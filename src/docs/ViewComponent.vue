@@ -229,6 +229,7 @@ export default {
 	font-size: 14px;
 	line-height: 1.5em;
 	text-align: left;
+	vertical-align: top;
 }
 
 .pkpul-component__table pre {

@@ -3,6 +3,8 @@ import WithCount from './WithCount.vue';
 import WithCountRaw from '!!raw-loader!./WithCount.vue';
 import WithSearch from './WithSearch.vue';
 import WithSearchRaw from '!!raw-loader!./WithSearch.vue';
+import WithLoadMore from './WithLoadMore.vue';
+import WithLoadMoreRaw from '!!raw-loader!./WithLoadMore.vue';
 
 export default {
 	baseData: function () {
@@ -61,6 +63,11 @@ export default {
 			label: 'with Search',
 			component: WithSearch,
 			componentRaw: WithSearchRaw,
+		},
+		WithLoadMore: {
+			label: 'with Load More',
+			component: WithLoadMore,
+			componentRaw: WithLoadMoreRaw,
 		},
 	},
 };

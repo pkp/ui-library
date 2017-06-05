@@ -19,7 +19,7 @@ import ListPanelItem from './ListPanelItem.vue';
 import ListPanelCount from './ListPanelCount.vue';
 import ListPanelSearch from './ListPanelSearch.vue';
 // import ListPanelFilter from './ListPanelFilter.vue';
-// import ListPanelLoadMore from './ListPanelLoadMore.vue';
+import ListPanelLoadMore from './ListPanelLoadMore.vue';
 
 export default {
 	name: 'ListPanel',
@@ -28,7 +28,7 @@ export default {
 		ListPanelCount,
 		ListPanelSearch,
 		// ListPanelFilter,
-		// ListPanelLoadMore,
+		ListPanelLoadMore,
 	},
 	data: function () {
 		return {
