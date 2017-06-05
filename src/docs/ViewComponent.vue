@@ -45,6 +45,10 @@
 						</tr>
 					</table>
 				</div>
+				<div class="pkpul-component__notes">
+					<h2 class="pkpul-component__heading">Notes</h2>
+					<div v-html="componentNotes"></div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -53,6 +57,7 @@
 <script>
 import ComponentExamples from './examples.js';
 import Vue from 'vue';
+import marked from 'marked';
 
 export default {
 	name: 'ViewComponent',
@@ -90,6 +95,9 @@ export default {
 				file = ComponentExamples[this.componentName].componentRaw;
 			}
 			return file.match(/<template>([\s\S]*?)<\/template>/g)[0];
+		},
+		componentNotes: function () {
+			return marked(require('./../docs/examples/' + this.componentName + '/_default.md'));
 		},
 		examplesList: function () {
 			var examplesList = [];
@@ -177,7 +185,8 @@ export default {
 
 .pkpul-component__preview,
 .pkpul-component__markup,
-.pkpul-component__data {
+.pkpul-component__data,
+.pkpul-component__notes {
 	padding: 2rem;
 	width: 100%;
 	border-bottom: 1px solid #ddd;
@@ -240,5 +249,18 @@ export default {
     tab-size: 2;
 	max-width: 20rem;
 	overflow-x: auto;
+}
+
+.pkpul-component__notes {
+
+	code {
+		display: inline-block;
+		background: #eee;
+		border-radius: 0.15em;
+		padding: 0 0.5em;
+		margin: 0 0.25em;
+		font-size: 12px;
+		font-family: monospace;
+	}
 }
 </style>
