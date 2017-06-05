@@ -56,22 +56,22 @@ export default {
 	},
 	notes: Notes,
 	examples: {
-		WithCount: {
+		'with-count': {
 			label: 'with Count',
 			component: WithCount,
 			componentRaw: WithCountRaw,
 		},
-		WithLoadMore: {
+		'with-load-more': {
 			label: 'with Load More',
 			component: WithLoadMore,
 			componentRaw: WithLoadMoreRaw,
 		},
-		WithActions: {
+		'with-actions': {
 			label: 'with Actions',
 			component: WithActions,
 			componentRaw: WithActionsRaw,
 		},
-		WithSearch: {
+		'with-search': {
 			label: 'with Search',
 			component: WithSearch,
 			componentRaw: WithSearchRaw,
