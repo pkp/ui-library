@@ -20,10 +20,13 @@
 
 <script>
 import ListPanel from './../../../components/ListPanel/ListPanel.vue';
+import ListPanelSearch from './../../../components/ListPanel/ListPanelSearch.vue';
 
 export default {
 	name: 'ListPanelWithSearch',
-	components: ListPanel.components,
+	components: _.extend({}, ListPanel.components, {
+		ListPanelSearch,
+	}),
 	computed: ListPanel.computed,
 	methods: ListPanel.methods,
 	mounted: ListPanel.mounted,

@@ -27,10 +27,15 @@
 
 <script>
 import ListPanel from './../../../components/ListPanel/ListPanel.vue';
+import ListPanelCount from './../../../components/ListPanel/ListPanelCount.vue';
+import ListPanelLoadMore from './../../../components/ListPanel/ListPanelLoadMore.vue';
 
 export default {
 	name: 'ListPanelWithLoadMore',
-	components: ListPanel.components,
+	components: _.extend({}, ListPanel.components, {
+		ListPanelCount,
+		ListPanelLoadMore,
+	}),
 	computed: ListPanel.computed,
 	methods: ListPanel.methods,
 	mounted: ListPanel.mounted,

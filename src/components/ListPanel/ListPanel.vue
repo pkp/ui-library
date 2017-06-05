@@ -16,19 +16,11 @@
 
 <script>
 import ListPanelItem from './ListPanelItem.vue';
-import ListPanelCount from './ListPanelCount.vue';
-import ListPanelSearch from './ListPanelSearch.vue';
-// import ListPanelFilter from './ListPanelFilter.vue';
-import ListPanelLoadMore from './ListPanelLoadMore.vue';
 
 export default {
 	name: 'ListPanel',
 	components: {
 		ListPanelItem,
-		ListPanelCount,
-		ListPanelSearch,
-		// ListPanelFilter,
-		ListPanelLoadMore,
 	},
 	data: function () {
 		return {

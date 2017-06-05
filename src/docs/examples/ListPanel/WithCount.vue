@@ -21,10 +21,13 @@
 
 <script>
 import ListPanel from './../../../components/ListPanel/ListPanel.vue';
+import ListPanelCount from './../../../components/ListPanel/ListPanelCount.vue';
 
 export default {
 	name: 'ListPanelWithCount',
-	components: ListPanel.components,
+	components: _.extend({}, ListPanel.components, {
+		ListPanelCount,
+	}),
 	computed: ListPanel.computed,
 	methods: ListPanel.methods,
 	mounted: ListPanel.mounted,
