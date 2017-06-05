@@ -1,14 +1,18 @@
 import Notes from 'raw-loader!./_default.md';
-import WithSearch from './WithSearch.vue';
-import WithSearchRaw from '!!raw-loader!./WithSearch.vue';
+import WithCount from './WithCount.vue';
+import WithCountRaw from '!!raw-loader!./WithCount.vue';
 
 export default {
 	baseData: function () {
 		return {
 			id: 'ExampleListPanel',
 			collection: {
-				items: [],
-				maxItems: null,
+				items: [
+					{title: 'Item one'},
+					{title: 'Item two'},
+					{title: 'Item three'},
+				],
+				maxItems: 10,
 			},
 			filterParams: {},
 			searchPhrase: '',
@@ -46,10 +50,10 @@ export default {
 	},
 	notes: Notes,
 	examples: {
-		WithSearch: {
-			label: 'with Search',
-			component: WithSearch,
-			componentRaw: WithSearchRaw,
+		WithCount: {
+			label: 'with Count',
+			component: WithCount,
+			componentRaw: WithCountRaw,
 		},
 	},
 };

@@ -12,7 +12,50 @@ export default {
 	name: 'app',
 	components: {
 		Sidebar,
-		// ViewComponent,
 	},
 };
 </script>
+
+<style lang="less">
+@import '../styles/_config';
+@import '../styles/font-awesome/variables';
+@import '../styles/font-awesome/core';
+@import '../styles/font-awesome/icons';
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+body {
+	position: relative;
+	margin: 0;
+	background: @lift;
+	font-family: @font;
+	font-size: @font-base;
+	line-height: @double;
+	color: @text-rgba;
+}
+
+a {
+	color: @primary;
+
+	&:hover,
+	&:focus {
+		color: @primary-lift;
+	}
+
+	&[disabled] {
+		color: @text-light-rgba;
+		cursor: not-allowed;
+	}
+}
+
+#app {
+	display: flex;
+	align-items: stretch;
+}
+
+.pkpul-sidebar {
+	flex: 0 0 15rem;
+}
+</style>

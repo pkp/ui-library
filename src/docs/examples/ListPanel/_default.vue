@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import ListPanel from './../../../components/ListPanel.vue';
+import ListPanel from './../../../components/ListPanel/ListPanel.vue';
 
 export default _.extend({}, ListPanel, {
 	// name: 'ExampleListPanel',
@@ -46,9 +46,3 @@ export default _.extend({}, ListPanel, {
 	},
 });
 </script>
-
-<style lang="less">
-.pkpListPanel__title {
-	background: blue;
-}
-</style>
