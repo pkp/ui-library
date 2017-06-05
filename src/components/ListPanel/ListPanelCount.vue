@@ -19,3 +19,9 @@ export default {
 	},
 };
 </script>
+
+<style lang="less">
+.pkpListPanel__count {
+	float: right;
+}
+</style>

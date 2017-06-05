@@ -1,6 +1,8 @@
 import Notes from 'raw-loader!./_default.md';
 import WithCount from './WithCount.vue';
 import WithCountRaw from '!!raw-loader!./WithCount.vue';
+import WithSearch from './WithSearch.vue';
+import WithSearchRaw from '!!raw-loader!./WithSearch.vue';
 
 export default {
 	baseData: function () {
@@ -54,6 +56,11 @@ export default {
 			label: 'with Count',
 			component: WithCount,
 			componentRaw: WithCountRaw,
+		},
+		WithSearch: {
+			label: 'with Search',
+			component: WithSearch,
+			componentRaw: WithSearchRaw,
 		},
 	},
 };

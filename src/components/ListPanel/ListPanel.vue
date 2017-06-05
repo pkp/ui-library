@@ -17,7 +17,7 @@
 <script>
 import ListPanelItem from './ListPanelItem.vue';
 import ListPanelCount from './ListPanelCount.vue';
-// import ListPanelSearch from './ListPanelSearch.vue';
+import ListPanelSearch from './ListPanelSearch.vue';
 // import ListPanelFilter from './ListPanelFilter.vue';
 // import ListPanelLoadMore from './ListPanelLoadMore.vue';
 
@@ -26,7 +26,7 @@ export default {
 	components: {
 		ListPanelItem,
 		ListPanelCount,
-		// ListPanelSearch,
+		ListPanelSearch,
 		// ListPanelFilter,
 		// ListPanelLoadMore,
 	},
@@ -422,106 +422,6 @@ export default {
 	}
 }
 
-.pkpListPanel__search {
-	position: relative;
-	float: right;
-	margin-top: 0.5em;
-	max-width: 100%;
-
-	input {
-		display: block;
-		box-sizing: border-box;
-		padding: 0 0.5em 0 3.5em;
-		width: 25em;
-		height: auto;
-		max-width: 100%;
-		border: @bg-border-light;
-		border-radius: @radius;
-		font-size: @font-sml;
-		line-height: @double;
-
-		&:hover {
-			border-color: @primary;
-
-			+ .pkpListPanel__searchIcons {
-				border-color: @primary;
-			}
-		}
-
-		&:focus {
-			outline: 0;
-			border-color: @primary;
-
-			+ .pkpListPanel__searchIcons {
-				border-color: @primary;
-				background: @primary;
-
-				.pkpListPanel__searchIcons--search:before {
-					color: #fff;
-				}
-
-				.pkpListPanel__searchIcons--searching:before {
-					border-top-color: rgba(255,255,255,0.5);
-					border-left-color: rgba(255,255,255,0.5);
-				}
-			}
-		}
-	}
-
-	&.searching {
-
-		.pkpListPanel__searchIcons--search:before {
-			opacity: 0;
-		}
-
-		.pkpListPanel__searchIcons--searching:before {
-			opacity: 1;
-		}
-	}
-}
-
-.pkpListPanel__actions + .pkpListPanel__search {
-	margin-right: 0.5em;
-}
-
-.pkpListPanel__searchLabel {
-	&:extend(.pkp_screen_reader all);
-}
-
-.pkpListPanel__searchIcons {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 2.5em;
-	height: 100%;
-	border-right: @bg-border-light;
-	border-top-left-radius: @radius;
-	border-bottom-left-radius: @radius;
-}
-
-.pkpListPanel__searchIcons--search:before {
-	&:extend(.fa);
-	// content: @fa-var-search;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	color: @primary;
-	transition: opacity 0.3s;
-	opacity: 1;
-}
-
-.pkpListPanel__searchIcons--searching:before {
-	&:extend(.pkp_spinner:after);
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin-top: -10px;
-	margin-left: -10px;
-	opacity: 0;
-	transition: opacity 0.3s;
-}
-
 .pkpListPanel__body {
 	.pkp_helpers_clear;
 	position: relative;
@@ -650,7 +550,7 @@ export default {
 }
 
 .pkpListPanel__filterRemoveLabel {
-	&:extend(.pkp_screen_reader);
+	.pkp_screen_reader();
 }
 
 .pkpListPanel__filter.--isVisible {
@@ -756,10 +656,6 @@ export default {
 	.pkp_spinner {
 		margin-right: 0.25em;
 	}
-}
-
-.pkpListPanel__count {
-	float: right;
 }
 
 .pkpListPanel__loadMore.--isLoadingMore {
