@@ -1,5 +1,14 @@
 <template>
 	<div class="pkpul-sidebar">
+		<h2 class="pkpul-sidebar__heading">Guide</h2>
+		<ul class="pkpul-sidebar__list">
+			<li class="pkpul-sidebar__list-item">
+				<router-link to="/">Introduction</router-link>
+			</li>
+			<li class="pkpul-sidebar__list-item">
+				<router-link to="/pages/accessibility">Accessibility</router-link>
+			</li>
+		</ul>
 		<h2 class="pkpul-sidebar__heading">Components</h2>
 		<ul class="pkpul-sidebar__list">
 			<li v-for="example in examples" class="pkpul-sidebar__list-item">
@@ -47,5 +56,6 @@ export default {
 	margin: 0;
 	padding: 0.5em 1em;
 	list-style: none;
+	line-height: 1.5em;
 }
 </style>

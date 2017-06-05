@@ -13,6 +13,12 @@ export default new Router({
 			component: Page,
 		},
 		{
+			path: '/pages/:page',
+			name: 'Page',
+			component: Page,
+			props: true,
+		},
+		{
 			path: '/components/:componentName',
 			name: 'Component',
 			component: ViewComponent,

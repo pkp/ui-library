@@ -252,6 +252,7 @@ export default {
 }
 
 .pkpul-component__notes {
+	line-height: 1.8em;
 
 	code {
 		display: inline-block;
