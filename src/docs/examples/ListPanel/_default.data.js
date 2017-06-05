@@ -5,6 +5,8 @@ import WithSearch from './WithSearch.vue';
 import WithSearchRaw from '!!raw-loader!./WithSearch.vue';
 import WithLoadMore from './WithLoadMore.vue';
 import WithLoadMoreRaw from '!!raw-loader!./WithLoadMore.vue';
+import WithActions from './WithActions.vue';
+import WithActionsRaw from '!!raw-loader!./WithActions.vue';
 
 export default {
 	baseData: function () {
@@ -59,15 +61,20 @@ export default {
 			component: WithCount,
 			componentRaw: WithCountRaw,
 		},
-		WithSearch: {
-			label: 'with Search',
-			component: WithSearch,
-			componentRaw: WithSearchRaw,
-		},
 		WithLoadMore: {
 			label: 'with Load More',
 			component: WithLoadMore,
 			componentRaw: WithLoadMoreRaw,
+		},
+		WithActions: {
+			label: 'with Actions',
+			component: WithActions,
+			componentRaw: WithActionsRaw,
+		},
+		WithSearch: {
+			label: 'with Search',
+			component: WithSearch,
+			componentRaw: WithSearchRaw,
 		},
 	},
 };

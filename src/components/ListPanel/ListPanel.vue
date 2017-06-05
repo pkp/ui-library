@@ -371,9 +371,9 @@ export default {
 }
 
 .pkpListPanel__actions {
-	&:extend(.pkp_unstyled_list all);
 	float: right;
-	margin-top: 0.5em;
+	margin: 0.5em 0 0;
+	padding: 0;
 	max-width: 30em;
 
 	li {
@@ -388,6 +388,7 @@ export default {
 		border: @bg-border-light;
 		border-radius: @radius;
 		font-size: @font-sml;
+		line-height: @double;
 		font-weight: @bold;
 		color: @primary;
 		text-decoration: none;
