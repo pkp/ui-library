@@ -64,6 +64,7 @@ export default {
 @import '../../styles/_config';
 
 .pkpListPanelItem {
+	position: relative;
 	padding: 1em;
 	border-bottom: @grid-border;
 	font-size: @font-sml;
