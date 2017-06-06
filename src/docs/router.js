@@ -30,5 +30,11 @@ export default new Router({
 			component: ViewComponent,
 			props: true,
 		},
+		{
+			path: '/components/:componentName/implementations/:implementationName',
+			name: 'Component',
+			component: ViewComponent,
+			props: true,
+		},
 	],
 });

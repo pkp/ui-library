@@ -1,0 +1,83 @@
+export default {
+	id: 1,
+	title: 'Tortor ultrices dolor diam dignissim ante nulla et morbi imperdiet',
+	author: {
+		authorString: 'Carlo Corino',
+	},
+	reviewAssignments: [],
+	reviewRounds: [
+		{
+			id: 1,
+			round: 1,
+			stageId: 3,
+			status: 'Waiting for reviewers to be selected.',
+			statusId: 6,
+		},
+	],
+	stages: [
+		{
+			id: 1,
+			label: 'Submission',
+			isActiveStage: true,
+			queries: [],
+			files: {
+				count: 0,
+			},
+		},
+		{
+			id: 3,
+			label: 'Review',
+			isActiveStage: false,
+			queries: [],
+			files: {
+				count: 0,
+			},
+		},
+		{
+			id: 4,
+			label: 'Copyediting',
+			isActiveStage: false,
+			queries: [],
+			files: {
+				count: 0,
+			},
+		},
+		{
+			id: 5,
+			label: 'Production',
+			isActiveStage: false,
+			queries: [],
+			files: {
+				count: 0,
+			},
+		},
+	],
+	status: {
+		id: 1,
+		label: 'Queued',
+	},
+	submissionProgress: 0,
+	urlPublished: '/article/view/5',
+	urlWorkflow: '/workflow/access/1',
+	copyrightHolder: null,
+	datePublished: null,
+	fullTitle: 'Tortor ultrices dolor diam dignissim ante nulla et morbi imperdiet',
+	dateStatusModified: '2016-05-31 13:56:38',
+	abstract: '<p>Tortor ultrices dolor diam dignissim ante nulla et morbi imperdiet. Tortor ultrices dolor diam dignissim ante nulla et morbi imperdiet. Tortor ultrices dolor diam dignissim ante nulla et morbi imperdiet. Tortor ultrices dolor diam dignissim ante nulla et morbi imperdiet. Tortor ultrices dolor diam dignissim ante nulla et morbi imperdiet. Tortor ultrices dolor diam dignissim ante nulla et morbi imperdiet. Tortor ultrices dolor diam dignissim ante nulla et morbi imperdiet. Tortor ultrices dolor diam dignissim ante nulla et morbi imperdiet. Tortor ultrices dolor diam dignissim ante nulla et morbi imperdiet. Tortor ultrices dolor diam dignissim ante nulla et morbi imperdiet. Tortor ultrices dolor diam dignissim ante nulla et morbi imperdiet. Tortor ultrices dolor diam dignissim ante nulla et morbi imperdiet. Tortor ultrices dolor diam dignissim ante nulla et morbi imperdiet. Tortor ultrices dolor diam dignissim ante nulla et morbi imperdiet.</p>',
+	discipline: null,
+	dateSubmitted: '2016-05-31 13:55:59',
+	copyrightYear: null,
+	citations: null,
+	lastModified: '2016-08-08 15:30:13',
+	sponsor: null,
+	pageArray: Array[0],
+	language: '',
+	section: 0,
+	licenseUrl: null,
+	locale: 'en_US',
+	prefix: null,
+	pages: null,
+	subject: null,
+	subtitle: null,
+	type: null,
+};

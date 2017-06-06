@@ -1,4 +1,3 @@
-import Notes from 'raw-loader!./_default.md';
 import WithCount from './WithCount.vue';
 import WithCountRaw from '!!raw-loader!./WithCount.vue';
 import WithSearch from './WithSearch.vue';
@@ -7,6 +6,8 @@ import WithLoadMore from './WithLoadMore.vue';
 import WithLoadMoreRaw from '!!raw-loader!./WithLoadMore.vue';
 import WithActions from './WithActions.vue';
 import WithActionsRaw from '!!raw-loader!./WithActions.vue';
+import SubmissionsListPanel from './implementations/ExampleSubmissionsListPanel.vue';
+import SubmissionsListPanelRaw from '!!raw-loader!./../../../components/ListPanel/submissions/SubmissionsListPanel.vue';
 
 export default {
 	baseData: function () {
@@ -54,7 +55,6 @@ export default {
 		lazyLoad: 'If `true`, it will call `ListPanel.get()` when mounted.',
 		_lastGetRequest: 'Internal tracking to to ensure only the last `ListPanel.get()` call is processed.',
 	},
-	notes: Notes,
 	examples: {
 		'with-count': {
 			label: 'with Count',
@@ -75,6 +75,13 @@ export default {
 			label: 'with Search',
 			component: WithSearch,
 			componentRaw: WithSearchRaw,
+		},
+	},
+	implementations: {
+		'SubmissionsListPanel': {
+			label: 'SubmissionsListPanel',
+			component: SubmissionsListPanel,
+			componentRaw: SubmissionsListPanelRaw,
 		},
 	},
 };

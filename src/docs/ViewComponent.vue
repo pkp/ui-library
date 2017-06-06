@@ -2,8 +2,13 @@
 	<div class="pkpul-component">
 		<h1 class="pkpul-component__title">
 			{{ componentName }}
-			<span class="pkpul-component__exampleTitle" v-if="exampleName">
-				{{ exampleName }}
+			<span class="pkpul-component__subTitle" v-if="exampleName || implementationName">
+				<template v-if="exampleName">
+					{{ exampleName }}
+				</template>
+				<template v-elseif="implementationName">
+					{{ implementationName }}
+				</template>
 			</span>
 		</h1>
 		<div class="pkpul-component__wrapper">
@@ -15,6 +20,12 @@
 					</li>
 					<li v-for="example in examplesList" class="pkpul-component__examples-list-item">
 						<router-link :to="example.url">{{ example.label }}</router-link>
+					</li>
+				</ul>
+				<h2 class="pkpul-component__examples-title">Implementations</h2>
+				<ul class="pkpul-component__examples-list">
+					<li v-for="implementation in implementationsList" class="pkpul-component__examples-list-item">
+						<router-link :to="implementation.url">{{ implementation.label }}</router-link>
 					</li>
 				</ul>
 			</div>
@@ -61,15 +72,20 @@ import marked from 'marked';
 
 export default {
 	name: 'ViewComponent',
-	props: ['componentName', 'exampleName', 'subcomponentName'],
+	props: ['componentName', 'exampleName', 'implementationName'],
 	computed: {
 		componentType: function () {
+			var cmp;
 			if (this.exampleName) {
 				if (this.config.examples[this.exampleName] !== 'undefined') {
 					return this.config.examples[this.exampleName].component;
 				}
+			} else if (this.implementationName) {
+				if (this.config.implementations[this.implementationName] !== 'undefined') {
+					return this.config.implementations[this.implementationName].component;
+				}
 			}
-			var cmp = ComponentExamples[this.componentName].component;
+			cmp = ComponentExamples[this.componentName].component;
 			cmp.data = this.config.baseData;
 			return cmp;
 		},
@@ -91,13 +107,17 @@ export default {
 				if (this.config.examples[this.exampleName] !== 'undefined') {
 					file = this.config.examples[this.exampleName].componentRaw;
 				}
+			} else if (this.implementationName) {
+				if (this.config.implementations[this.implementationName] !== 'undefined') {
+					file = this.config.implementations[this.implementationName].componentRaw;
+				}
 			} else {
 				file = ComponentExamples[this.componentName].componentRaw;
 			}
 			return file.match(/<template>([\s\S]*?)<\/template>/g)[0];
 		},
 		componentNotes: function () {
-			return marked(require('./../docs/examples/' + this.componentName + '/_default.md'));
+			return marked(require('./../docs/examples/' + this.componentName + '/notes.md'));
 		},
 		examplesList: function () {
 			var examplesList = [];
@@ -109,8 +129,18 @@ export default {
 			}
 			return examplesList;
 		},
+		implementationsList: function () {
+			var implementationsList = [];
+			for (var i in this.config.implementations) {
+				implementationsList.push({
+					label: this.config.implementations[i].label,
+					url: '/components/' + this.componentName + '/implementations/' + i,
+				});
+			}
+			return implementationsList;
+		},
 		config: function () {
-			return require('./../docs/examples/' + this.componentName + '/_default.data.js').default;
+			return require('./examples/' + this.componentName + '/data.js').default;
 		},
 		componentUrl: function () {
 			return '/components/' + this.componentName;
@@ -131,14 +161,12 @@ export default {
 	padding: 0 2rem;
 }
 
-.pkpul-component__exampleTitle {
+.pkpul-component__subTitle {
 	margin-left: 0.5em;
 	font-size: 14px;
 	line-height: 1.5em;
 	font-weight: normal;
-	color: #aaa;
-	text-transform: uppercase;
-	letter-spacing: 2px;
+	color: #777;
 	vertical-align: middle;
 }
 
@@ -164,7 +192,7 @@ export default {
 }
 
 .pkpul-component__examples-list {
-	margin: 0;
+	margin: 0 0 2rem;
 	padding: 0;
 	list-style: none;
 }
@@ -176,9 +204,22 @@ export default {
 	line-height: 1.5em;
 
 	.router-link-exact-active {
-		font-weight: @bold;
-		color: @text-light;
+		position: relative;
+		color: @text;
 		text-decoration: none;
+
+		&:before {
+			content: '';
+			display: block;
+			position: absolute;
+			top: 50%;
+			left: -1.25rem;
+			width: 0.5rem;
+			height: 0.5rem;
+			margin-top: -0.25rem;
+			border-radius: 50%;
+			background: @primary;
+		}
 	}
 }
 
@@ -248,7 +289,8 @@ export default {
     line-height: 1.2rem;
     tab-size: 2;
 	max-width: 20rem;
-	overflow-x: auto;
+	max-height: 40rem;
+	overflow: auto;
 }
 
 .pkpul-component__notes {

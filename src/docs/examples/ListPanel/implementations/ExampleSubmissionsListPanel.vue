@@ -1,0 +1,143 @@
+<script>
+import SubmissionsListPanel from './../../../../components/ListPanel/submissions/SubmissionsListPanel.vue';
+import BaseSubmissionObject from './helpers/BaseSubmissionObject.js';
+
+export default {
+	extends: SubmissionsListPanel,
+	name: 'ExampleSubmissionsListPanel',
+	data: function () {
+		return {
+			id: 'ExampleSubmissionsListPanel',
+			filterParams: {},
+			searchPhrase: '',
+			isLoading: false,
+			isSearching: false,
+			isOrdering: false,
+			isFilterVisible: false,
+			count: 3,
+			offset: 0,
+			apiPath: '',
+			getParams: {},
+			lazyLoad: false,
+			_lastGetRequest: null,
+			collection: {
+				items: [
+					BaseSubmissionObject,
+					_.extend({}, BaseSubmissionObject, {
+						id: 2,
+						title: 'Quisque vel ultrices ut vel sollicitudin vel varius suscipit phasellus',
+						author: {
+							authorString: 'Catherine Kwantes',
+						},
+						reviewAssignments: [],
+						reviewRounds: [],
+						stages: [
+							{
+								id: 1,
+								label: 'Submission',
+								isActiveStage: false,
+								queries: [],
+								files: {
+									count: 1,
+								},
+							},
+							{
+								id: 3,
+								label: 'Review',
+								isActiveStage: true,
+								status: 'Waiting for reviewers to be selected',
+								statusId: 6,
+								queries: [],
+								files: {
+									count: 2,
+								},
+							},
+							{
+								id: 4,
+								label: 'Copyediting',
+								isActiveStage: false,
+								queries: [],
+								files: {
+									count: 0,
+								},
+							},
+							{
+								id: 5,
+								label: 'Production',
+								isActiveStage: false,
+								queries: [],
+								files: {
+									count: 0,
+								},
+							},
+						],
+						urlWorkflow: '/workflow/access/2',
+						urlPublished: '/article/view/2',
+					}),
+					_.extend({}, BaseSubmissionObject, {
+						id: 3,
+						title: 'Metus ut elit est ultrices vivamus mauris est quisque arcu',
+						author: {
+							authorString: 'Domatilia Sokoloff',
+						},
+						urlWorkflow: '/workflow/access/3',
+						urlPublished: '/article/view/3',
+					}),
+					_.extend({}, BaseSubmissionObject, {
+						id: 4,
+						title: 'Est maximus eu donec congue felis amet sollicitudin non sagittis',
+						author: {
+							authorString: 'Donec Congue',
+						},
+						urlWorkflow: '/workflow/access/4',
+						urlPublished: '/article/view/4',
+					}),
+					_.extend({}, BaseSubmissionObject, {
+						id: 5,
+						title: 'Sed sed mattis amet eget aenean leo est nam sit',
+						author: {
+							authorString: 'Sed Aenean',
+						},
+						urlWorkflow: '/workflow/access/5',
+						urlPublished: '/article/view/5',
+					}),
+					_.extend({}, BaseSubmissionObject, {
+						id: 6,
+						title: 'Lacus ut leo dolor nam neque nam dolor aenean sagittis',
+						author: {
+							authorString: 'Lacus Agittis',
+						},
+						urlWorkflow: '/workflow/access/3',
+						urlPublished: '/article/view/3',
+					}),
+				],
+				maxItems: 10,
+			},
+			i18n: {
+				title: 'Example Submissions List',
+				add: 'New Submissions',
+				search: 'Search',
+				itemsOfTotal: '{$count} of {$total} items',
+				itemCount: '{$count} items',
+				loadMore: 'Load more',
+				loading: 'Loading',
+				incomplete: 'Incomplete',
+				delete: 'Delete',
+				infoCenter: 'Activity Log & Notes',
+				yes: 'Yes',
+				no: 'No',
+				deleting: 'Deleting',
+				confirmDelete: 'Delete submission?',
+				responseDue: 'Response due',
+				reviewDue: 'Review due',
+				filter: 'Filter',
+				filterRemove: 'Clear filter: {$filterTitle}',
+				itemOrdererUp: 'Increase position of {$itemTitle}',
+				itemOrdererDown: 'Decrease position of {$itemTitle}',
+			},
+			addUrl: 'http://example.org',
+			infoUrl: '/$$$call$$$/information-center/submission-information-center/view-information-center?submissionId=__id__',
+		};
+	},
+};
+</script>

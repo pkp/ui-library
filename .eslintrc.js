@@ -18,6 +18,7 @@ module.exports = {
   globals: {
     '_': false,
     '$': false,
+    'pkp': false,
   },
   // add your custom rules here
   'rules': {
@@ -29,7 +30,7 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     // use tab indentation
     'no-tabs': 0,
-    'indent': ['error', 'tab'],
+    'indent': ['error', 'tab', {SwitchCase: 1}],
     // allow trailing commas on multi-line arrays/obbjects
     'comma-dangle': ['error', 'always-multiline'],
     // require semi-colons at the end of statements
