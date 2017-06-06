@@ -20,7 +20,7 @@ export default {
 		 * this property.
 		 */
 		id: function () {
-			return 0;
+			return this.item.id || 0;
 		},
 	},
 	methods: {
