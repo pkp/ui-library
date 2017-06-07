@@ -246,7 +246,7 @@ export default {
     line-height: 1.2rem;
     tab-size: 2;
 	background: @primary;
-	color: rgba(255,255,255,0.9);
+	color: #fff;
 }
 
 .pkpul-component__heading {

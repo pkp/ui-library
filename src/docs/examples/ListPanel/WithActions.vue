@@ -4,10 +4,10 @@
 			<div class="pkpListPanel__title">{{ i18n.title }}</div>
 			<ul class="pkpListPanel__actions">
 				<li>
-					<button @click.prevent="openModal">{{ i18n.openModal }}</button>
+					<button @click.prevent="openModal" class="pkpButton">{{ i18n.openModal }}</button>
 				</li>
 				<li>
-					<a href="http://example.org">{{ i18n.goToUrl }}</a>
+					<a href="http://example.org" class="pkpButton">{{ i18n.goToUrl }}</a>
 				</li>
 			</ul>
 		</div>

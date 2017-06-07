@@ -8,6 +8,9 @@
 			<li class="pkpul-sidebar__list-item">
 				<router-link to="/pages/accessibility">Accessibility</router-link>
 			</li>
+			<li class="pkpul-sidebar__list-item">
+				<router-link to="/pages/elements">Elements</router-link>
+			</li>
 		</ul>
 		<h2 class="pkpul-sidebar__heading">Components</h2>
 		<ul class="pkpul-sidebar__list">

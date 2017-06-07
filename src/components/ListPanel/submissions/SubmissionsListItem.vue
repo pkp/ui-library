@@ -9,7 +9,7 @@
 					{{ submission.author.authorString }}
 				</div>
 				<div v-if="notice" class="pkpListPanelItem--submission__activity">
-					<span class="fa fa-exclamation-triangle"></span>
+					<span class="fa fa-exclamation-triangle pkpIcon--inline"></span>
 					{{ notice }}
 				</div>
 			</div>
@@ -49,17 +49,17 @@
 				</div>
 				<div class="pkpListPanelItem--submission__flags">
 					<span v-if="isReviewStage"  class="pkpListPanelItem--submission__flags--reviews" :class="classHighlightReviews">
-						<span v-if="classHighlightReviews === ''" class="fa fa-user-o"></span>
-						<span v-else class="fa fa-user"></span>
+						<span v-if="classHighlightReviews === ''" class="fa fa-user-o pkpIcon--inline"></span>
+						<span v-else class="fa fa-user pkpIcon--inline"></span>
 						<span class="count">{{ completedReviewsCount }} / {{ currentReviewAssignments.length }}</span>
 					</span>
 					<span v-if="activeStage.files.count" class="pkpListPanelItem--submission__flags--files" :class="classHighlightFiles">
-						<span v-if="classHighlightFiles === ''" class="fa fa-file-text-o"></span>
-						<span v-else class="fa fa-file-text"></span>
+						<span v-if="classHighlightFiles === ''" class="fa fa-file-text-o pkpIcon--inline"></span>
+						<span v-else class="fa fa-file-text pkpIcon--inline"></span>
 						<span class="count">{{ activeStage.files.count }}</span>
 					</span>
 					<span v-if="openQueryCount" class="pkpListPanelItem--submission__flags--discussions">
-						<span class="fa fa-comment-o"></span>
+						<span class="fa fa-comment-o pkpIcon--inline"></span>
 						<span class="count">{{ openQueryCount }}</span>
 					</span>
 				</div>
@@ -537,7 +537,6 @@ export default {
 	color: @text;
 
 	.fa {
-		margin-right: 0.25em;
 		font-size: @font-sml;
 		color: @no;
 	}
@@ -562,10 +561,6 @@ export default {
 	> * {
 		margin-left: 1em;
 		color: @text-light-rgba;
-	}
-
-	.fa {
-		margin-right: 0.5em;
 	}
 
 	&.--notice .fa {

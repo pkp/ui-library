@@ -21,6 +21,8 @@ export default {
 @import '../styles/font-awesome/variables';
 @import '../styles/font-awesome/core';
 @import '../styles/font-awesome/icons';
+@import '../styles/elements/buttons';
+@import '../styles/elements/icons';
 
 *, *:before, *:after {
   box-sizing: border-box;

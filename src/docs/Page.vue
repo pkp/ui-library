@@ -25,8 +25,18 @@ export default {
 	max-width: 45em;
 	line-height: 1.8em;
 
-	h1 {
+	h1:first-child {
 		margin-top: 0;
+	}
+
+	h2 {
+		margin-top: 3em;
+		padding-bottom: 0.5em;
+		border-bottom: 1px solid #333;
+	}
+
+	h3 {
+		margin-top: 3em;
 	}
 
 	code {
@@ -38,5 +48,30 @@ export default {
 		font-size: 12px;
 		font-family: monospace;
 	}
+}
+
+.pkpul-element {
+	margin: 2rem 0;
+
+	code {
+		margin: 0;
+		font-family: monospace;
+		font-size: 12px;
+		line-height: 1.2rem;
+		padding: 2rem;
+		width: 100%;
+		background: @primary;
+		color: #fff;
+		white-space: pre;
+		-moz-tab-size: 2;
+		-o-tab-size: 2;
+		tab-size: 2;
+	}
+}
+
+.pkpul-element__preview {
+	padding: 2rem;
+	border: 1px solid #ddd;
+	border-bottom: none;
 }
 </style>

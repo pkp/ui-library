@@ -372,48 +372,6 @@ export default {
 	li {
 		display: inline-block;
 	}
-
-	a,
-	button {
-		display: inline-block;
-		padding: 0 0.5em;
-		background: #fff;
-		border: @bg-border-light;
-		border-radius: @radius;
-		font-size: @font-sml;
-		line-height: @double;
-		font-weight: @bold;
-		color: @primary;
-		text-decoration: none;
-
-		&.--isActive {
-			background: @primary;
-			border-color: @primary;
-			color: #fff;
-		}
-
-		&:hover,
-		&:focus {
-			border-color: @primary;
-			outline: 0;
-		}
-
-		&.--isWarnable {
-			color: @no;
-			border-color: @no-btn-border;
-
-			&:hover,
-			&:focus {
-				background: @no;
-				border-color: @no;
-				color: #fff;
-			}
-		}
-
-		.fa {
-			margin-right: 0.25em;
-		}
-	}
 }
 
 .pkpListPanel__body {
@@ -463,79 +421,6 @@ export default {
 	font-size: @font-tiny;
 	line-height: @line-base;
 	border-top: @grid-border;
-}
-
-.pkpListPanel__loadMore {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	text-align: center;
-}
-
-.pkpListPanel__loadMoreButton,
-.pkpListPanel__loadMoreNotice {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	padding: @half @base;
-	transition: opacity 0.3s;
-}
-
-.pkpListPanel__loadMoreButton {
-	font-weight: @bold;
-	text-decoration: none;
-	opacity: 1;
-
-	.fa {
-		margin-right: 0.25em;
-	}
-
-	&:before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 50%;
-		width: 1em;
-		height: 2px;
-		background: @primary;
-		opacity: 0;
-		transform: translateX(-50%);
-		transition: width 0.3s;
-	}
-
-	&:hover,
-	&:focus {
-
-		&:before {
-			opacity: 1;
-			width: 10em;
-		}
-	}
-}
-
-.pkpListPanel__loadMoreNotice {
-	display: none;
-	opacity: 0;
-
-	.pkp_spinner {
-		margin-right: 0.25em;
-	}
-}
-
-.pkpListPanel__loadMore.--isLoadingMore {
-
-	.pkpListPanel__loadMoreButton {
-		opacity: 0;
-	}
-
-	.pkpListPanel__loadMoreNotice {
-		display: block;
-		opacity: 1;
-	}
 }
 
 .pkpListPanel.--isOrdering {
@@ -601,14 +486,6 @@ export default {
 		box-shadow: -2px 0 0 @primary;
 		outline: 0;
 	}
-
-	.fa {
-		margin-right: 0.25em;
-	}
-}
-
-.pkpListPanel__notice--info .fa {
-	color: @yes;
 }
 
 .pkpListPanelItem__selectItem {

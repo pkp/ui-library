@@ -1,7 +1,7 @@
 <template>
 	<div href="#" @click.prevent="toggleFilter" class="pkpListPanel__filter" :class="{'--isVisible': this.isVisible}">
 		<div class="pkpListPanel__filterHeader" tabindex="0">
-			<span class="fa fa-filter"></span>
+			<span class="fa fa-filter pkpIcon--inline"></span>
 			{{ i18n.filter }}
 		</div>
 		<div class="pkpListPanel__filterOptions"></div>
@@ -94,10 +94,6 @@ export default {
 
 	&:focus {
 		outline: 0;
-	}
-
-	.fa {
-		margin-right: 0.25em;
 	}
 }
 

@@ -4,7 +4,7 @@
 			<div class="pkpListPanel__title">{{ i18n.title }}</div>
 			<ul class="pkpListPanel__actions">
 				<li>
-					<a :href="addUrl">{{ i18n.add }}</a>
+					<a :href="addUrl" class="pkpButton">{{ i18n.add }}</a>
 				</li>
 			</ul>
 			<list-panel-search
