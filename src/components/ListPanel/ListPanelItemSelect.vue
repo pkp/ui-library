@@ -54,6 +54,18 @@ export default {
 <style lang="less">
 @import '../../styles/_config';
 
+.pkpListPanelItem--select {
+	padding: 0;
+
+	&.--hasFocus {
+
+		&:before {
+			height: 100%;
+			opacity: 1;
+		}
+	}
+}
+
 .pkpListPanelItem__selectItem {
 	position: absolute;
 	top: 0;
@@ -76,7 +88,8 @@ export default {
 }
 
 .pkpListPanelItem__item--select {
-	padding-left: 5em;
+	display: block;
+	padding: 1em 5em 1em;
 	width: 100%;
 	float: none;
 	cursor: pointer;
