@@ -19,12 +19,12 @@ Buttons can be links (`<a>`) or buttons (`<button>`). The [accessibility section
 
 <div class="pkpul-element">
 	<div class="pkpul-element__preview">
-		<button class="pkpButton">Button</button>
-		<button class="pkpButton --isPrimary">Primary Button</button>
+		<button class="pkpButton --isPrimary">Submit</button>
+		<button class="pkpButton">Save for later</button>
 	</div>
 ```
-<button class="pkpButton">Button</button>
-<button class="pkpButton --isPrimary">Primary Button</button>
+<button class="pkpButton --isPrimary">Submit</button>
+<button class="pkpButton">Save for later</button>
 ```
 </div>
 
@@ -34,12 +34,12 @@ Use `--isPrimary` when a button represents the default or expected action in a g
 
 <div class="pkpul-element">
 	<div class="pkpul-element__preview">
-		<button class="pkpButton">Button</button>
-		<button class="pkpButton --isWarnable">Warnable Button</button>
+		<button class="pkpButton">Save</button>
+		<button class="pkpButton --isWarnable">Cancel</button>
 	</div>
 ```
-<button class="pkpButton">Button</button>
-<button class="pkpButton --isWarnable">Warnable Button</button>
+<button class="pkpButton">Save</button>
+<button class="pkpButton --isWarnable">Cancel</button>
 ```
 </div>
 
