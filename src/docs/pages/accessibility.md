@@ -33,12 +33,24 @@ Avoid using `tabindex="1"` and `tabindex="2"` to enforce the order of navigation
 
 ## Labelling for those without sight
 
-When a component uses icons or a visual layout to communicate what a button or value represents, you should still provide text labelling for users without sight. You can use the `--screenReader` class to visually hide the label but ensure it's displayed to screen readers.
+When a component uses icons or a visual layout to indicate the meaning of something, you must provide a text label for users without sight. You can use the `--screenReader` class to hide the label from sighted users but still expose it to screen readers.
 
-For example, a search field often uses an icon to indicate it's purpose. This should still be accompanied by a label.
+You should _not_ use `display: hidden`, because screen readers will ignore the text.
 
+### Hidden search label
+
+<div class="pkpul-element">
+	<div class="pkpul-element__preview">
+		<div class="pkpul-accessible-search">
+			<span class="fa fa-search"></span>
+			<input id="searchInput" placeholder="Search submissions">
+			<label for="searchInput" class="--screenReader">
+				Search submissions
+			</label>
+		</div>
+	</div>
 ```
-<div class="search">
+<div class="pkpul-accessible-search">
 	<span class="fa fa-search"></span>
 	<input id="searchInput" placeholder="Search submissions">
 	<label for="searchInput" class="--screenReader">
@@ -46,5 +58,35 @@ For example, a search field often uses an icon to indicate it's purpose. This sh
 	</label>
 </div>
 ```
+</div>
 
-In this case, the `placeholder` attribute can not be read by all screen readers, so a label is provided and then hidden from sighted users.
+A search field often uses an icon to indicate it's purpose. The `placeholder` attribute can not be read by all screen readers, so a label is provided and then hidden from sighted users.
+
+### Icon-only buttons
+
+<div class="pkpul-element">
+	<div class="pkpul-element__preview">
+		<div class="pkpul-accessible-icon-only-button">
+			<p>
+				My example submission
+				<button>
+					<span class="fa fa-times"></span>
+					<span class="--screenReader">Delete My example submission</span>
+				</button>
+			</p>
+		</div>
+	</div>
+```
+<div class="pkpul-accessible-icon-only-button">
+	<p>
+		My example submission
+		<button>
+			<span class="fa fa-times"></span>
+			<span class="--screenReader">Delete My example submission</span>
+		</button>
+	</p>
+</div>
+```
+</div>
+
+In a few cases, an icon may not need a text label for sighted users to understand it's purpose. A hidden text label should still be provided for those using screen readers.

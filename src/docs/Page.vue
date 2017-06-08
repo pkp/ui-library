@@ -74,4 +74,26 @@ export default {
 	border: 1px solid #ddd;
 	border-bottom: none;
 }
+
+.pkpul-accessible-search {
+    border: 1px solid #ddd;
+    padding: 0.25em 0.5em;
+    border-radius: 0.25em;
+    display: inline-block;
+
+	input {
+		border: none;
+		margin-left: 0.5em;
+	}
+}
+
+.pkpul-accessible-icon-only-button {
+
+	button {
+		background: transparent;
+		border: none;
+		color: red;
+		cursor: pointer;
+	}
+}
 </style>
