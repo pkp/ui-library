@@ -33,7 +33,7 @@ Avoid using `tabindex="1"` and `tabindex="2"` to enforce the order of navigation
 
 ## Labelling for those without sight
 
-When a component uses icons or a visual layout to communicate what a button or value represents, you should still provide text labelling for users without sight. You can use the `pkp_screen_reader` class to visually hide the label but ensure it's displayed to screen readers.
+When a component uses icons or a visual layout to communicate what a button or value represents, you should still provide text labelling for users without sight. You can use the `--screenReader` class to visually hide the label but ensure it's displayed to screen readers.
 
 For example, a search field often uses an icon to indicate it's purpose. This should still be accompanied by a label.
 
@@ -41,7 +41,7 @@ For example, a search field often uses an icon to indicate it's purpose. This sh
 <div class="search">
 	<span class="fa fa-search"></span>
 	<input id="searchInput" placeholder="Search submissions">
-	<label for="searchInput" class="pkp_screen_reader">
+	<label for="searchInput" class="--screenReader">
 		Search submissions
 	</label>
 </div>

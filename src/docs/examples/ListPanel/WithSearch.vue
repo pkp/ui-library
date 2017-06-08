@@ -56,6 +56,7 @@ export default {
 			i18n: {
 				title: 'List Panel with Search',
 				search: 'Search',
+				clearSearch: 'Clear search phrase',
 			},
 			lazyLoad: false,
 			_lastGetRequest: null,

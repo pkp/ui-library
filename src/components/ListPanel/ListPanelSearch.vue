@@ -1,9 +1,10 @@
 <template>
 	<div class="pkpListPanel__search" :class="classSearching">
 		<label>
-			<span class="pkpListPanel__searchLabel">{{ i18n.search }}</span>
+			<span class="--screenReader">{{ i18n.search }}</span>
 			<input type="search"
 				@keyup="searchPhraseChanged"
+				:id="inputId"
 				:value="searchPhrase"
 				:placeholder="i18n.search"
 			>
@@ -12,6 +13,14 @@
 				<span class="pkpListPanel__searchIcons--searching"></span>
 			</span>
 		</label>
+		<button class="pkpListPanel__searchClear"
+			v-if="searchPhrase"
+			@click.prevent="clearSearchPhrase"
+			:aria-controls="inputId"
+		>
+			<span class="fa fa-times"></span>
+			<span class="--screenReader">{{ i18n.clearSearch }}</span>
+		</button>
 	</div>
 </template>
 
@@ -20,6 +29,9 @@ export default {
 	name: 'ListPanelSearch',
 	props: ['isSearching', 'searchPhrase', 'i18n'],
 	computed: {
+		inputId: function () {
+			return 'list-panel-search-' + this._uid;
+		},
 		classSearching: function () {
 			return { searching: this.isSearching };
 		},
@@ -37,6 +49,16 @@ export default {
 			var newVal = typeof data === 'string' ? data : data.target.value;
 			this.$emit('searchPhraseChanged', newVal);
 		}, 250),
+
+		/**
+		 * Clear the search phrase
+		 */
+		clearSearchPhrase: function () {
+			this.$emit('searchPhraseChanged', '');
+			this.$nextTick(function () {
+				this.$el.querySelector('input[type="search"]').focus();
+			});
+		},
 	},
 };
 </script>
@@ -102,12 +124,31 @@ export default {
 	}
 }
 
-.pkpListPanel__actions + .pkpListPanel__search {
-	margin-right: 0.5em;
+.pkpListPanel__searchClear {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: @double;
+	height: 100%;
+	background: transparent;
+	border: none;
+	border-top-right-radius: @radius;
+	border-bottom-right-radius: @radius;
+	vertical-align: middle;
+	text-align: center;
+	color: @offset;
+	cursor: pointer;
+
+	&:hover,
+	&:focus {
+		outline: 0;
+		background: @offset;
+		color: #fff;
+	}
 }
 
-.pkpListPanel__searchLabel {
-	.pkp_screen_reader();
+.pkpListPanel__actions + .pkpListPanel__search {
+	margin-right: 0.5em;
 }
 
 .pkpListPanel__searchIcons {

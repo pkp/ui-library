@@ -172,8 +172,4 @@ export default {
 		color: @offset;
 	}
 }
-
-.pkpListPanel__filterRemoveLabel {
-	.pkp_screen_reader();
-}
 </style>
