@@ -48,14 +48,12 @@
 					</template>
 				</div>
 				<div class="pkpListPanelItem--submission__flags">
-					<span v-if="isReviewStage"  class="pkpListPanelItem--submission__flags--reviews" :class="classHighlightReviews">
-						<span v-if="classHighlightReviews === ''" class="fa fa-user-o pkpIcon--inline"></span>
-						<span v-else class="fa fa-user pkpIcon--inline"></span>
+					<span v-if="isReviewStage"  class="pkpListPanelItem--submission__flags--reviews">
+						<span class="fa fa-user-o pkpIcon--inline"></span>
 						<span class="count">{{ completedReviewsCount }} / {{ currentReviewAssignments.length }}</span>
 					</span>
-					<span v-if="activeStage.files.count" class="pkpListPanelItem--submission__flags--files" :class="classHighlightFiles">
-						<span v-if="classHighlightFiles === ''" class="fa fa-file-text-o pkpIcon--inline"></span>
-						<span v-else class="fa fa-file-text pkpIcon--inline"></span>
+					<span v-if="activeStage.files.count" class="pkpListPanelItem--submission__flags--files">
+						<span class="fa fa-file-text-o pkpIcon--inline"></span>
 						<span class="count">{{ activeStage.files.count }}</span>
 					</span>
 					<span v-if="openQueryCount" class="pkpListPanelItem--submission__flags--discussions">
@@ -329,48 +327,6 @@ export default {
 		},
 
 		/**
-		 * Return a class to highlight the reviews icon
-		 *
-		 * @return string
-		 */
-		classHighlightReviews: function () {
-			if (!this.isReviewStage) {
-				return '';
-			}
-
-			// REVIEW_ROUND_STATUS_REVIEWS_OVERDUE
-			if (this.activeStage.statusId == 10) {
-				return '--warning';
-			}
-
-			// No reviews have been assigned
-			if (!this.currentReviewAssignments.length) {
-				return '--warning';
-			}
-
-			// REVIEW_ROUND_STATUS_REVIEWS_READY
-			if (this.activeStage.statusId == 8) {
-				return '--notice';
-			}
-
-			return '';
-		},
-
-		/**
-		 * Return a class to highlight the files icon when revisions have been
-		 * submitted.
-		 *
-		 * @return string
-		 */
-		classHighlightFiles: function () {
-			if (this.activeStage.files.count) {
-				return '--notice';
-			}
-
-			return '';
-		},
-
-		/**
 		 * Return a class to toggle the item mask
 		 *
 		 * @return string
@@ -561,14 +517,6 @@ export default {
 	> * {
 		margin-left: 1em;
 		color: @text-light-rgba;
-	}
-
-	&.--notice .fa {
-		color: @primary;
-	}
-
-	&.--warning .fa {
-		color: @no;
 	}
 }
 
