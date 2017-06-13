@@ -189,7 +189,7 @@ export default {
 				filesPrepared: 'Files prepared',
 				discussions: 'Discussions',
 			},
-			addUrl: 'http://example.org',
+			addUrl: '/submission/wizard',
 			infoUrl: '/$$$call$$$/information-center/submission-information-center/view-information-center?submissionId=__id__',
 		};
 	},
