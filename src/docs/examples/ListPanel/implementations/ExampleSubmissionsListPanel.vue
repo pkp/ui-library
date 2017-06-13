@@ -85,10 +85,62 @@ export default {
 					}),
 					_.extend({}, BaseSubmissionObject, {
 						id: 4,
-						title: 'Est maximus eu donec congue felis amet sollicitudin non sagittis',
+						title: 'Current user is assigned as reviewer to this submission',
 						author: {
 							authorString: 'Donec Congue',
 						},
+						reviewAssignments: [
+							{
+								due: '2025-12-05',
+								responseDue: '2017-01-01',
+								id: 7,
+								isCurrentUserAssigned: true,
+								round: 1,
+								roundId: 5,
+								status: 'The reviewer has missed the response due date.',
+								statusId: 4,
+							},
+						],
+						stages: [
+							{
+								id: 1,
+								label: 'Submission',
+								isActiveStage: false,
+								queries: [],
+								files: {
+									count: 1,
+								},
+							},
+							{
+								id: 3,
+								label: 'Review',
+								isActiveStage: true,
+								status: 'Waiting for reviewers to be selected',
+								statusId: 6,
+								queries: [],
+								files: {
+									count: 2,
+								},
+							},
+							{
+								id: 4,
+								label: 'Copyediting',
+								isActiveStage: false,
+								queries: [],
+								files: {
+									count: 0,
+								},
+							},
+							{
+								id: 5,
+								label: 'Production',
+								isActiveStage: false,
+								queries: [],
+								files: {
+									count: 0,
+								},
+							},
+						],
 						urlWorkflow: '/workflow/access/4',
 						urlPublished: '/article/view/4',
 					}),
