@@ -17,18 +17,18 @@
 		<div v-if="currentUserIsReviewer" class="pkpListPanelItem--submission__stage pkpListPanelItem--submission__stage--reviewer">
 			<a :href="submission.urlWorkflow" tabindex="-1">
 				<div v-if="currentUserLatestReviewAssignment.responsePending" class="pkpListPanelItem--submission__dueDate">
-					<div class="pkpListPanelItem--submission__dueDateValue">
+					<div :aria-labelledby="responseDueLabelId" class="pkpListPanelItem--submission__dueDateValue">
 						{{ currentUserLatestReviewAssignment.responseDue }}
 					</div>
-					<div class="pkpListPanelItem--submission__dueDateLabel">
+					<div :id="responseDueLabelId" class="pkpListPanelItem--submission__dueDateLabel">
 						{{ i18n.responseDue }}
 					</div>
 				</div>
 				<div v-if="currentUserLatestReviewAssignment.reviewPending" class="pkpListPanelItem--submission__dueDate">
-					<div class="pkpListPanelItem--submission__dueDateValue">
+					<div :aria-labelledby="reviewDueLabelId" class="pkpListPanelItem--submission__dueDateValue">
 						{{ currentUserLatestReviewAssignment.due }}
 					</div>
-					<div class="pkpListPanelItem--submission__dueDateLabel">
+					<div :id="reviewDueLabelId" class="pkpListPanelItem--submission__dueDateLabel">
 						{{ i18n.reviewDue }}
 					</div>
 				</div>
@@ -50,15 +50,18 @@
 				<div class="pkpListPanelItem--submission__flags">
 					<span v-if="isReviewStage"  class="pkpListPanelItem--submission__flags--reviews">
 						<span class="fa fa-user-o pkpIcon--inline"></span>
-						<span class="count">{{ completedReviewsCount }} / {{ currentReviewAssignments.length }}</span>
+						<span :aria-labelledby="reviewsCompletedLabelId">{{ completedReviewsCount }} / {{ currentReviewAssignments.length }}</span>
+						<span :id="reviewsCompletedLabelId" class="--screenReader">{{ i18n.reviewsCompleted }}</span>
 					</span>
 					<span v-if="activeStage.files.count" class="pkpListPanelItem--submission__flags--files">
 						<span class="fa fa-file-text-o pkpIcon--inline"></span>
-						<span class="count">{{ activeStage.files.count }}</span>
+						<span :aria-labelledby="filesPreparedLabelId">{{ activeStage.files.count }}</span>
+						<span :id="filesPreparedLabelId" class="--screenReader">{{ i18n.filesPrepared }}</span>
 					</span>
 					<span v-if="openQueryCount" class="pkpListPanelItem--submission__flags--discussions">
 						<span class="fa fa-comment-o pkpIcon--inline"></span>
-						<span class="count">{{ openQueryCount }}</span>
+						<span :aria-labelledby="discussionsLabelId">{{ openQueryCount }}</span>
+						<span :id="discussionsLabelId" class="--screenReader">{{ i18n.discussions }}</span>
 					</span>
 				</div>
 			</div>
@@ -344,6 +347,56 @@ export default {
 
 			return classes.join(' ');
 		},
+
+		/**
+		 * ID attribute to use in aria-labelledby linking the reponse due date
+		 * with it's label
+		 *
+		 * @return string
+		 */
+		responseDueLabelId: function () {
+			return 'responseDueLabel' + this._uid;
+		},
+
+		/**
+		 * ID attribute to use in aria-labelledby linking the review due date
+		 * with it's label
+		 *
+		 * @return string
+		 */
+		reviewDueLabelId: function () {
+			return 'reviewDueLabel' + this._uid;
+		},
+
+		/**
+		 * ID attribute to use in aria-labelledby linking the reviews completed
+		 * icons with their label
+		 *
+		 * @return string
+		 */
+		reviewsCompletedLabelId: function () {
+			return 'reviewsCompletedLabel' + this._uid;
+		},
+
+		/**
+		 * ID attribute to use in aria-labelledby linking the files prepared
+		 * icons with their label
+		 *
+		 * @return string
+		 */
+		filesPreparedLabelId: function () {
+			return 'filesPreparedLabel' + this._uid;
+		},
+
+		/**
+		 * ID attribute to use in aria-labelledby linking the discussion icons
+		 * with their label
+		 *
+		 * @return string
+		 */
+		discussionsLabelId: function () {
+			return 'discussionsLabel' + this._uid;
+		},
 	},
 	methods: {
 
@@ -355,11 +408,20 @@ export default {
 			var opts = {
 				title: this.submission.title,
 				url: this.infoUrl.replace('__id__', this.submission.id),
+				closeCallback: this.resetFocusInfoCenter,
 			};
 
 			$('<div id="' + $.pkp.classes.Helper.uuid() + '" ' +
 					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>')
 				.pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
+		},
+
+		/**
+		 * Reset the focus on the info center link when the modal has been
+		 * closed. This is a callback function passed into ModalHandler.js
+		 */
+		resetFocusInfoCenter: function () {
+			this.$el.querySelector('.pkpListPanelItem__openInfoCenter').focus();
 		},
 
 		/**
