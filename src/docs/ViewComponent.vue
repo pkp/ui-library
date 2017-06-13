@@ -50,9 +50,7 @@
 							<td>{{ data.type }}</td>
 							<td>
 								<pre>{{ data.currentVal }}</pre></td>
-							<td>
-								{{ config.dataDesc[data.key] }}
-							</td>
+							<td v-html="config.dataDesc[data.key]" class="pkpul-component__dataDesc"></td>
 						</tr>
 					</table>
 				</div>
@@ -140,7 +138,13 @@ export default {
 			return implementationsList;
 		},
 		config: function () {
-			return require('./examples/' + this.componentName + '/data.js').default;
+			var config = require('./examples/' + this.componentName + '/data.js').default;
+			if (config.dataDesc) {
+				for (var i in config.dataDesc) {
+					config.dataDesc[i] = marked(config.dataDesc[i]);
+				}
+			}
+			return config;
 		},
 		componentUrl: function () {
 			return '/components/' + this.componentName;
@@ -291,6 +295,27 @@ export default {
 	max-width: 20rem;
 	max-height: 40rem;
 	overflow: auto;
+}
+
+.pkpul-component__dataDesc {
+
+	p:first-child {
+		margin-top: 0;
+	}
+
+	p:last-child {
+		margin-bottom: 0;
+	}
+
+	code {
+		display: inline-block;
+		background: #eee;
+		border-radius: 0.15em;
+		padding: 0 0.5em;
+		margin: 0 0.25em;
+		font-size: 12px;
+		font-family: monospace;
+	}
 }
 
 .pkpul-component__notes {
