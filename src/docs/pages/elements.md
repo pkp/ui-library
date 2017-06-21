@@ -133,3 +133,16 @@ You may want to use icon-only labels when fitting a lot of information into a sm
 ### Avoid decorative icons
 
 When adding buttons or other controls, do not add an icon when the text label sufficiently describes the action.
+
+## Spinner
+
+<div class="pkpul-element">
+	<div class="pkpul-element__preview">
+		<span class="pkpSpinner"></span>
+	</div>
+```
+	<span class="pkpSpinner"></span>
+```
+</div>
+
+Use the spinner to indicate when a request is pending, a component is loading or the user must wait for some activity to complete.

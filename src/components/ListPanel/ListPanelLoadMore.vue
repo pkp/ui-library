@@ -5,7 +5,7 @@
 			{{ i18n.loadMore }}
 		</a>
 		<span class="pkpListPanel__loadMoreNotice">
-			<span class="pkp_spinner"></span>
+			<span class="pkpSpinner"></span>
 			{{ i18n.loading }}
 		</span>
 	</div>
@@ -91,7 +91,7 @@ export default {
 	display: none;
 	opacity: 0;
 
-	.pkp_spinner {
+	.pkpSpinner {
 		margin-right: 0.25em;
 	}
 }

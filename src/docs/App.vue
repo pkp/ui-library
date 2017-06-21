@@ -23,6 +23,7 @@ export default {
 @import '../styles/font-awesome/core';
 @import '../styles/font-awesome/icons';
 @import '../styles/elements/screen-reader';
+@import '../styles/elements/spinner';
 @import '../styles/elements/buttons';
 @import '../styles/elements/icons';
 

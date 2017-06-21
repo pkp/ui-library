@@ -10,7 +10,7 @@
 			>
 			<span class="pkpListPanel__searchIcons">
 				<span class="pkpListPanel__searchIcons--search fa fa-search"></span>
-				<span class="pkpListPanel__searchIcons--searching"></span>
+				<span class="pkpSpinner"></span>
 			</span>
 		</label>
 		<button class="pkpListPanel__searchClear"
@@ -104,7 +104,7 @@ export default {
 					color: #fff;
 				}
 
-				.pkpListPanel__searchIcons--searching:before {
+				.pkpSpinner:after {
 					border-top-color: rgba(255,255,255,0.5);
 					border-left-color: rgba(255,255,255,0.5);
 				}
@@ -118,7 +118,7 @@ export default {
 			opacity: 0;
 		}
 
-		.pkpListPanel__searchIcons--searching:before {
+		.pkpSpinner {
 			opacity: 1;
 		}
 	}
@@ -162,24 +162,22 @@ export default {
 	border-bottom-left-radius: @radius;
 }
 
-.pkpListPanel__searchIcons--search {
+.pkpListPanel__searchIcons--search,
+.pkpListPanel__searchIcons .pkpSpinner {
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	color: @primary;
 	transition: opacity 0.3s;
+}
+
+.pkpListPanel__searchIcons--search {
+	color: @primary;
 	opacity: 1;
 }
 
-.pkpListPanel__searchIcons--searching:before {
-	&:extend(.pkp_spinner:after);
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin-top: -10px;
-	margin-left: -10px;
+.pkpListPanel__searchIcons .pkpSpinner {
+	height: 100%;
 	opacity: 0;
-	transition: opacity 0.3s;
 }
 </style>
