@@ -12,13 +12,13 @@
 export default {
 	name: 'ListPanelFilter',
 	props: ['i18n', 'isVisible'],
-	data: function() {
+	data: function () {
 		return {
 			activeFilters: [],
 		}
 	},
 	computed: {
-		tabIndex: function() {
+		tabIndex: function () {
 			return this.isVisible ? false : -1;
 		}
 	},
@@ -26,23 +26,23 @@ export default {
 		/**
 		 * Emit an event to filter items in the list panel
 		 */
-		filterList: function(data) {
+		filterList: function (data) {
 			this.$emit('filterList', data);
 		},
 
 		/**
 		 * Clear any filters that are currently active
 		 */
-		clearFilters: function() {
+		clearFilters: function () {
 			this.activeFilters = [];
 			this.filterList({});
 		},
 	},
-	mounted: function() {
+	mounted: function () {
 		/**
 		 * Set focus in filters whenever the visible status is initiated
 		 */
-		this.$watch('isVisible', function(newVal, oldVal) {
+		this.$watch('isVisible', function (newVal, oldVal) {
 			if (!newVal || newVal === oldVal) {
 				return;
 			}
