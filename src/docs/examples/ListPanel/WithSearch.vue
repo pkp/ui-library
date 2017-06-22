@@ -25,9 +25,10 @@ import ListPanelSearch from './../../../components/ListPanel/ListPanelSearch.vue
 
 export default {
 	name: 'ListPanelWithSearch',
-	components: _.extend({}, ListPanel.components, {
+	components: {
+		...ListPanel.components,
 		ListPanelSearch,
-	}),
+	},
 	computed: ListPanel.computed,
 	methods: ListPanel.methods,
 	mounted: ListPanel.mounted,

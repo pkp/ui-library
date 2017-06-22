@@ -73,10 +73,12 @@ export default {
 
 		// Remove a submission from the list when it is deleted
 		pkp.eventBus.$on('submissionDeleted', function (data) {
-			if (!_.has(data, 'id') || !_.findWhere(self.collection.items, data)) {
+			if ('id' in data === false || !self.collection.items.find(item => item.id === data.id)) {
 				return;
 			}
-			self.collection.items = _.reject(self.collection.items, data);
+			self.collection.items = self.collection.items.filter(item => {
+				return item.id !== data.id;
+			});
 			self.collection.maxItems--;
 		});
 	},

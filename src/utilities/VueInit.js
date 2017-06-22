@@ -64,7 +64,7 @@ Vue.mixin({
 		 * @return null
 		 */
 		ajaxErrorCallback: function (r) {
-			if (_.has(r, 'responseJSON') && _.has(r.responseJSON, 'errorMessage')) {
+			if ('responseJSON' in r && 'errorMessage' in r.responseJSON) {
 				alert(r.responseJSON.errorMessage);
 			} else {
 				alert($.pkp.locale.api_submissions_unknownError);

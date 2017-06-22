@@ -26,9 +26,10 @@ import ListPanelCount from './../../../components/ListPanel/ListPanelCount.vue';
 
 export default {
 	name: 'ListPanelWithCount',
-	components: _.extend({}, ListPanel.components, {
+	components: {
+		...ListPanel.components,
 		ListPanelCount,
-	}),
+	},
 	computed: ListPanel.computed,
 	methods: ListPanel.methods,
 	mounted: ListPanel.mounted,

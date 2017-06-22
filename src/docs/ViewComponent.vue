@@ -93,7 +93,7 @@ export default {
 			for (var key in cmp.$data) {
 				componentData[key] = {
 					key: key,
-					type: _.isNull(cmp.$data[key]) ? 'null' : typeof cmp.$data[key],
+					type: cmp.$data[key] === null ? 'null' : typeof cmp.$data[key],
 					currentVal: cmp.$data[key],
 				};
 			}

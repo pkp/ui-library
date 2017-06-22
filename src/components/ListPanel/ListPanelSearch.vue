@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import debounce from 'debounce';
+
 export default {
 	name: 'ListPanelSearch',
 	props: ['isSearching', 'searchPhrase', 'i18n'],
@@ -45,7 +47,7 @@ export default {
 		 * @param string|object data A DOM event (object) or the new search
 		 *  phrase (string)
 		 */
-		searchPhraseChanged: _.debounce(function (data) {
+		searchPhraseChanged: debounce(function (data) {
 			var newVal = typeof data === 'string' ? data : data.target.value;
 			this.$emit('searchPhraseChanged', newVal);
 		}, 250),

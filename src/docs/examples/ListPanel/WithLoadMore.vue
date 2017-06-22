@@ -33,10 +33,11 @@ import ListPanelLoadMore from './../../../components/ListPanel/ListPanelLoadMore
 
 export default {
 	name: 'ListPanelWithLoadMore',
-	components: _.extend({}, ListPanel.components, {
+	components: {
+		...ListPanel.components,
 		ListPanelCount,
 		ListPanelLoadMore,
-	}),
+	},
 	computed: ListPanel.computed,
 	methods: ListPanel.methods,
 	mounted: ListPanel.mounted,

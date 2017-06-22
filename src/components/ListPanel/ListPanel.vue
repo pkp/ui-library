@@ -107,16 +107,13 @@ export default {
 			$.ajax({
 				url: $.pkp.app.apiBaseUrl + '/' + this.apiPath,
 				type: 'GET',
-				data: _.extend(
-					{},
-					this.getParams,
-					this.filterParams,
-					{
-						searchPhrase: this.searchPhrase,
-						count: this.count,
-						offset: this.offset,
-					},
-				),
+				data: {
+					...this.getParams,
+					...this.filterParams,
+					searchPhrase: this.searchPhrase,
+					count: this.count,
+					offset: this.offset,
+				},
 				_uuid: this._latestGetRequest,
 				error: function (r) {
 
@@ -134,12 +131,12 @@ export default {
 					}
 
 					if (handleResponse === 'append') {
-						var existingItemIds = _.pluck(self.items, 'id');
-						_.each(r.items, function (item) {
+						var existingItemIds = self.items.map(value => value.id);
+						for (var item of r.items) {
 							if (existingItemIds.indexOf(item.id) < 0) {
 								self.collection.items.push(item);
 							}
-						});
+						}
 						self.collection.maxItems = r.maxItems;
 					} else {
 						self.collection = r;
@@ -201,7 +198,9 @@ export default {
 		 * Move an item up in the list
 		 */
 		itemOrderUp: function (data) {
-			var index = _.findIndex(this.collection.items, function (item) { return item.id == data.id; });
+			var index = this.collection.items.findIndex(item => {
+				return item.id == data.id;
+			});
 			if (index === 0) {
 				return;
 			}
@@ -213,7 +212,9 @@ export default {
 		 * Move an item down in the list
 		 */
 		itemOrderDown: function (data) {
-			var index = _.findIndex(this.collection.items, function (item) { return item.id == data.id; });
+			var index = this.collection.items.findIndex(item => {
+				return item.id == data.id;
+			});
 			if (index === this.collection.items.length - 1) {
 				return;
 			}
@@ -243,26 +244,29 @@ export default {
 
 			// Wait until the components have been redrawn before setting focus
 			this.$nextTick(function () {
-				_.each(this.$children, function (child) {
+				var itemChild;
+				for (var child of this.$children) {
 					// If the list items are nested inside a draggable,
 					// search in that component's children.
 					if (child.$options._componentTag === 'draggable') {
-						var listItem = _.findWhere(child.$children, {id: itemId});
-						_.each(listItem.$children, function (itemChild) {
+						var listItem = child.$children.filter(item => {
+							return item.id === itemId;
+						});
+						for (itemChild of listItem.$children) {
 							if (itemChild.$options._componentTag === 'list-panel-item-orderer') {
 								itemChild.setFocus(direction);
 							}
-						});
+						}
 						return false;
 					} else if (child.id === itemId) {
-						_.each(child.$children, function (itemChild) {
+						for (itemChild of child.$children) {
 							if (itemChild.$options._componentTag === 'list-panel-item-orderer') {
 								itemChild.setFocus(direction);
 							}
-						});
+						}
 						return false;
 					}
-				}, this);
+				}
 			});
 		},
 
@@ -273,7 +277,7 @@ export default {
 		setItemOrderSequence: function (prop) {
 			prop = prop || 'seq'; // default sequence property in item models
 
-			_.each(this.collection.items, function (item, i) {
+			this.collection.items.forEach((item, i) => {
 				item[prop] = i;
 			});
 		},

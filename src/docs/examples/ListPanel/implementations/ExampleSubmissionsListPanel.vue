@@ -23,7 +23,8 @@ export default {
 			collection: {
 				items: [
 					BaseSubmissionObject,
-					_.extend({}, BaseSubmissionObject, {
+					{
+						...BaseSubmissionObject,
 						id: 2,
 						title: 'Quisque vel ultrices ut vel sollicitudin vel varius suscipit phasellus',
 						author: {
@@ -73,8 +74,9 @@ export default {
 						],
 						urlWorkflow: '/workflow/access/2',
 						urlPublished: '/article/view/2',
-					}),
-					_.extend({}, BaseSubmissionObject, {
+					},
+					{
+						...BaseSubmissionObject,
 						id: 3,
 						title: 'Metus ut elit est ultrices vivamus mauris est quisque arcu',
 						author: {
@@ -82,8 +84,9 @@ export default {
 						},
 						urlWorkflow: '/workflow/access/3',
 						urlPublished: '/article/view/3',
-					}),
-					_.extend({}, BaseSubmissionObject, {
+					},
+					{
+						...BaseSubmissionObject,
 						id: 4,
 						title: 'Current user is assigned as reviewer to this submission',
 						author: {
@@ -117,7 +120,14 @@ export default {
 								isActiveStage: true,
 								status: 'Waiting for reviewers to be selected',
 								statusId: 6,
-								queries: [],
+								queries: [{
+									assocId: 21,
+									assocType: 1048585,
+									closed: false,
+									id: 47,
+									sequence: 1,
+									stageId: 3,
+								}],
 								files: {
 									count: 2,
 								},
@@ -143,8 +153,9 @@ export default {
 						],
 						urlWorkflow: '/workflow/access/4',
 						urlPublished: '/article/view/4',
-					}),
-					_.extend({}, BaseSubmissionObject, {
+					},
+					{
+						...BaseSubmissionObject,
 						id: 5,
 						title: 'Sed sed mattis amet eget aenean leo est nam sit',
 						author: {
@@ -152,8 +163,9 @@ export default {
 						},
 						urlWorkflow: '/workflow/access/5',
 						urlPublished: '/article/view/5',
-					}),
-					_.extend({}, BaseSubmissionObject, {
+					},
+					{
+						...BaseSubmissionObject,
 						id: 6,
 						title: 'Lacus ut leo dolor nam neque nam dolor aenean sagittis',
 						author: {
@@ -161,7 +173,7 @@ export default {
 						},
 						urlWorkflow: '/workflow/access/3',
 						urlPublished: '/article/view/3',
-					}),
+					},
 				],
 				maxItems: 10,
 			},

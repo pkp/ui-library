@@ -14,8 +14,8 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
   },
   "dependencies": {
+    "debounce": "^1.0.2",
     "marked": "^0.3.6",
-    "underscore": "^1.8.3",
     "vue": "^2.3.3",
     "vue-router": "^2.3.1"
   },

@@ -143,15 +143,12 @@ export default {
 		 * @return bool
 		 */
 		currentUserIsReviewer: function () {
-			var isReviewer = false;
-			_.each(this.submission.reviewAssignments, function (review) {
+			for (var review of this.submission.reviewAssignments) {
 				if (review.isCurrentUserAssigned) {
-					isReviewer = true;
-					return;
+					return true;
 				}
-			});
-
-			return isReviewer;
+			}
+			return false;
 		},
 
 		/**
@@ -169,7 +166,9 @@ export default {
 		 * @return array
 		 */
 		activeStage: function () {
-			return _.findWhere(this.submission.stages, {isActiveStage: true});
+			return this.submission.stages.find(stage => {
+				return stage.isActiveStage === true;
+			});
 		},
 
 		/**
@@ -242,7 +241,9 @@ export default {
 		 * @return int
 		 */
 		openQueryCount: function () {
-			return _.where(this.activeStage.queries, {closed: false}).length;
+			return this.activeStage.queries.filter(query => {
+				return !query.closed;
+			}).length;
 		},
 
 		/**
@@ -264,7 +265,7 @@ export default {
 				return [];
 			}
 			var currentReviewRoundId = this.submission.reviewRounds[this.submission.reviewRounds.length - 1].id;
-			return _.filter(this.submission.reviewAssignments, function (assignment) {
+			return this.submission.reviewAssignments.filter(assignment => {
 				return assignment.roundId === currentReviewRoundId;
 			});
 		},
@@ -282,14 +283,16 @@ export default {
 				return false;
 			}
 
-			var assignments = _.where(this.submission.reviewAssignments, {isCurrentUserAssigned: true});
+			var assignments = this.submission.reviewAssignments.filter(assignment => {
+				return assignment.isCurrentUserAssigned === true;
+			});
 
 			if (!assignments.length) {
 				return false;
 			}
 
-			var latest = _.max(assignments, function (assignment) {
-				return assignment.round;
+			var latest = assignments.reduce((prev, current) => {
+				return (prev.round > current.round) ? prev : current;
 			});
 
 			switch (latest.statusId) {
@@ -324,7 +327,7 @@ export default {
 			if (!this.isReviewStage) {
 				return 0;
 			}
-			return _.filter(this.currentReviewAssignments, function (review) {
+			return this.currentReviewAssignments.filter(review => {
 				return review.statusId >= 7; // REVIEW_ASSIGNMENT_STATUS_RECEIVED and above
 			}).length;
 		},
