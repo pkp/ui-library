@@ -15,12 +15,12 @@ export default {
 	data: function () {
 		return {
 			activeFilters: [],
-		}
+		};
 	},
 	computed: {
 		tabIndex: function () {
 			return this.isVisible ? false : -1;
-		}
+		},
 	},
 	methods: {
 		/**
@@ -48,8 +48,8 @@ export default {
 			}
 			this.$el.querySelector('.pkpListPanel__filterHeader').focus();
 		});
-	}
-}
+	},
+};
 </script>
 
 <style lang="less">
