@@ -88,9 +88,7 @@ export default {
 						...BaseSubmissionObject,
 						id: 4,
 						title: 'Current user is assigned as reviewer to this submission',
-						author: {
-							authorString: 'Donec Congue',
-						},
+						author: null,
 						reviewAssignments: [
 							{
 								due: '2025-12-05',
