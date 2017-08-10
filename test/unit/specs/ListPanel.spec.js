@@ -16,7 +16,6 @@ ListPanel.data = function () {
 		filterParams: {},
 		searchPhrase: '',
 		isLoading: false,
-		isSearching: false,
 		isOrdering: false,
 		isFilterVisible: false,
 		count: 20,

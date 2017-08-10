@@ -15,7 +15,7 @@ import ListPanelItem from './ListPanelItem.vue';
 export default {
 	extends: ListPanelItem,
 	name: 'SelectSubmissionsListItem',
-	props: ['submission', 'i18n', 'inputName'],
+	props: ['item', 'i18n', 'inputName'],
 	data: function () {
 		return {
 			selected: false,

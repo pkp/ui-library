@@ -45,7 +45,7 @@ export default {
 		 * This event emerges from a ListPanelItemOrderer component.
 		 */
 		itemOrderUp: function () {
-			this.$emit('itemOrderUp', this.submission);
+			this.$emit('itemOrderUp', this.item);
 		},
 
 		/**
@@ -54,7 +54,7 @@ export default {
 		 * This event emerges from a ListPanelItemOrderer component.
 		 */
 		itemOrderDown: function () {
-			this.$emit('itemOrderDown', this.submission);
+			this.$emit('itemOrderDown', this.item);
 		},
 	},
 };

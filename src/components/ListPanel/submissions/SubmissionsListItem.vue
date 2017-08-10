@@ -1,12 +1,16 @@
 <template>
 	<li class="pkpListPanelItem pkpListPanelItem--submission" :class="{'--hasFocus': isFocused}">
-		<a :href="submission.urlWorkflow" class="pkpListPanelItem--submission__link" @focus="focusItem" @blur="blurItem">
+		<a :href="item.urlWorkflow" class="pkpListPanelItem--submission__link" @focus="focusItem" @blur="blurItem">
 			<div class="pkpListPanelItem--submission__item">
-				<div class="pkpListPanelItem--submission__title">
-					{{ submission.title }}
+				<div class="pkpListPanelItem--submission__id">
+					<span class="--screenReader">{{ i18n.id }}</span>
+					{{ item.id }}
 				</div>
-				<div v-if="submission.author" class="pkpListPanelItem--submission__author">
-					{{ submission.author.authorString }}
+				<div v-if="item.author" class="pkpListPanelItem--submission__author">
+					{{ item.author.authorString }}
+				</div>
+				<div class="pkpListPanelItem--submission__title">
+					{{ item.title }}
 				</div>
 				<div v-if="notice" class="pkpListPanelItem--submission__activity">
 					<span class="fa fa-exclamation-triangle pkpIcon--inline"></span>
@@ -15,7 +19,7 @@
 			</div>
 		</a>
 		<div v-if="currentUserIsReviewer" class="pkpListPanelItem--submission__stage pkpListPanelItem--submission__stage--reviewer">
-			<a :href="submission.urlWorkflow" tabindex="-1">
+			<a :href="item.urlWorkflow" tabindex="-1">
 				<div v-if="currentUserLatestReviewAssignment.responsePending" class="pkpListPanelItem--submission__dueDate">
 					<div :aria-labelledby="responseDueLabelId" class="pkpListPanelItem--submission__dueDateValue">
 						{{ currentUserLatestReviewAssignment.responseDue }}
@@ -37,10 +41,10 @@
 		<div v-else class="pkpListPanelItem--submission__stage">
 			<div class="pkpListPanelItem--submission__stageRow">
 				<div class="pkpListPanelItem--submission__stageLabel">
-					<template v-if="submission.status.id === 3 || submission.status.id === 4">
-						{{ submission.status.label }}
+					<template v-if="item.status.id === 3 || item.status.id === 4">
+						{{ item.status.label }}
 					</template>
-					<template v-else-if="submission.submissionProgress > 0">
+					<template v-else-if="item.submissionProgress > 0">
 						{{ i18n.incomplete }}
 					</template>
 					<template v-else>
@@ -100,7 +104,7 @@ import ListPanelItem from '../ListPanelItem.vue';
 export default {
 	extends: ListPanelItem,
 	name: 'SubmissionsListItem',
-	props: ['submission', 'i18n', 'apiPath', 'infoUrl'],
+	props: ['item', 'i18n', 'apiPath', 'infoUrl'],
 	data: function () {
 		return {
 			mask: null,
@@ -111,7 +115,7 @@ export default {
 		 * Map the submission id to the list item id
 		 */
 		id: function () {
-			return this.submission.id;
+			return this.item.id;
 		},
 
 		/**
@@ -122,7 +126,7 @@ export default {
 		currentUserCanDelete: function () {
 			if (pkp.userHasRole(['manager', 'siteAdmin'])) {
 				return true;
-			} else if (pkp.userHasRole('author') && this.submission.submissionProgress !== 0) {
+			} else if (pkp.userHasRole('author') && this.item.submissionProgress !== 0) {
 				return true;
 			}
 			return false; // @todo
@@ -143,7 +147,7 @@ export default {
 		 * @return bool
 		 */
 		currentUserIsReviewer: function () {
-			for (var review of this.submission.reviewAssignments) {
+			for (var review of this.item.reviewAssignments) {
 				if (review.isCurrentUserAssigned) {
 					return true;
 				}
@@ -166,7 +170,7 @@ export default {
 		 * @return array
 		 */
 		activeStage: function () {
-			return this.submission.stages.find(stage => {
+			return this.item.stages.find(stage => {
 				return stage.isActiveStage === true;
 			});
 		},
@@ -261,11 +265,11 @@ export default {
 		 * @return array
 		 */
 		currentReviewAssignments: function () {
-			if (!this.submission.reviewRounds.length || !this.submission.reviewAssignments.length) {
+			if (!this.item.reviewRounds.length || !this.item.reviewAssignments.length) {
 				return [];
 			}
-			var currentReviewRoundId = this.submission.reviewRounds[this.submission.reviewRounds.length - 1].id;
-			return this.submission.reviewAssignments.filter(assignment => {
+			var currentReviewRoundId = this.item.reviewRounds[this.item.reviewRounds.length - 1].id;
+			return this.item.reviewAssignments.filter(assignment => {
 				return assignment.roundId === currentReviewRoundId;
 			});
 		},
@@ -283,7 +287,7 @@ export default {
 				return false;
 			}
 
-			var assignments = this.submission.reviewAssignments.filter(assignment => {
+			var assignments = this.item.reviewAssignments.filter(assignment => {
 				return assignment.isCurrentUserAssigned === true;
 			});
 
@@ -409,8 +413,8 @@ export default {
 		openInfoCenter: function () {
 
 			var opts = {
-				title: this.submission.title,
-				url: this.infoUrl.replace('__id__', this.submission.id),
+				title: this.item.title,
+				url: this.infoUrl.replace('__id__', this.item.id),
 				closeCallback: this.resetFocusInfoCenter,
 			};
 
@@ -443,14 +447,14 @@ export default {
 
 			var self = this;
 			$.ajax({
-				url: $.pkp.app.apiBaseUrl + '/' + this.apiPath + '/' + this.submission.id,
+				url: $.pkp.app.apiBaseUrl + '/' + this.apiPath + '/' + this.item.id,
 				type: 'DELETE',
 				error: this.ajaxErrorCallback,
 				success: function (r) {
 					self.mask = 'finish';
 					// Allow time for the finished CSS transition to display
 					setTimeout(function () {
-						pkp.eventBus.$emit('submissionDeleted', { id: self.submission.id });
+						pkp.eventBus.$emit('submissionDeleted', { id: self.item.id });
 						self.cancelDeleteRequest();
 					}, 300);
 				},
@@ -508,6 +512,13 @@ export default {
 
 .pkpListPanelItem--submission__link {
 	display: block;
+	color: @text;
+	text-decoration: none;
+
+	&:hover,
+	&:focus {
+		color: @text;
+	}
 }
 
 .pkpListPanelItem--submission__item,
@@ -516,8 +527,19 @@ export default {
 }
 
 .pkpListPanelItem--submission__item {
+	position: relative;
 	float: left;
 	width: 65%;
+	padding-left: 48px;
+}
+
+.pkpListPanelItem--submission__id {
+	position: absolute;
+	top: 0;
+	left: 0;
+	font-size: @font-tiny;
+	line-height: (@font-sml * 1.5); // Match ,pkpListPanelItem--submission__author
+	color: @text;
 }
 
 .pkpListPanelItem--submission__title,
@@ -530,25 +552,8 @@ export default {
 	text-overflow: ellipsis;
 }
 
-.pkpListPanelItem--submission__title {
-	font-weight: @bold;
-	color: @text;
-	text-decoration: none;
-
-	&:hover,
-	&:focus {
-		color: @text;
-	}
-}
-
 .pkpListPanelItem--submission__author {
-	color: @text;
-	text-decoration: none;
-
-	&:hover,
-	&:focus {
-		color: @text;
-	}
+	font-weight: @bold;
 }
 
 .pkpListPanelItem--submission__activity {

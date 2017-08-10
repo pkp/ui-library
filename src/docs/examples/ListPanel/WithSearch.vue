@@ -4,7 +4,6 @@
 			<div class="pkpListPanel__title">{{ i18n.title }}</div>
 			<list-panel-search
 				@searchPhraseChanged="setSearchPhrase"
-				:isSearching="isSearching"
 				:searchPhrase="searchPhrase"
 				:i18n="i18n"
 			/>
@@ -47,7 +46,6 @@ export default {
 			filterParams: {},
 			searchPhrase: '',
 			isLoading: false,
-			isSearching: false,
 			isOrdering: false,
 			isFilterVisible: false,
 			count: 20,

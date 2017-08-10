@@ -11,7 +11,6 @@ export default {
 			filterParams: {},
 			searchPhrase: '',
 			isLoading: false,
-			isSearching: false,
 			isOrdering: false,
 			isFilterVisible: false,
 			count: 3,
@@ -178,6 +177,7 @@ export default {
 				maxItems: 10,
 			},
 			i18n: {
+				id: 'ID',
 				title: 'Example Submissions List',
 				add: 'New Submissions',
 				search: 'Search',

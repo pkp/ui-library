@@ -1,5 +1,5 @@
 <template>
-	<div class="pkpListPanel__search" :class="classSearching">
+	<div class="pkpListPanel__search">
 		<label>
 			<span class="--screenReader">{{ i18n.search }}</span>
 			<input type="search"
@@ -10,7 +10,6 @@
 			>
 			<span class="pkpListPanel__searchIcons">
 				<span class="pkpListPanel__searchIcons--search fa fa-search"></span>
-				<span class="pkpSpinner"></span>
 			</span>
 		</label>
 		<button class="pkpListPanel__searchClear"
@@ -29,13 +28,10 @@ import debounce from 'debounce';
 
 export default {
 	name: 'ListPanelSearch',
-	props: ['isSearching', 'searchPhrase', 'i18n'],
+	props: ['searchPhrase', 'i18n'],
 	computed: {
 		inputId: function () {
 			return 'list-panel-search-' + this._uid;
-		},
-		classSearching: function () {
-			return { searching: this.isSearching };
 		},
 	},
 	methods: {
@@ -105,23 +101,7 @@ export default {
 				.pkpListPanel__searchIcons--search:before {
 					color: #fff;
 				}
-
-				.pkpSpinner:after {
-					border-top-color: rgba(255,255,255,0.5);
-					border-left-color: rgba(255,255,255,0.5);
-				}
 			}
-		}
-	}
-
-	&.searching {
-
-		.pkpListPanel__searchIcons--search {
-			opacity: 0;
-		}
-
-		.pkpSpinner {
-			opacity: 1;
 		}
 	}
 }
@@ -164,22 +144,11 @@ export default {
 	border-bottom-left-radius: @radius;
 }
 
-.pkpListPanel__searchIcons--search,
-.pkpListPanel__searchIcons .pkpSpinner {
+.pkpListPanel__searchIcons--search {
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	transition: opacity 0.3s;
-}
-
-.pkpListPanel__searchIcons--search {
 	color: @primary;
-	opacity: 1;
-}
-
-.pkpListPanel__searchIcons .pkpSpinner {
-	height: 100%;
-	opacity: 0;
 }
 </style>
