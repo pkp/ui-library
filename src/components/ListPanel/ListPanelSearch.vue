@@ -81,6 +81,7 @@ export default {
 		border-radius: @radius;
 		font-size: @font-sml;
 		line-height: @double;
+		-webkit-appearance: none; /* Override Safari search input styles */
 
 		&:hover {
 			border-color: @primary;
