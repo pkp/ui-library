@@ -19,46 +19,46 @@ Buttons can be links (`<a>`) or buttons (`<button>`). The [accessibility section
 
 <div class="pkpul-element">
 	<div class="pkpul-element__preview">
-		<button class="pkpButton --isPrimary">Submit</button>
+		<button class="pkpButton -isPrimary">Submit</button>
 		<button class="pkpButton">Save for later</button>
 	</div>
 ```
-<button class="pkpButton --isPrimary">Submit</button>
+<button class="pkpButton -isPrimary">Submit</button>
 <button class="pkpButton">Save for later</button>
 ```
 </div>
 
-Use `--isPrimary` when a button represents the default or expected action in a group of actions. A single group of actions should never have more than one primary button.
+Use `-isPrimary` when a button represents the default or expected action in a group of actions. A single group of actions should never have more than one primary button.
 
 ### Warnable
 
 <div class="pkpul-element">
 	<div class="pkpul-element__preview">
 		<button class="pkpButton">Save</button>
-		<button class="pkpButton --isWarnable">Cancel</button>
+		<button class="pkpButton -isWarnable">Cancel</button>
 	</div>
 ```
 <button class="pkpButton">Save</button>
-<button class="pkpButton --isWarnable">Cancel</button>
+<button class="pkpButton -isWarnable">Cancel</button>
 ```
 </div>
 
-Use `--isWarnable` when a button represents an action such as delete, go back, revert or cancel.
+Use `-isWarnable` when a button represents an action such as delete, go back, revert or cancel.
 
 ### Active
 
 <div class="pkpul-element">
 	<div class="pkpul-element__preview">
 		<button class="pkpButton">Button</button>
-		<button class="pkpButton --isActive">Active Button</button>
+		<button class="pkpButton -isActive">Active Button</button>
 	</div>
 ```
 <button class="pkpButton">Button</button>
-<button class="pkpButton --isActive">Active Button</button>
+<button class="pkpButton -isActive">Active Button</button>
 ```
 </div>
 
-The `--isActive` button state is used when the button controls another element, and that element is active. Think of it like an [On Air](https://www.google.co.uk/search?q=on+air+sign&tbm=isch) buttton.
+The `-isActive` button state is used when the button controls another element, and that element is active. Think of it like an [On Air](https://www.google.co.uk/search?q=on+air+sign&tbm=isch) buttton.
 
 ### Icons in buttons
 

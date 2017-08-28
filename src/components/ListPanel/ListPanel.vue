@@ -46,7 +46,7 @@ export default {
 	},
 	computed: {
 		classStatus: function () {
-			return { '--isLoading': this.isLoading };
+			return { '-isLoading': this.isLoading };
 		},
 		itemCount: function () {
 			return this.collection.items.length;
@@ -333,7 +333,7 @@ export default {
 	box-shadow: 0 1px 1px rgba(0,0,0,0.2);
 	border-radius: @radius;
 
-	&.--isLoading {
+	&.-isLoading {
 
 		.pkpListPanel__title:after {
 			&:extend(.pkpSpinner:after);
@@ -375,7 +375,7 @@ export default {
 	position: relative;
 }
 
-.pkpListPanel__filter.--isVisible {
+.pkpListPanel__filter.-isVisible {
 	float: left;
 	position: relative;
 	left: auto;
@@ -419,7 +419,7 @@ export default {
 	border-top: @grid-border;
 }
 
-.pkpListPanel.--isOrdering {
+.pkpListPanel.-isOrdering {
 
 	// Hide other items on screen
 	.pkpListPanel__actions > li:not(.pkpListPanel__orderToggle):not(.pkpListPanel__orderToggleCancel),

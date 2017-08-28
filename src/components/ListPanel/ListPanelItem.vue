@@ -104,7 +104,7 @@ export default {
 	}
 }
 
-.pkpListPanel.--isOrdering {
+.pkpListPanel.-isOrdering {
 
 	.pkpListPanelItem {
 		position: relative;

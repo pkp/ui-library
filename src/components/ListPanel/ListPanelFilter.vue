@@ -1,5 +1,5 @@
 <template>
-	<div href="#" @click.prevent="toggleFilter" class="pkpListPanel__filter" :class="{'--isVisible': this.isVisible}">
+	<div class="pkpListPanel__filter" :class="{'-isVisible': this.isVisible}">
 		<div class="pkpListPanel__filterHeader" tabindex="0">
 			<span class="fa fa-filter pkpIcon--inline"></span>
 			{{ i18n.filter }}
@@ -149,7 +149,7 @@ export default {
 		outline: 0;
 	}
 
-	&.--isActive {
+	&.-isActive {
 		font-weight: @bold;
 	}
 }

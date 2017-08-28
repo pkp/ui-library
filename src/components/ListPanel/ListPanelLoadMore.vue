@@ -17,7 +17,7 @@ export default {
 	props: ['isLoading', 'i18n'],
 	computed: {
 		classLoadingMore: function () {
-			return { '--isLoadingMore': this.isLoading };
+			return { '-isLoadingMore': this.isLoading };
 		},
 	},
 	methods: {
@@ -96,7 +96,7 @@ export default {
 	}
 }
 
-.pkpListPanel__loadMore.--isLoadingMore {
+.pkpListPanel__loadMore.-isLoadingMore {
 
 	.pkpListPanel__loadMoreButton {
 		opacity: 0;

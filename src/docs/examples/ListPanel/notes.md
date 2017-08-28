@@ -65,7 +65,7 @@ This component will support item ordering by drag-and-drop and via keyboard cont
 3. Action buttons exist to toggle ordering on/off using the `toggleOrdering` method, and cancel the ordering changes using the `cancelOrdering` method.
 4. A `.pkpListPanel__notice` element with `tabindex="0"` containing instructions on how to use the ordering controls.
 
-When ordering the list, the user should be able to do nothing else with the `ListPanel`. Unnecessary sub-components like `ListPanelSearch` and `ListPanelFilter` are hidden whenever the `--isOrdering` class is added to the `ListPanel`. Use this class to hide any other elements which are not useful during sorting, including those within the `ListItem`.
+When ordering the list, the user should be able to do nothing else with the `ListPanel`. Unnecessary sub-components like `ListPanelSearch` and `ListPanelFilter` are hidden whenever the `-isOrdering` class is added to the `ListPanel`. Use this class to hide any other elements which are not useful during sorting, including those within the `ListItem`.
 
 ### Accessibility
 
