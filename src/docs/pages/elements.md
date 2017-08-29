@@ -65,13 +65,13 @@ The `-isActive` button state is used when the button controls another element, a
 <div class="pkpul-element">
 	<div class="pkpul-element__preview">
 		<button class="pkpButton">
-			<span class="fa fa-filter"></span>
+			<span class="fa fa-filter" aria-hidden="true"></span>
 			Filter
 		</button>
 	</div>
 ```
 <button class="pkpButton">
-	<span class="fa fa-filter"></span>
+	<span class="fa fa-filter" aria-hidden="true"></span>
 	Filter
 </button>
 ```
@@ -83,14 +83,14 @@ Read the guidance below on using icons.
 
 <div class="pkpul-element">
 	<div class="pkpul-element__preview">
-		<span class="fa fa-search"></span>
-		<span class="fa fa-chevron-up"></span>
-		<span class="fa fa-chevron-down"></span>
+		<span class="fa fa-search" aria-hidden="true"></span>
+		<span class="fa fa-chevron-up" aria-hidden="true"></span>
+		<span class="fa fa-chevron-down" aria-hidden="true"></span>
 	</div>
 ```
-<span class="fa fa-search"></span>
-<span class="fa fa-chevron-up"></span>
-<span class="fa fa-chevron-down"></span>
+<span class="fa fa-search" aria-hidden="true"></span>
+<span class="fa fa-chevron-up" aria-hidden="true"></span>
+<span class="fa fa-chevron-down" aria-hidden="true"></span>
 ```
 </div>
 
@@ -100,10 +100,10 @@ We use [FontAwesome](http://fontawesome.io/) icons. See [all icons](http://fonta
 
 <div class="pkpul-element">
 	<div class="pkpul-element__preview">
-		<span class="fa fa-search pkpIcon--inline"></span> Search
+		<span class="fa fa-search pkpIcon--inline" aria-hidden="true"></span> Search
 	</div>
 ```
-<span class="fa fa-search pkpIcon--inline"></span> Search
+<span class="fa fa-search pkpIcon--inline" aria-hidden="true"></span> Search
 ```
 </div>
 
@@ -113,10 +113,10 @@ Use `.pkpIcon--inline` when an icon sits alongside text to ensure adequate spaci
 
 <div class="pkpul-element">
 	<div class="pkpul-element__preview">
-		<span class="fa fa-info-circle"></span>
+		<span class="fa fa-info-circle" aria-hidden="true"></span>
 	</div>
 ```
-<span class="fa fa-info-circle"></span>
+<span class="fa fa-info-circle" aria-hidden="true"></span>
 ```
 </div>
 

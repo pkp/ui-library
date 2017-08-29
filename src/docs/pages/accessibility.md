@@ -42,7 +42,7 @@ You should _not_ use `display: hidden`, because screen readers will ignore the t
 <div class="pkpul-element">
 	<div class="pkpul-element__preview">
 		<div class="pkpul-accessible-search">
-			<span class="fa fa-search"></span>
+			<span class="fa fa-search" aria-hidden="true"></span>
 			<input id="searchInput" placeholder="Search submissions">
 			<label for="searchInput" class="-screenReader">
 				Search submissions
@@ -51,7 +51,7 @@ You should _not_ use `display: hidden`, because screen readers will ignore the t
 	</div>
 ```
 <div class="pkpul-accessible-search">
-	<span class="fa fa-search"></span>
+	<span class="fa fa-search" aria-hidden="true"></span>
 	<input id="searchInput" placeholder="Search submissions">
 	<label for="searchInput" class="-screenReader">
 		Search submissions
@@ -70,7 +70,7 @@ A search field often uses an icon to indicate it's purpose. The `placeholder` at
 			<p>
 				My example submission
 				<button>
-					<span class="fa fa-times"></span>
+					<span class="fa fa-times" aria-hidden="true"></span>
 					<span class="-screenReader">Delete My example submission</span>
 				</button>
 			</p>
@@ -81,7 +81,7 @@ A search field often uses an icon to indicate it's purpose. The `placeholder` at
 	<p>
 		My example submission
 		<button>
-			<span class="fa fa-times"></span>
+			<span class="fa fa-times" aria-hidden="true"></span>
 			<span class="-screenReader">Delete My example submission</span>
 		</button>
 	</p>

@@ -1,7 +1,7 @@
 <template>
 	<div class="pkpListPanel__loadMore" :class="classLoadingMore">
 		<a href="#" class="pkpListPanel__loadMoreButton" @click="loadMore">
-			<span class="fa fa-chevron-down pkpIcon--inline"></span>
+			<span class="fa fa-chevron-down pkpIcon--inline" aria-hidden="true"></span>
 			{{ i18n.loadMore }}
 		</a>
 		<span class="pkpListPanel__loadMoreNotice">

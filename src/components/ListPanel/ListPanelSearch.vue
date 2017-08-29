@@ -9,7 +9,7 @@
 				:placeholder="i18n.search"
 			>
 			<span class="pkpListPanel__searchIcons">
-				<span class="pkpListPanel__searchIcons--search fa fa-search"></span>
+				<span class="pkpListPanel__searchIcons--search fa fa-search" aria-hidden="true"></span>
 			</span>
 		</label>
 		<button class="pkpListPanel__searchClear"
@@ -17,7 +17,7 @@
 			@click.prevent="clearSearchPhrase"
 			:aria-controls="inputId"
 		>
-			<span class="fa fa-times"></span>
+			<span class="fa fa-times" aria-hidden="true"></span>
 			<span class="-screenReader">{{ i18n.clearSearch }}</span>
 		</button>
 	</div>

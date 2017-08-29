@@ -1,7 +1,7 @@
 <template>
 	<div class="pkpListPanel__filter" :class="{'-isVisible': this.isVisible}">
 		<div class="pkpListPanel__filterHeader" tabindex="0">
-			<span class="fa fa-filter pkpIcon--inline"></span>
+			<span class="fa fa-filter pkpIcon--inline" aria-hidden="true"></span>
 			{{ i18n.filter }}
 		</div>
 		<div class="pkpListPanel__filterOptions"></div>

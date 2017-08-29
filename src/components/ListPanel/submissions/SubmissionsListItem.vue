@@ -13,7 +13,7 @@
 					{{ item.title }}
 				</div>
 				<div v-if="notice" class="pkpListPanelItem--submission__activity">
-					<span class="fa fa-exclamation-triangle pkpIcon--inline"></span>
+					<span class="fa fa-exclamation-triangle pkpIcon--inline" aria-hidden="true"></span>
 					{{ notice }}
 				</div>
 			</div>
@@ -53,17 +53,17 @@
 				</div>
 				<div class="pkpListPanelItem--submission__flags">
 					<span v-if="isReviewStage"  class="pkpListPanelItem--submission__flags--reviews">
-						<span class="fa fa-user-o pkpIcon--inline"></span>
+						<span class="fa fa-user-o pkpIcon--inline" aria-hidden="true"></span>
 						<span :aria-labelledby="reviewsCompletedLabelId">{{ completedReviewsCount }} / {{ currentReviewAssignments.length }}</span>
 						<span :id="reviewsCompletedLabelId" class="-screenReader">{{ i18n.reviewsCompleted }}</span>
 					</span>
 					<span v-if="activeStage.files.count" class="pkpListPanelItem--submission__flags--files">
-						<span class="fa fa-file-text-o pkpIcon--inline"></span>
+						<span class="fa fa-file-text-o pkpIcon--inline" aria-hidden="true"></span>
 						<span :aria-labelledby="filesPreparedLabelId">{{ activeStage.files.count }}</span>
 						<span :id="filesPreparedLabelId" class="-screenReader">{{ i18n.filesPrepared }}</span>
 					</span>
 					<span v-if="openQueryCount" class="pkpListPanelItem--submission__flags--discussions">
-						<span class="fa fa-comment-o pkpIcon--inline"></span>
+						<span class="fa fa-comment-o pkpIcon--inline" aria-hidden="true"></span>
 						<span :aria-labelledby="discussionsLabelId">{{ openQueryCount }}</span>
 						<span :id="discussionsLabelId" class="-screenReader">{{ i18n.discussions }}</span>
 					</span>
