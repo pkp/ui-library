@@ -1,7 +1,7 @@
 <template>
 	<div class="pkpListPanel__search">
 		<label>
-			<span class="--screenReader">{{ i18n.search }}</span>
+			<span class="-screenReader">{{ i18n.search }}</span>
 			<input type="search"
 				@keyup="searchPhraseChanged"
 				:id="inputId"
@@ -18,7 +18,7 @@
 			:aria-controls="inputId"
 		>
 			<span class="fa fa-times"></span>
-			<span class="--screenReader">{{ i18n.clearSearch }}</span>
+			<span class="-screenReader">{{ i18n.clearSearch }}</span>
 		</button>
 	</div>
 </template>

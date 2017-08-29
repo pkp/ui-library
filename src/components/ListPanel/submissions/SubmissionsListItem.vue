@@ -3,7 +3,7 @@
 		<a :href="item.urlWorkflow" class="pkpListPanelItem--submission__link" @focus="focusItem" @blur="blurItem">
 			<div class="pkpListPanelItem--submission__item">
 				<div class="pkpListPanelItem--submission__id">
-					<span class="--screenReader">{{ i18n.id }}</span>
+					<span class="-screenReader">{{ i18n.id }}</span>
 					{{ item.id }}
 				</div>
 				<div v-if="item.author" class="pkpListPanelItem--submission__author">
@@ -55,17 +55,17 @@
 					<span v-if="isReviewStage"  class="pkpListPanelItem--submission__flags--reviews">
 						<span class="fa fa-user-o pkpIcon--inline"></span>
 						<span :aria-labelledby="reviewsCompletedLabelId">{{ completedReviewsCount }} / {{ currentReviewAssignments.length }}</span>
-						<span :id="reviewsCompletedLabelId" class="--screenReader">{{ i18n.reviewsCompleted }}</span>
+						<span :id="reviewsCompletedLabelId" class="-screenReader">{{ i18n.reviewsCompleted }}</span>
 					</span>
 					<span v-if="activeStage.files.count" class="pkpListPanelItem--submission__flags--files">
 						<span class="fa fa-file-text-o pkpIcon--inline"></span>
 						<span :aria-labelledby="filesPreparedLabelId">{{ activeStage.files.count }}</span>
-						<span :id="filesPreparedLabelId" class="--screenReader">{{ i18n.filesPrepared }}</span>
+						<span :id="filesPreparedLabelId" class="-screenReader">{{ i18n.filesPrepared }}</span>
 					</span>
 					<span v-if="openQueryCount" class="pkpListPanelItem--submission__flags--discussions">
 						<span class="fa fa-comment-o pkpIcon--inline"></span>
 						<span :aria-labelledby="discussionsLabelId">{{ openQueryCount }}</span>
-						<span :id="discussionsLabelId" class="--screenReader">{{ i18n.discussions }}</span>
+						<span :id="discussionsLabelId" class="-screenReader">{{ i18n.discussions }}</span>
 					</span>
 				</div>
 			</div>

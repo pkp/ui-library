@@ -33,7 +33,7 @@ Avoid using `tabindex="1"` and `tabindex="2"` to enforce the order of navigation
 
 ## Labelling for those without sight
 
-When a component uses icons or a visual layout to indicate the meaning of something, you must provide a text label for users without sight. You can use the `--screenReader` class to hide the label from sighted users but still expose it to screen readers.
+When a component uses icons or a visual layout to indicate the meaning of something, you must provide a text label for users without sight. You can use the `-screenReader` class to hide the label from sighted users but still expose it to screen readers.
 
 You should _not_ use `display: hidden`, because screen readers will ignore the text.
 
@@ -44,7 +44,7 @@ You should _not_ use `display: hidden`, because screen readers will ignore the t
 		<div class="pkpul-accessible-search">
 			<span class="fa fa-search"></span>
 			<input id="searchInput" placeholder="Search submissions">
-			<label for="searchInput" class="--screenReader">
+			<label for="searchInput" class="-screenReader">
 				Search submissions
 			</label>
 		</div>
@@ -53,7 +53,7 @@ You should _not_ use `display: hidden`, because screen readers will ignore the t
 <div class="pkpul-accessible-search">
 	<span class="fa fa-search"></span>
 	<input id="searchInput" placeholder="Search submissions">
-	<label for="searchInput" class="--screenReader">
+	<label for="searchInput" class="-screenReader">
 		Search submissions
 	</label>
 </div>
@@ -71,7 +71,7 @@ A search field often uses an icon to indicate it's purpose. The `placeholder` at
 				My example submission
 				<button>
 					<span class="fa fa-times"></span>
-					<span class="--screenReader">Delete My example submission</span>
+					<span class="-screenReader">Delete My example submission</span>
 				</button>
 			</p>
 		</div>
@@ -82,7 +82,7 @@ A search field often uses an icon to indicate it's purpose. The `placeholder` at
 		My example submission
 		<button>
 			<span class="fa fa-times"></span>
-			<span class="--screenReader">Delete My example submission</span>
+			<span class="-screenReader">Delete My example submission</span>
 		</button>
 	</p>
 </div>
