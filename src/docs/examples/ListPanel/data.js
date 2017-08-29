@@ -6,8 +6,8 @@ import WithLoadMore from './WithLoadMore.vue';
 import WithLoadMoreRaw from '!!raw-loader!./WithLoadMore.vue';
 import WithActions from './WithActions.vue';
 import WithActionsRaw from '!!raw-loader!./WithActions.vue';
-import WithSelection from './WithSelection.vue';
-import WithSelectionRaw from '!!raw-loader!./WithSelection.vue';
+import WithNotice from './WithNotice.vue';
+import WithNoticeRaw from '!!raw-loader!./WithNotice.vue';
 import SubmissionsListPanel from './implementations/ExampleSubmissionsListPanel.vue';
 import SubmissionsListPanelRaw from '!!raw-loader!./../../../components/ListPanel/submissions/SubmissionsListPanel.vue';
 
@@ -17,9 +17,9 @@ export default {
 			id: 'ExampleListPanel',
 			collection: {
 				items: [
-					{title: 'Item one'},
-					{title: 'Item two'},
-					{title: 'Item three'},
+					{id: 1, title: 'Item one'},
+					{id: 2, title: 'Item two'},
+					{id: 3, title: 'Item three'},
 				],
 				maxItems: 10,
 			},
@@ -81,10 +81,10 @@ export default {
 			component: WithSearch,
 			componentRaw: WithSearchRaw,
 		},
-		'with-selection': {
-			label: 'with Selection',
-			component: WithSelection,
-			componentRaw: WithSelectionRaw,
+		'with-notice': {
+			label: 'with Notice',
+			component: WithNotice,
+			componentRaw: WithNoticeRaw,
 		},
 	},
 	implementations: {

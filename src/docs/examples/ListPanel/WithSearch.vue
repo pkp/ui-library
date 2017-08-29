@@ -21,45 +21,23 @@
 <script>
 import ListPanel from './../../../components/ListPanel/ListPanel.vue';
 import ListPanelSearch from './../../../components/ListPanel/ListPanelSearch.vue';
+import ListPanelData from './data.js';
 
 export default {
 	name: 'ListPanelWithSearch',
+	extends: ListPanel,
 	components: {
-		...ListPanel.components,
 		ListPanelSearch,
 	},
-	computed: ListPanel.computed,
-	methods: ListPanel.methods,
-	mounted: ListPanel.mounted,
 	data: function () {
-		return {
+		return Object.assign(ListPanelData.baseData(), {
 			id: 'ListPanelWithSearch',
-			collection: {
-				items: [
-					{title: 'Item one'},
-					{title: 'Item two'},
-					{title: 'Item three'},
-				],
-				maxItems: 10,
-			},
-			addUrl: 'http://example.org',
-			filterParams: {},
-			searchPhrase: '',
-			isLoading: false,
-			isOrdering: false,
-			isFilterVisible: false,
-			count: 20,
-			offset: 0,
-			apiPath: '',
-			getParams: {},
 			i18n: {
 				title: 'List Panel with Search',
 				search: 'Search',
 				clearSearch: 'Clear search phrase',
 			},
-			lazyLoad: false,
-			_lastGetRequest: null,
-		};
+		});
 	},
 };
 </script>

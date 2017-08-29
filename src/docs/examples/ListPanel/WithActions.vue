@@ -23,42 +23,20 @@
 
 <script>
 import ListPanel from './../../../components/ListPanel/ListPanel.vue';
+import ListPanelData from './data.js';
 
 export default {
 	name: 'ListPanelWithActions',
-	components: ListPanel.components,
-	computed: ListPanel.computed,
-	methods: ListPanel.methods,
-	mounted: ListPanel.mounted,
+	extends: ListPanel,
 	data: function () {
-		return {
+		return Object.assign(ListPanelData.baseData(), {
 			id: 'ListPanelWithActions',
-			collection: {
-				items: [
-					{title: 'Item one'},
-					{title: 'Item two'},
-					{title: 'Item three'},
-				],
-				maxItems: 10,
-			},
-			addUrl: 'http://example.org',
-			filterParams: {},
-			searchPhrase: '',
-			isLoading: false,
-			isOrdering: false,
-			isFilterVisible: false,
-			count: 20,
-			offset: 0,
-			apiPath: '',
-			getParams: {},
 			i18n: {
 				title: 'List Panel with Actions',
 				openModal: 'Open Modal',
 				goToUrl: 'Go to URL',
 			},
-			lazyLoad: false,
-			_lastGetRequest: null,
-		};
+		});
 	},
 };
 </script>

@@ -18,7 +18,7 @@ When you update the `searchPhrase` or `filterParams` data properties on the comp
 
 ### Accessibility
 
-The items list must contain the `aria-live="polite"` attribute. When a list is updated, this will alert the user in an non-intrusive way.
+The items list can be updated (eg - searching, filtering, loading more, or adding to the list), the `.pkpListPanel__items` element must contain the `aria-live="polite"` attribute. When a list is updated, this will alert the user in an non-intrusive way.
 
 ## Searching
 

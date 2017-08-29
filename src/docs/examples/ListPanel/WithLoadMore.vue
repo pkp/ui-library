@@ -30,38 +30,18 @@
 import ListPanel from './../../../components/ListPanel/ListPanel.vue';
 import ListPanelCount from './../../../components/ListPanel/ListPanelCount.vue';
 import ListPanelLoadMore from './../../../components/ListPanel/ListPanelLoadMore.vue';
+import ListPanelData from './data.js';
 
 export default {
 	name: 'ListPanelWithLoadMore',
+	extends: ListPanel,
 	components: {
-		...ListPanel.components,
 		ListPanelCount,
 		ListPanelLoadMore,
 	},
-	computed: ListPanel.computed,
-	methods: ListPanel.methods,
-	mounted: ListPanel.mounted,
 	data: function () {
-		return {
+		return Object.assign(ListPanelData.baseData(), {
 			id: 'ListPanelWithLoadMore',
-			collection: {
-				items: [
-					{title: 'Item one'},
-					{title: 'Item two'},
-					{title: 'Item three'},
-				],
-				maxItems: 10,
-			},
-			addUrl: 'http://example.org',
-			filterParams: {},
-			searchPhrase: '',
-			isLoading: false,
-			isOrdering: false,
-			isFilterVisible: false,
-			count: 20,
-			offset: 0,
-			apiPath: '',
-			getParams: {},
 			i18n: {
 				title: 'List Panel with Load More',
 				loadMore: 'Load more',
@@ -69,9 +49,7 @@ export default {
 				itemsOfTotal: '{$count} of {$total} items',
 				itemCount: '{$count} items',
 			},
-			lazyLoad: false,
-			_lastGetRequest: null,
-		};
+		});
 	},
 };
 </script>
