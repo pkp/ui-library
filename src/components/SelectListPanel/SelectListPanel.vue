@@ -11,6 +11,7 @@
 				<ul class="pkpListPanel__items" aria-live="polite">
 					<select-list-panel-item
 						v-for="item in collection.items"
+						:key="item.id"
 						:item="item"
 						:inputName="inputName"
 						:inputType="inputType"
