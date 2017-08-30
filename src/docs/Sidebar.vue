@@ -39,7 +39,7 @@ export default {
 
 .pkpul-sidebar {
 	padding-top: 2em;
-	background: #ddd;
+	border-right: 1px solid #ddd;
 }
 
 .pkpul-sidebar__heading {
