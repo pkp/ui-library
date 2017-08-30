@@ -1,12 +1,7 @@
 <template>
-	<div class="pkpListPanel pkpListPanel--submissions" :class="classStatus">
+	<div class="pkpListPanel pkpListPanel--select pkpListPanel--selectSubmissions" :class="classStatus">
 		<div class="pkpListPanel__header">
 			<div class="pkpListPanel__title">{{ i18n.title }}</div>
-			<ul class="pkpListPanel__actions">
-				<li>
-					<a :href="addUrl" class="pkpButton">{{ i18n.add }}</a>
-				</li>
-			</ul>
 			<list-panel-search
 				@searchPhraseChanged="setSearchPhrase"
 				:searchPhrase="searchPhrase"
@@ -14,13 +9,12 @@
 			/>
 		</div>
 		<ul class="pkpListPanel__items" aria-live="polite">
-			<submissions-list-item
+			<select-submissions-list-item
 				v-for="item in collection.items"
 				:key="item.id"
 				:item="item"
 				:i18n="i18n"
-				:apiPath="apiPath"
-				:infoUrl="infoUrl"
+				:inputName="inputName"
 			/>
 		</ul>
 		<div class="pkpListPanel__footer">
@@ -40,27 +34,22 @@
 </template>
 
 <script>
-import ListPanel from './../ListPanel.vue';
-import ListPanelSearch from './../ListPanelSearch.vue';
-import ListPanelCount from './../ListPanelCount.vue';
-import ListPanelLoadMore from './../ListPanelLoadMore.vue';
-import SubmissionsListItem from './SubmissionsListItem.vue';
+import SelectListPanel from '../SelectListPanel.vue';
+import SelectSubmissionsListItem from './SelectSubmissionsListItem.vue';
+import ListPanelSearch from './../../ListPanel/ListPanelSearch.vue';
 import SubmissionsListListeners from './../../../mixins/ListPanel/submissions/listeners.js';
 
 export default {
-	extends: ListPanel,
-	name: 'SubmissionsListPanel',
+	extends: SelectListPanel,
+	name: 'SelectSubmissionsListPanel',
 	mixins: [SubmissionsListListeners],
 	components: {
 		ListPanelSearch,
-		ListPanelCount,
-		ListPanelLoadMore,
-		SubmissionsListItem,
+		SelectSubmissionsListItem,
 	},
 	data: function () {
 		return {
-			addUrl: '',
-			infoUrl: '',
+			inputName: '',
 		};
 	},
 };

@@ -1,4 +1,6 @@
 import ListPanelData from '../ListPanel/data.js';
+import SelectSubmissionsListPanel from './implementations/ExampleSelectSubmissionsListPanel.vue';
+import SelectSubmissionsListPanelRaw from '!!raw-loader!./../../../components/SelectListPanel/submissions/SelectSubmissionsListPanel.vue';
 
 export default {
 	baseData: function () {
@@ -16,5 +18,11 @@ export default {
 		inputType: 'Type of input field. Supports `checkbox` or `radio`. Default: `checkbox`.',
 	}),
 	examples: {},
-	implementations: {},
+	implementations: {
+		'SelectSubmissionsListPanel': {
+			label: 'SelectSubmissionsListPanel',
+			component: SelectSubmissionsListPanel,
+			componentRaw: SelectSubmissionsListPanelRaw,
+		},
+	},
 };
