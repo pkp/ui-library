@@ -14,6 +14,7 @@ export default {
 	data: function () {
 		return {
 			id: 'ExampleSelectSubmissionsListPanel',
+			inputName: 'exampleSelectSubmission',
 			collection: {
 				items: [
 					BaseSubmissionObject,
