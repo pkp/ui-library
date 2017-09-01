@@ -244,6 +244,11 @@ export default {
 						var listItem = child.$children.filter(item => {
 							return item.id === itemId;
 						});
+						if (!listItem.length) {
+							return false;
+						} else {
+							listItem = listItem[0];
+						}
 						for (itemChild of listItem.$children) {
 							if (itemChild.$options._componentTag === 'list-panel-item-orderer') {
 								itemChild.setFocus(direction);
