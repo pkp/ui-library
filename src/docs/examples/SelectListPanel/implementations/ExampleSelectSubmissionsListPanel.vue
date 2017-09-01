@@ -41,13 +41,13 @@ export default {
 			},
 			i18n: {
 				id: 'ID',
-				title: 'Example Submissions List',
+				title: 'Example Select Submissions List',
 				search: 'Search',
 				itemsOfTotal: '{$count} of {$total} items',
 				itemCount: '{$count} items',
 				loadMore: 'Load more',
 				loading: 'Loading',
-				incomplete: 'Incomplete',
+				viewSubmission: 'View {$title}',
 			},
 		};
 	},

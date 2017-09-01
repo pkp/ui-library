@@ -12,7 +12,8 @@
 			</div>
 		</label>
 		<a :href="item.urlWorkflow" class="pkpListPanelItem--submission__link" target="_blank" @focus="focusItem" @blur="blurItem">
-			{{ __('viewSubmission', {title: item.title}) }}
+			<span class="fa fa-external-link-square" aria-hidden="true"></span>
+			<span class="-screenReader">{{ __('viewSubmission', {title: item.title}) }}</span>
 		</a>
 	</li>
 </template>
@@ -30,7 +31,33 @@ export default {
 <style lang="less">
 @import '../../../styles/_config';
 
-.pkpListPanelItem--submission__author {
-	font-weight: @bold;
+.pkpListPanelItem--select {
+
+	.pkpListPanelItem--submission__author {
+		font-weight: @bold;
+	}
+
+	.pkpListPanelItem--submission__link {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 4rem;
+		height: 100%;
+		border-left: @grid-border;
+
+		.fa {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			color: @text-light;
+			text-indent: 0;
+		}
+
+		&:hover .fa,
+		&:focus .fa {
+			color: @primary;
+		}
+	}
 }
 </style>
