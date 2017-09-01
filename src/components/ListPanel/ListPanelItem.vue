@@ -1,5 +1,5 @@
 <template>
-	<li class="pkpListPanelItem" :class="{'--hasFocus': isFocused}">
+	<li class="pkpListPanelItem" :class="{'-hasFocus': isFocused}">
 		{{ item.title }}
 	</li>
 </template>
@@ -124,7 +124,7 @@ export default {
 	transform: translate(-50%, -50%);
 	transition: all 0.3s;
 
-	&.--active {
+	&.-active {
 		width: 100%;
 		height: 100%;
 		opacity: 1;
@@ -132,7 +132,7 @@ export default {
 		background: @bg-light;
 	}
 
-	&.--alert {
+	&.-alert {
 		background: @offset;
 
 		.pkp_spinner:after {
@@ -163,7 +163,7 @@ export default {
 		}
 	}
 
-	&.--finish {
+	&.-finish {
 		background: #fff;
 	}
 }

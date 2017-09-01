@@ -1,5 +1,5 @@
 <template>
-	<li class="pkpListPanelItem pkpListPanelItem--submission" :class="{'--hasFocus': isFocused}">
+	<li class="pkpListPanelItem pkpListPanelItem--submission" :class="{'-hasFocus': isFocused}">
 		<a :href="item.urlWorkflow" class="pkpListPanelItem--submission__link" @focus="focusItem" @blur="blurItem">
 			<div class="pkpListPanelItem--submission__item">
 				<div class="pkpListPanelItem--submission__id">
@@ -345,11 +345,11 @@ export default {
 			if (!this.mask) {
 				return '';
 			} else if (this.mask === 'finish') {
-				return '--finish';
+				return '-finish';
 			}
-			var classes = ['--active'];
+			var classes = ['-active'];
 			if (this.mask === 'confirmingDelete' || this.mask === 'deleting') {
-				classes.push('--alert');
+				classes.push('-alert');
 			}
 
 			return classes.join(' ');
@@ -501,7 +501,7 @@ export default {
 	}
 
 	&:hover,
-	&.--hasFocus {
+	&.-hasFocus {
 
 		&:before {
 			height: 100%;
