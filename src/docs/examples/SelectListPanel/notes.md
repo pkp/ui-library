@@ -30,7 +30,7 @@ If the text in the `label` does not read well together, consider using a separat
 <div>{{ item.id }}</div>
 <div>{{ item.publishedDate }}</div>
 <div>{{ item.author.authorString }}</div>
-<div >{{ item.title }}</div>
+<div>{{ item.title }}</div>
 <label :for="inputId" class="-screenReader">
 	Select: {{ item.title }}
 </label>
