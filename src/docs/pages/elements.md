@@ -138,10 +138,10 @@ When adding buttons or other controls, do not add an icon when the text label su
 
 <div class="pkpul-element">
 	<div class="pkpul-element__preview">
-		<span class="pkpSpinner"></span>
+		<span class="pkpSpinner" aria-hidden="true"></span>
 	</div>
 ```
-	<span class="pkpSpinner"></span>
+	<span class="pkpSpinner" aria-hidden="true"></span>
 ```
 </div>
 

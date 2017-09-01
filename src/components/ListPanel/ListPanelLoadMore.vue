@@ -5,7 +5,7 @@
 			{{ i18n.loadMore }}
 		</a>
 		<span class="pkpListPanel__loadMoreNotice">
-			<span class="pkpSpinner"></span>
+			<span class="pkpSpinner" aria-hidden="true"></span>
 			{{ i18n.loading }}
 		</span>
 	</div>
