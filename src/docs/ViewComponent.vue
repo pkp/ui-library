@@ -321,14 +321,22 @@ export default {
 .pkpul-component__notes {
 	line-height: 1.8em;
 
+	pre,
 	code {
-		display: inline-block;
 		background: #eee;
 		border-radius: 0.15em;
 		padding: 0 0.5em;
 		margin: 0 0.25em;
 		font-size: 12px;
 		font-family: monospace;
+	}
+
+	pre {
+		padding: 1em;
+	}
+
+	code {
+		display: inline-block;
 	}
 }
 </style>
