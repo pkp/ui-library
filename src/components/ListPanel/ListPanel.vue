@@ -433,50 +433,6 @@ export default {
 	}
 }
 
-.pkpListPanelItem__ordererDragDrop,
-.pkpListPanelItem__ordererUp,
-.pkpListPanelItem__ordererDown {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 4em;
-	height: 100%;
-	text-align: center;
-	background: transparent;
-	border: none;
-
-	&:focus {
-		outline: 0;
-	}
-}
-
-.pkpListPanelItem__ordererDragDrop {
-	color: @primary;
-	border-right: @grid-border;
-	cursor: move;
-}
-
-.pkpListPanelItem__ordererUp,
-.pkpListPanelItem__ordererDown {
-	left: auto;
-	right: 0;
-	color: @text-light;
-	border-left: @grid-border;
-
-	&:hover {
-		color: @primary;
-		box-shadow: 0 2px 0 @primary;
-	}
-
-	&:focus {
-		background: @bg-light;
-	}
-}
-
-.pkpListPanelItem__ordererUp {
-	right: 4em;
-}
-
 .pkpListPanel__notice {
 	padding: 1em;
 	border-bottom: @grid-border;
