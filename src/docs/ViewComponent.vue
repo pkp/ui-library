@@ -112,7 +112,7 @@ export default {
 			} else {
 				file = ComponentExamples[this.componentName].componentRaw;
 			}
-			return file.match(/<template>([\s\S]*?)<\/template>/g)[0];
+			return file.match(/<template>([\s\S]*?)\n<\/template>/g)[0];
 		},
 		componentNotes: function () {
 			return marked(require('./../docs/examples/' + this.componentName + '/notes.md'));
