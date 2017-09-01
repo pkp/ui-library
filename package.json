@@ -17,7 +17,8 @@
     "debounce": "^1.0.2",
     "marked": "^0.3.6",
     "vue": "^2.3.4",
-    "vue-router": "^2.6.0"
+    "vue-router": "^2.6.0",
+    "vuedraggable": "^2.14.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",
