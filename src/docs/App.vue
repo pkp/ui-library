@@ -31,8 +31,13 @@ export default {
   box-sizing: border-box;
 }
 
+html,
 body {
-	position: relative;
+	height: 100%;
+}
+
+body {
+	display: flex;
 	margin: 0;
 	background: @lift;
 	font-family: @font;
