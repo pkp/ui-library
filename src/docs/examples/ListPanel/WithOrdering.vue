@@ -14,6 +14,11 @@
 						</template>
 					</button>
 				</li>
+				<li v-if="isOrdering" class="pkpListPanel__orderToggleCancel">
+					<button @click.prevent="cancelOrdering" class="pkpButton -isWarnable">
+						{{ i18n.cancel }}
+					</button>
+				</li>
 			</ul>
 		</div>
 		<ul class="pkpListPanel__items" aria-live="polite">
@@ -52,6 +57,7 @@ export default {
 				title: 'List Panel with Ordering',
 				orderItems: 'Order',
 				saveItemOrder: 'Save Order',
+				cancel: 'Cancel',
 				itemOrdererUp: 'Increase position of {$itemTitle}',
 				itemOrdererDown: 'Decrease position of {$itemTitle}',
 			},
