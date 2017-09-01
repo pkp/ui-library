@@ -1,5 +1,5 @@
 <template>
-	<li class="pkpListPanelItem pkpListPanelItem--select" :class="{'-hasFocus': isFocused}">
+	<li class="pkpListPanelItem pkpListPanelItem--select">
 		<div class="pkpListPanelItem__selectItem" @click.prevent="toggleSelection">
 			<input
 				v-if="inputType === 'radio'"
