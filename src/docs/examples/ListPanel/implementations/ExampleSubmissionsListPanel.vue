@@ -17,6 +17,62 @@ export default {
 			offset: 0,
 			apiPath: '',
 			getParams: {},
+			filters: {
+				attention: {
+					filters: [
+						{
+							title: 'Overdue',
+							param: 'isOverdue',
+							val: true,
+						},
+						{
+							title: 'Incomplete',
+							param: 'isIncomplete',
+							val: true,
+						},
+					],
+				},
+				sectionIds: {
+					heading: 'Sections',
+					filters: [
+						{
+							title: 'Articles',
+							param: 'sectionIds',
+							val: '1',
+						},
+						{
+							title: 'Reviews',
+							param: 'sectionIds',
+							val: '2',
+						},
+					],
+				},
+				stageIds: {
+					heading: 'Stages',
+					filters: [
+						{
+							title: 'Submission',
+							param: 'stageIds',
+							val: 1,
+						},
+						{
+							title: 'Review',
+							param: 'stageIds',
+							val: 3,
+						},
+						{
+							title: 'Copyediting',
+							param: 'stageIds',
+							val: 4,
+						},
+						{
+							title: 'Production',
+							param: 'stageIds',
+							val: 5,
+						},
+					],
+				},
+			},
 			lazyLoad: false,
 			_lastGetRequest: null,
 			collection: {
