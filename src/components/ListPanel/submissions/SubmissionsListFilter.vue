@@ -1,7 +1,7 @@
 <template>
 	<div class="pkpListPanel__filter pkpListPanel__filter--submissions" :class="{'-isVisible': isVisible}" :aria-hidden="!isVisible">
 		<div class="pkpListPanel__filterHeader pkpListPanel__filterHeader--submissions" tabindex="0">
-			<span class="fa fa-filter"></span>
+			<span class="fa fa-filter pkpIcon--inline" aria-hidden="true"></span>
 			{{ i18n.filter }}
 		</div>
 		<div class="pkpListPanel__filterOptions pkpListPanel__filterOptions--submissions">
@@ -23,7 +23,7 @@
 							class="pkpListPanel__filterRemove"
 							@click.prevent.stop="clearFilter(filterItem.param, filterItem.val)"
 						>
-							<span class="fa fa-times-circle-o"></span>
+							<span class="fa fa-times-circle-o" aria-hidden="true"></span>
 							<span class="-screenReader">{{ __('filterRemove', {filterTitle: filterItem.title}) }}</span>
 						</button>
 					</li>
