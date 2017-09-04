@@ -10,6 +10,8 @@ import WithNotice from './WithNotice.vue';
 import WithNoticeRaw from '!!raw-loader!./WithNotice.vue';
 import WithOrdering from './WithOrdering.vue';
 import WithOrderingRaw from '!!raw-loader!./WithOrdering.vue';
+import WithFiltering from './WithFiltering.vue';
+import WithFilteringRaw from '!!raw-loader!./WithFiltering.vue';
 import SubmissionsListPanel from './implementations/ExampleSubmissionsListPanel.vue';
 import SubmissionsListPanelRaw from '!!raw-loader!./../../../components/ListPanel/submissions/SubmissionsListPanel.vue';
 
@@ -92,6 +94,11 @@ export default {
 			label: 'with Ordering',
 			component: WithOrdering,
 			componentRaw: WithOrderingRaw,
+		},
+		'with-filtering': {
+			label: 'with Filtering',
+			component: WithFiltering,
+			componentRaw: WithFilteringRaw,
 		},
 	},
 	implementations: {

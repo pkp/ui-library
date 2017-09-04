@@ -4,14 +4,39 @@
 			<span class="fa fa-filter pkpIcon--inline" aria-hidden="true"></span>
 			{{ i18n.filter }}
 		</div>
-		<div class="pkpListPanel__filterOptions"></div>
+		<div class="pkpListPanel__filterOptions">
+			<div v-for="filter in filters" class="pkpListPanel__filterSet">
+				<div v-if="filter.heading" class="pkpListPanel__filterSetLabel">
+					{{ filter.heading }}
+				</div>
+				<ul>
+					<li v-for="filterItem in filter.filters">
+						<a href="#"
+							@click.prevent.stop="filterBy(filterItem.param, filterItem.val)"
+							class="pkpListPanel__filterLabel"
+							:class="{'-isActive': isFilterActive(filterItem.param, filterItem.val)}"
+							:tabindex="tabIndex"
+						>{{ filterItem.title }}</a>
+						<button
+							v-if="isFilterActive(filterItem.param, filterItem.val)"
+							href="#"
+							class="pkpListPanel__filterRemove"
+							@click.prevent.stop="clearFilter(filterItem.param, filterItem.val)"
+						>
+							<span class="fa fa-times-circle-o" aria-hidden="true"></span>
+							<span class="-screenReader">{{ __('filterRemove', {filterTitle: filterItem.title}) }}</span>
+						</button>
+					</li>
+				</ul>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script>
 export default {
 	name: 'ListPanelFilter',
-	props: ['i18n', 'isVisible'],
+	props: ['i18n', 'filters', 'isVisible'],
 	data: function () {
 		return {
 			activeFilters: [],
