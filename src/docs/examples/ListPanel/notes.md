@@ -3,11 +3,6 @@ Use this component to display anything from simple lists to complex management p
 
 [View Source](https://github.com/NateWr/pkp-lib/blob/i2163_js_with_api/js/controllers/list/ListPanel.vue)
 
-## Implementations
-- [SubmissionsListPanel](https://github.com/NateWr/pkp-lib/blob/i2163_js_with_api/js/controllers/list/submissions/SubmissionsListPanel.vue)
-- [SelectSubmissionsListPanel](https://github.com/NateWr/pkp-lib/blob/i2163_js_with_api/js/controllers/list/submissions/SelectSubmissionsListPanel.vue)
-- [CatalogSubmissionsListPanel](https://github.com/NateWr/omp/blob/i2163_js_with_api/js/controllers/list/submissions/CatalogSubmissionsListPanel.vue) (OMP)
-
 ## <a name="rest-api"></a>Using the REST API
 
 This component can fetch, search, filter and load more list items by making GET requests to an API endpoint. Make a request with the `get` method, and use the `filterParams`, `searchPhrase`, `offset` and `count` properties to modify the request.
@@ -18,7 +13,7 @@ When you update the `searchPhrase` or `filterParams` data properties on the comp
 
 ### Accessibility
 
-The items list can be updated (eg - searching, filtering, loading more, or adding to the list), the `.pkpListPanel__items` element must contain the `aria-live="polite"` attribute. When a list is updated, this will alert the user in an non-intrusive way.
+The items list can be updated (eg - searching, filtering, loading more, or adding to the list). When using one of these features, the `.pkpListPanel__items` element must contain the `aria-live="polite"` attribute. When a list is updated, this will alert the user in an non-intrusive way.
 
 ## Searching
 
@@ -35,20 +30,17 @@ The search input field **must** include a `<label>` that usefully describes the 
 
 ## Filtering
 
-**This sub-component is in early draft stages. Expect the base pattern to be refined as more use-cases are implemented.**
-
 Add the `ListPanelFilter` component when a user wants to find all items in a group. Some examples:
 
 - Find a submission by section, series or category
-- Find all declined submissions
 - Find all submissions that are incomplete or on a given stage in the workflow
 - Find all users of a role
 
+When using filters, the `ListPanel` component expects to receive a `filters` key with an object containing the filters. Consult the example data for the complete specification.
+
+When selected filters change, `ListPanelFilter` will fire a `filterList` event and pass all `activeFilters`. A `ListPanel` is expected to respond to this event by updating the `filterParams` and firing the `get()` method to refresh the list. At the moment, filtering is only available on `ListPanel` components with a working `get()` method.
+
 [View Source](https://github.com/NateWr/pkp-lib/blob/i2163_js_with_api/js/controllers/list/ListPanelFilter.vue)
-
-### Implementations
-
-- [CatalogSubmissionsListPanel](https://github.com/NateWr/omp/blob/i2163_js_with_api/js/controllers/list/submissions/CatalogSubmissionsListPanel.vue) (OMP)
 
 ### Accessibility
 
