@@ -107,7 +107,6 @@ export default {
 				},
 				_uuid: this._latestGetRequest,
 				error: function (r) {
-					console.log('hi there');
 
 					// Only process latest request response
 					if (self._latestGetRequest !== this._uuid) {
