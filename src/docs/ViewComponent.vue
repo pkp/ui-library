@@ -319,7 +319,20 @@ export default {
 }
 
 .pkpul-component__notes {
-	line-height: 1.8em;
+	line-height: 2em;
+
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		margin-top: 4em;
+		margin-bottom: 0;
+	}
+
+	p {
+		margin: 2em 0;
+	}
 
 	pre,
 	code {
