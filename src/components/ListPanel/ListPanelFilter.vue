@@ -236,6 +236,7 @@ export default {
 	background: transparent;
 	text-align: center;
 	color: @text-light;
+	cursor: pointer;
 
 	&:hover,
 	&:focus {
