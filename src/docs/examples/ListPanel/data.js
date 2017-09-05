@@ -61,11 +61,13 @@ export default {
 		i18n: '',
 		lazyLoad: 'If `true`, it will call `ListPanel.get()` when mounted.',
 		_lastGetRequest: 'Internal tracking to to ensure only the last `ListPanel.get()` call is processed.',
-		// Selectable
-		inputName: 'Name for the checkbox field',
 		// SubmissionsListPanel
 		addUrl: 'Url to the submission wizard',
 		infoUrl: 'Link to fetch the Information Center content in the modal. The string `__id__` is replaced with the submission ID before being called.',
+		// CatalogSubmissionsListPanel
+		catalogEntryUrl: 'URL to the public catalog entry page. The string `__id__` is replaced with the submission ID before being called.',
+		catalogSortBy: 'Value in press setting `catalogSortOption`. Default: `ORDERBY_DATE_PUBLISHED`',
+		catalogSortDir: 'Value in press setting `catalogSortDir`. Default: `SORT_DIRECTION_ASC`',
 	},
 	examples: {
 		'with-count': {
