@@ -1,8 +1,12 @@
-# pkp-ui-library
+# PKP UI Library
 
-> Design pattern and component library for Public Knowledge Project's applications
+A design pattern and component library for Public Knowledge Project's applications [Open Journal Systems](https://pkp.sfu.ca/ojs/) and [Open Monograph Press](https://pkp.sfu.ca/omp/).
 
-## Build Setup
+## Usage
+
+This library is intended to be included and used within PKP's applications. It can also be run locally as a standalone app to develop and test components, and provide implementation guidance.
+
+To get started:
 
 ``` bash
 # install dependencies
@@ -10,21 +14,8 @@ npm install
 
 # serve with hot reload at localhost:8080
 npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## Issues
+
+Please file any development issues or questions with the [pkp/pkp-lib](https://github.com/pkp/pkp-lib) repository.
