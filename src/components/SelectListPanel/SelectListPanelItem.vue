@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import ListPanelItem from '../ListPanel/ListPanelItem.vue';
+import ListPanelItem from '@/components/ListPanel/ListPanelItem.vue';
 
 export default {
 	extends: ListPanelItem,

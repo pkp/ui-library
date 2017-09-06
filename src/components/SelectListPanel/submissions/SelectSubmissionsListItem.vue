@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import SelectListPanelItem from '../SelectListPanelItem.vue';
+import SelectListPanelItem from '@/components/SelectListPanel/SelectListPanelItem.vue';
 
 export default {
 	extends: SelectListPanelItem,

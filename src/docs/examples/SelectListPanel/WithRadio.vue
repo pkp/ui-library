@@ -1,5 +1,5 @@
 <script>
-import SelectListPanel from './../../../components/SelectListPanel/SelectListPanel.vue';
+import SelectListPanel from '@/components/SelectListPanel/SelectListPanel.vue';
 import SelectListPanelData from './data.js';
 
 export default {

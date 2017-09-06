@@ -1,9 +1,9 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
-import GlobalMixins from './mixins/global.js';
-import App from './docs/App';
-import router from './docs/router';
+import GlobalMixins from '@/mixins/global.js';
+import App from '@/docs/App';
+import router from '@/docs/router';
 
 Vue.mixin(GlobalMixins);
 

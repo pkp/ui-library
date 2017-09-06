@@ -14,9 +14,9 @@ import WithFiltering from './WithFiltering.vue';
 import WithFilteringRaw from '!!raw-loader!./WithFiltering.vue';
 import OJSSubmissionsListPanel from './implementations/OJSExampleSubmissionsListPanel.vue';
 import OMPSubmissionsListPanel from './implementations/OMPExampleSubmissionsListPanel.vue';
-import SubmissionsListPanelRaw from '!!raw-loader!./../../../components/ListPanel/submissions/SubmissionsListPanel.vue';
+import SubmissionsListPanelRaw from '!!raw-loader!@/components/ListPanel/submissions/SubmissionsListPanel.vue';
 import CatalogSubmissionsListPanel from './implementations/ExampleCatalogSubmissionsListPanel.vue';
-import CatalogSubmissionsListPanelRaw from '!!raw-loader!./../../../components/ListPanel/submissions/CatalogSubmissionsListPanel.vue';
+import CatalogSubmissionsListPanelRaw from '!!raw-loader!@/components/ListPanel/submissions/CatalogSubmissionsListPanel.vue';
 
 export default {
 	baseData: function () {

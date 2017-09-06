@@ -1,8 +1,8 @@
 <script>
-import SelectSubmissionsListPanel from './../../../../components/SelectListPanel/submissions/SelectSubmissionsListPanel.vue';
-import ListPanelCount from './../../../../components/ListPanel/ListPanelCount.vue';
-import ListPanelLoadMore from './../../../../components/ListPanel/ListPanelLoadMore.vue';
-import BaseSubmissionObject from './../../ListPanel/implementations/helpers/BaseSubmissionObject.js';
+import SelectSubmissionsListPanel from '@/components/SelectListPanel/submissions/SelectSubmissionsListPanel.vue';
+import ListPanelCount from '@/components/ListPanel/ListPanelCount.vue';
+import ListPanelLoadMore from '@/components/ListPanel/ListPanelLoadMore.vue';
+import BaseSubmissionObject from '@/docs/examples/ListPanel/implementations/helpers/BaseSubmissionObject.js';
 
 export default {
 	extends: SelectSubmissionsListPanel,

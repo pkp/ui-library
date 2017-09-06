@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import ListPanelFilter from '../ListPanelFilter.vue';
+import ListPanelFilter from '@/components/ListPanel/ListPanelFilter.vue';
 
 export default {
 	extends: ListPanelFilter,

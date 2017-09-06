@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import ListPanel from './../../../components/ListPanel/ListPanel.vue';
+import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import draggable from 'vuedraggable';
 import OrderableListPanelItem from './WithOrdering_OrderableListPanelItem.vue';
 import ListPanelData from './data.js';

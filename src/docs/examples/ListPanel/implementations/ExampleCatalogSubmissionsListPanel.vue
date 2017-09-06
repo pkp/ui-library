@@ -1,5 +1,5 @@
 <script>
-import CatalogSubmissionsListPanel from './../../../../components/ListPanel/submissions/CatalogSubmissionsListPanel.vue';
+import CatalogSubmissionsListPanel from '@/components/ListPanel/submissions/CatalogSubmissionsListPanel.vue';
 import BaseSubmissionListPanelData from './helpers/BaseSubmissionListPanelData.js';
 
 const getRandomInt = (min, max) => {

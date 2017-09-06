@@ -1,8 +1,8 @@
-import ListPanelData from '../ListPanel/data.js';
-import SelectListPanelRaw from '!!raw-loader!../../../components/SelectListPanel/SelectListPanel.vue';
+import ListPanelData from '@/docs/examples/ListPanel/data.js';
+import SelectListPanelRaw from '!!raw-loader!@/components/SelectListPanel/SelectListPanel.vue';
 import WithRadio from './WithRadio.vue';
 import SelectSubmissionsListPanel from './implementations/ExampleSelectSubmissionsListPanel.vue';
-import SelectSubmissionsListPanelRaw from '!!raw-loader!./../../../components/SelectListPanel/submissions/SelectSubmissionsListPanel.vue';
+import SelectSubmissionsListPanelRaw from '!!raw-loader!@/components/SelectListPanel/submissions/SelectSubmissionsListPanel.vue';
 
 export default {
 	baseData: function () {

@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import ListPanelItem from '../../../components/ListPanel/ListPanelItem.vue';
-import ListPanelItemOrderer from '../../../components/ListPanel/ListPanelItemOrderer.vue';
+import ListPanelItem from '@/components/ListPanel/ListPanelItem.vue';
+import ListPanelItemOrderer from '@/components/ListPanel/ListPanelItemOrderer.vue';
 
 export default {
 	extends: ListPanelItem,

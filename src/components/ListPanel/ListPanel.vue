@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import ListPanelItem from './ListPanelItem.vue';
+import ListPanelItem from '@/components/ListPanel/ListPanelItem.vue';
 
 export default {
 	name: 'ListPanel',

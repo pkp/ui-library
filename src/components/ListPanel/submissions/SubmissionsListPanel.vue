@@ -57,13 +57,13 @@
 </template>
 
 <script>
-import ListPanel from './../ListPanel.vue';
-import ListPanelSearch from './../ListPanelSearch.vue';
-import ListPanelCount from './../ListPanelCount.vue';
-import ListPanelLoadMore from './../ListPanelLoadMore.vue';
-import SubmissionsListFilter from './SubmissionsListFilter.vue';
-import SubmissionsListItem from './SubmissionsListItem.vue';
-import SubmissionsListListeners from './../../../mixins/ListPanel/submissions/listeners.js';
+import ListPanel from '@/components/ListPanel/ListPanel.vue';
+import ListPanelSearch from '@/components/ListPanel/ListPanelSearch.vue';
+import ListPanelCount from '@/components/ListPanel/ListPanelCount.vue';
+import ListPanelLoadMore from '@/components/ListPanel/ListPanelLoadMore.vue';
+import SubmissionsListFilter from '@/components/ListPanel/submissions/SubmissionsListFilter.vue';
+import SubmissionsListItem from '@/components/ListPanel/submissions/SubmissionsListItem.vue';
+import SubmissionsListListeners from '@/mixins/ListPanel/submissions/listeners.js';
 
 export default {
 	extends: ListPanel,

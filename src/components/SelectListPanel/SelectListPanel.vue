@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import ListPanel from '../ListPanel/ListPanel.vue';
-import SelectListPanelItem from './SelectListPanelItem.vue';
+import ListPanel from '@/components/ListPanel/ListPanel.vue';
+import SelectListPanelItem from '@/components/SelectListPanel/SelectListPanelItem.vue';
 
 export default {
 	extends: ListPanel,

@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import ListPanel from './../../../components/ListPanel/ListPanel.vue';
+import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import ListPanelData from './data.js';
 
 export default {

@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import ListPanel from './../../../components/ListPanel/ListPanel.vue';
-import ListPanelFilter from './../../../components/ListPanel/ListPanelFilter.vue';
+import ListPanel from '@/components/ListPanel/ListPanel.vue';
+import ListPanelFilter from '@/components/ListPanel/ListPanelFilter.vue';
 import ListPanelData from './data.js';
 
 export default {

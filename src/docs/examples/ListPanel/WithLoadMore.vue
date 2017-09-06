@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import ListPanel from './../../../components/ListPanel/ListPanel.vue';
-import ListPanelCount from './../../../components/ListPanel/ListPanelCount.vue';
-import ListPanelLoadMore from './../../../components/ListPanel/ListPanelLoadMore.vue';
+import ListPanel from '@/components/ListPanel/ListPanel.vue';
+import ListPanelCount from '@/components/ListPanel/ListPanelCount.vue';
+import ListPanelLoadMore from '@/components/ListPanel/ListPanelLoadMore.vue';
 import ListPanelData from './data.js';
 
 export default {

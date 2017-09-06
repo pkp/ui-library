@@ -34,10 +34,10 @@
 </template>
 
 <script>
-import SelectListPanel from '../SelectListPanel.vue';
-import SelectSubmissionsListItem from './SelectSubmissionsListItem.vue';
-import ListPanelSearch from './../../ListPanel/ListPanelSearch.vue';
-import SubmissionsListListeners from './../../../mixins/ListPanel/submissions/listeners.js';
+import SelectListPanel from '@/components/SelectListPanel/SelectListPanel.vue';
+import SelectSubmissionsListItem from '@/components/SelectListPanel/submissions/SelectSubmissionsListItem.vue';
+import ListPanelSearch from '@/components/ListPanel/ListPanelSearch.vue';
+import SubmissionsListListeners from '@/mixins/ListPanel/submissions/listeners.js';
 
 export default {
 	extends: SelectListPanel,

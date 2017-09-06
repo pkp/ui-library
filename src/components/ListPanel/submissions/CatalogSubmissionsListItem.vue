@@ -65,8 +65,8 @@
 </template>
 
 <script>
-import SubmissionsListItem from './SubmissionsListItem.vue';
-import ListPanelItemOrderer from '../ListPanelItemOrderer.vue';
+import SubmissionsListItem from '@/components/ListPanel/submissions/SubmissionsListItem.vue';
+import ListPanelItemOrderer from '@/components/ListPanel/ListPanelItemOrderer.vue';
 
 export default {
 	extends: SubmissionsListItem,

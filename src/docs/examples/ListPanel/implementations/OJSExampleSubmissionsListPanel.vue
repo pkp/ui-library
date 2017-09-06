@@ -1,5 +1,5 @@
 <script>
-import SubmissionsListPanel from './../../../../components/ListPanel/submissions/SubmissionsListPanel.vue';
+import SubmissionsListPanel from '@/components/ListPanel/submissions/SubmissionsListPanel.vue';
 import BaseSubmissionListPanelData from './helpers/BaseSubmissionListPanelData.js';
 
 export default {

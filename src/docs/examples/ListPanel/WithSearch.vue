@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import ListPanel from './../../../components/ListPanel/ListPanel.vue';
-import ListPanelSearch from './../../../components/ListPanel/ListPanelSearch.vue';
+import ListPanel from '@/components/ListPanel/ListPanel.vue';
+import ListPanelSearch from '@/components/ListPanel/ListPanelSearch.vue';
 import ListPanelData from './data.js';
 
 export default {

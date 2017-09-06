@@ -94,9 +94,9 @@
 </template>
 
 <script>
-import SubmissionsListPanel from './SubmissionsListPanel.vue';
-import CatalogSubmissionsListItem from './CatalogSubmissionsListItem.vue';
-import CatalogSubmissionsListFilter from './CatalogSubmissionsListFilter.vue';
+import SubmissionsListPanel from '@/components/ListPanel/submissions/SubmissionsListPanel.vue';
+import CatalogSubmissionsListItem from '@/components/ListPanel/submissions/CatalogSubmissionsListItem.vue';
+import CatalogSubmissionsListFilter from '@/components/ListPanel/submissions/CatalogSubmissionsListFilter.vue';
 import draggable from 'vuedraggable';
 
 export default {
