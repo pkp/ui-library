@@ -447,7 +447,7 @@ export default {
 
 			var self = this;
 			$.ajax({
-				url: $.pkp.app.apiBaseUrl + '/' + this.apiPath + '/' + this.item.id,
+				url: this.getApiUrl(this.apiPath + '/' + this.item.id),
 				type: 'DELETE',
 				error: this.ajaxErrorCallback,
 				success: function (r) {
