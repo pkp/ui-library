@@ -479,7 +479,7 @@ export default {
 
 
 <style lang="less">
-@import '../../../styles/_config';
+@import '../../../styles/_import';
 
 .pkpListPanelItem--submission {
 	.pkp_helpers_clear();

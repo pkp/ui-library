@@ -217,7 +217,7 @@ export default {
 </script>
 
 <style lang="less">
-@import '../../../styles/_config';
+@import '../../../styles/_import';
 
 .pkpListPanelItem--catalog__item {
 	display: block;

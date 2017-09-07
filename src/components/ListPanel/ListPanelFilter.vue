@@ -123,7 +123,7 @@ export default {
 </script>
 
 <style lang="less">
-@import '../../styles/_config';
+@import '../../styles/_import';
 
 .pkpListPanel__filter {
 	position: absolute;

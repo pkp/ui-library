@@ -18,7 +18,7 @@ export default {
 
 <style lang="less">
 @import '../styles/normalize';
-@import '../styles/_config';
+@import '../styles/_import';
 @import '../styles/font-awesome/variables';
 @import '../styles/font-awesome/core';
 @import '../styles/font-awesome/icons';

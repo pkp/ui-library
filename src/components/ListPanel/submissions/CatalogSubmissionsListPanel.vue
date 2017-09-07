@@ -381,7 +381,7 @@ export default {
 </script>
 
 <style lang="less">
-@import '../../../styles/_config';
+@import '../../../styles/_import';
 
 .pkpListPanel--catalogSubmissions {
 
