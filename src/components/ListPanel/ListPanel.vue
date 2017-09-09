@@ -122,7 +122,7 @@ export default {
 					}
 
 					if (handleResponse === 'append') {
-						var existingItemIds = self.items.map(value => value.id);
+						var existingItemIds = self.collection.items.map(value => value.id);
 						for (var item of r.items) {
 							if (existingItemIds.indexOf(item.id) < 0) {
 								self.collection.items.push(item);
