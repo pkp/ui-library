@@ -40,3 +40,18 @@ export default {
 	},
 };
 </script>
+
+<style lang="less">
+@import '../../../styles/_import';
+
+/* Override form base font size */
+.pkp_form .pkpListPanel__title {
+	font-size: @font-base;
+	line-height: @double;
+}
+
+/* Override form styles on labels */
+.pkp_form label.pkpListPanelItem__item {
+	font-size: @font-sml;
+}
+</style>
