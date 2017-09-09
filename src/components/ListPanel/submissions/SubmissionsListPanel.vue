@@ -1,7 +1,10 @@
 <template>
 	<div class="pkpListPanel pkpListPanel--submissions" :class="classStatus">
 		<div class="pkpListPanel__header">
-			<div class="pkpListPanel__title">{{ i18n.title }}</div>
+			<div class="pkpListPanel__title">
+				{{ i18n.title }}
+				<span v-if="isLoading" class="pkpSpinner" aria-hidden="true"></span>
+			</div>
 			<ul class="pkpListPanel__actions">
 				<li v-if="currentUserCanFilter">
 					<button @click.prevent="toggleFilter" class="pkpButton" :class="{'-isActive': isFilterVisible}">

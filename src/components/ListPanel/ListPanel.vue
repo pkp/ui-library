@@ -336,17 +336,6 @@ export default {
 	max-width: 900px;
 	box-shadow: 0 1px 1px rgba(0,0,0,0.2);
 	border-radius: @radius;
-
-	&.-isLoading {
-
-		.pkpListPanel__title:after {
-			&:extend(.pkpSpinner:after);
-			position: absolute;
-			top: 50%;
-			margin-top: -10px;
-			margin-left: 1em;
-		}
-	}
 }
 
 .pkpListPanel__header {
@@ -361,6 +350,14 @@ export default {
 	font-weight: @bold;
 	float: left;
 	max-width: 30em;
+}
+
+.pkpListPanel__title .pkpSpinner:after {
+	position: absolute;
+	top: 50%;
+	left: 100%;
+	margin-top: -10px;
+	margin-left: 1em;
 }
 
 .pkpListPanel__actions {

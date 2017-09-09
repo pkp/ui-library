@@ -11,6 +11,17 @@ When you update the `searchPhrase` or `filterParams` data properties on the comp
 
 **Never modify the `getParams` property.** These params represent the component's default state. Instead, use `filterParams` or `searchPhrase` to dynamically filter the list.
 
+### Loading Spinner
+
+When the list is updating, you should include a loading spinner next to the title of the list. You can display this whenever the `isLoading` flag is true by using the following structure for your list title:
+
+```
+	<div class="pkpListPanel__title">
+		{{ i18n.title }}
+		<span v-if="isLoading" class="pkpSpinner" aria-hidden="true"></span>
+	</div>
+```
+
 ### Accessibility
 
 The items list can be updated (eg - searching, filtering, loading more, or adding to the list). When using one of these features, the `.pkpListPanel__items` element must contain the `aria-live="polite"` attribute. When a list is updated, this will alert the user in an non-intrusive way.

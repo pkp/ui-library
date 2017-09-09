@@ -1,7 +1,10 @@
 <template>
 	<div class="pkpListPanel pkpListPanel--select pkpListPanel--selectSubmissions" :class="classStatus">
 		<div class="pkpListPanel__header">
-			<div class="pkpListPanel__title">{{ i18n.title }}</div>
+			<div class="pkpListPanel__title">
+				{{ i18n.title }}
+				<span v-if="isLoading" class="pkpSpinner" aria-hidden="true"></span>
+			</div>
 			<list-panel-search
 				@searchPhraseChanged="setSearchPhrase"
 				:searchPhrase="searchPhrase"
