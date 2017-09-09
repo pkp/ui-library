@@ -42,7 +42,7 @@ export default {
 </script>
 
 <style lang="less">
-@import '../../../styles/_import';
+@import '../../styles/_import';
 
 /* Override form base font size */
 .pkp_form .pkpListPanel__title {
