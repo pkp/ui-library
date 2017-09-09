@@ -2,7 +2,7 @@
 	<div class="pkpListPanel__search">
 		<label>
 			<span class="-screenReader">{{ i18n.search }}</span>
-			<input type="search"
+			<input type="search" class="pkpListPanel__searchInput"
 				@keyup="searchPhraseChanged"
 				:id="inputId"
 				:value="searchPhrase"
@@ -69,39 +69,41 @@ export default {
 	float: right;
 	margin-top: 0.5em;
 	max-width: 100%;
+}
 
-	input {
-		display: block;
-		box-sizing: border-box;
-		padding: 0 0.5em 0 3.5em;
-		width: 25em;
-		height: auto;
-		max-width: 100%;
-		border: @bg-border-light;
-		border-radius: @radius;
-		font-size: @font-sml;
-		line-height: @double;
-		-webkit-appearance: none; /* Override Safari search input styles */
+.pkpListPanel__searchInput,
+/* Override legacy form styles for: .pkp_form input[type="search"] */
+.pkp_form .pkpListPanel__search .pkpListPanel__searchInput {
+	display: block;
+	box-sizing: border-box;
+	padding: 0 0.5em 0 3.5em;
+	width: 25em;
+	height: auto;
+	max-width: 100%;
+	border: @bg-border-light;
+	border-radius: @radius;
+	font-size: @font-sml;
+	line-height: @double;
+	-webkit-appearance: none; /* Override Safari search input styles */
 
-		&:hover {
+	&:hover {
+		border-color: @primary;
+
+		+ .pkpListPanel__searchIcons {
 			border-color: @primary;
-
-			+ .pkpListPanel__searchIcons {
-				border-color: @primary;
-			}
 		}
+	}
 
-		&:focus {
-			outline: 0;
+	&:focus {
+		outline: 0;
+		border-color: @primary;
+
+		+ .pkpListPanel__searchIcons {
 			border-color: @primary;
+			background: @primary;
 
-			+ .pkpListPanel__searchIcons {
-				border-color: @primary;
-				background: @primary;
-
-				.pkpListPanel__searchIcons--search:before {
-					color: #fff;
-				}
+			.pkpListPanel__searchIcons--search:before {
+				color: #fff;
 			}
 		}
 	}
