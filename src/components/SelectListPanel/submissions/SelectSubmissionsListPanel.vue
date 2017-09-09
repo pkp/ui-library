@@ -37,6 +37,8 @@
 import SelectListPanel from '@/components/SelectListPanel/SelectListPanel.vue';
 import SelectSubmissionsListItem from '@/components/SelectListPanel/submissions/SelectSubmissionsListItem.vue';
 import ListPanelSearch from '@/components/ListPanel/ListPanelSearch.vue';
+import ListPanelCount from '@/components/ListPanel/ListPanelCount.vue';
+import ListPanelLoadMore from '@/components/ListPanel/ListPanelLoadMore.vue';
 import SubmissionsListListeners from '@/mixins/ListPanel/submissions/listeners.js';
 
 export default {
@@ -45,6 +47,8 @@ export default {
 	mixins: [SubmissionsListListeners],
 	components: {
 		ListPanelSearch,
+		ListPanelCount,
+		ListPanelLoadMore,
 		SelectSubmissionsListItem,
 	},
 	data: function () {
