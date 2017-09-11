@@ -223,7 +223,7 @@ export default {
 	display: block;
 	float: none;
 	width: 100%;
-	padding-right: @base * 17;
+	padding-right: @base * 15;
 
 	a {
 			text-decoration: none;
