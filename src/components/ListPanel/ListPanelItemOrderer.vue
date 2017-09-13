@@ -4,11 +4,11 @@
 			<span class="fa fa-sort" aria-hidden="true"></span>
 		</button>
 		<button class="pkpListPanelItem__ordererUp" @click.prevent="orderUp">
-			<span class="fa fa-chevron-up" aria-hidden="true"></span>
+			<span class="fa fa-angle-up" aria-hidden="true"></span>
 			<span class="-screenReader">{{ __('itemOrdererUp', {itemTitle: itemTitle}) }}</span>
 		</button>
 		<button class="pkpListPanelItem__ordererDown" @click.prevent="orderDown">
-			<span class="fa fa-chevron-down" aria-hidden="true"></span>
+			<span class="fa fa-angle-down" aria-hidden="true"></span>
 			<span class="-screenReader">{{ __('itemOrdererDown', {itemTitle: itemTitle}) }}</span>
 		</button>
 	</div>
@@ -85,6 +85,11 @@ export default {
 
 	&:focus {
 		background: @bg-light;
+	}
+
+	.fa {
+		font-size: 20px;
+		font-weight: @bold;
 	}
 }
 
