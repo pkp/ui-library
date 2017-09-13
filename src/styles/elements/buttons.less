@@ -38,6 +38,16 @@
 	}
 }
 
+.pkpButton.-isLink {
+	box-shadow: none;
+	border-color: transparent;
+
+	&:hover,
+	&:focus {
+		color: @primary-lift;
+	}
+}
+
 .pkpButton.-isWarnable {
 	color: @no;
 
@@ -45,11 +55,6 @@
 	&:focus {
 		border-color: @no;
 	}
-}
-
-.pkpButton.-isLink {
-	box-shadow: none;
-	border-color: transparent;
 }
 
 /**
