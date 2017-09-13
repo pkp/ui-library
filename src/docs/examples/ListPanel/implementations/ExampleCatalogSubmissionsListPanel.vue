@@ -44,6 +44,8 @@ BaseSubmissionListPanelData.collection.items = BaseSubmissionListPanelData.colle
 				assoc_type: pkp.const.ASSOC_TYPE_SERIES,
 			},
 		];
+	} else {
+		item.newRelease = [];
 	}
 	item.urlPublished = '/catalog/book/1';
 

@@ -146,9 +146,10 @@ export default {
 		 * Toggle the checkbox when clicked
 		 */
 		toggleNewRelease: function () {
-			const isNewRelease = this.item.newRelease.find((newRelease) => {
+			const matchingNewReleases = this.item.newRelease.find((newRelease) => {
 				return newRelease.assoc_type === this.filterAssocType;
 			});
+			const isNewRelease = typeof matchingNewReleases !== 'undefined';
 			if (isNewRelease) {
 				this.item.newRelease = this.item.newRelease.filter((newRelease) => {
 					return newRelease.assoc_type !== this.filterAssocType;
@@ -231,16 +232,20 @@ export default {
 }
 
 .pkpListPanelItem__selectItem--catalog {
-		left: auto;
-		right: @base * 8;
-		width: @base * 8;
-		border-right: none;
-		border-left: @grid-border;
-		cursor: pointer;
+	position: absolute;
+	top: 0;
+	left: auto;
+	right: @base * 8;
+	width: @base * 8;
+	height: 100%;
+	background: transparent;
+	border: none;
+	border-left: @grid-border;
+	cursor: pointer;
 
-		+ .pkpListPanelItem__selectItem--catalog {
-				right: 0;
-		}
+	+ .pkpListPanelItem__selectItem--catalog {
+			right: 0;
+	}
 }
 
 .pkpListPanelItem__actions .pkpButton.-isLink:first-child {

@@ -438,14 +438,4 @@ export default {
 		outline: 0;
 	}
 }
-
-.pkpListPanelItem__selectItem {
-	position: absolute;
-	top: 0;
-	width: 5em;
-	height: 100%;
-	background: transparent;
-	border: none;
-	border-right: @grid-border;
-}
 </style>
