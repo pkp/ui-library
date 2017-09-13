@@ -21,10 +21,10 @@
 				</div>
 			</a>
 			<div class="pkpListPanelItem__actions">
-				<button @click.prevent="viewCatalogEntry" @focus="focusItem" @blur="blurItem">
+				<button class="pkpButton -isLink" @click.prevent="viewCatalogEntry" @focus="focusItem" @blur="blurItem">
 					{{ i18n.editCatalogEntry }}
 				</button>
-				<a :href="item.urlWorkflow" @focus="focusItem" @blur="blurItem">
+				<a class="pkpButton -isLink" :href="item.urlWorkflow" @focus="focusItem" @blur="blurItem">
 					{{ i18n.viewSubmission }}
 				</a>
 			</div>
@@ -243,5 +243,7 @@ export default {
 		}
 }
 
-
+.pkpListPanelItem__actions .pkpButton.-isLink:first-child {
+	padding-left: 0;
+}
 </style>

@@ -58,7 +58,22 @@ Use `-isWarnable` when a button represents an action such as delete, go back, re
 ```
 </div>
 
-The `-isActive` button state is used when the button controls another element, and that element is active. Think of it like an [On Air](https://www.google.co.uk/search?q=on+air+sign&tbm=isch) buttton.
+The `-isActive` button state is used when the button controls another element, and that element is active. Think of it like an [On Air](https://www.google.co.uk/search?q=on+air+sign&tbm=isch) button.
+
+### Link
+
+<div class="pkpul-element">
+	<div class="pkpul-element__preview">
+		<button class="pkpButton">Button</button>
+		<button class="pkpButton -isLink">Link Button</button>
+	</div>
+```
+<button class="pkpButton">Button</button>
+<button class="pkpButton -isLink">Link Button</button>
+```
+</div>
+
+Use `-isLink` when you want the button to look more like a traditional link than a button.
 
 ### Icons in buttons
 
