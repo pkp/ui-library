@@ -1,6 +1,6 @@
 <template>
 	<div class="pkpListPanel">
-		<div class="pkpListPanel__header">
+		<div class="pkpListPanel__header -pkpClearfix">
 			<div class="pkpListPanel__title">{{ i18n.title }}</div>
 		</div>
 		<ul class="pkpListPanel__items" aria-live="polite">
@@ -10,7 +10,7 @@
 				:item="item"
 			/>
 		</ul>
-		<div class="pkpListPanel__footer">
+		<div class="pkpListPanel__footer -pkpClearfix">
 			<list-panel-load-more
 				v-if="canLoadMore"
 				@loadMore="loadMore"

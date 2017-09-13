@@ -1,6 +1,6 @@
 <template>
 	<div class="pkpListPanel pkpListPanel--submissions" :class="classStatus">
-		<div class="pkpListPanel__header">
+		<div class="pkpListPanel__header -pkpClearfix">
 			<div class="pkpListPanel__title">
 				{{ i18n.title }}
 				<span v-if="isLoading" class="pkpSpinner" aria-hidden="true"></span>
@@ -22,7 +22,7 @@
 				:i18n="i18n"
 			/>
 		</div>
-		<div class="pkpListPanel__body pkpListPanel__body--submissions">
+		<div class="pkpListPanel__body -pkpClearfix pkpListPanel__body--submissions">
 			<submissions-list-filter
 				v-if="currentUserCanFilter"
 				@filterList="updateFilter"
@@ -34,6 +34,7 @@
 				<ul class="pkpListPanel__items" aria-live="polite">
 					<submissions-list-item
 						v-for="item in collection.items"
+						@filterList="updateFilter"
 						:key="item.id"
 						:item="item"
 						:i18n="i18n"
@@ -43,7 +44,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="pkpListPanel__footer">
+		<div class="pkpListPanel__footer -pkpClearfix">
 			<list-panel-load-more
 				v-if="canLoadMore"
 				@loadMore="loadMore"

@@ -78,3 +78,43 @@ When ordering items, set `tabindex="-1"` on any unnecessary elements which could
 Exceptions can be made in cases where contextual information may be important. For example, the link to the catalog entry's three elements as they navigate through the list: the title of the item and the up/down buttons.
 
 Use the <kbd>TAB</kbd> key to navigate the list with your keyboard to test.
+
+## Expanding and Collapsing
+
+A `ListPanelItem` can have a summary and detailed view with a button to switch between them. The **With Expander** example shows how to create this effect. It requires a `ListPanelItem` with the following markup:
+
+```html
+<!-- Add the .pkpListPanelItem--hasSummary class to the outer wrapper -->
+<li class="pkpListPanelItem pkpListPanelItem--hasSummary">
+
+	<!-- Nest the summary view in a .pkpListPanelItem__summary class -->
+	<div class="pkpListPanelItem__summary">
+		<div class="pkpListPanelItem__item">
+			{{ item.title }}
+		</div>
+
+		<!-- Add a .pkpListPanelItem__expander button as the last child of the summary -->
+		<button
+			@click="toggleExpanded"
+			class="pkpListPanelItem__expander"
+		>
+			<template v-if="isExpanded">
+				<span class="fa fa-angle-up" aria-hidden="true"></span>
+				<span class="-screenReader">{{ i18n.viewMore }}</span>
+			</template>
+			<template v-else>
+				<span class="fa fa-angle-down" aria-hidden="true"></span>
+				<span class="-screenReader">{{ i18n.viewLess }}</span>
+			</template>
+		</button>
+	</div>
+
+	<!-- Add the details panel in a .pkpListPanelItem__details class -->
+	<div
+		v-if="isExpanded"
+		class="pkpListPanelItem__details"
+	>
+		Here are the expanded details about this item.
+	</div>
+</li>
+```

@@ -1,6 +1,6 @@
 <template>
 	<div class="pkpListPanel">
-		<div class="pkpListPanel__header">
+		<div class="pkpListPanel__header -pkpClearfix">
 			<div class="pkpListPanel__title">{{ i18n.title }}</div>
 			<ul class="pkpListPanel__actions">
 				<li>
@@ -11,7 +11,7 @@
 				</li>
 			</ul>
 		</div>
-		<div class="pkpListPanel__body pkpListPanel__body--submissions">
+		<div class="pkpListPanel__body -pkpClearfix pkpListPanel__body--submissions">
 			<list-panel-filter
 				@filterList="updateFilter"
 				:isVisible="isFilterVisible"

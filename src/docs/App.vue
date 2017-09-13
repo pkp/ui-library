@@ -17,12 +17,7 @@ export default {
 </script>
 
 <style lang="less">
-@import '../styles/normalize';
-@import '../styles/_import';
-@import '../styles/elements/screen-reader';
-@import '../styles/elements/spinner';
-@import '../styles/elements/buttons';
-@import '../styles/elements/icons';
+@import '../styles/_global';
 
 *, *:before, *:after {
   box-sizing: border-box;

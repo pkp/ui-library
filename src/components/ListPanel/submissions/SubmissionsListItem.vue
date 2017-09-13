@@ -1,81 +1,126 @@
 <template>
-	<li class="pkpListPanelItem pkpListPanelItem--submission" :class="{'-hasFocus': isFocused}">
-		<a :href="item.urlWorkflow" class="pkpListPanelItem--submission__link" @focus="focusItem" @blur="blurItem">
-			<div class="pkpListPanelItem--submission__item">
-				<div class="pkpListPanelItem--submission__id">
-					<span class="-screenReader">{{ i18n.id }}</span>
-					{{ item.id }}
-				</div>
-				<div v-if="item.author" class="pkpListPanelItem--submission__author">
-					{{ item.author.authorString }}
-				</div>
-				<div class="pkpListPanelItem--submission__title">
-					{{ item.title }}
-				</div>
-				<div v-if="notice" class="pkpListPanelItem--submission__activity">
-					<span class="fa fa-exclamation-triangle pkpIcon--inline" aria-hidden="true"></span>
-					{{ notice }}
-				</div>
-			</div>
-		</a>
-		<div v-if="currentUserIsReviewer" class="pkpListPanelItem--submission__stage pkpListPanelItem--submission__stage--reviewer">
-			<a :href="item.urlWorkflow" tabindex="-1">
-				<div v-if="currentUserLatestReviewAssignment.responsePending" class="pkpListPanelItem--submission__dueDate">
-					<div :aria-labelledby="responseDueLabelId" class="pkpListPanelItem--submission__dueDateValue">
-						{{ currentUserLatestReviewAssignment.responseDue }}
+	<li class="pkpListPanelItem pkpListPanelItem--submission pkpListPanelItem--hasSummary" :class="{'-hasFocus': isFocused}">
+		<div class="pkpListPanelItem__summary -pkpClearfix">
+			<a :href="item.urlWorkflow" class="pkpListPanelItem--submission__link" @focus="focusItem" @blur="blurItem">
+				<div class="pkpListPanelItem--submission__item">
+					<div class="pkpListPanelItem--submission__id">
+						<span class="-screenReader">{{ i18n.id }}</span>
+						{{ item.id }}
 					</div>
-					<div :id="responseDueLabelId" class="pkpListPanelItem--submission__dueDateLabel">
-						{{ i18n.responseDue }}
+					<div v-if="item.author" class="pkpListPanelItem--submission__author">
+						{{ item.author.authorString }}
 					</div>
-				</div>
-				<div v-if="currentUserLatestReviewAssignment.reviewPending" class="pkpListPanelItem--submission__dueDate">
-					<div :aria-labelledby="reviewDueLabelId" class="pkpListPanelItem--submission__dueDateValue">
-						{{ currentUserLatestReviewAssignment.due }}
+					<div class="pkpListPanelItem--submission__title">
+						{{ item.title }}
 					</div>
-					<div :id="reviewDueLabelId" class="pkpListPanelItem--submission__dueDateLabel">
-						{{ i18n.reviewDue }}
+					<div v-if="notice" class="pkpListPanelItem--submission__activity">
+						<span class="fa fa-exclamation-triangle pkpIcon--inline" aria-hidden="true"></span>
+						{{ notice }}
 					</div>
 				</div>
 			</a>
-		</div>
-		<div v-else class="pkpListPanelItem--submission__stage">
-			<div class="pkpListPanelItem--submission__stageRow">
-				<div class="pkpListPanelItem--submission__stageLabel">
-					<template v-if="item.status.id === 3 || item.status.id === 4">
-						{{ item.status.label }}
-					</template>
-					<template v-else-if="item.submissionProgress > 0">
-						{{ i18n.incomplete }}
-					</template>
-					<template v-else>
-						{{ activeStage.label }}
-					</template>
-				</div>
-				<div class="pkpListPanelItem--submission__flags">
-					<span v-if="isReviewStage"  class="pkpListPanelItem--submission__flags--reviews">
-						<span class="fa fa-user-o pkpIcon--inline" aria-hidden="true"></span>
-						<span :aria-labelledby="reviewsCompletedLabelId">{{ completedReviewsCount }} / {{ currentReviewAssignments.length }}</span>
-						<span :id="reviewsCompletedLabelId" class="-screenReader">{{ i18n.reviewsCompleted }}</span>
+			<div v-if="currentUserIsReviewer" class="pkpListPanelItem--submission__stage pkpListPanelItem--submission__stage--reviewer">
+				<a :href="item.urlWorkflow" tabindex="-1">
+					<div v-if="currentUserLatestReviewAssignment.responsePending" class="pkpListPanelItem--submission__dueDate">
+						<div :aria-labelledby="responseDueLabelId" class="pkpListPanelItem--submission__dueDateValue">
+							{{ currentUserLatestReviewAssignment.responseDue }}
+						</div>
+						<div :id="responseDueLabelId" class="pkpListPanelItem--submission__dueDateLabel">
+							{{ i18n.responseDue }}
+						</div>
+					</div>
+					<div v-if="currentUserLatestReviewAssignment.reviewPending" class="pkpListPanelItem--submission__dueDate">
+						<div :aria-labelledby="reviewDueLabelId" class="pkpListPanelItem--submission__dueDateValue">
+							{{ currentUserLatestReviewAssignment.due }}
+						</div>
+						<div :id="reviewDueLabelId" class="pkpListPanelItem--submission__dueDateLabel">
+							{{ i18n.reviewDue }}
+						</div>
+					</div>
+				</a>
+			</div>
+			<div v-else class="pkpListPanelItem--submission__stage">
+				<div class="pkpListPanelItem--submission__stageRow">
+					<span
+						class="pkpBadge pkpBadge--dot pkpBadge--button"
+						:class="stageBadgeClass"
+						@click="filterByStage(activeStage.id)"
+					>
+						<template v-if="item.status.id === 3 || item.status.id === 4">
+							{{ item.status.label }}
+						</template>
+						<template v-else-if="item.submissionProgress > 0">
+							{{ i18n.incomplete }}
+						</template>
+						<template v-else>
+							{{ activeStage.label }}
+						</template>
 					</span>
-					<span v-if="activeStage.files.count" class="pkpListPanelItem--submission__flags--files">
-						<span class="fa fa-file-text-o pkpIcon--inline" aria-hidden="true"></span>
-						<span :aria-labelledby="filesPreparedLabelId">{{ activeStage.files.count }}</span>
-						<span :id="filesPreparedLabelId" class="-screenReader">{{ i18n.filesPrepared }}</span>
-					</span>
-					<span v-if="openQueryCount" class="pkpListPanelItem--submission__flags--discussions">
-						<span class="fa fa-comment-o pkpIcon--inline" aria-hidden="true"></span>
-						<span :aria-labelledby="discussionsLabelId">{{ openQueryCount }}</span>
-						<span :id="discussionsLabelId" class="-screenReader">{{ i18n.discussions }}</span>
-					</span>
+					<!-- use aria-hidden on these details because the information can be
+						more easily acquired by screen readers from the details panel. -->
+					<div class="pkpListPanelItem--submission__flags" aria-hidden="true">
+						<span v-if="isReviewStage"  class="pkpListPanelItem--submission__flags--reviews">
+							<span class="fa fa-user-o pkpIcon--inline"></span>
+							{{ completedReviewsCount }}/{{ currentReviewAssignments.length }}
+						</span>
+						<span v-if="activeStage.files.count" class="pkpListPanelItem--submission__flags--files">
+							<span class="fa fa-file-text-o pkpIcon--inline"></span>
+							{{ activeStage.files.count }}
+						</span>
+						<span v-if="openQueryCount" class="pkpListPanelItem--submission__flags--discussions">
+							<span class="fa fa-comment-o pkpIcon--inline"></span>
+							{{ openQueryCount }}
+						</span>
+					</div>
 				</div>
 			</div>
-			<div v-if="hasActions" class="pkpListPanelItem__actions">
-				<a v-if="currentUserCanDelete" href="#" class="delete" @click.prevent="deleteSubmissionPrompt" @focus="focusItem" @blur="blurItem">
-					{{ i18n.delete }}
+			<button
+				v-if="!currentUserIsReviewer"
+				@click="toggleExpanded"
+				class="pkpListPanelItem__expander"
+			>
+				<span v-if="isExpanded" class="fa fa-angle-up" aria-hidden="true"></span>
+				<span v-else class="fa fa-angle-down" aria-hidden="true"></span>
+				<span class="-screenReader"></span>
+			</button>
+		</div>
+		<div
+			v-if="isExpanded"
+			class="pkpListPanelItem__details pkpListPanelItem__details--submission"
+		>
+			<div v-if="!item.submissionProgress" class="pkpListPanelItem--submission__stageDetails">
+				<div v-if="isReviewStage"  class="pkpListPanelItem--submission__stageDetailsItem">
+					<span class="pkpListPanelItem--submission__stageDetailsItemCount">
+						<span class="fa fa-user-o pkpIcon--inline" aria-hidden="true"></span>
+						{{ completedReviewsCount }}/{{ currentReviewAssignments.length }}
+					</span>
+					{{ i18n.reviewsCompleted }}
+				</div>
+				<div v-if="!isSubmissionStage" class="pkpListPanelItem--submission__stageDetailsItem">
+					<span class="pkpListPanelItem--submission__stageDetailsItemCount">
+						<span class="fa fa-file-text-o pkpIcon--inline" aria-hidden="true"></span>
+						{{ activeStage.files.count }}
+					</span>
+					{{ activeStageFilesLabel }}
+				</div>
+				<div class="pkpListPanelItem--submission__stageDetailsItem">
+					<span class="pkpListPanelItem--submission__stageDetailsItemCount">
+						<span class="fa fa-comment-o pkpIcon--inline" aria-hidden="true"></span>
+						{{ openQueryCount }}
+					</span>
+					{{ i18n.discussions }}
+				</div>
+			</div>
+			<div v-if="hasActions" class="pkpListPanelItem--submission__actions">
+				<a href="item.urlWorkflow" class="pkpButton" @focus="focusItem" @blur="blurItem">
+					{{ i18n.viewSubmission }}
 				</a>
-				<a v-if="currentUserCanViewInfoCenter" href="#" @click.prevent="openInfoCenter" @focus="focusItem" @blur="blurItem">
+				<button v-if="currentUserCanViewInfoCenter" class="pkpButton" @click.prevent="openInfoCenter" @focus="focusItem" @blur="blurItem">
 					{{ i18n.infoCenter }}
-				</a>
+				</button>
+				<button v-if="currentUserCanDelete" class="pkpButton -isWarnable" @click.prevent="deleteSubmissionPrompt" @focus="focusItem" @blur="blurItem">
+					{{ i18n.delete }}
+				</button>
 			</div>
 		</div>
 		<div class="pkpListPanelItem__mask" :class="classMask">
@@ -107,6 +152,7 @@ export default {
 	props: ['item', 'i18n', 'apiPath', 'infoUrl'],
 	data: function () {
 		return {
+			isExpanded: false,
 			mask: null,
 		};
 	},
@@ -240,6 +286,26 @@ export default {
 		},
 
 		/**
+		 * Get the pkpBadge class name to use for this stage
+		 *
+		 * @return string
+		 */
+		stageBadgeClass: function () {
+			switch (this.activeStage.id) {
+				case pkp.const.WORKFLOW_STAGE_ID_SUBMISSION:
+					return 'pkpBadge--submission';
+				case pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW:
+				case pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW:
+					return 'pkpBadge--review';
+				case pkp.const.WORKFLOW_STAGE_ID_EDITING:
+					return 'pkpBadge--copyediting';
+				case pkp.const.WORKFLOW_STAGE_ID_PRODUCTION:
+					return 'pkpBadge--production';
+			}
+			return '';
+		},
+
+		/**
 		 * Compile the count of open discussions
 		 *
 		 * @return int
@@ -248,6 +314,34 @@ export default {
 			return this.activeStage.queries.filter(query => {
 				return !query.closed;
 			}).length;
+		},
+
+		/**
+		 * Determine the correct label for the count of files based on the active
+		 * stage.
+		 *
+		 * @return string
+		 */
+		activeStageFilesLabel: function () {
+			switch (this.activeStage.id) {
+				case pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW:
+				case pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW:
+					return this.i18n.revisionsSubmitted;
+				case pkp.const.WORKFLOW_STAGE_ID_EDITING:
+					return this.i18n.copyeditsSubmitted;
+				case pkp.const.WORKFLOW_STAGE_ID_PRODUCTION:
+					return this.i18n.galleysCreated;
+			}
+			return '';
+		},
+
+		/**
+		 * Is this the submission stage?
+		 *
+		 * @return bool
+		 */
+		isSubmissionStage: function () {
+			return this.activeStage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION;
 		},
 
 		/**
@@ -374,38 +468,17 @@ export default {
 		reviewDueLabelId: function () {
 			return 'reviewDueLabel' + this._uid;
 		},
-
-		/**
-		 * ID attribute to use in aria-labelledby linking the reviews completed
-		 * icons with their label
-		 *
-		 * @return string
-		 */
-		reviewsCompletedLabelId: function () {
-			return 'reviewsCompletedLabel' + this._uid;
-		},
-
-		/**
-		 * ID attribute to use in aria-labelledby linking the files prepared
-		 * icons with their label
-		 *
-		 * @return string
-		 */
-		filesPreparedLabelId: function () {
-			return 'filesPreparedLabel' + this._uid;
-		},
-
-		/**
-		 * ID attribute to use in aria-labelledby linking the discussion icons
-		 * with their label
-		 *
-		 * @return string
-		 */
-		discussionsLabelId: function () {
-			return 'discussionsLabel' + this._uid;
-		},
 	},
 	methods: {
+
+		/**
+		 * Filter by a submission stage
+		 *
+		 * @param stageId int
+		 */
+		filterByStage: function (stageId) {
+			this.$emit('filterList', {'stageIds': [stageId]});
+		},
 
 		/**
 		 * Load a modal displaying history and notes of a submission
@@ -482,7 +555,6 @@ export default {
 @import '../../../styles/_import';
 
 .pkpListPanelItem--submission {
-	.pkp_helpers_clear();
 	position: relative;
 	transition: all 0.3s;
 
@@ -529,7 +601,7 @@ export default {
 .pkpListPanelItem--submission__item {
 	position: relative;
 	float: left;
-	width: 65%;
+	width: 75%;
 	padding-left: 48px;
 }
 
@@ -569,24 +641,74 @@ export default {
 }
 
 .pkpListPanelItem--submission__stage {
-	width: 35%;
-}
-
-.pkpListPanelItem--submission__stageLabel,
-.pkpListPanelItem--submission__flags {
-	display: inline-block;
-}
-
-.pkpListPanelItem--submission__stageLabel {
-	font-weight: @bold;
+	width: 25%;
 }
 
 .pkpListPanelItem--submission__flags {
-	float: right;
+	font-size: @font-tiny;
+	margin-top: 1em;
 
 	> * {
 		margin-left: 1em;
+	}
+
+	.fa {
+		margin-right: 0.25em;
+		font-size: @font-sml;
 		color: @text-light-rgba;
+	}
+}
+
+// Details panel
+.pkpListPanelItem__details--submission {
+	padding: 1em (@base * 3) 1em 62px;
+}
+
+.pkpListPanelItem--submission__stageDetails {
+	border-top: @grid-border;
+	box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+	border-radius: @radius;
+}
+
+.pkpListPanelItem--submission__stageDetailsItem {
+	position: relative;
+	padding: 1em;
+	padding-left: 6.5em;
+	border-bottom: @grid-border;
+
+	&:before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 5.5em;
+		width: 0;
+		height: 100%;
+		border-right: @grid-border;
+	}
+
+	&:last-child {
+		border-bottom: none;
+	}
+}
+
+.pkpListPanelItem--submission__stageDetailsItemCount {
+	position: absolute;
+	top: 50%;
+	left: 1em;
+	transform: translateY(-50%);
+	width: 6.5em;
+
+	.fa {
+		color: @text-light;
+		min-width: 1.25em;
+	}
+}
+
+.pkpListPanelItem--submission__actions {
+	text-align: right;
+
+	&:not(:first-child) {
+		margin-top: 1em;
 	}
 }
 
@@ -595,23 +717,15 @@ export default {
 	display: block;
 	color: @text;
 	text-decoration: none;
-}
 
-.pkpListPanelItem--submission__dueDate {
-	float: left;
-	width: 50%;
-	padding-right: 1em;
-
-	&:last-child:not(:first-child) {
-		padding-left: 1em;
-		padding-right: 0;
+	&:hover,
+	&:focus {
+		color: @text;
 	}
 }
 
-.pkpListPanelItem--submission__dueDate:first-child:last-child {
-	float: none;
-	width: 100%;
-	padding-right: 0;
+.pkpListPanelItem--submission__dueDate + .pkpListPanelItem--submission__dueDate {
+	margin-top: 1em;
 }
 
 .pkpListPanelItem--submission__dueDateValue {

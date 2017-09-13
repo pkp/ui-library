@@ -56,6 +56,13 @@ export default {
 		itemOrderDown: function () {
 			this.$emit('itemOrderDown', this.item);
 		},
+
+		/**
+		 * Toggle the expanded or summary views
+		 */
+		toggleExpanded: function () {
+			this.isExpanded = !this.isExpanded;
+		},
 	},
 };
 </script>
@@ -79,31 +86,6 @@ export default {
 	}
 }
 
-.pkpListPanelItem__actions {
-
-	a,
-	button {
-		display: inline-block;
-		margin-top: 1em;
-		margin-right: 2em;
-		padding: 0;
-		border: none;
-		background: transparent;
-		font-size: @font-tiny;
-		font-weight: @bold;
-		color: @primary;
-		text-decoration: none;
-
-		&:last-child {
-			margin-right: 0;
-		}
-	}
-
-	.delete {
-		color: @no;
-	}
-}
-
 .pkpListPanel.-isOrdering {
 
 	.pkpListPanelItem {
@@ -111,6 +93,52 @@ export default {
 		padding-left: 5em;
 		padding-right: 9em;
 	}
+}
+
+// ListPanels with a summary and detailed view
+@expandedWidth: @base * 3;
+
+.pkpListPanelItem--hasSummary {
+	padding: 0;
+}
+
+.pkpListPanelItem__summary {
+	position: relative;
+	padding: 1em @expandedWidth 1em 1em;
+}
+
+.pkpListPanelItem__expander {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: @expandedWidth;
+	height: 100%;
+	background: transparent;
+	border: none;
+	border-left: @grid-border;
+	text-align: center;
+	cursor: pointer;
+
+	.fa {
+		font-size: 20px;
+		font-weight: @bold;
+		color: @primary;
+	}
+
+	&:hover,
+	&:focus {
+		background: @primary;
+		outline: 0;
+
+		.fa {
+			color: #fff;
+		}
+	}
+}
+
+.pkpListPanelItem__details {
+	padding: 1em;
+	border-top: @grid-border;
 }
 
 .pkpListPanelItem__mask {

@@ -8,6 +8,8 @@ import WithActions from './WithActions.vue';
 import WithActionsRaw from '!!raw-loader!./WithActions.vue';
 import WithNotice from './WithNotice.vue';
 import WithNoticeRaw from '!!raw-loader!./WithNotice.vue';
+import WithExpander from './WithExpander.vue';
+import WithExpanderRaw from '!!raw-loader!./WithExpander.vue';
 import WithOrdering from './WithOrdering.vue';
 import WithOrderingRaw from '!!raw-loader!./WithOrdering.vue';
 import WithFiltering from './WithFiltering.vue';
@@ -94,6 +96,11 @@ export default {
 			label: 'with Notice',
 			component: WithNotice,
 			componentRaw: WithNoticeRaw,
+		},
+		'with-expander': {
+			label: 'with Expander',
+			component: WithExpander,
+			componentRaw: WithExpanderRaw,
 		},
 		'with-ordering': {
 			label: 'with Ordering',

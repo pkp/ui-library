@@ -1,6 +1,6 @@
 <template>
 	<div class="pkpListPanel pkpListPanel--submissions pkpListPanel--catalogSubmissions" :class="classStatus">
-		<div class="pkpListPanel__header">
+		<div class="pkpListPanel__header -pkpClearfix">
 			<div class="pkpListPanel__title">{{ i18n.title }}</div>
 			<ul class="pkpListPanel__actions">
 				<li>
@@ -37,7 +37,7 @@
 				:i18n="i18n"
 			/>
 		</div>
-		<div class="pkpListPanel__body pkpListPanel__body--catalogSubmissions">
+		<div class="pkpListPanel__body -pkpClearfix pkpListPanel__body--catalogSubmissions">
 			<div v-if="isOrdering" class="pkpListPanel__notice pkpListPanel__notice--info" tabindex="0">
 				<span class="fa fa-info-circle"></span>
 				{{ featuredNotice }}
@@ -77,7 +77,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="pkpListPanel__footer">
+		<div class="pkpListPanel__footer -pkpClearfix">
 			<list-panel-load-more
 				v-if="canLoadMore"
 				@loadMore="loadMore"

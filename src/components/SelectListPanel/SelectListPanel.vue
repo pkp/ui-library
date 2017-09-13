@@ -1,9 +1,9 @@
 <template>
 	<div class="pkpListPanel pkpListPanel--select">
-		<div class="pkpListPanel__header">
+		<div class="pkpListPanel__header -pkpClearfix">
 			<div class="pkpListPanel__title">{{ i18n.title }}</div>
 		</div>
-		<div class="pkpListPanel__body">
+		<div class="pkpListPanel__body -pkpClearfix">
 			<div v-if="i18n.notice" class="pkpListPanel__notice pkpListPanel__notice--info" tabindex="0">
 				{{ i18n.notice }}
 			</div>

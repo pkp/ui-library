@@ -1,9 +1,9 @@
 <template>
 	<div class="pkpListPanel" :class="classStatus">
-		<div class="pkpListPanel__header">
+		<div class="pkpListPanel__header -pkpClearfix">
 			<div class="pkpListPanel__title">{{ i18n.title }}</div>
 		</div>
-		<div class="pkpListPanel__body">
+		<div class="pkpListPanel__body -pkpClearfix">
 			<ul class="pkpListPanel__items" aria-live="polite">
 				<list-panel-item
 					v-for="item in collection.items"
@@ -339,7 +339,6 @@ export default {
 }
 
 .pkpListPanel__header {
-	.pkp_helpers_clear;
 	background: @bg-light;
 	padding: 0 0.5em 0.5em 1em;
 }
@@ -372,7 +371,6 @@ export default {
 }
 
 .pkpListPanel__body {
-	.pkp_helpers_clear;
 	position: relative;
 }
 
@@ -411,8 +409,8 @@ export default {
 	margin: 0;
 	padding: 0;
 }
+
 .pkpListPanel__footer {
-	.pkp_helpers_clear();
 	position: relative;
 	padding: @half @base;
 	font-size: @font-tiny;

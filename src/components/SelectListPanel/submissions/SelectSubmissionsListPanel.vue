@@ -1,6 +1,6 @@
 <template>
 	<div class="pkpListPanel pkpListPanel--select pkpListPanel--selectSubmissions" :class="classStatus">
-		<div class="pkpListPanel__header">
+		<div class="pkpListPanel__header -pkpClearfix">
 			<div class="pkpListPanel__title">
 				{{ i18n.title }}
 				<span v-if="isLoading" class="pkpSpinner" aria-hidden="true"></span>
@@ -20,7 +20,7 @@
 				:inputName="inputName"
 			/>
 		</ul>
-		<div class="pkpListPanel__footer">
+		<div class="pkpListPanel__footer -pkpClearfix">
 			<list-panel-load-more
 				v-if="canLoadMore"
 				@loadMore="loadMore"

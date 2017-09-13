@@ -193,6 +193,53 @@ export default {
 				author: {
 					authorString: 'Sed Aenean',
 				},
+				stages: [
+					{
+						id: 1,
+						label: 'Submission',
+						isActiveStage: false,
+						queries: [],
+						files: {
+							count: 1,
+						},
+					},
+					{
+						id: 3,
+						label: 'Review',
+						isActiveStage: false,
+						status: 'Waiting for reviewers to be selected',
+						statusId: 6,
+						queries: [],
+						files: {
+							count: 1,
+						},
+					},
+					{
+						id: 4,
+						label: 'Copyediting',
+						isActiveStage: true,
+						queries: [{
+							assocId: 21,
+							assocType: 1048585,
+							closed: false,
+							id: 47,
+							sequence: 1,
+							stageId: 4,
+						}],
+						files: {
+							count: 2,
+						},
+					},
+					{
+						id: 5,
+						label: 'Production',
+						isActiveStage: false,
+						queries: [],
+						files: {
+							count: 0,
+						},
+					},
+				],
 				urlWorkflow: '/workflow/access/5',
 				urlPublished: '/article/view/5',
 			},
@@ -203,6 +250,53 @@ export default {
 				author: {
 					authorString: 'Lacus Agittis',
 				},
+				stages: [
+					{
+						id: 1,
+						label: 'Submission',
+						isActiveStage: false,
+						queries: [],
+						files: {
+							count: 1,
+						},
+					},
+					{
+						id: 3,
+						label: 'Review',
+						isActiveStage: false,
+						status: 'Waiting for reviewers to be selected',
+						statusId: 6,
+						queries: [],
+						files: {
+							count: 1,
+						},
+					},
+					{
+						id: 4,
+						label: 'Copyediting',
+						isActiveStage: false,
+						queries: [],
+						files: {
+							count: 1,
+						},
+					},
+					{
+						id: 5,
+						label: 'Production',
+						isActiveStage: true,
+						queries: [{
+							assocId: 21,
+							assocType: 1048585,
+							closed: false,
+							id: 47,
+							sequence: 1,
+							stageId: 5,
+						}],
+						files: {
+							count: 4,
+						},
+					},
+				],
 				urlWorkflow: '/workflow/access/3',
 				urlPublished: '/article/view/3',
 			},
@@ -230,9 +324,12 @@ export default {
 		filter: 'Filter',
 		filterRemove: 'Clear filter: {$filterTitle}',
 		itemOrdererUp: 'Increase position of {$itemTitle}',
-		reviewsCompleted: 'Reviews completed',
-		filesPrepared: 'Files prepared',
-		discussions: 'Discussions',
+		viewSubmission: 'View Submission',
+		reviewsCompleted: 'Assigned reviews completed',
+		revisionsSubmitted: 'Revisions submitted',
+		copyeditsSubmitted: 'Copyedited files submitted',
+		galleysCreated: 'Production galleys created',
+		discussions: 'Open discussions',
 	},
 	addUrl: '/submission/wizard',
 	infoUrl: '/$$$call$$$/information-center/submission-information-center/view-information-center?submissionId=__id__',
