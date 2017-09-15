@@ -28,6 +28,7 @@
 				@filterList="updateFilter"
 				:isVisible="isFilterVisible"
 				:filters="filters"
+				:activeFilters="activeFilters"
 				:i18n="i18n"
 			/>
 			<div class="pkpListPanel__content pkpListPanel__content--submissions">

@@ -36,12 +36,7 @@
 <script>
 export default {
 	name: 'ListPanelFilter',
-	props: ['i18n', 'filters', 'isVisible'],
-	data: function () {
-		return {
-			activeFilters: [],
-		};
-	},
+	props: ['i18n', 'filters', 'activeFilters', 'isVisible'],
 	computed: {
 		tabIndex: function () {
 			return this.isVisible ? false : -1;
@@ -52,9 +47,7 @@ export default {
 		 * Check if a filter is currently active
 		 */
 		isFilterActive: function (type, val) {
-			return this.activeFilters.filter(filter => {
-				return filter.type === type && filter.val === val;
-			}).length;
+			return this.activeFilters[type] !== undefined && this.activeFilters[type].includes(val);
 		},
 
 		/**
@@ -63,46 +56,36 @@ export default {
 		filterBy: function (type, val) {
 			if (this.isFilterActive(type, val)) {
 				this.clearFilter(type, val);
-				return;
+			} else {
+				let filters = Object.assign({}, this.activeFilters);
+				if (filters[type] === undefined) {
+					filters[type] = [];
+				}
+				filters[type].push(val);
+				this.filterList(filters);
 			}
-			this.activeFilters.push({type: type, val: val});
-			this.filterList(this.compileFilterParams());
 		},
 
 		/**
 		 * Remove a filter
 		 */
 		clearFilter: function (type, val) {
-			this.activeFilters = this.activeFilters.filter(filter => {
-				return filter.type !== type || filter.val !== val;
+			const filters = Object.assign({}, this.activeFilters);
+			filters[type] = this.activeFilters[type].filter((filterVal) => {
+				return filterVal !== val;
 			});
-			this.filterList(this.compileFilterParams());
+			this.filterList(filters);
 		},
 
 		/**
 		 * Clear any filters that are currently active
 		 */
 		clearFilters: function () {
-			this.activeFilters = [];
 			this.filterList({});
 		},
 
 		/**
-		 * Compile active filters into filter parameters
-		 */
-		compileFilterParams: function () {
-			let params = {};
-			for (var filter of this.activeFilters) {
-				if (params[filter.type] === undefined) {
-					params[filter.type] = [];
-				}
-				params[filter.type].push(filter.val);
-			}
-			return params;
-		},
-
-		/**
-		 * Emit an event to filter items in the list panel
+		 * Emit an event to update the active filters in the list panel
 		 */
 		filterList: function (data) {
 			this.$emit('filterList', data);

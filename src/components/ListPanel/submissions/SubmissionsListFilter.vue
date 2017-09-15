@@ -42,37 +42,33 @@ export default {
 	props: ['isVisible', 'filters', 'i18n'],
 	methods: {
 		/**
-		 * Add a filter
+		 * Override ListPanelFilter.filterBy to handle special
+		 * logic around the `isIncomplete` filter.
 		 */
 		filterBy: function (type, val) {
+			// Don't allow other filters to be active when isIncomplete is active
 			if (type === 'isIncomplete') {
-				this.filterByIncomplete();
+				if (this.isFilterActive('isIncomplete', true)) {
+					this.filterList({});
+				} else {
+					this.filterList({isIncomplete: [true]});
+				}
 				return;
-			// Deactivate the isIncomplete filter when any other filter is selected
-			} else if (this.isFilterActive('isIncomplete', true)) {
-				this.clearFilter('isIncomplete', true);
+			}
+			let filters = Object.assign({}, this.activeFilters);
+			// Remove isIncomplete filter when other filters activated
+			if (filters.isIncomplete !== undefined) {
+				filters.isIncomplete = [];
 			}
 			if (this.isFilterActive(type, val)) {
 				this.clearFilter(type, val);
-				return;
+			} else {
+				if (filters[type] === undefined) {
+					filters[type] = [];
+				}
+				filters[type].push(val);
+				this.filterList(filters);
 			}
-			this.activeFilters.push({type: type, val: val});
-			this.filterList(this.compileFilterParams());
-		},
-
-		/**
-		 * Filter to show any incomplete submissions.
-		 * These are submissions which have been started but not fully submitted
-		 * by the author.
-		 */
-		filterByIncomplete: function () {
-			if (this.isFilterActive('isIncomplete', true)) {
-				this.clearFilters();
-				return;
-			}
-			this.clearFilters();
-			this.activeFilters.push({type: 'isIncomplete', val: true});
-			this.filterList(this.compileFilterParams());
 		},
 	},
 };

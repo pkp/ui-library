@@ -2,7 +2,6 @@ import BaseSubmissionObject from './BaseSubmissionObject.js';
 
 export default {
 	id: 'ExampleSubmissionsListPanel',
-	filterParams: {},
 	searchPhrase: '',
 	isLoading: false,
 	isOrdering: false,
@@ -11,6 +10,7 @@ export default {
 	offset: 0,
 	apiPath: '',
 	getParams: {},
+	activeFilters: {},
 	filters: {
 		attention: {
 			filters: [

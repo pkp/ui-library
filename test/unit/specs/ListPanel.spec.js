@@ -13,7 +13,7 @@ ListPanel.data = function () {
 			],
 			maxItems: 10,
 		},
-		filterParams: {},
+		activeFilters: {},
 		searchPhrase: '',
 		isLoading: false,
 		isOrdering: false,

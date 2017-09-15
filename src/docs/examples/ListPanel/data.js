@@ -32,7 +32,6 @@ export default {
 				],
 				maxItems: 10,
 			},
-			filterParams: {},
 			searchPhrase: '',
 			isLoading: false,
 			isOrdering: false,
@@ -41,6 +40,7 @@ export default {
 			offset: 0,
 			apiPath: '',
 			getParams: {},
+			activeFilters: {},
 			i18n: {
 				title: 'Example List Panel',
 			},
@@ -51,7 +51,7 @@ export default {
 	dataDesc: {
 		id: 'Used internally. Do not modify.',
 		collection: '`items`: Array containing items in the list. `maxItems:` count of total available items',
-		filterParams: 'Modifying this property will automatically trigger a `GET` request if an `apiPath` is set.',
+		activeFilters: 'Modifying this property will automatically trigger a `GET` request if an `apiPath` is set.',
 		searchPhrase: 'Modifying this property will automatically trigger a `GET` request if an `apiPath` is set.',
 		isLoading: '',
 		isOrdering: '',

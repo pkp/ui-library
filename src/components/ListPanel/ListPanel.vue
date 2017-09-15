@@ -30,7 +30,6 @@ export default {
 				items: [],
 				maxItems: null,
 			},
-			filterParams: {},
 			searchPhrase: '',
 			isLoading: false,
 			isOrdering: false,
@@ -39,6 +38,7 @@ export default {
 			offset: 0,
 			apiPath: '',
 			getParams: {},
+			activeFilters: {},
 			i18n: {},
 			lazyLoad: false,
 			_lastGetRequest: null,
@@ -100,7 +100,7 @@ export default {
 				type: 'GET',
 				data: {
 					...this.getParams,
-					...this.filterParams,
+					...this.activeFilters,
 					searchPhrase: this.searchPhrase,
 					count: this.count,
 					offset: this.offset,
@@ -158,13 +158,16 @@ export default {
 		 */
 		toggleFilter: function () {
 			this.isFilterVisible = !this.isFilterVisible;
+			if (!this.isFilterVisible) {
+				this.updateFilter({});
+			}
 		},
 
 		/**
 		 * Update filter parameters
 		 */
 		updateFilter: function (params) {
-			this.filterParams = params;
+			this.activeFilters = params;
 		},
 
 		/**
@@ -302,12 +305,15 @@ export default {
 		/**
 		 * Update list whenever a filter is applied
 		 */
-		this.$watch('filterParams', function (newVal, oldVal) {
+		this.$watch('activeFilters', function (newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
 			this.offset = 0;
 			this.get();
+			if (newVal && Object.keys(newVal).length) {
+				this.isFilterVisible = true;
+			}
 		});
 
 		/**
