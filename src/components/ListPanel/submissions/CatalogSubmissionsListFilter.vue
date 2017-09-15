@@ -48,13 +48,13 @@ export default {
 		 * features can be applied to a single category or series.
 		 */
 		filterBy: function (type, val) {
-			if (this.isFilterActive(type, val)) {
+			if (this.isFilterActive()) {
 				this.clearFilters();
 				return;
 			}
-			this.clearFilters();
-			this.activeFilters.push({type: type, val: val});
-			this.filterList(this.compileFilterParams());
+			let filters = {};
+			filters[type] = [val];
+			this.filterList(filters);
 		},
 	},
 };

@@ -46,6 +46,7 @@
 				@filterList="updateFilter"
 				:isVisible="isFilterVisible"
 				:filters="filters"
+				:activeFilters="activeFilters"
 				:i18n="i18n"
 			/>
 			<div class="pkpListPanel__content pkpListPanel__content--catalogSubmissions">
@@ -193,9 +194,9 @@ export default {
 		 * @return int
 		 */
 		filterAssocType: function () {
-			if (this.filterParams.hasOwnProperty('categoryIds')) {
+			if (this.activeFilters.hasOwnProperty('categoryIds')) {
 				return pkp.const.ASSOC_TYPE_CATEGORY;
-			} else if (this.filterParams.hasOwnProperty('seriesIds')) {
+			} else if (this.activeFilters.hasOwnProperty('seriesIds')) {
 				return pkp.const.ASSOC_TYPE_SERIES;
 			}
 			return pkp.const.ASSOC_TYPE_PRESS;
@@ -209,10 +210,10 @@ export default {
 		 * @return int
 		 */
 		filterAssocId: function () {
-			if (this.filterParams.hasOwnProperty('categoryIds')) {
-				return this.filterParams.categoryIds[0];
-			} else if (this.filterParams.hasOwnProperty('seriesIds')) {
-				return this.filterParams.seriesIds[0];
+			if (this.activeFilters.hasOwnProperty('categoryIds')) {
+				return this.activeFilters.categoryIds[0];
+			} else if (this.activeFilters.hasOwnProperty('seriesIds')) {
+				return this.activeFilters.seriesIds[0];
 			}
 			// in OMP, there's only one press context and it's always 1
 			return 1;
@@ -261,15 +262,15 @@ export default {
 		 * whether the full catalog or a series/category is being viewed.
 		 */
 		updateSortOrder: function () {
-			if (this.filterParams.hasOwnProperty('categoryIds')) {
+			if (this.activeFilters.hasOwnProperty('categoryIds')) {
 				const cat = this.filters.categoryIds.filters.find((filter) => {
-					return filter.val === this.filterParams.categoryIds[0];
+					return filter.val === this.activeFilters.categoryIds[0];
 				});
 				this.getParams.orderBy = cat.sortBy;
 				this.getParams.orderDirection = cat.sortDir || this.catalogSortDir;
-			} else if (this.filterParams.hasOwnProperty('seriesIds')) {
+			} else if (this.activeFilters.hasOwnProperty('seriesIds')) {
 				var series = this.filters.seriesIds.filters.find((filter) => {
-					return filter.val === this.filterParams.seriesIds[0];
+					return filter.val === this.activeFilters.seriesIds[0];
 				});
 				this.getParams.orderBy = series.sortBy || this.catalogSortBy;
 				this.getParams.orderDirection = series.sortDir || this.catalogSortDir;
@@ -348,7 +349,7 @@ export default {
 		 * Set this watcher before the mounted hook so that the get params are
 		 * updated before the ajax request is made in SubmissionListPanel.mounted.
 		 */
-		this.$watch('filterParams', function (newVal, oldVal) {
+		this.$watch('activeFilters', function (newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
