@@ -111,8 +111,8 @@
 					{{ i18n.discussions }}
 				</div>
 			</div>
-			<div v-if="hasActions" class="pkpListPanelItem--submission__actions">
-				<a href="item.urlWorkflow" class="pkpButton" @focus="focusItem" @blur="blurItem">
+			<div class="pkpListPanelItem--submission__actions">
+				<a :href="item.urlWorkflow" class="pkpButton" @focus="focusItem" @blur="blurItem">
 					{{ i18n.viewSubmission }}
 				</a>
 				<button v-if="currentUserCanViewInfoCenter" class="pkpButton" @click.prevent="openInfoCenter" @focus="focusItem" @blur="blurItem">
@@ -199,15 +199,6 @@ export default {
 				}
 			}
 			return false;
-		},
-
-		/**
-		 * Are there any actions available for this submission?
-		 *
-		 * @return bool
-		 */
-		hasActions: function () {
-			return this.currentUserCanDelete || this.currentUserCanViewInfoCenter;
 		},
 
 		/**

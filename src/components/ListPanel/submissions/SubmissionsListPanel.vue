@@ -12,7 +12,7 @@
 						{{ i18n.filter }}
 					</button>
 				</li>
-				<li>
+				<li v-if="currentUserCanAddSubmission">
 					<a :href="addUrl" class="pkpButton">{{ i18n.add }}</a>
 				</li>
 			</ul>
@@ -93,6 +93,13 @@ export default {
 		 */
 		currentUserCanFilter: function () {
 			return pkp.userHasRole(['manager', 'subeditor', 'assistant']);
+		},
+
+		/**
+		 * Does the current user have a role which can create a new submission?
+		 */
+		currentUserCanAddSubmission: function () {
+			return pkp.userHasRole(['manager', 'subeditor', 'assistant', 'author']);
 		},
 	},
 };
