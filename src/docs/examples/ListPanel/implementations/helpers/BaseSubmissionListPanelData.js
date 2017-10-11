@@ -60,10 +60,10 @@ export default {
 			{
 				...BaseSubmissionObject,
 				id: 2,
-				title: 'Quisque vel ultrices ut vel sollicitudin vel varius suscipit phasellus',
-				author: {
-					authorString: 'Catherine Kwantes',
+				fullTitle: {
+					en_US: 'Quisque vel ultrices ut vel sollicitudin vel varius suscipit phasellus',
 				},
+				authorString: 'Catherine Kwantes',
 				reviewAssignments: [],
 				reviewRounds: [],
 				stages: [
@@ -112,18 +112,19 @@ export default {
 			{
 				...BaseSubmissionObject,
 				id: 3,
-				title: 'Metus ut elit est ultrices vivamus mauris est quisque arcu',
-				author: {
-					authorString: 'Domatilia Sokoloff',
+				fullTitle: {
+					en_US: 'Metus ut elit est ultrices vivamus mauris est quisque arcu',
 				},
+				authorString: 'Domatilia Sokoloff',
 				urlWorkflow: '/workflow/access/3',
 				urlPublished: '/article/view/3',
 			},
 			{
 				...BaseSubmissionObject,
 				id: 4,
-				title: 'Current user is assigned as reviewer to this submission',
-				author: null,
+				fullTitle: {
+					en_US: 'Current user is assigned as reviewer to this submission',
+				},
 				reviewAssignments: [
 					{
 						due: '2025-12-05',
@@ -189,10 +190,10 @@ export default {
 			{
 				...BaseSubmissionObject,
 				id: 5,
-				title: 'Sed sed mattis amet eget aenean leo est nam sit',
-				author: {
-					authorString: 'Sed Aenean',
+				fullTitle: {
+					en_US: 'Sed sed mattis amet eget aenean leo est nam sit',
 				},
+				authorString: 'Sed Aenean',
 				stages: [
 					{
 						id: 1,
@@ -246,10 +247,10 @@ export default {
 			{
 				...BaseSubmissionObject,
 				id: 6,
-				title: 'Lacus ut leo dolor nam neque nam dolor aenean sagittis',
-				author: {
-					authorString: 'Lacus Agittis',
+				fullTitle: {
+					en_US: 'Lacus ut leo dolor nam neque nam dolor aenean sagittis',
 				},
+				authorString: 'Lacus Agittis',
 				stages: [
 					{
 						id: 1,

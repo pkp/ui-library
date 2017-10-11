@@ -20,20 +20,19 @@ export default {
 					BaseSubmissionObject,
 					{
 						...BaseSubmissionObject,
-						id: 2,
-						title: 'Quisque vel ultrices ut vel sollicitudin vel varius suscipit phasellus',
-						author: {
-							authorString: 'Catherine Kwantes',
+						fullTitle: {
+							en_US: 'Quisque vel ultrices ut vel sollicitudin vel varius suscipit phasellus',
 						},
+						authorString: 'Catherine Kwantes',
 						urlWorkflow: '/workflow/access/2',
 					},
 					{
 						...BaseSubmissionObject,
 						id: 3,
-						title: 'Metus ut elit est ultrices vivamus mauris est quisque arcu',
-						author: {
-							authorString: 'Domatilia Sokoloff',
+						fullTitle: {
+							en_US: 'Metus ut elit est ultrices vivamus mauris est quisque arcu',
 						},
+						authorString: 'Domatilia Sokoloff',
 						urlWorkflow: '/workflow/access/3',
 						urlPublished: '/article/view/3',
 					},

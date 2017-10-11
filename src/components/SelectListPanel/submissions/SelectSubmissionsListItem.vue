@@ -4,11 +4,11 @@
 			<input type="checkbox" :id="inputId" :name="inputName" :value="inputValue" v-model="selected" @click.stop @focus="focusItem" @blur="blurItem">
 		</div>
 		<label :for="inputId" class="pkpListPanelItem__item">
-			<div v-if="item.author" class="pkpListPanelItem--submission__author">
-				{{ item.author.authorString }}
+			<div v-if="item.authorString" class="pkpListPanelItem--submission__author">
+				{{ item.authorString }}
 			</div>
 			<div class="pkpListPanelItem--submission__title">
-				{{ item.title }}
+				{{ localize(item.fullTitle) }}
 			</div>
 		</label>
 		<a :href="item.urlWorkflow" class="pkpListPanelItem--submission__link" target="_blank" @focus="focusItem" @blur="blurItem">
