@@ -47,6 +47,16 @@ window.pkp = {
 	},
 };
 
+/**
+ * Spoof some of the variables in the $.pkp object from the app
+ */
+window.$.pkp = {
+	app: {
+		currentLocale: 'en_US',
+		primaryLocale: 'en_US',
+	},
+};
+
 /* eslint-disable no-new */
 new Vue({
 	el: '#app',

@@ -7,11 +7,11 @@
 						<span class="-screenReader">{{ i18n.id }}</span>
 						{{ item.id }}
 					</div>
-					<div v-if="item.author" class="pkpListPanelItem--submission__author">
-						{{ item.author.authorString }}
+					<div v-if="item.authorString" class="pkpListPanelItem--submission__author">
+						{{ item.authorString }}
 					</div>
 					<div class="pkpListPanelItem--submission__title">
-						{{ item.title }}
+						{{ localize(item.fullTitle) }}
 					</div>
 					<div v-if="notice" class="pkpListPanelItem--submission__activity">
 						<span class="fa fa-exclamation-triangle pkpIcon--inline" aria-hidden="true"></span>

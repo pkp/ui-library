@@ -45,6 +45,36 @@ export default {
 		},
 
 		/**
+		 * Get the locale-specific string from a locale object.
+		 *
+		 * It will search for the current locale value. If there's no value for the
+		 * current locale, it will revert to the primary locale. If there's still
+		 * no match, it will return an empty string.
+		 *
+		 * This can be used in templates like this:
+		 *
+		 * {{ localize(fullTitle) }}
+		 *
+		 * If you want to force a specific locale and not print a fallback:
+		 *
+		 * {{ localize(fullTitle, 'fr_CA') }}
+		 *
+		 * @param object localizedString Key/value hash storing one string per locale
+		 * @param string locale Optional. The locale to search for.
+		 * @return string
+		 */
+		localize: function (localizedString, requestedLocale) {
+			if (requestedLocale !== undefined) {
+				return localizedString.hasOwnProperty(requestedLocale) ? localizedString[requestedLocale] : '';
+			} else if (localizedString.hasOwnProperty($.pkp.app.currentLocale)) {
+				return localizedString[$.pkp.app.currentLocale];
+			} else if (localizedString.hasOwnProperty($.pkp.app.primaryLocale)) {
+				return localizedString[$.pkp.app.primaryLocale];
+			}
+			return '';
+		},
+
+		/**
 		 * Get an API endpoint URL
 		 *
 		 * This constructs an appropriate URL for querying the API, adjusting

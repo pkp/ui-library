@@ -13,11 +13,11 @@
 				{{ item.id }}
 			</div>
 			<a :href="item.urlPublished" @focus="focusItem" @blur="blurItem" class="pkpListPanelItem--submission__link">
-				<div v-if="item.author" class="pkpListPanelItem--submission__author">
-					{{ item.author.authorString }}
+				<div v-if="item.authorString" class="pkpListPanelItem--submission__author">
+					{{ item.authorString }}
 				</div>
 				<div class="pkpListPanelItem--submission__title">
-					{{ item.title }}
+					{{ localize(item.fullTitle) }}
 				</div>
 			</a>
 			<div class="pkpListPanelItem__actions">
