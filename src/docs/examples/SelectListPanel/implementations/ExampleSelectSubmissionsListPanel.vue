@@ -20,6 +20,7 @@ export default {
 					BaseSubmissionObject,
 					{
 						...BaseSubmissionObject,
+						id: 2,
 						fullTitle: {
 							en_US: 'Quisque vel ultrices ut vel sollicitudin vel varius suscipit phasellus',
 						},
@@ -48,6 +49,7 @@ export default {
 				loadMore: 'Load more',
 				loading: 'Loading',
 				viewSubmission: 'View {$title}',
+				selectAllLabel: 'Select All',
 			},
 		};
 	},

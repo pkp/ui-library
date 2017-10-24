@@ -137,6 +137,19 @@ Use `.pkpIcon--inline` when an icon sits alongside text to ensure adequate spaci
 
 The `.fa-info-circle` icon is reserved for providing help on how to use the software.
 
+### Warning Icon
+
+<div class="pkpul-element">
+	<div class="pkpul-element__preview">
+		<span class="fa fa-exclamation-triangle" aria-hidden="true"></span>
+	</div>
+```
+<span class="fa fa-exclamation-triangle" aria-hidden="true"></span>
+```
+</div>
+
+The `.fa-exclamation-triangle` icon is reserved for warning the user about an error or a serious consequence of an expected action.
+
 ### How to use icons
 
 Use icons when you want to visually connect two parts of the UI that are not otherwise connected. For example, the [ListPanel](/#/components/ListPanel) filters use an icon to link the button with the panel it controls.

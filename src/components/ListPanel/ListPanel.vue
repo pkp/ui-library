@@ -39,6 +39,7 @@ export default {
 			apiPath: '',
 			getParams: {},
 			activeFilters: {},
+			noticeType: '',
 			i18n: {},
 			lazyLoad: false,
 			_lastGetRequest: null,
@@ -430,18 +431,6 @@ export default {
 	.pkpListPanel__actions > li:not(.pkpListPanel__orderToggle):not(.pkpListPanel__orderToggleCancel),
 	.pkpListPanel__search {
 		display: none;
-	}
-}
-
-.pkpListPanel__notice {
-	padding: 1em;
-	border-bottom: @grid-border;
-	font-size: @font-sml;
-	line-height: @line-sml;
-
-	&:focus {
-		box-shadow: -2px 0 0 @primary;
-		outline: 0;
 	}
 }
 </style>

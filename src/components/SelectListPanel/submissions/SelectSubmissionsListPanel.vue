@@ -11,15 +11,27 @@
 				:i18n="i18n"
 			/>
 		</div>
-		<ul class="pkpListPanel__items" aria-live="polite">
-			<select-submissions-list-item
-				v-for="item in collection.items"
-				:key="item.id"
-				:item="item"
-				:i18n="i18n"
-				:inputName="inputName"
+		<div class="pkpListPanel__body -pkpClearfix">
+			<select-list-panel-select-all
+				v-if="showSelectAll"
+				:label="i18n.selectAllLabel"
+				:checked="selectAllChecked"
+				@toggle="toggleSelectAll"
 			/>
-		</ul>
+			<div class="pkpListPanel__content">
+				<ul class="pkpListPanel__items" aria-live="polite">
+					<select-submissions-list-item
+						v-for="item in collection.items"
+						:key="item.id"
+						:item="item"
+						:i18n="i18n"
+						:inputName="inputName"
+						:selected="selected"
+						@toggle="toggleItemSelection"
+					/>
+				</ul>
+			</div>
+		</div>
 		<div class="pkpListPanel__footer -pkpClearfix">
 			<list-panel-load-more
 				v-if="canLoadMore"
@@ -57,6 +69,7 @@ export default {
 	data: function () {
 		return {
 			inputName: '',
+			showSelectAll: true,
 		};
 	},
 };

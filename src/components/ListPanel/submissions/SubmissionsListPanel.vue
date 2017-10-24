@@ -23,6 +23,12 @@
 			/>
 		</div>
 		<div class="pkpListPanel__body -pkpClearfix pkpListPanel__body--submissions">
+			<select-list-panel-select-all
+				v-if="showSelectAll"
+				:label="i18n.selectAllLabel"
+				:checked="selectAllChecked"
+				@toggle="toggleSelectAll"
+			/>
 			<submissions-list-filter
 				v-if="currentUserCanFilter"
 				@filterList="updateFilter"
