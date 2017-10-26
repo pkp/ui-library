@@ -1,14 +1,14 @@
 <template>
 	<li class="pkpListPanelItem pkpListPanelItem--select">
-		<div class="pkpListPanelItem__selectItem" @click.prevent="toggleSelection">
+		<div class="pkpListPanelItem__selectItem" @click.self="toggle">
 			<input
 				v-if="inputType === 'radio'"
 				type="radio"
 				:id="inputId"
 				:name="inputName"
 				:value="inputValue"
-				v-model="selected"
-				@click.stop
+				v-model="isSelected"
+				@change="toggle"
 				@focus="focusItem"
 				@blur="blurItem"
 			>
@@ -18,8 +18,8 @@
 				:id="inputId"
 				:name="inputName"
 				:value="inputValue"
-				v-model="selected"
-				@click.stop
+				v-model="isSelected"
+				@change="toggle"
 				@focus="focusItem"
 				@blur="blurItem"
 			>
@@ -36,12 +36,7 @@ import ListPanelItem from '@/components/ListPanel/ListPanelItem.vue';
 export default {
 	extends: ListPanelItem,
 	name: 'SelectListPanelItem',
-	props: ['item', 'inputName', 'inputType'],
-	data: function () {
-		return {
-			selected: false,
-		};
-	},
+	props: ['item', 'inputName', 'inputType', 'selected'],
 	computed: {
 		/**
 		 * Map the item id
@@ -56,7 +51,7 @@ export default {
 		 * @return string
 		 */
 		inputValue: function () {
-			return this.item.id;
+			return this.id;
 		},
 
 		/**
@@ -67,26 +62,23 @@ export default {
 		inputId: function () {
 			return this.inputName + this.inputValue;
 		},
+
+		/**
+		 * Is this item selected?
+		 *
+		 * @return bool
+		 */
+		isSelected: function () {
+			return this.selected.indexOf(this.id) > -1;
+		},
 	},
 	methods: {
 		/**
-		 * Toggle the checkbox when clicked
+		 * Emit an event to select or de-select this item
 		 */
-		toggleSelection: function (e) {
-			if (this.inputType === 'radio') {
-				this.selected = this.selected ? '' : this.inputValue;
-			} else {
-				this.selected = !this.selected;
-			}
+		toggle: function () {
+			this.$emit('toggle', this.inputValue);
 		},
-	},
-	created: function () {
-		/**
-		 * Set an item to selected when loaded
-		 */
-		if (this.item._initializeSelected) {
-			this.selected = this.inputType === 'radio' ? this.inputValue : true;
-		}
 	},
 };
 </script>

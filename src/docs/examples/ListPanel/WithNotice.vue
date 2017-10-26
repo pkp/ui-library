@@ -4,10 +4,11 @@
 			<div class="pkpListPanel__title">{{ i18n.title }}</div>
 		</div>
 		<div class="pkpListPanel__body -pkpClearfix">
-			<div v-if="i18n.notice" class="pkpListPanel__notice pkpListPanel__notice--info" tabindex="0">
-				<span class="fa fa-info-circle pkpIcon--inline" aria-hidden="true"></span>
-				{{ i18n.notice }}
-			</div>
+			<list-panel-notice
+				v-if="i18n.notice"
+				:notice="i18n.notice"
+				:type="noticeType"
+			/>
 			<div class="pkpListPanel__content">
 				<ul class="pkpListPanel__items" aria-live="polite">
 					<list-panel-item
@@ -23,11 +24,15 @@
 
 <script>
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
+import ListPanelNotice from '@/components/ListPanel/ListPanelNotice.vue';
 import ListPanelData from './data.js';
 
 export default {
 	name: 'ListPanelWithNotice',
 	extends: ListPanel,
+	components: {
+		ListPanelNotice,
+	},
 	data: function () {
 		return Object.assign(ListPanelData.baseData(), {
 			id: 'ListPanelWithNotice',
@@ -35,6 +40,7 @@ export default {
 				title: 'List Panel with Notice',
 				notice: 'Example notice which can be used to display additional information on using the control.',
 			},
+			noticeType: 'info',
 		});
 	},
 };

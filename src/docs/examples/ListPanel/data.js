@@ -60,6 +60,7 @@ export default {
 		offset: 'Tracks the number of items visible for load more requests.',
 		apiPath: 'Optional. If present, `GET` requests can be fired off with `ListPanel.get()`',
 		getParams: 'Default parameters to pass with `GET` requests when no filters or search parameters exist.',
+		noticeType: 'The type of notice being displayed. Default is an empty string. Options: `info`, `warning`.',
 		i18n: '',
 		lazyLoad: 'If `true`, it will call `ListPanel.get()` when mounted.',
 		_lastGetRequest: 'Internal tracking to to ensure only the last `ListPanel.get()` call is processed.',

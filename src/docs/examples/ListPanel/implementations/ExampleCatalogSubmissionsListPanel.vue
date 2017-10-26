@@ -127,6 +127,8 @@ export default {
 				orderingFeaturesSection: 'Drag-and-drop or tap the up and down buttons to change the order of features in {$title}.',
 				saveFeatureOrder: 'Save Order',
 				cancel: 'Cancel',
+				itemOrdererUp: 'Increase position of {$itemTitle}',
+				itemOrdererDown: 'Decrease position of {$itemTitle}',
 			},
 		};
 	},

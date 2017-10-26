@@ -38,10 +38,11 @@
 			/>
 		</div>
 		<div class="pkpListPanel__body -pkpClearfix pkpListPanel__body--catalogSubmissions">
-			<div v-if="isOrdering" class="pkpListPanel__notice pkpListPanel__notice--info" tabindex="0">
-				<span class="fa fa-info-circle"></span>
-				{{ featuredNotice }}
-			</div>
+			<list-panel-notice
+				v-if="isOrdering"
+				:notice="featuredNotice"
+				:type="'info'"
+			/>
 			<catalog-submissions-list-filter
 				@filterList="updateFilter"
 				:isVisible="isFilterVisible"
@@ -96,6 +97,7 @@
 
 <script>
 import SubmissionsListPanel from '@/components/ListPanel/submissions/SubmissionsListPanel.vue';
+import ListPanelNotice from '@/components/ListPanel/ListPanelNotice.vue';
 import CatalogSubmissionsListItem from '@/components/ListPanel/submissions/CatalogSubmissionsListItem.vue';
 import CatalogSubmissionsListFilter from '@/components/ListPanel/submissions/CatalogSubmissionsListFilter.vue';
 import draggable from 'vuedraggable';
@@ -104,6 +106,7 @@ export default {
 	extends: SubmissionsListPanel,
 	name: 'CatalogSubmissionsListPanel',
 	components: {
+		ListPanelNotice,
 		CatalogSubmissionsListItem,
 		CatalogSubmissionsListFilter,
 		draggable,

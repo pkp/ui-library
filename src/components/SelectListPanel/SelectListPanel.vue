@@ -4,9 +4,17 @@
 			<div class="pkpListPanel__title">{{ i18n.title }}</div>
 		</div>
 		<div class="pkpListPanel__body -pkpClearfix">
-			<div v-if="i18n.notice" class="pkpListPanel__notice pkpListPanel__notice--info" tabindex="0">
-				{{ i18n.notice }}
-			</div>
+			<list-panel-notice
+				v-if="i18n.notice"
+				:notice="i18n.notice"
+				:type="noticeType"
+			/>
+			<select-list-panel-select-all
+				v-if="showSelectAll"
+				:label="i18n.selectAllLabel"
+				:checked="selectAllChecked"
+				@toggle="toggleSelectAll"
+			/>
 			<div class="pkpListPanel__content">
 				<ul class="pkpListPanel__items" aria-live="polite">
 					<select-list-panel-item
@@ -15,6 +23,8 @@
 						:item="item"
 						:inputName="inputName"
 						:inputType="inputType"
+						:selected="selected"
+						@toggle="toggleItemSelection"
 					/>
 				</ul>
 			</div>
@@ -24,19 +34,84 @@
 
 <script>
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
+import ListPanelNotice from '@/components/ListPanel/ListPanelNotice.vue';
 import SelectListPanelItem from '@/components/SelectListPanel/SelectListPanelItem.vue';
+import SelectListPanelSelectAll from '@/components/SelectListPanel/SelectListPanelSelectAll.vue';
 
 export default {
 	extends: ListPanel,
 	name: 'SelectListPanel',
 	components: {
+		ListPanelNotice,
 		SelectListPanelItem,
+		SelectListPanelSelectAll,
 	},
 	data: function () {
 		return {
 			inputName: '',
 			inputType: 'checkbox',
+			selected: [],
+			showSelectAll: false,
+			initializeAllSelected: false,
 		};
+	},
+	computed: {
+		/**
+		 * Are all items selected?
+		 *
+		 * @return bool
+		 */
+		selectAllChecked: function () {
+			return this.collection.items.length && this.selected.length === this.collection.items.length;
+		},
+	},
+	methods: {
+		/**
+		 * Select or de-select an item in the list
+		 *
+		 * @param int|string Input value for the item in the list.
+		 */
+		toggleItemSelection: function (val) {
+			let index = this.selected.indexOf(val);
+			if (index > -1) {
+				this.selected.splice(index, 1);
+			} else {
+				this.selected.push(val);
+			}
+		},
+
+		/**
+		 * Select or de-select all items in the list
+		 */
+		toggleSelectAll: function () {
+			if (this.selectAllChecked) {
+				this.selectNone();
+			} else {
+				this.selectAll();
+			}
+		},
+
+		/**
+		 * Select all items in the list
+		 */
+		selectAll: function () {
+			this.selected = this.collection.items.map(item => item.id);
+		},
+
+		/**
+		 * De-select all items in the list
+		 */
+		selectNone: function () {
+			this.selected = [];
+		},
+	},
+	created: function () {
+		/**
+		 * Mark all items as selected when a flag is passed.
+		 */
+		if (this.initializeAllSelected) {
+			this.selectAll();
+		}
 	},
 };
 </script>
