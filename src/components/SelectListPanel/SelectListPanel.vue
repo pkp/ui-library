@@ -72,11 +72,15 @@ export default {
 		 * @param int|string Input value for the item in the list.
 		 */
 		toggleItemSelection: function (val) {
-			let index = this.selected.indexOf(val);
-			if (index > -1) {
-				this.selected.splice(index, 1);
+			if (this.inputType === 'radio') {
+				this.selected = [val];
 			} else {
-				this.selected.push(val);
+				let index = this.selected.indexOf(val);
+				if (index > -1) {
+					this.selected.splice(index, 1);
+				} else {
+					this.selected.push(val);
+				}
 			}
 		},
 
