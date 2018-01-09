@@ -69,7 +69,7 @@ export default {
 		 * @return bool
 		 */
 		isSelected: function () {
-			return this.selected.indexOf(this.id) > -1;
+			return this.selected.indexOf(this.inputValue) > -1 ? this.inputValue : null;
 		},
 	},
 	methods: {
