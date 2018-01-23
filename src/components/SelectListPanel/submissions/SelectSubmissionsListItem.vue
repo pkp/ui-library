@@ -40,7 +40,7 @@ export default {
 <style lang="less">
 @import '../../../styles/_import';
 
-.pkpListPanelItem--select {
+.pkpListPanelItem--selectSubmission {
 
 	.pkpListPanelItem--submission__author {
 		font-weight: @bold;
