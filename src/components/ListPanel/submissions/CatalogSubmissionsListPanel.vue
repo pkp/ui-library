@@ -4,31 +4,33 @@
 			<div class="pkpListPanel__title">{{ i18n.title }}</div>
 			<ul class="pkpListPanel__actions">
 				<li>
-					<button @click.prevent="toggleFilter" class="pkpButton" :class="{'-isActive': isFilterVisible}">
-						<span class="fa fa-filter"></span>
-						{{ i18n.filter }}
-					</button>
+					<pkp-button
+						:label="i18n.filter"
+						icon="filter"
+						:isActive="isFilterVisible"
+						@click="toggleFilter"
+					/>
 				</li>
 				<li class="pkpListPanel__orderToggle" v-if="canOrder">
-					<button @click.prevent="toggleOrdering" class="pkpButton" :class="{'-isActive': isOrdering}">
-						<span class="fa fa-sort"></span>
-						<template v-if="isOrdering">
-							{{ i18n.saveFeatureOrder }}
-						</template>
-						<template v-else>
-							{{ i18n.orderFeatures }}
-						</template>
-					</button>
+					<pkp-button
+						:label="orderingLabel"
+						icon="sort"
+						:isActive="isOrdering"
+						@click="toggleOrdering"
+					/>
 				</li>
 				<li v-if="isOrdering" class="pkpListPanel__orderToggleCancel">
-					<button @click.prevent="cancelOrdering" class="pkpButton -isWarnable">
-						{{ i18n.cancel }}
-					</button>
+					<pkp-button
+						:label="i18n.cancel"
+						:isWarnable="true"
+						@click="cancelOrdering"
+					/>
 				</li>
 				<li>
-					<button @click.prevent="openNewEntryModal" class="pkpButton">
-						{{ i18n.add }}
-					</button>
+					<pkp-button
+						:label="i18n.add"
+						@click="openNewEntryModal"
+					/>
 				</li>
 			</ul>
 			<list-panel-search
@@ -100,6 +102,7 @@ import SubmissionsListPanel from '@/components/ListPanel/submissions/Submissions
 import ListPanelNotice from '@/components/ListPanel/ListPanelNotice.vue';
 import CatalogSubmissionsListItem from '@/components/ListPanel/submissions/CatalogSubmissionsListItem.vue';
 import CatalogSubmissionsListFilter from '@/components/ListPanel/submissions/CatalogSubmissionsListFilter.vue';
+import PkpButton from '@/components/Button/Button.vue';
 import draggable from 'vuedraggable';
 
 export default {
@@ -109,6 +112,7 @@ export default {
 		ListPanelNotice,
 		CatalogSubmissionsListItem,
 		CatalogSubmissionsListFilter,
+		PkpButton,
 		draggable,
 	},
 	data: function () {
@@ -137,6 +141,16 @@ export default {
 		 */
 		classStatus: function () {
 			return { '-isLoading': this.isLoading, '-isOrdering': this.isOrdering };
+		},
+
+		/**
+		 * Return the appropriate label for the ordering button depending on
+		 * if we're ordering or not.
+		 *
+		 * @return string
+		 */
+		orderingLabel: function () {
+			return this.isOrdering ? this.i18n.saveFeatureOrder : this.i18n.orderFeatures;
 		},
 
 		/**

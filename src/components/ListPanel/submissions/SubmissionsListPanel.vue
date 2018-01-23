@@ -7,13 +7,19 @@
 			</div>
 			<ul class="pkpListPanel__actions">
 				<li v-if="currentUserCanFilter">
-					<button @click.prevent="toggleFilter" class="pkpButton" :class="{'-isActive': isFilterVisible}">
-						<span class="fa fa-filter"></span>
-						{{ i18n.filter }}
-					</button>
+					<pkp-button
+						:label="i18n.filter"
+						icon="filter"
+						:isActive="isFilterVisible"
+						@click="toggleFilter"
+					/>
 				</li>
 				<li v-if="currentUserCanAddSubmission">
-					<a :href="addUrl" class="pkpButton">{{ i18n.add }}</a>
+					<pkp-button
+						element="a"
+						:href="addUrl"
+						:label="i18n.add"
+					/>
 				</li>
 			</ul>
 			<list-panel-search
@@ -69,6 +75,7 @@ import ListPanelLoadMore from '@/components/ListPanel/ListPanelLoadMore.vue';
 import SubmissionsListFilter from '@/components/ListPanel/submissions/SubmissionsListFilter.vue';
 import SubmissionsListItem from '@/components/ListPanel/submissions/SubmissionsListItem.vue';
 import SubmissionsListListeners from '@/mixins/ListPanel/submissions/listeners.js';
+import PkpButton from '@/components/Button/Button.vue';
 
 export default {
 	extends: ListPanel,
@@ -80,6 +87,7 @@ export default {
 		ListPanelLoadMore,
 		SubmissionsListFilter,
 		SubmissionsListItem,
+		PkpButton,
 	},
 	data: function () {
 		return {

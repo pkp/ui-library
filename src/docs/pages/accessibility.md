@@ -2,12 +2,6 @@
 
 Some components require specific markup or special handling based on state to ensure that they are accessible. Component-specific guidelines are outlined within each component's Notes section. The following are broad accessibility guidelines which should be followed.
 
-## Links vs Buttons
-
-The link element, `<a>`, should only be used for actions which navigate away from the current page. When opening modals or performing actions on the same page, use the `<button>` element.
-
-A good rule of thumb is this: if the URL changes when the action is clicked, use `<a>`. Otherwise, use `<button>`.
-
 ## Focus state and keyboard-based navigation
 
 Always test by navigating components with a keyboard, using <kbd>TAB</kbd> to cycle through elements. Any HTML elements which are not visible should not receive focus. You should be able to see where the focus is on the page at any time.

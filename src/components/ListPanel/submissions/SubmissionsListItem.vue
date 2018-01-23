@@ -104,15 +104,28 @@
 				</div>
 			</div>
 			<div class="pkpListPanelItem--submission__actions">
-				<a :href="item.urlWorkflow" class="pkpButton" @focus="focusItem" @blur="blurItem">
-					{{ i18n.viewSubmission }}
-				</a>
-				<button v-if="currentUserCanViewInfoCenter" class="pkpButton" @click.prevent="openInfoCenter" @focus="focusItem" @blur="blurItem">
-					{{ i18n.infoCenter }}
-				</button>
-				<button v-if="currentUserCanDelete" class="pkpButton -isWarnable" @click.prevent="deleteSubmissionPrompt" @focus="focusItem" @blur="blurItem">
-					{{ i18n.delete }}
-				</button>
+				<pkp-button
+					element="a"
+					:href="item.urlWorkflow"
+					:label="i18n.viewSubmission"
+					@focus="focusItem"
+					@blur="blurItem"
+				/>
+				<pkp-button
+					v-if="currentUserCanViewInfoCenter"
+					:label="i18n.infoCenter"
+					@click="openInfoCenter"
+					@focus="focusItem"
+					@blur="blurItem"
+				/>
+				<pkp-button
+					v-if="currentUserCanDelete"
+					:label="i18n.delete"
+					:isWarnable="true"
+					@click="deleteSubmissionPrompt"
+					@focus="focusItem"
+					@blur="blurItem"
+				/>
 			</div>
 		</div>
 		<div class="pkpListPanelItem__mask" :class="classMask">
@@ -138,12 +151,14 @@
 <script>
 import ListPanelItem from '@/components/ListPanel/ListPanelItem.vue';
 import Badge from '@/components/Badge/Badge.vue';
+import PkpButton from '@/components/Button/Button.vue';
 
 export default {
 	extends: ListPanelItem,
 	name: 'SubmissionsListItem',
 	components: {
 		Badge,
+		PkpButton,
 	},
 	props: ['item', 'i18n', 'apiPath', 'infoUrl'],
 	data: function () {
