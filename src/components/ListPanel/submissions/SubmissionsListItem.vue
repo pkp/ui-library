@@ -41,21 +41,13 @@
 			</div>
 			<div v-else class="pkpListPanelItem--submission__stage">
 				<div class="pkpListPanelItem--submission__stageRow">
-					<span
-						class="pkpBadge pkpBadge--dot pkpBadge--button"
-						:class="stageBadgeClass"
+					<badge
+						isButton="true"
+						:content="currentStageLabel"
+						:label="currentStageDescription"
+						:stage="currentStage"
 						@click="filterByStage(activeStage.id)"
-					>
-						<template v-if="item.status.id === 3 || item.status.id === 4">
-							{{ item.status.label }}
-						</template>
-						<template v-else-if="item.submissionProgress > 0">
-							{{ i18n.incomplete }}
-						</template>
-						<template v-else>
-							{{ activeStage.label }}
-						</template>
-					</span>
+					/>
 					<!-- use aria-hidden on these details because the information can be
 						more easily acquired by screen readers from the details panel. -->
 					<div class="pkpListPanelItem--submission__flags" aria-hidden="true">
@@ -145,10 +137,14 @@
 
 <script>
 import ListPanelItem from '@/components/ListPanel/ListPanelItem.vue';
+import Badge from '@/components/Badge/Badge.vue';
 
 export default {
 	extends: ListPanelItem,
 	name: 'SubmissionsListItem',
+	components: {
+		Badge,
+	},
 	props: ['item', 'i18n', 'apiPath', 'infoUrl'],
 	data: function () {
 		return {
@@ -287,23 +283,46 @@ export default {
 		},
 
 		/**
-		 * Get the pkpBadge class name to use for this stage
+		 * Get the current stage to pass to pkpBadge
 		 *
 		 * @return string
 		 */
-		stageBadgeClass: function () {
+		currentStage: function () {
 			switch (this.activeStage.id) {
 				case pkp.const.WORKFLOW_STAGE_ID_SUBMISSION:
-					return 'pkpBadge--submission';
+					return 'submission';
 				case pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW:
 				case pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW:
-					return 'pkpBadge--review';
+					return 'review';
 				case pkp.const.WORKFLOW_STAGE_ID_EDITING:
-					return 'pkpBadge--copyediting';
+					return 'copyediting';
 				case pkp.const.WORKFLOW_STAGE_ID_PRODUCTION:
-					return 'pkpBadge--production';
+					return 'production';
 			}
 			return '';
+		},
+
+		/**
+		 * Get the label for the current stage
+		 *
+		 * @return string
+		 */
+		currentStageLabel: function () {
+			if (this.item.status.id === 3 || this.item.status.id === 4) {
+				return this.item.status.label;
+			} else if (this.item.submissionProgress > 0) {
+				return this.i18n.incomplete;
+			}
+			return this.activeStage.label;
+		},
+
+		/**
+		 * Get an a11y description for the current stage badge
+		 *
+		 * @return string
+		 */
+		currentStageDescription: function () {
+			return this.__('currentStage', {stage: this.currentStageLabel});
 		},
 
 		/**

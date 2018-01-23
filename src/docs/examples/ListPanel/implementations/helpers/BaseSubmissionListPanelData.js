@@ -319,6 +319,7 @@ export default {
 		yes: 'Yes',
 		no: 'No',
 		deleting: 'Deleting',
+		currentStage: 'Currently in the {$stage} stage.',
 		confirmDelete: 'Delete submission?',
 		responseDue: 'Response due',
 		reviewDue: 'Review due',
