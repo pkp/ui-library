@@ -138,6 +138,37 @@ export default {
 	width: 100%;
 }
 
+.pkpListPanel__filter.-isVisible {
+	float: left;
+	position: relative;
+	left: auto;
+	width: 25%;
+
+	+ .pkpListPanel__content  {
+		float: right;
+		width: 75%;
+
+		&:before {
+			content: '';
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			right: 0;
+			left: -1px;
+			border-left: @grid-border;
+		}
+	}
+
+	.pkpListPanel__filterHeader,
+	.pkpListPanel__filterOptions {
+		position: relative;
+		left: 0;
+		opacity: 1;
+		width: 100%;
+		transition: opacity 0.2s ease-in-out 0.2s, left 0s ease-in-out 0.2s, width 0s ease-in-out 0.2s;
+	}
+}
+
 .pkpListPanel__filterHeader {
 	margin: @base 0;
 	padding: 0 @base;
