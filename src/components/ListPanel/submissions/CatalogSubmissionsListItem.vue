@@ -21,12 +21,21 @@
 				</div>
 			</a>
 			<div class="pkpListPanelItem__actions">
-				<button class="pkpButton -isLink" @click.prevent="viewCatalogEntry" @focus="focusItem" @blur="blurItem">
-					{{ i18n.editCatalogEntry }}
-				</button>
-				<a class="pkpButton -isLink" :href="item.urlWorkflow" @focus="focusItem" @blur="blurItem">
-					{{ i18n.viewSubmission }}
-				</a>
+				<pkp-button
+					:label="i18n.editCatalogEntry"
+					:isLink="true"
+					@click="viewCatalogEntry"
+					@focus="focusItem"
+					@blur="blurItem"
+				/>
+				<pkp-button
+					element="a"
+					:href="item.urlWorkflow"
+					:label="i18n.viewSubmission"
+					:isLink="true"
+					@focus="focusItem"
+					@blur="blurItem"
+				/>
 			</div>
 		</div>
 		<button class="pkpListPanelItem__selectItem pkpListPanelItem__selectItem--catalog" @click.prevent="toggleFeatured" @focus="focusItem" @blur="blurItem">
@@ -66,6 +75,7 @@
 
 <script>
 import SubmissionsListItem from '@/components/ListPanel/submissions/SubmissionsListItem.vue';
+import PkpButton from '@/components/Button/Button.vue';
 import ListPanelItemOrderer from '@/components/ListPanel/ListPanelItemOrderer.vue';
 
 export default {
@@ -73,6 +83,7 @@ export default {
 	name: 'CatalogSubmissionsListItem',
 	props: ['item', 'i18n', 'filterAssocType', 'filterAssocId', 'catalogEntryUrl', 'isOrdering', 'apiPath'],
 	components: {
+		PkpButton,
 		ListPanelItemOrderer,
 	},
 	data: function () {
@@ -248,7 +259,7 @@ export default {
 	}
 }
 
-.pkpListPanelItem__actions .pkpButton.-isLink:first-child {
-	padding-left: 0;
+.pkpListPanelItem__actions .pkpButton--isLink:first-child {
+	margin-left: -0.5em;
 }
 </style>
