@@ -1,5 +1,9 @@
 <template>
-	<button v-if="isButton" class="pkpBadge pkpBadge--button" :class="classes">
+	<button v-if="isButton"
+		class="pkpBadge pkpBadge--button"
+		:class="classes"
+		@click="click"
+	>
 		<span aria-hidden="true">{{ content }}</span>
 		<span class="-screenReader">{{ label }}</span>
 	</button>
@@ -30,6 +34,11 @@ export default {
 			}
 
 			return classes;
+		},
+	},
+	methods: {
+		click: function () {
+			this.$emit('click');
 		},
 	},
 };
