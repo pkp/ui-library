@@ -1,7 +1,7 @@
 <template>
 	<div class="pkpListPanel__filter" :class="{'-isVisible': this.isVisible}">
 		<div class="pkpListPanel__filterHeader" tabindex="0">
-			<span class="fa fa-filter pkpIcon--inline" aria-hidden="true"></span>
+			<icon icon="filter" :inline="true" />
 			{{ i18n.filter }}
 		</div>
 		<div class="pkpListPanel__filterOptions">
@@ -11,19 +11,21 @@
 				</div>
 				<ul>
 					<li v-for="filterItem in filter.filters">
-						<a href="#"
+						<button
 							@click.prevent.stop="filterBy(filterItem.param, filterItem.val)"
 							class="pkpListPanel__filterLabel"
 							:class="{'-isActive': isFilterActive(filterItem.param, filterItem.val)}"
 							:tabindex="tabIndex"
-						>{{ filterItem.title }}</a>
+						>
+							{{ filterItem.title }}
+						</button>
 						<button
 							v-if="isFilterActive(filterItem.param, filterItem.val)"
 							href="#"
 							class="pkpListPanel__filterRemove"
 							@click.prevent.stop="clearFilter(filterItem.param, filterItem.val)"
 						>
-							<span class="fa fa-times-circle-o" aria-hidden="true"></span>
+							<icon icon="times-circle-o" />
 							<span class="-screenReader">{{ __('filterRemove', {filterTitle: filterItem.title}) }}</span>
 						</button>
 					</li>
@@ -34,8 +36,13 @@
 </template>
 
 <script>
+import Icon from '@/components/Icon/Icon.vue';
+
 export default {
 	name: 'ListPanelFilter',
+	components: {
+		Icon,
+	},
 	props: ['i18n', 'filters', 'activeFilters', 'isVisible'],
 	computed: {
 		tabIndex: function () {
@@ -225,7 +232,9 @@ export default {
 	background: transparent;
 	border: none;
 	color: @primary;
+	line-height: @line-base;
 	text-decoration: none;
+	cursor: pointer;
 
 	&:focus {
 		border-left: 2px solid @primary;

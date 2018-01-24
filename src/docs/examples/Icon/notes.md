@@ -17,8 +17,8 @@ When adding buttons or other controls, do not add an icon when the text label su
 
 ## Help Icon
 
-The `info-circle` icon is reserved for providing help on how to use the software.
+The `info-circle` icon (<span class="fa fa-info-circle" aria-hidden="true"></span>) is reserved for providing help on how to use the software.
 
 ## Warning Icon
 
-The `exclamation-triangle` icon is reserved for warning the user about an error or a serious consequence of an expected action.
+The `exclamation-triangle` icon (<span class="fa fa-exclamation-triangle" aria-hidden="true"></span>) is reserved for warning the user about an error, urgent information, or a serious consequence of an expected action.

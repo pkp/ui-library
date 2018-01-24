@@ -1,14 +1,19 @@
 <template>
 		<div class="pkpListPanel__notice" tabindex="0">
-			<span v-if="type === 'info'" class="fa fa-info-circle pkpIcon--inline" aria-hidden="true"></span>
-			<span v-else-if="type === 'warning'" class="fa fa-exclamation-triangle pkpIcon--inline" aria-hidden="true"></span>
+			<icon v-if="type === 'info'" icon="info-circle" :inline="true"/>
+			<icon v-else-if="type === 'warning'" icon="exclamation-triangle" :inline="true"/>
 			{{ notice }}
 		</div>
 </template>
 
 <script>
+import Icon from '@/components/Icon/Icon.vue';
+
 export default {
 	name: 'ListPanelNotice',
+	components: {
+		Icon,
+	},
 	props: ['notice', 'type'],
 };
 </script>
