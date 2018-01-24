@@ -4,6 +4,8 @@ import WithRadio from './WithRadio.vue';
 import WithSelectAll from './WithSelectAll.vue';
 import SelectSubmissionsListPanel from './implementations/ExampleSelectSubmissionsListPanel.vue';
 import SelectSubmissionsListPanelRaw from '!!raw-loader!@/components/SelectListPanel/submissions/SelectSubmissionsListPanel.vue';
+import SelectReviewerListPanel from './implementations/ExampleSelectReviewerListPanel.vue';
+import SelectReviewerListPanelRaw from '!!raw-loader!@/components/SelectListPanel/users/SelectReviewerListPanel.vue';
 
 export default {
 	baseData: function () {
@@ -43,6 +45,11 @@ export default {
 			label: 'SelectSubmissionsListPanel',
 			component: SelectSubmissionsListPanel,
 			componentRaw: SelectSubmissionsListPanelRaw,
+		},
+		'SelectReviewerListPanel': {
+			label: 'SelectReviewerListPanel',
+			component: SelectReviewerListPanel,
+			componentRaw: SelectReviewerListPanelRaw,
 		},
 	},
 };
