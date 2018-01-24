@@ -30,7 +30,8 @@ A badge often relies on its visual proximity to indicate the meaning: a stage ba
 ```
 // Example: a badge representing the submission's stage
 <badge
-	content="Review"
 	label="Currently in the review stage"
-/>
+>
+	{{ stage }}
+</badge>
 ```

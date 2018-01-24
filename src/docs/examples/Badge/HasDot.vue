@@ -1,10 +1,11 @@
 <template>
 	<div>
-		<Badge
-			:content="content"
+		<badge
 			:label="label"
 			:hasDot="hasDot"
-		/>
+		>
+			{{ content }}
+		</badge>
 	</div>
 </template>
 

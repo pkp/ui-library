@@ -1,11 +1,12 @@
 <template>
 	<div>
-		<Badge
-			:content="content"
+		<badge
 			:label="label"
 			:isButton="isButton"
 			:stage="stage"
-		/>
+		>
+			{{ content }}
+		</badge>
 	</div>
 </template>
 

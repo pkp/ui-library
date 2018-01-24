@@ -6,6 +6,7 @@ import IsWarnable from './IsWarnable.vue';
 import IsButton from './IsButton.vue';
 import HasDot from './HasDot.vue';
 import IsStage from './IsStage.vue';
+import WithIcon from './WithIcon.vue';
 
 export default {
 	viewComponent: ViewBadge,
@@ -46,6 +47,11 @@ export default {
 		'is-Button': {
 			label: 'is Button',
 			component: IsButton,
+			componentRaw: BadgeRaw,
+		},
+		'with-Icon': {
+			label: 'with Icon',
+			component: WithIcon,
 			componentRaw: BadgeRaw,
 		},
 	},

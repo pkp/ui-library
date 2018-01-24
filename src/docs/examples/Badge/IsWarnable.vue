@@ -1,10 +1,11 @@
 <template>
 	<div>
-		<Badge
-			:content="content"
+		<badge
 			:label="label"
 			:isWarnable="isWarnable"
-		/>
+		>
+			{{ content }}
+		</badge>
 	</div>
 </template>
 

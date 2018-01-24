@@ -43,11 +43,12 @@
 				<div class="pkpListPanelItem--submission__stageRow">
 					<badge
 						isButton="true"
-						:content="currentStageLabel"
 						:label="currentStageDescription"
 						:stage="currentStage"
 						@click="filterByStage(activeStage.id)"
-					/>
+					>
+						{{ currentStageLabel }}
+					</badge>
 					<!-- use aria-hidden on these details because the information can be
 						more easily acquired by screen readers from the details panel. -->
 					<div class="pkpListPanelItem--submission__flags" aria-hidden="true">
@@ -81,29 +82,29 @@
 			v-if="isExpanded"
 			class="pkpListPanelItem__details pkpListPanelItem__details--submission"
 		>
-			<div v-if="!item.submissionProgress" class="pkpListPanelItem--submission__stageDetails">
-				<div v-if="isReviewStage"  class="pkpListPanelItem--submission__stageDetailsItem">
-					<span class="pkpListPanelItem--submission__stageDetailsItemCount">
+			<list v-if="!item.submissionProgress">
+				<list-item v-if="isReviewStage">
+					<template slot="value">
 						<icon icon="user-o" :inline="true" />
 						{{ completedReviewsCount }}/{{ currentReviewAssignments.length }}
-					</span>
+					</template>
 					{{ i18n.reviewsCompleted }}
-				</div>
-				<div v-if="!isSubmissionStage" class="pkpListPanelItem--submission__stageDetailsItem">
-					<span class="pkpListPanelItem--submission__stageDetailsItemCount">
+				</list-item>
+				<list-item v-if="!isSubmissionStage">
+					<template slot="value">
 						<icon icon="file-text-o" :inline="true" />
 						{{ activeStage.files.count }}
-					</span>
+					</template>
 					{{ activeStageFilesLabel }}
-				</div>
-				<div class="pkpListPanelItem--submission__stageDetailsItem">
-					<span class="pkpListPanelItem--submission__stageDetailsItemCount">
+				</list-item>
+				<list-item>
+					<template slot="value">
 						<icon icon="comment-o" :inline="true" />
 						{{ openQueryCount }}
-					</span>
+					</template>
 					{{ i18n.discussions }}
-				</div>
-			</div>
+				</list-item>
+			</list>
 			<div class="pkpListPanelItem--submission__actions">
 				<pkp-button
 					element="a"
@@ -151,6 +152,8 @@
 
 <script>
 import ListPanelItem from '@/components/ListPanel/ListPanelItem.vue';
+import List from '@/components/List/List.vue';
+import ListItem from '@/components/List/ListItem.vue';
 import Badge from '@/components/Badge/Badge.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
@@ -159,6 +162,8 @@ export default {
 	extends: ListPanelItem,
 	name: 'SubmissionsListItem',
 	components: {
+		List,
+		ListItem,
 		Badge,
 		PkpButton,
 		Icon,
@@ -700,46 +705,6 @@ export default {
 // Details panel
 .pkpListPanelItem__details--submission {
 	padding: 1em (@base * 3) 1em 62px;
-}
-
-.pkpListPanelItem--submission__stageDetails {
-	border-top: @grid-border;
-	box-shadow: 0 1px 1px rgba(0,0,0,0.2);
-	border-radius: @radius;
-}
-
-.pkpListPanelItem--submission__stageDetailsItem {
-	position: relative;
-	padding: 1em;
-	padding-left: 6.5em;
-	border-bottom: @grid-border;
-
-	&:before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 5.5em;
-		width: 0;
-		height: 100%;
-		border-right: @grid-border;
-	}
-
-	&:last-child {
-		border-bottom: none;
-	}
-}
-
-.pkpListPanelItem--submission__stageDetailsItemCount {
-	position: absolute;
-	top: 50%;
-	left: 1em;
-	transform: translateY(-50%);
-	width: 6.5em;
-
-	.fa {
-		color: @text-light;
-		min-width: 1.25em;
-	}
 }
 
 .pkpListPanelItem--submission__actions {
