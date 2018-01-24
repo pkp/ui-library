@@ -250,6 +250,10 @@ export default {
 	padding-left: 2rem;
 }
 
+.pkpul-component__details {
+	flex-grow: 1;
+}
+
 .pkpul-component__examples-title {
     margin: 0;
     font-weight: 700;
