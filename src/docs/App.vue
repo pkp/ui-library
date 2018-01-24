@@ -55,9 +55,14 @@ a {
 #app {
 	display: flex;
 	align-items: stretch;
+	width: 100%;
 }
 
 .pkpul-sidebar {
 	flex: 0 0 15rem;
+}
+
+.pkpul-component {
+	flex-grow: 2;
 }
 </style>
