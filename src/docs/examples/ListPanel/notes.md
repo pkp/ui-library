@@ -81,7 +81,7 @@ Use the <kbd>TAB</kbd> key to navigate the list with your keyboard to test.
 
 ## Expanding and Collapsing
 
-A `ListPanelItem` can have a summary and detailed view with a button to switch between them. The **With Expander** example shows how to create this effect. It requires a `ListPanelItem` with the following markup:
+A `ListPanelItem` can have a summary and detailed view with a button to open the detailed view. The **With Expander** example shows how to create this effect. It requires a `ListPanelItem` with the following markup:
 
 ```html
 <!-- Add the .pkpListPanelItem--hasSummary class to the outer wrapper -->
@@ -98,14 +98,9 @@ A `ListPanelItem` can have a summary and detailed view with a button to switch b
 			@click="toggleExpanded"
 			class="pkpListPanelItem__expander"
 		>
-			<template v-if="isExpanded">
-				<span class="fa fa-angle-up" aria-hidden="true"></span>
-				<span class="-screenReader">{{ i18n.viewMore }}</span>
-			</template>
-			<template v-else>
-				<span class="fa fa-angle-down" aria-hidden="true"></span>
-				<span class="-screenReader">{{ i18n.viewLess }}</span>
-			</template>
+			<icon v-if="isExpanded" icon="angle-up" />
+			<icon v-else icon="angle-down" />
+			<span class="-screenReader"></span>
 		</button>
 	</div>
 

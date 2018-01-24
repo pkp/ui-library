@@ -8,14 +8,10 @@
 				@click="toggleExpanded"
 				class="pkpListPanelItem__expander"
 			>
-				<template v-if="isExpanded">
-					<span class="fa fa-angle-up" aria-hidden="true"></span>
-					<span class="-screenReader">{{ i18n.viewMore }}</span>
-				</template>
-				<template v-else>
-					<span class="fa fa-angle-down" aria-hidden="true"></span>
-					<span class="-screenReader">{{ i18n.viewLess }}</span>
-				</template>
+				<icon v-if="isExpanded" icon="angle-up" />
+				<icon v-else icon="angle-down" />
+				<span v-if="isExpanded" class="-screenReader">{{ i18n.viewLess }}</span>
+				<span v-else class="-screenReader">{{ i18n.viewMore }}</span>
 			</button>
 		</div>
 		<div
@@ -29,10 +25,14 @@
 
 <script>
 import ListPanelItem from '@/components/ListPanel/ListPanelItem.vue';
+import Icon from '@/components/Icon/Icon.vue';
 
 export default {
 	extends: ListPanelItem,
 	name: 'WithExpander_ExpandableListPanelItem',
+	components: {
+		Icon,
+	},
 	props: ['item', 'i18n'],
 	data: function () {
 		return {

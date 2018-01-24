@@ -14,7 +14,7 @@
 						{{ localize(item.fullTitle) }}
 					</div>
 					<div v-if="notice" class="pkpListPanelItem--submission__activity">
-						<span class="fa fa-exclamation-triangle pkpIcon--inline" aria-hidden="true"></span>
+						<icon icon="exclamation-triangle" :inline="true" />
 						{{ notice }}
 					</div>
 				</div>
@@ -52,15 +52,15 @@
 						more easily acquired by screen readers from the details panel. -->
 					<div class="pkpListPanelItem--submission__flags" aria-hidden="true">
 						<span v-if="isReviewStage"  class="pkpListPanelItem--submission__flags--reviews">
-							<span class="fa fa-user-o pkpIcon--inline"></span>
+							<icon icon="user-o" :inline="true" />
 							{{ completedReviewsCount }}/{{ currentReviewAssignments.length }}
 						</span>
 						<span v-if="activeStage.files.count" class="pkpListPanelItem--submission__flags--files">
-							<span class="fa fa-file-text-o pkpIcon--inline"></span>
+							<icon icon="file-text-o" :inline="true" />
 							{{ activeStage.files.count }}
 						</span>
 						<span v-if="openQueryCount" class="pkpListPanelItem--submission__flags--discussions">
-							<span class="fa fa-comment-o pkpIcon--inline"></span>
+							<icon icon="comment-o" :inline="true" />
 							{{ openQueryCount }}
 						</span>
 					</div>
@@ -71,9 +71,10 @@
 				@click="toggleExpanded"
 				class="pkpListPanelItem__expander"
 			>
-				<span v-if="isExpanded" class="fa fa-angle-up" aria-hidden="true"></span>
-				<span v-else class="fa fa-angle-down" aria-hidden="true"></span>
-				<span class="-screenReader"></span>
+				<icon v-if="isExpanded" icon="angle-up" />
+				<icon v-else icon="angle-down" />
+				<span v-if="isExpanded" class="-screenReader">{{ i18n.viewLess }}</span>
+				<span v-else class="-screenReader">{{ i18n.viewMore }}</span>
 			</button>
 		</div>
 		<div
@@ -83,21 +84,21 @@
 			<div v-if="!item.submissionProgress" class="pkpListPanelItem--submission__stageDetails">
 				<div v-if="isReviewStage"  class="pkpListPanelItem--submission__stageDetailsItem">
 					<span class="pkpListPanelItem--submission__stageDetailsItemCount">
-						<span class="fa fa-user-o pkpIcon--inline" aria-hidden="true"></span>
+						<icon icon="user-o" :inline="true" />
 						{{ completedReviewsCount }}/{{ currentReviewAssignments.length }}
 					</span>
 					{{ i18n.reviewsCompleted }}
 				</div>
 				<div v-if="!isSubmissionStage" class="pkpListPanelItem--submission__stageDetailsItem">
 					<span class="pkpListPanelItem--submission__stageDetailsItemCount">
-						<span class="fa fa-file-text-o pkpIcon--inline" aria-hidden="true"></span>
+						<icon icon="file-text-o" :inline="true" />
 						{{ activeStage.files.count }}
 					</span>
 					{{ activeStageFilesLabel }}
 				</div>
 				<div class="pkpListPanelItem--submission__stageDetailsItem">
 					<span class="pkpListPanelItem--submission__stageDetailsItemCount">
-						<span class="fa fa-comment-o pkpIcon--inline" aria-hidden="true"></span>
+						<icon icon="comment-o" :inline="true" />
 						{{ openQueryCount }}
 					</span>
 					{{ i18n.discussions }}
@@ -152,6 +153,7 @@
 import ListPanelItem from '@/components/ListPanel/ListPanelItem.vue';
 import Badge from '@/components/Badge/Badge.vue';
 import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
 
 export default {
 	extends: ListPanelItem,
@@ -159,6 +161,7 @@ export default {
 	components: {
 		Badge,
 		PkpButton,
+		Icon,
 	},
 	props: ['item', 'i18n', 'apiPath', 'infoUrl'],
 	data: function () {

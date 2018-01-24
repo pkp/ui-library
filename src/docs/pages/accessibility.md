@@ -45,7 +45,7 @@ You should _not_ use `display: hidden`, because screen readers will ignore the t
 	</div>
 ```
 <div class="pkpul-accessible-search">
-	<span class="fa fa-search" aria-hidden="true"></span>
+	<icon icon="search" />
 	<input id="searchInput" placeholder="Search submissions">
 	<label for="searchInput" class="-screenReader">
 		Search submissions
@@ -75,7 +75,7 @@ A search field often uses an icon to indicate it's purpose. The `placeholder` at
 	<p>
 		My example submission
 		<button>
-			<span class="fa fa-times" aria-hidden="true"></span>
+			<icon icon="times" />
 			<span class="-screenReader">Delete My example submission</span>
 		</button>
 	</p>

@@ -1,7 +1,7 @@
 <template>
 	<div class="pkpListPanel__loadMore" :class="classLoadingMore">
 		<a href="#" class="pkpListPanel__loadMoreButton" @click="loadMore">
-			<span class="fa fa-chevron-down pkpIcon--inline" aria-hidden="true"></span>
+			<icon icon="chevron-down" :inline="true" />
 			{{ i18n.loadMore }}
 		</a>
 		<span class="pkpListPanel__loadMoreNotice">
@@ -12,8 +12,13 @@
 </template>
 
 <script>
+import Icon from '@/components/Icon/Icon.vue';
+
 export default {
 	name: 'ListPanelLoadMore',
+	components: {
+		Icon,
+	},
 	props: ['isLoading', 'i18n'],
 	computed: {
 		classLoadingMore: function () {
