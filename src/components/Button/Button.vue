@@ -12,7 +12,7 @@
 		@focus="focus"
 		@blur="blur"
 	>
-		<span v-if="icon" :class="iconClass" aria-hidden="true"></span>
+		<icon :icon="icon" :inline="label" />
 		{{ label }}
 	</button>
 	<a
@@ -29,14 +29,19 @@
 		@focus="focus"
 		@blur="blur"
 	>
-		<span v-if="icon" :class="iconClass" aria-hidden="true"></span>
+		<icon :icon="icon" :inline="label" />
 		{{ label }}
 	</a>
 </template>
 
 <script>
+import Icon from '@/components/Icon/Icon.vue';
+
 export default {
 	name: 'pkpButton',
+	components: {
+		Icon,
+	},
 	props: {
 		element: {
 			type: String,
@@ -66,9 +71,6 @@ export default {
 				classes.push('pkpButton--isLink');
 			}
 			return classes;
-		},
-		iconClass: function () {
-			return this.icon ? 'fa fa-' + this.icon : '';
 		},
 	},
 	methods: {
