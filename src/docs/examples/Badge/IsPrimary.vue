@@ -1,10 +1,11 @@
 <template>
 	<div>
-		<Badge
-			:content="content"
+		<badge
 			:label="label"
 			:isPrimary="isPrimary"
-		/>
+		>
+			{{ content }}
+		</badge>
 	</div>
 </template>
 

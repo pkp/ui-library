@@ -3,6 +3,7 @@
 		<badge
 			:label="label"
 		>
+			<icon icon="comment-o" :inline="true" />
 			{{ content }}
 		</badge>
 	</div>
@@ -10,21 +11,18 @@
 
 <script>
 import Badge from '@/components/Badge/Badge.vue';
+import Icon from '@/components/Icon/Icon.vue';
 
 export default {
-	name: 'ViewBadge',
+	name: 'WithIcon',
 	components: {
 		Badge,
+		Icon,
 	},
 	data: function () {
 		return {
-			content: '32',
-			label: 'Submissions',
-			isPrimary: false,
-			isWarnable: false,
-			isButton: false,
-			hasDot: false,
-			stage: '',
+			content: '25',
+			label: '25 Comments',
 		};
 	},
 };

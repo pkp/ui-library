@@ -21,7 +21,7 @@
 			</div>
 		</label>
 		<a :href="item.urlWorkflow" class="pkpListPanelItem--submission__link" target="_blank" @focus="focusItem" @blur="blurItem">
-			<span class="fa fa-external-link-square" aria-hidden="true"></span>
+			<icon icon="external-link-square" />
 			<span class="-screenReader">{{ __('viewSubmission', {title: item.title}) }}</span>
 		</a>
 	</li>
@@ -29,10 +29,14 @@
 
 <script>
 import SelectListPanelItem from '@/components/SelectListPanel/SelectListPanelItem.vue';
+import Icon from '@/components/Icon/Icon.vue';
 
 export default {
 	extends: SelectListPanelItem,
 	name: 'SelectSubmissionsListItem',
+	components: {
+		Icon,
+	},
 	props: ['i18n'],
 };
 </script>

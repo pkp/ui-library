@@ -4,6 +4,8 @@ import ViewButton from './examples/Button/ViewButton.vue';
 import ButtonRaw from '!!raw-loader!@/components/Button/Button.vue';
 import ViewIcon from './examples/Icon/ViewIcon.vue';
 import IconRaw from '!!raw-loader!@/components/Icon/Icon.vue';
+import ViewList from './examples/List/ViewList.vue';
+import ViewListRaw from '!!raw-loader!./examples/List/ViewList.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import ListPanelRaw from '!!raw-loader!@/components/ListPanel/ListPanel.vue';
 import SelectListPanel from '@/components/SelectListPanel/SelectListPanel.vue';
@@ -27,6 +29,12 @@ export default {
 		componentRaw: IconRaw,
 		label: 'Icon',
 		url: '/components/Icon',
+	},
+	List: {
+		component: ViewList,
+		componentRaw: ViewListRaw,
+		label: 'List',
+		url: '/components/List',
 	},
 	ListPanel: {
 		component: ListPanel,

@@ -4,19 +4,19 @@
 		:class="classes"
 		@click="click"
 	>
-		<span aria-hidden="true">{{ content }}</span>
-		<span class="-screenReader">{{ label }}</span>
+		<slot />
+		<span v-if="label" class="-screenReader">{{ label }}</span>
 	</button>
 	<span v-else class="pkpBadge" :class="classes">
-		<span aria-hidden="true">{{ content }}</span>
-		<span class="-screenReader">{{ label }}</span>
+		<slot />
+		<span v-if="label" class="-screenReader">{{ label }}</span>
 	</span>
 </template>
 
 <script>
 export default {
 	name: 'Badge',
-	props: ['content', 'label', 'isPrimary', 'isWarnable', 'isButton', 'hasDot', 'stage'],
+	props: ['label', 'isPrimary', 'isWarnable', 'isButton', 'hasDot', 'stage'],
 	computed: {
 		classes: function () {
 			let classes = [];

@@ -1,10 +1,11 @@
 <template>
 	<div>
-		<Badge
-			:content="content"
+		<badge
 			:label="label"
 			:isButton="isButton"
-		/>
+		>
+			{{ content }}
+		</badge>
 	</div>
 </template>
 
