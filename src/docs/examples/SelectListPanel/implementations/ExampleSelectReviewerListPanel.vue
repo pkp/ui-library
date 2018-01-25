@@ -2,6 +2,9 @@
 import SelectReviewerListPanel from '@/components/SelectListPanel/users/SelectReviewerListPanel.vue';
 import BaseReviewerObject from '@/docs/examples/SelectListPanel/implementations/helpers/BaseReviewerObject.js';
 
+let yesterday = new Date();
+yesterday.setDate(new Date().getDate() - 1);
+
 export default {
 	extends: SelectReviewerListPanel,
 	name: 'ExampleSelectReviewerListPanel',
@@ -37,7 +40,7 @@ export default {
 						fullName: 'Ahmed Maliki',
 						reviewsActive: 0,
 						reviewsCompleted: 2,
-						dateLastReviewAssignment: '2018-01-12 11:22:42',
+						dateLastReviewAssignment: yesterday.toString(),
 						reviewerRating: 4,
 						interests: [
 							{
@@ -84,7 +87,6 @@ export default {
 				maxItems: 10,
 			},
 			i18n: {
-				id: 'ID',
 				title: 'Example Select Reviewer List',
 				search: 'Search',
 				itemsOfTotal: '{$count} of {$total} items',
@@ -100,14 +102,14 @@ export default {
 				completedReviews: 'Reviews completed',
 				reviewerRating: 'Reviewer rating: {$rating}',
 				daysSinceLastAssignment: '{$days} days ago',
-				daySinceLastAssignment: '{$day} day ago',
+				daySinceLastAssignment: 'Yesterday',
 				daysSinceLastAssignmentDescription: 'Days since last review assigned',
 				averageCompletion: 'Average days to complete review',
 				neverAssigned: 'Never assigned',
 				reviewInterests: 'Reviewing Interests',
 				listSeparator: ', ',
-				showDetails: 'Show more details about {$name}',
-				hideDetails: 'Hide expanded details about {$name}',
+				viewMore: 'Show more details about {$name}',
+				viewLess: 'Hide expanded details about {$name}',
 			},
 		};
 	},

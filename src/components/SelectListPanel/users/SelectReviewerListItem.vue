@@ -74,13 +74,13 @@
 				<template v-if="isExpanded">
 					<icon icon="angle-up" />
 					<span class="-screenReader">
-						{{ __('hideDetails', {name: item.fullName}) }}
+						{{ __('viewLess', {name: item.fullName}) }}
 					</span>
 				</template>
 				<template v-else>
 					<icon icon="angle-down" />
 					<span class="-screenReader">
-						{{ __('showDetails', {name: item.fullName}) }}
+						{{ __('viewMore', {name: item.fullName}) }}
 					</span>
 				</template>
 			</button>
@@ -155,7 +155,7 @@ export default {
 			if (!this.item.dateLastReviewAssignment) {
 				return 0;
 			}
-			return Math.floor((Date.parse(this.item.dateLastReviewAssignment) - Date.now()) / 86400000) * -1;
+			return Math.floor(((Date.parse(this.item.dateLastReviewAssignment) - Date.now()) / 86400000) * -1);
 		},
 
 		/**
@@ -170,7 +170,7 @@ export default {
 			if (this.daysSinceLastAssignment > 1) {
 				return this.__('daysSinceLastAssignment', {days: this.daysSinceLastAssignment});
 			} else {
-				return this.__('daySinceLastAssignment', {day: this.daysSinceLastAssignment});
+				return this.__('daySinceLastAssignment');
 			}
 		},
 
