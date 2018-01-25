@@ -27,12 +27,11 @@
 				:notice="i18n.notice"
 				:type="noticeType"
 			/>
-			<list-panel-filter
-				@filterList="updateFilter"
+			<select-reviewer-list-filter
 				:isVisible="isFilterVisible"
-				:filters="filters"
 				:activeFilters="activeFilters"
 				:i18n="i18n"
+				@filterList="updateFilter"
 			/>
 			<div class="pkpListPanel__content">
 				<ul class="pkpListPanel__items" aria-live="polite">
@@ -71,7 +70,7 @@ import ListPanelNotice from '@/components/ListPanel/ListPanelNotice.vue';
 import ListPanelSearch from '@/components/ListPanel/ListPanelSearch.vue';
 import ListPanelCount from '@/components/ListPanel/ListPanelCount.vue';
 import ListPanelLoadMore from '@/components/ListPanel/ListPanelLoadMore.vue';
-import ListPanelFilter from '@/components/ListPanel/ListPanelFilter.vue';
+import SelectReviewerListFilter from '@/components/SelectListPanel/users/SelectReviewerListFilter.vue';
 import SelectReviewerListItem from '@/components/SelectListPanel/users/SelectReviewerListItem.vue';
 import PkpButton from '@/components/Button/Button.vue';
 
@@ -83,34 +82,13 @@ export default {
 		ListPanelSearch,
 		ListPanelCount,
 		ListPanelLoadMore,
-		ListPanelFilter,
+		SelectReviewerListFilter,
 		SelectReviewerListItem,
 		PkpButton,
 	},
 	data: function () {
 		return {
-			filters: {
-				example: {
-					heading: 'Colors',
-					filters: [
-						{
-							title: 'Red',
-							param: 'isRed',
-							val: true,
-						},
-						{
-							title: 'Blue',
-							param: 'isBlue',
-							val: true,
-						},
-						{
-							title: 'Green',
-							param: 'isGreen',
-							val: true,
-						},
-					],
-				},
-			},
+			activeFilters: {},
 		};
 	},
 };

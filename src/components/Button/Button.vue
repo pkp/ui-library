@@ -12,7 +12,7 @@
 		@focus="focus"
 		@blur="blur"
 	>
-		<icon :icon="icon" :inline="label" />
+		<icon :icon="icon" :inline="!!label" />
 		{{ label }}
 	</button>
 	<a
@@ -29,7 +29,7 @@
 		@focus="focus"
 		@blur="blur"
 	>
-		<icon :icon="icon" :inline="label" />
+		<icon :icon="icon" :inline="!!label" />
 		{{ label }}
 	</a>
 </template>

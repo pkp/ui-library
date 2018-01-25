@@ -45,6 +45,12 @@ export default {
 	},
 	props: ['i18n', 'filters', 'activeFilters', 'isVisible'],
 	computed: {
+		/**
+		 * Update the tab index so users don't have to tab through filters when
+		 * they're not visible
+		 *
+		 * @return boolean|integer
+		 */
 		tabIndex: function () {
 			return this.isVisible ? false : -1;
 		},
@@ -203,6 +209,7 @@ export default {
 }
 
 .pkpListPanel__filterSet {
+	position: relative;
 	margin: @base 0;
 	font-size: @font-sml;
 	line-height: @line-sml;
@@ -247,6 +254,16 @@ export default {
 	}
 }
 
+.pkpListPanel__filterInputLabel {
+	display: block;
+	padding: 0 @base;
+}
+
+.pkpListPanel__filterInput {
+	padding: (@half / 2) @base;
+}
+
+.pkpListPanel__filterAdd,
 .pkpListPanel__filterRemove {
 	position: absolute;
 	top: 50%;
@@ -257,9 +274,22 @@ export default {
 	border: none;
 	transform: translateY(-50%);
 	background: transparent;
+	font-size: @font-base;
 	text-align: center;
 	color: @text-light;
 	cursor: pointer;
+}
+
+.pkpListPanel__filterAdd {
+
+	&:hover,
+	&:focus {
+		color: @primary;
+	}
+}
+
+.pkpListPanel__filterRemove {
+	color: @offset;
 
 	&:hover,
 	&:focus {
