@@ -53,7 +53,7 @@
 				:i18n="i18n"
 			/>
 			<div class="pkpListPanel__content pkpListPanel__content--catalogSubmissions">
-				<div v-if="collection.items.length" class="pkpListPanel__columnLabels pkpListPanel__columnLabels--catalogSubmissions">
+				<div v-if="items.length" class="pkpListPanel__columnLabels pkpListPanel__columnLabels--catalogSubmissions">
 					<span class="pkpListPanel__columnLabel">
 						<span>{{ featuredLabel }}</span>
 					</span>
@@ -62,9 +62,9 @@
 					</span>
 				</div>
 				<ul class="pkpListPanel__items" aria-live="polite">
-					<draggable v-model="collection.items" :options="draggableOptions" @start="drag=true" @end="drag=false">
+					<draggable v-model="items" :options="draggableOptions" @start="drag=true" @end="drag=false">
 						<catalog-submissions-list-item
-							v-for="item in collection.items"
+							v-for="item in items"
 							@catalogFeatureUpdated="sortByFeaturedSequence"
 							@itemOrderUp="itemOrderUp"
 							@itemOrderDown="itemOrderDown"
@@ -90,7 +90,7 @@
 			/>
 			<list-panel-count
 				:count="itemCount"
-				:total="this.collection.maxItems"
+				:total="this.itemsMax"
 				:i18n="i18n"
 			/>
 		</div>
@@ -126,7 +126,7 @@ export default {
 		 * Can any monographs be ordered?
 		 */
 		canOrder: function () {
-			for (const item of this.collection.items) {
+			for (const item of this.items) {
 				for (const feature of item.featured) {
 					if (feature.assoc_type === this.filterAssocType) {
 						return true;
@@ -256,7 +256,7 @@ export default {
 		 * Sort submissions by featured sequence
 		 */
 		sortByFeaturedSequence: function () {
-			this.collection.items.sort((a, b) => {
+			this.items.sort((a, b) => {
 				const getFeatured = (feature) => {
 					return feature.assoc_type === this.filterAssocType;
 				};
@@ -304,7 +304,7 @@ export default {
 		setItemOrderSequence: function () {
 			const featured = [];
 			let seq = 0;
-			for (const item of this.collection.items) {
+			for (const item of this.items) {
 				const feature = item.featured.find((feature) => {
 					return feature.assoc_type === this.filterAssocType;
 				});
@@ -343,18 +343,18 @@ export default {
 		 * Override the ListPanel method to only handle featured items
 		 */
 		itemOrderDown: function (data) {
-			const featuredItems = this.collection.items.filter((item) => {
+			const featuredItems = this.items.filter((item) => {
 				return item.featured.find((feature) => {
 					return feature.assoc_type === this.filterAssocType;
 				});
 			});
-			const index = this.collection.items.findIndex((item) => {
+			const index = this.items.findIndex((item) => {
 				return item.id == data.id;
 			});
 			if (index === featuredItems.length - 1) {
 				return;
 			}
-			this.collection.items.splice(index + 1, 0, this.collection.items.splice(index, 1)[0]);
+			this.items.splice(index + 1, 0, this.items.splice(index, 1)[0]);
 			this.itemOrderResetFocus(data.id, 'down');
 		},
 	},
@@ -376,11 +376,11 @@ export default {
 	},
 	mounted: function () {
 		/**
-		 * Resort featured items to the top of the collection whenever it
+		 * Resort featured items to the top of the items whenever it
 		 * changes
 		 */
 		this.sortByFeaturedSequence();
-		this.$watch('collection', function (newVal, oldVal) {
+		this.$watch('items', function (newVal, oldVal) {
 			if (oldVal === newVal) {
 				return;
 			}

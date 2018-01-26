@@ -5,7 +5,7 @@
 		</div>
 		<ul class="pkpListPanel__items" aria-live="polite">
 			<expandable-list-panel-item
-				v-for="item in collection.items"
+				v-for="item in items"
 				:key="item.id"
 				:item="item"
 				:i18n="i18n"

@@ -21,9 +21,9 @@
 			</ul>
 		</div>
 		<ul class="pkpListPanel__items" aria-live="polite">
-			<draggable v-model="collection.items" :options="draggableOptions" @start="drag=true" @end="drag=false">
+			<draggable v-model="items" :options="draggableOptions" @start="drag=true" @end="drag=false">
 				<orderable-list-panel-item
-					v-for="item in collection.items"
+					v-for="item in items"
 					:key="item.id"
 					:item="item"
 					@itemOrderUp="itemOrderUp"

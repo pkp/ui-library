@@ -36,7 +36,7 @@
 			<div class="pkpListPanel__content">
 				<ul class="pkpListPanel__items" aria-live="polite">
 					<select-reviewer-list-item
-						v-for="item in collection.items"
+						v-for="item in items"
 						:key="item.id"
 						:item="item"
 						:inputName="inputName"
@@ -57,7 +57,7 @@
 			/>
 			<list-panel-count
 				:count="itemCount"
-				:total="this.collection.maxItems"
+				:total="this.itemsMax"
 				:i18n="i18n"
 			/>
 		</div>
@@ -100,7 +100,7 @@ export default {
 			if (newVal === oldVal) {
 				return;
 			}
-			const selectedReviewers = this.collection.items.filter((item) => {
+			const selectedReviewers = this.items.filter((item) => {
 				return this.selected.includes(item.id);
 			});
 

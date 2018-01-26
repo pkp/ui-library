@@ -40,7 +40,7 @@
 			<div class="pkpListPanel__content pkpListPanel__content--submissions">
 				<ul class="pkpListPanel__items" aria-live="polite">
 					<submissions-list-item
-						v-for="item in collection.items"
+						v-for="item in items"
 						@filterList="updateFilter"
 						:key="item.id"
 						:item="item"
@@ -60,7 +60,7 @@
 			/>
 			<list-panel-count
 				:count="itemCount"
-				:total="this.collection.maxItems"
+				:total="this.itemsMax"
 				:i18n="i18n"
 			/>
 		</div>
