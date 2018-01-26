@@ -91,6 +91,22 @@ export default {
 			activeFilters: {},
 		};
 	},
+	mounted: function () {
+
+		/**
+		 * Broadcast the selected reviewer
+		 */
+		this.$watch('selected', function (newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+			const selectedReviewers = this.collection.items.filter((item) => {
+				return this.selected.includes(item.id);
+			});
+
+			pkp.eventBus.$emit('reviewersSelected', selectedReviewers);
+		});
+	},
 };
 </script>
 
