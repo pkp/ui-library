@@ -7,7 +7,7 @@ const getRandomInt = (min, max) => {
 };
 
 // Add data to submission items
-BaseSubmissionListPanelData.collection.items = BaseSubmissionListPanelData.collection.items.map((item, i) => {
+BaseSubmissionListPanelData.items = BaseSubmissionListPanelData.items.map((item, i) => {
 	const categoryId = i % 2 ? 1 : 2;
 	const seriesId = getRandomInt(1, 3);
 	item.series = {

@@ -54,256 +54,254 @@ export default {
 	},
 	lazyLoad: false,
 	_lastGetRequest: null,
-	collection: {
-		items: [
-			BaseSubmissionObject,
-			{
-				...BaseSubmissionObject,
-				id: 2,
-				fullTitle: {
-					en_US: 'Quisque vel ultrices ut vel sollicitudin vel varius suscipit phasellus',
-				},
-				authorString: 'Catherine Kwantes',
-				reviewAssignments: [],
-				reviewRounds: [],
-				stages: [
-					{
-						id: 1,
-						label: 'Submission',
-						isActiveStage: false,
-						queries: [],
-						files: {
-							count: 1,
-						},
-					},
-					{
-						id: 3,
-						label: 'Review',
-						isActiveStage: true,
-						status: 'Waiting for reviewers to be selected',
-						statusId: 6,
-						queries: [],
-						files: {
-							count: 2,
-						},
-					},
-					{
-						id: 4,
-						label: 'Copyediting',
-						isActiveStage: false,
-						queries: [],
-						files: {
-							count: 0,
-						},
-					},
-					{
-						id: 5,
-						label: 'Production',
-						isActiveStage: false,
-						queries: [],
-						files: {
-							count: 0,
-						},
-					},
-				],
-				urlWorkflow: '/workflow/access/2',
-				urlPublished: '/article/view/2',
+	items: [
+		BaseSubmissionObject,
+		{
+			...BaseSubmissionObject,
+			id: 2,
+			fullTitle: {
+				en_US: 'Quisque vel ultrices ut vel sollicitudin vel varius suscipit phasellus',
 			},
-			{
-				...BaseSubmissionObject,
-				id: 3,
-				fullTitle: {
-					en_US: 'Metus ut elit est ultrices vivamus mauris est quisque arcu',
+			authorString: 'Catherine Kwantes',
+			reviewAssignments: [],
+			reviewRounds: [],
+			stages: [
+				{
+					id: 1,
+					label: 'Submission',
+					isActiveStage: false,
+					queries: [],
+					files: {
+						count: 1,
+					},
 				},
-				authorString: 'Domatilia Sokoloff',
-				urlWorkflow: '/workflow/access/3',
-				urlPublished: '/article/view/3',
-			},
-			{
-				...BaseSubmissionObject,
-				id: 4,
-				fullTitle: {
-					en_US: 'Current user is assigned as reviewer to this submission',
+				{
+					id: 3,
+					label: 'Review',
+					isActiveStage: true,
+					status: 'Waiting for reviewers to be selected',
+					statusId: 6,
+					queries: [],
+					files: {
+						count: 2,
+					},
 				},
-				reviewAssignments: [
-					{
-						due: '2025-12-05',
-						responseDue: '2017-01-01',
-						id: 7,
-						isCurrentUserAssigned: true,
-						round: 1,
-						roundId: 5,
-						status: 'The reviewer has missed the response due date.',
-						statusId: 4,
+				{
+					id: 4,
+					label: 'Copyediting',
+					isActiveStage: false,
+					queries: [],
+					files: {
+						count: 0,
 					},
-				],
-				stages: [
-					{
-						id: 1,
-						label: 'Submission',
-						isActiveStage: false,
-						queries: [],
-						files: {
-							count: 1,
-						},
-					},
-					{
-						id: 3,
-						label: 'Review',
-						isActiveStage: true,
-						status: 'Waiting for reviewers to be selected',
-						statusId: 6,
-						queries: [{
-							assocId: 21,
-							assocType: 1048585,
-							closed: false,
-							id: 47,
-							sequence: 1,
-							stageId: 3,
-						}],
-						files: {
-							count: 2,
-						},
-					},
-					{
-						id: 4,
-						label: 'Copyediting',
-						isActiveStage: false,
-						queries: [],
-						files: {
-							count: 0,
-						},
-					},
-					{
-						id: 5,
-						label: 'Production',
-						isActiveStage: false,
-						queries: [],
-						files: {
-							count: 0,
-						},
-					},
-				],
-				urlWorkflow: '/workflow/access/4',
-				urlPublished: '/article/view/4',
-			},
-			{
-				...BaseSubmissionObject,
-				id: 5,
-				fullTitle: {
-					en_US: 'Sed sed mattis amet eget aenean leo est nam sit',
 				},
-				authorString: 'Sed Aenean',
-				stages: [
-					{
-						id: 1,
-						label: 'Submission',
-						isActiveStage: false,
-						queries: [],
-						files: {
-							count: 1,
-						},
+				{
+					id: 5,
+					label: 'Production',
+					isActiveStage: false,
+					queries: [],
+					files: {
+						count: 0,
 					},
-					{
-						id: 3,
-						label: 'Review',
-						isActiveStage: false,
-						status: 'Waiting for reviewers to be selected',
-						statusId: 6,
-						queries: [],
-						files: {
-							count: 1,
-						},
-					},
-					{
-						id: 4,
-						label: 'Copyediting',
-						isActiveStage: true,
-						queries: [{
-							assocId: 21,
-							assocType: 1048585,
-							closed: false,
-							id: 47,
-							sequence: 1,
-							stageId: 4,
-						}],
-						files: {
-							count: 2,
-						},
-					},
-					{
-						id: 5,
-						label: 'Production',
-						isActiveStage: false,
-						queries: [],
-						files: {
-							count: 0,
-						},
-					},
-				],
-				urlWorkflow: '/workflow/access/5',
-				urlPublished: '/article/view/5',
-			},
-			{
-				...BaseSubmissionObject,
-				id: 6,
-				fullTitle: {
-					en_US: 'Lacus ut leo dolor nam neque nam dolor aenean sagittis',
 				},
-				authorString: 'Lacus Agittis',
-				stages: [
-					{
-						id: 1,
-						label: 'Submission',
-						isActiveStage: false,
-						queries: [],
-						files: {
-							count: 1,
-						},
-					},
-					{
-						id: 3,
-						label: 'Review',
-						isActiveStage: false,
-						status: 'Waiting for reviewers to be selected',
-						statusId: 6,
-						queries: [],
-						files: {
-							count: 1,
-						},
-					},
-					{
-						id: 4,
-						label: 'Copyediting',
-						isActiveStage: false,
-						queries: [],
-						files: {
-							count: 1,
-						},
-					},
-					{
-						id: 5,
-						label: 'Production',
-						isActiveStage: true,
-						queries: [{
-							assocId: 21,
-							assocType: 1048585,
-							closed: false,
-							id: 47,
-							sequence: 1,
-							stageId: 5,
-						}],
-						files: {
-							count: 4,
-						},
-					},
-				],
-				urlWorkflow: '/workflow/access/3',
-				urlPublished: '/article/view/3',
+			],
+			urlWorkflow: '/workflow/access/2',
+			urlPublished: '/article/view/2',
+		},
+		{
+			...BaseSubmissionObject,
+			id: 3,
+			fullTitle: {
+				en_US: 'Metus ut elit est ultrices vivamus mauris est quisque arcu',
 			},
-		],
-		maxItems: 10,
-	},
+			authorString: 'Domatilia Sokoloff',
+			urlWorkflow: '/workflow/access/3',
+			urlPublished: '/article/view/3',
+		},
+		{
+			...BaseSubmissionObject,
+			id: 4,
+			fullTitle: {
+				en_US: 'Current user is assigned as reviewer to this submission',
+			},
+			reviewAssignments: [
+				{
+					due: '2025-12-05',
+					responseDue: '2017-01-01',
+					id: 7,
+					isCurrentUserAssigned: true,
+					round: 1,
+					roundId: 5,
+					status: 'The reviewer has missed the response due date.',
+					statusId: 4,
+				},
+			],
+			stages: [
+				{
+					id: 1,
+					label: 'Submission',
+					isActiveStage: false,
+					queries: [],
+					files: {
+						count: 1,
+					},
+				},
+				{
+					id: 3,
+					label: 'Review',
+					isActiveStage: true,
+					status: 'Waiting for reviewers to be selected',
+					statusId: 6,
+					queries: [{
+						assocId: 21,
+						assocType: 1048585,
+						closed: false,
+						id: 47,
+						sequence: 1,
+						stageId: 3,
+					}],
+					files: {
+						count: 2,
+					},
+				},
+				{
+					id: 4,
+					label: 'Copyediting',
+					isActiveStage: false,
+					queries: [],
+					files: {
+						count: 0,
+					},
+				},
+				{
+					id: 5,
+					label: 'Production',
+					isActiveStage: false,
+					queries: [],
+					files: {
+						count: 0,
+					},
+				},
+			],
+			urlWorkflow: '/workflow/access/4',
+			urlPublished: '/article/view/4',
+		},
+		{
+			...BaseSubmissionObject,
+			id: 5,
+			fullTitle: {
+				en_US: 'Sed sed mattis amet eget aenean leo est nam sit',
+			},
+			authorString: 'Sed Aenean',
+			stages: [
+				{
+					id: 1,
+					label: 'Submission',
+					isActiveStage: false,
+					queries: [],
+					files: {
+						count: 1,
+					},
+				},
+				{
+					id: 3,
+					label: 'Review',
+					isActiveStage: false,
+					status: 'Waiting for reviewers to be selected',
+					statusId: 6,
+					queries: [],
+					files: {
+						count: 1,
+					},
+				},
+				{
+					id: 4,
+					label: 'Copyediting',
+					isActiveStage: true,
+					queries: [{
+						assocId: 21,
+						assocType: 1048585,
+						closed: false,
+						id: 47,
+						sequence: 1,
+						stageId: 4,
+					}],
+					files: {
+						count: 2,
+					},
+				},
+				{
+					id: 5,
+					label: 'Production',
+					isActiveStage: false,
+					queries: [],
+					files: {
+						count: 0,
+					},
+				},
+			],
+			urlWorkflow: '/workflow/access/5',
+			urlPublished: '/article/view/5',
+		},
+		{
+			...BaseSubmissionObject,
+			id: 6,
+			fullTitle: {
+				en_US: 'Lacus ut leo dolor nam neque nam dolor aenean sagittis',
+			},
+			authorString: 'Lacus Agittis',
+			stages: [
+				{
+					id: 1,
+					label: 'Submission',
+					isActiveStage: false,
+					queries: [],
+					files: {
+						count: 1,
+					},
+				},
+				{
+					id: 3,
+					label: 'Review',
+					isActiveStage: false,
+					status: 'Waiting for reviewers to be selected',
+					statusId: 6,
+					queries: [],
+					files: {
+						count: 1,
+					},
+				},
+				{
+					id: 4,
+					label: 'Copyediting',
+					isActiveStage: false,
+					queries: [],
+					files: {
+						count: 1,
+					},
+				},
+				{
+					id: 5,
+					label: 'Production',
+					isActiveStage: true,
+					queries: [{
+						assocId: 21,
+						assocType: 1048585,
+						closed: false,
+						id: 47,
+						sequence: 1,
+						stageId: 5,
+					}],
+					files: {
+						count: 4,
+					},
+				},
+			],
+			urlWorkflow: '/workflow/access/3',
+			urlPublished: '/article/view/3',
+		},
+	],
+	itemsMax: 10,
 	i18n: {
 		id: 'ID',
 		title: 'Submissions',

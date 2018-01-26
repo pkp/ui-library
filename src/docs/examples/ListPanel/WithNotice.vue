@@ -12,7 +12,7 @@
 			<div class="pkpListPanel__content">
 				<ul class="pkpListPanel__items" aria-live="polite">
 					<list-panel-item
-						v-for="item in collection.items"
+						v-for="item in items"
 						:key="item.id"
 						:item="item"
 					/>

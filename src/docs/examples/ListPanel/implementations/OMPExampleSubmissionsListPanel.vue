@@ -2,8 +2,8 @@
 import SubmissionsListPanel from '@/components/ListPanel/submissions/SubmissionsListPanel.vue';
 import BaseSubmissionListPanelData from './helpers/BaseSubmissionListPanelData.js';
 
-// Update stage names in collection to reflect internal/external review
-BaseSubmissionListPanelData.collection.items = BaseSubmissionListPanelData.collection.items.map(function (item) {
+// Update stage names in items to reflect internal/external review
+BaseSubmissionListPanelData.items = BaseSubmissionListPanelData.items.map(function (item) {
 	item.stages = item.stages.map(function (stage) {
 		if (stage.id === 2) {
 			stage.label = 'Internal Review';

@@ -25,7 +25,7 @@ export default {
 		inputName: 'Name of the input field for selection: `<input name="inputName">`',
 		inputType: 'Type of input field. Supports `checkbox` or `radio`. Default: `checkbox`.',
 		selected: 'Array of selected item ids.',
-		showSelectAll: 'Add a checkbox to select all items in the collection.',
+		showSelectAll: 'Add a checkbox to select all items.',
 		initializeAllSelected: 'Select all items when the component is created.',
 	}),
 	examples: {

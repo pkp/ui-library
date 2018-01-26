@@ -6,7 +6,7 @@
 		<div class="pkpListPanel__body -pkpClearfix">
 			<ul class="pkpListPanel__items" aria-live="polite">
 				<list-panel-item
-					v-for="item in collection.items"
+					v-for="item in items"
 					:key="item.id"
 					:item="item"
 				/>
@@ -26,10 +26,8 @@ export default {
 	data: function () {
 		return {
 			id: '',
-			collection: {
-				items: [],
-				maxItems: null,
-			},
+			items: [],
+			itemsMax: null,
 			searchPhrase: '',
 			isLoading: false,
 			isOrdering: false,
@@ -50,10 +48,10 @@ export default {
 			return { '-isLoading': this.isLoading };
 		},
 		itemCount: function () {
-			return this.collection.items.length;
+			return this.items.length;
 		},
 		canLoadMore: function () {
-			return typeof this.collection.maxItems !== 'undefined' && this.collection.maxItems > this.itemCount;
+			return typeof this.itemsMax !== 'undefined' && this.itemsMax > this.itemCount;
 		},
 
 		/**
@@ -83,7 +81,7 @@ export default {
 		 * `get` route to execute this method.
 		 *
 		 * @param string handleResponse How to handle the response. `append` to
-		 *  add to the collection. Default: null will replace the collection.
+		 *  add to the items. Default: null will replace the items.
 		 */
 		get: function (handleResponse) {
 			var self = this;
@@ -123,15 +121,16 @@ export default {
 					}
 
 					if (handleResponse === 'append') {
-						var existingItemIds = self.collection.items.map(value => value.id);
+						var existingItemIds = self.items.map(value => value.id);
 						for (var item of r.items) {
 							if (existingItemIds.indexOf(item.id) < 0) {
-								self.collection.items.push(item);
+								self.items.push(item);
 							}
 						}
-						self.collection.maxItems = r.maxItems;
+						self.itemsMax = r.itemsMax;
 					} else {
-						self.collection = r;
+						self.items = r.items;
+						self.itemsMax = r.itemsMax;
 					}
 				},
 				complete: function (r) {
@@ -150,7 +149,7 @@ export default {
 		 * Load more items in the list
 		 */
 		loadMore: function () {
-			this.offset = this.collection.items.length;
+			this.offset = this.items.length;
 			this.get('append');
 		},
 
@@ -193,13 +192,13 @@ export default {
 		 * Move an item up in the list
 		 */
 		itemOrderUp: function (data) {
-			var index = this.collection.items.findIndex(item => {
+			var index = this.items.findIndex(item => {
 				return item.id == data.id;
 			});
 			if (index === 0) {
 				return;
 			}
-			this.collection.items.splice(index - 1, 0, this.collection.items.splice(index, 1)[0]);
+			this.items.splice(index - 1, 0, this.items.splice(index, 1)[0]);
 			this.itemOrderResetFocus(data.id, 'up');
 		},
 
@@ -207,13 +206,13 @@ export default {
 		 * Move an item down in the list
 		 */
 		itemOrderDown: function (data) {
-			var index = this.collection.items.findIndex(item => {
+			var index = this.items.findIndex(item => {
 				return item.id == data.id;
 			});
-			if (index === this.collection.items.length - 1) {
+			if (index === this.items.length - 1) {
 				return;
 			}
-			this.collection.items.splice(index + 1, 0, this.collection.items.splice(index, 1)[0]);
+			this.items.splice(index + 1, 0, this.items.splice(index, 1)[0]);
 			this.itemOrderResetFocus(data.id, 'down');
 		},
 
@@ -277,7 +276,7 @@ export default {
 		setItemOrderSequence: function (prop) {
 			prop = prop || 'seq'; // default sequence property in item models
 
-			this.collection.items.forEach((item, i) => {
+			this.items.forEach((item, i) => {
 				item[prop] = i;
 			});
 		},
@@ -318,8 +317,8 @@ export default {
 		});
 
 		/**
-		 * Load a collection into the component once the page is loaded if a
-		 * lazyLoad is requested.
+		 * Load items into the component once the page is loaded if a lazyLoad is
+		 * requested.
 		 */
 		if (this.lazyLoad) {
 			if (document.readyState === 'complete') {
