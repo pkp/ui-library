@@ -33,10 +33,10 @@
 				:class="{'vue-slider-component--stars': useStars}"
 				@callback="(val) => filterBy(val)"
 			>
-				<template v-if="useStars" slot="tooltip" slot-scope="tooltip">
+				<template v-if="useStars" slot="tooltip" slot-scope="{ value }">
 					<span class="vue-slider-tooltip--stars">
-						<icon v-for="index in tooltip.value" key="index" icon="star" />
-						<span class="-screenReader">{{ __(starLabel, {rating: tooltip.value}) }}</span>
+						<icon v-for="index in value" :key="index" icon="star" />
+						<span class="-screenReader">{{ __(starLabel, {rating: value}) }}</span>
 					</span>
 				</template>
 			</vue-slider>
