@@ -110,6 +110,13 @@
 					</template>
 					{{ i18n.daysSinceLastAssignmentDescription }}
 				</list-item>
+				<list-item>
+					<template slot="value">
+						<icon icon="calendar" :inline="true" />
+						{{ item.averageReviewCompletionDays }}
+					</template>
+					{{ i18n.averageCompletion }}
+				</list-item>
 				<list-item v-if="item.interests.length">
 					<div class="pkpListPanelItem--reviewer__interestsDetail">
 						<icon icon="book" :inline="true" />
