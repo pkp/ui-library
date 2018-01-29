@@ -96,6 +96,8 @@ export default {
 				filterAdd: 'Add filter: {$filterTitle}',
 				filterRemove: 'Clear filter: {$filterTitle}',
 				filterRating: 'Rated at least',
+				lessThan: '{$value} or less',
+				moreThan: '{$value} or more',
 				activeReviews: '{$count} active',
 				activeReviewsDescription: 'Active reviews currently assigned',
 				completedReviews: 'Reviews completed',

@@ -20,12 +20,13 @@
 				@clearFilter="clearFilter"
 			/>
 			<select-reviewer-list-filter-slider
-				filterId="completed"
+				filterId="reviewsCompleted"
 				:filterValue="filterByCompleted"
-				:isFilterActive="isFilterActive('completed')"
+				:isFilterActive="isFilterActive('reviewsCompleted')"
 				:label="i18n.completedReviews"
 				:min="0"
-				:max="50"
+				:max="20"
+				:formatter="__('moreThan', {'value': '{value}'})"
 				:isVisible="isVisible"
 				:i18n="i18n"
 				@filterBy="filterBy"
@@ -44,9 +45,9 @@
 				@clearFilter="clearFilter"
 			/>
 			<select-reviewer-list-filter-slider
-				filterId="active"
+				filterId="reviewsActive"
 				:filterValue="filterByActive"
-				:isFilterActive="isFilterActive('active')"
+				:isFilterActive="isFilterActive('reviewsActive')"
 				:label="i18n.activeReviewsDescription"
 				:min="0"
 				:max="20"
@@ -62,6 +63,7 @@
 				:label="i18n.averageCompletion"
 				:min="0"
 				:max="150"
+				:formatter="__('lessThan', {'value': '{value}'})"
 				:isVisible="isVisible"
 				:i18n="i18n"
 				@filterBy="filterBy"
@@ -91,10 +93,8 @@ export default {
 			default: 3,
 		},
 		filterByCompleted: {
-			type: Array,
-			default: function () {
-				return [0, 50];
-			},
+			type: Number,
+			default: 10,
 		},
 		filterByDaysSinceLastAssignment: {
 			type: Array,
@@ -109,10 +109,8 @@ export default {
 			},
 		},
 		filterByAverageCompletion: {
-			type: Array,
-			default: function () {
-				return [0, 150];
-			},
+			type: Number,
+			default: 75,
 		},
 		i18n: Object,
 	},
@@ -135,6 +133,9 @@ export default {
 		 * arrays.
 		 */
 		filterBy: function (type, val) {
+			if (Array.isArray(val)) {
+				val = val.join('-');
+			}
 			let filters = Object.assign({}, this.activeFilters);
 			filters[type] = val;
 			this.filterList(filters);

@@ -27,6 +27,7 @@
 				:value="filterValue"
 				:min="min"
 				:max="max"
+				:formatter="formatter"
 				:disabled="!isFilterActive"
 				:speed="0.3"
 				tooltip-dir="bottom"
@@ -62,6 +63,7 @@ export default {
 		'label',
 		'min',
 		'max',
+		'formatter',
 		'isVisible',
 		'useStars',
 		'starLabel',
@@ -152,6 +154,7 @@ export default {
 .pkpListPanel__filterInputLabel {
 	margin-right: @base;
 	cursor: pointer;
+	line-height: 1.5em;
 }
 
 
