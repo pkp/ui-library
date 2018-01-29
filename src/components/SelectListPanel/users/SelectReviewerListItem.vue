@@ -60,7 +60,7 @@
 						<icon icon="history" :inline="true" />
 						{{ daysSinceLastAssignmentString }}
 					</span>
-					<span v-if="item.interests" class="pkpListPanelItem--reviewer__interests">
+					<span v-if="item.interests.length" class="pkpListPanelItem--reviewer__interests">
 						<icon icon="book" :inline="true" />
 						{{ interestsString }}
 					</span>
@@ -110,7 +110,7 @@
 					</template>
 					{{ i18n.daysSinceLastAssignmentDescription }}
 				</list-item>
-				<list-item>
+				<list-item v-if="item.interests.length">
 					<div class="pkpListPanelItem--reviewer__interestsDetail">
 						<icon icon="book" :inline="true" />
 						{{ i18n.reviewInterests }}

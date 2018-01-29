@@ -23,6 +23,7 @@ export default {
 					reviewsCompleted: 0,
 					dateLastReviewAssignment: '',
 					reviewerRating: null,
+					interests: [],
 				},
 				{
 					...BaseReviewerObject,
