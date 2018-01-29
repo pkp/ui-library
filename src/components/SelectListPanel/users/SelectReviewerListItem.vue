@@ -31,7 +31,6 @@
 						<badge
 							v-if="item.reviewsActive"
 							class="pkpListPanelItem--reviewer__active"
-							:isPrimary="true"
 						>
 							{{ __('activeReviews', {count: item.reviewsActive}) }}
 						</badge>

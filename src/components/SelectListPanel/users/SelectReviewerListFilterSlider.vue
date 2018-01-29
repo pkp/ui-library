@@ -11,7 +11,7 @@
 			class="pkpListPanel__filterAdd"
 			@click="enableFilter"
 		>
-			<icon icon="plus-circle" />
+			<icon icon="plus-square-o" />
 			<span class="-screenReader">{{ __('filterAdd', {filterTitle: label}) }}</span>
 		</button>
 		<label
@@ -134,7 +134,7 @@ export default {
 	.vue-slider-tooltip,
 	.vue-slider-tooltip--stars,
 	.vue-slider-process {
-		display: none;
+		display: none !important;
 	}
 }
 
@@ -154,11 +154,14 @@ export default {
 	cursor: pointer;
 }
 
+
 .vue-slider-component {
 
 	.vue-slider-tooltip {
 		border-color: @primary;
 		background: @primary;
+		font-size: @font-tiny;
+		line-height: 1.5em;
 	}
 
 	.vue-slider-tooltip-wrap.vue-slider-tooltip-bottom .vue-slider-tooltip::before {
