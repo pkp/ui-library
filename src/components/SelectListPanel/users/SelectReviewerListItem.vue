@@ -132,11 +132,17 @@
 					{{ i18n.averageCompletion }}
 				</list-item>
 				<list-item v-if="item.interests.length">
-					<div class="pkpListPanelItem--reviewer__interestsDetail">
+					<div class="pkpListPanelItem--reviewer__detailHeading">
 						<icon icon="book" :inline="true" />
 						{{ i18n.reviewInterests }}
 					</div>
 					{{ interestsString }}
+				</list-item>
+				<list-item v-if="item.biography">
+					<div class="pkpListPanelItem--reviewer__detailHeading">
+						{{ i18n.biography }}
+					</div>
+					<div v-html="localize(item.biography)"></div>
 				</list-item>
 			</list>
 		</div>
@@ -325,7 +331,7 @@ export default {
 	}
 }
 
-.pkpListPanelItem--reviewer__interestsDetail {
+.pkpListPanelItem--reviewer__detailHeading {
 	margin-bottom: 0.5em;
 	font-weight: @bold;
 }
