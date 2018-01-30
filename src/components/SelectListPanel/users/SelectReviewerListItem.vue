@@ -1,7 +1,7 @@
 <template>
-	<li class="pkpListPanelItem pkpListPanelItem--select pkpListPanelItem--selectReviewer -clearFix" :class="{'-hasFocus': isFocused}">
+	<li class="pkpListPanelItem pkpListPanelItem--select pkpListPanelItem--selectReviewer" :class="classes">
 		<div class="pkpListPanelItem__summary pkpListPanelItem__summary--selectReviewer -pkpClearFix">
-			<div class="pkpListPanelItem__selectItem" @click.self="toggle">
+			<div v-if="!isCurrentlyAssigned" class="pkpListPanelItem__selectItem" @click.self="toggle">
 				<input
 					v-if="inputType === 'radio'"
 					type="radio"
@@ -29,14 +29,14 @@
 				<div class="pkpListPanelItem--reviewer__header">
 					<div class="pkpListPanelItem--reviewer__fullName">
 						<badge
-							v-if="item.reviewsActive"
+							v-if="item.reviewsActive && !isCurrentlyAssigned"
 							class="pkpListPanelItem--reviewer__active"
 						>
 							{{ __('activeReviews', {count: item.reviewsActive}) }}
 						</badge>
 						{{ item.fullName }}
 					</div>
-					<div v-if="item.reviewerRating !== null" class="pkpListPanelItem--reviewer__rating">
+					<div v-if="item.reviewerRating !== null && !isCurrentlyAssigned" class="pkpListPanelItem--reviewer__rating">
 						<icon
 							v-for="(star, index) in stars"
 							:key="index"
@@ -51,7 +51,7 @@
 				</div>
 				<!-- use aria-hidden on these details because the information can be
 					more easily acquired by screen readers from the details panel. -->
-				<div class="pkpListPanelItem--reviewer__brief" aria-hidden="true">
+				<div v-if="!isCurrentlyAssigned" class="pkpListPanelItem--reviewer__brief" aria-hidden="true">
 					<span class="pkpListPanelItem--reviewer__complete">
 						<icon icon="check-circle-o" :inline="true" />
 						{{ item.reviewsCompleted }}
@@ -66,7 +66,12 @@
 					</span>
 				</div>
 			</label>
+			<div v-if="isCurrentlyAssigned" class="pkpListPanelItem--reviewer__assignedNotice">
+				<icon icon="exclamation-triangle" :inline="true" />
+				{{ i18n.currentlyAssigned }}
+			</div>
 			<button
+				v-if="!isCurrentlyAssigned"
 				@click="toggleExpanded"
 				class="pkpListPanelItem__expander"
 			>
@@ -145,13 +150,39 @@ export default {
 		List,
 		ListItem,
 	},
-	props: ['i18n'],
+	props: ['currentlyAssigned', 'i18n'],
 	data: function () {
 		return {
 			isExpanded: false,
 		};
 	},
 	computed: {
+		/**
+		 * Classes to add to outer element
+		 *
+		 * @return array
+		 */
+		classes: function () {
+			let classes = [];
+			if (this.isFocused) {
+				classes.push('-hasFocus');
+			}
+			if (this.isCurrentlyAssigned) {
+				classes.push('pkpListPanelItem--selectReviewerAssigned');
+			}
+
+			return classes;
+		},
+
+		/**
+		 * Is this reviewer assigned to the submission in question?
+		 *
+		 * @return boolean
+		 */
+		isCurrentlyAssigned: function () {
+			return this.currentlyAssigned.includes(this.item.id);
+		},
+
 		/**
 		 * How many days has it been since they were last assigned a review
 		 *
@@ -283,4 +314,31 @@ export default {
 	margin-bottom: 0.5em;
 	font-weight: @bold;
 }
+
+// Reviewers already assigned to this submission
+.pkpListPanelItem--reviewer__assignedNotice {
+	padding: 0.5rem 0.5rem 1rem 4rem;
+	font-size: @font-tiny;
+}
+
+.pkpListPanelItem--selectReviewerAssigned {
+
+	.pkpListPanelItem__item--reviewer {
+		padding-bottom: 0;
+		opacity: 0.5;
+
+		&:after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			width: 100%;
+			height: 100%;
+			cursor: not-allowed;
+		}
+	}
+}
+
 </style>

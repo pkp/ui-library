@@ -13,6 +13,7 @@ export default {
 			id: 'ExampleSelectReviewerListPanel',
 			inputName: 'exampleSelectReviewer',
 			inputType: 'radio',
+			currentlyAssigned: [5],
 			items: [
 				BaseReviewerObject,
 				{
@@ -68,6 +69,15 @@ export default {
 				{
 					...BaseReviewerObject,
 					id: 5,
+					fullName: 'Adela Gallego',
+					reviewsActive: 1,
+					reviewsCompleted: 0,
+					dateLastReviewAssignment: '2018-01-25 11:22:42',
+					reviewerRating: 5,
+				},
+				{
+					...BaseReviewerObject,
+					id: 6,
 					fullName: 'Habiba Yousef',
 					reviewsActive: 1,
 					reviewsCompleted: 0,
@@ -76,7 +86,7 @@ export default {
 				},
 				{
 					...BaseReviewerObject,
-					id: 6,
+					id: 7,
 					fullName: 'Matthew McMatherson',
 					reviewsActive: 0,
 					reviewsCompleted: 3,
@@ -107,6 +117,7 @@ export default {
 				daysSinceLastAssignmentDescription: 'Days since last review assigned',
 				averageCompletion: 'Average days to complete review',
 				neverAssigned: 'Never assigned',
+				currentlyAssigned: 'This reviewer has already been assigned to review this submission.',
 				reviewInterests: 'Reviewing Interests',
 				listSeparator: ', ',
 				viewMore: 'Show more details about {$name}',
