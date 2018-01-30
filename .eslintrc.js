@@ -39,5 +39,7 @@ module.exports = {
     'padded-blocks': 0,
     // don't require === for comparisons
     'eqeqeq': 0,
+    // Allow webpack loader bypassing in import statement (used for raw loader)
+    'import/no-webpack-loader-syntax': 0,
   }
 };
