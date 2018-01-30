@@ -51,5 +51,6 @@ export default {
 	averageReviewCompletionDays: 21,
 	dateLastReviewAssignment: '2017-02-03 11:22:42',
 	reviewerRating: 4,
+	orcid: '',
 	disabled: false,
 };
