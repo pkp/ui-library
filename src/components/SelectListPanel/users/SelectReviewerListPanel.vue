@@ -42,6 +42,7 @@
 						:inputName="inputName"
 						:inputType="inputType"
 						:selected="selected"
+						:currentlyAssigned="currentlyAssigned"
 						:i18n="i18n"
 						@toggle="toggleItemSelection"
 					/>
@@ -89,6 +90,7 @@ export default {
 	data: function () {
 		return {
 			activeFilters: {},
+			currentlyAssigned: [],
 		};
 	},
 	mounted: function () {
