@@ -48,6 +48,15 @@
 				</div>
 				<div class="pkpListPanelItem--reviewer__affiliation">
 					{{ localize(item.affiliation) }}
+					<a
+						v-if="item.orcid"
+						:href="item.orcid"
+						class="pkpListPanelItem--reviewer__orcid"
+						target="_blank"
+					>
+						<icon icon="orcid" :inline="true" />
+						{{ item.orcid }}
+					</a>
 				</div>
 				<!-- use aria-hidden on these details because the information can be
 					more easily acquired by screen readers from the details panel. -->
@@ -280,6 +289,12 @@ export default {
 
 .pkpListPanelItem--reviewer__star--on {
 	color: @star-on;
+}
+
+.pkpListPanelItem--reviewer__orcid {
+	margin-left: 1rem;
+	font-size: @font-tiny;
+	text-decoration: none;
 }
 
 .pkpListPanelItem--reviewer__brief > * {

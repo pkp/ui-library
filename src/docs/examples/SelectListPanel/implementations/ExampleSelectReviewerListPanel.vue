@@ -34,6 +34,7 @@ export default {
 					reviewsCompleted: 32,
 					dateLastReviewAssignment: '2017-12-31 11:22:42',
 					reviewerRating: 5,
+					orcid: 'http://orcid.org/0000-0002-1825-0097',
 				},
 				{
 					...BaseReviewerObject,
