@@ -138,6 +138,12 @@
 					</div>
 					{{ interestsString }}
 				</list-item>
+				<list-item v-if="item.gossip">
+					<div class="pkpListPanelItem--reviewer__detailHeading">
+						{{ i18n.gossip }}
+					</div>
+					<div v-html="item.gossip"></div>
+				</list-item>
 				<list-item v-if="item.biography">
 					<div class="pkpListPanelItem--reviewer__detailHeading">
 						{{ i18n.biography }}

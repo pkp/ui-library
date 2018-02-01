@@ -29,7 +29,7 @@ export default {
 				{
 					...BaseReviewerObject,
 					id: 3,
-					fullName: 'John Smith',
+					fullName: 'Aisla McCrae',
 					reviewsActive: 23,
 					reviewsCompleted: 32,
 					dateLastReviewAssignment: '2017-12-31 11:22:42',
@@ -38,6 +38,7 @@ export default {
 					biography: {
 						en_US: '<p>Professor Aisla McCrae is a senior research fellow in the Publishing Studies Department in the School of Publishing at the University of Manitoba. She is the deputy chair of the Manitoba Publishing Institute and the author of <em>Publishing Now and Forever: Recent Developments in Archival Permanence</em>.</p>',
 					},
+					gossip: "<p>Aisla is a terrific reviewer but she takes a while to confirm and complete a review. Recommend not using her if you're on a tight deadline.</p>",
 				},
 				{
 					...BaseReviewerObject,
@@ -123,6 +124,7 @@ export default {
 				neverAssigned: 'Never assigned',
 				currentlyAssigned: 'This reviewer has already been assigned to review this submission.',
 				reviewInterests: 'Reviewing Interests',
+				gossip: 'Editorial Notes',
 				biography: 'Biography',
 				listSeparator: ', ',
 				viewMore: 'Show more details about {$name}',
