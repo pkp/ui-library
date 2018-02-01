@@ -6,9 +6,9 @@
 		</div>
 		<div class="pkpListPanel__filterOptions pkpListPanel__filterOptions--submissions">
 			<select-reviewer-list-filter-slider
-				filterId="rating"
+				filterId="reviewerRating"
 				:filterValue="filterByRating"
-				:isFilterActive="isFilterActive('rating')"
+				:isFilterActive="isFilterActive('reviewerRating')"
 				:label="i18n.filterRating"
 				:min="1"
 				:max="5"
