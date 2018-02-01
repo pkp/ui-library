@@ -43,9 +43,6 @@ export default {
 			interest: 'alien',
 		},
 	],
-	gossip: {
-		en_US: '<p>This is a note about the user which has been entered by someone at some point in the past. It might reflect on past performance or include a reminder about what kind of material the reviewer prefers to review.',
-	},
 	reviewsActive: 2,
 	reviewsCompleted: 1,
 	averageReviewCompletionDays: 21,
