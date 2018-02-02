@@ -64,7 +64,9 @@ export default {
 		 * @return string
 		 */
 		localize: function (localizedString, requestedLocale) {
-			if (requestedLocale !== undefined) {
+			if (localizedString === null) {
+				return '';
+			}	else if (requestedLocale !== undefined) {
 				return localizedString.hasOwnProperty(requestedLocale) ? localizedString[requestedLocale] : '';
 			} else if (localizedString.hasOwnProperty($.pkp.app.currentLocale)) {
 				return localizedString[$.pkp.app.currentLocale];
