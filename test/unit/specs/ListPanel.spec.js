@@ -11,7 +11,7 @@ ListPanel.data = function () {
 				{title: 'Item two'},
 				{title: 'Item three'},
 			],
-			maxItems: 10,
+			itemsMax: 10,
 		},
 		activeFilters: {},
 		searchPhrase: '',
