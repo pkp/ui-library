@@ -30,8 +30,8 @@ export default {
 			id: 'ListPanelWithExpander',
 			i18n: {
 				title: 'List Panel with Expander',
-				viewMore: 'Show more details about this item',
-				viewLess: 'Hide expanded details about this item',
+				viewMore: 'Show more details about {$name}',
+				viewLess: 'Hide expanded details about {$name}',
 			},
 		});
 	},
