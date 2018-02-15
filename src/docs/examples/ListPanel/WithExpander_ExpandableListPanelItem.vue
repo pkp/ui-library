@@ -10,8 +10,8 @@
 			>
 				<icon v-if="isExpanded" icon="angle-up" />
 				<icon v-else icon="angle-down" />
-				<span v-if="isExpanded" class="-screenReader">{{ i18n.viewLess }}</span>
-				<span v-else class="-screenReader">{{ i18n.viewMore }}</span>
+				<span v-if="isExpanded" class="-screenReader">{{ __('viewLess', {name: item.title}) }}</span>
+				<span v-else class="-screenReader">{{ __('viewMore', {name: item.title}) }}</span>
 			</button>
 		</div>
 		<div
