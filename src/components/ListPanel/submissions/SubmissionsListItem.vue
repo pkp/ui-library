@@ -245,6 +245,7 @@ export default {
 						case pkp.const.REVIEW_ROUND_STATUS_REVIEWS_COMPLETED:
 						case pkp.const.REVIEW_ROUND_STATUS_REVIEWS_OVERDUE:
 						case pkp.const.REVIEW_ROUND_STATUS_REVISIONS_SUBMITTED:
+						case pkp.const.REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW_SUBMITTED:
 							notice = this.activeStage.status;
 							break;
 					}
@@ -264,6 +265,7 @@ export default {
 				if (this.isReviewStage) {
 					switch (this.activeStage.statusId) {
 						case pkp.const.REVIEW_ROUND_STATUS_REVISIONS_REQUESTED:
+						case pkp.const.REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW:
 							notice = this.activeStage.status;
 							break;
 					}
