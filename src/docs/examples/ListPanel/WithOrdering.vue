@@ -4,27 +4,26 @@
 			<div class="pkpListPanel__title">{{ i18n.title }}</div>
 			<ul class="pkpListPanel__actions">
 				<li class="pkpListPanel__orderToggle">
-					<button @click.prevent="toggleOrdering" class="pkpButton" :class="{'-isActive': isOrdering}">
-						<span class="fa fa-sort" aria-hidden="true"></span>
-						<template v-if="isOrdering">
-							{{ i18n.saveItemOrder }}
-						</template>
-						<template v-else>
-							{{ i18n.orderItems }}
-						</template>
-					</button>
+					<pkp-button
+						:label="orderingLabel"
+						icon="sort"
+						:isActive="isOrdering"
+						@click="toggleOrdering"
+					/>
 				</li>
 				<li v-if="isOrdering" class="pkpListPanel__orderToggleCancel">
-					<button @click.prevent="cancelOrdering" class="pkpButton -isWarnable">
-						{{ i18n.cancel }}
-					</button>
+					<pkp-button
+						:label="i18n.cancel"
+						:isWarnable="true"
+						@click="cancelOrdering"
+					/>
 				</li>
 			</ul>
 		</div>
 		<ul class="pkpListPanel__items" aria-live="polite">
-			<draggable v-model="collection.items" :options="draggableOptions" @start="drag=true" @end="drag=false">
+			<draggable v-model="items" :options="draggableOptions" @start="drag=true" @end="drag=false">
 				<orderable-list-panel-item
-					v-for="item in collection.items"
+					v-for="item in items"
 					:key="item.id"
 					:item="item"
 					@itemOrderUp="itemOrderUp"
@@ -41,6 +40,7 @@
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import draggable from 'vuedraggable';
 import OrderableListPanelItem from './WithOrdering_OrderableListPanelItem.vue';
+import PkpButton from '@/components/Button/Button.vue';
 import ListPanelData from './data.js';
 
 export default {
@@ -49,6 +49,7 @@ export default {
 	components: {
 		draggable,
 		OrderableListPanelItem,
+		PkpButton,
 	},
 	data: function () {
 		return Object.assign(ListPanelData.baseData(), {
@@ -62,6 +63,17 @@ export default {
 				itemOrdererDown: 'Decrease position of {$itemTitle}',
 			},
 		});
+	},
+	computed: {
+		/**
+		 * Return the appropriate label for the ordering button depending on
+		 * if we're ordering or not.
+		 *
+		 * @return string
+		 */
+		orderingLabel: function () {
+			return this.isOrdering ? this.i18n.saveItemOrder : this.i18n.orderItems;
+		},
 	},
 };
 </script>

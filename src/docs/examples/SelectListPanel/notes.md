@@ -4,9 +4,6 @@ This component extends [ListPanel](/#/components/ListPanel). Consult the documen
 
 [View Source](#) (todo)
 
-## Implementations
-- SelectSubmissionsListPanel
-
 ## Extended Item Descriptions
 
 When a `SelectListPanelItem` includes more than a simple label, make sure that the whole item can be clicked or tapped to select it. There should be no "gaps" where a click or tap will not perform an action.

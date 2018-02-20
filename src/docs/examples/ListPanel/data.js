@@ -24,14 +24,12 @@ export default {
 	baseData: function () {
 		return {
 			id: 'ExampleListPanel',
-			collection: {
-				items: [
-					{id: 1, title: 'Item one'},
-					{id: 2, title: 'Item two'},
-					{id: 3, title: 'Item three'},
-				],
-				maxItems: 10,
-			},
+			items: [
+				{id: 1, title: 'Item one'},
+				{id: 2, title: 'Item two'},
+				{id: 3, title: 'Item three'},
+			],
+			itemsMax: 10,
 			searchPhrase: '',
 			isLoading: false,
 			isOrdering: false,
@@ -50,7 +48,8 @@ export default {
 	},
 	dataDesc: {
 		id: 'Used internally. Do not modify.',
-		collection: '`items`: Array containing items in the list. `maxItems:` count of total available items',
+		items: 'Array containing items in the list',
+		itemsMax: 'Count of total available items according to get params',
 		activeFilters: 'Modifying this property will automatically trigger a `GET` request if an `apiPath` is set.',
 		searchPhrase: 'Modifying this property will automatically trigger a `GET` request if an `apiPath` is set.',
 		isLoading: '',

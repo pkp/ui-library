@@ -4,6 +4,8 @@ import WithRadio from './WithRadio.vue';
 import WithSelectAll from './WithSelectAll.vue';
 import SelectSubmissionsListPanel from './implementations/ExampleSelectSubmissionsListPanel.vue';
 import SelectSubmissionsListPanelRaw from '!!raw-loader!@/components/SelectListPanel/submissions/SelectSubmissionsListPanel.vue';
+import SelectReviewerListPanel from './implementations/ExampleSelectReviewerListPanel.vue';
+import SelectReviewerListPanelRaw from '!!raw-loader!@/components/SelectListPanel/users/SelectReviewerListPanel.vue';
 
 export default {
 	baseData: function () {
@@ -23,7 +25,7 @@ export default {
 		inputName: 'Name of the input field for selection: `<input name="inputName">`',
 		inputType: 'Type of input field. Supports `checkbox` or `radio`. Default: `checkbox`.',
 		selected: 'Array of selected item ids.',
-		showSelectAll: 'Add a checkbox to select all items in the collection.',
+		showSelectAll: 'Add a checkbox to select all items.',
 		initializeAllSelected: 'Select all items when the component is created.',
 	}),
 	examples: {
@@ -43,6 +45,11 @@ export default {
 			label: 'SelectSubmissionsListPanel',
 			component: SelectSubmissionsListPanel,
 			componentRaw: SelectSubmissionsListPanelRaw,
+		},
+		'SelectReviewerListPanel': {
+			label: 'SelectReviewerListPanel',
+			component: SelectReviewerListPanel,
+			componentRaw: SelectReviewerListPanelRaw,
 		},
 	},
 };

@@ -18,7 +18,7 @@
 			<div class="pkpListPanel__content">
 				<ul class="pkpListPanel__items" aria-live="polite">
 					<select-list-panel-item
-						v-for="item in collection.items"
+						v-for="item in items"
 						:key="item.id"
 						:item="item"
 						:inputName="inputName"
@@ -62,7 +62,7 @@ export default {
 		 * @return bool
 		 */
 		selectAllChecked: function () {
-			return this.collection.items.length && this.selected.length === this.collection.items.length;
+			return this.items.length && this.selected.length === this.items.length;
 		},
 	},
 	methods: {
@@ -99,7 +99,7 @@ export default {
 		 * Select all items in the list
 		 */
 		selectAll: function () {
-			this.selected = this.collection.items.map(item => item.id);
+			this.selected = this.items.map(item => item.id);
 		},
 
 		/**

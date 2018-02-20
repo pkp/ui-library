@@ -14,7 +14,7 @@
 						{{ localize(item.fullTitle) }}
 					</div>
 					<div v-if="notice" class="pkpListPanelItem--submission__activity">
-						<span class="fa fa-exclamation-triangle pkpIcon--inline" aria-hidden="true"></span>
+						<icon icon="exclamation-triangle" :inline="true" />
 						{{ notice }}
 					</div>
 				</div>
@@ -41,34 +41,27 @@
 			</div>
 			<div v-else class="pkpListPanelItem--submission__stage">
 				<div class="pkpListPanelItem--submission__stageRow">
-					<span
-						class="pkpBadge pkpBadge--dot pkpBadge--button"
-						:class="stageBadgeClass"
+					<badge
+						isButton="true"
+						:label="currentStageDescription"
+						:stage="currentStage"
 						@click="filterByStage(activeStage.id)"
 					>
-						<template v-if="item.status.id === 3 || item.status.id === 4">
-							{{ item.status.label }}
-						</template>
-						<template v-else-if="item.submissionProgress > 0">
-							{{ i18n.incomplete }}
-						</template>
-						<template v-else>
-							{{ activeStage.label }}
-						</template>
-					</span>
+						{{ currentStageLabel }}
+					</badge>
 					<!-- use aria-hidden on these details because the information can be
 						more easily acquired by screen readers from the details panel. -->
 					<div class="pkpListPanelItem--submission__flags" aria-hidden="true">
 						<span v-if="isReviewStage"  class="pkpListPanelItem--submission__flags--reviews">
-							<span class="fa fa-user-o pkpIcon--inline"></span>
+							<icon icon="user-o" :inline="true" />
 							{{ completedReviewsCount }}/{{ currentReviewAssignments.length }}
 						</span>
 						<span v-if="activeStage.files.count" class="pkpListPanelItem--submission__flags--files">
-							<span class="fa fa-file-text-o pkpIcon--inline"></span>
+							<icon icon="file-text-o" :inline="true" />
 							{{ activeStage.files.count }}
 						</span>
 						<span v-if="openQueryCount" class="pkpListPanelItem--submission__flags--discussions">
-							<span class="fa fa-comment-o pkpIcon--inline"></span>
+							<icon icon="comment-o" :inline="true" />
 							{{ openQueryCount }}
 						</span>
 					</div>
@@ -79,48 +72,62 @@
 				@click="toggleExpanded"
 				class="pkpListPanelItem__expander"
 			>
-				<span v-if="isExpanded" class="fa fa-angle-up" aria-hidden="true"></span>
-				<span v-else class="fa fa-angle-down" aria-hidden="true"></span>
-				<span class="-screenReader"></span>
+				<icon v-if="isExpanded" icon="angle-up" />
+				<icon v-else icon="angle-down" />
+				<span v-if="isExpanded" class="-screenReader">{{ __('viewLess', {name: item.authorString}) }}</span>
+				<span v-else class="-screenReader">{{ __('viewMore', {name: item.authorString}) }}</span>
 			</button>
 		</div>
 		<div
 			v-if="isExpanded"
 			class="pkpListPanelItem__details pkpListPanelItem__details--submission"
 		>
-			<div v-if="!item.submissionProgress" class="pkpListPanelItem--submission__stageDetails">
-				<div v-if="isReviewStage"  class="pkpListPanelItem--submission__stageDetailsItem">
-					<span class="pkpListPanelItem--submission__stageDetailsItemCount">
-						<span class="fa fa-user-o pkpIcon--inline" aria-hidden="true"></span>
+			<list v-if="!item.submissionProgress">
+				<list-item v-if="isReviewStage">
+					<template slot="value">
+						<icon icon="user-o" :inline="true" />
 						{{ completedReviewsCount }}/{{ currentReviewAssignments.length }}
-					</span>
+					</template>
 					{{ i18n.reviewsCompleted }}
-				</div>
-				<div v-if="!isSubmissionStage" class="pkpListPanelItem--submission__stageDetailsItem">
-					<span class="pkpListPanelItem--submission__stageDetailsItemCount">
-						<span class="fa fa-file-text-o pkpIcon--inline" aria-hidden="true"></span>
+				</list-item>
+				<list-item v-if="!isSubmissionStage">
+					<template slot="value">
+						<icon icon="file-text-o" :inline="true" />
 						{{ activeStage.files.count }}
-					</span>
+					</template>
 					{{ activeStageFilesLabel }}
-				</div>
-				<div class="pkpListPanelItem--submission__stageDetailsItem">
-					<span class="pkpListPanelItem--submission__stageDetailsItemCount">
-						<span class="fa fa-comment-o pkpIcon--inline" aria-hidden="true"></span>
+				</list-item>
+				<list-item>
+					<template slot="value">
+						<icon icon="comment-o" :inline="true" />
 						{{ openQueryCount }}
-					</span>
+					</template>
 					{{ i18n.discussions }}
-				</div>
-			</div>
+				</list-item>
+			</list>
 			<div class="pkpListPanelItem--submission__actions">
-				<a :href="item.urlWorkflow" class="pkpButton" @focus="focusItem" @blur="blurItem">
-					{{ i18n.viewSubmission }}
-				</a>
-				<button v-if="currentUserCanViewInfoCenter" class="pkpButton" @click.prevent="openInfoCenter" @focus="focusItem" @blur="blurItem">
-					{{ i18n.infoCenter }}
-				</button>
-				<button v-if="currentUserCanDelete" class="pkpButton -isWarnable" @click.prevent="deleteSubmissionPrompt" @focus="focusItem" @blur="blurItem">
-					{{ i18n.delete }}
-				</button>
+				<pkp-button
+					element="a"
+					:href="item.urlWorkflow"
+					:label="i18n.viewSubmission"
+					@focus="focusItem"
+					@blur="blurItem"
+				/>
+				<pkp-button
+					v-if="currentUserCanViewInfoCenter"
+					:label="i18n.infoCenter"
+					@click="openInfoCenter"
+					@focus="focusItem"
+					@blur="blurItem"
+				/>
+				<pkp-button
+					v-if="currentUserCanDelete"
+					:label="i18n.delete"
+					:isWarnable="true"
+					@click="deleteSubmissionPrompt"
+					@focus="focusItem"
+					@blur="blurItem"
+				/>
 			</div>
 		</div>
 		<div class="pkpListPanelItem__mask" :class="classMask">
@@ -145,10 +152,22 @@
 
 <script>
 import ListPanelItem from '@/components/ListPanel/ListPanelItem.vue';
+import List from '@/components/List/List.vue';
+import ListItem from '@/components/List/ListItem.vue';
+import Badge from '@/components/Badge/Badge.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
 
 export default {
 	extends: ListPanelItem,
 	name: 'SubmissionsListItem',
+	components: {
+		List,
+		ListItem,
+		Badge,
+		PkpButton,
+		Icon,
+	},
 	props: ['item', 'i18n', 'apiPath', 'infoUrl'],
 	data: function () {
 		return {
@@ -287,23 +306,46 @@ export default {
 		},
 
 		/**
-		 * Get the pkpBadge class name to use for this stage
+		 * Get the current stage to pass to pkpBadge
 		 *
 		 * @return string
 		 */
-		stageBadgeClass: function () {
+		currentStage: function () {
 			switch (this.activeStage.id) {
 				case pkp.const.WORKFLOW_STAGE_ID_SUBMISSION:
-					return 'pkpBadge--submission';
+					return 'submission';
 				case pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW:
 				case pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW:
-					return 'pkpBadge--review';
+					return 'review';
 				case pkp.const.WORKFLOW_STAGE_ID_EDITING:
-					return 'pkpBadge--copyediting';
+					return 'copyediting';
 				case pkp.const.WORKFLOW_STAGE_ID_PRODUCTION:
-					return 'pkpBadge--production';
+					return 'production';
 			}
 			return '';
+		},
+
+		/**
+		 * Get the label for the current stage
+		 *
+		 * @return string
+		 */
+		currentStageLabel: function () {
+			if (this.item.status.id === 3 || this.item.status.id === 4) {
+				return this.item.status.label;
+			} else if (this.item.submissionProgress > 0) {
+				return this.i18n.incomplete;
+			}
+			return this.activeStage.label;
+		},
+
+		/**
+		 * Get an a11y description for the current stage badge
+		 *
+		 * @return string
+		 */
+		currentStageDescription: function () {
+			return this.__('currentStage', {stage: this.currentStageLabel});
 		},
 
 		/**
@@ -663,46 +705,6 @@ export default {
 // Details panel
 .pkpListPanelItem__details--submission {
 	padding: 1em (@base * 3) 1em 62px;
-}
-
-.pkpListPanelItem--submission__stageDetails {
-	border-top: @grid-border;
-	box-shadow: 0 1px 1px rgba(0,0,0,0.2);
-	border-radius: @radius;
-}
-
-.pkpListPanelItem--submission__stageDetailsItem {
-	position: relative;
-	padding: 1em;
-	padding-left: 6.5em;
-	border-bottom: @grid-border;
-
-	&:before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 5.5em;
-		width: 0;
-		height: 100%;
-		border-right: @grid-border;
-	}
-
-	&:last-child {
-		border-bottom: none;
-	}
-}
-
-.pkpListPanelItem--submission__stageDetailsItemCount {
-	position: absolute;
-	top: 50%;
-	left: 1em;
-	transform: translateY(-50%);
-	width: 6.5em;
-
-	.fa {
-		color: @text-light;
-		min-width: 1.25em;
-	}
 }
 
 .pkpListPanelItem--submission__actions {
