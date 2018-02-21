@@ -5,7 +5,7 @@
 		</div>
 		<ul class="pkpListPanel__items" aria-live="polite">
 			<list-panel-item
-				v-for="item in collection.items"
+				v-for="item in items"
 				:key="item.id"
 				:item="item"
 			/>
@@ -13,7 +13,7 @@
 		<div class="pkpListPanel__footer -pkpClearfix">
 			<list-panel-count
 				:count="itemCount"
-				:total="this.collection.maxItems"
+				:total="this.itemsMax"
 				:i18n="i18n"
 			/>
 		</div>

@@ -22,12 +22,14 @@
 						<router-link :to="example.url">{{ example.label }}</router-link>
 					</li>
 				</ul>
-				<h2 class="pkpul-component__examples-title">Implementations</h2>
-				<ul class="pkpul-component__examples-list">
-					<li v-for="implementation in implementationsList" class="pkpul-component__examples-list-item">
-						<router-link :to="implementation.url">{{ implementation.label }}</router-link>
-					</li>
-				</ul>
+				<template v-if="implementationsList.length">
+					<h2 class="pkpul-component__examples-title">Implementations</h2>
+					<ul class="pkpul-component__examples-list">
+						<li v-for="implementation in implementationsList" class="pkpul-component__examples-list-item">
+							<router-link :to="implementation.url">{{ implementation.label }}</router-link>
+						</li>
+					</ul>
+				</template>
 			</div>
 			<div class="pkpul-component__details">
 				<div class="pkpul-component__preview">
@@ -36,7 +38,27 @@
 				<div class="pkpul-component__markup">
 					<pre class="pkpul-component__markupCode">{{ componentMarkup }}</pre>
 				</div>
-				<div class="pkpul-component__data">
+
+				<div v-if="componentHasProps" class="pkpul-component__data">
+					<h2 class="pkpul-component__heading">Props</h2>
+					<table class="pkpul-component__table">
+						<tr>
+							<th>Key</th>
+							<th>Type</th>
+							<th>Value in Example</th>
+							<th>Notes</th>
+						</tr>
+						<tr v-for="prop in this.componentProps">
+							<td>{{ prop.key }}</td>
+							<td>{{ prop.type }}</td>
+							<td>
+								<pre>{{ prop.currentVal }}</pre>
+							</td>
+							<td v-html="config.propDescription[prop.key]" class="pkpul-component__dataDesc"></td>
+						</tr>
+					</table>
+				</div>
+				<div v-if="componentHasData" class="pkpul-component__data">
 					<h2 class="pkpul-component__heading">Data</h2>
 					<table class="pkpul-component__table">
 						<tr>
@@ -49,7 +71,8 @@
 							<td>{{ data.key }}</td>
 							<td>{{ data.type }}</td>
 							<td>
-								<pre>{{ data.currentVal }}</pre></td>
+								<pre>{{ data.currentVal }}</pre>
+							</td>
 							<td v-html="config.dataDesc[data.key]" class="pkpul-component__dataDesc"></td>
 						</tr>
 					</table>
@@ -84,20 +107,59 @@ export default {
 				}
 			}
 			cmp = ComponentExamples[this.componentName].component;
-			cmp.data = this.config.baseData;
+			if (this.config.baseData) {
+				cmp.data = this.config.baseData;
+			}
 			return cmp;
 		},
 		componentData: function () {
-			var cmp = new Vue(this.componentType);
-			var componentData = {};
-			for (var key in cmp.$data) {
-				componentData[key] = {
-					key: key,
-					type: cmp.$data[key] === null ? 'null' : typeof cmp.$data[key],
-					currentVal: cmp.$data[key],
-				};
+			let componentData = {};
+			/**
+			* Pull's data from the component. Works in general except when the
+			* component is a view wrapper (used for components which need to take
+			* props).
+			*/
+			if (!this.config.viewComponent) {
+				let cmp = new Vue(this.componentType);
+				for (let key in cmp.$data) {
+					componentData[key] = {
+						key: key,
+						type: cmp.$data[key] === null ? 'null' : typeof cmp.$data[key],
+						currentVal: cmp.$data[key],
+					};
+				}
 			}
 			return componentData;
+		},
+		componentHasData: function () {
+			return !!Object.keys(this.componentData).length;
+		},
+		/**
+		 * When a component needs to be passed props, it should be wrapped in a
+		 * viewComponent referenced in it's example's data.js file. We read the
+		 * data from the viewComponent as props.
+		 */
+		componentProps: function () {
+			let componentProps = {};
+			let cmp;
+			if (this.config.viewComponent) {
+				if (this.exampleName && this.config.examples[this.exampleName]) {
+					cmp = new Vue(this.config.examples[this.exampleName].component);
+				} else {
+					cmp = new Vue(this.config.viewComponent);
+				}
+				for (let key in cmp.$data) {
+					componentProps[key] = {
+						key: key,
+						type: cmp.$data[key] === null ? 'null' : typeof cmp.$data[key],
+						currentVal: cmp.$data[key],
+					};
+				}
+			}
+			return componentProps;
+		},
+		componentHasProps: function () {
+			return !!Object.keys(this.componentProps).length;
 		},
 		componentMarkup: function () {
 			var file = '';
@@ -186,6 +248,10 @@ export default {
 	border-left: 1px solid #ddd;
 	padding-top: 2rem;
 	padding-left: 2rem;
+}
+
+.pkpul-component__details {
+	flex-grow: 1;
 }
 
 .pkpul-component__examples-title {
@@ -321,17 +387,30 @@ export default {
 .pkpul-component__notes {
 	line-height: 2em;
 
-	h2,
+	h2 {
+		margin-top: 3em;
+		margin-bottom: 0;
+
+		+ p {
+			margin-top: 1em;
+		}
+	}
+
 	h3,
 	h4,
 	h5,
 	h6 {
-		margin-top: 4em;
+		margin-top: 2em;
 		margin-bottom: 0;
+
+		+ p {
+			margin-top: 0em;
+		}
 	}
 
 	p {
 		margin: 2em 0;
+		max-width: 50em;
 	}
 
 	pre,

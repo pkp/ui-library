@@ -1,7 +1,7 @@
 <template>
 	<div class="pkpListPanel__filter pkpListPanel__filter--submissions" :class="{'-isVisible': isVisible}" :aria-hidden="!isVisible">
 		<div class="pkpListPanel__filterHeader pkpListPanel__filterHeader--submissions" tabindex="0">
-			<span class="fa fa-filter pkpIcon--inline" aria-hidden="true"></span>
+			<icon icon="filter" :inline="true" />
 			{{ i18n.filter }}
 		</div>
 		<div class="pkpListPanel__filterOptions pkpListPanel__filterOptions--submissions">
@@ -23,7 +23,7 @@
 							class="pkpListPanel__filterRemove"
 							@click.prevent.stop="clearFilter(filterItem.param, filterItem.val)"
 						>
-							<span class="fa fa-times-circle-o" aria-hidden="true"></span>
+							<icon icon="times-circle-o" />
 							<span class="-screenReader">{{ __('filterRemove', {filterTitle: filterItem.title}) }}</span>
 						</button>
 					</li>
@@ -35,10 +35,14 @@
 
 <script>
 import ListPanelFilter from '@/components/ListPanel/ListPanelFilter.vue';
+import Icon from '@/components/Icon/Icon.vue';
 
 export default {
 	extends: ListPanelFilter,
 	name: 'SubmissionsListFilter',
+	components: {
+		Icon,
+	},
 	props: ['isVisible', 'filters', 'i18n'],
 	methods: {
 		/**

@@ -1,22 +1,27 @@
 <template>
 	<div class="pkpListPanelItem__orderer">
 		<button tabindex="-1" class="pkpListPanelItem__ordererDragDrop">
-			<span class="fa fa-sort" aria-hidden="true"></span>
+			<icon icon="sort" />
 		</button>
 		<button class="pkpListPanelItem__ordererUp" @click.prevent="orderUp">
-			<span class="fa fa-angle-up" aria-hidden="true"></span>
+			<icon icon="angle-up" />
 			<span class="-screenReader">{{ __('itemOrdererUp', {itemTitle: itemTitle}) }}</span>
 		</button>
 		<button class="pkpListPanelItem__ordererDown" @click.prevent="orderDown">
-			<span class="fa fa-angle-down" aria-hidden="true"></span>
+			<icon icon="angle-down" />
 			<span class="-screenReader">{{ __('itemOrdererDown', {itemTitle: itemTitle}) }}</span>
 		</button>
 	</div>
 </template>
 
 <script>
+import Icon from '@/components/Icon/Icon.vue';
+
 export default {
 	name: 'ListPanelItemOrderer',
+	components: {
+		Icon,
+	},
 	props: ['i18n', 'itemTitle'],
 	methods: {
 		/**

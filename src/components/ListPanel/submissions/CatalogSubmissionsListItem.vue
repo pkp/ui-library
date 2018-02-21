@@ -21,17 +21,26 @@
 				</div>
 			</a>
 			<div class="pkpListPanelItem__actions">
-				<button class="pkpButton -isLink" @click.prevent="viewCatalogEntry" @focus="focusItem" @blur="blurItem">
-					{{ i18n.editCatalogEntry }}
-				</button>
-				<a class="pkpButton -isLink" :href="item.urlWorkflow" @focus="focusItem" @blur="blurItem">
-					{{ i18n.viewSubmission }}
-				</a>
+				<pkp-button
+					:label="i18n.editCatalogEntry"
+					:isLink="true"
+					@click="viewCatalogEntry"
+					@focus="focusItem"
+					@blur="blurItem"
+				/>
+				<pkp-button
+					element="a"
+					:href="item.urlWorkflow"
+					:label="i18n.viewSubmission"
+					:isLink="true"
+					@focus="focusItem"
+					@blur="blurItem"
+				/>
 			</div>
 		</div>
 		<button class="pkpListPanelItem__selectItem pkpListPanelItem__selectItem--catalog" @click.prevent="toggleFeatured" @focus="focusItem" @blur="blurItem">
-			<span v-if="isFeatured" class="fa fa-check-square-o"></span>
-			<span v-else class="fa fa-square-o"></span>
+			<icon v-if="isFeatured" icon="check-square-o" />
+			<icon v-else icon="square-o" />
 			<span class="-screenReader">
 				<template v-if="isFeatured">
 					This monograph is featured. Make this monograph not featured.
@@ -42,8 +51,8 @@
 			</span>
 		</button>
 		<button class="pkpListPanelItem__selectItem pkpListPanelItem__selectItem--catalog" @click.prevent="toggleNewRelease" @focus="focusItem" @blur="blurItem">
-			<span v-if="isNewRelease" class="fa fa-check-square-o"></span>
-			<span v-else class="fa fa-square-o"></span>
+			<icon v-if="isNewRelease" icon="check-square-o" />
+			<icon v-else icon="square-o" />
 			<span class="-screenReader">
 				<template v-if="isNewRelease">
 					This monograph is a new release. Make this monograph not a new release.
@@ -66,6 +75,8 @@
 
 <script>
 import SubmissionsListItem from '@/components/ListPanel/submissions/SubmissionsListItem.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
 import ListPanelItemOrderer from '@/components/ListPanel/ListPanelItemOrderer.vue';
 
 export default {
@@ -73,6 +84,8 @@ export default {
 	name: 'CatalogSubmissionsListItem',
 	props: ['item', 'i18n', 'filterAssocType', 'filterAssocId', 'catalogEntryUrl', 'isOrdering', 'apiPath'],
 	components: {
+		PkpButton,
+		Icon,
 		ListPanelItemOrderer,
 	},
 	data: function () {
@@ -248,7 +261,7 @@ export default {
 	}
 }
 
-.pkpListPanelItem__actions .pkpButton.-isLink:first-child {
-	padding-left: 0;
+.pkpListPanelItem__actions .pkpButton--isLink:first-child {
+	margin-left: -0.5em;
 }
 </style>

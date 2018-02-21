@@ -5,7 +5,7 @@
 		</div>
 		<ul class="pkpListPanel__items" aria-live="polite">
 			<expandable-list-panel-item
-				v-for="item in collection.items"
+				v-for="item in items"
 				:key="item.id"
 				:item="item"
 				:i18n="i18n"
@@ -30,8 +30,8 @@ export default {
 			id: 'ListPanelWithExpander',
 			i18n: {
 				title: 'List Panel with Expander',
-				viewMore: 'Show more details about this item',
-				viewLess: 'Hide expanded details about this item',
+				viewMore: 'Show more details about {$name}',
+				viewLess: 'Hide expanded details about {$name}',
 			},
 		});
 	},

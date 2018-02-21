@@ -15,31 +15,29 @@ export default {
 		return {
 			id: 'ExampleSelectSubmissionsListPanel',
 			inputName: 'exampleSelectSubmission',
-			collection: {
-				items: [
-					BaseSubmissionObject,
-					{
-						...BaseSubmissionObject,
-						id: 2,
-						fullTitle: {
-							en_US: 'Quisque vel ultrices ut vel sollicitudin vel varius suscipit phasellus',
-						},
-						authorString: 'Catherine Kwantes',
-						urlWorkflow: '/workflow/access/2',
+			items: [
+				BaseSubmissionObject,
+				{
+					...BaseSubmissionObject,
+					id: 2,
+					fullTitle: {
+						en_US: 'Quisque vel ultrices ut vel sollicitudin vel varius suscipit phasellus',
 					},
-					{
-						...BaseSubmissionObject,
-						id: 3,
-						fullTitle: {
-							en_US: 'Metus ut elit est ultrices vivamus mauris est quisque arcu',
-						},
-						authorString: 'Domatilia Sokoloff',
-						urlWorkflow: '/workflow/access/3',
-						urlPublished: '/article/view/3',
+					authorString: 'Catherine Kwantes',
+					urlWorkflow: '/workflow/access/2',
+				},
+				{
+					...BaseSubmissionObject,
+					id: 3,
+					fullTitle: {
+						en_US: 'Metus ut elit est ultrices vivamus mauris est quisque arcu',
 					},
-				],
-				maxItems: 10,
-			},
+					authorString: 'Domatilia Sokoloff',
+					urlWorkflow: '/workflow/access/3',
+					urlPublished: '/article/view/3',
+				},
+			],
+			itemsMax: 10,
 			i18n: {
 				id: 'ID',
 				title: 'Example Select Submissions List',

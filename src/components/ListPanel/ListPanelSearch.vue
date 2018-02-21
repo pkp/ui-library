@@ -9,7 +9,7 @@
 				:placeholder="i18n.search"
 			>
 			<span class="pkpListPanel__searchIcons">
-				<span class="pkpListPanel__searchIcons--search fa fa-search" aria-hidden="true"></span>
+				<icon icon="search" :inline="true" class="pkpListPanel__searchIcons--search" />
 			</span>
 		</label>
 		<button class="pkpListPanel__searchClear"
@@ -17,17 +17,21 @@
 			@click.prevent="clearSearchPhrase"
 			:aria-controls="inputId"
 		>
-			<span class="fa fa-times" aria-hidden="true"></span>
+			<icon icon="times" />
 			<span class="-screenReader">{{ i18n.clearSearch }}</span>
 		</button>
 	</div>
 </template>
 
 <script>
+import Icon from '@/components/Icon/Icon.vue';
 import debounce from 'debounce';
 
 export default {
 	name: 'ListPanelSearch',
+	components: {
+		Icon,
+	},
 	props: ['searchPhrase', 'i18n'],
 	computed: {
 		inputId: function () {
