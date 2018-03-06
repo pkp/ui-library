@@ -11,7 +11,7 @@
 						{{ item.authorString }}
 					</div>
 					<div class="pkpListPanelItem--submission__title">
-						{{ localize(item.fullTitle) }}
+						{{ localizeSubmission(item.fullTitle, item.locale) }}
 					</div>
 					<div v-if="notice" class="pkpListPanelItem--submission__activity">
 						<span class="fa fa-exclamation-triangle pkpIcon--inline" aria-hidden="true"></span>
@@ -145,10 +145,12 @@
 
 <script>
 import ListPanelItem from '@/components/ListPanel/ListPanelItem.vue';
+import LocalizeSubmission from '@/mixins/localizeSubmission.js';
 
 export default {
 	extends: ListPanelItem,
 	name: 'SubmissionsListItem',
+	mixins: [LocalizeSubmission],
 	props: ['item', 'i18n', 'apiPath', 'infoUrl'],
 	data: function () {
 		return {
