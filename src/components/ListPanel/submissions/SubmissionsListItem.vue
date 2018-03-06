@@ -11,7 +11,7 @@
 						{{ item.authorString }}
 					</div>
 					<div class="pkpListPanelItem--submission__title">
-						{{ localize(item.fullTitle) }}
+						{{ localizeSubmission(item.fullTitle, item.locale) }}
 					</div>
 					<div v-if="notice" class="pkpListPanelItem--submission__activity">
 						<icon icon="exclamation-triangle" :inline="true" />
@@ -157,10 +157,12 @@ import ListItem from '@/components/List/ListItem.vue';
 import Badge from '@/components/Badge/Badge.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
+import LocalizeSubmission from '@/mixins/localizeSubmission.js';
 
 export default {
 	extends: ListPanelItem,
 	name: 'SubmissionsListItem',
+	mixins: [LocalizeSubmission],
 	components: {
 		List,
 		ListItem,

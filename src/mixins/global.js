@@ -49,7 +49,10 @@ export default {
 		 *
 		 * It will search for the current locale value. If there's no value for the
 		 * current locale, it will revert to the primary locale. If there's still
-		 * no match, it will return an empty string.
+		 * no match, it will return the first available value or an empty string.
+		 *
+		 * This method mimics the DataObject::getLocalizedData() method from the
+		 * PHP backend.
 		 *
 		 * This can be used in templates like this:
 		 *
@@ -60,7 +63,7 @@ export default {
 		 * {{ localize(fullTitle, 'fr_CA') }}
 		 *
 		 * @param object localizedString Key/value hash storing one string per locale
-		 * @param string locale Optional. The locale to search for.
+		 * @param string requestedLocale Optional. Request a specific locale
 		 * @return string
 		 */
 		localize: function (localizedString, requestedLocale) {
@@ -68,11 +71,18 @@ export default {
 				return '';
 			}	else if (requestedLocale !== undefined) {
 				return localizedString.hasOwnProperty(requestedLocale) ? localizedString[requestedLocale] : '';
-			} else if (localizedString.hasOwnProperty($.pkp.app.currentLocale)) {
+			} else if (localizedString.hasOwnProperty($.pkp.app.currentLocale) && localizedString[$.pkp.app.currentLocale]) {
 				return localizedString[$.pkp.app.currentLocale];
-			} else if (localizedString.hasOwnProperty($.pkp.app.primaryLocale)) {
+			} else if (localizedString.hasOwnProperty($.pkp.app.primaryLocale) && localizedString[$.pkp.app.primaryLocale]) {
 				return localizedString[$.pkp.app.primaryLocale];
 			}
+
+			for (var key in localizedString) {
+				if (localizedString[key]) {
+					return localizedString[key];
+				}
+			}
+
 			return '';
 		},
 
