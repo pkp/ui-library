@@ -104,6 +104,9 @@
 					</template>
 					{{ i18n.discussions }}
 				</list-item>
+				<list-item v-if="dualWorkflowLinks">
+					<span v-html="dualWorkflowLinks" />
+				</list-item>
 			</list>
 			<div class="pkpListPanelItem--submission__actions">
 				<pkp-button
@@ -191,9 +194,9 @@ export default {
 		 * @return bool
 		 */
 		currentUserCanDelete: function () {
-			if (pkp.userHasRole(['manager', 'siteAdmin'])) {
+			if (!this.userAssignedRole(pkp.const.ROLE_ID_AUTHOR) && this.userAssignedRole([pkp.const.ROLE_ID_MANAGER, pkp.const.ROLE_ID_SITE_ADMIN])) {
 				return true;
-			} else if (pkp.userHasRole('author') && this.item.submissionProgress !== 0) {
+			} else if (this.userAssignedRole(pkp.const.ROLE_ID_AUTHOR) && this.item.submissionProgress !== 0) {
 				return true;
 			}
 			return false; // @todo
@@ -205,7 +208,7 @@ export default {
 		 * @return bool
 		 */
 		currentUserCanViewInfoCenter: function () {
-			return pkp.userHasRole(['manager', 'subeditor', 'assistant']);
+			return this.userAssignedRole([pkp.const.ROLE_ID_MANAGER, pkp.const.ROLE_ID_SUB_EDITOR, pkp.const.ROLE_ID_ASSISTANT]);
 		},
 
 		/**
@@ -247,7 +250,7 @@ export default {
 			var notice = '';
 
 			// Notices for journal managers
-			if (pkp.userHasRole('manager')) {
+			if (this.userAssignedRole(pkp.const.ROLE_ID_MANAGER)) {
 				if (this.activeStage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION) {
 					switch (this.activeStage.statusId) {
 						case pkp.const.STAGE_STATUS_SUBMISSION_UNASSIGNED:
@@ -258,7 +261,7 @@ export default {
 			}
 
 			// Notices for journal managers and subeditors
-			if (pkp.userHasRole(['manager', 'subeditor'])) {
+			if (this.userAssignedRole([pkp.const.ROLE_ID_MANAGER, pkp.const.ROLE_ID_SUB_EDITOR])) {
 				if (this.isReviewStage) {
 					switch (this.activeStage.statusId) {
 						case pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWERS:
@@ -282,7 +285,7 @@ export default {
 			}
 
 			// Notices for authors
-			if (pkp.userHasRole(['author'])) {
+			if (this.userAssignedRole(pkp.const.ROLE_ID_AUTHOR)) {
 				if (this.isReviewStage) {
 					switch (this.activeStage.statusId) {
 						case pkp.const.REVIEW_ROUND_STATUS_REVISIONS_REQUESTED:
@@ -396,6 +399,40 @@ export default {
 		 */
 		isReviewStage: function () {
 			return this.activeStage.id === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW || this.activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW;
+		},
+
+		/**
+		 * Retrieve all role assignments for any stage
+		 *
+		 * @return array
+		 */
+		currentRoleAssignments: function () {
+			let roles = [];
+			this.item.stages.forEach((stage) => {
+				stage.currentUserAssignedRoles.forEach((role) => {
+					if (roles.indexOf(role) === -1) {
+						roles.push(role);
+					}
+				});
+			});
+			return roles;
+		},
+
+		/**
+		 * If the user is assigned to more than one role, and has access to both the
+		 * editorial and author dashboards, provide a description and links to both.
+		 *
+		 * @return string
+		 */
+		dualWorkflowLinks: function () {
+			if (!this.userAssignedRole(pkp.const.ROLE_ID_AUTHOR) ||
+					!this.userAssignedRole([pkp.const.ROLE_ID_MANAGER, pkp.const.ROLE_ID_SUB_EDITOR, pkp.const.ROLE_ID_ASSISTANT])) {
+				return '';
+			}
+			return this.__('dualWorkflowLinks', {
+				urlAuthorWorkflow: this.item.urlAuthorWorkflow,
+				urlEditorialWorkflow: this.item.urlEditorialWorkflow,
+			});
 		},
 
 		/**
@@ -515,6 +552,31 @@ export default {
 		},
 	},
 	methods: {
+
+		/**
+		 * Check if a user is assigned a given role on this submission. If no
+		 * assignments exist, match global roles for site admin and manager
+		 *
+		 * @param roles int|array
+		 */
+		userAssignedRole: function (roles) {
+			if (!Array.isArray(roles)) {
+				roles = [roles];
+			}
+			if (this.currentRoleAssignments.length) {
+				return roles.some((role) => {
+					return this.currentRoleAssignments.includes(role);
+				});
+			} else {
+				var managerRoles = roles.filter((role) => {
+					return role === pkp.const.ROLE_ID_SITE_ADMIN || role === pkp.const.ROLE_ID_MANAGER;
+				});
+				if (managerRoles.length) {
+					return pkp.userHasRole(managerRoles);
+				}
+			}
+			return false;
+		},
 
 		/**
 		 * Filter by a submission stage

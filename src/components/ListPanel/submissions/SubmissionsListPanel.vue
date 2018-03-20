@@ -100,14 +100,14 @@ export default {
 		 * Can the current user filter the list?
 		 */
 		currentUserCanFilter: function () {
-			return pkp.userHasRole(['manager', 'subeditor', 'assistant']);
+			return pkp.userHasRole(['ROLE_ID_MANAGER', 'ROLE_ID_SUB_EDITOR', 'ROLE_ID_ASSISTANT']);
 		},
 
 		/**
 		 * Does the current user have a role which can create a new submission?
 		 */
 		currentUserCanAddSubmission: function () {
-			return pkp.userHasRole(['manager', 'subeditor', 'assistant', 'author']);
+			return pkp.userHasRole(['ROLE_ID_MANAGER', 'ROLE_ID_SUB_EDITOR', 'ROLE_ID_ASSISTANT', 'ROLE_ID_AUTHOR']);
 		},
 	},
 };
