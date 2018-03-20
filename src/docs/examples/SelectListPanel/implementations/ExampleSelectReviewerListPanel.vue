@@ -14,6 +14,7 @@ export default {
 			inputName: 'exampleSelectReviewer',
 			inputType: 'radio',
 			currentlyAssigned: [5],
+			warnOnAssignment: [7],
 			items: [
 				BaseReviewerObject,
 				{
@@ -123,6 +124,8 @@ export default {
 				averageCompletion: 'Average days to complete review',
 				neverAssigned: 'Never assigned',
 				currentlyAssigned: 'This reviewer has already been assigned to review this submission.',
+				warnOnAssign: "This reviewer is locked because they have been assigned a role which allows them to view the author's identity. Blind peer review can not be guaranteed. Would you like to unlock this reviewer anyway?",
+				warnOnAssignUnlock: 'Unlock',
 				reviewInterests: 'Reviewing Interests',
 				gossip: 'Editorial Notes',
 				biography: 'Biography',
