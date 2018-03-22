@@ -13,7 +13,10 @@
 					<div class="pkpListPanelItem--submission__title">
 						{{ localizeSubmission(item.fullTitle, item.locale) }}
 					</div>
-					<div v-if="notice" class="pkpListPanelItem--submission__activity">
+					<div v-if="reviewerWorkflowLink" class="pkpListPanelItem--submission__reviewerWorkflowLink">
+						<span v-html="reviewerWorkflowLink" />
+					</div>
+					<div v-else-if="notice" class="pkpListPanelItem--submission__activity">
 						<icon icon="exclamation-triangle" :inline="true" />
 						{{ notice }}
 					</div>
@@ -36,6 +39,10 @@
 						<div :id="reviewDueLabelId" class="pkpListPanelItem--submission__dueDateLabel">
 							{{ i18n.reviewDue }}
 						</div>
+					</div>
+					<div v-if="currentUserLatestReviewAssignment.reviewComplete" class="pkpListPanelItem--submission__reviewComplete">
+						<icon icon="check" :inline="true" />
+						{{ i18n.reviewComplete }}
 					</div>
 				</a>
 			</div>
@@ -436,6 +443,22 @@ export default {
 		},
 
 		/**
+		 * If the user is assigned as a reviewer, but also to an editorial role,
+		 * provide a description and link to the editorial workflow.
+		 *
+		 * @return string
+		 */
+		reviewerWorkflowLink: function () {
+			if (!this.currentUserIsReviewer ||
+					!this.userAssignedRole([pkp.const.ROLE_ID_MANAGER, pkp.const.ROLE_ID_SUB_EDITOR, pkp.const.ROLE_ID_ASSISTANT])) {
+				return '';
+			}
+			return this.__('reviewerWorkflowLink', {
+				urlEditorialWorkflow: this.item.urlEditorialWorkflow,
+			});
+		},
+
+		/**
 		 * Retrieve the review assignments for the latest review round
 		 *
 		 * @return array
@@ -735,7 +758,8 @@ export default {
 	font-weight: @bold;
 }
 
-.pkpListPanelItem--submission__activity {
+.pkpListPanelItem--submission__activity,
+.pkpListPanelItem--submission__reviewerWorkflowLink {
 	margin-top: 0.5em;
 	font-size: @font-tiny;
 	line-height: 1.5em;
@@ -802,5 +826,9 @@ export default {
 .pkpListPanelItem--submission__dueDateLabel {
 	font-size: @font-tiny;
 	line-height: @line-tiny;
+}
+
+.pkpListPanelItem--submission__reviewComplete .fa {
+	color: @yes;
 }
 </style>
