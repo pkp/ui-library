@@ -97,6 +97,7 @@ export default {
 		 */
 		getApiUrl: function (endpoint) {
 			var apiBase;
+			var indexFile = $.pkp.app.restfulUrlsEnabled ? '' : 'index.php';
 			if ($.pkp.app.contextPath) {
 				apiBase = '/' + $.pkp.app.contextPath + $.pkp.app.apiBasePath;
 			} else {
@@ -104,11 +105,11 @@ export default {
 			}
 			if (!$.pkp.app.pathInfoEnabled) {
 				if ($.pkp.app.contextPath) {
-					return $.pkp.app.baseUrl + '/index.php?journal=' + encodeURIComponent($.pkp.app.contextPath) + '&endpoint=' + apiBase + '/' + endpoint;
+					return $.pkp.app.baseUrl + '/' + indexFile + '?journal=' + encodeURIComponent($.pkp.app.contextPath) + '&endpoint=' + apiBase + '/' + endpoint;
 				}
-				return $.pkp.app.baseUrl + '/index.php?endpoint=' + apiBase + '/' + endpoint;
+				return $.pkp.app.baseUrl + '/' + indexFile + '?endpoint=' + apiBase + '/' + endpoint;
 			}
-			return $.pkp.app.baseUrl + '/index.php' + apiBase + '/' + endpoint;
+			return $.pkp.app.baseUrl + '/' + indexFile + apiBase + '/' + endpoint;
 		},
 
 		/**
