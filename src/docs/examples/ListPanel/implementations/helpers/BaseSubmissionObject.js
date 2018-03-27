@@ -23,6 +23,7 @@ export default {
 			files: {
 				count: 0,
 			},
+			currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
 		},
 		{
 			id: 3,
@@ -32,6 +33,7 @@ export default {
 			files: {
 				count: 0,
 			},
+			currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
 		},
 		{
 			id: 4,
@@ -41,6 +43,7 @@ export default {
 			files: {
 				count: 0,
 			},
+			currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
 		},
 		{
 			id: 5,
@@ -50,6 +53,7 @@ export default {
 			files: {
 				count: 0,
 			},
+			currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
 		},
 	],
 	status: {

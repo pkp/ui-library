@@ -1,7 +1,7 @@
 <template>
 	<li class="pkpListPanelItem pkpListPanelItem--select pkpListPanelItem--selectReviewer" :class="classes">
 		<div class="pkpListPanelItem__summary pkpListPanelItem__summary--selectReviewer -pkpClearFix">
-			<div v-if="!isCurrentlyAssigned" class="pkpListPanelItem__selectItem" @click.self="toggle">
+			<div v-if="!isCurrentlyAssigned && !shouldWarnOnAssignment" class="pkpListPanelItem__selectItem" @click.self="toggle">
 				<input
 					v-if="inputType === 'radio'"
 					type="radio"
@@ -29,14 +29,14 @@
 				<div class="pkpListPanelItem--reviewer__header">
 					<div class="pkpListPanelItem--reviewer__fullName">
 						<badge
-							v-if="item.reviewsActive && !isCurrentlyAssigned"
+							v-if="item.reviewsActive && !isCurrentlyAssigned && !shouldWarnOnAssignment"
 							class="pkpListPanelItem--reviewer__active"
 						>
 							{{ __('activeReviews', {count: item.reviewsActive}) }}
 						</badge>
 						{{ item.fullName }}
 					</div>
-					<div v-if="item.reviewerRating !== null && !isCurrentlyAssigned" class="pkpListPanelItem--reviewer__rating">
+					<div v-if="item.reviewerRating !== null && !isCurrentlyAssigned && !shouldWarnOnAssignment" class="pkpListPanelItem--reviewer__rating">
 						<icon
 							v-for="(star, index) in stars"
 							:key="index"
@@ -60,7 +60,7 @@
 				</div>
 				<!-- use aria-hidden on these details because the information can be
 					more easily acquired by screen readers from the details panel. -->
-				<div v-if="!isCurrentlyAssigned" class="pkpListPanelItem--reviewer__brief" aria-hidden="true">
+				<div v-if="!isCurrentlyAssigned && !shouldWarnOnAssignment" class="pkpListPanelItem--reviewer__brief" aria-hidden="true">
 					<span class="pkpListPanelItem--reviewer__complete">
 						<icon icon="check-circle-o" :inline="true" />
 						{{ item.reviewsCompleted }}
@@ -75,12 +75,17 @@
 					</span>
 				</div>
 			</label>
-			<div v-if="isCurrentlyAssigned" class="pkpListPanelItem--reviewer__assignedNotice">
+			<div v-if="isCurrentlyAssigned" class="pkpListPanelItem--reviewer__notice">
 				<icon icon="exclamation-triangle" :inline="true" />
 				{{ i18n.currentlyAssigned }}
 			</div>
+			<div v-else-if="shouldWarnOnAssignment" class="pkpListPanelItem--reviewer__notice">
+				<icon icon="lock" :inline="true" />
+				{{ i18n.warnOnAssign }}
+				<button @click.prevent="unlockAssignment" class="pkpListPanelItem--reviewer__noticeAction">{{ i18n.warnOnAssignUnlock }}</button>
+			</div>
 			<button
-				v-if="!isCurrentlyAssigned"
+				v-if="!isCurrentlyAssigned && !shouldWarnOnAssignment"
 				@click="toggleExpanded"
 				class="pkpListPanelItem__expander"
 			>
@@ -171,10 +176,11 @@ export default {
 		List,
 		ListItem,
 	},
-	props: ['currentlyAssigned', 'i18n'],
+	props: ['currentlyAssigned', 'warnOnAssignment', 'i18n'],
 	data: function () {
 		return {
 			isExpanded: false,
+			isWarningBypassed: false,
 		};
 	},
 	computed: {
@@ -190,6 +196,9 @@ export default {
 			}
 			if (this.isCurrentlyAssigned) {
 				classes.push('pkpListPanelItem--selectReviewerAssigned');
+			}
+			if (this.shouldWarnOnAssignment) {
+				classes.push('pkpListPanelItem--selectReviewerWarned');
 			}
 
 			return classes;
@@ -260,6 +269,22 @@ export default {
 				}
 			}
 			return stars;
+		},
+
+		/**
+		 * Should this reviewer feature a warning about assigning them as a blind
+		 * reviewer?
+		 */
+		shouldWarnOnAssignment: function () {
+			return !this.isWarningBypassed && this.warnOnAssignment.includes(this.item.id);
+		},
+	},
+	methods: {
+		/**
+		 * Unlock a locked assignment
+		 */
+		unlockAssignment: function () {
+			this.isWarningBypassed = true;
 		},
 	},
 };
@@ -343,9 +368,24 @@ export default {
 }
 
 // Reviewers already assigned to this submission
-.pkpListPanelItem--reviewer__assignedNotice {
+.pkpListPanelItem--reviewer__notice {
 	padding: 0.5rem 0.5rem 1rem 4rem;
 	font-size: @font-tiny;
+}
+
+// Make the button look like a link
+.pkpListPanelItem--reviewer__noticeAction {
+	border: none;
+	padding: 0;
+	background: transparent;
+	color: @primary;
+	text-decoration: underline;
+	cursor: pointer;
+
+	&:hover,
+	&:focus {
+		color: @primary-lift;
+	}
 }
 
 .pkpListPanelItem--selectReviewerAssigned {
@@ -365,6 +405,13 @@ export default {
 			height: 100%;
 			cursor: not-allowed;
 		}
+	}
+}
+
+.pkpListPanelItem--selectReviewerWarned {
+
+	.pkpListPanelItem__item--reviewer {
+		padding-bottom: 0;
 	}
 }
 

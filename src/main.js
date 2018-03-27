@@ -14,13 +14,21 @@ window.pkp = {
 	/**
 	 * Dummy global function used by components
 	 */
-	userHasRole: function (role) {
+	userHasRole: function (roles) {
 		return true;
 	},
 	/**
 	 * Dummy constants required by components
 	 */
 	const: {
+		'ROLE_ID_MANAGER': 16,
+		'ROLE_ID_SITE_ADMIN': 1,
+		'ROLE_ID_AUTHOR': 65536,
+		'ROLE_ID_REVIEWER': 4096,
+		'ROLE_ID_ASSISTANT': 4097,
+		'ROLE_ID_READER': 1048576,
+		'ROLE_ID_SUB_EDITOR': 17,
+		'ROLE_ID_SUBSCRIPTION_MANAGER': 2097152,
 		'WORKFLOW_STAGE_ID_SUBMISSION': 1,
 		'WORKFLOW_STAGE_ID_INTERNAL_REVIEW': 2,
 		'WORKFLOW_STAGE_ID_EXTERNAL_REVIEW': 3,
