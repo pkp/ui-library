@@ -215,7 +215,7 @@ export default {
 		 * @return bool
 		 */
 		currentUserCanViewInfoCenter: function () {
-			return this.userAssignedRole([pkp.const.ROLE_ID_SITE_ADMIN, pkp.const.ROLE_ID_MANAGER, pkp.const.ROLE_ID_SUB_EDITOR, pkp.const.ROLE_ID_ASSISTANT]);
+			return this.userAssignedRole([pkp.const.ROLE_ID_SITE_ADMIN, pkp.const.ROLE_ID_MANAGER, pkp.const.ROLE_ID_SUB_EDITOR]);
 		},
 
 		/**
