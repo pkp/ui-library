@@ -47,6 +47,7 @@
 						:i18n="i18n"
 						:apiPath="apiPath"
 						:infoUrl="infoUrl"
+						:assignParticipantUrl="assignParticipantUrl"
 					/>
 				</ul>
 			</div>
@@ -93,6 +94,7 @@ export default {
 		return {
 			addUrl: '',
 			infoUrl: '',
+			assignParticipantUrl: '',
 		};
 	},
 	computed: {

@@ -19,6 +19,14 @@
 					<div v-else-if="notice" class="pkpListPanelItem--submission__activity">
 						<icon icon="exclamation-triangle" :inline="true" />
 						{{ notice }}
+						<button v-for="(noticeAction, index) in noticeActions"
+							class="-linkButton"
+							@click.stop.prevent="noticeAction"
+							@focus="focusItem"
+							@blur="blurItem"
+						>
+							{{ noticeActionLabels[index] }}
+						</button>
 					</div>
 				</div>
 			</a>
@@ -180,11 +188,13 @@ export default {
 		PkpButton,
 		Icon,
 	},
-	props: ['item', 'i18n', 'apiPath', 'infoUrl'],
+	props: ['item', 'i18n', 'apiPath', 'infoUrl', 'assignParticipantUrl'],
 	data: function () {
 		return {
 			isExpanded: false,
 			mask: null,
+			noticeActions: [],
+			noticeActionLabels: [],
 		};
 	},
 	computed: {
@@ -249,22 +259,18 @@ export default {
 		 * Only stage status' that have pending work for the current user should
 		 * result in a notice.
 		 *
-		 * @todo Set different notice priorities for different users. Current
-		 *  set up is for editors.
 		 * @return string
 		 */
 		notice: function () {
 			var notice = '';
+			this.noticeActions = [];
+			this.noticeActionLabels = [];
 
 			// Notices for journal managers
-			if (this.userAssignedRole(pkp.const.ROLE_ID_MANAGER)) {
-				if (this.activeStage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION) {
-					switch (this.activeStage.statusId) {
-						case pkp.const.STAGE_STATUS_SUBMISSION_UNASSIGNED:
-							notice = this.activeStage.status;
-							break;
-					}
-				}
+			if (this.shouldAssignEditor) {
+				notice = this.activeStage.status;
+				this.noticeActions.push(this.openAssignParticipant);
+				this.noticeActionLabels.push(this.i18n.assignEditor);
 			}
 
 			// Notices for journal managers and subeditors
@@ -315,6 +321,18 @@ export default {
 			}
 
 			return notice;
+		},
+
+		/**
+		 * Does this submission need an editor assigned and can the current user
+		 * assign one?
+		 *
+		 * @return boolean
+		 */
+		shouldAssignEditor: function () {
+			return this.userAssignedRole(pkp.const.ROLE_ID_MANAGER)	&&
+					this.activeStage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION &&
+					this.activeStage.statusId === pkp.const.STAGE_STATUS_SUBMISSION_UNASSIGNED;
 		},
 
 		/**
@@ -635,6 +653,32 @@ export default {
 		},
 
 		/**
+		 * Load a modal displaying the assign participant options
+		 */
+		openAssignParticipant: function () {
+
+			var opts = {
+				title: this.i18n.assignEditor,
+				url: this.assignParticipantUrl
+					.replace('__id__', this.item.id)
+					.replace('__stageId__', this.activeStage.id),
+				closeCallback: this.resetFocusAssignParticipant,
+			};
+
+			$('<div id="' + $.pkp.classes.Helper.uuid() + '" ' +
+					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>')
+				.pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
+		},
+
+		/**
+		 * Reset the focus on the assign participant button when the modal has been
+		 * closed. This is a callback function passed into ModalHandler.js
+		 */
+		resetFocusAssignParticipant: function () {
+			this.$el.querySelector('.pkpListPanelItem--submission__activity button').focus();
+		},
+
+		/**
 		 * Display a confirmation prompt before deleting a submission
 		 */
 		deleteSubmissionPrompt: function () {
@@ -768,6 +812,13 @@ export default {
 	.fa {
 		font-size: @font-sml;
 		color: @no;
+	}
+}
+
+.pkpListPanelItem--submission__activity {
+
+	.-linkButton:not(:last-child) {
+		margin-right: 0.5em;
 	}
 }
 
