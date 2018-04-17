@@ -74,6 +74,7 @@ export default {
 					files: {
 						count: 1,
 					},
+					currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
 				},
 				{
 					id: 3,
@@ -85,6 +86,7 @@ export default {
 					files: {
 						count: 2,
 					},
+					currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
 				},
 				{
 					id: 4,
@@ -94,6 +96,7 @@ export default {
 					files: {
 						count: 0,
 					},
+					currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
 				},
 				{
 					id: 5,
@@ -103,10 +106,13 @@ export default {
 					files: {
 						count: 0,
 					},
+					currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
 				},
 			],
 			urlWorkflow: '/workflow/access/2',
 			urlPublished: '/article/view/2',
+			urlAuthorWorkflow: '/authorDashboard/submission/2',
+			urlEditorialWorkflow: '/workflow/access/2',
 		},
 		{
 			...BaseSubmissionObject,
@@ -117,6 +123,18 @@ export default {
 			authorString: 'Domatilia Sokoloff',
 			urlWorkflow: '/workflow/access/3',
 			urlPublished: '/article/view/3',
+			urlAuthorWorkflow: '/authorDashboard/submission/3',
+			urlEditorialWorkflow: '/workflow/access/3',
+			stages: BaseSubmissionObject.stages.map((stage) => {
+				if (stage.id === 1) {
+					return {
+						...stage,
+						status: 'No editor has been assigned to this submission.',
+						statusId: 1,
+					};
+				}
+				return stage;
+			}),
 		},
 		{
 			...BaseSubmissionObject,
@@ -145,6 +163,7 @@ export default {
 					files: {
 						count: 1,
 					},
+					currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
 				},
 				{
 					id: 3,
@@ -163,6 +182,7 @@ export default {
 					files: {
 						count: 2,
 					},
+					currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
 				},
 				{
 					id: 4,
@@ -172,6 +192,7 @@ export default {
 					files: {
 						count: 0,
 					},
+					currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
 				},
 				{
 					id: 5,
@@ -181,10 +202,13 @@ export default {
 					files: {
 						count: 0,
 					},
+					currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
 				},
 			],
-			urlWorkflow: '/workflow/access/4',
+			urlWorkflow: '/reviewer/submission/4',
 			urlPublished: '/article/view/4',
+			urlAuthorWorkflow: '/authorDashboard/submission/4',
+			urlEditorialWorkflow: '/workflow/access/4',
 		},
 		{
 			...BaseSubmissionObject,
@@ -202,6 +226,7 @@ export default {
 					files: {
 						count: 1,
 					},
+					currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
 				},
 				{
 					id: 3,
@@ -213,6 +238,7 @@ export default {
 					files: {
 						count: 1,
 					},
+					currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
 				},
 				{
 					id: 4,
@@ -229,6 +255,7 @@ export default {
 					files: {
 						count: 2,
 					},
+					currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
 				},
 				{
 					id: 5,
@@ -238,10 +265,13 @@ export default {
 					files: {
 						count: 0,
 					},
+					currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
 				},
 			],
 			urlWorkflow: '/workflow/access/5',
 			urlPublished: '/article/view/5',
+			urlAuthorWorkflow: '/authorDashboard/submission/5',
+			urlEditorialWorkflow: '/workflow/access/5',
 		},
 		{
 			...BaseSubmissionObject,
@@ -259,6 +289,7 @@ export default {
 					files: {
 						count: 1,
 					},
+					currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
 				},
 				{
 					id: 3,
@@ -270,6 +301,7 @@ export default {
 					files: {
 						count: 1,
 					},
+					currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
 				},
 				{
 					id: 4,
@@ -279,6 +311,7 @@ export default {
 					files: {
 						count: 1,
 					},
+					currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
 				},
 				{
 					id: 5,
@@ -295,10 +328,13 @@ export default {
 					files: {
 						count: 4,
 					},
+					currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
 				},
 			],
-			urlWorkflow: '/workflow/access/3',
-			urlPublished: '/article/view/3',
+			urlWorkflow: '/workflow/access/6',
+			urlPublished: '/article/view/6',
+			urlAuthorWorkflow: '/authorDashboard/submission/6',
+			urlEditorialWorkflow: '/workflow/access/6',
 		},
 	],
 	itemsMax: 10,
@@ -328,8 +364,12 @@ export default {
 		reviewsCompleted: 'Assigned reviews completed',
 		revisionsSubmitted: 'Revisions submitted',
 		copyeditsSubmitted: 'Copyedited files submitted',
-		galleysCreated: 'Production galleys created',
+		filesPrepared: 'Files prepared',
 		discussions: 'Open discussions',
+		assignEditor: 'Assign Editor',
+		galleysCreated: 'Production galleys created',
+		dualWorkflowLinks: 'You have been assigned multiple roles for this submission. Would you like to access the <a href="{$urlAuthorWorkflow}">Author\'s workflow</a>  or the <a href="{$urlEditorialWorkflow}">Editorial workflow</a>?',
+		reviewerWorkflowLink: 'You have been assigned an editorial role for this submission. Would you like to access the <a href="{$urlEditorialWorkflow}">Editorial workflow</a>?',
 		viewMore: 'View more details about {$name}',
 		viewLess: 'Hide expanded details about {$name}',
 	},

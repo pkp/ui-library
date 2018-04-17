@@ -61,6 +61,8 @@ export default {
 		label: 'Queued',
 	},
 	submissionProgress: 0,
-	urlPublished: '/article/view/5',
 	urlWorkflow: '/workflow/access/1',
+	urlPublished: '/article/view/1',
+	urlAuthorWorkflow: '/authorDashboard/submission/1',
+	urlEditorialWorkflow: '/workflow/access/1',
 };
