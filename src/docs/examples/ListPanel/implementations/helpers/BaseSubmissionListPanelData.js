@@ -375,4 +375,5 @@ export default {
 	},
 	addUrl: '/submission/wizard',
 	infoUrl: '/$$$call$$$/information-center/submission-information-center/view-information-center?submissionId=__id__',
+	assignParticipantUrl: '/$$$call$$$/grid/users/stage-participant/stage-participant-grid/add-participant?submissionId=__id__&stageId=__stageId__',
 };
