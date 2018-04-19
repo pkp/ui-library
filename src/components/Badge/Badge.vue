@@ -66,6 +66,7 @@ export default {
 	}
 
 	&.pkpBadge--button {
+		background-color: @primary;
 
 		&:hover,
 		&:focus {
@@ -90,6 +91,7 @@ export default {
 	}
 
 	&.pkpBadge--button {
+		background-color: @no;
 
 		&:hover,
 		&:focus {

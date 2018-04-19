@@ -30,7 +30,13 @@
 					<div class="pkpListPanelItem--users__email">{{ item.email }}</div>
 				</div>
 				<div class="pkpListPanelItem--users__userGroups">
-					<badge v-for="group in item.groups" :key="group.id">
+					<badge
+						v-for="group in item.groups"
+						@click="filterByUserGroup(group.id)"
+						:key="group.id"
+						:isButton="true"
+						:isPrimary="isUserGroupInFilters(group.id)"
+					>
 						{{ localize(group.name) }}
 					</badge>
 				</div>
@@ -126,6 +132,7 @@ export default {
 	},
 	props: [
 		'userListId',
+		'activeFilters',
 		'item',
 		'i18n',
 		'loginAsUrl',
@@ -173,6 +180,31 @@ export default {
 		 */
 		getUniqueId: function (elName) {
 			return elName + this.userListId + this.item.id;
+		},
+
+		/**
+		 * Filter by a user group
+		 *
+		 * @param userGroupId int
+		 */
+		filterByUserGroup: function (userGroupId) {
+			let userGroupIds = [];
+			if (this.activeFilters.userGroupIds) {
+				userGroupIds = this.activeFilters.userGroupIds;
+			}
+			if (userGroupIds.includes(userGroupId)) {
+				userGroupIds = userGroupIds.filter((i) => i !== userGroupId);
+			} else {
+				userGroupIds.push(userGroupId);
+			}
+			this.$emit('filterList', {'userGroupIds': userGroupIds});
+		},
+
+		/**
+		 * Check if a user group is an active filter
+		 */
+		isUserGroupInFilters: function (userGroupId) {
+			return !!this.activeFilters.userGroupIds && this.activeFilters.userGroupIds.includes(userGroupId);
 		},
 
 		/**

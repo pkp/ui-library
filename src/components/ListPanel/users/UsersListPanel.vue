@@ -40,10 +40,12 @@
 				<ul class="pkpListPanel__items" aria-live="polite">
 					<users-list-item
 						v-for="item in items"
+						@filterList="updateFilter"
 						:key="item.id"
 						:item="item"
 						:i18n="i18n"
 						:userListId="id"
+						:activeFilters="activeFilters"
 						:loginAsUrl="loginAsUrl"
 						:logoutAsUrl="logoutAsUrl"
 						:sendEmailUrl="sendEmailUrl"
