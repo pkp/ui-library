@@ -66,6 +66,7 @@ export default {
 		// SubmissionsListPanel
 		addUrl: 'Url to the submission wizard',
 		infoUrl: 'Link to fetch the Information Center content in the modal. The string `__id__` is replaced with the submission ID before being called.',
+		assignParticipantUrl: 'Link to fetch the assign participant form in a modal. The strings `__id__` and `__stageId__` are replaced before being called',
 		// CatalogSubmissionsListPanel
 		catalogEntryUrl: 'URL to the public catalog entry page. The string `__id__` is replaced with the submission ID before being called.',
 		catalogSortBy: 'Value in press setting `catalogSortOption`. Default: `ORDERBY_DATE_PUBLISHED`',

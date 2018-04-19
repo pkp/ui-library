@@ -33,8 +33,6 @@ Add the `ListPanelSearch` component when a user wants to find one or more items 
 - Find a submission by title or author
 - Find a user by name, surname, email or username
 
-[View Source](https://github.com/NateWr/pkp-lib/blob/i2163_js_with_api/js/controllers/list/ListPanelSearch.vue)
-
 ### Accessibility
 
 The search input field **must** include a `<label>` that usefully describes the control in the absence of visual icons. A `placeholder` attribute is not sufficient.
@@ -50,8 +48,6 @@ Add the `ListPanelFilter` component when a user wants to find all items in a gro
 When using filters, the `ListPanel` component expects to receive a `filters` key with an object containing the filters. Consult the example data for the complete specification.
 
 When selected filters change, `ListPanelFilter` will fire a `filterList` event and pass all `activeFilters`. A `ListPanel` is expected to respond to this event by updating the `filterParams` and firing the `get()` method to refresh the list. At the moment, filtering is only available on `ListPanel` components with a working `get()` method.
-
-[View Source](https://github.com/NateWr/pkp-lib/blob/i2163_js_with_api/js/controllers/list/ListPanelFilter.vue)
 
 ### Accessibility
 
@@ -100,7 +96,8 @@ A `ListPanelItem` can have a summary and detailed view with a button to open the
 		>
 			<icon v-if="isExpanded" icon="angle-up" />
 			<icon v-else icon="angle-down" />
-			<span class="-screenReader"></span>
+			<span v-if="isExpanded" class="-screenReader">View less</span>
+			<span v-else class="-screenReader">View More</span>
 		</button>
 	</div>
 
