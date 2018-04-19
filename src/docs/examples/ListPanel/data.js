@@ -14,6 +14,8 @@ import WithOrdering from './WithOrdering.vue';
 import WithOrderingRaw from '!!raw-loader!./WithOrdering.vue';
 import WithFiltering from './WithFiltering.vue';
 import WithFilteringRaw from '!!raw-loader!./WithFiltering.vue';
+import UsersListPanel from './implementations/ExampleUsersListPanel.vue';
+import UsersListPanelRaw from '!!raw-loader!@/components/ListPanel/users/UsersListPanel.vue';
 import OJSSubmissionsListPanel from './implementations/OJSExampleSubmissionsListPanel.vue';
 import OMPSubmissionsListPanel from './implementations/OMPExampleSubmissionsListPanel.vue';
 import SubmissionsListPanelRaw from '!!raw-loader!@/components/ListPanel/submissions/SubmissionsListPanel.vue';
@@ -115,6 +117,11 @@ export default {
 		},
 	},
 	implementations: {
+		'ExampleUsersListPanel': {
+			label: 'UsersListPanel',
+			component: UsersListPanel,
+			componentRaw: UsersListPanelRaw,
+		},
 		'OJSSubmissionsListPanel': {
 			label: 'SubmissionsListPanel (OJS)',
 			component: OJSSubmissionsListPanel,

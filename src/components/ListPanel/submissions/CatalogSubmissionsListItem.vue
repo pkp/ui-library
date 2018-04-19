@@ -78,11 +78,13 @@ import SubmissionsListItem from '@/components/ListPanel/submissions/SubmissionsL
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import ListPanelItemOrderer from '@/components/ListPanel/ListPanelItemOrderer.vue';
+import openOldModal from '@/mixins/openOldModal';
 
 export default {
 	extends: SubmissionsListItem,
 	name: 'CatalogSubmissionsListItem',
 	props: ['item', 'i18n', 'filterAssocType', 'filterAssocId', 'catalogEntryUrl', 'isOrdering', 'apiPath'],
+	mixins: [openOldModal],
 	components: {
 		PkpButton,
 		Icon,
@@ -216,15 +218,10 @@ export default {
 		 * Launch a modal to view the catalog entry for this item
 		 */
 		viewCatalogEntry: function () {
-
-			var opts = {
+			this.openOldModal({
 				title: this.i18n.catalogEntry,
 				url: this.catalogEntryUrl.replace('__id__', this.item.id),
-			};
-
-			$('<div id="' + $.pkp.classes.Helper.uuid() + '" ' +
-					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>')
-				.pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
+			});
 		},
 	},
 };

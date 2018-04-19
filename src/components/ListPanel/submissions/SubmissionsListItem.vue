@@ -176,11 +176,12 @@ import Badge from '@/components/Badge/Badge.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import LocalizeSubmission from '@/mixins/localizeSubmission.js';
+import openOldModal from '@/mixins/openOldModal';
 
 export default {
 	extends: ListPanelItem,
 	name: 'SubmissionsListItem',
-	mixins: [LocalizeSubmission],
+	mixins: [LocalizeSubmission, openOldModal],
 	components: {
 		List,
 		ListItem,
@@ -632,16 +633,11 @@ export default {
 		 * Load a modal displaying history and notes of a submission
 		 */
 		openInfoCenter: function () {
-
-			var opts = {
+			this.openOldModal({
 				title: this.item.title,
 				url: this.infoUrl.replace('__id__', this.item.id),
 				closeCallback: this.resetFocusInfoCenter,
-			};
-
-			$('<div id="' + $.pkp.classes.Helper.uuid() + '" ' +
-					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>')
-				.pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
+			});
 		},
 
 		/**
