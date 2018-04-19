@@ -10,7 +10,7 @@
 					{{ filter.heading }}
 				</div>
 				<ul>
-					<li v-for="filterItem in filter.filters">
+					<li v-for="filterItem in filter.filters" :key="filterItem.param + filterItem.val">
 						<button
 							@click.prevent.stop="filterBy(filterItem.param, filterItem.val)"
 							class="pkpListPanel__filterLabel"
@@ -244,6 +244,7 @@ export default {
 	border: none;
 	color: @primary;
 	line-height: @line-base;
+	text-align: left; // Override center alignment of two-line <buttons>
 	text-decoration: none;
 	cursor: pointer;
 

@@ -32,6 +32,46 @@ export default {
 						},
 					],
 				},
+				userGroups: {
+					heading: 'Roles',
+					filters: [
+						{
+							param: 'userGroupIds',
+							val: 3,
+							title: 'Author',
+						},
+						{
+							param: 'userGroupIds',
+							val: 5,
+							title: 'Copyeditor',
+						},
+						{
+							param: 'userGroupIds',
+							val: 6,
+							title: 'Guest Editor',
+						},
+						{
+							param: 'userGroupIds',
+							val: 2,
+							title: 'Journal Manager',
+						},
+						{
+							param: 'userGroupIds',
+							val: 10,
+							title: 'Marketing and Sales Coordinator',
+						},
+						{
+							param: 'userGroupIds',
+							val: 4,
+							title: 'Section Editor',
+						},
+						{
+							param: 'userGroupIds',
+							val: 7,
+							title: 'Translator',
+						},
+					],
+				},
 			},
 			addUserUrl: '/grid/settings/user/userGrid/addUser',
 			loginAsUrl: '/login/signInAsUser/__id__',
