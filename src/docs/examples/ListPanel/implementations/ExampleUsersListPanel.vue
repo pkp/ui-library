@@ -16,6 +16,23 @@ export default {
 			apiPath: '',
 			getParams: {},
 			activeFilters: {},
+			filters: {
+				status: {
+					heading: 'Status',
+					filters: [
+						{
+							param: 'status',
+							val: 'active',
+							title: 'Active',
+						},
+						{
+							param: 'status',
+							val: 'disabled',
+							title: 'Disabled',
+						},
+					],
+				},
+			},
 			addUserUrl: '/grid/settings/user/userGrid/addUser',
 			loginAsUrl: '/login/signInAsUser/__id__',
 			logoutAsUrl: '/login/signOutAsUser',
@@ -275,6 +292,8 @@ export default {
 				viewLess: 'Hide expanded details about {$name}',
 				itemsOfTotal: '{$count} of {$total} items',
 				itemCount: '{$count} items',
+				filter: 'Filters',
+				filterRemove: 'Clear filter: {$filterTitle}',
 				addUser: 'Add User',
 				disabled: 'Disabled',
 				orcid: 'ORCID',

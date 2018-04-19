@@ -84,9 +84,13 @@ export default {
 		 */
 		clearFilter: function (type, val) {
 			const filters = Object.assign({}, this.activeFilters);
-			filters[type] = this.activeFilters[type].filter((filterVal) => {
-				return filterVal !== val;
-			});
+			if (Array.isArray(filters[type])) {
+				filters[type] = this.activeFilters[type].filter((filterVal) => {
+					return filterVal !== val;
+				});
+			} else {
+				delete filters[type];
+			}
 			this.filterList(filters);
 		},
 

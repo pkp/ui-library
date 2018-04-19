@@ -8,6 +8,14 @@
 			<ul class="pkpListPanel__actions">
 				<li>
 					<pkp-button
+						:label="i18n.filter"
+						icon="filter"
+						:isActive="isFilterVisible"
+						@click="toggleFilter"
+					/>
+				</li>
+				<li>
+					<pkp-button
 						:id="addUserButtonId"
 						:label="i18n.addUser"
 						@click="openAddUser"
@@ -21,6 +29,13 @@
 			/>
 		</div>
 		<div class="pkpListPanel__body -pkpClearfix pkpListPanel__body--users">
+			<users-list-filter
+				@filterList="updateFilter"
+				:isVisible="isFilterVisible"
+				:filters="filters"
+				:activeFilters="activeFilters"
+				:i18n="i18n"
+			/>
 			<div class="pkpListPanel__content pkpListPanel__content--users">
 				<ul class="pkpListPanel__items" aria-live="polite">
 					<users-list-item
@@ -62,6 +77,7 @@ import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import ListPanelSearch from '@/components/ListPanel/ListPanelSearch.vue';
 import ListPanelCount from '@/components/ListPanel/ListPanelCount.vue';
 import ListPanelLoadMore from '@/components/ListPanel/ListPanelLoadMore.vue';
+import UsersListFilter from '@/components/ListPanel/users/UsersListFilter.vue';
 import UsersListItem from '@/components/ListPanel/users/UsersListItem.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import openOldModal from '@/mixins/openOldModal';
@@ -74,11 +90,13 @@ export default {
 		ListPanelSearch,
 		ListPanelCount,
 		ListPanelLoadMore,
+		UsersListFilter,
 		UsersListItem,
 		PkpButton,
 	},
 	data: function () {
 		return {
+			filters: '',
 			addUserUrl: '',
 			loginAsUrl: '',
 			logoutAsUrl: '',
