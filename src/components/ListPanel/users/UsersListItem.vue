@@ -31,13 +31,14 @@
 				</div>
 				<div class="pkpListPanelItem--users__userGroups">
 					<badge
-						v-for="group in item.groups"
-						@click="filterByUserGroup(group.id)"
+						v-for="group in userGroups"
 						:key="group.id"
-						:isButton="true"
-						:isPrimary="isUserGroupInFilters(group.id)"
+						:isPrimary="isRolePrimary(group.roleId)"
 					>
-						{{ localize(group.name) }}
+						<span v-if="group.context" class="pkpListPanelItem--users__userGroupContext">
+							{{ group.context }}
+						</span>
+						{{ group.name}}
 					</badge>
 				</div>
 			</div>
@@ -132,6 +133,8 @@ export default {
 	},
 	props: [
 		'userListId',
+		'isSiteAdmin',
+		'filters',
 		'activeFilters',
 		'item',
 		'i18n',
@@ -153,6 +156,8 @@ export default {
 	computed: {
 		/**
 		 * Create user-specific URL for logging in as
+		 *
+		 * @return string
 		 */
 		loginAsUrlWithId: function () {
 			return this.loginAsUrl.replace('__id__', this.item.id);
@@ -160,16 +165,83 @@ export default {
 
 		/**
 		 * Can the current user login as this user?
+		 *
+		 * @return string
 		 */
 		currentUserCanLoginAs: function () {
-			return this.item.currentUserCanAdminister && !this.item.currentUserIsLoggedInAs && $.pkp.currentUser.id !== this.item.id;
+			return this.item.currentUserCanAdminister && $.pkp.currentUser.id !== this.item.id;
 		},
 
 		/**
 		 * Is the current user logged in as this user?
+		 *
+		 * @return string
 		 */
 		currentUserIsLoggedInAs: function () {
 			return $.pkp.currentUser.isLoggedInAs && $.pkp.currentUser.id === this.item.id;
+		},
+
+		/**
+		 * Is the current user a site admin?
+		 *
+		 * @return string
+		 */
+		currentUserIsSiteAdmin: function () {
+			return pkp.userHasRole(pkp.const.ROLE_ID_SITE_ADMIN);
+		},
+
+		/**
+		 * Compile a list of user group names. Identify group context when in site
+		 * admin and context filters exist.
+		 *
+		 * @return array
+		 */
+		userGroups: function () {
+			let groups = {...this.item.groups};
+
+			groups = this.item.groups.map((group) => {
+				let contextName = '';
+				if (this.isSiteAdmin && this.filters.contextIds) {
+					let context = this.filters.contextIds.filters.find((context) => {
+						return context.val === group.contextId;
+					});
+					contextName = context ? context.acronym : '';
+				}
+				return {
+					id: group.id,
+					name: this.localize(group.name),
+					context: contextName,
+					roleId: group.roleId,
+				};
+			});
+
+			return groups;
+		},
+
+		/**
+		 * Compile a list of roles matching the user groups this user is assigned to
+		 *
+		 * @return array
+		 */
+		userRoles: function () {
+			if (!this.filters.roles) {
+				return [];
+			}
+			let roleIds = this.item.groups.map((group) => {
+				return group.roleId;
+			}).filter((roleId, pos, arr) => {
+				// Remove duplicates
+				return arr.indexOf(roleId) === pos;
+			});
+			return roleIds.map((roleId) => {
+				let role = this.filters.roles.filters.find((role) => {
+					return role.val === roleId;
+				});
+				return {
+					id: roleId,
+					name: role ? role.title : '',
+				};
+			});
 		},
 	},
 	methods: {
@@ -177,34 +249,19 @@ export default {
 		 * Create an element ID that's unique to this item
 		 *
 		 * @param string name A name for the element to assign an ID to
+		 * @return string
 		 */
 		getUniqueId: function (elName) {
 			return elName + this.userListId + this.item.id;
 		},
 
 		/**
-		 * Filter by a user group
+		 * Should a given role ID be identified as a primary role?
 		 *
-		 * @param userGroupId int
+		 * @param int roleId
 		 */
-		filterByUserGroup: function (userGroupId) {
-			let userGroupIds = [];
-			if (this.activeFilters.userGroupIds) {
-				userGroupIds = this.activeFilters.userGroupIds;
-			}
-			if (userGroupIds.includes(userGroupId)) {
-				userGroupIds = userGroupIds.filter((i) => i !== userGroupId);
-			} else {
-				userGroupIds.push(userGroupId);
-			}
-			this.$emit('filterList', {'userGroupIds': userGroupIds});
-		},
-
-		/**
-		 * Check if a user group is an active filter
-		 */
-		isUserGroupInFilters: function (userGroupId) {
-			return !!this.activeFilters.userGroupIds && this.activeFilters.userGroupIds.includes(userGroupId);
+		isRolePrimary: function (roleId) {
+			return [pkp.const.ROLE_ID_SITE_ADMIN, pkp.const.ROLE_ID_MANAGER].includes(roleId);
 		},
 
 		/**
@@ -326,6 +383,11 @@ export default {
 			margin-right: 0;
 		}
 	}
+}
+
+.pkpListPanelItem--users__userGroupContext {
+	margin-right: 0.25em;
+	font-weight: @bold;
 }
 
 .pkpListPanelItem__loginAs {

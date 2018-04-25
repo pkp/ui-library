@@ -7,7 +7,7 @@ Use this component to display anything from simple lists to complex management p
 
 This component can fetch, search, filter and load more list items by making GET requests to an API endpoint. Make a request with the `get` method, and use the `filterParams`, `searchPhrase`, `offset` and `count` properties to modify the request.
 
-When you update the `searchPhrase` or `filterParams` data properties on the component, it will automatically compile the params and make a GET request to the `apiPath`.
+When you update the `searchPhrase` or `filterParams` data properties on the component, it will automatically compile the params and make a GET request to the `apiPath`. If `apiContextPath` exists, this will be included in the form: `<apiContextPath>/<apiPath>?<params>`.
 
 **Never modify the `getParams` property.** These params represent the component's default state. Instead, use `filterParams` or `searchPhrase` to dynamically filter the list.
 

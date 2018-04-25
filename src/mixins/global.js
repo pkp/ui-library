@@ -93,23 +93,24 @@ export default {
 		 * as necessary for the disable_path_info configuration option.
 		 *
 		 * @param string endpoint
+		 * @param string contextPath Optional context path to include in URL. By
+		 *  default it will use $.pkp.app.contextPath, which represents the context
+		 *  of the page where the component is being displayed.
 		 * @return string
 		 */
-		getApiUrl: function (endpoint) {
-			var apiBase;
-			var indexFile = $.pkp.app.restfulUrlsEnabled ? '' : 'index.php';
-			if ($.pkp.app.contextPath) {
-				apiBase = '/' + $.pkp.app.contextPath + $.pkp.app.apiBasePath;
-			} else {
-				apiBase = $.pkp.app.apiBasePath;
+		getApiUrl: function (endpoint, contextPath) {
+			contextPath = contextPath || ($.pkp.app.contextPath || '*');
+			const indexFile = $.pkp.app.restfulUrlsEnabled ? '' : 'index.php';
+			let apiBase = $.pkp.app.apiBasePath;
+			if (contextPath) {
+				apiBase = contextPath + apiBase;
 			}
 			if (!$.pkp.app.pathInfoEnabled) {
-				if ($.pkp.app.contextPath) {
-					return $.pkp.app.baseUrl + '/' + indexFile + '?journal=' + encodeURIComponent($.pkp.app.contextPath) + '&endpoint=' + apiBase + '/' + endpoint;
-				}
-				return $.pkp.app.baseUrl + '/' + indexFile + '?endpoint=' + apiBase + '/' + endpoint;
+				return `${$.pkp.app.baseUrl}/${indexFile}?journal={encodeURIComponent(contextPath)}&endpoint=/${apiBase}/${endpoint}`;
+			} else if (indexFile) {
+				return `${$.pkp.app.baseUrl}/${indexFile}/${apiBase}/${endpoint}`;
 			}
-			return $.pkp.app.baseUrl + '/' + indexFile + apiBase + '/' + endpoint;
+			return `${$.pkp.app.baseUrl}/${apiBase}/${endpoint}`;
 		},
 
 		/**

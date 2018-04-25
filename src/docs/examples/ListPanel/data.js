@@ -16,6 +16,7 @@ import WithFiltering from './WithFiltering.vue';
 import WithFilteringRaw from '!!raw-loader!./WithFiltering.vue';
 import UsersListPanel from './implementations/ExampleUsersListPanel.vue';
 import UsersListPanelRaw from '!!raw-loader!@/components/ListPanel/users/UsersListPanel.vue';
+import AdminUsersListPanel from './implementations/ExampleAdminUsersListPanel.vue';
 import OJSSubmissionsListPanel from './implementations/OJSExampleSubmissionsListPanel.vue';
 import OMPSubmissionsListPanel from './implementations/OMPExampleSubmissionsListPanel.vue';
 import SubmissionsListPanelRaw from '!!raw-loader!@/components/ListPanel/submissions/SubmissionsListPanel.vue';
@@ -60,11 +61,14 @@ export default {
 		count: 'Number of items to fetch per request.',
 		offset: 'Tracks the number of items visible for load more requests.',
 		apiPath: 'Optional. If present, `GET` requests can be fired off with `ListPanel.get()`',
+		apiContextPath: 'If interacting with the API, it will use this context path for requests. In most cases, this should be left empty, and the context will be inherited from the global context. Pass `*` (in PHP, the constant `CONTEXT_ID_NONE_API`) when you want a `ListPanel` to fetch API data from a site-wide context.',
 		getParams: 'Default parameters to pass with `GET` requests when no filters or search parameters exist.',
 		noticeType: 'The type of notice being displayed. Default is an empty string. Options: `info`, `warning`.',
 		i18n: '',
 		lazyLoad: 'If `true`, it will call `ListPanel.get()` when mounted.',
 		_lastGetRequest: 'Internal tracking to to ensure only the last `ListPanel.get()` call is processed.',
+		// UsersListPanel
+		isSiteAdmin: 'If `true`, it will show different information that is more appropriate to viewing the component in the site admin area.',
 		// SubmissionsListPanel
 		addUrl: 'Url to the submission wizard',
 		infoUrl: 'Link to fetch the Information Center content in the modal. The string `__id__` is replaced with the submission ID before being called.',
@@ -120,6 +124,11 @@ export default {
 		'ExampleUsersListPanel': {
 			label: 'UsersListPanel',
 			component: UsersListPanel,
+			componentRaw: UsersListPanelRaw,
+		},
+		'ExampleAdminUsersListPanel': {
+			label: 'UsersListPanel (Site Admin)',
+			component: AdminUsersListPanel,
 			componentRaw: UsersListPanelRaw,
 		},
 		'OJSSubmissionsListPanel': {

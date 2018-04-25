@@ -45,6 +45,8 @@
 						:item="item"
 						:i18n="i18n"
 						:userListId="id"
+						:isSiteAdmin="isSiteAdmin"
+						:filters="filters"
 						:activeFilters="activeFilters"
 						:loginAsUrl="loginAsUrl"
 						:logoutAsUrl="logoutAsUrl"
@@ -98,6 +100,7 @@ export default {
 	},
 	data: function () {
 		return {
+			isSiteAdmin: false,
 			filters: '',
 			addUserUrl: '',
 			loginAsUrl: '',
