@@ -115,7 +115,7 @@ export default {
 			if (typeof this.activeFilters[type] === 'undefined') {
 				return false;
 			}
-			if (typeof this.activeFilters[type] === 'string' && this.activeFilters[type] === val) {
+			if (!Array.isArray(this.activeFilters[type]) && this.activeFilters[type] === val) {
 				return true;
 			}
 			if (Array.isArray(this.activeFilters[type]) && this.activeFilters[type].includes(val)) {

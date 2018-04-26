@@ -72,6 +72,11 @@ export default {
 			heading: 'Roles',
 			filters: [
 				{
+					param: 'userGroupIds',
+					val: 0,
+					title: 'No assigned roles',
+				},
+				{
 					param: 'roleIds',
 					val: 1,
 					title: 'Site Admin',
