@@ -13,7 +13,7 @@
 					</a>
 					<a
 						v-if="currentUserIsLoggedInAs"
-						class="pkpListPanelItem__loginAs pkpListPanelItem__loginAs--logout"
+						class="pkpListPanelItem__inlineLink pkpListPanelItem__inlineLink--logout"
 						:href="logoutAsUrl"
 					>
 						<icon icon="sign-out" :inline="true" />
@@ -21,7 +21,7 @@
 					</a>
 					<a
 						v-else-if="currentUserCanLoginAs"
-						class="pkpListPanelItem__loginAs"
+						class="pkpListPanelItem__inlineLink"
 						:href="loginAsUrlWithId"
 					>
 						<icon icon="sign-in" :inline="true" />
@@ -390,15 +390,22 @@ export default {
 	font-weight: @bold;
 }
 
-.pkpListPanelItem__loginAs {
+.pkpListPanelItem__inlineLink {
 	display: inline-block;
 	margin-left: 0.25em;
 	font-size: @font-tiny;
 	text-decoration: none;
+	opacity: 0;
+	transition: opacity 0.2s;
 }
 
-.pkpListPanelItem__loginAs--logout {
+.pkpListPanelItem__inlineLink--logout {
 	color: @no;
+}
+
+.pkpListPanelItem--user:hover .pkpListPanelItem__inlineLink,
+.pkpListPanelItem__inlineLink:focus {
+	opacity: 1;
 }
 
 .pkpListPanelItem__details--user {
