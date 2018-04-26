@@ -52,6 +52,7 @@
 						:logoutAsUrl="logoutAsUrl"
 						:sendEmailUrl="sendEmailUrl"
 						:editUserUrl="editUserUrl"
+						:assignUserUrl="assignUserUrl"
 						:enableUserUrl="enableUserUrl"
 						:disableUserUrl="disableUserUrl"
 						:removeUserUrl="removeUserUrl"
@@ -107,6 +108,7 @@ export default {
 			logoutAsUrl: '',
 			sendEmailUrl: '',
 			editUserUrl: '',
+			assignUserUrl: '',
 			enableUserUrl: '',
 			disableUserUrl: '',
 			removeUserUrl: '',

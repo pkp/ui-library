@@ -81,6 +81,12 @@
 					@click="openEditUser"
 				/>
 				<pkp-button
+					v-if="isSiteAdmin"
+					:id="getUniqueId('assignUser')"
+					:label="i18n.assignUser"
+					@click="openAssignUser"
+				/>
+				<pkp-button
 					v-if="item.disabled"
 					:id="getUniqueId('enableUser')"
 					:label="i18n.enableUser"
@@ -143,6 +149,7 @@ export default {
 		'sendEmailUrl',
 		'sendEmailUrl',
 		'editUserUrl',
+		'assignUserUrl',
 		'enableUserUrl',
 		'disableUserUrl',
 		'removeUserUrl',
@@ -283,6 +290,17 @@ export default {
 				title: this.i18n.editUser,
 				url: this.editUserUrl.replace('__id__', this.item.id),
 				closeCallback: this.setFocusCallback('#' + this.getUniqueId('editUser')),
+			});
+		},
+
+		/**
+		 * Open a modal to assign the user groups
+		 */
+		openAssignUser: function () {
+			this.openOldModal({
+				title: this.i18n.assignUser,
+				url: this.assignUserUrl.replace('__id__', this.item.id),
+				closeCallback: this.setFocusCallback('#' + this.getUniqueId('assignUser')),
 			});
 		},
 
