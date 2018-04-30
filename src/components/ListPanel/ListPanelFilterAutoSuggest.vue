@@ -1,6 +1,7 @@
 <template>
 	<vue-autosuggest
 			class="autosuggest"
+			ref="autosuggest"
 			:suggestions="suggestions"
 			:renderSuggestion="renderSuggestion"
 			:getSuggestionValue="getSuggestionValue"
@@ -64,6 +65,7 @@ export default {
 		 */
 		onSelected: function (val) {
 			this.suggestions = [];
+			this.$refs.autosuggest.searchInput = '';
 			this.$emit('select', {name: this.name, value: val});
 		},
 
@@ -111,13 +113,12 @@ export default {
 		},
 
 		/**
-		 * Get the value of a selected option. (We use this to clear the input
-		 * field when a filter is selected, so no option data is used.)
+		 * Show filter titles as value in input field
 		 *
 		 * @param object data Info on option from vue-autosuggest
 		 */
 		getSuggestionValue: function (data) {
-			return '';
+			return this.renderSuggestion(data);
 		},
 	},
 };
