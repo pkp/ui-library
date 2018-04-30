@@ -224,32 +224,6 @@ export default {
 
 			return groups;
 		},
-
-		/**
-		 * Compile a list of roles matching the user groups this user is assigned to
-		 *
-		 * @return array
-		 */
-		userRoles: function () {
-			if (!this.filters.roles) {
-				return [];
-			}
-			let roleIds = this.item.groups.map((group) => {
-				return group.roleId;
-			}).filter((roleId, pos, arr) => {
-				// Remove duplicates
-				return arr.indexOf(roleId) === pos;
-			});
-			return roleIds.map((roleId) => {
-				let role = this.filters.roles.filters.find((role) => {
-					return role.val === roleId;
-				});
-				return {
-					id: roleId,
-					name: role ? role.title : '',
-				};
-			});
-		},
 	},
 	methods: {
 		/**
