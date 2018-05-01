@@ -8,6 +8,7 @@
 		:isWarnable="isWarnable"
 		:isActive="isActive"
 		:isLink="isLink"
+		:disabled="disabled"
 		@click.prevent="click"
 		@focus="focus"
 		@blur="blur"
@@ -25,6 +26,7 @@
 		:isWarnable="isWarnable"
 		:isActive="isActive"
 		:isLink="isLink"
+		:disabled="disabled"
 		@click="click"
 		@focus="focus"
 		@blur="blur"
@@ -54,6 +56,7 @@ export default {
 		isWarnable: Boolean,
 		isActive: Boolean,
 		isLink: Boolean,
+		disabled: Boolean,
 	},
 	computed: {
 		classes: function () {
@@ -164,6 +167,20 @@ export default {
 	&:focus {
 		background: @primary-lift;
 		color: #fff;
+	}
+}
+
+.pkpButton[disabled="disabled"] {
+	opacity: 0.5;
+	background: @bg-light;
+	border-color: @bg-light;
+	color: @text;
+	cursor: not-allowed;
+
+	&:hover {
+		background: @bg-light;
+		border-color: @bg-light;
+		coolor: @text;
 	}
 }
 </style>
