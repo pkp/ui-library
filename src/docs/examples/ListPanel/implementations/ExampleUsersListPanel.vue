@@ -363,6 +363,7 @@ export default {
 				confirm: 'Ok',
 				cancel: 'Cancel',
 				mergeUser: 'Merge User',
+				mergeIntoUser: 'Merge into this user',
 			},
 		};
 	},

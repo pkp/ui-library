@@ -17,6 +17,7 @@ import WithFilteringRaw from '!!raw-loader!./WithFiltering.vue';
 import UsersListPanel from './implementations/ExampleUsersListPanel.vue';
 import UsersListPanelRaw from '!!raw-loader!@/components/ListPanel/users/UsersListPanel.vue';
 import AdminUsersListPanel from './implementations/ExampleAdminUsersListPanel.vue';
+import MergeUsersListPanel from './implementations/ExampleMergeUsersListPanel.vue';
 import OJSSubmissionsListPanel from './implementations/OJSExampleSubmissionsListPanel.vue';
 import OMPSubmissionsListPanel from './implementations/OMPExampleSubmissionsListPanel.vue';
 import SubmissionsListPanelRaw from '!!raw-loader!@/components/ListPanel/submissions/SubmissionsListPanel.vue';
@@ -55,9 +56,9 @@ export default {
 		itemsMax: 'Count of total available items according to get params',
 		activeFilters: 'Modifying this property will automatically trigger a `GET` request if an `apiPath` is set.',
 		searchPhrase: 'Modifying this property will automatically trigger a `GET` request if an `apiPath` is set.',
-		isLoading: '',
-		isOrdering: '',
-		isFilterVisible: '',
+		isLoading: 'Used internally to track when waiting for a request to complete.',
+		isOrdering: 'Used internally to track when waiting for a request to update the order of items to complete.',
+		isFilterVisible: 'Used internally to track whether a filter side panel is open.',
 		count: 'Number of items to fetch per request.',
 		offset: 'Tracks the number of items visible for load more requests.',
 		apiPath: 'Optional. If present, `GET` requests can be fired off with `ListPanel.get()`',
@@ -69,6 +70,19 @@ export default {
 		_lastGetRequest: 'Internal tracking to to ensure only the last `ListPanel.get()` call is processed.',
 		// UsersListPanel
 		isSiteAdmin: 'If `true`, it will show different information that is more appropriate to viewing the component in the site admin area.',
+		mergeUserSourceId: 'Use when merging users. If you pass a user ID, the list will display ready for a user to be selected to merge into.',
+		mergeUserTargetId: 'Used internally to track which user was selected to merge into.',
+		isLoadingMerge: 'Used internally to track the status of a merge request.',
+		addUserUrl: 'Used to open the Add User modal.',
+		loginAsUrl: 'Used to login as a a user.',
+		logoutAsUrl: 'Used to log out as a user.',
+		sendEmailUrl: 'Used to open the Send Email modal.',
+		editUserUrl: 'Used to open the Edit User modal.',
+		assignUserUrl: 'Used to open the Assign User modal.',
+		enableUserUrl: 'Used to open the Enable User modal.',
+		disableUserUrl: 'Used to open the Disable User modal.',
+		removeUserUrl: 'Used to open the Remove User modal.',
+		mergeUserUrl: 'Used to open the Merge User modal.',
 		// SubmissionsListPanel
 		addUrl: 'Url to the submission wizard',
 		infoUrl: 'Link to fetch the Information Center content in the modal. The string `__id__` is replaced with the submission ID before being called.',
@@ -129,6 +143,11 @@ export default {
 		'ExampleAdminUsersListPanel': {
 			label: 'UsersListPanel (Site Admin)',
 			component: AdminUsersListPanel,
+			componentRaw: UsersListPanelRaw,
+		},
+		'ExampleMergeUsersListPanel': {
+			label: 'UsersListPanel (Merging)',
+			component: MergeUsersListPanel,
 			componentRaw: UsersListPanelRaw,
 		},
 		'OJSSubmissionsListPanel': {

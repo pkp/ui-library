@@ -2,47 +2,60 @@
 	<li class="pkpListPanelItem pkpListPanelItem--user pkpListPanelItem--hasSummary">
 		<div class="pkpListPanelItem__summary">
 			<div class="pkpListPanelItem__item--users__item -pkpClearfix">
-				<div class="pkpListPanelItem--users__identity">
+				<div class="pkpListPanelItem--user__identity">
 					<badge v-if="item.disabled" :isWarnable="true">
 						{{ i18n.disabled }}
 					</badge>
-					<span class="pkpListPanelItem--users__fullName">{{ item.fullName }}</span>
-					<a v-if="item.orcid" :href="item.orcid" class="pkpListPanelItem--users__orcid">
+					<span class="pkpListPanelItem--user__fullName">{{ item.fullName }}</span>
+					<a v-if="item.orcid" :href="item.orcid" class="pkpListPanelItem--user__orcid">
 						<icon icon="orcid" :inline="true" />
 						<span class="-screenReader">{{ i18n.orcid }}</span>
 					</a>
-					<a
-						v-if="currentUserIsLoggedInAs"
-						class="pkpListPanelItem__inlineLink pkpListPanelItem__inlineLink--logout"
-						:href="logoutAsUrl"
-					>
-						<icon icon="sign-out" :inline="true" />
-						{{ i18n.logoutAs }}
-					</a>
-					<a
-						v-else-if="currentUserCanLoginAs"
-						class="pkpListPanelItem__inlineLink"
-						:href="loginAsUrlWithId"
-					>
-						<icon icon="sign-in" :inline="true" />
-						{{ i18n.loginAs }}
-					</a>
-					<div class="pkpListPanelItem--users__email">{{ item.email }}</div>
+					<template v-if="!mergeUserSourceId">
+						<a
+							v-if="currentUserIsLoggedInAs"
+							class="pkpListPanelItem__inlineLink pkpListPanelItem__inlineLink--logout"
+							:href="logoutAsUrl"
+						>
+							<icon icon="sign-out" :inline="true" />
+							{{ i18n.logoutAs }}
+						</a>
+						<a
+							v-else-if="currentUserCanLoginAs"
+							class="pkpListPanelItem__inlineLink"
+							:href="loginAsUrlWithId"
+						>
+							<icon icon="sign-in" :inline="true" />
+							{{ i18n.loginAs }}
+						</a>
+					</template>
+					<div class="pkpListPanelItem--user__email">{{ item.email }}</div>
 				</div>
-				<div class="pkpListPanelItem--users__userGroups">
+				<div
+					v-if="!mergeUserSourceId"
+					class="pkpListPanelItem--user__userGroups"
+				>
 					<badge
 						v-for="group in userGroups"
 						:key="group.id"
 						:isPrimary="isRolePrimary(group.roleId)"
 					>
-						<span v-if="group.context" class="pkpListPanelItem--users__userGroupContext">
+						<span v-if="group.context" class="pkpListPanelItem--user__userGroupContext">
 							{{ group.context }}
 						</span>
 						{{ group.name}}
 					</badge>
 				</div>
+				<span v-else-if="isMergingIntoThisUser" class="pkpSpinner pkpListPanelItem__pkpSpinner" aria-hidden="true"></span>
+				<pkp-button
+					v-else-if="!isMergingFromThisUser && (!isLoadingMerge || isMergingIntoThisUser)"
+					:label="i18n.mergeIntoUser"
+					class="pkpListPanelItem--user__mergeButton"
+					@click="mergeUser"
+				/>
 			</div>
 			<button
+				v-if="!mergeUserSourceId"
 				@click="toggleExpanded"
 				class="pkpListPanelItem__expander"
 			>
@@ -140,6 +153,9 @@ export default {
 	props: [
 		'userListId',
 		'isSiteAdmin',
+		'isLoadingMerge',
+		'mergeUserSourceId',
+		'mergeUserTargetId',
 		'filters',
 		'activeFilters',
 		'item',
@@ -223,6 +239,26 @@ export default {
 			});
 
 			return groups;
+		},
+
+		/**
+		 * Is true when waiting for a merge request to return from the server, and
+		 * the merge request is merging into this user.
+		 *
+		 * @return boolean
+		 */
+		isMergingIntoThisUser: function () {
+			return this.isLoadingMerge && this.item.id === this.mergeUserTargetId;
+		},
+
+		/**
+		 * Is true when this user list is for merging users, and this user is the
+		 * user that is being merged into another user.
+		 *
+		 * @return boolean
+		 */
+		isMergingFromThisUser: function () {
+			return this.item.id === this.mergeUserSourceId;
 		},
 	},
 	methods: {
@@ -324,6 +360,13 @@ export default {
 				closeCallback: this.setFocusCallback('#' + this.getUniqueId('mergeUser')),
 			});
 		},
+
+		/**
+		 * Emit an event to trigger user merging
+		 */
+		mergeUser: function () {
+			this.$emit('mergeUser', this.item.id);
+		},
 	},
 };
 </script>
@@ -331,7 +374,7 @@ export default {
 <style lang="less">
 @import '../../../styles/_import';
 
-.pkpListPanelItem--users__identity {
+.pkpListPanelItem--user__identity {
 
 	@media (min-width: 768px) {
 		float: left;
@@ -339,22 +382,30 @@ export default {
 	}
 }
 
-.pkpListPanelItem--users__fullName {
+.pkpListPanelItem--user__fullName {
 	display: inline-block;
 	font-weight: @bold;
 }
 
-.pkpListPanelItem--users__orcid {
+.pkpListPanelItem--user__orcid {
 	margin-left: 0.25em;
 	text-decoration: none;
 }
 
-.pkpListPanelItem--users__email {
+.pkpListPanelItem--user__email {
 	font-size: @font-sml;
 	line-height: 1.5em;
 }
 
-.pkpListPanelItem--users__userGroups {
+.pkpListPanelItem--user__mergeButton,
+.pkpListPanelItem__pkpSpinner {
+	position: absolute;
+	top: 50%;
+	right: 1rem;
+	transform: translateY(-50%);
+}
+
+.pkpListPanelItem--user__userGroups {
 	margin-top: 0.5rem;
 	margin-bottom: -0.5rem;
 
@@ -377,7 +428,7 @@ export default {
 	}
 }
 
-.pkpListPanelItem--users__userGroupContext {
+.pkpListPanelItem--user__userGroupContext {
 	margin-right: 0.25em;
 	font-weight: @bold;
 }

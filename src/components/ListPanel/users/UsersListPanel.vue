@@ -14,7 +14,7 @@
 						@click="toggleFilter"
 					/>
 				</li>
-				<li>
+				<li v-if="!mergeUserSourceId">
 					<pkp-button
 						:id="addUserButtonId"
 						:label="i18n.addUser"
@@ -41,11 +41,15 @@
 					<users-list-item
 						v-for="item in items"
 						@filterList="updateFilter"
+						@mergeUser="mergeUser"
 						:key="item.id"
 						:item="item"
 						:i18n="i18n"
 						:userListId="id"
 						:isSiteAdmin="isSiteAdmin"
+						:isLoadingMerge="isLoadingMerge"
+						:mergeUserSourceId="mergeUserSourceId"
+						:mergeUserTargetId="mergeUserTargetId"
 						:filters="filters"
 						:activeFilters="activeFilters"
 						:loginAsUrl="loginAsUrl"
@@ -102,6 +106,9 @@ export default {
 	data: function () {
 		return {
 			isSiteAdmin: false,
+			mergeUserSourceId: 0,
+			mergeUserTargetId: 0,
+			isLoadingMerge: false,
 			filters: '',
 			addUserUrl: '',
 			loginAsUrl: '',
@@ -134,6 +141,48 @@ export default {
 				closeCallback: this.setFocusCallback('#' + this.addUserButtonId),
 			});
 		},
+
+		/**
+		 * Send request to merge one user into another
+		 *
+		 * @param boolean targetId The user to merge into
+		 */
+		mergeUser: function (targetId) {
+			this.isLoadingMerge = true;
+			this.mergeUserTargetId = targetId;
+
+			let self = this;
+
+			$.ajax({
+				url: `${this.getApiUrl(this.apiPath, this.apiContextPath)}/${this.mergeUserSourceId}/merge`,
+				type: 'POST',
+				data: {
+					mergeIntoUserId: this.mergeUserTargetId,
+					csrfToken: $.pkp.currentUser.csrfToken,
+				},
+				error: this.ajaxErrorCallback,
+				success: function (r) {
+					pkp.eventBus.$emit('userMerged', r);
+				},
+				complete: function (r) {
+					self.isLoadingMerge = false;
+					self.mergeUserTargetId = 0;
+
+					// Reach out to the old modal framework and tell it to close
+					$(self.$el).trigger('modalFinished');
+				},
+			});
+		},
+
+		/**
+		 * Remove the merge source user from the list of users that can be merged
+		 * into.
+		 */
+		removeMergeUserSource: function () {
+			this.items = this.items.filter((user) => {
+				return user.id !== this.mergeUserSourceId;
+			});
+		},
 	},
 	mounted: function () {
 
@@ -143,6 +192,16 @@ export default {
 		pkp.eventBus.$on(['userAdded', 'userUpdated', 'userMerged'], function (user) {
 			self.get();
 		});
+
+		if (this.mergeUserSourceId) {
+			this.removeMergeUserSource();
+			this.$watch('items', function (newVal, oldVal) {
+				if (oldVal === newVal) {
+					return;
+				}
+				this.removeMergeUserSource();
+			});
+		}
 	},
 };
 </script>

@@ -8,7 +8,6 @@ export default {
 	data: function () {
 		let data = ExampleUsersListPanel.data();
 		data.isSiteAdmin = true;
-		data.contextId = 0;
 
 		let journalManager = {
 			'id': 21,
