@@ -94,7 +94,7 @@
 					@click="openEditUser"
 				/>
 				<pkp-button
-					v-if="isSiteAdmin"
+					v-if="filters.contextIds"
 					:id="getUniqueId('assignUser')"
 					:label="i18n.assignUser"
 					@click="openAssignUser"
