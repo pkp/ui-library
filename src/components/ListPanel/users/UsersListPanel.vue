@@ -182,6 +182,7 @@ export default {
 			this.items = this.items.filter((user) => {
 				return user.id !== this.mergeUserSourceId;
 			});
+			this.itemsMax = this.items.length;
 		},
 	},
 	mounted: function () {
