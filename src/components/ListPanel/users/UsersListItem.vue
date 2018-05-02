@@ -55,7 +55,7 @@
 				/>
 			</div>
 			<button
-				v-if="!mergeUserSourceId"
+				v-if="!mergeUserSourceId && (item.orcid || item.currentUserCanAdminister)"
 				@click="toggleExpanded"
 				class="pkpListPanelItem__expander"
 			>
@@ -82,7 +82,10 @@
 					<a :href="loginAsUrlWithId">{{ i18n.loginAs }}</a>
 				</list-item>
 			</list>
-			<div class="pkpListPanelItem--user__actions">
+			<div
+				v-if="item.currentUserCanAdminister"
+				class="pkpListPanelItem--user__actions"
+			>
 				<pkp-button
 					:id="getUniqueId('sendEmail')"
 					:label="i18n.sendEmail"
