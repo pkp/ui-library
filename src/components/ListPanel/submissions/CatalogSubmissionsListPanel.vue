@@ -104,10 +104,12 @@ import CatalogSubmissionsListItem from '@/components/ListPanel/submissions/Catal
 import CatalogSubmissionsListFilter from '@/components/ListPanel/submissions/CatalogSubmissionsListFilter.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import draggable from 'vuedraggable';
+import openOldModal from '@/mixins/openOldModal';
 
 export default {
 	extends: SubmissionsListPanel,
 	name: 'CatalogSubmissionsListPanel',
+	mixins: [openOldModal],
 	components: {
 		ListPanelNotice,
 		CatalogSubmissionsListItem,
@@ -241,15 +243,10 @@ export default {
 		 * Open the new catalog entry modal
 		 */
 		openNewEntryModal: function () {
-
-			var opts = {
+			this.openOldModal({
 				title: this.i18n.add,
 				url: this.addUrl,
-			};
-
-			$('<div id="' + $.pkp.classes.Helper.uuid() + '" ' +
-					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>')
-				.pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
+			});
 		},
 
 		/**

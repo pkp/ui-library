@@ -5,31 +5,61 @@
 			{{ i18n.filter }}
 		</div>
 		<div class="pkpListPanel__filterOptions">
-			<div v-for="filter in filters" class="pkpListPanel__filterSet">
+			<div v-for="(filter, filterType) in filters" class="pkpListPanel__filterSet">
 				<div v-if="filter.heading" class="pkpListPanel__filterSetLabel">
 					{{ filter.heading }}
 				</div>
-				<ul>
-					<li v-for="filterItem in filter.filters">
-						<button
-							@click.prevent.stop="filterBy(filterItem.param, filterItem.val)"
-							class="pkpListPanel__filterLabel"
-							:class="{'-isActive': isFilterActive(filterItem.param, filterItem.val)}"
-							:tabindex="tabIndex"
-						>
-							{{ filterItem.title }}
-						</button>
-						<button
-							v-if="isFilterActive(filterItem.param, filterItem.val)"
-							href="#"
-							class="pkpListPanel__filterRemove"
-							@click.prevent.stop="clearFilter(filterItem.param, filterItem.val)"
-						>
-							<icon icon="times-circle-o" />
-							<span class="-screenReader">{{ __('filterRemove', {filterTitle: filterItem.title}) }}</span>
-						</button>
-					</li>
-				</ul>
+				<template v-if="filter.isAutoSuggest">
+					<ul v-if="activeFilters[filterType]">
+						<template v-for="filterItem in filter.filters">
+							<li v-if="isFilterActive(filterItem.param, filterItem.val)" :key="filterItem.param + filterItem.val">
+								<button
+									@click.prevent.stop="filterBy(filterItem.param, filterItem.val)"
+									class="pkpListPanel__filterLabel -isActive"
+									:tabindex="tabIndex"
+								>
+									{{ filterItem.title }}
+								</button>
+								<button
+									class="pkpListPanel__filterRemove"
+									@click.prevent.stop="clearFilter(filterItem.param, filterItem.val)"
+								>
+									<icon icon="times-circle-o" />
+									<span class="-screenReader">{{ __('filterRemove', {filterTitle: filterItem.title}) }}</span>
+								</button>
+							</li>
+						</template>
+					</ul>
+					<list-panel-filter-auto-suggest
+						@select="autoSuggestFilterSelected"
+						:name="filterType"
+						:options="filter.filters"
+						:selected="activeFilters[filterType]"
+						:placeholder="i18n.search"
+					/>
+				</template>
+				<template v-else>
+					<ul>
+						<li v-for="filterItem in filter.filters" :key="filterItem.param + filterItem.val">
+							<button
+								@click.prevent.stop="filterBy(filterItem.param, filterItem.val)"
+								class="pkpListPanel__filterLabel"
+								:class="{'-isActive': isFilterActive(filterItem.param, filterItem.val)}"
+								:tabindex="tabIndex"
+							>
+								{{ filterItem.title }}
+							</button>
+							<button
+								v-if="isFilterActive(filterItem.param, filterItem.val)"
+								class="pkpListPanel__filterRemove"
+								@click.prevent.stop="clearFilter(filterItem.param, filterItem.val)"
+							>
+								<icon icon="times-circle-o" />
+								<span class="-screenReader">{{ __('filterRemove', {filterTitle: filterItem.title}) }}</span>
+							</button>
+						</li>
+					</ul>
+				</template>
 			</div>
 		</div>
 	</div>
@@ -37,13 +67,32 @@
 
 <script>
 import Icon from '@/components/Icon/Icon.vue';
+import ListPanelFilterAutoSuggest from '@/components/ListPanel/ListPanelFilterAutoSuggest.vue';
 
 export default {
 	name: 'ListPanelFilter',
 	components: {
 		Icon,
+		ListPanelFilterAutoSuggest,
 	},
-	props: ['i18n', 'filters', 'activeFilters', 'isVisible'],
+	props: {
+		i18n: {
+			type: Object,
+			required: true,
+		},
+		filters: {
+			type: Object,
+			required: true,
+		},
+		activeFilters: {
+			type: Object,
+			required: true,
+		},
+		isVisible: {
+			type: Boolean,
+			required: true,
+		},
+	},
 	computed: {
 		/**
 		 * Update the tab index so users don't have to tab through filters when
@@ -57,10 +106,22 @@ export default {
 	},
 	methods: {
 		/**
-		 * Check if a filter is currently active
+		 * Check if filter is active
+		 *
+		 * @param string type The type of filter to check for
+		 * @param mixed val The value to check for
 		 */
 		isFilterActive: function (type, val) {
-			return this.activeFilters[type] !== undefined && this.activeFilters[type].includes(val);
+			if (typeof this.activeFilters[type] === 'undefined') {
+				return false;
+			}
+			if (!Array.isArray(this.activeFilters[type]) && this.activeFilters[type] === val) {
+				return true;
+			}
+			if (Array.isArray(this.activeFilters[type]) && this.activeFilters[type].includes(val)) {
+				return true;
+			}
+			return false;
 		},
 
 		/**
@@ -84,9 +145,13 @@ export default {
 		 */
 		clearFilter: function (type, val) {
 			const filters = Object.assign({}, this.activeFilters);
-			filters[type] = this.activeFilters[type].filter((filterVal) => {
-				return filterVal !== val;
-			});
+			if (Array.isArray(filters[type])) {
+				filters[type] = this.activeFilters[type].filter((filterVal) => {
+					return filterVal !== val;
+				});
+			} else {
+				delete filters[type];
+			}
 			this.filterList(filters);
 		},
 
@@ -102,6 +167,19 @@ export default {
 		 */
 		filterList: function (data) {
 			this.$emit('filterList', data);
+		},
+
+		autoSuggestFilterSelected: function (data) {
+			let filters = Object.assign({}, this.activeFilters);
+			let filterType = data.name;
+			if (!filters[filterType]) {
+				filters[filterType] = [];
+			}
+			if (filters[filterType].indexOf(data.value.item.val) > -1) {
+				return;
+			}
+			filters[filterType].push(data.value.item.val);
+			this.$emit('filterList', filters);
 		},
 	},
 	mounted: function () {
@@ -233,6 +311,12 @@ export default {
 	color: @text-light;
 }
 
+.pkpListPanel__filterSet .autosuggest {
+	margin-top: 0.5rem;
+	padding-left: @base;
+	padding-right: @base;
+}
+
 .pkpListPanel__filterLabel {
 	display: block;
 	padding: (@half / 2) @base;
@@ -240,6 +324,7 @@ export default {
 	border: none;
 	color: @primary;
 	line-height: @line-base;
+	text-align: left; // Override center alignment of two-line <buttons>
 	text-decoration: none;
 	cursor: pointer;
 

@@ -140,9 +140,12 @@ export default {
 	}
 }
 
-.pkpListPanel__filterAdd,
-.pkpListPanel__filterRemove {
-	top: 0.8em;
+.pkpListPanel__filterSet--hasSlider {
+
+	.pkpListPanel__filterAdd,
+	.pkpListPanel__filterRemove {
+		top: 0.8em;
+	}
 }
 
 .pkpListPanel__filterInput--slider {

@@ -63,6 +63,12 @@ window.$.pkp = {
 		currentLocale: 'en_US',
 		primaryLocale: 'en_US',
 	},
+	currentUser: {
+		accessRoles: [1],
+		csrfToken: 'e6ffc4ab4f310673c30145c3edd9bd7e',
+		id: 1,
+		isLoggedInAs: false,
+	},
 };
 
 /* eslint-disable no-new */

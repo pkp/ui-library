@@ -35,6 +35,7 @@ export default {
 			count: 20,
 			offset: 0,
 			apiPath: '',
+			apiContextPath: null,
 			getParams: {},
 			activeFilters: {},
 			noticeType: '',
@@ -95,7 +96,7 @@ export default {
 			this._latestGetRequest = $.pkp.classes.Helper.uuid();
 
 			$.ajax({
-				url: this.getApiUrl(this.apiPath),
+				url: this.getApiUrl(this.apiPath, this.apiContextPath),
 				type: 'GET',
 				data: {
 					...this.getParams,
@@ -165,6 +166,8 @@ export default {
 
 		/**
 		 * Update filter parameters
+		 *
+		 * @param object params Complete set of filters
 		 */
 		updateFilter: function (params) {
 			this.activeFilters = params;

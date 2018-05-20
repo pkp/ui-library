@@ -176,11 +176,12 @@ import Badge from '@/components/Badge/Badge.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import LocalizeSubmission from '@/mixins/localizeSubmission.js';
+import openOldModal from '@/mixins/openOldModal';
 
 export default {
 	extends: ListPanelItem,
 	name: 'SubmissionsListItem',
-	mixins: [LocalizeSubmission],
+	mixins: [LocalizeSubmission, openOldModal],
 	components: {
 		List,
 		ListItem,
@@ -632,50 +633,24 @@ export default {
 		 * Load a modal displaying history and notes of a submission
 		 */
 		openInfoCenter: function () {
-
-			var opts = {
+			this.openOldModal({
 				title: this.item.title,
 				url: this.infoUrl.replace('__id__', this.item.id),
-				closeCallback: this.resetFocusInfoCenter,
-			};
-
-			$('<div id="' + $.pkp.classes.Helper.uuid() + '" ' +
-					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>')
-				.pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
-		},
-
-		/**
-		 * Reset the focus on the info center link when the modal has been
-		 * closed. This is a callback function passed into ModalHandler.js
-		 */
-		resetFocusInfoCenter: function () {
-			this.$el.querySelector('.pkpListPanelItem__openInfoCenter').focus();
+				closeCallback: this.setFocusCallback('.pkpListPanelItem__openInfoCenter'),
+			});
 		},
 
 		/**
 		 * Load a modal displaying the assign participant options
 		 */
 		openAssignParticipant: function () {
-
-			var opts = {
+			this.openOldModal({
 				title: this.i18n.assignEditor,
 				url: this.assignParticipantUrl
 					.replace('__id__', this.item.id)
 					.replace('__stageId__', this.activeStage.id),
-				closeCallback: this.resetFocusAssignParticipant,
-			};
-
-			$('<div id="' + $.pkp.classes.Helper.uuid() + '" ' +
-					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>')
-				.pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
-		},
-
-		/**
-		 * Reset the focus on the assign participant button when the modal has been
-		 * closed. This is a callback function passed into ModalHandler.js
-		 */
-		resetFocusAssignParticipant: function () {
-			this.$el.querySelector('.pkpListPanelItem--submission__activity button').focus();
+				closeCallback: this.setFocusCallback('.pkpListPanelItem--submission__activity button'),
+			});
 		},
 
 		/**

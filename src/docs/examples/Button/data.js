@@ -5,6 +5,7 @@ import IsPrimary from './IsPrimary.vue';
 import IsWarnable from './IsWarnable.vue';
 import IsLink from './IsLink.vue';
 import IsActive from './IsActive.vue';
+import IsDisabled from './IsDisabled.vue';
 import WithIcon from './WithIcon.vue';
 
 export default {
@@ -22,6 +23,7 @@ export default {
 		isWarnable: 'Use when this button represents an action such as delete, go back, revert or cancel.',
 		isActive: 'Use when the button controls another element, and that element is active. Think of it like an <a href="https://www.google.co.uk/search?q=on+air+sign&tbm=isch">On Air</a> button.',
 		isLink: 'Use when you want the button to look more like a traditional link than a button.',
+		disabled: 'Adds the native `disabled` HTML attribute.',
 		hasDot: 'Adds a small dot to the left of the <code>content</code>.',
 		stage: 'Pass a stage name to use a special design for stage badges. Supports: <code>submission</code>, <code>review</code>, <code>copyediting</code>, <code>production</code>.',
 	},
@@ -44,6 +46,11 @@ export default {
 		'is-Active': {
 			label: 'is Active',
 			component: IsActive,
+			componentRaw: pkpButtonRaw,
+		},
+		'is-Disabled': {
+			label: 'is Disabled',
+			component: IsDisabled,
 			componentRaw: pkpButtonRaw,
 		},
 		'with-Icon': {
