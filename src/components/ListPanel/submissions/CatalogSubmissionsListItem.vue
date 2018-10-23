@@ -1,9 +1,10 @@
 <template>
 	<li class="pkpListPanelItem pkpListPanelItem--submission pkpListPanelItem--catalog -pkpClearfix" :class="{'--hasFocus': isFocused, '-isLoading': isSaving, '-isFeatured': isFeatured}">
-		<list-panel-item-orderer
+		<orderer
 			v-if="isOrdering"
-			@itemOrderUp="itemOrderUp"
-			@itemOrderDown="itemOrderDown"
+			@up="itemOrderUp"
+			@down="itemOrderDown"
+			:itemId="item.id"
 			:itemTitle="item.title"
 			:i18n="i18n"
 		/>
@@ -77,7 +78,7 @@
 import SubmissionsListItem from '@/components/ListPanel/submissions/SubmissionsListItem.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
-import ListPanelItemOrderer from '@/components/ListPanel/ListPanelItemOrderer.vue';
+import Orderer from '@/components/Orderer/Orderer.vue';
 
 export default {
 	extends: SubmissionsListItem,
@@ -86,7 +87,7 @@ export default {
 	components: {
 		PkpButton,
 		Icon,
-		ListPanelItemOrderer,
+		Orderer,
 	},
 	data: function () {
 		return {
@@ -263,5 +264,18 @@ export default {
 
 .pkpListPanelItem__actions .pkpButton--isLink:first-child {
 	margin-left: -0.5em;
+}
+
+.pkpListPanelItem--catalog {
+
+	.orderer__dragDrop,
+	.orderer__up,
+	.orderer__down {
+		width: 4em;
+	}
+
+	.orderer__up {
+		right: 4em;
+	}
 }
 </style>

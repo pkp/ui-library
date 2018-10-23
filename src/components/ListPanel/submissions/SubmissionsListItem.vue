@@ -188,7 +188,7 @@ export default {
 		PkpButton,
 		Icon,
 	},
-	props: ['item', 'i18n', 'apiPath', 'infoUrl', 'assignParticipantUrl'],
+	props: ['item', 'i18n', 'apiPath', 'infoUrl', 'assignParticipantUrl', 'csrfToken'],
 	data: function () {
 		return {
 			isExpanded: false,
@@ -361,8 +361,8 @@ export default {
 		 * @return string
 		 */
 		currentStageLabel: function () {
-			if (this.item.status.id === 3 || this.item.status.id === 4) {
-				return this.item.status.label;
+			if (this.item.status === 3 || this.item.status === 4) {
+				return this.item.statusLabel;
 			} else if (this.item.submissionProgress > 0) {
 				return this.i18n.incomplete;
 			}
@@ -696,6 +696,9 @@ export default {
 			$.ajax({
 				url: this.getApiUrl(this.apiPath + '/' + this.item.id),
 				type: 'DELETE',
+				headers: {
+					'X-Csrf-Token': this.csrfToken,
+				},
 				error: this.ajaxErrorCallback,
 				success: function (r) {
 					self.mask = 'finish';

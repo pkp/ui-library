@@ -358,6 +358,17 @@ export default {
 			this.itemOrderResetFocus(data.id, 'down');
 		},
 	},
+	watch: {
+		/**
+		 * Resort featured items to the top whenever the list changes
+		 */
+		items: function (newVal, oldVal) {
+			if (oldVal === newVal) {
+				return;
+			}
+			this.sortByFeaturedSequence();
+		},
+	},
 	created: function () {
 		/**
 		 * When a filter is set, update the sort order to match the setting of
@@ -376,16 +387,9 @@ export default {
 	},
 	mounted: function () {
 		/**
-		 * Resort featured items to the top of the items whenever it
-		 * changes
+		 * Sort featured items at the top on load
 		 */
 		this.sortByFeaturedSequence();
-		this.$watch('items', function (newVal, oldVal) {
-			if (oldVal === newVal) {
-				return;
-			}
-			this.sortByFeaturedSequence();
-		});
 
 		/**
 		 * Update when a new entry has been added to the catalog

@@ -42,7 +42,7 @@ export default {
 		/**
 		 * Pass an itemOrderUp event up to the list panel
 		 *
-		 * This event emerges from a ListPanelItemOrderer component.
+		 * This event emerges from an Orderer component.
 		 */
 		itemOrderUp: function () {
 			this.$emit('itemOrderUp', this.item);
@@ -51,7 +51,7 @@ export default {
 		/**
 		 * Pass an itemOrderDown event up to the list panel
 		 *
-		 * This event emerges from a ListPanelItemOrderer component.
+		 * This event emerges from an Orderer component.
 		 */
 		itemOrderDown: function () {
 			this.$emit('itemOrderDown', this.item);

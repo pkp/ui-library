@@ -1,7 +1,7 @@
 
 Use this component to display anything from simple lists to complex management panels.
 
-[View Source](https://github.com/NateWr/pkp-lib/blob/i2163_js_with_api/js/controllers/list/ListPanel.vue)
+[View Source](https://github.com/pkp/ui-library/blob/master/src/components/ListPanel/ListPanel.vue)
 
 ## <a name="rest-api"></a>Using the REST API
 
@@ -59,21 +59,22 @@ Filters should always include a `.pkpListPanel__filterHeader` element which desc
 
 This component will support item ordering by drag-and-drop and via keyboard controls. This feature requires the following:.
 
-1. The `ListPanelItem` component has a sub-component of `ListPanelItemOrderer` as the first part of the item's template.
+1. The `ListPanelItem` component has a sub-component of `Orderer` as the first part of the item's template.
 2. The `ListPanel` component wraps the `ListPanelItem` sub-components in a `draggable` sub-component. (See [Vue.Draggable](https://github.com/SortableJS/Vue.Draggable))
-3. Action buttons exist to toggle ordering on/off using the `toggleOrdering` method, and cancel the ordering changes using the `cancelOrdering` method.
-4. To persist the changed order to the database, use the `setItemOrderSequence` to fire off a post request.
-5. When ordering is cancelled, the `get` method will be fired. If the `ListPanel` has no `get` method, the order will not be reset.
+3. The `isOrdering` data key is set to `true`.
+4. To persist the changed order to the database, override the `setItemOrderSequence` method to fire off a post request.
+5. To cancel ordering and reset the order from the current database values, use the `cancelOrdering` method. It will call the `get` method to repopulate the list.
+6. To toggle ordering on and off, use the `toggleOrdering` method.
 
-When ordering the list, the user should be able to do nothing else with the `ListPanel`. Unnecessary sub-components like `ListPanelSearch` and `ListPanelFilter` are hidden whenever the `-isOrdering` class is added to the `ListPanel`. Use this class to hide any other elements which are not useful during sorting, including those within the `ListItem`.
+When ordering can be switched on and off, the list panel should hide any unnecessary details during ordering. The user should be able to do nothing else with the `ListPanel` when ordering. Unnecessary sub-components like `ListPanelSearch` and `ListPanelFilter` are hidden whenever the `-isOrdering` class is added to the `ListPanel`. Use this class to hide any other elements which are not useful during sorting, including those within the `ListItem`.
 
 ### Accessibility
 
 When ordering items, set `tabindex="-1"` on any unnecessary elements which could otherwise receive focus. A keyboard user should focus on *only* the up/down buttons.
 
-Exceptions can be made in cases where contextual information may be important. For example, the link to the catalog entry's three elements as they navigate through the list: the title of the item and the up/down buttons.
+Exceptions can be made in cases where contextual information may be important. For example, when ordering catalog entries, the link to the item remains visible.
 
-Use the <kbd>TAB</kbd> key to navigate the list with your keyboard to test.
+Use the <kbd>TAB</kbd> key to navigate the list with your keyboard to test your work.
 
 ## Expanding and Collapsing
 
