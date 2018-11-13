@@ -32,7 +32,7 @@ When a component uses icons or a visual layout to indicate the meaning of someth
 You should _not_ use `display: hidden`, because screen readers will ignore the text.
 
 ### Hidden search label
-```
+
 <div class="pkpul-element">
 	<div class="pkpul-element__preview">
 		<div class="pkpul-accessible-search">
@@ -43,7 +43,7 @@ You should _not_ use `display: hidden`, because screen readers will ignore the t
 			</label>
 		</div>
 	</div>
-</div>
+```
 <div class="pkpul-accessible-search">
 	<icon icon="search" />
 	<input id="searchInput" placeholder="Search submissions">
@@ -52,10 +52,12 @@ You should _not_ use `display: hidden`, because screen readers will ignore the t
 	</label>
 </div>
 ```
+</div>
+
 A search field often uses an icon to indicate it's purpose. The `placeholder` attribute can not be read by all screen readers, so a label is provided and then hidden from sighted users.
 
 ### Icon-only buttons
-```
+
 <div class="pkpul-element">
 	<div class="pkpul-element__preview">
 		<div class="pkpul-accessible-icon-only-button">
@@ -68,7 +70,7 @@ A search field often uses an icon to indicate it's purpose. The `placeholder` at
 			</p>
 		</div>
 	</div>
-
+```
 <div class="pkpul-accessible-icon-only-button">
 	<p>
 		My example submission
@@ -79,5 +81,6 @@ A search field often uses an icon to indicate it's purpose. The `placeholder` at
 	</p>
 </div>
 ```
+</div>
 
 In a few cases, an icon may not need a text label for sighted users to understand it's purpose. A hidden text label should still be provided for those using screen readers.
