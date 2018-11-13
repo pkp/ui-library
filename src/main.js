@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import GlobalMixins from '@/mixins/global.js';
+import $ from 'jquery';
 import App from '@/docs/App';
 import router from '@/docs/router';
 
@@ -58,6 +59,7 @@ window.pkp = {
 /**
  * Spoof some of the variables in the $.pkp object from the app
  */
+window.$ = $;
 window.$.pkp = {
 	app: {
 		currentLocale: 'en_US',
