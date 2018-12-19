@@ -201,7 +201,7 @@ export default {
 	display: inline-block;
 	margin-bottom: @half;
 	font-weight: @bold;
-	font-size: @font-lead;
+	font-size: @font-base-larger;
 }
 
 .pkpFormGroup__description {

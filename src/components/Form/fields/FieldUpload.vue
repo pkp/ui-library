@@ -98,6 +98,7 @@ export default {
 	},
 	props: {
 		options: Object,
+		csrfToken: String,
 	},
 	data: function () {
 		return {
@@ -188,6 +189,9 @@ export default {
 						<div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
 					</div>
 				</div>`,
+				headers: {
+					'X-Csrf-Token': this.csrfToken,
+				},
 				dictDefaultMessage: this.i18n.dropzoneDictDefaultMessage,
 				dictFallbackMessage: this.i18n.dropzoneDictFallbackMessage,
 				dictFallbackText: this.i18n.dropzoneDictFallbackText,

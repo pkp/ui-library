@@ -32,6 +32,9 @@ export default {
 				context: this,
 				method: this.method,
 				url: this.action,
+				headers: {
+					'X-Csrf-Token': this.csrfToken,
+				},
 				data: values,
 				success: this.success,
 				error: this.error,

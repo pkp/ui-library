@@ -4,7 +4,7 @@
 			<div class="pkpListPanel__title">{{ i18n.title }}</div>
 			<ul class="pkpListPanel__actions">
 				<li>
-					<pkp-button
+					<pkp-button v-if="filters.length"
 						:label="i18n.filter"
 						icon="filter"
 						:isActive="isFilterVisible"

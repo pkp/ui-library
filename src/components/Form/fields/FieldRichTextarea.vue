@@ -1,5 +1,5 @@
 <template>
-	<div class="pkpFormField pkpFormField--richTextarea">
+	<div class="pkpFormField pkpFormField--richTextarea" :class="{'-isFocused': isFocused}">
 		<div class="pkpFormField__heading">
 			<form-field-label
 				:controlId="controlId"
@@ -18,7 +18,8 @@
 			v-html="description"
 			:id="describedByDescriptionId"
 		/>
-		<div class="pkpFormField__control pkpFormField--richTextarea__control">
+		<div class="pkpFormField__control pkpFormField--richTextarea__control" :class="'pkpFormField--richTextArea__control--' + this.size">
+			<div class="pkpFormField--richTextarea__toolbar" :id="toolbarId"></div>
 			<editor
 				class="pkpFormField__input pkpFormField--richTextarea__input"
 				v-model="currentValue"
@@ -26,6 +27,8 @@
 				:toolbar="compiledToolbar"
 				:plugins="plugins"
 				:init="compiledInit"
+				@onFocus="focus"
+				@onBlur="blur"
 			/>
 			<multilingual-progress v-if="isMultilingual && locales.length > 1"
 				:id="multilingualProgressId"
@@ -72,7 +75,21 @@ export default {
 			},
 		},
 	},
+	data: function () {
+		return {
+			isFocused: false,
+		};
+	},
 	computed: {
+		/**
+		 * ID attribute for the element where the toolbar should be placed
+		 *
+		 * @return string
+		 */
+		toolbarId: function () {
+			return this.compileId('toolbar');
+		},
+
 		/**
 		 * TinyMce toolbar
 		 *
@@ -89,15 +106,33 @@ export default {
 		 * @return Object
 		 */
 		compiledInit: function () {
-			let contentCSS = $.pkp.app.tinyMceContentCSS;
-			if ($.pkp.app.cdnEnabled) {
-				contentCSS = contentCSS + ', ' + $.pkp.app.tinyMceContentFont;
-			}
 			return {
-				height: this.size === 'large' ? 500 : 200,
-				content_css: contentCSS,
+				inline: true,
+				fixed_toolbar_container: '#' + this.toolbarId,
+				init_instance_callback: (editor) => {
+					// The inline toolbar only appears after the field has been focused.
+					// This mimics the focus event, without actually changing the user's
+					// focus.
+					editor.fire('focus');
+					editor.fire('blur');
+				},
 				...this.init,
 			};
+		},
+	},
+	methods: {
+		/**
+		 * When the input control gets focus
+		 */
+		focus: function () {
+			this.isFocused = true;
+		},
+
+		/**
+		 * When the input control loses focus
+		 */
+		blur: function () {
+			this.isFocused = false;
 		},
 	},
 };
@@ -106,13 +141,59 @@ export default {
 <style lang="less">
 @import '../../../styles/_import';
 
-.pkpFormField--richTextarea__input {
-	width: 100%;
+.pkpFormField--richTextarea__toolbar {
+	border-bottom: @bg-border;
+	min-height: 39px;
+
+	.mce-tinymce {
+		// Tinymce hides the toolbar when focus is not in the field but we want it
+		// to remain visible at all times.
+		display: block !important;
+	}
 }
 
 .pkpFormField--richTextarea__control {
 	border: @bg-border;
 	border-radius: @radius;
+
+	&:hover {
+		border-color: @shade;
+	}
+}
+
+.pkpFormField--richTextarea.-isFocused .pkpFormField--richTextarea__control {
+	border-color: @primary;
+	box-shadow: -3px 0 0 @primary;
+}
+
+.pkpFormField--richTextarea__input {
+	padding: @base;
+	width: 100%;
+	height: 14em;
+	font-size: @font-sml;
+	line-height: @line-sml;
+	border: none;
+	overflow-y: scroll;
+
+	&:focus {
+		box-shadow: none;
+	}
+
+	p:first-child {
+		margin-top: 0;
+	}
+
+	span.pkpTag {
+		padding: 0.5em;
+		font-size: 10px;
+		font-weight: @bold;
+		text-transform: uppercase;
+		color: @text-light;
+	}
+}
+
+.pkpFormField--richTextArea__control--large .pkpFormField--richTextarea__input {
+	height: 35em;
 }
 
 .pkpFormField--richTextarea .multilingualProgress {
@@ -126,29 +207,37 @@ export default {
 // we have transitioned all of the old tinymce fields out of the system
 .pkpFormField--richTextarea__control {
 
-	.mce-panel {
-		border: none;
-		background: @lift;
-	}
-
 	.mce-tinymce {
-		box-shadow: none;
 		border: none;
 	}
 
-	// this block overrides old tinymce styles
-	.mce-toolbar-grp {
-		border-bottom: @bg-border;
-		padding: 0;
+	// Fixes issue where the toolbar is not visible in tinymce controls under
+	// secondary languages, and overrides the toolbar size settings to allow it
+	// to expand/shrink responsively.
+	.mce-tinymce,
+	.mce-container-body,
+	.mce-container {
+		width: auto !important;
+		height: auto !important;
+	}
+	.mce-abs-layout-item {
+		position: static !important;
 	}
 
-	.mce-top-part:before {
-		border-bottom: @bg-border;
-		box-shadow: none;
+	.mce-content-body {
+		line-height: @line-sml;
+	}
+
+	.mce-edit-focus {
+		outline: none;
 	}
 
 	.mce-toolbar .mce-btn-group {
 		padding: 0.25rem;
+	}
+
+	.mce-btn-group:not(:first-child) {
+		border-left-color: @bg-border-color;
 	}
 
 	.mce-btn-group .mce-btn + .mce-btn {
@@ -171,14 +260,6 @@ export default {
 	.mce-btn.mce-active:focus,
 	.mce-btn.mce-active:active {
 		background-color: @primary;
-
-		// these styles and the .mce-ico block below override old tinymce styles
-		border-radius: @radius;
-		border-color: @primary;
-
-		.mce-ico {
-			color: #fff;
-		}
 	}
 }
 </style>

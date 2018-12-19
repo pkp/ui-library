@@ -5,7 +5,6 @@ import 'tinymce/plugins/paste';
 import 'tinymce/plugins/link';
 import 'tinymce/plugins/lists';
 import 'tinymce/plugins/code';
-import 'tinymce/skins/lightgray/skin.min.css';
 import Vue from 'vue';
 import GlobalMixins from '@/mixins/global.js';
 import $ from 'jquery';
@@ -77,8 +76,6 @@ window.$.pkp = {
 		currentLocale: 'en_US',
 		primaryLocale: 'en_US',
 		cdnEnabled: true,
-		tinyMceContentCSS: '/static/tinymce-content.css',
-		tinyMceContentFont: '/static/tinymce-content-font.css',
 	},
 };
 
