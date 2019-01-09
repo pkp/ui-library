@@ -104,16 +104,16 @@ export default {
 			this.$emit('filterList', data);
 		},
 	},
-	mounted: function () {
+	watch: {
 		/**
 		 * Set focus in filters whenever the visible status is initiated
 		 */
-		this.$watch('isVisible', function (newVal, oldVal) {
+		isVisible: function (newVal, oldVal) {
 			if (!newVal || newVal === oldVal) {
 				return;
 			}
 			this.$el.querySelector('.pkpListPanel__filterHeader').focus();
-		});
+		},
 	},
 };
 </script>

@@ -114,6 +114,16 @@ export default {
 	.fa {
 		margin-right: 0.25em;
 	}
+
+	&:disabled {
+		color: @text-disabled;
+
+		&:hover {
+			color: @text-disabled;
+			border-color: @bg-border-color-light;
+			cursor: not-allowed;
+		}
+	}
 }
 
 /**
@@ -130,6 +140,15 @@ export default {
 		background: @primary-lift;
 		color: #fff;
 	}
+
+	&:disabled,
+	&:disabled:hover {
+		color: #fff;
+		background: @bg-dark;
+		border-color: @bg-dark;
+		box-shadow: 0 1px 0 @shade;
+		cursor: not-allowed;
+	}
 }
 
 .pkpButton--isLink {
@@ -140,6 +159,10 @@ export default {
 	&:focus {
 		color: @primary-lift;
 	}
+
+	&:disabled:hover {
+		border-color: transparent;
+	}
 }
 
 .pkpButton--isWarnable {
@@ -148,6 +171,15 @@ export default {
 	&:hover,
 	&:focus {
 		border-color: @no;
+	}
+
+	&:disabled,
+	&:disabled:hover {
+		color: #fff;
+		background: @bg-dark;
+		border-color: @bg-dark;
+		box-shadow: 0 1px 0 @shade;
+		cursor: not-allowed;
 	}
 }
 
@@ -164,6 +196,15 @@ export default {
 	&:focus {
 		background: @primary-lift;
 		color: #fff;
+	}
+
+	&:disabled,
+	&:disabled:hover {
+		color: #fff;
+		background: @bg-dark;
+		border-color: @bg-dark;
+		box-shadow: 0 1px 0 @shade;
+		cursor: not-allowed;
 	}
 }
 </style>

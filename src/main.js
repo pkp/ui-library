@@ -1,11 +1,22 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+// Tinymce must be loaded before Vue
+import 'tinymce';
+import 'tinymce/themes/modern/theme';
+import 'tinymce/plugins/paste';
+import 'tinymce/plugins/link';
+import 'tinymce/plugins/lists';
+import 'tinymce/plugins/code';
 import Vue from 'vue';
 import GlobalMixins from '@/mixins/global.js';
 import $ from 'jquery';
+import VTooltip from 'v-tooltip';
+import VueScrollTo from 'vue-scrollto';
+import Tabs from 'vue-tabs-component';
 import App from '@/docs/App';
 import router from '@/docs/router';
 
+Vue.use(VTooltip, {defaultTrigger: 'click'});
+Vue.use(VueScrollTo);
+Vue.use(Tabs);
 Vue.mixin(GlobalMixins);
 
 Vue.config.productionTip = false;
@@ -64,6 +75,7 @@ window.$.pkp = {
 	app: {
 		currentLocale: 'en_US',
 		primaryLocale: 'en_US',
+		cdnEnabled: true,
 	},
 };
 

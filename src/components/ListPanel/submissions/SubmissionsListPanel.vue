@@ -48,6 +48,7 @@
 						:apiPath="apiPath"
 						:infoUrl="infoUrl"
 						:assignParticipantUrl="assignParticipantUrl"
+						:csrfToken="csrfToken"
 					/>
 				</ul>
 			</div>
@@ -95,6 +96,7 @@ export default {
 			addUrl: '',
 			infoUrl: '',
 			assignParticipantUrl: '',
+			csrfToken: '',
 		};
 	},
 	computed: {

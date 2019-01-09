@@ -90,12 +90,12 @@ export default {
 			this.$emit('clearFilter', this.filterId);
 		},
 	},
-	mounted: function () {
+	watch: {
 		/**
 		 * Refresh any sliders whenever the filter is opened or closed. This
 		 * updates the width of the component when the filter has fully expanded.
 		 */
-		this.$watch('isVisible', function (newVal, oldVal) {
+		isVisible: function (newVal, oldVal) {
 			if (!newVal || newVal === oldVal) {
 				return;
 			}
@@ -103,7 +103,7 @@ export default {
 			setTimeout(function () {
 				slider.refresh();
 			}, 300);
-		});
+		},
 	},
 };
 </script>

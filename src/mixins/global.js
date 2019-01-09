@@ -39,7 +39,12 @@ export default {
 
 			var str = this.i18n[key];
 			for (var param in params) {
-				str = str.replace('{$' + param + '}', params[param]);
+				let value = params[param];
+				// If a locale object is passed, take the value from the current locale
+				if (value === Object(value)) {
+					value = this.localize(value);
+				}
+				str = str.replace('{$' + param + '}', value);
 			}
 			return str;
 		},

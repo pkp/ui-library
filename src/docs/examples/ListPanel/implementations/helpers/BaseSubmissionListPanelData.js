@@ -359,7 +359,7 @@ export default {
 		reviewDue: 'Review due',
 		filter: 'Filter',
 		filterRemove: 'Clear filter: {$filterTitle}',
-		itemOrdererUp: 'Increase position of {$itemTitle}',
+		orderUp: 'Increase position of {$itemTitle}',
 		viewSubmission: 'View Submission',
 		reviewsCompleted: 'Assigned reviews completed',
 		revisionsSubmitted: 'Revisions submitted',

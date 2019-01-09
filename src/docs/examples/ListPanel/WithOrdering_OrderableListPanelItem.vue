@@ -1,9 +1,10 @@
 <template>
 	<li class="pkpListPanelItem" :class="{'-isOrdering': isOrdering}">
-		<list-panel-item-orderer
+		<orderer
 			v-if="isOrdering"
-			@itemOrderUp="itemOrderUp"
-			@itemOrderDown="itemOrderDown"
+			@up="itemOrderUp"
+			@down="itemOrderDown"
+			:itemId="item.id"
 			:itemTitle="item.title"
 			:i18n="i18n"
 		/>
@@ -15,14 +16,14 @@
 
 <script>
 import ListPanelItem from '@/components/ListPanel/ListPanelItem.vue';
-import ListPanelItemOrderer from '@/components/ListPanel/ListPanelItemOrderer.vue';
+import Orderer from '@/components/Orderer/Orderer.vue';
 
 export default {
 	extends: ListPanelItem,
 	name: 'WithOrdering_OrderableListPanelItem',
 	props: ['item', 'i18n', 'isOrdering'],
 	components: {
-		ListPanelItemOrderer,
+		Orderer,
 	},
 };
 </script>

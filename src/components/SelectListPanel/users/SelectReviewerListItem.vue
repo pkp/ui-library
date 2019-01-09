@@ -156,7 +156,7 @@
 					</div>
 					<div v-html="item.gossip"></div>
 				</list-item>
-				<list-item v-if="item.biography">
+				<list-item v-if="localize(item.biography)">
 					<div class="pkpListPanelItem--reviewer__detailHeading">
 						{{ i18n.biography }}
 					</div>

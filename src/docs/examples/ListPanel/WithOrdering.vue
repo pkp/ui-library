@@ -59,8 +59,8 @@ export default {
 				orderItems: 'Order',
 				saveItemOrder: 'Save Order',
 				cancel: 'Cancel',
-				itemOrdererUp: 'Increase position of {$itemTitle}',
-				itemOrdererDown: 'Decrease position of {$itemTitle}',
+				orderUp: 'Increase position of {$itemTitle}',
+				orderDown: 'Decrease position of {$itemTitle}',
 			},
 		});
 	},

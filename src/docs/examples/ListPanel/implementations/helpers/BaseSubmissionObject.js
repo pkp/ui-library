@@ -56,10 +56,8 @@ export default {
 			currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
 		},
 	],
-	status: {
-		id: 1,
-		label: 'Queued',
-	},
+	status: 1,
+	statusLabel: 'Queued',
 	submissionProgress: 0,
 	urlWorkflow: '/workflow/access/1',
 	urlPublished: '/article/view/1',

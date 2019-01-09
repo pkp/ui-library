@@ -95,12 +95,11 @@ export default {
 			warnOnAssignment: [],
 		};
 	},
-	mounted: function () {
-
+	watch: {
 		/**
 		 * Broadcast the selected reviewer
 		 */
-		this.$watch('selected', function (newVal, oldVal) {
+		selected: function (newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
@@ -109,7 +108,7 @@ export default {
 			});
 
 			pkp.eventBus.$emit('reviewersSelected', selectedReviewers);
-		});
+		},
 	},
 };
 </script>
