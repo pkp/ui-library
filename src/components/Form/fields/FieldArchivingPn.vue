@@ -28,7 +28,7 @@
 		<field-error v-if="errors.length" :id="describedByErrorId" :messages="errors" />
 		<input type="hidden" v-model="selectedValue" />
 		<div class="pkpFormField__control">
-			<label v-for="option in localizedOptions" class="pkpFormField--options__option">
+			<label v-for="option in localizedOptions" :key="option.value" class="pkpFormField--options__option">
 				<input
 					class="pkpFormField--options__input"
 					v-model="selectedValue"
@@ -55,32 +55,32 @@ export default {
 	props: {
 		value: {
 			type: Boolean,
-			required: true,
+			required: true
 		},
 		terms: {
 			type: String,
-			required: true,
+			required: true
 		},
 		enablePluginUrl: {
 			type: String,
-			required: true,
+			required: true
 		},
 		disablePluginUrl: {
 			type: String,
-			required: true,
+			required: true
 		},
 		settingsUrl: {
 			type: String,
-			required: true,
+			required: true
 		},
 		csrfToken: {
 			type: String,
-			required: true,
-		},
+			required: true
+		}
 	},
-	data: function () {
+	data: function() {
 		return {
-			isSaving: false,
+			isSaving: false
 		};
 	},
 	methods: {
@@ -88,21 +88,24 @@ export default {
 		 * Add an event listener to show the settings modal when the button in the
 		 * terms text is clicked.
 		 */
-		addSettingsListener: function () {
+		addSettingsListener: function() {
 			this.$nextTick(() => {
-				$('.pkpFormField--archivingPn__terms button', this.$el).click((e) => {
+				$('.pkpFormField--archivingPn__terms button', this.$el).click(e => {
 					e.stopPropagation();
 					e.preventDefault();
 
 					var opts = {
 						title: 'Test title',
 						url: this.settingsUrl,
-						closeCallback: this.resetFocus,
+						closeCallback: this.resetFocus
 					};
 
-					$('<div id="' + $.pkp.classes.Helper.uuid() + '" ' +
-							'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>')
-						.pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
+					$(
+						'<div id="' +
+							$.pkp.classes.Helper.uuid() +
+							'" ' +
+							'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>'
+					).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
 
 					return false;
 				});
@@ -112,14 +115,14 @@ export default {
 		/**
 		 * Remove the event listener to show the settings modal
 		 */
-		removeSettingsListener: function () {
+		removeSettingsListener: function() {
 			$('.pkpFormField--archivingPn__terms button', this.$el).off();
 		},
 
 		/**
 		 * Reset focus when the settings modal is closed
 		 */
-		resetFocus: function () {
+		resetFocus: function() {
 			$('.pkpFormField--archivingPn__terms button', this.$el).focus();
 		},
 
@@ -129,10 +132,12 @@ export default {
 		 * The plugin gallery will return 200 whether or not the action was
 		 * successful. We need to check the response to determine the status.
 		 */
-		success: function (r) {
+		success: function(r) {
 			if (r.status) {
 				pkp.eventBus.$emit('notify', {
-					text: this.value ? this.i18n.enablePluginSuccess : this.i18n.disablePluginSuccess,
+					text: this.value
+						? this.i18n.enablePluginSuccess
+						: this.i18n.disablePluginSuccess
 				});
 			} else {
 				pkp.eventBus.$emit('notify', {text: this.i18n.enablePluginError});
@@ -142,23 +147,23 @@ export default {
 		/**
 		 * When the plugin toggle request returns with an error
 		 */
-		error: function (r) {
+		error: function() {
 			pkp.eventBus.$emit('notify', {text: this.i18n.enablePluginError});
 		},
 
 		/**
 		 * When the plugin toggle request is finished
 		 */
-		complete: function (r) {
+		complete: function() {
 			this.isSaving = false;
-		},
+		}
 	},
 	watch: {
 		/**
 		 * When the input value changes, update the selected value if the input
 		 * option is the currently selected option
 		 */
-		value: function (newVal, oldVal) {
+		value: function(newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
@@ -175,15 +180,15 @@ export default {
 				url: newVal ? this.enablePluginUrl : this.disablePluginUrl,
 				data: {
 					csrfToken: this.csrfToken,
-					disableNotification: false,
+					disableNotification: false
 				},
 				success: this.success,
 				error: this.error,
-				complete: this.complete,
+				complete: this.complete
 			});
-		},
+		}
 	},
-	mounted: function () {
+	mounted: function() {
 		/**
 		 * Add the event listener to show the settings modal
 		 */
@@ -191,14 +196,14 @@ export default {
 			this.addSettingsListener();
 		}
 	},
-	beforeDestroy: function () {
+	beforeDestroy: function() {
 		/**
 		 * Remove the event listener for the settings button
 		 */
 		if (!this.value) {
 			$('.pkpFormField--archivingPn__terms button', this.$el).off();
 		}
-	},
+	}
 };
 </script>
 

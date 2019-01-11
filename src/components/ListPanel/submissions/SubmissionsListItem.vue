@@ -19,7 +19,7 @@
 					<div v-else-if="notice" class="pkpListPanelItem--submission__activity">
 						<icon icon="exclamation-triangle" :inline="true" />
 						{{ notice }}
-						<button v-for="(noticeAction, index) in noticeActions"
+						<button v-for="(noticeAction, index) in noticeActions" :key="index"
 							class="-linkButton"
 							@click.stop.prevent="noticeAction"
 							@focus="focusItem"
@@ -186,22 +186,29 @@ export default {
 		ListItem,
 		Badge,
 		PkpButton,
-		Icon,
+		Icon
 	},
-	props: ['item', 'i18n', 'apiPath', 'infoUrl', 'assignParticipantUrl', 'csrfToken'],
-	data: function () {
+	props: [
+		'item',
+		'i18n',
+		'apiPath',
+		'infoUrl',
+		'assignParticipantUrl',
+		'csrfToken'
+	],
+	data: function() {
 		return {
 			isExpanded: false,
 			mask: null,
 			noticeActions: [],
-			noticeActionLabels: [],
+			noticeActionLabels: []
 		};
 	},
 	computed: {
 		/**
 		 * Map the submission id to the list item id
 		 */
-		id: function () {
+		id: function() {
 			return this.item.id;
 		},
 
@@ -210,10 +217,19 @@ export default {
 		 *
 		 * @return bool
 		 */
-		currentUserCanDelete: function () {
-			if (!this.userAssignedRole(pkp.const.ROLE_ID_AUTHOR) && this.userAssignedRole([pkp.const.ROLE_ID_MANAGER, pkp.const.ROLE_ID_SITE_ADMIN])) {
+		currentUserCanDelete: function() {
+			if (
+				!this.userAssignedRole(pkp.const.ROLE_ID_AUTHOR) &&
+				this.userAssignedRole([
+					pkp.const.ROLE_ID_MANAGER,
+					pkp.const.ROLE_ID_SITE_ADMIN
+				])
+			) {
 				return true;
-			} else if (this.userAssignedRole(pkp.const.ROLE_ID_AUTHOR) && this.item.submissionProgress !== 0) {
+			} else if (
+				this.userAssignedRole(pkp.const.ROLE_ID_AUTHOR) &&
+				this.item.submissionProgress !== 0
+			) {
 				return true;
 			}
 			return false; // @todo
@@ -224,8 +240,12 @@ export default {
 		 *
 		 * @return bool
 		 */
-		currentUserCanViewInfoCenter: function () {
-			return this.userAssignedRole([pkp.const.ROLE_ID_SITE_ADMIN, pkp.const.ROLE_ID_MANAGER, pkp.const.ROLE_ID_SUB_EDITOR]);
+		currentUserCanViewInfoCenter: function() {
+			return this.userAssignedRole([
+				pkp.const.ROLE_ID_SITE_ADMIN,
+				pkp.const.ROLE_ID_MANAGER,
+				pkp.const.ROLE_ID_SUB_EDITOR
+			]);
 		},
 
 		/**
@@ -233,7 +253,7 @@ export default {
 		 *
 		 * @return bool
 		 */
-		currentUserIsReviewer: function () {
+		currentUserIsReviewer: function() {
 			for (var review of this.item.reviewAssignments) {
 				if (review.isCurrentUserAssigned) {
 					return true;
@@ -247,7 +267,7 @@ export default {
 		 *
 		 * @return array
 		 */
-		activeStage: function () {
+		activeStage: function() {
 			return this.item.stages.find(stage => {
 				return stage.isActiveStage === true;
 			});
@@ -261,20 +281,21 @@ export default {
 		 *
 		 * @return string
 		 */
-		notice: function () {
+		notice: function() {
 			var notice = '';
-			this.noticeActions = [];
-			this.noticeActionLabels = [];
 
 			// Notices for journal managers
 			if (this.shouldAssignEditor) {
 				notice = this.activeStage.status;
-				this.noticeActions.push(this.openAssignParticipant);
-				this.noticeActionLabels.push(this.i18n.assignEditor);
 			}
 
 			// Notices for journal managers and subeditors
-			if (this.userAssignedRole([pkp.const.ROLE_ID_MANAGER, pkp.const.ROLE_ID_SUB_EDITOR])) {
+			if (
+				this.userAssignedRole([
+					pkp.const.ROLE_ID_MANAGER,
+					pkp.const.ROLE_ID_SUB_EDITOR
+				])
+			) {
 				if (this.isReviewStage) {
 					switch (this.activeStage.statusId) {
 						case pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWERS:
@@ -329,10 +350,13 @@ export default {
 		 *
 		 * @return boolean
 		 */
-		shouldAssignEditor: function () {
-			return this.userAssignedRole(pkp.const.ROLE_ID_MANAGER)	&&
-					this.activeStage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION &&
-					this.activeStage.statusId === pkp.const.STAGE_STATUS_SUBMISSION_UNASSIGNED;
+		shouldAssignEditor: function() {
+			return (
+				this.userAssignedRole(pkp.const.ROLE_ID_MANAGER) &&
+				this.activeStage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION &&
+				this.activeStage.statusId ===
+					pkp.const.STAGE_STATUS_SUBMISSION_UNASSIGNED
+			);
 		},
 
 		/**
@@ -340,7 +364,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		currentStage: function () {
+		currentStage: function() {
 			switch (this.activeStage.id) {
 				case pkp.const.WORKFLOW_STAGE_ID_SUBMISSION:
 					return 'submission';
@@ -360,7 +384,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		currentStageLabel: function () {
+		currentStageLabel: function() {
 			if (this.item.status === 3 || this.item.status === 4) {
 				return this.item.statusLabel;
 			} else if (this.item.submissionProgress > 0) {
@@ -374,7 +398,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		currentStageDescription: function () {
+		currentStageDescription: function() {
 			return this.__('currentStage', {stage: this.currentStageLabel});
 		},
 
@@ -383,7 +407,7 @@ export default {
 		 *
 		 * @return int
 		 */
-		openQueryCount: function () {
+		openQueryCount: function() {
 			return this.activeStage.queries.filter(query => {
 				return !query.closed;
 			}).length;
@@ -395,7 +419,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		activeStageFilesLabel: function () {
+		activeStageFilesLabel: function() {
 			switch (this.activeStage.id) {
 				case pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW:
 				case pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW:
@@ -413,7 +437,7 @@ export default {
 		 *
 		 * @return bool
 		 */
-		isSubmissionStage: function () {
+		isSubmissionStage: function() {
 			return this.activeStage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION;
 		},
 
@@ -422,8 +446,11 @@ export default {
 		 *
 		 * @return bool
 		 */
-		isReviewStage: function () {
-			return this.activeStage.id === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW || this.activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW;
+		isReviewStage: function() {
+			return (
+				this.activeStage.id === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW ||
+				this.activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW
+			);
 		},
 
 		/**
@@ -431,10 +458,10 @@ export default {
 		 *
 		 * @return array
 		 */
-		currentRoleAssignments: function () {
+		currentRoleAssignments: function() {
 			let roles = [];
-			this.item.stages.forEach((stage) => {
-				stage.currentUserAssignedRoles.forEach((role) => {
+			this.item.stages.forEach(stage => {
+				stage.currentUserAssignedRoles.forEach(role => {
 					if (roles.indexOf(role) === -1) {
 						roles.push(role);
 					}
@@ -449,14 +476,20 @@ export default {
 		 *
 		 * @return string
 		 */
-		dualWorkflowLinks: function () {
-			if (!this.userAssignedRole(pkp.const.ROLE_ID_AUTHOR) ||
-					!this.userAssignedRole([pkp.const.ROLE_ID_MANAGER, pkp.const.ROLE_ID_SUB_EDITOR, pkp.const.ROLE_ID_ASSISTANT])) {
+		dualWorkflowLinks: function() {
+			if (
+				!this.userAssignedRole(pkp.const.ROLE_ID_AUTHOR) ||
+				!this.userAssignedRole([
+					pkp.const.ROLE_ID_MANAGER,
+					pkp.const.ROLE_ID_SUB_EDITOR,
+					pkp.const.ROLE_ID_ASSISTANT
+				])
+			) {
 				return '';
 			}
 			return this.__('dualWorkflowLinks', {
 				urlAuthorWorkflow: this.item.urlAuthorWorkflow,
-				urlEditorialWorkflow: this.item.urlEditorialWorkflow,
+				urlEditorialWorkflow: this.item.urlEditorialWorkflow
 			});
 		},
 
@@ -466,13 +499,19 @@ export default {
 		 *
 		 * @return string
 		 */
-		reviewerWorkflowLink: function () {
-			if (!this.currentUserIsReviewer ||
-					!this.userAssignedRole([pkp.const.ROLE_ID_MANAGER, pkp.const.ROLE_ID_SUB_EDITOR, pkp.const.ROLE_ID_ASSISTANT])) {
+		reviewerWorkflowLink: function() {
+			if (
+				!this.currentUserIsReviewer ||
+				!this.userAssignedRole([
+					pkp.const.ROLE_ID_MANAGER,
+					pkp.const.ROLE_ID_SUB_EDITOR,
+					pkp.const.ROLE_ID_ASSISTANT
+				])
+			) {
 				return '';
 			}
 			return this.__('reviewerWorkflowLink', {
-				urlEditorialWorkflow: this.item.urlEditorialWorkflow,
+				urlEditorialWorkflow: this.item.urlEditorialWorkflow
 			});
 		},
 
@@ -481,11 +520,16 @@ export default {
 		 *
 		 * @return array
 		 */
-		currentReviewAssignments: function () {
-			if (!this.item.reviewRounds.length || !this.item.reviewAssignments.length) {
+		currentReviewAssignments: function() {
+			if (
+				!this.item.reviewRounds.length ||
+				!this.item.reviewAssignments.length
+			) {
 				return [];
 			}
-			var currentReviewRoundId = this.item.reviewRounds[this.item.reviewRounds.length - 1].id;
+			var currentReviewRoundId = this.item.reviewRounds[
+				this.item.reviewRounds.length - 1
+			].id;
 			return this.item.reviewAssignments.filter(assignment => {
 				return assignment.roundId === currentReviewRoundId;
 			});
@@ -498,8 +542,7 @@ export default {
 		 *
 		 * @return object|false False if no review assignment exists
 		 */
-		currentUserLatestReviewAssignment: function () {
-
+		currentUserLatestReviewAssignment: function() {
 			if (!this.currentUserIsReviewer) {
 				return false;
 			}
@@ -513,11 +556,10 @@ export default {
 			}
 
 			var latest = assignments.reduce((prev, current) => {
-				return (prev.round > current.round) ? prev : current;
+				return prev.round > current.round ? prev : current;
 			});
 
 			switch (latest.statusId) {
-
 				case pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE:
 				case pkp.const.REVIEW_ASSIGNMENT_STATUS_RESPONSE_OVERDUE:
 					latest.responsePending = true;
@@ -544,7 +586,7 @@ export default {
 		 *
 		 * @return int
 		 */
-		completedReviewsCount: function () {
+		completedReviewsCount: function() {
 			if (!this.isReviewStage) {
 				return 0;
 			}
@@ -558,7 +600,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		classMask: function () {
+		classMask: function() {
 			if (!this.mask) {
 				return '';
 			} else if (this.mask === 'finish') {
@@ -578,7 +620,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		responseDueLabelId: function () {
+		responseDueLabelId: function() {
 			return 'responseDueLabel' + this._uid;
 		},
 
@@ -588,29 +630,31 @@ export default {
 		 *
 		 * @return string
 		 */
-		reviewDueLabelId: function () {
+		reviewDueLabelId: function() {
 			return 'reviewDueLabel' + this._uid;
-		},
+		}
 	},
 	methods: {
-
 		/**
 		 * Check if a user is assigned a given role on this submission. If no
 		 * assignments exist, match global roles for site admin and manager
 		 *
 		 * @param roles int|array
 		 */
-		userAssignedRole: function (roles) {
+		userAssignedRole: function(roles) {
 			if (!Array.isArray(roles)) {
 				roles = [roles];
 			}
 			if (this.currentRoleAssignments.length) {
-				return roles.some((role) => {
+				return roles.some(role => {
 					return this.currentRoleAssignments.includes(role);
 				});
 			} else {
-				var managerRoles = roles.filter((role) => {
-					return role === pkp.const.ROLE_ID_SITE_ADMIN || role === pkp.const.ROLE_ID_MANAGER;
+				var managerRoles = roles.filter(role => {
+					return (
+						role === pkp.const.ROLE_ID_SITE_ADMIN ||
+						role === pkp.const.ROLE_ID_MANAGER
+					);
 				});
 				if (managerRoles.length) {
 					return pkp.userHasRole(managerRoles);
@@ -624,72 +668,77 @@ export default {
 		 *
 		 * @param stageId int
 		 */
-		filterByStage: function (stageId) {
-			this.$emit('filterList', {'stageIds': [stageId]});
+		filterByStage: function(stageId) {
+			this.$emit('filterList', {stageIds: [stageId]});
 		},
 
 		/**
 		 * Load a modal displaying history and notes of a submission
 		 */
-		openInfoCenter: function () {
-
+		openInfoCenter: function() {
 			var opts = {
 				title: this.item.title,
 				url: this.infoUrl.replace('__id__', this.item.id),
-				closeCallback: this.resetFocusInfoCenter,
+				closeCallback: this.resetFocusInfoCenter
 			};
 
-			$('<div id="' + $.pkp.classes.Helper.uuid() + '" ' +
-					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>')
-				.pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
+			$(
+				'<div id="' +
+					$.pkp.classes.Helper.uuid() +
+					'" ' +
+					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>'
+			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
 		},
 
 		/**
 		 * Reset the focus on the info center link when the modal has been
 		 * closed. This is a callback function passed into ModalHandler.js
 		 */
-		resetFocusInfoCenter: function () {
+		resetFocusInfoCenter: function() {
 			this.$el.querySelector('.pkpListPanelItem__openInfoCenter').focus();
 		},
 
 		/**
 		 * Load a modal displaying the assign participant options
 		 */
-		openAssignParticipant: function () {
-
+		openAssignParticipant: function() {
 			var opts = {
 				title: this.i18n.assignEditor,
 				url: this.assignParticipantUrl
 					.replace('__id__', this.item.id)
 					.replace('__stageId__', this.activeStage.id),
-				closeCallback: this.resetFocusAssignParticipant,
+				closeCallback: this.resetFocusAssignParticipant
 			};
 
-			$('<div id="' + $.pkp.classes.Helper.uuid() + '" ' +
-					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>')
-				.pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
+			$(
+				'<div id="' +
+					$.pkp.classes.Helper.uuid() +
+					'" ' +
+					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>'
+			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
 		},
 
 		/**
 		 * Reset the focus on the assign participant button when the modal has been
 		 * closed. This is a callback function passed into ModalHandler.js
 		 */
-		resetFocusAssignParticipant: function () {
-			this.$el.querySelector('.pkpListPanelItem--submission__activity button').focus();
+		resetFocusAssignParticipant: function() {
+			this.$el
+				.querySelector('.pkpListPanelItem--submission__activity button')
+				.focus();
 		},
 
 		/**
 		 * Display a confirmation prompt before deleting a submission
 		 */
-		deleteSubmissionPrompt: function () {
+		deleteSubmissionPrompt: function() {
 			this.mask = 'confirmingDelete';
 		},
 
 		/**
 		 * Send a request to delete the submission and handle the response
 		 */
-		deleteSubmission: function () {
-
+		deleteSubmission: function() {
 			this.mask = 'deleting';
 
 			var self = this;
@@ -697,33 +746,49 @@ export default {
 				url: this.getApiUrl(this.apiPath + '/' + this.item.id),
 				type: 'DELETE',
 				headers: {
-					'X-Csrf-Token': this.csrfToken,
+					'X-Csrf-Token': this.csrfToken
 				},
 				error: this.ajaxErrorCallback,
-				success: function (r) {
+				success: function() {
 					self.mask = 'finish';
 					// Allow time for the finished CSS transition to display
-					setTimeout(function () {
-						pkp.eventBus.$emit('submissionDeleted', { id: self.item.id });
+					setTimeout(function() {
+						pkp.eventBus.$emit('submissionDeleted', {id: self.item.id});
 						self.cancelDeleteRequest();
 					}, 300);
 				},
-				complete: function (r) {
+				complete: function() {
 					// Reset the mask in case there is an error
 					if (self.mask === 'deleting') {
 						self.cancelDeleteRequest();
 					}
-				},
+				}
 			});
 		},
 
 		/**
 		 * Cancel the delete request
 		 */
-		cancelDeleteRequest: function () {
+		cancelDeleteRequest: function() {
 			this.mask = null;
-		},
+		}
 	},
+	watch: {
+		/**
+		 * When the notice changes, update the actions that are available
+		 */
+		notice: function(newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+			this.noticeActions = [];
+			this.noticeActionLabels = [];
+			if (this.shouldAssignEditor) {
+				this.noticeActions.push(this.openAssignParticipant);
+				this.noticeActionLabels.push(this.i18n.assignEditor);
+			}
+		}
+	}
 };
 </script>
 
@@ -751,7 +816,6 @@ export default {
 
 	&:hover,
 	&.-hasFocus {
-
 		&:before {
 			height: 100%;
 			opacity: 1;
@@ -819,7 +883,6 @@ export default {
 }
 
 .pkpListPanelItem--submission__activity {
-
 	.-linkButton:not(:last-child) {
 		margin-right: 0.5em;
 	}
@@ -855,6 +918,10 @@ export default {
 	&:not(:first-child) {
 		margin-top: 1em;
 	}
+
+	.pkpButton + .pkpButton {
+		margin-left: 0.5em;
+	}
 }
 
 // Reviewer-specific displays
@@ -869,7 +936,8 @@ export default {
 	}
 }
 
-.pkpListPanelItem--submission__dueDate + .pkpListPanelItem--submission__dueDate {
+.pkpListPanelItem--submission__dueDate
+	+ .pkpListPanelItem--submission__dueDate {
 	margin-top: 1em;
 }
 

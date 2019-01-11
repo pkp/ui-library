@@ -23,10 +23,10 @@ export default {
 	name: 'Icon',
 	props: {
 		icon: String,
-		inline: Boolean,
+		inline: Boolean
 	},
 	computed: {
-		classes: function () {
+		classes: function() {
 			let classes = [];
 			if (this.icon !== 'orcid') {
 				classes.push('fa-' + this.icon);
@@ -35,8 +35,8 @@ export default {
 				classes.push('pkpIcon--inline');
 			}
 			return classes;
-		},
-	},
+		}
+	}
 };
 </script>
 
@@ -72,11 +72,11 @@ export default {
 
 	// These colors match the orcid branding guidelines
 	.pkpIcon--orcid__bg {
-		fill: #A6CE39;
+		fill: #a6ce39;
 	}
 
 	.pkpIcon--orcid__fill {
-		fill: #FFFFFF;
+		fill: #ffffff;
 	}
 }
 </style>

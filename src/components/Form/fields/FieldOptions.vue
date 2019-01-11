@@ -64,34 +64,36 @@ export default {
 	extends: FieldBase,
 	components: {
 		draggable,
-		Orderer,
+		Orderer
 	},
 	props: {
 		type: {
-			validator: function (value) {
+			validator: function(value) {
 				return ['checkbox', 'radio'].includes(value);
 			},
-			default: 'checkbox',
+			default: 'checkbox'
 		},
 		isOrderable: {
 			type: Boolean,
-			default: false,
+			default: false
 		},
 		options: {
 			type: Array,
-			required: true,
+			required: true
 		},
 		value: {
 			type: [Array, String, Boolean],
-			required: true,
-		},
+			required: true
+		}
 	},
-	data: function () {
+	data: function() {
 		return {
 			/**
 			 *
 			 */
-			localizedOptions: this.isMultingual ? this.options[this.localeKey] : this.options,
+			localizedOptions: this.isMultingual
+				? this.options[this.localeKey]
+				: this.options,
 
 			/**
 			 * This replaces the computed `currentValue` property in FieldBase. We
@@ -100,7 +102,9 @@ export default {
 			 * is not called when an option is deselected. See:
 			 * https://github.com/vuejs/vuex/issues/249
 			 */
-			selectedValue: this.isMultilingual ? this.value[this.localeKey] : this.value,
+			selectedValue: this.isMultilingual
+				? this.value[this.localeKey]
+				: this.value
 		};
 	},
 	computed: {
@@ -109,13 +113,13 @@ export default {
 		 *
 		 * @return array
 		 */
-		classes: function () {
+		classes: function() {
 			let classes = [];
 			if (this.isOrderable) {
 				classes.push('pkpFormField--optionsOrderable');
 			}
 			return classes;
-		},
+		}
 	},
 	methods: {
 		/**
@@ -123,14 +127,18 @@ export default {
 		 *
 		 * @param optionValue int The value of the option to move up
 		 */
-		optionOrderUp: function (optionValue) {
+		optionOrderUp: function(optionValue) {
 			const index = this.localizedOptions.findIndex(option => {
 				return option.value === optionValue;
 			});
 			if (!index) {
 				return;
 			}
-			this.localizedOptions.splice(index - 1, 0, this.localizedOptions.splice(index, 1)[0]);
+			this.localizedOptions.splice(
+				index - 1,
+				0,
+				this.localizedOptions.splice(index, 1)[0]
+			);
 			this.updateValueOrder();
 		},
 
@@ -139,32 +147,36 @@ export default {
 		 *
 		 * @param optionValue int The value of the option to move down
 		 */
-		optionOrderDown: function (optionValue) {
+		optionOrderDown: function(optionValue) {
 			const index = this.localizedOptions.findIndex(option => {
 				return option.value === optionValue;
 			});
 			if (index < 0 || index >= this.localizedOptions.length - 1) {
 				return;
 			}
-			this.localizedOptions.splice(index + 1, 0, this.localizedOptions.splice(index, 1)[0]);
+			this.localizedOptions.splice(
+				index + 1,
+				0,
+				this.localizedOptions.splice(index, 1)[0]
+			);
 			this.updateValueOrder();
 		},
 
 		/**
 		 * Update the order of selected values when the order of options is changed
 		 */
-		updateValueOrder: function () {
+		updateValueOrder: function() {
 			this.selectedValue = this.localizedOptions
 				.filter(option => this.selectedValue.includes(option.value))
 				.map(option => option.value);
-		},
+		}
 	},
 	watch: {
 		/**
 		 * Whenever the selected value changes, emit an event to update the value of
 		 * this field in the form component.
 		 */
-		selectedValue: function (newVal, oldVal) {
+		selectedValue: function(newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
@@ -176,17 +188,19 @@ export default {
 			this.$emit('change', {
 				name: this.name,
 				value: newVal,
-				localeKey: this.localeKey,
+				localeKey: this.localeKey
 			});
 		},
 
 		/**
 		 * Whenever the options change, override the localized options with them
 		 */
-		options: function (newVal, oldVal) {
-			this.localizedOptions = this.isMultingual ? this.options[this.localeKey] : this.options;
-		},
-	},
+		options: function(newVal) {
+			this.localizedOptions = this.isMultingual
+				? newVal[this.localeKey]
+				: newVal;
+		}
+	}
 };
 </script>
 
@@ -223,7 +237,7 @@ export default {
 
 .pkpFormField--options__input {
 	position: absolute;
-	top: .9em;
+	top: 0.9em;
 	left: 0;
 	transform: translateY(-50%);
 }
@@ -243,7 +257,6 @@ export default {
 
 // Adjust when options can be ordered
 .pkpFormField--optionsOrderable {
-
 	.pkpFormField--options__option {
 		position: relative;
 		padding: 0.5em 0.5em 0.5em 6em;

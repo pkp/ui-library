@@ -11,19 +11,19 @@ import Icon from '@/components/Icon/Icon.vue';
 export default {
 	name: 'HelpButton',
 	components: {
-		Icon,
+		Icon
 	},
 	props: {
 		topic: {
 			type: String,
-			required: true,
+			required: true
 		},
 		section: String,
 		label: {
 			type: String,
-			required: true,
-		},
-	},
+			required: true
+		}
+	}
 };
 </script>
 

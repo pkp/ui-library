@@ -6,7 +6,7 @@
 
 <script>
 export default {
-	name: 'List',
+	name: 'List'
 };
 </script>
 
@@ -15,7 +15,7 @@ export default {
 
 .list {
 	border-top: @grid-border;
-	box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 	border-radius: @radius;
 }
 </style>

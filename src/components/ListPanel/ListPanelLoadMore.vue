@@ -17,27 +17,26 @@ import Icon from '@/components/Icon/Icon.vue';
 export default {
 	name: 'ListPanelLoadMore',
 	components: {
-		Icon,
+		Icon
 	},
 	props: ['isLoading', 'i18n'],
 	computed: {
-		classLoadingMore: function () {
-			return { '-isLoadingMore': this.isLoading };
-		},
+		classLoadingMore: function() {
+			return {'-isLoadingMore': this.isLoading};
+		}
 	},
 	methods: {
 		/**
 		 * Emit an event to load more items into this list panel
 		 */
-		loadMore: function (e) {
-
+		loadMore: function(e) {
 			if (e instanceof Event) {
 				e.preventDefault();
 			}
 
 			this.$emit('loadMore');
-		},
-	},
+		}
+	}
 };
 </script>
 
@@ -84,6 +83,7 @@ export default {
 
 	&:hover,
 	&:focus {
+		outline: 0;
 
 		&:before {
 			opacity: 1;
@@ -102,7 +102,6 @@ export default {
 }
 
 .pkpListPanel__loadMore.-isLoadingMore {
-
 	.pkpListPanel__loadMoreButton {
 		opacity: 0;
 	}

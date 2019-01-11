@@ -13,17 +13,17 @@
 export default {
 	name: 'List',
 	computed: {
-		classes: function () {
+		classes: function() {
 			let classes = [];
 			if (this.hasValueSlot) {
 				classes.push('listItem--hasLabel');
 			}
 			return classes;
 		},
-		hasValueSlot: function () {
+		hasValueSlot: function() {
 			return this.$slots.value;
-		},
-	},
+		}
+	}
 };
 </script>
 

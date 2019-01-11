@@ -40,12 +40,12 @@ import Icon from '@/components/Icon/Icon.vue';
 export default {
 	name: 'pkpButton',
 	components: {
-		Icon,
+		Icon
 	},
 	props: {
 		element: {
 			type: String,
-			default: 'button',
+			default: 'button'
 		},
 		href: String,
 		label: String,
@@ -53,10 +53,10 @@ export default {
 		isPrimary: Boolean,
 		isWarnable: Boolean,
 		isActive: Boolean,
-		isLink: Boolean,
+		isLink: Boolean
 	},
 	computed: {
-		classes: function () {
+		classes: function() {
 			let classes = [];
 			if (this.isPrimary) {
 				classes.push('pkpButton--isPrimary');
@@ -71,19 +71,19 @@ export default {
 				classes.push('pkpButton--isLink');
 			}
 			return classes;
-		},
+		}
 	},
 	methods: {
-		click: function () {
+		click: function() {
 			this.$emit('click');
 		},
-		focus: function () {
+		focus: function() {
 			this.$emit('focus');
 		},
-		blur: function () {
+		blur: function() {
 			this.$emit('blur');
-		},
-	},
+		}
+	}
 };
 </script>
 

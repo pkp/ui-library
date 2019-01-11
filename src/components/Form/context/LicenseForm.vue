@@ -9,12 +9,11 @@ export default {
 		 * Override Form.submit() in order to split the copyrightHolder field
 		 * value into copyrightHolderType and copyrightHolderOther.
 		 */
-		submit: function () {
-
+		submit: function() {
 			this.isSaving = true;
 
 			let values = {};
-			this.fields.forEach((field) => {
+			this.fields.forEach(field => {
 				if (field.name === 'copyrightHolder') {
 					if (['author', 'context'].includes(field.value)) {
 						values['copyrightHolderType'] = field.value;
@@ -33,14 +32,14 @@ export default {
 				method: this.method,
 				url: this.action,
 				headers: {
-					'X-Csrf-Token': this.csrfToken,
+					'X-Csrf-Token': this.csrfToken
 				},
 				data: values,
 				success: this.success,
 				error: this.error,
-				complete: this.complete,
+				complete: this.complete
 			});
-		},
-	},
+		}
+	}
 };
 </script>

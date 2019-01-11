@@ -12,7 +12,7 @@ export default {
 		FormFieldLabel,
 		HelpButton,
 		Tooltip,
-		MultilingualProgress,
+		MultilingualProgress
 	},
 	props: {
 		name: String,
@@ -27,15 +27,14 @@ export default {
 		isMultilingual: Boolean,
 		isRequired: Boolean,
 		showWhen: [String, Array],
-		validateAs: String,
 		primaryLocale: String,
 		localeKey: String,
 		locales: Array,
 		value: {
-			required: true,
+			required: true
 		},
 		allErrors: Object,
-		i18n: Object,
+		i18n: Object
 	},
 	computed: {
 		/**
@@ -46,22 +45,22 @@ export default {
 		 * change.
 		 */
 		currentValue: {
-			get: function () {
+			get: function() {
 				return this.isMultilingual ? this.value[this.localeKey] : this.value;
 			},
-			set: function (newVal) {
+			set: function(newVal) {
 				this.$emit('change', {
 					name: this.name,
 					value: newVal,
-					localeKey: this.localeKey,
+					localeKey: this.localeKey
 				});
-			},
+			}
 		},
 
 		/**
 		 *
 		 */
-		errors: function () {
+		errors: function() {
 			if (!Object.keys(this.allErrors).includes(this.name)) {
 				return [];
 			}
@@ -82,8 +81,8 @@ export default {
 		 *
 		 * @return string
 		 */
-		localizedName: function () {
-			return this.isMultilingual ? (this.name + '-' + this.localeKey) : this.name;
+		localizedName: function() {
+			return this.isMultilingual ? this.name + '-' + this.localeKey : this.name;
 		},
 
 		/**
@@ -91,7 +90,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		controlId: function () {
+		controlId: function() {
 			return this.compileId('control');
 		},
 
@@ -100,7 +99,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		describedByTooltipId: function () {
+		describedByTooltipId: function() {
 			return this.compileId('tooltip');
 		},
 
@@ -109,7 +108,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		describedByHelpId: function () {
+		describedByHelpId: function() {
 			return this.compileId('help');
 		},
 
@@ -118,7 +117,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		describedByDescriptionId: function () {
+		describedByDescriptionId: function() {
 			return this.compileId('description');
 		},
 
@@ -127,7 +126,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		describedByErrorId: function () {
+		describedByErrorId: function() {
 			return this.compileId('error');
 		},
 
@@ -136,7 +135,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		multilingualProgressId: function () {
+		multilingualProgressId: function() {
 			return this.compileId('multingualProgress');
 		},
 
@@ -147,7 +146,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		describedByIds: function () {
+		describedByIds: function() {
 			let ids = [];
 			if (this.description) {
 				ids.push(this.describedByDescriptionId);
@@ -175,11 +174,11 @@ export default {
 		 *
 		 * @return Number
 		 */
-		multilingualFieldsCompleted: function () {
+		multilingualFieldsCompleted: function() {
 			if (!this.isMultilingual) {
 				return 0;
 			}
-			return Object.values(this.value).filter((val) => {
+			return Object.values(this.value).filter(val => {
 				if (Array.isArray(val)) {
 					return val.length;
 				}
@@ -192,7 +191,7 @@ export default {
 		 *
 		 * @return Boolean
 		 */
-		isPrimaryLocale: function () {
+		isPrimaryLocale: function() {
 			return !this.isMultilingual || this.localeKey === this.primaryLocale;
 		},
 
@@ -204,11 +203,11 @@ export default {
 		 *
 		 * @return string
 		 */
-		localeLabel: function () {
+		localeLabel: function() {
 			if (!this.isMultilingual || this.isPrimaryLocale) {
 				return '';
 			}
-			return this.locales.find((locale) => locale.key === this.localeKey).label;
+			return this.locales.find(locale => locale.key === this.localeKey).label;
 		},
 
 		/**
@@ -218,9 +217,12 @@ export default {
 		 *
 		 * @return string
 		 */
-		multilingualLabel: function () {
-			return this.__('multilingualLabel', {label: this.label, localeName: this.localeLabel});
-		},
+		multilingualLabel: function() {
+			return this.__('multilingualLabel', {
+				label: this.label,
+				localeName: this.localeLabel
+			});
+		}
 	},
 	methods: {
 		/**
@@ -230,14 +232,14 @@ export default {
 		 * @param string type The type of ID you want to generate (eg - `tooltip`)
 		 * @return string
 		 */
-		compileId: function (type) {
+		compileId: function(type) {
 			let parts = [this.formId, this.name, type];
 			if (this.isMultilingual) {
 				parts.push(this.localeKey);
 			}
 			return parts.join('-');
-		},
-	},
+		}
+	}
 };
 </script>
 

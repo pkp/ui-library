@@ -59,16 +59,16 @@ export default {
 		inputType: String,
 		size: {
 			default: 'normal',
-			validator: function (value) {
-				return ['small', 'normal', 'large'].indexOf !== -1;
-			},
+			validator: function(value) {
+				return ['small', 'normal', 'large'].indexOf(value) !== -1;
+			}
 		},
-		prefix: String,
+		prefix: String
 	},
-	data: function () {
+	data: function() {
 		return {
 			inputStyles: {},
-			prefixStyles: {},
+			prefixStyles: {}
 		};
 	},
 	computed: {
@@ -77,7 +77,7 @@ export default {
 		 *
 		 * @return array
 		 */
-		classes: function () {
+		classes: function() {
 			return ['pkpFormField--size' + this.size];
 		},
 
@@ -86,7 +86,7 @@ export default {
 		 *
 		 * @return array
 		 */
-		controlClasses: function () {
+		controlClasses: function() {
 			let classes = [];
 			if (this.isMultilingual && this.locales.length > 1) {
 				classes.push('pkpFormField__control--hasMultilingualIndicator');
@@ -95,17 +95,17 @@ export default {
 				classes.push('pkpFormField__control--hasPrefix');
 			}
 			return classes;
-		},
+		}
 	},
 	methods: {
 		/**
 		 * Set focus to the control input
 		 */
-		setFocus: function () {
+		setFocus: function() {
 			this.$refs.input.focus();
-		},
+		}
 	},
-	mounted: function () {
+	mounted: function() {
 		/**
 		 * Increase input padding to account for a prefix if one exists and truncate
 		 * prefix if it takes up the whole input area.
@@ -120,21 +120,32 @@ export default {
 			setTimeout(() => {
 				if (this.prefix) {
 					this.inputStyles = {
-						'padding-left': (this.$refs.prefix.clientWidth + this.$refs.prefix.offsetLeft) + 'px',
+						'padding-left':
+							this.$refs.prefix.clientWidth +
+							this.$refs.prefix.offsetLeft +
+							'px'
 					};
 					this.$nextTick(() => {
-						const prefixLength = this.$refs.prefix.clientWidth + this.$refs.prefix.offsetLeft;
-						if (prefixLength > (this.$refs.input.clientWidth - 20)) {
+						const prefixLength =
+							this.$refs.prefix.clientWidth + this.$refs.prefix.offsetLeft;
+						if (prefixLength > this.$refs.input.clientWidth - 20) {
 							this.prefixStyles = {
-								width: (this.$refs.input.clientWidth - this.$refs.prefix.offsetLeft - 80) + 'px',
+								width:
+									this.$refs.input.clientWidth -
+									this.$refs.prefix.offsetLeft -
+									80 +
+									'px',
 								display: 'block',
 								'white-space': 'nowrap',
 								'overflow-x': 'hidden',
-								'text-overflow': 'ellipsis',
+								'text-overflow': 'ellipsis'
 							};
 							this.$nextTick(() => {
 								this.inputStyles = {
-									'padding-left': (this.$refs.prefix.clientWidth + this.$refs.prefix.offsetLeft) + 'px',
+									'padding-left':
+										this.$refs.prefix.clientWidth +
+										this.$refs.prefix.offsetLeft +
+										'px'
 								};
 							});
 						}
@@ -142,7 +153,7 @@ export default {
 				}
 			}, 700);
 		});
-	},
+	}
 };
 </script>
 
@@ -168,7 +179,6 @@ export default {
 }
 
 .pkpFormField__control--hasMultilingualIndicator {
-
 	.pkpFormField--text__input {
 		padding-left: 3rem;
 	}
@@ -221,14 +231,12 @@ export default {
 }
 
 .pkpFormField--sizesmall {
-
 	.pkpFormField--text__input {
 		width: 10em;
 	}
 }
 
 .pkpFormField--sizelarge {
-
 	.pkpFormField--text__input {
 		width: 100%;
 	}

@@ -94,16 +94,16 @@ export default {
 	extends: FieldBase,
 	components: {
 		VueDropzone,
-		PkpButton,
+		PkpButton
 	},
 	props: {
 		options: Object,
-		csrfToken: String,
+		csrfToken: String
 	},
-	data: function () {
+	data: function() {
 		return {
 			initialValue: null,
-			uploadFile: null,
+			uploadFile: null
 		};
 	},
 	computed: {
@@ -112,8 +112,12 @@ export default {
 		 *
 		 * @return boolean
 		 */
-		isInitialValue: function () {
-			return !!this.currentValue && !!this.initialValue && this.currentValue === this.initialValue;
+		isInitialValue: function() {
+			return (
+				!!this.currentValue &&
+				!!this.initialValue &&
+				this.currentValue === this.initialValue
+			);
 		},
 
 		/**
@@ -121,8 +125,10 @@ export default {
 		 *
 		 * @return string
 		 */
-		fileName: function () {
-			return this.uploadFile ? this.uploadFile.upload.filename : this.currentValue;
+		fileName: function() {
+			return this.uploadFile
+				? this.uploadFile.upload.filename
+				: this.currentValue;
 		},
 
 		/**
@@ -130,7 +136,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		controlId: function () {
+		controlId: function() {
 			return this.compileId('control');
 		},
 
@@ -141,7 +147,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		dropzoneClickableId: function () {
+		dropzoneClickableId: function() {
 			return this.compileId('clickable');
 		},
 
@@ -153,7 +159,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		dropzoneId: function () {
+		dropzoneId: function() {
 			return this.compileId('dropzone');
 		},
 
@@ -163,7 +169,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		dropzoneHiddenFileId: function () {
+		dropzoneHiddenFileId: function() {
 			return this.compileId('hiddenFileId');
 		},
 
@@ -174,13 +180,16 @@ export default {
 		 *
 		 * @return object
 		 */
-		dropzoneOptions: function () {
+		dropzoneOptions: function() {
 			return {
 				method: 'POST',
 				thumbnailWidth: 240,
 				maxFiles: 1,
 				hiddenInputContainer: '#' + this.controlId,
-				clickable: ['#' + this.controlId + ' .dropzone', '#' + this.dropzoneClickableId],
+				clickable: [
+					'#' + this.controlId + ' .dropzone',
+					'#' + this.dropzoneClickableId
+				],
 				addRemoveLinks: true,
 				previewTemplate: `<div class="dz-preview">
 					<img class="dz-image" data-dz-thumbnail />
@@ -190,7 +199,7 @@ export default {
 					</div>
 				</div>`,
 				headers: {
-					'X-Csrf-Token': this.csrfToken,
+					'X-Csrf-Token': this.csrfToken
 				},
 				dictDefaultMessage: this.i18n.dropzoneDictDefaultMessage,
 				dictFallbackMessage: this.i18n.dropzoneDictFallbackMessage,
@@ -200,22 +209,23 @@ export default {
 				dictResponseError: this.i18n.dropzoneDictResponseError,
 				dictCancelUpload: this.i18n.dropzoneDictCancelUpload,
 				dictUploadCanceled: this.i18n.dropzoneDictUploadCanceled,
-				dictCancelUploadConfirmation: this.i18n.dropzoneDictCancelUploadConfirmation,
+				dictCancelUploadConfirmation: this.i18n
+					.dropzoneDictCancelUploadConfirmation,
 				dictRemoveFile: this.i18n.dropzoneDictRemoveFile,
 				dictMaxFilesExceeded: this.i18n.dropzoneDictMaxFilesExceeded,
-				...this.options,
+				...this.options
 			};
-		},
+		}
 	},
 	methods: {
 		/**
 		 * Clear the current value
 		 */
-		clear: function () {
+		clear: function() {
 			this.$emit('change', {
 				name: this.name,
 				value: null,
-				localeKey: this.localeKey,
+				localeKey: this.localeKey
 			});
 			this.uploadFile = null;
 			this.$refs.dropzone.dropzone.removeAllFiles();
@@ -226,11 +236,11 @@ export default {
 		/**
 		 * Revert to the initialValue
 		 */
-		revert: function () {
+		revert: function() {
 			this.$emit('change', {
 				name: this.name,
 				value: this.initialValue,
-				localeKey: this.localeKey,
+				localeKey: this.localeKey
 			});
 			this.uploadFile = null;
 			this.setFocusToControl();
@@ -244,11 +254,11 @@ export default {
 		 * @param object response The server response
 		 * @see https://www.dropzonejs.com/#event-success
 		 */
-		success: function (file, response) {
+		success: function(file, response) {
 			this.$emit('change', {
 				name: this.name,
 				value: response.id,
-				localeKey: this.localeKey,
+				localeKey: this.localeKey
 			});
 			this.setFocusToControl();
 		},
@@ -259,21 +269,17 @@ export default {
 		 * @param object file Details about the file
 		 * @see https://www.dropzonejs.com/#event-addedfile
 		 */
-		onAddFile: function (file) {
+		onAddFile: function(file) {
 			this.uploadFile = {...file};
 			this.setErrors([]);
-
 		},
 
 		/**
 		 * Response to a dropzone.js event when a file has been removed
 		 *
-		 * @param object file Details about the file
-		 * @param string error
-		 * @param XmlHttpRequest xhr the ajax request
 		 * @see https://www.dropzonejs.com/#event-removedfile
 		 */
-		onRemoveFile: function (file, error, xhr) {
+		onRemoveFile: function() {
 			this.uploadFile = null;
 			this.setErrors([]);
 		},
@@ -286,10 +292,9 @@ export default {
 		 *
 		 * @param object file Details about the file
 		 * @param string|object message The error message
-		 * @param xhr XmlHttpRequest The ajax request
 		 * @see https://www.dropzonejs.com/#event-error
 		 */
-		error: function (file, message, xhr) {
+		error: function(file, message) {
 			let errors = this.errors.slice();
 			if (typeof message === 'string') {
 				errors.push(message);
@@ -307,7 +312,7 @@ export default {
 		 *
 		 * @param object New errors to send
 		 */
-		setErrors: function (errors) {
+		setErrors: function(errors) {
 			this.$emit('set-errors', this.name, errors, this.localeKey);
 		},
 
@@ -319,7 +324,7 @@ export default {
 		 * position will be dropped for someone using a keyboard or
 		 * assistive technology.
 		 */
-		setFocusToControl: function () {
+		setFocusToControl: function() {
 			this.$nextTick(() => {
 				let focusable = this.$refs.control.querySelectorAll('input,button');
 				if (focusable.length) {
@@ -328,33 +333,36 @@ export default {
 					this.$el.focus();
 				}
 			});
-		},
+		}
 	},
 	watch: {
 		/**
 		 * Whenever the current value changes, set focus to the control element
 		 */
-		value: function (newVal, oldVal) {
+		value: function(newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
 			this.setFocusToControl();
-		},
+		}
 	},
-	mounted: function () {
+	mounted: function() {
 		/**
 		 * Add attributes to the hidden file input field so that labels and
 		 * descriptions can be accessed by those using assistive devices.
 		 */
 		this.$refs.dropzone.dropzone.hiddenFileInput.id = this.dropzoneHiddenFileId;
-		this.$refs.dropzone.dropzone.hiddenFileInput.setAttribute('aria-describedby', this.describedByIds);
+		this.$refs.dropzone.dropzone.hiddenFileInput.setAttribute(
+			'aria-describedby',
+			this.describedByIds
+		);
 
 		/**
 		 * Set the initial data, which can't be set in the data() function because it relies on
 		 * a computed property
 		 */
 		this.initialValue = this.currentValue ? this.currentValue : null;
-	},
+	}
 };
 </script>
 
@@ -393,13 +401,18 @@ export default {
 
 // Dropzone.js
 @keyframes progressBar {
-	0%   {background: @primary;}
-	50%  {background: @primary-lift;}
-	100% {background: @primary;}
+	0% {
+		background: @primary;
+	}
+	50% {
+		background: @primary-lift;
+	}
+	100% {
+		background: @primary;
+	}
 }
 
 .pkpFormField--upload {
-
 	.dz-message {
 		padding: @base;
 		border: 1px dashed @bg-border-color;
@@ -411,7 +424,6 @@ export default {
 	}
 
 	.dz-started {
-
 		.dz-message {
 			display: none;
 		}

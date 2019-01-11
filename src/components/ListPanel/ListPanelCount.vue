@@ -9,14 +9,17 @@ export default {
 	name: 'ListPanelCount',
 	props: ['count', 'total', 'i18n'],
 	computed: {
-		countString: function () {
+		countString: function() {
 			if (this.total) {
-				return this.__('itemsOfTotal', { count: this.count, total: this.total });
+				return this.__('itemsOfTotal', {
+					count: this.count,
+					total: this.total
+				});
 			} else {
-				return this.__('itemCount', { count: this.count });
+				return this.__('itemCount', {count: this.count});
 			}
-		},
-	},
+		}
+	}
 };
 </script>
 

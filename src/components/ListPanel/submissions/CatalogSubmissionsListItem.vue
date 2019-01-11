@@ -83,22 +83,30 @@ import Orderer from '@/components/Orderer/Orderer.vue';
 export default {
 	extends: SubmissionsListItem,
 	name: 'CatalogSubmissionsListItem',
-	props: ['item', 'i18n', 'filterAssocType', 'filterAssocId', 'catalogEntryUrl', 'isOrdering', 'apiPath'],
+	props: [
+		'item',
+		'i18n',
+		'filterAssocType',
+		'filterAssocId',
+		'catalogEntryUrl',
+		'isOrdering',
+		'apiPath'
+	],
 	components: {
 		PkpButton,
 		Icon,
-		Orderer,
+		Orderer
 	},
-	data: function () {
+	data: function() {
 		return {
-			isSaving: false,
+			isSaving: false
 		};
 	},
 	computed: {
 		/**
 		 * Map the submission id to the list item id
 		 */
-		id: function () {
+		id: function() {
 			return this.item.id;
 		},
 
@@ -108,12 +116,15 @@ export default {
 		 *
 		 * @return bool
 		 */
-		isFeatured: function () {
+		isFeatured: function() {
 			if (!this.item.hasOwnProperty('featured')) {
 				return false;
 			}
-			const feature = this.item.featured.find((feature) => {
-				return feature.assoc_type === this.filterAssocType && feature.assoc_id === this.filterAssocId;
+			const feature = this.item.featured.find(feature => {
+				return (
+					feature.assoc_type === this.filterAssocType &&
+					feature.assoc_id === this.filterAssocId
+				);
 			});
 			return typeof feature !== 'undefined';
 		},
@@ -124,33 +135,36 @@ export default {
 		 *
 		 * @return bool
 		 */
-		isNewRelease: function () {
+		isNewRelease: function() {
 			if (!this.item.hasOwnProperty('newRelease')) {
 				return false;
 			}
-			const newRelease = this.item.newRelease.find((newRelease) => {
-				return newRelease.assoc_type === this.filterAssocType && newRelease.assoc_id === this.filterAssocId;
+			const newRelease = this.item.newRelease.find(newRelease => {
+				return (
+					newRelease.assoc_type === this.filterAssocType &&
+					newRelease.assoc_id === this.filterAssocId
+				);
 			});
 			return typeof newRelease !== 'undefined';
-		},
+		}
 	},
 	methods: {
 		/**
 		 * Toggle the checkbox when clicked
 		 */
-		toggleFeatured: function () {
-			const isFeatured = this.item.featured.find((feature) => {
+		toggleFeatured: function() {
+			const isFeatured = this.item.featured.find(feature => {
 				return feature.assoc_type === this.filterAssocType;
 			});
 			if (isFeatured) {
-				this.item.featured = this.item.featured.filter((feature) => {
+				this.item.featured = this.item.featured.filter(feature => {
 					return feature.assoc_type !== this.filterAssocType;
 				});
 			} else {
 				this.item.featured.push({
 					assoc_type: this.filterAssocType,
 					assoc_id: this.filterAssocId,
-					seq: 1,
+					seq: 1
 				});
 			}
 			this.saveDisplayFlags();
@@ -159,20 +173,20 @@ export default {
 		/**
 		 * Toggle the checkbox when clicked
 		 */
-		toggleNewRelease: function () {
-			const matchingNewReleases = this.item.newRelease.find((newRelease) => {
+		toggleNewRelease: function() {
+			const matchingNewReleases = this.item.newRelease.find(newRelease => {
 				return newRelease.assoc_type === this.filterAssocType;
 			});
 			const isNewRelease = typeof matchingNewReleases !== 'undefined';
 			if (isNewRelease) {
-				this.item.newRelease = this.item.newRelease.filter((newRelease) => {
+				this.item.newRelease = this.item.newRelease.filter(newRelease => {
 					return newRelease.assoc_type !== this.filterAssocType;
 				});
 			} else {
 				this.item.newRelease.push({
 					assoc_type: this.filterAssocType,
 					assoc_id: this.filterAssocId,
-					seq: 1,
+					seq: 1
 				});
 			}
 			this.saveDisplayFlags();
@@ -181,8 +195,7 @@ export default {
 		/**
 		 * Post updates to the featured or new release status of a submission
 		 */
-		saveDisplayFlags: function () {
-
+		saveDisplayFlags: function() {
 			this.isLoading = true;
 
 			var self = this;
@@ -193,12 +206,12 @@ export default {
 					submissionId: this.item.id,
 					featured: this.item.featured,
 					newRelease: this.item.newRelease,
-					csrfToken: $.pkp.currentUser.csrfToken,
+					csrfToken: $.pkp.currentUser.csrfToken
 				},
-				error: function (r) {
+				error: function(r) {
 					self.ajaxErrorCallback(r);
 				},
-				success: function (r) {
+				success: function(r) {
 					if (typeof r.featured !== 'undefined') {
 						self.item.featured = r.featured;
 						self.$emit('catalogFeatureUpdated', self.submission);
@@ -207,27 +220,29 @@ export default {
 						self.item.newRelease = r.newRelease;
 					}
 				},
-				complete: function (r) {
+				complete: function() {
 					self.isLoading = false;
-				},
+				}
 			});
 		},
 
 		/**
 		 * Launch a modal to view the catalog entry for this item
 		 */
-		viewCatalogEntry: function () {
-
+		viewCatalogEntry: function() {
 			var opts = {
 				title: this.i18n.catalogEntry,
-				url: this.catalogEntryUrl.replace('__id__', this.item.id),
+				url: this.catalogEntryUrl.replace('__id__', this.item.id)
 			};
 
-			$('<div id="' + $.pkp.classes.Helper.uuid() + '" ' +
-					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>')
-				.pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
-		},
-	},
+			$(
+				'<div id="' +
+					$.pkp.classes.Helper.uuid() +
+					'" ' +
+					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>'
+			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
+		}
+	}
 };
 </script>
 
@@ -241,24 +256,24 @@ export default {
 	padding-right: @base * 15;
 
 	a {
-			text-decoration: none;
+		text-decoration: none;
 	}
 }
 
-.pkpListPanelItem__selectItem--catalog {
-	position: absolute;
-	top: 0;
+.pkpListPanelItem__selectItem.pkpListPanelItem__selectItem--catalog {
 	left: auto;
 	right: @base * 8;
 	width: @base * 8;
-	height: 100%;
-	background: transparent;
-	border: none;
-	border-left: @grid-border;
-	cursor: pointer;
+	border: 1px solid transparent;
+	border-left-color: @grid-border-color;
+
+	&:focus {
+		outline: 0;
+		border-color: @primary;
+	}
 
 	+ .pkpListPanelItem__selectItem--catalog {
-			right: 0;
+		right: 0;
 	}
 }
 
@@ -267,7 +282,6 @@ export default {
 }
 
 .pkpListPanelItem--catalog {
-
 	.orderer__dragDrop,
 	.orderer__up,
 	.orderer__down {

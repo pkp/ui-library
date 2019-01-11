@@ -5,12 +5,12 @@
 			{{ i18n.filter }}
 		</div>
 		<div class="pkpListPanel__filterOptions pkpListPanel__filterOptions--catalogSubmissions">
-			<div v-for="filter in filters" class="pkpListPanel__filterSet">
+			<div v-for="(filter, index) in filters" :key="index" class="pkpListPanel__filterSet">
 				<div v-if="filter.heading" class="pkpListPanel__filterSetLabel">
 					{{ filter.heading }}
 				</div>
 				<ul>
-					<li v-for="filterItem in filter.filters">
+					<li v-for="filterItem in filter.filters" :key="filterItem.param + filterItem.val">
 						<a href="#"
 							@click.prevent.stop="filterBy(filterItem.param, filterItem.val)"
 							class="pkpListPanel__filterLabel"
@@ -41,7 +41,7 @@ export default {
 	extends: ListPanelFilter,
 	name: 'CatalogSubmissionsListFilter',
 	components: {
-		Icon,
+		Icon
 	},
 	props: ['isVisible', 'filters', 'i18n'],
 	methods: {
@@ -51,7 +51,7 @@ export default {
 		 * Only allow a single filter to be enabled at a time, so that the ordering
 		 * features can be applied to a single category or series.
 		 */
-		filterBy: function (type, val) {
+		filterBy: function(type, val) {
 			if (this.isFilterActive()) {
 				this.clearFilters();
 				return;
@@ -59,7 +59,7 @@ export default {
 			let filters = {};
 			filters[type] = [val];
 			this.filterList(filters);
-		},
-	},
+		}
+	}
 };
 </script>

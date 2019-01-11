@@ -30,13 +30,13 @@
 
 <script>
 import FieldBase from './FieldBase.vue';
-import { Chrome } from 'vue-color';
+import {Chrome} from 'vue-color';
 
 export default {
 	name: 'FieldColor',
 	extends: FieldBase,
 	components: {
-		'color-picker': Chrome,
+		'color-picker': Chrome
 	},
 	methods: {
 		/**
@@ -44,13 +44,13 @@ export default {
 		 *
 		 * @param string newVal
 		 */
-		setValue: function (newVal) {
+		setValue: function(newVal) {
 			if (newVal.hex === this.currentValue) {
 				return;
 			}
 			this.currentValue = newVal.hex;
-		},
-	},
+		}
+	}
 };
 </script>
 

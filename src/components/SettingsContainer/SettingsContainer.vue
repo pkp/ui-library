@@ -10,10 +10,12 @@ export default {
 		PkpForm,
 		AddContextForm,
 		LicenseForm,
-		ThemeForm,
+		ThemeForm
 	},
-	data: function () {
-		return {};
+	data: function() {
+		return {
+			forms: []
+		};
 	},
 	methods: {
 		/**
@@ -22,7 +24,7 @@ export default {
 		 * @param string formId
 		 * @return Object
 		 */
-		getForm: function (formId) {
+		getForm: function(formId) {
 			return this.forms[formId] ? this.forms[formId] : false;
 		},
 
@@ -32,7 +34,7 @@ export default {
 		 * @param string formId
 		 * @param array newFields The list of fields to update the form with
 		 */
-		setFormFields: function (formId, newFields) {
+		setFormFields: function(formId, newFields) {
 			if (!this.forms[formId]) {
 				return;
 			}
@@ -45,7 +47,7 @@ export default {
 		 * @param string formId
 		 * @param object errors List of errors to attach to the form
 		 */
-		setFormErrors: function (formId, errors) {
+		setFormErrors: function(formId, errors) {
 			if (this.getForm(formId)) {
 				this.getForm(formId).errors = errors;
 			}
@@ -57,17 +59,17 @@ export default {
 		 * @param string formId
 		 * @param array visiibleLocales list of locale keys that should be active
 		 */
-		setFormVisibleLocales: function (formId, visibleLocales) {
+		setFormVisibleLocales: function(formId, visibleLocales) {
 			if (this.getForm(formId)) {
 				this.getForm(formId).visibleLocales = visibleLocales;
 			}
-		},
+		}
 	},
-	mounted: function () {
+	mounted: function() {
 		/**
 		 * Listen for changes in the supported form languages and update forms
 		 */
-		pkp.eventBus.$on('set-form-languages', (data) => {
+		pkp.eventBus.$on('set-form-languages', data => {
 			let supportedFormLocales;
 			// Account for global events triggered from Handler.js, which attaches
 			// non-numeric keys to the event data, changing the array to an object
@@ -84,10 +86,10 @@ export default {
 				supportedFormLocales = [...data];
 			}
 
-			Object.keys(this.forms).forEach((id) => {
+			Object.keys(this.forms).forEach(id => {
 				this.forms[id].supportedFormLocales = supportedFormLocales;
 			});
 		});
-	},
+	}
 };
 </script>

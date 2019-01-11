@@ -6,22 +6,24 @@ A design pattern and component library for Public Knowledge Project's applicatio
 
 This library contains design patterns implemented or planned for the Public Knowledge Project's applications [Open Journal Systems](https://pkp.sfu.ca/ojs/) and [Open Monograph Press](https://pkp.sfu.ca/omp/).
 
-This library can also be run locally to provide a style guide and sandbox environment for component development and testing. The style guide is intended to help orient developers to the existing components, outline markup guidelines, and provide details on how to adhere to accessibility requirements.
-
-The style guide components are for demonstration purposes. In most cases, they are not fully functional and do not provide complete documentation. You should consult the source code for these components.
+This library can also be run locally to provide a style guide, component documentation, and a sandbox environment for component development and testing.
 
 ## Usage
 
-This library is intended to be included and used within PKP's applications. It can also be run locally as a standalone app to develop and test components, and provide implementation guidance.
-
-To get started:
+This library is intended to be included and used within PKP's applications. If you would like to run the style guide and component documentation locally, follow these steps.
 
 ``` bash
 # install dependencies
 npm install
 
 # serve with hot reload at localhost:8080
-npm run dev
+npm run serve
+```
+
+Run the following command to build the library for inclusion in [PKP's documentation hub](https://github.com/pkp/pkp-docs)
+
+```bash
+npm run build-docs
 ```
 
 ## Issues

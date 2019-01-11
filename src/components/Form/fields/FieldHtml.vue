@@ -17,7 +17,7 @@ import FieldBase from './FieldBase.vue';
 
 export default {
 	name: 'FieldHtml',
-	extends: FieldBase,
+	extends: FieldBase
 };
 </script>
 

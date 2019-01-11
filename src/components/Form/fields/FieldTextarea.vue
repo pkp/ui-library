@@ -43,16 +43,16 @@
 import FieldBase from './FieldBase.vue';
 
 export default {
-	name: 'FieldText',
+	name: 'FieldTextarea',
 	extends: FieldBase,
 	props: {
 		size: {
 			type: String,
 			default: 'normal',
-			validator: function (value) {
-				return ['small', 'normal', 'large'].indexOf !== -1;
-			},
-		},
+			validator: function(value) {
+				return ['small', 'normal', 'large'].indexOf(value) !== -1;
+			}
+		}
 	},
 	computed: {
 		/**
@@ -60,14 +60,10 @@ export default {
 		 *
 		 * @return array
 		 */
-		classes: function () {
-			let classes = [];
-			if (this.size === 'small') {
-				classes.push('pkpFormField--small');
-			}
-			return classes;
-		},
-	},
+		classes: function() {
+			return ['pkpFormField--' + this.size];
+		}
+	}
 };
 </script>
 
@@ -85,5 +81,9 @@ export default {
 .pkpFormField--small .pkpFormField--textarea__input {
 	max-width: 20em;
 	height: 8em;
+}
+
+.pkpFormField--large .pkpFormField--textarea__input {
+	height: 40em;
 }
 </style>

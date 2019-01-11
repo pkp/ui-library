@@ -7,7 +7,7 @@
 		<div class="pkpFormGroup__fields">
 			<template v-for="field in fieldsInGroup">
 				<template v-if="field.isMultilingual">
-					<div class="pkpFormGroup__localeGroup -pkpClearfix">
+					<div class="pkpFormGroup__localeGroup -pkpClearfix" :key="field.name">
 						<div v-for="locale in availableLocales" :key="locale.key" class="pkpFormGroup__locale" :class="{'pkpFormGroup__locale--isVisible': visibleLocales.includes(locale.key)}">
 							<component
 								:is="field.component"
@@ -28,6 +28,7 @@
 					<component
 						:is="field.component"
 						v-bind="field"
+						:key="field.name"
 						:allErrors="errors"
 						:formId="formId"
 						:i18n="i18n"
@@ -70,7 +71,7 @@ export default {
 		FieldText,
 		FieldTextarea,
 		FieldUpload,
-		FieldUploadImage,
+		FieldUploadImage
 	},
 	props: {
 		id: String,
@@ -84,7 +85,7 @@ export default {
 		visibleLocales: Array,
 		availableLocales: Array,
 		showWhen: [String, Array],
-		i18n: Object,
+		i18n: Object
 	},
 	computed: {
 		/**
@@ -92,18 +93,20 @@ export default {
 		 *
 		 * @return array
 		 */
-		fieldsInGroup: function () {
-			return this.fields.filter(field => field.groupId === this.id && this.shouldShowField(field));
+		fieldsInGroup: function() {
+			return this.fields.filter(
+				field => field.groupId === this.id && this.shouldShowField(field)
+			);
 		},
 
-		hasErrors: function () {
+		hasErrors: function() {
 			for (var fieldName in this.fieldsInGroup) {
 				if (fieldName in this.errors) {
 					return true;
 				}
 			}
 			return false;
-		},
+		}
 	},
 	methods: {
 		/**
@@ -115,7 +118,7 @@ export default {
 		 *  @option string localeKey Locale key for this value. Empty it not multilingual
 		 * }}
 		 */
-		fieldChanged: function (data) {
+		fieldChanged: function(data) {
 			this.$emit('change', data);
 		},
 
@@ -125,11 +128,12 @@ export default {
 		 * @param object field One of this.fields
 		 * @return boolean
 		 */
-		shouldShowField: function (field) {
+		shouldShowField: function(field) {
 			if (typeof field.showWhen === 'undefined') {
 				return true;
 			}
-			const whenFieldName = typeof field.showWhen === 'string' ? field.showWhen : field.showWhen[0];
+			const whenFieldName =
+				typeof field.showWhen === 'string' ? field.showWhen : field.showWhen[0];
 			const whenField = this.fields.find(field => field.name === whenFieldName);
 			if (!whenField) {
 				return false;
@@ -143,30 +147,36 @@ export default {
 		/**
 		 * Respond to a field changing its errors
 		 *
-		 * @param string fieldName Field name
-		 * @param arrayy fieldErrors New errors array for that field
-		 * @param string localeKey The locale for a multilingual field
+		 * @param object data {{
+		 *		@option string name Field name
+		 *		@option array errors List of errors for the field
+		 *		@option string localeKey The locale key for a multilingual field
+		 * }}
 		 */
-		setFieldErrors: function (fieldName, fieldErrors, localeKey) {
+		setFieldErrors: function(data) {
+			const localeKey = data.localeKey || '';
 			let newErrors = {...this.errors};
-			if (!fieldErrors.length) {
-				if (localeKey && newErrors[fieldName] && newErrors[fieldName][localeKey]) {
-					delete newErrors[fieldName][localeKey];
-				} else if (newErrors[fieldName]) {
-					delete newErrors[fieldName];
+			if (!data.errors.length) {
+				if (
+					localeKey &&
+					newErrors[data.name] &&
+					newErrors[data.name][localeKey]
+				) {
+					delete newErrors[data.name][localeKey];
+				} else if (newErrors[data.name]) {
+					delete newErrors[data.name];
 				}
 			} else {
 				if (localeKey) {
-					newErrors[fieldName] = newErrors[fieldName] || {};
-					newErrors[fieldName][localeKey] = fieldErrors;
+					newErrors[data.name] = newErrors[data.name] || {};
+					newErrors[data.name][localeKey] = data.errors;
 				} else {
-					newErrors[fieldName] = fieldErrors;
+					newErrors[data.name] = data.errors;
 				}
 			}
 			this.$emit('set-errors', newErrors);
-			// this.$nextTick(() => { this.$forceUpdate(); });
-		},
-	},
+		}
+	}
 };
 </script>
 
@@ -182,7 +192,6 @@ export default {
 		border-top: @bg-border-light;
 	}
 }
-
 
 .pkpFormGroup__heading {
 	float: left;
@@ -225,7 +234,6 @@ export default {
 
 // When multiple locales are being displayed at once
 .pkpForm--hasManyVisibleLocales {
-
 	.pkpFormGroup__heading {
 		float: none;
 		padding-right: 0;

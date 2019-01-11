@@ -181,13 +181,13 @@ export default {
 		Badge,
 		Icon,
 		List,
-		ListItem,
+		ListItem
 	},
 	props: ['currentlyAssigned', 'warnOnAssignment', 'i18n'],
-	data: function () {
+	data: function() {
 		return {
 			isExpanded: false,
-			isWarningBypassed: false,
+			isWarningBypassed: false
 		};
 	},
 	computed: {
@@ -196,7 +196,7 @@ export default {
 		 *
 		 * @return array
 		 */
-		classes: function () {
+		classes: function() {
 			let classes = [];
 			if (this.isFocused) {
 				classes.push('-hasFocus');
@@ -216,7 +216,7 @@ export default {
 		 *
 		 * @return boolean
 		 */
-		isCurrentlyAssigned: function () {
+		isCurrentlyAssigned: function() {
 			return this.currentlyAssigned.includes(this.item.id);
 		},
 
@@ -225,11 +225,15 @@ export default {
 		 *
 		 * @return int
 		 */
-		daysSinceLastAssignment: function () {
+		daysSinceLastAssignment: function() {
 			if (!this.item.dateLastReviewAssignment) {
 				return 0;
 			}
-			return Math.floor(((Date.parse(this.item.dateLastReviewAssignment) - Date.now()) / 86400000) * -1);
+			return Math.floor(
+				((Date.parse(this.item.dateLastReviewAssignment) - Date.now()) /
+					86400000) *
+					-1
+			);
 		},
 
 		/**
@@ -237,12 +241,14 @@ export default {
 		 *
 		 * @return string "X days ago"
 		 */
-		daysSinceLastAssignmentString: function () {
+		daysSinceLastAssignmentString: function() {
 			if (!this.daysSinceLastAssignment) {
 				return this.i18n.neverAssigned;
 			}
 			if (this.daysSinceLastAssignment > 1) {
-				return this.__('daysSinceLastAssignment', {days: this.daysSinceLastAssignment});
+				return this.__('daysSinceLastAssignment', {
+					days: this.daysSinceLastAssignment
+				});
 			} else {
 				return this.__('daySinceLastAssignment');
 			}
@@ -253,11 +259,15 @@ export default {
 		 *
 		 * @return string
 		 */
-		interestsString: function () {
+		interestsString: function() {
 			if (!this.item.interests || !this.item.interests.length) {
 				return '';
 			}
-			return this.item.interests.map((i) => { return i.interest; }).join(this.i18n.listSeparator);
+			return this.item.interests
+				.map(i => {
+					return i.interest;
+				})
+				.join(this.i18n.listSeparator);
 		},
 
 		/**
@@ -268,7 +278,7 @@ export default {
 		 *
 		 * @return array
 		 */
-		stars: function () {
+		stars: function() {
 			let stars = [];
 			if (this.item.reviewerRating) {
 				for (let i = 0; i < 5; i++) {
@@ -282,18 +292,20 @@ export default {
 		 * Should this reviewer feature a warning about assigning them as a blind
 		 * reviewer?
 		 */
-		shouldWarnOnAssignment: function () {
-			return !this.isWarningBypassed && this.warnOnAssignment.includes(this.item.id);
-		},
+		shouldWarnOnAssignment: function() {
+			return (
+				!this.isWarningBypassed && this.warnOnAssignment.includes(this.item.id)
+			);
+		}
 	},
 	methods: {
 		/**
 		 * Unlock a locked assignment
 		 */
-		unlockAssignment: function () {
+		unlockAssignment: function() {
 			this.isWarningBypassed = true;
-		},
-	},
+		}
+	}
 };
 </script>
 
@@ -362,7 +374,6 @@ export default {
 }
 
 .pkpListPanelItem__details--selectReviewer {
-
 	.list {
 		margin-left: 3rem;
 		margin-right: 2rem;
@@ -396,7 +407,6 @@ export default {
 }
 
 .pkpListPanelItem--selectReviewerAssigned {
-
 	.pkpListPanelItem__item--reviewer {
 		padding-bottom: 0;
 		opacity: 0.5;
@@ -416,10 +426,8 @@ export default {
 }
 
 .pkpListPanelItem--selectReviewerWarned {
-
 	.pkpListPanelItem__item--reviewer {
 		padding-bottom: 0;
 	}
 }
-
 </style>

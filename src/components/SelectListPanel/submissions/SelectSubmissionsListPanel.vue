@@ -64,13 +64,13 @@ export default {
 		ListPanelSearch,
 		ListPanelCount,
 		ListPanelLoadMore,
-		SelectSubmissionsListItem,
+		SelectSubmissionsListItem
 	},
-	data: function () {
+	data: function() {
 		return {
 			inputName: '',
-			showSelectAll: true,
+			showSelectAll: true
 		};
-	},
+	}
 };
 </script>

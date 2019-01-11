@@ -109,12 +109,12 @@ export default {
 	name: 'FieldUploadImage',
 	extends: FieldUpload,
 	props: {
-		baseUrl: String,
+		baseUrl: String
 	},
-	data: function () {
+	data: function() {
 		return {
 			altTextValue: '',
-			initialValue: null,
+			initialValue: null
 		};
 	},
 	computed: {
@@ -123,12 +123,14 @@ export default {
 		 *
 		 * @return boolean
 		 */
-		isInitialValue: function () {
-			return !!this.currentValue &&
+		isInitialValue: function() {
+			return (
+				!!this.currentValue &&
 				!!this.initialValue &&
 				!!this.currentValue.dateUploaded &&
 				!!this.initialValue.dateUploaded &&
-				this.currentValue.dateUploaded === this.initialValue.dateUploaded;
+				this.currentValue.dateUploaded === this.initialValue.dateUploaded
+			);
 		},
 
 		/**
@@ -136,7 +138,7 @@ export default {
 		 *
 		 * @return @string
 		 */
-		thumbnail: function () {
+		thumbnail: function() {
 			if (this.uploadFile) {
 				return this.uploadFile.dataURL;
 			} else if (this.currentValue && this.currentValue.uploadName) {
@@ -150,7 +152,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		altTextId: function () {
+		altTextId: function() {
 			return this.compileId('altText');
 		},
 
@@ -160,9 +162,9 @@ export default {
 		 *
 		 * @return string
 		 */
-		altTextDescriptionId: function () {
+		altTextDescriptionId: function() {
 			return this.compileId('altTextDescription');
-		},
+		}
 	},
 	methods: {
 		/**
@@ -172,15 +174,15 @@ export default {
 		 * @param object response The server response
 		 * @see https://www.dropzonejs.com/#event-success
 		 */
-		success: function (file, response) {
+		success: function(file, response) {
 			this.isUploading = false;
 			this.$emit('change', {
 				name: this.name,
 				value: {
 					temporaryFileId: response.id,
-					altText: '',
+					altText: ''
 				},
-				localeKey: this.localeKey,
+				localeKey: this.localeKey
 			});
 			this.setFocusToControl();
 		},
@@ -189,20 +191,19 @@ export default {
 		 * Respond to a dropzone.js event when it creates a thumbnail
 		 *
 		 * @param object file Details about the file
-		 * @param string dataURL A base64 representation of the image
 		 * @see https://www.dropzonejs.com/#event-thumbnail
 		 */
-		onThumbnail: function (file, dataUrl) {
+		onThumbnail: function(file) {
 			this.uploadFile = {...file};
 			this.setFocusToControl();
-		},
+		}
 	},
 	watch: {
 		/**
 		 * Whenever the current value changes, update the altTextValue to keep
 		 * the field in sync with external changes
 		 */
-		currentValue: function (newVal, oldVal) {
+		currentValue: function(newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
@@ -213,7 +214,7 @@ export default {
 		 * Whenever the alt text field changes, sync the change to the correct
 		 * property in the value object
 		 */
-		altTextValue: function (newVal, oldVal) {
+		altTextValue: function(newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
@@ -224,32 +225,34 @@ export default {
 				name: this.name,
 				value: {
 					...this.currentValue,
-					altText: newVal,
+					altText: newVal
 				},
-				localeKey: this.localeKey,
+				localeKey: this.localeKey
 			});
-		},
+		}
 	},
-	mounted: function () {
+	mounted: function() {
 		/**
 		 * Add attributes to the hidden file input field so that labels and
 		 * descriptions can be accessed by those using assistive devices.
 		 */
 		this.$refs.dropzone.dropzone.hiddenFileInput.id = this.dropzoneHiddenFileId;
-		this.$refs.dropzone.dropzone.hiddenFileInput.setAttribute('aria-describedby', this.describedByIds);
+		this.$refs.dropzone.dropzone.hiddenFileInput.setAttribute(
+			'aria-describedby',
+			this.describedByIds
+		);
 
 		/**
 		 * Set the initial data, which can't be set in the data() function because it relies on
 		 * a computed property
 		 */
 		this.altTextValue = this.currentValue ? this.currentValue.altText : '';
-	},
+	}
 };
 </script>
 
 <style lang="less">
 @import '../../../styles/_import';
-
 
 .pkpFormField--uploadImage__thumbnailWrapper {
 	float: left;
@@ -280,7 +283,6 @@ export default {
 
 // Stack image preview and alt text columns when showing multiple locales
 .pkpForm--hasManyVisibleLocales {
-
 	.pkpFormField--uploadImage__thumbnailWrapper {
 		float: none;
 		width: 100%;
@@ -295,7 +297,6 @@ export default {
 }
 
 .pkpFormField--uploadImage {
-
 	.pkpFormField--upload__previewActions {
 		float: none;
 		clear: both;
@@ -314,7 +315,7 @@ export default {
 
 		&:before,
 		&:after {
-			content: " ";
+			content: ' ';
 			display: table;
 		}
 

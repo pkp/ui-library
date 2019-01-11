@@ -54,7 +54,7 @@ export default {
 	name: 'SelectReviewerListFilterSlider',
 	components: {
 		Icon,
-		VueSlider,
+		VueSlider
 	},
 	props: [
 		'filterId',
@@ -67,44 +67,44 @@ export default {
 		'isVisible',
 		'useStars',
 		'starLabel',
-		'i18n',
+		'i18n'
 	],
 	computed: {
-		sliderRef: function () {
+		sliderRef: function() {
 			return 'slider' + this.filterId;
-		},
+		}
 	},
 	methods: {
-		enableFilter: function () {
+		enableFilter: function() {
 			this.$emit('filterBy', this.filterId, this.filterValue);
 		},
 		/**
 		 * Throttle this so that sliders don't fire off dozens of
 		 * filtering requests as they're being moved.
 		 */
-		filterBy: debounce(function (val) {
+		filterBy: debounce(function(val) {
 			this.$emit('filterBy', this.filterId, val);
 		}, 250),
 
-		clearFilter: function () {
+		clearFilter: function() {
 			this.$emit('clearFilter', this.filterId);
-		},
+		}
 	},
 	watch: {
 		/**
 		 * Refresh any sliders whenever the filter is opened or closed. This
 		 * updates the width of the component when the filter has fully expanded.
 		 */
-		isVisible: function (newVal, oldVal) {
+		isVisible: function(newVal, oldVal) {
 			if (!newVal || newVal === oldVal) {
 				return;
 			}
 			let slider = this.$refs[this.sliderRef];
-			setTimeout(function () {
+			setTimeout(function() {
 				slider.refresh();
 			}, 300);
-		},
-	},
+		}
+	}
 };
 </script>
 
@@ -117,18 +117,17 @@ export default {
  */
 .pkpListPanel__filterSet--hasSlider {
 	opacity: 0;
-	transition: opacity 0.4s ease-in-out 0.4s, left 0s ease-in-out 0.4s, width 0s ease-in-out 0.4s;
+	transition: opacity 0.4s ease-in-out 0.4s, left 0s ease-in-out 0.4s,
+		width 0s ease-in-out 0.4s;
 }
 
 .pkpListPanel__filter.-isVisible {
-
 	.pkpListPanel__filterSet--hasSlider {
 		opacity: 1;
 	}
 }
 
 .pkpListPanel__filterSet--disabled {
-
 	.pkpListPanel__filterInput {
 		opacity: 0.5;
 	}
@@ -157,9 +156,7 @@ export default {
 	line-height: 1.5em;
 }
 
-
 .vue-slider-component {
-
 	.vue-slider-tooltip {
 		border-color: @primary;
 		background: @primary;
@@ -167,7 +164,8 @@ export default {
 		line-height: 1.5em;
 	}
 
-	.vue-slider-tooltip-wrap.vue-slider-tooltip-bottom .vue-slider-tooltip::before {
+	.vue-slider-tooltip-wrap.vue-slider-tooltip-bottom
+		.vue-slider-tooltip::before {
 		border-bottom-color: @primary;
 	}
 

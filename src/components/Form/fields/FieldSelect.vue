@@ -28,7 +28,7 @@
 				:aria-invalid="!!errors.length"
 				:required="isRequired"
 			>
-				<option v-for="option in localizedOptions" v-bind="option">{{ option.label }}</option>
+				<option v-for="option in localizedOptions" :key="option.value" v-bind="option">{{ option.label }}</option>
 			</select>
 			<multilingual-progress v-if="isMultilingual && locales.length > 1"
 				:id="multilingualProgressId"
@@ -48,7 +48,7 @@ export default {
 	name: 'FieldSelect',
 	extends: FieldBase,
 	props: {
-		options: Array,
+		options: Array
 	},
 	computed: {
 		/**
@@ -56,10 +56,10 @@ export default {
 		 *
 		 * @return array
 		 */
-		localizedOptions: function () {
+		localizedOptions: function() {
 			return this.isMultingual ? this.options[this.localeKey] : this.options;
-		},
-	},
+		}
+	}
 };
 </script>
 
@@ -71,8 +71,8 @@ export default {
 }
 
 .pkpFormField--select__input:-moz-focusring {
-  color: transparent;
-  text-shadow: 0 0 0 @text;
+	color: transparent;
+	text-shadow: 0 0 0 @text;
 }
 
 .pkpFormField__control--hasMultilingualIndicator .pkpFormField--select__input {

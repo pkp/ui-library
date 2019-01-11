@@ -5,12 +5,12 @@
 			{{ i18n.filter }}
 		</div>
 		<div class="pkpListPanel__filterOptions pkpListPanel__filterOptions--submissions">
-			<div v-for="filter in filters" class="pkpListPanel__filterSet">
+			<div v-for="(filter, index) in filters" :key="index" class="pkpListPanel__filterSet">
 				<div v-if="filter.heading" class="pkpListPanel__filterSetLabel">
 					{{ filter.heading }}
 				</div>
 				<ul>
-					<li v-for="filterItem in filter.filters">
+					<li v-for="filterItem in filter.filters" :key="filterItem.param + filterItem.val">
 						<a href="#"
 							@click.prevent.stop="filterBy(filterItem.param, filterItem.val)"
 							class="pkpListPanel__filterLabel"
@@ -41,7 +41,7 @@ export default {
 	extends: ListPanelFilter,
 	name: 'SubmissionsListFilter',
 	components: {
-		Icon,
+		Icon
 	},
 	props: ['isVisible', 'filters', 'i18n'],
 	methods: {
@@ -49,7 +49,7 @@ export default {
 		 * Override ListPanelFilter.filterBy to handle special
 		 * logic around the `isIncomplete` filter.
 		 */
-		filterBy: function (type, val) {
+		filterBy: function(type, val) {
 			// Don't allow other filters to be active when isIncomplete is active
 			if (type === 'isIncomplete') {
 				if (this.isFilterActive('isIncomplete', true)) {
@@ -73,7 +73,7 @@ export default {
 				filters[type].push(val);
 				this.filterList(filters);
 			}
-		},
-	},
+		}
+	}
 };
 </script>

@@ -55,7 +55,7 @@ export default {
 	components: {
 		FormErrors,
 		FormGroup,
-		PkpButton,
+		PkpButton
 	},
 	props: {
 		id: String,
@@ -71,7 +71,7 @@ export default {
 		submitButton: Object,
 		previousButton: Object,
 		isSaving: Boolean,
-		i18n: Object,
+		i18n: Object
 	},
 	computed: {
 		/**
@@ -79,8 +79,10 @@ export default {
 		 *
 		 * @return array
 		 */
-		groupsInPage: function () {
-			return this.groups.filter(group => group.pageId === this.id && this.shouldShowGroup(group));
+		groupsInPage: function() {
+			return this.groups.filter(
+				group => group.pageId === this.id && this.shouldShowGroup(group)
+			);
 		},
 
 		/**
@@ -88,18 +90,22 @@ export default {
 		 *
 		 * @return string
 		 */
-		hasFooter: function () {
-			return this.previousButton || this.submitButton || Object.keys(this.errors).length;
-		},
+		hasFooter: function() {
+			return (
+				this.previousButton ||
+				this.submitButton ||
+				Object.keys(this.errors).length
+			);
+		}
 	},
 	watch: {
 		/**
 		 * When saving, set the focus to the button wrapper element so it doesn't
 		 * get dropped as the dom updates
 		 */
-		isSaving: function () {
+		isSaving: function() {
 			this.$refs.buttons.focus();
-		},
+		}
 	},
 	methods: {
 		/**
@@ -111,21 +117,21 @@ export default {
 		 *  @option string localeKey Locale key for this value. Empty it not multilingual
 		 * }}
 		 */
-		fieldChanged: function (data) {
+		fieldChanged: function(data) {
 			this.$emit('change', data);
 		},
 
 		/**
 		 * Submit the form page
 		 */
-		submit: function () {
+		submit: function() {
 			this.$emit('pageSubmitted', this.id);
 		},
 
 		/**
 		 * Request the previous page
 		 */
-		previousPage: function () {
+		previousPage: function() {
 			this.$emit('previousPage', this.id);
 		},
 
@@ -134,7 +140,7 @@ export default {
 		 *
 		 * @param string fieldName
 		 */
-		showField: function (fieldName) {
+		showField: function(fieldName) {
 			this.$emit('showField', fieldName);
 		},
 
@@ -143,7 +149,7 @@ export default {
 		 *
 		 * @param string localeKey
 		 */
-		showLocale: function (localeKey) {
+		showLocale: function(localeKey) {
 			this.$emit('showLocale', localeKey);
 		},
 
@@ -153,11 +159,12 @@ export default {
 		 * @param object group One of this.groups
 		 * @return boolean
 		 */
-		shouldShowGroup: function (group) {
+		shouldShowGroup: function(group) {
 			if (typeof group.showWhen === 'undefined') {
 				return true;
 			}
-			const whenFieldName = typeof group.showWhen === 'string' ? group.showWhen : group.showWhen[0];
+			const whenFieldName =
+				typeof group.showWhen === 'string' ? group.showWhen : group.showWhen[0];
 			const whenField = this.fields.find(field => field.name === whenFieldName);
 			if (!whenField) {
 				return false;
@@ -173,10 +180,10 @@ export default {
 		 *
 		 * @param object errors The new errors object
 		 */
-		setErrors: function (errors) {
+		setErrors: function(errors) {
 			this.$emit('set-errors', errors);
-		},
-	},
+		}
+	}
 };
 </script>
 

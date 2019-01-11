@@ -3,7 +3,7 @@
 		<icon icon="exclamation-triangle" :inline="true" />
 		{{ message }}
 		<ul class="-screenReader">
-			<li v-for="error in errorList">
+			<li v-for="(error, index) in errorList" :key="index">
 				<button @click.prevent="showError(error.fieldName)">
 					{{ __('errorA11y', {fieldLabel: error.label, errorMessage: error.message}) }}
 				</button>
@@ -21,12 +21,12 @@ import Icon from '../Icon/Icon.vue';
 export default {
 	name: 'FormErrors',
 	components: {
-		Icon,
+		Icon
 	},
 	props: {
 		errors: Object,
 		fields: Array,
-		i18n: Object,
+		i18n: Object
 	},
 	computed: {
 		/**
@@ -34,7 +34,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		message: function () {
+		message: function() {
 			if (Object.keys(this.errors).length === 1) {
 				return this.i18n.errorOne;
 			} else {
@@ -51,25 +51,30 @@ export default {
 		 *
 		 * @return array
 		 */
-		errorList: function () {
-			return Object.keys(this.errors).map((fieldName) => {
-				const field = this.fields.find((field) => field.name === fieldName);
+		errorList: function() {
+			return Object.keys(this.errors).map(fieldName => {
+				const field = this.fields.find(field => field.name === fieldName);
 				const label = field ? field.label : fieldName;
 				let errorMessage;
-				if (this.errors[fieldName] !== null && typeof this.errors[fieldName] === 'object') {
-					errorMessage = this.errors[fieldName][Object.keys(this.errors[fieldName])[0]];
+				if (
+					this.errors[fieldName] !== null &&
+					typeof this.errors[fieldName] === 'object'
+				) {
+					errorMessage = this.errors[fieldName][
+						Object.keys(this.errors[fieldName])[0]
+					];
 				} else {
 					errorMessage = this.errors[fieldName];
 				}
 				return {fieldName: fieldName, label: label, message: errorMessage};
 			});
-		},
+		}
 	},
 	methods: {
 		/**
 		 * Emit an event to display the next error in the list
 		 */
-		showNextError: function () {
+		showNextError: function() {
 			this.showError(Object.keys(this.errors)[0]);
 		},
 
@@ -78,14 +83,14 @@ export default {
 		 *
 		 * @param string fieldName
 		 */
-		showError: function (fieldName) {
+		showError: function(fieldName) {
 			const error = this.errors[fieldName];
 			if (error && typeof error === 'object' && error.constructor === Object) {
 				this.$emit('showLocale', Object.keys(error)[0]);
 			}
 			this.$emit('showField', fieldName);
-		},
-	},
+		}
+	}
 };
 </script>
 

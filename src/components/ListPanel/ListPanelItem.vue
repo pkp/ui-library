@@ -7,10 +7,10 @@
 <script>
 export default {
 	name: 'ListPanelItem',
-	props: ['item'],
-	data: function () {
+	props: ['item', 'i18n'],
+	data: function() {
 		return {
-			isFocused: false,
+			isFocused: false
 		};
 	},
 	computed: {
@@ -19,23 +19,22 @@ export default {
 		 * should overwrite this computed property and map the item's id to
 		 * this property.
 		 */
-		id: function () {
+		id: function() {
 			return this.item.id || 0;
-		},
+		}
 	},
 	methods: {
-
 		/**
 		 * Update the isFocused property
 		 */
-		focusItem: function () {
+		focusItem: function() {
 			this.isFocused = true;
 		},
 
 		/**
 		 * Update the isFocused property
 		 */
-		blurItem: function () {
+		blurItem: function() {
 			this.isFocused = false;
 		},
 
@@ -44,7 +43,7 @@ export default {
 		 *
 		 * This event emerges from an Orderer component.
 		 */
-		itemOrderUp: function () {
+		itemOrderUp: function() {
 			this.$emit('itemOrderUp', this.item);
 		},
 
@@ -53,17 +52,17 @@ export default {
 		 *
 		 * This event emerges from an Orderer component.
 		 */
-		itemOrderDown: function () {
+		itemOrderDown: function() {
 			this.$emit('itemOrderDown', this.item);
 		},
 
 		/**
 		 * Toggle the expanded or summary views
 		 */
-		toggleExpanded: function () {
+		toggleExpanded: function() {
 			this.isExpanded = !this.isExpanded;
-		},
-	},
+		}
+	}
 };
 </script>
 
@@ -87,7 +86,6 @@ export default {
 }
 
 .pkpListPanel.-isOrdering {
-
 	.pkpListPanelItem {
 		position: relative;
 		padding-left: 5em;

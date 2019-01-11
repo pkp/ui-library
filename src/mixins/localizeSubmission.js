@@ -4,7 +4,6 @@
  * @see https://vuejs.org/v2/guide/mixins.html
  */
 export default {
-
 	methods: {
 		/**
 		 * Get a submission's locale-specific string from a locale object.
@@ -16,14 +15,23 @@ export default {
 		 * @param string submissionLocale The submission's locale
 		 * @return string
 		 */
-		localizeSubmission: function (localizedString, submissionLocale) {
+		localizeSubmission: function(localizedString, submissionLocale) {
 			if (localizedString === null) {
 				return '';
-			} else if (localizedString.hasOwnProperty($.pkp.app.currentLocale) && localizedString[$.pkp.app.currentLocale]) {
+			} else if (
+				localizedString.hasOwnProperty($.pkp.app.currentLocale) &&
+				localizedString[$.pkp.app.currentLocale]
+			) {
 				return localizedString[$.pkp.app.currentLocale];
-			}	else if (localizedString.hasOwnProperty(submissionLocale) && localizedString[submissionLocale]) {
+			} else if (
+				localizedString.hasOwnProperty(submissionLocale) &&
+				localizedString[submissionLocale]
+			) {
 				return localizedString[submissionLocale];
-			} else if (localizedString.hasOwnProperty($.pkp.app.primaryLocale) && localizedString[$.pkp.app.primaryLocale]) {
+			} else if (
+				localizedString.hasOwnProperty($.pkp.app.primaryLocale) &&
+				localizedString[$.pkp.app.primaryLocale]
+			) {
 				return localizedString[$.pkp.app.primaryLocale];
 			}
 
@@ -34,6 +42,6 @@ export default {
 			}
 
 			return '';
-		},
-	},
+		}
+	}
 };
