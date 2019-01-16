@@ -2,37 +2,50 @@
 	<div class="viewTable">
 		<pkp-table
 			:caption="caption"
+			:orderBy="orderBy"
+			:orderDirection="orderDirection"
 			:columns="columns"
 			:rows="rows"
 		>
-			<thead slot="header" class="pkpTable__header">
-				<tr>
-					<th v-for="column in columns"
+			<tbody slot="rows">
+				<table-row v-for="(row, rowIndex) in rows" :key="'row' + rowIndex">
+					<table-cell
+						v-for="(column, columnIndex) in columns"
 						:key="column.name"
-						:scope="column.scope ? column.scope : 'col'"
+						:column="column"
+						:row="row"
 					>
-						{{ column.label }}
-						<icon v-if="column.name === 'pdf'" icon="exclamation-triangle" :inline="true" />
-					</th>
-				</tr>
-			</thead>
+						<pkp-button
+							v-if="column.name === 'pdf'"
+							:label="row.pdf.toString()"
+							@click="viewItem(row)"
+						/>
+					</table-cell>
+				</table-row>
+			</tbody>
 		</pkp-table>
 	</div>
 </template>
 
 <script>
-import Icon from '@/components/Icon/Icon.vue';
+import PkpButton from '@/components/Button/Button.vue';
 import PkpTable from '@/components/Table/Table.vue';
+import TableRow from '@/components/Table/TableRow.vue';
+import TableCell from '@/components/Table/TableCell.vue';
 import ArticleStats from './helpers/ArticleStats.js';
 
 export default {
 	components: {
-		Icon,
+		PkpButton,
 		PkpTable,
+		TableRow,
+		TableCell,
 	},
 	data: function () {
 		return {
-			caption: 'Example table with a custom header template',
+			caption: 'Example table with a custom column template',
+			orderBy: '',
+			orderDirection: false,
 			columns: [
 				{
 					name: 'views',
@@ -67,6 +80,11 @@ export default {
 			],
 			rows: ArticleStats,
 		};
+	},
+	methods: {
+		viewItem: function (row) {
+			alert(JSON.stringify(row));
+		},
 	},
 };
 </script>
