@@ -10,6 +10,8 @@ import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import ListPanelRaw from '!!raw-loader!@/components/ListPanel/ListPanel.vue';
 import SelectListPanel from '@/components/SelectListPanel/SelectListPanel.vue';
 import SelectListPanelRaw from '!!raw-loader!@/components/SelectListPanel/SelectListPanel.vue';
+import ViewTable from './examples/Table/ViewTable.vue';
+import TableRaw from '!!raw-loader!@/components/Table/Table.vue';
 
 export default {
 	Badge: {
@@ -47,5 +49,11 @@ export default {
 		componentRaw: SelectListPanelRaw,
 		label: 'SelectListPanel',
 		url: '/components/SelectListPanel',
+	},
+	Table: {
+		component: ViewTable,
+		componentRaw: TableRaw,
+		label: 'Table',
+		url: '/components/Table',
 	},
 };
