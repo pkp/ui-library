@@ -7,13 +7,14 @@
 			:columns="columns"
 			:rows="rows"
 		>
-			<tbody slot="rows">
+			<template slot="rows">
 				<table-row v-for="(row, rowIndex) in rows" :key="'row' + rowIndex">
 					<table-cell
 						v-for="(column, columnIndex) in columns"
 						:key="column.name"
 						:column="column"
 						:row="row"
+						:tabindex="!rowIndex && !columnIndex ? 0 : -1"
 					>
 						<pkp-button
 							v-if="column.name === 'pdf'"
@@ -22,7 +23,7 @@
 						/>
 					</table-cell>
 				</table-row>
-			</tbody>
+			</template>
 		</pkp-table>
 	</div>
 </template>

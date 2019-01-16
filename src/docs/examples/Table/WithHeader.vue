@@ -5,7 +5,7 @@
 			:columns="columns"
 			:rows="rows"
 		>
-			<thead slot="header" class="pkpTable__header">
+			<template slot="header">
 				<tr>
 					<th v-for="column in columns"
 						:key="column.name"
@@ -15,7 +15,7 @@
 						<icon v-if="column.name === 'pdf'" icon="exclamation-triangle" :inline="true" />
 					</th>
 				</tr>
-			</thead>
+			</template>
 		</pkp-table>
 	</div>
 </template>

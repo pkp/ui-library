@@ -1,17 +1,28 @@
 <template>
 	<table class="pkpTable">
 		<caption v-html="caption" />
-		<slot name="header">
-			<table-header
-				:orderBy="orderBy"
-				:orderDirection="orderDirection"
-				:columns="columns"
-				:rows="rows"
-				@orderBy="column => setOrderBy(column)"
-			/>
-		</slot>
-		<slot name="rows">
-			<tbody>
+		<thead>
+			<slot name="header">
+				<table-header
+					:orderBy="orderBy"
+					:orderDirection="orderDirection"
+					:columns="columns"
+					:rows="rows"
+					@orderBy="column => setOrderBy(column)"
+				/>
+			</slot>
+		</thead>
+		<tbody
+			@keydown.35.ctrl.exact.prevent="focusEnd"
+			@keydown.36.ctrl.exact.prevent="focusStart"
+			@keydown.35.exact.prevent="focusLastCell"
+			@keydown.36.exact.prevent="focusFirstCell"
+			@keydown.37.exact.prevent="focusPreviousCell"
+			@keydown.38.exact.prevent="focusPreviousRow"
+			@keydown.39.exact.prevent="focusNextCell"
+			@keydown.40.exact.prevent="focusNextRow"
+		>
+			<slot name="rows">
 		  	<table-row v-for="(row, rowIndex) in rows" :key="'row' + rowIndex">
 					<table-cell
 					 	v-for="(column, columnIndex) in columns"
@@ -21,8 +32,8 @@
 						:tabindex="!rowIndex && !columnIndex ? 0 : -1"
 					/>
 				</table-row>
-			</tbody>
-		</slot>
+			</slot>
+		</tbody>
 	</table>
 </template>
 
@@ -65,6 +76,134 @@ export default {
 			} else {
 				this.$emit('orderBy', column.orderBy, column.initialOrderDirection);
 			}
+		},
+
+		/**
+		 * Move focus to the next cell in the row
+		 *
+		 * Keyboard: →
+		 *
+		 * @param Event e
+		 */
+		focusNextCell: function (e) {
+			$(e.target)
+				.closest('td, th')
+				.next()
+				.focus();
+		},
+
+		/**
+		 * Move focus to the previous cell in the row
+		 *
+		 * Keyboard: ←
+		 *
+		 * @param Event e
+		 */
+		focusPreviousCell: function (e) {
+			$(e.target)
+				.closest('td, th')
+				.prev()
+				.focus();
+		},
+
+		/**
+		 * Move focus to the same column in the next row
+		 *
+		 * Keyboard: ↓
+		 *
+		 * @param Event e
+		 */
+		focusNextRow: function (e) {
+			const $target = $(e.target);
+			const $cell = $target.closest('td');
+			const $row = $cell.closest('tr');
+			const columnIndex = $row.children().index($cell);
+			const $nextRowCells = $row.next().children();
+			if ($nextRowCells[columnIndex]) {
+				$nextRowCells[columnIndex].focus();
+			}
+		},
+
+		/**
+		 * Move focus to the same column in the previous row
+		 *
+		 * Keyboard: ↑
+		 *
+		 * @param Event e
+		 */
+		focusPreviousRow: function (e) {
+			const $target = $(e.target);
+			const $cell = $target.closest('td');
+			const $row = $cell.closest('tr');
+			const columnIndex = $row.children().index($cell);
+			const $prevRowCells = $row.prev().children();
+			if ($prevRowCells[columnIndex]) {
+				$prevRowCells[columnIndex].focus();
+			}
+		},
+
+		/**
+		 * Move focus to the first cell in the row
+		 *
+		 * Keyboard: [Home]
+		 *
+		 * @param Event e
+		 */
+		focusFirstCell: function (e) {
+			$(e.target)
+				.parents('tr')
+				.children('td, th')
+				.first()
+				.focus();
+		},
+
+		/**
+		 * Move focus to the last cell in the row
+		 *
+		 * Keyboard: [End]
+		 *
+		 * @param Event e
+		 */
+		focusLastCell: function (e) {
+			$(e.target)
+				.parents('tr')
+				.children('td, th')
+				.last()
+				.focus();
+		},
+
+		/**
+		 * Move focus to the first cell in the first row
+		 *
+		 * Keyboard: [CTRL] + [Home]
+		 *
+		 * @param Event e
+		 */
+		focusStart: function (e) {
+			$(e.target)
+				.parents('tbody')
+				.children('tr')
+				.first()
+				.children('td, th')
+				.first()
+				.focus();
+		},
+
+		/**
+		 * Move focus to the last cell in the last row
+		 *
+		 * Keyboard: [CTRL] + [End]
+		 *
+		 * @param Event e
+		 */
+		focusEnd: function (e) {
+			$(e.target)
+				.parents('tbody')
+				.children('tr')
+				.last()
+				.children('td, th')
+				.last()
+				.focus();
 		},
 	},
 };
