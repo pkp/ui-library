@@ -3,32 +3,26 @@
 		<caption v-html="caption" />
 		<thead>
 			<tr>
-				<th v-for="column in columns"
-					:key="column.name"
-					:aria-sort="!!column.orderBy"
-					:scope="column.scope ? column.scope
-					: 'col'"
-				>
-					<button v-if="column.orderBy" @click="setOrderBy(column)">
-						{{ column.label }}
-						<icon
-							v-if="orderBy === column.orderBy"
-							:icon="orderDirection ? 'caret-down' : 'caret-up'"
-						/>
-					</button>
-					<template v-else>
-						{{ column.label }}
-					</template>
-				</th>
+				<slot name="header">
+					<th v-for="column in columns"
+						:key="column.name"
+						:aria-sort="!!column.orderBy"
+						:scope="column.scope ? column.scope : 'col'"
+						:class="{'-isActive': orderBy === column.orderBy}"
+					>
+						<button v-if="column.orderBy" @click="setOrderBy(column)">
+							{{ column.label }}
+							<icon :icon="orderDirection ? 'caret-down' : 'caret-up'" />
+						</button>
+						<template v-else>
+							{{ column.label }}
+						</template>
+					</th>
+				</slot>
 			</tr>
 		</thead>
 		<tbody>
-		  <tr
-		    v-for="(row, rowIndex) in rows"
-		    :key="rowIndex"
-		  >
-		    <!-- We have a slot for each todo, passing it the -->
-		    <!-- `todo` object as a slot prop.                -->
+		  <tr v-for="(row, rowIndex) in rows" :key="rowIndex">
 		    <slot name="row" :row="row" :getCellClasses="getCellClasses">
 					<component
 						v-for="(column, columnIndex) in columns"
@@ -53,9 +47,18 @@ export default {
 		Icon,
 	},
 	props: {
-		caption: String,
-		orderBy: String,
-		orderDirection: Boolean,
+		caption: {
+			type: String,
+			default: '',
+		},
+		orderBy: {
+			type: String,
+			default: '',
+		},
+		orderDirection: {
+			type: Boolean,
+			default: false,
+		},
 		columns: Array,
 		rows: Array,
 	},
@@ -104,6 +107,7 @@ export default {
 @import '../../styles/_import';
 
 .pkpTable {
+	width: 100%;
 	max-width: 100%;
 	border: @grid-border;
 	border-collapse: collapse;
@@ -119,7 +123,7 @@ export default {
 
 		&:focus {
 			outline: 0;
-			box-shadow: inset 0 0 0 2px @primary;
+			box-shadow: inset 0 0 0 1px @primary;
 		}
 	}
 
@@ -148,6 +152,7 @@ export default {
 		max-width: 40em;
 	}
 
+	// Sortable columns
 	th[aria-sort="true"] {
 		padding: 0;
 
@@ -156,6 +161,7 @@ export default {
 			margin: 0;
 			padding: 0.5rem;
 			border: none;
+			border-radius: @radius;
 			background: transparent;
 			box-shadow: none;
 			font-size: @font-tiny;
@@ -166,10 +172,20 @@ export default {
 
 			&:focus {
 				outline: 0;
-				box-shadow: inset 0 0 0 2px @primary;
+				box-shadow: inset 0 0 0 1px @primary;
 			}
 
 			.fa {
+				display: none;
+			}
+		}
+
+		&.-isActive,
+		button:hover,
+		button:focus {
+
+			.fa {
+				display: inline-block;
 				margin-left: 0.25em;
 				color: @primary;
 			}
