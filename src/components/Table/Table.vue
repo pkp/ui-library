@@ -1,5 +1,10 @@
 <template>
-	<table class="pkpTable">
+	<table
+		class="pkpTable"
+		role="grid"
+		:aria-labelledBy="labelledBy ? labelledBy : false"
+		:aria-describedBy="describedBy ? describedBy : false"
+	>
 		<caption v-if="label || description">
 			<div v-if="label" class="pkpTable__label">{{ label }}</div>
 			<div v-if="description" class="pkpTable__description" v-html="description" />
