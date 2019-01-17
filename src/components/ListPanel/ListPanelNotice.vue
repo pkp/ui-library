@@ -12,9 +12,9 @@ import Icon from '@/components/Icon/Icon.vue';
 export default {
 	name: 'ListPanelNotice',
 	components: {
-		Icon,
+		Icon
 	},
-	props: ['notice', 'type'],
+	props: ['notice', 'type']
 };
 </script>
 

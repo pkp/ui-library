@@ -11,18 +11,18 @@ import Icon from '@/components/Icon/Icon.vue';
 export default {
 	name: 'Tooltip',
 	components: {
-		Icon,
+		Icon
 	},
 	props: {
 		tooltip: {
 			type: String,
-			required: true,
+			required: true
 		},
 		label: {
 			type: String,
-			required: true,
-		},
-	},
+			required: true
+		}
+	}
 };
 </script>
 

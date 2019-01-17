@@ -83,36 +83,36 @@ export default {
 	name: 'SelectReviewerListFilter',
 	components: {
 		Icon,
-		SelectReviewerListFilterSlider,
+		SelectReviewerListFilterSlider
 	},
 	props: {
 		isVisible: Boolean,
 		activeFilters: Object,
 		filterByRating: {
 			type: Number,
-			default: 3,
+			default: 3
 		},
 		filterByCompleted: {
 			type: Number,
-			default: 10,
+			default: 10
 		},
 		filterByDaysSinceLastAssignment: {
 			type: Array,
-			default: function () {
+			default: function() {
 				return [0, 365];
-			},
+			}
 		},
 		filterByActive: {
 			type: Array,
-			default: function () {
+			default: function() {
 				return [0, 20];
-			},
+			}
 		},
 		filterByAverageCompletion: {
 			type: Number,
-			default: 75,
+			default: 75
 		},
-		i18n: Object,
+		i18n: Object
 	},
 	methods: {
 		/**
@@ -122,7 +122,7 @@ export default {
 		 *
 		 * @return boolean
 		 */
-		isFilterActive: function (type) {
+		isFilterActive: function(type) {
 			return this.activeFilters[type] !== undefined;
 		},
 
@@ -132,7 +132,7 @@ export default {
 		 * Overrides ListPanelFilter::filterBy so that vals are not stored as
 		 * arrays.
 		 */
-		filterBy: function (type, val) {
+		filterBy: function(type, val) {
 			if (Array.isArray(val)) {
 				val = val.join('-');
 			}
@@ -146,13 +146,13 @@ export default {
 		 *
 		 * Overrides ListPanelFilter::clearFilter so that no values are required.
 		 */
-		clearFilter: function (type) {
+		clearFilter: function(type) {
 			const filters = Object.assign({}, this.activeFilters);
 			if (filters[type]) {
 				delete filters[type];
 			}
 			this.filterList(filters);
-		},
-	},
+		}
+	}
 };
 </script>

@@ -35,9 +35,9 @@ export default {
 	extends: SelectListPanelItem,
 	name: 'SelectSubmissionsListItem',
 	components: {
-		Icon,
+		Icon
 	},
-	props: ['i18n'],
+	props: ['i18n']
 };
 </script>
 
@@ -45,7 +45,6 @@ export default {
 @import '../../../styles/_import';
 
 .pkpListPanelItem--selectSubmission {
-
 	.pkpListPanelItem--submission__author {
 		font-weight: @bold;
 	}

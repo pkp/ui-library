@@ -113,19 +113,19 @@ export default {
 		CatalogSubmissionsListItem,
 		CatalogSubmissionsListFilter,
 		PkpButton,
-		draggable,
+		draggable
 	},
-	data: function () {
+	data: function() {
 		return {
 			catalogSortBy: '',
-			catalogSortDir: '',
+			catalogSortDir: ''
 		};
 	},
 	computed: {
 		/**
 		 * Can any monographs be ordered?
 		 */
-		canOrder: function () {
+		canOrder: function() {
 			for (const item of this.items) {
 				for (const feature of item.featured) {
 					if (feature.assoc_type === this.filterAssocType) {
@@ -139,8 +139,8 @@ export default {
 		/**
 		 * Set status on the component
 		 */
-		classStatus: function () {
-			return { '-isLoading': this.isLoading, '-isOrdering': this.isOrdering };
+		classStatus: function() {
+			return {'-isLoading': this.isLoading, '-isOrdering': this.isOrdering};
 		},
 
 		/**
@@ -149,15 +149,17 @@ export default {
 		 *
 		 * @return string
 		 */
-		orderingLabel: function () {
-			return this.isOrdering ? this.i18n.saveFeatureOrder : this.i18n.orderFeatures;
+		orderingLabel: function() {
+			return this.isOrdering
+				? this.i18n.saveFeatureOrder
+				: this.i18n.orderFeatures;
 		},
 
 		/**
 		 * Return the appropriate label for the featured column depending on
 		 * if we're looking at a filtered view
 		 */
-		featuredLabel: function () {
+		featuredLabel: function() {
 			if (this.filterAssocType === pkp.const.ASSOC_TYPE_CATEGORY) {
 				return this.i18n.featuredCategory;
 			} else if (this.filterAssocType === pkp.const.ASSOC_TYPE_SERIES) {
@@ -170,7 +172,7 @@ export default {
 		 * Return the appropriate label for the new release column depending on
 		 * if we're looking at a filtered view
 		 */
-		newReleaseLabel: function () {
+		newReleaseLabel: function() {
 			if (this.filterAssocType === pkp.const.ASSOC_TYPE_CATEGORY) {
 				return this.i18n.newReleaseCategory;
 			} else if (this.filterAssocType === pkp.const.ASSOC_TYPE_SERIES) {
@@ -183,8 +185,8 @@ export default {
 		 * Return the appropriate label for the featured column depending on
 		 * if we're looking at a filtered view
 		 */
-		featuredNotice: function () {
-			const getFilter = (filter) => {
+		featuredNotice: function() {
+			const getFilter = filter => {
 				return filter.val === this.filterAssocId;
 			};
 
@@ -210,7 +212,7 @@ export default {
 		 *
 		 * @return int
 		 */
-		filterAssocType: function () {
+		filterAssocType: function() {
 			if (this.activeFilters.hasOwnProperty('categoryIds')) {
 				return pkp.const.ASSOC_TYPE_CATEGORY;
 			} else if (this.activeFilters.hasOwnProperty('seriesIds')) {
@@ -226,7 +228,7 @@ export default {
 		 *
 		 * @return int
 		 */
-		filterAssocId: function () {
+		filterAssocId: function() {
 			if (this.activeFilters.hasOwnProperty('categoryIds')) {
 				return this.activeFilters.categoryIds[0];
 			} else if (this.activeFilters.hasOwnProperty('seriesIds')) {
@@ -234,36 +236,44 @@ export default {
 			}
 			// in OMP, there's only one press context and it's always 1
 			return 1;
-		},
+		}
 	},
 	methods: {
 		/**
 		 * Open the new catalog entry modal
 		 */
-		openNewEntryModal: function () {
-
+		openNewEntryModal: function() {
 			var opts = {
 				title: this.i18n.add,
-				url: this.addUrl,
+				url: this.addUrl
 			};
 
-			$('<div id="' + $.pkp.classes.Helper.uuid() + '" ' +
-					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>')
-				.pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
+			$(
+				'<div id="' +
+					$.pkp.classes.Helper.uuid() +
+					'" ' +
+					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>'
+			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
 		},
 
 		/**
 		 * Sort submissions by featured sequence
 		 */
-		sortByFeaturedSequence: function () {
-			this.items.sort((a, b) => {
-				const getFeatured = (feature) => {
+		sortByFeaturedSequence: function() {
+			this.items.sort(a => {
+				const getFeatured = feature => {
 					return feature.assoc_type === this.filterAssocType;
 				};
 				const featuredA = a.featured.find(getFeatured);
-				const seqA = featuredA && featuredA.hasOwnProperty('seq') ? featuredA.seq : 99999999;
+				const seqA =
+					featuredA && featuredA.hasOwnProperty('seq')
+						? featuredA.seq
+						: 99999999;
 				const featuredB = a.featured.find(getFeatured);
-				const seqB = featuredB && featuredB.hasOwnProperty('seq') ? featuredB.seq : 99999999;
+				const seqB =
+					featuredB && featuredB.hasOwnProperty('seq')
+						? featuredB.seq
+						: 99999999;
 				if (seqA < seqB) {
 					return -1;
 				}
@@ -278,15 +288,15 @@ export default {
 		 * Set the sort order for get requests. This can change depending on
 		 * whether the full catalog or a series/category is being viewed.
 		 */
-		updateSortOrder: function () {
+		updateSortOrder: function() {
 			if (this.activeFilters.hasOwnProperty('categoryIds')) {
-				const cat = this.filters.categoryIds.filters.find((filter) => {
+				const cat = this.filters.categoryIds.filters.find(filter => {
 					return filter.val === this.activeFilters.categoryIds[0];
 				});
 				this.getParams.orderBy = cat.sortBy;
 				this.getParams.orderDirection = cat.sortDir || this.catalogSortDir;
 			} else if (this.activeFilters.hasOwnProperty('seriesIds')) {
-				var series = this.filters.seriesIds.filters.find((filter) => {
+				var series = this.filters.seriesIds.filters.find(filter => {
 					return filter.val === this.activeFilters.seriesIds[0];
 				});
 				this.getParams.orderBy = series.sortBy || this.catalogSortBy;
@@ -301,18 +311,18 @@ export default {
 		 * Update the order sequence property for items in this list based on
 		 * the new order of items
 		 */
-		setItemOrderSequence: function () {
+		setItemOrderSequence: function() {
 			const featured = [];
 			let seq = 0;
 			for (const item of this.items) {
-				const feature = item.featured.find((feature) => {
+				const feature = item.featured.find(feature => {
 					return feature.assoc_type === this.filterAssocType;
 				});
 				if (feature) {
 					feature.seq = seq;
 					featured.push({
 						id: item.id,
-						seq: feature.seq,
+						seq: feature.seq
 					});
 					seq++;
 				}
@@ -328,27 +338,27 @@ export default {
 					assocType: this.filterAssocType,
 					assocId: this.filterAssocId,
 					featured: featured,
-					csrfToken: $.pkp.currentUser.csrfToken,
+					csrfToken: $.pkp.currentUser.csrfToken
 				},
-				error: function (r) {
+				error: function(r) {
 					self.ajaxErrorCallback(r);
 				},
-				complete: function (r) {
+				complete: function() {
 					self.isLoading = false;
-				},
+				}
 			});
 		},
 
 		/**
 		 * Override the ListPanel method to only handle featured items
 		 */
-		itemOrderDown: function (data) {
-			const featuredItems = this.items.filter((item) => {
-				return item.featured.find((feature) => {
+		itemOrderDown: function(data) {
+			const featuredItems = this.items.filter(item => {
+				return item.featured.find(feature => {
 					return feature.assoc_type === this.filterAssocType;
 				});
 			});
-			const index = this.items.findIndex((item) => {
+			const index = this.items.findIndex(item => {
 				return item.id == data.id;
 			});
 			if (index === featuredItems.length - 1) {
@@ -356,20 +366,20 @@ export default {
 			}
 			this.items.splice(index + 1, 0, this.items.splice(index, 1)[0]);
 			this.itemOrderResetFocus(data.id, 'down');
-		},
+		}
 	},
 	watch: {
 		/**
 		 * Resort featured items to the top whenever the list changes
 		 */
-		items: function (newVal, oldVal) {
+		items: function(newVal, oldVal) {
 			if (oldVal === newVal) {
 				return;
 			}
 			this.sortByFeaturedSequence();
-		},
+		}
 	},
-	created: function () {
+	created: function() {
 		/**
 		 * When a filter is set, update the sort order to match the setting of
 		 * the series or catalog
@@ -377,15 +387,14 @@ export default {
 		 * Set this watcher before the mounted hook so that the get params are
 		 * updated before the ajax request is made in SubmissionListPanel.mounted.
 		 */
-		this.$watch('activeFilters', function (newVal, oldVal) {
+		this.$watch('activeFilters', function(newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
 			this.updateSortOrder();
 		});
-
 	},
-	mounted: function () {
+	mounted: function() {
 		/**
 		 * Sort featured items at the top on load
 		 */
@@ -395,10 +404,10 @@ export default {
 		 * Update when a new entry has been added to the catalog
 		 */
 		var self = this;
-		pkp.eventBus.$on('catalogEntryAdded', function (data) {
+		pkp.eventBus.$on('catalogEntryAdded', function() {
 			self.get();
 		});
-	},
+	}
 };
 </script>
 
@@ -406,79 +415,76 @@ export default {
 @import '../../../styles/_import';
 
 .pkpListPanel--catalogSubmissions {
+	// Make room in a crowded header
+	.pkpListPanel__search input {
+		width: 20em;
+	}
 
-  // Make room in a crowded header
-  .pkpListPanel__search input {
-    width: 20em;
-  }
-
-  &.-isLoading {
-
-    // Hide the list when loading because the featured and new release
-    // actions change depending on the filter used. This prevents a brief
-    // period while a list is loading when a user may click on the featured/
-    // new release actions on an item that isn't in the filter that's been
-    // requested.
-    .pkpListPanel__content--catalogSubmissions:after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: #fff;
-      opacity: 0.5;
-    }
+	&.-isLoading {
+		// Hide the list when loading because the featured and new release
+		// actions change depending on the filter used. This prevents a brief
+		// period while a list is loading when a user may click on the featured/
+		// new release actions on an item that isn't in the filter that's been
+		// requested.
+		.pkpListPanel__content--catalogSubmissions:after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: #fff;
+			opacity: 0.5;
+		}
 
 		// Hide column labels while loading. See above.
 		.pkpListPanel__columnLabel > span {
 			opacity: 0;
 		}
-  }
+	}
 }
 
 .pkpListPanel__columnLabels--catalogSubmissions {
+	.pkpListPanel__columnLabel {
+		position: absolute;
+		top: 0;
+		right: @base * 8;
+		width: @base * 8;
+		height: 100%;
+		border-left: @grid-border;
+		line-height: @base;
 
-  .pkpListPanel__columnLabel {
-    position: absolute;
-    top: 0;
-    right: @base * 8;
-    width: @base * 8;
-    height: 100%;
-    border-left: @grid-border;
-    line-height: @base;
+		+ .pkpListPanel__columnLabel {
+			right: 0;
+		}
 
-    + .pkpListPanel__columnLabel {
-      right: 0;
-    }
-
-    span {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 90%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-    }
-  }
+		span {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			width: 90%;
+			transform: translate(-50%, -50%);
+			text-align: center;
+		}
+	}
 }
 
 .pkpListPanel--catalogSubmissions.-isOrdering {
+	.pkpListPanel__actions
+		> li:not(.pkpListPanel__orderToggle):not(.pkpListPanel__orderToggleCancel),
+	.pkpListPanel__search,
+	.pkpListPanelItem__selectItem,
+	.pkpListPanelItem__actions,
+	.pkpListPanel__columnLabels {
+		display: none;
+	}
 
-  .pkpListPanel__actions > li:not(.pkpListPanel__orderToggle):not(.pkpListPanel__orderToggleCancel),
-  .pkpListPanel__search,
-  .pkpListPanelItem__selectItem,
-  .pkpListPanelItem__actions,
-  .pkpListPanel__columnLabels {
-    display: none;
-  }
+	.pkpListPanelItem--submission__item {
+		padding-right: 0;
+	}
 
-  .pkpListPanelItem--submission__item {
-    padding-right: 0;
-  }
-
-  .pkpListPanelItem:not(.-isFeatured) {
-    display: none;
-  }
+	.pkpListPanelItem:not(.-isFeatured) {
+		display: none;
+	}
 }
 </style>

@@ -25,7 +25,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		inputId: function () {
+		inputId: function() {
 			return 'SelectListPanelSelectAll-' + this._uid;
 		},
 
@@ -34,18 +34,18 @@ export default {
 		 *
 		 * @return boolean
 		 */
-		isChecked: function () {
+		isChecked: function() {
 			return this.checked;
-		},
+		}
 	},
 	methods: {
 		/**
 		 * Emit an event to select or de-select all items
 		 */
-		toggle: function () {
+		toggle: function() {
 			this.$emit('toggle');
-		},
-	},
+		}
+	}
 };
 </script>
 

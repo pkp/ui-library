@@ -86,29 +86,29 @@ export default {
 		ListPanelLoadMore,
 		SelectReviewerListFilter,
 		SelectReviewerListItem,
-		PkpButton,
+		PkpButton
 	},
-	data: function () {
+	data: function() {
 		return {
 			activeFilters: {},
 			currentlyAssigned: [],
-			warnOnAssignment: [],
+			warnOnAssignment: []
 		};
 	},
 	watch: {
 		/**
 		 * Broadcast the selected reviewer
 		 */
-		selected: function (newVal, oldVal) {
+		selected: function(newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
-			const selectedReviewers = this.items.filter((item) => {
+			const selectedReviewers = this.items.filter(item => {
 				return this.selected.includes(item.id);
 			});
 
 			pkp.eventBus.$emit('reviewersSelected', selectedReviewers);
-		},
-	},
+		}
+	}
 };
 </script>

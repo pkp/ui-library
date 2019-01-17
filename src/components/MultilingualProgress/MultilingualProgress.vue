@@ -13,21 +13,21 @@ import Icon from '@/components/Icon/Icon.vue';
 export default {
 	name: 'MultilingualProgress',
 	components: {
-		Icon,
+		Icon
 	},
 	props: {
 		count: {
 			type: Number,
-			required: true,
+			required: true
 		},
 		total: {
 			type: Number,
-			required: true,
+			required: true
 		},
 		i18n: {
 			type: Object,
-			required: true,
-		},
+			required: true
+		}
 	},
 	computed: {
 		/**
@@ -35,7 +35,7 @@ export default {
 		 *
 		 * @return Array
 		 */
-		classes: function () {
+		classes: function() {
 			let classes = [];
 			if (this.count === this.total) {
 				classes.push('multilingualProgress--isComplete');
@@ -52,13 +52,13 @@ export default {
 		 *
 		 * @return string
 		 */
-		tooltip: function () {
+		tooltip: function() {
 			return this.__('multilingualProgress', {
 				count: this.count,
-				total: this.total,
+				total: this.total
 			});
-		},
-	},
+		}
+	}
 };
 </script>
 

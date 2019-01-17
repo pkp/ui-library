@@ -89,30 +89,39 @@ export default {
 		ListPanelLoadMore,
 		SubmissionsListFilter,
 		SubmissionsListItem,
-		PkpButton,
+		PkpButton
 	},
-	data: function () {
+	data: function() {
 		return {
 			addUrl: '',
 			infoUrl: '',
 			assignParticipantUrl: '',
-			csrfToken: '',
+			csrfToken: ''
 		};
 	},
 	computed: {
 		/**
 		 * Can the current user filter the list?
 		 */
-		currentUserCanFilter: function () {
-			return pkp.userHasRole([pkp.const.ROLE_ID_MANAGER, pkp.const.ROLE_ID_SUB_EDITOR, pkp.const.ROLE_ID_ASSISTANT]);
+		currentUserCanFilter: function() {
+			return pkp.userHasRole([
+				pkp.const.ROLE_ID_MANAGER,
+				pkp.const.ROLE_ID_SUB_EDITOR,
+				pkp.const.ROLE_ID_ASSISTANT
+			]);
 		},
 
 		/**
 		 * Does the current user have a role which can create a new submission?
 		 */
-		currentUserCanAddSubmission: function () {
-			return pkp.userHasRole([pkp.const.ROLE_ID_MANAGER, pkp.const.ROLE_ID_SUB_EDITOR, pkp.const.ROLE_ID_ASSISTANT, pkp.const.ROLE_ID_AUTHOR]);
-		},
-	},
+		currentUserCanAddSubmission: function() {
+			return pkp.userHasRole([
+				pkp.const.ROLE_ID_MANAGER,
+				pkp.const.ROLE_ID_SUB_EDITOR,
+				pkp.const.ROLE_ID_ASSISTANT,
+				pkp.const.ROLE_ID_AUTHOR
+			]);
+		}
+	}
 };
 </script>

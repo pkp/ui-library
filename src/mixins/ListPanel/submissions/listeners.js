@@ -8,22 +8,27 @@
  * @see https://vuejs.org/v2/guide/mixins.html
  */
 export default {
-	mounted: function () {
+	mounted: function() {
 		// Store a reference to this component for global event callbacks
 		var self = this;
 
 		// Refresh the list when a submission is updated in any way
-		pkp.eventBus.$on('submissionUpdated', function (data) {
+		pkp.eventBus.$on('submissionUpdated', function() {
 			self.get();
 		});
 
 		// Remove a submission from the list when it is deleted
-		pkp.eventBus.$on('submissionDeleted', function (data) {
-			if (!_.has(data, 'id') || !_.findWhere(self.items, data)) {
+		pkp.eventBus.$on('submissionDeleted', function(data) {
+			if (
+				!data.id ||
+				!self.items.find(submission => submission.id === data.id)
+			) {
 				return;
 			}
-			self.items = _.reject(self.items, data);
+			self.items = self.items.filter(item => {
+				return data.id !== item.id;
+			});
 			self.itemsMax--;
 		});
-	},
+	}
 };

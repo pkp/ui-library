@@ -44,15 +44,15 @@ export default {
 	components: {
 		ListPanelNotice,
 		SelectListPanelItem,
-		SelectListPanelSelectAll,
+		SelectListPanelSelectAll
 	},
-	data: function () {
+	data: function() {
 		return {
 			inputName: '',
 			inputType: 'checkbox',
 			selected: [],
 			showSelectAll: false,
-			initializeAllSelected: false,
+			initializeAllSelected: false
 		};
 	},
 	computed: {
@@ -61,9 +61,9 @@ export default {
 		 *
 		 * @return bool
 		 */
-		selectAllChecked: function () {
+		selectAllChecked: function() {
 			return this.items.length && this.selected.length === this.items.length;
-		},
+		}
 	},
 	methods: {
 		/**
@@ -71,7 +71,7 @@ export default {
 		 *
 		 * @param int|string Input value for the item in the list.
 		 */
-		toggleItemSelection: function (val) {
+		toggleItemSelection: function(val) {
 			if (this.inputType === 'radio') {
 				this.selected = [val];
 			} else {
@@ -87,7 +87,7 @@ export default {
 		/**
 		 * Select or de-select all items in the list
 		 */
-		toggleSelectAll: function () {
+		toggleSelectAll: function() {
 			if (this.selectAllChecked) {
 				this.selectNone();
 			} else {
@@ -98,25 +98,25 @@ export default {
 		/**
 		 * Select all items in the list
 		 */
-		selectAll: function () {
+		selectAll: function() {
 			this.selected = this.items.map(item => item.id);
 		},
 
 		/**
 		 * De-select all items in the list
 		 */
-		selectNone: function () {
+		selectNone: function() {
 			this.selected = [];
-		},
+		}
 	},
-	created: function () {
+	created: function() {
 		/**
 		 * Mark all items as selected when a flag is passed.
 		 */
 		if (this.initializeAllSelected) {
 			this.selectAll();
 		}
-	},
+	}
 };
 </script>
 

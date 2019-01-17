@@ -18,7 +18,7 @@ export default {
 	name: 'Badge',
 	props: ['label', 'isPrimary', 'isWarnable', 'isButton', 'hasDot', 'stage'],
 	computed: {
-		classes: function () {
+		classes: function() {
 			let classes = [];
 			if (this.isPrimary) {
 				classes.push('pkpBadge--isPrimary');
@@ -34,13 +34,13 @@ export default {
 			}
 
 			return classes;
-		},
+		}
 	},
 	methods: {
-		click: function () {
+		click: function() {
 			this.$emit('click');
-		},
-	},
+		}
+	}
 };
 </script>
 
@@ -66,7 +66,6 @@ export default {
 	}
 
 	&.pkpBadge--button {
-
 		&:hover,
 		&:focus {
 			background: transparent;
@@ -90,7 +89,6 @@ export default {
 	}
 
 	&.pkpBadge--button {
-
 		&:hover,
 		&:focus {
 			background: transparent;
@@ -210,5 +208,4 @@ export default {
 		}
 	}
 }
-
 </style>

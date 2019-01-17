@@ -52,26 +52,26 @@ export default {
 		// The value which matches a disabled state
 		disabledValue: {
 			type: Number,
-			required: true,
+			required: true
 		},
 		// The value which matches an enabled state, but not when it is requested
 		// or required during submission.
 		enabledOnlyValue: {
 			type: String,
-			required: true,
+			required: true
 		},
 		value: {
 			type: [Number, String],
-			required: true,
+			required: true
 		},
 		submissionOptions: {
 			type: Array,
-			required: true,
-		},
+			required: true
+		}
 	},
-	data: function () {
+	data: function() {
 		return {
-			isEnabled: this.disabledValue !== this.value,
+			isEnabled: this.disabledValue !== this.value
 		};
 	},
 	watch: {
@@ -79,13 +79,13 @@ export default {
 		 * Whenever the submission value changes, emit an event to update the value
 		 * of this field in the form component.
 		 */
-		isEnabled: function (newVal, oldVal) {
+		isEnabled: function(newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
 			this.selectedValue = newVal ? this.enabledOnlyValue : this.disabledValue;
-		},
-	},
+		}
+	}
 };
 </script>
 

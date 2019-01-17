@@ -30,13 +30,13 @@ import debounce from 'debounce';
 export default {
 	name: 'ListPanelSearch',
 	components: {
-		Icon,
+		Icon
 	},
 	props: ['searchPhrase', 'i18n'],
 	computed: {
-		inputId: function () {
+		inputId: function() {
 			return 'list-panel-search-' + this._uid;
-		},
+		}
 	},
 	methods: {
 		/**
@@ -47,7 +47,7 @@ export default {
 		 * @param string|object data A DOM event (object) or the new search
 		 *  phrase (string)
 		 */
-		searchPhraseChanged: debounce(function (data) {
+		searchPhraseChanged: debounce(function(data) {
 			var newVal = typeof data === 'string' ? data : data.target.value;
 			this.$emit('searchPhraseChanged', newVal);
 		}, 250),
@@ -55,13 +55,13 @@ export default {
 		/**
 		 * Clear the search phrase
 		 */
-		clearSearchPhrase: function () {
+		clearSearchPhrase: function() {
 			this.$emit('searchPhraseChanged', '');
-			this.$nextTick(function () {
+			this.$nextTick(function() {
 				this.$el.querySelector('input[type="search"]').focus();
 			});
-		},
-	},
+		}
+	}
 };
 </script>
 

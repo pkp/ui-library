@@ -20,22 +20,22 @@ import Icon from '@/components/Icon/Icon.vue';
 export default {
 	name: 'Orderer',
 	components: {
-		Icon,
+		Icon
 	},
 	props: {
 		itemId: [String, Number],
 		itemTitle: String,
 		isDraggable: {
 			type: Boolean,
-			default: true,
+			default: true
 		},
-		i18n: Object,
+		i18n: Object
 	},
 	methods: {
 		/**
 		 * Emit an event to move this item up
 		 */
-		up: function () {
+		up: function() {
 			this.$emit('up', this.itemId);
 			this.$nextTick(() => {
 				this.setFocus('up');
@@ -45,7 +45,7 @@ export default {
 		/**
 		 * Emit an event to move this item down
 		 */
-		down: function () {
+		down: function() {
 			this.$emit('down', this.itemId);
 			this.$nextTick(() => {
 				this.setFocus('down');
@@ -55,11 +55,11 @@ export default {
 		/**
 		 * Set the focus on one of the up/down buttons
 		 */
-		setFocus: function (dir) {
+		setFocus: function(dir) {
 			const selector = dir === 'up' ? '.orderer__up' : '.orderer__down';
 			this.$el.querySelector(selector).focus();
-		},
-	},
+		}
+	}
 };
 </script>
 

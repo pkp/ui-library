@@ -16,26 +16,21 @@
 </template>
 
 <script>
-import PkpButton from '@/components/Button/Button.vue';
-
 export default {
 	name: 'FormLocales',
-	components: {
-		PkpButton,
-	},
 	props: {
 		locales: {
 			type: Array,
-			required: true,
+			required: true
 		},
 		visible: {
 			type: Array,
-			required: true,
+			required: true
 		},
 		primaryLocaleKey: {
 			type: String,
-			required: true,
-		},
+			required: true
+		}
 	},
 	computed: {
 		/**
@@ -43,8 +38,8 @@ export default {
 		 *
 		 * @return Object
 		 */
-		primaryLocale: function () {
-			return this.locales.find((locale) => locale.key === this.primaryLocaleKey);
+		primaryLocale: function() {
+			return this.locales.find(locale => locale.key === this.primaryLocaleKey);
 		},
 
 		/**
@@ -52,9 +47,11 @@ export default {
 		 *
 		 * @return Array
 		 */
-		additionalLocales: function () {
-			return this.locales.filter((locale) => locale.key !== this.primaryLocaleKey);
-		},
+		additionalLocales: function() {
+			return this.locales.filter(
+				locale => locale.key !== this.primaryLocaleKey
+			);
+		}
 	},
 	methods: {
 		/**
@@ -67,7 +64,7 @@ export default {
 		 *
 		 * @param string localeKey "en_US"
 		 */
-		toggleLocale: function (localeKey) {
+		toggleLocale: function(localeKey) {
 			let selected = [this.primaryLocaleKey];
 			if (!this.visible.includes(localeKey)) {
 				selected.push(localeKey);
@@ -80,10 +77,10 @@ export default {
 		 *
 		 * @param array selected Locales which should be visible
 		 */
-		updateLocales: function (selected) {
+		updateLocales: function(selected) {
 			this.$emit('updateLocales', selected);
-		},
-	},
+		}
+	}
 };
 </script>
 

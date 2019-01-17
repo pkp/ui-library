@@ -41,7 +41,7 @@ export default {
 		/**
 		 * Map the item id
 		 */
-		id: function () {
+		id: function() {
 			return this.item.id;
 		},
 
@@ -50,7 +50,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		inputValue: function () {
+		inputValue: function() {
 			return this.id;
 		},
 
@@ -59,7 +59,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		inputId: function () {
+		inputId: function() {
 			return this.inputName + this.inputValue;
 		},
 
@@ -68,18 +68,20 @@ export default {
 		 *
 		 * @return bool
 		 */
-		isSelected: function () {
-			return this.selected.indexOf(this.inputValue) > -1 ? this.inputValue : null;
-		},
+		isSelected: function() {
+			return this.selected.indexOf(this.inputValue) > -1
+				? this.inputValue
+				: null;
+		}
 	},
 	methods: {
 		/**
 		 * Emit an event to select or de-select this item
 		 */
-		toggle: function () {
+		toggle: function() {
 			this.$emit('toggle', this.inputValue);
-		},
-	},
+		}
+	}
 };
 </script>
 

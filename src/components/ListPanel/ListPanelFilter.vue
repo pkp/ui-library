@@ -5,12 +5,12 @@
 			{{ i18n.filter }}
 		</div>
 		<div class="pkpListPanel__filterOptions">
-			<div v-for="filter in filters" class="pkpListPanel__filterSet">
+			<div v-for="(filter, index) in filters" :key="index" class="pkpListPanel__filterSet">
 				<div v-if="filter.heading" class="pkpListPanel__filterSetLabel">
 					{{ filter.heading }}
 				</div>
 				<ul>
-					<li v-for="filterItem in filter.filters">
+					<li v-for="filterItem in filter.filters" :key="filterItem.param + filterItem.val">
 						<button
 							@click.prevent.stop="filterBy(filterItem.param, filterItem.val)"
 							class="pkpListPanel__filterLabel"
@@ -41,7 +41,7 @@ import Icon from '@/components/Icon/Icon.vue';
 export default {
 	name: 'ListPanelFilter',
 	components: {
-		Icon,
+		Icon
 	},
 	props: ['i18n', 'filters', 'activeFilters', 'isVisible'],
 	computed: {
@@ -51,22 +51,25 @@ export default {
 		 *
 		 * @return boolean|integer
 		 */
-		tabIndex: function () {
+		tabIndex: function() {
 			return this.isVisible ? false : -1;
-		},
+		}
 	},
 	methods: {
 		/**
 		 * Check if a filter is currently active
 		 */
-		isFilterActive: function (type, val) {
-			return this.activeFilters[type] !== undefined && this.activeFilters[type].includes(val);
+		isFilterActive: function(type, val) {
+			return (
+				this.activeFilters[type] !== undefined &&
+				this.activeFilters[type].includes(val)
+			);
 		},
 
 		/**
 		 * Add a filter
 		 */
-		filterBy: function (type, val) {
+		filterBy: function(type, val) {
 			if (this.isFilterActive(type, val)) {
 				this.clearFilter(type, val);
 			} else {
@@ -82,9 +85,9 @@ export default {
 		/**
 		 * Remove a filter
 		 */
-		clearFilter: function (type, val) {
+		clearFilter: function(type, val) {
 			const filters = Object.assign({}, this.activeFilters);
-			filters[type] = this.activeFilters[type].filter((filterVal) => {
+			filters[type] = this.activeFilters[type].filter(filterVal => {
 				return filterVal !== val;
 			});
 			this.filterList(filters);
@@ -93,28 +96,28 @@ export default {
 		/**
 		 * Clear any filters that are currently active
 		 */
-		clearFilters: function () {
+		clearFilters: function() {
 			this.filterList({});
 		},
 
 		/**
 		 * Emit an event to update the active filters in the list panel
 		 */
-		filterList: function (data) {
+		filterList: function(data) {
 			this.$emit('filterList', data);
-		},
+		}
 	},
 	watch: {
 		/**
 		 * Set focus in filters whenever the visible status is initiated
 		 */
-		isVisible: function (newVal, oldVal) {
+		isVisible: function(newVal, oldVal) {
 			if (!newVal || newVal === oldVal) {
 				return;
 			}
 			this.$el.querySelector('.pkpListPanel__filterHeader').focus();
-		},
-	},
+		}
+	}
 };
 </script>
 
@@ -157,7 +160,7 @@ export default {
 	left: auto;
 	width: 25%;
 
-	+ .pkpListPanel__content  {
+	+ .pkpListPanel__content {
 		float: right;
 		width: 75%;
 
@@ -178,7 +181,8 @@ export default {
 		left: 0;
 		opacity: 1;
 		width: 100%;
-		transition: opacity 0.2s ease-in-out 0.2s, left 0s ease-in-out 0.2s, width 0s ease-in-out 0.2s;
+		transition: opacity 0.2s ease-in-out 0.2s, left 0s ease-in-out 0.2s,
+			width 0s ease-in-out 0.2s;
 	}
 }
 
@@ -281,7 +285,6 @@ export default {
 }
 
 .pkpListPanel__filterAdd {
-
 	&:hover,
 	&:focus {
 		color: @primary;

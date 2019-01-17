@@ -24,7 +24,7 @@
 				class="pkpFormField__input pkpFormField--richTextarea__input"
 				v-model="currentValue"
 				:id="controlId"
-				:toolbar="compiledToolbar"
+				:toolbar="toolbar"
 				:plugins="plugins"
 				:init="compiledInit"
 				@onFocus="focus"
@@ -49,35 +49,42 @@ export default {
 	name: 'FieldRichTextarea',
 	extends: FieldBase,
 	components: {
-		Editor,
+		Editor
 	},
 	props: {
 		size: {
 			type: String,
-			default: 'default',
+			default: 'default'
 		},
+		// @see https://www.tinymce.com/docs/configure/editor-appearance/#toolbar
 		toolbar: {
 			type: String,
-			default: 'default',
+			default: function() {
+				return 'bold italic superscript subscript | link';
+			}
 		},
+		// @see https://www.tiny.cloud/docs/configure/integration-and-setup/#plugins
 		plugins: {
 			type: String,
-			default: 'paste,link',
+			default: function() {
+				return 'paste,link';
+			}
 		},
+		// @see https://www.tiny.cloud/docs/configure/integration-and-setup/
 		init: {
 			type: Object,
-			default: function () {
+			default: function() {
 				return {
 					menubar: false,
 					statusbar: false,
-					entity_encoding: 'raw',
+					entity_encoding: 'raw'
 				};
-			},
-		},
+			}
+		}
 	},
-	data: function () {
+	data: function() {
 		return {
-			isFocused: false,
+			isFocused: false
 		};
 	},
 	computed: {
@@ -86,17 +93,8 @@ export default {
 		 *
 		 * @return string
 		 */
-		toolbarId: function () {
+		toolbarId: function() {
 			return this.compileId('toolbar');
-		},
-
-		/**
-		 * TinyMce toolbar
-		 *
-		 * @see https://www.tinymce.com/docs/configure/editor-appearance/#toolbar
-		 */
-		compiledToolbar: function () {
-			return 'bold italic superscript subscript | link';
 		},
 
 		/**
@@ -105,36 +103,36 @@ export default {
 		 * @see https://www.tinymce.com/docs/configure/
 		 * @return Object
 		 */
-		compiledInit: function () {
+		compiledInit: function() {
 			return {
 				inline: true,
 				fixed_toolbar_container: '#' + this.toolbarId,
-				init_instance_callback: (editor) => {
+				init_instance_callback: editor => {
 					// The inline toolbar only appears after the field has been focused.
 					// This mimics the focus event, without actually changing the user's
 					// focus.
 					editor.fire('focus');
 					editor.fire('blur');
 				},
-				...this.init,
+				...this.init
 			};
-		},
+		}
 	},
 	methods: {
 		/**
 		 * When the input control gets focus
 		 */
-		focus: function () {
+		focus: function() {
 			this.isFocused = true;
 		},
 
 		/**
 		 * When the input control loses focus
 		 */
-		blur: function () {
+		blur: function() {
 			this.isFocused = false;
-		},
-	},
+		}
+	}
 };
 </script>
 
@@ -206,7 +204,6 @@ export default {
 // We temporarily wrap these styles in .pkpFormField--richTextarea__input until
 // we have transitioned all of the old tinymce fields out of the system
 .pkpFormField--richTextarea__control {
-
 	.mce-tinymce {
 		border: none;
 	}

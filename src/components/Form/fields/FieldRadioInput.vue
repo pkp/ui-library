@@ -24,7 +24,7 @@
 		<field-error v-if="errors.length" :id="describedByErrorId" :messages="errors" />
 		<input type="hidden" v-model="selectedValue" />
 		<div class="pkpFormField__control">
-			<label v-for="option in localizedOptions" class="pkpFormField--options__option">
+			<label v-for="option in localizedOptions" :key="option.value" class="pkpFormField--options__option">
 				<template v-if="!option.isInput">
 					<input
 						class="pkpFormField--options__input"
@@ -81,12 +81,12 @@ export default {
 	props: {
 		value: {
 			type: String,
-			required: true,
-		},
+			required: true
+		}
 	},
-	data: function () {
+	data: function() {
 		return {
-			inputValue: '',
+			inputValue: ''
 		};
 	},
 	computed: {
@@ -95,17 +95,18 @@ export default {
 		 *
 		 * @return boolean
 		 */
-		isInputSelected: function () {
-			return !this.options.filter(opt => !opt.isInput)
+		isInputSelected: function() {
+			return !this.options
+				.filter(opt => !opt.isInput)
 				.map(opt => opt.value)
 				.includes(this.selectedValue);
-		},
+		}
 	},
 	methods: {
 		/**
 		 * Select the option with an input field
 		 */
-		selectInput: function () {
+		selectInput: function() {
 			this.selectedValue = this.inputValue;
 			this.$refs.inputRadio[0].checked = true;
 			this.$refs.inputText[0].focus();
@@ -114,23 +115,23 @@ export default {
 		/**
 		 * Set the seletected value to the input field's vale
 		 */
-		setInputToSelected: function () {
+		setInputToSelected: function() {
 			this.selectedValue = this.inputValue;
-		},
+		}
 	},
 	watch: {
 		/**
 		 * When the input value changes, update the selected value if the input
 		 * option is the currently selected option
 		 */
-		inputValue: function (newVal, oldVal) {
+		inputValue: function(newVal, oldVal) {
 			if (newVal === oldVal || !this.isInputSelected) {
 				return;
 			}
 			this.selectedValue = this.inputValue;
-		},
+		}
 	},
-	mounted: function () {
+	mounted: function() {
 		/**
 		 * Put the value into the input field if it doesn't match one of the
 		 * existing options.
@@ -139,7 +140,7 @@ export default {
 			this.inputValue = this.value;
 			this.$refs.inputRadio[0].checked = true;
 		}
-	},
+	}
 };
 </script>
 
@@ -148,6 +149,7 @@ export default {
 
 .pkpFormField--options__input--text {
 	display: inline-block;
+	margin-left: 0.5em;
 	padding: 0 0.5em;
 	line-height: 1.8rem;
 	height: 1.8rem;

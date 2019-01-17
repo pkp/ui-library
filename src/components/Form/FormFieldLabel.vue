@@ -24,10 +24,10 @@ export default {
 		multilingualLabel: String,
 		isRequired: {
 			type: Boolean,
-			default: false,
+			default: false
 		},
-		requiredLabel: String,
-	},
+		requiredLabel: String
+	}
 };
 </script>
 

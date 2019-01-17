@@ -9,6 +9,7 @@
 					v-for="item in items"
 					:key="item.id"
 					:item="item"
+					:i18n="i18n"
 				/>
 			</ul>
 		</div>
@@ -21,9 +22,9 @@ import ListPanelItem from '@/components/ListPanel/ListPanelItem.vue';
 export default {
 	name: 'ListPanel',
 	components: {
-		ListPanelItem,
+		ListPanelItem
 	},
-	data: function () {
+	data: function() {
 		return {
 			id: '',
 			items: [],
@@ -40,18 +41,20 @@ export default {
 			noticeType: '',
 			i18n: {},
 			lazyLoad: false,
-			_lastGetRequest: null,
+			latestGetRequest: null
 		};
 	},
 	computed: {
-		classStatus: function () {
-			return { '-isLoading': this.isLoading };
+		classStatus: function() {
+			return {'-isLoading': this.isLoading};
 		},
-		itemCount: function () {
+		itemCount: function() {
 			return this.items.length;
 		},
-		canLoadMore: function () {
-			return typeof this.itemsMax !== 'undefined' && this.itemsMax > this.itemCount;
+		canLoadMore: function() {
+			return (
+				typeof this.itemsMax !== 'undefined' && this.itemsMax > this.itemCount
+			);
 		},
 
 		/**
@@ -59,20 +62,19 @@ export default {
 		 *
 		 * @see https://github.com/SortableJS/Vue.Draggable
 		 */
-		draggableOptions: function () {
+		draggableOptions: function() {
 			return {
-				disabled: !this.isOrdering,
+				disabled: !this.isOrdering
 			};
-		},
+		}
 	},
 	methods: {
-
 		/**
 		 * Set the search phrase
 		 *
 		 * @param string val The new search phrase
 		 */
-		setSearchPhrase: function (val) {
+		setSearchPhrase: function(val) {
 			this.searchPhrase = val;
 		},
 
@@ -83,7 +85,7 @@ export default {
 		 * @param string handleResponse How to handle the response. `append` to
 		 *  add to the items. Default: null will replace the items.
 		 */
-		get: function (handleResponse) {
+		get: function(handleResponse) {
 			var self = this;
 
 			this.isLoading = true;
@@ -92,7 +94,7 @@ export default {
 			// most recent get request. When we receive the response, we
 			// can check that the response matches the most recent get request, and
 			// discard responses that are outdated.
-			this._latestGetRequest = $.pkp.classes.Helper.uuid();
+			this.latestGetRequest = $.pkp.classes.Helper.uuid();
 
 			$.ajax({
 				url: this.getApiUrl(this.apiPath),
@@ -102,21 +104,19 @@ export default {
 					...this.activeFilters,
 					searchPhrase: this.searchPhrase,
 					count: this.count,
-					offset: this.offset,
+					offset: this.offset
 				},
-				_uuid: this._latestGetRequest,
-				error: function (r) {
-
+				_uuid: this.latestGetRequest,
+				error: function(r) {
 					// Only process latest request response
-					if (self._latestGetRequest !== this._uuid) {
+					if (self.latestGetRequest !== this._uuid) {
 						return;
 					}
 					self.ajaxErrorCallback(r);
 				},
-				success: function (r) {
-
+				success: function(r) {
 					// Only process latest request response
-					if (self._latestGetRequest !== this._uuid) {
+					if (self.latestGetRequest !== this._uuid) {
 						return;
 					}
 
@@ -133,22 +133,21 @@ export default {
 						self.itemsMax = r.itemsMax;
 					}
 				},
-				complete: function (r) {
-
+				complete: function() {
 					// Only process latest request response
-					if (self._latestGetRequest !== this._uuid) {
+					if (self.latestGetRequest !== this._uuid) {
 						return;
 					}
 
 					self.isLoading = false;
-				},
+				}
 			});
 		},
 
 		/**
 		 * Load more items in the list
 		 */
-		loadMore: function () {
+		loadMore: function() {
 			this.offset = this.items.length;
 			this.get('append');
 		},
@@ -156,7 +155,7 @@ export default {
 		/**
 		 * Toggle filter visibility
 		 */
-		toggleFilter: function () {
+		toggleFilter: function() {
 			this.isFilterVisible = !this.isFilterVisible;
 			if (!this.isFilterVisible) {
 				this.updateFilter({});
@@ -166,20 +165,20 @@ export default {
 		/**
 		 * Update filter parameters
 		 */
-		updateFilter: function (params) {
+		updateFilter: function(params) {
 			this.activeFilters = params;
 		},
 
 		/**
 		 * Toggle the ordering status
 		 */
-		toggleOrdering: function () {
+		toggleOrdering: function() {
 			if (this.isOrdering) {
 				this.setItemOrderSequence();
 			}
 			this.isOrdering = !this.isOrdering;
 			if (this.isOrdering) {
-				this.$nextTick(function () {
+				this.$nextTick(function() {
 					var helpEl = this.$el.querySelector('.pkpListPanel__notice');
 					if (helpEl) {
 						helpEl.focus();
@@ -191,11 +190,11 @@ export default {
 		/**
 		 * Move an item up in the list
 		 *
-		 * @param id int The id of the item to move
+		 * @param item object The item to move
 		 */
-		itemOrderUp: function (id) {
-			var index = this.items.findIndex(item => {
-				return item.id == id;
+		itemOrderUp: function(item) {
+			var index = this.items.findIndex(obj => {
+				return item.id == obj.id;
 			});
 			if (index === 0) {
 				return;
@@ -206,11 +205,11 @@ export default {
 		/**
 		 * Move an item down in the list
 		 *
-		 * @param id int The id of the item to move
+		 * @param item object The item to move
 		 */
-		itemOrderDown: function (id) {
-			var index = this.items.findIndex(item => {
-				return item.id == id;
+		itemOrderDown: function(item) {
+			var index = this.items.findIndex(obj => {
+				return item.id == obj.id;
 			});
 			if (index === this.items.length - 1) {
 				return;
@@ -222,7 +221,7 @@ export default {
 		 * Update the order sequence property for items in this list based on
 		 * the new order of items
 		 */
-		setItemOrderSequence: function (prop) {
+		setItemOrderSequence: function(prop) {
 			prop = prop || 'seq'; // default sequence property in item models
 
 			this.items.forEach((item, i) => {
@@ -233,17 +232,17 @@ export default {
 		/**
 		 * Cancel changes made by ordering items
 		 */
-		cancelOrdering: function () {
+		cancelOrdering: function() {
 			this.isOrdering = false;
 			this.offset = 0;
 			this.get();
-		},
+		}
 	},
 	watch: {
 		/**
 		 * Perform a search whenever the searchPhrase is updated
 		 */
-		searchPhrase: function (newVal, oldVal) {
+		searchPhrase: function(newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
@@ -254,7 +253,7 @@ export default {
 		/**
 		 * Update list whenever a filter is applied
 		 */
-		activeFilters: function (newVal, oldVal) {
+		activeFilters: function(newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
@@ -263,9 +262,9 @@ export default {
 			if (newVal && Object.keys(newVal).length) {
 				this.isFilterVisible = true;
 			}
-		},
+		}
 	},
-	mounted: function () {
+	mounted: function() {
 		/**
 		 * Load items into the component once the page is loaded if a lazyLoad is
 		 * requested.
@@ -275,12 +274,12 @@ export default {
 				this.get();
 			} else {
 				var self = this;
-				$(function () {
+				$(function() {
 					self.get();
 				});
 			}
 		}
-	},
+	}
 };
 </script>
 
@@ -289,7 +288,7 @@ export default {
 
 .pkpListPanel {
 	position: relative;
-	box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 	border-radius: @radius;
 }
 
@@ -322,6 +321,10 @@ export default {
 
 	li {
 		display: inline-block;
+
+		+ li {
+			margin-left: 0.5em;
+		}
 	}
 }
 
@@ -353,9 +356,9 @@ export default {
 }
 
 .pkpListPanel.-isOrdering {
-
 	// Hide other items on screen
-	.pkpListPanel__actions > li:not(.pkpListPanel__orderToggle):not(.pkpListPanel__orderToggleCancel),
+	.pkpListPanel__actions
+		> li:not(.pkpListPanel__orderToggle):not(.pkpListPanel__orderToggleCancel),
 	.pkpListPanel__search {
 		display: none;
 	}

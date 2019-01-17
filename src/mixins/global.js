@@ -8,9 +8,7 @@
  * @see https://vuejs.org/v2/guide/mixins.html
  */
 export default {
-
 	methods: {
-
 		/**
 		 * Compile a string translation
 		 *
@@ -26,10 +24,8 @@ export default {
 		 * @param params object (Optional) Variables to compile with the translation
 		 * @return string
 		 */
-		__: function (key, params) {
-
+		__: function(key, params) {
 			if (typeof this.i18n[key] === 'undefined') {
-				console.log('Translation key ' + key + ' could not be found.');
 				return '';
 			}
 
@@ -71,14 +67,22 @@ export default {
 		 * @param string requestedLocale Optional. Request a specific locale
 		 * @return string
 		 */
-		localize: function (localizedString, requestedLocale) {
+		localize: function(localizedString, requestedLocale) {
 			if (localizedString === null) {
 				return '';
-			}	else if (requestedLocale !== undefined) {
-				return localizedString.hasOwnProperty(requestedLocale) ? localizedString[requestedLocale] : '';
-			} else if (localizedString.hasOwnProperty($.pkp.app.currentLocale) && localizedString[$.pkp.app.currentLocale]) {
+			} else if (requestedLocale !== undefined) {
+				return localizedString.hasOwnProperty(requestedLocale)
+					? localizedString[requestedLocale]
+					: '';
+			} else if (
+				localizedString.hasOwnProperty($.pkp.app.currentLocale) &&
+				localizedString[$.pkp.app.currentLocale]
+			) {
 				return localizedString[$.pkp.app.currentLocale];
-			} else if (localizedString.hasOwnProperty($.pkp.app.primaryLocale) && localizedString[$.pkp.app.primaryLocale]) {
+			} else if (
+				localizedString.hasOwnProperty($.pkp.app.primaryLocale) &&
+				localizedString[$.pkp.app.primaryLocale]
+			) {
 				return localizedString[$.pkp.app.primaryLocale];
 			}
 
@@ -100,7 +104,7 @@ export default {
 		 * @param string endpoint
 		 * @return string
 		 */
-		getApiUrl: function (endpoint) {
+		getApiUrl: function(endpoint) {
 			var apiBase;
 			var indexFile = $.pkp.app.restfulUrlsEnabled ? '' : 'index.php';
 			if ($.pkp.app.contextPath) {
@@ -110,9 +114,27 @@ export default {
 			}
 			if (!$.pkp.app.pathInfoEnabled) {
 				if ($.pkp.app.contextPath) {
-					return $.pkp.app.baseUrl + '/' + indexFile + '?journal=' + encodeURIComponent($.pkp.app.contextPath) + '&endpoint=' + apiBase + '/' + endpoint;
+					return (
+						$.pkp.app.baseUrl +
+						'/' +
+						indexFile +
+						'?journal=' +
+						encodeURIComponent($.pkp.app.contextPath) +
+						'&endpoint=' +
+						apiBase +
+						'/' +
+						endpoint
+					);
 				}
-				return $.pkp.app.baseUrl + '/' + indexFile + '?endpoint=' + apiBase + '/' + endpoint;
+				return (
+					$.pkp.app.baseUrl +
+					'/' +
+					indexFile +
+					'?endpoint=' +
+					apiBase +
+					'/' +
+					endpoint
+				);
 			}
 			return $.pkp.app.baseUrl + '/' + indexFile + apiBase + '/' + endpoint;
 		},
@@ -133,7 +155,7 @@ export default {
 		 * @param object r The response from jQuery's ajax request
 		 * @return null
 		 */
-		ajaxErrorCallback: function (r) {
+		ajaxErrorCallback: function(r) {
 			var msg, modalOptions, $modal, modalHandler;
 
 			if ('responseJSON' in r && 'errorMessage' in r.responseJSON) {
@@ -147,18 +169,20 @@ export default {
 				title: $.pkp.locale.common_error,
 				okButton: $.pkp.locale.common_ok,
 				cancelButton: false,
-				dialogText: msg,
+				dialogText: msg
 			};
 
 			$modal = $(
-				'<div id="' + $.pkp.classes.Helper.uuid() + '" ' +
-				'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>')
-				.pkpHandler(modalOptions.modalHandler, modalOptions);
+				'<div id="' +
+					$.pkp.classes.Helper.uuid() +
+					'" ' +
+					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>'
+			).pkpHandler(modalOptions.modalHandler, modalOptions);
 
 			modalHandler = $.pkp.classes.Handler.getHandler($modal);
 
 			modalHandler.modalBuild();
 			modalHandler.modalOpen();
-		},
-	},
+		}
+	}
 };
