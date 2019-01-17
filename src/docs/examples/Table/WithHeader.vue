@@ -1,21 +1,20 @@
 <template>
 	<div class="viewTable">
 		<pkp-table
-			:caption="caption"
+			:label="label"
+			:description="description"
 			:columns="columns"
 			:rows="rows"
 		>
-			<template slot="header">
-				<tr>
-					<th v-for="column in columns"
-						:key="column.name"
-						:scope="column.scope ? column.scope : 'col'"
-					>
-						{{ column.label }}
-						<icon v-if="column.name === 'pdf'" icon="exclamation-triangle" :inline="true" />
-					</th>
-				</tr>
-			</template>
+			<tr slot="header">
+				<th v-for="column in columns"
+					:key="column.name"
+					:scope="column.scope ? column.scope : 'col'"
+				>
+					{{ column.label }}
+					<icon v-if="column.name === 'pdf'" icon="exclamation-triangle" />
+				</th>
+			</tr>
 		</pkp-table>
 	</div>
 </template>
@@ -24,6 +23,7 @@
 import Icon from '@/components/Icon/Icon.vue';
 import PkpTable from '@/components/Table/Table.vue';
 import ArticleStats from './helpers/ArticleStats.js';
+import ArticleStatsColumns from './helpers/ArticleStatsColumns.js';
 
 export default {
 	components: {
@@ -32,39 +32,9 @@ export default {
 	},
 	data: function () {
 		return {
-			caption: 'Example table with a custom header template',
-			columns: [
-				{
-					name: 'views',
-					label: 'Views',
-					value: 'views',
-				},
-				{
-					name: 'downloads',
-					label: 'Downloads',
-					value: 'downloads',
-				},
-				{
-					name: 'pdf',
-					label: 'PDF',
-					value: 'pdf',
-				},
-				{
-					name: 'html',
-					label: 'HTML',
-					value: 'html',
-				},
-				{
-					name: 'other',
-					label: 'Other',
-					value: 'other',
-				},
-				{
-					name: 'total',
-					label: 'Total',
-					value: 'total',
-				},
-			],
+			label: 'Example Custom Header',
+			description: 'This table uses the <code>header</code> slot to customize the PDF column header.',
+			columns: ArticleStatsColumns.slice(3),
 			rows: ArticleStats,
 		};
 	},

@@ -1,6 +1,9 @@
 <template>
 	<table class="pkpTable">
-		<caption v-html="caption" />
+		<caption v-if="label || description">
+			<div v-if="label" class="pkpTable__label">{{ label }}</div>
+			<div v-if="description" class="pkpTable__description" v-html="description" />
+		</caption>
 		<thead>
 			<slot name="header">
 				<table-header
@@ -49,7 +52,19 @@ export default {
 		TableCell,
 	},
 	props: {
-		caption: {
+		label: {
+			type: String,
+			default: '',
+		},
+		description: {
+			type: String,
+			default: '',
+		},
+		labelledBy: {
+			type: String,
+			default: '',
+		},
+		describedBy: {
 			type: String,
 			default: '',
 		},
@@ -237,6 +252,14 @@ export default {
 		border-bottom: @grid-border;
 	}
 
+	caption {
+		background: @bg-light;
+		padding: 1rem;
+		border-top-left-radius: @radius;
+		border-top-right-radius: @radius;
+		text-align: left;
+	}
+
 	thead {
 
 		th {
@@ -251,7 +274,7 @@ export default {
 			button {
 				position: relative;
 				margin: 0;
-				padding: 0.5rem;
+				padding: 0.5rem 16px 0.5rem 0.5rem;
 				border: none;
 				border-radius: @radius;
 				background: transparent;
@@ -260,29 +283,50 @@ export default {
 				font-weight: @bold;
 				line-height: 1.2em;
 				text-align: left;
+				color: @text;
 				cursor: pointer;
 
 				&:focus {
 					outline: 0;
 					box-shadow: inset 0 0 0 1px @primary;
 				}
-
-				.fa {
-					display: none;
-				}
-			}
-
-			&.-isActive,
-			button:hover,
-			button:focus {
-
-				.fa {
-					display: inline-block;
-					margin-left: 0.25em;
-					color: @primary;
-				}
 			}
 		}
+
+		.pkpTable__sortIcon {
+			visibility: hidden;
+			position: absolute;
+			top: 50%;
+			right: 4px;
+			transform: translateY(-50%);
+		}
+
+		&:hover .pkpTable__sortIcon {
+			visibility: visible;
+			color: @bg-dark;
+		}
+
+		th[aria-sort="true"].-isActive .pkpTable__sortIcon,
+		th[aria-sort="true"]:hover .pkpTable__sortIcon,
+		th[aria-sort="true"]:focus .pkpTable__sortIcon {
+			visibility: visible;
+			margin-left: 0.25em;
+			color: @primary;
+		}
 	}
+}
+
+.pkpTable__label {
+	font-size: @font-base;
+	font-weight: @bold;
+}
+
+.pkpTable__description {
+	max-width: 50em;
+	line-height: 1.6em;
+}
+
+.pkpTable__label + .pkpTable__description {
+	margin-top: 1rem;
 }
 </style>

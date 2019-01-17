@@ -8,7 +8,7 @@
 		>
 			<button v-if="column.orderBy" @click="$emit('orderBy', column)">
 				{{ column.label }}
-				<icon :icon="orderDirection ? 'caret-down' : 'caret-up'" />
+				<icon :icon="getIconDirection(column) ? 'caret-down' : 'caret-up'" class="pkpTable__sortIcon"/>
 			</button>
 			<template v-else>
 				{{ column.label }}
@@ -35,6 +35,21 @@ export default {
 		},
 		columns: Array,
 		rows: Array,
+	},
+	methods: {
+		/**
+		 * Get the correct icon (up/down) to show on sortable columns
+		 *
+		 * @param object column
+		 * @return string `caret-down` or `caret-up`
+		 */
+		getIconDirection: function (column) {
+			let iconDirection = column.initialOrderDirection;
+			if (this.orderBy === column.orderBy) {
+				iconDirection = this.orderDirection;
+			}
+			return iconDirection;
+		},
 	},
 };
 </script>
