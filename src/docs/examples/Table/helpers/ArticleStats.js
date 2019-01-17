@@ -24,7 +24,7 @@ const baseStat = {
 };
 
 let stats = [];
-for (let i = 1; i < 31; i++) {
+for (let i = 1; i < 61; i++) {
 	let stat = {
 		...baseStat,
 		object: {

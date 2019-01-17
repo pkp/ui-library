@@ -35,7 +35,7 @@ export default {
 			label: 'Example Custom Header',
 			description: 'This table uses the <code>header</code> slot to customize the PDF column header.',
 			columns: ArticleStatsColumns.slice(3),
-			rows: ArticleStats,
+			rows: ArticleStats.slice(0, 10),
 		};
 	},
 };

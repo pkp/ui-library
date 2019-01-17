@@ -6,6 +6,7 @@ import IsWarnable from './IsWarnable.vue';
 import IsLink from './IsLink.vue';
 import IsActive from './IsActive.vue';
 import WithIcon from './WithIcon.vue';
+import IsDisabled from './IsDisabled.vue';
 
 export default {
 	viewComponent: ViewButton,
@@ -49,6 +50,11 @@ export default {
 		'with-Icon': {
 			label: 'with Icon',
 			component: WithIcon,
+			componentRaw: pkpButtonRaw,
+		},
+		'is-Disabled': {
+			label: 'is Disabled',
+			component: IsDisabled,
 			componentRaw: pkpButtonRaw,
 		},
 	},

@@ -8,6 +8,8 @@ import WithHeader from './WithHeader.vue';
 import WithHeaderRaw from '!!raw-loader!./WithHeader.vue';
 import WithLabelledBy from './WithLabelledBy.vue';
 import WithLabelledByRaw from '!!raw-loader!./WithLabelledBy.vue';
+import WithPagination from './WithPagination.vue';
+import WithPaginationRaw from '!!raw-loader!./WithPagination.vue';
 import WithSorting from './WithSorting.vue';
 import WithSortingRaw from '!!raw-loader!./WithSorting.vue';
 
@@ -40,6 +42,11 @@ export default {
 			label: 'with Labelled By',
 			component: WithLabelledBy,
 			componentRaw: WithLabelledByRaw,
+		},
+		'with-pagination': {
+			label: 'with Paginationn',
+			component: WithPagination,
+			componentRaw: WithPaginationRaw,
 		},
 	},
 };

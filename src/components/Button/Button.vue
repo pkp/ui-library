@@ -121,11 +121,6 @@ export default {
 .pkpButton--isLink {
 	box-shadow: none;
 	border-color: transparent;
-
-	&:hover,
-	&:focus {
-		color: @primary-lift;
-	}
 }
 
 .pkpButton--isWarnable {
@@ -134,6 +129,7 @@ export default {
 	&:hover,
 	&:focus {
 		border-color: @no;
+		color: @no;
 	}
 }
 
@@ -150,6 +146,17 @@ export default {
 	&:focus {
 		background: @primary-lift;
 		color: #fff;
+	}
+}
+
+.pkpButton[disabled] {
+	color: @text-light;
+	background: #fff;
+
+	&:hover,
+	&:focus {
+		cursor: not-allowed;
+		border-color: @bg-border-color;
 	}
 }
 </style>

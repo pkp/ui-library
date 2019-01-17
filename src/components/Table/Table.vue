@@ -81,8 +81,14 @@ export default {
 			type: Boolean,
 			default: false,
 		},
-		columns: Array,
-		rows: Array,
+		columns: {
+			type: Array,
+			default: [],
+		},
+		rows: {
+			type: Array,
+			default: [],
+		},
 	},
 	methods: {
 		/**
@@ -333,5 +339,57 @@ export default {
 
 .pkpTable__label + .pkpTable__description {
 	margin-top: 1rem;
+}
+
+// A pagination component appearing directly after the table
+.pkpTable + .pkpPagination {
+	padding: 0;
+	border: @grid-border;
+	border-top: none;
+	border-radius: @radius;
+
+	button {
+		margin-top: 0.5rem;
+		margin-bottom: 0.5rem;
+	}
+
+	li:first-child,
+	li:last-child {
+		margin: 0;
+
+		button,
+		button {
+			margin: 0;
+			padding: 0.5rem 1rem;
+			border-color: transparent;
+			box-shadow: none;
+			border-radius: 0;
+
+			&:hover,
+			&:focus {
+				border-color: @primary;
+			}
+		}
+	}
+
+	li:first-child button {
+		border-right: @grid-border;
+		border-bottom-left-radius: @radius;
+
+		&[disabled]:hover {
+			border-color: transparent;
+			border-right: @grid-border;
+		}
+	}
+
+	li:last-child button {
+		border-left: @grid-border;
+		border-bottom-right-radius: @radius;
+
+		&[disabled]:hover {
+			border-color: transparent;
+			border-left: @grid-border;
+		}
+	}
 }
 </style>

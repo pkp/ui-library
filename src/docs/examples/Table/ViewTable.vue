@@ -21,7 +21,7 @@ export default {
 		return {
 			label: 'Example Table',
 			columns: ArticleStatsColumns,
-			rows: ArticleStats,
+			rows: ArticleStats.slice(0, 10),
 		};
 	},
 };

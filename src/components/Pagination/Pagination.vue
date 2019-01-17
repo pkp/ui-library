@@ -44,9 +44,9 @@ export default {
 			type: Number,
 			required: true,
 		},
-		innerPagesCount: {
+		showAdjacentPages: {
 			type: Number,
-			default: 3,
+			default: 1,
 		},
 		i18n: Object,
 	},
@@ -61,9 +61,8 @@ export default {
 		 */
 		items: function () {
 			let items = [];
-			const innerPadding = Math.floor(this.innerPagesCount / 2);
-			let innerMax = Math.min(this.currentPage + innerPadding, this.lastPage);
-			let innerMin = Math.max(this.currentPage - innerPadding, 1);
+			let innerMax = Math.min(this.currentPage + this.showAdjacentPages, this.lastPage);
+			let innerMin = Math.max(this.currentPage - this.showAdjacentPages, 1);
 
 			// Add a Previous button
 			items.push({
@@ -75,8 +74,8 @@ export default {
 
 			// Ensure there are always enough inner links
 			// If the current page is at the start or end, expand the min/max
-			if (innerMax - innerMin < this.innerPagesCount) {
-				const remainder = this.innerPagesCount - (innerMax - innerMin);
+			if (innerMax - innerMin < this.showAdjacentPages) {
+				const remainder = this.showAdjacentPages - (innerMax - innerMin);
 				if (innerMin === 1) {
 					innerMax = Math.min(innerMax + remainder, this.lastPage);
 				} else if (innerMax === this.lastPage) {
@@ -173,18 +172,18 @@ export default {
 .pkpPagination {
 	font-size: @font-tiny;
 	line-height: 1.5em;
+	text-align: center;
 
 	ul {
 		margin: 0;
 		padding: 0;
 		list-style: none;
-		text-align: center;
 	}
 
 	li {
 		display: inline-block;
-		margin-left: 0.25rem;
-		margin-right: 0.25rem;
+		margin-left: 1px;
+		margin-right: 1px;
 
 		&:first-child {
 			float: left;
@@ -193,6 +192,11 @@ export default {
 		&:last-child {
 			float: right;
 		}
+	}
+
+	.pkpButton {
+		padding-left: 0.75rem;
+		padding-right: 0.75rem;
 	}
 }
 

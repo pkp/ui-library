@@ -29,7 +29,7 @@ export default {
 	data: function () {
 		return {
 			columns: ArticleStatsColumns,
-			rows: ArticleStats,
+			rows: ArticleStats.slice(0, 10),
 		};
 	},
 };
