@@ -6,6 +6,7 @@ function getRandomTitle (str) {
 }
 
 const baseTitle = 'tortor ultrices dolor diam dignissim ante nulla et morbi imperdiet';
+const sectionIds = [1, 2, 3];
 const baseStat = {
 	total: 0,
 	abstractViews: 0,
@@ -18,6 +19,7 @@ const baseStat = {
 		fullTitle: {
 			en_US: getRandomTitle(baseTitle),
 		},
+		sectionId: 1,
 		authorString: 'Carlo Corino',
 		urlPublished: '/example/1',
 	},
@@ -33,6 +35,7 @@ for (let i = 1; i < 61; i++) {
 			fullTitle: {
 				en_US: getRandomTitle(baseTitle),
 			},
+			sectionId: sectionIds[Math.floor(Math.random() * sectionIds.length)],
 		},
 		abstractViews: Math.floor(Math.random() * 10000) + 1,
 		totalGalleyViews: Math.floor(Math.random() * 1000) + 1,

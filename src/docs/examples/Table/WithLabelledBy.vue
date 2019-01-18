@@ -19,8 +19,8 @@
 
 <script>
 import PkpTable from '@/components/Table/Table.vue';
-import ArticleStats from './helpers/ArticleStats.js';
-import ArticleStatsColumns from './helpers/ArticleStatsColumns.js';
+import articleStats from './helpers/articleStats.js';
+import articleStatsColumns from './helpers/articleStatsColumns.js';
 
 export default {
 	components: {
@@ -28,8 +28,8 @@ export default {
 	},
 	data: function () {
 		return {
-			columns: ArticleStatsColumns,
-			rows: ArticleStats.slice(0, 10),
+			columns: articleStatsColumns,
+			rows: articleStats.slice(0, 10),
 		};
 	},
 };

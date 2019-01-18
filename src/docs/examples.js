@@ -8,10 +8,14 @@ import ViewList from './examples/List/ViewList.vue';
 import ViewListRaw from '!!raw-loader!./examples/List/ViewList.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import ListPanelRaw from '!!raw-loader!@/components/ListPanel/ListPanel.vue';
+import ViewPageHeader from './examples/PageHeader/ViewPageHeader.vue';
+import ViewPageHeaderRaw from '!!raw-loader!./examples/PageHeader/ViewPageHeader.vue';
 import ViewPagination from './examples/Pagination/ViewPagination.vue';
 import ViewPaginationRaw from '!!raw-loader!./examples/Pagination/ViewPagination.vue';
 import SelectListPanel from '@/components/SelectListPanel/SelectListPanel.vue';
 import SelectListPanelRaw from '!!raw-loader!@/components/SelectListPanel/SelectListPanel.vue';
+import ArticleStatistics from './examples/Statistics/ArticleStatistics.vue';
+import ArticleStatisticsRaw from '!!raw-loader!./examples/Statistics/ArticleStatistics.vue';
 import ViewTable from './examples/Table/ViewTable.vue';
 import ViewTableRaw from '!!raw-loader!./examples/Table/ViewTable.vue';
 
@@ -46,6 +50,12 @@ export default {
 		label: 'ListPanel',
 		url: '/components/ListPanel',
 	},
+	PageHeader: {
+		component: ViewPageHeader,
+		componentRaw: ViewPageHeaderRaw,
+		label: 'PageHeader',
+		url: '/components/PageHeader',
+	},
 	Pagination: {
 		component: ViewPagination,
 		componentRaw: ViewPaginationRaw,
@@ -57,6 +67,12 @@ export default {
 		componentRaw: SelectListPanelRaw,
 		label: 'SelectListPanel',
 		url: '/components/SelectListPanel',
+	},
+	Statistics: {
+		component: ArticleStatistics,
+		componentRaw: ArticleStatisticsRaw,
+		label: 'Statistics',
+		url: '/components/Statistics',
 	},
 	Table: {
 		component: ViewTable,

@@ -11,8 +11,8 @@
 
 <script>
 import PkpTable from '@/components/Table/Table.vue';
-import ArticleStats from './helpers/ArticleStats.js';
-import ArticleStatsColumns from './helpers/ArticleStatsColumns.js';
+import articleStats from './helpers/articleStats.js';
+import articleStatsColumns from './helpers/articleStatsColumns.js';
 
 export default {
 	components: {
@@ -22,8 +22,8 @@ export default {
 		return {
 			label: 'Example Table',
 			description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-			columns: ArticleStatsColumns,
-			rows: ArticleStats.slice(0, 10),
+			columns: articleStatsColumns,
+			rows: articleStats.slice(0, 10),
 		};
 	},
 };

@@ -18,8 +18,8 @@
 <script>
 import PkpTable from '@/components/Table/Table.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
-import ArticleStats from './helpers/ArticleStats.js';
-import ArticleStatsColumns from './helpers/ArticleStatsColumns.js';
+import articleStats from './helpers/articleStats.js';
+import articleStatsColumns from './helpers/articleStatsColumns.js';
 
 export default {
 	components: {
@@ -30,8 +30,8 @@ export default {
 		return {
 			label: 'Example With Pagination',
 			description: 'Use the Pagination component to display large data sets in a table.',
-			columns: ArticleStatsColumns,
-			rows: ArticleStats,
+			columns: articleStatsColumns,
+			rows: articleStats,
 			currentPage: 1,
 			perPage: 5,
 			i18n: {

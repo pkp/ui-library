@@ -8,7 +8,6 @@ export default [
 		name: 'title',
 		label: 'Title',
 		isRowHeader: true,
-		truncate: 'medium',
 		value (row) { return row.object.fullTitle.en_US; },
 	},
 	{

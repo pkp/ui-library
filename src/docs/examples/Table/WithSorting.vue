@@ -14,15 +14,15 @@
 
 <script>
 import PkpTable from '@/components/Table/Table.vue';
-import ArticleStats from './helpers/ArticleStats.js';
-import ArticleStatsColumns from './helpers/ArticleStatsColumns.js';
+import articleStats from './helpers/articleStats.js';
+import articleStatsColumns from './helpers/articleStatsColumns.js';
 
 export default {
 	components: {
 		PkpTable,
 	},
 	data: function () {
-		const sortableColumns = ArticleStatsColumns.map(col => {
+		const sortableColumns = articleStatsColumns.map(col => {
 			if (['abstractViews', 'totalGalleyViews', 'total'].includes(col.name)) {
 				col.orderBy = col.name;
 				col.initialOrderDirection = true;
@@ -33,7 +33,7 @@ export default {
 			label: 'Example With Sorting',
 			description: 'This example allows the user to sort entries by Abstract Views, Galley Views and Total. See the section on Sorting in the usage guidance below.',
 			columns: sortableColumns,
-			rows: ArticleStats.slice(0, 10),
+			rows: articleStats.slice(0, 10),
 			orderBy: '',
 			orderDirection: false,
 		};

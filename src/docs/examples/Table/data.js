@@ -12,6 +12,8 @@ import WithPagination from './WithPagination.vue';
 import WithPaginationRaw from '!!raw-loader!./WithPagination.vue';
 import WithSorting from './WithSorting.vue';
 import WithSortingRaw from '!!raw-loader!./WithSorting.vue';
+import WithTruncated from './WithTruncated.vue';
+import WithTruncatedRaw from '!!raw-loader!./WithTruncated.vue';
 
 export default {
 	viewComponent: ViewTable,
@@ -47,6 +49,11 @@ export default {
 			label: 'with Pagination',
 			component: WithPagination,
 			componentRaw: WithPaginationRaw,
+		},
+		'with-truncated': {
+			label: 'with Truncated',
+			component: WithTruncated,
+			componentRaw: WithTruncatedRaw,
 		},
 	},
 };

@@ -9,7 +9,7 @@
 			<tr slot="header">
 				<th v-for="column in columns"
 					:key="column.name"
-					:scope="column.scope ? column.scope : 'col'"
+					scope="col"
 				>
 					{{ column.label }}
 					<icon v-if="column.name === 'pdf'" icon="exclamation-triangle" />
@@ -22,8 +22,8 @@
 <script>
 import Icon from '@/components/Icon/Icon.vue';
 import PkpTable from '@/components/Table/Table.vue';
-import ArticleStats from './helpers/ArticleStats.js';
-import ArticleStatsColumns from './helpers/ArticleStatsColumns.js';
+import articleStats from './helpers/articleStats.js';
+import articleStatsColumns from './helpers/articleStatsColumns.js';
 
 export default {
 	components: {
@@ -34,8 +34,8 @@ export default {
 		return {
 			label: 'Example Custom Header',
 			description: 'This table uses the <code>header</code> slot to customize the PDF column header.',
-			columns: ArticleStatsColumns.slice(3),
-			rows: ArticleStats.slice(0, 10),
+			columns: articleStatsColumns.slice(3),
+			rows: articleStats.slice(0, 10),
 		};
 	},
 };

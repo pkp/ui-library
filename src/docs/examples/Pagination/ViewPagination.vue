@@ -4,6 +4,7 @@
 			:currentPage="currentPage"
 			:lastPage="lastPage"
 			:i18n="i18n"
+			@setPage="setPage"
 		/>
 	</div>
 </template>
@@ -27,6 +28,11 @@ export default {
 				previousPageLabel: 'Previous page',
 			},
 		};
+	},
+	methods: {
+		setPage: function (page) {
+			this.currentPage = page;
+		},
 	},
 };
 </script>

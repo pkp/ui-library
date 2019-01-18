@@ -32,8 +32,8 @@ import PkpButton from '@/components/Button/Button.vue';
 import PkpTable from '@/components/Table/Table.vue';
 import TableRow from '@/components/Table/TableRow.vue';
 import TableCell from '@/components/Table/TableCell.vue';
-import ArticleStats from './helpers/ArticleStats.js';
-import ArticleStatsColumns from './helpers/ArticleStatsColumns.js';
+import articleStats from './helpers/articleStats.js';
+import articleStatsColumns from './helpers/articleStatsColumns.js';
 
 export default {
 	components: {
@@ -46,8 +46,8 @@ export default {
 		return {
 			label: 'Example Custom Column',
 			description: 'This table uses the <code>rows</code> slot to customize the output of the PDF column in each row.',
-			columns: ArticleStatsColumns.slice(3),
-			rows: ArticleStats.slice(0, 10),
+			columns: articleStatsColumns.slice(3),
+			rows: articleStats.slice(0, 10),
 		};
 	},
 	methods: {
