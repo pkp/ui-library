@@ -141,7 +141,7 @@ export default {
 		 */
 		focusNextRow: function (e) {
 			const $target = $(e.target);
-			const $cell = $target.closest('td');
+			const $cell = $target.closest('td, th');
 			const $row = $cell.closest('tr');
 			const columnIndex = $row.children().index($cell);
 			const $nextRowCells = $row.next().children();
@@ -159,7 +159,7 @@ export default {
 		 */
 		focusPreviousRow: function (e) {
 			const $target = $(e.target);
-			const $cell = $target.closest('td');
+			const $cell = $target.closest('td, th');
 			const $row = $cell.closest('tr');
 			const columnIndex = $row.children().index($cell);
 			const $prevRowCells = $row.prev().children();
