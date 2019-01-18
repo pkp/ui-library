@@ -17,14 +17,14 @@ export default [
 		value (row) { return row.object.authorString; },
 	},
 	{
-		name: 'views',
-		label: 'Views',
-		value: 'views',
+		name: 'abstractViews',
+		label: 'Abstract Views',
+		value: 'abstractViews',
 	},
 	{
-		name: 'downloads',
-		label: 'Downloads',
-		value: 'downloads',
+		name: 'totalGalleyViews',
+		label: 'Galley Views',
+		value: 'totalGalleyViews',
 	},
 	{
 		name: 'pdf',

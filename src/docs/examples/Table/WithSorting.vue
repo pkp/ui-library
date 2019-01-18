@@ -23,7 +23,7 @@ export default {
 	},
 	data: function () {
 		const sortableColumns = ArticleStatsColumns.map(col => {
-			if (['views', 'downloads', 'total'].includes(col.name)) {
+			if (['abstractViews', 'totalGalleyViews', 'total'].includes(col.name)) {
 				col.orderBy = col.name;
 				col.initialOrderDirection = true;
 			}
@@ -31,7 +31,7 @@ export default {
 		});
 		return {
 			label: 'Example With Sorting',
-			description: 'This example allows the user to sort entries by Views, Downloads and Total. See the section on Sorting in the usage guidance below.',
+			description: 'This example allows the user to sort entries by Abstract Views, Galley Views and Total. See the section on Sorting in the usage guidance below.',
 			columns: sortableColumns,
 			rows: ArticleStats.slice(0, 10),
 			orderBy: '',
