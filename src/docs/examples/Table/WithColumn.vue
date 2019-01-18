@@ -45,7 +45,7 @@ export default {
 	data: function () {
 		return {
 			label: 'Example Custom Column',
-			description: 'This table uses the <code>rows</code> slot to customize the output of one cell in each row.',
+			description: 'This table uses the <code>rows</code> slot to customize the output of the PDF column in each row.',
 			columns: ArticleStatsColumns.slice(3),
 			rows: ArticleStats.slice(0, 10),
 		};

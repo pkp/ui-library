@@ -31,7 +31,7 @@ export default {
 		});
 		return {
 			label: 'Example With Sorting',
-			description: 'This example allows the user to sort entries by the title. See the section on Sorting in the usage guidance below.',
+			description: 'This example allows the user to sort entries by Views, Downloads and Total. See the section on Sorting in the usage guidance below.',
 			columns: sortableColumns,
 			rows: ArticleStats.slice(0, 10),
 			orderBy: '',

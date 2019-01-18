@@ -44,7 +44,7 @@ export default {
 			componentRaw: WithLabelledByRaw,
 		},
 		'with-pagination': {
-			label: 'with Paginationn',
+			label: 'with Pagination',
 			component: WithPagination,
 			componentRaw: WithPaginationRaw,
 		},
