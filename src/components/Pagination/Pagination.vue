@@ -127,7 +127,7 @@ export default {
 			// Add a Next button
 			items.push({
 				value: 'next',
-				isDisabled: this.currentPage === this.lastPage,
+				isDisabled: !this.lastPage || this.currentPage === this.lastPage,
 				label: this.i18n.nextPageLabel,
 				ariaLabel: this.__('goToLabel', { page: this.i18n.nextPageLabel }),
 			});
@@ -170,6 +170,7 @@ export default {
 @import '../../styles/_import';
 
 .pkpPagination {
+	min-height: 51px;
 	font-size: @font-tiny;
 	line-height: 1.5em;
 	text-align: center;
