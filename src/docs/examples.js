@@ -2,6 +2,8 @@ import ViewBadge from './examples/Badge/ViewBadge.vue';
 import BadgeRaw from '!!raw-loader!@/components/Badge/Badge.vue';
 import ViewButton from './examples/Button/ViewButton.vue';
 import ButtonRaw from '!!raw-loader!@/components/Button/Button.vue';
+import ViewDateRange from './examples/DateRange/ViewDateRange.vue';
+import DateRangeRaw from '!!raw-loader!@/components/DateRange/DateRange.vue';
 import ViewIcon from './examples/Icon/ViewIcon.vue';
 import IconRaw from '!!raw-loader!@/components/Icon/Icon.vue';
 import ViewList from './examples/List/ViewList.vue';
@@ -31,6 +33,12 @@ export default {
 		componentRaw: ButtonRaw,
 		label: 'Button',
 		url: '/components/Button',
+	},
+	DateRange: {
+		component: ViewDateRange,
+		componentRaw: DateRangeRaw,
+		label: 'DateRange',
+		url: '/components/DateRange',
 	},
 	Icon: {
 		component: ViewIcon,

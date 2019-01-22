@@ -4,7 +4,14 @@
 			{{ i18n.pageTitle }}
 			<span v-if="isLoading" class="pkpSpinner" aria-hidden="true"></span>
 			<template slot="actions">
-				<pkp-button :label="i18n.dateRange" icon="calendar" />
+				<date-range
+					uniqueId="article-stats-date-range"
+					:dateStart="dateStart"
+					:dateEnd="dateEnd"
+					:options="dateRangeOptions"
+					:i18n="i18n"
+					@setRange="setDateRange"
+				/>
 				<pkp-button
 					:label="i18n.filter"
 					icon="filter"
@@ -53,6 +60,8 @@
 							<th v-for="column in tableColumns"
 								:key="column.name"
 								scope="col"
+								:aria-sort="!!column.orderBy"
+								:class="{'-isActive': orderBy === column.orderBy}"
 							>
 								{{ column.label }}
 								<list-panel-search
@@ -65,6 +74,7 @@
 						</tr>
 					</pkp-table>
 					<pagination
+						v-if="lastPage"
 						id="articleDetailTablePagination"
 						:currentPage="currentPage"
 						:lastPage="lastPage"
@@ -91,6 +101,32 @@ export default {
 			currentPage: 1,
 			perPage: 10,
 			searchPhrase: '',
+			dateStart: '2018-10-18',
+			dateEnd: '2019-01-18',
+			dateRangeOptions: [
+				{
+					dateStart: '2018-10-18',
+					dateEnd: '2019-01-18',
+					label: 'Last 90 days',
+				},
+				{
+					dateStart: '2018-12-28',
+					dateEnd: '2019-12-01',
+					label: 'Last 30 days',
+				},
+				{
+					dateStart: '2018-01-01',
+					dateEnd: '2018-12-31',
+					label: 'Last 12 months',
+				},
+				{
+					dateStart: '',
+					dateEnd: '',
+					label: 'All dates',
+				},
+			],
+			orderBy: '',
+			orderDirection: false,
 			filters: {
 				example: {
 					heading: 'Sections',
@@ -115,7 +151,6 @@ export default {
 			},
 			originalStats: [],
 			i18n: {
-				dateRange: 'Date Range Placeholder',
 				filter: 'Filter',
 				filterRemove: 'Clear filter: {$filterTitle}',
 				pageTitle: 'Articles',
@@ -129,10 +164,26 @@ export default {
 				previousPageLabel: 'Previous page',
 				search: 'Search by title, author and ID',
 				clearSearch: 'Clear search phrase',
+				dateRange: 'Date Range',
+				dateFormatInstructions: 'Enter each date in the format YYYY-MM-DD. For example, if you want the date for 15 January, 2019, enter 2019-01-15.',
+				changeDateRange: 'Change date range',
+				sinceDate: 'Since {$date}',
+				untilDate: 'Until {$date}',
+				allDates: 'All dates',
+				customRange: 'Custom Range',
+				fromDate: 'From',
+				toDate: 'To',
+				apply: 'Apply',
+				invalidDate: 'The date format is not valid. Enter each date in the format YYYY-MM-DD.',
+				dateDoesNotExist: 'One of the dates entered does not exist.',
+				invalidDateRange: 'The start date must be before the end date.',
 			},
 		};
 	},
 	methods: {
+		/**
+		 * Mock a request to the API
+		 */
 		get: function () {
 			this.isLoading = true;
 
@@ -161,6 +212,7 @@ export default {
 					return true;
 				});
 
+				this.currentPage = 1;
 				this.isLoading = false;
 			}, 1000);
 		},

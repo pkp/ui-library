@@ -1,13 +1,16 @@
 <script>
+import DateRange from '@/components/DateRange/DateRange.vue';
 import ListPanelFilter from '@/components/ListPanel/ListPanelFilter.vue';
 import ListPanelSearch from '@/components/ListPanel/ListPanelSearch.vue';
 import PageHeader from '@/components/PageHeader/PageHeader.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import PkpTable from '@/components/Table/Table.vue';
+import debounce from 'debounce';
 
 export default {
 	components: {
+		DateRange,
 		ListPanelFilter,
 		ListPanelSearch,
 		PageHeader,
@@ -22,6 +25,11 @@ export default {
 			currentPage: 1,
 			perPage: 30,
 			searchPhrase: '',
+			dateStart: '',
+			dateEnd: '',
+			dateRangeOptions: [],
+			orderBy: '',
+			orderDirection: false,
 			filters: [],
 			activeFilters: {},
 			isFilterVisible: false,
@@ -39,20 +47,49 @@ export default {
 		},
 	},
 	methods: {
+		/**
+		 * Set the date range
+		 *
+		 * @param string dateStart
+		 * @param string dateEnd
+		 */
+		setDateRange: function (dateStart, dateEnd) {
+			this.dateStart = dateStart;
+			this.dateEnd = dateEnd;
+		},
+
+		/**
+		 * Set the current page
+		 *
+		 * @param number page
+		 */
 		setPage: function (page) {
 			this.currentPage = page;
 		},
+
+		/**
+		 * Set the search phrase
+		 *
+		 * @param string val
+		 */
 		setSearchPhrase: function (val) {
 			this.searchPhrase = val;
 		},
+
+		/**
+		 * Get statistics from the server based on the current params
+		 */
 		get: function () {
 			this.isLoading = true;
 
 			console.log('get', {
 				activeFilters: this.activeFilters,
+				dateStart: this.dateStart,
+				dateEnd: this.dateEnd,
 				searchPhrase: this.searchPhrase,
 			});
 
+			this.currentPage = 1;
 			this.isLoading = false;
 		},
 
@@ -80,12 +117,23 @@ export default {
 			}
 			this.get();
 		},
+		dateStart: function (newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+			this.get();
+		},
+		dateEnd: function (newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+			this.get();
+		},
 		searchPhrase: function (newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
-			this.currentPage = 1;
-			this.get();
+			debounce(this.get(), 250);
 		},
 	},
 };
