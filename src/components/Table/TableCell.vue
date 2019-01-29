@@ -6,13 +6,14 @@
 		:tabindex="tabindex"
 	>
 		<template v-if="hasSlot">
-			<slot />
+			<slot :column="column" :row="row" />
 		</template>
 		<template v-else>
 			<span v-html="value" />
 		</template>
 	</component>
 </template>
+
 
 <script>
 export default {

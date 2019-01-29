@@ -49,14 +49,14 @@ export default {
 		 */
 		searchPhraseChanged: debounce(function (data) {
 			var newVal = typeof data === 'string' ? data : data.target.value;
-			this.$emit('searchPhraseChanged', newVal);
+			this.$emit('search-phrase-changed', newVal);
 		}, 250),
 
 		/**
 		 * Clear the search phrase
 		 */
 		clearSearchPhrase: function () {
-			this.$emit('searchPhraseChanged', '');
+			this.$emit('search-phrase-changed', '');
 			this.$nextTick(function () {
 				this.$el.querySelector('input[type="search"]').focus();
 			});

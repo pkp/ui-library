@@ -153,7 +153,7 @@ export default {
 			modalHandler = $.pkp.classes.Handler.getHandler($modal);
 
 			modalHandler.modalBuild();
-			modalHandler.modalOpen();
+			modalHandler.modalOpen(modalHandler.getHtmlElement());
 		},
 	},
 };

@@ -1,8 +1,8 @@
 import Statistics from '@/components/Statistics/Statistics.vue';
-import ArticleStatistics from './ArticleStatistics.vue';
+import ViewArticleStatistics from './ViewArticleStatistics.vue';
 
 export default {
-	viewComponent: ArticleStatistics,
+	viewComponent: ViewArticleStatistics,
 	baseComponent: Statistics,
 	propDescription: {},
 };

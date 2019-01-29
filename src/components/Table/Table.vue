@@ -10,15 +10,26 @@
 			<div v-if="description" class="pkpTable__description" v-html="description" />
 		</caption>
 		<thead>
-			<slot name="header">
-				<table-header
-					:orderBy="orderBy"
-					:orderDirection="orderDirection"
-					:columns="columns"
-					:rows="rows"
-					@orderBy="column => setOrderBy(column)"
-				/>
-			</slot>
+			<tr>
+				<th v-for="column in columns"
+					:key="column.name"
+					scope="col"
+					:aria-sort="!!column.orderBy"
+					:class="{'-isActive': orderBy === column.orderBy}"
+				>
+					<button v-if="column.orderBy" @click="setOrderBy(column)">
+						{{ column.label }}
+						<icon
+							:icon="getIconDirection(column) ? 'caret-down' : 'caret-up'"
+							class="pkpTable__sortIcon"
+						/>
+					</button>
+					<template v-else>
+						{{ column.label }}
+					</template>
+					<slot :name="'thead-' + column.name" :column="column" />
+				</th>
+			</tr>
 		</thead>
 		<tbody
 			@keydown.35.ctrl.exact.prevent="focusEnd"
@@ -30,30 +41,32 @@
 			@keydown.39.exact.prevent="focusNextCell"
 			@keydown.40.exact.prevent="focusNextRow"
 		>
-			<slot name="rows">
-		  	<table-row v-for="(row, rowIndex) in rows" :key="'row' + rowIndex">
+			<tr
+				v-for="(row, rowIndex) in rows"
+				:key="'row' + rowIndex"
+				class="pkpTable__row"
+			>
+				<slot :row="row" :rowIndex="rowIndex">
 					<table-cell
 					 	v-for="(column, columnIndex) in columns"
 						:key="column.name"
 						:column="column"
 						:row="row"
 						:tabindex="!rowIndex && !columnIndex ? 0 : -1"
-					/>
-				</table-row>
-			</slot>
+					></table-cell>
+				</slot>
+			</tr>
 		</tbody>
 	</table>
 </template>
 
 <script>
-import TableHeader from '@/components/Table/TableHeader.vue';
-import TableRow from '@/components/Table/TableRow.vue';
+import Icon from '@/components/Icon/Icon.vue';
 import TableCell from '@/components/Table/TableCell.vue';
 
 export default {
 	components: {
-		TableHeader,
-		TableRow,
+		Icon,
 		TableCell,
 	},
 	props: {
@@ -98,10 +111,25 @@ export default {
 		 */
 		setOrderBy: function (column) {
 			if (this.orderBy === column.orderBy) {
-				this.$emit('orderBy', column.orderBy, !this.orderDirection);
+				this.$emit('order-by', column.orderBy, !this.orderDirection);
 			} else {
-				this.$emit('orderBy', column.orderBy, column.initialOrderDirection);
+				this.$emit('order-by', column.orderBy, column.initialOrderDirection);
 			}
+		},
+
+		/**
+		 * Get the correct icon (up/down) to show on sortable columns
+		 *
+		 * @param object column
+		 * @return boolean
+		 */
+		getIconDirection: function (column) {
+			if (this.orderBy === column.orderBy) {
+				return this.orderDirection;
+			} else if (column.initialOrderDirection !== null) {
+				return column.initialOrderDirection;
+			}
+			return false;
 		},
 
 		/**

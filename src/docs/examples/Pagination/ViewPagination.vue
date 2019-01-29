@@ -1,10 +1,10 @@
 <template>
 	<div class="viewPagination">
 		<pagination
-			:currentPage="currentPage"
-			:lastPage="lastPage"
+			:current-page="currentPage"
+			:last-page="lastPage"
 			:i18n="i18n"
-			@setPage="setPage"
+			@set-page="setPage"
 		/>
 	</div>
 </template>
@@ -23,7 +23,7 @@ export default {
 			i18n: {
 				paginationLabel: 'Other pages of this example component',
 				goToLabel: 'Go to {$page}',
-				pageLabel: 'Page {$page}',
+				pageLabel: 'Page {$pageNumber}',
 				nextPageLabel: 'Next page',
 				previousPageLabel: 'Previous page',
 			},

@@ -6,7 +6,7 @@
 				<span v-if="isLoading" class="pkpSpinner" aria-hidden="true"></span>
 			</div>
 			<list-panel-search
-				@searchPhraseChanged="setSearchPhrase"
+				@search-phrase-changed="setSearchPhrase"
 				:searchPhrase="searchPhrase"
 				:i18n="i18n"
 			/>

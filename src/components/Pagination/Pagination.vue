@@ -5,6 +5,14 @@
 		:aria-label="i18n.paginationLabel"
 	>
 		<ul>
+			<li>
+				<pkp-button
+					:disabled="currentPage === 1"
+					:label="i18n.previousPageLabel"
+					:aria-label="__('goToLabel', { page: i18n.previousPageLabel })"
+					@click="setPage('previous')"
+				/>
+			</li>
 			<li v-for="(item, index) in items" :key="index">
 				<span
 					v-if="item.isSeparator"
@@ -19,9 +27,16 @@
 					:aria-label="item.ariaLabel"
 					:aria-current="item.isCurrent"
 					:label="item.label"
-					:isLink="!item.isCurrent && !['previous', 'next'].includes(item.value)"
-					:isActive="item.isCurrent"
+					:is-link="!item.isCurrent && !['previous', 'next'].includes(item.value)"
+					:is-active="item.isCurrent"
 					@click="setPage(item.value)"
+				/>
+			</li>
+			<li>
+				<pkp-button
+					:disabled="!currentPage === lastPage"
+					:label="i18n.nextPageLabel"
+					@click="setPage('next')"
 				/>
 			</li>
 		</ul>
@@ -63,14 +78,6 @@ export default {
 			let items = [];
 			let innerMax = Math.min(this.currentPage + this.showAdjacentPages, this.lastPage);
 			let innerMin = Math.max(this.currentPage - this.showAdjacentPages, 1);
-
-			// Add a Previous button
-			items.push({
-				value: 'previous',
-				isDisabled: this.currentPage === 1,
-				label: this.i18n.previousPageLabel,
-				ariaLabel: this.__('goToLabel', { page: this.i18n.previousPageLabel }),
-			});
 
 			// Ensure there are always enough inner links
 			// If the current page is at the start or end, expand the min/max
@@ -124,14 +131,6 @@ export default {
 				});
 			}
 
-			// Add a Next button
-			items.push({
-				value: 'next',
-				isDisabled: !this.lastPage || this.currentPage === this.lastPage,
-				label: this.i18n.nextPageLabel,
-				ariaLabel: this.__('goToLabel', { page: this.i18n.nextPageLabel }),
-			});
-
 			return items;
 		},
 	},
@@ -143,7 +142,7 @@ export default {
 		 * @return String
 		 */
 		getNumberAriaLabel: function (page) {
-			const pageLabel = this.__('pageLabel', { page: page });
+			const pageLabel = this.__('pageLabel', { pageNumber: page });
 			return this.__('goToLabel', { page: pageLabel });
 		},
 
@@ -159,7 +158,7 @@ export default {
 				page = this.currentPage + 1;
 			}
 			if (page >= 1 && page <= this.lastPage) {
-				this.$emit('setPage', page);
+				this.$emit('set-page', page);
 			}
 		},
 	},

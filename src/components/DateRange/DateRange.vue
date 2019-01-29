@@ -87,7 +87,15 @@ export default {
 			type: String,
 			default: '',
 		},
+		dateStartMin: {
+			type: String,
+			default: '',
+		},
 		dateEnd: {
+			type: String,
+			default: '',
+		},
+		dateEndMax: {
 			type: String,
 			default: '',
 		},
@@ -141,7 +149,7 @@ export default {
 		 * @param string dateEnd
 		 */
 		set: function (dateStart, dateEnd) {
-			this.$emit('setRange', dateStart, dateEnd);
+			this.$emit('set-range', dateStart, dateEnd);
 		},
 
 		/**
@@ -189,6 +197,16 @@ export default {
 				return;
 			}
 
+			if (!this.validateDateStartMin(this.localDateStart)) {
+				this.errorMessage = this.__('invalidStartDateMin', {date: this.dateStartMin});
+				return;
+			}
+
+			if (!this.validateDateEndMax(this.localDateEnd)) {
+				this.errorMessage = this.__('invalidEndDateMax', {date: this.dateEndMax});
+				return;
+			}
+
 			this.set(this.localDateStart, this.localDateEnd);
 			this.$refs.toggleButton.focus();
 			this.isOpen = false;
@@ -229,14 +247,41 @@ export default {
 				return true;
 			}
 
-			// A start date can not be later than the end date
 			const startDateInt = parseInt(startDate.replace(/-/g, ''));
 			const endDateInt = parseInt(endDate.replace(/-/g, ''));
-			if (startDateInt < endDateInt) {
-				return true;
+
+			// A start date can not be later than the end date
+			if (startDateInt > endDateInt) {
+				return false;
 			}
 
-			return false;
+			return true;
+		},
+
+		/**
+		 * Check if the start date is too early
+		 *
+		 * @param Date startDate
+		 * @return Boolean
+		 */
+		validateDateStartMin: function (startDate) {
+			if (this.dateStartMin) {
+				return parseInt(startDate.replace(/-/g, '')) >= parseInt(this.dateStartMin.replace(/-/g, ''));
+			}
+			return true;
+		},
+
+		/**
+		 * Check if the end date is too late
+		 *
+		 * @param Date endDate
+		 * @return Boolean
+		 */
+		validateDateEndMax: function (endDate) {
+			if (this.dateEndMax) {
+				return parseInt(endDate.replace(/-/g, '')) <= parseInt(this.dateEndMax.replace(/-/g, ''));
+			}
+			return true;
 		},
 	},
 	mounted: function () {
@@ -253,13 +298,14 @@ export default {
 	position: relative;
 	display: inline-block;
 	min-width: 12em;
+	height: @double + 2px;
 	font-size: @font-sml;
 }
 
 .pkpDateRange__current {
 	margin-left: 2rem;
 	padding: 0.5rem;
-	line-height: @double;
+	line-height: @double + 2px;
 	font-weight: @bold;
 	color: @primary;
 }
@@ -269,7 +315,7 @@ export default {
 	top: 0;
 	left: 0;
 	width: 100%;
-	height: @double;
+	height: 100%;
 	border: @bg-border-light;
 	border-radius: @radius;
 	background: transparent;

@@ -6,6 +6,8 @@ import ViewDateRange from './examples/DateRange/ViewDateRange.vue';
 import DateRangeRaw from '!!raw-loader!@/components/DateRange/DateRange.vue';
 import ViewIcon from './examples/Icon/ViewIcon.vue';
 import IconRaw from '!!raw-loader!@/components/Icon/Icon.vue';
+import ViewLineChart from './examples/Chart/ViewLineChart.vue';
+import ViewLineChartRaw from '!!raw-loader!./examples/Chart/ViewLineChart.vue';
 import ViewList from './examples/List/ViewList.vue';
 import ViewListRaw from '!!raw-loader!./examples/List/ViewList.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
@@ -16,8 +18,8 @@ import ViewPagination from './examples/Pagination/ViewPagination.vue';
 import ViewPaginationRaw from '!!raw-loader!./examples/Pagination/ViewPagination.vue';
 import SelectListPanel from '@/components/SelectListPanel/SelectListPanel.vue';
 import SelectListPanelRaw from '!!raw-loader!@/components/SelectListPanel/SelectListPanel.vue';
-import ArticleStatistics from './examples/Statistics/ArticleStatistics.vue';
-import ArticleStatisticsRaw from '!!raw-loader!./examples/Statistics/ArticleStatistics.vue';
+import ViewArticleStatistics from './examples/Statistics/ViewArticleStatistics.vue';
+import ViewArticleStatisticsRaw from '!!raw-loader!./examples/Statistics/ViewArticleStatistics.vue';
 import ViewTable from './examples/Table/ViewTable.vue';
 import ViewTableRaw from '!!raw-loader!./examples/Table/ViewTable.vue';
 
@@ -33,6 +35,12 @@ export default {
 		componentRaw: ButtonRaw,
 		label: 'Button',
 		url: '/components/Button',
+	},
+	Chart: {
+		component: ViewLineChart,
+		componentRaw: ViewLineChartRaw,
+		label: 'Chart',
+		url: '/components/Chart',
 	},
 	DateRange: {
 		component: ViewDateRange,
@@ -77,8 +85,8 @@ export default {
 		url: '/components/SelectListPanel',
 	},
 	Statistics: {
-		component: ArticleStatistics,
-		componentRaw: ArticleStatisticsRaw,
+		component: ViewArticleStatistics,
+		componentRaw: ViewArticleStatisticsRaw,
 		label: 'Statistics',
 		url: '/components/Statistics',
 	},

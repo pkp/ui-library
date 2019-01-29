@@ -10,7 +10,7 @@
 			:currentPage="currentPage"
 			:lastPage="lastPage"
 			:i18n="i18n"
-			@setPage="setPage"
+			@set-page="setPage"
 		/>
 	</div>
 </template>

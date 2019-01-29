@@ -6,15 +6,11 @@
 			:columns="columns"
 			:rows="rows"
 		>
-			<tr slot="header">
-				<th v-for="column in columns"
-					:key="column.name"
-					scope="col"
-				>
-					{{ column.label }}
-					<icon v-if="column.name === 'pdf'" icon="exclamation-triangle" />
-				</th>
-			</tr>
+			<icon
+				slot="thead-pdf"
+				slot-scope="{ column }"
+				icon="exclamation-triangle"
+			/>
 		</pkp-table>
 	</div>
 </template>

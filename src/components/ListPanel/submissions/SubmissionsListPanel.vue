@@ -23,7 +23,7 @@
 				</li>
 			</ul>
 			<list-panel-search
-				@searchPhraseChanged="setSearchPhrase"
+				@search-phrase-changed="setSearchPhrase"
 				:searchPhrase="searchPhrase"
 				:i18n="i18n"
 			/>
@@ -31,7 +31,7 @@
 		<div class="pkpListPanel__body -pkpClearfix pkpListPanel__body--submissions">
 			<submissions-list-filter
 				v-if="currentUserCanFilter"
-				@filterList="updateFilter"
+				@filter-list="updateFilter"
 				:isVisible="isFilterVisible"
 				:filters="filters"
 				:activeFilters="activeFilters"
@@ -41,7 +41,7 @@
 				<ul class="pkpListPanel__items" aria-live="polite">
 					<submissions-list-item
 						v-for="item in items"
-						@filterList="updateFilter"
+						@filter-list="updateFilter"
 						:key="item.id"
 						:item="item"
 						:i18n="i18n"

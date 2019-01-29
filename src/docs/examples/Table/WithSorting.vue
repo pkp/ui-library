@@ -7,7 +7,7 @@
 			:rows="rows"
 			:orderBy="orderBy"
 			:orderDirection="orderDirection"
-			@orderBy="setOrder"
+			@order-by="setOrder"
 		/>
 	</div>
 </template>

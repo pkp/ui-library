@@ -3,7 +3,7 @@
 		<div class="pkpListPanel__header -pkpClearfix">
 			<div class="pkpListPanel__title">{{ i18n.title }}</div>
 			<list-panel-search
-				@searchPhraseChanged="setSearchPhrase"
+				@search-phrase-changed="setSearchPhrase"
 				:searchPhrase="searchPhrase"
 				:i18n="i18n"
 			/>

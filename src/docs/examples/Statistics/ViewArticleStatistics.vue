@@ -1,85 +1,115 @@
 <template>
 	<div class="pkpStatistics">
 		<page-header>
-			{{ i18n.pageTitle }}
+			Articles
 			<span v-if="isLoading" class="pkpSpinner" aria-hidden="true"></span>
 			<template slot="actions">
 				<date-range
-					uniqueId="article-stats-date-range"
-					:dateStart="dateStart"
-					:dateEnd="dateEnd"
+					unique-id="article-stats-date-range"
+					:date-start="dateStart"
+					:date-end="dateEnd"
+					:date-end-max="dateEndMax"
 					:options="dateRangeOptions"
 					:i18n="i18n"
-					@setRange="setDateRange"
+					@set-range="setDateRange"
 				/>
 				<pkp-button
 					:label="i18n.filter"
 					icon="filter"
-					:isActive="isFilterVisible"
+					:is-active="isFilterVisible"
 					@click="toggleFilter"
 				/>
 			</template>
 		</page-header>
 		<div class="pkpStatistics__container">
 			<list-panel-filter
-				:isVisible="isFilterVisible"
+				:is-visible="isFilterVisible"
 				:filters="filters"
-				:activeFilters="activeFilters"
+				:active-filters="activeFilters"
 				:i18n="i18n"
-				@filterList="updateFilter"
+				@filter-list="updateFilter"
 			/>
 			<div class="pkpStatistics__main">
-				<div class="pkpStatistics__graph">
-					Graph
+				<div v-if="chartData" class="pkpStatistics__graph">
+					<div class="pkpStatistics__graphHeader">
+						<h2 class="pkpStatistics__graphTitle" id="article-stats-time-segment">Abstract Views</h2>
+						<div class="pkpStatistics__graphSegment">
+							<pkp-button
+								:label="i18n.daily"
+								:aria-pressed="timeSegment === 'daily'"
+								aria-describedby="article-stats-time-segment"
+								:disabled="!isDailySegmentEnabled"
+								@click="setTimeSegment('daily')"
+							/>
+							<pkp-button
+								:label="i18n.monthly"
+								:aria-pressed="timeSegment === 'monthly'"
+								aria-describedby="article-stats-time-segment"
+								:disabled="!isMonthlySegmentEnabled"
+								@click="setTimeSegment('monthly')"
+							/>
+						</div>
+					</div>
+					<table class="-screenReader" role="region" aria-live="polite">
+						<caption>Total views for all articles by month</caption>
+						<thead>
+							<tr>
+								<th scope="col">Date</th>
+								<th scope="col">Abstract Views</th>
+								<th scope="col">Galley Views</th>
+								<th scope="col">Total Views</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr	v-for="segment in timeSegments">
+								<th scope="row">{{ segment.dateLabel }}</th>
+								<th>{{ segment.abstractViews }}</th>
+								<th>{{ segment.totalGalleyViews }}</th>
+								<th>{{ segment.total }}</th>
+							</tr>
+						</tbody>
+					</table>
+					<line-chart :chartData="chartData" aria-hidden="true"></line-chart>
 				</div>
-				<div class="pkpStatistics__table">
+				<div class="pkpStatistics__table" role="region" aria-live="polite">
 					<div class="pkpStatistics__tableHeader">
 						<h2 class="pkpStatistics__tableTitle" id="articleDetailTableLabel">
-							{{ i18n.tableTitle }}
+							Article Details
 							<span v-if="isLoading" class="pkpSpinner" aria-hidden="true"></span>
 						</h2>
 						<div class="pkpStatistics__tableActions">
 							<div class="pkpStatistics__itemsOfTotal">
-								{{ __('itemsOfTotal', { count: currentRows.length, total: stats.length }) }}
+								{{ __('itemsOfTotal', { count: currentRows.length, total: items.length }) }}
 								<a
-								v-if="currentRows.length < stats.length"
-								href="#articleDetailTablePagination"
-								class="-screenReader"
+									v-if="currentRows.length < items.length"
+									href="#articleDetailTablePagination"
+									class="-screenReader"
 								>
-									{{ i18n.goToPagination }}
+									{{ i18n.paginationLabel }}
 								</a>
 							</div>
 						</div>
 					</div>
 					<pkp-table
-						labelledBy="articleDetailTableLabel"
+						labelled-by="articleDetailTableLabel"
 						:columns="tableColumns"
 						:rows="currentRows"
 					>
-						<tr slot="header">
-							<th v-for="column in tableColumns"
-								:key="column.name"
-								scope="col"
-								:aria-sort="!!column.orderBy"
-								:class="{'-isActive': orderBy === column.orderBy}"
-							>
-								{{ column.label }}
-								<list-panel-search
-									v-if="column.name === 'title'"
-									:searchPhrase="searchPhrase"
-									:i18n="i18n"
-									@searchPhraseChanged="setSearchPhrase"
-								/>
-							</th>
-						</tr>
+						<list-panel-search
+							slot="thead-title"
+							slot-scope="{ column }"
+							:search-phrase="searchPhrase"
+							:i18n="i18n"
+							@search-phrase-changed="setSearchPhrase"
+						/>
 					</pkp-table>
 					<pagination
-						v-if="lastPage"
+						v-if="lastPage > 1"
 						id="articleDetailTablePagination"
-						:currentPage="currentPage"
-						:lastPage="lastPage"
+						:current-page="currentPage"
+						:last-page="lastPage"
 						:i18n="i18n"
-						@setPage="setPage"
+						@set-page="setPage"
 					/>
 				</div>
 			</div>
@@ -91,18 +121,25 @@
 import Statistics from '@/components/Statistics/Statistics.vue';
 import articleStats from '../Table/helpers/articleStats.js';
 import articleStatsColumns from '../Table/helpers/articleStatsColumns.js';
+import timeSegments from './helpers/timeSegments.js';
 
 export default {
 	extends: Statistics,
 	data: function () {
+		const dateEndMax = new Date(new Date().setDate(new Date().getDate() - 1));
 		return {
-			stats: articleStats,
+			apiUrl: '/articles',
+			timeSegment: 'daily',
+			timeSegments: timeSegments,
+			items: articleStats,
+			itemsMax: articleStats.length,
 			tableColumns: articleStatsColumns.filter(col => !['id', 'author'].includes(col.name)),
-			currentPage: 1,
-			perPage: 10,
+			count: 10,
+			offset: 0,
 			searchPhrase: '',
-			dateStart: '2018-10-18',
+			dateStart: '2018-12-18',
 			dateEnd: '2019-01-18',
+			dateEndMax: dateEndMax.toISOString().split('T')[0],
 			dateRangeOptions: [
 				{
 					dateStart: '2018-10-18',
@@ -111,7 +148,7 @@ export default {
 				},
 				{
 					dateStart: '2018-12-28',
-					dateEnd: '2019-12-01',
+					dateEnd: '2019-01-28',
 					label: 'Last 30 days',
 				},
 				{
@@ -149,15 +186,12 @@ export default {
 					],
 				},
 			},
-			originalStats: [],
+			originalItems: [],
 			i18n: {
 				filter: 'Filter',
 				filterRemove: 'Clear filter: {$filterTitle}',
-				pageTitle: 'Articles',
-				tableTitle: 'Article Details',
 				itemsOfTotal: '{$count} of {$total} articles',
-				goToPagination: 'Go to other pages',
-				paginationLabel: 'Other pages of this example component',
+				paginationLabel: 'View more pages',
 				goToLabel: 'Go to {$page}',
 				pageLabel: 'Page {$page}',
 				nextPageLabel: 'Next page',
@@ -177,8 +211,17 @@ export default {
 				invalidDate: 'The date format is not valid. Enter each date in the format YYYY-MM-DD.',
 				dateDoesNotExist: 'One of the dates entered does not exist.',
 				invalidDateRange: 'The start date must be before the end date.',
+				invalidEndDateMax: 'The end date may not be later than {$date}',
+				invalidStartDateMin: 'The start date may not be earlier than {$date}',
+				daily: 'Daily',
+				monthly: 'Monthly',
 			},
 		};
+	},
+	computed: {
+		currentRows: function () {
+			return this.items.slice(this.offset, (this.offset + this.count));
+		},
 	},
 	methods: {
 		/**
@@ -194,11 +237,11 @@ export default {
 
 			setTimeout(() => {
 
-				if (!this.originalStats.length) {
-					this.originalStats = [...this.stats];
+				if (!this.originalItems.length) {
+					this.originalItems = [...this.items];
 				}
 
-				this.stats = this.originalStats.filter(row => {
+				this.items = this.originalItems.filter(row => {
 					if (this.searchPhrase) {
 						if (!row.object.fullTitle.en_US.includes(this.searchPhrase) &&
 								row.object.id != this.searchPhrase &&
@@ -212,7 +255,6 @@ export default {
 					return true;
 				});
 
-				this.currentPage = 1;
 				this.isLoading = false;
 			}, 1000);
 		},

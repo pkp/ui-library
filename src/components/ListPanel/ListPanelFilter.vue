@@ -101,7 +101,7 @@ export default {
 		 * Emit an event to update the active filters in the list panel
 		 */
 		filterList: function (data) {
-			this.$emit('filterList', data);
+			this.$emit('filter-list', data);
 		},
 	},
 	mounted: function () {

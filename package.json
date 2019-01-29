@@ -13,10 +13,12 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs"
   },
   "dependencies": {
+    "chart.js": "^2.7.3",
     "debounce": "^1.1.0",
     "jquery": "3.*",
     "marked": "^0.3.12",
     "vue": "^2.5.13",
+    "vue-chartjs": "^3.4.0",
     "vue-router": "^3.0.1",
     "vue-slider-component": "^2.5.3",
     "vuedraggable": "^2.16.0"

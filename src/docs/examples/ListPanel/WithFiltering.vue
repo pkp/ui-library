@@ -15,7 +15,7 @@
 		</div>
 		<div class="pkpListPanel__body -pkpClearfix pkpListPanel__body--submissions">
 			<list-panel-filter
-				@filterList="updateFilter"
+				@filter-list="updateFilter"
 				:isVisible="isFilterVisible"
 				:filters="filters"
 				:activeFilters="activeFilters"

@@ -1,32 +1,41 @@
 <script>
 import DateRange from '@/components/DateRange/DateRange.vue';
+import LineChart from '@/components/Chart/LineChart.vue';
 import ListPanelFilter from '@/components/ListPanel/ListPanelFilter.vue';
 import ListPanelSearch from '@/components/ListPanel/ListPanelSearch.vue';
 import PageHeader from '@/components/PageHeader/PageHeader.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import PkpTable from '@/components/Table/Table.vue';
+import TableCell from '@/components/Table/TableCell.vue';
 import debounce from 'debounce';
 
 export default {
 	components: {
 		DateRange,
+		LineChart,
 		ListPanelFilter,
 		ListPanelSearch,
 		PageHeader,
 		Pagination,
 		PkpButton,
 		PkpTable,
+		TableCell,
 	},
 	data: function () {
 		return {
-			stats: [],
+			apiUrl: '',
+			timeSegment: '',
+			timeSegments: null,
+			items: [],
+			itemsMax: 0,
 			tableColumns: [],
-			currentPage: 1,
-			perPage: 30,
+			count: 30,
+			offset: 0,
 			searchPhrase: '',
 			dateStart: '',
 			dateEnd: '',
+			dateEndMax: '',
 			dateRangeOptions: [],
 			orderBy: '',
 			orderDirection: false,
@@ -38,12 +47,69 @@ export default {
 		};
 	},
 	computed: {
-		lastPage: function () {
-			return Math.floor(this.stats.length / this.perPage);
+		/**
+		 * The current page of results
+		 *
+		 * @return Number
+		 */
+		currentPage: function () {
+			return Math.floor(this.offset / this.count) + 1;
 		},
-		currentRows: function () {
-			const start = (this.currentPage * this.perPage) - this.perPage;
-			return this.stats.slice(start, (start + this.perPage));
+
+		/**
+		 * The number of pages of items that are available
+		 *
+		 * @return Number
+		 */
+		lastPage: function () {
+			return Math.ceil(this.itemsMax / this.count);
+		},
+
+		/**
+		 * Compile the data to pass to the LineChart component
+		 *
+		 * @return Object|null
+		 */
+		chartData: function () {
+			if (!this.timeSegments) {
+				return null;
+			}
+			const timeSegments = this.timeSegments.reverse();
+			return {
+				labels: timeSegments.map(segment => segment.dateLabel),
+				datasets: [
+					{
+						data: timeSegments.map(segment => segment.abstractViews),
+					},
+				],
+			};
+		},
+
+		/**
+		 * Is the current date range within a range that allows daily
+		 * time segments to be shown?
+		 *
+		 * @return Boolean
+		 */
+		isDailySegmentEnabled: function () {
+			if (!this.dateStart || !this.dateEndMax) {
+				return false;
+			}
+			return this.getDaysBetween(new Date(this.dateStart), new Date(this.dateEndMax)) < 91;
+		},
+
+		/**
+		 * Is the current date range within a range that allows monthly
+		 * time segments to be shown?
+		 *
+		 * @return Boolean
+		 */
+		isMonthlySegmentEnabled: function () {
+			if (!this.dateStart || !this.dateEnd) {
+				return true;
+			}
+			return new Date(this.dateStart).getMonth() !== new Date(this.dateEnd).getMonth() ||
+				new Date(this.dateStart).getYear() !== new Date(this.dateEnd).getYear();
 		},
 	},
 	methods: {
@@ -59,12 +125,32 @@ export default {
 		},
 
 		/**
+		 * Set the time segment for the graph
+		 *
+		 * @param string timeSegment
+		 */
+		setTimeSegment: function (timeSegment) {
+			this.timeSegment = timeSegment;
+		},
+
+		/**
 		 * Set the current page
 		 *
 		 * @param number page
 		 */
 		setPage: function (page) {
-			this.currentPage = page;
+			this.offset = (page - 1) * this.count;
+		},
+
+		/**
+		 * Set the orderBy and orderDirection values
+		 *
+		 * @param string orderBy What param to order by
+		 * @param boolean orderDirection true = DESC, false = ASC
+		 */
+		setOrderBy: function (orderBy, orderDirection) {
+			this.orderBy = orderBy;
+			this.orderDirection = orderDirection;
 		},
 
 		/**
@@ -80,17 +166,77 @@ export default {
 		 * Get statistics from the server based on the current params
 		 */
 		get: function () {
+			let self = this;
+
 			this.isLoading = true;
 
-			console.log('get', {
-				activeFilters: this.activeFilters,
-				dateStart: this.dateStart,
-				dateEnd: this.dateEnd,
-				searchPhrase: this.searchPhrase,
-			});
+			// Address issues with multiple async get requests. Store an ID for the
+			// most recent get request. When we receive the response, we
+			// can check that the response matches the most recent get request, and
+			// discard responses that are outdated.
+			this._latestGetRequest = $.pkp.classes.Helper.uuid();
 
-			this.currentPage = 1;
-			this.isLoading = false;
+			let params = {
+				...this.activeFilters,
+				count: this.count,
+				offset: this.offset,
+			};
+
+			if (this.dateStart) {
+				params.dateStart = this.dateStart;
+			}
+
+			if (this.dateEnd) {
+				params.dateEnd = this.dateEnd;
+			}
+
+			if (this.timeSegment) {
+				params.timeSegment = this.timeSegment;
+			}
+
+			if (this.searchPhrase) {
+				params.searchPhrase = this.searchPhrase;
+			}
+
+			if (this.orderBy) {
+				params.orderBy = this.orderBy;
+				params.orderDirection = this.orderDirection ? 'DESC' : 'ASC';
+			}
+
+			$.ajax({
+				url: this.apiUrl,
+				type: 'GET',
+				data: params,
+				_uuid: this._latestGetRequest,
+				error: function (r) {
+
+					// Only process latest request response
+					if (self._latestGetRequest !== this._uuid) {
+						return;
+					}
+					self.ajaxErrorCallback(r);
+				},
+				success: function (r) {
+
+					// Only process latest request response
+					if (self._latestGetRequest !== this._uuid) {
+						return;
+					}
+
+					self.timeSegments = r.timeSegments;
+					self.items = r.items;
+					self.itemsMax = r.itemsMax;
+				},
+				complete: function (r) {
+
+					// Only process latest request response
+					if (self._latestGetRequest !== this._uuid) {
+						return;
+					}
+
+					self.isLoading = false;
+				},
+			});
 		},
 
 		/**
@@ -109,15 +255,36 @@ export default {
 		updateFilter: function (params) {
 			this.activeFilters = params;
 		},
+
+		/**
+		 * Get the number of days betweeen two dates
+		 *
+		 * This could probably be moved into a general function somewhere.
+		 *
+		 * @param Date dateStart
+		 * @param Date dateEnd
+		 * @return Number
+		 */
+		getDaysBetween (dateStart, dateEnd) {
+			const millisecondsPerDay = 24 * 60 * 60 * 1000;
+
+			// Handle timezone offsets if date goes over Daylight Savings Time
+			// See: https://stackoverflow.com/a/11252167
+			dateStart.setMinutes(dateStart.getMinutes() - dateStart.getTimezoneOffset());
+			dateEnd.setMinutes(dateEnd.getMinutes() - dateEnd.getTimezoneOffset());
+
+			return (dateEnd - dateStart) / millisecondsPerDay;
+		},
 	},
 	watch: {
 		activeFilters: function (newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
+			this.offset = 0;
 			this.get();
 		},
-		dateStart: function (newVal, oldVal) {
+		count: function (newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
@@ -127,13 +294,65 @@ export default {
 			if (newVal === oldVal) {
 				return;
 			}
+			this.offset = 0;
+			this.get();
+		},
+		dateStart: function (newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+			this.offset = 0;
+			this.get();
+		},
+		isDailySegmentEnabled: function (newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+			if (!newVal) {
+				this.timeSegment = 'monthly';
+			}
+		},
+		isMonthlySegmentEnabled: function (newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+			if (!newVal) {
+				this.timeSegment = 'daily';
+			}
+		},
+		orderBy: function (newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+			this.offset = 0;
+			this.get();
+		},
+		orderDirection: function (newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+			this.offset = 0;
+			this.get();
+		},
+		offset: function (newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
 			this.get();
 		},
 		searchPhrase: function (newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
+			this.offset = 0;
 			debounce(this.get(), 250);
+		},
+		timeSegment: function (newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+			this.offset = 0;
+			this.get();
 		},
 	},
 };
@@ -152,10 +371,14 @@ export default {
 	position: relative;
 	left: auto;
 	width: 192px;
-	border-top: @grid-border;
+	margin-left: -@base;
+
+	&:before {
+		display: none;
+	}
 
 	+ .pkpStatistics__main  {
-		margin-left: 192px;
+		margin-left: 176px;
 	}
 }
 
@@ -205,11 +428,95 @@ export default {
 	}
 }
 
-// TEMP
+.pkpStatistics__itemLink {
+	color: @text;
+	text-decoration: none;
+}
+
+.pkpStatistics__itemAuthors {
+	font-weight: @bold;
+}
+
 .pkpStatistics__graph {
 	background: @bg-anchor;
-	text-align: center;
-	padding: 5rem;
 	color: #fff;
+	border-radius: @radius;
+
+	.chartjs-render-monitor {
+		border-radius: @radius;
+	}
 }
+
+.pkpStatistics__graphHeader {
+	padding: @base;
+}
+
+.pkpStatistics__graphTitle {
+	display: inline-block;
+	margin: 0;
+	font-size: @base;
+	line-height: 1.5em;
+}
+
+.pkpStatistics__graphSegment {
+	float: right;
+
+	.pkpButton {
+		position: relative;
+		z-index: 1;
+		float: right;
+		background: transparent;
+		border: 1px solid #437b96;
+		box-shadow: 0 1px 0 #000;
+		font-size: @font-tiny;
+		line-height: 2em;
+		color: #fff;
+
+		&:before {
+			content: '';
+			position: relative;
+			display: inline-block;
+			width: 0.75em;
+			height: 0.75em;
+			margin-right: 0.25em;
+			border: 1px solid #fff;
+			border-radius: 50%;
+		}
+
+		&:first-child {
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+
+		&:last-child {
+			position: relative;
+			left: 1px;
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+
+		&:hover,
+		&:focus {
+			color: #fff;
+			border-color: #fff;
+			z-index: 2;
+		}
+
+		&[aria-pressed="true"] {
+			background: @primary;
+
+			&:before {
+				background: #fff;
+				box-shadow: inset 0 0 0 1px @primary;
+			}
+		}
+
+		&[disabled] {
+			background: transparent;
+			opacity: 0.5;
+		}
+	}
+}
+
+
 </style>
