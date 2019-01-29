@@ -64,7 +64,7 @@
 							<tr	v-for="segment in timeSegments">
 								<th scope="row">{{ segment.dateLabel }}</th>
 								<th>{{ segment.abstractViews }}</th>
-								<th>{{ segment.totalGalleyViews }}</th>
+								<th>{{ segment.totalFileViews }}</th>
 								<th>{{ segment.total }}</th>
 							</tr>
 						</tbody>

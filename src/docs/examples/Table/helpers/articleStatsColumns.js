@@ -21,9 +21,9 @@ export default [
 		value: 'abstractViews',
 	},
 	{
-		name: 'totalGalleyViews',
+		name: 'totalFileViews',
 		label: 'Galley Views',
-		value: 'totalGalleyViews',
+		value: 'totalFileViews',
 	},
 	{
 		name: 'pdf',

@@ -10,7 +10,7 @@ const sectionIds = [1, 2, 3];
 const baseStat = {
 	total: 0,
 	abstractViews: 0,
-	totalGalleyViews: 0,
+	totalFileViews: 0,
 	pdf: 0,
 	html: 0,
 	other: 0,
@@ -38,14 +38,14 @@ for (let i = 1; i < 61; i++) {
 			sectionId: sectionIds[Math.floor(Math.random() * sectionIds.length)],
 		},
 		abstractViews: Math.floor(Math.random() * 10000) + 1,
-		totalGalleyViews: Math.floor(Math.random() * 1000) + 1,
+		totalFileViews: Math.floor(Math.random() * 1000) + 1,
 	};
 
-	let sixth = Math.floor(stat.totalGalleyViews / 6);
+	let sixth = Math.floor(stat.totalFileViews / 6);
 	stat.pdf = sixth * 3;
 	stat.html = sixth * 2;
 	stat.other = sixth * 1;
-	stat.total = stat.abstractViews + stat.totalGalleyViews;
+	stat.total = stat.abstractViews + stat.totalFileViews;
 
 	stats.push(stat);
 }

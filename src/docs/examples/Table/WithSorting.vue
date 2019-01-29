@@ -23,7 +23,7 @@ export default {
 	},
 	data: function () {
 		const sortableColumns = articleStatsColumns.map(col => {
-			if (['abstractViews', 'totalGalleyViews', 'total'].includes(col.name)) {
+			if (['abstractViews', 'totalFileViews', 'total'].includes(col.name)) {
 				col.orderBy = col.name;
 				col.initialOrderDirection = true;
 			}
