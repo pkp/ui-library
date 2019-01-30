@@ -111,6 +111,15 @@ export default {
 			return new Date(this.dateStart).getMonth() !== new Date(this.dateEnd).getMonth() ||
 				new Date(this.dateStart).getYear() !== new Date(this.dateEnd).getYear();
 		},
+
+		/**
+		 * Are there any filters for this stats panel
+		 *
+		 * @return Boolean
+		 */
+		hasFilters: function () {
+			return Object.keys(this.filters).length > 0;
+		},
 	},
 	methods: {
 		/**
