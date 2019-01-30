@@ -437,6 +437,15 @@ export default {
 	font-weight: @bold;
 }
 
+.pkpStatistics__noRecords {
+	padding: @double @base;
+	border: @grid-border;
+	border-top: none;
+	font-size: @font-sml;
+	text-align: center;
+	color: @text-light;
+}
+
 .pkpStatistics__graph {
 	background: @bg-anchor;
 	color: #fff;
