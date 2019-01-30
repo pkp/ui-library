@@ -70,7 +70,11 @@ export default {
 		TableCell,
 	},
 	props: {
-		label: {
+		columns: {
+			type: Array,
+			default: [],
+		},
+		describedBy: {
 			type: String,
 			default: '',
 		},
@@ -78,11 +82,11 @@ export default {
 			type: String,
 			default: '',
 		},
-		labelledBy: {
+		label: {
 			type: String,
 			default: '',
 		},
-		describedBy: {
+		labelledBy: {
 			type: String,
 			default: '',
 		},
@@ -93,10 +97,6 @@ export default {
 		orderDirection: {
 			type: Boolean,
 			default: false,
-		},
-		columns: {
-			type: Array,
-			default: [],
 		},
 		rows: {
 			type: Array,

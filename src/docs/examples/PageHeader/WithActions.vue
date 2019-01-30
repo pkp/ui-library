@@ -1,6 +1,6 @@
 <template>
 	<div class="viewPageHeader">
-		<page-header :level="1">
+		<page-header>
 			Articles
 			<template slot="actions">
 				<pkp-button label="Filter" icon="filter" />

@@ -3,6 +3,7 @@
 		<pagination
 			:current-page="currentPage"
 			:last-page="lastPage"
+			:show-adjacent-pages="showAdjacentPages"
 			:i18n="i18n"
 			@set-page="setPage"
 		/>
@@ -20,8 +21,9 @@ export default {
 		return {
 			currentPage: 12,
 			lastPage: 20,
+			showAdjacentPages: 1,
 			i18n: {
-				paginationLabel: 'Other pages of this example component',
+				paginationLabel: 'View additional pages',
 				goToLabel: 'Go to {$page}',
 				pageLabel: 'Page {$pageNumber}',
 				nextPageLabel: 'Next page',

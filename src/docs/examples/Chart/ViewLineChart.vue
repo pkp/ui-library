@@ -1,6 +1,6 @@
 <template>
 	<div class="viewLineChart">
-		<line-chart :chartData="chartData" />
+		<line-chart :chart-data="chartData" :chart-options="chartOptions"></line-chart>
 	</div>
 </template>
 
@@ -22,6 +22,7 @@ export default {
 					},
 				],
 			},
+			chartOptions: {},
 		};
 	},
 };

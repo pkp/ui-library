@@ -20,8 +20,13 @@ export default {
 	data: function () {
 		return {
 			label: 'Example Table',
+			description: '',
+			labelledBy: '',
+			describedBy: '',
 			columns: articleStatsColumns,
 			rows: articleStats.slice(0, 10),
+			orderBy: '',
+			orderDirection: false,
 		};
 	},
 };

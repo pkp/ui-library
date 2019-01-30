@@ -21,8 +21,10 @@ export default {
 	data: function () {
 		return {
 			uniqueId: 'example-view-date-range',
-			dateStart: '2018-10-18',
 			dateEnd: '2019-01-18',
+			dateEndMax: '',
+			dateStart: '2018-10-18',
+			dateStartMin: '',
 			options: [
 				{
 					dateStart: '2018-10-18',

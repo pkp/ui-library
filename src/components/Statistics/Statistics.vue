@@ -39,7 +39,7 @@ export default {
 			dateRangeOptions: [],
 			orderBy: '',
 			orderDirection: false,
-			filters: [],
+			filters: {},
 			activeFilters: {},
 			isFilterVisible: false,
 			isLoading: false,

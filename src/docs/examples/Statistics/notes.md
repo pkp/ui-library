@@ -1,2 +1,8 @@
 
-This is the Statistics app.
+Use the `Statistics` component to show a page of statistics with a chart and a table.
+
+## Template
+
+The `Statistics` component is a template-less component. You must write the template in Smarty on the server-side and it will be compiled at run time.
+
+The example here provides a sample template, similar to the article statistics page.
