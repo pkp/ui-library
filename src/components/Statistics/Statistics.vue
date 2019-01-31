@@ -318,7 +318,7 @@ export default {
 				return;
 			}
 			if (!newVal) {
-				this.timeSegment = 'monthly';
+				this.timeSegment = 'month';
 			}
 		},
 		isMonthlySegmentEnabled: function (newVal, oldVal) {
@@ -326,7 +326,7 @@ export default {
 				return;
 			}
 			if (!newVal) {
-				this.timeSegment = 'daily';
+				this.timeSegment = 'day';
 			}
 		},
 		orderBy: function (newVal, oldVal) {

@@ -6,7 +6,7 @@ export default {
 	baseComponent: Statistics,
 	propDescription: {
 		apiUrl: 'A URL to the API endpoint where requests for statistics data should be sent.',
-		timeSegment: 'How stats in the graph should be grouped by time. It should be <code>daily</code> or <code>monthly</code>. Default: <code>daily</code>',
+		timeSegment: 'How stats in the graph should be grouped by time. It should be <code>day</code> or <code>month</code>. Default: <code>day</code>',
 		items: 'An array of statistics records. These will be displayed in the table.',
 		itemsMax: 'Count of total available records matching the current parameters.',
 		tableColumns: 'An array of config objects defining the columns to display in the table.',

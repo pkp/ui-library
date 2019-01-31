@@ -36,17 +36,17 @@
 						<div class="pkpStatistics__graphSegment">
 							<pkp-button
 								:label="i18n.daily"
-								:aria-pressed="timeSegment === 'daily'"
+								:aria-pressed="timeSegment === 'day'"
 								aria-describedby="article-stats-time-segment"
 								:disabled="!isDailySegmentEnabled"
-								@click="setTimeSegment('daily')"
+								@click="setTimeSegment('day')"
 							/>
 							<pkp-button
 								:label="i18n.monthly"
-								:aria-pressed="timeSegment === 'monthly'"
+								:aria-pressed="timeSegment === 'month'"
 								aria-describedby="article-stats-time-segment"
 								:disabled="!isMonthlySegmentEnabled"
-								@click="setTimeSegment('monthly')"
+								@click="setTimeSegment('month')"
 							/>
 						</div>
 					</div>
@@ -129,7 +129,7 @@ export default {
 		const dateEndMax = new Date(new Date().setDate(new Date().getDate() - 1));
 		return {
 			apiUrl: '/articles',
-			timeSegment: 'daily',
+			timeSegment: 'day',
 			timeSegments: timeSegments,
 			items: articleStats,
 			itemsMax: articleStats.length,
