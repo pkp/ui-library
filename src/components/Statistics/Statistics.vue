@@ -105,7 +105,7 @@ export default {
 		 * @return Boolean
 		 */
 		isMonthlySegmentEnabled: function () {
-			if (!this.dateStart || !this.dateEnd) {
+			if (!this.dateStart || !this.dateEnd || !this.isDailySegmentEnabled) {
 				return true;
 			}
 			return new Date(this.dateStart).getMonth() !== new Date(this.dateEnd).getMonth() ||
