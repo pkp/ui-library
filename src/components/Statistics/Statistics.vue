@@ -174,7 +174,7 @@ export default {
 		/**
 		 * Get statistics from the server based on the current params
 		 */
-		get: function () {
+		get: debounce(function () {
 			let self = this;
 
 			this.isLoading = true;
@@ -246,7 +246,7 @@ export default {
 					self.isLoading = false;
 				},
 			});
-		},
+		}, 0),
 
 		/**
 		 * Toggle filter visibility
