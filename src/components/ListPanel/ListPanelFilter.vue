@@ -231,16 +231,19 @@ export default {
 	font-weight: @bold;
 	font-size: @font-tiny;
 	color: @text-light;
+	word-break: break-all;
 }
 
 .pkpListPanel__filterLabel {
 	display: block;
-	padding: (@half / 2) @base;
+	padding: (@half / 2) (@base + @half) (@half / 2) @base;
 	background: transparent;
 	border: none;
 	color: @primary;
 	line-height: @line-base;
 	text-decoration: none;
+	text-align: left;
+	word-break: break-all;
 	cursor: pointer;
 
 	&:focus {

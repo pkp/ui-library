@@ -118,6 +118,11 @@ export default {
 .pkpListPanel__filterSet--hasSlider {
 	opacity: 0;
 	transition: opacity 0.4s ease-in-out 0.4s, left 0s ease-in-out 0.4s, width 0s ease-in-out 0.4s;
+
+	.pkpListPanel__filterAdd,
+	.pkpListPanel__filterRemove {
+		top: 0.8em;
+	}
 }
 
 .pkpListPanel__filter.-isVisible {
@@ -138,11 +143,6 @@ export default {
 	.vue-slider-process {
 		display: none !important;
 	}
-}
-
-.pkpListPanel__filterAdd,
-.pkpListPanel__filterRemove {
-	top: 0.8em;
 }
 
 .pkpListPanel__filterInput--slider {
