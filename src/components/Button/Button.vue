@@ -1,25 +1,8 @@
 <template>
-	<button
-		v-if="element === 'button'"
-		class="pkpButton"
+	<component
+		:is="element"
 		:class="classes"
-		:icon="icon"
-		:isPrimary="isPrimary"
-		:isWarnable="isWarnable"
-		:isActive="isActive"
-		:isLink="isLink"
-		@click.prevent="click"
-		@focus="focus"
-		@blur="blur"
-	>
-		<icon v-if="icon" :icon="icon" :inline="!!label" />
-		{{ label }}
-	</button>
-	<a
-		v-else-if="element === 'a'"
-		class="pkpButton"
-		:class="classes"
-		:href="href"
+		:href="element === 'a' ? href : false"
 		:icon="icon"
 		:isPrimary="isPrimary"
 		:isWarnable="isWarnable"
@@ -31,7 +14,7 @@
 	>
 		<icon v-if="icon" :icon="icon" :inline="!!label" />
 		{{ label }}
-	</a>
+	</component>
 </template>
 
 <script>
@@ -48,7 +31,7 @@ export default {
 			default: 'button',
 		},
 		href: String,
-		label: String,
+		label: [String, Number],
 		icon: String,
 		isPrimary: Boolean,
 		isWarnable: Boolean,
@@ -57,7 +40,7 @@ export default {
 	},
 	computed: {
 		classes: function () {
-			let classes = [];
+			let classes = ['pkpButton'];
 			if (this.isPrimary) {
 				classes.push('pkpButton--isPrimary');
 			}
@@ -74,7 +57,10 @@ export default {
 		},
 	},
 	methods: {
-		click: function () {
+		click: function (e) {
+			if (this.element === 'button') {
+				e.preventDefault();
+			}
 			this.$emit('click');
 		},
 		focus: function () {
@@ -135,11 +121,6 @@ export default {
 .pkpButton--isLink {
 	box-shadow: none;
 	border-color: transparent;
-
-	&:hover,
-	&:focus {
-		color: @primary-lift;
-	}
 }
 
 .pkpButton--isWarnable {
@@ -148,6 +129,7 @@ export default {
 	&:hover,
 	&:focus {
 		border-color: @no;
+		color: @no;
 	}
 }
 
@@ -164,6 +146,17 @@ export default {
 	&:focus {
 		background: @primary-lift;
 		color: #fff;
+	}
+}
+
+.pkpButton[disabled] {
+	color: @text-light;
+	background: #fff;
+
+	&:hover,
+	&:focus {
+		cursor: not-allowed;
+		border-color: @bg-border-color;
 	}
 }
 </style>

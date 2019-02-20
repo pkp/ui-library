@@ -16,7 +16,7 @@
 				</li>
 			</ul>
 			<list-panel-search
-				@searchPhraseChanged="setSearchPhrase"
+				@search-phrase-changed="setSearchPhrase"
 				:searchPhrase="searchPhrase"
 				:i18n="i18n"
 			/>
@@ -31,7 +31,7 @@
 				:isVisible="isFilterVisible"
 				:activeFilters="activeFilters"
 				:i18n="i18n"
-				@filterList="updateFilter"
+				@filter-list="updateFilter"
 			/>
 			<div class="pkpListPanel__content">
 				<ul class="pkpListPanel__items" aria-live="polite">

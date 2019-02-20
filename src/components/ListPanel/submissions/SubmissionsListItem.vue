@@ -625,7 +625,7 @@ export default {
 		 * @param stageId int
 		 */
 		filterByStage: function (stageId) {
-			this.$emit('filterList', {'stageIds': [stageId]});
+			this.$emit('filter-list', {'stageIds': [stageId]});
 		},
 
 		/**

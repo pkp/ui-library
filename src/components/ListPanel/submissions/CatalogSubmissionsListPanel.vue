@@ -34,7 +34,7 @@
 				</li>
 			</ul>
 			<list-panel-search
-				@searchPhraseChanged="setSearchPhrase"
+				@search-phrase-changed="setSearchPhrase"
 				:searchPhrase="searchPhrase"
 				:i18n="i18n"
 			/>
@@ -46,7 +46,7 @@
 				:type="'info'"
 			/>
 			<catalog-submissions-list-filter
-				@filterList="updateFilter"
+				@filter-list="updateFilter"
 				:isVisible="isFilterVisible"
 				:filters="filters"
 				:activeFilters="activeFilters"
