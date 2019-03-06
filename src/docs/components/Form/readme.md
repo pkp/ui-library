@@ -4,9 +4,7 @@ Use this component to display a form. The parent component should respond to the
 ```html
 <pkp-form
 	v-bind="formData"
-	@set-fields="setFormFields"
-	@set-errors="setFormErrors"
-	@set-visible-locales="setFormVisibleLocales"
+	@set="set"
 />
 ```
 

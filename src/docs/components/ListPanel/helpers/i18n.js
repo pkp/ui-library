@@ -1,11 +1,9 @@
-export const count = {
-	itemsOfTotal: '{$count} of {$total} items',
-	itemCount: '{$count} items'
-};
-
-export const loadMore = {
-	loadMore: 'Load more',
-	loading: 'Loading'
+export const pagination = {
+	paginationLabel: 'View additional pages',
+	goToLabel: 'Go to {$page}',
+	pageLabel: 'Page {$pageNumber}',
+	nextPageLabel: 'Next page',
+	previousPageLabel: 'Previous page'
 };
 
 export const search = {
@@ -81,8 +79,7 @@ export const catalogSubmissionsListPanel = {
 };
 
 export default {
-	count,
-	loadMore,
+	pagination,
 	search,
 	notice,
 	expandable,

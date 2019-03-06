@@ -206,7 +206,12 @@ export default {
 
 			let errors = this.validate();
 			if (Object.keys(errors).length) {
-				this.$emit('set-errors', this.id, {...this.errors, ...errors});
+				this.$emit('set', this.id, {
+					errors: {
+						...this.errors,
+						...errors
+					}
+				});
 				this.isSaving = false;
 				return;
 			}
@@ -301,7 +306,7 @@ export default {
 				}
 				return field;
 			});
-			this.$emit('set-fields', this.id, newFields);
+			this.$emit('set', this.id, {fields: newFields});
 			this.$scrollTo(this.$el, 500, {
 				offset: -50
 			});
@@ -322,7 +327,7 @@ export default {
 					}),
 					type: 'error'
 				});
-				this.$emit('set-errors', this.id, r.responseJSON);
+				this.$emit('set', this.id, {errors: r.responseJSON});
 				// A generic error from the API endpoint
 			} else if (
 				r.status &&
@@ -372,7 +377,7 @@ export default {
 				}
 				return field;
 			});
-			this.$emit('set-fields', this.id, newFields);
+			this.$emit('set', this.id, {fields: newFields});
 			this.removeError(data.name, data.localeKey);
 		},
 
@@ -410,7 +415,7 @@ export default {
 		 * @param array locales New array of visible locales
 		 */
 		setVisibleLocales: function(locales) {
-			this.$emit('set-visible-locales', this.id, locales);
+			this.$emit('set', this.id, {visibleLocales: locales});
 		},
 
 		/**
@@ -483,7 +488,7 @@ export default {
 					delete newErrors[name];
 				}
 			}
-			this.$emit('set-errors', this.id, newErrors);
+			this.$emit('set', this.id, {errors: newErrors});
 		},
 
 		/**
@@ -492,7 +497,7 @@ export default {
 		 * @param array errors The new list of errors
 		 */
 		setErrors: function(errors) {
-			this.$emit('set-errors', this.id, errors);
+			this.$emit('set', this.id, {errors: errors});
 		}
 	},
 	mounted: function() {

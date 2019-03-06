@@ -9,7 +9,7 @@ export default {
 	},
 	data() {
 		return {
-			props: PreviewErrors.data().forms.example,
+			props: PreviewErrors.data().components.example,
 			component: 'preview-errors'
 		};
 	}

@@ -96,50 +96,6 @@ export default {
 		},
 
 		/**
-		 * Get an API endpoint URL
-		 *
-		 * This constructs an appropriate URL for querying the API, adjusting
-		 * as necessary for the disable_path_info configuration option.
-		 *
-		 * @param string endpoint
-		 * @return string
-		 */
-		getApiUrl: function(endpoint) {
-			var apiBase;
-			var indexFile = $.pkp.app.restfulUrlsEnabled ? '' : 'index.php';
-			if ($.pkp.app.contextPath) {
-				apiBase = '/' + $.pkp.app.contextPath + $.pkp.app.apiBasePath;
-			} else {
-				apiBase = $.pkp.app.apiBasePath;
-			}
-			if (!$.pkp.app.pathInfoEnabled) {
-				if ($.pkp.app.contextPath) {
-					return (
-						$.pkp.app.baseUrl +
-						'/' +
-						indexFile +
-						'?journal=' +
-						encodeURIComponent($.pkp.app.contextPath) +
-						'&endpoint=' +
-						apiBase +
-						'/' +
-						endpoint
-					);
-				}
-				return (
-					$.pkp.app.baseUrl +
-					'/' +
-					indexFile +
-					'?endpoint=' +
-					apiBase +
-					'/' +
-					endpoint
-				);
-			}
-			return $.pkp.app.baseUrl + '/' + indexFile + apiBase + '/' + endpoint;
-		},
-
-		/**
 		 * Display an error message from an ajax request
 		 *
 		 * This callback expects to be attached to the `error` param of the
@@ -183,6 +139,20 @@ export default {
 
 			modalHandler.modalBuild();
 			modalHandler.modalOpen();
+		},
+
+		/**
+		 * Set focus to the first focusable element within a dom node
+		 *
+		 * @param ParentNode el
+		 */
+		setFocusIn(el) {
+			let focusable = el.querySelectorAll(
+				'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+			);
+			if (focusable.length) {
+				focusable[0].focus();
+			}
 		}
 	}
 };

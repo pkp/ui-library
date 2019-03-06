@@ -25,7 +25,7 @@ import ComponentListPanel from './docs/components/ListPanel/ComponentListPanel.v
 import ComponentMultilingualProgress from './docs/components/MultilingualProgress/ComponentMultilingualProgress.vue';
 import ComponentOrderer from './docs/components/Orderer/ComponentOrderer.vue';
 import ComponentSelectListPanel from './docs/components/SelectListPanel/ComponentSelectListPanel.vue';
-import ComponentSettingsContainer from './docs/components/SettingsContainer/ComponentSettingsContainer.vue';
+import ComponentContainer from './docs/components/Container/ComponentContainer.vue';
 import ComponentTab from './docs/components/Tab/ComponentTab.vue';
 import ComponentTooltip from './docs/components/Tooltip/ComponentTooltip.vue';
 
@@ -165,9 +165,9 @@ export default new Router({
 			component: ComponentSelectListPanel
 		},
 		{
-			path: '/component/SettingsContainer/:example?',
-			name: 'SettingsContainer',
-			component: ComponentSettingsContainer
+			path: '/component/Container/:example?',
+			name: 'Container',
+			component: ComponentContainer
 		},
 		{
 			path: '/component/Tab/:example?',

@@ -1,24 +1,24 @@
 <template>
-	<div class="pkpListPanel__search">
+	<div class="pkpSearch">
 		<label>
-			<span class="-screenReader">{{ i18n.search }}</span>
-			<input type="search" class="pkpListPanel__searchInput"
-				@keyup="searchPhraseChanged"
+			<span class="-screenReader">{{ searchLabel }}</span>
+			<input type="search" class="pkpSearch__input"
+				@keyup="searchPhraseKeyUp"
 				:id="inputId"
 				:value="searchPhrase"
-				:placeholder="i18n.search"
+				:placeholder="searchLabel"
 			>
-			<span class="pkpListPanel__searchIcons">
-				<icon icon="search" :inline="true" class="pkpListPanel__searchIcons--search" />
+			<span class="pkpSearch__icons">
+				<icon icon="search" :inline="true" class="pkpSearch__icons--search" />
 			</span>
 		</label>
-		<button class="pkpListPanel__searchClear"
+		<button class="pkpSearch__clear"
 			v-if="searchPhrase"
 			@click.prevent="clearSearchPhrase"
 			:aria-controls="inputId"
 		>
 			<icon icon="times" />
-			<span class="-screenReader">{{ i18n.clearSearch }}</span>
+			<span class="-screenReader">{{ clearSearchLabel }}</span>
 		</button>
 	</div>
 </template>
@@ -28,28 +28,40 @@ import Icon from '@/components/Icon/Icon.vue';
 import debounce from 'debounce';
 
 export default {
-	name: 'ListPanelSearch',
 	components: {
 		Icon
 	},
-	props: ['searchPhrase', 'i18n'],
+	props: {
+		searchPhrase: {
+			type: String,
+			default() {
+				return '';
+			}
+		},
+		searchLabel: {
+			type: String,
+			required: true
+		},
+		clearSearchLabel: {
+			type: String,
+			required: true
+		}
+	},
 	computed: {
 		inputId: function() {
-			return 'list-panel-search-' + this._uid;
+			return this._uid;
 		}
 	},
 	methods: {
 		/**
-		 * A throttled function to signal to the parent element that the
-		 * searchPhrase should be updated. It's throttled to allow it to be
-		 * fired by frequent events, like keyup.
+		 * Emit an event when the search phrase changes in response to a keyup
+		 * event in the input field.
 		 *
-		 * @param string|object data A DOM event (object) or the new search
+		 * @param object data A DOM event (object) or the new search
 		 *  phrase (string)
 		 */
-		searchPhraseChanged: debounce(function(data) {
-			var newVal = typeof data === 'string' ? data : data.target.value;
-			this.$emit('searchPhraseChanged', newVal);
+		searchPhraseKeyUp: debounce(function(el) {
+			this.$emit('searchPhraseChanged', el.target.value);
 		}, 250),
 
 		/**
@@ -68,20 +80,18 @@ export default {
 <style lang="less">
 @import '../../styles/_import';
 
-.pkpListPanel__search {
+.pkpSearch {
 	position: relative;
-	float: right;
-	margin-top: 0.5em;
 	max-width: 100%;
 }
 
-.pkpListPanel__searchInput,
+.pkpSearch__input,
 /* Override legacy form styles for: .pkp_form input[type="search"] */
-.pkp_form .pkpListPanel__search .pkpListPanel__searchInput {
+.pkp_form .pkpSearch .pkpSearch__input {
 	display: block;
 	box-sizing: border-box;
 	padding: 0 0.5em 0 3.5em;
-	width: 25em;
+	width: 20em;
 	height: auto;
 	max-width: 100%;
 	border: @bg-border-light;
@@ -93,7 +103,7 @@ export default {
 	&:hover {
 		border-color: @primary;
 
-		+ .pkpListPanel__searchIcons {
+		+ .pkpSearch__icons {
 			border-color: @primary;
 		}
 	}
@@ -102,18 +112,18 @@ export default {
 		outline: 0;
 		border-color: @primary;
 
-		+ .pkpListPanel__searchIcons {
+		+ .pkpSearch__icons {
 			border-color: @primary;
 			background: @primary;
 
-			.pkpListPanel__searchIcons--search:before {
+			.pkpSearch__icons--search:before {
 				color: #fff;
 			}
 		}
 	}
 }
 
-.pkpListPanel__searchClear {
+.pkpSearch__clear {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -136,11 +146,11 @@ export default {
 	}
 }
 
-.pkpListPanel__actions + .pkpListPanel__search {
+.pkpListPanel__actions + .pkpSearch {
 	margin-right: 0.5em;
 }
 
-.pkpListPanel__searchIcons {
+.pkpSearch__icons {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -151,7 +161,7 @@ export default {
 	border-bottom-left-radius: @radius;
 }
 
-.pkpListPanel__searchIcons--search {
+.pkpSearch__icons--search {
 	position: absolute;
 	top: 50%;
 	left: 50%;

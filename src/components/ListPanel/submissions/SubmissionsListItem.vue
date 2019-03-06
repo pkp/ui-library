@@ -191,7 +191,7 @@ export default {
 	props: [
 		'item',
 		'i18n',
-		'apiPath',
+		'apiUrl',
 		'infoUrl',
 		'assignParticipantUrl',
 		'csrfToken'
@@ -669,7 +669,7 @@ export default {
 		 * @param stageId int
 		 */
 		filterByStage: function(stageId) {
-			this.$emit('filterList', {stageIds: [stageId]});
+			this.$emit('addFilter', 'stageIds', stageId);
 		},
 
 		/**
@@ -743,7 +743,7 @@ export default {
 
 			var self = this;
 			$.ajax({
-				url: this.getApiUrl(this.apiPath + '/' + this.item.id),
+				url: this.apiUrl + '/' + this.item.id,
 				type: 'DELETE',
 				headers: {
 					'X-Csrf-Token': this.csrfToken

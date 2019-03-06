@@ -1,18 +1,18 @@
 <script>
 import Example from '@/docs/Example.vue';
-import SettingsContainer from '@/components/SettingsContainer/SettingsContainer.vue';
+import Container from '@/components/Container/Container.vue';
 import config from './config';
 
 export default {
 	extends: Example,
 	components: {
-		SettingsContainer
+		Container
 	},
 	data() {
 		return {
 			...config,
-			title: 'SettingsContainer',
-			component: 'settings-container',
+			title: 'Container',
+			component: 'container',
 			template: ''
 		};
 	}

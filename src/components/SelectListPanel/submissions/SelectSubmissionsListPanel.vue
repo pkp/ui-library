@@ -5,10 +5,11 @@
 				{{ i18n.title }}
 				<span v-if="isLoading" class="pkpSpinner" aria-hidden="true"></span>
 			</div>
-			<list-panel-search
-				@searchPhraseChanged="setSearchPhrase"
+			<pkp-search
 				:searchPhrase="searchPhrase"
-				:i18n="i18n"
+				:searchLabel="i18n.search"
+				:clearSearchLabel="i18n.clearSearch"
+				@searchPhraseChanged="setSearchPhrase"
 			/>
 		</div>
 		<div class="pkpListPanel__body -pkpClearfix">
@@ -40,8 +41,8 @@
 				:i18n="i18n"
 			/>
 			<list-panel-count
-				:count="itemCount"
-				:total="this.itemsMax"
+				:count="items.length"
+				:total="itemsMax"
 				:i18n="i18n"
 			/>
 		</div>
@@ -51,7 +52,7 @@
 <script>
 import SelectListPanel from '@/components/SelectListPanel/SelectListPanel.vue';
 import SelectSubmissionsListItem from '@/components/SelectListPanel/submissions/SelectSubmissionsListItem.vue';
-import ListPanelSearch from '@/components/ListPanel/ListPanelSearch.vue';
+import PkpSearch from '@/components/Search/Search.vue';
 import ListPanelCount from '@/components/ListPanel/ListPanelCount.vue';
 import ListPanelLoadMore from '@/components/ListPanel/ListPanelLoadMore.vue';
 import SubmissionsListListeners from '@/mixins/ListPanel/submissions/listeners.js';
@@ -61,7 +62,7 @@ export default {
 	name: 'SelectSubmissionsListPanel',
 	mixins: [SubmissionsListListeners],
 	components: {
-		ListPanelSearch,
+		PkpSearch,
 		ListPanelCount,
 		ListPanelLoadMore,
 		SelectSubmissionsListItem

@@ -7,7 +7,6 @@
 			<list-panel-notice
 				v-if="i18n.notice"
 				:notice="i18n.notice"
-				:type="noticeType"
 			/>
 			<select-list-panel-select-all
 				v-if="showSelectAll"

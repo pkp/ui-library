@@ -16,7 +16,7 @@ The example below demonstrates how a `SubmissionsListPanel` is displayed on the 
 
 This component can fetch, search, filter and load more list items by making GET requests to an API endpoint. Make a request with the `get` method, and use the `filterParams`, `searchPhrase`, `offset` and `count` properties to modify the request.
 
-When you update the `searchPhrase` or `filterParams` data properties on the component, it will automatically compile the params and make a GET request to the `apiPath`.
+When you update the `searchPhrase` or `filterParams` data properties on the component, it will automatically compile the params and make a GET request to the `apiUrl`.
 
 **Never modify the `getParams` property.** These params represent the component's default state. Instead, use `filterParams` or `searchPhrase` to dynamically filter the list.
 
@@ -37,7 +37,7 @@ The items list can be updated (eg - searching, filtering, loading more, or addin
 
 ## Searching
 
-Add the `ListPanelSearch` component when a user wants to find one or more items by typing in a search phrase. Some examples:
+Add the `PkpSearch` component when a user wants to find one or more items by typing in a search phrase. Some examples:
 
 - Find a submission by title or author
 - Find a user by name, surname, email or username
@@ -60,9 +60,9 @@ When selected filters change, `ListPanelFilter` will fire a `filterList` event a
 
 ### Accessibility
 
-When `isFilterVisible` is false, filter buttons must have `tabindex="-1"` to prevent them from receiving focus. Remove this attribute when visible to let them be focused.
+When `isSidebarVisible` is false, filter buttons must have `tabindex="-1"` to prevent them from receiving focus. Remove this attribute when visible to let them be focused.
 
-Filters should always include a `.pkpListPanel__filterHeader` element which describes the filter set. When visible, the element should have `tabindex="0"` so that it can be focused. When `isFilterVisible` is changed to true, the focus will be shifted to this element.
+Filters should always include a `.pkpListPanel__filterHeader` element which describes the filter set. When visible, the element should have `tabindex="0"` so that it can be focused. When `isSidebarVisible` is changed to true, the focus will be shifted to this element.
 
 ## Ordering
 
@@ -75,7 +75,7 @@ This component will support item ordering by drag-and-drop and via keyboard cont
 5. To cancel ordering and reset the order from the current database values, use the `cancelOrdering` method. It will call the `get` method to repopulate the list.
 6. To toggle ordering on and off, use the `toggleOrdering` method.
 
-When ordering can be switched on and off, the list panel should hide any unnecessary details during ordering. The user should be able to do nothing else with the `ListPanel` when ordering. Unnecessary sub-components like `ListPanelSearch` and `ListPanelFilter` are hidden whenever the `-isOrdering` class is added to the `ListPanel`. Use this class to hide any other elements which are not useful during sorting, including those within the `ListItem`.
+When ordering can be switched on and off, the list panel should hide any unnecessary details during ordering. The user should be able to do nothing else with the `ListPanel` when ordering. Unnecessary sub-components like `PkpSearch` and `ListPanelFilter` are hidden whenever the `-isOrdering` class is added to the `ListPanel`. Use this class to hide any other elements which are not useful during sorting, including those within the `ListItem`.
 
 ### Accessibility
 

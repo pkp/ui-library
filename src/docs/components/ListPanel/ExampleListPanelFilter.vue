@@ -1,19 +1,18 @@
 <script>
 import Example from '@/docs/Example.vue';
-import ListPanel from './previews/PreviewListPanelFilter.vue';
+import PreviewListPanelFilter from './previews/PreviewListPanelFilter.vue';
 import fileContent from '!raw-loader!./previews/PreviewListPanelFilter.vue';
 import config from './config';
 
 export default {
 	extends: Example,
 	components: {
-		ListPanel
+		PreviewListPanelFilter
 	},
 	data() {
 		return {
 			...config,
-			title: 'ListPanel With Filter',
-			component: 'list-panel',
+			component: 'preview-list-panel-filter',
 			template: this.extractTemplate(fileContent)
 		};
 	}

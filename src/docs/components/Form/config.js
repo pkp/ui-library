@@ -6,7 +6,7 @@ export const propDocs = [
 	{
 		key: 'id',
 		description:
-			'Used by a parent component, such as `SettingsContainer`, to identify events emitted from the form and update the form props when necessary.'
+			'Used by a parent component, such as `Container`, to identify events emitted from the form and update the form props when necessary.'
 	},
 	{
 		key: 'method',

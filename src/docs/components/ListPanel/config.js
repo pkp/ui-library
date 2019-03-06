@@ -1,35 +1,53 @@
 import submissionsListPanel from './helpers/submissionsListPanel';
 import catalogSubmissionsListPanel from './helpers/catalogSubmissionsListPanel';
 
-export let props = {};
-
-export let data = {
-	id: '',
-	items: [],
-	itemsMax: null,
-	searchPhrase: '',
-	isLoading: false,
-	isOrdering: false,
-	isFilterVisible: false,
+export let props = {
+	apiUrl: '',
 	count: 20,
-	offset: 0,
-	apiPath: '',
+	filters: [],
 	getParams: {},
-	activeFilters: {},
-	noticeType: '',
-	i18n: {
-		title: 'List Panel'
-	},
+	id: '',
+	isSidebarVisible: false,
+	items: [],
+	itemsMax: 0,
 	lazyLoad: false,
-	latestGetRequest: null
+	offset: 0,
+	searchPhrase: '',
+	title: 'List Panel',
+	i18n: {}
 };
 
-export const propDocs = [];
-
-export const dataDocs = [
+export const propDocs = [
+	{
+		key: 'apiUrl',
+		description:
+			'Optional. If present, searching, filtering and other tasks will be performed through a `GET` request to this URL.'
+	},
+	{
+		key: 'count',
+		description: 'Number of items to fetch per request.'
+	},
 	{
 		key: 'id',
 		description: 'Used internally. Do not modify.'
+	},
+	{
+		key: 'filters',
+		description:
+			'Filters that can be applied to this list to adjust what items are shown.'
+	},
+	{
+		key: 'getParams',
+		description:
+			'Default parameters to pass with `GET` requests when no filters or search parameters exist.'
+	},
+	{
+		key: 'isSidebarVisible',
+		description: ''
+	},
+	{
+		key: 'i18n',
+		description: ''
 	},
 	{
 		key: 'items',
@@ -40,14 +58,25 @@ export const dataDocs = [
 		description: 'Count of total available items in the list'
 	},
 	{
-		key: 'activeFilters',
-		description:
-			'Modifying this property will automatically trigger a `GET` request if an `apiPath` is set.'
+		key: 'lazyLoad',
+		description: 'If `true`, it will call `ListPanel.get()` when mounted.'
+	},
+	{
+		key: 'offset',
+		description: 'Tracks the number of items visible for load more requests.'
 	},
 	{
 		key: 'searchPhrase',
 		description:
-			'Modifying this property will automatically trigger a `GET` request if an `apiPath` is set.'
+			'Modifying this property will automatically trigger a `GET` request if an `apiUrl` is set.'
+	}
+];
+
+export const dataDocs = [
+	{
+		key: 'activeFilters',
+		description:
+			'Modifying this property will automatically trigger a `GET` request if an `apiUrl` is set.'
 	},
 	{
 		key: 'isLoading',
@@ -56,41 +85,6 @@ export const dataDocs = [
 	{
 		key: 'isOrdering',
 		description: ''
-	},
-	{
-		key: 'isFilterVisible',
-		description: ''
-	},
-	{
-		key: 'count',
-		description: 'Number of items to fetch per request.'
-	},
-	{
-		key: 'offset',
-		description: 'Tracks the number of items visible for load more requests.'
-	},
-	{
-		key: 'apiPath',
-		description:
-			'Optional. If present, `GET` requests can be fired off with `ListPanel.get()`'
-	},
-	{
-		key: 'getParams',
-		description:
-			'Default parameters to pass with `GET` requests when no filters or search parameters exist.'
-	},
-	{
-		key: 'noticeType',
-		description:
-			'The type of notice being displayed. Default is an empty string. Options: `info`, `warning`.'
-	},
-	{
-		key: 'i18n',
-		description: ''
-	},
-	{
-		key: 'lazyLoad',
-		description: 'If `true`, it will call `ListPanel.get()` when mounted.'
 	},
 	{
 		key: 'latestGetRequest',
@@ -105,14 +99,15 @@ export const dataDocs = [
  * Data and documentation for the SubmissionsListPanel component in OJS, which
  * extends the base ListPanel.
  */
-export const dataSubmissionsListPanel = {
+export const propsSubmissionsListPanel = {
+	...props,
 	...submissionsListPanel,
 	addUrl: 'https://example.org',
 	infoUrl: 'https://example.org',
 	assignParticipantUrl: 'https://example.org'
 };
 
-export const dataDocsSubmissionsListPanel = [
+export const propsDocsSubmissionsListPanel = [
 	{
 		key: 'addUrl',
 		description: 'Url to the submission wizard'
@@ -172,11 +167,10 @@ export const dataDocsCatalogSubmissionsListPanel = [
 
 export default {
 	props,
-	data,
 	propDocs,
 	dataDocs,
-	dataSubmissionsListPanel,
-	dataDocsSubmissionsListPanel,
+	propsSubmissionsListPanel,
+	propsDocsSubmissionsListPanel,
 	dataCatalogSubmissionsListPanel,
 	dataDocsCatalogSubmissionsListPanel
 };

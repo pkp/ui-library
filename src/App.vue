@@ -11,9 +11,8 @@
 			</nav-group>
 			<nav-group>
 				<template slot="heading">Apps</template>
-				<li><router-link to="/component/ListPanel">ListPanel</router-link></li>
+				<li><router-link to="/component/Container">Container</router-link></li>
 				<li><router-link to="/component/SelectListPanel">SelectListPanel</router-link></li>
-				<li><router-link to="/component/SettingsContainer">SettingsContainer</router-link></li>
 			</nav-group>
 			<nav-group>
 				<template slot="heading">Components</template>
@@ -49,6 +48,7 @@
 				<li><router-link to="/component/HelpButton">HelpButton</router-link></li>
 				<li><router-link to="/component/Icon">Icon</router-link></li>
 				<li><router-link to="/component/List">List</router-link></li>
+				<li><router-link to="/component/ListPanel">ListPanel</router-link></li>
 				<li><router-link to="/component/MultilingualProgress">MultilingualProgress</router-link></li>
 				<li><router-link to="/component/Orderer">Orderer</router-link></li>
 				<li><router-link to="/component/Tab">Tab</router-link></li>

@@ -90,7 +90,7 @@ export default {
 		'filterAssocId',
 		'catalogEntryUrl',
 		'isOrdering',
-		'apiPath'
+		'apiUrl'
 	],
 	components: {
 		PkpButton,
@@ -200,7 +200,7 @@ export default {
 
 			var self = this;
 			$.ajax({
-				url: this.getApiUrl(this.apiPath + '/' + 'saveDisplayFlags'),
+				url: this.apiUrl + '/saveDisplayFlags',
 				type: 'POST',
 				data: {
 					submissionId: this.item.id,

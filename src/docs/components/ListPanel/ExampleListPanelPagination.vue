@@ -1,19 +1,18 @@
 <script>
 import Example from '@/docs/Example.vue';
-import ListPanel from './previews/PreviewListPanelLoadMore.vue';
-import fileContent from '!raw-loader!./previews/PreviewListPanelLoadMore.vue';
+import PreviewListPanelPagination from './previews/PreviewListPanelPagination.vue';
+import fileContent from '!raw-loader!./previews/PreviewListPanelPagination.vue';
 import config from './config';
 
 export default {
 	extends: Example,
 	components: {
-		ListPanel
+		PreviewListPanelPagination
 	},
 	data() {
 		return {
 			...config,
-			title: 'ListPanel With Load More',
-			component: 'list-panel',
+			component: 'preview-list-panel-pagination',
 			template: this.extractTemplate(fileContent)
 		};
 	}

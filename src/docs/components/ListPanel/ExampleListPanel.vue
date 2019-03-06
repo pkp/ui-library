@@ -1,30 +1,18 @@
 <script>
 import Example from '@/docs/Example.vue';
-import BaseListPanel from '@/components/ListPanel/ListPanel.vue';
-import fileContent from '!raw-loader!@/components/ListPanel/ListPanel.vue';
+import PreviewListPanel from './previews/PreviewListPanel.vue';
+import fileContent from '!raw-loader!./previews/PreviewListPanel.vue';
 import config from './config';
-import items from './helpers/items';
-
-const ListPanel = {
-	...BaseListPanel,
-	data() {
-		return {
-			...config.data,
-			items: items
-		};
-	}
-};
 
 export default {
 	extends: Example,
 	components: {
-		ListPanel
+		PreviewListPanel
 	},
 	data() {
 		return {
 			...config,
-			title: 'ListPanel',
-			component: 'list-panel',
+			component: 'preview-list-panel',
 			template: this.extractTemplate(fileContent)
 		};
 	}

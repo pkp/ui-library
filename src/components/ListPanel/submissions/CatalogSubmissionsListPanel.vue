@@ -7,7 +7,7 @@
 					<pkp-button v-if="filters.length"
 						:label="i18n.filter"
 						icon="filter"
-						:isActive="isFilterVisible"
+						:isActive="isSidebarVisible"
 						@click="toggleFilter"
 					/>
 				</li>
@@ -33,10 +33,11 @@
 					/>
 				</li>
 			</ul>
-			<list-panel-search
-				@searchPhraseChanged="setSearchPhrase"
+			<pkp-search
 				:searchPhrase="searchPhrase"
-				:i18n="i18n"
+				:searchLabel="i18n.search"
+				:clearSearchLabel="i18n.clearSearch"
+				@searchPhraseChanged="setSearchPhrase"
 			/>
 		</div>
 		<div class="pkpListPanel__body -pkpClearfix pkpListPanel__body--catalogSubmissions">
@@ -47,17 +48,17 @@
 			/>
 			<catalog-submissions-list-filter
 				@filterList="updateFilter"
-				:isVisible="isFilterVisible"
+				:isVisible="isSidebarVisible"
 				:filters="filters"
 				:activeFilters="activeFilters"
 				:i18n="i18n"
 			/>
 			<div class="pkpListPanel__content pkpListPanel__content--catalogSubmissions">
-				<div v-if="items.length" class="pkpListPanel__columnLabels pkpListPanel__columnLabels--catalogSubmissions">
-					<span class="pkpListPanel__columnLabel">
+				<div v-if="items.length" class="pkpListPanel--catalogSubmissions__columnLabels">
+					<span class="pkpListPanel--catalogSubmissions__columnLabel">
 						<span>{{ featuredLabel }}</span>
 					</span>
-					<span class="pkpListPanel__columnLabel">
+					<span class="pkpListPanel--catalogSubmissions__columnLabel">
 						<span>{{ newReleaseLabel }}</span>
 					</span>
 				</div>
@@ -74,7 +75,7 @@
 							:filterAssocType="filterAssocType"
 							:filterAssocId="filterAssocId"
 							:isOrdering="isOrdering"
-							:apiPath="apiPath"
+							:apiUrl="apiUrl"
 							:i18n="i18n"
 						/>
 					</draggable>
@@ -89,8 +90,8 @@
 				:i18n="i18n"
 			/>
 			<list-panel-count
-				:count="itemCount"
-				:total="this.itemsMax"
+				:count="items.length"
+				:total="itemsMax"
 				:i18n="i18n"
 			/>
 		</div>
@@ -332,7 +333,7 @@ export default {
 
 			const self = this;
 			$.ajax({
-				url: this.getApiUrl(this.apiPath + '/' + 'saveFeaturedOrder'),
+				url: this.apiUrl + '/saveFeaturedOrder',
 				type: 'POST',
 				data: {
 					assocType: this.filterAssocType,
@@ -438,14 +439,22 @@ export default {
 		}
 
 		// Hide column labels while loading. See above.
-		.pkpListPanel__columnLabel > span {
+		.pkpListPanel--catalogSubmissions__columnLabel > span {
 			opacity: 0;
 		}
 	}
 }
 
-.pkpListPanel__columnLabels--catalogSubmissions {
-	.pkpListPanel__columnLabel {
+.pkpListPanel--catalogSubmissions__columnLabels {
+	position: relative;
+	display: block;
+	min-height: @base * 3;
+	background: @lift;
+	border-bottom: @grid-border;
+	font-size: @font-tiny;
+	line-height: @line-tiny;
+
+	.pkpListPanel--catalogSubmissions__columnLabel {
 		position: absolute;
 		top: 0;
 		right: @base * 8;
@@ -454,7 +463,7 @@ export default {
 		border-left: @grid-border;
 		line-height: @base;
 
-		+ .pkpListPanel__columnLabel {
+		+ .pkpListPanel--catalogSubmissions__columnLabel {
 			right: 0;
 		}
 
@@ -475,7 +484,7 @@ export default {
 	.pkpListPanel__search,
 	.pkpListPanelItem__selectItem,
 	.pkpListPanelItem__actions,
-	.pkpListPanel__columnLabels {
+	.pkpListPanel--catalogSubmissions__columnLabels {
 		display: none;
 	}
 

@@ -10,25 +10,25 @@
 					<pkp-button
 						:label="i18n.filter"
 						icon="filter"
-						:isActive="isFilterVisible"
+						:isActive="isSidebarVisible"
 						@click="toggleFilter"
 					/>
 				</li>
 			</ul>
-			<list-panel-search
-				@searchPhraseChanged="setSearchPhrase"
+			<pkp-search
 				:searchPhrase="searchPhrase"
-				:i18n="i18n"
+				:searchLabel="i18n.search"
+				:clearSearchLabel="i18n.clearSearch"
+				@searchPhraseChanged="setSearchPhrase"
 			/>
 		</div>
 		<div class="pkpListPanel__body -pkpClearfix">
 			<list-panel-notice
 				v-if="i18n.notice"
 				:notice="i18n.notice"
-				:type="noticeType"
 			/>
 			<select-reviewer-list-filter
-				:isVisible="isFilterVisible"
+				:isVisible="isSidebarVisible"
 				:activeFilters="activeFilters"
 				:i18n="i18n"
 				@filterList="updateFilter"
@@ -58,8 +58,8 @@
 				:i18n="i18n"
 			/>
 			<list-panel-count
-				:count="itemCount"
-				:total="this.itemsMax"
+				:count="items.length"
+				:total="itemsMax"
 				:i18n="i18n"
 			/>
 		</div>
@@ -69,7 +69,7 @@
 <script>
 import SelectListPanel from '@/components/SelectListPanel/SelectListPanel.vue';
 import ListPanelNotice from '@/components/ListPanel/ListPanelNotice.vue';
-import ListPanelSearch from '@/components/ListPanel/ListPanelSearch.vue';
+import PkpSearch from '@/components/Search/Search.vue';
 import ListPanelCount from '@/components/ListPanel/ListPanelCount.vue';
 import ListPanelLoadMore from '@/components/ListPanel/ListPanelLoadMore.vue';
 import SelectReviewerListFilter from '@/components/SelectListPanel/users/SelectReviewerListFilter.vue';
@@ -81,7 +81,7 @@ export default {
 	name: 'SelectReviewerListPanel',
 	components: {
 		ListPanelNotice,
-		ListPanelSearch,
+		PkpSearch,
 		ListPanelCount,
 		ListPanelLoadMore,
 		SelectReviewerListFilter,

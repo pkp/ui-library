@@ -9,7 +9,7 @@ export default {
 	},
 	data() {
 		return {
-			props: PreviewConditionalDisplay.data().forms.example,
+			props: PreviewConditionalDisplay.data().components.example,
 			component: 'preview-conditional-display'
 		};
 	}

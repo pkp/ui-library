@@ -1,17 +1,17 @@
 <script>
 import Component from '@/docs/Component.vue';
-import SettingsContainer from './ExampleSettingsContainer.vue';
+import Container from './ExampleContainer.vue';
 
 export default {
 	extends: Component,
 	components: {
-		SettingsContainer
+		Container
 	},
 	data() {
 		return {
-			name: 'SettingsContainer',
+			name: 'Container',
 			examples: {
-				SettingsContainer: 'Base'
+				Container: 'Base'
 			}
 		};
 	}

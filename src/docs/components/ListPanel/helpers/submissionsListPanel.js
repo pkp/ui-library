@@ -3,47 +3,47 @@ import i18n from './i18n';
 
 export default {
 	id: 'SubmissionsListPanel',
-	filters: {
-		attention: {
+	filters: [
+		{
 			filters: [
 				{
 					title: 'Overdue',
 					param: 'isOverdue',
-					val: true
+					value: true
 				},
 				{
 					title: 'Incomplete',
 					param: 'isIncomplete',
-					val: true
+					value: true
 				}
 			]
 		},
-		stageIds: {
+		{
 			heading: 'Stages',
 			filters: [
 				{
 					title: 'Submission',
 					param: 'stageIds',
-					val: 1
+					value: 1
 				},
 				{
 					title: 'Review',
 					param: 'stageIds',
-					val: 3
+					value: 3
 				},
 				{
 					title: 'Copyediting',
 					param: 'stageIds',
-					val: 4
+					value: 4
 				},
 				{
 					title: 'Production',
 					param: 'stageIds',
-					val: 5
+					value: 5
 				}
 			]
 		}
-	},
+	],
 	items: [
 		submission,
 		{
@@ -338,7 +338,7 @@ export default {
 	csrfToken: $.pkp.currentUser.csrfToken,
 	i18n: {
 		...i18n.count,
-		...i18n.loadMore,
+		...i18n.pagination,
 		...i18n.search,
 		...i18n.expandable,
 		...i18n.orderable,

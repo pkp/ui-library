@@ -12,8 +12,8 @@
 		</ul>
 		<div class="pkpListPanel__footer -pkpClearfix">
 			<list-panel-count
-				:count="itemCount"
-				:total="this.itemsMax"
+				:count="items.length"
+				:total="itemsMax"
 				:i18n="i18n"
 			/>
 		</div>
