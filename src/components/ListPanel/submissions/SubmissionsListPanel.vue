@@ -97,9 +97,10 @@
 </template>
 
 <script>
+import ListPanel from '@/components/ListPanel/ListPanel.vue';
+import Pagination from '@/components/Pagination/Pagination.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Search from '@/components/Search/Search.vue';
-import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import SubmissionsListItem from '@/components/ListPanel/submissions/SubmissionsListItem.vue';
 import SubmissionsListListeners from '@/mixins/ListPanel/submissions/listeners.js';
 
@@ -107,6 +108,7 @@ export default {
 	extends: ListPanel,
 	mixins: [SubmissionsListListeners],
 	components: {
+		Pagination,
 		PkpButton,
 		Search,
 		SubmissionsListItem

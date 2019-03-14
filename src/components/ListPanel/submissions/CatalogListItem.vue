@@ -23,6 +23,7 @@
 			</a>
 			<div class="pkpListPanelItem__actions">
 				<pkp-button
+					ref="viewEntryButton"
 					:label="i18n.editCatalogEntry"
 					:isLink="true"
 					@click="viewCatalogEntry"
@@ -80,6 +81,7 @@ export default {
 	extends: ListPanelItem,
 	name: 'CatalogListItem',
 	props: [
+		'csrfToken',
 		'item',
 		'i18n',
 		'filterAssocType',
@@ -194,26 +196,27 @@ export default {
 		saveDisplayFlags: function() {
 			this.isLoading = true;
 
-			var self = this;
+			const self = this;
 			$.ajax({
 				url: this.apiUrl + '/saveDisplayFlags',
 				type: 'POST',
+				headers: {
+					'X-Csrf-Token': this.csrfToken
+				},
 				data: {
 					submissionId: this.item.id,
 					featured: this.item.featured,
-					newRelease: this.item.newRelease,
-					csrfToken: $.pkp.currentUser.csrfToken
+					newRelease: this.item.newRelease
 				},
 				error: function(r) {
 					self.ajaxErrorCallback(r);
 				},
 				success: function(r) {
 					if (typeof r.featured !== 'undefined') {
-						self.item.featured = r.featured;
 						self.$emit('update:item', {...self.item, featured: r.featured});
 					}
 					if (typeof r.newRelease !== 'undefined') {
-						self.item.newRelease = r.newRelease;
+						self.$emit('update:item', {...self.item, newRelease: r.newRelease});
 					}
 				},
 				complete: function() {
@@ -228,7 +231,8 @@ export default {
 		viewCatalogEntry: function() {
 			var opts = {
 				title: this.i18n.catalogEntry,
-				url: this.catalogEntryUrl.replace('__id__', this.item.id)
+				url: this.catalogEntryUrl.replace('__id__', this.item.id),
+				closeCallback: () => this.$refs.viewEntryButton.$el.focus()
 			};
 
 			$(

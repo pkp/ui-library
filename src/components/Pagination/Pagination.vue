@@ -34,7 +34,7 @@
 			</li>
 			<li>
 				<pkp-button
-					:disabled="!currentPage === lastPage"
+					:disabled="currentPage === lastPage"
 					:label="i18n.nextPageLabel"
 					@click="setPage('next')"
 				/>

@@ -35,6 +35,7 @@
 					/>
 				</template>
 				<pkp-button
+					ref="addEntryButton"
 					:label="i18n.add"
 					@click="openNewEntryModal"
 				/>
@@ -91,6 +92,7 @@
 							:key="item.id"
 							:item="item"
 							:catalogEntryUrl="catalogEntryUrl"
+							:csrfToken="csrfToken"
 							:filterAssocType="filterAssocType"
 							:filterAssocId="filterAssocId"
 							:isOrdering="isOrdering"
@@ -132,6 +134,7 @@
 import CatalogListItem from '@/components/ListPanel/submissions/CatalogListItem.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import Notification from '@/components/Notification/Notification.vue';
+import Pagination from '@/components/Pagination/Pagination.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Search from '@/components/Search/Search.vue';
 import SubmissionsListListeners from '@/mixins/ListPanel/submissions/listeners';
@@ -142,6 +145,7 @@ export default {
 	components: {
 		CatalogListItem,
 		Notification,
+		Pagination,
 		PkpButton,
 		Search
 	},
@@ -178,7 +182,7 @@ export default {
 		 * @return boolean
 		 */
 		canOrderCurrent: function() {
-			for (let item of this.items) {
+			for (let item of this.localItems) {
 				for (let feature of item.featured) {
 					if (
 						feature.assoc_type === this.filterAssocType &&
@@ -197,30 +201,7 @@ export default {
 		 */
 		localItems: {
 			get() {
-				let items = [...this.items];
-				items.sort(a => {
-					const getFeatured = feature => {
-						return feature.assoc_type === this.filterAssocType;
-					};
-					const featuredA = a.featured.find(getFeatured);
-					const seqA =
-						featuredA && featuredA.hasOwnProperty('seq')
-							? featuredA.seq
-							: 99999999;
-					const featuredB = a.featured.find(getFeatured);
-					const seqB =
-						featuredB && featuredB.hasOwnProperty('seq')
-							? featuredB.seq
-							: 99999999;
-					if (seqA < seqB) {
-						return -1;
-					}
-					if (seqA > seqB) {
-						return 1;
-					}
-					return 0;
-				});
-				return items;
+				return this.items;
 			},
 			set(newVal, oldVal) {
 				if (newVal === oldVal) {
@@ -367,8 +348,8 @@ export default {
 		 * @param object updatedItem
 		 */
 		updateItem: function(updatedItem) {
-			let items = this.items.map(item => {
-				return item.id === updatedItem.id ? updatedItem.id : item.id;
+			let items = this.localItems.map(item => {
+				return item.id === updatedItem.id ? updatedItem : item;
 			});
 			this.$emit('set', this.id, {items: items});
 		},
@@ -383,7 +364,8 @@ export default {
 
 			const opts = {
 				title: this.i18n.add,
-				url: this.addUrl
+				url: this.addUrl,
+				closeCallback: () => this.$refs.addEntryButton.$el.focus()
 			};
 
 			$(
@@ -448,11 +430,13 @@ export default {
 			$.ajax({
 				url: this.apiUrl + '/saveFeaturedOrder',
 				type: 'POST',
+				headers: {
+					'X-Csrf-Token': this.csrfToken
+				},
 				data: {
 					assocType: this.filterAssocType,
 					assocId: this.filterAssocId,
-					featured: featured,
-					csrfToken: this.csrfToken
+					featured: featured
 				},
 				error: function(r) {
 					self.ajaxErrorCallback(r);
@@ -553,7 +537,7 @@ export default {
 
 .pkpListPanel--catalog.-isOrdering {
 	.pkpHeader__actions
-		> li:not(.pkpListPanel--catalog__orderToggle):not(.pkpListPanel--catalog__orderCancel),
+		> button:not(.pkpListPanel--catalog__orderToggle):not(.pkpListPanel--catalog__orderCancel),
 	.pkpSearch,
 	.pkpListPanelItem--catalog__select,
 	.pkpListPanelItem__actions,

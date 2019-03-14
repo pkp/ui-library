@@ -116,6 +116,7 @@ import draggable from 'vuedraggable';
 import Icon from '@/components/Icon/Icon.vue';
 import ListPanelItem from '@/components/ListPanel/ListPanelItem.vue';
 import Notification from '@/components/Notification/Notification.vue';
+import Pagination from '@/components/Pagination/Pagination.vue';
 import PkpFilter from '@/components/Filter/Filter.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';
@@ -127,6 +128,7 @@ export default {
 		Icon,
 		ListPanelItem,
 		Notification,
+		Pagination,
 		PkpFilter,
 		PkpHeader,
 		Spinner
@@ -424,7 +426,9 @@ export default {
 			this.$emit('set', this.id, {
 				isSidebarVisible: !this.isSidebarVisible
 			});
-			this.get();
+			if(this.isSidebarVisible) {
+				this.get();
+			}
 		},
 
 		/**
@@ -617,8 +621,8 @@ export default {
 		 */
 		cancelOrdering: function() {
 			this.isOrdering = false;
-			this.$emit('set', this.id, {offset: this.items.length});
-			this.get();
+			this.$emit('set', this.id, {offset: 0});
+			this.$nextTick(() => this.get());
 		},
 
 		/**
@@ -630,7 +634,7 @@ export default {
 		 */
 		setPage: function(page) {
 			this.$emit('set', this.id, {offset: page * this.count - this.count});
-			this.get();
+			this.$nextTick(() => this.get());
 		},
 
 		/**
@@ -693,7 +697,7 @@ export default {
 				return;
 			}
 			this.$emit('set', this.id, {offset: 0});
-			this.get();
+			this.$nextTick(() => this.get());
 		},
 
 		/**
