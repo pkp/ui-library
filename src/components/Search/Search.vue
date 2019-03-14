@@ -57,7 +57,7 @@ export default {
 		 * Emit an event when the search phrase changes in response to a keyup
 		 * event in the input field.
 		 *
-		 * @param object data A DOM event (object) or the new search
+		 * @param {Object} data A DOM event (object) or the new search
 		 *  phrase (string)
 		 */
 		searchPhraseKeyUp: debounce(function(el) {

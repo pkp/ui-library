@@ -198,7 +198,7 @@ export default {
 		/**
 		 * Classes to apply to the root element
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
 		classes() {
 			let classes = ListPanelItem.computed.classes.apply(this);
@@ -212,7 +212,7 @@ export default {
 		/**
 		 * How many days has it been since they were last assigned a review
 		 *
-		 * @return int
+		 * @return {Number}
 		 */
 		daysSinceLastAssignment() {
 			if (!this.item.dateLastReviewAssignment) {
@@ -228,7 +228,7 @@ export default {
 		/**
 		 * How many days has it been since they were last assigned a review
 		 *
-		 * @return string "X days ago"
+		 * @return {String} "X days ago"
 		 */
 		daysSinceLastAssignmentString() {
 			if (!this.daysSinceLastAssignment) {
@@ -246,7 +246,7 @@ export default {
 		/**
 		 * A list of interests with the localised separator (usually a comma)
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		interestsString() {
 			if (!this.item.interests || !this.item.interests.length) {
@@ -265,7 +265,7 @@ export default {
 		 * Checks for current assignment and a locked assignment warning.
 		 * Use this instead of the canSelect prop.
 		 *
-		 * @return boolean
+		 * @return {Boolean}
 		 */
 		localCanSelect() {
 			if (this.currentlyAssigned) {
@@ -283,7 +283,7 @@ export default {
 		 *
 		 * An empty array means no rating has been assigned.
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
 		stars() {
 			let stars = [];

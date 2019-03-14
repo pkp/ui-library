@@ -112,7 +112,7 @@ export default {
 		 * Is the submission featured in the current filtered view?
 		 * press, category or series
 		 *
-		 * @return bool
+		 * @return {Boolean}
 		 */
 		isFeatured() {
 			if (!this.item.hasOwnProperty('featured')) {
@@ -131,7 +131,7 @@ export default {
 		 * Is the submission a new release in the current filtered view?
 		 * press, category or series
 		 *
-		 * @return bool
+		 * @return {Boolean}
 		 */
 		isNewRelease() {
 			if (!this.item.hasOwnProperty('newRelease')) {

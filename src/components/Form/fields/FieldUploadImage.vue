@@ -121,7 +121,7 @@ export default {
 		/**
 		 * Is the current value the same as the initial value?
 		 *
-		 * @return boolean
+		 * @return {Boolean}
 		 */
 		isInitialValue() {
 			return (
@@ -136,7 +136,7 @@ export default {
 		/**
 		 * Determine the `src` attribute for the thumbnail preview
 		 *
-		 * @return @string
+		 * @return {String}
 		 */
 		thumbnail() {
 			if (this.uploadFile) {
@@ -150,7 +150,7 @@ export default {
 		/**
 		 * An id for the alt text input so the label can be linked to it
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		altTextId() {
 			return this.compileId('altText');
@@ -160,7 +160,7 @@ export default {
 		 * An id for the alt text description so the input can refer to it in an
 		 * aria-describedby attribute.
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		altTextDescriptionId() {
 			return this.compileId('altTextDescription');
@@ -170,8 +170,8 @@ export default {
 		/**
 		 * Respond to dropzone.js event when a file is successfully uploaded
 		 *
-		 * @param object file Details about the file
-		 * @param object response The server response
+		 * @param {Object} file Details about the file
+		 * @param {Object} response The server response
 		 * @see https://www.dropzonejs.com/#event-success
 		 */
 		success: function(file, response) {
@@ -190,7 +190,7 @@ export default {
 		/**
 		 * Respond to a dropzone.js event when it creates a thumbnail
 		 *
-		 * @param object file Details about the file
+		 * @param {Object} file Details about the file
 		 * @see https://www.dropzonejs.com/#event-thumbnail
 		 */
 		onThumbnail: function(file) {

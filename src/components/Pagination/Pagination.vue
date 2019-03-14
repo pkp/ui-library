@@ -72,7 +72,7 @@ export default {
 		 * Determines the page numbers to display, adds prev/next links, and adds
 		 * separators where necessary
 		 *
-		 * @return Array
+		 * @return {Array}
 		 */
 		items() {
 			let items = [];
@@ -141,8 +141,8 @@ export default {
 		/**
 		 * Get the label for a page link
 		 *
-		 * @param Number page
-		 * @return String
+		 * @param {Number} page
+		 * @return {String}
 		 */
 		getNumberAriaLabel: function(page) {
 			const pageLabel = this.__('pageLabel', {pageNumber: page});
@@ -152,7 +152,7 @@ export default {
 		/**
 		 * Emit an event to change the page
 		 *
-		 * @param Number page
+		 * @param {Number} page
 		 */
 		setPage: function(page) {
 			if (page === 'previous') {

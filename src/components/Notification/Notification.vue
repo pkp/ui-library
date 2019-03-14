@@ -24,7 +24,7 @@ export default {
 		/**
 		 * Classes to apply to root element
 		 *
-		 * @return Array
+		 * @return {Array}
 		 */
 		classes() {
 			let classes = [];

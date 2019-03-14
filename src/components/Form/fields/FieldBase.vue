@@ -79,7 +79,7 @@ export default {
 		 * It will append the appropriate `localeKey` to the `name` property if this
 		 * is a multilingual field.
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		localizedName() {
 			return this.isMultilingual ? this.name + '-' + this.localeKey : this.name;
@@ -88,7 +88,7 @@ export default {
 		/**
 		 * A unique id for the label and control
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		controlId() {
 			return this.compileId('control');
@@ -97,7 +97,7 @@ export default {
 		/**
 		 * A unique id for the field's tooltip
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		describedByTooltipId() {
 			return this.compileId('tooltip');
@@ -106,7 +106,7 @@ export default {
 		/**
 		 * A unique id for the field's help link button
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		describedByHelpId() {
 			return this.compileId('help');
@@ -115,7 +115,7 @@ export default {
 		/**
 		 * A unique id for the field's description
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		describedByDescriptionId() {
 			return this.compileId('description');
@@ -124,7 +124,7 @@ export default {
 		/**
 		 * A unique id for the field's error message
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		describedByErrorId() {
 			return this.compileId('error');
@@ -133,7 +133,7 @@ export default {
 		/**
 		 * A unique id for the field's multilingual progress indicator
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		multilingualProgressId() {
 			return this.compileId('multingualProgress');
@@ -144,7 +144,7 @@ export default {
 		 *
 		 * This is used in the aria-describedby attribute for accessibility.
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		describedByIds() {
 			let ids = [];
@@ -172,7 +172,7 @@ export default {
 		 * If this is a multilingual field, it will return the number of locales
 		 * with values. Otherwise it will return 0.
 		 *
-		 * @return Number
+		 * @return {Number}
 		 */
 		multilingualFieldsCompleted() {
 			if (!this.isMultilingual) {
@@ -189,7 +189,7 @@ export default {
 		/*
 		 * Is this a multilingual field and is this the primary locale?
 		 *
-		 * @return Boolean
+		 * @return {Boolean}
 		 */
 		isPrimaryLocale() {
 			return !this.isMultilingual || this.localeKey === this.primaryLocale;
@@ -201,7 +201,7 @@ export default {
 		 * For multilingual fields, the secondary languages will indicate the
 		 * locale name in the label.
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		localeLabel() {
 			if (!this.isMultilingual || this.isPrimaryLocale) {
@@ -215,7 +215,7 @@ export default {
 		 * screenreaders that indicates the language as well as the original field
 		 * label.
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		multilingualLabel() {
 			return this.__('multilingualLabel', {
@@ -229,8 +229,8 @@ export default {
 		 * Helper function to compile unique IDs for labels and aria-describedby
 		 * attributes.
 		 *
-		 * @param string type The type of ID you want to generate (eg - `tooltip`)
-		 * @return string
+		 * @param {String} type The type of ID you want to generate (eg - `tooltip`)
+		 * @return {String}
 		 */
 		compileId: function(type) {
 			let parts = [this.formId, this.name, type];

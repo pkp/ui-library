@@ -104,7 +104,7 @@ export default {
 		/**
 		 * Convert objects in the items array for passing to a ListPanelItem
 		 *
-		 * @return Array
+		 * @return {Array}
 		 */
 		itemsPlucked() {
 			return this.items.map(item => {

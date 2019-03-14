@@ -111,7 +111,7 @@ export default {
 		/**
 		 * Get classes for the wrapper element
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
 		classes() {
 			let classes = [];
@@ -125,7 +125,7 @@ export default {
 		/**
 		 * Move an option up in the list
 		 *
-		 * @param optionValue int The value of the option to move up
+		 * @param {Number} optionValue The value of the option to move up
 		 */
 		optionOrderUp: function(optionValue) {
 			const index = this.localizedOptions.findIndex(option => {
@@ -145,7 +145,7 @@ export default {
 		/**
 		 * Move an option down in the list
 		 *
-		 * @param optionValue int The value of the option to move down
+		 * @param {Number} optionValue The value of the option to move down
 		 */
 		optionOrderDown: function(optionValue) {
 			const index = this.localizedOptions.findIndex(option => {

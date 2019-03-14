@@ -75,7 +75,7 @@ export default {
 		/**
 		 * Add classes to wrapper element based on configuration
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
 		classes() {
 			return ['pkpFormField--size' + this.size];
@@ -84,7 +84,7 @@ export default {
 		/**
 		 * Add classes to the input control
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
 		controlClasses() {
 			let classes = [];

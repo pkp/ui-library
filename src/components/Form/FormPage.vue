@@ -77,7 +77,7 @@ export default {
 		/**
 		 * All groups assigned to this page
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
 		groupsInPage() {
 			return this.groups.filter(
@@ -88,7 +88,7 @@ export default {
 		/**
 		 * Is there any content to display in the footer?
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		hasFooter() {
 			return (
@@ -111,7 +111,7 @@ export default {
 		/**
 		 * Emit an event when a field's value has changed
 		 *
-		 * @param object data {{
+		 * @param {Object} data {{
 		 *  @option string name Field name
 		 *  @option string value New value
 		 *  @option string localeKey Locale key for this value. Empty it not multilingual
@@ -138,7 +138,7 @@ export default {
 		/**
 		 * Ask the Form to scroll to a field
 		 *
-		 * @param string fieldName
+		 * @param {String} fieldName
 		 */
 		showField: function(fieldName) {
 			this.$emit('showField', fieldName);
@@ -147,7 +147,7 @@ export default {
 		/**
 		 * Ask the Form to display a locale
 		 *
-		 * @param string localeKey
+		 * @param {String} localeKey
 		 */
 		showLocale: function(localeKey) {
 			this.$emit('showLocale', localeKey);
@@ -156,8 +156,8 @@ export default {
 		/**
 		 * Should a group be shown?
 		 *
-		 * @param object group One of this.groups
-		 * @return boolean
+		 * @param {Object} group One of this.groups
+		 * @return {Boolean}
 		 */
 		shouldShowGroup: function(group) {
 			if (typeof group.showWhen === 'undefined') {
@@ -178,7 +178,7 @@ export default {
 		/**
 		 * Pass an event up to the form to set the errors object
 		 *
-		 * @param object errors The new errors object
+		 * @param {Object} errors The new errors object
 		 */
 		setErrors: function(errors) {
 			this.$emit('set-errors', errors);

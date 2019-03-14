@@ -21,8 +21,8 @@ export default {
 		/**
 		 * Get a form by its id
 		 *
-		 * @param string formId
-		 * @return Object
+		 * @param {String} formId
+		 * @return {Object}
 		 */
 		getForm: function(formId) {
 			return this.forms[formId] ? this.forms[formId] : false;
@@ -31,8 +31,8 @@ export default {
 		/**
 		 * Update the fields in a form
 		 *
-		 * @param string formId
-		 * @param array newFields The list of fields to update the form with
+		 * @param {String} formId
+		 * @param {Array} newFields The list of fields to update the form with
 		 */
 		setFormFields: function(formId, newFields) {
 			if (!this.forms[formId]) {
@@ -44,8 +44,8 @@ export default {
 		/**
 		 * Set the errors in the form
 		 *
-		 * @param string formId
-		 * @param object errors List of errors to attach to the form
+		 * @param {String} formId
+		 * @param {Object} errors List of errors to attach to the form
 		 */
 		setFormErrors: function(formId, errors) {
 			if (this.getForm(formId)) {
@@ -56,8 +56,8 @@ export default {
 		/**
 		 * Set the errors in the form
 		 *
-		 * @param string formId
-		 * @param array visiibleLocales list of locale keys that should be active
+		 * @param {String} formId
+		 * @param {Array} visiibleLocales list of locale keys that should be active
 		 */
 		setFormVisibleLocales: function(formId, visibleLocales) {
 			if (this.getForm(formId)) {

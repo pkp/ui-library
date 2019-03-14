@@ -32,7 +32,7 @@ export default {
 		/**
 		 * A message indicating how many errors are in the form
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		message() {
 			if (Object.keys(this.errors).length === 1) {
@@ -49,7 +49,7 @@ export default {
 		 * be displayed in a hidden list for screen readers, so they see a list of
 		 * all errors and can click to go to them.
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
 		errorList() {
 			return Object.keys(this.errors).map(fieldName => {
@@ -81,7 +81,7 @@ export default {
 		/**
 		 * Emit an event to display a specific error
 		 *
-		 * @param string fieldName
+		 * @param {String} fieldName
 		 */
 		showError: function(fieldName) {
 			const error = this.errors[fieldName];

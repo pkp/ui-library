@@ -58,7 +58,7 @@ export default {
 		/**
 		 * Classes added to the wrapper element
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
 		classes() {
 			return ['pkpFormField--' + this.size];

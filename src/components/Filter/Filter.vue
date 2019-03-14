@@ -54,7 +54,7 @@ export default {
 		/**
 		 * Classes to apply to the root element
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
 		classes() {
 			let classes = ['pkpFilter'];

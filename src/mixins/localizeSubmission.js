@@ -11,9 +11,9 @@ export default {
 		 * This method mimics the global localize mixin, but falls back to the
 		 * submission locale before falling back to the journal's primary locale.
 		 *
-		 * @param object localizedString Key/value hash storing one string per locale
-		 * @param string submissionLocale The submission's locale
-		 * @return string
+		 * @param {Object} localizedString Key/value hash storing one string per locale
+		 * @param {String} submissionLocale The submission's locale
+		 * @return {String}
 		 */
 		localizeSubmission: function(localizedString, submissionLocale) {
 			if (localizedString === null) {

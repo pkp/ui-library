@@ -163,8 +163,8 @@ export default {
 		 * the isIncomplete filter is added, and removes the isIncomplete filter
 		 * when other filters are added.
 		 *
-		 * @param String param
-		 * @param mixed value
+		 * @param {String} param
+		 * @param {mixed} value
 		 */
 		addSubmissionFilter(param, value) {
 			// Don't allow other filters to be active when the

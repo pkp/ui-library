@@ -23,8 +23,8 @@ export default {
 		/**
 		 * Get a component by its key
 		 *
-		 * @param string key
-		 * @return Object
+		 * @param {String} key
+		 * @return {Object}
 		 */
 		get(key) {
 			return this.components[key] ? this.components[key] : {};
@@ -36,8 +36,8 @@ export default {
 		 * Existing keys in the component that are not passed in the data
 		 * argument will not be modified or removed.
 		 *
-		 * @param string key
-		 * @param array data Key/value object with new data
+		 * @param {String} key
+		 * @param {Array} data Key/value object with new data
 		 */
 		set: function(key, data) {
 			let component = {...this.get(key)};

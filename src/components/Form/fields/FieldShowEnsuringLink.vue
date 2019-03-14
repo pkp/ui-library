@@ -11,7 +11,7 @@ export default {
 		/**
 		 * Get classes for the wrapper element
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
 		classes() {
 			return ['pkpFormField--showEnsuringLink'];

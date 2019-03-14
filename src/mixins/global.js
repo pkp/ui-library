@@ -20,9 +20,9 @@ export default {
 		 *
 		 * {{ __('key', { count: this.item_count }) }}
 		 *
-		 * @param string key The translation string to use
-		 * @param params object (Optional) Variables to compile with the translation
-		 * @return string
+		 * @param {String} key The translation string to use
+		 * @param {params} object (Optional) Variables to compile with the translation
+		 * @return {String}
 		 */
 		__: function(key, params) {
 			if (typeof this.i18n[key] === 'undefined') {
@@ -63,9 +63,9 @@ export default {
 		 *
 		 * {{ localize(fullTitle, 'fr_CA') }}
 		 *
-		 * @param object localizedString Key/value hash storing one string per locale
-		 * @param string requestedLocale Optional. Request a specific locale
-		 * @return string
+		 * @param {Object} localizedString Key/value hash storing one string per locale
+		 * @param {String} requestedLocale Optional. Request a specific locale
+		 * @return {String}
 		 */
 		localize: function(localizedString, requestedLocale) {
 			if (localizedString === null) {
@@ -108,8 +108,7 @@ export default {
 		 *   }
 		 * }
 		 *
-		 * @param object r The response from jQuery's ajax request
-		 * @return null
+		 * @param {Object} r The response from jQuery's ajax request
 		 */
 		ajaxErrorCallback: function(r) {
 			var msg, modalOptions, $modal, modalHandler;
@@ -144,7 +143,7 @@ export default {
 		/**
 		 * Set focus to the first focusable element within a dom node
 		 *
-		 * @param ParentNode el
+		 * @param {ParentNode} el
 		 */
 		setFocusIn(el) {
 			let focusable = el.querySelectorAll(

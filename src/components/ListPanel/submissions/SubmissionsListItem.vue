@@ -217,7 +217,7 @@ export default {
 		/**
 		 * Can the current user delete a submission?
 		 *
-		 * @return bool
+		 * @return {Boolean}
 		 */
 		currentUserCanDelete() {
 			if (
@@ -240,7 +240,7 @@ export default {
 		/**
 		 * Can the current user view the info center?
 		 *
-		 * @return bool
+		 * @return {Boolean}
 		 */
 		currentUserCanViewInfoCenter() {
 			return this.userAssignedRole([
@@ -253,7 +253,7 @@ export default {
 		/**
 		 * Is the current user a reviewer on this submission?
 		 *
-		 * @return bool
+		 * @return {Boolean}
 		 */
 		currentUserIsReviewer() {
 			for (var review of this.item.reviewAssignments) {
@@ -267,7 +267,7 @@ export default {
 		/**
 		 * The current stage
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
 		activeStage() {
 			return this.item.stages.find(stage => {
@@ -281,7 +281,7 @@ export default {
 		 * Only stage status' that have pending work for the current user should
 		 * result in a notice.
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		notice() {
 			var notice = '';
@@ -350,7 +350,7 @@ export default {
 		 * Does this submission need an editor assigned and can the current user
 		 * assign one?
 		 *
-		 * @return boolean
+		 * @return {Boolean}
 		 */
 		shouldAssignEditor() {
 			return (
@@ -364,7 +364,7 @@ export default {
 		/**
 		 * Get the current stage to pass to pkpBadge
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		currentStage() {
 			switch (this.activeStage.id) {
@@ -384,7 +384,7 @@ export default {
 		/**
 		 * Get the label for the current stage
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		currentStageLabel() {
 			if (this.item.status === 3 || this.item.status === 4) {
@@ -398,7 +398,7 @@ export default {
 		/**
 		 * Get an a11y description for the current stage badge
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		currentStageDescription() {
 			return this.__('currentStage', {stage: this.currentStageLabel});
@@ -407,7 +407,7 @@ export default {
 		/**
 		 * Compile the count of open discussions
 		 *
-		 * @return int
+		 * @return {Number}
 		 */
 		openQueryCount() {
 			return this.activeStage.queries.filter(query => {
@@ -419,7 +419,7 @@ export default {
 		 * Determine the correct label for the count of files based on the active
 		 * stage.
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		activeStageFilesLabel() {
 			switch (this.activeStage.id) {
@@ -437,7 +437,7 @@ export default {
 		/**
 		 * Is this the submission stage?
 		 *
-		 * @return bool
+		 * @return {Boolean}
 		 */
 		isSubmissionStage() {
 			return this.activeStage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION;
@@ -446,7 +446,7 @@ export default {
 		/**
 		 * Is this the review stage?
 		 *
-		 * @return bool
+		 * @return {Boolean}
 		 */
 		isReviewStage() {
 			return (
@@ -458,7 +458,7 @@ export default {
 		/**
 		 * Retrieve all role assignments for any stage
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
 		currentRoleAssignments() {
 			let roles = [];
@@ -476,7 +476,7 @@ export default {
 		 * If the user is assigned to more than one role, and has access to both the
 		 * editorial and author dashboards, provide a description and links to both.
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		dualWorkflowLinks() {
 			if (
@@ -499,7 +499,7 @@ export default {
 		 * If the user is assigned as a reviewer, but also to an editorial role,
 		 * provide a description and link to the editorial workflow.
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		reviewerWorkflowLink() {
 			if (
@@ -520,7 +520,7 @@ export default {
 		/**
 		 * Retrieve the review assignments for the latest review round
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
 		currentReviewAssignments() {
 			if (
@@ -542,7 +542,7 @@ export default {
 		 * review assignment from the latest round if available, or any other
 		 * round if not available.
 		 *
-		 * @return object|false False if no review assignment exists
+		 * @return {Object|Boolean} False if no review assignment exists
 		 */
 		currentUserLatestReviewAssignment() {
 			if (!this.currentUserIsReviewer) {
@@ -586,7 +586,7 @@ export default {
 		/**
 		 * Compile the count of completed reviews
 		 *
-		 * @return int
+		 * @return {Number}
 		 */
 		completedReviewsCount() {
 			if (!this.isReviewStage) {
@@ -600,7 +600,7 @@ export default {
 		/**
 		 * Return a class to toggle the item mask
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		classMask() {
 			if (!this.mask) {
@@ -620,7 +620,7 @@ export default {
 		 * ID attribute to use in aria-labelledby linking the reponse due date
 		 * with it's label
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		responseDueLabelId() {
 			return 'responseDueLabel' + this._uid;
@@ -630,7 +630,7 @@ export default {
 		 * ID attribute to use in aria-labelledby linking the review due date
 		 * with it's label
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		reviewDueLabelId() {
 			return 'reviewDueLabel' + this._uid;
@@ -641,7 +641,7 @@ export default {
 		 * Check if a user is assigned a given role on this submission. If no
 		 * assignments exist, match global roles for site admin and manager
 		 *
-		 * @param roles int|array
+		 * @param {Number|Array} roles
 		 */
 		userAssignedRole: function(roles) {
 			if (!Array.isArray(roles)) {
@@ -668,7 +668,7 @@ export default {
 		/**
 		 * Filter by a submission stage
 		 *
-		 * @param stageId int
+		 * @param {Number} stageId
 		 */
 		filterByStage: function(stageId) {
 			this.$emit('addFilter', 'stageIds', stageId);

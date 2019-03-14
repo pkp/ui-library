@@ -93,7 +93,7 @@ export default {
 		/**
 		 * Is the input option the currently selected option?
 		 *
-		 * @return boolean
+		 * @return {Boolean}
 		 */
 		isInputSelected() {
 			return !this.options

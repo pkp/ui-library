@@ -99,7 +99,7 @@ export default {
 		/**
 		 * Classes to apply to the root element
 		 *
-		 * @return Array
+		 * @return {Array}
 		 */
 		classes() {
 			let classes = ['pkpListPanelItem'];
@@ -120,7 +120,7 @@ export default {
 		 * should overwrite this computed property and map the item's id to
 		 * this property.
 		 *
-		 * @return Number
+		 * @return {Number}
 		 */
 		id() {
 			return this.item.id || 0;
@@ -142,7 +142,7 @@ export default {
 		/**
 		 * A unique ID for the input field
 		 *
-		 * @return String
+		 * @return {String}
 		 */
 		selectorId() {
 			return `${this.selectorName}-${this.id}`;

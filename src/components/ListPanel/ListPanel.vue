@@ -265,7 +265,7 @@ export default {
 		/**
 		 * Classes used on the root element
 		 *
-		 * @return Array
+		 * @return {Array}
 		 */
 		classes() {
 			let classes = ['pkpListPanel'];
@@ -292,7 +292,7 @@ export default {
 		/**
 		 * Does this ListPanel have anything in the footer slot?
 		 *
-		 * @return Boolean
+		 * @return {Boolean}
 		 */
 		hasFooter() {
 			return this.$slots.footer;
@@ -316,7 +316,7 @@ export default {
 		/**
 		 * Get the number of the page of results showing in the list
 		 *
-		 * @return Number
+		 * @return {Number}
 		 */
 		currentPage() {
 			return Math.floor(this.offset / this.count) + 1;
@@ -325,7 +325,7 @@ export default {
 		/**
 		 * Get the number of the last page of results available for the list
 		 *
-		 * @return Number
+		 * @return {Number}
 		 */
 		lastPage() {
 			return Math.ceil(this.itemsMax / this.count);
@@ -336,7 +336,7 @@ export default {
 		 * Get items for the list. This ListPanel must have a defined
 		 * `get` route to execute this method.
 		 *
-		 * @param string handleResponse How to handle the response. `append` to
+		 * @param {String} handleResponse How to handle the response. `append` to
 		 *  add to the items. Default: null will replace the items.
 		 */
 		get: function(handleResponse) {
@@ -410,7 +410,7 @@ export default {
 		/**
 		 * Set the search phrase
 		 *
-		 * @param string value
+		 * @param {String} value
 		 */
 		setSearchPhrase: function(value) {
 			this.$emit('set', this.id, {
@@ -434,9 +434,9 @@ export default {
 		/**
 		 * Check if a filter is currently active
 		 *
-		 * @param String param
-		 * @param mixed value
-		 * @return Boolean
+		 * @param {String} param
+		 * @param {mixed} value
+		 * @return {Boolean}
 		 */
 		isFilterActive: function(param, value) {
 			if (!Object.keys(this.activeFilters).includes(param)) {
@@ -456,8 +456,8 @@ export default {
 		 * more than one value for the param. For example, a
 		 * list of valid stageIds.
 		 *
-		 * @param String param
-		 * @param mixed value
+		 * @param {String} param
+		 * @param {mixed} value
 		 */
 		addFilter: function(param, value) {
 			if (this.isFilterActive(param, value)) {
@@ -481,8 +481,8 @@ export default {
 		 * for the param. For example, whether to show enabled
 		 * or disabled objects.
 		 *
-		 * @param String param
-		 * @param mixed value
+		 * @param {String} param
+		 * @param {mixed} value
 		 */
 		setFilter: function(param, value) {
 			let activeFilters = {...this.activeFilters};
@@ -497,8 +497,8 @@ export default {
 		 * Removes one value from the array of values for this
 		 * param. Use this method for filters that use addFilter.
 		 *
-		 * @param String param
-		 * @param mixed value
+		 * @param {String} param
+		 * @param {mixed} value
 		 */
 		removeFilter: function(param, value) {
 			if (this.activeFilters[param] === undefined) {
@@ -516,7 +516,7 @@ export default {
 		 * Removes all filters related to a param. Use this method
 		 * with filters that use setFilter.
 		 *
-		 * @param string param
+		 * @param {String} param
 		 */
 		removeParamFilters: function(param) {
 			if (!Object.keys(this.activeFilters).includes(param)) {
@@ -531,7 +531,7 @@ export default {
 		/**
 		 * Update the selected value
 		 *
-		 * @param mixed newVal
+		 * @param {mixed} newVal
 		 */
 		updateSelected: function(newVal) {
 			this.$emit('set', this.id, {selected: newVal});
@@ -571,7 +571,7 @@ export default {
 		/**
 		 * Move an item up in the list
 		 *
-		 * @param item object The item to move
+		 * @param {Object} item The item to move
 		 */
 		itemOrderUp: function(item) {
 			var index = this.items.findIndex(obj => {
@@ -588,7 +588,7 @@ export default {
 		/**
 		 * Move an item down in the list
 		 *
-		 * @param item object The item to move
+		 * @param {Object} item The item to move
 		 */
 		itemOrderDown: function(item) {
 			var index = this.items.findIndex(obj => {
@@ -630,7 +630,7 @@ export default {
 		 *
 		 * Calculates the offset value and emits an event to update it
 		 *
-		 * @param Number page
+		 * @param {Number} page
 		 */
 		setPage: function(page) {
 			this.$emit('set', this.id, {offset: page * this.count - this.count});
@@ -641,7 +641,7 @@ export default {
 		 * Set the tabindex on items in the sidebar to allow/prevent
 		 * them from accepting focus
 		 *
-		 * @param boolean enable
+		 * @param {Boolean} enable
 		 */
 		toggleSidebarFocus: function(enable) {
 			if (!Object.keys(this.$refs).includes('sidebar')) {

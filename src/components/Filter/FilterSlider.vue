@@ -92,7 +92,7 @@ export default {
 		/**
 		 * Classes to apply to the root element
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
 		classes() {
 			let classes = Filter.computed.classes.apply(this);
@@ -105,7 +105,7 @@ export default {
 		/**
 		 * A unique ID to use as the reference for the slider
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		sliderRef() {
 			return 'slider' + this.param;

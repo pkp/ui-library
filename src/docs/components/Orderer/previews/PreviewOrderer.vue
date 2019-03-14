@@ -39,7 +39,7 @@ export default {
 		/**
 		 * Movin' on up!
 		 *
-		 * @param id string|int The item to move
+		 * @param {String|Number} id The item to move
 		 */
 		up: function(id) {
 			const index = this.items.findIndex(item => {
@@ -54,7 +54,7 @@ export default {
 		/**
 		 * Get down tonight!
 		 *
-		 * @param id string|int The item to move
+		 * @param {String|Number} id The item to move
 		 */
 		down: function(id) {
 			const index = this.items.findIndex(item => {

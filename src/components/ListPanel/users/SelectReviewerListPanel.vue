@@ -136,8 +136,8 @@ export default {
 		 * slider filter values that are arrays [0, 20] into a string
 		 * that is expected by the API "0-20".
 		 *
-		 * @param String param
-		 * @param mixed value
+		 * @param {String} param
+		 * @param {mixed} value
 		 */
 		setFilter: function(param, value) {
 			if (Array.isArray(value) && value.length === 2) {

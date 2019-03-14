@@ -91,7 +91,7 @@ export default {
 		/**
 		 * ID attribute for the element where the toolbar should be placed
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		toolbarId() {
 			return this.compileId('toolbar');
@@ -101,7 +101,7 @@ export default {
 		 * TinyMce init properties
 		 *
 		 * @see https://www.tinymce.com/docs/configure/
-		 * @return Object
+		 * @return {Object}
 		 */
 		compiledInit() {
 			return {

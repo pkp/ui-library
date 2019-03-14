@@ -33,7 +33,7 @@ export default {
 		/**
 		 * Classes to add to the wrapper element
 		 *
-		 * @return Array
+		 * @return {Array}
 		 */
 		classes() {
 			let classes = [];
@@ -50,7 +50,7 @@ export default {
 		/**
 		 * Tooltip
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		tooltip() {
 			return this.__('multilingualProgress', {

@@ -179,7 +179,7 @@ export default {
 		/**
 		 * Can any monographs being displayed now be ordered?
 		 *
-		 * @return boolean
+		 * @return {Boolean}
 		 */
 		canOrderCurrent() {
 			for (let item of this.localItems) {
@@ -215,7 +215,7 @@ export default {
 		 * Return the appropriate label for the ordering button depending on
 		 * if we're ordering or not.
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		orderingLabel() {
 			return this.isOrdering
@@ -227,7 +227,7 @@ export default {
 		 * Return the appropriate label for the featured column depending on
 		 * if we're looking at a filtered view
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		featuredLabel() {
 			if (this.filterAssocType === pkp.const.ASSOC_TYPE_CATEGORY) {
@@ -242,7 +242,7 @@ export default {
 		 * Return the appropriate label for the new release column depending on
 		 * if we're looking at a filtered view
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		newReleaseLabel() {
 			if (this.filterAssocType === pkp.const.ASSOC_TYPE_CATEGORY) {
@@ -257,7 +257,7 @@ export default {
 		 * Return a description of which items are currently being ordered
 		 * based on the filters that are set
 		 *
-		 * @return string
+		 * @return {String}
 		 */
 		orderingDescription() {
 			let filter = null;
@@ -280,7 +280,7 @@ export default {
 		 * The assoc_type will match constants indicating a press, category or
 		 * series
 		 *
-		 * @return int
+		 * @return {Number}
 		 */
 		filterAssocType() {
 			if (this.activeFilters.hasOwnProperty('categoryIds')) {
@@ -296,7 +296,7 @@ export default {
 		 *
 		 * The assoc_id will match the pressId, categoryId or seriesId
 		 *
-		 * @return int
+		 * @return {Number}
 		 */
 		filterAssocId() {
 			if (this.activeFilters.hasOwnProperty('categoryIds')) {
@@ -312,9 +312,9 @@ export default {
 		/**
 		 * Find a filter's configuration details by param and value
 		 *
-		 * @param string param The param of the filter to find
-		 * @param mixed value The value of the filter to find
-		 * @return object The filter config object
+		 * @param {String} param The param of the filter to find
+		 * @param {mixed} value The value of the filter to find
+		 * @return {Object} The filter config object
 		 */
 		getFilter: function(param, value) {
 			for (let filterSet of this.filters) {
@@ -333,8 +333,8 @@ export default {
 		 * category or series is being viewed at one time, so that sorting
 		 * is applied appropriately.
 		 *
-		 * @param String param
-		 * @param mixed value
+		 * @param {String} param
+		 * @param {mixed} value
 		 */
 		setFilter: function(param, value) {
 			this.activeFilters = {};
@@ -345,7 +345,7 @@ export default {
 		/**
 		 * Update an item in the list
 		 *
-		 * @param object updatedItem
+		 * @param {Object} updatedItem
 		 */
 		updateItem: function(updatedItem) {
 			let items = this.localItems.map(item => {
