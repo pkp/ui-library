@@ -50,5 +50,6 @@ export default {
 	reviewsDeclined: 0,
 	reviewerRating: 4,
 	orcid: '',
-	disabled: false
+	disabled: false,
+	biography: {}
 };

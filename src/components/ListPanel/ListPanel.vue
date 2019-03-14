@@ -1,10 +1,31 @@
 <template>
-	<div class="pkpListPanel" :class="classes">
+	<component
+		:is="canSelect ? 'fieldset' : 'div'"
+		:class="classes"
+	>
+
+		<!-- Header -->
 		<slot name="header">
-			<pkp-header>{{ title }}</pkp-header>
+			<pkp-header>
+				<legend v-if="canSelect">{{ title }}</legend>
+				<template v-else>{{ title }}</template>
+			</pkp-header>
 		</slot>
+
+		<!-- Optional description -->
+		<notification v-if="description" type="info">
+			{{ description }}
+		</notification>
+
+		<!-- Body of the panel, including items and sidebar -->
 		<div class="pkpListPanel__body -pkpClearfix">
-			<div v-if="filters.length" class="pkpListPanel__sidebar" :class="{'-isVisible': isSidebarVisible}">
+
+			<!-- Filters in the sidebar -->
+			<div v-if="filters.length" ref="sidebar" class="pkpListPanel__sidebar" :class="{'-isVisible': isSidebarVisible}">
+				<pkp-header class="pkpListPanel__sidebarHeader">
+					<icon icon="filter" :inline="true" />
+					{{ i18n.filter }}
+				</pkp-header>
 				<div v-for="(filterSet, index) in filters" :key="index" class="pkpListPanel__filterSet">
 					<pkp-header v-if="filterSet.heading">
 						{{ filterSet.heading }}
@@ -20,37 +41,95 @@
 					/>
 				</div>
 			</div>
+
+			<!-- Content -->
 			<div class="pkpListPanel__content" aria-live="polite">
+
+				<!-- Optional selectAll button -->
+				<label
+					v-if="canSelectAll"
+					class="pkpListPanel__selectAll"
+					@click="toggleSelectAll"
+				>
+					<input type="checkbox" v-model="isSelectAllOn" />
+					<span class="pkpListPanel__selectAllLabel">
+						{{ i18n.selectAllLabel }}
+					</span>
+				</label>
+
+				<!-- Items -->
 				<template v-if="items.length">
-					<list-panel-item
-						v-for="item in items"
-						:key="item.id"
-						:item="item"
-						:i18n="i18n"
-					/>
+					<draggable
+						v-if="canOrder"
+						v-model="localItems"
+						:options="draggableOptions"
+						@start="drag=true"
+						@end="drag=false"
+					>
+						<list-panel-item
+							v-for="item in items"
+							:key="item.id"
+							:item="item"
+							:canOrder="canOrder"
+							:canSelect="canSelect"
+							:isOrdering="isOrdering"
+							:selected="selected"
+							:selectorName="selectorName"
+							:selectorType="selectorType"
+							:i18n="i18n"
+							@update:selected="updateSelected"
+							@order-up="itemOrderUp"
+							@order-down="itemOrderDown"
+						/>
+					</draggable>
+					<template v-else>
+						<list-panel-item
+							v-for="item in items"
+							:key="item.id"
+							:item="item"
+							:canSelect="canSelect"
+							:selected="selected"
+							:selectorName="selectorName"
+							:selectorType="selectorType"
+							:i18n="i18n"
+							@update:selected="updateSelected"
+						/>
+					</template>
 				</template>
+
+				<!-- Indicator when no items exist -->
 				<div v-else class="pkpListPanel__empty">
 					{{ i18n.empty }}
 				</div>
 			</div>
 		</div>
+
+		<!-- Optional footer -->
 		<div v-if="hasFooter" class="pkpListPanel__footer">
 			<slot name="footer" />
 		</div>
-	</div>
+	</component>
 </template>
 
 <script>
-import PkpFilter from '@/components/Filter/Filter.vue';
+import draggable from 'vuedraggable';
+import Icon from '@/components/Icon/Icon.vue';
 import ListPanelItem from '@/components/ListPanel/ListPanelItem.vue';
+import Notification from '@/components/Notification/Notification.vue';
+import PkpFilter from '@/components/Filter/Filter.vue';
 import PkpHeader from '@/components/Header/Header.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
 
 export default {
 	name: 'ListPanel',
 	components: {
-		PkpFilter,
+		draggable,
+		Icon,
 		ListPanelItem,
-		PkpHeader
+		Notification,
+		PkpFilter,
+		PkpHeader,
+		Spinner
 	},
 	props: {
 		apiUrl: {
@@ -59,9 +138,33 @@ export default {
 				return '';
 			}
 		},
+		canOrder: {
+			type: Boolean,
+			default() {
+				return false;
+			}
+		},
+		canSelect: {
+			type: Boolean,
+			default() {
+				return false;
+			}
+		},
+		canSelectAll: {
+			type: Boolean,
+			default() {
+				return false;
+			}
+		},
 		count: {
 			type: Number,
 			required: true
+		},
+		description: {
+			type: String,
+			default() {
+				return '';
+			}
 		},
 		getParams: {
 			type: Object,
@@ -115,6 +218,31 @@ export default {
 				return '';
 			}
 		},
+		selected: {
+			type: [Number, String, Array],
+			default() {
+				if (this.selectorType === 'checkbox') {
+					return [];
+				} else {
+					return '';
+				}
+			}
+		},
+		selectorName: {
+			type: String,
+			default() {
+				return '';
+			}
+		},
+		selectorType: {
+			type: String,
+			default() {
+				return 'checkbox';
+			},
+			validator(value) {
+				return ['checkbox', 'radio'].includes(value);
+			}
+		},
 		title: {
 			type: String,
 			default() {
@@ -126,8 +254,9 @@ export default {
 		return {
 			activeFilters: {},
 			isLoading: false,
-			isOrdering: false,
-			latestGetRequest: null
+			isOrdering: this.canOrder,
+			latestGetRequest: null,
+			isSelectAllOn: false
 		};
 	},
 	computed: {
@@ -137,10 +266,14 @@ export default {
 		 * @return Array
 		 */
 		classes: function() {
-			return {
-				'-isOrdering': this.isOrdering,
-				'-isLoading': this.isLoading
-			};
+			let classes = ['pkpListPanel'];
+			if (this.isOrdering) {
+				classes.push('-isOrdering');
+			}
+			if (this.isLoading) {
+				classes.push('-isLoading');
+			}
+			return classes;
 		},
 
 		/**
@@ -161,6 +294,21 @@ export default {
 		 */
 		hasFooter: function() {
 			return this.$slots.footer;
+		},
+
+		/**
+		 * Getters and setters for mutating the items array
+		 */
+		localItems: {
+			get() {
+				return this.items;
+			},
+			set(newVal, oldVal) {
+				if (newVal === oldVal) {
+					return;
+				}
+				this.$emit('set', this.id, {items: newVal});
+			}
 		},
 
 		/**
@@ -266,25 +414,17 @@ export default {
 			this.$emit('set', this.id, {
 				searchPhrase: value
 			});
-			this.$nextTick(() => {
-				if (!this.isSidebarVisible) {
-					this.updateFilter({});
-				}
-			});
 		},
 
 		/**
 		 * Toggle sidebar visibility
 		 */
 		toggleSidebar: function() {
+			this.activeFilters = {};
 			this.$emit('set', this.id, {
 				isSidebarVisible: !this.isSidebarVisible
 			});
-			this.$nextTick(() => {
-				if (!this.isSidebarVisible) {
-					this.updateFilter({});
-				}
-			});
+			this.get();
 		},
 
 		/**
@@ -295,34 +435,63 @@ export default {
 		 * @return Boolean
 		 */
 		isFilterActive: function(param, value) {
-			return (
-				typeof this.activeFilters[param] !== 'undefined' &&
-				this.activeFilters[param].includes(value)
-			);
+			if (!Object.keys(this.activeFilters).includes(param)) {
+				return false;
+			}
+			if (Array.isArray(this.activeFilters[param])) {
+				return this.activeFilters[param].includes(value);
+			}
+			return this.activeFilters[param] === value;
 		},
 
 		/**
 		 * Add a filter
+		 *
+		 * Adds the value to the array of existing values for
+		 * this param. Use this method for filters which accept
+		 * more than one value for the param. For example, a
+		 * list of valid stageIds.
 		 *
 		 * @param String param
 		 * @param mixed value
 		 */
 		addFilter: function(param, value) {
 			if (this.isFilterActive(param, value)) {
-				this.removeFilter(param, value);
-			} else {
-				let filters = {...this.activeFilters};
-				if (filters[param] === undefined) {
-					filters[param] = [];
-				}
-				filters[param].push(value);
-				this.activeFilters = filters;
+				return;
 			}
+			let filters = {...this.activeFilters};
+			if (filters[param] === undefined) {
+				filters[param] = [];
+			}
+			filters[param].push(value);
+			this.activeFilters = filters;
+			this.get();
+		},
+
+		/**
+		 * Set a filter
+		 *
+		 * Overrides the existing value for the param and
+		 * replaces it with the new value. Use this method
+		 * for filters which only support a single value
+		 * for the param. For example, whether to show enabled
+		 * or disabled objects.
+		 *
+		 * @param String param
+		 * @param mixed value
+		 */
+		setFilter: function(param, value) {
+			let activeFilters = {...this.activeFilters};
+			activeFilters[param] = value;
+			this.activeFilters = activeFilters;
 			this.get();
 		},
 
 		/**
 		 * Remove a filter
+		 *
+		 * Removes one value from the array of values for this
+		 * param. Use this method for filters that use addFilter.
 		 *
 		 * @param String param
 		 * @param mixed value
@@ -332,11 +501,51 @@ export default {
 				return;
 			}
 			let filters = {...this.activeFilters};
-			filters[param] = filters[param].filter(filterVal => {
-				return filterVal !== value;
-			});
+			filters[param] = filters[param].filter(filterVal => filterVal !== value);
 			this.activeFilters = filters;
 			this.get();
+		},
+
+		/**
+		 * Remove all filters for a param
+		 *
+		 * Removes all filters related to a param. Use this method
+		 * with filters that use setFilter.
+		 *
+		 * @param string param
+		 */
+		removeParamFilters: function(param) {
+			if (!Object.keys(this.activeFilters).includes(param)) {
+				return;
+			}
+			let filters = {...this.activeFilters};
+			delete filters[param];
+			this.activeFilters = filters;
+			this.get();
+		},
+
+		/**
+		 * Update the selected value
+		 *
+		 * @param mixed newVal
+		 */
+		updateSelected: function(newVal) {
+			this.$emit('set', this.id, {selected: newVal});
+		},
+
+		/**
+		 * Select or de-select all options
+		 */
+		toggleSelectAll: function() {
+			let selected;
+			if (this.selected.length < this.items.length) {
+				this.isSelectAllOn = true;
+				selected = this.items.map(item => item.id);
+			} else {
+				this.isSelectAllOn = false;
+				selected = [];
+			}
+			this.$emit('set', this.id, {selected: selected});
 		},
 
 		/**
@@ -419,9 +628,27 @@ export default {
 		 *
 		 * @param Number page
 		 */
-		changePage: function(page) {
+		setPage: function(page) {
 			this.$emit('set', this.id, {offset: page * this.count - this.count});
 			this.get();
+		},
+
+		/**
+		 * Set the tabindex on items in the sidebar to allow/prevent
+		 * them from accepting focus
+		 *
+		 * @param boolean enable
+		 */
+		toggleSidebarFocus: function(enable) {
+			if (!Object.keys(this.$refs).includes('sidebar')) {
+				return;
+			}
+			const tabIndex = enable ? 0 : -1;
+			this.$refs.sidebar
+				.querySelectorAll(
+					'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+				)
+				.forEach(el => (el.tabIndex = tabIndex));
 		}
 	},
 	watch: {
@@ -439,6 +666,26 @@ export default {
 		},
 
 		/**
+		 * Update list whenever the count is modified
+		 */
+		count: function(newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+			this.get();
+		},
+
+		/**
+		 * Prevent focus in the sidebar whenever it is not visible
+		 */
+		isSidebarVisible: function(newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+			this.toggleSidebarFocus(newVal);
+		},
+
+		/**
 		 * Perform a search whenever the searchPhrase is updated
 		 */
 		searchPhrase: function(newVal, oldVal) {
@@ -450,13 +697,10 @@ export default {
 		},
 
 		/**
-		 * Update list whenever the count is modified
+		 * Toggle the select all button when selected is updated
 		 */
-		count: function(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			this.get();
+		selected: function(newVal, oldVal) {
+			this.isSelectAllOn = newVal.length === this.items.length;
 		}
 	},
 	mounted: function() {
@@ -474,6 +718,11 @@ export default {
 				});
 			}
 		}
+
+		/**
+		 * Set the initial tabindex attributes in the sidebar
+		 */
+		this.toggleSidebarFocus(this.isSidebarVisible);
 	}
 };
 </script>
@@ -490,6 +739,16 @@ export default {
 		background: @bg-light;
 		padding: 0.5rem 0.75rem;
 		font-weight: @bold;
+
+		> .pkpSpinner {
+			margin-left: 0.25rem;
+		}
+	}
+
+	> .pkpNotification {
+		border: none;
+		box-shadow: none;
+		background: @bg-light;
 	}
 }
 
@@ -538,21 +797,30 @@ export default {
 	}
 }
 
+.pkpListPanel__sidebar .pkpHeader__title {
+	font-size: @font-sml;
+}
+
+.pkpListPanel__sidebarHeader {
+	padding: 1rem 1rem 0;
+}
+
 .pkpListPanel__filterSet {
 	margin: 1rem 0;
 	font-size: @font-sml;
 
 	.pkpHeader {
-		margin: 0 0 0.25rem;
 		padding: 0 1rem;
-		font-size: @font-tiny;
 		line-height: 1.2em;
-		font-weight: @bold;
 		color: @text-light;
 
 		&:focus {
 			outline: 0;
 		}
+	}
+
+	.pkpHeader__title {
+		font-size: @font-tiny;
 	}
 }
 
@@ -561,6 +829,47 @@ export default {
 	padding: 2rem;
 	color: @text-light;
 	text-align: center;
+
+	> .pkpSpinner {
+		margin-right: 0.25rem;
+	}
+}
+
+// Override fieldset defaults when used with canSelect
+fieldset.pkpListPanel {
+	padding: 0;
+	border: none;
+
+	legend {
+		display: inline-block;
+	}
+}
+
+.pkpListPanel__selectAll {
+	position: relative;
+	display: block;
+	background: @bg-light;
+	padding: 0.5rem 0.75rem 0.5rem 2.5rem;
+	font-size: @font-tiny;
+
+	> input {
+		position: absolute;
+		top: 50%;
+		left: 1.5rem;
+		transform: translate(-50%, -50%);
+
+		&:focus {
+			outline: @primary dotted 1px;
+			outline-offset: 0.25rem;
+		}
+	}
+}
+
+/** Override label style when used in a .pkp_form */
+.pkp_form label.pkpListPanel__selectAll {
+	min-height: auto;
+	font-size: @font-tiny;
+	font-weight: @normal;
 }
 
 .pkpListPanel__footer {

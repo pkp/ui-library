@@ -72,7 +72,7 @@ export default {
 	position: absolute;
 	top: 0;
 	left: 0;
-	width: 3em;
+	width: 3rem;
 	height: 100%;
 	background: transparent;
 	border: none;
@@ -119,6 +119,6 @@ export default {
 }
 
 .orderer__up {
-	right: 3em;
+	right: 3rem;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
-	<li class="pkpListPanelItem pkpListPanelItem--submission pkpListPanelItem--hasSummary" :class="{'-hasFocus': isFocused}">
+	<div class="pkpListPanelItem--submission -hasSummary" :class="classes">
 		<div class="pkpListPanelItem__summary -pkpClearfix">
-			<a :href="item.urlWorkflow" class="pkpListPanelItem--submission__link" @focus="focusItem" @blur="blurItem">
+			<a :href="item.urlWorkflow" class="pkpListPanelItem--submission__link">
 				<div class="pkpListPanelItem--submission__item">
 					<div class="pkpListPanelItem--submission__id">
 						<span class="-screenReader">{{ i18n.id }}</span>
@@ -22,8 +22,6 @@
 						<button v-for="(noticeAction, index) in noticeActions" :key="index"
 							class="-linkButton"
 							@click.stop.prevent="noticeAction"
-							@focus="focusItem"
-							@blur="blurItem"
 						>
 							{{ noticeActionLabels[index] }}
 						</button>
@@ -128,23 +126,17 @@
 					element="a"
 					:href="item.urlWorkflow"
 					:label="i18n.viewSubmission"
-					@focus="focusItem"
-					@blur="blurItem"
 				/>
 				<pkp-button
 					v-if="currentUserCanViewInfoCenter"
 					:label="i18n.infoCenter"
 					@click="openInfoCenter"
-					@focus="focusItem"
-					@blur="blurItem"
 				/>
 				<pkp-button
 					v-if="currentUserCanDelete"
 					:label="i18n.delete"
 					:isWarnable="true"
 					@click="deleteSubmissionPrompt"
-					@focus="focusItem"
-					@blur="blurItem"
 				/>
 			</div>
 		</div>
@@ -165,7 +157,7 @@
 				</template>
 			</div>
 		</div>
-	</li>
+	</div>
 </template>
 
 <script>
@@ -188,14 +180,24 @@ export default {
 		PkpButton,
 		Icon
 	},
-	props: [
-		'item',
-		'i18n',
-		'apiUrl',
-		'infoUrl',
-		'assignParticipantUrl',
-		'csrfToken'
-	],
+	props: {
+		apiUrl: {
+			type: String,
+			required: true
+		},
+		assignParticipantUrl: {
+			type: String,
+			required: true
+		},
+		csrfToken: {
+			type: String,
+			required: true
+		},
+		infoUrl: {
+			type: String,
+			required: true
+		}
+	},
 	data: function() {
 		return {
 			isExpanded: false,
@@ -805,7 +807,7 @@ export default {
 		display: block;
 		position: absolute;
 		top: 50%;
-		right: 100%;
+		left: 0;
 		width: 0.1rem;
 		height: 25%;
 		background: @primary;
@@ -814,8 +816,7 @@ export default {
 		transform: translateY(-50%);
 	}
 
-	&:hover,
-	&.-hasFocus {
+	&:hover {
 		&:before {
 			height: 100%;
 			opacity: 1;
@@ -832,6 +833,29 @@ export default {
 	&:focus {
 		color: @text;
 	}
+
+	&:before {
+		content: '';
+		display: block;
+		position: absolute;
+		top: 50%;
+		right: 100%;
+		width: 0.1rem;
+		height: 25%;
+		background: @primary;
+		opacity: 0;
+		transition: height 0.3s;
+		transform: translateY(-50%);
+	}
+
+	&:focus {
+		outline: 0;
+
+		&:before {
+			height: 100%;
+			opacity: 1;
+		}
+	}
 }
 
 .pkpListPanelItem--submission__item,
@@ -843,7 +867,7 @@ export default {
 	position: relative;
 	float: left;
 	width: 75%;
-	padding-left: 48px;
+	padding-left: 4rem;
 }
 
 .pkpListPanelItem--submission__id {

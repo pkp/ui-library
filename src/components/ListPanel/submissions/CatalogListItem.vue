@@ -1,9 +1,9 @@
 <template>
-	<li class="pkpListPanelItem pkpListPanelItem--submission pkpListPanelItem--catalog -pkpClearfix" :class="{'--hasFocus': isFocused, '-isLoading': isSaving, '-isFeatured': isFeatured}">
+	<div class="pkpListPanelItem pkpListPanelItem--submission pkpListPanelItem--catalog -pkpClearfix" :class="{'--hasFocus': isFocused, '-isLoading': isSaving, '-isFeatured': isFeatured}">
 		<orderer
 			v-if="isOrdering"
-			@up="itemOrderUp"
-			@down="itemOrderDown"
+			@up="orderUp"
+			@down="orderDown"
 			:itemId="item.id"
 			:itemTitle="item.title"
 			:i18n="i18n"
@@ -13,11 +13,11 @@
 				<span class="-screenReader">{{ i18n.id }}</span>
 				{{ item.id }}
 			</div>
-			<a :href="item.urlPublished" @focus="focusItem" @blur="blurItem" class="pkpListPanelItem--submission__link">
+			<a :href="item.urlPublished" class="pkpListPanelItem--submission__link">
 				<div v-if="item.authorString" class="pkpListPanelItem--submission__author">
 					{{ item.authorString }}
 				</div>
-				<div class="pkpListPanelItem--submission__title">
+				<div class="pkpListPanelItem--submission__title" :tabindex="-1">
 					{{ localize(item.fullTitle) }}
 				</div>
 			</a>
@@ -26,40 +26,36 @@
 					:label="i18n.editCatalogEntry"
 					:isLink="true"
 					@click="viewCatalogEntry"
-					@focus="focusItem"
-					@blur="blurItem"
 				/>
 				<pkp-button
 					element="a"
 					:href="item.urlWorkflow"
 					:label="i18n.viewSubmission"
 					:isLink="true"
-					@focus="focusItem"
-					@blur="blurItem"
 				/>
 			</div>
 		</div>
-		<button class="pkpListPanelItem__selectItem pkpListPanelItem__selectItem--catalog" @click.prevent="toggleFeatured" @focus="focusItem" @blur="blurItem">
+		<button class="pkpListPanelItem--catalog__select" @click.prevent="toggleFeatured">
 			<icon v-if="isFeatured" icon="check-square-o" />
 			<icon v-else icon="square-o" />
 			<span class="-screenReader">
 				<template v-if="isFeatured">
-					This monograph is featured. Make this monograph not featured.
+					{{ i18n.isFeatured }}
 				</template>
 				<template v-else>
-					This monograph is not featured. Make this monograph featured.
+					{{ i18n.isNotFeatured }}
 				</template>
 			</span>
 		</button>
-		<button class="pkpListPanelItem__selectItem pkpListPanelItem__selectItem--catalog" @click.prevent="toggleNewRelease" @focus="focusItem" @blur="blurItem">
+		<button class="pkpListPanelItem--catalog__select" @click.prevent="toggleNewRelease">
 			<icon v-if="isNewRelease" icon="check-square-o" />
 			<icon v-else icon="square-o" />
 			<span class="-screenReader">
 				<template v-if="isNewRelease">
-					This monograph is a new release. Make this monograph not a new release.
+					{{ i18n.isNewRelease }}
 				</template>
 				<template v-else>
-					This monograph is not a new release. Make this monograph a new release.
+					{{ i18n.isNotNewRelease }}
 				</template>
 			</span>
 		</button>
@@ -71,18 +67,18 @@
 				</span>
 			</div>
 		</div>
-	</li>
+	</div>
 </template>
 
 <script>
-import SubmissionsListItem from '@/components/ListPanel/submissions/SubmissionsListItem.vue';
+import ListPanelItem from '@/components/ListPanel/ListPanelItem.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import Orderer from '@/components/Orderer/Orderer.vue';
 
 export default {
-	extends: SubmissionsListItem,
-	name: 'CatalogSubmissionsListItem',
+	extends: ListPanelItem,
+	name: 'CatalogListItem',
 	props: [
 		'item',
 		'i18n',
@@ -214,7 +210,7 @@ export default {
 				success: function(r) {
 					if (typeof r.featured !== 'undefined') {
 						self.item.featured = r.featured;
-						self.$emit('catalogFeatureUpdated', self.submission);
+						self.$emit('update:item', {...self.item, featured: r.featured});
 					}
 					if (typeof r.newRelease !== 'undefined') {
 						self.item.newRelease = r.newRelease;
@@ -249,30 +245,49 @@ export default {
 <style lang="less">
 @import '../../../styles/_import';
 
+// Shift padding to the catalog item so that focus indicator
+// takes up full height
+.pkpListPanelItem--catalog {
+	padding: 0;
+
+	.pkpListPanelItem--submission__id {
+		top: 1rem;
+		left: 1rem;
+	}
+}
+
 .pkpListPanelItem--catalog__item {
 	display: block;
 	float: none;
 	width: 100%;
-	padding-right: @base * 15;
+	padding: 1rem 17rem 1rem 4rem;
 
 	a {
 		text-decoration: none;
 	}
 }
 
-.pkpListPanelItem__selectItem.pkpListPanelItem__selectItem--catalog {
-	left: auto;
+.pkpListPanelItem--catalog .pkpListPanelItem--submission__author,
+.pkpListPanelItem--catalog .pkpListPanelItem--submission__title {
+	padding-right: 0;
+}
+
+.pkpListPanelItem--catalog__select {
+	position: absolute;
+	top: 0;
 	right: @base * 8;
+	bottom: 0;
 	width: @base * 8;
 	border: 1px solid transparent;
 	border-left-color: @grid-border-color;
+	background: transparent;
 
 	&:focus {
 		outline: 0;
 		border-color: @primary;
 	}
 
-	+ .pkpListPanelItem__selectItem--catalog {
+	+ .pkpListPanelItem--catalog__select {
 		right: 0;
 	}
 }

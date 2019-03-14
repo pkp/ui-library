@@ -4,10 +4,10 @@
 			<div class="pkpListPanel__title">{{ i18n.title }}</div>
 		</div>
 		<div class="pkpListPanel__body -pkpClearfix">
-			<list-panel-notice
+			<!-- <list-panel-notice
 				v-if="i18n.notice"
 				:notice="i18n.notice"
-			/>
+			/> -->
 			<select-list-panel-select-all
 				v-if="showSelectAll"
 				:label="i18n.selectAllLabel"
@@ -33,7 +33,7 @@
 
 <script>
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
-import ListPanelNotice from '@/components/ListPanel/ListPanelNotice.vue';
+// import ListPanelNotice from '@/components/ListPanel/ListPanelNotice.vue';
 import SelectListPanelItem from '@/components/SelectListPanel/SelectListPanelItem.vue';
 import SelectListPanelSelectAll from '@/components/SelectListPanel/SelectListPanelSelectAll.vue';
 
@@ -41,7 +41,7 @@ export default {
 	extends: ListPanel,
 	name: 'SelectListPanel',
 	components: {
-		ListPanelNotice,
+		// ListPanelNotice,
 		SelectListPanelItem,
 		SelectListPanelSelectAll
 	},

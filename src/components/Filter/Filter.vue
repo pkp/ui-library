@@ -1,5 +1,5 @@
 <template>
-	<div class="pkpFilter">
+	<div :class="classes">
 		<button
 			@click.prevent.stop="toggle(param, value)"
 			class="pkpFilter__label"
@@ -50,29 +50,37 @@ export default {
 			required: true
 		}
 	},
+	computed: {
+		/**
+		 * Classes to apply to the root element
+		 *
+		 * @return array
+		 */
+		classes: function() {
+			let classes = ['pkpFilter'];
+			if (!this.isFilterActive) {
+				classes.push('pkpFilter--disabled');
+			}
+			return classes;
+		}
+	},
 	methods: {
 		/**
 		 * Add or remove a filter
-		 *
-		 * @param String param
-		 * @param mixed value
 		 */
-		toggle: function(param, value) {
+		toggle: function() {
 			if (this.isFilterActive) {
-				this.remove(param, value);
+				this.remove();
 			} else {
-				this.$emit('add-filter', param, value);
+				this.$emit('add-filter', this.param, this.value);
 			}
 		},
 
 		/**
 		 * Remove a filter
-		 *
-		 * @param String param
-		 * @param mixed value
 		 */
-		remove: function(param, value) {
-			this.$emit('remove-filter', param, value);
+		remove: function() {
+			this.$emit('remove-filter', this.param, this.value);
 		}
 	}
 };
@@ -92,6 +100,7 @@ export default {
 	color: @primary;
 	line-height: 1.2em;
 	text-decoration: none;
+	text-align: left;
 	cursor: pointer;
 
 	&:hover,
@@ -105,6 +114,7 @@ export default {
 	}
 }
 
+.pkpFilter__add,
 .pkpFilter__remove {
 	position: absolute;
 	top: 50%;

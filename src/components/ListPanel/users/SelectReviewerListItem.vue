@@ -1,91 +1,87 @@
 <template>
-	<li class="pkpListPanelItem pkpListPanelItem--select pkpListPanelItem--selectReviewer" :class="classes">
-		<div class="pkpListPanelItem__summary pkpListPanelItem__summary--selectReviewer -pkpClearFix">
-			<div v-if="!isCurrentlyAssigned && !shouldWarnOnAssignment" class="pkpListPanelItem__selectItem" @click.self="toggle">
-				<input
-					v-if="inputType === 'radio'"
-					type="radio"
-					:id="inputId"
-					:name="inputName"
-					:value="inputValue"
-					v-model="isSelected"
-					@change="toggle"
-					@focus="focusItem"
-					@blur="blurItem"
-				>
-				<input
-					v-else
-					type="checkbox"
-					:id="inputId"
-					:name="inputName"
-					:value="inputValue"
-					v-model="isSelected"
-					@change="toggle"
-					@focus="focusItem"
-					@blur="blurItem"
-				>
-			</div>
-			<label :for="inputId" class="pkpListPanelItem__item pkpListPanelItem__item--reviewer">
-				<div class="pkpListPanelItem--reviewer__header">
-					<div class="pkpListPanelItem--reviewer__fullName">
-						<badge
-							v-if="item.reviewsActive && !isCurrentlyAssigned && !shouldWarnOnAssignment"
-							class="pkpListPanelItem--reviewer__active"
+	<div class="pkpListPanelItem--reviewer -hasSummary" :class="classes">
+		<div class="pkpListPanelItem__summary">
+			<component :is="localCanSelect ? 'label' : 'div'" class="pkpListPanelItem__selectorLabel">
+				<div v-if="localCanSelect" class="pkpListPanelItem__selector">
+					<input
+						:name="selectorName"
+						:type="selectorType"
+						:value="id"
+						v-model="localSelected"
+					/>
+				</div>
+				<div class="pkpListPanelItem--reviewer__entry">
+					<div class="pkpListPanelItem--reviewer__header">
+						<div class="pkpListPanelItem--reviewer__fullName">
+							<badge
+								v-if="item.reviewsActive && localCanSelect"
+								class="pkpListPanelItem--reviewer__active"
+							>
+								{{ __('activeReviews', {count: item.reviewsActive}) }}
+							</badge>
+							{{ item.fullName }}
+						</div>
+						<div
+							v-if="item.reviewerRating !== null && localCanSelect"
+							class="pkpListPanelItem--reviewer__rating"
 						>
-							{{ __('activeReviews', {count: item.reviewsActive}) }}
-						</badge>
-						{{ item.fullName }}
+							<icon
+								v-for="(star, index) in stars"
+								:key="index"
+								icon="star"
+								:class="star ? 'pkpListPanelItem--reviewer__star--on' : 'pkpListPanelItem--reviewer__star--off'"
+							/>
+							<span class="-screenReader">{{ __('reviewerRating', {rating: item.reviewerRating}) }}</span>
+						</div>
 					</div>
-					<div v-if="item.reviewerRating !== null && !isCurrentlyAssigned && !shouldWarnOnAssignment" class="pkpListPanelItem--reviewer__rating">
-						<icon
-							v-for="(star, index) in stars"
-							:key="index"
-							icon="star"
-							:class="star ? 'pkpListPanelItem--reviewer__star--on' : 'pkpListPanelItem--reviewer__star--off'"
-						/>
-						<span class="-screenReader">{{ __('reviewerRating', {rating: item.reviewerRating}) }}</span>
-					</div>
-				</div>
-				<div class="pkpListPanelItem--reviewer__affiliation">
-					{{ localize(item.affiliation) }}
-					<a
-						v-if="item.orcid"
-						:href="item.orcid"
-						class="pkpListPanelItem--reviewer__orcid"
-						target="_blank"
+					<div
+						v-if="Object.keys(item.affiliation).length || item.orcid"
+						class="pkpListPanelItem--reviewer__affiliation"
 					>
-						<icon icon="orcid" :inline="true" />
-						{{ item.orcid }}
-					</a>
+						{{ localize(item.affiliation) }}
+						<a
+							v-if="item.orcid"
+							:href="item.orcid"
+							class="pkpListPanelItem--reviewer__orcid"
+							target="_blank"
+						>
+							<icon icon="orcid" :inline="true" />
+							{{ item.orcid }}
+						</a>
+					</div>
+					<!-- use aria-hidden on these details because the information can be
+						more easily acquired by screen readers from the details panel. -->
+					<div
+						v-if="localCanSelect"
+						class="pkpListPanelItem--reviewer__brief"
+						aria-hidden="true"
+					>
+						<span class="pkpListPanelItem--reviewer__complete">
+							<icon icon="check-circle-o" :inline="true" />
+							{{ item.reviewsCompleted }}
+						</span>
+						<span class="pkpListPanelItem--reviewer__last">
+							<icon icon="history" :inline="true" />
+							{{ daysSinceLastAssignmentString }}
+						</span>
+						<span v-if="item.interests.length" class="pkpListPanelItem--reviewer__interests">
+							<icon icon="book" :inline="true" />
+							{{ interestsString }}
+						</span>
+					</div>
 				</div>
-				<!-- use aria-hidden on these details because the information can be
-					more easily acquired by screen readers from the details panel. -->
-				<div v-if="!isCurrentlyAssigned && !shouldWarnOnAssignment" class="pkpListPanelItem--reviewer__brief" aria-hidden="true">
-					<span class="pkpListPanelItem--reviewer__complete">
-						<icon icon="check-circle-o" :inline="true" />
-						{{ item.reviewsCompleted }}
-					</span>
-					<span class="pkpListPanelItem--reviewer__last">
-						<icon icon="history" :inline="true" />
-						{{ daysSinceLastAssignmentString }}
-					</span>
-					<span v-if="item.interests.length" class="pkpListPanelItem--reviewer__interests">
-						<icon icon="book" :inline="true" />
-						{{ interestsString }}
-					</span>
-				</div>
-			</label>
-			<div v-if="isCurrentlyAssigned" class="pkpListPanelItem--reviewer__notice">
+			</component>
+			<div v-if="currentlyAssigned" class="pkpListPanelItem--reviewer__notice">
 				<icon icon="exclamation-triangle" :inline="true" />
 				{{ i18n.currentlyAssigned }}
 			</div>
-			<div v-else-if="shouldWarnOnAssignment" class="pkpListPanelItem--reviewer__notice">
+			<div v-else-if="warnOnAssignment && !isWarningBypassed" class="pkpListPanelItem--reviewer__notice">
 				<icon icon="lock" :inline="true" />
 				{{ i18n.warnOnAssign }}
 				<button @click.prevent="unlockAssignment" class="pkpListPanelItem--reviewer__noticeAction">{{ i18n.warnOnAssignUnlock }}</button>
 			</div>
 			<button
-				v-if="!isCurrentlyAssigned && !shouldWarnOnAssignment"
+				v-if="localCanSelect"
 				@click="toggleExpanded"
 				class="pkpListPanelItem__expander"
 			>
@@ -105,7 +101,7 @@
 		</div>
 		<div
 			v-if="isExpanded"
-			class="pkpListPanelItem__details pkpListPanelItem__details--selectReviewer"
+			class="pkpListPanelItem__details pkpListPanelItem__details--reviewer"
 		>
 			<list>
 				<list-item>
@@ -164,27 +160,35 @@
 				</list-item>
 			</list>
 		</div>
-	</li>
+	</div>
 </template>
 
 <script>
-import SelectListPanelItem from '@/components/SelectListPanel/SelectListPanelItem.vue';
+import ListPanelItem from '@/components/ListPanel/ListPanelItem.vue';
 import Badge from '@/components/Badge/Badge.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import List from '@/components/List/List.vue';
 import ListItem from '@/components/List/ListItem.vue';
 
 export default {
-	extends: SelectListPanelItem,
-	name: 'SelectReviewerListItem',
+	extends: ListPanelItem,
 	components: {
 		Badge,
 		Icon,
 		List,
 		ListItem
 	},
-	props: ['currentlyAssigned', 'warnOnAssignment', 'i18n'],
-	data: function() {
+	props: {
+		currentlyAssigned: {
+			type: Boolean,
+			required: true
+		},
+		warnOnAssignment: {
+			type: Boolean,
+			required: true
+		}
+	},
+	data() {
 		return {
 			isExpanded: false,
 			isWarningBypassed: false
@@ -192,32 +196,17 @@ export default {
 	},
 	computed: {
 		/**
-		 * Classes to add to outer element
+		 * Classes to apply to the root element
 		 *
 		 * @return array
 		 */
 		classes: function() {
-			let classes = [];
-			if (this.isFocused) {
-				classes.push('-hasFocus');
+			let classes = ListPanelItem.computed.classes.apply(this);
+			classes.push('-hasSelector');
+			if (this.currentlyAssigned) {
+				classes.push('-isAssigned');
 			}
-			if (this.isCurrentlyAssigned) {
-				classes.push('pkpListPanelItem--selectReviewerAssigned');
-			}
-			if (this.shouldWarnOnAssignment) {
-				classes.push('pkpListPanelItem--selectReviewerWarned');
-			}
-
 			return classes;
-		},
-
-		/**
-		 * Is this reviewer assigned to the submission in question?
-		 *
-		 * @return boolean
-		 */
-		isCurrentlyAssigned: function() {
-			return this.currentlyAssigned.includes(this.item.id);
 		},
 
 		/**
@@ -271,6 +260,24 @@ export default {
 		},
 
 		/**
+		 * Can this reviewer be selected
+		 *
+		 * Checks for current assignment and a locked assignment warning.
+		 * Use this instead of the canSelect prop.
+		 *
+		 * @return boolean
+		 */
+		localCanSelect: function() {
+			if (this.currentlyAssigned) {
+				return false;
+			}
+			if (this.warnOnAssignment) {
+				return this.isWarningBypassed;
+			}
+			return true;
+		},
+
+		/**
 		 * An array of booleans matching the stars for the reviewerRating. True is
 		 * a filled-in star. False is an empty star.
 		 *
@@ -286,16 +293,6 @@ export default {
 				}
 			}
 			return stars;
-		},
-
-		/**
-		 * Should this reviewer feature a warning about assigning them as a blind
-		 * reviewer?
-		 */
-		shouldWarnOnAssignment: function() {
-			return (
-				!this.isWarningBypassed && this.warnOnAssignment.includes(this.item.id)
-			);
 		}
 	},
 	methods: {
@@ -311,15 +308,6 @@ export default {
 
 <style lang="less">
 @import '../../../styles/_import';
-
-.pkpListPanelItem--selectReviewer {
-	padding: 0;
-}
-
-.pkpListPanelItem__summary--selectReviewer {
-	padding-top: 0;
-	padding-bottom: 0;
-}
 
 .pkpListPanelItem--reviewer__header {
 	position: relative;
@@ -356,26 +344,27 @@ export default {
 .pkpListPanelItem--reviewer__brief > * {
 	display: inline-block;
 	margin-top: 0.5em;
+	margin-right: 1em;
 	font-size: @font-tiny;
 }
 
 .pkpListPanelItem--reviewer__complete {
-	min-width: 5em;
+	min-width: 4em;
 }
 
 .pkpListPanelItem--reviewer__last {
-	min-width: 10em;
+	min-width: 9em;
 }
 
 .pkpListPanelItem--reviewer__brief .fa,
-.pkpListPanelItem__details--selectReviewer .list .fa {
+.pkpListPanelItem__details--reviewer .list .fa {
 	color: @bg-dark;
 	font-size: @font-sml;
 }
 
-.pkpListPanelItem__details--selectReviewer {
+.pkpListPanelItem__details--reviewer {
 	.list {
-		margin-left: 3rem;
+		margin-left: 2rem;
 		margin-right: 2rem;
 	}
 }
@@ -387,7 +376,8 @@ export default {
 
 // Reviewers already assigned to this submission
 .pkpListPanelItem--reviewer__notice {
-	padding: 0.5rem 0.5rem 1rem 4rem;
+	margin-top: -0.5rem;
+	padding: 0 0.5rem 1rem 1rem;
 	font-size: @font-tiny;
 }
 
@@ -406,28 +396,35 @@ export default {
 	}
 }
 
-.pkpListPanelItem--selectReviewerAssigned {
-	.pkpListPanelItem__item--reviewer {
-		padding-bottom: 0;
-		opacity: 0.5;
+.pkpListPanelItem--reviewer.-isAssigned .pkpListPanelItem--reviewer__entry {
+	opacity: 0.5;
 
-		&:after {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			width: 100%;
-			height: 100%;
-			cursor: not-allowed;
-		}
+	&:after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		width: 100%;
+		height: 100%;
+		cursor: not-allowed;
 	}
 }
 
-.pkpListPanelItem--selectReviewerWarned {
-	.pkpListPanelItem__item--reviewer {
-		padding-bottom: 0;
+/** Override styles when placed in a legacy form */
+.pkp_form .pkpListPanel--reviewer {
+	label {
+		font-weight: @normal;
+	}
+
+	.pkpListPanelItem--reviewer__fullName,
+	.pkpListPanelItem--reviewer__affiliation {
+		font-size: @font-sml;
+	}
+
+	.pkpListPanelItem--reviewer__fullName {
+		font-weight: @bold;
 	}
 }
 </style>

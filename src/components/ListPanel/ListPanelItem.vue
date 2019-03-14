@@ -1,13 +1,95 @@
 <template>
-	<li class="pkpListPanelItem" :class="{'-hasFocus': isFocused}">
-		{{ item.title }}
-	</li>
+	<div :class="classes">
+		<orderer
+			v-if="canOrder && isOrdering"
+			@up="orderUp"
+			@down="orderDown"
+			:itemId="item.id"
+			:itemTitle="item.title"
+			:i18n="i18n"
+		/>
+		<!-- Items with checkbox or radio selection -->
+		<label v-if="canSelect" class="pkpListPanelItem__selectorLabel">
+			<div class="pkpListPanelItem__selector">
+				<input
+					v-if="canSelect"
+					:type="selectorType"
+					:id="selectorId"
+					:name="selectorName"
+					:value="id"
+					v-model="localSelected"
+				/>
+			</div>
+			{{ item.title }}
+		</label>
+		<template v-else>
+			{{ item.title }}
+		</template>
+	</div>
 </template>
 
 <script>
+import Orderer from '@/components/Orderer/Orderer.vue';
+
 export default {
 	name: 'ListPanelItem',
-	props: ['item', 'i18n'],
+	components: {
+		Orderer
+	},
+	props: {
+		canOrder: {
+			type: Boolean,
+			default() {
+				return false;
+			}
+		},
+		canSelect: {
+			type: Boolean,
+			default() {
+				return false;
+			}
+		},
+		i18n: {
+			type: Object,
+			default() {
+				return {};
+			}
+		},
+		isOrdering: {
+			type: Boolean,
+			default() {
+				return false;
+			}
+		},
+		selectorType: {
+			type: String,
+			default() {
+				return 'checkbox';
+			}
+		},
+		selectorName: {
+			type: String,
+			default() {
+				return '';
+			}
+		},
+		selected: {
+			type: [Number, String, Array],
+			default() {
+				if (this.selectorType === 'radio') {
+					return '';
+				} else {
+					return [];
+				}
+			}
+		},
+		item: {
+			type: Object,
+			default() {
+				return {};
+			}
+		}
+	},
 	data: function() {
 		return {
 			isFocused: false
@@ -15,45 +97,70 @@ export default {
 	},
 	computed: {
 		/**
+		 * Classes to apply to the root element
+		 *
+		 * @return Array
+		 */
+		classes() {
+			let classes = ['pkpListPanelItem'];
+			if (this.canOrder) {
+				classes.push('-hasOrderer');
+			}
+			if (this.isOrdering) {
+				classes.push('-isOrdering');
+			}
+			if (this.canSelect) {
+				classes.push('-hasSelector');
+			}
+			return classes;
+		},
+
+		/**
 		 * Each item needs an id for list ordering to work. Most components
 		 * should overwrite this computed property and map the item's id to
 		 * this property.
+		 *
+		 * @return Number
 		 */
 		id: function() {
 			return this.item.id || 0;
+		},
+
+		/**
+		 * A wrapper for the selected prop which emits an event to update
+		 * the value when the selection changes
+		 */
+		localSelected: {
+			get() {
+				return this.selected;
+			},
+			set(newVal, oldVal) {
+				this.$emit('update:selected', newVal);
+			}
+		},
+
+		/**
+		 * A unique ID for the input field
+		 *
+		 * @return String
+		 */
+		selectorId() {
+			return `${this.selectorName}-${this.id}`;
 		}
 	},
 	methods: {
 		/**
-		 * Update the isFocused property
+		 * Emit an event to move this item up in the order
 		 */
-		focusItem: function() {
-			this.isFocused = true;
+		orderUp: function() {
+			this.$emit('order-up', this.item);
 		},
 
 		/**
-		 * Update the isFocused property
+		 * Emit an event to move this item down in the order
 		 */
-		blurItem: function() {
-			this.isFocused = false;
-		},
-
-		/**
-		 * Pass an itemOrderUp event up to the list panel
-		 *
-		 * This event emerges from an Orderer component.
-		 */
-		itemOrderUp: function() {
-			this.$emit('itemOrderUp', this.item);
-		},
-
-		/**
-		 * Pass an itemOrderDown event up to the list panel
-		 *
-		 * This event emerges from an Orderer component.
-		 */
-		itemOrderDown: function() {
-			this.$emit('itemOrderDown', this.item);
+		orderDown: function() {
+			this.$emit('order-down', this.item);
 		},
 
 		/**
@@ -71,7 +178,7 @@ export default {
 
 .pkpListPanelItem {
 	position: relative;
-	padding: 1em;
+	padding: 1rem;
 	border-bottom: @grid-border;
 	font-size: @font-sml;
 	line-height: 1.5em;
@@ -85,24 +192,73 @@ export default {
 	}
 }
 
+.pkpListPanelItem.-hasSelector {
+	padding: 0 0 0 3rem;
+
+	.pkpListPanelItem__selectorLabel {
+		display: block;
+		padding: 1rem;
+		// Override legacy form label styles
+		font-size: @font-sml;
+		font-weight: @normal;
+	}
+}
+
+.pkpListPanelItem__selector {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 3rem;
+	border-right: @grid-border;
+
+	input {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+
+		&:focus {
+			outline: @primary dotted 1px;
+			outline-offset: 0.25rem;
+		}
+	}
+}
+
 .pkpListPanel.-isOrdering {
 	.pkpListPanelItem {
 		position: relative;
-		padding-left: 5em;
-		padding-right: 9em;
+		padding-left: 4rem;
+		padding-right: 7rem;
 	}
 }
 
 // ListPanels with a summary and detailed view
-@expandedWidth: @base * 3;
+@expandedWidth: 3rem;
 
-.pkpListPanelItem--hasSummary {
+// Move padding to the summary so expander border reaches edge
+.-hasSummary {
 	padding: 0;
 }
 
 .pkpListPanelItem__summary {
 	position: relative;
-	padding: 1em @expandedWidth 1em 1em;
+	padding: 1rem @expandedWidth 1rem 1rem;
+}
+
+.pkpListPanelItem.-hasSummary.-hasSelector {
+	padding: 0;
+
+	// Move padding to the label to avoid gaps in clickable areas
+	.pkpListPanelItem__summary {
+		padding-top: 0;
+		padding-bottom: 0;
+		padding-left: 3rem;
+
+		.pkpListPanelItem__selectorLabel {
+			padding: 1rem 0 1rem 1rem;
+		}
+	}
 }
 
 .pkpListPanelItem__expander {
@@ -174,7 +330,7 @@ export default {
 
 			a {
 				margin-left: 1em;
-				padding: 0.25em 0.5em;
+				padding: 0.25rem 0.5em;
 				background: #fff;
 				border-radius: @radius;
 				text-decoration: none;

@@ -1,6 +1,8 @@
 <template>
-	<div class="pkpHeader">
-		<slot class="pkpHeader__title" />
+	<div class="pkpHeader -pkpClearfix">
+		<span class="pkpHeader__title">
+			<slot />
+		</span>
 		<div v-if="hasActions" class="pkpHeader__actions">
 			<slot name="actions" />
 		</div>
@@ -27,6 +29,7 @@ export default {
 .pkpHeader__title {
 	display: inline-block;
 	margin: 0;
+	padding: 0.25rem 0;
 	font-size: @font-base;
 	font-weight: @bold;
 	line-height: 1.5em;

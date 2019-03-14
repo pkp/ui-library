@@ -52,64 +52,67 @@ const items = submissionsListPanel.items.map((item, i) => {
 });
 
 export default {
-	...submissionsListPanel,
-	filters: {
-		categoryids: {
+	id: 'CatalogListPanel',
+	addUrl: '/example',
+	catalogEntryUrl: 'https://example.org',
+	catalogSortBy: 'datePublished', // ORDERBY_DATE_PUBLISHED
+	catalogSortDir: 1, // SORT_DIRECTION_ASC
+	csrfToken: '1234',
+	filters: [
+		{
 			heading: 'Categories',
 			filters: [
 				{
 					title: 'Example Category',
 					param: 'categoryIds',
-					val: 1,
+					value: 1,
 					sortBy: '',
 					sortDir: ''
 				},
 				{
 					title: 'Another Category',
 					param: 'categoryIds',
-					val: 2,
+					value: 2,
 					sortBy: '',
 					sortDir: ''
 				}
 			]
 		},
-		seriesIds: {
+		{
 			heading: 'Series',
 			filters: [
 				{
 					title: 'Library & Information Studies',
 					param: 'seriesIds',
-					val: 1,
+					value: 1,
 					sortBy: 'seriesPosition',
 					sortDir: 'DESC'
 				},
 				{
 					title: 'Political Economy',
 					param: 'seriesIds',
-					val: 2,
+					value: 2,
 					sortBy: '',
 					sortDir: 'ASC'
 				},
 				{
 					title: 'History',
 					param: 'seriesIds',
-					val: 3,
+					value: 3,
 					sortBy: 'seriesIds',
 					sortDir: ''
 				}
 			]
 		}
-	},
+	],
 	items: items,
 	i18n: {
-		...i18n.count,
-		...i18n.loadMore,
-		...i18n.search,
 		...i18n.expandable,
-		...i18n.orderable,
 		...i18n.filter,
-		...i18n.submissionsListPanel,
-		...i18n.catalogSubmissionsListPanel,
+		...i18n.orderable,
+		...i18n.pagination,
+		...i18n.search,
+		...i18n.catalogListPanel,
 		title: 'Catalog'
 	}
 };

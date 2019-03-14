@@ -12,7 +12,6 @@
 			<nav-group>
 				<template slot="heading">Apps</template>
 				<li><router-link to="/component/Container">Container</router-link></li>
-				<li><router-link to="/component/SelectListPanel">SelectListPanel</router-link></li>
 			</nav-group>
 			<nav-group>
 				<template slot="heading">Components</template>

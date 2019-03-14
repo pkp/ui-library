@@ -1,6 +1,8 @@
 <script type="text/javascript">
 import PkpForm from '@/components/Form/Form.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
+import SelectReviewerListPanel from '@/components/ListPanel/users/SelectReviewerListPanel.vue';
+import SelectSubmissionsListPanel from '@/components/ListPanel/submissions/SelectSubmissionsListPanel.vue';
 import SubmissionsListPanel from '@/components/ListPanel/submissions/SubmissionsListPanel.vue';
 
 export default {
@@ -8,6 +10,8 @@ export default {
 	components: {
 		PkpForm,
 		ListPanel,
+		SelectReviewerListPanel,
+		SelectSubmissionsListPanel,
 		SubmissionsListPanel
 	},
 	data() {

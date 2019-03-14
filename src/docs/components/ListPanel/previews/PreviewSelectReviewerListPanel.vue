@@ -1,6 +1,6 @@
 <template>
 	<!-- Use the v-bind syntax to bind all props at once. -->
-	<list-panel
+	<select-reviewer-list-panel
 		v-bind="components.example"
 		@set="set"
 	/>
@@ -8,25 +8,21 @@
 
 <script>
 import Container from '@/components/Container/Container.vue';
-import {props} from '../config';
-import items from '../helpers/items';
-import i18n from '../helpers/i18n';
+import SelectReviewerListPanel from '@/components/ListPanel/users/SelectReviewerListPanel.vue';
+import {propsSelectReviewerListPanel} from '../config';
 
 export default {
 	extends: Container,
+	components: {
+		SelectReviewerListPanel
+	},
 	data() {
 		return {
 			components: {
 				example: {
-					...props,
+					...propsSelectReviewerListPanel,
 					id: 'example',
-					items: items,
-					canOrder: true,
-					title: 'List Panel with Orderer',
-					i18n: {
-						...props.i18n,
-						...i18n.orderable
-					}
+					title: 'Select Reviewer List Panel'
 				}
 			}
 		};

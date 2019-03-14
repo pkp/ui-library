@@ -1,8 +1,10 @@
 <template>
-	<!-- Use the v-bind syntax to bind all props at once. -->
-	<div class="pkpListPanel pkpListPanel--submissions" :class="classes">
+	<div class="pkpListPanel--submissions" :class="classes">
+
+		<!-- Header -->
 		<pkp-header>
 			{{ title }}
+			<spinner v-if="isLoading" />
 			<template slot="actions">
 				<search
 					:searchPhrase="searchPhrase"
@@ -25,8 +27,16 @@
 				/>
 			</template>
 		</pkp-header>
+
+		<!-- Body of the panel, including items and sidebar -->
 		<div class="pkpListPanel__body -pkpClearfix">
-			<div v-if="filters.length" class="pkpListPanel__sidebar" :class="{'-isVisible': isSidebarVisible}">
+
+			<!-- Filters in the sidebar -->
+			<div v-if="filters.length" ref="sidebar" class="pkpListPanel__sidebar" :class="{'-isVisible': isSidebarVisible}">
+				<pkp-header class="pkpListPanel__sidebarHeader">
+					<icon icon="filter" :inline="true" />
+					{{ i18n.filter }}
+				</pkp-header>
 				<div v-for="(filterSet, index) in filters" :key="index" class="pkpListPanel__filterSet">
 					<pkp-header v-if="filterSet.heading">
 						{{ filterSet.heading }}
@@ -37,12 +47,16 @@
 						v-bind="filter"
 						:isFilterActive="isFilterActive(filter.param, filter.value)"
 						:i18n="i18n"
-						@add-filter="addFilter"
+						@add-filter="addSubmissionFilter"
 						@remove-filter="removeFilter"
 					/>
 				</div>
 			</div>
+
+			<!-- Content -->
 			<div class="pkpListPanel__content" aria-live="polite">
+
+				<!-- Items -->
 				<template v-if="items.length">
 					<submissions-list-item
 						v-for="item in items"
@@ -56,11 +70,21 @@
 						@addFilter="addFilter"
 					/>
 				</template>
+
+				<!-- Loading indicator when loading and no items exist -->
+				<div v-else-if="isLoading" class="pkpListPanel__empty">
+					<spinner />
+					{{ i18n.loading }}
+				</div>
+
+				<!-- Indicator when no items exist -->
 				<div v-else class="pkpListPanel__empty">
 					{{ i18n.empty }}
 				</div>
 			</div>
 		</div>
+
+		<!-- Footer -->
 		<div v-if="lastPage > 1" class="pkpListPanel__footer">
 			<pagination
 				:currentPage="currentPage"
@@ -129,6 +153,29 @@ export default {
 				pkp.const.ROLE_ID_ASSISTANT,
 				pkp.const.ROLE_ID_AUTHOR
 			]);
+		}
+	},
+	methods: {
+		/**
+		 * Wrapper for ListPanel.addFilter which removes other filters when
+		 * the isIncomplete filter is added, and removes the isIncomplete filter
+		 * when other filters are added.
+		 *
+		 * @param String param
+		 * @param mixed value
+		 */
+		addSubmissionFilter(param, value) {
+			// Don't allow other filters to be active when the
+			// isIncomplete filter is active
+			if (param === 'isIncomplete') {
+				this.activeFilters = {isIncomplete: [value]};
+				this.get();
+			} else {
+				if (Object.keys(this.activeFilters).includes('isIncomplete')) {
+					delete this.activeFilters.isIncomplete;
+				}
+				this.addFilter(param, value);
+			}
 		}
 	}
 };

@@ -24,7 +24,6 @@ import ComponentList from './docs/components/List/ComponentList.vue';
 import ComponentListPanel from './docs/components/ListPanel/ComponentListPanel.vue';
 import ComponentMultilingualProgress from './docs/components/MultilingualProgress/ComponentMultilingualProgress.vue';
 import ComponentOrderer from './docs/components/Orderer/ComponentOrderer.vue';
-import ComponentSelectListPanel from './docs/components/SelectListPanel/ComponentSelectListPanel.vue';
 import ComponentContainer from './docs/components/Container/ComponentContainer.vue';
 import ComponentTab from './docs/components/Tab/ComponentTab.vue';
 import ComponentTooltip from './docs/components/Tooltip/ComponentTooltip.vue';
@@ -53,6 +52,11 @@ export default new Router({
 			path: '/component/Button/:example?',
 			name: 'Button',
 			component: ComponentButton
+		},
+		{
+			path: '/component/Container/:example?',
+			name: 'Container',
+			component: ComponentContainer
 		},
 		{
 			path: '/component/Form/fields/FieldArchivingPn/:example?',
@@ -158,16 +162,6 @@ export default new Router({
 			path: '/component/Orderer/:example?',
 			name: 'Orderer',
 			component: ComponentOrderer
-		},
-		{
-			path: '/component/SelectListPanel/:example?',
-			name: 'SelectListPanel',
-			component: ComponentSelectListPanel
-		},
-		{
-			path: '/component/Container/:example?',
-			name: 'Container',
-			component: ComponentContainer
 		},
 		{
 			path: '/component/Tab/:example?',

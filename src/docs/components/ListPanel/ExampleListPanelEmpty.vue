@@ -1,19 +1,18 @@
 <script>
 import Example from '@/docs/Example.vue';
-import ListPanel from './previews/PreviewListPanelNotice.vue';
-import fileContent from '!raw-loader!./previews/PreviewListPanelNotice.vue';
+import PreviewListPanelEmpty from './previews/PreviewListPanelEmpty.vue';
+import fileContent from '!raw-loader!./previews/PreviewListPanelEmpty.vue';
 import config from './config';
 
 export default {
 	extends: Example,
 	components: {
-		ListPanel
+		PreviewListPanelEmpty
 	},
 	data() {
 		return {
 			...config,
-			title: 'ListPanel With Notice',
-			component: 'list-panel',
+			component: 'preview-list-panel-empty',
 			template: this.extractTemplate(fileContent)
 		};
 	}

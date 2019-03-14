@@ -1,8 +1,12 @@
 import submissionsListPanel from './helpers/submissionsListPanel';
-import catalogSubmissionsListPanel from './helpers/catalogSubmissionsListPanel';
+import catalogListPanel from './helpers/catalogListPanel';
+import selectReviewerListPanel from './helpers/selectReviewerListPanel';
+import i18n from './helpers/i18n';
 
 export let props = {
 	apiUrl: '',
+	canSelect: false,
+	canSelectAll: false,
 	count: 20,
 	filters: [],
 	getParams: {},
@@ -11,10 +15,18 @@ export let props = {
 	items: [],
 	itemsMax: 0,
 	lazyLoad: false,
+	description: '',
 	offset: 0,
 	searchPhrase: '',
+	selected: [],
 	title: 'List Panel',
-	i18n: {}
+	i18n: {
+		...i18n.filter,
+		...i18n.search,
+		empty: 'No items found',
+		loading: 'Loading',
+		selectAllLabel: 'Select all'
+	}
 };
 
 export const propDocs = [
@@ -22,6 +34,16 @@ export const propDocs = [
 		key: 'apiUrl',
 		description:
 			'Optional. If present, searching, filtering and other tasks will be performed through a `GET` request to this URL.'
+	},
+	{
+		key: 'canSelect',
+		description:
+			'Can items in this list be selected? See [List Panel with Select](/#/component/ListPanel/ExampleListPanelSelect).'
+	},
+	{
+		key: 'canSelectAll',
+		description:
+			'If `true`, a checkbox for selecting all items will appear above the list. See [List Panel with Select](/#/component/ListPanel/ExampleListPanelSelect).'
 	},
 	{
 		key: 'count',
@@ -62,6 +84,10 @@ export const propDocs = [
 		description: 'If `true`, it will call `ListPanel.get()` when mounted.'
 	},
 	{
+		key: 'description',
+		description: 'A description that can be added below the header.'
+	},
+	{
 		key: 'offset',
 		description: 'Tracks the number of items visible for load more requests.'
 	},
@@ -69,6 +95,21 @@ export const propDocs = [
 		key: 'searchPhrase',
 		description:
 			'Modifying this property will automatically trigger a `GET` request if an `apiUrl` is set.'
+	},
+	{
+		key: 'selected',
+		description:
+			'An array of items that should be selected. `canSelect` must be set to `true`. See [List Panel with Select](/#/component/ListPanel/ExampleListPanelSelect).'
+	},
+	{
+		key: 'selectorName',
+		description:
+			'Optional. The name of the selection `<input>` field. See [List Panel with Select](/#/component/ListPanel/ExampleListPanelSelect).'
+	},
+	{
+		key: 'selectorType',
+		description:
+			'Whether to use a `checkbox` or `radio` input field for selection. See [List Panel with Select](/#/component/ListPanel/ExampleListPanelSelect). Default is `checkbox`.'
 	}
 ];
 
@@ -130,19 +171,17 @@ export const propsDocsSubmissionsListPanel = [
 ];
 
 /**
- * CatalogSubmissionsListPanel (OMP)
+ * CatalogListPanel (OMP)
  *
- * Data and documentation for the CatalogSubmissionsListPanel component, which
+ * Data and documentation for the CatalogListPanel component, which
  * extends the base ListPanel.
  */
-export const dataCatalogSubmissionsListPanel = {
-	...catalogSubmissionsListPanel,
-	catalogEntryUrl: 'https://example.org',
-	catalogSortBy: 'datePublished', // ORDERBY_DATE_PUBLISHED
-	catalogSortDir: 1 // SORT_DIRECTION_ASC
+export const propsCatalogListPanel = {
+	...props,
+	...catalogListPanel
 };
 
-export const dataDocsCatalogSubmissionsListPanel = [
+export const propsDocsCatalogListPanel = [
 	{
 		key: 'catalogEntryUrl',
 		description:
@@ -165,12 +204,53 @@ export const dataDocsCatalogSubmissionsListPanel = [
 	}
 ];
 
+/**
+ * SelectSubmissionsListPanel
+ *
+ * Props for the SelectSubmissionsListPanel component
+ */
+export const propsSelectSubmissionsListPanel = {
+	...props,
+	...submissionsListPanel,
+	canSelect: true,
+	canSelectAll: true,
+	selectorName: 'submissionIds[]',
+	i18n: {
+		...props.i18n,
+		...i18n.search,
+		...i18n.selectSubmissionsListPanel
+	}
+};
+
+/**
+ * SelectReviewerListPanel
+ *
+ * Props for the SelectReviewerListPanel component
+ */
+export const propsSelectReviewerListPanel = {
+	...props,
+	...selectReviewerListPanel,
+	canSelect: true,
+	canSelectAll: true,
+	selectorName: 'reviewerId',
+	selectorType: 'radio',
+	i18n: {
+		...props.i18n,
+		...i18n.expandable,
+		...i18n.filter,
+		...i18n.pagination,
+		...i18n.search,
+		...i18n.selectReviewerListPanel
+	}
+};
+
 export default {
 	props,
 	propDocs,
 	dataDocs,
 	propsSubmissionsListPanel,
 	propsDocsSubmissionsListPanel,
-	dataCatalogSubmissionsListPanel,
-	dataDocsCatalogSubmissionsListPanel
+	propsCatalogListPanel,
+	propsDocsCatalogListPanel,
+	propsSelectSubmissionsListPanel
 };

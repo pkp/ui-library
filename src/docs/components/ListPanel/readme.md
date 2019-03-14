@@ -90,8 +90,8 @@ Use the <kbd>TAB</kbd> key to navigate the list with your keyboard to test your 
 A `ListPanelItem` can have a summary and detailed view with a button to open the detailed view. The **With Expander** example shows how to create this effect. It requires a `ListPanelItem` with the following markup:
 
 ```html
-<!-- Add the .pkpListPanelItem--hasSummary class to the outer wrapper -->
-<li class="pkpListPanelItem pkpListPanelItem--hasSummary">
+<!-- Add the -hasSummary class to the outer wrapper -->
+<li class="pkpListPanelItem -hasSummary">
 
 	<!-- Nest the summary view in a .pkpListPanelItem__summary class -->
 	<div class="pkpListPanelItem__summary">
