@@ -79,7 +79,7 @@ export default {
 		 *
 		 * @return array
 		 */
-		groupsInPage: function() {
+		groupsInPage() {
 			return this.groups.filter(
 				group => group.pageId === this.id && this.shouldShowGroup(group)
 			);
@@ -90,7 +90,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		hasFooter: function() {
+		hasFooter() {
 			return (
 				this.previousButton ||
 				this.submitButton ||
@@ -103,7 +103,7 @@ export default {
 		 * When saving, set the focus to the button wrapper element so it doesn't
 		 * get dropped as the dom updates
 		 */
-		isSaving: function() {
+		isSaving() {
 			this.$refs.buttons.focus();
 		}
 	},
@@ -124,14 +124,14 @@ export default {
 		/**
 		 * Submit the form page
 		 */
-		submit: function() {
+		submit() {
 			this.$emit('pageSubmitted', this.id);
 		},
 
 		/**
 		 * Request the previous page
 		 */
-		previousPage: function() {
+		previousPage() {
 			this.$emit('previousPage', this.id);
 		},
 

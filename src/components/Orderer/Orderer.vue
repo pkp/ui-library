@@ -35,7 +35,7 @@ export default {
 		/**
 		 * Emit an event to move this item up
 		 */
-		up: function() {
+		up() {
 			this.$emit('up', this.itemId);
 			this.$nextTick(() => {
 				this.setFocus('up');
@@ -45,7 +45,7 @@ export default {
 		/**
 		 * Emit an event to move this item down
 		 */
-		down: function() {
+		down() {
 			this.$emit('down', this.itemId);
 			this.$nextTick(() => {
 				this.setFocus('down');

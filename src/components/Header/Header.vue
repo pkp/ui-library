@@ -12,7 +12,7 @@
 <script>
 export default {
 	computed: {
-		hasActions: function() {
+		hasActions() {
 			return this.$slots.actions;
 		}
 	}

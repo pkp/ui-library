@@ -137,7 +137,7 @@ export default {
 		/**
 		 * Can the current user filter the list?
 		 */
-		currentUserCanFilter: function() {
+		currentUserCanFilter() {
 			return pkp.userHasRole([
 				pkp.const.ROLE_ID_MANAGER,
 				pkp.const.ROLE_ID_SUB_EDITOR,
@@ -148,7 +148,7 @@ export default {
 		/**
 		 * Does the current user have a role which can create a new submission?
 		 */
-		currentUserCanAddSubmission: function() {
+		currentUserCanAddSubmission() {
 			return pkp.userHasRole([
 				pkp.const.ROLE_ID_MANAGER,
 				pkp.const.ROLE_ID_SUB_EDITOR,

@@ -26,7 +26,7 @@ export default {
 		inline: Boolean
 	},
 	computed: {
-		classes: function() {
+		classes() {
 			let classes = [];
 			if (this.icon !== 'orcid') {
 				classes.push('fa-' + this.icon);

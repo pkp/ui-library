@@ -12,7 +12,7 @@ export default {
 		LicenseForm,
 		ThemeForm
 	},
-	data: function() {
+	data() {
 		return {
 			components: []
 		};
@@ -65,7 +65,7 @@ export default {
 			}
 		}
 	},
-	mounted: function() {
+	mounted() {
 		/**
 		 * Listen for changes in the supported form languages and update forms
 		 */

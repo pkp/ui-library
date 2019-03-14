@@ -65,7 +65,7 @@ export default {
 		},
 		prefix: String
 	},
-	data: function() {
+	data() {
 		return {
 			inputStyles: {},
 			prefixStyles: {}
@@ -77,7 +77,7 @@ export default {
 		 *
 		 * @return array
 		 */
-		classes: function() {
+		classes() {
 			return ['pkpFormField--size' + this.size];
 		},
 
@@ -86,7 +86,7 @@ export default {
 		 *
 		 * @return array
 		 */
-		controlClasses: function() {
+		controlClasses() {
 			let classes = [];
 			if (this.isMultilingual && this.locales.length > 1) {
 				classes.push('pkpFormField__control--hasMultilingualIndicator');
@@ -101,11 +101,11 @@ export default {
 		/**
 		 * Set focus to the control input
 		 */
-		setFocus: function() {
+		setFocus() {
 			this.$refs.input.focus();
 		}
 	},
-	mounted: function() {
+	mounted() {
 		/**
 		 * Increase input padding to account for a prefix if one exists and truncate
 		 * prefix if it takes up the whole input area.

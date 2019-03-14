@@ -94,7 +94,7 @@ export default {
 		 *
 		 * @return array
 		 */
-		classes: function() {
+		classes() {
 			let classes = Filter.computed.classes.apply(this);
 			if (this.isVisible) {
 				classes.push('-isVisible');
@@ -107,7 +107,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		sliderRef: function() {
+		sliderRef() {
 			return 'slider' + this.param;
 		}
 	},
@@ -116,7 +116,7 @@ export default {
 		 * Enable the filter and emit an event to update active
 		 * filters with the current value
 		 */
-		enable: function() {
+		enable() {
 			this.$emit('add-filter', this.param, this.value);
 		},
 
@@ -134,7 +134,7 @@ export default {
 		/**
 		 * @copydoc Filter::remove()
 		 */
-		remove: function() {
+		remove() {
 			this.$emit('remove-filter', this.param);
 		}
 	},

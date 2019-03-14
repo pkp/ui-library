@@ -181,7 +181,7 @@ export default {
 		 *
 		 * @return boolean
 		 */
-		canOrderCurrent: function() {
+		canOrderCurrent() {
 			for (let item of this.localItems) {
 				for (let feature of item.featured) {
 					if (
@@ -217,7 +217,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		orderingLabel: function() {
+		orderingLabel() {
 			return this.isOrdering
 				? this.i18n.saveFeatureOrder
 				: this.i18n.orderFeatures;
@@ -229,7 +229,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		featuredLabel: function() {
+		featuredLabel() {
 			if (this.filterAssocType === pkp.const.ASSOC_TYPE_CATEGORY) {
 				return this.i18n.featuredCategory;
 			} else if (this.filterAssocType === pkp.const.ASSOC_TYPE_SERIES) {
@@ -244,7 +244,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		newReleaseLabel: function() {
+		newReleaseLabel() {
 			if (this.filterAssocType === pkp.const.ASSOC_TYPE_CATEGORY) {
 				return this.i18n.newReleaseCategory;
 			} else if (this.filterAssocType === pkp.const.ASSOC_TYPE_SERIES) {
@@ -259,7 +259,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		orderingDescription: function() {
+		orderingDescription() {
 			let filter = null;
 			if (this.filterAssocType === pkp.const.ASSOC_TYPE_CATEGORY) {
 				filter = this.getFilter('categoryIds', this.filterAssocId);
@@ -282,7 +282,7 @@ export default {
 		 *
 		 * @return int
 		 */
-		filterAssocType: function() {
+		filterAssocType() {
 			if (this.activeFilters.hasOwnProperty('categoryIds')) {
 				return pkp.const.ASSOC_TYPE_CATEGORY;
 			} else if (this.activeFilters.hasOwnProperty('seriesIds')) {
@@ -298,7 +298,7 @@ export default {
 		 *
 		 * @return int
 		 */
-		filterAssocId: function() {
+		filterAssocId() {
 			if (this.activeFilters.hasOwnProperty('categoryIds')) {
 				return this.activeFilters.categoryIds;
 			} else if (this.activeFilters.hasOwnProperty('seriesIds')) {
@@ -357,7 +357,7 @@ export default {
 		/**
 		 * Open the new catalog entry modal
 		 */
-		openNewEntryModal: function() {
+		openNewEntryModal() {
 			if (!this.addUrl) {
 				return;
 			}
@@ -380,7 +380,7 @@ export default {
 		 * Set the sort order for get requests. This can change depending on
 		 * whether the full catalog or a series/category is being viewed.
 		 */
-		updateSortOrder: function() {
+		updateSortOrder() {
 			let getParams = {...this.getParams};
 			if (this.activeFilters.hasOwnProperty('categoryIds')) {
 				const category = this.getFilter(
@@ -407,7 +407,7 @@ export default {
 		 * Update the order sequence property for items in this list based on
 		 * the new order of items
 		 */
-		setItemOrderSequence: function() {
+		setItemOrderSequence() {
 			const featured = [];
 			let seq = 0;
 			for (const item of this.items) {
@@ -441,13 +441,13 @@ export default {
 				error: function(r) {
 					self.ajaxErrorCallback(r);
 				},
-				complete: function() {
+				complete() {
 					self.isLoading = false;
 				}
 			});
 		}
 	},
-	created: function() {
+	created() {
 		/**
 		 * When a filter is set, update the sort order to match the setting of
 		 * the series or catalog
@@ -462,7 +462,7 @@ export default {
 			this.updateSortOrder();
 		});
 	},
-	mounted: function() {
+	mounted() {
 		/**
 		 * Update when a new entry has been added to the catalog
 		 */

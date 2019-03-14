@@ -13,14 +13,14 @@
 export default {
 	name: 'List',
 	computed: {
-		classes: function() {
+		classes() {
 			let classes = [];
 			if (this.hasValueSlot) {
 				classes.push('listItem--hasLabel');
 			}
 			return classes;
 		},
-		hasValueSlot: function() {
+		hasValueSlot() {
 			return this.$slots.value;
 		}
 	}

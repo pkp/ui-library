@@ -95,7 +95,7 @@ export default {
 		Icon,
 		Orderer
 	},
-	data: function() {
+	data() {
 		return {
 			isSaving: false
 		};
@@ -104,7 +104,7 @@ export default {
 		/**
 		 * Map the submission id to the list item id
 		 */
-		id: function() {
+		id() {
 			return this.item.id;
 		},
 
@@ -114,7 +114,7 @@ export default {
 		 *
 		 * @return bool
 		 */
-		isFeatured: function() {
+		isFeatured() {
 			if (!this.item.hasOwnProperty('featured')) {
 				return false;
 			}
@@ -133,7 +133,7 @@ export default {
 		 *
 		 * @return bool
 		 */
-		isNewRelease: function() {
+		isNewRelease() {
 			if (!this.item.hasOwnProperty('newRelease')) {
 				return false;
 			}
@@ -150,7 +150,7 @@ export default {
 		/**
 		 * Toggle the checkbox when clicked
 		 */
-		toggleFeatured: function() {
+		toggleFeatured() {
 			const isFeatured = this.item.featured.find(feature => {
 				return feature.assoc_type === this.filterAssocType;
 			});
@@ -171,7 +171,7 @@ export default {
 		/**
 		 * Toggle the checkbox when clicked
 		 */
-		toggleNewRelease: function() {
+		toggleNewRelease() {
 			const matchingNewReleases = this.item.newRelease.find(newRelease => {
 				return newRelease.assoc_type === this.filterAssocType;
 			});
@@ -193,7 +193,7 @@ export default {
 		/**
 		 * Post updates to the featured or new release status of a submission
 		 */
-		saveDisplayFlags: function() {
+		saveDisplayFlags() {
 			this.isLoading = true;
 
 			const self = this;
@@ -219,7 +219,7 @@ export default {
 						self.$emit('update:item', {...self.item, newRelease: r.newRelease});
 					}
 				},
-				complete: function() {
+				complete() {
 					self.isLoading = false;
 				}
 			});
@@ -228,7 +228,7 @@ export default {
 		/**
 		 * Launch a modal to view the catalog entry for this item
 		 */
-		viewCatalogEntry: function() {
+		viewCatalogEntry() {
 			var opts = {
 				title: this.i18n.catalogEntry,
 				url: this.catalogEntryUrl.replace('__id__', this.item.id),

@@ -45,7 +45,7 @@ export default {
 		 * change.
 		 */
 		currentValue: {
-			get: function() {
+			get() {
 				return this.isMultilingual ? this.value[this.localeKey] : this.value;
 			},
 			set: function(newVal) {
@@ -60,7 +60,7 @@ export default {
 		/**
 		 *
 		 */
-		errors: function() {
+		errors() {
 			if (!Object.keys(this.allErrors).includes(this.name)) {
 				return [];
 			}
@@ -81,7 +81,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		localizedName: function() {
+		localizedName() {
 			return this.isMultilingual ? this.name + '-' + this.localeKey : this.name;
 		},
 
@@ -90,7 +90,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		controlId: function() {
+		controlId() {
 			return this.compileId('control');
 		},
 
@@ -99,7 +99,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		describedByTooltipId: function() {
+		describedByTooltipId() {
 			return this.compileId('tooltip');
 		},
 
@@ -108,7 +108,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		describedByHelpId: function() {
+		describedByHelpId() {
 			return this.compileId('help');
 		},
 
@@ -117,7 +117,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		describedByDescriptionId: function() {
+		describedByDescriptionId() {
 			return this.compileId('description');
 		},
 
@@ -126,7 +126,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		describedByErrorId: function() {
+		describedByErrorId() {
 			return this.compileId('error');
 		},
 
@@ -135,7 +135,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		multilingualProgressId: function() {
+		multilingualProgressId() {
 			return this.compileId('multingualProgress');
 		},
 
@@ -146,7 +146,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		describedByIds: function() {
+		describedByIds() {
 			let ids = [];
 			if (this.description) {
 				ids.push(this.describedByDescriptionId);
@@ -174,7 +174,7 @@ export default {
 		 *
 		 * @return Number
 		 */
-		multilingualFieldsCompleted: function() {
+		multilingualFieldsCompleted() {
 			if (!this.isMultilingual) {
 				return 0;
 			}
@@ -191,7 +191,7 @@ export default {
 		 *
 		 * @return Boolean
 		 */
-		isPrimaryLocale: function() {
+		isPrimaryLocale() {
 			return !this.isMultilingual || this.localeKey === this.primaryLocale;
 		},
 
@@ -203,7 +203,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		localeLabel: function() {
+		localeLabel() {
 			if (!this.isMultilingual || this.isPrimaryLocale) {
 				return '';
 			}
@@ -217,7 +217,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		multilingualLabel: function() {
+		multilingualLabel() {
 			return this.__('multilingualLabel', {
 				label: this.label,
 				localeName: this.localeLabel

@@ -25,7 +25,7 @@ export default {
 		ListItem,
 		Orderer
 	},
-	data: function() {
+	data() {
 		return {
 			items: ['One', 'Two', 'Three'],
 			isDraggable: false,

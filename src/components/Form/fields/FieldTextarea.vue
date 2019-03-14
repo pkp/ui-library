@@ -60,7 +60,7 @@ export default {
 		 *
 		 * @return array
 		 */
-		classes: function() {
+		classes() {
 			return ['pkpFormField--' + this.size];
 		}
 	}

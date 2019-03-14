@@ -200,7 +200,7 @@ export default {
 		 *
 		 * @return array
 		 */
-		classes: function() {
+		classes() {
 			let classes = ListPanelItem.computed.classes.apply(this);
 			classes.push('-hasSelector');
 			if (this.currentlyAssigned) {
@@ -214,7 +214,7 @@ export default {
 		 *
 		 * @return int
 		 */
-		daysSinceLastAssignment: function() {
+		daysSinceLastAssignment() {
 			if (!this.item.dateLastReviewAssignment) {
 				return 0;
 			}
@@ -230,7 +230,7 @@ export default {
 		 *
 		 * @return string "X days ago"
 		 */
-		daysSinceLastAssignmentString: function() {
+		daysSinceLastAssignmentString() {
 			if (!this.daysSinceLastAssignment) {
 				return this.i18n.neverAssigned;
 			}
@@ -248,7 +248,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		interestsString: function() {
+		interestsString() {
 			if (!this.item.interests || !this.item.interests.length) {
 				return '';
 			}
@@ -267,7 +267,7 @@ export default {
 		 *
 		 * @return boolean
 		 */
-		localCanSelect: function() {
+		localCanSelect() {
 			if (this.currentlyAssigned) {
 				return false;
 			}
@@ -285,7 +285,7 @@ export default {
 		 *
 		 * @return array
 		 */
-		stars: function() {
+		stars() {
 			let stars = [];
 			if (this.item.reviewerRating) {
 				for (let i = 0; i < 5; i++) {
@@ -299,7 +299,7 @@ export default {
 		/**
 		 * Unlock a locked assignment
 		 */
-		unlockAssignment: function() {
+		unlockAssignment() {
 			this.isWarningBypassed = true;
 		}
 	}

@@ -35,7 +35,7 @@ export default {
 		 *
 		 * @return Array
 		 */
-		classes: function() {
+		classes() {
 			let classes = [];
 			if (this.count === this.total) {
 				classes.push('multilingualProgress--isComplete');
@@ -52,7 +52,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		tooltip: function() {
+		tooltip() {
 			return this.__('multilingualProgress', {
 				count: this.count,
 				total: this.total

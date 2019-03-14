@@ -47,7 +47,7 @@ export default {
 			this.components[key] = component;
 		}
 	},
-	mounted: function() {
+	mounted() {
 		/**
 		 * Listen for changes in the supported form languages and update
 		 * form components

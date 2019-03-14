@@ -93,13 +93,13 @@ export default {
 		 *
 		 * @return array
 		 */
-		fieldsInGroup: function() {
+		fieldsInGroup() {
 			return this.fields.filter(
 				field => field.groupId === this.id && this.shouldShowField(field)
 			);
 		},
 
-		hasErrors: function() {
+		hasErrors() {
 			for (var fieldName in this.fieldsInGroup) {
 				if (fieldName in this.errors) {
 					return true;

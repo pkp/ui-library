@@ -111,7 +111,7 @@ export default {
 	props: {
 		baseUrl: String
 	},
-	data: function() {
+	data() {
 		return {
 			altTextValue: '',
 			initialValue: null
@@ -123,7 +123,7 @@ export default {
 		 *
 		 * @return boolean
 		 */
-		isInitialValue: function() {
+		isInitialValue() {
 			return (
 				!!this.currentValue &&
 				!!this.initialValue &&
@@ -138,7 +138,7 @@ export default {
 		 *
 		 * @return @string
 		 */
-		thumbnail: function() {
+		thumbnail() {
 			if (this.uploadFile) {
 				return this.uploadFile.dataURL;
 			} else if (this.currentValue && this.currentValue.uploadName) {
@@ -152,7 +152,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		altTextId: function() {
+		altTextId() {
 			return this.compileId('altText');
 		},
 
@@ -162,7 +162,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		altTextDescriptionId: function() {
+		altTextDescriptionId() {
 			return this.compileId('altTextDescription');
 		}
 	},
@@ -231,7 +231,7 @@ export default {
 			});
 		}
 	},
-	mounted: function() {
+	mounted() {
 		/**
 		 * Add attributes to the hidden file input field so that labels and
 		 * descriptions can be accessed by those using assistive devices.

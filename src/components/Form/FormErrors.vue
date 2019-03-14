@@ -34,7 +34,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		message: function() {
+		message() {
 			if (Object.keys(this.errors).length === 1) {
 				return this.i18n.errorOne;
 			} else {
@@ -51,7 +51,7 @@ export default {
 		 *
 		 * @return array
 		 */
-		errorList: function() {
+		errorList() {
 			return Object.keys(this.errors).map(fieldName => {
 				const field = this.fields.find(field => field.name === fieldName);
 				const label = field ? field.label : fieldName;
@@ -74,7 +74,7 @@ export default {
 		/**
 		 * Emit an event to display the next error in the list
 		 */
-		showNextError: function() {
+		showNextError() {
 			this.showError(Object.keys(this.errors)[0]);
 		},
 

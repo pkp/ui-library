@@ -56,7 +56,7 @@ export default {
 		 *
 		 * @return array
 		 */
-		classes: function() {
+		classes() {
 			let classes = ['pkpFilter'];
 			if (!this.isFilterActive) {
 				classes.push('pkpFilter--disabled');
@@ -68,7 +68,7 @@ export default {
 		/**
 		 * Add or remove a filter
 		 */
-		toggle: function() {
+		toggle() {
 			if (this.isFilterActive) {
 				this.remove();
 			} else {
@@ -79,7 +79,7 @@ export default {
 		/**
 		 * Remove a filter
 		 */
-		remove: function() {
+		remove() {
 			this.$emit('remove-filter', this.param, this.value);
 		}
 	}

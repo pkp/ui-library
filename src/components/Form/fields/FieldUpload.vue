@@ -100,7 +100,7 @@ export default {
 		options: Object,
 		csrfToken: String
 	},
-	data: function() {
+	data() {
 		return {
 			initialValue: null,
 			uploadFile: null
@@ -112,7 +112,7 @@ export default {
 		 *
 		 * @return boolean
 		 */
-		isInitialValue: function() {
+		isInitialValue() {
 			return (
 				!!this.currentValue &&
 				!!this.initialValue &&
@@ -125,7 +125,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		fileName: function() {
+		fileName() {
 			return this.uploadFile
 				? this.uploadFile.upload.filename
 				: this.currentValue;
@@ -136,7 +136,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		controlId: function() {
+		controlId() {
 			return this.compileId('control');
 		},
 
@@ -147,7 +147,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		dropzoneClickableId: function() {
+		dropzoneClickableId() {
 			return this.compileId('clickable');
 		},
 
@@ -159,7 +159,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		dropzoneId: function() {
+		dropzoneId() {
 			return this.compileId('dropzone');
 		},
 
@@ -169,7 +169,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		dropzoneHiddenFileId: function() {
+		dropzoneHiddenFileId() {
 			return this.compileId('hiddenFileId');
 		},
 
@@ -180,7 +180,7 @@ export default {
 		 *
 		 * @return object
 		 */
-		dropzoneOptions: function() {
+		dropzoneOptions() {
 			return {
 				method: 'POST',
 				thumbnailWidth: 240,
@@ -221,7 +221,7 @@ export default {
 		/**
 		 * Clear the current value
 		 */
-		clear: function() {
+		clear() {
 			this.$emit('change', {
 				name: this.name,
 				value: null,
@@ -236,7 +236,7 @@ export default {
 		/**
 		 * Revert to the initialValue
 		 */
-		revert: function() {
+		revert() {
 			this.$emit('change', {
 				name: this.name,
 				value: this.initialValue,
@@ -279,7 +279,7 @@ export default {
 		 *
 		 * @see https://www.dropzonejs.com/#event-removedfile
 		 */
-		onRemoveFile: function() {
+		onRemoveFile() {
 			this.uploadFile = null;
 			this.setErrors([]);
 		},
@@ -324,7 +324,7 @@ export default {
 		 * position will be dropped for someone using a keyboard or
 		 * assistive technology.
 		 */
-		setFocusToControl: function() {
+		setFocusToControl() {
 			this.$nextTick(() => {
 				let focusable = this.$refs.control.querySelectorAll('input,button');
 				if (focusable.length) {
@@ -346,7 +346,7 @@ export default {
 			this.setFocusToControl();
 		}
 	},
-	mounted: function() {
+	mounted() {
 		/**
 		 * Add attributes to the hidden file input field so that labels and
 		 * descriptions can be accessed by those using assistive devices.

@@ -90,7 +90,7 @@ export default {
 			}
 		}
 	},
-	data: function() {
+	data() {
 		return {
 			isFocused: false
 		};
@@ -122,7 +122,7 @@ export default {
 		 *
 		 * @return Number
 		 */
-		id: function() {
+		id() {
 			return this.item.id || 0;
 		},
 
@@ -152,21 +152,21 @@ export default {
 		/**
 		 * Emit an event to move this item up in the order
 		 */
-		orderUp: function() {
+		orderUp() {
 			this.$emit('order-up', this.item);
 		},
 
 		/**
 		 * Emit an event to move this item down in the order
 		 */
-		orderDown: function() {
+		orderDown() {
 			this.$emit('order-down', this.item);
 		},
 
 		/**
 		 * Toggle the expanded or summary views
 		 */
-		toggleExpanded: function() {
+		toggleExpanded() {
 			this.isExpanded = !this.isExpanded;
 		}
 	}

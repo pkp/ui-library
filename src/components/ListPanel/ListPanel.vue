@@ -267,7 +267,7 @@ export default {
 		 *
 		 * @return Array
 		 */
-		classes: function() {
+		classes() {
 			let classes = ['pkpListPanel'];
 			if (this.isOrdering) {
 				classes.push('-isOrdering');
@@ -283,7 +283,7 @@ export default {
 		 *
 		 * @see https://github.com/SortableJS/Vue.Draggable
 		 */
-		draggableOptions: function() {
+		draggableOptions() {
 			return {
 				disabled: !this.isOrdering
 			};
@@ -294,7 +294,7 @@ export default {
 		 *
 		 * @return Boolean
 		 */
-		hasFooter: function() {
+		hasFooter() {
 			return this.$slots.footer;
 		},
 
@@ -396,7 +396,7 @@ export default {
 						itemsMax: r.itemsMax
 					});
 				},
-				complete: function() {
+				complete() {
 					// Only process latest request response
 					if (self.latestGetRequest !== this._uuid) {
 						return;
@@ -421,7 +421,7 @@ export default {
 		/**
 		 * Toggle sidebar visibility
 		 */
-		toggleSidebar: function() {
+		toggleSidebar() {
 			this.activeFilters = {};
 			this.$emit('set', this.id, {
 				isSidebarVisible: !this.isSidebarVisible
@@ -540,7 +540,7 @@ export default {
 		/**
 		 * Select or de-select all options
 		 */
-		toggleSelectAll: function() {
+		toggleSelectAll() {
 			let selected;
 			if (this.selected.length < this.items.length) {
 				this.isSelectAllOn = true;
@@ -555,7 +555,7 @@ export default {
 		/**
 		 * Toggle the ordering status
 		 */
-		toggleOrdering: function() {
+		toggleOrdering() {
 			if (this.isOrdering) {
 				this.setItemOrderSequence();
 			}
@@ -619,7 +619,7 @@ export default {
 		/**
 		 * Cancel changes made by ordering items
 		 */
-		cancelOrdering: function() {
+		cancelOrdering() {
 			this.isOrdering = false;
 			this.$emit('set', this.id, {offset: 0});
 			this.$nextTick(() => this.get());
@@ -707,7 +707,7 @@ export default {
 			this.isSelectAllOn = newVal.length === this.items.length;
 		}
 	},
-	mounted: function() {
+	mounted() {
 		/**
 		 * Load items into the component once the page is loaded if a lazyLoad is
 		 * requested.

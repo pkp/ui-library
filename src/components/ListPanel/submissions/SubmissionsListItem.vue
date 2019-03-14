@@ -198,7 +198,7 @@ export default {
 			required: true
 		}
 	},
-	data: function() {
+	data() {
 		return {
 			isExpanded: false,
 			mask: null,
@@ -210,7 +210,7 @@ export default {
 		/**
 		 * Map the submission id to the list item id
 		 */
-		id: function() {
+		id() {
 			return this.item.id;
 		},
 
@@ -219,7 +219,7 @@ export default {
 		 *
 		 * @return bool
 		 */
-		currentUserCanDelete: function() {
+		currentUserCanDelete() {
 			if (
 				!this.userAssignedRole(pkp.const.ROLE_ID_AUTHOR) &&
 				this.userAssignedRole([
@@ -242,7 +242,7 @@ export default {
 		 *
 		 * @return bool
 		 */
-		currentUserCanViewInfoCenter: function() {
+		currentUserCanViewInfoCenter() {
 			return this.userAssignedRole([
 				pkp.const.ROLE_ID_SITE_ADMIN,
 				pkp.const.ROLE_ID_MANAGER,
@@ -255,7 +255,7 @@ export default {
 		 *
 		 * @return bool
 		 */
-		currentUserIsReviewer: function() {
+		currentUserIsReviewer() {
 			for (var review of this.item.reviewAssignments) {
 				if (review.isCurrentUserAssigned) {
 					return true;
@@ -269,7 +269,7 @@ export default {
 		 *
 		 * @return array
 		 */
-		activeStage: function() {
+		activeStage() {
 			return this.item.stages.find(stage => {
 				return stage.isActiveStage === true;
 			});
@@ -283,7 +283,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		notice: function() {
+		notice() {
 			var notice = '';
 
 			// Notices for journal managers
@@ -352,7 +352,7 @@ export default {
 		 *
 		 * @return boolean
 		 */
-		shouldAssignEditor: function() {
+		shouldAssignEditor() {
 			return (
 				this.userAssignedRole(pkp.const.ROLE_ID_MANAGER) &&
 				this.activeStage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION &&
@@ -366,7 +366,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		currentStage: function() {
+		currentStage() {
 			switch (this.activeStage.id) {
 				case pkp.const.WORKFLOW_STAGE_ID_SUBMISSION:
 					return 'submission';
@@ -386,7 +386,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		currentStageLabel: function() {
+		currentStageLabel() {
 			if (this.item.status === 3 || this.item.status === 4) {
 				return this.item.statusLabel;
 			} else if (this.item.submissionProgress > 0) {
@@ -400,7 +400,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		currentStageDescription: function() {
+		currentStageDescription() {
 			return this.__('currentStage', {stage: this.currentStageLabel});
 		},
 
@@ -409,7 +409,7 @@ export default {
 		 *
 		 * @return int
 		 */
-		openQueryCount: function() {
+		openQueryCount() {
 			return this.activeStage.queries.filter(query => {
 				return !query.closed;
 			}).length;
@@ -421,7 +421,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		activeStageFilesLabel: function() {
+		activeStageFilesLabel() {
 			switch (this.activeStage.id) {
 				case pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW:
 				case pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW:
@@ -439,7 +439,7 @@ export default {
 		 *
 		 * @return bool
 		 */
-		isSubmissionStage: function() {
+		isSubmissionStage() {
 			return this.activeStage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION;
 		},
 
@@ -448,7 +448,7 @@ export default {
 		 *
 		 * @return bool
 		 */
-		isReviewStage: function() {
+		isReviewStage() {
 			return (
 				this.activeStage.id === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW ||
 				this.activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW
@@ -460,7 +460,7 @@ export default {
 		 *
 		 * @return array
 		 */
-		currentRoleAssignments: function() {
+		currentRoleAssignments() {
 			let roles = [];
 			this.item.stages.forEach(stage => {
 				stage.currentUserAssignedRoles.forEach(role => {
@@ -478,7 +478,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		dualWorkflowLinks: function() {
+		dualWorkflowLinks() {
 			if (
 				!this.userAssignedRole(pkp.const.ROLE_ID_AUTHOR) ||
 				!this.userAssignedRole([
@@ -501,7 +501,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		reviewerWorkflowLink: function() {
+		reviewerWorkflowLink() {
 			if (
 				!this.currentUserIsReviewer ||
 				!this.userAssignedRole([
@@ -522,7 +522,7 @@ export default {
 		 *
 		 * @return array
 		 */
-		currentReviewAssignments: function() {
+		currentReviewAssignments() {
 			if (
 				!this.item.reviewRounds.length ||
 				!this.item.reviewAssignments.length
@@ -544,7 +544,7 @@ export default {
 		 *
 		 * @return object|false False if no review assignment exists
 		 */
-		currentUserLatestReviewAssignment: function() {
+		currentUserLatestReviewAssignment() {
 			if (!this.currentUserIsReviewer) {
 				return false;
 			}
@@ -588,7 +588,7 @@ export default {
 		 *
 		 * @return int
 		 */
-		completedReviewsCount: function() {
+		completedReviewsCount() {
 			if (!this.isReviewStage) {
 				return 0;
 			}
@@ -602,7 +602,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		classMask: function() {
+		classMask() {
 			if (!this.mask) {
 				return '';
 			} else if (this.mask === 'finish') {
@@ -622,7 +622,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		responseDueLabelId: function() {
+		responseDueLabelId() {
 			return 'responseDueLabel' + this._uid;
 		},
 
@@ -632,7 +632,7 @@ export default {
 		 *
 		 * @return string
 		 */
-		reviewDueLabelId: function() {
+		reviewDueLabelId() {
 			return 'reviewDueLabel' + this._uid;
 		}
 	},
@@ -677,7 +677,7 @@ export default {
 		/**
 		 * Load a modal displaying history and notes of a submission
 		 */
-		openInfoCenter: function() {
+		openInfoCenter() {
 			var opts = {
 				title: this.item.title,
 				url: this.infoUrl.replace('__id__', this.item.id),
@@ -696,14 +696,14 @@ export default {
 		 * Reset the focus on the info center link when the modal has been
 		 * closed. This is a callback function passed into ModalHandler.js
 		 */
-		resetFocusInfoCenter: function() {
+		resetFocusInfoCenter() {
 			this.$el.querySelector('.pkpListPanelItem__openInfoCenter').focus();
 		},
 
 		/**
 		 * Load a modal displaying the assign participant options
 		 */
-		openAssignParticipant: function() {
+		openAssignParticipant() {
 			var opts = {
 				title: this.i18n.assignEditor,
 				url: this.assignParticipantUrl
@@ -724,7 +724,7 @@ export default {
 		 * Reset the focus on the assign participant button when the modal has been
 		 * closed. This is a callback function passed into ModalHandler.js
 		 */
-		resetFocusAssignParticipant: function() {
+		resetFocusAssignParticipant() {
 			this.$el
 				.querySelector('.pkpListPanelItem--submission__activity button')
 				.focus();
@@ -733,14 +733,14 @@ export default {
 		/**
 		 * Display a confirmation prompt before deleting a submission
 		 */
-		deleteSubmissionPrompt: function() {
+		deleteSubmissionPrompt() {
 			this.mask = 'confirmingDelete';
 		},
 
 		/**
 		 * Send a request to delete the submission and handle the response
 		 */
-		deleteSubmission: function() {
+		deleteSubmission() {
 			this.mask = 'deleting';
 
 			var self = this;
@@ -751,7 +751,7 @@ export default {
 					'X-Csrf-Token': this.csrfToken
 				},
 				error: this.ajaxErrorCallback,
-				success: function() {
+				success() {
 					self.mask = 'finish';
 					// Allow time for the finished CSS transition to display
 					setTimeout(function() {
@@ -759,7 +759,7 @@ export default {
 						self.cancelDeleteRequest();
 					}, 300);
 				},
-				complete: function() {
+				complete() {
 					// Reset the mask in case there is an error
 					if (self.mask === 'deleting') {
 						self.cancelDeleteRequest();
@@ -771,7 +771,7 @@ export default {
 		/**
 		 * Cancel the delete request
 		 */
-		cancelDeleteRequest: function() {
+		cancelDeleteRequest() {
 			this.mask = null;
 		}
 	},

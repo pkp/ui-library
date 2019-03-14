@@ -38,7 +38,7 @@ export default {
 		 *
 		 * @return Object
 		 */
-		primaryLocale: function() {
+		primaryLocale() {
 			return this.locales.find(locale => locale.key === this.primaryLocaleKey);
 		},
 
@@ -47,7 +47,7 @@ export default {
 		 *
 		 * @return Array
 		 */
-		additionalLocales: function() {
+		additionalLocales() {
 			return this.locales.filter(
 				locale => locale.key !== this.primaryLocaleKey
 			);

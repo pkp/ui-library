@@ -40,7 +40,7 @@ export default {
 		isLink: Boolean
 	},
 	computed: {
-		classes: function() {
+		classes() {
 			let classes = [];
 			if (this.isPrimary) {
 				classes.push('pkpButton--isPrimary');
@@ -64,10 +64,10 @@ export default {
 			}
 			this.$emit('click');
 		},
-		focus: function() {
+		focus() {
 			this.$emit('focus');
 		},
-		blur: function() {
+		blur() {
 			this.$emit('blur');
 		}
 	}

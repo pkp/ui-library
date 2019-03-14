@@ -68,7 +68,7 @@ export default {
 		action: String,
 		errors: {
 			type: Object,
-			default: function() {
+			default() {
 				return {};
 			}
 		},
@@ -81,7 +81,7 @@ export default {
 		csrfToken: String,
 		i18n: Object
 	},
-	data: function() {
+	data() {
 		return {
 			currentPage: '',
 			isSaving: false
@@ -93,7 +93,7 @@ export default {
 		 *
 		 * @return array
 		 */
-		classes: function() {
+		classes() {
 			let classes = [];
 			if (this.visibleLocales.length > 1) {
 				classes.push('pkpForm--hasManyVisibleLocales');
@@ -106,7 +106,7 @@ export default {
 		 *
 		 * @return array
 		 */
-		availableLocales: function() {
+		availableLocales() {
 			return this.hasMultilingualFields ? this.supportedFormLocales : [];
 		},
 
@@ -115,7 +115,7 @@ export default {
 		 *
 		 * @return boolean
 		 */
-		hasMultilingualFields: function() {
+		hasMultilingualFields() {
 			return !!this.fields.find(field => field.isMultilingual);
 		},
 
@@ -124,7 +124,7 @@ export default {
 		 *
 		 * @return array
 		 */
-		groupIdsWithErrors: function() {
+		groupIdsWithErrors() {
 			let groupIds = [];
 			Object.keys(this.errors).forEach(fieldName => {
 				const field = this.fields.find(field => field.name === fieldName);
@@ -140,7 +140,7 @@ export default {
 		 *
 		 * @return array
 		 */
-		pageIdsWithErrors: function() {
+		pageIdsWithErrors() {
 			let pageIds = [];
 			this.groupIdsWithErrors.forEach(groupId => {
 				const group = this.groups.find(group => group.id === groupId);
@@ -161,7 +161,7 @@ export default {
 		 *
 		 * @return object
 		 */
-		submitValues: function() {
+		submitValues() {
 			let values = {};
 			this.fields.forEach(field => {
 				if (!field.isMultilingual) {
@@ -201,7 +201,7 @@ export default {
 		/**
 		 * Submit the form
 		 */
-		submit: function() {
+		submit() {
 			this.isSaving = true;
 
 			let errors = this.validate();
@@ -235,7 +235,7 @@ export default {
 		 *
 		 * @return object
 		 */
-		validate: function() {
+		validate() {
 			return this.validateRequired();
 		},
 
@@ -244,7 +244,7 @@ export default {
 		 *
 		 * @return object
 		 */
-		validateRequired: function() {
+		validateRequired() {
 			let errors = {};
 			this.fields.forEach(field => {
 				if (!field.isRequired) {
@@ -353,7 +353,7 @@ export default {
 		 *
 		 * @param object r The response to the AJAX request
 		 */
-		complete: function() {
+		complete() {
 			this.isSaving = false;
 		},
 
@@ -500,7 +500,7 @@ export default {
 			this.$emit('set', this.id, {errors: errors});
 		}
 	},
-	mounted: function() {
+	mounted() {
 		// Set the current page
 		if (!this.currentPage) {
 			this.currentPage = this.pages[0].id;

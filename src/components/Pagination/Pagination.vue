@@ -74,7 +74,7 @@ export default {
 		 *
 		 * @return Array
 		 */
-		items: function() {
+		items() {
 			let items = [];
 			let innerMax = Math.min(
 				this.currentPage + this.showAdjacentPages,

@@ -48,7 +48,7 @@ export default {
 		}
 	},
 	computed: {
-		inputId: function() {
+		inputId() {
 			return this._uid;
 		}
 	},
@@ -67,7 +67,7 @@ export default {
 		/**
 		 * Clear the search phrase
 		 */
-		clearSearchPhrase: function() {
+		clearSearchPhrase() {
 			this.$emit('searchPhraseChanged', '');
 			this.$nextTick(function() {
 				this.$el.querySelector('input[type="search"]').focus();

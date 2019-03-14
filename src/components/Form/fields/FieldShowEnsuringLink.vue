@@ -13,11 +13,11 @@ export default {
 		 *
 		 * @return array
 		 */
-		classes: function() {
+		classes() {
 			return ['pkpFormField--showEnsuringLink'];
 		}
 	},
-	mounted: function() {
+	mounted() {
 		/**
 		 * Show the requested message in a modal when the link in the messgae is
 		 * clicked.
@@ -46,7 +46,7 @@ export default {
 			return false;
 		});
 	},
-	beforeDestroy: function() {
+	beforeDestroy() {
 		/**
 		 * Clean up modal event listener
 		 */

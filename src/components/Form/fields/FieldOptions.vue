@@ -86,7 +86,7 @@ export default {
 			required: true
 		}
 	},
-	data: function() {
+	data() {
 		return {
 			/**
 			 *
@@ -113,7 +113,7 @@ export default {
 		 *
 		 * @return array
 		 */
-		classes: function() {
+		classes() {
 			let classes = [];
 			if (this.isOrderable) {
 				classes.push('pkpFormField--optionsOrderable');
@@ -165,7 +165,7 @@ export default {
 		/**
 		 * Update the order of selected values when the order of options is changed
 		 */
-		updateValueOrder: function() {
+		updateValueOrder() {
 			this.selectedValue = this.localizedOptions
 				.filter(option => this.selectedValue.includes(option.value))
 				.map(option => option.value);
