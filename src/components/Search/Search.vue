@@ -146,10 +146,6 @@ export default {
 	}
 }
 
-.pkpListPanel__actions + .pkpSearch {
-	margin-right: 0.5em;
-}
-
 .pkpSearch__icons {
 	position: absolute;
 	top: 0;

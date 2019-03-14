@@ -426,7 +426,7 @@ export default {
 			this.$emit('set', this.id, {
 				isSidebarVisible: !this.isSidebarVisible
 			});
-			if(this.isSidebarVisible) {
+			if (this.isSidebarVisible) {
 				this.get();
 			}
 		},

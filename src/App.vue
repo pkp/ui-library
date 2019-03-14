@@ -5,7 +5,6 @@
 				<template slot="heading">Guide</template>
 				<li><router-link to="/" class="router-link-home">Introduction</router-link></li>
 				<li><router-link to="/pages/usage" class="router-link-home">Usage</router-link></li>
-				<li><router-link to="/pages/elements">Elements</router-link></li>
 				<li><router-link to="/pages/accessibility">Accessibility</router-link></li>
 				<li><router-link to="/pages/contributing" class="router-link-home">Contributing</router-link></li>
 			</nav-group>

@@ -2,10 +2,10 @@
 import Component from '@/docs/Component.vue';
 import ExampleListPanel from './ExampleListPanel.vue';
 import ExampleListPanelActions from './ExampleListPanelActions.vue';
-import ListPanelOrderable from './ExampleListPanelOrderable.vue';
 import ExampleListPanelDescription from './ExampleListPanelDescription.vue';
 import ExampleListPanelEmpty from './ExampleListPanelEmpty.vue';
 import ExampleListPanelFilter from './ExampleListPanelFilter.vue';
+import ExampleListPanelOrderable from './ExampleListPanelOrderable.vue';
 import ExampleListPanelPagination from './ExampleListPanelPagination.vue';
 import ExampleListPanelSearch from './ExampleListPanelSearch.vue';
 import ExampleListPanelSelect from './ExampleListPanelSelect.vue';
@@ -19,10 +19,10 @@ export default {
 	components: {
 		ExampleListPanel,
 		ExampleListPanelActions,
-		ListPanelOrderable,
 		ExampleListPanelDescription,
 		ExampleListPanelEmpty,
 		ExampleListPanelFilter,
+		ExampleListPanelOrderable,
 		ExampleListPanelPagination,
 		ExampleListPanelSearch,
 		ExampleListPanelSelect,
@@ -37,10 +37,10 @@ export default {
 			examples: {
 				ExampleListPanel: 'Base',
 				ExampleListPanelActions: 'With Actions',
-				ListPanelOrderable: 'With Orderable Items',
 				ExampleListPanelDescription: 'With Description',
 				ExampleListPanelEmpty: 'With No Items',
 				ExampleListPanelFilter: 'With Filter',
+				ExampleListPanelOrderable: 'With Orderable Items',
 				ExampleListPanelPagination: 'With Pagination',
 				ExampleListPanelSearch: 'With Search',
 				ExampleListPanelSelect: 'With Select'
