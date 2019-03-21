@@ -38,10 +38,7 @@ export default {
 					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>'
 			).pkpHandler(modalOptions.modalHandler, modalOptions);
 
-			const modalHandler = $.pkp.classes.Handler.getHandler($modal);
-
-			modalHandler.modalBuild();
-			modalHandler.modalOpen();
+			$.pkp.classes.Handler.getHandler($modal);
 
 			return false;
 		});
