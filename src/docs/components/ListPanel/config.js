@@ -1,6 +1,7 @@
 import submissionsListPanel from './helpers/submissionsListPanel';
 import catalogListPanel from './helpers/catalogListPanel';
 import selectReviewerListPanel from './helpers/selectReviewerListPanel';
+import emailTemplatesListPanel from './helpers/emailTemplatesListPanel';
 import i18n from './helpers/i18n';
 
 export let props = {
@@ -241,6 +242,23 @@ export const propsSelectReviewerListPanel = {
 		...i18n.pagination,
 		...i18n.search,
 		...i18n.selectReviewerListPanel
+	}
+};
+
+/**
+ * EmailTemplatesListPanel
+ *
+ * Props for the EmailTemplatesListPanel component
+ */
+export const propsEmailTemplatesListPanel = {
+	...props,
+	...emailTemplatesListPanel,
+	i18n: {
+		...props.i18n,
+		...i18n.expandable,
+		...i18n.filter,
+		...i18n.search,
+		...i18n.emailTemplatesListPanel
 	}
 };
 

@@ -13,6 +13,7 @@ import ExampleSubmissionsListPanel from './ExampleSubmissionsListPanel.vue';
 import ExampleSelectSubmissionsListPanel from './ExampleSelectSubmissionsListPanel.vue';
 import ExampleSelectReviewerListPanel from './ExampleSelectReviewerListPanel.vue';
 import ExampleCatalogListPanel from './ExampleCatalogListPanel.vue';
+import ExampleEmailTemplatesListPanel from './ExampleEmailTemplatesListPanel.vue';
 
 export default {
 	extends: Component,
@@ -29,7 +30,8 @@ export default {
 		ExampleSubmissionsListPanel,
 		ExampleSelectSubmissionsListPanel,
 		ExampleSelectReviewerListPanel,
-		ExampleCatalogListPanel
+		ExampleCatalogListPanel,
+		ExampleEmailTemplatesListPanel
 	},
 	data() {
 		return {
@@ -49,7 +51,7 @@ export default {
 				ExampleSubmissionsListPanel: 'SubmissionsListPanel',
 				ExampleSelectSubmissionsListPanel: 'SelectSubmissionsListPanel',
 				ExampleSelectReviewerListPanel: 'SelectReviewerListPanel',
-				ExampleCatalogListPanel: 'CatalogListPanel (OMP)'
+				ExampleEmailTemplatesListPanel: 'EmailTemplatesListPanel'
 			}
 		};
 	}

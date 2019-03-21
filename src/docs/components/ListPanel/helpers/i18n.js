@@ -113,6 +113,28 @@ export const selectReviewerListPanel = {
 	viewLess: 'Hide expanded details about {$name}'
 };
 
+export const emailTemplatesListPanel = {
+	add: 'Add Template',
+	cancel: 'Cancel',
+	delete: 'Delete',
+	deleteConfirm: 'Are you sure you want to delete this email template?',
+	disable: 'Disable',
+	disabled: 'Disabled',
+	edit: 'Edit',
+	editTemplate: 'Edit Email',
+	enable: 'Enable',
+	from: 'From: {$value}',
+	ok: 'Ok',
+	reset: 'Reset',
+	resetAll: 'Reset All',
+	resetAllConfirm:
+		'If you reset all templates, all modifications to the email templates will be lost.  Do you want to confirm this operation?',
+	resetConfirm:
+		'Are you sure you want to reset this email template to its default values?',
+	subjectLabel: 'Subject: {$subject}',
+	to: 'To: {$value}'
+};
+
 export default {
 	pagination,
 	search,
@@ -122,5 +144,6 @@ export default {
 	submissionsListPanel,
 	catalogListPanel,
 	selectSubmissionsListPanel,
-	selectReviewerListPanel
+	selectReviewerListPanel,
+	emailTemplatesListPanel
 };

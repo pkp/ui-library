@@ -121,7 +121,7 @@
 					<span v-html="dualWorkflowLinks" />
 				</list-item>
 			</list>
-			<div class="pkpListPanelItem--submission__actions">
+			<div class="pkpListPanelItem__actions">
 				<pkp-button
 					element="a"
 					:href="item.urlWorkflow"
@@ -884,9 +884,6 @@ export default {
 .pkpListPanelItem--submission__activity {
 	display: block;
 	padding-right: 2em;
-	white-space: nowrap;
-	overflow-x: hidden;
-	text-overflow: ellipsis;
 }
 
 .pkpListPanelItem--submission__author {
@@ -934,18 +931,6 @@ export default {
 // Details panel
 .pkpListPanelItem__details--submission {
 	padding: 1em (@base * 3) 1em 62px;
-}
-
-.pkpListPanelItem--submission__actions {
-	text-align: right;
-
-	&:not(:first-child) {
-		margin-top: 1em;
-	}
-
-	.pkpButton + .pkpButton {
-		margin-left: 0.5em;
-	}
 }
 
 // Reviewer-specific displays

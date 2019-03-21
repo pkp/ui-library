@@ -361,4 +361,16 @@ export default {
 		margin-right: 1em;
 	}
 }
+
+.pkpListPanelItem__actions {
+	text-align: right;
+
+	&:not(:first-child) {
+		margin-top: 1em;
+	}
+
+	.pkpButton + .pkpButton {
+		margin-left: 0.5em;
+	}
+}
 </style>
