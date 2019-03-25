@@ -25,7 +25,7 @@ export default {
 					}
 					return field;
 				});
-				this.$emit('set-fields', this.id, newFields);
+				this.$emit('set', this.id, {fields: newFields});
 			}
 			this.removeError(data.name, data.localeKey);
 		},
@@ -38,16 +38,18 @@ export default {
 		 * based on the value of the old field.
 		 */
 		changeTheme: function(theme) {
-			this.$emit('set-fields', this.id, [this.fields[0]]);
+			this.$emit('set', this.id, {fields: this.fields.slice(0, 1)});
 			this.$nextTick(() => {
 				const themeOptionFields = this.themeFields[theme] || [];
-				this.$emit('set-fields', this.id, [
-					{
-						...this.fields[0],
-						value: theme
-					},
-					...themeOptionFields
-				]);
+				this.$emit('set', this.id, {
+					fields: [
+						{
+							...this.fields[0],
+							value: theme
+						},
+						...themeOptionFields
+					]
+				});
 			});
 		}
 	}
