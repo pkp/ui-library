@@ -88,19 +88,31 @@
 				</div>
 			</div>
 		</div>
+
+		<!-- Footer -->
+		<div v-if="lastPage > 1" class="pkpListPanel__footer">
+			<pagination
+				:currentPage="currentPage"
+				:lastPage="lastPage"
+				:i18n="i18n"
+				@set-page="setPage"
+			/>
+		</div>
 	</div>
 </template>
 
 <script>
+import EmailTemplatesListItem from '@/components/ListPanel/emailTemplates/EmailTemplatesListItem.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
+import Pagination from '@/components/Pagination/Pagination.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Search from '@/components/Search/Search.vue';
-import EmailTemplatesListItem from '@/components/ListPanel/emailTemplates/EmailTemplatesListItem.vue';
 
 export default {
 	extends: ListPanel,
 	components: {
 		EmailTemplatesListItem,
+		Pagination,
 		PkpButton,
 		Search
 	},
