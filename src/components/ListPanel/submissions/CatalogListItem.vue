@@ -296,8 +296,14 @@ export default {
 	}
 }
 
-.pkpListPanelItem__actions .pkpButton--isLink:first-child {
-	margin-left: -0.5em;
+.pkpListPanelItem--catalog {
+	.pkpListPanelItem__actions {
+		text-align: left;
+
+		.pkpButton--isLink:first-child {
+			margin-left: -0.5em;
+		}
+	}
 }
 
 .pkpListPanelItem--catalog {
