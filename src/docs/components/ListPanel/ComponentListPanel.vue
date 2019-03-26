@@ -48,6 +48,7 @@ export default {
 				ExampleListPanelSelect: 'With Select'
 			},
 			implementations: {
+				ExampleCatalogListPanel: 'CatalogListPanel',
 				ExampleSubmissionsListPanel: 'SubmissionsListPanel',
 				ExampleSelectSubmissionsListPanel: 'SelectSubmissionsListPanel',
 				ExampleSelectReviewerListPanel: 'SelectReviewerListPanel',
