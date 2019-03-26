@@ -24,6 +24,8 @@ import ComponentList from './docs/components/List/ComponentList.vue';
 import ComponentListPanel from './docs/components/ListPanel/ComponentListPanel.vue';
 import ComponentMultilingualProgress from './docs/components/MultilingualProgress/ComponentMultilingualProgress.vue';
 import ComponentOrderer from './docs/components/Orderer/ComponentOrderer.vue';
+import ComponentPagination from './docs/components/Pagination/ComponentPagination.vue';
+import ComponentSpinner from './docs/components/Spinner/ComponentSpinner.vue';
 import ComponentTab from './docs/components/Tab/ComponentTab.vue';
 import ComponentTooltip from './docs/components/Tooltip/ComponentTooltip.vue';
 
@@ -156,6 +158,16 @@ export default new Router({
 			path: '/component/Orderer/:example?',
 			name: 'Orderer',
 			component: ComponentOrderer
+		},
+		{
+			path: '/component/Pagination/:example?',
+			name: 'Pagination',
+			component: ComponentPagination
+		},
+		{
+			path: '/component/Spinner/:example?',
+			name: 'Spinner',
+			component: ComponentSpinner
 		},
 		{
 			path: '/component/Tab/:example?',
