@@ -24,36 +24,11 @@ When you are done, run the following command to compile an optimized `/js/build.
 npm run build
 ```
 
-## Display Apps
+## Apps
 
-An "App" is a Vue component that manages `data` and passes `props` to child components. Wherever you want to use a component in OJS or OMP, it must be wrapped inside of an App.
+An app is a root component that manages `data` for child components. Whenever you want to use a Vue component in OJS or OMP, it must be controlled by an app.
 
-Read about [parent components, data, props and events in Vue](https://vuejs.org/v2/guide/components.html#Organizing-Components).
-
-You can place an App into any template in OJS or OMP.
-
-```html
-{assign var="uuid" value=""|uniqid|escape}
-<div id="my-submission-list-handler-{$uuid}">
-	<script type="text/javascript">
-		pkp.registry.init('my-submission-list-handler-{$uuid}', 'SubmissionsListPanel', {$myQueueListData|json_encode});
-	</script>
-</div>
-```
-
-This creates a `SubmissionsListPanel` app. Initial data is passed to the component through `$myQueueListData`, a JSON object which is merged with the component's `data` property.
-
-This is exactly the same as mounting a Vue app to the DOM as recommended in Vue's documentation.
-
-```js
-var app = new Vue({
-	...SubmissionsListPanel,
-	el: '#my-submission-list-handler-<uuid>',
-	data: myQueueListDataInJsonFormat
-})
-```
-
-We use `pkp.registry.init` to make sure that Vue components mounted inside of our legacy JavaScript toolkit do not cause memory leaks.
+Read about the [`Container`](/#/pages/container) app.
 
 ## Passing events between Apps
 

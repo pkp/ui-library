@@ -4,13 +4,15 @@
 			<nav-group>
 				<template slot="heading">Guide</template>
 				<li><router-link to="/" class="router-link-home">Introduction</router-link></li>
-				<li><router-link to="/pages/usage" class="router-link-home">Usage</router-link></li>
+				<li><router-link to="/pages/usage">Usage</router-link></li>
 				<li><router-link to="/pages/accessibility">Accessibility</router-link></li>
-				<li><router-link to="/pages/contributing" class="router-link-home">Contributing</router-link></li>
+				<li><router-link to="/pages/contributing">Contributing</router-link></li>
 			</nav-group>
 			<nav-group>
 				<template slot="heading">Apps</template>
-				<li><router-link to="/component/Container">Container</router-link></li>
+				<li><router-link to="/pages/container">Container</router-link></li>
+				<li><router-link to="/pages/container-settings">SettingsContainer</router-link></li>
+				<li><router-link to="/pages/container-catalog">CatalogContainer</router-link></li>
 			</nav-group>
 			<nav-group>
 				<template slot="heading">Components</template>
