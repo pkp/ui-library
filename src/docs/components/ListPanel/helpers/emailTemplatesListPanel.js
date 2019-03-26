@@ -222,7 +222,9 @@ let filters = [
 ];
 
 export default {
+	addItemUrl: '/example',
 	csrfToken: '12345',
+	editItemUrl: '/example/__key__',
 	filters: filters,
 	items: items,
 	itemsMax: 10,
