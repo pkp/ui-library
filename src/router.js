@@ -27,6 +27,7 @@ import ComponentMultilingualProgress from './docs/components/MultilingualProgres
 import ComponentNotification from './docs/components/Notification/ComponentNotification.vue';
 import ComponentOrderer from './docs/components/Orderer/ComponentOrderer.vue';
 import ComponentPagination from './docs/components/Pagination/ComponentPagination.vue';
+import ComponentSearch from './docs/components/Search/ComponentSearch.vue';
 import ComponentSpinner from './docs/components/Spinner/ComponentSpinner.vue';
 import ComponentTab from './docs/components/Tab/ComponentTab.vue';
 import ComponentTooltip from './docs/components/Tooltip/ComponentTooltip.vue';
@@ -175,6 +176,11 @@ export default new Router({
 			path: '/component/Pagination/:example?',
 			name: 'Pagination',
 			component: ComponentPagination
+		},
+		{
+			path: '/component/Search/:example?',
+			name: 'Search',
+			component: ComponentSearch
 		},
 		{
 			path: '/component/Spinner/:example?',

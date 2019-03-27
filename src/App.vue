@@ -54,6 +54,7 @@
 				<li><router-link to="/component/Notification">Notification</router-link></li>
 				<li><router-link to="/component/Orderer">Orderer</router-link></li>
 				<li><router-link to="/component/Pagination">Pagination</router-link></li>
+				<li><router-link to="/component/Search">Search</router-link></li>
 				<li><router-link to="/component/Spinner">Spinner</router-link></li>
 				<li><router-link to="/component/Tab">Tab</router-link></li>
 				<li><router-link to="/component/Tooltip">Tooltip</router-link></li>
