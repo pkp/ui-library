@@ -24,6 +24,7 @@ import ComponentIcon from './docs/components/Icon/ComponentIcon.vue';
 import ComponentList from './docs/components/List/ComponentList.vue';
 import ComponentListPanel from './docs/components/ListPanel/ComponentListPanel.vue';
 import ComponentMultilingualProgress from './docs/components/MultilingualProgress/ComponentMultilingualProgress.vue';
+import ComponentNotification from './docs/components/Notification/ComponentNotification.vue';
 import ComponentOrderer from './docs/components/Orderer/ComponentOrderer.vue';
 import ComponentPagination from './docs/components/Pagination/ComponentPagination.vue';
 import ComponentSpinner from './docs/components/Spinner/ComponentSpinner.vue';
@@ -159,6 +160,11 @@ export default new Router({
 			path: '/component/MultilingualProgress/:example?',
 			name: 'MultilingualProgress',
 			component: ComponentMultilingualProgress
+		},
+		{
+			path: '/component/Notification/:example?',
+			name: 'Notification',
+			component: ComponentNotification
 		},
 		{
 			path: '/component/Orderer/:example?',
