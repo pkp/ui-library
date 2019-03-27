@@ -61,14 +61,14 @@ export default {
 		 *  phrase (string)
 		 */
 		searchPhraseKeyUp: debounce(function(el) {
-			this.$emit('searchPhraseChanged', el.target.value);
+			this.$emit('search-phrase-changed', el.target.value);
 		}, 250),
 
 		/**
 		 * Clear the search phrase
 		 */
 		clearSearchPhrase() {
-			this.$emit('searchPhraseChanged', '');
+			this.$emit('search-phrase-changed', '');
 			this.$nextTick(function() {
 				this.$el.querySelector('input[type="search"]').focus();
 			});
@@ -82,6 +82,7 @@ export default {
 
 .pkpSearch {
 	position: relative;
+	width: 18rem;
 	max-width: 100%;
 }
 
@@ -91,9 +92,8 @@ export default {
 	display: block;
 	box-sizing: border-box;
 	padding: 0 0.5em 0 3.5em;
-	width: 20em;
+	width: 100%;
 	height: auto;
-	max-width: 100%;
 	border: @bg-border-light;
 	border-radius: @radius;
 	font-size: @font-sml;

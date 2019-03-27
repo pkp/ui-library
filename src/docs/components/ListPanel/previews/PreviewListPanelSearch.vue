@@ -11,7 +11,7 @@
 					:searchPhrase="components.example.searchPhrase"
 					:searchLabel="i18n.search"
 					:clearSearchLabel="i18n.clearSearch"
-					@searchPhraseChanged="setSearchPhrase"
+					@search-phrase-changed="setSearchPhrase"
 				/>
 			</template>
 		</pkp-header>
