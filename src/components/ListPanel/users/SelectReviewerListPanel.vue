@@ -31,7 +31,7 @@
 
 			<!-- Filters in the sidebar -->
 			<div v-if="filters.length" ref="sidebar" class="pkpListPanel__sidebar" :class="{'-isVisible': isSidebarVisible}">
-				<pkp-header class="pkpListPanel__sidebarHeader">
+				<pkp-header class="pkpListPanel__sidebarHeader" :tabindex="isSidebarVisible ? 0 :-1">
 					<icon icon="filter" :inline="true" />
 					{{ i18n.filter }}
 				</pkp-header>

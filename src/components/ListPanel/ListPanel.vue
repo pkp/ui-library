@@ -22,7 +22,7 @@
 
 			<!-- Filters in the sidebar -->
 			<div v-if="filters.length" ref="sidebar" class="pkpListPanel__sidebar" :class="{'-isVisible': isSidebarVisible}">
-				<pkp-header class="pkpListPanel__sidebarHeader">
+				<pkp-header class="pkpListPanel__sidebarHeader" :tabindex="isSidebarVisible ? 1 : 0">
 					<icon icon="filter" :inline="true" />
 					{{ i18n.filter }}
 				</pkp-header>
@@ -687,6 +687,13 @@ export default {
 				return;
 			}
 			this.toggleSidebarFocus(newVal);
+
+			// move focus into the sidebar when it is made visible
+			this.$nextTick(() => {
+				if (newVal && Object.keys(this.$refs).includes('sidebar')) {
+					this.setFocusIn(this.$refs.sidebar);
+				}
+			});
 		},
 
 		/**
@@ -806,7 +813,13 @@ export default {
 }
 
 .pkpListPanel__sidebarHeader {
-	padding: 1rem 1rem 0;
+	margin-top: 1rem;
+	padding: 0 1rem;
+
+	&:focus {
+		box-shadow: inset 2px 0 0 @primary;
+		outline: 0;
+	}
 }
 
 .pkpListPanel__filterSet {
