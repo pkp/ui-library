@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Page from './docs/Page.vue';
 import ComponentBadge from './docs/components/Badge/ComponentBadge.vue';
 import ComponentButton from './docs/components/Button/ComponentButton.vue';
+import ComponentFilter from './docs/components/Filter/ComponentFilter.vue';
 import ComponentFieldArchivingPn from './docs/components/Form/fields/FieldArchivingPn/ComponentFieldArchivingPn.vue';
 import ComponentFieldBase from './docs/components/Form/fields/FieldBase/ComponentFieldBase.vue';
 import ComponentFieldColor from './docs/components/Form/fields/FieldColor/ComponentFieldColor.vue';
@@ -56,6 +57,11 @@ export default new Router({
 			path: '/component/Button/:example?',
 			name: 'Button',
 			component: ComponentButton
+		},
+		{
+			path: '/component/Filter/:example?',
+			name: 'Filter',
+			component: ComponentFilter
 		},
 		{
 			path: '/component/Form/fields/FieldArchivingPn/:example?',

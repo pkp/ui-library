@@ -18,6 +18,7 @@
 				<template slot="heading">Components</template>
 				<li><router-link to="/component/Badge">Badge</router-link></li>
 				<li><router-link to="/component/Button">Button</router-link></li>
+				<li><router-link to="/component/Filter">Filter</router-link></li>
 				<li :class="{'-submenuOpen': displaySubmenu('Form')}">
 					<router-link to="/component/Form">Form</router-link>
 					<button v-if="!pathIncludes('Form')" class="nav__toggle" @click="toggleSubmenu('Form')">

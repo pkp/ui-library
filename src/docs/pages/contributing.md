@@ -81,7 +81,7 @@ export default {
 }
 ```
 
-If your component accepts data or emits events, those should be documented and exported as `data`, `dataDocs`, and `events`.
+If your component accepts data or emits events, those should be documented and exported as `data`, `dataDocs`, and `emitDocs`.
 
 Create an example of the component:
 
