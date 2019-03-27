@@ -811,7 +811,6 @@ export default {
 
 .pkpListPanel__filterSet {
 	margin: 1rem 0;
-	font-size: @font-sml;
 
 	.pkpHeader {
 		padding: 0 1rem;

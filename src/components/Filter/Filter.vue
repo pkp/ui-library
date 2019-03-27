@@ -91,6 +91,7 @@ export default {
 
 .pkpFilter {
 	position: relative;
+	font-size: @font-sml;
 }
 
 .pkpFilter__label {
