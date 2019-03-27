@@ -18,6 +18,7 @@ import ComponentFieldTextarea from './docs/components/Form/fields/FieldTextarea/
 import ComponentFieldUpload from './docs/components/Form/fields/FieldUpload/ComponentFieldUpload.vue';
 import ComponentFieldUploadImage from './docs/components/Form/fields/FieldUploadImage/ComponentFieldUploadImage.vue';
 import ComponentForm from './docs/components/Form/ComponentForm.vue';
+import ComponentHeader from './docs/components/Header/ComponentHeader.vue';
 import ComponentHelpButton from './docs/components/HelpButton/ComponentHelpButton.vue';
 import ComponentIcon from './docs/components/Icon/ComponentIcon.vue';
 import ComponentList from './docs/components/List/ComponentList.vue';
@@ -128,6 +129,11 @@ export default new Router({
 			path: '/component/Form/:example?',
 			name: 'Form',
 			component: ComponentForm
+		},
+		{
+			path: '/component/Header/:example?',
+			name: 'Header',
+			component: ComponentHeader
 		},
 		{
 			path: '/component/HelpButton/:example?',

@@ -1,0 +1,2 @@
+
+The `Header` component defines a consistent UI for providing a group of related components with a title, actions which interact with those components, and a loading spinner when requests are being processed.

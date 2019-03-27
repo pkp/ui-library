@@ -45,6 +45,7 @@
 						<li><router-link to="/component/Form/fields/FieldShowEnsuringLink">FieldShowEnsuringLink</router-link></li>
 					</ul>
 				</li>
+				<li><router-link to="/component/Header">Header</router-link></li>
 				<li><router-link to="/component/HelpButton">HelpButton</router-link></li>
 				<li><router-link to="/component/Icon">Icon</router-link></li>
 				<li><router-link to="/component/List">List</router-link></li>
