@@ -78,7 +78,7 @@ export default {
 			required: true
 		}
 	},
-	data: function() {
+	data() {
 		return {
 			isSaving: false
 		};
@@ -88,7 +88,7 @@ export default {
 		 * Add an event listener to show the settings modal when the button in the
 		 * terms text is clicked.
 		 */
-		addSettingsListener: function() {
+		addSettingsListener() {
 			this.$nextTick(() => {
 				$('.pkpFormField--archivingPn__terms button', this.$el).click(e => {
 					e.stopPropagation();
@@ -115,14 +115,14 @@ export default {
 		/**
 		 * Remove the event listener to show the settings modal
 		 */
-		removeSettingsListener: function() {
+		removeSettingsListener() {
 			$('.pkpFormField--archivingPn__terms button', this.$el).off();
 		},
 
 		/**
 		 * Reset focus when the settings modal is closed
 		 */
-		resetFocus: function() {
+		resetFocus() {
 			$('.pkpFormField--archivingPn__terms button', this.$el).focus();
 		},
 
@@ -147,14 +147,14 @@ export default {
 		/**
 		 * When the plugin toggle request returns with an error
 		 */
-		error: function() {
+		error() {
 			pkp.eventBus.$emit('notify', {text: this.i18n.enablePluginError});
 		},
 
 		/**
 		 * When the plugin toggle request is finished
 		 */
-		complete: function() {
+		complete() {
 			this.isSaving = false;
 		}
 	},
@@ -188,7 +188,7 @@ export default {
 			});
 		}
 	},
-	mounted: function() {
+	mounted() {
 		/**
 		 * Add the event listener to show the settings modal
 		 */
@@ -196,7 +196,7 @@ export default {
 			this.addSettingsListener();
 		}
 	},
-	beforeDestroy: function() {
+	beforeDestroy() {
 		/**
 		 * Remove the event listener for the settings button
 		 */

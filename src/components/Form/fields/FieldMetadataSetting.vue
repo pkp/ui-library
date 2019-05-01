@@ -69,7 +69,7 @@ export default {
 			required: true
 		}
 	},
-	data: function() {
+	data() {
 		return {
 			isEnabled: this.disabledValue !== this.value
 		};

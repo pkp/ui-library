@@ -68,7 +68,7 @@ export default {
 		action: String,
 		errors: {
 			type: Object,
-			default: function() {
+			default() {
 				return {};
 			}
 		},
@@ -81,7 +81,7 @@ export default {
 		csrfToken: String,
 		i18n: Object
 	},
-	data: function() {
+	data() {
 		return {
 			currentPage: '',
 			isSaving: false
@@ -91,9 +91,9 @@ export default {
 		/**
 		 * Classes to add to wrapper element
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
-		classes: function() {
+		classes() {
 			let classes = [];
 			if (this.visibleLocales.length > 1) {
 				classes.push('pkpForm--hasManyVisibleLocales');
@@ -104,27 +104,27 @@ export default {
 		/**
 		 * Which locales should be available in this form?
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
-		availableLocales: function() {
+		availableLocales() {
 			return this.hasMultilingualFields ? this.supportedFormLocales : [];
 		},
 
 		/**
 		 * Has multilingual fields
 		 *
-		 * @return boolean
+		 * @return {Boolean}
 		 */
-		hasMultilingualFields: function() {
+		hasMultilingualFields() {
 			return !!this.fields.find(field => field.isMultilingual);
 		},
 
 		/**
 		 * List of group ids which contain a field with an error
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
-		groupIdsWithErrors: function() {
+		groupIdsWithErrors() {
 			let groupIds = [];
 			Object.keys(this.errors).forEach(fieldName => {
 				const field = this.fields.find(field => field.name === fieldName);
@@ -138,9 +138,9 @@ export default {
 		/**
 		 * List of page ids which contain a field with an error
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
-		pageIdsWithErrors: function() {
+		pageIdsWithErrors() {
 			let pageIds = [];
 			this.groupIdsWithErrors.forEach(groupId => {
 				const group = this.groups.find(group => group.id === groupId);
@@ -159,9 +159,9 @@ export default {
 		 * data is still around, it can cause validation errors when trying to
 		 * submit to the API.
 		 *
-		 * @return object
+		 * @return {Object}
 		 */
-		submitValues: function() {
+		submitValues() {
 			let values = {};
 			this.fields.forEach(field => {
 				if (!field.isMultilingual) {
@@ -201,12 +201,17 @@ export default {
 		/**
 		 * Submit the form
 		 */
-		submit: function() {
+		submit() {
 			this.isSaving = true;
 
 			let errors = this.validate();
 			if (Object.keys(errors).length) {
-				this.$emit('set-errors', this.id, {...this.errors, ...errors});
+				this.$emit('set', this.id, {
+					errors: {
+						...this.errors,
+						...errors
+					}
+				});
 				this.isSaving = false;
 				return;
 			}
@@ -228,18 +233,18 @@ export default {
 		/**
 		 * Validate the form
 		 *
-		 * @return object
+		 * @return {Object}
 		 */
-		validate: function() {
+		validate() {
 			return this.validateRequired();
 		},
 
 		/**
 		 * Check if required form fields are present
 		 *
-		 * @return object
+		 * @return {Object}
 		 */
-		validateRequired: function() {
+		validateRequired() {
 			let errors = {};
 			this.fields.forEach(field => {
 				if (!field.isRequired) {
@@ -285,7 +290,7 @@ export default {
 		 * Callback to fire when the form submission's ajax request has been
 		 * returned successfully
 		 *
-		 * @param object r The response to the AJAX request
+		 * @param {Object} r The response to the AJAX request
 		 */
 		success: function(r) {
 			pkp.eventBus.$emit('notify', {
@@ -301,7 +306,7 @@ export default {
 				}
 				return field;
 			});
-			this.$emit('set-fields', this.id, newFields);
+			this.$emit('set', this.id, {fields: newFields});
 			this.$scrollTo(this.$el, 500, {
 				offset: -50
 			});
@@ -311,7 +316,7 @@ export default {
 		 * Callback to fire when the form submission's ajax request has been
 		 * returned with errors
 		 *
-		 * @param object r The response to the AJAX request
+		 * @param {Object} r The response to the AJAX request
 		 */
 		error: function(r) {
 			// Field validation errors
@@ -322,7 +327,7 @@ export default {
 					}),
 					type: 'error'
 				});
-				this.$emit('set-errors', this.id, r.responseJSON);
+				this.$emit('set', this.id, {errors: r.responseJSON});
 				// A generic error from the API endpoint
 			} else if (
 				r.status &&
@@ -346,16 +351,16 @@ export default {
 		 * Callback to fire when the form submission's ajax request has been
 		 * returned, and the success or error callbacks have already been fired.
 		 *
-		 * @param object r The response to the AJAX request
+		 * @param {Object} r The response to the AJAX request
 		 */
-		complete: function() {
+		complete() {
 			this.isSaving = false;
 		},
 
 		/**
 		 * Update values when a field has changed
 		 *
-		 * @param object data {{
+		 * @param {Object} data {{
 		 *  @option string name Field name
 		 *  @option string value New value
 		 *  @option string localeKey Locale key for this value. Empty it not multilingual
@@ -372,14 +377,14 @@ export default {
 				}
 				return field;
 			});
-			this.$emit('set-fields', this.id, newFields);
+			this.$emit('set', this.id, {fields: newFields});
 			this.removeError(data.name, data.localeKey);
 		},
 
 		/**
 		 * Set the current page
 		 *
-		 * @param boolean|number pageId The id of the page you want to display.
+		 * @param {Boolean|Number} pageId The id of the page you want to display.
 		 *  You can also pass `true` to move to the next page and `false` to move to
 		 *  the previous page.
 		 */
@@ -407,16 +412,16 @@ export default {
 		/**
 		 * Update visible locales
 		 *
-		 * @param array locales New array of visible locales
+		 * @param {Array} locales New array of visible locales
 		 */
 		setVisibleLocales: function(locales) {
-			this.$emit('set-visible-locales', this.id, locales);
+			this.$emit('set', this.id, {visibleLocales: locales});
 		},
 
 		/**
 		 * Display a particular locale
 		 *
-		 * @param string localeKey
+		 * @param {String} localeKey
 		 */
 		showLocale: function(localeKey) {
 			if (this.visibleLocales.includes(localeKey)) {
@@ -428,7 +433,7 @@ export default {
 		/**
 		 * Display and scroll to a field in the form
 		 *
-		 * @param string name The name of the field to bring into view
+		 * @param {String} name The name of the field to bring into view
 		 */
 		showField: function(name) {
 			let field = this.fields.find(field => field.name === name);
@@ -462,8 +467,8 @@ export default {
 		/**
 		 * Remove an error from the error list
 		 *
-		 * @param string name The name of the field
-		 * @param string|null localeKey The locale to remove, if not removing the
+		 * @param {String} name The name of the field
+		 * @param {String|Null} localeKey The locale to remove, if not removing the
 		 *  whole error.
 		 */
 		removeError: function(name, localeKey) {
@@ -483,19 +488,19 @@ export default {
 					delete newErrors[name];
 				}
 			}
-			this.$emit('set-errors', this.id, newErrors);
+			this.$emit('set', this.id, {errors: newErrors});
 		},
 
 		/**
 		 * Emit an event to set a new errors array
 		 *
-		 * @param array errors The new list of errors
+		 * @param {Array} errors The new list of errors
 		 */
 		setErrors: function(errors) {
-			this.$emit('set-errors', this.id, errors);
+			this.$emit('set', this.id, {errors: errors});
 		}
 	},
-	mounted: function() {
+	mounted() {
 		// Set the current page
 		if (!this.currentPage) {
 			this.currentPage = this.pages[0].id;

@@ -1,25 +1,9 @@
 <template>
-	<button
-		v-if="element === 'button'"
+	<component
+		:is="element"
 		class="pkpButton"
 		:class="classes"
-		:icon="icon"
-		:isPrimary="isPrimary"
-		:isWarnable="isWarnable"
-		:isActive="isActive"
-		:isLink="isLink"
-		@click.prevent="click"
-		@focus="focus"
-		@blur="blur"
-	>
-		<icon v-if="icon" :icon="icon" :inline="!!label" />
-		{{ label }}
-	</button>
-	<a
-		v-else-if="element === 'a'"
-		class="pkpButton"
-		:class="classes"
-		:href="href"
+		:href="element === 'a' ? href : false"
 		:icon="icon"
 		:isPrimary="isPrimary"
 		:isWarnable="isWarnable"
@@ -31,7 +15,7 @@
 	>
 		<icon v-if="icon" :icon="icon" :inline="!!label" />
 		{{ label }}
-	</a>
+	</component>
 </template>
 
 <script>
@@ -48,7 +32,7 @@ export default {
 			default: 'button'
 		},
 		href: String,
-		label: String,
+		label: [String, Number],
 		icon: String,
 		isPrimary: Boolean,
 		isWarnable: Boolean,
@@ -56,7 +40,7 @@ export default {
 		isLink: Boolean
 	},
 	computed: {
-		classes: function() {
+		classes() {
 			let classes = [];
 			if (this.isPrimary) {
 				classes.push('pkpButton--isPrimary');
@@ -74,13 +58,16 @@ export default {
 		}
 	},
 	methods: {
-		click: function() {
+		click: function(e) {
+			if (this.element === 'button') {
+				e.preventDefault();
+			}
 			this.$emit('click');
 		},
-		focus: function() {
+		focus() {
 			this.$emit('focus');
 		},
-		blur: function() {
+		blur() {
 			this.$emit('blur');
 		}
 	}
@@ -155,11 +142,6 @@ export default {
 	box-shadow: none;
 	border-color: transparent;
 
-	&:hover,
-	&:focus {
-		color: @primary-lift;
-	}
-
 	&:disabled:hover {
 		border-color: transparent;
 	}
@@ -171,6 +153,7 @@ export default {
 	&:hover,
 	&:focus {
 		border-color: @no;
+		color: @no;
 	}
 
 	&:disabled,
@@ -205,6 +188,16 @@ export default {
 		border-color: @bg-dark;
 		box-shadow: 0 1px 0 @shade;
 		cursor: not-allowed;
+	}
+}
+
+.pkpButton:disabled {
+	color: @text-light;
+	background: #fff;
+	&:hover,
+	&:focus {
+		cursor: not-allowed;
+		border-color: @bg-border-color;
 	}
 }
 </style>

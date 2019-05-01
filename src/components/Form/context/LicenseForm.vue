@@ -9,7 +9,7 @@ export default {
 		 * Override Form.submit() in order to split the copyrightHolder field
 		 * value into copyrightHolderType and copyrightHolderOther.
 		 */
-		submit: function() {
+		submit() {
 			this.isSaving = true;
 
 			let values = {};

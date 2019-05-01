@@ -45,7 +45,7 @@ export default {
 		 * change.
 		 */
 		currentValue: {
-			get: function() {
+			get() {
 				return this.isMultilingual ? this.value[this.localeKey] : this.value;
 			},
 			set: function(newVal) {
@@ -60,7 +60,7 @@ export default {
 		/**
 		 *
 		 */
-		errors: function() {
+		errors() {
 			if (!Object.keys(this.allErrors).includes(this.name)) {
 				return [];
 			}
@@ -79,63 +79,63 @@ export default {
 		 * It will append the appropriate `localeKey` to the `name` property if this
 		 * is a multilingual field.
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		localizedName: function() {
+		localizedName() {
 			return this.isMultilingual ? this.name + '-' + this.localeKey : this.name;
 		},
 
 		/**
 		 * A unique id for the label and control
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		controlId: function() {
+		controlId() {
 			return this.compileId('control');
 		},
 
 		/**
 		 * A unique id for the field's tooltip
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		describedByTooltipId: function() {
+		describedByTooltipId() {
 			return this.compileId('tooltip');
 		},
 
 		/**
 		 * A unique id for the field's help link button
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		describedByHelpId: function() {
+		describedByHelpId() {
 			return this.compileId('help');
 		},
 
 		/**
 		 * A unique id for the field's description
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		describedByDescriptionId: function() {
+		describedByDescriptionId() {
 			return this.compileId('description');
 		},
 
 		/**
 		 * A unique id for the field's error message
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		describedByErrorId: function() {
+		describedByErrorId() {
 			return this.compileId('error');
 		},
 
 		/**
 		 * A unique id for the field's multilingual progress indicator
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		multilingualProgressId: function() {
+		multilingualProgressId() {
 			return this.compileId('multingualProgress');
 		},
 
@@ -144,9 +144,9 @@ export default {
 		 *
 		 * This is used in the aria-describedby attribute for accessibility.
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		describedByIds: function() {
+		describedByIds() {
 			let ids = [];
 			if (this.description) {
 				ids.push(this.describedByDescriptionId);
@@ -172,9 +172,9 @@ export default {
 		 * If this is a multilingual field, it will return the number of locales
 		 * with values. Otherwise it will return 0.
 		 *
-		 * @return Number
+		 * @return {Number}
 		 */
-		multilingualFieldsCompleted: function() {
+		multilingualFieldsCompleted() {
 			if (!this.isMultilingual) {
 				return 0;
 			}
@@ -189,9 +189,9 @@ export default {
 		/*
 		 * Is this a multilingual field and is this the primary locale?
 		 *
-		 * @return Boolean
+		 * @return {Boolean}
 		 */
-		isPrimaryLocale: function() {
+		isPrimaryLocale() {
 			return !this.isMultilingual || this.localeKey === this.primaryLocale;
 		},
 
@@ -201,9 +201,9 @@ export default {
 		 * For multilingual fields, the secondary languages will indicate the
 		 * locale name in the label.
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		localeLabel: function() {
+		localeLabel() {
 			if (!this.isMultilingual || this.isPrimaryLocale) {
 				return '';
 			}
@@ -215,9 +215,9 @@ export default {
 		 * screenreaders that indicates the language as well as the original field
 		 * label.
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		multilingualLabel: function() {
+		multilingualLabel() {
 			return this.__('multilingualLabel', {
 				label: this.label,
 				localeName: this.localeLabel
@@ -229,8 +229,8 @@ export default {
 		 * Helper function to compile unique IDs for labels and aria-describedby
 		 * attributes.
 		 *
-		 * @param string type The type of ID you want to generate (eg - `tooltip`)
-		 * @return string
+		 * @param {String} type The type of ID you want to generate (eg - `tooltip`)
+		 * @return {String}
 		 */
 		compileId: function(type) {
 			let parts = [this.formId, this.name, type];

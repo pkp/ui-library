@@ -59,21 +59,21 @@ export default {
 		// @see https://www.tinymce.com/docs/configure/editor-appearance/#toolbar
 		toolbar: {
 			type: String,
-			default: function() {
+			default() {
 				return 'bold italic superscript subscript | link';
 			}
 		},
 		// @see https://www.tiny.cloud/docs/configure/integration-and-setup/#plugins
 		plugins: {
 			type: String,
-			default: function() {
+			default() {
 				return 'paste,link';
 			}
 		},
 		// @see https://www.tiny.cloud/docs/configure/integration-and-setup/
 		init: {
 			type: Object,
-			default: function() {
+			default() {
 				return {
 					menubar: false,
 					statusbar: false,
@@ -82,7 +82,7 @@ export default {
 			}
 		}
 	},
-	data: function() {
+	data() {
 		return {
 			isFocused: false
 		};
@@ -91,9 +91,9 @@ export default {
 		/**
 		 * ID attribute for the element where the toolbar should be placed
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		toolbarId: function() {
+		toolbarId() {
 			return this.compileId('toolbar');
 		},
 
@@ -101,9 +101,9 @@ export default {
 		 * TinyMce init properties
 		 *
 		 * @see https://www.tinymce.com/docs/configure/
-		 * @return Object
+		 * @return {Object}
 		 */
-		compiledInit: function() {
+		compiledInit() {
 			return {
 				inline: true,
 				fixed_toolbar_container: '#' + this.toolbarId,
@@ -122,14 +122,14 @@ export default {
 		/**
 		 * When the input control gets focus
 		 */
-		focus: function() {
+		focus() {
 			this.isFocused = true;
 		},
 
 		/**
 		 * When the input control loses focus
 		 */
-		blur: function() {
+		blur() {
 			this.isFocused = false;
 		}
 	}

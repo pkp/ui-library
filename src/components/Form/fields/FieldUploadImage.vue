@@ -111,7 +111,7 @@ export default {
 	props: {
 		baseUrl: String
 	},
-	data: function() {
+	data() {
 		return {
 			altTextValue: '',
 			initialValue: null
@@ -121,9 +121,9 @@ export default {
 		/**
 		 * Is the current value the same as the initial value?
 		 *
-		 * @return boolean
+		 * @return {Boolean}
 		 */
-		isInitialValue: function() {
+		isInitialValue() {
 			return (
 				!!this.currentValue &&
 				!!this.initialValue &&
@@ -136,9 +136,9 @@ export default {
 		/**
 		 * Determine the `src` attribute for the thumbnail preview
 		 *
-		 * @return @string
+		 * @return {String}
 		 */
-		thumbnail: function() {
+		thumbnail() {
 			if (this.uploadFile) {
 				return this.uploadFile.dataURL;
 			} else if (this.currentValue && this.currentValue.uploadName) {
@@ -150,9 +150,9 @@ export default {
 		/**
 		 * An id for the alt text input so the label can be linked to it
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		altTextId: function() {
+		altTextId() {
 			return this.compileId('altText');
 		},
 
@@ -160,9 +160,9 @@ export default {
 		 * An id for the alt text description so the input can refer to it in an
 		 * aria-describedby attribute.
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		altTextDescriptionId: function() {
+		altTextDescriptionId() {
 			return this.compileId('altTextDescription');
 		}
 	},
@@ -170,8 +170,8 @@ export default {
 		/**
 		 * Respond to dropzone.js event when a file is successfully uploaded
 		 *
-		 * @param object file Details about the file
-		 * @param object response The server response
+		 * @param {Object} file Details about the file
+		 * @param {Object} response The server response
 		 * @see https://www.dropzonejs.com/#event-success
 		 */
 		success: function(file, response) {
@@ -190,7 +190,7 @@ export default {
 		/**
 		 * Respond to a dropzone.js event when it creates a thumbnail
 		 *
-		 * @param object file Details about the file
+		 * @param {Object} file Details about the file
 		 * @see https://www.dropzonejs.com/#event-thumbnail
 		 */
 		onThumbnail: function(file) {
@@ -231,7 +231,7 @@ export default {
 			});
 		}
 	},
-	mounted: function() {
+	mounted() {
 		/**
 		 * Add attributes to the hidden file input field so that labels and
 		 * descriptions can be accessed by those using assistive devices.

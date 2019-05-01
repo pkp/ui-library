@@ -1,52 +1,58 @@
 <script>
 import Component from '@/docs/Component.vue';
-import ListPanel from './ExampleListPanel.vue';
-import ListPanelCount from './ExampleListPanelCount.vue';
-import ListPanelLoadMore from './ExampleListPanelLoadMore.vue';
-import ListPanelActions from './ExampleListPanelActions.vue';
-import ListPanelSearch from './ExampleListPanelSearch.vue';
-import ListPanelNotice from './ExampleListPanelNotice.vue';
-import ListPanelExpandable from './ExampleListPanelExpandable.vue';
-import ListPanelOrderable from './ExampleListPanelOrderable.vue';
-import ListPanelFilter from './ExampleListPanelFilter.vue';
-import SubmissionsListPanelOJS from './ExampleSubmissionsListPanelOJS.vue';
-import SubmissionsListPanelOMP from './ExampleSubmissionsListPanelOMP.vue';
-import CatalogSubmissionsListPanel from './ExampleCatalogSubmissionsListPanel.vue';
+import ExampleListPanel from './ExampleListPanel.vue';
+import ExampleListPanelActions from './ExampleListPanelActions.vue';
+import ExampleListPanelDescription from './ExampleListPanelDescription.vue';
+import ExampleListPanelEmpty from './ExampleListPanelEmpty.vue';
+import ExampleListPanelFilter from './ExampleListPanelFilter.vue';
+import ExampleListPanelOrderable from './ExampleListPanelOrderable.vue';
+import ExampleListPanelPagination from './ExampleListPanelPagination.vue';
+import ExampleListPanelSearch from './ExampleListPanelSearch.vue';
+import ExampleListPanelSelect from './ExampleListPanelSelect.vue';
+import ExampleSubmissionsListPanel from './ExampleSubmissionsListPanel.vue';
+import ExampleSelectSubmissionsListPanel from './ExampleSelectSubmissionsListPanel.vue';
+import ExampleSelectReviewerListPanel from './ExampleSelectReviewerListPanel.vue';
+import ExampleCatalogListPanel from './ExampleCatalogListPanel.vue';
+import ExampleEmailTemplatesListPanel from './ExampleEmailTemplatesListPanel.vue';
 
 export default {
 	extends: Component,
 	components: {
-		ListPanel,
-		ListPanelCount,
-		ListPanelLoadMore,
-		ListPanelActions,
-		ListPanelSearch,
-		ListPanelNotice,
-		ListPanelExpandable,
-		ListPanelOrderable,
-		ListPanelFilter,
-		SubmissionsListPanelOJS,
-		SubmissionsListPanelOMP,
-		CatalogSubmissionsListPanel
+		ExampleListPanel,
+		ExampleListPanelActions,
+		ExampleListPanelDescription,
+		ExampleListPanelEmpty,
+		ExampleListPanelFilter,
+		ExampleListPanelOrderable,
+		ExampleListPanelPagination,
+		ExampleListPanelSearch,
+		ExampleListPanelSelect,
+		ExampleSubmissionsListPanel,
+		ExampleSelectSubmissionsListPanel,
+		ExampleSelectReviewerListPanel,
+		ExampleCatalogListPanel,
+		ExampleEmailTemplatesListPanel
 	},
 	data() {
 		return {
 			name: 'ListPanel',
 			examples: {
-				ListPanel: 'ListPanel',
-				ListPanelCount: 'With Count',
-				ListPanelLoadMore: 'With Load More',
-				ListPanelActions: 'With Actions',
-				ListPanelSearch: 'With Search',
-				ListPanelNotice: 'With Notice',
-				ListPanelExpandable: 'With Expandable Items',
-				ListPanelOrderable: 'With Orderable Items',
-				ListPanelFilter: 'With Filter'
+				ExampleListPanel: 'Base',
+				ExampleListPanelActions: 'With Actions',
+				ExampleListPanelDescription: 'With Description',
+				ExampleListPanelEmpty: 'With No Items',
+				ExampleListPanelFilter: 'With Filter',
+				ExampleListPanelOrderable: 'With Orderable Items',
+				ExampleListPanelPagination: 'With Pagination',
+				ExampleListPanelSearch: 'With Search',
+				ExampleListPanelSelect: 'With Select'
 			},
 			implementations: {
-				SubmissionsListPanelOJS: 'SubmissionsListPanel (OJS)',
-				SubmissionsListPanelOMP: 'SubmissionsListPanel (OMP)',
-				CatalogSubmissionsListPanel: 'CatalogSubmissionsListPanel (OMP)'
+				ExampleCatalogListPanel: 'CatalogListPanel',
+				ExampleSubmissionsListPanel: 'SubmissionsListPanel',
+				ExampleSelectSubmissionsListPanel: 'SelectSubmissionsListPanel',
+				ExampleSelectReviewerListPanel: 'SelectReviewerListPanel',
+				ExampleEmailTemplatesListPanel: 'EmailTemplatesListPanel'
 			}
 		};
 	}

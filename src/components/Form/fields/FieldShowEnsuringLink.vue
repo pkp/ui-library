@@ -11,13 +11,13 @@ export default {
 		/**
 		 * Get classes for the wrapper element
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
-		classes: function() {
+		classes() {
 			return ['pkpFormField--showEnsuringLink'];
 		}
 	},
-	mounted: function() {
+	mounted() {
 		/**
 		 * Show the requested message in a modal when the link in the messgae is
 		 * clicked.
@@ -38,15 +38,12 @@ export default {
 					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>'
 			).pkpHandler(modalOptions.modalHandler, modalOptions);
 
-			const modalHandler = $.pkp.classes.Handler.getHandler($modal);
-
-			modalHandler.modalBuild();
-			modalHandler.modalOpen();
+			$.pkp.classes.Handler.getHandler($modal);
 
 			return false;
 		});
 	},
-	beforeDestroy: function() {
+	beforeDestroy() {
 		/**
 		 * Clean up modal event listener
 		 */

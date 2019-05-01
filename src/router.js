@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Page from './docs/Page.vue';
 import ComponentBadge from './docs/components/Badge/ComponentBadge.vue';
 import ComponentButton from './docs/components/Button/ComponentButton.vue';
+import ComponentFilter from './docs/components/Filter/ComponentFilter.vue';
 import ComponentFieldArchivingPn from './docs/components/Form/fields/FieldArchivingPn/ComponentFieldArchivingPn.vue';
 import ComponentFieldBase from './docs/components/Form/fields/FieldBase/ComponentFieldBase.vue';
 import ComponentFieldColor from './docs/components/Form/fields/FieldColor/ComponentFieldColor.vue';
@@ -18,14 +19,17 @@ import ComponentFieldTextarea from './docs/components/Form/fields/FieldTextarea/
 import ComponentFieldUpload from './docs/components/Form/fields/FieldUpload/ComponentFieldUpload.vue';
 import ComponentFieldUploadImage from './docs/components/Form/fields/FieldUploadImage/ComponentFieldUploadImage.vue';
 import ComponentForm from './docs/components/Form/ComponentForm.vue';
+import ComponentHeader from './docs/components/Header/ComponentHeader.vue';
 import ComponentHelpButton from './docs/components/HelpButton/ComponentHelpButton.vue';
 import ComponentIcon from './docs/components/Icon/ComponentIcon.vue';
 import ComponentList from './docs/components/List/ComponentList.vue';
 import ComponentListPanel from './docs/components/ListPanel/ComponentListPanel.vue';
 import ComponentMultilingualProgress from './docs/components/MultilingualProgress/ComponentMultilingualProgress.vue';
+import ComponentNotification from './docs/components/Notification/ComponentNotification.vue';
 import ComponentOrderer from './docs/components/Orderer/ComponentOrderer.vue';
-import ComponentSelectListPanel from './docs/components/SelectListPanel/ComponentSelectListPanel.vue';
-import ComponentSettingsContainer from './docs/components/SettingsContainer/ComponentSettingsContainer.vue';
+import ComponentPagination from './docs/components/Pagination/ComponentPagination.vue';
+import ComponentSearch from './docs/components/Search/ComponentSearch.vue';
+import ComponentSpinner from './docs/components/Spinner/ComponentSpinner.vue';
 import ComponentTab from './docs/components/Tab/ComponentTab.vue';
 import ComponentTooltip from './docs/components/Tooltip/ComponentTooltip.vue';
 
@@ -53,6 +57,11 @@ export default new Router({
 			path: '/component/Button/:example?',
 			name: 'Button',
 			component: ComponentButton
+		},
+		{
+			path: '/component/Filter/:example?',
+			name: 'Filter',
+			component: ComponentFilter
 		},
 		{
 			path: '/component/Form/fields/FieldArchivingPn/:example?',
@@ -130,6 +139,11 @@ export default new Router({
 			component: ComponentForm
 		},
 		{
+			path: '/component/Header/:example?',
+			name: 'Header',
+			component: ComponentHeader
+		},
+		{
 			path: '/component/HelpButton/:example?',
 			name: 'HelpButton',
 			component: ComponentHelpButton
@@ -155,19 +169,29 @@ export default new Router({
 			component: ComponentMultilingualProgress
 		},
 		{
+			path: '/component/Notification/:example?',
+			name: 'Notification',
+			component: ComponentNotification
+		},
+		{
 			path: '/component/Orderer/:example?',
 			name: 'Orderer',
 			component: ComponentOrderer
 		},
 		{
-			path: '/component/SelectListPanel/:example?',
-			name: 'SelectListPanel',
-			component: ComponentSelectListPanel
+			path: '/component/Pagination/:example?',
+			name: 'Pagination',
+			component: ComponentPagination
 		},
 		{
-			path: '/component/SettingsContainer/:example?',
-			name: 'SettingsContainer',
-			component: ComponentSettingsContainer
+			path: '/component/Search/:example?',
+			name: 'Search',
+			component: ComponentSearch
+		},
+		{
+			path: '/component/Spinner/:example?',
+			name: 'Spinner',
+			component: ComponentSpinner
 		},
 		{
 			path: '/component/Tab/:example?',

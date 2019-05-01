@@ -33,9 +33,9 @@ export default {
 		/**
 		 * Classes to add to the wrapper element
 		 *
-		 * @return Array
+		 * @return {Array}
 		 */
-		classes: function() {
+		classes() {
 			let classes = [];
 			if (this.count === this.total) {
 				classes.push('multilingualProgress--isComplete');
@@ -50,9 +50,9 @@ export default {
 		/**
 		 * Tooltip
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		tooltip: function() {
+		tooltip() {
 			return this.__('multilingualProgress', {
 				count: this.count,
 				total: this.total

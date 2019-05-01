@@ -9,7 +9,7 @@ export default {
 	},
 	data() {
 		return {
-			props: PreviewGroups.data().forms.example,
+			props: PreviewGroups.data().components.example,
 			component: 'preview-groups'
 		};
 	}

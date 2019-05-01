@@ -100,7 +100,7 @@ export default {
 		options: Object,
 		csrfToken: String
 	},
-	data: function() {
+	data() {
 		return {
 			initialValue: null,
 			uploadFile: null
@@ -110,9 +110,9 @@ export default {
 		/**
 		 * Is the current value the same as the initial value?
 		 *
-		 * @return boolean
+		 * @return {Boolean}
 		 */
-		isInitialValue: function() {
+		isInitialValue() {
 			return (
 				!!this.currentValue &&
 				!!this.initialValue &&
@@ -123,9 +123,9 @@ export default {
 		/**
 		 * The filename to display to the user
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		fileName: function() {
+		fileName() {
 			return this.uploadFile
 				? this.uploadFile.upload.filename
 				: this.currentValue;
@@ -134,9 +134,9 @@ export default {
 		/**
 		 * An id for the control element so that focus can be reset as needed
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		controlId: function() {
+		controlId() {
 			return this.compileId('control');
 		},
 
@@ -145,9 +145,9 @@ export default {
 		 *
 		 * Used to ensure keyboard-only file uploads.
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		dropzoneClickableId: function() {
+		dropzoneClickableId() {
 			return this.compileId('clickable');
 		},
 
@@ -157,9 +157,9 @@ export default {
 		 * Required by vue2-dropzone, this ensures it is unique when used more
 		 * than once on a page.
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		dropzoneId: function() {
+		dropzoneId() {
 			return this.compileId('dropzone');
 		},
 
@@ -167,9 +167,9 @@ export default {
 		 * An id for dropzone's hidden file input. This is used to link the label
 		 * to the file input for screen readers
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		dropzoneHiddenFileId: function() {
+		dropzoneHiddenFileId() {
 			return this.compileId('hiddenFileId');
 		},
 
@@ -178,9 +178,9 @@ export default {
 		 *
 		 * Merges defaults with any options supplied by the `options` prop
 		 *
-		 * @return object
+		 * @return {Object}
 		 */
-		dropzoneOptions: function() {
+		dropzoneOptions() {
 			return {
 				method: 'POST',
 				thumbnailWidth: 240,
@@ -221,7 +221,7 @@ export default {
 		/**
 		 * Clear the current value
 		 */
-		clear: function() {
+		clear() {
 			this.$emit('change', {
 				name: this.name,
 				value: null,
@@ -236,7 +236,7 @@ export default {
 		/**
 		 * Revert to the initialValue
 		 */
-		revert: function() {
+		revert() {
 			this.$emit('change', {
 				name: this.name,
 				value: this.initialValue,
@@ -250,8 +250,8 @@ export default {
 		/**
 		 * Respond to dropzone.js event when a file is successfully uploaded
 		 *
-		 * @param object file Details about the file
-		 * @param object response The server response
+		 * @param {Object} file Details about the file
+		 * @param {Object} response The server response
 		 * @see https://www.dropzonejs.com/#event-success
 		 */
 		success: function(file, response) {
@@ -266,7 +266,7 @@ export default {
 		/**
 		 * Respond to a dropzone.js event when a file upload has begun
 		 *
-		 * @param object file Details about the file
+		 * @param {Object} file Details about the file
 		 * @see https://www.dropzonejs.com/#event-addedfile
 		 */
 		onAddFile: function(file) {
@@ -279,7 +279,7 @@ export default {
 		 *
 		 * @see https://www.dropzonejs.com/#event-removedfile
 		 */
-		onRemoveFile: function() {
+		onRemoveFile() {
 			this.uploadFile = null;
 			this.setErrors([]);
 		},
@@ -290,8 +290,8 @@ export default {
 		 * If the message comes from dropzone.js, it will be a string. If it comes from our API,
 		 * it will be an object.
 		 *
-		 * @param object file Details about the file
-		 * @param string|object message The error message
+		 * @param {Object} file Details about the file
+		 * @param {String|Object} message The error message
 		 * @see https://www.dropzonejs.com/#event-error
 		 */
 		error: function(file, message) {
@@ -310,7 +310,7 @@ export default {
 		 * Because the errors are stored as an object, Vue's observers won't react when the
 		 * object properties change. We force a re-render to ensure the errors prop is refreshed.
 		 *
-		 * @param object New errors to send
+		 * @param {Object} New errors to send
 		 */
 		setErrors: function(errors) {
 			this.$emit('set-errors', this.name, errors, this.localeKey);
@@ -324,7 +324,7 @@ export default {
 		 * position will be dropped for someone using a keyboard or
 		 * assistive technology.
 		 */
-		setFocusToControl: function() {
+		setFocusToControl() {
 			this.$nextTick(() => {
 				let focusable = this.$refs.control.querySelectorAll('input,button');
 				if (focusable.length) {
@@ -346,7 +346,7 @@ export default {
 			this.setFocusToControl();
 		}
 	},
-	mounted: function() {
+	mounted() {
 		/**
 		 * Add attributes to the hidden file input field so that labels and
 		 * descriptions can be accessed by those using assistive devices.

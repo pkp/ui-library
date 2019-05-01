@@ -36,18 +36,18 @@ export default {
 		/**
 		 * The site's primary locale
 		 *
-		 * @return Object
+		 * @return {Object}
 		 */
-		primaryLocale: function() {
+		primaryLocale() {
 			return this.locales.find(locale => locale.key === this.primaryLocaleKey);
 		},
 
 		/**
 		 * All locales except the primary locale
 		 *
-		 * @return Array
+		 * @return {Array}
 		 */
-		additionalLocales: function() {
+		additionalLocales() {
 			return this.locales.filter(
 				locale => locale.key !== this.primaryLocaleKey
 			);
@@ -62,7 +62,7 @@ export default {
 		 * the primary locale and any other visible locale will be removed. The
 		 * primary locale is always visible.
 		 *
-		 * @param string localeKey "en_US"
+		 * @param {String} localeKey "en_US"
 		 */
 		toggleLocale: function(localeKey) {
 			let selected = [this.primaryLocaleKey];
@@ -75,7 +75,7 @@ export default {
 		/**
 		 * Emit an event with updated locales
 		 *
-		 * @param array selected Locales which should be visible
+		 * @param {Array} selected Locales which should be visible
 		 */
 		updateLocales: function(selected) {
 			this.$emit('updateLocales', selected);

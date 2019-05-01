@@ -18,7 +18,7 @@ export default {
 	name: 'Badge',
 	props: ['label', 'isPrimary', 'isWarnable', 'isButton', 'hasDot', 'stage'],
 	computed: {
-		classes: function() {
+		classes() {
 			let classes = [];
 			if (this.isPrimary) {
 				classes.push('pkpBadge--isPrimary');
@@ -37,7 +37,7 @@ export default {
 		}
 	},
 	methods: {
-		click: function() {
+		click() {
 			this.$emit('click');
 		}
 	}

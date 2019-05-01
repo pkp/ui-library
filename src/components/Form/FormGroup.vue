@@ -91,15 +91,15 @@ export default {
 		/**
 		 * All fields assigned to this group
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
-		fieldsInGroup: function() {
+		fieldsInGroup() {
 			return this.fields.filter(
 				field => field.groupId === this.id && this.shouldShowField(field)
 			);
 		},
 
-		hasErrors: function() {
+		hasErrors() {
 			for (var fieldName in this.fieldsInGroup) {
 				if (fieldName in this.errors) {
 					return true;
@@ -112,7 +112,7 @@ export default {
 		/**
 		 * Emit an event when a field's value has changed
 		 *
-		 * @param object data {{
+		 * @param {Object} data {{
 		 *  @option string name Field name
 		 *  @option string value New value
 		 *  @option string localeKey Locale key for this value. Empty it not multilingual
@@ -125,8 +125,8 @@ export default {
 		/**
 		 * Should a field be shown?
 		 *
-		 * @param object field One of this.fields
-		 * @return boolean
+		 * @param {Object} field One of this.fields
+		 * @return {Boolean}
 		 */
 		shouldShowField: function(field) {
 			if (typeof field.showWhen === 'undefined') {
@@ -147,7 +147,7 @@ export default {
 		/**
 		 * Respond to a field changing its errors
 		 *
-		 * @param object data {{
+		 * @param {Object} data {{
 		 *		@option string name Field name
 		 *		@option array errors List of errors for the field
 		 *		@option string localeKey The locale key for a multilingual field

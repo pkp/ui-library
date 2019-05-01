@@ -6,7 +6,7 @@ Some components require specific markup or special handling based on state to en
 
 Always test by navigating components with a keyboard, using <kbd>TAB</kbd> to cycle through elements. Any HTML elements which are not visible should not receive focus. You should be able to see where the focus is on the page at any time.
 
-For example, a [ListPanelFilter](#/component/detail/list-panel--with-filter) is hidden until enabled. When hidden, focusable elements such as the filter buttons should be skipped when navigating with the <kbd>TAB</kbd> key.
+For example, a [ListPanelFilter](#/component/ListPanel/ListPanelFilter) is hidden until enabled. When hidden, focusable elements such as the filter buttons should be skipped when navigating with the <kbd>TAB</kbd> key.
 
 Furthermore, all actions should be possible without a mouse. If drag-and-drop features are used, there should be alternative tools for moving items around when only using a keyboard.
 

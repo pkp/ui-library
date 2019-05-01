@@ -54,9 +54,9 @@ export default {
 		/**
 		 * Get localized set of options
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
-		localizedOptions: function() {
+		localizedOptions() {
 			return this.isMultingual ? this.options[this.localeKey] : this.options;
 		}
 	}

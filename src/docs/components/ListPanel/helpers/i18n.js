@@ -1,21 +1,14 @@
-export const count = {
-	itemsOfTotal: '{$count} of {$total} items',
-	itemCount: '{$count} items'
-};
-
-export const loadMore = {
-	loadMore: 'Load more',
-	loading: 'Loading'
+export const pagination = {
+	paginationLabel: 'View additional pages',
+	goToLabel: 'Go to {$page}',
+	pageLabel: 'Page {$pageNumber}',
+	nextPageLabel: 'Next page',
+	previousPageLabel: 'Previous page'
 };
 
 export const search = {
 	search: 'Search',
 	clearSearch: 'Clear search phrase'
-};
-
-export const notice = {
-	notice:
-		'Example notice which can be used to display additional information on using the control.'
 };
 
 export const expandable = {
@@ -32,7 +25,7 @@ export const orderable = {
 };
 
 export const filter = {
-	filter: 'Filter',
+	filter: 'Filters',
 	filterRemove: 'Clear filter: {$filterTitle}'
 };
 
@@ -62,13 +55,14 @@ export const submissionsListPanel = {
 		'You have been assigned an editorial role for this submission. Would you like to access the <a href="{$urlEditorialWorkflow}">Editorial workflow</a>?'
 };
 
-export const catalogSubmissionsListPanel = {
+export const catalogListPanel = {
 	add: 'Add Entry',
 	featured: 'Featured',
 	newRelease: 'New Release',
 	featuredCategory: 'Featured in category',
-	featuredSeries: 'Feeatured in series',
-	newreleaseSeries: 'New release in series',
+	featuredSeries: 'Featured in series',
+	newReleaseCategory: 'New release in category',
+	newReleaseSeries: 'New release in series',
 	catalogEntry: 'Catalog Entry',
 	editCatalogEntry: 'Entry',
 	saving: 'Saving',
@@ -77,17 +71,79 @@ export const catalogSubmissionsListPanel = {
 		'Drag-and-drop or tap the up and down buttons to change the order of features on the homepage.',
 	orderingFeaturesSection:
 		'Drag-and-drop or tap the up and down buttons to change the order of features in {$title}.',
-	saveFeatureOrder: 'Save Order'
+	saveFeatureOrder: 'Save Order',
+	isFeatured: 'This monograph is featured. Make this monograph not featured.',
+	isNotFeatured:
+		'This monograph is not featured. Make this monograph featured.',
+	isNewRelease:
+		'This monograph is a new release. Make this monograph not a new release.',
+	isNotNewRelease:
+		'This monograph is not a new release. Make this monograph a new release.',
+	viewSubmission: 'View Submission'
+};
+
+export const selectSubmissionsListPanel = {
+	listSeparator: ', ',
+	viewSubmission: 'View Submission'
+};
+
+export const selectReviewerListPanel = {
+	filterRating: 'Rated at least',
+	activeReviews: '{$count} active',
+	activeReviewsDescription: 'Active reviews currently assigned',
+	completedReviews: 'Reviews completed',
+	declinedReviews: 'Reviews declined',
+	empty: 'No reviewers found',
+	reviewerRating: 'Reviewer rating: {$rating}',
+	daysSinceLastAssignment: '{$days} days ago',
+	daySinceLastAssignment: 'Yesterday',
+	daysSinceLastAssignmentDescription: 'Days since last review assigned',
+	averageCompletion: 'Average days to complete review',
+	neverAssigned: 'Never assigned',
+	currentlyAssigned:
+		'This reviewer has already been assigned to review this submission.',
+	warnOnAssign:
+		"This reviewer is locked because they have been assigned a role which allows them to view the author's identity. Blind peer review can not be guaranteed. Would you like to unlock this reviewer anyway?",
+	warnOnAssignUnlock: 'Unlock',
+	reviewInterests: 'Reviewing Interests',
+	gossip: 'Editorial Notes',
+	biography: 'Biography',
+	listSeparator: ', ',
+	viewMore: 'Show more details about {$name}',
+	viewLess: 'Hide expanded details about {$name}'
+};
+
+export const emailTemplatesListPanel = {
+	add: 'Add Template',
+	cancel: 'Cancel',
+	delete: 'Delete',
+	deleteConfirm: 'Are you sure you want to delete this email template?',
+	disable: 'Disable',
+	disabled: 'Disabled',
+	edit: 'Edit',
+	editTemplate: 'Edit Email',
+	enable: 'Enable',
+	from: 'From: {$value}',
+	ok: 'Ok',
+	reset: 'Reset',
+	resetAll: 'Reset All',
+	resetAllConfirm:
+		'If you reset all templates, all modifications to the email templates will be lost.  Do you want to confirm this operation?',
+	resetConfirm:
+		'Are you sure you want to reset this email template to its default values?',
+	subjectLabel: 'Subject: {$subject}',
+	to: 'To: {$value}'
 };
 
 export default {
-	count,
-	loadMore,
+	pagination,
 	search,
-	notice,
 	expandable,
 	orderable,
 	filter,
 	submissionsListPanel,
-	catalogSubmissionsListPanel
+	catalogListPanel,
+	selectSubmissionsListPanel,
+	selectReviewerListPanel,
+	emailTemplatesListPanel
 };

@@ -82,11 +82,11 @@ export default {
 			required: true
 		},
 		value: {
-			type: [Array, String, Boolean],
+			type: [Array, Number, String, Boolean],
 			required: true
 		}
 	},
-	data: function() {
+	data() {
 		return {
 			/**
 			 *
@@ -111,9 +111,9 @@ export default {
 		/**
 		 * Get classes for the wrapper element
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
-		classes: function() {
+		classes() {
 			let classes = [];
 			if (this.isOrderable) {
 				classes.push('pkpFormField--optionsOrderable');
@@ -125,7 +125,7 @@ export default {
 		/**
 		 * Move an option up in the list
 		 *
-		 * @param optionValue int The value of the option to move up
+		 * @param {Number} optionValue The value of the option to move up
 		 */
 		optionOrderUp: function(optionValue) {
 			const index = this.localizedOptions.findIndex(option => {
@@ -145,7 +145,7 @@ export default {
 		/**
 		 * Move an option down in the list
 		 *
-		 * @param optionValue int The value of the option to move down
+		 * @param {Number} optionValue The value of the option to move down
 		 */
 		optionOrderDown: function(optionValue) {
 			const index = this.localizedOptions.findIndex(option => {
@@ -165,7 +165,7 @@ export default {
 		/**
 		 * Update the order of selected values when the order of options is changed
 		 */
-		updateValueOrder: function() {
+		updateValueOrder() {
 			this.selectedValue = this.localizedOptions
 				.filter(option => this.selectedValue.includes(option.value))
 				.map(option => option.value);

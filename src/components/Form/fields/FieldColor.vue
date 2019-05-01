@@ -42,7 +42,7 @@ export default {
 		/**
 		 * Update the current value when the color picker changes
 		 *
-		 * @param string newVal
+		 * @param {String} newVal
 		 */
 		setValue: function(newVal) {
 			if (newVal.hex === this.currentValue) {

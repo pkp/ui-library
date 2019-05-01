@@ -1,19 +1,18 @@
 <script>
 import Example from '@/docs/Example.vue';
-import ListPanel from './previews/PreviewListPanelSearch.vue';
+import PreviewListPanelSearch from './previews/PreviewListPanelSearch.vue';
 import fileContent from '!raw-loader!./previews/PreviewListPanelSearch.vue';
 import config from './config';
 
 export default {
 	extends: Example,
 	components: {
-		ListPanel
+		PreviewListPanelSearch
 	},
 	data() {
 		return {
 			...config,
-			title: 'ListPanel With Search',
-			component: 'list-panel',
+			component: 'preview-list-panel-search',
 			template: this.extractTemplate(fileContent)
 		};
 	}

@@ -1,56 +1,49 @@
 <template>
-	<div class="pkpListPanel">
-		<div class="pkpListPanel__header -pkpClearfix">
-			<div class="pkpListPanel__title">{{ i18n.title }}</div>
-			<ul class="pkpListPanel__actions">
-				<li>
-					<pkp-button
-						:label="i18n.openModal"
-						@click="openModal"
-					/>
-				</li>
-				<li>
-					<pkp-button
-						element="a"
-						href="https://example.org"
-						:label="i18n.goToUrl"
-					/>
-				</li>
-			</ul>
-		</div>
-		<ul class="pkpListPanel__items" aria-live="polite">
-			<list-panel-item
-				v-for="item in items"
-				:key="item.id"
-				:item="item"
-			/>
-		</ul>
-	</div>
+	<!-- Use the v-bind syntax to bind all props at once. -->
+	<list-panel
+		v-bind="components.example"
+		@set="set"
+	>
+		<pkp-header slot="header">
+			{{ title }}
+			<template slot="actions">
+				<pkp-button
+					@click="openModal"
+					label="Add Item"
+				/>
+				<pkp-button
+					@click="openModal"
+					:isWarnable="true"
+					label="Reset Defaults"
+				/>
+			</template>
+		</pkp-header>
+	</list-panel>
 </template>
 
 <script>
-import ListPanel from '@/components/ListPanel/ListPanel.vue';
+import Container from '@/components/Container/Container.vue';
+import PkpHeader from '@/components/Header/Header.vue';
 import PkpButton from '@/components/Button/Button.vue';
-import {data} from '../config';
+import {props} from '../config';
 import items from '../helpers/items';
 
 export default {
-	extends: ListPanel,
+	extends: Container,
 	components: {
-		PkpButton
+		PkpButton,
+		PkpHeader
 	},
 	data() {
 		return {
-			...data,
-			id: 'PreviewListPanelCount',
-			items: items,
-			itemsMax: 10,
-			i18n: {
-				...data.i18n,
-				title: 'List Panel with Actions',
-				openModal: 'Open Modal',
-				goToUrl: 'Go to URL'
-			}
+			components: {
+				example: {
+					...props,
+					id: 'example',
+					items: items
+				}
+			},
+			title: 'List Panel with Actions'
 		};
 	},
 	methods: {

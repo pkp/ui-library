@@ -20,9 +20,9 @@ export default {
 		 *
 		 * {{ __('key', { count: this.item_count }) }}
 		 *
-		 * @param string key The translation string to use
-		 * @param params object (Optional) Variables to compile with the translation
-		 * @return string
+		 * @param {String} key The translation string to use
+		 * @param {params} object (Optional) Variables to compile with the translation
+		 * @return {String}
 		 */
 		__: function(key, params) {
 			if (typeof this.i18n[key] === 'undefined') {
@@ -63,9 +63,9 @@ export default {
 		 *
 		 * {{ localize(fullTitle, 'fr_CA') }}
 		 *
-		 * @param object localizedString Key/value hash storing one string per locale
-		 * @param string requestedLocale Optional. Request a specific locale
-		 * @return string
+		 * @param {Object} localizedString Key/value hash storing one string per locale
+		 * @param {String} requestedLocale Optional. Request a specific locale
+		 * @return {String}
 		 */
 		localize: function(localizedString, requestedLocale) {
 			if (localizedString === null) {
@@ -96,50 +96,6 @@ export default {
 		},
 
 		/**
-		 * Get an API endpoint URL
-		 *
-		 * This constructs an appropriate URL for querying the API, adjusting
-		 * as necessary for the disable_path_info configuration option.
-		 *
-		 * @param string endpoint
-		 * @return string
-		 */
-		getApiUrl: function(endpoint) {
-			var apiBase;
-			var indexFile = $.pkp.app.restfulUrlsEnabled ? '' : 'index.php';
-			if ($.pkp.app.contextPath) {
-				apiBase = '/' + $.pkp.app.contextPath + $.pkp.app.apiBasePath;
-			} else {
-				apiBase = $.pkp.app.apiBasePath;
-			}
-			if (!$.pkp.app.pathInfoEnabled) {
-				if ($.pkp.app.contextPath) {
-					return (
-						$.pkp.app.baseUrl +
-						'/' +
-						indexFile +
-						'?journal=' +
-						encodeURIComponent($.pkp.app.contextPath) +
-						'&endpoint=' +
-						apiBase +
-						'/' +
-						endpoint
-					);
-				}
-				return (
-					$.pkp.app.baseUrl +
-					'/' +
-					indexFile +
-					'?endpoint=' +
-					apiBase +
-					'/' +
-					endpoint
-				);
-			}
-			return $.pkp.app.baseUrl + '/' + indexFile + apiBase + '/' + endpoint;
-		},
-
-		/**
 		 * Display an error message from an ajax request
 		 *
 		 * This callback expects to be attached to the `error` param of the
@@ -152,8 +108,7 @@ export default {
 		 *   }
 		 * }
 		 *
-		 * @param object r The response from jQuery's ajax request
-		 * @return null
+		 * @param {Object} r The response from jQuery's ajax request
 		 */
 		ajaxErrorCallback: function(r) {
 			var msg, modalOptions, $modal, modalHandler;
@@ -183,6 +138,20 @@ export default {
 
 			modalHandler.modalBuild();
 			modalHandler.modalOpen();
+		},
+
+		/**
+		 * Set focus to the first focusable element within a dom node
+		 *
+		 * @param {ParentNode} el
+		 */
+		setFocusIn(el) {
+			let focusable = el.querySelectorAll(
+				'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+			);
+			if (focusable.length) {
+				focusable[0].focus();
+			}
 		}
 	}
 };

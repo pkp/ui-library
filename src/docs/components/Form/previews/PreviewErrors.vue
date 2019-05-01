@@ -6,7 +6,7 @@ export default {
 	extends: PreviewForm,
 	data() {
 		return {
-			forms: {
+			components: {
 				example: {
 					...props,
 					id: 'example'

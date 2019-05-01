@@ -1,22 +1,20 @@
 <template>
 	<!-- Use the v-bind syntax to bind all props at once. -->
 	<pkp-form
-		v-bind="forms.example"
-		@set-fields="setFormFields"
-		@set-errors="setFormErrors"
-		@set-visible-locales="setFormVisibleLocales"
+		v-bind="components.example"
+		@set="set"
 	/>
 </template>
 
 <script>
-import SettingsContainer from '@/components/SettingsContainer/SettingsContainer.vue';
+import Container from '@/components/Container/Container.vue';
 import {props} from '../config';
 
 export default {
-	extends: SettingsContainer,
+	extends: Container,
 	data() {
 		return {
-			forms: {
+			components: {
 				example: props
 			}
 		};

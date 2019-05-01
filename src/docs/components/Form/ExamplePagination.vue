@@ -9,7 +9,7 @@ export default {
 	},
 	data() {
 		return {
-			props: PreviewPagination.data().forms.example,
+			props: PreviewPagination.data().components.example,
 			component: 'preview-pagination'
 		};
 	}

@@ -9,7 +9,7 @@ export default {
 	},
 	data() {
 		return {
-			props: PreviewMultilingual.data().forms.example,
+			props: PreviewMultilingual.data().components.example,
 			component: 'preview-multilingual'
 		};
 	}

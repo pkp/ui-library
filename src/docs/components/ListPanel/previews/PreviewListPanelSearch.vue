@@ -1,43 +1,57 @@
 <template>
-	<div class="pkpListPanel">
-		<div class="pkpListPanel__header -pkpClearfix">
-			<div class="pkpListPanel__title">{{ i18n.title }}</div>
-			<list-panel-search
-				@searchPhraseChanged="setSearchPhrase"
-				:searchPhrase="searchPhrase"
-				:i18n="i18n"
-			/>
-		</div>
-		<ul class="pkpListPanel__items" aria-live="polite">
-			<list-panel-item
-				v-for="item in items"
-				:key="item.id"
-				:item="item"
-			/>
-		</ul>
-	</div>
+	<!-- Use the v-bind syntax to bind all props at once. -->
+	<list-panel
+		v-bind="components.example"
+		@set="set"
+	>
+		<pkp-header slot="header">
+			{{ title }}
+			<template slot="actions">
+				<pkp-search
+					:searchPhrase="components.example.searchPhrase"
+					:searchLabel="i18n.search"
+					:clearSearchLabel="i18n.clearSearch"
+					@search-phrase-changed="setSearchPhrase"
+				/>
+			</template>
+		</pkp-header>
+	</list-panel>
 </template>
 
 <script>
-import ListPanel from '@/components/ListPanel/ListPanel.vue';
-import ListPanelSearch from '@/components/ListPanel/ListPanelSearch.vue';
-import {data} from '../config';
-import {search} from '../helpers/i18n';
+import Container from '@/components/Container/Container.vue';
+import PkpHeader from '@/components/Header/Header.vue';
+import PkpSearch from '@/components/Search/Search.vue';
+import {props} from '../config';
 import items from '../helpers/items';
 
 export default {
-	extends: ListPanel,
+	extends: Container,
 	components: {
-		ListPanelSearch
+		PkpSearch,
+		PkpHeader
 	},
 	data() {
 		return {
-			...data,
-			id: 'PreviewListPanelSearch',
-			items: items,
-			itemsMax: 10,
-			i18n: {...data.i18n, ...search}
+			components: {
+				example: {
+					...props,
+					id: 'example',
+					items: items
+				}
+			},
+			originalItems: [...items],
+			title: 'List Panel with Search',
+			i18n: {
+				search: 'Search',
+				clearSearch: 'Clear search'
+			}
 		};
+	},
+	methods: {
+		setSearchPhrase(searchPhrase) {
+			this.components.example.searchPhrase = searchPhrase;
+		}
 	}
 };
 </script>

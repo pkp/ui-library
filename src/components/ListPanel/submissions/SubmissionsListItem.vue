@@ -1,7 +1,7 @@
 <template>
-	<li class="pkpListPanelItem pkpListPanelItem--submission pkpListPanelItem--hasSummary" :class="{'-hasFocus': isFocused}">
+	<div class="pkpListPanelItem--submission -hasSummary" :class="classes">
 		<div class="pkpListPanelItem__summary -pkpClearfix">
-			<a :href="item.urlWorkflow" class="pkpListPanelItem--submission__link" @focus="focusItem" @blur="blurItem">
+			<a :href="item.urlWorkflow" class="pkpListPanelItem--submission__link">
 				<div class="pkpListPanelItem--submission__item">
 					<div class="pkpListPanelItem--submission__id">
 						<span class="-screenReader">{{ i18n.id }}</span>
@@ -22,8 +22,6 @@
 						<button v-for="(noticeAction, index) in noticeActions" :key="index"
 							class="-linkButton"
 							@click.stop.prevent="noticeAction"
-							@focus="focusItem"
-							@blur="blurItem"
 						>
 							{{ noticeActionLabels[index] }}
 						</button>
@@ -123,28 +121,22 @@
 					<span v-html="dualWorkflowLinks" />
 				</list-item>
 			</list>
-			<div class="pkpListPanelItem--submission__actions">
+			<div class="pkpListPanelItem__actions">
 				<pkp-button
 					element="a"
 					:href="item.urlWorkflow"
 					:label="i18n.viewSubmission"
-					@focus="focusItem"
-					@blur="blurItem"
 				/>
 				<pkp-button
 					v-if="currentUserCanViewInfoCenter"
 					:label="i18n.infoCenter"
 					@click="openInfoCenter"
-					@focus="focusItem"
-					@blur="blurItem"
 				/>
 				<pkp-button
 					v-if="currentUserCanDelete"
 					:label="i18n.delete"
 					:isWarnable="true"
 					@click="deleteSubmissionPrompt"
-					@focus="focusItem"
-					@blur="blurItem"
 				/>
 			</div>
 		</div>
@@ -165,7 +157,7 @@
 				</template>
 			</div>
 		</div>
-	</li>
+	</div>
 </template>
 
 <script>
@@ -188,15 +180,25 @@ export default {
 		PkpButton,
 		Icon
 	},
-	props: [
-		'item',
-		'i18n',
-		'apiPath',
-		'infoUrl',
-		'assignParticipantUrl',
-		'csrfToken'
-	],
-	data: function() {
+	props: {
+		apiUrl: {
+			type: String,
+			required: true
+		},
+		assignParticipantUrl: {
+			type: String,
+			required: true
+		},
+		csrfToken: {
+			type: String,
+			required: true
+		},
+		infoUrl: {
+			type: String,
+			required: true
+		}
+	},
+	data() {
 		return {
 			isExpanded: false,
 			mask: null,
@@ -208,16 +210,16 @@ export default {
 		/**
 		 * Map the submission id to the list item id
 		 */
-		id: function() {
+		id() {
 			return this.item.id;
 		},
 
 		/**
 		 * Can the current user delete a submission?
 		 *
-		 * @return bool
+		 * @return {Boolean}
 		 */
-		currentUserCanDelete: function() {
+		currentUserCanDelete() {
 			if (
 				!this.userAssignedRole(pkp.const.ROLE_ID_AUTHOR) &&
 				this.userAssignedRole([
@@ -238,9 +240,9 @@ export default {
 		/**
 		 * Can the current user view the info center?
 		 *
-		 * @return bool
+		 * @return {Boolean}
 		 */
-		currentUserCanViewInfoCenter: function() {
+		currentUserCanViewInfoCenter() {
 			return this.userAssignedRole([
 				pkp.const.ROLE_ID_SITE_ADMIN,
 				pkp.const.ROLE_ID_MANAGER,
@@ -251,9 +253,9 @@ export default {
 		/**
 		 * Is the current user a reviewer on this submission?
 		 *
-		 * @return bool
+		 * @return {Boolean}
 		 */
-		currentUserIsReviewer: function() {
+		currentUserIsReviewer() {
 			for (var review of this.item.reviewAssignments) {
 				if (review.isCurrentUserAssigned) {
 					return true;
@@ -265,9 +267,9 @@ export default {
 		/**
 		 * The current stage
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
-		activeStage: function() {
+		activeStage() {
 			return this.item.stages.find(stage => {
 				return stage.isActiveStage === true;
 			});
@@ -279,9 +281,9 @@ export default {
 		 * Only stage status' that have pending work for the current user should
 		 * result in a notice.
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		notice: function() {
+		notice() {
 			var notice = '';
 
 			// Notices for journal managers
@@ -348,9 +350,9 @@ export default {
 		 * Does this submission need an editor assigned and can the current user
 		 * assign one?
 		 *
-		 * @return boolean
+		 * @return {Boolean}
 		 */
-		shouldAssignEditor: function() {
+		shouldAssignEditor() {
 			return (
 				this.userAssignedRole(pkp.const.ROLE_ID_MANAGER) &&
 				this.activeStage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION &&
@@ -362,9 +364,9 @@ export default {
 		/**
 		 * Get the current stage to pass to pkpBadge
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		currentStage: function() {
+		currentStage() {
 			switch (this.activeStage.id) {
 				case pkp.const.WORKFLOW_STAGE_ID_SUBMISSION:
 					return 'submission';
@@ -382,9 +384,9 @@ export default {
 		/**
 		 * Get the label for the current stage
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		currentStageLabel: function() {
+		currentStageLabel() {
 			if (this.item.status === 3 || this.item.status === 4) {
 				return this.item.statusLabel;
 			} else if (this.item.submissionProgress > 0) {
@@ -396,18 +398,18 @@ export default {
 		/**
 		 * Get an a11y description for the current stage badge
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		currentStageDescription: function() {
+		currentStageDescription() {
 			return this.__('currentStage', {stage: this.currentStageLabel});
 		},
 
 		/**
 		 * Compile the count of open discussions
 		 *
-		 * @return int
+		 * @return {Number}
 		 */
-		openQueryCount: function() {
+		openQueryCount() {
 			return this.activeStage.queries.filter(query => {
 				return !query.closed;
 			}).length;
@@ -417,9 +419,9 @@ export default {
 		 * Determine the correct label for the count of files based on the active
 		 * stage.
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		activeStageFilesLabel: function() {
+		activeStageFilesLabel() {
 			switch (this.activeStage.id) {
 				case pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW:
 				case pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW:
@@ -435,18 +437,18 @@ export default {
 		/**
 		 * Is this the submission stage?
 		 *
-		 * @return bool
+		 * @return {Boolean}
 		 */
-		isSubmissionStage: function() {
+		isSubmissionStage() {
 			return this.activeStage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION;
 		},
 
 		/**
 		 * Is this the review stage?
 		 *
-		 * @return bool
+		 * @return {Boolean}
 		 */
-		isReviewStage: function() {
+		isReviewStage() {
 			return (
 				this.activeStage.id === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW ||
 				this.activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW
@@ -456,9 +458,9 @@ export default {
 		/**
 		 * Retrieve all role assignments for any stage
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
-		currentRoleAssignments: function() {
+		currentRoleAssignments() {
 			let roles = [];
 			this.item.stages.forEach(stage => {
 				stage.currentUserAssignedRoles.forEach(role => {
@@ -474,9 +476,9 @@ export default {
 		 * If the user is assigned to more than one role, and has access to both the
 		 * editorial and author dashboards, provide a description and links to both.
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		dualWorkflowLinks: function() {
+		dualWorkflowLinks() {
 			if (
 				!this.userAssignedRole(pkp.const.ROLE_ID_AUTHOR) ||
 				!this.userAssignedRole([
@@ -497,9 +499,9 @@ export default {
 		 * If the user is assigned as a reviewer, but also to an editorial role,
 		 * provide a description and link to the editorial workflow.
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		reviewerWorkflowLink: function() {
+		reviewerWorkflowLink() {
 			if (
 				!this.currentUserIsReviewer ||
 				!this.userAssignedRole([
@@ -518,9 +520,9 @@ export default {
 		/**
 		 * Retrieve the review assignments for the latest review round
 		 *
-		 * @return array
+		 * @return {Array}
 		 */
-		currentReviewAssignments: function() {
+		currentReviewAssignments() {
 			if (
 				!this.item.reviewRounds.length ||
 				!this.item.reviewAssignments.length
@@ -540,9 +542,9 @@ export default {
 		 * review assignment from the latest round if available, or any other
 		 * round if not available.
 		 *
-		 * @return object|false False if no review assignment exists
+		 * @return {Object|Boolean} False if no review assignment exists
 		 */
-		currentUserLatestReviewAssignment: function() {
+		currentUserLatestReviewAssignment() {
 			if (!this.currentUserIsReviewer) {
 				return false;
 			}
@@ -584,9 +586,9 @@ export default {
 		/**
 		 * Compile the count of completed reviews
 		 *
-		 * @return int
+		 * @return {Number}
 		 */
-		completedReviewsCount: function() {
+		completedReviewsCount() {
 			if (!this.isReviewStage) {
 				return 0;
 			}
@@ -598,9 +600,9 @@ export default {
 		/**
 		 * Return a class to toggle the item mask
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		classMask: function() {
+		classMask() {
 			if (!this.mask) {
 				return '';
 			} else if (this.mask === 'finish') {
@@ -618,9 +620,9 @@ export default {
 		 * ID attribute to use in aria-labelledby linking the reponse due date
 		 * with it's label
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		responseDueLabelId: function() {
+		responseDueLabelId() {
 			return 'responseDueLabel' + this._uid;
 		},
 
@@ -628,9 +630,9 @@ export default {
 		 * ID attribute to use in aria-labelledby linking the review due date
 		 * with it's label
 		 *
-		 * @return string
+		 * @return {String}
 		 */
-		reviewDueLabelId: function() {
+		reviewDueLabelId() {
 			return 'reviewDueLabel' + this._uid;
 		}
 	},
@@ -639,7 +641,7 @@ export default {
 		 * Check if a user is assigned a given role on this submission. If no
 		 * assignments exist, match global roles for site admin and manager
 		 *
-		 * @param roles int|array
+		 * @param {Number|Array} roles
 		 */
 		userAssignedRole: function(roles) {
 			if (!Array.isArray(roles)) {
@@ -666,16 +668,16 @@ export default {
 		/**
 		 * Filter by a submission stage
 		 *
-		 * @param stageId int
+		 * @param {Number} stageId
 		 */
 		filterByStage: function(stageId) {
-			this.$emit('filterList', {stageIds: [stageId]});
+			this.$emit('addFilter', 'stageIds', stageId);
 		},
 
 		/**
 		 * Load a modal displaying history and notes of a submission
 		 */
-		openInfoCenter: function() {
+		openInfoCenter() {
 			var opts = {
 				title: this.item.title,
 				url: this.infoUrl.replace('__id__', this.item.id),
@@ -694,14 +696,14 @@ export default {
 		 * Reset the focus on the info center link when the modal has been
 		 * closed. This is a callback function passed into ModalHandler.js
 		 */
-		resetFocusInfoCenter: function() {
+		resetFocusInfoCenter() {
 			this.$el.querySelector('.pkpListPanelItem__openInfoCenter').focus();
 		},
 
 		/**
 		 * Load a modal displaying the assign participant options
 		 */
-		openAssignParticipant: function() {
+		openAssignParticipant() {
 			var opts = {
 				title: this.i18n.assignEditor,
 				url: this.assignParticipantUrl
@@ -722,7 +724,7 @@ export default {
 		 * Reset the focus on the assign participant button when the modal has been
 		 * closed. This is a callback function passed into ModalHandler.js
 		 */
-		resetFocusAssignParticipant: function() {
+		resetFocusAssignParticipant() {
 			this.$el
 				.querySelector('.pkpListPanelItem--submission__activity button')
 				.focus();
@@ -731,25 +733,25 @@ export default {
 		/**
 		 * Display a confirmation prompt before deleting a submission
 		 */
-		deleteSubmissionPrompt: function() {
+		deleteSubmissionPrompt() {
 			this.mask = 'confirmingDelete';
 		},
 
 		/**
 		 * Send a request to delete the submission and handle the response
 		 */
-		deleteSubmission: function() {
+		deleteSubmission() {
 			this.mask = 'deleting';
 
 			var self = this;
 			$.ajax({
-				url: this.getApiUrl(this.apiPath + '/' + this.item.id),
+				url: this.apiUrl + '/' + this.item.id,
 				type: 'DELETE',
 				headers: {
 					'X-Csrf-Token': this.csrfToken
 				},
 				error: this.ajaxErrorCallback,
-				success: function() {
+				success() {
 					self.mask = 'finish';
 					// Allow time for the finished CSS transition to display
 					setTimeout(function() {
@@ -757,7 +759,7 @@ export default {
 						self.cancelDeleteRequest();
 					}, 300);
 				},
-				complete: function() {
+				complete() {
 					// Reset the mask in case there is an error
 					if (self.mask === 'deleting') {
 						self.cancelDeleteRequest();
@@ -769,7 +771,7 @@ export default {
 		/**
 		 * Cancel the delete request
 		 */
-		cancelDeleteRequest: function() {
+		cancelDeleteRequest() {
 			this.mask = null;
 		}
 	},
@@ -805,7 +807,7 @@ export default {
 		display: block;
 		position: absolute;
 		top: 50%;
-		right: 100%;
+		left: 0;
 		width: 0.1rem;
 		height: 25%;
 		background: @primary;
@@ -814,8 +816,7 @@ export default {
 		transform: translateY(-50%);
 	}
 
-	&:hover,
-	&.-hasFocus {
+	&:hover {
 		&:before {
 			height: 100%;
 			opacity: 1;
@@ -832,6 +833,29 @@ export default {
 	&:focus {
 		color: @text;
 	}
+
+	&:before {
+		content: '';
+		display: block;
+		position: absolute;
+		top: 50%;
+		right: 100%;
+		width: 0.1rem;
+		height: 25%;
+		background: @primary;
+		opacity: 0;
+		transition: height 0.3s;
+		transform: translateY(-50%);
+	}
+
+	&:focus {
+		outline: 0;
+
+		&:before {
+			height: 100%;
+			opacity: 1;
+		}
+	}
 }
 
 .pkpListPanelItem--submission__item,
@@ -843,7 +867,7 @@ export default {
 	position: relative;
 	float: left;
 	width: 75%;
-	padding-left: 48px;
+	padding-left: 4rem;
 }
 
 .pkpListPanelItem--submission__id {
@@ -860,9 +884,6 @@ export default {
 .pkpListPanelItem--submission__activity {
 	display: block;
 	padding-right: 2em;
-	white-space: nowrap;
-	overflow-x: hidden;
-	text-overflow: ellipsis;
 }
 
 .pkpListPanelItem--submission__author {
@@ -910,18 +931,6 @@ export default {
 // Details panel
 .pkpListPanelItem__details--submission {
 	padding: 1em (@base * 3) 1em 62px;
-}
-
-.pkpListPanelItem--submission__actions {
-	text-align: right;
-
-	&:not(:first-child) {
-		margin-top: 1em;
-	}
-
-	.pkpButton + .pkpButton {
-		margin-left: 0.5em;
-	}
 }
 
 // Reviewer-specific displays

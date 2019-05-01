@@ -24,7 +24,7 @@ export default {
 	components: {
 		draggable
 	},
-	data: function() {
+	data() {
 		return {
 			...PreviewOrderer.data(),
 			isDraggable: true

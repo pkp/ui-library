@@ -8,7 +8,7 @@
  * @see https://vuejs.org/v2/guide/mixins.html
  */
 export default {
-	mounted: function() {
+	mounted() {
 		// Store a reference to this component for global event callbacks
 		var self = this;
 

@@ -84,7 +84,7 @@ export default {
 			required: true
 		}
 	},
-	data: function() {
+	data() {
 		return {
 			inputValue: ''
 		};
@@ -93,9 +93,9 @@ export default {
 		/**
 		 * Is the input option the currently selected option?
 		 *
-		 * @return boolean
+		 * @return {Boolean}
 		 */
-		isInputSelected: function() {
+		isInputSelected() {
 			return !this.options
 				.filter(opt => !opt.isInput)
 				.map(opt => opt.value)
@@ -106,7 +106,7 @@ export default {
 		/**
 		 * Select the option with an input field
 		 */
-		selectInput: function() {
+		selectInput() {
 			this.selectedValue = this.inputValue;
 			this.$refs.inputRadio[0].checked = true;
 			this.$refs.inputText[0].focus();
@@ -115,7 +115,7 @@ export default {
 		/**
 		 * Set the seletected value to the input field's vale
 		 */
-		setInputToSelected: function() {
+		setInputToSelected() {
 			this.selectedValue = this.inputValue;
 		}
 	},
@@ -131,7 +131,7 @@ export default {
 			this.selectedValue = this.inputValue;
 		}
 	},
-	mounted: function() {
+	mounted() {
 		/**
 		 * Put the value into the input field if it doesn't match one of the
 		 * existing options.

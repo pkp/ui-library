@@ -1,69 +1,96 @@
 <template>
-	<div class="pkpListPanel pkpListPanel--submissions" :class="classStatus">
-		<div class="pkpListPanel__header -pkpClearfix">
-			<div class="pkpListPanel__title">
-				{{ i18n.title }}
-				<span v-if="isLoading" class="pkpSpinner" aria-hidden="true"></span>
+	<div class="pkpListPanel--submissions" :class="classes">
+
+		<!-- Header -->
+		<pkp-header>
+			{{ title }}
+			<spinner v-if="isLoading" />
+			<template slot="actions">
+				<search
+					:searchPhrase="searchPhrase"
+					:searchLabel="i18n.search"
+					:clearSearchLabel="i18n.clearSearch"
+					@search-phrase-changed="setSearchPhrase"
+				/>
+				<pkp-button
+					v-if="currentUserCanFilter"
+					:isActive="isSidebarVisible"
+					icon="filter"
+					:label="i18n.filter"
+					@click="toggleSidebar"
+				/>
+				<pkp-button
+					v-if="currentUserCanAddSubmission"
+					element="a"
+					:href="addUrl"
+					:label="i18n.add"
+				/>
+			</template>
+		</pkp-header>
+
+		<!-- Body of the panel, including items and sidebar -->
+		<div class="pkpListPanel__body -pkpClearfix">
+
+			<!-- Filters in the sidebar -->
+			<div v-if="filters.length" ref="sidebar" class="pkpListPanel__sidebar" :class="{'-isVisible': isSidebarVisible}">
+				<pkp-header class="pkpListPanel__sidebarHeader" :tabindex="isSidebarVisible ? 0 :-1">
+					<icon icon="filter" :inline="true" />
+					{{ i18n.filter }}
+				</pkp-header>
+				<div v-for="(filterSet, index) in filters" :key="index" class="pkpListPanel__filterSet">
+					<pkp-header v-if="filterSet.heading">
+						{{ filterSet.heading }}
+					</pkp-header>
+					<pkp-filter
+						v-for="filter in filterSet.filters"
+						:key="filter.param + filter.value"
+						v-bind="filter"
+						:isFilterActive="isFilterActive(filter.param, filter.value)"
+						:i18n="i18n"
+						@add-filter="addSubmissionFilter"
+						@remove-filter="removeFilter"
+					/>
+				</div>
 			</div>
-			<ul class="pkpListPanel__actions">
-				<li v-if="currentUserCanFilter">
-					<pkp-button
-						:label="i18n.filter"
-						icon="filter"
-						:isActive="isFilterVisible"
-						@click="toggleFilter"
-					/>
-				</li>
-				<li v-if="currentUserCanAddSubmission">
-					<pkp-button
-						element="a"
-						:href="addUrl"
-						:label="i18n.add"
-					/>
-				</li>
-			</ul>
-			<list-panel-search
-				@searchPhraseChanged="setSearchPhrase"
-				:searchPhrase="searchPhrase"
-				:i18n="i18n"
-			/>
-		</div>
-		<div class="pkpListPanel__body -pkpClearfix pkpListPanel__body--submissions">
-			<submissions-list-filter
-				v-if="currentUserCanFilter"
-				@filterList="updateFilter"
-				:isVisible="isFilterVisible"
-				:filters="filters"
-				:activeFilters="activeFilters"
-				:i18n="i18n"
-			/>
-			<div class="pkpListPanel__content pkpListPanel__content--submissions">
-				<ul class="pkpListPanel__items" aria-live="polite">
+
+			<!-- Content -->
+			<div class="pkpListPanel__content" aria-live="polite">
+
+				<!-- Items -->
+				<template v-if="items.length">
 					<submissions-list-item
 						v-for="item in items"
-						@filterList="updateFilter"
 						:key="item.id"
 						:item="item"
 						:i18n="i18n"
-						:apiPath="apiPath"
+						:apiUrl="apiUrl"
 						:infoUrl="infoUrl"
 						:assignParticipantUrl="assignParticipantUrl"
 						:csrfToken="csrfToken"
+						@addFilter="addFilter"
 					/>
-				</ul>
+				</template>
+
+				<!-- Loading indicator when loading and no items exist -->
+				<div v-else-if="isLoading" class="pkpListPanel__empty">
+					<spinner />
+					{{ i18n.loading }}
+				</div>
+
+				<!-- Indicator when no items exist -->
+				<div v-else class="pkpListPanel__empty">
+					{{ i18n.empty }}
+				</div>
 			</div>
 		</div>
-		<div class="pkpListPanel__footer -pkpClearfix">
-			<list-panel-load-more
-				v-if="canLoadMore"
-				@loadMore="loadMore"
-				:isLoading="isLoading"
+
+		<!-- Footer -->
+		<div v-if="lastPage > 1" class="pkpListPanel__footer">
+			<pagination
+				:currentPage="currentPage"
+				:lastPage="lastPage"
 				:i18n="i18n"
-			/>
-			<list-panel-count
-				:count="itemCount"
-				:total="this.itemsMax"
-				:i18n="i18n"
+				@set-page="setPage"
 			/>
 		</div>
 	</div>
@@ -71,39 +98,46 @@
 
 <script>
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
-import ListPanelSearch from '@/components/ListPanel/ListPanelSearch.vue';
-import ListPanelCount from '@/components/ListPanel/ListPanelCount.vue';
-import ListPanelLoadMore from '@/components/ListPanel/ListPanelLoadMore.vue';
-import SubmissionsListFilter from '@/components/ListPanel/submissions/SubmissionsListFilter.vue';
+import Pagination from '@/components/Pagination/Pagination.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Search from '@/components/Search/Search.vue';
 import SubmissionsListItem from '@/components/ListPanel/submissions/SubmissionsListItem.vue';
 import SubmissionsListListeners from '@/mixins/ListPanel/submissions/listeners.js';
-import PkpButton from '@/components/Button/Button.vue';
 
 export default {
 	extends: ListPanel,
-	name: 'SubmissionsListPanel',
 	mixins: [SubmissionsListListeners],
 	components: {
-		ListPanelSearch,
-		ListPanelCount,
-		ListPanelLoadMore,
-		SubmissionsListFilter,
-		SubmissionsListItem,
-		PkpButton
+		Pagination,
+		PkpButton,
+		Search,
+		SubmissionsListItem
 	},
-	data: function() {
-		return {
-			addUrl: '',
-			infoUrl: '',
-			assignParticipantUrl: '',
-			csrfToken: ''
-		};
+	props: {
+		addUrl: {
+			type: String,
+			required: true
+		},
+		infoUrl: {
+			type: String,
+			required: true
+		},
+		assignParticipantUrl: {
+			type: String,
+			default() {
+				return '';
+			}
+		},
+		csrfToken: {
+			type: String,
+			required: true
+		}
 	},
 	computed: {
 		/**
 		 * Can the current user filter the list?
 		 */
-		currentUserCanFilter: function() {
+		currentUserCanFilter() {
 			return pkp.userHasRole([
 				pkp.const.ROLE_ID_MANAGER,
 				pkp.const.ROLE_ID_SUB_EDITOR,
@@ -114,13 +148,36 @@ export default {
 		/**
 		 * Does the current user have a role which can create a new submission?
 		 */
-		currentUserCanAddSubmission: function() {
+		currentUserCanAddSubmission() {
 			return pkp.userHasRole([
 				pkp.const.ROLE_ID_MANAGER,
 				pkp.const.ROLE_ID_SUB_EDITOR,
 				pkp.const.ROLE_ID_ASSISTANT,
 				pkp.const.ROLE_ID_AUTHOR
 			]);
+		}
+	},
+	methods: {
+		/**
+		 * Wrapper for ListPanel.addFilter which removes other filters when
+		 * the isIncomplete filter is added, and removes the isIncomplete filter
+		 * when other filters are added.
+		 *
+		 * @param {String} param
+		 * @param {mixed} value
+		 */
+		addSubmissionFilter(param, value) {
+			// Don't allow other filters to be active when the
+			// isIncomplete filter is active
+			if (param === 'isIncomplete') {
+				this.activeFilters = {isIncomplete: [value]};
+				this.get();
+			} else {
+				if (Object.keys(this.activeFilters).includes('isIncomplete')) {
+					delete this.activeFilters.isIncomplete;
+				}
+				this.addFilter(param, value);
+			}
 		}
 	}
 };
