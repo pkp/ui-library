@@ -14,7 +14,7 @@
     "dedent": "^0.7.0",
     "highlight.js": "^9.13.1",
     "html-entities": "^1.2.1",
-    "marked": "^0.5.1",
+    "marked": "^0.6.2",
     "raw-loader": "^1.0.0",
     "tinymce": "^4.8.5",
     "v-tooltip": "^2.0.0-rc.33",
@@ -30,7 +30,7 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.3.0",
     "@vue/cli-plugin-eslint": "^3.3.0",
-    "@vue/cli-service": "^3.3.0",
+    "@vue/cli-service": "^3.7.0",
     "@vue/eslint-config-prettier": "^4.0.1",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",
