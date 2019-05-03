@@ -1,9 +1,6 @@
 <template>
 	<!-- Use the v-bind syntax to bind all props at once. -->
-	<catalog-list-panel
-		v-bind="components.example"
-		@set="set"
-	/>
+	<catalog-list-panel v-bind="components.example" @set="set" />
 </template>
 
 <script>

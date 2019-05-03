@@ -12,18 +12,43 @@
 				*
 				<span class="-screenReader">{{ i18n.required }}</span>
 			</span>
-			<tooltip v-if="isPrimaryLocale && tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
-			<span v-if="isPrimaryLocale && tooltip" class="-screenReader" :id="describedByTooltipId" v-html="tooltip" />
-			<help-button v-if="isPrimaryLocale && helpTopic" :id="describedByHelpId" :topic="helpTopic" :section="helpSection" :label="i18n.help" />
+			<tooltip
+				v-if="isPrimaryLocale && tooltip"
+				aria-hidden="true"
+				:tooltip="tooltip"
+				label=""
+			/>
+			<span
+				v-if="isPrimaryLocale && tooltip"
+				class="-screenReader"
+				:id="describedByTooltipId"
+				v-html="tooltip"
+			/>
+			<help-button
+				v-if="isPrimaryLocale && helpTopic"
+				:id="describedByHelpId"
+				:topic="helpTopic"
+				:section="helpSection"
+				:label="i18n.help"
+			/>
 		</legend>
-		<div v-if="isPrimaryLocale && description"
+		<div
+			v-if="isPrimaryLocale && description"
 			class="pkpFormField__description"
 			v-html="description"
 			:id="describedByDescriptionId"
 		/>
 		<div class="pkpFormField__control">
-			<color-picker :value="currentValue" @input="setValue" :disableAlpha="true" />
-			<field-error v-if="errors.length" :id="describedByErrorId" :messages="errors" />
+			<color-picker
+				:value="currentValue"
+				@input="setValue"
+				:disableAlpha="true"
+			/>
+			<field-error
+				v-if="errors.length"
+				:id="describedByErrorId"
+				:messages="errors"
+			/>
 		</div>
 	</fieldset>
 </template>

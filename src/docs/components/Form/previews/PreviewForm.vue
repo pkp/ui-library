@@ -1,9 +1,6 @@
 <template>
 	<!-- Use the v-bind syntax to bind all props at once. -->
-	<pkp-form
-		v-bind="components.example"
-		@set="set"
-	/>
+	<pkp-form v-bind="components.example" @set="set" />
 </template>
 
 <script>

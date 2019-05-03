@@ -1,14 +1,12 @@
 <template>
-	<component
-		:is="canSelect ? 'fieldset' : 'div'"
-		:class="classes"
-	>
-
+	<component :is="canSelect ? 'fieldset' : 'div'" :class="classes">
 		<!-- Header -->
 		<slot name="header">
 			<pkp-header>
 				<legend v-if="canSelect">{{ title }}</legend>
-				<template v-else>{{ title }}</template>
+				<template v-else>
+					{{ title }}
+				</template>
 			</pkp-header>
 		</slot>
 
@@ -19,14 +17,25 @@
 
 		<!-- Body of the panel, including items and sidebar -->
 		<div class="pkpListPanel__body -pkpClearfix">
-
 			<!-- Filters in the sidebar -->
-			<div v-if="filters.length" ref="sidebar" class="pkpListPanel__sidebar" :class="{'-isVisible': isSidebarVisible}">
-				<pkp-header class="pkpListPanel__sidebarHeader" :tabindex="isSidebarVisible ? 1 : 0">
+			<div
+				v-if="filters.length"
+				ref="sidebar"
+				class="pkpListPanel__sidebar"
+				:class="{'-isVisible': isSidebarVisible}"
+			>
+				<pkp-header
+					class="pkpListPanel__sidebarHeader"
+					:tabindex="isSidebarVisible ? 1 : 0"
+				>
 					<icon icon="filter" :inline="true" />
 					{{ i18n.filter }}
 				</pkp-header>
-				<div v-for="(filterSet, index) in filters" :key="index" class="pkpListPanel__filterSet">
+				<div
+					v-for="(filterSet, index) in filters"
+					:key="index"
+					class="pkpListPanel__filterSet"
+				>
 					<pkp-header v-if="filterSet.heading">
 						{{ filterSet.heading }}
 					</pkp-header>
@@ -44,7 +53,6 @@
 
 			<!-- Content -->
 			<div class="pkpListPanel__content" aria-live="polite">
-
 				<!-- Optional selectAll button -->
 				<label
 					v-if="canSelectAll"
@@ -63,8 +71,8 @@
 						v-if="canOrder"
 						v-model="localItems"
 						:options="draggableOptions"
-						@start="drag=true"
-						@end="drag=false"
+						@start="drag = true"
+						@end="drag = false"
 					>
 						<list-panel-item
 							v-for="item in items"

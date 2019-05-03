@@ -6,9 +6,17 @@
 			</span>
 			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span v-if="tooltip" class="-screenReader" v-html="tooltip" />
-			<help-button v-if="helpTopic" :topic="helpTopic" :section="helpSection" :label="i18n.help" />
+			<help-button
+				v-if="helpTopic"
+				:topic="helpTopic"
+				:section="helpSection"
+				:label="i18n.help"
+			/>
 		</div>
-		<div class="pkpFormField__control pkpFormField__control--html" v-html="description" />
+		<div
+			class="pkpFormField__control pkpFormField__control--html"
+			v-html="description"
+		/>
 	</div>
 </template>
 

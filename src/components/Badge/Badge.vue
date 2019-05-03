@@ -1,5 +1,6 @@
 <template>
-	<button v-if="isButton"
+	<button
+		v-if="isButton"
 		class="pkpBadge pkpBadge--button"
 		:class="classes"
 		@click="click"

@@ -1,8 +1,5 @@
 <template>
-	<badge
-		label="Participant assigned as author"
-		hasDot="true"
-	>
+	<badge label="Participant assigned as author" hasDot="true">
 		Author
 	</badge>
 </template>
