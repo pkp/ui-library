@@ -3,6 +3,8 @@ import Router from 'vue-router';
 import Page from './docs/Page.vue';
 import ComponentBadge from './docs/components/Badge/ComponentBadge.vue';
 import ComponentButton from './docs/components/Button/ComponentButton.vue';
+import ComponentChart from './docs/components/Chart/ComponentChart.vue';
+import ComponentDateRange from './docs/components/DateRange/ComponentDateRange.vue';
 import ComponentFilter from './docs/components/Filter/ComponentFilter.vue';
 import ComponentFieldArchivingPn from './docs/components/Form/fields/FieldArchivingPn/ComponentFieldArchivingPn.vue';
 import ComponentFieldBase from './docs/components/Form/fields/FieldBase/ComponentFieldBase.vue';
@@ -31,6 +33,7 @@ import ComponentPagination from './docs/components/Pagination/ComponentPaginatio
 import ComponentSearch from './docs/components/Search/ComponentSearch.vue';
 import ComponentSpinner from './docs/components/Spinner/ComponentSpinner.vue';
 import ComponentTab from './docs/components/Tab/ComponentTab.vue';
+import ComponentTable from './docs/components/Table/ComponentTable.vue';
 import ComponentTooltip from './docs/components/Tooltip/ComponentTooltip.vue';
 
 Vue.use(Router);
@@ -57,6 +60,16 @@ export default new Router({
 			path: '/component/Button/:example?',
 			name: 'Button',
 			component: ComponentButton
+		},
+		{
+			path: '/component/Chart/:example?',
+			name: 'Chart',
+			component: ComponentChart
+		},
+		{
+			path: '/component/DateRange/:example?',
+			name: 'DateRange',
+			component: ComponentDateRange
 		},
 		{
 			path: '/component/Filter/:example?',
@@ -197,6 +210,11 @@ export default new Router({
 			path: '/component/Tab/:example?',
 			name: 'Tab',
 			component: ComponentTab
+		},
+		{
+			path: '/component/Table/:example?',
+			name: 'Table',
+			component: ComponentTable
 		},
 		{
 			path: '/component/Tooltip/:example?',

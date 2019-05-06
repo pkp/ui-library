@@ -40,6 +40,8 @@
 				</template>
 				<li><router-link to="/component/Badge">Badge</router-link></li>
 				<li><router-link to="/component/Button">Button</router-link></li>
+				<li><router-link to="/component/Chart">Chart</router-link></li>
+				<li><router-link to="/component/DateRange">DateRange</router-link></li>
 				<li><router-link to="/component/Filter">Filter</router-link></li>
 				<li :class="{'-submenuOpen': displaySubmenu('Form')}">
 					<router-link to="/component/Form">Form</router-link>
@@ -150,6 +152,7 @@
 				<li><router-link to="/component/Search">Search</router-link></li>
 				<li><router-link to="/component/Spinner">Spinner</router-link></li>
 				<li><router-link to="/component/Tab">Tab</router-link></li>
+				<li><router-link to="/component/Table">Table</router-link></li>
 				<li><router-link to="/component/Tooltip">Tooltip</router-link></li>
 			</nav-group>
 		</nav>
