@@ -31,7 +31,16 @@ export const propDocs = [
 	}
 ];
 
+export const emitDocs = [
+	{
+		key: 'set-page',
+		description: 'The page that should be selected.',
+		value: 1
+	}
+];
+
 export default {
 	props,
-	propDocs
+	propDocs,
+	emitDocs
 };
