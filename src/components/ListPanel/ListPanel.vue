@@ -26,7 +26,7 @@
 			>
 				<pkp-header
 					class="pkpListPanel__sidebarHeader"
-					:tabindex="isSidebarVisible ? 1 : 0"
+					:tabindex="isSidebarVisible ? 0 : -1"
 				>
 					<icon icon="filter" :inline="true" />
 					{{ i18n.filter }}

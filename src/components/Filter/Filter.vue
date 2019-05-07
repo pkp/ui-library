@@ -105,6 +105,7 @@ export default {
 	text-decoration: none;
 	text-align: left;
 	cursor: pointer;
+	word-break: break-all;
 
 	&:hover,
 	&:focus {

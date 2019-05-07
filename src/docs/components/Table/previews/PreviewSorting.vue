@@ -22,7 +22,7 @@ export default {
 	},
 	data() {
 		const sortableColumns = props.columns.map(col => {
-			if (['abstractViews', 'totalFileViews', 'total'].includes(col.name)) {
+			if (['abstractViews', 'galleyViews', 'total'].includes(col.name)) {
 				col.orderBy = col.name;
 				col.initialOrderDirection = true;
 			}

@@ -33,6 +33,11 @@
 						CatalogContainer
 					</router-link>
 				</li>
+				<li>
+					<router-link to="/component/StatsContainer">
+						StatsContainer
+					</router-link>
+				</li>
 			</nav-group>
 			<nav-group>
 				<template slot="heading">

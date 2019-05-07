@@ -304,6 +304,7 @@ export default {
 	display: inline-block;
 	min-width: 12em;
 	height: @double + 2px;
+	background: @lift;
 	font-size: @font-sml;
 }
 
@@ -321,9 +322,9 @@ export default {
 	left: 0;
 	width: 100%;
 	height: 100%;
+	background: transparent;
 	border: @bg-border-light;
 	border-radius: @radius;
-	background: transparent;
 	box-shadow: 0 1px 0 @bg-border-color-light;
 	cursor: pointer;
 
