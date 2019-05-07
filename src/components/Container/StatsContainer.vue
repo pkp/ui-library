@@ -29,8 +29,9 @@ export default {
 	data() {
 		return {
 			apiUrl: '',
-			timelineInterval: '',
 			timeline: [],
+			timelineInterval: '',
+			timelineType: '',
 			items: [],
 			itemsMax: 0,
 			tableColumns: [],
@@ -97,15 +98,13 @@ export default {
 		 *
 		 * @return Boolean
 		 */
-		isDailySegmentEnabled() {
-			if (!this.dateStart || !this.dateEndMax) {
+		isDailyIntervalEnabled() {
+			if (!this.dateStart || !this.dateEnd) {
 				return false;
 			}
 			return (
-				this.getDaysBetween(
-					new Date(this.dateStart),
-					new Date(this.dateEndMax)
-				) < 91
+				this.getDaysBetween(new Date(this.dateStart), new Date(this.dateEnd)) <
+				91
 			);
 		},
 
@@ -115,8 +114,8 @@ export default {
 		 *
 		 * @return Boolean
 		 */
-		isMonthlySegmentEnabled() {
-			if (!this.dateStart || !this.dateEnd || !this.isDailySegmentEnabled) {
+		isMonthlyIntervalEnabled() {
+			if (!this.dateStart || !this.dateEnd || !this.isDailyIntervalEnabled) {
 				return true;
 			}
 			return (
@@ -202,6 +201,15 @@ export default {
 		setDateRange(dateStart, dateEnd) {
 			this.dateStart = dateStart;
 			this.dateEnd = dateEnd;
+		},
+
+		/**
+		 * Set the timeline type for the graph
+		 *
+		 * @param string timelineType
+		 */
+		setTimelineType(timelineType) {
+			this.timelineType = timelineType;
 		},
 
 		/**
@@ -299,7 +307,7 @@ export default {
 			this.latestTimelineGetRequest = $.pkp.classes.Helper.uuid();
 
 			$.ajax({
-				url: this.apiUrl + '/abstract',
+				url: this.apiUrl + '/' + this.timelineType,
 				type: 'GET',
 				data: this.getParams,
 				_uuid: this.latestTimelineGetRequest,
@@ -444,7 +452,7 @@ export default {
 			this.offset = 0;
 			this.get();
 		},
-		isDailySegmentEnabled(newVal, oldVal) {
+		isDailyIntervalEnabled(newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
@@ -452,7 +460,7 @@ export default {
 				this.timelineInterval = 'month';
 			}
 		},
-		isMonthlySegmentEnabled(newVal, oldVal) {
+		isMonthlyIntervalEnabled(newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
@@ -506,7 +514,12 @@ export default {
 			if (newVal === oldVal) {
 				return;
 			}
-			this.offset = 0;
+			this.getTimeline();
+		},
+		timelineType(newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
 			this.getTimeline();
 		}
 	},
@@ -670,20 +683,17 @@ export default {
 	padding: @base;
 }
 
-.pkpStats__graphTitle {
-	display: inline-block;
-	margin: 0;
-	font-size: @base;
-	line-height: 1.5em;
+.pkpStats__graphSelectors {
+	display: flex;
+	align-items: center;
 }
 
-.pkpStats__graphSegment {
-	float: right;
+.pkpStats__graphSelector {
+	display: flex;
 
 	.pkpButton {
 		position: relative;
 		z-index: 1;
-		float: right;
 		background: transparent;
 		border: 1px solid #437b96;
 		box-shadow: 0 1px 0 #000;
@@ -703,15 +713,15 @@ export default {
 		}
 
 		&:first-child {
-			border-top-left-radius: 0;
-			border-bottom-left-radius: 0;
-		}
-
-		&:last-child {
 			position: relative;
 			left: 1px;
 			border-top-right-radius: 0;
 			border-bottom-right-radius: 0;
+		}
+
+		&:last-child {
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
 		}
 
 		&:hover,
@@ -735,5 +745,9 @@ export default {
 			opacity: 0.5;
 		}
 	}
+}
+
+.pkpStats__graphSelector--timelineInterval {
+	margin-left: auto;
 }
 </style>

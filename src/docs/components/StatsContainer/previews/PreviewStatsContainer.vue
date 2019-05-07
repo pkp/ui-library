@@ -60,30 +60,53 @@
 				<div v-if="chartData" class="pkpStats__graph">
 					<div class="pkpStats__graphHeader">
 						<h2
-							class="pkpStats__graphTitle"
-							id="publication-stats-time-segment"
+							class="pkpStats__graphTitle -screenReader"
+							id="publication-stats-graph-title"
 						>
-							Abstract Views
+							Views
 						</h2>
-						<div class="pkpStats__graphSegment">
-							<pkp-button
-								:label="i18n.daily"
-								:aria-pressed="timelineInterval === 'day'"
-								aria-describedby="publication-stats-time-segment"
-								:disabled="!isDailySegmentEnabled"
-								@click="setTimelineInterval('day')"
-							/>
-							<pkp-button
-								:label="i18n.monthly"
-								:aria-pressed="timelineInterval === 'month'"
-								aria-describedby="publication-stats-time-segment"
-								:disabled="!isMonthlySegmentEnabled"
-								@click="setTimelineInterval('month')"
-							/>
+						<div class="pkpStats__graphSelectors">
+							<div
+								class="pkpStats__graphSelector pkpStats__graphSelector--timelineType"
+							>
+								<pkp-button
+									:label="i18n.abstracts"
+									:aria-pressed="timelineType === 'abstract'"
+									aria-describedby="publication-stats-graph-title"
+									@click="setTimelineType('abstract')"
+								/>
+								<pkp-button
+									:label="i18n.galleys"
+									:aria-pressed="timelineType === 'galley'"
+									aria-describedby="publication-stats-graph-title"
+									@click="setTimelineType('galley')"
+								/>
+							</div>
+							<div
+								class="pkpStats__graphSelector pkpStats__graphSelector--timelineInterval"
+							>
+								<pkp-button
+									:label="i18n.daily"
+									:aria-pressed="timelineInterval === 'day'"
+									aria-describedby="publication-stats-graph-title"
+									:disabled="!isDailyIntervalEnabled"
+									@click="setTimelineInterval('day')"
+								/>
+								<pkp-button
+									:label="i18n.monthly"
+									:aria-pressed="timelineInterval === 'month'"
+									aria-describedby="publication-stats-graph-title"
+									:disabled="!isMonthlyIntervalEnabled"
+									@click="setTimelineInterval('month')"
+								/>
+							</div>
 						</div>
 					</div>
 					<table class="-screenReader" role="region" aria-live="polite">
-						<caption>Total abstract views for all articles by month</caption>
+						<caption v-if="timelineType === 'galley'">
+							Total galley views for articles by month
+						</caption>
+						<caption v-else>Total abstract views for articles by month</caption>
 						<thead>
 							<tr>
 								<th scope="col">Date</th>
@@ -196,8 +219,9 @@ export default {
 		startDate.setDate(dateEndMax.getDate() - 30);
 		return {
 			apiUrl: '/api/v1/stats/publications',
-			timelineInterval: 'day',
 			timeline: getRandomTimeline(startDate, dateEndMax, 'day'),
+			timelineType: 'abstract',
+			timelineInterval: 'day',
 			items: articleStats.slice(0, 30),
 			itemsMax: articleStats.length,
 			tableColumns: articleStatsColumns.filter(
@@ -269,7 +293,9 @@ export default {
 				invalidEndDateMax: 'The end date may not be later than {$date}',
 				invalidStartDateMin: 'The start date may not be earlier than {$date}',
 				daily: 'Daily',
-				monthly: 'Monthly'
+				monthly: 'Monthly',
+				abstracts: 'Abstracts',
+				galleys: 'Galleys'
 			}
 		};
 	},
