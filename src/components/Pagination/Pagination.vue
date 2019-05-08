@@ -21,6 +21,10 @@
 				>
 					···
 				</span>
+				<spinner
+					v-else-if="isLoading && item.isCurrent"
+					class="pkpPagination__loading"
+				/>
 				<pkp-button
 					v-else
 					:disabled="item.isDisabled"
@@ -47,15 +51,21 @@
 
 <script>
 import PkpButton from '@/components/Button/Button.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
 
 export default {
 	components: {
-		PkpButton
+		PkpButton,
+		Spinner
 	},
 	props: {
 		currentPage: {
 			type: Number,
 			required: true
+		},
+		isLoading: {
+			type: Boolean,
+			default: false
 		},
 		lastPage: {
 			type: Number,
@@ -208,5 +218,10 @@ export default {
 	font-size: @font-tiny;
 	color: @text-light;
 	letter-spacing: 2px;
+}
+
+.pkpPagination__loading {
+	display: inline-block;
+	width: 34px;
 }
 </style>

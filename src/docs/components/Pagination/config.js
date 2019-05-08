@@ -1,5 +1,6 @@
 export let props = {
 	currentPage: 1,
+	isLoading: false,
 	lastPage: 10,
 	showAdjacentPages: 1,
 	i18n: {
@@ -15,6 +16,10 @@ export const propDocs = [
 	{
 		key: 'currentPage',
 		description: 'The page that is currently being displayed.'
+	},
+	{
+		key: 'isLoading',
+		description: 'Is the current page still loading?'
 	},
 	{
 		key: 'lastPage',

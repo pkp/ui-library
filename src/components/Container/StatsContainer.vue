@@ -139,6 +139,19 @@ export default {
 		},
 
 		/**
+		 * Add classes to the table when it is loading
+		 *
+		 * @return Array
+		 */
+		tableClasses() {
+			let classes = [];
+			if (this.isLoadingItems) {
+				classes.push('-isLoading');
+			}
+			return classes;
+		},
+
+		/**
 		 * The params to send with each GET request
 		 *
 		 * @return Object
@@ -756,5 +769,39 @@ export default {
 
 .pkpStats__graphSelector--timelineInterval {
 	margin-left: auto;
+}
+
+// Fade the graph and table when loading
+.pkpStats__graph {
+	position: relative;
+}
+
+.pkpStats__loadingCover {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 1;
+
+	> .pkpSpinner {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+
+		&:before {
+			width: 100px;
+			height: 100px;
+			border-top-color: #fff;
+			border-left-color: #fff;
+			animation-duration: 0.8s;
+		}
+	}
+}
+
+.pkpStats__table .pkpTable.-isLoading tbody {
+	opacity: 0.5;
 }
 </style>
