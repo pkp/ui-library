@@ -2,7 +2,6 @@
 	<div class="pkpStats">
 		<pkp-header>
 			Articles
-			<spinner v-if="isLoadingTimeline"></spinner>
 			<template slot="actions">
 				<date-range
 					unique-id="publication-stats-date-range"
@@ -121,6 +120,9 @@
 						</tbody>
 					</table>
 					<line-chart :chartData="chartData" aria-hidden="true"></line-chart>
+					<span v-if="isLoadingTimeline" class="pkpStats__loadingCover">
+						<spinner></spinner>
+					</span>
 				</div>
 				<div class="pkpStats__table" role="region" aria-live="polite">
 					<div class="pkpStats__tableHeader">
@@ -148,6 +150,7 @@
 					</div>
 					<pkp-table
 						labelled-by="articleDetailTableLabel"
+						:class="tableClasses"
 						:columns="tableColumns"
 						:rows="items"
 						:order-by="orderBy"
@@ -163,14 +166,6 @@
 							@search-phrase-changed="setSearchPhrase"
 						/>
 					</pkp-table>
-					<pagination
-						v-if="lastPage > 1"
-						id="articleDetailTablePagination"
-						:current-page="currentPage"
-						:last-page="lastPage"
-						:i18n="i18n"
-						@set-page="setPage"
-					/>
 					<div v-if="!items.length" class="pkpStats__noRecords">
 						<template v-if="isLoadingItems">
 							<spinner></spinner>
@@ -181,6 +176,15 @@
 							parameters.
 						</template>
 					</div>
+					<pagination
+						v-if="lastPage > 1"
+						id="articleDetailTablePagination"
+						:current-page="currentPage"
+						:is-loading="isLoadingItems"
+						:last-page="lastPage"
+						:i18n="i18n"
+						@set-page="setPage"
+					/>
 				</div>
 			</div>
 		</div>

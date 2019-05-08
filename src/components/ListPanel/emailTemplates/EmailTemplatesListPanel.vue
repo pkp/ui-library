@@ -102,6 +102,7 @@
 		<div v-if="lastPage > 1" class="pkpListPanel__footer">
 			<pagination
 				:currentPage="currentPage"
+				:isLoading="isLoading"
 				:lastPage="lastPage"
 				:i18n="i18n"
 				@set-page="setPage"

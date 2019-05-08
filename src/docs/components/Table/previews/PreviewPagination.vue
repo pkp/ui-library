@@ -32,6 +32,7 @@ export default {
 			description:
 				'Use the Pagination component to display large data sets in a table.',
 			currentPage: 1,
+			isLoading: false,
 			perPage: 10,
 			rows: articleStats,
 			i18n: {
