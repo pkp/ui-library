@@ -859,6 +859,11 @@ export default {
 	}
 }
 
+// Fade the items in the list when loading
+.pkpListPanel.-isLoading .pkpListPanel__content {
+	opacity: 0.65;
+}
+
 // Override fieldset defaults when used with canSelect
 fieldset.pkpListPanel {
 	padding: 0;
