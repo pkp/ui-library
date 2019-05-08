@@ -436,7 +436,7 @@ export default {
 			if (newVal === oldVal) {
 				return;
 			}
-			this.get();
+			this.getItems();
 		},
 		dateEnd(newVal, oldVal) {
 			if (newVal === oldVal) {
@@ -488,20 +488,20 @@ export default {
 				return;
 			}
 			this.offset = 0;
-			this.get();
+			this.getItems();
 		},
 		orderDirection(newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
 			this.offset = 0;
-			this.get();
+			this.getItems();
 		},
 		offset(newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
-			this.get();
+			this.getItems();
 		},
 		searchPhrase(newVal, oldVal) {
 			if (newVal === oldVal) {
@@ -654,6 +654,13 @@ export default {
 .pkpStats__itemLink {
 	color: @text;
 	text-decoration: none;
+
+	&:hover,
+	&:focus {
+		color: @primary;
+		text-decoration: underline;
+		outline: 5px solid transparent;
+	}
 }
 
 .pkpStats__itemAuthors {
