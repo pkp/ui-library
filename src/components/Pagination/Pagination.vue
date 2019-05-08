@@ -9,7 +9,7 @@
 				<pkp-button
 					:disabled="currentPage === 1"
 					:label="i18n.previousPageLabel"
-					:aria-label="__('goToLabel', { page: i18n.previousPageLabel })"
+					:aria-label="__('goToLabel', {page: i18n.previousPageLabel})"
 					@click="setPage('previous')"
 				/>
 			</li>
@@ -27,7 +27,9 @@
 					:aria-label="item.ariaLabel"
 					:aria-current="item.isCurrent"
 					:label="item.label"
-					:is-link="!item.isCurrent && !['previous', 'next'].includes(item.value)"
+					:is-link="
+						!item.isCurrent && !['previous', 'next'].includes(item.value)
+					"
 					:is-active="item.isCurrent"
 					@click="setPage(item.value)"
 				/>

@@ -1,6 +1,5 @@
 <template>
 	<fieldset class="pkpListPanel--selectSubmissions" :class="classes">
-
 		<!-- Header -->
 		<pkp-header>
 			<legend>{{ title }}</legend>
@@ -18,7 +17,6 @@
 		<!-- Content -->
 		<div class="pkpListPanel__body">
 			<div class="pkpListPanel__content" aria-live="polite">
-
 				<!-- Optional selectAll button -->
 				<label
 					v-if="canSelectAll"
@@ -46,9 +44,15 @@
 							:selectorType="selectorType"
 							@update:selected="updateSelected"
 						/>
-						<a :href="item.urlWorkflow" class="pkpListPanel--selectSubmissions__link" target="_blank">
+						<a
+							:href="item.urlWorkflow"
+							class="pkpListPanel--selectSubmissions__link"
+							target="_blank"
+						>
 							<icon icon="external-link-square" />
-							<span class="-screenReader">{{ __('viewSubmission', {title: item.title}) }}</span>
+							<span class="-screenReader">{{
+								__('viewSubmission', {title: item.title})
+							}}</span>
 						</a>
 					</div>
 				</template>

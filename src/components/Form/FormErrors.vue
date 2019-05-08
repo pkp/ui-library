@@ -5,7 +5,12 @@
 		<ul class="-screenReader">
 			<li v-for="(error, index) in errorList" :key="index">
 				<button @click.prevent="showError(error.fieldName)">
-					{{ __('errorA11y', {fieldLabel: error.label, errorMessage: error.message}) }}
+					{{
+						__('errorA11y', {
+							fieldLabel: error.label,
+							errorMessage: error.message
+						})
+					}}
 				</button>
 			</li>
 		</ul>

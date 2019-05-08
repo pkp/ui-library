@@ -13,7 +13,9 @@
 			@click.prevent.stop="remove(param, value)"
 		>
 			<icon icon="times-circle-o" />
-			<span class="-screenReader">{{ __('filterRemove', {filterTitle: title}) }}</span>
+			<span class="-screenReader">{{
+				__('filterRemove', {filterTitle: title})
+			}}</span>
 		</button>
 	</div>
 </template>

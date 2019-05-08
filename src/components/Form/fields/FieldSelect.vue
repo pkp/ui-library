@@ -10,15 +10,33 @@
 				:multilingualLabel="multilingualLabel"
 			/>
 			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
-			<span v-if="tooltip" class="-screenReader" :id="describedByTooltipId" v-html="tooltip" />
-			<help-button v-if="helpTopic" :id="describedByHelpId" :topic="helpTopic" :section="helpSection" :label="i18n.help" />
+			<span
+				v-if="tooltip"
+				class="-screenReader"
+				:id="describedByTooltipId"
+				v-html="tooltip"
+			/>
+			<help-button
+				v-if="helpTopic"
+				:id="describedByHelpId"
+				:topic="helpTopic"
+				:section="helpSection"
+				:label="i18n.help"
+			/>
 		</div>
-		<div v-if="isPrimaryLocale && description"
+		<div
+			v-if="isPrimaryLocale && description"
 			class="pkpFormField__description"
 			v-html="description"
 			:id="describedByDescriptionId"
 		/>
-		<div class="pkpFormField__control" :class="{'pkpFormField__control--hasMultilingualIndicator': isMultilingual && locales.length > 1}">
+		<div
+			class="pkpFormField__control"
+			:class="{
+				'pkpFormField__control--hasMultilingualIndicator':
+					isMultilingual && locales.length > 1
+			}"
+		>
 			<select
 				class="pkpFormField__input pkpFormField--select__input"
 				v-model="currentValue"
@@ -28,15 +46,25 @@
 				:aria-invalid="!!errors.length"
 				:required="isRequired"
 			>
-				<option v-for="option in localizedOptions" :key="option.value" v-bind="option">{{ option.label }}</option>
+				<option
+					v-for="option in localizedOptions"
+					:key="option.value"
+					v-bind="option"
+					>{{ option.label }}</option
+				>
 			</select>
-			<multilingual-progress v-if="isMultilingual && locales.length > 1"
+			<multilingual-progress
+				v-if="isMultilingual && locales.length > 1"
 				:id="multilingualProgressId"
 				:count="multilingualFieldsCompleted"
 				:total="locales.length"
 				:i18n="i18n"
 			/>
-			<field-error v-if="errors.length" :id="describedByErrorId" :messages="errors" />
+			<field-error
+				v-if="errors.length"
+				:id="describedByErrorId"
+				:messages="errors"
+			/>
 		</div>
 	</div>
 </template>
