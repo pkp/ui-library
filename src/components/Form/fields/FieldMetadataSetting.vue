@@ -3,37 +3,17 @@
 		<legend class="pkpFormField--options__legend">
 			{{ label }}
 			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
-			<span
-				v-if="tooltip"
-				class="-screenReader"
-				:id="describedByTooltipId"
-				v-html="tooltip"
-			/>
-			<help-button
-				v-if="helpTopic"
-				:id="describedByHelpId"
-				:topic="helpTopic"
-				:section="helpSection"
-				:label="i18n.help"
-			/>
+			<span v-if="tooltip" class="-screenReader" :id="describedByTooltipId" v-html="tooltip" />
+			<help-button v-if="helpTopic" :id="describedByHelpId" :topic="helpTopic" :section="helpSection" :label="i18n.help" />
 		</legend>
-		<div
-			v-if="description"
+		<div v-if="description"
 			class="pkpFormField__description pkpFormField--options__description"
 			v-html="description"
 			:id="describedByDescriptionId"
 		/>
-		<field-error
-			v-if="errors.length"
-			:id="describedByErrorId"
-			:messages="errors"
-		/>
+		<field-error v-if="errors.length" :id="describedByErrorId" :messages="errors" />
 		<div class="pkpFormField__control">
-			<label
-				v-for="option in options"
-				:key="option.value"
-				class="pkpFormField--options__option"
-			>
+			<label v-for="option in options" :key="option.value" class="pkpFormField--options__option">
 				<input
 					class="pkpFormField--options__input"
 					type="checkbox"
@@ -43,17 +23,10 @@
 					:aria-invalid="!!errors.length"
 					:disabled="option.disabled"
 				/>
-				<span
-					class="pkpFormField--options__optionLabel"
-					v-html="option.label"
-				/>
+				<span class="pkpFormField--options__optionLabel" v-html="option.label" />
 			</label>
 			<div v-if="isEnabled" class="pkpFormField--metadata__submissionOptions">
-				<label
-					v-for="option in submissionOptions"
-					:key="'submission' + option.value"
-					class="pkpFormField--options__option"
-				>
+				<label v-for="option in submissionOptions" :key="'submission' + option.value" class="pkpFormField--options__option">
 					<input
 						class="pkpFormField--options__input pkpFormField--metadata__submissionInput"
 						v-model="selectedValue"
@@ -62,10 +35,7 @@
 						:aria-invalid="!!errors.length"
 						:disabled="option.disabled"
 					/>
-					<span
-						class="pkpFormField--options__optionLabel"
-						v-html="option.label"
-					/>
+					<span class="pkpFormField--options__optionLabel" v-html="option.label" />
 				</label>
 			</div>
 		</div>

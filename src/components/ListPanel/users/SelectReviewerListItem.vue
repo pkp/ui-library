@@ -1,10 +1,7 @@
 <template>
 	<div class="pkpListPanelItem--reviewer -hasSummary" :class="classes">
 		<div class="pkpListPanelItem__summary">
-			<component
-				:is="localCanSelect ? 'label' : 'div'"
-				class="pkpListPanelItem__selectorLabel"
-			>
+			<component :is="localCanSelect ? 'label' : 'div'" class="pkpListPanelItem__selectorLabel">
 				<div v-if="localCanSelect" class="pkpListPanelItem__selector">
 					<input
 						:name="selectorName"
@@ -32,15 +29,9 @@
 								v-for="(star, index) in stars"
 								:key="index"
 								icon="star"
-								:class="
-									star
-										? 'pkpListPanelItem--reviewer__star--on'
-										: 'pkpListPanelItem--reviewer__star--off'
-								"
+								:class="star ? 'pkpListPanelItem--reviewer__star--on' : 'pkpListPanelItem--reviewer__star--off'"
 							/>
-							<span class="-screenReader">{{
-								__('reviewerRating', {rating: item.reviewerRating})
-							}}</span>
+							<span class="-screenReader">{{ __('reviewerRating', {rating: item.reviewerRating}) }}</span>
 						</div>
 					</div>
 					<div
@@ -73,10 +64,7 @@
 							<icon icon="history" :inline="true" />
 							{{ daysSinceLastAssignmentString }}
 						</span>
-						<span
-							v-if="item.interests.length"
-							class="pkpListPanelItem--reviewer__interests"
-						>
+						<span v-if="item.interests.length" class="pkpListPanelItem--reviewer__interests">
 							<icon icon="book" :inline="true" />
 							{{ interestsString }}
 						</span>
@@ -87,18 +75,10 @@
 				<icon icon="exclamation-triangle" :inline="true" />
 				{{ i18n.currentlyAssigned }}
 			</div>
-			<div
-				v-else-if="warnOnAssignment && !isWarningBypassed"
-				class="pkpListPanelItem--reviewer__notice"
-			>
+			<div v-else-if="warnOnAssignment && !isWarningBypassed" class="pkpListPanelItem--reviewer__notice">
 				<icon icon="lock" :inline="true" />
 				{{ i18n.warnOnAssign }}
-				<button
-					@click.prevent="unlockAssignment"
-					class="pkpListPanelItem--reviewer__noticeAction"
-				>
-					{{ i18n.warnOnAssignUnlock }}
-				</button>
+				<button @click.prevent="unlockAssignment" class="pkpListPanelItem--reviewer__noticeAction">{{ i18n.warnOnAssignUnlock }}</button>
 			</div>
 			<button
 				v-if="localCanSelect"
@@ -129,21 +109,21 @@
 						<icon icon="clock-o" :inline="true" />
 						{{ item.reviewsActive }}
 					</template>
-					{{ i18n.activeReviewsDescription }}
+					{{ i18n.activeReviewsDescription}}
 				</list-item>
 				<list-item>
 					<template slot="value">
 						<icon icon="check-circle-o" :inline="true" />
 						{{ item.reviewsCompleted }}
 					</template>
-					{{ i18n.completedReviews }}
+					{{ i18n.completedReviews}}
 				</list-item>
 				<list-item>
 					<template slot="value">
 						<icon icon="times-circle-o" :inline="true" />
 						{{ item.reviewsDeclined }}
 					</template>
-					{{ i18n.declinedReviews }}
+					{{ i18n.declinedReviews}}
 				</list-item>
 				<list-item>
 					<template slot="value">

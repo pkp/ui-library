@@ -1,8 +1,8 @@
 <template>
-	<div class="pkpNotification" :classes="classes">
-		<icon v-if="type === 'info'" icon="info-circle" :inline="true" />
-		<slot />
-	</div>
+  <div class="pkpNotification" :classes="classes">
+    <icon v-if="type === 'info'" icon="info-circle" :inline="true" />
+    <slot />
+  </div>
 </template>
 
 <script>

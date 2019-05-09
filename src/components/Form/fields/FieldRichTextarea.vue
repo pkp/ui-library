@@ -1,8 +1,5 @@
 <template>
-	<div
-		class="pkpFormField pkpFormField--richTextarea"
-		:class="{'-isFocused': isFocused}"
-	>
+	<div class="pkpFormField pkpFormField--richTextarea" :class="{'-isFocused': isFocused}">
 		<div class="pkpFormField__heading">
 			<form-field-label
 				:controlId="controlId"
@@ -12,36 +9,16 @@
 				:requiredLabel="i18n.required"
 				:multilingualLabel="multilingualLabel"
 			/>
-			<tooltip
-				v-if="isPrimaryLocale && tooltip"
-				aria-hidden="true"
-				:tooltip="tooltip"
-				label=""
-			/>
-			<span
-				v-if="isPrimaryLocale && tooltip"
-				class="-screenReader"
-				:id="describedByTooltipId"
-				v-html="tooltip"
-			/>
-			<help-button
-				v-if="isPrimaryLocale && helpTopic"
-				:id="describedByHelpId"
-				:topic="helpTopic"
-				:section="helpSection"
-				:label="i18n.help"
-			/>
+			<tooltip v-if="isPrimaryLocale && tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
+			<span v-if="isPrimaryLocale && tooltip" class="-screenReader" :id="describedByTooltipId" v-html="tooltip" />
+			<help-button v-if="isPrimaryLocale && helpTopic" :id="describedByHelpId" :topic="helpTopic" :section="helpSection" :label="i18n.help" />
 		</div>
-		<div
-			v-if="isPrimaryLocale && description"
+		<div v-if="isPrimaryLocale && description"
 			class="pkpFormField__description"
 			v-html="description"
 			:id="describedByDescriptionId"
 		/>
-		<div
-			class="pkpFormField__control pkpFormField--richTextarea__control"
-			:class="'pkpFormField--richTextArea__control--' + this.size"
-		>
+		<div class="pkpFormField__control pkpFormField--richTextarea__control" :class="'pkpFormField--richTextArea__control--' + this.size">
 			<div class="pkpFormField--richTextarea__toolbar" :id="toolbarId"></div>
 			<editor
 				class="pkpFormField__input pkpFormField--richTextarea__input"
@@ -53,19 +30,14 @@
 				@onFocus="focus"
 				@onBlur="blur"
 			/>
-			<multilingual-progress
-				v-if="isMultilingual && locales.length > 1"
+			<multilingual-progress v-if="isMultilingual && locales.length > 1"
 				:id="multilingualProgressId"
 				:count="multilingualFieldsCompleted"
 				:total="locales.length"
 				:i18n="i18n"
 			/>
 		</div>
-		<field-error
-			v-if="errors.length"
-			:id="describedByErrorId"
-			:messages="errors"
-		/>
+		<field-error v-if="errors.length" :id="describedByErrorId" :messages="errors" />
 	</div>
 </template>
 

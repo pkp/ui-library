@@ -2,151 +2,59 @@
 	<div id="app">
 		<nav class="nav" aria-label="Primary Navigation">
 			<nav-group>
-				<template slot="heading"
-					>Guide</template
-				>
-				<li>
-					<router-link to="/" class="router-link-home"
-						>Introduction</router-link
-					>
-				</li>
+				<template slot="heading">Guide</template>
+				<li><router-link to="/" class="router-link-home">Introduction</router-link></li>
 				<li><router-link to="/pages/usage">Usage</router-link></li>
-				<li>
-					<router-link to="/pages/accessibility">Accessibility</router-link>
-				</li>
-				<li>
-					<router-link to="/pages/contributing">Contributing</router-link>
-				</li>
+				<li><router-link to="/pages/accessibility">Accessibility</router-link></li>
+				<li><router-link to="/pages/contributing">Contributing</router-link></li>
 			</nav-group>
 			<nav-group>
-				<template slot="heading"
-					>Apps</template
-				>
+				<template slot="heading">Apps</template>
 				<li><router-link to="/pages/container">Container</router-link></li>
-				<li>
-					<router-link to="/pages/container-settings"
-						>SettingsContainer</router-link
-					>
-				</li>
-				<li>
-					<router-link to="/pages/container-catalog"
-						>CatalogContainer</router-link
-					>
-				</li>
+				<li><router-link to="/pages/container-settings">SettingsContainer</router-link></li>
+				<li><router-link to="/pages/container-catalog">CatalogContainer</router-link></li>
 			</nav-group>
 			<nav-group>
-				<template slot="heading"
-					>Components</template
-				>
+				<template slot="heading">Components</template>
 				<li><router-link to="/component/Badge">Badge</router-link></li>
 				<li><router-link to="/component/Button">Button</router-link></li>
 				<li><router-link to="/component/Filter">Filter</router-link></li>
 				<li :class="{'-submenuOpen': displaySubmenu('Form')}">
 					<router-link to="/component/Form">Form</router-link>
-					<button
-						v-if="!pathIncludes('Form')"
-						class="nav__toggle"
-						@click="toggleSubmenu('Form')"
-					>
+					<button v-if="!pathIncludes('Form')" class="nav__toggle" @click="toggleSubmenu('Form')">
 						<span v-if="displaySubmenu('Form')">-</span>
 						<span v-else>+</span>
 					</button>
 					<ul v-if="displaySubmenu('Form')">
-						<li>
-							<router-link to="/component/Form/fields/FieldBase"
-								>FieldBase</router-link
-							>
-						</li>
+						<li><router-link to="/component/Form/fields/FieldBase">FieldBase</router-link></li>
 					</ul>
 					<ul v-if="displaySubmenu('Form')">
-						<li>
-							<router-link to="/component/Form/fields/FieldHtml"
-								>FieldHtml</router-link
-							>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldOptions"
-								>FieldOptions</router-link
-							>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldRadioInput"
-								>FieldRadioInput</router-link
-							>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldRichTextarea"
-								>FieldRichTextarea</router-link
-							>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldSelect"
-								>FieldSelect</router-link
-							>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldText"
-								>FieldText</router-link
-							>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldTextarea"
-								>FieldTextarea</router-link
-							>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldUpload"
-								>FieldUpload</router-link
-							>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldUploadImage"
-								>FieldUploadImage</router-link
-							>
-						</li>
+						<li><router-link to="/component/Form/fields/FieldHtml">FieldHtml</router-link></li>
+						<li><router-link to="/component/Form/fields/FieldOptions">FieldOptions</router-link></li>
+						<li><router-link to="/component/Form/fields/FieldRadioInput">FieldRadioInput</router-link></li>
+						<li><router-link to="/component/Form/fields/FieldRichTextarea">FieldRichTextarea</router-link></li>
+						<li><router-link to="/component/Form/fields/FieldSelect">FieldSelect</router-link></li>
+						<li><router-link to="/component/Form/fields/FieldText">FieldText</router-link></li>
+						<li><router-link to="/component/Form/fields/FieldTextarea">FieldTextarea</router-link></li>
+						<li><router-link to="/component/Form/fields/FieldUpload">FieldUpload</router-link></li>
+						<li><router-link to="/component/Form/fields/FieldUploadImage">FieldUploadImage</router-link></li>
 					</ul>
 					<ul v-if="displaySubmenu('Form')">
-						<li>
-							<router-link to="/component/Form/fields/FieldArchivingPn"
-								>FieldArchivingPn</router-link
-							>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldColor"
-								>FieldColor</router-link
-							>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldMetadataSetting"
-								>FieldMetadataSetting</router-link
-							>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldShowEnsuringLink"
-								>FieldShowEnsuringLink</router-link
-							>
-						</li>
+						<li><router-link to="/component/Form/fields/FieldArchivingPn">FieldArchivingPn</router-link></li>
+						<li><router-link to="/component/Form/fields/FieldColor">FieldColor</router-link></li>
+						<li><router-link to="/component/Form/fields/FieldMetadataSetting">FieldMetadataSetting</router-link></li>
+						<li><router-link to="/component/Form/fields/FieldShowEnsuringLink">FieldShowEnsuringLink</router-link></li>
 					</ul>
 				</li>
 				<li><router-link to="/component/Header">Header</router-link></li>
-				<li>
-					<router-link to="/component/HelpButton">HelpButton</router-link>
-				</li>
+				<li><router-link to="/component/HelpButton">HelpButton</router-link></li>
 				<li><router-link to="/component/Icon">Icon</router-link></li>
 				<li><router-link to="/component/List">List</router-link></li>
 				<li><router-link to="/component/ListPanel">ListPanel</router-link></li>
-				<li>
-					<router-link to="/component/MultilingualProgress"
-						>MultilingualProgress</router-link
-					>
-				</li>
-				<li>
-					<router-link to="/component/Notification">Notification</router-link>
-				</li>
+				<li><router-link to="/component/MultilingualProgress">MultilingualProgress</router-link></li>
+				<li><router-link to="/component/Notification">Notification</router-link></li>
 				<li><router-link to="/component/Orderer">Orderer</router-link></li>
-				<li>
-					<router-link to="/component/Pagination">Pagination</router-link>
-				</li>
+				<li><router-link to="/component/Pagination">Pagination</router-link></li>
 				<li><router-link to="/component/Search">Search</router-link></li>
 				<li><router-link to="/component/Spinner">Spinner</router-link></li>
 				<li><router-link to="/component/Tab">Tab</router-link></li>
@@ -154,7 +62,7 @@
 			</nav-group>
 		</nav>
 		<div class="content" role="main">
-			<router-view />
+			<router-view/>
 		</div>
 	</div>
 </template>

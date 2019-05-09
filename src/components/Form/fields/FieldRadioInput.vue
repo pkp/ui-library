@@ -12,44 +12,19 @@
 				*
 				<span class="-screenReader">{{ i18n.required }}</span>
 			</span>
-			<tooltip
-				v-if="isPrimaryLocale && tooltip"
-				aria-hidden="true"
-				:tooltip="tooltip"
-				label=""
-			/>
-			<span
-				v-if="isPrimaryLocale && tooltip"
-				class="-screenReader"
-				:id="describedByTooltipId"
-				v-html="tooltip"
-			/>
-			<help-button
-				v-if="isPrimaryLocale && helpTopic"
-				:id="describedByHelpId"
-				:topic="helpTopic"
-				:section="helpSection"
-				:label="i18n.help"
-			/>
+			<tooltip v-if="isPrimaryLocale && tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
+			<span v-if="isPrimaryLocale && tooltip" class="-screenReader" :id="describedByTooltipId" v-html="tooltip" />
+			<help-button v-if="isPrimaryLocale && helpTopic" :id="describedByHelpId" :topic="helpTopic" :section="helpSection" :label="i18n.help" />
 		</legend>
-		<div
-			v-if="isPrimaryLocale && description"
+		<div v-if="isPrimaryLocale && description"
 			class="pkpFormField__description pkpFormField--options__description"
 			v-html="description"
 			:id="describedByDescriptionId"
 		/>
-		<field-error
-			v-if="errors.length"
-			:id="describedByErrorId"
-			:messages="errors"
-		/>
+		<field-error v-if="errors.length" :id="describedByErrorId" :messages="errors" />
 		<input type="hidden" v-model="selectedValue" />
 		<div class="pkpFormField__control">
-			<label
-				v-for="option in localizedOptions"
-				:key="option.value"
-				class="pkpFormField--options__option"
-			>
+			<label v-for="option in localizedOptions" :key="option.value" class="pkpFormField--options__option">
 				<template v-if="!option.isInput">
 					<input
 						class="pkpFormField--options__input"
@@ -87,8 +62,7 @@
 					/>
 				</template>
 			</label>
-			<multilingual-progress
-				v-if="isMultilingual && locales.length > 1"
+			<multilingual-progress v-if="isMultilingual && locales.length > 1"
 				:id="multilingualProgressId"
 				:count="multilingualFieldsCompleted"
 				:total="locales.length"

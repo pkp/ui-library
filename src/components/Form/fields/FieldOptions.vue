@@ -12,48 +12,19 @@
 				*
 				<span class="-screenReader">{{ i18n.required }}</span>
 			</span>
-			<tooltip
-				v-if="isPrimaryLocale && tooltip"
-				aria-hidden="true"
-				:tooltip="tooltip"
-				label=""
-			/>
-			<span
-				v-if="isPrimaryLocale && tooltip"
-				class="-screenReader"
-				:id="describedByTooltipId"
-				v-html="tooltip"
-			/>
-			<help-button
-				v-if="isPrimaryLocale && helpTopic"
-				:id="describedByHelpId"
-				:topic="helpTopic"
-				:section="helpSection"
-				:label="i18n.help"
-			/>
+			<tooltip v-if="isPrimaryLocale && tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
+			<span v-if="isPrimaryLocale && tooltip" class="-screenReader" :id="describedByTooltipId" v-html="tooltip" />
+			<help-button v-if="isPrimaryLocale && helpTopic" :id="describedByHelpId" :topic="helpTopic" :section="helpSection" :label="i18n.help" />
 		</legend>
-		<div
-			v-if="isPrimaryLocale && description"
+		<div v-if="isPrimaryLocale && description"
 			class="pkpFormField__description pkpFormField--options__description"
 			v-html="description"
 			:id="describedByDescriptionId"
 		/>
-		<field-error
-			v-if="errors.length"
-			:id="describedByErrorId"
-			:messages="errors"
-		/>
+		<field-error v-if="errors.length" :id="describedByErrorId" :messages="errors" />
 		<div class="pkpFormField__control">
-			<draggable
-				v-model="localizedOptions"
-				@end="updateValueOrder"
-				:options="{disabled: !isOrderable}"
-			>
-				<label
-					v-for="option in localizedOptions"
-					:key="option.value"
-					class="pkpFormField--options__option"
-				>
+			<draggable v-model="localizedOptions" @end="updateValueOrder" :options="{disabled: !isOrderable}">
+				<label v-for="option in localizedOptions" :key="option.value" class="pkpFormField--options__option">
 					<input
 						class="pkpFormField--options__input"
 						v-model="selectedValue"
@@ -63,12 +34,8 @@
 						:aria-invalid="!!errors.length"
 						:disabled="option.disabled"
 					/>
-					<span
-						class="pkpFormField--options__optionLabel"
-						v-html="option.label"
-					/>
-					<orderer
-						v-if="isOrderable"
+					<span class="pkpFormField--options__optionLabel" v-html="option.label" />
+					<orderer v-if="isOrderable"
 						@up="optionOrderUp"
 						@down="optionOrderDown"
 						:itemId="option.value"
@@ -77,8 +44,7 @@
 					/>
 				</label>
 			</draggable>
-			<multilingual-progress
-				v-if="isMultilingual && locales.length > 1"
+			<multilingual-progress v-if="isMultilingual && locales.length > 1"
 				:id="multilingualProgressId"
 				:count="multilingualFieldsCompleted"
 				:total="locales.length"

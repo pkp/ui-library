@@ -1,7 +1,6 @@
 <template>
 	<div class="pkpFormPage" :class="{'pkpFormPage--current': isCurrentPage}">
-		<form-group
-			v-for="group in groupsInPage"
+		<form-group v-for="group in groupsInPage"
 			:key="group.id"
 			v-bind="group"
 			:fields="fields"
@@ -14,12 +13,7 @@
 			@change="fieldChanged"
 			@set-errors="setErrors"
 		/>
-		<div
-			v-if="hasFooter"
-			class="pkpFormPage__footer"
-			ref="footer"
-			aria-live="polite"
-		>
+		<div v-if="hasFooter" class="pkpFormPage__footer" ref="footer" aria-live="polite">
 			<form-errors
 				v-if="Object.keys(errors).length"
 				:errors="errors"
@@ -36,13 +30,11 @@
 					</span>
 				</template>
 				<template v-else>
-					<pkp-button
-						v-if="previousButton"
+					<pkp-button v-if="previousButton"
 						v-bind="previousButton"
 						@click="previousPage"
 					/>
-					<pkp-button
-						v-if="submitButton"
+					<pkp-button v-if="submitButton"
 						v-bind="submitButton"
 						:disabled="isLastPage && !!Object.keys(errors).length"
 						@click="submit"

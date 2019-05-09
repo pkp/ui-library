@@ -16,8 +16,7 @@
 		</list-item>
 		<list-item>
 			<icon icon="exclamation-triangle" :inline="true" />
-			This journal is not currently available for the public to view. Would you
-			like to <a href="#">make it public</a>?
+			This journal is not currently available for the public to view. Would you like to <a href="#">make it public</a>?
 		</list-item>
 	</list>
 </template>

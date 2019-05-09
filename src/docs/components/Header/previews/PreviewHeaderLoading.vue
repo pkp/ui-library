@@ -1,13 +1,13 @@
 <template>
 	<pkp-header>
 		Submissions
-		<spinner v-if="isLoading" />
+    <spinner v-if="isLoading" />
 		<template slot="actions">
 			<pkp-button
-				label="Toggle Loading Spinner"
-				:isActive="isLoading"
-				@click="toggle"
-			/>
+        label="Toggle Loading Spinner"
+        :isActive="isLoading"
+        @click="toggle"
+      />
 		</template>
 	</pkp-header>
 </template>

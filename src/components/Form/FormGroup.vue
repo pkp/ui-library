@@ -2,26 +2,13 @@
 	<fieldset class="pkpFormGroup -pkpClearfix">
 		<div v-if="label" class="pkpFormGroup__heading">
 			<legend class="pkpFormGroup__legend">{{ label }}</legend>
-			<div
-				v-if="description"
-				class="pkpFormGroup__description"
-				v-html="description"
-			></div>
+			<div v-if="description" class="pkpFormGroup__description" v-html="description"></div>
 		</div>
 		<div class="pkpFormGroup__fields">
 			<template v-for="field in fieldsInGroup">
 				<template v-if="field.isMultilingual">
 					<div class="pkpFormGroup__localeGroup -pkpClearfix" :key="field.name">
-						<div
-							v-for="locale in availableLocales"
-							:key="locale.key"
-							class="pkpFormGroup__locale"
-							:class="{
-								'pkpFormGroup__locale--isVisible': visibleLocales.includes(
-									locale.key
-								)
-							}"
-						>
+						<div v-for="locale in availableLocales" :key="locale.key" class="pkpFormGroup__locale" :class="{'pkpFormGroup__locale--isVisible': visibleLocales.includes(locale.key)}">
 							<component
 								:is="field.component"
 								v-bind="field"

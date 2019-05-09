@@ -7,30 +7,19 @@
 						<span class="-screenReader">{{ i18n.id }}</span>
 						{{ item.id }}
 					</div>
-					<div
-						v-if="item.authorString"
-						class="pkpListPanelItem--submission__author"
-					>
+					<div v-if="item.authorString" class="pkpListPanelItem--submission__author">
 						{{ item.authorString }}
 					</div>
 					<div class="pkpListPanelItem--submission__title">
 						{{ localizeSubmission(item.fullTitle, item.locale) }}
 					</div>
-					<div
-						v-if="reviewerWorkflowLink"
-						class="pkpListPanelItem--submission__reviewerWorkflowLink"
-					>
+					<div v-if="reviewerWorkflowLink" class="pkpListPanelItem--submission__reviewerWorkflowLink">
 						<span v-html="reviewerWorkflowLink" />
 					</div>
-					<div
-						v-else-if="notice"
-						class="pkpListPanelItem--submission__activity"
-					>
+					<div v-else-if="notice" class="pkpListPanelItem--submission__activity">
 						<icon icon="exclamation-triangle" :inline="true" />
 						{{ notice }}
-						<button
-							v-for="(noticeAction, index) in noticeActions"
-							:key="index"
+						<button v-for="(noticeAction, index) in noticeActions" :key="index"
 							class="-linkButton"
 							@click.stop.prevent="noticeAction"
 						>
@@ -39,49 +28,25 @@
 					</div>
 				</div>
 			</a>
-			<div
-				v-if="currentUserIsReviewer"
-				class="pkpListPanelItem--submission__stage pkpListPanelItem--submission__stage--reviewer"
-			>
+			<div v-if="currentUserIsReviewer" class="pkpListPanelItem--submission__stage pkpListPanelItem--submission__stage--reviewer">
 				<a :href="item.urlWorkflow" tabindex="-1">
-					<div
-						v-if="currentUserLatestReviewAssignment.responsePending"
-						class="pkpListPanelItem--submission__dueDate"
-					>
-						<div
-							:aria-labelledby="responseDueLabelId"
-							class="pkpListPanelItem--submission__dueDateValue"
-						>
+					<div v-if="currentUserLatestReviewAssignment.responsePending" class="pkpListPanelItem--submission__dueDate">
+						<div :aria-labelledby="responseDueLabelId" class="pkpListPanelItem--submission__dueDateValue">
 							{{ currentUserLatestReviewAssignment.responseDue }}
 						</div>
-						<div
-							:id="responseDueLabelId"
-							class="pkpListPanelItem--submission__dueDateLabel"
-						>
+						<div :id="responseDueLabelId" class="pkpListPanelItem--submission__dueDateLabel">
 							{{ i18n.responseDue }}
 						</div>
 					</div>
-					<div
-						v-if="currentUserLatestReviewAssignment.reviewPending"
-						class="pkpListPanelItem--submission__dueDate"
-					>
-						<div
-							:aria-labelledby="reviewDueLabelId"
-							class="pkpListPanelItem--submission__dueDateValue"
-						>
+					<div v-if="currentUserLatestReviewAssignment.reviewPending" class="pkpListPanelItem--submission__dueDate">
+						<div :aria-labelledby="reviewDueLabelId" class="pkpListPanelItem--submission__dueDateValue">
 							{{ currentUserLatestReviewAssignment.due }}
 						</div>
-						<div
-							:id="reviewDueLabelId"
-							class="pkpListPanelItem--submission__dueDateLabel"
-						>
+						<div :id="reviewDueLabelId" class="pkpListPanelItem--submission__dueDateLabel">
 							{{ i18n.reviewDue }}
 						</div>
 					</div>
-					<div
-						v-if="currentUserLatestReviewAssignment.reviewComplete"
-						class="pkpListPanelItem--submission__reviewComplete"
-					>
+					<div v-if="currentUserLatestReviewAssignment.reviewComplete" class="pkpListPanelItem--submission__reviewComplete">
 						<icon icon="check" :inline="true" />
 						{{ i18n.reviewComplete }}
 					</div>
@@ -100,24 +65,15 @@
 					<!-- use aria-hidden on these details because the information can be
 						more easily acquired by screen readers from the details panel. -->
 					<div class="pkpListPanelItem--submission__flags" aria-hidden="true">
-						<span
-							v-if="isReviewStage"
-							class="pkpListPanelItem--submission__flags--reviews"
-						>
+						<span v-if="isReviewStage"  class="pkpListPanelItem--submission__flags--reviews">
 							<icon icon="user-o" :inline="true" />
 							{{ completedReviewsCount }}/{{ currentReviewAssignments.length }}
 						</span>
-						<span
-							v-if="activeStage.files.count"
-							class="pkpListPanelItem--submission__flags--files"
-						>
+						<span v-if="activeStage.files.count" class="pkpListPanelItem--submission__flags--files">
 							<icon icon="file-text-o" :inline="true" />
 							{{ activeStage.files.count }}
 						</span>
-						<span
-							v-if="openQueryCount"
-							class="pkpListPanelItem--submission__flags--discussions"
-						>
+						<span v-if="openQueryCount" class="pkpListPanelItem--submission__flags--discussions">
 							<icon icon="comment-o" :inline="true" />
 							{{ openQueryCount }}
 						</span>
@@ -131,12 +87,8 @@
 			>
 				<icon v-if="isExpanded" icon="angle-up" />
 				<icon v-else icon="angle-down" />
-				<span v-if="isExpanded" class="-screenReader">{{
-					__('viewLess', {name: item.authorString})
-				}}</span>
-				<span v-else class="-screenReader">{{
-					__('viewMore', {name: item.authorString})
-				}}</span>
+				<span v-if="isExpanded" class="-screenReader">{{ __('viewLess', {name: item.authorString}) }}</span>
+				<span v-else class="-screenReader">{{ __('viewMore', {name: item.authorString}) }}</span>
 			</button>
 		</div>
 		<div
@@ -841,6 +793,7 @@ export default {
 	}
 };
 </script>
+
 
 <style lang="less">
 @import '../../../styles/_import';

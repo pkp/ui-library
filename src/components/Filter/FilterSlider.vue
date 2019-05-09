@@ -1,16 +1,18 @@
 <template>
 	<div class="pkpFilter--slider" :class="classes">
-		<button v-if="isFilterActive" class="pkpFilter__remove" @click="remove">
+		<button	v-if="isFilterActive"
+			class="pkpFilter__remove"
+			@click="remove"
+		>
 			<icon icon="times-circle-o" />
-			<span class="-screenReader">{{
-				__('filterRemove', {filterTitle: title})
-			}}</span>
+			<span class="-screenReader">{{ __('filterRemove', {filterTitle: title}) }}</span>
 		</button>
-		<button v-else class="pkpFilter__add" @click="enable">
+		<button	v-else
+			class="pkpFilter__add"
+			@click="enable"
+		>
 			<icon icon="plus-square-o" />
-			<span class="-screenReader">{{
-				__('filterAdd', {filterTitle: title})
-			}}</span>
+			<span class="-screenReader">{{ __('filterAdd', {filterTitle: title}) }}</span>
 		</button>
 		<div
 			class="pkpFilter__inputTitle"
@@ -31,14 +33,12 @@
 				:speed="0.3"
 				tooltip-dir="bottom"
 				:class="{'vue-slider-component--stars': useStars}"
-				@callback="val => update(val)"
+				@callback="(val) => update(val)"
 			>
-				<template v-if="useStars" slot="tooltip" slot-scope="{value}">
+				<template v-if="useStars" slot="tooltip" slot-scope="{ value }">
 					<span class="vue-slider-tooltip--stars">
 						<icon v-for="index in value" :key="index" icon="star" />
-						<span class="-screenReader">{{
-							starLabel.replace('{$rating}', value)
-						}}</span>
+						<span class="-screenReader">{{ starLabel.replace('{$rating}', value) }}</span>
 					</span>
 				</template>
 			</vue-slider>

@@ -1,7 +1,10 @@
 <template>
-	<form class="pkpForm -pkpClearfix" :method="method" :action="action">
-		<form-locales
-			v-if="availableLocales.length > 1"
+	<form
+		class="pkpForm -pkpClearfix"
+		:method="method"
+		:action="action"
+	>
+		<form-locales v-if="availableLocales.length > 1"
 			:primaryLocaleKey="primaryLocale"
 			:locales="availableLocales"
 			:visible="visibleLocales"
@@ -9,11 +12,7 @@
 		/>
 		<div v-if="pages.length > 1" class="pkpForm__pageNav">
 			<ol class="pkpForm__pageNavList">
-				<li
-					v-for="page in pages"
-					:key="page.id"
-					class="pkpForm__pageNavListItem"
-				>
+				<li v-for="page in pages" :key="page.id" class="pkpForm__pageNavListItem">
 					<button
 						class="pkpForm__pageNavPage"
 						:class="{'pkpForm__pageNavPage--current': page.id === currentPage}"
@@ -21,17 +20,12 @@
 					>
 						{{ page.label }}
 					</button>
-					<icon
-						v-if="pageIdsWithErrors.includes(page.id)"
-						icon="exclamation-triangle"
-						:inline="true"
-					/>
+					<icon v-if="pageIdsWithErrors.includes(page.id)" icon="exclamation-triangle" :inline="true" />
 				</li>
 			</ol>
 		</div>
 		<div class="pkpFormPages" :class="classes">
-			<form-page
-				v-for="(page, index) in pages"
+			<form-page v-for="(page, index) in pages"
 				:key="page.id"
 				v-bind="page"
 				:groups="groups"
@@ -39,7 +33,7 @@
 				:errors="errors"
 				:formId="id"
 				:isCurrentPage="currentPage === page.id"
-				:isLastPage="index === pages.length - 1"
+				:isLastPage="index === (pages.length - 1)"
 				:primaryLocale="primaryLocale"
 				:visibleLocales="visibleLocales"
 				:availableLocales="availableLocales"

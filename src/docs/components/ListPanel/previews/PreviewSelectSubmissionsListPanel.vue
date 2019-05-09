@@ -1,6 +1,9 @@
 <template>
 	<!-- Use the v-bind syntax to bind all props at once. -->
-	<select-submissions-list-panel v-bind="components.example" @set="set" />
+	<select-submissions-list-panel
+		v-bind="components.example"
+		@set="set"
+	/>
 </template>
 
 <script>

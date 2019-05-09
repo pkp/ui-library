@@ -1,5 +1,5 @@
 <template>
-	<span class="pkpSpinner" aria-hidden="true" />
+  <span class="pkpSpinner" aria-hidden="true" />
 </template>
 
 <style lang="less">

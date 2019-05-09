@@ -1,10 +1,5 @@
 <template>
-	<button
-		class="helpButton requestHelpPanel"
-		:data-topic="topic"
-		:data-section="section"
-		@click.prevent
-	>
+	<button class="helpButton requestHelpPanel" :data-topic="topic" :data-section="section" @click.prevent>
 		<icon icon="info-circle" />
 		<span class="-screenReader">{{ label }}</span>
 	</button>

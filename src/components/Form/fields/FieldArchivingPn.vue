@@ -1,8 +1,5 @@
 <template>
-	<fieldset
-		class="pkpFormField pkpFormField--options pkpFormField--archivingPn"
-		:class="classes"
-	>
+	<fieldset class="pkpFormField pkpFormField--options pkpFormField--archivingPn" :class="classes">
 		<legend class="pkpFormField--options__legend">
 			<template v-if="localeLabel">
 				<span class="aria-hidden">{{ localeLabel }}</span>
@@ -16,43 +13,22 @@
 				<span class="-screenReader">{{ i18n.required }}</span>
 			</span>
 			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
-			<span
-				v-if="tooltip"
-				class="-screenReader"
-				:id="describedByTooltipId"
-				v-html="tooltip"
-			/>
-			<help-button
-				v-if="helpTopic"
-				:id="describedByHelpId"
-				:topic="helpTopic"
-				:section="helpSection"
-				:label="i18n.help"
-			/>
+			<span v-if="tooltip" class="-screenReader" :id="describedByTooltipId" v-html="tooltip" />
+			<help-button v-if="helpTopic" :id="describedByHelpId" :topic="helpTopic" :section="helpSection" :label="i18n.help" />
 		</legend>
-		<div
-			v-if="description"
+		<div v-if="description"
 			class="pkpFormField__description pkpFormField--options__description"
 			v-html="description"
 			:id="describedByDescriptionId"
 		/>
-		<div
-			v-if="terms && value"
+		<div v-if="terms && value"
 			class="pkpFormField__description pkpFormField--options__description pkpFormField--archivingPn__terms"
 			v-html="terms"
 		/>
-		<field-error
-			v-if="errors.length"
-			:id="describedByErrorId"
-			:messages="errors"
-		/>
+		<field-error v-if="errors.length" :id="describedByErrorId" :messages="errors" />
 		<input type="hidden" v-model="selectedValue" />
 		<div class="pkpFormField__control">
-			<label
-				v-for="option in localizedOptions"
-				:key="option.value"
-				class="pkpFormField--options__option"
-			>
+			<label v-for="option in localizedOptions" :key="option.value" class="pkpFormField--options__option">
 				<input
 					class="pkpFormField--options__input"
 					v-model="selectedValue"

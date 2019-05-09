@@ -1,7 +1,7 @@
 <template>
 	<tabs>
 		<tab name="First tab">
-			<tabs :options="{useUrlFragment: false}">
+			<tabs :options="{ useUrlFragment: false }">
 				<tab name="Tab A">
 					Tab A Content
 				</tab>

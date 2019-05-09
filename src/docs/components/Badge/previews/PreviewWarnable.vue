@@ -1,5 +1,8 @@
 <template>
-	<badge label="7 new messages" isWarnable="true">
+	<badge
+		label="7 new messages"
+		isWarnable="true"
+	>
 		7
 	</badge>
 </template>

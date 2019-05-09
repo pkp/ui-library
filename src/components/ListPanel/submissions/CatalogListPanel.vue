@@ -1,5 +1,6 @@
 <template>
 	<div class="pkpListPanel--submissions pkpListPanel--catalog" :class="classes">
+
 		<!-- Header -->
 		<pkp-header>
 			{{ title }}
@@ -48,25 +49,14 @@
 
 		<!-- Body of the panel, including items and sidebar -->
 		<div class="pkpListPanel__body -pkpClearfix">
+
 			<!-- Filters in the sidebar -->
-			<div
-				v-if="filters.length"
-				ref="sidebar"
-				class="pkpListPanel__sidebar"
-				:class="{'-isVisible': isSidebarVisible}"
-			>
-				<pkp-header
-					class="pkpListPanel__sidebarHeader"
-					:tabindex="isSidebarVisible ? 0 : -1"
-				>
+			<div v-if="filters.length" ref="sidebar" class="pkpListPanel__sidebar" :class="{'-isVisible': isSidebarVisible}">
+				<pkp-header class="pkpListPanel__sidebarHeader" :tabindex="isSidebarVisible ? 0 :-1">
 					<icon icon="filter" :inline="true" />
 					{{ i18n.filter }}
 				</pkp-header>
-				<div
-					v-for="(filterSet, index) in filters"
-					:key="index"
-					class="pkpListPanel__filterSet"
-				>
+				<div v-for="(filterSet, index) in filters" :key="index" class="pkpListPanel__filterSet">
 					<pkp-header v-if="filterSet.heading">
 						{{ filterSet.heading }}
 					</pkp-header>
@@ -84,6 +74,7 @@
 
 			<!-- Content -->
 			<div class="pkpListPanel__content" aria-live="polite">
+
 				<!-- Items -->
 				<template v-if="items.length">
 					<div class="pkpListPanel--catalog__columnLabels">
@@ -95,12 +86,7 @@
 						</span>
 					</div>
 
-					<draggable
-						v-model="localItems"
-						:options="draggableOptions"
-						@start="drag = true"
-						@end="drag = false"
-					>
+					<draggable v-model="localItems" :options="draggableOptions" @start="drag=true" @end="drag=false">
 						<catalog-list-item
 							v-for="item in localItems"
 							:key="item.id"

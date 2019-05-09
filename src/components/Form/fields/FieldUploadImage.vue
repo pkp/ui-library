@@ -10,22 +10,10 @@
 				:multilingualLabel="multilingualLabel"
 			/>
 			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
-			<span
-				v-if="tooltip"
-				class="-screenReader"
-				:id="describedByTooltipId"
-				v-html="tooltip"
-			/>
-			<help-button
-				v-if="helpTopic"
-				:id="describedByHelpId"
-				:topic="helpTopic"
-				:section="helpSection"
-				:label="i18n.help"
-			/>
+			<span v-if="tooltip" class="-screenReader" :id="describedByTooltipId" v-html="tooltip" />
+			<help-button v-if="helpTopic" :id="describedByHelpId" :topic="helpTopic" :section="helpSection" :label="i18n.help" />
 		</div>
-		<div
-			v-if="isPrimaryLocale && description"
+		<div v-if="isPrimaryLocale && description"
 			class="pkpFormField__description"
 			v-html="description"
 			:id="describedByDescriptionId"
@@ -36,14 +24,8 @@
 			:id="controlId"
 			aria-live="polite"
 		>
-			<div
-				v-if="currentValue"
-				class="pkpFormField--upload__preview -pkpClearfix"
-			>
-				<div
-					v-if="this.thumbnail"
-					class="pkpFormField--uploadImage__thumbnailWrapper"
-				>
+			<div v-if="currentValue" class="pkpFormField--upload__preview -pkpClearfix">
+				<div v-if="this.thumbnail" class="pkpFormField--uploadImage__thumbnailWrapper" >
 					<img
 						class="pkpFormField--uploadImage__thumbnail"
 						:alt="i18n.thumbnailDescription"
@@ -51,31 +33,29 @@
 					/>
 				</div>
 				<div class="pkpFormField--upload__details">
-					<label class="pkpFormFieldLabel" :for="altTextId">{{
-						i18n.altTextLabel
-					}}</label>
-					<input
-						class="pkpFormField__input pkpFormField--uploadImage__altTextInput"
+					<label class="pkpFormFieldLabel" :for="altTextId">{{ i18n.altTextLabel }}</label>
+					<input class="pkpFormField__input pkpFormField--uploadImage__altTextInput"
 						type="text"
 						v-model="altTextValue"
 						:id="altTextId"
 						:aria-describedby="altTextDescriptionId"
 					/>
-					<div
-						class="pkpFormField--uploadImage__altTextDescription"
+					<div class="pkpFormField--uploadImage__altTextDescription"
 						v-html="i18n.altTextDescription"
 						:id="altTextDescriptionId"
 					/>
 				</div>
 				<div class="pkpFormField--upload__previewActions">
-					<pkp-button :isWarnable="true" :label="i18n.remove" @click="clear" />
 					<pkp-button
-						v-if="initialValue && !isInitialValue"
+						:isWarnable="true"
+						:label="i18n.remove"
+						@click="clear"
+					/>
+					<pkp-button v-if="initialValue && !isInitialValue"
 						:label="i18n.restore"
 						@click="revert"
 					/>
-					<multilingual-progress
-						v-if="isMultilingual && locales.length > 1"
+					<multilingual-progress v-if="isMultilingual && locales.length > 1"
 						:id="multilingualProgressId"
 						:count="multilingualFieldsCompleted"
 						:total="locales.length"
@@ -83,11 +63,7 @@
 					/>
 				</div>
 			</div>
-			<field-error
-				v-if="currentValue && errors.length"
-				:id="describedByErrorId"
-				:messages="errors"
-			/>
+			<field-error v-if="currentValue && errors.length" :id="describedByErrorId" :messages="errors" />
 			<!-- Keep the dropzone elements in the dom so they can be manipulated in mounted hook -->
 			<div :class="{'-screenReader': currentValue}">
 				<vue-dropzone
@@ -100,11 +76,7 @@
 					@vdropzone-error="error"
 					@vdropzone-removed-file="onRemoveFile"
 				/>
-				<field-error
-					v-if="errors.length"
-					:id="describedByErrorId"
-					:messages="errors"
-				/>
+				<field-error v-if="errors.length" :id="describedByErrorId" :messages="errors" />
 				<div class="pkpFormField--upload__uploadActions">
 					<!-- keyboard-accessible file upload -->
 					<pkp-button
@@ -113,14 +85,12 @@
 						:id="dropzoneClickableId"
 						:label="i18n.uploadFile"
 					/>
-					<pkp-button
-						v-if="initialValue && !isInitialValue"
-						class="pkpFormField--upload__restore"
+					<pkp-button v-if="initialValue && !isInitialValue"
+					 	class="pkpFormField--upload__restore"
 						:label="i18n.restore"
 						@click="revert"
 					/>
-					<multilingual-progress
-						v-if="isMultilingual && locales.length > 1"
+					<multilingual-progress v-if="isMultilingual && locales.length > 1"
 						:id="multilingualProgressId"
 						:count="multilingualFieldsCompleted"
 						:total="locales.length"

@@ -1,6 +1,10 @@
 <template>
 	<!-- Use the v-bind syntax to bind all props at once. -->
-	<list-panel v-bind="components.example" :title="title" @set="set">
+	<list-panel
+		v-bind="components.example"
+		:title="title"
+		@set="set"
+	>
 		<pagination
 			v-if="lastPage > 1"
 			slot="footer"

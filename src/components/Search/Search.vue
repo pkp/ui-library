@@ -2,20 +2,17 @@
 	<div class="pkpSearch">
 		<label>
 			<span class="-screenReader">{{ searchLabel }}</span>
-			<input
-				type="search"
-				class="pkpSearch__input"
+			<input type="search" class="pkpSearch__input"
 				@keyup="searchPhraseKeyUp"
 				:id="inputId"
 				:value="searchPhrase"
 				:placeholder="searchLabel"
-			/>
+			>
 			<span class="pkpSearch__icons">
 				<icon icon="search" :inline="true" class="pkpSearch__icons--search" />
 			</span>
 		</label>
-		<button
-			class="pkpSearch__clear"
+		<button class="pkpSearch__clear"
 			v-if="searchPhrase"
 			@click.prevent="clearSearchPhrase"
 			:aria-controls="inputId"

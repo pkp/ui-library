@@ -1,5 +1,8 @@
 <template>
-	<badge label="View all layout editors" isButton="true">
+	<badge
+		label="View all layout editors"
+		isButton="true"
+	>
 		Layout Editor
 	</badge>
 </template>

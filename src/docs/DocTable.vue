@@ -10,13 +10,9 @@
 				<td class="docTable__value" v-if="headers.includes('Value')">
 					<pre><code v-html="formatValue(row.value)" /></pre>
 				</td>
-				<td
-					class="docTable__description"
-					v-html="convertMarkdown(row.description)"
-				></td>
+				<td class="docTable__description" v-html="convertMarkdown(row.description)"></td>
 			</tr>
 		</table>
-
 		<p v-else>
 			<template v-if="title === 'Events'">
 				This component does not emit events.

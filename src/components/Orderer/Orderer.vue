@@ -5,15 +5,11 @@
 		</span>
 		<button class="orderer__up" @click.prevent="up">
 			<icon icon="angle-up" />
-			<span class="-screenReader">{{
-				__('orderUp', {itemTitle: itemTitle})
-			}}</span>
+			<span class="-screenReader">{{ __('orderUp', {itemTitle: itemTitle}) }}</span>
 		</button>
 		<button class="orderer__down" @click.prevent="down">
 			<icon icon="angle-down" />
-			<span class="-screenReader">{{
-				__('orderDown', {itemTitle: itemTitle})
-			}}</span>
+			<span class="-screenReader">{{ __('orderDown', {itemTitle: itemTitle}) }}</span>
 		</button>
 	</div>
 </template>

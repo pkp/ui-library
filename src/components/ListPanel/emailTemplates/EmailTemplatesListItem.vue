@@ -1,21 +1,16 @@
 <template>
 	<div class="pkpListPanelItem--emailTemplates -hasSummary" :class="classes">
 		<div class="pkpListPanelItem__summary -pkpClearfix">
-			<div class="pkpListPanelItem--emailTemplates__subject">
-				<badge v-if="item.enabled === false" :isWarnable="true">{{
-					i18n.disabled
-				}}</badge>
-				{{ localize(item.subject) }}
-			</div>
-			<div
-				v-if="localize(item.description)"
-				class="pkpListPanelItem--emailTemplates__description"
-			>
-				{{ localize(item.description) }}
-			</div>
-			<span class="pkpListPanelItem--emailTemplates__key">
-				{{ item.key }}
-			</span>
+      <div class="pkpListPanelItem--emailTemplates__subject">
+        <badge v-if="item.enabled === false" :isWarnable="true">{{ i18n.disabled }}</badge>
+        {{ localize(item.subject) }}
+      </div>
+      <div v-if="localize(item.description)" class="pkpListPanelItem--emailTemplates__description">
+        {{ localize(item.description) }}
+      </div>
+      <span class="pkpListPanelItem--emailTemplates__key">
+        {{ item.key }}
+      </span>
 			<button
 				ref="expanderButton"
 				class="pkpListPanelItem__expander"
@@ -23,57 +18,49 @@
 			>
 				<icon v-if="isExpanded" icon="angle-up" />
 				<icon v-else icon="angle-down" />
-				<span v-if="isExpanded" class="-screenReader">{{
-					__('viewLess', {name: localize(item.subject)})
-				}}</span>
-				<span v-else class="-screenReader">{{
-					__('viewMore', {name: localize(item.subject)})
-				}}</span>
+				<span v-if="isExpanded" class="-screenReader">{{ __('viewLess', {name: localize(item.subject)}) }}</span>
+				<span v-else class="-screenReader">{{ __('viewMore', {name: localize(item.subject)}) }}</span>
 			</button>
 		</div>
-		<div v-if="isExpanded" class="pkpListPanelItem__details">
+		<div
+			v-if="isExpanded"
+			class="pkpListPanelItem__details"
+		>
 			<list>
 				<list-item>{{ __('subjectLabel', {subject: item.subject}) }}</list-item>
-				<list-item v-if="item.fromRoleId">{{
-					__('from', {value: getRoleLabel(item.fromRoleId)})
-				}}</list-item>
-				<list-item v-if="item.toRoleId">{{
-					__('to', {value: getRoleLabel(item.toRoleId)})
-				}}</list-item>
-				<list-item
-					class="pkpListPanelItem--emailTemplates__body"
-					v-html="localize(item.body)"
-				/>
-			</list>
+				<list-item v-if="item.fromRoleId">{{ __('from', {value: getRoleLabel(item.fromRoleId)}) }}</list-item>
+				<list-item v-if="item.toRoleId">{{ __('to', {value: getRoleLabel(item.toRoleId)}) }}</list-item>
+				<list-item class="pkpListPanelItem--emailTemplates__body" v-html="localize(item.body)" />
+      </list>
 			<div class="pkpListPanelItem__actions">
 				<spinner v-if="isEnabling" />
 				<pkp-button
-					v-if="canEdit"
+          v-if="canEdit"
 					ref="editButton"
 					:label="i18n.edit"
-					@click="openEditModal"
+          @click="openEditModal"
 				/>
 				<pkp-button
 					v-if="item.canDisable"
 					ref="toggleEnabledButton"
 					:label="item.enabled === false ? i18n.enable : i18n.disable"
-					:isWarnable="item.enabled !== false"
+          :isWarnable="item.enabled !== false"
 					:disabled="isEnabling"
-					@click="toggleEnabled"
+          @click="toggleEnabled"
 				/>
 				<pkp-button
-					v-if="canReset"
+          v-if="canReset"
 					ref="resetButton"
 					:label="i18n.reset"
-					:isWarnable="true"
-					@click="openResetModal"
+          :isWarnable="true"
+          @click="openResetModal"
 				/>
 				<pkp-button
-					v-else-if="isCustom"
+          v-else-if="isCustom"
 					ref="deleteButton"
 					:label="i18n.delete"
-					:isWarnable="true"
-					@click="openDeleteModal"
+          :isWarnable="true"
+          @click="openDeleteModal"
 				/>
 			</div>
 		</div>

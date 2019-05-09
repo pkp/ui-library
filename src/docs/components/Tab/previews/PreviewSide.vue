@@ -1,7 +1,7 @@
 <template>
 	<tabs>
 		<tab name="First tab">
-			<tabs :options="{useUrlFragment: false}" class="tabs-component--side">
+			<tabs :options="{ useUrlFragment: false }" class="tabs-component--side">
 				<tab name="Tab A">
 					Tab A content
 				</tab>

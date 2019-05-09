@@ -1,11 +1,11 @@
 <template>
-	<div class="navGroup">
+  <div class="navGroup">
 		<div class="navGroup__heading">
 			<slot name="heading"></slot>
 		</div>
-		<ul class="navGroup__list">
+    <ul class="navGroup__list">
 			<slot />
-		</ul>
+    </ul>
 	</div>
 </template>
 

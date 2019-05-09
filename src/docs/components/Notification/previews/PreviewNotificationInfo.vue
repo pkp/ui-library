@@ -1,7 +1,6 @@
 <template>
 	<notification type="info">
-		Accepted file types include <code>.jpg</code>, <code>.png</code> and
-		<code>.gif</code>.
+		Accepted file types include <code>.jpg</code>, <code>.png</code> and <code>.gif</code>.
 	</notification>
 </template>
 
