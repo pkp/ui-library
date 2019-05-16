@@ -93,6 +93,7 @@ export const selectReviewerListPanel = {
 	activeReviewsDescription: 'Active reviews currently assigned',
 	completedReviews: 'Reviews completed',
 	declinedReviews: 'Reviews declined',
+	cancelledReviews: 'Reviews cancelled',
 	empty: 'No reviewers found',
 	reviewerRating: 'Reviewer rating: {$rating}',
 	daysSinceLastAssignment: '{$days} days ago',

@@ -127,6 +127,13 @@
 				</list-item>
 				<list-item>
 					<template slot="value">
+						<icon icon="times-circle-o" :inline="true" />
+						{{ item.reviewsCancelled }}
+					</template>
+					{{ i18n.cancelledReviews }}
+				</list-item>
+				<list-item>
+					<template slot="value">
 						<icon icon="history" :inline="true" />
 						{{ daysSinceLastAssignment }}
 					</template>
