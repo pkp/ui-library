@@ -575,6 +575,7 @@ export default {
 
 				case pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED:
 				case pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE:
+				case pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED:
 				case pkp.const.REVIEW_ASSIGNMENT_STATUS_THANKED:
 					latest.reviewComplete = true;
 					break;

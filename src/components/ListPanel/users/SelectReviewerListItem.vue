@@ -127,7 +127,7 @@
 				</list-item>
 				<list-item>
 					<template slot="value">
-						<icon icon="times-circle-o" :inline="true" />
+						<icon icon="ban" :inline="true" />
 						{{ item.reviewsCancelled }}
 					</template>
 					{{ i18n.cancelledReviews }}
