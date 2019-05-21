@@ -46,6 +46,10 @@
 							{{ i18n.reviewDue }}
 						</div>
 					</div>
+					<div v-if="currentUserLatestReviewAssignment.reviewCancelled" class="pkpListPanelItem--submission__reviewCancelled">
+						<icon icon="exclamation-triangle" :inline="true" />
+						{{ i18n.reviewCancelled }}
+					</div>
 					<div v-if="currentUserLatestReviewAssignment.reviewComplete" class="pkpListPanelItem--submission__reviewComplete">
 						<icon icon="check" :inline="true" />
 						{{ i18n.reviewComplete }}
