@@ -1,5 +1,12 @@
 <template>
-	<div class="pkpListPanelItem pkpListPanelItem--submission pkpListPanelItem--catalog -pkpClearfix" :class="{'--hasFocus': isFocused, '-isLoading': isSaving, '-isFeatured': isFeatured}">
+	<div
+		class="pkpListPanelItem pkpListPanelItem--submission pkpListPanelItem--catalog -pkpClearfix"
+		:class="{
+			'--hasFocus': isFocused,
+			'-isLoading': isSaving,
+			'-isFeatured': isFeatured
+		}"
+	>
 		<orderer
 			v-if="isOrdering"
 			@up="orderUp"
@@ -8,13 +15,18 @@
 			:itemTitle="item.title"
 			:i18n="i18n"
 		/>
-		<div class="pkpListPanelItem--submission__item pkpListPanelItem--catalog__item">
+		<div
+			class="pkpListPanelItem--submission__item pkpListPanelItem--catalog__item"
+		>
 			<div class="pkpListPanelItem--submission__id">
 				<span class="-screenReader">{{ i18n.id }}</span>
 				{{ item.id }}
 			</div>
 			<a :href="item.urlPublished" class="pkpListPanelItem--submission__link">
-				<div v-if="item.authorString" class="pkpListPanelItem--submission__author">
+				<div
+					v-if="item.authorString"
+					class="pkpListPanelItem--submission__author"
+				>
 					{{ item.authorString }}
 				</div>
 				<div class="pkpListPanelItem--submission__title" :tabindex="-1">
@@ -36,7 +48,10 @@
 				/>
 			</div>
 		</div>
-		<button class="pkpListPanelItem--catalog__select" @click.prevent="toggleFeatured">
+		<button
+			class="pkpListPanelItem--catalog__select"
+			@click.prevent="toggleFeatured"
+		>
 			<icon v-if="isFeatured" icon="check-square-o" />
 			<icon v-else icon="square-o" />
 			<span class="-screenReader">
@@ -48,7 +63,10 @@
 				</template>
 			</span>
 		</button>
-		<button class="pkpListPanelItem--catalog__select" @click.prevent="toggleNewRelease">
+		<button
+			class="pkpListPanelItem--catalog__select"
+			@click.prevent="toggleNewRelease"
+		>
 			<icon v-if="isNewRelease" icon="check-square-o" />
 			<icon v-else icon="square-o" />
 			<span class="-screenReader">

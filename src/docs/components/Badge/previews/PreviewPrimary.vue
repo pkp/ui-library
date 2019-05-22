@@ -1,8 +1,5 @@
 <template>
-	<badge
-		label="4 assigned submissions"
-		isPrimary="true"
-	>
+	<badge label="4 assigned submissions" isPrimary="true">
 		4
 	</badge>
 </template>

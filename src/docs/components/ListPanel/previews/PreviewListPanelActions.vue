@@ -1,16 +1,10 @@
 <template>
 	<!-- Use the v-bind syntax to bind all props at once. -->
-	<list-panel
-		v-bind="components.example"
-		@set="set"
-	>
+	<list-panel v-bind="components.example" @set="set">
 		<pkp-header slot="header">
 			{{ title }}
 			<template slot="actions">
-				<pkp-button
-					@click="openModal"
-					label="Add Item"
-				/>
+				<pkp-button @click="openModal" label="Add Item" />
 				<pkp-button
 					@click="openModal"
 					:isWarnable="true"

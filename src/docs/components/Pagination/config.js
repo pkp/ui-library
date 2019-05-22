@@ -1,5 +1,6 @@
 export let props = {
 	currentPage: 1,
+	isLoading: false,
 	lastPage: 10,
 	showAdjacentPages: 1,
 	i18n: {
@@ -17,6 +18,10 @@ export const propDocs = [
 		description: 'The page that is currently being displayed.'
 	},
 	{
+		key: 'isLoading',
+		description: 'Is the current page still loading?'
+	},
+	{
 		key: 'lastPage',
 		description: 'The last page that is available.'
 	},
@@ -31,7 +36,16 @@ export const propDocs = [
 	}
 ];
 
+export const emitDocs = [
+	{
+		key: 'set-page',
+		description: 'The page that should be selected.',
+		value: 1
+	}
+];
+
 export default {
 	props,
-	propDocs
+	propDocs,
+	emitDocs
 };

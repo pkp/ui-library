@@ -1,6 +1,7 @@
 <template>
 	<div class="inlineIconPreview">
-		<icon icon="search" :inline="true" /> Search
+		<icon icon="search" :inline="true" />
+		Search
 	</div>
 </template>
 

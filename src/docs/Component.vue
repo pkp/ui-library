@@ -3,13 +3,17 @@
 		<h1 class="component__title">{{ name }}</h1>
 		<nav class="component__examples" :aria-label="'Examples of ' + this.name">
 			<nav-group>
-				<template slot="heading">Examples</template>
+				<template slot="heading">
+					Examples
+				</template>
 				<li v-for="(label, route) in examples" :key="route">
 					<router-link :to="routePrefix + route">{{ label }}</router-link>
 				</li>
 			</nav-group>
 			<nav-group v-if="hasImplementations">
-				<template slot="heading">Implementations</template>
+				<template slot="heading">
+					Implementations
+				</template>
 				<li v-for="(label, route) in implementations" :key="route">
 					<router-link :to="routePrefix + route">{{ label }}</router-link>
 				</li>

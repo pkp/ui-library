@@ -1,14 +1,11 @@
 <template>
 	<!-- Use the v-bind syntax to bind all props at once. -->
-	<list-panel
-		v-bind="components.example"
-		:title="title"
-		@set="set"
-	>
+	<list-panel v-bind="components.example" :title="title" @set="set">
 		<pagination
 			v-if="lastPage > 1"
 			slot="footer"
 			:currentPage="currentPage"
+			:isLoading="isLoading"
 			:lastPage="lastPage"
 			:i18n="i18n"
 			@set-page="setPage"
@@ -50,6 +47,7 @@ export default {
 				}
 			},
 			allItems: manyItems,
+			isLoading: false,
 			title: 'List Panel with Pagination',
 			i18n: i18n.pagination
 		};
@@ -76,6 +74,11 @@ export default {
 				this.components.example.offset,
 				this.components.example.count + this.components.example.offset
 			);
+			// Mock a delay for a remote request
+			this.isLoading = true;
+			setTimeout(() => {
+				this.isLoading = false;
+			}, 2000);
 		}
 	}
 };

@@ -3,21 +3,39 @@
 		<template v-if="component">
 			<div class="example__preview" :class="previewSizeClass">
 				<div class="example__previewControls">
-					<button class="example__previewControl example__previewControl--mobile" :class="{'-isActive': previewSize === 'mobile'}" @click="previewSize = 'mobile'">
+					<button
+						class="example__previewControl example__previewControl--mobile"
+						:class="{'-isActive': previewSize === 'mobile'}"
+						@click="previewSize = 'mobile'"
+					>
 						<icon icon="mobile" />
 					</button>
-					<button class="example__previewControl example__previewControl--desktop" :class="{'-isActive': previewSize === 'desktop'}" @click="previewSize = 'desktop'">
+					<button
+						class="example__previewControl example__previewControl--desktop"
+						:class="{'-isActive': previewSize === 'desktop'}"
+						@click="previewSize = 'desktop'"
+					>
 						<icon icon="desktop" />
 					</button>
-					<button class="example__previewControl" :class="{'-isActive': previewSize === 'max'}" @click="previewSize = 'max'">
+					<button
+						class="example__previewControl"
+						:class="{'-isActive': previewSize === 'max'}"
+						@click="previewSize = 'max'"
+					>
 						<icon icon="arrows-alt" />
 					</button>
 				</div>
-				<div class="example__previewWrapper" :class="'example__previewWrapper--' + component">
-					<component :is="component" v-bind="props" v-on="listeners"/>
+				<div
+					class="example__previewWrapper"
+					:class="'example__previewWrapper--' + component"
+				>
+					<component :is="component" v-bind="props" v-on="listeners" />
 				</div>
 			</div>
-			<pre v-if="template" class="example__template"><code class="language-html" v-html="template" /></pre>
+			<pre
+				v-if="template"
+				class="example__template"
+			><code class="language-html" v-html="template" /></pre>
 			<section v-if="propRows.length">
 				<h2 class="example__sectionTitle">Props</h2>
 				<doc-table
@@ -28,16 +46,13 @@
 			<section v-if="emitDocs.length">
 				<h2 class="example__sectionTitle">Events</h2>
 				<doc-table
-				:headers="['Key', 'Type', 'Value', 'Description']"
-				:rows="emitDocs"
+					:headers="['Key', 'Type', 'Value', 'Description']"
+					:rows="emitDocs"
 				/>
 			</section>
 			<section v-if="dataDocs.length">
 				<h2 class="example__sectionTitle">Data</h2>
-				<doc-table
-				:headers="['Key', 'Description']"
-				:rows="dataDocs"
-				/>
+				<doc-table :headers="['Key', 'Description']" :rows="dataDocs" />
 			</section>
 			<section v-if="readme" class="example__readme bodyText">
 				<h2 class="example__sectionTitle">Usage</h2>
