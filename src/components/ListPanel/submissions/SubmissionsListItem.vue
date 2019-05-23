@@ -734,7 +734,7 @@ export default {
 		 */
 		openInfoCenter() {
 			var opts = {
-				title: this.item.title,
+				title: this.localizeSubmission(this.item.fullTitle, this.item.locale),
 				url: this.infoUrl.replace('__id__', this.item.id),
 				closeCallback: this.resetFocusInfoCenter
 			};
