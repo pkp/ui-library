@@ -1,5 +1,6 @@
 <script>
 import DateRange from '@/components/DateRange/DateRange.vue';
+import DoughnutChart from '@/components/Chart/DoughnutChart.vue';
 import LineChart from '@/components/Chart/LineChart.vue';
 import ListPanelFilter from '@/components/ListPanel/ListPanelFilter.vue';
 import ListPanelSearch from '@/components/ListPanel/ListPanelSearch.vue';
@@ -13,6 +14,7 @@ import debounce from 'debounce';
 export default {
 	components: {
 		DateRange,
+		DoughnutChart,
 		LineChart,
 		ListPanelFilter,
 		ListPanelSearch,
@@ -536,5 +538,64 @@ export default {
 	}
 }
 
+// Editorial stats
+.pkpStatistics--editorial__stageWrapper {
+	position: relative;
+	min-height: 256px;
+}
 
+.pkpStatistics--editorial__stageChartWrapper {
+	float: left;
+	width: 256px;
+
+	.chartjs-render-monitor {
+		margin-left: auto;
+		margin-right: auto;
+		max-width: 256px;
+	}
+}
+
+.pkpStatistics--editorial__stageList {
+	position: absolute;
+	top: 50%;
+	left: 256px;
+	width: 65%;
+	transform: translateY(-50%);
+}
+
+.pkpStatistics--editorial__stage {
+	display: inline-block;
+	margin-top: 2rem;
+	margin-right: 1.5rem;
+}
+
+.pkpStatistics--editorial__stageCount {
+	display: block;
+	font-size: @font-lead;
+	font-weight: @bold;
+	line-height: 1em;
+}
+
+.pkpStatistics--editorial__stageLabel {
+	display: block;
+	font-size: @font-sml;
+	line-height: 1.25em;
+}
+
+.pkpStatistics--editorial__stage--total {
+	display: block;
+	margin-top: 0;
+
+	.pkpStatistics--editorial__stageCount {
+		font-size: 48px;
+	}
+
+	.pkpStatistics--editorial__stageLabel {
+		font-size: @font-base;
+	}
+}
+
+.pkpStatistics--editorial .pkpTable {
+	margin-top: 0.5rem;
+}
 </style>
