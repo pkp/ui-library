@@ -42,6 +42,7 @@ export const submissionsListPanel = {
 	responseDue: 'Response due',
 	reviewDue: 'Review due',
 	viewSubmission: 'View Submission',
+	reviewAssignment: 'Review Assignment',
 	reviewsCompleted: 'Assigned reviews completed',
 	revisionsSubmitted: 'Revisions submitted',
 	copyeditsSubmitted: 'Copyedited files submitted',

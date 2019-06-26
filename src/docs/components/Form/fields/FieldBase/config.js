@@ -112,7 +112,7 @@ export const emitDocs = [
 	{
 		key: 'change',
 		description:
-			"When the value of the field changes. The payload will contain the field's `name`, the new `value` and the `localeKey` of this value for multilingual fields. `localeKey` will be an empty string for fields that are not multilingual. This event is fired every time the value changes, so [debounce](https://www.npmjs.com/package/debounce) event callbacks that contain resource-intensive code.",
+			"When the value of the field changes. The payload will contain the field's `name`, the new `value` and the `localeKey` of this value for multilingual fields. `localeKey` will be an empty string for fields that are not multilingual. This event is fired every time the value changes, so you should [debounce](https://www.npmjs.com/package/debounce) event callbacks that contain resource-intensive code.",
 		value: {
 			name: 'fieldName',
 			value: 'mixed',

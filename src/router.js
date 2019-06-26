@@ -5,16 +5,20 @@ import ComponentBadge from './docs/components/Badge/ComponentBadge.vue';
 import ComponentButton from './docs/components/Button/ComponentButton.vue';
 import ComponentChart from './docs/components/Chart/ComponentChart.vue';
 import ComponentDateRange from './docs/components/DateRange/ComponentDateRange.vue';
+import ComponentDropdown from './docs/components/Dropdown/ComponentDropdown.vue';
 import ComponentFilter from './docs/components/Filter/ComponentFilter.vue';
 import ComponentFieldArchivingPn from './docs/components/Form/fields/FieldArchivingPn/ComponentFieldArchivingPn.vue';
+import ComponentFieldAutosuggest from './docs/components/Form/fields/FieldAutosuggest/ComponentFieldAutosuggest.vue';
 import ComponentFieldBase from './docs/components/Form/fields/FieldBase/ComponentFieldBase.vue';
 import ComponentFieldColor from './docs/components/Form/fields/FieldColor/ComponentFieldColor.vue';
+import ComponentFieldControlledVocab from './docs/components/Form/fields/FieldControlledVocab/ComponentFieldControlledVocab.vue';
 import ComponentFieldHtml from './docs/components/Form/fields/FieldHtml/ComponentFieldHtml.vue';
 import ComponentFieldMetadataSetting from './docs/components/Form/fields/FieldMetadataSetting/ComponentFieldMetadataSetting.vue';
 import ComponentFieldOptions from './docs/components/Form/fields/FieldOptions/ComponentFieldOptions.vue';
 import ComponentFieldRadioInput from './docs/components/Form/fields/FieldRadioInput/ComponentFieldRadioInput.vue';
 import ComponentFieldRichTextarea from './docs/components/Form/fields/FieldRichTextarea/ComponentFieldRichTextarea.vue';
 import ComponentFieldSelect from './docs/components/Form/fields/FieldSelect/ComponentFieldSelect.vue';
+import ComponentFieldSelectIssue from './docs/components/Form/fields/FieldSelectIssue/ComponentFieldSelectIssue.vue';
 import ComponentFieldShowEnsuringLink from './docs/components/Form/fields/FieldShowEnsuringLink/ComponentFieldShowEnsuringLink.vue';
 import ComponentFieldText from './docs/components/Form/fields/FieldText/ComponentFieldText.vue';
 import ComponentFieldTextarea from './docs/components/Form/fields/FieldTextarea/ComponentFieldTextarea.vue';
@@ -33,9 +37,10 @@ import ComponentPagination from './docs/components/Pagination/ComponentPaginatio
 import ComponentSearch from './docs/components/Search/ComponentSearch.vue';
 import ComponentSpinner from './docs/components/Spinner/ComponentSpinner.vue';
 import ComponentStatsContainer from './docs/components/StatsContainer/ComponentStatsContainer.vue';
-import ComponentTab from './docs/components/Tab/ComponentTab.vue';
 import ComponentTable from './docs/components/Table/ComponentTable.vue';
+import ComponentTabs from './docs/components/Tabs/ComponentTabs.vue';
 import ComponentTooltip from './docs/components/Tooltip/ComponentTooltip.vue';
+import ComponentWorkflowContainer from './docs/components/WorkflowContainer/ComponentWorkflowContainer.vue';
 
 Vue.use(Router);
 
@@ -73,6 +78,11 @@ export default new Router({
 			component: ComponentDateRange
 		},
 		{
+			path: '/component/Dropdown/:example?',
+			name: 'Dropdown',
+			component: ComponentDropdown
+		},
+		{
 			path: '/component/Filter/:example?',
 			name: 'Filter',
 			component: ComponentFilter
@@ -83,6 +93,11 @@ export default new Router({
 			component: ComponentFieldArchivingPn
 		},
 		{
+			path: '/component/Form/fields/FieldAutosuggest/:example?',
+			name: 'Form/fields/FieldAutosuggest',
+			component: ComponentFieldAutosuggest
+		},
+		{
 			path: '/component/Form/fields/FieldBase/:example?',
 			name: 'Form/fields/FieldBase',
 			component: ComponentFieldBase
@@ -91,6 +106,11 @@ export default new Router({
 			path: '/component/Form/fields/FieldColor/:example?',
 			name: 'Form/fields/FieldColor',
 			component: ComponentFieldColor
+		},
+		{
+			path: '/component/Form/fields/FieldControlledVocab/:example?',
+			name: 'Form/fields/FieldControlledVocab',
+			component: ComponentFieldControlledVocab
 		},
 		{
 			path: '/component/Form/fields/FieldHtml/:example?',
@@ -121,6 +141,11 @@ export default new Router({
 			path: '/component/Form/fields/FieldSelect/:example?',
 			name: 'Form/fields/FieldSelect',
 			component: ComponentFieldSelect
+		},
+		{
+			path: '/component/Form/fields/FieldSelectIssue/:example?',
+			name: 'Form/fields/FieldSelectIssue',
+			component: ComponentFieldSelectIssue
 		},
 		{
 			path: '/component/Form/fields/FieldShowEnsuringLink/:example?',
@@ -213,19 +238,24 @@ export default new Router({
 			component: ComponentStatsContainer
 		},
 		{
-			path: '/component/Tab/:example?',
-			name: 'Tab',
-			component: ComponentTab
-		},
-		{
 			path: '/component/Table/:example?',
 			name: 'Table',
 			component: ComponentTable
 		},
 		{
+			path: '/component/Tabs/:example?',
+			name: 'Tabs',
+			component: ComponentTabs
+		},
+		{
 			path: '/component/Tooltip/:example?',
 			name: 'Tooltip',
 			component: ComponentTooltip
+		},
+		{
+			path: '/component/WorkflowContainer/:example?',
+			name: 'WorkflowContainer',
+			component: ComponentWorkflowContainer
 		}
 	]
 });

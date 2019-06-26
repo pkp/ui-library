@@ -17,12 +17,23 @@
 <script>
 export default {
 	name: 'Badge',
-	props: ['label', 'isPrimary', 'isWarnable', 'isButton', 'hasDot', 'stage'],
+	props: [
+		'label',
+		'isPrimary',
+		'isSuccess',
+		'isWarnable',
+		'isButton',
+		'hasDot',
+		'stage'
+	],
 	computed: {
 		classes() {
 			let classes = [];
 			if (this.isPrimary) {
 				classes.push('pkpBadge--isPrimary');
+			}
+			if (this.isSuccess) {
+				classes.push('pkpBadge--isSuccess');
 			}
 			if (this.isWarnable) {
 				classes.push('pkpBadge--isWarnable');
@@ -75,6 +86,29 @@ export default {
 
 			&:before {
 				border-color: @primary;
+			}
+		}
+	}
+}
+
+.pkpBadge--isSuccess {
+	border-color: @yes;
+	background-color: @yes;
+	color: #fff;
+
+	&:before {
+		border-color: #fff;
+	}
+
+	&.pkpBadge--button {
+		&:hover,
+		&:focus {
+			background: transparent;
+			border-color: @yes;
+			color: @yes;
+
+			&:before {
+				border-color: @yes;
 			}
 		}
 	}

@@ -68,7 +68,7 @@ export default {
 <style lang="less">
 @import '../../styles/_import';
 
-.-truncate {
+.pkpTable__cell.-truncate {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -76,11 +76,11 @@ export default {
 	max-width: 20em;
 }
 
-.-truncate-small {
+.pkpTable__cell.-truncate-small {
 	max-width: 10em;
 }
 
-.-truncate-large {
+.pkpTable__cell.-truncate-large {
 	max-width: 40em;
 }
 </style>

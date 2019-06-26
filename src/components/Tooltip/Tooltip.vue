@@ -40,4 +40,8 @@ export default {
 	background: transparent;
 	cursor: pointer;
 }
+
+.tooltip-inner a {
+	color: #fff;
+}
 </style>

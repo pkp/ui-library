@@ -41,10 +41,10 @@
 			@keydown.36.ctrl.exact.prevent="focusStart"
 			@keydown.35.exact.prevent="focusLastCell"
 			@keydown.36.exact.prevent="focusFirstCell"
-			@keydown.37.exact.prevent="focusPreviousCell"
-			@keydown.38.exact.prevent="focusPreviousRow"
-			@keydown.39.exact.prevent="focusNextCell"
-			@keydown.40.exact.prevent="focusNextRow"
+			@keydown.left.exact.prevent="focusPreviousCell"
+			@keydown.up.exact.prevent="focusPreviousRow"
+			@keydown.right.exact.prevent="focusNextCell"
+			@keydown.down.exact.prevent="focusNextRow"
 		>
 			<tr
 				v-for="(row, rowIndex) in rows"

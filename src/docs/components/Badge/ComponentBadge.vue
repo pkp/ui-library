@@ -2,6 +2,7 @@
 import Component from '@/docs/Component.vue';
 import ExampleBadge from './ExampleBadge.vue';
 import Primary from './ExamplePrimary.vue';
+import Success from './ExampleSuccess.vue';
 import Warnable from './ExampleWarnable.vue';
 import Dot from './ExampleDot.vue';
 import Stage from './ExampleStage.vue';
@@ -13,6 +14,7 @@ export default {
 	components: {
 		ExampleBadge,
 		Primary,
+		Success,
 		Warnable,
 		Dot,
 		Stage,
@@ -25,6 +27,7 @@ export default {
 			examples: {
 				ExampleBadge: 'Base',
 				Primary: 'Primary',
+				Success: 'Success',
 				Warnable: 'Warnable',
 				Dot: 'Dot',
 				Stage: 'Stage',

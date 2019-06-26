@@ -1,6 +1,7 @@
 export let props = {
 	label: '32 submissions',
 	isPrimary: false,
+	isSuccess: false,
 	isWarnable: false,
 	isButton: false,
 	hasDot: false,
@@ -15,6 +16,10 @@ export const propDocs = [
 	{
 		key: 'isPrimary',
 		description: 'Badges which should stand out from adjacent badges.'
+	},
+	{
+		key: 'isSuccess',
+		description: 'Badges which describe a successful or complete state.'
 	},
 	{
 		key: 'isWarnable',

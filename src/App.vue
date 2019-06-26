@@ -38,6 +38,11 @@
 						StatsContainer
 					</router-link>
 				</li>
+				<li>
+					<router-link to="/component/WorkflowContainer">
+						WorkflowContainer
+					</router-link>
+				</li>
 			</nav-group>
 			<nav-group>
 				<template slot="heading">
@@ -47,6 +52,7 @@
 				<li><router-link to="/component/Button">Button</router-link></li>
 				<li><router-link to="/component/Chart">Chart</router-link></li>
 				<li><router-link to="/component/DateRange">DateRange</router-link></li>
+				<li><router-link to="/component/Dropdown">Dropdown</router-link></li>
 				<li><router-link to="/component/Filter">Filter</router-link></li>
 				<li :class="{'-submenuOpen': displaySubmenu('Form')}">
 					<router-link to="/component/Form">Form</router-link>
@@ -66,6 +72,11 @@
 						</li>
 					</ul>
 					<ul v-if="displaySubmenu('Form')">
+						<li>
+							<router-link to="/component/Form/fields/FieldAutosuggest">
+								FieldAutosuggest
+							</router-link>
+						</li>
 						<li>
 							<router-link to="/component/Form/fields/FieldHtml">
 								FieldHtml
@@ -124,8 +135,18 @@
 							</router-link>
 						</li>
 						<li>
+							<router-link to="/component/Form/fields/FieldControlledVocab">
+								FieldControlledVocab
+							</router-link>
+						</li>
+						<li>
 							<router-link to="/component/Form/fields/FieldMetadataSetting">
 								FieldMetadataSetting
+							</router-link>
+						</li>
+						<li>
+							<router-link to="/component/Form/fields/FieldSelectIssue">
+								FieldSelectIssue
 							</router-link>
 						</li>
 						<li>
@@ -156,8 +177,8 @@
 				</li>
 				<li><router-link to="/component/Search">Search</router-link></li>
 				<li><router-link to="/component/Spinner">Spinner</router-link></li>
-				<li><router-link to="/component/Tab">Tab</router-link></li>
 				<li><router-link to="/component/Table">Table</router-link></li>
+				<li><router-link to="/component/Tabs">Tabs</router-link></li>
 				<li><router-link to="/component/Tooltip">Tooltip</router-link></li>
 			</nav-group>
 		</nav>

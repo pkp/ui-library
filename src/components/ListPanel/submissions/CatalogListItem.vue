@@ -24,22 +24,16 @@
 			</div>
 			<a :href="item.urlPublished" class="pkpListPanelItem--submission__link">
 				<div
-					v-if="item.authorString"
+					v-if="currentPublication.authorsStringShort"
 					class="pkpListPanelItem--submission__author"
 				>
-					{{ item.authorString }}
+					{{ currentPublication.authorsStringShort }}
 				</div>
 				<div class="pkpListPanelItem--submission__title" :tabindex="-1">
-					{{ localize(item.fullTitle) }}
+					{{ localize(currentPublication.fullTitle) }}
 				</div>
 			</a>
 			<div class="pkpListPanelItem__actions">
-				<pkp-button
-					ref="viewEntryButton"
-					:label="i18n.editCatalogEntry"
-					:isLink="true"
-					@click="viewCatalogEntry"
-				/>
 				<pkp-button
 					element="a"
 					:href="item.urlWorkflow"
@@ -124,6 +118,17 @@ export default {
 		 */
 		id() {
 			return this.item.id;
+		},
+
+		/**
+		 * The current publication of the submission
+		 *
+		 * @return {Object}
+		 */
+		currentPublication() {
+			return this.item.publications.find(
+				publication => publication.id === this.item.currentPublicationId
+			);
 		},
 
 		/**
@@ -241,24 +246,6 @@ export default {
 					self.isLoading = false;
 				}
 			});
-		},
-
-		/**
-		 * Launch a modal to view the catalog entry for this item
-		 */
-		viewCatalogEntry() {
-			var opts = {
-				title: this.i18n.catalogEntry,
-				url: this.catalogEntryUrl.replace('__id__', this.item.id),
-				closeCallback: () => this.$refs.viewEntryButton.$el.focus()
-			};
-
-			$(
-				'<div id="' +
-					$.pkp.classes.Helper.uuid() +
-					'" ' +
-					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>'
-			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
 		}
 	}
 };

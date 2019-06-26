@@ -171,7 +171,14 @@ export default {
 			let values = {};
 			this.fields.forEach(field => {
 				if (!field.isMultilingual) {
-					values[field.name] = field.value;
+					// Convert empty arrays to an empty string to address the fact that
+					// jQuery drops empty arrays before sending the POST data.
+					// See: https://bugs.jquery.com/ticket/6481
+					if (Array.isArray(field.value) && !field.value.length) {
+						values[field.name] = '';
+					} else {
+						values[field.name] = field.value;
+					}
 				} else {
 					let fieldValues = {};
 					Object.keys(field.value).forEach(localeKey => {
@@ -180,7 +187,12 @@ export default {
 								locale => locale.key === localeKey
 							).length
 						) {
-							fieldValues[localeKey] = field.value[localeKey];
+							// See note above on converting empty arrays
+							if (Array.isArray(field.value[localeKey]) && !field.value[localeKey].length) {
+								fieldValues[localeKey] = '';
+							} else {
+								fieldValues[localeKey] = field.value[localeKey];
+							}
 						}
 					});
 					if (Object.keys(fieldValues).length) {
@@ -313,9 +325,6 @@ export default {
 				return field;
 			});
 			this.$emit('set', this.id, {fields: newFields});
-			this.$scrollTo(this.$el, 500, {
-				offset: -50
-			});
 		},
 
 		/**

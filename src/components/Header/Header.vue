@@ -1,5 +1,5 @@
 <template>
-	<div class="pkpHeader -pkpClearfix">
+	<div class="pkpHeader -pkpClearfix" :class="{'-isOneLine': isOneLine}">
 		<span class="pkpHeader__title">
 			<slot />
 		</span>
@@ -11,6 +11,12 @@
 
 <script>
 export default {
+	props: {
+		isOneLine: {
+			type: Boolean,
+			default: false
+		}
+	},
 	computed: {
 		hasActions() {
 			return this.$slots.actions;
@@ -41,15 +47,42 @@ export default {
 
 .pkpHeader__actions {
 	float: right;
-	margin-left: 1rem;
 	margin-top: -1px; // button borders
 
 	> * {
 		display: inline-block;
+
+		&:first-child {
+			margin-left: 1rem;
+		}
 	}
 
 	> * + * {
 		margin-left: 0.25rem;
+	}
+}
+
+.pkpHeader.-isOneLine {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	.pkpHeader__title {
+		margin-right: auto; // flex: align left when only one item
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.pkpHeader__actions {
+		float: none;
+		display: flex;
+		align-items: center;
+		margin-left: auto;
+
+		> * {
+			white-space: nowrap;
+		}
 	}
 }
 </style>
