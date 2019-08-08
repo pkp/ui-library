@@ -234,9 +234,12 @@ export default {
 						return;
 					}
 
-					self.timeSegments = r.timeSegments;
-					self.items = r.items;
-					self.itemsMax = r.itemsMax;
+					// Reassign any existing data property
+					for (const key in r) {
+						if (key in self.$data) {
+							self[key] = r[key];
+						}
+					}
 				},
 				complete: function (r) {
 
