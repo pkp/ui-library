@@ -588,6 +588,12 @@ export default {
 .pkpStatistics--editorial__stage--total {
 	display: block;
 	margin-top: 0;
+	font-weight: @normal;
+
+	// Fight specificity issue with legacy CSS styles
+	&.pkpStatistics--editorial__stage--total {
+		margin-bottom: 0;
+	}
 
 	.pkpStatistics--editorial__stageCount {
 		font-size: 48px;
