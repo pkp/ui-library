@@ -28,6 +28,14 @@
 							{{ noticeActionLabels[index] }}
 						</button>
 					</div>
+                                         <div v-else-if="item.reviewRounds.length > 0" class="pkpListPanelItem--submission__activity">
+                                        <dfn>{{ item.reviewRounds[item.reviewRounds.length-1].status }}</dfn>
+                                </div>
+                                 <div  class="pkpListPanelItem--submission__activity">
+                                        {{ item.dateStatusModified.label }} <i>{{ item.dateStatusModified.value | moment("from") }}</i>
+                                </div>
+ 
+
 				</div>
 			</a>
 			<div v-if="currentUserIsReviewer" class="pkpListPanelItem--submission__stage pkpListPanelItem--submission__stage--reviewer">
@@ -782,7 +790,7 @@ export default {
 .pkpListPanelItem--submission__id {
 	position: absolute;
 	top: 0;
-	left: 0;
+	left: -7px;
 	font-size: @font-tiny;
 	line-height: (@font-sml * 1.5); // Match ,pkpListPanelItem--submission__author
 	color: @text;
