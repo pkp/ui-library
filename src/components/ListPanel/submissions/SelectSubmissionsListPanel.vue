@@ -113,12 +113,15 @@ export default {
 		 */
 		itemsPlucked() {
 			return this.items.map(item => {
-				const currentPublication = item.publications.find(publication => publication.id === item.currentPublicationId);
+				const currentPublication = item.publications.find(
+					publication => publication.id === item.currentPublicationId
+				);
 				return {
 					id: item.id,
-					title: [currentPublication.authorsStringShort, this.localize(currentPublication.fullTitle)].join(
-						this.__('listSeparator')
-					),
+					title: [
+						currentPublication.authorsStringShort,
+						this.localize(currentPublication.fullTitle)
+					].join(this.__('listSeparator')),
 					urlWorkflow: item.urlWorkflow
 				};
 			});

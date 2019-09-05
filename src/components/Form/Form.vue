@@ -188,7 +188,10 @@ export default {
 							).length
 						) {
 							// See note above on converting empty arrays
-							if (Array.isArray(field.value[localeKey]) && !field.value[localeKey].length) {
+							if (
+								Array.isArray(field.value[localeKey]) &&
+								!field.value[localeKey].length
+							) {
 								fieldValues[localeKey] = '';
 							} else {
 								fieldValues[localeKey] = field.value[localeKey];

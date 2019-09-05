@@ -7,7 +7,7 @@ export default {
 	data() {
 		return {
 			chaptersGridUrl: '',
-			isLoadingWorkType: false,
+			isLoadingWorkType: false
 		};
 	},
 	computed: {
@@ -44,9 +44,7 @@ export default {
 					refreshOn: 'form-success'
 				});
 			} else {
-				const chaptersHandler = $.pkp.classes.Handler.getHandler(
-					$chaptersEl
-				);
+				const chaptersHandler = $.pkp.classes.Handler.getHandler($chaptersEl);
 				chaptersHandler.setSourceUrl(sourceUrl);
 				chaptersHandler.reload();
 			}
