@@ -4,6 +4,8 @@ import AddContextForm from '@/components/Form/context/AddContextForm.vue';
 import EmailTemplatesListPanel from '@/components/ListPanel/emailTemplates/EmailTemplatesListPanel.vue';
 import LicenseForm from '@/components/Form/context/LicenseForm.vue';
 import PkpForm from '@/components/Form/Form.vue';
+import Tab from '@/components/Tabs/Tab.vue';
+import Tabs from '@/components/Tabs/Tabs.vue';
 import ThemeForm from '@/components/Form/context/ThemeForm.vue';
 
 export default {
@@ -14,6 +16,8 @@ export default {
 		EmailTemplatesListPanel,
 		LicenseForm,
 		PkpForm,
+		Tab,
+		Tabs,
 		ThemeForm
 	}
 };

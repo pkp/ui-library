@@ -13,11 +13,9 @@ import router from './router';
 import GlobalMixins from '@/mixins/global.js';
 import VTooltip from 'v-tooltip';
 import VueScrollTo from 'vue-scrollto';
-import Tabs from 'vue-tabs-component';
 
 Vue.use(VTooltip, {defaultTrigger: 'click'});
 Vue.use(VueScrollTo);
-Vue.use(Tabs);
 
 // Add the global event bus, which would be part of /public/globals.js if it
 // didn't require Vue to be imported

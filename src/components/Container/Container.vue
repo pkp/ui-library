@@ -4,6 +4,8 @@ import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import SelectReviewerListPanel from '@/components/ListPanel/users/SelectReviewerListPanel.vue';
 import SelectSubmissionsListPanel from '@/components/ListPanel/submissions/SelectSubmissionsListPanel.vue';
 import SubmissionsListPanel from '@/components/ListPanel/submissions/SubmissionsListPanel.vue';
+import Tab from '@/components/Tabs/Tab.vue';
+import Tabs from '@/components/Tabs/Tabs.vue';
 
 export default {
 	name: 'Container',
@@ -12,7 +14,9 @@ export default {
 		ListPanel,
 		SelectReviewerListPanel,
 		SelectSubmissionsListPanel,
-		SubmissionsListPanel
+		SubmissionsListPanel,
+		Tab,
+		Tabs
 	},
 	data() {
 		return {

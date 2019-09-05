@@ -8,13 +8,24 @@
 						{{ item.id }}
 					</div>
 					<div
-						v-if="item.authorString"
+						v-if="currentUserIsReviewer"
 						class="pkpListPanelItem--submission__author"
 					>
-						{{ item.authorString }}
+						{{ i18n.reviewAssignment }}
+					</div>
+					<div
+						v-else-if="currentPublication.authorsStringShort"
+						class="pkpListPanelItem--submission__author"
+					>
+						{{ currentPublication.authorsStringShort }}
 					</div>
 					<div class="pkpListPanelItem--submission__title">
-						{{ localizeSubmission(item.fullTitle, item.locale) }}
+						{{
+							localizeSubmission(
+								currentPublication.fullTitle,
+								currentPublication.locale
+							)
+						}}
 					</div>
 					<div
 						v-if="reviewerWorkflowLink"
@@ -139,10 +150,10 @@
 				<icon v-if="isExpanded" icon="angle-up" />
 				<icon v-else icon="angle-down" />
 				<span v-if="isExpanded" class="-screenReader">
-					{{ __('viewLess', {name: item.authorString}) }}
+					{{ __('viewLess', {name: currentPublication.authorsStringShort}) }}
 				</span>
 				<span v-else class="-screenReader">
-					{{ __('viewMore', {name: item.authorString}) }}
+					{{ __('viewMore', {name: currentPublication.authorsStringShort}) }}
 				</span>
 			</button>
 		</div>
@@ -267,6 +278,17 @@ export default {
 		 */
 		id() {
 			return this.item.id;
+		},
+
+		/**
+		 * The current publication of the submission
+		 *
+		 * @return {Object}
+		 */
+		currentPublication() {
+			return this.item.publications.find(
+				publication => publication.id === this.item.currentPublicationId
+			);
 		},
 
 		/**
@@ -442,7 +464,10 @@ export default {
 		 * @return {String}
 		 */
 		currentStageLabel() {
-			if (this.item.status === 3 || this.item.status === 4) {
+			if (
+				this.item.status === pkp.const.STATUS_PUBLISHED ||
+				this.item.status === pkp.const.STATUS_DECLINED
+			) {
 				return this.item.statusLabel;
 			} else if (this.item.submissionProgress > 0) {
 				return this.i18n.incomplete;
@@ -734,7 +759,10 @@ export default {
 		 */
 		openInfoCenter() {
 			var opts = {
-				title: this.localizeSubmission(this.item.fullTitle, this.item.locale),
+				title: this.localizeSubmission(
+					this.currentPublication.fullTitle,
+					this.currentPublication.locale
+				),
 				url: this.infoUrl.replace('__id__', this.item.id),
 				closeCallback: this.resetFocusInfoCenter
 			};
@@ -921,7 +949,7 @@ export default {
 	position: relative;
 	float: left;
 	width: 75%;
-	padding-left: 4rem;
+	padding-left: 3rem;
 }
 
 .pkpListPanelItem--submission__id {

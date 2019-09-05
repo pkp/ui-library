@@ -274,6 +274,10 @@ export default {
 	top: 0.9em;
 	left: 0;
 	transform: translateY(-50%);
+
+	&:focus {
+		outline: 2px solid @primary;
+	}
 }
 
 .pkpFormField--options .multilingualProgress {

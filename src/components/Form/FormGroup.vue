@@ -55,14 +55,17 @@
 </template>
 
 <script>
+import FieldAutosuggest from '@/components/Form/fields/FieldAutosuggest.vue';
 import FieldArchivingPn from '@/components/Form/fields/FieldArchivingPn.vue';
 import FieldColor from '@/components/Form/fields/FieldColor.vue';
+import FieldControlledVocab from '@/components/Form/fields/FieldControlledVocab.vue';
 import FieldHtml from '@/components/Form/fields/FieldHtml.vue';
 import FieldMetadataSetting from '@/components/Form/fields/FieldMetadataSetting.vue';
 import FieldOptions from '@/components/Form/fields/FieldOptions.vue';
 import FieldRadioInput from '@/components/Form/fields/FieldRadioInput.vue';
 import FieldRichTextarea from '@/components/Form/fields/FieldRichTextarea.vue';
 import FieldSelect from '@/components/Form/fields/FieldSelect.vue';
+import FieldSelectIssue from '@/components/Form/fields/FieldSelectIssue.vue';
 import FieldShowEnsuringLink from '@/components/Form/fields/FieldShowEnsuringLink.vue';
 import FieldText from '@/components/Form/fields/FieldText.vue';
 import FieldTextarea from '@/components/Form/fields/FieldTextarea.vue';
@@ -72,14 +75,17 @@ import FieldUploadImage from '@/components/Form/fields/FieldUploadImage.vue';
 export default {
 	name: 'FormGroup',
 	components: {
+		FieldAutosuggest,
 		FieldArchivingPn,
 		FieldColor,
+		FieldControlledVocab,
 		FieldHtml,
 		FieldMetadataSetting,
 		FieldOptions,
 		FieldRadioInput,
 		FieldRichTextarea,
 		FieldSelect,
+		FieldSelectIssue,
 		FieldShowEnsuringLink,
 		FieldText,
 		FieldTextarea,

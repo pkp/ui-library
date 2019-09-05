@@ -2,7 +2,12 @@
 	<div class="pkpDateRange">
 		<span class="-screenReader">{{ i18n.dateRange }}</span>
 		<span class="pkpDateRange__current" v-html="currentRange" />
-		<button class="pkpDateRange__button" ref="toggleButton" @click="toggle">
+		<button
+			class="pkpDateRange__button"
+			ref="toggleButton"
+			@click="toggle"
+			@blur="closeOnBlur"
+		>
 			<icon icon="calendar" />
 			<span class="-screenReader">
 				{{ i18n.changeDateRange }}
@@ -210,6 +215,24 @@ export default {
 			this.set(this.localDateStart, this.localDateEnd);
 			this.$refs.toggleButton.focus();
 			this.isOpen = false;
+		},
+
+		/**
+		 * Close the date range dropdown when it loses focus
+		 */
+		closeOnBlur() {
+			setTimeout(() => {
+				if (this.$el.contains(document.activeElement)) {
+					var interval = setInterval(() => {
+						if (!this.$el.contains(document.activeElement)) {
+							this.isOpen = false;
+							window.clearInterval(interval);
+						}
+					}, 1000);
+				} else {
+					this.isOpen = false;
+				}
+			}, 10);
 		},
 
 		/**

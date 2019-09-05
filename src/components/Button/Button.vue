@@ -5,10 +5,7 @@
 		:class="classes"
 		:href="element === 'a' ? href : false"
 		:icon="icon"
-		:isPrimary="isPrimary"
-		:isWarnable="isWarnable"
-		:isActive="isActive"
-		:isLink="isLink"
+		:disabled="isDisabled"
 		@click="click"
 		@focus="focus"
 		@blur="blur"
@@ -37,7 +34,8 @@ export default {
 		isPrimary: Boolean,
 		isWarnable: Boolean,
 		isActive: Boolean,
-		isLink: Boolean
+		isLink: Boolean,
+		isDisabled: Boolean
 	},
 	computed: {
 		classes() {

@@ -113,9 +113,10 @@ export default {
 		 */
 		itemsPlucked() {
 			return this.items.map(item => {
+				const currentPublication = item.publications.find(publication => publication.id === item.currentPublicationId);
 				return {
 					id: item.id,
-					title: [item.authorString, this.localize(item.fullTitle)].join(
+					title: [currentPublication.authorsStringShort, this.localize(currentPublication.fullTitle)].join(
 						this.__('listSeparator')
 					),
 					urlWorkflow: item.urlWorkflow
