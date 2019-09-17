@@ -122,6 +122,9 @@
 				<list-item v-if="dualWorkflowLinks">
 					<span v-html="dualWorkflowLinks" />
 				</list-item>
+				<list-item>
+					<span>{{ i18n.lastActivity }} {{ item.dateStatusModified | formatDate }}</span>
+				</list-item>
 			</list>
 			<div class="pkpListPanelItem--submission__actions">
 				<pkp-button
@@ -196,6 +199,14 @@ export default {
 			noticeActions: [],
 			noticeActionLabels: [],
 		};
+	},
+	filters: {
+		formatDate: function (str) {
+			if (!str) { return '(n/a)'; }
+			str = new Date(str);
+			return str.getFullYear() + '-' + ((str.getMonth() < 9) ? '0' : '') + (str.getMonth() + 1) + '-' +
+				((str.getDate() < 10) ? '0' : '') + str.getDate();
+		},
 	},
 	computed: {
 		/**
