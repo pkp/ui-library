@@ -257,6 +257,16 @@ export default {
 	}
 }
 
+.pkpListPanel__subFilter {
+	padding-left: @base * 2;
+	&.-isActive {
+		font-weight: @bold;
+	}
+	&:focus {
+		padding-left: ( @base * 2 ) - 2;
+	}
+}
+
 .pkpListPanel__filterInputLabel {
 	display: block;
 	padding: 0 @base;
@@ -269,7 +279,7 @@ export default {
 .pkpListPanel__filterAdd,
 .pkpListPanel__filterRemove {
 	position: absolute;
-	top: 50%;
+	top: (@half + @line-base) / 2;
 	right: 0;
 	padding: 0;
 	margin: 0;

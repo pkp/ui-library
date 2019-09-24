@@ -26,6 +26,25 @@
 							<icon icon="times-circle-o" />
 							<span class="-screenReader">{{ __('filterRemove', {filterTitle: filterItem.title}) }}</span>
 						</button>
+						<ul>
+							<li v-for="subFilter in filterItem.subfilters">
+								<a href="#"
+									@click.prevent.stop="filterBy(subFilter.param, subFilter.val)"
+									class="pkpListPanel__filterLabel pkpListPanel__subFilter"
+									:class="{'-isActive': isFilterActive(subFilter.param, subFilter.val)}"
+									:tabindex="tabIndex"
+									>{{ subFilter.title }}</a>
+									<button
+										v-if="isFilterActive(subFilter.param, subFilter.val)"
+										href="#"
+										class="pkpListPanel__filterRemove"
+										@click.prevent.stop="clearFilter(subFilter.param, subFilter.val)"
+									>
+										<icon icon="times-circle-o" />
+										<span class="-screenReader">{{ __('filterRemove', {filterTitle: subFilter.title}) }}</span>
+									</button>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</div>
@@ -47,22 +66,38 @@ export default {
 	methods: {
 		/**
 		 * Override ListPanelFilter.filterBy to handle special
-		 * logic around the `isIncomplete` filter.
+		 * logic around exclusive filters.
 		 */
 		filterBy: function (type, val) {
-			// Don't allow other filters to be active when isIncomplete is active
-			if (type === 'isIncomplete') {
-				if (this.isFilterActive('isIncomplete', true)) {
-					this.filterList({});
+			// Don't allow other filters to be active when one exclusive filter is active except daysInactive and sectionIds
+			let exclusiveFilters = ['isIncomplete', 'needsAction', 'revisionsRequested', 'revisionsSubmitted', 'isOverdue'];
+			let filters = Object.assign({}, this.activeFilters);
+
+			if (exclusiveFilters.includes(type)) {
+				if (this.isFilterActive(type, true)) {
+					this.clearFilter(type, val);
 				} else {
-					this.filterList({isIncomplete: [true]});
+					// Save daysInactive and sectionIds
+					let saveFilters = {};
+					if (filters.daysInactive !== undefined) {
+						saveFilters.daysInactive = filters.daysInactive;
+					}
+					if (filters.sectionIds !== undefined) {
+						saveFilters.sectionIds = filters.sectionIds;
+					}
+					saveFilters[type] = [true];
+					this.filterList(saveFilters);
 				}
 				return;
 			}
-			let filters = Object.assign({}, this.activeFilters);
-			// Remove isIncomplete filter when other filters activated
-			if (filters.isIncomplete !== undefined) {
-				filters.isIncomplete = [];
+
+			// Remove exclusive filters when other filters activated except daysInactive and sectionIds
+			if (!(['daysInactive', 'sectionIds'].includes(type))) {
+				exclusiveFilters.forEach(function (filter) {
+					if (filters[filter] !== undefined) {
+						filters[filter] = [];
+					}
+				});
 			}
 			if (this.isFilterActive(type, val)) {
 				this.clearFilter(type, val);
