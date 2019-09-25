@@ -123,7 +123,7 @@
 					<span v-html="dualWorkflowLinks" />
 				</list-item>
 				<list-item>
-					<span>{{ i18n.lastActivity }} {{ item.dateStatusModified | formatDate }}</span>
+					<span>{{ __('lastActivity', { date: formatDate(item.dateStatusModified) }) }}</span>
 				</list-item>
 			</list>
 			<div class="pkpListPanelItem--submission__actions">
@@ -199,14 +199,6 @@ export default {
 			noticeActions: [],
 			noticeActionLabels: [],
 		};
-	},
-	filters: {
-		formatDate: function (str) {
-			if (!str) { return '(n/a)'; }
-			str = new Date(str);
-			return str.getFullYear() + '-' + ((str.getMonth() < 9) ? '0' : '') + (str.getMonth() + 1) + '-' +
-				((str.getDate() < 10) ? '0' : '') + str.getDate();
-		},
 	},
 	computed: {
 		/**
@@ -731,6 +723,14 @@ export default {
 		cancelDeleteRequest: function () {
 			this.mask = null;
 		},
+
+		formatDate: function (str) {
+			if (!str) { return ''; }
+			str = new Date(str);
+			return str.getFullYear() + '-' + ((str.getMonth() < 9) ? '0' : '') + (str.getMonth() + 1) + '-' +
+				((str.getDate() < 10) ? '0' : '') + str.getDate();
+		},
+
 	},
 };
 </script>
