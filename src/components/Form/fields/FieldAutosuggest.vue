@@ -298,7 +298,8 @@ export default {
 		 * are changed
 		 */
 		updateInputPadding() {
-			const baseInputLeftPadding = this.isMultilingual ? 48 : 16; // 16px = 1rem
+			const baseInputLeftPadding =
+				this.isMultilingual && this.locales.length > 1 ? 48 : 16; // 16px = 1rem
 			if (!this.currentValue.length) {
 				const inputEl = this.$refs.autosuggest.$el.querySelector(
 					'#' + this.controlId
@@ -313,7 +314,8 @@ export default {
 				// Identify the left offset of the values so that it can be used when calculating
 				// the remaining with. The remaining width should always be calculated as if the
 				// values are inline, to prevent flashing where it jumps between inline and below
-				const offsetLeft = this.isMultilingual ? 48 : 16;
+				const offsetLeft =
+					this.isMultilingual && this.locales.length > 1 ? 48 : 16;
 				const valuesWidth = offsetLeft + this.$refs.values.offsetWidth;
 
 				// This may not be accurate if the user has adjusted the zoom level. One line can
