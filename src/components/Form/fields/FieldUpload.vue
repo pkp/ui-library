@@ -422,6 +422,13 @@ export default {
 	margin-left: @half;
 }
 
+.pkpFormField--upload__uploadActions,
+.pkpFormField--upload__previewActions {
+	.pkpButton + .pkpButton {
+		margin-left: @half;
+	}
+}
+
 // Dropzone.js
 @keyframes progressBar {
 	0% {
