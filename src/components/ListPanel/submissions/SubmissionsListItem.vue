@@ -123,7 +123,7 @@
 					<span v-html="dualWorkflowLinks" />
 				</list-item>
 				<list-item>
-					<span>{{ __('lastActivity', { date: formatDate(item.dateStatusModified) }) }}</span>
+					<span>{{ __('lastActivity', { date: localizeDate(item.dateStatusModified) }) }}</span>
 				</list-item>
 			</list>
 			<div class="pkpListPanelItem--submission__actions">
@@ -723,14 +723,6 @@ export default {
 		cancelDeleteRequest: function () {
 			this.mask = null;
 		},
-
-		formatDate: function (str) {
-			if (!str) { return ''; }
-			str = new Date(str);
-			return str.getFullYear() + '-' + ((str.getMonth() < 9) ? '0' : '') + (str.getMonth() + 1) + '-' +
-				((str.getDate() < 10) ? '0' : '') + str.getDate();
-		},
-
 	},
 };
 </script>
