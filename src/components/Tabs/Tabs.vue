@@ -128,6 +128,17 @@ export default {
 		 * Set the tab to view when loaded
 		 */
 		this.currentTab = this.defaultTab || this.tabs[0].id;
+
+		/**
+		 * Listen for global 'tab' events and open the correct tab when called
+		 */
+		pkp.eventBus.$on('open-tab', tabId => {
+			this.tabs.forEach(tab => {
+				if (tab.id === tabId) {
+					this.setCurrentTab(tabId);
+				}
+			});
+		});
 	},
 	watch: {
 		/**
