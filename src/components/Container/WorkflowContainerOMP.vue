@@ -36,7 +36,7 @@ export default {
 			const $chaptersEl = $(this.$refs.chapters);
 			const sourceUrl = this.chaptersGridUrl.replace(
 				'__publicationId__',
-				this.workingPublication.id
+				publication.id
 			);
 			if (!$.pkp.classes.Handler.hasHandler($chaptersEl)) {
 				$chaptersEl.pkpHandler('$.pkp.controllers.UrlInDivHandler', {
