@@ -109,8 +109,8 @@
 									>
 										<button
 											class="pkpDropdown__action"
-											:disabled="publication.id === workingPublicationId"
-											@click="setWorkingPublicationId(publication)"
+											:disabled="publication.id === workingPublication"
+											@click="setWorkingPublicationById(publication.id)"
 										>
 											{{ publication.id }} /
 											<template
