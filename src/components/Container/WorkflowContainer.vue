@@ -22,6 +22,7 @@ export default {
 		return {
 			contributorsGridUrl: '',
 			csrfToken: '',
+			currentPublication: null,
 			editorialHistoryUrl: '',
 			isLoadingVersion: false,
 			publicationFormIds: [],
@@ -30,7 +31,7 @@ export default {
 			submissionLibraryUrl: '',
 			supportsReferences: false,
 			uploadFileUrl: '',
-			workingPublicationId: 0
+			workingPublication: null
 		};
 	},
 	computed: {
@@ -42,31 +43,19 @@ export default {
 		canCreateNewVersion() {
 			return (
 				this.submission.status === pkp.const.STATUS_PUBLISHED &&
-				this.latestPublication.id <= this.currentPublication.id
+				this.latestPublicationId <= this.currentPublication.id
 			);
 		},
 
 		/**
-		 * Get the last published publication or the latest publication
-		 * if none are published
+		 * Get the id of the most recently created publication
 		 *
-		 * @return {Object}
+		 * @return {Number}
 		 */
-		currentPublication() {
-			return this.submission.publications.find(
-				publication => publication.id === this.submission.currentPublicationId
-			);
-		},
-
-		/**
-		 * Get the most recently created publication
-		 *
-		 * @return {Object}
-		 */
-		latestPublication() {
-			return this.submission.publications.reduce((a, b) =>
-				a.id < b.id ? b : a
-			);
+		latestPublicationId() {
+			return this.publicationList.reduce((a, b) => {
+				return a < b.id ? b.id : a;
+			}, 0);
 		},
 
 		/**
@@ -87,19 +76,8 @@ export default {
 		 */
 		publicationTabsLabel() {
 			return this.__('publicationTabsLabel', {
-				version: this.workingPublicationId
+				version: this.workingPublication.id
 			});
-		},
-
-		/**
-		 * Get the publication that is being viewed
-		 *
-		 * @return {Object}
-		 */
-		workingPublication() {
-			return this.submission.publications.find(
-				publication => publication.id === this.workingPublicationId
-			);
 		}
 	},
 	methods: {
@@ -108,13 +86,14 @@ export default {
 		 */
 		createVersion() {
 			this.isLoadingVersion = true;
+			const startTime = new Date();
 			var self = this;
 
 			$.ajax({
 				url:
 					this.submissionApiUrl +
 					'/publications/' +
-					this.latestPublication.id +
+					this.latestPublicationId +
 					'/version',
 				type: 'POST',
 				headers: {
@@ -125,14 +104,33 @@ export default {
 					self.ajaxErrorCallback(r);
 				},
 				success(r) {
-					let submission = {...self.submission};
-					submission.publications.push(r);
-					self.submission = {};
-					self.submission = submission;
-					self.setWorkingPublicationId(
-						submission.publications[submission.publications.length - 1]
-					);
-					self.setFocusIn(self.$refs.publication);
+					self.publicationList.push({
+						id: r.id,
+						datePublished: r.datePublished,
+						status: r.status
+					});
+					self.workingPublication = {};
+					self.workingPublication = r;
+					self.$nextTick(() => {
+						self.setFocusIn(self.$refs.publication);
+
+						// Enforce a minimum 3-second delay when a new
+						// version is created. We do this to force the
+						// user to slow down and process what happened.
+						// We hope this will reinforce the perception
+						// that cerating a new version is a "big
+						// action", and properly communicate the scale
+						// of what has happened behind the scenes.
+						const nowTime = new Date();
+						const timeDiff = nowTime - startTime;
+						if (timeDiff / 1000 >= 3) {
+							self.isLoadingVersion = false;
+						} else {
+							setTimeout(() => {
+								self.isLoadingVersion = true;
+							}, timeDiff);
+						}
+					});
 				}
 			});
 		},
@@ -158,7 +156,7 @@ export default {
 			const $contributorsEl = $(this.$refs.contributors);
 			const sourceUrl = this.contributorsGridUrl.replace(
 				'__publicationId__',
-				this.workingPublication.id
+				publication.id
 			);
 			if (!$.pkp.classes.Handler.hasHandler($contributorsEl)) {
 				$contributorsEl.pkpHandler('$.pkp.controllers.UrlInDivHandler', {
@@ -186,7 +184,7 @@ export default {
 			const $representationsEl = $(this.$refs.representations);
 			const sourceUrl = this.representationsGridUrl.replace(
 				'__publicationId__',
-				this.workingPublication.id
+				publication.id
 			);
 			if (!$.pkp.classes.Handler.hasHandler($representationsEl)) {
 				$representationsEl.pkpHandler('$.pkp.controllers.UrlInDivHandler', {
@@ -319,6 +317,11 @@ export default {
 				url: this.submissionApiUrl,
 				type: 'GET',
 				success(submission) {
+					// Store some publication data and discard the rest
+					submission.publications.forEach(publication =>
+						self.updatePublication(publication)
+					);
+					delete submission.publications;
 					self.submission = {};
 					self.submission = submission;
 				},
@@ -377,19 +380,29 @@ export default {
 		/**
 		 * Change the publication the user is working with
 		 *
-		 * @param Object publication
+		 * @param Number publication id
 		 */
-		setWorkingPublicationId(publication) {
+		setWorkingPublicationById(publicationId) {
 			this.isLoadingVersion = true;
-			setTimeout(() => {
-				this.workingPublicationId = publication.id;
-				setTimeout(() => {
-					this.$nextTick(() => {
-						this.setFocusIn(this.$refs.publication);
-						this.isLoadingVersion = false;
+			var self = this;
+
+			$.ajax({
+				url: this.submissionApiUrl + '/publications/' + publicationId,
+				type: 'GET',
+				error(r) {
+					self.isLoadingVersion = false;
+					self.ajaxErrorCallback(r);
+				},
+				success(r) {
+					self.workingPublication = {};
+					self.workingPublication = r;
+					self.updatePublication(r);
+					self.$nextTick(() => {
+						self.setFocusIn(self.$refs.publication);
+						self.isLoadingVersion = false;
 					});
-				}, 300);
-			}, 600);
+				}
+			});
 		},
 
 		/**
@@ -414,6 +427,8 @@ export default {
 					self.ajaxErrorCallback(r);
 				},
 				success(r) {
+					self.workingPublication = {};
+					self.workingPublication = r;
 					self.updatePublication(r);
 					self.isLoadingVersion = false;
 					self.setFocusIn(self.$refs.publication);
@@ -426,13 +441,21 @@ export default {
 		 * Update a publication's details
 		 */
 		updatePublication(newPublication) {
-			const publications = this.submission.publications.map(publication => {
-				return publication.id === newPublication.id
-					? newPublication
-					: publication;
+			this.publicationList.forEach(publication => {
+				if (publication.id === newPublication.id) {
+					(publication.id = newPublication.id),
+						(publication.datePublished = newPublication.datePublished);
+					publication.status = newPublication.status;
+				}
 			});
-			this.submission.publications = [];
-			this.submission.publications = publications;
+			if (this.workingPublication.id === newPublication.id) {
+				this.workingPublication = {};
+				this.workingPublication = newPublication;
+			}
+			if (this.currentPublication.id === newPublication.id) {
+				this.currentPublication = {};
+				this.currentPublication = newPublication;
+			}
 		}
 	},
 	watch: {
@@ -446,15 +469,6 @@ export default {
 		}
 	},
 	created() {
-		/**
-		 * Set the working publication to the latest one
-		 */
-		if (!this.workingPublicationId) {
-			this.workingPublicationId = this.submission.publications[
-				this.submission.publications.length - 1
-			].id;
-		}
-
 		/**
 		 * Subscribe to publication forms and update the publication
 		 * with the details that have changed
@@ -489,10 +503,18 @@ export default {
 	mounted() {
 		/**
 		 * Load publication grids
+		 *
+		 * Add a delay to allow the workflow requests to be sent first
 		 */
-		this.loadContributorsGrid(this.workingPublication);
-		this.loadRepresentationsGrid(this.workingPublication);
+		setTimeout(() => {
+			this.loadContributorsGrid(this.workingPublication);
+			this.loadRepresentationsGrid(this.workingPublication);
+		}, 1000);
 
+		/**
+		 * Open the unpublish confirmation modal when a global unpublish
+		 * event is fired
+		 */
 		pkp.eventBus.$on('unpublish:publication', this.openUnpublish);
 	}
 };

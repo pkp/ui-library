@@ -69,6 +69,7 @@
 				:key="autosuggestId"
 				:suggestions="[{data: filteredSuggestions}]"
 				@selected="select"
+				@focus="loadSuggestions"
 			/>
 			<div
 				v-if="currentPosition === 'below'"
@@ -157,6 +158,7 @@ export default {
 	data() {
 		return {
 			currentPosition: this.initialPosition,
+			suggestionsLoaded: false,
 			inputValue: '',
 			suggestions: []
 		};
@@ -251,18 +253,21 @@ export default {
 		/**
 		 * Get suggestions from a remote URL
 		 */
-		getSuggestions() {
-			var self = this;
-			$.ajax({
-				url: this.suggestionsUrl,
-				type: 'GET',
-				error(r) {
-					self.ajaxErrorCallback(r);
-				},
-				success(r) {
-					self.suggestions = r;
-				}
-			});
+		loadSuggestions() {
+			if (!this.suggestionsLoaded) {
+				var self = this;
+				$.ajax({
+					url: this.suggestionsUrl,
+					type: 'GET',
+					error(r) {
+						self.ajaxErrorCallback(r);
+					},
+					success(r) {
+						self.suggestions = r;
+						self.suggestionsLoaded = true;
+					}
+				});
+			}
 		},
 
 		/**
@@ -353,15 +358,6 @@ export default {
 			this.$refs.autosuggest.$el,
 			debounce(() => this.updateInputPadding(), 100)
 		);
-
-		/**
-		 * Load suggestions from a URL or from props
-		 *
-		 * Use $nextTick() so it fires after other requests when the page is loaded
-		 */
-		if (this.suggestionsUrl) {
-			this.$nextTick(this.getSuggestions);
-		}
 	},
 	beforeDestroy() {
 		elementResizeEvent.unbind(this.$refs.autosuggest.$el);
