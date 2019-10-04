@@ -165,7 +165,7 @@
 								@click="alert('Opens a modal to confirm scheduling')"
 							></pkp-button>
 							<pkp-button
-								v-else-if="canCreateNewVersion"
+								v-if="canCreateNewVersion"
 								ref="createVersion"
 								label="Create New Version"
 								@click="
