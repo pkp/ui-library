@@ -333,10 +333,6 @@ export default {
 		margin: @base -@base -@base;
 		padding: @base;
 		border-top: @bg-border;
-
-		.pkpButton + .pkpButton {
-			margin-left: @half;
-		}
 	}
 
 	// Dropzone.js preview with thumbnail
