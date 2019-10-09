@@ -89,6 +89,12 @@ export default {
 				return '';
 			}
 		},
+		isPForPress: {
+			type: Boolean,
+			default() {
+				return false;
+			}
+		},
 		issueNumber: {
 			type: [String, Number],
 			default() {
@@ -143,11 +149,18 @@ export default {
 		 */
 		canGenerateDoi() {
 			return (
-				(this.contextInitials || !this.pattern.includes('%j')) &&
 				(this.issueNumber || !this.pattern.includes('%i')) &&
 				(this.issueVolume || !this.pattern.includes('%v')) &&
-				(this.pages || !this.pattern.includes('%p')) &&
+				(
+					(!this.isPForPress &&
+						(this.contextInitials || !this.pattern.includes('%j')) &&
+						(this.pages || !this.pattern.includes('%p'))
+					) ||
+					(this.isPForPress && (this.contextInitials || !this.pattern.includes('%j')))
+				) &&
 				(this.publisherId || !this.pattern.includes('%x')) &&
+				(this.submissionId || !this.pattern.includes('%a')) &&
+				(this.submissionId || !this.pattern.includes('%m')) &&
 				(this.year || !this.pattern.includes('%Y'))
 			);
 		}
@@ -190,18 +203,24 @@ export default {
 		 * @return {String}
 		 */
 		generateDoi() {
-			return (
+			let doi = (
 				this.prefix +
 				'/' +
 				this.pattern
-					.replace('%j', this.contextInitials)
 					.replace('%i', this.issueNumber)
 					.replace('%v', this.issueVolume)
-					.replace('%p', this.pages)
 					.replace('%x', this.publisherId)
 					.replace('%Y', this.year)
-					.replace('%a', this.submissionId)
 			);
+			if (this.isPForPress) {
+				doi = doi.replace('%p', this.contextInitials)
+					.replace('%m', this.submissionId);
+			} else {
+				doi = doi.replace('%j', this.contextInitials)
+					.replace('%a', this.submissionId)
+					.replace('%p', this.pages);
+			}
+			return doi;
 		}
 	}
 };
