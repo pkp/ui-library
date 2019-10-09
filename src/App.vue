@@ -140,6 +140,11 @@
 							</router-link>
 						</li>
 						<li>
+							<router-link to="/component/Form/fields/FieldDoi">
+								FieldDoi
+							</router-link>
+						</li>
+						<li>
 							<router-link to="/component/Form/fields/FieldMetadataSetting">
 								FieldMetadataSetting
 							</router-link>
