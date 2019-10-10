@@ -1,6 +1,11 @@
 <template>
 	<div class="pkpNotification" :classes="classes">
 		<icon v-if="type === 'info'" icon="info-circle" :inline="true" />
+		<icon
+			v-else-if="type === 'warning'"
+			icon="exclamation-triangle"
+			:inline="true"
+		/>
 		<slot />
 	</div>
 </template>
@@ -46,5 +51,10 @@ export default {
 	box-shadow: inset 0.25rem 0 0 @primary;
 	font-size: @font-sml;
 	line-height: 1.6em;
+}
+
+.pkpNotification--warning {
+	border-color: @no;
+	box-shadow: inset 0.25rem 0 0 @no;
 }
 </style>
