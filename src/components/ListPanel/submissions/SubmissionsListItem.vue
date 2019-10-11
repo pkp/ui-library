@@ -186,6 +186,9 @@
 				<list-item v-if="dualWorkflowLinks">
 					<span v-html="dualWorkflowLinks" />
 				</list-item>
+				<list-item>
+					<span>{{__('lastActivity', { date: localizeDate(item.dateStatusModified) })}}</span>
+				</list-item>
 			</list>
 			<div class="pkpListPanelItem__actions">
 				<pkp-button

@@ -96,6 +96,32 @@ export default {
 		},
 
 		/**
+		 * Get the locale-specific string for current locale
+		 * from a string representing a Date.
+		 *
+		 * example : {{ localizeDate(submission.dateStatusModified) }}
+		 *
+		 * If you want to force a specific locale:
+		 *
+		 * {{ localizeDate(date, 'fr_CA') }}
+		 *
+		 * @param string representing a Date
+		 * @param string requestedLocale Optional. Request a specific locale
+		 * @return string
+		 */
+		localizeDate: function(str, requestedLocale) {
+			if (!str) {
+				return '';
+			}
+			str = new Date(str);
+			let dateLocale =
+					requestedLocale !== undefined
+						? requestedLocale.replace('_', '-')
+						: $.pkp.app.currentLocale.replace('_', '-');
+			return str.toLocaleDateString(dateLocale);
+		},
+
+		/**
 		 * Display an error message from an ajax request
 		 *
 		 * This callback expects to be attached to the `error` param of the
