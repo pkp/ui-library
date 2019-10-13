@@ -53,8 +53,4 @@ export default {
 
 <style lang="less">
 @import '../../styles/_import';
-
-.chartjs-render-monitor {
-	background: @bg-anchor;
-}
 </style>

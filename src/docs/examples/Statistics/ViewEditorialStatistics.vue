@@ -7,7 +7,7 @@
 			<div v-if="submissionsStage" class="pkpStatistics__graph">
 				<div class="pkpStatistics--editorial__stageWrapper -pkpClearfix">
 					<div class="pkpStatistics--editorial__stageChartWrapper">
-						<doughnut-chart :chart-data="pieData" :chart-options="pieOptions"></doughnut-chart>
+						<doughnut-chart :chart-data="pieData"></doughnut-chart>
 					</div>
 					<div class="pkpStatistics--editorial__stageList">
 						<div class="pkpStatistics--editorial__stage pkpStatistics--editorial__stage--total">
@@ -52,13 +52,13 @@
 </template>
 
 <script>
-import Statistics from '@/components/Statistics/Statistics.vue';
+import StatisticsEditorial from '@/components/Statistics/StatisticsEditorial.vue';
 import submissionsStage from './helpers/submissionsStage';
 import editorialStats from './helpers/editorialStats.js';
 import editorialStatsColumns from './helpers/editorialStatsColumns.js';
 
 export default {
-	extends: Statistics,
+	extends: StatisticsEditorial,
 	data: function () {
 		const dateEndMax = new Date(new Date().setDate(new Date().getDate() - 1));
 		return {

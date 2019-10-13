@@ -1,7 +1,5 @@
 <script>
 import DateRange from '@/components/DateRange/DateRange.vue';
-import DoughnutChart from '@/components/Chart/DoughnutChart.vue';
-import LineChart from '@/components/Chart/LineChart.vue';
 import ListPanelFilter from '@/components/ListPanel/ListPanelFilter.vue';
 import ListPanelSearch from '@/components/ListPanel/ListPanelSearch.vue';
 import PageHeader from '@/components/PageHeader/PageHeader.vue';
@@ -14,8 +12,6 @@ import debounce from 'debounce';
 export default {
 	components: {
 		DateRange,
-		DoughnutChart,
-		LineChart,
 		ListPanelFilter,
 		ListPanelSearch,
 		PageHeader,
@@ -68,26 +64,6 @@ export default {
 		},
 
 		/**
-		 * Compile the data to pass to the LineChart component
-		 *
-		 * @return Object|null
-		 */
-		chartData: function () {
-			if (!this.timeSegments) {
-				return null;
-			}
-			const timeSegments = this.timeSegments.reverse();
-			return {
-				labels: timeSegments.map(segment => segment.dateLabel),
-				datasets: [
-					{
-						data: timeSegments.map(segment => segment.abstractViews),
-					},
-				],
-			};
-		},
-
-		/**
 		 * Is the current date range within a range that allows daily
 		 * time segments to be shown?
 		 *
@@ -124,6 +100,15 @@ export default {
 		},
 	},
 	methods: {
+		/**
+		 * Process the API response
+		 *
+		 * @param object Response
+		 */
+		processResponse (response) {
+			throw new Error('The method processResponse must be overwritten.');
+		},
+
 		/**
 		 * Set the date range
 		 *
@@ -233,13 +218,7 @@ export default {
 					if (self._latestGetRequest !== this._uuid) {
 						return;
 					}
-
-					// Reassign any existing data property
-					for (const key in r) {
-						if (key in self.$data) {
-							self[key] = r[key];
-						}
-					}
+					self.processResponse(r);
 				},
 				complete: function (r) {
 
@@ -373,238 +352,5 @@ export default {
 </script>
 
 <style lang="less">
-@import '../../styles/_import';
-
-.pkpStatistics .pkpPageHeader {
-	padding-left: 0;
-	padding-right: 0;
-}
-
-.pkpStatistics .pkpListPanel__filter.-isVisible {
-	float: left;
-	position: relative;
-	left: auto;
-	width: 192px;
-	margin-left: -@base;
-
-	&:before {
-		display: none;
-	}
-
-	+ .pkpStatistics__main  {
-		margin-left: 176px;
-	}
-}
-
-.pkpStatistics__main {
-	margin-left: 0;
-	transition: margin-left 0.2s;
-}
-
-.pkpStatistics__tableHeader {
-	margin-top: 2rem;
-}
-
-.pkpStatistics__tableTitle {
-	display: inline-block;
-	margin: 0;
-	font-size: @font-base;
-	line-height: 1.5em;
-
-	.pkpSpinner {
-		margin-left: 0.5rem;
-	}
-}
-
-.pkpStatistics__tableActions {
-	float: right;
-	margin-left: 1rem;
-}
-
-.pkpStatistics__itemsOfTotal {
-	font-size: @font-tiny;
-}
-
-.pkpStatistics .pkpTable {
-
-	.pkpListPanel__search {
-		display: inline-block;
-		float: none;
-		margin-top: 0;
-		margin-left: 1rem;
-		max-width: 20em;
-	}
-
-	.pkpListPanel__searchInput {
-		font-size: @font-tiny;
-		line-height: 2.5em;
-		padding-left: 2.5rem;
-	}
-}
-
-.pkpStatistics__itemLink {
-	color: @text;
-	text-decoration: none;
-}
-
-.pkpStatistics__itemAuthors {
-	font-weight: @bold;
-}
-
-.pkpStatistics__noRecords {
-	padding: @double @base;
-	border: @grid-border;
-	border-top: none;
-	font-size: @font-sml;
-	text-align: center;
-	color: @text-light;
-}
-
-.pkpStatistics__graph {
-	background: @bg-anchor;
-	color: #fff;
-	border-radius: @radius;
-
-	.chartjs-render-monitor {
-		border-radius: @radius;
-	}
-}
-
-.pkpStatistics__graphHeader {
-	padding: @base;
-}
-
-.pkpStatistics__graphTitle {
-	display: inline-block;
-	margin: 0;
-	font-size: @base;
-	line-height: 1.5em;
-}
-
-.pkpStatistics__graphSegment {
-	float: right;
-
-	.pkpButton {
-		position: relative;
-		z-index: 1;
-		float: right;
-		background: transparent;
-		border: 1px solid #437b96;
-		box-shadow: 0 1px 0 #000;
-		font-size: @font-tiny;
-		line-height: 2em;
-		color: #fff;
-
-		&:before {
-			content: '';
-			position: relative;
-			display: inline-block;
-			width: 0.75em;
-			height: 0.75em;
-			margin-right: 0.25em;
-			border: 1px solid #fff;
-			border-radius: 50%;
-		}
-
-		&:first-child {
-			border-top-left-radius: 0;
-			border-bottom-left-radius: 0;
-		}
-
-		&:last-child {
-			position: relative;
-			left: 1px;
-			border-top-right-radius: 0;
-			border-bottom-right-radius: 0;
-		}
-
-		&:hover,
-		&:focus {
-			color: #fff;
-			border-color: #fff;
-			z-index: 2;
-		}
-
-		&[aria-pressed="true"] {
-			background: @primary;
-
-			&:before {
-				background: #fff;
-				box-shadow: inset 0 0 0 1px @primary;
-			}
-		}
-
-		&[disabled] {
-			background: transparent;
-			opacity: 0.5;
-		}
-	}
-}
-
-// Editorial stats
-.pkpStatistics--editorial__stageWrapper {
-	position: relative;
-	min-height: 256px;
-}
-
-.pkpStatistics--editorial__stageChartWrapper {
-	float: left;
-	width: 256px;
-
-	.chartjs-render-monitor {
-		margin-left: auto;
-		margin-right: auto;
-		max-width: 256px;
-	}
-}
-
-.pkpStatistics--editorial__stageList {
-	position: absolute;
-	top: 50%;
-	left: 256px;
-	width: 65%;
-	transform: translateY(-50%);
-}
-
-.pkpStatistics--editorial__stage {
-	display: inline-block;
-	margin-top: 2rem;
-	margin-right: 1.5rem;
-}
-
-.pkpStatistics--editorial__stageCount {
-	display: block;
-	font-size: @font-lead;
-	font-weight: @bold;
-	line-height: 1em;
-}
-
-.pkpStatistics--editorial__stageLabel {
-	display: block;
-	font-size: @font-sml;
-	line-height: 1.25em;
-}
-
-.pkpStatistics--editorial__stage--total {
-	display: block;
-	margin-top: 0;
-	font-weight: @normal;
-
-	// Fight specificity issue with legacy CSS styles
-	&.pkpStatistics--editorial__stage--total {
-		margin-bottom: 0;
-	}
-
-	.pkpStatistics--editorial__stageCount {
-		font-size: 48px;
-	}
-
-	.pkpStatistics--editorial__stageLabel {
-		font-size: @font-base;
-	}
-}
-
-.pkpStatistics--editorial .pkpTable {
-	margin-top: 0.5rem;
-}
+@import 'Statistics.less';
 </style>
