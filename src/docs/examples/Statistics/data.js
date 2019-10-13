@@ -27,7 +27,7 @@ export default {
 		isLoading: 'A boolean flag used internally to track whether new statistics records are loading.',
 		originalItems: 'This is used for this demo only. It does not exist in the <code>Statistics</code> component.',
 	},
-	examples: {
+	implementations: {
 		'editorial': {
 			label: 'Editorial Activity',
 			component: ViewEditorialStatistics,

@@ -118,13 +118,13 @@
 </template>
 
 <script>
-import Statistics from '@/components/Statistics/Statistics.vue';
+import StatisticsSubmissions from '@/components/Statistics/StatisticsSubmissions.vue';
 import articleStats from '../Table/helpers/articleStats.js';
 import articleStatsColumns from '../Table/helpers/articleStatsColumns.js';
 import timeSegments from './helpers/timeSegments.js';
 
 export default {
-	extends: Statistics,
+	extends: StatisticsSubmissions,
 	data: function () {
 		const dateEndMax = new Date(new Date().setDate(new Date().getDate() - 1));
 		return {

@@ -9,7 +9,7 @@ export default new Router({
 	routes: [
 		{
 			path: '/',
-			name: 'Page',
+			name: 'Home',
 			component: Page,
 		},
 		{
@@ -26,13 +26,13 @@ export default new Router({
 		},
 		{
 			path: '/components/:componentName/examples/:exampleName',
-			name: 'Component',
+			name: 'ComponentExample',
 			component: ViewComponent,
 			props: true,
 		},
 		{
 			path: '/components/:componentName/implementations/:implementationName',
-			name: 'Component',
+			name: 'ComponentImplementation',
 			component: ViewComponent,
 			props: true,
 		},
