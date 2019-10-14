@@ -99,7 +99,7 @@ export default {
 		 * Get the locale-specific string for current locale
 		 * from a string representing a Date.
 		 *
-		 * example : {{ localizeDate(submission.dateStatusModified) }}
+		 * example : {{ localizeDate(submission.dateLastActivity) }}
 		 *
 		 * If you want to force a specific locale:
 		 *
@@ -115,10 +115,15 @@ export default {
 			}
 			str = new Date(str);
 			let dateLocale =
-					requestedLocale !== undefined
-						? requestedLocale.replace('_', '-')
-						: $.pkp.app.currentLocale.replace('_', '-');
-			return str.toLocaleDateString(dateLocale);
+				requestedLocale !== undefined
+					? requestedLocale.replace('_', '-')
+					: $.pkp.app.currentLocale.replace('_', '-');
+			return str.toLocaleDateString(dateLocale, {
+				weekday: 'long',
+				year: 'numeric',
+				month: 'long',
+				day: 'numeric'
+			});
 		},
 
 		/**
