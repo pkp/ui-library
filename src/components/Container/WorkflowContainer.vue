@@ -372,6 +372,17 @@ export default {
 					});
 				}
 
+				// Pass identifier requirements to the DOI/URN fields
+				if (formId === pkp.const.FORM_PUBLICATION_IDENTIFIERS) {
+					form.fields = form.fields.map(field => {
+						if (field.name === 'pub-id::doi') {
+							field.pages = publication.pages || '';
+							field.publisherId = publication['pub-id::publisher-id'] || '';
+						}
+						return field;
+					});
+				}
+
 				this.components[formId] = {};
 				this.components[formId] = form;
 			});
