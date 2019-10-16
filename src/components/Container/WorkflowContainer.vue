@@ -21,7 +21,6 @@ export default {
 	data() {
 		return {
 			contributorsGridUrl: '',
-			revisionsGridUrl: '',
 			disableSave: '',
 			csrfToken: '',
 			currentPublication: null,
@@ -203,30 +202,6 @@ export default {
 		},
 
 		/**
-		 * Load/reload the revisions grid
-		 *
-		 * @param Object publication Load revisions for this submission
-		 */
-		loadRevisionsGrid() {
-			if (!this.$refs.revisions) {
-				return;
-			}
-			const $revisionsEl = $(this.$refs.revisions);
-			if (!$.pkp.classes.Handler.hasHandler($revisionsEl)) {
-				$revisionsEl.pkpHandler('$.pkp.controllers.UrlInDivHandler', {
-					sourceUrl: this.revisionsGridUrl,
-					refreshOn: 'form-success'
-				});
-			} else {
-				const revisionsHandler = $.pkp.classes.Handler.getHandler(
-					$revisionsEl
-				);
-				revisionsHandler.setSourceUrl(this.revisionsGridUrl);
-				revisionsHandler.reload();
-			}
-		},
-
-		/**
 		 * Open a modal displaying the editorial history
 		 */
 		openActivity() {
@@ -254,7 +229,6 @@ export default {
 				title: this.i18n.uploadFileModal,
 				url: this.uploadFileUrl,
 				closeCallback: () => {
-					this.loadRevisionsGrid();
 					this.$refs.uploadFileButton.$el.focus();
 				}
 			};
@@ -391,8 +365,6 @@ export default {
 					}
 					return field;
 				});
-
-				console.log(this.disableSave);
 
 				// Add/remove save button depending on publication status or user permissions
 				form.pages = form.pages.map(page => {
@@ -567,13 +539,13 @@ export default {
 		setTimeout(() => {
 			this.loadContributorsGrid(this.workingPublication);
 			this.loadRepresentationsGrid(this.workingPublication);
-			this.loadRevisionsGrid(this.workingPublication);
 		}, 1000);
 
 		/**
 		 * Load forms
 		 */
-		this.setPublicationForms(this.workingPublication);
+
+		 this.setPublicationForms(this.workingPublication);
 
 		/**
 		 * Open the unpublish confirmation modal when a global unpublish
