@@ -270,6 +270,13 @@ export default {
 	line-height: 2.5rem;
 	border: @bg-border;
 	border-radius: 2px;
+
+	&:disabled {
+		background: @bg-light;
+		cursor: not-allowed;
+		// Lighter than @text but accessible on @bg-light
+		color: rgba(0, 0, 0, 0.65);
+	}
 }
 
 .pkpFormField__input:hover {

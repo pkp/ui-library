@@ -59,6 +59,7 @@ import FieldAutosuggest from '@/components/Form/fields/FieldAutosuggest.vue';
 import FieldArchivingPn from '@/components/Form/fields/FieldArchivingPn.vue';
 import FieldColor from '@/components/Form/fields/FieldColor.vue';
 import FieldControlledVocab from '@/components/Form/fields/FieldControlledVocab.vue';
+import FieldDoi from '@/components/Form/fields/FieldDoi.vue';
 import FieldHtml from '@/components/Form/fields/FieldHtml.vue';
 import FieldMetadataSetting from '@/components/Form/fields/FieldMetadataSetting.vue';
 import FieldOptions from '@/components/Form/fields/FieldOptions.vue';
@@ -79,6 +80,7 @@ export default {
 		FieldArchivingPn,
 		FieldColor,
 		FieldControlledVocab,
+		FieldDoi,
 		FieldHtml,
 		FieldMetadataSetting,
 		FieldOptions,
