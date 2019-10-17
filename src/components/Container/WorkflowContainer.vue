@@ -229,6 +229,7 @@ export default {
 				title: this.i18n.uploadFileModal,
 				url: this.uploadFileUrl,
 				closeCallback: () => {
+					pkp.eventBus.$emit('refreshRevisionsGrid');
 					this.$refs.uploadFileButton.$el.focus();
 				}
 			};
