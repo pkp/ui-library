@@ -58,7 +58,7 @@
 						:isFilterActive="isFilterActive(filter.param, filter.value)"
 						:i18n="i18n"
 						@add-filter="addSubmissionFilter"
-						@remove-filter="removeFilter"
+						@remove-filter="removeSubmissionFilter"
 					/>
 				</div>
 			</div>
@@ -180,13 +180,32 @@ export default {
 			// Don't allow other filters to be active when the
 			// isIncomplete filter is active
 			if (param === 'isIncomplete') {
-				this.activeFilters = {isIncomplete: [value]};
+				this.activeFilters = {isIncomplete: value};
 				this.get();
 			} else {
 				if (Object.keys(this.activeFilters).includes('isIncomplete')) {
 					delete this.activeFilters.isIncomplete;
 				}
-				this.addFilter(param, value);
+				if (['isOverdue', 'daysInactive'].includes(param)) {
+					this.setFilter(param, value);
+				} else {
+					this.addFilter(param, value);
+				}
+			}
+		},
+
+		/**
+		 * Wrapper for ListPanel.removeFilter which calls removeParamFilters
+		 * on the filters that aren't stored as arrays
+		 *
+		 * @param {String} param
+		 * @param {mixed} value
+		 */
+		removeSubmissionFilter(param, value) {
+			if (['isIncomplete', 'isOverdue', 'daysInactive'].includes(param)) {
+				this.removeParamFilters(param);
+			} else {
+				this.removeFilter(param, value);
 			}
 		}
 	}

@@ -161,7 +161,7 @@
 			v-if="isExpanded"
 			class="pkpListPanelItem__details pkpListPanelItem__details--submission"
 		>
-			<list v-if="!item.submissionProgress">
+			<list>
 				<list-item v-if="isReviewStage">
 					<template slot="value">
 						<icon icon="user-o" :inline="true" />
@@ -176,7 +176,7 @@
 					</template>
 					{{ activeStageFilesLabel }}
 				</list-item>
-				<list-item>
+				<list-item v-if="!item.submissionProgress">
 					<template slot="value">
 						<icon icon="comment-o" :inline="true" />
 						{{ openQueryCount }}
@@ -185,6 +185,13 @@
 				</list-item>
 				<list-item v-if="dualWorkflowLinks">
 					<span v-html="dualWorkflowLinks" />
+				</list-item>
+				<list-item>
+					<span>
+						{{
+							__('lastActivity', {date: localizeDate(item.dateLastActivity)})
+						}}
+					</span>
 				</list-item>
 			</list>
 			<div class="pkpListPanelItem__actions">

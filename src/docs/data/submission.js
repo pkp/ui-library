@@ -4,7 +4,7 @@ export default {
 	_href: 'http://localhost:8000/publicknowledge/api/v1/submissions/1',
 	contextId: 1,
 	currentPublicationId: 17,
-	dateStatusModified: '2019-06-25 16:52:47',
+	dateLastActivity: '2019-06-25 16:52:47',
 	dateSubmitted: '2019-05-30 12:28:18',
 	id: 1,
 	lastModified: '2019-06-25 16:40:29',
