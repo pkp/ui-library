@@ -325,7 +325,6 @@ export default {
 			} else if (this.activeFilters.hasOwnProperty('seriesIds')) {
 				return this.activeFilters.seriesIds;
 			}
-			console.log("Here: " + this.contextId);
 			return this.contextId;
 		}
 	},
