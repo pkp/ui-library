@@ -119,6 +119,7 @@ export default {
 		return {
 			catalogSortBy: '',
 			catalogSortDir: '',
+			contextId: 0,
 		};
 	},
 	computed: {
@@ -232,8 +233,7 @@ export default {
 			} else if (this.activeFilters.hasOwnProperty('seriesIds')) {
 				return this.activeFilters.seriesIds[0];
 			}
-			// in OMP, there's only one press context and it's always 1
-			return 1;
+			return this.contextId;
 		},
 	},
 	methods: {
