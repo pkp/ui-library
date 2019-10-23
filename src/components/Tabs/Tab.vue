@@ -7,6 +7,7 @@
 		:aria-labelledby="id + '-button'"
 		:hidden="!isActive"
 		tabindex="0"
+		:badge="badge"
 	>
 		<slot />
 	</div>
@@ -26,6 +27,12 @@ export default {
 			required: true
 		},
 		label: {
+			type: String,
+			default() {
+				return '';
+			}
+		},
+		badge: {
 			type: String,
 			default() {
 				return '';
