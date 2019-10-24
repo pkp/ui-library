@@ -10,7 +10,6 @@
 				:key="tab.id"
 				:ref="'button' + tab.id"
 				role="tab"
-				:badge="badge"
 				:tabindex="currentTab === tab.id ? '' : -1"
 				@click="setCurrentTab(tab.id)"
 				@keydown.35.prevent="setLastTab"
@@ -26,7 +25,7 @@
 					{{ tab.label }}
 				</template>
 				<template v-if="tab.badge">
-					<badge :badge="tab.badge"></badge>
+					<badge :label="tab.label">{{ tab.badge }}</badge>
 				</template>
 			</button>
 		</div>
@@ -36,7 +35,7 @@
 
 <script>
 import Icon from '@/components/Icon/Icon.vue';
-import Badge from '@/components/Tabs/Badge.vue';
+import Badge from '@/components/Badge/Badge.vue';
 
 export default {
 	components: {
@@ -57,12 +56,6 @@ export default {
 			}
 		},
 		label: {
-			type: String,
-			default() {
-				return '';
-			}
-		},
-		badge: {
 			type: String,
 			default() {
 				return '';
@@ -170,11 +163,6 @@ export default {
 	margin: 0;
 	list-style: none;
 	font-size: @font-sml;
-}
-
-.badge {
-	border: 1px solid #eee;
-	border-radius: 50px;
 }
 
 .pkpTabs__button {

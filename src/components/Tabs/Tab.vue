@@ -7,7 +7,6 @@
 		:aria-labelledby="id + '-button'"
 		:hidden="!isActive"
 		tabindex="0"
-		:badge="badge"
 	>
 		<slot />
 	</div>
