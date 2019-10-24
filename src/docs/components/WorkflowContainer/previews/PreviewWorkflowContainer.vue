@@ -244,7 +244,7 @@ export default {
 			submission: {
 				contextId: 1,
 				currentPublicationId: 852,
-				dateStatusModified: '2018-11-03 12:34:53',
+				dateLastActivity: '2018-11-03 12:34:53',
 				dateSubmitted: '2018-08-03',
 				id: 732,
 				lastModified: '2019-06-03 18:03:32',

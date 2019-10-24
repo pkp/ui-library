@@ -185,6 +185,12 @@ export default {
 				return 1; // SORT_DIRECTION_ASC
 			}
 		},
+		contextId: {
+			type: Number,
+			default() {
+				return 0;
+			}
+		},
 		csrfToken: {
 			type: String,
 			required: true
@@ -319,8 +325,7 @@ export default {
 			} else if (this.activeFilters.hasOwnProperty('seriesIds')) {
 				return this.activeFilters.seriesIds;
 			}
-			// in OMP, there's only one press context and it's always 1
-			return 1;
+			return this.contextId;
 		}
 	},
 	methods: {

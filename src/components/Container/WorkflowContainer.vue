@@ -127,7 +127,7 @@ export default {
 							self.isLoadingVersion = false;
 						} else {
 							setTimeout(() => {
-								self.isLoadingVersion = true;
+								self.isLoadingVersion = false;
 							}, timeDiff);
 						}
 					});
@@ -319,7 +319,7 @@ export default {
 				success(submission) {
 					// Store some publication data and discard the rest
 					submission.publications.forEach(publication =>
-						self.updatePublication(publication)
+						self.updatePublicationInList(publication)
 					);
 					delete submission.publications;
 					self.submission = {};
@@ -372,6 +372,17 @@ export default {
 					});
 				}
 
+				// Pass identifier requirements to the DOI/URN fields
+				if (formId === pkp.const.FORM_PUBLICATION_IDENTIFIERS) {
+					form.fields = form.fields.map(field => {
+						if (field.name === 'pub-id::doi') {
+							field.pages = publication.pages || '';
+							field.publisherId = publication['pub-id::publisher-id'] || '';
+						}
+						return field;
+					});
+				}
+
 				this.components[formId] = {};
 				this.components[formId] = form;
 			});
@@ -396,7 +407,7 @@ export default {
 				success(r) {
 					self.workingPublication = {};
 					self.workingPublication = r;
-					self.updatePublication(r);
+					self.updatePublicationInList(r);
 					self.$nextTick(() => {
 						self.setFocusIn(self.$refs.publication);
 						self.isLoadingVersion = false;
@@ -429,7 +440,7 @@ export default {
 				success(r) {
 					self.workingPublication = {};
 					self.workingPublication = r;
-					self.updatePublication(r);
+					self.updatePublicationInList(r);
 					self.isLoadingVersion = false;
 					self.setFocusIn(self.$refs.publication);
 					self.refreshSubmission();
@@ -438,9 +449,11 @@ export default {
 		},
 
 		/**
-		 * Update a publication's details
+		 * Update a publication's details in the publication list
+		 *
+		 * @param {Object} newPublication
 		 */
-		updatePublication(newPublication) {
+		updatePublicationInList(newPublication) {
 			this.publicationList.forEach(publication => {
 				if (publication.id === newPublication.id) {
 					(publication.id = newPublication.id),
@@ -448,14 +461,6 @@ export default {
 					publication.status = newPublication.status;
 				}
 			});
-			if (this.workingPublication.id === newPublication.id) {
-				this.workingPublication = {};
-				this.workingPublication = newPublication;
-			}
-			if (this.currentPublication.id === newPublication.id) {
-				this.currentPublication = {};
-				this.currentPublication = newPublication;
-			}
 		}
 	},
 	watch: {
@@ -475,12 +480,16 @@ export default {
 		 */
 		pkp.eventBus.$on('form-success', (formId, newPublication) => {
 			if (this.publicationFormIds.includes(formId)) {
-				this.updatePublication(newPublication);
+				this.workingPublication = {};
+				this.workingPublication = newPublication;
 			}
 
 			// Update the submission's status when the publish form is completed
 			if (formId === pkp.const.FORM_PUBLISH) {
 				this.setPublicationForms(newPublication);
+				this.currentPublication = {};
+				this.currentPublication = newPublication;
+				this.submission.currentPublicationId = newPublication.id;
 				this.refreshSubmission();
 			}
 		});
@@ -495,7 +504,9 @@ export default {
 					this.submissionApiUrl + '/publications/' + this.workingPublication.id,
 				type: 'GET',
 				success(publication) {
-					self.updatePublication(publication);
+					self.workingPublication = {};
+					self.workingPublication = publication;
+					self.updatePublicationInList(publication);
 				}
 			});
 		});

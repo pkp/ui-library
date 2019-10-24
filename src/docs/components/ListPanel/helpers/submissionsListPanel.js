@@ -16,6 +16,11 @@ export default {
 					title: 'Incomplete',
 					param: 'isIncomplete',
 					value: true
+				},
+				{
+					title: 'Inactive for 30 days',
+					param: 'daysinactive',
+					value: 30
 				}
 			]
 		},
