@@ -210,6 +210,11 @@ export default {
 	+ .pkpTabs__button {
 		margin-left: 0.25rem;
 	}
+
+	.pkpBadge {
+		padding-left: 0.5em;
+		padding-right: 0.5em;
+	}
 }
 
 .pkpTabs__button:focus:before,
