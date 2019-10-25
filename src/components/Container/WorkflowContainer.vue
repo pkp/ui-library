@@ -534,7 +534,7 @@ export default {
 		/**
 		 * Load forms
 		 */
-		 this.setPublicationForms(this.workingPublication);
+		this.setPublicationForms(this.workingPublication);
 	},
 	mounted() {
 		/**
