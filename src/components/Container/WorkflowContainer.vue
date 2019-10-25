@@ -530,6 +530,11 @@ export default {
 				}
 			});
 		});
+
+		/**
+		 * Load forms
+		 */
+		 this.setPublicationForms(this.workingPublication);
 	},
 	mounted() {
 		/**
@@ -541,12 +546,6 @@ export default {
 			this.loadContributorsGrid(this.workingPublication);
 			this.loadRepresentationsGrid(this.workingPublication);
 		}, 1000);
-
-		/**
-		 * Load forms
-		 */
-
-		 this.setPublicationForms(this.workingPublication);
 
 		/**
 		 * Open the unpublish confirmation modal when a global unpublish
