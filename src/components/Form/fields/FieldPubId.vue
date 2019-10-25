@@ -1,5 +1,5 @@
 <template>
-	<div class="pkpFormField pkpFormField--doi">
+	<div class="pkpFormField pkpFormField--pubid">
 		<div class="pkpFormField__heading">
 			<form-field-label
 				:controlId="controlId"
@@ -30,7 +30,7 @@
 		/>
 		<div class="pkpFormField__control">
 			<input
-				class="pkpFormField__input pkpFormField--doi__input"
+				class="pkpFormField__input pkpFormField--text__input pkpFormField--pubid__input"
 				ref="input"
 				v-model="currentValue"
 				:id="controlId"
@@ -41,21 +41,21 @@
 				:required="isRequired"
 			/>
 			<pkp-button
-				v-if="pattern && canGenerateDoi && !currentValue"
-				class="pkpFormField--doi__button"
-				:label="i18n.assignDoi"
-				@click="assignDoi"
+				v-if="pattern && canGenerateId && !currentValue"
+				class="pkpFormField--pubid__button"
+				:label="i18n.assignId"
+				@click="assignId"
 			/>
 			<pkp-button
-				v-else-if="pattern && canGenerateDoi"
-				class="pkpFormField--doi__button"
-				:label="i18n.clearDoi"
+				v-else-if="pattern"
+				class="pkpFormField--pubid__button"
+				:label="i18n.clearId"
 				:isWarnable="true"
 				@click="() => (currentValue = '')"
 			/>
 			<div
-				v-if="pattern && !canGenerateDoi && !currentValue"
-				class="pkpFormField--doi__warning"
+				v-if="pattern && !canGenerateId && !currentValue"
+				class="pkpFormField--pubid__warning"
 				:id="describedByDescriptionId"
 			>
 				<icon icon="exclamation-triangle" :inline="true" />
@@ -127,6 +127,12 @@ export default {
 			type: String,
 			required: true
 		},
+		separator: {
+			type: String,
+			default() {
+				return '';
+			}
+		},
 		submissionId: {
 			type: Number,
 			default() {
@@ -142,22 +148,20 @@ export default {
 	},
 	computed: {
 		/**
-		 * Is all required info available to generate a DOI
+		 * Is all required info available to generate a pub id
 		 * according to the pattern?
 		 *
 		 * @return {Boolean}
 		 */
-		canGenerateDoi() {
+		canGenerateId() {
 			return (
 				(this.issueNumber || !this.pattern.includes('%i')) &&
 				(this.issueVolume || !this.pattern.includes('%v')) &&
-				(
-					(!this.isPForPress &&
-						(this.contextInitials || !this.pattern.includes('%j')) &&
-						(this.pages || !this.pattern.includes('%p'))
-					) ||
-					(this.isPForPress && (this.contextInitials || !this.pattern.includes('%j')))
-				) &&
+				((!this.isPForPress &&
+					(this.contextInitials || !this.pattern.includes('%j')) &&
+					(this.pages || !this.pattern.includes('%p'))) ||
+					(this.isPForPress &&
+						(this.contextInitials || !this.pattern.includes('%j')))) &&
 				(this.publisherId || !this.pattern.includes('%x')) &&
 				(this.submissionId || !this.pattern.includes('%a')) &&
 				(this.submissionId || !this.pattern.includes('%m')) &&
@@ -167,60 +171,37 @@ export default {
 	},
 	methods: {
 		/**
-		 * Assign a DOI based on the pattern
+		 * Assign a pub id based on the pattern
 		 */
-		assignDoi() {
-			// Check that all requirements to build the pattern are met
-			if (!this.canGenerateDoi) {
-				const modalOptions = {
-					modalHandler: '$.pkp.controllers.modal.ConfirmationModalHandler',
-					title: $.pkp.locale.common_error,
-					okButton: $.pkp.locale.common_ok,
-					cancelButton: false,
-					dialogText: this.i18n.missingIssue
-				};
-
-				const $modal = $(
-					'<div id="' +
-						$.pkp.classes.Helper.uuid() +
-						'" ' +
-						'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>'
-				).pkpHandler(modalOptions.modalHandler, modalOptions);
-
-				const modalHandler = $.pkp.classes.Handler.getHandler($modal);
-				modalHandler.modalBuild();
-				modalHandler.modalOpen();
-
-				return;
-			}
-
-			this.currentValue = this.generateDoi();
+		assignId() {
+			this.currentValue = this.generateId();
 		},
 
 		/**
-		 * Generate a DOI from the pattern
+		 * Generate a pub id from the pattern
 		 *
 		 * @return {String}
 		 */
-		generateDoi() {
-			let doi = (
+		generateId() {
+			let id =
 				this.prefix +
-				'/' +
+				this.separator +
 				this.pattern
 					.replace('%i', this.issueNumber)
 					.replace('%v', this.issueVolume)
 					.replace('%x', this.publisherId)
-					.replace('%Y', this.year)
-			);
+					.replace('%Y', this.year);
 			if (this.isPForPress) {
-				doi = doi.replace('%p', this.contextInitials)
+				id = id
+					.replace('%p', this.contextInitials)
 					.replace('%m', this.submissionId);
 			} else {
-				doi = doi.replace('%j', this.contextInitials)
+				id = id
+					.replace('%j', this.contextInitials)
 					.replace('%a', this.submissionId)
 					.replace('%p', this.pages);
 			}
-			return doi;
+			return id;
 		}
 	}
 };
@@ -229,17 +210,16 @@ export default {
 <style lang="less">
 @import '../../../styles/_import';
 
-.pkpFormField--doi__input {
+.pkpFormField--pubid__input {
 	display: inline-block;
-	width: 15em;
 }
 
-.pkpFormField--doi__button {
+.pkpFormField--pubid__button {
 	margin-left: 0.25rem;
 	height: 2.5rem; // Match input height
 }
 
-.pkpFormField--doi__warning {
+.pkpFormField--pubid__warning {
 	font-size: @font-tiny;
 	line-height: 1.65em;
 	margin-top: 0.25rem;

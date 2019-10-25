@@ -375,7 +375,7 @@ export default {
 				// Pass identifier requirements to the DOI/URN fields
 				if (formId === pkp.const.FORM_PUBLICATION_IDENTIFIERS) {
 					form.fields = form.fields.map(field => {
-						if (field.name === 'pub-id::doi') {
+						if (['pub-id::doi', 'pub-id::other::urn'].includes(field.name)) {
 							field.pages = publication.pages || '';
 							field.publisherId = publication['pub-id::publisher-id'] || '';
 						}
@@ -471,6 +471,10 @@ export default {
 			this.setPublicationForms(newVal);
 			this.loadContributorsGrid(newVal);
 			this.loadRepresentationsGrid(newVal);
+			if (newVal.id === this.currentPublication.id) {
+				this.currentPublication = {};
+				this.currentPublication = newVal;
+			}
 		}
 	},
 	created() {

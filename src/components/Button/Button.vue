@@ -96,6 +96,10 @@ export default {
 		outline: 0;
 	}
 
+	&:active {
+		box-shadow: 0 0 2px;
+	}
+
 	.fa {
 		margin-right: 0.25em;
 	}

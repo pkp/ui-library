@@ -140,8 +140,8 @@
 							</router-link>
 						</li>
 						<li>
-							<router-link to="/component/Form/fields/FieldDoi">
-								FieldDoi
+							<router-link to="/component/Form/fields/FieldPubId">
+								FieldPubId
 							</router-link>
 						</li>
 						<li>
