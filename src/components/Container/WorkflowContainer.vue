@@ -369,7 +369,7 @@ export default {
 
 				// Add/remove save button depending on publication status or user permissions
 				form.pages = form.pages.map(page => {
-					if (publication.status === pkp.const.STATUS_PUBLISHED || this.canEditPublication) {
+					if (publication.status === pkp.const.STATUS_PUBLISHED || !this.canEditPublication) {
 						delete page['submitButton'];
 					} else {
 						page.submitButton = {label: this.i18n.save};
