@@ -1,18 +1,18 @@
 <script>
 import Component from '@/docs/Component.vue';
-import ExampleFieldDoi from './ExampleFieldDoi.vue';
+import ExampleFieldPubId from './ExampleFieldPubId.vue';
 
 export default {
 	extends: Component,
 	components: {
-		ExampleFieldDoi
+		ExampleFieldPubId
 	},
 	data() {
 		return {
-			name: 'FieldDoi',
+			name: 'FieldPubId',
 			parentRoute: 'Form/fields',
 			examples: {
-				ExampleFieldDoi: 'Base'
+				ExampleFieldPubId: 'Base'
 			}
 		};
 	}

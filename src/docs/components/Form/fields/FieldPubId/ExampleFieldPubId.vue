@@ -1,17 +1,17 @@
 <script>
 import ExampleFieldBase from '../FieldBase/ExampleFieldBase.vue';
-import FieldDoi from '@/components/Form/fields/FieldDoi.vue';
+import FieldPubId from '@/components/Form/fields/FieldPubId.vue';
 import config from './config';
 
 export default {
 	extends: ExampleFieldBase,
 	components: {
-		FieldDoi
+		FieldPubId
 	},
 	data() {
 		return {
 			...config,
-			component: 'field-doi'
+			component: 'field-pub-id'
 		};
 	}
 };

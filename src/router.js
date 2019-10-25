@@ -12,7 +12,7 @@ import ComponentFieldAutosuggest from './docs/components/Form/fields/FieldAutosu
 import ComponentFieldBase from './docs/components/Form/fields/FieldBase/ComponentFieldBase.vue';
 import ComponentFieldColor from './docs/components/Form/fields/FieldColor/ComponentFieldColor.vue';
 import ComponentFieldControlledVocab from './docs/components/Form/fields/FieldControlledVocab/ComponentFieldControlledVocab.vue';
-import ComponentFieldDoi from './docs/components/Form/fields/FieldDoi/ComponentFieldDoi.vue';
+import ComponentFieldPubId from './docs/components/Form/fields/FieldPubId/ComponentFieldPubId.vue';
 import ComponentFieldHtml from './docs/components/Form/fields/FieldHtml/ComponentFieldHtml.vue';
 import ComponentFieldMetadataSetting from './docs/components/Form/fields/FieldMetadataSetting/ComponentFieldMetadataSetting.vue';
 import ComponentFieldOptions from './docs/components/Form/fields/FieldOptions/ComponentFieldOptions.vue';
@@ -114,9 +114,9 @@ export default new Router({
 			component: ComponentFieldControlledVocab
 		},
 		{
-			path: '/component/Form/fields/FieldDoi/:example?',
-			name: 'Form/fields/FieldDoi',
-			component: ComponentFieldDoi
+			path: '/component/Form/fields/FieldPubId/:example?',
+			name: 'Form/fields/FieldPubId',
+			component: ComponentFieldPubId
 		},
 		{
 			path: '/component/Form/fields/FieldHtml/:example?',
