@@ -25,7 +25,7 @@
 					{{ tab.label }}
 				</template>
 				<template v-if="tab.badge">
-					<badge :label="tab.label">{{ tab.badge }}</badge>
+					<badge>{{ tab.badge }}</badge>
 				</template>
 			</button>
 		</div>
