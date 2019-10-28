@@ -26,7 +26,7 @@ export default {
 				Side: 'Nested Tabs (Side)',
 				Default: 'Default Tab',
 				Icon: 'Icon-only Tab',
-				Badge: 'Badge'
+				Badge: 'Badge Tab'
 			}
 		};
 	}
