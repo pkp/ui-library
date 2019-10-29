@@ -22,7 +22,8 @@ export const propDocs = [
 	},
 	{
 		key: 'badge',
-		description: 'Adds a numeric badge beside the icon or text in the tab.'
+		description:
+			'Adds a [Badge](/#/component/Badge) component beside the icon or text in the tab.'
 	}
 ];
 

@@ -212,8 +212,13 @@ export default {
 	}
 
 	.pkpBadge {
+		margin-left: 0.25em;
+		margin-bottom: -3px; // Prevent change to tab height
 		padding-left: 0.5em;
 		padding-right: 0.5em;
+		min-width: 2.25em; // Give single-digit badges a rounder shape
+		border-color: @bg-border-color;
+		background: @lift;
 	}
 }
 
