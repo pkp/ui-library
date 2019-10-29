@@ -30,6 +30,12 @@ export default {
 			default() {
 				return '';
 			}
+		},
+		badge: {
+			type: String,
+			default() {
+				return '';
+			}
 		}
 	},
 	data() {

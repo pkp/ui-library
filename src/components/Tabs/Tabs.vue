@@ -24,6 +24,9 @@
 				<template v-else>
 					{{ tab.label }}
 				</template>
+				<template v-if="tab.badge">
+					<badge>{{ tab.badge }}</badge>
+				</template>
 			</button>
 		</div>
 		<slot />
@@ -32,10 +35,12 @@
 
 <script>
 import Icon from '@/components/Icon/Icon.vue';
+import Badge from '@/components/Badge/Badge.vue';
 
 export default {
 	components: {
-		Icon
+		Icon,
+		Badge
 	},
 	props: {
 		defaultTab: {
@@ -204,6 +209,11 @@ export default {
 
 	+ .pkpTabs__button {
 		margin-left: 0.25rem;
+	}
+
+	.pkpBadge {
+		padding-left: 0.5em;
+		padding-right: 0.5em;
 	}
 }
 

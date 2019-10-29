@@ -1,7 +1,8 @@
 export let props = {
 	defaultTab: '',
 	isSideTabs: false,
-	label: ''
+	label: '',
+	badge: ''
 };
 
 export const propDocs = [
@@ -18,6 +19,10 @@ export const propDocs = [
 		key: 'label',
 		description:
 			'Sets an `aria-label` for the tabs. See the [Accessible label](#accessible-label) section below.'
+	},
+	{
+		key: 'badge',
+		description: 'Adds a numeric badge beside the icon or text in the tab.'
 	}
 ];
 
