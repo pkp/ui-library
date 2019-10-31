@@ -5,8 +5,8 @@ import config from './config';
 
 config.props = {
 	...config.props,
-	toolbar: FieldRichTextarea.props.toolbar.default(),
-	plugins: FieldRichTextarea.props.plugins.default(),
+	toolbar: 'bold italic superscript subscript | link',
+	plugins: 'paste,link',
 	init: FieldRichTextarea.props.init.default()
 };
 

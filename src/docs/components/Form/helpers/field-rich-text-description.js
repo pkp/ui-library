@@ -1,6 +1,6 @@
 export default {
-	name: 'citation',
+	name: 'description',
 	component: 'field-rich-textarea',
-	label: 'Citation',
+	label: 'Journal Description',
 	value: ''
 };

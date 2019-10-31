@@ -10,5 +10,6 @@ export default {
 		fr_CA: '',
 		ar_AR: ''
 	},
-	isMultilingual: true
+	isMultilingual: true,
+	wordLimit: 200
 };
