@@ -23,7 +23,7 @@ export default {
 					editorRole: 'Editor Role',
 					dueDate: 'Due Date',
 					recipientName: 'Recipient Name',
-					submissionTitle: 'Submission Title'
+					'escap"ing': 'HTML should be <sup>escaped</sup>'
 				},
 				size: 'large',
 				value: `<p>Hi {$recipientName},</p>

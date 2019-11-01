@@ -208,7 +208,7 @@ export default {
 					editor.fire('blur');
 				},
 				setup(editor) {
-					if (Object.keys(self.preparedContent).length) {
+					if (Object.keys(self.preparedContentSanitized).length) {
 						editor.addButton('pkpPreparedContent', {
 							icon: 'nonbreaking',
 							type: 'panelbutton',
@@ -216,11 +216,11 @@ export default {
 								html() {
 									var markup =
 										'<ul class="pkpFormField--richTextarea__tinymcePanel">';
-									Object.keys(self.preparedContent).forEach(
+									Object.keys(self.preparedContentSanitized).forEach(
 										key =>
 											(markup += `<li>
 													<button data-symbolic="${key}">
-														${self.preparedContent[key]}
+														${self.preparedContentSanitized[key]}
 													</button>
 												</li>`)
 									);
@@ -232,10 +232,13 @@ export default {
 									}
 									const key = e.target.dataset.symbolic;
 									if (self.renderPreparedContent) {
-										editor.insertContent(self.preparedContent[key]);
+										editor.insertContent(self.preparedContentSanitized[key]);
 									} else {
 										editor.insertContent(
-											self.getPlaceholder(key, self.preparedContent[key])
+											self.getPlaceholder(
+												key,
+												self.preparedContentSanitized[key]
+											)
 										);
 									}
 									this.hide();
@@ -247,6 +250,35 @@ export default {
 				},
 				...this.init
 			};
+		},
+
+		/**
+		 * The preparedContent property with the keys and values sanitized
+		 * so that they can be injected into attributes and HTML strings
+		 * without causing problems.
+		 *
+		 * Keys are restricted to alphanumeric (\w) and values have the
+		 * < and > characters converted to their HTML entities.
+		 *
+		 * @return {Object}
+		 */
+		preparedContentSanitized() {
+			if (!Object.keys(this.preparedContent).length) {
+				return {};
+			}
+			let obj = {};
+			Object.keys(this.preparedContent).forEach(key => {
+				const newKey = key.replace(/[^\w]/gi, '');
+				const map = {'<': '&lt;', '>': '&gt;'};
+				const newValue = this.preparedContent[key].replace(
+					/[<>]/g,
+					m => map[m]
+				);
+				if (newKey && newValue) {
+					obj[newKey] = newValue;
+				}
+			});
+			return obj;
 		}
 	},
 	methods: {
@@ -257,7 +289,7 @@ export default {
 			this.isFocused = false;
 
 			if (!this.renderPreparedContent) {
-				const keys = Object.keys(this.preparedContent);
+				const keys = Object.keys(this.preparedContentSanitized);
 
 				// Find and replace any placeholders
 				if (keys.length) {
@@ -298,7 +330,7 @@ export default {
 		setEditorValue() {
 			this.editorValue = this.currentValue;
 
-			const keys = Object.keys(this.preparedContent);
+			const keys = Object.keys(this.preparedContentSanitized);
 			if (keys.length) {
 				let value = this.editorValue;
 				// Replace {$tags} in the body text with their values
@@ -306,7 +338,7 @@ export default {
 					keys.forEach(key => {
 						value = value.replace(
 							new RegExp('\\{\\$' + key + '\\}', 'g'),
-							this.preparedContent[key]
+							this.preparedContentSanitized[key]
 						);
 					});
 
@@ -315,7 +347,7 @@ export default {
 					keys.forEach(key => {
 						value = value.replace(
 							new RegExp('\\{\\$' + key + '\\}', 'g'),
-							this.getPlaceholder(key, this.preparedContent[key])
+							this.getPlaceholder(key, this.preparedContentSanitized[key])
 						);
 					});
 				}
