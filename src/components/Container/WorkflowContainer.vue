@@ -21,6 +21,7 @@ export default {
 	data() {
 		return {
 			contributorsGridUrl: '',
+			canEditPublication: true,
 			csrfToken: '',
 			currentPublication: null,
 			editorialHistoryUrl: '',
@@ -224,7 +225,21 @@ export default {
 		 * Only used in author dashboard
 		 */
 		openFileUpload() {
-			alert('todo: ' + this.uploadFileUrl);
+			var opts = {
+				title: this.i18n.uploadFileModal,
+				url: this.uploadFileUrl,
+				closeCallback: () => {
+					pkp.eventBus.$emit('refreshRevisionsGrid');
+					this.$refs.uploadFileButton.$el.focus();
+				}
+			};
+
+			$(
+				'<div id="' +
+					$.pkp.classes.Helper.uuid() +
+					'" ' +
+					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>'
+			).pkpHandler('$.pkp.controllers.modal.WizardModalHandler', opts);
 		},
 
 		/**
@@ -352,9 +367,12 @@ export default {
 					return field;
 				});
 
-				// Add/remove save button depending on publication status
+				// Add/remove save button depending on publication status or user permissions
 				form.pages = form.pages.map(page => {
-					if (publication.status === pkp.const.STATUS_PUBLISHED) {
+					if (
+						publication.status === pkp.const.STATUS_PUBLISHED ||
+						!this.canEditPublication
+					) {
 						delete page['submitButton'];
 					} else {
 						page.submitButton = {label: this.i18n.save};
@@ -471,6 +489,7 @@ export default {
 			this.setPublicationForms(newVal);
 			this.loadContributorsGrid(newVal);
 			this.loadRepresentationsGrid(newVal);
+			this.loadRevisionsGrid(newVal);
 			if (newVal.id === this.currentPublication.id) {
 				this.currentPublication = {};
 				this.currentPublication = newVal;
@@ -514,6 +533,11 @@ export default {
 				}
 			});
 		});
+
+		/**
+		 * Load forms
+		 */
+		this.setPublicationForms(this.workingPublication);
 	},
 	mounted() {
 		/**
