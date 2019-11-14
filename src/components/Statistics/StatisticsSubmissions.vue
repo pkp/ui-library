@@ -40,7 +40,3 @@ export default {
 	},
 };
 </script>
-
-<style lang="less">
-@import 'Statistics.less';
-</style>

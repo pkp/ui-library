@@ -29,7 +29,7 @@ export default {
 </script>
 
 <style lang="less">
-@import 'Statistics.less';
+@import '../../styles/_import';
 
 .pkpStatistics--editorial__stageWrapper {
 	position: relative;
