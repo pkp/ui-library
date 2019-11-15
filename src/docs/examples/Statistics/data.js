@@ -1,5 +1,7 @@
 import Statistics from '@/components/Statistics/Statistics.vue';
 import ViewArticleStatistics from './ViewArticleStatistics.vue';
+import ViewEditorialStatistics from './ViewEditorialStatistics.vue';
+import EditorialStatisticsRaw from '!!raw-loader!./ViewEditorialStatistics.vue';
 
 export default {
 	viewComponent: ViewArticleStatistics,
@@ -24,5 +26,12 @@ export default {
 		isFilterVisible: 'A boolean flag used internally to track whether the filters panel is open or closed.',
 		isLoading: 'A boolean flag used internally to track whether new statistics records are loading.',
 		originalItems: 'This is used for this demo only. It does not exist in the <code>Statistics</code> component.',
+	},
+	implementations: {
+		'editorial': {
+			label: 'Editorial Activity',
+			component: ViewEditorialStatistics,
+			componentRaw: EditorialStatisticsRaw,
+		},
 	},
 };

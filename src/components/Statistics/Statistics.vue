@@ -1,6 +1,5 @@
 <script>
 import DateRange from '@/components/DateRange/DateRange.vue';
-import LineChart from '@/components/Chart/LineChart.vue';
 import ListPanelFilter from '@/components/ListPanel/ListPanelFilter.vue';
 import ListPanelSearch from '@/components/ListPanel/ListPanelSearch.vue';
 import PageHeader from '@/components/PageHeader/PageHeader.vue';
@@ -13,7 +12,6 @@ import debounce from 'debounce';
 export default {
 	components: {
 		DateRange,
-		LineChart,
 		ListPanelFilter,
 		ListPanelSearch,
 		PageHeader,
@@ -66,26 +64,6 @@ export default {
 		},
 
 		/**
-		 * Compile the data to pass to the LineChart component
-		 *
-		 * @return Object|null
-		 */
-		chartData: function () {
-			if (!this.timeSegments) {
-				return null;
-			}
-			const timeSegments = this.timeSegments.reverse();
-			return {
-				labels: timeSegments.map(segment => segment.dateLabel),
-				datasets: [
-					{
-						data: timeSegments.map(segment => segment.abstractViews),
-					},
-				],
-			};
-		},
-
-		/**
 		 * Is the current date range within a range that allows daily
 		 * time segments to be shown?
 		 *
@@ -108,8 +86,7 @@ export default {
 			if (!this.dateStart || !this.dateEnd || !this.isDailySegmentEnabled) {
 				return true;
 			}
-			return new Date(this.dateStart).getMonth() !== new Date(this.dateEnd).getMonth() ||
-				new Date(this.dateStart).getYear() !== new Date(this.dateEnd).getYear();
+			return this.getDaysBetween(new Date(this.dateStart), new Date(this.dateEndMax)) > 31;
 		},
 
 		/**
@@ -122,6 +99,15 @@ export default {
 		},
 	},
 	methods: {
+		/**
+		 * Process the API response
+		 *
+		 * @param object Response
+		 */
+		processResponse (response) {
+			throw new Error('The method processResponse must be overwritten.');
+		},
+
 		/**
 		 * Set the date range
 		 *
@@ -231,10 +217,7 @@ export default {
 					if (self._latestGetRequest !== this._uuid) {
 						return;
 					}
-
-					self.timeSegments = r.timeSegments;
-					self.items = r.items;
-					self.itemsMax = r.itemsMax;
+					self.processResponse(r);
 				},
 				complete: function (r) {
 
@@ -535,6 +518,4 @@ export default {
 		}
 	}
 }
-
-
 </style>
