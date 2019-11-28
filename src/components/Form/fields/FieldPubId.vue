@@ -139,6 +139,12 @@ export default {
 				return '';
 			}
 		},
+		publicationId: {
+			type: Number,
+			default() {
+				return '';
+			}
+		},
 		year: {
 			type: [String, Number],
 			default() {
@@ -165,6 +171,7 @@ export default {
 				(this.publisherId || !this.pattern.includes('%x')) &&
 				(this.submissionId || !this.pattern.includes('%a')) &&
 				(this.submissionId || !this.pattern.includes('%m')) &&
+				(this.publicationId || !this.pattern.includes('%b')) &&
 				(this.year || !this.pattern.includes('%Y'))
 			);
 		}
@@ -199,6 +206,7 @@ export default {
 				id = id
 					.replace('%j', this.contextInitials)
 					.replace('%a', this.submissionId)
+					.replace('%b', this.publicationId)
 					.replace('%p', this.pages);
 			}
 			return id;
