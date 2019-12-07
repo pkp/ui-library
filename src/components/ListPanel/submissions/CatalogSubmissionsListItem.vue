@@ -111,8 +111,8 @@ export default {
 			if (!this.item.hasOwnProperty('featured')) {
 				return false;
 			}
-			const feature = this.item.featured.find((feature) => {
-				return feature.assoc_type === this.filterAssocType && feature.assoc_id === this.filterAssocId;
+			const feature = this.item.featured.find((f) => {
+				return f.assoc_type == this.filterAssocType && f.assoc_id == this.filterAssocId;
 			});
 			return typeof feature !== 'undefined';
 		},
@@ -127,8 +127,8 @@ export default {
 			if (!this.item.hasOwnProperty('newRelease')) {
 				return false;
 			}
-			const newRelease = this.item.newRelease.find((newRelease) => {
-				return newRelease.assoc_type === this.filterAssocType && newRelease.assoc_id === this.filterAssocId;
+			const newRelease = this.item.newRelease.find((n) => {
+				return n.assoc_type == this.filterAssocType && n.assoc_id == this.filterAssocId;
 			});
 			return typeof newRelease !== 'undefined';
 		},
