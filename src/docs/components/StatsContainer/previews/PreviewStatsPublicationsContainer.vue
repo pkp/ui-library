@@ -192,7 +192,7 @@
 </template>
 
 <script>
-import StatsContainer from '@/components/Container/StatsContainer.vue';
+import StatsPublicationsContainer from '@/components/Container/StatsPublicationsContainer.vue';
 import articleStats from '../../Table/helpers/articleStats.js';
 import articleStatsColumns from '../../Table/helpers/articleStatsColumns.js';
 
@@ -219,7 +219,7 @@ function getRandomTimeline(startDate, endDate, timelineInterval) {
 }
 
 export default {
-	extends: StatsContainer,
+	extends: StatsPublicationsContainer,
 	data: function() {
 		const dateEndMax = new Date(new Date().setDate(new Date().getDate() - 1));
 		const startDate = new Date();

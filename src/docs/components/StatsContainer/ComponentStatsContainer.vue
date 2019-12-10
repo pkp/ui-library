@@ -1,17 +1,20 @@
 <script>
 import Component from '@/docs/Component.vue';
-import StatsContainer from './ExampleStatsContainer.vue';
+import StatsPublicationsContainer from './ExampleStatsPublicationsContainer.vue';
+import StatsEditorialContainer from './ExampleStatsEditorialContainer.vue';
 
 export default {
 	extends: Component,
 	components: {
-		StatsContainer
+		StatsPublicationsContainer,
+		StatsEditorialContainer
 	},
 	data() {
 		return {
 			name: 'StatsContainer',
 			examples: {
-				StatsContainer: 'Base'
+				StatsPublicationsContainer: 'StatsPublicationsContainer',
+				StatsEditorialContainer: 'StatsEditorialContainer'
 			}
 		};
 	}

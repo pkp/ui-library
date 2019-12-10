@@ -2,129 +2,42 @@
 import DateRange from '@/components/DateRange/DateRange.vue';
 import PkpFilter from '@/components/Filter/Filter.vue';
 import Icon from '@/components/Icon/Icon.vue';
-import LineChart from '@/components/Chart/LineChart.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import PkpTable from '@/components/Table/Table.vue';
-import Search from '@/components/Search/Search.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';
 import TableCell from '@/components/Table/TableCell.vue';
-import debounce from 'debounce';
 
 export default {
 	components: {
 		DateRange,
 		PkpFilter,
 		Icon,
-		LineChart,
 		Pagination,
 		PkpButton,
 		PkpHeader,
 		PkpTable,
-		Search,
 		Spinner,
 		TableCell
 	},
 	data() {
 		return {
 			apiUrl: '',
-			timeline: [],
-			timelineInterval: '',
-			timelineType: '',
-			items: [],
-			itemsMax: 0,
 			tableColumns: [],
-			count: 30,
-			offset: 0,
-			searchPhrase: '',
 			dateStart: '',
 			dateEnd: '',
 			dateEndMax: '',
 			dateRangeOptions: [],
-			orderBy: '',
-			orderDirection: false,
 			filters: [],
 			activeFilters: {},
 			isSidebarVisible: false,
 			isLoadingItems: false,
-			isLoadingTimeline: false,
 			latestItemsGetRequest: '',
-			latestTimelineGetRequest: '',
 			i18n: {}
 		};
 	},
 	computed: {
-		/**
-		 * The current page of results
-		 *
-		 * @return Number
-		 */
-		currentPage() {
-			return Math.floor(this.offset / this.count) + 1;
-		},
-
-		/**
-		 * The number of pages of items that are available
-		 *
-		 * @return Number
-		 */
-		lastPage() {
-			return Math.ceil(this.itemsMax / this.count);
-		},
-
-		/**
-		 * Compile the data to pass to the LineChart component
-		 *
-		 * @return Object|null
-		 */
-		chartData() {
-			if (!this.timeline.length) {
-				return null;
-			}
-			return {
-				labels: this.timeline.map(segment => segment.label),
-				datasets: [
-					{
-						data: this.timeline.map(segment => segment.value)
-					}
-				]
-			};
-		},
-
-		/**
-		 * Is the current date range within a range that allows daily
-		 * time segments to be shown?
-		 *
-		 * @return Boolean
-		 */
-		isDailyIntervalEnabled() {
-			if (!this.dateStart || !this.dateEnd) {
-				return false;
-			}
-			return (
-				this.getDaysBetween(new Date(this.dateStart), new Date(this.dateEnd)) <
-				91
-			);
-		},
-
-		/**
-		 * Is the current date range within a range that allows monthly
-		 * time segments to be shown?
-		 *
-		 * @return Boolean
-		 */
-		isMonthlyIntervalEnabled() {
-			if (!this.dateStart || !this.dateEnd || !this.isDailyIntervalEnabled) {
-				return true;
-			}
-			return (
-				new Date(this.dateStart).getMonth() !==
-					new Date(this.dateEnd).getMonth() ||
-				new Date(this.dateStart).getYear() !== new Date(this.dateEnd).getYear()
-			);
-		},
-
 		/**
 		 * Add a class to the sidebar when it is visible
 		 *
@@ -149,42 +62,6 @@ export default {
 				classes.push('-isLoading');
 			}
 			return classes;
-		},
-
-		/**
-		 * The params to send with each GET request
-		 *
-		 * @return Object
-		 */
-		getParams() {
-			let params = {
-				...this.activeFilters,
-				count: this.count,
-				offset: this.offset
-			};
-
-			if (this.dateStart) {
-				params.dateStart = this.dateStart;
-			}
-
-			if (this.dateEnd) {
-				params.dateEnd = this.dateEnd;
-			}
-
-			if (this.timelineInterval) {
-				params.timelineInterval = this.timelineInterval;
-			}
-
-			if (this.searchPhrase) {
-				params.searchPhrase = this.searchPhrase;
-			}
-
-			if (this.orderBy) {
-				params.orderBy = this.orderBy;
-				params.orderDirection = this.orderDirection ? 'DESC' : 'ASC';
-			}
-
-			return params;
 		}
 	},
 	methods: {
@@ -214,135 +91,6 @@ export default {
 		setDateRange(dateStart, dateEnd) {
 			this.dateStart = dateStart;
 			this.dateEnd = dateEnd;
-		},
-
-		/**
-		 * Set the timeline type for the graph
-		 *
-		 * @param string timelineType
-		 */
-		setTimelineType(timelineType) {
-			this.timelineType = timelineType;
-		},
-
-		/**
-		 * Set the time segment for the graph
-		 *
-		 * @param string timelineInterval
-		 */
-		setTimelineInterval(timelineInterval) {
-			this.timelineInterval = timelineInterval;
-		},
-
-		/**
-		 * Set the current page
-		 *
-		 * @param number page
-		 */
-		setPage(page) {
-			this.offset = (page - 1) * this.count;
-		},
-
-		/**
-		 * Set the orderBy and orderDirection values
-		 *
-		 * @param string orderBy What param to order by
-		 * @param boolean orderDirection true = DESC, false = ASC
-		 */
-		setOrderBy(orderBy, orderDirection) {
-			this.orderBy = orderBy;
-			this.orderDirection = orderDirection;
-		},
-
-		/**
-		 * Set the search phrase
-		 *
-		 * @param string val
-		 */
-		setSearchPhrase(val) {
-			this.searchPhrase = val;
-		},
-
-		/**
-		 * Get statistics from the server based on the current params
-		 */
-		get: debounce(function() {
-			this.getItems();
-			this.getTimeline();
-		}, 0),
-
-		/**
-		 * Get the list of items from the server based on the current params
-		 */
-		getItems() {
-			let self = this;
-
-			this.isLoadingItems = true;
-			this.latestItemsGetRequest = $.pkp.classes.Helper.uuid();
-
-			$.ajax({
-				url: this.apiUrl,
-				type: 'GET',
-				data: this.getParams,
-				_uuid: this.latestItemsGetRequest,
-				error(r) {
-					if (self.latestItemsGetRequest !== this._uuid) {
-						return;
-					}
-					self.ajaxErrorCallback(r);
-				},
-				success(r) {
-					if (self.latestItemsGetRequest !== this._uuid) {
-						return;
-					}
-					self.items = r.items.map(row => {
-						row.total = row.abstractViews + row.galleyViews;
-						return row;
-					});
-					self.itemsMax = r.itemsMax;
-				},
-				complete(r) {
-					if (self.latestItemsGetRequest !== this._uuid) {
-						return;
-					}
-					self.isLoadingItems = false;
-				}
-			});
-		},
-
-		/**
-		 * Get the timeline data from the server based on the current params
-		 */
-		getTimeline() {
-			let self = this;
-
-			this.isLoadingTimeline = true;
-			this.latestTimelineGetRequest = $.pkp.classes.Helper.uuid();
-
-			$.ajax({
-				url: this.apiUrl + '/' + this.timelineType,
-				type: 'GET',
-				data: this.getParams,
-				_uuid: this.latestTimelineGetRequest,
-				error(r) {
-					if (self.latestTimelineGetRequest !== this._uuid) {
-						return;
-					}
-					self.ajaxErrorCallback(r);
-				},
-				success(r) {
-					if (self.latestTimelineGetRequest !== this._uuid) {
-						return;
-					}
-					self.timeline = r;
-				},
-				complete(r) {
-					if (self.latestTimelineGetRequest !== this._uuid) {
-						return;
-					}
-					self.isLoadingTimeline = false;
-				}
-			});
 		},
 
 		/**
@@ -445,12 +193,6 @@ export default {
 			this.offset = 0;
 			this.get();
 		},
-		count(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			this.getItems();
-		},
 		dateEnd(newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
@@ -464,22 +206,6 @@ export default {
 			}
 			this.offset = 0;
 			this.get();
-		},
-		isDailyIntervalEnabled(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			if (!newVal) {
-				this.timelineInterval = 'month';
-			}
-		},
-		isMonthlyIntervalEnabled(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			if (!newVal) {
-				this.timelineInterval = 'day';
-			}
 		},
 		isSidebarVisible(newVal, oldVal) {
 			if (newVal === oldVal) {
@@ -495,53 +221,9 @@ export default {
 					}
 				});
 			}
-		},
-		orderBy(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			this.offset = 0;
-			this.getItems();
-		},
-		orderDirection(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			this.offset = 0;
-			this.getItems();
-		},
-		offset(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			this.getItems();
-		},
-		searchPhrase(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			this.offset = 0;
-			debounce(this.get(), 250);
-		},
-		timelineInterval(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			this.getTimeline();
-		},
-		timelineType(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			this.getTimeline();
 		}
 	},
 	mounted() {
-		/**
-		 * Load the items
-		 */
-		this.getItems();
-
 		/**
 		 * Set the initial tabindex attributes in the sidebar
 		 */

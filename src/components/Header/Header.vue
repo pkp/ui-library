@@ -32,7 +32,8 @@ export default {
 	padding: 1rem 2rem;
 }
 
-.pkpHeader__title {
+.pkpHeader__title,
+.pkpHeader__title > * {
 	display: inline-block;
 	margin: 0;
 	padding: 0.25rem 0;
