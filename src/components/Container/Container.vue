@@ -1,6 +1,6 @@
 <script type="text/javascript">
-import PkpForm from '@/components/Form/Form.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
+import PkpForm from '@/components/Form/Form.vue';
 import SelectReviewerListPanel from '@/components/ListPanel/users/SelectReviewerListPanel.vue';
 import SelectSubmissionsListPanel from '@/components/ListPanel/submissions/SelectSubmissionsListPanel.vue';
 import SubmissionsListPanel from '@/components/ListPanel/submissions/SubmissionsListPanel.vue';
@@ -10,8 +10,8 @@ import Tabs from '@/components/Tabs/Tabs.vue';
 export default {
 	name: 'Container',
 	components: {
-		PkpForm,
 		ListPanel,
+		PkpForm,
 		SelectReviewerListPanel,
 		SelectSubmissionsListPanel,
 		SubmissionsListPanel,

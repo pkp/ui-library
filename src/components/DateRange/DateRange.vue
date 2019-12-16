@@ -46,7 +46,7 @@
 							@focus="focus"
 						/>
 					</label>
-					<span class="pkpDateRange__separator">&mdash;</span>
+					<span class="pkpDateRange__separator">—</span>
 					<label>
 						<span class="-screenReader">{{ i18n.toDate }}</span>
 						<input
@@ -125,7 +125,7 @@ export default {
 			} else if (!this.dateStart && !this.dateEnd) {
 				return this.i18n.allDates;
 			}
-			return this.dateStart + ' &mdash; ' + this.dateEnd;
+			return this.dateStart + ' — ' + this.dateEnd;
 		}
 	},
 	methods: {
@@ -315,6 +315,13 @@ export default {
 	mounted() {
 		this.localDateStart = this.dateStart;
 		this.localDateEnd = this.dateEnd;
+	},
+	watch: {
+		currentRange(newVal, oldVal) {
+			if (newVal !== oldVal) {
+				this.$emit('updated:current-range', newVal);
+			}
+		}
 	}
 };
 </script>

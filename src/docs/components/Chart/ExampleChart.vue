@@ -1,17 +1,17 @@
 <script>
 import Example from '@/docs/Example.vue';
-import Chart from '@/components/Chart/LineChart.vue';
+import LineChart from '@/components/Chart/LineChart.vue';
 import config from './config';
 
 export default {
 	extends: Example,
 	components: {
-		Chart
+		LineChart
 	},
 	data() {
 		return {
 			...config,
-			component: 'chart'
+			component: 'line-chart'
 		};
 	}
 };

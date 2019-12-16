@@ -16,7 +16,7 @@ export default {
 		 * @return {String}
 		 */
 		localizeSubmission: function(localizedString, submissionLocale) {
-			if (localizedString === null) {
+			if (typeof localizedString === 'undefined') {
 				return '';
 			} else if (
 				localizedString.hasOwnProperty($.pkp.app.currentLocale) &&
