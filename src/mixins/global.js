@@ -144,6 +144,13 @@ export default {
 		ajaxErrorCallback: function(r) {
 			var msg, modalOptions, $modal, modalHandler;
 
+			// If the user browses away from the page before a response has been
+			// received by the ajax request, the error handler will be invoked.
+			// Do nothing so the user does not see an obsolete error message.
+			if ('status' in r && r.status == 0) {
+				return;
+			}
+
 			if ('responseJSON' in r && 'errorMessage' in r.responseJSON) {
 				msg = r.responseJSON.errorMessage;
 			} else {
