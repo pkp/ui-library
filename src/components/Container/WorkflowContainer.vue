@@ -568,13 +568,10 @@ export default {
 	min-height: 2rem;
 }
 
-.pkpWorkflow__identification {
+.pkpWorkflow__header .pkpWorkflow__identification {
 	font-size: @font-sml;
 	font-weight: @normal;
 	line-height: 2rem;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
 }
 
 .pkpWorkflow__identificationStatus {

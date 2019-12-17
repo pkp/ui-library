@@ -1,8 +1,10 @@
 <template>
 	<pkp-header :isOneLine="true">
-		Data Modelling and Conceptual Modelling: a comparative analysis of
-		functionality and roles within both wide and narrow scopes in a context of
-		rapid synergistic iterative evolution
+		<h1>
+			Data Modelling and Conceptual Modelling: a comparative analysis of
+			functionality and roles within both wide and narrow scopes in a context of
+			rapid synergistic iterative evolution
+		</h1>
 		<template slot="actions">
 			<pkp-button label="Preview" />
 			<pkp-button label="Activity Log" />

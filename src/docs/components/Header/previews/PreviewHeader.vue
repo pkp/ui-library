@@ -1,6 +1,6 @@
 <template>
 	<pkp-header>
-		Submissions
+		<h1>Submissions</h1>
 	</pkp-header>
 </template>
 

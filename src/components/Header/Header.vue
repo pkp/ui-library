@@ -32,8 +32,7 @@ export default {
 	padding: 1rem 2rem;
 }
 
-.pkpHeader__title,
-.pkpHeader__title > * {
+.pkpHeader__title {
 	display: inline-block;
 	margin: 0;
 	padding: 0.25rem 0;
@@ -44,6 +43,22 @@ export default {
 	.pkpSpinner {
 		margin-left: 0.5rem;
 	}
+}
+
+.pkpHeader__title > h1,
+.pkpHeader__title > h2,
+.pkpHeader__title > h3,
+.pkpHeader__title > h4,
+.pkpHeader__title > h5,
+.pkpHeader__title > h6 {
+	margin: 0;
+	font-size: @font-base;
+	font-weight: @bold;
+	line-height: 1.5em;
+}
+
+.pkpHeader__title > legend {
+	display: block;
 }
 
 .pkpHeader__actions {
@@ -68,7 +83,8 @@ export default {
 	justify-content: space-between;
 	align-items: center;
 
-	.pkpHeader__title {
+	.pkpHeader__title,
+	.pkpHeader__title > * {
 		margin-right: auto; // flex: align left when only one item
 		white-space: nowrap;
 		overflow: hidden;

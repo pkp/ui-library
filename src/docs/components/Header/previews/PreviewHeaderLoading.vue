@@ -1,6 +1,6 @@
 <template>
 	<pkp-header>
-		Submissions
+		<h3>Submissions</h3>
 		<spinner v-if="isLoading" />
 		<template slot="actions">
 			<pkp-button

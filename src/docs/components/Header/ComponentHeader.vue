@@ -4,6 +4,8 @@ import ExampleHeader from './ExampleHeader.vue';
 import ExampleHeaderActions from './ExampleHeaderActions.vue';
 import ExampleHeaderLoading from './ExampleHeaderLoading.vue';
 import ExampleHeaderOneLine from './ExampleHeaderOneLine.vue';
+import ExampleHeaderNoHeading from './ExampleHeaderNoHeading.vue';
+import ExampleHeaderLegend from './ExampleHeaderLegend.vue';
 
 export default {
 	extends: Component,
@@ -11,7 +13,9 @@ export default {
 		ExampleHeader,
 		ExampleHeaderActions,
 		ExampleHeaderLoading,
-		ExampleHeaderOneLine
+		ExampleHeaderOneLine,
+		ExampleHeaderNoHeading,
+		ExampleHeaderLegend
 	},
 	data() {
 		return {
@@ -20,7 +24,9 @@ export default {
 				ExampleHeader: 'Base',
 				ExampleHeaderActions: 'With Actions',
 				ExampleHeaderLoading: 'With Loading Status',
-				ExampleHeaderOneLine: 'With One Line'
+				ExampleHeaderOneLine: 'With One Line',
+				ExampleHeaderNoHeading: 'With no <h1>',
+				ExampleHeaderLegend: 'With Legend'
 			}
 		};
 	}

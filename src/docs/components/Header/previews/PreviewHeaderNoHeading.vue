@@ -1,9 +1,9 @@
 <template>
 	<pkp-header>
-		<h3>Participants</h3>
+		Data Modelling and Conceptual Modelling
 		<template slot="actions">
-			<pkp-button label="Send Message" />
-			<pkp-button label="Add Participant" />
+			<pkp-button label="Preview" />
+			<pkp-button label="Activity Log" />
 		</template>
 	</pkp-header>
 </template>
