@@ -220,6 +220,36 @@ export default {
 		},
 
 		/**
+		 * Open a modal to prompt the user to confirm creation of
+		 * a new version
+		 */
+		openCreateVersionPrompt() {
+			const focusTarget = document.activeElement;
+			const modalOptions = {
+				modalHandler: '$.pkp.controllers.modal.ConfirmationModalHandler',
+				title: '',
+				okButton: this.i18n.yes,
+				cancelButton: this.i18n.no,
+				dialogText: this.i18n.versionConfirm,
+				callback: () => {
+					this.createVersion();
+				},
+				closeCallback: () => {
+					if (focusTarget) {
+						focusTarget.focus();
+					}
+				}
+			};
+
+			$(
+				'<div id="' +
+					$.pkp.classes.Helper.uuid() +
+					'" ' +
+					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>'
+			).pkpHandler(modalOptions.modalHandler, modalOptions);
+		},
+
+		/**
 		 * Open a file upload modal
 		 *
 		 * Only used in author dashboard
