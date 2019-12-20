@@ -20,8 +20,9 @@ export default {
 	},
 	data() {
 		return {
-			contributorsGridUrl: '',
+			canAccessPublication: true,
 			canEditPublication: true,
+			contributorsGridUrl: '',
 			csrfToken: '',
 			currentPublication: null,
 			editorialHistoryUrl: '',
@@ -511,7 +512,6 @@ export default {
 			this.setPublicationForms(newVal);
 			this.loadContributorsGrid(newVal);
 			this.loadRepresentationsGrid(newVal);
-			this.loadRevisionsGrid(newVal);
 			if (newVal.id === this.currentPublication.id) {
 				this.currentPublication = {};
 				this.currentPublication = newVal;
