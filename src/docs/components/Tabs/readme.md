@@ -27,7 +27,7 @@ This only works when the tab is visible. If the `publication` tab was nested ins
 ```html
 <tabs>
 	<tab id="hello" label="Hello">...</tab>
-	<tab id="world" label"World">
+	<tab id="world" label="World">
 		<tabs>
 			<tab id="lorem" label="Lorem">...</tab>
 			<tab id="ipsum" label="Ipsum">...</tab>
