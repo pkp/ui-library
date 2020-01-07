@@ -411,7 +411,7 @@ export default {
 				});
 
 				// Pass the publication status to the issue selection field
-				if (formId === pkp.const.FORM_JOURNAL_ENTRY) {
+				if (formId === pkp.const.FORM_ISSUE_ENTRY) {
 					form.fields = form.fields.map(field => {
 						if (field.name === 'issueId') {
 							field.publicationStatus = publication.status;

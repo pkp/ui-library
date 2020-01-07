@@ -212,8 +212,8 @@
 						<tab id="license" label="Permissions & Disclosure">
 							<pkp-form v-bind="components.publicationLicense" @set="set" />
 						</tab>
-						<tab id="issue" label="Journal Entry">
-							<pkp-form v-bind="components.journalEntry" @set="set" />
+						<tab id="issue" label="Issue">
+							<pkp-form v-bind="components.issueEntry" @set="set" />
 						</tab>
 					</tabs>
 					<span class="pkpPublication__mask" :class="publicationMaskClasses">
