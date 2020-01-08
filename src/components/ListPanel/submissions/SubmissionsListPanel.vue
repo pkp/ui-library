@@ -163,7 +163,8 @@ export default {
 				pkp.const.ROLE_ID_MANAGER,
 				pkp.const.ROLE_ID_SUB_EDITOR,
 				pkp.const.ROLE_ID_ASSISTANT,
-				pkp.const.ROLE_ID_AUTHOR
+				pkp.const.ROLE_ID_AUTHOR,
+				pkp.const.ROLE_ID_REVIEWER
 			]);
 		}
 	},
