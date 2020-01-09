@@ -398,17 +398,9 @@ export default {
 				});
 
 				// Add/remove save button depending on publication status or user permissions
-				form.pages = form.pages.map(page => {
-					if (
-						publication.status === pkp.const.STATUS_PUBLISHED ||
-						!this.canEditPublication
-					) {
-						delete page['submitButton'];
-					} else {
-						page.submitButton = {label: this.i18n.save};
-					}
-					return page;
-				});
+				form.canSubmit =
+					this.canEditPublication &&
+					publication.status !== pkp.const.STATUS_PUBLISHED;
 
 				// Pass the publication status to the issue selection field
 				if (formId === pkp.const.FORM_ISSUE_ENTRY) {
