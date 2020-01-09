@@ -38,6 +38,7 @@
 				:fields="fields"
 				:errors="errors"
 				:formId="id"
+				:canSubmit="canSubmit"
 				:isCurrentPage="currentPage === page.id"
 				:isLastPage="index === pages.length - 1"
 				:primaryLocale="primaryLocale"
@@ -72,6 +73,12 @@ export default {
 		id: String,
 		method: String,
 		action: String,
+		canSubmit: {
+			type: Boolean,
+			default() {
+				return true;
+			}
+		},
 		errors: {
 			type: Object,
 			default() {
@@ -223,6 +230,10 @@ export default {
 		 * Submit the form
 		 */
 		submit() {
+			if (!this.canSubmit) {
+				return false;
+			}
+
 			this.isSaving = true;
 
 			let errors = this.validate();
