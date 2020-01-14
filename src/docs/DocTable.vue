@@ -24,9 +24,7 @@
 			<template v-else-if="title === 'Props'">
 				This component does not accept props.
 			</template>
-			<template v-else>
-				This component does not have {{ title }}.
-			</template>
+			<template v-else>This component does not have {{ title }}.</template>
 		</p>
 	</div>
 </template>
