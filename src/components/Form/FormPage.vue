@@ -44,7 +44,9 @@
 					<pkp-button
 						v-if="submitButton"
 						v-bind="submitButton"
-						:disabled="isLastPage && !!Object.keys(errors).length"
+						:disabled="
+							!canSubmit || (isLastPage && !!Object.keys(errors).length)
+						"
 						@click="submit"
 					/>
 				</template>
@@ -78,6 +80,12 @@ export default {
 		availableLocales: Array,
 		submitButton: Object,
 		previousButton: Object,
+		canSubmit: {
+			type: Boolean,
+			default() {
+				return true;
+			}
+		},
 		isSaving: Boolean,
 		i18n: Object
 	},

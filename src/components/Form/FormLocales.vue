@@ -3,6 +3,7 @@
 		<button
 			v-for="locale in additionalLocales"
 			class="pkpFormLocales__locale"
+			type="button"
 			:key="locale.key"
 			:label="locale.label"
 			:class="{

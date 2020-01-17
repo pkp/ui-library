@@ -20,8 +20,9 @@ export default {
 	},
 	data() {
 		return {
-			contributorsGridUrl: '',
+			canAccessPublication: true,
 			canEditPublication: true,
+			contributorsGridUrl: '',
 			csrfToken: '',
 			currentPublication: null,
 			editorialHistoryUrl: '',
@@ -220,6 +221,36 @@ export default {
 		},
 
 		/**
+		 * Open a modal to prompt the user to confirm creation of
+		 * a new version
+		 */
+		openCreateVersionPrompt() {
+			const focusTarget = document.activeElement;
+			const modalOptions = {
+				modalHandler: '$.pkp.controllers.modal.ConfirmationModalHandler',
+				title: '',
+				okButton: this.i18n.yes,
+				cancelButton: this.i18n.no,
+				dialogText: this.i18n.versionConfirm,
+				callback: () => {
+					this.createVersion();
+				},
+				closeCallback: () => {
+					if (focusTarget) {
+						focusTarget.focus();
+					}
+				}
+			};
+
+			$(
+				'<div id="' +
+					$.pkp.classes.Helper.uuid() +
+					'" ' +
+					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>'
+			).pkpHandler(modalOptions.modalHandler, modalOptions);
+		},
+
+		/**
 		 * Open a file upload modal
 		 *
 		 * Only used in author dashboard
@@ -368,20 +399,12 @@ export default {
 				});
 
 				// Add/remove save button depending on publication status or user permissions
-				form.pages = form.pages.map(page => {
-					if (
-						publication.status === pkp.const.STATUS_PUBLISHED ||
-						!this.canEditPublication
-					) {
-						delete page['submitButton'];
-					} else {
-						page.submitButton = {label: this.i18n.save};
-					}
-					return page;
-				});
+				form.canSubmit =
+					this.canEditPublication &&
+					publication.status !== pkp.const.STATUS_PUBLISHED;
 
 				// Pass the publication status to the issue selection field
-				if (formId === pkp.const.FORM_JOURNAL_ENTRY) {
+				if (formId === pkp.const.FORM_ISSUE_ENTRY) {
 					form.fields = form.fields.map(field => {
 						if (field.name === 'issueId') {
 							field.publicationStatus = publication.status;
@@ -489,7 +512,6 @@ export default {
 			this.setPublicationForms(newVal);
 			this.loadContributorsGrid(newVal);
 			this.loadRepresentationsGrid(newVal);
-			this.loadRevisionsGrid(newVal);
 			if (newVal.id === this.currentPublication.id) {
 				this.currentPublication = {};
 				this.currentPublication = newVal;
