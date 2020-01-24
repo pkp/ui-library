@@ -149,21 +149,6 @@ export default {
 	},
 	computed: {
 		/**
-		 * Is the current value the same as the initial value?
-		 *
-		 * @return {Boolean}
-		 */
-		isInitialValue() {
-			return (
-				!!this.currentValue &&
-				!!this.initialValue &&
-				!!this.currentValue.dateUploaded &&
-				!!this.initialValue.dateUploaded &&
-				this.currentValue.dateUploaded === this.initialValue.dateUploaded
-			);
-		},
-
-		/**
 		 * Determine the `src` attribute for the thumbnail preview
 		 *
 		 * @return {String}
