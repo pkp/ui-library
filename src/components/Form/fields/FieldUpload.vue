@@ -139,7 +139,9 @@ export default {
 			return (
 				!!this.currentValue &&
 				!!this.initialValue &&
-				this.currentValue === this.initialValue
+				!!this.currentValue.dateUploaded &&
+				!!this.initialValue.dateUploaded &&
+				this.currentValue.dateUploaded === this.initialValue.dateUploaded
 			);
 		},
 
@@ -151,7 +153,7 @@ export default {
 		fileName() {
 			return this.uploadFile
 				? this.uploadFile.upload.filename
-				: this.currentValue;
+				: this.currentValue.uploadName;
 		},
 
 		/**
@@ -280,7 +282,7 @@ export default {
 		success: function(file, response) {
 			this.$emit('change', {
 				name: this.name,
-				value: response.id,
+				value: {temporaryFileId: response.id},
 				localeKey: this.localeKey
 			});
 			this.setFocusToControl();
