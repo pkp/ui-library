@@ -4,6 +4,7 @@ import ExampleFieldText from './ExampleFieldText.vue';
 import ExampleSmall from './ExampleSmall.vue';
 import ExampleLarge from './ExampleLarge.vue';
 import ExamplePrefix from './ExamplePrefix.vue';
+import ExampleOptIntoEdit from './ExampleOptIntoEdit.vue';
 
 export default {
 	extends: Component,
@@ -11,7 +12,8 @@ export default {
 		ExampleFieldText,
 		ExampleSmall,
 		ExampleLarge,
-		ExamplePrefix
+		ExamplePrefix,
+		ExampleOptIntoEdit
 	},
 	data() {
 		return {
@@ -21,7 +23,8 @@ export default {
 				ExampleFieldText: 'Base',
 				ExampleSmall: 'Small',
 				ExampleLarge: 'Large',
-				ExamplePrefix: 'Prefix'
+				ExamplePrefix: 'Prefix',
+				ExampleOptIntoEdit: 'Opt Into Edit'
 			}
 		};
 	}
