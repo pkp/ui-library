@@ -22,6 +22,15 @@ export const propDocs = [
 			'The `type` attribute for the `<input>` field. See [available types](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Form_%3Cinput%3E_types). Default: `text`.'
 	},
 	{
+		key: 'optIntoEdit',
+		description:
+			'Disables the field and adds a button that the user must click before they can edit it. Default: `false`.'
+	},
+	{
+		key: 'optIntoEditLabel',
+		description: 'The label for the button added by `optIntoEdit`.'
+	},
+	{
 		key: 'size',
 		description: 'One of `small`, `normal` or `large`. Default: `normal`.'
 	},

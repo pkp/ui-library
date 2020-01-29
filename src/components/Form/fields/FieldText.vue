@@ -36,33 +36,42 @@
 			:id="describedByDescriptionId"
 		/>
 		<div class="pkpFormField__control" :class="controlClasses">
-			<input
-				class="pkpFormField__input pkpFormField--text__input"
-				ref="input"
-				v-model="currentValue"
-				:type="inputType"
-				:id="controlId"
-				:name="localizedName"
-				:aria-describedby="describedByIds"
-				:aria-invalid="!!errors.length"
-				:required="isRequired"
-				:style="inputStyles"
-			/>
-			<span
-				v-if="prefix"
-				class="pkpFormField__inputPrefix"
-				v-html="prefix"
-				ref="prefix"
-				:style="prefixStyles"
-				@click="setFocus"
-			/>
-			<multilingual-progress
-				v-if="isMultilingual && locales.length > 1"
-				:id="multilingualProgressId"
-				:count="multilingualFieldsCompleted"
-				:total="locales.length"
-				:i18n="i18n"
-			/>
+			<div class="pkpFormField__control_top">
+				<input
+					class="pkpFormField__input pkpFormField--text__input"
+					ref="input"
+					v-model="currentValue"
+					:type="inputType"
+					:id="controlId"
+					:name="localizedName"
+					:aria-describedby="describedByIds"
+					:aria-invalid="!!errors.length"
+					:disabled="isDisabled"
+					:required="isRequired"
+					:style="inputStyles"
+				/>
+				<span
+					v-if="prefix"
+					class="pkpFormField__inputPrefix"
+					v-html="prefix"
+					ref="prefix"
+					:style="prefixStyles"
+					@click="setFocus"
+				/>
+				<multilingual-progress
+					v-if="isMultilingual && locales.length > 1"
+					:id="multilingualProgressId"
+					:count="multilingualFieldsCompleted"
+					:total="locales.length"
+					:i18n="i18n"
+				/>
+				<pkp-button
+					v-if="optIntoEdit && isDisabled"
+					class="pkpFormField--text__optIntoEdit"
+					:label="optIntoEditLabel"
+					@click="isDisabled = false"
+				/>
+			</div>
 			<field-error
 				v-if="errors.length"
 				:id="describedByErrorId"
@@ -74,12 +83,18 @@
 
 <script>
 import FieldBase from './FieldBase.vue';
+import PkpButton from '@/components/Button/Button.vue';
 
 export default {
 	name: 'FieldText',
 	extends: FieldBase,
+	components: {
+		PkpButton
+	},
 	props: {
 		inputType: String,
+		optIntoEdit: Boolean,
+		optIntoEditLabel: String,
 		size: {
 			default: 'normal',
 			validator: function(value) {
@@ -91,6 +106,7 @@ export default {
 	data() {
 		return {
 			inputStyles: {},
+			isDisabled: false,
 			prefixStyles: {}
 		};
 	},
@@ -176,6 +192,11 @@ export default {
 				}
 			}, 700);
 		});
+
+		// Set the field to disabled if optIntoEdit is passed
+		if (this.optIntoEdit) {
+			this.isDisabled = true;
+		}
 	}
 };
 </script>
@@ -185,6 +206,7 @@ export default {
 
 .pkpFormField--text__input {
 	width: 20em;
+	display: inline-block;
 }
 
 .pkpFormField__control {
@@ -253,6 +275,11 @@ export default {
 	border-color: @primary;
 }
 
+.pkpFormField--text__optIntoEdit {
+	margin-left: 0.25rem;
+	height: 2.5rem; // Match input height
+}
+
 .pkpFormField--sizesmall {
 	.pkpFormField--text__input {
 		width: 10em;
@@ -262,6 +289,12 @@ export default {
 .pkpFormField--sizelarge {
 	.pkpFormField--text__input {
 		width: 100%;
+	}
+
+	.pkpFormField--text__optIntoEdit {
+		margin-left: 0;
+		margin-top: 0.25rem;
+		height: inherit;
 	}
 }
 </style>
