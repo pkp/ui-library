@@ -19,6 +19,13 @@ export default {
 		Tab,
 		Tabs,
 		ThemeForm
+	},
+	mounted() {
+		pkp.eventBus.$on('form-success', (formId, context) => {
+			if (formId === pkp.const.FORM_PAYMENT_SETTINGS) {
+				window.location.reload(true);
+			}
+		});
 	}
 };
 </script>
