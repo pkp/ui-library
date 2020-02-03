@@ -109,7 +109,8 @@ export default {
 					self.publicationList.push({
 						id: r.id,
 						datePublished: r.datePublished,
-						status: r.status
+						status: r.status,
+						version: r.version
 					});
 					self.workingPublication = {};
 					self.workingPublication = r;
@@ -120,7 +121,7 @@ export default {
 						// version is created. We do this to force the
 						// user to slow down and process what happened.
 						// We hope this will reinforce the perception
-						// that cerating a new version is a "big
+						// that creating a new version is a "big
 						// action", and properly communicate the scale
 						// of what has happened behind the scenes.
 						const nowTime = new Date();
@@ -497,9 +498,9 @@ export default {
 		updatePublicationInList(newPublication) {
 			this.publicationList.forEach(publication => {
 				if (publication.id === newPublication.id) {
-					(publication.id = newPublication.id),
-						(publication.datePublished = newPublication.datePublished);
+					publication.datePublished = newPublication.datePublished;
 					publication.status = newPublication.status;
+					publication.version = newPublication.version;
 				}
 			});
 		}
