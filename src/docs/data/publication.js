@@ -155,7 +155,7 @@ export default {
 		en_US: ''
 	},
 	sectionId: 1,
-	seq: null,
+	seq: 0,
 	source: {
 		fr_CA: '',
 		en_US: ''

@@ -1,5 +1,5 @@
 <template>
-	<div class="pkpWorkflow">
+	<div class="pkpWorkflow" v-cloak>
 		<pkp-header :is-one-line="true" class="pkpWorkflow__header">
 			<h1 class="pkpWorkflow__identification">
 				<badge
@@ -91,11 +91,11 @@
 							</span>
 						</span>
 						<span
-							v-if="submission.publications.length > 1"
+							v-if="publicationList.length > 1"
 							class="pkpPublication__version"
 						>
 							<strong tabindex="0">{{ i18n.version }}</strong>
-							{{ workingPublication.id }}
+							{{ workingPublication.version }}
 							<dropdown
 								class="pkpPublication__versions"
 								label="All Versions"
@@ -104,15 +104,15 @@
 							>
 								<ul>
 									<li
-										v-for="publication in submission.publications"
+										v-for="publication in publicationList"
 										:key="publication.id"
 									>
 										<button
 											class="pkpDropdown__action"
-											:disabled="publication.id === workingPublication"
+											:disabled="publication.id === workingPublication.id"
 											@click="setWorkingPublicationById(publication.id)"
 										>
-											{{ publication.id }} /
+											{{ publication.version }} /
 											<template
 												v-if="
 													publication.status === getConstant('STATUS_QUEUED') &&
@@ -133,11 +133,9 @@
 													publication.status === getConstant('STATUS_PUBLISHED')
 												"
 											>
-												Published
+												{{ publication.datePublished }}
 											</template>
-											<template v-else>
-												Unpublished
-											</template>
+											<template v-else>Unpublished</template>
 										</button>
 									</li>
 								</ul>
@@ -154,15 +152,25 @@
 										? i18n.publish
 										: i18n.schedulePublication
 								"
-								@click="alert('Opens a modal to confirm publishing')"
+								@click="alert('Opens a modal to confirm publishing.')"
 							></pkp-button>
 							<pkp-button
 								v-else-if="
 									workingPublication.status === getConstant('STATUS_SCHEDULED')
 								"
-								label="Unscheduled"
+								label="Unschedule"
 								:is-warnable="true"
-								@click="alert('Opens a modal to confirm scheduling')"
+								@click="
+									alert('Opens a modoal to confirm scheduling for publication.')
+								"
+							></pkp-button>
+							<pkp-button
+								v-else-if="
+									workingPublication.status === getConstant('STATUS_PUBLISHED')
+								"
+								label="Unpublish"
+								:is-warnable="true"
+								@click="alert('Opens a modal to confirm unpublishing.')"
 							></pkp-button>
 							<pkp-button
 								v-if="canCreateNewVersion"
@@ -196,13 +204,13 @@
 							</div>
 						</tab>
 						<tab id="metadata" label="Metadata">
-							.
+							<pkp-form v-bind="components.metadata" @set="set" />
 						</tab>
 						<tab v-if="supportsReferences" id="citations" label="Citations">
-							.
+							<pkp-form v-bind="components.citations" @set="set" />
 						</tab>
 						<tab id="identifiers" label="Identifiers">
-							.
+							... DOIs ...
 						</tab>
 						<tab id="galleys" label="Galleys">
 							<div id="representations-grid" ref="representations">
@@ -210,10 +218,10 @@
 							</div>
 						</tab>
 						<tab id="license" label="Permissions & Disclosure">
-							<pkp-form v-bind="components.publicationLicense" @set="set" />
+							... copyright and license ...
 						</tab>
 						<tab id="issue" label="Issue">
-							<pkp-form v-bind="components.issueEntry" @set="set" />
+							... issue form for cover image, section, etc...
 						</tab>
 					</tabs>
 					<span class="pkpPublication__mask" :class="publicationMaskClasses">
@@ -227,19 +235,65 @@
 
 <script>
 import WorkflowContainer from '@/components/Container/WorkflowContainer.vue';
+import formCitations from '@/docs/components/Form/helpers/form-citations';
+import formMetadata from '@/docs/components/Form/helpers/form-metadata';
 import formTitleAbstract from '@/docs/components/Form/helpers/form-title-abstract';
 import basePublication from '@/docs/data/publication';
 
 export default {
 	extends: WorkflowContainer,
 	data: function() {
+		const currentPublication = {
+			...basePublication,
+			id: 852,
+			datePublished: '2019-03-23 09:12:32',
+			isPublished: true,
+			issueId: 1,
+			lastModified: '2019-03-23 09:12:32',
+			status: 3,
+			version: 2
+		};
+		const latestPublication = {
+			...basePublication,
+			id: 921,
+			lastModified: '2019-06-03 18:03:32',
+			status: 1,
+			title: {
+				en_US: 'Amet sit dolor ipsum lorem',
+				fr_CA: 'FR Amet sit dolor ipsum lorem'
+			},
+			version: 3
+		};
 		return {
 			components: {
+				citations: formCitations,
+				metadata: formMetadata,
 				titleAbstract: formTitleAbstract
 			},
 			contributorsGridUrl: 'http://example.org',
 			csrfToken: '1234',
+			currentPublication: currentPublication,
 			publicationFormIds: ['titleAbstract'],
+			publicationList: [
+				{
+					id: 801,
+					datePublished: '2019-01-01 12:01:23',
+					status: 3,
+					version: 1
+				},
+				{
+					id: currentPublication.id,
+					datePublished: currentPublication.datePublished,
+					status: currentPublication.status,
+					version: currentPublication.version
+				},
+				{
+					id: latestPublication.id,
+					datePublished: latestPublication.datePublished,
+					status: latestPublication.status,
+					version: latestPublication.version
+				}
+			],
 			representationsGridUrl: 'http://example.org',
 			submission: {
 				contextId: 1,
@@ -248,37 +302,6 @@ export default {
 				dateSubmitted: '2018-08-03',
 				id: 732,
 				lastModified: '2019-06-03 18:03:32',
-				publications: [
-					{
-						...basePublication,
-						id: 801,
-						datePublished: '2019-01-01 12:01:23',
-						isPublished: true,
-						issueId: 1,
-						lastModified: '2019-01-01 12:01:23',
-						publicationType: 'preprint',
-						status: 3
-					},
-					{
-						...basePublication,
-						id: 852,
-						datePublished: '2019-03-23 09:12:32',
-						isPublished: true,
-						issueId: 1,
-						lastModified: '2019-03-23 09:12:32',
-						status: 3
-					},
-					{
-						...basePublication,
-						id: 921,
-						lastModified: '2019-06-03 18:03:32',
-						status: 1,
-						title: {
-							en_US: 'Amet sit dolor ipsum lorem',
-							fr_CA: 'FR Amet sit dolor ipsum lorem'
-						}
-					}
-				],
 				stageId: 5,
 				status: 1,
 				submissionProgress: 0,
@@ -289,6 +312,7 @@ export default {
 			},
 			submissionApiUrl: 'http://example.org',
 			supportsReferences: true,
+			workingPublication: latestPublication,
 			i18n: {
 				preview: 'Preview',
 				publish: 'Publish',

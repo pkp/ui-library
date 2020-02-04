@@ -12,7 +12,12 @@ export default {
 		{...FieldTextPrefix, groupId: 'default'},
 		{...FieldTextTitle, groupId: 'default'},
 		{...FieldTextSubtitle, groupId: 'default'},
-		{...FieldRichTextareaAbstract, groupId: 'default'}
+		{
+			...FieldRichTextareaAbstract,
+			toolbar: 'bold italic superscript subscript | link',
+			plugins: 'paste,link',
+			groupId: 'default'
+		}
 	],
 	groups: [
 		{
