@@ -39,6 +39,7 @@ export const submissionsListPanel = {
 	deleting: 'Deleting',
 	currentStage: 'Currently in the {$stage} stage.',
 	confirmDelete: 'Delete submission?',
+	lastActivity: 'Last activity recorded on {$date}.',
 	responseDue: 'Response due',
 	reviewDue: 'Review due',
 	viewSubmission: 'View Submission',
