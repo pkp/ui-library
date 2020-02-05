@@ -31,7 +31,7 @@
 			<div class="pkpFormPage__buttons" ref="buttons">
 				<template v-if="isSaving">
 					<span class="pkpFormPage__loading">
-						<span class="pkpSpinner" aria-hidden="true"></span>
+						<spinner />
 						{{ i18n.saving }}
 					</span>
 				</template>
@@ -59,13 +59,15 @@
 import FormErrors from '@/components/Form/FormErrors.vue';
 import FormGroup from '@/components/Form/FormGroup.vue';
 import PkpButton from '@/components/Button/Button.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
 
 export default {
 	name: 'FormPage',
 	components: {
 		FormErrors,
 		FormGroup,
-		PkpButton
+		PkpButton,
+		Spinner
 	},
 	props: {
 		id: String,
@@ -214,13 +216,13 @@ export default {
 
 .pkpFormPage__buttons {
 	display: inline-block;
+
+	> * {
+		margin-right: 0.5em;
+	}
 }
 
 .pkpFormPage__loading {
 	font-size: @font-tiny;
-
-	.pkpSpinner {
-		margin-right: 0.5em;
-	}
 }
 </style>

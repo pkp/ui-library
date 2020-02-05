@@ -1,6 +1,6 @@
 export default {
 	name: 'doi',
-	component: 'field-doi',
+	component: 'field-pub-id',
 	label: 'DOI',
 	value: '',
 	contextInitials: 'PKP',

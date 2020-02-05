@@ -40,6 +40,10 @@ export default {
 	font-weight: @bold;
 	line-height: 1.5em;
 
+	> * {
+		display: inline-block;
+	}
+
 	.pkpSpinner {
 		margin-left: 0.5rem;
 	}

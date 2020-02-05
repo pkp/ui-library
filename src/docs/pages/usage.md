@@ -1,6 +1,6 @@
 # Usage Guide
 
-This UI Library uses [Vue](https://vuejs.org/), a JavaScript library for building interactive applications. If you're not familiar with Vue, read its [usage guide](https://vuejs.org/v2/guide/) before continuing.
+This UI Library uses [Vue.js](https://vuejs.org/), a JavaScript library for building interactive applications. If you're not familiar with Vue.js, read its [usage guide](https://vuejs.org/v2/guide/) before continuing.
 
 ## Working with OJS and OMP
 
@@ -26,13 +26,13 @@ npm run build
 
 ## Apps
 
-An app is a root component that manages `data` for child components. Whenever you want to use a Vue component in OJS or OMP, it must be controlled by an app.
+An app is a root component that manages `data` for child components. Whenever you want to use a Vue.js component in OJS or OMP, it must be controlled by an app.
 
 Read about the [`Container`](/#/pages/container) app.
 
 ## Passing events between Apps
 
-When two Apps need to communicate with each other, you can use the global event bus. The event bus is an instance of Vue so you can use the same [events API](https://vuejs.org/v2/api/#Instance-Methods-Events) as any other component.
+When two Apps need to communicate with each other, you can use the global event bus. The event bus is an instance of Vue.js so you can use the same [events API](https://vuejs.org/v2/api/#Instance-Methods-Events) as any other component.
 
 Send a global event.
 

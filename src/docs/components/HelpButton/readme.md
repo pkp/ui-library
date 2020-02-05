@@ -1,8 +1,6 @@
 
 Use this component to display an icon that will open the help panel when clicked.
 
-[View Source](https://github.com/pkp/ui-library/)
-
 ## Usage Recommendations
 
 Use the help panel when **instructions** for completing actions require further information, such as a description of when one choice should be made over another. This will commonly occur with form fields or other controls where limited space is available.

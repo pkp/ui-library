@@ -32,7 +32,7 @@ A `Form` expects to receive a URL to which it can submit a `PUT` or `POST` reque
 - A `403` or `404` response when the server refuses the submission with a JSON object describing the error.
 - A `400` response when a validation error occurs with one of the fields. In this case, a JSON object will be returned with each invalid field as a key and an array of errors for that field.
 
-See the [API Documentation](https://docs.pkp.sfu.ca/dev/api/ojs/dev) for the specification of errors.
+See the [API Documentation](https://docs.pkp.sfu.ca/dev/api) for the specification of errors.
 
 ## Groups and Group Descriptions
 

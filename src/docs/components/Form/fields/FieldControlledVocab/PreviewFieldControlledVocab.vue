@@ -341,7 +341,8 @@ export default {
 				'feugiat',
 				'lectus',
 				'sed'
-			]
+			],
+			suggestionsLoaded: true
 		};
 	}
 };
