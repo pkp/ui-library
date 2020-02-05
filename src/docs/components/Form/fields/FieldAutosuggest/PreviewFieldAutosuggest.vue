@@ -30,7 +30,8 @@ export default {
 				'Elinor Ostrom',
 				'Fabio Paglieri',
 				'John Mwandenga'
-			]
+			],
+			suggestionsLoaded: true
 		};
 	}
 };
