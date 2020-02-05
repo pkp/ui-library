@@ -21,7 +21,7 @@ let items = [
 		fullName: 'Aisla McCrae',
 		reviewsActive: 23,
 		reviewsCompleted: 32,
-		dateLastReviewAssignment: '2017-12-31 11:22:42',
+		dateLastReviewAssignment: '2019-12-31 11:22:42',
 		reviewerRating: 5,
 		orcid: 'http://orcid.org/0000-0002-1825-0097',
 		biography: {
@@ -68,7 +68,7 @@ let items = [
 		fullName: 'Adela Gallego',
 		reviewsActive: 1,
 		reviewsCompleted: 0,
-		dateLastReviewAssignment: '2018-01-25 11:22:42',
+		dateLastReviewAssignment: '2019-01-25 11:22:42',
 		reviewerRating: 5
 	},
 	{
@@ -77,7 +77,7 @@ let items = [
 		fullName: 'Habiba Yousef',
 		reviewsActive: 1,
 		reviewsCompleted: 0,
-		dateLastReviewAssignment: '2017-06-07 11:22:42',
+		dateLastReviewAssignment: '2019-06-07 11:22:42',
 		reviewerRating: 3
 	},
 	{
