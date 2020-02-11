@@ -2,7 +2,6 @@
 import Container from './Container.vue';
 import AddContextForm from '@/components/Form/context/AddContextForm.vue';
 import EmailTemplatesListPanel from '@/components/ListPanel/emailTemplates/EmailTemplatesListPanel.vue';
-import LicenseForm from '@/components/Form/context/LicenseForm.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import Tab from '@/components/Tabs/Tab.vue';
 import Tabs from '@/components/Tabs/Tabs.vue';
@@ -14,7 +13,6 @@ export default {
 	components: {
 		AddContextForm,
 		EmailTemplatesListPanel,
-		LicenseForm,
 		PkpForm,
 		Tab,
 		Tabs,
