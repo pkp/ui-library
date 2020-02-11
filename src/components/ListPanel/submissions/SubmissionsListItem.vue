@@ -108,9 +108,11 @@
 			<div v-else class="pkpListPanelItem--submission__stage">
 				<div class="pkpListPanelItem--submission__stageRow">
 					<badge
-						isButton="true"
+						:isButton="!isArchived"
 						:label="currentStageDescription"
-						:stage="currentStage"
+						:stage="isArchived ? '' : currentStage"
+						:isSuccess="isApproved"
+						:isWarnable="isDeclined"
 						@click="filterByStage(activeStage.id)"
 					>
 						{{ currentStageLabel }}
@@ -471,10 +473,7 @@ export default {
 		 * @return {String}
 		 */
 		currentStageLabel() {
-			if (
-				this.item.status === pkp.const.STATUS_PUBLISHED ||
-				this.item.status === pkp.const.STATUS_DECLINED
-			) {
+			if (this.isArchived) {
 				return this.item.statusLabel;
 			} else if (this.item.submissionProgress > 0) {
 				return this.i18n.incomplete;
@@ -489,6 +488,40 @@ export default {
 		 */
 		currentStageDescription() {
 			return this.__('currentStage', {stage: this.currentStageLabel});
+		},
+
+		/**
+		 * Has this submission been archived?
+		 *
+		 * @return {Boolean}
+		 */
+		isArchived() {
+			return (
+				this.item.status === pkp.const.STATUS_SCHEDULED ||
+				this.item.status === pkp.const.STATUS_PUBLISHED ||
+				this.item.status === pkp.const.STATUS_DECLINED
+			);
+		},
+
+		/**
+		 * Has this submission been declined?
+		 *
+		 * @return {Boolean}
+		 */
+		isDeclined() {
+			return this.item.status === pkp.const.STATUS_DECLINED;
+		},
+
+		/**
+		 * Is this submission published or scheduled to be published?
+		 *
+		 * @return {Boolean}
+		 */
+		isApproved() {
+			return (
+				this.item.status === pkp.const.STATUS_SCHEDULED ||
+				this.item.status === pkp.const.STATUS_PUBLISHED
+			);
 		},
 
 		/**
