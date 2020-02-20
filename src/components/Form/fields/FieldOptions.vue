@@ -207,6 +207,18 @@ export default {
 	},
 	watch: {
 		/**
+		 * Sync the selectedValue to the value if it is changed programatically
+		 */
+		value(newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+			this.selectedValue = this.isMultilingual
+				? this.value[this.localeKey]
+				: this.value;
+		},
+
+		/**
 		 * Whenever the selected value changes, emit an event to update the value of
 		 * this field in the form component.
 		 */
