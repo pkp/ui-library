@@ -57,18 +57,18 @@ export default {
 
 <style lang="less">
 @import '../../styles/_import';
-.relateForm .pkpFormGroup{
+.pkpWorkflow__relateForm .pkpFormGroup{
 	padding: 0.5rem;
 }
 .pkpWorkflow__relation .pkpDropdown__content{
 	min-width: 25em;
 	max-width: 25em;
 }
-.relateForm .pkpFormPage__footer{
+.pkpWorkflow__relateForm .pkpFormPage__footer{
 	border-top: none;
 	padding: 0.5rem;
 }
-.relateForm .pkpFormPage__buttons > * {
+.pkpWorkflow__relateForm .pkpFormPage__buttons > * {
 	margin-right: 2px;
 }
 </style>
