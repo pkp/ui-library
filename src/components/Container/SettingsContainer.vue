@@ -20,7 +20,12 @@ export default {
 	},
 	mounted() {
 		pkp.eventBus.$on('form-success', (formId, context) => {
-			if (formId === pkp.const.FORM_PAYMENT_SETTINGS) {
+			if (
+				[
+					pkp.const.FORM_PAYMENT_SETTINGS,
+					pkp.const.FORM_ANNOUNCEMENT_SETTINGS
+				].includes(formId)
+			) {
 				window.location.reload(true);
 			}
 		});
