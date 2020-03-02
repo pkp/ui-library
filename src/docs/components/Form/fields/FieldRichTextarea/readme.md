@@ -31,7 +31,7 @@ $uploadUrl = $dispatcher->url(
 	Application::get()->getRequest(),
 	ROUTE_API,
 	$context->getPath(),
-	'_uploadPublicFile/'
+	'_uploadPublicFile'
 );
 ```
 
