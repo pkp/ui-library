@@ -125,7 +125,7 @@ export default {
 			/**
 			 *
 			 */
-			localizedOptions: this.isMultingual
+			localizedOptions: this.isMultilingual
 				? this.options[this.localeKey]
 				: this.options,
 
@@ -210,7 +210,7 @@ export default {
 		 * Sync the selectedValue to the value if it is changed programatically
 		 */
 		value(newVal, oldVal) {
-			if (newVal === oldVal) {
+			if (JSON.stringify(newVal) === JSON.stringify(oldVal)) {
 				return;
 			}
 			this.selectedValue = this.isMultilingual
@@ -223,7 +223,7 @@ export default {
 		 * this field in the form component.
 		 */
 		selectedValue: function(newVal, oldVal) {
-			if (newVal === oldVal) {
+			if (JSON.stringify(newVal) === JSON.stringify(oldVal)) {
 				return;
 			}
 			if (this.isOrderable) {
@@ -242,7 +242,7 @@ export default {
 		 * Whenever the options change, override the localized options with them
 		 */
 		options: function(newVal) {
-			this.localizedOptions = this.isMultingual
+			this.localizedOptions = this.isMultilingual
 				? newVal[this.localeKey]
 				: newVal;
 		}
