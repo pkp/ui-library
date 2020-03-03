@@ -97,7 +97,7 @@
 
 					<draggable
 						v-model="localItems"
-						:options="draggableOptions"
+						v-bind="draggableOptions"
 						@start="drag = true"
 						@end="drag = false"
 					>
