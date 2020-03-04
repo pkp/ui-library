@@ -47,7 +47,7 @@
 			<draggable
 				v-model="localizedOptions"
 				@end="updateValueOrder"
-				disabled="!isOrderable"
+				:disabled="!isOrderable"
 			>
 				<label
 					v-for="option in localizedOptions"
