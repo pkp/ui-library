@@ -86,7 +86,7 @@ export default {
 		 * @return {Array}
 		 */
 		localizedOptions() {
-			return this.isMultingual ? this.options[this.localeKey] : this.options;
+			return this.isMultilingual ? this.options[this.localeKey] : this.options;
 		}
 	}
 };
