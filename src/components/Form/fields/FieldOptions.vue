@@ -59,6 +59,7 @@
 						v-model="selectedValue"
 						:value="option.value"
 						:type="type"
+						:name="localizedName"
 						:aria-describedby="describedByIds"
 						:aria-invalid="!!errors.length"
 						:disabled="option.disabled"
