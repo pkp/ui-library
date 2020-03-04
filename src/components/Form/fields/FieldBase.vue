@@ -136,7 +136,7 @@ export default {
 		 * @return {String}
 		 */
 		multilingualProgressId() {
-			return this.compileId('multingualProgress');
+			return this.compileId('multilingualProgress');
 		},
 
 		/**
