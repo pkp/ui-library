@@ -510,7 +510,7 @@ export default {
 	},
 	watch: {
 		workingPublication(newVal, oldVal) {
-			if (newVal === oldVal) {
+			if (newVal.id === oldVal.id) {
 				return;
 			}
 			this.setPublicationForms(newVal);
