@@ -29,7 +29,7 @@ export default {
 				'Domatilia Sokoloff',
 				'Elinor Ostrom',
 				'Fabio Paglieri',
-				'John Mwandenga'
+				'Alan Mwandenga'
 			],
 			suggestionsLoaded: true
 		};
