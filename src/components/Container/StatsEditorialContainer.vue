@@ -13,6 +13,8 @@ export default {
 	data() {
 		return {
 			activeByStage: [],
+			averages: {},
+			averagesApiUrl: '',
 			isLoading: false,
 			percentageStats: [],
 			tableRows: []
@@ -75,38 +77,41 @@ export default {
 		 */
 		get: debounce(function() {
 			let self = this;
+			let latestDateRangeGetRequest = $.pkp.classes.Helper.uuid();
+			let latestTotalsGetRequest = $.pkp.classes.Helper.uuid();
+			let latestAveragesGetRequest = $.pkp.classes.Helper.uuid();
 			this.isLoading = true;
-			this.latestDateRangeGetRequest == $.pkp.classes.Helper.uuid();
-			this.latestTotalsGetRequest == $.pkp.classes.Helper.uuid();
 
 			// Track when the API responses come back
 			// We won't process any updates to data until both responses
 			// are back.
 			let dateRangeFinished = false;
 			let totalsFinished = false;
+			let averagesFinished = false;
 			let dateRangeResponse = [];
 			let totalsResponse = [];
+			let averagesResponse = {};
 
 			// Get stats within date range
 			$.ajax({
 				url: this.apiUrl,
 				type: 'GET',
 				data: this.getParams,
-				_uuid: this.latestDateRangeGetRequest,
+				_uuid: latestDateRangeGetRequest,
 				error(r) {
-					if (self.latestDateRangeGetRequest !== this._uuid) {
+					if (latestDateRangeGetRequest !== this._uuid) {
 						return;
 					}
 					self.ajaxErrorCallback(r);
 				},
 				success(r) {
-					if (self.latestDateRangeGetRequest !== this._uuid) {
+					if (latestDateRangeGetRequest !== this._uuid) {
 						return;
 					}
 					dateRangeResponse = r;
 				},
 				complete(r) {
-					if (self.latestDateRangeGetRequest !== this._uuid) {
+					if (latestDateRangeGetRequest !== this._uuid) {
 						return;
 					}
 					dateRangeFinished = true;
@@ -121,30 +126,56 @@ export default {
 				url: this.apiUrl,
 				type: 'GET',
 				data: totalParams,
-				_uuid: this.latestTotalsGetRequest,
+				_uuid: latestTotalsGetRequest,
 				error(r) {
-					if (self.latestTotalsGetRequest !== this._uuid) {
+					if (latestTotalsGetRequest !== this._uuid) {
 						return;
 					}
 					self.ajaxErrorCallback(r);
 				},
 				success(r) {
-					if (self.latestTotalsGetRequest !== this._uuid) {
+					if (latestTotalsGetRequest !== this._uuid) {
 						return;
 					}
 					totalsResponse = r;
 				},
 				complete(r) {
-					if (self.latestTotalsGetRequest !== this._uuid) {
+					if (latestTotalsGetRequest !== this._uuid) {
 						return;
 					}
 					totalsFinished = true;
 				}
 			});
 
-			// Update stats when both responses are back
+			// Get average stats
+			$.ajax({
+				url: this.averagesApiUrl,
+				type: 'GET',
+				data: this.getParams,
+				_uuid: latestAveragesGetRequest,
+				error(r) {
+					if (latestAveragesGetRequest !== this._uuid) {
+						return;
+					}
+					self.ajaxErrorCallback(r);
+				},
+				success(r) {
+					if (latestAveragesGetRequest !== this._uuid) {
+						return;
+					}
+					averagesResponse = r;
+				},
+				complete(r) {
+					if (latestAveragesGetRequest !== this._uuid) {
+						return;
+					}
+					averagesFinished = true;
+				}
+			});
+
+			// Update stats when all responses are back
 			const interval = setInterval(() => {
-				if (!dateRangeFinished || !totalsFinished) {
+				if (!dateRangeFinished || !totalsFinished || !averagesFinished) {
 					return;
 				}
 				let tableRows = this.tableRows.map(row => {
@@ -156,6 +187,16 @@ export default {
 					} else {
 						row.dateRange = dateRange.value;
 						row.total = total.value;
+					}
+					if (
+						averagesResponse.hasOwnProperty(row.key) &&
+						averagesResponse[row.key] > -1 &&
+						total.value > 0
+					) {
+						row.total = this.__('countWithYearlyAverage', {
+							count: row.total,
+							average: averagesResponse[row.key]
+						});
 					}
 					return row;
 				});
