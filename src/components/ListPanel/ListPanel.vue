@@ -780,6 +780,7 @@ export default {
 	left: -9999px;
 	opacity: 0;
 	width: 0;
+	top:-9999px;
 }
 
 .pkpListPanel__content {
