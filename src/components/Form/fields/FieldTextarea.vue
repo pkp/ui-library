@@ -44,6 +44,7 @@
 				:aria-describedby="describedByIds"
 				:aria-invalid="!!errors.length"
 				:required="isRequired"
+				:readonly="isReadOnly"
 			></textarea>
 			<multilingual-progress
 				v-if="isMultilingual && locales.length > 1"
@@ -74,7 +75,8 @@ export default {
 			validator: function(value) {
 				return ['small', 'normal', 'large'].indexOf(value) !== -1;
 			}
-		}
+		},
+		isReadOnly: Boolean
 	},
 	computed: {
 		/**
@@ -107,5 +109,9 @@ export default {
 
 .pkpFormField--large .pkpFormField--textarea__input {
 	height: 40em;
+}
+
+.pkpFormField--textarea__input:read-only {
+	background: @bg-light;
 }
 </style>

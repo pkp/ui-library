@@ -153,7 +153,8 @@ export default {
 			default() {
 				return '';
 			}
-		}
+		},
+		isReadOnly: Boolean
 	},
 	data() {
 		return {
@@ -233,7 +234,8 @@ export default {
 				'aria-describedby': this.describedByIds,
 				class: 'pkpFormField__input pkpFormField--autosuggest__input',
 				id: this.controlId,
-				name: this.name
+				name: this.name,
+				readonly: this.isReadOnly
 			};
 		}
 	},
@@ -254,6 +256,10 @@ export default {
 		 * Get suggestions from a remote URL
 		 */
 		loadSuggestions() {
+			if (this.isReadOnly) {
+				return;
+			}
+
 			if (!this.suggestionsLoaded) {
 				var self = this;
 				$.ajax({
@@ -537,5 +543,9 @@ export default {
 
 .pkpFormField--autosuggest__input:focus + .multilingualProgress button {
 	border-color: @primary;
+}
+
+.pkpFormField--autosuggest__input:read-only {
+	background: @bg-light;
 }
 </style>
