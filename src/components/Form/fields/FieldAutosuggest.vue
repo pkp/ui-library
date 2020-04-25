@@ -1,5 +1,8 @@
 <template>
-	<div class="pkpFormField pkpFormField--autosuggest">
+	<div
+		class="pkpFormField pkpFormField--autosuggest"
+		v-bind:class="{'read-only': isReadOnly}"
+	>
 		<div class="pkpFormField__heading">
 			<form-field-label
 				:controlId="controlId"
@@ -50,6 +53,7 @@
 				<pkp-badge v-else v-for="item in currentValue" :key="item">
 					{{ item }}
 					<button
+						v-if="!isReadOnly"
 						class="pkpFormField--autosuggest__valueButton"
 						@click="deselect(item)"
 					>
@@ -547,5 +551,13 @@ export default {
 
 .pkpFormField--autosuggest__input:read-only {
 	background: @bg-light;
+}
+
+.pkpFormField--autosuggest.read-only {
+	.pkpFormField--autosuggest__values {
+		.pkpBadge {
+			padding-right: 1em;
+		}
+	}
 }
 </style>
