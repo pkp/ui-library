@@ -82,3 +82,9 @@ export default {
 	}
 };
 </script>
+
+<style lang="less">
+[v-cloak] {
+	display: none;
+}
+</style>
