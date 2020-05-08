@@ -1,5 +1,8 @@
 <template>
-	<div class="pkpFormField pkpFormField--autosuggest">
+	<div
+		class="pkpFormField pkpFormField--autosuggest"
+		v-bind:class="{'read-only': isReadOnly}"
+	>
 		<div class="pkpFormField__heading">
 			<form-field-label
 				:controlId="controlId"
@@ -50,6 +53,7 @@
 				<pkp-badge v-else v-for="item in currentValue" :key="item">
 					{{ item }}
 					<button
+						v-if="!isReadOnly"
 						class="pkpFormField--autosuggest__valueButton"
 						@click="deselect(item)"
 					>
@@ -153,7 +157,8 @@ export default {
 			default() {
 				return '';
 			}
-		}
+		},
+		isReadOnly: Boolean
 	},
 	data() {
 		return {
@@ -233,7 +238,8 @@ export default {
 				'aria-describedby': this.describedByIds,
 				class: 'pkpFormField__input pkpFormField--autosuggest__input',
 				id: this.controlId,
-				name: this.name
+				name: this.name,
+				readonly: this.isReadOnly
 			};
 		}
 	},
@@ -254,6 +260,10 @@ export default {
 		 * Get suggestions from a remote URL
 		 */
 		loadSuggestions() {
+			if (this.isReadOnly) {
+				return;
+			}
+
 			if (!this.suggestionsLoaded) {
 				var self = this;
 				$.ajax({
@@ -537,5 +547,17 @@ export default {
 
 .pkpFormField--autosuggest__input:focus + .multilingualProgress button {
 	border-color: @primary;
+}
+
+.pkpFormField--autosuggest__input:read-only {
+	background: @bg-light;
+}
+
+.pkpFormField--autosuggest.read-only {
+	.pkpFormField--autosuggest__values {
+		.pkpBadge {
+			padding-right: 1em;
+		}
+	}
 }
 </style>

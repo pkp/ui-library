@@ -45,6 +45,7 @@
 				:aria-describedby="describedByIds"
 				:aria-invalid="!!errors.length"
 				:required="isRequired"
+				:disabled="isDisabled"
 			>
 				<option
 					v-for="option in localizedOptions"
@@ -77,7 +78,8 @@ export default {
 	name: 'FieldSelect',
 	extends: FieldBase,
 	props: {
-		options: Array
+		options: Array,
+		isDisabled: Boolean
 	},
 	computed: {
 		/**

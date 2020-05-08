@@ -48,6 +48,7 @@
 					:aria-invalid="!!errors.length"
 					:disabled="isDisabled"
 					:required="isRequired"
+					:readonly="isReadOnly"
 					:style="inputStyles"
 				/>
 				<span
@@ -101,7 +102,8 @@ export default {
 				return ['small', 'normal', 'large'].indexOf(value) !== -1;
 			}
 		},
-		prefix: String
+		prefix: String,
+		isReadOnly: Boolean
 	},
 	data() {
 		return {
@@ -296,5 +298,9 @@ export default {
 		margin-top: 0.25rem;
 		height: inherit;
 	}
+}
+
+.pkpFormField--text__input:read-only {
+	background: @bg-light;
 }
 </style>
