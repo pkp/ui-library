@@ -1,6 +1,6 @@
 <template>
 	<div class="pkpDateRange">
-		<span class="-screenReader">{{ i18n.dateRange }}</span>
+		<span class="-screenReader">{{ dateRangeLabel }}</span>
 		<span class="pkpDateRange__current" v-html="currentRange" />
 		<button
 			class="pkpDateRange__button"
@@ -10,7 +10,7 @@
 		>
 			<icon icon="calendar" />
 			<span class="-screenReader">
-				{{ i18n.changeDateRange }}
+				{{ changeDateRangeLabel }}
 			</span>
 		</button>
 		<div v-if="options && this.isOpen" class="pkpDateRange__options">
@@ -30,12 +30,12 @@
 				@submit="applyCustomRange"
 			>
 				<fieldset class="pkpDateRange__inputGroup">
-					<legend>{{ i18n.customRange }}</legend>
+					<legend>{{ customRangeLabel }}</legend>
 					<div class="-screenReader" :id="uniqueId + '-describedBy'">
-						{{ i18n.dateFormatInstructions }}
+						{{ dateFormatInstructionsLabel }}
 					</div>
 					<label>
-						<span class="-screenReader">{{ i18n.fromDate }}</span>
+						<span class="-screenReader">{{ fromDateLabel }}</span>
 						<input
 							class="pkpDateRange__input pkpDateRange__input--start"
 							ref="dateStart"
@@ -48,7 +48,7 @@
 					</label>
 					<span class="pkpDateRange__separator">—</span>
 					<label>
-						<span class="-screenReader">{{ i18n.toDate }}</span>
+						<span class="-screenReader">{{ toDateLabel }}</span>
 						<input
 							class="pkpDateRange__input pkpDateRange__input--end"
 							ref="dateEnd"
@@ -60,7 +60,7 @@
 						/>
 					</label>
 				</fieldset>
-				<pkp-button :label="i18n.apply" @click="applyCustomRange" />
+				<pkp-button @click="applyCustomRange">{{ applyLabel }}</pkp-button>
 				<div v-if="errorMessage" class="pkpDateRange__error">
 					<icon icon="exclamation-triangle" :inline="true" />
 					<span v-html="errorMessage" />
@@ -71,14 +71,7 @@
 </template>
 
 <script>
-import Icon from '@/components/Icon/Icon.vue';
-import PkpButton from '@/components/Button/Button.vue';
-
 export default {
-	components: {
-		PkpButton,
-		Icon
-	},
 	props: {
 		uniqueId: {
 			type: String,
@@ -100,8 +93,63 @@ export default {
 			type: String,
 			default: ''
 		},
-		options: Array,
-		i18n: Object
+		dateRangeLabel: {
+			type: String,
+			required: true
+		},
+		dateFormatInstructionsLabel: {
+			type: String,
+			required: true
+		},
+		changeDateRangeLabel: {
+			type: String,
+			required: true
+		},
+		sinceDateLabel: {
+			type: String,
+			required: true
+		},
+		untilDateLabel: {
+			type: String,
+			required: true
+		},
+		allDatesLabel: {
+			type: String,
+			required: true
+		},
+		customRangeLabel: {
+			type: String,
+			required: true
+		},
+		fromDateLabel: {
+			type: String,
+			required: true
+		},
+		toDateLabel: {
+			type: String,
+			required: true
+		},
+		applyLabel: {
+			type: String,
+			required: true
+		},
+		invalidDateLabel: {
+			type: String,
+			required: true
+		},
+		dateDoesNotExistLabel: {
+			type: String,
+			required: true
+		},
+		invalidDateRangeLabel: {
+			type: String,
+			required: true
+		},
+		invalidStartDateMinLabel: {
+			type: String,
+			required: true
+		},
+		options: Array
 	},
 	data() {
 		return {
@@ -119,11 +167,15 @@ export default {
 		 */
 		currentRange() {
 			if (this.dateStart && !this.dateEnd) {
-				return this.__('sinceDate', {date: this.dateStart});
+				return this.replaceLocaleParams(this.sinceDateLabel, {
+					date: this.dateStart
+				});
 			} else if (!this.dateStart && this.dateEnd) {
-				return this.__('untilDate', {date: this.dateEnd});
+				return this.replaceLocaleParams(this.untilDateLabel, {
+					date: this.dateEnd
+				});
 			} else if (!this.dateStart && !this.dateEnd) {
-				return this.i18n.allDates;
+				return this.allDatesLabel;
 			}
 			return this.dateStart + ' — ' + this.dateEnd;
 		}
@@ -173,42 +225,44 @@ export default {
 
 			if (this.localDateStart.length) {
 				if (!this.validateFormat(this.localDateStart)) {
-					this.errorMessage = this.i18n.invalidDate;
+					this.errorMessage = this.invalidDateLabel;
 					return;
 				}
 				if (!this.validateDateExists(this.localDateStart)) {
-					this.errorMessage = this.i18n.dateDoesNotExist;
+					this.errorMessage = this.dateDoesNotExistLabel;
 					return;
 				}
 			}
 
 			if (this.localDateEnd.length) {
 				if (!this.validateFormat(this.localDateEnd)) {
-					this.errorMessage = this.i18n.invalidDate;
+					this.errorMessage = this.invalidDateLabel;
 					return;
 				}
 				if (!this.validateDateExists(this.localDateEnd)) {
-					this.errorMessage = this.i18n.dateDoesNotExist;
+					this.errorMessage = this.dateDoesNotExistLabel;
 					return;
 				}
 			}
 
 			if (!this.validateRange(this.localDateStart, this.localDateEnd)) {
-				this.errorMessage = this.i18n.invalidDateRange;
+				this.errorMessage = this.invalidDateRangeLabel;
 				return;
 			}
 
 			if (!this.validateDateStartMin(this.localDateStart)) {
-				this.errorMessage = this.__('invalidStartDateMin', {
-					date: this.dateStartMin
-				});
+				this.errorMessage = this.replaceLocaleParams(
+					this.invalidStartDateMinLabel,
+					{date: this.dateStartMin}
+				);
 				return;
 			}
 
 			if (!this.validateDateEndMax(this.localDateEnd)) {
-				this.errorMessage = this.__('invalidEndDateMax', {
-					date: this.dateEndMax
-				});
+				this.errorMessage = this.replaceLocaleParams(
+					this.invalidEndDateMaxLabel,
+					{date: this.dateEndMax}
+				);
 				return;
 			}
 

@@ -1,3 +1,17 @@
+## Props
+
+| Key | Description |
+| --- | --- |
+| `defaultTab` | Select one of the tabs by default. Pass the tab's `id` prop. |
+| `isSideTabs` | Displays the tabs on the side with content on the right when `true`. |
+| `label` | Sets an `aria-label` for the tabs. See the [Accessible label](#accessible-label) section below. |
+| `badge` | Adds a [Badge](#/component/Badge) component beside the icon or text in the tab. |
+
+## Events
+
+This component does not emit any events.
+
+## Usage
 
 Use this component to display content in tabs.
 

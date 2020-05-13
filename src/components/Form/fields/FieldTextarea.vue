@@ -6,7 +6,7 @@
 				:label="label"
 				:localeLabel="localeLabel"
 				:isRequired="isRequired"
-				:requiredLabel="i18n.required"
+				:requiredLabel="__('common.required')"
 				:multilingualLabel="multilingualLabel"
 			/>
 			<tooltip
@@ -26,7 +26,7 @@
 				:id="describedByHelpId"
 				:topic="helpTopic"
 				:section="helpSection"
-				:label="i18n.help"
+				:label="__('help.help')"
 			/>
 		</div>
 		<div
@@ -50,7 +50,6 @@
 				:id="multilingualProgressId"
 				:count="multilingualFieldsCompleted"
 				:total="locales.length"
-				:i18n="i18n"
 			/>
 		</div>
 		<field-error

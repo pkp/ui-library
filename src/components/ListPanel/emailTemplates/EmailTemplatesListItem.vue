@@ -1,123 +1,162 @@
 <template>
-	<div class="pkpListPanelItem--emailTemplates -hasSummary" :class="classes">
-		<div class="pkpListPanelItem__summary -pkpClearfix">
-			<div class="pkpListPanelItem--emailTemplates__subject">
-				<badge v-if="item.enabled === false" :isWarnable="true">
-					{{ i18n.disabled }}
-				</badge>
-				{{ localize(item.subject) }}
-			</div>
-			<div
-				v-if="localize(item.description)"
-				class="pkpListPanelItem--emailTemplates__description"
-			>
-				{{ localize(item.description) }}
-			</div>
-			<span class="pkpListPanelItem--emailTemplates__key">
-				{{ item.key }}
-			</span>
-			<button
-				ref="expanderButton"
-				class="pkpListPanelItem__expander"
-				@click="toggleExpanded"
-			>
-				<icon v-if="isExpanded" icon="angle-up" />
-				<icon v-else icon="angle-down" />
-				<span v-if="isExpanded" class="-screenReader">
-					{{ __('viewLess', {name: localize(item.subject)}) }}
+	<div class="listPanel__item--emailTemplate">
+		<div class="listPanel__itemSummary ">
+			<div class="listPanel__itemIdentity">
+				<div class="listPanel__itemTitle">
+					<badge v-if="item.enabled === false" :isWarnable="true">
+						{{ disabledLabel }}
+					</badge>
+					{{ localize(item.subject) }}
+				</div>
+				<div class="listPanel__itemSubtitle">
+					{{ localize(item.description) }}
+				</div>
+				<span class="listPanel--emailTemplates__key">
+					{{ item.key }}
 				</span>
-				<span v-else class="-screenReader">
-					{{ __('viewMore', {name: localize(item.subject)}) }}
-				</span>
-			</button>
+			</div>
+			<div class="listPanel__itemActions">
+				<expander
+					:isExpanded="isExpanded"
+					:itemName="localize(item.subject)"
+					@toggle="isExpanded = !isExpanded"
+				/>
+			</div>
 		</div>
-		<div v-if="isExpanded" class="pkpListPanelItem__details">
+		<div v-if="isExpanded" class="listPanel__itemExpanded">
 			<list>
-				<list-item>{{ __('subjectLabel', {subject: item.subject}) }}</list-item>
+				<list-item>
+					{{
+						replaceLocaleParams(this.subjectLabel, {
+							subject: item.subject
+						})
+					}}
+				</list-item>
 				<list-item v-if="item.fromRoleId">
-					{{ __('from', {value: getRoleLabel(item.fromRoleId)}) }}
+					{{
+						replaceLocaleParams(this.fromLabel, {
+							value: getRoleLabel(item.fromRoleId)
+						})
+					}}
 				</list-item>
 				<list-item v-if="item.toRoleId">
-					{{ __('to', {value: getRoleLabel(item.toRoleId)}) }}
+					{{
+						replaceLocaleParams(this.toLabel, {
+							value: getRoleLabel(item.toRoleId)
+						})
+					}}
 				</list-item>
 				<list-item
-					class="pkpListPanelItem--emailTemplates__body"
+					class="listPanel__item--emailTemplates__body"
 					v-html="localize(item.body)"
 				/>
 			</list>
-			<div class="pkpListPanelItem__actions">
+			<div class="listPanel__itemExpandedActions">
 				<spinner v-if="isEnabling" />
 				<pkp-button
 					v-if="canEdit"
 					ref="editButton"
-					:label="i18n.edit"
-					@click="openEditModal"
-				/>
+					@click="$emit('edit:item', item.key)"
+				>
+					{{ __('common.edit') }}
+				</pkp-button>
 				<pkp-button
 					v-if="item.canDisable"
 					ref="toggleEnabledButton"
-					:label="item.enabled === false ? i18n.enable : i18n.disable"
 					:isWarnable="item.enabled !== false"
 					:disabled="isEnabling"
 					@click="toggleEnabled"
-				/>
+				>
+					{{ item.enabled === false ? enableLabel : disableLabel }}
+				</pkp-button>
 				<pkp-button
 					v-if="canReset"
 					ref="resetButton"
-					:label="i18n.reset"
 					:isWarnable="true"
 					@click="openResetModal"
-				/>
+				>
+					{{ resetLabel }}
+				</pkp-button>
 				<pkp-button
 					v-else-if="isCustom"
 					ref="deleteButton"
-					:label="i18n.delete"
 					:isWarnable="true"
 					@click="openDeleteModal"
-				/>
+				>
+					{{ __('common.delete') }}
+				</pkp-button>
 			</div>
 		</div>
-		<div v-if="isLoading" class="pkpListPanelItem--emailTemplates__loadingMask">
+		<div v-if="isLoading" class="listPanel__item--emailTemplates__loadingMask">
 			<spinner />
 		</div>
 	</div>
 </template>
 
 <script>
-import ListPanelItem from '@/components/ListPanel/ListPanelItem.vue';
-import Badge from '@/components/Badge/Badge.vue';
-import Icon from '@/components/Icon/Icon.vue';
+import Expander from '@/components/Expander/Expander.vue';
 import List from '@/components/List/List.vue';
 import ListItem from '@/components/List/ListItem.vue';
-import PkpButton from '@/components/Button/Button.vue';
-import Spinner from '@/components/Spinner/Spinner.vue';
+import modal from '@/mixins/modal';
 
 export default {
-	extends: ListPanelItem,
-	name: 'EmailTemplatesListItem',
 	components: {
-		Badge,
-		Icon,
+		Expander,
 		List,
-		ListItem,
-		PkpButton,
-		Spinner
+		ListItem
 	},
+	mixins: [modal],
 	props: {
 		apiUrl: {
 			type: String,
 			required: true
 		},
-		csrfToken: {
+		deleteConfirmMessage: {
 			type: String,
 			required: true
 		},
-		editItemUrl: {
+		disableLabel: {
+			type: String,
+			required: true
+		},
+		disabledLabel: {
+			type: String,
+			required: true
+		},
+		enableLabel: {
+			type: String,
+			required: true
+		},
+		fromLabel: {
+			type: String,
+			required: true
+		},
+		item: {
+			type: Object,
+			required: true
+		},
+		resetCompleteLabel: {
+			type: String,
+			required: true
+		},
+		resetConfirmLabel: {
+			type: String,
+			required: true
+		},
+		resetLabel: {
 			type: String,
 			required: true
 		},
 		roles: {
 			type: Object,
+			required: true
+		},
+		subjectLabel: {
+			type: String,
+			required: true
+		},
+		toLabel: {
+			type: String,
 			required: true
 		}
 	},
@@ -181,159 +220,30 @@ export default {
 		 */
 		openDeleteModal() {
 			const parentNode = this.$el.parentNode;
-			const modalOptions = {
-				modalHandler: '$.pkp.controllers.modal.ConfirmationModalHandler',
-				title: '',
-				okButton: this.i18n.ok,
-				cancelButton: this.i18n.cancel,
-				dialogText: this.i18n.deleteConfirm,
-				callback: this.delete,
-				closeCallback: () =>
-					this.$refs.deleteButton
-						? this.$refs.deleteButton.$el.focus()
-						: this.setFocusIn(parentNode)
-			};
+			this.openDialog({
+				modalName: 'delete',
+				cancelLabel: this.__('common.cancel'),
+				confirmLabel: this.__('common.delete'),
+				message: this.deleteConfirmMessage,
+				title: this.__('common.delete'),
+				callback: () => {
+					let self = this;
+					this.isLoading = true;
 
-			const $modal = $(
-				'<div id="' +
-					$.pkp.classes.Helper.uuid() +
-					'" ' +
-					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>'
-			).pkpHandler(modalOptions.modalHandler, modalOptions);
-			``;
-			$.pkp.classes.Handler.getHandler($modal);
-		},
-
-		/**
-		 * Delete the template
-		 *
-		 *
-		 */
-		delete() {
-			let self = this;
-			this.isLoading = true;
-
-			$.ajax({
-				url: this.apiUrl + '/' + this.item.key,
-				type: 'DELETE',
-				headers: {
-					'X-Csrf-Token': this.csrfToken
-				},
-				error(r) {
-					self.ajaxErrorCallback(r);
-					self.isLoading = false;
-				},
-				success(r) {
-					self.$emit('delete:item', r);
-					pkp.eventBus.$emit('delete:emailTemplate', r);
-				},
-				complete(r) {
-					self.isLoading = false;
-				}
-			});
-		},
-
-		/**
-		 * Open the modal to edit a template
-		 */
-		openEditModal() {
-			let modalHandler;
-
-			// Assign the form success callback function
-			// to a var so that we can remove the event
-			// listener when the modal is closed
-			const editTemplateFormSuccess = (formId, newItem) => {
-				if (formId !== 'editEmailTemplate') {
-					return;
-				}
-				this.$emit('update:item', newItem);
-				pkp.eventBus.$emit('update:emailTemplate', newItem);
-				modalHandler.modalClose();
-			};
-
-			const modalOptions = {
-				modalHandler: '$.pkp.controllers.modal.AjaxModalHandler',
-				url: this.editItemUrl.replace('__key__', this.item.key),
-				title: this.i18n.editTemplate,
-				closeCleanVueInstances: ['editEmailTemplate'],
-				closeCallback: () => {
-					this.$refs.editButton
-						? this.$refs.editButton.$el.focus()
-						: this.setFocusIn(this.$el);
-					pkp.eventBus.$off('form-success', editTemplateFormSuccess);
-				}
-			};
-
-			const $modal = $(
-				'<div id="' +
-					$.pkp.classes.Helper.uuid() +
-					'" ' +
-					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>'
-			).pkpHandler(modalOptions.modalHandler, modalOptions);
-
-			modalHandler = $.pkp.classes.Handler.getHandler($modal);
-
-			// Update item and close modal when the template has been edited
-			pkp.eventBus.$on('form-success', editTemplateFormSuccess);
-		},
-
-		/**
-		 * Open the modal to confirm resetting a template
-		 */
-		openResetModal() {
-			const parentNode = this.$el.parentNode;
-			const modalOptions = {
-				modalHandler: '$.pkp.controllers.modal.ConfirmationModalHandler',
-				title: '',
-				okButton: this.i18n.ok,
-				cancelButton: this.i18n.cancel,
-				dialogText: this.i18n.resetConfirm,
-				callback: this.reset,
-				closeCallback: () =>
-					this.$refs.resetButton
-						? this.$refs.resetButton.$el.focus()
-						: this.setFocusIn(parentNode)
-			};
-
-			const $modal = $(
-				'<div id="' +
-					$.pkp.classes.Helper.uuid() +
-					'" ' +
-					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>'
-			).pkpHandler(modalOptions.modalHandler, modalOptions);
-			``;
-			$.pkp.classes.Handler.getHandler($modal);
-		},
-
-		/**
-		 * Reset the template
-		 */
-		reset() {
-			let self = this;
-			this.isLoading = true;
-
-			$.ajax({
-				url: this.apiUrl + '/' + this.item.key,
-				type: 'DELETE',
-				headers: {
-					'X-Csrf-Token': this.csrfToken
-				},
-				error(r) {
-					self.ajaxErrorCallback(r);
-					self.isLoading = false;
-				},
-				success(r) {
 					$.ajax({
-						url: self.apiUrl + '/' + self.item.key,
-						type: 'GET',
-						error(r) {
-							self.ajaxErrorCallback(r);
+						url: this.apiUrl + '/' + this.item.key,
+						type: 'DELETE',
+						headers: {
+							'X-Csrf-Token': pkp.currentUser.csrfToken
 						},
+						error: self.ajaxErrorCallback,
 						success(r) {
-							self.$emit('update:item', r);
-							pkp.eventBus.$emit('update:emailTemplate', r);
+							self.$modal.hide('delete');
+							self.$emit('delete:item', r);
+							pkp.eventBus.$emit('delete:emailTemplate', r);
+							self.setFocusIn(parentNode);
 						},
-						complete() {
+						complete(r) {
 							self.isLoading = false;
 						}
 					});
@@ -341,6 +251,52 @@ export default {
 			});
 		},
 
+		/**
+		 * Open the modal to confirm resetting a template
+		 */
+		openResetModal() {
+			const parentNode = this.$el.parentNode;
+			this.openDialog({
+				modalName: 'reset',
+				cancelLabel: this.__('common.cancel'),
+				confirmLabel: this.resetLabel,
+				message: this.resetConfirmLabel,
+				title: this.resetLabel,
+				callback: () => {
+					let self = this;
+					this.isLoading = true;
+					$.ajax({
+						url: this.apiUrl + '/' + this.item.key,
+						type: 'DELETE',
+						headers: {
+							'X-Csrf-Token': pkp.currentUser.csrfToken
+						},
+						error: self.ajaxErrorCallback,
+						success(r) {
+							$.ajax({
+								url: self.apiUrl + '/' + self.item.key,
+								type: 'GET',
+								error: self.ajaxErrorCallback,
+								success(r) {
+									self.$modal.hide('reset');
+									self.$emit('update:item', r);
+									pkp.eventBus.$emit('update:emailTemplate', r);
+									pkp.eventBus.$emit(
+										'notify',
+										self.resetCompleteLabel,
+										'success'
+									);
+									self.setFocusIn(parentNode);
+								},
+								complete() {
+									self.isLoading = false;
+								}
+							});
+						}
+					});
+				}
+			});
+		},
 		/**
 		 * Enable or disable this item
 		 */
@@ -352,7 +308,7 @@ export default {
 				url: this.apiUrl + '/' + this.item.key,
 				type: 'PUT',
 				headers: {
-					'X-Csrf-Token': this.csrfToken
+					'X-Csrf-Token': pkp.currentUser.csrfToken
 				},
 				data: {
 					enabled: !this.item.enabled
@@ -376,22 +332,15 @@ export default {
 <style lang="less">
 @import '../../../styles/_import';
 
-.pkpListPanelItem--emailTemplates__subject,
-.pkpListPanelItem--emailTemplates__description {
-	padding-right: 1rem;
-	white-space: nowrap;
-	overflow-x: hidden;
-	text-overflow: ellipsis;
+.listPanel__item--emailTemplate {
+	.listPanel__itemTitle {
+		// Ensure there is no jank when a disabled badge
+		// is added or removed
+		line-height: 27px;
+	}
 }
 
-.pkpListPanelItem--emailTemplates__subject {
-	font-weight: @bold;
-	// Ensure there is no jank when a disabled badge
-	// is added or removed
-	line-height: 27px;
-}
-
-.pkpListPanelItem--emailTemplates__key {
+.listPanel--emailTemplates__key {
 	display: inline-block;
 	margin-top: 0.25rem;
 	margin-right: 1rem;
@@ -403,7 +352,7 @@ export default {
 	color: @primary;
 }
 
-.pkpListPanelItem--emailTemplates__body {
+.listPanel__item--emailTemplates__body {
 	p:first-child {
 		margin-top: 0;
 	}
@@ -413,11 +362,11 @@ export default {
 	}
 }
 
-.pkpListPanelItem--emailTemplates .pkpListPanelItem__actions > .pkpSpinner {
+.listPanel__item--emailTemplate .listPanel__itemExpandedActions > .pkpSpinner {
 	margin-right: 0.5rem;
 }
 
-.pkpListPanelItem--emailTemplates__loadingMask {
+.listPanel__item--emailTemplates__loadingMask {
 	position: absolute;
 	top: 0;
 	left: 0;

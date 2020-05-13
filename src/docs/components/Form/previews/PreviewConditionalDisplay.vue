@@ -1,17 +1,18 @@
+<template>
+	<!-- Use the v-bind syntax to bind all props at once. -->
+	<pkp-form v-bind="components.example" @set="set" />
+</template>
+
 <script>
-import PreviewForm from './PreviewForm.vue';
-import props from '../helpers/form-conditional-display';
+import Container from '@/components/Container/Container.vue';
+import form from '../helpers/form-conditional-display';
 
 export default {
-	extends: PreviewForm,
+	extends: Container,
 	data() {
 		return {
 			components: {
-				example: {
-					...props,
-					id: 'example',
-					errors: {}
-				}
+				example: form
 			}
 		};
 	}

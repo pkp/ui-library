@@ -91,4 +91,11 @@ export default {
 		fill: #ffffff;
 	}
 }
+
+[dir='rtl'] {
+	.pkpIcon--inline {
+		margin-right: 0;
+		margin-left: 0.25em;
+	}
+}
 </style>

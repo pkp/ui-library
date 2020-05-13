@@ -14,25 +14,15 @@
 		>
 			<icon icon="times-circle-o" />
 			<span class="-screenReader">
-				{{ __('filterRemove', {filterTitle: title}) }}
+				{{ __('common.filterRemove', {filterTitle: title}) }}
 			</span>
 		</button>
 	</div>
 </template>
 
 <script>
-import Icon from '@/components/Icon/Icon.vue';
 export default {
-	components: {
-		Icon
-	},
 	props: {
-		i18n: {
-			type: Object,
-			default() {
-				return {};
-			}
-		},
 		isFilterActive: {
 			type: Boolean,
 			default() {

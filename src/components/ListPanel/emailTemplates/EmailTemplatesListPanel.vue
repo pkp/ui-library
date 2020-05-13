@@ -1,179 +1,310 @@
 <template>
-	<div class="ListPanel--emailTemplates" :class="classes">
-		<!-- Header -->
-		<pkp-header>
-			{{ title }}
-			<spinner v-if="isLoading" />
-			<template slot="actions">
-				<search
-					:searchPhrase="searchPhrase"
-					:searchLabel="i18n.search"
-					:clearSearchLabel="i18n.clearSearch"
-					@search-phrase-changed="setSearchPhrase"
-				/>
-				<pkp-button
-					:isActive="isSidebarVisible"
-					icon="filter"
-					:label="i18n.filter"
-					@click="toggleSidebar"
-				/>
-				<pkp-button
-					ref="addButton"
-					:label="i18n.add"
-					@click="openAddTemplateModal"
-				/>
-				<pkp-button
-					ref="resetAllButton"
-					:isWarnable="true"
-					:label="i18n.resetAll"
-					@click="openResetAllModal"
-				/>
-			</template>
-		</pkp-header>
-
-		<!-- Body of the panel, including items and sidebar -->
-		<div class="pkpListPanel__body -pkpClearfix">
-			<!-- Filters in the sidebar -->
-			<div
-				v-if="filters.length"
-				ref="sidebar"
-				class="pkpListPanel__sidebar"
-				:class="{'-isVisible': isSidebarVisible}"
-			>
-				<pkp-header
-					class="pkpListPanel__sidebarHeader"
-					:tabindex="isSidebarVisible ? 0 : -1"
-				>
-					<icon icon="filter" :inline="true" />
-					{{ i18n.filter }}
+	<div>
+		<list-panel
+			:isSidebarVisible="isSidebarVisible"
+			:items="items"
+			class="listPanel--emailTemplates"
+		>
+			<pkp-header slot="header">
+				<h2>{{ title }}</h2>
+				<spinner v-if="isLoading" />
+				<template slot="actions">
+					<search
+						:searchPhrase="searchPhrase"
+						@search-phrase-changed="setSearchPhrase"
+					/>
+					<pkp-button
+						:isActive="isSidebarVisible"
+						@click="isSidebarVisible = !isSidebarVisible"
+					>
+						<icon icon="filter" :inline="true" />
+						{{ __('common.filter') }}
+					</pkp-button>
+					<pkp-button @click="openAddTemplateModal">{{ addLabel }}</pkp-button>
+					<pkp-button :isWarnable="true" @click="openResetAllModal">
+						{{ resetAllLabel }}
+					</pkp-button>
+				</template>
+			</pkp-header>
+			<template slot="sidebar">
+				<pkp-header :isOneLine="false">
+					<h3>
+						<icon icon="filter" :inline="true" />
+						{{ __('common.filter') }}
+					</h3>
 				</pkp-header>
 				<div
 					v-for="(filterSet, index) in filters"
 					:key="index"
-					class="pkpListPanel__filterSet"
+					class="listPanel__filterSet"
 				>
 					<pkp-header v-if="filterSet.heading">
-						{{ filterSet.heading }}
+						<h4>{{ filterSet.heading }}</h4>
 					</pkp-header>
 					<pkp-filter
 						v-for="filter in filterSet.filters"
 						:key="filter.param + filter.value"
 						v-bind="filter"
 						:isFilterActive="isFilterActive(filter.param, filter.value)"
-						:i18n="i18n"
-						@add-filter="addEmailTemplateFilter"
-						@remove-filter="removeEmailTemplateFilter"
+						@add-filter="addFilter"
+						@remove-filter="removeFilter"
 					/>
 				</div>
-			</div>
+			</template>
 
-			<!-- Content -->
-			<div class="pkpListPanel__content" aria-live="polite">
-				<!-- Items -->
-				<template v-if="items.length">
-					<email-templates-list-item
-						v-for="item in items"
-						:apiUrl="apiUrl"
-						:csrfToken="csrfToken"
-						:editItemUrl="editItemUrl"
-						:key="item.id"
-						:item="item"
-						:roles="roles"
-						:i18n="i18n"
-						@delete:item="deleteItem"
-						@update:item="updateItem"
-					/>
-				</template>
+			<template v-if="isLoading" slot="itemsEmpty">
+				<spinner />
+				{{ __('common.loading') }}
+			</template>
 
-				<!-- Loading indicator when loading and no items exist -->
-				<div v-else-if="isLoading" class="pkpListPanel__empty">
-					<spinner />
-					{{ i18n.loading }}
-				</div>
-
-				<!-- Indicator when no items exist -->
-				<div v-else class="pkpListPanel__empty">
-					{{ i18n.empty }}
-				</div>
-			</div>
-		</div>
-
-		<!-- Footer -->
-		<div v-if="lastPage > 1" class="pkpListPanel__footer">
-			<pagination
-				:currentPage="currentPage"
-				:isLoading="isLoading"
-				:lastPage="lastPage"
-				:i18n="i18n"
-				@set-page="setPage"
-			/>
-		</div>
+			<template v-slot:item="{item}">
+				<email-templates-list-item
+					:apiUrl="apiUrl"
+					:deleteConfirmMessage="deleteConfirmMessage"
+					:disableLabel="disableLabel"
+					:disabledLabel="disabledLabel"
+					:enableLabel="enableLabel"
+					:fromLabel="fromLabel"
+					:resetCompleteLabel="resetCompleteLabel"
+					:resetConfirmLabel="resetConfirmLabel"
+					:resetLabel="resetLabel"
+					:subjectLabel="subjectLabel"
+					:toLabel="toLabel"
+					:item="item"
+					:roles="roles"
+					@delete:item="removeItem"
+					@edit:item="openEditTemplateModal"
+					@update:item="updateItem"
+				/>
+			</template>
+		</list-panel>
+		<modal v-bind="MODAL_PROPS" name="form" @closed="formModalClosed">
+			<modal-content
+				:closeLabel="closeLabel"
+				modalName="form"
+				:title="activeFormTitle"
+			>
+				<pkp-form
+					v-bind="activeForm"
+					@set="updateForm"
+					@success="formSuccess"
+				/>
+			</modal-content>
+		</modal>
 	</div>
 </template>
 
 <script>
 import EmailTemplatesListItem from '@/components/ListPanel/emailTemplates/EmailTemplatesListItem.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
-import Pagination from '@/components/Pagination/Pagination.vue';
-import PkpButton from '@/components/Button/Button.vue';
+import PkpFilter from '@/components/Filter/Filter.vue';
+import PkpForm from '@/components/Form/Form.vue';
+import PkpHeader from '@/components/Header/Header.vue';
 import Search from '@/components/Search/Search.vue';
+import fetch from '@/mixins/fetch';
+import modal from '@/mixins/modal';
+import cloneDeep from 'clone-deep';
 
 export default {
-	extends: ListPanel,
 	components: {
 		EmailTemplatesListItem,
-		Pagination,
-		PkpButton,
+		ListPanel,
+		PkpFilter,
+		PkpForm,
+		PkpHeader,
 		Search
 	},
+	mixins: [fetch, modal],
 	props: {
-		addItemUrl: {
+		addLabel: {
 			type: String,
 			required: true
 		},
-		csrfToken: {
+		deleteConfirmMessage: {
 			type: String,
 			required: true
 		},
-		editItemUrl: {
+		descriptionLabel: {
+			type: String,
+			required: true
+		},
+		disableLabel: {
+			type: String,
+			required: true
+		},
+		disabledLabel: {
+			type: String,
+			required: true
+		},
+		editTemplateLabel: {
+			type: String,
+			required: true
+		},
+		enableLabel: {
+			type: String,
+			required: true
+		},
+		filters: {
+			type: Array,
+			default() {
+				return [];
+			}
+		},
+		form: {
+			type: Object,
+			required: true
+		},
+		fromLabel: {
+			type: String,
+			required: true
+		},
+		id: {
+			type: String,
+			required: true
+		},
+		items: {
+			type: Array,
+			default() {
+				return [];
+			}
+		},
+		itemsMax: {
+			type: Number,
+			defaut() {
+				return 0;
+			}
+		},
+		resetAllLabel: {
+			type: String,
+			required: true
+		},
+		resetAllCompleteLabel: {
+			type: String,
+			required: true
+		},
+		resetAllConfirmLabel: {
+			type: String,
+			required: true
+		},
+		resetCompleteLabel: {
+			type: String,
+			required: true
+		},
+		resetConfirmLabel: {
+			type: String,
+			required: true
+		},
+		resetLabel: {
 			type: String,
 			required: true
 		},
 		roles: {
 			type: Object,
 			required: true
+		},
+		subjectLabel: {
+			type: String,
+			required: true
+		},
+		title: {
+			type: String,
+			default() {
+				return '';
+			}
+		},
+		toLabel: {
+			type: String,
+			required: true
+		}
+	},
+	data() {
+		return {
+			activeForm: null,
+			activeFormTitle: '',
+			isSidebarVisible: false,
+			resetFocusTo: null
+		};
+	},
+	computed: {
+		closeLabel() {
+			return this.__('common.close');
 		}
 	},
 	methods: {
 		/**
-		 * A wrapper method which calls ListPanel::addFilter()
-		 * or ListPanel::setFilter() depending on whether the
-		 * filter param accepts multiple values.
+		 * Add a filter
 		 *
 		 * @param {String} param
 		 * @param {mixed} value
 		 */
-		addEmailTemplateFilter: function(param, value) {
+		addFilter: function(param, value) {
+			if (this.isFilterActive(param, value)) {
+				return;
+			}
+			let newFilters = {...this.activeFilters};
 			if (param === 'isEnabled' || param === 'isCustom') {
-				this.setFilter(param, value);
+				newFilters[param] = value;
 			} else {
-				this.addFilter(param, value);
+				if (!Object.keys(newFilters).includes(param)) {
+					newFilters[param] = [value];
+				} else {
+					newFilters[param].push(value);
+				}
+			}
+			this.activeFilters = newFilters;
+			this.get();
+		},
+
+		/**
+		 * Clear the active form when the modal is closed
+		 *
+		 * @param {Object} event
+		 */
+		formModalClosed(event) {
+			this.activeForm = null;
+			this.activeFormTitle = '';
+			if (this.resetFocusTo) {
+				this.resetFocusTo.focus();
 			}
 		},
 
 		/**
-		 * A wrapper method which calls ListPanel::removeFilter()
-		 * or ListPanel::removeParamFilters() depending on whether
-		 * the filter param accepts multiple values.
+		 * The add/edit form has been successfully
+		 * submitted.
 		 *
-		 * @param {String} param
-		 * @param {mixed} value
+		 * @param {Object} item
 		 */
-		removeEmailTemplateFilter: function(param, value) {
-			if (param === 'isEnabled' || param === 'isCustom') {
-				this.removeParamFilters(param);
+		formSuccess(item) {
+			if (this.activeForm.method === 'POST') {
+				this.offset = 0;
+				this.get();
+				pkp.eventBus.$emit('add:emailTemplate', item);
 			} else {
-				this.removeFilter(param, value);
+				this.setItems(
+					this.items.map(i => (i.id === item.id ? item : i)),
+					this.itemsMax
+				);
+				pkp.eventBus.$emit('update:emailTemplate', item);
+			}
+			setTimeout(() => {
+				this.$modal.hide('form');
+			}, 1500);
+		},
+
+		/**
+		 * Is a filter currently active?
+		 *
+		 * @param {string} param The filter param
+		 * @param {mixed} value The filter value
+		 * @return {Boolean}
+		 */
+		isFilterActive(param, value) {
+			if (!Object.keys(this.activeFilters).includes(param)) {
+				return false;
+			} else if (Array.isArray(this.activeFilters[param])) {
+				return this.activeFilters[param].includes(value);
+			} else {
+				return this.activeFilters[param] === value;
 			}
 		},
 
@@ -181,115 +312,188 @@ export default {
 		 * Open the modal to add a new template
 		 */
 		openAddTemplateModal() {
-			let modalHandler;
+			this.resetFocusTo = document.activeElement;
+			let activeForm = cloneDeep(this.form);
+			activeForm.action = this.apiUrl;
+			activeForm.method = 'POST';
+			this.activeForm = activeForm;
+			this.activeFormTitle = this.addLabel;
+			this.$modal.show('form');
+		},
 
-			// Assign the form success callback function
-			// to a var so that we can remove the event
-			// listener when the modal is closed
-			const addTemplateFormSuccess = (formId, newItem) => {
-				if (formId !== 'editEmailTemplate') {
-					return;
+		/**
+		 * Open the modal to edit a template
+		 *
+		 * @param {String} key Email template key
+		 */
+		openEditTemplateModal(key) {
+			this.resetFocusTo = document.activeElement;
+
+			const emailTemplate = this.items.find(
+				emailTemplate => emailTemplate.key === key
+			);
+			if (!emailTemplate) {
+				this.openDialog({
+					confirmLabel: this.__('common.ok'),
+					modalName: 'unknownError',
+					message: this.__('common.unknownError'),
+					callback: () => {
+						this.$modal.hide('unknownError');
+					}
+				});
+			}
+
+			let activeForm = cloneDeep(this.form);
+			activeForm.action = this.apiUrl + '/' + key;
+			activeForm.method = 'PUT';
+
+			// Remove the key field, which is only used for new templates
+			activeForm.fields = activeForm.fields.filter(
+				field => field.name !== 'key'
+			);
+
+			// Add a description field if the email template includes a description
+			if (this.localize(emailTemplate.description)) {
+				activeForm.fields.unshift({
+					component: 'field-html',
+					name: 'description',
+					description: this.localize(emailTemplate.description),
+					label: this.descriptionLabel,
+					groupId: 'default'
+				});
+			}
+
+			activeForm.fields = activeForm.fields.map(field => {
+				if (Object.keys(emailTemplate).includes(field.name)) {
+					field.value = emailTemplate[field.name];
 				}
-				this.get();
-				pkp.eventBus.$emit('add:emailTemplate', newItem);
-				modalHandler.modalClose();
-			};
+				return field;
+			});
 
-			const modalOptions = {
-				modalHandler: '$.pkp.controllers.modal.AjaxModalHandler',
-				url: this.addItemUrl,
-				title: this.i18n.add,
-				closeCleanVueInstances: ['editEmailTemplate'],
-				closeCallback: () => {
-					this.$refs.addButton
-						? this.$refs.addButton.$el.focus()
-						: this.setFocusIn(this.$el);
-					pkp.eventBus.$off('form-success', addTemplateFormSuccess);
-				}
-			};
-
-			const $modal = $(
-				'<div id="' +
-					$.pkp.classes.Helper.uuid() +
-					'" ' +
-					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>'
-			).pkpHandler(modalOptions.modalHandler, modalOptions);
-
-			modalHandler = $.pkp.classes.Handler.getHandler($modal);
-
-			// Update item and close modal when the template has been edited
-			pkp.eventBus.$on('form-success', addTemplateFormSuccess);
+			this.activeForm = activeForm;
+			this.activeFormTitle = this.editTemplateLabel;
+			this.$modal.show('form');
 		},
 
 		/**
 		 * Open a confirmation modal to reset all templates
 		 */
 		openResetAllModal() {
-			const modalOptions = {
-				modalHandler: '$.pkp.controllers.modal.ConfirmationModalHandler',
-				title: '',
-				okButton: this.i18n.ok,
-				cancelButton: this.i18n.cancel,
-				dialogText: this.i18n.resetAllConfirm,
-				callback: this.resetAll,
-				closeCallback: () => this.$refs.resetAllButton.$el.focus()
-			};
-
-			const $modal = $(
-				'<div id="' +
-					$.pkp.classes.Helper.uuid() +
-					'" ' +
-					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>'
-			).pkpHandler(modalOptions.modalHandler, modalOptions);
-
-			$.pkp.classes.Handler.getHandler($modal);
-		},
-
-		/**
-		 * Reset all templates
-		 */
-		resetAll() {
-			let self = this;
-			this.isLoading = true;
-
-			$.ajax({
-				url: this.apiUrl + '/restoreDefaults',
-				type: 'DELETE',
-				headers: {
-					'X-Csrf-Token': this.csrfToken
-				},
-				error(r) {
-					self.ajaxErrorCallback(r);
-					self.isLoading = false;
-				},
-				success(r) {
-					self.get();
+			const resetFocusTo = document.activeElement;
+			this.openDialog({
+				modalName: 'resetAll',
+				cancelLabel: this.__('common.cancel'),
+				confirmLabel: this.resetAllLabel,
+				message: this.resetAllConfirmLabel,
+				title: this.resetAllLabel,
+				callback: () => {
+					let self = this;
+					this.isLoading = true;
+					$.ajax({
+						url: this.apiUrl + '/restoreDefaults',
+						type: 'DELETE',
+						headers: {
+							'X-Csrf-Token': pkp.currentUser.csrfToken
+						},
+						error: self.ajaxErrorCallback,
+						success(r) {
+							self.$modal.hide('resetAll');
+							self.get();
+							pkp.eventBus.$emit(
+								'notify',
+								self.resetAllCompleteLabel,
+								'success'
+							);
+							resetFocusTo.focus();
+						},
+						complete(r) {
+							self.isLoading = false;
+						}
+					});
 				}
 			});
 		},
 
 		/**
-		 * Delete an item from the list
+		 * Remove a filter
 		 *
-		 * @param {Object} deletedItem
+		 * @param {String} param
+		 * @param {mixed} value
 		 */
-		deleteItem(deletedItem) {
+		removeFilter: function(param, value) {
+			if (!Object.keys(this.activeFilters).includes(param)) {
+				return;
+			}
+			let newFilters = {...this.activeFilters};
+			if (param === 'isEnabled' || param === 'isCustom') {
+				delete newFilters[param];
+			} else {
+				newFilters[param] = newFilters[param].filter(
+					filterValue => filterValue !== value
+				);
+			}
+			this.activeFilters = newFilters;
+			this.get();
+		},
+
+		/**
+		 * Remove an item from the list
+		 *
+		 * @param {Object} item
+		 */
+		removeItem(item) {
 			this.$emit('set', this.id, {
-				items: this.items.filter(item => item.key !== deletedItem.key)
+				items: this.items.filter(i => i.key !== item.key)
 			});
+		},
+
+		/**
+		 * Update the list of items
+		 *
+		 * @param {Array} items
+		 * @param {Number} itemsMax
+		 */
+		setItems(items, itemsMax) {
+			this.$emit('set', this.id, {
+				items,
+				itemsMax
+			});
+		},
+
+		/**
+		 * Update form values when they change
+		 *
+		 * @param {String} formId
+		 * @param {Object} data
+		 */
+		updateForm(formId, data) {
+			let activeForm = {...this.activeForm};
+			Object.keys(data).forEach(function(key) {
+				activeForm[key] = data[key];
+			});
+			this.activeForm = activeForm;
 		},
 
 		/**
 		 * Update an item in the list
 		 *
-		 * @param {Object} newItem
+		 * @param {Object} item
 		 */
-		updateItem(newItem) {
+		updateItem(item) {
 			this.$emit('set', this.id, {
-				items: this.items.map(item =>
-					item.key === newItem.key ? newItem : item
-				)
+				items: this.items.map(i => (i.key === item.key ? item : i))
 			});
+		}
+	},
+	watch: {
+		/**
+		 * Update list whenever a filter is applied
+		 */
+		activeFilters(newVal, oldVal) {
+			this.offset = 0;
+			if (newVal && Object.keys(newVal).length) {
+				this.isSidebarVisible = true;
+			}
 		}
 	}
 };

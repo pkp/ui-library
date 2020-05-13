@@ -1,18 +1,22 @@
 <script>
 import Component from '@/docs/Component.vue';
-import ExampleList from './ExampleList.vue';
+import PreviewList from './previews/PreviewList.vue';
+import PreviewListTemplate from '!raw-loader!./previews/PreviewList.vue';
+import readme from '!raw-loader!./readme.md';
 
 export default {
 	extends: Component,
-	components: {
-		ExampleList
-	},
 	data() {
 		return {
 			name: 'List',
-			examples: {
-				ExampleList: 'Base'
-			}
+			readme: readme,
+			examples: [
+				{
+					component: PreviewList,
+					name: 'Base',
+					template: this.extractTemplate(PreviewListTemplate)
+				}
+			]
 		};
 	}
 };

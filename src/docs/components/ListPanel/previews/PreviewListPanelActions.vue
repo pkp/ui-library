@@ -1,43 +1,30 @@
 <template>
-	<!-- Use the v-bind syntax to bind all props at once. -->
-	<list-panel v-bind="components.example" @set="set">
+	<list-panel :items="items">
 		<pkp-header slot="header">
-			{{ title }}
+			<h2>List Panel with Actions</h2>
 			<template slot="actions">
-				<pkp-button @click="openModal" label="Add Item" />
-				<pkp-button
-					@click="openModal"
-					:isWarnable="true"
-					label="Reset Defaults"
-				/>
+				<pkp-button @click="openModal">Add Item</pkp-button>
+				<pkp-button @click="openModal" :isWarnable="true">
+					Reset Defaults
+				</pkp-button>
 			</template>
 		</pkp-header>
 	</list-panel>
 </template>
 
 <script>
-import Container from '@/components/Container/Container.vue';
+import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import PkpHeader from '@/components/Header/Header.vue';
-import PkpButton from '@/components/Button/Button.vue';
-import {props} from '../config';
 import items from '../helpers/items';
 
 export default {
-	extends: Container,
 	components: {
-		PkpButton,
+		ListPanel,
 		PkpHeader
 	},
 	data() {
 		return {
-			components: {
-				example: {
-					...props,
-					id: 'example',
-					items: items
-				}
-			},
-			title: 'List Panel with Actions'
+			items: [...items]
 		};
 	},
 	methods: {

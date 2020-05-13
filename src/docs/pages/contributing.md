@@ -4,162 +4,113 @@ This library provides documentation and a development sandbox for building and m
 
 ## File Structure
 
-All of the files loaded by OJS or OMP can be found in `/src/components`, `/src/mixins`, and `/src/styles`. Everything else in this repository is only used to run this library.
+The following directories contain code that is run by our applications.
 
-- `/public` Global files that help run the UI Library app. Not used in OJS and OMP.
-- `/src/components` The component source files. All imports from OJS and OMP should be here.
-- `/src/docs` The files used to document and preview components. Not used in OJS and OMP.
-- `/src/docs/components` Files for displaying and documenting individual components in the UI Library. Not used in OJS and OMP.
-- `/src/docs/pages` Markdown files for description pages that are not specific to a component, such as this page you are reading now.
-- `/src/mixins` [Mixins](https://vuejs.org/v2/guide/mixins.html) used in components. Used in OJS and OMP.
-- `/src/styles` LESS styles that are imported into global stylesheets and components. Some files used in OJS and OMP.
-- `/src/App.vue` The main component that runs the UI Library. Not used in OJS and OMP.
-- `/src/main.js` Loads dependencies and initializes the UI Library. Not used in OJS and OMP, but often dependencies must be synced with `js/load.js` and `/lib/pkp/js/load.js` in those applications.
-- `/src/router.js` The router for the UI Library. Not used in OJS and OMP.
+| Directory | Description |
+| --- | --- |
+| `/src/components` | All of the Vue.js component source files. |
+| `/src/mixins` | [Mixins](https://vuejs.org/v2/guide/mixins.html) used in components. |
+| `/src/styles` | LESS styles that are imported into global stylesheets and components. |
 
-## Creating a Component Demo
+The rest of the files in this library are used to run the component demos.
 
-Each documented component requires the following:
+| Directory | Description |
+| --- | --- |
+| `/public` | Static site files. |
+| `/src/docs` | Document and preview components. |
+| `/src/docs/components` | Document individual components in the UI Library. |
+| `/src/docs/pages` | Markdown files for pages that are not related to a component, such as the page you are reading now. |
+| `/src/App.vue` | The main component that runs the UI Library. |
+| `/src/main.js` | Loads dependencies and initializes the UI Library. |
+| `/src/router.js` | The router for the UI Library. |
 
-- documented props, data and events,
-- an example of the component in action
-- usage guidance
+## Create a Component Demo
 
-This section will describe the files that are used to document the [HelpButton](#/component/HelpButton) component. You can use this as a guide to documenting your own components.
+Each component demo should include an example of the component in action, documentation describing the props accepted and events emitted by the component, and guidance on when and how the component should be used.
 
-Create a basic preview of the component:
+Create a single-file Vue component that loads an example of the component you wish to document:
 
 ```html
-<!-- /src/docs/components/HelpButton/previews/PreviewHelpButton.vue -->
+<!-- /src/docs/components/Notification/previews/PreviewNotification.vue -->
 <template>
-	<help-button
-		topic="settings"
-		section="workflow-library"
-		label="Learn more about the Publisher Library"
-	/>
+	<div class="previewNotification">
+		<notification type="warning">
+			This submission does not have an editor assigned.
+		</notification>
+	</div>
 </template>
 
 <script>
-import HelpButton from '@/components/HelpButton/HelpButton.vue';
+import Notification from '@/components/Notification/Notification.vue';
 
 export default {
 	components: {
-		HelpButton,
+		Notification
 	}
 };
 </script>
 ```
 
-Create a `config.js` file that exports default props and describes every prop accepted by the component:
+Create a `readme.md` file that documents how the component works.
 
-```js
-// /src/docs/components/HelpButton/config.js
-export let props = {
-	topic: 'settings',
-	section: 'workflow-library',
-	label: 'Learn more about the Publisher Library'
-}
+```md
+##  Props
 
-export const propDocs = [
-	{
-		key: 'topic',
-		description: 'Which topic to open in the help panel. This will correspond with one of the `.md` files used in the help panel. Do not include the `.md` extension.'
-	},
-	{
-		key: 'section',
-		description: 'Open the help panel to a particular section of the topic. This must match one of the named anchors in the topic page, such as `<a name="workflow-library"></a>`.'
-	},
-	{
-		key: 'label',
-		description: 'A localized label for screen readers. In English this should be "Help".'
-	}
-]
+| Key | Description |
+| --- | --- |
+| `type` | The type of notification. Pass `warning` for notifications about errors or serious problems. |
 
-export default {
-	props,
-	propDocs
-}
+## Events
+
+This component does not emit any events.
+
+## Usage
+
+Use the `Notification` component to draw the user's attention to new information. Do not overuse notifications. If they become too common, they will no longer draw the user's attention.
 ```
 
-If your component accepts data or emits events, those should be documented and exported as `data`, `dataDocs`, and `emitDocs`.
-
-Create an example of the component:
+Create the documentation component which will load the example and readme:
 
 ```html
-<!-- /src/docs/components/HelpButton/ExampleHelpButton.vue -->
-<script>
-import Example from '@/docs/Example.vue';
-import PreviewHelpButton from './previews/PreviewHelpButton.vue';
-// !raw-loader helps us extract the pre-compiled template from the preview
-import fileContent from '!raw-loader!./previews/PreviewHelpButton.vue';
-import config from './config';
-
-export default {
-	extends: Example,
-	components: {
-		PreviewHelpButton
-	},
-	data() {
-		return {
-			...config,
-			component: 'preview-help-button',
-			props: config.props,
-			template: this.extractTemplate(fileContent),
-		}
-	}
-}
-</script>
-```
-
-Notice how the `config` object is passed to the data. This is used to provide consistent starting props, data, and documentation for all examples of a component.
-
-Create the parent documentation component and pass each example:
-
-```html
-<!-- /src/docs/components/HelpButton/ComponentHelpButton.vue -->
+<!-- /src/docs/components/Notification/ComponentNotification.vue -->
 <script>
 import Component from '@/docs/Component.vue';
-import ExampleHelpButton from './ExampleHelpButton.vue';
+import PreviewNotification from './previews/PreviewNotification.vue';
+import PreviewNotificationTemplate from '!raw-loader!./previews/PreviewNotification.vue';
+import readme from '!raw-loader!./readme.md';
 
 export default {
 	extends: Component,
-	components: {
-		ExampleHelpButton,
-	},
 	data() {
 		return {
-			name: 'Help Button',
-			examples: {
-				'ExampleHelpButton': 'Base'
-			}
-		}
+			name: 'Notification',
+			readme: readme,
+			examples: [
+				{
+					component: PreviewNotification,
+					name: 'Base',
+					template: this.extractTemplate(PreviewNotificationTemplate)
+				}
+			]
+		};
 	}
-}
+};
 </script>
 ```
 
 To create multiple examples for a component, import additional `Example*` components and add them to the `examples` data object.
 
-Create a `readme.md` file to provide usage guidance for the component:
-
-```md
-<!--- /src/docs/components/HelpButton/readme.md --->
-Use this component to display an icon that will open the help panel when clicked.
-
-...
-```
-
-Add a route to `/src/router.js`:
+If this is a new component, you will need to add a route to `/src/router.js`:
 
 ```js
 ...
-import ComponentHelpButton from "./docs/components/HelpButton/ComponentHelpButton.vue";
+import ComponentNotification from "./docs/components/Notification/ComponentNotification.vue";
 
 ...
 	{
-		path: "/component/HelpButton/:example?",
-		name: "HelpButton",
-		component: ComponentHelpButton,
+		path: "/component/Notification/:example?",
+		name: "Notification",
+		component: ComponentNotification,
 	},
 ...
 ```
@@ -168,17 +119,9 @@ Finally, add a link to the library's list of documented components:
 
 ```html
 ...
-	<li><router-link to="/component/HelpButton">HelpButton</router-link></li>
+	<li><router-link to="/component/Notification">Notification</router-link></li>
 ...
 ```
-
-## Linked Components
-
-Some components can only be used with a specific parent component. For example, `ListPanelLoadMore` is only used in `ListPanel` components.
-
-When documenting such components, add an example that demonstrates this relationship and label it "With <name-of-child-component>".
-
-See [ListPanel/ListPanelLoadMore](http://localhost:8080/component/ListPanel/ListPanelLoadMore).
 
 ## ESLint and Prettier
 

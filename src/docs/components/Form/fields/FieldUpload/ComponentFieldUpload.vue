@@ -1,19 +1,23 @@
 <script>
 import Component from '@/docs/Component.vue';
-import ExampleFieldUpload from './ExampleFieldUpload.vue';
+import PreviewFieldUpload from './previews/PreviewFieldUpload.vue';
+import PreviewFieldUploadTemplate from '!raw-loader!./previews/PreviewFieldUpload.vue';
+import readme from '!raw-loader!./readme.md';
 
 export default {
 	extends: Component,
-	components: {
-		ExampleFieldUpload
-	},
 	data() {
 		return {
 			name: 'FieldUpload',
 			parentRoute: 'Form/fields',
-			examples: {
-				ExampleFieldUpload: 'Base'
-			}
+			readme: readme,
+			examples: [
+				{
+					component: PreviewFieldUpload,
+					name: 'Base',
+					template: this.extractTemplate(PreviewFieldUploadTemplate)
+				}
+			]
 		};
 	}
 };

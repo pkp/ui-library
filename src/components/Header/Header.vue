@@ -1,5 +1,8 @@
 <template>
-	<div class="pkpHeader -pkpClearfix" :class="{'-isOneLine': isOneLine}">
+	<div
+		class="pkpHeader"
+		:class="{'-isOneLine': isOneLine, '-pkpClearfix': !isOneLine}"
+	>
 		<span class="pkpHeader__title">
 			<slot />
 		</span>
@@ -14,7 +17,7 @@ export default {
 	props: {
 		isOneLine: {
 			type: Boolean,
-			default: false
+			default: true
 		}
 	},
 	computed: {
@@ -35,13 +38,12 @@ export default {
 .pkpHeader__title {
 	display: inline-block;
 	margin: 0;
-	padding: 0.25rem 0;
 	font-size: @font-base;
-	font-weight: @bold;
-	line-height: 1.5em;
+	line-height: 1.2;
 
 	> * {
 		display: inline-block;
+		vertical-align: middle;
 	}
 
 	.pkpSpinner {
@@ -54,11 +56,12 @@ export default {
 .pkpHeader__title > h3,
 .pkpHeader__title > h4,
 .pkpHeader__title > h5,
-.pkpHeader__title > h6 {
+.pkpHeader__title > h6,
+.pkpHeader__title > legend {
 	margin: 0;
 	font-size: @font-base;
 	font-weight: @bold;
-	line-height: 1.5em;
+	line-height: @double + 2; // Matches buttons
 }
 
 .pkpHeader__title > legend {
@@ -84,15 +87,15 @@ export default {
 
 .pkpHeader.-isOneLine {
 	display: flex;
-	justify-content: space-between;
 	align-items: center;
 
-	.pkpHeader__title,
-	.pkpHeader__title > * {
+	.pkpHeader__title {
 		margin-right: auto; // flex: align left when only one item
+		min-width: 1px;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
+		width: 100%;
 	}
 
 	.pkpHeader__actions {
@@ -103,6 +106,22 @@ export default {
 
 		> * {
 			white-space: nowrap;
+		}
+	}
+}
+
+[dir='rtl'] {
+	.pkpHeader__actions {
+		> * {
+			&:first-child {
+				margin-left: 0;
+				margin-right: 1rem;
+			}
+		}
+
+		> * + * {
+			margin-left: 0;
+			margin-right: 0.25rem;
 		}
 	}
 }

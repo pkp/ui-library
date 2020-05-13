@@ -1,19 +1,23 @@
 <script>
 import Component from '@/docs/Component.vue';
-import ExampleFieldPubId from './ExampleFieldPubId.vue';
+import PreviewFieldPubId from './previews/PreviewFieldPubId.vue';
+import PreviewFieldPubIdTemplate from '!raw-loader!./previews/PreviewFieldPubId.vue';
+import readme from '!raw-loader!./readme.md';
 
 export default {
 	extends: Component,
-	components: {
-		ExampleFieldPubId
-	},
 	data() {
 		return {
 			name: 'FieldPubId',
 			parentRoute: 'Form/fields',
-			examples: {
-				ExampleFieldPubId: 'Base'
-			}
+			readme: readme,
+			examples: [
+				{
+					component: PreviewFieldPubId,
+					name: 'Base',
+					template: this.extractTemplate(PreviewFieldPubIdTemplate)
+				}
+			]
 		};
 	}
 };

@@ -1,127 +1,120 @@
 <template>
-	<div class="pkpListPanelItem--reviewer -hasSummary" :class="classes">
-		<div class="pkpListPanelItem__summary">
-			<component
-				:is="localCanSelect ? 'label' : 'div'"
-				class="pkpListPanelItem__selectorLabel"
-			>
-				<div v-if="localCanSelect" class="pkpListPanelItem__selector">
-					<input
-						:name="selectorName"
-						:type="selectorType"
-						:value="id"
-						v-model="localSelected"
-					/>
+	<div
+		class="listPanel__item--reviewer"
+		:class="currentlyAssigned ? '-isAssigned' : ''"
+	>
+		<div class="listPanel__itemSummary">
+			<div class="listPanel__itemIdentity">
+				<div class="listPanel__itemTitle">
+					<badge
+						v-if="item.reviewsActive && canSelect"
+						class="listPanel__item--reviewer__active"
+					>
+						{{
+							activeReviewsCountLabel.replace('{$count}', item.reviewsActive)
+						}}
+					</badge>
+					{{ item.fullName }}
+					<span
+						v-if="item.reviewerRating !== null && canSelect"
+						class="listPanel__item--reviewer__rating"
+					>
+						<icon
+							v-for="(star, index) in stars"
+							:key="index"
+							icon="star"
+							:class="
+								star
+									? 'listPanel__item--reviewer__star--on'
+									: 'listPanel__item--reviewer__star--off'
+							"
+						/>
+						<span class="-screenReader">
+							{{
+								reviewerRatingLabel.replace('{$rating}', item.reviewerRating)
+							}}
+						</span>
+					</span>
 				</div>
-				<div class="pkpListPanelItem--reviewer__entry">
-					<div class="pkpListPanelItem--reviewer__header">
-						<div class="pkpListPanelItem--reviewer__fullName">
-							<badge
-								v-if="item.reviewsActive && localCanSelect"
-								class="pkpListPanelItem--reviewer__active"
-							>
-								{{ __('activeReviews', {count: item.reviewsActive}) }}
-							</badge>
-							{{ item.fullName }}
-						</div>
-						<div
-							v-if="item.reviewerRating !== null && localCanSelect"
-							class="pkpListPanelItem--reviewer__rating"
-						>
-							<icon
-								v-for="(star, index) in stars"
-								:key="index"
-								icon="star"
-								:class="
-									star
-										? 'pkpListPanelItem--reviewer__star--on'
-										: 'pkpListPanelItem--reviewer__star--off'
-								"
-							/>
-							<span class="-screenReader">
-								{{ __('reviewerRating', {rating: item.reviewerRating}) }}
-							</span>
-						</div>
-					</div>
+
+				<div class="listPanel__itemSubtitle">
 					<div
 						v-if="Object.keys(item.affiliation).length || item.orcid"
-						class="pkpListPanelItem--reviewer__affiliation"
+						class="listPanel__item--reviewer__affiliation"
 					>
 						{{ localize(item.affiliation) }}
 						<a
 							v-if="item.orcid"
 							:href="item.orcid"
-							class="pkpListPanelItem--reviewer__orcid"
+							class="listPanel__item--reviewer__orcid"
 							target="_blank"
 						>
 							<icon icon="orcid" :inline="true" />
 							{{ item.orcid }}
 						</a>
 					</div>
-					<!-- use aria-hidden on these details because the information can be
-						more easily acquired by screen readers from the details panel. -->
-					<div
-						v-if="localCanSelect"
-						class="pkpListPanelItem--reviewer__brief"
-						aria-hidden="true"
-					>
-						<span class="pkpListPanelItem--reviewer__complete">
-							<icon icon="check-circle-o" :inline="true" />
-							{{ item.reviewsCompleted }}
-						</span>
-						<span class="pkpListPanelItem--reviewer__last">
-							<icon icon="history" :inline="true" />
-							{{ daysSinceLastAssignmentString }}
-						</span>
-						<span
-							v-if="item.interests.length"
-							class="pkpListPanelItem--reviewer__interests"
-						>
-							<icon icon="book" :inline="true" />
-							{{ interestsString }}
-						</span>
-					</div>
 				</div>
-			</component>
-			<div v-if="currentlyAssigned" class="pkpListPanelItem--reviewer__notice">
-				<icon icon="exclamation-triangle" :inline="true" />
-				{{ i18n.currentlyAssigned }}
-			</div>
-			<div
-				v-else-if="warnOnAssignment && !isWarningBypassed"
-				class="pkpListPanelItem--reviewer__notice"
-			>
-				<icon icon="lock" :inline="true" />
-				{{ i18n.warnOnAssign }}
-				<button
-					@click.prevent="unlockAssignment"
-					class="pkpListPanelItem--reviewer__noticeAction"
+
+				<!-- use aria-hidden on these details because the information can be
+					more easily acquired by screen readers from the details panel. -->
+				<div
+					v-if="canSelect"
+					class="listPanel__item--reviewer__brief"
+					aria-hidden="true"
 				>
-					{{ i18n.warnOnAssignUnlock }}
-				</button>
+					<span class="listPanel__item--reviewer__complete">
+						<icon icon="check-circle-o" :inline="true" />
+						{{ item.reviewsCompleted }}
+					</span>
+					<span class="listPanel__item--reviewer__last">
+						<icon icon="history" :inline="true" />
+						{{ daysSinceLastAssignmentLabelCompiled }}
+					</span>
+					<span
+						v-if="item.interests.length"
+						class="listPanel__item--reviewer__interests"
+					>
+						<icon icon="book" :inline="true" />
+						{{ interestsString }}
+					</span>
+				</div>
+
+				<div v-if="currentlyAssigned" class="listPanel__item--reviewer__notice">
+					<icon icon="exclamation-triangle" :inline="true" />
+					{{ currentlyAssignedLabel }}
+				</div>
+				<div
+					v-else-if="warnOnAssignment && !isWarningBypassed"
+					class="listPanel__item--reviewer__notice"
+				>
+					<icon icon="lock" :inline="true" />
+					{{ warnOnAssignmentLabel }}
+					<button
+						@click.prevent="unlockAssignment"
+						class="listPanel__item--reviewer__noticeAction"
+					>
+						{{ warnOnAssignmentUnlockLabel }}
+					</button>
+				</div>
 			</div>
-			<button
-				v-if="localCanSelect"
-				@click="toggleExpanded"
-				class="pkpListPanelItem__expander"
-			>
-				<template v-if="isExpanded">
-					<icon icon="angle-up" />
+
+			<div class="listPanel__itemActions">
+				<pkp-button v-if="canSelect" @click="select">
+					<span aria-hidden="true">{{ selectReviewerLabel }}</span>
 					<span class="-screenReader">
-						{{ __('viewLess', {name: item.fullName}) }}
+						{{ __('common.selectWithName', {name: item.fullName}) }}
 					</span>
-				</template>
-				<template v-else>
-					<icon icon="angle-down" />
-					<span class="-screenReader">
-						{{ __('viewMore', {name: item.fullName}) }}
-					</span>
-				</template>
-			</button>
+				</pkp-button>
+				<expander
+					:isExpanded="isExpanded"
+					:itemName="item.fullName"
+					@toggle="isExpanded = !isExpanded"
+				/>
+			</div>
 		</div>
 		<div
 			v-if="isExpanded"
-			class="pkpListPanelItem__details pkpListPanelItem__details--reviewer"
+			class="listPanel__itemExpanded listPanel__itemExpanded--reviewer"
 		>
 			<list>
 				<list-item>
@@ -129,59 +122,59 @@
 						<icon icon="clock-o" :inline="true" />
 						{{ item.reviewsActive }}
 					</template>
-					{{ i18n.activeReviewsDescription }}
+					{{ activeReviewsLabel }}
 				</list-item>
 				<list-item>
 					<template slot="value">
 						<icon icon="check-circle-o" :inline="true" />
 						{{ item.reviewsCompleted }}
 					</template>
-					{{ i18n.completedReviews }}
+					{{ completedReviewsLabel }}
 				</list-item>
 				<list-item>
 					<template slot="value">
 						<icon icon="times-circle-o" :inline="true" />
 						{{ item.reviewsDeclined }}
 					</template>
-					{{ i18n.declinedReviews }}
+					{{ declinedReviewsLabel }}
 				</list-item>
 				<list-item>
 					<template slot="value">
 						<icon icon="ban" :inline="true" />
 						{{ item.reviewsCancelled }}
 					</template>
-					{{ i18n.cancelledReviews }}
+					{{ cancelledReviewsLabel }}
 				</list-item>
 				<list-item>
 					<template slot="value">
 						<icon icon="history" :inline="true" />
 						{{ daysSinceLastAssignment }}
 					</template>
-					{{ i18n.daysSinceLastAssignmentDescription }}
+					{{ daysSinceLastAssignmentDescriptionLabel }}
 				</list-item>
 				<list-item>
 					<template slot="value">
 						<icon icon="calendar" :inline="true" />
 						{{ item.averageReviewCompletionDays }}
 					</template>
-					{{ i18n.averageCompletion }}
+					{{ averageCompletionLabel }}
 				</list-item>
 				<list-item v-if="item.interests.length">
-					<div class="pkpListPanelItem--reviewer__detailHeading">
+					<div class="listPanel__item--reviewer__detailHeading">
 						<icon icon="book" :inline="true" />
-						{{ i18n.reviewInterests }}
+						{{ reviewInterestsLabel }}
 					</div>
 					{{ interestsString }}
 				</list-item>
 				<list-item v-if="item.gossip">
-					<div class="pkpListPanelItem--reviewer__detailHeading">
-						{{ i18n.gossip }}
+					<div class="listPanel__item--reviewer__detailHeading">
+						{{ gossipLabel }}
 					</div>
 					<div v-html="item.gossip"></div>
 				</list-item>
 				<list-item v-if="localize(item.biography)">
-					<div class="pkpListPanelItem--reviewer__detailHeading">
-						{{ i18n.biography }}
+					<div class="listPanel__item--reviewer__detailHeading">
+						{{ biographyLabel }}
 					</div>
 					<div v-html="localize(item.biography)"></div>
 				</list-item>
@@ -191,27 +184,99 @@
 </template>
 
 <script>
-import ListPanelItem from '@/components/ListPanel/ListPanelItem.vue';
-import Badge from '@/components/Badge/Badge.vue';
-import Icon from '@/components/Icon/Icon.vue';
+import Expander from '@/components/Expander/Expander.vue';
 import List from '@/components/List/List.vue';
 import ListItem from '@/components/List/ListItem.vue';
 
 export default {
-	extends: ListPanelItem,
 	components: {
-		Badge,
-		Icon,
+		Expander,
 		List,
 		ListItem
 	},
 	props: {
+		activeReviewsCountLabel: {
+			type: String,
+			required: true
+		},
+		activeReviewsLabel: {
+			type: String,
+			required: true
+		},
+		averageCompletionLabel: {
+			type: String,
+			required: true
+		},
+		biographyLabel: {
+			type: String,
+			required: true
+		},
+		cancelledReviewsLabel: {
+			type: String,
+			required: true
+		},
+		completedReviewsLabel: {
+			type: String,
+			required: true
+		},
 		currentlyAssigned: {
 			type: Boolean,
 			required: true
 		},
+		currentlyAssignedLabel: {
+			type: String,
+			required: true
+		},
+		daySinceLastAssignmentLabel: {
+			type: String,
+			required: true
+		},
+		daysSinceLastAssignmentLabel: {
+			type: String,
+			required: true
+		},
+		daysSinceLastAssignmentDescriptionLabel: {
+			type: String,
+			required: true
+		},
+		declinedReviewsLabel: {
+			type: String,
+			required: true
+		},
+		gossipLabel: {
+			type: String,
+			required: true
+		},
+		item: {
+			type: Object,
+			required: true
+		},
+		neverAssignedLabel: {
+			type: String,
+			required: true
+		},
+		reviewerRatingLabel: {
+			type: String,
+			required: true
+		},
+		reviewInterestsLabel: {
+			type: String,
+			required: true
+		},
+		selectReviewerLabel: {
+			type: String,
+			required: true
+		},
 		warnOnAssignment: {
 			type: Boolean,
+			required: true
+		},
+		warnOnAssignmentLabel: {
+			type: String,
+			required: true
+		},
+		warnOnAssignmentUnlockLabel: {
+			type: String,
 			required: true
 		}
 	},
@@ -223,17 +288,21 @@ export default {
 	},
 	computed: {
 		/**
-		 * Classes to apply to the root element
+		 * Can this reviewer be selected
 		 *
-		 * @return {Array}
+		 * Checks for current assignment and a locked assignment warning.
+		 * Use this instead of the canSelect prop.
+		 *
+		 * @return {Boolean}
 		 */
-		classes() {
-			let classes = ListPanelItem.computed.classes.apply(this);
-			classes.push('-hasSelector');
+		canSelect() {
 			if (this.currentlyAssigned) {
-				classes.push('-isAssigned');
+				return false;
 			}
-			return classes;
+			if (this.warnOnAssignment) {
+				return this.isWarningBypassed;
+			}
+			return true;
 		},
 
 		/**
@@ -257,16 +326,17 @@ export default {
 		 *
 		 * @return {String} "X days ago"
 		 */
-		daysSinceLastAssignmentString() {
+		daysSinceLastAssignmentLabelCompiled() {
 			if (!this.daysSinceLastAssignment) {
-				return this.i18n.neverAssigned;
+				return this.neverAssignedLabel;
 			}
 			if (this.daysSinceLastAssignment > 1) {
-				return this.__('daysSinceLastAssignment', {
-					days: this.daysSinceLastAssignment
-				});
+				return this.daysSinceLastAssignmentLabel.replace(
+					'{$days}',
+					this.daysSinceLastAssignment
+				);
 			} else {
-				return this.__('daySinceLastAssignment');
+				return this.daySinceLastAssignmentLabel;
 			}
 		},
 
@@ -283,25 +353,7 @@ export default {
 				.map(i => {
 					return i.interest;
 				})
-				.join(this.i18n.listSeparator);
-		},
-
-		/**
-		 * Can this reviewer be selected
-		 *
-		 * Checks for current assignment and a locked assignment warning.
-		 * Use this instead of the canSelect prop.
-		 *
-		 * @return {Boolean}
-		 */
-		localCanSelect() {
-			if (this.currentlyAssigned) {
-				return false;
-			}
-			if (this.warnOnAssignment) {
-				return this.isWarningBypassed;
-			}
-			return true;
+				.join(this.__('common.commaListSeparator'));
 		},
 
 		/**
@@ -324,6 +376,16 @@ export default {
 	},
 	methods: {
 		/**
+		 * Emit an event to select a reviewer
+		 *
+		 * @param
+		 */
+		select() {
+			this.$emit('select', this.item);
+			pkp.eventBus.$emit('selected:reviewer', this.item);
+		},
+
+		/**
 		 * Unlock a locked assignment
 		 */
 		unlockAssignment() {
@@ -336,80 +398,59 @@ export default {
 <style lang="less">
 @import '../../../styles/_import';
 
-.pkpListPanelItem--reviewer__header {
-	position: relative;
-	padding-right: 8em;
-}
-
-.pkpListPanelItem--reviewer__fullName {
-	font-weight: @bold;
-}
-
-.pkpListPanelItem--reviewer__active {
-	font-weight: @normal;
+.listPanel__item--reviewer__active {
 	margin-right: 0.25rem;
+	font-weight: @normal;
 }
 
-.pkpListPanelItem--reviewer__rating {
-	position: absolute;
-	top: 50%;
-	right: 1em;
-	transform: translateY(-50%);
+.listPanel__item--reviewer__rating {
+	margin-left: 0.25rem;
 	color: @star-off;
 }
 
-.pkpListPanelItem--reviewer__star--on {
+.listPanel__item--reviewer__star--on {
 	color: @star-on;
 }
 
-.pkpListPanelItem--reviewer__orcid {
-	margin-left: 1rem;
+.listPanel__item--reviewer__orcid {
+	margin-left: 0.5rem;
 	font-size: @font-tiny;
 	text-decoration: none;
 }
 
-.pkpListPanelItem--reviewer__brief > * {
+.listPanel__item--reviewer__brief > * {
 	display: inline-block;
 	margin-top: 0.5em;
 	margin-right: 1em;
 	font-size: @font-tiny;
 }
 
-.pkpListPanelItem--reviewer__complete {
+.listPanel__item--reviewer__complete {
 	min-width: 4em;
 }
 
-.pkpListPanelItem--reviewer__last {
+.listPanel__item--reviewer__last {
 	min-width: 9em;
 }
 
-.pkpListPanelItem--reviewer__brief .fa,
-.pkpListPanelItem__details--reviewer .list .fa {
+.listPanel__item--reviewer__brief .fa,
+.listPanel__itemExpanded--reviewer .fa {
 	color: @bg-dark;
 	font-size: @font-sml;
 }
 
-.pkpListPanelItem__details--reviewer {
-	.list {
-		margin-left: 2rem;
-		margin-right: 2rem;
-	}
-}
-
-.pkpListPanelItem--reviewer__detailHeading {
+.listPanel__item--reviewer__detailHeading {
 	margin-bottom: 0.5em;
 	font-weight: @bold;
 }
 
-// Reviewers already assigned to this submission
-.pkpListPanelItem--reviewer__notice {
-	margin-top: -0.5rem;
-	padding: 0 0.5rem 1rem 1rem;
+// Reviewer locked or already assigned
+.listPanel__item--reviewer__notice {
 	font-size: @font-tiny;
 }
 
 // Make the button look like a link
-.pkpListPanelItem--reviewer__noticeAction {
+.listPanel__item--reviewer__noticeAction {
 	border: none;
 	padding: 0;
 	background: transparent;
@@ -420,38 +461,6 @@ export default {
 	&:hover,
 	&:focus {
 		color: @primary-lift;
-	}
-}
-
-.pkpListPanelItem--reviewer.-isAssigned .pkpListPanelItem--reviewer__entry {
-	opacity: 0.5;
-
-	&:after {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		width: 100%;
-		height: 100%;
-		cursor: not-allowed;
-	}
-}
-
-/** Override styles when placed in a legacy form */
-.pkp_form .pkpListPanel--reviewer {
-	label {
-		font-weight: @normal;
-	}
-
-	.pkpListPanelItem--reviewer__fullName,
-	.pkpListPanelItem--reviewer__affiliation {
-		font-size: @font-sml;
-	}
-
-	.pkpListPanelItem--reviewer__fullName {
-		font-weight: @bold;
 	}
 }
 </style>

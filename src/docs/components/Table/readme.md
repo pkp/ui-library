@@ -1,3 +1,23 @@
+## Props
+
+| Key | Description |
+| --- | --- |
+| `columns` | An array of configuration objects for each column. |
+| `describedBy` | The id of one or more HTML elements that describe the table, to be used in an <code>aria-describedby</code> attribute. This prop is not required unless additional information about the table is available and not included in the <code>description</code> prop. |
+| `description` | An optional description of the table. |
+| `label` | A name for the table. If no <code>label</code> is provided, you must make use of the <code>labelledBy</code> prop. |
+| `labelledBy` | The id of one or more HTML elements that name the table, to be used in an <code>aria-labelledby</code> attribute. This prop should not be used if a <code>label</code> is provided. |
+| `orderBy` | The name of the column that the rows are ordered by. |
+| `orderDirection` | The direction that rows are ordered by as a boolean. |
+| `rows` | The items to display in the table. |
+
+## Events
+
+| Key | Description |
+| --- | --- |
+| `order-by` | Emitted when items in the table should be reordered. `(orderBy, orderDirection)` |
+
+## Usage
 
 Use the `Table` component to provide tabular data when the user will interact with the data, such as sorting, searching, filtering or editing the rows.
 

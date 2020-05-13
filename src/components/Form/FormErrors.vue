@@ -6,7 +6,7 @@
 			<li v-for="(error, index) in errorList" :key="index">
 				<button @click.prevent="showError(error.fieldName)">
 					{{
-						__('errorA11y', {
+						__('form.errorA11y', {
 							fieldLabel: error.label,
 							errorMessage: error.message
 						})
@@ -15,23 +15,17 @@
 			</li>
 		</ul>
 		<button class="pkpFormErrors__goTo" @click.prevent="showNextError">
-			{{ i18n.errorGoTo }}
+			{{ __('form.errorGoTo') }}
 		</button>
 	</div>
 </template>
 
 <script>
-import Icon from '../Icon/Icon.vue';
-
 export default {
 	name: 'FormErrors',
-	components: {
-		Icon
-	},
 	props: {
 		errors: Object,
-		fields: Array,
-		i18n: Object
+		fields: Array
 	},
 	computed: {
 		/**
@@ -41,9 +35,11 @@ export default {
 		 */
 		message() {
 			if (Object.keys(this.errors).length === 1) {
-				return this.i18n.errorOne;
+				return this.__('form.errorOne');
 			} else {
-				return this.__('errorMany', {count: Object.keys(this.errors).length});
+				return this.__('form.errorMany', {
+					count: Object.keys(this.errors).length
+				});
 			}
 		},
 

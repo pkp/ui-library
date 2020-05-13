@@ -10,7 +10,7 @@
 				v-if="helpTopic"
 				:topic="helpTopic"
 				:section="helpSection"
-				:label="i18n.help"
+				:label="__('help.help')"
 			/>
 		</div>
 		<div

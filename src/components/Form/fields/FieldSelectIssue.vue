@@ -5,7 +5,7 @@
 				:controlId="controlId"
 				:label="label"
 				:isRequired="isRequired"
-				:requiredLabel="i18n.required"
+				:requiredLabel="__('common.required')"
 			/>
 			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span
@@ -19,7 +19,7 @@
 				:id="describedByHelpId"
 				:topic="helpTopic"
 				:section="helpSection"
-				:label="i18n.help"
+				:label="__('help.help')"
 			/>
 		</div>
 		<div
@@ -39,10 +39,11 @@
 					<span v-html="scheduledNotice" />
 					<pkp-button
 						class="pkpFormField--selectIssue__unscheduleButton"
-						:label="unscheduleLabel"
 						:isWarnable="true"
 						@click="emitUnschedule"
-					/>
+					>
+						{{ unscheduleLabel }}
+					</pkp-button>
 				</span>
 			</template>
 			<template v-else>
@@ -66,14 +67,10 @@
 
 <script>
 import FieldSelect from './FieldSelect.vue';
-import PkpButton from '@/components/Button/Button.vue';
 
 export default {
 	name: 'FieldSelectIssue',
 	extends: FieldSelect,
-	components: {
-		PkpButton
-	},
 	props: {
 		publicationStatus: {
 			type: Number,

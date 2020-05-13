@@ -13,7 +13,7 @@
 			</template>
 			<span v-if="isRequired" class="pkpFormFieldLabel__required">
 				*
-				<span class="-screenReader">{{ i18n.required }}</span>
+				<span class="-screenReader">{{ __('common.required') }}</span>
 			</span>
 			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span
@@ -27,7 +27,7 @@
 				:id="describedByHelpId"
 				:topic="helpTopic"
 				:section="helpSection"
-				:label="i18n.help"
+				:label="__('help.help')"
 			/>
 		</legend>
 		<div
@@ -85,6 +85,14 @@ export default {
 			type: String,
 			required: true
 		},
+		disablePluginSuccess: {
+			type: String,
+			required: true
+		},
+		enablePluginSuccess: {
+			type: String,
+			required: true
+		},
 		enablePluginUrl: {
 			type: String,
 			required: true
@@ -94,10 +102,6 @@ export default {
 			required: true
 		},
 		settingsUrl: {
-			type: String,
-			required: true
-		},
-		csrfToken: {
 			type: String,
 			required: true
 		}
@@ -158,13 +162,13 @@ export default {
 		 */
 		success: function(r) {
 			if (r.status) {
-				pkp.eventBus.$emit('notify', {
-					text: this.value
-						? this.i18n.enablePluginSuccess
-						: this.i18n.disablePluginSuccess
-				});
+				pkp.eventBus.$emit(
+					'notify',
+					this.value ? this.enablePluginSuccess : this.disablePluginSuccess,
+					'success'
+				);
 			} else {
-				pkp.eventBus.$emit('notify', {text: this.i18n.enablePluginError});
+				pkp.eventBus.$emit('notify', this.__('common.unknownError'), 'warning');
 			}
 		},
 
@@ -172,7 +176,7 @@ export default {
 		 * When the plugin toggle request returns with an error
 		 */
 		error() {
-			pkp.eventBus.$emit('notify', {text: this.i18n.enablePluginError});
+			pkp.eventBus.$emit('notify', this.enablePluginError, 'warning');
 		},
 
 		/**
@@ -203,7 +207,7 @@ export default {
 				method: 'POST',
 				url: newVal ? this.enablePluginUrl : this.disablePluginUrl,
 				data: {
-					csrfToken: this.csrfToken,
+					csrfToken: pkp.currentUser.csrfToken,
 					disableNotification: false
 				},
 				success: this.success,

@@ -10,10 +10,13 @@ window.pkp = {
 	eventBus: null,
 
 	/**
-	 * Dummy global function used by components
+	 * The current logged-in user
 	 */
-	userHasRole: function(roles) {
-		return true;
+	currentUser: {
+		csrfToken: '1234',
+		id: 1,
+		roles: [1, 16, 65536, 1048576],
+		username: 'dbarnes'
 	},
 
 	/**
@@ -56,6 +59,61 @@ window.pkp = {
 		WORKFLOW_STAGE_ID_EXTERNAL_REVIEW: 3,
 		WORKFLOW_STAGE_ID_EDITING: 4,
 		WORKFLOW_STAGE_ID_PRODUCTION: 5
+	},
+
+	/**
+	 * Locale keys loaded on the server-side
+	 */
+	localeKeys: {
+		'common.cancel': 'Cancel',
+		'common.clearSearch': 'Clear search',
+		'common.close': 'Close',
+		'common.commaListSeparator': ', ',
+		'common.confirm': 'Confirm',
+		'common.delete': 'Delete',
+		'common.edit': 'Edit',
+		'common.error': 'Error',
+		'common.filter': 'Filters',
+		'common.filterAdd': 'Add filter: {$filterTitle}',
+		'common.filterRemove': 'Clear filter: {$filterTitle}',
+		'common.loading': 'Loading',
+		'common.no': 'No',
+		'common.noItemsFound': 'No items found.',
+		'common.none': 'None',
+		'common.ok': 'Ok',
+		'common.orderUp': 'Increase position of {$itemTitle}',
+		'common.orderDown': 'Decrease position of {$itemTitle}',
+		'common.pageNumber': 'Page {$pageNumber}',
+		'common.pagination.goToPage': 'Go to {$page}',
+		'common.pagination.label': 'View additional pages',
+		'common.pagination.next': 'Next page',
+		'common.pagination.previous': 'Previous page',
+		'common.remove': 'Remove',
+		'common.required': 'Required',
+		'common.save': 'Save',
+		'common.saving': 'Saving',
+		'common.search': 'Search',
+		'common.selectWithName': 'Select {$name}',
+		'common.unknownError':
+			'An unexpected error has occurred. Please reload the page and try again.',
+		'common.view': 'View',
+		'common.viewLess': 'Hide expanded details about {$name}',
+		'common.viewMore': 'Show more details about {$name}',
+		'common.viewWithName': 'View {$name}',
+		'common.yes': 'Yes',
+		'form.dataHasChanged':
+			'The data on this form has changed. Do you wish to continue without saving?',
+		'form.errorA11y': 'Go to {$fieldLabel}: {$errorMessage}',
+		'form.errorGoTo': 'View Next Error',
+		'form.errorMany': 'There are {$count} errors that must be corrected.',
+		'form.errorOne': 'There is one error that must be corrected.',
+		'form.errors':
+			'The form was not saved because {$count} error(s) were encountered. Please correct these errors and try again.',
+		'form.multilingualLabel': '{$label} in {$localeName}',
+		'form.multilingualProgress': '{$count}/{$total} languages completed',
+		'form.saved': 'Saved',
+		'help.help': 'Help',
+		'validator.required': 'This field is required.'
 	}
 };
 
@@ -67,12 +125,6 @@ window.$.pkp = {
 		currentLocale: 'en_US',
 		primaryLocale: 'en_US',
 		cdnEnabled: true
-	},
-	currentUser: {
-		csrfToken: '1234'
-	},
-	locale: {
-		ok: 'Ok'
 	},
 	pkpHandler() {
 		alert(

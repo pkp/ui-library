@@ -5,7 +5,7 @@
 				:controlId="controlId"
 				:label="label"
 				:isRequired="isRequired"
-				:requiredLabel="i18n.required"
+				:requiredLabel="__('common.required')"
 			/>
 			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span
@@ -19,7 +19,7 @@
 				:id="describedByHelpId"
 				:topic="helpTopic"
 				:section="helpSection"
-				:label="i18n.help"
+				:label="__('help.help')"
 			/>
 		</div>
 		<div
@@ -43,23 +43,25 @@
 			<pkp-button
 				v-if="pattern && canGenerateId && !currentValue"
 				class="pkpFormField--pubid__button"
-				:label="i18n.assignId"
 				@click="assignId"
-			/>
+			>
+				{{ assignIdLabel }}
+			</pkp-button>
 			<pkp-button
 				v-else-if="pattern && currentValue"
 				class="pkpFormField--pubid__button"
-				:label="i18n.clearId"
 				:isWarnable="true"
 				@click="() => (currentValue = '')"
-			/>
+			>
+				{{ clearIdLabel }}
+			</pkp-button>
 			<div
 				v-if="pattern && !canGenerateId && !currentValue"
 				class="pkpFormField--pubid__warning"
 				:id="describedByDescriptionId"
 			>
 				<icon icon="exclamation-triangle" :inline="true" />
-				{{ i18n.missingParts }}
+				{{ missingPartsLabel }}
 			</div>
 			<field-error
 				v-if="errors && errors.length"
@@ -72,17 +74,19 @@
 
 <script>
 import FieldBase from './FieldBase.vue';
-import Icon from '@/components/Icon/Icon.vue';
-import PkpButton from '@/components/Button/Button.vue';
 
 export default {
 	name: 'FieldPubId',
 	extends: FieldBase,
-	components: {
-		Icon,
-		PkpButton
-	},
 	props: {
+		assignIdLabel: {
+			type: String,
+			required: true
+		},
+		clearIdLabel: {
+			type: String,
+			required: true
+		},
 		contextInitials: {
 			type: String,
 			default() {
@@ -107,6 +111,10 @@ export default {
 				return '';
 			}
 		},
+		missingPartsLabel: {
+			type: String,
+			required: true
+		},
 		pages: {
 			type: String,
 			default() {
@@ -117,15 +125,15 @@ export default {
 			type: String,
 			required: true
 		},
+		prefix: {
+			type: String,
+			required: true
+		},
 		publisherId: {
 			type: String,
 			default() {
 				return '';
 			}
-		},
-		prefix: {
-			type: String,
-			required: true
 		},
 		separator: {
 			type: String,
@@ -142,7 +150,7 @@ export default {
 		publicationId: {
 			type: Number,
 			default() {
-				return '';
+				return 0;
 			}
 		},
 		year: {

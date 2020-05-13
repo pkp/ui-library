@@ -9,7 +9,7 @@
 				:label="label"
 				:localeLabel="localeLabel"
 				:isRequired="isRequired"
-				:requiredLabel="i18n.required"
+				:requiredLabel="__('common.required')"
 				:multilingualLabel="multilingualLabel"
 			/>
 			<tooltip
@@ -29,7 +29,7 @@
 				:id="describedByHelpId"
 				:topic="helpTopic"
 				:section="helpSection"
-				:label="i18n.help"
+				:label="__('help.help')"
 			/>
 		</div>
 		<div
@@ -63,7 +63,6 @@
 					:id="multilingualProgressId"
 					:count="multilingualFieldsCompleted"
 					:total="locales.length"
-					:i18n="i18n"
 				/>
 				<div v-if="wordLimit" class="pkpFormField--richTextarea__wordLimit">
 					<icon
@@ -71,7 +70,12 @@
 						icon="exclamation-triangle"
 						:inline="true"
 					/>
-					{{ __('wordCount', {count: wordCount, limit: wordLimit}) }}
+					{{
+						replaceLocaleParams(wordCountLabel, {
+							count: wordCount,
+							limit: wordLimit
+						})
+					}}
 				</div>
 			</div>
 		</div>
@@ -86,15 +90,13 @@
 <script>
 import FieldBase from './FieldBase.vue';
 import Editor from '@tinymce/tinymce-vue';
-import Icon from '@/components/Icon/Icon.vue';
 import debounce from 'debounce';
 
 export default {
 	name: 'FieldRichTextarea',
 	extends: FieldBase,
 	components: {
-		Editor,
-		Icon
+		Editor
 	},
 	props: {
 		// @see https://www.tiny.cloud/docs/configure/integration-and-setup/
@@ -127,7 +129,12 @@ export default {
 		},
 		size: {
 			type: String,
-			default: 'default'
+			default() {
+				return 'default';
+			},
+			validator(value) {
+				return ['default', 'large'].includes(value);
+			}
 		},
 		// @see https://www.tinymce.com/docs/configure/editor-appearance/#toolbar
 		toolbar: {
@@ -135,6 +142,12 @@ export default {
 			required: true
 		},
 		uploadUrl: {
+			type: String,
+			default() {
+				return '';
+			}
+		},
+		wordCountLabel: {
 			type: String,
 			default() {
 				return '';
@@ -189,7 +202,7 @@ export default {
 						processData: false,
 						contentType: false,
 						headers: {
-							'X-Csrf-Token': $.pkp.currentUser.csrfToken
+							'X-Csrf-Token': pkp.currentUser.csrfToken
 						},
 						success(r) {
 							success(r.url);

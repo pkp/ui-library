@@ -4,11 +4,10 @@ Some components require specific markup or special handling based on state to en
 
 ## Focus state and keyboard-based navigation
 
-Always test by navigating components with a keyboard, using <kbd>TAB</kbd> to cycle through elements. Any HTML elements which are not visible should not receive focus. You should be able to see where the focus is on the page at any time.
+It should be possible to use a component without a mouse. To test this, use the <kbd>TAB</kbd> key to interact with the component and check the following:
 
-For example, a [ListPanelFilter](#/component/ListPanel/ListPanelFilter) is hidden until enabled. When hidden, focusable elements such as the filter buttons should be skipped when navigating with the <kbd>TAB</kbd> key.
-
-Furthermore, all actions should be possible without a mouse. If drag-and-drop features are used, there should be alternative tools for moving items around when only using a keyboard.
+- Can I use the component? For example, if the component allows reordering items, can I do this with a keyboard?
+- Can I see where the focus is and is it easy to determine where it moves each time I hit the <kbd>TAB</kbd> key? The focus should never "disappear".
 
 ### Moving focus
 
@@ -20,10 +19,7 @@ For example, when a button is pressed to open a modal, the focus should be moved
 
 ### Avoid tabindex
 
-Avoid using `tabindex="1"` and `tabindex="2"` to enforce the order of navigation. There are only two occassions when you should use `tabindex`:
-
-1. Use `tabindex="-1"` to prevent an item from receiving focus. You may wish to do this to remove drag-and-drop controls from a keyboard user's tab order, or to prevent the user from having to tab through elements which are currently hidden.
-2. Use `tabindex="0"` to allow an item to receive focus when it otherwise would not, such as a `<div>` or `<span>` element. This is useful when you want to move the focus to an element, and want to target a heading or label. (Generally, moving the focus should be avoided. See above.)
+Avoid using the `tabindex` attribute. An exception can be made when you need to use `tabindex="-1"` to prevent an item from receiving focus. You may wish to do this to remove drag-and-drop controls from a keyboard user's tab order, or to prevent the user from having to tab through elements which are currently hidden.
 
 ## Labelling for assistive technology
 

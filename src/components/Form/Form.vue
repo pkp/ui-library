@@ -41,11 +41,11 @@
 				:canSubmit="canSubmit"
 				:isCurrentPage="currentPage === page.id"
 				:isLastPage="index === pages.length - 1"
+				:lastSaveTimestamp="lastSaveTimestamp"
 				:primaryLocale="primaryLocale"
 				:visibleLocales="visibleLocales"
 				:availableLocales="availableLocales"
 				:isSaving="isSaving"
-				:i18n="i18n"
 				@change="fieldChanged"
 				@pageSubmitted="nextPage"
 				@previousPage="setCurrentPage(false)"
@@ -60,14 +60,12 @@
 <script>
 import FormLocales from './FormLocales.vue';
 import FormPage from './FormPage.vue';
-import Icon from '@/components/Icon/Icon.vue';
 
 export default {
 	name: 'PkpForm',
 	components: {
 		FormLocales,
-		FormPage,
-		Icon
+		FormPage
 	},
 	props: {
 		id: String,
@@ -90,14 +88,13 @@ export default {
 		pages: Array,
 		primaryLocale: String,
 		visibleLocales: Array,
-		supportedFormLocales: Array,
-		csrfToken: String,
-		i18n: Object
+		supportedFormLocales: Array
 	},
 	data() {
 		return {
 			currentPage: '',
-			isSaving: false
+			isSaving: false,
+			lastSaveTimestamp: -1
 		};
 	},
 	computed: {
@@ -253,7 +250,7 @@ export default {
 				method: this.method,
 				url: this.action,
 				headers: {
-					'X-Csrf-Token': this.csrfToken
+					'X-Csrf-Token': pkp.currentUser.csrfToken
 				},
 				data: this.submitValues,
 				success: this.success,
@@ -308,10 +305,10 @@ export default {
 					if (field.isMultilingual) {
 						errors[field.name] = {};
 						errors[field.name][this.primaryLocale] = [
-							this.__('missingRequired')
+							this.__('validator.required')
 						];
 					} else {
-						errors[field.name] = [this.__('missingRequired')];
+						errors[field.name] = [this.__('validator.required')];
 					}
 				}
 			});
@@ -325,10 +322,8 @@ export default {
 		 * @param {Object} r The response to the AJAX request
 		 */
 		success: function(r) {
-			pkp.eventBus.$emit('notify', {
-				text: this.__('successMessage', r),
-				type: 'success'
-			});
+			this.$emit('success', r);
+			this.lastSaveTimestamp = Date.now();
 			pkp.eventBus.$emit('form-success', this.id, r);
 
 			// Update form values with the response values
@@ -350,12 +345,13 @@ export default {
 		error: function(r) {
 			// Field validation errors
 			if (r.status && r.status === 400) {
-				pkp.eventBus.$emit('notify', {
-					text: this.__('errors', {
+				pkp.eventBus.$emit(
+					'notify',
+					this.__('form.errors', {
 						count: Object.keys(r.responseJSON).length
 					}),
-					type: 'error'
-				});
+					'warning'
+				);
 				this.$emit('set', this.id, {errors: r.responseJSON});
 				// A generic error from the API endpoint
 			} else if (
@@ -364,15 +360,9 @@ export default {
 				r.responseJSON &&
 				r.responseJSON.errorMessage
 			) {
-				pkp.eventBus.$emit('notify', {
-					text: r.responseJSON.errorMessage,
-					type: 'error'
-				});
+				pkp.eventBus.$emit('notify', r.responseJSON.errorMessage, 'warning');
 			} else {
-				pkp.eventBus.$emit('notify', {
-					text: this.__('errorUnknown'),
-					type: 'error'
-				});
+				pkp.eventBus.$emit('notify', this.__('common.unknownError', 'warning'));
 			}
 		},
 
@@ -389,25 +379,24 @@ export default {
 		/**
 		 * Update values when a field has changed
 		 *
-		 * @param {Object} data {{
-		 *  @option string name Field name
-		 *  @option string value New value
-		 *  @option string localeKey Locale key for this value. Empty it not multilingual
-		 * }}
+		 * @param {String} name Name of the field to modify
+		 * @param {String} prop Name of the prop to modify
+		 * @param {mixed} value The new value for the prop
+		 * @param {String} localeKey Optional locale key for multilingual props
 		 */
-		fieldChanged: function(data) {
+		fieldChanged: function(name, prop, value, localeKey) {
 			const newFields = this.fields.map(field => {
-				if (field.name === data.name) {
-					if (data.localeKey) {
-						field.value[data.localeKey] = data.value;
+				if (field.name === name) {
+					if (localeKey) {
+						field[prop][localeKey] = value;
 					} else {
-						field.value = data.value;
+						field[prop] = value;
 					}
 				}
 				return field;
 			});
 			this.$emit('set', this.id, {fields: newFields});
-			this.removeError(data.name, data.localeKey);
+			this.removeError(name, localeKey);
 		},
 
 		/**

@@ -1,6 +1,13 @@
+##  Props
 
-Use the `Notification` component to draw the user's attention to new information.
+| Key | Description |
+| --- | --- |
+| `type` | The type of notification. Pass `warning` for notifications about errors or serious problems. |
 
-Do not overuse `Notification`s. If they become too common, they will no longer draw the user's attention.
+## Events
 
-Only use the `info` type for information that would otherwise be placed in a tooltip or in the in-app help area. Typically, this is used to provide descriptive information about an action the user is undertaking, such as completing a form. In this context, it may be appropriate to restyle the notification so that it is less prominent.
+This component does not emit any events.
+
+## Usage
+
+Use the `Notification` component to draw the user's attention to new information. Do not overuse notifications. If they become too common, they will no longer draw the user's attention.

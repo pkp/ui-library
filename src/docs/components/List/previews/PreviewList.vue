@@ -27,13 +27,11 @@
 <script>
 import List from '@/components/List/List.vue';
 import ListItem from '@/components/List/ListItem.vue';
-import Icon from '@/components/Icon/Icon.vue';
 
 export default {
 	components: {
 		List,
-		ListItem,
-		Icon
+		ListItem
 	}
 };
 </script>

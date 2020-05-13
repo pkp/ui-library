@@ -1,23 +1,18 @@
 <template>
-	<div class="pkpFilter--slider" :class="classes">
+	<div class="pkpFilter pkpFilter--slider" :class="classes">
 		<button v-if="isFilterActive" class="pkpFilter__remove" @click="remove">
 			<icon icon="times-circle-o" />
 			<span class="-screenReader">
-				{{ __('filterRemove', {filterTitle: title}) }}
+				{{ __('common.filterRemove', {filterTitle: title}) }}
 			</span>
 		</button>
 		<button v-else class="pkpFilter__add" @click="enable">
 			<icon icon="plus-square-o" />
 			<span class="-screenReader">
-				{{ __('filterAdd', {filterTitle: title}) }}
+				{{ __('common.filterAdd', {filterTitle: title}) }}
 			</span>
 		</button>
-		<div
-			class="pkpFilter__inputTitle"
-			:tabindex="!isFilterActive ? -1 : false"
-			aria-hidden="true"
-			@click="toggle"
-		>
+		<div class="pkpFilter__inputTitle" aria-hidden="true" @click="toggle">
 			{{ title }}
 		</div>
 		<div class="pkpFilter__input pkpFilter__input--slider">
@@ -172,14 +167,9 @@ export default {
 @import '../../styles/_import';
 
 .pkpFilter--slider {
+	position: relative;
 	padding-left: 1rem;
 	padding-right: 1rem;
-}
-
-.pkpFilter--disabled {
-	.pkpFilter__input--slider {
-		opacity: 0.5;
-	}
 }
 
 .pkpFilter--slider .pkpFilter__add,
@@ -281,7 +271,7 @@ export default {
 		height: 5px;
 		cursor: pointer;
 		border-radius: @base;
-		background-color: @bg-dark;
+		background-color: @primary;
 	}
 
 	input[type='range']:focus::-webkit-slider-runnable-track {
@@ -293,7 +283,7 @@ export default {
 		height: 5px;
 		cursor: pointer;
 		border-radius: @base;
-		background-color: @bg-dark;
+		background-color: @primary;
 	}
 
 	input[type='range']::-ms-track {
@@ -301,19 +291,54 @@ export default {
 		height: 5px;
 		cursor: pointer;
 		border-radius: @base;
-		background-color: @bg-dark;
+		background-color: @primary;
 	}
 	input[type='range']::-ms-fill-lower {
-		background: @bg-dark;
+		background: @primary;
 		border-radius: @base;
 	}
 	input[type='range']:focus::-ms-fill-lower {
-		background: @bg-dark;
+		background: @primary;
 	}
 	input[type='range']::-ms-fill-upper {
-		background: @bg-dark;
+		background: @primary;
 		border-radius: @base;
 	}
+	input[type='range']:focus::-ms-fill-upper {
+		background: @primary;
+	}
+}
+
+.pkpFilter--disabled {
+
+	.pkpFilter__input--slider {
+		opacity: 0.5;
+	}
+
+	input[type='range']::-webkit-slider-runnable-track {
+		background-color: @bg-dark;
+	}
+
+	input[type='range']::-moz-range-track {
+		background-color: @bg-dark;
+	}
+
+	input[type='range']::-ms-track {
+		background-color: @bg-dark;
+	}
+
+	input[type='range']::-ms-fill-lower {
+		background: @bg-dark;
+	}
+
+	input[type='range']:focus::-ms-fill-lower {
+		background: @bg-dark;
+	}
+
+	input[type='range']::-ms-fill-upper {
+		background: @bg-dark;
+	}
+
 	input[type='range']:focus::-ms-fill-upper {
 		background: @bg-dark;
 	}

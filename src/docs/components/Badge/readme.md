@@ -1,7 +1,27 @@
 
+## Props
+
+| Key | Description |
+| --- | --- |
+| `label` | A hidden label for users without sight |
+| `isPrimary` | Badges which should stand out from adjacent badges |
+| `isSuccess` | Badges which describe a successful or complete state |
+| `isWarnable` | Badges which describe an alert or warning |
+| `isButton` | If the badge can be used to perform an action, set this to true. |
+| `hasDot` | Adds a small dot to the left of the `content` |
+| `stage` | Pass a stage name to use a special design for stag |badges. Supports: `submission`, `review`, `copyediting`, `production`. |
+
+## Events
+
+| Key | Description |
+| --- | --- |
+| `click` | This event will be emitted when the badge is clicked and `isButton` is `true`. |
+
+## Usage
+
 Use this component to display a short value in a badge which visually distinguishes it from the surrounding content.
 
-## Usage Recommendations
+## Recommendations
 
 This component is commonly used for tagging items as part of a group. This might include:
 
@@ -11,7 +31,7 @@ This component is commonly used for tagging items as part of a group. This might
 
 It is also common to use a badge to display a count of something that is related to an item. Examples might include:
 
-- the number of reviews a review is currently undertaking
+- the number of reviews a reviewer is currently undertaking
 - the number of submissions an editor has been assigned
 - the number of notifications a user has
 

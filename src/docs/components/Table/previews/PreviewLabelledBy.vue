@@ -7,7 +7,7 @@
 			<code>describedBy</code>
 		</h1>
 		<p id="viewTableDescription">
-			You can use the
+			Use the
 			<code>labelledBy</code>
 			and
 			<code>describedBy</code>
@@ -17,23 +17,16 @@
 		<pkp-table
 			labelledBy="viewTableLabel"
 			describedBy="viewTableDescription"
-			v-bind="table"
+			:columns="columns"
+			:rows="rows"
 		/>
 	</div>
 </template>
 
 <script>
-import PkpTable from '@/components/Table/Table.vue';
-import {props} from '../config';
+import PreviewTable from './PreviewTable.vue';
 
 export default {
-	components: {
-		PkpTable
-	},
-	data() {
-		return {
-			table: {...props}
-		};
-	}
+	extends: PreviewTable
 };
 </script>

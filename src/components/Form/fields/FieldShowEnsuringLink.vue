@@ -1,11 +1,14 @@
 <script>
 import FieldOptions from './FieldOptions.vue';
+import modal from '@/mixins/modal';
 
 export default {
 	name: 'FieldShowEnsuringLink',
 	extends: FieldOptions,
+	mixins: [modal],
 	props: {
-		message: String
+		message: String,
+		modalTitle: String
 	},
 	computed: {
 		/**
@@ -23,23 +26,21 @@ export default {
 		 * clicked.
 		 */
 		$('.pkpFormField--options__option button', this.$el).click(() => {
-			const modalOptions = {
-				modalHandler: '$.pkp.controllers.modal.ConfirmationModalHandler',
-				title: '',
-				okButton: $.pkp.locale.common_ok,
-				cancelButton: false,
-				dialogText: this.message
-			};
-
-			const $modal = $(
-				'<div id="' +
-					$.pkp.classes.Helper.uuid() +
-					'" ' +
-					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>'
-			).pkpHandler(modalOptions.modalHandler, modalOptions);
-
-			$.pkp.classes.Handler.getHandler($modal);
-
+			this.openDialog(
+				{
+					modalName: 'ensureBlindReview',
+					confirmLabel: this.__('common.ok'),
+					message: this.message,
+					title: this.modalTitle,
+					callback: () => {
+						this.$modal.hide('ensureBlindReview');
+					}
+				},
+				{
+					height: 'auto',
+					scrollable: true
+				}
+			);
 			return false;
 		});
 	},

@@ -1,3 +1,15 @@
+## Props
+
+| Key | Description |
+| --- | --- |
+| `tooltip` | The message to display in the popup. |
+| `label` | A label for the button that screenreaders will use to understand it. This should refer to the thing it is describing. A tooltip for the submission subtitle field might say "Tooltip for subtitle". |
+
+## Events
+
+This component does not emit any events.
+
+## Usage
 
 Use this component to add short tips that appear above a button.
 

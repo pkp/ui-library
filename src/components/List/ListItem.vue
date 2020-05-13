@@ -1,12 +1,12 @@
 <template>
-	<div class="listItem" :class="classes">
+	<li class="listItem" :class="classes">
 		<span v-if="hasValueSlot" class="listItem__value">
 			<slot name="value"></slot>
 		</span>
 		<span class="listItem__label">
 			<slot></slot>
 		</span>
-	</div>
+	</li>
 </template>
 
 <script>

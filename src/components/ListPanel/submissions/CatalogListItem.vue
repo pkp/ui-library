@@ -1,125 +1,102 @@
 <template>
 	<div
-		class="pkpListPanelItem pkpListPanelItem--submission pkpListPanelItem--catalog -pkpClearfix"
+		class="listPanel__item--catalog"
 		:class="{
-			'--hasFocus': isFocused,
-			'-isLoading': isSaving,
 			'-isFeatured': isFeatured
 		}"
 	>
-		<orderer
-			v-if="isOrdering"
-			@up="orderUp"
-			@down="orderDown"
-			:itemId="item.id"
-			:itemTitle="item.title"
-			:i18n="i18n"
-		/>
-		<div
-			class="pkpListPanelItem--submission__item pkpListPanelItem--catalog__item"
-		>
-			<div class="pkpListPanelItem--submission__id">
-				<span class="-screenReader">{{ i18n.id }}</span>
-				{{ item.id }}
-			</div>
-			<a :href="item.urlPublished" class="pkpListPanelItem--submission__link">
-				<div
-					v-if="currentPublication.authorsStringShort"
-					class="pkpListPanelItem--submission__author"
-				>
-					{{ currentPublication.authorsStringShort }}
+		<div class="listPanel__itemSummary">
+			<div class="listPanel__itemIdentity listPanel__itemIdentity--catalog">
+				<div class="listPanel__item--catalog__id">
+					{{ item.id }}
 				</div>
-				<div class="pkpListPanelItem--submission__title" :tabindex="-1">
+				<div class="listPanel__itemTitle">
+					<span
+						v-if="currentPublication.authorsStringShort"
+						class="listPanel__item--submission__author"
+					>
+						{{ currentPublication.authorsStringShort }}
+					</span>
+				</div>
+				<div class="listPanel__itemSubtitle">
 					{{ localize(currentPublication.fullTitle) }}
 				</div>
-			</a>
-			<div class="pkpListPanelItem__actions">
-				<pkp-button
-					element="a"
-					:href="item.urlWorkflow"
-					:label="i18n.viewSubmission"
-					:isLink="true"
-				/>
+			</div>
+
+			<div class="listPanel__itemActions listPanel__itemActions--catalog">
+				<pkp-button element="a" :href="item.urlWorkflow">
+					{{ __('submission.list.viewSubmission') }}
+				</pkp-button>
+				<pkp-button element="a" :href="item.urlPublished">
+					{{ __('submission.list.viewEntry') }}
+				</pkp-button>
+				<button
+					class="listPanel__item--catalog__select listPanel__item--catalog__select--first"
+					@click.prevent="toggleFeatured"
+				>
+					<icon v-if="isFeatured" icon="check-square-o" />
+					<icon v-else icon="square-o" />
+					<span class="-screenReader">
+						<template v-if="isFeatured">
+							{{ __('catalog.manage.isFeatured') }}
+						</template>
+						<template v-else>
+							{{ __('catalog.manage.isNotFeatured') }}
+						</template>
+					</span>
+				</button>
+				<button
+					class="listPanel__item--catalog__select"
+					@click.prevent="toggleNewRelease"
+				>
+					<icon :icon="isNewRelease ? 'check-square-o' : 'square-o'" />
+					<span class="-screenReader">
+						<template v-if="isNewRelease">
+							{{ __('catalog.manage.isNewRelease') }}
+						</template>
+						<template v-else>
+							{{ __('catalog.manage.isNotNewRelease') }}
+						</template>
+					</span>
+				</button>
 			</div>
 		</div>
-		<button
-			class="pkpListPanelItem--catalog__select"
-			@click.prevent="toggleFeatured"
-		>
-			<icon v-if="isFeatured" icon="check-square-o" />
-			<icon v-else icon="square-o" />
-			<span class="-screenReader">
-				<template v-if="isFeatured">
-					{{ i18n.isFeatured }}
-				</template>
-				<template v-else>
-					{{ i18n.isNotFeatured }}
-				</template>
-			</span>
-		</button>
-		<button
-			class="pkpListPanelItem--catalog__select"
-			@click.prevent="toggleNewRelease"
-		>
-			<icon v-if="isNewRelease" icon="check-square-o" />
-			<icon v-else icon="square-o" />
-			<span class="-screenReader">
-				<template v-if="isNewRelease">
-					{{ i18n.isNewRelease }}
-				</template>
-				<template v-else>
-					{{ i18n.isNotNewRelease }}
-				</template>
-			</span>
-		</button>
-		<div class="pkpListPanelItem__mask" :class="{'--active': isSaving}">
-			<div class="pkpListPanelItem__maskLabel">
-				<span class="pkpListPanelItem__maskLabel_loading">
-					<span class="pkp_spinner"></span>
-					{{ i18n.saving }}
-				</span>
-			</div>
-		</div>
+		<orderer
+			v-if="isOrdering"
+			@up="$emit('order-up', item)"
+			@down="$emit('order-down', item)"
+			:itemId="item.id"
+			:itemTitle="item.title"
+		/>
+		<div
+			v-if="isSaving || isLoading"
+			class="listPanel__itemMask--catalog"
+		></div>
 	</div>
 </template>
 
 <script>
-import ListPanelItem from '@/components/ListPanel/ListPanelItem.vue';
-import PkpButton from '@/components/Button/Button.vue';
-import Icon from '@/components/Icon/Icon.vue';
 import Orderer from '@/components/Orderer/Orderer.vue';
 
 export default {
-	extends: ListPanelItem,
 	name: 'CatalogListItem',
-	props: [
-		'csrfToken',
-		'item',
-		'i18n',
-		'filterAssocType',
-		'filterAssocId',
-		'catalogEntryUrl',
-		'isOrdering',
-		'apiUrl'
-	],
 	components: {
-		PkpButton,
-		Icon,
 		Orderer
 	},
+	props: [
+		'apiUrl',
+		'filterAssocType',
+		'filterAssocId',
+		'isLoading',
+		'isOrdering',
+		'item'
+	],
 	data() {
 		return {
 			isSaving: false
 		};
 	},
 	computed: {
-		/**
-		 * Map the submission id to the list item id
-		 */
-		id() {
-			return this.item.id;
-		},
-
 		/**
 		 * The current publication of the submission
 		 *
@@ -224,7 +201,7 @@ export default {
 				url: this.apiUrl + '/saveDisplayFlags',
 				type: 'POST',
 				headers: {
-					'X-Csrf-Token': this.csrfToken
+					'X-Csrf-Token': pkp.currentUser.csrfToken
 				},
 				data: {
 					submissionId: this.item.id,
@@ -256,62 +233,51 @@ export default {
 
 // Shift padding to the catalog item so that focus indicator
 // takes up full height
-.pkpListPanelItem--catalog {
+.listPanel--catalog .listPanel__item {
+	position: relative;
 	padding: 0;
-
-	.pkpListPanelItem--submission__id {
-		top: 1rem;
-		left: 1rem;
-	}
 }
 
-.pkpListPanelItem--catalog__item {
-	display: block;
-	float: none;
-	width: 100%;
-	padding: 1rem 17rem 1rem 4rem;
-
-	a {
-		text-decoration: none;
-	}
+.listPanel__itemIdentity--catalog {
+	padding: 0.75rem 0.5rem 0.75rem 3.5rem;
 }
 
-.pkpListPanelItem--catalog .pkpListPanelItem--submission__author,
-.pkpListPanelItem--catalog .pkpListPanelItem--submission__title {
-	padding-right: 0;
-}
-
-.pkpListPanelItem--catalog__select {
+.listPanel__item--catalog__id {
 	position: absolute;
-	top: 0;
-	right: @base * 8;
-	bottom: 0;
-	width: @base * 8;
-	border: 1px solid transparent;
-	border-left-color: @grid-border-color;
+	top: 0.75rem;
+	left: 1rem;
+	font-size: @font-tiny;
+	line-height: 22px; // Match baseline of title
+	color: @text;
+}
+
+.listPanel__itemActions--catalog {
+	align-self: stretch;
+}
+
+.listPanel__item--catalog__select {
+	align-self: stretch;
+	width: 6rem;
+	margin-left: 0;
 	background: transparent;
+	border: 1px solid transparent;
+	border-left: @grid-border;
 
 	&:focus {
 		outline: 0;
 		border-color: @primary;
 	}
 
-	+ .pkpListPanelItem--catalog__select {
+	+ .listPanel__item--catalog__select {
 		right: 0;
 	}
 }
 
-.pkpListPanelItem--catalog {
-	.pkpListPanelItem__actions {
-		text-align: left;
-
-		.pkpButton--isLink:first-child {
-			margin-left: -0.5em;
-		}
-	}
+.listPanel__item--catalog__select--first {
+	margin-left: 0.5rem;
 }
 
-.pkpListPanelItem--catalog {
+.listPanel__item--catalog {
 	.orderer__dragDrop,
 	.orderer__up,
 	.orderer__down {
@@ -321,5 +287,15 @@ export default {
 	.orderer__up {
 		right: 4em;
 	}
+}
+
+.listPanel__itemMask--catalog {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: #fff;
+	opacity: 0.5;
 }
 </style>

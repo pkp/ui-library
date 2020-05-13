@@ -1,21 +1,22 @@
 <script>
 import Component from '@/docs/Component.vue';
-import ExampleNotification from './ExampleNotification.vue';
-import ExampleNotificationInfo from './ExampleNotificationInfo.vue';
+import PreviewNotification from './previews/PreviewNotification.vue';
+import PreviewNotificationTemplate from '!raw-loader!./previews/PreviewNotification.vue';
+import readme from '!raw-loader!./readme.md';
 
 export default {
 	extends: Component,
-	components: {
-		ExampleNotification,
-		ExampleNotificationInfo
-	},
 	data() {
 		return {
 			name: 'Notification',
-			examples: {
-				ExampleNotification: 'Base',
-				ExampleNotificationInfo: 'Info Type'
-			}
+			readme: readme,
+			examples: [
+				{
+					component: PreviewNotification,
+					name: 'Base',
+					template: this.extractTemplate(PreviewNotificationTemplate)
+				}
+			]
 		};
 	}
 };

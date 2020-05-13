@@ -1,19 +1,23 @@
 <script>
 import Component from '@/docs/Component.vue';
-import ExampleFieldColor from './ExampleFieldColor.vue';
+import PreviewFieldColor from './previews/PreviewFieldColor.vue';
+import PreviewFieldColorTemplate from '!raw-loader!./previews/PreviewFieldColor.vue';
+import readme from '!raw-loader!./readme.md';
 
 export default {
 	extends: Component,
-	components: {
-		ExampleFieldColor
-	},
 	data() {
 		return {
 			name: 'FieldColor',
 			parentRoute: 'Form/fields',
-			examples: {
-				ExampleFieldColor: 'Base'
-			}
+			readme: readme,
+			examples: [
+				{
+					component: PreviewFieldColor,
+					name: 'Base',
+					template: this.extractTemplate(PreviewFieldColorTemplate)
+				}
+			]
 		};
 	}
 };

@@ -10,7 +10,7 @@
 			</template>
 			<span v-if="isRequired" class="pkpFormFieldLabel__required">
 				*
-				<span class="-screenReader">{{ i18n.required }}</span>
+				<span class="-screenReader">{{ __('common.required') }}</span>
 			</span>
 			<tooltip
 				v-if="isPrimaryLocale && tooltip"
@@ -29,7 +29,7 @@
 				:id="describedByHelpId"
 				:topic="helpTopic"
 				:section="helpSection"
-				:label="i18n.help"
+				:label="__('help.help')"
 			/>
 		</legend>
 		<div
@@ -74,7 +74,6 @@
 						@down="optionOrderDown"
 						:itemId="option.value"
 						:itemTitle="option.label"
-						:i18n="i18n"
 					/>
 				</label>
 			</draggable>
@@ -83,7 +82,6 @@
 				:id="multilingualProgressId"
 				:count="multilingualFieldsCompleted"
 				:total="locales.length"
-				:i18n="i18n"
 			/>
 		</div>
 	</fieldset>
@@ -232,11 +230,7 @@ export default {
 					.filter(option => newVal.includes(option.value))
 					.map(option => option.value);
 			}
-			this.$emit('change', {
-				name: this.name,
-				value: newVal,
-				localeKey: this.localeKey
-			});
+			this.$emit('change', this.name, 'value', newVal, this.localeKey);
 		},
 
 		/**
@@ -255,6 +249,7 @@ export default {
 @import '../../../styles/_import';
 
 .pkpFormField--options {
+	margin: 0;
 	padding: 0.5rem 1rem 1rem;
 	border: @bg-border;
 	border-radius: @radius;

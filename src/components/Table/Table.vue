@@ -66,12 +66,10 @@
 </template>
 
 <script>
-import Icon from '@/components/Icon/Icon.vue';
 import TableCell from '@/components/Table/TableCell.vue';
 
 export default {
 	components: {
-		Icon,
 		TableCell
 	},
 	props: {

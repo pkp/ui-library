@@ -1,33 +1,57 @@
 <script>
 import Component from '@/docs/Component.vue';
-import ExampleTab from './ExampleTab.vue';
-import Nested from './ExampleNested.vue';
-import Side from './ExampleSide.vue';
-import Default from './ExampleDefault.vue';
-import Icon from './ExampleIcon.vue';
-import Badge from './ExampleBadge.vue';
+import PreviewTabs from './previews/PreviewTabs.vue';
+import PreviewTabsTemplate from '!raw-loader!./previews/PreviewTabs.vue';
+import PreviewNested from './previews/PreviewNested.vue';
+import PreviewNestedTemplate from '!raw-loader!./previews/PreviewNested.vue';
+import PreviewSide from './previews/PreviewSide.vue';
+import PreviewSideTemplate from '!raw-loader!./previews/PreviewSide.vue';
+import PreviewIcon from './previews/PreviewIcon.vue';
+import PreviewIconTemplate from '!raw-loader!./previews/PreviewIcon.vue';
+import PreviewBadge from './previews/PreviewBadge.vue';
+import PreviewBadgeTemplate from '!raw-loader!./previews/PreviewBadge.vue';
+import PreviewDefault from './previews/PreviewDefault.vue';
+import PreviewDefaultTemplate from '!raw-loader!./previews/PreviewDefault.vue';
+import readme from '!raw-loader!./readme.md';
 
 export default {
 	extends: Component,
-	components: {
-		ExampleTab,
-		Nested,
-		Side,
-		Default,
-		Icon,
-		Badge
-	},
 	data() {
 		return {
 			name: 'Tabs',
-			examples: {
-				ExampleTab: 'Base',
-				Nested: 'Nested Tabs',
-				Side: 'Nested Tabs (Side)',
-				Default: 'Default Tab',
-				Icon: 'Icon-only Tab',
-				Badge: 'Badge Tab'
-			}
+			readme: readme,
+			examples: [
+				{
+					component: PreviewTabs,
+					name: 'Base',
+					template: this.extractTemplate(PreviewTabsTemplate)
+				},
+				{
+					component: PreviewNested,
+					name: 'Nested Tabs',
+					template: this.extractTemplate(PreviewNestedTemplate)
+				},
+				{
+					component: PreviewSide,
+					name: 'Side Tabs',
+					template: this.extractTemplate(PreviewSideTemplate)
+				},
+				{
+					component: PreviewIcon,
+					name: 'With Icon',
+					template: this.extractTemplate(PreviewIconTemplate)
+				},
+				{
+					component: PreviewBadge,
+					name: 'With Badge',
+					template: this.extractTemplate(PreviewBadgeTemplate)
+				},
+				{
+					component: PreviewDefault,
+					name: 'With Default Tab',
+					template: this.extractTemplate(PreviewDefaultTemplate)
+				}
+			]
 		};
 	}
 };

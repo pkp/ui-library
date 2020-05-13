@@ -6,13 +6,8 @@
 </template>
 
 <script>
-import Icon from '@/components/Icon/Icon.vue';
-
 export default {
 	name: 'Tooltip',
-	components: {
-		Icon
-	},
 	props: {
 		tooltip: {
 			type: String,

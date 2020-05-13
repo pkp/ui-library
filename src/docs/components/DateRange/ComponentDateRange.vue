@@ -1,18 +1,22 @@
 <script>
 import Component from '@/docs/Component.vue';
-import DateRange from './ExampleDateRange.vue';
+import PreviewDateRange from './previews/PreviewDateRange.vue';
+import PreviewDateRangeTemplate from '!raw-loader!./previews/PreviewDateRange.vue';
+import readme from '!raw-loader!./readme.md';
 
 export default {
 	extends: Component,
-	components: {
-		DateRange
-	},
 	data() {
 		return {
 			name: 'DateRange',
-			examples: {
-				DateRange: 'Base'
-			}
+			readme: readme,
+			examples: [
+				{
+					component: PreviewDateRange,
+					name: 'Base',
+					template: this.extractTemplate(PreviewDateRangeTemplate)
+				}
+			]
 		};
 	}
 };

@@ -1,167 +1,166 @@
 <template>
-	<div class="pkpListPanelItem--submission -hasSummary" :class="classes">
-		<div class="pkpListPanelItem__summary -pkpClearfix">
-			<a :href="item.urlWorkflow" class="pkpListPanelItem--submission__link">
-				<div class="pkpListPanelItem--submission__item">
-					<div class="pkpListPanelItem--submission__id">
-						<span class="-screenReader">{{ i18n.id }}</span>
-						{{ item.id }}
-					</div>
-					<div
-						v-if="currentUserIsReviewer"
-						class="pkpListPanelItem--submission__author"
-					>
-						{{ i18n.reviewAssignment }}
-					</div>
-					<div
-						v-else-if="currentPublication.authorsStringShort"
-						class="pkpListPanelItem--submission__author"
-					>
+	<div class="listPanel__item--submission">
+		<div class="listPanel__itemSummary">
+			<div class="listPanel__itemIdentity listPanel__itemIdentity--submission">
+				<div class="listPanel__item--submission__id">
+					{{ item.id }}
+				</div>
+				<div class="listPanel__itemTitle">
+					<span v-if="currentUserIsReviewer">
+						{{ __('submission.list.reviewAssignment') }}
+					</span>
+					<span v-else-if="currentPublication.authorsStringShort">
 						{{ currentPublication.authorsStringShort }}
-					</div>
-					<div class="pkpListPanelItem--submission__title">
+					</span>
+				</div>
+				<div class="listPanel__itemSubtitle">
+					{{
+						localizeSubmission(
+							currentPublication.fullTitle,
+							currentPublication.locale
+						)
+					}}
+				</div>
+
+				<!-- Review assignment information -->
+				<div
+					v-if="currentUserIsReviewer"
+					class="listPanel__item--submission__reviewDetails"
+				>
+					<span
+						v-if="currentUserLatestReviewAssignment.responsePending"
+						class="listPanel__item--submission__dueDate"
+					>
 						{{
-							localizeSubmission(
-								currentPublication.fullTitle,
-								currentPublication.locale
-							)
+							__('submission.list.responseDue', {
+								date: currentUserLatestReviewAssignment.responseDue
+							})
 						}}
-					</div>
-					<div
-						v-if="reviewerWorkflowLink"
-						class="pkpListPanelItem--submission__reviewerWorkflowLink"
+					</span>
+					<span
+						v-if="currentUserLatestReviewAssignment.reviewPending"
+						class="listPanel__item--submission__dueDate"
 					>
-						<span v-html="reviewerWorkflowLink" />
-					</div>
-					<div
-						v-else-if="notice"
-						class="pkpListPanelItem--submission__activity"
+						{{
+							__('submission.list.reviewDue', {
+								date: currentUserLatestReviewAssignment.due
+							})
+						}}
+					</span>
+				</div>
+
+				<!-- Warnings and notices -->
+				<div
+					v-if="reviewerWorkflowLink"
+					class="listPanel__item--submission__notice"
+				>
+					<span v-html="reviewerWorkflowLink" />
+				</div>
+				<div v-else-if="notice" class="listPanel__item--submission__notice">
+					<icon icon="exclamation-triangle" :inline="true" />
+					{{ notice }}
+					<button
+						v-if="shouldAssignEditor"
+						class="-linkButton"
+						@click.stop.prevent="openAssignParticipant"
 					>
-						<icon icon="exclamation-triangle" :inline="true" />
-						{{ notice }}
-						<button
-							v-for="(noticeAction, index) in noticeActions"
-							:key="index"
-							class="-linkButton"
-							@click.stop.prevent="noticeAction"
+						{{ __('submission.list.assignEditor') }}
+					</button>
+				</div>
+			</div>
+
+			<div class="listPanel__itemActions">
+				<!-- Workflow stage information -->
+				<div
+					v-if="!currentUserIsReviewer"
+					class="listPanel__item--submission__itemSummaryDetails"
+				>
+					<div class="listPanel__item--submission__itemSummaryDetailsRow">
+						<!-- use aria-hidden on these details because the information can be
+							more easily acquired by screen readers from the details panel. -->
+						<div class="listPanel__item--submission__flags" aria-hidden="true">
+							<span v-if="isReviewStage">
+								<icon icon="user-o" :inline="true" />
+								{{ completedReviewsCount }}/{{
+									currentReviewAssignments.length
+								}}
+							</span>
+							<span v-if="activeStage.files.count">
+								<icon icon="file-text-o" :inline="true" />
+								{{ activeStage.files.count }}
+							</span>
+							<span v-if="openQueryCount">
+								<icon icon="comment-o" :inline="true" />
+								{{ openQueryCount }}
+							</span>
+						</div>
+						<badge
+							class="listPanel__item--submission__stage"
+							:isButton="!isArchived"
+							:label="currentStageDescription"
+							:stage="isArchived ? '' : currentStage"
+							:isPrimary="isScheduled"
+							:isSuccess="isPublished"
+							:isWarnable="isDeclined"
+							@click="filterByStage(activeStage.id)"
 						>
-							{{ noticeActionLabels[index] }}
-						</button>
+							{{ currentStageLabel }}
+						</badge>
 					</div>
 				</div>
-			</a>
-			<div
-				v-if="currentUserIsReviewer"
-				class="pkpListPanelItem--submission__stage pkpListPanelItem--submission__stage--reviewer"
-			>
-				<a :href="item.urlWorkflow" tabindex="-1">
-					<div
-						v-if="currentUserLatestReviewAssignment.responsePending"
-						class="pkpListPanelItem--submission__dueDate"
-					>
-						<div
-							:aria-labelledby="responseDueLabelId"
-							class="pkpListPanelItem--submission__dueDateValue"
-						>
-							{{ currentUserLatestReviewAssignment.responseDue }}
-						</div>
-						<div
-							:id="responseDueLabelId"
-							class="pkpListPanelItem--submission__dueDateLabel"
-						>
-							{{ i18n.responseDue }}
-						</div>
-					</div>
-					<div
-						v-if="currentUserLatestReviewAssignment.reviewPending"
-						class="pkpListPanelItem--submission__dueDate"
-					>
-						<div
-							:aria-labelledby="reviewDueLabelId"
-							class="pkpListPanelItem--submission__dueDateValue"
-						>
-							{{ currentUserLatestReviewAssignment.due }}
-						</div>
-						<div
-							:id="reviewDueLabelId"
-							class="pkpListPanelItem--submission__dueDateLabel"
-						>
-							{{ i18n.reviewDue }}
-						</div>
-					</div>
+
+				<!-- Review status -->
+				<template v-else>
 					<div
 						v-if="currentUserLatestReviewAssignment.reviewCancelled"
-						class="pkpListPanelItem--submission__reviewCancelled"
+						class="listPanel__item--submission__reviewCancelled"
 					>
 						<icon icon="exclamation-triangle" :inline="true" />
-						{{ i18n.reviewCancelled }}
+						{{ __('submission.list.reviewCancelled') }}
 					</div>
 					<div
 						v-if="currentUserLatestReviewAssignment.reviewComplete"
-						class="pkpListPanelItem--submission__reviewComplete"
+						class="listPanel__item--submission__reviewComplete"
 					>
 						<icon icon="check" :inline="true" />
-						{{ i18n.reviewComplete }}
+						{{ __('submission.list.reviewComplete') }}
 					</div>
-				</a>
+				</template>
+
+				<!-- Actions -->
+				<pkp-button element="a" :href="item.urlWorkflow">
+					<span aria-hidden="true">{{ __('common.view') }}</span>
+					<span v-if="currentUserIsReviewer" class="-screenReader">
+						{{
+							__('common.viewWithName', {
+								name: localizeSubmission(
+									currentPublication.fullTitle,
+									currentPublication.locale
+								)
+							})
+						}}
+					</span>
+					<span v-else class="-screenReader">
+						{{
+							__('common.viewWithName', {
+								name: currentPublication.authorsStringShort
+							})
+						}}
+					</span>
+				</pkp-button>
+				<expander
+					v-if="!currentUserIsReviewer"
+					:isExpanded="isExpanded"
+					:itemName="localize(currentPublication.authorsStringShort)"
+					@toggle="isExpanded = !isExpanded"
+				/>
 			</div>
-			<div v-else class="pkpListPanelItem--submission__stage">
-				<div class="pkpListPanelItem--submission__stageRow">
-					<badge
-						:isButton="!isArchived"
-						:label="currentStageDescription"
-						:stage="isArchived ? '' : currentStage"
-						:isSuccess="isApproved"
-						:isWarnable="isDeclined"
-						@click="filterByStage(activeStage.id)"
-					>
-						{{ currentStageLabel }}
-					</badge>
-					<!-- use aria-hidden on these details because the information can be
-						more easily acquired by screen readers from the details panel. -->
-					<div class="pkpListPanelItem--submission__flags" aria-hidden="true">
-						<span
-							v-if="isReviewStage"
-							class="pkpListPanelItem--submission__flags--reviews"
-						>
-							<icon icon="user-o" :inline="true" />
-							{{ completedReviewsCount }}/{{ currentReviewAssignments.length }}
-						</span>
-						<span
-							v-if="activeStage.files.count"
-							class="pkpListPanelItem--submission__flags--files"
-						>
-							<icon icon="file-text-o" :inline="true" />
-							{{ activeStage.files.count }}
-						</span>
-						<span
-							v-if="openQueryCount"
-							class="pkpListPanelItem--submission__flags--discussions"
-						>
-							<icon icon="comment-o" :inline="true" />
-							{{ openQueryCount }}
-						</span>
-					</div>
-				</div>
-			</div>
-			<button
-				v-if="!currentUserIsReviewer"
-				@click="toggleExpanded"
-				class="pkpListPanelItem__expander"
-			>
-				<icon v-if="isExpanded" icon="angle-up" />
-				<icon v-else icon="angle-down" />
-				<span v-if="isExpanded" class="-screenReader">
-					{{ __('viewLess', {name: currentPublication.authorsStringShort}) }}
-				</span>
-				<span v-else class="-screenReader">
-					{{ __('viewMore', {name: currentPublication.authorsStringShort}) }}
-				</span>
-			</button>
 		</div>
+
+		<!-- Expanded panel -->
 		<div
 			v-if="isExpanded"
-			class="pkpListPanelItem__details pkpListPanelItem__details--submission"
+			class="listPanel__itemExpanded listPanel__itemExpanded--submission"
 		>
 			<list>
 				<list-item v-if="isReviewStage">
@@ -169,7 +168,7 @@
 						<icon icon="user-o" :inline="true" />
 						{{ completedReviewsCount }}/{{ currentReviewAssignments.length }}
 					</template>
-					{{ i18n.reviewsCompleted }}
+					{{ __('submission.list.reviewsCompleted') }}
 				</list-item>
 				<list-item v-if="!isSubmissionStage">
 					<template slot="value">
@@ -183,7 +182,7 @@
 						<icon icon="comment-o" :inline="true" />
 						{{ openQueryCount }}
 					</template>
-					{{ i18n.discussions }}
+					{{ __('submission.list.discussions') }}
 				</list-item>
 				<list-item v-if="dualWorkflowLinks">
 					<span v-html="dualWorkflowLinks" />
@@ -191,69 +190,44 @@
 				<list-item>
 					<span>
 						{{
-							__('lastActivity', {date: localizeDate(item.dateLastActivity)})
+							__('common.lastActivity', {
+								date: localizeDate(item.dateLastActivity)
+							})
 						}}
 					</span>
 				</list-item>
 			</list>
-			<div class="pkpListPanelItem__actions">
-				<pkp-button
-					element="a"
-					:href="item.urlWorkflow"
-					:label="i18n.viewSubmission"
-				/>
-				<pkp-button
-					v-if="currentUserCanViewInfoCenter"
-					:label="i18n.infoCenter"
-					@click="openInfoCenter"
-				/>
+			<div class="listPanel__itemExpandedActions">
+				<pkp-button v-if="currentUserCanViewInfoCenter" @click="openInfoCenter">
+					{{ __('submission.list.infoCenter') }}
+				</pkp-button>
 				<pkp-button
 					v-if="currentUserCanDelete"
-					:label="i18n.delete"
 					:isWarnable="true"
 					@click="deleteSubmissionPrompt"
-				/>
-			</div>
-		</div>
-		<div class="pkpListPanelItem__mask" :class="classMask">
-			<div class="pkpListPanelItem__maskLabel">
-				<template v-if="mask === 'confirmingDelete'">
-					<span class="pkpListPanelItem__maskLabel_prompt">
-						{{ i18n.confirmDelete }}
-						<a href="#" @click.prevent="deleteSubmission">Yes</a>
-						<a href="#" @click.prevent="cancelDeleteRequest">No</a>
-					</span>
-				</template>
-				<template v-if="mask === 'deleting'">
-					<span class="pkpListPanelItem__maskLabel_loading">
-						<span class="pkp_spinner"></span>
-						{{ i18n.deleting }}
-					</span>
-				</template>
+				>
+					{{ __('common.delete') }}
+				</pkp-button>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import ListPanelItem from '@/components/ListPanel/ListPanelItem.vue';
+import Expander from '@/components/Expander/Expander.vue';
 import List from '@/components/List/List.vue';
 import ListItem from '@/components/List/ListItem.vue';
-import Badge from '@/components/Badge/Badge.vue';
-import PkpButton from '@/components/Button/Button.vue';
-import Icon from '@/components/Icon/Icon.vue';
-import LocalizeSubmission from '@/mixins/localizeSubmission.js';
+import fetch from '@/mixins/fetch';
+import localizeSubmission from '@/mixins/localizeSubmission';
+import modal from '@/mixins/modal';
 
 export default {
-	extends: ListPanelItem,
 	name: 'SubmissionsListItem',
-	mixins: [LocalizeSubmission],
+	mixins: [fetch, localizeSubmission, modal],
 	components: {
+		Expander,
 		List,
-		ListItem,
-		Badge,
-		PkpButton,
-		Icon
+		ListItem
 	},
 	props: {
 		apiUrl: {
@@ -264,12 +238,12 @@ export default {
 			type: String,
 			required: true
 		},
-		csrfToken: {
+		infoUrl: {
 			type: String,
 			required: true
 		},
-		infoUrl: {
-			type: String,
+		item: {
+			type: Object,
 			required: true
 		}
 	},
@@ -282,13 +256,6 @@ export default {
 		};
 	},
 	computed: {
-		/**
-		 * Map the submission id to the list item id
-		 */
-		id() {
-			return this.item.id;
-		},
-
 		/**
 		 * The current publication of the submission
 		 *
@@ -371,6 +338,11 @@ export default {
 		 */
 		notice() {
 			var notice = '';
+
+			// Incomplete submissions should not show notices
+			if (this.item.submissionProgress > 0) {
+				return notice;
+			}
 
 			// Notices for journal managers
 			if (this.shouldAssignEditor) {
@@ -476,7 +448,7 @@ export default {
 			if (this.isArchived) {
 				return this.item.statusLabel;
 			} else if (this.item.submissionProgress > 0) {
-				return this.i18n.incomplete;
+				return this.__('submissions.incomplete');
 			}
 			return this.activeStage.label;
 		},
@@ -487,7 +459,9 @@ export default {
 		 * @return {String}
 		 */
 		currentStageDescription() {
-			return this.__('currentStage', {stage: this.currentStageLabel});
+			return this.__('submission.list.currentStage', {
+				stage: this.currentStageLabel
+			});
 		},
 
 		/**
@@ -513,15 +487,21 @@ export default {
 		},
 
 		/**
-		 * Is this submission published or scheduled to be published?
+		 * Has this submission been scheduled for publication
 		 *
 		 * @return {Boolean}
 		 */
-		isApproved() {
-			return (
-				this.item.status === pkp.const.STATUS_SCHEDULED ||
-				this.item.status === pkp.const.STATUS_PUBLISHED
-			);
+		isScheduled() {
+			return this.item.status === pkp.const.STATUS_SCHEDULED;
+		},
+
+		/**
+		 * Has this submission been published
+		 *
+		 * @return {Boolean}
+		 */
+		isPublished() {
+			return this.item.status === pkp.const.STATUS_PUBLISHED;
 		},
 
 		/**
@@ -545,11 +525,11 @@ export default {
 			switch (this.activeStage.id) {
 				case pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW:
 				case pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW:
-					return this.i18n.revisionsSubmitted;
+					return this.__('submission.list.revisionsSubmitted');
 				case pkp.const.WORKFLOW_STAGE_ID_EDITING:
-					return this.i18n.copyeditsSubmitted;
+					return this.__('submission.list.copyeditsSubmitted');
 				case pkp.const.WORKFLOW_STAGE_ID_PRODUCTION:
-					return this.i18n.galleysCreated;
+					return this.__('submission.list.galleysCreated');
 			}
 			return '';
 		},
@@ -609,7 +589,7 @@ export default {
 			) {
 				return '';
 			}
-			return this.__('dualWorkflowLinks', {
+			return this.__('submission.list.dualWorkflowLinks', {
 				urlAuthorWorkflow: this.item.urlAuthorWorkflow,
 				urlEditorialWorkflow: this.item.urlEditorialWorkflow
 			});
@@ -632,7 +612,7 @@ export default {
 			) {
 				return '';
 			}
-			return this.__('reviewerWorkflowLink', {
+			return this.__('submission.list.reviewerWorkflowLink', {
 				urlEditorialWorkflow: this.item.urlEditorialWorkflow
 			});
 		},
@@ -715,45 +695,6 @@ export default {
 			return this.currentReviewAssignments.filter(review => {
 				return review.statusId >= pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED;
 			}).length;
-		},
-
-		/**
-		 * Return a class to toggle the item mask
-		 *
-		 * @return {String}
-		 */
-		classMask() {
-			if (!this.mask) {
-				return '';
-			} else if (this.mask === 'finish') {
-				return '-finish';
-			}
-			var classes = ['-active'];
-			if (this.mask === 'confirmingDelete' || this.mask === 'deleting') {
-				classes.push('-alert');
-			}
-
-			return classes.join(' ');
-		},
-
-		/**
-		 * ID attribute to use in aria-labelledby linking the reponse due date
-		 * with it's label
-		 *
-		 * @return {String}
-		 */
-		responseDueLabelId() {
-			return 'responseDueLabel' + this._uid;
-		},
-
-		/**
-		 * ID attribute to use in aria-labelledby linking the review due date
-		 * with it's label
-		 *
-		 * @return {String}
-		 */
-		reviewDueLabelId() {
-			return 'reviewDueLabel' + this._uid;
 		}
 	},
 	methods: {
@@ -779,7 +720,7 @@ export default {
 					);
 				});
 				if (managerRoles.length) {
-					return pkp.userHasRole(managerRoles);
+					return this.userHasRole(managerRoles);
 				}
 			}
 			return false;
@@ -820,7 +761,7 @@ export default {
 		 * closed. This is a callback function passed into ModalHandler.js
 		 */
 		resetFocusInfoCenter() {
-			this.$el.querySelector('.pkpListPanelItem__openInfoCenter').focus();
+			this.$el.querySelector('.listPanel__item__openInfoCenter').focus();
 		},
 
 		/**
@@ -828,7 +769,7 @@ export default {
 		 */
 		openAssignParticipant() {
 			var opts = {
-				title: this.i18n.assignEditor,
+				title: this.__('submission.list.assignEditor'),
 				url: this.assignParticipantUrl
 					.replace('__id__', this.item.id)
 					.replace('__stageId__', this.activeStage.id),
@@ -849,7 +790,7 @@ export default {
 		 */
 		resetFocusAssignParticipant() {
 			this.$el
-				.querySelector('.pkpListPanelItem--submission__activity button')
+				.querySelector('.listPanel__item--submission__notice button')
 				.focus();
 		},
 
@@ -857,61 +798,55 @@ export default {
 		 * Display a confirmation prompt before deleting a submission
 		 */
 		deleteSubmissionPrompt() {
-			this.mask = 'confirmingDelete';
+			this.openDialog({
+				cancelLabel: this.__('common.no'),
+				modalName: 'deleteSubmission',
+				message: this.__('editor.submissionArchive.confirmDelete'),
+				title: this.__('common.delete'),
+				callback: this.deleteSubmission
+			});
 		},
 
 		/**
 		 * Send a request to delete the submission and handle the response
 		 */
 		deleteSubmission() {
-			this.mask = 'deleting';
-
 			var self = this;
 			$.ajax({
 				url: this.apiUrl + '/' + this.item.id,
 				type: 'DELETE',
 				headers: {
-					'X-Csrf-Token': this.csrfToken
+					'X-Csrf-Token': pkp.currentUser.csrfToken
 				},
 				error: this.ajaxErrorCallback,
 				success() {
-					self.mask = 'finish';
-					// Allow time for the finished CSS transition to display
-					setTimeout(function() {
-						pkp.eventBus.$emit('submissionDeleted', {id: self.item.id});
-						self.cancelDeleteRequest();
-					}, 300);
+					pkp.eventBus.$emit('deleted:submission', {id: self.item.id});
 				},
 				complete() {
-					// Reset the mask in case there is an error
-					if (self.mask === 'deleting') {
-						self.cancelDeleteRequest();
-					}
+					self.$modal.hide('deleteSubmission');
 				}
 			});
 		},
 
 		/**
-		 * Cancel the delete request
+		 * Helper function to determine if the current user has a role
+		 *
+		 * @param int|array roles The role ID to look for (pkp.const.ROLE_ID...)
+		 * @return bool
 		 */
-		cancelDeleteRequest() {
-			this.mask = null;
-		}
-	},
-	watch: {
-		/**
-		 * When the notice changes, update the actions that are available
-		 */
-		notice: function(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
+		userHasRole(roles) {
+			if (!Array.isArray(roles)) {
+				roles = [roles];
 			}
-			this.noticeActions = [];
-			this.noticeActionLabels = [];
-			if (this.shouldAssignEditor) {
-				this.noticeActions.push(this.openAssignParticipant);
-				this.noticeActionLabels.push(this.i18n.assignEditor);
-			}
+
+			var hasRole = false;
+			roles.forEach(role => {
+				if (pkp.currentUser.roles.indexOf(role) > -1) {
+					hasRole = true;
+				}
+			});
+
+			return hasRole;
 		}
 	}
 };
@@ -920,100 +855,33 @@ export default {
 <style lang="less">
 @import '../../../styles/_import';
 
-.pkpListPanelItem--submission {
-	position: relative;
-	transition: all 0.3s;
-
-	&:before {
-		content: '';
-		display: block;
-		position: absolute;
-		top: 50%;
-		left: 0;
-		width: 0.1rem;
-		height: 25%;
-		background: @primary;
-		opacity: 0;
-		transition: height 0.3s;
-		transform: translateY(-50%);
-	}
-
-	&:hover {
-		&:before {
-			height: 100%;
-			opacity: 1;
-		}
-	}
+.listPanel__itemIdentity--submission,
+.listPanel__itemExpanded--submission {
+	padding-left: 2.5rem;
 }
 
-.pkpListPanelItem--submission__link {
-	display: block;
-	color: @text;
-	text-decoration: none;
-
-	&:hover,
-	&:focus {
-		color: @text;
-	}
-
-	&:before {
-		content: '';
-		display: block;
-		position: absolute;
-		top: 50%;
-		right: 100%;
-		width: 0.1rem;
-		height: 25%;
-		background: @primary;
-		opacity: 0;
-		transition: height 0.3s;
-		transform: translateY(-50%);
-	}
-
-	&:focus {
-		outline: 0;
-
-		&:before {
-			height: 100%;
-			opacity: 1;
-		}
-	}
-}
-
-.pkpListPanelItem--submission__item,
-.pkpListPanelItem--submission__stage {
-	float: left;
-}
-
-.pkpListPanelItem--submission__item {
-	position: relative;
-	float: left;
-	width: 75%;
-	padding-left: 3rem;
-}
-
-.pkpListPanelItem--submission__id {
+.listPanel__item--submission__id {
 	position: absolute;
 	top: 0;
 	left: 0;
 	font-size: @font-tiny;
-	line-height: (@font-sml * 1.5); // Match ,pkpListPanelItem--submission__author
+	line-height: 22px; // Match baseline of title
 	color: @text;
 }
 
-.pkpListPanelItem--submission__title,
-.pkpListPanelItem--submission__author,
-.pkpListPanelItem--submission__activity {
+.listPanel__item--submission__title,
+.listPanel__item--submission__author,
+.listPanel__item--submission__notice {
 	display: block;
 	padding-right: 2em;
 }
 
-.pkpListPanelItem--submission__author {
+.listPanel__item--submission__author {
 	font-weight: @bold;
 }
 
-.pkpListPanelItem--submission__activity,
-.pkpListPanelItem--submission__reviewerWorkflowLink {
+.listPanel__item--submission__notice,
+.listPanel__item--submission__reviewerWorkflowLink {
 	margin-top: 0.5em;
 	font-size: @font-tiny;
 	line-height: 1.5em;
@@ -1025,22 +893,19 @@ export default {
 	}
 }
 
-.pkpListPanelItem--submission__activity {
+.listPanel__item--submission__notice {
 	.-linkButton:not(:last-child) {
 		margin-right: 0.5em;
 	}
 }
 
-.pkpListPanelItem--submission__stage {
-	width: 25%;
-}
-
-.pkpListPanelItem--submission__flags {
+.listPanel__item--submission__flags {
+	display: inline-block;
 	font-size: @font-tiny;
-	margin-top: 1em;
+	line-height: 1.5em;
 
 	> * {
-		margin-left: 1em;
+		margin-right: 1em;
 	}
 
 	.fa {
@@ -1050,38 +915,40 @@ export default {
 	}
 }
 
-// Details panel
-.pkpListPanelItem__details--submission {
-	padding: 1em (@base * 3) 1em 62px;
+.listPanel__item--submission__stage {
+	margin-left: 0.5rem;
+	margin-right: 0.25rem;
 }
 
-// Reviewer-specific displays
-.pkpListPanelItem--submission__stage--reviewer a {
-	display: block;
-	color: @text;
-	text-decoration: none;
-
-	&:hover,
-	&:focus {
-		color: @text;
-	}
+.listPanel__itemExpanded--submission {
+	margin-top: 1rem;
 }
 
-.pkpListPanelItem--submission__dueDate
-	+ .pkpListPanelItem--submission__dueDate {
-	margin-top: 1em;
-}
-
-.pkpListPanelItem--submission__dueDateValue {
-	font-weight: @bold;
-}
-
-.pkpListPanelItem--submission__dueDateLabel {
+.listPanel__item--submission__reviewDetails {
+	margin-top: 0.25em;
 	font-size: @font-tiny;
-	line-height: @line-tiny;
+	line-height: 1.5em;
 }
 
-.pkpListPanelItem--submission__reviewComplete .fa {
+.listPanel__item--submission__dueDate {
+	margin-right: 1rem;
+}
+
+.listPanel__item--submission__reviewComplete .fa {
 	color: @yes;
+}
+
+[dir='rtl'] {
+	.listPanel__itemIdentity--submission {
+		padding-left: 0rem;
+		padding-right: 2.5rem;
+	}
+
+	.listPanel__item--submission__id {
+		position: absolute;
+		left: auto;
+		right: 0;
+		text-align: left;
+	}
 }
 </style>

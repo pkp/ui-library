@@ -1,7 +1,20 @@
+## Props
+
+| Key | Description |
+| --- | --- |
+| `topic` | Which topic to open in the help panel. This will correspond with one of the `.md` files used in the help panel. Do not include the `.md` extension. |
+| `section` | Open the help panel to a particular section of the topic. This must match one of the named anchors in the topic page, such as `<a name="workflow-library"></a>`. |
+| `label` | A localized label for screen readers. In English this should be "Help". |
+
+## Events
+
+This component does not emit any events.
+
+## Usage
 
 Use this component to display an icon that will open the help panel when clicked.
 
-## Usage Recommendations
+## Recommendations
 
 Use the help panel when **instructions** for completing actions require further information, such as a description of when one choice should be made over another. This will commonly occur with form fields or other controls where limited space is available.
 

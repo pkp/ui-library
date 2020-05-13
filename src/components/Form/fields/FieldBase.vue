@@ -33,8 +33,7 @@ export default {
 		value: {
 			required: true
 		},
-		allErrors: Object,
-		i18n: Object
+		allErrors: Object
 	},
 	computed: {
 		/**
@@ -49,11 +48,7 @@ export default {
 				return this.isMultilingual ? this.value[this.localeKey] : this.value;
 			},
 			set: function(newVal) {
-				this.$emit('change', {
-					name: this.name,
-					value: newVal,
-					localeKey: this.localeKey
-				});
+				this.$emit('change', this.name, 'value', newVal, this.localeKey);
 			}
 		},
 
@@ -218,7 +213,7 @@ export default {
 		 * @return {String}
 		 */
 		multilingualLabel() {
-			return this.__('multilingualLabel', {
+			return this.__('form.multilingualLabel', {
 				label: this.label,
 				localeName: this.localeLabel
 			});

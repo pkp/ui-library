@@ -1,3 +1,20 @@
+## Props
+
+| Key | Description |
+| --- | --- |
+| `isFilterActive` | Whether or not this is filter is currently on or off. |
+| `param` | The query parameter to use when submitting API requests for this filter. For example, a filter for getting all submissions in a particular stage would be `stageIds`. |
+| `title` | The label for this filter. |
+| `value` | The value to use when submitting API requests for this filter. For example, a filter for getting all submissions currently in the Submission stage would have a `param` of `stageIds` and a `value` of `1`. |
+
+## Events
+
+| Key | Description |
+| --- | --- |
+| `add-filter` | Emitted when the filter is activated. Payload: `(param, value)` |
+| `remove-filter` | Emitted when the filter is deactivated. Payload: `(param, value)` |
+
+## Usage
 
 Use this component when the user wants to narrow the items in a list by some criteria.
 
@@ -24,7 +41,7 @@ More than one `Filter` may share the same `param`, but not the same `value`. For
 
 ## Managing Active Filters
 
-A parent component must manage which filters are active. By convention, this should be in an `activeFilters` object. See the [ListPanel](/#/component/ListPanel) for an example.
+A parent component must manage which filters are active. By convention, this should be in an `activeFilters` object. See the [ListPanel](#/component/ListPanel) for an example.
 
 Most filters should be able to be combined with other filters, so there may be more than one filter active at a time. The following shows what the `activeFilters` object might look like when stage and section filters are applied at the same time:
 

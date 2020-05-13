@@ -11,13 +11,8 @@
 </template>
 
 <script>
-import Icon from '@/components/Icon/Icon.vue';
-
 export default {
 	name: 'HelpButton',
-	components: {
-		Icon
-	},
 	props: {
 		topic: {
 			type: String,
