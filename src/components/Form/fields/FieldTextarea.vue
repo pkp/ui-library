@@ -42,7 +42,7 @@
 				:id="controlId"
 				:name="localizedName"
 				:aria-describedby="describedByIds"
-				:aria-invalid="!!errors.length"
+				:aria-invalid="errors && errors.length"
 				:required="isRequired"
 			></textarea>
 			<multilingual-progress
@@ -54,7 +54,7 @@
 			/>
 		</div>
 		<field-error
-			v-if="errors.length"
+			v-if="errors && errors.length"
 			:id="describedByErrorId"
 			:messages="errors"
 		/>

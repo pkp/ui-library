@@ -45,7 +45,7 @@
 				:disableAlpha="true"
 			/>
 			<field-error
-				v-if="errors.length"
+				v-if="errors && errors.length"
 				:id="describedByErrorId"
 				:messages="errors"
 			/>

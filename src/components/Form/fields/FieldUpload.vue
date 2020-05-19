@@ -60,7 +60,7 @@
 				</div>
 			</div>
 			<field-error
-				v-if="currentValue && errors.length"
+				v-if="currentValue && errors && errors.length"
 				:id="describedByErrorId"
 				:messages="errors"
 			/>
@@ -76,7 +76,7 @@
 					@vdropzone-removed-file="onRemoveFile"
 				/>
 				<field-error
-					v-if="!currentValue && errors.length"
+					v-if="!currentValue && errors && errors.length"
 					:id="describedByErrorId"
 					:messages="errors"
 				/>

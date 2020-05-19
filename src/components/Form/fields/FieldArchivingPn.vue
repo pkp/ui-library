@@ -42,7 +42,7 @@
 			v-html="terms"
 		/>
 		<field-error
-			v-if="errors.length"
+			v-if="errors && errors.length"
 			:id="describedByErrorId"
 			:messages="errors"
 		/>
@@ -60,7 +60,7 @@
 					type="checkbox"
 					:name="name"
 					:aria-describedby="describedByIds"
-					:aria-invalid="!!errors.length"
+					:aria-invalid="errors && errors.length"
 					:disabled="isSaving || option.disabled"
 				/>
 				{{ option.label }}

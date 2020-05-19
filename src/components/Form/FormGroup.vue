@@ -177,7 +177,7 @@ export default {
 		setFieldErrors: function(data) {
 			const localeKey = data.localeKey || '';
 			let newErrors = {...this.errors};
-			if (!data.errors.length) {
+			if (!data.errors || !data.errors.length) {
 				if (
 					localeKey &&
 					newErrors[data.name] &&

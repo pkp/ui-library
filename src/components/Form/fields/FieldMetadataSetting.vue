@@ -24,7 +24,7 @@
 			:id="describedByDescriptionId"
 		/>
 		<field-error
-			v-if="errors.length"
+			v-if="errors && errors.length"
 			:id="describedByErrorId"
 			:messages="errors"
 		/>
@@ -40,7 +40,7 @@
 					v-model="isEnabled"
 					:value="option.value"
 					:aria-describedby="describedByIds"
-					:aria-invalid="!!errors.length"
+					:aria-invalid="errors && errors.length"
 					:disabled="option.disabled"
 				/>
 				<span
@@ -59,7 +59,7 @@
 						v-model="selectedValue"
 						type="radio"
 						:value="option.value"
-						:aria-invalid="!!errors.length"
+						:aria-invalid="errors && errors.length"
 						:disabled="option.disabled"
 					/>
 					<span

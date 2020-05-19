@@ -39,7 +39,7 @@
 			:id="describedByDescriptionId"
 		/>
 		<field-error
-			v-if="errors.length"
+			v-if="errors && errors.length"
 			:id="describedByErrorId"
 			:messages="errors"
 		/>
@@ -61,7 +61,7 @@
 						:type="type"
 						:name="localizedName"
 						:aria-describedby="describedByIds"
-						:aria-invalid="!!errors.length"
+						:aria-invalid="errors && errors.length"
 						:disabled="option.disabled"
 					/>
 					<span

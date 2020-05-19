@@ -39,7 +39,7 @@
 			:id="describedByDescriptionId"
 		/>
 		<field-error
-			v-if="errors.length"
+			v-if="errors && errors.length"
 			:id="describedByErrorId"
 			:messages="errors"
 		/>
@@ -58,7 +58,7 @@
 						type="radio"
 						:name="name"
 						:aria-describedby="describedByIds"
-						:aria-invalid="!!errors.length"
+						:aria-invalid="errors && errors.length"
 						:disabled="option.disabled"
 					/>
 					{{ option.label }}
@@ -70,7 +70,7 @@
 						ref="inputRadio"
 						:name="name"
 						:aria-describedby="describedByIds"
-						:aria-invalid="!!errors.length"
+						:aria-invalid="errors && errors.length"
 						:disabled="option.disabled"
 						@change="selectInput"
 					/>
@@ -81,7 +81,7 @@
 						v-model="inputValue"
 						ref="inputText"
 						:aria-describedby="describedByIds"
-						:aria-invalid="!!errors.length"
+						:aria-invalid="errors && errors.length"
 						:disabled="option.disabled"
 						@focus="selectInput"
 					/>
