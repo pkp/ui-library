@@ -69,34 +69,55 @@ export default {
 
 				// Update the issue volume and number used in the DOI
 				// field when the issue changes
-				var self = this;
-				$.ajax({
-					url: this.issueApiUrl.replace('__issueId__', newVal.issueId),
-					type: 'GET',
-					error(r) {
-						self.ajaxErrorCallback(r);
-					},
-					success(r) {
-						self.publicationFormIds.forEach(formId => {
-							if (formId !== pkp.const.FORM_PUBLICATION_IDENTIFIERS) {
-								return;
-							}
-							let form = {...self.components[formId]};
-							form.fields = form.fields.map(field => {
-								if (field.name === 'pub-id::doi') {
-									field.issueNumber = r.number || '';
-									field.issueVolume = r.volume || '';
-									if (!self.workingPublication.datePublished) {
-										field.year = r.year || '';
-									}
+				if (!newVal.issueId) {
+					this.publicationFormIds.forEach(formId => {
+						if (formId !== pkp.const.FORM_PUBLICATION_IDENTIFIERS) {
+							return;
+						}
+						let form = {...this.components[formId]};
+						form.fields = form.fields.map(field => {
+							if (field.name === 'pub-id::doi') {
+								field.issueNumber = '';
+								field.issueVolume = '';
+								if (!this.workingPublication.datePublished) {
+									field.year = '';
 								}
-								return field;
-							});
-							self.components[formId] = {};
-							self.components[formId] = form;
+							}
+							return field;
 						});
-					}
-				});
+						this.components[formId] = {};
+						this.components[formId] = form;
+					});
+				} else {
+					var self = this;
+					$.ajax({
+						url: this.issueApiUrl.replace('__issueId__', newVal.issueId),
+						type: 'GET',
+						error(r) {
+							self.ajaxErrorCallback(r);
+						},
+						success(r) {
+							self.publicationFormIds.forEach(formId => {
+								if (formId !== pkp.const.FORM_PUBLICATION_IDENTIFIERS) {
+									return;
+								}
+								let form = {...self.components[formId]};
+								form.fields = form.fields.map(field => {
+									if (field.name === 'pub-id::doi') {
+										field.issueNumber = r.number || '';
+										field.issueVolume = r.volume || '';
+										if (!self.workingPublication.datePublished) {
+											field.year = r.year || '';
+										}
+									}
+									return field;
+								});
+								self.components[formId] = {};
+								self.components[formId] = form;
+							});
+						}
+					});
+				}
 			}
 		}
 	},
