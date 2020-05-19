@@ -46,23 +46,14 @@
 				</span>
 			</template>
 			<template v-else>
-				<select
-					class="pkpFormField__input pkpFormField--select__input"
-					v-model="currentValue"
-					:id="controlId"
-					:name="localizedName"
-					:aria-describedby="describedByIds"
-					:aria-invalid="errors && errors.length"
-					:required="isRequired"
-				>
-					<option
-						v-for="option in localizedOptions"
-						:key="option.value"
-						v-bind="option"
-					>
-						{{ option.label }}
-					</option>
-				</select>
+				<span class="pkpFormField__description">
+					<span v-html="unscheduledNotice" />
+					<pkp-button
+						class="pkpFormField--selectIssue__unscheduleButton"
+						:label="scheduleLabel"
+						@click="emitSchedule"
+					/>
+				</span>
 				<field-error
 					v-if="errors && errors.length"
 					:id="describedByErrorId"
@@ -92,7 +83,15 @@ export default {
 			type: String,
 			required: true
 		},
+		scheduleLabel: {
+			type: String,
+			required: true
+		},
 		scheduledNoticeBase: {
+			type: String,
+			required: true
+		},
+		unscheduledNotice: {
 			type: String,
 			required: true
 		},
@@ -156,6 +155,13 @@ export default {
 		}
 	},
 	methods: {
+		/**
+		 * Emit a global event to schedule a publication in an issue
+		 */
+		emitSchedule() {
+			pkp.eventBus.$emit('schedule:publication');
+		},
+
 		/**
 		 * Emit a global event to unschedule a publication
 		 */
