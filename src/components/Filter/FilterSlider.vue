@@ -29,9 +29,9 @@
 				id="slider"
 				v-model="currentValue"
 			/>
-			<span class="slider--currentValue">
+			<output ref="output">
 				{{ currentValue }}
-			</span>
+			</output>
 		</div>
 	</div>
 </template>
@@ -147,6 +147,11 @@ export default {
 				return;
 			} else {
 				this.updateCurrentValue(newVal);
+				const val = this.$refs.output.value;
+				this.min ? this.min : 0;
+				this.max ? this.max : 100;
+				newVal = Number(((val - this.min) * 100) / (this.max - this.min));
+				this.$refs.output.style.left = newVal + '%';
 			}
 		}
 	}
@@ -193,6 +198,7 @@ export default {
 	// margin-left: -8px;
 	// margin-right: -8px;
 	padding-bottom: 3em; // account for title space
+	position: relative;
 }
 
 .pkpFilter__inputTitle {
@@ -228,9 +234,8 @@ export default {
 	}
 }
 
-.slider--currentValue {
-	display: inline-block;
-	float: right;
+output {
+	position: absolute;
 }
 
 input[type='range'] {
