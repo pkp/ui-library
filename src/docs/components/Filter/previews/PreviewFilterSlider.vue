@@ -67,7 +67,7 @@ export default {
 	data() {
 		return {
 			activeFilters: {},
-			daysSinceLastReview: [1, 365],
+			daysSinceLastReview: 30,
 			i18n: {...props.i18n}
 		};
 	},
