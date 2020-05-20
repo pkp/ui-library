@@ -150,8 +150,11 @@ export default {
 				const val = this.$refs.output.value;
 				this.min ? this.min : 0;
 				this.max ? this.max : 100;
-				newVal = Number(((val - this.min) * 100) / (this.max - this.min));
-				this.$refs.output.style.left = newVal + '%';
+				const position = Number(
+					((val - this.min) * 100) / (this.max - this.min)
+				);
+				this.$refs.output.style.left = position + '%';
+				this.$refs.output.style.top = '50%';
 			}
 		}
 	}
@@ -236,6 +239,29 @@ export default {
 
 output {
 	position: absolute;
+	background-color: #3498db;
+	width: 40px;
+	height: 30px;
+	text-align: center;
+	color: white;
+	border-radius: 10px;
+	display: inline-block;
+	top: 175%;
+	left: 0;
+	margin-left: -1%;
+}
+output:after {
+	content: '';
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-bottom: 10px solid #3498db;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	bottom: 100%;
+	left: 50%;
+	margin-left: -5px;
+	margin-top: -1px;
 }
 
 input[type='range'] {
