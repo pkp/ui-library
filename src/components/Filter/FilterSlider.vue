@@ -29,6 +29,9 @@
 				id="slider"
 				v-model="currentValue"
 			/>
+			<span class="slider--currentValue">
+				{{ currentValue }}
+			</span>
 		</div>
 	</div>
 </template>
@@ -223,6 +226,11 @@ export default {
 	.fa {
 		color: @star-on;
 	}
+}
+
+.slider--currentValue {
+	display: inline-block;
+	float: right;
 }
 
 input[type='range'] {
