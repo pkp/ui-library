@@ -21,41 +21,24 @@
 			{{ title }}
 		</div>
 		<div class="pkpFilter__input pkpFilter__input--slider">
-			<vue-slider
-				:ref="sliderRef"
-				:value="value"
+			<label class="-screenReader" for="slider">{{ title }}</label>
+			<input
+				type="range"
 				:min="min"
 				:max="max"
-				:formatter="formatter"
-				:disabled="!isFilterActive"
-				:speed="0.3"
-				tooltip-dir="bottom"
-				:class="{'vue-slider-component--stars': useStars}"
-				@callback="val => update(val)"
-			>
-				<template v-if="useStars" slot="tooltip" slot-scope="{value}">
-					<span class="vue-slider-tooltip--stars">
-						<icon v-for="index in value" :key="index" icon="star" />
-						<span class="-screenReader">
-							{{ starLabel.replace('{$rating}', value) }}
-						</span>
-					</span>
-				</template>
-			</vue-slider>
+				id="slider"
+				v-model="currentValue"
+			/>
 		</div>
 	</div>
 </template>
 
 <script>
 import Filter from './Filter.vue';
-import VueSlider from 'vue-slider-component';
 import debounce from 'debounce';
 
 export default {
 	extends: Filter,
-	components: {
-		VueSlider
-	},
 	props: {
 		formatter: {
 			type: String,
@@ -87,6 +70,11 @@ export default {
 				return false;
 			}
 		}
+	},
+	data() {
+		return {
+			currentValue: this.value
+		};
 	},
 	computed: {
 		/**
@@ -127,10 +115,9 @@ export default {
 		 * Throttle this method so that slideres don't off dozens of
 		 * events as they're being moved.
 		 */
-		update: debounce(function(value) {
+		updateCurrentValue: debounce(function(value) {
 			this.$emit('update-filter', this.param, value);
 		}, 250),
-
 		/**
 		 * @copydoc Filter::remove()
 		 */
@@ -151,6 +138,13 @@ export default {
 			setTimeout(function() {
 				slider.refresh();
 			}, 300);
+		},
+		currentValue(newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			} else {
+				this.updateCurrentValue(newVal);
+			}
 		}
 	}
 };
