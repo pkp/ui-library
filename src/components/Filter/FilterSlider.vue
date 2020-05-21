@@ -149,11 +149,11 @@ export default {
 				this.updateCurrentValue(newVal);
 				this.min ? this.min : 0;
 				this.max ? this.max : 100;
-				const newValue = Number(
+				const currentPosition = Number(
 					((newVal - this.min) * 100) / (this.max - this.min)
 				);
-				const newPosition = 10 - newValue * 0.2;
-				this.$refs.output.style.left = `calc(${newValue}% - (${14 -
+				const newPosition = 10 - currentPosition * 0.2;
+				this.$refs.output.style.left = `calc(${currentPosition}% - (${14 -
 					newPosition}px))`;
 				this.$refs.output.style.top = '50%';
 			}
