@@ -59,7 +59,7 @@ export default {
 							ticks: {
 								fontColor: 'rgba(255,255,255,0.85)',
 								fontFamily:
-									'"Noto Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen-Sans", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif',
+									'"Noto Sans", "Noto Kufi Arabic", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen-Sans", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif',
 								fontStyle: 700,
 								padding: 8,
 								maxTicksLimit: 5,
