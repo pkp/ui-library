@@ -47,7 +47,7 @@
 				@click="assignId"
 			/>
 			<pkp-button
-				v-else-if="pattern"
+				v-else-if="pattern && currentValue"
 				class="pkpFormField--pubid__button"
 				:label="i18n.clearId"
 				:isWarnable="true"
