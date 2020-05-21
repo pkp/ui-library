@@ -487,6 +487,8 @@ export default {
 					self.workingPublication = r;
 					self.updatePublicationInList(r);
 					self.setPublicationForms(r);
+					self.loadContributorsGrid(r);
+					self.loadRepresentationsGrid(r);
 					self.isLoadingVersion = false;
 					self.setFocusIn(self.$refs.publication);
 					self.refreshSubmission();
