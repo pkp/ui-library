@@ -147,13 +147,14 @@ export default {
 				return;
 			} else {
 				this.updateCurrentValue(newVal);
-				const val = this.$refs.output.value;
 				this.min ? this.min : 0;
 				this.max ? this.max : 100;
-				const position = Number(
-					((val - this.min) * 100) / (this.max - this.min)
+				const newValue = Number(
+					((newVal - this.min) * 100) / (this.max - this.min)
 				);
-				this.$refs.output.style.left = position + '%';
+				const newPosition = 10 - newValue * 0.2;
+				this.$refs.output.style.left = `calc(${newValue}% - (${14 -
+					newPosition}px))`;
 				this.$refs.output.style.top = '50%';
 			}
 		}
