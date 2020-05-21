@@ -147,14 +147,16 @@ export default {
 				return;
 			} else {
 				this.updateCurrentValue(newVal);
+
+				// move this to mounted
 				this.min ? this.min : 0;
 				this.max ? this.max : 100;
-				const currentPosition = Number(
+				const position = Number(
 					((newVal - this.min) * 100) / (this.max - this.min)
 				);
-				const newPosition = 10 - currentPosition * 0.2;
-				this.$refs.output.style.left = `calc(${currentPosition}% - (${14 -
-					newPosition}px))`;
+				const offset = 10 - position * 0.2;
+				this.$refs.output.style.left = `calc(${position}% - (${14 -
+					offset}px))`;
 				this.$refs.output.style.top = '50%';
 			}
 		}
