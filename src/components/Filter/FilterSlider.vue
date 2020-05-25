@@ -24,8 +24,9 @@
 			<label class="-screenReader" for="slider">{{ title }}</label>
 			<input
 				type="range"
-				:min="min"
 				:max="max"
+				:min="min"
+				:disabled="isDisabled"
 				id="slider"
 				v-model="currentValue"
 			/>
@@ -92,7 +93,6 @@ export default {
 			}
 			return classes;
 		},
-
 		/**
 		 * A unique ID to use as the reference for the slider
 		 *
@@ -100,6 +100,13 @@ export default {
 		 */
 		sliderRef() {
 			return 'slider' + this.param;
+		},
+		isDisabled() {
+			if (this.isFilterActive) {
+				return false;
+			} else {
+				return true;
+			}
 		}
 	},
 	methods: {
@@ -115,7 +122,7 @@ export default {
 		 * Emit an event to update active filters with the current
 		 * value.
 		 *
-		 * Throttle this method so that slideres don't off dozens of
+		 * Throttle this method so that sliders don't fire off dozens of
 		 * events as they're being moved.
 		 */
 		updateCurrentValue: debounce(function(value) {
@@ -127,6 +134,9 @@ export default {
 		remove() {
 			this.$emit('remove-filter', this.param);
 		}
+	},
+	mounted() {
+		this.currentValue;
 	},
 	watch: {
 		/**
