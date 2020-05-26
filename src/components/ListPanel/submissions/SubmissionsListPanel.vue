@@ -51,14 +51,17 @@
 					<pkp-header v-if="filterSet.heading">
 						{{ filterSet.heading }}
 					</pkp-header>
-					<pkp-filter
+					<component
 						v-for="filter in filterSet.filters"
 						:key="filter.param + filter.value"
+						:is="filter.filterType || 'pkp-filter'"
 						v-bind="filter"
 						:isFilterActive="isFilterActive(filter.param, filter.value)"
+						:isVisible="isSidebarVisible"
 						:i18n="i18n"
 						@add-filter="addSubmissionFilter"
 						@remove-filter="removeSubmissionFilter"
+						@update-filter="setFilter"
 					/>
 				</div>
 			</div>
@@ -110,6 +113,7 @@
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
 import PkpButton from '@/components/Button/Button.vue';
+import PkpFilterSlider from '@/components/Filter/FilterSlider.vue';
 import Search from '@/components/Search/Search.vue';
 import SubmissionsListItem from '@/components/ListPanel/submissions/SubmissionsListItem.vue';
 import SubmissionsListListeners from '@/mixins/ListPanel/submissions/listeners.js';
@@ -120,6 +124,7 @@ export default {
 	components: {
 		Pagination,
 		PkpButton,
+		PkpFilterSlider,
 		Search,
 		SubmissionsListItem
 	},
@@ -193,6 +198,25 @@ export default {
 					this.addFilter(param, value);
 				}
 			}
+		},
+
+		/**
+		 * Check if a filter is currently active
+		 *
+		 * @param {String} param
+		 * @param {mixed} value
+		 * @return {Boolean}
+		 */
+		isFilterActive: function(param, value) {
+			if (!Object.keys(this.activeFilters).includes(param)) {
+				return false;
+			} else if (param === 'daysInactive') {
+				return true;
+			}
+			if (Array.isArray(this.activeFilters[param])) {
+				return this.activeFilters[param].includes(value);
+			}
+			return this.activeFilters[param] === value;
 		},
 
 		/**

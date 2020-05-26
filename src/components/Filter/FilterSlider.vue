@@ -131,7 +131,7 @@ export default {
 		 * filters with the current value
 		 */
 		enable() {
-			this.$emit('add-filter', this.param, this.value);
+			this.$emit('add-filter', this.param, parseInt(this.currentValue, 0));
 		},
 
 		/**
@@ -142,7 +142,7 @@ export default {
 		 * events as they're being moved.
 		 */
 		updateCurrentValue: debounce(function(value) {
-			this.$emit('update-filter', this.param, value);
+			this.$emit('update-filter', this.param, parseInt(value, 0));
 		}, 250),
 
 		/**
@@ -171,20 +171,9 @@ export default {
 <style lang="less">
 @import '../../styles/_import';
 
-/**
- * Fade the slider in on a slight delay. This gives the slider component time
- * to refresh it's width after the filters have slid into view.
- */
 .pkpFilter--slider {
 	padding-left: 1rem;
 	padding-right: 1rem;
-	opacity: 0;
-	transition: opacity 0.4s ease-in-out 0.4s, left 0s ease-in-out 0.4s,
-		width 0s ease-in-out 0.4s;
-
-	&.-isVisible {
-		opacity: 1;
-	}
 }
 
 .pkpFilter--slider.pkpFilter--disabled {
@@ -201,7 +190,7 @@ export default {
 
 .pkpFilter--slider .pkpFilter__add,
 .pkpFilter--slider .pkpFilter__remove {
-	top: 0.7rem;
+	top: 0.6rem;
 }
 
 .pkpFilter__input--slider {
@@ -213,6 +202,7 @@ export default {
 
 .pkpFilter__inputTitle {
 	margin-right: @base;
+	color: @primary;
 	cursor: pointer;
 	line-height: 1.5em;
 }

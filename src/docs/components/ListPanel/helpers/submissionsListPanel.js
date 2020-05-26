@@ -16,11 +16,6 @@ export default {
 					title: 'Incomplete',
 					param: 'isIncomplete',
 					value: true
-				},
-				{
-					title: 'Inactive for 30 days',
-					param: 'daysinactive',
-					value: 30
 				}
 			]
 		},
@@ -46,6 +41,19 @@ export default {
 					title: 'Production',
 					param: 'stageIds',
 					value: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION
+				}
+			]
+		},
+		{
+			heading: 'Activity',
+			filters: [
+				{
+					title: 'Days since last activity',
+					param: 'daysInactive',
+					value: 30,
+					min: 1,
+					max: 180,
+					filterType: 'pkp-filter-slider'
 				}
 			]
 		}
