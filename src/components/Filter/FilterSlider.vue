@@ -26,11 +26,16 @@
 				type="range"
 				:max="max"
 				:min="min"
-				:disabled="isDisabled"
+				:disabled="!isFilterActive"
 				id="slider"
 				v-model="currentValue"
 			/>
-			<output ref="output" v-if="!isDisabled">
+			<output
+				ref="output"
+				v-if="isFilterActive"
+				class="pkpFilter__value"
+				:style="valueStyles"
+			>
 				{{ currentValue }}
 			</output>
 		</div>
@@ -101,12 +106,23 @@ export default {
 		sliderRef() {
 			return 'slider' + this.param;
 		},
-		isDisabled() {
+		valueStyles() {
 			if (this.isFilterActive) {
-				return false;
-			} else {
-				return true;
+				const position = Number(
+					((this.currentValue - this.min) * 100) / (this.max - this.min)
+				);
+				// The numbers here account for the way that the native input
+				// range filter aligns the handle on the left and right. The
+				// exact position of the center of the handle is not the same
+				// as position. The offset here accounts for the shift in
+				// position that must occur when the handle is on the left
+				// or right of the range.
+				const offset = 8 + (position / 100) * -17;
+				return {
+					left: `calc(${position}% + ${offset}px)`
+				};
 			}
+			return {};
 		}
 	},
 	methods: {
@@ -128,19 +144,7 @@ export default {
 		updateCurrentValue: debounce(function(value) {
 			this.$emit('update-filter', this.param, value);
 		}, 250),
-		showValueBubble(newVal) {
-			if (!this.isDisabled) {
-				this.min ? this.min : 0;
-				this.max ? this.max : 100;
-				const position = Number(
-					((newVal - this.min) * 100) / (this.max - this.min)
-				);
-				const offset = 10 - position * 0.2;
-				this.$refs.output.style.left = `calc(${position}% - (${14 -
-					offset}px))`;
-				this.$refs.output.style.top = '50%';
-			}
-		},
+
 		/**
 		 * @copydoc Filter::remove()
 		 */
@@ -149,28 +153,14 @@ export default {
 		}
 	},
 	mounted() {
-		this.showValueBubble(this.currentValue);
+		// this.showValueBubble(this.currentValue);
 	},
 	watch: {
-		/**
-		 * Refresh any sliders whenever the filter is opened or closed. This
-		 * updates the width of the component when the filter has fully expanded.
-		 */
-		isVisible: function(newVal, oldVal) {
-			if (!newVal || newVal === oldVal) {
-				return;
-			}
-			let slider = this.$refs[this.sliderRef];
-			setTimeout(function() {
-				slider.refresh();
-			}, 300);
-		},
 		currentValue: function(newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			} else {
 				this.updateCurrentValue(newVal);
-				this.showValueBubble(newVal);
 				return newVal;
 			}
 		}
@@ -254,31 +244,30 @@ export default {
 	}
 }
 
-output {
+.pkpFilter__value {
 	position: absolute;
+	top: 2rem;
 	background-color: #3498db;
-	width: 40px;
-	height: 30px;
 	text-align: center;
+	padding: 0 0.5em;
+	line-height: @line-sml;
 	color: white;
-	border-radius: 10px;
+	border-radius: @radius;
 	display: inline-block;
-	top: 175%;
-	left: 0;
-	margin-left: -1%;
-}
-output:after {
-	content: '';
-	position: absolute;
-	width: 0;
-	height: 0;
-	border-bottom: 10px solid #3498db;
-	border-left: 5px solid transparent;
-	border-right: 5px solid transparent;
-	bottom: 100%;
-	left: 50%;
-	margin-left: -5px;
-	margin-top: -1px;
+	transform: translateX(-50%);
+
+	&:after {
+		content: '';
+		position: absolute;
+		width: 0;
+		height: 0;
+		border-bottom: @half solid #3498db;
+		border-left: @half solid transparent;
+		border-right: @half solid transparent;
+		bottom: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+	}
 }
 
 input[type='range'] {
@@ -298,8 +287,8 @@ input[type='range']:focus {
 
 input[type='range']::-webkit-slider-thumb {
 	-webkit-appearance: none;
-	height: 15px;
-	width: 15px;
+	height: @base;
+	width: @base;
 	border-radius: 50%;
 	background-color: #fff;
 	box-shadow: 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0.32);
@@ -307,8 +296,8 @@ input[type='range']::-webkit-slider-thumb {
 
 /* All the same stuff for Firefox */
 input[type='range']::-moz-range-thumb {
-	height: 15px;
-	width: 15px;
+	height: @base;
+	width: @base;
 	border-radius: 50%;
 	background-color: #fff;
 	box-shadow: 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0.32);
@@ -316,8 +305,8 @@ input[type='range']::-moz-range-thumb {
 
 /* All the same stuff for IE */
 input[type='range']::-ms-thumb {
-	height: 15px;
-	width: 15px;
+	height: @base;
+	width: @base;
 	border-radius: 50%;
 	background-color: #fff;
 	box-shadow: 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0.32);
