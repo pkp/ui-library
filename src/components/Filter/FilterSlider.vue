@@ -36,6 +36,7 @@
 				class="pkpFilter__value"
 				:style="valueStyles"
 			>
+				<span class="pkpFilter__valueCaret" aria-hidden="true" />
 				{{ currentValue }}
 			</output>
 		</div>
@@ -176,15 +177,9 @@ export default {
 	padding-right: 1rem;
 }
 
-.pkpFilter--slider.pkpFilter--disabled {
-	.pkpFilter__input {
+.pkpFilter--disabled {
+	.pkpFilter__input--slider {
 		opacity: 0.5;
-	}
-
-	.vue-slider-tooltip,
-	.vue-slider-tooltip--stars,
-	.vue-slider-process {
-		display: none !important;
 	}
 }
 
@@ -194,163 +189,128 @@ export default {
 }
 
 .pkpFilter__input--slider {
-	// margin-left: -8px;
-	// margin-right: -8px;
-	padding-bottom: 3em; // account for title space
 	position: relative;
+	padding-bottom: 1.5rem; // account for value bubble below input
 }
 
 .pkpFilter__inputTitle {
 	margin-right: @base;
 	color: @primary;
-	cursor: pointer;
 	line-height: 1.5em;
-}
-
-.vue-slider-component {
-	.vue-slider-tooltip {
-		border-color: @primary;
-		background: @primary;
-		font-size: @font-tiny;
-		line-height: 1.5em;
-	}
-
-	.vue-slider-tooltip-wrap.vue-slider-tooltip-bottom
-		.vue-slider-tooltip::before {
-		border-bottom-color: @primary;
-	}
-
-	.vue-slider-process {
-		background: @primary;
-	}
-}
-
-.vue-slider-component--stars .vue-slider-tooltip-wrap {
-	width: 70px;
-	text-align: center;
-
-	.fa {
-		color: @star-on;
-	}
+	cursor: pointer;
 }
 
 .pkpFilter__value {
 	position: absolute;
-	top: 2rem;
-	background-color: #3498db;
-	text-align: center;
-	padding: 0 0.5em;
-	line-height: @line-sml;
-	color: white;
+	top: 1.75rem;
+	padding: 0.25em;
+	background-color: @bg-anchor;
 	border-radius: @radius;
-	display: inline-block;
+	text-align: center;
+	line-height: 1;
+	color: @lift;
 	transform: translateX(-50%);
+}
 
-	&:after {
-		content: '';
-		position: absolute;
-		width: 0;
-		height: 0;
-		border-bottom: @half solid #3498db;
-		border-left: @half solid transparent;
-		border-right: @half solid transparent;
-		bottom: 100%;
-		left: 50%;
-		transform: translateX(-50%);
+.pkpFilter__valueCaret {
+	content: '';
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-bottom: 0.25rem solid @bg-anchor;
+	border-left: 0.25rem solid transparent;
+	border-right: 0.25rem solid transparent;
+	bottom: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+// Cross-browser range input styles
+.pkpFilter__input--slider {
+	input[type='range'] {
+		-webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+		width: 100%; /* Specific width is required for Firefox. */
+		background: transparent; /* Otherwise white in Chrome */
+		margin-left: 0;
 	}
-}
 
-input[type='range'] {
-	-webkit-appearance: none; /* Hides the slider so that custom slider can be made */
-	width: 100%; /* Specific width is required for Firefox. */
-	background: transparent; /* Otherwise white in Chrome */
-	margin-left: 0;
-}
+	input[type='range']::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		height: @base;
+		width: @base;
+		border-radius: 50%;
+		background-color: #fff;
+		box-shadow: 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0.25);
+	}
 
-input[type='range']::-webkit-slider-thumb {
-	-webkit-appearance: none;
-}
+	// Firefox
+	input[type='range']::-moz-range-thumb {
+		height: @base;
+		width: @base;
+		border-radius: 50%;
+		background-color: #fff;
+		box-shadow: 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0.25);
+	}
 
-input[type='range']:focus {
-	outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
-}
+	// IE
+	input[type='range']::-ms-thumb {
+		height: @base;
+		width: @base;
+		border-radius: 50%;
+		background-color: #fff;
+		box-shadow: 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0.25);
+	}
 
-input[type='range']::-webkit-slider-thumb {
-	-webkit-appearance: none;
-	height: @base;
-	width: @base;
-	border-radius: 50%;
-	background-color: #fff;
-	box-shadow: 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0.32);
-}
+	input[type='range']::-ms-track {
+		width: 100%;
+		cursor: pointer;
 
-/* All the same stuff for Firefox */
-input[type='range']::-moz-range-thumb {
-	height: @base;
-	width: @base;
-	border-radius: 50%;
-	background-color: #fff;
-	box-shadow: 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0.32);
-}
+		/* Hides the slider so custom styles can be added */
+		background: transparent;
+		border-color: transparent;
+		color: transparent;
+	}
 
-/* All the same stuff for IE */
-input[type='range']::-ms-thumb {
-	height: @base;
-	width: @base;
-	border-radius: 50%;
-	background-color: #fff;
-	box-shadow: 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0.32);
-}
+	input[type='range']::-webkit-slider-runnable-track {
+		width: 100%;
+		height: 5px;
+		cursor: pointer;
+		border-radius: @base;
+		background-color: @bg-dark;
+	}
 
-input[type='range']::-ms-track {
-	width: 100%;
-	cursor: pointer;
+	input[type='range']:focus::-webkit-slider-runnable-track {
+		background: #367ebd;
+	}
 
-	/* Hides the slider so custom styles can be added */
-	background: transparent;
-	border-color: transparent;
-	color: transparent;
-}
+	input[type='range']::-moz-range-track {
+		width: 100%;
+		height: 5px;
+		cursor: pointer;
+		border-radius: @base;
+		background-color: @bg-dark;
+	}
 
-input[type='range']::-webkit-slider-runnable-track {
-	width: 100%;
-	height: 7px;
-	cursor: pointer;
-	border-radius: 15px;
-	background-color: #ccc;
-}
-
-input[type='range']:focus::-webkit-slider-runnable-track {
-	background: #367ebd;
-}
-
-input[type='range']::-moz-range-track {
-	width: 100%;
-	height: 7px;
-	cursor: pointer;
-	border-radius: 15px;
-	background-color: #ccc;
-}
-
-input[type='range']::-ms-track {
-	width: 100%;
-	height: 7px;
-	cursor: pointer;
-	border-radius: 15px;
-	background-color: #ccc;
-}
-input[type='range']::-ms-fill-lower {
-	background: #0064b4;
-	border-radius: 15px;
-}
-input[type='range']:focus::-ms-fill-lower {
-	background: #0064b4;
-}
-input[type='range']::-ms-fill-upper {
-	background: #0064b4;
-	border-radius: 15px;
-}
-input[type='range']:focus::-ms-fill-upper {
-	background: #0064b4;
+	input[type='range']::-ms-track {
+		width: 100%;
+		height: 5px;
+		cursor: pointer;
+		border-radius: @base;
+		background-color: @bg-dark;
+	}
+	input[type='range']::-ms-fill-lower {
+		background: @bg-dark;
+		border-radius: @base;
+	}
+	input[type='range']:focus::-ms-fill-lower {
+		background: @bg-dark;
+	}
+	input[type='range']::-ms-fill-upper {
+		background: @bg-dark;
+		border-radius: @base;
+	}
+	input[type='range']:focus::-ms-fill-upper {
+		background: @bg-dark;
+	}
 }
 </style>
