@@ -30,7 +30,7 @@
 				id="slider"
 				v-model="currentValue"
 			/>
-			<output ref="output">
+			<output ref="output" v-if="!isDisabled">
 				{{ currentValue }}
 			</output>
 		</div>
@@ -128,6 +128,19 @@ export default {
 		updateCurrentValue: debounce(function(value) {
 			this.$emit('update-filter', this.param, value);
 		}, 250),
+		showValueBubble(newVal) {
+			if (!this.isDisabled) {
+				this.min ? this.min : 0;
+				this.max ? this.max : 100;
+				const position = Number(
+					((newVal - this.min) * 100) / (this.max - this.min)
+				);
+				const offset = 10 - position * 0.2;
+				this.$refs.output.style.left = `calc(${position}% - (${14 -
+					offset}px))`;
+				this.$refs.output.style.top = '50%';
+			}
+		},
 		/**
 		 * @copydoc Filter::remove()
 		 */
@@ -136,7 +149,7 @@ export default {
 		}
 	},
 	mounted() {
-		this.currentValue;
+		this.showValueBubble(this.currentValue);
 	},
 	watch: {
 		/**
@@ -152,22 +165,13 @@ export default {
 				slider.refresh();
 			}, 300);
 		},
-		currentValue(newVal, oldVal) {
+		currentValue: function(newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			} else {
 				this.updateCurrentValue(newVal);
-
-				// move this to mounted
-				this.min ? this.min : 0;
-				this.max ? this.max : 100;
-				const position = Number(
-					((newVal - this.min) * 100) / (this.max - this.min)
-				);
-				const offset = 10 - position * 0.2;
-				this.$refs.output.style.left = `calc(${position}% - (${14 -
-					offset}px))`;
-				this.$refs.output.style.top = '50%';
+				this.showValueBubble(newVal);
+				return newVal;
 			}
 		}
 	}
