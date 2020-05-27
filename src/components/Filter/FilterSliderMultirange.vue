@@ -135,7 +135,7 @@ export default {
 .pkpFilter__value--multirange {
 	position: relative;
 	left: 50%;
-	top: -0.75rem;
+	top: -0.5rem;
 	display: inline-block;
 }
 
