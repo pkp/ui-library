@@ -28,16 +28,30 @@
 				:min="min"
 				:disabled="!isFilterActive"
 				id="slider"
-				v-model="currentValue"
+				v-model.number="currentValue"
 			/>
 			<output
 				ref="output"
 				v-if="isFilterActive"
+				for="slider"
 				class="pkpFilter__value"
 				:style="valueStyles"
 			>
 				<span class="pkpFilter__valueCaret" aria-hidden="true" />
-				{{ currentValue }}
+				<span
+					v-if="useStars"
+					aria-hidden="true"
+					class="pkpFilter__value--stars"
+				>
+					<icon
+						v-for="i in 5"
+						:key="i"
+						:icon="i <= currentValue ? 'star' : 'star-o'"
+					/>
+				</span>
+				<template v-else>
+					{{ currentValueLabel }}
+				</template>
 			</output>
 		</div>
 	</div>
@@ -45,21 +59,15 @@
 
 <script>
 import Filter from './Filter.vue';
+import Icon from '@/components/Icon/Icon.vue';
 import debounce from 'debounce';
 
 export default {
 	extends: Filter,
+	components: {
+		Icon
+	},
 	props: {
-		formatter: {
-			type: String,
-			default() {
-				return '';
-			}
-		},
-		isVisible: {
-			type: Boolean,
-			required: true
-		},
 		max: {
 			type: Number,
 			required: true
@@ -68,16 +76,16 @@ export default {
 			type: Number,
 			required: true
 		},
-		starLabel: {
-			type: String,
-			default() {
-				return '';
-			}
-		},
 		useStars: {
 			type: Boolean,
 			default() {
 				return false;
+			}
+		},
+		valueLabel: {
+			type: String,
+			default() {
+				return '{$value}';
 			}
 		}
 	},
@@ -88,25 +96,20 @@ export default {
 	},
 	computed: {
 		/**
-		 * Classes to apply to the root element
-		 *
-		 * @return {Array}
-		 */
-		classes() {
-			let classes = Filter.computed.classes.apply(this);
-			if (this.isVisible) {
-				classes.push('-isVisible');
-			}
-			return classes;
-		},
-		/**
-		 * A unique ID to use as the reference for the slider
+		 * A label to show the current value
 		 *
 		 * @return {String}
 		 */
-		sliderRef() {
-			return 'slider' + this.param;
+		currentValueLabel() {
+			return this.valueLabel.replace('{$value}', this.currentValue);
 		},
+
+		/**
+		 * Position the current value "bubble" directly
+		 * below the range input's handle
+		 *
+		 * @return {Object}
+		 */
 		valueStyles() {
 			if (this.isFilterActive) {
 				const position = Number(
@@ -132,18 +135,18 @@ export default {
 		 * filters with the current value
 		 */
 		enable() {
-			this.$emit('add-filter', this.param, parseInt(this.currentValue, 0));
+			this.$emit('add-filter', this.param, this.currentValue);
 		},
 
 		/**
 		 * Emit an event to update active filters with the current
 		 * value.
 		 *
-		 * Throttle this method so that sliders don't fire off dozens of
+		 * Debounce this method so that sliders don't fire off dozens of
 		 * events as they're being moved.
 		 */
 		updateCurrentValue: debounce(function(value) {
-			this.$emit('update-filter', this.param, parseInt(value, 0));
+			this.$emit('update-filter', this.param, value);
 		}, 250),
 
 		/**
@@ -153,17 +156,13 @@ export default {
 			this.$emit('remove-filter', this.param);
 		}
 	},
-	mounted() {
-		// this.showValueBubble(this.currentValue);
-	},
 	watch: {
+		/**
+		 * Fire a debounced method to update the active filter
+		 * value
+		 */
 		currentValue: function(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			} else {
-				this.updateCurrentValue(newVal);
-				return newVal;
-			}
+			this.updateCurrentValue(newVal);
 		}
 	}
 };
@@ -210,6 +209,8 @@ export default {
 	line-height: 1;
 	color: @lift;
 	transform: translateX(-50%);
+	white-space: nowrap;
+	z-index: 3;
 }
 
 .pkpFilter__valueCaret {
@@ -223,6 +224,10 @@ export default {
 	bottom: 100%;
 	left: 50%;
 	transform: translateX(-50%);
+}
+
+.pkpFilter__value--stars {
+	color: @star-on;
 }
 
 // Cross-browser range input styles
