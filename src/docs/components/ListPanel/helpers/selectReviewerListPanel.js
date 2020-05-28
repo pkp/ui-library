@@ -101,7 +101,7 @@ let filters = [
 				min: 1,
 				max: 5,
 				useStars: true,
-				starLabel: 'Reviewer rating: {$rating}'
+				valueLabel: '{$value}/5'
 			},
 			{
 				param: 'reviewsCompleted',
@@ -109,28 +109,37 @@ let filters = [
 				value: 10,
 				min: 0,
 				max: 20,
-				formatter: '{value} or more'
+				valueLabel: '{$value} or more'
 			},
 			{
 				param: 'daysSinceLastAssignment',
 				title: 'Days since last review assigned',
 				value: [0, 365],
 				min: 0,
-				max: 365
+				max: 365,
+				filterType: 'filter-slider-multirange',
+				valueLabel: '{$min}-{$max}',
+				moreThanLabel: 'More than',
+				lessThanLabel: 'Less than'
 			},
 			{
 				param: 'reviewsActive',
 				title: 'Active reviews currently assigned',
 				value: [0, 20],
 				min: 0,
-				max: 20
+				max: 20,
+				filterType: 'filter-slider-multirange',
+				valueLabel: '{$min}-{$max}',
+				moreThanLabel: 'More than',
+				lessThanLabel: 'Less than'
 			},
 			{
 				param: 'averageCompletion',
 				title: 'Average days to complete review',
 				value: 75,
 				min: 0,
-				max: 75
+				max: 75,
+				valueLabel: '{$value} or less'
 			}
 		]
 	}

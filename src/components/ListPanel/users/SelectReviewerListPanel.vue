@@ -49,12 +49,12 @@
 					<pkp-header v-if="filterSet.heading">
 						{{ filterSet.heading }}
 					</pkp-header>
-					<filter-slider
+					<component
 						v-for="(filter, index) in filterSet.filters"
 						:key="index"
+						:is="filter.filterType || 'filter-slider'"
 						v-bind="filter"
 						:isFilterActive="Object.keys(activeFilters).includes(filter.param)"
-						:isVisible="isSidebarVisible"
 						:i18n="i18n"
 						@add-filter="setFilter"
 						@update-filter="setFilter"
@@ -109,6 +109,7 @@
 
 <script>
 import FilterSlider from '@/components/Filter/FilterSlider.vue';
+import FilterSliderMultirange from '@/components/Filter/FilterSliderMultirange.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import Notification from '@/components/Notification/Notification.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
@@ -120,6 +121,7 @@ export default {
 	extends: ListPanel,
 	components: {
 		FilterSlider,
+		FilterSliderMultirange,
 		Notification,
 		Pagination,
 		PkpButton,

@@ -21,52 +21,53 @@
 			{{ title }}
 		</div>
 		<div class="pkpFilter__input pkpFilter__input--slider">
-			<vue-slider
-				:ref="sliderRef"
-				:value="value"
-				:min="min"
+			<label class="-screenReader" for="slider">{{ title }}</label>
+			<input
+				type="range"
 				:max="max"
-				:formatter="formatter"
+				:min="min"
 				:disabled="!isFilterActive"
-				:speed="0.3"
-				tooltip-dir="bottom"
-				:class="{'vue-slider-component--stars': useStars}"
-				@callback="val => update(val)"
+				id="slider"
+				v-model.number="currentValue"
+			/>
+			<output
+				ref="output"
+				v-if="isFilterActive"
+				for="slider"
+				class="pkpFilter__value"
+				:style="valueStyles"
 			>
-				<template v-if="useStars" slot="tooltip" slot-scope="{value}">
-					<span class="vue-slider-tooltip--stars">
-						<icon v-for="index in value" :key="index" icon="star" />
-						<span class="-screenReader">
-							{{ starLabel.replace('{$rating}', value) }}
-						</span>
-					</span>
+				<span class="pkpFilter__valueCaret" aria-hidden="true" />
+				<span
+					v-if="useStars"
+					aria-hidden="true"
+					class="pkpFilter__value--stars"
+				>
+					<icon
+						v-for="i in 5"
+						:key="i"
+						:icon="i <= currentValue ? 'star' : 'star-o'"
+					/>
+				</span>
+				<template v-else>
+					{{ currentValueLabel }}
 				</template>
-			</vue-slider>
+			</output>
 		</div>
 	</div>
 </template>
 
 <script>
 import Filter from './Filter.vue';
-import VueSlider from 'vue-slider-component';
+import Icon from '@/components/Icon/Icon.vue';
 import debounce from 'debounce';
 
 export default {
 	extends: Filter,
 	components: {
-		VueSlider
+		Icon
 	},
 	props: {
-		formatter: {
-			type: String,
-			default() {
-				return '';
-			}
-		},
-		isVisible: {
-			type: Boolean,
-			required: true
-		},
 		max: {
 			type: Number,
 			required: true
@@ -75,40 +76,57 @@ export default {
 			type: Number,
 			required: true
 		},
-		starLabel: {
-			type: String,
-			default() {
-				return '';
-			}
-		},
 		useStars: {
 			type: Boolean,
 			default() {
 				return false;
 			}
+		},
+		valueLabel: {
+			type: String,
+			default() {
+				return '{$value}';
+			}
 		}
+	},
+	data() {
+		return {
+			currentValue: this.value
+		};
 	},
 	computed: {
 		/**
-		 * Classes to apply to the root element
-		 *
-		 * @return {Array}
-		 */
-		classes() {
-			let classes = Filter.computed.classes.apply(this);
-			if (this.isVisible) {
-				classes.push('-isVisible');
-			}
-			return classes;
-		},
-
-		/**
-		 * A unique ID to use as the reference for the slider
+		 * A label to show the current value
 		 *
 		 * @return {String}
 		 */
-		sliderRef() {
-			return 'slider' + this.param;
+		currentValueLabel() {
+			return this.valueLabel.replace('{$value}', this.currentValue);
+		},
+
+		/**
+		 * Position the current value "bubble" directly
+		 * below the range input's handle
+		 *
+		 * @return {Object}
+		 */
+		valueStyles() {
+			if (this.isFilterActive) {
+				const position = Number(
+					((this.currentValue - this.min) * 100) / (this.max - this.min)
+				);
+				// The numbers here account for the way that the native input
+				// range filter aligns the handle on the left and right. The
+				// exact position of the center of the handle is not the same
+				// as position. The offset here accounts for the shift in
+				// position that must occur when the handle is on the left
+				// or right of the range.
+				const offset = 8 + (position / 100) * -17;
+				return {
+					left: `calc(${position}% + ${offset}px)`
+				};
+			}
+			return {};
 		}
 	},
 	methods: {
@@ -117,17 +135,17 @@ export default {
 		 * filters with the current value
 		 */
 		enable() {
-			this.$emit('add-filter', this.param, this.value);
+			this.$emit('add-filter', this.param, this.currentValue);
 		},
 
 		/**
 		 * Emit an event to update active filters with the current
 		 * value.
 		 *
-		 * Throttle this method so that slideres don't off dozens of
+		 * Debounce this method so that sliders don't fire off dozens of
 		 * events as they're being moved.
 		 */
-		update: debounce(function(value) {
+		updateCurrentValue: debounce(function(value) {
 			this.$emit('update-filter', this.param, value);
 		}, 250),
 
@@ -140,17 +158,11 @@ export default {
 	},
 	watch: {
 		/**
-		 * Refresh any sliders whenever the filter is opened or closed. This
-		 * updates the width of the component when the filter has fully expanded.
+		 * Fire a debounced method to update the active filter
+		 * value
 		 */
-		isVisible: function(newVal, oldVal) {
-			if (!newVal || newVal === oldVal) {
-				return;
-			}
-			let slider = this.$refs[this.sliderRef];
-			setTimeout(function() {
-				slider.refresh();
-			}, 300);
+		currentValue: function(newVal, oldVal) {
+			this.updateCurrentValue(newVal);
 		}
 	}
 };
@@ -159,75 +171,151 @@ export default {
 <style lang="less">
 @import '../../styles/_import';
 
-/**
- * Fade the slider in on a slight delay. This gives the slider component time
- * to refresh it's width after the filters have slid into view.
- */
 .pkpFilter--slider {
 	padding-left: 1rem;
 	padding-right: 1rem;
-	opacity: 0;
-	transition: opacity 0.4s ease-in-out 0.4s, left 0s ease-in-out 0.4s,
-		width 0s ease-in-out 0.4s;
-
-	&.-isVisible {
-		opacity: 1;
-	}
 }
 
-.pkpFilter--slider.pkpFilter--disabled {
-	.pkpFilter__input {
+.pkpFilter--disabled {
+	.pkpFilter__input--slider {
 		opacity: 0.5;
-	}
-
-	.vue-slider-tooltip,
-	.vue-slider-tooltip--stars,
-	.vue-slider-process {
-		display: none !important;
 	}
 }
 
 .pkpFilter--slider .pkpFilter__add,
 .pkpFilter--slider .pkpFilter__remove {
-	top: 0.7rem;
+	top: 0.6rem;
 }
 
 .pkpFilter__input--slider {
-	margin-left: -8px;
-	margin-right: -8px;
-	padding-bottom: 3em; // account for title space
+	position: relative;
+	padding-bottom: 1.5rem; // account for value bubble below input
 }
 
 .pkpFilter__inputTitle {
 	margin-right: @base;
-	cursor: pointer;
+	color: @primary;
 	line-height: 1.5em;
+	cursor: pointer;
 }
 
-.vue-slider-component {
-	.vue-slider-tooltip {
-		border-color: @primary;
-		background: @primary;
-		font-size: @font-tiny;
-		line-height: 1.5em;
-	}
-
-	.vue-slider-tooltip-wrap.vue-slider-tooltip-bottom
-		.vue-slider-tooltip::before {
-		border-bottom-color: @primary;
-	}
-
-	.vue-slider-process {
-		background: @primary;
-	}
-}
-
-.vue-slider-component--stars .vue-slider-tooltip-wrap {
-	width: 70px;
+.pkpFilter__value {
+	position: absolute;
+	top: 1.75rem;
+	padding: 0.25em;
+	background-color: @bg-anchor;
+	border-radius: @radius;
 	text-align: center;
+	line-height: 1;
+	color: @lift;
+	transform: translateX(-50%);
+	white-space: nowrap;
+	z-index: 3;
+}
 
-	.fa {
-		color: @star-on;
+.pkpFilter__valueCaret {
+	content: '';
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-bottom: 0.25rem solid @bg-anchor;
+	border-left: 0.25rem solid transparent;
+	border-right: 0.25rem solid transparent;
+	bottom: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.pkpFilter__value--stars {
+	color: @star-on;
+}
+
+// Cross-browser range input styles
+.pkpFilter__input--slider {
+	input[type='range'] {
+		-webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+		width: 100%; /* Specific width is required for Firefox. */
+		background: transparent; /* Otherwise white in Chrome */
+		margin-left: 0;
+	}
+
+	input[type='range']::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		height: @base;
+		width: @base;
+		border-radius: 50%;
+		background-color: #fff;
+		box-shadow: 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0.25);
+	}
+
+	// Firefox
+	input[type='range']::-moz-range-thumb {
+		height: @base;
+		width: @base;
+		border-radius: 50%;
+		background-color: #fff;
+		box-shadow: 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0.25);
+	}
+
+	// IE
+	input[type='range']::-ms-thumb {
+		height: @base;
+		width: @base;
+		border-radius: 50%;
+		background-color: #fff;
+		box-shadow: 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0.25);
+	}
+
+	input[type='range']::-ms-track {
+		width: 100%;
+		cursor: pointer;
+
+		/* Hides the slider so custom styles can be added */
+		background: transparent;
+		border-color: transparent;
+		color: transparent;
+	}
+
+	input[type='range']::-webkit-slider-runnable-track {
+		width: 100%;
+		height: 5px;
+		cursor: pointer;
+		border-radius: @base;
+		background-color: @bg-dark;
+	}
+
+	input[type='range']:focus::-webkit-slider-runnable-track {
+		background: #367ebd;
+	}
+
+	input[type='range']::-moz-range-track {
+		width: 100%;
+		height: 5px;
+		cursor: pointer;
+		border-radius: @base;
+		background-color: @bg-dark;
+	}
+
+	input[type='range']::-ms-track {
+		width: 100%;
+		height: 5px;
+		cursor: pointer;
+		border-radius: @base;
+		background-color: @bg-dark;
+	}
+	input[type='range']::-ms-fill-lower {
+		background: @bg-dark;
+		border-radius: @base;
+	}
+	input[type='range']:focus::-ms-fill-lower {
+		background: @bg-dark;
+	}
+	input[type='range']::-ms-fill-upper {
+		background: @bg-dark;
+		border-radius: @base;
+	}
+	input[type='range']:focus::-ms-fill-upper {
+		background: @bg-dark;
 	}
 }
 </style>

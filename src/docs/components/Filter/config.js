@@ -48,45 +48,34 @@ export const emitDocs = [
 	}
 ];
 
-export const propsSlider = {
-	formatter: '{value} or more',
-	isVisible: true,
-	max: 25,
-	min: 1,
-	starLabel: '',
-	useStars: false
-};
-
 export const propSliderDocs = [
 	{
-		key: 'formatter',
+		key: 'lessThanLabel',
 		description:
-			'Format how the value is displayed in the tooltip. See [vue-slider-component docs](https://github.com/NightCatSama/vue-slider-component/tree/v2#props).'
-	},
-	{
-		key: 'isVisible',
-		description:
-			'Use this prop when the filter is shown or hidden, to ensure that the slider is properly resized when it comes into view.'
+			'An accessible label for the maximum range input in a multirange slider. Recommended: `Less than`.'
 	},
 	{
 		key: 'max',
-		description:
-			'The highest allowed value in the slider. See [vue-slider-component docs](https://github.com/NightCatSama/vue-slider-component/tree/v2#props).'
+		description: 'The highest allowed value in the slider.'
 	},
 	{
 		key: 'min',
-		description:
-			'The lowest allowed value in the slider. See [vue-slider-component docs](https://github.com/NightCatSama/vue-slider-component/tree/v2#props).'
+		description: 'The lowest allowed value in the slider.'
 	},
 	{
-		key: 'starLabel',
+		key: 'moreThanLabel',
 		description:
-			'A label to use when the slider tooltip shows a star rating. This should usually be something like "Reviewer rating: {rating}".'
+			'An accessible label for the minimum range input in a multirange slider. Recommended: `More than`.'
 	},
 	{
 		key: 'useStars',
 		description:
-			'Whether or not to replace the slider tooltip with a star rating.'
+			'Whether or not to replace the current value bubble with a star rating.'
+	},
+	{
+		key: 'valueLabel',
+		description:
+			'A label for the current value bubble, such as `{$value} or less`. Default: `{$value}`.'
 	}
 ];
 
@@ -94,7 +83,7 @@ export const emitSliderDocs = [
 	{
 		key: 'update-filter',
 		description:
-			'This event is only emitted by <code>FilterSlider</code> components when the value is updated.',
+			'This event is only emitted by the <code>FilterSlider</code> and <code>FilterSliderMultirange</code> components when the value is updated.',
 		value: ['stageIds', 1]
 	}
 ];
@@ -103,7 +92,6 @@ export default {
 	props,
 	propDocs,
 	emitDocs,
-	propsSlider,
 	propSliderDocs,
 	emitSliderDocs
 };
