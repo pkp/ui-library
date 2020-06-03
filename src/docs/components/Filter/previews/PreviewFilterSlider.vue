@@ -66,7 +66,7 @@ export default {
 	data() {
 		return {
 			activeFilters: {},
-			daysSinceLastReview: 30,
+			daysSinceLastReview: 30
 		};
 	},
 	methods: {

@@ -38,6 +38,7 @@ export default {
 			unpublishConfirmLabel: '',
 			unpublishLabel: '',
 			unscheduleConfirmLabel: '',
+			unscheduleLabel: '',
 			uploadFileModalLabel: '',
 			uploadFileUrl: '',
 			versionLabel: '',
@@ -325,11 +326,18 @@ export default {
 			this.openDialog({
 				modalName: 'confirmUnpublish',
 				cancelLabel: this.__('common.cancel'),
-				confirmLabel: this.unpublishLabel,
+				confirmLabel:
+					this.workingPublication.status === pkp.const.STATUS_SCHEDULED
+						? this.unscheduleLabel
+						: this.unpublishLabel,
 				message:
 					this.workingPublication.status === pkp.const.STATUS_SCHEDULED
 						? this.unscheduleConfirmLabel
 						: this.unpublishConfirmLabel,
+				title:
+					this.workingPublication.status === pkp.const.STATUS_SCHEDULED
+						? this.unscheduleLabel
+						: this.unpublishLabel,
 				callback: () => {
 					this.unpublish(this.workingPublication);
 					this.$modal.hide('confirmUnpublish');

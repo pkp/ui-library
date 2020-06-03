@@ -51,9 +51,10 @@
 					<span v-html="unscheduledNotice" />
 					<pkp-button
 						class="pkpFormField--selectIssue__unscheduleButton"
-						:label="scheduleLabel"
 						@click="emitSchedule"
-					/>
+					>
+						{{ scheduleLabel }}
+					</pkp-button>
 				</span>
 				<field-error
 					v-if="errors && errors.length"
