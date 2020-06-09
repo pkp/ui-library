@@ -17,7 +17,8 @@ export default {
 		 */
 		setRelationForm(publication) {
 			let form = {...this.components[pkp.const.FORM_ID_RELATION]};
-			form.action = this.submissionApiUrl + '/publications/' + publication.id + '/relate';
+			form.action =
+				this.submissionApiUrl + '/publications/' + publication.id + '/relate';
 			form.fields = form.fields.map(field => {
 				if (Object.keys(publication).includes(field.name)) {
 					field.value = publication[field.name];
@@ -26,7 +27,7 @@ export default {
 			});
 			this.components[pkp.const.FORM_ID_RELATION] = {};
 			this.components[pkp.const.FORM_ID_RELATION] = form;
-		},
+		}
 	},
 	watch: {
 		workingPublication(newVal, oldVal) {
@@ -57,14 +58,14 @@ export default {
 
 <style lang="less">
 @import '../../styles/_import';
-.pkpWorkflow__relateForm .pkpFormGroup{
+.pkpWorkflow__relateForm .pkpFormGroup {
 	padding: 0.5rem;
 }
-.pkpWorkflow__relation .pkpDropdown__content{
+.pkpWorkflow__relation .pkpDropdown__content {
 	min-width: 25em;
 	max-width: 25em;
 }
-.pkpWorkflow__relateForm .pkpFormPage__footer{
+.pkpWorkflow__relateForm .pkpFormPage__footer {
 	border-top: none;
 	padding: 0.5rem;
 }

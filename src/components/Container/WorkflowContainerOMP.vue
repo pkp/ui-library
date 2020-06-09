@@ -80,7 +80,7 @@ export default {
 				},
 				headers: {
 					'X-Csrf-Token': this.csrfToken,
-                    'X-Http-Method-Override': 'PUT'
+					'X-Http-Method-Override': 'PUT'
 				},
 				error(r) {
 					self.isLoadingWorkType = false;

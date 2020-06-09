@@ -477,7 +477,7 @@ export default {
 				type: 'POST',
 				headers: {
 					'X-Csrf-Token': this.csrfToken,
-                    'X-Http-Method-Override': 'PUT'
+					'X-Http-Method-Override': 'PUT'
 				},
 				error(r) {
 					self.isLoadingVersion = false;
