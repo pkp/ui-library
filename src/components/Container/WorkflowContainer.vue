@@ -474,9 +474,10 @@ export default {
 					'/publications/' +
 					publication.id +
 					'/unpublish',
-				type: 'PUT',
+				type: 'POST',
 				headers: {
-					'X-Csrf-Token': this.csrfToken
+					'X-Csrf-Token': this.csrfToken,
+                    'X-Http-Method-Override': 'PUT'
 				},
 				error(r) {
 					self.isLoadingVersion = false;

@@ -869,9 +869,10 @@ export default {
 			var self = this;
 			$.ajax({
 				url: this.apiUrl + '/' + this.item.id,
-				type: 'DELETE',
+				type: 'POST',
 				headers: {
-					'X-Csrf-Token': this.csrfToken
+					'X-Csrf-Token': this.csrfToken,
+					'X-Http-Method-Override': 'DELETE'
 				},
 				error: this.ajaxErrorCallback,
 				success() {

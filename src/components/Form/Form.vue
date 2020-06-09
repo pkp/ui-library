@@ -248,12 +248,17 @@ export default {
 				return;
 			}
 
+			let thisMethod = this.method;
+			let xHttpMethodOverride = this.method;
+			if(thisMethod == 'DELETE' || thisMethod == 'PUT') { thisMethod = 'POST';}
+
 			$.ajax({
 				context: this,
-				method: this.method,
+				method: thisMethod,
 				url: this.action,
 				headers: {
-					'X-Csrf-Token': this.csrfToken
+					'X-Csrf-Token': this.csrfToken,
+					'X-Http-Method-Override': xHttpMethodOverride
 				},
 				data: this.submitValues,
 				success: this.success,

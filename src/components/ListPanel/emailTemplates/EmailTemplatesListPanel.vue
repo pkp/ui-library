@@ -254,9 +254,10 @@ export default {
 
 			$.ajax({
 				url: this.apiUrl + '/restoreDefaults',
-				type: 'DELETE',
+				type: 'POST',
 				headers: {
-					'X-Csrf-Token': this.csrfToken
+					'X-Csrf-Token': this.csrfToken,
+					'X-Http-Method-Override': 'DELETE'
 				},
 				error(r) {
 					self.ajaxErrorCallback(r);

@@ -215,9 +215,10 @@ export default {
 
 			$.ajax({
 				url: this.apiUrl + '/' + this.item.key,
-				type: 'DELETE',
+				type: 'POST',
 				headers: {
-					'X-Csrf-Token': this.csrfToken
+					'X-Csrf-Token': this.csrfToken,
+					'X-Http-Method-Override': 'DELETE'
 				},
 				error(r) {
 					self.ajaxErrorCallback(r);
@@ -314,9 +315,10 @@ export default {
 
 			$.ajax({
 				url: this.apiUrl + '/' + this.item.key,
-				type: 'DELETE',
+				type: 'POST',
 				headers: {
-					'X-Csrf-Token': this.csrfToken
+					'X-Csrf-Token': this.csrfToken,
+					'X-Http-Method-Override': 'DELETE'
 				},
 				error(r) {
 					self.ajaxErrorCallback(r);
@@ -350,9 +352,10 @@ export default {
 
 			$.ajax({
 				url: this.apiUrl + '/' + this.item.key,
-				type: 'PUT',
+				type: 'POST',
 				headers: {
-					'X-Csrf-Token': this.csrfToken
+					'X-Csrf-Token': this.csrfToken,
+					'X-Http-Method-Override': 'PUT'
 				},
 				data: {
 					enabled: !this.item.enabled
