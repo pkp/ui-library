@@ -235,7 +235,7 @@ export default {
 		compileId: function(type) {
 			let parts = [this.formId, this.name, type];
 			if (this.isMultilingual) {
-				parts.push(this.localeKey);
+				parts.push(this.localeKey.replace('@', '_'));
 			}
 			return parts.join('-');
 		}
