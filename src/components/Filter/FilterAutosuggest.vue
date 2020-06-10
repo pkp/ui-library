@@ -1,6 +1,5 @@
 <template>
 	<div class="pkpFilter--autosuggest" :class="classes">
-		This is a test.
 		<field-select-users v-bind="autosuggestProps" @change="toggle" />
 	</div>
 </template>
@@ -20,15 +19,15 @@ export default {
 		}
 	},
 	methods: {
-		toggle() {
+		toggle(fieldName, fieldProp, newVal) {
 			if (!this.currentValue) {
-				this.remove();
+				this.$emit('add-filter', this.param, newVal);
 			} else {
-				this.$emit('add-filter', this.param, this.value);
+				this.remove();
 			}
 		},
 		remove() {
-			this.$emit('remove-filter', this.param, this.value);
+			this.$emit('remove-filter', this.param);
 		}
 	}
 };

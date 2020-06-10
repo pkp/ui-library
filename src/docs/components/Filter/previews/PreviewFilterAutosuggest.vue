@@ -1,11 +1,10 @@
 <template>
 	<div class="previewFilters">
-		This is a
 		<filter-autosuggest
 			:autosuggestProps="autosuggestProps"
-			param="stageIds"
+			param="assignedTo"
 			:value="[]"
-			title="Select Users"
+			title="Assigned To Editors"
 			@add-filter="addFilter"
 			@remove-filter="removeFilter"
 		/>
@@ -18,6 +17,7 @@ import fieldBase from '../../Form/helpers/field-base';
 import fieldBaseAutosuggest from '../../Form/helpers/field-autosuggest-users';
 
 export default {
+	extends: fieldBaseAutosuggest,
 	components: {
 		FilterAutosuggest
 	},
@@ -31,23 +31,17 @@ export default {
 				label: 'Assigned To Editors',
 				selectedLabel: 'Assigned'
 			},
-			assignedTo: {
-				stageIds: []
+			activeFilters: {
+				assignedTo: []
 			}
 		};
 	},
 	methods: {
-		addFilter(param, val) {
-			if (!this.assignedTo[param].includes(val)) {
-				this.assignedTo[param].push(val);
-			}
+		addFilter(param, newVal) {
+			this.activeFilters[param] = newVal;
 		},
-		removeFilter(param, val) {
-			if (this.assignedTo[param].includes(val)) {
-				this.assignedTo[param] = this.assignedTo[param].filter(
-					item => item !== val
-				);
-			}
+		removeFilter(param, newVal) {
+			this.activeFilters[param] = [];
 		}
 	}
 };
