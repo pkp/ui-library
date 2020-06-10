@@ -33,7 +33,6 @@
 
 <script>
 import FilterSliderMultirange from '@/components/Filter/FilterSliderMultirange.vue';
-import {props} from '../config';
 
 export default {
 	components: {
@@ -43,8 +42,7 @@ export default {
 		return {
 			activeFilters: {},
 			daysSinceLastReview: [30, 120],
-			activeReviewsCurrentlyAssigned: [1, 20],
-			i18n: {...props.i18n}
+			activeReviewsCurrentlyAssigned: [1, 20]
 		};
 	},
 	methods: {

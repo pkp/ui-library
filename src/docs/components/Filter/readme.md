@@ -7,6 +7,22 @@
 | `title` | The label for this filter. |
 | `value` | The value to use when submitting API requests for this filter. For example, a filter for getting all submissions currently in the Submission stage would have a `param` of `stageIds` and a `value` of `1`. |
 
+## Props (FilterSlider and FilterSliderMultirange)
+
+| Key | Description |
+| --- | --- |
+| `max` | The highest allowed value. Required. |
+| `min` | The lowest allowed value. Required. |
+| `useStars` | Whether or not to display the value as a star rating. Default: `false`. |
+| `valueLabel` | How to display the value. A label of `At least {$value}` will display as `At least 20`. Default: `{$value}`. |
+
+## Props (FilterSliderMultirange)
+
+| Key | Description |
+| --- | --- |
+| `lessThanLabel` | An accessible label for the higher value. Typically "Less than". Required. |
+| `moreThanLabel` | An accessible label for the lower value. Typically "Higher than". Required. |
+
 ## Events
 
 | Key | Description |
