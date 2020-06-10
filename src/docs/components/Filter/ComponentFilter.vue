@@ -6,6 +6,8 @@ import PreviewFilterSlider from './previews/PreviewFilterSlider.vue';
 import PreviewFilterSliderTemplate from '!raw-loader!./previews/PreviewFilterSlider.vue';
 import PreviewFilterSliderMultirange from './previews/PreviewFilterSliderMultirange.vue';
 import PreviewFilterSliderMultirangeTemplate from '!raw-loader!./previews/PreviewFilterSliderMultirange.vue';
+import PreviewFilterAutosuggest from './previews/PreviewFilterAutosuggest.vue';
+import PreviewFilterAutosuggestTemplate from '!raw-loader!./previews/PreviewFilterAutosuggest.vue';
 import readme from '!raw-loader!./readme.md';
 
 export default {
@@ -29,6 +31,11 @@ export default {
 					component: PreviewFilterSliderMultirange,
 					name: 'Slider (Multirange)',
 					template: this.extractTemplate(PreviewFilterSliderMultirangeTemplate)
+				},
+				{
+					component: PreviewFilterAutosuggest,
+					name: 'Autosuggest',
+					template: this.extractTemplate(PreviewFilterAutosuggestTemplate)
 				}
 			]
 		};
