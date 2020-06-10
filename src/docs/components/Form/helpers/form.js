@@ -1,5 +1,3 @@
-import FormI18n from './i18n';
-
 export default {
 	method: 'PUT',
 	action: '/example/default',
@@ -23,6 +21,5 @@ export default {
 			label: 'English'
 		}
 	],
-	isSaving: false,
-	i18n: FormI18n
+	isSaving: false
 };

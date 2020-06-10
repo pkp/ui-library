@@ -6,7 +6,7 @@
 				:label="label"
 				:localeLabel="localeLabel"
 				:isRequired="isRequired"
-				:requiredLabel="i18n.required"
+				:requiredLabel="__('common.required')"
 				:multilingualLabel="multilingualLabel"
 			/>
 			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
@@ -21,7 +21,7 @@
 				:id="describedByHelpId"
 				:topic="helpTopic"
 				:section="helpSection"
-				:label="i18n.help"
+				:label="__('help.help')"
 			/>
 		</div>
 		<div
@@ -46,13 +46,13 @@
 				>
 					<img
 						class="pkpFormField--uploadImage__thumbnail"
-						:alt="i18n.thumbnailDescription"
+						:alt="thumbnailDescription"
 						:src="thumbnail"
 					/>
 				</div>
 				<div class="pkpFormField--upload__details">
 					<label class="pkpFormFieldLabel" :for="altTextId">
-						{{ i18n.altTextLabel }}
+						{{ altTextLabel }}
 					</label>
 					<input
 						class="pkpFormField__input pkpFormField--uploadImage__altTextInput"
@@ -63,23 +63,22 @@
 					/>
 					<div
 						class="pkpFormField--uploadImage__altTextDescription"
-						v-html="i18n.altTextDescription"
+						v-html="altTextDescription"
 						:id="altTextDescriptionId"
 					/>
 				</div>
 				<div class="pkpFormField--upload__previewActions">
-					<pkp-button :isWarnable="true" :label="i18n.remove" @click="clear" />
-					<pkp-button
-						v-if="initialValue && !isInitialValue"
-						:label="i18n.restore"
-						@click="revert"
-					/>
+					<pkp-button :isWarnable="true" @click="clear">
+						{{ __('common.remove') }}
+					</pkp-button>
+					<pkp-button v-if="initialValue && !isInitialValue" @click="revert">
+						{{ restoreLabel }}
+					</pkp-button>
 					<multilingual-progress
 						v-if="isMultilingual && locales.length > 1"
 						:id="multilingualProgressId"
 						:count="multilingualFieldsCompleted"
 						:total="locales.length"
-						:i18n="i18n"
 					/>
 				</div>
 			</div>
@@ -111,20 +110,21 @@
 						class="pkpFormField--upload__addFile"
 						:disabled="!!uploadFile"
 						:id="dropzoneClickableId"
-						:label="i18n.uploadFile"
-					/>
+					>
+						{{ uploadFileLabel }}
+					</pkp-button>
 					<pkp-button
 						v-if="initialValue && !isInitialValue"
 						class="pkpFormField--upload__restore"
-						:label="i18n.restore"
 						@click="revert"
-					/>
+					>
+						{{ restoreLabel }}
+					</pkp-button>
 					<multilingual-progress
 						v-if="isMultilingual && locales.length > 1"
 						:id="multilingualProgressId"
 						:count="multilingualFieldsCompleted"
 						:total="locales.length"
-						:i18n="i18n"
 					/>
 				</div>
 			</div>
@@ -139,7 +139,10 @@ export default {
 	name: 'FieldUploadImage',
 	extends: FieldUpload,
 	props: {
-		baseUrl: String
+		altTextDescription: String,
+		altTextLabel: String,
+		baseUrl: String,
+		thumbnailDescription: String
 	},
 	data() {
 		return {

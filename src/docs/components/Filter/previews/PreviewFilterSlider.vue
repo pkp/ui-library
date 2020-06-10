@@ -58,7 +58,6 @@
 
 <script>
 import PkpFilterSlider from '@/components/Filter/FilterSlider.vue';
-import {props} from '../config';
 
 export default {
 	components: {
@@ -67,8 +66,7 @@ export default {
 	data() {
 		return {
 			activeFilters: {},
-			daysSinceLastReview: 30,
-			i18n: {...props.i18n}
+			daysSinceLastReview: 30
 		};
 	},
 	methods: {

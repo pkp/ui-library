@@ -1,13 +1,10 @@
 <template>
-	<!-- Use the v-bind syntax to bind all props at once. -->
-	<list-panel v-bind="components.example" @set="set">
+	<list-panel :items="items">
 		<pkp-header slot="header">
-			{{ title }}
+			<h2>List Panel with Search</h2>
 			<template slot="actions">
-				<pkp-search
-					:searchPhrase="components.example.searchPhrase"
-					:searchLabel="i18n.search"
-					:clearSearchLabel="i18n.clearSearch"
+				<search
+					:searchPhrase="searchPhrase"
 					@search-phrase-changed="setSearchPhrase"
 				/>
 			</template>
@@ -16,38 +13,40 @@
 </template>
 
 <script>
-import Container from '@/components/Container/Container.vue';
+import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import PkpHeader from '@/components/Header/Header.vue';
-import PkpSearch from '@/components/Search/Search.vue';
-import {props} from '../config';
+import Search from '@/components/Search/Search.vue';
 import items from '../helpers/items';
 
 export default {
-	extends: Container,
 	components: {
-		PkpSearch,
-		PkpHeader
+		ListPanel,
+		PkpHeader,
+		Search
 	},
 	data() {
 		return {
-			components: {
-				example: {
-					...props,
-					id: 'example',
-					items: items
-				}
-			},
+			items: [...items],
 			originalItems: [...items],
-			title: 'List Panel with Search',
-			i18n: {
-				search: 'Search',
-				clearSearch: 'Clear search'
-			}
+			searchPhrase: ''
 		};
 	},
 	methods: {
+		/**
+		 * Normally you would send the search request to the server
+		 */
 		setSearchPhrase(searchPhrase) {
-			this.components.example.searchPhrase = searchPhrase;
+			this.searchPhrase = searchPhrase;
+			if (!searchPhrase.length) {
+				this.items = [...this.originalItems];
+			} else {
+				this.items = this.originalItems.filter(item => {
+					return (
+						new RegExp(searchPhrase, 'i').test(item.title) ||
+						new RegExp(searchPhrase, 'i').test(item.subtitle)
+					);
+				});
+			}
 		}
 	}
 };

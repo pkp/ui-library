@@ -1,8 +1,7 @@
 <template>
 	<div class="pkpDropdown">
 		<pkp-button
-			:label="label"
-			:icon="icon"
+			ref="button"
 			:isActive="isActive"
 			:isLink="isLink"
 			:isPrimary="isPrimary"
@@ -11,8 +10,18 @@
 			:aria-expanded="isOpen"
 			@click="toggle"
 			@blur="closeOnBlur"
-		/>
-		<div class="pkpDropdown__content" :hidden="!isOpen" :id="id">
+		>
+			<slot name="button">
+				<icon v-if="icon" :icon="icon" :inline="true" />
+				{{ label }}
+			</slot>
+		</pkp-button>
+		<div
+			v-if="isOpen"
+			class="pkpDropdown__content"
+			:id="id"
+			@click="preserveFocus"
+		>
 			<slot />
 		</div>
 		<span v-if="isOpen" class="pkpDropdown__caret" />
@@ -20,12 +29,7 @@
 </template>
 
 <script>
-import PkpButton from '@/components/Button/Button.vue';
-
 export default {
-	components: {
-		PkpButton
-	},
 	props: {
 		icon: {
 			type: String,
@@ -33,7 +37,7 @@ export default {
 		},
 		label: {
 			type: String,
-			required: true
+			default: ''
 		},
 		isActive: {
 			type: Boolean,
@@ -67,6 +71,19 @@ export default {
 	},
 	methods: {
 		/**
+		 *
+		 */
+		preserveFocus(e) {
+			// If the active element is the body, then focus was probably
+			// dropped due to a click on a non-focusable id. This is usually
+			// a mis-click so we reset the focus to the button to keep the
+			// dropdown open
+			if (document.activeElement === document.body) {
+				this.$refs.button.$el.focus();
+			}
+		},
+
+		/**
 		 * Open and close the dropdown
 		 */
 		toggle() {
@@ -88,7 +105,7 @@ export default {
 				} else {
 					this.isOpen = false;
 				}
-			}, 10);
+			}, 100);
 		}
 	}
 };
@@ -114,12 +131,29 @@ export default {
 	background: @lift;
 	box-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.3);
 	font-size: @font-sml;
+	line-height: 1.5rem;
 	z-index: 9999;
 
 	ul {
 		margin: 0;
 		padding: 0;
 		list-style: none;
+	}
+}
+
+.pkpDropdown__section {
+	margin-left: -0.5rem;
+	margin-right: -0.5rem;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+
+	&:not(:first-child) {
+		padding-top: 0.5rem;
+	}
+
+	&:not(:last-child) {
+		border-bottom: @grid-border;
+		padding-bottom: 0.5rem;
 	}
 }
 

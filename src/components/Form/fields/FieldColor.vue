@@ -10,7 +10,7 @@
 			</template>
 			<span v-if="isRequired" class="pkpFormFieldLabel__required">
 				*
-				<span class="-screenReader">{{ i18n.required }}</span>
+				<span class="-screenReader">{{ __('common.required') }}</span>
 			</span>
 			<tooltip
 				v-if="isPrimaryLocale && tooltip"
@@ -29,7 +29,7 @@
 				:id="describedByHelpId"
 				:topic="helpTopic"
 				:section="helpSection"
-				:label="i18n.help"
+				:label="__('help.help')"
 			/>
 		</legend>
 		<div

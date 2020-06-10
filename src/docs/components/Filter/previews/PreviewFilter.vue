@@ -37,7 +37,6 @@
 
 <script>
 import PkpFilter from '@/components/Filter/Filter.vue';
-import {props} from '../config';
 
 export default {
 	components: {
@@ -47,8 +46,7 @@ export default {
 		return {
 			activeFilters: {
 				stageIds: []
-			},
-			i18n: {...props.i18n}
+			}
 		};
 	},
 	methods: {

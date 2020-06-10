@@ -1,17 +1,19 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Page from './docs/Page.vue';
+import ComponentAnnouncementsListPanel from './docs/components/ListPanel/ComponentAnnouncementsListPanel.vue';
 import ComponentBadge from './docs/components/Badge/ComponentBadge.vue';
 import ComponentButton from './docs/components/Button/ComponentButton.vue';
+import ComponentCatalogListPanel from './docs/components/ListPanel/ComponentCatalogListPanel.vue';
 import ComponentChart from './docs/components/Chart/ComponentChart.vue';
 import ComponentDateRange from './docs/components/DateRange/ComponentDateRange.vue';
 import ComponentDropdown from './docs/components/Dropdown/ComponentDropdown.vue';
+import ComponentEmailTemplatesListPanel from './docs/components/ListPanel/ComponentEmailTemplatesListPanel.vue';
 import ComponentFilter from './docs/components/Filter/ComponentFilter.vue';
 import ComponentFieldArchivingPn from './docs/components/Form/fields/FieldArchivingPn/ComponentFieldArchivingPn.vue';
-import ComponentFieldAutosuggest from './docs/components/Form/fields/FieldAutosuggest/ComponentFieldAutosuggest.vue';
+import ComponentFieldBaseAutosuggest from './docs/components/Form/fields/FieldBaseAutosuggest/ComponentFieldBaseAutosuggest.vue';
 import ComponentFieldBase from './docs/components/Form/fields/FieldBase/ComponentFieldBase.vue';
 import ComponentFieldColor from './docs/components/Form/fields/FieldColor/ComponentFieldColor.vue';
-import ComponentFieldControlledVocab from './docs/components/Form/fields/FieldControlledVocab/ComponentFieldControlledVocab.vue';
 import ComponentFieldPubId from './docs/components/Form/fields/FieldPubId/ComponentFieldPubId.vue';
 import ComponentFieldHtml from './docs/components/Form/fields/FieldHtml/ComponentFieldHtml.vue';
 import ComponentFieldMetadataSetting from './docs/components/Form/fields/FieldMetadataSetting/ComponentFieldMetadataSetting.vue';
@@ -31,22 +33,30 @@ import ComponentHelpButton from './docs/components/HelpButton/ComponentHelpButto
 import ComponentIcon from './docs/components/Icon/ComponentIcon.vue';
 import ComponentList from './docs/components/List/ComponentList.vue';
 import ComponentListPanel from './docs/components/ListPanel/ComponentListPanel.vue';
+import ComponentModal from './docs/components/Modal/ComponentModal.vue';
 import ComponentMultilingualProgress from './docs/components/MultilingualProgress/ComponentMultilingualProgress.vue';
 import ComponentNotification from './docs/components/Notification/ComponentNotification.vue';
+import ComponentNotify from './docs/utilities/Notify/ComponentNotify.vue';
 import ComponentOrderer from './docs/components/Orderer/ComponentOrderer.vue';
+import ComponentPage from './docs/components/Page/ComponentPage.vue';
 import ComponentPagination from './docs/components/Pagination/ComponentPagination.vue';
 import ComponentSearch from './docs/components/Search/ComponentSearch.vue';
+import ComponentSelectReviewerListPanel from './docs/components/ListPanel/ComponentSelectReviewerListPanel.vue';
+import ComponentSubmissionsListPanel from './docs/components/ListPanel/ComponentSubmissionsListPanel.vue';
 import ComponentSpinner from './docs/components/Spinner/ComponentSpinner.vue';
-import ComponentStatsContainer from './docs/components/StatsContainer/ComponentStatsContainer.vue';
+import ComponentStatsPage from './docs/components/StatsPage/ComponentStatsPage.vue';
 import ComponentTable from './docs/components/Table/ComponentTable.vue';
 import ComponentTabs from './docs/components/Tabs/ComponentTabs.vue';
 import ComponentTooltip from './docs/components/Tooltip/ComponentTooltip.vue';
-import ComponentWorkflowContainer from './docs/components/WorkflowContainer/ComponentWorkflowContainer.vue';
+import ComponentWorkflowPage from './docs/components/WorkflowPage/ComponentWorkflowPage.vue';
 
 Vue.use(Router);
 
 export default new Router({
 	base: process.env.BASE_URL,
+	scrollBehavior(to, from, savedPosition) {
+		return {x: 0, y: 0};
+	},
 	routes: [
 		{
 			path: '/',
@@ -94,9 +104,9 @@ export default new Router({
 			component: ComponentFieldArchivingPn
 		},
 		{
-			path: '/component/Form/fields/FieldAutosuggest/:example?',
-			name: 'Form/fields/FieldAutosuggest',
-			component: ComponentFieldAutosuggest
+			path: '/component/Form/fields/FieldBaseAutosuggest/:example?',
+			name: 'Form/fields/FieldBaseAutosuggest',
+			component: ComponentFieldBaseAutosuggest
 		},
 		{
 			path: '/component/Form/fields/FieldBase/:example?',
@@ -107,11 +117,6 @@ export default new Router({
 			path: '/component/Form/fields/FieldColor/:example?',
 			name: 'Form/fields/FieldColor',
 			component: ComponentFieldColor
-		},
-		{
-			path: '/component/Form/fields/FieldControlledVocab/:example?',
-			name: 'Form/fields/FieldControlledVocab',
-			component: ComponentFieldControlledVocab
 		},
 		{
 			path: '/component/Form/fields/FieldPubId/:example?',
@@ -209,6 +214,36 @@ export default new Router({
 			component: ComponentListPanel
 		},
 		{
+			path: '/component/ListPanel/components/AnnouncementsListPanel/:example?',
+			name: 'AnnouncementsListPanel',
+			component: ComponentAnnouncementsListPanel
+		},
+		{
+			path: '/component/ListPanel/components/CatalogListPanel/:example?',
+			name: 'CatalogListPanel',
+			component: ComponentCatalogListPanel
+		},
+		{
+			path: '/component/ListPanel/components/EmailTemplatesListPanel/:example?',
+			name: 'EmailTemplatesListPanel',
+			component: ComponentEmailTemplatesListPanel
+		},
+		{
+			path: '/component/ListPanel/components/SelectReviewerListPanel/:example?',
+			name: 'SelectReviewerListPanel',
+			component: ComponentSelectReviewerListPanel
+		},
+		{
+			path: '/component/ListPanel/components/SubmissionsListPanel/:example?',
+			name: 'SubmissionsListPanel',
+			component: ComponentSubmissionsListPanel
+		},
+		{
+			path: '/component/Modal/:example?',
+			name: 'Modal',
+			component: ComponentModal
+		},
+		{
 			path: '/component/MultilingualProgress/:example?',
 			name: 'MultilingualProgress',
 			component: ComponentMultilingualProgress
@@ -222,6 +257,11 @@ export default new Router({
 			path: '/component/Orderer/:example?',
 			name: 'Orderer',
 			component: ComponentOrderer
+		},
+		{
+			path: '/component/Page/:example?',
+			name: 'Page',
+			component: ComponentPage
 		},
 		{
 			path: '/component/Pagination/:example?',
@@ -239,9 +279,9 @@ export default new Router({
 			component: ComponentSpinner
 		},
 		{
-			path: '/component/StatsContainer/:example?',
-			name: 'StatsContainer',
-			component: ComponentStatsContainer
+			path: '/component/StatsPage/:example?',
+			name: 'StatsPage',
+			component: ComponentStatsPage
 		},
 		{
 			path: '/component/Table/:example?',
@@ -259,9 +299,14 @@ export default new Router({
 			component: ComponentTooltip
 		},
 		{
-			path: '/component/WorkflowContainer/:example?',
-			name: 'WorkflowContainer',
-			component: ComponentWorkflowContainer
+			path: '/component/WorkflowPage/:example?',
+			name: 'WorkflowPage',
+			component: ComponentWorkflowPage
+		},
+		{
+			path: '/utilities/Notify/:example?',
+			name: 'Notify',
+			component: ComponentNotify
 		}
 	]
 });

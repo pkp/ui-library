@@ -51,7 +51,7 @@ export default {
 		border-radius: @radius;
 	}
 
-	.router-link-active {
+	.router-link-exact-active {
 		font-weight: @bold;
 	}
 

@@ -3,12 +3,11 @@
 		<list-item v-for="item in items" :key="item">
 			{{ item }}
 			<orderer
-				@up="up"
-				@down="down"
+				:isDraggable="false"
 				:itemId="item"
 				:itemTitle="item"
-				:isDraggable="isDraggable"
-				:i18n="i18n"
+				@down="down"
+				@up="up"
 			/>
 		</list-item>
 	</list>
@@ -27,12 +26,7 @@ export default {
 	},
 	data() {
 		return {
-			items: ['One', 'Two', 'Three'],
-			isDraggable: false,
-			i18n: {
-				orderUp: 'Increase position of {$itemTitle}',
-				orderDown: 'Decrease position of {$itemTitle}'
-			}
+			items: ['One', 'Two', 'Three']
 		};
 	},
 	methods: {

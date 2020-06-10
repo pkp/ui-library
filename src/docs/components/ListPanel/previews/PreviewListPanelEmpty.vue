@@ -1,25 +1,13 @@
 <template>
-	<!-- Use the v-bind syntax to bind all props at once. -->
-	<list-panel v-bind="components.example" @set="set" />
+	<list-panel :items="[]" title="ListPanel with No Items" />
 </template>
 
 <script>
-import Container from '@/components/Container/Container.vue';
-import {props} from '../config';
+import ListPanel from '@/components/ListPanel/ListPanel.vue';
 
 export default {
-	extends: Container,
-	data() {
-		return {
-			components: {
-				example: {
-					...props,
-					id: 'example',
-					items: [],
-					itemsMax: 0
-				}
-			}
-		};
+	components: {
+		ListPanel
 	}
 };
 </script>

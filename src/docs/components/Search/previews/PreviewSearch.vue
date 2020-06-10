@@ -1,8 +1,6 @@
 <template>
 	<search
 		:searchPhrase="searchPhrase"
-		searchLabel="Search"
-		clearSearchLabel="Clear search"
 		@search-phrase-changed="setSearchPhrase"
 	/>
 </template>

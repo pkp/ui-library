@@ -19,7 +19,7 @@ import FieldSelectCountry from './field-select-country';
 
 export default {
 	...Form,
-	id: 'user',
+	id: 'example',
 	action: '/example/user',
 	fields: [
 		FieldTextGivenName,
@@ -84,21 +84,5 @@ export default {
 			key: 'ar_AR',
 			label: 'عربى'
 		}
-	],
-	errors: {
-		email: ['Please provide a valid email address'],
-		affiliation: {
-			en_US: ['You must enter your affiliation in English.'],
-			fr_CA: ['You must enter your affiliation in French.'],
-			ar_AR: ['You must enter your affiliation in Arabic.']
-		},
-		'user-locales': ['You must select at least two options.'],
-		bio: {
-			fr_CA: ['Please provide a bio statement to accompany your publication.']
-		},
-		country: ['Please select your country.'],
-		'mailing-address': [
-			'You must enter a mailing address where you can receive post.'
-		]
-	}
+	]
 };

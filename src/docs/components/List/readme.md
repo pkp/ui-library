@@ -1,3 +1,12 @@
+## Props
+
+This component does not have any props.
+
+## Events
+
+This component does not emit any events.
+
+## Usage
 
 Use this component to display simple lists of content that should be grouped together.
 

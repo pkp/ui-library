@@ -1,8 +1,14 @@
 # Container
 
-The `Container` is the root component. Whenever mounting Vue apps in OJS or OMP, you must use a `Container` or one of the other `Container` elements.
+A `Container` is a root component to initialize Vue.js in a template. In most cases this is not needed. Instead, a `Page` component is automatically initialized on every page in the editorial backend. Learn more about [Pages](#/component/Page).
 
-The `Container` element does not have a preset template. It will render whatever template it is mounted to.
+However, it may be necessary to initialize Vue.js in a template that doesn't yet support the `Page` component. This is the case when content is loaded into a modal in the older JS framework.
+
+## Integration with legacy JavaScript framework
+
+The following describes how to use the `Container` directly when integrating with an old modal.
+
+In the example below, the `Container` component treats the content of the `#example-container-{$uuid}` DOM element as the template. It creates a `<pkp-form>` component and passes the value of `this.components.masthead` as props.
 
 ```html
 {assign var="uuid" value=""|uniqid|escape}
@@ -16,8 +22,6 @@ The `Container` element does not have a preset template. It will render whatever
 	pkp.registry.init('example-container-{$uuid}', 'Container', {$exampleData|json_encode});
 </script>
 ```
-
-In this example, the `Container` component treats the content of the `#example-container-{$uuid}` DOM element as the template. It creates a `<pkp-form>` component and passes the value of `this.components.masthead` as props.
 
 This is the same as mounting a Vue app to the DOM as recommended in Vue's documentation.
 
@@ -58,16 +62,4 @@ $templateMgr->assign('exampleData', [
 <script type="text/javascript">
 	pkp.registry.init('example-container-{$uuid}', 'Container', {$exampleData|json_encode});
 </script>
-```
-
-A `Container` is typically used to compose components together into a working app. However, they must also be used when injecting a single Vue.js component into an existing template in the legacy UI system, such as a modal.
-
-## Data Management
-
-`Container` components exist to manage data for child components. Read about [organizing components in Vue.js](https://vuejs.org/v2/guide/components.html#Organizing-Components).
-
-A child component can update data in the `Container` by emitting a `set` event:
-
-```js
-this.$emit('set', this.id, {items: newItems});
 ```

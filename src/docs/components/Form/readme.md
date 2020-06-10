@@ -1,5 +1,32 @@
+## Props
 
-Use this component to display a form. The parent component should respond to the following events:
+| Key | Description |
+| --- | --- |
+| `action` | Where the form should be submitted. It should be a full URL (`http://...`) to the API endpoint where this form is handled. |
+| `errors` | Key/value object of messages. The key is the field `name` and the value is an array of errors. Errors are generated during form submission and handled automatically, so this prop can be omitted in most cicumstances. |
+| `fields` | Array of form fields. This prop is typically configured on the server, using the `Form` and `Field` classes in the PHP application. |
+| `groups` | Array of form groups. See "Groups and Group Descriptions" below. |
+| `id` | Used by a parent component, such as `Container`, to identify events emitted from the form and update the form props when necessary. |
+| `method` | The method to use when submitting the form. This should match the API endpoint that will handle the form. It can be `POST` (create) or `PUT` (edit). |
+| `pages` | Array of form pages. See "Multi-page Forms" below. |
+| `primaryLocale` | The primary locale for this form. This may be the primary locale of the journal/press, submission or site depending on the form. |
+| `supportedFormLocales` | The locale(s) supported by this form. If a form has multilingual fields, it will display a separate input control for each of these locales. |
+| `visibleLocales` | The locale(s) the form is currently being presented in. |
+
+## Events
+
+| Key | Description |
+| --- | --- |
+| `set` | When the form props need to be updated. The payload is an object with any keys that need to be modified. |
+| `success` | When the form has been successfully submitted. The payload will include the server response from the successful form submission. This is usually the object that was added or edited. |
+
+## Usage
+
+Use this component to display a form.
+
+## Pass props
+
+Typically you will generate all the required props from one of the `FormComponent` classes on the server side. These props can then be passed to the form.
 
 ```html
 <pkp-form
@@ -7,8 +34,6 @@ Use this component to display a form. The parent component should respond to the
 	@set="set"
 />
 ```
-
-In the example above, `formData` will typically be an object compiled from one of the `FormComponent` classes on the server-side.
 
 ## Multi-page Forms
 

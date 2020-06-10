@@ -5,7 +5,6 @@ export default {
 	value: [],
 	deselectLabel: 'Remove {$item}',
 	initialPosition: 'inline',
-	noneLabel: 'None',
 	selectedLabel: 'Selected',
-	suggestionsUrl: ''
+	apiUrl: ''
 };

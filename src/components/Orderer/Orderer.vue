@@ -6,34 +6,28 @@
 		<button class="orderer__up" @click.prevent="up">
 			<icon icon="angle-up" />
 			<span class="-screenReader">
-				{{ __('orderUp', {itemTitle: itemTitle}) }}
+				{{ __('common.orderUp', {itemTitle: itemTitle}) }}
 			</span>
 		</button>
 		<button class="orderer__down" @click.prevent="down">
 			<icon icon="angle-down" />
 			<span class="-screenReader">
-				{{ __('orderDown', {itemTitle: itemTitle}) }}
+				{{ __('common.orderDown', {itemTitle: itemTitle}) }}
 			</span>
 		</button>
 	</div>
 </template>
 
 <script>
-import Icon from '@/components/Icon/Icon.vue';
-
 export default {
 	name: 'Orderer',
-	components: {
-		Icon
-	},
 	props: {
 		itemId: [String, Number],
 		itemTitle: String,
 		isDraggable: {
 			type: Boolean,
 			default: true
-		},
-		i18n: Object
+		}
 	},
 	methods: {
 		/**

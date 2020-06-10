@@ -20,29 +20,36 @@
 			</nav-group>
 			<nav-group>
 				<template slot="heading">
-					Apps
+					Pages
+				</template>
+				<li>
+					<router-link to="/component/Page">
+						Page
+					</router-link>
+				</li>
+				<li>
+					<router-link to="/component/StatsPage">
+						StatsPage
+					</router-link>
+				</li>
+				<li>
+					<router-link to="/component/WorkflowPage">
+						WorkflowPage
+					</router-link>
+				</li>
+			</nav-group>
+			<nav-group>
+				<template slot="heading">
+					Utilities
 				</template>
 				<li><router-link to="/pages/container">Container</router-link></li>
+				<li><router-link to="/pages/csrf">CSRF Token</router-link></li>
+				<li><router-link to="/pages/event-bus">Event Bus</router-link></li>
+				<li><router-link to="/pages/fetch">Fetch</router-link></li>
 				<li>
-					<router-link to="/pages/container-settings">
-						SettingsContainer
-					</router-link>
+					<router-link to="/pages/localization">Localization</router-link>
 				</li>
-				<li>
-					<router-link to="/pages/container-catalog">
-						CatalogContainer
-					</router-link>
-				</li>
-				<li>
-					<router-link to="/component/StatsContainer">
-						StatsContainer
-					</router-link>
-				</li>
-				<li>
-					<router-link to="/component/WorkflowContainer">
-						WorkflowContainer
-					</router-link>
-				</li>
+				<li><router-link to="/utilities/Notify">Notify</router-link></li>
 			</nav-group>
 			<nav-group>
 				<template slot="heading">
@@ -73,8 +80,8 @@
 					</ul>
 					<ul v-if="displaySubmenu('Form')">
 						<li>
-							<router-link to="/component/Form/fields/FieldAutosuggest">
-								FieldAutosuggest
+							<router-link to="/component/Form/fields/FieldBaseAutosuggest">
+								FieldBaseAutosuggest
 							</router-link>
 						</li>
 						<li>
@@ -135,11 +142,6 @@
 							</router-link>
 						</li>
 						<li>
-							<router-link to="/component/Form/fields/FieldControlledVocab">
-								FieldControlledVocab
-							</router-link>
-						</li>
-						<li>
 							<router-link to="/component/Form/fields/FieldPubId">
 								FieldPubId
 							</router-link>
@@ -167,7 +169,60 @@
 				</li>
 				<li><router-link to="/component/Icon">Icon</router-link></li>
 				<li><router-link to="/component/List">List</router-link></li>
-				<li><router-link to="/component/ListPanel">ListPanel</router-link></li>
+				<li :class="{'-submenuOpen': displaySubmenu('ListPanel')}">
+					<router-link to="/component/ListPanel">ListPanel</router-link>
+					<button
+						v-if="!pathIncludes('ListPanel')"
+						class="nav__toggle"
+						@click="toggleSubmenu('ListPanel')"
+					>
+						<span v-if="displaySubmenu('ListPanel')">-</span>
+						<span v-else>+</span>
+					</button>
+					<ul v-if="displaySubmenu('ListPanel')">
+						<li>
+							<router-link
+								to="/component/ListPanel/components/AnnouncementsListPanel"
+							>
+								AnnouncementsListPanel
+							</router-link>
+						</li>
+						<li>
+							<router-link
+								to="/component/ListPanel/components/CatalogListPanel"
+							>
+								CatalogListPanel
+							</router-link>
+						</li>
+						<li>
+							<router-link
+								to="/component/ListPanel/components/EmailTemplatesListPanel"
+							>
+								EmailTemplatesListPanel
+							</router-link>
+						</li>
+						<li>
+							<router-link
+								to="/component/ListPanel/components/SelectReviewerListPanel"
+							>
+								SelectReviewerListPanel
+							</router-link>
+						</li>
+						<li>
+							<router-link
+								to="/component/ListPanel/components/SubmissionsListPanel"
+							>
+								SubmissionsListPanel
+							</router-link>
+						</li>
+					</ul>
+				</li>
+
+				<li>
+					<router-link to="/component/Modal">
+						Modal
+					</router-link>
+				</li>
 				<li>
 					<router-link to="/component/MultilingualProgress">
 						MultilingualProgress
@@ -259,7 +314,7 @@ body {
 
 #app {
 	display: grid;
-	grid-template-columns: 200px auto;
+	grid-template-columns: 15rem auto;
 	width: 100%;
 
 	.nav {
@@ -365,6 +420,44 @@ a {
 	h5 + p,
 	h6 + p {
 		margin-top: 0;
+	}
+
+	table {
+		border: @bg-border-light;
+		border-bottom: none;
+		border-collapse: collapse;
+		width: 100%;
+		font-size: @font-sml;
+		line-height: 1.5em;
+	}
+
+	tr {
+		border-bottom: @bg-border-light;
+	}
+
+	th:not(:last-child),
+	td:not(:last-child) {
+		border-right: @bg-border-light;
+	}
+
+	th,
+	td {
+		padding: 0.5rem 1rem;
+		text-align: left;
+		vertical-align: top;
+	}
+
+	th {
+		font-weight: @bold;
+	}
+
+	td code {
+		border: 1px solid #d3e9d8;
+		background: #f9f9f9;
+		border-radius: @radius;
+		padding: 0.125em 0.25em;
+		color: #3fab5c;
+		font-size: @font-tiny;
 	}
 }
 </style>

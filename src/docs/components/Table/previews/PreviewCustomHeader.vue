@@ -1,29 +1,18 @@
 <template>
-	<div class="previewTable">
-		<pkp-table v-bind="table">
-			<icon slot="thead-pdf" icon="exclamation-triangle" />
-		</pkp-table>
-	</div>
+	<pkp-table
+		label="Example Table"
+		description="This table uses the <code>header</code> slot to customize the PDF column header."
+		:columns="columns"
+		:rows="rows"
+	>
+		<icon slot="thead-pdf" icon="exclamation-triangle" />
+	</pkp-table>
 </template>
 
 <script>
-import PkpTable from '@/components/Table/Table.vue';
-import Icon from '@/components/Icon/Icon.vue';
-import {props} from '../config';
+import PreviewTable from './PreviewTable.vue';
 
 export default {
-	components: {
-		PkpTable,
-		Icon
-	},
-	data() {
-		return {
-			table: {
-				...props,
-				description:
-					'This table uses the <code>header</code> slot to customize the PDF column header.'
-			}
-		};
-	}
+	extends: PreviewTable
 };
 </script>

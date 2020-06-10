@@ -5,14 +5,14 @@
 
 <script>
 import Container from '@/components/Container/Container.vue';
-import {props} from '../config';
+import form from '../helpers/form-base';
 
 export default {
 	extends: Container,
 	data() {
 		return {
 			components: {
-				example: props
+				example: form
 			}
 		};
 	}

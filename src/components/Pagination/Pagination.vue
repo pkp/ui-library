@@ -2,16 +2,21 @@
 	<nav
 		class="pkpPagination"
 		role="navigation"
-		:aria-label="i18n.paginationLabel"
+		:aria-label="__('common.pagination.label')"
 	>
 		<ul>
 			<li>
 				<pkp-button
 					:disabled="currentPage === 1"
-					:label="i18n.previousPageLabel"
-					:aria-label="__('goToLabel', {page: i18n.previousPageLabel})"
+					:aria-label="
+						__('common.pagination.goToPage', {
+							page: __('common.pagination.previous')
+						})
+					"
 					@click="setPage('previous')"
-				/>
+				>
+					{{ __('common.pagination.previous') }}
+				</pkp-button>
 			</li>
 			<li v-for="(item, index) in items" :key="index">
 				<span
@@ -30,34 +35,29 @@
 					:disabled="item.isDisabled"
 					:aria-label="item.ariaLabel"
 					:aria-current="item.isCurrent"
-					:label="item.label"
 					:is-link="
 						!item.isCurrent && !['previous', 'next'].includes(item.value)
 					"
 					:is-active="item.isCurrent"
 					@click="setPage(item.value)"
-				/>
+				>
+					{{ item.label }}
+				</pkp-button>
 			</li>
 			<li>
 				<pkp-button
 					:disabled="currentPage === lastPage"
-					:label="i18n.nextPageLabel"
 					@click="setPage('next')"
-				/>
+				>
+					{{ __('common.pagination.next') }}
+				</pkp-button>
 			</li>
 		</ul>
 	</nav>
 </template>
 
 <script>
-import PkpButton from '@/components/Button/Button.vue';
-import Spinner from '@/components/Spinner/Spinner.vue';
-
 export default {
-	components: {
-		PkpButton,
-		Spinner
-	},
 	props: {
 		currentPage: {
 			type: Number,
@@ -74,8 +74,7 @@ export default {
 		showAdjacentPages: {
 			type: Number,
 			default: 1
-		},
-		i18n: Object
+		}
 	},
 	computed: {
 		/**
@@ -157,8 +156,8 @@ export default {
 		 * @return {String}
 		 */
 		getNumberAriaLabel: function(page) {
-			const pageLabel = this.__('pageLabel', {pageNumber: page});
-			return this.__('goToLabel', {page: pageLabel});
+			const pageLabel = this.__('common.pageNumber', {pageNumber: page});
+			return this.__('common.pagination.goToPage', {page: pageLabel});
 		},
 
 		/**

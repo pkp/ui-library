@@ -1,28 +1,120 @@
 <template>
-	<!-- Use the v-bind syntax to bind all props at once. -->
-	<submissions-list-panel v-bind="components.example" @set="set" />
+	<submissions-list-panel
+		addUrl="http://localhost:8000/publicknowledge/submission/wizard"
+		apiUrl="http://httpbin.org/get"
+		:filters="filters"
+		id="previewSubmissionsListPanel"
+		infoUrl="http://httbin.org/get"
+		:items="items"
+		:itemsMax="itemsMax"
+		title="Submissions"
+	/>
 </template>
-
 <script>
-import Container from '@/components/Container/Container.vue';
+import Page from '@/components/Container/Page.vue';
 import SubmissionsListPanel from '@/components/ListPanel/submissions/SubmissionsListPanel.vue';
-import {propsSubmissionsListPanel} from '../config';
+import submissions from '@/docs/data/submissions';
 
 export default {
-	extends: Container,
+	extends: Page,
 	components: {
 		SubmissionsListPanel
 	},
 	data() {
 		return {
-			components: {
-				example: {
-					...propsSubmissionsListPanel,
-					id: 'example',
-					title: 'Submissions List Panel (OJS)'
+			filters: [
+				{
+					filters: [
+						{
+							title: 'Overdue',
+							param: 'isOverdue',
+							value: true
+						},
+						{
+							title: 'Incomplete',
+							param: 'isIncomplete',
+							value: true
+						}
+					]
+				},
+				{
+					heading: 'Stages',
+					filters: [
+						{
+							title: 'Submission',
+							param: 'stageIds',
+							value: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION
+						},
+						{
+							title: 'Review',
+							param: 'stageIds',
+							value: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW
+						},
+						{
+							title: 'Copyediting',
+							param: 'stageIds',
+							value: pkp.const.WORKFLOW_STAGE_ID_EDITING
+						},
+						{
+							title: 'Production',
+							param: 'stageIds',
+							value: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION
+						}
+					]
+				},
+				{
+					heading: 'Activity',
+					filters: [
+						{
+							title: 'Days since last activity',
+							param: 'daysInactive',
+							value: 30,
+							min: 1,
+							max: 180,
+							filterType: 'pkp-filter-slider'
+						}
+					]
 				}
-			}
+			],
+			items: [...submissions],
+			itemsMax: submissions.length
 		};
+	},
+	created() {
+		/**
+		 * Add required locale keys
+		 */
+		pkp.localeKeys['common.lastActivity'] =
+			'Last activity recorded on {$date}.';
+		pkp.localeKeys['submission.list.empty'] = 'No submissions found.';
+		pkp.localeKeys['submission.submit.newSubmissionSingle'] = 'New Submission';
+		pkp.localeKeys['submission.review'] = 'Review';
+		pkp.localeKeys['submissions.incomplete'] = 'Incomplete';
+		pkp.localeKeys['submission.list.assignEditor'] = 'Assign Editor';
+		pkp.localeKeys['submission.list.copyeditsSubmitted'] =
+			'Copyedited files submitted';
+		pkp.localeKeys['submission.list.currentStage'] =
+			'Currently in the {$stage} stage.';
+		pkp.localeKeys['submission.list.discussions'] = 'Open discussions';
+		pkp.localeKeys[
+			'submission.list.dualWorkflowLinks'
+		] = `You have been assigned multiple roles for this submission. Would you like to access the <a href="{$urlAuthorWorkflow}">Author's workflow</a>  or the <a href="{$urlEditorialWorkflow}">Editorial workflow</a>?`;
+		pkp.localeKeys['submission.list.galleysCreated'] =
+			'Copyedited files submitted';
+		pkp.localeKeys['submission.list.infoCenter'] = 'Activity Log & Notes';
+		pkp.localeKeys['submission.list.reviewAssignment'] = 'Review Assignment';
+		pkp.localeKeys['submission.list.responseDue'] = 'Response Due: {$date}';
+		pkp.localeKeys['submission.list.reviewCancelled'] = 'Review Cancelled';
+		pkp.localeKeys['submission.list.reviewComplete'] = 'Review Submitted';
+		pkp.localeKeys['submission.list.reviewDue'] = 'Review Due: {$date}';
+		pkp.localeKeys[
+			'submission.list.reviewerWorkflowLink'
+		] = `You have been assigned an editorial role for this submission. Would you like to access the <a href="{$urlEditorialWorkflow}">Editorial workflow</a>?`;
+		pkp.localeKeys['submission.list.reviewsCompleted'] =
+			'Assigned reviews completed';
+		pkp.localeKeys['submission.list.revisionsSubmitted'] =
+			'Production galleys created';
+		pkp.localeKeys['submission.list.viewSubmission'] = 'View Submission';
 	}
 };
 </script>

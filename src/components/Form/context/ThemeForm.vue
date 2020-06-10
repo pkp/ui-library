@@ -11,23 +11,23 @@ export default {
 		/**
 		 * @copydoc Form::fieldChanged()
 		 */
-		fieldChanged: function(data) {
-			if (data.name === 'themePluginPath') {
-				this.changeTheme(data.value);
+		fieldChanged: function(name, prop, value, localeKey) {
+			if (name === 'themePluginPath') {
+				this.changeTheme(value);
 			} else {
 				let newFields = this.fields.map(field => {
-					if (field.name === data.name) {
-						if (data.localeKey) {
-							field.value[data.localeKey] = data.value;
+					if (field.name === name) {
+						if (localeKey) {
+							field[prop][localeKey] = value;
 						} else {
-							field.value = data.value;
+							field[prop] = value;
 						}
 					}
 					return field;
 				});
 				this.$emit('set', this.id, {fields: newFields});
 			}
-			this.removeError(data.name, data.localeKey);
+			this.removeError(name, localeKey);
 		},
 
 		/**

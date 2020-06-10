@@ -13,9 +13,10 @@ export default {
 	],
 	terms:
 		'View the <button>plugin settings</button> to accept the terms of use for the PKP PN.',
+	enablePluginSuccess: 'The PKP PN plugin was successfully enabled.',
 	enablePluginUrl: 'https://example.com',
+	disablePluginSuccess: 'The PKP PN plugin has been disabled.',
 	disablePluginUrl: 'https://example.com',
 	settingsUrl: 'https://example.com',
-	csrfToken: '11111',
 	groupId: 'test'
 };

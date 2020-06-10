@@ -10,7 +10,6 @@
 			:visibleLocales="visibleLocales"
 			:availableLocales="availableLocales"
 			:formId="formId"
-			:i18n="i18n"
 			@change="fieldChanged"
 			@set-errors="setErrors"
 		/>
@@ -24,31 +23,42 @@
 				v-if="Object.keys(errors).length"
 				:errors="errors"
 				:fields="fields"
-				:i18n="i18n"
 				@showField="showField"
 				@showLocale="showLocale"
 			/>
-			<div class="pkpFormPage__buttons" ref="buttons">
-				<template v-if="isSaving">
-					<span class="pkpFormPage__loading">
+			<span role="status" aria-live="polite" aria-atomic="true">
+				<transition name="pkpFormPage__status">
+					<span v-if="isSaving" class="pkpFormPage__status">
 						<spinner />
-						{{ i18n.saving }}
+						{{ __('common.saving') }}
 					</span>
-				</template>
-				<template v-else>
+					<span v-else-if="hasRecentSave" class="pkpFormPage__status">
+						<icon icon="check" :inline="true" />
+						{{ __('form.saved') }}
+					</span>
+				</transition>
+			</span>
+			<div class="pkpFormPage__buttons" ref="buttons">
+				<template>
 					<pkp-button
 						v-if="previousButton"
 						v-bind="previousButton"
 						@click="previousPage"
-					/>
+					>
+						{{ previousButton.label }}
+					</pkp-button>
 					<pkp-button
 						v-if="submitButton"
 						v-bind="submitButton"
 						:disabled="
-							!canSubmit || (isLastPage && !!Object.keys(errors).length)
+							isSaving ||
+								!canSubmit ||
+								(isLastPage && !!Object.keys(errors).length)
 						"
 						@click="submit"
-					/>
+					>
+						{{ submitButton.label }}
+					</pkp-button>
 				</template>
 			</div>
 		</div>
@@ -58,16 +68,18 @@
 <script>
 import FormErrors from '@/components/Form/FormErrors.vue';
 import FormGroup from '@/components/Form/FormGroup.vue';
-import PkpButton from '@/components/Button/Button.vue';
-import Spinner from '@/components/Spinner/Spinner.vue';
 
 export default {
 	name: 'FormPage',
 	components: {
 		FormErrors,
-		FormGroup,
-		PkpButton,
-		Spinner
+		FormGroup
+	},
+	data() {
+		return {
+			hasRecentSave: false,
+			recentSaveInterval: null
+		};
 	},
 	props: {
 		id: String,
@@ -77,6 +89,7 @@ export default {
 		formId: String,
 		isCurrentPage: Boolean,
 		isLastPage: Boolean,
+		lastSaveTimestamp: Number,
 		primaryLocale: String,
 		visibleLocales: Array,
 		availableLocales: Array,
@@ -88,8 +101,7 @@ export default {
 				return true;
 			}
 		},
-		isSaving: Boolean,
-		i18n: Object
+		isSaving: Boolean
 	},
 	computed: {
 		/**
@@ -127,16 +139,16 @@ export default {
 	},
 	methods: {
 		/**
-		 * Emit an event when a field's value has changed
+		 * Emit an event when a field's prop has changed
 		 *
-		 * @param {Object} data {{
-		 *  @option string name Field name
-		 *  @option string value New value
-		 *  @option string localeKey Locale key for this value. Empty it not multilingual
+		 * @param {String} name Name of the field to modify
+		 * @param {String} prop Name of the prop to modify
+		 * @param {mixed} value The new value for the prop
+		 * @param {String} localeKey Optional locale key for multilingual props
 		 * }}
 		 */
-		fieldChanged: function(data) {
-			this.$emit('change', data);
+		fieldChanged: function(name, prop, value, localeKey) {
+			this.$emit('change', name, prop, value, localeKey);
 		},
 
 		/**
@@ -201,6 +213,22 @@ export default {
 		setErrors: function(errors) {
 			this.$emit('set-errors', errors);
 		}
+	},
+	mounted() {
+		/**
+		 * Set an interval timer to check if there is a recent save
+		 */
+		this.recentSaveInterval = setInterval(() => {
+			const expire = this.lastSaveTimestamp + 5000;
+			if (this.hasRecentSave && expire < Date.now()) {
+				this.hasRecentSave = false;
+			} else if (!this.hasRecentSave && expire > Date.now()) {
+				this.hasRecentSave = true;
+			}
+		}, 250);
+	},
+	destroyed() {
+		clearInterval(this.recentSaveInterval);
 	}
 };
 </script>
@@ -217,12 +245,34 @@ export default {
 .pkpFormPage__buttons {
 	display: inline-block;
 
-	> * {
-		margin-right: 0.5em;
+	> * + * {
+		margin-left: 0.5em;
 	}
 }
 
-.pkpFormPage__loading {
+.pkpFormPage__status {
+	display: inline-block;
+	margin-right: 0.5rem;
 	font-size: @font-tiny;
+	transition: all 0.3s;
+	text-align: right;
+
+	.fa {
+		color: @yes;
+	}
+
+	.pkpSpinner {
+		margin-right: 0.25rem;
+	}
+}
+
+.pkpFormPage__status-enter {
+	transform: translateY(0.5rem);
+	opacity: 0;
+}
+
+.pkpFormPage__status-leave-to {
+	transform: translateY(-0.5rem);
+	opacity: 0;
 }
 </style>

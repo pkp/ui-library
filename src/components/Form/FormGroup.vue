@@ -30,7 +30,6 @@
 								:formId="formId"
 								:primaryLocale="primaryLocale"
 								:locales="availableLocales"
-								:i18n="i18n"
 								@change="fieldChanged"
 								@set-errors="setFieldErrors"
 							></component>
@@ -44,7 +43,6 @@
 						:key="field.name"
 						:allErrors="errors"
 						:formId="formId"
-						:i18n="i18n"
 						@change="fieldChanged"
 						@set-errors="setFieldErrors"
 					></component>
@@ -55,7 +53,7 @@
 </template>
 
 <script>
-import FieldAutosuggest from '@/components/Form/fields/FieldAutosuggest.vue';
+import FieldBaseAutosuggest from '@/components/Form/fields/FieldBaseAutosuggest.vue';
 import FieldArchivingPn from '@/components/Form/fields/FieldArchivingPn.vue';
 import FieldColor from '@/components/Form/fields/FieldColor.vue';
 import FieldControlledVocab from '@/components/Form/fields/FieldControlledVocab.vue';
@@ -67,6 +65,7 @@ import FieldRadioInput from '@/components/Form/fields/FieldRadioInput.vue';
 import FieldRichTextarea from '@/components/Form/fields/FieldRichTextarea.vue';
 import FieldSelect from '@/components/Form/fields/FieldSelect.vue';
 import FieldSelectIssue from '@/components/Form/fields/FieldSelectIssue.vue';
+import FieldSelectSubmissions from '@/components/Form/fields/FieldSelectSubmissions.vue';
 import FieldShowEnsuringLink from '@/components/Form/fields/FieldShowEnsuringLink.vue';
 import FieldText from '@/components/Form/fields/FieldText.vue';
 import FieldTextarea from '@/components/Form/fields/FieldTextarea.vue';
@@ -76,7 +75,7 @@ import FieldUploadImage from '@/components/Form/fields/FieldUploadImage.vue';
 export default {
 	name: 'FormGroup',
 	components: {
-		FieldAutosuggest,
+		FieldBaseAutosuggest,
 		FieldArchivingPn,
 		FieldColor,
 		FieldControlledVocab,
@@ -88,6 +87,7 @@ export default {
 		FieldRichTextarea,
 		FieldSelect,
 		FieldSelectIssue,
+		FieldSelectSubmissions,
 		FieldShowEnsuringLink,
 		FieldText,
 		FieldTextarea,
@@ -105,8 +105,7 @@ export default {
 		primaryLocale: String,
 		visibleLocales: Array,
 		availableLocales: Array,
-		showWhen: [String, Array],
-		i18n: Object
+		showWhen: [String, Array]
 	},
 	computed: {
 		/**
@@ -131,16 +130,15 @@ export default {
 	},
 	methods: {
 		/**
-		 * Emit an event when a field's value has changed
+		 * Emit an event when a field's prop has changed
 		 *
-		 * @param {Object} data {{
-		 *  @option string name Field name
-		 *  @option string value New value
-		 *  @option string localeKey Locale key for this value. Empty it not multilingual
-		 * }}
+		 * @param {String} name Name of the field to modify
+		 * @param {String} prop Name of the prop to modify
+		 * @param {mixed} value The new value for the prop
+		 * @param {String} localeKey Optional locale key for multilingual props
 		 */
-		fieldChanged: function(data) {
-			this.$emit('change', data);
+		fieldChanged: function(name, prop, value, localeKey) {
+			this.$emit('change', name, prop, value, localeKey);
 		},
 
 		/**

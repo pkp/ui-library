@@ -14,7 +14,7 @@
 				:id="describedByHelpId"
 				:topic="helpTopic"
 				:section="helpSection"
-				:label="i18n.help"
+				:label="__('help.help')"
 			/>
 		</legend>
 		<div

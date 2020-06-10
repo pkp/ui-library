@@ -1,14 +1,14 @@
 <template>
 	<div class="pkpSearch">
 		<label>
-			<span class="-screenReader">{{ searchLabel }}</span>
+			<span class="-screenReader">{{ currentSearchLabel }}</span>
 			<input
 				type="search"
 				class="pkpSearch__input"
 				@keyup="searchPhraseKeyUp"
 				:id="inputId"
 				:value="searchPhrase"
-				:placeholder="searchLabel"
+				:placeholder="currentSearchLabel"
 			/>
 			<span class="pkpSearch__icons">
 				<icon icon="search" :inline="true" class="pkpSearch__icons--search" />
@@ -21,38 +21,35 @@
 			:aria-controls="inputId"
 		>
 			<icon icon="times" />
-			<span class="-screenReader">{{ clearSearchLabel }}</span>
+			<span class="-screenReader">{{ __('common.clearSearch') }}</span>
 		</button>
 	</div>
 </template>
 
 <script>
-import Icon from '@/components/Icon/Icon.vue';
 import debounce from 'debounce';
 
 export default {
-	components: {
-		Icon
-	},
 	props: {
-		searchPhrase: {
+		searchLabel: {
 			type: String,
 			default() {
 				return '';
 			}
 		},
-		searchLabel: {
+		searchPhrase: {
 			type: String,
-			required: true
-		},
-		clearSearchLabel: {
-			type: String,
-			required: true
+			default() {
+				return '';
+			}
 		}
 	},
 	computed: {
 		inputId() {
 			return this._uid;
+		},
+		currentSearchLabel() {
+			return this.searchLabel ? this.searchLabel : this.__('common.search');
 		}
 	},
 	methods: {

@@ -1,7 +1,7 @@
 <template>
-	<div class="list">
+	<ul class="list">
 		<slot />
-	</div>
+	</ul>
 </template>
 
 <script>
@@ -14,6 +14,9 @@ export default {
 @import '../../styles/_import';
 
 .list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
 	border-top: @grid-border;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 	border-radius: @radius;

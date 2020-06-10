@@ -1,47 +1,35 @@
 <template>
 	<div class="previewTable">
 		<pkp-table
-			:label="label"
-			:description="description"
+			label="Example Table"
+			description="Use the Pagination component to display large data sets in a table."
 			:columns="columns"
 			:rows="currentRows"
 		/>
 		<pagination
 			:currentPage="currentPage"
 			:lastPage="lastPage"
-			:i18n="i18n"
 			@set-page="setPage"
 		/>
 	</div>
 </template>
 
 <script>
-import PkpTable from '@/components/Table/Table.vue';
+import PreviewTable from './PreviewTable.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
-import {props} from '../config';
 import articleStats from '../helpers/articleStats.js';
 
 export default {
+	extends: PreviewTable,
 	components: {
-		PkpTable,
 		Pagination
 	},
 	data() {
 		return {
-			...props,
-			description:
-				'Use the Pagination component to display large data sets in a table.',
 			currentPage: 1,
 			isLoading: false,
 			perPage: 10,
-			rows: articleStats,
-			i18n: {
-				paginationLabel: 'Other pages of this example component',
-				goToLabel: 'Go to {$page}',
-				pageLabel: 'Page {$page}',
-				nextPageLabel: 'Next page',
-				previousPageLabel: 'Previous page'
-			}
+			rows: [...articleStats]
 		};
 	},
 	computed: {

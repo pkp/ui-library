@@ -11,15 +11,3 @@
 		</tab>
 	</tabs>
 </template>
-
-<script>
-import Tab from '@/components/Tabs/Tab.vue';
-import Tabs from '@/components/Tabs/Tabs.vue';
-
-export default {
-	components: {
-		Tab,
-		Tabs
-	}
-};
-</script>

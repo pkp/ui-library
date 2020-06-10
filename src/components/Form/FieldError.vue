@@ -12,13 +12,8 @@
 </template>
 
 <script>
-import Icon from '../Icon/Icon.vue';
-
 export default {
 	name: 'FieldError',
-	components: {
-		Icon
-	},
 	props: {
 		messages: Array
 	}

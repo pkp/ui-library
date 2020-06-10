@@ -1,18 +1,22 @@
 <script>
 import Component from '@/docs/Component.vue';
-import ExampleSpinner from './ExampleSpinner.vue';
+import PreviewSpinner from './previews/PreviewSpinner.vue';
+import PreviewSpinnerTemplate from '!raw-loader!./previews/PreviewSpinner.vue';
+import readme from '!raw-loader!./readme.md';
 
 export default {
 	extends: Component,
-	components: {
-		ExampleSpinner
-	},
 	data() {
 		return {
 			name: 'Spinner',
-			examples: {
-				ExampleSpinner: 'Base'
-			}
+			readme: readme,
+			examples: [
+				{
+					component: PreviewSpinner,
+					name: 'Base',
+					template: this.extractTemplate(PreviewSpinnerTemplate)
+				}
+			]
 		};
 	}
 };

@@ -4,33 +4,24 @@
 		class="pkpButton"
 		:class="classes"
 		:href="element === 'a' ? href : false"
-		:icon="icon"
 		:disabled="isDisabled"
 		@click="click"
-		@focus="focus"
-		@blur="blur"
+		@focus="$emit('focus')"
+		@blur="$emit('blur')"
 	>
-		<icon v-if="icon" :icon="icon" :inline="!!label" />
-		{{ label }}
+		<slot />
 	</component>
 </template>
 
 <script>
-import Icon from '@/components/Icon/Icon.vue';
-
 export default {
 	name: 'pkpButton',
-	components: {
-		Icon
-	},
 	props: {
 		element: {
 			type: String,
 			default: 'button'
 		},
 		href: String,
-		label: [String, Number],
-		icon: String,
 		isPrimary: Boolean,
 		isWarnable: Boolean,
 		isActive: Boolean,
@@ -56,17 +47,11 @@ export default {
 		}
 	},
 	methods: {
-		click: function(e) {
+		click(e) {
 			if (this.element === 'button') {
 				e.preventDefault();
 			}
 			this.$emit('click');
-		},
-		focus() {
-			this.$emit('focus');
-		},
-		blur() {
-			this.$emit('blur');
 		}
 	}
 };
@@ -98,10 +83,6 @@ export default {
 
 	&:active {
 		box-shadow: 0 0 2px;
-	}
-
-	.fa {
-		margin-right: 0.25em;
 	}
 
 	&:disabled {

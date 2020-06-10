@@ -1,19 +1,23 @@
 <script>
 import Component from '@/docs/Component.vue';
-import ExampleFieldSelect from './ExampleFieldSelect.vue';
+import PreviewFieldSelect from './previews/PreviewFieldSelect.vue';
+import PreviewFieldSelectTemplate from '!raw-loader!./previews/PreviewFieldSelect.vue';
+import readme from '!raw-loader!./readme.md';
 
 export default {
 	extends: Component,
-	components: {
-		ExampleFieldSelect
-	},
 	data() {
 		return {
 			name: 'FieldSelect',
 			parentRoute: 'Form/fields',
-			examples: {
-				ExampleFieldSelect: 'Base'
-			}
+			readme: readme,
+			examples: [
+				{
+					component: PreviewFieldSelect,
+					name: 'Base',
+					template: this.extractTemplate(PreviewFieldSelectTemplate)
+				}
+			]
 		};
 	}
 };

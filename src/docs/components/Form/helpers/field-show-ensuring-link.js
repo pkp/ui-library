@@ -9,5 +9,28 @@ export default {
 				'Present a link to <button>Ensuring a Blind Review</button> during upload.'
 		}
 	],
-	message: '<p>Hello this is a message.</p><ul><li>One</li><li>Two</li></ul>'
+	message: `
+		<p>Hello this is a long message that will require scrolling.</p><ul><li>One</li><li>Two</li></ul>
+		<p>Hello this is a long message that will require scrolling.</p><ul><li>One</li><li>Two</li></ul>
+		<p>Hello this is a long message that will require scrolling.</p><ul><li>One</li><li>Two</li></ul>
+		<p>Hello this is a long message that will require scrolling.</p><ul><li>One</li><li>Two</li></ul>
+		<p>Hello this is a long message that will require scrolling.</p><ul><li>One</li><li>Two</li></ul>
+		<p>Hello this is a long message that will require scrolling.</p><ul><li>One</li><li>Two</li></ul>
+		<p>Hello this is a long message that will require scrolling.</p><ul><li>One</li><li>Two</li></ul>
+		<p>Hello this is a long message that will require scrolling.</p><ul><li>One</li><li>Two</li></ul>
+		<p>Hello this is a long message that will require scrolling.</p><ul><li>One</li><li>Two</li></ul>
+		<p>Hello this is a long message that will require scrolling.</p><ul><li>One</li><li>Two</li></ul>
+		<p>Hello this is a long message that will require scrolling.</p><ul><li>One</li><li>Two</li></ul>
+		<p>Hello this is a long message that will require scrolling.</p><ul><li>One</li><li>Two</li></ul>
+		<p>Hello this is a long message that will require scrolling.</p><ul><li>One</li><li>Two</li></ul>
+		<p>Hello this is a long message that will require scrolling.</p><ul><li>One</li><li>Two</li></ul>
+		<p>Hello this is a long message that will require scrolling.</p><ul><li>One</li><li>Two</li></ul>
+		<p>Hello this is a long message that will require scrolling.</p><ul><li>One</li><li>Two</li></ul>
+		<p>Hello this is a long message that will require scrolling.</p><ul><li>One</li><li>Two</li></ul>
+		<p>Hello this is a long message that will require scrolling.</p><ul><li>One</li><li>Two</li></ul>
+		<p>Hello this is a long message that will require scrolling.</p><ul><li>One</li><li>Two</li></ul>
+		<p>Hello this is a long message that will require scrolling.</p><ul><li>One</li><li>Two</li></ul>
+		<p>Hello this is a long message that will require scrolling.</p><ul><li>One</li><li>Two</li></ul>
+	`,
+	modalTitle: 'Ensure a Blind Review'
 };

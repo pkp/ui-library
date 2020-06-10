@@ -1,24 +1,36 @@
 <script>
 import Component from '@/docs/Component.vue';
-import ExampleFilter from './ExampleFilter.vue';
-import ExampleFilterSlider from './ExampleFilterSlider.vue';
-import ExampleFilterSliderMultirange from './ExampleFilterSliderMultirange.vue';
+import PreviewFilter from './previews/PreviewFilter.vue';
+import PreviewFilterTemplate from '!raw-loader!./previews/PreviewFilter.vue';
+import PreviewFilterSlider from './previews/PreviewFilterSlider.vue';
+import PreviewFilterSliderTemplate from '!raw-loader!./previews/PreviewFilterSlider.vue';
+import PreviewFilterSliderMultirange from './previews/PreviewFilterSliderMultirange.vue';
+import PreviewFilterSliderMultirangeTemplate from '!raw-loader!./previews/PreviewFilterSliderMultirange.vue';
+import readme from '!raw-loader!./readme.md';
 
 export default {
 	extends: Component,
-	components: {
-		ExampleFilter,
-		ExampleFilterSlider,
-		ExampleFilterSliderMultirange
-	},
 	data() {
 		return {
 			name: 'Filter',
-			examples: {
-				ExampleFilter: 'Base',
-				ExampleFilterSlider: 'Slider',
-				ExampleFilterSliderMultirange: 'Slider (Multirange)'
-			}
+			readme: readme,
+			examples: [
+				{
+					component: PreviewFilter,
+					name: 'Base',
+					template: this.extractTemplate(PreviewFilterTemplate)
+				},
+				{
+					component: PreviewFilterSlider,
+					name: 'Slider',
+					template: this.extractTemplate(PreviewFilterSliderTemplate)
+				},
+				{
+					component: PreviewFilterSliderMultirange,
+					name: 'Slider (Multirange)',
+					template: this.extractTemplate(PreviewFilterSliderMultirangeTemplate)
+				}
+			]
 		};
 	}
 };

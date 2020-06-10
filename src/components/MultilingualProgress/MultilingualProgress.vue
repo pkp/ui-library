@@ -8,13 +8,8 @@
 </template>
 
 <script>
-import Icon from '@/components/Icon/Icon.vue';
-
 export default {
 	name: 'MultilingualProgress',
-	components: {
-		Icon
-	},
 	props: {
 		count: {
 			type: Number,
@@ -22,10 +17,6 @@ export default {
 		},
 		total: {
 			type: Number,
-			required: true
-		},
-		i18n: {
-			type: Object,
 			required: true
 		}
 	},
@@ -53,7 +44,7 @@ export default {
 		 * @return {String}
 		 */
 		tooltip() {
-			return this.__('multilingualProgress', {
+			return this.__('form.multilingualProgress', {
 				count: this.count,
 				total: this.total
 			});

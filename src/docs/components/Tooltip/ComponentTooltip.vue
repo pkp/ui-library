@@ -1,18 +1,22 @@
 <script>
 import Component from '@/docs/Component.vue';
-import ExampleTooltip from './ExampleTooltip.vue';
+import PreviewTooltip from './previews/PreviewTooltip.vue';
+import PreviewTooltipTemplate from '!raw-loader!./previews/PreviewTooltip.vue';
+import readme from '!raw-loader!./readme.md';
 
 export default {
 	extends: Component,
-	components: {
-		ExampleTooltip
-	},
 	data() {
 		return {
 			name: 'Tooltip',
-			examples: {
-				ExampleTooltip: 'Base'
-			}
+			readme: readme,
+			examples: [
+				{
+					component: PreviewTooltip,
+					name: 'Base',
+					template: this.extractTemplate(PreviewTooltipTemplate)
+				}
+			]
 		};
 	}
 };

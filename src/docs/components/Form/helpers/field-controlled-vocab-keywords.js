@@ -9,5 +9,5 @@ export default {
 	initialPosition: 'inline',
 	noneLabel: 'None',
 	selectedLabel: 'Selected',
-	suggestionsUrl: ''
+	apiUrl: ''
 };

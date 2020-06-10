@@ -1,147 +1,146 @@
 <template>
-	<div class="pkpListPanel--submissions pkpListPanel--catalog" :class="classes">
-		<!-- Header -->
-		<pkp-header>
-			{{ title }}
-			<spinner v-if="isLoading" />
-			<template slot="actions">
-				<search
-					:searchPhrase="searchPhrase"
-					:searchLabel="i18n.search"
-					:clearSearchLabel="i18n.clearSearch"
-					@search-phrase-changed="setSearchPhrase"
-				/>
-				<pkp-button
-					:isActive="isSidebarVisible"
-					icon="filter"
-					:label="i18n.filter"
-					@click="toggleSidebar"
-				/>
-				<template v-if="canOrderCurrent">
-					<pkp-button
-						class="pkpListPanel--catalog__orderToggle"
-						:label="orderingLabel"
-						icon="sort"
-						:isActive="isOrdering"
-						@click="toggleOrdering"
-					/>
-					<pkp-button
-						v-if="isOrdering"
-						class="pkpListPanel--catalog__orderCancel"
-						:label="i18n.cancel"
-						:isWarnable="true"
-						@click="cancelOrdering"
-					/>
-				</template>
-				<pkp-button
-					ref="addEntryButton"
-					:label="i18n.add"
-					@click="openNewEntryModal"
-				/>
-			</template>
-		</pkp-header>
+	<div>
+		<list-panel
+			:isSidebarVisible="isSidebarVisible"
+			:items="items"
+			class="listPanel--catalog"
+			:class="isOrdering ? '-isOrdering' : ''"
+		>
+			<template slot="header">
+				<pkp-header>
+					<h2>{{ title }}</h2>
+					<spinner v-if="isLoading" />
+					<template slot="actions">
+						<search
+							:searchPhrase="searchPhrase"
+							@search-phrase-changed="setSearchPhrase"
+						/>
+						<pkp-button
+							:isActive="isSidebarVisible"
+							@click="isSidebarVisible = !isSidebarVisible"
+						>
+							<icon icon="filter" :inline="true" />
+							{{ __('common.filter') }}
+						</pkp-button>
+						<template v-if="canOrderCurrent">
+							<pkp-button
+								class="listPanel--catalog__orderToggle"
+								icon="sort"
+								:isActive="isOrdering"
+								@click="toggleOrdering"
+							>
+								{{ orderingLabel }}
+							</pkp-button>
+							<pkp-button
+								v-if="isOrdering"
+								class="listPanel--catalog__orderCancel"
+								:isWarnable="true"
+								@click="cancelOrdering"
+							>
+								{{ __('common.cancel') }}
+							</pkp-button>
+						</template>
+						<pkp-button
+							ref="addEntryButton"
+							@click="$modal.show('addCatalogEntry')"
+						>
+							{{ __('submission.catalogEntry.new') }}
+						</pkp-button>
+					</template>
+				</pkp-header>
 
-		<!-- A notice indicating which kind of submissions are being ordered -->
-		<notification v-if="isOrdering" type="info">
-			{{ orderingDescription }}
-		</notification>
+				<!-- A notice indicating which kind of submissions are being ordered -->
+				<notification v-if="isOrdering">
+					{{ orderingDescription }}
+				</notification>
 
-		<!-- Body of the panel, including items and sidebar -->
-		<div class="pkpListPanel__body -pkpClearfix">
-			<!-- Filters in the sidebar -->
-			<div
-				v-if="filters.length"
-				ref="sidebar"
-				class="pkpListPanel__sidebar"
-				:class="{'-isVisible': isSidebarVisible}"
-			>
-				<pkp-header
-					class="pkpListPanel__sidebarHeader"
-					:tabindex="isSidebarVisible ? 0 : -1"
+				<!-- Table-like column headers for featured/new -->
+				<div
+					v-if="items.length"
+					class="listPanel--catalog__headings"
+					aria-hidden="true"
 				>
-					<icon icon="filter" :inline="true" />
-					{{ i18n.filter }}
+					<span class="listPanel--catalog__heading">
+						{{ featuredLabel }}
+					</span>
+					<span class="listPanel--catalog__heading">
+						{{ newReleaseLabel }}
+					</span>
+				</div>
+			</template>
+
+			<template slot="sidebar">
+				<pkp-header :isOneLine="false">
+					<h3>
+						<icon icon="filter" :inline="true" />
+						{{ __('common.filter') }}
+					</h3>
 				</pkp-header>
 				<div
 					v-for="(filterSet, index) in filters"
 					:key="index"
-					class="pkpListPanel__filterSet"
+					class="listPanel__filterSet"
 				>
 					<pkp-header v-if="filterSet.heading">
-						{{ filterSet.heading }}
+						<h4>{{ filterSet.heading }}</h4>
 					</pkp-header>
 					<pkp-filter
 						v-for="filter in filterSet.filters"
 						:key="filter.param + filter.value"
 						v-bind="filter"
 						:isFilterActive="isFilterActive(filter.param, filter.value)"
-						:i18n="i18n"
-						@add-filter="setFilter"
-						@remove-filter="removeParamFilters"
+						@add-filter="addFilter"
+						@remove-filter="removeFilter"
 					/>
 				</div>
-			</div>
+			</template>
 
-			<!-- Content -->
-			<div class="pkpListPanel__content" aria-live="polite">
-				<!-- Items -->
-				<template v-if="items.length">
-					<div class="pkpListPanel--catalog__columnLabels">
-						<span class="pkpListPanel--catalog__columnLabel">
-							<span>{{ featuredLabel }}</span>
-						</span>
-						<span class="pkpListPanel--catalog__columnLabel">
-							<span>{{ newReleaseLabel }}</span>
-						</span>
-					</div>
+			<template v-if="isLoading" slot="itemsEmpty">
+				<spinner />
+				{{ __('common.loading') }}
+			</template>
 
-					<draggable
-						v-model="localItems"
-						v-bind="draggableOptions"
-						@start="drag = true"
-						@end="drag = false"
-					>
-						<catalog-list-item
-							v-for="item in localItems"
-							:key="item.id"
-							:item="item"
-							:catalogEntryUrl="catalogEntryUrl"
-							:csrfToken="csrfToken"
-							:filterAssocType="filterAssocType"
-							:filterAssocId="filterAssocId"
-							:isOrdering="isOrdering"
-							:apiUrl="apiUrl"
-							:i18n="i18n"
-							@update:item="updateItem"
-							@order-up="itemOrderUp"
-							@order-down="itemOrderDown"
-						/>
-					</draggable>
-				</template>
+			<template v-slot:item="{item}">
+				<catalog-list-item
+					:key="item.id"
+					:item="item"
+					:filterAssocType="filterAssocType"
+					:filterAssocId="filterAssocId"
+					:isLoading="isLoading"
+					:isOrdering="isOrdering"
+					:apiUrl="apiUrl"
+					@update:item="updateItem"
+					@order-up="itemOrderUp"
+					@order-down="itemOrderDown"
+				/>
+			</template>
 
-				<!-- Loading indicator when loading and no items exist -->
-				<div v-else-if="isLoading" class="pkpListPanel__empty">
-					<spinner />
-					{{ i18n.loading }}
-				</div>
-
-				<!-- Indicator when no items exist -->
-				<div v-else class="pkpListPanel__empty">
-					{{ i18n.empty }}
-				</div>
-			</div>
-		</div>
-
-		<!-- Footer -->
-		<div v-if="lastPage > 1" class="pkpListPanel__footer">
 			<pagination
+				v-if="lastPage > 1"
+				slot="footer"
 				:currentPage="currentPage"
 				:isLoading="isLoading"
 				:lastPage="lastPage"
-				:i18n="i18n"
 				@set-page="setPage"
 			/>
-		</div>
+		</list-panel>
+		<modal
+			v-bind="MODAL_PROPS"
+			name="addCatalogEntry"
+			@closed="addEntryFormClosed"
+		>
+			<modal-content
+				:closeLabel="__('common.close')"
+				modalName="addCatalogEntry"
+				:title="__('submission.catalogEntry.new')"
+			>
+				<pkp-form
+					v-bind="addEntryForm"
+					@set="setAddEntryForm"
+					@success="addEntryFormSuccess"
+				/>
+			</modal-content>
+		</modal>
 	</div>
 </template>
 
@@ -150,27 +149,28 @@ import CatalogListItem from '@/components/ListPanel/submissions/CatalogListItem.
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import Notification from '@/components/Notification/Notification.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
-import PkpButton from '@/components/Button/Button.vue';
+import PkpForm from '@/components/Form/Form.vue';
+import PkpHeader from '@/components/Header/Header.vue';
+import PkpFilter from '@/components/Filter/Filter.vue';
 import Search from '@/components/Search/Search.vue';
-import SubmissionsListListeners from '@/mixins/ListPanel/submissions/listeners';
+import fetch from '@/mixins/fetch';
+import modal from '@/mixins/modal';
 
 export default {
-	extends: ListPanel,
-	mixins: [SubmissionsListListeners],
 	components: {
 		CatalogListItem,
+		ListPanel,
 		Notification,
 		Pagination,
-		PkpButton,
+		PkpForm,
+		PkpHeader,
+		PkpFilter,
 		Search
 	},
+	mixins: [fetch, modal],
 	props: {
-		addUrl: {
-			type: String,
-			required: true
-		},
-		catalogEntryUrl: {
-			type: String,
+		addEntryForm: {
+			type: Object,
 			required: true
 		},
 		catalogSortBy: {
@@ -194,7 +194,42 @@ export default {
 		csrfToken: {
 			type: String,
 			required: true
+		},
+		filters: {
+			type: Array,
+			default() {
+				return [];
+			}
+		},
+		id: {
+			type: String,
+			required: true
+		},
+		items: {
+			type: Array,
+			default() {
+				return [];
+			}
+		},
+		itemsMax: {
+			type: Number,
+			defaut() {
+				return 0;
+			}
+		},
+		title: {
+			type: String,
+			default() {
+				return '';
+			}
 		}
+	},
+	data() {
+		return {
+			newEntries: [],
+			isOrdering: false,
+			isSidebarVisible: false
+		};
 	},
 	computed: {
 		/**
@@ -203,7 +238,7 @@ export default {
 		 * @return {Boolean}
 		 */
 		canOrderCurrent() {
-			for (let item of this.localItems) {
+			for (let item of this.items) {
 				for (let feature of item.featured) {
 					if (
 						feature.assoc_type === this.filterAssocType &&
@@ -217,22 +252,6 @@ export default {
 		},
 
 		/**
-		 * Always sort featured items at the top, according to
-		 * their sequence
-		 */
-		localItems: {
-			get() {
-				return this.items;
-			},
-			set(newVal, oldVal) {
-				if (newVal === oldVal) {
-					return;
-				}
-				this.$emit('set', this.id, {items: newVal});
-			}
-		},
-
-		/**
 		 * Return the appropriate label for the ordering button depending on
 		 * if we're ordering or not.
 		 *
@@ -240,8 +259,8 @@ export default {
 		 */
 		orderingLabel() {
 			return this.isOrdering
-				? this.i18n.saveFeatureOrder
-				: this.i18n.orderFeatures;
+				? this.__('submission.list.saveFeatureOrder')
+				: this.__('submission.list.orderFeatures');
 		},
 
 		/**
@@ -252,11 +271,11 @@ export default {
 		 */
 		featuredLabel() {
 			if (this.filterAssocType === pkp.const.ASSOC_TYPE_CATEGORY) {
-				return this.i18n.featuredCategory;
+				return this.__('catalog.manage.categoryFeatured');
 			} else if (this.filterAssocType === pkp.const.ASSOC_TYPE_SERIES) {
-				return this.i18n.featuredSeries;
+				return this.__('catalog.manage.seriesFeatured');
 			}
-			return this.i18n.featured;
+			return this.__('catalog.manage.featured');
 		},
 
 		/**
@@ -267,11 +286,11 @@ export default {
 		 */
 		newReleaseLabel() {
 			if (this.filterAssocType === pkp.const.ASSOC_TYPE_CATEGORY) {
-				return this.i18n.newReleaseCategory;
+				return this.__('catalog.manage.feature.categoryNewRelease');
 			} else if (this.filterAssocType === pkp.const.ASSOC_TYPE_SERIES) {
-				return this.i18n.newReleaseSeries;
+				return this.__('catalog.manage.feature.seriesNewRelease');
 			}
-			return this.i18n.newRelease;
+			return this.__('catalog.manage.feature.newRelease');
 		},
 
 		/**
@@ -289,10 +308,12 @@ export default {
 			}
 
 			if (filter) {
-				return this.__('orderingFeaturesSection', {title: filter.title});
+				return this.__('submission.list.orderingFeaturesSection', {
+					title: filter.title
+				});
 			}
 
-			return this.i18n.orderingFeatures;
+			return this.__('submission.list.orderingFeatures');
 		},
 
 		/**
@@ -330,13 +351,119 @@ export default {
 	},
 	methods: {
 		/**
+		 * When the add entry form has been successfully submitted
+		 */
+		addEntryFormSuccess() {
+			this.$modal.hide('addCatalogEntry');
+			this.get();
+		},
+
+		/**
+		 * When the add entry modal is closed
+		 */
+		addEntryFormClosed() {
+			this.setFocusToRef('addEntryButton');
+			this.addEntryForm.fields.find(
+				f => f.name === 'submissionIds'
+			).selected = [];
+		},
+
+		/**
+		 * Add a filter
+		 *
+		 * Only one filter can be active at a time because setting features
+		 * and new releases is done on a per-category basis.
+		 *
+		 * @param {String} param
+		 * @param {mixed} value
+		 */
+		addFilter(param, value) {
+			let newFilters = {};
+			newFilters[param] = value;
+			this.activeFilters = newFilters;
+		},
+
+		/**
+		 * Remove a filter
+		 *
+		 * Only one filter can be active at a time because setting features
+		 * and new releases is done on a per-category basis.
+		 *
+		 * @param {String} param
+		 * @param {mixed} value
+		 */
+		removeFilter(param, value) {
+			this.activeFilters = {};
+		},
+
+		/**
+		 * Is a filter currently active?
+		 *
+		 * @param {string} param The filter param
+		 * @param {mixed} value The filter value
+		 * @return {Boolean}
+		 */
+		isFilterActive(param, value) {
+			if (!Object.keys(this.activeFilters).includes(param)) {
+				return false;
+			} else if (Array.isArray(this.activeFilters[param])) {
+				return this.activeFilters[param].includes(value);
+			} else {
+				return this.activeFilters[param] === value;
+			}
+		},
+
+		/**
+		 * Cancel changes made by ordering items
+		 */
+		cancelOrdering() {
+			this.isOrdering = false;
+			this.$emit('set', this.id, {offset: 0});
+			this.$nextTick(() => this.get());
+		},
+
+		/**
+		 * Move an item down in the list
+		 *
+		 * @param {Object} item The item to move
+		 */
+		itemOrderDown(item) {
+			var index = this.items.findIndex(obj => {
+				return item.id == obj.id;
+			});
+			if (index === this.items.length - 1) {
+				return;
+			}
+			let items = [...this.items];
+			items.splice(index + 1, 0, items.splice(index, 1)[0]);
+			this.$emit('set', this.id, {items: items});
+		},
+
+		/**
+		 * Move an item up in the list
+		 *
+		 * @param {Object} item The item to move
+		 */
+		itemOrderUp(item) {
+			var index = this.items.findIndex(obj => {
+				return item.id == obj.id;
+			});
+			if (index === 0) {
+				return;
+			}
+			let items = [...this.items];
+			items.splice(index - 1, 0, items.splice(index, 1)[0]);
+			this.$emit('set', this.id, {items: items});
+		},
+
+		/**
 		 * Find a filter's configuration details by param and value
 		 *
 		 * @param {String} param The param of the filter to find
 		 * @param {mixed} value The value of the filter to find
 		 * @return {Object} The filter config object
 		 */
-		getFilter: function(param, value) {
+		getFilter(param, value) {
 			for (let filterSet of this.filters) {
 				for (let filter of filterSet.filters) {
 					if (filter.param === param && filter.value === value) {
@@ -348,6 +475,20 @@ export default {
 		},
 
 		/**
+		 * Update the add entry form when values change
+		 *
+		 * @param {String} formId
+		 * @param {Object} data
+		 */
+		setAddEntryForm(formId, data) {
+			let addEntryForm = {...this.addEntryForm};
+			Object.keys(data).forEach(function(key) {
+				addEntryForm[key] = data[key];
+			});
+			this.addEntryForm = addEntryForm;
+		},
+
+		/**
 		 * Override ListPanel::setFilter() so that only one filter param
 		 * can be set any time. This is necessary to ensure only a single
 		 * category or series is being viewed at one time, so that sorting
@@ -356,10 +497,23 @@ export default {
 		 * @param {String} param
 		 * @param {mixed} value
 		 */
-		setFilter: function(param, value) {
+		setFilter(param, value) {
 			this.activeFilters = {};
 			this.activeFilters[param] = value;
 			this.get();
+		},
+
+		/**
+		 * Update the list of items
+		 *
+		 * @param {Array} items
+		 * @param {Number} itemsMax
+		 */
+		setItems(items, itemsMax) {
+			this.$emit('set', this.id, {
+				items,
+				itemsMax
+			});
 		},
 
 		/**
@@ -367,33 +521,11 @@ export default {
 		 *
 		 * @param {Object} updatedItem
 		 */
-		updateItem: function(updatedItem) {
-			let items = this.localItems.map(item => {
+		updateItem(updatedItem) {
+			let items = this.items.map(item => {
 				return item.id === updatedItem.id ? updatedItem : item;
 			});
 			this.$emit('set', this.id, {items: items});
-		},
-
-		/**
-		 * Open the new catalog entry modal
-		 */
-		openNewEntryModal() {
-			if (!this.addUrl) {
-				return;
-			}
-
-			const opts = {
-				title: this.i18n.add,
-				url: this.addUrl,
-				closeCallback: () => this.$refs.addEntryButton.$el.focus()
-			};
-
-			$(
-				'<div id="' +
-					$.pkp.classes.Helper.uuid() +
-					'" ' +
-					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>'
-			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
 		},
 
 		/**
@@ -451,20 +583,30 @@ export default {
 				url: this.apiUrl + '/saveFeaturedOrder',
 				type: 'POST',
 				headers: {
-					'X-Csrf-Token': this.csrfToken
+					'X-Csrf-Token': pkp.currentUser.csrfToken
 				},
 				data: {
 					assocType: this.filterAssocType,
 					assocId: this.filterAssocId,
 					featured: featured
 				},
-				error: function(r) {
+				error(r) {
 					self.ajaxErrorCallback(r);
 				},
 				complete() {
 					self.isLoading = false;
 				}
 			});
+		},
+
+		/**
+		 * Toggle the ordering and save a new order
+		 */
+		toggleOrdering() {
+			if (this.isOrdering) {
+				this.setItemOrderSequence();
+			}
+			this.isOrdering = !this.isOrdering;
 		}
 	},
 	created() {
@@ -481,15 +623,6 @@ export default {
 			}
 			this.updateSortOrder();
 		});
-	},
-	mounted() {
-		/**
-		 * Update when a new entry has been added to the catalog
-		 */
-		var self = this;
-		pkp.eventBus.$on('catalogEntryAdded', function() {
-			self.get();
-		});
 	}
 };
 </script>
@@ -497,14 +630,14 @@ export default {
 <style lang="less">
 @import '../../../styles/_import';
 
-.pkpListPanel--catalog {
+.listPanel--catalog {
 	&.-isLoading {
 		// Hide the list when loading because the featured and new release
 		// actions change depending on the filter used. This prevents a brief
 		// period while a list is loading when a user may click on the featured/
 		// new release actions on an item that isn't in the filter that's been
 		// requested.
-		.pkpListPanel__content:after {
+		.listPanel__content:after {
 			content: '';
 			position: absolute;
 			top: 0;
@@ -516,13 +649,34 @@ export default {
 		}
 
 		// Hide column labels while loading. See above.
-		.pkpListPanel--catalog__columnLabel > span {
+		.listPanel--catalog__columnLabel > span {
 			opacity: 0;
 		}
 	}
+
+	.listPanel__itemsList {
+		padding-top: 0;
+		padding-bottom: 0;
+	}
 }
 
-.pkpListPanel--catalog__columnLabels {
+.listPanel--catalog__headings {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	margin: 0.5rem -0.5rem 0 -1rem;
+	padding-top: 0.5rem;
+	border-top: @grid-border;
+	font-size: @font-tiny;
+	line-height: @line-tiny;
+}
+
+.listPanel--catalog__heading {
+	width: 6rem;
+	text-align: center;
+}
+
+.listPanel--catalog__columnLabels {
 	position: relative;
 	display: block;
 	min-height: 3rem;
@@ -531,7 +685,7 @@ export default {
 	font-size: @font-tiny;
 	line-height: @line-tiny;
 
-	.pkpListPanel--catalog__columnLabel {
+	.listPanel--catalog__columnLabel {
 		position: absolute;
 		top: 0;
 		right: 8rem;
@@ -540,7 +694,7 @@ export default {
 		border-left: @grid-border;
 		line-height: 1rem;
 
-		+ .pkpListPanel--catalog__columnLabel {
+		+ .listPanel--catalog__columnLabel {
 			right: 0;
 		}
 
@@ -555,22 +709,19 @@ export default {
 	}
 }
 
-.pkpListPanel--catalog.-isOrdering {
+.listPanel--catalog.-isOrdering {
 	.pkpHeader__actions
-		> button:not(.pkpListPanel--catalog__orderToggle):not(.pkpListPanel--catalog__orderCancel),
+		> button:not(.listPanel--catalog__orderToggle):not(.listPanel--catalog__orderCancel),
 	.pkpSearch,
-	.pkpListPanelItem--catalog__select,
-	.pkpListPanelItem__actions,
-	.pkpListPanel--catalog__columnLabels {
+	.listPanel__itemActions--catalog,
+	.listPanel__item--catalog:not(.-isFeatured),
+	.orderer__dragDrop,
+	.listPanel--catalog__headings {
 		display: none;
 	}
 
-	.pkpListPanelItem--submission__item {
-		padding-right: 1rem;
-	}
-
-	.pkpListPanelItem:not(.-isFeatured) {
-		display: none;
+	.listPanel__itemSummary {
+		margin-right: 8rem;
 	}
 }
 </style>

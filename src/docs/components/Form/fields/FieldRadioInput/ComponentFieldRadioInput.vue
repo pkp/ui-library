@@ -1,19 +1,23 @@
 <script>
 import Component from '@/docs/Component.vue';
-import ExampleFieldRadioInput from './ExampleFieldRadioInput.vue';
+import PreviewFieldRadioInput from './previews/PreviewFieldRadioInput.vue';
+import PreviewFieldRadioInputTemplate from '!raw-loader!./previews/PreviewFieldRadioInput.vue';
+import readme from '!raw-loader!./readme.md';
 
 export default {
 	extends: Component,
-	components: {
-		ExampleFieldRadioInput
-	},
 	data() {
 		return {
-			name: 'FieldOptions',
+			name: 'FieldRadioInput',
 			parentRoute: 'Form/fields',
-			examples: {
-				ExampleFieldRadioInput: 'Base'
-			}
+			readme: readme,
+			examples: [
+				{
+					component: PreviewFieldRadioInput,
+					name: 'Base',
+					template: this.extractTemplate(PreviewFieldRadioInputTemplate)
+				}
+			]
 		};
 	}
 };

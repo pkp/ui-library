@@ -1,39 +1,32 @@
 <template>
-	<div class="previewTable">
-		<pkp-table
-			:label="label"
-			:description="description"
-			:columns="columns"
-			:rows="rows"
-			:order-by="orderBy"
-			:order-direction="orderDirection"
-			@order-by="setOrder"
-		/>
-	</div>
+	<pkp-table
+		label="Example Table"
+		description="This example supports sorting by the abstract, galley and total views columns."
+		:columns="columns"
+		:rows="rows"
+		:order-by="orderBy"
+		:order-direction="orderDirection"
+		@order-by="setOrder"
+	/>
 </template>
 
 <script>
-import PkpTable from '@/components/Table/Table.vue';
-import {props} from '../config';
+import PreviewTable from './PreviewTable.vue';
+import articleStatsColumns from '../helpers/articleStatsColumns.js';
 
 export default {
-	components: {
-		PkpTable
-	},
+	extends: PreviewTable,
 	data() {
-		const sortableColumns = props.columns.map(col => {
-			if (['abstractViews', 'galleyViews', 'total'].includes(col.name)) {
-				col.orderBy = col.name;
-				col.initialOrderDirection = true;
-			}
-			return col;
-		});
 		return {
-			...props,
-			description:
-				'This example supports sorting by the abstract, galley and total views columns.',
-			columns: sortableColumns,
-			rows: props.rows.slice(0, 10)
+			columns: articleStatsColumns.map(col => {
+				if (['abstractViews', 'galleyViews', 'total'].includes(col.name)) {
+					col.orderBy = col.name;
+					col.initialOrderDirection = true;
+				}
+				return col;
+			}),
+			orderBy: '',
+			orderDirection: false
 		};
 	},
 	methods: {
@@ -47,6 +40,7 @@ export default {
 			this.orderBy = orderBy;
 			this.orderDirection = orderDirection;
 		},
+
 		/**
 		 * Sort the rows in table when an orderBy event is emitted from the table
 		 *

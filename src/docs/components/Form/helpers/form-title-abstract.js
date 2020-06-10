@@ -2,7 +2,7 @@ import Form from './form';
 import FieldTextPrefix from './field-text-prefix';
 import FieldTextTitle from './field-text-title';
 import FieldTextSubtitle from './field-text-subtitle';
-import FieldRichTextareaAbstract from './field-rich-text-abstract';
+import FieldRichTextareaAbstract from './field-rich-textarea-abstract';
 
 export default {
 	...Form,

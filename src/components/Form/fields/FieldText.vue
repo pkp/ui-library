@@ -6,7 +6,7 @@
 				:label="label"
 				:localeLabel="localeLabel"
 				:isRequired="isRequired"
-				:requiredLabel="i18n.required"
+				:requiredLabel="__('common.required')"
 				:multilingualLabel="multilingualLabel"
 			/>
 			<tooltip
@@ -26,7 +26,7 @@
 				:id="describedByHelpId"
 				:topic="helpTopic"
 				:section="helpSection"
-				:label="i18n.help"
+				:label="__('help.help')"
 			/>
 		</div>
 		<div
@@ -63,14 +63,14 @@
 					:id="multilingualProgressId"
 					:count="multilingualFieldsCompleted"
 					:total="locales.length"
-					:i18n="i18n"
 				/>
 				<pkp-button
 					v-if="optIntoEdit && isDisabled"
 					class="pkpFormField--text__optIntoEdit"
-					:label="optIntoEditLabel"
 					@click="isDisabled = false"
-				/>
+				>
+					{{ optIntoEditLabel }}
+				</pkp-button>
 			</div>
 			<field-error
 				v-if="errors && errors.length"
@@ -83,14 +83,10 @@
 
 <script>
 import FieldBase from './FieldBase.vue';
-import PkpButton from '@/components/Button/Button.vue';
 
 export default {
 	name: 'FieldText',
 	extends: FieldBase,
-	components: {
-		PkpButton
-	},
 	props: {
 		inputType: String,
 		optIntoEdit: Boolean,

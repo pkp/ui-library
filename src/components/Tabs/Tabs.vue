@@ -34,14 +34,7 @@
 </template>
 
 <script>
-import Icon from '@/components/Icon/Icon.vue';
-import Badge from '@/components/Badge/Badge.vue';
-
 export default {
-	components: {
-		Icon,
-		Badge
-	},
 	props: {
 		defaultTab: {
 			type: String,
@@ -121,6 +114,14 @@ export default {
 			this.setCurrentTab(tab.id);
 		}
 	},
+	watch: {
+		/**
+		 * Update the active tab when a new tab is selected
+		 */
+		currentTab(newVal, oldVal) {
+			this.tabs.forEach(tab => (tab.isActive = tab.id === newVal));
+		}
+	},
 	mounted() {
 		/**
 		 * Store the nested tabs as a data property
@@ -145,13 +146,8 @@ export default {
 			});
 		});
 	},
-	watch: {
-		/**
-		 * Update the active tab when a new tab is selected
-		 */
-		currentTab(newVal, oldVal) {
-			this.tabs.forEach(tab => (tab.isActive = tab.id === newVal));
-		}
+	destroyed() {
+		pkp.eventBus.$off('open-tab');
 	}
 };
 </script>
@@ -253,7 +249,6 @@ export default {
 	.pkpTabs__buttons {
 		position: relative;
 		top: 1px;
-		padding-left: 1rem;
 		z-index: 2;
 	}
 
@@ -370,7 +365,7 @@ export default {
 		border-top: none;
 
 		.pkpForm {
-			margin: 0 0 @double (-@double - 1); // overlap border
+			margin: 0 0 0 (-@double - 1); // overlap border
 			border: @bg-border-light;
 		}
 

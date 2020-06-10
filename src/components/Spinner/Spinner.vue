@@ -14,12 +14,10 @@
 		vertical-align: middle;
 		animation: pkp_anim_spinner 0.6s linear infinite;
 		border-radius: 100%;
-		border-top: 1px solid @shade;
+		border-top: 1px solid @bg-anchor;
 		border-bottom: 1px solid transparent;
-		border-left: 1px solid @shade;
+		border-left: 1px solid @bg-anchor;
 		border-right: 1px solid transparent;
-		border-top-color: rgba(0, 0, 0, 0.5);
-		border-left-color: rgba(0, 0, 0, 0.5);
 		content: '';
 		opacity: 1;
 	}
