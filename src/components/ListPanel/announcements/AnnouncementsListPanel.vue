@@ -205,9 +205,10 @@ export default {
 					var self = this;
 					$.ajax({
 						url: this.apiUrl + '/' + id,
-						type: 'DELETE',
+						type: 'POST',
 						headers: {
-							'X-Csrf-Token': pkp.currentUser.csrfToken
+							'X-Csrf-Token': pkp.currentUser.csrfToken,
+							'X-Http-Method-Override': 'DELETE'
 						},
 						error: self.ajaxErrorCallback,
 						success: function(r) {

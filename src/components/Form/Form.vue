@@ -245,12 +245,18 @@ export default {
 				return;
 			}
 
+			let method = this.method;
+			if (method === 'DELETE' || method === 'PUT') {
+				method = 'POST';
+			}
+
 			$.ajax({
 				context: this,
-				method: this.method,
+				method: method,
 				url: this.action,
 				headers: {
-					'X-Csrf-Token': pkp.currentUser.csrfToken
+					'X-Csrf-Token': pkp.currentUser.csrfToken,
+					'X-Http-Method-Override': this.method
 				},
 				data: this.submitValues,
 				success: this.success,
