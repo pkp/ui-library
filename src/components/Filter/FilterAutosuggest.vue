@@ -20,7 +20,7 @@ export default {
 	},
 	methods: {
 		toggle(fieldName, fieldProp, newVal) {
-			if (!this.currentValue) {
+			if (newVal.length) {
 				this.$emit('add-filter', this.param, newVal);
 			} else {
 				this.remove();
