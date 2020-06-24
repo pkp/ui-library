@@ -32,3 +32,18 @@ export default {
 	}
 };
 </script>
+
+<style lang="less">
+@import '../../styles/_import';
+
+.pkpFilter--autosuggest {
+	position: relative;
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
+.pkpFormField--autosuggest__values .pkpBadge {
+	margin-right: 0;
+	display: block;
+}
+</style>
