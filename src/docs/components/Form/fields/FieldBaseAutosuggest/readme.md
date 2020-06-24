@@ -44,5 +44,6 @@ The `value` is submitted with the form.
 
 The following autosuggest fields are available to be used.
 
+- `FieldAutosuggestPreset` can be used to when the options can be preset instead of requiring a request to the REST API.
 - `FieldControlledVocab` can be used to enter metadata such as keywords and subjects.
 - `FieldSelectSubmissions` can be used to find and select submissions.

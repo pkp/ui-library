@@ -10,6 +10,7 @@ import ComponentDateRange from './docs/components/DateRange/ComponentDateRange.v
 import ComponentDropdown from './docs/components/Dropdown/ComponentDropdown.vue';
 import ComponentEmailTemplatesListPanel from './docs/components/ListPanel/ComponentEmailTemplatesListPanel.vue';
 import ComponentFilter from './docs/components/Filter/ComponentFilter.vue';
+import ComponentFieldAutosuggestPreset from './docs/components/Form/fields/FieldAutosuggestPreset/ComponentFieldAutosuggestPreset.vue';
 import ComponentFieldArchivingPn from './docs/components/Form/fields/FieldArchivingPn/ComponentFieldArchivingPn.vue';
 import ComponentFieldBaseAutosuggest from './docs/components/Form/fields/FieldBaseAutosuggest/ComponentFieldBaseAutosuggest.vue';
 import ComponentFieldBase from './docs/components/Form/fields/FieldBase/ComponentFieldBase.vue';
@@ -102,6 +103,11 @@ export default new Router({
 			path: '/component/Form/fields/FieldArchivingPn/:example?',
 			name: 'Form/fields/FieldArchivingPn',
 			component: ComponentFieldArchivingPn
+		},
+		{
+			path: '/component/Form/fields/FieldAutosuggestPreset/:example?',
+			name: 'Form/fields/FieldAutosuggestPreset',
+			component: ComponentFieldAutosuggestPreset
 		},
 		{
 			path: '/component/Form/fields/FieldBaseAutosuggest/:example?',
