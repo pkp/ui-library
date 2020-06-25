@@ -8,7 +8,7 @@ export default {
 	...Form,
 	id: 'example',
 	action: 'http://httpbin.org/put',
-	methood: 'PUT',
+	method: 'PUT',
 	fields: [
 		{...FieldTextGivenName, groupId: 'default'},
 		{...FieldTextFamilyName, groupId: 'default'},

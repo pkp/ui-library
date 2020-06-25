@@ -183,8 +183,8 @@ export default {
 					const dateRange = dateRangeResponse.find(i => i.key === row.key);
 					const total = totalsResponse.find(i => i.key === row.key);
 					if (this.percentageStats.includes(row.key)) {
-						row.dateRange = dateRange.value * 100 + '%';
-						row.total = total.value * 100 + '%';
+						row.dateRange = Number(dateRange.value * 100).toFixed(0) + '%';
+						row.total = Number(total.value * 100).toFixed(0) + '%';
 					} else {
 						row.dateRange = dateRange.value;
 						row.total = total.value;

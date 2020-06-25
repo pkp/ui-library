@@ -22,132 +22,15 @@ This is a root component. It does not emit any events but may fire events on the
 
 This component is a root component which is used to render a page of the editorial backend. It manages the layout architecture, including the main navigation menu, tasks and user navigation dropdown.
 
-Nothing is needed to load the `Page` component. It is initialized automatically for every page in the editorial backend.
+Nothing is needed to load the `Page` component. It is initialized automatically for every page in the editorial backend. Learn more about the [application's frontend](https://docs.pkp.sfu.ca/dev/documentation/en/frontend).
 
 ## State
 
-The `Page` component is responsible for managing data on its page. For example, if an action changes the number of unread tasks, the `Page` container should update the value.
+The developer documentation includes guidance on [how to manage state](https://docs.pkp.sfu.ca/dev/documentation/en/frontend-ui-library#state) in a `Page` component.
 
-```html
-<button @click="markTaskRead(1)">
-	...
-</button>
-```
-```js
-methods: {
-	markTaskRead(id) {
-		var self = this;
-		$.ajax(/* API request to mark task read */)
-			.success(() => {
-				this.unreadTasksCount = this.unreadTasksCount - 1
-			});
-	}
-}
-```
+## Page Components
 
-Data that is passed to the `Page` component is called "state". Initialize state data on the server side using the Template Manager.
-
-```php
-$templateMgr = TemplateManager::getManager($request);
-$templateMgr->setState([
-	'unreadTasksCount' => $unreadTasksCount,
-]);
-```
-
-## Managing Components
-
-The `Page` component sometimes manages state that should be passed down to a complex component. For example, a `Page` component may manage a list panel which updates state data by making requests to the API.
-
-In large applications, a state management library such as [Vuex](https://vuex.vuejs.org/) is typically used. Instead, we opt for a lightweight approach to manage state. State is passed down to child components, which emit events when they want to update that state.
-
-If you are unfamiliar with how props and events are used to coordinate components, read this guide on [organizing components](https://vuejs.org/v2/guide/components.html#Organizing-Components).
-
-The example below demonstrates how to pass state to a complex component, the `submissions-list-panel`, and update that state.
-
-```html
-<submissions-list-panel />
-```
-
-All props for the list panel are stored in the  `components` object with a unique key. These props can be passed to the component all at once with `v-bind`.
-
-```html
-<submissions-list-panel
-	v-bind="components.submissions"
-/>
-```
-
-When the child component needs to update the props that have been passed down, it will emit a `set` event to update state data.
-
-```js
-/* This code is used in the submissions list panel */
-this.$emit('set', this.id, {items: newItems});
-```
-
-The `Page` component provides a `set` method that will listen for this event and update the component's state. Use the following to call this method when the `set` event is emitted.
-
-```html
-<submissions-list-panel
-	v-bind="components.submissions"
-	@set="set"
-/>
-```
-
-## Extend the Page Component
-
-It is often necessary to extend the `Page` component to provide additional functionality for a page. The example below shows the `SettingsPage` component, which adds or removes a navigation menu item when the announcements have been enabled or disabled.
-
-```js
-import Page from './Page.vue';
-
-export default {
-	name: 'SettingsPage',
-	extends: Page,
-	mounted() {
-		pkp.eventBus.$on('form-success', (formId, context) => {
-			if (formId === pkp.const.FORM_ANNOUNCEMENT_SETTINGS) {
-				let menu = {...this.menu};
-				if (!context.enableAnnouncements) {
-					delete menu.announcements;
-				} else {
-					menu.announcements = {
-						name: 'Announcements,
-						url: 'http://example.org/announcements'
-					};
-				}
-				this.menu = menu;
-			}
-		});
-	},
-	destroyed() {
-		pkp.eventBus.$off('form-success');
-	}
-};
-```
-
-Once a new page component has been created, it must be imported and registered in `js/load.js`.
-
-```js
-...
-import SettingsPage from '@/components/Container/SettingsPage.vue';
-
-window.pkp = Object.assign(PkpLoad, {
-	controllers: {
-		...
-		SettingsPage
-	}
-});
-```
-
-Finally, it must be declared as the `pageComponent` on the server-side.
-
-```php
-$templateMgr = TemplateManager::getManager($request);
-$templateMgr->assign([
-	'pageComponent' => 'SettingsPage',
-]);
-```
-
-Several page components have been created:
+Several page components have been created to manage state for different pages of the application. They include:
 
 - `AdminPage` is used on administration pages.
 - `ImportExportPage` is used to support the select all functionality for the export tools.

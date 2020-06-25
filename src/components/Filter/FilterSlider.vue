@@ -310,7 +310,6 @@ export default {
 }
 
 .pkpFilter--disabled {
-
 	.pkpFilter__input--slider {
 		opacity: 0.5;
 	}

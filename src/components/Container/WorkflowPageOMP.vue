@@ -76,12 +76,13 @@ export default {
 			var self = this;
 			$.ajax({
 				url: this.submissionApiUrl,
-				type: 'PUT',
+				type: 'POST',
 				data: {
 					workType: workType
 				},
 				headers: {
-					'X-Csrf-Token': pkp.currentUser.csrfToken
+					'X-Csrf-Token': pkp.currentUser.csrfToken,
+					'X-Http-Method-Override': 'PUT'
 				},
 				error(r) {
 					self.isLoadingWorkType = false;
