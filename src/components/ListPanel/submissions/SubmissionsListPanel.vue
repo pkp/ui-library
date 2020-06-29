@@ -206,7 +206,7 @@ export default {
 				if (newFilters.hasOwnProperty('isIncomplete')) {
 					delete newFilters.isIncomplete;
 				}
-				if (['isOverdue', 'daysInactive'].includes(param)) {
+				if (['isOverdue', 'daysInactive', 'assignedTo'].includes(param)) {
 					newFilters[param] = value;
 				} else {
 					if (!newFilters[param]) {
