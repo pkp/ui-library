@@ -98,6 +98,7 @@ import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
 import PkpFilter from '@/components/Filter/Filter.vue';
 import PkpFilterSlider from '@/components/Filter/FilterSlider.vue';
+import PkpFilterAutosuggest from '@/components/Filter/FilterAutosuggest.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import Search from '@/components/Search/Search.vue';
 import SubmissionsListItem from '@/components/ListPanel/submissions/SubmissionsListItem.vue';
@@ -110,6 +111,7 @@ export default {
 		Pagination,
 		PkpFilter,
 		PkpFilterSlider,
+		PkpFilterAutosuggest,
 		PkpHeader,
 		Search,
 		SubmissionsListItem
@@ -204,7 +206,7 @@ export default {
 				if (newFilters.hasOwnProperty('isIncomplete')) {
 					delete newFilters.isIncomplete;
 				}
-				if (['isOverdue', 'daysInactive'].includes(param)) {
+				if (['isOverdue', 'daysInactive', 'assignedTo'].includes(param)) {
 					newFilters[param] = value;
 				} else {
 					if (!newFilters[param]) {
