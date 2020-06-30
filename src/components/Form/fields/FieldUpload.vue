@@ -234,11 +234,7 @@ export default {
 		 * Clear the current value
 		 */
 		clear() {
-			this.$emit('change', {
-				name: this.name,
-				value: null,
-				localeKey: this.localeKey
-			});
+			this.$emit('change', this.name, 'value', null, this.localeKey);
 			this.uploadFile = null;
 			this.$refs.dropzone.dropzone.removeAllFiles();
 			this.setFocusToControl();
@@ -249,11 +245,13 @@ export default {
 		 * Revert to the initialValue
 		 */
 		revert() {
-			this.$emit('change', {
-				name: this.name,
-				value: this.initialValue,
-				localeKey: this.localeKey
-			});
+			this.$emit(
+				'change',
+				this.name,
+				'value',
+				this.initialValue,
+				this.localeKey
+			);
 			this.uploadFile = null;
 			this.setFocusToControl();
 			this.setErrors([]);
@@ -267,11 +265,13 @@ export default {
 		 * @see https://www.dropzonejs.com/#event-success
 		 */
 		success: function(file, response) {
-			this.$emit('change', {
-				name: this.name,
-				value: {temporaryFileId: response.id},
-				localeKey: this.localeKey
-			});
+			this.$emit(
+				'change',
+				this.name,
+				'value',
+				{temporaryFileId: response.id},
+				this.localeKey
+			);
 			this.setFocusToControl();
 		},
 
