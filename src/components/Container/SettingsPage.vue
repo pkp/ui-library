@@ -74,7 +74,7 @@ export default {
 <style lang="less">
 @import '../../styles/_import';
 
-.pkp_page_management .app__page > .pkpNotification, .pkp_page_submissions .app__page > .pkpNotification  {
+.pkp_page_management .app__page > .pkpNotification {
 	margin-bottom: 2rem;
 }
 </style>

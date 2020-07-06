@@ -22,7 +22,7 @@
 					</pkp-button>
 					<pkp-button
 						v-if="addUrl && currentUserCanAddSubmission"
-						v-show="showButton"
+						v-show="allowSubmissions"
 						element="a"
 						:href="addUrl"
 					>
@@ -158,7 +158,7 @@ export default {
 			type: String,
 			required: true
 		},
-		showButton: {
+		allowSubmissions: {
 			type: Boolean,
 			default() {
 				return true;
@@ -186,7 +186,7 @@ export default {
 		 * Does the current user have a role which can create a new submission?
 		 */
 		currentUserCanAddSubmission() {
-			return this.userHasRole([
+			return this.allowSubmissions && this.userHasRole([
 				pkp.const.ROLE_ID_MANAGER,
 				pkp.const.ROLE_ID_SUB_EDITOR,
 				pkp.const.ROLE_ID_ASSISTANT,
