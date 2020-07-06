@@ -6,7 +6,7 @@
 import ExampleFieldUserAutosuggest from './ExampleFieldUserAutosuggest.vue';
 import PreviewFieldBase from '../../FieldBase/previews/PreviewFieldBase.vue';
 import fieldBase from '../../../helpers/field-base';
-import FieldBaseAutosuggest from '../../../helpers/field-autosuggest-users';
+import FieldBaseAutosuggest from '../../../helpers/field-autosuggest';
 
 export default {
 	extends: PreviewFieldBase,
