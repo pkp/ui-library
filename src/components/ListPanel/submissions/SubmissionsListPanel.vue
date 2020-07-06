@@ -22,6 +22,7 @@
 					</pkp-button>
 					<pkp-button
 						v-if="addUrl && currentUserCanAddSubmission"
+						v-show="showButton"
 						element="a"
 						:href="addUrl"
 					>
@@ -154,6 +155,12 @@ export default {
 		title: {
 			type: String,
 			required: true
+		},
+		showButton: {
+			type: Boolean,
+			default() {
+				return true;
+			}
 		}
 	},
 	data() {
