@@ -1,11 +1,20 @@
 <template>
 	<div class="previewFilters">
-		This is a
 		<filter-autosuggest
-			:autosuggestProps="autosuggestProps"
+			:autosuggestProps="users"
+			component="field-select-users"
 			param="stageIds"
 			:value="[]"
-			title="Select Users"
+			title="Assigned to Editors"
+			@add-filter="addFilter"
+			@remove-filter="removeFilter"
+		/>
+		<filter-autosuggest
+			:autosuggestProps="issues"
+			component="field-select-issues"
+			param="stageIds"
+			:value="[]"
+			title="Assigned to Issues"
 			@add-filter="addFilter"
 			@remove-filter="removeFilter"
 		/>
@@ -15,7 +24,7 @@
 <script>
 import FilterAutosuggest from '@/components/Filter/FilterAutosuggest.vue';
 import fieldBase from '../../Form/helpers/field-base';
-import fieldBaseAutosuggest from '../../Form/helpers/field-autosuggest-users';
+import fieldBaseAutosuggest from '../../Form/helpers/field-autosuggest';
 
 export default {
 	components: {
@@ -23,30 +32,55 @@ export default {
 	},
 	data() {
 		return {
-			autosuggestProps: {
+			users: {
 				...fieldBase,
 				...fieldBaseAutosuggest,
-				apiUrl: '/usernames.json',
-				name: 'editorIds',
-				label: 'Assigned To Editors',
-				selectedLabel: 'Assigned'
+				name: 'userIds',
+				label: 'Assigned to Editors',
+				selectedLabel: 'Assigned',
+				apiUrl: '/usernames.json'
+			},
+			issues: {
+				...fieldBase,
+				...fieldBaseAutosuggest,
+				name: 'issueIds',
+				label: 'Assigned to Issues',
+				selectedLabel: 'Assigned',
+				apiUrl: '/issues.json'
 			},
 			assignedTo: {
+				stageIds: []
+			},
+			assignedIssues: {
 				stageIds: []
 			}
 		};
 	},
 	methods: {
-		addFilter(param, val) {
-			if (!this.assignedTo[param].includes(val)) {
-				this.assignedTo[param].push(val);
+		addFilter(fieldName, param, val) {
+			if (fieldName === 'userIds') {
+				if (!this.assignedTo[param].includes(val)) {
+					this.assignedTo[param].push(val);
+				}
+			} else {
+				if (!this.assignedIssues[param].includes(val)) {
+					this.assignedIssues[param].push(val);
+				}
 			}
 		},
-		removeFilter(param, val) {
-			if (this.assignedTo[param].includes(val)) {
-				this.assignedTo[param] = this.assignedTo[param].filter(
-					item => item !== val
-				);
+		removeFilter(fieldName, param, val) {
+			if (fieldName === 'userIds') {
+				if (this.assignedTo[param].includes(val)) {
+					this.assignedTo[param] = this.assignedTo[param].filter(
+						item => item !== val
+					);
+				}
+			} else {
+				if (this.assignedIssues[param].includes(val)) {
+					this.assignedIssues[param] = this.assignedIssues[param].filter(
+						item => item !== val
+					);
+				}
 			}
 		}
 	}
