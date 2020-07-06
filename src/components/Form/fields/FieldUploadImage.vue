@@ -194,14 +194,16 @@ export default {
 		 */
 		success: function(file, response) {
 			this.isUploading = false;
-			this.$emit('change', {
-				name: this.name,
-				value: {
+			this.$emit(
+				'change',
+				this.name,
+				'value',
+				{
 					temporaryFileId: response.id,
 					altText: ''
 				},
-				localeKey: this.localeKey
-			});
+				this.localeKey
+			);
 			this.setFocusToControl();
 		},
 
@@ -239,14 +241,16 @@ export default {
 			if (!newVal && !this.currentValue) {
 				return;
 			}
-			this.$emit('change', {
-				name: this.name,
-				value: {
+			this.$emit(
+				'change',
+				this.name,
+				'value',
+				{
 					...this.currentValue,
 					altText: newVal
 				},
-				localeKey: this.localeKey
-			});
+				this.localeKey
+			);
 		}
 	},
 	mounted() {

@@ -14,6 +14,8 @@
 import Page from '@/components/Container/Page.vue';
 import SubmissionsListPanel from '@/components/ListPanel/submissions/SubmissionsListPanel.vue';
 import submissions from '@/docs/data/submissions';
+import fieldBase from '../../Form/helpers/field-base';
+import fieldBaseAutosuggest from '../../Form/helpers/field-autosuggest-users';
 
 export default {
 	extends: Page,
@@ -72,6 +74,24 @@ export default {
 							min: 1,
 							max: 180,
 							filterType: 'pkp-filter-slider'
+						}
+					]
+				},
+				{
+					filters: [
+						{
+							title: 'Editors',
+							param: 'assignedTo',
+							value: [],
+							autosuggestProps: {
+								...fieldBase,
+								...fieldBaseAutosuggest,
+								apiUrl: '/usernames.json',
+								name: 'editorIds',
+								label: 'Assigned To Editors',
+								selectedLabel: 'Assigned'
+							},
+							filterType: 'pkp-filter-autosuggest'
 						}
 					]
 				}
