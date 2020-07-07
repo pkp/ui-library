@@ -22,7 +22,6 @@
 					</pkp-button>
 					<pkp-button
 						v-if="addUrl && currentUserCanAddSubmission"
-						v-show="allowSubmissions"
 						element="a"
 						:href="addUrl"
 					>
