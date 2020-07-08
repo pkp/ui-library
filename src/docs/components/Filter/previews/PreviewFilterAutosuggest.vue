@@ -27,40 +27,50 @@ import fieldBase from '../../Form/helpers/field-base';
 import fieldBaseAutosuggest from '../../Form/helpers/field-autosuggest';
 
 export default {
-    components: {
-        FilterAutosuggest
-    },
-    data() {
-        return {
-            users: {
-                ...fieldBase,
-                ...fieldBaseAutosuggest,
-                name: 'assignedTo',
-                label: 'Assigned to Editors',
-                selectedLabel: 'Assigned',
-                apiUrl: '/usernames.json'
-            },
-            issues: {
-                ...fieldBase,
-                ...fieldBaseAutosuggest,
-                name: 'issueIds',
-                label: 'Assigned to Issues',
-                selectedLabel: 'Assigned',
-                apiUrl: '/issues.json'
-            },
-            activeFilters: {
-                assignedTo: [],
-                issueIds: []
-            }
-        };
-    },
-    methods: {
-        addFilter(param, newVal) {
-            this.activeFilters[param] = newVal;
-        },
-        removeFilter(param) {
-            this.activeFilters[param] = [];
-        }
-    }
+	components: {
+		FilterAutosuggest
+	},
+	data() {
+		return {
+			users: {
+				...fieldBase,
+				...fieldBaseAutosuggest,
+				name: 'userIds',
+				label: 'Assigned to Editors',
+				selectedLabel: 'Assigned',
+				apiUrl: '/usernames.json'
+			},
+			issues: {
+				...fieldBase,
+				...fieldBaseAutosuggest,
+				name: 'issueIds',
+				label: 'Assigned to Issues',
+				selectedLabel: 'Assigned',
+				apiUrl: '/issues.json'
+			},
+			assignedTo: {
+				stageIds: []
+			},
+			assignedIssues: {
+				stageIds: []
+			}
+		};
+	},
+	methods: {
+		addFilter(fieldName, param, newVal) {
+			if (fieldName === 'userIds') {
+				this.assignedTo[param] = newVal;
+			} else {
+				this.assignedIssues[param] = newVal;
+			}
+		},
+		removeFilter(fieldName, param, newVal) {
+			if (fieldName === 'userIds') {
+				this.assignedTo[param] = [];
+			} else {
+				this.assignedIssues[param] = [];
+			}
+		}
+	}
 };
 </script>
