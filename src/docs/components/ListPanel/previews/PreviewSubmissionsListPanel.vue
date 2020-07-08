@@ -15,7 +15,7 @@ import Page from '@/components/Container/Page.vue';
 import SubmissionsListPanel from '@/components/ListPanel/submissions/SubmissionsListPanel.vue';
 import submissions from '@/docs/data/submissions';
 import fieldBase from '../../Form/helpers/field-base';
-import fieldBaseAutosuggest from '../../Form/helpers/field-autosuggest-users';
+import fieldBaseAutosuggest from '../../Form/helpers/field-autosuggest';
 
 export default {
 	extends: Page,

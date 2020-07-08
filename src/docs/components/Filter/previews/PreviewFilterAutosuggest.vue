@@ -1,10 +1,20 @@
 <template>
 	<div class="previewFilters">
 		<filter-autosuggest
-			:autosuggestProps="autosuggestProps"
-			param="assignedTo"
+			:autosuggestProps="users"
+			component="field-select-users"
+			param="stageIds"
 			:value="[]"
-			title="Assigned To Editors"
+			title="Assigned to Editors"
+			@add-filter="addFilter"
+			@remove-filter="removeFilter"
+		/>
+		<filter-autosuggest
+			:autosuggestProps="issues"
+			component="field-select-issues"
+			param="stageIds"
+			:value="[]"
+			title="Assigned to Issues"
 			@add-filter="addFilter"
 			@remove-filter="removeFilter"
 		/>
@@ -14,34 +24,52 @@
 <script>
 import FilterAutosuggest from '@/components/Filter/FilterAutosuggest.vue';
 import fieldBase from '../../Form/helpers/field-base';
-import fieldBaseAutosuggest from '../../Form/helpers/field-autosuggest-users';
+import fieldBaseAutosuggest from '../../Form/helpers/field-autosuggest';
 
 export default {
-	extends: fieldBaseAutosuggest,
 	components: {
 		FilterAutosuggest
 	},
 	data() {
 		return {
-			autosuggestProps: {
+			users: {
 				...fieldBase,
 				...fieldBaseAutosuggest,
-				apiUrl: '/usernames.json',
-				name: 'editorIds',
-				label: 'Assigned To Editors',
-				selectedLabel: 'Assigned'
+				name: 'userIds',
+				label: 'Assigned to Editors',
+				selectedLabel: 'Assigned',
+				apiUrl: '/usernames.json'
 			},
-			activeFilters: {
-				assignedTo: []
+			issues: {
+				...fieldBase,
+				...fieldBaseAutosuggest,
+				name: 'issueIds',
+				label: 'Assigned to Issues',
+				selectedLabel: 'Assigned',
+				apiUrl: '/issues.json'
+			},
+			assignedTo: {
+				stageIds: []
+			},
+			assignedIssue: {
+				stageIds: []
 			}
 		};
 	},
 	methods: {
-		addFilter(param, newVal) {
-			this.activeFilters[param] = newVal;
+		addFilter(fieldName, param, newVal) {
+			if (fieldName === 'userIds') {
+				this.assignedTo[param] = newVal;
+			} else {
+				this.assignedIssue[param] = newVal;
+			}
 		},
-		removeFilter(param, newVal) {
-			this.activeFilters[param] = [];
+		removeFilter(fieldName, param, newVal) {
+			if (fieldName === 'userIds') {
+				this.assignedTo[param] = [];
+			} else {
+				this.assignedIssue[param] = [];
+			}
 		}
 	}
 };
