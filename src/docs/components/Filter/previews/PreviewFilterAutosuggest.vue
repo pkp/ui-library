@@ -66,9 +66,9 @@ export default {
 		},
 		removeFilter(fieldName, param, newVal) {
 			if (fieldName === 'userIds') {
-				this.assignedTo[param] = [];
+				delete this.assignedTo[param];
 			} else {
-				this.assignedIssues[param] = [];
+				delete this.assignedIssues[param];
 			}
 		}
 	}
