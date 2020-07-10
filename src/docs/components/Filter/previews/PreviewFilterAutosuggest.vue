@@ -55,8 +55,8 @@ export default {
 		};
 	},
 	methods: {
-		addFilter(param, val) {
-			this.activeFilters[param] = val;
+		addFilter(param, newVal) {
+			this.activeFilters[param] = newVal;
 		},
 		removeFilter(param) {
 			this.activeFilters[param] = [];
