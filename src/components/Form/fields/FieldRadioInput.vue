@@ -56,7 +56,7 @@
 						v-model="selectedValue"
 						:value="option.value"
 						type="radio"
-						:name="name"
+						:name="localizedName"
 						:aria-describedby="describedByIds"
 						:aria-invalid="errors && errors.length"
 						:disabled="option.disabled"
@@ -68,7 +68,7 @@
 						class="pkpFormField--options__input"
 						type="radio"
 						ref="inputRadio"
-						:name="name"
+						:name="localizedName"
 						:aria-describedby="describedByIds"
 						:aria-invalid="errors && errors.length"
 						:disabled="option.disabled"
@@ -121,7 +121,7 @@ export default {
 		 * @return {Boolean}
 		 */
 		isInputSelected() {
-			return !this.options
+			return !this.localizedOptions
 				.filter(opt => !opt.isInput)
 				.map(opt => opt.value)
 				.includes(this.selectedValue);
