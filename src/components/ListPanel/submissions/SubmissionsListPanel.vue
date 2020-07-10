@@ -249,7 +249,16 @@ export default {
 		 */
 		removeFilter(param, value) {
 			let newFilters = {...this.activeFilters};
-			if (['isIncomplete', 'isOverdue', 'daysInactive'].includes(param)) {
+			if (
+				[
+					'isIncomplete',
+					'isOverdue',
+					'daysInactive',
+					'activeFilters',
+					'assignedTo',
+					'issueIds'
+				].includes(param)
+			) {
 				delete newFilters[param];
 			} else {
 				newFilters[param] = newFilters[param].filter(v => v !== value);
