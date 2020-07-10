@@ -3,8 +3,8 @@
 | Key | Description |
 | --- | --- |
 | `...` | Supports all props in [FieldBase](#/component/Form/fields/FieldBase). |
-| `value` | The current value for this field. |
-| `isInput` | Should be set to `true` for a custom field. |
+| `...` | Supports all props in [FieldOptions](#/component/Form/fields/FieldOptions). |
+| `options` | A list of the options as described in [FieldOptions](#/component/Form/fields/FieldOptions), with additional support for an input field. See [Custom Input](#custom-input) |
 
 ## Events
 
@@ -18,4 +18,20 @@ This component extends [`FieldOptions`](#/component/Form/fields/FieldOptions), b
 
 ## Custom input
 
-When creating a field for a custom input, instead of `value` prop, `isInput` should be passed with a boolean value `true`.
+When creating an option with a custom input field, pass the `isInput` key instead of the `value` key.
+
+
+```js
+[
+	{
+		value: 1,
+		label: "One"
+	},
+	{
+		value: 2,
+		label: "Two"
+	},
+	{
+		isInput: true
+	}
+]
