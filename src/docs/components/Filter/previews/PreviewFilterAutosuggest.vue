@@ -1,24 +1,24 @@
 <template>
-    <div class="previewFilters">
-        <filter-autosuggest
-            :autosuggestProps="users"
-            component="field-select-users"
-            param="assignedTo"
-            :value="[]"
-            title="Assigned to Editors"
-            @add-filter="addFilter"
-            @remove-filter="removeFilter"
-        />
-        <filter-autosuggest
-            :autosuggestProps="issues"
-            component="field-select-issues"
-            param="issueIds"
-            :value="[]"
-            title="Assigned to Issues"
-            @add-filter="addFilter"
-            @remove-filter="removeFilter"
-        />
-    </div>
+	<div class="previewFilters">
+		<filter-autosuggest
+			:autosuggestProps="users"
+			component="field-select-users"
+			param="assignedTo"
+			:value="[]"
+			title="Assigned to Editors"
+			@add-filter="addFilter"
+			@remove-filter="removeFilter"
+		/>
+		<filter-autosuggest
+			:autosuggestProps="issues"
+			component="field-select-issues"
+			param="issueIds"
+			:value="[]"
+			title="Assigned to Issues"
+			@add-filter="addFilter"
+			@remove-filter="removeFilter"
+		/>
+	</div>
 </template>
 
 <script>
@@ -35,7 +35,7 @@ export default {
 			users: {
 				...fieldBase,
 				...fieldBaseAutosuggest,
-				name: 'userIds',
+				name: 'assignedTo',
 				label: 'Assigned to Editors',
 				selectedLabel: 'Assigned',
 				apiUrl: '/usernames.json'
@@ -48,28 +48,18 @@ export default {
 				selectedLabel: 'Assigned',
 				apiUrl: '/issues.json'
 			},
-			assignedTo: {
-				stageIds: []
-			},
-			assignedIssues: {
-				stageIds: []
+			activeFilters: {
+				assignedTo: [],
+				issueIds: []
 			}
 		};
 	},
 	methods: {
-		addFilter(fieldName, param, newVal) {
-			if (fieldName === 'userIds') {
-				this.assignedTo[param] = newVal;
-			} else {
-				this.assignedIssues[param] = newVal;
-			}
+		addFilter(param, val) {
+			this.activeFilters[param] = val;
 		},
-		removeFilter(fieldName, param, newVal) {
-			if (fieldName === 'userIds') {
-				delete this.assignedTo[param];
-			} else {
-				delete this.assignedIssues[param];
-			}
+		removeFilter(param) {
+			this.activeFilters[param] = [];
 		}
 	}
 };

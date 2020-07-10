@@ -27,7 +27,7 @@ export default {
 	methods: {
 		toggle(fieldName, fieldProp, newVal) {
 			if (newVal.length) {
-				this.$emit('add-filter', fieldName, this.param, newVal);
+				this.$emit('add-filter', this.param, newVal);
 			} else {
 				this.remove();
 			}
@@ -42,10 +42,10 @@ export default {
 <style lang="less">
 @import '../../styles/_import';
 .pkpFilter--autosuggest {
-    position: relative;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    padding-bottom: 1rem;
+	position: relative;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-bottom: 1rem;
 }
 
 .pkpFormField--autosuggest__values .pkpBadge {

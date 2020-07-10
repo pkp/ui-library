@@ -206,7 +206,11 @@ export default {
 				if (newFilters.hasOwnProperty('isIncomplete')) {
 					delete newFilters.isIncomplete;
 				}
+<<<<<<< HEAD
 				if (['isOverdue', 'daysInactive', 'assignedTo'].includes(param)) {
+=======
+				if (['isOverdue', 'daysInactive', 'activeFilters'].includes(param)) {
+>>>>>>> pkp/pkp-lib#6054 Added new autosuggest filters to SubmissionsListPanel
 					newFilters[param] = value;
 				} else {
 					if (!newFilters[param]) {
