@@ -68,6 +68,9 @@ export default {
 		 * @return {String}
 		 */
 		localize: function(localizedString, requestedLocale) {
+			if (!localizedString) {
+				return '';
+			}
 			if (typeof localizedString === 'undefined') {
 				return '';
 			} else if (requestedLocale !== undefined) {
