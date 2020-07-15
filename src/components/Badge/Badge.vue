@@ -61,9 +61,9 @@ export default {
 
 .pkpBadge {
 	display: inline-block;
-	padding: 0 1em;
+	padding: 0.25em 1em;
 	font-size: @font-tiny;
-	line-height: 2em;
+	line-height: 1.5em;
 	border: 1px solid @bg-border-color-light;
 	border-radius: 1.2em;
 }
