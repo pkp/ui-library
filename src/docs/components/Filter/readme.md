@@ -48,16 +48,16 @@ More than one `Filter` may share the same `param`, but not the same `value`. For
 
 ```html
 <pkp-filter
-	label="Review"
-	param="stageIds"
-	value="2"
-	...
+  label="Review"
+  param="stageIds"
+  value="2"
+  ...
 />
 <pkp-filter
-	label="Copyediting"
-	param="stageIds"
-	value="3"
-	...
+  label="Copyediting"
+  param="stageIds"
+  value="3"
+  ...
 />
 ```
 
@@ -69,7 +69,7 @@ Most filters should be able to be combined with other filters, so there may be m
 
 ```json
 {
-	stageIds: [2, 3],
-	sectionIds: [1]
+  stageIds: [2, 3],
+  sectionIds: [1]
 }
 ```

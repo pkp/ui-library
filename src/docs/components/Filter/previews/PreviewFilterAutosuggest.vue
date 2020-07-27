@@ -1,10 +1,20 @@
 <template>
 	<div class="previewFilters">
 		<filter-autosuggest
-			:autosuggestProps="autosuggestProps"
+			:autosuggestProps="users"
+			component="field-select-users"
 			param="assignedTo"
 			:value="[]"
-			title="Assigned To Editors"
+			title="Assigned to Editors"
+			@add-filter="addFilter"
+			@remove-filter="removeFilter"
+		/>
+		<filter-autosuggest
+			:autosuggestProps="issues"
+			component="field-select-issues"
+			param="issueIds"
+			:value="[]"
+			title="Assigned to Issues"
 			@add-filter="addFilter"
 			@remove-filter="removeFilter"
 		/>
@@ -14,25 +24,33 @@
 <script>
 import FilterAutosuggest from '@/components/Filter/FilterAutosuggest.vue';
 import fieldBase from '../../Form/helpers/field-base';
-import fieldBaseAutosuggest from '../../Form/helpers/field-autosuggest-users';
+import fieldBaseAutosuggest from '../../Form/helpers/field-autosuggest';
 
 export default {
-	extends: fieldBaseAutosuggest,
 	components: {
 		FilterAutosuggest
 	},
 	data() {
 		return {
-			autosuggestProps: {
+			users: {
 				...fieldBase,
 				...fieldBaseAutosuggest,
-				apiUrl: '/usernames.json',
-				name: 'editorIds',
-				label: 'Assigned To Editors',
-				selectedLabel: 'Assigned'
+				name: 'assignedTo',
+				label: 'Assigned to Editors',
+				selectedLabel: 'Assigned',
+				apiUrl: '/usernames.json'
+			},
+			issues: {
+				...fieldBase,
+				...fieldBaseAutosuggest,
+				name: 'issueIds',
+				label: 'Assigned to Issues',
+				selectedLabel: 'Assigned',
+				apiUrl: '/issues.json'
 			},
 			activeFilters: {
-				assignedTo: []
+				assignedTo: [],
+				issueIds: []
 			}
 		};
 	},
@@ -40,7 +58,7 @@ export default {
 		addFilter(param, newVal) {
 			this.activeFilters[param] = newVal;
 		},
-		removeFilter(param, newVal) {
+		removeFilter(param) {
 			this.activeFilters[param] = [];
 		}
 	}
