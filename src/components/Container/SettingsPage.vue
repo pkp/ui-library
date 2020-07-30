@@ -4,6 +4,7 @@ import AnnouncementsListPanel from '@/components/ListPanel/announcements/Announc
 import EmailTemplatesListPanel from '@/components/ListPanel/emailTemplates/EmailTemplatesListPanel.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import ThemeForm from '@/components/Form/context/ThemeForm.vue';
+import DateTimeForm from '@/components/Form/context/DateTimeForm.vue';
 
 export default {
 	name: 'SettingsPage',
@@ -12,7 +13,8 @@ export default {
 		AnnouncementsListPanel,
 		EmailTemplatesListPanel,
 		PkpForm,
-		ThemeForm
+		ThemeForm,
+		DateTimeForm
 	},
 	data() {
 		return {
