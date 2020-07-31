@@ -1,3 +1,4 @@
+import doi from '@/docs/data/doi';
 import reviewAssignment from '@/docs/data/reviewAssignment';
 import submission from '@/docs/data/submission';
 
@@ -13,10 +14,17 @@ export default [
 				id: 22,
 				authorsString: 'Catherine Kwantes',
 				authorsStringShort: 'Kwantes',
+				doiObject: {
+					...doi,
+					status: 4,
+					crossref_batchId: '_123456',
+					crossref_failedMsg: 'This is a sample failure message'
+				},
 				fullTitle: {
 					en_US:
 						'Quisque vel ultrices ut vel sollicitudin vel varius suscipit phasellus'
-				}
+				},
+				isPublished: true
 			}
 		],
 		stages: submission.stages.map(stage => {
@@ -25,6 +33,7 @@ export default [
 				currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER]
 			};
 		}),
+		status: 3,
 		urlAuthorWorkflow: submission.urlAuthorWorkflow.replace('1', '2'),
 		urlEditorialWorkflow: submission.urlEditorialWorkflow.replace('1', '2'),
 		urlPublished: submission.urlPublished.replace('1', '2'),
