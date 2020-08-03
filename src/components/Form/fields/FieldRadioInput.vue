@@ -162,7 +162,9 @@ export default {
 		 * existing options.
 		 */
 		if (this.isInputSelected) {
-			this.inputValue = this.value;
+			this.inputValue = this.isMultilingual
+				? this.value[this.localeKey]
+				: this.value;
 			this.$refs.inputRadio[0].checked = true;
 		}
 	}
