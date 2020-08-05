@@ -1,0 +1,21 @@
+{
+	"items": [
+		{
+			"id": 1,
+			"identification": "Vol. 1 No. 2 (2014)"
+		},
+		{
+			"id": 2,
+			"identification": "Vol. 1 No. 2 (2014)"
+		},
+		{
+			"id": 3,
+			"identification": "Vol. 1 No. 3 (2014) Special issue on genomics"
+		},
+		{
+			"id": 4,
+			"identification": "Vol. 1 No. 4 (2014) Yam diseases and its management in Nigeria"
+		}
+	],
+	"itemsMax": 2
+}
