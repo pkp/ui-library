@@ -1,7 +1,7 @@
 <template>
-    <div class="pkpFilter--autosuggest" :class="classes">
-        <component :is="component" v-bind="autosuggestProps" @change="toggle" />
-    </div>
+	<div class="pkpFilter--autosuggest" :class="classes">
+		<component :is="component" v-bind="autosuggestProps" @change="toggle" />
+	</div>
 </template>
 
 <script>
@@ -49,7 +49,7 @@ export default {
 }
 
 .pkpFormField--autosuggest__values .pkpBadge {
-    margin-right: 0;
-    display: block;
+	margin-right: 0;
+	display: block;
 }
 </style>
