@@ -39,7 +39,7 @@
 
 				<div class="listPanel__itemSubtitle">
 					<div
-						v-if="Object.keys(item.affiliation).length || item.orcid"
+						v-if="item.affiliation || item.orcid"
 						class="listPanel__item--reviewer__affiliation"
 					>
 						{{ localize(item.affiliation) }}
