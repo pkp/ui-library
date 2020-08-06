@@ -44,7 +44,7 @@
 						</div>
 					</div>
 					<div
-						v-if="Object.keys(item.affiliation).length || item.orcid"
+						v-if="item.affiliation || item.orcid"
 						class="pkpListPanelItem--reviewer__affiliation"
 					>
 						{{ localize(item.affiliation) }}
