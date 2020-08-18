@@ -191,6 +191,9 @@ export default {
 				relative_urls: false,
 				remove_script_host: false,
 				convert_urls: true,
+				directionality: $.pkp.app.rtlLocales.includes(this.localeKey)
+					? 'rtl'
+					: null,
 				// See: https://www.tiny.cloud/docs/general-configuration-guide/upload-images/#rollingyourimagehandler
 				images_upload_handler(blobInfo, success, failure) {
 					const data = new FormData();
