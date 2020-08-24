@@ -5,7 +5,7 @@ import moment from 'moment';
 export default {
 	name: 'DateTimeForm',
 	extends: PkpForm,
-	data: function() {
+	data() {
 		return {
 			// holds initial value of the field that emitted set event
 			fieldBeforeSetEvent: {
@@ -130,12 +130,12 @@ export default {
 
 		/**
 		 * Provide actual update of the fields, update value only if predefined radio input is selected
-		 * @param newFields array contains updated field on set event
-		 * @param name string name of the field that emits event
-		 * @param localeKey string locale of the field that emits event
-		 * @param shortDateTime object new label and value for the short date and time field
-		 * @param longDateTime object  new label and value for the short date and time field
-		 * @returns array updated fields
+		 * @param {Array} newFields - contains updated field on set event
+		 * @param {string} name - string name of the field that emits event
+		 * @param {string} localeKey - locale of the field that emits event
+		 * @param {Object} shortDateTime - new label and value for the short date and time field
+		 * @param {Object} longDateTime - new label and value for the short date and time field
+		 * @returns {Array} updated fields
 		 */
 		updateFields: function(
 			newFields,
@@ -190,8 +190,8 @@ export default {
 		},
 		/**
 		 * Converts strftime datetime format to the Moment.js format
-		 * @param strftimeFormat string
-		 * @returns string|null
+		 * @param {string} strftimeFormat
+		 * @returns {(string|null)}
 		 */
 		convertDateFormat: function(strftimeFormat) {
 			let convertedLabel = '';
