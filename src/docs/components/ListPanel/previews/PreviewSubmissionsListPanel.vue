@@ -15,7 +15,7 @@ import Page from '@/components/Container/Page.vue';
 import SubmissionsListPanel from '@/components/ListPanel/submissions/SubmissionsListPanel.vue';
 import submissions from '@/docs/data/submissions';
 import fieldBase from '../../Form/helpers/field-base';
-import fieldBaseAutosuggest from '../../Form/helpers/field-autosuggest-users';
+import fieldBaseAutosuggest from '../../Form/helpers/field-autosuggest';
 
 export default {
 	extends: Page,
@@ -83,12 +83,32 @@ export default {
 							title: 'Editors',
 							param: 'assignedTo',
 							value: [],
+							component: 'field-select-users',
 							autosuggestProps: {
 								...fieldBase,
 								...fieldBaseAutosuggest,
 								apiUrl: '/usernames.json',
-								name: 'editorIds',
+								name: 'assignedTo',
 								label: 'Assigned To Editors',
+								selectedLabel: 'Assigned'
+							},
+							filterType: 'pkp-filter-autosuggest'
+						}
+					]
+				},
+				{
+					filters: [
+						{
+							title: 'Issues',
+							param: 'issueIds',
+							value: [],
+							component: 'field-select-issues',
+							autosuggestProps: {
+								...fieldBase,
+								...fieldBaseAutosuggest,
+								apiUrl: '/issues.json',
+								name: 'issueIds',
+								label: 'Assigned To Issues',
 								selectedLabel: 'Assigned'
 							},
 							filterType: 'pkp-filter-autosuggest'

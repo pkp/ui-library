@@ -1,7 +1,7 @@
 export default {
-	name: 'us-ers',
+	name: 'autosuggest',
 	component: 'field-autosuggest',
-	label: 'Select Users',
+	label: '',
 	value: [],
 	deselectLabel: 'Remove {$item}',
 	initialPosition: 'inline',
