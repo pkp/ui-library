@@ -43,8 +43,13 @@ export default {
 	},
 	methods: {
 		/**
-		 * @copydoc Form::fieldChanged()
-		 * @brief update label and value of the dateTimeFormatShort and dateTimeFormatLong based on the date and time input
+		 * Update label and value of the dateTimeFormatShort and
+		 * dateTimeFormatLong based on the date and time input
+		 *
+		 * @param {String} name
+		 * @param {String} prop
+		 * @param {String} value
+		 * @param {String|null} localeKey
 		 */
 		fieldChanged: function(name, prop, value, localeKey) {
 			// Update changed value
@@ -130,12 +135,13 @@ export default {
 
 		/**
 		 * Provide actual update of the fields, update value only if predefined radio input is selected
+		 *
 		 * @param {Array} newFields - contains updated field on set event
-		 * @param {string} name - string name of the field that emits event
-		 * @param {string} localeKey - locale of the field that emits event
+		 * @param {String} name - string name of the field that emits event
+		 * @param {String} localeKey - locale of the field that emits event
 		 * @param {Object} shortDateTime - new label and value for the short date and time field
 		 * @param {Object} longDateTime - new label and value for the short date and time field
-		 * @returns {Array} updated fields
+		 * @return {Array} updated fields
 		 */
 		updateFields: function(
 			newFields,
@@ -149,7 +155,8 @@ export default {
 					(name === 'dateFormatShort' || name === 'timeFormat') &&
 					field.name === 'datetimeFormatShort'
 				) {
-					// Contains initial value of the datetimeFormatShort composed from date and time fields, needed to determine value selected by a user (predefined vs custom)
+					// Contains initial value of the datetimeFormatShort composed from date and time fields,
+					// needed to determine value selected by a user (predefined vs custom)
 					let suggestedOldValue =
 						name === 'dateFormatShort'
 							? this.fieldBeforeSetEvent.value + ' ' + shortDateTime.value.time
@@ -188,10 +195,12 @@ export default {
 				return field;
 			});
 		},
+
 		/**
 		 * Converts strftime datetime format to the Moment.js format
-		 * @param {string} strftimeFormat
-		 * @returns {(string|null)}
+		 *
+		 * @param {String} strftimeFormat
+		 * @return {String|null}
 		 */
 		convertDateFormat: function(strftimeFormat) {
 			let convertedLabel = '';
