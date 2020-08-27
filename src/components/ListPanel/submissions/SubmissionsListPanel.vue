@@ -156,6 +156,12 @@ export default {
 		title: {
 			type: String,
 			required: true
+		},
+		allowSubmissions: {
+			type: Boolean,
+			default() {
+				return true;
+			}
 		}
 	},
 	data() {
@@ -179,7 +185,7 @@ export default {
 		 * Does the current user have a role which can create a new submission?
 		 */
 		currentUserCanAddSubmission() {
-			return this.userHasRole([
+			return this.allowSubmissions && this.userHasRole([
 				pkp.const.ROLE_ID_MANAGER,
 				pkp.const.ROLE_ID_SUB_EDITOR,
 				pkp.const.ROLE_ID_ASSISTANT,
