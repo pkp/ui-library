@@ -43,4 +43,4 @@ See the [Labelled By](#/component/Table/LabelledBy) example.
 
 This component supports two kinds of slots for extending the template. Read the [Vue.js documentation about slots](https://vuejs.org/v2/guide/components-slots.html).
 
-Examples of the slots in use can be seen in the [Custom Header](#/components/Table/examples/with-header) and [Custom Column](#/components/Table/examples/with-column) examples.
+Examples of the slots in use can be seen in the [Custom Header](#/component/Table/examples/with-header) and [Custom Column](#/component/Table/examples/with-column) examples.

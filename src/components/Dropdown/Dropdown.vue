@@ -6,6 +6,7 @@
 			:isLink="isLink"
 			:isPrimary="isPrimary"
 			:isWarnable="isWarnable"
+			:aria-describedby="ariaDescribedBy"
 			:aria-controls="id"
 			:aria-expanded="isOpen"
 			@click="toggle"
@@ -31,6 +32,10 @@
 <script>
 export default {
 	props: {
+		ariaDescribedBy: {
+			type: String,
+			default: ''
+		},
 		icon: {
 			type: String,
 			default: ''

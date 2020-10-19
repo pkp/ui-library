@@ -166,31 +166,24 @@ export default {
 		/**
 		 * Respond to a field changing its errors
 		 *
-		 * @param {Object} data {{
-		 *		@option string name Field name
-		 *		@option array errors List of errors for the field
-		 *		@option string localeKey The locale key for a multilingual field
-		 * }}
+		 * @param {String} name Field name
+		 * @param {Array} errors List of errors for the field
+		 * @param {String} localeKey The locale key for a multilingual field
 		 */
-		setFieldErrors: function(data) {
-			const localeKey = data.localeKey || '';
+		setFieldErrors: function(name, errors, localeKey = '') {
 			let newErrors = {...this.errors};
-			if (!data.errors || !data.errors.length) {
-				if (
-					localeKey &&
-					newErrors[data.name] &&
-					newErrors[data.name][localeKey]
-				) {
-					delete newErrors[data.name][localeKey];
-				} else if (newErrors[data.name]) {
-					delete newErrors[data.name];
+			if (!errors || !errors.length) {
+				if (localeKey && newErrors[name] && newErrors[name][localeKey]) {
+					delete newErrors[name][localeKey];
+				} else if (newErrors[name]) {
+					delete newErrors[name];
 				}
 			} else {
 				if (localeKey) {
-					newErrors[data.name] = newErrors[data.name] || {};
-					newErrors[data.name][localeKey] = data.errors;
+					newErrors[name] = newErrors[name] || {};
+					newErrors[name][localeKey] = errors;
 				} else {
-					newErrors[data.name] = data.errors;
+					newErrors[name] = errors;
 				}
 			}
 			this.$emit('set-errors', newErrors);

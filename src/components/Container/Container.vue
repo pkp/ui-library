@@ -3,6 +3,7 @@ import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import SelectReviewerListPanel from '@/components/ListPanel/users/SelectReviewerListPanel.vue';
 import SubmissionsListPanel from '@/components/ListPanel/submissions/SubmissionsListPanel.vue';
+import SubmissionFilesListPanel from '@/components/ListPanel/submissionFiles/SubmissionFilesListPanel.vue';
 
 export default {
 	name: 'Container',
@@ -10,7 +11,8 @@ export default {
 		ListPanel,
 		PkpForm,
 		SelectReviewerListPanel,
-		SubmissionsListPanel
+		SubmissionsListPanel,
+		SubmissionFilesListPanel
 	},
 	data() {
 		return {
