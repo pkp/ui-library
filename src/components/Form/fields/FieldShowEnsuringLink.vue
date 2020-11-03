@@ -28,12 +28,12 @@ export default {
 		$('.pkpFormField--options__option button', this.$el).click(() => {
 			this.openDialog(
 				{
-					modalName: 'ensureBlindReview',
+					modalName: 'ensureAnonymousReview',
 					confirmLabel: this.__('common.ok'),
 					message: this.message,
 					title: this.modalTitle,
 					callback: () => {
-						this.$modal.hide('ensureBlindReview');
+						this.$modal.hide('ensureAnonymousReview');
 					}
 				},
 				{
