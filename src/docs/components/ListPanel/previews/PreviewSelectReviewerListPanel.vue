@@ -26,7 +26,7 @@
 		selectorName="reviewerId"
 		title="Locate a Reviewer"
 		:warnOnAssignment="[7]"
-		warnOnAssignmentLabel="This reviewer is locked because they have been assigned a role which allows them to view the author's identity. Blind peer review can not be guaranteed. Would you like to unlock this reviewer anyway?"
+		warnOnAssignmentLabel="This reviewer is locked because they have been assigned a role which allows them to view the author's identity. Anonymous peer review can not be guaranteed. Would you like to unlock this reviewer anyway?"
 		warnOnAssignmentUnlockLabel="Unlock"
 	/>
 </template>
