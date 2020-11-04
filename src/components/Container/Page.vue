@@ -307,6 +307,8 @@ export default {
 }
 
 .app__returnHeader {
+	position: sticky;
+	top: 3rem;
 	padding-left: 1rem;
 	padding-right: 1rem;
 	background: @bg-anchor;
@@ -315,6 +317,7 @@ export default {
 	line-height: 3rem;
 	background: @bg-anchor;
 	font-size: 0.85rem;
+	z-index: 10;
 }
 
 .app__returnHeaderLink {
