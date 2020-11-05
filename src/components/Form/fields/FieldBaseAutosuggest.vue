@@ -458,8 +458,8 @@ export default {
 	background: transparent;
 	border: 1px solid transparent;
 	border-left-color: @bg-border-color-light;
-	border-top-right-radius: 50%;
-	border-bottom-right-radius: 50%;
+	border-top-right-radius: 1.2em; // matches radius on button in Badge.vue
+	border-bottom-right-radius: 1.2em;
 	color: @no;
 
 	.fa {

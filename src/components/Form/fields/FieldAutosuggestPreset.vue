@@ -17,6 +17,7 @@ export default {
 		getSuggestions() {
 			if (!this.inputValue || !this.options.length) {
 				this.suggestions = [];
+				return;
 			}
 
 			// Escape the input for regex

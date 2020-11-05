@@ -78,6 +78,21 @@ export default {
 					]
 				},
 				{
+					heading: 'Sections',
+					filters: [
+						{
+							title: 'Articles',
+							param: 'sectionIds',
+							value: 1
+						},
+						{
+							title: 'Reviews',
+							param: 'sectionIds',
+							value: 2
+						}
+					]
+				},
+				{
 					filters: [
 						{
 							title: 'Editors',

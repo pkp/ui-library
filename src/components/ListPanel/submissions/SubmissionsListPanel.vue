@@ -40,7 +40,7 @@
 				<div
 					v-for="(filterSet, index) in filters"
 					:key="index"
-					class="listPanel__filterSet"
+					class="listPanel__block"
 				>
 					<pkp-header v-if="filterSet.heading">
 						<h4>{{ filterSet.heading }}</h4>
@@ -185,13 +185,16 @@ export default {
 		 * Does the current user have a role which can create a new submission?
 		 */
 		currentUserCanAddSubmission() {
-			return this.allowSubmissions && this.userHasRole([
-				pkp.const.ROLE_ID_MANAGER,
-				pkp.const.ROLE_ID_SUB_EDITOR,
-				pkp.const.ROLE_ID_ASSISTANT,
-				pkp.const.ROLE_ID_AUTHOR,
-				pkp.const.ROLE_ID_REVIEWER
-			]);
+			return (
+				this.allowSubmissions &&
+				this.userHasRole([
+					pkp.const.ROLE_ID_MANAGER,
+					pkp.const.ROLE_ID_SUB_EDITOR,
+					pkp.const.ROLE_ID_ASSISTANT,
+					pkp.const.ROLE_ID_AUTHOR,
+					pkp.const.ROLE_ID_REVIEWER
+				])
+			);
 		}
 	},
 	methods: {
@@ -212,7 +215,15 @@ export default {
 				if (newFilters.hasOwnProperty('isIncomplete')) {
 					delete newFilters.isIncomplete;
 				}
-				if (['isOverdue', 'daysInactive', 'assignedTo'].includes(param)) {
+				if (
+					[
+						'isOverdue',
+						'daysInactive',
+						'assignedTo',
+						'issueIds',
+						'sectionIds'
+					].includes(param)
+				) {
 					newFilters[param] = value;
 				} else {
 					if (!newFilters[param]) {
@@ -251,7 +262,15 @@ export default {
 		 */
 		removeFilter(param, value) {
 			let newFilters = {...this.activeFilters};
-			if (['isIncomplete', 'isOverdue', 'daysInactive'].includes(param)) {
+			if (
+				[
+					'isIncomplete',
+					'isOverdue',
+					'daysInactive',
+					'issueIds',
+					'sectionIds'
+				].includes(param)
+			) {
 				delete newFilters[param];
 			} else {
 				newFilters[param] = newFilters[param].filter(v => v !== value);

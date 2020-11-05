@@ -170,6 +170,12 @@ export default {
 	position: relative;
 	padding-left: 1rem;
 	padding-right: 1rem;
+
+	// Make room for the slider value when another filter
+	// immediately follows this one
+	+ .pkpFilter {
+		margin-top: 1rem;
+	}
 }
 
 .pkpFilter--slider .pkpFilter__add,
@@ -179,7 +185,6 @@ export default {
 
 .pkpFilter__input--slider {
 	position: relative;
-	padding-bottom: 1.5rem; // account for value bubble below input
 }
 
 .pkpFilter__inputTitle {

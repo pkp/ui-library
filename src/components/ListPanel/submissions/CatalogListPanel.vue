@@ -79,7 +79,7 @@
 				<div
 					v-for="(filterSet, index) in filters"
 					:key="index"
-					class="listPanel__filterSet"
+					class="listPanel__block"
 				>
 					<pkp-header v-if="filterSet.heading">
 						<h4>{{ filterSet.heading }}</h4>

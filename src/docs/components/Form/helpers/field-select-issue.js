@@ -42,5 +42,7 @@ export default {
 		'Published in <a href="http://example.com/issue/__issueId__">{$issueName}</a>.',
 	scheduledNoticeBase:
 		'Scheduled for publication in <a href="http://example.com/issue/__issueId__">{$issueName}</a>.',
+	scheduleLabel: 'Assign to Issue',
+	unscheduledNotice: 'This has not been scheduled for publication in an issue.',
 	unscheduleLabel: 'Unschedule'
 };

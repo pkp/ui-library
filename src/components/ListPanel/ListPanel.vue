@@ -204,12 +204,26 @@ export default {
 	transition: opacity 0.15s ease-in-out, margin-right 0.15s ease-in-out 0.15s;
 }
 
-.listPanel__sidebar .pkpHeader {
-	padding: 1.5rem 0.5rem 0rem 1rem;
+.listPanel__sidebar > .pkpHeader {
+	padding-left: 1rem;
+	padding-right: 1rem;
 }
 
-.listPanel__sidebar > .pkpHeader:first-child {
-	padding: 0.5rem 0.5rem 0.5rem 1rem;
+.listPanel__block {
+	margin: 1rem 0.5rem 1rem 1rem;
+
+	.pkpHeader {
+		padding: 0;
+	}
+
+	.pkpFilter {
+		margin-left: -1rem;
+		margin-right: -0.5rem;
+	}
+}
+
+.listPanel__sidebar .pkpHeader + .listPanel__block {
+	margin-top: 0;
 }
 
 .listPanel__sidebar .pkpHeader__title > h1,
