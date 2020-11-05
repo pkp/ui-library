@@ -268,7 +268,7 @@ export default {
 		},
 
 		/**
-		 * Can the current user delete a submission?
+		 * Can the current user delete this submission?
 		 *
 		 * @return {Boolean}
 		 */
@@ -278,7 +278,8 @@ export default {
 				this.userAssignedRole([
 					pkp.const.ROLE_ID_MANAGER,
 					pkp.const.ROLE_ID_SITE_ADMIN
-				])
+				]) &&
+				this.item.status === pkp.const.STATUS_DECLINED
 			) {
 				return true;
 			} else if (
