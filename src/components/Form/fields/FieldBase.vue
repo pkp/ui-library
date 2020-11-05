@@ -33,7 +33,12 @@ export default {
 		value: {
 			required: true
 		},
-		allErrors: Object
+		allErrors: {
+			type: Object,
+			default() {
+				return {};
+			}
+		}
 	},
 	computed: {
 		/**
