@@ -221,7 +221,8 @@ export default {
 						'daysInactive',
 						'assignedTo',
 						'issueIds',
-						'sectionIds'
+						'sectionIds',
+						'assignedTo'
 					].includes(param)
 				) {
 					newFilters[param] = value;
@@ -268,7 +269,8 @@ export default {
 					'isOverdue',
 					'daysInactive',
 					'issueIds',
-					'sectionIds'
+					'sectionIds',
+					'assignedTo'
 				].includes(param)
 			) {
 				delete newFilters[param];
