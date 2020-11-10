@@ -16,7 +16,7 @@ export default {
 		setSuggestions(newItems) {
 			const suggestions = newItems
 				.filter(item => {
-					return !this.selected.find(s => s.id === item.id);
+					return !this.selected.find(s => s.value === item.id);
 				})
 				.map(item => {
 					return {

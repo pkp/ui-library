@@ -7,7 +7,10 @@
  *
  * @see https://vuejs.org/v2/guide/mixins.html
  */
+import modal from './modal';
+
 export default {
+	mixins: [modal],
 	methods: {
 		/**
 		 * Compile a string translation
@@ -38,45 +41,6 @@ export default {
 			}
 
 			return this.replaceLocaleParams(pkp.localeKeys[key], params);
-		},
-
-		/**
-		 * Display an error message from an ajax request
-		 *
-		 * This callback expects to be attached to the `error` param of the
-		 * jQuery $.ajax method. It can also be fired directly, but should have
-		 * a jQuery response object with the following:
-		 * {
-		 *   responseJSON: {
-		 *     error: 'localised.string.key',
-		 *     errorMessage: 'The string rendered into localised form for display',
-		 *   }
-		 * }
-		 *
-		 * @param {Object} r The response from jQuery's ajax request
-		 */
-		ajaxErrorCallback(r) {
-			// If the user browses away from the page before a response has been
-			// received by the ajax request, the error handler will be invoked.
-			// Do nothing so the user does not see an obsolete error message.
-			if ('status' in r && r.status == 0) {
-				return;
-			}
-
-			let msg;
-			if ('responseJSON' in r && 'errorMessage' in r.responseJSON) {
-				msg = r.responseJSON.errorMessage;
-			} else {
-				msg = this.__('common.unknownError');
-			}
-
-			this.openDialog({
-				modalName: 'ajaxError',
-				confirmLabel: this.__('common.ok'),
-				title: this.__('common.error'),
-				message: msg,
-				callback: () => this.$modal.hide('ajaxError')
-			});
 		},
 
 		/**

@@ -217,13 +217,14 @@
 import Expander from '@/components/Expander/Expander.vue';
 import List from '@/components/List/List.vue';
 import ListItem from '@/components/List/ListItem.vue';
+import ajaxError from '@/mixins/ajaxError';
 import fetch from '@/mixins/fetch';
 import localizeSubmission from '@/mixins/localizeSubmission';
 import modal from '@/mixins/modal';
 
 export default {
 	name: 'SubmissionsListItem',
-	mixins: [fetch, localizeSubmission, modal],
+	mixins: [ajaxError, fetch, localizeSubmission, modal],
 	components: {
 		Expander,
 		List,

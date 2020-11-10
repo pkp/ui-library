@@ -3,12 +3,13 @@ import Page from './Page.vue';
 import Dropdown from '@/components/Dropdown/Dropdown.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import LocalizeSubmission from '@/mixins/localizeSubmission.js';
+import ajaxError from '@/mixins/ajaxError';
 import modal from '@/mixins/modal.js';
 
 export default {
 	name: 'WorkflowPage',
 	extends: Page,
-	mixins: [LocalizeSubmission, modal],
+	mixins: [LocalizeSubmission, modal, ajaxError],
 	components: {
 		Dropdown,
 		PkpHeader

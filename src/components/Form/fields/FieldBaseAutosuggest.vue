@@ -109,12 +109,14 @@
 import FieldBase from './FieldBase.vue';
 import PkpBadge from '@/components/Badge/Badge.vue';
 import {VueAutosuggest} from 'vue-autosuggest';
+import ajaxError from '@/mixins/ajaxError';
 import debounce from 'debounce';
 import elementResizeEvent from 'element-resize-event';
 
 export default {
 	name: 'FieldBaseAutosuggest',
 	extends: FieldBase,
+	mixins: [ajaxError],
 	components: {
 		PkpBadge,
 		VueAutosuggest
@@ -522,7 +524,8 @@ export default {
 
 	.autosuggest__results-item {
 		position: relative;
-		padding: 0.25rem 1rem;
+		padding: 0.5rem 1rem;
+		line-height: 1.5em;
 
 		&:before {
 			content: '';

@@ -6,10 +6,12 @@ import Pagination from '@/components/Pagination/Pagination.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import PkpTable from '@/components/Table/Table.vue';
 import TableCell from '@/components/Table/TableCell.vue';
+import ajaxError from '@/mixins/ajaxError';
 
 export default {
 	name: 'StatsPage',
 	extends: Page,
+	mixins: [ajaxError],
 	components: {
 		DateRange,
 		PkpFilter,

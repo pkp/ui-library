@@ -97,6 +97,7 @@
 import Expander from '@/components/Expander/Expander.vue';
 import List from '@/components/List/List.vue';
 import ListItem from '@/components/List/ListItem.vue';
+import ajaxError from '@/mixins/ajaxError';
 import modal from '@/mixins/modal';
 
 export default {
@@ -105,7 +106,7 @@ export default {
 		List,
 		ListItem
 	},
-	mixins: [modal],
+	mixins: [modal, ajaxError],
 	props: {
 		apiUrl: {
 			type: String,

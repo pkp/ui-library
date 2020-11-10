@@ -61,6 +61,7 @@ import Pagination from '@/components/Pagination/Pagination.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import Search from '@/components/Search/Search.vue';
+import ajaxError from '@/mixins/ajaxError';
 import fetch from '@/mixins/fetch';
 import modal from '@/mixins/modal';
 import cloneDeep from 'clone-deep';
@@ -73,7 +74,7 @@ export default {
 		PkpHeader,
 		Search
 	},
-	mixins: [fetch, modal],
+	mixins: [fetch, modal, ajaxError],
 	props: {
 		addAnnouncementLabel: {
 			type: String,
