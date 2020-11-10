@@ -155,7 +155,7 @@ export default {
 					name: 'Review'
 				},
 				{
-					color: '#007ab2',
+					color: '#006798',
 					count: 8,
 					name: 'Copyediting'
 				},

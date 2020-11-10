@@ -71,9 +71,9 @@ export default {
 					yAxes: [
 						{
 							gridLines: {
-								color: '#007ab2',
+								color: '#006798',
 								borderDash: [1, 10],
-								zeroLineColor: '#007ab2',
+								zeroLineColor: '#006798',
 								drawBorder: false
 							},
 							ticks: {
