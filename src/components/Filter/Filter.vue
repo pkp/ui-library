@@ -115,7 +115,7 @@ export default {
 	right: 0;
 	padding: 0;
 	margin: 0;
-	width: @double;
+	width: 2rem;
 	border: none;
 	transform: translateY(-50%);
 	background: transparent;

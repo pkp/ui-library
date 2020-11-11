@@ -256,7 +256,7 @@ export default {
 	padding: 0.5rem 1rem;
 	background: transparent;
 	border: none;
-	line-height: @double;
+	line-height: 2rem;
 	color: #fff;
 	cursor: pointer;
 }

@@ -387,7 +387,7 @@ export default {
 	position: relative;
 	display: inline-block;
 	min-width: 12em;
-	height: @double + 2px;
+	height: calc(2rem + 2px);
 	background: @lift;
 	font-size: @font-sml;
 }
@@ -395,7 +395,7 @@ export default {
 .pkpDateRange__current {
 	margin-left: 2rem;
 	padding: 0.5rem;
-	line-height: @double + 2px;
+	line-height: calc(2rem + 2px);
 	font-weight: @bold;
 	color: @primary;
 }

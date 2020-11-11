@@ -256,24 +256,24 @@ export default {
 }
 
 .pkpFormField--options__legend {
-	padding: 0 @half;
+	padding: 0 0.5rem;
 	font-weight: @bold;
 }
 
 .pkpFormField--options__description {
-	margin-bottom: @base;
+	margin-bottom: 1rem;
 }
 
 .pkpFormField--options__option {
 	position: relative;
 	display: block;
-	padding-left: @base + @half;
+	padding-left: 1.5rem;
 	font-size: @font-sml;
 	line-height: 1.8em;
 	cursor: pointer;
 
 	+ .pkpFormField--options__option {
-		margin-top: @half;
+		margin-top: 0.5rem;
 	}
 }
 
@@ -289,12 +289,12 @@ export default {
 }
 
 .pkpFormField--options .multilingualProgress {
-	margin-top: @base;
+	margin-top: 1rem;
 }
 
 .pkpFormField--options .pkpFieldError {
 	margin-top: 0;
-	margin-bottom: @base;
+	margin-bottom: 1rem;
 
 	&:before {
 		display: none;

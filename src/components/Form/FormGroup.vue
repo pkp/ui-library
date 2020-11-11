@@ -197,7 +197,7 @@ export default {
 
 .pkpFormGroup {
 	position: relative;
-	padding: @double;
+	padding: 2rem;
 	border: none;
 
 	+ .pkpFormGroup {
@@ -220,7 +220,7 @@ export default {
 
 .pkpFormGroup__legend {
 	display: inline-block;
-	margin-bottom: @half;
+	margin-bottom: 0.5rem;
 	font-weight: @bold;
 	font-size: @font-base-larger;
 }
@@ -233,7 +233,7 @@ export default {
 .pkpFormGroup .pkpFormField + .pkpFormGroup__localeGroup,
 .pkpFormGroup .pkpFormGroup__localeGroup + .pkpFormField,
 .pkpFormGroup .pkpFormGroup__localeGroup + .pkpFormGroup__localeGroup {
-	margin-top: @base + @half;
+	margin-top: 1.5rem;
 }
 
 .pkpFormGroup__locale {
@@ -249,7 +249,7 @@ export default {
 	.pkpFormGroup__heading {
 		float: none;
 		padding-right: 0;
-		margin-bottom: @double;
+		margin-bottom: 2rem;
 		width: 100%;
 		max-width: 35em;
 
@@ -263,11 +263,11 @@ export default {
 	.pkpFormGroup__locale--isVisible {
 		float: left;
 		width: 50%;
-		padding-right: @base + @half;
+		padding-right: 1.5rem;
 
 		~ .pkpFormGroup__locale--isVisible {
 			padding-right: 0;
-			padding-left: @base + @half;
+			padding-left: 1.5rem;
 		}
 	}
 }

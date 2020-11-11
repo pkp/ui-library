@@ -238,7 +238,7 @@ export default {
 
 .pkpFormPage__footer {
 	border-top: @bg-border-light;
-	padding: @base;
+	padding: 1rem;
 	text-align: right;
 }
 

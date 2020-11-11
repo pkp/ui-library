@@ -115,6 +115,6 @@ export default {
 
 // Integrate the grids in the publication tab
 #chapters-grid {
-	padding-top: @double;
+	padding-top: 2rem;
 }
 </style>

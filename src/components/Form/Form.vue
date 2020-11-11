@@ -542,7 +542,7 @@ export default {
 
 .pkpForm__pageNav {
 	float: left;
-	padding-right: @base;
+	padding-right: 1rem;
 	width: 20%;
 
 	+ .pkpFormPages {
@@ -561,7 +561,7 @@ export default {
 
 .pkpForm__pageNavList {
 	margin: 0;
-	padding: @base;
+	padding: 1rem;
 	list-style: none;
 }
 

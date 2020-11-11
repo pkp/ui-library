@@ -323,7 +323,7 @@ body {
 	background: @lift;
 	font-family: @font;
 	font-size: @font-base;
-	line-height: @double;
+	line-height: 2rem;
 	color: @text-rgba;
 }
 

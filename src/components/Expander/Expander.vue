@@ -38,7 +38,7 @@ export default {
 	border: @bg-border-light;
 	border-radius: @radius;
 	font-size: @font-sml;
-	line-height: @double;
+	line-height: 2rem;
 	color: @primary;
 	box-shadow: 0 1px 0 @bg-border-color-light;
 	cursor: pointer;

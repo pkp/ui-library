@@ -382,7 +382,7 @@ export default {
 @import '../../../styles/_import';
 
 .pkpFormField--upload__preview {
-	padding: @base;
+	padding: 1rem;
 	border: @bg-border;
 	border-radius: 2px;
 	font-size: @font-sml;
@@ -391,7 +391,7 @@ export default {
 
 .pkpFormField--upload__fileName {
 	display: inline-block;
-	padding: (@half / 2) 0;
+	padding: 0.25rem 0;
 }
 
 .pkpFormField--upload__previewActions {
@@ -399,22 +399,22 @@ export default {
 }
 
 .pkpFormField--upload__restore {
-	margin-top: @half;
-	margin-right: @half;
+	margin-top: 0.5rem;
+	margin-right: 0.5rem;
 }
 
 .pkpFormField--upload__addFile {
-	margin-top: @half;
+	margin-top: 0.5rem;
 }
 
 .pkpFormField--upload .multilingualProgress {
-	margin-left: @half;
+	margin-left: 0.5rem;
 }
 
 .pkpFormField--upload__uploadActions,
 .pkpFormField--upload__previewActions {
 	.pkpButton + .pkpButton {
-		margin-left: @half;
+		margin-left: 0.5rem;
 	}
 }
 
@@ -433,7 +433,7 @@ export default {
 
 .pkpFormField--upload {
 	.dz-message {
-		padding: @base;
+		padding: 1rem;
 		border: 1px dashed @bg-border-color;
 		border-radius: 2px;
 		text-align: center;
@@ -456,12 +456,12 @@ export default {
 		line-height: 1.5em;
 
 		+ .dz-preview {
-			margin-top: @base;
+			margin-top: 1rem;
 		}
 	}
 
 	.dz-details {
-		padding: @base;
+		padding: 1rem;
 	}
 
 	.dz-filename {
@@ -473,10 +473,10 @@ export default {
 	.dz-progress {
 		position: relative;
 		display: block;
-		margin-top: @base;
-		height: @half;
+		margin-top: 1rem;
+		height: 0.5rem;
 		background: @bg;
-		border-radius: @half / 2;
+		border-radius: 0.25rem;
 		overflow: hidden; // apply border-radius to progress bar
 	}
 
@@ -485,7 +485,7 @@ export default {
 		top: 0;
 		left: 0;
 		display: block;
-		height: @half;
+		height: 0.5rem;
 		background: @primary;
 		transition: 0.2s all;
 		animation: progressBar 1s infinite;
@@ -493,9 +493,9 @@ export default {
 
 	.dz-remove {
 		position: absolute;
-		top: @base;
-		right: @base;
-		padding-left: @half;
+		top: 1rem;
+		right: 1rem;
+		padding-left: 0.5rem;
 		background: @lift;
 	}
 
