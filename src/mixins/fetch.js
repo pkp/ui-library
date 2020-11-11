@@ -10,7 +10,10 @@
  * component that overrides this one.
  *
  */
+import ajaxError from '@/mixins/ajaxError';
+
 export default {
+	mixins: [ajaxError],
 	props: {
 		apiUrl: {
 			type: String,

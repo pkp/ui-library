@@ -77,12 +77,14 @@
 
 <script>
 import Orderer from '@/components/Orderer/Orderer.vue';
+import ajaxError from '@/mixins/ajaxError';
 
 export default {
 	name: 'CatalogListItem',
 	components: {
 		Orderer
 	},
+	mixins: [ajaxError],
 	props: [
 		'apiUrl',
 		'filterAssocType',

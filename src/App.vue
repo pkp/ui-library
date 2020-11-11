@@ -80,6 +80,11 @@
 					</ul>
 					<ul v-if="displaySubmenu('Form')">
 						<li>
+							<router-link to="/component/Form/fields/FieldAutosuggestPreset">
+								FieldAutosuggestPreset
+							</router-link>
+						</li>
+						<li>
 							<router-link to="/component/Form/fields/FieldBaseAutosuggest">
 								FieldBaseAutosuggest
 							</router-link>

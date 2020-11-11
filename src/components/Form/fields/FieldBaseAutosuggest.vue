@@ -109,12 +109,14 @@
 import FieldBase from './FieldBase.vue';
 import PkpBadge from '@/components/Badge/Badge.vue';
 import {VueAutosuggest} from 'vue-autosuggest';
+import ajaxError from '@/mixins/ajaxError';
 import debounce from 'debounce';
 import elementResizeEvent from 'element-resize-event';
 
 export default {
 	name: 'FieldBaseAutosuggest',
 	extends: FieldBase,
+	mixins: [ajaxError],
 	components: {
 		PkpBadge,
 		VueAutosuggest
@@ -458,8 +460,8 @@ export default {
 	background: transparent;
 	border: 1px solid transparent;
 	border-left-color: @bg-border-color-light;
-	border-top-right-radius: 50%;
-	border-bottom-right-radius: 50%;
+	border-top-right-radius: 1.2em; // matches radius on button in Badge.vue
+	border-bottom-right-radius: 1.2em;
 	color: @no;
 
 	.fa {
@@ -522,7 +524,8 @@ export default {
 
 	.autosuggest__results-item {
 		position: relative;
-		padding: 0.25rem 1rem;
+		padding: 0.5rem 1rem;
+		line-height: 1.5em;
 
 		&:before {
 			content: '';
