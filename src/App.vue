@@ -215,6 +215,13 @@
 						</li>
 						<li>
 							<router-link
+								to="/component/ListPanel/components/SubmissionFilesListPanel"
+							>
+								SubmissionFilesListPanel
+							</router-link>
+						</li>
+						<li>
+							<router-link
 								to="/component/ListPanel/components/SubmissionsListPanel"
 							>
 								SubmissionsListPanel
@@ -239,6 +246,9 @@
 				<li><router-link to="/component/Orderer">Orderer</router-link></li>
 				<li>
 					<router-link to="/component/Pagination">Pagination</router-link>
+				</li>
+				<li>
+					<router-link to="/component/ProgressBar">ProgressBar</router-link>
 				</li>
 				<li><router-link to="/component/Search">Search</router-link></li>
 				<li><router-link to="/component/Spinner">Spinner</router-link></li>

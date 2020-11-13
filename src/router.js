@@ -41,8 +41,10 @@ import ComponentNotify from './docs/utilities/Notify/ComponentNotify.vue';
 import ComponentOrderer from './docs/components/Orderer/ComponentOrderer.vue';
 import ComponentPage from './docs/components/Page/ComponentPage.vue';
 import ComponentPagination from './docs/components/Pagination/ComponentPagination.vue';
+import ComponentProgressBar from './docs/components/ProgressBar/ComponentProgressBar.vue';
 import ComponentSearch from './docs/components/Search/ComponentSearch.vue';
 import ComponentSelectReviewerListPanel from './docs/components/ListPanel/ComponentSelectReviewerListPanel.vue';
+import ComponentSubmissionFilesListPanel from './docs/components/ListPanel/ComponentSubmissionFilesListPanel.vue';
 import ComponentSubmissionsListPanel from './docs/components/ListPanel/ComponentSubmissionsListPanel.vue';
 import ComponentSpinner from './docs/components/Spinner/ComponentSpinner.vue';
 import ComponentStatsPage from './docs/components/StatsPage/ComponentStatsPage.vue';
@@ -240,6 +242,12 @@ export default new Router({
 			component: ComponentSelectReviewerListPanel
 		},
 		{
+			path:
+				'/component/ListPanel/components/SubmissionFilesListPanel/:example?',
+			name: 'SubmissionFilesListPanel',
+			component: ComponentSubmissionFilesListPanel
+		},
+		{
 			path: '/component/ListPanel/components/SubmissionsListPanel/:example?',
 			name: 'SubmissionsListPanel',
 			component: ComponentSubmissionsListPanel
@@ -273,6 +281,11 @@ export default new Router({
 			path: '/component/Pagination/:example?',
 			name: 'Pagination',
 			component: ComponentPagination
+		},
+		{
+			path: '/component/ProgressBar/:example?',
+			name: 'ProgressBar',
+			component: ComponentProgressBar
 		},
 		{
 			path: '/component/Search/:example?',
