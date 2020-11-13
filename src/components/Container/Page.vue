@@ -317,7 +317,7 @@ export default {
 	line-height: 3rem;
 	background: @bg-anchor;
 	font-size: 0.85rem;
-	z-index: 10;
+	z-index: 9;
 }
 
 .app__returnHeaderLink {
