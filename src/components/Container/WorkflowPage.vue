@@ -43,7 +43,8 @@ export default {
 			uploadFileModalLabel: '',
 			uploadFileUrl: '',
 			versionLabel: '',
-			versionConfirmLabel: '',
+			versionConfirmMessage: '',
+			versionConfirmTitle: '',
 			workingPublication: null
 		};
 	},
@@ -240,7 +241,8 @@ export default {
 			this.openDialog({
 				cancelLabel: this.__('common.no'),
 				modalName: 'createVersion',
-				message: this.versionConfirmLabel,
+				message: this.versionConfirmMessage,
+				title: this.versionConfirmTitle,
 				callback: () => {
 					this.createVersion();
 					this.$modal.hide('createVersion');

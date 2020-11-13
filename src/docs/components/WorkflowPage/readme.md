@@ -26,7 +26,8 @@
 | `unpublishLabel` | Label for the unpublish button. |
 | `unscheduleConfirmLabel` | Confirmation message before scheduling for publication. |
 | `versionLabel` | Label for the current version. |
-| `versionConfirmLabel` | Confirmation message before creating a new version. |
+| `versionConfirmMessage` | Confirmation message before creating a new version. |
+| `versionConfirmTitle` | Title of the confirmation modal before creating a new version. |
 | `workingPublication` | Object representing the working publication. This is the version that is currently being shown. |
 
 ## Usage

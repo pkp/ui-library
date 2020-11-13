@@ -328,7 +328,8 @@ export default {
 			unscheduleConfirmLabel:
 				"Are you sure you don't want this scheduled for publication?",
 			versionLabel: 'Version: ',
-			versionConfirmLabel: 'Are you sure you want to create a new version?',
+			versionConfirmTitle: 'Create New Version',
+			versionConfirmMessage: 'Are you sure you want to create a new version?',
 			workingPublication: latestPublication
 		};
 	},
