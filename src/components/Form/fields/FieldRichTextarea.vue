@@ -180,8 +180,11 @@ export default {
 				convert_urls: true,
 				urlconverter_callback: function (url) {
 					// removes script_host from smarty variables
+					var absoluteUrl = /^http[s]*:\/\//i.test(url);
 					var smartyVariable = /\{\$(\w*)\}/.exec(url);
-					return (smartyVariable) ? smartyVariable[0] : window.location.href + '/' + url;
+					if (!absoluteUrl)  url = window.location.href + '/' + url;
+					if (smartyVariable) url = smartyVariable[0] ;
+					return  url;
 				},
 				// See: https://www.tiny.cloud/docs/general-configuration-guide/upload-images/#rollingyourimagehandler
 				images_upload_handler(blobInfo, success, failure) {
