@@ -191,7 +191,12 @@ export default {
 				relative_urls: false,
 				remove_script_host: false,
 				convert_urls: true,
-				directionality: $.pkp.app.rtlLocales.includes(this.localeKey)
+        urlconverter_callback: function (url) {
+          // removes script_host from smarty variables
+          var smartyVariable = /\{\$(\w*)\}/.exec(url);
+          return (smartyVariable) ? smartyVariable[0] : window.location.href + '/' + url;
+        },
+        directionality: $.pkp.app.rtlLocales.includes(this.localeKey)
 					? 'rtl'
 					: null,
 				// See: https://www.tiny.cloud/docs/general-configuration-guide/upload-images/#rollingyourimagehandler
