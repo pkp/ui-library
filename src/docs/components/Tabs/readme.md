@@ -6,6 +6,7 @@
 | `isSideTabs` | Displays the tabs on the side with content on the right when `true`. |
 | `label` | Sets an `aria-label` for the tabs. See the [Accessible label](#accessible-label) section below. |
 | `badge` | Adds a [Badge](#/component/Badge) component beside the icon or text in the tab. |
+| `trackHistory` | When `true`, the tabs will modify the browser history when the current tab changes so that the back button can be used. |
 
 ## Events
 
