@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import debounce from 'debounce';
+
 export default {
 	props: {
 		defaultTab: {
@@ -53,6 +55,12 @@ export default {
 			default() {
 				return '';
 			}
+		},
+		trackHistory: {
+			type: Boolean,
+			default() {
+				return false;
+			}
 		}
 	},
 	data() {
@@ -69,7 +77,10 @@ export default {
 		 */
 		setCurrentTab(tabId) {
 			this.currentTab = tabId;
-			this.$nextTick(() => $(this.$refs['button' + tabId]).focus());
+			this.$nextTick(() => {
+				$(this.$refs['button' + tabId]).focus();
+				this.updateUrl();
+			});
 		},
 
 		/**
@@ -112,7 +123,23 @@ export default {
 			const i = this.tabs.findIndex(tab => tab.id === this.currentTab);
 			const tab = this.tabs[i - 1] || this.tabs[this.tabs.length - 1];
 			this.setCurrentTab(tab.id);
-		}
+		},
+
+		/**
+		 * Update the URL hash when a tab has been opened
+		 */
+		updateUrl: debounce(function() {
+			if (this.trackHistory) {
+				const hash =
+					this.$parent.$options.name === 'Tab'
+						? '#' + this.$parent.id + '/' + this.currentTab
+						: '#' + this.currentTab;
+				if (hash !== window.location.hash) {
+					const activeTab = this.tabs.find(tab => tab.id === this.currentTab);
+					window.history.pushState({}, activeTab.label, hash);
+				}
+			}
+		}, 100)
 	},
 	watch: {
 		/**

@@ -82,6 +82,16 @@ export default {
 		},
 
 		/**
+		 * Open the requested tab when the URL includes an anchor
+		 */
+		openUrlTab() {
+			let parts = window.location.hash.slice(1).split('/');
+			while (parts.length) {
+				pkp.eventBus.$emit('open-tab', parts.shift());
+			}
+		},
+
+		/**
 		 * Open a modal showing the user's tasks
 		 */
 		openTasks() {
@@ -103,11 +113,9 @@ export default {
 		 * Open tabs if the URL contains an anchor (#tabname)
 		 */
 		if (window.location.hash) {
-			let parts = window.location.hash.slice(1).split('/');
-			while (parts.length) {
-				pkp.eventBus.$emit('open-tab', parts.shift());
-			}
+			this.openUrlTab();
 		}
+		window.onhashchange = this.openUrlTab;
 
 		/**
 		 * Respond to notify events
