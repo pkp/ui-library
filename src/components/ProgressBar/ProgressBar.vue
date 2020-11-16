@@ -57,9 +57,9 @@ export default {
 .progressBar {
 	position: relative;
 	display: block;
-	height: @half;
+	height: 0.5rem;
 	background: @bg;
-	border-radius: @half / 2;
+	border-radius: 0.25rem;
 	overflow: hidden; // apply border-radius to progress bar
 }
 
@@ -68,7 +68,7 @@ export default {
 	top: 0;
 	left: 0;
 	display: block;
-	height: @half;
+	height: 0.5rem;
 	background: @primary;
 	transition: 0.2s all;
 	animation: progressBar 2s infinite;
