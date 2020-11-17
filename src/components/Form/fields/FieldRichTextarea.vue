@@ -191,6 +191,14 @@ export default {
 				relative_urls: false,
 				remove_script_host: false,
 				convert_urls: true,
+				urlconverter_callback: function(url) {
+					// removes script_host from smarty variables
+					const absoluteUrl = /^http[s]*:\/\//i.test(url);
+					const smartyVariable = /\{\$(\w*)\}/.exec(url);
+					if (!absoluteUrl) url = window.location.href + '/' + url;
+					if (smartyVariable) url = smartyVariable[0];
+					return url;
+				},
 				directionality: $.pkp.app.rtlLocales.includes(this.localeKey)
 					? 'rtl'
 					: null,
