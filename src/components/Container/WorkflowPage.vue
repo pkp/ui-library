@@ -616,7 +616,7 @@ export default {
 }
 
 .pkpPublication__header {
-	margin: -@double -@double 0;
+	margin: -2rem -2rem 0;
 	padding: 1rem;
 	border-bottom: @bg-border-light;
 
@@ -640,7 +640,7 @@ export default {
 }
 
 .pkpPublication__versionPublished {
-	margin: 0 -@double;
+	margin: 0 -2rem;
 	padding: 1rem;
 	background: @no-red;
 	font-size: @font-sml;
@@ -654,12 +654,12 @@ export default {
 	}
 
 	.pkpTab .pkpForm {
-		margin-right: -@base;
+		margin-right: -1rem;
 		border-top: none;
 		border-right: none;
 
 		@media (min-width: 767px) {
-			margin-right: -@double;
+			margin-right: -2rem;
 		}
 	}
 }
@@ -699,6 +699,6 @@ export default {
 // Integrate the grids in the publication tab
 #contributors-grid,
 #representations-grid {
-	padding-top: @double;
+	padding-top: 2rem;
 }
 </style>

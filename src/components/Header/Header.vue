@@ -61,7 +61,7 @@ export default {
 	margin: 0;
 	font-size: @font-base;
 	font-weight: @bold;
-	line-height: @double + 2; // Matches buttons
+	line-height: calc(2rem + 2px); // Matches buttons
 }
 
 .pkpHeader__title > legend {

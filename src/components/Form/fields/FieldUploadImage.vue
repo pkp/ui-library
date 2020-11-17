@@ -279,7 +279,7 @@ export default {
 .pkpFormField--uploadImage__thumbnailWrapper {
 	float: left;
 	width: 40%;
-	margin-bottom: @base;
+	margin-bottom: 1rem;
 }
 
 .pkpFormField--uploadImage__thumbnail {
@@ -292,7 +292,7 @@ export default {
 
 .pkpFormField--uploadImage__thumbnailWrapper + .pkpFormField--upload__details {
 	margin-left: 40%;
-	padding-left: @base;
+	padding-left: 1rem;
 }
 
 .pkpFormField--uploadImage__altTextInput {
@@ -322,8 +322,8 @@ export default {
 	.pkpFormField--upload__previewActions {
 		float: none;
 		clear: both;
-		margin: @base -@base -@base;
-		padding: @base;
+		margin: 1rem -1rem -1rem;
+		padding: 1rem;
 		border-top: @bg-border;
 	}
 
@@ -344,17 +344,17 @@ export default {
 		.dz-image {
 			display: block;
 			float: right;
-			width: 48px;
-			margin: @base @base @base 0;
+			width: 3rem;
+			margin: 1rem 1rem 1rem 0;
 			border-radius: 2px;
 		}
 
 		.dz-details {
-			margin-right: 48px + @base;
+			margin-right: 4rem;
 		}
 
 		.dz-remove {
-			right: 48px + @double;
+			right: 5rem;
 		}
 	}
 }

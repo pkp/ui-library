@@ -449,7 +449,7 @@ export default {
 }
 
 .pkpFormField--richTextarea__input {
-	padding: @base;
+	padding: 1rem;
 	width: 100%;
 	height: 14em;
 	font-size: @font-sml;
@@ -486,7 +486,7 @@ export default {
 .pkpFormField--richTextarea__controlFooter {
 	display: flex;
 	align-items: center;
-	padding: @half @base;
+	padding: 0.5rem 1rem;
 	border-top: @bg-border;
 	font-size: @font-tiny;
 	line-height: @line-sml;

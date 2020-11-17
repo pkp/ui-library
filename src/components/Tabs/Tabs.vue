@@ -231,7 +231,7 @@ export default {
 
 .pkpTab {
 	position: relative;
-	padding: @base;
+	padding: 1rem;
 	background: @lift;
 
 	&:focus {
@@ -241,8 +241,8 @@ export default {
 
 // Nested tabs
 .pkpTabs .pkpTabs {
-	margin-left: -@base;
-	margin-right: -@base;
+	margin-left: -1rem;
+	margin-right: -1rem;
 }
 
 @media (min-width: 767px) {
@@ -264,16 +264,16 @@ export default {
 	}
 
 	.pkpTab {
-		padding: @double;
+		padding: 2rem;
 		border: @bg-border-light;
 		border-radius: @radius;
 	}
 
 	/* Nested tabs */
 	.pkpTabs .pkpTabs {
-		margin-left: -@double;
-		margin-right: -@double;
-		margin-bottom: -@double;
+		margin-left: -2rem;
+		margin-right: -2rem;
+		margin-bottom: -2rem;
 
 		.pkpTabs__buttons {
 			padding-left: 1rem;
@@ -294,14 +294,14 @@ export default {
 			top: 0;
 			padding-left: 0;
 			padding-right: 0;
-			margin-bottom: @double;
+			margin-bottom: 2rem;
 			border-right: @bg-border-light;
 		}
 
 		.pkpTabs__button {
 			display: block;
 			width: 100%;
-			padding-right: @base;
+			padding-right: 1rem;
 			border-left: none;
 			border-right: none;
 			border-color: transparent;
@@ -365,7 +365,7 @@ export default {
 		border-top: none;
 
 		.pkpForm {
-			margin: 0 0 0 (-@double - 1); // overlap border
+			margin: 0 0 0 calc(-2rem - 1px); // overlap border
 			border: @bg-border-light;
 		}
 
@@ -379,7 +379,7 @@ export default {
 
 	/* Forms in tabs */
 	.pkpTab > .pkpForm {
-		margin: -@double;
+		margin: -2rem;
 	}
 }
 </style>

@@ -97,7 +97,7 @@ export default {
 	border: @bg-border-light;
 	border-radius: @radius;
 	font-size: @font-sml;
-	line-height: @double;
+	line-height: 2rem;
 	-webkit-appearance: none; /* Override Safari search input styles */
 
 	&:hover {
@@ -127,7 +127,7 @@ export default {
 	position: absolute;
 	top: 0;
 	right: 0;
-	width: @double;
+	width: 2rem;
 	height: 100%;
 	background: transparent;
 	border: none;

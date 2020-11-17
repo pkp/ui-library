@@ -93,7 +93,7 @@ export default {
 
 .pkpFormLocales {
 	position: relative;
-	padding: 0 @base;
+	padding: 0 1rem;
 	border-bottom: @bg-border-light;
 	background: @lift;
 	text-align: right;
@@ -103,11 +103,11 @@ export default {
 .pkpFormLocales__locale {
 	position: relative;
 	display: inline-block;
-	padding: @half;
+	padding: 0.5rem;
 	background: #fff;
 	border: none;
 	font-size: @font-tiny;
-	line-height: @double;
+	line-height: 2rem;
 	color: @primary;
 }
 
@@ -117,7 +117,7 @@ button.pkpFormLocales__locale {
 
 .pkpFormLocales__locale--isPrimary {
 	padding-right: 0;
-	padding-left: @base;
+	padding-left: 1rem;
 	border-left: @bg-border-light;
 	font-weight: @bold;
 	color: @text-light;

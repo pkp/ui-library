@@ -67,7 +67,7 @@ export default {
 	border: @bg-border-light;
 	border-radius: @radius;
 	font-size: @font-sml;
-	line-height: @double;
+	line-height: 2rem;
 	font-weight: @bold;
 	color: @primary;
 	text-decoration: none;

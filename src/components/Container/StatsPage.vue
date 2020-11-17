@@ -261,7 +261,7 @@ export default {
 
 	.pkpHeader,
 	.pkpFilter {
-		margin-left: -@base;
+		margin-left: -1rem;
 	}
 
 	.pkpStats__filterSet:first-child .pkpHeader {
@@ -352,7 +352,7 @@ export default {
 }
 
 .pkpStats__noRecords {
-	padding: @double @base;
+	padding: 2rem 1rem;
 	border: @grid-border;
 	border-top: none;
 	font-size: @font-sml;
@@ -371,7 +371,7 @@ export default {
 }
 
 .pkpStats__graphHeader {
-	padding: @base;
+	padding: 1rem;
 }
 
 .pkpStats__graphSelectors {

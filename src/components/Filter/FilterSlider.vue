@@ -188,7 +188,7 @@ export default {
 }
 
 .pkpFilter__inputTitle {
-	margin-right: @base;
+	margin-right: 1rem;
 	color: @primary;
 	line-height: 1.5em;
 	cursor: pointer;
@@ -236,8 +236,8 @@ export default {
 
 	input[type='range']::-webkit-slider-thumb {
 		-webkit-appearance: none;
-		height: @base;
-		width: @base;
+		height: 1rem;
+		width: 1rem;
 		border-radius: 50%;
 		background-color: #fff;
 		box-shadow: 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0.25);
@@ -245,8 +245,8 @@ export default {
 
 	// Firefox
 	input[type='range']::-moz-range-thumb {
-		height: @base;
-		width: @base;
+		height: 1rem;
+		width: 1rem;
 		border-radius: 50%;
 		background-color: #fff;
 		box-shadow: 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0.25);
@@ -254,8 +254,8 @@ export default {
 
 	// IE
 	input[type='range']::-ms-thumb {
-		height: @base;
-		width: @base;
+		height: 1rem;
+		width: 1rem;
 		border-radius: 50%;
 		background-color: #fff;
 		box-shadow: 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0.25);
@@ -275,7 +275,7 @@ export default {
 		width: 100%;
 		height: 5px;
 		cursor: pointer;
-		border-radius: @base;
+		border-radius: 1rem;
 		background-color: @primary;
 	}
 
@@ -287,7 +287,7 @@ export default {
 		width: 100%;
 		height: 5px;
 		cursor: pointer;
-		border-radius: @base;
+		border-radius: 1rem;
 		background-color: @primary;
 	}
 
@@ -295,19 +295,19 @@ export default {
 		width: 100%;
 		height: 5px;
 		cursor: pointer;
-		border-radius: @base;
+		border-radius: 1rem;
 		background-color: @primary;
 	}
 	input[type='range']::-ms-fill-lower {
 		background: @primary;
-		border-radius: @base;
+		border-radius: 1rem;
 	}
 	input[type='range']:focus::-ms-fill-lower {
 		background: @primary;
 	}
 	input[type='range']::-ms-fill-upper {
 		background: @primary;
-		border-radius: @base;
+		border-radius: 1rem;
 	}
 	input[type='range']:focus::-ms-fill-upper {
 		background: @primary;
