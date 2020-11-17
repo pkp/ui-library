@@ -178,6 +178,14 @@ export default {
 				relative_urls: false,
 				remove_script_host: false,
 				convert_urls: true,
+				urlconverter_callback: function(url) {
+					// removes script_host from smarty variables
+					const absoluteUrl = /^http[s]*:\/\//i.test(url);
+					const smartyVariable = /\{\$(\w*)\}/.exec(url);
+					if (!absoluteUrl) url = window.location.href + '/' + url;
+					if (smartyVariable) url = smartyVariable[0];
+					return url;
+				},
 				// See: https://www.tiny.cloud/docs/general-configuration-guide/upload-images/#rollingyourimagehandler
 				images_upload_handler(blobInfo, success, failure) {
 					const data = new FormData();
