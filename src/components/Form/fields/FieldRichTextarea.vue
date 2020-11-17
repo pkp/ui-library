@@ -9,7 +9,7 @@
 				:label="label"
 				:localeLabel="localeLabel"
 				:isRequired="isRequired"
-				:requiredLabel="__('common.required')"
+				:requiredLabel="__('common.required2')"
 				:multilingualLabel="multilingualLabel"
 			/>
 			<tooltip
