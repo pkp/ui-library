@@ -41,6 +41,13 @@ export default {
 					}
 				}
 			});
+		},
+
+		/**
+		 * Reload the page to send another email
+		 */
+		reload() {
+			window.location.reload();
 		}
 	},
 	mounted() {
@@ -59,3 +66,11 @@ export default {
 	}
 };
 </script>
+
+<style lang="less">
+@import '../../styles/_import';
+
+.notifyUsers__progress__spinner {
+	margin-right: 0.25em;
+}
+</style>
