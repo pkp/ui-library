@@ -15,7 +15,7 @@
     "core-js": "^3.4.4",
     "debounce": "^1.2.0",
     "dedent": "^0.7.0",
-    "highlight.js": "^9.17.1",
+    "highlight.js": "^10.1.2",
     "html-entities": "^1.2.1",
     "marked": "^0.7.0",
     "moment": "^2.27.0",
