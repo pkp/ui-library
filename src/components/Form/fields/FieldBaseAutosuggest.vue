@@ -490,20 +490,22 @@ export default {
 }
 
 .autosuggest__results-container {
-	display: none;
 	position: absolute;
 	top: 100%;
 	margin-top: -2px;
 	width: 100%;
 	max-width: 100%;
 	min-width: 20rem;
+	z-index: 9999;
+}
+
+.autosuggest__results {
 	border: 1px solid @primary;
 	border-bottom-right-radius: @radius;
 	border-bottom-left-radius: @radius;
 	background: @lift;
 	box-shadow: 0 0.75rem 0.75rem rgba(0, 0, 0, 0.2);
 	font-size: @font-sml;
-	z-index: 9999;
 
 	&:after {
 		content: '';
@@ -542,12 +544,6 @@ export default {
 
 	.autosuggest__results-item--highlighted {
 		background: @bg;
-	}
-}
-
-.autosuggest__input--open {
-	+ .autosuggest__results-container {
-		display: block;
 	}
 }
 
