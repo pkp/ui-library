@@ -76,8 +76,16 @@ export default {
 			);
 			this.suggestions = this.allSuggestions.filter(
 				suggestion =>
-					!this.inputValue !== suggestion.value && suggestion.value.match(regex)
+					!this.inputValue ||
+					(this.inputValue !== suggestion.value &&
+						suggestion.value.match(regex))
 			);
+			if (this.inputValue && !this.suggestions.includes(this.inputValue)) {
+				this.suggestions.unshift({
+					value: this.inputValue,
+					label: this.inputValue
+				});
+			}
 		}, 250)
 	}
 };
