@@ -19,13 +19,16 @@ export default {
 	data() {
 		return {
 			announcementsNavLink: {},
-			paymentsNavLink: {}
+			paymentsNavLink: null
 		};
 	},
 	mounted() {
 		pkp.eventBus.$on('form-success', (formId, context) => {
 			// Add or remove payments nav link
-			if (formId === pkp.const.FORM_PAYMENT_SETTINGS) {
+			if (
+				formId === pkp.const.FORM_PAYMENT_SETTINGS &&
+				!!this.paymentsNavLink
+			) {
 				if (!context.paymentsEnabled && !!this.menu['payments']) {
 					let menu = {...this.menu};
 					delete menu.payments;
