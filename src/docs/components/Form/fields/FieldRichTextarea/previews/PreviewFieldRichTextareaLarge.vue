@@ -17,7 +17,8 @@ export default {
 		return {
 			field: {
 				...fieldBase,
-				...field
+				...field,
+				isMultilingual: false
 			}
 		};
 	}

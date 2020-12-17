@@ -18,7 +18,8 @@ export default {
 			field: {
 				...fieldBase,
 				...field,
-				wordLimit: 200
+				wordLimit: 200,
+				isMultilingual: false
 			}
 		};
 	}

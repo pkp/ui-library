@@ -125,7 +125,8 @@ window.$.pkp = {
 	app: {
 		currentLocale: 'en_US',
 		primaryLocale: 'en_US',
-		cdnEnabled: true
+		cdnEnabled: true,
+		rtlLocales: []
 	},
 	pkpHandler() {
 		alert(

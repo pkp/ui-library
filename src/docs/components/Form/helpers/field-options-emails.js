@@ -2,8 +2,7 @@ export default {
 	name: 'email-options',
 	component: 'field-options',
 	label: 'Email Options',
-	description:
-		'How would you like to receive email notifications? (Select "Once a week" to see further options.)',
+	description: 'How would you like to receive email notifications?',
 	value: [],
 	type: 'radio',
 	showWhen: 'options-confirmation',

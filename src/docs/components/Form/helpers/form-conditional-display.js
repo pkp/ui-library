@@ -9,7 +9,13 @@ export default {
 	action: 'https://example.org/example',
 	fields: [
 		{...FieldOptionsConfirmation, groupId: 'default'},
-		{...FieldOptionsEmails, groupId: 'default'},
+		{
+			...FieldOptionsEmails,
+			description:
+				FieldOptionsEmails.description +
+				' (Select "Once a week" to see further options.)',
+			groupId: 'default'
+		},
 		{...FieldOptionsEmailsDiscussions, groupId: 'default'}
 	],
 	groups: [

@@ -25,15 +25,17 @@ export default {
 			field: {
 				...fieldBase,
 				...field,
-				plugins: field.plugins + ',noneditable'
+				plugins: field.plugins + ',noneditable',
+				isMultilingual: false
 			},
 			preparedContent: {
-				contextName: 'Journal Name',
-				editorName: 'Editor Name',
-				editorRole: 'Editor Role',
-				dueDate: 'Due Date',
-				recipientName: 'Recipient Name',
-				submissionTitle: 'Submission Title',
+				contextName: 'Journal of Public Knowledge',
+				editorName: 'Daniel Barnes',
+				editorRole: 'Journal Manager',
+				dueDate: '2021-03-21',
+				recipientName: 'Carlo Corino',
+				submissionTitle:
+					'The influence of lactation on the quantity and quality of cashmere production',
 				'escap"ing': 'HTML should be <sup>escaped</sup>'
 			},
 			value: `<p>Hi {$recipientName},</p>
