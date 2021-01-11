@@ -39,7 +39,7 @@ export default {
 					items: [
 						...submissionFiles,
 						{
-							id: 234,
+							id: 235,
 							fileId: 1234,
 							name: {
 								en_US: 'file-with-no-genre-assignment-yet.docx',

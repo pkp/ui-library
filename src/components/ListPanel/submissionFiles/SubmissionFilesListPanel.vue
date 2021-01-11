@@ -48,9 +48,7 @@
 			@vdropzone-success="dropzoneSuccess"
 			@vdropzone-upload-progress="dropzoneUploadProgress"
 			@vdropzone-total-upload-progress="dropzoneTotalUploadProgress"
-			@vdropzone-drag-over="dragover"
-			@vdropzone-drag-leave="dragleave"
-			@vdropzone-drop="dragleave"
+			@vdropzone-drop="drop"
 		/>
 		<span v-if="status" class="-screenReader" role="status">
 			{{ status }}
@@ -165,6 +163,7 @@ export default {
 	data() {
 		return {
 			activeForm: {},
+			dragEventCounter: 0,
 			editingLabel: '',
 			isDragging: false,
 			status: ''
@@ -233,38 +232,58 @@ export default {
 		},
 
 		/**
-		 * Event handler when the user stops dragging
+		 * Event handler when the user drags over an element
 		 *
-		 * Callback for `dragend` and `dragleave` events.
-		 * Both events are needed because a `dragend` event
-		 * is not fired if the user ends the drag outside
-		 * of the browser.
+		 * Callback for `dragenter` events.
 		 *
-		 * @param {Object} event
+		 * The dragenter and dragleave events are fired on every
+		 * element as the user drags across the screen. The counter
+		 * tracks the enter/leave events across all elements. When
+		 * the counter reaches 0 again, the user has dragged away
+		 * from the viewport or dropped the files into a drop area.
+		 *
+		 * See https://stackoverflow.com/questions/3144881/how-do-i-detect-a-html5-drag-event-entering-and-leaving-the-window-like-gmail-d#comment7748043_3144881
+		 *
+		 * @param {DragEvent} event
 		 */
-		dragleave(event) {
-			// preventDefault will prevent the browser from loading the
-			// file if the user accidentally missed the drop target
-			event.preventDefault();
-			this.isDragging = false;
+		dragenter(event) {
+			this.dragEventCounter = this.dragEventCounter + 1;
+			this.isDragging = event.dataTransfer.types.includes('Files');
 		},
 
 		/**
-		 * Event handler when the user starts or continues
-		 * dragging
+		 * Event handler when the user drags away from an element
 		 *
-		 * Callback for `dragstart` and `dragover` events.
-		 * Both events are needed because a `dragstart` event
-		 * is not fired when the user is dragging from another
-		 * program, like a file browser on their desktop.
+		 * Callback for `dragleave` events.
 		 *
-		 * @param {Object} event
+		 * @see this.dragenter
+		 * @param {DragEvent} event
 		 */
-		dragover(event) {
+		dragleave(event) {
+			this.dragEventCounter = this.dragEventCounter - 1;
+			this.isDragging = this.dragEventCounter > 0;
+		},
+
+		/**
+		 * Event handler when the user "drops" in a drag-and-drop action
+		 *
+		 * Callback for `drop` and `dragover` events. Both events are
+		 * needed to catch drops that happen outside the drop target
+		 * and prevent the browser from redirecting.
+		 *
+		 * See: https://stackoverflow.com/questions/6756583/prevent-browser-from-loading-a-drag-and-dropped-file#comment51502784_6756680
+		 *
+		 * @see this.dragenter
+		 * @param {DragEvent} event
+		 */
+		drop(event) {
 			// preventDefault will prevent the browser from loading the
 			// file if the user accidentally missed the drop target
 			event.preventDefault();
-			this.isDragging = event.dataTransfer.types.includes('Files');
+			if (event.type === 'drop') {
+				this.isDragging = false;
+				this.dragEventCounter = 0;
+			}
 		},
 
 		/**
@@ -499,21 +518,19 @@ export default {
 		/**
 		 * Listen for when the user performs a drag-and-drop action
 		 */
-		document.addEventListener('dragover', this.dragover);
-		document.addEventListener('dragstart', this.dragover);
-		document.addEventListener('dragend', this.dragleave);
-		document.addEventListener('dragleave', this.dragleave);
-		document.addEventListener('drop', this.dragleave);
+		document.addEventListener('dragenter', this.dragenter, true);
+		document.addEventListener('dragleave', this.dragleave, true);
+		document.addEventListener('dragover', this.drop, true);
+		document.addEventListener('drop', this.drop);
 	},
 	destroyed() {
 		/**
 		 * Clean up listeners
 		 */
-		document.removeEventListener('dragover', this.dragover);
-		document.removeEventListener('dragstart', this.dragover);
-		document.removeEventListener('dragend', this.dragleave);
-		document.removeEventListener('dragleave', this.dragleave);
-		document.removeEventListener('drop', this.dragleave);
+		document.removeEventListener('dragenter', this.dragenter, true);
+		document.removeEventListener('dragleave', this.dragleave, true);
+		document.removeEventListener('dragover', this.drop, true);
+		document.removeEventListener('drop', this.drop);
 	}
 };
 </script>
