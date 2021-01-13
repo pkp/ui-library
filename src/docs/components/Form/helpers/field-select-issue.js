@@ -38,11 +38,14 @@ export default {
 		}
 	],
 	value: '',
+	assignLabel: 'Assign to Issue',
+	assignedNoticeBase:
+		'This has been assigned to <a href="{$issueUrl}">{$issueName}</a> but it has not been scheduled for publication.',
+	changeIssue: 'Change Issue',
 	publishedNoticeBase:
 		'Published in <a href="http://example.com/issue/__issueId__">{$issueName}</a>.',
 	scheduledNoticeBase:
 		'Scheduled for publication in <a href="http://example.com/issue/__issueId__">{$issueName}</a>.',
-	scheduleLabel: 'Assign to Issue',
 	unscheduledNotice: 'This has not been scheduled for publication in an issue.',
 	unscheduleLabel: 'Unschedule'
 };

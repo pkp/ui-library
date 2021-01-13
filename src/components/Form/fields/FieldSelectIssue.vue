@@ -29,39 +29,22 @@
 			:id="describedByDescriptionId"
 		/>
 		<div class="pkpFormField__control">
-			<span
-				v-if="isPublished"
-				v-html="publishedNotice"
-				class="pkpFormField__description"
+			<span class="pkpFormField__description">
+				<span v-html="notice" />
+				<pkp-button
+					v-if="button"
+					v-bind="button"
+					class="pkpFormField--selectIssue__button"
+					@click="emitGlobal(button.event)"
+				>
+					{{ button.label }}
+				</pkp-button>
+			</span>
+			<field-error
+				v-if="errors && errors.length"
+				:id="describedByErrorId"
+				:messages="errors"
 			/>
-			<template v-else-if="isScheduled">
-				<span class="pkpFormField__description">
-					<span v-html="scheduledNotice" />
-					<pkp-button
-						class="pkpFormField--selectIssue__unscheduleButton"
-						:isWarnable="true"
-						@click="emitUnschedule"
-					>
-						{{ unscheduleLabel }}
-					</pkp-button>
-				</span>
-			</template>
-			<template v-else>
-				<span class="pkpFormField__description">
-					<span v-html="unscheduledNotice" />
-					<pkp-button
-						class="pkpFormField--selectIssue__unscheduleButton"
-						@click="emitSchedule"
-					>
-						{{ scheduleLabel }}
-					</pkp-button>
-				</span>
-				<field-error
-					v-if="errors && errors.length"
-					:id="describedByErrorId"
-					:messages="errors"
-				/>
-			</template>
 		</div>
 	</div>
 </template>
@@ -73,15 +56,23 @@ export default {
 	name: 'FieldSelectIssue',
 	extends: FieldSelect,
 	props: {
+		assignedNoticeBase: {
+			type: String,
+			required: true
+		},
+		assignLabel: {
+			type: String,
+			required: true
+		},
+		changeIssueLabel: {
+			type: String,
+			required: true
+		},
 		publicationStatus: {
 			type: Number,
 			required: true
 		},
 		publishedNoticeBase: {
-			type: String,
-			required: true
-		},
-		scheduleLabel: {
 			type: String,
 			required: true
 		},
@@ -100,41 +91,49 @@ export default {
 	},
 	computed: {
 		/**
-		 * Is this publication published?
+		 * The button to show in the field depending on
+		 * whether an issue has been selected/assigned
 		 *
-		 * @return {Boolean}
+		 * This value is bound to the button with v-bind
+		 * and the `callback` property is bound to @click
+		 *
+		 * @return {Object|Null}
 		 */
-		isPublished() {
-			return this.publicationStatus === pkp.const.STATUS_PUBLISHED;
+		button() {
+			let button = null;
+			if (this.publicationStatus === pkp.const.STATUS_SCHEDULED) {
+				button = {
+					event: 'unpublish:publication',
+					isWarnable: true,
+					label: this.unscheduleLabel
+				};
+			} else if (this.publicationStatus !== pkp.const.STATUS_PUBLISHED) {
+				button = {
+					event: 'schedule:publication',
+					label: this.value ? this.changeIssueLabel : this.assignLabel
+				};
+			}
+			return button;
 		},
 
 		/**
-		 * Is this publication scheduled?
-		 *
-		 * @return {Boolean}
-		 */
-		isScheduled() {
-			return this.publicationStatus === pkp.const.STATUS_SCHEDULED;
-		},
-
-		/**
-		 * Text that says this issue has been published
+		 * The notice text to show in the field depending
+		 * on whether an issue has been selected/assigned
 		 *
 		 * @return {String}
 		 */
-		publishedNotice() {
-			return this.publishedNoticeBase
-				.replace('__issueId__', this.value)
-				.replace('{$issueName}', this.selectedIssueName);
-		},
-
-		/**
-		 * Text that says this issue has been scheduled for publication
-		 *
-		 * @return {String}
-		 */
-		scheduledNotice() {
-			return this.scheduledNoticeBase
+		notice() {
+			let notice = '';
+			if (this.publicationStatus === pkp.const.STATUS_PUBLISHED) {
+				notice = this.publishedNoticeBase;
+			} else if (this.publicationStatus === pkp.const.STATUS_SCHEDULED) {
+				notice = this.scheduledNoticeBase;
+			} else if (this.value) {
+				notice = this.assignedNoticeBase;
+			} else {
+				return this.unscheduledNotice;
+			}
+			return notice
 				.replace('__issueId__', this.value)
 				.replace('{$issueName}', this.selectedIssueName);
 		},
@@ -154,17 +153,12 @@ export default {
 	},
 	methods: {
 		/**
-		 * Emit a global event to schedule a publication in an issue
+		 * Emit a global event
+		 *
+		 * @param {String} event
 		 */
-		emitSchedule() {
-			pkp.eventBus.$emit('schedule:publication');
-		},
-
-		/**
-		 * Emit a global event to unschedule a publication
-		 */
-		emitUnschedule() {
-			pkp.eventBus.$emit('unpublish:publication');
+		emitGlobal(event) {
+			pkp.eventBus.$emit(event);
 		}
 	}
 };
@@ -173,7 +167,7 @@ export default {
 <style lang="less">
 @import '../../../styles/_import';
 
-.pkpFormField--selectIssue__unscheduleButton {
+.pkpFormField--selectIssue__button {
 	margin-left: 0.5em;
 }
 </style>

@@ -134,11 +134,13 @@ export default {
 				return;
 			}
 			this.workingPublication = data;
-			this.$nextTick(() => this.openPublish());
+			if (this.workingPublication.issueId) {
+				this.$nextTick(() => this.openPublish());
+			}
 		});
 
 		/**
-		 * Open the assign to issue modal when a global unpublish
+		 * Open the assign to issue modal when a global publish
 		 * event is fired
 		 */
 		pkp.eventBus.$on('schedule:publication', this.openAssignToIssue);
