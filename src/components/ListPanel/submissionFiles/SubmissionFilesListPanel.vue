@@ -210,7 +210,7 @@ export default {
 					'X-Csrf-Token': pkp.currentUser.csrfToken
 				},
 				params: (files, xhr) => {
-					const name = 'name[' + $.pkp.app.currentLocale + ']';
+					const name = 'name[' + $.pkp.app.primaryLocale + ']';
 					return {
 						fileStage: this.fileStage,
 						[name]: files[0].name
