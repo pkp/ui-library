@@ -54,11 +54,29 @@
 					:key="option.value"
 					class="pkpFormField--options__option"
 				>
+					<!--
+						The `type` property can not be dynamic when using the
+						v-model and value properties together, or it results
+						in an error in IE 11.
+						See: https://stackoverflow.com/a/59999459/1723499
+					-->
 					<input
+						v-if="type === 'checkbox'"
 						class="pkpFormField--options__input"
 						v-model="selectedValue"
 						:value="option.value"
-						:type="type"
+						type="checkbox"
+						:name="localizedName"
+						:aria-describedby="describedByIds"
+						:aria-invalid="errors && errors.length"
+						:disabled="option.disabled"
+					/>
+					<input
+						v-else
+						class="pkpFormField--options__input"
+						v-model="selectedValue"
+						:value="option.value"
+						type="radio"
 						:name="localizedName"
 						:aria-describedby="describedByIds"
 						:aria-invalid="errors && errors.length"
