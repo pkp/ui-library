@@ -88,7 +88,7 @@
   "browserslist": [
     "> 1%",
     "last 2 versions",
-    "not ie <= 10"
+    "ie >= 10"
   ],
   "gitHooks": {
     "pre-commit": "lint-staged"
