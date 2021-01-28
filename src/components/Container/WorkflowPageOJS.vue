@@ -147,3 +147,11 @@ export default {
 	}
 };
 </script>
+
+<style lang="less">
+@import '../../styles/_import';
+.pkpWorkflow__submissionPayments .pkpDropdown__content {
+	min-width: 15em;
+	max-width: 15em;
+}
+</style>
