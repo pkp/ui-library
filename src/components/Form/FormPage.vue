@@ -275,4 +275,10 @@ export default {
 	transform: translateY(-0.5rem);
 	opacity: 0;
 }
+
+// When forms appear in a dropdown
+.pkpDropdown .pkpFormPage__footer {
+	padding: 0.5rem;
+	border-top: none;
+}
 </style>

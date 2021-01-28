@@ -271,4 +271,9 @@ export default {
 		}
 	}
 }
+
+// When forms appear in a dropdown
+.pkpDropdown .pkpFormGroup {
+	padding: 0.5rem;
+}
 </style>
