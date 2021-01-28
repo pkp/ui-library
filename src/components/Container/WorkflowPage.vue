@@ -596,6 +596,10 @@ export default {
 	line-height: 2rem;
 }
 
+.pkpWorkflow__submissionPayments legend {
+	white-space: nowrap;
+}
+
 .pkpWorkflow__identificationStatus {
 	margin-right: 0.5em;
 }
