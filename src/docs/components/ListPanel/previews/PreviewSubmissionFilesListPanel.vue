@@ -54,14 +54,15 @@ export default {
 							uuid: '12345',
 							name: 'File In Progress.docx',
 							progress: 35,
-							error: ''
+							error: []
 						},
 						{
 							uuid: '123456',
 							name: 'File that is too large.docx',
 							progress: 100,
-							error:
+							error: [
 								'File is too big (20mb). Files larger than 2mb can not be uploaded.'
+							]
 						}
 					],
 					options: {
