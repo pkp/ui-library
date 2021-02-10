@@ -312,7 +312,19 @@ export default {
 		 * @see https://www.dropzonejs.com/#event-list
 		 */
 		dropzoneError(file, error) {
-			error = typeof error === 'string' ? error : error.errorMessage;
+			if (typeof error === 'string') {
+				error = [error];
+			} else {
+				// Error objects with error code and message
+				if (typeof error.errorMessage !== 'undefined') {
+					error = [error.errorMessage];
+					// Error objects with invalid properties
+				} else if (typeof error === 'object' && error !== null) {
+					error = Object.keys(error)
+						.map(key => error[key])
+						.flat();
+				}
+			}
 
 			// Use $nextTick to compensate for the fact that this fires
 			// before dropzoneFilesAdded but we need this to fire after
