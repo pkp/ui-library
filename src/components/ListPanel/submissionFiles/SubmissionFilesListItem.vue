@@ -101,7 +101,10 @@
 					</pkp-button>
 				</div>
 			</div>
-			<field-error v-if="item.error" :messages="[item.error]" />
+			<field-error
+				v-if="item.error && item.error.length"
+				:messages="item.error"
+			/>
 			<progress-bar v-else :value="item.progress" />
 		</template>
 	</div>
