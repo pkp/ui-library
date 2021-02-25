@@ -185,20 +185,25 @@ export default {
 		 */
 		compiledInit() {
 			var self = this;
+			var urlConverterCallback = function(url) {
+				// removes script_host from smarty variables
+				const smartyVariable = /\{\$(\w*)\}/.exec(url);
+				if (smartyVariable) {
+					url = smartyVariable[0];
+				} else {
+					this.settings.urlconverter_callback = false; // eslint-disable-line
+					url = this.convertURL(url);
+					this.settings.urlconverter_callback = urlConverterCallback; // eslint-disable-line
+				}
+				return url;
+			};
 			return {
 				inline: true,
 				paste_data_images: true,
 				relative_urls: false,
 				remove_script_host: false,
 				convert_urls: true,
-				urlconverter_callback: function(url) {
-					// removes script_host from smarty variables
-					const absoluteUrl = /^http[s]*:\/\//i.test(url);
-					const smartyVariable = /\{\$(\w*)\}/.exec(url);
-					if (!absoluteUrl) url = window.location.href + '/' + url;
-					if (smartyVariable) url = smartyVariable[0];
-					return url;
-				},
+				urlconverter_callback: urlConverterCallback,
 				directionality: $.pkp.app.rtlLocales.includes(this.localeKey)
 					? 'rtl'
 					: null,
