@@ -238,7 +238,7 @@ export default {
 				},
 				setup(editor) {
 					if (Object.keys(self.preparedContentSanitized).length) {
-						editor.addButton('pkpPreparedContent', {
+						editor.ui.registry.addButton('pkpPreparedContent', {
 							icon: 'nonbreaking',
 							type: 'panelbutton',
 							panel: {
