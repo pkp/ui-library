@@ -347,17 +347,6 @@ export default {
 			});
 		}
 	},
-	watch: {
-		/**
-		 * Whenever the current value changes, set focus to the control element
-		 */
-		value: function(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			this.setFocusToControl();
-		}
-	},
 	mounted() {
 		/**
 		 * Add attributes to the hidden file input field so that labels and
