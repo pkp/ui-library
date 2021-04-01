@@ -3,10 +3,10 @@
 		<icon v-if="isExpanded" icon="angle-up" />
 		<icon v-else icon="angle-down" />
 		<span v-if="isExpanded" class="-screenReader">
-			{{ __('common.viewLess', {name: itemName}) }}
+			{{ __('list.viewLess', {name: itemName}) }}
 		</span>
 		<span v-else class="-screenReader">
-			{{ __('common.viewMore', {name: itemName}) }}
+			{{ __('list.viewMore', {name: itemName}) }}
 		</span>
 	</button>
 </template>
