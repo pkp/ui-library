@@ -98,8 +98,8 @@ window.pkp = {
 		'common.unknownError':
 			'An unexpected error has occurred. Please reload the page and try again.',
 		'common.view': 'View',
-		'common.viewLess': 'Hide expanded details about {$name}',
-		'common.viewMore': 'Show more details about {$name}',
+		'list.viewLess': 'Hide expanded details about {$name}',
+		'list.viewMore': 'Show more details about {$name}',
 		'common.viewWithName': 'View {$name}',
 		'common.yes': 'Yes',
 		'form.dataHasChanged':
