@@ -19,7 +19,7 @@ const cancel = this.__('common.cancel');
 Pass parameters to the localized keys by using the following.
 
 ```js
-{{ __('common.viewMore', {name: 'Daniel Barnes'}) }}
+{{ __('list.viewMore', {name: 'Daniel Barnes'}) }}
 ```
 
 The application should provide all of the localized phrases necessary from the server. On the server side, a locale key can be added to a page with the following PHP code.
