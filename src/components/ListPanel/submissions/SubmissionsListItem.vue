@@ -151,7 +151,7 @@
 				<expander
 					v-if="!currentUserIsReviewer"
 					:isExpanded="isExpanded"
-					:itemName="localize(currentPublication.authorsStringShort)"
+					:itemName="currentPublication.authorsStringShort"
 					@toggle="isExpanded = !isExpanded"
 				/>
 			</div>
