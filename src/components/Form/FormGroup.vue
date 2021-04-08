@@ -68,6 +68,7 @@ import FieldSelectIssue from '@/components/Form/fields/FieldSelectIssue.vue';
 import FieldSelectSubmissions from '@/components/Form/fields/FieldSelectSubmissions.vue';
 import FieldShowEnsuringLink from '@/components/Form/fields/FieldShowEnsuringLink.vue';
 import FieldText from '@/components/Form/fields/FieldText.vue';
+import FieldItems from '@/components/Form/fields/FieldItems.vue';
 import FieldTextarea from '@/components/Form/fields/FieldTextarea.vue';
 import FieldUpload from '@/components/Form/fields/FieldUpload.vue';
 import FieldUploadImage from '@/components/Form/fields/FieldUploadImage.vue';
@@ -90,6 +91,7 @@ export default {
 		FieldSelectSubmissions,
 		FieldShowEnsuringLink,
 		FieldText,
+		FieldItems,
 		FieldTextarea,
 		FieldUpload,
 		FieldUploadImage
@@ -270,10 +272,5 @@ export default {
 			padding-left: 1.5rem;
 		}
 	}
-}
-
-// When forms appear in a dropdown
-.pkpDropdown .pkpFormGroup {
-	padding: 0.5rem;
 }
 </style>

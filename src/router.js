@@ -25,6 +25,7 @@ import ComponentFieldSelect from './docs/components/Form/fields/FieldSelect/Comp
 import ComponentFieldSelectIssue from './docs/components/Form/fields/FieldSelectIssue/ComponentFieldSelectIssue.vue';
 import ComponentFieldShowEnsuringLink from './docs/components/Form/fields/FieldShowEnsuringLink/ComponentFieldShowEnsuringLink.vue';
 import ComponentFieldText from './docs/components/Form/fields/FieldText/ComponentFieldText.vue';
+import ComponentFieldItems from './docs/components/Form/fields/FieldItems/ComponentFieldItems.vue';
 import ComponentFieldTextarea from './docs/components/Form/fields/FieldTextarea/ComponentFieldTextarea.vue';
 import ComponentFieldUpload from './docs/components/Form/fields/FieldUpload/ComponentFieldUpload.vue';
 import ComponentFieldUploadImage from './docs/components/Form/fields/FieldUploadImage/ComponentFieldUploadImage.vue';
@@ -175,6 +176,11 @@ export default new Router({
 			path: '/component/Form/fields/FieldText/:example?',
 			name: 'Form/fields/FieldText',
 			component: ComponentFieldText
+		},
+		{
+			path: '/component/Form/fields/FieldItems',
+			name: 'Form/fields/FieldItems',
+			component: ComponentFieldItems
 		},
 		{
 			path: '/component/Form/fields/FieldTextarea/:example?',

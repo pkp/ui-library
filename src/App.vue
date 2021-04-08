@@ -120,6 +120,11 @@
 							</router-link>
 						</li>
 						<li>
+							<router-link to="/component/Form/fields/FieldItems">
+								FieldItems
+							</router-link>
+						</li>
+						<li>
 							<router-link to="/component/Form/fields/FieldTextarea">
 								FieldTextarea
 							</router-link>
