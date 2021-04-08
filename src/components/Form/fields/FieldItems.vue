@@ -45,7 +45,6 @@
 					:name="localizedName"
 					:aria-describedby="describedByIds"
 					:aria-invalid="errors && errors.length"
-					:disabled="isDisabled"
 					:required="isRequired"
 				/>
 				<input
@@ -94,9 +93,6 @@ export default {
 	name: 'FieldItems',
 	extends: FieldBase,
 	props: {
-		inputType: String,
-		optIntoEdit: Boolean,
-		optIntoEditLabel: String,
 		size: {
 			default: 'normal',
 			validator: function(value) {
@@ -109,7 +105,6 @@ export default {
 	data() {
 		return {
 			inputStyles: {},
-			isDisabled: false,
 			prefixStyles: {},
 			newItem: ''
 		};
@@ -214,11 +209,6 @@ export default {
 				}
 			}, 700);
 		});
-
-		// Set the field to disabled if optIntoEdit is passed
-		if (this.optIntoEdit) {
-			this.isDisabled = true;
-		}
 	}
 };
 </script>
