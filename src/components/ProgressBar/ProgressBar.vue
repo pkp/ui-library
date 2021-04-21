@@ -23,7 +23,7 @@ export default {
 		min: {
 			type: Number,
 			default() {
-				return 100;
+				return 0;
 			}
 		},
 		value: {
