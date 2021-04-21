@@ -360,7 +360,8 @@ export default {
 					name: 'description',
 					description: this.localize(emailTemplate.description),
 					label: this.descriptionLabel,
-					groupId: 'default'
+					groupId: 'default',
+					isMultilingual: true
 				});
 			}
 
