@@ -2,7 +2,7 @@ export default {
 	name: 'issueId',
 	component: 'field-select-issue',
 	label: 'Issue',
-	publicationStatus: 1, // STATUS_QUEUED
+	publicationStatus: 1, // PKPSubmission::STATUS_QUEUED
 	options: [
 		{
 			value: '',

@@ -18,7 +18,7 @@ export default {
 			field: {
 				...fieldBase,
 				...field,
-				publicationStatus: 5, // STATUS_SCHEDULED
+				publicationStatus: 5, // PKPSubmission::STATUS_SCHEDULED
 				value: 4
 			}
 		};

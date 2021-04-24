@@ -5,7 +5,7 @@
 | `...` | Supports all props in [FieldBase](#/component/Form/fields/FieldBase). |
 | `value` | The current value for this field. |
 | `options` | An array of objects defining the options which can be selected. |
-| `publicationStatus` | One of the `STATUS_` constants. When set to `STATUS_QUEUED` or `STATUS_PUBLISHED` the issue selection will be hidden. |
+| `publicationStatus` | One of the `PKPSubmission::STATUS_` constants. When set to `PKPSubmission::STATUS_QUEUED` or `PKPSubmission::STATUS_PUBLISHED` the issue selection will be hidden. |
 | `publishedNoticeBase` | Text to be displayed when the publication is published in an issue. A string replace will be called to replace `{$issueId}` and `{$issueName}` params with the selected issue. |
 | `scheduledNoticeBase` | Text to be displayed when the publication is scheduled for publication in an issue. A string replace will be called to replace `{$issueId}` and `{$issueName}` params with the selected issue. |
 | `unscheduleLabel` | The label for the button to unschedule a scheduled publication. |
