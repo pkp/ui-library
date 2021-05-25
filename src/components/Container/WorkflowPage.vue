@@ -90,7 +90,7 @@ export default {
 		 */
 		currentPublicationTabsLabel() {
 			return this.replaceLocaleParams(this.publicationTabsLabel, {
-				version: this.workingPublication.id
+				version: this.workingPublication.version
 			});
 		}
 	},
