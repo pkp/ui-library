@@ -88,6 +88,16 @@
 </template>
 
 <script>
+// Tinymce must be loaded before Vue
+import 'tinymce';
+import 'tinymce/icons/default';
+import 'tinymce/themes/silver';
+import 'tinymce/plugins/code';
+import 'tinymce/plugins/image';
+import 'tinymce/plugins/link';
+import 'tinymce/plugins/lists';
+import 'tinymce/plugins/noneditable';
+import 'tinymce/plugins/paste';
 import FieldBase from './FieldBase.vue';
 import Editor from '@tinymce/tinymce-vue';
 import debounce from 'debounce';
@@ -115,6 +125,10 @@ export default {
 			type: String,
 			required: true
 		},
+		insertPreparedContentLabel: {
+			type: String,
+			required: true
+		},
 		preparedContent: {
 			type: Object,
 			default() {
@@ -126,6 +140,10 @@ export default {
 			default() {
 				return false;
 			}
+		},
+		skinUrl: {
+			type: String,
+			required: true
 		},
 		size: {
 			type: String,
@@ -199,6 +217,7 @@ export default {
 			};
 			return {
 				inline: true,
+				skin_url: this.skinUrl,
 				paste_data_images: true,
 				relative_urls: false,
 				remove_script_host: false,
@@ -238,28 +257,12 @@ export default {
 				},
 				setup(editor) {
 					if (Object.keys(self.preparedContentSanitized).length) {
-						editor.ui.registry.addButton('pkpPreparedContent', {
-							icon: 'nonbreaking',
-							type: 'panelbutton',
-							panel: {
-								html() {
-									var markup =
-										'<ul class="pkpFormField--richTextarea__tinymcePanel">';
-									Object.keys(self.preparedContentSanitized).forEach(
-										key =>
-											(markup += `<li>
-													<button data-symbolic="${key}">
-														${self.preparedContentSanitized[key]}
-													</button>
-												</li>`)
-									);
-									return markup + '</ul>';
-								},
-								onclick(e) {
-									if (e.target.tagName !== 'BUTTON') {
-										return;
-									}
-									const key = e.target.dataset.symbolic;
+						var items = [];
+						Object.keys(self.preparedContentSanitized).forEach(key =>
+							items.push({
+								type: 'menuitem',
+								text: self.preparedContentSanitized[key],
+								onAction() {
 									if (self.renderPreparedContent) {
 										editor.insertContent(self.preparedContentSanitized[key]);
 									} else {
@@ -270,8 +273,14 @@ export default {
 											)
 										);
 									}
-									this.hide();
 								}
+							})
+						);
+						editor.ui.registry.addMenuButton('pkpPreparedContent', {
+							icon: 'non-breaking',
+							tooltip: self.insertPreparedContentLabel,
+							fetch(callback) {
+								callback(items);
 							}
 						});
 						editor.settings.toolbar += ' | pkpPreparedContent';
@@ -505,83 +514,20 @@ export default {
 // We temporarily wrap these styles in .pkpFormField--richTextarea__input until
 // we have transitioned all of the old tinymce fields out of the system
 .pkpFormField--richTextarea__control {
-	.mce-tinymce {
-		border: none;
+	// Ensure the toolbar is always visible
+	.pkpFormField--richTextarea__toolbar .tox-tinymce-inline {
+		display: block !important;
+		visibility: visible !important;
 	}
 
-	// Fixes issue where the toolbar is not visible in tinymce controls under
-	// secondary languages, and overrides the toolbar size settings to allow it
-	// to expand/shrink responsively.
-	.mce-tinymce,
-	.mce-container-body,
-	.mce-container {
-		width: auto !important;
-		height: auto !important;
-	}
-	.mce-abs-layout-item {
-		position: static !important;
-	}
-
-	.mce-content-body {
-		line-height: @line-sml;
-	}
-
-	.mce-edit-focus {
-		outline: none;
-	}
-
-	.mce-toolbar .mce-btn-group {
-		padding: 0.25rem;
-	}
-
-	.mce-btn-group:not(:first-child) {
-		border-left-color: @bg-border-color;
-	}
-
-	.mce-btn-group .mce-btn + .mce-btn {
+	.tox-tbtn:not(:first-child) {
 		margin-left: 0.25rem;
 	}
 
-	.mce-btn {
-		background: transparent;
-		border-radius: @radius;
-	}
-
-	.mce-btn:hover,
-	.mce-btn:active {
-		background: transparent;
-		border-color: @primary;
-	}
-
-	.mce-btn.mce-active,
-	.mce-btn.mce-active:hover,
-	.mce-btn.mce-active:focus,
-	.mce-btn.mce-active:active {
-		background-color: @primary;
-	}
-}
-
-.mce-popover {
-	.pkpFormField--richTextarea__tinymcePanel {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-
-		li:not(:last-child) {
-			border-bottom: @bg-border;
-		}
-
-		button {
-			padding: 0.5em 0.75em 0.5em 0.5em;
-			border-left: 0.25em solid transparent;
-			font-size: @font-tiny;
-			line-height: @line-tiny;
-
-			&:hover,
-			&:focus {
-				border-left-color: @primary;
-			}
-		}
+	// Remove focused outline from text input
+	// Visual indicator already exists around whole component
+	.pkpFormField--richTextarea__input {
+		outline: none;
 	}
 }
 </style>

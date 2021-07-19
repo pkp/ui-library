@@ -1,13 +1,3 @@
-// Tinymce must be loaded before Vue
-import 'tinymce';
-import 'tinymce/themes/modern/theme';
-import 'tinymce/plugins/code';
-import 'tinymce/plugins/image';
-import 'tinymce/plugins/link';
-import 'tinymce/plugins/lists';
-import 'tinymce/plugins/noneditable';
-import 'tinymce/plugins/paste';
-import 'tinymce/skins/lightgray/skin.min.css';
 import Vue from 'vue';
 import App from './App.vue';
 import router from './router';

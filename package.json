@@ -9,7 +9,7 @@
     "build-docs": "env PKP_DOCS=1 vue-cli-service build"
   },
   "dependencies": {
-    "@tinymce/tinymce-vue": "^1.1.2",
+    "@tinymce/tinymce-vue": "^3",
     "chart.js": "^2.9.4",
     "clone-deep": "^4.0.1",
     "core-js": "^3.8.0",
@@ -20,7 +20,7 @@
     "marked": "^0.7.0",
     "moment": "^2.27.0",
     "raw-loader": "^1.0.0",
-    "tinymce": "^4.9.11",
+    "tinymce": "^5.8.2",
     "v-tooltip": "^2.0.3",
     "vue": "^2.6.12",
     "vue-autosuggest": "^2.2.0",
@@ -33,9 +33,9 @@
     "vuedraggable": "^2.24.3"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.5.9",
-    "@vue/cli-plugin-eslint": "^4.5.9",
-    "@vue/cli-service": "^4.5.9",
+    "@vue/cli-plugin-babel": "^4.5.13",
+    "@vue/cli-plugin-eslint": "^3.1.1",
+    "@vue/cli-service": "^4.5.13",
     "@vue/eslint-config-prettier": "^4.0.1",
     "babel-eslint": "^10.1.0",
     "element-resize-event": "^3.0.3",
@@ -43,7 +43,7 @@
     "eslint-plugin-vue": "^5.2.3",
     "less": "^3.12.2",
     "less-loader": "^4.1.0",
-    "lint-staged": "^8.2.1",
+    "lint-staged": "^11.0.1",
     "vue-template-compiler": "^2.6.12"
   },
   "eslintConfig": {
