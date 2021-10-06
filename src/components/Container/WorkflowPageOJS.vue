@@ -35,6 +35,82 @@ export default {
 					'" ' +
 					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>'
 			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
+		},
+		/**
+		 * Clear the active form when the modal is closed
+		 *
+		 * @param {Object} event
+		 */
+		formModalClosed(event) {
+			this.activeForm = null;
+			this.activeFormTitle = '';
+			if (this.resetFocusTo) {
+				this.resetFocusTo.focus();
+			}
+		},
+		/**
+		 * The add/edit form has been successfully
+		 * submitted.
+		 *
+		 * @param {Object} item
+		 */
+		formSuccess(item) {
+			if (this.activeForm.method === 'POST') {
+				this.offset = 0;
+				this.get();
+				pkp.eventBus.$emit('add:announcement', item);
+			} else {
+				this.setItems(
+					this.items.map(i => (i.id === item.id ? item : i)),
+					this.itemsMax
+				);
+				pkp.eventBus.$emit('update:announcement', item);
+			}
+			this.$modal.hide('form');
+		},
+		/**
+		 * Update form values when they change
+		 *
+		 * @param {String} formId
+		 * @param {Object} data
+		 */
+		updateForm(formId, data) {
+			let activeForm = {...this.activeForm};
+			Object.keys(data).forEach(function(key) {
+				activeForm[key] = data[key];
+			});
+			this.activeForm = activeForm;
+		},
+		editAuthor(id) {
+			this.resetFocusTo = document.activeElement;
+
+			const author = this.workingPublication.authors.find(x => x.id === id);
+			if (!author) {
+				this.openDialog({
+					confirmLabel: this.__('common.ok'),
+					modalName: 'unknownError',
+					message: this.__('common.unknownError'),
+					callback: () => {
+						this.$modal.hide('unknownError');
+					}
+				});
+			}
+			var activeForm = this.get('contributor');
+
+			// let activeForm = cloneDeep(form);
+			//activeForm.action = this.apiUrl + '/' + id;
+			//activeForm.method = 'PUT';
+			activeForm.fields = activeForm.fields.map(field => {
+				if (Object.keys(author).includes(field.name)) {
+					field.value = author[field.name];
+				}
+				return field;
+			});
+			this.activeForm = activeForm;
+			this.activeFormTitle = 'test'; // this.editAnnouncementLabel;
+			this.$modal.show('form');
+
+			// this.workingPublication.authors
 		}
 	},
 	watch: {

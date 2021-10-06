@@ -273,7 +273,6 @@ export default {
 				metadata: formMetadata,
 				titleAbstract: formTitleAbstract
 			},
-			contributorsGridUrl: 'http://example.org',
 			currentPublication: currentPublication,
 			editorialHistoryUrl: 'http://example.org',
 			publicationFormIds: ['titleAbstract'],

@@ -5,6 +5,7 @@ import PkpHeader from '@/components/Header/Header.vue';
 import LocalizeSubmission from '@/mixins/localizeSubmission.js';
 import ajaxError from '@/mixins/ajaxError';
 import modal from '@/mixins/modal.js';
+import ContributorsListPanel from '@/components/ListPanel/contributors/ContributorsListPanel.vue';
 
 export default {
 	name: 'WorkflowPage',
@@ -12,14 +13,14 @@ export default {
 	mixins: [LocalizeSubmission, modal, ajaxError],
 	components: {
 		Dropdown,
-		PkpHeader
+		PkpHeader,
+		ContributorsListPanel
 	},
 	data() {
 		return {
 			activityLogLabel: '',
 			canAccessPublication: false,
 			canEditPublication: false,
-			contributorsGridUrl: '',
 			currentPublication: null,
 			editorialHistoryUrl: '',
 			isLoadingVersion: false,
@@ -157,34 +158,6 @@ export default {
 		 */
 		getConstant(constant) {
 			return pkp.const[constant];
-		},
-
-		/**
-		 * Load/reload the contributors grid
-		 *
-		 * @param Object publication Load contributors for this publication
-		 */
-		loadContributorsGrid(publication) {
-			if (!this.$refs.contributors) {
-				return;
-			}
-			const $contributorsEl = $(this.$refs.contributors);
-			const sourceUrl = this.contributorsGridUrl.replace(
-				'__publicationId__',
-				publication.id
-			);
-			if (!$.pkp.classes.Handler.hasHandler($contributorsEl)) {
-				$contributorsEl.pkpHandler('$.pkp.controllers.UrlInDivHandler', {
-					sourceUrl: sourceUrl,
-					refreshOn: 'form-success'
-				});
-			} else {
-				const contributorHandler = $.pkp.classes.Handler.getHandler(
-					$contributorsEl
-				);
-				contributorHandler.setSourceUrl(sourceUrl);
-				contributorHandler.reload();
-			}
 		},
 
 		/**
@@ -478,7 +451,6 @@ export default {
 					self.workingPublication = r;
 					self.updatePublicationInList(r);
 					self.setPublicationForms(r);
-					self.loadContributorsGrid(r);
 					self.loadRepresentationsGrid(r);
 					self.isLoadingVersion = false;
 					self.setFocusIn(self.$refs.publication);
@@ -500,12 +472,64 @@ export default {
 					publication.version = newPublication.version;
 				}
 			});
+		},
+		contributorEdited(contributor) {
+			const newContributors = this.workingPublication.authors.map(author => {
+				if (author.id === contributor.id) {
+					return contributor;
+				}
+				return author;
+			});
+			this.workingPublication.authors = [...newContributors];
+		},
+		contributorAdded(contributor) {
+			const newContributors = [...this.workingPublication.authors];
+			newContributors.push(contributor);
+			this.workingPublication.authors = [...newContributors];
+		},
+		contributorDeleted(contributor) {
+			const newContributors = this.workingPublication.authors.filter(author => {
+				return author.id !== contributor.id;
+			});
+			this.workingPublication.authors = [...newContributors];
+		},
+		/**
+		 * Move an item down in the list
+		 *
+		 * @param {Object} item The item to move
+		 */
+		contributorItemOrderDown(item) {
+			var index = this.workingPublication.authors.findIndex(obj => {
+				return item.id == obj.id;
+			});
+			if (index === this.workingPublication.authors.length - 1) {
+				return;
+			}
+			let items = [...this.workingPublication.authors];
+			items.splice(index + 1, 0, items.splice(index, 1)[0]);
+			this.workingPublication.authors = [...items];
+		},
+
+		/**
+		 * Move an item up in the list
+		 *
+		 * @param {Object} item The item to move
+		 */
+		contributorItemOrderUp(item) {
+			var index = this.workingPublication.authors.findIndex(obj => {
+				return item.id == obj.id;
+			});
+			if (index === 0) {
+				return;
+			}
+			let items = [...this.workingPublication.authors];
+			items.splice(index - 1, 0, items.splice(index, 1)[0]);
+			this.workingPublication.authors = [...items];
 		}
 	},
 	watch: {
 		workingPublication(newVal, oldVal) {
 			this.setPublicationForms(newVal);
-			this.loadContributorsGrid(newVal);
 			this.loadRepresentationsGrid(newVal);
 			if (newVal.id === this.currentPublication.id) {
 				this.currentPublication = {};
@@ -563,7 +587,6 @@ export default {
 		 * Add a delay to allow the workflow requests to be sent first
 		 */
 		setTimeout(() => {
-			this.loadContributorsGrid(this.workingPublication);
 			this.loadRepresentationsGrid(this.workingPublication);
 		}, 1000);
 

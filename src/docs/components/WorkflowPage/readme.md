@@ -6,7 +6,6 @@
 | `canAccessPublication` | Can the current user access the publication details? Default: `false` |
 | `canEditPublication` | Can the current user edit the publication details? Default: `false` |
 | `components` | Key/value map of nested components, such as forms. |
-| `contributorsGridUrl` | URL to get the contributors grid. |
 | `currentPublication` | The submission's current publication. |
 | `editorialHistoryUrl` | URL to get the activity log modal. |
 | `publicationFormIds` | Array containing all of the keys in `components` that match a publication form. These forms will be updated when changing versions.  |
