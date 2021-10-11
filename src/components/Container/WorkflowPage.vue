@@ -479,6 +479,9 @@ export default {
 		primaryContactChanged(publication) {
 			this.setWorkingPublicationById(publication.id);
 		},
+		contributorsOrderChanged(publicationId) {
+			this.setWorkingPublicationById(publicationId);
+		},
 		/**
 		 * Move an item down in the list
 		 *

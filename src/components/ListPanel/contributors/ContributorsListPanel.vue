@@ -398,9 +398,9 @@ export default {
 				seq++;
 			}
 
+			let self = this;
 			this.isLoading = true;
 
-			let self = this;
 			$.ajax({
 				url: this.sourceUrl + '/saveOrder',
 				type: 'POST',
@@ -409,6 +409,9 @@ export default {
 				},
 				data: {
 					sortedAuthors: this.items
+				},
+				success: function(r) {
+					self.$emit('contributors-order-changed', r);
 				},
 				error(r) {
 					self.ajaxErrorCallback(r);
