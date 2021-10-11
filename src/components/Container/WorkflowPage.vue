@@ -473,25 +473,11 @@ export default {
 				}
 			});
 		},
-		contributorEdited(contributor) {
-			const newContributors = this.workingPublication.authors.map(author => {
-				if (author.id === contributor.id) {
-					return contributor;
-				}
-				return author;
-			});
-			this.workingPublication.authors = [...newContributors];
+		contributorChanged(contributor) {
+			this.setWorkingPublicationById(contributor.publicationId);
 		},
-		contributorAdded(contributor) {
-			const newContributors = [...this.workingPublication.authors];
-			newContributors.push(contributor);
-			this.workingPublication.authors = [...newContributors];
-		},
-		contributorDeleted(contributor) {
-			const newContributors = this.workingPublication.authors.filter(author => {
-				return author.id !== contributor.id;
-			});
-			this.workingPublication.authors = [...newContributors];
+		primaryContactChanged(publication) {
+			this.setWorkingPublicationById(publication.id);
 		},
 		/**
 		 * Move an item down in the list

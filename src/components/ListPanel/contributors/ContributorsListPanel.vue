@@ -10,40 +10,48 @@
 					<h2>{{ title }}</h2>
 					<spinner v-if="isLoading" />
 					<template slot="actions">
-						<pkp-button
-							class="listPanel--contributor__orderToggle"
-							icon="sort"
-							:isActive="isOrdering"
-							@click="toggleOrdering"
-						>
-							<!-- {{ orderingLabel }} -->
-							{{ __('common.order') }}
-						</pkp-button>
-						<pkp-button
-							v-if="isOrdering"
-							class="listPanel--contributor__orderCancel"
-							:isWarnable="true"
-							@click="cancelOrdering"
-						>
-							{{ __('common.cancel') }}
-						</pkp-button>
-						<pkp-button @click="openAddModal">
-							{{ addContributorLabel }}
-						</pkp-button>
+						<div v-if="publication.status !== getConstant('STATUS_PUBLISHED')">
+							<pkp-button
+								class="listPanel--contributor__orderToggle"
+								icon="sort"
+								:isActive="isOrdering"
+								@click="toggleOrdering"
+							>
+								{{ __('common.order') }}
+							</pkp-button>
+							<pkp-button
+								v-if="isOrdering"
+								class="listPanel--contributor__orderCancel"
+								:isWarnable="true"
+								@click="cancelOrdering"
+							>
+								{{ __('common.cancel') }}
+							</pkp-button>
+							<pkp-button @click="openAddModal">
+								{{ addContributorLabel }}
+							</pkp-button>
+						</div>
 					</template>
 				</pkp-header>
 				<template v-slot:itemTitle="{item}">
 					{{ localize(item.givenName) }} {{ localize(item.familyName) }}
+					<badge v-if="primaryAuthorId == item.id">
+						{{ __('author.users.contributor.principalContact') }}
+					</badge>
+					<badge v-if="!item.includeInBrowse">
+						{{ __('author.users.contributor.notIncludedInBrowse') }}
+					</badge>
+					<badge>
+						{{ item.userGroupLabel }}
+					</badge>
 				</template>
 				<template v-slot:itemSubtitle="{item}">
 					{{ item.email }}
 				</template>
-				<template v-slot:itemActions="{item}">
-					<!-- if the primaryAuthorId if the item.id -->
-					<badge v-if="primaryAuthorId == item.id">
-						Primary Contact
-					</badge>
-
+				<template
+					v-if="publication.status !== getConstant('STATUS_PUBLISHED')"
+					v-slot:itemActions="{item}"
+				>
 					<div v-if="isOrdering">
 						<orderer
 							@up="$emit('order-up', item)"
@@ -53,12 +61,27 @@
 						/>
 					</div>
 					<div v-else>
+						<pkp-button
+							v-if="primaryAuthorId != item.id"
+							class="listPanel--contributor__setPrimaryContact"
+							@click="setPrimaryContact(item.id)"
+						>
+							{{ __('author.users.contributor.setPrincipalContact') }}
+						</pkp-button>
 						<pkp-button @click="openEditModal(item.id)">
 							{{ __('common.edit') }}
 						</pkp-button>
 						<pkp-button :isWarnable="true" @click="openDeleteModal(item.id)">
 							{{ __('common.delete') }}
 						</pkp-button>
+					</div>
+				</template>
+				<template slot="footer">
+					<div>
+						<span>{{ __('common.publication.authorsString') }}:</span>
+						<span class="publication-authors-string">
+							{{ publication.authorsStringIncludeInBrowse }}
+						</span>
 					</div>
 				</template>
 			</list-panel>
@@ -136,8 +159,12 @@ export default {
 			type: Number,
 			required: true
 		},
-		publicationId: {
-			type: Number,
+		publicationApiUrl: {
+			type: String,
+			required: true
+		},
+		publication: {
+			type: Object,
 			required: true
 		}
 	},
@@ -160,9 +187,21 @@ export default {
 			return this.isOrdering
 				? this.__('grid.action.order')
 				: this.__('grid.action.order');
+		},
+		sourceUrl() {
+			return this.apiUrl.replace('__publicationId__', this.publication.id);
 		}
 	},
 	methods: {
+		/**
+		 * Helper method to access a global constant in the template
+		 *
+		 * @return {Object}
+		 */
+		getConstant(constant) {
+			return pkp.const[constant];
+		},
+
 		/**
 		 * Clear the active form when the modal is closed
 		 *
@@ -185,13 +224,12 @@ export default {
 		formSuccess(item) {
 			if (this.activeForm.method === 'POST') {
 				this.offset = 0;
-				this.get();
 				this.$emit('added', item);
 			} else {
-				this.setItems(
-					this.items.map(i => (i.id === item.id ? item : i)),
-					this.itemsMax
-				);
+				// this.setItems(
+				// 	this.items.map(i => (i.id === item.id ? item : i)),
+				// 	this.itemsMax
+				// );
 				this.$emit('edited', item);
 			}
 			this.$modal.hide('form');
@@ -201,14 +239,9 @@ export default {
 		 * Open the modal to add an item
 		 */
 		openAddModal() {
-			const sourceUrl = this.apiUrl.replace(
-				'__publicationId__',
-				this.publicationId
-			);
-
 			this.resetFocusTo = document.activeElement;
 			let activeForm = cloneDeep(this.form);
-			activeForm.action = sourceUrl;
+			activeForm.action = this.sourceUrl;
 			activeForm.method = 'POST';
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.addContributorLabel;
@@ -221,11 +254,6 @@ export default {
 		 * @param {Number} id
 		 */
 		openDeleteModal(id) {
-			const sourceUrl = this.apiUrl.replace(
-				'__publicationId__',
-				this.publicationId
-			);
-
 			const author = this.items.find(a => a.id === id);
 			if (typeof author === 'undefined') {
 				this.openDialog({
@@ -249,7 +277,7 @@ export default {
 				callback: () => {
 					var self = this;
 					$.ajax({
-						url: sourceUrl + '/' + id,
+						url: this.sourceUrl + '/' + id,
 						type: 'POST',
 						headers: {
 							'X-Csrf-Token': pkp.currentUser.csrfToken,
@@ -276,35 +304,30 @@ export default {
 		 * @param {Number} id
 		 */
 		openEditModal(id) {
-			const sourceUrl = this.apiUrl.replace(
-				'__publicationId__',
-				this.publicationId
-			);
-
-			var t = this;
+			var self = this;
 
 			this.resetFocusTo = document.activeElement;
 
 			$.ajax({
-				url: sourceUrl + '/' + id,
+				url: this.sourceUrl + '/' + id,
 				type: 'GET',
 				error: self.ajaxErrorCallback,
 				success: function(r) {
 					var author = r;
 
 					if (!author) {
-						t.openDialog({
-							confirmLabel: t.__('common.ok'),
+						self.openDialog({
+							confirmLabel: self.__('common.ok'),
 							modalName: 'unknownError',
-							message: t.__('common.unknownError'),
+							message: self.__('common.unknownError'),
 							callback: () => {
-								t.$modal.hide('unknownError');
+								self.$modal.hide('unknownError');
 							}
 						});
 					}
 
-					let activeForm = cloneDeep(t.form);
-					activeForm.action = sourceUrl + '/' + id;
+					let activeForm = cloneDeep(self.form);
+					activeForm.action = self.sourceUrl + '/' + id;
 					activeForm.method = 'PUT';
 					activeForm.fields = activeForm.fields.map(field => {
 						if (Object.keys(author).includes(field.name)) {
@@ -312,9 +335,9 @@ export default {
 						}
 						return field;
 					});
-					t.activeForm = activeForm;
-					t.activeFormTitle = t.editContributorLabel;
-					t.$modal.show('form');
+					self.activeForm = activeForm;
+					self.activeFormTitle = self.editContributorLabel;
+					self.$modal.show('form');
 				}
 			});
 		},
@@ -362,8 +385,6 @@ export default {
 		 */
 		cancelOrdering() {
 			this.isOrdering = false;
-			this.$emit('set', this.id, {offset: 0});
-			this.$nextTick(() => this.get());
 		},
 
 		/**
@@ -371,11 +392,6 @@ export default {
 		 * the new order of items
 		 */
 		setItemOrderSequence() {
-			const sourceUrl = this.apiUrl.replace(
-				'__publicationId__',
-				this.publicationId
-			);
-
 			let seq = 0;
 			for (const item of this.items) {
 				item.seq = seq;
@@ -386,13 +402,42 @@ export default {
 
 			let self = this;
 			$.ajax({
-				url: sourceUrl + '/saveOrder',
+				url: this.sourceUrl + '/saveOrder',
 				type: 'POST',
 				headers: {
 					'X-Csrf-Token': pkp.currentUser.csrfToken
 				},
 				data: {
 					sortedAuthors: this.items
+				},
+				error(r) {
+					self.ajaxErrorCallback(r);
+				},
+				complete() {
+					self.isLoading = false;
+				}
+			});
+		},
+
+		/**
+		 * Sets the given contributor as the primary contact
+		 */
+		setPrimaryContact(id) {
+			this.isLoading = true;
+
+			let self = this;
+
+			$.ajax({
+				url: this.publicationApiUrl + '/' + this.publication.id,
+				type: 'PUT',
+				headers: {
+					'X-Csrf-Token': pkp.currentUser.csrfToken
+				},
+				data: {
+					primaryContactId: id
+				},
+				success: function(r) {
+					self.$emit('primary-contact-changed', r);
 				},
 				error(r) {
 					self.ajaxErrorCallback(r);
@@ -456,5 +501,9 @@ export default {
 	.listPanel__itemSummary {
 		margin-right: 8rem;
 	}
+}
+
+.publication-authors-string {
+	font-weight: bold;
 }
 </style>
