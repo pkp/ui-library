@@ -9,60 +9,61 @@
 				<pkp-header slot="header">
 					<h2>{{ title }}</h2>
 					<spinner v-if="isLoading" />
-					<template slot="actions">
-						<div v-if="publication.status !== getConstant('STATUS_PUBLISHED')">
-							<pkp-button
-								class="listPanel--contributor__orderToggle"
-								icon="sort"
-								:isActive="isOrdering"
-								@click="toggleOrdering"
-							>
-								{{ __('common.order') }}
-							</pkp-button>
-							<pkp-button
-								v-if="isOrdering"
-								class="listPanel--contributor__orderCancel"
-								:isWarnable="true"
-								@click="cancelOrdering"
-							>
-								{{ __('common.cancel') }}
-							</pkp-button>
-							<pkp-button @click="openAddModal">
-								{{ addContributorLabel }}
-							</pkp-button>
-						</div>
+					<template
+						slot="actions"
+						v-if="publication.status !== getConstant('STATUS_PUBLISHED')"
+					>
+						<pkp-button
+							class="listPanel--contributor__orderToggle"
+							icon="sort"
+							:isActive="isOrdering"
+							@click="toggleOrdering"
+						>
+							{{ __('common.order') }}
+						</pkp-button>
+						<pkp-button
+							v-if="isOrdering"
+							class="listPanel--contributor__orderCancel"
+							:isWarnable="true"
+							@click="cancelOrdering"
+						>
+							{{ __('common.cancel') }}
+						</pkp-button>
+						<pkp-button v-if="!isOrdering" @click="$modal.show('preview')">
+							Preview
+						</pkp-button>
+						<pkp-button v-if="!isOrdering" @click="openAddModal">
+							{{ addContributorLabel }}
+						</pkp-button>
 					</template>
 				</pkp-header>
 				<template v-slot:itemTitle="{item}">
 					{{ localize(item.givenName) }} {{ localize(item.familyName) }}
-					<badge v-if="primaryAuthorId == item.id">
-						{{ __('author.users.contributor.principalContact') }}
-					</badge>
-					<badge v-if="!item.includeInBrowse">
-						{{ __('author.users.contributor.notIncludedInBrowse') }}
-					</badge>
 					<badge>
 						{{ item.userGroupLabel }}
 					</badge>
 				</template>
 				<template v-slot:itemSubtitle="{item}">
-					{{ item.email }}
+					{{ localize(item.affiliation) }}
 				</template>
 				<template
 					v-if="publication.status !== getConstant('STATUS_PUBLISHED')"
 					v-slot:itemActions="{item}"
 				>
-					<div v-if="isOrdering">
+					<template v-if="isOrdering">
 						<orderer
 							@up="$emit('order-up', item)"
 							@down="$emit('order-down', item)"
 							:itemId="item.id"
 							:itemTitle="item.title"
 						/>
-					</div>
-					<div v-else>
+					</template>
+					<template v-else>
+						<badge v-if="primaryAuthorId == item.id" :isPrimary="true">
+							{{ __('author.users.contributor.principalContact') }}
+						</badge>
 						<pkp-button
-							v-if="primaryAuthorId != item.id"
+							v-else
 							class="listPanel--contributor__setPrimaryContact"
 							@click="setPrimaryContact(item.id)"
 						>
@@ -74,15 +75,7 @@
 						<pkp-button :isWarnable="true" @click="openDeleteModal(item.id)">
 							{{ __('common.delete') }}
 						</pkp-button>
-					</div>
-				</template>
-				<template slot="footer">
-					<div>
-						<span>{{ __('common.publication.authorsString') }}:</span>
-						<span class="publication-authors-string">
-							{{ publication.authorsStringIncludeInBrowse }}
-						</span>
-					</div>
+					</template>
 				</template>
 			</list-panel>
 			<modal v-bind="MODAL_PROPS" name="form" @closed="formModalClosed">
@@ -96,6 +89,40 @@
 						@set="updateForm"
 						@success="formSuccess"
 					/>
+				</modal-content>
+			</modal>
+			<modal v-bind="MODAL_PROPS" name="preview">
+				<modal-content
+					:closeLabel="__('common.close')"
+					modalName="preview"
+					title="List of Contributors"
+				>
+					<p>
+						Contributors to this publication will be identified in this journal
+						in the following formats.
+					</p>
+					<table class="pkpTable">
+						<thead>
+							<tr>
+								<th>Format</th>
+								<th>Display</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Abbreviated</td>
+								<td>{{ publication.authorsStringShort }}</td>
+							</tr>
+							<tr>
+								<td>Publication Lists</td>
+								<td>{{ publication.authorsStringIncludeInBrowse }}</td>
+							</tr>
+							<tr>
+								<td>Full</td>
+								<td>{{ publication.authorsString }}</td>
+							</tr>
+						</tbody>
+					</table>
 				</modal-content>
 			</modal>
 		</slot>
@@ -457,56 +484,21 @@ export default {
 <style lang="less">
 @import '../../../styles/_import';
 
-.listPanel__itemIdentity--contributor,
-.listPanel__itemExpanded--contributor {
-	padding-left: 2.5rem;
-}
-
-.listPanel__item--contributor__id {
-	position: absolute;
-	top: 0;
-	left: 0;
-	font-size: @font-tiny;
-	line-height: 22px; // Match baseline of title
-	color: @text;
-}
-
-.listPanel__item--contributor__title {
-	display: block;
-	padding-right: 2em;
-}
-
-[dir='rtl'] {
-	.listPanel__itemIdentity--contributor {
-		padding-left: 0rem;
-		padding-right: 2.5rem;
-	}
-
-	.listPanel__item--contributor__id {
-		position: absolute;
-		left: auto;
-		right: 0;
-		text-align: left;
-	}
-}
-
 .listPanel--contributor.-isOrdering {
-	.pkpHeader__actions
-		> button:not(.listPanel--contributor__orderToggle):not(.listPanel--contributor__orderCancel),
-	.pkpSearch,
-	.listPanel__itemActions--contributor,
-	.listPanel__item--contributor:not(.-isFeatured),
-	.orderer__dragDrop,
-	.listPanel--contributor__headings {
+	.listPanel__item {
+		padding: 0;
+	}
+
+	.listPanel__itemIdentity {
+		padding: 0.75rem 8rem 0.75rem 1rem;
+	}
+
+	.orderer__dragDrop {
 		display: none;
 	}
 
 	.listPanel__itemSummary {
 		margin-right: 8rem;
 	}
-}
-
-.publication-authors-string {
-	font-weight: bold;
 }
 </style>

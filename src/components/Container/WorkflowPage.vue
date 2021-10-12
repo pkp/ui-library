@@ -665,7 +665,7 @@ export default {
 		border-top: none;
 	}
 
-	.pkpTab .pkpForm {
+	.pkpTab > .pkpForm {
 		margin-right: -1rem;
 		border-top: none;
 		border-right: none;
@@ -709,7 +709,7 @@ export default {
 }
 
 // Integrate the grids in the publication tab
-#contributors-grid,
+.pkpWorkflow__contributors,
 #representations-grid {
 	padding-top: 2rem;
 }
