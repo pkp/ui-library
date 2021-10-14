@@ -14,16 +14,14 @@
 						v-if="publication.status !== getConstant('STATUS_PUBLISHED')"
 					>
 						<pkp-button
-							class="listPanel--contributor__orderToggle"
 							icon="sort"
 							:isActive="isOrdering"
 							@click="toggleOrdering"
 						>
-							{{ __('common.order') }}
+							{{ orderingLabel }}
 						</pkp-button>
 						<pkp-button
 							v-if="isOrdering"
-							class="listPanel--contributor__orderCancel"
 							:isWarnable="true"
 							@click="cancelOrdering"
 						>
@@ -39,8 +37,11 @@
 				</pkp-header>
 				<template v-slot:itemTitle="{item}">
 					{{ localize(item.givenName) }} {{ localize(item.familyName) }}
-					<badge>
+					<badge v-if="item.userGroupLabel">
 						{{ item.userGroupLabel }}
+					</badge>
+					<badge v-if="!item.includeInBrowse">
+						{{ __('author.users.contributor.notIncludedInBrowse') }}
 					</badge>
 				</template>
 				<template v-slot:itemSubtitle="{item}">
@@ -59,13 +60,13 @@
 						/>
 					</template>
 					<template v-else>
-						<badge v-if="primaryAuthorId == item.id" :isPrimary="true">
+						<badge v-if="publication.primaryContactId == item.id" :isPrimary="true">
 							{{ __('author.users.contributor.principalContact') }}
 						</badge>
 						<pkp-button
 							v-else
-							class="listPanel--contributor__setPrimaryContact"
 							@click="setPrimaryContact(item.id)"
+							:disabled="isLoading"
 						>
 							{{ __('author.users.contributor.setPrincipalContact') }}
 						</pkp-button>
@@ -95,7 +96,7 @@
 				<modal-content
 					:closeLabel="__('common.close')"
 					modalName="preview"
-					title="List of Contributors"
+					:title="__('submission.contributors')"
 				>
 					<p>
 						Contributors to this publication will be identified in this journal
@@ -182,10 +183,6 @@ export default {
 			type: String,
 			required: true
 		},
-		primaryAuthorId: {
-			type: Number,
-			required: true
-		},
 		publicationApiUrl: {
 			type: String,
 			required: true
@@ -212,7 +209,7 @@ export default {
 		 */
 		orderingLabel() {
 			return this.isOrdering
-				? this.__('grid.action.order')
+				? this.__('grid.action.saveOrdering')
 				: this.__('grid.action.order');
 		},
 		sourceUrl() {
@@ -253,10 +250,6 @@ export default {
 				this.offset = 0;
 				this.$emit('added', item);
 			} else {
-				// this.setItems(
-				// 	this.items.map(i => (i.id === item.id ? item : i)),
-				// 	this.itemsMax
-				// );
 				this.$emit('edited', item);
 			}
 			this.$modal.hide('form');
@@ -299,10 +292,13 @@ export default {
 				modalName: 'delete',
 				title: this.deleteContributorLabel,
 				message: this.replaceLocaleParams(this.confirmDeleteMessage, {
-					title: this.localize(author.title)
+					name: this.localize(author.givenName) + ' ' + this.localize(author.familyName)
 				}),
 				callback: () => {
 					var self = this;
+
+					self.isLoading = true;
+					
 					$.ajax({
 						url: this.sourceUrl + '/' + id,
 						type: 'POST',
@@ -311,7 +307,7 @@ export default {
 							'X-Http-Method-Override': 'DELETE'
 						},
 						error: self.ajaxErrorCallback,
-						success: function(r) {
+						success(r) {
 							self.setItems(
 								self.items.filter(i => i.id !== id),
 								self.itemsMax
@@ -319,6 +315,9 @@ export default {
 							self.$modal.hide('delete');
 							self.setFocusIn(self.$el);
 							self.$emit('deleted', author);
+						},
+						complete(r) {
+							self.isLoading = false;
 						}
 					});
 				}
@@ -333,25 +332,16 @@ export default {
 		openEditModal(id) {
 			var self = this;
 
+			self.isLoading = true;
+
 			this.resetFocusTo = document.activeElement;
 
 			$.ajax({
 				url: this.sourceUrl + '/' + id,
 				type: 'GET',
 				error: self.ajaxErrorCallback,
-				success: function(r) {
+				success(r) {
 					var author = r;
-
-					if (!author) {
-						self.openDialog({
-							confirmLabel: self.__('common.ok'),
-							modalName: 'unknownError',
-							message: self.__('common.unknownError'),
-							callback: () => {
-								self.$modal.hide('unknownError');
-							}
-						});
-					}
 
 					let activeForm = cloneDeep(self.form);
 					activeForm.action = self.sourceUrl + '/' + id;
@@ -365,6 +355,9 @@ export default {
 					self.activeForm = activeForm;
 					self.activeFormTitle = self.editContributorLabel;
 					self.$modal.show('form');
+				},
+				complete(r) {
+					self.isLoading = false;
 				}
 			});
 		},
@@ -403,8 +396,9 @@ export default {
 		toggleOrdering() {
 			if (this.isOrdering) {
 				this.setItemOrderSequence();
+			} else {
+				this.isOrdering = !this.isOrdering;
 			}
-			this.isOrdering = !this.isOrdering;
 		},
 
 		/**
@@ -426,7 +420,7 @@ export default {
 			}
 
 			let self = this;
-			this.isLoading = true;
+			self.isLoading = true;
 
 			$.ajax({
 				url: this.sourceUrl + '/saveOrder',
@@ -437,14 +431,13 @@ export default {
 				data: {
 					sortedAuthors: this.items
 				},
-				success: function(r) {
+				success(r) {
 					self.$emit('contributors-order-changed', r);
 				},
-				error(r) {
-					self.ajaxErrorCallback(r);
-				},
+				error: this.ajaxErrorCallback,
 				complete() {
 					self.isLoading = false;
+					self.isOrdering = false;
 				}
 			});
 		},
@@ -453,9 +446,9 @@ export default {
 		 * Sets the given contributor as the primary contact
 		 */
 		setPrimaryContact(id) {
-			this.isLoading = true;
-
 			let self = this;
+
+			self.isLoading = true;
 
 			$.ajax({
 				url: this.publicationApiUrl + '/' + this.publication.id,
@@ -466,12 +459,10 @@ export default {
 				data: {
 					primaryContactId: id
 				},
-				success: function(r) {
+				success(r) {
 					self.$emit('primary-contact-changed', r);
 				},
-				error(r) {
-					self.ajaxErrorCallback(r);
-				},
+				error: this.ajaxErrorCallback,
 				complete() {
 					self.isLoading = false;
 				}

@@ -107,10 +107,6 @@ export default {
 				return field;
 			});
 			this.activeForm = activeForm;
-			this.activeFormTitle = 'test'; // this.editAnnouncementLabel;
-			this.$modal.show('form');
-
-			// this.workingPublication.authors
 		}
 	},
 	watch: {

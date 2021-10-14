@@ -1,20 +1,20 @@
 <script type="text/javascript">
 import Page from './Page.vue';
+import ContributorsListPanel from '@/components/ListPanel/contributors/ContributorsListPanel.vue';
 import Dropdown from '@/components/Dropdown/Dropdown.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import LocalizeSubmission from '@/mixins/localizeSubmission.js';
 import ajaxError from '@/mixins/ajaxError';
 import modal from '@/mixins/modal.js';
-import ContributorsListPanel from '@/components/ListPanel/contributors/ContributorsListPanel.vue';
 
 export default {
 	name: 'WorkflowPage',
 	extends: Page,
 	mixins: [LocalizeSubmission, modal, ajaxError],
 	components: {
+		ContributorsListPanel,
 		Dropdown,
-		PkpHeader,
-		ContributorsListPanel
+		PkpHeader
 	},
 	data() {
 		return {
