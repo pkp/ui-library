@@ -473,48 +473,38 @@ export default {
 				}
 			});
 		},
-		contributorChanged(contributor) {
-			this.setWorkingPublicationById(contributor.publicationId);
-		},
 		primaryContactChanged(publication) {
-			this.setWorkingPublicationById(publication.id);
+			this.workingPublication = publication;
 		},
-		contributorsOrderChanged(publicationId) {
-			this.setWorkingPublicationById(publicationId);
+		previewPublicationAuthors(publication) {
+			this.workingPublication = publication;
 		},
-		/**
-		 * Move an item down in the list
-		 *
-		 * @param {Object} item The item to move
-		 */
-		contributorItemOrderDown(item) {
-			var index = this.workingPublication.authors.findIndex(obj => {
-				return item.id == obj.id;
+		contributorsOrderChanged(publication) {
+			this.workingPublication = publication;
+		},
+		contributorEdited(contributor) {
+			const newContributors = this.workingPublication.authors.map(author => {
+				if (author.id === contributor.id) {
+					return contributor;
+				}
+				return author;
 			});
-			if (index === this.workingPublication.authors.length - 1) {
-				return;
-			}
-			let items = [...this.workingPublication.authors];
-			items.splice(index + 1, 0, items.splice(index, 1)[0]);
-			this.workingPublication.authors = [...items];
+			this.workingPublication.authors = [...newContributors];
 		},
-
-		/**
-		 * Move an item up in the list
-		 *
-		 * @param {Object} item The item to move
-		 */
-		contributorItemOrderUp(item) {
-			var index = this.workingPublication.authors.findIndex(obj => {
-				return item.id == obj.id;
+		contributorAdded(contributor) {
+			const newContributors = [...this.workingPublication.authors];
+			newContributors.push(contributor);
+			this.workingPublication.authors = [...newContributors];
+		},
+		contributorDeleted(contributor) {
+			const newContributors = this.workingPublication.authors.filter(author => {
+				return author.id !== contributor.id;
 			});
-			if (index === 0) {
-				return;
-			}
-			let items = [...this.workingPublication.authors];
-			items.splice(index - 1, 0, items.splice(index, 1)[0]);
-			this.workingPublication.authors = [...items];
-		}
+			this.workingPublication.authors = [...newContributors];
+		},
+		resetContributors(contributors) {
+			this.workingPublication.authors = [...contributors];
+		},
 	},
 	watch: {
 		workingPublication(newVal, oldVal) {

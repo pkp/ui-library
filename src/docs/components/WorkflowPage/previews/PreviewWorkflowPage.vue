@@ -234,6 +234,7 @@
 </template>
 
 <script>
+import ContributorsListPanel from '@/components/ListPanel/contributors/ContributorsListPanel.vue';
 import WorkflowPage from '@/components/Container/WorkflowPage.vue';
 import formCitations from '@/docs/components/Form/helpers/form-citations';
 import formMetadata from '@/docs/components/Form/helpers/form-metadata';
@@ -269,6 +270,7 @@ export default {
 			canAccessPublication: true,
 			canEditPublication: true,
 			components: {
+				ContributorsListPanel,
 				citations: formCitations,
 				metadata: formMetadata,
 				titleAbstract: formTitleAbstract

@@ -27,8 +27,8 @@
 						>
 							{{ __('common.cancel') }}
 						</pkp-button>
-						<pkp-button v-if="!isOrdering" @click="$modal.show('preview')">
-							Preview
+						<pkp-button v-if="!isOrdering" @click="openPreviewModal">
+							{{ __('contributor.listPanel.preview') }}
 						</pkp-button>
 						<pkp-button v-if="!isOrdering" @click="openAddModal">
 							{{ addContributorLabel }}
@@ -36,12 +36,9 @@
 					</template>
 				</pkp-header>
 				<template v-slot:itemTitle="{item}">
-					{{ localize(item.givenName) }} {{ localize(item.familyName) }}
+					{{ item.fullName }}
 					<badge v-if="item.userGroupLabel">
 						{{ item.userGroupLabel }}
-					</badge>
-					<badge v-if="!item.includeInBrowse">
-						{{ __('author.users.contributor.notIncludedInBrowse') }}
 					</badge>
 				</template>
 				<template v-slot:itemSubtitle="{item}">
@@ -53,8 +50,8 @@
 				>
 					<template v-if="isOrdering">
 						<orderer
-							@up="$emit('order-up', item)"
-							@down="$emit('order-down', item)"
+							@up="contributorItemOrderUp(item)"
+							@down="contributorItemOrderDown(item)"
 							:itemId="item.id"
 							:itemTitle="item.title"
 						/>
@@ -99,27 +96,26 @@
 					:title="__('submission.contributors')"
 				>
 					<p>
-						Contributors to this publication will be identified in this journal
-						in the following formats.
+						{{ __('contributor.listPanel.preview.description') }}
 					</p>
 					<table class="pkpTable">
 						<thead>
 							<tr>
-								<th>Format</th>
-								<th>Display</th>
+								<th>{{ __('contributor.listPanel.preview.format') }}</th>
+								<th>{{ __('contributor.listPanel.preview.display') }}</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
-								<td>Abbreviated</td>
+								<td>{{ __('contributor.listPanel.preview.abbreviated') }}</td>
 								<td>{{ publication.authorsStringShort }}</td>
 							</tr>
 							<tr>
-								<td>Publication Lists</td>
+								<td>{{ __('contributor.listPanel.preview.publicationLists') }}</td>
 								<td>{{ publication.authorsStringIncludeInBrowse }}</td>
 							</tr>
 							<tr>
-								<td>Full</td>
+								<td>{{ __('contributor.listPanel.preview.full') }}</td>
 								<td>{{ publication.authorsString }}</td>
 							</tr>
 						</tbody>
@@ -197,7 +193,8 @@ export default {
 			activeForm: null,
 			activeFormTitle: '',
 			resetFocusTo: null,
-			isOrdering: false
+			isOrdering: false,
+			itemsBeforeReordering: null,
 		};
 	},
 	computed: {
@@ -255,6 +252,26 @@ export default {
 			this.$modal.hide('form');
 		},
 
+		openPreviewModal() {
+			var self = this;
+
+			self.isLoading = true;
+
+			$.ajax({
+				url: self.publicationApiUrl + '/' + self.publication.id,
+				type: 'GET',
+				error: self.ajaxErrorCallback,
+				success(r) {
+					self.$emit('preview-publication-authors', r);
+
+					self.$modal.show('preview');
+				},
+				complete(r) {
+					self.isLoading = false;
+				}
+			});
+		},
+
 		/**
 		 * Open the modal to add an item
 		 */
@@ -292,7 +309,7 @@ export default {
 				modalName: 'delete',
 				title: this.deleteContributorLabel,
 				message: this.replaceLocaleParams(this.confirmDeleteMessage, {
-					name: this.localize(author.givenName) + ' ' + this.localize(author.familyName)
+					name: author.fullName
 				}),
 				callback: () => {
 					var self = this;
@@ -397,6 +414,7 @@ export default {
 			if (this.isOrdering) {
 				this.setItemOrderSequence();
 			} else {
+				this.itemsBeforeReordering = this.items;
 				this.isOrdering = !this.isOrdering;
 			}
 		},
@@ -405,6 +423,9 @@ export default {
 		 * Cancel changes made by ordering items
 		 */
 		cancelOrdering() {
+			this.$emit('reset-contributors', this.itemsBeforeReordering);
+			
+			this.itemsBeforeReordering = null;
 			this.isOrdering = false;
 		},
 
@@ -430,9 +451,6 @@ export default {
 				},
 				data: {
 					sortedAuthors: this.items
-				},
-				success(r) {
-					self.$emit('contributors-order-changed', r);
 				},
 				error: this.ajaxErrorCallback,
 				complete() {
@@ -467,6 +485,42 @@ export default {
 					self.isLoading = false;
 				}
 			});
+		},
+
+		/**
+		 * Move an item down in the list
+		 *
+		 * @param {Object} item The item to move
+		 */
+		contributorItemOrderDown(item) {
+			var index = this.items.findIndex(obj => {
+				return item.id == obj.id;
+			});
+			if (index === this.items.length - 1) {
+				return;
+			}
+			let newItems = [...this.items];
+			newItems.splice(index + 1, 0, newItems.splice(index, 1)[0]);
+
+			this.$emit('reset-contributors', newItems);
+		},
+
+		/**
+		 * Move an item up in the list
+		 *
+		 * @param {Object} item The item to move
+		 */
+		contributorItemOrderUp(item) {
+			var index = this.items.findIndex(obj => {
+				return item.id == obj.id;
+			});
+			if (index === 0) {
+				return;
+			}
+			let newItems = [...this.items];
+			newItems.splice(index - 1, 0, newItems.splice(index, 1)[0]);
+
+			this.$emit('reset-contributors', newItems);
 		}
 	}
 };
