@@ -504,7 +504,7 @@ export default {
 		},
 		resetContributors(contributors) {
 			this.workingPublication.authors = [...contributors];
-		},
+		}
 	},
 	watch: {
 		workingPublication(newVal, oldVal) {

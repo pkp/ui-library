@@ -10,6 +10,24 @@ export default {
 	accessStatus: 0,
 	authors: [
 		{
+			affiliation: {en_US: ''},
+			email: 'defstat2@gmail.com',
+			familyName: {en_US: 'Ευσταθιου'},
+			fullName: 'Δημητριος Ευσταθιου',
+			givenName: {en_US: 'Δημητριος'},
+			id: 23,
+			includeInBrowse: true,
+			orcid: '',
+			preferredPublicName: {en_US: 'Δημητριος Ευσταθιου'},
+			publicationId: 16,
+			seq: 0,
+			submissionLocale: null,
+			userGroupId: 14,
+			userGroupLabel: 'Author'
+		},
+		{
+			userGroupLabel: 'Author',
+			fullName: 'Barnes Daniel',
 			affilation: {
 				fr_CA: 'FR Public Knowledge Project',
 				en_US: 'Public Knowledge Project'
@@ -32,9 +50,11 @@ export default {
 			},
 			publicationId: 17,
 			seq: 1,
-			userGroupId: null
+			userGroupId: 14
 		},
 		{
+			userGroupLabel: 'Author',
+			fullName: 'Ipsum Lorem',
 			affilation: {
 				fr_CA: '',
 				en_US: 'University of Public Knowledge'
@@ -57,7 +77,7 @@ export default {
 			},
 			publicationId: 17,
 			seq: 2,
-			userGroupId: null
+			userGroupId: 14
 		}
 	],
 	authorsString: 'Daniel Barnes, Dr. L. P. Ipsum',

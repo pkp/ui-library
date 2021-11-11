@@ -9,14 +9,15 @@
 				<pkp-header slot="header">
 					<h2>{{ title }}</h2>
 					<spinner v-if="isLoading" />
-					<template
-						slot="actions"
-						v-if="publication.status !== getConstant('STATUS_PUBLISHED')"
-					>
+					<template slot="actions">
 						<pkp-button
 							icon="sort"
 							:isActive="isOrdering"
 							@click="toggleOrdering"
+							v-if="
+								publication.status !== getConstant('STATUS_PUBLISHED') &&
+									canEditPublication
+							"
 						>
 							{{ orderingLabel }}
 						</pkp-button>
@@ -30,7 +31,14 @@
 						<pkp-button v-if="!isOrdering" @click="openPreviewModal">
 							{{ __('contributor.listPanel.preview') }}
 						</pkp-button>
-						<pkp-button v-if="!isOrdering" @click="openAddModal">
+						<pkp-button
+							v-if="
+								!isOrdering &&
+									publication.status !== getConstant('STATUS_PUBLISHED') &&
+									canEditPublication
+							"
+							@click="openAddModal"
+						>
 							{{ addContributorLabel }}
 						</pkp-button>
 					</template>
@@ -45,7 +53,10 @@
 					{{ localize(item.affiliation) }}
 				</template>
 				<template
-					v-if="publication.status !== getConstant('STATUS_PUBLISHED')"
+					v-if="
+						publication.status !== getConstant('STATUS_PUBLISHED') &&
+							canEditPublication
+					"
 					v-slot:itemActions="{item}"
 				>
 					<template v-if="isOrdering">
@@ -57,7 +68,10 @@
 						/>
 					</template>
 					<template v-else>
-						<badge v-if="publication.primaryContactId == item.id" :isPrimary="true">
+						<badge
+							v-if="publication.primaryContactId == item.id"
+							:isPrimary="true"
+						>
 							{{ __('author.users.contributor.principalContact') }}
 						</badge>
 						<pkp-button
@@ -111,7 +125,9 @@
 								<td>{{ publication.authorsStringShort }}</td>
 							</tr>
 							<tr>
-								<td>{{ __('contributor.listPanel.preview.publicationLists') }}</td>
+								<td>
+									{{ __('contributor.listPanel.preview.publicationLists') }}
+								</td>
 								<td>{{ publication.authorsStringIncludeInBrowse }}</td>
 							</tr>
 							<tr>
@@ -186,6 +202,10 @@ export default {
 		publication: {
 			type: Object,
 			required: true
+		},
+		canEditPublication: {
+			type: Boolean,
+			required: true
 		}
 	},
 	data() {
@@ -194,7 +214,7 @@ export default {
 			activeFormTitle: '',
 			resetFocusTo: null,
 			isOrdering: false,
-			itemsBeforeReordering: null,
+			itemsBeforeReordering: null
 		};
 	},
 	computed: {
@@ -315,7 +335,7 @@ export default {
 					var self = this;
 
 					self.isLoading = true;
-					
+
 					$.ajax({
 						url: this.sourceUrl + '/' + id,
 						type: 'POST',
@@ -424,7 +444,7 @@ export default {
 		 */
 		cancelOrdering() {
 			this.$emit('reset-contributors', this.itemsBeforeReordering);
-			
+
 			this.itemsBeforeReordering = null;
 			this.isOrdering = false;
 		},
