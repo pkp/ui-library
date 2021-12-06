@@ -4,7 +4,7 @@
 | --- | --- |
 | `action` | Where the form should be submitted. It should be a full URL (`http://...`) to the API endpoint where this form is handled. |
 | `canSubmit` | A boolean indicating whether this form can be submitted. The save button will be disable if this is false. Default: `true`. |
-| `errors` | Key/value object of messages. The key is the field `name` and the value is an array of errors. Errors are generated during form submission and handled automatically, so this prop can be omitted in most cicumstances. |
+| `errors` | Key/value object of messages. The key is the field `name` and the value is an array of errors. Errors are generated during form submission and handled automatically, so this prop can be omitted in most circumstances. |
 | `fields` | Array of form fields. This prop is typically configured on the server, using the `Form` and `Field` classes in the PHP application. |
 | `groups` | Array of form groups. See "Groups and Group Descriptions" below. |
 | `id` | Used by a parent component, such as `Container`, to identify events emitted from the form and update the form props when necessary. |

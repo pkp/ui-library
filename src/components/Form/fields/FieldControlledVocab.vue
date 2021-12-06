@@ -30,12 +30,14 @@ export default {
 						self.ajaxErrorCallback(r);
 					},
 					success(r) {
-						self.allSuggestions = r.map(v => {
-							return {
-								value: v,
-								label: v
-							};
-						});
+						self.allSuggestions = r
+							.map(v => {
+								return {
+									value: v,
+									label: v
+								};
+							})
+							.sort();
 						self.setSuggestions.apply(self);
 						self.suggestionsLoaded = true;
 					}
@@ -80,6 +82,9 @@ export default {
 					(this.inputValue !== suggestion.value &&
 						suggestion.value.match(regex))
 			);
+			this.itemsMax = this.suggestions.length;
+			const start = (this.currentPage - 1) * this.count;
+			this.suggestions = this.suggestions.slice(start, start + this.count);
 			if (this.inputValue && !this.suggestions.includes(this.inputValue)) {
 				this.suggestions.unshift({
 					value: this.inputValue,

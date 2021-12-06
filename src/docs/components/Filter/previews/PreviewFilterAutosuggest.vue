@@ -36,9 +36,10 @@ export default {
 				...fieldBase,
 				...fieldBaseAutosuggest,
 				name: 'assignedTo',
-				label: 'Assigned to Editors',
+				label: 'Assigned to Editors (limited to 3 items)',
 				selectedLabel: 'Assigned',
-				apiUrl: '/usernames.json'
+				apiUrl: '/usernames.json',
+				maxSelectedItems: 3
 			},
 			issues: {
 				...fieldBase,

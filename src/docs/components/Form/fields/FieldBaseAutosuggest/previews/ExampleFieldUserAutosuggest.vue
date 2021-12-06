@@ -4,7 +4,7 @@ import FieldBaseAutosuggest from '@/components/Form/fields/FieldBaseAutosuggest.
 export default {
 	extends: FieldBaseAutosuggest,
 	methods: {
-		setSuggestions(items) {
+		setSuggestions(items, itemsMax) {
 			// Escape the search phrase for regex
 			// See: https://stackoverflow.com/a/3561711/1723499
 			const regex = new RegExp(
@@ -14,14 +14,13 @@ export default {
 
 			const suggestions = items
 				.filter(u => u.fullName.match(regex))
-				.filter(u => !this.currentValue.includes(u.id))
 				.map(u => {
 					return {
 						value: u.id,
 						label: u.fullName
 					};
 				});
-
+			this.itemsMax = itemsMax;
 			this.suggestions = [...suggestions];
 		}
 	}

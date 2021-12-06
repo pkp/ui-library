@@ -104,7 +104,7 @@ export default {
 								...fieldBaseAutosuggest,
 								apiUrl: '/usernames.json',
 								name: 'assignedTo',
-								label: 'Assigned To Editors',
+								label: 'Assigned To Editors (limited to 3 items)',
 								selectedLabel: 'Assigned'
 							},
 							filterType: 'pkp-filter-autosuggest'

@@ -8,23 +8,21 @@ export default {
 		/**
 		 * Set the suggestions from an API response
 		 *
-		 * Maps the API response when searching for submissions
+		 * Maps the API response when searching for users
 		 * to an object with value and label props.
 		 *
-		 * @param {Array} newItems List of submissions
+		 * @param {Array} items List of users
+		 * @param {Number} itemsMax Total amount of users based on the applied filters
 		 */
-		setSuggestions(newItems) {
-			const suggestions = newItems
-				.filter(item => {
-					return !this.selected.find(s => s.id === item.id);
-				})
-				.map(item => {
-					return {
-						value: item.id,
-						label: item.fullName
-					};
-				});
+		setSuggestions(items, itemsMax) {
+			const suggestions = items.map(item => {
+				return {
+					value: item.id,
+					label: item.fullName
+				};
+			});
 			this.suggestions = suggestions;
+			this.itemsMax = itemsMax;
 		}
 	}
 };
