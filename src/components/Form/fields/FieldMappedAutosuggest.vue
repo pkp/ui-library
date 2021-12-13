@@ -2,7 +2,7 @@
 import FieldBaseAutosuggest from './FieldBaseAutosuggest.vue';
 
 export default {
-	name: 'FieldPagedAutosuggest',
+	name: 'FieldMappedAutosuggest',
 	extends: FieldBaseAutosuggest,
 	props: {
 		dataMapper: {
@@ -17,7 +17,12 @@ export default {
 		 * @param {Number} itemsMax Total amount of items from the API
 		 */
 		setSuggestions(items, itemsMax) {
-			this.suggestions = this.dataMapper ? items.map(this.dataMapper) : items;
+			const suggestions = this.dataMapper ? items.map(this.dataMapper) : items;
+			if (this.offset) {
+				this.suggestions.push(...suggestions);
+			} else {
+				this.suggestions = suggestions;
+			}
 			this.itemsMax = itemsMax;
 		}
 	}

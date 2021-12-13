@@ -16,9 +16,9 @@ export default {
 		 */
 		setSuggestions(items, itemsMax) {
 			const suggestions = items.map(item => {
-				const currentPublication = item.publications.find(publication => {
-					return publication.id === item.currentPublicationId;
-				});
+				const currentPublication = item.publications.find(
+					publication => publication.id === item.currentPublicationId
+				);
 				if (!currentPublication) {
 					return {
 						value: 0,
@@ -31,7 +31,11 @@ export default {
 					};
 				}
 			});
-			this.suggestions = suggestions;
+			if (this.offset) {
+				this.suggestions.push(...suggestions);
+			} else {
+				this.suggestions = suggestions;
+			}
 			this.itemsMax = itemsMax;
 		}
 	}

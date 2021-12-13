@@ -66,22 +66,27 @@
 				class="pkpFormField--autosuggest__autosuggest"
 				v-bind="autosuggestOptions"
 				@selected="selectSuggestion"
+				:style="maxHeight === null || `--maxAutosuggestHeight: ${maxHeight}`"
 			>
-				<template slot="after-suggestions">
+				<template slot="after-suggestions" v-if="currentPage < lastPage">
 					<div
 						class="pkpFormField--autosuggest__pagination"
-						v-if="showPagination && lastPage > 1"
 						@click.prevent.stop=""
 						@mouseup.prevent.stop=""
 						@mousedown.prevent.stop=""
 					>
-						<pagination
-							@set-page="setPage"
-							v-bind="paginationOptions"
-							:currentPage="currentPage"
-							:isLoading="isLoading"
-							:lastPage="lastPage"
-						/>
+						<pkp-button
+							:isDisabled="isLoading"
+							@click="setPage(currentPage + 1)"
+							:aria-controls="controlId"
+						>
+							{{ __('common.pagination.loadMore') }}
+						</pkp-button>
+						{{
+							__('common.pagination.loadMore.description', {
+								quantity: this.unloadedItems
+							})
+						}}
 					</div>
 				</template>
 			</vue-autosuggest>
@@ -127,7 +132,6 @@
 <script>
 import FieldBase from './FieldBase.vue';
 import PkpBadge from '@/components/Badge/Badge.vue';
-import Pagination from '@/components/Pagination/Pagination.vue';
 import {VueAutosuggest} from 'vue-autosuggest';
 import debounce from 'debounce';
 import fetch from '@/mixins/fetch';
@@ -139,8 +143,7 @@ export default {
 	mixins: [fetch],
 	components: {
 		PkpBadge,
-		VueAutosuggest,
-		Pagination
+		VueAutosuggest
 	},
 	props: {
 		deselectLabel: {
@@ -166,10 +169,6 @@ export default {
 			type: String,
 			required: true
 		},
-		showPagination: {
-			type: Boolean,
-			default: true
-		},
 		minInputLength: {
 			type: Number,
 			default: 0
@@ -181,6 +180,10 @@ export default {
 		replaceWhenFull: {
 			type: Boolean,
 			default: true
+		},
+		maxHeight: {
+			type: String,
+			default: '260px'
 		}
 	},
 	data() {
@@ -285,14 +288,12 @@ export default {
 		},
 
 		/**
-		 * Options to pass to the pagination component
+		 * Retrieves the quantity of items which were not loaded yet
 		 *
-		 * @return {Object}
+		 * @return int
 		 */
-		paginationOptions() {
-			return {
-				showAdjacentPages: 2
-			};
+		unloadedItems() {
+			return Math.max(0, this.itemsMax - this.suggestions.length);
 		}
 	},
 	methods: {
@@ -536,6 +537,7 @@ export default {
 }
 
 .pkpFormField--autosuggest__autosuggest {
+	--maxAutosuggestHeight: 100%;
 	position: relative;
 }
 
@@ -562,6 +564,7 @@ export default {
 	max-width: 100%;
 	min-width: 20rem;
 	z-index: 9999;
+	background: @lift;
 }
 
 .autosuggest__results {
@@ -571,6 +574,8 @@ export default {
 	background: @lift;
 	box-shadow: 0 0.75rem 0.75rem rgba(0, 0, 0, 0.2);
 	font-size: @font-sml;
+	max-height: var(--maxAutosuggestHeight);
+	overflow: auto;
 
 	&:after {
 		content: '';

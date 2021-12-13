@@ -205,10 +205,7 @@ export default {
 			if (document.readyState === 'complete') {
 				this.get();
 			} else {
-				var self = this;
-				$(function() {
-					self.get();
-				});
+				$(() => this.get());
 			}
 		}
 	}

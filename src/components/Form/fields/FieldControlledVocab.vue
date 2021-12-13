@@ -20,8 +20,9 @@ export default {
 				this.suggestions = [];
 				return;
 			}
-			if (!this.suggestionsLoaded) {
+			if (!this.suggestionsLoaded && !this.isLoading) {
 				const self = this;
+				this.isLoading = true;
 				$.ajax({
 					url: this.apiUrl,
 					type: 'GET',
@@ -31,15 +32,22 @@ export default {
 					},
 					success(r) {
 						self.allSuggestions = r
+							.sort(
+								new Intl.Collator(
+									(this.localeKey || $.pkp.app.currentLocale).split('_')[0]
+								).compare
+							)
 							.map(v => {
 								return {
 									value: v,
 									label: v
 								};
-							})
-							.sort();
-						self.setSuggestions.apply(self);
+							});
+						self.setSuggestions();
 						self.suggestionsLoaded = true;
+					},
+					complete() {
+						self.isLoading = false;
 					}
 				});
 			}
@@ -82,9 +90,6 @@ export default {
 					(this.inputValue !== suggestion.value &&
 						suggestion.value.match(regex))
 			);
-			this.itemsMax = this.suggestions.length;
-			const start = (this.currentPage - 1) * this.count;
-			this.suggestions = this.suggestions.slice(start, start + this.count);
 			if (this.inputValue && !this.suggestions.includes(this.inputValue)) {
 				this.suggestions.unshift({
 					value: this.inputValue,

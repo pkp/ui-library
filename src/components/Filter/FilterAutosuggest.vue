@@ -7,14 +7,14 @@
 <script>
 import Filter from './Filter.vue';
 import FieldAutosuggestPreset from '@/components/Form/fields/FieldAutosuggestPreset.vue';
-import FieldPagedAutosuggest from '@/components/Form/fields/FieldPagedAutosuggest.vue';
+import FieldMappedAutosuggest from '@/components/Form/fields/FieldMappedAutosuggest.vue';
 import FieldSelectUsers from '@/components/Form/fields/FieldSelectUsers.vue';
 import FieldSelectIssues from '@/components/Form/fields/FieldSelectIssues.vue';
 export default {
 	extends: Filter,
 	components: {
 		FieldAutosuggestPreset,
-		FieldPagedAutosuggest,
+		FieldMappedAutosuggest,
 		FieldSelectUsers,
 		FieldSelectIssues
 	},

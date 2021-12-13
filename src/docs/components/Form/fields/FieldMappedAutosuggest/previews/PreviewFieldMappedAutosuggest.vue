@@ -2,7 +2,7 @@
 	<div>
 		This example is using minInputLength = 2 and a function to map the API
 		response.
-		<field-paged-autosuggest
+		<field-mapped-autosuggest
 			v-bind="field"
 			@change="change"
 			:minInputLength="2"
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import FieldPagedAutosuggest from '@/components/Form/fields/FieldPagedAutosuggest.vue';
+import FieldMappedAutosuggest from '@/components/Form/fields/FieldMappedAutosuggest.vue';
 import PreviewFieldBase from '../../FieldBase/previews/PreviewFieldBase.vue';
 import fieldBase from '../../../helpers/field-base';
 import FieldBaseAutosuggest from '../../../helpers/field-autosuggest';
@@ -19,7 +19,7 @@ import FieldBaseAutosuggest from '../../../helpers/field-autosuggest';
 export default {
 	extends: PreviewFieldBase,
 	components: {
-		FieldPagedAutosuggest
+		FieldMappedAutosuggest
 	},
 	data() {
 		return {

@@ -16,7 +16,7 @@ See [FieldBase](#/component/Form/fields/FieldBase).
 This is an implementation of [FieldBaseAutosuggest](#/component/Form/fields/FieldBaseAutosuggest) that might display a pagination if there are too many results and also has a function to map the response.
 
 ```html
-<field-paged-autosuggest
+<field-mapped-autosuggest
 	...
 >
 ```

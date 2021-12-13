@@ -21,7 +21,11 @@ export default {
 					label: item.fullName
 				};
 			});
-			this.suggestions = suggestions;
+			if (this.offset) {
+				this.suggestions.push(...suggestions);
+			} else {
+				this.suggestions = suggestions;
+			}
 			this.itemsMax = itemsMax;
 		}
 	}
