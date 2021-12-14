@@ -70,7 +70,7 @@
 			>
 				<template slot="after-suggestions" v-if="currentPage < lastPage">
 					<div
-						class="pkpFormField--autosuggest__pagination"
+						class="pkpFormField--autosuggest__loadMore"
 						@click.prevent.stop=""
 						@mouseup.prevent.stop=""
 						@mousedown.prevent.stop=""
@@ -82,11 +82,13 @@
 						>
 							{{ __('common.pagination.loadMore') }}
 						</pkp-button>
-						{{
-							__('common.pagination.loadMore.description', {
-								quantity: this.unloadedItems
-							})
-						}}
+						<span class="pkpFormField--autosuggest__loadMoreCount">
+							{{
+								__('common.pagination.loadMore.description', {
+									quantity: this.unloadedItems
+								})
+							}}
+						</span>
 					</div>
 				</template>
 			</vue-autosuggest>
@@ -537,13 +539,16 @@ export default {
 }
 
 .pkpFormField--autosuggest__autosuggest {
-	--maxAutosuggestHeight: 100%;
 	position: relative;
 }
 
-.pkpFormField--autosuggest__pagination {
-	border-top: @bg-border;
+.pkpFormField--autosuggest__loadMore {
+	border-top: 1px solid @primary;
 	padding: 0.5rem 1rem;
+}
+
+.pkpFormField--autosuggest__loadMoreCount {
+	margin-left: 0.25rem;
 }
 
 .pkpFormField--autosuggest__spinner {
@@ -574,8 +579,6 @@ export default {
 	background: @lift;
 	box-shadow: 0 0.75rem 0.75rem rgba(0, 0, 0, 0.2);
 	font-size: @font-sml;
-	max-height: var(--maxAutosuggestHeight);
-	overflow: auto;
 
 	&:after {
 		content: '';
@@ -588,17 +591,22 @@ export default {
 		background: @primary;
 	}
 
-	ul {
+	ul[role='listbox'] {
 		margin: 0;
 		padding: 0;
 		list-style: none;
+		max-height: 20rem;
+		overflow-y: scroll;
 	}
 
 	.autosuggest__results-item {
 		position: relative;
 		padding: 0.5rem 1rem;
 		line-height: 1.5em;
+	}
 
+	.autosuggest__results-item:before,
+	.autosuggest__loadMore:before {
 		&:before {
 			content: '';
 			position: absolute;
