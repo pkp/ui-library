@@ -200,6 +200,11 @@
 							</router-link>
 						</li>
 						<li>
+							<router-link to="/component/ListPanel/components/DoiListPanelOJS">
+								DoiListPanelOJS
+							</router-link>
+						</li>
+						<li>
 							<router-link
 								to="/component/ListPanel/components/EmailTemplatesListPanel"
 							>

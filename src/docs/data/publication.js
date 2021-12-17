@@ -1,4 +1,5 @@
 import authors from './authors';
+import doi from '@/docs/data/doi';
 
 export default {
 	_href:
@@ -35,6 +36,7 @@ export default {
 		fr_CA: [],
 		en_US: []
 	},
+	doiObject: {...doi},
 	fullTitle: {
 		en_US:
 			'The Lorem ipsum dolor sit amet: Excepteur sint occaecat cupidatat non proident',
@@ -48,6 +50,7 @@ export default {
 			isApproved: false,
 			label: 'PDF',
 			locale: 'en_US',
+			doiObject: {...doi},
 			publicationId: 17,
 			seq: 0,
 			urlPublished: 'http://...',
@@ -59,6 +62,7 @@ export default {
 			isApproved: false,
 			label: 'Remote',
 			locale: 'en_US',
+			doiObject: {...doi},
 			publicationId: 17,
 			seq: 1,
 			urlPublished: 'http://...',
@@ -70,6 +74,7 @@ export default {
 			isApproved: false,
 			label: 'Supplementaru',
 			locale: 'en_US',
+			doiObject: {...doi},
 			publicationId: 17,
 			seq: 2,
 			urlPublished: 'http://...',

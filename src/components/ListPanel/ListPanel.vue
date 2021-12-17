@@ -316,7 +316,7 @@ export default {
 	margin-top: 0.5rem;
 	text-align: right;
 
-	.pkpButton + .pkpButton {
+	> * + * {
 		margin-left: 0.25rem;
 	}
 }
@@ -345,7 +345,7 @@ export default {
 	.listPanel__itemExpandedActions {
 		text-align: left;
 
-		.pkpButton + .pkpButton {
+		> * + * {
 			margin-left: 0;
 			margin-right: 0.25rem;
 		}
