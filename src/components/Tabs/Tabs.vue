@@ -391,14 +391,14 @@ export default {
 		padding-top: 0;
 		border-top: none;
 
-		.pkpForm {
+		> .pkpForm {
 			margin: 0 0 0 calc(-2rem - 1px); // overlap border
 			border: @bg-border-light;
 		}
 
 		// Fix off-by-one errors with the locale and side tab border lines
 		&:nth-child(2) {
-			.pkpFormPages {
+			.pkpForm > .pkpFormPages {
 				margin-top: -1px;
 			}
 		}
