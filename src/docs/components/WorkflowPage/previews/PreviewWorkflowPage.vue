@@ -249,10 +249,16 @@ import formMetadata from '@/docs/components/Form/helpers/form-metadata';
 import formTitleAbstract from '@/docs/components/Form/helpers/form-title-abstract';
 import basePublication from '@/docs/data/publication';
 import authors from '@/docs/data/authors';
+import fieldAffiliation from '../../Form/helpers/field-text-affiliation';
+import fieldAuthorsRole from '../../Form/helpers/field-options-authors-role';
+import fieldBiography from '../../Form/helpers/field-rich-textarea-bio';
+import fieldConfirmation from '../../Form/helpers/field-options-confirmation';
 import fieldCountry from '../../Form/helpers/field-select-country';
 import fieldEmail from '../../Form/helpers/field-text-email';
+import fieldGivenName from '../../Form/helpers/field-text-given-name';
+import fieldFamilyName from '../../Form/helpers/field-text-family-name';
 import fieldOrcid from '../../Form/helpers/field-text-orcid';
-import fieldAffiliation from '../../Form/helpers/field-text-affiliation';
+import fieldUrl from '../../Form/helpers/field-text-url';
 
 export default {
 	extends: WorkflowPage,
@@ -303,133 +309,61 @@ export default {
 							'http://localhost:8088/index.php/ts/api/v1/submissions/16/publications/__publicationId__/contributors',
 						fields: [
 							{
-								name: 'givenName',
-								component: 'field-text',
-								label: 'Given Name',
+								...fieldGivenName,
 								groupId: 'default',
-								isRequired: true,
 								isMultilingual: true,
-								inputType: 'text',
-								optIntoEdit: false,
-								optIntoEditLabel: '',
-								size: 'normal',
-								prefix: '',
 								value: {en_US: ''}
 							},
 							{
-								name: 'familyName',
-								component: 'field-text',
-								label: 'Family Name',
-								groupId: 'default',
+								...fieldFamilyName,
 								isRequired: false,
+								groupId: 'default',
 								isMultilingual: true,
-								inputType: 'text',
-								optIntoEdit: false,
-								optIntoEditLabel: '',
-								size: 'normal',
-								prefix: '',
 								value: {en_US: ''}
 							},
 							{
+								...fieldFamilyName,
 								name: 'preferredPublicName',
-								component: 'field-text',
 								label: 'Preferred Public Name',
-								groupId: 'default',
 								isRequired: false,
+								groupId: 'default',
 								isMultilingual: true,
-								inputType: 'text',
-								optIntoEdit: false,
-								optIntoEditLabel: '',
-								size: 'normal',
-								prefix: '',
 								value: {en_US: ''}
 							},
 							{
 								...fieldEmail,
-								isMultilingual: false,
-								optIntoEdit: false,
-								optIntoEditLabel: '',
-								size: 'normal',
-								prefix: ''
+								groupId: 'default'
 							},
 							{
 								...fieldCountry,
-								description:
-									'Select the country where this journal is located, or the country of the mailing address for the journal or publisher.',
-								isMultilingual: false
+								groupId: 'default'
 							},
 							{
-								name: 'url',
-								component: 'field-text',
-								label: 'Homepage URL',
-								groupId: 'default',
-								isRequired: false,
-								isMultilingual: false,
-								inputType: 'text',
-								optIntoEdit: false,
-								optIntoEditLabel: '',
-								size: 'normal',
-								prefix: '',
-								value: ''
+								...fieldUrl,
+								groupId: 'default'
 							},
 							{
 								...fieldOrcid,
-								label: 'ORCID',
-								isRequired: false,
-								isMultilingual: false,
-								optIntoEdit: false,
-								optIntoEditLabel: '',
-								size: 'normal',
-								prefix: ''
+								groupId: 'default'
 							},
 							{
-								name: 'biography',
-								component: 'field-rich-textarea',
-								label: 'Bio Statement (e.g., department and rank)',
-								groupId: 'default',
-								isRequired: false,
-								isMultilingual: true,
-								plugins: 'paste,link,noneditable',
-								insertPreparedContentLabel: 'Insert',
-								renderPreparedContent: false,
-								toolbar: 'bold italic superscript subscript | link',
-								skinUrl:
-									'http://localhost:8088/lib/ui-library/public/styles/tinymce',
-								value: {en_US: ''}
+								...fieldBiography,
+								groupId: 'default'
 							},
 							{
 								...fieldAffiliation,
-								isRequired: false,
-								optIntoEdit: false,
-								optIntoEditLabel: '',
-								size: 'normal',
-								prefix: ''
+								groupId: 'default'
 							},
 							{
-								name: 'userGroupId',
-								component: 'field-options',
-								label: "Contributor's role",
-								groupId: 'default',
-								isRequired: false,
-								isMultilingual: false,
-								value: 14,
-								type: 'radio',
-								isOrderable: false,
-								options: [
-									{value: 14, label: 'Author'},
-									{value: 15, label: 'Translator'}
-								]
+								...fieldAuthorsRole
 							},
 							{
+								...fieldConfirmation,
 								name: 'includeInBrowse',
-								component: 'field-options',
 								label: 'Publication Lists',
 								groupId: 'default',
-								isRequired: false,
 								isMultilingual: false,
 								value: true,
-								type: 'checkbox',
-								isOrderable: false,
 								options: [
 									{
 										value: true,
@@ -514,6 +448,16 @@ export default {
 		alert(msg) {
 			alert(msg);
 		}
+	},
+	created() {
+		pkp.localeKeys['contributor.listPanel.preview.description'] =
+			'Contributors to this publication will be identified in this journal in the following formats.';
+		pkp.localeKeys['contributor.listPanel.preview.format'] = 'Format';
+		pkp.localeKeys['contributor.listPanel.preview.display'] = 'Display';
+		pkp.localeKeys['contributor.listPanel.preview.abbreviated'] = 'Abbreviated';
+		pkp.localeKeys['contributor.listPanel.preview.publicationLists'] =
+			'Publication Lists';
+		pkp.localeKeys['contributor.listPanel.preview.full'] = 'Full';
 	}
 };
 </script>
