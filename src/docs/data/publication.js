@@ -10,6 +10,8 @@ export default {
 	accessStatus: 0,
 	authors: [
 		{
+			userGroupName: 'Author',
+			fullName: 'Barnes Daniel',
 			affilation: {
 				fr_CA: 'FR Public Knowledge Project',
 				en_US: 'Public Knowledge Project'
@@ -32,9 +34,11 @@ export default {
 			},
 			publicationId: 17,
 			seq: 1,
-			userGroupId: null
+			userGroupId: 14
 		},
 		{
+			userGroupName: 'Author',
+			fullName: 'Ipsum Lorem',
 			affilation: {
 				fr_CA: '',
 				en_US: 'University of Public Knowledge'
@@ -57,7 +61,7 @@ export default {
 			},
 			publicationId: 17,
 			seq: 2,
-			userGroupId: null
+			userGroupId: 14
 		}
 	],
 	authorsString: 'Daniel Barnes, Dr. L. P. Ipsum',

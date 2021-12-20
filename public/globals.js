@@ -114,7 +114,14 @@ window.pkp = {
 		'form.multilingualProgress': '{$count}/{$total} languages completed',
 		'form.saved': 'Saved',
 		'help.help': 'Help',
-		'validator.required': 'This field is required.'
+		'validator.required': 'This field is required.',
+		'common.order': 'Order',
+		'author.users.contributor.setPrincipalContact': 'Set Primary Contact',
+		'author.users.contributor.principalContact': 'Primary Contact',
+		'submission.contributors': 'Contributors',
+		'grid.action.saveOrdering': 'Save Order',
+		'grid.action.order': 'Order',
+		'contributor.listPanel.preview': 'Preview'
 	}
 };
 

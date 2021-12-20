@@ -1,5 +1,6 @@
 <script type="text/javascript">
 import Page from './Page.vue';
+import ContributorsListPanel from '@/components/ListPanel/contributors/ContributorsListPanel.vue';
 import Dropdown from '@/components/Dropdown/Dropdown.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import LocalizeSubmission from '@/mixins/localizeSubmission.js';
@@ -11,6 +12,7 @@ export default {
 	extends: Page,
 	mixins: [LocalizeSubmission, modal, ajaxError],
 	components: {
+		ContributorsListPanel,
 		Dropdown,
 		PkpHeader
 	},
@@ -19,7 +21,6 @@ export default {
 			activityLogLabel: '',
 			canAccessPublication: false,
 			canEditPublication: false,
-			contributorsGridUrl: '',
 			currentPublication: null,
 			editorialHistoryUrl: '',
 			isLoadingVersion: false,
@@ -157,34 +158,6 @@ export default {
 		 */
 		getConstant(constant) {
 			return pkp.const[constant];
-		},
-
-		/**
-		 * Load/reload the contributors grid
-		 *
-		 * @param Object publication Load contributors for this publication
-		 */
-		loadContributorsGrid(publication) {
-			if (!this.$refs.contributors) {
-				return;
-			}
-			const $contributorsEl = $(this.$refs.contributors);
-			const sourceUrl = this.contributorsGridUrl.replace(
-				'__publicationId__',
-				publication.id
-			);
-			if (!$.pkp.classes.Handler.hasHandler($contributorsEl)) {
-				$contributorsEl.pkpHandler('$.pkp.controllers.UrlInDivHandler', {
-					sourceUrl: sourceUrl,
-					refreshOn: 'form-success'
-				});
-			} else {
-				const contributorHandler = $.pkp.classes.Handler.getHandler(
-					$contributorsEl
-				);
-				contributorHandler.setSourceUrl(sourceUrl);
-				contributorHandler.reload();
-			}
 		},
 
 		/**
@@ -478,7 +451,6 @@ export default {
 					self.workingPublication = r;
 					self.updatePublicationInList(r);
 					self.setPublicationForms(r);
-					self.loadContributorsGrid(r);
 					self.loadRepresentationsGrid(r);
 					self.isLoadingVersion = false;
 					self.setFocusIn(self.$refs.publication);
@@ -500,12 +472,29 @@ export default {
 					publication.version = newPublication.version;
 				}
 			});
+		},
+
+		/**
+		 * Update a publication
+		 *
+		 * @param {Object} publication
+		 */
+		setWorkingPublication(publication) {
+			this.workingPublication = publication;
+		},
+
+		/**
+		 * Update a set of publication contributors
+		 *
+		 * @param {Object} contributors
+		 */
+		setContributors(contributors) {
+			this.workingPublication.authors = [...contributors];
 		}
 	},
 	watch: {
 		workingPublication(newVal, oldVal) {
 			this.setPublicationForms(newVal);
-			this.loadContributorsGrid(newVal);
 			this.loadRepresentationsGrid(newVal);
 			if (newVal.id === this.currentPublication.id) {
 				this.currentPublication = {};
@@ -563,7 +552,6 @@ export default {
 		 * Add a delay to allow the workflow requests to be sent first
 		 */
 		setTimeout(() => {
-			this.loadContributorsGrid(this.workingPublication);
 			this.loadRepresentationsGrid(this.workingPublication);
 		}, 1000);
 
@@ -653,7 +641,7 @@ export default {
 		border-top: none;
 	}
 
-	.pkpTab .pkpForm {
+	.pkpTab > .pkpForm {
 		margin-right: -1rem;
 		border-top: none;
 		border-right: none;
@@ -697,7 +685,7 @@ export default {
 }
 
 // Integrate the grids in the publication tab
-#contributors-grid,
+.pkpWorkflow__contributors,
 #representations-grid {
 	padding-top: 2rem;
 }

@@ -199,9 +199,18 @@
 							<pkp-form v-bind="components.titleAbstract" @set="set" />
 						</tab>
 						<tab id="contributors" label="Contributors">
-							<div id="contributors-grid" ref="contributors">
-								<spinner></spinner>
-							</div>
+							<contributors-list-panel
+								v-bind="components.contributors"
+								class="pkpWorkflow__contributors"
+								@set="set"
+								:items="workingPublication.authors"
+								:publication="workingPublication"
+								:publication-api-url="
+									submissionApiUrl + '/publications/' + workingPublication.id
+								"
+								@updated:publication="setWorkingPublication"
+								@updated:contributors="setContributors"
+							></contributors-list-panel>
 						</tab>
 						<tab id="metadata" label="Metadata">
 							<pkp-form v-bind="components.metadata" @set="set" />
@@ -239,6 +248,11 @@ import formCitations from '@/docs/components/Form/helpers/form-citations';
 import formMetadata from '@/docs/components/Form/helpers/form-metadata';
 import formTitleAbstract from '@/docs/components/Form/helpers/form-title-abstract';
 import basePublication from '@/docs/data/publication';
+import authors from '@/docs/data/authors';
+import fieldCountry from '../../../helpers/field-select-country';
+import fieldEmail from '../../../helpers/field-text-email';
+import fieldOrcid from '../../../helpers/field-text-orcid';
+import fieldAffiliation from '../../../helpers/field-text-affiliation';
 
 export default {
 	extends: WorkflowPage,
@@ -269,11 +283,174 @@ export default {
 			canAccessPublication: true,
 			canEditPublication: true,
 			components: {
+				contributors: {
+					id: 'contributors',
+					items: [...authors],
+					title: 'Contributors',
+					addContributorLabel: 'Add Contributor',
+					publicationApiUrl:
+						'http://localhost:8088/index.php/ts/api/v1/submissions/16/publications',
+					confirmDeleteMessage:
+						'Are you sure you want to remove {$name} as a contributor? This action can not be undone.',
+					count: 30,
+					deleteContributorLabel: 'Delete',
+					editContributorLabel: 'Edit',
+					canEditPublication: true,
+					form: {
+						id: 'contributor',
+						method: 'POST',
+						action:
+							'http://localhost:8088/index.php/ts/api/v1/submissions/16/publications/__publicationId__/contributors',
+						fields: [
+							{
+								name: 'givenName',
+								component: 'field-text',
+								label: 'Given Name',
+								groupId: 'default',
+								isRequired: true,
+								isMultilingual: true,
+								inputType: 'text',
+								optIntoEdit: false,
+								optIntoEditLabel: '',
+								size: 'normal',
+								prefix: '',
+								value: {en_US: ''}
+							},
+							{
+								name: 'familyName',
+								component: 'field-text',
+								label: 'Family Name',
+								groupId: 'default',
+								isRequired: false,
+								isMultilingual: true,
+								inputType: 'text',
+								optIntoEdit: false,
+								optIntoEditLabel: '',
+								size: 'normal',
+								prefix: '',
+								value: {en_US: ''}
+							},
+							{
+								name: 'preferredPublicName',
+								component: 'field-text',
+								label: 'Preferred Public Name',
+								groupId: 'default',
+								isRequired: false,
+								isMultilingual: true,
+								inputType: 'text',
+								optIntoEdit: false,
+								optIntoEditLabel: '',
+								size: 'normal',
+								prefix: '',
+								value: {en_US: ''}
+							},
+							{
+								...fieldEmail,
+								isMultilingual: false,
+								optIntoEdit: false,
+								optIntoEditLabel: '',
+								size: 'normal',
+								prefix: ''
+							},
+							{
+								...fieldCountry,
+								description:
+									'Select the country where this journal is located, or the country of the mailing address for the journal or publisher.',
+								isMultilingual: false
+							},
+							{
+								name: 'url',
+								component: 'field-text',
+								label: 'Homepage URL',
+								groupId: 'default',
+								isRequired: false,
+								isMultilingual: false,
+								inputType: 'text',
+								optIntoEdit: false,
+								optIntoEditLabel: '',
+								size: 'normal',
+								prefix: '',
+								value: ''
+							},
+							{
+								...fieldOrcid,
+								label: 'ORCID',
+								isRequired: false,
+								isMultilingual: false,
+								optIntoEdit: false,
+								optIntoEditLabel: '',
+								size: 'normal',
+								prefix: ''
+							},
+							{
+								name: 'biography',
+								component: 'field-rich-textarea',
+								label: 'Bio Statement (e.g., department and rank)',
+								groupId: 'default',
+								isRequired: false,
+								isMultilingual: true,
+								plugins: 'paste,link,noneditable',
+								insertPreparedContentLabel: 'Insert',
+								renderPreparedContent: false,
+								toolbar: 'bold italic superscript subscript | link',
+								skinUrl:
+									'http://localhost:8088/lib/ui-library/public/styles/tinymce',
+								value: {en_US: ''}
+							},
+							{
+								...fieldAffiliation,
+								isRequired: false,
+								optIntoEdit: false,
+								optIntoEditLabel: '',
+								size: 'normal',
+								prefix: ''
+							},
+							{
+								name: 'userGroupId',
+								component: 'field-options',
+								label: "Contributor's role",
+								groupId: 'default',
+								isRequired: false,
+								isMultilingual: false,
+								value: 14,
+								type: 'radio',
+								isOrderable: false,
+								options: [
+									{value: 14, label: 'Author'},
+									{value: 15, label: 'Translator'}
+								]
+							},
+							{
+								name: 'includeInBrowse',
+								component: 'field-options',
+								label: 'Publication Lists',
+								groupId: 'default',
+								isRequired: false,
+								isMultilingual: false,
+								value: true,
+								type: 'checkbox',
+								isOrderable: false,
+								options: [
+									{
+										value: true,
+										label:
+											'Include this contributor when identifying authors in lists of publications.'
+									}
+								]
+							}
+						],
+						groups: [{id: 'default', pageId: 'default'}],
+						pages: [{id: 'default', submitButton: {label: 'Save'}}],
+						primaryLocale: 'en_US',
+						visibleLocales: ['en_US'],
+						supportedFormLocales: [{key: 'en_US', label: 'English'}],
+						errors: {}
+					}
+				},
 				citations: formCitations,
 				metadata: formMetadata,
 				titleAbstract: formTitleAbstract
 			},
-			contributorsGridUrl: 'http://example.org',
 			currentPublication: currentPublication,
 			editorialHistoryUrl: 'http://example.org',
 			publicationFormIds: ['titleAbstract'],
