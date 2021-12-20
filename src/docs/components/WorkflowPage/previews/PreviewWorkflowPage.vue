@@ -249,10 +249,10 @@ import formMetadata from '@/docs/components/Form/helpers/form-metadata';
 import formTitleAbstract from '@/docs/components/Form/helpers/form-title-abstract';
 import basePublication from '@/docs/data/publication';
 import authors from '@/docs/data/authors';
-import fieldCountry from '../../../helpers/field-select-country';
-import fieldEmail from '../../../helpers/field-text-email';
-import fieldOrcid from '../../../helpers/field-text-orcid';
-import fieldAffiliation from '../../../helpers/field-text-affiliation';
+import fieldCountry from '../../Form/helpers/field-select-country';
+import fieldEmail from '../../Form/helpers/field-text-email';
+import fieldOrcid from '../../Form/helpers/field-text-orcid';
+import fieldAffiliation from '../../Form/helpers/field-text-affiliation';
 
 export default {
 	extends: WorkflowPage,
