@@ -298,7 +298,6 @@ export default {
 						'http://localhost:8088/index.php/ts/api/v1/submissions/16/publications',
 					confirmDeleteMessage:
 						'Are you sure you want to remove {$name} as a contributor? This action can not be undone.',
-					count: 30,
 					deleteContributorLabel: 'Delete',
 					editContributorLabel: 'Edit',
 					canEditPublication: true,
