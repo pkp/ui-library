@@ -68,28 +68,26 @@
 				@selected="selectSuggestion"
 				:style="maxHeight === null || `--maxAutosuggestHeight: ${maxHeight}`"
 			>
-				<template slot="after-suggestions" v-if="currentPage < lastPage">
-					<div
-						class="pkpFormField--autosuggest__loadMore"
-						@click.prevent.stop=""
-						@mouseup.prevent.stop=""
-						@mousedown.prevent.stop=""
-					>
+				<template slot-scope="{suggestion}">
+					<template v-if="suggestion.item === loadMoreOption">
 						<pkp-button
 							:isDisabled="isLoading"
-							@click="setPage(currentPage + 1)"
 							:aria-controls="controlId"
+							tabindex="-1"
 						>
 							{{ __('common.pagination.loadMore') }}
 						</pkp-button>
 						<span class="pkpFormField--autosuggest__loadMoreCount">
 							{{
 								__('common.pagination.loadMore.description', {
-									quantity: this.unloadedItems
+									quantity: unloadedItems
 								})
 							}}
 						</span>
-					</div>
+					</template>
+					<template v-else>
+						{{ suggestion.item.label }}
+					</template>
 				</template>
 			</vue-autosuggest>
 			<spinner class="pkpFormField--autosuggest__spinner" v-if="isLoading" />
@@ -192,7 +190,9 @@ export default {
 		return {
 			currentPosition: this.initialPosition,
 			inputValue: '',
-			suggestions: []
+			suggestions: [],
+			loadMoreOption: new Option(),
+			triggeredLoadMore: false
 		};
 	},
 	computed: {
@@ -215,9 +215,11 @@ export default {
 				id: this.autosuggestId,
 				inputProps: this.inputProps,
 				key: this.autosuggestId,
-				suggestions: [{data: this.suggestions}],
-				getSuggestionValue: suggestion => suggestion.item.label,
-				renderSuggestion: suggestion => suggestion.item.label
+				suggestions: [{data: this.extendedSuggestions}],
+				shouldRenderSuggestions: (totalResults, loading) => {
+					return this.shouldRenderSuggestions(totalResults, loading);
+				},
+				getSuggestionValue: suggestion => suggestion.item.label
 			};
 		},
 
@@ -296,9 +298,28 @@ export default {
 		 */
 		unloadedItems() {
 			return Math.max(0, this.itemsMax - this.suggestions.length);
+		},
+
+		/**
+		 * Retrieve the suggestions with an extra item to render the "Load More" button when needed
+		 *
+		 * @return array
+		 */
+		extendedSuggestions() {
+			return this.currentPage < this.lastPage
+				? [...this.suggestions, this.loadMoreOption]
+				: this.suggestions;
 		}
 	},
 	methods: {
+		shouldRenderSuggestions(totalResults, loading) {
+			if (this.triggeredLoadMore) {
+				this.triggeredLoadMore = false;
+				loading = this.$refs.autosuggest.loading = false;
+			}
+			return totalResults > 0 && !loading;
+		},
+
 		/**
 		 * Remove an item from the selected list
 		 *
@@ -350,6 +371,13 @@ export default {
 		 * @param {Object|null} item The item that was selected
 		 */
 		select(item) {
+			this.triggeredLoadMore = item === this.loadMoreOption;
+			if (this.triggeredLoadMore) {
+				if (!this.isLoading) {
+					this.setPage(this.currentPage + 1);
+				}
+				return;
+			}
 			if (!item) {
 				if (!this.inputValue || !this.suggestions.length) {
 					return;
@@ -579,6 +607,8 @@ export default {
 	background: @lift;
 	box-shadow: 0 0.75rem 0.75rem rgba(0, 0, 0, 0.2);
 	font-size: @font-sml;
+	max-height: 20rem;
+	overflow-y: scroll;
 
 	&:after {
 		content: '';
@@ -595,8 +625,6 @@ export default {
 		margin: 0;
 		padding: 0;
 		list-style: none;
-		max-height: 20rem;
-		overflow-y: scroll;
 	}
 
 	.autosuggest__results-item {
