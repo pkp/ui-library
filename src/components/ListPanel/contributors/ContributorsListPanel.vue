@@ -357,7 +357,6 @@ export default {
 						},
 						error: self.ajaxErrorCallback,
 						success(r) {
-							self.items = self.items.filter(i => i.id !== id);
 							self.$modal.hide('delete');
 							self.setFocusIn(self.$el);
 
@@ -444,7 +443,7 @@ export default {
 		 * Cancel changes made by ordering items
 		 */
 		cancelOrdering() {
-			this.items = this.itemsBeforeReordering;
+			this.$emit('updated:contributors', this.itemsBeforeReordering);
 
 			this.itemsBeforeReordering = null;
 			this.isOrdering = false;
