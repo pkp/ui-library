@@ -66,7 +66,31 @@
 				class="pkpFormField--autosuggest__autosuggest"
 				v-bind="autosuggestOptions"
 				@selected="selectSuggestion"
-			/>
+				:style="maxHeight === null || `--maxAutosuggestHeight: ${maxHeight}`"
+			>
+				<template slot-scope="{suggestion}">
+					<template v-if="suggestion.item === loadMoreOption">
+						<pkp-button
+							:isDisabled="isLoading"
+							:aria-controls="controlId"
+							tabindex="-1"
+						>
+							{{ __('common.pagination.loadMore') }}
+						</pkp-button>
+						<span class="pkpFormField--autosuggest__loadMoreCount">
+							{{
+								__('common.pagination.loadMore.description', {
+									quantity: unloadedItems
+								})
+							}}
+						</span>
+					</template>
+					<template v-else>
+						{{ suggestion.item.label }}
+					</template>
+				</template>
+			</vue-autosuggest>
+			<spinner class="pkpFormField--autosuggest__spinner" v-if="isLoading" />
 			<div
 				v-if="currentPosition === 'below'"
 				class="pkpFormField--autosuggest__values pkpFormField--autosuggest__values--below"
@@ -109,34 +133,22 @@
 import FieldBase from './FieldBase.vue';
 import PkpBadge from '@/components/Badge/Badge.vue';
 import {VueAutosuggest} from 'vue-autosuggest';
-import ajaxError from '@/mixins/ajaxError';
 import debounce from 'debounce';
+import fetch from '@/mixins/fetch';
 import elementResizeEvent from 'element-resize-event';
 
 export default {
 	name: 'FieldBaseAutosuggest',
 	extends: FieldBase,
-	mixins: [ajaxError],
+	mixins: [fetch],
 	components: {
 		PkpBadge,
 		VueAutosuggest
 	},
 	props: {
-		apiUrl: {
-			type: String,
-			default() {
-				return '';
-			}
-		},
 		deselectLabel: {
 			type: String,
 			required: true
-		},
-		getParams: {
-			type: Object,
-			default() {
-				return {};
-			}
 		},
 		initialPosition: {
 			type: String,
@@ -156,13 +168,31 @@ export default {
 		selectedLabel: {
 			type: String,
 			required: true
+		},
+		minInputLength: {
+			type: Number,
+			default: 0
+		},
+		maxSelectedItems: {
+			type: Number,
+			default: null
+		},
+		replaceWhenFull: {
+			type: Boolean,
+			default: true
+		},
+		maxHeight: {
+			type: String,
+			default: '260px'
 		}
 	},
 	data() {
 		return {
 			currentPosition: this.initialPosition,
 			inputValue: '',
-			suggestions: []
+			suggestions: [],
+			loadMoreOption: new Option(),
+			triggeredLoadMore: false
 		};
 	},
 	computed: {
@@ -185,9 +215,11 @@ export default {
 				id: this.autosuggestId,
 				inputProps: this.inputProps,
 				key: this.autosuggestId,
-				suggestions: [{data: this.suggestions}],
-				getSuggestionValue: suggestion => suggestion.item.label,
-				renderSuggestion: suggestion => suggestion.item.label
+				suggestions: [{data: this.extendedSuggestions}],
+				shouldRenderSuggestions: (totalResults, loading) => {
+					return this.shouldRenderSuggestions(totalResults, loading);
+				},
+				getSuggestionValue: suggestion => suggestion.item.label
 			};
 		},
 
@@ -257,9 +289,37 @@ export default {
 				id: this.controlId,
 				name: this.name
 			};
+		},
+
+		/**
+		 * Retrieves the quantity of items which were not loaded yet
+		 *
+		 * @return int
+		 */
+		unloadedItems() {
+			return Math.max(0, this.itemsMax - this.suggestions.length);
+		},
+
+		/**
+		 * Retrieve the suggestions with an extra item to render the "Load More" button when needed
+		 *
+		 * @return array
+		 */
+		extendedSuggestions() {
+			return this.currentPage < this.lastPage
+				? [...this.suggestions, this.loadMoreOption]
+				: this.suggestions;
 		}
 	},
 	methods: {
+		shouldRenderSuggestions(totalResults, loading) {
+			if (this.triggeredLoadMore) {
+				this.triggeredLoadMore = false;
+				loading = this.$refs.autosuggest.loading = false;
+			}
+			return totalResults > 0 && !loading;
+		},
+
 		/**
 		 * Remove an item from the selected list
 		 *
@@ -275,29 +335,30 @@ export default {
 		},
 
 		/**
-		 * Get suggestions from the API url
+		 * Update the list of items
+		 *
+		 * @param {Array} items
+		 * @param {Number} itemsMax
 		 */
-		getSuggestions: debounce(function() {
+		setItems(items, itemsMax) {
+			this.setSuggestions(items, itemsMax);
+		},
+
+		/**
+		 * Overwrite the get method from the fetch mixin to avoid requesting a resource if there's no user input
+		 */
+		get() {
 			if (!this.inputValue) {
 				this.suggestions = [];
 				return;
 			}
-			var self = this;
-			$.ajax({
-				url: this.apiUrl,
-				type: 'GET',
-				data: {
-					...this.getParams,
-					searchPhrase: this.inputValue
-				},
-				error(r) {
-					self.ajaxErrorCallback(r);
-				},
-				success(r) {
-					self.setSuggestions(r.items);
-				}
-			});
-		}, 250),
+			this.getSuggestions();
+		},
+
+		/**
+		 * Get suggestions from the API url by leveraging the get method of the fetch mixin
+		 */
+		getSuggestions: debounce(fetch.methods.get, 250),
 
 		/**
 		 * Add a suggested item to the list of selected items
@@ -310,13 +371,34 @@ export default {
 		 * @param {Object|null} item The item that was selected
 		 */
 		select(item) {
+			this.triggeredLoadMore = item === this.loadMoreOption;
+			if (this.triggeredLoadMore) {
+				if (!this.isLoading) {
+					this.setPage(this.currentPage + 1);
+				}
+				return;
+			}
 			if (!item) {
 				if (!this.inputValue || !this.suggestions.length) {
 					return;
 				}
 				item = this.suggestions[0];
 			}
-			this.currentSelected.push(item);
+			if (!this.currentSelected.find(({value}) => value === item.value)) {
+				const hasReachedLimit =
+					this.maxSelectedItems !== null &&
+					this.currentSelected.length >= this.maxSelectedItems;
+				const canReplace =
+					hasReachedLimit &&
+					this.currentSelected.length &&
+					this.replaceWhenFull;
+				if (!hasReachedLimit || canReplace) {
+					if (canReplace) {
+						this.currentSelected.pop();
+					}
+					this.currentSelected.push(item);
+				}
+			}
 			this.inputValue = '';
 			this.$nextTick(() => {
 				this.$nextTick(() => {
@@ -342,9 +424,10 @@ export default {
 		 * This must be implemented in a component that extends
 		 * this component
 		 *
-		 * @param {Array} newItems
+		 * @param {Array} items
+		 * @param {Number} itemsMax
 		 */
-		setSuggestions(newItems) {
+		setSuggestions(items, itemsMax) {
 			throw new Error(
 				'The setSuggestions method must be implemented in any component that extends FieldBaseAutosuggest.'
 			);
@@ -404,7 +487,9 @@ export default {
 			if (newVal === oldVal) {
 				return;
 			}
-			this.getSuggestions();
+			if (newVal.length >= this.minInputLength) {
+				this.setSearchPhrase(newVal);
+			}
 		}
 	},
 	mounted() {
@@ -485,6 +570,21 @@ export default {
 	position: relative;
 }
 
+.pkpFormField--autosuggest__loadMore {
+	border-top: 1px solid @primary;
+	padding: 0.5rem 1rem;
+}
+
+.pkpFormField--autosuggest__loadMoreCount {
+	margin-left: 0.25rem;
+}
+
+.pkpFormField--autosuggest__spinner {
+	position: absolute;
+	right: 1rem;
+	top: 0.2rem;
+}
+
 .pkpFormField--autosuggest__input {
 	width: 100%;
 }
@@ -497,6 +597,7 @@ export default {
 	max-width: 100%;
 	min-width: 20rem;
 	z-index: 9999;
+	background: @lift;
 }
 
 .autosuggest__results {
@@ -506,6 +607,8 @@ export default {
 	background: @lift;
 	box-shadow: 0 0.75rem 0.75rem rgba(0, 0, 0, 0.2);
 	font-size: @font-sml;
+	max-height: 20rem;
+	overflow-y: scroll;
 
 	&:after {
 		content: '';
@@ -518,7 +621,7 @@ export default {
 		background: @primary;
 	}
 
-	ul {
+	ul[role='listbox'] {
 		margin: 0;
 		padding: 0;
 		list-style: none;
@@ -528,7 +631,10 @@ export default {
 		position: relative;
 		padding: 0.5rem 1rem;
 		line-height: 1.5em;
+	}
 
+	.autosuggest__results-item:before,
+	.autosuggest__loadMore:before {
 		&:before {
 			content: '';
 			position: absolute;

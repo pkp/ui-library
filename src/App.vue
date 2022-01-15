@@ -90,6 +90,11 @@
 							</router-link>
 						</li>
 						<li>
+							<router-link to="/component/Form/fields/FieldMappedAutosuggest">
+								FieldMappedAutosuggest
+							</router-link>
+						</li>
+						<li>
 							<router-link to="/component/Form/fields/FieldHtml">
 								FieldHtml
 							</router-link>

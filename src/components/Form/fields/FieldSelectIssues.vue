@@ -8,23 +8,25 @@ export default {
 		/**
 		 * Set the suggestions from an API response
 		 *
-		 * Maps the API response when searching for submissions
+		 * Maps the API response when searching for issues
 		 * to an object with value and label props.
 		 *
-		 * @param {Array} newItems List of submissions
+		 * @param {Array} items List of issues
+		 * @param {Number} itemsMax Total amount of issues based on the applied filters
 		 */
-		setSuggestions(newItems) {
-			const suggestions = newItems
-				.filter(item => {
-					return !this.selected.find(s => s.value === item.id);
-				})
-				.map(item => {
-					return {
-						value: item.id,
-						label: item.identification
-					};
-				});
-			this.suggestions = suggestions;
+		setSuggestions(items, itemsMax) {
+			const suggestions = items.map(item => {
+				return {
+					value: item.id,
+					label: item.identification
+				};
+			});
+			if (this.offset) {
+				this.suggestions.push(...suggestions);
+			} else {
+				this.suggestions = suggestions;
+			}
+			this.itemsMax = itemsMax;
 		}
 	}
 };

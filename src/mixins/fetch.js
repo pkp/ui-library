@@ -44,7 +44,9 @@ export default {
 			isLoading: false,
 			latestGetRequest: '',
 			offset: 0,
-			searchPhrase: ''
+			itemsMax: 0,
+			searchPhrase: '',
+			lastRequest: null
 		};
 	},
 	computed: {
@@ -54,7 +56,7 @@ export default {
 		 * @return {Number}
 		 */
 		currentPage() {
-			return Math.floor(this.offset / this.count) + 1;
+			return Math.floor(this.offset / Math.max(1, this.count)) + 1;
 		},
 
 		/**
@@ -63,7 +65,7 @@ export default {
 		 * @return {Number}
 		 */
 		lastPage() {
-			return Math.ceil(this.itemsMax / this.count);
+			return Math.ceil(this.itemsMax / Math.max(1, this.count));
 		}
 	},
 	methods: {
@@ -90,7 +92,11 @@ export default {
 			// discard responses that are outdated.
 			this.latestGetRequest = $.pkp.classes.Helper.uuid();
 
-			$.ajax({
+			if (this.lastRequest) {
+				this.lastRequest.abort('Aborted due to new user request');
+			}
+
+			this.lastRequest = $.ajax({
 				url: this.apiUrl,
 				type: 'GET',
 				data: {
@@ -199,10 +205,7 @@ export default {
 			if (document.readyState === 'complete') {
 				this.get();
 			} else {
-				var self = this;
-				$(function() {
-					self.get();
-				});
+				$(() => this.get());
 			}
 		}
 	}

@@ -20,8 +20,9 @@ export default {
 				this.suggestions = [];
 				return;
 			}
-			if (!this.suggestionsLoaded) {
+			if (!this.suggestionsLoaded && !this.isLoading) {
 				const self = this;
+				this.isLoading = true;
 				$.ajax({
 					url: this.apiUrl,
 					type: 'GET',
@@ -30,14 +31,23 @@ export default {
 						self.ajaxErrorCallback(r);
 					},
 					success(r) {
-						self.allSuggestions = r.map(v => {
-							return {
-								value: v,
-								label: v
-							};
-						});
-						self.setSuggestions.apply(self);
+						self.allSuggestions = r
+							.sort(
+								new Intl.Collator(
+									(this.localeKey || $.pkp.app.currentLocale).split('_')[0]
+								).compare
+							)
+							.map(v => {
+								return {
+									value: v,
+									label: v
+								};
+							});
+						self.setSuggestions();
 						self.suggestionsLoaded = true;
+					},
+					complete() {
+						self.isLoading = false;
 					}
 				});
 			}

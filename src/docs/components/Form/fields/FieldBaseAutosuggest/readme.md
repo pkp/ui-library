@@ -2,6 +2,7 @@
 
 | Key | Description |
 | --- | --- |
+| `...` | Supports all props in [Fetch](#/pages/fetch). |
 | `...` | Supports all props in [FieldBase](#/component/Form/fields/FieldBase). |
 | `apiUrl` | A URL where suggestions can be retrieved. Suggestions are expected to be returned in a flat array. |
 | `deselectLabel` | A text label for the button to remove a selection. This must be included to be compatible with assistive technology. |
@@ -9,6 +10,10 @@
 | `initialPosition` | Whether selected entries should appear `inline` or `below` the input field when this field is created. Default is `inline`. The position will change automatically when the width of selected values is too large for the input field. |
 | `selected` | The currently selected options for this field. These should be objects with `value` and `label` keys. |
 | `selectedLabel` | A text label that proceeds the selected values. This must be included to be compatible with assistive technology. |
+| `minInputLength` | Defines the minimum amount of characters to trigger the API request. Default: 0 |
+| `maxSelectedItems` | Defines the maximum amount of items that can be selected. Default: null |
+| `replaceWhenFull` | Defines the behavior of selecting an additional item when the `maxSelectedItems` has been reached. `true`: The new item replaces the last item. `false`: Blocks adding the new item. Default: `true` |
+| `maxHeight` | Defines the maximum height of the list, if the threshold is exceeded, a scrollbar will be added. If null, there will be no limits. Default: `260px` |
 
 ## Events
 
@@ -26,13 +31,14 @@ import FieldBaseAutosuggest from './FieldBaseAutosuggest.vue';
 export default {
 	extends: FieldBaseAutosuggest,
 	methods: {
-		setSuggestions(newItems) {
-			this.suggestions = newItems.map(item => {
+		setSuggestions(items, itemsMax) {
+			this.suggestions = items.map(item => {
 				return {
 					value: item.id,
 					label: item.title
 				};
-			})
+			});
+			this.itemsMax = itemsMax;
 		}
 	}
 }
@@ -45,5 +51,6 @@ The `value` is submitted with the form.
 The following autosuggest fields are available to be used.
 
 - `FieldAutosuggestPreset` can be used to when the options can be preset instead of requiring a request to the REST API.
+- `FieldMappedAutosuggest` can be used to when the options might return a large list.
 - `FieldControlledVocab` can be used to enter metadata such as keywords and subjects.
 - `FieldSelectSubmissions` can be used to find and select submissions.

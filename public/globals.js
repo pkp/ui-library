@@ -89,6 +89,8 @@ window.pkp = {
 		'common.pagination.label': 'View additional pages',
 		'common.pagination.next': 'Next page',
 		'common.pagination.previous': 'Previous page',
+		'common.pagination.loadMore': 'Load more',
+		'common.pagination.loadMore.description': '{$quantity} results not shown',
 		'common.remove': 'Remove',
 		'common.required': 'Required',
 		'common.save': 'Save',

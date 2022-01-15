@@ -11,30 +11,32 @@ export default {
 		 * Maps the API response when searching for submissions
 		 * to an object with value and label props.
 		 *
-		 * @param {Array} newItems List of submissions
+		 * @param {Array} items List of submissions
+		 * @param {Number} itemsMax Total amount of submissions based on the applied filters
 		 */
-		setSuggestions(newItems) {
-			const suggestions = newItems
-				.filter(item => {
-					return !this.selected.find(s => s.id === item.id);
-				})
-				.map(item => {
-					const currentPublication = item.publications.find(publication => {
-						return publication.id === item.currentPublicationId;
-					});
-					if (!currentPublication) {
-						return {
-							value: 0,
-							label: ''
-						};
-					} else {
-						return {
-							value: item.id,
-							label: this.localize(currentPublication.fullTitle)
-						};
-					}
-				});
-			this.suggestions = suggestions;
+		setSuggestions(items, itemsMax) {
+			const suggestions = items.map(item => {
+				const currentPublication = item.publications.find(
+					publication => publication.id === item.currentPublicationId
+				);
+				if (!currentPublication) {
+					return {
+						value: 0,
+						label: ''
+					};
+				} else {
+					return {
+						value: item.id,
+						label: this.localize(currentPublication.fullTitle)
+					};
+				}
+			});
+			if (this.offset) {
+				this.suggestions.push(...suggestions);
+			} else {
+				this.suggestions = suggestions;
+			}
+			this.itemsMax = itemsMax;
 		}
 	}
 };
