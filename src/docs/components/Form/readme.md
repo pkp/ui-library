@@ -7,6 +7,7 @@
 | `errors` | Key/value object of messages. The key is the field `name` and the value is an array of errors. Errors are generated during form submission and handled automatically, so this prop can be omitted in most cicumstances. |
 | `fields` | Array of form fields. This prop is typically configured on the server, using the `Form` and `Field` classes in the PHP application. |
 | `groups` | Array of form groups. See "Groups and Group Descriptions" below. |
+| `hiddenFields` | Key/value of hidden fields that should be submitted with the form. The key will be used as the field's `name` attribute. |
 | `id` | Used by a parent component, such as `Container`, to identify events emitted from the form and update the form props when necessary. |
 | `method` | The method to use when submitting the form. This should match the API endpoint that will handle the form. It can be `POST` (create) or `PUT` (edit). |
 | `pages` | Array of form pages. See "Multi-page Forms" below. |

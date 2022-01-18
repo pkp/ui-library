@@ -1,5 +1,5 @@
 <template>
-	<div class="pkpWorkflow" v-cloak>
+	<div class="pkpWorkflow">
 		<pkp-header :is-one-line="true" class="pkpWorkflow__header">
 			<h1 class="pkpWorkflow__identification">
 				<badge
@@ -51,7 +51,9 @@
 		</pkp-header>
 		<tabs default-tab="workflow">
 			<tab id="workflow" label="Workflow">
-				... Workflow ...
+				<notification type="warning">
+					This component preview does not include the full workflow.
+				</notification>
 			</tab>
 			<tab id="publication" label="Publication">
 				<div class="pkpPublication" ref="publication" aria-live="polite">
@@ -239,6 +241,33 @@
 				</div>
 			</tab>
 		</tabs>
+		<div
+			aria-live="polite"
+			aria-atomic="true"
+			class="app__notifications"
+			ref="notifications"
+			role="status"
+		>
+			<transition-group name="app__notification">
+				<notification
+					v-for="notification in notifications"
+					:key="notification.key"
+					:type="notification.type"
+					:can-dismiss="true"
+					@dismiss="dismissNotification(notification.key)"
+				>
+					{{ notification.message }}
+				</notification>
+			</transition-group>
+		</div>
+		<transition name="app__loading">
+			<div v-if="isLoading" class="app__loading" role="alert">
+				<div class="app__loading__content">
+					<spinner></spinner>
+					Loading
+				</div>
+			</div>
+		</transition>
 	</div>
 </template>
 
@@ -429,6 +458,7 @@ export default {
 				urlPublished: '/articles/view/1'
 			},
 			submissionApiUrl: 'http://example.org',
+			submissionFileApiUrl: 'http://example.org',
 			submissionLibraryLabel: 'Library',
 			submissionLibraryUrl: 'http://example.org',
 			supportsReferences: true,

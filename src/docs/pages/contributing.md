@@ -98,9 +98,9 @@ export default {
 </script>
 ```
 
-To create multiple examples for a component, import additional `Example*` components and add them to the `examples` data object.
+Import more `Preview*` components and add them to the `examples` array if you want more than one example.
 
-If this is a new component, you will need to add a route to `/src/router.js`:
+Add a route to the component in `/src/router.js`:
 
 ```js
 ...
@@ -115,7 +115,7 @@ import ComponentNotification from "./docs/components/Notification/ComponentNotif
 ...
 ```
 
-Finally, add a link to the library's list of documented components:
+Add a link to the navigation menu in `/src/App.vue`:
 
 ```html
 ...

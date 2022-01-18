@@ -4,21 +4,22 @@
 			Open Modal
 		</pkp-button>
 		<modal
-			v-bind="MODAL_PROPS"
+			closeLabel="Close"
 			name="simple"
+			title="Simple Modal"
 			@closed="setFocusToRef('simpleModalButton')"
 		>
-			<modal-content closeLabel="Close" modalName="simple" title="Simple Modal">
-				<p>This is an example of a simple modal.</p>
-			</modal-content>
+			<p>This is an example of a simple modal.</p>
 		</modal>
 	</div>
 </template>
 
 <script>
-import modal from '@/mixins/modal';
+import Modal from '@/components/Modal/Modal.vue';
 
 export default {
-	mixins: [modal]
+	components: {
+		Modal
+	}
 };
 </script>

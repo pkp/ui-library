@@ -3,17 +3,17 @@
 </template>
 
 <script>
-import modal from '@/mixins/modal';
+import dialog from '@/mixins/dialog';
 
 export default {
-	mixins: [modal],
+	mixins: [dialog],
 	methods: {
 		openExampleDialog() {
 			this.openDialog({
 				cancelLabel: 'Cancel',
 				confirmLabel: 'Confirm',
 				message: 'Are you sure you want to submit this article?',
-				modalName: 'dialog',
+				name: 'dialog',
 				title: 'Submit Article',
 				callback: () => {
 					// Simulate a server request

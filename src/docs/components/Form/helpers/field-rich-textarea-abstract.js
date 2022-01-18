@@ -4,7 +4,6 @@ export default {
 	label: 'Abstract',
 	description: 'The abstract must be less than 300 words.',
 	insertPreparedContentLabel: 'Insert',
-	skinUrl: '/styles/tinymce',
 	isRequired: true,
 	plugins: 'paste,link,noneditable',
 	toolbar: 'bold italic superscript subscript | link',

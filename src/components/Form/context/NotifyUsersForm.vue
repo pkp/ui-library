@@ -36,7 +36,7 @@ export default {
 				cancelLabel: this.__('common.cancel'),
 				confirmLabel: this.sendLabel,
 				message: this.confirmLabel.replace('{$total}', totalUserCount),
-				modalName: 'confirmNotify',
+				name: 'confirmNotify',
 				title: this.sendLabel,
 				callback: () => {
 					this.submit();

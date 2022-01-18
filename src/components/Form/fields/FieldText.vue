@@ -113,7 +113,11 @@ export default {
 		 * @return {Array}
 		 */
 		classes() {
-			return ['pkpFormField--size' + this.size];
+			let classes = ['pkpFormField--size' + this.size];
+			if ($.pkp.app.rtlLocales.includes(this.localeKey)) {
+				classes.push('pkpFormField--text--rtl');
+			}
+			return classes;
 		},
 
 		/**
@@ -199,6 +203,10 @@ export default {
 
 <style lang="less">
 @import '../../../styles/_import';
+
+.pkpFormField--text {
+	position: relative;
+}
 
 .pkpFormField--text__input {
 	width: 20em;

@@ -63,6 +63,7 @@ export default {
 .pkpButton {
 	display: inline-block;
 	padding: 0 0.5em;
+	min-width: 2.13rem; // Always at least as wide as it is tall
 	background: #fff;
 	border: @bg-border-light;
 	border-radius: @radius;
@@ -74,25 +75,19 @@ export default {
 	box-shadow: 0 1px 0 @bg-border-color-light;
 	cursor: pointer;
 
-	&:hover,
+	&:hover {
+		color: @primary;
+		border-color: @primary;
+	}
+
 	&:focus {
 		color: @primary;
 		border-color: @primary;
-		outline: 0;
+		outline: 1px solid @primary;
 	}
 
 	&:active {
 		box-shadow: 0 0 2px;
-	}
-
-	&:disabled {
-		color: @text-disabled;
-
-		&:hover {
-			color: @text-disabled;
-			border-color: @bg-border-color-light;
-			cursor: not-allowed;
-		}
 	}
 }
 
@@ -110,24 +105,11 @@ export default {
 		background: @primary-lift;
 		color: #fff;
 	}
-
-	&:disabled,
-	&:disabled:hover {
-		color: #fff;
-		background: @bg-dark;
-		border-color: @bg-dark;
-		box-shadow: 0 1px 0 @shade;
-		cursor: not-allowed;
-	}
 }
 
 .pkpButton--isLink {
 	box-shadow: none;
 	border-color: transparent;
-
-	&:disabled:hover {
-		border-color: transparent;
-	}
 }
 
 .pkpButton--isWarnable {
@@ -137,15 +119,6 @@ export default {
 	&:focus {
 		border-color: @no;
 		color: @no;
-	}
-
-	&:disabled,
-	&:disabled:hover {
-		color: #fff;
-		background: @bg-dark;
-		border-color: @bg-dark;
-		box-shadow: 0 1px 0 @shade;
-		cursor: not-allowed;
 	}
 }
 
@@ -163,24 +136,20 @@ export default {
 		background: @primary-lift;
 		color: #fff;
 	}
-
-	&:disabled,
-	&:disabled:hover {
-		color: #fff;
-		background: @bg-dark;
-		border-color: @bg-dark;
-		box-shadow: 0 1px 0 @shade;
-		cursor: not-allowed;
-	}
 }
 
 .pkpButton:disabled {
-	color: @text-light;
+	color: @text-disabled;
+	border-color: @bg-border-color-light;
 	background: #fff;
+	outline: none;
+	box-shadow: none;
+
 	&:hover,
 	&:focus {
 		cursor: not-allowed;
-		border-color: @bg-border-color;
+		outline: none;
+		box-shadow: none;
 	}
 }
 </style>

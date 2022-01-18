@@ -10,12 +10,10 @@
 							:href="item.url"
 							:id="nameId"
 						>
-							<icon
-								:icon="getIcon(item)"
-								:inline="true"
-								class="listPanel--submissionFiles__itemDocumentType"
+							<submission-files-file
+								:documentType="item.documentType"
+								:name="localize(item.name)"
 							/>
-							{{ localize(item.name) }}
 						</a>
 					</div>
 				</div>
@@ -85,41 +83,27 @@
 
 		<!-- Uploads in progress not yet saved as submission files -->
 		<template v-else>
-			<div class="listPanel__itemSummary">
-				<div class="listPanel__itemIdentity">
-					<div class="listPanel__itemSubtitle">
-						{{ item.name }}
-					</div>
-				</div>
-				<div class="listPanel__itemActions">
-					<pkp-button
-						:is-warnable="true"
-						:aria-describedby="nameId"
-						@click="$emit('cancel', item.uuid)"
-					>
-						{{ cancelUploadLabel }}
-					</pkp-button>
-				</div>
-			</div>
-			<field-error
-				v-if="item.error && item.error.length"
-				:messages="item.error"
+			<file-upload-progress
+				:cancelUploadLabel="cancelUploadLabel"
+				:errors="item.errors || []"
+				:name="item.name"
+				:progress="item.progress"
+				@cancel="$emit('cancel', item.id)"
 			/>
-			<progress-bar v-else :value="item.progress" />
 		</template>
 	</div>
 </template>
 
 <script>
 import Badge from '@/components/Badge/Badge.vue';
-import FieldError from '@/components/Form/FieldError.vue';
-import ProgressBar from '@/components/ProgressBar/ProgressBar.vue';
+import FileUploadProgress from '@/components/FileUploadProgress/FileUploadProgress.vue';
+import SubmissionFilesFile from '../../File/File.vue';
 
 export default {
 	components: {
 		Badge,
-		FieldError,
-		ProgressBar
+		FileUploadProgress,
+		SubmissionFilesFile
 	},
 	props: {
 		apiUrl: {
@@ -128,10 +112,6 @@ export default {
 		},
 		cancelUploadLabel: {
 			type: String,
-			required: true
-		},
-		documentTypes: {
-			type: Object,
 			required: true
 		},
 		genrePromptLabel: {
@@ -157,7 +137,8 @@ export default {
 	},
 	data() {
 		return {
-			isSavingGenreId: false
+			isSavingGenreId: false,
+			status: ''
 		};
 	},
 	computed: {
@@ -223,37 +204,6 @@ export default {
 		},
 
 		/**
-		 * Get an icon for the file type
-		 *
-		 * @param {Object} item
-		 * @return {String} name of the icon to display
-		 */
-		getIcon(item) {
-			switch (item.documentType) {
-				case this.documentTypes.DOCUMENT_TYPE_EXCEL:
-					return 'file-excel-o';
-				case this.documentTypes.DOCUMENT_TYPE_HTML:
-					return 'file-code-o';
-				case this.documentTypes.DOCUMENT_TYPE_IMAGE:
-					return 'file-image-o';
-				case this.documentTypes.DOCUMENT_TYPE_PDF:
-					return 'file-pdf-o';
-				case this.documentTypes.DOCUMENT_TYPE_WORD:
-					return 'file-word-o';
-				case this.documentTypes.DOCUMENT_TYPE_EPUB:
-					return 'file-text-o';
-				case this.documentTypes.DOCUMENT_TYPE_ZIP:
-					return 'file-archive-o';
-				case this.documentTypes.DOCUMENT_TYPE_AUDIO:
-					return 'file-audio-o';
-				case this.documentTypes.DOCUMENT_TYPE_VIDEO:
-					return 'file-video-o';
-				default:
-					return 'file-o';
-			}
-		},
-
-		/**
 		 * Set the genreId for this item
 		 *
 		 * @param {Number} genreId The new genreId for the item
@@ -294,11 +244,6 @@ export default {
 .listPanel--submissionFiles .listPanel__item {
 	padding-top: 0.5rem;
 	padding-bottom: 0.5rem;
-
-	.progressBar {
-		margin-top: 12px;
-		margin-bottom: 12px;
-	}
 }
 
 .listPanel--submissionFiles .listPanel__itemSubtitle {
@@ -307,14 +252,12 @@ export default {
 
 .listPanel__item--submissionFile__link {
 	display: block;
-	padding: 0.25rem;
 	margin-left: -0.25rem;
+	padding: 0.25rem;
 	border: 1px solid transparent;
 	border-radius: @radius;
 	color: @text;
 	text-decoration: none;
-	overflow: hidden;
-	text-overflow: ellipsis;
 
 	&:hover,
 	&:focus {
@@ -339,12 +282,6 @@ export default {
 
 .listPanel--submissionFiles__itemGenre {
 	margin-right: 0.25rem;
-}
-
-.listPanel--submissionFiles__itemDocumentType {
-	width: 1rem;
-	font-size: 1rem;
-	color: @primary;
 }
 
 .listPanel--submissionFiles__genreSpinner {

@@ -15,7 +15,6 @@ export default {
 	groupId: 'contact',
 	isMultilingual: true,
 	plugins: 'paste,link,noneditable',
-	skinUrl: '/styles/tinymce',
 	toolbar: 'bold italic superscript subscript | link',
 	value: {
 		en_US: '',

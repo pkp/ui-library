@@ -67,6 +67,7 @@ export default {
 	line-height: 1.5em;
 	border: 1px solid @bg-border-color-light;
 	border-radius: 1.2em;
+	color: @text;
 }
 
 .pkpBadge--isPrimary {

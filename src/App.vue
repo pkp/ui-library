@@ -28,6 +28,11 @@
 					</router-link>
 				</li>
 				<li>
+					<router-link to="/component/DecisionPage">
+						DecisionPage
+					</router-link>
+				</li>
+				<li>
 					<router-link to="/component/StatsPage">
 						StatsPage
 					</router-link>
@@ -58,8 +63,23 @@
 				<li><router-link to="/component/Badge">Badge</router-link></li>
 				<li><router-link to="/component/Button">Button</router-link></li>
 				<li><router-link to="/component/Chart">Chart</router-link></li>
+				<li><router-link to="/component/Composer">Composer</router-link></li>
 				<li><router-link to="/component/DateRange">DateRange</router-link></li>
 				<li><router-link to="/component/Dropdown">Dropdown</router-link></li>
+				<li><router-link to="/component/File">File</router-link></li>
+				<li>
+					<router-link to="/component/FileAttacher">FileAttacher</router-link>
+				</li>
+				<li>
+					<router-link to="/component/FileUploader">
+						FileUploader
+					</router-link>
+				</li>
+				<li>
+					<router-link to="/component/FileUploadProgress">
+						FileUploadProgress
+					</router-link>
+				</li>
 				<li><router-link to="/component/Filter">Filter</router-link></li>
 				<li :class="{'-submenuOpen': displaySubmenu('Form')}">
 					<router-link to="/component/Form">Form</router-link>
@@ -253,10 +273,14 @@
 					<router-link to="/component/Pagination">Pagination</router-link>
 				</li>
 				<li>
+					<router-link to="/component/Panel">Panel</router-link>
+				</li>
+				<li>
 					<router-link to="/component/ProgressBar">ProgressBar</router-link>
 				</li>
 				<li><router-link to="/component/Search">Search</router-link></li>
 				<li><router-link to="/component/Spinner">Spinner</router-link></li>
+				<li><router-link to="/component/Steps">Steps</router-link></li>
 				<li><router-link to="/component/Table">Table</router-link></li>
 				<li><router-link to="/component/Tabs">Tabs</router-link></li>
 				<li><router-link to="/component/Tooltip">Tooltip</router-link></li>

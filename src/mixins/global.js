@@ -7,10 +7,10 @@
  *
  * @see https://vuejs.org/v2/guide/mixins.html
  */
-import modal from './modal';
+import dialog from './dialog';
 
 export default {
-	mixins: [modal],
+	mixins: [dialog],
 	methods: {
 		/**
 		 * Compile a string translation
@@ -167,6 +167,22 @@ export default {
 				} else {
 					focusable[0].focus();
 				}
+			}
+		},
+
+		/**
+		 * Set the focus to an element stored as a $ref in this component
+		 *
+		 * @param {String} ref
+		 */
+		setFocusToRef(ref) {
+			if (!this.$refs[ref]) {
+				return;
+			}
+			if (this.$refs[ref].$el) {
+				this.$refs[ref].$el.focus();
+			} else if (typeof this.$refs[ref].focus !== 'undefined') {
+				this.$refs[ref].focus();
 			}
 		}
 	}

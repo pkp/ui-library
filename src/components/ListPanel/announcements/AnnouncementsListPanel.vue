@@ -38,18 +38,17 @@
 					@set-page="setPage"
 				/>
 			</list-panel>
-			<modal v-bind="MODAL_PROPS" name="form" @closed="formModalClosed">
-				<modal-content
-					:closeLabel="__('common.close')"
-					modalName="form"
-					:title="activeFormTitle"
-				>
-					<pkp-form
-						v-bind="activeForm"
-						@set="updateForm"
-						@success="formSuccess"
-					/>
-				</modal-content>
+			<modal
+				:closeLabel="__('common.close')"
+				name="form"
+				:title="activeFormTitle"
+				@closed="formModalClosed"
+			>
+				<pkp-form
+					v-bind="activeForm"
+					@set="updateForm"
+					@success="formSuccess"
+				/>
 			</modal>
 		</slot>
 	</div>
@@ -60,10 +59,10 @@ import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import PkpHeader from '@/components/Header/Header.vue';
+import Modal from '@/components/Modal/Modal.vue';
 import Search from '@/components/Search/Search.vue';
 import ajaxError from '@/mixins/ajaxError';
 import fetch from '@/mixins/fetch';
-import modal from '@/mixins/modal';
 import cloneDeep from 'clone-deep';
 
 export default {
@@ -72,9 +71,10 @@ export default {
 		Pagination,
 		PkpForm,
 		PkpHeader,
+		Modal,
 		Search
 	},
-	mixins: [fetch, modal, ajaxError],
+	mixins: [fetch, ajaxError],
 	props: {
 		addAnnouncementLabel: {
 			type: String,
@@ -186,7 +186,7 @@ export default {
 			if (typeof announcement === 'undefined') {
 				this.openDialog({
 					confirmLabel: this.__('common.ok'),
-					modalName: 'unknownError',
+					name: 'unknownError',
 					message: this.__('common.unknownError'),
 					title: this.__('common.error'),
 					callback: () => {
@@ -197,7 +197,7 @@ export default {
 			}
 			this.openDialog({
 				cancelLabel: this.__('common.no'),
-				modalName: 'delete',
+				name: 'delete',
 				title: this.deleteAnnouncementLabel,
 				message: this.replaceLocaleParams(this.confirmDeleteMessage, {
 					title: this.localize(announcement.title)
@@ -239,7 +239,7 @@ export default {
 			if (!announcement) {
 				this.openDialog({
 					confirmLabel: this.__('common.ok'),
-					modalName: 'unknownError',
+					name: 'unknownError',
 					message: this.__('common.unknownError'),
 					callback: () => {
 						this.$modal.hide('unknownError');

@@ -7,10 +7,10 @@
  *
  * @see https://vuejs.org/v2/guide/mixins.html
  */
-import modal from './modal';
+import dialog from './dialog';
 
 export default {
-	mixins: [modal],
+	mixins: [dialog],
 	methods: {
 		/**
 		 * Display an error message from an ajax request
@@ -43,7 +43,7 @@ export default {
 			}
 
 			this.openDialog({
-				modalName: 'ajaxError',
+				name: 'ajaxError',
 				confirmLabel: this.__('common.ok'),
 				title: this.__('common.error'),
 				message: msg,

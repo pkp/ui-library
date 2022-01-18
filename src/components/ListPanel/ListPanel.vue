@@ -173,7 +173,7 @@ export default {
 
 .listPanel__sidebar {
 	position: relative;
-	min-width: 12rem;
+	flex: 0 0 12rem;
 	border-right: @grid-border;
 }
 

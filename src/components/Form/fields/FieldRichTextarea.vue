@@ -45,7 +45,7 @@
 			<div class="pkpFormField--richTextarea__toolbar" :id="toolbarId"></div>
 			<editor
 				class="pkpFormField__input pkpFormField--richTextarea__input"
-				v-model="editorValue"
+				v-model="currentValue"
 				ref="editor"
 				:id="controlId"
 				:toolbar="toolbar"
@@ -100,11 +100,13 @@ import 'tinymce/plugins/noneditable';
 import 'tinymce/plugins/paste';
 import FieldBase from './FieldBase.vue';
 import Editor from '@tinymce/tinymce-vue';
+import preparedContent from '@/mixins/preparedContent';
 import debounce from 'debounce';
 
 export default {
 	name: 'FieldRichTextarea',
 	extends: FieldBase,
+	mixins: [preparedContent],
 	components: {
 		Editor
 	},
@@ -134,16 +136,6 @@ export default {
 			default() {
 				return {};
 			}
-		},
-		renderPreparedContent: {
-			type: Boolean,
-			default() {
-				return false;
-			}
-		},
-		skinUrl: {
-			type: String,
-			required: true
 		},
 		size: {
 			type: String,
@@ -180,12 +172,20 @@ export default {
 	},
 	data() {
 		return {
-			editorValue: '',
 			isFocused: false,
 			wordCount: 0
 		};
 	},
 	computed: {
+		/** @see FieldBase.computed.currentValue */
+		currentValue: {
+			get() {
+				return this.isMultilingual ? this.value[this.localeKey] : this.value;
+			},
+			set: function(newVal) {
+				this.$emit('change', this.name, 'value', newVal, this.localeKey);
+			}
+		},
 		/**
 		 * ID attribute for the element where the toolbar should be placed
 		 *
@@ -217,7 +217,7 @@ export default {
 			};
 			return {
 				inline: true,
-				skin_url: this.skinUrl,
+				skin_url: this.$root.tinyMCE.skinUrl,
 				paste_data_images: true,
 				relative_urls: false,
 				remove_script_host: false,
@@ -256,23 +256,14 @@ export default {
 					editor.fire('blur');
 				},
 				setup(editor) {
-					if (Object.keys(self.preparedContentSanitized).length) {
+					if (Object.keys(self.preparedContent).length) {
 						var items = [];
-						Object.keys(self.preparedContentSanitized).forEach(key =>
+						Object.keys(self.preparedContent).forEach(key =>
 							items.push({
 								type: 'menuitem',
-								text: self.preparedContentSanitized[key],
+								text: self.preparedContent[key],
 								onAction() {
-									if (self.renderPreparedContent) {
-										editor.insertContent(self.preparedContentSanitized[key]);
-									} else {
-										editor.insertContent(
-											self.getPlaceholder(
-												key,
-												self.preparedContentSanitized[key]
-											)
-										);
-									}
+									editor.insertContent(self.preparedContent[key]);
 								}
 							})
 						);
@@ -288,35 +279,6 @@ export default {
 				},
 				...this.init
 			};
-		},
-
-		/**
-		 * The preparedContent property with the keys and values sanitized
-		 * so that they can be injected into attributes and HTML strings
-		 * without causing problems.
-		 *
-		 * Keys are restricted to alphanumeric (\w) and values have the
-		 * < and > characters converted to their HTML entities.
-		 *
-		 * @return {Object}
-		 */
-		preparedContentSanitized() {
-			if (!Object.keys(this.preparedContent).length) {
-				return {};
-			}
-			let obj = {};
-			Object.keys(this.preparedContent).forEach(key => {
-				const newKey = key.replace(/[^\w]/gi, '');
-				const map = {'<': '&lt;', '>': '&gt;'};
-				const newValue = this.preparedContent[key].replace(
-					/[<>]/g,
-					m => map[m]
-				);
-				if (newKey && newValue) {
-					obj[newKey] = newValue;
-				}
-			});
-			return obj;
 		}
 	},
 	methods: {
@@ -325,22 +287,6 @@ export default {
 		 */
 		blur() {
 			this.isFocused = false;
-
-			if (!this.renderPreparedContent) {
-				const keys = Object.keys(this.preparedContentSanitized);
-
-				// Find and replace any placeholders
-				if (keys.length) {
-					const value = document.createElement('div');
-					value.innerHTML = this.editorValue;
-					value.querySelectorAll('.pkpTag[data-symbolic]').forEach(node => {
-						node.replaceWith('{$' + node.dataset.symbolic + '}');
-					});
-					this.currentValue = value.innerHTML;
-				} else {
-					this.currentValue = this.editorValue;
-				}
-			}
 		},
 
 		/**
@@ -351,53 +297,10 @@ export default {
 		},
 
 		/**
-		 * Get a placeholder for prepared content
-		 *
-		 * @param string key The property name
-		 * @param string value The rendered content value
-		 * @return string
-		 */
-		getPlaceholder(key, value) {
-			return `<span class="pkpTag mceNonEditable" data-symbolic="${key}">${value}</span>`;
-		},
-
-		/**
-		 * Set the editor value to the currentValue and
-		 * process any prepared content
-		 */
-		setEditorValue() {
-			this.editorValue = this.currentValue;
-
-			const keys = Object.keys(this.preparedContentSanitized);
-			if (keys.length) {
-				let value = this.editorValue;
-				// Replace {$tags} in the body text with their values
-				if (this.renderPreparedContent) {
-					keys.forEach(key => {
-						value = value.replace(
-							new RegExp('\\{\\$' + key + '\\}', 'g'),
-							this.preparedContentSanitized[key]
-						);
-					});
-
-					// Or replace {$tags} in the body text with placeholders
-				} else {
-					keys.forEach(key => {
-						value = value.replace(
-							new RegExp('\\{\\$' + key + '\\}', 'g'),
-							this.getPlaceholder(key, this.preparedContentSanitized[key])
-						);
-					});
-				}
-				this.editorValue = value;
-			}
-		},
-
-		/**
 		 * Update the word count based on the current value
 		 */
-		setWordCount: debounce(function() {
-			if (!this.wordLimit || !this.editorValue || !this.$refs.editor) {
+		setWordCount() {
+			if (!this.wordLimit || !this.currentValue || !this.$refs.editor) {
 				this.wordCount = 0;
 				return;
 			}
@@ -409,27 +312,17 @@ export default {
 				return;
 			}
 			this.wordCount = 0;
-		}, 250)
-	},
-	watch: {
-		editorValue(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			this.setWordCount();
-		},
-		currentValue(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			this.setEditorValue();
 		}
 	},
-	created() {
-		this.setEditorValue();
-	},
-	mounted() {
-		this.setWordCount();
+	watch: {
+		value(newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+			newVal = this.renderPreparedContent(newVal, this.preparedContent);
+			debounce(this.setWordCount, 250)();
+			this.$emit('change', this.name, 'value', newVal, this.localeKey);
+		}
 	}
 };
 </script>
@@ -459,7 +352,17 @@ export default {
 
 .pkpFormField--richTextarea.-isFocused .pkpFormField--richTextarea__control {
 	border-color: @primary;
-	box-shadow: -3px 0 0 @primary;
+
+	&:after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		width: 3px;
+		background: @primary;
+		z-index: 1;
+	}
 }
 
 .pkpFormField--richTextarea__input {
@@ -522,6 +425,10 @@ export default {
 
 	.tox-tbtn:not(:first-child) {
 		margin-left: 0.25rem;
+	}
+
+	.tox-tinymce-inline .tox-editor-header {
+		border: none;
 	}
 
 	// Remove focused outline from text input

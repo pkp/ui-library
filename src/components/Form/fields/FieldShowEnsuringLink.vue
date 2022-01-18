@@ -1,11 +1,11 @@
 <script>
 import FieldOptions from './FieldOptions.vue';
-import modal from '@/mixins/modal';
+import dialog from '@/mixins/dialog';
 
 export default {
 	name: 'FieldShowEnsuringLink',
 	extends: FieldOptions,
-	mixins: [modal],
+	mixins: [dialog],
 	props: {
 		message: String,
 		modalTitle: String
@@ -28,7 +28,7 @@ export default {
 		$('.pkpFormField--options__option button', this.$el).click(() => {
 			this.openDialog(
 				{
-					modalName: 'ensureAnonymousReview',
+					name: 'ensureAnonymousReview',
 					confirmLabel: this.__('common.ok'),
 					message: this.message,
 					title: this.modalTitle,

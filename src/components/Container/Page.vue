@@ -3,12 +3,10 @@ import Container from '@/components/Container/Container.vue';
 import Dropdown from '@/components/Dropdown/Dropdown.vue';
 import Notification from '@/components/Notification/Notification.vue';
 import PkpHeader from '@/components/Header/Header.vue';
-import modal from '@/mixins/modal';
 
 export default {
 	extends: Container,
 	name: 'Page',
-	mixins: [modal],
 	components: {
 		Dropdown,
 		Notification,
@@ -17,6 +15,7 @@ export default {
 	data() {
 		return {
 			breadcrumbs: [],
+			isLoading: false,
 			menu: [],
 			notifications: [],
 			notificationInterval: null,
@@ -441,6 +440,11 @@ a.app__navItem--isCurrent {
 
 	a {
 		text-decoration: none;
+
+		&:hover,
+		&:focus {
+			text-decoration: underline;
+		}
 	}
 }
 
@@ -457,22 +461,10 @@ a.app__navItem--isCurrent {
 	margin-right: auto;
 }
 
-// PAGE_WIDTH_NARROW
-.app__page--narrow {
-	max-width: 25rem;
-}
-// PAGE_WIDTH_WIDE
-.app__page--wide {
-	max-width: 1200px;
-}
-// PAGE_WIDTH_FULL
-.app__page--full {
-	max-width: none;
-}
-
 .app__pageHeading {
 	margin: 0 0 1rem;
-	font-size: 1.1rem;
+	font-size: @font-lead;
+	line-height: @line-lead;
 }
 
 .app__contentPanel {
@@ -527,6 +519,30 @@ a.app__navItem--isCurrent {
 .app__notification-leave-to {
 	transform: translateY(-1.5rem);
 	opacity: 0;
+}
+
+// Full-page loading screen
+.app__loading {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1999;
+	transition: opacity 0.3s;
+	background: rgba(255, 255, 255, 0.5);
+}
+
+.app__loading-enter,
+.app__loading-leave-to {
+	opacity: 0;
+}
+
+.app__loading__content {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 
 [dir='rtl'] {

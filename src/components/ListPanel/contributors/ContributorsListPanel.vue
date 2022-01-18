@@ -101,53 +101,50 @@
 					</template>
 				</template>
 			</list-panel>
-			<modal v-bind="MODAL_PROPS" name="form" @closed="formModalClosed">
-				<modal-content
-					:closeLabel="__('common.close')"
-					modalName="form"
-					:title="activeFormTitle"
-				>
-					<pkp-form
-						v-bind="activeForm"
-						@set="updateForm"
-						@success="formSuccess"
-					/>
-				</modal-content>
+			<modal
+				:closeLabel="__('common.close')"
+				name="form"
+				:title="activeFormTitle"
+				@closed="formModalClosed"
+			>
+				<pkp-form
+					v-bind="activeForm"
+					@set="updateForm"
+					@success="formSuccess"
+				/>
 			</modal>
-			<modal v-bind="MODAL_PROPS" name="preview">
-				<modal-content
-					:closeLabel="__('common.close')"
-					modalName="preview"
-					:title="__('submission.contributors')"
-				>
-					<p>
-						{{ __('contributor.listPanel.preview.description') }}
-					</p>
-					<table class="pkpTable">
-						<thead>
-							<tr>
-								<th>{{ __('contributor.listPanel.preview.format') }}</th>
-								<th>{{ __('contributor.listPanel.preview.display') }}</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>{{ __('contributor.listPanel.preview.abbreviated') }}</td>
-								<td>{{ publication.authorsStringShort }}</td>
-							</tr>
-							<tr>
-								<td>
-									{{ __('contributor.listPanel.preview.publicationLists') }}
-								</td>
-								<td>{{ publication.authorsStringIncludeInBrowse }}</td>
-							</tr>
-							<tr>
-								<td>{{ __('contributor.listPanel.preview.full') }}</td>
-								<td>{{ publication.authorsString }}</td>
-							</tr>
-						</tbody>
-					</table>
-				</modal-content>
+			<modal
+				:closeLabel="__('common.close')"
+				name="preview"
+				:title="__('submission.contributors')"
+			>
+				<p>
+					{{ __('contributor.listPanel.preview.description') }}
+				</p>
+				<table class="pkpTable">
+					<thead>
+						<tr>
+							<th>{{ __('contributor.listPanel.preview.format') }}</th>
+							<th>{{ __('contributor.listPanel.preview.display') }}</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>{{ __('contributor.listPanel.preview.abbreviated') }}</td>
+							<td>{{ publication.authorsStringShort }}</td>
+						</tr>
+						<tr>
+							<td>
+								{{ __('contributor.listPanel.preview.publicationLists') }}
+							</td>
+							<td>{{ publication.authorsStringIncludeInBrowse }}</td>
+						</tr>
+						<tr>
+							<td>{{ __('contributor.listPanel.preview.full') }}</td>
+							<td>{{ publication.authorsString }}</td>
+						</tr>
+					</tbody>
+				</table>
 			</modal>
 		</slot>
 	</div>
@@ -155,21 +152,22 @@
 
 <script>
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
+import Modal from '@/components/Modal/Modal.vue';
+import Orderer from '@/components/Orderer/Orderer.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import ajaxError from '@/mixins/ajaxError';
-import modal from '@/mixins/modal';
 import cloneDeep from 'clone-deep';
-import Orderer from '@/components/Orderer/Orderer.vue';
 
 export default {
 	components: {
 		ListPanel,
+		Modal,
+		Orderer,
 		PkpForm,
-		PkpHeader,
-		Orderer
+		PkpHeader
 	},
-	mixins: [modal, ajaxError],
+	mixins: [ajaxError],
 	props: {
 		addContributorLabel: {
 			type: String,
