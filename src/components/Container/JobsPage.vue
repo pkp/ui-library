@@ -16,11 +16,6 @@ export default {
 			description: '',
 			total: 0
 		};
-	},
-	computed: {
-		compiledDescription() {
-			return this.replaceLocaleParams(this.description, {total: this.total});
-		}
 	}
 };
 </script>
