@@ -74,7 +74,7 @@
 						</div>
 					</div>
 					<div v-if="otherLocales.length" class="composer__locales">
-						{{ switchToLabel }}
+						{{ switchLanguageLabel }}
 						<template v-for="(otherLocale, i) in otherLocales">
 							<button
 								v-if="locale !== otherLocale.locale"
@@ -92,22 +92,22 @@
 				</div>
 			</template>
 			<div class="composer__message">
-				<div class="composer__to__wrapper">
+				<div class="composer__recipients__wrapper">
 					<field-autosuggest-preset
-						class="composer__to"
+						class="composer__recipients"
 						name="to"
-						:label="toLabel"
+						:label="recipientsLabel"
 						:isLabelInline="true"
 						:deselectLabel="deselectLabel"
 						:all-errors="errors"
 						groupId="composer"
 						:formId="id"
-						:selectedLabel="toLabel"
-						:options="toOptions"
-						:selected="toSelected"
-						:value="to"
-						:is-disabled="!canChangeTo"
-						@change="changeTo"
+						:selectedLabel="recipientsLabel"
+						:options="recipientOptions"
+						:selected="recipientsSelected"
+						:value="recipients"
+						:is-disabled="!canChangeRecipients"
+						@change="changeRecipients"
 					/>
 					<button
 						v-if="!ccIsEnabled"
@@ -333,7 +333,7 @@ export default {
 			type: String,
 			required: true
 		},
-		canChangeTo: {
+		canChangeRecipients: {
 			type: Boolean,
 			default() {
 				return true;
@@ -401,6 +401,16 @@ export default {
 			type: String,
 			required: true
 		},
+		recipients: {
+			type: Array,
+			default() {
+				return [];
+			}
+		},
+		recipientOptions: {
+			type: Array,
+			required: true
+		},
 		removeItemLabel: {
 			type: String,
 			required: true
@@ -419,22 +429,12 @@ export default {
 			type: String,
 			required: true
 		},
-		switchToLabel: {
+		switchLanguageLabel: {
 			type: String,
 			required: true
 		},
-		to: {
-			type: Array,
-			default() {
-				return [];
-			}
-		},
-		toLabel: {
+		recipientsLabel: {
 			type: String,
-			required: true
-		},
-		toOptions: {
-			type: Array,
 			required: true
 		},
 		variables: {
@@ -475,7 +475,7 @@ export default {
 			}
 		},
 		compiledVariables() {
-			return !this.canChangeTo
+			return !this.canChangeRecipients
 				? this.localizedVariables
 				: {
 						...this.localizedVariables,
@@ -497,9 +497,12 @@ export default {
 		otherLocales() {
 			return this.locales.filter(locale => locale.locale !== this.locale);
 		},
+		/**
+		 * The names of all the recipients separated by a comma
+		 */
 		recipientVariable() {
-			let name = this.toSelected
-				.map(to => to.label)
+			let name = this.recipientsSelected
+				.map(recipient => recipient.label)
 				.join(this.__('common.commaListSeparator'));
 			if (!name) {
 				return '{$recipientName}';
@@ -514,9 +517,13 @@ export default {
 				this.emitChange({subject: newVal});
 			}
 		},
-		toSelected() {
-			return this.toOptions.filter(recipient =>
-				this.to.includes(recipient.value)
+		/**
+		 * The recipient options that are currently
+		 * set in the recipients array
+		 */
+		recipientsSelected() {
+			return this.recipientOptions.filter(recipient =>
+				this.recipients.includes(recipient.value)
 			);
 		}
 	},
@@ -564,9 +571,9 @@ export default {
 		/**
 		 * Respond to change events from the recipient autosuggest field
 		 */
-		changeTo(name, prop, value) {
+		changeRecipients(name, prop, value) {
 			if (prop === 'value') {
-				this.emitChange({to: value});
+				this.emitChange({recipients: value});
 			}
 		},
 
@@ -830,7 +837,7 @@ export default {
 	margin-top: 2rem;
 }
 
-.composer__to {
+.composer__recipients {
 	display: flex;
 	align-items: center;
 
@@ -839,7 +846,7 @@ export default {
 	}
 }
 
-.composer__to__wrapper {
+.composer__recipients__wrapper {
 	position: relative;
 }
 

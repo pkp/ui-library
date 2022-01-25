@@ -4,7 +4,7 @@
 | --- | --- |
 | `bcc` | A comma-separated list of email addresses for recipients that should be BCC'd in the email. |
 | `body` | The body of the email message. |
-| `canChangeTo` | Can the recipients be modified? Default: `false` |
+| `canChangeRecipients` | Can the recipients be modified? Default: `false` |
 | `cc` | A comma-separated list of email addresses for recipients that should be CC'd in the email. |
 | `emailTemplates` | An array of `emailTemplate`s appropriate for this message. |
 | `emailTemplatesApiUrl` | The URL to the API endpoint to get `emailTemplate`s. |

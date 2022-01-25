@@ -12,9 +12,9 @@
 				:name="name"
 			/>
 		</label>
-		<div v-if="genreName || url" class="listPanel__itemActions">
-			<badge v-if="genreName" :is-primary="genreIsPrimary">
-				{{ localize(genreName) }}
+		<div v-if="genre || url" class="listPanel__itemActions">
+			<badge v-if="genre" :is-primary="genreIsPrimary">
+				{{ localize(genre.name) }}
 			</badge>
 			<pkp-button
 				v-if="url"
@@ -50,13 +50,7 @@ export default {
 			type: String,
 			required: true
 		},
-		genreIsPrimary: {
-			type: Boolean,
-			default() {
-				return false;
-			}
-		},
-		genreName: {
+		genre: {
 			type: Object,
 			default() {
 				return null;
@@ -83,6 +77,11 @@ export default {
 		return {
 			describedById: ''
 		};
+	},
+	computed: {
+		genreIsPrimary() {
+			return this.genre && !this.genre.dependent && !this.genre.supplementary;
+		}
 	},
 	created() {
 		this.describedById = $.pkp.classes.Helper.uuid();

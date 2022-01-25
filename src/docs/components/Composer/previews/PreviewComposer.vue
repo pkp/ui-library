@@ -10,7 +10,7 @@
 			bccLabel="BCC:"
 			:body="body"
 			bodyLabel="Message"
-			:canChangeTo="false"
+			:canChangeRecipients="false"
 			:cc="cc"
 			ccLabel="CC:"
 			deselectLabel="Deselect"
@@ -24,10 +24,10 @@
 			searchingLabel="Searching"
 			:subject="subject"
 			subjectLabel="Subject:"
-			switchToLabel="Switch To:"
+			switchLanguageLabel="Switch To:"
 			:to="to"
-			toLabel="To:"
-			:toOptions="toOptions"
+			recipientsLabel="To:"
+			:recipientOptions="recipientOptions"
 			:variables="variables"
 			@set="composerChanged"
 		>
@@ -80,7 +80,7 @@ export default {
 				'http://localhost:8000/publicknowledge/api/v1/emailTemplates',
 			subject: '',
 			to: [2, 3],
-			toOptions: [
+			recipientOptions: [
 				{
 					value: 2,
 					label: 'Carlo Corino'

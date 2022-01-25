@@ -26,8 +26,7 @@
 				<select-submission-file-list-item
 					:documentType="item.documentType"
 					downloadLabel="Download"
-					:genreIsPrimary="item.genreIsPrimary"
-					:genreName="item.genreName"
+					:genre="item.genre"
 					:fileId="item.id"
 					:name="localize(item.name)"
 					:url="item.url"

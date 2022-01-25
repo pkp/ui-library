@@ -46,7 +46,7 @@
 				@step:open="openStep"
 			>
 				<step
-					v-for="step in workflow"
+					v-for="step in steps"
 					:key="step.id"
 					:id="step.id"
 					:label="step.name"
@@ -89,8 +89,8 @@
 							removeItemLabel="Remove {$item}"
 							searchingLabel="Searching"
 							subjectLabel="Subject:"
-							switchToLabel="Switch To:"
-							toLabel="To:"
+							switchLanguageLabel="Switch To:"
+							recipientsLabel="To:"
 							@set="updateStep"
 						>
 							<template slot="description">
@@ -144,7 +144,7 @@
 
 			<div
 				class="decision__footer"
-				:class="{'decision__footer--noSteps': !workflow.length}"
+				:class="{'decision__footer--noSteps': !steps.length}"
 			>
 				<spinner v-if="isSubmitting"></spinner>
 				<pkp-button
@@ -259,7 +259,7 @@ export default {
 			stageId: 3,
 			submissionApiUrl:
 				'http://localhost:8000/publicknowledge/api/v1/submission/1',
-			workflow: [
+			steps: [
 				{
 					id: 'payment',
 					type: 'form',
@@ -316,13 +316,13 @@ export default {
 						'Send an email to the authors to let them know that their submission has been accepted for publication.',
 					errors: {},
 					to: [31],
-					toOptions: [
+					recipientOptions: [
 						{
 							value: 31,
 							label: 'Rana Baiyewu'
 						}
 					],
-					canChangeTo: false,
+					canChangeRecipients: false,
 					canSkip: true,
 					defaultEmailTemplateKey: 'EDITOR_DECISION_ACCEPT',
 					emailTemplates: [
@@ -360,7 +360,7 @@ export default {
 							'You can not send an email to the following recipients: Alan Mwandenga.'
 						]
 					},
-					toOptions: [
+					recipientOptions: [
 						{
 							value: 10,
 							label: 'Adela Gallego'
@@ -370,7 +370,7 @@ export default {
 							label: 'Aisla McCrae'
 						}
 					],
-					canChangeTo: true,
+					canChangeRecipients: true,
 					canSkip: true,
 					defaultEmailTemplateKey: 'EDITOR_DECISION_ACCEPT',
 					emailTemplates: [

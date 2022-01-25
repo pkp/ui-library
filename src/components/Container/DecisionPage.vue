@@ -41,18 +41,18 @@ export default {
 			reviewRoundId: 0,
 			skippedSteps: [],
 			stageId: 0,
+			steps: [],
 			submissionUrl: '',
 			submissionApiUrl: '',
-			viewSubmissionLabel: '',
-			workflow: []
+			viewSubmissionLabel: ''
 		};
 	},
 	computed: {
 		currentStepIndex() {
-			return this.workflow.findIndex(step => step.id === this.currentStep.id);
+			return this.steps.findIndex(step => step.id === this.currentStep.id);
 		},
 		errors() {
-			return this.workflow
+			return this.steps
 				.filter(
 					step =>
 						Object.keys(step.errors).length ||
@@ -71,7 +71,7 @@ export default {
 			return 0 === this.currentStepIndex;
 		},
 		isOnLastStep() {
-			return this.currentStepIndex === this.workflow.length - 1;
+			return this.currentStepIndex === this.steps.length - 1;
 		}
 	},
 	methods: {
@@ -127,10 +127,10 @@ export default {
 		 */
 		nextStep() {
 			const nextIndex = 1 + this.currentStepIndex;
-			if (this.workflow.length <= nextIndex) {
+			if (this.steps.length <= nextIndex) {
 				this.submit();
 			} else {
-				this.openStep(this.workflow[nextIndex].id);
+				this.openStep(this.steps[nextIndex].id);
 			}
 		},
 
@@ -156,7 +156,7 @@ export default {
 		 */
 		openStep(stepId) {
 			this.initializedSteps = [...new Set([...this.initializedSteps, stepId])];
-			this.currentStep = this.workflow.find(step => step.id === stepId);
+			this.currentStep = this.steps.find(step => step.id === stepId);
 		},
 
 		/**
@@ -165,7 +165,7 @@ export default {
 		previousStep() {
 			const previousIndex = this.currentStepIndex - 1;
 			if (previousIndex >= 0) {
-				this.openStep(this.workflow[previousIndex].id);
+				this.openStep(this.steps[previousIndex].id);
 			}
 		},
 
@@ -175,7 +175,7 @@ export default {
 		 * This method maps validation errors to their step.
 		 */
 		setStepErrors(errors) {
-			this.workflow.forEach((step, index) => {
+			this.steps.forEach((step, index) => {
 				if (index in errors === false) {
 					return;
 				}
@@ -197,15 +197,15 @@ export default {
 				this.skippedSteps = this.skippedSteps.filter(sid => sid !== stepId);
 			} else {
 				this.skippedSteps.push(stepId);
-				this.workflow = this.workflow.map(step => {
+				this.steps = this.steps.map(step => {
 					if (step.id === stepId) {
 						step.errors = {};
 					}
 					return step;
 				});
 				if (
-					this.workflow.findIndex(step => step.id === stepId) <
-					this.workflow.length - 1
+					this.steps.findIndex(step => step.id === stepId) <
+					this.steps.length - 1
 				) {
 					this.nextStep();
 				}
@@ -218,7 +218,7 @@ export default {
 		submit() {
 			this.isSubmitting = true;
 			let self = this;
-			const steps = this.workflow.filter(
+			const steps = this.steps.filter(
 				step => !this.skippedSteps.includes(step.id)
 			);
 			const data = {
@@ -240,7 +240,7 @@ export default {
 								attachments: step.attachments,
 								bcc: bcc ? bcc.split(',') : [],
 								cc: cc ? cc.split(',') : [],
-								to: step.canChangeTo ? step.to : [],
+								to: step.canChangeRecipients ? step.to : [],
 								subject: step.subject,
 								body: step.body
 							};
@@ -317,7 +317,7 @@ export default {
 		 * Update the data attached to a step
 		 */
 		updateStep(stepId, data) {
-			this.workflow = this.workflow.map(step => {
+			this.steps = this.steps.map(step => {
 				if (step.id !== stepId) {
 					return step;
 				}
@@ -346,10 +346,10 @@ export default {
 	},
 	created() {
 		// Start step 1
-		this.openStep(this.workflow[0].id);
+		this.openStep(this.steps[0].id);
 
 		// Set up email data for each email step
-		this.workflow = this.workflow.map(step => {
+		this.steps = this.steps.map(step => {
 			if (step.type !== stepTypes.email) {
 				return step;
 			}
@@ -360,7 +360,7 @@ export default {
 				body: '',
 				cc: '',
 				bcc: '',
-				to: step.toOptions.map(to => to.value)
+				recipients: step.recipientOptions.map(to => to.value)
 			};
 		});
 	}
