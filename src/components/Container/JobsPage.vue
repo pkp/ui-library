@@ -25,7 +25,9 @@ export default {
 	methods: {
 		handlePagination: function(page) {
 			this.isLoadingItems = true;
-			window.location = this.url + '?page=' + page;
+			const paged = new URL(window.location.href);
+			paged.searchParams.set('page', page);
+			window.location = paged;
 		}
 	}
 };
