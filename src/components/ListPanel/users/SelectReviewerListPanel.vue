@@ -100,6 +100,7 @@
 </template>
 
 <script>
+import PkpFilter from '@/components/Filter/Filter.vue';
 import FilterSlider from '@/components/Filter/FilterSlider.vue';
 import FilterSliderMultirange from '@/components/Filter/FilterSliderMultirange.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
@@ -111,6 +112,7 @@ import fetch from '@/mixins/fetch';
 
 export default {
 	components: {
+		PkpFilter,
 		FilterSlider,
 		FilterSliderMultirange,
 		ListPanel,
