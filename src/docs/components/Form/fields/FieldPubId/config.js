@@ -1,9 +1,7 @@
 import fieldBase from '../FieldBase/config';
-import fieldDoi from '../../helpers/field-doi';
 
 export let props = {
-	...fieldBase.props,
-	...fieldDoi
+	...fieldBase.props
 };
 
 export const propDocs = [

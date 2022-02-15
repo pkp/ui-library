@@ -7,6 +7,8 @@ import ComponentButton from './docs/components/Button/ComponentButton.vue';
 import ComponentCatalogListPanel from './docs/components/ListPanel/ComponentCatalogListPanel.vue';
 import ComponentChart from './docs/components/Chart/ComponentChart.vue';
 import ComponentDateRange from './docs/components/DateRange/ComponentDateRange.vue';
+import ComponentDoiListPanel from './docs/components/ListPanel/ComponentDoiListPanel';
+import ComponentDoiListPanelOJS from '@/docs/components/ListPanel/ComponentDoiListPanelOJS';
 import ComponentDropdown from './docs/components/Dropdown/ComponentDropdown.vue';
 import ComponentEmailTemplatesListPanel from './docs/components/ListPanel/ComponentEmailTemplatesListPanel.vue';
 import ComponentFilter from './docs/components/Filter/ComponentFilter.vue';
@@ -230,6 +232,16 @@ export default new Router({
 			path: '/component/ListPanel/components/CatalogListPanel/:example?',
 			name: 'CatalogListPanel',
 			component: ComponentCatalogListPanel
+		},
+		{
+			path: '/component/ListPanel/components/DoiListPanel/:example?',
+			name: 'DoiListPanel',
+			component: ComponentDoiListPanel
+		},
+		{
+			path: '/component/ListPanel/components/DoiListPanelOJS/:example?',
+			name: 'DoiListPanelOJS',
+			component: ComponentDoiListPanelOJS
 		},
 		{
 			path: '/component/ListPanel/components/EmailTemplatesListPanel/:example?',
