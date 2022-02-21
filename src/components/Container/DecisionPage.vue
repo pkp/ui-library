@@ -240,7 +240,7 @@ export default {
 								attachments: step.attachments,
 								bcc: bcc ? bcc.split(',') : [],
 								cc: cc ? cc.split(',') : [],
-								to: step.canChangeRecipients ? step.to : [],
+								recipients: step.canChangeRecipients ? step.recipients : [],
 								subject: step.subject,
 								body: step.body
 							};

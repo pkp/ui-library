@@ -319,6 +319,9 @@ export default {
 			if (newVal === oldVal) {
 				return;
 			}
+			if (this.isMultilingual) {
+				newVal = newVal[this.localeKey];
+			}
 			newVal = this.renderPreparedContent(newVal, this.preparedContent);
 			debounce(this.setWordCount, 250)();
 			this.$emit('change', this.name, 'value', newVal, this.localeKey);

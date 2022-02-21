@@ -24,7 +24,8 @@ export default {
 		 */
 		renderPreparedContent(string, preparedContent) {
 			return Object.keys(preparedContent).reduce((string, key) => {
-				return string.replaceAll('{$' + key + '}', preparedContent[key]);
+				const regex = new RegExp(`{\$${key}}`.replace(/[${]/g, '\\$&'), 'g'); // eslint-disable-line
+				return string.replace(regex, preparedContent[key]);
 			}, string);
 		}
 	}
