@@ -140,35 +140,25 @@
 					<!-- Messages Modals -->
 					<!-- Error Message Modal -->
 					<modal
-						v-bind="MODAL_PROPS"
+						:close-label="__('common.close')"
 						:name="`errorMessageModal-${item.id}`"
+						:title="__('manager.dois.registration.viewError.title')"
 						@closed="setFocusToRef('errorMessageModalButton')"
 					>
-						<modal-content
-							:close-label="__('common.close')"
-							:modal-name="`errorMessageModal-${item.id}`"
-							:title="__('manager.dois.registration.viewError.title')"
-						>
-							<p>{{ registrationAgencyInfo['errorMessagePreamble'] }}</p>
-							<div class="depositErrorMessage">
-								<pre>{{ item.doiObjects[0]['errorMessage'] }}</pre>
-							</div>
-						</modal-content>
+						<p>{{ registrationAgencyInfo['errorMessagePreamble'] }}</p>
+						<div class="depositErrorMessage">
+							<pre>{{ item.doiObjects[0]['errorMessage'] }}</pre>
+						</div>
 					</modal>
 					<!-- Recorded Message Modal -->
 					<modal
-						v-bind="MODAL_PROPS"
+						:close-label="__('common.close')"
 						name="registeredMessageModal"
+						:title="__('manager.dois.registration.viewError.title')"
 						@closed="setFocusToRef('registeredMessageModalButton')"
 					>
-						<modal-content
-							:close-label="__('common.close')"
-							modal-name="registeredMessageModal"
-							:title="__('manager.dois.registration.viewError.title')"
-						>
-							<p>{{ registrationAgencyInfo['registeredMessagePreamble'] }}</p>
-							<p>{{ item.doiObjects[0]['registeredMessage'] }}</p>
-						</modal-content>
+						<p>{{ registrationAgencyInfo['registeredMessagePreamble'] }}</p>
+						<p>{{ item.doiObjects[0]['registeredMessage'] }}</p>
 					</modal>
 				</div>
 			</div>
@@ -178,7 +168,7 @@
 
 <script>
 import Expander from '@/components/Expander/Expander.vue';
-import modal from '@/mixins/modal';
+import Modal from '@/components/Modal/Modal.vue';
 import PkpTable from '@/components/Table/Table.vue';
 import TableCell from '@/components/Table/TableCell';
 
@@ -186,10 +176,10 @@ export default {
 	name: 'DoiListItem',
 	components: {
 		Expander,
+		Modal,
 		PkpTable,
 		TableCell
 	},
-	mixins: [modal],
 	props: {
 		apiUrl: {
 			type: String,
