@@ -346,23 +346,25 @@ export default {
 	},
 	created() {
 		// Start step 1
-		this.openStep(this.steps[0].id);
+		if (this.steps.length) {
+			this.openStep(this.steps[0].id);
 
-		// Set up email data for each email step
-		this.steps = this.steps.map(step => {
-			if (step.type !== stepTypes.email) {
-				return step;
-			}
-			return {
-				...step,
-				attachments: [],
-				subject: '',
-				body: '',
-				cc: '',
-				bcc: '',
-				recipients: step.recipientOptions.map(to => to.value)
-			};
-		});
+			// Set up email data for each email step
+			this.steps = this.steps.map(step => {
+				if (step.type !== stepTypes.email) {
+					return step;
+				}
+				return {
+					...step,
+					attachments: [],
+					subject: '',
+					body: '',
+					cc: '',
+					bcc: '',
+					recipients: step.recipientOptions.map(to => to.value)
+				};
+			});
+		}
 	}
 };
 </script>
