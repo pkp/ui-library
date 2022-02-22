@@ -336,7 +336,7 @@ export default {
 
 			this.openDialog({
 				cancelLabel: this.__('common.no'),
-				modalName: 'delete',
+				name: 'delete',
 				title: this.deleteContributorLabel,
 				message: this.replaceLocaleParams(this.confirmDeleteMessage, {
 					name: contributor.fullName

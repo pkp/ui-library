@@ -393,7 +393,7 @@ export default {
 				cancelLabel: this.__('common.cancel'),
 				confirmLabel: actionLabel,
 				message: actionMessage,
-				modalName: 'bulkActions',
+				name: 'bulkActions',
 				title: actionLabel,
 				callback: () => {
 					$.ajax({
@@ -431,7 +431,7 @@ export default {
 				cancelLabel: this.__('common.cancel'),
 				confirmLabel: actionLabel,
 				message: actionMessage,
-				modalName: 'bulkActions',
+				name: 'bulkActions',
 				title: actionLabel,
 				callback: () => {
 					$.ajax({
@@ -477,7 +477,7 @@ export default {
 				cancelLabel: this.__('common.cancel'),
 				confirmLabel: actionLabel,
 				message: actionMessage,
-				modalName: 'bulkActions',
+				name: 'bulkActions',
 				title: actionLabel,
 				callback: () => {
 					$.ajax({
@@ -511,7 +511,7 @@ export default {
 				cancelLabel: this.__('common.cancel'),
 				confirmLabel: actionLabel,
 				message: actionMessage,
-				modalName: 'bulkActions',
+				name: 'bulkActions',
 				title: actionLabel,
 				callback: () => {
 					$.ajax({
@@ -545,7 +545,7 @@ export default {
 				cancelLabel: this.__('common.cancel'),
 				confirmLabel: actionLabel,
 				message: actionMessage,
-				modalName: 'bulkActions',
+				name: 'bulkActions',
 				title: actionLabel,
 				callback: () => {
 					$.ajax({
