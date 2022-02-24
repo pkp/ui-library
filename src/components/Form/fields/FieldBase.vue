@@ -271,20 +271,25 @@ export default {
 	border: @bg-border;
 	border-radius: 2px;
 
+	&:hover {
+		border-color: @shade;
+	}
+
+	&:focus {
+		border-color: @primary;
+		box-shadow: inset 3px 0 0 @primary;
+		outline: 0;
+	}
+
 	&:disabled {
 		background: @bg-light;
 		cursor: not-allowed;
 		// Lighter than @text but accessible on @bg-light
 		color: rgba(0, 0, 0, 0.65);
+
+		&:hover {
+			border-color: @bg-border-color;
+		}
 	}
-}
-
-.pkpFormField__input:hover {
-	border-color: @shade;
-}
-
-.pkpFormField__input:focus {
-	border-color: @primary;
-	box-shadow: inset 3px 0 0 @primary;
 }
 </style>

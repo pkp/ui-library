@@ -1,21 +1,33 @@
 <template>
 	<div class="modal">
-		<span tabindex="0" @focus="setFocusIn($refs.keyboardTrap, true)" />
-		<div ref="keyboardTrap">
-			<div class="modal__header">
-				<h2 v-if="title" class="modal__title">
-					{{ title }}
-				</h2>
-				<button class="modal__closeButton" @click="$modal.hide(modalName)">
-					<span :aria-hidden="true">×</span>
-					<span class="-screenReader">{{ closeLabel }}</span>
-				</button>
+		<modal
+			v-bind="MODAL_PROPS"
+			:name="name"
+			@opened="setFocusToRef('keyboardTrap')"
+			@closed="data => this.$emit('closed', data)"
+		>
+			<div class="modal__panel">
+				<span tabindex="0" @focus="setFocusIn($refs.keyboardTrap, true)" />
+				<div tabindex="0" ref="keyboardTrap" class="modal__keyboardTrap">
+					<div class="modal__header">
+						<h2 v-if="title" class="modal__title">
+							{{ title }}
+						</h2>
+						<button class="modal__closeButton" @click="$modal.hide(name)">
+							<span :aria-hidden="true">×</span>
+							<span class="-screenReader">{{ closeLabel }}</span>
+						</button>
+					</div>
+					<div class="modal__content">
+						<slot />
+					</div>
+					<div v-if="!!$slots.footer" class="modal__footer">
+						<slot name="footer" />
+					</div>
+				</div>
+				<span tabindex="0" @focus="setFocusIn($refs.keyboardTrap)" />
 			</div>
-			<div class="modal__content">
-				<slot />
-			</div>
-		</div>
-		<span tabindex="0" @focus="setFocusIn($refs.keyboardTrap)" />
+		</modal>
 	</div>
 </template>
 
@@ -26,7 +38,7 @@ export default {
 			type: String,
 			required: true
 		},
-		modalName: {
+		name: {
 			type: String,
 			reqired: true
 		},
@@ -37,8 +49,13 @@ export default {
 			}
 		}
 	},
-	mounted() {
-		this.setFocusIn(this.$refs.keyboardTrap);
+	data() {
+		return {
+			MODAL_PROPS: {
+				height: 'auto',
+				scrollable: true
+			}
+		};
 	}
 };
 </script>
@@ -87,7 +104,7 @@ export default {
 	max-width: 50rem;
 }
 
-.modal {
+.modal__panel {
 	font-size: @font-sml;
 	line-height: @line-sml;
 }
@@ -143,11 +160,16 @@ export default {
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
-	margin-top: 2rem;
+	padding: 1rem;
 
 	* + .pkpButton {
 		margin-left: 0.5rem;
 	}
+}
+
+.modal__keyboardTrap:focus {
+	outline: 2px solid @primary;
+	border-radius: @radius;
 }
 
 // Forms in modals

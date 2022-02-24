@@ -1,36 +1,38 @@
 <template>
-	<div class="modal modal--dialog">
+	<div class="modal__panel modal__panel--dialog">
 		<span tabindex="0" @focus="setFocusIn($refs.keyboardTrap, true)" />
-		<div ref="keyboardTrap">
+		<div tabindex="0" ref="keyboardTrap" class="modal__keyboardTrap">
 			<div class="modal__header">
 				<h2 v-if="title" class="modal__title">
 					{{ title }}
 				</h2>
-				<spinner v-if="isLoading" />
-				<button class="modal__closeButton" @click="$modal.hide(modalName)">
+				<button class="modal__closeButton" @click="$modal.hide(name)">
 					<span :aria-hidden="true">×</span>
 					<span class="-screenReader">{{ closeLabel }}</span>
 				</button>
 			</div>
 			<div class="modal__content">
-				<slot>
-					<div v-html="message" />
+				<div v-html="message" />
+			</div>
+			<div class="modal__footer">
+				<spinner v-if="isLoading" />
+				<slot name="actions">
+					<pkp-button
+						:isPrimary="true"
+						:isDisabled="isLoading"
+						@click="fireCallback"
+					>
+						{{ confirmLabel }}
+					</pkp-button>
+					<pkp-button
+						v-if="cancelLabel"
+						:isWarnable="true"
+						:isDisabled="isLoading"
+						@click="$modal.hide(name)"
+					>
+						{{ cancelLabel }}
+					</pkp-button>
 				</slot>
-				<div class="modal__footer">
-					<slot name="actions">
-						<pkp-button :isDisabled="isLoading" @click="fireCallback">
-							{{ confirmLabel }}
-						</pkp-button>
-						<pkp-button
-							v-if="cancelLabel"
-							:isWarnable="true"
-							:isDisabled="isLoading"
-							@click="$modal.hide(modalName)"
-						>
-							{{ cancelLabel }}
-						</pkp-button>
-					</slot>
-				</div>
 			</div>
 		</div>
 		<span tabindex="0" @focus="setFocusIn($refs.keyboardTrap)" />
@@ -38,10 +40,10 @@
 </template>
 
 <script>
-import ModalContent from './ModalContent.vue';
+import Modal from './Modal.vue';
 
 export default {
-	extends: ModalContent,
+	extends: Modal,
 	props: {
 		actions: {
 			type: Array,
@@ -90,6 +92,9 @@ export default {
 			this.isLoading = true;
 			this.callback();
 		}
+	},
+	mounted() {
+		this.setFocusToRef('keyboardTrap');
 	},
 	destroyed() {
 		if (typeof this.closeCallback === 'function') {

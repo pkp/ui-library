@@ -1,19 +1,23 @@
 <script type="text/javascript">
 import Page from './Page.vue';
 import ContributorsListPanel from '@/components/ListPanel/contributors/ContributorsListPanel.vue';
+import Composer from '@/components/Composer/Composer.vue';
 import Dropdown from '@/components/Dropdown/Dropdown.vue';
+import Modal from '@/components/Modal/Modal.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import LocalizeSubmission from '@/mixins/localizeSubmission.js';
 import ajaxError from '@/mixins/ajaxError';
-import modal from '@/mixins/modal.js';
+import dialog from '@/mixins/dialog.js';
 
 export default {
 	name: 'WorkflowPage',
 	extends: Page,
-	mixins: [LocalizeSubmission, modal, ajaxError],
+	mixins: [LocalizeSubmission, dialog, ajaxError],
 	components: {
 		ContributorsListPanel,
+		Composer,
 		Dropdown,
+		Modal,
 		PkpHeader
 	},
 	data() {
@@ -22,6 +26,7 @@ export default {
 			canAccessPublication: false,
 			canEditPublication: false,
 			currentPublication: null,
+			decisionUrl: '',
 			editorialHistoryUrl: '',
 			isLoadingVersion: false,
 			publicationFormIds: [],
@@ -33,6 +38,7 @@ export default {
 			schedulePublicationLabel: '',
 			submission: null,
 			submissionApiUrl: '',
+			submissionFileApiUrl: '',
 			submissionLibraryLabel: '',
 			submissionLibraryUrl: '',
 			supportsReferences: false,
@@ -154,10 +160,21 @@ export default {
 		/**
 		 * Helper method to access a global constant in the template
 		 *
+		 * @param {String} constant
 		 * @return {Object}
 		 */
 		getConstant(constant) {
 			return pkp.const[constant];
+		},
+
+		/**
+		 * When the user has selected whether revisions will be sent for
+		 * a new round of review
+		 */
+		goToRevisionDecision(formData) {
+			window.location = this.decisionUrl
+				.replace('__decision__', formData.decision)
+				.replace('__reviewRoundId__', formData.reviewRoundId);
 		},
 
 		/**
@@ -213,7 +230,7 @@ export default {
 		openCreateVersionPrompt() {
 			this.openDialog({
 				cancelLabel: this.__('common.no'),
-				modalName: 'createVersion',
+				name: 'createVersion',
 				message: this.versionConfirmMessage,
 				title: this.versionConfirmTitle,
 				callback: () => {
@@ -300,7 +317,7 @@ export default {
 		 */
 		openUnpublish() {
 			this.openDialog({
-				modalName: 'confirmUnpublish',
+				name: 'confirmUnpublish',
 				cancelLabel: this.__('common.cancel'),
 				confirmLabel:
 					this.workingPublication.status === pkp.const.STATUS_SCHEDULED
@@ -541,6 +558,28 @@ export default {
 		});
 
 		/**
+		 * Open the unpublish confirmation modal when a global unpublish
+		 * event is fired
+		 */
+		pkp.eventBus.$on('unpublish:publication', this.openUnpublish);
+
+		/**
+		 * Open the modals to select the revision type when requested
+		 */
+		pkp.eventBus.$on('decision:revisions', reviewRoundId => {
+			this.components.selectRevisionDecision.hiddenFields[
+				'reviewRoundId'
+			] = reviewRoundId;
+			this.$modal.show('selectRevisionDecision');
+		});
+		pkp.eventBus.$on('recommendation:revisions', reviewRoundId => {
+			this.components.selectRevisionRecommendation.hiddenFields[
+				'reviewRoundId'
+			] = reviewRoundId;
+			this.$modal.show('selectRevisionRecommendation');
+		});
+
+		/**
 		 * Load forms
 		 */
 		this.setPublicationForms(this.workingPublication);
@@ -554,17 +593,13 @@ export default {
 		setTimeout(() => {
 			this.loadRepresentationsGrid(this.workingPublication);
 		}, 1000);
-
-		/**
-		 * Open the unpublish confirmation modal when a global unpublish
-		 * event is fired
-		 */
-		pkp.eventBus.$on('unpublish:publication', this.openUnpublish);
 	},
 	destroyed() {
 		pkp.eventBus.$off('form-success');
 		pkp.eventBus.$off('authorsUpdated');
 		pkp.eventBus.$off('unpublish:publication');
+		pkp.eventBus.$off('decision:revisions');
+		pkp.eventBus.$off('recommendation:revisions');
 	}
 };
 </script>

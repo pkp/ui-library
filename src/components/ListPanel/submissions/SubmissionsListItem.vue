@@ -220,11 +220,11 @@ import ListItem from '@/components/List/ListItem.vue';
 import ajaxError from '@/mixins/ajaxError';
 import fetch from '@/mixins/fetch';
 import localizeSubmission from '@/mixins/localizeSubmission';
-import modal from '@/mixins/modal';
+import dialog from '@/mixins/dialog';
 
 export default {
 	name: 'SubmissionsListItem',
-	mixins: [ajaxError, fetch, localizeSubmission, modal],
+	mixins: [ajaxError, fetch, localizeSubmission, dialog],
 	components: {
 		Expander,
 		List,
@@ -802,7 +802,7 @@ export default {
 		deleteSubmissionPrompt() {
 			this.openDialog({
 				cancelLabel: this.__('common.no'),
-				modalName: 'deleteSubmission',
+				name: 'deleteSubmission',
 				message: this.__('editor.submissionArchive.confirmDelete'),
 				title: this.__('common.delete'),
 				callback: this.deleteSubmission

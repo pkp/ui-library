@@ -1,6 +1,6 @@
 ## Props
 
-This is a root component. Pass data to the component using [state](#/component/Page#state).
+This is a root component. Pass data to the component using state (see below).
 
 ## Data
 
@@ -26,7 +26,7 @@ Nothing is needed to load the `Page` component. It is initialized automatically 
 
 ## State
 
-The developer documentation includes guidance on [how to manage state](https://docs.pkp.sfu.ca/dev/documentation/en/frontend-ui-library#state) in a `Page` component.
+The developer documentation includes guidance on [how to initialize state](https://docs.pkp.sfu.ca/dev/documentation/en/frontend-ui-library#state) in a `Page` component.
 
 ## Page Components
 

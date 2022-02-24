@@ -16,7 +16,8 @@ window.pkp = {
 		csrfToken: '1234',
 		id: 1,
 		roles: [1, 16, 65536, 1048576],
-		username: 'dbarnes'
+		username: 'dbarnes',
+		preferredName: 'Daniel Barnes'
 	},
 
 	/**
@@ -64,6 +65,22 @@ window.pkp = {
 		DOI_STATUS_REGISTERED: 3,
 		DOI_STATUS_ERROR: 4,
 		DOI_STATUS_STALE: 5
+	},
+
+	/**
+	 * Icon map for document types
+	 */
+	documentTypeIcons: {
+		default: 'file-o', // DOCUMENT_TYPE_DEFAULT
+		audio: 'file-audio-o', // DOCUMENT_TYPE_AUDIO
+		epub: 'file-text-o', // DOCUMENT_TYPE_EPUB
+		excel: 'file-excel-o', // DOCUMENT_TYPE_EXCEL
+		html: 'file-code-o', // DOCUMENT_TYPE_HTML
+		image: 'file-image-o', // DOCUMENT_TYPE_IMAGE
+		pdf: 'file-pdf-o', // DOCUMENT_TYPE_PDF
+		word: 'file-word-o', // DOCUMENT_TYPE_WORD
+		video: 'file-video-o', // DOCUMENT_TYPE_VIDEO
+		zip: 'file-archive-o' // DOCUMENT_TYPE_ZIP
 	},
 
 	/**

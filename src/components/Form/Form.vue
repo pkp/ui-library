@@ -1,5 +1,12 @@
 <template>
 	<form class="pkpForm -pkpClearfix" :method="method" :action="action">
+		<input
+			v-for="(value, name) in hiddenFields"
+			:key="name"
+			type="hidden"
+			:name="name"
+			:value="value"
+		/>
 		<form-locales
 			v-if="availableLocales.length > 1"
 			:primaryLocaleKey="primaryLocale"
@@ -69,8 +76,18 @@ export default {
 	},
 	props: {
 		id: String,
-		method: String,
-		action: String,
+		method: {
+			type: String,
+			default() {
+				return '';
+			}
+		},
+		action: {
+			type: String,
+			default() {
+				return '';
+			}
+		},
 		canSubmit: {
 			type: Boolean,
 			default() {
@@ -85,6 +102,7 @@ export default {
 		},
 		fields: Array,
 		groups: Array,
+		hiddenFields: Object,
 		pages: Array,
 		primaryLocale: String,
 		visibleLocales: Array,
@@ -174,6 +192,9 @@ export default {
 		submitValues() {
 			let values = {};
 			this.fields.forEach(field => {
+				if (field.component === 'field-html') {
+					return;
+				}
 				if (!field.isMultilingual) {
 					// Convert empty arrays to an empty string to address the fact that
 					// jQuery drops empty arrays before sending the POST data.
@@ -207,7 +228,10 @@ export default {
 					}
 				}
 			});
-			return values;
+			return {
+				...values,
+				...this.hiddenFields
+			};
 		}
 	},
 	methods: {
@@ -245,24 +269,26 @@ export default {
 				return;
 			}
 
-			let method = this.method;
-			if (method === 'DELETE' || method === 'PUT') {
-				method = 'POST';
+			if (this.action === 'emit') {
+				this.$emit('success', this.submitValues);
+			} else {
+				$.ajax({
+					context: this,
+					method:
+						this.method === 'DELETE' || this.method === 'PUT'
+							? 'POST'
+							: this.method,
+					url: this.action,
+					headers: {
+						'X-Csrf-Token': pkp.currentUser.csrfToken,
+						'X-Http-Method-Override': this.method
+					},
+					data: this.submitValues,
+					success: this.success,
+					error: this.error,
+					complete: this.complete
+				});
 			}
-
-			$.ajax({
-				context: this,
-				method: method,
-				url: this.action,
-				headers: {
-					'X-Csrf-Token': pkp.currentUser.csrfToken,
-					'X-Http-Method-Override': this.method
-				},
-				data: this.submitValues,
-				success: this.success,
-				error: this.error,
-				complete: this.complete
-			});
 		},
 
 		/**
@@ -325,21 +351,24 @@ export default {
 		 * Callback to fire when the form submission's ajax request has been
 		 * returned successfully
 		 *
-		 * @param {Object} r The response to the AJAX request
+		 * @param {Object} r The response to the AJAX request or the values
+		 * 		of the form if no request was sent
 		 */
 		success: function(r) {
 			this.$emit('success', r);
 			this.lastSaveTimestamp = Date.now();
 			pkp.eventBus.$emit('form-success', this.id, r);
 
-			// Update form values with the response values
-			const newFields = this.fields.map(field => {
-				if (typeof r[field.name] !== 'undefined') {
-					field.value = r[field.name];
-				}
-				return field;
-			});
-			this.$emit('set', this.id, {fields: newFields});
+			if (this.action) {
+				// Update form values with the response values
+				const newFields = this.fields.map(field => {
+					if (typeof r[field.name] !== 'undefined') {
+						field.value = r[field.name];
+					}
+					return field;
+				});
+				this.$emit('set', this.id, {fields: newFields});
+			}
 		},
 
 		/**

@@ -18,7 +18,9 @@ export default {
 			field: {
 				...fieldBase,
 				...FieldBaseAutosuggest,
-				apiUrl: '/usernames.json'
+				apiUrl: '/usernames.json',
+				label: 'Select Users',
+				selected: []
 			}
 		};
 	}

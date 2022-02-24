@@ -1,6 +1,13 @@
 <template>
-	<div class="pkpFormField pkpFormField--autosuggest">
-		<div class="pkpFormField__heading">
+	<div
+		class="pkpFormField pkpAutosuggest"
+		:class="{
+			'pkpAutosuggest--disabled': isDisabled,
+			'pkpAutosuggest--inline': isLabelInline,
+			'pkpAutosuggest--rtl': isRTL
+		}"
+	>
+		<div class="pkpFormField__heading" ref="heading">
 			<form-field-label
 				:controlId="controlId"
 				:label="label"
@@ -30,27 +37,32 @@
 			v-html="description"
 			:id="describedByDescriptionId"
 		/>
-		<div
-			class="pkpFormField__control pkpFormField--autosuggest__control"
-			:class="{
-				'pkpFormField__control--hasMultilingualIndicator':
-					isMultilingual && locales.length > 1
-			}"
-		>
+		<div class="pkpFormField__control pkpAutosuggest__control">
 			<div
-				v-if="currentPosition === 'inline'"
-				class="pkpFormField--autosuggest__values pkpFormField--autosuggest__values--inline"
-				:id="describedBySelectedId"
+				class="pkpAutosuggest__inputWrapper pkpFormField__input"
+				:class="{
+					'pkpAutosuggest__inputWrapper--multilingual':
+						isMultilingual && locales.length > 1,
+					'pkpAutosuggest__inputWrapper--focus': isFocused
+				}"
 				ref="values"
+				:id="describedBySelectedId"
+				@click="setFocusToInput"
 			>
 				<span class="-screenReader">{{ selectedLabel }}</span>
 				<span v-if="!currentValue.length" class="-screenReader">
 					{{ __('common.none') }}
 				</span>
-				<pkp-badge v-else v-for="item in currentSelected" :key="item.value">
+				<pkp-badge
+					v-else
+					v-for="item in currentSelected"
+					:key="item.value"
+					class="pkpAutosuggest__selection"
+				>
 					{{ item.label }}
 					<button
-						class="pkpFormField--autosuggest__valueButton"
+						v-if="!isDisabled"
+						class="pkpAutosuggest__deselect"
 						@click.stop.prevent="deselect(item)"
 					>
 						<icon icon="times" />
@@ -59,36 +71,16 @@
 						</span>
 					</button>
 				</pkp-badge>
-			</div>
-			<vue-autosuggest
-				v-model="inputValue"
-				ref="autosuggest"
-				class="pkpFormField--autosuggest__autosuggest"
-				v-bind="autosuggestOptions"
-				@selected="selectSuggestion"
-			/>
-			<div
-				v-if="currentPosition === 'below'"
-				class="pkpFormField--autosuggest__values pkpFormField--autosuggest__values--below"
-				:id="describedBySelectedId"
-				ref="values"
-			>
-				<span class="-screenReader">{{ selectedLabel }}</span>
-				<span v-if="!currentValue.length" class="-screenReader">
-					{{ __('common.none') }}
-				</span>
-				<pkp-badge v-else v-for="item in currentSelected" :key="item.value">
-					{{ item.label }}
-					<button
-						class="pkpFormField--autosuggest__valueButton"
-						@click.stop.prevent="deselect(item)"
-					>
-						<icon icon="times" />
-						<span class="-screenReader">
-							{{ deselectLabel.replace('{$item}', item.label) }}
-						</span>
-					</button>
-				</pkp-badge>
+				<vue-autosuggest
+					v-if="!isDisabled"
+					v-model="inputValue"
+					ref="autosuggest"
+					class="pkpAutosuggest__autosuggester"
+					v-bind="autosuggestOptions"
+					@selected="selectSuggestion"
+					@focus="() => (isFocused = true)"
+					@blur="() => (isFocused = false)"
+				/>
 			</div>
 			<multilingual-progress
 				v-if="isMultilingual && locales.length > 1"
@@ -132,19 +124,22 @@ export default {
 			type: String,
 			required: true
 		},
+		isDisabled: {
+			type: Boolean,
+			default() {
+				return false;
+			}
+		},
+		isLabelInline: {
+			type: Boolean,
+			default() {
+				return false;
+			}
+		},
 		getParams: {
 			type: Object,
 			default() {
 				return {};
-			}
-		},
-		initialPosition: {
-			type: String,
-			default() {
-				return 'inline';
-			},
-			validator: function(value) {
-				return ['inline', 'below'].includes(value);
 			}
 		},
 		selected: {
@@ -160,8 +155,8 @@ export default {
 	},
 	data() {
 		return {
-			currentPosition: this.initialPosition,
 			inputValue: '',
+			isFocused: false,
 			suggestions: []
 		};
 	},
@@ -192,33 +187,13 @@ export default {
 		},
 
 		/**
-		 * Override the FieldBase implementation of currentValue
-		 * because we never set the currentValue directly. Instead
-		 * it should be derived from currentSelected.
-		 *
-		 * @return {Array|Object}
+		 * The selected items for this component. This gets locale-specific
+		 * selections if this is a multilingual component
 		 */
-		currentValue() {
-			const selected = this.isMultilingual
+		currentSelected() {
+			return this.isMultilingual
 				? this.selected[this.localeKey]
 				: this.selected;
-			return selected.map(item => item.value);
-		},
-
-		/**
-		 * The selected items for this component. This gets locale-specific
-		 * selections if necessary and emits an event to update the `selected`
-		 * prop when it is set.
-		 */
-		currentSelected: {
-			get() {
-				return this.isMultilingual
-					? this.selected[this.localeKey]
-					: this.selected;
-			},
-			set(newVal) {
-				this.$emit('change', this.name, 'selected', newVal, this.localeKey);
-			}
 		},
 
 		/**
@@ -251,12 +226,23 @@ export default {
 		 * @return {Object}
 		 */
 		inputProps() {
-			return {
+			let props = {
 				'aria-describedby': this.describedByIds,
-				class: 'pkpFormField__input pkpFormField--autosuggest__input',
+				class: 'pkpAutosuggest__input',
 				id: this.controlId,
 				name: this.name
 			};
+			if (this.isDisabled) {
+				props.disabled = 'disabled';
+			}
+			return props;
+		},
+
+		/**
+		 * Is this field in a right-to-left language
+		 */
+		isRTL() {
+			return $.pkp.app.rtlLocales.includes(this.localeKey);
 		}
 	},
 	methods: {
@@ -266,12 +252,22 @@ export default {
 		 * @param {Object} itemToRemove
 		 */
 		deselect(itemToRemove) {
-			this.currentSelected.splice(
-				this.currentSelected.findIndex(
-					item => item.value === itemToRemove.value
-				),
+			let newSelected = [...this.currentSelected];
+			newSelected.splice(
+				newSelected.findIndex(item => item.value === itemToRemove.value),
 				1
 			);
+			this.setSelected(newSelected);
+		},
+
+		/**
+		 * Move focus to the input field
+		 */
+		setFocusToInput() {
+			if (this.isDisabled) {
+				return;
+			}
+			this.$refs.autosuggest.$el.querySelector('#' + this.controlId).focus();
 		},
 
 		/**
@@ -316,7 +312,7 @@ export default {
 				}
 				item = this.suggestions[0];
 			}
-			this.currentSelected.push(item);
+			this.setSelected([...this.currentSelected, item]);
 			this.inputValue = '';
 			this.$nextTick(() => {
 				this.$nextTick(() => {
@@ -339,6 +335,20 @@ export default {
 		},
 
 		/**
+		 * Emit events to change the selected items and the field's value
+		 */
+		setSelected(selected) {
+			this.$emit('change', this.name, 'selected', selected, this.localeKey);
+			this.$emit(
+				'change',
+				this.name,
+				'value',
+				selected.map(s => s.value),
+				this.localeKey
+			);
+		},
+
+		/**
 		 * This must be implemented in a component that extends
 		 * this component
 		 *
@@ -351,54 +361,80 @@ export default {
 		},
 
 		/**
-		 * Update the padding on the input field when selections
-		 * are changed
+		 * Update the padding if the label is inline
 		 */
-		updateInputPadding() {
-			const baseInputLeftPadding =
-				this.isMultilingual && this.locales.length > 1 ? 48 : 16; // 16px = 1rem
-			if (!this.currentValue.length) {
-				const inputEl = this.$refs.autosuggest.$el.querySelector(
-					'#' + this.controlId
-				);
-				this.currentPosition = 'inline';
-				inputEl.style.paddingLeft = baseInputLeftPadding + 'px';
+		updateInlineLabelPadding() {
+			if (!this.isLabelInline) {
+				return;
+			}
+			let value = this.$refs.heading.offsetWidth + 'px';
+			if (this.isRTL) {
+				this.$refs.values.style.paddingRight = value;
 			} else {
-				const inputEl = this.$refs.autosuggest.$el.querySelector(
-					'#' + this.controlId
+				this.$refs.values.style.paddingLeft = value;
+			}
+		},
+
+		/**
+		 * Update the width of the input field
+		 *
+		 * The input field should expand to fill the input area after the
+		 * values have been positioned. The input field should take up any
+		 * remaining width or, if there is less than 172px, move to the
+		 * next line and take the full width.
+		 */
+		updateInputWidth() {
+			if (this.isDisabled) {
+				return;
+			}
+
+			// Use the full width when there are no values
+			if (!this.currentValue.length) {
+				this.$refs.autosuggest.$el.style.width = '100%';
+			} else {
+				// Otherwise use the remaining width based on the
+				// bottom right corner of the last value (or bottom
+				// left corner for RTL languages)
+				const containerStyle = window.getComputedStyle(this.$refs.values);
+				const containerLeftPadding = parseFloat(
+					containerStyle.getPropertyValue('padding-left')
 				);
-
-				// Identify the left offset of the values so that it can be used when calculating
-				// the remaining with. The remaining width should always be calculated as if the
-				// values are inline, to prevent flashing where it jumps between inline and below
-				const offsetLeft =
-					this.isMultilingual && this.locales.length > 1 ? 48 : 16;
-				const valuesWidth = offsetLeft + this.$refs.values.offsetWidth;
-
-				// This may not be accurate if the user has adjusted the zoom level. One line can
-				// appear taller than 50px. In such cases, the values are still easy to view
-				// when below the input, so this should be a graceful handling of it.
-				const isMaybeMultiline = this.$refs.values.offsetHeight > 50;
-
-				if (isMaybeMultiline || inputEl.offsetWidth - valuesWidth < 140) {
-					this.currentPosition = 'below';
-					inputEl.style.paddingLeft = baseInputLeftPadding + 'px';
+				const containerRightPadding = parseFloat(
+					containerStyle.getPropertyValue('padding-right')
+				);
+				const containerWidth =
+					parseFloat(containerStyle.getPropertyValue('width')) -
+					containerLeftPadding -
+					containerRightPadding;
+				const valueEls = this.$refs.values.querySelectorAll(
+					'.pkpAutosuggest__selection'
+				);
+				const lastValueEl = valueEls[valueEls.length - 1];
+				// Right-to-left languages need to calculate distance from the right edge
+				const lastPixelPosition = this.isRTL
+					? containerWidth - (lastValueEl.offsetLeft - containerRightPadding)
+					: lastValueEl.offsetLeft -
+					  containerLeftPadding +
+					  lastValueEl.offsetWidth;
+				// remainingWidth = total available space - width of values
+				const remainingWidth = containerWidth - lastPixelPosition;
+				if (remainingWidth < 172) {
+					this.$refs.autosuggest.$el.style.width = '100%';
 				} else {
-					this.currentPosition = 'inline';
-					inputEl.style.paddingLeft = valuesWidth + 'px';
+					// 32 = 16px padding + extra space for the browser's scroll bar.
+					// when the suggestion list is shown/hidden, it can cause the whole
+					// page height to exceed the viewport, which means the browser's
+					// scroll bar pops in and out of view. this causes the input field
+					// width to expand/contract. The extra space allows this to happen
+					// without shifting the input field to the next line
+					this.$refs.autosuggest.$el.style.width = remainingWidth - 32 + 'px';
 				}
 			}
 		}
 	},
 	watch: {
-		currentPosition(newVal, oldVal) {
-			if (newVal === oldVal || newVal != 'below') {
-				return;
-			}
-		},
 		currentValue(newVal, oldVal) {
-			this.$emit('change', this.name, 'value', newVal, this.localeKey);
-			this.$nextTick(() => this.updateInputPadding());
+			this.$nextTick(() => this.updateInputWidth());
 		},
 		inputValue(newVal, oldVal) {
 			if (newVal === oldVal) {
@@ -408,18 +444,26 @@ export default {
 		}
 	},
 	mounted() {
-		/**
-		 * Shift the input cursor to make room for any pre-existing selections
-		 * and call this method whenever the element is resized
-		 */
-		this.updateInputPadding();
+		this.updateInlineLabelPadding();
+		this.updateInputWidth();
 		elementResizeEvent(
-			this.$refs.autosuggest.$el,
-			debounce(() => this.updateInputPadding(), 100)
+			this.$refs.values,
+			debounce(() => {
+				this.updateInlineLabelPadding();
+				this.updateInputWidth();
+			}, 100)
 		);
+
+		// Inline labels can not be used with multilingual fields
+		if (this.isMultilingual && this.isLabelInline) {
+			throw new Error(
+				'An inline label can not be used with a multilingual autosuggest field. This error encountered in the field ' +
+					this.name
+			);
+		}
 	},
 	beforeDestroy() {
-		elementResizeEvent.unbind(this.$refs.autosuggest.$el);
+		elementResizeEvent.unbind(this.$refs.values);
 	}
 };
 </script>
@@ -427,30 +471,43 @@ export default {
 <style lang="less">
 @import '../../../styles/_import';
 
-.pkpFormField--autosuggest__values {
-	display: inline-block;
-	z-index: 999; // must remain less than z-index of .autosuggest__results-container
-
-	.pkpBadge {
-		position: relative;
-		margin-right: 0.25rem;
-		padding-right: 2.5em;
-	}
+.pkpAutosuggest {
+	position: relative;
 }
 
-.pkpFormField--autosuggest__values--inline {
-	position: absolute;
-	left: 0.5rem;
-	top: 50%;
-	transform: translateY(-50%);
-	line-height: 1; // Remove extra vertical space around badges
+.pkpAutosuggest__control {
+	width: 100%;
 }
 
-.pkpFormField--autosuggest__values--below .pkpBadge {
-	margin-top: 0.25rem;
+// Copy of .pkpFormField:focus
+.pkpAutosuggest__inputWrapper--focus {
+	border-color: @primary;
+	box-shadow: inset 3px 0 0 @primary;
 }
 
-.pkpFormField--autosuggest__valueButton {
+.pkpAutosuggest__inputWrapper {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	height: auto;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
+}
+
+// Space between items in the input wrapper
+.pkpAutosuggest__selection,
+.pkpAutosuggest__autosuggester {
+	margin-top: 0.125rem;
+	margin-bottom: 0.125rem;
+	margin-right: 0.25rem;
+}
+
+.pkpAutosuggest__selection {
+	position: relative;
+	padding-right: 2.5em;
+}
+
+.pkpAutosuggest__deselect {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -481,12 +538,19 @@ export default {
 	}
 }
 
-.pkpFormField--autosuggest__autosuggest {
+.pkpAutosuggest__autosuggester {
 	position: relative;
+	line-height: 1.6rem; // prevent jank when value is added or removed
+	width: 100%;
 }
 
-.pkpFormField--autosuggest__input {
+.pkpAutosuggest__input {
 	width: 100%;
+	border: none;
+
+	&:focus {
+		outline: none;
+	}
 }
 
 .autosuggest__results-container {
@@ -547,20 +611,15 @@ export default {
 	}
 }
 
-.pkpFormField__control--hasMultilingualIndicator {
-	.pkpFormField--autosuggest__input {
-		padding-left: 3rem;
-	}
-
-	.pkpFormField--autosuggest__values--inline {
-		left: 3rem;
-	}
+.pkpAutosuggest__inputWrapper--multilingual {
+	padding-left: 3rem;
 }
 
-.pkpFormField--autosuggest .multilingualProgress {
+.pkpAutosuggest .multilingualProgress {
 	position: absolute;
 	top: 0;
 	left: 0;
+	bottom: 0;
 
 	button {
 		position: absolute;
@@ -568,8 +627,6 @@ export default {
 		bottom: 0;
 		left: 0;
 		width: 2.5rem;
-		height: 2.5rem;
-		border: 1px solid transparent;
 		border-right: @bg-border;
 
 		&:focus {
@@ -585,17 +642,56 @@ export default {
 
 	.fa {
 		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
+		top: -1px; // vertically center with text
+		left: 0;
+		right: 0;
+		padding: 0.5rem;
 	}
 }
 
-.pkpFormField--autosuggest__input:hover + .multilingualProgress button {
+.pkpAutosuggest__inputWrapper:hover + .multilingualProgress button {
 	border-color: @shade;
 }
 
-.pkpFormField--autosuggest__input:focus + .multilingualProgress button {
+.pkpAutosuggest__inputWrapper--focus + .multilingualProgress button {
 	border-color: @primary;
+}
+
+// Disabled input field
+.pkpAutosuggest--disabled {
+	.pkpBadge {
+		border-color: @bg-border-color;
+		padding-right: 1em;
+	}
+
+	// Copy of .pkpFormField:disabled
+	.pkpAutosuggest__inputWrapper {
+		cursor: not-allowed;
+
+		&:hover {
+			border-color: @bg-border-color;
+		}
+	}
+}
+
+// Inline label
+.pkpAutosuggest--inline {
+	.pkpFormField__heading {
+		position: absolute;
+		top: 0;
+		left: 0;
+		padding: 0.5rem;
+		line-height: 1.5rem;
+		z-index: 999;
+		font-size: @font-sml;
+	}
+
+	// Right-to-left languages
+	&.pkpAutosuggest--rtl {
+		.pkpFormField__heading {
+			left: auto;
+			right: 0.5rem;
+		}
+	}
 }
 </style>

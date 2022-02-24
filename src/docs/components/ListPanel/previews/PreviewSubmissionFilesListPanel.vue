@@ -4,7 +4,6 @@
 		apiUrl="http://localhost:8000/publicknowledge/api/v1/submissions/1/files"
 		cancelUploadLabel="Cancel Upload"
 		genrePromptLabel="What kind of file is this?"
-		:documentTypes="components.preview.documentTypes"
 		emptyLabel="Upload any files the editorial team will need to evaluate your submission."
 		emptyAddLabel="Upload Files"
 		:fileStage="2"
@@ -26,6 +25,7 @@ import Page from '@/components/Container/Page.vue';
 import SubmissionFilesListPanel from '@/components/ListPanel/submissionFiles/SubmissionFilesListPanel.vue';
 import submissionFiles from '@/docs/data/submissionFiles';
 import form from '@/docs/components/Form/helpers/form-submission-file';
+import dropzoneOptions from '@/docs/data/dropzoneOptions';
 
 export default {
 	extends: Page,
@@ -51,13 +51,13 @@ export default {
 								'https://example.com/publicknowledge/$$$call$$$/api/file/file-api/download-file?id=234&submissionId=22&stageId=2'
 						},
 						{
-							uuid: '12345',
+							id: '12345',
 							name: 'File In Progress.docx',
 							progress: 35,
 							error: []
 						},
 						{
-							uuid: '123456',
+							id: '123456',
 							name: 'File that is too large.docx',
 							progress: 100,
 							error: [
@@ -65,37 +65,7 @@ export default {
 							]
 						}
 					],
-					options: {
-						maxFilesize: 2,
-						url: 'https://httpbin.org/post',
-						dropzoneDictDefaultMessage: 'Drop files here to upload',
-						dropzoneDictFallbackMessage:
-							"Your browser does not support drag'n'drop file uploads.",
-						dropzoneDictFallbackText:
-							'Please use the fallback form below to upload your files.',
-						dropzoneDictFileTooBig:
-							'File is too big ({{filesize}}mb). Files larger than {{maxFilesize}}mb can not be uploaded.',
-						dropzoneDictInvalidFileType:
-							'Files of this type can not be uploaded.',
-						dropzoneDictResponseError:
-							'Server responded with {{statusCode}} code. Please contact the system administrator if this problem persists.',
-						dropzoneDictCancelUpload: 'Cancel upload',
-						dropzoneDictUploadCanceled: 'Upload canceled',
-						dropzoneDictCancelUploadConfirmation:
-							'Are you sure you want to cancel this upload?',
-						dropzoneDictRemoveFile: 'Remove file',
-						dropzoneDictMaxFilesExceeded: 'You can not upload any more files.'
-					},
-					documentTypes: {
-						DOCUMENT_TYPE_DEFAULT: 'default',
-						DOCUMENT_TYPE_EXCEL: 'excel',
-						DOCUMENT_TYPE_HTML: 'html',
-						DOCUMENT_TYPE_IMAGE: 'image',
-						DOCUMENT_TYPE_PDF: 'pdf',
-						DOCUMENT_TYPE_WORD: 'word',
-						DOCUMENT_TYPE_EPUB: 'epub',
-						DOCUMENT_TYPE_ZIP: 'zip'
-					},
+					options: {...dropzoneOptions},
 					form: {...form},
 					genres: [
 						{

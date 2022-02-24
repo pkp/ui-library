@@ -177,6 +177,14 @@
 				</notification>
 			</transition-group>
 		</div>
+		<transition name="app__loading">
+			<div v-if="isLoading" class="app__loading" role="alert">
+				<div class="app__loading__content">
+					<spinner></spinner>
+					Loading
+				</div>
+			</div>
+		</transition>
 	</div>
 </template>
 

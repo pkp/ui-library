@@ -98,7 +98,7 @@ import Expander from '@/components/Expander/Expander.vue';
 import List from '@/components/List/List.vue';
 import ListItem from '@/components/List/ListItem.vue';
 import ajaxError from '@/mixins/ajaxError';
-import modal from '@/mixins/modal';
+import dialog from '@/mixins/dialog';
 
 export default {
 	components: {
@@ -106,7 +106,7 @@ export default {
 		List,
 		ListItem
 	},
-	mixins: [modal, ajaxError],
+	mixins: [dialog, ajaxError],
 	props: {
 		apiUrl: {
 			type: String,
@@ -222,7 +222,7 @@ export default {
 		openDeleteModal() {
 			const parentNode = this.$el.parentNode;
 			this.openDialog({
-				modalName: 'delete',
+				name: 'delete',
 				cancelLabel: this.__('common.cancel'),
 				confirmLabel: this.__('common.delete'),
 				message: this.deleteConfirmMessage,
@@ -259,7 +259,7 @@ export default {
 		openResetModal() {
 			const parentNode = this.$el.parentNode;
 			this.openDialog({
-				modalName: 'reset',
+				name: 'reset',
 				cancelLabel: this.__('common.cancel'),
 				confirmLabel: this.resetLabel,
 				message: this.resetConfirmLabel,

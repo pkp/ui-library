@@ -163,7 +163,7 @@ export default {
 		this.currentTab = this.defaultTab || this.tabs[0].id;
 
 		/**
-		 * Listen for global 'tab' events and open the correct tab when called
+		 * Listen for global 'open-tab' events and open the correct tab when called
 		 */
 		pkp.eventBus.$on('open-tab', tabId => {
 			this.tabs.forEach(tab => {

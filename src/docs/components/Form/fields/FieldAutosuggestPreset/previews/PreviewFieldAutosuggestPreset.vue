@@ -48,6 +48,13 @@ export default {
 						value: 7,
 						label: 'Conference Proceedings'
 					}
+				],
+				value: [1],
+				selected: [
+					{
+						value: 1,
+						label: 'Articles'
+					}
 				]
 			}
 		};

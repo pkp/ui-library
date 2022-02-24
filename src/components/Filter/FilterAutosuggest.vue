@@ -49,20 +49,8 @@ export default {
 	padding-right: 1rem;
 
 	// Scale input field down to match size of filters
-	.pkpFormField--autosuggest__input {
-		line-height: 2rem;
-		height: 2rem;
-	}
-
-	// Always display values in vertical list because
-	// filters are used in narrow columns
-	.pkpFormField--autosuggest__values {
-		display: block;
-
-		.pkpBadge {
-			margin-right: 0;
-			display: block;
-		}
+	.pkpAutosuggest__autosuggester {
+		line-height: 1.25rem;
 	}
 }
 </style>

@@ -15,6 +15,7 @@
 	border: none;
 	background: transparent;
 	box-shadow: none;
+	text-align: left;
 	color: @primary;
 	text-decoration: underline;
 	cursor: pointer;
@@ -23,9 +24,41 @@
 	&:focus {
 		color: @primary-lift;
 	}
+
+	&:disabled {
+		color: @text-light;
+	}
 }
 
 // Implement [hidden] support for browsers that don't support it
 [hidden] {
 	display: none;
+}
+
+/**
+ * Width containers
+ *
+ * Prevent content from expanding too wide. Usually used
+ * at the page level for content in a page.
+ */
+// TemplateManager::PAGE_WIDTH_Normal
+.width {
+	max-width: 992px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+// TemplateManager::PAGE_WIDTH_NARROW
+.width--narrow {
+	max-width: 25rem;
+}
+
+// TemplateManager::PAGE_WIDTH_WIDE
+.width--wide {
+	max-width: 1200px;
+}
+
+// TemplateManager::PAGE_WIDTH_FULL
+.width--full {
+	max-width: none;
 }

@@ -11,7 +11,7 @@
 
 <script>
 export default {
-	name: 'List',
+	name: 'ListItem',
 	computed: {
 		classes() {
 			let classes = [];

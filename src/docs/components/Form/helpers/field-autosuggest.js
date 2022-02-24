@@ -4,7 +4,6 @@ export default {
 	label: '',
 	value: [],
 	deselectLabel: 'Remove {$item}',
-	initialPosition: 'inline',
 	selectedLabel: 'Selected',
 	apiUrl: ''
 };

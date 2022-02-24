@@ -4,31 +4,26 @@
 			Modal with Form
 		</pkp-button>
 		<modal
-			v-bind="MODAL_PROPS"
+			closeLabel="Close"
 			name="form"
+			title="Add Announcement"
 			@closed="setFocusToRef('modalFormButton')"
 		>
-			<modal-content
-				closeLabel="Close"
-				modalName="form"
-				title="Add Announcement"
-			>
-				<pkp-form v-bind="form" @set="setForm" @success="formSuccess" />
-			</modal-content>
+			<pkp-form v-bind="form" @set="setForm" @success="formSuccess" />
 		</modal>
 	</div>
 </template>
 
 <script>
 import PkpForm from '@/components/Form/Form.vue';
+import Modal from '@/components/Modal/Modal.vue';
 import cloneDeep from 'clone-deep';
 import form from '@/docs/components/Form/helpers/form-announcement';
-import modal from '@/mixins/modal';
 
 export default {
-	mixins: [modal],
 	components: {
-		PkpForm
+		PkpForm,
+		Modal
 	},
 	data() {
 		return {

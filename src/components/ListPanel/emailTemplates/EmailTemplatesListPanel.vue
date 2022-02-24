@@ -78,18 +78,13 @@
 				/>
 			</template>
 		</list-panel>
-		<modal v-bind="MODAL_PROPS" name="form" @closed="formModalClosed">
-			<modal-content
-				:closeLabel="closeLabel"
-				modalName="form"
-				:title="activeFormTitle"
-			>
-				<pkp-form
-					v-bind="activeForm"
-					@set="updateForm"
-					@success="formSuccess"
-				/>
-			</modal-content>
+		<modal
+			:closeLabel="closeLabel"
+			name="form"
+			:title="activeFormTitle"
+			@closed="formModalClosed"
+		>
+			<pkp-form v-bind="activeForm" @set="updateForm" @success="formSuccess" />
 		</modal>
 	</div>
 </template>
@@ -100,22 +95,23 @@ import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import PkpFilter from '@/components/Filter/Filter.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import PkpHeader from '@/components/Header/Header.vue';
+import Modal from '@/components/Modal/Modal.vue';
 import Search from '@/components/Search/Search.vue';
 import ajaxError from '@/mixins/ajaxError';
 import fetch from '@/mixins/fetch';
-import modal from '@/mixins/modal';
 import cloneDeep from 'clone-deep';
 
 export default {
 	components: {
 		EmailTemplatesListItem,
 		ListPanel,
+		Modal,
 		PkpFilter,
 		PkpForm,
 		PkpHeader,
 		Search
 	},
-	mixins: [ajaxError, fetch, modal],
+	mixins: [ajaxError, fetch],
 	props: {
 		addLabel: {
 			type: String,
@@ -336,7 +332,7 @@ export default {
 			if (!emailTemplate) {
 				this.openDialog({
 					confirmLabel: this.__('common.ok'),
-					modalName: 'unknownError',
+					name: 'unknownError',
 					message: this.__('common.unknownError'),
 					callback: () => {
 						this.$modal.hide('unknownError');
@@ -386,7 +382,7 @@ export default {
 		openResetAllModal() {
 			const resetFocusTo = document.activeElement;
 			this.openDialog({
-				modalName: 'resetAll',
+				name: 'resetAll',
 				cancelLabel: this.__('common.cancel'),
 				confirmLabel: this.resetAllLabel,
 				message: this.resetAllConfirmLabel,

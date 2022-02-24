@@ -6,12 +6,13 @@ import ComponentBadge from './docs/components/Badge/ComponentBadge.vue';
 import ComponentButton from './docs/components/Button/ComponentButton.vue';
 import ComponentCatalogListPanel from './docs/components/ListPanel/ComponentCatalogListPanel.vue';
 import ComponentChart from './docs/components/Chart/ComponentChart.vue';
+import ComponentComposer from './docs/components/Composer/ComponentComposer.vue';
 import ComponentDateRange from './docs/components/DateRange/ComponentDateRange.vue';
 import ComponentDoiListPanel from './docs/components/ListPanel/ComponentDoiListPanel';
 import ComponentDoiListPanelOJS from '@/docs/components/ListPanel/ComponentDoiListPanelOJS';
+import ComponentDecisionPage from './docs/components/DecisionPage/ComponentDecisionPage.vue';
 import ComponentDropdown from './docs/components/Dropdown/ComponentDropdown.vue';
 import ComponentEmailTemplatesListPanel from './docs/components/ListPanel/ComponentEmailTemplatesListPanel.vue';
-import ComponentFilter from './docs/components/Filter/ComponentFilter.vue';
 import ComponentFieldAutosuggestPreset from './docs/components/Form/fields/FieldAutosuggestPreset/ComponentFieldAutosuggestPreset.vue';
 import ComponentFieldArchivingPn from './docs/components/Form/fields/FieldArchivingPn/ComponentFieldArchivingPn.vue';
 import ComponentFieldBaseAutosuggest from './docs/components/Form/fields/FieldBaseAutosuggest/ComponentFieldBaseAutosuggest.vue';
@@ -30,6 +31,11 @@ import ComponentFieldText from './docs/components/Form/fields/FieldText/Componen
 import ComponentFieldTextarea from './docs/components/Form/fields/FieldTextarea/ComponentFieldTextarea.vue';
 import ComponentFieldUpload from './docs/components/Form/fields/FieldUpload/ComponentFieldUpload.vue';
 import ComponentFieldUploadImage from './docs/components/Form/fields/FieldUploadImage/ComponentFieldUploadImage.vue';
+import ComponentFile from './docs/components/File/ComponentFile.vue';
+import ComponentFileAttacher from './docs/components/FileAttacher/ComponentFileAttacher.vue';
+import ComponentFileUploader from './docs/components/FileUploader/ComponentFileUploader.vue';
+import ComponentFileUploadProgress from './docs/components/FileUploadProgress/ComponentFileUploadProgress.vue';
+import ComponentFilter from './docs/components/Filter/ComponentFilter.vue';
 import ComponentForm from './docs/components/Form/ComponentForm.vue';
 import ComponentHeader from './docs/components/Header/ComponentHeader.vue';
 import ComponentHelpButton from './docs/components/HelpButton/ComponentHelpButton.vue';
@@ -43,6 +49,7 @@ import ComponentNotify from './docs/utilities/Notify/ComponentNotify.vue';
 import ComponentOrderer from './docs/components/Orderer/ComponentOrderer.vue';
 import ComponentPage from './docs/components/Page/ComponentPage.vue';
 import ComponentPagination from './docs/components/Pagination/ComponentPagination.vue';
+import ComponentPanel from './docs/components/Panel/ComponentPanel.vue';
 import ComponentProgressBar from './docs/components/ProgressBar/ComponentProgressBar.vue';
 import ComponentSearch from './docs/components/Search/ComponentSearch.vue';
 import ComponentSelectReviewerListPanel from './docs/components/ListPanel/ComponentSelectReviewerListPanel.vue';
@@ -50,6 +57,7 @@ import ComponentSubmissionFilesListPanel from './docs/components/ListPanel/Compo
 import ComponentSubmissionsListPanel from './docs/components/ListPanel/ComponentSubmissionsListPanel.vue';
 import ComponentSpinner from './docs/components/Spinner/ComponentSpinner.vue';
 import ComponentStatsPage from './docs/components/StatsPage/ComponentStatsPage.vue';
+import ComponentSteps from './docs/components/Steps/ComponentSteps.vue';
 import ComponentTable from './docs/components/Table/ComponentTable.vue';
 import ComponentTabs from './docs/components/Tabs/ComponentTabs.vue';
 import ComponentTooltip from './docs/components/Tooltip/ComponentTooltip.vue';
@@ -89,19 +97,24 @@ export default new Router({
 			component: ComponentChart
 		},
 		{
+			path: '/component/Composer/:example?',
+			name: 'Composer',
+			component: ComponentComposer
+		},
+		{
 			path: '/component/DateRange/:example?',
 			name: 'DateRange',
 			component: ComponentDateRange
 		},
 		{
+			path: '/component/DecisionPage/:example?',
+			name: 'DecisionPage',
+			component: ComponentDecisionPage
+		},
+		{
 			path: '/component/Dropdown/:example?',
 			name: 'Dropdown',
 			component: ComponentDropdown
-		},
-		{
-			path: '/component/Filter/:example?',
-			name: 'Filter',
-			component: ComponentFilter
 		},
 		{
 			path: '/component/Form/fields/FieldArchivingPn/:example?',
@@ -197,6 +210,31 @@ export default new Router({
 			path: '/component/Form/:example?',
 			name: 'Form',
 			component: ComponentForm
+		},
+		{
+			path: '/component/File/:example?',
+			name: 'File',
+			component: ComponentFile
+		},
+		{
+			path: '/component/FileAttacher/:example?',
+			name: 'FileAttacher',
+			component: ComponentFileAttacher
+		},
+		{
+			path: '/component/FileUploader/:example?',
+			name: 'FileUploader',
+			component: ComponentFileUploader
+		},
+		{
+			path: '/component/FileUploadProgress/:example?',
+			name: 'FileUploadProgress',
+			component: ComponentFileUploadProgress
+		},
+		{
+			path: '/component/Filter/:example?',
+			name: 'Filter',
+			component: ComponentFilter
 		},
 		{
 			path: '/component/Header/:example?',
@@ -295,6 +333,11 @@ export default new Router({
 			component: ComponentPagination
 		},
 		{
+			path: '/component/Panel/:example?',
+			name: 'Panel',
+			component: ComponentPanel
+		},
+		{
 			path: '/component/ProgressBar/:example?',
 			name: 'ProgressBar',
 			component: ComponentProgressBar
@@ -313,6 +356,11 @@ export default new Router({
 			path: '/component/StatsPage/:example?',
 			name: 'StatsPage',
 			component: ComponentStatsPage
+		},
+		{
+			path: '/component/Steps/:example?',
+			name: 'Steps',
+			component: ComponentSteps
 		},
 		{
 			path: '/component/Table/:example?',

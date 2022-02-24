@@ -1,35 +1,14 @@
 /**
- * Modal mixins
+ * Dialog mixin
  *
- * Modal mixins provide helper functions and configuration settings
- * for opening and closing modals
+ * Helper function and configuration settings for opening
+ * a simple modal
  *
  * @see https://vuejs.org/v2/guide/mixins.html
  */
 import Dialog from '@/components/Modal/Dialog.vue';
-import ModalContent from '@/components/Modal/ModalContent.vue';
-
-const MODAL_PROPS = {
-	height: 'auto',
-	scrollable: true
-};
-
-const MODAL_PROPS_DIALOG = {
-	...MODAL_PROPS,
-	classes: 'v--modal v--modal-dialog',
-	scrollable: false
-};
 
 export default {
-	components: {
-		ModalContent
-	},
-	data() {
-		return {
-			MODAL_PROPS: MODAL_PROPS,
-			MODAL_PROPS_DIALOG: MODAL_PROPS_DIALOG
-		};
-	},
 	methods: {
 		/**
 		 * Open a dialog modal
@@ -58,26 +37,14 @@ export default {
 					}
 				},
 				{
-					...MODAL_PROPS_DIALOG,
+					height: 'auto',
+					scrollable: false,
+					classes: 'v--modal v--modal-dialog',
 					...modalProps,
-					name: props.modalName
+					name: props.name
 				},
 				modalEvents
 			);
-		},
-
-		/**
-		 * Set the focus to a ref
-		 *
-		 * Use this method to restore focus to where it was before the modal
-		 * was opened.
-		 *
-		 * @param {String} ref
-		 */
-		setFocusToRef(ref) {
-			if (this.$refs[ref]) {
-				this.$refs[ref].$el.focus();
-			}
 		}
 	}
 };
