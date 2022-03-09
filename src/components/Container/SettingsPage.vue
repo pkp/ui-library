@@ -5,6 +5,7 @@ import EmailTemplatesListPanel from '@/components/ListPanel/emailTemplates/Email
 import PkpForm from '@/components/Form/Form.vue';
 import ThemeForm from '@/components/Form/context/ThemeForm.vue';
 import DateTimeForm from '@/components/Form/context/DateTimeForm.vue';
+import DoiSettingsForm from '@/components/Form/context/DoiSettingsForm';
 
 export default {
 	name: 'SettingsPage',
@@ -14,7 +15,8 @@ export default {
 		EmailTemplatesListPanel,
 		PkpForm,
 		ThemeForm,
-		DateTimeForm
+		DateTimeForm,
+		DoiSettingsForm
 	},
 	data() {
 		return {
