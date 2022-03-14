@@ -4,7 +4,7 @@
 			<list-panel
 				class="listPanel--selectReviewer"
 				:isSidebarVisible="isSidebarVisible"
-				:items="items"
+				:items="currentReviewers"
 			>
 				<pkp-header slot="header">
 					<h2>
@@ -59,6 +59,8 @@
 					<select-reviewer-list-item
 						:activeReviewsCountLabel="activeReviewsCountLabel"
 						:activeReviewsLabel="activeReviewsLabel"
+						:assignedToLastRound="lastRoundReviewerIds.includes(item.id)"
+						:assignedToLastRoundLabel="assignedToLastRoundLabel"
 						:averageCompletionLabel="averageCompletionLabel"
 						:biographyLabel="biographyLabel"
 						:cancelledReviewsLabel="cancelledReviewsLabel"
@@ -75,6 +77,8 @@
 						:key="item.id"
 						:item="item"
 						:neverAssignedLabel="neverAssignedLabel"
+						:reassignLabel="reassignLabel"
+						:reassignWithNameLabel="reassignWithNameLabel"
 						:reviewerRatingLabel="reviewerRatingLabel"
 						:reviewInterestsLabel="reviewInterestsLabel"
 						:selectReviewerLabel="selectReviewerLabel"
@@ -100,7 +104,6 @@
 </template>
 
 <script>
-import PkpFilter from '@/components/Filter/Filter.vue';
 import FilterSlider from '@/components/Filter/FilterSlider.vue';
 import FilterSliderMultirange from '@/components/Filter/FilterSliderMultirange.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
@@ -112,7 +115,6 @@ import fetch from '@/mixins/fetch';
 
 export default {
 	components: {
-		PkpFilter,
 		FilterSlider,
 		FilterSliderMultirange,
 		ListPanel,
@@ -128,6 +130,10 @@ export default {
 			required: true
 		},
 		activeReviewsLabel: {
+			type: String,
+			required: true
+		},
+		assignedToLastRoundLabel: {
 			type: String,
 			required: true
 		},
@@ -203,7 +209,21 @@ export default {
 				return 0;
 			}
 		},
+		lastRoundReviewers: {
+			type: Array,
+			default() {
+				return [];
+			}
+		},
 		neverAssignedLabel: {
+			type: String,
+			required: true
+		},
+		reassignLabel: {
+			type: String,
+			required: true
+		},
+		reassignWithNameLabel: {
 			type: String,
 			required: true
 		},
@@ -247,6 +267,29 @@ export default {
 			isLoading: false,
 			isSidebarVisible: false
 		};
+	},
+	computed: {
+		/**
+		 * The current reviewers merged with any preset reviewers
+		 */
+		currentReviewers() {
+			if (Object.keys(this.activeFilters).length) {
+				return this.items;
+			}
+			return [
+				...this.lastRoundReviewers,
+				...this.items.filter(
+					reviewer => !this.lastRoundReviewerIds.includes(reviewer.id)
+				)
+			];
+		},
+
+		/**
+		 * The user IDs of reviewers from the last round
+		 */
+		lastRoundReviewerIds() {
+			return this.lastRoundReviewers.map(reviewer => reviewer.id);
+		}
 	},
 	methods: {
 		/**
