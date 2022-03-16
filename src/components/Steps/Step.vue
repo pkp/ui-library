@@ -1,11 +1,5 @@
 <template>
-	<div
-		class="pkpStep"
-		role="tabpanel"
-		:id="id"
-		:aria-labelledby="id + '-button'"
-		:hidden="!isActive"
-	>
+	<div class="pkpStep" :hidden="!isActive">
 		<slot />
 	</div>
 </template>
