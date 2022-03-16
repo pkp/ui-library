@@ -6,7 +6,12 @@ export default [
 			en_US: 'influence-lactation-final-v2-edited-final.docx',
 			fr_CA: 'french-influence-lactation-final-v2-edited-final.docx'
 		},
-		genreId: 1,
+		genre: {
+			id: 1,
+			name: 'Book Manuscript',
+			isDependent: false,
+			isSupplementary: false
+		},
 		documentType: 'word',
 		description: '',
 		url:
@@ -19,7 +24,12 @@ export default [
 			en_US: 'ccorino-disclosure-statement.docx',
 			fr_CA: 'french-ccorino-disclosure-statement.docx'
 		},
-		genreId: 10,
+		genre: {
+			id: 1,
+			name: 'Other',
+			isDependent: false,
+			isSupplementary: true
+		},
 		documentType: 'word',
 		description:
 			'This document details the sources of funding we received to support this research.',
@@ -33,7 +43,12 @@ export default [
 			en_US: 'influence-lactation-dataset-approved.xls',
 			fr_CA: 'french-influence-lactation-dataset-approved.xls'
 		},
-		genreId: 4,
+		genre: {
+			id: 1,
+			name: 'Dataset',
+			isDependent: false,
+			isSupplementary: true
+		},
 		documentType: 'excel',
 		description: '',
 		url:

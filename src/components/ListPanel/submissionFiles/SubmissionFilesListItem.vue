@@ -19,11 +19,11 @@
 				</div>
 				<div class="listPanel__itemActions">
 					<badge
-						v-if="getGenre(item.genreId)"
-						:is-primary="getGenre(item.genreId).isPrimary"
+						v-if="item.genre"
+						:is-primary="isPrimaryGenre"
 						class="listPanel--submissionFiles__itemGenre"
 					>
-						{{ getGenre(item.genreId).name }}
+						{{ item.genre.name }}
 					</badge>
 					<pkp-button
 						:id="editId"
@@ -41,7 +41,7 @@
 					</pkp-button>
 				</div>
 			</div>
-			<div v-if="!item.genreId" class="listPanel--submissionFiles__setGenre">
+			<div v-if="!item.genre" class="listPanel--submissionFiles__setGenre">
 				<span role="alert">
 					<icon icon="exclamation-triangle" :inline="true" />
 					<span
@@ -152,6 +152,13 @@ export default {
 		},
 
 		/**
+		 * Is this a primary file
+		 */
+		isPrimaryGenre() {
+			return this.genre && !this.genre.isDependent && !this.genre.isSupplementary;
+		},
+
+		/**
 		 * A computed id to use in aria-describedby attributes
 		 * for the prompt to choose a genre
 		 *
@@ -191,16 +198,6 @@ export default {
 		compileId(type) {
 			const id = this.item.id || this.item.uuid;
 			return [type, id].join('-');
-		},
-
-		/**
-		 * Get the name of a genre by id
-		 *
-		 * @param {Number} id
-		 * @return {Object}
-		 */
-		getGenre(id) {
-			return this.genres.find(genre => genre.id === id);
 		},
 
 		/**
