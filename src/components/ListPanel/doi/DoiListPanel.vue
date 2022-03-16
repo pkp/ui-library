@@ -254,6 +254,15 @@ export default {
 		registrationAgencyInfo: {
 			type: Object,
 			required: true
+		},
+		/**
+		 * Brings in app-specific publication statuses for use with filters.
+		 *
+		 * Returned object shape: {name: string, published: Number|Array, unpublished: Number|Array}
+		 */
+		publishedStatuses: {
+			type: Object,
+			required: true
 		}
 	},
 	data() {
@@ -329,16 +338,32 @@ export default {
 		 */
 		addFilter(param, value) {
 			let newFilters = {...this.activeFilters};
-			if (['status', 'isPublished', 'issueIds'].includes(param)) {
-				// Handle "toggleable" or single select filters
-				newFilters[param] = value;
-			} else {
-				// Handle multi-select filters
-				if (!newFilters[param]) {
-					newFilters[param] = [];
-				}
-				newFilters[param].push(value);
+
+			// `issueIds` is the only filter param that can be combined with any of the other filters, therefore we reset
+			// the primary filter options if we're not adding an `issueIds` filter
+			if (param !== 'issueIds') {
+				delete newFilters['unpublished'];
+				delete newFilters['unregistered'];
+				delete newFilters['doiStatus'];
+				delete newFilters['hasDois'];
+				delete newFilters[this.publishedStatuses.name];
 			}
+
+			// The unpublished filter looks for items that are unpublished and have DOIs
+			if (param === 'unpublished') {
+				newFilters['hasDois'] = 1;
+				newFilters[
+					this.publishedStatuses.name
+				] = this.publishedStatuses.unpublished;
+				// The unregistered filter looks for items that are published and have DOIs assigned with the STATUS_UNREGISTERED status.
+			} else if (param === 'unregistered') {
+				newFilters['doiStatus'] = pkp.const.DOI_STATUS_UNREGISTERED;
+				newFilters[
+					this.publishedStatuses.name
+				] = this.publishedStatuses.published;
+			}
+
+			newFilters[param] = value;
 			this.activeFilters = newFilters;
 		},
 		/**
@@ -365,13 +390,25 @@ export default {
 		 */
 		removeFilter(param, value) {
 			let newFilters = {...this.activeFilters};
-			if (['status', 'isPublished', 'issueIds'].includes(param)) {
-				// Handle "toggleable" filters
-				delete newFilters[param];
-			} else {
-				// Handle multi-select filters
-				newFilters[param] = newFilters[param].filter(v => v !== value);
+
+			// Selectable filter options `unpublished`, and `unregistered` all work on a combination of filters.
+			// `issueIds` is the only filter param that can be combined with any of the other filters, therefore we reset
+			// the primary filter options if we're not removing an `issueIds` filter
+			if (param !== 'issueIds') {
+				delete newFilters['unpublished'];
+				delete newFilters['unregistered'];
+				delete newFilters['doiStatus'];
+				delete newFilters['hasDois'];
+				delete newFilters[this.publishedStatuses.name];
 			}
+
+			// The unpublished filter operates on items that are unpublished and have DOIs. Non-app-specific filters
+			// are removed above.
+			if (['unpublished', 'unregistered'].includes(param)) {
+				delete newFilters[this.publishedStatuses.name];
+			}
+
+			delete newFilters[param];
 			this.activeFilters = newFilters;
 		},
 		/**

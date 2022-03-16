@@ -46,8 +46,8 @@ export default {
 							doiObject === null
 								? null
 								: doiObject[
-										this.registrationAgencyInfo['registeredMessageKey']
-								  ],
+									this.registrationAgencyInfo['registeredMessageKey']
+									],
 						updateWithNewDoiEndpoint: updateWithNewDoiEndpoint
 					});
 				}
@@ -82,8 +82,8 @@ export default {
 								doiObject === null
 									? null
 									: doiObject[
-											this.registrationAgencyInfo['registeredMessageKey']
-									  ],
+										this.registrationAgencyInfo['registeredMessageKey']
+										],
 							updateWithNewDoiEndpoint: updateWithNewDoiEndpoint
 						});
 					});
@@ -117,8 +117,8 @@ export default {
 							doiObject === null
 								? null
 								: doiObject[
-										this.registrationAgencyInfo['registeredMessageKey']
-								  ],
+									this.registrationAgencyInfo['registeredMessageKey']
+									],
 						updateWithNewDoiEndpoint: updateWithNewDoiEndpoint
 					});
 				}
