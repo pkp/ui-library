@@ -2,8 +2,6 @@
 import Component from '@/docs/Component.vue';
 import PreviewModal from './previews/PreviewModal.vue';
 import PreviewModalTemplate from '!raw-loader!./previews/PreviewModal.vue';
-import PreviewDialog from './previews/PreviewDialog.vue';
-import PreviewDialogTemplate from '!raw-loader!./previews/PreviewDialog.vue';
 import PreviewModalForm from './previews/PreviewModalForm.vue';
 import PreviewModalFormTemplate from '!raw-loader!./previews/PreviewModalForm.vue';
 import PreviewModalTabs from './previews/PreviewModalTabs.vue';
@@ -23,11 +21,6 @@ export default {
 					component: PreviewModal,
 					name: 'Base',
 					template: this.extractTemplate(PreviewModalTemplate)
-				},
-				{
-					component: PreviewDialog,
-					name: 'Dialog',
-					template: this.extractTemplate(PreviewDialogTemplate)
 				},
 				{
 					component: PreviewModalForm,

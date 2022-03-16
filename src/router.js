@@ -8,9 +8,10 @@ import ComponentCatalogListPanel from './docs/components/ListPanel/ComponentCata
 import ComponentChart from './docs/components/Chart/ComponentChart.vue';
 import ComponentComposer from './docs/components/Composer/ComponentComposer.vue';
 import ComponentDateRange from './docs/components/DateRange/ComponentDateRange.vue';
+import ComponentDecisionPage from './docs/components/DecisionPage/ComponentDecisionPage.vue';
+import ComponentDialog from './docs/utilities/Dialog/ComponentDialog.vue';
 import ComponentDoiListPanel from './docs/components/ListPanel/ComponentDoiListPanel';
 import ComponentDoiListPanelOJS from '@/docs/components/ListPanel/ComponentDoiListPanelOJS';
-import ComponentDecisionPage from './docs/components/DecisionPage/ComponentDecisionPage.vue';
 import ComponentDropdown from './docs/components/Dropdown/ComponentDropdown.vue';
 import ComponentEmailTemplatesListPanel from './docs/components/ListPanel/ComponentEmailTemplatesListPanel.vue';
 import ComponentFieldAutosuggestPreset from './docs/components/Form/fields/FieldAutosuggestPreset/ComponentFieldAutosuggestPreset.vue';
@@ -381,6 +382,11 @@ export default new Router({
 			path: '/component/WorkflowPage/:example?',
 			name: 'WorkflowPage',
 			component: ComponentWorkflowPage
+		},
+		{
+			path: '/utilities/Dialog/:example?',
+			name: 'Dialog',
+			component: ComponentDialog
 		},
 		{
 			path: '/utilities/Notify/:example?',

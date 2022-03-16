@@ -10,7 +10,7 @@
 
 | Key | Description |
 | --- | --- |
-| `closed` | When the modal is closed. The payload is passed from the [vue-js-modal](https://github.com/euvl/vue-js-modal) library. See the [Focus](#focus) section below. |
+| `closed` | When the modal is closed. The payload is passed from the [vue-js-modal](https://github.com/euvl/vue-js-modal) library. See the Focus section below. |
 
 ## Global Events
 
@@ -18,7 +18,9 @@ This component does not emit any global events.
 
 ## Usage
 
-This library uses the [vue-js-modal](https://github.com/euvl/vue-js-modal) component to control modals and dialogs. Import the `Modal` component and use it like this.
+This library uses the [vue-js-modal](https://github.com/euvl/vue-js-modal) component to control modals and dialogs. For a simple confiration modal, see the [Dialog](#/component/Dialog) component.
+
+Use the `Modal` component by importing it and showing it like this.
 
 ```js
 import Modal from '@/components/Modal/Modal.vue';
@@ -86,10 +88,10 @@ export default {
 | `actions` | The buttons to add to the dialog. |
 | `actions[0].label` | The label for the button. |
 | `actions[0].callback` | A callback function that will be fired when the button is pressed. |
-| `actions[0].isPrimary` | Whether to style this action as the primary or main action. See [Button](/#/component/Button) |
-| `actions[0].isWarnable` | Whether to style this action like a cancel, back or delete action. See [Button](/#/component/Button) |
-| `actions[0].element` | Pass `a` to make this a link instead of a button. See [Button](/#/component/Button) |
-| `actions[0].href` | The URL of a link when `element` is set to `a`. See [Button](/#/component/Button) |
+| `actions[0].isPrimary` | Whether to style this action as the primary or main action. See [Button](#/component/Button) |
+| `actions[0].isWarnable` | Whether to style this action like a cancel, back or delete action. See [Button](#/component/Button) |
+| `actions[0].element` | Pass `a` to make this a link instead of a button. See [Button](#/component/Button) |
+| `actions[0].href` | The URL of a link when `element` is set to `a`. See [Button](#/component/Button) |
 
 ## Focus
 

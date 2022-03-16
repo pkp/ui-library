@@ -38,7 +38,7 @@ export default {
 				name: 'full',
 				title: 'Several Actions',
 				message:
-					'This dialog includes a link button as well as a callback that fires when the modal is closed (see the console). Dialogs should usually have 2 or at most 3 actions.',
+					'This dialog includes an action that is a link (Visit Page). It also logs something to the console when the modal is closed. Dialogs should have 2 or 3 actions at the most.',
 				actions: [
 					{
 						label: 'Confirm',
