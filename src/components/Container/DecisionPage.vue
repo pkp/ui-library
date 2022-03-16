@@ -44,6 +44,8 @@ export default {
 			steps: [],
 			submissionUrl: '',
 			submissionApiUrl: '',
+			submissionListUrl: '',
+			viewAllSubmissionsLabel: '',
 			viewSubmissionLabel: ''
 		};
 	},
@@ -146,9 +148,6 @@ export default {
 		 * Open the modal when decision is complete
 		 */
 		openCompletedDialog() {
-			const redirect = () => {
-				window.location = this.submissionUrl;
-			};
 			this.openDialog({
 				name: 'completed',
 				title: this.decisionCompleteLabel,
@@ -156,11 +155,18 @@ export default {
 				actions: [
 					{
 						label: this.viewSubmissionLabel,
-						isPrimary: true,
-						callback: redirect
+						element: 'a',
+						href: this.submissionUrl
+					},
+					{
+						label: this.viewAllSubmissionsLabel,
+						element: 'a',
+						href: this.submissionListUrl
 					}
 				],
-				close: redirect
+				close: () => {
+					window.location = this.submissionUrl;
+				}
 			});
 		},
 
