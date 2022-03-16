@@ -44,10 +44,14 @@ export default {
 
 			this.openDialog({
 				name: 'ajaxError',
-				confirmLabel: this.__('common.ok'),
 				title: this.__('common.error'),
 				message: msg,
-				callback: () => this.$modal.hide('ajaxError')
+				actions: [
+					{
+						label: this.__('common.ok'),
+						callback: () => this.$modal.hide('ajaxError')
+					}
+				]
 			});
 		}
 	}

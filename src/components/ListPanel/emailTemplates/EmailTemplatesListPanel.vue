@@ -330,14 +330,7 @@ export default {
 				emailTemplate => emailTemplate.key === key
 			);
 			if (!emailTemplate) {
-				this.openDialog({
-					confirmLabel: this.__('common.ok'),
-					name: 'unknownError',
-					message: this.__('common.unknownError'),
-					callback: () => {
-						this.$modal.hide('unknownError');
-					}
-				});
+				this.ajaxErrorCallback({});
 			}
 
 			let activeForm = cloneDeep(this.form);
@@ -383,36 +376,45 @@ export default {
 			const resetFocusTo = document.activeElement;
 			this.openDialog({
 				name: 'resetAll',
-				cancelLabel: this.__('common.cancel'),
-				confirmLabel: this.resetAllLabel,
-				message: this.resetAllConfirmLabel,
 				title: this.resetAllLabel,
-				callback: () => {
-					let self = this;
-					this.isLoading = true;
-					$.ajax({
-						url: this.apiUrl + '/restoreDefaults',
-						type: 'POST',
-						headers: {
-							'X-Csrf-Token': pkp.currentUser.csrfToken,
-							'X-Http-Method-Override': 'DELETE'
-						},
-						error: self.ajaxErrorCallback,
-						success(r) {
-							self.$modal.hide('resetAll');
-							self.get();
-							pkp.eventBus.$emit(
-								'notify',
-								self.resetAllCompleteLabel,
-								'success'
-							);
-							resetFocusTo.focus();
-						},
-						complete(r) {
-							self.isLoading = false;
+				message: this.resetAllConfirmLabel,
+				actions: [
+					{
+						label: this.resetAllLabel,
+						isPrimary: true,
+						callback: () => {
+							let self = this;
+							this.isLoading = true;
+							$.ajax({
+								url: this.apiUrl + '/restoreDefaults',
+								type: 'POST',
+								headers: {
+									'X-Csrf-Token': pkp.currentUser.csrfToken,
+									'X-Http-Method-Override': 'DELETE'
+								},
+								error: self.ajaxErrorCallback,
+								success(r) {
+									self.$modal.hide('resetAll');
+									self.get();
+									pkp.eventBus.$emit(
+										'notify',
+										self.resetAllCompleteLabel,
+										'success'
+									);
+									resetFocusTo.focus();
+								},
+								complete(r) {
+									self.isLoading = false;
+								}
+							});
 						}
-					});
-				}
+					},
+					{
+						label: this.__('common.cancel'),
+						isWarnable: true,
+						callback: () => this.$modal.hide('resetAll')
+					}
+				]
 			});
 		},
 

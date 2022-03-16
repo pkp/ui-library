@@ -80,14 +80,22 @@ export default {
 		 */
 		cancel() {
 			this.openDialog({
-				cancelLabel: this.keepWorkingLabel,
-				confirmLabel: this.abandonDecisionLabel,
 				name: 'cancel',
-				message: this.cancelConfirmationPrompt,
 				title: this.abandonDecisionLabel,
-				callback: () => {
-					window.location = this.submissionUrl;
-				}
+				message: this.cancelConfirmationPrompt,
+				actions: [
+					{
+						label: this.abandonDecisionLabel,
+						isWarnable: true,
+						callback: () => {
+							window.location = this.submissionUrl;
+						}
+					},
+					{
+						label: this.keepWorkingLabel,
+						callback: () => this.$modal.hide('cancel')
+					}
+				]
 			});
 		},
 
@@ -142,12 +150,17 @@ export default {
 				window.location = this.submissionUrl;
 			};
 			this.openDialog({
-				confirmLabel: this.viewSubmissionLabel,
 				name: 'completed',
-				message: this.decisionCompleteDescription,
 				title: this.decisionCompleteLabel,
-				callback: redirect,
-				closeCallback: redirect
+				message: this.decisionCompleteDescription,
+				actions: [
+					{
+						label: this.viewSubmissionLabel,
+						isPrimary: true,
+						callback: redirect
+					}
+				],
+				close: redirect
 			});
 		},
 

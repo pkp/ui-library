@@ -801,11 +801,21 @@ export default {
 		 */
 		deleteSubmissionPrompt() {
 			this.openDialog({
-				cancelLabel: this.__('common.no'),
 				name: 'deleteSubmission',
-				message: this.__('editor.submissionArchive.confirmDelete'),
 				title: this.__('common.delete'),
-				callback: this.deleteSubmission
+				message: this.__('editor.submissionArchive.confirmDelete'),
+				actions: [
+					{
+						label: this.__('common.yes'),
+						isPrimary: true,
+						callback: this.deleteSubmission
+					},
+					{
+						label: this.__('common.no'),
+						isWarnable: true,
+						callback: () => this.$modal.hide('deleteSubmission')
+					}
+				]
 			});
 		},
 

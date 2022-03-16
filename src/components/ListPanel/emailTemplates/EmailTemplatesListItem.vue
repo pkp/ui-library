@@ -223,33 +223,42 @@ export default {
 			const parentNode = this.$el.parentNode;
 			this.openDialog({
 				name: 'delete',
-				cancelLabel: this.__('common.cancel'),
-				confirmLabel: this.__('common.delete'),
-				message: this.deleteConfirmMessage,
 				title: this.__('common.delete'),
-				callback: () => {
-					let self = this;
-					this.isLoading = true;
+				message: this.deleteConfirmMessage,
+				actions: [
+					{
+						label: this.__('common.delete'),
+						isPrimary: true,
+						callback: () => {
+							let self = this;
+							this.isLoading = true;
 
-					$.ajax({
-						url: this.apiUrl + '/' + this.item.key,
-						type: 'POST',
-						headers: {
-							'X-Csrf-Token': pkp.currentUser.csrfToken,
-							'X-Http-Method-Override': 'DELETE'
-						},
-						error: self.ajaxErrorCallback,
-						success(r) {
-							self.$modal.hide('delete');
-							self.$emit('delete:item', r);
-							pkp.eventBus.$emit('delete:emailTemplate', r);
-							self.setFocusIn(parentNode);
-						},
-						complete(r) {
-							self.isLoading = false;
+							$.ajax({
+								url: this.apiUrl + '/' + this.item.key,
+								type: 'POST',
+								headers: {
+									'X-Csrf-Token': pkp.currentUser.csrfToken,
+									'X-Http-Method-Override': 'DELETE'
+								},
+								error: self.ajaxErrorCallback,
+								success(r) {
+									self.$modal.hide('delete');
+									self.$emit('delete:item', r);
+									pkp.eventBus.$emit('delete:emailTemplate', r);
+									self.setFocusIn(parentNode);
+								},
+								complete(r) {
+									self.isLoading = false;
+								}
+							});
 						}
-					});
-				}
+					},
+					{
+						label: this.__('common.cancel'),
+						isWarnable: true,
+						callback: () => this.$modal.hide('delete')
+					}
+				]
 			});
 		},
 
@@ -260,44 +269,53 @@ export default {
 			const parentNode = this.$el.parentNode;
 			this.openDialog({
 				name: 'reset',
-				cancelLabel: this.__('common.cancel'),
-				confirmLabel: this.resetLabel,
-				message: this.resetConfirmLabel,
 				title: this.resetLabel,
-				callback: () => {
-					let self = this;
-					this.isLoading = true;
-					$.ajax({
-						url: this.apiUrl + '/' + this.item.key,
-						type: 'POST',
-						headers: {
-							'X-Csrf-Token': pkp.currentUser.csrfToken,
-							'X-Http-Method-Override': 'DELETE'
-						},
-						error: self.ajaxErrorCallback,
-						success(r) {
+				message: this.resetConfirmLabel,
+				actions: [
+					{
+						label: this.resetLabel,
+						isPrimary: true,
+						callback: () => {
+							let self = this;
+							this.isLoading = true;
 							$.ajax({
-								url: self.apiUrl + '/' + self.item.key,
-								type: 'GET',
+								url: this.apiUrl + '/' + this.item.key,
+								type: 'POST',
+								headers: {
+									'X-Csrf-Token': pkp.currentUser.csrfToken,
+									'X-Http-Method-Override': 'DELETE'
+								},
 								error: self.ajaxErrorCallback,
 								success(r) {
-									self.$modal.hide('reset');
-									self.$emit('update:item', r);
-									pkp.eventBus.$emit('update:emailTemplate', r);
-									pkp.eventBus.$emit(
-										'notify',
-										self.resetCompleteLabel,
-										'success'
-									);
-									self.setFocusIn(parentNode);
-								},
-								complete() {
-									self.isLoading = false;
+									$.ajax({
+										url: self.apiUrl + '/' + self.item.key,
+										type: 'GET',
+										error: self.ajaxErrorCallback,
+										success(r) {
+											self.$modal.hide('reset');
+											self.$emit('update:item', r);
+											pkp.eventBus.$emit('update:emailTemplate', r);
+											pkp.eventBus.$emit(
+												'notify',
+												self.resetCompleteLabel,
+												'success'
+											);
+											self.setFocusIn(parentNode);
+										},
+										complete() {
+											self.isLoading = false;
+										}
+									});
 								}
 							});
 						}
-					});
-				}
+					},
+					{
+						label: this.__('common.cancel'),
+						isWarnable: true,
+						callback: () => this.$modal.hide('reset')
+					}
+				]
 			});
 		},
 		/**

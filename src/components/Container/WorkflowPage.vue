@@ -229,14 +229,23 @@ export default {
 		 */
 		openCreateVersionPrompt() {
 			this.openDialog({
-				cancelLabel: this.__('common.no'),
 				name: 'createVersion',
-				message: this.versionConfirmMessage,
 				title: this.versionConfirmTitle,
-				callback: () => {
-					this.createVersion();
-					this.$modal.hide('createVersion');
-				}
+				message: this.versionConfirmMessage,
+				actions: [
+					{
+						label: this.__('common.yes'),
+						isWarnable: true,
+						callback: () => {
+							this.createVersion();
+							this.$modal.hide('createVersion');
+						}
+					},
+					{
+						label: this.__('common.no'),
+						callback: () => this.$modal.hide('createVersion')
+					}
+				]
 			});
 		},
 
@@ -318,8 +327,7 @@ export default {
 		openUnpublish() {
 			this.openDialog({
 				name: 'confirmUnpublish',
-				cancelLabel: this.__('common.cancel'),
-				confirmLabel:
+				title:
 					this.workingPublication.status === pkp.const.STATUS_SCHEDULED
 						? this.unscheduleLabel
 						: this.unpublishLabel,
@@ -327,14 +335,23 @@ export default {
 					this.workingPublication.status === pkp.const.STATUS_SCHEDULED
 						? this.unscheduleConfirmLabel
 						: this.unpublishConfirmLabel,
-				title:
-					this.workingPublication.status === pkp.const.STATUS_SCHEDULED
-						? this.unscheduleLabel
-						: this.unpublishLabel,
-				callback: () => {
-					this.unpublish(this.workingPublication);
-					this.$modal.hide('confirmUnpublish');
-				}
+				actions: [
+					{
+						label:
+							this.workingPublication.status === pkp.const.STATUS_SCHEDULED
+								? this.unscheduleLabel
+								: this.unpublishLabel,
+						isPrimary: true,
+						callback: () => {
+							this.unpublish(this.workingPublication);
+							this.$modal.hide('confirmUnpublish');
+						}
+					},
+					{
+						label: this.__('common.cancel'),
+						callback: () => this.$modal.hide('confirmUnpublish')
+					}
+				]
 			});
 		},
 

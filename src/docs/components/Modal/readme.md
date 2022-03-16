@@ -46,16 +46,29 @@ export default {
 	mixins: [dialog],
 	methods: {
 		this.openDialog({
-			cancelLabel: 'Cancel',
-			confirmLabel: 'Confirm',
-			message: 'Are you sure you want to submit this article?',
-			name: 'dialog',
+			name: 'example',
 			title: 'Submit Article',
-			callback: () => {
-				// user has confirmed
-			},
-			closeCallback: () => {
-				// user has cancelled
+			message: 'Are you sure you want to submit this article?',
+			actions: [
+				{
+					label: 'Confirm',
+					isPrimary: true,
+					callback: () => {
+						// user has confirmed
+					},
+				},
+				{
+					label: 'Cancel',
+					isWarnable: true,
+					callback: () => {
+						// user has cancelled
+						// usually you want to close the modal
+						this.$modal.hide('example');
+					}
+				}
+			],
+			close: () => {
+				// dialog has been closed
 			}
 		});
 	}
@@ -66,13 +79,17 @@ export default {
 
 | Key | Description |
 | --- | --- |
-| `cancelLabel` | A localized label for the cancel button. |
-| `confirmLabel` | A localized label for the confirm button. |
-| `message` | The message to display in the dialog. |
 | `name` | A unique name for this dialog. |
 | `title` | The title to display in the dialog. |
-| `callback` | A callback function to call when the user clicks the confirm button. |
-| `closeCallback` | A callback function to call when the user closes the modal. |
+| `message` | The message to display in the dialog. |
+| `close` | A callback function that will be fired when the dialog is closed. |
+| `actions` | The buttons to add to the dialog. |
+| `actions[0].label` | The label for the button. |
+| `actions[0].callback` | A callback function that will be fired when the button is pressed. |
+| `actions[0].isPrimary` | Whether to style this action as the primary or main action. See [Button](/#/component/Button) |
+| `actions[0].isWarnable` | Whether to style this action like a cancel, back or delete action. See [Button](/#/component/Button) |
+| `actions[0].element` | Pass `a` to make this a link instead of a button. See [Button](/#/component/Button) |
+| `actions[0].href` | The URL of a link when `element` is set to `a`. See [Button](/#/component/Button) |
 
 ## Focus
 
