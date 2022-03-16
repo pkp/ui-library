@@ -39,7 +39,7 @@
 
 			<steps
 				:current="currentStep.id"
-				:initialized-steps="initializedSteps"
+				:started-steps="startedSteps"
 				label="Complete the following steps to take this decision"
 				progress-label="{$current}/{$total} steps"
 				show-steps-label="Show all steps"
@@ -178,7 +178,7 @@
 					class="decision__skipStep -linkButton"
 					v-if="currentStep.type === 'email'"
 					:disabled="isSubmitting"
-					@click="skipStep(currentStep.id)"
+					@click="toggleSkippedStep(currentStep.id)"
 				>
 					Skip this email
 				</button>
@@ -251,7 +251,7 @@ export default {
 			emailTemplatesApiUrl:
 				'http://localhost:8000/publicknowledge/api/v1/emailTemplates',
 			stepErrorMessage: 'There is a problem with the {$stepName} step.',
-			initializedSteps: [],
+			startedSteps: [],
 			isComplete: false,
 			isSubmitting: false,
 			reviewRoundId: 2,

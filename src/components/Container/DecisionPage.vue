@@ -35,7 +35,7 @@ export default {
 			decisionCompleteDescription: '',
 			emailTemplatesApiUrl: '',
 			fileGenres: [],
-			initializedSteps: [],
+			startedSteps: [],
 			isSubmitting: false,
 			keepWorkingLabel: '',
 			reviewRoundId: 0,
@@ -155,7 +155,7 @@ export default {
 		 * Go to a step in the wizard
 		 */
 		openStep(stepId) {
-			this.initializedSteps = [...new Set([...this.initializedSteps, stepId])];
+			this.startedSteps = [...new Set([...this.startedSteps, stepId])];
 			this.currentStep = this.steps.find(step => step.id === stepId);
 		},
 

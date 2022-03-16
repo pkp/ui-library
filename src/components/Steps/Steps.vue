@@ -1,46 +1,49 @@
 <template>
-	<div class="pkpSteps">
+	<div class="pkpSteps" :class="{'pkpSteps--collapsed': collapsed}">
 		<div
 			ref="buttons"
 			class="pkpSteps__buttonWrapper"
-			:class="{'-screenReader': steps.length === 1}"
+			:class="{
+				'-screenReader': steps.length === 1
+			}"
 		>
-			<div
-				class="pkpSteps__buttons"
-				:class="{'pkpSteps__buttons--collapsed': collapsed}"
-				role="tablist"
-				:aria-label="label"
-			>
-				<span class="pkpSteps__line" aria-hidden="true" />
-				<span
-					ref="line"
-					class="pkpSteps__line pkpSteps__line--initialized"
-					aria-hidden="true"
-				/>
-				<button
+			<span class="pkpSteps__line" aria-hidden="true" />
+			<span
+				ref="line"
+				class="pkpSteps__line pkpSteps__line__started"
+				aria-hidden="true"
+			/>
+			<ol class="pkpSteps__buttons" :aria-label="label">
+				<li
 					v-for="(step, i) in steps"
-					:aria-selected="current === step.id"
-					:aria-controls="step.id"
-					class="pkpSteps__button"
+					class="pkpSteps__step"
 					:class="{
-						'pkpSteps__button--initialized': initializedSteps.includes(step.id),
 						'-screenReader': collapsed && !stepsVisible && current !== step.id
 					}"
-					:id="step.id + '-button'"
 					:key="step.id"
-					:ref="'button' + step.id"
-					role="tab"
-					:tabindex="current === step.id ? '' : -1"
-					@click="setCurrent(step.id)"
-					@keydown.35.prevent="setLastStep"
-					@keydown.36.prevent="setFirstStep"
-					@keydown.left.exact.prevent="focusStepByIndex(i - 1)"
-					@keydown.right.exact.prevent="focusStepByIndex(i + 1)"
 				>
-					<span class="pkpSteps__number">{{ i + 1 }}</span>
-					{{ step.label }}
-				</button>
-			</div>
+					<template v-if="startedSteps.includes(step.id)">
+						<button
+							class="pkpSteps__step__label"
+							:class="{
+								'pkpSteps__step__label--current': current === step.id,
+								'pkpSteps__step__label--started': startedSteps.includes(step.id)
+							}"
+							:ref="'button' + step.id"
+							@click="setCurrent(step.id)"
+						>
+							<span class="pkpSteps__step__number">{{ i + 1 }}</span>
+							{{ step.label }}
+						</button>
+					</template>
+					<template v-else>
+						<span class="pkpSteps__step__label" :ref="'button' + step.id">
+							<span class="pkpSteps__step__number">{{ i + 1 }}</span>
+							{{ step.label }}
+						</span>
+					</template>
+				</li>
+			</ol>
 			<div v-if="collapsed" class="pkpSteps__controls" aria-hidden="true">
 				<span class="pkpSteps__progress">
 					{{ progress }}
@@ -63,12 +66,12 @@ import elementResizeEvent from 'element-resize-event';
 
 export default {
 	props: {
-		initializedSteps: {
-			type: Array,
-			required: true
-		},
 		current: {
 			type: String,
+			required: true
+		},
+		startedSteps: {
+			type: Array,
 			required: true
 		},
 		label: {
@@ -107,41 +110,19 @@ export default {
 	},
 	methods: {
 		/**
-		 * Move the cursor focus to a step
-		 */
-		focusStep(stepId) {
-			this.$refs['button' + stepId][0].focus();
-		},
-
-		/**
-		 * Move the cursor focus to a step by its index in the
-		 * array of steps
-		 *
-		 * Keyboard: → / ←
-		 *
-		 * @param Number i The index of the step to focus
-		 */
-		focusStepByIndex(i) {
-			const step = this.steps[i] || null;
-			if (step) {
-				this.focusStep(step.id);
-			}
-		},
-
-		/**
 		 * Check the width of this element and switch between collapsed
 		 * or expanded view depending on whether all the steps fit within
 		 * the allowed width
 		 */
 		maybeToggleCollapsedView() {
 			const totalWidth = this.$refs.buttons.offsetWidth;
-			const allButtons = this.$refs.buttons.querySelectorAll('[role="tab"]');
-			const allButtonsWidth = Array.prototype.slice
-				.call(allButtons)
+			const allSteps = this.$refs.buttons.querySelectorAll('li');
+			const allStepsWidth = Array.prototype.slice
+				.call(allSteps)
 				.reduce((totalWidth, button) => {
 					return totalWidth + button.offsetWidth;
 				}, 0);
-			this.collapsed = allButtonsWidth > totalWidth;
+			this.collapsed = allStepsWidth > totalWidth;
 		},
 
 		/**
@@ -160,41 +141,20 @@ export default {
 		 */
 		setCurrent(stepId) {
 			this.$emit('step:open', stepId);
-			this.$nextTick(() => {
-				this.focusStep(stepId);
-			});
-		},
-
-		/**
-		 * Set the current step to the first step in the list
-		 *
-		 * Keyboard: [Home]
-		 */
-		setFirstStep() {
-			this.focusStep(this.steps[0].id);
-		},
-
-		/**
-		 * Set the current step to the last step in the list
-		 *
-		 * Keyboard: [End]
-		 */
-		setLastStep() {
-			this.focusStep(this.steps[this.steps.length - 1].id);
 		},
 
 		/**
 		 * Set the width/height of the line between steps that
-		 * shows which steps have been initialized
+		 * shows which steps have been started
 		 */
-		setInitializedLine() {
-			if (this.initializedSteps.length < 2) {
+		setStartedLine() {
+			if (this.startedSteps.length < 2) {
 				this.$refs.line.style.right = 'auto';
 				return;
 			}
 			const lastStep = this.steps.reduce((last, current) => {
-				return this.initializedSteps.includes(current.id) ? current : last;
-			}, this.initializedSteps[0]);
+				return this.startedSteps.includes(current.id) ? current : last;
+			}, this.startedSteps[0]);
 			const width =
 				this.$refs.buttons.offsetWidth -
 				this.$refs['button' + lastStep.id][0].offsetLeft;
@@ -216,7 +176,13 @@ export default {
 		 */
 		current(newVal, oldVal) {
 			this.setChildStepsIsActive(newVal);
-			this.setInitializedLine();
+			this.setStartedLine();
+			this.$nextTick(() => {
+				this.setFocusIn(this.$el.querySelector('.pkpStep:not([hidden])'));
+				this.$scrollTo(this.$el, 500, {
+					offset: -50
+				});
+			});
 		}
 	},
 	mounted() {
@@ -242,7 +208,7 @@ export default {
 		/**
 		 * Set the progress line
 		 */
-		this.setInitializedLine();
+		this.$nextTick(() => this.setStartedLine());
 	}
 };
 </script>
@@ -262,13 +228,10 @@ export default {
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
+	margin: 0;
+	padding: 0;
 	// Align buttons with controls when collapsed
 	margin-top: 1px;
-}
-
-.pkpSteps__buttons--collapsed {
-	flex-direction: column;
-	align-items: flex-start;
 }
 
 .pkpSteps__controls,
@@ -286,7 +249,27 @@ export default {
 	margin-right: 0.25rem;
 }
 
-.pkpSteps__number {
+.pkpSteps__step {
+	list-style: none;
+	// Make line-height consistent for button and span labels
+	line-height: @line-sml;
+}
+
+.pkpSteps__step__label {
+	position: relative;
+	display: inline-block;
+	padding: 1em;
+	border: none;
+	text-decoration: none;
+	font-size: @font-sml;
+	font-weight: @bold;
+	white-space: nowrap;
+	// cover the line connecting each step
+	background: @lift;
+	z-index: 2;
+}
+
+.pkpSteps__step__number {
 	display: inline-block;
 	padding: 0;
 	width: 2.5em;
@@ -300,44 +283,38 @@ export default {
 	// Align with the text
 	position: relative;
 	top: -1px;
+	outline-offset: 2px;
 }
 
-.pkpSteps__button {
-	padding: 1em;
-	border: none;
-	background: transparent;
-	text-decoration: none;
-	font-size: @font-sml;
-	font-weight: @bold;
-	// cover the line connecting each step
-	background: @lift;
-	z-index: 2;
-
-	&:hover,
-	&:focus {
-		outline: 0;
-
-		.pkpSteps__number {
-			border-color: @primary;
-		}
-	}
-}
-
-.pkpSteps__button--initialized {
+.pkpSteps__step__label--started {
 	color: @primary;
 
-	.pkpSteps__number {
+	.pkpSteps__step__number {
 		background: @primary;
 		color: @lift;
 		border-color: @primary;
 	}
 
-	&:hover,
-	&:focus {
-		.pkpSteps__number {
-			outline: 1px solid @primary;
-			outline-offset: 2px;
+	&:hover {
+		outline: 0;
+
+		.pkpSteps__step__number {
+			outline: @bg-border;
 		}
+	}
+
+	&:focus {
+		outline: 0;
+
+		.pkpSteps__step__number {
+			outline: 2px solid @primary;
+		}
+	}
+}
+
+.pkpSteps__step__label--current {
+	.pkpSteps__step__number {
+		outline: 1px solid @primary;
 	}
 }
 
@@ -352,8 +329,20 @@ export default {
 	z-index: 1;
 }
 
-.pkpSteps__line--initialized {
+.pkpSteps__line__started {
 	right: auto;
 	background: @primary;
+}
+
+.pkpSteps--collapsed {
+	.pkpSteps__line,
+	.pkpSteps__line__started {
+		display: none;
+	}
+
+	.pkpSteps__buttons {
+		flex-direction: column;
+		align-items: flex-start;
+	}
 }
 </style>
