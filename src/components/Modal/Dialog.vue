@@ -8,7 +8,9 @@
 				</h2>
 				<button class="modal__closeButton" @click="$modal.hide(name)">
 					<span :aria-hidden="true">×</span>
-					<span class="-screenReader">{{ closeLabel }}</span>
+					<span class="-screenReader">
+						{{ closeLabel || __('common.close') }}
+					</span>
 				</button>
 			</div>
 			<div class="modal__content">
@@ -16,23 +18,18 @@
 			</div>
 			<div class="modal__footer">
 				<spinner v-if="isLoading" />
-				<slot name="actions">
-					<pkp-button
-						:isPrimary="true"
-						:isDisabled="isLoading"
-						@click="fireCallback"
-					>
-						{{ confirmLabel }}
-					</pkp-button>
-					<pkp-button
-						v-if="cancelLabel"
-						:isWarnable="true"
-						:isDisabled="isLoading"
-						@click="$modal.hide(name)"
-					>
-						{{ cancelLabel }}
-					</pkp-button>
-				</slot>
+				<pkp-button
+					v-for="action in actions"
+					:key="action.label"
+					:element="action.element || 'button'"
+					:href="action.href || null"
+					:isPrimary="action.isPrimary || null"
+					:isWarnable="action.isWarnable || null"
+					:isDisabled="isLoading"
+					@click="action.callback ? fireCallback(action.callback) : null"
+				>
+					{{ action.label }}
+				</pkp-button>
 			</div>
 		</div>
 		<span tabindex="0" @focus="setFocusIn($refs.keyboardTrap)" />
@@ -47,29 +44,16 @@ export default {
 	props: {
 		actions: {
 			type: Array,
-			default() {
-				return [];
-			}
-		},
-		callback: {
-			type: Function,
 			required: true
 		},
-		cancelLabel: {
-			type: String,
-			default() {
-				return '';
-			}
-		},
-		closeCallback: {
+		close: {
 			type: Function,
 			default() {
 				return () => {};
 			}
 		},
-		confirmLabel: {
-			type: String,
-			reqired: true
+		closeLabel: {
+			type: String
 		},
 		message: {
 			type: String,
@@ -78,7 +62,7 @@ export default {
 		title: {
 			type: String,
 			default() {
-				return {};
+				return '';
 			}
 		}
 	},
@@ -88,17 +72,19 @@ export default {
 		};
 	},
 	methods: {
-		fireCallback() {
+		fireCallback(callback) {
 			this.isLoading = true;
-			this.callback();
+			if (typeof callback === 'function') {
+				callback();
+			}
 		}
 	},
 	mounted() {
 		this.setFocusToRef('keyboardTrap');
 	},
 	destroyed() {
-		if (typeof this.closeCallback === 'function') {
-			this.closeCallback();
+		if (typeof this.close === 'function') {
+			this.close();
 		}
 	}
 };

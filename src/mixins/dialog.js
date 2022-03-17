@@ -14,25 +14,23 @@ export default {
 		 * Open a dialog modal
 		 *
 		 * @param {Object} props Props to pass to the <dialog> component
-		 * @param {Object} modalProps Props to pass to this.$modal. See vue-js-modal docs
-		 * @param {Object} modalEvents Events to pass to this.$modal. See vue-js-modal docs
+		 * @param {Object} modalProps Optional. Props to pass to this.$modal. See vue-js-modal docs
+		 * @param {Object} modalEvents Optional. Events to pass to this.$modal. See vue-js-modal docs
 		 */
 		openDialog(props, modalProps, modalEvents) {
 			const focusEl = document.activeElement;
-			props.closeLabel = props.closeLabel || this.__('common.close');
-			props.confirmLabel = props.confirmLabel || this.__('common.yes');
 			modalProps = modalProps || {};
 			modalEvents = modalEvents || {};
 			this.$modal.show(
 				Dialog,
 				{
 					...props,
-					closeCallback: () => {
+					close: () => {
 						if (focusEl) {
 							focusEl.focus();
 						}
-						if (props.closeCallback) {
-							props.closeCallback();
+						if (props.close) {
+							props.close();
 						}
 					}
 				},

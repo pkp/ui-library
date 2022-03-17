@@ -218,28 +218,38 @@ export default {
 		 */
 		remove(item) {
 			this.openDialog({
-				cancelLabel: this.__('common.no'),
 				name: 'remove',
-				message: this.removeConfirmLabel,
 				title: this.__('common.remove'),
-				callback: () => {
-					var self = this;
-					$.ajax({
-						url: this.apiUrl + '/' + item.id + '?stageId=' + this.stageId,
-						type: 'POST',
-						headers: {
-							'X-Csrf-Token': pkp.currentUser.csrfToken,
-							'X-Http-Method-Override': 'DELETE'
-						},
-						error: self.ajaxErrorCallback,
-						success(r) {
-							const items = self.items.filter(item => item.id !== r.id);
-							self.$emit('set', self.id, {items});
-							self.$modal.hide('remove');
-							self.$refs.addFileButton.$el.focus();
+				message: this.removeConfirmLabel,
+				actions: [
+					{
+						label: this.__('common.yes'),
+						isPrimary: true,
+						callback: () => {
+							var self = this;
+							$.ajax({
+								url: this.apiUrl + '/' + item.id + '?stageId=' + this.stageId,
+								type: 'POST',
+								headers: {
+									'X-Csrf-Token': pkp.currentUser.csrfToken,
+									'X-Http-Method-Override': 'DELETE'
+								},
+								error: self.ajaxErrorCallback,
+								success(r) {
+									const items = self.items.filter(item => item.id !== r.id);
+									self.$emit('set', self.id, {items});
+									self.$modal.hide('remove');
+									self.$refs.addFileButton.$el.focus();
+								}
+							});
 						}
-					});
-				}
+					},
+					{
+						label: this.__('common.no'),
+						isWarnable: true,
+						callback: () => this.$modal.hide('remove')
+					}
+				]
 			});
 		},
 

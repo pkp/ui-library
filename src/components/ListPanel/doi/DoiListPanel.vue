@@ -426,32 +426,25 @@ export default {
 				registrationAgency: this.registrationAgencyInfo['displayName']
 			});
 
-			this.openDialog({
-				cancelLabel: this.__('common.cancel'),
-				confirmLabel: actionLabel,
-				message: actionMessage,
-				name: 'bulkActions',
-				title: actionLabel,
-				callback: () => {
-					$.ajax({
-						...this.getBulkActionAjaxProps('deposit'),
-						data: {
-							ids: ids
-						},
-						/**
-						 * @param {{responseMessage: string}} response
-						 */
-						success: response => {
-							pkp.eventBus.$emit(
-								'notify',
-								this.__(response.responseMessage),
-								'success'
-							);
-						},
-						error: response => this.ajaxErrorCallback(response),
-						complete: () => this.onBulkActionComplete()
-					});
-				}
+			this.openBulkActionDialog(actionLabel, actionMessage, () => {
+				$.ajax({
+					...this.getBulkActionAjaxProps('deposit'),
+					data: {
+						ids: ids
+					},
+					/**
+					 * @param {{responseMessage: string}} response
+					 */
+					success: response => {
+						pkp.eventBus.$emit(
+							'notify',
+							this.__(response.responseMessage),
+							'success'
+						);
+					},
+					error: response => this.ajaxErrorCallback(response),
+					complete: () => this.onBulkActionComplete()
+				});
 			});
 		},
 		/**
@@ -464,40 +457,33 @@ export default {
 				registrationAgency: this.registrationAgencyInfo['displayName']
 			});
 
-			this.openDialog({
-				cancelLabel: this.__('common.cancel'),
-				confirmLabel: actionLabel,
-				message: actionMessage,
-				name: 'bulkActions',
-				title: actionLabel,
-				callback: () => {
-					$.ajax({
-						...this.getBulkActionAjaxProps('export'),
-						data: {
-							ids: this.selected
-						},
-						/**
-						 *
-						 * @param {{temporaryFileId: int}} data
-						 */
-						success: data => {
-							// Triggers GET request to download TemporaryFile with id of temporaryFileId
-							const anchor = document.createElement('a');
-							anchor.href = `${this.doiApiUrl}/exports/${data.temporaryFileId}`;
-							document.body.appendChild(anchor);
-							anchor.click();
-							document.body.removeChild(anchor);
+			this.openBulkActionDialog(actionLabel, actionMessage, () => {
+				$.ajax({
+					...this.getBulkActionAjaxProps('export'),
+					data: {
+						ids: this.selected
+					},
+					/**
+					 *
+					 * @param {{temporaryFileId: int}} data
+					 */
+					success: data => {
+						// Triggers GET request to download TemporaryFile with id of temporaryFileId
+						const anchor = document.createElement('a');
+						anchor.href = `${this.doiApiUrl}/exports/${data.temporaryFileId}`;
+						document.body.appendChild(anchor);
+						anchor.click();
+						document.body.removeChild(anchor);
 
-							pkp.eventBus.$emit(
-								'notify',
-								this.__('manager.dois.notification.exportSuccess'),
-								'success'
-							);
-						},
-						error: response => this.ajaxErrorCallback(response),
-						complete: () => this.onBulkActionComplete()
-					});
-				}
+						pkp.eventBus.$emit(
+							'notify',
+							this.__('manager.dois.notification.exportSuccess'),
+							'success'
+						);
+					},
+					error: response => this.ajaxErrorCallback(response),
+					complete: () => this.onBulkActionComplete()
+				});
 			});
 		},
 		/**
@@ -510,29 +496,22 @@ export default {
 				{count: this.selected.length}
 			);
 
-			this.openDialog({
-				cancelLabel: this.__('common.cancel'),
-				confirmLabel: actionLabel,
-				message: actionMessage,
-				name: 'bulkActions',
-				title: actionLabel,
-				callback: () => {
-					$.ajax({
-						...this.getBulkActionAjaxProps('markRegistered'),
-						data: {
-							ids: this.selected
-						},
-						success: () => {
-							pkp.eventBus.$emit(
-								'notify',
-								this.__('manager.dois.notification.markRegisteredSuccess'),
-								'success'
-							);
-						},
-						error: response => this.ajaxErrorCallback(response),
-						complete: () => this.onBulkActionComplete()
-					});
-				}
+			this.openBulkActionDialog(actionLabel, actionMessage, () => {
+				$.ajax({
+					...this.getBulkActionAjaxProps('markRegistered'),
+					data: {
+						ids: this.selected
+					},
+					success: () => {
+						pkp.eventBus.$emit(
+							'notify',
+							this.__('manager.dois.notification.markRegisteredSuccess'),
+							'success'
+						);
+					},
+					error: response => this.ajaxErrorCallback(response),
+					complete: () => this.onBulkActionComplete()
+				});
 			});
 		},
 		/**
@@ -544,29 +523,22 @@ export default {
 				count: this.selected.length
 			});
 
-			this.openDialog({
-				cancelLabel: this.__('common.cancel'),
-				confirmLabel: actionLabel,
-				message: actionMessage,
-				name: 'bulkActions',
-				title: actionLabel,
-				callback: () => {
-					$.ajax({
-						...this.getBulkActionAjaxProps('assignDois'),
-						data: {
-							ids: this.selected
-						},
-						success: () => {
-							pkp.eventBus.$emit(
-								'notify',
-								this.__('manager.dois.notification.assignDoisSuccess'),
-								'success'
-							);
-						},
-						error: response => this.ajaxErrorCallback(response),
-						complete: () => this.onBulkActionComplete()
-					});
-				}
+			this.openBulkActionDialog(actionLabel, actionMessage, () => {
+				$.ajax({
+					...this.getBulkActionAjaxProps('assignDois'),
+					data: {
+						ids: this.selected
+					},
+					success: () => {
+						pkp.eventBus.$emit(
+							'notify',
+							this.__('manager.dois.notification.assignDoisSuccess'),
+							'success'
+						);
+					},
+					error: response => this.ajaxErrorCallback(response),
+					complete: () => this.onBulkActionComplete()
+				});
 			});
 		},
 		/**
@@ -578,30 +550,49 @@ export default {
 				registrationAgency: this.registrationAgencyInfo['displayName']
 			});
 
+			this.openBulkActionDialog(actionLabel, actionMessage, () => {
+				$.ajax({
+					url: `${this.doiApiUrl}/depositAll`,
+					type: 'POST',
+					headers: {
+						'X-Csrf-Token': pkp.currentUser.csrfToken
+					},
+					success: () => {
+						pkp.eventBus.$emit(
+							'notify',
+							this.__('manager.dois.notification.depositQueuedSuccess'),
+							'success'
+						);
+					},
+					error: response => this.ajaxErrorCallback(response),
+					complete: () => this.onBulkActionComplete()
+				});
+			});
+		},
+		/**
+		 * A reusable method for opening a bulk action confirmation dialog
+		 *
+		 * @param {String} title The title of the dialog
+		 * @param {String} message The message in the dialog
+		 * @param {Function} callback A callback function to fire when the dialog is confirmed
+		 */
+		openBulkActionDialog(title, message, callback) {
 			this.openDialog({
-				cancelLabel: this.__('common.cancel'),
-				confirmLabel: actionLabel,
-				message: actionMessage,
 				name: 'bulkActions',
-				title: actionLabel,
-				callback: () => {
-					$.ajax({
-						url: `${this.doiApiUrl}/depositAll`,
-						type: 'POST',
-						headers: {
-							'X-Csrf-Token': pkp.currentUser.csrfToken
-						},
-						success: () => {
-							pkp.eventBus.$emit(
-								'notify',
-								this.__('manager.dois.notification.depositQueuedSuccess'),
-								'success'
-							);
-						},
-						error: response => this.ajaxErrorCallback(response),
-						complete: () => this.onBulkActionComplete()
-					});
-				}
+				title: title,
+				message: message,
+				actions: [
+					{
+						label: title,
+						isPrimary: true,
+						callback: callback
+					},
+					{
+						label: this.__('common.cancel'),
+						isWarnable: true,
+						callback: () => this.$modal.hide('bulkActions')
+					}
+				]
 			});
 		},
 		/**

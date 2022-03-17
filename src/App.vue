@@ -49,6 +49,7 @@
 				</template>
 				<li><router-link to="/pages/container">Container</router-link></li>
 				<li><router-link to="/pages/csrf">CSRF Token</router-link></li>
+				<li><router-link to="/utilities/Dialog">Dialog</router-link></li>
 				<li><router-link to="/pages/event-bus">Event Bus</router-link></li>
 				<li><router-link to="/pages/fetch">Fetch</router-link></li>
 				<li>

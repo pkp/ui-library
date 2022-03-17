@@ -335,41 +335,51 @@ export default {
 			const contributor = this.items.find(a => a.id === id);
 
 			this.openDialog({
-				cancelLabel: this.__('common.no'),
 				name: 'delete',
 				title: this.deleteContributorLabel,
 				message: this.replaceLocaleParams(this.confirmDeleteMessage, {
 					name: contributor.fullName
 				}),
-				callback: () => {
-					var self = this;
+				actions: [
+					{
+						label: this.abandonDecisionLabel,
+						isPrimary: true,
+						callback: () => {
+							var self = this;
 
-					self.isLoading = true;
+							self.isLoading = true;
 
-					$.ajax({
-						url: this.apiUrl + '/' + id,
-						type: 'POST',
-						headers: {
-							'X-Csrf-Token': pkp.currentUser.csrfToken,
-							'X-Http-Method-Override': 'DELETE'
-						},
-						error: self.ajaxErrorCallback,
-						success(r) {
-							self.$modal.hide('delete');
-							self.setFocusIn(self.$el);
+							$.ajax({
+								url: this.apiUrl + '/' + id,
+								type: 'POST',
+								headers: {
+									'X-Csrf-Token': pkp.currentUser.csrfToken,
+									'X-Http-Method-Override': 'DELETE'
+								},
+								error: self.ajaxErrorCallback,
+								success(r) {
+									self.$modal.hide('delete');
+									self.setFocusIn(self.$el);
 
-							const newContributors = self.publication.authors.filter(
-								author => {
-									return author.id !== id;
+									const newContributors = self.publication.authors.filter(
+										author => {
+											return author.id !== id;
+										}
+									);
+									self.$emit('updated:contributors', newContributors);
+								},
+								complete(r) {
+									self.isLoading = false;
 								}
-							);
-							self.$emit('updated:contributors', newContributors);
-						},
-						complete(r) {
-							self.isLoading = false;
+							});
 						}
-					});
-				}
+					},
+					{
+						label: this.__('common.no'),
+						isWarnable: true,
+						callback: () => this.$modal.hide('delete')
+					}
+				]
 			});
 		},
 

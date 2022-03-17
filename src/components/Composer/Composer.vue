@@ -664,18 +664,27 @@ export default {
 			const localeName = this.locales.find(iLocale => iLocale.locale === locale)
 				.name;
 			this.openDialog({
-				cancelLabel: this.__('common.cancel'),
-				confirmLabel: 'Switch',
 				name: 'confirmLocaleSwitch',
+				title: 'Switch to ' + localeName,
 				message:
 					'Are you sure you want to change to ' +
 					localeName +
 					' to compose this email? Any changes you have made to the subject and body of the email will be lost.',
-				title: 'Switch to ' + localeName,
-				callback: () => {
-					this.switchLocale(locale);
-					this.$modal.hide('confirmLocaleSwitch');
-				}
+				actions: [
+					{
+						label: 'Switch',
+						isPrimary: true,
+						callback: () => {
+							this.switchLocale(locale);
+							this.$modal.hide('confirmLocaleSwitch');
+						}
+					},
+					{
+						label: this.__('common.cancel'),
+						isWarnable: true,
+						callback: () => this.$modal.hide('confirmLocaleSwitch')
+					}
+				]
 			});
 		},
 

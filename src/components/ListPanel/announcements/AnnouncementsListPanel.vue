@@ -184,44 +184,46 @@ export default {
 		openDeleteModal(id) {
 			const announcement = this.items.find(a => a.id === id);
 			if (typeof announcement === 'undefined') {
-				this.openDialog({
-					confirmLabel: this.__('common.ok'),
-					name: 'unknownError',
-					message: this.__('common.unknownError'),
-					title: this.__('common.error'),
-					callback: () => {
-						this.$modal.hide('unknownError');
-					}
-				});
+				this.ajaxErrorCallback({});
 				return;
 			}
 			this.openDialog({
-				cancelLabel: this.__('common.no'),
 				name: 'delete',
 				title: this.deleteAnnouncementLabel,
 				message: this.replaceLocaleParams(this.confirmDeleteMessage, {
 					title: this.localize(announcement.title)
 				}),
-				callback: () => {
-					var self = this;
-					$.ajax({
-						url: this.apiUrl + '/' + id,
-						type: 'POST',
-						headers: {
-							'X-Csrf-Token': pkp.currentUser.csrfToken,
-							'X-Http-Method-Override': 'DELETE'
-						},
-						error: self.ajaxErrorCallback,
-						success: function(r) {
-							self.setItems(
-								self.items.filter(i => i.id !== id),
-								self.itemsMax
-							);
-							self.$modal.hide('delete');
-							self.setFocusIn(self.$el);
+				actions: [
+					{
+						label: this.__('common.yes'),
+						isPrimary: true,
+						callback: () => {
+							var self = this;
+							$.ajax({
+								url: this.apiUrl + '/' + id,
+								type: 'POST',
+								headers: {
+									'X-Csrf-Token': pkp.currentUser.csrfToken,
+									'X-Http-Method-Override': 'DELETE'
+								},
+								error: self.ajaxErrorCallback,
+								success: function(r) {
+									self.setItems(
+										self.items.filter(i => i.id !== id),
+										self.itemsMax
+									);
+									self.$modal.hide('delete');
+									self.setFocusIn(self.$el);
+								}
+							});
 						}
-					});
-				}
+					},
+					{
+						label: this.__('common.no'),
+						isWarnable: true,
+						callback: () => this.$modal.hide('delete')
+					}
+				]
 			});
 		},
 
@@ -237,14 +239,8 @@ export default {
 				announcement => announcement.id === id
 			);
 			if (!announcement) {
-				this.openDialog({
-					confirmLabel: this.__('common.ok'),
-					name: 'unknownError',
-					message: this.__('common.unknownError'),
-					callback: () => {
-						this.$modal.hide('unknownError');
-					}
-				});
+				this.ajaxErrorCallback({});
+				return;
 			}
 
 			let activeForm = cloneDeep(this.form);

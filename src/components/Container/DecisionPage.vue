@@ -44,6 +44,8 @@ export default {
 			steps: [],
 			submissionUrl: '',
 			submissionApiUrl: '',
+			submissionListUrl: '',
+			viewAllSubmissionsLabel: '',
 			viewSubmissionLabel: ''
 		};
 	},
@@ -80,14 +82,22 @@ export default {
 		 */
 		cancel() {
 			this.openDialog({
-				cancelLabel: this.keepWorkingLabel,
-				confirmLabel: this.abandonDecisionLabel,
 				name: 'cancel',
-				message: this.cancelConfirmationPrompt,
 				title: this.abandonDecisionLabel,
-				callback: () => {
-					window.location = this.submissionUrl;
-				}
+				message: this.cancelConfirmationPrompt,
+				actions: [
+					{
+						label: this.abandonDecisionLabel,
+						isWarnable: true,
+						callback: () => {
+							window.location = this.submissionUrl;
+						}
+					},
+					{
+						label: this.keepWorkingLabel,
+						callback: () => this.$modal.hide('cancel')
+					}
+				]
 			});
 		},
 
@@ -138,16 +148,25 @@ export default {
 		 * Open the modal when decision is complete
 		 */
 		openCompletedDialog() {
-			const redirect = () => {
-				window.location = this.submissionUrl;
-			};
 			this.openDialog({
-				confirmLabel: this.viewSubmissionLabel,
 				name: 'completed',
-				message: this.decisionCompleteDescription,
 				title: this.decisionCompleteLabel,
-				callback: redirect,
-				closeCallback: redirect
+				message: this.decisionCompleteDescription,
+				actions: [
+					{
+						label: this.viewSubmissionLabel,
+						element: 'a',
+						href: this.submissionUrl
+					},
+					{
+						label: this.viewAllSubmissionsLabel,
+						element: 'a',
+						href: this.submissionListUrl
+					}
+				],
+				close: () => {
+					window.location = this.submissionUrl;
+				}
 			});
 		},
 

@@ -33,15 +33,24 @@ export default {
 				);
 			}
 			this.openDialog({
-				cancelLabel: this.__('common.cancel'),
-				confirmLabel: this.sendLabel,
-				message: this.confirmLabel.replace('{$total}', totalUserCount),
 				name: 'confirmNotify',
 				title: this.sendLabel,
-				callback: () => {
-					this.submit();
-					this.$modal.hide('confirmNotify');
-				}
+				message: this.confirmLabel.replace('{$total}', totalUserCount),
+				actions: [
+					{
+						label: this.sendLabel,
+						isPrimary: true,
+						callback: () => {
+							this.submit();
+							this.$modal.hide('confirmNotify');
+						}
+					},
+					{
+						label: this.__('common.cancel'),
+						isWarnable: true,
+						callback: () => this.$modal.hide('confirmNotify')
+					}
+				]
 			});
 		}
 	}
