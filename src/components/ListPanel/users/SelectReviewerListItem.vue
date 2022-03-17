@@ -55,10 +55,35 @@
 					</div>
 				</div>
 
+				<div v-if="currentlyAssigned" class="listPanel__item--reviewer__notice">
+					<icon icon="exclamation-triangle" :inline="true" />
+					{{ currentlyAssignedLabel }}
+				</div>
+				<div
+					v-else-if="assignedToLastRound"
+					class="listPanel__item--reviewer__notice"
+				>
+					<icon icon="thumb-tack" :inline="true" />
+					{{ assignedToLastRoundLabel }}
+				</div>
+				<div
+					v-else-if="warnOnAssignment && !isWarningBypassed"
+					class="listPanel__item--reviewer__notice"
+				>
+					<icon icon="lock" :inline="true" />
+					{{ warnOnAssignmentLabel }}
+					<button
+						@click.prevent="unlockAssignment"
+						class="listPanel__item--reviewer__noticeAction"
+					>
+						{{ warnOnAssignmentUnlockLabel }}
+					</button>
+				</div>
+
 				<!-- use aria-hidden on these details because the information can be
 					more easily acquired by screen readers from the details panel. -->
 				<div
-					v-if="canSelect"
+					v-else-if="canSelect"
 					class="listPanel__item--reviewer__brief"
 					aria-hidden="true"
 				>
@@ -78,32 +103,22 @@
 						{{ interestsString }}
 					</span>
 				</div>
-
-				<div v-if="currentlyAssigned" class="listPanel__item--reviewer__notice">
-					<icon icon="exclamation-triangle" :inline="true" />
-					{{ currentlyAssignedLabel }}
-				</div>
-				<div
-					v-else-if="warnOnAssignment && !isWarningBypassed"
-					class="listPanel__item--reviewer__notice"
-				>
-					<icon icon="lock" :inline="true" />
-					{{ warnOnAssignmentLabel }}
-					<button
-						@click.prevent="unlockAssignment"
-						class="listPanel__item--reviewer__noticeAction"
-					>
-						{{ warnOnAssignmentUnlockLabel }}
-					</button>
-				</div>
 			</div>
 
 			<div class="listPanel__itemActions">
 				<pkp-button v-if="canSelect" @click="select">
-					<span aria-hidden="true">{{ selectReviewerLabel }}</span>
-					<span class="-screenReader">
-						{{ __('common.selectWithName', {name: item.fullName}) }}
-					</span>
+					<template v-if="assignedToLastRound">
+						<span aria-hidden="true">{{ reassignLabel }}</span>
+						<span class="-screenReader">
+							{{ reassignWithName }}
+						</span>
+					</template>
+					<template v-else>
+						<span aria-hidden="true">{{ selectReviewerLabel }}</span>
+						<span class="-screenReader">
+							{{ __('common.selectWithName', {name: item.fullName}) }}
+						</span>
+					</template>
 				</pkp-button>
 				<expander
 					:isExpanded="isExpanded"
@@ -203,6 +218,14 @@ export default {
 			type: String,
 			required: true
 		},
+		assignedToLastRound: {
+			type: Boolean,
+			required: true
+		},
+		assignedToLastRoundLabel: {
+			type: String,
+			required: true
+		},
 		averageCompletionLabel: {
 			type: String,
 			required: true
@@ -252,6 +275,14 @@ export default {
 			required: true
 		},
 		neverAssignedLabel: {
+			type: String,
+			required: true
+		},
+		reassignLabel: {
+			type: String,
+			required: true
+		},
+		reassignWithNameLabel: {
 			type: String,
 			required: true
 		},
@@ -354,6 +385,13 @@ export default {
 					return i.interest;
 				})
 				.join(this.__('common.commaListSeparator'));
+		},
+
+		/**
+		 * An accessible label for the button to reassign a user
+		 */
+		reassignWithName() {
+			return this.reassignWithNameLabel.replace('{$name}', this.item.fullName);
 		},
 
 		/**
