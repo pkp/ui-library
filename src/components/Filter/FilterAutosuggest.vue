@@ -27,11 +27,17 @@ export default {
 		}
 	},
 	methods: {
-		toggle(fieldName, fieldProp, newVal) {
+		toggle(fieldName, fieldProp, newVal, localeKey) {
 			if (newVal.length) {
 				this.$emit('add-filter', this.param, newVal);
 			} else {
 				this.remove();
+			}
+			// Update the value in the autosuggest field
+			if (this.autosuggestProps.isMultilingual) {
+				this.autosuggestProps[fieldProp][localeKey] = newVal;
+			} else {
+				this.autosuggestProps[fieldProp] = newVal;
 			}
 		},
 		remove() {
