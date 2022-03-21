@@ -12,9 +12,9 @@
 				:name="name"
 			/>
 		</label>
-		<div v-if="genre || url" class="listPanel__itemActions">
-			<badge v-if="genre" :is-primary="genreIsPrimary">
-				{{ genre.name }}
+		<div v-if="genreName || url" class="listPanel__itemActions">
+			<badge v-if="genreName" :is-primary="genreIsPrimary">
+				{{ genreName }}
 			</badge>
 			<pkp-button
 				v-if="url"
@@ -50,10 +50,16 @@ export default {
 			type: String,
 			required: true
 		},
-		genre: {
-			type: Object,
+		genreName: {
+			type: String,
 			default() {
-				return null;
+				return '';
+			}
+		},
+		genreIsPrimary: {
+			type: Boolean,
+			default() {
+				return false;
 			}
 		},
 		fileId: {
@@ -77,11 +83,6 @@ export default {
 		return {
 			describedById: ''
 		};
-	},
-	computed: {
-		genreIsPrimary() {
-			return this.genre && !this.genre.dependent && !this.genre.supplementary;
-		}
 	},
 	created() {
 		this.describedById = $.pkp.classes.Helper.uuid();

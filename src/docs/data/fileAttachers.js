@@ -10,13 +10,21 @@ export default [
 		description: 'Upload a file from your computer.',
 		button: 'Upload File',
 		dropzoneOptions: {...dropzoneOptions},
-		temporaryFilesApiUrl: 'http://example.org'
+		temporaryFilesApiUrl: 'http://example.org',
+		addFilesLabel: 'Add Files',
+		attachFilesLabel: 'Attach Files',
+		backLabel: 'Back',
+		dragAndDropMessage: 'Drag and drop files here.',
+		dragAndDropOrUploadMessage: 'Or upload a file',
+		removeItemLabel: 'Remove {$item}'
 	},
 	{
 		component: 'FileAttacherReviewFiles',
 		label: 'Review Files',
 		description: 'Attach files that were uploaded by reviewers.',
 		button: 'Attach Review File',
+		attachSelectedLabel: 'Attach Selected',
+		backLabel: 'Back',
 		downloadLabel: 'Download',
 		files: [
 			{
@@ -46,6 +54,9 @@ export default [
 			'Attach files uploaded during the submission workflow, such as revisions or files to be reviewed.',
 		button: 'Attach Submission Files',
 		submissionFilesApiUrl: 'http://example.org',
+		attachSelectedLabel: 'Attach Selected',
+		backLabel: 'Back',
+		downloadLabel: 'Download',
 		fileStages: [
 			{
 				label: 'Revisions',
@@ -70,6 +81,8 @@ export default [
 		button: 'Attach Library Files',
 		libraryApiUrl: 'http://example.org',
 		includeSubmissionId: 15,
+		attachSelectedLabel: 'Attach Selected',
+		backLabel: 'Back',
 		downloadLabel: 'Download'
 	}
 ];

@@ -9,64 +9,54 @@
 				{{ __('common.noItemsFound') }}
 			</div>
 		</div>
-		<div v-else class="fileAttacherLibrary__files">
-			<div
+		<div v-else>
+			<select-submission-file-list-item
 				v-for="(file, i) in files"
 				:key="i"
-				class="fileAttacherUploader__file"
+				:documentType="file.documentType"
+				:downloadLabel="downloadLabel"
+				:genreName="file.typeName"
+				:fileId="file.id"
+				:name="localize(file.name)"
+				:url="file.url"
 			>
-				<label class="fileAttacherUploader__file__label">
-					<input type="checkbox" :value="file.id" v-model="selected" />
-					<file
-						:id="'FileAttacherLibrary__File__' + i"
-						:name="localize(file.name)"
-						:documentType="file.documentType"
-					/>
-				</label>
-				<div class="fileAttacherUploader__actions">
-					<badge>
-						{{ file.typeName }}
-					</badge>
-					<pkp-button
-						class="fileAttacherLibrary__download"
-						element="a"
-						:href="file.url"
-						target="_blank"
-						rel="noopener noreferrer"
-						:aria-describedby="'FileAttacherLibrary__File__' + i"
-					>
-						<icon icon="download" />
-						<span class="-screenReader">{{ downloadLabel }}</span>
-					</pkp-button>
-				</div>
-			</div>
+				<input type="checkbox" :value="file.id" v-model="selected" />
+			</select-submission-file-list-item>
 		</div>
 		<div class="fileAttacher__footer">
 			<button class="fileAttacher__back -linkButton" @click="$emit('cancel')">
 				<icon icon="long-arrow-left" :inline="true" />
-				Back
+				{{ backLabel }}
 			</button>
 			<pkp-button
 				:isDisabled="!selected.length"
 				@click="$emit('selected:files', selectedFiles)"
 			>
-				Attach Selected
+				{{ attachSelectedLabel }}
 			</pkp-button>
 		</div>
 	</div>
 </template>
 
 <script>
-import File from '@/components/File/File.vue';
+import SelectSubmissionFileListItem from '@/components/ListPanel/submissionFiles/SelectSubmissionFileListItem.vue';
 import ajaxError from '@/mixins/ajaxError';
 
 export default {
 	name: 'FileAttacherLibrary',
 	mixins: [ajaxError],
 	components: {
-		File
+		SelectSubmissionFileListItem
 	},
 	props: {
+		attachSelectedLabel: {
+			type: String,
+			required: true
+		},
+		backLabel: {
+			type: String,
+			required: true
+		},
 		component: {
 			type: String,
 			required: true
@@ -139,32 +129,5 @@ export default {
 	align-items: center;
 	min-height: 4rem;
 	font-size: @font-sml;
-}
-
-.fileAttacherUploader__file {
-	display: flex;
-	align-items: center;
-	margin: 0.5rem 0;
-}
-
-.fileAttacherUploader__file__label {
-	display: flex;
-	align-items: center;
-	overflow: hidden;
-
-	.file {
-		margin-left: 1rem;
-	}
-}
-
-.fileAttacherUploader__actions {
-	display: flex;
-	align-items: center;
-	margin-left: auto;
-}
-
-.fileAttacherLibrary__download {
-	margin-left: 0.5rem;
-	text-align: center;
 }
 </style>

@@ -3,9 +3,9 @@
 		<div class="fileAttacherUpload__wrapper">
 			<div v-if="!files.length" class="fileAttacherUpload__prompt">
 				<p>
-					Drag and drop files here.
+					{{ dragAndDropMessage }}
 					<button class="-linkButton" @click="selectFile">
-						Or upload a file
+						{{ dragAndDropOrUploadMessage }}
 					</button>
 				</p>
 			</div>
@@ -33,7 +33,15 @@
 							:isWarnable="true"
 							@click="removeFile(i)"
 						>
-							Remove
+							<span class="aria-hidden">{{ __('common.remove') }}</span>
+							<span class="-screenReader">
+								{{
+									removeItemLabel.replace(
+										'{$item}',
+										file.form ? file.form.name : file.name
+									)
+								}}
+							</span>
 						</pkp-button>
 					</div>
 				</template>
@@ -51,17 +59,17 @@
 		<div class="fileAttacher__footer">
 			<button class="fileAttacher__back -linkButton" @click="$emit('cancel')">
 				<icon icon="long-arrow-left" :inline="true" />
-				Back
+				{{ backLabel }}
 			</button>
 			<pkp-button @click="selectFile">
-				Add Files
+				{{ addFilesLabel }}
 			</pkp-button>
 			<pkp-button
 				:isPrimary="true"
 				:isDisabled="!files.length || isUploading"
 				@click="$emit('selected:files', files)"
 			>
-				Attach Files
+				{{ attachFilesLabel }}
 			</pkp-button>
 		</div>
 	</div>
@@ -80,12 +88,36 @@ export default {
 		FileUploadProgress
 	},
 	props: {
+		addFilesLabel: {
+			type: String,
+			required: true
+		},
+		attachFilesLabel: {
+			type: String,
+			required: true
+		},
+		backLabel: {
+			type: String,
+			required: true
+		},
 		component: {
+			type: String,
+			required: true
+		},
+		dragAndDropMessage: {
+			type: String,
+			required: true
+		},
+		dragAndDropOrUploadMessage: {
 			type: String,
 			required: true
 		},
 		dropzoneOptions: {
 			type: Object,
+			required: true
+		},
+		removeItemLabel: {
+			type: String,
 			required: true
 		},
 		temporaryFilesApiUrl: {

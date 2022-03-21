@@ -127,10 +127,6 @@ export default {
 			type: String,
 			required: true
 		},
-		insertPreparedContentLabel: {
-			type: String,
-			required: true
-		},
 		preparedContent: {
 			type: Object,
 			default() {
@@ -269,7 +265,6 @@ export default {
 						);
 						editor.ui.registry.addMenuButton('pkpPreparedContent', {
 							icon: 'non-breaking',
-							tooltip: self.insertPreparedContentLabel,
 							fetch(callback) {
 								callback(items);
 							}

@@ -11,7 +11,6 @@ export default {
 		fr_CA:
 			'Ajoutez une signature personnelle que vous souhaitez inclure dans les courriels que nous envoyons en votre nom.'
 	},
-	insertPreparedContentLabel: 'Insert',
 	groupId: 'contact',
 	isMultilingual: true,
 	plugins: 'paste,link,noneditable',
