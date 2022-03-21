@@ -321,7 +321,10 @@ export default {
 					recipientOptions: [
 						{
 							value: 31,
-							label: 'Rana Baiyewu'
+							label: {
+								en_US: 'Rana Baiyewu',
+								fr_CA: 'Rana Fr Baiyewu'
+							}
 						}
 					],
 					canChangeRecipients: false,
@@ -365,11 +368,17 @@ export default {
 					recipientOptions: [
 						{
 							value: 10,
-							label: 'Adela Gallego'
+							label: {
+								en_US: 'Adela Gallego',
+								fr_CA: 'Adela Gallego'
+							}
 						},
 						{
 							value: 9,
-							label: 'Aisla McCrae'
+							label: {
+								en_US: 'Aisla McCrae',
+								fr_CA: 'Aisla McCrae'
+							}
 						}
 					],
 					canChangeRecipients: true,

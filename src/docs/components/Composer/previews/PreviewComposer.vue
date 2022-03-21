@@ -75,19 +75,31 @@ export default {
 		const recipientOptions = [
 			{
 				value: 2,
-				label: 'Carlo Corino'
+				label: {
+					en_US: 'Carlo Corino',
+					fr_CA: 'Carlo Fr Corino'
+				}
 			},
 			{
 				value: 3,
-				label: 'Daniel Barnes'
+				label: {
+					en_US: 'Daniel Barnes',
+					fr_CA: 'Daniel Fr Barnes'
+				}
 			},
 			{
 				value: 4,
-				label: 'Stephanie Minoue'
+				label: {
+					en_US: 'Stephanie Minoue',
+					fr_CA: 'Stephanie Fr Minoue'
+				}
 			},
 			{
 				value: 5,
-				label: 'Paul Hudson'
+				label: {
+					en_US: 'Paul Hudson',
+					fr_CA: 'Paul Fr Hudson'
+				}
 			}
 		];
 

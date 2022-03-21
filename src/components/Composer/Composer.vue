@@ -102,7 +102,7 @@
 						groupId="composer"
 						:formId="id"
 						:selectedLabel="recipientsLabel"
-						:options="recipientOptions"
+						:options="localizedRecipientOptions"
 						:selected="recipientsSelected"
 						:value="recipients"
 						:is-disabled="!canChangeRecipients"
@@ -409,6 +409,10 @@ export default {
 				return [];
 			}
 		},
+		recipientsLabel: {
+			type: String,
+			required: true
+		},
 		recipientOptions: {
 			type: Array,
 			required: true
@@ -440,10 +444,6 @@ export default {
 			required: true
 		},
 		switchToNamedLanguageLabel: {
-			type: String,
-			required: true
-		},
-		recipientsLabel: {
 			type: String,
 			required: true
 		},
@@ -498,6 +498,15 @@ export default {
 		limitedSearchResults() {
 			return this.searchResults.slice(0, this.showSearchResultCount);
 		},
+		localizedRecipientOptions() {
+			const locale = this.locale ?? $.pkp.app.currentLocale;
+			return this.recipientOptions.map(recipient => {
+				return {
+					value: recipient.value,
+					label: recipient.label[locale]
+				};
+			});
+		},
 		localizedVariables() {
 			return this.locale ? this.variables[this.locale] : {};
 		},
@@ -532,7 +541,7 @@ export default {
 		 * set in the recipients array
 		 */
 		recipientsSelected() {
-			return this.recipientOptions.filter(recipient =>
+			return this.localizedRecipientOptions.filter(recipient =>
 				this.recipients.includes(recipient.value)
 			);
 		}
