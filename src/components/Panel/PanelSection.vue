@@ -68,6 +68,8 @@ export default {
 
 		.panelSection__content {
 			flex: 1;
+			// Fix: panelSection__content exceeds panelSection width
+			min-width: 1px;
 		}
 	}
 }

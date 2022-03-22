@@ -14,7 +14,7 @@
 		</label>
 		<div v-if="genre || url" class="listPanel__itemActions">
 			<badge v-if="genre" :is-primary="genreIsPrimary">
-				{{ localize(genre.name) }}
+				{{ genre.name }}
 			</badge>
 			<pkp-button
 				v-if="url"
