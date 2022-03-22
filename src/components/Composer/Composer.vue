@@ -102,7 +102,7 @@
 						groupId="composer"
 						:formId="id"
 						:selectedLabel="recipientsLabel"
-						:options="recipientOptions"
+						:options="localizedRecipientOptions"
 						:selected="recipientsSelected"
 						:value="recipients"
 						:is-disabled="!canChangeRecipients"
@@ -393,6 +393,10 @@ export default {
 			type: String,
 			required: true
 		},
+		locale: {
+			type: String,
+			required: true
+		},
 		locales: {
 			type: Array,
 			default() {
@@ -408,6 +412,10 @@ export default {
 			default() {
 				return [];
 			}
+		},
+		recipientsLabel: {
+			type: String,
+			required: true
 		},
 		recipientOptions: {
 			type: Array,
@@ -443,10 +451,6 @@ export default {
 			type: String,
 			required: true
 		},
-		recipientsLabel: {
-			type: String,
-			required: true
-		},
 		variables: {
 			type: Object,
 			default() {
@@ -461,7 +465,6 @@ export default {
 			isLoadingTemplate: false,
 			isSearching: false,
 			latestSearchRequest: '',
-			locale: '',
 			searchPhrase: '',
 			searchResults: [],
 			showSearchResultCount: 10
@@ -498,6 +501,15 @@ export default {
 		limitedSearchResults() {
 			return this.searchResults.slice(0, this.showSearchResultCount);
 		},
+		localizedRecipientOptions() {
+			const locale = this.locale ?? $.pkp.app.currentLocale;
+			return this.recipientOptions.map(recipient => {
+				return {
+					value: recipient.value,
+					label: recipient.label[locale]
+				};
+			});
+		},
 		localizedVariables() {
 			return this.locale ? this.variables[this.locale] : {};
 		},
@@ -532,7 +544,7 @@ export default {
 		 * set in the recipients array
 		 */
 		recipientsSelected() {
-			return this.recipientOptions.filter(recipient =>
+			return this.localizedRecipientOptions.filter(recipient =>
 				this.recipients.includes(recipient.value)
 			);
 		}
@@ -778,8 +790,8 @@ export default {
 		 * in the new locale
 		 */
 		switchLocale(locale) {
-			this.locale = locale;
-			this.loadTemplate(this.initialTemplateKey);
+			this.emitChange({locale: locale});
+			this.$nextTick(() => this.loadTemplate(this.initialTemplateKey));
 		},
 
 		/**
@@ -805,7 +817,6 @@ export default {
 		}
 	},
 	created() {
-		this.locale = $.pkp.app.currentLocale;
 		if (this.initialTemplateKey) {
 			this.loadTemplate(this.initialTemplateKey);
 		}

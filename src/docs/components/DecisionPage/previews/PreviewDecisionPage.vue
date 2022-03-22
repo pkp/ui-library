@@ -86,6 +86,8 @@
 							:email-templatesApiUrl="emailTemplatesApiUrl"
 							findTemplateLabel="Find Template"
 							loadTemplateLabel="Load a Template"
+							:locale="step.locale"
+							:locales="step.locales"
 							moreSearchResultsLabel="{$number} more"
 							removeItemLabel="Remove {$item}"
 							searchingLabel="Searching"
@@ -321,7 +323,10 @@ export default {
 					recipientOptions: [
 						{
 							value: 31,
-							label: 'Rana Baiyewu'
+							label: {
+								en_US: 'Rana Baiyewu',
+								fr_CA: 'Rana Fr Baiyewu'
+							}
 						}
 					],
 					canChangeRecipients: false,
@@ -347,7 +352,18 @@ export default {
 							}
 						}
 					],
-					emailTemplatesApiUrl: 'http://example.org'
+					emailTemplatesApiUrl: 'http://example.org',
+					locale: 'en_US',
+					locales: [
+						{
+							locale: 'en_US',
+							name: 'English (United States)'
+						},
+						{
+							locale: 'fr_CA',
+							name: 'French (Canada)'
+						}
+					]
 				},
 				{
 					id: 'notifyReviewers',
@@ -365,11 +381,17 @@ export default {
 					recipientOptions: [
 						{
 							value: 10,
-							label: 'Adela Gallego'
+							label: {
+								en_US: 'Adela Gallego',
+								fr_CA: 'Adela Gallego'
+							}
 						},
 						{
 							value: 9,
-							label: 'Aisla McCrae'
+							label: {
+								en_US: 'Aisla McCrae',
+								fr_CA: 'Aisla McCrae'
+							}
 						}
 					],
 					canChangeRecipients: true,
@@ -389,7 +411,18 @@ export default {
 							}
 						}
 					],
-					emailTemplatesApiUrl: 'http://example.org'
+					emailTemplatesApiUrl: 'http://example.org',
+					locale: 'en_US',
+					locales: [
+						{
+							locale: 'en_US',
+							name: 'English (United States)'
+						},
+						{
+							locale: 'fr_CA',
+							name: 'French (Canada)'
+						}
+					]
 				},
 				{
 					id: 'promoteFiles',
