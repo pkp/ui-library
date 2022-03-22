@@ -20,6 +20,8 @@
 			findTemplateLabel="Find Template"
 			:initialTemplateKey="initialTemplateKey"
 			loadTemplateLabel="Load a Template"
+			:locale="locale"
+			:locales="locales"
 			moreSearchResultsLabel="{$number} more"
 			removeItemLabel="Remove {$item}"
 			searchingLabel="Searching"
@@ -113,6 +115,17 @@ export default {
 			emailTemplates: emailTemplates,
 			emailTemplatesApiUrl:
 				'http://localhost:8000/publicknowledge/api/v1/emailTemplates',
+			locale: 'en_US',
+			locales: [
+				{
+					locale: 'en_US',
+					name: 'English (United States)'
+				},
+				{
+					locale: 'fr_CA',
+					name: 'French (Canada)'
+				}
+			],
 			subject: '',
 			to: [2, 3],
 			recipientOptions: recipientOptions,

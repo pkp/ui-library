@@ -86,6 +86,8 @@
 							:email-templatesApiUrl="emailTemplatesApiUrl"
 							findTemplateLabel="Find Template"
 							loadTemplateLabel="Load a Template"
+							:locale="step.locale"
+							:locales="step.locales"
 							moreSearchResultsLabel="{$number} more"
 							removeItemLabel="Remove {$item}"
 							searchingLabel="Searching"
@@ -350,7 +352,18 @@ export default {
 							}
 						}
 					],
-					emailTemplatesApiUrl: 'http://example.org'
+					emailTemplatesApiUrl: 'http://example.org',
+					locale: 'en_US',
+					locales: [
+						{
+							locale: 'en_US',
+							name: 'English (United States)'
+						},
+						{
+							locale: 'fr_CA',
+							name: 'French (Canada)'
+						}
+					]
 				},
 				{
 					id: 'notifyReviewers',
@@ -398,7 +411,18 @@ export default {
 							}
 						}
 					],
-					emailTemplatesApiUrl: 'http://example.org'
+					emailTemplatesApiUrl: 'http://example.org',
+					locale: 'en_US',
+					locales: [
+						{
+							locale: 'en_US',
+							name: 'English (United States)'
+						},
+						{
+							locale: 'fr_CA',
+							name: 'French (Canada)'
+						}
+					]
 				},
 				{
 					id: 'promoteFiles',

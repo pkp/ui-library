@@ -393,6 +393,10 @@ export default {
 			type: String,
 			required: true
 		},
+		locale: {
+			type: String,
+			required: true
+		},
 		locales: {
 			type: Array,
 			default() {
@@ -461,7 +465,6 @@ export default {
 			isLoadingTemplate: false,
 			isSearching: false,
 			latestSearchRequest: '',
-			locale: '',
 			searchPhrase: '',
 			searchResults: [],
 			showSearchResultCount: 10
@@ -787,8 +790,8 @@ export default {
 		 * in the new locale
 		 */
 		switchLocale(locale) {
-			this.locale = locale;
-			this.loadTemplate(this.initialTemplateKey);
+			this.emitChange({locale: locale});
+			this.$nextTick(() => this.loadTemplate(this.initialTemplateKey));
 		},
 
 		/**
@@ -814,7 +817,6 @@ export default {
 		}
 	},
 	created() {
-		this.locale = $.pkp.app.currentLocale;
 		if (this.initialTemplateKey) {
 			this.loadTemplate(this.initialTemplateKey);
 		}
