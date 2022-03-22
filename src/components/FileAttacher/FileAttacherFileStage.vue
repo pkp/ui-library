@@ -25,8 +25,9 @@
 			<template v-slot:item="{item}">
 				<select-submission-file-list-item
 					:documentType="item.documentType"
-					downloadLabel="Download"
-					:genre="item.genre"
+					:downloadLabel="downloadLabel"
+					:genreName="item.genre.name"
+					:genreIsPrimary="!item.genre.dependent && !item.genre.supplementary"
 					:fileId="item.id"
 					:name="localize(item.name)"
 					:url="item.url"
@@ -38,13 +39,13 @@
 		<div class="fileAttacher__footer">
 			<button class="fileAttacher__back -linkButton" @click="$emit('cancel')">
 				<icon icon="long-arrow-left" :inline="true" />
-				Back
+				{{ backLabel }}
 			</button>
 			<pkp-button
 				:isDisabled="!selected.length"
 				@click="$emit('selected:files', selectedFiles)"
 			>
-				Attach Selected
+				{{ attachSelectedLabel }}
 			</pkp-button>
 		</div>
 	</div>
@@ -67,7 +68,19 @@ export default {
 		SelectSubmissionFileListItem
 	},
 	props: {
+		attachSelectedLabel: {
+			type: String,
+			required: true
+		},
+		backLabel: {
+			type: String,
+			required: true
+		},
 		component: {
+			type: String,
+			required: true
+		},
+		downloadLabel: {
 			type: String,
 			required: true
 		},

@@ -81,6 +81,7 @@
 							bccLabel="BCC:"
 							bodyLabel="Message"
 							ccLabel="CC:"
+							confirmSwitchLocaleLabel="Are you sure you want to change to {$localeName} to compose this email? Any changes you have made to the subject and body of the email will be lost."
 							deselectLabel="Deselect"
 							:email-templatesApiUrl="emailTemplatesApiUrl"
 							findTemplateLabel="Find Template"
@@ -88,8 +89,10 @@
 							moreSearchResultsLabel="{$number} more"
 							removeItemLabel="Remove {$item}"
 							searchingLabel="Searching"
+							searchResultsLabel="Search Results"
 							subjectLabel="Subject:"
-							switchLanguageLabel="Switch To:"
+							switchToLabel="Switch To:"
+							switchToNamedLanguageLabel="Switch to {$name}"
 							recipientsLabel="To:"
 							@set="updateStep"
 						>
@@ -113,27 +116,26 @@
 									:title="list.name"
 									class="decision_filesList"
 								>
-									<template slot="itemsEmpty">
-										{{ __('common.noItemsFound') }}
-									</template>
 									<template v-slot:item="{item}">
-										<div class="listPanel__itemSummary">
-											<label class="listPanel__selectWrapper">
-												<div class="listPanel__selector">
-													<input
-														type="checkbox"
-														name="selected[]"
-														:value="item.id"
-														v-model="step.selected"
-													/>
-												</div>
-												<div class="listPanel__itemIdentity">
-													<div class="listPanel__itemSubTitle">
-														<a :href="item.url">{{ localize(item.name) }}</a>
-													</div>
-												</div>
-											</label>
-										</div>
+										<select-submission-file-list-item
+											:document-type="item.documentType"
+											download-label="Download"
+											:genreName="item.genre.name"
+											:genreIsPrimary="
+												!item.genre.dependent && !item.genre.supplementary
+											"
+											:genre="item.genre"
+											:file-id="item.id"
+											:name="localize(item.name)"
+											:url="item.url"
+										>
+											<input
+												type="checkbox"
+												:name="'promoteFile' + item.id"
+												:value="item.id"
+												v-model="step.selected"
+											/>
+										</select-submission-file-list-item>
 									</template>
 								</list-panel>
 							</panel-section>

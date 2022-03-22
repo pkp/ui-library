@@ -3,7 +3,6 @@ export default {
 	component: 'field-rich-textarea',
 	label: 'Abstract',
 	description: 'The abstract must be less than 300 words.',
-	insertPreparedContentLabel: 'Insert',
 	isRequired: true,
 	plugins: 'paste,link,noneditable',
 	toolbar: 'bold italic superscript subscript | link',

@@ -32,49 +32,48 @@
 							newSearchPhrase => (this.searchPhrase = newSearchPhrase)
 						"
 					/>
-					<div class="composer__templates__searchResults" aria-live="true">
-						<ul
-							v-if="searchResults.length"
-							class="composer__templates__list"
-							aria-label="Search results"
+					<ul
+						v-if="searchResults.length"
+						class="composer__templates__list"
+						aria-live="true"
+						:aria-label="searchResultsLabel"
+					>
+						<li
+							v-for="searchResult in limitedSearchResults"
+							:key="searchResult.key"
 						>
-							<li
-								v-for="searchResult in limitedSearchResults"
-								:key="searchResult.key"
+							<button
+								class="-linkButton"
+								@click="loadTemplate(searchResult.key)"
 							>
-								<button
-									class="-linkButton"
-									@click="loadTemplate(searchResult.key)"
-								>
-									{{ localize(searchResult.subject) }}
-								</button>
-							</li>
-							<li v-if="searchResults.length > showSearchResultCount">
-								<button
-									class="-linkButton composer__templates__moreSearchResults"
-									@click="showSearchResultCount = searchResults.length"
-								>
-									<icon icon="plus-circle" :inline="true" />
-									{{
-										moreSearchResultsLabel.replace(
-											'{$number}',
-											searchResults.length - showSearchResultCount
-										)
-									}}
-								</button>
-							</li>
-						</ul>
-						<div
-							v-if="isSearching"
-							class="composer__templates__searching"
-							role="alert"
-						>
-							<spinner />
-							{{ searchingLabel }}
-						</div>
+								{{ localize(searchResult.subject) }}
+							</button>
+						</li>
+						<li v-if="searchResults.length > showSearchResultCount">
+							<button
+								class="-linkButton composer__templates__moreSearchResults"
+								@click="showSearchResultCount = searchResults.length"
+							>
+								<icon icon="plus-circle" :inline="true" />
+								{{
+									moreSearchResultsLabel.replace(
+										'{$number}',
+										searchResults.length - showSearchResultCount
+									)
+								}}
+							</button>
+						</li>
+					</ul>
+					<div
+						v-if="isSearching"
+						class="composer__templates__searching"
+						role="alert"
+					>
+						<spinner />
+						{{ searchingLabel }}
 					</div>
 					<div v-if="otherLocales.length" class="composer__locales">
-						{{ switchLanguageLabel }}
+						{{ switchToLabel }}
 						<template v-for="(otherLocale, i) in otherLocales">
 							<button
 								v-if="locale !== otherLocale.locale"
@@ -190,7 +189,6 @@
 					class="composer__body"
 					name="body"
 					:label="bodyLabel"
-					insertPreparedContentLabel="Insert"
 					groupId="message"
 					primaryLocale="en_US"
 					:all-errors="errors"
@@ -349,6 +347,10 @@ export default {
 			type: String,
 			required: true
 		},
+		confirmSwitchLocaleLabel: {
+			type: String,
+			required: true
+		},
 		deselectLabel: {
 			type: String,
 			required: true
@@ -419,6 +421,10 @@ export default {
 			type: String,
 			required: true
 		},
+		searchResultsLabel: {
+			type: String,
+			required: true
+		},
 		subject: {
 			type: String,
 			default() {
@@ -429,7 +435,11 @@ export default {
 			type: String,
 			required: true
 		},
-		switchLanguageLabel: {
+		switchToLabel: {
+			type: String,
+			required: true
+		},
+		switchToNamedLanguageLabel: {
 			type: String,
 			required: true
 		},
@@ -665,14 +675,17 @@ export default {
 				.name;
 			this.openDialog({
 				name: 'confirmLocaleSwitch',
-				title: 'Switch to ' + localeName,
-				message:
-					'Are you sure you want to change to ' +
-					localeName +
-					' to compose this email? Any changes you have made to the subject and body of the email will be lost.',
+				title: this.switchToNamedLanguageLabel.replace('{$name}', localeName),
+				message: this.confirmSwitchLocaleLabel.replace(
+					'{$localeName}',
+					localeName
+				),
 				actions: [
 					{
-						label: 'Switch',
+						label: this.switchToNamedLanguageLabel.replace(
+							'{$name}',
+							localeName
+						),
 						isPrimary: true,
 						callback: () => {
 							this.switchLocale(locale);

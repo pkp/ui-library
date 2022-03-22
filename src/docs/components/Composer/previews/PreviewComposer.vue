@@ -13,6 +13,7 @@
 			:canChangeRecipients="false"
 			:cc="cc"
 			ccLabel="CC:"
+			confirmSwitchLocaleLabel="Are you sure you want to change to {$localeName} to compose this email? Any changes you have made to the subject and body of the email will be lost."
 			deselectLabel="Deselect"
 			:emailTemplates="emailTemplates"
 			:emailTemplatesApiUrl="emailTemplatesApiUrl"
@@ -22,12 +23,15 @@
 			moreSearchResultsLabel="{$number} more"
 			removeItemLabel="Remove {$item}"
 			searchingLabel="Searching"
+			searchResultsLabel="Search Results"
 			:subject="subject"
 			subjectLabel="Subject:"
-			switchLanguageLabel="Switch To:"
+			switchToLabel="Switch To:"
+			switchToNamedLanguageLabel="Switch to {$name}"
 			:to="to"
 			recipientsLabel="To:"
 			:recipientOptions="recipientOptions"
+			:recipients="recipientOptions.map(r => r.value)"
 			:variables="variables"
 			@set="composerChanged"
 		>
@@ -68,6 +72,25 @@ export default {
 			}
 		});
 
+		const recipientOptions = [
+			{
+				value: 2,
+				label: 'Carlo Corino'
+			},
+			{
+				value: 3,
+				label: 'Daniel Barnes'
+			},
+			{
+				value: 4,
+				label: 'Stephanie Minoue'
+			},
+			{
+				value: 5,
+				label: 'Paul Hudson'
+			}
+		];
+
 		return {
 			attachers: [...fileAttachers],
 			attachments: [],
@@ -80,24 +103,8 @@ export default {
 				'http://localhost:8000/publicknowledge/api/v1/emailTemplates',
 			subject: '',
 			to: [2, 3],
-			recipientOptions: [
-				{
-					value: 2,
-					label: 'Carlo Corino'
-				},
-				{
-					value: 3,
-					label: 'Daniel Barnes'
-				},
-				{
-					value: 4,
-					label: 'Stephanie Minoue'
-				},
-				{
-					value: 5,
-					label: 'Paul Hudson'
-				}
-			],
+			recipientOptions: recipientOptions,
+			recipients: recipientOptions.map(r => r.value),
 			variables: {
 				en_US: {
 					journalName: 'Journal of Public Knowledge',
