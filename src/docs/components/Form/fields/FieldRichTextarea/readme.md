@@ -6,7 +6,6 @@
 | `value` | The current value for this field. |
 | `init` | Provide config properties for TinyMCE's `init` method. Any props you pass will be merged with defaults and can override them. See [TinyMCE documentation](https://www.tiny.cloud/docs/configure/integration-and-setup/). |
 | `plugins` | Specify plugins the TinyMCE editor should load. See [TinyMCE documentation](https://www.tiny.cloud/docs/configure/integration-and-setup/#plugins). |
-| `preparedContent` | An optional object containing preset information. When preset information exists, a button will appear in the toolbar. See the [Prepared Content](#/component/Form/fields/FieldRichTextarea/ExamplePreparedContent) example. |
 | `size` | One of `default` or `large`. Default: `default`. |
 | `toolbar` | Provide the TinyMCE editor with a custom toolbar. See [TinyMCE documentation](https://www.tinymce.com/docs/configure/editor-appearance/#toolbar). |
 | `uploadUrl` | Optionally provide a URL where images and other files can be uploaded. You still need to add the appropriate buttons and plugins to the `toolbar` and `plugins` props. The most common use is the [image](https://www.tiny.cloud/docs/plugins/image/) plugin. |
@@ -18,7 +17,7 @@ See [FieldBase](#/component/Form/fields/FieldBase).
 
 ## Usage
 
-Use this component to provide the user with a rich text input area that supports bold, italics, links and other HTML code.
+Use this component to provide the user with a rich text editor that supports bold, italics, links and other HTML code.
 
 This component uses the TinyMCE editor. You can pass `toolbar`, `plugins` and `init` props to customize the editor. See the [TinyMCE documentation](https://www.tiny.cloud/docs/configure/integration-and-setup/).
 
@@ -55,15 +54,3 @@ $uploadUrl = $dispatcher->url(
 ```
 
 Users must be logged in to upload files.
-
-## Prepared Content
-
-The `preparedContent` prop allows you to pass content to the editor and give the user a point-and-click tool to add that content. This is intended to be used in cases where data can be rendered inside of an email template.
-
-When an editor is assigning a reviewer, the reviewer's name and the due date can be passed to the editor so that the editor can inject this information directly into the email.
-
-In such cases, the `renderPreparedContent` prop should be set to `true`. This will render the reviewer's name and due date directly into the content as the editor is writing the email.
-
-However, when editing email templates, we must preserve the placeholders. In such cases, the `renderPreparedContent` prop should be set to `false`. Instead of adding the reviewer's name, a placeholder will be inserted that says `[Reviewer Name]`.
-
-The [Prepared Content](#/component/Form/fields/FieldRichTextarea/ExamplePreparedContent) example shows the placeholders that are used when `renderPreparedContent` is `false`.

@@ -85,6 +85,10 @@
 							deselectLabel="Deselect"
 							:email-templatesApiUrl="emailTemplatesApiUrl"
 							findTemplateLabel="Find Template"
+							insertLabel="Insert"
+							insertModalLabel="Insert Content"
+							insertContentLabel="Content"
+							insertSearchLabel="Find content to insert"
 							loadTemplateLabel="Load a Template"
 							:locale="step.locale"
 							:locales="step.locales"
@@ -245,6 +249,7 @@
 import DecisionPage from '@/components/Container/DecisionPage.vue';
 import emailTemplate from '@/docs/data/emailTemplate';
 import submissionFiles from '@/docs/data/submissionFiles';
+import insertContent from '../../../data/insertContent';
 
 export default {
 	extends: DecisionPage,
@@ -353,6 +358,10 @@ export default {
 						}
 					],
 					emailTemplatesApiUrl: 'http://example.org',
+					variables: {
+						en_US: [...insertContent],
+						fr_CA: [...insertContent]
+					},
 					locale: 'en_US',
 					locales: [
 						{
@@ -412,6 +421,10 @@ export default {
 						}
 					],
 					emailTemplatesApiUrl: 'http://example.org',
+					variables: {
+						en_US: [...insertContent],
+						fr_CA: [...insertContent]
+					},
 					locale: 'en_US',
 					locales: [
 						{

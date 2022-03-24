@@ -19,6 +19,10 @@
 			:emailTemplatesApiUrl="emailTemplatesApiUrl"
 			findTemplateLabel="Find Template"
 			:initialTemplateKey="initialTemplateKey"
+			insertLabel="Insert"
+			insertModalLabel="Insert Content"
+			insertContentLabel="Content"
+			insertSearchLabel="Find content to insert"
 			loadTemplateLabel="Load a Template"
 			:locale="locale"
 			:locales="locales"
@@ -52,6 +56,7 @@
 import Composer from './ExampleComposer.vue';
 import emailTemplate from '@/docs/data/emailTemplate';
 import fileAttachers from '@/docs/data/fileAttachers';
+import insertContent from '../../../data/insertContent';
 
 export default {
 	components: {
@@ -131,13 +136,8 @@ export default {
 			recipientOptions: recipientOptions,
 			recipients: recipientOptions.map(r => r.value),
 			variables: {
-				en_US: {
-					journalName: 'Journal of Public Knowledge',
-					journalUrl: 'http://example.org',
-					senderName: 'Daniel Barnes',
-					submissionTitle:
-						'Towards Designing an Intercultural Curriculum: A Case Study from the Atlantic Coast of Nicaragua'
-				}
+				en_US: [...insertContent],
+				fr_CA: [...insertContent]
 			}
 		};
 	},

@@ -155,7 +155,9 @@ export default {
 		 * Is this a primary file
 		 */
 		isPrimaryGenre() {
-			return this.genre && !this.genre.isDependent && !this.genre.isSupplementary;
+			return (
+				this.genre && !this.genre.isDependent && !this.genre.isSupplementary
+			);
 		},
 
 		/**

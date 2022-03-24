@@ -8,8 +8,6 @@ import PreviewFieldRichTextareaMediumToolbar from './previews/PreviewFieldRichTe
 import PreviewFieldRichTextareaMediumToolbarTemplate from '!raw-loader!./previews/PreviewFieldRichTextareaMediumToolbar.vue';
 import PreviewFieldRichTextareaHeavyToolbar from './previews/PreviewFieldRichTextareaHeavyToolbar.vue';
 import PreviewFieldRichTextareaHeavyToolbarTemplate from '!raw-loader!./previews/PreviewFieldRichTextareaHeavyToolbar.vue';
-import PreviewFieldRichTextareaPreparedContent from './previews/PreviewFieldRichTextareaPreparedContent.vue';
-import PreviewFieldRichTextareaPreparedContentTemplate from '!raw-loader!./previews/PreviewFieldRichTextareaPreparedContent.vue';
 import PreviewFieldRichTextareaWordLimit from './previews/PreviewFieldRichTextareaWordLimit.vue';
 import PreviewFieldRichTextareaWordLimitTemplate from '!raw-loader!./previews/PreviewFieldRichTextareaWordLimit.vue';
 import readme from '!raw-loader!./readme.md';
@@ -44,13 +42,6 @@ export default {
 					name: 'Heavy Toolbar',
 					template: this.extractTemplate(
 						PreviewFieldRichTextareaHeavyToolbarTemplate
-					)
-				},
-				{
-					component: PreviewFieldRichTextareaPreparedContent,
-					name: 'Prepared Content',
-					template: this.extractTemplate(
-						PreviewFieldRichTextareaPreparedContentTemplate
 					)
 				},
 				{

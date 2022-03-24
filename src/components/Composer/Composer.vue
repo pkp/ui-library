@@ -185,7 +185,7 @@
 					:id="id + '-subject-error'"
 					:messages="errors.subject"
 				/>
-				<field-rich-textarea
+				<field-prepared-content
 					class="composer__body"
 					name="body"
 					:label="bodyLabel"
@@ -198,6 +198,10 @@
 					toolbar="bold italic superscript subscript | link"
 					:value="body"
 					:preparedContent="compiledVariables"
+					:insertLabel="insertLabel"
+					:insertModalLabel="insertModalLabel"
+					:preparedContentLabel="insertContentLabel"
+					:searchLabel="insertSearchLabel"
 					@change="(name, prop, value) => this.emitChange({body: value})"
 				/>
 				<div v-if="attachers.length" class="composer__attachmentWrapper">
@@ -267,7 +271,7 @@
 <script>
 import FieldAutosuggestPreset from '@/components/Form/fields/FieldAutosuggestPreset.vue';
 import FieldError from '@/components/Form/FieldError.vue';
-import FieldRichTextarea from '@/components/Form/fields/FieldRichTextarea.vue';
+import FieldPreparedContent from '@/components/Form/fields/FieldPreparedContent.vue';
 import FileAttacher from '@/components/FileAttacher/FileAttacher.vue';
 import Modal from '@/components/Modal/Modal.vue';
 import Search from '@/components/Search/Search.vue';
@@ -281,7 +285,7 @@ export default {
 	components: {
 		FieldAutosuggestPreset,
 		FieldError,
-		FieldRichTextarea,
+		FieldPreparedContent,
 		FileAttacher,
 		Modal,
 		Search
@@ -389,6 +393,24 @@ export default {
 				return '';
 			}
 		},
+		insertLabel: {
+			type: String,
+			required: true
+		},
+		insertModalLabel: {
+			type: String,
+			required: true
+		},
+		insertContentLabel: {
+			type: String,
+			required: true
+		},
+		insertSearchLabel: {
+			type: String,
+			default() {
+				return '';
+			}
+		},
 		loadTemplateLabel: {
 			type: String,
 			required: true
@@ -490,10 +512,16 @@ export default {
 		compiledVariables() {
 			return !this.canChangeRecipients
 				? this.localizedVariables
-				: {
+				: [
 						...this.localizedVariables,
-						recipientName: this.recipientVariable
-				  };
+						{
+							key: 'recipientName',
+							value: this.recipientVariable,
+							description:
+								this.localizedVariables.find(v => v.key === 'recipientName')
+									?.description ?? ''
+						}
+				  ];
 		},
 		fileAttacherModalId() {
 			return this.id + 'fileAttacher';
@@ -511,7 +539,7 @@ export default {
 			});
 		},
 		localizedVariables() {
-			return this.locale ? this.variables[this.locale] : {};
+			return this.variables[this.locale] ? this.variables[this.locale] : [];
 		},
 		/**
 		 * A list of supported locales without the currently active locale
@@ -940,7 +968,7 @@ export default {
 .composer__body {
 	margin-top: 0.5rem;
 
-	label {
+	.pkpFormFieldLabel {
 		clip: rect(1px, 1px, 1px, 1px);
 		position: absolute !important;
 		left: -2000px;
