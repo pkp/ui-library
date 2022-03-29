@@ -17,8 +17,8 @@
 						{{ item.value }}
 					</div>
 					<pkp-button
-						class="insertContent__item_button"
-						aria-describedby="'insert-content-' + item.key"
+						class="insertContent__item__button"
+						:aria-describedby="'insert-content-' + item.key"
 						@click="$emit('insert', item.value)"
 					>
 						{{ insertLabel }}
@@ -147,7 +147,7 @@ export default {
 	white-space: nowrap;
 }
 
-.insertContent__item_button {
+.insertContent__item__button {
 	margin-left: auto;
 	flex-shrink: 0;
 }

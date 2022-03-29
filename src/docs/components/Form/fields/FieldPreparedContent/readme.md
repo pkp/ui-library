@@ -3,7 +3,7 @@
 | Key | Description |
 | --- | --- |
 | `...` | Supports all props in [FieldRichTextarea](#/component/Form/fields/FieldRichTextarea). |
-| `preparedContent` | An optional object containing preset information. When preset information exists, a button will appear in the toolbar. See the [Prepared Content](#/component/Form/fields/FieldRichTextarea/ExamplePreparedContent) example. |
+| `preparedContent` | An optional object containing preset information. When preset information exists, a button will appear in the toolbar. See the [Prepared Content](#/component/Form/fields/FieldPreparedContent) example. |
 
 ## Events
 
