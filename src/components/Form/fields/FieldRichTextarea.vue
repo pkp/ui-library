@@ -84,6 +84,7 @@
 			:id="describedByErrorId"
 			:messages="errors"
 		/>
+		<slot name="footer" />
 	</div>
 </template>
 
@@ -98,15 +99,13 @@ import 'tinymce/plugins/link';
 import 'tinymce/plugins/lists';
 import 'tinymce/plugins/noneditable';
 import 'tinymce/plugins/paste';
-import FieldBase from './FieldBase.vue';
 import Editor from '@tinymce/tinymce-vue';
-import preparedContent from '@/mixins/preparedContent';
+import FieldBase from './FieldBase.vue';
 import debounce from 'debounce';
 
 export default {
 	name: 'FieldRichTextarea',
 	extends: FieldBase,
-	mixins: [preparedContent],
 	components: {
 		Editor
 	},
@@ -126,12 +125,6 @@ export default {
 		plugins: {
 			type: String,
 			required: true
-		},
-		preparedContent: {
-			type: Object,
-			default() {
-				return {};
-			}
 		},
 		size: {
 			type: String,
@@ -251,27 +244,6 @@ export default {
 					editor.fire('focus');
 					editor.fire('blur');
 				},
-				setup(editor) {
-					if (Object.keys(self.preparedContent).length) {
-						var items = [];
-						Object.keys(self.preparedContent).forEach(key =>
-							items.push({
-								type: 'menuitem',
-								text: self.preparedContent[key],
-								onAction() {
-									editor.insertContent(self.preparedContent[key]);
-								}
-							})
-						);
-						editor.ui.registry.addMenuButton('pkpPreparedContent', {
-							icon: 'non-breaking',
-							fetch(callback) {
-								callback(items);
-							}
-						});
-						editor.settings.toolbar += ' | pkpPreparedContent';
-					}
-				},
 				...this.init
 			};
 		}
@@ -317,7 +289,6 @@ export default {
 			if (this.isMultilingual) {
 				newVal = newVal[this.localeKey];
 			}
-			newVal = this.renderPreparedContent(newVal, this.preparedContent);
 			debounce(this.setWordCount, 250)();
 			this.$emit('change', this.name, 'value', newVal, this.localeKey);
 		}

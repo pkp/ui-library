@@ -23,6 +23,7 @@ import ComponentFieldPubId from './docs/components/Form/fields/FieldPubId/Compon
 import ComponentFieldHtml from './docs/components/Form/fields/FieldHtml/ComponentFieldHtml.vue';
 import ComponentFieldMetadataSetting from './docs/components/Form/fields/FieldMetadataSetting/ComponentFieldMetadataSetting.vue';
 import ComponentFieldOptions from './docs/components/Form/fields/FieldOptions/ComponentFieldOptions.vue';
+import ComponentFieldPreparedContent from './docs/components/Form/fields/FieldPreparedContent/ComponentFieldPreparedContent.vue';
 import ComponentFieldRadioInput from './docs/components/Form/fields/FieldRadioInput/ComponentFieldRadioInput.vue';
 import ComponentFieldRichTextarea from './docs/components/Form/fields/FieldRichTextarea/ComponentFieldRichTextarea.vue';
 import ComponentFieldSelect from './docs/components/Form/fields/FieldSelect/ComponentFieldSelect.vue';
@@ -161,6 +162,11 @@ export default new Router({
 			path: '/component/Form/fields/FieldOptions/:example?',
 			name: 'Form/fields/FieldOptions',
 			component: ComponentFieldOptions
+		},
+		{
+			path: '/component/Form/fields/FieldPreparedContent/:example?',
+			name: 'Form/fields/FieldPreparedContent',
+			component: ComponentFieldPreparedContent
 		},
 		{
 			path: '/component/Form/fields/FieldRadioInput/:example?',

@@ -61,6 +61,7 @@ import FieldPubId from '@/components/Form/fields/FieldPubId.vue';
 import FieldHtml from '@/components/Form/fields/FieldHtml.vue';
 import FieldMetadataSetting from '@/components/Form/fields/FieldMetadataSetting.vue';
 import FieldOptions from '@/components/Form/fields/FieldOptions.vue';
+import FieldPreparedContent from '@/components/Form/fields/FieldPreparedContent.vue';
 import FieldRadioInput from '@/components/Form/fields/FieldRadioInput.vue';
 import FieldRichTextarea from '@/components/Form/fields/FieldRichTextarea.vue';
 import FieldSelect from '@/components/Form/fields/FieldSelect.vue';
@@ -83,6 +84,7 @@ export default {
 		FieldHtml,
 		FieldMetadataSetting,
 		FieldOptions,
+		FieldPreparedContent,
 		FieldRadioInput,
 		FieldRichTextarea,
 		FieldSelect,

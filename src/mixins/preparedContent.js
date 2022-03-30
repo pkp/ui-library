@@ -1,8 +1,25 @@
 /**
  * Prepared content mixin
  *
- * This mixin provides a method to render prepared content in
- * placeholders.
+ * This mixin helps components work with prepared content. This
+ * is a way to work with dynamic content in text strings.
+ *
+ * Example:
+ *
+ * this.renderPreparedContent(
+ *   'Thank you for submitting to {$journalName}',
+ *   [
+ * 		{
+ * 			key: 'journalName',
+ * 			value: 'Journal of Public Knowledge',
+ * 			description: ''
+ * 		}
+ *   ]
+ * );
+ *
+ * Can produce:
+ *
+ * Thank you for submitting to Journal of Public Knowledge
  *
  * @see https://vuejs.org/v2/guide/mixins.html
  */
@@ -20,12 +37,12 @@ export default {
 		 * }
 		 *
 		 * @param {String} string The string to manipulate
-		 * @param {Object} preparedContent The placeholders (keys) and content (values)
+		 * @param {Array} preparedContent The list of prepared items
 		 */
 		renderPreparedContent(string, preparedContent) {
-			return Object.keys(preparedContent).reduce((string, key) => {
-				const regex = new RegExp(`{\$${key}}`.replace(/[${]/g, '\\$&'), 'g'); // eslint-disable-line
-				return string.replace(regex, preparedContent[key]);
+			return preparedContent.reduce((string, item) => {
+				const regex = new RegExp(`{\$${item.key}}`.replace(/[${]/g, '\\$&'), 'g'); // eslint-disable-line
+				return string.replace(regex, item.value);
 			}, string);
 		}
 	}

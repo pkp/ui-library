@@ -168,6 +168,11 @@
 							</router-link>
 						</li>
 						<li>
+							<router-link to="/component/Form/fields/FieldPreparedContent">
+								FieldPreparedContent
+							</router-link>
+						</li>
+						<li>
 							<router-link to="/component/Form/fields/FieldPubId">
 								FieldPubId
 							</router-link>
