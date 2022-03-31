@@ -61,6 +61,9 @@
 				<template slot="heading">
 					Components
 				</template>
+				<li>
+					<router-link to="/component/ActionPanel">ActionPanel</router-link>
+				</li>
 				<li><router-link to="/component/Badge">Badge</router-link></li>
 				<li><router-link to="/component/Button">Button</router-link></li>
 				<li><router-link to="/component/Chart">Chart</router-link></li>

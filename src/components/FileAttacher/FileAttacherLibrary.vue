@@ -24,10 +24,14 @@
 			</select-submission-file-list-item>
 		</div>
 		<div class="fileAttacher__footer">
-			<button class="fileAttacher__back -linkButton" @click="$emit('cancel')">
+			<pkp-button
+				class="fileAttacher__back"
+				:is-link="true"
+				@click="$emit('cancel')"
+			>
 				<icon icon="long-arrow-left" :inline="true" />
 				{{ backLabel }}
-			</button>
+			</pkp-button>
 			<pkp-button
 				:isDisabled="!selected.length"
 				@click="$emit('selected:files', selectedFiles)"
@@ -129,5 +133,9 @@ export default {
 	align-items: center;
 	min-height: 4rem;
 	font-size: @font-sml;
+}
+
+.fileAttacherLibrary .selectSubmissionFileListItem {
+	padding: 0.75rem 0.5rem 0.75rem 1rem;
 }
 </style>

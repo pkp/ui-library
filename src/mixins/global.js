@@ -158,9 +158,18 @@ export default {
 		 * @param {Boolean} toLast Move the focus to the last focusable element
 		 */
 		setFocusIn(el, toLast) {
-			let focusable = el.querySelectorAll(
-				'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-			);
+			const selectors = [
+				'button',
+				'[href]',
+				'input',
+				'select',
+				'textarea',
+				'details',
+				'[tabindex]:not([tabindex="-1"])'
+			];
+			let focusable = [...el.querySelectorAll(selectors.join(','))]
+				.filter(node => !node.hasAttribute('disabled'))
+				.filter(node => !node.hasAttribute('aria-hidden'));
 			if (focusable.length) {
 				if (toLast) {
 					focusable[focusable.length - 1].focus();

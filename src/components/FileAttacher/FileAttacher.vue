@@ -1,40 +1,55 @@
 <template>
 	<div class="fileAttacher">
-		<panel v-if="!currentAttacher">
-			<panel-section v-for="(attacher, key) in attachers" :key="key">
-				<template slot="header">
-					<h2>{{ attacher.label }}</h2>
-					<p v-html="attacher.description" />
-				</template>
-				<pkp-button @click="setAttacher(attacher.component)">
+		<action-panel
+			v-for="(attacher, key) in attachers"
+			:key="key"
+			:id="'attacher' + key"
+		>
+			<h2>{{ attacher.label }}</h2>
+			<p v-html="attacher.description" />
+			<template slot="actions">
+				<pkp-button
+					:aria-describedby="'attacher' + key"
+					@click="setAttacher(attacher)"
+				>
 					{{ attacher.button }}
 				</pkp-button>
-			</panel-section>
-		</panel>
-		<component
-			v-else
-			:is="currentAttacher.component"
-			v-bind="currentAttacher"
-			ref="attacher"
-			@selected:files="attachFiles"
-			@cancel="cancel"
-		/>
+			</template>
+		</action-panel>
+		<modal
+			:closeLabel="__('common.close')"
+			name="attacher"
+			:title="currentAttacher ? currentAttacher.label : ''"
+			@closed="resetFocus"
+		>
+			<component
+				v-if="currentAttacher"
+				:is="currentAttacher.component"
+				v-bind="currentAttacher"
+				@selected:files="attachFiles"
+				@cancel="cancel"
+			/>
+		</modal>
 	</div>
 </template>
 
 <script>
+import ActionPanel from '../ActionPanel/ActionPanel.vue';
 import FileAttacherFileStage from './FileAttacherFileStage.vue';
 import FileAttacherLibrary from './FileAttacherLibrary.vue';
 import FileAttacherReviewFiles from './FileAttacherReviewFiles.vue';
 import FileAttacherUpload from './FileAttacherUpload.vue';
+import Modal from '../Modal/Modal.vue';
 
 export default {
 	name: 'FileAttacher',
 	components: {
+		ActionPanel,
 		FileAttacherFileStage,
 		FileAttacherLibrary,
 		FileAttacherReviewFiles,
-		FileAttacherUpload
+		FileAttacherUpload,
+		Modal
 	},
 	props: {
 		attachers: {
@@ -44,21 +59,28 @@ export default {
 	},
 	data() {
 		return {
-			currentAttacher: null
+			currentAttacher: null,
+			resetFocusTo: null
 		};
 	},
 	methods: {
 		attachFiles(files) {
 			this.$emit('attached:files', this.currentAttacher.component, files);
+			this.$modal.hide('attacher');
 		},
 		cancel() {
-			this.currentAttacher = null;
+			this.$modal.hide('attacher');
+			this.$nextTick(() => (this.currentAttacher = null));
 		},
-		setAttacher(component) {
-			this.currentAttacher = this.attachers.find(
-				attacher => attacher.component === component
-			);
-			this.setFocusToRef('attacher');
+		resetFocus() {
+			if (this.resetFocusTo) {
+				this.resetFocusTo.focus();
+			}
+		},
+		setAttacher(attacher) {
+			this.currentAttacher = attacher;
+			this.resetFocusTo = document.activeElement;
+			this.$modal.show('attacher');
 		}
 	}
 };
@@ -67,8 +89,20 @@ export default {
 <style lang="less">
 @import '../../styles/_import';
 
+.fileAttacher .actionPanel:not(:last-child) {
+	margin-bottom: 2rem;
+}
+
 .fileAttacher__footer {
 	display: flex;
 	padding-top: 1rem;
+
+	.pkpButton + .pkpButton {
+		margin-left: 0.25rem;
+	}
+}
+
+.fileAttacher__back {
+	margin-right: auto;
 }
 </style>
