@@ -57,10 +57,14 @@
 			/>
 		</div>
 		<div class="fileAttacher__footer">
-			<button class="fileAttacher__back -linkButton" @click="$emit('cancel')">
+			<pkp-button
+				class="fileAttacher__back"
+				:is-link="true"
+				@click="$emit('cancel')"
+			>
 				<icon icon="long-arrow-left" :inline="true" />
 				{{ backLabel }}
-			</button>
+			</pkp-button>
 			<pkp-button @click="selectFile">
 				{{ addFilesLabel }}
 			</pkp-button>

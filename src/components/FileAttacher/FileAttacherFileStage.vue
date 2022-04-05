@@ -1,6 +1,6 @@
 <template>
 	<div class="fileAttacherFileStage" aria-live="polite">
-		<list-panel :items="items" :isLoading="isLoading">
+		<list-panel :items="files" :isLoading="isLoading">
 			<pkp-header slot="header">
 				<h2>{{ currentFileStage.label }}</h2>
 				<template slot="actions">
@@ -37,10 +37,14 @@
 			</template>
 		</list-panel>
 		<div class="fileAttacher__footer">
-			<button class="fileAttacher__back -linkButton" @click="$emit('cancel')">
+			<pkp-button
+				class="fileAttacher__back"
+				:is-link="true"
+				@click="$emit('cancel')"
+			>
 				<icon icon="long-arrow-left" :inline="true" />
 				{{ backLabel }}
-			</button>
+			</pkp-button>
 			<pkp-button
 				:isDisabled="!selected.length"
 				@click="$emit('selected:files', selectedFiles)"
@@ -97,26 +101,26 @@ export default {
 		return {
 			currentFileStage: {},
 			isLoading: false,
-			items: [],
+			files: [],
 			selected: []
 		};
 	},
 	computed: {
 		selectedFiles() {
-			return this.items.filter(item => this.selected.includes(item.id));
+			return this.files.filter(item => this.selected.includes(item.id));
 		}
 	},
 	methods: {
 		getFiles() {
 			let self = this;
 			this.isLoading = true;
-			this.items = [];
+			this.files = [];
 			$.ajax({
 				url: this.submissionFilesApiUrl,
 				type: 'GET',
 				data: this.currentFileStage.queryParams,
 				success(r) {
-					self.items = r.items;
+					self.files = r.items;
 				},
 				error: this.ajaxErrorCallback,
 				complete(r) {

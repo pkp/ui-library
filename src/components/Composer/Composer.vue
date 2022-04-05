@@ -217,6 +217,7 @@
 						:closeLabel="__('common.close')"
 						:name="fileAttacherModalId"
 						:title="attachFilesLabel"
+						@closed="resetFocusAfterAttachment"
 					>
 						<file-attacher
 							:attachers="attachers"
@@ -628,7 +629,8 @@ export default {
 		},
 
 		/**
-		 * The icon to match this document type
+		 * Get the icon to match this document type,
+		 * such as PDF, Word, spreadsheet, etc.
 		 *
 		 * @return {String}
 		 */
@@ -658,7 +660,7 @@ export default {
 		},
 
 		/**
-		 * Load message from a template
+		 * Load an email template and update the subject/body
 		 */
 		loadTemplate(key) {
 			this.isLoadingTemplate = true;
@@ -742,12 +744,19 @@ export default {
 		},
 
 		/**
-		 * Remove an attachment
+		 * Remove a file attachment
 		 */
 		removeAttachment(index) {
 			this.emitChange({
 				attachments: this.attachments.filter((attachment, i) => i !== index)
 			});
+		},
+
+		/**
+		 * Reset the focus when the attachment modal is closed
+		 */
+		resetFocusAfterAttachment() {
+			this.$refs.attachFiles.$el.focus();
 		},
 
 		/**

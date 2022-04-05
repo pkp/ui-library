@@ -3,7 +3,7 @@
 		<div v-if="!files.length" class="fileAttacherReviewFiles__noFiles">
 			{{ __('common.noItemsFound') }}
 		</div>
-		<div v-else>
+		<template v-else>
 			<select-submission-file-list-item
 				v-for="(file, i) in files"
 				:key="i"
@@ -16,12 +16,16 @@
 			>
 				<input type="checkbox" :value="file.id" v-model="selected" />
 			</select-submission-file-list-item>
-		</div>
+		</template>
 		<div class="fileAttacher__footer">
-			<button class="fileAttacher__back -linkButton" @click="$emit('cancel')">
+			<pkp-button
+				class="fileAttacher__back"
+				:is-link="true"
+				@click="$emit('cancel')"
+			>
 				<icon icon="long-arrow-left" :inline="true" />
 				{{ backLabel }}
-			</button>
+			</pkp-button>
 			<pkp-button
 				:isPrimary="true"
 				:isDisabled="!selected.length"
@@ -85,5 +89,9 @@ export default {
 	align-items: center;
 	min-height: 4rem;
 	font-size: @font-sml;
+}
+
+.fileAttacherReviewFiles .selectSubmissionFileListItem {
+	padding: 0.75rem 0.5rem 0.75rem 1rem;
 }
 </style>

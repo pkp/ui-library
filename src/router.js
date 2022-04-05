@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Page from './docs/Page.vue';
+import ComponentActionPanel from './docs/components/ActionPanel/ComponentActionPanel.vue';
 import ComponentAnnouncementsListPanel from './docs/components/ListPanel/ComponentAnnouncementsListPanel.vue';
 import ComponentBadge from './docs/components/Badge/ComponentBadge.vue';
 import ComponentButton from './docs/components/Button/ComponentButton.vue';
@@ -82,6 +83,11 @@ export default new Router({
 			path: '/pages/:page?',
 			name: 'page',
 			component: Page
+		},
+		{
+			path: '/component/ActionPanel/:example?',
+			name: 'ActionPanel',
+			component: ComponentActionPanel
 		},
 		{
 			path: '/component/Badge/:example?',

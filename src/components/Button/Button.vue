@@ -67,6 +67,7 @@ export default {
 	background: #fff;
 	border: @bg-border-light;
 	border-radius: @radius;
+	text-align: center;
 	font-size: @font-sml;
 	line-height: 2rem;
 	font-weight: @bold;
