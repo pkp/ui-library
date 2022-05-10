@@ -43,6 +43,7 @@ import ComponentForm from './docs/components/Form/ComponentForm.vue';
 import ComponentHeader from './docs/components/Header/ComponentHeader.vue';
 import ComponentHelpButton from './docs/components/HelpButton/ComponentHelpButton.vue';
 import ComponentIcon from './docs/components/Icon/ComponentIcon.vue';
+import ComponentInstitutionsListPanel from './docs/components/ListPanel/ComponentInstitutionsListPanel.vue';
 import ComponentList from './docs/components/List/ComponentList.vue';
 import ComponentListPanel from './docs/components/ListPanel/ComponentListPanel.vue';
 import ComponentModal from './docs/components/Modal/ComponentModal.vue';
@@ -298,6 +299,11 @@ export default new Router({
 			path: '/component/ListPanel/components/EmailTemplatesListPanel/:example?',
 			name: 'EmailTemplatesListPanel',
 			component: ComponentEmailTemplatesListPanel
+		},
+		{
+			path: '/component/ListPanel/components/InstitutionsListPanel/:example?',
+			name: 'InstitutionsListPanel',
+			component: ComponentInstitutionsListPanel
 		},
 		{
 			path: '/component/ListPanel/components/SelectReviewerListPanel/:example?',
