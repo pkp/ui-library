@@ -45,9 +45,7 @@ export default {
 					let menu = {};
 					Object.keys(this.menu).forEach(key => {
 						if (key === 'settings') {
-							if (!this.menu['institutions']) {
-								menu.institutions = this.institutionsNavLink;
-							}
+							menu.institutions = this.institutionsNavLink;
 							menu.payments = this.paymentsNavLink;
 						}
 						menu[key] = this.menu[key];
@@ -58,7 +56,11 @@ export default {
 
 			// Add or remove institutions nav link
 			if (formId === pkp.const.FORM_CONTEXT_STATISTICS) {
-				if (!context.enableInstitutionUsageStats && !this.menu['payments'] && !!this.menu['institutions']) {
+				if (
+					!context.enableInstitutionUsageStats &&
+					!this.menu['payments'] &&
+					!!this.menu['institutions']
+				) {
 					let menu = {...this.menu};
 					delete menu.institutions;
 					this.menu = menu;
@@ -89,7 +91,11 @@ export default {
 				) {
 					let menu = {};
 					Object.keys(this.menu).forEach(key => {
-						if (key === 'settings' || key === 'payments' || key === 'institutions') {
+						if (
+							key === 'settings' ||
+							key === 'payments' ||
+							key === 'institutions'
+						) {
 							menu.announcements = this.announcementsNavLink;
 						}
 						menu[key] = this.menu[key];

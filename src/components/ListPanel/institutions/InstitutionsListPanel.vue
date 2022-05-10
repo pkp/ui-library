@@ -16,13 +16,22 @@
 					</template>
 				</pkp-header>
 				<template v-slot:itemTitle="{item}">
-					{{ localize(item.name) }}
+					<span :id="'institution-' + item.id">
+						{{ localize(item.name) }}
+					</span>
 				</template>
 				<template v-slot:itemActions="{item}">
-					<pkp-button @click="openEditModal(item.id)">
+					<pkp-button
+						:aria-describedby="'institution-' + item.id"
+						@click="openEditModal(item.id)"
+					>
 						{{ __('common.edit') }}
 					</pkp-button>
-					<pkp-button :isWarnable="true" @click="openDeleteModal(item.id)">
+					<pkp-button
+						:isWarnable="true"
+						:aria-describedby="'institution-' + item.id"
+						@click="openDeleteModal(item.id)"
+					>
 						{{ __('common.delete') }}
 					</pkp-button>
 				</template>
@@ -177,44 +186,46 @@ export default {
 		openDeleteModal(id) {
 			const institution = this.items.find(a => a.id === id);
 			if (typeof institution === 'undefined') {
-				this.openDialog({
-					confirmLabel: this.__('common.ok'),
-					name: 'unknownError',
-					message: this.__('common.unknownError'),
-					title: this.__('common.error'),
-					callback: () => {
-						this.$modal.hide('unknownError');
-					}
-				});
+				this.ajaxErrorCallback({});
 				return;
 			}
 			this.openDialog({
-				cancelLabel: this.__('common.no'),
 				name: 'delete',
 				title: this.deleteInstitutionLabel,
 				message: this.replaceLocaleParams(this.confirmDeleteMessage, {
 					title: this.localize(institution.title)
 				}),
-				callback: () => {
-					var self = this;
-					$.ajax({
-						url: this.apiUrl + '/' + id,
-						type: 'POST',
-						headers: {
-							'X-Csrf-Token': pkp.currentUser.csrfToken,
-							'X-Http-Method-Override': 'DELETE'
-						},
-						error: self.ajaxErrorCallback,
-						success: function(r) {
-							self.setItems(
-								self.items.filter(i => i.id !== id),
-								self.itemsMax
-							);
-							self.$modal.hide('delete');
-							self.setFocusIn(self.$el);
+				actions: [
+					{
+						label: this.__('common.yes'),
+						isPrimary: true,
+						callback: () => {
+							var self = this;
+							$.ajax({
+								url: this.apiUrl + '/' + id,
+								type: 'POST',
+								headers: {
+									'X-Csrf-Token': pkp.currentUser.csrfToken,
+									'X-Http-Method-Override': 'DELETE'
+								},
+								error: self.ajaxErrorCallback,
+								success: function(r) {
+									self.setItems(
+										self.items.filter(i => i.id !== id),
+										self.itemsMax
+									);
+									self.$modal.hide('delete');
+									self.setFocusIn(self.$el);
+								}
+							});
 						}
-					});
-				}
+					},
+					{
+						label: this.__('common.no'),
+						isWarnable: true,
+						callback: () => this.$modal.hide('delete')
+					}
+				]
 			});
 		},
 
@@ -226,18 +237,10 @@ export default {
 		openEditModal(id) {
 			this.resetFocusTo = document.activeElement;
 
-			const institution = this.items.find(
-				institution => institution.id === id
-			);
+			const institution = this.items.find(institution => institution.id === id);
 			if (!institution) {
-				this.openDialog({
-					confirmLabel: this.__('common.ok'),
-					name: 'unknownError',
-					message: this.__('common.unknownError'),
-					callback: () => {
-						this.$modal.hide('unknownError');
-					}
-				});
+				this.ajaxErrorCallback({});
+				return;
 			}
 
 			let activeForm = cloneDeep(this.form);
@@ -293,11 +296,6 @@ export default {
 @import '../../../styles/_import';
 
 .institutionsListPanel {
-	.listPanel__item {
-		padding-top: 0.25rem;
-		padding-bottom: 0.25rem;
-	}
-
 	.listPanel__itemTitle {
 		font-weight: @normal;
 	}
