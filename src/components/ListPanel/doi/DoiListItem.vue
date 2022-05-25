@@ -416,6 +416,9 @@ export default {
 						// Complete called here instead of in addDoiToPubObject since it will never be called
 						this.postUpdatedDoiComplete(response, itemToUpdate.uid);
 					});
+			} else if (itemToUpdate.identifier === '') {
+				// Otherwise, if the DOI identifier field is empty, the whole DOI object should be deleted
+				this.deleteDoi(itemToUpdate);
 			} else {
 				this.editDoi(itemToUpdate);
 			}
@@ -475,6 +478,24 @@ export default {
 					contentType: 'application/x-www-form-urlencoded'
 				},
 				data: {doi: `${itemToUpdate.identifier}`},
+				success: response =>
+					this.postUpdatedDoiSuccess(response, itemToUpdate.uid),
+				error: response => this.postUpdatedDoiError(response, itemToUpdate.uid),
+				complete: response =>
+					this.postUpdatedDoiComplete(response, itemToUpdate.uid)
+			});
+		},
+		/**
+		 * Delete a DOI object directly
+		 */
+		deleteDoi(itemToUpdate) {
+			return $.ajax({
+				url: `${this.doiApiUrl}/${itemToUpdate.doiId}`,
+				type: 'POST',
+				headers: {
+					'X-Csrf-Token': pkp.currentUser.csrfToken,
+					'X-Http-Method-Override': 'DELETE'
+				},
 				success: response =>
 					this.postUpdatedDoiSuccess(response, itemToUpdate.uid),
 				error: response => this.postUpdatedDoiError(response, itemToUpdate.uid),
