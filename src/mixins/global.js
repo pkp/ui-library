@@ -8,6 +8,7 @@
  * @see https://vuejs.org/v2/guide/mixins.html
  */
 import dialog from './dialog';
+import moment from 'moment';
 
 export default {
 	mixins: [dialog],
@@ -41,6 +42,14 @@ export default {
 			}
 
 			return this.replaceLocaleParams(pkp.localeKeys[key], params);
+		},
+
+		/**
+		 * Parses ISO-8601 date strings in cross-browser compatible way and returns default JS Date object.
+		 * @param {String} dateString
+		 */
+		getBrowserSafeDate(dateString) {
+			return moment.utc(dateString).toDate();
 		},
 
 		/**
@@ -111,7 +120,7 @@ export default {
 			if (!str) {
 				return '';
 			}
-			str = new Date(str);
+			str = this.getBrowserSafeDate(str);
 			let dateLocale =
 				requestedLocale !== undefined
 					? requestedLocale.replace('_', '-')

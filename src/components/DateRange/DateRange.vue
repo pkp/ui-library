@@ -306,7 +306,7 @@ export default {
 		 * @return boolean
 		 */
 		validateDateExists(date) {
-			const dateExists = new Date(date);
+			const dateExists = this.getBrowserSafeDate(date);
 			return !isNaN(dateExists.getTime());
 		},
 
