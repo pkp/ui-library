@@ -171,6 +171,27 @@
 				/>
 			</list-panel>
 		</slot>
+
+		<!-- DOI creation failed modal -->
+		<modal
+			:close-label="__('common.close')"
+			name="failedDoiCreationModal"
+			:title="__('manager.dois.update.failedCreation')"
+			@closed="
+				setFocusIn($el.querySelector('.doiListPanel__bulkActions'));
+				failedDoiCreations = [];
+			"
+		>
+			<p>{{ this.__('manager.dois.update.partialFailure') }}</p>
+			<ul>
+				<li
+					v-for="errorMessage in this.failedDoiCreations"
+					v-bind:key="errorMessage.index"
+				>
+					{{ errorMessage }}
+				</li>
+			</ul>
+		</modal>
 	</div>
 </template>
 
@@ -186,9 +207,12 @@ import PkpHeader from '@/components/Header/Header.vue';
 import Search from '@/components/Search/Search.vue';
 import fetch from '@/mixins/fetch';
 import ajaxError from '@/mixins/ajaxError';
+import Notification from '@/components/Notification/Notification';
+import Modal from '@/components/Modal/Modal';
 
 export default {
 	components: {
+		Notification,
 		DoiListItem,
 		Dropdown,
 		FieldSelect,
@@ -197,7 +221,8 @@ export default {
 		PkpFilter,
 		PkpFilterAutosuggest,
 		PkpHeader,
-		Search
+		Search,
+		Modal
 	},
 	mixins: [ajaxError, fetch],
 	props: {
@@ -269,7 +294,8 @@ export default {
 		return {
 			activeFilters: {},
 			selected: [],
-			expanded: []
+			expanded: [],
+			failedDoiCreations: []
 		};
 	},
 	methods: {
@@ -427,6 +453,8 @@ export default {
 			});
 
 			this.openBulkActionDialog(actionLabel, actionMessage, () => {
+				let self = this;
+				self.loading = true;
 				$.ajax({
 					...this.getBulkActionAjaxProps('deposit'),
 					data: {
@@ -443,7 +471,10 @@ export default {
 						);
 					},
 					error: response => this.ajaxErrorCallback(response),
-					complete: () => this.onBulkActionComplete()
+					complete: () => {
+						self.isloading = false;
+						return this.onBulkActionComplete();
+					}
 				});
 			});
 		},
@@ -536,7 +567,15 @@ export default {
 							'success'
 						);
 					},
-					error: response => this.ajaxErrorCallback(response),
+					error: response => {
+						if (response.responseJSON.hasOwnProperty('failedDoiCreations')) {
+							this.failedDoiCreations =
+								response.responseJSON.failedDoiCreations;
+							this.$modal.show('failedDoiCreationModal');
+							return;
+						}
+						return this.ajaxErrorCallback(response);
+					},
 					complete: () => this.onBulkActionComplete()
 				});
 			});
