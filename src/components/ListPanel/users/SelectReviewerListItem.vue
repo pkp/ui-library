@@ -314,8 +314,15 @@ export default {
 			if (!this.item.dateLastReviewAssignment) {
 				return 0;
 			}
+
+			// Needed for Safari as it will return NaN for date strings with '-' separators.
+			const fixDateForAllBrowsers = dateString => dateString.replace(/-/g, '/');
+
 			return Math.floor(
-				((Date.parse(this.item.dateLastReviewAssignment) - Date.now()) /
+				((Date.parse(
+					fixDateForAllBrowsers(this.item.dateLastReviewAssignment)
+				) -
+					Date.now()) /
 					86400000) *
 					-1
 			);

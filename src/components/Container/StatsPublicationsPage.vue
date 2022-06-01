@@ -76,8 +76,10 @@ export default {
 				return false;
 			}
 			return (
-				this.getDaysBetween(new Date(this.dateStart), new Date(this.dateEnd)) <
-				91
+				this.getDaysBetween(
+					this.getBrowserSafeDate(this.dateStart),
+					this.getBrowserSafeDate(this.dateEnd)
+				) < 91
 			);
 		},
 
@@ -93,8 +95,8 @@ export default {
 			}
 			return (
 				this.getDaysBetween(
-					new Date(this.dateStart),
-					new Date(this.dateEndMax)
+					this.getBrowserSafeDate(this.dateStart),
+					this.getBrowserSafeDate(this.dateEndMax)
 				) > 31
 			);
 		},

@@ -335,8 +335,8 @@ export default {
 					this.dateEnd ||
 					new Date(new Date().setDate(new Date().getDate() - 1));
 				this.timeline = getRandomTimeline(
-					new Date(dateStart),
-					new Date(dateEnd),
+					this.getBrowserSafeDate(dateStart),
+					this.getBrowserSafeDate(dateEnd),
 					this.timelineInterval
 				);
 				this.isLoadingTimeline = false;
