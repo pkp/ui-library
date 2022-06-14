@@ -18,7 +18,6 @@
 										<li>
 											<button
 												class="pkpDropdown__action"
-												id="toggleSelectAll"
 												@click="toggleSelectAll"
 											>
 												{{
@@ -31,7 +30,6 @@
 										<li>
 											<button
 												class="pkpDropdown__action"
-												id="toggleExpandAll"
 												@click="toggleExpandAll"
 											>
 												{{
@@ -46,36 +44,55 @@
 
 								<div class="pkpDropdown__section">
 									<div class="app__userNav__loggedInAs">
-										Take action on {{ selected.length }} selected item(s)
+										{{
+											__('manager.dois.actions.description', {
+												count: selected.length
+											})
+										}}
 									</div>
 									<ul>
 										<li v-if="isRegistrationPluginConfigured">
 											<button
 												class="pkpDropdown__action"
-												id="openBulkExport"
 												@click="openBulkExport"
 											>
-												Export
+												{{ __('manager.dois.actions.export.label') }}
 											</button>
 										</li>
 
 										<li>
 											<button
 												class="pkpDropdown__action"
-												id="openBulkMarkRegistered"
 												@click="openBulkMarkRegistered"
 											>
-												Mark registered
+												{{ __('manager.dois.actions.markRegistered.label') }}
 											</button>
 										</li>
 
 										<li>
 											<button
 												class="pkpDropdown__action"
-												id="openBulkAssign"
+												@click="openBulkMarkUnregistered"
+											>
+												{{ __('manager.dois.actions.markUnregistered.label') }}
+											</button>
+										</li>
+
+										<li>
+											<button
+												class="pkpDropdown__action"
+												@click="openBulkMarkStale"
+											>
+												{{ __('manager.dois.actions.markStale.label') }}
+											</button>
+										</li>
+
+										<li>
+											<button
+												class="pkpDropdown__action"
 												@click="openBulkAssign"
 											>
-												Assign DOIs
+												{{ __('manager.dois.actions.assign.label') }}
 											</button>
 										</li>
 
@@ -84,7 +101,7 @@
 												class="pkpDropdown__action"
 												@click="openBulkDeposit"
 											>
-												Deposit
+												{{ __('manager.dois.actions.deposit.label') }}
 											</button>
 										</li>
 									</ul>
@@ -94,7 +111,6 @@
 							<pkp-button
 								:is-primary="true"
 								v-if="isRegistrationPluginConfigured"
-								id="openBulkDepositAll"
 								@click="openBulkDepositAll"
 							>
 								{{ __('manager.dois.actions.deposit.all') }}
@@ -172,20 +188,20 @@
 			</list-panel>
 		</slot>
 
-		<!-- DOI creation failed modal -->
+		<!-- DOI action failed modal -->
 		<modal
 			:close-label="__('common.close')"
-			name="failedDoiCreationModal"
+			name="failedDoiActionModal"
 			:title="__('manager.dois.update.failedCreation')"
 			@closed="
 				setFocusIn($el.querySelector('.doiListPanel__bulkActions'));
-				failedDoiCreations = [];
+				failedDoiActions = [];
 			"
 		>
 			<p>{{ this.__('manager.dois.update.partialFailure') }}</p>
 			<ul>
 				<li
-					v-for="errorMessage in this.failedDoiCreations"
+					v-for="errorMessage in this.failedDoiActions"
 					v-bind:key="errorMessage.index"
 				>
 					{{ errorMessage }}
@@ -295,7 +311,7 @@ export default {
 			activeFilters: {},
 			selected: [],
 			expanded: [],
-			failedDoiCreations: []
+			failedDoiActions: []
 		};
 	},
 	methods: {
@@ -537,7 +553,76 @@ export default {
 							'success'
 						);
 					},
+					error: response => {
+						if (response.responseJSON.hasOwnProperty('failedDoiActions')) {
+							this.failedDoiActions = response.responseJSON.failedDoiActions;
+							return;
+						}
+						return this.ajaxErrorCallback(response);
+					},
+					complete: () => this.onBulkActionComplete()
+				});
+			});
+		},
+		/**
+		 * Opens modal for bulk marking items unregistered
+		 */
+		openBulkMarkUnregistered() {
+			const actionLabel = this.__(
+				'manager.dois.actions.markUnregistered.label'
+			);
+			const actionMessage = this.__(
+				'manager.dois.actions.markUnregistered.prompt',
+				{count: this.selected.length}
+			);
+
+			this.openBulkActionDialog(actionLabel, actionMessage, () => {
+				$.ajax({
+					...this.getBulkActionAjaxProps('markUnregistered', 'PUT'),
+					data: {
+						ids: this.selected
+					},
+					success: () => {
+						pkp.eventBus.$emit(
+							'notify',
+							this.__('manager.dois.notification.markUnregisteredSuccess'),
+							'success'
+						);
+					},
 					error: response => this.ajaxErrorCallback(response),
+					complete: () => this.onBulkActionComplete()
+				});
+			});
+		},
+		/**
+		 * Opens modal for bulk marking items registered
+		 */
+		openBulkMarkStale() {
+			const actionLabel = this.__('manager.dois.actions.markStale.label');
+			const actionMessage = this.__('manager.dois.actions.markStale.prompt', {
+				count: this.selected.length
+			});
+
+			this.openBulkActionDialog(actionLabel, actionMessage, () => {
+				$.ajax({
+					...this.getBulkActionAjaxProps('markStale', 'PUT'),
+					data: {
+						ids: this.selected
+					},
+					success: () => {
+						pkp.eventBus.$emit(
+							'notify',
+							this.__('manager.dois.notification.markStaleSuccess'),
+							'success'
+						);
+					},
+					error: response => {
+						if (response.responseJSON.hasOwnProperty('failedDoiActions')) {
+							this.failedDoiActions = response.responseJSON.failedDoiActions;
+							return;
+						}
+						return this.ajaxErrorCallback(response);
+					},
 					complete: () => this.onBulkActionComplete()
 				});
 			});
@@ -565,10 +650,8 @@ export default {
 						);
 					},
 					error: response => {
-						if (response.responseJSON.hasOwnProperty('failedDoiCreations')) {
-							this.failedDoiCreations =
-								response.responseJSON.failedDoiCreations;
-							this.$modal.show('failedDoiCreationModal');
+						if (response.responseJSON.hasOwnProperty('failedDoiActions')) {
+							this.failedDoiActions = response.responseJSON.failedDoiActions;
 							return;
 						}
 						return this.ajaxErrorCallback(response);
@@ -780,6 +863,24 @@ export default {
 		},
 		isRegistrationPluginConfigured() {
 			return this.registrationAgencyInfo['isConfigured'];
+		}
+	},
+	watch: {
+		/**
+		 *
+		 * @param {Array} newVal
+		 * @param {Array} oldVal
+		 */
+		failedDoiActions(newVal, oldVal) {
+			window.console.log({newVal, oldVal});
+			// if (newVal === oldVal) {
+			// 	return;
+			// }
+			if (newVal.length !== 0) {
+				this.$modal.show('failedDoiActionModal');
+			} else {
+				this.$modal.hide('failedDoiActionModal');
+			}
 		}
 	}
 };
