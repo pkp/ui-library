@@ -460,13 +460,10 @@ export default {
 					data: {
 						ids: ids
 					},
-					/**
-					 * @param {{responseMessage: string}} response
-					 */
-					success: response => {
+					success: () => {
 						pkp.eventBus.$emit(
 							'notify',
-							this.__(response.responseMessage),
+							this.__('manager.dois.notification.depositQueuedSuccess'),
 							'success'
 						);
 					},
