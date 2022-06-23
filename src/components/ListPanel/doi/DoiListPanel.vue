@@ -456,7 +456,7 @@ export default {
 				let self = this;
 				self.loading = true;
 				$.ajax({
-					...this.getBulkActionAjaxProps('deposit'),
+					...this.getBulkActionAjaxProps('deposit', 'PUT'),
 					data: {
 						ids: ids
 					},
@@ -487,7 +487,7 @@ export default {
 
 			this.openBulkActionDialog(actionLabel, actionMessage, () => {
 				$.ajax({
-					...this.getBulkActionAjaxProps('export'),
+					...this.getBulkActionAjaxProps('export', 'PUT'),
 					data: {
 						ids: this.selected
 					},
@@ -526,7 +526,7 @@ export default {
 
 			this.openBulkActionDialog(actionLabel, actionMessage, () => {
 				$.ajax({
-					...this.getBulkActionAjaxProps('markRegistered'),
+					...this.getBulkActionAjaxProps('markRegistered', 'PUT'),
 					data: {
 						ids: this.selected
 					},
@@ -591,7 +591,8 @@ export default {
 					url: `${this.doiApiUrl}/depositAll`,
 					type: 'POST',
 					headers: {
-						'X-Csrf-Token': pkp.currentUser.csrfToken
+						'X-Csrf-Token': pkp.currentUser.csrfToken,
+						'X-Http-Method-Override': 'PUT'
 					},
 					success: () => {
 						pkp.eventBus.$emit(
@@ -635,15 +636,21 @@ export default {
 		 * Gets Actions used by all bulk action AJAX requests
 		 *
 		 * @param {string} action
-		 * @returns {{headers: {"X-Csrf-Token": string}, type: string, url: string}}
+		 * @param {string} requestType HTTP method override type
+		 * @returns {{headers: {"X-Csrf-Token": string, 'X-Http-Method-Override': string}, type: string, url: string}}
 		 */
-		getBulkActionAjaxProps(action) {
+		getBulkActionAjaxProps(action, requestType = 'POST') {
+			let headers = {
+				'X-Csrf-Token': pkp.currentUser.csrfToken
+			};
+			if (requestType !== 'POST') {
+				headers['X-Http-Method-Override'] = requestType;
+			}
+
 			return {
 				url: `${this.executeActionApiUrl}/${action}`,
 				type: 'POST',
-				headers: {
-					'X-Csrf-Token': pkp.currentUser.csrfToken
-				}
+				headers: headers
 			};
 		},
 		/**
