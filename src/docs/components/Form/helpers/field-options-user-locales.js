@@ -14,7 +14,7 @@ export default {
 		},
 		{
 			value: 'fr_CA',
-			label: 'French (Canadian)'
+			label: 'French'
 		},
 		{
 			value: 'ar_AR',

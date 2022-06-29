@@ -366,11 +366,11 @@ export default {
 					locales: [
 						{
 							locale: 'en_US',
-							name: 'English (United States)'
+							name: 'English'
 						},
 						{
 							locale: 'fr_CA',
-							name: 'French (Canada)'
+							name: 'French'
 						}
 					]
 				},
@@ -429,11 +429,11 @@ export default {
 					locales: [
 						{
 							locale: 'en_US',
-							name: 'English (United States)'
+							name: 'English'
 						},
 						{
 							locale: 'fr_CA',
-							name: 'French (Canada)'
+							name: 'French '
 						}
 					]
 				},
