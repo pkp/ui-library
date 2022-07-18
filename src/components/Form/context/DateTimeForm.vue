@@ -1,10 +1,12 @@
 <script>
 import PkpForm from '../Form.vue';
 import moment from 'moment';
+import localizeMoment from '@/mixins/localizeMoment.js';
 
 export default {
 	name: 'DateTimeForm',
 	extends: PkpForm,
+	mixins: [localizeMoment],
 	data() {
 		return {
 			// holds initial value of the field that emitted set event
@@ -238,7 +240,7 @@ export default {
 						const formatString = this.convertDateFormat(option.label);
 						if (formatString) {
 							let dateTime = moment();
-							dateTime.locale(locale.key);
+							dateTime.locale(this.getMomentLocale(locale.key));
 							option.label = dateTime.format(formatString);
 						}
 					});
