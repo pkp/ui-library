@@ -1,6 +1,7 @@
 <script type="text/javascript">
 import Page from './Page.vue';
 import AnnouncementsListPanel from '@/components/ListPanel/announcements/AnnouncementsListPanel.vue';
+import InstitutionsListPanel from '@/components/ListPanel/institutions/InstitutionsListPanel.vue';
 import EmailTemplatesListPanel from '@/components/ListPanel/emailTemplates/EmailTemplatesListPanel.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import ThemeForm from '@/components/Form/context/ThemeForm.vue';
@@ -12,6 +13,7 @@ export default {
 	extends: Page,
 	components: {
 		AnnouncementsListPanel,
+		InstitutionsListPanel,
 		EmailTemplatesListPanel,
 		PkpForm,
 		ThemeForm,
@@ -21,6 +23,7 @@ export default {
 	data() {
 		return {
 			announcementsNavLink: {},
+			institutionsNavLink: {},
 			paymentsNavLink: null
 		};
 	},
@@ -42,7 +45,33 @@ export default {
 					let menu = {};
 					Object.keys(this.menu).forEach(key => {
 						if (key === 'settings') {
+							menu.institutions = this.institutionsNavLink;
 							menu.payments = this.paymentsNavLink;
+						}
+						menu[key] = this.menu[key];
+					});
+					this.menu = menu;
+				}
+			}
+
+			// Add or remove institutions nav link
+			if (formId === pkp.const.FORM_CONTEXT_STATISTICS) {
+				if (
+					!context.enableInstitutionUsageStats &&
+					!this.menu['payments'] &&
+					!!this.menu['institutions']
+				) {
+					let menu = {...this.menu};
+					delete menu.institutions;
+					this.menu = menu;
+				} else if (
+					context.enableInstitutionUsageStats &&
+					!Object.keys(this.menu).includes('institutions')
+				) {
+					let menu = {};
+					Object.keys(this.menu).forEach(key => {
+						if (key === 'settings' || key === 'payments') {
+							menu.institutions = this.institutionsNavLink;
 						}
 						menu[key] = this.menu[key];
 					});
@@ -62,7 +91,11 @@ export default {
 				) {
 					let menu = {};
 					Object.keys(this.menu).forEach(key => {
-						if (key === 'settings' || key === 'payments') {
+						if (
+							key === 'settings' ||
+							key === 'payments' ||
+							key === 'institutions'
+						) {
 							menu.announcements = this.announcementsNavLink;
 						}
 						menu[key] = this.menu[key];
