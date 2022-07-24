@@ -14,77 +14,56 @@ export default {
 			let newMappedItem = mappedItem;
 			const originalItem = this.items.find((item) => item.id === mappedItem.id);
 
-			// Submissions
-			if (this.enabledDoiTypes.includes('publication')) {
-				let doiObject = this.getCurrentPublication(originalItem).doiObject;
+			originalItem.publications.map(publication => {
+				const isCurrentVersion =
+					publication.id === this.getCurrentPublication(originalItem).id;
 
-				let updateWithNewDoiEndpoint = `${this.doiApiUrl}/publications/${originalItem.currentPublicationId}`;
-				updateWithNewDoiEndpoint = updateWithNewDoiEndpoint.replace(
-					/dois/g,
-					'_dois'
-				);
+				// Submissions
+				if (this.enabledDoiTypes.includes('publication')) {
+					const doiObject = publication.doiObject;
 
-				newMappedItem.doiObjects.push({
-					id: this.getCurrentPublication(originalItem).id,
-					doiId: doiObject === null ? null : doiObject.id,
-					uid: `${originalItem.id}-preprint-${
-						this.getCurrentPublication(originalItem).id
-					}`,
-					displayType: this.__('submission.publication'),
-					type: 'preprint',
-					identifier: doiObject === null ? '' : doiObject.doi,
-					depositStatus:
-						doiObject === null
-							? pkp.const.DOI_STATUS_UNREGISTERED
-							: doiObject.status,
-					errorMessage:
-						doiObject === null
-							? null
-							: doiObject[this.registrationAgencyInfo['errorMessageKey']],
-					registeredMessage:
-						doiObject === null
-							? null
-							: doiObject[this.registrationAgencyInfo['registeredMessageKey']],
-					updateWithNewDoiEndpoint: updateWithNewDoiEndpoint,
-				});
-			}
-
-			// Galleys
-			if (this.enabledDoiTypes.includes('representation')) {
-				this.getCurrentPublication(originalItem).galleys.forEach((galley) => {
-					let doiObject = galley.doiObject;
-
-					let updateWithNewDoiEndpoint = `${this.doiApiUrl}/galleys/${galley.id}`;
+					let updateWithNewDoiEndpoint = `${this.doiApiUrl}/publications/${originalItem.currentPublicationId}`;
 					updateWithNewDoiEndpoint = updateWithNewDoiEndpoint.replace(
 						/dois/g,
 						'_dois'
 					);
 
-					newMappedItem.doiObjects.push({
-						id: galley.id,
-						doiId: doiObject === null ? null : doiObject.id,
-						uid: `${originalItem.id}-galley-${galley.id}`,
-						displayType: galley.label,
-						type: 'galley',
-						identifier: doiObject === null ? '' : doiObject.doi,
-						depositStatus:
-							doiObject === null
-								? pkp.const.DOI_STATUS_UNREGISTERED
-								: doiObject.status,
-						errorMessage:
-							doiObject === null
-								? null
-								: doiObject[this.registrationAgencyInfo['errorMessageKey']],
-						registeredMessage:
-							doiObject === null
-								? null
-								: doiObject[
-										this.registrationAgencyInfo['registeredMessageKey']
-								  ],
-						updateWithNewDoiEndpoint: updateWithNewDoiEndpoint,
+					newMappedItem.doiObjects.push(
+						this.mapDoiObject(doiObject, {
+							id: publication.id,
+							uid: `${originalItem.id}-publication-${publication.id}`,
+							displayType: this.__('submission.publication'),
+							type: 'publication',
+							isCurrentVersion,
+							updateWithNewDoiEndpoint,
+						})
+					);
+				}
+
+				// Galleys
+				if (this.enabledDoiTypes.includes('representation')) {
+					publication.galleys.forEach(galley => {
+						const doiObject = galley.doiObject;
+
+						let updateWithNewDoiEndpoint = `${this.doiApiUrl}/galleys/${galley.id}`;
+						updateWithNewDoiEndpoint = updateWithNewDoiEndpoint.replace(
+							/dois/g,
+							'_dois'
+						);
+
+						newMappedItem.doiObjects.push(
+							this.mapDoiObject(doiObject, {
+								id: galley.id,
+								uid: `${originalItem.id}-representation-${galley.id}`,
+								displayType: galley.label,
+								type: 'representation',
+								isCurrentVersion,
+								updateWithNewDoiEndpoint,
+							})
+						);
 					});
-				});
-			}
+				}
+			});
 
 			return mappedItem;
 		},
