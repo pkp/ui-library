@@ -839,6 +839,44 @@ export default {
 		getIsPublishedBase(item) {
 			return item.status === pkp.const.STATUS_PUBLISHED;
 		},
+		getVersions(item) {
+			return (
+				item.publications?.map(publication => {
+					return {
+						id: publication.id,
+						isCurrentVersion: item.currentPublicationId === publication.id,
+						versionNumber: publication.version,
+						urlPublished: publication.urlPublished,
+						datePublished: publication.datePublished
+					};
+				}) || []
+			);
+		},
+		/**
+		 * Maps app/pubObject specific props and DOI objects for use in child components
+		 *
+		 * @param {DoiObject|null} doiObject
+		 * @param {{id: String, uid: String, displayType: String, type: String, isCurrentVersion: Boolean, updateWithNewDoiEndpoint: String}} props
+		 */
+		mapDoiObject(doiObject, props) {
+			return {
+				doiId: doiObject === null ? null : doiObject.id,
+				identifier: doiObject === null ? '' : doiObject.doi,
+				depositStatus:
+					doiObject === null
+						? pkp.const.DOI_STATUS_UNREGISTERED
+						: doiObject.status,
+				errorMessage:
+					doiObject === null
+						? null
+						: doiObject[this.registrationAgencyInfo['errorMessageKey']],
+				registeredMessage:
+					doiObject === null
+						? null
+						: doiObject[this.registrationAgencyInfo['registeredMessageKey']],
+				...props
+			};
+		},
 	},
 	computed: {
 		isAllSelected() {
@@ -855,6 +893,7 @@ export default {
 					title: this.getItemTitle(item),
 					urlPublished: this.getUrlPublished(item),
 					isPublished: this.getIsPublished(item),
+					versions: this.getVersions(item),
 					doiObjects: [],
 				};
 				newItem = this.addDoiObjects(newItem);
