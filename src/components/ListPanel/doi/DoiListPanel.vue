@@ -872,10 +872,6 @@ export default {
 		 * @param {Array} oldVal
 		 */
 		failedDoiActions(newVal, oldVal) {
-			window.console.log({newVal, oldVal});
-			// if (newVal === oldVal) {
-			// 	return;
-			// }
 			if (newVal.length !== 0) {
 				this.$modal.show('failedDoiActionModal');
 			} else {
