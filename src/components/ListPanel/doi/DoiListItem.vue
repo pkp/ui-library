@@ -66,10 +66,7 @@
 			v-if="isExpanded"
 			class="listPanel__itemExpanded listPanel__itemExpanded--doi"
 		>
-			<pkp-table
-				:columns="doiListColumns"
-				:rows="currentVersionDoiObjects"
-			>
+			<pkp-table :columns="doiListColumns" :rows="currentVersionDoiObjects">
 				<template slot-scope="{row}">
 					<table-cell :column="doiListColumns[0]" :row="row">
 						<label :for="row.uid">{{ row.displayType }}</label>
@@ -112,11 +109,7 @@
 					:is-disabled="isDeposited || isSaving"
 					@click="isEditingDois ? saveDois() : editDois()"
 				>
-					{{
-						isEditingDois
-							? __('common.save')
-							: __('common.edit')
-					}}
+					{{ isEditingDois ? __('common.save') : __('common.edit') }}
 				</pkp-button>
 			</div>
 
@@ -167,92 +160,86 @@
 					>
 						{{ __('manager.dois.registration.viewError') }}
 					</pkp-button>
-					<!-- Messages Modals -->
-					<!-- Error Message Modal -->
-					<modal
-						:close-label="__('common.close')"
-						:name="`errorMessageModal-${item.id}`"
-						:title="__('manager.dois.registration.viewError.title')"
-						@closed="setFocusToRef('errorMessageModalButton')"
-					>
-						<p>{{ registrationAgencyInfo['errorMessagePreamble'] }}</p>
-						<div class="depositErrorMessage">
-							<pre>{{ currentVersionDoiObjects[0]['errorMessage'] }}</pre>
-						</div>
-					</modal>
-					<!-- Recorded Message Modal -->
-					<modal
-						:close-label="__('common.close')"
-						name="registeredMessageModal"
-						:title="__('manager.dois.registration.viewError.title')"
-						@closed="setFocusToRef('registeredMessageModalButton')"
-					>
-						<p>{{ registrationAgencyInfo['registeredMessagePreamble'] }}</p>
-						<p>{{ currentVersionDoiObjects[0]['registeredMessage'] }}</p>
-					</modal>
-					<!-- Version Modal -->
-					<modal
-						:close-label="__('common.close')"
-						:name="versionModalName"
-						:title="__('doi.manager.versions.modalTitle')"
-						@closed="setFocusToRef(versionModalName)"
-					>
-						<div
-							class="doiListItem__versionContainer"
-							v-for="version in item.versions"
-							:key="version.id"
-						>
-							<a
-								:href="version.urlPublished"
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								{{ getVersionHeader(version) }}
-							</a>
-							<pkp-table
-								:columns="doiListColumns"
-								:rows="
-									item.doiObjects.filter(
-										doiObject => doiObject.id === version.id
-									)
-								"
-							>
-								<template slot-scope="{row}">
-									<table-cell :column="doiListColumns[0]" :row="row">
-										<label :for="row.uid">{{ row.displayType }}</label>
-									</table-cell>
-									<table-cell :column="doiListColumns[1]" :row="row">
-										<input
-											class="pkpFormField__input pkpFormField--text__input"
-											:id="row.uid"
-											type="text"
-											:readonly="!(isEditingDois && !isSaving)"
-											v-model="
-												mutableDois.find(doi => doi.uid === row.uid).identifier
-											"
-										/>
-									</table-cell>
-								</template>
-							</pkp-table>
-						</div>
-
-						<div class="doiListItem__versionContainer--actionsBar">
-							<spinner v-if="isSaving" />
-							<pkp-button
-								:is-disabled="isDeposited || isSaving"
-								@click="isEditingDois ? saveDois() : editDois()"
-							>
-								{{
-									isEditingDois
-										? __('common.save')
-										: __('common.edit')
-								}}
-							</pkp-button>
-						</div>
-					</modal>
 				</div>
 			</div>
 		</div>
+		<!-- Messages Modals -->
+		<!-- Error Message Modal -->
+		<modal
+			:close-label="__('common.close')"
+			:name="`errorMessageModal-${item.id}`"
+			:title="__('manager.dois.registration.viewError.title')"
+			@closed="setFocusToRef('errorMessageModalButton')"
+		>
+			<p>{{ registrationAgencyInfo['errorMessagePreamble'] }}</p>
+			<div class="depositErrorMessage">
+				<pre>{{ currentVersionDoiObjects[0]['errorMessage'] }}</pre>
+			</div>
+		</modal>
+		<!-- Recorded Message Modal -->
+		<modal
+			:close-label="__('common.close')"
+			name="registeredMessageModal"
+			:title="__('manager.dois.registration.viewError.title')"
+			@closed="setFocusToRef('registeredMessageModalButton')"
+		>
+			<p>{{ registrationAgencyInfo['registeredMessagePreamble'] }}</p>
+			<p>{{ currentVersionDoiObjects[0]['registeredMessage'] }}</p>
+		</modal>
+		<!-- Version Modal -->
+		<modal
+			:close-label="__('common.close')"
+			:name="versionModalName"
+			:title="__('doi.manager.versions.modalTitle')"
+			@closed="setFocusToRef(versionModalName)"
+		>
+			<div
+				class="doiListItem__versionContainer"
+				v-for="version in item.versions"
+				:key="version.id"
+			>
+				<a
+					:href="version.urlPublished"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					{{ getVersionHeader(version) }}
+				</a>
+				<pkp-table
+					:columns="doiListColumns"
+					:rows="
+						item.doiObjects.filter(doiObject => doiObject.id === version.id)
+					"
+				>
+					<template slot-scope="{row}">
+						<table-cell :column="doiListColumns[0]" :row="row">
+							<label :for="row.uid">{{ row.displayType }}</label>
+						</table-cell>
+						<table-cell :column="doiListColumns[1]" :row="row">
+							<input
+								class="pkpFormField__input pkpFormField--text__input"
+								:id="row.uid"
+								type="text"
+								:readonly="!(isEditingDois && !isSaving)"
+								v-model="
+									mutableDois.find(doi => doi.uid === row.uid).identifier
+								"
+							/>
+						</table-cell>
+					</template>
+				</pkp-table>
+			</div>
+
+			<div class="doiListItem__versionContainer--actionsBar">
+				<spinner v-if="isSaving" />
+				<pkp-button
+					:is-disabled="isDeposited || isSaving"
+					@click="isEditingDois ? saveDois() : editDois()"
+				>
+					{{ isEditingDois ? __('common.save') : __('common.edit') }}
+				</pkp-button>
+			</div>
+		</modal>
 	</div>
 </template>
 
@@ -452,7 +439,9 @@ export default {
 		 * @returns {boolean}
 		 */
 		hasRegisteredMessage() {
-			const messageField = this.currentVersionDoiObjects[0]['registeredMessage'];
+			const messageField = this.currentVersionDoiObjects[0][
+				'registeredMessage'
+			];
 			return (
 				messageField !== null &&
 				messageField !== undefined &&
