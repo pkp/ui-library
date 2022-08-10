@@ -282,7 +282,7 @@ export default {
 	}
 
 	&:disabled,
-	&:read-only{
+	&:read-only {
 		background: @bg-light;
 		cursor: not-allowed;
 		// Lighter than @text but accessible on @bg-light
@@ -294,11 +294,18 @@ export default {
 	}
 }
 
+// :read-only causes unexpected effects on editable fields
+// that aren't input or textarea
+input.pkpFormField__input:read-only,
+textarea.pkpFormField__input:read-only {
+	&:extend(.pkpFormField__input:disabled);
+}
+
 [dir='rtl'] {
-	.pkpFormField__input {
-		&:focus {
-			box-shadow: inset -3px 0 0 @primary;
-		}
+  .pkpFormField__input {
+	&:focus {
+	  box-shadow: inset -3px 0 0 @primary;
 	}
+  }
 }
 </style>
