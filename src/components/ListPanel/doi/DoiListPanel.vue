@@ -171,6 +171,7 @@
 							:is-selected="selected.includes(item.id)"
 							:is-expanded="expanded.includes(item.id)"
 							:enabled-doi-types="enabledDoiTypes"
+							:version-dois="versionDois"
 							:registration-agency-info="registrationAgencyInfo"
 							@select-item="selectItem"
 							@expand-item="expandItem"
@@ -286,6 +287,10 @@ export default {
 			default() {
 				return [];
 			},
+		},
+		versionDois: {
+			type: Boolean,
+			required: true,
 		},
 		doiApiUrl: {
 			type: String,
@@ -841,13 +846,13 @@ export default {
 		},
 		getVersions(item) {
 			return (
-				item.publications?.map(publication => {
+				item.publications?.map((publication) => {
 					return {
 						id: publication.id,
 						isCurrentVersion: item.currentPublicationId === publication.id,
 						versionNumber: publication.version,
 						urlPublished: publication.urlPublished,
-						datePublished: publication.datePublished
+						datePublished: publication.datePublished,
 					};
 				}) || []
 			);
@@ -857,6 +862,7 @@ export default {
 		 *
 		 * @param {DoiObject|null} doiObject
 		 * @param {{id: String, uid: String, displayType: String, type: String, isCurrentVersion: Boolean, updateWithNewDoiEndpoint: String}} props
+		 * @return {DoiObject}
 		 */
 		mapDoiObject(doiObject, props) {
 			return {
@@ -874,7 +880,7 @@ export default {
 					doiObject === null
 						? null
 						: doiObject[this.registrationAgencyInfo['registeredMessageKey']],
-				...props
+				...props,
 			};
 		},
 	},

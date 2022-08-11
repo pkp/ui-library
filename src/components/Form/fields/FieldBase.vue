@@ -302,10 +302,10 @@ textarea.pkpFormField__input:read-only {
 }
 
 [dir='rtl'] {
-  .pkpFormField__input {
-	&:focus {
-	  box-shadow: inset -3px 0 0 @primary;
+	.pkpFormField__input {
+		&:focus {
+			box-shadow: inset -3px 0 0 @primary;
+		}
 	}
-  }
 }
 </style>
