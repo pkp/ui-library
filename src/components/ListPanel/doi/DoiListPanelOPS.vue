@@ -14,15 +14,16 @@ export default {
 			let newMappedItem = mappedItem;
 			const originalItem = this.items.find((item) => item.id === mappedItem.id);
 
-			originalItem.publications.map(publication => {
+			originalItem.publications.forEach((publication) => {
 				const isCurrentVersion =
 					publication.id === this.getCurrentPublication(originalItem).id;
+				const versionNumber = publication.version;
 
 				// Submissions
 				if (this.enabledDoiTypes.includes('publication')) {
 					const doiObject = publication.doiObject;
 
-					let updateWithNewDoiEndpoint = `${this.doiApiUrl}/publications/${originalItem.currentPublicationId}`;
+					let updateWithNewDoiEndpoint = `${this.doiApiUrl}/publications/${publication.id}`;
 					updateWithNewDoiEndpoint = updateWithNewDoiEndpoint.replace(
 						/dois/g,
 						'_dois'
@@ -35,6 +36,7 @@ export default {
 							displayType: this.__('submission.publication'),
 							type: 'publication',
 							isCurrentVersion,
+							versionNumber,
 							updateWithNewDoiEndpoint,
 						})
 					);
@@ -42,7 +44,7 @@ export default {
 
 				// Galleys
 				if (this.enabledDoiTypes.includes('representation')) {
-					publication.galleys.forEach(galley => {
+					publication.galleys.forEach((galley) => {
 						const doiObject = galley.doiObject;
 
 						let updateWithNewDoiEndpoint = `${this.doiApiUrl}/galleys/${galley.id}`;
@@ -58,6 +60,7 @@ export default {
 								displayType: galley.label,
 								type: 'representation',
 								isCurrentVersion,
+								versionNumber,
 								updateWithNewDoiEndpoint,
 							})
 						);

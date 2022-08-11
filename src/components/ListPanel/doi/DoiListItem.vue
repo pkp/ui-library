@@ -89,11 +89,16 @@
 			>
 				<div
 					class="doiListPanel__itemExpandedActions--actionsBar"
-					v-if="item.versions.length > 1 && !isEditingDois && !isSaving"
+					v-if="
+						item.versions.length > 1 &&
+						!isEditingDois &&
+						!isSaving &&
+						versionDois
+					"
 				>
 					{{
 						__('doi.manager.versions.countStatement', {
-							count: item.versions.length
+							count: item.versions.length,
 						})
 					}}
 					<button
@@ -208,7 +213,9 @@
 				<pkp-table
 					:columns="doiListColumns"
 					:rows="
-						item.doiObjects.filter(doiObject => doiObject.id === version.id)
+						item.doiObjects.filter(
+							(doiObject) => doiObject.versionNumber === version.versionNumber
+						)
 					"
 				>
 					<template slot-scope="{row}">
@@ -222,7 +229,7 @@
 								type="text"
 								:readonly="!(isEditingDois && !isSaving)"
 								v-model="
-									mutableDois.find(doi => doi.uid === row.uid).identifier
+									mutableDois.find((doi) => doi.uid === row.uid).identifier
 								"
 							/>
 						</table-cell>
@@ -290,7 +297,7 @@ export default {
 		 * @property {?string} errorMessage - Deposit error message, if any
 		 * @property {Number} id - Publication object ID
 		 * @property {string} identifier - DOI
-		 * @property {boolean} isCurrentVersion - Whether DOI belongs to currently published version or not. Defaults to true for issues.
+		 * @property {boolean} isCurrentVersion - Whether DOI belongs to currently published version. Defaults to true for issues.
 		 * @property {?string} registeredMessage - Deposit registration message, if any
 		 * @property {string} type - Item type for internal use
 		 * @property {string} uid - Unique identifier for item in list
@@ -323,6 +330,10 @@ export default {
 			default() {
 				return [];
 			},
+		},
+		versionDois: {
+			type: Boolean,
+			required: true,
 		},
 		registrationAgencyInfo: {
 			type: Object,
@@ -359,7 +370,7 @@ export default {
 		 */
 		currentVersionDoiObjects() {
 			return this.item.doiObjects.filter(
-				doiObject => doiObject.isCurrentVersion
+				(doiObject) => doiObject.isCurrentVersion
 			);
 		},
 		/**
@@ -370,7 +381,9 @@ export default {
 		depositStatusString() {
 			switch (this.itemDepositStatus) {
 				case pkp.const.DOI_STATUS_UNREGISTERED:
-					return this.__('manager.dois.status.unregistered');
+					return this.needsDoi
+						? this.__('manager.dois.status.needsDoi')
+						: this.__('manager.dois.status.unregistered');
 				case pkp.const.DOI_STATUS_SUBMITTED:
 					return this.__('manager.dois.status.submitted');
 				case pkp.const.DOI_STATUS_REGISTERED:
@@ -410,7 +423,7 @@ export default {
 		/**
 		 * Gets the deposit status for the item as a whole to display when in collapsed view.
 		 * NB: Uses current publication as reference.
-		 * FIXME: Handle different statuses for a single item (not possible with Crossref)
+		 * FIXME: Handle different statuses for a single item (not possible with Crossref plugin currently)
 		 */
 		itemDepositStatus() {
 			return this.currentVersionDoiObjects.length !== 0
@@ -439,14 +452,24 @@ export default {
 		 * @returns {boolean}
 		 */
 		hasRegisteredMessage() {
-			const messageField = this.currentVersionDoiObjects[0][
-				'registeredMessage'
-			];
+			const messageField =
+				this.currentVersionDoiObjects[0]['registeredMessage'];
 			return (
 				messageField !== null &&
 				messageField !== undefined &&
 				messageField !== ''
 			);
+		},
+		/**
+		 * Whether this object still needs to have DOIs assigned
+		 *
+		 * @return {boolean}
+		 */
+		needsDoi() {
+			const hasAnyDois = this.item.doiObjects.some(
+				(doiObject) => doiObject.doiId !== null
+			);
+			return !hasAnyDois;
 		},
 		/**
 		 * Display string for publication status
@@ -466,7 +489,7 @@ export default {
 		 */
 		versionModalName() {
 			return this.item.type + '-versionsModal-' + this.item.id;
-		}
+		},
 	},
 	methods: {
 		updateMutableDois(doiObjects) {
@@ -492,11 +515,13 @@ export default {
 					(item) => item.uid === mutableDoi.uid
 				);
 				if (oldDoiItem.identifier !== mutableDoi.identifier) {
-					this.itemsToUpdate[mutableDoi.uid] = {
+					let items = {...this.itemsToUpdate};
+					items[mutableDoi.uid] = {
 						isFinished: false,
 						isSuccess: false,
 						...mutableDoi,
 					};
+					this.itemsToUpdate = items;
 				}
 			});
 
@@ -510,9 +535,6 @@ export default {
 				this.isEditingDois = false;
 			}
 		},
-		/**
-		 *
-		 */
 		postUpdatedDoi(itemToUpdate) {
 			// Check if this is the first time a DOI is being added to the object
 			if (itemToUpdate.doiId === null) {
@@ -580,6 +602,17 @@ export default {
 		 * Edit a DOI object directly
 		 */
 		editDoi(itemToUpdate) {
+			let data = {
+				doi: itemToUpdate.identifier,
+			};
+
+			// Handle editing of DOIs differently when versioning is enabled.
+			// See PKP\API\v1\dois\PKPDoiHandler::edit() for more details.
+			if (this.versionDois) {
+				data.pubObjectType = itemToUpdate.pubObjectType;
+				data.pubObjectId = itemToUpdate.pubObjectId;
+			}
+
 			return $.ajax({
 				url: `${this.doiApiUrl}/${itemToUpdate.doiId}`,
 				type: 'POST',
@@ -588,11 +621,7 @@ export default {
 					'X-Http-Method-Override': 'PUT',
 					contentType: 'application/x-www-form-urlencoded',
 				},
-				data: {
-					doi: itemToUpdate.identifier,
-					pubObjectType: itemToUpdate.pubObjectType,
-					pubObjectId: itemToUpdate.pubObjectId
-				},
+				data,
 				success: (response) =>
 					this.postUpdatedDoiSuccess(response, itemToUpdate.uid),
 				error: (response) =>
@@ -605,6 +634,15 @@ export default {
 		 * Delete a DOI object directly
 		 */
 		deleteDoi(itemToUpdate) {
+			let data = {};
+
+			// Handle editing of DOIs differently when versioning is enabled.
+			// See PKP\API\v1\dois\PKPDoiHandler::delete() for more details.
+			if (this.versionDois) {
+				data.pubObjectType = itemToUpdate.pubObjectType;
+				data.pubObjectId = itemToUpdate.pubObjectId;
+			}
+
 			return $.ajax({
 				url: `${this.doiApiUrl}/${itemToUpdate.doiId}`,
 				type: 'POST',
@@ -612,10 +650,7 @@ export default {
 					'X-Csrf-Token': pkp.currentUser.csrfToken,
 					'X-Http-Method-Override': 'DELETE',
 				},
-				data: {
-					pubObjectType: itemToUpdate.pubObjectType,
-					pubObjectId: itemToUpdate.pubObjectId
-				},
+				data,
 				success: (response) =>
 					this.postUpdatedDoiSuccess(response, itemToUpdate.uid),
 				error: (response) =>
@@ -700,7 +735,7 @@ export default {
 							// or force reload entire page
 						},
 						complete(response) {
-							this.itemsToUpdate = {};
+							self.itemsToUpdate = {};
 						},
 					});
 				} else {
@@ -740,7 +775,7 @@ export default {
 					? `(${version.datePublished})`
 					: this.__('publication.status.unpublished');
 			return `${this.__('publication.version', {
-				version: version.versionNumber
+				version: version.versionNumber,
 			})} ${dateInfo}`;
 		},
 	},
