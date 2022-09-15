@@ -398,6 +398,7 @@ export default {
 					case pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE:
 					case pkp.const.REVIEW_ASSIGNMENT_STATUS_RESPONSE_OVERDUE:
 					case pkp.const.REVIEW_ASSIGNMENT_STATUS_REVIEW_OVERDUE:
+					case pkp.const.REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND:
 						notice = this.currentUserLatestReviewAssignment.status;
 						break;
 				}
@@ -666,6 +667,7 @@ export default {
 			switch (latest.statusId) {
 				case pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE:
 				case pkp.const.REVIEW_ASSIGNMENT_STATUS_RESPONSE_OVERDUE:
+				case pkp.const.REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND:
 					latest.responsePending = true;
 					latest.reviewPending = true;
 					break;
