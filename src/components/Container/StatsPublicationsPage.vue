@@ -1,5 +1,6 @@
 <script>
 import StatsPage from '@/components/Container/StatsPage.vue';
+import ActionPanel from '../ActionPanel/ActionPanel.vue';
 import LineChart from '@/components/Chart/LineChart.vue';
 import Search from '@/components/Search/Search.vue';
 import List from '@/components/List/List.vue';
@@ -11,6 +12,7 @@ export default {
 	name: 'StatsPublicationsPage',
 	extends: StatsPage,
 	components: {
+		ActionPanel,
 		LineChart,
 		Search,
 		List,
@@ -31,8 +33,7 @@ export default {
 			orderDirection: false,
 			isLoadingTimeline: false,
 			latestTimelineGetRequest: '',
-			isDownloadingReport: false,
-			reportType: ''
+			isDownloadingReport: false
 		};
 	},
 	computed: {
@@ -241,35 +242,21 @@ export default {
 		/**
 		 * Download the CSV report based on the current params
 		 */
-		downloadReport() {
-			let self = this;
-
+		downloadReport(type) {
 			this.isDownloadingReport = true;
-			this.latestItemsGetRequest = $.pkp.classes.Helper.uuid();
 
-			let url = this.apiUrl;
-			if (this.reportType !== '') {
-				url += '/' + this.reportType;
-			}
 			$.ajax({
-				url: url,
+				url: this.apiUrl + (type ? '/' + type : ''),
 				type: 'GET',
+				context: this,
 				headers: {
 					Accept: 'text/csv; charset=utf-8',
 					'Content-Type': 'text/csv;·charset_utf-8'
 				},
 				data: this.getReportParams(),
 				_uuid: this.latestItemsGetRequest,
-				error(r) {
-					if (self.latestItemsGetRequest !== this._uuid) {
-						return;
-					}
-					self.ajaxErrorCallback(r);
-				},
+				error: this.ajaxErrorCallback,
 				success(r) {
-					if (self.latestItemsGetRequest !== this._uuid) {
-						return;
-					}
 					var blob = new Blob([r]);
 					var link = document.createElement('a');
 					link.href = window.URL.createObjectURL(blob);
@@ -277,11 +264,8 @@ export default {
 					link.click();
 				},
 				complete(r) {
-					if (self.latestItemsGetRequest !== this._uuid) {
-						return;
-					}
-					self.isDownloadingReport = false;
-					self.$modal.hide('export');
+					this.isDownloadingReport = false;
+					this.$modal.hide('export');
 				}
 			});
 		},
@@ -492,5 +476,16 @@ export default {
 
 .pkpStats__sidebarHeader + .pkpStats__filterSet .pkpHeader {
 	padding-top: 0;
+}
+
+.pkpStats__reportParams {
+	th {
+		font-weight: @bold;
+		border-right: @grid-border;
+	}
+}
+
+.pkpStats__reportAction {
+	margin: 2rem 0;
 }
 </style>
