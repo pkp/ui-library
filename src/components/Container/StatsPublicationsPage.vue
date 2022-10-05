@@ -2,6 +2,9 @@
 import StatsPage from '@/components/Container/StatsPage.vue';
 import LineChart from '@/components/Chart/LineChart.vue';
 import Search from '@/components/Search/Search.vue';
+import List from '@/components/List/List.vue';
+import ListItem from '@/components/List/ListItem.vue';
+import Modal from '@/components/Modal/Modal.vue';
 import debounce from 'debounce';
 
 export default {
@@ -9,7 +12,10 @@ export default {
 	extends: StatsPage,
 	components: {
 		LineChart,
-		Search
+		Search,
+		List,
+		ListItem,
+		Modal
 	},
 	data() {
 		return {
@@ -24,10 +30,74 @@ export default {
 			orderBy: '',
 			orderDirection: false,
 			isLoadingTimeline: false,
-			latestTimelineGetRequest: ''
+			latestTimelineGetRequest: '',
+			isDownloadingReport: false,
+			reportType: ''
 		};
 	},
 	computed: {
+		/**
+		 * Get description active filters titles to display on the export modal
+		 *
+		 * @return string
+		 */
+		getFiltersTitlesDescription() {
+			let returnStr = [];
+			this.filters.forEach(filterSet => {
+				let filterTitles = [];
+				filterSet.filters.forEach(element => {
+					if (
+						element.param in this.activeFilters &&
+						this.activeFilters[element.param].includes(element.value)
+					) {
+						filterTitles.push(element.title);
+					}
+				});
+				let str = this.replaceLocaleParams(this.inAllFiltersLabel, {
+					filter: filterSet['heading'].toLowerCase()
+				});
+				if (filterTitles.length != 0) {
+					str = this.replaceLocaleParams(this.inFiltersLabel, {
+						filter: filterTitles.join(', ')
+					});
+				}
+				returnStr.push(str);
+			});
+			if (!returnStr.length) {
+				return '';
+			}
+			return returnStr.join(' ' + this.commonAndLabel + ' ');
+		},
+
+		/**
+		 * Get date range description to display on the expot modal
+		 *
+		 * @return string
+		 */
+		getDateRangeDescription() {
+			if (!this.dateStart && !this.dateEnd) {
+				return this.allDatesLabel;
+			}
+			return this.replaceLocaleParams(this.betweenDatesLabel, {
+				startDate: this.dateStart,
+				endDate: this.dateEnd
+			});
+		},
+
+		/**
+		 * Get search phrase description to display on the expot modal
+		 *
+		 * @return string
+		 */
+		getSearchPhraseDescription() {
+			if (this.searchPhrase) {
+				return this.replaceLocaleParams(this.searchPhraseLabel, {
+					phrase: this.searchPhrase
+				});
+			}
+			return '';
+		},
+
 		/**
 		 * Compile the data to pass to the LineChart component
 		 *
@@ -138,6 +208,84 @@ export default {
 		}
 	},
 	methods: {
+		/**
+		 * Get the report parameters
+		 *
+		 * @return Object
+		 */
+		getReportParams() {
+			let params = {
+				...this.activeFilters
+			};
+
+			if (this.dateStart) {
+				params.dateStart = this.dateStart;
+			}
+
+			if (this.dateEnd) {
+				params.dateEnd = this.dateEnd;
+			}
+
+			if (this.searchPhrase) {
+				params.searchPhrase = this.searchPhrase;
+			}
+
+			if (this.orderBy) {
+				params.orderBy = this.orderBy;
+				params.orderDirection = this.orderDirection ? 'DESC' : 'ASC';
+			}
+
+			return params;
+		},
+
+		/**
+		 * Download the CSV report based on the current params
+		 */
+		downloadReport() {
+			let self = this;
+
+			this.isDownloadingReport = true;
+			this.latestItemsGetRequest = $.pkp.classes.Helper.uuid();
+
+			let url = this.apiUrl;
+			if (this.reportType !== '') {
+				url += '/' + this.reportType;
+			}
+			$.ajax({
+				url: url,
+				type: 'GET',
+				headers: {
+					Accept: 'text/csv; charset=utf-8',
+					'Content-Type': 'text/csv;·charset_utf-8'
+				},
+				data: this.getReportParams(),
+				_uuid: this.latestItemsGetRequest,
+				error(r) {
+					if (self.latestItemsGetRequest !== this._uuid) {
+						return;
+					}
+					self.ajaxErrorCallback(r);
+				},
+				success(r) {
+					if (self.latestItemsGetRequest !== this._uuid) {
+						return;
+					}
+					var blob = new Blob([r]);
+					var link = document.createElement('a');
+					link.href = window.URL.createObjectURL(blob);
+					link.download = 'report.csv';
+					link.click();
+				},
+				complete(r) {
+					if (self.latestItemsGetRequest !== this._uuid) {
+						return;
+					}
+					self.isDownloadingReport = false;
+					self.$modal.hide('export');
+				}
+			});
+		},
+
 		/**
 		 * Get statistics from the server based on the current params
 		 */
