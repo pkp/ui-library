@@ -38,68 +38,6 @@ export default {
 	},
 	computed: {
 		/**
-		 * Get description active filters titles to display on the export modal
-		 *
-		 * @return string
-		 */
-		getFiltersTitlesDescription() {
-			let returnStr = [];
-			this.filters.forEach(filterSet => {
-				let filterTitles = [];
-				filterSet.filters.forEach(element => {
-					if (
-						element.param in this.activeFilters &&
-						this.activeFilters[element.param].includes(element.value)
-					) {
-						filterTitles.push(element.title);
-					}
-				});
-				let str = this.replaceLocaleParams(this.inAllFiltersLabel, {
-					filter: filterSet['heading'].toLowerCase()
-				});
-				if (filterTitles.length != 0) {
-					str = this.replaceLocaleParams(this.inFiltersLabel, {
-						filter: filterTitles.join(', ')
-					});
-				}
-				returnStr.push(str);
-			});
-			if (!returnStr.length) {
-				return '';
-			}
-			return returnStr.join(' ' + this.commonAndLabel + ' ');
-		},
-
-		/**
-		 * Get date range description to display on the expot modal
-		 *
-		 * @return string
-		 */
-		getDateRangeDescription() {
-			if (!this.dateStart && !this.dateEnd) {
-				return this.allDatesLabel;
-			}
-			return this.replaceLocaleParams(this.betweenDatesLabel, {
-				startDate: this.dateStart,
-				endDate: this.dateEnd
-			});
-		},
-
-		/**
-		 * Get search phrase description to display on the expot modal
-		 *
-		 * @return string
-		 */
-		getSearchPhraseDescription() {
-			if (this.searchPhrase) {
-				return this.replaceLocaleParams(this.searchPhraseLabel, {
-					phrase: this.searchPhrase
-				});
-			}
-			return '';
-		},
-
-		/**
 		 * Compile the data to pass to the LineChart component
 		 *
 		 * @return Object|null
@@ -210,6 +148,46 @@ export default {
 	},
 	methods: {
 		/**
+		 * Get active filter titles of the given filter set to display on the download report modal
+		 *
+		 * @param Object
+		 * @return string
+		 */
+		getFilterDescription(filterSet) {
+			let filterTitles = [];
+			filterSet.filters.forEach(element => {
+				if (
+					element.param in this.activeFilters &&
+					this.activeFilters[element.param].includes(element.value)
+				) {
+					filterTitles.push(element.title);
+				}
+			});
+			let description = this.replaceLocaleParams(this.allFiltersLabel, {
+				filter: filterSet.heading
+			});
+			if (filterTitles.length != 0) {
+				description = filterTitles.join(', ');
+			}
+			return description;
+		},
+
+		/**
+		 * Get date range description to display on the download report modal
+		 *
+		 * @return string
+		 */
+		getDateRangeDescription() {
+			if (!this.dateStart && !this.dateEnd) {
+				return this.allDatesLabel;
+			}
+			return this.replaceLocaleParams(this.betweenDatesLabel, {
+				startDate: this.dateStart,
+				endDate: this.dateEnd
+			});
+		},
+
+		/**
 		 * Get the report parameters
 		 *
 		 * @return Object
@@ -245,6 +223,32 @@ export default {
 		downloadReport(type) {
 			this.isDownloadingReport = true;
 
+			let filterTitles = [];
+			this.filters.forEach(filterSet => {
+				filterTitles.push(
+					this.getFilterDescription(filterSet)
+						.replaceAll(' ', '')
+						.replaceAll(',', '_')
+				);
+			});
+			let downloadFileName =
+				`stats_` +
+				new Date()
+					.toISOString()
+					.substr(0, 19)
+					.replaceAll(':', '-') +
+				'_' +
+				(type ? type : 'submissions') +
+				'_' +
+				this.getDateRangeDescription()
+					.replaceAll(' ', '')
+					.replace('to', '_') +
+				'_' +
+				filterTitles.join('_') +
+				'_' +
+				this.searchPhrase +
+				'.csv';
+
 			$.ajax({
 				url: this.apiUrl + (type ? '/' + type : ''),
 				type: 'GET',
@@ -260,7 +264,7 @@ export default {
 					var blob = new Blob([r]);
 					var link = document.createElement('a');
 					link.href = window.URL.createObjectURL(blob);
-					link.download = 'report.csv';
+					link.download = downloadFileName;
 					link.click();
 				},
 				complete(r) {
@@ -327,7 +331,10 @@ export default {
 			this.latestTimelineGetRequest = $.pkp.classes.Helper.uuid();
 
 			$.ajax({
-				url: this.apiUrl + '/' + this.timelineType,
+				url:
+					this.apiUrl +
+					'/timeline' +
+					(this.timelineType == 'files' ? '?type=files' : ''),
 				type: 'GET',
 				data: this.getParams,
 				_uuid: this.latestTimelineGetRequest,
