@@ -1,15 +1,23 @@
 <script>
 import StatsPage from '@/components/Container/StatsPage.vue';
+import ActionPanel from '../ActionPanel/ActionPanel.vue';
 import LineChart from '@/components/Chart/LineChart.vue';
 import Search from '@/components/Search/Search.vue';
+import List from '@/components/List/List.vue';
+import ListItem from '@/components/List/ListItem.vue';
+import Modal from '@/components/Modal/Modal.vue';
 import debounce from 'debounce';
 
 export default {
 	name: 'StatsPublicationsPage',
 	extends: StatsPage,
 	components: {
+		ActionPanel,
 		LineChart,
-		Search
+		Search,
+		List,
+		ListItem,
+		Modal
 	},
 	data() {
 		return {
@@ -24,7 +32,8 @@ export default {
 			orderBy: '',
 			orderDirection: false,
 			isLoadingTimeline: false,
-			latestTimelineGetRequest: ''
+			latestTimelineGetRequest: '',
+			isDownloadingReport: false
 		};
 	},
 	computed: {
@@ -139,6 +148,127 @@ export default {
 	},
 	methods: {
 		/**
+		 * Get active filter titles of the given filter set to display on the download report modal
+		 *
+		 * @param Object
+		 * @return string
+		 */
+		getFilterDescription(filterSet) {
+			let filterTitles = [];
+			filterSet.filters.forEach(element => {
+				if (
+					element.param in this.activeFilters &&
+					this.activeFilters[element.param].includes(element.value)
+				) {
+					filterTitles.push(element.title);
+				}
+			});
+			let description = this.replaceLocaleParams(this.allFiltersLabel, {
+				filter: filterSet.heading
+			});
+			if (filterTitles.length != 0) {
+				description = filterTitles.join(this.__('common.commaListSeparator'));
+			}
+			return description;
+		},
+
+		/**
+		 * Get date range description to display on the download report modal
+		 *
+		 * @return string
+		 */
+		getDateRangeDescription() {
+			if (!this.dateStart && !this.dateEnd) {
+				return this.allDatesLabel;
+			}
+			return this.replaceLocaleParams(this.betweenDatesLabel, {
+				startDate: this.dateStart,
+				endDate: this.dateEnd
+			});
+		},
+
+		/**
+		 * Get the report parameters
+		 *
+		 * @return Object
+		 */
+		getReportParams() {
+			let params = {
+				...this.activeFilters
+			};
+
+			if (this.dateStart) {
+				params.dateStart = this.dateStart;
+			}
+
+			if (this.dateEnd) {
+				params.dateEnd = this.dateEnd;
+			}
+
+			if (this.searchPhrase) {
+				params.searchPhrase = this.searchPhrase;
+			}
+
+			if (this.orderBy) {
+				params.orderBy = this.orderBy;
+				params.orderDirection = this.orderDirection ? 'DESC' : 'ASC';
+			}
+
+			return params;
+		},
+
+		/**
+		 * Download the CSV report based on the current params
+		 */
+		downloadReport(type) {
+			this.isDownloadingReport = true;
+
+			let filterTitles = [];
+			this.filters.forEach(filterSet => {
+				filterTitles.push(
+					this.getFilterDescription(filterSet)
+						.replaceAll(' ', '')
+						.replaceAll(',', '_')
+				);
+			});
+			let downloadFileName =
+				[
+					'stats',
+					type ? type : 'submissions',
+					this.getDateRangeDescription()
+						.replaceAll(' ', '')
+						.replace('to', '_'),
+					filterTitles.join('_'),
+					this.searchPhrase ?? ''
+				]
+					.filter(i => i) // removes empty values. it is the same as function(i) => { return $i ? $i : false}
+					.join('_') + '.csv';
+
+			$.ajax({
+				url: this.apiUrl + (type ? '/' + type : ''),
+				type: 'GET',
+				context: this,
+				headers: {
+					Accept: 'text/csv; charset=utf-8',
+					'Content-Type': 'text/csv;·charset_utf-8'
+				},
+				data: this.getReportParams(),
+				error: this.ajaxErrorCallback,
+				success(r) {
+					var blob = new Blob([r]);
+					var link = document.createElement('a');
+					link.href = window.URL.createObjectURL(blob);
+					link.download = downloadFileName;
+					link.click();
+				},
+				complete(r) {
+					this.isDownloadingReport = false;
+					this.$modal.hide('export');
+				}
+			});
+		},
+
+		/**
 		 * Get statistics from the server based on the current params
 		 */
 		get: debounce(function() {
@@ -195,7 +325,10 @@ export default {
 			this.latestTimelineGetRequest = $.pkp.classes.Helper.uuid();
 
 			$.ajax({
-				url: this.apiUrl + '/' + this.timelineType,
+				url:
+					this.apiUrl +
+					'/timeline' +
+					(this.timelineType == 'files' ? '?type=files' : ''),
 				type: 'GET',
 				data: this.getParams,
 				_uuid: this.latestTimelineGetRequest,
@@ -344,5 +477,16 @@ export default {
 
 .pkpStats__sidebarHeader + .pkpStats__filterSet .pkpHeader {
 	padding-top: 0;
+}
+
+.pkpStats__reportParams {
+	th {
+		font-weight: @bold;
+		border-right: @grid-border;
+	}
+}
+
+.pkpStats__reportAction {
+	margin: 2rem 0;
 }
 </style>
