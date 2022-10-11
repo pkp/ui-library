@@ -167,7 +167,7 @@ export default {
 				filter: filterSet.heading
 			});
 			if (filterTitles.length != 0) {
-				description = filterTitles.join(', ');
+				description = filterTitles.join(this.__('common.commaListSeparator'));
 			}
 			return description;
 		},
@@ -232,22 +232,17 @@ export default {
 				);
 			});
 			let downloadFileName =
-				`stats_` +
-				new Date()
-					.toISOString()
-					.substr(0, 19)
-					.replaceAll(':', '-') +
-				'_' +
-				(type ? type : 'submissions') +
-				'_' +
-				this.getDateRangeDescription()
-					.replaceAll(' ', '')
-					.replace('to', '_') +
-				'_' +
-				filterTitles.join('_') +
-				'_' +
-				this.searchPhrase +
-				'.csv';
+				[
+					'stats',
+					type ? type : 'submissions',
+					this.getDateRangeDescription()
+						.replaceAll(' ', '')
+						.replace('to', '_'),
+					filterTitles.join('_'),
+					this.searchPhrase ?? ''
+				]
+					.filter(i => i) // removes empty values. it is the same as function(i) => { return $i ? $i : false}
+					.join('_') + '.csv';
 
 			$.ajax({
 				url: this.apiUrl + (type ? '/' + type : ''),
@@ -258,7 +253,6 @@ export default {
 					'Content-Type': 'text/csv;·charset_utf-8'
 				},
 				data: this.getReportParams(),
-				_uuid: this.latestItemsGetRequest,
 				error: this.ajaxErrorCallback,
 				success(r) {
 					var blob = new Blob([r]);
