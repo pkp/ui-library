@@ -76,7 +76,7 @@ export default {
 		/**
 		 * Get statistics from the server based on the current params
 		 */
-		get: debounce(function() {
+		get: debounce(async function() {
 			let self = this;
 			let latestDateRangeGetRequest = $.pkp.classes.Helper.uuid();
 			let latestTotalsGetRequest = $.pkp.classes.Helper.uuid();
@@ -86,99 +86,91 @@ export default {
 			// Track when the API responses come back
 			// We won't process any updates to data until both responses
 			// are back.
-			let dateRangeFinished = false;
-			let totalsFinished = false;
-			let averagesFinished = false;
 			let dateRangeResponse = [];
 			let totalsResponse = [];
 			let averagesResponse = {};
 
+			const NetworkError = function(response) {
+				this.response = response;
+			};
+
 			// Get stats within date range
-			$.ajax({
-				url: this.apiUrl,
-				type: 'GET',
-				data: this.getParams,
-				_uuid: latestDateRangeGetRequest,
-				error(r) {
-					if (latestDateRangeGetRequest !== this._uuid) {
-						return;
+			const dateRangePromise = new Promise((resolve, reject) =>
+				$.ajax({
+					url: this.apiUrl,
+					type: 'GET',
+					data: this.getParams,
+					_uuid: latestDateRangeGetRequest,
+					error(r) {
+						if (latestDateRangeGetRequest !== this._uuid) {
+							return;
+						}
+						self.ajaxErrorCallback(r);
+						reject(new NetworkError(r));
+					},
+					success(r) {
+						if (latestDateRangeGetRequest !== this._uuid) {
+							return;
+						}
+						dateRangeResponse = r;
+						resolve(r);
 					}
-					self.ajaxErrorCallback(r);
-				},
-				success(r) {
-					if (latestDateRangeGetRequest !== this._uuid) {
-						return;
-					}
-					dateRangeResponse = r;
-				},
-				complete(r) {
-					if (latestDateRangeGetRequest !== this._uuid) {
-						return;
-					}
-					dateRangeFinished = true;
-				}
-			});
+				})
+			);
 
 			// Get total stats
 			let totalParams = {...this.getParams};
 			delete totalParams['dateStart'];
 			delete totalParams['dateEnd'];
-			$.ajax({
-				url: this.apiUrl,
-				type: 'GET',
-				data: totalParams,
-				_uuid: latestTotalsGetRequest,
-				error(r) {
-					if (latestTotalsGetRequest !== this._uuid) {
-						return;
+			const totalsPromise = new Promise((resolve, reject) =>
+				$.ajax({
+					url: this.apiUrl,
+					type: 'GET',
+					data: totalParams,
+					_uuid: latestTotalsGetRequest,
+					error(r) {
+						if (latestTotalsGetRequest !== this._uuid) {
+							return;
+						}
+						self.ajaxErrorCallback(r);
+						reject(new NetworkError(r));
+					},
+					success(r) {
+						if (latestTotalsGetRequest !== this._uuid) {
+							return;
+						}
+						totalsResponse = r;
+						resolve(r);
 					}
-					self.ajaxErrorCallback(r);
-				},
-				success(r) {
-					if (latestTotalsGetRequest !== this._uuid) {
-						return;
-					}
-					totalsResponse = r;
-				},
-				complete(r) {
-					if (latestTotalsGetRequest !== this._uuid) {
-						return;
-					}
-					totalsFinished = true;
-				}
-			});
+				})
+			);
 
 			// Get average stats
-			$.ajax({
-				url: this.averagesApiUrl,
-				type: 'GET',
-				data: this.getParams,
-				_uuid: latestAveragesGetRequest,
-				error(r) {
-					if (latestAveragesGetRequest !== this._uuid) {
-						return;
+			const averagesPromise = new Promise((resolve, reject) =>
+				$.ajax({
+					url: this.averagesApiUrl,
+					type: 'GET',
+					data: this.getParams,
+					_uuid: latestAveragesGetRequest,
+					error(r) {
+						if (latestAveragesGetRequest !== this._uuid) {
+							return;
+						}
+						self.ajaxErrorCallback(r);
+						reject(new NetworkError(r));
+					},
+					success(r) {
+						if (latestAveragesGetRequest !== this._uuid) {
+							return;
+						}
+						averagesResponse = r;
+						resolve(r);
 					}
-					self.ajaxErrorCallback(r);
-				},
-				success(r) {
-					if (latestAveragesGetRequest !== this._uuid) {
-						return;
-					}
-					averagesResponse = r;
-				},
-				complete(r) {
-					if (latestAveragesGetRequest !== this._uuid) {
-						return;
-					}
-					averagesFinished = true;
-				}
-			});
+				})
+			);
 
-			// Update stats when all responses are back
-			const interval = setInterval(() => {
-				if (!dateRangeFinished || !totalsFinished || !averagesFinished) {
-					return;
-				}
+			try {
+				await Promise.all([dateRangePromise, totalsPromise, averagesPromise]);
 				let tableRows = this.tableRows.map(row => {
 					const dateRange = dateRangeResponse.find(i => i.key === row.key);
 					const total = totalsResponse.find(i => i.key === row.key);
@@ -204,8 +196,14 @@ export default {
 				this.tableRows = [];
 				this.tableRows = tableRows;
 				this.isLoading = false;
-				clearInterval(interval);
-			}, 20);
+			} catch (error) {
+				// Ignores the NetworkError, as it's handled by the ajaxErrorCallback
+				if (!(error instanceof NetworkError)) {
+					throw error;
+				}
+			} finally {
+				this.isLoading = false;
+			}
 		}, 0),
 
 		/**
