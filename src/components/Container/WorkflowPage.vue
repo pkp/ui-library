@@ -237,8 +237,8 @@ export default {
 						label: this.__('common.yes'),
 						isWarnable: true,
 						callback: () => {
-							this.createVersion();
 							this.$modal.hide('createVersion');
+							this.createVersion();
 						}
 					},
 					{
