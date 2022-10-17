@@ -244,8 +244,8 @@ export default {
 				message: this.versionConfirmMessage,
 				title: this.versionConfirmTitle,
 				callback: () => {
-					this.createVersion();
 					this.$modal.hide('createVersion');
+					this.createVersion();
 				}
 			});
 		},
