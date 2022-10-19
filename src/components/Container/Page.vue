@@ -456,7 +456,6 @@ a.app__navItem--isCurrent {
 }
 
 .app__page {
-	max-width: 992px;
 	margin-left: auto;
 	margin-right: auto;
 }
