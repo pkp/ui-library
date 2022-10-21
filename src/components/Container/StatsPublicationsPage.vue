@@ -155,12 +155,12 @@ export default {
 		 */
 		getFilterDescription(filterSet) {
 			let filterTitles = [];
-			filterSet.filters.forEach(element => {
+			Object.values(filterSet.filters).forEach(filter => {
 				if (
-					element.param in this.activeFilters &&
-					this.activeFilters[element.param].includes(element.value)
+					filter.param in this.activeFilters &&
+					this.activeFilters[filter.param].includes(filter.value)
 				) {
-					filterTitles.push(element.title);
+					filterTitles.push(filter.title);
 				}
 			});
 			let description = this.replaceLocaleParams(this.allFiltersLabel, {
