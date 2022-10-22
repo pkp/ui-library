@@ -162,7 +162,7 @@ export default {
 					filter.param in this.activeFilters &&
 					this.activeFilters[filter.param].includes(filter.value)
 				) {
-					filterTitles.push(filter.title);
+					filterTitles.push(filter.title.trim());
 				}
 			});
 			let description = this.replaceLocaleParams(this.allFiltersLabel, {
@@ -172,6 +172,44 @@ export default {
 				description = filterTitles.join(this.__('common.commaListSeparator'));
 			}
 			return description;
+		},
+
+		/**
+		 * Get timeline type label
+		 *
+		 * @return string
+		 */
+		getTimelineTypeLabel() {
+			let tielineTypeLabel = this.viewsLabel;
+			if (this.timelineType == 'files') {
+				tielineTypeLabel = this.downloadsLabel;
+			}
+			return tielineTypeLabel;
+		},
+
+		/**
+		 * Get timeline type label
+		 *
+		 * @return string
+		 */
+		getTimelineIntervalLabel() {
+			let tielineIntervalLabel = this.monthLabel;
+			if (this.timelineInterval == 'day') {
+				tielineIntervalLabel = this.dayLabel;
+			}
+			return tielineIntervalLabel;
+		},
+
+		/**
+		 * Get description for timeline report to display on the download report modal
+		 *
+		 * @return string
+		 */
+		getTimelineDescription() {
+			return this.replaceLocaleParams(this.timelineDescriptionLabel, {
+				type: this.getTimelineTypeLabel().toLowerCase(),
+				interval: this.getTimelineIntervalLabel().toLowerCase()
+			});
 		},
 
 		/**
@@ -192,9 +230,10 @@ export default {
 		/**
 		 * Get the report parameters
 		 *
+		 * @param string
 		 * @return Object
 		 */
-		getReportParams() {
+		getReportParams(type) {
 			let params = {
 				...this.activeFilters
 			};
@@ -211,6 +250,12 @@ export default {
 				params.searchPhrase = this.searchPhrase;
 			}
 
+			if (type == 'timeline') {
+				if (this.timelineInterval) {
+					params.timelineInterval = this.timelineInterval;
+				}
+			}
+
 			if (this.orderBy) {
 				params.orderBy = this.orderBy;
 				params.orderDirection = this.orderDirection ? 'DESC' : 'ASC';
@@ -225,11 +270,17 @@ export default {
 		 * @return string
 		 */
 		getReportFileNamePart(type) {
-			return type ? type : 'submissions';
+			return type
+				? type == 'timeline'
+					? 'submissions_timeline'
+					: type
+				: 'submissions';
 		},
 
 		/**
 		 * Download the CSV report based on the current params
+		 *
+		 * @param string
 		 */
 		downloadReport(type) {
 			this.isDownloadingReport = true;
@@ -264,18 +315,41 @@ export default {
 				? '"' + this.searchPhraseLabel + '","' + this.searchPhrase + '"\n'
 				: '';
 
+			let timelineTypeRow =
+				'"' +
+				this.timelineTypeLabel +
+				'","' +
+				this.getTimelineTypeLabel() +
+				'"\n';
+			let timelineIntervalRow =
+				'"' +
+				this.timelineIntervalLabel +
+				'","' +
+				this.getTimelineIntervalLabel() +
+				'"\n';
+
 			$.ajax({
-				url: this.apiUrl + (type ? '/' + type : ''),
+				url:
+					this.apiUrl +
+					(type ? '/' + type : '') +
+					(type == 'timeline' && this.timelineType == 'files'
+						? '?type=files'
+						: ''),
 				type: 'GET',
 				context: this,
 				headers: {
 					Accept: 'text/csv; charset=utf-8',
 					'Content-Type': 'text/csv;·charset_utf-8'
 				},
-				data: this.getReportParams(),
+				data: this.getReportParams(type),
 				error: this.ajaxErrorCallback,
 				success(r) {
-					r = dateRangeRow + filtersRow.join('\n') + '\n' + searchPhraseRow + r;
+					r =
+						dateRangeRow +
+						(filtersRow.length > 0 ? filtersRow.join('\n') + '\n' : '') +
+						searchPhraseRow +
+						(type == 'timeline' ? timelineTypeRow + timelineIntervalRow : '') +
+						r;
 					var blob = new Blob([r]);
 					var link = document.createElement('a');
 					link.href = window.URL.createObjectURL(blob);
