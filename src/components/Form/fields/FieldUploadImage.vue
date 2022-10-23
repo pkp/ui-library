@@ -142,7 +142,8 @@ export default {
 		altTextDescription: String,
 		altTextLabel: String,
 		baseUrl: String,
-		thumbnailDescription: String
+		thumbnailDescription: String,
+		refreshedInitialValue: Object
 	},
 	data() {
 		return {
@@ -224,9 +225,10 @@ export default {
 		 * the field in sync with external changes
 		 */
 		currentValue: function(newVal, oldVal) {
-			if (newVal === oldVal) {
+			if (JSON.stringify(newVal) === JSON.stringify(oldVal)) {
 				return;
 			}
+
 			this.altTextValue = newVal && newVal.altText ? newVal.altText : '';
 		},
 
@@ -235,7 +237,7 @@ export default {
 		 * property in the value object
 		 */
 		altTextValue: function(newVal, oldVal) {
-			if (newVal === oldVal) {
+			if (JSON.stringify(newVal) === JSON.stringify(oldVal)) {
 				return;
 			}
 			if (!newVal && !this.currentValue) {
@@ -251,6 +253,15 @@ export default {
 				},
 				this.localeKey
 			);
+		},
+
+		refreshedInitialValue: function(newVal, oldVal) {
+			if (this.isMultilingual) {
+				this.initialValue = newVal[this.localeKey];
+			} else {
+				this.initialValue = newVal;
+			}
+			
 		}
 	},
 	mounted() {
