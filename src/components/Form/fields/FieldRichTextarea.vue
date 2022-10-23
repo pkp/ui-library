@@ -106,7 +106,8 @@ export default {
 				return {
 					menubar: false,
 					statusbar: false,
-					entity_encoding: 'raw'
+					entity_encoding: 'raw',
+					browser_spellcheck: true
 				};
 			}
 		},
