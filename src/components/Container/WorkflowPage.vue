@@ -555,6 +555,16 @@ export default {
 				this.submission.currentPublicationId = newPublication.id;
 				this.refreshSubmission();
 			}
+
+			if (formId === pkp.const.FORM_CATALOG_ENTRY) {
+				let form = {...this.components[formId]};
+				form.fields = form.fields.map(field => {
+					if (['coverImage'].includes(field.name)) {
+						field.refreshedInitialValue = {};
+						field.refreshedInitialValue = newPublication.coverImage;
+					}
+				});
+			}
 		});
 
 		/**
