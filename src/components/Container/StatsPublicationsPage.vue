@@ -6,6 +6,7 @@ import Search from '@/components/Search/Search.vue';
 import List from '@/components/List/List.vue';
 import ListItem from '@/components/List/ListItem.vue';
 import Modal from '@/components/Modal/Modal.vue';
+import Tooltip from '@/components/Tooltip/Tooltip.vue';
 import debounce from 'debounce';
 
 export default {
@@ -17,7 +18,8 @@ export default {
 		Search,
 		List,
 		ListItem,
-		Modal
+		Modal,
+		Tooltip
 	},
 	data() {
 		return {
@@ -218,31 +220,49 @@ export default {
 		},
 
 		/**
+		 * Get report file name part by type
+		 *
+		 * @return string
+		 */
+		getReportFileNamePart(type) {
+			return type ? type : 'submissions';
+		},
+
+		/**
 		 * Download the CSV report based on the current params
 		 */
 		downloadReport(type) {
 			this.isDownloadingReport = true;
 
-			let filterTitles = [];
-			this.filters.forEach(filterSet => {
-				filterTitles.push(
-					this.getFilterDescription(filterSet)
-						.replaceAll(' ', '')
-						.replaceAll(',', '_')
-				);
-			});
 			let downloadFileName =
 				[
 					'stats',
-					type ? type : 'submissions',
-					this.getDateRangeDescription()
-						.replaceAll(' ', '')
-						.replace('to', '_'),
-					filterTitles.join('_'),
-					this.searchPhrase ?? ''
-				]
-					.filter(i => i) // removes empty values. it is the same as function(i) => { return $i ? $i : false}
-					.join('_') + '.csv';
+					this.getReportFileNamePart(type),
+					new Date()
+						.toISOString()
+						.slice(0, -5)
+						.replace(':', '-')
+				].join('_') + '.csv';
+
+			let dateRangeRow =
+				'"' +
+				this.dateRangeLabel +
+				'","' +
+				this.getDateRangeDescription() +
+				'"\n';
+			let filtersRow = [];
+			Object.values(this.filters).forEach(filterSet => {
+				filtersRow.push(
+					'"' +
+						filterSet.heading +
+						'","' +
+						this.getFilterDescription(filterSet) +
+						'"'
+				);
+			});
+			let searchPhraseRow = this.searchPhrase
+				? '"' + this.searchPhraseLabel + '","' + this.searchPhrase + '"\n'
+				: '';
 
 			$.ajax({
 				url: this.apiUrl + (type ? '/' + type : ''),
@@ -255,6 +275,7 @@ export default {
 				data: this.getReportParams(),
 				error: this.ajaxErrorCallback,
 				success(r) {
+					r = dateRangeRow + filtersRow.join('\n') + '\n' + searchPhraseRow + r;
 					var blob = new Blob([r]);
 					var link = document.createElement('a');
 					link.href = window.URL.createObjectURL(blob);
