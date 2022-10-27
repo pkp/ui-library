@@ -11,7 +11,7 @@ export default {
 		 * @return string
 		 */
 		getReportFileNamePart(type) {
-			return 'issues';
+			return type == 'timeline' ? 'issues_timeline' : 'issues';
 		}
 	}
 };
