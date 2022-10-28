@@ -6,6 +6,15 @@ export default {
 	extends: StatsPublicationsPage,
 	methods: {
 		/**
+		 * Set items and itemsMax from the API call result
+		 */
+		setItems(result) {
+			let self = this;
+			self.items = result.items;
+			self.itemsMax = result.itemsMax;
+		},
+
+		/**
 		 * Get report file name part by type
 		 *
 		 * @return string
