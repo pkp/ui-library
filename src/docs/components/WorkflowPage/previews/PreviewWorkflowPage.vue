@@ -18,10 +18,10 @@
 				</badge>
 				<span class="pkpWorkflow__identificationId">{{ submission.id }}</span>
 				<span class="pkpWorkflow__identificationDivider">/</span>
-				<span class="pkpWorkflow__identificationAuthor">
+				<span v-if="currentPublication.authorsStringShort" class="pkpWorkflow__identificationAuthor">
 					{{ currentPublication.authorsStringShort }}
 				</span>
-				<span class="pkpWorkflow__identificationDivider">/</span>
+				<span v-if="currentPublication.authorsStringShort" class="pkpWorkflow__identificationDivider">/</span>
 				<span class="pkpWorkflow__identificationTitle">
 					{{
 						localizeSubmission(
