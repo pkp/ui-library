@@ -5,6 +5,7 @@ import ComponentActionPanel from './docs/components/ActionPanel/ComponentActionP
 import ComponentAnnouncementsListPanel from './docs/components/ListPanel/ComponentAnnouncementsListPanel.vue';
 import ComponentBadge from './docs/components/Badge/ComponentBadge.vue';
 import ComponentButton from './docs/components/Button/ComponentButton.vue';
+import ComponentButtonRow from './docs/components/ButtonRow/ComponentButtonRow.vue';
 import ComponentCatalogListPanel from './docs/components/ListPanel/ComponentCatalogListPanel.vue';
 import ComponentChart from './docs/components/Chart/ComponentChart.vue';
 import ComponentComposer from './docs/components/Composer/ComponentComposer.vue';
@@ -59,6 +60,7 @@ import ComponentSearch from './docs/components/Search/ComponentSearch.vue';
 import ComponentSelectReviewerListPanel from './docs/components/ListPanel/ComponentSelectReviewerListPanel.vue';
 import ComponentSubmissionFilesListPanel from './docs/components/ListPanel/ComponentSubmissionFilesListPanel.vue';
 import ComponentSubmissionsListPanel from './docs/components/ListPanel/ComponentSubmissionsListPanel.vue';
+import ComponentSubmissionWizardPage from './docs/components/SubmissionWizardPage/ComponentSubmissionWizardPage.vue';
 import ComponentSpinner from './docs/components/Spinner/ComponentSpinner.vue';
 import ComponentStatsPage from './docs/components/StatsPage/ComponentStatsPage.vue';
 import ComponentSteps from './docs/components/Steps/ComponentSteps.vue';
@@ -99,6 +101,11 @@ export default new Router({
 			path: '/component/Button/:example?',
 			name: 'Button',
 			component: ComponentButton
+		},
+		{
+			path: '/component/ButtonRow/:example?',
+			name: 'ButtonRow',
+			component: ComponentButtonRow
 		},
 		{
 			path: '/component/Chart/:example?',
@@ -301,6 +308,11 @@ export default new Router({
 			component: ComponentInstitutionsListPanel
 		},
 		{
+			path: '/component/ManageEmailsPage/:example?',
+			name: 'ManageEmailsPage',
+			component: ComponentManageEmailsPage
+		},
+		{
 			path: '/component/ListPanel/components/SelectReviewerListPanel/:example?',
 			name: 'SelectReviewerListPanel',
 			component: ComponentSelectReviewerListPanel
@@ -317,9 +329,9 @@ export default new Router({
 			component: ComponentSubmissionsListPanel
 		},
 		{
-			path: '/component/ManageEmailsPage/:example?',
-			name: 'ManageEmailsPage',
-			component: ComponentManageEmailsPage
+			path: '/component/SubmissionWizardPage/:example?',
+			name: 'SubmissionWizardPage',
+			component: ComponentSubmissionWizardPage
 		},
 		{
 			path: '/component/Modal/:example?',

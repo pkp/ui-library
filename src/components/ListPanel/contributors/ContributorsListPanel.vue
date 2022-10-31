@@ -35,7 +35,7 @@
 							@click="openPreviewModal"
 							:disabled="isLoading"
 						>
-							{{ __('contributor.listPanel.preview') }}
+							{{ i18nPreview }}
 						</pkp-button>
 						<pkp-button
 							v-if="
@@ -46,7 +46,7 @@
 							@click="openAddModal"
 							:disabled="isLoading"
 						>
-							{{ addContributorLabel }}
+							{{ i18nAddContributor }}
 						</pkp-button>
 					</template>
 				</pkp-header>
@@ -71,7 +71,7 @@
 							@up="contributorItemOrderUp(item)"
 							@down="contributorItemOrderDown(item)"
 							:itemId="item.id"
-							:itemTitle="item.title"
+							:itemTitle="item.fullName"
 						/>
 					</template>
 					<template v-else>
@@ -79,14 +79,14 @@
 							v-if="publication.primaryContactId == item.id"
 							:isPrimary="true"
 						>
-							{{ __('author.users.contributor.principalContact') }}
+							{{ i18nPrimaryContact }}
 						</badge>
 						<pkp-button
 							v-else
 							@click="setPrimaryContact(item.id)"
 							:disabled="isLoading"
 						>
-							{{ __('author.users.contributor.setPrincipalContact') }}
+							{{ i18nSetPrimaryContact }}
 						</pkp-button>
 						<pkp-button @click="openEditModal(item.id)" :disabled="isLoading">
 							{{ __('common.edit') }}
@@ -103,7 +103,7 @@
 			</list-panel>
 			<modal
 				:closeLabel="__('common.close')"
-				name="form"
+				:name="formModal"
 				:title="activeFormTitle"
 				@closed="formModalClosed"
 			>
@@ -115,32 +115,32 @@
 			</modal>
 			<modal
 				:closeLabel="__('common.close')"
-				name="preview"
-				:title="__('submission.contributors')"
+				:name="previewModal"
+				:title="i18nContributors"
 			>
 				<p>
-					{{ __('contributor.listPanel.preview.description') }}
+					{{ i18nPreviewDescription }}
 				</p>
 				<table class="pkpTable">
 					<thead>
 						<tr>
-							<th>{{ __('contributor.listPanel.preview.format') }}</th>
-							<th>{{ __('contributor.listPanel.preview.display') }}</th>
+							<th>{{ i18nFormat }}</th>
+							<th>{{ i18nDisplay }}</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<td>{{ __('contributor.listPanel.preview.abbreviated') }}</td>
+							<td>{{ i18nAbbreviated }}</td>
 							<td>{{ publication.authorsStringShort }}</td>
 						</tr>
 						<tr>
 							<td>
-								{{ __('contributor.listPanel.preview.publicationLists') }}
+								{{ i18nPublicationLists }}
 							</td>
 							<td>{{ publication.authorsStringIncludeInBrowse }}</td>
 						</tr>
 						<tr>
-							<td>{{ __('contributor.listPanel.preview.full') }}</td>
+							<td>{{ i18nFull }}</td>
 							<td>{{ publication.authorsString }}</td>
 						</tr>
 					</tbody>
@@ -169,20 +169,8 @@ export default {
 	},
 	mixins: [ajaxError],
 	props: {
-		addContributorLabel: {
-			type: String,
-			required: true
-		},
-		confirmDeleteMessage: {
-			type: String,
-			required: true
-		},
-		deleteContributorLabel: {
-			type: String,
-			required: true
-		},
-		editContributorLabel: {
-			type: String,
+		canEditPublication: {
+			type: Boolean,
 			required: true
 		},
 		form: {
@@ -203,7 +191,7 @@ export default {
 			type: String,
 			required: true
 		},
-		publicationApiUrl: {
+		publicationApiUrlFormat: {
 			type: String,
 			required: true
 		},
@@ -211,8 +199,64 @@ export default {
 			type: Object,
 			required: true
 		},
-		canEditPublication: {
-			type: Boolean,
+		i18nAbbreviated: {
+			type: String,
+			required: true
+		},
+		i18nAddContributor: {
+			type: String,
+			required: true
+		},
+		i18nConfirmDelete: {
+			type: String,
+			required: true
+		},
+		i18nContributors: {
+			type: String,
+			required: true
+		},
+		i18nDisplay: {
+			type: String,
+			required: true
+		},
+		i18nDeleteContributor: {
+			type: String,
+			required: true
+		},
+		i18nEditContributor: {
+			type: String,
+			required: true
+		},
+		i18nFormat: {
+			type: String,
+			required: true
+		},
+		i18nFull: {
+			type: String,
+			required: true
+		},
+		i18nPreview: {
+			type: String,
+			required: true
+		},
+		i18nPreviewDescription: {
+			type: String,
+			required: true
+		},
+		i18nPrimaryContact: {
+			type: String,
+			required: true
+		},
+		i18nPublicationLists: {
+			type: String,
+			required: true
+		},
+		i18nSaveOrder: {
+			type: String,
+			required: true
+		},
+		i18nSetPrimaryContact: {
+			type: String,
 			required: true
 		}
 	},
@@ -228,18 +272,47 @@ export default {
 	},
 	computed: {
 		/**
+		 * URL to the API endpoint for the current publication's contributors.
+		 */
+		contributorsApiUrl() {
+			return this.publicationApiUrlFormat.replace(
+				'__publicationId__',
+				this.publication.id + '/contributors'
+			);
+		},
+
+		/**
+		 * Unique ID for the form modal
+		 */
+		formModal() {
+			return this.id + 'form';
+		},
+
+		/**
+		 * Unique ID for the preview modal
+		 */
+		previewModal() {
+			return this.id + 'preview';
+		},
+
+		/**
+		 * URL to the API endpoint for the current publication
+		 */
+		publicationApiUrl() {
+			return this.publicationApiUrlFormat.replace(
+				'__publicationId__',
+				this.publication.id
+			);
+		},
+
+		/**
 		 * Return the appropriate label for the ordering button depending on
 		 * if we're ordering or not.
 		 *
 		 * @return {String}
 		 */
 		orderingLabel() {
-			return this.isOrdering
-				? this.__('grid.action.saveOrdering')
-				: this.__('grid.action.order');
-		},
-		apiUrl() {
-			return this.publicationApiUrl + '/contributors';
+			return this.isOrdering ? this.i18nSaveOrder : this.__('common.order');
 		}
 	},
 	methods: {
@@ -287,28 +360,27 @@ export default {
 				});
 				this.$emit('updated:contributors', newContributors);
 			}
-			this.$modal.hide('form');
+			this.$modal.hide(this.formModal);
 		},
 
 		/**
 		 * Open a modal to view a preview of the contributor lists.
 		 */
 		openPreviewModal() {
-			var self = this;
-
-			self.isLoading = true;
+			this.isLoading = true;
 
 			$.ajax({
-				url: self.publicationApiUrl,
+				url: this.publicationApiUrl,
 				type: 'GET',
-				error: self.ajaxErrorCallback,
-				success(r) {
-					self.$emit('updated:publication', r);
+				context: this,
+				error: this.ajaxErrorCallback,
+				success(publication) {
+					this.$emit('updated:publication', publication);
 
-					self.$modal.show('preview');
+					this.$modal.show(this.previewModal);
 				},
 				complete(r) {
-					self.isLoading = false;
+					this.isLoading = false;
 				}
 			});
 		},
@@ -319,11 +391,11 @@ export default {
 		openAddModal() {
 			this.resetFocusTo = document.activeElement;
 			let activeForm = cloneDeep(this.form);
-			activeForm.action = this.apiUrl;
+			activeForm.action = this.contributorsApiUrl;
 			activeForm.method = 'POST';
 			this.activeForm = activeForm;
-			this.activeFormTitle = this.addContributorLabel;
-			this.$modal.show('form');
+			this.activeFormTitle = this.i18nAddContributor;
+			this.$modal.show(this.formModal);
 		},
 
 		/**
@@ -336,47 +408,48 @@ export default {
 
 			this.openDialog({
 				name: 'delete',
-				title: this.deleteContributorLabel,
-				message: this.replaceLocaleParams(this.confirmDeleteMessage, {
+				title: this.i18nDeleteContributor,
+				message: this.replaceLocaleParams(this.i18nConfirmDelete, {
 					name: contributor.fullName
 				}),
 				actions: [
 					{
-						label: this.abandonDecisionLabel,
-						isPrimary: true,
+						label: this.i18nDeleteContributor,
+						isWarnable: true,
 						callback: () => {
-							var self = this;
-
-							self.isLoading = true;
+							this.isLoading = true;
 
 							$.ajax({
-								url: this.apiUrl + '/' + id,
+								url: this.contributorsApiUrl.replace(
+									'/contributors',
+									'/contributors/' + id
+								),
 								type: 'POST',
+								context: this,
 								headers: {
 									'X-Csrf-Token': pkp.currentUser.csrfToken,
 									'X-Http-Method-Override': 'DELETE'
 								},
-								error: self.ajaxErrorCallback,
+								error: this.ajaxErrorCallback,
 								success(r) {
-									self.$modal.hide('delete');
-									self.setFocusIn(self.$el);
+									this.$modal.hide('delete');
+									this.setFocusIn(this.$el);
 
-									const newContributors = self.publication.authors.filter(
+									const newContributors = this.publication.authors.filter(
 										author => {
 											return author.id !== id;
 										}
 									);
-									self.$emit('updated:contributors', newContributors);
+									this.$emit('updated:contributors', newContributors);
 								},
 								complete(r) {
-									self.isLoading = false;
+									this.isLoading = false;
 								}
 							});
 						}
 					},
 					{
-						label: this.__('common.no'),
-						isWarnable: true,
+						label: this.__('common.cancel'),
 						callback: () => this.$modal.hide('delete')
 					}
 				]
@@ -389,21 +462,21 @@ export default {
 		 * @param {Number} id
 		 */
 		openEditModal(id) {
-			var self = this;
-
-			self.isLoading = true;
-
+			this.isLoading = true;
 			this.resetFocusTo = document.activeElement;
+			const apiUrl = this.contributorsApiUrl.replace(
+				'/contributors',
+				'/contributors/' + id
+			);
 
 			$.ajax({
-				url: this.apiUrl + '/' + id,
+				url: apiUrl,
 				type: 'GET',
-				error: self.ajaxErrorCallback,
-				success(r) {
-					var author = r;
-
-					let activeForm = cloneDeep(self.form);
-					activeForm.action = self.apiUrl + '/' + id;
+				error: this.ajaxErrorCallback,
+				context: this,
+				success(author) {
+					let activeForm = cloneDeep(this.form);
+					activeForm.action = apiUrl;
 					activeForm.method = 'PUT';
 					activeForm.fields = activeForm.fields.map(field => {
 						if (Object.keys(author).includes(field.name)) {
@@ -411,12 +484,12 @@ export default {
 						}
 						return field;
 					});
-					self.activeForm = activeForm;
-					self.activeFormTitle = self.editContributorLabel;
-					self.$modal.show('form');
+					this.activeForm = activeForm;
+					this.activeFormTitle = this.i18nEditContributor;
+					this.$modal.show(this.formModal);
 				},
 				complete(r) {
-					self.isLoading = false;
+					this.isLoading = false;
 				}
 			});
 		},
@@ -468,25 +541,44 @@ export default {
 				seq++;
 			}
 
-			let self = this;
-			self.isLoading = true;
+			this.isLoading = true;
 
 			$.ajax({
-				url: this.apiUrl + '/saveOrder',
-				type: 'PUT',
+				url: this.contributorsApiUrl.replace(
+					'/contributors',
+					'/contributors/saveOrder'
+				),
+				context: this,
+				type: 'POST',
 				headers: {
-					'X-Csrf-Token': pkp.currentUser.csrfToken
+					'X-Csrf-Token': pkp.currentUser.csrfToken,
+					'X-Http-Method-Override': 'PUT'
 				},
 				data: {
 					sortedAuthors: this.items
 				},
-				success(r) {
-					self.$emit('updated:contributors', self.items);
+				success(contributors) {
+					this.$emit('updated:contributors', contributors);
+
+					// Update the publication in the background so that
+					// any author strings are updated
+					$.ajax({
+						url: this.publicationApiUrl,
+						context: this,
+						type: 'GET',
+						success(publication) {
+							this.$emit('updated:publication', publication);
+						},
+						complete() {
+							this.isLoading = false;
+							this.isOrdering = false;
+						}
+					});
 				},
 				error: this.ajaxErrorCallback,
 				complete() {
-					self.isLoading = false;
-					self.isOrdering = false;
+					this.isLoading = false;
+					this.isOrdering = false;
 				}
 			});
 		},
@@ -501,9 +593,10 @@ export default {
 
 			$.ajax({
 				url: this.publicationApiUrl,
-				type: 'PUT',
+				type: 'POST',
 				headers: {
-					'X-Csrf-Token': pkp.currentUser.csrfToken
+					'X-Csrf-Token': pkp.currentUser.csrfToken,
+					'X-Http-Method-Override': 'PUT'
 				},
 				data: {
 					primaryContactId: id
@@ -568,7 +661,8 @@ export default {
 	}
 
 	.listPanel__itemIdentity {
-		padding: 0.75rem 8rem 0.75rem 1rem;
+		padding: 0.75rem 1rem;
+		padding-inline-end: 8rem;
 	}
 
 	.orderer__dragDrop {
@@ -576,7 +670,7 @@ export default {
 	}
 
 	.listPanel__itemSummary {
-		margin-right: 8rem;
+		margin-inline-end: 8rem;
 	}
 }
 </style>

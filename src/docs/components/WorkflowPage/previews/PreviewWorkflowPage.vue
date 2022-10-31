@@ -330,13 +330,13 @@ export default {
 					id: 'contributors',
 					items: [...authors],
 					title: 'Contributors',
-					addContributorLabel: 'Add Contributor',
+					i18nAddContributor: 'Add Contributor',
 					publicationApiUrl:
 						'http://localhost:8088/index.php/ts/api/v1/submissions/16/publications',
-					confirmDeleteMessage:
+					i18nConfirmDelete:
 						'Are you sure you want to remove {$name} as a contributor? This action can not be undone.',
-					deleteContributorLabel: 'Delete',
-					editContributorLabel: 'Edit',
+					i18nDeleteContributor: 'Delete',
+					i18nEditContributor: 'Edit',
 					canEditPublication: true,
 					form: {
 						id: 'contributor',

@@ -29,7 +29,7 @@
 						</div>
 						<pre
 							class="component__example__template"
-						><code class="language-html" v-html="currentExample.template" /></pre>
+						><div class="language-html" v-html="currentExample.template" /></pre>
 						<section v-if="readme" class="component__example__readme bodyText">
 							<div v-html="readme" />
 						</section>

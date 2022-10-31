@@ -14,7 +14,7 @@ window.pkp = {
 	 */
 	currentUser: {
 		csrfToken: '1234',
-		id: 1,
+		id: 20,
 		roles: [1, 16, 65536, 1048576],
 		username: 'dbarnes',
 		preferredName: 'Daniel Barnes'
@@ -106,6 +106,7 @@ window.pkp = {
 		'common.noItemsFound': 'No items found.',
 		'common.none': 'None',
 		'common.ok': 'Ok',
+		'common.order': 'Order',
 		'common.orderUp': 'Increase position of {$itemTitle}',
 		'common.orderDown': 'Decrease position of {$itemTitle}',
 		'common.pageNumber': 'Page {$pageNumber}',
@@ -138,14 +139,7 @@ window.pkp = {
 		'form.multilingualProgress': '{$count}/{$total} languages completed',
 		'form.saved': 'Saved',
 		'help.help': 'Help',
-		'validator.required': 'This field is required.',
-		'common.order': 'Order',
-		'author.users.contributor.setPrincipalContact': 'Set Primary Contact',
-		'author.users.contributor.principalContact': 'Primary Contact',
-		'submission.contributors': 'Contributors',
-		'grid.action.saveOrdering': 'Save Order',
-		'grid.action.order': 'Order',
-		'contributor.listPanel.preview': 'Preview'
+		'validator.required': 'This field is required.'
 	}
 };
 

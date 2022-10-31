@@ -513,9 +513,7 @@ export default {
 		 * @return {Number}
 		 */
 		openQueryCount() {
-			return this.activeStage.queries.filter(query => {
-				return !query.closed;
-			}).length;
+			return this.activeStage.openQueryCount;
 		},
 
 		/**

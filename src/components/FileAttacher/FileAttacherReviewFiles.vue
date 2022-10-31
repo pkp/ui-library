@@ -17,32 +17,31 @@
 				<input type="checkbox" :value="file.id" v-model="selected" />
 			</select-submission-file-list-item>
 		</template>
-		<div class="fileAttacher__footer">
+		<button-row class="fileAttacher__footer">
+			<template slot="end">
+				<pkp-button :is-link="true" @click="$emit('cancel')">
+					<icon icon="long-arrow-left" :inline="true" />
+					{{ backLabel }}
+				</pkp-button>
+			</template>
 			<pkp-button
-				class="fileAttacher__back"
-				:is-link="true"
-				@click="$emit('cancel')"
-			>
-				<icon icon="long-arrow-left" :inline="true" />
-				{{ backLabel }}
-			</pkp-button>
-			<pkp-button
-				:isPrimary="true"
 				:isDisabled="!selected.length"
 				@click="$emit('selected:files', selectedFiles)"
 			>
 				{{ attachSelectedLabel }}
 			</pkp-button>
-		</div>
+		</button-row>
 	</div>
 </template>
 
 <script>
+import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
 import SelectSubmissionFileListItem from '@/components/ListPanel/submissionFiles/SelectSubmissionFileListItem.vue';
 
 export default {
 	name: 'FileAttacherReviewFiles',
 	components: {
+		ButtonRow,
 		SelectSubmissionFileListItem
 	},
 	props: {

@@ -26,8 +26,8 @@
 				<select-submission-file-list-item
 					:documentType="item.documentType"
 					:downloadLabel="downloadLabel"
-					:genreName="item.genre.name"
-					:genreIsPrimary="!item.genre.dependent && !item.genre.supplementary"
+					:genreName="localize(item.genreName)"
+					:genreIsPrimary="!item.genreIsDependent && !item.genreIsSupplementary"
 					:fileId="item.id"
 					:name="localize(item.name)"
 					:url="item.url"
@@ -36,26 +36,25 @@
 				</select-submission-file-list-item>
 			</template>
 		</list-panel>
-		<div class="fileAttacher__footer">
-			<pkp-button
-				class="fileAttacher__back"
-				:is-link="true"
-				@click="$emit('cancel')"
-			>
-				<icon icon="long-arrow-left" :inline="true" />
-				{{ backLabel }}
-			</pkp-button>
+		<button-row class="fileAttacher__footer">
+			<template slot="end">
+				<pkp-button :is-link="true" @click="$emit('cancel')">
+					<icon icon="long-arrow-left" :inline="true" />
+					{{ backLabel }}
+				</pkp-button>
+			</template>
 			<pkp-button
 				:isDisabled="!selected.length"
 				@click="$emit('selected:files', selectedFiles)"
 			>
 				{{ attachSelectedLabel }}
 			</pkp-button>
-		</div>
+		</button-row>
 	</div>
 </template>
 
 <script>
+import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
 import Dropdown from '@/components/Dropdown/Dropdown.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import PkpHeader from '@/components/Header/Header.vue';
@@ -66,6 +65,7 @@ export default {
 	name: 'FileAttacherFileStage',
 	mixins: [ajaxError],
 	components: {
+		ButtonRow,
 		Dropdown,
 		ListPanel,
 		PkpHeader,

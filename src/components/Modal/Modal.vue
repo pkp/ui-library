@@ -94,6 +94,11 @@ export default {
 	margin-right: auto;
 }
 
+// Fix text alignment overrides in right-to-left languages
+.v--modal.v--modal {
+	text-align: unset;
+}
+
 .v--modal-dialog.v--modal-dialog {
 	top: 50vh !important;
 	transform: translateY(-75%);
@@ -129,8 +134,8 @@ export default {
 }
 
 .modal__closeButton {
-	margin-left: auto; // fix position when no title exists
-	margin-right: 0.5rem;
+	margin-inline-start: auto;
+	margin-inline-end: 0.5rem;
 	border: none;
 	font-size: @font-lead;
 	line-height: 1;
@@ -189,6 +194,12 @@ export default {
 		padding-left: 1rem;
 		padding-right: 1rem;
 	}
+}
+
+// Override collapsed padding when this
+// modal is nested inside of a section
+.panelSection .modal .pkpFormGroup {
+	padding: 2rem 1rem;
 }
 
 // Tabs in modals

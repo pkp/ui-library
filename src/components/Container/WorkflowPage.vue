@@ -558,23 +558,6 @@ export default {
 		});
 
 		/**
-		 * Update the working publication authors when the authors are updated
-		 */
-		pkp.eventBus.$on('authorsUpdated', () => {
-			let self = this;
-			$.ajax({
-				url:
-					this.submissionApiUrl + '/publications/' + this.workingPublication.id,
-				type: 'GET',
-				success(publication) {
-					self.workingPublication = {};
-					self.workingPublication = publication;
-					self.updatePublicationInList(publication);
-				}
-			});
-		});
-
-		/**
 		 * Open the unpublish confirmation modal when a global unpublish
 		 * event is fired
 		 */
@@ -613,7 +596,6 @@ export default {
 	},
 	destroyed() {
 		pkp.eventBus.$off('form-success');
-		pkp.eventBus.$off('authorsUpdated');
 		pkp.eventBus.$off('unpublish:publication');
 		pkp.eventBus.$off('decision:revisions');
 		pkp.eventBus.$off('recommendation:revisions');

@@ -320,6 +320,9 @@ export default {
 					case 'undefined':
 						missingValue = true;
 						break;
+					case 'boolean':
+						missingValue = !value;
+						break;
 					case 'string':
 					case 'array':
 						if (!value.length) {
@@ -404,8 +407,6 @@ export default {
 		/**
 		 * Callback to fire when the form submission's ajax request has been
 		 * returned, and the success or error callbacks have already been fired.
-		 *
-		 * @param {Object} r The response to the AJAX request
 		 */
 		complete() {
 			this.isSaving = false;

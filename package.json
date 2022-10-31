@@ -21,6 +21,7 @@
     "moment": "^2.27.0",
     "raw-loader": "^1.0.0",
     "tinymce": "^5.10.0",
+    "uuid": "^3.4.0",
     "v-tooltip": "^2.0.3",
     "vue": "^2.6.12",
     "vue-autosuggest": "^2.2.0",

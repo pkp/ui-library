@@ -28,7 +28,7 @@ export default {
 			var self = this;
 			$.ajax({
 				url: this.progressUrl.replace('{queueId}', queueId),
-				method: 'PUT',
+				method: 'POST',
 				headers: {
 					'X-Csrf-Token': pkp.currentUser.csrfToken,
 					'X-Http-Method-Override': 'PUT'

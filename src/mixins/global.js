@@ -155,7 +155,8 @@ export default {
 				if (value === Object(value)) {
 					value = this.localize(value);
 				}
-				str = str.replace('{$' + param + '}', value);
+				const re = new RegExp('{\\$' + param + '}', 'g');
+				str = str.replace(re, value);
 			}
 			return str;
 		},

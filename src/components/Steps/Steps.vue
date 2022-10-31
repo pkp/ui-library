@@ -94,6 +94,17 @@ export default {
 			type: String,
 			required: true
 		},
+		/**
+		 * The DOM element to scroll into view when changing steps.
+		 *
+		 * Pass a reference from the parent component ($refs).
+		 */
+		scrollTo: {
+			type: HTMLElement,
+			default() {
+				return null;
+			}
+		},
 		showStepsLabel: {
 			type: String,
 			required: true
@@ -198,9 +209,11 @@ export default {
 			this.setStartedLine();
 			this.$nextTick(() => {
 				this.setFocusIn(this.$el.querySelector('.pkpStep:not([hidden])'));
-				this.$scrollTo(this.$el, 500, {
-					offset: -50
-				});
+				if (this.scrollTo) {
+					this.$scrollTo(this.scrollTo, 500, {
+						offset: -50
+					});
+				}
 			});
 		}
 	},
@@ -260,7 +273,7 @@ export default {
 }
 
 .pkpSteps__controls {
-	top: -1px;
+	padding: 0.75rem;
 }
 
 .pkpSteps__progress {
@@ -304,7 +317,7 @@ export default {
 	border-radius: 50%;
 	font-size: @font-tiny;
 	text-align: center;
-	margin-right: 0.25rem;
+	margin-inline-end: 0.25rem;
 	// Align with the text
 	position: relative;
 	top: -1px;

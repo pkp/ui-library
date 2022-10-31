@@ -16,7 +16,7 @@
 			</ol>
 		</nav>
 		<template v-if="!isComplete">
-			<h1 class="app__pageHeading">
+			<h1 class="app__pageHeading" ref="pageTitle">
 				Accept Submission
 			</h1>
 			<p class="app__pageDescription">
@@ -42,6 +42,7 @@
 				:started-steps="startedSteps"
 				label="Complete the following steps to take this decision"
 				progress-label="{$current}/{$total} steps"
+				:scroll-to="$refs.pageTitle"
 				show-steps-label="Show all steps"
 				@step:open="openStep"
 			>
@@ -126,11 +127,14 @@
 										<select-submission-file-list-item
 											:document-type="item.documentType"
 											download-label="Download"
-											:genreName="item.genre.name"
-											:genreIsPrimary="
-												!item.genre.dependent && !item.genre.supplementary
+											:genreName="
+												item.genreName ? localize(item.genreName) : ''
 											"
-											:genre="item.genre"
+											:genreIsPrimary="
+												item.genreId &&
+													!item.genreIsDependent &&
+													!item.genreIsSupplementary
+											"
 											:file-id="item.id"
 											:name="localize(item.name)"
 											:url="item.url"
@@ -150,10 +154,25 @@
 				</step>
 			</steps>
 
-			<div
+			<button-row
 				class="decision__footer"
 				:class="{'decision__footer--noSteps': !steps.length}"
 			>
+				<template slot="end">
+					<button
+						v-if="currentStep.type === 'email'"
+						class="decision__skipStep -linkButton"
+						:disabled="isSubmitting"
+						@click="toggleSkippedStep(currentStep.id)"
+					>
+						Skip this email
+					</button>
+					<!--
+						Leave this v-else in so that the slot
+						is never empty.
+					-->
+					<span v-else></span>
+				</template>
 				<spinner v-if="isSubmitting"></spinner>
 				<pkp-button
 					v-if="!isOnFirstStep"
@@ -182,15 +201,7 @@
 						Next
 					</template>
 				</pkp-button>
-				<button
-					class="decision__skipStep -linkButton"
-					v-if="currentStep.type === 'email'"
-					:disabled="isSubmitting"
-					@click="toggleSkippedStep(currentStep.id)"
-				>
-					Skip this email
-				</button>
-			</div>
+			</button-row>
 		</template>
 
 		<div v-else class="width width--narrow">
@@ -346,12 +357,14 @@ export default {
 						},
 						{
 							...emailTemplate,
+							key: 'EDITOR_DECISION_ACCEPT_CONDITIONS',
 							subject: {
 								en_US: 'Accept with Conditions'
 							}
 						},
 						{
 							...emailTemplate,
+							key: 'EDITOR_DECISION_ACCEPT_EARLY',
 							subject: {
 								en_US: 'Accept for Early Publication'
 							}
@@ -405,16 +418,18 @@ export default {
 					],
 					canChangeRecipients: true,
 					canSkip: true,
-					defaultEmailTemplateKey: 'EDITOR_DECISION_ACCEPT',
+					defaultEmailTemplateKey: 'EDITOR_DECISION_THANK_REVIEWERS',
 					emailTemplates: [
 						{
 							...emailTemplate,
+							key: 'EDITOR_DECISION_THANK_REVIEWERS',
 							subject: {
 								en_US: 'Thank Reviewer'
 							}
 						},
 						{
 							...emailTemplate,
+							key: 'EDITOR_DECISION_THANK_REVIEWERS_REQUEST',
 							subject: {
 								en_US: 'Thank Reviewer and Request Feedback'
 							}

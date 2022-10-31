@@ -38,11 +38,6 @@
 			v-html="description"
 			:id="describedByDescriptionId"
 		/>
-		<field-error
-			v-if="errors && errors.length"
-			:id="describedByErrorId"
-			:messages="errors"
-		/>
 		<div class="pkpFormField__control">
 			<draggable
 				v-model="localizedOptions"
@@ -102,6 +97,11 @@
 				:total="locales.length"
 			/>
 		</div>
+		<field-error
+			v-if="errors && errors.length"
+			:id="describedByErrorId"
+			:messages="errors"
+		/>
 	</fieldset>
 </template>
 
@@ -129,7 +129,7 @@ export default {
 			default: false
 		},
 		options: {
-			type: Array,
+			type: [Array, Object],
 			required: true
 		},
 		value: {
@@ -285,7 +285,7 @@ export default {
 .pkpFormField--options__option {
 	position: relative;
 	display: block;
-	padding-left: 1.5rem;
+	margin-inline-start: 1.5rem;
 	font-size: @font-sml;
 	line-height: 1.8em;
 	cursor: pointer;
@@ -298,7 +298,7 @@ export default {
 .pkpFormField--options__input {
 	position: absolute;
 	top: 0.9em;
-	left: 0;
+	margin-inline-start: -1.5rem;
 	transform: translateY(-50%);
 
 	&:focus {
@@ -311,9 +311,6 @@ export default {
 }
 
 .pkpFormField--options .pkpFieldError {
-	margin-top: 0;
-	margin-bottom: 1rem;
-
 	&:before {
 		display: none;
 	}
@@ -330,7 +327,7 @@ export default {
 	.pkpFormField--options__input {
 		position: absolute;
 		top: 1.5em;
-		left: 4em;
+		margin-inline-start: 4em;
 		transform: translateY(-50%);
 	}
 }

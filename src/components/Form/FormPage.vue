@@ -13,7 +13,7 @@
 			@change="fieldChanged"
 			@set-errors="setErrors"
 		/>
-		<div
+		<button-row
 			v-if="hasFooter"
 			class="pkpFormPage__footer"
 			ref="footer"
@@ -38,40 +38,36 @@
 					</span>
 				</transition>
 			</span>
-			<div class="pkpFormPage__buttons" ref="buttons">
-				<template>
-					<pkp-button
-						v-if="previousButton"
-						v-bind="previousButton"
-						@click="previousPage"
-					>
-						{{ previousButton.label }}
-					</pkp-button>
-					<pkp-button
-						v-if="submitButton"
-						v-bind="submitButton"
-						:disabled="
-							isSaving ||
-								!canSubmit ||
-								(isLastPage && !!Object.keys(errors).length)
-						"
-						@click="submit"
-					>
-						{{ submitButton.label }}
-					</pkp-button>
-				</template>
-			</div>
-		</div>
+			<pkp-button
+				v-if="previousButton"
+				v-bind="previousButton"
+				@click="previousPage"
+			>
+				{{ previousButton.label }}
+			</pkp-button>
+			<pkp-button
+				v-if="submitButton"
+				v-bind="submitButton"
+				:disabled="
+					isSaving || !canSubmit || (isLastPage && !!Object.keys(errors).length)
+				"
+				@click="submit"
+			>
+				{{ submitButton.label }}
+			</pkp-button>
+		</button-row>
 	</div>
 </template>
 
 <script>
+import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
 import FormErrors from '@/components/Form/FormErrors.vue';
 import FormGroup from '@/components/Form/FormGroup.vue';
 
 export default {
 	name: 'FormPage',
 	components: {
+		ButtonRow,
 		FormErrors,
 		FormGroup
 	},
@@ -126,15 +122,6 @@ export default {
 				this.submitButton ||
 				Object.keys(this.errors).length
 			);
-		}
-	},
-	watch: {
-		/**
-		 * When saving, set the focus to the button wrapper element so it doesn't
-		 * get dropped as the dom updates
-		 */
-		isSaving() {
-			this.$refs.buttons.focus();
 		}
 	},
 	methods: {
@@ -239,23 +226,19 @@ export default {
 .pkpFormPage__footer {
 	border-top: @bg-border-light;
 	padding: 1rem;
-	text-align: right;
-}
 
-.pkpFormPage__buttons {
-	display: inline-block;
-
-	> * + * {
-		margin-left: 0.5em;
+	> .pkpButton {
+		white-space: nowrap;
+		flex-shrink: 0;
 	}
 }
 
 .pkpFormPage__status {
-	display: inline-block;
 	margin-right: 0.5rem;
 	font-size: @font-tiny;
 	transition: all 0.3s;
-	text-align: right;
+	white-space: nowrap;
+	flex-shrink: 0;
 
 	.fa {
 		color: @yes;

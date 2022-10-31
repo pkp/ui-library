@@ -70,7 +70,7 @@ export default {
 }
 
 .fileUploadProgress__actions {
-	margin-left: auto;
+	margin-inline-start: auto;
 }
 
 .fileUploadProgress .progressBar {

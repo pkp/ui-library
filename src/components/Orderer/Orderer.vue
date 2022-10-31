@@ -119,4 +119,16 @@ export default {
 .orderer__up {
 	right: 3rem;
 }
+
+[dir='rtl'] {
+	.orderer__up {
+		left: 0;
+		right: auto;
+	}
+
+	.orderer__down {
+		left: 3rem;
+		right: auto;
+	}
+}
 </style>

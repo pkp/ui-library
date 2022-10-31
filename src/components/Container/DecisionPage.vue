@@ -1,5 +1,6 @@
 <script type="text/javascript">
 import Page from '@/components/Container/Page.vue';
+import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
 import Composer from '@/components/Composer/Composer.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import PkpForm from '@/components/Form/Form.vue';
@@ -19,6 +20,7 @@ export default {
 	extends: Page,
 	mixins: [ajaxError, dialog, localizeSubmission],
 	components: {
+		ButtonRow,
 		Composer,
 		ListPanel,
 		PkpForm,
@@ -487,12 +489,9 @@ export default {
 
 .decision__skipStep {
 	font-size: @font-tiny;
-	order: -1;
-	margin-right: auto;
 }
 
 .decision__footer--noSteps {
-	justify-content: flex-start;
 	padding: 0;
 	background: transparent;
 	border: none;

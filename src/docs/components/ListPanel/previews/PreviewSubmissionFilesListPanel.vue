@@ -27,6 +27,7 @@ import SubmissionFilesListPanel from '@/components/ListPanel/submissionFiles/Sub
 import submissionFiles from '@/docs/data/submissionFiles';
 import form from '@/docs/components/Form/helpers/form-submission-file';
 import dropzoneOptions from '@/docs/data/dropzoneOptions';
+import genres from '../../../data/genres';
 
 export default {
 	extends: Page,
@@ -68,50 +69,7 @@ export default {
 					],
 					options: {...dropzoneOptions},
 					form: {...form},
-					genres: [
-						{
-							id: 1,
-							name: 'Book Manuscript',
-							isPrimary: true
-						},
-						{
-							id: 2,
-							name: 'Chapter Manuscript',
-							isPrimary: true
-						},
-						{
-							id: 3,
-							name: 'Preface'
-						},
-						{
-							id: 4,
-							name: 'Index'
-						},
-						{
-							id: 5,
-							name: 'Glossary'
-						},
-						{
-							id: 7,
-							name: 'Prospectus'
-						},
-						{
-							id: 11,
-							name: 'Table'
-						},
-						{
-							id: 8,
-							name: 'Figure'
-						},
-						{
-							id: 9,
-							name: 'Audio'
-						},
-						{
-							id: 10,
-							name: 'Other'
-						}
-					]
+					genres: [...genres]
 				}
 			}
 		};

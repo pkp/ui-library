@@ -53,8 +53,9 @@
 </template>
 
 <script>
-import FieldBaseAutosuggest from '@/components/Form/fields/FieldBaseAutosuggest.vue';
 import FieldArchivingPn from '@/components/Form/fields/FieldArchivingPn.vue';
+import FieldAutosuggestPreset from '@/components/Form/fields/FieldAutosuggestPreset.vue';
+import FieldBaseAutosuggest from '@/components/Form/fields/FieldBaseAutosuggest.vue';
 import FieldColor from '@/components/Form/fields/FieldColor.vue';
 import FieldControlledVocab from '@/components/Form/fields/FieldControlledVocab.vue';
 import FieldPubId from '@/components/Form/fields/FieldPubId.vue';
@@ -76,8 +77,9 @@ import FieldUploadImage from '@/components/Form/fields/FieldUploadImage.vue';
 export default {
 	name: 'FormGroup',
 	components: {
-		FieldBaseAutosuggest,
 		FieldArchivingPn,
+		FieldAutosuggestPreset,
+		FieldBaseAutosuggest,
 		FieldColor,
 		FieldControlledVocab,
 		FieldPubId,
@@ -199,6 +201,7 @@ export default {
 
 .pkpFormGroup {
 	position: relative;
+	margin: 0;
 	padding: 2rem;
 	border: none;
 
@@ -208,15 +211,15 @@ export default {
 }
 
 .pkpFormGroup__heading {
-	float: left;
+	float: inline-start;
 	width: 30%;
-	padding-right: 1.5rem;
+	padding-inline-end: 1.5rem;
 	line-height: @line-sml;
 
 	+ .pkpFormGroup__fields {
-		float: right;
+		float: inline-end;
 		width: 70%;
-		padding-left: 1.5rem;
+		padding-inline-start: 1.5rem;
 	}
 }
 
@@ -250,7 +253,7 @@ export default {
 .pkpForm--hasManyVisibleLocales {
 	.pkpFormGroup__heading {
 		float: none;
-		padding-right: 0;
+		padding-inline-end: 0;
 		margin-bottom: 2rem;
 		width: 100%;
 		max-width: 35em;
@@ -258,18 +261,18 @@ export default {
 		+ .pkpFormGroup__fields {
 			float: none;
 			width: 100%;
-			padding-left: 0;
+			padding-inline-start: 0;
 		}
 	}
 
 	.pkpFormGroup__locale--isVisible {
-		float: left;
+		float: inline-start;
 		width: 50%;
-		padding-right: 1.5rem;
+		padding-inline-end: 1.5rem;
 
 		~ .pkpFormGroup__locale--isVisible {
-			padding-right: 0;
-			padding-left: 1.5rem;
+			padding-inline-end: 0;
+			padding-inline-start: 1.5rem;
 		}
 	}
 }
