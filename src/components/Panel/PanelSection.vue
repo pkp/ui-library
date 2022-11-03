@@ -64,7 +64,7 @@ export default {
 			width: 35%;
 			min-width: 16rem;
 			max-width: 30rem;
-			margin-right: 2rem;
+			margin-inline-end: 2rem;
 		}
 
 		.panelSection__content {

@@ -27,22 +27,22 @@
 							<div class="listPanel__itemSummary">
 								<div class="listPanel__itemIdentity">
 									<div class="listPanel__itemTitle">
-										<slot name="itemTitle" :item="item">{{ item.title }}</slot>
+										<slot name="item-title" :item="item">{{ item.title }}</slot>
 									</div>
 									<div
 										class="listPanel__itemSubtitle"
-										v-if="!!$scopedSlots.itemSubtitle || item.subtitle"
+										v-if="!!$scopedSlots['item-subtitle'] || item.subtitle"
 									>
-										<slot name="itemSubtitle" :item="item">
+										<slot name="item-subtitle" :item="item">
 											{{ item.subtitle }}
 										</slot>
 									</div>
 								</div>
 								<div
-									v-if="!!$scopedSlots.itemActions"
+									v-if="!!$scopedSlots['item-actions']"
 									class="listPanel__itemActions"
 								>
-									<slot name="itemActions" :item="item" />
+									<slot name="item-actions" :item="item" />
 								</div>
 							</div>
 						</slot>
@@ -50,7 +50,7 @@
 							v-if="expanded.includes(item.id)"
 							class="listPanel__itemExpanded"
 						>
-							<slot name="itemExpanded" :item="item" />
+							<slot name="item-expanded" :item="item" />
 						</div>
 					</li>
 				</ul>

@@ -50,13 +50,13 @@
 						</pkp-button>
 					</template>
 				</pkp-header>
-				<template v-slot:itemTitle="{item}">
+				<template v-slot:item-title="{item}">
 					{{ item.fullName }}
 					<badge v-if="item.userGroupName">
 						{{ localize(item.userGroupName) }}
 					</badge>
 				</template>
-				<template v-slot:itemSubtitle="{item}">
+				<template v-slot:item-subtitle="{item}">
 					{{ localize(item.affiliation) }}
 				</template>
 				<template
@@ -64,7 +64,7 @@
 						publication.status !== getConstant('STATUS_PUBLISHED') &&
 							canEditPublication
 					"
-					v-slot:itemActions="{item}"
+					v-slot:item-actions="{item}"
 				>
 					<template v-if="isOrdering">
 						<orderer

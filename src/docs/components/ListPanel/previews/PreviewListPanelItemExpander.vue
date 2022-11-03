@@ -5,7 +5,7 @@
 		title="List Panel with Item Expander"
 		class="previewListPanelItemExpander"
 	>
-		<template v-slot:itemActions="{item}">
+		<template v-slot:item-actions="{item}">
 			<pkp-button @click="openModal(item.title)">Edit</pkp-button>
 			<expander
 				:isExpanded="expanded.includes(item.id)"

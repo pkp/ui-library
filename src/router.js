@@ -14,7 +14,6 @@ import ComponentDialog from './docs/utilities/Dialog/ComponentDialog.vue';
 import ComponentDoiListPanel from './docs/components/ListPanel/ComponentDoiListPanel';
 import ComponentDoiListPanelOJS from '@/docs/components/ListPanel/ComponentDoiListPanelOJS';
 import ComponentDropdown from './docs/components/Dropdown/ComponentDropdown.vue';
-import ComponentEmailTemplatesListPanel from './docs/components/ListPanel/ComponentEmailTemplatesListPanel.vue';
 import ComponentFieldAutosuggestPreset from './docs/components/Form/fields/FieldAutosuggestPreset/ComponentFieldAutosuggestPreset.vue';
 import ComponentFieldArchivingPn from './docs/components/Form/fields/FieldArchivingPn/ComponentFieldArchivingPn.vue';
 import ComponentFieldBaseAutosuggest from './docs/components/Form/fields/FieldBaseAutosuggest/ComponentFieldBaseAutosuggest.vue';
@@ -46,6 +45,7 @@ import ComponentIcon from './docs/components/Icon/ComponentIcon.vue';
 import ComponentInstitutionsListPanel from './docs/components/ListPanel/ComponentInstitutionsListPanel.vue';
 import ComponentList from './docs/components/List/ComponentList.vue';
 import ComponentListPanel from './docs/components/ListPanel/ComponentListPanel.vue';
+import ComponentManageEmailsPage from './docs/components/ManageEmailsPage/ComponentManageEmailsPage.vue';
 import ComponentModal from './docs/components/Modal/ComponentModal.vue';
 import ComponentMultilingualProgress from './docs/components/MultilingualProgress/ComponentMultilingualProgress.vue';
 import ComponentNotification from './docs/components/Notification/ComponentNotification.vue';
@@ -296,11 +296,6 @@ export default new Router({
 			component: ComponentDoiListPanelOJS
 		},
 		{
-			path: '/component/ListPanel/components/EmailTemplatesListPanel/:example?',
-			name: 'EmailTemplatesListPanel',
-			component: ComponentEmailTemplatesListPanel
-		},
-		{
 			path: '/component/ListPanel/components/InstitutionsListPanel/:example?',
 			name: 'InstitutionsListPanel',
 			component: ComponentInstitutionsListPanel
@@ -320,6 +315,11 @@ export default new Router({
 			path: '/component/ListPanel/components/SubmissionsListPanel/:example?',
 			name: 'SubmissionsListPanel',
 			component: ComponentSubmissionsListPanel
+		},
+		{
+			path: '/component/ManageEmailsPage/:example?',
+			name: 'ManageEmailsPage',
+			component: ComponentManageEmailsPage
 		},
 		{
 			path: '/component/Modal/:example?',

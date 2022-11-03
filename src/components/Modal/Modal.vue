@@ -13,7 +13,10 @@
 						<h2 v-if="title" class="modal__title">
 							{{ title }}
 						</h2>
-						<button class="modal__closeButton" @click="$modal.hide(name)">
+						<button
+							class="modal__closeButton"
+							@click.stop.prevent="$modal.hide(name)"
+						>
 							<span :aria-hidden="true">×</span>
 							<span class="-screenReader">{{ closeLabel }}</span>
 						</button>

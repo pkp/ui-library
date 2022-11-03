@@ -1,6 +1,6 @@
 <template>
 	<list-panel :items="items" title="List Panel with Item Actions">
-		<template v-slot:itemActions="{item}">
+		<template v-slot:item-actions="{item}">
 			<pkp-button @click="openModal(item.title)">Edit</pkp-button>
 			<pkp-button @click="openModal(item.title)" :isWarnable="true">
 				Delete

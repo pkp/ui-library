@@ -4,14 +4,18 @@ export default {
 	...Form,
 	id: 'example',
 	action: 'https://example.org/example',
+	hiddenFields: {},
 	fields: [
 		{
 			component: 'field-text',
-			description:
-				'The email key can only contain letters, numbers and underscores.',
-			label: 'Email Key',
-			name: 'key',
-			value: '',
+			description: 'Enter a brief name to help you find this template.',
+			label: 'Name',
+			name: 'name',
+			value: {
+				en_US: '',
+				fr_CA: ''
+			},
+			isMultilingual: true,
 			groupId: 'default'
 		},
 		{
@@ -21,15 +25,16 @@ export default {
 			isMultilingual: true,
 			value: {
 				en_US: '',
-				fr_CA: '',
-				ar_AR: ''
+				fr_CA: ''
 			},
 			groupId: 'default'
 		},
 		{
 			name: 'body',
-			component: 'field-rich-textarea',
+			component: 'field-prepared-content',
 			label: 'Body',
+			description:
+				'Use the "Insert Content" button to use dynamic data in your template. These variables will be replaced with real data before the email is sent.',
 			isMultilingual: true,
 			size: 'large',
 			plugins: 'paste,link,lists',
@@ -37,9 +42,13 @@ export default {
 				'bold italic superscript subscript | link | blockquote bullist numlist',
 			value: {
 				en_US: '',
-				fr_CA: '',
-				ar_AR: ''
+				fr_CA: ''
 			},
+			insertLabel: 'Insert',
+			insertModalLabel: 'Insert Content',
+			preparedContentLabel: 'Content',
+			searchLabel: 'Find content to insert',
+			preparedContent: [],
 			groupId: 'default'
 		}
 	],
@@ -54,10 +63,6 @@ export default {
 		{
 			key: 'fr_CA',
 			label: 'Français (Canada)'
-		},
-		{
-			key: 'ar_AR',
-			label: 'عربى'
 		}
 	]
 };
