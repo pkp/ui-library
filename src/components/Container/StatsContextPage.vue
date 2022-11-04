@@ -4,13 +4,14 @@ import StatsPublicationsPage from '@/components/Container/StatsPublicationsPage.
 export default {
 	name: 'StatsContextPage',
 	extends: StatsPublicationsPage,
-	computed: {
+	methods: {
 		/**
 		 * The params to send with each GET request
 		 *
+		 * @param string
 		 * @return Object
 		 */
-		getParams() {
+		getParams(type) {
 			let params = {};
 
 			if (this.dateStart) {
@@ -21,14 +22,15 @@ export default {
 				params.dateEnd = this.dateEnd;
 			}
 
-			if (this.timelineInterval) {
-				params.timelineInterval = this.timelineInterval;
+			if (type == 'timeline') {
+				if (this.timelineInterval) {
+					params.timelineInterval = this.timelineInterval;
+				}
 			}
 
 			return params;
-		}
-	},
-	methods: {
+		},
+
 		/**
 		 * Set items and itemsMax from the API call result
 		 */
