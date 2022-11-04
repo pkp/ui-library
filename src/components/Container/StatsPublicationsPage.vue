@@ -110,19 +110,23 @@ export default {
 					this.getBrowserSafeDate(this.dateEndMax)
 				) > 31
 			);
-		},
-
+		}
+	},
+	methods: {
 		/**
 		 * The params to send with each GET request
 		 *
+		 * @param string
 		 * @return Object
 		 */
-		getParams() {
+		getParams(type) {
 			let params = {
-				...this.activeFilters,
-				count: this.count,
-				offset: this.offset
+				...this.activeFilters
 			};
+
+			if (type != 'timeline') {
+				(params.count = this.count), (params.offset = this.offset);
+			}
 
 			if (this.dateStart) {
 				params.dateStart = this.dateStart;
@@ -132,23 +136,27 @@ export default {
 				params.dateEnd = this.dateEnd;
 			}
 
-			if (this.timelineInterval) {
-				params.timelineInterval = this.timelineInterval;
-			}
-
 			if (this.searchPhrase) {
 				params.searchPhrase = this.searchPhrase;
 			}
 
-			if (this.orderBy) {
+			if (type == 'timeline') {
+				if (this.timelineInterval) {
+					params.timelineInterval = this.timelineInterval;
+				}
+				if (this.timelineType == 'files') {
+					params.type = this.timelineType;
+				}
+			}
+
+			if (type != 'timeline' && this.orderBy) {
 				params.orderBy = this.orderBy;
 				params.orderDirection = this.orderDirection ? 'DESC' : 'ASC';
 			}
 
 			return params;
-		}
-	},
-	methods: {
+		},
+
 		/**
 		 * Get active filter titles of the given filter set to display on the download report modal
 		 *
@@ -256,7 +264,7 @@ export default {
 				}
 			}
 
-			if (this.orderBy) {
+			if (type != 'timeline' && this.orderBy) {
 				params.orderBy = this.orderBy;
 				params.orderDirection = this.orderDirection ? 'DESC' : 'ASC';
 			}
@@ -372,6 +380,18 @@ export default {
 		}, 0),
 
 		/**
+		 * Set items and itemsMax from the API call result
+		 */
+		setItems(result) {
+			let self = this;
+			self.items = result.items.map(row => {
+				row.total = row.abstractViews + row.galleyViews;
+				return row;
+			});
+			self.itemsMax = result.itemsMax;
+		},
+
+		/**
 		 * Get the list of items from the server based on the current params
 		 */
 		getItems() {
@@ -383,7 +403,7 @@ export default {
 			$.ajax({
 				url: this.apiUrl,
 				type: 'GET',
-				data: this.getParams,
+				data: this.getParams(),
 				_uuid: this.latestItemsGetRequest,
 				error(r) {
 					if (self.latestItemsGetRequest !== this._uuid) {
@@ -395,11 +415,7 @@ export default {
 					if (self.latestItemsGetRequest !== this._uuid) {
 						return;
 					}
-					self.items = r.items.map(row => {
-						row.total = row.abstractViews + row.galleyViews;
-						return row;
-					});
-					self.itemsMax = r.itemsMax;
+					self.setItems(r);
 				},
 				complete(r) {
 					if (self.latestItemsGetRequest !== this._uuid) {
@@ -420,12 +436,9 @@ export default {
 			this.latestTimelineGetRequest = $.pkp.classes.Helper.uuid();
 
 			$.ajax({
-				url:
-					this.apiUrl +
-					'/timeline' +
-					(this.timelineType == 'files' ? '?type=files' : ''),
+				url: this.apiUrl + '/timeline',
 				type: 'GET',
-				data: this.getParams,
+				data: this.getParams('timeline'),
 				_uuid: this.latestTimelineGetRequest,
 				error(r) {
 					if (self.latestTimelineGetRequest !== this._uuid) {
