@@ -149,6 +149,10 @@ export default {
 			type: String,
 			required: true
 		},
+		invalidEndDateMaxLabel: {
+			type: String,
+			required: true
+		},
 		options: Array
 	},
 	data() {
