@@ -42,6 +42,7 @@
 			dateDoesNotExistLabel="One of the dates entered does not exist."
 			invalidDateRangeLabel="The start date must be before the end date."
 			invalidStartDateMinLabel="The start date may not be earlier than {$date}."
+			invalidEndDateMaxLabel="The end date may not be later than {$date}."
 			@set-range="setRange"
 		/>
 	</div>
