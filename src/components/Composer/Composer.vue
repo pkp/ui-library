@@ -456,6 +456,12 @@ export default {
 			type: String,
 			required: true
 		},
+		separateEmails: {
+			type: Boolean,
+			default() {
+				return false;
+			}
+		},
 		subject: {
 			type: String,
 			default() {
@@ -510,19 +516,28 @@ export default {
 				this.emitChange({cc: newVal});
 			}
 		},
+		/**
+		 * Override the recipientName in the email variables
+		 *
+		 * If separate emails will be sent to each recipient, use the
+		 * variable name, {$recipientName}, so that this is injected
+		 * before the email is sent.
+		 *
+		 * If the recipients can be changed, update the {$recipientName}
+		 * variable based on the recipients currently selected.
+		 */
 		compiledVariables() {
-			return !this.canChangeRecipients
-				? this.localizedVariables
-				: [
-						...this.localizedVariables,
-						{
-							key: 'recipientName',
-							value: this.recipientVariable,
-							description:
-								this.localizedVariables.find(v => v.key === 'recipientName')
-									?.description ?? ''
-						}
-				  ];
+			const variables = [...this.localizedVariables];
+			const i = variables.findIndex(v => v.key === 'recipientName');
+			if (i === -1) {
+				return variables;
+			}
+			if (this.separateEmails) {
+				variables[i].value = '{$recipientName}';
+			} else if (this.canChangeRecipients) {
+				variables[i].value = this.recipientVariable;
+			}
+			return variables;
 		},
 		fileAttacherModalId() {
 			return this.id + 'fileAttacher';
