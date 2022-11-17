@@ -403,9 +403,38 @@ export default {
 }
 
 .app__page--decision .pkpSteps__buttonWrapper {
-	margin-bottom: 2rem;
 	border: @bg-border-light;
-	border-radius: @radius;
+	border-bottom: 0;
+	border-top-left-radius: @radius;
+	border-top-right-radius: @radius;
+}
+
+.decision__stepPanel {
+	border-top: 0;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+.decision__stepHeader {
+	h2 {
+		margin: 0;
+		font-size: @font-large;
+		line-height: @line-large;
+	}
+
+	p {
+		margin: 0.5rem 0 0;
+		font-size: @font-sml;
+		line-height: @line-sml-tight;
+	}
+}
+
+.app__page--decision .panel.composer {
+	border: none;
+
+	.panelSection {
+		padding: 0;
+	}
 }
 
 .decision_filesList:not(:last-child) {

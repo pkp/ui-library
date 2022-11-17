@@ -10,19 +10,6 @@
 					<div class="composer__templates__heading">
 						{{ loadTemplateLabel }}
 					</div>
-					<ul class="composer__templates__list">
-						<li
-							v-for="emailTemplate in emailTemplates"
-							:key="emailTemplate.key"
-						>
-							<button
-								class="-linkButton"
-								@click="loadTemplate(emailTemplate.key)"
-							>
-								{{ localize(emailTemplate.name) }}
-							</button>
-						</li>
-					</ul>
 					<search
 						v-if="emailTemplatesApiUrl"
 						:searchLabel="findTemplateLabel"
@@ -32,46 +19,6 @@
 							newSearchPhrase => (this.searchPhrase = newSearchPhrase)
 						"
 					/>
-					<ul
-						v-if="searchResults.length"
-						class="composer__templates__list"
-						aria-live="true"
-						:aria-label="searchResultsLabel"
-					>
-						<li
-							v-for="searchResult in limitedSearchResults"
-							:key="searchResult.key"
-						>
-							<button
-								class="-linkButton"
-								@click="loadTemplate(searchResult.key)"
-							>
-								{{ localize(searchResult.name) }}
-							</button>
-						</li>
-						<li v-if="searchResults.length > showSearchResultCount">
-							<button
-								class="-linkButton composer__templates__moreSearchResults"
-								@click="showSearchResultCount = searchResults.length"
-							>
-								<icon icon="plus-circle" :inline="true" />
-								{{
-									moreSearchResultsLabel.replace(
-										'{$number}',
-										searchResults.length - showSearchResultCount
-									)
-								}}
-							</button>
-						</li>
-					</ul>
-					<div
-						v-if="isSearching"
-						class="composer__templates__searching"
-						role="alert"
-					>
-						<spinner />
-						{{ searchingLabel }}
-					</div>
 					<div v-if="otherLocales.length" class="composer__locales">
 						{{ switchToLabel }}
 						<template v-for="(otherLocale, i) in otherLocales">
@@ -87,6 +34,60 @@
 								{{ __('common.commaListSeparator') }}
 							</template>
 						</template>
+					</div>
+					<ul
+						class="composer__templates__list"
+						aria-live="true"
+						:aria-label="searchResultsLabel"
+					>
+						<template v-if="!searchPhrase">
+							<li
+								v-for="emailTemplate in emailTemplates"
+								:key="emailTemplate.key"
+							>
+								<button
+									class="-linkButton"
+									@click="loadTemplate(emailTemplate.key)"
+								>
+									{{ localize(emailTemplate.subject) }}
+								</button>
+							</li>
+						</template>
+						<template v-else>
+							<li
+								v-for="searchResult in limitedSearchResults"
+								:key="searchResult.key"
+							>
+								<button
+									class="-linkButton"
+									@click="loadTemplate(searchResult.key)"
+								>
+									{{ localize(searchResult.subject) }}
+								</button>
+							</li>
+							<li v-if="searchResults.length > showSearchResultCount">
+								<button
+									class="-linkButton composer__templates__moreSearchResults"
+									@click="showSearchResultCount = searchResults.length"
+								>
+									<icon icon="plus-circle" :inline="true" />
+									{{
+										moreSearchResultsLabel.replace(
+											'{$number}',
+											searchResults.length - showSearchResultCount
+										)
+									}}
+								</button>
+							</li>
+						</template>
+					</ul>
+					<div
+						v-if="isSearching"
+						class="composer__templates__searching"
+						role="alert"
+					>
+						<spinner />
+						{{ searchingLabel }}
 					</div>
 				</div>
 			</template>
@@ -892,10 +893,6 @@ export default {
 	flex: 1;
 }
 
-.composer__templates {
-	margin-top: 1rem;
-}
-
 .composer__templates__heading {
 	font-weight: @bold;
 }
@@ -907,7 +904,7 @@ export default {
 }
 
 .composer__templates__search {
-	margin-top: 1rem;
+	margin-top: 0.5rem;
 }
 
 .composer__templates__searching {
@@ -919,7 +916,7 @@ export default {
 }
 
 .composer__locales {
-	margin-top: 2rem;
+	margin: 0.5rem 0;
 }
 
 .composer__recipients {
