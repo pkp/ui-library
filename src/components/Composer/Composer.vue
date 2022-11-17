@@ -193,6 +193,7 @@
 					groupId="message"
 					primaryLocale="en_US"
 					:all-errors="errors"
+					:init="bodyInit"
 					:formId="id"
 					plugins="link"
 					size="large"
@@ -204,28 +205,12 @@
 					:preparedContentLabel="insertContentLabel"
 					:searchLabel="insertSearchLabel"
 					@change="(name, prop, value) => this.emitChange({body: value})"
-				/>
-				<div v-if="attachers.length" class="composer__attachmentWrapper">
-					<pkp-button
-						:is-link="true"
-						ref="attachFiles"
-						@click="$modal.show(fileAttacherModalId)"
+				>
+					<div
+						v-if="attachments.length"
+						class="composer__attachments"
+						slot="footer"
 					>
-						<icon icon="paperclip" :inline="true" />
-						{{ attachFilesLabel }}
-					</pkp-button>
-					<modal
-						:closeLabel="__('common.close')"
-						:name="fileAttacherModalId"
-						:title="attachFilesLabel"
-						@closed="resetFocusAfterAttachment"
-					>
-						<file-attacher
-							:attachers="attachers"
-							@attached:files="addAttachments"
-						/>
-					</modal>
-					<div v-if="attachments.length" class="composer__attachments">
 						<span class="-screenReader">
 							{{ attachedFilesLabel }}
 						</span>
@@ -251,7 +236,18 @@
 							</button>
 						</badge>
 					</div>
-				</div>
+				</field-prepared-content>
+				<modal
+					:closeLabel="__('common.close')"
+					:name="fileAttacherModalId"
+					:title="attachFilesLabel"
+					@closed="resetFocusAfterAttachment"
+				>
+					<file-attacher
+						:attachers="attachers"
+						@attached:files="addAttachments"
+					/>
+				</modal>
 				<field-error
 					v-if="errors.attachments"
 					:id="id + '-attachments-error'"
@@ -508,6 +504,23 @@ export default {
 			set(newVal) {
 				this.emitChange({bcc: newVal});
 			}
+		},
+		bodyInit() {
+			if (!this.attachers.length) {
+				return {};
+			}
+			let self = this;
+			return {
+				setup: function(editor) {
+					editor.ui.registry.addButton('pkpAttachFiles', {
+						text: self.__('common.attachFiles'),
+						onAction() {
+							self.$modal.show(self.fileAttacherModalId);
+						}
+					});
+					editor.settings.toolbar += ' | pkpAttachFiles';
+				}
+			};
 		},
 		ccBinded: {
 			get() {
@@ -996,19 +1009,12 @@ export default {
 	}
 }
 
-.composer__attachmentWrapper {
-	margin-top: 0.5rem;
-	border: @bg-border;
-	padding: 0.5rem;
-}
-
 .composer__attachments {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	margin-top: 0.5rem;
-	padding-top: 0.5rem;
-	border-top: @bg-border;
+	padding: 0.75rem;
+	border-top: @bg-border-light;
 }
 
 .composer__attachment {
