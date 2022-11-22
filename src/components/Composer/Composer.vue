@@ -528,14 +528,14 @@ export default {
 		 */
 		compiledVariables() {
 			const variables = [...this.localizedVariables];
-			const i = variables.findIndex(v => v.key === 'recipientName');
-			if (i === -1) {
+			const recipientName = variables.find(v => v.key === 'recipientName');
+			if (!recipientName) {
 				return variables;
 			}
 			if (this.separateEmails) {
-				variables[i].value = '{$recipientName}';
+				recipientName.value = '{$recipientName}';
 			} else if (this.canChangeRecipients) {
-				variables[i].value = this.recipientVariable;
+				recipientName.value = this.recipientVariable;
 			}
 			return variables;
 		},
