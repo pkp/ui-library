@@ -21,8 +21,6 @@ export default {
 			currentTemplate: {},
 			currentTemplateForm: {},
 			customTemplates: [],
-			i18nAssignTemplate: '',
-			i18nAssignTemplateMessage: '',
 			i18nRemoveTemplate: '',
 			i18nRemoveTemplateMessage: '',
 			i18nResetAll: '',
@@ -301,9 +299,6 @@ export default {
 			}
 
 			this.currentTemplateForm = templateForm;
-		},
-		showMailable(mailable) {
-			this.currentMailable = mailable;
 		},
 		templateSaved(template) {
 			const exists =

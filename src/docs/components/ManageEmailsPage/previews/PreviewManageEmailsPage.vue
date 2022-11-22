@@ -182,9 +182,6 @@ export default {
 				1048576: 'Reader', // ROLE_ID_READER
 				2097152: 'Subscription Manager' // ROLE_ID_SUBSCRIPTION_MANAGER
 			},
-			i18nAssignTemplate: 'Assign Template',
-			i18nAssignTemplateMessage:
-				'Are you sure you want to assign the template <strong>{$template}</strong> to the <strong>{$mailable}</strong> email?',
 			i18nRemoveTemplate: 'Remove Template',
 			i18nRemoveTemplateMessage:
 				'Are you sure you want to unassign the template <strong>{$template}</strong> from the <strong>{$mailable}</strong> email?',
