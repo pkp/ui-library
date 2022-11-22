@@ -12,7 +12,13 @@
 				:name="name"
 			/>
 		</label>
-		<div v-if="genreName || url" class="listPanel__itemActions">
+		<div
+			v-if="uploadedDetails || genreName || url"
+			class="listPanel__itemActions"
+		>
+			<span v-if="uploadedDetails">
+				{{ uploadedDetails }}
+			</span>
 			<badge v-if="genreName" :is-primary="genreIsPrimary">
 				{{ genreName }}
 			</badge>
@@ -40,6 +46,12 @@ export default {
 		File
 	},
 	props: {
+		createdAt: {
+			type: String,
+			default() {
+				return '';
+			}
+		},
 		documentType: {
 			type: String,
 			default() {
@@ -72,6 +84,12 @@ export default {
 			type: String,
 			required: true
 		},
+		uploadedBy: {
+			type: String,
+			default() {
+				return '';
+			}
+		},
 		url: {
 			type: String,
 			default() {
@@ -83,6 +101,19 @@ export default {
 		return {
 			describedById: ''
 		};
+	},
+	computed: {
+		uploadedDetails() {
+			if (this.uploadedBy && this.createdAt) {
+				return this.__('common.uploadedByAndWhen', {
+					name: this.uploadedBy,
+					date: this.createdAt.substring(0, 10)
+				});
+			} else if (this.uploadedBy) {
+				return this.__('common.uploaded');
+			}
+			return '';
+		}
 	},
 	created() {
 		this.describedById = $.pkp.classes.Helper.uuid();
