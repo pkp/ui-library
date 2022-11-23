@@ -870,6 +870,10 @@ export default {
 <style lang="less">
 @import '../../../styles/_import';
 
+.listPanel__itemIdentity--submission {
+	position: relative;
+}
+
 .listPanel__itemIdentity--submission,
 .listPanel__itemExpanded--submission {
 	padding-left: 2.5rem;
@@ -880,7 +884,7 @@ export default {
 	top: 0;
 	left: 0;
 	font-size: @font-tiny;
-	line-height: 22px; // Match baseline of title
+	line-height: 1.5rem; // Match baseline of title/author
 	color: @text;
 }
 
