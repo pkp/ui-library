@@ -33,6 +33,11 @@
 					</router-link>
 				</li>
 				<li>
+					<router-link to="/component/ManageEmailsPage">
+						ManageEmailsPage
+					</router-link>
+				</li>
+				<li>
 					<router-link to="/component/StatsPage">
 						StatsPage
 					</router-link>
@@ -231,13 +236,6 @@
 						<li>
 							<router-link to="/component/ListPanel/components/DoiListPanelOJS">
 								DoiListPanelOJS
-							</router-link>
-						</li>
-						<li>
-							<router-link
-								to="/component/ListPanel/components/EmailTemplatesListPanel"
-							>
-								EmailTemplatesListPanel
 							</router-link>
 						</li>
 						<li>

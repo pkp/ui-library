@@ -15,12 +15,12 @@
 						</pkp-button>
 					</template>
 				</pkp-header>
-				<template v-slot:itemTitle="{item}">
+				<template v-slot:item-title="{item}">
 					<span :id="'institution-' + item.id">
 						{{ localize(item.name) }}
 					</span>
 				</template>
-				<template v-slot:itemActions="{item}">
+				<template v-slot:item-actions="{item}">
 					<pkp-button
 						:aria-describedby="'institution-' + item.id"
 						@click="openEditModal(item.id)"

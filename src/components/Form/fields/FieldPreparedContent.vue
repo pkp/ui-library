@@ -11,6 +11,7 @@
 				:closeLabel="__('common.close')"
 				:name="preparedContentId"
 				:title="insertModalLabel"
+				@close="closeInsertModal"
 			>
 				<insert-content
 					:insertLabel="insertLabel"
@@ -77,6 +78,11 @@ export default {
 			}
 		}
 	},
+	data() {
+		return {
+			resetFocusTo: null
+		};
+	},
 	computed: {
 		/**
 		 * Get the props that should be passed down to
@@ -121,8 +127,9 @@ export default {
 			const setup = function(editor) {
 				if (self.preparedContent.length) {
 					editor.ui.registry.addMenuButton('pkpInsert', {
-						icon: 'non-breaking',
+						text: self.__('common.insertContent'),
 						fetch() {
+							self.resetFocusTo = document.activeElement;
 							self.$modal.show(self.preparedContentId);
 						}
 					});
@@ -136,19 +143,35 @@ export default {
 		},
 
 		renderedValue() {
-			return this.renderPreparedContent(
-				this.currentValue,
-				this.preparedContent
-			);
+			const render = value => {
+				return this.renderPreparedContent(value, this.preparedContent);
+			};
+			let newValue = {};
+			if (this.isMultilingual) {
+				Object.keys(this.value).forEach(localeKey => {
+					newValue[localeKey] = render(this.value[localeKey]);
+				});
+			} else {
+				newValue = render(this.value);
+			}
+			return newValue;
 		}
 	},
 	methods: {
+		closeInsertModal() {
+			this.resetFocus();
+		},
 		fieldChanged(name, prop, newVal, localeKey) {
 			this.$emit('change', name, prop, newVal, localeKey);
 		},
 		insert(text) {
 			this.$refs.textarea.$refs.editor.editor.insertContent(text);
 			this.$modal.hide(this.preparedContentId);
+		},
+		resetFocus() {
+			if (this.resetFocusTo) {
+				this.resetFocusTo.focus();
+			}
 		}
 	}
 };

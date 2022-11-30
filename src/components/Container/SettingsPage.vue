@@ -2,7 +2,6 @@
 import Page from './Page.vue';
 import AnnouncementsListPanel from '@/components/ListPanel/announcements/AnnouncementsListPanel.vue';
 import InstitutionsListPanel from '@/components/ListPanel/institutions/InstitutionsListPanel.vue';
-import EmailTemplatesListPanel from '@/components/ListPanel/emailTemplates/EmailTemplatesListPanel.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import ThemeForm from '@/components/Form/context/ThemeForm.vue';
 import DateTimeForm from '@/components/Form/context/DateTimeForm.vue';
@@ -14,7 +13,6 @@ export default {
 	components: {
 		AnnouncementsListPanel,
 		InstitutionsListPanel,
-		EmailTemplatesListPanel,
 		PkpForm,
 		ThemeForm,
 		DateTimeForm,

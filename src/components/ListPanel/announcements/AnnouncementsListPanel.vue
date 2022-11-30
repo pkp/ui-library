@@ -15,10 +15,10 @@
 						</pkp-button>
 					</template>
 				</pkp-header>
-				<template v-slot:itemTitle="{item}">
+				<template v-slot:item-title="{item}">
 					{{ localize(item.title) }}
 				</template>
-				<template v-slot:itemActions="{item}">
+				<template v-slot:item-actions="{item}">
 					<pkp-button element="a" :href="urlBase.replace('__id__', item.id)">
 						{{ __('common.view') }}
 					</pkp-button>

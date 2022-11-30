@@ -19,7 +19,7 @@
 								class="-linkButton"
 								@click="loadTemplate(emailTemplate.key)"
 							>
-								{{ localize(emailTemplate.subject) }}
+								{{ localize(emailTemplate.name) }}
 							</button>
 						</li>
 					</ul>
@@ -46,7 +46,7 @@
 								class="-linkButton"
 								@click="loadTemplate(searchResult.key)"
 							>
-								{{ localize(searchResult.subject) }}
+								{{ localize(searchResult.name) }}
 							</button>
 						</li>
 						<li v-if="searchResults.length > showSearchResultCount">

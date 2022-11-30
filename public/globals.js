@@ -100,6 +100,7 @@ window.pkp = {
 		'common.filter': 'Filters',
 		'common.filterAdd': 'Add filter: {$filterTitle}',
 		'common.filterRemove': 'Clear filter: {$filterTitle}',
+		'common.insertContent': 'Insert Content',
 		'common.loading': 'Loading',
 		'common.no': 'No',
 		'common.noItemsFound': 'No items found.',
