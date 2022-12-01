@@ -19,22 +19,6 @@
 							newSearchPhrase => (this.searchPhrase = newSearchPhrase)
 						"
 					/>
-					<div v-if="otherLocales.length" class="composer__locales">
-						{{ switchToLabel }}
-						<template v-for="(otherLocale, i) in otherLocales">
-							<button
-								v-if="locale !== otherLocale.locale"
-								:key="otherLocale.locale"
-								class="-linkButton"
-								@click="openSwitchLocale(otherLocale.locale)"
-							>
-								{{ otherLocale.name }}
-							</button>
-							<template v-if="i < otherLocales.length - 1">
-								{{ __('common.commaListSeparator') }}
-							</template>
-						</template>
-					</div>
 					<ul
 						class="composer__templates__list"
 						aria-live="true"
@@ -46,10 +30,18 @@
 								:key="emailTemplate.key"
 							>
 								<button
-									class="-linkButton"
+									class="composer__template"
 									@click="loadTemplate(emailTemplate.key)"
 								>
-									{{ localize(emailTemplate.subject) }}
+									<div class="composer__template__name -linkButton">
+										{{ localize(emailTemplate.name) }}
+									</div>
+									<div
+										v-if="localize(emailTemplate.body)"
+										class="composer__template__body"
+									>
+										{{ getBodySnippet(localize(emailTemplate.body)) }}
+									</div>
 								</button>
 							</li>
 						</template>
@@ -59,10 +51,18 @@
 								:key="searchResult.key"
 							>
 								<button
-									class="-linkButton"
+									class="composer__template"
 									@click="loadTemplate(searchResult.key)"
 								>
-									{{ localize(searchResult.subject) }}
+									<div class="composer__template__name -linkButton">
+										{{ localize(searchResult.name) }}
+									</div>
+									<div
+										v-if="localize(searchResult.body)"
+										class="composer__template__body"
+									>
+										{{ getBodySnippet(localize(searchResult.body)) }}
+									</div>
 								</button>
 							</li>
 							<li v-if="searchResults.length > showSearchResultCount">
@@ -88,6 +88,22 @@
 					>
 						<spinner />
 						{{ searchingLabel }}
+					</div>
+					<div v-if="otherLocales.length" class="composer__locales">
+						{{ switchToLabel }}
+						<template v-for="(otherLocale, i) in otherLocales">
+							<button
+								v-if="locale !== otherLocale.locale"
+								:key="otherLocale.locale"
+								class="-linkButton"
+								@click="openSwitchLocale(otherLocale.locale)"
+							>
+								{{ otherLocale.name }}
+							</button>
+							<template v-if="i < otherLocales.length - 1">
+								{{ __('common.commaListSeparator') }}
+							</template>
+						</template>
 					</div>
 				</div>
 			</template>
@@ -690,6 +706,20 @@ export default {
 		},
 
 		/**
+		 * Get a plain text snippet of an email template's body
+		 */
+		getBodySnippet(str) {
+			const length = 70;
+			let span = document.createElement('span');
+			span.innerHTML = str;
+			const snippet = (span.textContent || span.innerText).trim();
+			if (snippet.length < length - 3) {
+				return snippet;
+			}
+			return snippet.substring(0, 80).trim() + '...';
+		},
+
+		/**
 		 * Load an email template and update the subject/body
 		 */
 		loadTemplate(key) {
@@ -921,6 +951,30 @@ export default {
 	margin-top: 0.5rem;
 }
 
+.composer__template {
+	width: 100%;
+	margin-top: 0.5rem;
+	padding: 1rem;
+	background: @bg-very-light;
+	text-align: left;
+	border: @bg-border-light;
+	border-radius: @radius;
+	box-shadow: 0 1px 0 @bg-border-color-light;
+	cursor: pointer;
+
+	&:hover,
+	&:focus {
+		border-color: @primary;
+		background: @lift;
+		outline: 0;
+	}
+}
+
+.composer__template__body {
+	margin-top: 0.5rem;
+	line-height: 1.5em;
+}
+
 .composer__templates__searching {
 	margin-top: 0.5rem;
 }
@@ -930,7 +984,7 @@ export default {
 }
 
 .composer__locales {
-	margin: 0.5rem 0;
+	margin-top: 2rem;
 }
 
 .composer__recipients {
