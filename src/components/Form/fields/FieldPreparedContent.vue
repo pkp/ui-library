@@ -131,6 +131,7 @@ export default {
 				}
 				if (self.preparedContent.length) {
 					editor.ui.registry.addButton('pkpInsert', {
+						icon: 'plus',
 						text: self.__('common.insertContent'),
 						onAction() {
 							self.$modal.show(self.preparedContentId);

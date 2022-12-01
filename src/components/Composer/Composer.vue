@@ -513,6 +513,7 @@ export default {
 			return {
 				setup: function(editor) {
 					editor.ui.registry.addButton('pkpAttachFiles', {
+						icon: 'upload',
 						text: self.__('common.attachFiles'),
 						onAction() {
 							self.$modal.show(self.fileAttacherModalId);
