@@ -25,14 +25,26 @@
 					<template v-if="startedSteps.includes(step.id)">
 						<button
 							class="pkpSteps__step__label"
-							:class="{
-								'pkpSteps__step__label--current': current === step.id,
-								'pkpSteps__step__label--started': startedSteps.includes(step.id)
-							}"
+							:class="
+								current === step.id
+									? 'pkpSteps__step__label--current'
+									: completedSteps.includes(step.id)
+									? 'pkpSteps__step__label--completed'
+									: ''
+							"
 							:ref="'button' + step.id"
 							@click="setCurrent(step.id)"
 						>
-							<span class="pkpSteps__step__number">{{ i + 1 }}</span>
+							<span class="pkpSteps__step__number">
+								<template
+									v-if="current !== step.id && completedSteps.includes(step.id)"
+								>
+									<icon icon="check" />
+								</template>
+								<template v-else>
+									{{ i + 1 }}
+								</template>
+							</span>
 							{{ step.label }}
 						</button>
 					</template>
@@ -95,6 +107,13 @@ export default {
 		};
 	},
 	computed: {
+		/**
+		 * The steps that have been completed
+		 */
+		completedSteps() {
+			return this.startedSteps.slice(0, -1);
+		},
+
 		/**
 		 * The current progress, eg - 1/5 steps
 		 * @return String
@@ -263,10 +282,16 @@ export default {
 	text-decoration: none;
 	font-size: @font-sml;
 	font-weight: @bold;
+	color: @text-light;
 	white-space: nowrap;
 	// cover the line connecting each step
 	background: @lift;
 	z-index: 2;
+
+	&:hover,
+	&:focus {
+		outline: 0;
+	}
 }
 
 .pkpSteps__step__number {
@@ -286,26 +311,22 @@ export default {
 	outline-offset: 2px;
 }
 
-.pkpSteps__step__label--started {
-	color: @primary;
+.pkpSteps__step__label--completed {
+	color: @text;
 
 	.pkpSteps__step__number {
 		background: @primary;
 		color: @lift;
-		border-color: @primary;
+		border-color: transparent;
 	}
 
 	&:hover {
-		outline: 0;
-
 		.pkpSteps__step__number {
 			outline: @bg-border;
 		}
 	}
 
 	&:focus {
-		outline: 0;
-
 		.pkpSteps__step__number {
 			outline: 2px solid @primary;
 		}
@@ -313,8 +334,10 @@ export default {
 }
 
 .pkpSteps__step__label--current {
+	color: @primary;
+
 	.pkpSteps__step__number {
-		outline: 1px solid @primary;
+		border-color: @primary;
 	}
 }
 

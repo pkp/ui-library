@@ -10,19 +10,6 @@
 					<div class="composer__templates__heading">
 						{{ loadTemplateLabel }}
 					</div>
-					<ul class="composer__templates__list">
-						<li
-							v-for="emailTemplate in emailTemplates"
-							:key="emailTemplate.key"
-						>
-							<button
-								class="-linkButton"
-								@click="loadTemplate(emailTemplate.key)"
-							>
-								{{ localize(emailTemplate.name) }}
-							</button>
-						</li>
-					</ul>
 					<search
 						v-if="emailTemplatesApiUrl"
 						:searchLabel="findTemplateLabel"
@@ -33,36 +20,66 @@
 						"
 					/>
 					<ul
-						v-if="searchResults.length"
 						class="composer__templates__list"
 						aria-live="true"
 						:aria-label="searchResultsLabel"
 					>
-						<li
-							v-for="searchResult in limitedSearchResults"
-							:key="searchResult.key"
-						>
-							<button
-								class="-linkButton"
-								@click="loadTemplate(searchResult.key)"
+						<template v-if="!searchPhrase">
+							<li
+								v-for="emailTemplate in emailTemplates"
+								:key="emailTemplate.key"
 							>
-								{{ localize(searchResult.name) }}
-							</button>
-						</li>
-						<li v-if="searchResults.length > showSearchResultCount">
-							<button
-								class="-linkButton composer__templates__moreSearchResults"
-								@click="showSearchResultCount = searchResults.length"
+								<button
+									class="composer__template"
+									@click="loadTemplate(emailTemplate.key)"
+								>
+									<div class="composer__template__name -linkButton">
+										{{ localize(emailTemplate.name) }}
+									</div>
+									<div
+										v-if="localize(emailTemplate.body)"
+										class="composer__template__body"
+									>
+										{{ getBodySnippet(localize(emailTemplate.body)) }}
+									</div>
+								</button>
+							</li>
+						</template>
+						<template v-else>
+							<li
+								v-for="searchResult in limitedSearchResults"
+								:key="searchResult.key"
 							>
-								<icon icon="plus-circle" :inline="true" />
-								{{
-									moreSearchResultsLabel.replace(
-										'{$number}',
-										searchResults.length - showSearchResultCount
-									)
-								}}
-							</button>
-						</li>
+								<button
+									class="composer__template"
+									@click="loadTemplate(searchResult.key)"
+								>
+									<div class="composer__template__name -linkButton">
+										{{ localize(searchResult.name) }}
+									</div>
+									<div
+										v-if="localize(searchResult.body)"
+										class="composer__template__body"
+									>
+										{{ getBodySnippet(localize(searchResult.body)) }}
+									</div>
+								</button>
+							</li>
+							<li v-if="searchResults.length > showSearchResultCount">
+								<button
+									class="-linkButton composer__templates__moreSearchResults"
+									@click="showSearchResultCount = searchResults.length"
+								>
+									<icon icon="plus-circle" :inline="true" />
+									{{
+										moreSearchResultsLabel.replace(
+											'{$number}',
+											searchResults.length - showSearchResultCount
+										)
+									}}
+								</button>
+							</li>
+						</template>
 					</ul>
 					<div
 						v-if="isSearching"
@@ -192,6 +209,7 @@
 					groupId="message"
 					primaryLocale="en_US"
 					:all-errors="errors"
+					:init="bodyInit"
 					:formId="id"
 					plugins="link"
 					size="large"
@@ -203,28 +221,12 @@
 					:preparedContentLabel="insertContentLabel"
 					:searchLabel="insertSearchLabel"
 					@change="(name, prop, value) => this.emitChange({body: value})"
-				/>
-				<div v-if="attachers.length" class="composer__attachmentWrapper">
-					<pkp-button
-						:is-link="true"
-						ref="attachFiles"
-						@click="$modal.show(fileAttacherModalId)"
+				>
+					<div
+						v-if="attachments.length"
+						class="composer__attachments"
+						slot="footer"
 					>
-						<icon icon="paperclip" :inline="true" />
-						{{ attachFilesLabel }}
-					</pkp-button>
-					<modal
-						:closeLabel="__('common.close')"
-						:name="fileAttacherModalId"
-						:title="attachFilesLabel"
-						@closed="resetFocusAfterAttachment"
-					>
-						<file-attacher
-							:attachers="attachers"
-							@attached:files="addAttachments"
-						/>
-					</modal>
-					<div v-if="attachments.length" class="composer__attachments">
 						<span class="-screenReader">
 							{{ attachedFilesLabel }}
 						</span>
@@ -250,7 +252,18 @@
 							</button>
 						</badge>
 					</div>
-				</div>
+				</field-prepared-content>
+				<modal
+					:closeLabel="__('common.close')"
+					:name="fileAttacherModalId"
+					:title="attachFilesLabel"
+					@closed="resetFocusAfterAttachment"
+				>
+					<file-attacher
+						:attachers="attachers"
+						@attached:files="addAttachments"
+					/>
+				</modal>
 				<field-error
 					v-if="errors.attachments"
 					:id="id + '-attachments-error'"
@@ -508,6 +521,24 @@ export default {
 				this.emitChange({bcc: newVal});
 			}
 		},
+		bodyInit() {
+			if (!this.attachers.length) {
+				return {};
+			}
+			let self = this;
+			return {
+				setup: function(editor) {
+					editor.ui.registry.addButton('pkpAttachFiles', {
+						icon: 'upload',
+						text: self.__('common.attachFiles'),
+						onAction() {
+							self.$modal.show(self.fileAttacherModalId);
+						}
+					});
+					editor.settings.toolbar += ' | pkpAttachFiles';
+				}
+			};
+		},
 		ccBinded: {
 			get() {
 				return this.cc;
@@ -672,6 +703,20 @@ export default {
 			this.$nextTick(() => {
 				this.updateToPadding();
 			});
+		},
+
+		/**
+		 * Get a plain text snippet of an email template's body
+		 */
+		getBodySnippet(str) {
+			const length = 70;
+			let span = document.createElement('span');
+			span.innerHTML = str;
+			const snippet = span.textContent.trim();
+			if (snippet.length < length - 3) {
+				return snippet;
+			}
+			return snippet.substring(0, length).trim() + '...';
 		},
 
 		/**
@@ -892,10 +937,6 @@ export default {
 	flex: 1;
 }
 
-.composer__templates {
-	margin-top: 1rem;
-}
-
 .composer__templates__heading {
 	font-weight: @bold;
 }
@@ -907,7 +948,31 @@ export default {
 }
 
 .composer__templates__search {
-	margin-top: 1rem;
+	margin-top: 0.5rem;
+}
+
+.composer__template {
+	width: 100%;
+	margin-top: 0.5rem;
+	padding: 1rem;
+	background: @bg-very-light;
+	text-align: left;
+	border: @bg-border-light;
+	border-radius: @radius;
+	box-shadow: 0 1px 0 @bg-border-color-light;
+	cursor: pointer;
+
+	&:hover,
+	&:focus {
+		border-color: @primary;
+		background: @lift;
+		outline: 0;
+	}
+}
+
+.composer__template__body {
+	margin-top: 0.5rem;
+	line-height: 1.5em;
 }
 
 .composer__templates__searching {
@@ -999,19 +1064,12 @@ export default {
 	}
 }
 
-.composer__attachmentWrapper {
-	margin-top: 0.5rem;
-	border: @bg-border;
-	padding: 0.5rem;
-}
-
 .composer__attachments {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	margin-top: 0.5rem;
-	padding-top: 0.5rem;
-	border-top: @bg-border;
+	padding: 0.75rem;
+	border-top: @bg-border-light;
 }
 
 .composer__attachment {

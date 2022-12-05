@@ -78,13 +78,13 @@
 					}}
 				</div>
 			</div>
+			<slot name="footer" />
 		</div>
 		<field-error
 			v-if="errors && errors.length"
 			:id="describedByErrorId"
 			:messages="errors"
 		/>
-		<slot name="footer" />
 	</div>
 </template>
 
@@ -114,12 +114,7 @@ export default {
 		init: {
 			type: Object,
 			default() {
-				return {
-					menubar: false,
-					statusbar: false,
-					entity_encoding: 'raw',
-					browser_spellcheck: true
-				};
+				return {};
 			}
 		},
 		// @see https://www.tiny.cloud/docs/configure/integration-and-setup/#plugins
@@ -216,6 +211,10 @@ export default {
 				directionality: $.pkp.app.rtlLocales.includes(this.localeKey)
 					? 'rtl'
 					: null,
+				menubar: false,
+				statusbar: false,
+				entity_encoding: 'raw',
+				browser_spellcheck: true,
 				// See: https://www.tiny.cloud/docs/general-configuration-guide/upload-images/#rollingyourimagehandler
 				images_upload_handler(blobInfo, success, failure) {
 					const data = new FormData();
@@ -395,6 +394,11 @@ export default {
 
 	.tox-tbtn:not(:first-child) {
 		margin-left: 0.25rem;
+	}
+
+	.tox-tbtn__select-label {
+		color: @primary;
+		text-decoration: underline;
 	}
 
 	.tox-tinymce-inline .tox-editor-header {

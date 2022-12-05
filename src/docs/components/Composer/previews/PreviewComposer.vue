@@ -23,7 +23,7 @@
 			insertModalLabel="Insert Content"
 			insertContentLabel="Content"
 			insertSearchLabel="Find content to insert"
-			loadTemplateLabel="Load a Template"
+			loadTemplateLabel="Email Templates"
 			:locale="locale"
 			:locales="locales"
 			moreSearchResultsLabel="{$number} more"

@@ -7,6 +7,7 @@
 		@change="fieldChanged"
 	>
 		<template slot="footer">
+			<slot name="footer" />
 			<modal
 				:closeLabel="__('common.close')"
 				:name="preparedContentId"
@@ -125,11 +126,14 @@ export default {
 
 			// Add the insert content button
 			const setup = function(editor) {
+				if (self.init.setup) {
+					self.init.setup.call(this, editor);
+				}
 				if (self.preparedContent.length) {
-					editor.ui.registry.addMenuButton('pkpInsert', {
+					editor.ui.registry.addButton('pkpInsert', {
+						icon: 'plus',
 						text: self.__('common.insertContent'),
-						fetch() {
-							self.resetFocusTo = document.activeElement;
+						onAction() {
 							self.$modal.show(self.preparedContentId);
 						}
 					});

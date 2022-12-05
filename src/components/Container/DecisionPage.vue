@@ -403,9 +403,38 @@ export default {
 }
 
 .app__page--decision .pkpSteps__buttonWrapper {
-	margin-bottom: 2rem;
 	border: @bg-border-light;
-	border-radius: @radius;
+	border-bottom: 0;
+	border-top-left-radius: @radius;
+	border-top-right-radius: @radius;
+}
+
+.decision__stepPanel {
+	border-bottom: none;
+	border-top: none;
+	border-radius: 0;
+}
+
+.decision__stepHeader {
+	h2 {
+		margin: 0;
+		font-size: @font-large;
+		line-height: @line-large;
+	}
+
+	p {
+		margin: 0.5rem 0 0;
+		font-size: @font-sml;
+		line-height: @line-sml-tight;
+	}
+}
+
+.app__page--decision .panel.composer {
+	border: none;
+
+	.panelSection {
+		padding: 0;
+	}
 }
 
 .decision_filesList:not(:last-child) {
@@ -433,14 +462,23 @@ export default {
 	display: none;
 }
 
+.decision__footer__panel {
+	border-top: none;
+	border-radius: 0;
+
+	.panelSection {
+		padding-top: 0;
+	}
+
+	.panelSection__header {
+		margin-bottom: 0;
+	}
+}
+
 .decision__footer {
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
-	padding: 1rem;
-	background: @lift;
-	border: @bg-border-light;
-	border-top: none;
 
 	* + .pkpButton {
 		margin-left: 0.5rem;
@@ -451,12 +489,6 @@ export default {
 	font-size: @font-tiny;
 	order: -1;
 	margin-right: auto;
-}
-
-@media (min-width: 1200px) {
-	.decision__footer {
-		padding: 2rem;
-	}
 }
 
 .decision__footer--noSteps {
