@@ -104,15 +104,16 @@ export default {
 	},
 	computed: {
 		uploadedDetails() {
-			if (this.uploadedBy && this.createdAt) {
+			if (!this.uploadedBy) {
+				return '';
+			}
+			if (this.createdAt) {
 				return this.__('common.uploadedByAndWhen', {
 					name: this.uploadedBy,
 					date: this.createdAt.substring(0, 10)
 				});
-			} else if (this.uploadedBy) {
-				return this.__('common.uploaded');
 			}
-			return '';
+			return this.__('common.uploaded');
 		}
 	},
 	created() {

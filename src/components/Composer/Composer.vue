@@ -712,11 +712,11 @@ export default {
 			const length = 70;
 			let span = document.createElement('span');
 			span.innerHTML = str;
-			const snippet = (span.textContent || span.innerText).trim();
+			const snippet = span.textContent.trim();
 			if (snippet.length < length - 3) {
 				return snippet;
 			}
-			return snippet.substring(0, 80).trim() + '...';
+			return snippet.substring(0, length).trim() + '...';
 		},
 
 		/**

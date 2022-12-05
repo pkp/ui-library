@@ -111,7 +111,7 @@ export default {
 		 * The steps that have been completed
 		 */
 		completedSteps() {
-			return this.startedSteps.slice(0, this.startedSteps.length - 1);
+			return this.startedSteps.slice(0, -1);
 		},
 
 		/**
