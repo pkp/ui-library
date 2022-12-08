@@ -488,6 +488,7 @@ export default {
 }
 
 .decision__skipStep {
+	margin-inline-end: auto;
 	font-size: @font-tiny;
 }
 
