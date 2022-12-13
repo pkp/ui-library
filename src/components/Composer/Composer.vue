@@ -640,21 +640,18 @@ export default {
 								documentType: file.documentType
 							};
 						case 'FileAttacherFileStage':
+						case 'FileAttacherReviewFiles': {
+							let name = this.localize(file.name, this.locale).trim();
 							return {
-								name: this.localize(file.name, this.locale),
+								name: name === '' ? this.localize(file.name) : '',
 								submissionFileId: file.id,
 								documentType: file.documentType
 							};
+						}
 						case 'FileAttacherLibrary':
 							return {
 								name: file.filename,
 								libraryFileId: file.id,
-								documentType: file.documentType
-							};
-						case 'FileAttacherReviewFiles':
-							return {
-								name: this.localize(file.name, this.locale),
-								submissionFileId: file.id,
 								documentType: file.documentType
 							};
 					}
