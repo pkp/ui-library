@@ -150,7 +150,7 @@ window.$.pkp = {
 	app: {
 		currentLocale: 'en_US',
 		primaryLocale: 'en_US',
-		rtlLocales: []
+		rtlLocales: ['ar_AR']
 	},
 	pkpHandler() {
 		alert(

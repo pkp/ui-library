@@ -141,14 +141,14 @@ export default {
 
 .insertContent__item__value {
 	font-weight: @bold;
-	padding-right: 1rem;
+	padding-inline-end: 1rem;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 
 .insertContent__item__button {
-	margin-left: auto;
+	margin-inline-start: auto;
 	flex-shrink: 0;
 }
 </style>

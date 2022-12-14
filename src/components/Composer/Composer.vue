@@ -956,7 +956,7 @@ export default {
 	margin-top: 0.5rem;
 	padding: 1rem;
 	background: @bg-very-light;
-	text-align: left;
+	text-align: inherit;
 	border: @bg-border-light;
 	border-radius: @radius;
 	box-shadow: 0 1px 0 @bg-border-color-light;
@@ -1129,5 +1129,12 @@ export default {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+
+[dir='rtl'] {
+	.composer__ccToggle {
+		right: auto;
+		left: 0;
+	}
 }
 </style>

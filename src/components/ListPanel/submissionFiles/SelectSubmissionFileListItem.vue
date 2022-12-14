@@ -139,18 +139,8 @@ export default {
 }
 
 .selectSubmissionFileListItem__selector {
-	position: relative;
-	top: -2px; // vertical alignment
 	width: 3rem;
-	min-width: 3rem;
-	margin-left: -1rem;
-
-	input {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-	}
+	text-align: center;
 }
 
 .selectSubmissionFileListItem__download {

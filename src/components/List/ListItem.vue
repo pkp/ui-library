@@ -43,7 +43,7 @@ export default {
 }
 
 .listItem--hasLabel {
-	padding-left: 6.5em;
+	padding-inline-start: 6.5em;
 
 	&:before {
 		content: '';
@@ -66,6 +66,19 @@ export default {
 	.fa {
 		color: @text-light;
 		min-width: 1.25em;
+	}
+}
+
+[dir='rtl'] {
+	.listItem--hasLabel {
+		&:before {
+			left: auto;
+			right: 5.5em;
+		}
+	}
+	.listItem__value {
+		left: auto;
+		right: 1em;
 	}
 }
 </style>

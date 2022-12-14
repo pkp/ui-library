@@ -284,8 +284,9 @@ export default {
 
 .pkpFormField--options__option {
 	position: relative;
-	display: block;
-	margin-inline-start: 1.5rem;
+	display: flex;
+	align-items: flex-start;
+	gap: 0.5rem;
 	font-size: @font-sml;
 	line-height: 1.8em;
 	cursor: pointer;
@@ -296,13 +297,11 @@ export default {
 }
 
 .pkpFormField--options__input {
-	position: absolute;
-	top: 0.9em;
-	margin-inline-start: -1.5rem;
-	transform: translateY(-50%);
+	margin-top: 0.4rem; // align with first line of option text
 
 	&:focus {
 		outline: 2px solid @primary;
+		outline-offset: 1px;
 	}
 }
 
@@ -320,15 +319,10 @@ export default {
 .pkpFormField--optionsOrderable {
 	.pkpFormField--options__option {
 		position: relative;
-		padding: 0.5em 0.5em 0.5em 6em;
+		padding: 0.5rem;
+		padding-inline-start: 4rem;
+		padding-inline-end: 7rem;
 		border: @bg-border-light;
-	}
-
-	.pkpFormField--options__input {
-		position: absolute;
-		top: 1.5em;
-		margin-inline-start: 4em;
-		transform: translateY(-50%);
 	}
 }
 </style>

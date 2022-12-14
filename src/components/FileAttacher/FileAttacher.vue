@@ -95,5 +95,13 @@ export default {
 
 .fileAttacher__footer {
 	padding-top: 1rem;
+
+	.pkpButton + .pkpButton {
+		margin-inline-start: 0.25rem;
+	}
+}
+
+.fileAttacher__back {
+	margin-inline-end: auto;
 }
 </style>

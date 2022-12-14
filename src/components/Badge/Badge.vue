@@ -159,7 +159,7 @@ export default {
 
 .pkpBadge--dot {
 	position: relative;
-	padding-left: 2em;
+	padding-inline-start: 2em;
 
 	&:before {
 		content: '';
@@ -242,6 +242,15 @@ export default {
 
 		&:before {
 			border-color: #fff;
+		}
+	}
+}
+
+[dir='rtl'] {
+	.pkpBadge--dot {
+		&:before {
+			left: auto;
+			right: 0.75em;
 		}
 	}
 }

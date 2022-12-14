@@ -174,11 +174,11 @@ export default {
 .listPanel__sidebar {
 	position: relative;
 	flex: 0 0 12rem;
-	border-right: @grid-border;
+	border-inline-end: @grid-border;
 }
 
 .listPanel__sidebar-enter {
-	margin-right: -12rem;
+	margin-inline-end: -12rem;
 	opacity: 0;
 }
 
@@ -187,22 +187,23 @@ export default {
 }
 
 .listPanel__sidebar-enter-to {
-	margin-right: 0;
+	margin-inline-end: 0;
 	opacity: 1;
 }
 
 .listPanel__sidebar-leave {
-	margin-right: 0;
+	margin-inline-end: 0;
 	opacity: 1;
 }
 
 .listPanel__sidebar-leave-to {
-	margin-right: -12em;
+	margin-inline-end: -12em;
 	opacity: 0;
 }
 
 .listPanel__sidebar-leave-active {
-	transition: opacity 0.15s ease-in-out, margin-right 0.15s ease-in-out 0.15s;
+	transition: opacity 0.15s ease-in-out,
+		margin-inline-end 0.15s ease-in-out 0.15s;
 }
 
 .listPanel__sidebar > .pkpHeader {
@@ -218,8 +219,8 @@ export default {
 	}
 
 	.pkpFilter {
-		margin-left: -1rem;
-		margin-right: -0.5rem;
+		margin-inline-start: -1rem;
+		margin-inline-end: -0.5rem;
 	}
 }
 
@@ -251,7 +252,8 @@ export default {
 }
 
 .listPanel__item {
-	padding: 0.75rem 0.5rem 0.75rem 1rem;
+	padding: 0.75rem 0.5rem;
+	padding-inline-start: 1rem;
 }
 
 .listPanel__itemSummary {
@@ -289,8 +291,8 @@ export default {
 .listPanel__itemActions {
 	display: flex;
 	align-items: center;
-	margin-left: auto;
-	padding-left: 0.5rem;
+	margin-inline-start: auto;
+	padding-inline-start: 0.5rem;
 	font-size: @font-tiny;
 	line-height: 1.5em;
 
@@ -300,12 +302,12 @@ export default {
 
 	// Space between each button or action
 	> * + * {
-		margin-left: 0.25rem;
+		margin-inline-start: 0.25rem;
 	}
 }
 
 .listPanel__itemExpanded {
-	margin-right: 2.25rem;
+	margin-inline-end: 2.25rem;
 }
 
 .listPanel__itemExpanded .list {
@@ -317,7 +319,7 @@ export default {
 	text-align: right;
 
 	> * + * {
-		margin-left: 0.25rem;
+		margin-inline-start: 0.25rem;
 	}
 }
 
@@ -326,29 +328,8 @@ export default {
 }
 
 [dir='rtl'] {
-	.listPanel__itemActions {
-		padding-left: 0;
-		padding-right: 0.5rem;
-
-		// Space between each button or action
-		> * + * {
-			margin-left: 0;
-			margin-right: 0.25rem;
-		}
-	}
-
-	.listPanel__itemExpanded {
-		margin-right: 0;
-		margin-left: 2.25rem;
-	}
-
 	.listPanel__itemExpandedActions {
 		text-align: left;
-
-		> * + * {
-			margin-left: 0;
-			margin-right: 0.25rem;
-		}
 	}
 }
 </style>

@@ -48,4 +48,13 @@ export default {
 		color: #fff;
 	}
 }
+
+[dir='rtl'] {
+	.pkpFieldError {
+		&:before {
+			left: auto;
+			right: 1rem;
+		}
+	}
+}
 </style>

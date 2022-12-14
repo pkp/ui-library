@@ -89,7 +89,7 @@ export default {
 
 .orderer__dragDrop {
 	color: @primary;
-	border-right: @grid-border;
+	border-inline-end: @grid-border;
 	cursor: move;
 }
 
@@ -98,7 +98,7 @@ export default {
 	left: auto;
 	right: 0;
 	color: @text-light;
-	border-left: @grid-border;
+	border-inline-start: @grid-border;
 	cursor: pointer;
 
 	&:hover {
@@ -121,14 +121,19 @@ export default {
 }
 
 [dir='rtl'] {
-	.orderer__up {
-		left: 0;
+	.orderer__dragDrop {
+		right: 0;
+		left: auto;
+	}
+
+	.orderer__up,
+	.orderer__down {
 		right: auto;
+		left: 0;
 	}
 
 	.orderer__down {
 		left: 3rem;
-		right: auto;
 	}
 }
 </style>

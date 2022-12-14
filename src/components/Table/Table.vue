@@ -298,7 +298,7 @@ export default {
 	th {
 		padding: 0.5rem;
 		font-weight: @normal;
-		text-align: left;
+		text-align: inherit;
 
 		&:focus {
 			outline: 0;
@@ -315,7 +315,7 @@ export default {
 		padding: 1rem;
 		border-top-left-radius: @radius;
 		border-top-right-radius: @radius;
-		text-align: left;
+		text-align: inherit;
 	}
 
 	thead {
@@ -331,7 +331,8 @@ export default {
 			button {
 				position: relative;
 				margin: 0;
-				padding: 0.5rem 16px 0.5rem 0.5rem;
+				padding: 0.5rem;
+				padding-inline-end: 16px;
 				border: none;
 				border-radius: @radius;
 				background: transparent;
@@ -356,6 +357,7 @@ export default {
 			top: 50%;
 			right: 4px;
 			transform: translateY(-50%);
+			margin-inline-start: 0.25em;
 		}
 
 		&:hover .pkpTable__sortIcon {
@@ -367,7 +369,6 @@ export default {
 		th[aria-sort='true']:hover .pkpTable__sortIcon,
 		th[aria-sort='true']:focus .pkpTable__sortIcon {
 			visibility: visible;
-			margin-left: 0.25em;
 			color: @primary;
 		}
 	}
@@ -435,6 +436,17 @@ export default {
 		&[disabled]:hover {
 			border-color: transparent;
 			border-left: @grid-border;
+		}
+	}
+}
+
+[dir='rtl'] {
+	.pkpTable {
+		thead {
+			.pkpTable__sortIcon {
+				right: auto;
+				left: 4px;
+			}
 		}
 	}
 }

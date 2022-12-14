@@ -92,6 +92,8 @@ export default {
 	max-width: 50rem;
 	margin-left: auto;
 	margin-right: auto;
+	// Don't assume LTR langauges
+	text-align: initial;
 }
 
 // Fix text alignment overrides in right-to-left languages
@@ -134,7 +136,7 @@ export default {
 }
 
 .modal__closeButton {
-	margin-inline-start: auto;
+	margin-inline-start: auto; // fix position when no title exists
 	margin-inline-end: 0.5rem;
 	border: none;
 	font-size: @font-lead;
@@ -171,7 +173,7 @@ export default {
 	padding: 1rem;
 
 	* + .pkpButton {
-		margin-left: 0.5rem;
+		margin-inline-start: 0.5rem;
 	}
 }
 
@@ -191,8 +193,8 @@ export default {
 	}
 
 	.pkpFormGroup {
-		padding-left: 1rem;
-		padding-right: 1rem;
+		padding-inline-start: 1rem;
+		padding-inline-end: 1rem;
 	}
 }
 
@@ -205,28 +207,19 @@ export default {
 // Tabs in modals
 .modal {
 	.pkpTabs {
-		margin-left: -1rem;
-		margin-right: -1rem;
+		margin-inline-start: -1rem;
+		margin-inline-end: -1rem;
 	}
 
 	.pkpTabs__buttons {
-		padding-left: 1rem;
-		padding-right: 1rem;
+		padding-inline-start: 1rem;
+		padding-inline-end: 1rem;
 	}
 
 	.pkpTab {
 		border-left: none;
 		border-right: none;
 		border-bottom: none;
-	}
-}
-
-[dir='rtl'] {
-	.modal__footer {
-		* + .pkpButton {
-			margin-left: 0;
-			margin-right: 0.5rem;
-		}
 	}
 }
 </style>

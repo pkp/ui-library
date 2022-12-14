@@ -36,10 +36,7 @@
 			:id="controlId"
 			aria-live="polite"
 		>
-			<div
-				v-if="currentValue"
-				class="pkpFormField--upload__preview -pkpClearfix"
-			>
+			<div v-if="currentValue" class="pkpFormField--upload__preview">
 				<span class="pkpFormField--upload__fileName">
 					{{ fileName }}
 				</span>
@@ -371,6 +368,9 @@ export default {
 @import '../../../styles/_import';
 
 .pkpFormField--upload__preview {
+	display: flex;
+	justify-content: space-between;
+	gap: 1rem;
 	padding: 1rem;
 	border: @bg-border;
 	border-radius: 2px;
@@ -379,17 +379,12 @@ export default {
 }
 
 .pkpFormField--upload__fileName {
-	display: inline-block;
 	padding: 0.25rem 0;
-}
-
-.pkpFormField--upload__previewActions {
-	float: right;
 }
 
 .pkpFormField--upload__restore {
 	margin-top: 0.5rem;
-	margin-right: 0.5rem;
+	margin-inline-end: 0.5rem;
 }
 
 .pkpFormField--upload__addFile {
@@ -397,13 +392,13 @@ export default {
 }
 
 .pkpFormField--upload .multilingualProgress {
-	margin-left: 0.5rem;
+	margin-inline-start: 0.5rem;
 }
 
 .pkpFormField--upload__uploadActions,
 .pkpFormField--upload__previewActions {
 	.pkpButton + .pkpButton {
-		margin-left: 0.5rem;
+		margin-inline-start: 0.5rem;
 	}
 }
 
@@ -439,18 +434,18 @@ export default {
 
 	.dz-preview {
 		position: relative;
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 1rem;
 		border: @bg-border;
 		border-radius: 2px;
 		font-size: @font-tiny;
 		line-height: 1.5em;
-
-		+ .dz-preview {
-			margin-top: 1rem;
-		}
 	}
 
 	.dz-details {
-		padding: 1rem;
+		flex-grow: 1;
 	}
 
 	.dz-filename {
@@ -461,7 +456,6 @@ export default {
 
 	.dz-progress {
 		position: relative;
-		display: block;
 		margin-top: 1rem;
 		height: 0.5rem;
 		background: @bg;
@@ -481,10 +475,6 @@ export default {
 	}
 
 	.dz-remove {
-		position: absolute;
-		top: 1rem;
-		right: 1rem;
-		padding-left: 0.5rem;
 		background: @lift;
 	}
 

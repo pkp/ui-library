@@ -21,6 +21,12 @@ Use this component for entering a single line of text.
 
 The `size` of the input area will signal to the user how much information they should enter into the field. Choose a size that is sufficient to display the expected input.
 
-When using a `prefix`, be careful not to use a long prefix. There may not be enough room for the user to enter their information. If a prefix runs too long, it will be truncated so that the user can enter their information.
+
 
 Do not use `isLabelInline` unless a designer has recommended this approach. Forms need to be designed carefully to support inline labels.
+
+### Prefix
+
+When using a `prefix`, be careful not to use a long prefix. There may not be enough room for the user to enter their information. If a prefix runs too long, it will be truncated so that the user can enter their information.
+
+A `prefix` can not be used with a localized value. Languages that read right-to-left (RTL) will not appear correctly. Only use a prefix in cases where the prefix will always read left-to-right, for example a domain name (http://test.com/) or a DOI prefix (10.1234/).

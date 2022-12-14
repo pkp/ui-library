@@ -11,25 +11,17 @@ export default {
 			<p>Sincèrement,</p>
 			<p>{$senderName}<br>{$journalName}</p>`
 	},
-	canDisable: false,
-	canEdit: true,
 	contextId: null,
-	description: {
-		en_US:
-			'This email from the Editor or Section Editor to an Author notifies them of a final "accept submission" decision regarding their submission.',
-		fr_CA:
-			"Ce courriel du,de la rédacteur-trice ou du,de la rédacteur-trice de rubrique à un-e auteur-e le,la notifie de la décision finale concernant sa soumission, soit d'accepter sa soumission."
-	},
-	enabled: true,
-	fromRoleId: 16,
 	id: null,
 	key: 'EDITOR_DECISION_ACCEPT',
+	name: {
+		en_US: 'Accept for Publication'
+	},
 	stageId: 3,
 	subject: {
 		en_US:
 			'Your submission has been accepted for publication in {$journalName}',
 		fr_CA:
 			'Votre soumission a été acceptée pour publication dans {$journalName}'
-	},
-	toRoleId: 65536
+	}
 };

@@ -1,5 +1,5 @@
 <template>
-	<div class="pkpTabs" :class="{'pkpTabs--side -pkpClearfix': isSideTabs}">
+	<div class="pkpTabs" :class="{'pkpTabs--side': isSideTabs}">
 		<div class="pkpTabs__buttons" role="tablist" :aria-label="label">
 			<button
 				v-for="tab in tabs"
@@ -315,14 +315,14 @@ export default {
 
 	/* Side-tabs */
 	.pkpTabs--side {
+		display: grid;
+		grid-template-columns: 192px auto;
+
 		.pkpTabs__buttons {
-			width: 192px;
-			float: left;
-			top: 0;
 			padding-left: 0;
 			padding-right: 0;
 			margin-bottom: 2rem;
-			border-right: @bg-border-light;
+			border-inline-end: @bg-border-light;
 		}
 
 		.pkpTabs__button {
@@ -334,7 +334,7 @@ export default {
 			border-color: transparent;
 			top: auto;
 			right: -1px; // overlap right border
-			text-align: left;
+			text-align: inherit;
 
 			&:before {
 				content: '';
@@ -360,7 +360,7 @@ export default {
 			}
 
 			+ .pkpTabs__button {
-				margin-left: 0;
+				margin-inline-end: 0;
 			}
 		}
 
@@ -377,14 +377,10 @@ export default {
 			border-left: none;
 			border-right: none;
 		}
-
-		.pkpTab {
-			margin-left: 192px;
-		}
 	}
 
 	.pkpTabs .pkpTabs--side .pkpTabs__buttons {
-		padding-right: 0;
+		padding-inline-end: 0;
 	}
 
 	.pkpTabs .pkpTabs--side .pkpTab {
@@ -392,7 +388,8 @@ export default {
 		border-top: none;
 
 		> .pkpForm {
-			margin: 0 0 0 calc(-2rem - 1px); // overlap border
+			margin: 0;
+			margin-inline-start: calc(-2rem - 1px);
 			border: @bg-border-light;
 		}
 
@@ -407,6 +404,29 @@ export default {
 	/* Forms in tabs */
 	.pkpTab > .pkpForm {
 		margin: -2rem;
+	}
+}
+
+[dir='rtl'] {
+	@media (min-width: 767px) {
+		.pkpTabs--side {
+			.pkpTabs__button {
+				left: -1px; // overlap right border
+				right: auto;
+
+				&:before {
+					left: auto;
+					right: -2px;
+				}
+
+				&:focus {
+					&:after {
+						left: auto;
+						right: 0.375rem;
+					}
+				}
+			}
+		}
 	}
 }
 </style>

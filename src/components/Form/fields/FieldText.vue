@@ -159,7 +159,8 @@ export default {
 			setTimeout(() => {
 				if (this.prefix) {
 					this.inputStyles = {
-						'padding-left':
+						direction: 'ltr',
+						'padding-inline-start':
 							this.$refs.prefix.clientWidth +
 							this.$refs.prefix.offsetLeft +
 							'px'
@@ -181,7 +182,8 @@ export default {
 							};
 							this.$nextTick(() => {
 								this.inputStyles = {
-									'padding-left':
+									direction: 'ltr',
+									'padding-inline-start':
 										this.$refs.prefix.clientWidth +
 										this.$refs.prefix.offsetLeft +
 										'px'
@@ -229,7 +231,7 @@ export default {
 
 .pkpFormField__control--hasMultilingualIndicator {
 	.pkpFormField--text__input {
-		padding-left: 3rem;
+		padding-inline-start: 3rem;
 	}
 
 	.pkpFormField__inputPrefix {
@@ -250,7 +252,7 @@ export default {
 		width: 2.5rem;
 		height: 2.5rem;
 		border: 1px solid transparent;
-		border-right: @bg-border;
+		border-inline-end: @bg-border;
 
 		&:focus {
 			outline: 0;
@@ -280,7 +282,7 @@ export default {
 }
 
 .pkpFormField--text__optIntoEdit {
-	margin-left: 0.25rem;
+	margin-inline-start: 0.25rem;
 	height: 2.5rem; // Match input height
 }
 
@@ -296,9 +298,27 @@ export default {
 	}
 
 	.pkpFormField--text__optIntoEdit {
-		margin-left: 0;
+		margin-inline-start: 0;
 		margin-top: 0.25rem;
 		height: inherit;
+	}
+}
+
+[dir='rtl'] {
+	.pkpFormField--text .multilingualProgress {
+		left: auto;
+		right: 0;
+
+		button {
+			left: auto;
+			right: 0;
+		}
+	}
+
+	.pkpFormField__control--hasMultilingualIndicator {
+		.pkpFormField__inputPrefix {
+			right: 3rem;
+		}
 	}
 }
 </style>

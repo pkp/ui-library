@@ -223,4 +223,17 @@ export default {
 	display: inline-block;
 	width: 34px;
 }
+
+[dir='rtl'] {
+	.pkpPagination {
+		li {
+			&:first-child {
+				float: right;
+			}
+			&:last-child {
+				float: left;
+			}
+		}
+	}
+}
 </style>

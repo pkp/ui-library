@@ -8,7 +8,8 @@ export default {
 	options: [
 		{
 			value: true,
-			label: 'Yes, I would like to receive emails.'
+			label:
+				'Yes, I would like to receive emails. Yes, I would like to receive emails. Yes, I would like to receive emails. Yes, I would like to receive emails. '
 		}
 	],
 	groupId: 'preferences'

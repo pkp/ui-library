@@ -92,27 +92,27 @@ export default {
 		display: flex;
 		align-items: center;
 		margin-top: 1rem;
-		margin-left: -0.5rem;
+		margin-inline-start: -0.5rem;
 		line-height: 1.5rem;
 
 		> input {
-			margin-left: 0.5rem;
+			margin-inline-start: 0.5rem;
 		}
 	}
 
 	.listPanel__selectAllLabel {
-		margin-left: 0.5rem;
+		margin-inline-start: 0.5rem;
 	}
 
 	.listPanel__selectWrapper {
 		display: flex;
 		align-items: center;
-		margin-left: -1rem;
+		margin-inline-start: -1rem;
 	}
 
 	.listPanel__selector {
 		width: 3rem;
-		padding-left: 1rem;
+		padding-inline-start: 1rem;
 	}
 }
 </style>

@@ -11,7 +11,7 @@
 				:placeholder="currentSearchLabel"
 			/>
 			<span class="pkpSearch__icons">
-				<icon icon="search" :inline="true" class="pkpSearch__icons--search" />
+				<icon icon="search" class="pkpSearch__icons--search" />
 			</span>
 		</label>
 		<button
@@ -91,7 +91,8 @@ export default {
 .pkp_form .pkpSearch .pkpSearch__input {
 	display: block;
 	box-sizing: border-box;
-	padding: 0 0.5em 0 3.5em;
+	padding: 0 0.5em;
+	padding-inline-start: 3.5em;
 	width: 100%;
 	height: auto;
 	border: @bg-border-light;
@@ -152,9 +153,7 @@ export default {
 	left: 0;
 	width: 2.5em;
 	height: 100%;
-	border-right: @bg-border-light;
-	border-top-left-radius: @radius;
-	border-bottom-left-radius: @radius;
+	border-inline-end: @bg-border-light;
 }
 
 .pkpSearch__icons--search {
@@ -163,5 +162,17 @@ export default {
 	left: 50%;
 	transform: translate(-50%, -50%);
 	color: @primary;
+}
+
+[dir='rtl'] {
+	.pkpSearch__clear {
+		right: auto;
+		left: 0;
+	}
+
+	.pkpSearch__icons {
+		left: auto;
+		right: 0;
+	}
 }
 </style>

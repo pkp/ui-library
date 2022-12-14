@@ -133,4 +133,12 @@ export default {
 		color: @offset;
 	}
 }
+
+[dir='rtl'] {
+	.pkpFilter__add,
+	.pkpFilter__remove {
+		right: auto;
+		left: 0;
+	}
+}
 </style>

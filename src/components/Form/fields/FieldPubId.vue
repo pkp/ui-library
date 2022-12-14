@@ -231,7 +231,7 @@ export default {
 }
 
 .pkpFormField--pubid__button {
-	margin-left: 0.25rem;
+	margin-inline-start: 0.25rem;
 	height: 2.5rem; // Match input height
 }
 

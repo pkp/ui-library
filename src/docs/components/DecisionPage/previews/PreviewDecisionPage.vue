@@ -1,5 +1,5 @@
 <template>
-	<div class="app__page app__page--decision width width--wide">
+	<div class="app__page width width--wide">
 		<nav role="navigation" aria-label="You are here:" class="app__breadcrumbs">
 			<ol>
 				<li>
@@ -15,7 +15,7 @@
 				</li>
 			</ol>
 		</nav>
-		<template v-if="!isComplete">
+		<div class="app__page--decision">
 			<h1 class="app__pageHeading" ref="pageTitle">
 				Accept Submission
 			</h1>
@@ -52,70 +52,67 @@
 					:id="step.id"
 					:label="step.name"
 				>
-					<template v-if="step.type === 'form'">
-						<panel>
+					<panel class="decision__stepPanel">
+						<panel-section class="decision__stepHeader">
+							<h2>{{ step.name }}</h2>
+							<p>{{ step.description }}</p>
+						</panel-section>
+						<template v-if="step.type === 'form'">
 							<panel-section>
-								<template slot="header">
-									<h2>{{ step.name }}</h2>
-									<p>{{ step.description }}</p>
-								</template>
 								<pkp-form
 									v-bind="step.form"
 									:errors="step.errors"
 									@set="updateStep"
 								></pkp-form>
 							</panel-section>
-						</panel>
-					</template>
-					<template v-else-if="step.type === 'email'">
-						<!-- <div v-if="!sendNotifyEmail">
-							This email has been skipped.
-							<button class="-linkButton" @click="sendNotifyEmail = true">
-								Compose Email
-							</button>
-						</div> -->
-						<composer
-							v-bind="step"
-							addCCLabel="Add CC/BCC"
-							attachFilesLabel="Attach Files"
-							attachedFilesLabel="Attached Files:"
-							bccLabel="BCC:"
-							bodyLabel="Message"
-							ccLabel="CC:"
-							confirmSwitchLocaleLabel="Are you sure you want to change to {$localeName} to compose this email? Any changes you have made to the subject and body of the email will be lost."
-							deselectLabel="Deselect"
-							:email-templatesApiUrl="emailTemplatesApiUrl"
-							findTemplateLabel="Find Template"
-							insertLabel="Insert"
-							insertModalLabel="Insert Content"
-							insertContentLabel="Content"
-							insertSearchLabel="Find content to insert"
-							loadTemplateLabel="Email Templates"
-							:locale="step.locale"
-							:locales="step.locales"
-							moreSearchResultsLabel="{$number} more"
-							removeItemLabel="Remove {$item}"
-							searchingLabel="Searching"
-							searchResultsLabel="Search Results"
-							subjectLabel="Subject:"
-							switchToLabel="Switch To:"
-							switchToNamedLanguageLabel="Switch to {$name}"
-							recipientsLabel="To:"
-							@set="updateStep"
-						>
-							<template slot="description">
-								<h2>{{ step.name }}</h2>
-								<p v-html="step.description"></p>
-							</template>
-						</composer>
-					</template>
-					<template v-else-if="step.type === 'promoteFiles'">
-						<panel>
+						</template>
+						<template v-else-if="step.type === 'email'">
+							<panel-section v-if="skippedSteps.includes(step.id)">
+								<notification type="warning">
+									This email has been skipped.
+									<button
+										class="-linkButton"
+										:disabled="isSubmitting"
+										@click="toggleSkippedStep(step.id)"
+									>
+										Don't skip email
+									</button>
+								</notification>
+							</panel-section>
+							<panel-section v-else>
+								<composer
+									v-bind="step"
+									addCCLabel="Add CC/BCC"
+									attachFilesLabel="Attach Files"
+									attachedFilesLabel="Attached Files:"
+									bccLabel="BCC:"
+									bodyLabel="Message"
+									ccLabel="CC:"
+									confirmSwitchLocaleLabel="Are you sure you want to change to {$localeName} to compose this email? Any changes you have made to the subject and body of the email will be lost."
+									deselectLabel="Deselect"
+									:email-templatesApiUrl="emailTemplatesApiUrl"
+									findTemplateLabel="Find Template"
+									insertLabel="Insert"
+									insertModalLabel="Insert Content"
+									insertContentLabel="Content"
+									insertSearchLabel="Find content to insert"
+									loadTemplateLabel="Email Templates"
+									:locale="step.locale"
+									:locales="step.locales"
+									moreSearchResultsLabel="{$number} more"
+									removeItemLabel="Remove {$item}"
+									searchingLabel="Searching"
+									searchResultsLabel="Search Results"
+									subjectLabel="Subject:"
+									switchToLabel="Switch To:"
+									switchToNamedLanguageLabel="Switch to {$name}"
+									recipientsLabel="To:"
+									@set="updateStep"
+								></composer>
+							</panel-section>
+						</template>
+						<template v-else-if="step.type === 'promoteFiles'">
 							<panel-section>
-								<template slot="header">
-									<h2>{{ step.name }}</h2>
-									<p>{{ step.description }}</p>
-								</template>
 								<list-panel
 									v-for="(list, i) in step.lists"
 									:key="i"
@@ -149,78 +146,59 @@
 									</template>
 								</list-panel>
 							</panel-section>
-						</panel>
-					</template>
+						</template>
+					</panel>
 				</step>
 			</steps>
 
-			<button-row
-				class="decision__footer"
-				:class="{'decision__footer--noSteps': !steps.length}"
-			>
-				<template slot="end">
-					<button
-						v-if="currentStep.type === 'email'"
-						class="decision__skipStep -linkButton"
-						:disabled="isSubmitting"
-						@click="toggleSkippedStep(currentStep.id)"
-					>
-						Skip this email
-					</button>
-					<!--
-						Leave this v-else in so that the slot
-						is never empty.
-					-->
-					<span v-else></span>
-				</template>
-				<spinner v-if="isSubmitting"></spinner>
-				<pkp-button
-					v-if="!isOnFirstStep"
-					:disabled="isSubmitting"
-					:is-warnable="true"
-					@click="cancel"
-				>
-					Cancel
-				</pkp-button>
-				<pkp-button
-					v-if="!isOnFirstStep"
-					:disabled="isSubmitting"
-					@click="previousStep"
-				>
-					Previous
-				</pkp-button>
-				<pkp-button
-					:disabled="isSubmitting"
-					:is-primary="isOnLastStep"
-					@click="nextStep"
-				>
-					<template v-if="isOnLastStep">
-						Record Decision
-					</template>
-					<template v-else>
-						Next
-					</template>
-				</pkp-button>
-			</button-row>
-		</template>
-
-		<div v-else class="width width--narrow">
-			<panel :stack="true">
+			<panel class="decision__footer__panel">
 				<panel-section>
-					<div slot="header">
-						<h1>Submission Accepted</h1>
-						<p>
-							The submission, "Towards Designing an Intercultural Curriculum: A
-							Case Study from the Atlantic Coast of Nicaragua", has been
-							accepted for publication and sent to the copyediting stage.
-						</p>
-						<p>
-							Go
-							<a href="#">back to the submission</a>
-							or
-							<a href="#">view all submissions</a>
-							.
-						</p>
+					<span slot="header">
+						<!-- empty on purpose -->
+					</span>
+					<div
+						class="decision__footer"
+						:class="{'decision__footer--noSteps': !steps.length}"
+					>
+						<button
+							v-if="
+								currentStep.type === 'email' &&
+									currentStep.canSkip &&
+									!skippedSteps.includes(currentStep.id)
+							"
+							class="decision__skipStep -linkButton"
+							:disabled="isSubmitting"
+							@click="toggleSkippedStep(currentStep.id)"
+						>
+							Skip email
+						</button>
+						<spinner v-if="isSubmitting"></spinner>
+						<pkp-button
+							:disabled="isSubmitting"
+							:is-warnable="true"
+							@click="cancel"
+						>
+							Cancel
+						</pkp-button>
+						<pkp-button
+							v-if="!isOnFirstStep && steps.length > 1"
+							:disabled="isSubmitting"
+							@click="previousStep"
+						>
+							Previous
+						</pkp-button>
+						<pkp-button
+							:disabled="isSubmitting"
+							:is-primary="isOnLastStep"
+							@click="nextStep"
+						>
+							<template v-if="isOnLastStep">
+								Record Decision
+							</template>
+							<template v-else>
+								Continue
+							</template>
+						</pkp-button>
 					</div>
 				</panel-section>
 			</panel>
@@ -351,6 +329,9 @@ export default {
 					emailTemplates: [
 						{
 							...emailTemplate,
+							name: {
+								en_US: 'Accept for Publication'
+							},
 							subject: {
 								en_US: 'Accept for Publication'
 							}
@@ -358,6 +339,9 @@ export default {
 						{
 							...emailTemplate,
 							key: 'EDITOR_DECISION_ACCEPT_CONDITIONS',
+							name: {
+								en_US: 'Accept with Conditions'
+							},
 							subject: {
 								en_US: 'Accept with Conditions'
 							}
@@ -365,6 +349,9 @@ export default {
 						{
 							...emailTemplate,
 							key: 'EDITOR_DECISION_ACCEPT_EARLY',
+							name: {
+								en_US: 'Accept for Early Publication'
+							},
 							subject: {
 								en_US: 'Accept for Early Publication'
 							}
