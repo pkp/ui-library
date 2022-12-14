@@ -36,20 +36,13 @@
 			:id="controlId"
 			aria-live="polite"
 		>
-			<div
-				v-if="currentValue"
-				class="pkpFormField--upload__preview -pkpClearfix"
-			>
-				<div
+			<div v-if="currentValue" class="pkpFormField--upload__preview">
+				<img
 					v-if="this.thumbnail"
-					class="pkpFormField--uploadImage__thumbnailWrapper"
-				>
-					<img
-						class="pkpFormField--uploadImage__thumbnail"
-						:alt="thumbnailDescription"
-						:src="thumbnail"
-					/>
-				</div>
+					class="pkpFormField--uploadImage__thumbnail"
+					:alt="thumbnailDescription"
+					:src="thumbnail"
+				/>
 				<div class="pkpFormField--upload__details">
 					<label class="pkpFormFieldLabel" :for="altTextId">
 						{{ altTextLabel }}
@@ -276,23 +269,11 @@ export default {
 <style lang="less">
 @import '../../../styles/_import';
 
-.pkpFormField--uploadImage__thumbnailWrapper {
-	float: left;
-	width: 40%;
-	margin-bottom: 1rem;
-}
-
 .pkpFormField--uploadImage__thumbnail {
 	display: block;
-	max-width: 100%;
+	width: 3rem;
 	height: auto;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.pkpFormField--uploadImage__thumbnailWrapper + .pkpFormField--upload__details {
-	margin-left: 40%;
-	padding-left: 1rem;
+	align-self: flex-start;
 }
 
 .pkpFormField--uploadImage__altTextInput {
@@ -305,56 +286,17 @@ export default {
 
 // Stack image preview and alt text columns when showing multiple locales
 .pkpForm--hasManyVisibleLocales {
-	.pkpFormField--uploadImage__thumbnailWrapper {
-		float: none;
-		width: 100%;
-
-		+ .pkpFormField--upload__details {
-			float: none;
-			width: 100%;
-			margin-left: 0;
-			padding-left: 0;
-		}
+	.pkpFormField--upload__preview {
+		display: block;
 	}
 }
 
 .pkpFormField--uploadImage {
-	.pkpFormField--upload__previewActions {
-		float: none;
-		clear: both;
-		margin: 1rem -1rem -1rem;
-		padding: 1rem;
-		border-top: @bg-border;
-	}
-
 	// Dropzone.js preview with thumbnail
 	.dz-image-preview {
-		display: block;
-
-		&:before,
-		&:after {
-			content: ' ';
-			display: table;
-		}
-
-		&:after {
-			clear: both;
-		}
-
 		.dz-image {
 			display: block;
-			float: right;
 			width: 3rem;
-			margin: 1rem 1rem 1rem 0;
-			border-radius: 2px;
-		}
-
-		.dz-details {
-			margin-right: 4rem;
-		}
-
-		.dz-remove {
-			right: 5rem;
 		}
 	}
 }

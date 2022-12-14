@@ -104,7 +104,7 @@ export default {
 }
 
 .pkpFormField__control--hasMultilingualIndicator .pkpFormField--select__input {
-	padding-left: 3rem;
+	padding-inline-start: 3rem;
 }
 
 .pkpFormField--select .multilingualProgress {
@@ -147,5 +147,17 @@ export default {
 
 .pkpFormField--select__input:focus + .multilingualProgress button {
 	border-color: @primary;
+}
+
+[dir='rtl'] {
+	.pkpFormField--select .multilingualProgress {
+		left: auto;
+		right: 0;
+
+		button {
+			left: auto;
+			right: 0;
+		}
+	}
 }
 </style>

@@ -99,10 +99,7 @@ export default {
 @import '../../styles/_import';
 
 .pkpFormErrors {
-	display: inline-block;
-	margin-right: 1rem;
 	font-size: 0.9rem;
-	line-height: 1.6em;
 }
 
 .pkpFormErrors__goTo {

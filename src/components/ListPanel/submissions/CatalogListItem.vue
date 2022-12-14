@@ -241,7 +241,8 @@ export default {
 }
 
 .listPanel__itemIdentity--catalog {
-	padding: 0.75rem 0.5rem 0.75rem 3.5rem;
+	padding: 0.75rem 0.5rem;
+	padding-inline-start: 3.5rem;
 }
 
 .listPanel__item--catalog__id {
@@ -260,10 +261,10 @@ export default {
 .listPanel__item--catalog__select {
 	align-self: stretch;
 	width: 6rem;
-	margin-left: 0;
+	margin-inline-start: 0;
 	background: transparent;
 	border: 1px solid transparent;
-	border-left: @grid-border;
+	border-inline-start: @grid-border;
 
 	&:focus {
 		outline: 0;
@@ -276,7 +277,7 @@ export default {
 }
 
 .listPanel__item--catalog__select--first {
-	margin-left: 0.5rem;
+	margin-inline-start: 0.5rem;
 }
 
 .listPanel__item--catalog {
@@ -299,5 +300,12 @@ export default {
 	right: 0;
 	background: #fff;
 	opacity: 0.5;
+}
+
+[dir='rtl'] {
+	.listPanel__item--catalog__id {
+		left: auto;
+		right: 1rem;
+	}
 }
 </style>

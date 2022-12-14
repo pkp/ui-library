@@ -168,6 +168,6 @@ export default {
 @import '../../../styles/_import';
 
 .pkpFormField--selectIssue__button {
-	margin-left: 0.5em;
+	margin-inline-start: 0.5em;
 }
 </style>

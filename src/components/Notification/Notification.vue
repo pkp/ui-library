@@ -68,7 +68,7 @@ export default {
 }
 
 .pkpNotification--canDismiss {
-	padding-right: 2.5rem;
+	padding-inline-end: 2.5rem;
 }
 
 .pkpNotification__closeButton {
@@ -91,6 +91,25 @@ export default {
 		outline: 0;
 		border-radius: @radius;
 		border: 1px solid @primary;
+	}
+}
+
+[dir='rtl'] {
+	.pkpNotification {
+		box-shadow: inset -0.25rem 0 0 @primary;
+	}
+
+	.pkpNotification--success {
+		box-shadow: inset -0.25rem 0 0 @yes;
+	}
+
+	.pkpNotification--warning {
+		box-shadow: inset -0.25rem 0 0 @no;
+	}
+
+	.pkpNotification__closeButton {
+		right: auto;
+		left: 0;
 	}
 }
 </style>

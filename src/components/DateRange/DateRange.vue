@@ -397,7 +397,7 @@ export default {
 }
 
 .pkpDateRange__current {
-	margin-left: 2rem;
+	margin-inline-start: 2rem;
 	padding: 0.5rem;
 	line-height: calc(2rem + 2px);
 	font-weight: @bold;
@@ -422,7 +422,7 @@ export default {
 		outline: 0;
 
 		.fa {
-			border-right-color: @primary;
+			border-inline-end-color: @primary;
 		}
 	}
 
@@ -432,7 +432,7 @@ export default {
 		left: 0;
 		bottom: 0;
 		width: 2rem;
-		border-right: @bg-border-light;
+		border-inline-end: @bg-border-light;
 		color: @primary;
 
 		&:before {
@@ -467,7 +467,7 @@ export default {
 .pkpDateRange__option {
 	display: inline-block;
 	padding: 0.25rem;
-	margin-left: -0.25rem;
+	margin-inline-start: -0.25rem;
 	border: none;
 	border-radius: @radius;
 	box-shadow: none;
@@ -497,7 +497,7 @@ export default {
 	.pkpButton {
 		font-size: @font-tiny;
 		line-height: 1.5em;
-		margin-left: 0.25em;
+		margin-inline-start: 0.25em;
 		padding: 0.25rem 0.5rem;
 	}
 }
@@ -531,5 +531,17 @@ export default {
 	padding-top: 0.5rem;
 	font-size: @font-tiny;
 	line-height: 1.5em;
+}
+
+[dir='rtl'] {
+	.pkpDateRange__button .fa {
+		left: auto;
+		right: 0;
+	}
+
+	.pkpDateRange__options {
+		left: auto;
+		right: 0;
+	}
 }
 </style>

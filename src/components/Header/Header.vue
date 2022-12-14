@@ -47,7 +47,7 @@ export default {
 	}
 
 	.pkpSpinner {
-		margin-left: 0.5rem;
+		margin-inline-start: 0.5rem;
 	}
 }
 
@@ -76,12 +76,12 @@ export default {
 		display: inline-block;
 
 		&:first-child {
-			margin-left: 1rem;
+			margin-inline-start: 1rem;
 		}
 	}
 
 	> * + * {
-		margin-left: 0.25rem;
+		margin-inline-start: 0.25rem;
 	}
 }
 
@@ -102,7 +102,7 @@ export default {
 		float: none;
 		display: flex;
 		align-items: center;
-		margin-left: auto;
+		margin-inline-start: auto;
 
 		> * {
 			white-space: nowrap;
@@ -112,17 +112,7 @@ export default {
 
 [dir='rtl'] {
 	.pkpHeader__actions {
-		> * {
-			&:first-child {
-				margin-left: 0;
-				margin-right: 1rem;
-			}
-		}
-
-		> * + * {
-			margin-left: 0;
-			margin-right: 0.25rem;
-		}
+		float: left;
 	}
 }
 </style>

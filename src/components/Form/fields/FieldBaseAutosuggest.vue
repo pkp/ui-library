@@ -367,12 +367,8 @@ export default {
 			if (!this.isLabelInline) {
 				return;
 			}
-			let value = this.$refs.heading.offsetWidth + 'px';
-			if (this.isRTL) {
-				this.$refs.values.style.paddingRight = value;
-			} else {
-				this.$refs.values.style.paddingLeft = value;
-			}
+			this.$refs.values.style.paddingInlineStart =
+				this.$refs.heading.offsetWidth + 'px';
 		},
 
 		/**
@@ -499,7 +495,7 @@ export default {
 .pkpAutosuggest__autosuggester {
 	margin-top: 0.125rem;
 	margin-bottom: 0.125rem;
-	margin-right: 0.25rem;
+	margin-inline-end: 0.25rem;
 }
 
 .pkpAutosuggest__selection {
@@ -685,13 +681,17 @@ export default {
 		z-index: 999;
 		font-size: @font-sml;
 	}
+}
 
-	// Right-to-left languages
-	&.pkpAutosuggest--rtl {
+[dir='rtl'] {
+	.pkpAutosuggest--inline {
 		.pkpFormField__heading {
 			left: auto;
-			right: 0.5rem;
+			right: 0;
 		}
+	}
+	.pkpAutosuggest__inputWrapper--focus {
+		box-shadow: inset -3px 0 0 @primary;
 	}
 }
 </style>

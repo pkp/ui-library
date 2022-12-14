@@ -188,7 +188,7 @@ export default {
 }
 
 .pkpFilter__inputTitle {
-	margin-right: 1rem;
+	margin-inline-end: 1rem;
 	color: @primary;
 	line-height: 1.5em;
 	cursor: pointer;

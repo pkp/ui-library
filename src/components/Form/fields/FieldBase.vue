@@ -292,4 +292,12 @@ export default {
 		}
 	}
 }
+
+[dir='rtl'] {
+	.pkpFormField__input {
+		&:focus {
+			box-shadow: inset -3px 0 0 @primary;
+		}
+	}
+}
 </style>

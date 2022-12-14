@@ -67,6 +67,9 @@ export default {
 		emailTemplates.push({
 			...emailTemplate,
 			key: 'ACCEPTED_CONDITIONAL',
+			name: {
+				en_US: 'Accepted With Conditions'
+			},
 			subject: {
 				en_US: 'Accepted With Conditions'
 			}
@@ -74,11 +77,13 @@ export default {
 		emailTemplates.push({
 			...emailTemplate,
 			key: 'ACCEPTED_EARLY_PUBLICATION',
+			name: {
+				en_US: 'Accepted for Early Publication'
+			},
 			subject: {
 				en_US: 'Accepted for Early Publication'
 			}
 		});
-
 		const recipientOptions = [
 			{
 				value: 2,

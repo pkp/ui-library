@@ -1,6 +1,63 @@
 <template>
 	<div class="component" :class="'component--' + this.name">
-		<h1 class="component__title">{{ name }}</h1>
+		<div class="component__titleWrapper">
+			<h1 class="component__title">{{ name }}</h1>
+			<div class="component__settings">
+				<div class="component__setting">
+					<button
+						class="component__settingOption"
+						:class="screen === 'auto' ? 'component__settingOption--on' : ''"
+						@click="screen = 'auto'"
+					>
+						<icon icon="arrows-h" />
+					</button>
+					<button
+						class="component__settingOption"
+						:class="screen === 'desktop' ? 'component__settingOption--on' : ''"
+						@click="screen = 'desktop'"
+					>
+						<icon icon="desktop" />
+					</button>
+					<button
+						class="component__settingOption"
+						:class="screen === 'laptop' ? 'component__settingOption--on' : ''"
+						@click="screen = 'laptop'"
+					>
+						<icon icon="laptop" />
+					</button>
+					<button
+						class="component__settingOption"
+						:class="screen === 'tablet' ? 'component__settingOption--on' : ''"
+						@click="screen = 'tablet'"
+					>
+						<icon icon="tablet" />
+					</button>
+					<button
+						class="component__settingOption"
+						:class="screen === 'mobile' ? 'component__settingOption--on' : ''"
+						@click="screen = 'mobile'"
+					>
+						<icon icon="mobile" />
+					</button>
+				</div>
+				<div class="component__setting">
+					<button
+						class="component__settingOption"
+						:class="dir === 'ltr' ? 'component__settingOption--on' : ''"
+						@click="dir = 'ltr'"
+					>
+						A →
+					</button>
+					<button
+						class="component__settingOption"
+						:class="dir === 'rtl' ? 'component__settingOption--on' : ''"
+						@click="dir = 'rtl'"
+					>
+						← A
+					</button>
+				</div>
+			</div>
+		</div>
 		<div
 			class="component__wrapper"
 			:class="{'component__wrapper--hasExamples': exampleRoutes.length > 1}"
@@ -22,8 +79,15 @@
 			<div class="component__details">
 				<div class="example">
 					<template v-if="currentExample">
-						<div class="component__example">
-							<div class="component__exampleWrapper">
+						<div
+							class="component__example"
+							:class="width !== 'auto' ? 'component__example--scroll' : ''"
+						>
+							<div
+								class="component__exampleWrapper"
+								:dir="dir"
+								:style="'width: ' + width"
+							>
 								<component :is="currentExample.component" />
 							</div>
 						</div>
@@ -54,6 +118,8 @@ export default {
 	},
 	data() {
 		return {
+			dir: 'ltr',
+			screen: 'auto',
 			examples: [],
 			implementations: {},
 			name: '',
@@ -107,6 +173,23 @@ export default {
 		 */
 		hasImplementations() {
 			return Object.keys(this.implementations).length;
+		},
+
+		/**
+		 * Width to display the example at
+		 */
+		width() {
+			switch (this.screen) {
+				case 'desktop':
+					return '1900px';
+				case 'laptop':
+					return '1400px';
+				case 'tablet':
+					return '900px';
+				case 'mobile':
+					return '480px';
+			}
+			return 'auto';
 		}
 	},
 	methods: {
@@ -152,11 +235,62 @@ export default {
 <style lang="less">
 @import '../styles/_import';
 
+.component__titleWrapper {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
 .component__title {
-	margin: 0;
-	padding: 1rem 0;
 	font-size: @font-lead;
 	line-height: 1.5em;
+}
+
+.component__settings {
+	display: flex;
+	gap: 0.5rem;
+	margin-inline-start: auto;
+	margin-inline-end: 1rem;
+}
+
+.component__setting {
+	background: @bg;
+	font-size: 0.85rem;
+	line-height: 1;
+}
+
+.component__settingOption {
+	padding: 0.25rem 0.5rem;
+	color: @text-light;
+	border: 1px solid transparent;
+	min-width: 2.25rem;
+
+	&:focus,
+	&:hover {
+		border-color: @primary;
+		background: @bg;
+		outline: 0;
+	}
+
+	&:first-child {
+		border-top-left-radius: @radius;
+		border-bottom-left-radius: @radius;
+	}
+
+	&:last-child {
+		border-top-right-radius: @radius;
+		border-bottom-right-radius: @radius;
+	}
+}
+
+.component__settingOption--on {
+	background: @primary;
+	color: @lift;
+
+	&:focus,
+	&:hover {
+		background: @primary;
+	}
 }
 
 .component__wrapper {
@@ -187,12 +321,14 @@ export default {
 	position: relative;
 }
 
+.component__example--scroll {
+	overflow: scroll;
+}
+
 .component__exampleWrapper {
 	margin-left: auto;
 	margin-right: auto;
-	max-width: 992px + 32;
 	background: @lift;
-	transition: max-width 0.2s;
 }
 
 .component__example__template {

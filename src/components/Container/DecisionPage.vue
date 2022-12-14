@@ -446,12 +446,12 @@ export default {
 .listPanel--promoteFiles__selectWrapper {
 	display: flex;
 	align-items: center;
-	margin-left: -1rem;
+	margin-inline-start: -1rem;
 }
 
 .listPanel--promoteFiles__selector {
 	width: 3rem;
-	padding-left: 1rem;
+	padding-inline-start: 1rem;
 }
 
 .decision__error {
@@ -483,13 +483,14 @@ export default {
 	align-items: center;
 
 	* + .pkpButton {
-		margin-left: 0.5rem;
+		margin-inline-start: 0.5rem;
 	}
 }
 
 .decision__skipStep {
 	margin-inline-end: auto;
 	font-size: @font-tiny;
+	order: -1;
 }
 
 .decision__footer--noSteps {

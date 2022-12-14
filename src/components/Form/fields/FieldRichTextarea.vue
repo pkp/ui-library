@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="pkpFormField pkpFormField--richTextarea"
-		:class="{'-isFocused': isFocused}"
+		:class="{'-isFocused': isFocused, 'pkpFormField--richTextarea--rtl': isRTL}"
 	>
 		<div class="pkpFormField__heading">
 			<form-field-label
@@ -209,9 +209,7 @@ export default {
 				remove_script_host: false,
 				convert_urls: true,
 				urlconverter_callback: urlConverterCallback,
-				directionality: $.pkp.app.rtlLocales.includes(this.localeKey)
-					? 'rtl'
-					: null,
+				directionality: this.isRTL ? 'rtl' : 'ltr',
 				menubar: false,
 				statusbar: false,
 				entity_encoding: 'raw',
@@ -247,6 +245,12 @@ export default {
 				},
 				...this.init
 			};
+		},
+		/**
+		 * Is this field for language in a RTL language?
+		 */
+		isRTL() {
+			return $.pkp.app.rtlLocales.includes(this.localeKey);
 		}
 	},
 	methods: {
@@ -413,6 +417,16 @@ export default {
 	// Visual indicator already exists around whole component
 	.pkpFormField--richTextarea__input {
 		outline: none;
+	}
+}
+
+// Align the TinyMCE toolbar correctly when it is used for a
+// RTL language. The `directionality` config property is passed
+// to TinyMCE, but it doesn't seem to effect the toolbar.
+.pkpFormField--richTextarea--rtl {
+	// Override TinyMCE style
+	.tox.tox.tox {
+		direction: rtl;
 	}
 }
 </style>

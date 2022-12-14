@@ -243,8 +243,7 @@ export default {
 }
 
 .pkpStats__content {
-	margin-left: 0;
-	transition: margin-left 0.2s;
+	margin-inline-start: 0;
 }
 
 .pkpStats__sidebar {
@@ -261,7 +260,7 @@ export default {
 
 	.pkpHeader,
 	.pkpFilter {
-		margin-left: -1rem;
+		margin-inline-start: -1rem;
 	}
 
 	.pkpStats__filterSet:first-child .pkpHeader {
@@ -276,7 +275,7 @@ export default {
 	width: 25%;
 	opacity: 1;
 	transition: opacity 0.2s ease-in-out 0.2s, left 0s ease-in-out 0.1s,
-		width 0.2s ease-in-out 0s;
+		right 0s ease-in-out 0.1s, width 0.2s ease-in-out 0s;
 
 	+ .pkpStats__content {
 		width: 75%;
@@ -284,11 +283,15 @@ export default {
 }
 
 .pkpStats__sidebar .pkpHeader {
-	padding: 1.5rem 0.5rem 0rem 1rem;
+	padding-top: 1.5rem;
+	padding-bottom: 0;
+	padding-inline-start: 1rem;
+	padding-inline-end: 0.5rem;
 }
 
 .pkpStats__sidebar > .pkpHeader:first-child {
-	padding: 0.5rem 0.5rem 0.5rem 1rem;
+	padding: 0.5rem;
+	padding-inline-start: 1rem;
 }
 
 .pkpStats__sidebar .pkpHeader__title > h1,
@@ -325,13 +328,13 @@ export default {
 	display: inline-block;
 	float: none;
 	margin-top: 0;
-	margin-left: 1rem;
+	margin-inline-start: 1rem;
 	max-width: 20em;
 
 	.pkpSearch__input {
 		font-size: @font-tiny;
 		line-height: 2.5em;
-		padding-left: 2.5rem;
+		padding-inline-start: 2.5rem;
 	}
 }
 
@@ -398,7 +401,7 @@ export default {
 			display: inline-block;
 			width: 0.75em;
 			height: 0.75em;
-			margin-right: 0.25em;
+			margin-inline-end: 0.25em;
 			border: 1px solid #fff;
 			border-radius: 50%;
 		}
@@ -474,5 +477,43 @@ export default {
 
 .pkpStats__table .pkpTable.-isLoading tbody {
 	opacity: 0.5;
+}
+
+[dir='rtl'] {
+	.pkpStats__sidebar {
+		left: auto;
+		right: -9999px;
+
+		+ .pkpStats__content {
+			float: left;
+		}
+	}
+
+	.pkpStats__sidebar.-isVisible {
+		float: right;
+		left: auto;
+		right: 0;
+	}
+
+	.pkpStats__graphSelector {
+		border-radius: 50%;
+
+		&:first-child {
+			left: auto;
+			right: 1px;
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+
+		&:last-child {
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+	}
+
+	.pkpStats__loadingCover {
+		left: auto;
+		right: 0;
+	}
 }
 </style>

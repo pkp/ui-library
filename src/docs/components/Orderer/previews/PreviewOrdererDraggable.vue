@@ -31,7 +31,7 @@ export default {
 
 .viewOrderer--draggable {
 	.listItem {
-		padding-left: 4em;
+		padding-inline-start: 4em;
 	}
 }
 </style>

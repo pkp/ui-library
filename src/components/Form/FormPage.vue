@@ -224,6 +224,9 @@ export default {
 @import '../../styles/_import';
 
 .pkpFormPage__footer {
+	display: flex;
+	justify-content: flex-end;
+	gap: 0.5rem;
 	border-top: @bg-border-light;
 	padding: 1rem;
 
@@ -233,8 +236,13 @@ export default {
 	}
 }
 
+.pkpFormPage__buttons {
+	display: flex;
+	justify-content: space-between;
+	gap: 0.5rem;
+}
+
 .pkpFormPage__status {
-	margin-right: 0.5rem;
 	font-size: @font-tiny;
 	transition: all 0.3s;
 	white-space: nowrap;
@@ -245,7 +253,7 @@ export default {
 	}
 
 	.pkpSpinner {
-		margin-right: 0.25rem;
+		margin-inline-end: 0.25rem;
 	}
 }
 

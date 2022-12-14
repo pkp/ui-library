@@ -56,7 +56,7 @@ export default {
 @import '../../styles/_import';
 
 .pkpIcon--inline {
-	margin-right: 0.25em;
+	margin-inline-end: 0.25em;
 }
 
 /**
@@ -89,13 +89,6 @@ export default {
 
 	.pkpIcon--orcid__fill {
 		fill: #ffffff;
-	}
-}
-
-[dir='rtl'] {
-	.pkpIcon--inline {
-		margin-right: 0;
-		margin-left: 0.25em;
 	}
 }
 </style>

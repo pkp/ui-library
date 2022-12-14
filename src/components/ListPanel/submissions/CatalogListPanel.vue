@@ -688,7 +688,7 @@ export default {
 		right: 8rem;
 		width: 8rem;
 		height: 100%;
-		border-left: @grid-border;
+		border-inline-start: @grid-border;
 		line-height: 1rem;
 
 		+ .listPanel--catalog__columnLabel {
@@ -719,6 +719,20 @@ export default {
 
 	.listPanel__itemSummary {
 		margin-right: 8rem;
+	}
+}
+
+[dir='rtl'] {
+	.listPanel--catalog__columnLabels {
+		.listPanel--catalog__columnLabel {
+			right: auto;
+			left: 8rem;
+
+			+ .listPanel--catalog__columnLabel {
+				right: auto;
+				left: 0;
+			}
+		}
 	}
 }
 </style>

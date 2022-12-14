@@ -874,7 +874,7 @@ export default {
 
 .listPanel__itemIdentity--submission,
 .listPanel__itemExpanded--submission {
-	padding-left: 2.5rem;
+	padding-inline-start: 2.5rem;
 }
 
 .listPanel__item--submission__id {
@@ -890,7 +890,7 @@ export default {
 .listPanel__item--submission__author,
 .listPanel__item--submission__notice {
 	display: block;
-	padding-right: 2em;
+	padding-inline-end: 2em;
 }
 
 .listPanel__item--submission__author {
@@ -912,7 +912,7 @@ export default {
 
 .listPanel__item--submission__notice {
 	.-linkButton:not(:last-child) {
-		margin-right: 0.5em;
+		margin-inline-end: 0.5em;
 	}
 }
 
@@ -922,19 +922,19 @@ export default {
 	line-height: 1.5em;
 
 	> * {
-		margin-right: 1em;
+		margin-inline-end: 1em;
 	}
 
 	.fa {
-		margin-right: 0.25em;
+		margin-inline-end: 0.25em;
 		font-size: @font-sml;
 		color: @text-light-rgba;
 	}
 }
 
 .listPanel__item--submission__stage {
-	margin-left: 0.5rem;
-	margin-right: 0.25rem;
+	margin-inline-start: 0.5rem;
+	margin-inline-end: 0.25rem;
 }
 
 .listPanel__itemExpanded--submission {
@@ -948,7 +948,7 @@ export default {
 }
 
 .listPanel__item--submission__dueDate {
-	margin-right: 1rem;
+	margin-inline-end: 1rem;
 }
 
 .listPanel__item--submission__reviewComplete .fa {
@@ -956,16 +956,9 @@ export default {
 }
 
 [dir='rtl'] {
-	.listPanel__itemIdentity--submission {
-		padding-left: 0rem;
-		padding-right: 2.5rem;
-	}
-
 	.listPanel__item--submission__id {
-		position: absolute;
 		left: auto;
 		right: 0;
-		text-align: left;
 	}
 }
 </style>

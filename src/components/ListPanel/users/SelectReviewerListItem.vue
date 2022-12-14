@@ -444,12 +444,12 @@ export default {
 @import '../../../styles/_import';
 
 .listPanel__item--reviewer__active {
-	margin-right: 0.25rem;
+	margin-inline-end: 0.25rem;
 	font-weight: @normal;
 }
 
 .listPanel__item--reviewer__rating {
-	margin-left: 0.25rem;
+	margin-inline-start: 0.25rem;
 	color: @star-off;
 }
 
@@ -458,7 +458,7 @@ export default {
 }
 
 .listPanel__item--reviewer__orcid {
-	margin-left: 0.5rem;
+	margin-inline-start: 0.5rem;
 	font-size: @font-tiny;
 	text-decoration: none;
 }
@@ -466,7 +466,7 @@ export default {
 .listPanel__item--reviewer__brief > * {
 	display: inline-block;
 	margin-top: 0.5em;
-	margin-right: 1em;
+	margin-inline-end: 1em;
 	font-size: @font-tiny;
 }
 
