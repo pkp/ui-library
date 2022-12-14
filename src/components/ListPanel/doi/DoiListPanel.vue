@@ -181,6 +181,7 @@
 							:enabled-doi-types="enabledDoiTypes"
 							:version-dois="versionDois"
 							:registration-agency-info="registrationAgencyInfo"
+							:registration-agency-names="registrationAgencyNames"
 							@select-item="selectItem"
 							@expand-item="expandItem"
 							@deposit-triggered="openBulkDeposit"
@@ -356,6 +357,12 @@ export default {
 		registrationAgencyInfo: {
 			type: Object,
 			required: true,
+		},
+		registrationAgencyNames: {
+			type: Object,
+			default() {
+				return {};
+			},
 		},
 		/**
 		 * Brings in app-specific publication statuses for use with filters.
@@ -933,6 +940,8 @@ export default {
 					doiObject === null
 						? null
 						: doiObject[this.registrationAgencyInfo['registeredMessageKey']],
+				registrationAgency:
+					doiObject === null ? null : doiObject.registrationAgency,
 				...props,
 			};
 		},
