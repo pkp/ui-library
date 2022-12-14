@@ -130,9 +130,11 @@
 				<span class="doiListItem__depositorDescription" v-if="item.isPublished">
 					{{
 						isDeposited
-							? __('manager.dois.registration.submittedDescription', {
-									registrationAgency: registrationAgencyInfo['displayName'],
-							  })
+							? itemRegistrationAgency === null
+								? __('manager.dois.registration.manuallyMarkedRegistered')
+								: __('manager.dois.registration.submittedDescription', {
+										registrationAgency: itemRegistrationAgencyName,
+								  })
 							: __('manager.dois.registration.notSubmittedDescription', {
 									registrationAgency: registrationAgencyInfo['displayName'],
 							  })
@@ -302,6 +304,7 @@ export default {
 		 * @property {string} type - Item type for internal use
 		 * @property {string} uid - Unique identifier for item in list
 		 * @property {string} updateWithNewDoiEndpoint - API endpoint to add new DOI to item if none exists
+		 * @property {string} registrationAgency - Name of registration agency if registered, null if marked manually registered
 		 */
 		/**
 		 * Details about top-level publication object and its DOIs
@@ -338,6 +341,12 @@ export default {
 		registrationAgencyInfo: {
 			type: Object,
 			required: true,
+		},
+		registrationAgencyNames: {
+			type: Object,
+			default() {
+				return {};
+			},
 		},
 	},
 	data() {
@@ -429,6 +438,26 @@ export default {
 			return this.currentVersionDoiObjects.length !== 0
 				? this.currentVersionDoiObjects[0]['depositStatus']
 				: pkp.const.DOI_STATUS_UNREGISTERED;
+		},
+		/**
+		 * Returns a machine-readable key indicating how this DOI was registered, if at all
+		 * @return {string|null}
+		 */
+		itemRegistrationAgency: function () {
+			return this.item.doiObjects.length !== 0
+				? this.item.doiObjects[0]['registrationAgency']
+				: null;
+		},
+		/**
+		 * Returns the localized name of a given registration agency, falling back to the machine-readable key
+		 * @return {string}
+		 */
+		itemRegistrationAgencyName: function () {
+			const key = this.itemRegistrationAgency;
+
+			return this.registrationAgencyNames.hasOwnProperty(key)
+				? this.registrationAgencyNames[key]
+				: `[${key}]`;
 		},
 		/**
 		 * Whether item has the DOI_STATUS_ERROR status
