@@ -53,6 +53,10 @@ export default {
 	padding: 0;
 }
 
+.panelSection__content {
+	position: relative;
+}
+
 @media (min-width: 1200px) {
 	.panel--wide {
 		.panelSection {

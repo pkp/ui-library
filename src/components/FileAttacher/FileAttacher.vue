@@ -94,15 +94,6 @@ export default {
 }
 
 .fileAttacher__footer {
-	display: flex;
 	padding-top: 1rem;
-
-	.pkpButton + .pkpButton {
-		margin-left: 0.25rem;
-	}
-}
-
-.fileAttacher__back {
-	margin-right: auto;
 }
 </style>

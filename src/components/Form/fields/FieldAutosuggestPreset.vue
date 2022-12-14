@@ -37,6 +37,27 @@ export default {
 				return valueMatch || option.label.match(regex);
 			});
 		}
+	},
+	watch: {
+		/**
+		 * Update the selected property when the value
+		 * is changed outside of the field.
+		 */
+		value(newVal, oldVal) {
+			if (!newVal || newVal === oldVal) {
+				return;
+			}
+			// Check for duplicate object and array values
+			if (JSON.stringify(newVal) === JSON.stringify(oldVal)) {
+				return;
+			}
+			const localizedNewValue = this.isMultilingual
+				? newVal[this.localeKey]
+				: newVal;
+			this.setSelected(
+				this.options.filter(s => localizedNewValue.includes(s.value))
+			);
+		}
 	}
 };
 </script>

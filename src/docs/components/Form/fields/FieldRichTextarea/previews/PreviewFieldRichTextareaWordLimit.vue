@@ -19,6 +19,7 @@ export default {
 				...fieldBase,
 				...field,
 				wordLimit: 200,
+				wordCountLabel: 'Word Count: {$count}/{$limit}',
 				isMultilingual: false
 			}
 		};

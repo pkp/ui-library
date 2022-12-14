@@ -21,27 +21,36 @@ export default {
 				return;
 			}
 			if (!this.suggestionsLoaded) {
-				const self = this;
-				$.ajax({
-					url: this.apiUrl,
-					type: 'GET',
-					data: this.isMultilingual ? {locale: this.localeKey} : {},
-					error(r) {
-						self.ajaxErrorCallback(r);
-					},
-					success(r) {
-						self.allSuggestions = r.map(v => {
-							return {
-								value: v,
-								label: v
-							};
-						});
-						self.setSuggestions.apply(self);
-						self.suggestionsLoaded = true;
-					}
-				});
+				this.loadSuggestions(this.setSuggestions);
 			}
 			this.setSuggestions();
+		},
+
+		/**
+		 * Load suggestions from the API
+		 */
+		loadSuggestions(successCallback) {
+			$.ajax({
+				url: this.apiUrl,
+				type: 'GET',
+				context: this,
+				data: this.isMultilingual ? {locale: this.localeKey} : {},
+				error(r) {
+					this.ajaxErrorCallback(r);
+				},
+				success(r) {
+					this.allSuggestions = r.map(v => {
+						return {
+							value: v,
+							label: v
+						};
+					});
+					this.suggestionsLoaded = true;
+					if (successCallback) {
+						successCallback.apply(this);
+					}
+				}
+			});
 		},
 
 		/**
@@ -87,6 +96,34 @@ export default {
 				});
 			}
 		}, 250)
+	},
+	watch: {
+		/**
+		 * Update the selected property when the value
+		 * is changed outside of the field.
+		 */
+		value(newVal, oldVal) {
+			if (!newVal || newVal === oldVal) {
+				return;
+			}
+			// Check for duplicate object and array values
+			if (JSON.stringify(newVal) === JSON.stringify(oldVal)) {
+				return;
+			}
+			this.loadSuggestions(() => {
+				const localizedValue = this.isMultilingual
+					? newVal[this.localeKey]
+					: newVal;
+				// Empty values will come back in the API as a string
+				if (!Array.isArray(localizedValue)) {
+					this.setSelected([]);
+					return;
+				}
+				this.setSelected(
+					this.allSuggestions.filter(s => localizedValue.includes(s.value))
+				);
+			});
+		}
 	}
 };
 </script>

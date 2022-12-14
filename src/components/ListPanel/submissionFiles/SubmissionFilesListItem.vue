@@ -19,11 +19,11 @@
 				</div>
 				<div class="listPanel__itemActions">
 					<badge
-						v-if="item.genre"
+						v-if="item.genreId"
 						:is-primary="isPrimaryGenre"
 						class="listPanel--submissionFiles__itemGenre"
 					>
-						{{ item.genre.name }}
+						{{ localize(item.genreName) }}
 					</badge>
 					<pkp-button
 						:id="editId"
@@ -41,7 +41,7 @@
 					</pkp-button>
 				</div>
 			</div>
-			<div v-if="!item.genre" class="listPanel--submissionFiles__setGenre">
+			<div v-if="!item.genreId" class="listPanel--submissionFiles__setGenre">
 				<span role="alert">
 					<icon icon="exclamation-triangle" :inline="true" />
 					<span
@@ -155,9 +155,7 @@ export default {
 		 * Is this a primary file
 		 */
 		isPrimaryGenre() {
-			return (
-				this.genre && !this.genre.isDependent && !this.genre.isSupplementary
-			);
+			return !this.item.genreIsDependent && !this.item.genreIsSupplementary;
 		},
 
 		/**
@@ -213,12 +211,13 @@ export default {
 			var self = this;
 			$.ajax({
 				url: this.apiUrl + '/' + this.item.id + '?stageId=' + this.stageId,
-				type: 'PUT',
+				type: 'POST',
 				data: {
 					genreId: genreId
 				},
 				headers: {
-					'X-Csrf-Token': pkp.currentUser.csrfToken
+					'X-Csrf-Token': pkp.currentUser.csrfToken,
+					'X-Http-Method-Override': 'PUT'
 				},
 				error: this.ajaxErrorCallback,
 				success(r) {
@@ -251,7 +250,7 @@ export default {
 
 .listPanel__item--submissionFile__link {
 	display: block;
-	margin-left: -0.25rem;
+	margin-inline-start: -0.25rem;
 	padding: 0.25rem;
 	border: 1px solid transparent;
 	border-radius: @radius;
@@ -276,14 +275,14 @@ export default {
 }
 
 .listPanel--submissionFiles__setGenreButton {
-	margin-left: 0.5rem;
+	margin-inline-start: 0.5rem;
 }
 
 .listPanel--submissionFiles__itemGenre {
-	margin-right: 0.25rem;
+	margin-inline-end: 0.25rem;
 }
 
 .listPanel--submissionFiles__genreSpinner {
-	margin-left: 0.5rem;
+	margin-inline-start: 0.5rem;
 }
 </style>

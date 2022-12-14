@@ -107,7 +107,7 @@ export default {
 			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
 		}
 	},
-	mounted() {
+	created() {
 		/**
 		 * Open tabs if the URL contains an anchor (#tabname)
 		 */
@@ -115,7 +115,8 @@ export default {
 			this.openUrlTab();
 		}
 		window.onhashchange = this.openUrlTab;
-
+	},
+	mounted() {
 		/**
 		 * Respond to notify events
 		 */
@@ -209,7 +210,7 @@ export default {
 
 .app__headerActions {
 	display: flex;
-	margin-left: auto;
+	margin-inline-start: auto;
 	white-space: nowrap;
 
 	.pkpDropdown__content {
@@ -455,15 +456,19 @@ a.app__navItem--isCurrent {
 	color: @text-light;
 }
 
-.app__page {
-	margin-left: auto;
-	margin-right: auto;
-}
-
 .app__pageHeading {
 	margin: 0 0 1rem;
 	font-size: @font-lead;
 	line-height: @line-lead;
+}
+
+.app__pageHeading--center {
+	text-align: center;
+}
+
+.app__pageHeading--spacious {
+	margin-top: 2rem;
+	margin-bottom: 2rem;
 }
 
 .app__contentPanel {
@@ -472,6 +477,15 @@ a.app__navItem--isCurrent {
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 	border-radius: @radius;
 	font-size: @font-sml;
+	line-height: @line-sml;
+
+	p:first-child {
+		margin-top: 0;
+	}
+
+	p:last-child {
+		margin-bottom: 0;
+	}
 }
 
 // Tasks dropdown
@@ -546,9 +560,6 @@ a.app__navItem--isCurrent {
 
 [dir='rtl'] {
 	.app__headerActions {
-		margin-left: 0;
-		margin-right: auto;
-
 		.pkpDropdown__content {
 			right: auto;
 			left: 0;

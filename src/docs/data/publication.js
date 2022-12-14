@@ -14,6 +14,7 @@ export default {
 	authors: [...authors],
 	authorsString: 'Daniel Barnes, Dr. L. P. Ipsum',
 	authorsStringShort: 'Barnes, et al',
+	categoryIds: [2, 3],
 	citations: {
 		fr_CA: '',
 		en_US: ''

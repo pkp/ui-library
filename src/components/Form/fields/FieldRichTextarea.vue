@@ -169,6 +169,7 @@ export default {
 			},
 			set: function(newVal) {
 				this.$emit('change', this.name, 'value', newVal, this.localeKey);
+				debounce(this.setWordCount, 250)();
 			}
 		},
 		/**
@@ -292,6 +293,9 @@ export default {
 			debounce(this.setWordCount, 250)();
 			this.$emit('change', this.name, 'value', newVal, this.localeKey);
 		}
+	},
+	mounted() {
+		debounce(this.setWordCount, 1000)();
 	}
 };
 </script>

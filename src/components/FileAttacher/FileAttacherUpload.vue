@@ -56,15 +56,13 @@
 				@updated:files="updateFiles"
 			/>
 		</div>
-		<div class="fileAttacher__footer">
-			<pkp-button
-				class="fileAttacher__back"
-				:is-link="true"
-				@click="$emit('cancel')"
-			>
-				<icon icon="long-arrow-left" :inline="true" />
-				{{ backLabel }}
-			</pkp-button>
+		<button-row class="fileAttacher__footer">
+			<template slot="end">
+				<pkp-button :is-link="true" @click="$emit('cancel')">
+					<icon icon="long-arrow-left" :inline="true" />
+					{{ backLabel }}
+				</pkp-button>
+			</template>
 			<pkp-button @click="selectFile">
 				{{ addFilesLabel }}
 			</pkp-button>
@@ -75,11 +73,12 @@
 			>
 				{{ attachFilesLabel }}
 			</pkp-button>
-		</div>
+		</button-row>
 	</div>
 </template>
 
 <script>
+import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
 import File from '@/components/File/File.vue';
 import FileUploader from '@/components/FileUploader/FileUploader.vue';
 import FileUploadProgress from '@/components/FileUploadProgress/FileUploadProgress.vue';
@@ -87,6 +86,7 @@ import FileUploadProgress from '@/components/FileUploadProgress/FileUploadProgre
 export default {
 	name: 'FileAttacherUpload',
 	components: {
+		ButtonRow,
 		File,
 		FileUploader,
 		FileUploadProgress

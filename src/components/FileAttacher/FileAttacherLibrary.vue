@@ -23,26 +23,25 @@
 				<input type="checkbox" :value="file.id" v-model="selected" />
 			</select-submission-file-list-item>
 		</div>
-		<div class="fileAttacher__footer">
-			<pkp-button
-				class="fileAttacher__back"
-				:is-link="true"
-				@click="$emit('cancel')"
-			>
-				<icon icon="long-arrow-left" :inline="true" />
-				{{ backLabel }}
-			</pkp-button>
+		<button-row class="fileAttacher__footer">
+			<template slot="end">
+				<pkp-button :is-link="true" @click="$emit('cancel')">
+					<icon icon="long-arrow-left" :inline="true" />
+					{{ backLabel }}
+				</pkp-button>
+			</template>
 			<pkp-button
 				:isDisabled="!selected.length"
 				@click="$emit('selected:files', selectedFiles)"
 			>
 				{{ attachSelectedLabel }}
 			</pkp-button>
-		</div>
+		</button-row>
 	</div>
 </template>
 
 <script>
+import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
 import SelectSubmissionFileListItem from '@/components/ListPanel/submissionFiles/SelectSubmissionFileListItem.vue';
 import ajaxError from '@/mixins/ajaxError';
 
@@ -50,6 +49,7 @@ export default {
 	name: 'FileAttacherLibrary',
 	mixins: [ajaxError],
 	components: {
+		ButtonRow,
 		SelectSubmissionFileListItem
 	},
 	props: {

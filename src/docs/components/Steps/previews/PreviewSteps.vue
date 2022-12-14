@@ -1,10 +1,11 @@
 <template>
-	<div class="previewSteps">
+	<div class="previewSteps" ref="wrapper">
 		<steps
 			:startedSteps="startedSteps"
 			:current="currentStep"
 			label="Demonstration of steps component"
 			progressLabel="{$current}/{$total} steps"
+			:scrollTo="$refs.wrapper"
 			showStepsLabel="Show/hide all steps"
 			@step:open="openStep"
 		>
@@ -43,8 +44,8 @@
 			</step>
 		</steps>
 		<div class="previewSteps__buttons">
-			<pkp-button @click="previous">Previous</pkp-button>
-			<pkp-button @click="next">Next</pkp-button>
+			<pkp-button @click="previousStep">Previous</pkp-button>
+			<pkp-button @click="nextStep">Next</pkp-button>
 		</div>
 	</div>
 </template>
@@ -54,48 +55,53 @@ export default {
 	data() {
 		return {
 			currentStep: 'first',
-			startedSteps: ['first']
+			startedSteps: ['first'],
+			steps: []
 		};
 	},
+	computed: {
+		/**
+		 * The array index of the current step
+		 */
+		currentStepIndex() {
+			return this.steps.findIndex(step => step.id === this.currentStep);
+		}
+	},
 	methods: {
+		/**
+		 * Open a step
+		 */
 		openStep(step) {
 			this.currentStep = step;
 			if (!this.startedSteps.includes(step)) {
 				this.startedSteps.push(step);
 			}
 		},
-		next() {
-			switch (this.currentStep) {
-				case 'first':
-					this.openStep('second');
-					break;
-				case 'second':
-					this.openStep('third');
-					break;
-				case 'third':
-					this.openStep('fourth');
-					break;
-				case 'fourth':
-					this.openStep('fifth');
-					break;
-			}
+
+		/**
+		 * Go to the next step
+		 */
+		nextStep() {
+			this.openStep(this.steps[1 + this.currentStepIndex].id);
 		},
-		previous() {
-			switch (this.currentStep) {
-				case 'second':
-					this.openStep('first');
-					break;
-				case 'third':
-					this.openStep('second');
-					break;
-				case 'fourth':
-					this.openStep('third');
-					break;
-				case 'fifth':
-					this.openStep('fourth');
-					break;
+
+		/**
+		 * Go to the previous step
+		 */
+		previousStep() {
+			const previousIndex = this.currentStepIndex - 1;
+			if (previousIndex >= 0) {
+				this.openStep(this.steps[previousIndex].id);
 			}
 		}
+	},
+	mounted() {
+		/**
+		 * Get an array of all the step components
+		 */
+		this.steps = this.$children
+			.find(child => child.$options._componentTag === 'steps')
+			.$children.filter(child => child.$options._componentTag === 'step');
 	}
 };
 </script>

@@ -47,7 +47,11 @@
 			:uploadProgressLabel="uploadProgressLabel"
 			@updated:files="setFiles"
 		/>
-		<modal :closeLabel="__('common.close')" name="form" :title="editingLabel">
+		<modal
+			:closeLabel="__('common.close')"
+			:name="formModal"
+			:title="editingLabel"
+		>
 			<pkp-form v-bind="activeForm" @set="setForm" @success="formSuccess" />
 		</modal>
 	</div>
@@ -157,6 +161,11 @@ export default {
 			status: ''
 		};
 	},
+	computed: {
+		formModal() {
+			return this.id + 'form';
+		}
+	},
 	methods: {
 		/**
 		 * Cancel an upload in progress or completed but not yet
@@ -189,7 +198,7 @@ export default {
 			this.editingLabel = this.__('common.editItem', {
 				name: this.localize(item.name)
 			});
-			this.$modal.show('form');
+			this.$modal.show(this.formModal);
 		},
 
 		/**
@@ -199,7 +208,7 @@ export default {
 		 */
 		formSuccess(item) {
 			this.updateItem(item);
-			this.$modal.hide('form');
+			this.$modal.hide(this.formModal);
 			this.activeForm = {};
 			this.$el.querySelector('#edit-' + item.id).focus();
 		},
@@ -226,20 +235,20 @@ export default {
 						label: this.__('common.yes'),
 						isPrimary: true,
 						callback: () => {
-							var self = this;
 							$.ajax({
 								url: this.apiUrl + '/' + item.id + '?stageId=' + this.stageId,
 								type: 'POST',
+								context: this,
 								headers: {
 									'X-Csrf-Token': pkp.currentUser.csrfToken,
 									'X-Http-Method-Override': 'DELETE'
 								},
-								error: self.ajaxErrorCallback,
+								error: this.ajaxErrorCallback,
 								success(r) {
-									const items = self.items.filter(item => item.id !== r.id);
-									self.$emit('set', self.id, {items});
-									self.$modal.hide('remove');
-									self.$refs.addFileButton.$el.focus();
+									const items = this.items.filter(item => item.id !== r.id);
+									this.$emit('set', this.id, {items});
+									this.$modal.hide('remove');
+									this.$refs.addFileButton.$el.focus();
 								}
 							});
 						}

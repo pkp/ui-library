@@ -439,7 +439,7 @@ export default {
 }
 
 .pkpStats__graphSelector--timelineInterval {
-	margin-left: auto;
+	margin-inline-start: auto;
 }
 
 // Fade the graph and table when loading

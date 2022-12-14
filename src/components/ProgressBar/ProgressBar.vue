@@ -66,7 +66,6 @@ export default {
 .progressBar__progress {
 	position: absolute;
 	top: 0;
-	left: 0;
 	display: block;
 	height: 0.5rem;
 	background: @primary;
