@@ -736,6 +736,10 @@ export default {
 	}
 }
 
+.pkpWorkflow__moreActions .pkpDropdown__content {
+	right: 0.25rem;
+}
+
 // Integrate the grids in the publication tab
 .pkpWorkflow__contributors,
 #representations-grid {
