@@ -101,7 +101,7 @@
 							:stage="isArchived ? '' : currentStage"
 							:isPrimary="isScheduled"
 							:isSuccess="isPublished"
-							:isWarnable="isDeclined"
+							:isWarnable="isDeclinedOrCanceled"
 							@click="filterByStage(activeStage.id)"
 						>
 							{{ currentStageLabel }}
@@ -280,7 +280,8 @@ export default {
 					pkp.const.ROLE_ID_MANAGER,
 					pkp.const.ROLE_ID_SITE_ADMIN
 				]) &&
-				this.item.status === pkp.const.STATUS_DECLINED
+				(this.item.status === pkp.const.STATUS_DECLINED ||
+					this.item.status === pkp.const.STATUS_CANCELED)
 			) {
 				return true;
 			} else if (
@@ -476,17 +477,21 @@ export default {
 			return (
 				this.item.status === pkp.const.STATUS_SCHEDULED ||
 				this.item.status === pkp.const.STATUS_PUBLISHED ||
+				this.item.status === pkp.const.STATUS_CANCELED ||
 				this.item.status === pkp.const.STATUS_DECLINED
 			);
 		},
 
 		/**
-		 * Has this submission been declined?
+		 * Has this submission been declined or canceled?
 		 *
 		 * @return {Boolean}
 		 */
-		isDeclined() {
-			return this.item.status === pkp.const.STATUS_DECLINED;
+		isDeclinedOrCanceled() {
+			return (
+				this.item.status === pkp.const.STATUS_CANCELED ||
+				this.item.status === pkp.const.STATUS_DECLINED
+			);
 		},
 
 		/**
