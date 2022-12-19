@@ -382,36 +382,6 @@
         ]
     },
     {
-        "_href": "http://localhost:8000/pu/api/v1/mailables/PASSWORD_RESET",
-        "dataDescriptions": {
-            "password": "New random user password",
-            "recipientName": "The full name of the recipient or all recipients",
-            "recipientUsername": "The username of the recipient or all recipients",
-            "siteContactEmail": "The email of the website's primary contact",
-            "siteContactName": "The full name of the website's primary contact",
-            "siteSignature": "The website's email signature for automated emails",
-            "siteTitle": "Name of the website when more than one journal is hosted"
-        },
-        "description": "This email is sent to a registered user when they have successfully reset their password following the process described in the PASSWORD_RESET_CONFIRM email.",
-        "emailTemplateKey": "PASSWORD_RESET",
-        "fromRoleIds": [
-            -1
-        ],
-        "groupIds": [
-            "other"
-        ],
-        "name": "Password Reset",
-        "supportsTemplates": false,
-        "toRoleIds": [
-            17,
-            4097,
-            65536,
-            1048576,
-            4096,
-            2097152
-        ]
-    },
-    {
         "_href": "http://localhost:8000/pu/api/v1/mailables/PASSWORD_RESET_CONFIRM",
         "dataDescriptions": {
             "recipientName": "The full name of the recipient or all recipients",
