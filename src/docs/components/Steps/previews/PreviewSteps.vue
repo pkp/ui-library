@@ -56,7 +56,7 @@ export default {
 		return {
 			currentStep: 'first',
 			startedSteps: ['first'],
-			steps: []
+			steps: [],
 		};
 	},
 	computed: {
@@ -64,8 +64,8 @@ export default {
 		 * The array index of the current step
 		 */
 		currentStepIndex() {
-			return this.steps.findIndex(step => step.id === this.currentStep);
-		}
+			return this.steps.findIndex((step) => step.id === this.currentStep);
+		},
 	},
 	methods: {
 		/**
@@ -93,16 +93,16 @@ export default {
 			if (previousIndex >= 0) {
 				this.openStep(this.steps[previousIndex].id);
 			}
-		}
+		},
 	},
 	mounted() {
 		/**
 		 * Get an array of all the step components
 		 */
 		this.steps = this.$children
-			.find(child => child.$options._componentTag === 'steps')
-			.$children.filter(child => child.$options._componentTag === 'step');
-	}
+			.find((child) => child.$options._componentTag === 'steps')
+			.$children.filter((child) => child.$options._componentTag === 'step');
+	},
 };
 </script>
 

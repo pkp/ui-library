@@ -10,22 +10,22 @@ export default {
 	options: [
 		{
 			value: 'enable',
-			label: 'Enable keyword metadata'
-		}
+			label: 'Enable keyword metadata',
+		},
 	],
 	submissionOptions: [
 		{
 			value: 'enable',
-			label: 'Do not request keywords from the author during submission.'
+			label: 'Do not request keywords from the author during submission.',
 		},
 		{
 			value: 'request',
-			label: 'Ask the author to suggest keywords during submission.'
+			label: 'Ask the author to suggest keywords during submission.',
 		},
 		{
 			value: 'require',
 			label:
-				'Require the author to suggest keywords before accepting their submission.'
-		}
-	]
+				'Require the author to suggest keywords before accepting their submission.',
+		},
+	],
 };

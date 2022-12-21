@@ -9,7 +9,7 @@ import DoughnutChart from '@/components/Chart/DoughnutChart.vue';
 
 export default {
 	components: {
-		DoughnutChart
+		DoughnutChart,
 	},
 	data() {
 		return {
@@ -18,11 +18,11 @@ export default {
 				datasets: [
 					{
 						data: [12, 27, 4, 8],
-						backgroundColor: ['#d00a0a', '#e05c14', '#006798', '#00b28d']
-					}
-				]
-			}
+						backgroundColor: ['#d00a0a', '#e05c14', '#006798', '#00b28d'],
+					},
+				],
+			},
 		};
-	}
+	},
 };
 </script>

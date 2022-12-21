@@ -15,10 +15,10 @@ export default {
 				{
 					component: PreviewFieldPubId,
 					name: 'Base',
-					template: this.extractTemplate(PreviewFieldPubIdTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewFieldPubIdTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

@@ -27,7 +27,7 @@
 		<file-upload-progress
 			cancelUploadLabel="Cancel Upload"
 			:errors="[
-				'File is too big (20mb). Files larger than 2mb can not be uploaded.'
+				'File is too big (20mb). Files larger than 2mb can not be uploaded.',
 			]"
 			name="ccorino-disclosure-statement.docx"
 			:progress="0"
@@ -43,8 +43,8 @@ import PreviewProgressBar from '../../ProgressBar/previews/PreviewProgressBar.vu
 export default {
 	extends: PreviewProgressBar,
 	components: {
-		FileUploadProgress
-	}
+		FileUploadProgress,
+	},
 };
 </script>
 

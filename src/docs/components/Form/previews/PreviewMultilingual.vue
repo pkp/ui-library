@@ -12,9 +12,9 @@ export default {
 	data() {
 		return {
 			components: {
-				example: form
-			}
+				example: form,
+			},
 		};
-	}
+	},
 };
 </script>

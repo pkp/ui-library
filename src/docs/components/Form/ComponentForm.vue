@@ -24,36 +24,36 @@ export default {
 				{
 					component: PreviewForm,
 					name: 'Base',
-					template: this.extractTemplate(PreviewFormTemplate)
+					template: this.extractTemplate(PreviewFormTemplate),
 				},
 				{
 					component: PreviewMultilingual,
 					name: 'Multilingual',
-					template: this.extractTemplate(PreviewMultilingualTemplate)
+					template: this.extractTemplate(PreviewMultilingualTemplate),
 				},
 				{
 					component: PreviewGroups,
 					name: 'With Groups',
-					template: this.extractTemplate(PreviewGroupsTemplate)
+					template: this.extractTemplate(PreviewGroupsTemplate),
 				},
 				{
 					component: PreviewPagination,
 					name: 'With Pagination',
-					template: this.extractTemplate(PreviewPaginationTemplate)
+					template: this.extractTemplate(PreviewPaginationTemplate),
 				},
 				{
 					component: PreviewConditionalDisplay,
 					name: 'With Conditional Display',
-					template: this.extractTemplate(PreviewConditionalDisplayTemplate)
+					template: this.extractTemplate(PreviewConditionalDisplayTemplate),
 				},
 				{
 					component: PreviewErrors,
 					name: 'With Errors',
-					template: this.extractTemplate(PreviewErrorsTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewErrorsTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>
 

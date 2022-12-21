@@ -29,12 +29,8 @@
 						</tab>
 					</tabs>
 				</tab>
-				<tab id="two" label="Second Tab">
-					This is the second tab.
-				</tab>
-				<tab id="three" label="Third Tab">
-					This is the third tab.
-				</tab>
+				<tab id="two" label="Second Tab">This is the second tab.</tab>
+				<tab id="three" label="Third Tab">This is the third tab.</tab>
 			</tabs>
 			<template slot="footer">
 				<pkp-button @click="$modal.hide('tabs')">Close</pkp-button>
@@ -48,7 +44,7 @@ import Modal from '@/components/Modal/Modal.vue';
 
 export default {
 	components: {
-		Modal
-	}
+		Modal,
+	},
 };
 </script>

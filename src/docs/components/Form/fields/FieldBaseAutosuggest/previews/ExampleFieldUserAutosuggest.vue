@@ -13,17 +13,17 @@ export default {
 			);
 
 			const suggestions = items
-				.filter(u => u.fullName.match(regex))
-				.filter(u => !this.currentValue.includes(u.id))
-				.map(u => {
+				.filter((u) => u.fullName.match(regex))
+				.filter((u) => !this.currentValue.includes(u.id))
+				.map((u) => {
 					return {
 						value: u.id,
-						label: u.fullName
+						label: u.fullName,
 					};
 				});
 
 			this.suggestions = [...suggestions];
-		}
-	}
+		},
+	},
 };
 </script>

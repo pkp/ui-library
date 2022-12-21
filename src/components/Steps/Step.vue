@@ -9,19 +9,19 @@ export default {
 	props: {
 		id: {
 			type: String,
-			required: true
+			required: true,
 		},
 		label: {
 			type: String,
 			default() {
 				return '';
-			}
-		}
+			},
+		},
 	},
 	data() {
 		return {
-			isActive: false
+			isActive: false,
 		};
-	}
+	},
 };
 </script>

@@ -112,17 +112,17 @@ export default {
 	name: 'FieldUpload',
 	extends: FieldBase,
 	components: {
-		VueDropzone
+		VueDropzone,
 	},
 	props: {
 		options: Object,
 		restoreLabel: String,
-		uploadFileLabel: String
+		uploadFileLabel: String,
 	},
 	data() {
 		return {
 			initialValue: null,
-			uploadFile: null
+			uploadFile: null,
 		};
 	},
 	computed: {
@@ -209,7 +209,7 @@ export default {
 				hiddenInputContainer: '#' + this.controlId,
 				clickable: [
 					'#' + this.controlId + ' .dropzone',
-					'#' + this.dropzoneClickableId
+					'#' + this.dropzoneClickableId,
 				],
 				addRemoveLinks: true,
 				previewTemplate: `<div class="dz-preview">
@@ -220,11 +220,11 @@ export default {
 					</div>
 				</div>`,
 				headers: {
-					'X-Csrf-Token': pkp.currentUser.csrfToken
+					'X-Csrf-Token': pkp.currentUser.csrfToken,
 				},
-				...this.options
+				...this.options,
 			};
-		}
+		},
 	},
 	methods: {
 		/**
@@ -261,7 +261,7 @@ export default {
 		 * @param {Object} response The server response
 		 * @see https://www.dropzonejs.com/#event-success
 		 */
-		success: function(file, response) {
+		success: function (file, response) {
 			this.$emit(
 				'change',
 				this.name,
@@ -278,7 +278,7 @@ export default {
 		 * @param {Object} file Details about the file
 		 * @see https://www.dropzonejs.com/#event-addedfile
 		 */
-		onAddFile: function(file) {
+		onAddFile: function (file) {
 			this.uploadFile = {...file};
 			this.setErrors([]);
 		},
@@ -303,7 +303,7 @@ export default {
 		 * @param {String|Object} message The error message
 		 * @see https://www.dropzonejs.com/#event-error
 		 */
-		error: function(file, message) {
+		error: function (file, message) {
 			let errors = this.errors.slice();
 			if (typeof message === 'string') {
 				errors.push(message);
@@ -321,7 +321,7 @@ export default {
 		 *
 		 * @param {Object} New errors to send
 		 */
-		setErrors: function(errors) {
+		setErrors: function (errors) {
 			this.$emit('set-errors', this.name, errors, this.localeKey);
 		},
 
@@ -342,7 +342,7 @@ export default {
 					this.$el.focus();
 				}
 			});
-		}
+		},
 	},
 	mounted() {
 		/**
@@ -360,7 +360,7 @@ export default {
 		 * a computed property
 		 */
 		this.initialValue = this.currentValue ? this.currentValue : null;
-	}
+	},
 };
 </script>
 

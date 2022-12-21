@@ -6,7 +6,7 @@ export default {
 	name: 'AddContextContainer',
 	extends: Container,
 	components: {
-		AddContextForm
-	}
+		AddContextForm,
+	},
 };
 </script>

@@ -50,47 +50,47 @@ export default {
 	mixins: [ajaxError],
 	components: {
 		ButtonRow,
-		SelectSubmissionFileListItem
+		SelectSubmissionFileListItem,
 	},
 	props: {
 		attachSelectedLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		backLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		component: {
 			type: String,
-			required: true
+			required: true,
 		},
 		downloadLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		includeSubmissionId: {
 			type: Number,
 			default() {
 				return -1;
-			}
+			},
 		},
 		libraryApiUrl: {
 			type: String,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return {
 			isLoading: false,
 			files: [],
-			selected: []
+			selected: [],
 		};
 	},
 	computed: {
 		selectedFiles() {
-			return this.files.filter(file => this.selected.includes(file.id));
-		}
+			return this.files.filter((file) => this.selected.includes(file.id));
+		},
 	},
 	methods: {
 		getFiles() {
@@ -109,18 +109,18 @@ export default {
 				error: this.ajaxErrorCallback,
 				complete(r) {
 					self.isLoading = false;
-				}
+				},
 			});
-		}
+		},
 	},
 	watch: {
 		selected(newVal, oldVal) {
 			this.$emit('selected', newVal);
-		}
+		},
 	},
 	created() {
 		this.getFiles();
-	}
+	},
 };
 </script>
 

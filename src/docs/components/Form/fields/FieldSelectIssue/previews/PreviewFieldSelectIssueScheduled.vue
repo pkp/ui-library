@@ -11,7 +11,7 @@ import field from '../../../helpers/field-select-issue';
 export default {
 	extends: PreviewFieldBase,
 	components: {
-		FieldSelectIssue
+		FieldSelectIssue,
 	},
 	data() {
 		return {
@@ -19,9 +19,9 @@ export default {
 				...fieldBase,
 				...field,
 				publicationStatus: 5, // PKPSubmission::STATUS_SCHEDULED
-				value: 4
-			}
+				value: 4,
+			},
 		};
-	}
+	},
 };
 </script>

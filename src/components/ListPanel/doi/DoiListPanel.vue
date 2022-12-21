@@ -46,7 +46,7 @@
 									<div class="app__userNav__loggedInAs">
 										{{
 											__('manager.dois.actions.description', {
-												count: selected.length
+												count: selected.length,
 											})
 										}}
 									</div>
@@ -238,63 +238,63 @@ export default {
 		PkpFilterAutosuggest,
 		PkpHeader,
 		Search,
-		Modal
+		Modal,
 	},
 	mixins: [ajaxError, fetch],
 	props: {
 		id: {
 			type: String,
-			required: true
+			required: true,
 		},
 		items: {
 			type: Array,
 			default() {
 				return [];
-			}
+			},
 		},
 		itemsMax: {
 			type: Number,
 			default() {
 				return 0;
-			}
+			},
 		},
 		itemType: {
 			type: String,
-			required: true
+			required: true,
 		},
 		filters: {
 			type: Array,
 			default() {
-				return {};
-			}
+				return [];
+			},
 		},
 		title: {
 			type: String,
-			required: true
+			required: true,
 		},
 		doiPrefix: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		enabledDoiTypes: {
 			type: Array,
 			default() {
 				return [];
-			}
+			},
 		},
 		doiApiUrl: {
 			type: String,
-			required: true
+			required: true,
 		},
 		executeActionApiUrl: {
 			type: String,
-			required: true
+			required: true,
 		},
 		registrationAgencyInfo: {
 			type: Object,
-			required: true
+			required: true,
 		},
 		/**
 		 * Brings in app-specific publication statuses for use with filters.
@@ -303,15 +303,15 @@ export default {
 		 */
 		publishedStatuses: {
 			type: Object,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return {
 			activeFilters: {},
 			selected: [],
 			expanded: [],
-			failedDoiActions: []
+			failedDoiActions: [],
 		};
 	},
 	methods: {
@@ -325,7 +325,7 @@ export default {
 		setItems(items, itemsMax) {
 			this.$emit('set', this.id, {
 				items,
-				itemsMax
+				itemsMax,
 			});
 		},
 		/**
@@ -335,7 +335,7 @@ export default {
 		 */
 		selectItem(itemId) {
 			if (this.selected.includes(itemId)) {
-				this.selected = this.selected.filter(item => item !== itemId);
+				this.selected = this.selected.filter((item) => item !== itemId);
 			} else {
 				this.selected.push(itemId);
 			}
@@ -347,7 +347,7 @@ export default {
 		 */
 		expandItem(itemId) {
 			if (this.expanded.includes(itemId)) {
-				this.expanded = this.expanded.filter(item => item !== itemId);
+				this.expanded = this.expanded.filter((item) => item !== itemId);
 			} else {
 				this.expanded.push(itemId);
 			}
@@ -359,7 +359,7 @@ export default {
 			if (this.isAllExpanded) {
 				this.expanded = [];
 			} else {
-				this.expanded = this.items.map(i => i.id);
+				this.expanded = this.items.map((i) => i.id);
 			}
 		},
 		/**
@@ -369,7 +369,7 @@ export default {
 			if (this.isAllSelected) {
 				this.selected = [];
 			} else {
-				this.selected = this.items.map(i => i.id);
+				this.selected = this.items.map((i) => i.id);
 			}
 		},
 		/**
@@ -394,15 +394,13 @@ export default {
 			// The unpublished filter looks for items that are unpublished and have DOIs
 			if (param === 'unpublished') {
 				newFilters['hasDois'] = 1;
-				newFilters[
-					this.publishedStatuses.name
-				] = this.publishedStatuses.unpublished;
+				newFilters[this.publishedStatuses.name] =
+					this.publishedStatuses.unpublished;
 				// The unregistered filter looks for items that are published and have DOIs assigned with the STATUS_UNREGISTERED status.
 			} else if (param === 'unregistered') {
 				newFilters['doiStatus'] = pkp.const.DOI_STATUS_UNREGISTERED;
-				newFilters[
-					this.publishedStatuses.name
-				] = this.publishedStatuses.published;
+				newFilters[this.publishedStatuses.name] =
+					this.publishedStatuses.published;
 			}
 
 			newFilters[param] = value;
@@ -415,7 +413,7 @@ export default {
 		 * @param {mixed} value The filter value
 		 * @return {Boolean}
 		 */
-		isFilterActive: function(param, value) {
+		isFilterActive: function (param, value) {
 			if (!Object.keys(this.activeFilters).includes(param)) {
 				return false;
 			} else if (Array.isArray(this.activeFilters[param])) {
@@ -465,7 +463,7 @@ export default {
 			const actionLabel = this.__('manager.dois.actions.deposit.label');
 			const actionMessage = this.__('manager.dois.actions.deposit.prompt', {
 				count: ids.length,
-				registrationAgency: this.registrationAgencyInfo['displayName']
+				registrationAgency: this.registrationAgencyInfo['displayName'],
 			});
 
 			this.openBulkActionDialog(actionLabel, actionMessage, () => {
@@ -474,7 +472,7 @@ export default {
 				$.ajax({
 					...this.getBulkActionAjaxProps('deposit', 'PUT'),
 					data: {
-						ids: ids
+						ids: ids,
 					},
 					success: () => {
 						pkp.eventBus.$emit(
@@ -483,11 +481,11 @@ export default {
 							'success'
 						);
 					},
-					error: response => this.ajaxErrorCallback(response),
+					error: (response) => this.ajaxErrorCallback(response),
 					complete: () => {
 						self.isloading = false;
 						return this.onBulkActionComplete();
-					}
+					},
 				});
 			});
 		},
@@ -498,20 +496,20 @@ export default {
 			const actionLabel = this.__('manager.dois.actions.export.label');
 			const actionMessage = this.__('manager.dois.actions.export.prompt', {
 				count: this.selected.length,
-				registrationAgency: this.registrationAgencyInfo['displayName']
+				registrationAgency: this.registrationAgencyInfo['displayName'],
 			});
 
 			this.openBulkActionDialog(actionLabel, actionMessage, () => {
 				$.ajax({
 					...this.getBulkActionAjaxProps('export', 'PUT'),
 					data: {
-						ids: this.selected
+						ids: this.selected,
 					},
 					/**
 					 *
 					 * @param {{temporaryFileId: int}} data
 					 */
-					success: data => {
+					success: (data) => {
 						// Triggers GET request to download TemporaryFile with id of temporaryFileId
 						const anchor = document.createElement('a');
 						anchor.href = `${this.doiApiUrl}/exports/${data.temporaryFileId}`;
@@ -525,8 +523,8 @@ export default {
 							'success'
 						);
 					},
-					error: response => this.ajaxErrorCallback(response),
-					complete: () => this.onBulkActionComplete()
+					error: (response) => this.ajaxErrorCallback(response),
+					complete: () => this.onBulkActionComplete(),
 				});
 			});
 		},
@@ -544,7 +542,7 @@ export default {
 				$.ajax({
 					...this.getBulkActionAjaxProps('markRegistered', 'PUT'),
 					data: {
-						ids: this.selected
+						ids: this.selected,
 					},
 					success: () => {
 						pkp.eventBus.$emit(
@@ -553,14 +551,14 @@ export default {
 							'success'
 						);
 					},
-					error: response => {
+					error: (response) => {
 						if (response.responseJSON.hasOwnProperty('failedDoiActions')) {
 							this.failedDoiActions = response.responseJSON.failedDoiActions;
 							return;
 						}
 						return this.ajaxErrorCallback(response);
 					},
-					complete: () => this.onBulkActionComplete()
+					complete: () => this.onBulkActionComplete(),
 				});
 			});
 		},
@@ -580,7 +578,7 @@ export default {
 				$.ajax({
 					...this.getBulkActionAjaxProps('markUnregistered', 'PUT'),
 					data: {
-						ids: this.selected
+						ids: this.selected,
 					},
 					success: () => {
 						pkp.eventBus.$emit(
@@ -589,8 +587,8 @@ export default {
 							'success'
 						);
 					},
-					error: response => this.ajaxErrorCallback(response),
-					complete: () => this.onBulkActionComplete()
+					error: (response) => this.ajaxErrorCallback(response),
+					complete: () => this.onBulkActionComplete(),
 				});
 			});
 		},
@@ -600,14 +598,14 @@ export default {
 		openBulkMarkStale() {
 			const actionLabel = this.__('manager.dois.actions.markStale.label');
 			const actionMessage = this.__('manager.dois.actions.markStale.prompt', {
-				count: this.selected.length
+				count: this.selected.length,
 			});
 
 			this.openBulkActionDialog(actionLabel, actionMessage, () => {
 				$.ajax({
 					...this.getBulkActionAjaxProps('markStale', 'PUT'),
 					data: {
-						ids: this.selected
+						ids: this.selected,
 					},
 					success: () => {
 						pkp.eventBus.$emit(
@@ -616,14 +614,14 @@ export default {
 							'success'
 						);
 					},
-					error: response => {
+					error: (response) => {
 						if (response.responseJSON.hasOwnProperty('failedDoiActions')) {
 							this.failedDoiActions = response.responseJSON.failedDoiActions;
 							return;
 						}
 						return this.ajaxErrorCallback(response);
 					},
-					complete: () => this.onBulkActionComplete()
+					complete: () => this.onBulkActionComplete(),
 				});
 			});
 		},
@@ -633,14 +631,14 @@ export default {
 		openBulkAssign() {
 			const actionLabel = this.__('manager.dois.actions.assign.label');
 			const actionMessage = this.__('manager.dois.actions.assign.prompt', {
-				count: this.selected.length
+				count: this.selected.length,
 			});
 
 			this.openBulkActionDialog(actionLabel, actionMessage, () => {
 				$.ajax({
 					...this.getBulkActionAjaxProps('assignDois'),
 					data: {
-						ids: this.selected
+						ids: this.selected,
 					},
 					success: () => {
 						pkp.eventBus.$emit(
@@ -649,14 +647,14 @@ export default {
 							'success'
 						);
 					},
-					error: response => {
+					error: (response) => {
 						if (response.responseJSON.hasOwnProperty('failedDoiActions')) {
 							this.failedDoiActions = response.responseJSON.failedDoiActions;
 							return;
 						}
 						return this.ajaxErrorCallback(response);
 					},
-					complete: () => this.onBulkActionComplete()
+					complete: () => this.onBulkActionComplete(),
 				});
 			});
 		},
@@ -666,7 +664,7 @@ export default {
 		openBulkDepositAll() {
 			const actionLabel = this.__('manager.dois.actions.depositAll.label');
 			const actionMessage = this.__('manager.dois.actions.depositAll.prompt', {
-				registrationAgency: this.registrationAgencyInfo['displayName']
+				registrationAgency: this.registrationAgencyInfo['displayName'],
 			});
 
 			this.openBulkActionDialog(actionLabel, actionMessage, () => {
@@ -675,7 +673,7 @@ export default {
 					type: 'POST',
 					headers: {
 						'X-Csrf-Token': pkp.currentUser.csrfToken,
-						'X-Http-Method-Override': 'PUT'
+						'X-Http-Method-Override': 'PUT',
 					},
 					success: () => {
 						pkp.eventBus.$emit(
@@ -684,8 +682,8 @@ export default {
 							'success'
 						);
 					},
-					error: response => this.ajaxErrorCallback(response),
-					complete: () => this.onBulkActionComplete()
+					error: (response) => this.ajaxErrorCallback(response),
+					complete: () => this.onBulkActionComplete(),
 				});
 			});
 		},
@@ -705,14 +703,14 @@ export default {
 					{
 						label: title,
 						isPrimary: true,
-						callback: callback
+						callback: callback,
 					},
 					{
 						label: this.__('common.cancel'),
 						isWarnable: true,
-						callback: () => this.$modal.hide('bulkActions')
-					}
-				]
+						callback: () => this.$modal.hide('bulkActions'),
+					},
+				],
 			});
 		},
 		/**
@@ -724,7 +722,7 @@ export default {
 		 */
 		getBulkActionAjaxProps(action, requestType = 'POST') {
 			let headers = {
-				'X-Csrf-Token': pkp.currentUser.csrfToken
+				'X-Csrf-Token': pkp.currentUser.csrfToken,
 			};
 			if (requestType !== 'POST') {
 				headers['X-Http-Method-Override'] = requestType;
@@ -733,7 +731,7 @@ export default {
 			return {
 				url: `${this.executeActionApiUrl}/${action}`,
 				type: 'POST',
-				headers: headers
+				headers: headers,
 			};
 		},
 		/**
@@ -749,7 +747,7 @@ export default {
 		 * @param {Object} pubObject
 		 */
 		updateSuccessfulDoiEdits(pubObject) {
-			let newItemsList = this.items.map(item => {
+			let newItemsList = this.items.map((item) => {
 				return item.id === pubObject.id ? pubObject : item;
 			});
 
@@ -768,7 +766,7 @@ export default {
 		 */
 		getCurrentPublication(submission) {
 			return submission.publications.find(
-				publication => publication.id === submission.currentPublicationId
+				(publication) => publication.id === submission.currentPublicationId
 			);
 		},
 		// -- Mapped Items and related methods -- //
@@ -837,7 +835,7 @@ export default {
 		 */
 		getIsPublishedBase(item) {
 			return item.status === pkp.const.STATUS_PUBLISHED;
-		}
+		},
 	},
 	computed: {
 		isAllSelected() {
@@ -847,14 +845,14 @@ export default {
 			return this.expanded.length && this.expanded.length === this.items.length;
 		},
 		mappedItems() {
-			return this.items.map(item => {
+			return this.items.map((item) => {
 				let newItem = {
 					id: item.id,
 					type: this.itemType,
 					title: this.getItemTitle(item),
 					urlPublished: this.getUrlPublished(item),
 					isPublished: this.getIsPublished(item),
-					doiObjects: []
+					doiObjects: [],
 				};
 				newItem = this.addDoiObjects(newItem);
 
@@ -863,7 +861,7 @@ export default {
 		},
 		isRegistrationPluginConfigured() {
 			return this.registrationAgencyInfo['isConfigured'];
-		}
+		},
 	},
 	watch: {
 		/**
@@ -877,8 +875,8 @@ export default {
 			} else {
 				this.$modal.hide('failedDoiActionModal');
 			}
-		}
-	}
+		},
+	},
 };
 </script>
 

@@ -16,13 +16,13 @@ import draggable from 'vuedraggable';
 export default {
 	extends: PreviewOrderer,
 	components: {
-		draggable
+		draggable,
 	},
 	data() {
 		return {
-			...PreviewOrderer.data()
+			...PreviewOrderer.data(),
 		};
-	}
+	},
 };
 </script>
 

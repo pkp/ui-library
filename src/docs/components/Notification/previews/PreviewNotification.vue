@@ -24,18 +24,18 @@ import Notification from '@/components/Notification/Notification.vue';
 
 export default {
 	components: {
-		Notification
+		Notification,
 	},
 	data() {
 		return {
-			dismissed: false
+			dismissed: false,
 		};
 	},
 	methods: {
 		dismiss() {
 			this.dismissed = true;
-		}
-	}
+		},
+	},
 };
 </script>
 

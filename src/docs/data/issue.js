@@ -16,41 +16,41 @@ export default {
 					authorsStringShort: 'Kwantes',
 					fullTitle: {
 						en_US:
-							'Quisque vel ultrices ut vel sollicitudin vel varius suscipit phasellus'
+							'Quisque vel ultrices ut vel sollicitudin vel varius suscipit phasellus',
 					},
-					isPublished: true
-				}
+					isPublished: true,
+				},
 			],
-			stages: submission.stages.map(stage => {
+			stages: submission.stages.map((stage) => {
 				return {
 					...stage,
-					currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER]
+					currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
 				};
 			}),
 			status: 3,
 			urlAuthorWorkflow: submission.urlAuthorWorkflow.replace('1', '2'),
 			urlEditorialWorkflow: submission.urlEditorialWorkflow.replace('1', '2'),
 			urlPublished: submission.urlPublished.replace('1', '2'),
-			urlWorkflow: submission.urlWorkflow.replace('1', '2')
+			urlWorkflow: submission.urlWorkflow.replace('1', '2'),
 		},
 		{
-			...submission
-		}
+			...submission,
+		},
 	],
 	coverImageAltText: {
 		en_US: '',
-		fr_CA: ''
+		fr_CA: '',
 	},
 	coverImageUrl: {
 		en_US: '',
-		fr_CA: ''
+		fr_CA: '',
 	},
 	dateNotified: null,
 	datePublished: '2020-09-18 20:41:39',
 	doiObject: {...doi},
 	description: {
 		en_US: '',
-		fr_CA: ''
+		fr_CA: '',
 	},
 	galleys: [],
 	id: 1,
@@ -61,8 +61,8 @@ export default {
 	publishedUrl: 'http://localhost:8080/publicknowledge/issue/view/1',
 	title: {
 		en_US: 'Issue Number 1',
-		fr_CA: 'Issue Number 1'
+		fr_CA: 'Issue Number 1',
 	},
 	volume: 1,
-	year: 2020
+	year: 2020,
 };

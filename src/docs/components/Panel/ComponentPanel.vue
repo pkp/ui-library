@@ -18,20 +18,20 @@ export default {
 				{
 					component: Preview,
 					name: 'Base',
-					template: this.extractTemplate(Template)
+					template: this.extractTemplate(Template),
 				},
 				{
 					component: PreviewMultipleSections,
 					name: 'Many Sections',
-					template: this.extractTemplate(TemplateMultipleSections)
+					template: this.extractTemplate(TemplateMultipleSections),
 				},
 				{
 					component: PreviewStacked,
 					name: 'Stacked Header',
-					template: this.extractTemplate(TemplateStacked)
-				}
-			]
+					template: this.extractTemplate(TemplateStacked),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

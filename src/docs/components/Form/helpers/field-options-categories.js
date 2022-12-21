@@ -8,24 +8,24 @@ export default {
 	options: [
 		{
 			value: 4,
-			label: 'Biology'
+			label: 'Biology',
 		},
 		{
 			value: 1,
-			label: 'Health Sciences'
+			label: 'Health Sciences',
 		},
 		{
 			value: 2,
-			label: 'Health Sciences > Tropical Medicine'
+			label: 'Health Sciences > Tropical Medicine',
 		},
 		{
 			value: 3,
-			label: 'Health Sciences > Radiology'
+			label: 'Health Sciences > Radiology',
 		},
 		{
 			value: 5,
-			label: '...'
-		}
+			label: '...',
+		},
 	],
-	groupId: 'default'
+	groupId: 'default',
 };

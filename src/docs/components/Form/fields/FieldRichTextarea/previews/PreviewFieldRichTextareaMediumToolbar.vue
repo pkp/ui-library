@@ -17,16 +17,16 @@ import field from '../../../helpers/field-rich-textarea-bio';
 export default {
 	extends: PreviewFieldBase,
 	components: {
-		FieldRichTextarea
+		FieldRichTextarea,
 	},
 	data() {
 		return {
 			field: {
 				...fieldBase,
 				...field,
-				isMultilingual: false
-			}
+				isMultilingual: false,
+			},
 		};
-	}
+	},
 };
 </script>

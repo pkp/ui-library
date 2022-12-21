@@ -70,57 +70,57 @@ import TableCell from '@/components/Table/TableCell.vue';
 
 export default {
 	components: {
-		TableCell
+		TableCell,
 	},
 	props: {
 		columns: {
 			type: Array,
 			default() {
 				return [];
-			}
+			},
 		},
 		describedBy: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		description: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		label: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		labelledBy: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		orderBy: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		orderDirection: {
 			type: Boolean,
 			default() {
 				return false;
-			}
+			},
 		},
 		rows: {
 			type: Array,
 			default() {
 				return [];
-			}
-		}
+			},
+		},
 	},
 	methods: {
 		/**
@@ -159,10 +159,7 @@ export default {
 		 * @param Event e
 		 */
 		focusNextCell(e) {
-			$(e.target)
-				.closest('td, th')
-				.next()
-				.focus();
+			$(e.target).closest('td, th').next().focus();
 		},
 
 		/**
@@ -173,10 +170,7 @@ export default {
 		 * @param Event e
 		 */
 		focusPreviousCell(e) {
-			$(e.target)
-				.closest('td, th')
-				.prev()
-				.focus();
+			$(e.target).closest('td, th').prev().focus();
 		},
 
 		/**
@@ -223,11 +217,7 @@ export default {
 		 * @param Event e
 		 */
 		focusFirstCell(e) {
-			$(e.target)
-				.parents('tr')
-				.children('td, th')
-				.first()
-				.focus();
+			$(e.target).parents('tr').children('td, th').first().focus();
 		},
 
 		/**
@@ -238,11 +228,7 @@ export default {
 		 * @param Event e
 		 */
 		focusLastCell(e) {
-			$(e.target)
-				.parents('tr')
-				.children('td, th')
-				.last()
-				.focus();
+			$(e.target).parents('tr').children('td, th').last().focus();
 		},
 
 		/**
@@ -277,8 +263,8 @@ export default {
 				.children('td, th')
 				.last()
 				.focus();
-		}
-	}
+		},
+	},
 };
 </script>
 

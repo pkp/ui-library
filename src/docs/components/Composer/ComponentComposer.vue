@@ -14,10 +14,10 @@ export default {
 				{
 					component: PreviewComposer,
 					name: 'Base',
-					template: this.extractTemplate(PreviewComposerTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewComposerTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

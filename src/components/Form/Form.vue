@@ -72,7 +72,7 @@ export default {
 	name: 'PkpForm',
 	components: {
 		FormLocales,
-		FormPage
+		FormPage,
 	},
 	props: {
 		id: String,
@@ -80,25 +80,25 @@ export default {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		action: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		canSubmit: {
 			type: Boolean,
 			default() {
 				return true;
-			}
+			},
 		},
 		errors: {
 			type: Object,
 			default() {
 				return {};
-			}
+			},
 		},
 		fields: Array,
 		groups: Array,
@@ -106,13 +106,13 @@ export default {
 		pages: Array,
 		primaryLocale: String,
 		visibleLocales: Array,
-		supportedFormLocales: Array
+		supportedFormLocales: Array,
 	},
 	data() {
 		return {
 			currentPage: '',
 			isSaving: false,
-			lastSaveTimestamp: -1
+			lastSaveTimestamp: -1,
 		};
 	},
 	computed: {
@@ -144,7 +144,7 @@ export default {
 		 * @return {Boolean}
 		 */
 		hasMultilingualFields() {
-			return !!this.fields.find(field => field.isMultilingual);
+			return !!this.fields.find((field) => field.isMultilingual);
 		},
 
 		/**
@@ -154,8 +154,8 @@ export default {
 		 */
 		groupIdsWithErrors() {
 			let groupIds = [];
-			Object.keys(this.errors).forEach(fieldName => {
-				const field = this.fields.find(field => field.name === fieldName);
+			Object.keys(this.errors).forEach((fieldName) => {
+				const field = this.fields.find((field) => field.name === fieldName);
 				if (field && !groupIds.includes(field.groupId)) {
 					groupIds.push(field.groupId);
 				}
@@ -170,8 +170,8 @@ export default {
 		 */
 		pageIdsWithErrors() {
 			let pageIds = [];
-			this.groupIdsWithErrors.forEach(groupId => {
-				const group = this.groups.find(group => group.id === groupId);
+			this.groupIdsWithErrors.forEach((groupId) => {
+				const group = this.groups.find((group) => group.id === groupId);
 				if (group && !pageIds.includes(group.pageId)) {
 					pageIds.push(group.pageId);
 				}
@@ -191,7 +191,7 @@ export default {
 		 */
 		submitValues() {
 			let values = {};
-			this.fields.forEach(field => {
+			this.fields.forEach((field) => {
 				if (field.component === 'field-html') {
 					return;
 				}
@@ -206,10 +206,10 @@ export default {
 					}
 				} else {
 					let fieldValues = {};
-					Object.keys(field.value).forEach(localeKey => {
+					Object.keys(field.value).forEach((localeKey) => {
 						if (
 							this.supportedFormLocales.filter(
-								locale => locale.key === localeKey
+								(locale) => locale.key === localeKey
 							).length
 						) {
 							// See note above on converting empty arrays
@@ -230,16 +230,16 @@ export default {
 			});
 			return {
 				...values,
-				...this.hiddenFields
+				...this.hiddenFields,
 			};
-		}
+		},
 	},
 	methods: {
 		/**
 		 * Move to the next page or submit form if we're at the last page
 		 */
-		nextPage: function(pageId) {
-			const pageIndex = this.pages.findIndex(page => page.id === pageId);
+		nextPage: function (pageId) {
+			const pageIndex = this.pages.findIndex((page) => page.id === pageId);
 			if (this.pages.length === 1 || pageIndex === this.pages.length - 1) {
 				this.submit();
 				return;
@@ -262,8 +262,8 @@ export default {
 				this.$emit('set', this.id, {
 					errors: {
 						...this.errors,
-						...errors
-					}
+						...errors,
+					},
 				});
 				this.isSaving = false;
 				return;
@@ -281,12 +281,12 @@ export default {
 					url: this.action,
 					headers: {
 						'X-Csrf-Token': pkp.currentUser.csrfToken,
-						'X-Http-Method-Override': this.method
+						'X-Http-Method-Override': this.method,
 					},
 					data: this.submitValues,
 					success: this.success,
 					error: this.error,
-					complete: this.complete
+					complete: this.complete,
 				});
 			}
 		},
@@ -307,7 +307,7 @@ export default {
 		 */
 		validateRequired() {
 			let errors = {};
-			this.fields.forEach(field => {
+			this.fields.forEach((field) => {
 				if (!field.isRequired) {
 					return;
 				}
@@ -340,7 +340,7 @@ export default {
 					if (field.isMultilingual) {
 						errors[field.name] = {};
 						errors[field.name][this.primaryLocale] = [
-							this.__('validator.required')
+							this.__('validator.required'),
 						];
 					} else {
 						errors[field.name] = [this.__('validator.required')];
@@ -357,14 +357,14 @@ export default {
 		 * @param {Object} r The response to the AJAX request or the values
 		 * 		of the form if no request was sent
 		 */
-		success: function(r) {
+		success: function (r) {
 			this.$emit('success', r);
 			this.lastSaveTimestamp = Date.now();
 			pkp.eventBus.$emit('form-success', this.id, r);
 
 			if (this.action) {
 				// Update form values with the response values
-				const newFields = this.fields.map(field => {
+				const newFields = this.fields.map((field) => {
 					if (typeof r[field.name] !== 'undefined') {
 						field.value = r[field.name];
 					}
@@ -380,13 +380,13 @@ export default {
 		 *
 		 * @param {Object} r The response to the AJAX request
 		 */
-		error: function(r) {
+		error: function (r) {
 			// Field validation errors
 			if (r.status && r.status === 400) {
 				pkp.eventBus.$emit(
 					'notify',
 					this.__('form.errors', {
-						count: Object.keys(r.responseJSON).length
+						count: Object.keys(r.responseJSON).length,
 					}),
 					'warning'
 				);
@@ -420,8 +420,8 @@ export default {
 		 * @param {mixed} value The new value for the prop
 		 * @param {String} localeKey Optional locale key for multilingual props
 		 */
-		fieldChanged: function(name, prop, value, localeKey) {
-			const newFields = this.fields.map(field => {
+		fieldChanged: function (name, prop, value, localeKey) {
+			const newFields = this.fields.map((field) => {
 				if (field.name === name) {
 					if (localeKey) {
 						field[prop][localeKey] = value;
@@ -442,9 +442,9 @@ export default {
 		 *  You can also pass `true` to move to the next page and `false` to move to
 		 *  the previous page.
 		 */
-		setCurrentPage: function(pageId) {
+		setCurrentPage: function (pageId) {
 			const currentPageIndex = this.pages.findIndex(
-				page => page.id === this.currentPage
+				(page) => page.id === this.currentPage
 			);
 			if (pageId === true) {
 				if (this.pages.length <= currentPageIndex) {
@@ -459,7 +459,7 @@ export default {
 			}
 			this.currentPage = pageId;
 			this.$scrollTo(this.$el, 500, {
-				offset: -50
+				offset: -50,
 			});
 		},
 
@@ -468,7 +468,7 @@ export default {
 		 *
 		 * @param {Array} locales New array of visible locales
 		 */
-		setVisibleLocales: function(locales) {
+		setVisibleLocales: function (locales) {
 			this.$emit('set', this.id, {visibleLocales: locales});
 		},
 
@@ -477,7 +477,7 @@ export default {
 		 *
 		 * @param {String} localeKey
 		 */
-		showLocale: function(localeKey) {
+		showLocale: function (localeKey) {
 			if (this.visibleLocales.includes(localeKey)) {
 				return;
 			}
@@ -489,12 +489,12 @@ export default {
 		 *
 		 * @param {String} name The name of the field to bring into view
 		 */
-		showField: function(name) {
-			let field = this.fields.find(field => field.name === name);
+		showField: function (name) {
+			let field = this.fields.find((field) => field.name === name);
 			if (!field) {
 				return;
 			}
-			let group = this.groups.find(group => group.id === field.groupId);
+			let group = this.groups.find((group) => group.id === field.groupId);
 			if (!group) {
 				return;
 			}
@@ -510,7 +510,7 @@ export default {
 				);
 				if ($el) {
 					this.$scrollTo($el, 500, {
-						offset: -50
+						offset: -50,
 					});
 				} else {
 					this.setCurrentPage(group.pageId);
@@ -525,7 +525,7 @@ export default {
 		 * @param {String|Null} localeKey The locale to remove, if not removing the
 		 *  whole error.
 		 */
-		removeError: function(name, localeKey) {
+		removeError: function (name, localeKey) {
 			if (!this.errors[name]) {
 				return;
 			}
@@ -550,16 +550,16 @@ export default {
 		 *
 		 * @param {Array} errors The new list of errors
 		 */
-		setErrors: function(errors) {
+		setErrors: function (errors) {
 			this.$emit('set', this.id, {errors: errors});
-		}
+		},
 	},
 	mounted() {
 		// Set the current page
 		if (!this.currentPage) {
 			this.currentPage = this.pages[0].id;
 		}
-	}
+	},
 };
 </script>
 

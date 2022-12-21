@@ -81,84 +81,84 @@ export default {
 	props: {
 		assignIdLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		clearIdLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		contextInitials: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		isPForPress: {
 			type: Boolean,
 			default() {
 				return false;
-			}
+			},
 		},
 		issueNumber: {
 			type: [String, Number],
 			default() {
 				return '';
-			}
+			},
 		},
 		issueVolume: {
 			type: [String, Number],
 			default() {
 				return '';
-			}
+			},
 		},
 		missingPartsLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		pages: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		pattern: {
 			type: String,
-			required: true
+			required: true,
 		},
 		prefix: {
 			type: String,
-			required: true
+			required: true,
 		},
 		publisherId: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		separator: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		submissionId: {
 			type: Number,
 			default() {
-				return '';
-			}
+				return 0;
+			},
 		},
 		publicationId: {
 			type: Number,
 			default() {
 				return 0;
-			}
+			},
 		},
 		year: {
 			type: [String, Number],
 			default() {
 				return '';
-			}
-		}
+			},
+		},
 	},
 	computed: {
 		/**
@@ -182,7 +182,7 @@ export default {
 				(this.publicationId || !this.pattern.includes('%b')) &&
 				(this.year || !this.pattern.includes('%Y'))
 			);
-		}
+		},
 	},
 	methods: {
 		/**
@@ -218,8 +218,8 @@ export default {
 					.replace('%p', this.pages);
 			}
 			return id;
-		}
-	}
+		},
+	},
 };
 </script>
 

@@ -19,14 +19,14 @@ export default {
 	props: {
 		element: {
 			type: String,
-			default: 'button'
+			default: 'button',
 		},
 		href: String,
 		isPrimary: Boolean,
 		isWarnable: Boolean,
 		isActive: Boolean,
 		isLink: Boolean,
-		isDisabled: Boolean
+		isDisabled: Boolean,
 	},
 	computed: {
 		classes() {
@@ -44,7 +44,7 @@ export default {
 				classes.push('pkpButton--isLink');
 			}
 			return classes;
-		}
+		},
 	},
 	methods: {
 		click(e) {
@@ -52,8 +52,8 @@ export default {
 				e.preventDefault();
 			}
 			this.$emit('click');
-		}
-	}
+		},
+	},
 };
 </script>
 

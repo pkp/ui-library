@@ -52,7 +52,7 @@ import items from '../helpers/items';
 export default {
 	components: {
 		ListPanel,
-		PkpHeader
+		PkpHeader,
 	},
 	data() {
 		return {
@@ -60,7 +60,7 @@ export default {
 			canSelectAll: true,
 			isSelectAllOn: false,
 			items: [...items],
-			selected: []
+			selected: [],
 		};
 	},
 	methods: {
@@ -68,16 +68,16 @@ export default {
 			if (this.isSelectAllOn) {
 				this.selected = [];
 			} else {
-				this.selected = this.items.map(i => i.id);
+				this.selected = this.items.map((i) => i.id);
 			}
-		}
+		},
 	},
 	watch: {
 		selected(newVal, oldVal) {
 			this.isSelectAllOn =
 				this.selected.length && this.selected.length === this.items.length;
-		}
-	}
+		},
+	},
 };
 </script>
 

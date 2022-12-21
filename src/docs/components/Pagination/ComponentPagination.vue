@@ -14,10 +14,10 @@ export default {
 				{
 					component: PreviewPagination,
 					name: 'Base',
-					template: this.extractTemplate(PreviewPaginationTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewPaginationTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

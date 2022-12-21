@@ -4,7 +4,7 @@
 		:class="{
 			'pkpAutosuggest--disabled': isDisabled,
 			'pkpAutosuggest--inline': isLabelInline,
-			'pkpAutosuggest--rtl': isRTL
+			'pkpAutosuggest--rtl': isRTL,
 		}"
 	>
 		<div class="pkpFormField__heading" ref="heading">
@@ -43,7 +43,7 @@
 				:class="{
 					'pkpAutosuggest__inputWrapper--multilingual':
 						isMultilingual && locales.length > 1,
-					'pkpAutosuggest__inputWrapper--focus': isFocused
+					'pkpAutosuggest__inputWrapper--focus': isFocused,
 				}"
 				ref="values"
 				:id="describedBySelectedId"
@@ -111,53 +111,53 @@ export default {
 	mixins: [ajaxError],
 	components: {
 		PkpBadge,
-		VueAutosuggest
+		VueAutosuggest,
 	},
 	props: {
 		apiUrl: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		deselectLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		isDisabled: {
 			type: Boolean,
 			default() {
 				return false;
-			}
+			},
 		},
 		isLabelInline: {
 			type: Boolean,
 			default() {
 				return false;
-			}
+			},
 		},
 		getParams: {
 			type: Object,
 			default() {
 				return {};
-			}
+			},
 		},
 		selected: {
 			type: [Array, Object],
 			default() {
 				return this.isMultilingual ? {} : [];
-			}
+			},
 		},
 		selectedLabel: {
 			type: String,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return {
 			inputValue: '',
 			isFocused: false,
-			suggestions: []
+			suggestions: [],
 		};
 	},
 	computed: {
@@ -181,8 +181,8 @@ export default {
 				inputProps: this.inputProps,
 				key: this.autosuggestId,
 				suggestions: [{data: this.suggestions}],
-				getSuggestionValue: suggestion => suggestion.item.label,
-				renderSuggestion: suggestion => suggestion.item.label
+				getSuggestionValue: (suggestion) => suggestion.item.label,
+				renderSuggestion: (suggestion) => suggestion.item.label,
 			};
 		},
 
@@ -230,7 +230,7 @@ export default {
 				'aria-describedby': this.describedByIds,
 				class: 'pkpAutosuggest__input',
 				id: this.controlId,
-				name: this.name
+				name: this.name,
 			};
 			if (this.isDisabled) {
 				props.disabled = 'disabled';
@@ -243,7 +243,7 @@ export default {
 		 */
 		isRTL() {
 			return $.pkp.app.rtlLocales.includes(this.localeKey);
-		}
+		},
 	},
 	methods: {
 		/**
@@ -254,7 +254,7 @@ export default {
 		deselect(itemToRemove) {
 			let newSelected = [...this.currentSelected];
 			newSelected.splice(
-				newSelected.findIndex(item => item.value === itemToRemove.value),
+				newSelected.findIndex((item) => item.value === itemToRemove.value),
 				1
 			);
 			this.setSelected(newSelected);
@@ -273,7 +273,7 @@ export default {
 		/**
 		 * Get suggestions from the API url
 		 */
-		getSuggestions: debounce(function() {
+		getSuggestions: debounce(function () {
 			if (!this.inputValue) {
 				this.suggestions = [];
 				return;
@@ -284,14 +284,14 @@ export default {
 				type: 'GET',
 				data: {
 					...this.getParams,
-					searchPhrase: this.inputValue
+					searchPhrase: this.inputValue,
 				},
 				error(r) {
 					self.ajaxErrorCallback(r);
 				},
 				success(r) {
 					self.setSuggestions(r.items);
-				}
+				},
 			});
 		}, 250),
 
@@ -343,7 +343,7 @@ export default {
 				'change',
 				this.name,
 				'value',
-				selected.map(s => s.value),
+				selected.map((s) => s.value),
 				this.localeKey
 			);
 		},
@@ -426,7 +426,7 @@ export default {
 					this.$refs.autosuggest.$el.style.width = remainingWidth - 32 + 'px';
 				}
 			}
-		}
+		},
 	},
 	watch: {
 		currentValue(newVal, oldVal) {
@@ -437,7 +437,7 @@ export default {
 				return;
 			}
 			this.getSuggestions();
-		}
+		},
 	},
 	mounted() {
 		this.updateInlineLabelPadding();
@@ -460,7 +460,7 @@ export default {
 	},
 	beforeDestroy() {
 		elementResizeEvent.unbind(this.$refs.values);
-	}
+	},
 };
 </script>
 

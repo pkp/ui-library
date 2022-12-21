@@ -20,7 +20,7 @@ import insertContent from '../../../../../data/insertContent';
 export default {
 	extends: PreviewFieldBase,
 	components: {
-		FieldPreparedContent
+		FieldPreparedContent,
 	},
 	data() {
 		return {
@@ -35,10 +35,10 @@ export default {
 					<p>At this time, we ask you to please let us know if there are any further adjustments you would like to make before our copyeditor begins working on it.</p>
 					<p>Please let us know by {$revisionsDueDate}.</p>
 					<p>Sincerely,<br>
-					{$signature}</p>`
+					{$signature}</p>`,
 			},
-			preparedContent: [...insertContent]
+			preparedContent: [...insertContent],
 		};
-	}
+	},
 };
 </script>

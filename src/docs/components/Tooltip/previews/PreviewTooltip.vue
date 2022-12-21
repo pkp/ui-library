@@ -10,7 +10,7 @@ import Tooltip from '@/components/Tooltip/Tooltip.vue';
 
 export default {
 	components: {
-		Tooltip
-	}
+		Tooltip,
+	},
 };
 </script>

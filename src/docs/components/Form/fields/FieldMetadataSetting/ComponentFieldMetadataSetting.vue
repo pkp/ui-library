@@ -15,10 +15,10 @@ export default {
 				{
 					component: PreviewFieldMetadataSetting,
 					name: 'Base',
-					template: this.extractTemplate(PreviewFieldMetadataSettingTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewFieldMetadataSettingTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

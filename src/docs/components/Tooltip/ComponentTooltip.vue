@@ -14,10 +14,10 @@ export default {
 				{
 					component: PreviewTooltip,
 					name: 'Base',
-					template: this.extractTemplate(PreviewTooltipTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewTooltipTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

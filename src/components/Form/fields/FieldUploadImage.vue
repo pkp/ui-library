@@ -135,12 +135,12 @@ export default {
 		altTextDescription: String,
 		altTextLabel: String,
 		baseUrl: String,
-		thumbnailDescription: String
+		thumbnailDescription: String,
 	},
 	data() {
 		return {
 			altTextValue: '',
-			initialValue: null
+			initialValue: null,
 		};
 	},
 	computed: {
@@ -175,7 +175,7 @@ export default {
 		 */
 		altTextDescriptionId() {
 			return this.compileId('altTextDescription');
-		}
+		},
 	},
 	methods: {
 		/**
@@ -185,7 +185,7 @@ export default {
 		 * @param {Object} response The server response
 		 * @see https://www.dropzonejs.com/#event-success
 		 */
-		success: function(file, response) {
+		success: function (file, response) {
 			this.isUploading = false;
 			this.$emit(
 				'change',
@@ -193,7 +193,7 @@ export default {
 				'value',
 				{
 					temporaryFileId: response.id,
-					altText: ''
+					altText: '',
 				},
 				this.localeKey
 			);
@@ -206,17 +206,17 @@ export default {
 		 * @param {Object} file Details about the file
 		 * @see https://www.dropzonejs.com/#event-thumbnail
 		 */
-		onThumbnail: function(file) {
+		onThumbnail: function (file) {
 			this.uploadFile = {...file};
 			this.setFocusToControl();
-		}
+		},
 	},
 	watch: {
 		/**
 		 * Whenever the current value changes, update the altTextValue to keep
 		 * the field in sync with external changes
 		 */
-		currentValue: function(newVal, oldVal) {
+		currentValue: function (newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
@@ -227,7 +227,7 @@ export default {
 		 * Whenever the alt text field changes, sync the change to the correct
 		 * property in the value object
 		 */
-		altTextValue: function(newVal, oldVal) {
+		altTextValue: function (newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
@@ -240,11 +240,11 @@ export default {
 				'value',
 				{
 					...this.currentValue,
-					altText: newVal
+					altText: newVal,
 				},
 				this.localeKey
 			);
-		}
+		},
 	},
 	mounted() {
 		/**
@@ -262,7 +262,7 @@ export default {
 		 * a computed property
 		 */
 		this.altTextValue = this.currentValue ? this.currentValue.altText : '';
-	}
+	},
 };
 </script>
 

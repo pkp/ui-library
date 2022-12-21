@@ -15,8 +15,8 @@
 export default {
 	name: 'FieldError',
 	props: {
-		messages: Array
-	}
+		messages: Array,
+	},
 };
 </script>
 

@@ -207,114 +207,114 @@ export default {
 	components: {
 		Expander,
 		List,
-		ListItem
+		ListItem,
 	},
 	props: {
 		activeReviewsCountLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		activeReviewsLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		assignedToLastRound: {
 			type: Boolean,
-			required: true
+			required: true,
 		},
 		assignedToLastRoundLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		averageCompletionLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		biographyLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		cancelledReviewsLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		completedReviewsLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		currentlyAssigned: {
 			type: Boolean,
-			required: true
+			required: true,
 		},
 		currentlyAssignedLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		daySinceLastAssignmentLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		daysSinceLastAssignmentLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		daysSinceLastAssignmentDescriptionLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		declinedReviewsLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		gossipLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		item: {
 			type: Object,
-			required: true
+			required: true,
 		},
 		neverAssignedLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		reassignLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		reassignWithNameLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		reviewerRatingLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		reviewInterestsLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		selectReviewerLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		warnOnAssignment: {
 			type: Boolean,
-			required: true
+			required: true,
 		},
 		warnOnAssignmentLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		warnOnAssignmentUnlockLabel: {
 			type: String,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return {
 			isExpanded: false,
-			isWarningBypassed: false
+			isWarningBypassed: false,
 		};
 	},
 	computed: {
@@ -347,7 +347,8 @@ export default {
 			}
 
 			// Needed for Safari as it will return NaN for date strings with '-' separators.
-			const fixDateForAllBrowsers = dateString => dateString.replace(/-/g, '/');
+			const fixDateForAllBrowsers = (dateString) =>
+				dateString.replace(/-/g, '/');
 
 			return Math.floor(
 				((Date.parse(
@@ -388,7 +389,7 @@ export default {
 				return '';
 			}
 			return this.item.interests
-				.map(i => {
+				.map((i) => {
 					return i.interest;
 				})
 				.join(this.__('common.commaListSeparator'));
@@ -417,7 +418,7 @@ export default {
 				}
 			}
 			return stars;
-		}
+		},
 	},
 	methods: {
 		/**
@@ -435,8 +436,8 @@ export default {
 		 */
 		unlockAssignment() {
 			this.isWarningBypassed = true;
-		}
-	}
+		},
+	},
 };
 </script>
 

@@ -4,7 +4,7 @@
 			v-bind="MODAL_PROPS"
 			:name="name"
 			@opened="setFocusToRef('keyboardTrap')"
-			@closed="data => this.$emit('closed', data)"
+			@closed="(data) => this.$emit('closed', data)"
 		>
 			<div class="modal__panel">
 				<span tabindex="0" @focus="setFocusIn($refs.keyboardTrap, true)" />
@@ -39,27 +39,27 @@ export default {
 	props: {
 		closeLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		name: {
 			type: String,
-			reqired: true
+			reqired: true,
 		},
 		title: {
 			type: String,
 			default() {
 				return '';
-			}
-		}
+			},
+		},
 	},
 	data() {
 		return {
 			MODAL_PROPS: {
 				height: 'auto',
-				scrollable: true
-			}
+				scrollable: true,
+			},
 		};
-	}
+	},
 };
 </script>
 

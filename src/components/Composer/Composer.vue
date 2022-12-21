@@ -16,7 +16,7 @@
 						class="composer__templates__search"
 						:searchPhrase="searchPhrase"
 						@search-phrase-changed="
-							newSearchPhrase => (this.searchPhrase = newSearchPhrase)
+							(newSearchPhrase) => (this.searchPhrase = newSearchPhrase)
 						"
 					/>
 					<ul
@@ -302,203 +302,203 @@ export default {
 		FieldPreparedContent,
 		FileAttacher,
 		Modal,
-		Search
+		Search,
 	},
 	props: {
 		addCCLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		attachers: {
 			type: Array,
 			default() {
 				return [];
-			}
+			},
 		},
 		attachments: {
 			type: Array,
 			default() {
 				return [];
-			}
+			},
 		},
 		attachFilesLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		attachedFilesLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		bcc: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		bccLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		body: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		bodyLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		canChangeRecipients: {
 			type: Boolean,
 			default() {
 				return true;
-			}
+			},
 		},
 		cc: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		ccLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		confirmSwitchLocaleLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		deselectLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		emailTemplates: {
 			type: Array,
 			default() {
 				return [];
-			}
+			},
 		},
 		emailTemplatesApiUrl: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		errors: {
 			type: Object,
 			default() {
 				return {};
-			}
+			},
 		},
 		findTemplateLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		id: {
 			type: String,
 			default() {
 				return 'composer';
-			}
+			},
 		},
 		initialTemplateKey: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		insertLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		insertModalLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		insertContentLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		insertSearchLabel: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		loadTemplateLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		locale: {
 			type: String,
-			required: true
+			required: true,
 		},
 		locales: {
 			type: Array,
 			default() {
 				return [];
-			}
+			},
 		},
 		moreSearchResultsLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		recipients: {
 			type: Array,
 			default() {
 				return [];
-			}
+			},
 		},
 		recipientsLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		recipientOptions: {
 			type: Array,
-			required: true
+			required: true,
 		},
 		removeItemLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		searchingLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		searchResultsLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		separateEmails: {
 			type: Boolean,
 			default() {
 				return false;
-			}
+			},
 		},
 		subject: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		subjectLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		switchToLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		switchToNamedLanguageLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		variables: {
 			type: Object,
 			default() {
 				return {};
-			}
-		}
+			},
+		},
 	},
 	data() {
 		return {
@@ -509,7 +509,7 @@ export default {
 			latestSearchRequest: '',
 			searchPhrase: '',
 			searchResults: [],
-			showSearchResultCount: 10
+			showSearchResultCount: 10,
 		};
 	},
 	computed: {
@@ -519,7 +519,7 @@ export default {
 			},
 			set(newVal) {
 				this.emitChange({bcc: newVal});
-			}
+			},
 		},
 		bodyInit() {
 			if (!this.attachers.length) {
@@ -527,16 +527,16 @@ export default {
 			}
 			let self = this;
 			return {
-				setup: function(editor) {
+				setup: function (editor) {
 					editor.ui.registry.addButton('pkpAttachFiles', {
 						icon: 'upload',
 						text: self.__('common.attachFiles'),
 						onAction() {
 							self.$modal.show(self.fileAttacherModalId);
-						}
+						},
 					});
 					editor.settings.toolbar += ' | pkpAttachFiles';
-				}
+				},
 			};
 		},
 		ccBinded: {
@@ -545,7 +545,7 @@ export default {
 			},
 			set(newVal) {
 				this.emitChange({cc: newVal});
-			}
+			},
 		},
 		/**
 		 * Override the recipientName in the email variables
@@ -559,7 +559,7 @@ export default {
 		 */
 		compiledVariables() {
 			const variables = [...this.localizedVariables];
-			const recipientName = variables.find(v => v.key === 'recipientName');
+			const recipientName = variables.find((v) => v.key === 'recipientName');
 			if (!recipientName) {
 				return variables;
 			}
@@ -578,10 +578,10 @@ export default {
 		},
 		localizedRecipientOptions() {
 			const locale = this.locale ?? $.pkp.app.currentLocale;
-			return this.recipientOptions.map(recipient => {
+			return this.recipientOptions.map((recipient) => {
 				return {
 					value: recipient.value,
-					label: recipient.label[locale]
+					label: recipient.label[locale],
 				};
 			});
 		},
@@ -592,14 +592,14 @@ export default {
 		 * A list of supported locales without the currently active locale
 		 */
 		otherLocales() {
-			return this.locales.filter(locale => locale.locale !== this.locale);
+			return this.locales.filter((locale) => locale.locale !== this.locale);
 		},
 		/**
 		 * The names of all the recipients separated by a comma
 		 */
 		recipientVariable() {
 			let name = this.recipientsSelected
-				.map(recipient => recipient.label)
+				.map((recipient) => recipient.label)
 				.join(this.__('common.commaListSeparator'));
 			if (!name) {
 				return '{$recipientName}';
@@ -612,17 +612,17 @@ export default {
 			},
 			set(newVal) {
 				this.emitChange({subject: newVal});
-			}
+			},
 		},
 		/**
 		 * The recipient options that are currently
 		 * set in the recipients array
 		 */
 		recipientsSelected() {
-			return this.localizedRecipientOptions.filter(recipient =>
+			return this.localizedRecipientOptions.filter((recipient) =>
 				this.recipients.includes(recipient.value)
 			);
-		}
+		},
 	},
 	methods: {
 		/**
@@ -631,13 +631,13 @@ export default {
 		addAttachments(component, files) {
 			const attachments = [
 				...this.attachments,
-				...files.map(file => {
+				...files.map((file) => {
 					switch (component) {
 						case 'FileAttacherUpload':
 							return {
 								name: file.name,
 								temporaryFileId: file.id,
-								documentType: file.documentType
+								documentType: file.documentType,
 							};
 						case 'FileAttacherFileStage':
 						case 'FileAttacherReviewFiles': {
@@ -645,17 +645,17 @@ export default {
 							return {
 								name: name === '' ? this.localize(file.name) : '',
 								submissionFileId: file.id,
-								documentType: file.documentType
+								documentType: file.documentType,
 							};
 						}
 						case 'FileAttacherLibrary':
 							return {
 								name: file.filename,
 								libraryFileId: file.id,
-								documentType: file.documentType
+								documentType: file.documentType,
 							};
 					}
-				})
+				}),
 			];
 			this.emitChange({attachments});
 			this.$modal.hide(this.fileAttacherModalId);
@@ -723,7 +723,7 @@ export default {
 			this.isLoadingTemplate = true;
 
 			const template = this.emailTemplates.find(
-				template => template.key === key
+				(template) => template.key === key
 			);
 			if (template) {
 				// Fake a small delay so that the user notices the change
@@ -762,7 +762,7 @@ export default {
 						return;
 					}
 					self.isLoadingTemplate = false;
-				}
+				},
 			});
 		},
 
@@ -770,8 +770,9 @@ export default {
 		 * Open a confirmation modal to change the locale
 		 */
 		openSwitchLocale(locale) {
-			const localeName = this.locales.find(iLocale => iLocale.locale === locale)
-				.name;
+			const localeName = this.locales.find(
+				(iLocale) => iLocale.locale === locale
+			).name;
 			this.openDialog({
 				name: 'confirmLocaleSwitch',
 				title: this.switchToNamedLanguageLabel.replace('{$name}', localeName),
@@ -789,14 +790,14 @@ export default {
 						callback: () => {
 							this.switchLocale(locale);
 							this.$modal.hide('confirmLocaleSwitch');
-						}
+						},
 					},
 					{
 						label: this.__('common.cancel'),
 						isWarnable: true,
-						callback: () => this.$modal.hide('confirmLocaleSwitch')
-					}
-				]
+						callback: () => this.$modal.hide('confirmLocaleSwitch'),
+					},
+				],
 			});
 		},
 
@@ -805,7 +806,7 @@ export default {
 		 */
 		removeAttachment(index) {
 			this.emitChange({
-				attachments: this.attachments.filter((attachment, i) => i !== index)
+				attachments: this.attachments.filter((attachment, i) => i !== index),
 			});
 		},
 
@@ -836,17 +837,17 @@ export default {
 				url: this.emailTemplatesApiUrl,
 				type: 'GET',
 				data: {
-					searchPhrase: this.searchPhrase
+					searchPhrase: this.searchPhrase,
 				},
 				_uuid: this.latestSearchRequest,
-				error: function(r) {
+				error: function (r) {
 					// Only process latest request response
 					if (self.latestSearchRequest !== this._uuid) {
 						return;
 					}
 					self.ajaxErrorCallback(r);
 				},
-				success: function(r) {
+				success: function (r) {
 					// Only process latest request response
 					if (self.latestSearchRequest !== this._uuid) {
 						return;
@@ -859,7 +860,7 @@ export default {
 						return;
 					}
 					self.isSearching = false;
-				}
+				},
 			});
 		},
 
@@ -875,7 +876,7 @@ export default {
 		 */
 		setSubject(value) {
 			this.emitChange({
-				subject: this.renderPreparedContent(value, this.compiledVariables)
+				subject: this.renderPreparedContent(value, this.compiledVariables),
 			});
 		},
 
@@ -904,11 +905,11 @@ export default {
 			// Force the autosuggest/text fields to recalculate the input width
 			// by briefly resizing the object that is used by elementResizeEvent
 			const resizeSensorEls = inputEl.querySelectorAll('.resize-sensor');
-			[...resizeSensorEls].forEach(resizeSensorEl => {
+			[...resizeSensorEls].forEach((resizeSensorEl) => {
 				resizeSensorEl.style.width = '1px';
 				setTimeout(() => (resizeSensorEl.style.width = 'auto'), 1000);
 			});
-		}
+		},
 	},
 	created() {
 		if (this.initialTemplateKey) {
@@ -921,8 +922,8 @@ export default {
 	watch: {
 		searchPhrase() {
 			this.$nextTick(() => this.search());
-		}
-	}
+		},
+	},
 };
 </script>
 

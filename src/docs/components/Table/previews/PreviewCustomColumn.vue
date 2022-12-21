@@ -28,12 +28,12 @@ import TableCell from '@/components/Table/TableCell.vue';
 export default {
 	extends: PreviewTable,
 	components: {
-		TableCell
+		TableCell,
 	},
 	methods: {
-		viewItem: function(row) {
+		viewItem: function (row) {
 			alert(JSON.stringify(row));
-		}
-	}
+		},
+	},
 };
 </script>

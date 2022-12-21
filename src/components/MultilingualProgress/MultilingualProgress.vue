@@ -13,12 +13,12 @@ export default {
 	props: {
 		count: {
 			type: Number,
-			required: true
+			required: true,
 		},
 		total: {
 			type: Number,
-			required: true
-		}
+			required: true,
+		},
 	},
 	computed: {
 		/**
@@ -46,10 +46,10 @@ export default {
 		tooltip() {
 			return this.__('form.multilingualProgress', {
 				count: this.count,
-				total: this.total
+				total: this.total,
 			});
-		}
-	}
+		},
+	},
 };
 </script>
 

@@ -14,10 +14,10 @@ export default {
 					name: 'Base',
 					template: this.extractTemplate(
 						PreviewSubmissionFilesListPanelTemplate
-					)
-				}
-			]
+					),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

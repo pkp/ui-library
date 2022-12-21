@@ -21,7 +21,7 @@ import fieldBaseAutosuggest from '@/docs/components/Form/helpers/field-autosugge
 
 export default {
 	components: {
-		DoiListPanel
+		DoiListPanel,
 	},
 	data() {
 		const submissionItems = [...submissions];
@@ -40,14 +40,14 @@ export default {
 						{
 							title: 'Published',
 							param: 'status',
-							value: `${pkp.const.STATUS_PUBLISHED}`
+							value: `${pkp.const.STATUS_PUBLISHED}`,
 						},
 						{
 							title: 'Unpublished',
 							param: 'status',
-							value: `${pkp.const.STATUS_QUEUED}, ${pkp.const.STATUS_SCHEDULED}` // '1,5'
-						}
-					]
+							value: `${pkp.const.STATUS_QUEUED}, ${pkp.const.STATUS_SCHEDULED}`, // '1,5'
+						},
+					],
 				},
 				{
 					heading: 'CrossRef Deposit Status',
@@ -55,24 +55,24 @@ export default {
 						{
 							title: 'Not deposited',
 							param: 'crossrefStatus',
-							value: 'notDeposited'
+							value: 'notDeposited',
 						},
 						{
 							title: 'Active',
 							param: 'crossrefStatus',
-							value: 'registered'
+							value: 'registered',
 						},
 						{
 							title: 'Failed',
 							param: 'crossrefStatus',
-							value: 'failed'
+							value: 'failed',
 						},
 						{
 							title: 'Marked Active',
 							param: 'crossrefStatus',
-							value: 'markedRegistered'
-						}
-					]
+							value: 'markedRegistered',
+						},
+					],
 				},
 				{
 					filters: [
@@ -87,12 +87,12 @@ export default {
 								apiUrl: '/issues.json',
 								name: 'issueIds',
 								label: 'Issues',
-								selectedLabel: 'Assigned'
+								selectedLabel: 'Assigned',
 							},
-							filterType: 'pkp-filter-autosuggest'
-						}
-					]
-				}
+							filterType: 'pkp-filter-autosuggest',
+						},
+					],
+				},
 				// For issues
 				// {
 				// 	heading: 'Publication Status',
@@ -111,7 +111,7 @@ export default {
 				// }
 			],
 			enabledDoiTypes: ['issue', 'publication', 'representation'],
-			doiPrefix: '10.9876'
+			doiPrefix: '10.9876',
 		};
 	},
 	created() {
@@ -157,6 +157,6 @@ export default {
 			'manager.dois.status.registered';
 		pkp.localeKeys['manager.dois.status.error'] = 'manager.dois.status.error';
 		pkp.localeKeys['manager.dois.status.stale'] = 'manager.dois.status.stale';
-	}
+	},
 };
 </script>

@@ -58,36 +58,36 @@ export default {
 	props: {
 		assignedNoticeBase: {
 			type: String,
-			required: true
+			required: true,
 		},
 		assignLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		changeIssueLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		publicationStatus: {
 			type: Number,
-			required: true
+			required: true,
 		},
 		publishedNoticeBase: {
 			type: String,
-			required: true
+			required: true,
 		},
 		scheduledNoticeBase: {
 			type: String,
-			required: true
+			required: true,
 		},
 		unscheduledNotice: {
 			type: String,
-			required: true
+			required: true,
 		},
 		unscheduleLabel: {
 			type: String,
-			required: true
-		}
+			required: true,
+		},
 	},
 	computed: {
 		/**
@@ -105,12 +105,12 @@ export default {
 				button = {
 					event: 'unpublish:publication',
 					isWarnable: true,
-					label: this.unscheduleLabel
+					label: this.unscheduleLabel,
 				};
 			} else if (this.publicationStatus !== pkp.const.STATUS_PUBLISHED) {
 				button = {
 					event: 'schedule:publication',
-					label: this.value ? this.changeIssueLabel : this.assignLabel
+					label: this.value ? this.changeIssueLabel : this.assignLabel,
 				};
 			}
 			return button;
@@ -147,9 +147,9 @@ export default {
 			if (!this.value) {
 				return '';
 			}
-			const issue = this.options.find(option => option.value === this.value);
+			const issue = this.options.find((option) => option.value === this.value);
 			return issue ? issue.label : '';
-		}
+		},
 	},
 	methods: {
 		/**
@@ -159,8 +159,8 @@ export default {
 		 */
 		emitGlobal(event) {
 			pkp.eventBus.$emit(event);
-		}
-	}
+		},
+	},
 };
 </script>
 

@@ -7,14 +7,14 @@ export default {
 	props: {
 		chartData: {
 			type: Object,
-			required: true
+			required: true,
 		},
 		chartOptions: {
 			type: Object,
-			default: function() {
+			default: function () {
 				return {};
-			}
-		}
+			},
+		},
 	},
 	computed: {
 		/**
@@ -22,7 +22,7 @@ export default {
 		 *
 		 * @return Object
 		 */
-		options: function() {
+		options: function () {
 			return {
 				responsive: true,
 				maintainAspectRatio: false,
@@ -32,23 +32,23 @@ export default {
 						top: 32,
 						bottom: 32,
 						left: 32,
-						right: 32
-					}
+						right: 32,
+					},
 				},
 				legend: {
-					display: false
+					display: false,
 				},
 				elements: {
 					arc: {
-						borderWidth: 0
-					}
+						borderWidth: 0,
+					},
 				},
-				...this.chartOptions
+				...this.chartOptions,
 			};
-		}
+		},
 	},
-	mounted: function() {
+	mounted: function () {
 		this.renderChart(this.chartData, this.options);
-	}
+	},
 };
 </script>

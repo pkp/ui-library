@@ -21,9 +21,9 @@
 export default {
 	data() {
 		return {
-			isActive: true
+			isActive: true,
 		};
-	}
+	},
 };
 </script>
 

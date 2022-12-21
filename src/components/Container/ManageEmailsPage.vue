@@ -12,7 +12,7 @@ export default {
 	components: {
 		Modal,
 		PkpFilter,
-		Search
+		Search,
 	},
 	data() {
 		return {
@@ -30,7 +30,7 @@ export default {
 			resetFocusTo: {},
 			searchPhrase: '',
 			templateForm: {},
-			templatesApiUrl: ''
+			templatesApiUrl: '',
 		};
 	},
 	computed: {
@@ -46,7 +46,7 @@ export default {
 
 			if (this.searchPhrase.length) {
 				const searchPhrase = this.searchPhrase.toLowerCase();
-				newMailables = newMailables.filter(mailable => {
+				newMailables = newMailables.filter((mailable) => {
 					return (
 						mailable.name.toLowerCase().includes(searchPhrase) ||
 						mailable.description.toLowerCase().includes(searchPhrase)
@@ -54,16 +54,16 @@ export default {
 				});
 			}
 
-			Object.keys(this.activeFilters).forEach(filter => {
-				this.activeFilters[filter].forEach(value => {
-					newMailables = newMailables.filter(mailable =>
+			Object.keys(this.activeFilters).forEach((filter) => {
+				this.activeFilters[filter].forEach((value) => {
+					newMailables = newMailables.filter((mailable) =>
 						mailable[filter].includes(value)
 					);
 				});
 			});
 
 			return newMailables;
-		}
+		},
 	},
 	methods: {
 		addFilter(param, value) {
@@ -91,21 +91,22 @@ export default {
 							this.deleteTemplate(
 								template,
 								() => {
-									this.currentMailable.emailTemplates = this.currentMailable.emailTemplates.filter(
-										t => t.key !== template.key
-									);
+									this.currentMailable.emailTemplates =
+										this.currentMailable.emailTemplates.filter(
+											(t) => t.key !== template.key
+										);
 								},
 								() => {
 									this.$modal.hide('removeTemplate');
 								}
 							);
-						}
+						},
 					},
 					{
 						label: this.__('common.cancel'),
-						callback: () => this.$modal.hide('removeTemplate')
-					}
-				]
+						callback: () => this.$modal.hide('removeTemplate'),
+					},
+				],
 			});
 		},
 		confirmResetAll() {
@@ -124,20 +125,20 @@ export default {
 								context: this,
 								headers: {
 									'X-Csrf-Token': pkp.currentUser.csrfToken,
-									'X-Http-Method-Override': 'DELETE'
+									'X-Http-Method-Override': 'DELETE',
 								},
 								error: this.ajaxErrorCallback,
 								success(r) {
 									window.location.reload();
-								}
+								},
 							});
-						}
+						},
 					},
 					{
 						label: this.__('common.cancel'),
-						callback: () => this.$modal.hide('resetAll')
-					}
-				]
+						callback: () => this.$modal.hide('resetAll'),
+					},
+				],
 			});
 		},
 		confirmResetTemplate(template) {
@@ -154,20 +155,21 @@ export default {
 						isWarnable: true,
 						callback: () => {
 							this.deleteTemplate(template, () => {
-								this.getTemplate(template.key, r => {
-									this.currentMailable.emailTemplates = this.currentMailable.emailTemplates.map(
-										t => (t.key === template.key ? r : t)
-									);
+								this.getTemplate(template.key, (r) => {
+									this.currentMailable.emailTemplates =
+										this.currentMailable.emailTemplates.map((t) =>
+											t.key === template.key ? r : t
+										);
 									this.$modal.hide('resetTemplate');
 								});
 							});
-						}
+						},
 					},
 					{
 						label: this.__('common.cancel'),
-						callback: () => this.$modal.hide('resetTemplate')
-					}
-				]
+						callback: () => this.$modal.hide('resetTemplate'),
+					},
+				],
 			});
 		},
 		deleteTemplate(template, onSuccess, onComplete) {
@@ -177,11 +179,11 @@ export default {
 				context: this,
 				headers: {
 					'X-Csrf-Token': pkp.currentUser.csrfToken,
-					'X-Http-Method-Override': 'DELETE'
+					'X-Http-Method-Override': 'DELETE',
 				},
 				error: this.ajaxErrorCallback,
 				success: onSuccess,
-				complete: onComplete
+				complete: onComplete,
 			});
 		},
 		getMailable(mailable, onSuccess) {
@@ -193,7 +195,7 @@ export default {
 				type: 'GET',
 				context: this,
 				error: this.ajaxErrorCallback,
-				success: onSuccess
+				success: onSuccess,
 			});
 		},
 		getTemplate(template, onSuccess) {
@@ -202,7 +204,7 @@ export default {
 				type: 'GET',
 				context: this,
 				error: this.ajaxErrorCallback,
-				success: onSuccess
+				success: onSuccess,
 			});
 		},
 		isFilterActive(param, value) {
@@ -219,13 +221,13 @@ export default {
 		},
 		openMailable(mailable) {
 			if (mailable.supportsTemplates) {
-				this.getMailable(mailable, mailable => {
+				this.getMailable(mailable, (mailable) => {
 					this.resetFocusTo = document.activeElement;
 					this.currentMailable = mailable;
 					this.$modal.show('mailable');
 				});
 			} else {
-				this.getTemplate(mailable.emailTemplateKey, template => {
+				this.getTemplate(mailable.emailTemplateKey, (template) => {
 					this.currentMailable = mailable;
 					this.openTemplate(template);
 				});
@@ -242,7 +244,7 @@ export default {
 				return;
 			}
 			let newFilters = {...this.activeFilters};
-			newFilters[param] = newFilters[param].filter(v => v !== value);
+			newFilters[param] = newFilters[param].filter((v) => v !== value);
 			this.activeFilters = newFilters;
 		},
 		resetFocus() {
@@ -265,7 +267,7 @@ export default {
 
 				const props = Object.keys(newTemplate);
 
-				templateForm.fields = templateForm.fields.map(field => {
+				templateForm.fields = templateForm.fields.map((field) => {
 					if (props.includes(field.name)) {
 						field.value = field.isMultilingual
 							? {...newTemplate[field.name]}
@@ -275,15 +277,15 @@ export default {
 				});
 			}
 
-			templateForm.fields = templateForm.fields.map(field => {
+			templateForm.fields = templateForm.fields.map((field) => {
 				if (field.name === 'body') {
 					field.preparedContent = Object.keys(
 						this.currentMailable.dataDescriptions
-					).map(variable => {
+					).map((variable) => {
 						return {
 							key: variable,
 							value: '{$' + variable + '}',
-							description: this.currentMailable.dataDescriptions[variable]
+							description: this.currentMailable.dataDescriptions[variable],
 						};
 					});
 				}
@@ -295,7 +297,8 @@ export default {
 				(newTemplate &&
 					this.currentMailable.emailTemplateKey !== newTemplate.key)
 			) {
-				templateForm.hiddenFields.alternateTo = this.currentMailable.emailTemplateKey;
+				templateForm.hiddenFields.alternateTo =
+					this.currentMailable.emailTemplateKey;
 			}
 
 			this.currentTemplateForm = templateForm;
@@ -303,13 +306,14 @@ export default {
 		templateSaved(template) {
 			const exists =
 				this.currentMailable.emailTemplates.findIndex(
-					t => t.key === template.key
+					(t) => t.key === template.key
 				) > -1;
 
 			if (exists) {
-				this.currentMailable.emailTemplates = this.currentMailable.emailTemplates.map(
-					t => (t.key === template.key ? template : t)
-				);
+				this.currentMailable.emailTemplates =
+					this.currentMailable.emailTemplates.map((t) =>
+						t.key === template.key ? template : t
+					);
 			} else {
 				this.currentMailable.emailTemplates.push(template);
 			}
@@ -329,15 +333,15 @@ export default {
 		updateCurrentTemplateForm(formId, data) {
 			this.currentTemplateForm = {
 				...this.currentTemplateForm,
-				...data
+				...data,
 			};
-		}
+		},
 	},
 	watch: {
 		currentTemplate(newVal) {
 			this.setCurrentTemplateForm(newVal);
-		}
-	}
+		},
+	},
 };
 </script>
 

@@ -121,151 +121,151 @@ export default {
 		Pagination,
 		PkpHeader,
 		Search,
-		SelectReviewerListItem
+		SelectReviewerListItem,
 	},
 	mixins: [fetch],
 	props: {
 		activeReviewsCountLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		activeReviewsLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		assignedToLastRoundLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		averageCompletionLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		biographyLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		cancelledReviewsLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		completedReviewsLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		currentlyAssigned: {
 			type: Array,
 			default() {
 				return [];
-			}
+			},
 		},
 		currentlyAssignedLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		daySinceLastAssignmentLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		daysSinceLastAssignmentLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		daysSinceLastAssignmentDescriptionLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		declinedReviewsLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		emptyLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		filters: {
 			type: Array,
 			default() {
 				return [];
-			}
+			},
 		},
 		gossipLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		id: {
 			type: String,
-			required: true
+			required: true,
 		},
 		items: {
 			type: Array,
 			default() {
 				return [];
-			}
+			},
 		},
 		itemsMax: {
 			type: Number,
 			default() {
 				return 0;
-			}
+			},
 		},
 		lastRoundReviewers: {
 			type: Array,
 			default() {
 				return [];
-			}
+			},
 		},
 		neverAssignedLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		reassignLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		reassignWithNameLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		reviewerRatingLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		reviewInterestsLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		selectorName: {
 			type: String,
-			required: true
+			required: true,
 		},
 		selectReviewerLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		title: {
 			type: String,
-			required: true
+			required: true,
 		},
 		warnOnAssignment: {
 			type: Array,
 			default() {
 				return [];
-			}
+			},
 		},
 		warnOnAssignmentLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		warnOnAssignmentUnlockLabel: {
 			type: String,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return {
 			isLoading: false,
-			isSidebarVisible: false
+			isSidebarVisible: false,
 		};
 	},
 	computed: {
@@ -279,8 +279,8 @@ export default {
 			return [
 				...this.lastRoundReviewers,
 				...this.items.filter(
-					reviewer => !this.lastRoundReviewerIds.includes(reviewer.id)
-				)
+					(reviewer) => !this.lastRoundReviewerIds.includes(reviewer.id)
+				),
 			];
 		},
 
@@ -288,8 +288,8 @@ export default {
 		 * The user IDs of reviewers from the last round
 		 */
 		lastRoundReviewerIds() {
-			return this.lastRoundReviewers.map(reviewer => reviewer.id);
-		}
+			return this.lastRoundReviewers.map((reviewer) => reviewer.id);
+		},
 	},
 	methods: {
 		/**
@@ -338,9 +338,9 @@ export default {
 		setItems(items, itemsMax) {
 			this.$emit('set', this.id, {
 				items,
-				itemsMax
+				itemsMax,
 			});
-		}
+		},
 	},
 	watch: {
 		/**
@@ -351,7 +351,7 @@ export default {
 			if (newVal && Object.keys(newVal).length) {
 				this.isSidebarVisible = true;
 			}
-		}
-	}
+		},
+	},
 };
 </script>

@@ -16,15 +16,15 @@ export default {
 				{
 					component: PreviewChart,
 					name: 'Base',
-					template: this.extractTemplate(PreviewChartTemplate)
+					template: this.extractTemplate(PreviewChartTemplate),
 				},
 				{
 					component: PreviewDoughnut,
 					name: 'Doughnut',
-					template: this.extractTemplate(PreviewDoughnutTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewDoughnutTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

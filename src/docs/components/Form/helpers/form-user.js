@@ -34,13 +34,13 @@ export default {
 		FieldOptionsEmails,
 		FieldTextUrl,
 		FieldRichTextareaBio,
-		FieldTextOrcid
+		FieldTextOrcid,
 	],
 	groups: [
 		{...GroupIdentity, pageId: 'account'},
 		{...GroupContact, pageId: 'account'},
 		{...GroupPreferences, pageId: 'preferences'},
-		{...GroupProfile, pageId: 'profile'}
+		{...GroupProfile, pageId: 'profile'},
 	],
 	pages: [
 		{
@@ -48,41 +48,41 @@ export default {
 			label: 'Account Details',
 			submitButton: {
 				label: 'Next',
-				isPrimary: true
-			}
+				isPrimary: true,
+			},
 		},
 		{
 			id: 'preferences',
 			label: 'Preferences',
 			submitButton: {
 				label: 'Next',
-				isPrimary: true
+				isPrimary: true,
 			},
 			previousButton: {
-				label: 'Previous'
-			}
+				label: 'Previous',
+			},
 		},
 		{
 			id: 'profile',
 			label: 'Profile',
 			submitButton: {
 				label: 'Submit',
-				isPrimary: true
+				isPrimary: true,
 			},
 			previousButton: {
-				label: 'Previous'
-			}
-		}
+				label: 'Previous',
+			},
+		},
 	],
 	supportedFormLocales: [
 		...Form.supportedFormLocales,
 		{
 			key: 'fr_CA',
-			label: 'Français (Canada)'
+			label: 'Français (Canada)',
 		},
 		{
 			key: 'ar_AR',
-			label: 'عربى'
-		}
-	]
+			label: 'عربى',
+		},
+	],
 };

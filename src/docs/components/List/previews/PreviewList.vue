@@ -31,7 +31,7 @@ import ListItem from '@/components/List/ListItem.vue';
 export default {
 	components: {
 		List,
-		ListItem
-	}
+		ListItem,
+	},
 };
 </script>

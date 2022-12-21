@@ -14,11 +14,11 @@ export default {
 				{
 					component: PreviewPage,
 					name: 'Base',
-					template: this.extractTemplate(PreviewPageTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewPageTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>
 

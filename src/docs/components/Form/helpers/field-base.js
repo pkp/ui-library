@@ -4,5 +4,5 @@ export default {
 	isRequired: false,
 	primaryLocale: 'en_US',
 	locales: ['en_US'],
-	allErrors: {}
+	allErrors: {},
 };

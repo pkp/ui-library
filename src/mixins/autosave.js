@@ -59,7 +59,7 @@ export default {
 			/**
 			 * Autosave payloads that are in the queue waiting to be saved
 			 */
-			pendingAutosaves: []
+			pendingAutosaves: [],
 		};
 	},
 	methods: {
@@ -76,7 +76,7 @@ export default {
 				id: id,
 				url: url,
 				timestamp: Date.now(),
-				data: data
+				data: data,
 			});
 		},
 
@@ -157,7 +157,7 @@ export default {
 										this.$modal.hide('loadAutosave');
 									}, 2000); // 2 seconds so that autosaving can start before first check
 								});
-							}
+							},
 						},
 						{
 							label: this.i18nDiscardChanges,
@@ -166,9 +166,9 @@ export default {
 								this.removeLocaleStorage(this.autosavesKey);
 								this.startAutosaveTimer();
 								this.$modal.hide('loadAutosave');
-							}
-						}
-					]
+							},
+						},
+					],
 				});
 			});
 		},
@@ -220,7 +220,7 @@ export default {
 			}
 			setTimeout(() => {
 				this._sendAutosave(this._getNextAutosave(), {
-					success: r => {
+					success: (r) => {
 						connectionTimerInterval = 4000;
 						this.isDisconnected = false;
 					},
@@ -229,7 +229,7 @@ export default {
 							connectionTimerInterval = connectionTimerInterval * 2;
 						}
 						this._runReconnect();
-					}
+					},
 				});
 			}, connectionTimerInterval);
 		},
@@ -244,7 +244,7 @@ export default {
 			isAutosaveRequestPending = true;
 			this.isAutosaving = true;
 
-			const onSuccess = r => {
+			const onSuccess = (r) => {
 				if (typeof this.autosaveSucceeded === 'function') {
 					this.autosaveSucceeded(payload, r);
 				}
@@ -266,7 +266,7 @@ export default {
 				}
 			};
 
-			const onComplete = r => {
+			const onComplete = (r) => {
 				isAutosaveRequestPending = false;
 				let moreAutosaves = this.getLocalStorage(this.autosavesKey) ?? [];
 				if (!moreAutosaves.length && !this.pendingAutosaves.length) {
@@ -286,10 +286,10 @@ export default {
 				method: 'POST',
 				headers: {
 					'X-Csrf-Token': pkp.currentUser.csrfToken,
-					'X-Http-Method-Override': 'PUT'
+					'X-Http-Method-Override': 'PUT',
 				},
 				data: payload.data,
-				...config
+				...config,
 			});
 		},
 
@@ -303,17 +303,17 @@ export default {
 			let existingAutosaves = this.getLocalStorage(this.autosavesKey) ?? [];
 			this.setLocalStorage(this.autosavesKey, [
 				...existingAutosaves,
-				...this.pendingAutosaves
+				...this.pendingAutosaves,
 			]);
 			this.pendingAutosaves = [];
-		}
+		},
 	},
 	watch: {
 		isDisconnected(newVal, oldVal) {
 			if (newVal && newVal !== oldVal) {
 				this._runReconnect();
 			}
-		}
+		},
 	},
 	created() {
 		/**
@@ -326,13 +326,13 @@ export default {
 			'autosavesKey',
 			'i18nDiscardChanges',
 			'i18nUnsavedChanges',
-			'i18nUnsavedChangesMessage'
-		].forEach(prop => {
+			'i18nUnsavedChangesMessage',
+		].forEach((prop) => {
 			if (typeof this[prop] === 'undefined') {
 				throw new Error(err.replace('{$prop}', prop));
 			}
 		});
-		['addAutosaves', 'restoreStoredAutosave'].forEach(method => {
+		['addAutosaves', 'restoreStoredAutosave'].forEach((method) => {
 			if (typeof this[method] !== 'function') {
 				throw new Error(err.replace('{$prop}', method));
 			}
@@ -352,5 +352,5 @@ export default {
 	},
 	destroyed() {
 		this.stopAutosaveTimer();
-	}
+	},
 };

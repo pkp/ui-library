@@ -89,55 +89,57 @@ export default {
 		ButtonRow,
 		File,
 		FileUploader,
-		FileUploadProgress
+		FileUploadProgress,
 	},
 	props: {
 		addFilesLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		attachFilesLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		backLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		component: {
 			type: String,
-			required: true
+			required: true,
 		},
 		dragAndDropMessage: {
 			type: String,
-			required: true
+			required: true,
 		},
 		dragAndDropOrUploadMessage: {
 			type: String,
-			required: true
+			required: true,
 		},
 		dropzoneOptions: {
 			type: Object,
-			required: true
+			required: true,
 		},
 		removeItemLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		temporaryFilesApiUrl: {
 			type: String,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return {
-			files: []
+			files: [],
 		};
 	},
 	computed: {
 		isUploading() {
-			return this.files.filter(file => 'progress' in file === true).length > 1;
-		}
+			return (
+				this.files.filter((file) => 'progress' in file === true).length > 1
+			);
+		},
 	},
 	methods: {
 		removeFile(index) {
@@ -150,8 +152,8 @@ export default {
 		},
 		updateFiles(files) {
 			this.files = [...files];
-		}
-	}
+		},
+	},
 };
 </script>
 

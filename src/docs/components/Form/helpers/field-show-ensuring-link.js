@@ -6,8 +6,8 @@ export default {
 		{
 			value: true,
 			label:
-				'Present a link to <button>How to ensure all files are anonymized</button> during upload.'
-		}
+				'Present a link to <button>How to ensure all files are anonymized</button> during upload.',
+		},
 	],
 	message: `
 		<p>Hello this is a long message that will require scrolling.</p><ul><li>One</li><li>Two</li></ul>
@@ -32,5 +32,5 @@ export default {
 		<p>Hello this is a long message that will require scrolling.</p><ul><li>One</li><li>Two</li></ul>
 		<p>Hello this is a long message that will require scrolling.</p><ul><li>One</li><li>Two</li></ul>
 	`,
-	modalTitle: 'How to ensure all files are anonymized'
+	modalTitle: 'How to ensure all files are anonymized',
 };

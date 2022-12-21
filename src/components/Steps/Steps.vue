@@ -4,7 +4,7 @@
 			ref="buttons"
 			class="pkpSteps__buttonWrapper"
 			:class="{
-				'-screenReader': steps.length === 1
+				'-screenReader': steps.length === 1,
 			}"
 		>
 			<span class="pkpSteps__line" aria-hidden="true" />
@@ -18,7 +18,7 @@
 					v-for="(step, i) in steps"
 					class="pkpSteps__step"
 					:class="{
-						'-screenReader': collapsed && !stepsVisible && current !== step.id
+						'-screenReader': collapsed && !stepsVisible && current !== step.id,
 					}"
 					:key="step.id"
 				>
@@ -80,19 +80,19 @@ export default {
 	props: {
 		current: {
 			type: String,
-			required: true
+			required: true,
 		},
 		startedSteps: {
 			type: Array,
-			required: true
+			required: true,
 		},
 		label: {
 			type: String,
-			required: true
+			required: true,
 		},
 		progressLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		/**
 		 * The DOM element to scroll into view when changing steps.
@@ -103,18 +103,18 @@ export default {
 			type: HTMLElement,
 			default() {
 				return null;
-			}
+			},
 		},
 		showStepsLabel: {
 			type: String,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return {
 			collapsed: false,
 			steps: [],
-			stepsVisible: false
+			stepsVisible: false,
 		};
 	},
 	computed: {
@@ -133,10 +133,10 @@ export default {
 			return this.progressLabel
 				.replace(
 					'{$current}',
-					1 + this.steps.findIndex(step => step.id === this.current)
+					1 + this.steps.findIndex((step) => step.id === this.current)
 				)
 				.replace('{$total}', this.steps.length);
-		}
+		},
 	},
 	methods: {
 		/**
@@ -161,7 +161,7 @@ export default {
 		 * @param {String} stepId
 		 */
 		setChildStepsIsActive(stepId) {
-			this.steps.forEach(step => (step.isActive = step.id === stepId));
+			this.steps.forEach((step) => (step.isActive = step.id === stepId));
 		},
 
 		/**
@@ -189,7 +189,7 @@ export default {
 				this.$refs.buttons.offsetWidth -
 				this.$refs['button' + lastStep.id][0].offsetLeft;
 			this.$refs.line.style.right = width + 'px';
-		}
+		},
 	},
 	watch: {
 		/**
@@ -211,18 +211,18 @@ export default {
 				this.setFocusIn(this.$el.querySelector('.pkpStep:not([hidden])'));
 				if (this.scrollTo) {
 					this.$scrollTo(this.scrollTo, 500, {
-						offset: -50
+						offset: -50,
 					});
 				}
 			});
-		}
+		},
 	},
 	mounted() {
 		/**
 		 * Store the nested steps as a data property
 		 */
 		this.steps = this.$children.filter(
-			child => child.$options._componentTag === 'step'
+			(child) => child.$options._componentTag === 'step'
 		);
 
 		/**
@@ -241,7 +241,7 @@ export default {
 		 * Set the progress line
 		 */
 		this.$nextTick(() => this.setStartedLine());
-	}
+	},
 };
 </script>
 

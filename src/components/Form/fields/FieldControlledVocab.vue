@@ -8,7 +8,7 @@ export default {
 	data() {
 		return {
 			allSuggestions: [],
-			suggestionsLoaded: false
+			suggestionsLoaded: false,
 		};
 	},
 	methods: {
@@ -39,17 +39,17 @@ export default {
 					this.ajaxErrorCallback(r);
 				},
 				success(r) {
-					this.allSuggestions = r.map(v => {
+					this.allSuggestions = r.map((v) => {
 						return {
 							value: v,
-							label: v
+							label: v,
 						};
 					});
 					this.suggestionsLoaded = true;
 					if (successCallback) {
 						successCallback.apply(this);
 					}
-				}
+				},
 			});
 		},
 
@@ -65,7 +65,7 @@ export default {
 			} else if (this.inputValue) {
 				this.select({
 					value: this.inputValue,
-					label: this.inputValue
+					label: this.inputValue,
 				});
 			}
 		},
@@ -76,7 +76,7 @@ export default {
 		 *
 		 * @param {Array} suggestions List of unfiltered suggestions
 		 */
-		setSuggestions: debounce(function() {
+		setSuggestions: debounce(function () {
 			// Escape the input for regex
 			// See: https://stackoverflow.com/a/3561711/1723499
 			const regex = new RegExp(
@@ -84,7 +84,7 @@ export default {
 				'gi'
 			);
 			this.suggestions = this.allSuggestions.filter(
-				suggestion =>
+				(suggestion) =>
 					!this.inputValue ||
 					(this.inputValue !== suggestion.value &&
 						suggestion.value.match(regex))
@@ -92,10 +92,10 @@ export default {
 			if (this.inputValue && !this.suggestions.includes(this.inputValue)) {
 				this.suggestions.unshift({
 					value: this.inputValue,
-					label: this.inputValue
+					label: this.inputValue,
 				});
 			}
-		}, 250)
+		}, 250),
 	},
 	watch: {
 		/**
@@ -120,10 +120,10 @@ export default {
 					return;
 				}
 				this.setSelected(
-					this.allSuggestions.filter(s => localizedValue.includes(s.value))
+					this.allSuggestions.filter((s) => localizedValue.includes(s.value))
 				);
 			});
-		}
-	}
+		},
+	},
 };
 </script>

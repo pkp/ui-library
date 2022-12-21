@@ -10,7 +10,7 @@ export default {
 	components: {
 		Dropdown,
 		Notification,
-		PkpHeader
+		PkpHeader,
 	},
 	data() {
 		return {
@@ -20,7 +20,7 @@ export default {
 			notifications: [],
 			notificationInterval: null,
 			tasksUrl: '',
-			unreadTasksCount: 0
+			unreadTasksCount: 0,
 		};
 	},
 	computed: {
@@ -46,7 +46,7 @@ export default {
 		backToDashboardLabel() {
 			if (this.backToDashboardLink) {
 				return this.__('navigation.backTo', {
-					page: this.backToDashboardLink.name
+					page: this.backToDashboardLink.name,
 				});
 			}
 			return null;
@@ -66,7 +66,7 @@ export default {
 				Object.keys(this.menu).length === 1 &&
 				!this.menu[Object.keys(this.menu)[0]].isCurrent
 			);
-		}
+		},
 	},
 	methods: {
 		/**
@@ -75,7 +75,7 @@ export default {
 		 * @param {String} key Notification key
 		 */
 		dismissNotification(key) {
-			this.notifications = this.notifications.filter(n => {
+			this.notifications = this.notifications.filter((n) => {
 				return n.key !== key;
 			});
 		},
@@ -96,7 +96,7 @@ export default {
 		openTasks() {
 			var opts = {
 				url: this.tasksUrl,
-				closeCallback: this.$refs.tasksButton.focus()
+				closeCallback: this.$refs.tasksButton.focus(),
 			};
 
 			$(
@@ -105,7 +105,7 @@ export default {
 					'" ' +
 					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>'
 			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
-		}
+		},
 	},
 	created() {
 		/**
@@ -126,7 +126,7 @@ export default {
 				key: notificationUniqueKey,
 				message: message,
 				type: type ?? 'notice',
-				expire: Date.now() + 5000 // milliseconds
+				expire: Date.now() + 5000, // milliseconds
 			});
 			notificationUniqueKey++;
 		});
@@ -140,7 +140,7 @@ export default {
 			if (this.$refs.notifications.matches(':hover')) {
 				return;
 			}
-			this.notifications = this.notifications.filter(notification => {
+			this.notifications = this.notifications.filter((notification) => {
 				return notification.expire > Date.now();
 			});
 		}, 250);
@@ -155,7 +155,7 @@ export default {
 		 */
 		pkp.eventBus.$on(
 			'update:unread-tasks-count',
-			data => (this.unreadTasksCount = data.count)
+			(data) => (this.unreadTasksCount = data.count)
 		);
 	},
 	destroyed() {
@@ -163,7 +163,7 @@ export default {
 		pkp.eventBus.$off('clear-all-notify');
 		clearInterval(this.notificationInterval);
 		pkp.eventBus.$off('update:unread-tasks-count');
-	}
+	},
 };
 </script>
 

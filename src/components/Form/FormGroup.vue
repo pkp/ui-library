@@ -19,7 +19,7 @@
 							:class="{
 								'pkpFormGroup__locale--isVisible': visibleLocales.includes(
 									locale.key
-								)
+								),
 							}"
 						>
 							<component
@@ -96,7 +96,7 @@ export default {
 		FieldText,
 		FieldTextarea,
 		FieldUpload,
-		FieldUploadImage
+		FieldUploadImage,
 	},
 	props: {
 		id: String,
@@ -109,7 +109,7 @@ export default {
 		primaryLocale: String,
 		visibleLocales: Array,
 		availableLocales: Array,
-		showWhen: [String, Array]
+		showWhen: [String, Array],
 	},
 	computed: {
 		/**
@@ -119,7 +119,7 @@ export default {
 		 */
 		fieldsInGroup() {
 			return this.fields.filter(
-				field => field.groupId === this.id && this.shouldShowField(field)
+				(field) => field.groupId === this.id && this.shouldShowField(field)
 			);
 		},
 
@@ -130,7 +130,7 @@ export default {
 				}
 			}
 			return false;
-		}
+		},
 	},
 	methods: {
 		/**
@@ -141,7 +141,7 @@ export default {
 		 * @param {mixed} value The new value for the prop
 		 * @param {String} localeKey Optional locale key for multilingual props
 		 */
-		fieldChanged: function(name, prop, value, localeKey) {
+		fieldChanged: function (name, prop, value, localeKey) {
 			this.$emit('change', name, prop, value, localeKey);
 		},
 
@@ -151,13 +151,15 @@ export default {
 		 * @param {Object} field One of this.fields
 		 * @return {Boolean}
 		 */
-		shouldShowField: function(field) {
+		shouldShowField: function (field) {
 			if (typeof field.showWhen === 'undefined') {
 				return true;
 			}
 			const whenFieldName =
 				typeof field.showWhen === 'string' ? field.showWhen : field.showWhen[0];
-			const whenField = this.fields.find(field => field.name === whenFieldName);
+			const whenField = this.fields.find(
+				(field) => field.name === whenFieldName
+			);
 			if (!whenField) {
 				return false;
 			}
@@ -174,7 +176,7 @@ export default {
 		 * @param {Array} errors List of errors for the field
 		 * @param {String} localeKey The locale key for a multilingual field
 		 */
-		setFieldErrors: function(name, errors, localeKey = '') {
+		setFieldErrors: function (name, errors, localeKey = '') {
 			let newErrors = {...this.errors};
 			if (!errors || !errors.length) {
 				if (localeKey && newErrors[name] && newErrors[name][localeKey]) {
@@ -191,8 +193,8 @@ export default {
 				}
 			}
 			this.$emit('set-errors', newErrors);
-		}
-	}
+		},
+	},
 };
 </script>
 

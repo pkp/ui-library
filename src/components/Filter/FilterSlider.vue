@@ -60,33 +60,33 @@ import debounce from 'debounce';
 export default {
 	extends: Filter,
 	components: {
-		Icon
+		Icon,
 	},
 	props: {
 		max: {
 			type: Number,
-			required: true
+			required: true,
 		},
 		min: {
 			type: Number,
-			required: true
+			required: true,
 		},
 		useStars: {
 			type: Boolean,
 			default() {
 				return false;
-			}
+			},
 		},
 		valueLabel: {
 			type: String,
 			default() {
 				return '{$value}';
-			}
-		}
+			},
+		},
 	},
 	data() {
 		return {
-			currentValue: this.value
+			currentValue: this.value,
 		};
 	},
 	computed: {
@@ -118,11 +118,11 @@ export default {
 				// or right of the range.
 				const offset = 8 + (position / 100) * -17;
 				return {
-					left: `calc(${position}% + ${offset}px)`
+					left: `calc(${position}% + ${offset}px)`,
 				};
 			}
 			return {};
-		}
+		},
 	},
 	methods: {
 		/**
@@ -140,7 +140,7 @@ export default {
 		 * Debounce this method so that sliders don't fire off dozens of
 		 * events as they're being moved.
 		 */
-		updateCurrentValue: debounce(function(value) {
+		updateCurrentValue: debounce(function (value) {
 			this.$emit('update-filter', this.param, value);
 		}, 250),
 
@@ -149,17 +149,17 @@ export default {
 		 */
 		remove() {
 			this.$emit('remove-filter', this.param);
-		}
+		},
 	},
 	watch: {
 		/**
 		 * Fire a debounced method to update the active filter
 		 * value
 		 */
-		currentValue: function(newVal, oldVal) {
+		currentValue: function (newVal, oldVal) {
 			this.updateCurrentValue(newVal);
-		}
-	}
+		},
+	},
 };
 </script>
 

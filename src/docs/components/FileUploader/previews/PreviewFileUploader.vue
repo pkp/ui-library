@@ -37,12 +37,12 @@ import dropzoneOptions from '@/docs/data/dropzoneOptions';
 export default {
 	components: {
 		FileUploader,
-		FileUploadProgress
+		FileUploadProgress,
 	},
 	data() {
 		return {
 			files: [],
-			options: {...dropzoneOptions}
+			options: {...dropzoneOptions},
 		};
 	},
 	methods: {
@@ -54,8 +54,8 @@ export default {
 		},
 		updateFiles(files) {
 			this.files = [...files];
-		}
-	}
+		},
+	},
 };
 </script>
 

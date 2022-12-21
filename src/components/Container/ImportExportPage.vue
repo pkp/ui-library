@@ -6,7 +6,7 @@ export default {
 	extends: Page,
 	data() {
 		return {
-			selectedSubmissions: []
+			selectedSubmissions: [],
 		};
 	},
 	methods: {
@@ -30,11 +30,11 @@ export default {
 				this.selectedSubmissions = [];
 			} else {
 				this.selectedSubmissions = this.components.submissions.items.map(
-					s => s.id
+					(s) => s.id
 				);
 			}
-		}
-	}
+		},
+	},
 };
 </script>
 

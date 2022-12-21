@@ -16,15 +16,15 @@ export default {
 				{
 					component: PreviewOrderer,
 					name: 'Base',
-					template: this.extractTemplate(PreviewOrdererTemplate)
+					template: this.extractTemplate(PreviewOrdererTemplate),
 				},
 				{
 					component: PreviewOrdererDraggable,
 					name: 'Draggable',
-					template: this.extractTemplate(PreviewOrdererDraggableTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewOrdererDraggableTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

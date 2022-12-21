@@ -13,11 +13,9 @@
 				@toggle="toggleExpanded(item.id)"
 			/>
 		</template>
-		<template v-slot:itemExpanded="{item}">
+		<template v-slot:itemExpanded="{}">
 			<list>
-				<list-item>
-					Ut enim ad minim veniam, quis nostrud
-				</list-item>
+				<list-item>Ut enim ad minim veniam, quis nostrud</list-item>
 				<list-item>
 					Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.
 				</list-item>
@@ -42,12 +40,12 @@ export default {
 		Expander,
 		List,
 		ListItem,
-		ListPanel
+		ListPanel,
 	},
 	data() {
 		return {
 			items: [...items],
-			expanded: []
+			expanded: [],
 		};
 	},
 	methods: {
@@ -56,11 +54,11 @@ export default {
 		},
 		toggleExpanded(id) {
 			if (this.expanded.includes(id)) {
-				this.expanded = this.expanded.filter(k => k !== id);
+				this.expanded = this.expanded.filter((k) => k !== id);
 			} else {
 				this.expanded.push(id);
 			}
-		}
-	}
+		},
+	},
 };
 </script>

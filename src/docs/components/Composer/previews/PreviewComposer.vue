@@ -37,7 +37,7 @@
 			:to="to"
 			recipientsLabel="To:"
 			:recipientOptions="recipientOptions"
-			:recipients="recipientOptions.map(r => r.value)"
+			:recipients="recipientOptions.map((r) => r.value)"
 			:variables="variables"
 			@set="composerChanged"
 		>
@@ -60,7 +60,7 @@ import insertContent from '../../../data/insertContent';
 
 export default {
 	components: {
-		Composer
+		Composer,
 	},
 	data() {
 		const emailTemplates = [emailTemplate];
@@ -68,51 +68,51 @@ export default {
 			...emailTemplate,
 			key: 'ACCEPTED_CONDITIONAL',
 			name: {
-				en_US: 'Accepted With Conditions'
+				en_US: 'Accepted With Conditions',
 			},
 			subject: {
-				en_US: 'Accepted With Conditions'
-			}
+				en_US: 'Accepted With Conditions',
+			},
 		});
 		emailTemplates.push({
 			...emailTemplate,
 			key: 'ACCEPTED_EARLY_PUBLICATION',
 			name: {
-				en_US: 'Accepted for Early Publication'
+				en_US: 'Accepted for Early Publication',
 			},
 			subject: {
-				en_US: 'Accepted for Early Publication'
-			}
+				en_US: 'Accepted for Early Publication',
+			},
 		});
 		const recipientOptions = [
 			{
 				value: 2,
 				label: {
 					en_US: 'Carlo Corino',
-					fr_CA: 'Carlo Fr Corino'
-				}
+					fr_CA: 'Carlo Fr Corino',
+				},
 			},
 			{
 				value: 3,
 				label: {
 					en_US: 'Daniel Barnes',
-					fr_CA: 'Daniel Fr Barnes'
-				}
+					fr_CA: 'Daniel Fr Barnes',
+				},
 			},
 			{
 				value: 4,
 				label: {
 					en_US: 'Stephanie Minoue',
-					fr_CA: 'Stephanie Fr Minoue'
-				}
+					fr_CA: 'Stephanie Fr Minoue',
+				},
 			},
 			{
 				value: 5,
 				label: {
 					en_US: 'Paul Hudson',
-					fr_CA: 'Paul Fr Hudson'
-				}
-			}
+					fr_CA: 'Paul Fr Hudson',
+				},
+			},
 		];
 
 		return {
@@ -129,29 +129,29 @@ export default {
 			locales: [
 				{
 					locale: 'en_US',
-					name: 'English'
+					name: 'English',
 				},
 				{
 					locale: 'fr_CA',
-					name: 'French'
-				}
+					name: 'French',
+				},
 			],
 			subject: '',
 			to: [2, 3],
 			recipientOptions: recipientOptions,
-			recipients: recipientOptions.map(r => r.value),
+			recipients: recipientOptions.map((r) => r.value),
 			variables: {
 				en_US: [...insertContent],
-				fr_CA: [...insertContent]
-			}
+				fr_CA: [...insertContent],
+			},
 		};
 	},
 	methods: {
 		composerChanged(id, data) {
-			Object.keys(data).forEach(key => {
+			Object.keys(data).forEach((key) => {
 				this[key] = data[key];
 			});
-		}
-	}
+		},
+	},
 };
 </script>

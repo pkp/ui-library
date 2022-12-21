@@ -21,14 +21,14 @@ export default {
 		dialog,
 		localizeMoment,
 		localizeSubmission,
-		localStorage
+		localStorage,
 	],
 	components: {
 		ButtonRow,
 		ContributorsListPanel,
 		File,
 		Modal,
-		SubmissionFilesListPanel
+		SubmissionFilesListPanel,
 	},
 	data() {
 		return {
@@ -60,7 +60,7 @@ export default {
 			i18nTitleSeparator: '',
 			i18nUnableToSave: '',
 			i18nUnsavedChanges: '',
-			i18nUnsavedChangesMessage: ''
+			i18nUnsavedChangesMessage: '',
 		};
 	},
 	computed: {
@@ -77,21 +77,21 @@ export default {
 		},
 		currentCategoryTitles() {
 			return this.publication.categoryIds
-				.filter(id => !!this.categories[id])
-				.map(id => this.categories[id]);
+				.filter((id) => !!this.categories[id])
+				.map((id) => this.categories[id]);
 		},
 		currentStep() {
-			return this.steps.find(step => step.id === this.currentStepId);
+			return this.steps.find((step) => step.id === this.currentStepId);
 		},
 		currentStepIndex() {
-			return this.steps.findIndex(step => step.id === this.currentStepId);
+			return this.steps.findIndex((step) => step.id === this.currentStepId);
 		},
 		isConfirmed() {
 			const hasUnconfirmedField = this.steps
-				.find(step => step.id === 'review')
-				?.sections.find(section => section.id === 'confirmSubmission')
+				.find((step) => step.id === 'review')
+				?.sections.find((section) => section.id === 'confirmSubmission')
 				?.form.fields.map(
-					field => field.component !== 'field-options' || field.value
+					(field) => field.component !== 'field-options' || field.value
 				)
 				.includes(false);
 			return !hasUnconfirmedField;
@@ -111,7 +111,7 @@ export default {
 		 */
 		pageTitle() {
 			return this.i18nPageTitle.replace('{$step}', this.currentStep.name);
-		}
+		},
 	},
 	methods: {
 		/**
@@ -125,7 +125,7 @@ export default {
 
 			while (this.staleForms.length) {
 				const formId = this.staleForms.splice(0, 1)[0];
-				const form = this.$refs.autosaveForms.find(ref => ref.id === formId);
+				const form = this.$refs.autosaveForms.find((ref) => ref.id === formId);
 				if (!form) {
 					return;
 				}
@@ -172,7 +172,7 @@ export default {
 				if (autosaves.length) {
 					this.setLocalStorage(
 						this.autosavesKey,
-						autosaves.filter(payload => payload.id !== autosave.id)
+						autosaves.filter((payload) => payload.id !== autosave.id)
 					);
 				}
 			}
@@ -248,9 +248,9 @@ export default {
 				actions: [
 					{
 						label: this.__('common.ok'),
-						callback: () => this.$modal.hide('saveForLaterFailed')
-					}
-				]
+						callback: () => this.$modal.hide('saveForLaterFailed'),
+					},
+				],
 			});
 		},
 
@@ -258,7 +258,7 @@ export default {
 		 * Go to a step in the wizard
 		 */
 		openStep(stepId) {
-			const newStep = this.steps.find(step => step.id === stepId);
+			const newStep = this.steps.find((step) => step.id === stepId);
 			if (!newStep) {
 				return;
 			}
@@ -272,7 +272,7 @@ export default {
 		 */
 		openUrlTab() {
 			const stepId = window.location.hash.replace('#', '');
-			const newStep = this.steps.find(step => step.id === stepId);
+			const newStep = this.steps.find((step) => step.id === stepId);
 			this.openStep(newStep ? newStep.id : this.steps[0].id);
 		},
 
@@ -311,7 +311,7 @@ export default {
 				context: this,
 				headers: {
 					'X-Csrf-Token': pkp.currentUser.csrfToken,
-					'X-Http-Method-Override': 'PUT'
+					'X-Http-Method-Override': 'PUT',
 				},
 				data: submissionData,
 				error: this.ajaxErrorCallback,
@@ -326,15 +326,15 @@ export default {
 						context: this,
 						headers: {
 							'X-Csrf-Token': pkp.currentUser.csrfToken,
-							'X-Http-Method-Override': 'PUT'
+							'X-Http-Method-Override': 'PUT',
 						},
 						data: publicationData,
 						error: this.ajaxErrorCallback,
 						success(r) {
 							window.location.reload();
-						}
+						},
 					});
-				}
+				},
 			});
 		},
 
@@ -365,10 +365,10 @@ export default {
 					context: this,
 					headers: {
 						'X-Csrf-Token': pkp.currentUser.csrfToken,
-						'X-Http-Method-Override': 'PUT'
+						'X-Http-Method-Override': 'PUT',
 					},
 					data: {
-						step: this.startedSteps[this.startedSteps.length - 1]
+						step: this.startedSteps[this.startedSteps.length - 1],
 					},
 					error() {
 						this.isLoading = false;
@@ -376,7 +376,7 @@ export default {
 					},
 					success() {
 						window.location = this.submissionSavedUrl;
-					}
+					},
 				});
 				clearInterval(waitForSaves);
 			}, 1000);
@@ -434,7 +434,7 @@ export default {
 								method: 'POST',
 								headers: {
 									'X-Csrf-Token': pkp.currentUser.csrfToken,
-									'X-Http-Method-Override': 'PUT'
+									'X-Http-Method-Override': 'PUT',
 								},
 								error(r) {
 									if (!r.responseJSON) {
@@ -446,16 +446,16 @@ export default {
 								},
 								success() {
 									window.location = this.submissionWizardUrl;
-								}
+								},
 							});
-						}
+						},
 					},
 					{
 						label: this.__('common.cancel'),
 						isWarnable: true,
-						callback: () => this.$modal.hide('submitConfirmation')
-					}
-				]
+						callback: () => this.$modal.hide('submitConfirmation'),
+					},
+				],
 			});
 		},
 
@@ -465,8 +465,8 @@ export default {
 		restoreStoredAutosave(payload) {
 			let form;
 			const dataKeys = Object.keys(payload.data);
-			this.steps.forEach(step => {
-				step.sections.forEach(section => {
+			this.steps.forEach((step) => {
+				step.sections.forEach((section) => {
 					if (section.type !== 'form' || section.form.id !== payload.id) {
 						return;
 					}
@@ -477,15 +477,15 @@ export default {
 				return;
 			}
 			this.updateForm(payload.id, {
-				fields: form.fields.map(field => {
+				fields: form.fields.map((field) => {
 					if (!dataKeys.includes(field.name)) {
 						return field;
 					}
 					return {
 						...field,
-						value: payload.data[field.name]
+						value: payload.data[field.name],
 					};
-				})
+				}),
 			});
 		},
 
@@ -504,7 +504,7 @@ export default {
 					}
 					this.steps[stepIndex].sections[sectionIndex].form = {
 						...this.steps[stepIndex].sections[sectionIndex].form,
-						...data
+						...data,
 					};
 					if (this.staleForms.indexOf(formId) === -1) {
 						this.staleForms.push(formId);
@@ -535,10 +535,10 @@ export default {
 					context: this,
 					headers: {
 						'X-Csrf-Token': pkp.currentUser.csrfToken,
-						'X-Http-Method-Override': 'PUT'
+						'X-Http-Method-Override': 'PUT',
 					},
 					data: {
-						_validateOnly: true
+						_validateOnly: true,
 					},
 					error(r) {
 						if (!r.responseJSON) {
@@ -552,10 +552,10 @@ export default {
 					},
 					complete() {
 						this.isValidating = false;
-					}
+					},
 				});
 			}, 500);
-		}
+		},
 	},
 	watch: {
 		/**
@@ -600,11 +600,11 @@ export default {
 			this.steps.forEach((step, stepIndex) => {
 				step.sections.forEach((section, sectionIndex) => {
 					if (section.type === 'form') {
-						section.form.fields.forEach(field => {
+						section.form.fields.forEach((field) => {
 							if (keys.includes(field.name)) {
 								this.steps[stepIndex].sections[sectionIndex].form.errors = {
 									...this.steps[stepIndex].sections[sectionIndex].form.errors,
-									...{[field.name]: newVal[field.name]}
+									...{[field.name]: newVal[field.name]},
 								};
 							}
 						});
@@ -623,12 +623,12 @@ export default {
 			if (!newVal && oldVal) {
 				this.setLastAutosaveMessage();
 			}
-		}
+		},
 	},
 	created() {
 		if (!window.location.hash) {
 			const newStep = this.steps.find(
-				step => step.id === this.submission.submissionProgress
+				(step) => step.id === this.submission.submissionProgress
 			);
 			this.openStep(newStep ? newStep.id : this.steps[0].id);
 		}
@@ -638,7 +638,7 @@ export default {
 		 * so it shows an accurate time
 		 */
 		setInterval(this.setLastAutosaveMessage, 3000);
-	}
+	},
 };
 </script>
 

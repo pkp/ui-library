@@ -9,15 +9,15 @@ export default {
 	groups: [
 		{
 			id: 'default',
-			pageId: 'default'
-		}
+			pageId: 'default',
+		},
 	],
 	pages: [
 		{
 			id: 'default',
 			submitButton: {
-				label: 'Save'
-			}
-		}
-	]
+				label: 'Save',
+			},
+		},
+	],
 };

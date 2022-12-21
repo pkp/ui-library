@@ -32,17 +32,17 @@ export default {
 						if (props.close) {
 							props.close();
 						}
-					}
+					},
 				},
 				{
 					height: 'auto',
 					scrollable: false,
 					classes: 'v--modal v--modal-dialog',
 					...modalProps,
-					name: props.name
+					name: props.name,
 				},
 				modalEvents
 			);
-		}
-	}
+		},
+	},
 };

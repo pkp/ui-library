@@ -15,10 +15,10 @@ export default {
 			value: {
 				en_US: '',
 				fr_CA: '',
-				ar_AR: ''
+				ar_AR: '',
 			},
 			isMultilingual: true,
-			groupId: 'default'
+			groupId: 'default',
 		},
 		{
 			name: 'ipRanges',
@@ -29,24 +29,24 @@ export default {
 			value: '',
 			size: 'large',
 			isMultilingual: false,
-			groupId: 'default'
-		}
+			groupId: 'default',
+		},
 	],
 	groups: [
 		{
 			id: 'default',
-			pageId: 'default'
-		}
+			pageId: 'default',
+		},
 	],
 	supportedFormLocales: [
 		...Form.supportedFormLocales,
 		{
 			key: 'fr_CA',
-			label: 'Français (Canada)'
+			label: 'Français (Canada)',
 		},
 		{
 			key: 'ar_AR',
-			label: 'عربى'
-		}
-	]
+			label: 'عربى',
+		},
+	],
 };

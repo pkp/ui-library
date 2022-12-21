@@ -6,174 +6,174 @@ export default {
 		{
 			value: '',
 			label: 'Select a country',
-			disabled: true
+			disabled: true,
 		},
 		{
 			value: 'AF',
-			label: 'Afghanistan'
+			label: 'Afghanistan',
 		},
 		{
 			value: 'AL',
-			label: 'Albania'
+			label: 'Albania',
 		},
 		{
 			value: 'DZ',
-			label: 'Algeria'
+			label: 'Algeria',
 		},
 		{
 			value: 'AS',
-			label: 'American Samoa'
+			label: 'American Samoa',
 		},
 		{
 			value: 'AD',
-			label: 'Andorra'
+			label: 'Andorra',
 		},
 		{
 			value: 'AO',
-			label: 'Angola'
+			label: 'Angola',
 		},
 		{
 			value: 'AI',
-			label: 'Anguilla'
+			label: 'Anguilla',
 		},
 		{
 			value: 'AQ',
-			label: 'Antarctica'
+			label: 'Antarctica',
 		},
 		{
 			value: 'AG',
-			label: 'Antigua and Barbuda'
+			label: 'Antigua and Barbuda',
 		},
 		{
 			value: 'AR',
-			label: 'Argentina'
+			label: 'Argentina',
 		},
 		{
 			value: 'AM',
-			label: 'Armenia'
+			label: 'Armenia',
 		},
 		{
 			value: 'AW',
-			label: 'Aruba'
+			label: 'Aruba',
 		},
 		{
 			value: 'AU',
-			label: 'Australia'
+			label: 'Australia',
 		},
 		{
 			value: 'AT',
-			label: 'Austria'
+			label: 'Austria',
 		},
 		{
 			value: 'AZ',
-			label: 'Azerbaijan'
+			label: 'Azerbaijan',
 		},
 		{
 			value: 'BS',
-			label: 'Bahamas'
+			label: 'Bahamas',
 		},
 		{
 			value: 'BH',
-			label: 'Bahrain'
+			label: 'Bahrain',
 		},
 		{
 			value: 'BD',
-			label: 'Bangladesh'
+			label: 'Bangladesh',
 		},
 		{
 			value: 'BB',
-			label: 'Barbados'
+			label: 'Barbados',
 		},
 		{
 			value: 'BY',
-			label: 'Belarus'
+			label: 'Belarus',
 		},
 		{
 			value: 'BE',
-			label: 'Belgium'
+			label: 'Belgium',
 		},
 		{
 			value: 'BZ',
-			label: 'Belize'
+			label: 'Belize',
 		},
 		{
 			value: 'BJ',
-			label: 'Benin'
+			label: 'Benin',
 		},
 		{
 			value: 'BM',
-			label: 'Bermuda'
+			label: 'Bermuda',
 		},
 		{
 			value: 'BT',
-			label: 'Bhutan'
+			label: 'Bhutan',
 		},
 		{
 			value: 'BO',
-			label: 'Bolivia, Plurinational State of'
+			label: 'Bolivia, Plurinational State of',
 		},
 		{
 			value: 'BQ',
-			label: 'Bonaire, Sint Eustatius and Saba'
+			label: 'Bonaire, Sint Eustatius and Saba',
 		},
 		{
 			value: 'BA',
-			label: 'Bosnia and Herzegovina'
+			label: 'Bosnia and Herzegovina',
 		},
 		{
 			value: 'BW',
-			label: 'Botswana'
+			label: 'Botswana',
 		},
 		{
 			value: 'BV',
-			label: 'Bouvet Island'
+			label: 'Bouvet Island',
 		},
 		{
 			value: 'BR',
-			label: 'Brazil'
+			label: 'Brazil',
 		},
 		{
 			value: 'IO',
-			label: 'British Indian Ocean Territory'
+			label: 'British Indian Ocean Territory',
 		},
 		{
 			value: 'BN',
-			label: 'Brunei Darussalam'
+			label: 'Brunei Darussalam',
 		},
 		{
 			value: 'BG',
-			label: 'Bulgaria'
+			label: 'Bulgaria',
 		},
 		{
 			value: 'BF',
-			label: 'Burkina Faso'
+			label: 'Burkina Faso',
 		},
 		{
 			value: 'BI',
-			label: 'Burundi'
+			label: 'Burundi',
 		},
 		{
 			value: 'CV',
-			label: 'Cabo Verde'
+			label: 'Cabo Verde',
 		},
 		{
 			value: 'KH',
-			label: 'Cambodia'
+			label: 'Cambodia',
 		},
 		{
 			value: 'CM',
-			label: 'Cameroon'
+			label: 'Cameroon',
 		},
 		{
 			value: 'CA',
-			label: 'Canada'
+			label: 'Canada',
 		},
 		{
 			value: '...',
-			label: '...'
-		}
+			label: '...',
+		},
 	],
 	value: '',
 	groupId: 'contact',
-	isRequired: true
+	isRequired: true,
 };

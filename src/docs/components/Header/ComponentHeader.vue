@@ -14,10 +14,10 @@ export default {
 				{
 					component: PreviewHeader,
 					name: 'Base',
-					template: this.extractTemplate(PreviewHeaderTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewHeaderTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

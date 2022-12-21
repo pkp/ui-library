@@ -14,10 +14,10 @@ export default {
 				{
 					component: PreviewSearch,
 					name: 'Base',
-					template: this.extractTemplate(PreviewSearchTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewSearchTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

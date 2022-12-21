@@ -8,7 +8,7 @@ import fieldBase from '../../../helpers/field-base';
 
 export default {
 	components: {
-		FieldText
+		FieldText,
 	},
 	data() {
 		return {
@@ -16,10 +16,10 @@ export default {
 				...fieldBase,
 				name: 'initials',
 				allErrors: {
-					initials: ['The journal initials can not contain any spaces.']
-				}
-			}
+					initials: ['The journal initials can not contain any spaces.'],
+				},
+			},
 		};
-	}
+	},
 };
 </script>

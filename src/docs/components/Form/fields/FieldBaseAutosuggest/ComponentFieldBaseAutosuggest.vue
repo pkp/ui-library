@@ -19,24 +19,24 @@ export default {
 				{
 					component: PreviewFieldBaseAutosuggest,
 					name: 'Base',
-					template: this.extractTemplate(PreviewFieldBaseAutosuggestTemplate)
+					template: this.extractTemplate(PreviewFieldBaseAutosuggestTemplate),
 				},
 				{
 					component: PreviewFieldBaseAutosuggestDisabled,
 					name: 'Disabled',
 					template: this.extractTemplate(
 						PreviewFieldBaseAutosuggestDisabledTemplate
-					)
+					),
 				},
 				{
 					component: PreviewFieldBaseAutosuggestInline,
 					name: 'Inline',
 					template: this.extractTemplate(
 						PreviewFieldBaseAutosuggestInlineTemplate
-					)
-				}
-			]
+					),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

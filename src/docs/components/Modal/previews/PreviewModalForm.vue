@@ -23,15 +23,15 @@ import form from '@/docs/components/Form/helpers/form-announcement';
 export default {
 	components: {
 		PkpForm,
-		Modal
+		Modal,
 	},
 	data() {
 		return {
 			form: {
 				...cloneDeep(form),
 				action: 'http://localhost:8080',
-				method: 'GET'
-			}
+				method: 'GET',
+			},
 		};
 	},
 	methods: {
@@ -40,11 +40,11 @@ export default {
 		},
 		setForm(key, data) {
 			let form = {...this.form};
-			Object.keys(data).forEach(function(key) {
+			Object.keys(data).forEach(function (key) {
 				form[key] = data[key];
 			});
 			this.form = form;
-		}
-	}
+		},
+	},
 };
 </script>

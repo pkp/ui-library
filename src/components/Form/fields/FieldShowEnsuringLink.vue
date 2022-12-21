@@ -8,7 +8,7 @@ export default {
 	mixins: [dialog],
 	props: {
 		message: String,
-		modalTitle: String
+		modalTitle: String,
 	},
 	computed: {
 		/**
@@ -18,7 +18,7 @@ export default {
 		 */
 		classes() {
 			return ['pkpFormField--showEnsuringLink'];
-		}
+		},
 	},
 	mounted() {
 		/**
@@ -34,11 +34,11 @@ export default {
 					title: this.modalTitle,
 					callback: () => {
 						this.$modal.hide('ensureAnonymousReview');
-					}
+					},
 				},
 				{
 					height: 'auto',
-					scrollable: true
+					scrollable: true,
 				}
 			);
 			return false;
@@ -49,7 +49,7 @@ export default {
 		 * Clean up modal event listener
 		 */
 		$('.pkpFormField--options__option button', this.$el).off();
-	}
+	},
 };
 </script>
 

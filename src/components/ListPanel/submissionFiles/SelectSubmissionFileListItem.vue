@@ -43,63 +43,63 @@ import File from '../../File/File.vue';
 
 export default {
 	components: {
-		File
+		File,
 	},
 	props: {
 		createdAt: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		documentType: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		downloadLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		genreName: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		genreIsPrimary: {
 			type: Boolean,
 			default() {
 				return false;
-			}
+			},
 		},
 		fileId: {
 			type: Number,
 			default() {
 				return 0;
-			}
+			},
 		},
 		name: {
 			type: String,
-			required: true
+			required: true,
 		},
 		uploadedBy: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		url: {
 			type: String,
 			default() {
 				return '';
-			}
-		}
+			},
+		},
 	},
 	data() {
 		return {
-			describedById: ''
+			describedById: '',
 		};
 	},
 	computed: {
@@ -110,15 +110,15 @@ export default {
 			if (this.createdAt) {
 				return this.__('common.uploadedByAndWhen', {
 					name: this.uploadedBy,
-					date: this.createdAt.substring(0, 10)
+					date: this.createdAt.substring(0, 10),
 				});
 			}
 			return this.__('common.uploaded');
-		}
+		},
 	},
 	created() {
 		this.describedById = $.pkp.classes.Helper.uuid();
-	}
+	},
 };
 </script>
 

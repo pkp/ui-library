@@ -9,15 +9,15 @@ import email from '../../../helpers/field-text-email';
 
 export default {
 	components: {
-		FieldText
+		FieldText,
 	},
 	data() {
 		return {
 			field: {
 				...fieldBase,
 				...email,
-				isRequired: false
-			}
+				isRequired: false,
+			},
 		};
 	},
 	methods: {
@@ -27,7 +27,7 @@ export default {
 			} else {
 				this.field[prop] = newValue;
 			}
-		}
-	}
+		},
+	},
 };
 </script>

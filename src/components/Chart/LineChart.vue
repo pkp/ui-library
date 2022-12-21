@@ -7,14 +7,14 @@ export default {
 	props: {
 		chartData: {
 			type: Object,
-			required: true
+			required: true,
 		},
 		chartOptions: {
 			type: Object,
 			default() {
 				return {};
-			}
-		}
+			},
+		},
 	},
 	computed: {
 		/**
@@ -31,30 +31,30 @@ export default {
 						top: 32,
 						bottom: 8,
 						left: 32,
-						right: 64
-					}
+						right: 64,
+					},
 				},
 				legend: {
-					display: false
+					display: false,
 				},
 				elements: {
 					point: {
 						borderWidth: 0,
-						backgroundColor: '#D00A6C'
+						backgroundColor: '#D00A6C',
 					},
 					line: {
 						tension: 0.2,
 						borderWidth: 2,
 						borderColor: '#D00A6C',
-						backgroundColor: 'transparent'
-					}
+						backgroundColor: 'transparent',
+					},
 				},
 				scales: {
 					xAxes: [
 						{
 							gridLines: {
 								color: 'transparent',
-								zeroLineColor: 'transparent'
+								zeroLineColor: 'transparent',
 							},
 							ticks: {
 								fontColor: 'rgba(255,255,255,0.85)',
@@ -64,9 +64,9 @@ export default {
 								padding: 8,
 								maxTicksLimit: 5,
 								maxRotation: 0,
-								minRotation: 0
-							}
-						}
+								minRotation: 0,
+							},
+						},
 					],
 					yAxes: [
 						{
@@ -74,21 +74,21 @@ export default {
 								color: '#006798',
 								borderDash: [1, 10],
 								zeroLineColor: '#006798',
-								drawBorder: false
+								drawBorder: false,
 							},
 							ticks: {
-								fontColor: 'rgba(255,255,255,0.85)'
-							}
-						}
-					]
+								fontColor: 'rgba(255,255,255,0.85)',
+							},
+						},
+					],
 				},
-				...this.chartOptions
+				...this.chartOptions,
 			};
-		}
+		},
 	},
 	mounted() {
 		this.renderChart(this.chartData, this.options);
-	}
+	},
 };
 </script>
 

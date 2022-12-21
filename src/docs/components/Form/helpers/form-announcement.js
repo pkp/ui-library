@@ -11,9 +11,9 @@ export default {
 			value: {
 				en_US: '',
 				fr_CA: '',
-				ar_AR: ''
+				ar_AR: '',
 			},
-			groupId: 'default'
+			groupId: 'default',
 		},
 		{
 			name: 'descriptionShort',
@@ -25,9 +25,9 @@ export default {
 			value: {
 				en_US: '',
 				fr_CA: '',
-				ar_AR: ''
+				ar_AR: '',
 			},
-			groupId: 'default'
+			groupId: 'default',
 		},
 		{
 			name: 'description',
@@ -40,9 +40,9 @@ export default {
 			value: {
 				en_US: '',
 				fr_CA: '',
-				ar_AR: ''
+				ar_AR: '',
 			},
-			groupId: 'default'
+			groupId: 'default',
 		},
 		{
 			name: 'dateExpire',
@@ -52,7 +52,7 @@ export default {
 			description:
 				'The announcement will be displayed to readers until this date. Leave blank if the announcement should be displayed indefinitely.',
 			value: '',
-			groupId: 'default'
+			groupId: 'default',
 		},
 		{
 			name: 'sendEmail',
@@ -65,27 +65,27 @@ export default {
 				{
 					value: true,
 					label:
-						'Yes, I would like an email about this announcement to be sent to all registered users.'
-				}
+						'Yes, I would like an email about this announcement to be sent to all registered users.',
+				},
 			],
-			groupId: 'default'
-		}
+			groupId: 'default',
+		},
 	],
 	groups: [
 		{
 			id: 'default',
-			pageId: 'default'
-		}
+			pageId: 'default',
+		},
 	],
 	supportedFormLocales: [
 		...Form.supportedFormLocales,
 		{
 			key: 'fr_CA',
-			label: 'Français (Canada)'
+			label: 'Français (Canada)',
 		},
 		{
 			key: 'ar_AR',
-			label: 'عربى'
-		}
-	]
+			label: 'عربى',
+		},
+	],
 };

@@ -7,7 +7,7 @@ import MultilingualProgress from '@/components/MultilingualProgress/Multilingual
 
 export default {
 	components: {
-		MultilingualProgress
-	}
+		MultilingualProgress,
+	},
 };
 </script>

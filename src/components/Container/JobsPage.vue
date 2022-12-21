@@ -8,7 +8,7 @@ export default {
 	extends: Page,
 	components: {
 		PkpTable,
-		Pagination
+		Pagination,
 	},
 	data() {
 		return {
@@ -19,16 +19,16 @@ export default {
 			total: 0,
 			currentPage: 1,
 			lastPage: 1,
-			isLoadingItems: false
+			isLoadingItems: false,
 		};
 	},
 	methods: {
-		handlePagination: function(page) {
+		handlePagination: function (page) {
 			this.isLoadingItems = true;
 			const paged = new URL(window.location.href);
 			paged.searchParams.set('page', page);
 			window.location = paged;
-		}
-	}
+		},
+	},
 };
 </script>

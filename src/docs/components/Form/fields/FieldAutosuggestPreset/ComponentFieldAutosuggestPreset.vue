@@ -15,10 +15,10 @@ export default {
 				{
 					component: PreviewFieldAutosuggestPreset,
 					name: 'Base',
-					template: this.extractTemplate(PreviewFieldAutosuggestPresetTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewFieldAutosuggestPresetTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

@@ -16,15 +16,15 @@ export default {
 				{
 					component: PreviewStatsEditorialPage,
 					name: 'Editorial Stats',
-					template: this.extractTemplate(PreviewStatsEditorialPageTemplate)
+					template: this.extractTemplate(PreviewStatsEditorialPageTemplate),
 				},
 				{
 					component: PreviewStatsPublicationsPage,
 					name: 'Publication Stats',
-					template: this.extractTemplate(PreviewStatsPublicationsPageTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewStatsPublicationsPageTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

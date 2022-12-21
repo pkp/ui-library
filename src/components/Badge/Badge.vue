@@ -24,7 +24,7 @@ export default {
 		'isWarnable',
 		'isButton',
 		'hasDot',
-		'stage'
+		'stage',
 	],
 	computed: {
 		classes() {
@@ -46,13 +46,13 @@ export default {
 			}
 
 			return classes;
-		}
+		},
 	},
 	methods: {
 		click() {
 			this.$emit('click');
-		}
-	}
+		},
+	},
 };
 </script>
 

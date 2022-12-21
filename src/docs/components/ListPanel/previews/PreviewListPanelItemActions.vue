@@ -15,17 +15,17 @@ import items from '../helpers/items';
 
 export default {
 	components: {
-		ListPanel
+		ListPanel,
 	},
 	data() {
 		return {
-			items: [...items]
+			items: [...items],
 		};
 	},
 	methods: {
 		openModal(title) {
 			alert('You opened a modal for ' + title + '.');
-		}
-	}
+		},
+	},
 };
 </script>

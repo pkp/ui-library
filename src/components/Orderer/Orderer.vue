@@ -26,8 +26,8 @@ export default {
 		itemTitle: String,
 		isDraggable: {
 			type: Boolean,
-			default: true
-		}
+			default: true,
+		},
 	},
 	methods: {
 		/**
@@ -53,11 +53,11 @@ export default {
 		/**
 		 * Set the focus on one of the up/down buttons
 		 */
-		setFocus: function(dir) {
+		setFocus: function (dir) {
 			const selector = dir === 'up' ? '.orderer__up' : '.orderer__down';
 			this.$el.querySelector(selector).focus();
-		}
-	}
+		},
+	},
 };
 </script>
 

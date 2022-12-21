@@ -15,10 +15,10 @@ export default {
 				{
 					component: PreviewFieldRadioInput,
 					name: 'Base',
-					template: this.extractTemplate(PreviewFieldRadioInputTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewFieldRadioInputTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

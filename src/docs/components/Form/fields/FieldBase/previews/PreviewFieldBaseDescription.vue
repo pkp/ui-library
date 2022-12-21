@@ -13,12 +13,12 @@ import fieldBase from '../../../helpers/field-base';
 
 export default {
 	components: {
-		FieldText
+		FieldText,
 	},
 	data() {
 		return {
-			field: fieldBase
+			field: fieldBase,
 		};
-	}
+	},
 };
 </script>

@@ -48,7 +48,7 @@ export default {
 		 */
 		getReportFileNamePart(type) {
 			return type == 'timeline' ? 'context_timeline' : 'context';
-		}
-	}
+		},
+	},
 };
 </script>

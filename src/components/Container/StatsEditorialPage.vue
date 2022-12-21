@@ -9,7 +9,7 @@ export default {
 	extends: StatsPage,
 	components: {
 		DoughnutChart,
-		Tooltip
+		Tooltip,
 	},
 	data() {
 		return {
@@ -18,7 +18,7 @@ export default {
 			averagesApiUrl: '',
 			isLoading: false,
 			percentageStats: [],
-			tableRows: []
+			tableRows: [],
 		};
 	},
 	computed: {
@@ -32,13 +32,13 @@ export default {
 				return null;
 			}
 			return {
-				labels: this.activeByStage.map(stage => stage.name),
+				labels: this.activeByStage.map((stage) => stage.name),
 				datasets: [
 					{
-						data: this.activeByStage.map(stage => stage.count),
-						backgroundColor: this.activeByStage.map(stage => stage.color)
-					}
-				]
+						data: this.activeByStage.map((stage) => stage.count),
+						backgroundColor: this.activeByStage.map((stage) => stage.color),
+					},
+				],
 			};
 		},
 
@@ -49,7 +49,7 @@ export default {
 		 */
 		getParams() {
 			let params = {
-				...this.activeFilters
+				...this.activeFilters,
 			};
 
 			if (this.dateStart) {
@@ -70,13 +70,13 @@ export default {
 		 */
 		totalActive() {
 			return this.activeByStage.reduce((a, b) => a + b.count, 0);
-		}
+		},
 	},
 	methods: {
 		/**
 		 * Get statistics from the server based on the current params
 		 */
-		get: debounce(async function() {
+		get: debounce(async function () {
 			let self = this;
 			let latestDateRangeGetRequest = $.pkp.classes.Helper.uuid();
 			let latestTotalsGetRequest = $.pkp.classes.Helper.uuid();
@@ -90,7 +90,7 @@ export default {
 			let totalsResponse = [];
 			let averagesResponse = {};
 
-			const NetworkError = function(response) {
+			const NetworkError = function (response) {
 				this.response = response;
 			};
 
@@ -114,7 +114,7 @@ export default {
 						}
 						dateRangeResponse = r;
 						resolve(r);
-					}
+					},
 				})
 			);
 
@@ -141,7 +141,7 @@ export default {
 						}
 						totalsResponse = r;
 						resolve(r);
-					}
+					},
 				})
 			);
 
@@ -165,15 +165,15 @@ export default {
 						}
 						averagesResponse = r;
 						resolve(r);
-					}
+					},
 				})
 			);
 
 			try {
 				await Promise.all([dateRangePromise, totalsPromise, averagesPromise]);
-				let tableRows = this.tableRows.map(row => {
-					const dateRange = dateRangeResponse.find(i => i.key === row.key);
-					const total = totalsResponse.find(i => i.key === row.key);
+				let tableRows = this.tableRows.map((row) => {
+					const dateRange = dateRangeResponse.find((i) => i.key === row.key);
+					const total = totalsResponse.find((i) => i.key === row.key);
 					if (this.percentageStats.includes(row.key)) {
 						row.dateRange = Number(dateRange.value * 100).toFixed(0) + '%';
 						row.total = Number(total.value * 100).toFixed(0) + '%';
@@ -188,7 +188,7 @@ export default {
 					) {
 						row.total = this.__('stats.countWithYearlyAverage', {
 							count: row.total,
-							average: averagesResponse[row.key]
+							average: averagesResponse[row.key],
 						});
 					}
 					return row;
@@ -214,8 +214,8 @@ export default {
 		 */
 		setCurrentDateRange(range) {
 			this.tableColumns[1].label = range;
-		}
-	}
+		},
+	},
 };
 </script>
 

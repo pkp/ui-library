@@ -15,10 +15,10 @@ export default {
 				{
 					component: PreviewFieldSelect,
 					name: 'Base',
-					template: this.extractTemplate(PreviewFieldSelectTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewFieldSelectTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

@@ -14,14 +14,14 @@ export default {
 			description:
 				FieldOptionsEmails.description +
 				' (Select "Once a week" to see further options.)',
-			groupId: 'default'
+			groupId: 'default',
 		},
-		{...FieldOptionsEmailsDiscussions, groupId: 'default'}
+		{...FieldOptionsEmailsDiscussions, groupId: 'default'},
 	],
 	groups: [
 		{
 			id: 'default',
-			pageId: 'default'
-		}
-	]
+			pageId: 'default',
+		},
+	],
 };

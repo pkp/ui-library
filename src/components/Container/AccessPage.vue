@@ -8,14 +8,14 @@ export default {
 	extends: Page,
 	components: {
 		NotifyUsersForm,
-		ProgressBar
+		ProgressBar,
 	},
 	data() {
 		return {
 			completedJobs: 0,
 			progressUrl: '',
 			queueId: '',
-			totalJobs: 0
+			totalJobs: 0,
 		};
 	},
 	methods: {
@@ -31,7 +31,7 @@ export default {
 				method: 'POST',
 				headers: {
 					'X-Csrf-Token': pkp.currentUser.csrfToken,
-					'X-Http-Method-Override': 'PUT'
+					'X-Http-Method-Override': 'PUT',
 				},
 				error: this.ajaxErrorCallback,
 				success(r) {
@@ -39,7 +39,7 @@ export default {
 					if (r.pendingJobs) {
 						self.processQueue(queueId);
 					}
-				}
+				},
 			});
 		},
 
@@ -48,7 +48,7 @@ export default {
 		 */
 		reload() {
 			window.location.reload();
-		}
+		},
 	},
 	mounted() {
 		pkp.eventBus.$on('form-success', (formId, data) => {
@@ -63,7 +63,7 @@ export default {
 	},
 	destroyed() {
 		pkp.eventBus.$off('form-success');
-	}
+	},
 };
 </script>
 

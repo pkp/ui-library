@@ -69,16 +69,16 @@ export default {
 	props: {
 		lessThanLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		moreThanLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		valueLabel: {
 			type: String,
-			required: true
-		}
+			required: true,
+		},
 	},
 	computed: {
 		/**
@@ -112,8 +112,8 @@ export default {
 			return this.valueLabel
 				.replace('{$min}', this.currentValue[0])
 				.replace('{$max}', this.currentValue[1]);
-		}
-	}
+		},
+	},
 };
 </script>
 

@@ -49,10 +49,10 @@ export default {
 				actions: [
 					{
 						label: this.__('common.ok'),
-						callback: () => this.$modal.hide('ajaxError')
-					}
-				]
+						callback: () => this.$modal.hide('ajaxError'),
+					},
+				],
 			});
-		}
-	}
+		},
+	},
 };

@@ -20,7 +20,7 @@ import form from '@/docs/components/Form/helpers/form-announcement';
 
 export default {
 	components: {
-		AnnouncementsListPanel
+		AnnouncementsListPanel,
 	},
 	data() {
 		const announcements = [
@@ -33,8 +33,8 @@ export default {
 				title: {
 					en_US: 'Eros in cursus turpis massa tincidunt dui ut ornare lectus',
 					fr_CA: 'Eros in cursus turpis massa tincidunt dui ut ornare lectus',
-					ar_AR: 'Eros in cursus turpis massa tincidunt dui ut ornare lectus'
-				}
+					ar_AR: 'Eros in cursus turpis massa tincidunt dui ut ornare lectus',
+				},
 			},
 			{
 				...announcement,
@@ -47,8 +47,8 @@ export default {
 					fr_CA:
 						'Elit ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at turpis massa tincidunt dui ut ornare lectus',
 					ar_AR:
-						'Elit ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at turpis massa tincidunt dui ut ornare lectus'
-				}
+						'Elit ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at turpis massa tincidunt dui ut ornare lectus',
+				},
 			},
 			{
 				...announcement,
@@ -58,8 +58,8 @@ export default {
 				title: {
 					en_US: 'Risus feugiat in ante metus dictum at',
 					fr_CA: 'Risus feugiat in ante metus dictum at',
-					ar_AR: 'Risus feugiat in ante metus dictum at'
-				}
+					ar_AR: 'Risus feugiat in ante metus dictum at',
+				},
 			},
 			{
 				...announcement,
@@ -72,8 +72,8 @@ export default {
 					fr_CA:
 						'Morbi tincidunt ornare massa eget egestas purus viverra accumsan',
 					ar_AR:
-						'Morbi tincidunt ornare massa eget egestas purus viverra accumsan'
-				}
+						'Morbi tincidunt ornare massa eget egestas purus viverra accumsan',
+				},
 			},
 			{
 				...announcement,
@@ -83,16 +83,16 @@ export default {
 				title: {
 					en_US: 'Nibh praesent tristique magna sit amet purus gravida quis',
 					fr_CA: 'Nibh praesent tristique magna sit amet purus gravida quis',
-					ar_AR: 'Nibh praesent tristique magna sit amet purus gravida quis'
-				}
-			}
+					ar_AR: 'Nibh praesent tristique magna sit amet purus gravida quis',
+				},
+			},
 		];
 
 		return {
 			form: {...form},
 			items: [...announcements],
-			itemsMax: announcements.length
+			itemsMax: announcements.length,
 		};
-	}
+	},
 };
 </script>

@@ -28,7 +28,7 @@ import fieldBaseAutosuggest from '../../Form/helpers/field-autosuggest';
 
 export default {
 	components: {
-		FilterAutosuggest
+		FilterAutosuggest,
 	},
 	data() {
 		return {
@@ -38,7 +38,7 @@ export default {
 				name: 'assignedTo',
 				label: 'Assigned to Editors',
 				selectedLabel: 'Assigned',
-				apiUrl: '/usernames.json'
+				apiUrl: '/usernames.json',
 			},
 			issues: {
 				...fieldBase,
@@ -46,12 +46,12 @@ export default {
 				name: 'issueIds',
 				label: 'Assigned to Issues',
 				selectedLabel: 'Assigned',
-				apiUrl: '/issues.json'
+				apiUrl: '/issues.json',
 			},
 			activeFilters: {
 				assignedTo: [],
-				issueIds: []
-			}
+				issueIds: [],
+			},
 		};
 	},
 	methods: {
@@ -60,7 +60,7 @@ export default {
 		},
 		removeFilter(param) {
 			this.activeFilters[param] = [];
-		}
-	}
+		},
+	},
 };
 </script>

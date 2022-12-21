@@ -21,7 +21,7 @@ export default {
 		 */
 		getReportFileNamePart(type) {
 			return type == 'timeline' ? 'issues_timeline' : 'issues';
-		}
-	}
+		},
+	},
 };
 </script>

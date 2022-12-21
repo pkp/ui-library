@@ -12,10 +12,12 @@ export default {
 				{
 					component: PreviewSelectReviewerListPanel,
 					name: 'Base',
-					template: this.extractTemplate(PreviewSelectReviewerListPanelTemplate)
-				}
-			]
+					template: this.extractTemplate(
+						PreviewSelectReviewerListPanelTemplate
+					),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

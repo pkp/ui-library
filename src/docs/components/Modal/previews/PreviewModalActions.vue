@@ -54,11 +54,11 @@ export default {
 	components: {
 		List,
 		ListItem,
-		Modal
+		Modal,
 	},
 	data() {
 		return {
-			isSendingReport: false
+			isSendingReport: false,
 		};
 	},
 	methods: {
@@ -69,7 +69,7 @@ export default {
 				this.isSendingReport = false;
 				this.$modal.hide('report');
 			}, 2000);
-		}
-	}
+		},
+	},
 };
 </script>

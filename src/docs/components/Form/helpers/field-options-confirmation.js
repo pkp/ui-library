@@ -9,8 +9,8 @@ export default {
 		{
 			value: true,
 			label:
-				'Yes, I would like to receive emails. Yes, I would like to receive emails. Yes, I would like to receive emails. Yes, I would like to receive emails. '
-		}
+				'Yes, I would like to receive emails. Yes, I would like to receive emails. Yes, I would like to receive emails. Yes, I would like to receive emails. ',
+		},
 	],
-	groupId: 'preferences'
+	groupId: 'preferences',
 };

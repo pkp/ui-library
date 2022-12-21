@@ -10,12 +10,12 @@ export default [
 		number: '2',
 		doiObject: {
 			...doi,
-			identifier: '10.987/iss456'
+			identifier: '10.987/iss456',
 		},
 		title: {
 			en_US: 'Issue Number 2',
-			fr_CA: 'Issue Number 2'
-		}
+			fr_CA: 'Issue Number 2',
+		},
 	},
 	{
 		...issue,
@@ -24,12 +24,12 @@ export default [
 		number: '3',
 		doiObject: {
 			...doi,
-			identifier: '10.987/iss789'
+			identifier: '10.987/iss789',
 		},
 		title: {
 			en_US: 'Issue Number 3',
-			fr_CA: 'Issue Number 3'
-		}
+			fr_CA: 'Issue Number 3',
+		},
 	},
 	{
 		...issue,
@@ -38,11 +38,11 @@ export default [
 		number: '4',
 		doiObject: {
 			...doi,
-			identifier: '10.987/iss012'
+			identifier: '10.987/iss012',
 		},
 		title: {
 			en_US: 'Issue Number 4',
-			fr_CA: 'Issue Number 4'
-		}
-	}
+			fr_CA: 'Issue Number 4',
+		},
+	},
 ];

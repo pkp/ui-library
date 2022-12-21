@@ -16,7 +16,7 @@ export default {
 				this.items = [...submissionFiles];
 				this.isLoading = false;
 			}, 1000);
-		}
-	}
+		},
+	},
 };
 </script>

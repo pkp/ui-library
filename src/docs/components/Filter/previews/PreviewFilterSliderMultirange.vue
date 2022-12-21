@@ -36,13 +36,13 @@ import FilterSliderMultirange from '@/components/Filter/FilterSliderMultirange.v
 
 export default {
 	components: {
-		FilterSliderMultirange
+		FilterSliderMultirange,
 	},
 	data() {
 		return {
 			activeFilters: {},
 			daysSinceLastReview: [30, 120],
-			activeReviewsCurrentlyAssigned: [1, 20]
+			activeReviewsCurrentlyAssigned: [1, 20],
 		};
 	},
 	methods: {
@@ -58,7 +58,7 @@ export default {
 			let activeFilters = {...this.activeFilters};
 			delete activeFilters[param];
 			this.activeFilters = activeFilters;
-		}
-	}
+		},
+	},
 };
 </script>

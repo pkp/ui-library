@@ -16,9 +16,7 @@
 			</ol>
 		</nav>
 		<div class="app__page--decision">
-			<h1 class="app__pageHeading" ref="pageTitle">
-				Accept Submission
-			</h1>
+			<h1 class="app__pageHeading" ref="pageTitle">Accept Submission</h1>
 			<p class="app__pageDescription">
 				This submission will be accepted for publication and sent for
 				copyediting.
@@ -32,9 +30,7 @@
 				role="alert"
 			>
 				{{ error }}
-				<button class="-linkButton" @click="openStep(index)">
-					View Error
-				</button>
+				<button class="-linkButton" @click="openStep(index)">View Error</button>
 			</notification>
 
 			<steps
@@ -129,8 +125,8 @@
 											"
 											:genreIsPrimary="
 												item.genreId &&
-													!item.genreIsDependent &&
-													!item.genreIsSupplementary
+												!item.genreIsDependent &&
+												!item.genreIsSupplementary
 											"
 											:file-id="item.id"
 											:name="localize(item.name)"
@@ -163,8 +159,8 @@
 						<button
 							v-if="
 								currentStep.type === 'email' &&
-									currentStep.canSkip &&
-									!skippedSteps.includes(currentStep.id)
+								currentStep.canSkip &&
+								!skippedSteps.includes(currentStep.id)
 							"
 							class="decision__skipStep -linkButton"
 							:disabled="isSubmitting"
@@ -192,12 +188,8 @@
 							:is-primary="isOnLastStep"
 							@click="nextStep"
 						>
-							<template v-if="isOnLastStep">
-								Record Decision
-							</template>
-							<template v-else>
-								Continue
-							</template>
+							<template v-if="isOnLastStep">Record Decision</template>
+							<template v-else>Continue</template>
 						</pkp-button>
 					</div>
 				</panel-section>
@@ -279,32 +271,32 @@ export default {
 								options: [
 									{
 										value: true,
-										label: 'Request payment from the author (USD $150)'
+										label: 'Request payment from the author (USD $150)',
 									},
 									{
 										value: false,
-										label: 'Waive the fee'
-									}
+										label: 'Waive the fee',
+									},
 								],
-								groupId: 'default'
-							}
+								groupId: 'default',
+							},
 						],
 						groups: [
 							{
 								id: 'default',
-								pageId: 'default'
-							}
+								pageId: 'default',
+							},
 						],
 						pages: [
 							{
-								id: 'default'
-							}
+								id: 'default',
+							},
 						],
 						primaryLocale: 'en_US',
 						visibleLocales: ['en_US'],
 						supportedFormLocales: [],
-						errors: {}
-					}
+						errors: {},
+					},
 				},
 				{
 					id: 'notifyAuthors',
@@ -319,9 +311,9 @@ export default {
 							value: 31,
 							label: {
 								en_US: 'Rana Baiyewu',
-								fr_CA: 'Rana Fr Baiyewu'
-							}
-						}
+								fr_CA: 'Rana Fr Baiyewu',
+							},
+						},
 					],
 					canChangeRecipients: false,
 					canSkip: true,
@@ -330,49 +322,49 @@ export default {
 						{
 							...emailTemplate,
 							name: {
-								en_US: 'Accept for Publication'
+								en_US: 'Accept for Publication',
 							},
 							subject: {
-								en_US: 'Accept for Publication'
-							}
+								en_US: 'Accept for Publication',
+							},
 						},
 						{
 							...emailTemplate,
 							key: 'EDITOR_DECISION_ACCEPT_CONDITIONS',
 							name: {
-								en_US: 'Accept with Conditions'
+								en_US: 'Accept with Conditions',
 							},
 							subject: {
-								en_US: 'Accept with Conditions'
-							}
+								en_US: 'Accept with Conditions',
+							},
 						},
 						{
 							...emailTemplate,
 							key: 'EDITOR_DECISION_ACCEPT_EARLY',
 							name: {
-								en_US: 'Accept for Early Publication'
+								en_US: 'Accept for Early Publication',
 							},
 							subject: {
-								en_US: 'Accept for Early Publication'
-							}
-						}
+								en_US: 'Accept for Early Publication',
+							},
+						},
 					],
 					emailTemplatesApiUrl: 'http://example.org',
 					variables: {
 						en_US: [...insertContent],
-						fr_CA: [...insertContent]
+						fr_CA: [...insertContent],
 					},
 					locale: 'en_US',
 					locales: [
 						{
 							locale: 'en_US',
-							name: 'English'
+							name: 'English',
 						},
 						{
 							locale: 'fr_CA',
-							name: 'French'
-						}
-					]
+							name: 'French',
+						},
+					],
 				},
 				{
 					id: 'notifyReviewers',
@@ -384,24 +376,24 @@ export default {
 						body: ['This field is required.'],
 						subject: ['This field is required.'],
 						to: [
-							'You can not send an email to the following recipients: Alan Mwandenga.'
-						]
+							'You can not send an email to the following recipients: Alan Mwandenga.',
+						],
 					},
 					recipientOptions: [
 						{
 							value: 10,
 							label: {
 								en_US: 'Adela Gallego',
-								fr_CA: 'Adela Gallego'
-							}
+								fr_CA: 'Adela Gallego',
+							},
 						},
 						{
 							value: 9,
 							label: {
 								en_US: 'Aisla McCrae',
-								fr_CA: 'Aisla McCrae'
-							}
-						}
+								fr_CA: 'Aisla McCrae',
+							},
+						},
 					],
 					canChangeRecipients: true,
 					canSkip: true,
@@ -411,33 +403,33 @@ export default {
 							...emailTemplate,
 							key: 'EDITOR_DECISION_THANK_REVIEWERS',
 							subject: {
-								en_US: 'Thank Reviewer'
-							}
+								en_US: 'Thank Reviewer',
+							},
 						},
 						{
 							...emailTemplate,
 							key: 'EDITOR_DECISION_THANK_REVIEWERS_REQUEST',
 							subject: {
-								en_US: 'Thank Reviewer and Request Feedback'
-							}
-						}
+								en_US: 'Thank Reviewer and Request Feedback',
+							},
+						},
 					],
 					emailTemplatesApiUrl: 'http://example.org',
 					variables: {
 						en_US: [...insertContent],
-						fr_CA: [...insertContent]
+						fr_CA: [...insertContent],
 					},
 					locale: 'en_US',
 					locales: [
 						{
 							locale: 'en_US',
-							name: 'English'
+							name: 'English',
 						},
 						{
 							locale: 'fr_CA',
-							name: 'French '
-						}
-					]
+							name: 'French ',
+						},
+					],
 				},
 				{
 					id: 'promoteFiles',
@@ -449,15 +441,15 @@ export default {
 					lists: [
 						{
 							name: 'Revisions',
-							files: [...submissionFiles]
-						}
+							files: [...submissionFiles],
+						},
 					],
 					selected: [],
-					to: 6
-				}
-			]
+					to: 6,
+				},
+			],
 		};
-	}
+	},
 };
 </script>
 

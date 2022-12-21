@@ -12,10 +12,10 @@ export default {
 				{
 					component: PreviewInstitutionsListPanel,
 					name: 'Base',
-					template: this.extractTemplate(PreviewInstitutionsListPanelTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewInstitutionsListPanelTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

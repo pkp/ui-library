@@ -61,12 +61,12 @@ import PkpFilterSlider from '@/components/Filter/FilterSlider.vue';
 
 export default {
 	components: {
-		PkpFilterSlider
+		PkpFilterSlider,
 	},
 	data() {
 		return {
 			activeFilters: {},
-			daysSinceLastReview: 30
+			daysSinceLastReview: 30,
 		};
 	},
 	methods: {
@@ -82,7 +82,7 @@ export default {
 			let activeFilters = {...this.activeFilters};
 			delete activeFilters[param];
 			this.activeFilters = activeFilters;
-		}
-	}
+		},
+	},
 };
 </script>

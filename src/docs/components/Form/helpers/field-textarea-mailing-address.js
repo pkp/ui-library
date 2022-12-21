@@ -4,5 +4,5 @@ export default {
 	label: 'Mailing Address',
 	size: 'small',
 	value: '',
-	groupId: 'contact'
+	groupId: 'contact',
 };

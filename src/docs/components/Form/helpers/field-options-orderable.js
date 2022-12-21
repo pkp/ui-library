@@ -9,15 +9,15 @@ export default {
 	options: [
 		{
 			value: 'informationblockplugin',
-			label: 'Information Block'
+			label: 'Information Block',
 		},
 		{
 			value: 'languagetoggleblockplugin',
-			label: 'Language Toggle Block'
+			label: 'Language Toggle Block',
 		},
 		{
 			value: 'developedbyblockplugin',
-			label: '"Developed By" Block'
-		}
-	]
+			label: '"Developed By" Block',
+		},
+	],
 };

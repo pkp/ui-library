@@ -8,8 +8,8 @@ export default {
 		{
 			value: true,
 			label:
-				'Yes, send me new discussions and replies by email as soon as they happen.'
-		}
+				'Yes, send me new discussions and replies by email as soon as they happen.',
+		},
 	],
-	groupId: 'default'
+	groupId: 'default',
 };

@@ -13,10 +13,10 @@ export default {
 			name: 'name',
 			value: {
 				en_US: '',
-				fr_CA: ''
+				fr_CA: '',
 			},
 			isMultilingual: true,
-			groupId: 'default'
+			groupId: 'default',
 		},
 		{
 			name: 'subject',
@@ -25,9 +25,9 @@ export default {
 			isMultilingual: true,
 			value: {
 				en_US: '',
-				fr_CA: ''
+				fr_CA: '',
 			},
-			groupId: 'default'
+			groupId: 'default',
 		},
 		{
 			name: 'body',
@@ -42,27 +42,27 @@ export default {
 				'bold italic superscript subscript | link | blockquote bullist numlist',
 			value: {
 				en_US: '',
-				fr_CA: ''
+				fr_CA: '',
 			},
 			insertLabel: 'Insert',
 			insertModalLabel: 'Insert Content',
 			preparedContentLabel: 'Content',
 			searchLabel: 'Find content to insert',
 			preparedContent: [],
-			groupId: 'default'
-		}
+			groupId: 'default',
+		},
 	],
 	groups: [
 		{
 			id: 'default',
-			pageId: 'default'
-		}
+			pageId: 'default',
+		},
 	],
 	supportedFormLocales: [
 		...Form.supportedFormLocales,
 		{
 			key: 'fr_CA',
-			label: 'Français (Canada)'
-		}
-	]
+			label: 'Français (Canada)',
+		},
+	],
 };

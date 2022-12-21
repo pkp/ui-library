@@ -8,12 +8,12 @@ import items from '../helpers/items.js';
 
 export default {
 	components: {
-		ListPanel
+		ListPanel,
 	},
 	data() {
 		return {
-			items: [...items]
+			items: [...items],
 		};
-	}
+	},
 };
 </script>

@@ -31,45 +31,45 @@ export default {
 				{
 					component: PreviewTable,
 					name: 'Base',
-					template: this.extractTemplate(PreviewTableTemplate)
+					template: this.extractTemplate(PreviewTableTemplate),
 				},
 				{
 					component: PreviewDescription,
 					name: 'With Description',
-					template: this.extractTemplate(PreviewDescriptionTemplate)
+					template: this.extractTemplate(PreviewDescriptionTemplate),
 				},
 				{
 					component: PreviewCustomHeader,
 					name: 'With Custom Header',
-					template: this.extractTemplate(PreviewCustomHeaderTemplate)
+					template: this.extractTemplate(PreviewCustomHeaderTemplate),
 				},
 				{
 					component: PreviewCustomColumn,
 					name: 'With Custom Column',
-					template: this.extractTemplate(PreviewCustomColumnTemplate)
+					template: this.extractTemplate(PreviewCustomColumnTemplate),
 				},
 				{
 					component: PreviewSorting,
 					name: 'With Sorting',
-					template: this.extractTemplate(PreviewSortingTemplate)
+					template: this.extractTemplate(PreviewSortingTemplate),
 				},
 				{
 					component: PreviewPagination,
 					name: 'With Pagination',
-					template: this.extractTemplate(PreviewPaginationTemplate)
+					template: this.extractTemplate(PreviewPaginationTemplate),
 				},
 				{
 					component: PreviewLabelledBy,
 					name: 'With LabelledBy',
-					template: this.extractTemplate(PreviewLabelledByTemplate)
+					template: this.extractTemplate(PreviewLabelledByTemplate),
 				},
 				{
 					component: PreviewTruncated,
 					name: 'With Truncated Column',
-					template: this.extractTemplate(PreviewTruncatedTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewTruncatedTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

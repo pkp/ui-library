@@ -12,7 +12,7 @@ export default {
 		FormFieldLabel,
 		HelpButton,
 		Tooltip,
-		MultilingualProgress
+		MultilingualProgress,
 	},
 	props: {
 		name: String,
@@ -31,14 +31,14 @@ export default {
 		localeKey: String,
 		locales: Array,
 		value: {
-			required: true
+			required: true,
 		},
 		allErrors: {
 			type: Object,
 			default() {
 				return {};
-			}
-		}
+			},
+		},
 	},
 	computed: {
 		/**
@@ -52,9 +52,9 @@ export default {
 			get() {
 				return this.isMultilingual ? this.value[this.localeKey] : this.value;
 			},
-			set: function(newVal) {
+			set: function (newVal) {
 				this.$emit('change', this.name, 'value', newVal, this.localeKey);
-			}
+			},
 		},
 
 		/**
@@ -178,7 +178,7 @@ export default {
 			if (!this.isMultilingual) {
 				return 0;
 			}
-			return Object.values(this.value).filter(val => {
+			return Object.values(this.value).filter((val) => {
 				if (Array.isArray(val)) {
 					return val.length;
 				}
@@ -207,7 +207,7 @@ export default {
 			if (!this.isMultilingual || this.isPrimaryLocale) {
 				return '';
 			}
-			return this.locales.find(locale => locale.key === this.localeKey).label;
+			return this.locales.find((locale) => locale.key === this.localeKey).label;
 		},
 
 		/**
@@ -220,9 +220,9 @@ export default {
 		multilingualLabel() {
 			return this.__('form.multilingualLabel', {
 				label: this.label,
-				localeName: this.localeLabel
+				localeName: this.localeLabel,
 			});
-		}
+		},
 	},
 	methods: {
 		/**
@@ -232,14 +232,14 @@ export default {
 		 * @param {String} type The type of ID you want to generate (eg - `tooltip`)
 		 * @return {String}
 		 */
-		compileId: function(type) {
+		compileId: function (type) {
 			let parts = [this.formId, this.name, type];
 			if (this.isMultilingual) {
 				parts.push(this.localeKey.replace('@', '_'));
 			}
 			return parts.join('-');
-		}
-	}
+		},
+	},
 };
 </script>
 

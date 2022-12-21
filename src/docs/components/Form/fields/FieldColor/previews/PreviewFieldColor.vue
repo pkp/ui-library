@@ -11,15 +11,15 @@ import fieldColor from '../../../helpers/field-color';
 export default {
 	extends: PreviewFieldBase,
 	components: {
-		FieldColor
+		FieldColor,
 	},
 	data() {
 		return {
 			field: {
 				...fieldBase,
-				...fieldColor
-			}
+				...fieldColor,
+			},
 		};
-	}
+	},
 };
 </script>

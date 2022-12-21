@@ -7,8 +7,8 @@ export default {
 	props: {
 		options: {
 			type: Array,
-			required: true
-		}
+			required: true,
+		},
 	},
 	methods: {
 		/**
@@ -26,7 +26,7 @@ export default {
 				this.inputValue.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'),
 				'gi'
 			);
-			this.suggestions = this.options.filter(option => {
+			this.suggestions = this.options.filter((option) => {
 				if (this.currentValue.includes(option.value)) {
 					return false;
 				}
@@ -36,7 +36,7 @@ export default {
 						: option.value == this.inputValue;
 				return valueMatch || option.label.match(regex);
 			});
-		}
+		},
 	},
 	watch: {
 		/**
@@ -55,9 +55,9 @@ export default {
 				? newVal[this.localeKey]
 				: newVal;
 			this.setSelected(
-				this.options.filter(s => localizedNewValue.includes(s.value))
+				this.options.filter((s) => localizedNewValue.includes(s.value))
 			);
-		}
-	}
+		},
+	},
 };
 </script>

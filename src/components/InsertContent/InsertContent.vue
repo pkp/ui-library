@@ -3,7 +3,7 @@
 		<search
 			:searchLabel="searchLabel"
 			:searchPhrase="searchPhrase"
-			@search-phrase-changed="newVal => (this.searchPhrase = newVal)"
+			@search-phrase-changed="(newVal) => (this.searchPhrase = newVal)"
 		/>
 		<ol class="insertContent__items" :aria-label="itemsLabel">
 			<li
@@ -38,7 +38,7 @@ import Search from '@/components/Search/Search.vue';
 export default {
 	name: 'InsertContent',
 	components: {
-		Search
+		Search,
 	},
 	props: {
 		/**
@@ -46,7 +46,7 @@ export default {
 		 */
 		insertLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 
 		/**
@@ -66,7 +66,7 @@ export default {
 			type: Array,
 			default() {
 				return [];
-			}
+			},
 		},
 
 		/**
@@ -74,7 +74,7 @@ export default {
 		 */
 		itemsLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 
 		/**
@@ -84,12 +84,12 @@ export default {
 			type: String,
 			default() {
 				return '';
-			}
-		}
+			},
+		},
 	},
 	data() {
 		return {
-			searchPhrase: ''
+			searchPhrase: '',
 		};
 	},
 	computed: {
@@ -103,15 +103,15 @@ export default {
 				return this.items;
 			}
 			const regex = new RegExp(this.searchPhrase, 'i');
-			return this.items.filter(item => {
+			return this.items.filter((item) => {
 				return (
 					regex.test(item.key) ||
 					regex.test(item.value) ||
 					regex.test(item.description)
 				);
 			});
-		}
-	}
+		},
+	},
 };
 </script>
 

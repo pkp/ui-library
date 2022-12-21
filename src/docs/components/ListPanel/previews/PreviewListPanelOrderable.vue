@@ -18,10 +18,10 @@ export default {
 					id: 'example',
 					items: items,
 					canOrder: true,
-					title: 'List Panel with Orderer'
-				}
-			}
+					title: 'List Panel with Orderer',
+				},
+			},
 		};
-	}
+	},
 };
 </script>

@@ -15,10 +15,10 @@ export default {
 				{
 					component: PreviewFieldArchivingPn,
 					name: 'Base',
-					template: this.extractTemplate(PreviewFieldArchivingPnTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewFieldArchivingPnTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

@@ -12,7 +12,7 @@ export default {
 			let values = Form.computed.submitValues.apply(this);
 			delete values.title;
 			return values;
-		}
+		},
 	},
 	methods: {
 		/**
@@ -21,7 +21,7 @@ export default {
 		 */
 		success(submission) {
 			this.isSaving = true;
-			const titleField = this.fields.find(field => field.name === 'title');
+			const titleField = this.fields.find((field) => field.name === 'title');
 			if (!titleField || !titleField.value) {
 				window.location = submission.urlSubmissionWizard;
 				return;
@@ -34,12 +34,12 @@ export default {
 				context: this,
 				headers: {
 					'X-Csrf-Token': pkp.currentUser.csrfToken,
-					'X-Http-Method-Override': 'PUT'
+					'X-Http-Method-Override': 'PUT',
 				},
 				data: data,
 				complete() {
 					window.location = submission.urlSubmissionWizard;
-				}
+				},
 			});
 		},
 
@@ -52,7 +52,7 @@ export default {
 		 */
 		complete(xhr, status) {
 			this.isSaving = status === 'success';
-		}
-	}
+		},
+	},
 };
 </script>

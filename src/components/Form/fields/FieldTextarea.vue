@@ -70,10 +70,10 @@ export default {
 		size: {
 			type: String,
 			default: 'normal',
-			validator: function(value) {
+			validator: function (value) {
 				return ['small', 'normal', 'large'].indexOf(value) !== -1;
-			}
-		}
+			},
+		},
 	},
 	computed: {
 		/**
@@ -83,8 +83,8 @@ export default {
 		 */
 		classes() {
 			return ['pkpFormField--' + this.size];
-		}
-	}
+		},
+	},
 };
 </script>
 

@@ -20,17 +20,17 @@ import items from '../helpers/items';
 export default {
 	components: {
 		ListPanel,
-		PkpHeader
+		PkpHeader,
 	},
 	data() {
 		return {
-			items: [...items]
+			items: [...items],
 		};
 	},
 	methods: {
 		openModal() {
 			alert('You opened this modal.');
-		}
-	}
+		},
+	},
 };
 </script>

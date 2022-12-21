@@ -69,46 +69,46 @@ export default {
 		Dropdown,
 		ListPanel,
 		PkpHeader,
-		SelectSubmissionFileListItem
+		SelectSubmissionFileListItem,
 	},
 	props: {
 		attachSelectedLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		backLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		component: {
 			type: String,
-			required: true
+			required: true,
 		},
 		downloadLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		fileStages: {
 			type: Array,
-			required: true
+			required: true,
 		},
 		submissionFilesApiUrl: {
 			type: String,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return {
 			currentFileStage: {},
 			isLoading: false,
 			files: [],
-			selected: []
+			selected: [],
 		};
 	},
 	computed: {
 		selectedFiles() {
-			return this.files.filter(item => this.selected.includes(item.id));
-		}
+			return this.files.filter((item) => this.selected.includes(item.id));
+		},
 	},
 	methods: {
 		getFiles() {
@@ -125,18 +125,18 @@ export default {
 				error: this.ajaxErrorCallback,
 				complete(r) {
 					self.isLoading = false;
-				}
+				},
 			});
-		}
+		},
 	},
 	watch: {
 		currentFileStage(newVal, oldVal) {
 			this.getFiles();
-		}
+		},
 	},
 	created() {
 		this.currentFileStage = this.fileStages[0];
-	}
+	},
 };
 </script>
 

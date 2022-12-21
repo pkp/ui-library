@@ -1,4 +1,6 @@
 <template>
+	<!-- Temporary disable eslint warning about mutating prop in v-model="isSelected" -->
+	<!-- eslint-disable vue/no-mutating-props -->
 	<div :id="`list-item-${item.type}-${item.id}`" class="listPanel__item--doi">
 		<div class="listPanel__itemSummary">
 			<!-- Item selector -->
@@ -39,9 +41,9 @@
 						class="doiListItem__itemMetadata--badge"
 						:is-warnable="
 							item.isPublished &&
-								((!isDeposited && isRegistrationPluginConfigured) ||
-									(isDeposited && isRegistrationPluginConfigured && isStale) ||
-									hasErrors)
+							((!isDeposited && isRegistrationPluginConfigured) ||
+								(isDeposited && isRegistrationPluginConfigured && isStale) ||
+								hasErrors)
 						"
 						:is-primary="item.isPublished && isDeposited"
 					>
@@ -75,7 +77,9 @@
 							:id="row.uid"
 							type="text"
 							:disabled="!(isEditingDois && !isSaving)"
-							v-model="mutableDois.find(doi => doi.uid === row.uid).identifier"
+							v-model="
+								mutableDois.find((doi) => doi.uid === row.uid).identifier
+							"
 						/>
 					</table-cell>
 				</template>
@@ -103,10 +107,10 @@
 					{{
 						isDeposited
 							? __('manager.dois.registration.submittedDescription', {
-									registrationAgency: registrationAgencyInfo['displayName']
+									registrationAgency: registrationAgencyInfo['displayName'],
 							  })
 							: __('manager.dois.registration.notSubmittedDescription', {
-									registrationAgency: registrationAgencyInfo['displayName']
+									registrationAgency: registrationAgencyInfo['displayName'],
 							  })
 					}}
 				</span>
@@ -178,22 +182,22 @@ export default {
 		Expander,
 		Modal,
 		PkpTable,
-		TableCell
+		TableCell,
 	},
 	props: {
 		apiUrl: {
 			type: String,
-			required: true
+			required: true,
 		},
 		doiApiUrl: {
 			type: String,
-			required: true
+			required: true,
 		},
 		doiPrefix: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		/**
 		 * Publication Object with a DOI
@@ -222,24 +226,24 @@ export default {
 		/** @type {DoiListItemData} */
 		item: {
 			type: Object,
-			required: true
+			required: true,
 		},
 		isExpanded: {
-			type: Boolean
+			type: Boolean,
 		},
 		isSelected: {
-			type: Boolean
+			type: Boolean,
 		},
 		enabledDoiTypes: {
 			type: Array,
 			default() {
 				return [];
-			}
+			},
 		},
 		registrationAgencyInfo: {
 			type: Object,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return {
@@ -249,19 +253,19 @@ export default {
 					label: 'Type',
 					value(row) {
 						return row.displayType;
-					}
+					},
 				},
 				{
 					name: 'doi',
 					label: 'DOI',
-					value: 'value'
-				}
+					value: 'value',
+				},
 			],
 			isEditingDois: false,
 			isEditingDoisEnabled: false,
 			isSaving: false,
 			mutableDois: [],
-			itemsToUpdate: {}
+			itemsToUpdate: {},
 		};
 	},
 	computed: {
@@ -294,7 +298,7 @@ export default {
 		isDeposited() {
 			const depositedStatuses = [
 				pkp.const.DOI_STATUS_SUBMITTED,
-				pkp.const.DOI_STATUS_REGISTERED
+				pkp.const.DOI_STATUS_REGISTERED,
 			];
 			return depositedStatuses.includes(this.itemDepositStatus);
 		},
@@ -359,16 +363,16 @@ export default {
 			return this.item.doiObjects.length !== 0
 				? this.item.doiObjects[0]['depositStatus']
 				: pkp.const.DOI_STATUS_UNREGISTERED;
-		}
+		},
 	},
 	methods: {
 		updateMutableDois(doiObjects) {
 			let dois = [];
-			doiObjects.forEach(item => {
+			doiObjects.forEach((item) => {
 				dois.push({
 					uid: item.uid,
 					doiId: item.doiId,
-					identifier: item.identifier
+					identifier: item.identifier,
 				});
 			});
 
@@ -378,22 +382,22 @@ export default {
 			this.isEditingDois = true;
 		},
 		saveDois() {
-			this.mutableDois.forEach(mutableDoi => {
+			this.mutableDois.forEach((mutableDoi) => {
 				const oldDoiItem = this.item.doiObjects.find(
-					item => item.uid === mutableDoi.uid
+					(item) => item.uid === mutableDoi.uid
 				);
 				if (oldDoiItem.identifier !== mutableDoi.identifier) {
 					this.itemsToUpdate[mutableDoi.uid] = {
 						isFinished: false,
 						isSuccess: false,
-						...mutableDoi
+						...mutableDoi,
 					};
 				}
 			});
 
 			this.isSaving = true;
 			if (Object.keys(this.itemsToUpdate).length !== 0) {
-				Object.keys(this.itemsToUpdate).forEach(itemId => {
+				Object.keys(this.itemsToUpdate).forEach((itemId) => {
 					this.postUpdatedDoi(this.itemsToUpdate[itemId]);
 				});
 			} else {
@@ -412,7 +416,7 @@ export default {
 					.then(() => {
 						this.addDoiToPubObject(itemToUpdate);
 					})
-					.catch(response => {
+					.catch((response) => {
 						// Complete called here instead of in addDoiToPubObject since it will never be called
 						this.postUpdatedDoiComplete(response, itemToUpdate.uid);
 					});
@@ -432,16 +436,17 @@ export default {
 				type: 'POST',
 				headers: {
 					'X-Csrf-Token': pkp.currentUser.csrfToken,
-					contentType: 'application/x-www-form-urlencoded'
+					contentType: 'application/x-www-form-urlencoded',
 				},
 				data: {
 					contextId: this.item.contextId,
-					doi: `${itemToUpdate.identifier}`
+					doi: `${itemToUpdate.identifier}`,
 				},
 				success(response) {
 					itemToUpdate.doiId = response.id;
 				},
-				error: response => this.postUpdatedDoiError(response, itemToUpdate.uid)
+				error: (response) =>
+					this.postUpdatedDoiError(response, itemToUpdate.uid),
 			});
 		},
 		/**
@@ -449,20 +454,21 @@ export default {
 		 */
 		addDoiToPubObject(itemToUpdate) {
 			return $.ajax({
-				url: this.item.doiObjects.find(item => item.uid === itemToUpdate.uid)
+				url: this.item.doiObjects.find((item) => item.uid === itemToUpdate.uid)
 					.updateWithNewDoiEndpoint,
 				type: 'POST',
 				headers: {
 					'X-Csrf-Token': pkp.currentUser.csrfToken,
 					'X-Http-Method-Override': 'PUT',
-					contentType: 'application/x-www-form-urlencoded'
+					contentType: 'application/x-www-form-urlencoded',
 				},
 				data: {doiId: itemToUpdate.doiId},
-				success: response =>
+				success: (response) =>
 					this.postUpdatedDoiSuccess(response, itemToUpdate.uid),
-				error: response => this.postUpdatedDoiError(response, itemToUpdate.uid),
-				complete: response =>
-					this.postUpdatedDoiComplete(response, itemToUpdate.uid)
+				error: (response) =>
+					this.postUpdatedDoiError(response, itemToUpdate.uid),
+				complete: (response) =>
+					this.postUpdatedDoiComplete(response, itemToUpdate.uid),
 			});
 		},
 		/**
@@ -475,14 +481,15 @@ export default {
 				headers: {
 					'X-Csrf-Token': pkp.currentUser.csrfToken,
 					'X-Http-Method-Override': 'PUT',
-					contentType: 'application/x-www-form-urlencoded'
+					contentType: 'application/x-www-form-urlencoded',
 				},
 				data: {doi: `${itemToUpdate.identifier}`},
-				success: response =>
+				success: (response) =>
 					this.postUpdatedDoiSuccess(response, itemToUpdate.uid),
-				error: response => this.postUpdatedDoiError(response, itemToUpdate.uid),
-				complete: response =>
-					this.postUpdatedDoiComplete(response, itemToUpdate.uid)
+				error: (response) =>
+					this.postUpdatedDoiError(response, itemToUpdate.uid),
+				complete: (response) =>
+					this.postUpdatedDoiComplete(response, itemToUpdate.uid),
 			});
 		},
 		/**
@@ -494,13 +501,14 @@ export default {
 				type: 'POST',
 				headers: {
 					'X-Csrf-Token': pkp.currentUser.csrfToken,
-					'X-Http-Method-Override': 'DELETE'
+					'X-Http-Method-Override': 'DELETE',
 				},
-				success: response =>
+				success: (response) =>
 					this.postUpdatedDoiSuccess(response, itemToUpdate.uid),
-				error: response => this.postUpdatedDoiError(response, itemToUpdate.uid),
-				complete: response =>
-					this.postUpdatedDoiComplete(response, itemToUpdate.uid)
+				error: (response) =>
+					this.postUpdatedDoiError(response, itemToUpdate.uid),
+				complete: (response) =>
+					this.postUpdatedDoiComplete(response, itemToUpdate.uid),
 			});
 		},
 		/**
@@ -540,14 +548,14 @@ export default {
 			this.itemsToUpdate = items;
 
 			const isAllDoisUpdated = Object.keys(this.itemsToUpdate).every(
-				itemUid => this.itemsToUpdate[itemUid].isFinished === true
+				(itemUid) => this.itemsToUpdate[itemUid].isFinished === true
 			);
 
 			if (isAllDoisUpdated) {
 				let items = {...this.itemsToUpdate};
 				let didUpdatesFail = false;
 
-				Object.keys(items).forEach(itemUid => {
+				Object.keys(items).forEach((itemUid) => {
 					if (!items[itemUid].isSuccess) {
 						didUpdatesFail = true;
 						delete items[itemUid];
@@ -580,7 +588,7 @@ export default {
 						},
 						complete(response) {
 							this.itemsToUpdate = {};
-						}
+						},
 					});
 				} else {
 					// If there were no successful updates, something has failed and we need to
@@ -609,16 +617,16 @@ export default {
 		},
 		toggleExpanded() {
 			this.$emit('expand-item', this.item.id);
-		}
+		},
 	},
 	mounted() {
 		this.updateMutableDois(this.item.doiObjects);
 	},
 	watch: {
-		item: function() {
+		item: function () {
 			this.updateMutableDois(this.item.doiObjects);
-		}
-	}
+		},
+	},
 };
 </script>
 

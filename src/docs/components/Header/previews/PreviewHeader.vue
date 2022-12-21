@@ -49,13 +49,13 @@ import PkpHeader from '@/components/Header/Header.vue';
 
 export default {
 	components: {
-		PkpHeader
+		PkpHeader,
 	},
 	data() {
 		return {
-			isLoading: false
+			isLoading: false,
 		};
-	}
+	},
 };
 </script>
 

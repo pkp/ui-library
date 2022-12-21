@@ -8,8 +8,8 @@ export default {
 	options: [
 		{
 			value: true,
-			label: 'Enable PKP PN plugin'
-		}
+			label: 'Enable PKP PN plugin',
+		},
 	],
 	terms:
 		'View the <button>plugin settings</button> to accept the terms of use for the PKP PN.',
@@ -18,5 +18,5 @@ export default {
 	disablePluginSuccess: 'The PKP PN plugin has been disabled.',
 	disablePluginUrl: 'https://example.com',
 	settingsUrl: 'https://example.com',
-	groupId: 'test'
+	groupId: 'test',
 };

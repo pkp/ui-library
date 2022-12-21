@@ -23,49 +23,49 @@ import VueDropzone from 'vue2-dropzone';
 
 export default {
 	components: {
-		VueDropzone
+		VueDropzone,
 	},
 	props: {
 		apiUrl: {
 			type: String,
-			required: true
+			required: true,
 		},
 		filenameLocale: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		files: {
 			type: Array,
-			required: true
+			required: true,
 		},
 		id: {
 			type: String,
-			required: true
+			required: true,
 		},
 		options: {
 			type: Object,
 			default() {
 				return {};
-			}
+			},
 		},
 		queryParams: {
 			type: Object,
 			default() {
 				return {};
-			}
+			},
 		},
 		uploadProgressLabel: {
 			type: String,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return {
 			dragEventCounter: 0,
 			isDragging: false,
-			status: ''
+			status: '',
 		};
 	},
 	computed: {
@@ -97,7 +97,7 @@ export default {
 				addRemoveLinks: true,
 				previewTemplate: '<p></p>',
 				headers: {
-					'X-Csrf-Token': pkp.currentUser.csrfToken
+					'X-Csrf-Token': pkp.currentUser.csrfToken,
 				},
 				params: (files, xhr) => {
 					const name = this.filenameLocale
@@ -105,12 +105,12 @@ export default {
 						: 'name';
 					return {
 						...this.queryParams,
-						[name]: files[0].name
+						[name]: files[0].name,
 					};
 				},
-				...this.options
+				...this.options,
 			};
-		}
+		},
 	},
 	methods: {
 		/**
@@ -120,7 +120,7 @@ export default {
 		 */
 		cancelUpload(id) {
 			const file = this.$refs.dropzone.dropzone.files.find(
-				f => f.upload.uuid === id
+				(f) => f.upload.uuid === id
 			);
 			if (file) {
 				this.$refs.dropzone.removeFile(file);
@@ -203,7 +203,7 @@ export default {
 					// Error objects with invalid properties
 				} else if (typeof error === 'object' && error !== null) {
 					errors = Object.keys(error)
-						.map(key => error[key])
+						.map((key) => error[key])
 						.flat();
 				}
 			}
@@ -214,7 +214,7 @@ export default {
 			this.$nextTick(() => {
 				this.$nextTick(() => {
 					this.$nextTick(() => {
-						const newFiles = this.files.map(file => {
+						const newFiles = this.files.map((file) => {
 							if (file.id === erroredFile.upload.uuid) {
 								file.errors = errors;
 							}
@@ -235,12 +235,12 @@ export default {
 		dropzoneFilesAdded(files) {
 			// use $nextTick because file.upload is undefined on initial call
 			this.$nextTick(() => {
-				const newFiles = Array.from(files).map(file => {
+				const newFiles = Array.from(files).map((file) => {
 					return {
 						id: file.upload.uuid,
 						name: file.upload.filename,
 						progress: file.upload.progress,
-						errors: []
+						errors: [],
 					};
 				});
 				this.$emit('updated:files', this.files.concat(newFiles));
@@ -255,7 +255,7 @@ export default {
 		 */
 		dropzoneRemovedFile(file) {
 			const files = this.files.filter(
-				item => !item.id || item.id !== file.upload.uuid
+				(item) => !item.id || item.id !== file.upload.uuid
 			);
 			this.$emit('updated:files', files);
 		},
@@ -268,7 +268,7 @@ export default {
 		 * @see https://www.dropzonejs.com/#event-list
 		 */
 		dropzoneSuccess(file, response) {
-			const files = this.files.map(item => {
+			const files = this.files.map((item) => {
 				if (item.id === file.upload.uuid) {
 					return response;
 				}
@@ -298,7 +298,7 @@ export default {
 		 * @see https://www.dropzonejs.com/#event-list
 		 */
 		dropzoneUploadProgress(file, progress) {
-			const files = this.files.map(item => {
+			const files = this.files.map((item) => {
 				if (item.id === file.upload.uuid) {
 					item.progress = progress;
 				}
@@ -312,7 +312,7 @@ export default {
 		 */
 		openFileBrowser() {
 			this.$refs.dropzone.dropzone.hiddenFileInput.click();
-		}
+		},
 	},
 	mounted() {
 		/**
@@ -331,7 +331,7 @@ export default {
 		document.removeEventListener('dragleave', this.dragleave, true);
 		document.removeEventListener('dragover', this.drop, true);
 		document.removeEventListener('drop', this.drop);
-	}
+	},
 };
 </script>
 

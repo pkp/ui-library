@@ -23,36 +23,36 @@ export default {
 				{
 					component: PreviewFieldRichTextarea,
 					name: 'Base',
-					template: this.extractTemplate(PreviewFieldRichTextareaTemplate)
+					template: this.extractTemplate(PreviewFieldRichTextareaTemplate),
 				},
 				{
 					component: PreviewFieldRichTextareaLarge,
 					name: 'Large',
-					template: this.extractTemplate(PreviewFieldRichTextareaLargeTemplate)
+					template: this.extractTemplate(PreviewFieldRichTextareaLargeTemplate),
 				},
 				{
 					component: PreviewFieldRichTextareaMediumToolbar,
 					name: 'Medium Toolbar',
 					template: this.extractTemplate(
 						PreviewFieldRichTextareaMediumToolbarTemplate
-					)
+					),
 				},
 				{
 					component: PreviewFieldRichTextareaHeavyToolbar,
 					name: 'Heavy Toolbar',
 					template: this.extractTemplate(
 						PreviewFieldRichTextareaHeavyToolbarTemplate
-					)
+					),
 				},
 				{
 					component: PreviewFieldRichTextareaWordLimit,
 					name: 'Word Limit',
 					template: this.extractTemplate(
 						PreviewFieldRichTextareaWordLimitTemplate
-					)
-				}
-			]
+					),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

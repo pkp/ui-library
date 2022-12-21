@@ -11,15 +11,15 @@ import field from '../../../helpers/field-select-country';
 export default {
 	extends: PreviewFieldBase,
 	components: {
-		FieldSelect
+		FieldSelect,
 	},
 	data() {
 		return {
 			field: {
 				...fieldBase,
-				...field
-			}
+				...field,
+			},
 		};
-	}
+	},
 };
 </script>

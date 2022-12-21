@@ -9,13 +9,13 @@ import articleStatsColumns from '../helpers/articleStatsColumns.js';
 
 export default {
 	components: {
-		PkpTable
+		PkpTable,
 	},
 	data() {
 		return {
 			columns: [...articleStatsColumns],
-			rows: articleStats.slice(0, 10)
+			rows: articleStats.slice(0, 10),
 		};
-	}
+	},
 };
 </script>

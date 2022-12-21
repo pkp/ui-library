@@ -5,8 +5,8 @@
 		:selected="[
 			{
 				value: 1,
-				label: 'Daniel Barnes'
-			}
+				label: 'Daniel Barnes',
+			},
 		]"
 		:value="[1]"
 		@change="change"
@@ -17,6 +17,6 @@
 import PreviewFieldBaseAutosuggest from './PreviewFieldBaseAutosuggest.vue';
 
 export default {
-	extends: PreviewFieldBaseAutosuggest
+	extends: PreviewFieldBaseAutosuggest,
 };
 </script>

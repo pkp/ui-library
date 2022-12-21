@@ -80,348 +80,347 @@ export default new Router({
 		{
 			path: '/',
 			name: 'index',
-			component: Page
+			component: Page,
 		},
 		{
 			path: '/pages/:page?',
 			name: 'page',
-			component: Page
+			component: Page,
 		},
 		{
 			path: '/component/ActionPanel/:example?',
 			name: 'ActionPanel',
-			component: ComponentActionPanel
+			component: ComponentActionPanel,
 		},
 		{
 			path: '/component/Badge/:example?',
 			name: 'Badge',
-			component: ComponentBadge
+			component: ComponentBadge,
 		},
 		{
 			path: '/component/Button/:example?',
 			name: 'Button',
-			component: ComponentButton
+			component: ComponentButton,
 		},
 		{
 			path: '/component/ButtonRow/:example?',
 			name: 'ButtonRow',
-			component: ComponentButtonRow
+			component: ComponentButtonRow,
 		},
 		{
 			path: '/component/Chart/:example?',
 			name: 'Chart',
-			component: ComponentChart
+			component: ComponentChart,
 		},
 		{
 			path: '/component/Composer/:example?',
 			name: 'Composer',
-			component: ComponentComposer
+			component: ComponentComposer,
 		},
 		{
 			path: '/component/DateRange/:example?',
 			name: 'DateRange',
-			component: ComponentDateRange
+			component: ComponentDateRange,
 		},
 		{
 			path: '/component/DecisionPage/:example?',
 			name: 'DecisionPage',
-			component: ComponentDecisionPage
+			component: ComponentDecisionPage,
 		},
 		{
 			path: '/component/Dropdown/:example?',
 			name: 'Dropdown',
-			component: ComponentDropdown
+			component: ComponentDropdown,
 		},
 		{
 			path: '/component/Form/fields/FieldArchivingPn/:example?',
 			name: 'Form/fields/FieldArchivingPn',
-			component: ComponentFieldArchivingPn
+			component: ComponentFieldArchivingPn,
 		},
 		{
 			path: '/component/Form/fields/FieldAutosuggestPreset/:example?',
 			name: 'Form/fields/FieldAutosuggestPreset',
-			component: ComponentFieldAutosuggestPreset
+			component: ComponentFieldAutosuggestPreset,
 		},
 		{
 			path: '/component/Form/fields/FieldBaseAutosuggest/:example?',
 			name: 'Form/fields/FieldBaseAutosuggest',
-			component: ComponentFieldBaseAutosuggest
+			component: ComponentFieldBaseAutosuggest,
 		},
 		{
 			path: '/component/Form/fields/FieldBase/:example?',
 			name: 'Form/fields/FieldBase',
-			component: ComponentFieldBase
+			component: ComponentFieldBase,
 		},
 		{
 			path: '/component/Form/fields/FieldColor/:example?',
 			name: 'Form/fields/FieldColor',
-			component: ComponentFieldColor
+			component: ComponentFieldColor,
 		},
 		{
 			path: '/component/Form/fields/FieldPubId/:example?',
 			name: 'Form/fields/FieldPubId',
-			component: ComponentFieldPubId
+			component: ComponentFieldPubId,
 		},
 		{
 			path: '/component/Form/fields/FieldHtml/:example?',
 			name: 'Form/fields/FieldHtml',
-			component: ComponentFieldHtml
+			component: ComponentFieldHtml,
 		},
 		{
 			path: '/component/Form/fields/FieldMetadataSetting/:example?',
 			name: 'Form/fields/FieldMetadataSetting',
-			component: ComponentFieldMetadataSetting
+			component: ComponentFieldMetadataSetting,
 		},
 		{
 			path: '/component/Form/fields/FieldOptions/:example?',
 			name: 'Form/fields/FieldOptions',
-			component: ComponentFieldOptions
+			component: ComponentFieldOptions,
 		},
 		{
 			path: '/component/Form/fields/FieldPreparedContent/:example?',
 			name: 'Form/fields/FieldPreparedContent',
-			component: ComponentFieldPreparedContent
+			component: ComponentFieldPreparedContent,
 		},
 		{
 			path: '/component/Form/fields/FieldRadioInput/:example?',
 			name: 'Form/fields/FieldRadioInput',
-			component: ComponentFieldRadioInput
+			component: ComponentFieldRadioInput,
 		},
 		{
 			path: '/component/Form/fields/FieldRichTextarea/:example?',
 			name: 'Form/fields/FieldRichTextarea',
-			component: ComponentFieldRichTextarea
+			component: ComponentFieldRichTextarea,
 		},
 		{
 			path: '/component/Form/fields/FieldSelect/:example?',
 			name: 'Form/fields/FieldSelect',
-			component: ComponentFieldSelect
+			component: ComponentFieldSelect,
 		},
 		{
 			path: '/component/Form/fields/FieldSelectIssue/:example?',
 			name: 'Form/fields/FieldSelectIssue',
-			component: ComponentFieldSelectIssue
+			component: ComponentFieldSelectIssue,
 		},
 		{
 			path: '/component/Form/fields/FieldShowEnsuringLink/:example?',
 			name: 'Form/fields/FieldShowEnsuringLink',
-			component: ComponentFieldShowEnsuringLink
+			component: ComponentFieldShowEnsuringLink,
 		},
 		{
 			path: '/component/Form/fields/FieldText/:example?',
 			name: 'Form/fields/FieldText',
-			component: ComponentFieldText
+			component: ComponentFieldText,
 		},
 		{
 			path: '/component/Form/fields/FieldTextarea/:example?',
 			name: 'Form/fields/FieldTextarea',
-			component: ComponentFieldTextarea
+			component: ComponentFieldTextarea,
 		},
 		{
 			path: '/component/Form/fields/FieldUpload/:example?',
 			name: 'Form/fields/FieldUpload',
-			component: ComponentFieldUpload
+			component: ComponentFieldUpload,
 		},
 		{
 			path: '/component/Form/fields/FieldUploadImage/:example?',
 			name: 'Form/fields/FieldUploadImage',
-			component: ComponentFieldUploadImage
+			component: ComponentFieldUploadImage,
 		},
 		{
 			path: '/component/Form/:example?',
 			name: 'Form',
-			component: ComponentForm
+			component: ComponentForm,
 		},
 		{
 			path: '/component/File/:example?',
 			name: 'File',
-			component: ComponentFile
+			component: ComponentFile,
 		},
 		{
 			path: '/component/FileAttacher/:example?',
 			name: 'FileAttacher',
-			component: ComponentFileAttacher
+			component: ComponentFileAttacher,
 		},
 		{
 			path: '/component/FileUploader/:example?',
 			name: 'FileUploader',
-			component: ComponentFileUploader
+			component: ComponentFileUploader,
 		},
 		{
 			path: '/component/FileUploadProgress/:example?',
 			name: 'FileUploadProgress',
-			component: ComponentFileUploadProgress
+			component: ComponentFileUploadProgress,
 		},
 		{
 			path: '/component/Filter/:example?',
 			name: 'Filter',
-			component: ComponentFilter
+			component: ComponentFilter,
 		},
 		{
 			path: '/component/Header/:example?',
 			name: 'Header',
-			component: ComponentHeader
+			component: ComponentHeader,
 		},
 		{
 			path: '/component/HelpButton/:example?',
 			name: 'HelpButton',
-			component: ComponentHelpButton
+			component: ComponentHelpButton,
 		},
 		{
 			path: '/component/Icon/:example?',
 			name: 'Icon',
-			component: ComponentIcon
+			component: ComponentIcon,
 		},
 		{
 			path: '/component/List/:example?',
 			name: 'List',
-			component: ComponentList
+			component: ComponentList,
 		},
 		{
 			path: '/component/ListPanel/:example?',
 			name: 'ListPanel',
-			component: ComponentListPanel
+			component: ComponentListPanel,
 		},
 		{
 			path: '/component/ListPanel/components/AnnouncementsListPanel/:example?',
 			name: 'AnnouncementsListPanel',
-			component: ComponentAnnouncementsListPanel
+			component: ComponentAnnouncementsListPanel,
 		},
 		{
 			path: '/component/ListPanel/components/CatalogListPanel/:example?',
 			name: 'CatalogListPanel',
-			component: ComponentCatalogListPanel
+			component: ComponentCatalogListPanel,
 		},
 		{
 			path: '/component/ListPanel/components/DoiListPanel/:example?',
 			name: 'DoiListPanel',
-			component: ComponentDoiListPanel
+			component: ComponentDoiListPanel,
 		},
 		{
 			path: '/component/ListPanel/components/DoiListPanelOJS/:example?',
 			name: 'DoiListPanelOJS',
-			component: ComponentDoiListPanelOJS
+			component: ComponentDoiListPanelOJS,
 		},
 		{
 			path: '/component/ListPanel/components/InstitutionsListPanel/:example?',
 			name: 'InstitutionsListPanel',
-			component: ComponentInstitutionsListPanel
+			component: ComponentInstitutionsListPanel,
 		},
 		{
 			path: '/component/ManageEmailsPage/:example?',
 			name: 'ManageEmailsPage',
-			component: ComponentManageEmailsPage
+			component: ComponentManageEmailsPage,
 		},
 		{
 			path: '/component/ListPanel/components/SelectReviewerListPanel/:example?',
 			name: 'SelectReviewerListPanel',
-			component: ComponentSelectReviewerListPanel
+			component: ComponentSelectReviewerListPanel,
 		},
 		{
-			path:
-				'/component/ListPanel/components/SubmissionFilesListPanel/:example?',
+			path: '/component/ListPanel/components/SubmissionFilesListPanel/:example?',
 			name: 'SubmissionFilesListPanel',
-			component: ComponentSubmissionFilesListPanel
+			component: ComponentSubmissionFilesListPanel,
 		},
 		{
 			path: '/component/ListPanel/components/SubmissionsListPanel/:example?',
 			name: 'SubmissionsListPanel',
-			component: ComponentSubmissionsListPanel
+			component: ComponentSubmissionsListPanel,
 		},
 		{
 			path: '/component/SubmissionWizardPage/:example?',
 			name: 'SubmissionWizardPage',
-			component: ComponentSubmissionWizardPage
+			component: ComponentSubmissionWizardPage,
 		},
 		{
 			path: '/component/Modal/:example?',
 			name: 'Modal',
-			component: ComponentModal
+			component: ComponentModal,
 		},
 		{
 			path: '/component/MultilingualProgress/:example?',
 			name: 'MultilingualProgress',
-			component: ComponentMultilingualProgress
+			component: ComponentMultilingualProgress,
 		},
 		{
 			path: '/component/Notification/:example?',
 			name: 'Notification',
-			component: ComponentNotification
+			component: ComponentNotification,
 		},
 		{
 			path: '/component/Orderer/:example?',
 			name: 'Orderer',
-			component: ComponentOrderer
+			component: ComponentOrderer,
 		},
 		{
 			path: '/component/Page/:example?',
 			name: 'Page',
-			component: ComponentPage
+			component: ComponentPage,
 		},
 		{
 			path: '/component/Pagination/:example?',
 			name: 'Pagination',
-			component: ComponentPagination
+			component: ComponentPagination,
 		},
 		{
 			path: '/component/Panel/:example?',
 			name: 'Panel',
-			component: ComponentPanel
+			component: ComponentPanel,
 		},
 		{
 			path: '/component/ProgressBar/:example?',
 			name: 'ProgressBar',
-			component: ComponentProgressBar
+			component: ComponentProgressBar,
 		},
 		{
 			path: '/component/Search/:example?',
 			name: 'Search',
-			component: ComponentSearch
+			component: ComponentSearch,
 		},
 		{
 			path: '/component/Spinner/:example?',
 			name: 'Spinner',
-			component: ComponentSpinner
+			component: ComponentSpinner,
 		},
 		{
 			path: '/component/StatsPage/:example?',
 			name: 'StatsPage',
-			component: ComponentStatsPage
+			component: ComponentStatsPage,
 		},
 		{
 			path: '/component/Steps/:example?',
 			name: 'Steps',
-			component: ComponentSteps
+			component: ComponentSteps,
 		},
 		{
 			path: '/component/Table/:example?',
 			name: 'Table',
-			component: ComponentTable
+			component: ComponentTable,
 		},
 		{
 			path: '/component/Tabs/:example?',
 			name: 'Tabs',
-			component: ComponentTabs
+			component: ComponentTabs,
 		},
 		{
 			path: '/component/Tooltip/:example?',
 			name: 'Tooltip',
-			component: ComponentTooltip
+			component: ComponentTooltip,
 		},
 		{
 			path: '/component/WorkflowPage/:example?',
 			name: 'WorkflowPage',
-			component: ComponentWorkflowPage
+			component: ComponentWorkflowPage,
 		},
 		{
 			path: '/utilities/Dialog/:example?',
 			name: 'Dialog',
-			component: ComponentDialog
+			component: ComponentDialog,
 		},
 		{
 			path: '/utilities/Notify/:example?',
 			name: 'Notify',
-			component: ComponentNotify
-		}
-	]
+			component: ComponentNotify,
+		},
+	],
 });

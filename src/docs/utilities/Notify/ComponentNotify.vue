@@ -14,10 +14,10 @@ export default {
 				{
 					component: PreviewNotify,
 					name: 'Base',
-					template: this.extractTemplate(PreviewNotifyTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewNotifyTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

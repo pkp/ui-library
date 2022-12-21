@@ -14,10 +14,10 @@ export default {
 				{
 					component: PreviewButton,
 					name: 'Base',
-					template: this.extractTemplate(PreviewButtonTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewButtonTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

@@ -11,7 +11,7 @@ import FieldBaseAutosuggest from '../../../helpers/field-autosuggest';
 export default {
 	extends: PreviewFieldBase,
 	components: {
-		ExampleFieldUserAutosuggest
+		ExampleFieldUserAutosuggest,
 	},
 	data() {
 		return {
@@ -20,9 +20,9 @@ export default {
 				...FieldBaseAutosuggest,
 				apiUrl: '/usernames.json',
 				label: 'Select Users',
-				selected: []
-			}
+				selected: [],
+			},
 		};
-	}
+	},
 };
 </script>

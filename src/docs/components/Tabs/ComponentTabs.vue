@@ -24,35 +24,35 @@ export default {
 				{
 					component: PreviewTabs,
 					name: 'Base',
-					template: this.extractTemplate(PreviewTabsTemplate)
+					template: this.extractTemplate(PreviewTabsTemplate),
 				},
 				{
 					component: PreviewNested,
 					name: 'Nested Tabs',
-					template: this.extractTemplate(PreviewNestedTemplate)
+					template: this.extractTemplate(PreviewNestedTemplate),
 				},
 				{
 					component: PreviewSide,
 					name: 'Side Tabs',
-					template: this.extractTemplate(PreviewSideTemplate)
+					template: this.extractTemplate(PreviewSideTemplate),
 				},
 				{
 					component: PreviewIcon,
 					name: 'With Icon',
-					template: this.extractTemplate(PreviewIconTemplate)
+					template: this.extractTemplate(PreviewIconTemplate),
 				},
 				{
 					component: PreviewBadge,
 					name: 'With Badge',
-					template: this.extractTemplate(PreviewBadgeTemplate)
+					template: this.extractTemplate(PreviewBadgeTemplate),
 				},
 				{
 					component: PreviewDefault,
 					name: 'With Default Tab',
-					template: this.extractTemplate(PreviewDefaultTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewDefaultTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

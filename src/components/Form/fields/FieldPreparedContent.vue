@@ -40,13 +40,13 @@ export default {
 	components: {
 		FieldRichTextarea,
 		InsertContent,
-		Modal
+		Modal,
 	},
 	props: {
 		/** @see InsertContent.props.insertLabel */
 		insertLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 
 		/**
@@ -54,7 +54,7 @@ export default {
 		 */
 		insertModalLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 
 		/** @see InsertContent.props.preparedContent */
@@ -62,13 +62,13 @@ export default {
 			type: Array,
 			default() {
 				return [];
-			}
+			},
 		},
 
 		/** @see InsertContent.props.itemsLabel */
 		preparedContentLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 
 		/** @see InsertContent.props.searchLabel */
@@ -76,12 +76,12 @@ export default {
 			type: String,
 			default() {
 				return '';
-			}
-		}
+			},
+		},
 	},
 	data() {
 		return {
-			resetFocusTo: null
+			resetFocusTo: null,
 		};
 	},
 	computed: {
@@ -96,7 +96,7 @@ export default {
 			let props = {};
 			let parent = FieldRichTextarea;
 			while (parent) {
-				Object.keys(parent.props).forEach(key => {
+				Object.keys(parent.props).forEach((key) => {
 					if (typeof this[key] !== 'undefined') {
 						props[key] = this[key];
 					}
@@ -125,7 +125,7 @@ export default {
 			let self = this;
 
 			// Add the insert content button
-			const setup = function(editor) {
+			const setup = function (editor) {
 				if (self.init.setup) {
 					self.init.setup.call(this, editor);
 				}
@@ -135,31 +135,31 @@ export default {
 						text: self.__('common.insertContent'),
 						onAction() {
 							self.$modal.show(self.preparedContentId);
-						}
+						},
 					});
 					editor.settings.toolbar += ' | pkpInsert';
 				}
 			};
 			return {
 				...this.init,
-				setup: setup
+				setup: setup,
 			};
 		},
 
 		renderedValue() {
-			const render = value => {
+			const render = (value) => {
 				return this.renderPreparedContent(value, this.preparedContent);
 			};
 			let newValue = {};
 			if (this.isMultilingual) {
-				Object.keys(this.value).forEach(localeKey => {
+				Object.keys(this.value).forEach((localeKey) => {
 					newValue[localeKey] = render(this.value[localeKey]);
 				});
 			} else {
 				newValue = render(this.value);
 			}
 			return newValue;
-		}
+		},
 	},
 	methods: {
 		closeInsertModal() {
@@ -176,8 +176,8 @@ export default {
 			if (this.resetFocusTo) {
 				this.resetFocusTo.focus();
 			}
-		}
-	}
+		},
+	},
 };
 </script>
 

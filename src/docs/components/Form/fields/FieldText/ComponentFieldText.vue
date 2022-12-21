@@ -25,35 +25,35 @@ export default {
 				{
 					component: PreviewFieldText,
 					name: 'Base',
-					template: this.extractTemplate(PreviewFieldTextTemplate)
+					template: this.extractTemplate(PreviewFieldTextTemplate),
 				},
 				{
 					component: PreviewFieldTextSmall,
 					name: 'Small',
-					template: this.extractTemplate(PreviewFieldTextSmallTemplate)
+					template: this.extractTemplate(PreviewFieldTextSmallTemplate),
 				},
 				{
 					component: PreviewFieldTextLarge,
 					name: 'Large',
-					template: this.extractTemplate(PreviewFieldTextLargeTemplate)
+					template: this.extractTemplate(PreviewFieldTextLargeTemplate),
 				},
 				{
 					component: PreviewFieldTextPrefix,
 					name: 'With Prefix',
-					template: this.extractTemplate(PreviewFieldTextPrefixTemplate)
+					template: this.extractTemplate(PreviewFieldTextPrefixTemplate),
 				},
 				{
 					component: PreviewFieldTextOptIntoEdit,
 					name: 'Editing Opt-in',
-					template: this.extractTemplate(PreviewFieldTextOptIntoEditTemplate)
+					template: this.extractTemplate(PreviewFieldTextOptIntoEditTemplate),
 				},
 				{
 					component: PreviewFieldTextInline,
 					name: 'Inline Label',
-					template: this.extractTemplate(PreviewFieldTextInlineTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewFieldTextInlineTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

@@ -15,10 +15,10 @@ export default {
 				{
 					component: PreviewFieldUploadImage,
 					name: 'Base',
-					template: this.extractTemplate(PreviewFieldUploadImageTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewFieldUploadImageTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

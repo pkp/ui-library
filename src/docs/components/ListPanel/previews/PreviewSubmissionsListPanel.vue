@@ -20,7 +20,7 @@ import fieldBaseAutosuggest from '../../Form/helpers/field-autosuggest';
 export default {
 	extends: Page,
 	components: {
-		SubmissionsListPanel
+		SubmissionsListPanel,
 	},
 	data() {
 		return {
@@ -30,14 +30,14 @@ export default {
 						{
 							title: 'Overdue',
 							param: 'isOverdue',
-							value: true
+							value: true,
 						},
 						{
 							title: 'Incomplete',
 							param: 'isIncomplete',
-							value: true
-						}
-					]
+							value: true,
+						},
+					],
 				},
 				{
 					heading: 'Stages',
@@ -45,24 +45,24 @@ export default {
 						{
 							title: 'Submission',
 							param: 'stageIds',
-							value: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION
+							value: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
 						},
 						{
 							title: 'Review',
 							param: 'stageIds',
-							value: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW
+							value: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 						},
 						{
 							title: 'Copyediting',
 							param: 'stageIds',
-							value: pkp.const.WORKFLOW_STAGE_ID_EDITING
+							value: pkp.const.WORKFLOW_STAGE_ID_EDITING,
 						},
 						{
 							title: 'Production',
 							param: 'stageIds',
-							value: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION
-						}
-					]
+							value: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+						},
+					],
 				},
 				{
 					heading: 'Activity',
@@ -73,9 +73,9 @@ export default {
 							value: 30,
 							min: 1,
 							max: 180,
-							filterType: 'pkp-filter-slider'
-						}
-					]
+							filterType: 'pkp-filter-slider',
+						},
+					],
 				},
 				{
 					heading: 'Sections',
@@ -83,14 +83,14 @@ export default {
 						{
 							title: 'Articles',
 							param: 'sectionIds',
-							value: 1
+							value: 1,
 						},
 						{
 							title: 'Reviews',
 							param: 'sectionIds',
-							value: 2
-						}
-					]
+							value: 2,
+						},
+					],
 				},
 				{
 					filters: [
@@ -105,11 +105,11 @@ export default {
 								apiUrl: '/usernames.json',
 								name: 'assignedTo',
 								label: 'Assigned To Editors',
-								selectedLabel: 'Assigned'
+								selectedLabel: 'Assigned',
 							},
-							filterType: 'pkp-filter-autosuggest'
-						}
-					]
+							filterType: 'pkp-filter-autosuggest',
+						},
+					],
 				},
 				{
 					filters: [
@@ -124,15 +124,15 @@ export default {
 								apiUrl: '/issues.json',
 								name: 'issueIds',
 								label: 'Assigned To Issues',
-								selectedLabel: 'Assigned'
+								selectedLabel: 'Assigned',
 							},
-							filterType: 'pkp-filter-autosuggest'
-						}
-					]
-				}
+							filterType: 'pkp-filter-autosuggest',
+						},
+					],
+				},
 			],
 			items: [...submissions],
-			itemsMax: submissions.length
+			itemsMax: submissions.length,
 		};
 	},
 	created() {
@@ -170,6 +170,6 @@ export default {
 		pkp.localeKeys['submission.list.revisionsSubmitted'] =
 			'Production galleys created';
 		pkp.localeKeys['submission.list.viewSubmission'] = 'View Submission';
-	}
+	},
 };
 </script>

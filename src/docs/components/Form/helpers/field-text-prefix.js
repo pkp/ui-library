@@ -8,7 +8,7 @@ export default {
 	value: {
 		en_US: 'The',
 		fr_CA: '',
-		ar_AR: ''
+		ar_AR: '',
 	},
-	isMultilingual: true
+	isMultilingual: true,
 };

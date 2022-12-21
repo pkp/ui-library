@@ -15,17 +15,17 @@ export default {
 		 */
 		setSuggestions(newItems) {
 			const suggestions = newItems
-				.filter(item => {
-					return !this.selected.find(s => s.id === item.id);
+				.filter((item) => {
+					return !this.selected.find((s) => s.id === item.id);
 				})
-				.map(item => {
+				.map((item) => {
 					return {
 						value: item.id,
-						label: item.fullName
+						label: item.fullName,
 					};
 				});
 			this.suggestions = suggestions;
-		}
-	}
+		},
+	},
 };
 </script>

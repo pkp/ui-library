@@ -4,5 +4,5 @@ export default {
 	inputType: 'url',
 	label: 'ORCID iD',
 	groupId: 'profile',
-	value: ''
+	value: '',
 };

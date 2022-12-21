@@ -34,7 +34,7 @@
 			class="pkpFormField__control"
 			:class="{
 				'pkpFormField__control--hasMultilingualIndicator':
-					isMultilingual && locales.length > 1
+					isMultilingual && locales.length > 1,
 			}"
 		>
 			<select
@@ -76,7 +76,7 @@ export default {
 	name: 'FieldSelect',
 	extends: FieldBase,
 	props: {
-		options: Array
+		options: Array,
 	},
 	computed: {
 		/**
@@ -86,8 +86,8 @@ export default {
 		 */
 		localizedOptions() {
 			return this.isMultilingual ? this.options[this.localeKey] : this.options;
-		}
-	}
+		},
+	},
 };
 </script>
 

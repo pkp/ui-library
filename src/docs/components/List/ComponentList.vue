@@ -14,10 +14,10 @@ export default {
 				{
 					component: PreviewList,
 					name: 'Base',
-					template: this.extractTemplate(PreviewListTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewListTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

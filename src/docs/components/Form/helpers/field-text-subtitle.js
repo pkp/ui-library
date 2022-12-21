@@ -7,7 +7,7 @@ export default {
 	value: {
 		en_US: 'A comparative analysis of functionality and roles',
 		fr_CA: '',
-		ar_AR: ''
+		ar_AR: '',
 	},
-	isMultilingual: true
+	isMultilingual: true,
 };

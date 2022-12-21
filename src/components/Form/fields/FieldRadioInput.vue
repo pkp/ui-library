@@ -106,12 +106,12 @@ export default {
 	props: {
 		value: {
 			type: String,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return {
-			inputValue: ''
+			inputValue: '',
 		};
 	},
 	computed: {
@@ -122,10 +122,10 @@ export default {
 		 */
 		isInputSelected() {
 			return !this.localizedOptions
-				.filter(opt => !opt.isInput)
-				.map(opt => opt.value)
+				.filter((opt) => !opt.isInput)
+				.map((opt) => opt.value)
 				.includes(this.selectedValue);
-		}
+		},
 	},
 	methods: {
 		/**
@@ -142,19 +142,19 @@ export default {
 		 */
 		setInputToSelected() {
 			this.selectedValue = this.inputValue;
-		}
+		},
 	},
 	watch: {
 		/**
 		 * When the input value changes, update the selected value if the input
 		 * option is the currently selected option
 		 */
-		inputValue: function(newVal, oldVal) {
+		inputValue: function (newVal, oldVal) {
 			if (newVal === oldVal || !this.isInputSelected) {
 				return;
 			}
 			this.selectedValue = this.inputValue;
-		}
+		},
 	},
 	mounted() {
 		/**
@@ -167,7 +167,7 @@ export default {
 				: this.value;
 			this.$refs.inputRadio[0].checked = true;
 		}
-	}
+	},
 };
 </script>
 

@@ -11,6 +11,6 @@
 import PreviewFieldBaseAutosuggest from './PreviewFieldBaseAutosuggest.vue';
 
 export default {
-	extends: PreviewFieldBaseAutosuggest
+	extends: PreviewFieldBaseAutosuggest,
 };
 </script>

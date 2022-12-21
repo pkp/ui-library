@@ -11,15 +11,15 @@ import field from '../../../helpers/field-radio-input';
 export default {
 	extends: PreviewFieldBase,
 	components: {
-		FieldRadioInput
+		FieldRadioInput,
 	},
 	data() {
 		return {
 			field: {
 				...fieldBase,
-				...field
-			}
+				...field,
+			},
 		};
-	}
+	},
 };
 </script>

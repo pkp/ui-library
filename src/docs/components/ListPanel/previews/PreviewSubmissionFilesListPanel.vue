@@ -32,7 +32,7 @@ import genres from '../../../data/genres';
 export default {
 	extends: Page,
 	components: {
-		SubmissionFilesListPanel
+		SubmissionFilesListPanel,
 	},
 	data() {
 		return {
@@ -45,34 +45,33 @@ export default {
 							fileId: 1234,
 							name: {
 								en_US: 'file-with-no-genre-assignment-yet.docx',
-								fr_CA: 'french-file-with-no-genre-assignment-yet.docx'
+								fr_CA: 'french-file-with-no-genre-assignment-yet.docx',
 							},
 							genre: null,
 							documentType: 'word',
-							url:
-								'https://example.com/publicknowledge/$$$call$$$/api/file/file-api/download-file?id=234&submissionId=22&stageId=2'
+							url: 'https://example.com/publicknowledge/$$$call$$$/api/file/file-api/download-file?id=234&submissionId=22&stageId=2',
 						},
 						{
 							id: '12345',
 							name: 'File In Progress.docx',
 							progress: 35,
-							error: []
+							error: [],
 						},
 						{
 							id: '123456',
 							name: 'File that is too large.docx',
 							progress: 100,
 							error: [
-								'File is too big (20mb). Files larger than 2mb can not be uploaded.'
-							]
-						}
+								'File is too big (20mb). Files larger than 2mb can not be uploaded.',
+							],
+						},
 					],
 					options: {...dropzoneOptions},
 					form: {...form},
-					genres: [...genres]
-				}
-			}
+					genres: [...genres],
+				},
+			},
 		};
-	}
+	},
 };
 </script>

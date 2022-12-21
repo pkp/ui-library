@@ -11,7 +11,7 @@ import field from '../../../helpers/field-upload-css';
 export default {
 	extends: PreviewFieldBase,
 	components: {
-		FieldUpload
+		FieldUpload,
 	},
 	data() {
 		return {
@@ -19,9 +19,9 @@ export default {
 				...fieldBase,
 				...field,
 				uploadFileLabel: 'Add File',
-				restoreLabel: 'Restore'
-			}
+				restoreLabel: 'Restore',
+			},
 		};
-	}
+	},
 };
 </script>

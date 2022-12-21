@@ -11,15 +11,15 @@ import field from '../../../helpers/field-show-ensuring-link';
 export default {
 	extends: PreviewFieldBase,
 	components: {
-		FieldShowEnsuringLink
+		FieldShowEnsuringLink,
 	},
 	data() {
 		return {
 			field: {
 				...fieldBase,
-				...field
-			}
+				...field,
+			},
 		};
-	}
+	},
 };
 </script>

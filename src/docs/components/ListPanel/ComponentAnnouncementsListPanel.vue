@@ -12,10 +12,10 @@ export default {
 				{
 					component: PreviewAnnouncementsListPanel,
 					name: 'Base',
-					template: this.extractTemplate(PreviewAnnouncementsListPanelTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewAnnouncementsListPanelTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

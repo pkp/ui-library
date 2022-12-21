@@ -14,10 +14,10 @@ export default {
 				{
 					component: PreviewBadge,
 					name: 'Base',
-					template: this.extractTemplate(PreviewBadgeTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewBadgeTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

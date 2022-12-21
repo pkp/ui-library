@@ -19,20 +19,20 @@ export default {
 				{
 					component: PreviewFieldTextarea,
 					name: 'Base',
-					template: this.extractTemplate(PreviewFieldTextareaTemplate)
+					template: this.extractTemplate(PreviewFieldTextareaTemplate),
 				},
 				{
 					component: PreviewFieldTextareaSmall,
 					name: 'Small',
-					template: this.extractTemplate(PreviewFieldTextareaSmallTemplate)
+					template: this.extractTemplate(PreviewFieldTextareaSmallTemplate),
 				},
 				{
 					component: PreviewFieldTextareaLarge,
 					name: 'Large',
-					template: this.extractTemplate(PreviewFieldTextareaLargeTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewFieldTextareaLargeTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

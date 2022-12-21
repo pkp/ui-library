@@ -44,31 +44,31 @@ export default {
 	props: {
 		actions: {
 			type: Array,
-			required: true
+			required: true,
 		},
 		close: {
 			type: Function,
 			default() {
 				return () => {};
-			}
+			},
 		},
 		closeLabel: {
-			type: String
+			type: String,
 		},
 		message: {
 			type: String,
-			required: true
+			required: true,
 		},
 		title: {
 			type: String,
 			default() {
 				return '';
-			}
-		}
+			},
+		},
 	},
 	data() {
 		return {
-			isLoading: false
+			isLoading: false,
 		};
 	},
 	methods: {
@@ -77,7 +77,7 @@ export default {
 			if (typeof callback === 'function') {
 				callback();
 			}
-		}
+		},
 	},
 	mounted() {
 		this.setFocusToRef('keyboardTrap');
@@ -86,6 +86,6 @@ export default {
 		if (typeof this.close === 'function') {
 			this.close();
 		}
-	}
+	},
 };
 </script>

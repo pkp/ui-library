@@ -39,7 +39,7 @@ import reviewer from '@/docs/data/reviewer';
 
 export default {
 	components: {
-		SelectReviewerListPanel
+		SelectReviewerListPanel,
 	},
 	data() {
 		const yesterday = new Date();
@@ -55,7 +55,7 @@ export default {
 				reviewsCompleted: 0,
 				dateLastReviewAssignment: '',
 				reviewerRating: null,
-				interests: []
+				interests: [],
 			},
 			{
 				...reviewer,
@@ -68,10 +68,10 @@ export default {
 				orcid: 'http://orcid.org/0000-0002-1825-0097',
 				biography: {
 					en_US:
-						'<p>Professor Aisla McCrae is a senior research fellow in the Publishing Studies Department in the School of Publishing at the University of Manitoba. She is the deputy chair of the Manitoba Publishing Institute and the author of <em>Publishing Now and Forever: Recent Developments in Archival Permanence</em>.</p>'
+						'<p>Professor Aisla McCrae is a senior research fellow in the Publishing Studies Department in the School of Publishing at the University of Manitoba. She is the deputy chair of the Manitoba Publishing Institute and the author of <em>Publishing Now and Forever: Recent Developments in Archival Permanence</em>.</p>',
 				},
 				gossip:
-					"<p>Aisla is a terrific reviewer but she takes a while to confirm and complete a review. Recommend not using her if you're on a tight deadline.</p>"
+					"<p>Aisla is a terrific reviewer but she takes a while to confirm and complete a review. Recommend not using her if you're on a tight deadline.</p>",
 			},
 			{
 				...reviewer,
@@ -84,25 +84,25 @@ export default {
 				interests: [
 					{
 						id: 223,
-						interest: 'catapulting into space'
+						interest: 'catapulting into space',
 					},
 					{
 						id: 224,
-						interest: 'somersaults around the moon'
+						interest: 'somersaults around the moon',
 					},
 					{
 						id: 225,
-						interest: 'listening to taylor swift'
+						interest: 'listening to taylor swift',
 					},
 					{
 						id: 227,
-						interest: 'growing plants and stuff'
+						interest: 'growing plants and stuff',
 					},
 					{
 						id: 226,
-						interest: 'just kickin it'
-					}
-				]
+						interest: 'just kickin it',
+					},
+				],
 			},
 			{
 				...reviewer,
@@ -111,7 +111,7 @@ export default {
 				reviewsActive: 1,
 				reviewsCompleted: 0,
 				dateLastReviewAssignment: '2019-01-25 11:22:42',
-				reviewerRating: 5
+				reviewerRating: 5,
 			},
 			{
 				...reviewer,
@@ -120,7 +120,7 @@ export default {
 				reviewsActive: 1,
 				reviewsCompleted: 0,
 				dateLastReviewAssignment: '2019-06-07 11:22:42',
-				reviewerRating: 3
+				reviewerRating: 3,
 			},
 			{
 				...reviewer,
@@ -129,8 +129,8 @@ export default {
 				reviewsActive: 0,
 				reviewsCompleted: 3,
 				dateLastReviewAssignment: '2017-10-21 11:22:42',
-				reviewerRating: 2
-			}
+				reviewerRating: 2,
+			},
 		];
 
 		return {
@@ -142,7 +142,7 @@ export default {
 					min: 1,
 					max: 5,
 					useStars: true,
-					valueLabel: '{$value}/5'
+					valueLabel: '{$value}/5',
 				},
 				{
 					param: 'reviewsCompleted',
@@ -150,7 +150,7 @@ export default {
 					value: 10,
 					min: 0,
 					max: 20,
-					valueLabel: '{$value} or more'
+					valueLabel: '{$value} or more',
 				},
 				{
 					param: 'daysSinceLastAssignment',
@@ -161,7 +161,7 @@ export default {
 					max: 365,
 					valueLabel: '{$min}-{$max}',
 					moreThanLabel: 'More than',
-					lessThanLabel: 'Less than'
+					lessThanLabel: 'Less than',
 				},
 				{
 					param: 'reviewsActive',
@@ -172,7 +172,7 @@ export default {
 					max: 20,
 					valueLabel: '{$min}-{$max}',
 					moreThanLabel: 'More than',
-					lessThanLabel: 'Less than'
+					lessThanLabel: 'Less than',
 				},
 				{
 					param: 'averageCompletion',
@@ -180,11 +180,11 @@ export default {
 					value: 75,
 					min: 0,
 					max: 75,
-					valueLabel: '{$value} or less'
-				}
+					valueLabel: '{$value} or less',
+				},
 			],
-			items: [...items]
+			items: [...items],
 		};
-	}
+	},
 };
 </script>

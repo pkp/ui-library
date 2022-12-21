@@ -54,8 +54,8 @@ export default {
 		},
 		notify(message, type) {
 			pkp.eventBus.$emit('notify', message, type);
-		}
-	}
+		},
+	},
 };
 </script>
 

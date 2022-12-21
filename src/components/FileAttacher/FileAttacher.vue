@@ -49,18 +49,18 @@ export default {
 		FileAttacherLibrary,
 		FileAttacherReviewFiles,
 		FileAttacherUpload,
-		Modal
+		Modal,
 	},
 	props: {
 		attachers: {
 			type: Array,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return {
 			currentAttacher: null,
-			resetFocusTo: null
+			resetFocusTo: null,
 		};
 	},
 	methods: {
@@ -81,8 +81,8 @@ export default {
 			this.currentAttacher = attacher;
 			this.resetFocusTo = document.activeElement;
 			this.$modal.show('attacher');
-		}
-	}
+		},
+	},
 };
 </script>
 

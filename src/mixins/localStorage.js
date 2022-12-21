@@ -15,7 +15,7 @@ export default {
 	data() {
 		return {
 			clientId: null,
-			isLocalStorageEnabled: false
+			isLocalStorageEnabled: false,
 		};
 	},
 	methods: {
@@ -72,12 +72,12 @@ export default {
 			} catch (e) {
 				return false;
 			}
-		}
+		},
 	},
 	created() {
 		this.isLocalStorageEnabled = this._test();
 		if (this.isLocalStorageEnabled) {
 			this._setClientId();
 		}
-	}
+	},
 };

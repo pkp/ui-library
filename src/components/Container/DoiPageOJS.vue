@@ -6,7 +6,7 @@ export default {
 	name: 'DoiPageOJS',
 	extends: Page,
 	components: {
-		DoiListPanel
-	}
+		DoiListPanel,
+	},
 };
 </script>

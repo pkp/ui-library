@@ -12,10 +12,10 @@ export default {
 				{
 					component: PreviewSubmissionsListPanel,
 					name: 'Base',
-					template: this.extractTemplate(PreviewSubmissionsListPanelTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewSubmissionsListPanelTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

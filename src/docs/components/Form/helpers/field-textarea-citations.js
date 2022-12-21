@@ -3,5 +3,5 @@ export default {
 	component: 'field-textarea',
 	label: 'Citations',
 	value: '',
-	size: 'large'
+	size: 'large',
 };

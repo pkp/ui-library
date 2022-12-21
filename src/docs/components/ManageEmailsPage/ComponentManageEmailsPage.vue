@@ -14,10 +14,10 @@ export default {
 				{
 					component: PreviewManageEmailsPage,
 					name: 'Base',
-					template: this.extractTemplate(PreviewManageEmailsPageTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewManageEmailsPageTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

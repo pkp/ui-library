@@ -10,11 +10,11 @@ export default {
 		ListPanel,
 		PkpForm,
 		SelectReviewerListPanel,
-		SubmissionsListPanel
+		SubmissionsListPanel,
 	},
 	data() {
 		return {
-			components: {}
+			components: {},
 		};
 	},
 	methods: {
@@ -37,20 +37,20 @@ export default {
 		 * @param {String} key
 		 * @param {Array} data Key/value object with new data
 		 */
-		set: function(key, data) {
+		set: function (key, data) {
 			let component = {...this.get(key)};
-			Object.keys(data).forEach(function(dataKey) {
+			Object.keys(data).forEach(function (dataKey) {
 				component[dataKey] = data[dataKey];
 			});
 			this.components[key] = component;
-		}
+		},
 	},
 	mounted() {
 		/**
 		 * Listen for changes in the supported form languages and update
 		 * form components
 		 */
-		pkp.eventBus.$on('set-form-languages', data => {
+		pkp.eventBus.$on('set-form-languages', (data) => {
 			let supportedFormLocales;
 			// Account for global events triggered from Handler.js, which attaches
 			// non-numeric keys to the event data, changing the array to an object
@@ -67,7 +67,7 @@ export default {
 				supportedFormLocales = [...data];
 			}
 
-			Object.keys(this.components).forEach(key => {
+			Object.keys(this.components).forEach((key) => {
 				if (typeof this.components[key].supportedFormLocales !== 'undefined') {
 					this.components[key].supportedFormLocales = supportedFormLocales;
 				}
@@ -76,6 +76,6 @@ export default {
 	},
 	destroyed() {
 		pkp.eventBus.$off('set-form-languages');
-	}
+	},
 };
 </script>

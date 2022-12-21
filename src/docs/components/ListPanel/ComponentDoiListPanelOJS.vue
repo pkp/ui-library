@@ -12,10 +12,10 @@ export default {
 				{
 					component: PreviewDoiListPanelOJS,
 					name: 'Base',
-					template: this.extractTemplate(PreviewDoiListPanelOJSTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewDoiListPanelOJSTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

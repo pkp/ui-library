@@ -11,15 +11,15 @@ import field from '../../../helpers/field-text-doi-prefix';
 export default {
 	extends: PreviewFieldBase,
 	components: {
-		FieldText
+		FieldText,
 	},
 	data() {
 		return {
 			field: {
 				...fieldBase,
-				...field
-			}
+				...field,
+			},
 		};
-	}
+	},
 };
 </script>

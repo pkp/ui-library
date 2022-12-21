@@ -42,7 +42,6 @@
 			class="pkpFormField__control pkpFormField--richTextarea__control"
 			:class="'pkpFormField--richTextArea__control--' + this.size"
 		>
-			<div class="pkpFormField--richTextarea__toolbar" :id="toolbarId"></div>
 			<editor
 				class="pkpFormField__input pkpFormField--richTextarea__input"
 				v-model="currentValue"
@@ -73,7 +72,7 @@
 					{{
 						replaceLocaleParams(wordCountLabel, {
 							count: wordCount,
-							limit: wordLimit
+							limit: wordLimit,
 						})
 					}}
 				</div>
@@ -107,7 +106,7 @@ export default {
 	name: 'FieldRichTextarea',
 	extends: FieldBase,
 	components: {
-		Editor
+		Editor,
 	},
 	props: {
 		// @see https://www.tiny.cloud/docs/configure/integration-and-setup/
@@ -115,12 +114,12 @@ export default {
 			type: Object,
 			default() {
 				return {};
-			}
+			},
 		},
 		// @see https://www.tiny.cloud/docs/configure/integration-and-setup/#plugins
 		plugins: {
 			type: String,
-			required: true
+			required: true,
 		},
 		size: {
 			type: String,
@@ -129,36 +128,36 @@ export default {
 			},
 			validator(value) {
 				return ['default', 'large'].includes(value);
-			}
+			},
 		},
 		// @see https://www.tinymce.com/docs/configure/editor-appearance/#toolbar
 		toolbar: {
 			type: String,
-			required: true
+			required: true,
 		},
 		uploadUrl: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		wordCountLabel: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		wordLimit: {
 			type: Number,
 			default() {
 				return 0;
-			}
-		}
+			},
+		},
 	},
 	data() {
 		return {
 			isFocused: false,
-			wordCount: 0
+			wordCount: 0,
 		};
 	},
 	computed: {
@@ -167,10 +166,10 @@ export default {
 			get() {
 				return this.isMultilingual ? this.value[this.localeKey] : this.value;
 			},
-			set: function(newVal) {
+			set: function (newVal) {
 				this.$emit('change', this.name, 'value', newVal, this.localeKey);
 				debounce(this.setWordCount, 250)();
-			}
+			},
 		},
 		/**
 		 * ID attribute for the element where the toolbar should be placed
@@ -189,7 +188,7 @@ export default {
 		 */
 		compiledInit() {
 			var self = this;
-			var urlConverterCallback = function(url) {
+			var urlConverterCallback = function (url) {
 				// removes script_host from smarty variables
 				const smartyVariable = /\{\$(\w*)\}/.exec(url);
 				if (smartyVariable) {
@@ -202,8 +201,8 @@ export default {
 				return url;
 			};
 			return {
-				inline: true,
 				skin_url: this.$root.tinyMCE.skinUrl,
+				content_css: $.pkp.app.tinyMceContentCSS,
 				paste_data_images: true,
 				relative_urls: false,
 				remove_script_host: false,
@@ -225,25 +224,24 @@ export default {
 						processData: false,
 						contentType: false,
 						headers: {
-							'X-Csrf-Token': pkp.currentUser.csrfToken
+							'X-Csrf-Token': pkp.currentUser.csrfToken,
 						},
 						success(r) {
 							success(r.url);
 						},
 						error(r) {
 							failure(r.responseJSON.errorMessage);
-						}
+						},
 					});
 				},
-				fixed_toolbar_container: '#' + this.toolbarId,
-				init_instance_callback: editor => {
+				init_instance_callback: (editor) => {
 					// The inline toolbar only appears after the field has been focused.
 					// This mimics the focus event, without actually changing the user's
 					// focus.
 					editor.fire('focus');
 					editor.fire('blur');
 				},
-				...this.init
+				...this.init,
 			};
 		},
 		/**
@@ -251,7 +249,7 @@ export default {
 		 */
 		isRTL() {
 			return $.pkp.app.rtlLocales.includes(this.localeKey);
-		}
+		},
 	},
 	methods: {
 		/**
@@ -284,7 +282,7 @@ export default {
 				return;
 			}
 			this.wordCount = 0;
-		}
+		},
 	},
 	watch: {
 		value(newVal, oldVal) {
@@ -296,27 +294,16 @@ export default {
 			}
 			debounce(this.setWordCount, 250)();
 			this.$emit('change', this.name, 'value', newVal, this.localeKey);
-		}
+		},
 	},
 	mounted() {
 		debounce(this.setWordCount, 1000)();
-	}
+	},
 };
 </script>
 
 <style lang="less">
 @import '../../../styles/_import';
-
-.pkpFormField--richTextarea__toolbar {
-	border-bottom: @bg-border;
-	min-height: 39px;
-
-	.mce-tinymce {
-		// Tinymce hides the toolbar when focus is not in the field but we want it
-		// to remain visible at all times.
-		display: block !important;
-	}
-}
 
 .pkpFormField--richTextarea__control {
 	border: @bg-border;
@@ -342,41 +329,6 @@ export default {
 	}
 }
 
-.pkpFormField--richTextarea__input {
-	padding: 1rem;
-	width: 100%;
-	height: 14em;
-	font-size: @font-sml;
-	line-height: @line-sml;
-	border: none;
-	overflow-y: scroll;
-
-	&:focus {
-		box-shadow: none;
-	}
-
-	p:first-child {
-		margin-top: 0;
-	}
-
-	span.pkpTag {
-		padding: 0.5em;
-		font-size: 10px;
-		font-weight: @bold;
-		text-transform: uppercase;
-		color: @text-light;
-
-		&[contentEditable='false'][data-mce-selected] {
-			outline: 1px solid @primary;
-			border-radius: 2px;
-		}
-	}
-}
-
-.pkpFormField--richTextArea__control--large .pkpFormField--richTextarea__input {
-	height: 35em;
-}
-
 .pkpFormField--richTextarea__controlFooter {
 	display: flex;
 	align-items: center;
@@ -391,13 +343,19 @@ export default {
 }
 
 // Override tinymce styles
-// We temporarily wrap these styles in .pkpFormField--richTextarea__input until
-// we have transitioned all of the old tinymce fields out of the system
 .pkpFormField--richTextarea__control {
-	// Ensure the toolbar is always visible
-	.pkpFormField--richTextarea__toolbar .tox-tinymce-inline {
-		display: block !important;
-		visibility: visible !important;
+	.pkpFormField--richTextarea__input,
+	.tox-tinymce {
+		border: none;
+		width: 100%;
+		height: 15em !important;
+	}
+
+	.tox .tox-toolbar,
+	.tox .tox-toolbar__overflow,
+	.tox .tox-toolbar__primary {
+		background: @lift;
+		border-bottom: @bg-border;
 	}
 
 	.tox-tbtn:not(:first-child) {
@@ -408,15 +366,12 @@ export default {
 		color: @primary;
 		text-decoration: underline;
 	}
+}
 
-	.tox-tinymce-inline .tox-editor-header {
-		border: none;
-	}
-
-	// Remove focused outline from text input
-	// Visual indicator already exists around whole component
-	.pkpFormField--richTextarea__input {
-		outline: none;
+.pkpFormField--richTextArea__control--large {
+	.pkpFormField--richTextarea__input,
+	.tox-tinymce {
+		height: 35em !important;
 	}
 }
 

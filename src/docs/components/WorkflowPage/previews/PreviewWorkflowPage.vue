@@ -71,7 +71,7 @@
 							<span
 								v-if="
 									workingPublication.status === getConstant('STATUS_QUEUED') &&
-										workingPublication.id === currentPublication.id
+									workingPublication.id === currentPublication.id
 								"
 								class="pkpPublication__statusUnpublished"
 							>
@@ -122,7 +122,7 @@
 											<template
 												v-if="
 													publication.status === getConstant('STATUS_QUEUED') &&
-														publication.id === currentPublication.id
+													publication.id === currentPublication.id
 												"
 											>
 												Unscheduled
@@ -228,9 +228,7 @@
 						<tab v-if="supportsReferences" id="citations" label="Citations">
 							<pkp-form v-bind="components.citations" @set="set" />
 						</tab>
-						<tab id="identifiers" label="Identifiers">
-							... DOIs ...
-						</tab>
+						<tab id="identifiers" label="Identifiers">... DOIs ...</tab>
 						<tab id="galleys" label="Galleys">
 							<div id="representations-grid" ref="representations">
 								<spinner></spinner>
@@ -299,7 +297,7 @@ import fieldUrl from '../../Form/helpers/field-text-url';
 
 export default {
 	extends: WorkflowPage,
-	data: function() {
+	data: function () {
 		const currentPublication = {
 			...basePublication,
 			id: 852,
@@ -308,7 +306,7 @@ export default {
 			issueId: 1,
 			lastModified: '2019-03-23 09:12:32',
 			status: 3,
-			version: 2
+			version: 2,
 		};
 		const latestPublication = {
 			...basePublication,
@@ -317,9 +315,9 @@ export default {
 			status: 1,
 			title: {
 				en_US: 'Amet sit dolor ipsum lorem',
-				fr_CA: 'FR Amet sit dolor ipsum lorem'
+				fr_CA: 'FR Amet sit dolor ipsum lorem',
 			},
-			version: 3
+			version: 3,
 		};
 		return {
 			activityLogLabel: 'Activity Log',
@@ -348,14 +346,14 @@ export default {
 								...fieldGivenName,
 								groupId: 'default',
 								isMultilingual: true,
-								value: {en_US: ''}
+								value: {en_US: ''},
 							},
 							{
 								...fieldFamilyName,
 								isRequired: false,
 								groupId: 'default',
 								isMultilingual: true,
-								value: {en_US: ''}
+								value: {en_US: ''},
 							},
 							{
 								...fieldFamilyName,
@@ -364,34 +362,34 @@ export default {
 								isRequired: false,
 								groupId: 'default',
 								isMultilingual: true,
-								value: {en_US: ''}
+								value: {en_US: ''},
 							},
 							{
 								...fieldEmail,
-								groupId: 'default'
+								groupId: 'default',
 							},
 							{
 								...fieldCountry,
-								groupId: 'default'
+								groupId: 'default',
 							},
 							{
 								...fieldUrl,
-								groupId: 'default'
+								groupId: 'default',
 							},
 							{
 								...fieldOrcid,
-								groupId: 'default'
+								groupId: 'default',
 							},
 							{
 								...fieldBiography,
-								groupId: 'default'
+								groupId: 'default',
 							},
 							{
 								...fieldAffiliation,
-								groupId: 'default'
+								groupId: 'default',
 							},
 							{
-								...fieldAuthorsRole
+								...fieldAuthorsRole,
 							},
 							{
 								...fieldConfirmation,
@@ -404,22 +402,22 @@ export default {
 									{
 										value: true,
 										label:
-											'Include this contributor when identifying authors in lists of publications.'
-									}
-								]
-							}
+											'Include this contributor when identifying authors in lists of publications.',
+									},
+								],
+							},
 						],
 						groups: [{id: 'default', pageId: 'default'}],
 						pages: [{id: 'default', submitButton: {label: 'Save'}}],
 						primaryLocale: 'en_US',
 						visibleLocales: ['en_US'],
 						supportedFormLocales: [{key: 'en_US', label: 'English'}],
-						errors: {}
-					}
+						errors: {},
+					},
 				},
 				citations: formCitations,
 				metadata: formMetadata,
-				titleAbstract: formTitleAbstract
+				titleAbstract: formTitleAbstract,
 			},
 			currentPublication: currentPublication,
 			editorialHistoryUrl: 'http://example.org',
@@ -429,20 +427,20 @@ export default {
 					id: 801,
 					datePublished: '2019-01-01 12:01:23',
 					status: 3,
-					version: 1
+					version: 1,
 				},
 				{
 					id: currentPublication.id,
 					datePublished: currentPublication.datePublished,
 					status: currentPublication.status,
-					version: currentPublication.version
+					version: currentPublication.version,
 				},
 				{
 					id: latestPublication.id,
 					datePublished: latestPublication.datePublished,
 					status: latestPublication.status,
-					version: latestPublication.version
-				}
+					version: latestPublication.version,
+				},
 			],
 			publicationTabsLabel: 'Publication details for version {$version}',
 			publishLabel: 'Publish',
@@ -463,7 +461,7 @@ export default {
 				urlAuthorWorkflow: '/authorDashboard/submission/1',
 				urlEditorialWorkflow: '/workflow/access/1',
 				urlWorkflow: '/workflow/access/1',
-				urlPublished: '/articles/view/1'
+				urlPublished: '/articles/view/1',
 			},
 			submissionApiUrl: 'http://example.org',
 			submissionFileApiUrl: 'http://example.org',
@@ -478,13 +476,13 @@ export default {
 			versionLabel: 'Version: ',
 			versionConfirmTitle: 'Create New Version',
 			versionConfirmMessage: 'Are you sure you want to create a new version?',
-			workingPublication: latestPublication
+			workingPublication: latestPublication,
 		};
 	},
 	methods: {
 		alert(msg) {
 			alert(msg);
-		}
+		},
 	},
 	created() {
 		pkp.localeKeys['contributor.listPanel.preview.description'] =
@@ -495,7 +493,7 @@ export default {
 		pkp.localeKeys['contributor.listPanel.preview.publicationLists'] =
 			'Publication Lists';
 		pkp.localeKeys['contributor.listPanel.preview.full'] = 'Full';
-	}
+	},
 };
 </script>
 

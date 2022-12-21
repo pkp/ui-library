@@ -22,11 +22,11 @@ export default {
 	components: {
 		List,
 		ListItem,
-		Orderer
+		Orderer,
 	},
 	data() {
 		return {
-			items: ['One', 'Two', 'Three']
+			items: ['One', 'Two', 'Three'],
 		};
 	},
 	methods: {
@@ -35,8 +35,8 @@ export default {
 		 *
 		 * @param {String|Number} id The item to move
 		 */
-		up: function(id) {
-			const index = this.items.findIndex(item => {
+		up: function (id) {
+			const index = this.items.findIndex((item) => {
 				return item === id;
 			});
 			if (!index) {
@@ -50,15 +50,15 @@ export default {
 		 *
 		 * @param {String|Number} id The item to move
 		 */
-		down: function(id) {
-			const index = this.items.findIndex(item => {
+		down: function (id) {
+			const index = this.items.findIndex((item) => {
 				return item === id;
 			});
 			if (index < 0 || index >= this.items.length - 1) {
 				return;
 			}
 			this.items.splice(index + 1, 0, this.items.splice(index, 1)[0]);
-		}
-	}
+		},
+	},
 };
 </script>

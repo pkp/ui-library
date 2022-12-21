@@ -103,42 +103,42 @@ export default {
 	components: {
 		Badge,
 		FileUploadProgress,
-		SubmissionFilesFile
+		SubmissionFilesFile,
 	},
 	props: {
 		apiUrl: {
 			type: String,
-			required: true
+			required: true,
 		},
 		cancelUploadLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		genrePromptLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		genres: {
 			type: Array,
-			required: true
+			required: true,
 		},
 		item: {
 			type: Object,
-			required: true
+			required: true,
 		},
 		otherLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		stageId: {
 			type: Number,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return {
 			isSavingGenreId: false,
-			status: ''
+			status: '',
 		};
 	},
 	computed: {
@@ -185,8 +185,8 @@ export default {
 		 * @return {Array}
 		 */
 		primaryGenres() {
-			return this.genres.filter(genre => !!genre.isPrimary);
-		}
+			return this.genres.filter((genre) => !!genre.isPrimary);
+		},
 	},
 	methods: {
 		/**
@@ -213,11 +213,11 @@ export default {
 				url: this.apiUrl + '/' + this.item.id + '?stageId=' + this.stageId,
 				type: 'POST',
 				data: {
-					genreId: genreId
+					genreId: genreId,
 				},
 				headers: {
 					'X-Csrf-Token': pkp.currentUser.csrfToken,
-					'X-Http-Method-Override': 'PUT'
+					'X-Http-Method-Override': 'PUT',
 				},
 				error: this.ajaxErrorCallback,
 				success(r) {
@@ -229,10 +229,10 @@ export default {
 				},
 				complete(r) {
 					setTimeout(() => (self.isSavingGenreId = false), 500);
-				}
+				},
 			});
-		}
-	}
+		},
+	},
 };
 </script>
 

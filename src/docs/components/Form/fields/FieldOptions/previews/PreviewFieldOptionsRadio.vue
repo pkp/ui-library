@@ -11,15 +11,15 @@ import field from '../../../helpers/field-options-emails';
 export default {
 	extends: PreviewFieldBase,
 	components: {
-		FieldOptions
+		FieldOptions,
 	},
 	data() {
 		return {
 			field: {
 				...fieldBase,
-				...field
-			}
+				...field,
+			},
 		};
-	}
+	},
 };
 </script>

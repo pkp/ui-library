@@ -12,8 +12,8 @@ export default {
 	computed: {
 		hasEndSlot() {
 			return this.$slots.end;
-		}
-	}
+		},
+	},
 };
 </script>
 

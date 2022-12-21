@@ -15,10 +15,10 @@ export default {
 				{
 					component: PreviewFieldShowEnsuringLink,
 					name: 'Base',
-					template: this.extractTemplate(PreviewFieldShowEnsuringLinkTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewFieldShowEnsuringLinkTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

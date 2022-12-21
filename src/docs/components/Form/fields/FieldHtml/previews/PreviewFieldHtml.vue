@@ -11,15 +11,15 @@ import field from '../../../helpers/field-html-lorem';
 export default {
 	extends: PreviewFieldBase,
 	components: {
-		FieldHtml
+		FieldHtml,
 	},
 	data() {
 		return {
 			field: {
 				...fieldBase,
-				...field
-			}
+				...field,
+			},
 		};
-	}
+	},
 };
 </script>

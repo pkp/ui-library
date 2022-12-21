@@ -21,25 +21,25 @@ export default {
 				{
 					component: PreviewFieldBase,
 					name: 'Base',
-					template: this.extractTemplate(PreviewFieldBaseTemplate)
+					template: this.extractTemplate(PreviewFieldBaseTemplate),
 				},
 				{
 					component: PreviewFieldBaseDescription,
 					name: 'With Description',
-					template: this.extractTemplate(PreviewFieldBaseDescriptionTemplate)
+					template: this.extractTemplate(PreviewFieldBaseDescriptionTemplate),
 				},
 				{
 					component: PreviewFieldBaseTooltip,
 					name: 'With Tooltip',
-					template: this.extractTemplate(PreviewFieldBaseTooltipTemplate)
+					template: this.extractTemplate(PreviewFieldBaseTooltipTemplate),
 				},
 				{
 					component: PreviewFieldBaseError,
 					name: 'With Error',
-					template: this.extractTemplate(PreviewFieldBaseErrorTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewFieldBaseErrorTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

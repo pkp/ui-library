@@ -13,14 +13,14 @@ import ProgressBar from '@/components/ProgressBar/ProgressBar.vue';
 
 export default {
 	components: {
-		ProgressBar
+		ProgressBar,
 	},
 	data() {
 		return {
 			fastInterval: null,
 			fastValue: 0,
 			slowInterval: null,
-			slowValue: 0
+			slowValue: 0,
 		};
 	},
 	methods: {
@@ -48,11 +48,11 @@ export default {
 					clearInterval(this.slowInterval);
 				}
 			}, 1700);
-		}
+		},
 	},
 	mounted() {
 		this.start();
-	}
+	},
 };
 </script>
 
