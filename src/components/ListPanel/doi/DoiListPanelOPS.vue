@@ -30,7 +30,7 @@ export default {
 					uid: `${originalItem.id}-preprint-${
 						this.getCurrentPublication(originalItem).id
 					}`,
-					displayType: 'Preprint',
+					displayType: this.__('submission.publication'),
 					type: 'preprint',
 					identifier: doiObject === null ? '' : doiObject.doi,
 					depositStatus:

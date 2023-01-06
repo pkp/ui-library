@@ -12,7 +12,10 @@
 								@search-phrase-changed="setSearchPhrase"
 							/>
 
-							<dropdown label="Bulk Actions" class="doiListPanel__bulkActions">
+							<dropdown
+								:label="__('manager.dois.actions.bulkActions')"
+								class="doiListPanel__bulkActions"
+							>
 								<div class="pkpDropdown__section">
 									<ul>
 										<li>

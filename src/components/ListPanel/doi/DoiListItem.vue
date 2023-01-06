@@ -90,7 +90,7 @@
 					:is-disabled="isDeposited || isSaving"
 					@click="isEditingDois ? saveDois() : editDois()"
 				>
-					{{ isEditingDois ? 'Save changes' : 'Edit DOI(s)' }}
+					{{ isEditingDois ? __('common.save') : __('common.edit') }}
 				</pkp-button>
 			</div>
 
@@ -250,14 +250,14 @@ export default {
 			doiListColumns: [
 				{
 					name: 'type',
-					label: 'Type',
+					label: this.__('common.type'),
 					value(row) {
 						return row.displayType;
 					},
 				},
 				{
 					name: 'doi',
-					label: 'DOI',
+					label: this.__('manager.dois.title'),
 					value: 'value',
 				},
 			],
