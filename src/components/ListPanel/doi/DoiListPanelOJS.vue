@@ -31,7 +31,7 @@ export default {
 						uid: `${originalItem.id}-article-${
 							this.getCurrentPublication(originalItem).id
 						}`,
-						displayType: 'Article',
+						displayType: this.__('article.article'),
 						type: 'article',
 						identifier: doiObject === null ? '' : doiObject.doi,
 						depositStatus:
@@ -102,7 +102,7 @@ export default {
 						id: originalItem.id,
 						doiId: doiObject === null ? null : doiObject.id,
 						uid: `${originalItem.id}-issue`,
-						displayType: 'Issue',
+						displayType: this.__('issue.issue'),
 						type: 'issue',
 						identifier: doiObject === null ? '' : doiObject.doi,
 						depositStatus:

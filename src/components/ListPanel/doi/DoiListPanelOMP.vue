@@ -31,7 +31,7 @@ export default {
 					uid: `${originalItem.id}-monograph-${
 						this.getCurrentPublication(originalItem).id
 					}`,
-					displayType: 'Monograph',
+					displayType: this.__('submission.monograph'),
 					type: 'monograph',
 					identifier: doiObject === null ? '' : doiObject.doi,
 					depositStatus:
