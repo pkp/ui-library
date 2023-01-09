@@ -60,6 +60,8 @@
 						:tabindex="!rowIndex && !columnIndex ? 0 : -1"
 					></table-cell>
 				</slot>
+
+				<slot name="actions" :row="row" />
 			</tr>
 		</tbody>
 	</table>
