@@ -3,7 +3,6 @@ import Page from './Page.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
 import PkpTable from '@/components/Table/Table.vue';
 import ajaxError from '@/mixins/ajaxError';
-import dialog from '@/mixins/dialog';
 
 export default {
 	name: 'FailedJobsPage',
@@ -25,7 +24,7 @@ export default {
 			apiUrl: null
 		};
 	},
-	mixins: [ajaxError, dialog],
+	mixins: [ajaxError],
 	methods: {
 		handlePagination: function(page) {
 			this.isLoadingItems = true;
@@ -69,19 +68,6 @@ export default {
 					this.refreshComponent(data);
 				}
 			});
-		},
-		showExceptionTrace: function(data) {
-			this.openDialog({
-				name: 'jobException',
-				title: this.__('admin.jobs.action.view.error.title'),
-				message: data.exception,
-				actions: [
-					{
-						label: this.__('common.ok'),
-						callback: () => this.$modal.hide('jobException')
-					}
-				]
-			});
 		}
 	},
 	created() {
@@ -91,10 +77,6 @@ export default {
 
 		pkp.eventBus.$on('remove-job', data => {
 			this.remove(data);
-		});
-
-		pkp.eventBus.$on('show-job-exception', data => {
-			this.showExceptionTrace(data);
 		});
 	}
 };
