@@ -90,7 +90,7 @@
 											</button>
 										</li>
 
-										<li>
+										<li v-if="canAssignDois">
 											<button
 												class="pkpDropdown__action"
 												@click="openBulkAssign"
@@ -947,6 +947,13 @@ export default {
 		},
 	},
 	computed: {
+		canAssignDois() {
+			return (
+				this.doiPrefix &&
+				this.doiPrefix?.length > 0 &&
+				this.enabledDoiTypes.length > 0
+			);
+		},
 		isAllSelected() {
 			return this.selected.length && this.selected.length === this.items.length;
 		},
