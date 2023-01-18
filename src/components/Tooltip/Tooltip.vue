@@ -11,13 +11,13 @@ export default {
 	props: {
 		tooltip: {
 			type: String,
-			required: true
+			required: true,
 		},
 		label: {
 			type: String,
-			required: true
-		}
-	}
+			required: true,
+		},
+	},
 };
 </script>
 

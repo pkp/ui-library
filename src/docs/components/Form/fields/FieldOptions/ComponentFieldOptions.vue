@@ -21,25 +21,25 @@ export default {
 				{
 					component: PreviewFieldOptions,
 					name: 'Base',
-					template: this.extractTemplate(PreviewFieldOptionsTemplate)
+					template: this.extractTemplate(PreviewFieldOptionsTemplate),
 				},
 				{
 					component: PreviewFieldOptionsRadio,
 					name: 'Radio',
-					template: this.extractTemplate(PreviewFieldOptionsRadioTemplate)
+					template: this.extractTemplate(PreviewFieldOptionsRadioTemplate),
 				},
 				{
 					component: PreviewFieldOptionsConfirm,
 					name: 'Confirm',
-					template: this.extractTemplate(PreviewFieldOptionsConfirmTemplate)
+					template: this.extractTemplate(PreviewFieldOptionsConfirmTemplate),
 				},
 				{
 					component: PreviewFieldOptionsOrderable,
 					name: 'Orderable',
-					template: this.extractTemplate(PreviewFieldOptionsOrderableTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewFieldOptionsOrderableTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

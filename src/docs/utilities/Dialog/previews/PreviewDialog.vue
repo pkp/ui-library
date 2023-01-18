@@ -23,14 +23,14 @@ export default {
 						callback: () => {
 							// Simulate a server request
 							setTimeout(() => this.$modal.hide('basic'), 2000);
-						}
+						},
 					},
 					{
 						label: 'Cancel',
 						isWarnable: true,
-						callback: () => this.$modal.hide('basic')
-					}
-				]
+						callback: () => this.$modal.hide('basic'),
+					},
+				],
 			});
 		},
 		openFullExample() {
@@ -46,23 +46,23 @@ export default {
 						callback: () => {
 							// Simulate a server request
 							setTimeout(() => this.$modal.hide('full'), 2000);
-						}
+						},
 					},
 					{
 						label: 'Visit Page',
 						element: 'a',
-						href: 'https://example.org'
+						href: 'https://example.org',
 					},
 					{
 						label: 'Cancel',
 						isWarnable: true,
-						callback: () => this.$modal.hide('full')
-					}
+						callback: () => this.$modal.hide('full'),
+					},
 				],
 				close: () => console.log('closed full example dialog'), // eslint-disable-line
 			});
-		}
-	}
+		},
+	},
 };
 </script>
 

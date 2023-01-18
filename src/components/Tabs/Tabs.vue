@@ -42,31 +42,31 @@ export default {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		isSideTabs: {
 			type: Boolean,
 			default() {
 				return false;
-			}
+			},
 		},
 		label: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		trackHistory: {
 			type: Boolean,
 			default() {
 				return false;
-			}
-		}
+			},
+		},
 	},
 	data() {
 		return {
 			currentTab: '',
-			tabs: []
+			tabs: [],
 		};
 	},
 	methods: {
@@ -108,7 +108,7 @@ export default {
 		 * Keyboard: →
 		 */
 		setNextTab() {
-			const i = this.tabs.findIndex(tab => tab.id === this.currentTab);
+			const i = this.tabs.findIndex((tab) => tab.id === this.currentTab);
 			const tab = this.tabs[i + 1] || this.tabs[0];
 			this.setCurrentTab(tab.id);
 		},
@@ -120,7 +120,7 @@ export default {
 		 * Keyboard: ←
 		 */
 		setPreviousTab() {
-			const i = this.tabs.findIndex(tab => tab.id === this.currentTab);
+			const i = this.tabs.findIndex((tab) => tab.id === this.currentTab);
 			const tab = this.tabs[i - 1] || this.tabs[this.tabs.length - 1];
 			this.setCurrentTab(tab.id);
 		},
@@ -128,33 +128,33 @@ export default {
 		/**
 		 * Update the URL hash when a tab has been opened
 		 */
-		updateUrl: debounce(function() {
+		updateUrl: debounce(function () {
 			if (this.trackHistory) {
 				const hash =
 					this.$parent.$options.name === 'Tab'
 						? '#' + this.$parent.id + '/' + this.currentTab
 						: '#' + this.currentTab;
 				if (hash !== window.location.hash) {
-					const activeTab = this.tabs.find(tab => tab.id === this.currentTab);
+					const activeTab = this.tabs.find((tab) => tab.id === this.currentTab);
 					window.history.pushState({}, activeTab.label, hash);
 				}
 			}
-		}, 100)
+		}, 100),
 	},
 	watch: {
 		/**
 		 * Update the active tab when a new tab is selected
 		 */
 		currentTab(newVal, oldVal) {
-			this.tabs.forEach(tab => (tab.isActive = tab.id === newVal));
-		}
+			this.tabs.forEach((tab) => (tab.isActive = tab.id === newVal));
+		},
 	},
 	mounted() {
 		/**
 		 * Store the nested tabs as a data property
 		 */
 		this.tabs = this.$children.filter(
-			child => child.$options._componentTag === 'tab'
+			(child) => child.$options._componentTag === 'tab'
 		);
 
 		/**
@@ -165,8 +165,8 @@ export default {
 		/**
 		 * Listen for global 'open-tab' events and open the correct tab when called
 		 */
-		pkp.eventBus.$on('open-tab', tabId => {
-			this.tabs.forEach(tab => {
+		pkp.eventBus.$on('open-tab', (tabId) => {
+			this.tabs.forEach((tab) => {
 				if (tab.id === tabId) {
 					this.setCurrentTab(tabId);
 				}
@@ -175,7 +175,7 @@ export default {
 	},
 	destroyed() {
 		pkp.eventBus.$off('open-tab');
-	}
+	},
 };
 </script>
 

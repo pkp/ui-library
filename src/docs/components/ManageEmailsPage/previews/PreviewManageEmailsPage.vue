@@ -12,7 +12,7 @@
 						search-label="Search by name or description"
 						:search-phrase="searchPhrase"
 						@search-phrase-changed="
-							newSearch => (this.searchPhrase = newSearch)
+							(newSearch) => (this.searchPhrase = newSearch)
 						"
 					></search>
 					<pkp-button @click="confirmResetAll" :isWarnable="true">
@@ -53,9 +53,7 @@
 				></pkp-filter>
 				<div class="listPanel__block">
 					<pkp-header>
-						<h3>
-							Sent From
-						</h3>
+						<h3>Sent From</h3>
 					</pkp-header>
 					<pkp-filter
 						v-for="(name, value) in fromFilters"
@@ -70,9 +68,7 @@
 				</div>
 				<div class="listPanel__block">
 					<pkp-header>
-						<h3>
-							Sent To
-						</h3>
+						<h3>Sent To</h3>
 					</pkp-header>
 					<pkp-filter
 						v-for="(name, value) in toFilters"
@@ -115,9 +111,7 @@
 						<badge v-if="item.key === currentMailable.emailTemplateKey">
 							Default
 						</badge>
-						<pkp-button @click="openTemplate(item)">
-							Edit
-						</pkp-button>
+						<pkp-button @click="openTemplate(item)">Edit</pkp-button>
 						<pkp-button
 							v-if="item.key === currentMailable.emailTemplateKey && item.id"
 							:is-warnable="true"
@@ -166,13 +160,13 @@ export default {
 				review: 'Review',
 				copyediting: 'Copyediting',
 				production: 'Production',
-				other: 'Other'
+				other: 'Other',
 			},
 			fromFilters: {
 				17: 'Editor', // ROLE_ID_SUB_EDITOR
 				4096: 'Reviewer', // ROLE_ID_REVIEWER
 				4097: 'Assistant', // ROLE_ID_ASSISTANT
-				1048576: 'Reader' // ROLE_ID_READER
+				1048576: 'Reader', // ROLE_ID_READER
 			},
 			toFilters: {
 				17: 'Editor', // ROLE_ID_SUB_EDITOR
@@ -180,7 +174,7 @@ export default {
 				4097: 'Assistant', // ROLE_ID_ASSISTANT
 				65536: 'Author', // ROLE_ID_AUTHOR
 				1048576: 'Reader', // ROLE_ID_READER
-				2097152: 'Subscription Manager' // ROLE_ID_SUBSCRIPTION_MANAGER
+				2097152: 'Subscription Manager', // ROLE_ID_SUBSCRIPTION_MANAGER
 			},
 			i18nRemoveTemplate: 'Remove Template',
 			i18nRemoveTemplateMessage:
@@ -189,7 +183,7 @@ export default {
 			i18nResetAllMessage:
 				'If you reset all templates, all modifications to the email templates will be lost. Do you want to confirm this operation?',
 			mailables: [],
-			templateForm: {...templateForm}
+			templateForm: {...templateForm},
 		};
 	},
 	methods: {
@@ -204,14 +198,14 @@ export default {
 				error() {
 					alert('failed to load mailable at /mailable.json');
 				},
-				success: onSuccess
+				success: onSuccess,
 			});
 		},
 		getTemplate(template, onSuccess) {
-			this.getMailable('', mailable => {
+			this.getMailable('', (mailable) => {
 				onSuccess.apply(this, [mailable.emailTemplates[0]]);
 			});
-		}
+		},
 	},
 	created() {
 		$.ajax({
@@ -223,9 +217,9 @@ export default {
 			},
 			error(r) {
 				alert('failed to load mailables from /mailables.json');
-			}
+			},
 		});
-	}
+	},
 };
 </script>
 

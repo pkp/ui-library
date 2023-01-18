@@ -14,10 +14,10 @@ export default {
 				{
 					component: PreviewMultilingualProgress,
 					name: 'Base',
-					template: this.extractTemplate(PreviewMultilingualProgressTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewMultilingualProgressTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

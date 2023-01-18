@@ -68,9 +68,7 @@
 				:aria-label="'Examples of ' + this.name"
 			>
 				<nav-group>
-					<template slot="heading">
-						Examples
-					</template>
+					<template slot="heading">Examples</template>
 					<li v-for="route in exampleRoutes" :key="route.path">
 						<router-link :to="route.path">{{ route.name }}</router-link>
 					</li>
@@ -109,12 +107,12 @@
 
 <script>
 import NavGroup from './NavGroup.vue';
-import marked from 'marked';
+import {marked} from 'marked';
 import highlightjs from 'highlight.js';
 
 export default {
 	components: {
-		NavGroup
+		NavGroup,
 	},
 	data() {
 		return {
@@ -125,7 +123,7 @@ export default {
 			name: '',
 			parentRoute: '',
 			readme: '',
-			template: ''
+			template: '',
 		};
 	},
 	computed: {
@@ -137,7 +135,7 @@ export default {
 		currentExample() {
 			if (this.$route.params.example) {
 				return this.examples.find(
-					example =>
+					(example) =>
 						this.getRoutePath(example.name) === this.$route.params.example
 				);
 			}
@@ -148,12 +146,12 @@ export default {
 		 * Route names and URL paths
 		 */
 		exampleRoutes() {
-			return this.examples.map(example => ({
+			return this.examples.map((example) => ({
 				name: example.name,
 				path:
 					example.name === 'Base'
 						? this.routePrefix
-						: this.routePrefix + this.getRoutePath(example.name)
+						: this.routePrefix + this.getRoutePath(example.name),
 			}));
 		},
 
@@ -190,7 +188,7 @@ export default {
 					return '480px';
 			}
 			return 'auto';
-		}
+		},
 	},
 	methods: {
 		/**
@@ -212,23 +210,24 @@ export default {
 				return highlightjs.highlightAuto(
 					matches[1]
 						.split('\n')
-						.map(line => (line[0] === '\t' ? line.substr(1) : line))
+						.map((line) => (line[0] === '\t' ? line.substr(1) : line))
 						.join('\n'),
 					['html']
 				).value;
 			}
 			return '';
-		}
+		},
 	},
 	mounted() {
 		if (this.readme) {
-			this.readme = marked(this.readme, {
+			marked.setOptions({
 				highlight(code) {
 					return highlightjs.highlightAuto(code).value;
-				}
+				},
 			});
+			this.readme = marked.parse(this.readme);
 		}
-	}
+	},
 };
 </script>
 

@@ -12,7 +12,7 @@ export default {
 			// holds initial value of the field that emitted set event
 			fieldBeforeSetEvent: {
 				name: null,
-				value: null
+				value: null,
 			},
 
 			formatMap: new Map([
@@ -39,8 +39,8 @@ export default {
 				['%l', 'h'],
 				['%M', 'mm'],
 				['%p', 'A'],
-				['%P', 'a']
-			])
+				['%P', 'a'],
+			]),
 		};
 	},
 	methods: {
@@ -53,9 +53,9 @@ export default {
 		 * @param {String} value
 		 * @param {String|null} localeKey
 		 */
-		fieldChanged: function(name, prop, value, localeKey) {
+		fieldChanged: function (name, prop, value, localeKey) {
 			// Update changed value
-			let newFields = this.fields.map(field => {
+			let newFields = this.fields.map((field) => {
 				if (field.name === name) {
 					this.fieldBeforeSetEvent.name = name;
 					this.fieldBeforeSetEvent.value = field[prop][localeKey];
@@ -67,7 +67,7 @@ export default {
 
 			if (
 				!['dateFormatShort', 'dateFormatLong', 'timeFormat'].find(
-					fieldName => fieldName === name
+					(fieldName) => fieldName === name
 				)
 			) {
 				this.$emit('set', this.id, {fields: newFields});
@@ -75,21 +75,21 @@ export default {
 			}
 
 			const shortDate = this.fields.find(
-				field => field.name === 'dateFormatShort'
+				(field) => field.name === 'dateFormatShort'
 			);
 			const longDate = this.fields.find(
-				field => field.name === 'dateFormatLong'
+				(field) => field.name === 'dateFormatLong'
 			);
-			const time = this.fields.find(field => field.name === 'timeFormat');
+			const time = this.fields.find((field) => field.name === 'timeFormat');
 
 			// Determine value for the short and long date & time fields
 			let shortDateTimeValue = {
 				date: shortDate.value[localeKey],
-				time: time.value[localeKey]
+				time: time.value[localeKey],
 			};
 			let longDateTimeValue = {
 				date: longDate.value[localeKey],
-				time: time.value[localeKey]
+				time: time.value[localeKey],
 			};
 
 			// Change value based on a new input
@@ -104,13 +104,13 @@ export default {
 
 			// Determine labels for the short and long date & time fields
 			const shortDateOption = shortDate.options[localeKey].find(
-				option => option.value === shortDate.value[localeKey]
+				(option) => option.value === shortDate.value[localeKey]
 			);
 			const longDateOption = longDate.options[localeKey].find(
-				option => option.value === longDate.value[localeKey]
+				(option) => option.value === longDate.value[localeKey]
 			);
 			const timeOption = time.options[localeKey].find(
-				option => option.value === time.value[localeKey]
+				(option) => option.value === time.value[localeKey]
 			);
 
 			// If there isn't label for the date or time in case of custom input, use latter as a label
@@ -145,14 +145,14 @@ export default {
 		 * @param {Object} longDateTime - new label and value for the short date and time field
 		 * @return {Array} updated fields
 		 */
-		updateFields: function(
+		updateFields: function (
 			newFields,
 			name,
 			localeKey,
 			shortDateTime,
 			longDateTime
 		) {
-			return newFields.map(field => {
+			return newFields.map((field) => {
 				if (
 					(name === 'dateFormatShort' || name === 'timeFormat') &&
 					field.name === 'datetimeFormatShort'
@@ -204,7 +204,7 @@ export default {
 		 * @param {String} strftimeFormat
 		 * @return {String|null}
 		 */
-		convertDateFormat: function(strftimeFormat) {
+		convertDateFormat: function (strftimeFormat) {
 			let convertedLabel = '';
 			const optArray = strftimeFormat.split('');
 			for (let i = 0; i < optArray.length; i++) {
@@ -230,15 +230,15 @@ export default {
 			// Not a format
 			if (convertedLabel === strftimeFormat) return null;
 			return convertedLabel;
-		}
+		},
 	},
 	mounted() {
-		this.$nextTick(function() {
+		this.$nextTick(function () {
 			let dateTime = moment();
-			this.fields.forEach(field => {
-				this.availableLocales.forEach(locale => {
+			this.fields.forEach((field) => {
+				this.availableLocales.forEach((locale) => {
 					dateTime.locale(this.getMomentLocale(locale.key));
-					field.options[locale.key].forEach(option => {
+					field.options[locale.key].forEach((option) => {
 						const formatString = this.convertDateFormat(option.label);
 						if (formatString) {
 							option.label = dateTime.format(formatString);
@@ -247,6 +247,6 @@ export default {
 				});
 			});
 		});
-	}
+	},
 };
 </script>

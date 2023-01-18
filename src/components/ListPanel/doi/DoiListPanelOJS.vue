@@ -12,7 +12,7 @@ export default {
 		 */
 		addDoiObjects(mappedItem) {
 			let newMappedItem = mappedItem;
-			const originalItem = this.items.find(item => item.id === mappedItem.id);
+			const originalItem = this.items.find((item) => item.id === mappedItem.id);
 
 			// Submissions
 			if (this.itemType === 'submission') {
@@ -48,13 +48,13 @@ export default {
 								: doiObject[
 										this.registrationAgencyInfo['registeredMessageKey']
 								  ],
-						updateWithNewDoiEndpoint: updateWithNewDoiEndpoint
+						updateWithNewDoiEndpoint: updateWithNewDoiEndpoint,
 					});
 				}
 
 				// Galleys
 				if (this.enabledDoiTypes.includes('representation')) {
-					this.getCurrentPublication(originalItem).galleys.forEach(galley => {
+					this.getCurrentPublication(originalItem).galleys.forEach((galley) => {
 						let doiObject = galley.doiObject;
 
 						let updateWithNewDoiEndpoint = `${this.doiApiUrl}/galleys/${galley.id}`;
@@ -84,7 +84,7 @@ export default {
 									: doiObject[
 											this.registrationAgencyInfo['registeredMessageKey']
 									  ],
-							updateWithNewDoiEndpoint: updateWithNewDoiEndpoint
+							updateWithNewDoiEndpoint: updateWithNewDoiEndpoint,
 						});
 					});
 				}
@@ -119,7 +119,7 @@ export default {
 								: doiObject[
 										this.registrationAgencyInfo['registeredMessageKey']
 								  ],
-						updateWithNewDoiEndpoint: updateWithNewDoiEndpoint
+						updateWithNewDoiEndpoint: updateWithNewDoiEndpoint,
 					});
 				}
 			}
@@ -164,7 +164,7 @@ export default {
 			} else {
 				return item.published;
 			}
-		}
-	}
+		},
+	},
 };
 </script>

@@ -2,7 +2,7 @@
 	<div
 		class="listPanel__item--catalog"
 		:class="{
-			'-isFeatured': isFeatured
+			'-isFeatured': isFeatured,
 		}"
 	>
 		<div class="listPanel__itemSummary">
@@ -82,20 +82,14 @@ import ajaxError from '@/mixins/ajaxError';
 export default {
 	name: 'CatalogListItem',
 	components: {
-		Orderer
+		Orderer,
 	},
 	mixins: [ajaxError],
-	props: [
-		'apiUrl',
-		'filterAssocType',
-		'filterAssocId',
-		'isLoading',
-		'isOrdering',
-		'item'
-	],
+	props: ['apiUrl', 'filterAssocType', 'filterAssocId', 'isOrdering', 'item'],
 	data() {
 		return {
-			isSaving: false
+			isLoading: false,
+			isSaving: false,
 		};
 	},
 	computed: {
@@ -106,7 +100,7 @@ export default {
 		 */
 		currentPublication() {
 			return this.item.publications.find(
-				publication => publication.id === this.item.currentPublicationId
+				(publication) => publication.id === this.item.currentPublicationId
 			);
 		},
 
@@ -120,7 +114,7 @@ export default {
 			if (!this.item.hasOwnProperty('featured')) {
 				return false;
 			}
-			const feature = this.item.featured.find(feature => {
+			const feature = this.item.featured.find((feature) => {
 				return (
 					feature.assoc_type === this.filterAssocType &&
 					feature.assoc_id === this.filterAssocId
@@ -139,57 +133,73 @@ export default {
 			if (!this.item.hasOwnProperty('newRelease')) {
 				return false;
 			}
-			const newRelease = this.item.newRelease.find(newRelease => {
+			const newRelease = this.item.newRelease.find((newRelease) => {
 				return (
 					newRelease.assoc_type === this.filterAssocType &&
 					newRelease.assoc_id === this.filterAssocId
 				);
 			});
 			return typeof newRelease !== 'undefined';
-		}
+		},
 	},
 	methods: {
 		/**
 		 * Toggle the checkbox when clicked
 		 */
 		toggleFeatured() {
-			const isFeatured = this.item.featured.find(feature => {
+			const isFeatured = this.item.featured.find((feature) => {
 				return feature.assoc_type === this.filterAssocType;
 			});
 			if (isFeatured) {
-				this.item.featured = this.item.featured.filter(feature => {
-					return feature.assoc_type !== this.filterAssocType;
+				this.$emit('update:item', {
+					...this.item,
+					featured: this.item.featured.filter((feature) => {
+						return feature.assoc_type !== this.filterAssocType;
+					}),
 				});
 			} else {
-				this.item.featured.push({
+				let featured = [...this.item.featured];
+				featured.push({
 					assoc_type: this.filterAssocType,
 					assoc_id: this.filterAssocId,
-					seq: 1
+					seq: 1,
+				});
+				this.$emit('update:item', {
+					...this.item,
+					featured,
 				});
 			}
-			this.saveDisplayFlags();
+			this.$nextTick(() => this.saveDisplayFlags());
 		},
 
 		/**
 		 * Toggle the checkbox when clicked
 		 */
 		toggleNewRelease() {
-			const matchingNewReleases = this.item.newRelease.find(newRelease => {
+			const matchingNewReleases = this.item.newRelease.find((newRelease) => {
 				return newRelease.assoc_type === this.filterAssocType;
 			});
 			const isNewRelease = typeof matchingNewReleases !== 'undefined';
 			if (isNewRelease) {
-				this.item.newRelease = this.item.newRelease.filter(newRelease => {
-					return newRelease.assoc_type !== this.filterAssocType;
+				this.$emit('update:item', {
+					...this.item,
+					newRelease: this.item.newRelease.filter((newRelease) => {
+						return newRelease.assoc_type !== this.filterAssocType;
+					}),
 				});
 			} else {
-				this.item.newRelease.push({
+				let newRelease = [...this.item.newRelease];
+				newRelease.push({
 					assoc_type: this.filterAssocType,
 					assoc_id: this.filterAssocId,
-					seq: 1
+					seq: 1,
+				});
+				this.$emit('update:item', {
+					...this.item,
+					newRelease,
 				});
 			}
-			this.saveDisplayFlags();
+			this.$nextTick(() => this.saveDisplayFlags());
 		},
 
 		/**
@@ -203,17 +213,17 @@ export default {
 				url: this.apiUrl + '/saveDisplayFlags',
 				type: 'POST',
 				headers: {
-					'X-Csrf-Token': pkp.currentUser.csrfToken
+					'X-Csrf-Token': pkp.currentUser.csrfToken,
 				},
 				data: {
 					submissionId: this.item.id,
 					featured: this.item.featured,
-					newRelease: this.item.newRelease
+					newRelease: this.item.newRelease,
 				},
-				error: function(r) {
+				error: function (r) {
 					self.ajaxErrorCallback(r);
 				},
-				success: function(r) {
+				success: function (r) {
 					if (typeof r.featured !== 'undefined') {
 						self.$emit('update:item', {...self.item, featured: r.featured});
 					}
@@ -223,10 +233,10 @@ export default {
 				},
 				complete() {
 					self.isLoading = false;
-				}
+				},
 			});
-		}
-	}
+		},
+	},
 };
 </script>
 

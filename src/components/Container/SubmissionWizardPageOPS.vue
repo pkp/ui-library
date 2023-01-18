@@ -5,7 +5,7 @@ export default {
 	extends: SubmissionWizardPage,
 	data() {
 		return {
-			galleys: []
+			galleys: [],
 		};
 	},
 	methods: {
@@ -13,22 +13,22 @@ export default {
 			this.galleys.push(galley);
 		},
 		editGalley(galley) {
-			this.galleys = this.galleys.map(g => {
+			this.galleys = this.galleys.map((g) => {
 				return g.id === galley.id ? galley : g;
 			});
 		},
 		deleteGalley(data) {
-			this.galleys = this.galleys.filter(g => g.id !== data.id);
+			this.galleys = this.galleys.filter((g) => g.id !== data.id);
 		},
 		setSubmissionFile(submissionFile) {
-			this.galleys = this.galleys.map(g => {
+			this.galleys = this.galleys.map((g) => {
 				if (g.id === submissionFile.assocId) {
 					g.submissionFileId = submissionFile.id;
 					g.file = {...submissionFile};
 				}
 				return g;
 			});
-		}
+		},
 	},
 	created() {
 		pkp.eventBus.$on('galley:added', this.addGalley);
@@ -42,6 +42,6 @@ export default {
 		pkp.eventBus.$off('galley:edited');
 		pkp.eventBus.$off('submissionFile:added');
 		pkp.eventBus.$off('submissionFile:edited');
-	}
+	},
 };
 </script>

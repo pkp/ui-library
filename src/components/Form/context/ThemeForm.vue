@@ -5,17 +5,17 @@ export default {
 	name: 'ThemeForm',
 	extends: PkpForm,
 	props: {
-		themeFields: Object
+		themeFields: Object,
 	},
 	methods: {
 		/**
 		 * @copydoc Form::fieldChanged()
 		 */
-		fieldChanged: function(name, prop, value, localeKey) {
+		fieldChanged: function (name, prop, value, localeKey) {
 			if (name === 'themePluginPath') {
 				this.changeTheme(value);
 			} else {
-				let newFields = this.fields.map(field => {
+				let newFields = this.fields.map((field) => {
 					if (field.name === name) {
 						if (localeKey) {
 							field[prop][localeKey] = value;
@@ -37,7 +37,7 @@ export default {
 		 * Otherwise, there can be field collisions where a new field still renders
 		 * based on the value of the old field.
 		 */
-		changeTheme: function(theme) {
+		changeTheme: function (theme) {
 			this.$emit('set', this.id, {fields: this.fields.slice(0, 1)});
 			this.$nextTick(() => {
 				const themeOptionFields = this.themeFields[theme] || [];
@@ -45,13 +45,13 @@ export default {
 					fields: [
 						{
 							...this.fields[0],
-							value: theme
+							value: theme,
 						},
-						...themeOptionFields
-					]
+						...themeOptionFields,
+					],
 				});
 			});
-		}
-	}
+		},
+	},
 };
 </script>

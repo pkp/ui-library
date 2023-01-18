@@ -26,34 +26,34 @@ import ProgressBar from '@/components/ProgressBar/ProgressBar.vue';
 export default {
 	components: {
 		FieldError,
-		ProgressBar
+		ProgressBar,
 	},
 	props: {
 		cancelUploadLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		errors: {
 			type: Array,
-			required: true
+			required: true,
 		},
 		name: {
 			type: String,
-			required: true
+			required: true,
 		},
 		progress: {
 			type: Number,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return {
-			uuid: ''
+			uuid: '',
 		};
 	},
 	created() {
 		this.uuid = $.pkp.classes.Helper.uuid();
-	}
+	},
 };
 </script>
 

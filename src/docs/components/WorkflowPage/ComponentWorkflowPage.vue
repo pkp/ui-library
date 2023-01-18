@@ -14,10 +14,10 @@ export default {
 				{
 					component: PreviewWorkflowPage,
 					name: 'Base',
-					template: this.extractTemplate(PreviewWorkflowPageTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewWorkflowPageTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

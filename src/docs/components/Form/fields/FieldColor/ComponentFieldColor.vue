@@ -15,10 +15,10 @@ export default {
 				{
 					component: PreviewFieldColor,
 					name: 'Base',
-					template: this.extractTemplate(PreviewFieldColorTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewFieldColorTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

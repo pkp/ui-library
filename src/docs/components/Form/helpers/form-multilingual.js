@@ -10,23 +10,23 @@ export default {
 	fields: [
 		{...FieldTextOrcid, groupId: 'default'},
 		{...FieldTextAffiliation, groupId: 'default'},
-		{...FieldRichTextareaBio, groupId: 'default'}
+		{...FieldRichTextareaBio, groupId: 'default'},
 	],
 	groups: [
 		{
 			id: 'default',
-			pageId: 'default'
-		}
+			pageId: 'default',
+		},
 	],
 	supportedFormLocales: [
 		...Form.supportedFormLocales,
 		{
 			key: 'fr_CA',
-			label: 'Français (Canada)'
+			label: 'Français (Canada)',
 		},
 		{
 			key: 'ar_AR',
-			label: 'عربى'
-		}
-	]
+			label: 'عربى',
+		},
+	],
 };

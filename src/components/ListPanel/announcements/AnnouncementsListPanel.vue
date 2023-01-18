@@ -72,60 +72,60 @@ export default {
 		PkpForm,
 		PkpHeader,
 		Modal,
-		Search
+		Search,
 	},
 	mixins: [fetch, ajaxError],
 	props: {
 		addAnnouncementLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		confirmDeleteMessage: {
 			type: String,
-			required: true
+			required: true,
 		},
 		deleteAnnouncementLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		editAnnouncementLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		form: {
 			type: Object,
-			required: true
+			required: true,
 		},
 		id: {
 			type: String,
-			required: true
+			required: true,
 		},
 		items: {
 			type: Array,
 			default() {
 				return [];
-			}
+			},
 		},
 		itemsMax: {
 			type: Number,
 			default() {
 				return 0;
-			}
+			},
 		},
 		title: {
 			type: String,
-			required: true
+			required: true,
 		},
 		urlBase: {
 			type: String,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return {
 			activeForm: null,
 			activeFormTitle: '',
-			resetFocusTo: null
+			resetFocusTo: null,
 		};
 	},
 	methods: {
@@ -155,7 +155,7 @@ export default {
 				pkp.eventBus.$emit('add:announcement', item);
 			} else {
 				this.setItems(
-					this.items.map(i => (i.id === item.id ? item : i)),
+					this.items.map((i) => (i.id === item.id ? item : i)),
 					this.itemsMax
 				);
 				pkp.eventBus.$emit('update:announcement', item);
@@ -182,7 +182,7 @@ export default {
 		 * @param {Number} id
 		 */
 		openDeleteModal(id) {
-			const announcement = this.items.find(a => a.id === id);
+			const announcement = this.items.find((a) => a.id === id);
 			if (typeof announcement === 'undefined') {
 				this.ajaxErrorCallback({});
 				return;
@@ -191,7 +191,7 @@ export default {
 				name: 'delete',
 				title: this.deleteAnnouncementLabel,
 				message: this.replaceLocaleParams(this.confirmDeleteMessage, {
-					title: this.localize(announcement.title)
+					title: this.localize(announcement.title),
 				}),
 				actions: [
 					{
@@ -204,26 +204,26 @@ export default {
 								type: 'POST',
 								headers: {
 									'X-Csrf-Token': pkp.currentUser.csrfToken,
-									'X-Http-Method-Override': 'DELETE'
+									'X-Http-Method-Override': 'DELETE',
 								},
 								error: self.ajaxErrorCallback,
-								success: function(r) {
+								success: function (r) {
 									self.setItems(
-										self.items.filter(i => i.id !== id),
+										self.items.filter((i) => i.id !== id),
 										self.itemsMax
 									);
 									self.$modal.hide('delete');
 									self.setFocusIn(self.$el);
-								}
+								},
 							});
-						}
+						},
 					},
 					{
 						label: this.__('common.no'),
 						isWarnable: true,
-						callback: () => this.$modal.hide('delete')
-					}
-				]
+						callback: () => this.$modal.hide('delete'),
+					},
+				],
 			});
 		},
 
@@ -236,7 +236,7 @@ export default {
 			this.resetFocusTo = document.activeElement;
 
 			const announcement = this.items.find(
-				announcement => announcement.id === id
+				(announcement) => announcement.id === id
 			);
 			if (!announcement) {
 				this.ajaxErrorCallback({});
@@ -246,7 +246,7 @@ export default {
 			let activeForm = cloneDeep(this.form);
 			activeForm.action = this.apiUrl + '/' + id;
 			activeForm.method = 'PUT';
-			activeForm.fields = activeForm.fields.map(field => {
+			activeForm.fields = activeForm.fields.map((field) => {
 				if (Object.keys(announcement).includes(field.name)) {
 					field.value = announcement[field.name];
 				}
@@ -267,7 +267,7 @@ export default {
 		setItems(items, itemsMax) {
 			this.$emit('set', this.id, {
 				items,
-				itemsMax
+				itemsMax,
 			});
 		},
 
@@ -279,12 +279,12 @@ export default {
 		 */
 		updateForm(formId, data) {
 			let activeForm = {...this.activeForm};
-			Object.keys(data).forEach(function(key) {
+			Object.keys(data).forEach(function (key) {
 				activeForm[key] = data[key];
 			});
 			this.activeForm = activeForm;
-		}
-	}
+		},
+	},
 };
 </script>
 

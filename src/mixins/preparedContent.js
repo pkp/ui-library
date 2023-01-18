@@ -44,6 +44,6 @@ export default {
 				const regex = new RegExp(`{\$${item.key}}`.replace(/[${]/g, '\\$&'), 'g'); // eslint-disable-line
 				return string.replace(regex, item.value);
 			}, string);
-		}
-	}
+		},
+	},
 };

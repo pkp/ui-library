@@ -9,17 +9,17 @@ export default {
 			id: 'default',
 			submitButton: {
 				label: 'Submit',
-				isPrimary: true
-			}
-		}
+				isPrimary: true,
+			},
+		},
 	],
 	primaryLocale: 'en_US',
 	visibleLocales: ['en_US'],
 	supportedFormLocales: [
 		{
 			key: 'en_US',
-			label: 'English'
-		}
+			label: 'English',
+		},
 	],
-	isSaving: false
+	isSaving: false,
 };

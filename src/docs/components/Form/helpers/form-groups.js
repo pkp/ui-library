@@ -14,21 +14,21 @@ export default {
 		FieldTextEmail,
 		FieldTextAffiliation,
 		FieldTextPhone,
-		FieldSelectCountry
+		FieldSelectCountry,
 	],
 	groups: [
 		{...GroupIdentity, pageId: 'default'},
-		{...GroupContact, pageId: 'default'}
+		{...GroupContact, pageId: 'default'},
 	],
 	supportedFormLocales: [
 		...Form.supportedFormLocales,
 		{
 			key: 'fr_CA',
-			label: 'Français (Canada)'
+			label: 'Français (Canada)',
 		},
 		{
 			key: 'ar_AR',
-			label: 'عربى'
-		}
-	]
+			label: 'عربى',
+		},
+	],
 };

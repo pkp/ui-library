@@ -14,9 +14,7 @@
 					</li>
 				</ul>
 			</dropdown>
-			<div class="app__contextTitle">
-				Journal of Public Knowledge
-			</div>
+			<div class="app__contextTitle">Journal of Public Knowledge</div>
 			<div class="app__headerActions">
 				<div class="app__headerAction app__tasks">
 					<button
@@ -148,11 +146,9 @@
 						</ol>
 					</nav>
 					<div class="page__content">
-						<h1 class="app__pageHeading">
-							Page Title Here
-						</h1>
+						<h1 class="app__pageHeading">Page Title Here</h1>
 						<div class="app__contentPanel">
-							<div style="min-height: 50rem;"></div>
+							<div style="min-height: 50rem"></div>
 						</div>
 					</div>
 				</div>
@@ -195,7 +191,7 @@ import Dropdown from '@/components/Dropdown/Dropdown.vue';
 export default {
 	extends: Page,
 	components: {
-		Dropdown
+		Dropdown,
 	},
 	data() {
 		return {
@@ -203,29 +199,29 @@ export default {
 				{
 					id: 'settings',
 					name: 'Settings',
-					url: 'http://example.org'
+					url: 'http://example.org',
 				},
 				{
 					id: 'website',
-					name: 'Website'
-				}
+					name: 'Website',
+				},
 			],
 			contexts: [
 				{
 					id: 1,
 					title: 'Journal of Public Knowledge',
-					url: 'http://example.org'
+					url: 'http://example.org',
 				},
 				{
 					id: 2,
 					title: 'Recherche Bactériologique',
-					url: 'http://example.org'
+					url: 'http://example.org',
 				},
 				{
 					id: 3,
 					title: 'الطب والأنثروبولوجيا',
-					url: 'http://example.org'
-				}
+					url: 'http://example.org',
+				},
 			],
 			currentLocale: 'en_US',
 			hasMultipleContexts: true,
@@ -233,37 +229,37 @@ export default {
 			locales: [
 				{
 					key: 'en_US',
-					name: 'English'
+					name: 'English',
 				},
 				{
 					key: 'fr_CA',
-					name: 'Français (Canada)'
+					name: 'Français (Canada)',
 				},
 				{
 					key: 'ar_AR',
-					name: 'العربية'
-				}
+					name: 'العربية',
+				},
 			],
 			menu: {
 				submissions: {
 					name: 'Submissions',
 					url: '#/component/Page',
-					isCurrent: false
+					isCurrent: false,
 				},
 				issues: {
 					name: 'Issues',
 					url: '#/component/Page',
-					isCurrent: false
+					isCurrent: false,
 				},
 				announcements: {
 					name: 'Announcements',
 					url: '#/component/Page',
-					isCurrent: false
+					isCurrent: false,
 				},
 				subscriptions: {
 					name: 'Subscriptions',
 					url: '#/component/Page',
-					isCurrent: false
+					isCurrent: false,
 				},
 				settings: {
 					name: 'Settings',
@@ -272,29 +268,29 @@ export default {
 						context: {
 							name: 'Journal',
 							url: '#/component/Page',
-							isCurrent: false
+							isCurrent: false,
 						},
 						website: {
 							name: 'Website',
 							url: '#/component/Page',
-							isCurrent: false
+							isCurrent: false,
 						},
 						workflow: {
 							name: 'Workflow',
 							url: '#/component/Page',
-							isCurrent: false
+							isCurrent: false,
 						},
 						distribution: {
 							name: 'Distribution',
 							url: '#/component/Page',
-							isCurrent: false
+							isCurrent: false,
 						},
 						access: {
 							name: 'Users & Roles',
 							url: '#/component/Page',
-							isCurrent: false
-						}
-					}
+							isCurrent: false,
+						},
+					},
 				},
 				stats: {
 					name: 'Stats',
@@ -303,33 +299,33 @@ export default {
 						editorial: {
 							name: 'Editorial',
 							url: '#/component/Page',
-							isCurrent: false
+							isCurrent: false,
 						},
 						publications: {
 							name: 'Publications',
 							url: '#/component/Page',
-							isCurrent: false
+							isCurrent: false,
 						},
 						users: {
 							name: 'Users',
 							url: '#/component/Page',
-							isCurrent: false
-						}
-					}
+							isCurrent: false,
+						},
+					},
 				},
 				tools: {
 					name: 'Tools',
 					url: '#/component/Page',
-					isCurrent: false
+					isCurrent: false,
 				},
 				admin: {
 					name: 'Administration',
 					url: '#/component/Page',
-					isCurrent: false
-				}
+					isCurrent: false,
+				},
 			},
 			tasksUrl: '',
-			unreadTasksCount: 3
+			unreadTasksCount: 3,
 		};
 	},
 	computed: {
@@ -342,13 +338,13 @@ export default {
 		},
 		currentUsername() {
 			return this.isLoggedInAs ? this.isLoggedInAs : pkp.currentUser.username;
-		}
+		},
 	},
 	methods: {
 		alert(msg) {
 			alert(msg);
-		}
-	}
+		},
+	},
 };
 </script>
 

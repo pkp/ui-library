@@ -79,36 +79,36 @@ export default {
 	props: {
 		value: {
 			type: Boolean,
-			required: true
+			required: true,
 		},
 		terms: {
 			type: String,
-			required: true
+			required: true,
 		},
 		disablePluginSuccess: {
 			type: String,
-			required: true
+			required: true,
 		},
 		enablePluginSuccess: {
 			type: String,
-			required: true
+			required: true,
 		},
 		enablePluginUrl: {
 			type: String,
-			required: true
+			required: true,
 		},
 		disablePluginUrl: {
 			type: String,
-			required: true
+			required: true,
 		},
 		settingsUrl: {
 			type: String,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return {
-			isSaving: false
+			isSaving: false,
 		};
 	},
 	methods: {
@@ -118,14 +118,14 @@ export default {
 		 */
 		addSettingsListener() {
 			this.$nextTick(() => {
-				$('.pkpFormField--archivingPn__terms button', this.$el).click(e => {
+				$('.pkpFormField--archivingPn__terms button', this.$el).click((e) => {
 					e.stopPropagation();
 					e.preventDefault();
 
 					var opts = {
 						title: 'Test title',
 						url: this.settingsUrl,
-						closeCallback: this.resetFocus
+						closeCallback: this.resetFocus,
 					};
 
 					$(
@@ -160,7 +160,7 @@ export default {
 		 * The plugin gallery will return 200 whether or not the action was
 		 * successful. We need to check the response to determine the status.
 		 */
-		success: function(r) {
+		success: function (r) {
 			if (r.status) {
 				pkp.eventBus.$emit(
 					'notify',
@@ -184,14 +184,14 @@ export default {
 		 */
 		complete() {
 			this.isSaving = false;
-		}
+		},
 	},
 	watch: {
 		/**
 		 * When the input value changes, update the selected value if the input
 		 * option is the currently selected option
 		 */
-		value: function(newVal, oldVal) {
+		value: function (newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
@@ -208,13 +208,13 @@ export default {
 				url: newVal ? this.enablePluginUrl : this.disablePluginUrl,
 				data: {
 					csrfToken: pkp.currentUser.csrfToken,
-					disableNotification: false
+					disableNotification: false,
 				},
 				success: this.success,
 				error: this.error,
-				complete: this.complete
+				complete: this.complete,
 			});
-		}
+		},
 	},
 	mounted() {
 		/**
@@ -231,7 +231,7 @@ export default {
 		if (!this.value) {
 			$('.pkpFormField--archivingPn__terms button', this.$el).off();
 		}
-	}
+	},
 };
 </script>
 

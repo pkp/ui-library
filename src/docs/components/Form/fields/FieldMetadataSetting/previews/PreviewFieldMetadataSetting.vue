@@ -11,15 +11,15 @@ import fieldMetadata from '../../../helpers/field-metadata';
 export default {
 	extends: PreviewFieldBase,
 	components: {
-		FieldMetadataSetting
+		FieldMetadataSetting,
 	},
 	data() {
 		return {
 			field: {
 				...fieldBase,
-				...fieldMetadata
-			}
+				...fieldMetadata,
+			},
 		};
-	}
+	},
 };
 </script>

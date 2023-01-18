@@ -13,12 +13,12 @@ export default {
 		 * @param {mixed} value The new value for the prop
 		 * @param {String} localeKey Optional locale key for multilingual props
 		 */
-		fieldChanged: function(name, prop, value, localeKey) {
+		fieldChanged: function (name, prop, value, localeKey) {
 			if (name === 'enableDois') {
 				this.removeError('doiPrefix', localeKey);
 			}
 			Form.methods.fieldChanged.apply(this, [name, prop, value, localeKey]);
-		}
-	}
+		},
+	},
 };
 </script>

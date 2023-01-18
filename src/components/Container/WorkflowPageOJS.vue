@@ -9,7 +9,7 @@ export default {
 			assignToIssueUrl: '',
 			issueApiUrl: '',
 			sectionWordLimits: {},
-			selectIssueLabel: ''
+			selectIssueLabel: '',
 		};
 	},
 	methods: {
@@ -26,7 +26,7 @@ export default {
 			const opts = {
 				title: this.selectIssueLabel,
 				url: sourceUrl,
-				closeOnFormSuccessId: pkp.const.FORM_ASSIGN_TO_ISSUE
+				closeOnFormSuccessId: pkp.const.FORM_ASSIGN_TO_ISSUE,
 			};
 
 			$(
@@ -35,7 +35,7 @@ export default {
 					'" ' +
 					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>'
 			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
-		}
+		},
 	},
 	watch: {
 		workingPublication(newVal, oldVal) {
@@ -46,7 +46,7 @@ export default {
 			) {
 				const wordLimit = this.sectionWordLimits[newVal.sectionId] || 0;
 				let form = {...this.components[pkp.const.FORM_TITLE_ABSTRACT]};
-				form.fields = form.fields.map(field => {
+				form.fields = form.fields.map((field) => {
 					if (field.name === 'abstract') {
 						field.wordLimit = wordLimit;
 					}
@@ -60,7 +60,7 @@ export default {
 				// Update the issue selection in the form when it has changed
 				// through the schedule for publication form
 				let form = this.components[pkp.const.FORM_ISSUE_ENTRY];
-				form.fields = form.fields.map(field => {
+				form.fields = form.fields.map((field) => {
 					if (field.name === 'issueId') {
 						field.value = newVal.issueId;
 					}
@@ -70,12 +70,12 @@ export default {
 				// Update the issue volume and number used in the DOI
 				// field when the issue changes
 				if (!newVal.issueId) {
-					this.publicationFormIds.forEach(formId => {
+					this.publicationFormIds.forEach((formId) => {
 						if (formId !== pkp.const.FORM_PUBLICATION_IDENTIFIERS) {
 							return;
 						}
 						let form = {...this.components[formId]};
-						form.fields = form.fields.map(field => {
+						form.fields = form.fields.map((field) => {
 							if (field.name === 'pub-id::doi') {
 								field.issueNumber = '';
 								field.issueVolume = '';
@@ -97,12 +97,12 @@ export default {
 							self.ajaxErrorCallback(r);
 						},
 						success(r) {
-							self.publicationFormIds.forEach(formId => {
+							self.publicationFormIds.forEach((formId) => {
 								if (formId !== pkp.const.FORM_PUBLICATION_IDENTIFIERS) {
 									return;
 								}
 								let form = {...self.components[formId]};
-								form.fields = form.fields.map(field => {
+								form.fields = form.fields.map((field) => {
 									if (field.name === 'pub-id::doi') {
 										field.issueNumber = r.number || '';
 										field.issueVolume = r.volume || '';
@@ -115,11 +115,11 @@ export default {
 								self.components[formId] = {};
 								self.components[formId] = form;
 							});
-						}
+						},
 					});
 				}
 			}
-		}
+		},
 	},
 	mounted() {
 		/**
@@ -144,7 +144,7 @@ export default {
 		 * event is fired
 		 */
 		pkp.eventBus.$on('schedule:publication', this.openAssignToIssue);
-	}
+	},
 };
 </script>
 

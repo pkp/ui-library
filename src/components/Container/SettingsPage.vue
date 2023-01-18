@@ -16,13 +16,13 @@ export default {
 		PkpForm,
 		ThemeForm,
 		DateTimeForm,
-		DoiSettingsForm
+		DoiSettingsForm,
 	},
 	data() {
 		return {
 			announcementsNavLink: {},
 			institutionsNavLink: {},
-			paymentsNavLink: null
+			paymentsNavLink: null,
 		};
 	},
 	mounted() {
@@ -41,7 +41,7 @@ export default {
 					!Object.keys(this.menu).includes('payments')
 				) {
 					let menu = {};
-					Object.keys(this.menu).forEach(key => {
+					Object.keys(this.menu).forEach((key) => {
 						if (key === 'settings') {
 							menu.institutions = this.institutionsNavLink;
 							menu.payments = this.paymentsNavLink;
@@ -67,7 +67,7 @@ export default {
 					!Object.keys(this.menu).includes('institutions')
 				) {
 					let menu = {};
-					Object.keys(this.menu).forEach(key => {
+					Object.keys(this.menu).forEach((key) => {
 						if (key === 'settings' || key === 'payments') {
 							menu.institutions = this.institutionsNavLink;
 						}
@@ -88,7 +88,7 @@ export default {
 					!Object.keys(this.menu).includes('announcements')
 				) {
 					let menu = {};
-					Object.keys(this.menu).forEach(key => {
+					Object.keys(this.menu).forEach((key) => {
 						if (
 							key === 'settings' ||
 							key === 'payments' ||
@@ -105,7 +105,7 @@ export default {
 	},
 	destroyed() {
 		pkp.eventBus.$off('form-success');
-	}
+	},
 };
 </script>
 

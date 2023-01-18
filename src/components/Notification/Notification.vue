@@ -19,14 +19,14 @@ export default {
 			type: Boolean,
 			default() {
 				return false;
-			}
+			},
 		},
 		type: {
 			type: String,
 			default() {
 				return '';
-			}
-		}
+			},
+		},
 	},
 	computed: {
 		classes() {
@@ -38,8 +38,8 @@ export default {
 				classes.push('pkpNotification--canDismiss');
 			}
 			return classes;
-		}
-	}
+		},
+	},
 };
 </script>
 

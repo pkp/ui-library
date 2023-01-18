@@ -8,5 +8,5 @@ export default {
 	apiUrl: '/controlled-vocab.json',
 	deselectLabel: 'Remove {$item}',
 	noneLabel: 'None',
-	selectedLabel: 'Selected'
+	selectedLabel: 'Selected',
 };

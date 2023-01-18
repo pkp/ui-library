@@ -40,13 +40,13 @@ import PkpFilter from '@/components/Filter/Filter.vue';
 
 export default {
 	components: {
-		PkpFilter
+		PkpFilter,
 	},
 	data() {
 		return {
 			activeFilters: {
-				stageIds: []
-			}
+				stageIds: [],
+			},
 		};
 	},
 	methods: {
@@ -61,10 +61,10 @@ export default {
 		removeFilter(param, val) {
 			if (this.activeFilters[param].includes(val)) {
 				this.activeFilters[param] = this.activeFilters[param].filter(
-					item => item !== val
+					(item) => item !== val
 				);
 			}
-		}
-	}
+		},
+	},
 };
 </script>

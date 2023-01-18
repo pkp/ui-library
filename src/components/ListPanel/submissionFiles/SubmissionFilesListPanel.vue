@@ -73,84 +73,84 @@ export default {
 		Modal,
 		PkpForm,
 		PkpHeader,
-		SubmissionFilesListItem
+		SubmissionFilesListItem,
 	},
 	props: {
 		addFileLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		apiUrl: {
 			type: String,
-			required: true
+			required: true,
 		},
 		cancelUploadLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		emptyLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		emptyAddLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		fileStage: {
 			type: Number,
-			required: true
+			required: true,
 		},
 		form: {
-			type: Object
+			type: Object,
 		},
 		genrePromptLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		genres: {
 			type: Array,
-			required: true
+			required: true,
 		},
 		id: {
 			type: String,
-			required: true
+			required: true,
 		},
 		items: {
 			type: Array,
 			default() {
 				return [];
-			}
+			},
 		},
 		options: {
 			type: Object,
 			default() {
 				return {};
-			}
+			},
 		},
 		otherLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		primaryLocale: {
 			type: String,
-			required: true
+			required: true,
 		},
 		removeConfirmLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		stageId: {
 			type: Number,
-			required: true
+			required: true,
 		},
 		title: {
 			type: String,
-			required: true
+			required: true,
 		},
 		uploadProgressLabel: {
 			type: String,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return {
@@ -158,13 +158,13 @@ export default {
 			dragEventCounter: 0,
 			editingLabel: '',
 			isDragging: false,
-			status: ''
+			status: '',
 		};
 	},
 	computed: {
 		formModal() {
 			return this.id + 'form';
-		}
+		},
 	},
 	methods: {
 		/**
@@ -188,7 +188,7 @@ export default {
 			activeForm.action =
 				activeForm.action + '/' + item.id + '?stageId=' + this.stageId;
 			// Set values that match the form fields
-			activeForm.fields = activeForm.fields.map(field => {
+			activeForm.fields = activeForm.fields.map((field) => {
 				if (item[field.name] != null) {
 					field.value = item[field.name];
 				}
@@ -196,7 +196,7 @@ export default {
 			});
 			this.activeForm = activeForm;
 			this.editingLabel = this.__('common.editItem', {
-				name: this.localize(item.name)
+				name: this.localize(item.name),
 			});
 			this.$modal.show(this.formModal);
 		},
@@ -241,24 +241,24 @@ export default {
 								context: this,
 								headers: {
 									'X-Csrf-Token': pkp.currentUser.csrfToken,
-									'X-Http-Method-Override': 'DELETE'
+									'X-Http-Method-Override': 'DELETE',
 								},
 								error: this.ajaxErrorCallback,
 								success(r) {
-									const items = this.items.filter(item => item.id !== r.id);
+									const items = this.items.filter((item) => item.id !== r.id);
 									this.$emit('set', this.id, {items});
 									this.$modal.hide('remove');
 									this.$refs.addFileButton.$el.focus();
-								}
+								},
 							});
-						}
+						},
 					},
 					{
 						label: this.__('common.no'),
 						isWarnable: true,
-						callback: () => this.$modal.hide('remove')
-					}
-				]
+						callback: () => this.$modal.hide('remove'),
+					},
+				],
 			});
 		},
 
@@ -277,7 +277,7 @@ export default {
 		 */
 		setForm(key, data) {
 			let activeForm = {...this.activeForm};
-			Object.keys(data).forEach(function(key) {
+			Object.keys(data).forEach(function (key) {
 				activeForm[key] = data[key];
 			});
 			this.activeForm = activeForm;
@@ -289,12 +289,12 @@ export default {
 		 * @param {Object} newItem The item to update
 		 */
 		updateItem(newItem) {
-			const items = this.items.map(item => {
+			const items = this.items.map((item) => {
 				return item.id === newItem.id ? newItem : item;
 			});
 			this.$emit('set', this.id, {items});
-		}
-	}
+		},
+	},
 };
 </script>
 

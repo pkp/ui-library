@@ -18,18 +18,18 @@ export default {
 	description: {
 		en_US: description,
 		fr_CA: description,
-		ar_AR: description
+		ar_AR: description,
 	},
 	descriptionShort: {
 		en_US: descriptionShort,
 		fr_CA: descriptionShort,
-		ar_AR: descriptionShort
+		ar_AR: descriptionShort,
 	},
 	id: 1,
 	title: {
 		en_US: 'Eros in cursus turpis massa tincidunt dui ut ornare lectus',
 		fr_CA: 'Eros in cursus turpis massa tincidunt dui ut ornare lectus',
-		ar_AR: 'Eros in cursus turpis massa tincidunt dui ut ornare lectus'
+		ar_AR: 'Eros in cursus turpis massa tincidunt dui ut ornare lectus',
 	},
-	typeId: 1
+	typeId: 1,
 };

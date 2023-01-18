@@ -8,44 +8,44 @@ export default {
 	options: [
 		{
 			value: 1,
-			label: 'Book Manuscript'
+			label: 'Book Manuscript',
 		},
 		{
 			value: 2,
-			label: 'Chapter Manuscript'
+			label: 'Chapter Manuscript',
 		},
 		{
 			value: 3,
-			label: 'Preface'
+			label: 'Preface',
 		},
 		{
 			value: 4,
-			label: 'Index'
+			label: 'Index',
 		},
 		{
 			value: 5,
-			label: 'Glossary'
+			label: 'Glossary',
 		},
 		{
 			value: 7,
-			label: 'Prospectus'
+			label: 'Prospectus',
 		},
 		{
 			value: 11,
-			label: 'Table'
+			label: 'Table',
 		},
 		{
 			value: 8,
-			label: 'Figure'
+			label: 'Figure',
 		},
 		{
 			value: 9,
-			label: 'Audio'
+			label: 'Audio',
 		},
 		{
 			value: 10,
-			label: 'Other'
-		}
+			label: 'Other',
+		},
 	],
-	groupId: 'default'
+	groupId: 'default',
 };

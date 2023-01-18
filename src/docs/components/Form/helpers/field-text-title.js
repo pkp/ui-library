@@ -8,7 +8,7 @@ export default {
 	value: {
 		en_US: 'Effect of Data Modelling and Conceptual Modelling',
 		fr_CA: '',
-		ar_AR: ''
+		ar_AR: '',
 	},
-	isMultilingual: true
+	isMultilingual: true,
 };

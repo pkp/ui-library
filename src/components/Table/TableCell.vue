@@ -19,7 +19,7 @@ export default {
 	props: {
 		column: Object,
 		row: Object,
-		tabindex: [Number, Boolean]
+		tabindex: [Number, Boolean],
 	},
 	computed: {
 		/**
@@ -60,8 +60,8 @@ export default {
 				return this.row[this.column.value];
 			}
 			return '';
-		}
-	}
+		},
+	},
 };
 </script>
 

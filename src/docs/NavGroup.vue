@@ -16,9 +16,9 @@ export default {
 		links: Object,
 		prefix: {
 			type: String,
-			default: ''
-		}
-	}
+			default: '',
+		},
+	},
 };
 </script>
 

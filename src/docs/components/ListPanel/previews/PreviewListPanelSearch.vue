@@ -22,13 +22,13 @@ export default {
 	components: {
 		ListPanel,
 		PkpHeader,
-		Search
+		Search,
 	},
 	data() {
 		return {
 			items: [...items],
 			originalItems: [...items],
-			searchPhrase: ''
+			searchPhrase: '',
 		};
 	},
 	methods: {
@@ -40,14 +40,14 @@ export default {
 			if (!searchPhrase.length) {
 				this.items = [...this.originalItems];
 			} else {
-				this.items = this.originalItems.filter(item => {
+				this.items = this.originalItems.filter((item) => {
 					return (
 						new RegExp(searchPhrase, 'i').test(item.title) ||
 						new RegExp(searchPhrase, 'i').test(item.subtitle)
 					);
 				});
 			}
-		}
-	}
+		},
+	},
 };
 </script>

@@ -93,17 +93,17 @@ export default {
 		optIntoEditLabel: String,
 		size: {
 			default: 'normal',
-			validator: function(value) {
+			validator: function (value) {
 				return ['small', 'normal', 'large'].indexOf(value) !== -1;
-			}
+			},
 		},
-		prefix: String
+		prefix: String,
 	},
 	data() {
 		return {
 			inputStyles: {},
 			isDisabled: false,
-			prefixStyles: {}
+			prefixStyles: {},
 		};
 	},
 	computed: {
@@ -134,7 +134,7 @@ export default {
 				classes.push('pkpFormField__control--hasPrefix');
 			}
 			return classes;
-		}
+		},
 	},
 	methods: {
 		/**
@@ -142,7 +142,7 @@ export default {
 		 */
 		setFocus() {
 			this.$refs.input.focus();
-		}
+		},
 	},
 	mounted() {
 		/**
@@ -163,7 +163,7 @@ export default {
 						'padding-inline-start':
 							this.$refs.prefix.clientWidth +
 							this.$refs.prefix.offsetLeft +
-							'px'
+							'px',
 					};
 					this.$nextTick(() => {
 						const prefixLength =
@@ -178,7 +178,7 @@ export default {
 								display: 'block',
 								'white-space': 'nowrap',
 								'overflow-x': 'hidden',
-								'text-overflow': 'ellipsis'
+								'text-overflow': 'ellipsis',
 							};
 							this.$nextTick(() => {
 								this.inputStyles = {
@@ -186,7 +186,7 @@ export default {
 									'padding-inline-start':
 										this.$refs.prefix.clientWidth +
 										this.$refs.prefix.offsetLeft +
-										'px'
+										'px',
 								};
 							});
 						}
@@ -199,7 +199,7 @@ export default {
 		if (this.optIntoEdit) {
 			this.isDisabled = true;
 		}
-	}
+	},
 };
 </script>
 

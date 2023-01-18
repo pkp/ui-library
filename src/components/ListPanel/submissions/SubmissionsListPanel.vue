@@ -114,59 +114,59 @@ export default {
 		PkpFilterAutosuggest,
 		PkpHeader,
 		Search,
-		SubmissionsListItem
+		SubmissionsListItem,
 	},
 	props: {
 		addUrl: {
 			type: String,
-			required: true
+			required: true,
 		},
 		assignParticipantUrl: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		filters: {
 			type: Array,
 			default() {
 				return [];
-			}
+			},
 		},
 		id: {
 			type: String,
-			required: true
+			required: true,
 		},
 		infoUrl: {
 			type: String,
-			required: true
+			required: true,
 		},
 		items: {
 			type: Array,
 			default() {
 				return [];
-			}
+			},
 		},
 		itemsMax: {
 			type: Number,
 			defaut() {
 				return 0;
-			}
+			},
 		},
 		title: {
 			type: String,
-			required: true
+			required: true,
 		},
 		allowSubmissions: {
 			type: Boolean,
 			default() {
 				return true;
-			}
-		}
+			},
+		},
 	},
 	data() {
 		return {
-			isSidebarVisible: false
+			isSidebarVisible: false,
 		};
 	},
 	computed: {
@@ -177,7 +177,7 @@ export default {
 			return this.userHasRole([
 				pkp.const.ROLE_ID_MANAGER,
 				pkp.const.ROLE_ID_SUB_EDITOR,
-				pkp.const.ROLE_ID_ASSISTANT
+				pkp.const.ROLE_ID_ASSISTANT,
 			]);
 		},
 
@@ -192,10 +192,10 @@ export default {
 					pkp.const.ROLE_ID_SUB_EDITOR,
 					pkp.const.ROLE_ID_ASSISTANT,
 					pkp.const.ROLE_ID_AUTHOR,
-					pkp.const.ROLE_ID_REVIEWER
+					pkp.const.ROLE_ID_REVIEWER,
 				])
 			);
-		}
+		},
 	},
 	methods: {
 		/**
@@ -223,7 +223,7 @@ export default {
 						'issueIds',
 						'sectionIds',
 						'categoryIds',
-						'assignedTo'
+						'assignedTo',
 					].includes(param)
 				) {
 					newFilters[param] = value;
@@ -272,12 +272,12 @@ export default {
 					'issueIds',
 					'sectionIds',
 					'categoryIds',
-					'assignedTo'
+					'assignedTo',
 				].includes(param)
 			) {
 				delete newFilters[param];
 			} else {
-				newFilters[param] = newFilters[param].filter(v => v !== value);
+				newFilters[param] = newFilters[param].filter((v) => v !== value);
 			}
 			this.activeFilters = newFilters;
 		},
@@ -291,7 +291,7 @@ export default {
 		setItems(items, itemsMax) {
 			this.$emit('set', this.id, {
 				items,
-				itemsMax
+				itemsMax,
 			});
 		},
 
@@ -307,14 +307,14 @@ export default {
 			}
 
 			var hasRole = false;
-			roles.forEach(role => {
+			roles.forEach((role) => {
 				if (pkp.currentUser.roles.indexOf(role) > -1) {
 					hasRole = true;
 				}
 			});
 
 			return hasRole;
-		}
+		},
 	},
 	mounted() {
 		/**
@@ -325,22 +325,24 @@ export default {
 		/**
 		 * Remove a submission from the list when it is deleted
 		 */
-		pkp.eventBus.$on('deleted:submission', data => {
+		pkp.eventBus.$on('deleted:submission', (data) => {
 			if (
 				!data.id ||
-				!this.items.find(submission => submission.id === data.id)
+				!this.items.find((submission) => submission.id === data.id)
 			) {
 				return;
 			}
-			this.items = this.items.filter(item => {
-				return data.id !== item.id;
-			});
-			this.itemsMax--;
+			this.setItems(
+				this.items.filter((item) => {
+					return data.id !== item.id;
+				}),
+				this.itemsMax - 1
+			);
 		});
 	},
 	destroyed() {
 		pkp.eventBus.$off('updated:submission');
 		pkp.eventBus.$off('deleted:submission');
-	}
+	},
 };
 </script>

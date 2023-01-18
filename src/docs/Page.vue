@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import marked from 'marked';
+import {marked} from 'marked';
 import highlightjs from 'highlight.js';
 
 export default {
@@ -21,16 +21,17 @@ export default {
 					markdown = '';
 				}
 				if (markdown) {
-					return marked(markdown, {
+					marked.setOptions({
 						highlight(code) {
 							return highlightjs.highlightAuto(code).value;
-						}
+						},
 					});
+					return marked.parse(markdown.default);
 				}
 			}
 			return '';
-		}
-	}
+		},
+	},
 };
 </script>
 

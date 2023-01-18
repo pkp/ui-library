@@ -19,24 +19,24 @@ export default {
 				{
 					component: PreviewFieldSelectIssue,
 					name: 'Base',
-					template: this.extractTemplate(PreviewFieldSelectIssueTemplate)
+					template: this.extractTemplate(PreviewFieldSelectIssueTemplate),
 				},
 				{
 					component: PreviewFieldSelectIssuePublished,
 					name: 'Published',
 					template: this.extractTemplate(
 						PreviewFieldSelectIssuePublishedTemplate
-					)
+					),
 				},
 				{
 					component: PreviewFieldSelectIssueScheduled,
 					name: 'Scheduled',
 					template: this.extractTemplate(
 						PreviewFieldSelectIssueScheduledTemplate
-					)
-				}
-			]
+					),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

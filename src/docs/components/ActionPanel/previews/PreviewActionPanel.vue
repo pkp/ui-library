@@ -23,15 +23,9 @@
 				cached values for all journals.
 			</p>
 			<template slot="actions">
-				<pkp-button>
-					Clear Data Cache
-				</pkp-button>
-				<pkp-button>
-					Clear Template/CSS Cache
-				</pkp-button>
-				<pkp-button :isWarnable="true">
-					Clear All Cache
-				</pkp-button>
+				<pkp-button>Clear Data Cache</pkp-button>
+				<pkp-button>Clear Template/CSS Cache</pkp-button>
+				<pkp-button :isWarnable="true">Clear All Cache</pkp-button>
 			</template>
 		</action-panel>
 		<action-panel>
@@ -55,7 +49,7 @@ import dialog from '../../../../mixins/dialog';
 
 export default {
 	components: {
-		ActionPanel
+		ActionPanel,
 	},
 	mixins: [dialog],
 	methods: {
@@ -73,16 +67,16 @@ export default {
 							setTimeout(() => {
 								this.$modal.hide('deleteDialog');
 							}, 1000);
-						}
+						},
 					},
 					{
 						label: this.__('common.cancel'),
-						callback: () => this.$modal.hide('deleteDialog')
-					}
-				]
+						callback: () => this.$modal.hide('deleteDialog'),
+					},
+				],
 			});
-		}
-	}
+		},
+	},
 };
 </script>
 

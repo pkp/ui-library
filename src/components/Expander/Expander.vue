@@ -18,13 +18,13 @@ export default {
 			type: Boolean,
 			default() {
 				return false;
-			}
+			},
 		},
 		itemName: {
 			type: String,
-			required: true
-		}
-	}
+			required: true,
+		},
+	},
 };
 </script>
 

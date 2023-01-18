@@ -21,12 +21,12 @@ const baseStat = {
 	object: {
 		id: 1,
 		fullTitle: {
-			en_US: getRandomTitle(baseTitle)
+			en_US: getRandomTitle(baseTitle),
 		},
 		sectionId: 1,
 		authorString: 'Carlo Corino',
-		urlPublished: '/example/1'
-	}
+		urlPublished: '/example/1',
+	},
 };
 
 let stats = [];
@@ -37,12 +37,12 @@ for (let i = 1; i < 61; i++) {
 			...baseStat.object,
 			id: i,
 			fullTitle: {
-				en_US: getRandomTitle(baseTitle)
+				en_US: getRandomTitle(baseTitle),
 			},
-			sectionId: sectionIds[Math.floor(Math.random() * sectionIds.length)]
+			sectionId: sectionIds[Math.floor(Math.random() * sectionIds.length)],
 		},
 		abstractViews: Math.floor(Math.random() * 10000) + 1,
-		galleyViews: Math.floor(Math.random() * 1000) + 1
+		galleyViews: Math.floor(Math.random() * 1000) + 1,
 	};
 
 	let sixth = Math.floor(stat.galleyViews / 6);

@@ -5,5 +5,5 @@ export default {
 	value: [],
 	deselectLabel: 'Remove {$item}',
 	selectedLabel: 'Selected',
-	apiUrl: ''
+	apiUrl: '',
 };

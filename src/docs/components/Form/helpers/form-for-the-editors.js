@@ -19,32 +19,32 @@ export default {
 			value: '',
 			toolbar: 'bold italic superscript subscript | link',
 			plugins: 'paste,link',
-			groupId: 'default'
-		}
+			groupId: 'default',
+		},
 	],
 	groups: [
 		{
 			id: 'default',
-			pageId: 'default'
-		}
+			pageId: 'default',
+		},
 	],
 	pages: [
 		{
 			id: 'default',
 			submitButton: {
-				label: 'Save'
-			}
-		}
+				label: 'Save',
+			},
+		},
 	],
 	supportedFormLocales: [
 		...Form.supportedFormLocales,
 		{
 			key: 'fr_CA',
-			label: 'Français (Canada)'
+			label: 'Français (Canada)',
 		},
 		{
 			key: 'ar_AR',
-			label: 'عربى'
-		}
-	]
+			label: 'عربى',
+		},
+	],
 };

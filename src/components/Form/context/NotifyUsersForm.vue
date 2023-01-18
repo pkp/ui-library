@@ -7,22 +7,22 @@ export default {
 	props: {
 		confirmLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		userGroupCounts: {
 			type: Object,
-			required: true
+			required: true,
 		},
 		sendLabel: {
 			type: String,
-			required: true
-		}
+			required: true,
+		},
 	},
 	methods: {
 		/**
 		 * Require user confirmation before submitting the form
 		 */
-		nextPage: function(pageId) {
+		nextPage: function (pageId) {
 			let totalUserCount = 0;
 			if (this.submitValues.userGroupIds) {
 				totalUserCount = this.submitValues.userGroupIds.reduce(
@@ -43,16 +43,16 @@ export default {
 						callback: () => {
 							this.submit();
 							this.$modal.hide('confirmNotify');
-						}
+						},
 					},
 					{
 						label: this.__('common.cancel'),
 						isWarnable: true,
-						callback: () => this.$modal.hide('confirmNotify')
-					}
-				]
+						callback: () => this.$modal.hide('confirmNotify'),
+					},
+				],
 			});
-		}
-	}
+		},
+	},
 };
 </script>

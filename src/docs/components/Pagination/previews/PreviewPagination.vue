@@ -21,12 +21,12 @@ import Pagination from '@/components/Pagination/Pagination.vue';
 
 export default {
 	components: {
-		Pagination
+		Pagination,
 	},
 	data() {
 		return {
 			currentPage: 1,
-			isLoading: false
+			isLoading: false,
 		};
 	},
 	methods: {
@@ -39,8 +39,8 @@ export default {
 			setTimeout(() => {
 				this.isLoading = false;
 			}, 1000);
-		}
-	}
+		},
+	},
 };
 </script>
 

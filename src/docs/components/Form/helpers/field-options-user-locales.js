@@ -10,16 +10,16 @@ export default {
 	options: [
 		{
 			value: 'en_US',
-			label: 'English'
+			label: 'English',
 		},
 		{
 			value: 'fr_CA',
-			label: 'French'
+			label: 'French',
 		},
 		{
 			value: 'ar_AR',
-			label: 'عربى'
-		}
+			label: 'عربى',
+		},
 	],
-	groupId: 'preferences'
+	groupId: 'preferences',
 };

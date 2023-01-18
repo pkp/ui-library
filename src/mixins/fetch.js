@@ -17,26 +17,26 @@ export default {
 	props: {
 		apiUrl: {
 			type: String,
-			required: true
+			required: true,
 		},
 		count: {
 			type: Number,
 			default() {
 				return 30;
-			}
+			},
 		},
 		getParams: {
 			type: Object,
 			default() {
 				return {};
-			}
+			},
 		},
 		lazyLoad: {
 			type: Boolean,
 			default() {
 				return false;
-			}
-		}
+			},
+		},
 	},
 	data() {
 		return {
@@ -44,7 +44,7 @@ export default {
 			isLoading: false,
 			latestGetRequest: '',
 			offset: 0,
-			searchPhrase: ''
+			searchPhrase: '',
 		};
 	},
 	computed: {
@@ -64,7 +64,7 @@ export default {
 		 */
 		lastPage() {
 			return Math.ceil(this.itemsMax / this.count);
-		}
+		},
 	},
 	methods: {
 		/**
@@ -98,17 +98,17 @@ export default {
 					...this.activeFilters,
 					searchPhrase: this.searchPhrase,
 					count: this.count,
-					offset: this.offset
+					offset: this.offset,
 				},
 				_uuid: this.latestGetRequest,
-				error: function(r) {
+				error: function (r) {
 					// Only process latest request response
 					if (self.latestGetRequest !== this._uuid) {
 						return;
 					}
 					self.ajaxErrorCallback(r);
 				},
-				success: function(r) {
+				success: function (r) {
 					// Only process latest request response
 					if (self.latestGetRequest !== this._uuid) {
 						return;
@@ -121,7 +121,7 @@ export default {
 						return;
 					}
 					self.isLoading = false;
-				}
+				},
 			});
 		},
 
@@ -156,7 +156,7 @@ export default {
 		 */
 		setSearchPhrase(searchPhrase) {
 			this.searchPhrase = searchPhrase;
-		}
+		},
 	},
 	watch: {
 		/**
@@ -192,7 +192,7 @@ export default {
 			} else {
 				this.$nextTick(() => this.get());
 			}
-		}
+		},
 	},
 	mounted() {
 		if (this.lazyLoad) {
@@ -200,10 +200,10 @@ export default {
 				this.get();
 			} else {
 				var self = this;
-				$(function() {
+				$(function () {
 					self.get();
 				});
 			}
 		}
-	}
+	},
 };

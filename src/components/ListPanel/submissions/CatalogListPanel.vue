@@ -4,7 +4,10 @@
 			:isSidebarVisible="isSidebarVisible"
 			:items="items"
 			class="listPanel--catalog"
-			:class="isOrdering ? '-isOrdering' : ''"
+			:class="{
+				'-isOrdering': isOrdering,
+				'-isLoading': isLoading,
+			}"
 		>
 			<template slot="header">
 				<pkp-header>
@@ -106,7 +109,6 @@
 					:item="item"
 					:filterAssocType="filterAssocType"
 					:filterAssocId="filterAssocId"
-					:isLoading="isLoading"
 					:isOrdering="isOrdering"
 					:apiUrl="apiUrl"
 					@update:item="updateItem"
@@ -162,70 +164,70 @@ export default {
 		PkpForm,
 		PkpHeader,
 		PkpFilter,
-		Search
+		Search,
 	},
 	mixins: [ajaxError, fetch],
 	props: {
 		addEntryForm: {
 			type: Object,
-			required: true
+			required: true,
 		},
 		catalogSortBy: {
 			type: String,
 			default() {
 				return 'datePublished'; // ORDERBY_DATE_PUBLISHED
-			}
+			},
 		},
 		catalogSortDir: {
 			type: Number,
 			default() {
 				return 1; // SORT_DIRECTION_ASC
-			}
+			},
 		},
 		contextId: {
 			type: Number,
 			default() {
 				return 0;
-			}
+			},
 		},
 		csrfToken: {
 			type: String,
-			required: true
+			required: true,
 		},
 		filters: {
 			type: Array,
 			default() {
 				return [];
-			}
+			},
 		},
 		id: {
 			type: String,
-			required: true
+			required: true,
 		},
 		items: {
 			type: Array,
 			default() {
 				return [];
-			}
+			},
 		},
 		itemsMax: {
 			type: Number,
 			defaut() {
 				return 0;
-			}
+			},
 		},
 		title: {
 			type: String,
 			default() {
 				return '';
-			}
-		}
+			},
+		},
 	},
 	data() {
 		return {
 			newEntries: [],
 			isOrdering: false,
-			isSidebarVisible: false
+			isSidebarVisible: false,
 		};
 	},
 	computed: {
@@ -306,7 +308,7 @@ export default {
 
 			if (filter) {
 				return this.__('submission.list.orderingFeaturesSection', {
-					title: filter.title
+					title: filter.title,
 				});
 			}
 
@@ -344,7 +346,7 @@ export default {
 				return this.activeFilters.seriesIds;
 			}
 			return this.contextId;
-		}
+		},
 	},
 	methods: {
 		/**
@@ -361,7 +363,7 @@ export default {
 		addEntryFormClosed() {
 			this.setFocusToRef('addEntryButton');
 			this.addEntryForm.fields.find(
-				f => f.name === 'submissionIds'
+				(f) => f.name === 'submissionIds'
 			).selected = [];
 		},
 
@@ -425,7 +427,7 @@ export default {
 		 * @param {Object} item The item to move
 		 */
 		itemOrderDown(item) {
-			var index = this.items.findIndex(obj => {
+			var index = this.items.findIndex((obj) => {
 				return item.id == obj.id;
 			});
 			if (index === this.items.length - 1) {
@@ -442,7 +444,7 @@ export default {
 		 * @param {Object} item The item to move
 		 */
 		itemOrderUp(item) {
-			var index = this.items.findIndex(obj => {
+			var index = this.items.findIndex((obj) => {
 				return item.id == obj.id;
 			});
 			if (index === 0) {
@@ -479,10 +481,10 @@ export default {
 		 */
 		setAddEntryForm(formId, data) {
 			let addEntryForm = {...this.addEntryForm};
-			Object.keys(data).forEach(function(key) {
+			Object.keys(data).forEach(function (key) {
 				addEntryForm[key] = data[key];
 			});
-			this.addEntryForm = addEntryForm;
+			this.$emit('set', this.id, {addEntryForm: data});
 		},
 
 		/**
@@ -509,7 +511,7 @@ export default {
 		setItems(items, itemsMax) {
 			this.$emit('set', this.id, {
 				items,
-				itemsMax
+				itemsMax,
 			});
 		},
 
@@ -519,7 +521,7 @@ export default {
 		 * @param {Object} updatedItem
 		 */
 		updateItem(updatedItem) {
-			let items = this.items.map(item => {
+			let items = this.items.map((item) => {
 				return item.id === updatedItem.id ? updatedItem : item;
 			});
 			this.$emit('set', this.id, {items: items});
@@ -560,14 +562,14 @@ export default {
 			const featured = [];
 			let seq = 0;
 			for (const item of this.items) {
-				const feature = item.featured.find(feature => {
+				const feature = item.featured.find((feature) => {
 					return feature.assoc_type === this.filterAssocType;
 				});
 				if (feature) {
 					feature.seq = seq;
 					featured.push({
 						id: item.id,
-						seq: feature.seq
+						seq: feature.seq,
 					});
 					seq++;
 				}
@@ -580,19 +582,19 @@ export default {
 				url: this.apiUrl + '/saveFeaturedOrder',
 				type: 'POST',
 				headers: {
-					'X-Csrf-Token': pkp.currentUser.csrfToken
+					'X-Csrf-Token': pkp.currentUser.csrfToken,
 				},
 				data: {
 					assocType: this.filterAssocType,
 					assocId: this.filterAssocId,
-					featured: featured
+					featured: featured,
 				},
 				error(r) {
 					self.ajaxErrorCallback(r);
 				},
 				complete() {
 					self.isLoading = false;
-				}
+				},
 			});
 		},
 
@@ -604,7 +606,7 @@ export default {
 				this.setItemOrderSequence();
 			}
 			this.isOrdering = !this.isOrdering;
-		}
+		},
 	},
 	created() {
 		/**
@@ -614,13 +616,13 @@ export default {
 		 * Set this watcher before the mounted hook so that the get params are
 		 * updated before the ajax request is made in SubmissionListPanel.mounted.
 		 */
-		this.$watch('activeFilters', function(newVal, oldVal) {
+		this.$watch('activeFilters', function (newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
 			this.updateSortOrder();
 		});
-	}
+	},
 };
 </script>
 
@@ -708,7 +710,9 @@ export default {
 
 .listPanel--catalog.-isOrdering {
 	.pkpHeader__actions
-		> button:not(.listPanel--catalog__orderToggle):not(.listPanel--catalog__orderCancel),
+		> button:not(.listPanel--catalog__orderToggle):not(
+			.listPanel--catalog__orderCancel
+		),
 	.pkpSearch,
 	.listPanel__itemActions--catalog,
 	.listPanel__item--catalog:not(.-isFeatured),

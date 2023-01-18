@@ -156,7 +156,7 @@
 								{{
 									replaceLocaleParams(itemsOfTotalLabel, {
 										count: items.length,
-										total: itemsMax
+										total: itemsMax,
 									})
 								}}
 								<a
@@ -221,12 +221,8 @@ function getRandomTimeline(startDate, endDate, timelineInterval) {
 	while (startDate.getTime() < endDate.getTime()) {
 		timeline.push({
 			date: startDate.toISOString().split('T')[0],
-			label: startDate
-				.toString()
-				.split(' ')
-				.slice(1, labelSplice)
-				.join(' '),
-			value: Math.floor(Math.random() * 2000) + 3000
+			label: startDate.toString().split(' ').slice(1, labelSplice).join(' '),
+			value: Math.floor(Math.random() * 2000) + 3000,
 		});
 		if (timelineInterval === 'month') {
 			startDate.setMonth(startDate.getMonth() + 1);
@@ -239,7 +235,7 @@ function getRandomTimeline(startDate, endDate, timelineInterval) {
 
 export default {
 	extends: StatsPublicationsPage,
-	data: function() {
+	data: function () {
 		const dateEndMax = new Date(new Date().setDate(new Date().getDate() - 1));
 		const startDate = new Date();
 		startDate.setDate(dateEndMax.getDate() - 30);
@@ -251,7 +247,7 @@ export default {
 			items: articleStats.slice(0, 30),
 			itemsMax: articleStats.length,
 			tableColumns: articleStatsColumns.filter(
-				col => !['id', 'author'].includes(col.name)
+				(col) => !['id', 'author'].includes(col.name)
 			),
 			dateStart: '2019-04-01',
 			dateEnd: '2019-05-01',
@@ -260,19 +256,19 @@ export default {
 				{
 					dateStart: '2019-04-01',
 					dateEnd: '2019-05-01',
-					label: 'Last 30 days'
+					label: 'Last 30 days',
 				},
 				{
 					dateStart: '2019-01-31',
 					dateEnd: '2019-05-01',
-					label: 'Last 90 days'
+					label: 'Last 90 days',
 				},
 				{
 					dateStart: '2018-05-02',
 					dateEnd: '2019-05-01',
-					label: 'Last 12 months'
+					label: 'Last 12 months',
 				},
-				{dateStart: '', dateEnd: '', label: 'All Dates'}
+				{dateStart: '', dateEnd: '', label: 'All Dates'},
 			],
 			filters: [
 				{
@@ -284,23 +280,23 @@ export default {
 						{
 							title: 'Epäjärjestelmällistyttämättömyydelläänsäkäänköhän',
 							param: 'sectionIds',
-							value: 4
-						}
-					]
-				}
+							value: 4,
+						},
+					],
+				},
 			],
-			originalItems: []
+			originalItems: [],
 		};
 	},
 	methods: {
 		/**
 		 * Mock requests to the API
 		 */
-		getItems: function() {
+		getItems: function () {
 			this.isLoadingItems = true;
 
 			setTimeout(() => {
-				const items = articleStats.filter(row => {
+				const items = articleStats.filter((row) => {
 					if (this.searchPhrase) {
 						if (
 							!row.object.fullTitle.en_US.includes(this.searchPhrase) &&
@@ -328,7 +324,7 @@ export default {
 		/**
 		 * Mock requests to the API
 		 */
-		getTimeline: function() {
+		getTimeline: function () {
 			this.isLoadingTimeline = true;
 			setTimeout(() => {
 				const dateStart = this.dateStart || '2016-01-01';
@@ -342,7 +338,7 @@ export default {
 				);
 				this.isLoadingTimeline = false;
 			}, 1000);
-		}
-	}
+		},
+	},
 };
 </script>

@@ -18,24 +18,24 @@ export default {
 			type: Number,
 			default() {
 				return 100;
-			}
+			},
 		},
 		min: {
 			type: Number,
 			default() {
 				return 0;
-			}
+			},
 		},
 		value: {
 			type: Number,
-			required: true
-		}
+			required: true,
+		},
 	},
 	computed: {
 		progress() {
 			return ((this.value / this.max) * 100).toFixed(0);
-		}
-	}
+		},
+	},
 };
 </script>
 

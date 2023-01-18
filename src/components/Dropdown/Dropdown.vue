@@ -34,36 +34,36 @@ export default {
 	props: {
 		ariaDescribedBy: {
 			type: String,
-			default: ''
+			default: '',
 		},
 		icon: {
 			type: String,
-			default: ''
+			default: '',
 		},
 		label: {
 			type: String,
-			default: ''
+			default: '',
 		},
 		isActive: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
 		isLink: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
 		isPrimary: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
 		isWarnable: {
 			type: Boolean,
-			default: false
-		}
+			default: false,
+		},
 	},
 	data() {
 		return {
-			isOpen: false
+			isOpen: false,
 		};
 	},
 	computed: {
@@ -72,7 +72,7 @@ export default {
 		 */
 		id() {
 			return this._uid;
-		}
+		},
 	},
 	methods: {
 		/**
@@ -111,8 +111,8 @@ export default {
 					this.isOpen = false;
 				}
 			}, 100);
-		}
-	}
+		},
+	},
 };
 </script>
 

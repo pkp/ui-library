@@ -27,20 +27,20 @@ export default {
 			type: Boolean,
 			default() {
 				return false;
-			}
+			},
 		},
 		param: {
 			type: String,
-			required: true
+			required: true,
 		},
 		title: {
 			type: String,
-			required: true
+			required: true,
 		},
 		value: {
 			type: [String, Number, Boolean, Array, Object],
-			required: true
-		}
+			required: true,
+		},
 	},
 	computed: {
 		/**
@@ -54,7 +54,7 @@ export default {
 				classes.push('pkpFilter--disabled');
 			}
 			return classes;
-		}
+		},
 	},
 	methods: {
 		/**
@@ -73,8 +73,8 @@ export default {
 		 */
 		remove() {
 			this.$emit('remove-filter', this.param, this.value);
-		}
-	}
+		},
+	},
 };
 </script>
 

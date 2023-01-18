@@ -20,7 +20,7 @@ import Tabs from '@/components/Tabs/Tabs.vue';
 
 Vue.use(VModal, {
 	dynamic: true,
-	injectModalsContainer: true
+	injectModalsContainer: true,
 });
 Vue.use(VTooltip, {defaultTrigger: 'click'});
 Vue.use(VueScrollTo);
@@ -61,53 +61,53 @@ new Vue({
 				{
 					id: 1,
 					name: 'Book Manuscript',
-					isPrimary: true
+					isPrimary: true,
 				},
 				{
 					id: 2,
 					name: 'Chapter Manuscript',
-					isPrimary: true
+					isPrimary: true,
 				},
 				{
 					id: 3,
-					name: 'Preface'
+					name: 'Preface',
 				},
 				{
 					id: 4,
-					name: 'Index'
+					name: 'Index',
 				},
 				{
 					id: 5,
-					name: 'Glossary'
+					name: 'Glossary',
 				},
 				{
 					id: 7,
-					name: 'Prospectus'
+					name: 'Prospectus',
 				},
 				{
 					id: 11,
-					name: 'Table'
+					name: 'Table',
 				},
 				{
 					id: 8,
-					name: 'Figure'
+					name: 'Figure',
 				},
 				{
 					id: 9,
-					name: 'Audio'
+					name: 'Audio',
 				},
 				{
 					id: 10,
-					name: 'Other'
-				}
+					name: 'Other',
+				},
 			],
 			/**
 			 * TinyMCE configuration
 			 */
 			tinyMCE: {
-				skinUrl: '/styles/tinymce'
-			}
+				skinUrl: '/styles/tinymce',
+			},
 		};
 	},
-	render: h => h(App)
+	render: (h) => h(App),
 }).$mount('#app');

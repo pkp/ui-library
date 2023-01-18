@@ -7,5 +7,5 @@ export default {
 	tooltip:
 		'The link to your website or institutional profile, which should begin with http://.',
 	value: '',
-	prefix: 'https://'
+	prefix: 'https://',
 };

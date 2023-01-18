@@ -42,40 +42,40 @@ export default {
 	name: 'FileAttacherReviewFiles',
 	components: {
 		ButtonRow,
-		SelectSubmissionFileListItem
+		SelectSubmissionFileListItem,
 	},
 	props: {
 		attachSelectedLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		backLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		component: {
 			type: String,
-			required: true
+			required: true,
 		},
 		downloadLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		files: {
 			type: Array,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return {
-			selected: []
+			selected: [],
 		};
 	},
 	computed: {
 		selectedFiles() {
-			return this.files.filter(file => this.selected.includes(file.id));
-		}
-	}
+			return this.files.filter((file) => this.selected.includes(file.id));
+		},
+	},
 };
 </script>
 

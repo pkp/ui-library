@@ -9,16 +9,16 @@ export default {
 	options: [
 		{
 			value: 'asap',
-			label: 'As soon as possible'
+			label: 'As soon as possible',
 		},
 		{
 			value: 'daily',
-			label: 'Once a day'
+			label: 'Once a day',
 		},
 		{
 			value: 'weekly',
-			label: 'Once a week'
-		}
+			label: 'Once a week',
+		},
 	],
-	groupId: 'preferences'
+	groupId: 'preferences',
 };

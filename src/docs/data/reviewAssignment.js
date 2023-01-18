@@ -6,5 +6,5 @@ export default {
 	round: 1,
 	roundId: 15,
 	status: 'Waiting for a response from the reviewer.',
-	statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE
+	statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE,
 };

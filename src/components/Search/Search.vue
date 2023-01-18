@@ -35,14 +35,14 @@ export default {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		searchPhrase: {
 			type: String,
 			default() {
 				return '';
-			}
-		}
+			},
+		},
 	},
 	computed: {
 		inputId() {
@@ -50,7 +50,7 @@ export default {
 		},
 		currentSearchLabel() {
 			return this.searchLabel ? this.searchLabel : this.__('common.search');
-		}
+		},
 	},
 	methods: {
 		/**
@@ -60,7 +60,7 @@ export default {
 		 * @param {Object} data A DOM event (object) or the new search
 		 *  phrase (string)
 		 */
-		searchPhraseKeyUp: debounce(function(el) {
+		searchPhraseKeyUp: debounce(function (el) {
 			this.$emit('search-phrase-changed', el.target.value);
 		}, 250),
 
@@ -69,11 +69,11 @@ export default {
 		 */
 		clearSearchPhrase() {
 			this.$emit('search-phrase-changed', '');
-			this.$nextTick(function() {
+			this.$nextTick(function () {
 				this.$el.querySelector('input[type="search"]').focus();
 			});
-		}
-	}
+		},
+	},
 };
 </script>
 

@@ -14,10 +14,10 @@ export default {
 				{
 					component: PreviewHelpButton,
 					name: 'Base',
-					template: this.extractTemplate(PreviewHelpButtonTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewHelpButtonTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

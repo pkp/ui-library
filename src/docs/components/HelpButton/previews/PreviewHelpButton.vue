@@ -11,7 +11,7 @@ import HelpButton from '@/components/HelpButton/HelpButton.vue';
 
 export default {
 	components: {
-		HelpButton
-	}
+		HelpButton,
+	},
 };
 </script>

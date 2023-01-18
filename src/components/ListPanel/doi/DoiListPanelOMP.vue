@@ -12,7 +12,7 @@ export default {
 		 */
 		addDoiObjects(mappedItem) {
 			let newMappedItem = mappedItem;
-			const originalItem = this.items.find(item => item.id === mappedItem.id);
+			const originalItem = this.items.find((item) => item.id === mappedItem.id);
 
 			// Submissions
 			if (this.enabledDoiTypes.includes('publication')) {
@@ -46,14 +46,14 @@ export default {
 						doiObject === null
 							? null
 							: doiObject[this.registrationAgencyInfo['registeredMessageKey']],
-					updateWithNewDoiEndpoint: updateWithNewDoiEndpoint
+					updateWithNewDoiEndpoint: updateWithNewDoiEndpoint,
 				};
 
 				newMappedItem.doiObjects.push(publicationItem);
 			}
 
 			if (this.enabledDoiTypes.includes('chapter')) {
-				this.getCurrentPublication(originalItem).chapters.forEach(chapter => {
+				this.getCurrentPublication(originalItem).chapters.forEach((chapter) => {
 					let doiObject = chapter.doiObject;
 
 					let updateWithNewDoiEndpoint = `${this.doiApiUrl}/chapters/${chapter.id}`;
@@ -84,7 +84,7 @@ export default {
 								: doiObject[
 										this.registrationAgencyInfo['registeredMessageKey']
 								  ],
-						updateWithNewDoiEndpoint: updateWithNewDoiEndpoint
+						updateWithNewDoiEndpoint: updateWithNewDoiEndpoint,
 					};
 
 					newMappedItem.doiObjects.push(chapterItem);
@@ -94,7 +94,7 @@ export default {
 			// Publication Formats
 			if (this.enabledDoiTypes.includes('representation')) {
 				this.getCurrentPublication(originalItem).publicationFormats.forEach(
-					publicationFormat => {
+					(publicationFormat) => {
 						let doiObject = publicationFormat.doiObject;
 
 						let updateWithNewDoiEndpoint = `${this.doiApiUrl}/publicationFormats/${publicationFormat.id}`;
@@ -109,7 +109,7 @@ export default {
 							doiId: doiObject === null ? null : doiObject.id,
 							uid: `${originalItem.id}-publicationFormat-${publicationFormat.id}`,
 							displayType: this.__('manager.dois.formatIdentifier.file', {
-								format: this.localize(publicationFormat.name)
+								format: this.localize(publicationFormat.name),
 							}),
 							type: 'publicationFormat',
 							identifier: doiObject === null ? '' : doiObject.doi,
@@ -127,7 +127,7 @@ export default {
 									: doiObject[
 											this.registrationAgencyInfo['registeredMessageKey']
 									  ],
-							updateWithNewDoiEndpoint: updateWithNewDoiEndpoint
+							updateWithNewDoiEndpoint: updateWithNewDoiEndpoint,
 						};
 						newMappedItem.doiObjects.push(publicationFormatItem);
 					}
@@ -137,8 +137,8 @@ export default {
 			// Submission files
 			if (this.enabledDoiTypes.includes('file')) {
 				this.getCurrentPublication(originalItem).publicationFormats.forEach(
-					publicationFormat => {
-						publicationFormat.submissionFiles.forEach(submissionFile => {
+					(publicationFormat) => {
+						publicationFormat.submissionFiles.forEach((submissionFile) => {
 							let doiObject = submissionFile.doiObject;
 
 							let updateWithNewDoiEndpoint = `${this.doiApiUrl}/submissionFiles/${submissionFile.id}`;
@@ -171,7 +171,7 @@ export default {
 										: doiObject[
 												this.registrationAgencyInfo['registeredMessageKey']
 										  ],
-								updateWithNewDoiEndpoint: updateWithNewDoiEndpoint
+								updateWithNewDoiEndpoint: updateWithNewDoiEndpoint,
 							};
 							newMappedItem.doiObjects.push(submissionFileItem);
 						});
@@ -218,7 +218,7 @@ export default {
 			} else {
 				return item.published;
 			}
-		}
-	}
+		},
+	},
 };
 </script>

@@ -61,7 +61,7 @@ export default {
 	name: 'FieldColor',
 	extends: FieldBase,
 	components: {
-		'color-picker': Chrome
+		'color-picker': Chrome,
 	},
 	methods: {
 		/**
@@ -69,13 +69,13 @@ export default {
 		 *
 		 * @param {String} newVal
 		 */
-		setValue: function(newVal) {
+		setValue: function (newVal) {
 			if (newVal.hex === this.currentValue) {
 				return;
 			}
 			this.currentValue = newVal.hex;
-		}
-	}
+		},
+	},
 };
 </script>
 

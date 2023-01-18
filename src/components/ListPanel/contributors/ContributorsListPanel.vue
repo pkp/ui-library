@@ -16,7 +16,7 @@
 							@click="toggleOrdering"
 							v-if="
 								publication.status !== getConstant('STATUS_PUBLISHED') &&
-									canEditPublication
+								canEditPublication
 							"
 							:disabled="isLoading"
 						>
@@ -40,8 +40,8 @@
 						<pkp-button
 							v-if="
 								!isOrdering &&
-									publication.status !== getConstant('STATUS_PUBLISHED') &&
-									canEditPublication
+								publication.status !== getConstant('STATUS_PUBLISHED') &&
+								canEditPublication
 							"
 							@click="openAddModal"
 							:disabled="isLoading"
@@ -62,7 +62,7 @@
 				<template
 					v-if="
 						publication.status !== getConstant('STATUS_PUBLISHED') &&
-							canEditPublication
+						canEditPublication
 					"
 					v-slot:item-actions="{item}"
 				>
@@ -165,100 +165,100 @@ export default {
 		Modal,
 		Orderer,
 		PkpForm,
-		PkpHeader
+		PkpHeader,
 	},
 	mixins: [ajaxError],
 	props: {
 		canEditPublication: {
 			type: Boolean,
-			required: true
+			required: true,
 		},
 		form: {
 			type: Object,
-			required: true
+			required: true,
 		},
 		id: {
 			type: String,
-			required: true
+			required: true,
 		},
 		items: {
 			type: Array,
 			default() {
 				return [];
-			}
+			},
 		},
 		title: {
 			type: String,
-			required: true
+			required: true,
 		},
 		publicationApiUrlFormat: {
 			type: String,
-			required: true
+			required: true,
 		},
 		publication: {
 			type: Object,
-			required: true
+			required: true,
 		},
 		i18nAbbreviated: {
 			type: String,
-			required: true
+			required: true,
 		},
 		i18nAddContributor: {
 			type: String,
-			required: true
+			required: true,
 		},
 		i18nConfirmDelete: {
 			type: String,
-			required: true
+			required: true,
 		},
 		i18nContributors: {
 			type: String,
-			required: true
+			required: true,
 		},
 		i18nDisplay: {
 			type: String,
-			required: true
+			required: true,
 		},
 		i18nDeleteContributor: {
 			type: String,
-			required: true
+			required: true,
 		},
 		i18nEditContributor: {
 			type: String,
-			required: true
+			required: true,
 		},
 		i18nFormat: {
 			type: String,
-			required: true
+			required: true,
 		},
 		i18nFull: {
 			type: String,
-			required: true
+			required: true,
 		},
 		i18nPreview: {
 			type: String,
-			required: true
+			required: true,
 		},
 		i18nPreviewDescription: {
 			type: String,
-			required: true
+			required: true,
 		},
 		i18nPrimaryContact: {
 			type: String,
-			required: true
+			required: true,
 		},
 		i18nPublicationLists: {
 			type: String,
-			required: true
+			required: true,
 		},
 		i18nSaveOrder: {
 			type: String,
-			required: true
+			required: true,
 		},
 		i18nSetPrimaryContact: {
 			type: String,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return {
@@ -267,7 +267,7 @@ export default {
 			resetFocusTo: null,
 			isOrdering: false,
 			isLoading: false,
-			itemsBeforeReordering: null
+			itemsBeforeReordering: null,
 		};
 	},
 	computed: {
@@ -313,7 +313,7 @@ export default {
 		 */
 		orderingLabel() {
 			return this.isOrdering ? this.i18nSaveOrder : this.__('common.order');
-		}
+		},
 	},
 	methods: {
 		/**
@@ -352,7 +352,7 @@ export default {
 				newContributors.push(contributor);
 				this.$emit('updated:contributors', newContributors);
 			} else {
-				const newContributors = this.publication.authors.map(author => {
+				const newContributors = this.publication.authors.map((author) => {
 					if (author.id === contributor.id) {
 						return contributor;
 					}
@@ -381,7 +381,7 @@ export default {
 				},
 				complete(r) {
 					this.isLoading = false;
-				}
+				},
 			});
 		},
 
@@ -404,13 +404,13 @@ export default {
 		 * @param {Number} id
 		 */
 		openDeleteModal(id) {
-			const contributor = this.items.find(a => a.id === id);
+			const contributor = this.items.find((a) => a.id === id);
 
 			this.openDialog({
 				name: 'delete',
 				title: this.i18nDeleteContributor,
 				message: this.replaceLocaleParams(this.i18nConfirmDelete, {
-					name: contributor.fullName
+					name: contributor.fullName,
 				}),
 				actions: [
 					{
@@ -428,7 +428,7 @@ export default {
 								context: this,
 								headers: {
 									'X-Csrf-Token': pkp.currentUser.csrfToken,
-									'X-Http-Method-Override': 'DELETE'
+									'X-Http-Method-Override': 'DELETE',
 								},
 								error: this.ajaxErrorCallback,
 								success(r) {
@@ -436,7 +436,7 @@ export default {
 									this.setFocusIn(this.$el);
 
 									const newContributors = this.publication.authors.filter(
-										author => {
+										(author) => {
 											return author.id !== id;
 										}
 									);
@@ -444,15 +444,15 @@ export default {
 								},
 								complete(r) {
 									this.isLoading = false;
-								}
+								},
 							});
-						}
+						},
 					},
 					{
 						label: this.__('common.cancel'),
-						callback: () => this.$modal.hide('delete')
-					}
-				]
+						callback: () => this.$modal.hide('delete'),
+					},
+				],
 			});
 		},
 
@@ -478,7 +478,7 @@ export default {
 					let activeForm = cloneDeep(this.form);
 					activeForm.action = apiUrl;
 					activeForm.method = 'PUT';
-					activeForm.fields = activeForm.fields.map(field => {
+					activeForm.fields = activeForm.fields.map((field) => {
 						if (Object.keys(author).includes(field.name)) {
 							field.value = author[field.name];
 						}
@@ -490,7 +490,7 @@ export default {
 				},
 				complete(r) {
 					this.isLoading = false;
-				}
+				},
 			});
 		},
 
@@ -502,7 +502,7 @@ export default {
 		 */
 		updateForm(formId, data) {
 			let activeForm = {...this.activeForm};
-			Object.keys(data).forEach(function(key) {
+			Object.keys(data).forEach(function (key) {
 				activeForm[key] = data[key];
 			});
 			this.activeForm = activeForm;
@@ -552,10 +552,10 @@ export default {
 				type: 'POST',
 				headers: {
 					'X-Csrf-Token': pkp.currentUser.csrfToken,
-					'X-Http-Method-Override': 'PUT'
+					'X-Http-Method-Override': 'PUT',
 				},
 				data: {
-					sortedAuthors: this.items
+					sortedAuthors: this.items,
 				},
 				success(contributors) {
 					this.$emit('updated:contributors', contributors);
@@ -572,14 +572,14 @@ export default {
 						complete() {
 							this.isLoading = false;
 							this.isOrdering = false;
-						}
+						},
 					});
 				},
 				error: this.ajaxErrorCallback,
 				complete() {
 					this.isLoading = false;
 					this.isOrdering = false;
-				}
+				},
 			});
 		},
 
@@ -596,10 +596,10 @@ export default {
 				type: 'POST',
 				headers: {
 					'X-Csrf-Token': pkp.currentUser.csrfToken,
-					'X-Http-Method-Override': 'PUT'
+					'X-Http-Method-Override': 'PUT',
 				},
 				data: {
-					primaryContactId: id
+					primaryContactId: id,
 				},
 				success(r) {
 					self.$emit('updated:publication', r);
@@ -609,7 +609,7 @@ export default {
 				error: this.ajaxErrorCallback,
 				complete() {
 					self.isLoading = false;
-				}
+				},
 			});
 		},
 
@@ -619,7 +619,7 @@ export default {
 		 * @param {Object} item The item to move
 		 */
 		contributorItemOrderDown(item) {
-			var index = this.items.findIndex(obj => {
+			var index = this.items.findIndex((obj) => {
 				return item.id == obj.id;
 			});
 			if (index === this.items.length - 1) {
@@ -637,7 +637,7 @@ export default {
 		 * @param {Object} item The item to move
 		 */
 		contributorItemOrderUp(item) {
-			var index = this.items.findIndex(obj => {
+			var index = this.items.findIndex((obj) => {
 				return item.id == obj.id;
 			});
 			if (index === 0) {
@@ -647,8 +647,8 @@ export default {
 			newItems.splice(index - 1, 0, newItems.splice(index, 1)[0]);
 
 			this.$emit('updated:contributors', newItems);
-		}
-	}
+		},
+	},
 };
 </script>
 

@@ -11,15 +11,15 @@ import field from '../../../helpers/field-options-orderable';
 export default {
 	extends: PreviewFieldBase,
 	components: {
-		FieldOptions
+		FieldOptions,
 	},
 	data() {
 		return {
 			field: {
 				...fieldBase,
-				...field
-			}
+				...field,
+			},
 		};
-	}
+	},
 };
 </script>

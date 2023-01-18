@@ -15,27 +15,27 @@ export default {
 		 */
 		setSuggestions(newItems) {
 			const suggestions = newItems
-				.filter(item => {
-					return !this.selected.find(s => s.id === item.id);
+				.filter((item) => {
+					return !this.selected.find((s) => s.id === item.id);
 				})
-				.map(item => {
-					const currentPublication = item.publications.find(publication => {
+				.map((item) => {
+					const currentPublication = item.publications.find((publication) => {
 						return publication.id === item.currentPublicationId;
 					});
 					if (!currentPublication) {
 						return {
 							value: 0,
-							label: ''
+							label: '',
 						};
 					} else {
 						return {
 							value: item.id,
-							label: this.localize(currentPublication.fullTitle)
+							label: this.localize(currentPublication.fullTitle),
 						};
 					}
 				});
 			this.suggestions = suggestions;
-		}
-	}
+		},
+	},
 };
 </script>

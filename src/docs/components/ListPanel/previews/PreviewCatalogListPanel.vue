@@ -22,7 +22,7 @@ import submissions from '@/docs/data/submissions';
 export default {
 	extends: Page,
 	components: {
-		CatalogListPanel
+		CatalogListPanel,
 	},
 	data() {
 		const getRandomInt = (min, max) => {
@@ -35,7 +35,7 @@ export default {
 			item.series = {
 				id: '1',
 				position: '1',
-				title: ''
+				title: '',
 			};
 			item.category = [
 				{
@@ -44,27 +44,27 @@ export default {
 					parent_id: 0,
 					path: 'example',
 					press_id: 1,
-					seq: 10000
-				}
+					seq: 10000,
+				},
 			];
 			item.featured = [
 				{
 					assoc_id: categoryId,
 					assoc_type: pkp.const.ASSOC_TYPE_CATEGORY,
-					seq: 0
+					seq: 0,
 				},
 				{
 					assoc_id: seriesId,
 					assoc_type: pkp.const.ASSOC_TYPE_SERIES,
-					seq: 0
-				}
+					seq: 0,
+				},
 			];
 			if (i === 3) {
 				item.newRelease = [
 					{
 						assoc_id: seriesId,
-						assoc_type: pkp.const.ASSOC_TYPE_SERIES
-					}
+						assoc_type: pkp.const.ASSOC_TYPE_SERIES,
+					},
 				];
 			} else {
 				item.newRelease = [];
@@ -87,33 +87,33 @@ export default {
 						isRequired: true,
 						selected: [],
 						value: [],
-						groupId: 'default'
-					}
+						groupId: 'default',
+					},
 				],
 				groups: [
 					{
 						id: 'default',
-						pageId: 'default'
-					}
+						pageId: 'default',
+					},
 				],
 				pages: [
 					{
 						id: 'default',
 						submitButton: {
 							label: 'Add Entry',
-							isPrimary: true
-						}
-					}
+							isPrimary: true,
+						},
+					},
 				],
 				primaryLocale: 'en_US',
 				visibleLocales: ['en_US'],
 				supportedFormLocales: [
 					{
 						key: 'en_US',
-						label: 'English'
-					}
+						label: 'English',
+					},
 				],
-				isSaving: false
+				isSaving: false,
 			},
 			filters: [
 				{
@@ -124,16 +124,16 @@ export default {
 							param: 'categoryIds',
 							value: 1,
 							sortBy: '',
-							sortDir: ''
+							sortDir: '',
 						},
 						{
 							title: 'Another Category',
 							param: 'categoryIds',
 							value: 2,
 							sortBy: '',
-							sortDir: ''
-						}
-					]
+							sortDir: '',
+						},
+					],
 				},
 				{
 					heading: 'Series',
@@ -143,27 +143,27 @@ export default {
 							param: 'seriesIds',
 							value: 1,
 							sortBy: 'seriesPosition',
-							sortDir: 'DESC'
+							sortDir: 'DESC',
 						},
 						{
 							title: 'Political Economy',
 							param: 'seriesIds',
 							value: 2,
 							sortBy: '',
-							sortDir: 'ASC'
+							sortDir: 'ASC',
 						},
 						{
 							title: 'History',
 							param: 'seriesIds',
 							value: 3,
 							sortBy: 'seriesIds',
-							sortDir: ''
-						}
-					]
-				}
+							sortDir: '',
+						},
+					],
+				},
 			],
 			items: [...items],
-			itemsMax: items.length
+			itemsMax: items.length,
 		};
 	},
 	created() {
@@ -195,6 +195,6 @@ export default {
 			'This monograph is not a new release. Make this monograph a new release.';
 		pkp.localeKeys['submission.list.viewEntry'] = 'View Entry';
 		pkp.localeKeys['submission.list.viewSubmission'] = 'View Submission';
-	}
+	},
 };
 </script>

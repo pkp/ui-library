@@ -9,7 +9,7 @@ import FileAttacherFileStage from './ExampleFileAttacherFileStage.vue';
 export default {
 	extends: FileAttacher,
 	components: {
-		FileAttacherFileStage
-	}
+		FileAttacherFileStage,
+	},
 };
 </script>

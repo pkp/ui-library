@@ -11,15 +11,15 @@ import field from '../../../helpers/field-upload-image-logo';
 export default {
 	extends: PreviewFieldBase,
 	components: {
-		FieldUploadImage
+		FieldUploadImage,
 	},
 	data() {
 		return {
 			field: {
 				...fieldBase,
-				...field
-			}
+				...field,
+			},
 		};
-	}
+	},
 };
 </script>

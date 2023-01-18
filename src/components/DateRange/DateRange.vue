@@ -75,92 +75,92 @@ export default {
 	props: {
 		uniqueId: {
 			type: String,
-			required: true
+			required: true,
 		},
 		dateStart: {
 			type: String,
-			default: ''
+			default: '',
 		},
 		dateStartMin: {
 			type: String,
-			default: ''
+			default: '',
 		},
 		dateEnd: {
 			type: String,
-			default: ''
+			default: '',
 		},
 		dateEndMax: {
 			type: String,
-			default: ''
+			default: '',
 		},
 		dateRangeLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		dateFormatInstructionsLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		changeDateRangeLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		sinceDateLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		untilDateLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		allDatesLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		customRangeLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		fromDateLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		toDateLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		applyLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		invalidDateLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		dateDoesNotExistLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		invalidDateRangeLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		invalidStartDateMinLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
 		invalidEndDateMaxLabel: {
 			type: String,
-			required: true
+			required: true,
 		},
-		options: Array
+		options: Array,
 	},
 	data() {
 		return {
 			isOpen: false,
 			localDateStart: '',
 			localDateEnd: '',
-			errorMessage: ''
+			errorMessage: '',
 		};
 	},
 	computed: {
@@ -172,17 +172,17 @@ export default {
 		currentRange() {
 			if (this.dateStart && !this.dateEnd) {
 				return this.replaceLocaleParams(this.sinceDateLabel, {
-					date: this.dateStart
+					date: this.dateStart,
 				});
 			} else if (!this.dateStart && this.dateEnd) {
 				return this.replaceLocaleParams(this.untilDateLabel, {
-					date: this.dateEnd
+					date: this.dateEnd,
 				});
 			} else if (!this.dateStart && !this.dateEnd) {
 				return this.allDatesLabel;
 			}
 			return this.dateStart + ' — ' + this.dateEnd;
-		}
+		},
 	},
 	methods: {
 		/**
@@ -368,7 +368,7 @@ export default {
 				);
 			}
 			return true;
-		}
+		},
 	},
 	mounted() {
 		this.localDateStart = this.dateStart;
@@ -379,8 +379,8 @@ export default {
 			if (newVal !== oldVal) {
 				this.$emit('updated:current-range', newVal);
 			}
-		}
-	}
+		},
+	},
 };
 </script>
 

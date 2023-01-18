@@ -18,7 +18,7 @@ export default {
 	extends: PreviewTable,
 	data() {
 		return {
-			columns: articleStatsColumns.map(col => {
+			columns: articleStatsColumns.map((col) => {
 				if (['abstractViews', 'galleyViews', 'total'].includes(col.name)) {
 					col.orderBy = col.name;
 					col.initialOrderDirection = true;
@@ -26,7 +26,7 @@ export default {
 				return col;
 			}),
 			orderBy: '',
-			orderDirection: false
+			orderDirection: false,
 		};
 	},
 	methods: {
@@ -52,7 +52,7 @@ export default {
 		 * @param boolean orderDirection
 		 */
 		reorder(orderBy, orderDirection) {
-			const orderByColumn = this.columns.find(col => col.name === orderBy);
+			const orderByColumn = this.columns.find((col) => col.name === orderBy);
 			if (!orderByColumn) {
 				return;
 			}
@@ -65,7 +65,7 @@ export default {
 					? 1
 					: -1;
 			});
-		}
+		},
 	},
 	watch: {
 		orderBy(newVal, oldVal) {
@@ -79,7 +79,7 @@ export default {
 				return;
 			}
 			this.reorder(this.orderBy, newVal);
-		}
-	}
+		},
+	},
 };
 </script>

@@ -14,10 +14,10 @@ export default {
 				{
 					component: PreviewDialog,
 					name: 'Dialog',
-					template: this.extractTemplate(PreviewDialogTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewDialogTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

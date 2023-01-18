@@ -6,7 +6,7 @@ export default {
 	name: 'StatsUsersPage',
 	extends: StatsPage,
 	components: {
-		Modal
+		Modal,
 	},
 	methods: {
 		/**
@@ -17,7 +17,7 @@ export default {
 		loadExport(url) {
 			window.location = url;
 			this.$modal.hide('export');
-		}
-	}
+		},
+	},
 };
 </script>

@@ -18,7 +18,7 @@ export default {
 		Pagination,
 		PkpHeader,
 		PkpTable,
-		TableCell
+		TableCell,
 	},
 	data() {
 		return {
@@ -33,7 +33,7 @@ export default {
 			isSidebarVisible: false,
 			isLoadingItems: false,
 			itemsOfTotalLabel: '',
-			latestItemsGetRequest: ''
+			latestItemsGetRequest: '',
 		};
 	},
 	computed: {
@@ -61,7 +61,7 @@ export default {
 				classes.push('-isLoading');
 			}
 			return classes;
-		}
+		},
 	},
 	methods: {
 		/**
@@ -71,7 +71,7 @@ export default {
 		 * @param {mixed} value
 		 * @return {Boolean}
 		 */
-		isFilterActive: function(param, value) {
+		isFilterActive: function (param, value) {
 			if (!Object.keys(this.activeFilters).includes(param)) {
 				return false;
 			}
@@ -114,7 +114,7 @@ export default {
 		 * @param {String} param
 		 * @param {mixed} value
 		 */
-		addFilter: function(param, value) {
+		addFilter: function (param, value) {
 			if (this.isFilterActive(param, value)) {
 				return;
 			}
@@ -136,12 +136,14 @@ export default {
 		 * @param {String} param
 		 * @param {mixed} value
 		 */
-		removeFilter: function(param, value) {
+		removeFilter: function (param, value) {
 			if (this.activeFilters[param] === undefined) {
 				return;
 			}
 			let filters = {...this.activeFilters};
-			filters[param] = filters[param].filter(filterVal => filterVal !== value);
+			filters[param] = filters[param].filter(
+				(filterVal) => filterVal !== value
+			);
 			this.activeFilters = filters;
 			this.get();
 		},
@@ -181,8 +183,8 @@ export default {
 			const tabIndex = this.isSidebarVisible ? 0 : -1;
 			this.$refs.sidebar
 				.querySelectorAll('button, [href], input, select, textarea')
-				.forEach(el => (el.tabIndex = tabIndex));
-		}
+				.forEach((el) => (el.tabIndex = tabIndex));
+		},
 	},
 	watch: {
 		activeFilters(newVal, oldVal) {
@@ -220,14 +222,14 @@ export default {
 					}
 				});
 			}
-		}
+		},
 	},
 	mounted() {
 		/**
 		 * Set the initial tabindex attributes in the sidebar
 		 */
 		this.setSidebarFocus();
-	}
+	},
 };
 </script>
 

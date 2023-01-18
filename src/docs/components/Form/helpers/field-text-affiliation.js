@@ -8,6 +8,6 @@ export default {
 	value: {
 		en_US: '',
 		fr_CA: '',
-		ar_AR: ''
-	}
+		ar_AR: '',
+	},
 };

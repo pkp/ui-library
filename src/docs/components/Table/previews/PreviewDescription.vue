@@ -11,6 +11,6 @@
 import PreviewTable from './PreviewTable.vue';
 
 export default {
-	extends: PreviewTable
+	extends: PreviewTable,
 };
 </script>

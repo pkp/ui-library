@@ -115,27 +115,27 @@ export default {
 	extends: FieldBase,
 	components: {
 		draggable,
-		Orderer
+		Orderer,
 	},
 	props: {
 		type: {
-			validator: function(value) {
+			validator: function (value) {
 				return ['checkbox', 'radio'].includes(value);
 			},
-			default: 'checkbox'
+			default: 'checkbox',
 		},
 		isOrderable: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
 		options: {
 			type: [Array, Object],
-			required: true
+			required: true,
 		},
 		value: {
 			type: [Array, Number, String, Boolean],
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return {
@@ -155,7 +155,7 @@ export default {
 			 */
 			selectedValue: this.isMultilingual
 				? this.value[this.localeKey]
-				: this.value
+				: this.value,
 		};
 	},
 	computed: {
@@ -170,7 +170,7 @@ export default {
 				classes.push('pkpFormField--optionsOrderable');
 			}
 			return classes;
-		}
+		},
 	},
 	methods: {
 		/**
@@ -178,8 +178,8 @@ export default {
 		 *
 		 * @param {Number} optionValue The value of the option to move up
 		 */
-		optionOrderUp: function(optionValue) {
-			const index = this.localizedOptions.findIndex(option => {
+		optionOrderUp: function (optionValue) {
+			const index = this.localizedOptions.findIndex((option) => {
 				return option.value === optionValue;
 			});
 			if (!index) {
@@ -198,8 +198,8 @@ export default {
 		 *
 		 * @param {Number} optionValue The value of the option to move down
 		 */
-		optionOrderDown: function(optionValue) {
-			const index = this.localizedOptions.findIndex(option => {
+		optionOrderDown: function (optionValue) {
+			const index = this.localizedOptions.findIndex((option) => {
 				return option.value === optionValue;
 			});
 			if (index < 0 || index >= this.localizedOptions.length - 1) {
@@ -218,9 +218,9 @@ export default {
 		 */
 		updateValueOrder() {
 			this.selectedValue = this.localizedOptions
-				.filter(option => this.selectedValue.includes(option.value))
-				.map(option => option.value);
-		}
+				.filter((option) => this.selectedValue.includes(option.value))
+				.map((option) => option.value);
+		},
 	},
 	watch: {
 		/**
@@ -239,14 +239,14 @@ export default {
 		 * Whenever the selected value changes, emit an event to update the value of
 		 * this field in the form component.
 		 */
-		selectedValue: function(newVal, oldVal) {
+		selectedValue: function (newVal, oldVal) {
 			if (JSON.stringify(newVal) === JSON.stringify(oldVal)) {
 				return;
 			}
 			if (this.isOrderable) {
 				newVal = this.localizedOptions
-					.filter(option => newVal.includes(option.value))
-					.map(option => option.value);
+					.filter((option) => newVal.includes(option.value))
+					.map((option) => option.value);
 			}
 			this.$emit('change', this.name, 'value', newVal, this.localeKey);
 		},
@@ -254,12 +254,12 @@ export default {
 		/**
 		 * Whenever the options change, override the localized options with them
 		 */
-		options: function(newVal) {
+		options: function (newVal) {
 			this.localizedOptions = this.isMultilingual
 				? newVal[this.localeKey]
 				: newVal;
-		}
-	}
+		},
+	},
 };
 </script>
 

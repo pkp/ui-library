@@ -6,7 +6,7 @@ export default {
 	extends: WorkflowPage,
 	data() {
 		return {
-			sectionWordLimits: {}
+			sectionWordLimits: {},
 		};
 	},
 	methods: {
@@ -19,7 +19,7 @@ export default {
 			let form = {...this.components[pkp.const.FORM_ID_RELATION]};
 			form.action =
 				this.submissionApiUrl + '/publications/' + publication.id + '/relate';
-			form.fields = form.fields.map(field => {
+			form.fields = form.fields.map((field) => {
 				if (Object.keys(publication).includes(field.name)) {
 					field.value = publication[field.name];
 				}
@@ -27,7 +27,7 @@ export default {
 			});
 			this.components[pkp.const.FORM_ID_RELATION] = {};
 			this.components[pkp.const.FORM_ID_RELATION] = form;
-		}
+		},
 	},
 	watch: {
 		workingPublication(newVal, oldVal) {
@@ -38,7 +38,7 @@ export default {
 			) {
 				const wordLimit = this.sectionWordLimits[newVal.sectionId] || 0;
 				let form = {...this.components[pkp.const.FORM_TITLE_ABSTRACT]};
-				form.fields = form.fields.map(field => {
+				form.fields = form.fields.map((field) => {
 					if (field.name === 'abstract') {
 						field.wordLimit = wordLimit;
 					}
@@ -51,8 +51,8 @@ export default {
 				return;
 			}
 			this.setRelationForm(newVal);
-		}
-	}
+		},
+	},
 };
 </script>
 

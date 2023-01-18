@@ -6,15 +6,15 @@ export default {
 	options: [
 		{
 			value: 'one',
-			label: 'One'
+			label: 'One',
 		},
 		{
 			value: 'two',
-			label: 'Two'
+			label: 'Two',
 		},
 		{
 			label: 'Any',
-			isInput: true
-		}
-	]
+			isInput: true,
+		},
+	],
 };

@@ -20,25 +20,25 @@ export default {
 				{
 					component: PreviewModal,
 					name: 'Base',
-					template: this.extractTemplate(PreviewModalTemplate)
+					template: this.extractTemplate(PreviewModalTemplate),
 				},
 				{
 					component: PreviewModalForm,
 					name: 'With Form',
-					template: this.extractTemplate(PreviewModalFormTemplate)
+					template: this.extractTemplate(PreviewModalFormTemplate),
 				},
 				{
 					component: PreviewModalTabs,
 					name: 'With Tabs',
-					template: this.extractTemplate(PreviewModalTabsTemplate)
+					template: this.extractTemplate(PreviewModalTabsTemplate),
 				},
 				{
 					component: PreviewModalActions,
 					name: 'With Custom Actions',
-					template: this.extractTemplate(PreviewModalActionsTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewModalActionsTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

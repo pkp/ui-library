@@ -14,10 +14,10 @@ export default {
 				{
 					component: PreviewDateRange,
 					name: 'Base',
-					template: this.extractTemplate(PreviewDateRangeTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewDateRangeTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

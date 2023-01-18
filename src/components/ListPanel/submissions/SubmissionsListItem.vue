@@ -33,7 +33,7 @@
 					>
 						{{
 							__('submission.list.responseDue', {
-								date: currentUserLatestReviewAssignment.responseDue
+								date: currentUserLatestReviewAssignment.responseDue,
 							})
 						}}
 					</span>
@@ -43,7 +43,7 @@
 					>
 						{{
 							__('submission.list.reviewDue', {
-								date: currentUserLatestReviewAssignment.due
+								date: currentUserLatestReviewAssignment.due,
 							})
 						}}
 					</span>
@@ -136,14 +136,14 @@
 								name: localizeSubmission(
 									currentPublication.fullTitle,
 									currentPublication.locale
-								)
+								),
 							})
 						}}
 					</span>
 					<span v-else class="-screenReader">
 						{{
 							__('common.viewWithName', {
-								name: currentPublication.authorsStringShort
+								name: currentPublication.authorsStringShort,
 							})
 						}}
 					</span>
@@ -191,7 +191,7 @@
 					<span>
 						{{
 							__('common.lastActivity', {
-								date: localizeDate(item.dateLastActivity)
+								date: localizeDate(item.dateLastActivity),
 							})
 						}}
 					</span>
@@ -228,32 +228,32 @@ export default {
 	components: {
 		Expander,
 		List,
-		ListItem
+		ListItem,
 	},
 	props: {
 		apiUrl: {
 			type: String,
-			required: true
+			required: true,
 		},
 		assignParticipantUrl: {
 			type: String,
-			required: true
+			required: true,
 		},
 		infoUrl: {
 			type: String,
-			required: true
+			required: true,
 		},
 		item: {
 			type: Object,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return {
 			isExpanded: false,
 			mask: null,
 			noticeActions: [],
-			noticeActionLabels: []
+			noticeActionLabels: [],
 		};
 	},
 	computed: {
@@ -264,7 +264,7 @@ export default {
 		 */
 		currentPublication() {
 			return this.item.publications.find(
-				publication => publication.id === this.item.currentPublicationId
+				(publication) => publication.id === this.item.currentPublicationId
 			);
 		},
 
@@ -278,7 +278,7 @@ export default {
 				!this.userAssignedRole(pkp.const.ROLE_ID_AUTHOR) &&
 				this.userAssignedRole([
 					pkp.const.ROLE_ID_MANAGER,
-					pkp.const.ROLE_ID_SITE_ADMIN
+					pkp.const.ROLE_ID_SITE_ADMIN,
 				]) &&
 				this.item.status === pkp.const.STATUS_DECLINED
 			) {
@@ -301,7 +301,7 @@ export default {
 			return this.userAssignedRole([
 				pkp.const.ROLE_ID_SITE_ADMIN,
 				pkp.const.ROLE_ID_MANAGER,
-				pkp.const.ROLE_ID_SUB_EDITOR
+				pkp.const.ROLE_ID_SUB_EDITOR,
 			]);
 		},
 
@@ -325,7 +325,7 @@ export default {
 		 * @return {Array}
 		 */
 		activeStage() {
-			return this.item.stages.find(stage => {
+			return this.item.stages.find((stage) => {
 				return stage.isActiveStage === true;
 			});
 		},
@@ -355,7 +355,7 @@ export default {
 			if (
 				this.userAssignedRole([
 					pkp.const.ROLE_ID_MANAGER,
-					pkp.const.ROLE_ID_SUB_EDITOR
+					pkp.const.ROLE_ID_SUB_EDITOR,
 				])
 			) {
 				if (this.isReviewStage) {
@@ -463,7 +463,7 @@ export default {
 		 */
 		currentStageDescription() {
 			return this.__('submission.list.currentStage', {
-				stage: this.currentStageLabel
+				stage: this.currentStageLabel,
 			});
 		},
 
@@ -563,8 +563,8 @@ export default {
 		 */
 		currentRoleAssignments() {
 			let roles = [];
-			this.item.stages.forEach(stage => {
-				stage.currentUserAssignedRoles.forEach(role => {
+			this.item.stages.forEach((stage) => {
+				stage.currentUserAssignedRoles.forEach((role) => {
 					if (roles.indexOf(role) === -1) {
 						roles.push(role);
 					}
@@ -585,14 +585,14 @@ export default {
 				!this.userAssignedRole([
 					pkp.const.ROLE_ID_MANAGER,
 					pkp.const.ROLE_ID_SUB_EDITOR,
-					pkp.const.ROLE_ID_ASSISTANT
+					pkp.const.ROLE_ID_ASSISTANT,
 				])
 			) {
 				return '';
 			}
 			return this.__('submission.list.dualWorkflowLinks', {
 				urlAuthorWorkflow: this.item.urlAuthorWorkflow,
-				urlEditorialWorkflow: this.item.urlEditorialWorkflow
+				urlEditorialWorkflow: this.item.urlEditorialWorkflow,
 			});
 		},
 
@@ -608,13 +608,13 @@ export default {
 				!this.userAssignedRole([
 					pkp.const.ROLE_ID_MANAGER,
 					pkp.const.ROLE_ID_SUB_EDITOR,
-					pkp.const.ROLE_ID_ASSISTANT
+					pkp.const.ROLE_ID_ASSISTANT,
 				])
 			) {
 				return '';
 			}
 			return this.__('submission.list.reviewerWorkflowLink', {
-				urlEditorialWorkflow: this.item.urlEditorialWorkflow
+				urlEditorialWorkflow: this.item.urlEditorialWorkflow,
 			});
 		},
 
@@ -630,10 +630,9 @@ export default {
 			) {
 				return [];
 			}
-			var currentReviewRoundId = this.item.reviewRounds[
-				this.item.reviewRounds.length - 1
-			].id;
-			return this.item.reviewAssignments.filter(assignment => {
+			var currentReviewRoundId =
+				this.item.reviewRounds[this.item.reviewRounds.length - 1].id;
+			return this.item.reviewAssignments.filter((assignment) => {
 				return assignment.roundId === currentReviewRoundId;
 			});
 		},
@@ -650,7 +649,7 @@ export default {
 				return false;
 			}
 
-			var assignments = this.item.reviewAssignments.filter(assignment => {
+			var assignments = this.item.reviewAssignments.filter((assignment) => {
 				return assignment.isCurrentUserAssigned === true;
 			});
 
@@ -694,10 +693,10 @@ export default {
 			if (!this.isReviewStage) {
 				return 0;
 			}
-			return this.currentReviewAssignments.filter(review => {
+			return this.currentReviewAssignments.filter((review) => {
 				return review.statusId >= pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED;
 			}).length;
-		}
+		},
 	},
 	methods: {
 		/**
@@ -706,16 +705,16 @@ export default {
 		 *
 		 * @param {Number|Array} roles
 		 */
-		userAssignedRole: function(roles) {
+		userAssignedRole: function (roles) {
 			if (!Array.isArray(roles)) {
 				roles = [roles];
 			}
 			if (this.currentRoleAssignments.length) {
-				return roles.some(role => {
+				return roles.some((role) => {
 					return this.currentRoleAssignments.includes(role);
 				});
 			} else {
-				var managerRoles = roles.filter(role => {
+				var managerRoles = roles.filter((role) => {
 					return (
 						role === pkp.const.ROLE_ID_SITE_ADMIN ||
 						role === pkp.const.ROLE_ID_MANAGER
@@ -733,7 +732,7 @@ export default {
 		 *
 		 * @param {Number} stageId
 		 */
-		filterByStage: function(stageId) {
+		filterByStage: function (stageId) {
 			this.$emit('addFilter', 'stageIds', stageId);
 		},
 
@@ -747,7 +746,7 @@ export default {
 					this.currentPublication.locale
 				),
 				url: this.infoUrl.replace('__id__', this.item.id),
-				closeCallback: this.resetFocusInfoCenter
+				closeCallback: this.resetFocusInfoCenter,
 			};
 
 			$(
@@ -775,7 +774,7 @@ export default {
 				url: this.assignParticipantUrl
 					.replace('__id__', this.item.id)
 					.replace('__stageId__', this.activeStage.id),
-				closeCallback: this.resetFocusAssignParticipant
+				closeCallback: this.resetFocusAssignParticipant,
 			};
 
 			$(
@@ -808,14 +807,14 @@ export default {
 					{
 						label: this.__('common.yes'),
 						isPrimary: true,
-						callback: this.deleteSubmission
+						callback: this.deleteSubmission,
 					},
 					{
 						label: this.__('common.no'),
 						isWarnable: true,
-						callback: () => this.$modal.hide('deleteSubmission')
-					}
-				]
+						callback: () => this.$modal.hide('deleteSubmission'),
+					},
+				],
 			});
 		},
 
@@ -829,7 +828,7 @@ export default {
 				type: 'POST',
 				headers: {
 					'X-Csrf-Token': pkp.currentUser.csrfToken,
-					'X-Http-Method-Override': 'DELETE'
+					'X-Http-Method-Override': 'DELETE',
 				},
 				error: this.ajaxErrorCallback,
 				success() {
@@ -837,7 +836,7 @@ export default {
 				},
 				complete() {
 					self.$modal.hide('deleteSubmission');
-				}
+				},
 			});
 		},
 
@@ -853,15 +852,15 @@ export default {
 			}
 
 			var hasRole = false;
-			roles.forEach(role => {
+			roles.forEach((role) => {
 				if (pkp.currentUser.roles.indexOf(role) > -1) {
 					hasRole = true;
 				}
 			});
 
 			return hasRole;
-		}
-	}
+		},
+	},
 };
 </script>
 

@@ -17,14 +17,14 @@ export default {
 	props: {
 		isOneLine: {
 			type: Boolean,
-			default: true
-		}
+			default: true,
+		},
 	},
 	computed: {
 		hasActions() {
 			return this.$slots.actions;
-		}
-	}
+		},
+	},
 };
 </script>
 

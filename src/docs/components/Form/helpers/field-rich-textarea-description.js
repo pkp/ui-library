@@ -5,5 +5,5 @@ export default {
 	value: '',
 	plugins: 'paste,link,lists,image,code',
 	toolbar:
-		'bold italic superscript subscript | link | blockquote bullist numlist | image | code'
+		'bold italic superscript subscript | link | blockquote bullist numlist | image | code',
 };

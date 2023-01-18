@@ -9,7 +9,7 @@ import LineChart from '@/components/Chart/LineChart.vue';
 
 export default {
 	components: {
-		LineChart
+		LineChart,
 	},
 	data() {
 		return {
@@ -26,17 +26,17 @@ export default {
 					'September',
 					'October',
 					'November',
-					'December'
+					'December',
 				],
 				datasets: [
 					{
 						label: 'Total Views',
-						data: [40, 20, 12, 39, -10, 40, 39, 80, 40, 20, 12, 11]
-					}
-				]
+						data: [40, 20, 12, 39, -10, 40, 39, 80, 40, 20, 12, 11],
+					},
+				],
 			},
-			chartOptions: {}
+			chartOptions: {},
 		};
-	}
+	},
 };
 </script>

@@ -13,8 +13,8 @@ export default {
 	options: [
 		{
 			value: true,
-			label: 'Yes, I agree to the copyright statement.'
-		}
+			label: 'Yes, I agree to the copyright statement.',
+		},
 	],
-	groupId: 'default'
+	groupId: 'default',
 };

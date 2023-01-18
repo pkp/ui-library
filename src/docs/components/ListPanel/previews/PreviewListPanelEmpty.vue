@@ -7,7 +7,7 @@ import ListPanel from '@/components/ListPanel/ListPanel.vue';
 
 export default {
 	components: {
-		ListPanel
-	}
+		ListPanel,
+	},
 };
 </script>

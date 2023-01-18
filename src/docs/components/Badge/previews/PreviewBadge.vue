@@ -1,20 +1,10 @@
 <template>
 	<div class="previewBadge">
-		<badge label="32 submissions">
-			32
-		</badge>
-		<badge label="4 assigned submissions" :isPrimary="true">
-			4
-		</badge>
-		<badge :isSuccess="true">
-			Published
-		</badge>
-		<badge label="7 new messages" :isWarnable="true">
-			7
-		</badge>
-		<badge label="Participant assigned as author" :hasDot="true">
-			Author
-		</badge>
+		<badge label="32 submissions">32</badge>
+		<badge label="4 assigned submissions" :isPrimary="true">4</badge>
+		<badge :isSuccess="true">Published</badge>
+		<badge label="7 new messages" :isWarnable="true">7</badge>
+		<badge label="Participant assigned as author" :hasDot="true">Author</badge>
 		<badge
 			label="Currently in the submission stage"
 			stage="submission"

@@ -16,14 +16,14 @@ export default {
 	props: {
 		topic: {
 			type: String,
-			required: true
+			required: true,
 		},
 		section: String,
 		label: {
 			type: String,
-			required: true
-		}
-	}
+			required: true,
+		},
+	},
 };
 </script>
 

@@ -8,8 +8,8 @@ export default {
 	name: 'AdminPage',
 	components: {
 		ActionPanel,
-		ThemeForm
-	}
+		ThemeForm,
+	},
 };
 </script>
 

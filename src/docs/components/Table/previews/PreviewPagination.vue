@@ -22,29 +22,29 @@ import articleStats from '../helpers/articleStats.js';
 export default {
 	extends: PreviewTable,
 	components: {
-		Pagination
+		Pagination,
 	},
 	data() {
 		return {
 			currentPage: 1,
 			isLoading: false,
 			perPage: 10,
-			rows: [...articleStats]
+			rows: [...articleStats],
 		};
 	},
 	computed: {
-		lastPage: function() {
+		lastPage: function () {
 			return Math.floor(this.rows.length / this.perPage);
 		},
-		currentRows: function() {
+		currentRows: function () {
 			const start = this.currentPage * this.perPage - this.perPage;
 			return this.rows.slice(start, start + this.perPage);
-		}
+		},
 	},
 	methods: {
-		setPage: function(page) {
+		setPage: function (page) {
 			this.currentPage = page;
-		}
-	}
+		},
+	},
 };
 </script>

@@ -69,12 +69,12 @@ export default {
 	components: {
 		ButtonRow,
 		FormErrors,
-		FormGroup
+		FormGroup,
 	},
 	data() {
 		return {
 			hasRecentSave: false,
-			recentSaveInterval: null
+			recentSaveInterval: null,
 		};
 	},
 	props: {
@@ -95,9 +95,9 @@ export default {
 			type: Boolean,
 			default() {
 				return true;
-			}
+			},
 		},
-		isSaving: Boolean
+		isSaving: Boolean,
 	},
 	computed: {
 		/**
@@ -107,7 +107,7 @@ export default {
 		 */
 		groupsInPage() {
 			return this.groups.filter(
-				group => group.pageId === this.id && this.shouldShowGroup(group)
+				(group) => group.pageId === this.id && this.shouldShowGroup(group)
 			);
 		},
 
@@ -122,7 +122,7 @@ export default {
 				this.submitButton ||
 				Object.keys(this.errors).length
 			);
-		}
+		},
 	},
 	methods: {
 		/**
@@ -134,7 +134,7 @@ export default {
 		 * @param {String} localeKey Optional locale key for multilingual props
 		 * }}
 		 */
-		fieldChanged: function(name, prop, value, localeKey) {
+		fieldChanged: function (name, prop, value, localeKey) {
 			this.$emit('change', name, prop, value, localeKey);
 		},
 
@@ -157,7 +157,7 @@ export default {
 		 *
 		 * @param {String} fieldName
 		 */
-		showField: function(fieldName) {
+		showField: function (fieldName) {
 			this.$emit('showField', fieldName);
 		},
 
@@ -166,7 +166,7 @@ export default {
 		 *
 		 * @param {String} localeKey
 		 */
-		showLocale: function(localeKey) {
+		showLocale: function (localeKey) {
 			this.$emit('showLocale', localeKey);
 		},
 
@@ -176,13 +176,15 @@ export default {
 		 * @param {Object} group One of this.groups
 		 * @return {Boolean}
 		 */
-		shouldShowGroup: function(group) {
+		shouldShowGroup: function (group) {
 			if (typeof group.showWhen === 'undefined') {
 				return true;
 			}
 			const whenFieldName =
 				typeof group.showWhen === 'string' ? group.showWhen : group.showWhen[0];
-			const whenField = this.fields.find(field => field.name === whenFieldName);
+			const whenField = this.fields.find(
+				(field) => field.name === whenFieldName
+			);
 			if (!whenField) {
 				return false;
 			}
@@ -197,9 +199,9 @@ export default {
 		 *
 		 * @param {Object} errors The new errors object
 		 */
-		setErrors: function(errors) {
+		setErrors: function (errors) {
 			this.$emit('set-errors', errors);
-		}
+		},
 	},
 	mounted() {
 		/**
@@ -216,7 +218,7 @@ export default {
 	},
 	destroyed() {
 		clearInterval(this.recentSaveInterval);
-	}
+	},
 };
 </script>
 

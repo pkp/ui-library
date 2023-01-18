@@ -35,7 +35,7 @@ export default {
 	name: 'Icon',
 	props: {
 		icon: String,
-		inline: Boolean
+		inline: Boolean,
 	},
 	computed: {
 		classes() {
@@ -47,8 +47,8 @@ export default {
 				classes.push('pkpIcon--inline');
 			}
 			return classes;
-		}
-	}
+		},
+	},
 };
 </script>
 

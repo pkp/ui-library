@@ -14,10 +14,10 @@ export default {
 				{
 					component: PreviewProgressBar,
 					name: 'Base',
-					template: this.extractTemplate(PreviewProgressBarTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewProgressBarTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

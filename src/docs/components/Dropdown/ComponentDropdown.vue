@@ -16,15 +16,15 @@ export default {
 				{
 					component: PreviewDropdown,
 					name: 'Base',
-					template: this.extractTemplate(PreviewDropdownTemplate)
+					template: this.extractTemplate(PreviewDropdownTemplate),
 				},
 				{
 					component: PreviewDropdownSections,
 					name: 'With Sections',
-					template: this.extractTemplate(PreviewDropdownSectionsTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewDropdownSectionsTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

@@ -70,60 +70,60 @@ export default {
 	name: 'ListPanel',
 	components: {
 		Notification,
-		PkpHeader
+		PkpHeader,
 	},
 	props: {
 		description: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		emptyLabel: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		expanded: {
 			type: Array,
 			default() {
 				return [];
-			}
+			},
 		},
 		headingLevel: {
 			type: String,
 			default() {
 				return 'h2';
-			}
+			},
 		},
 		isSidebarVisible: {
 			type: Boolean,
 			default() {
 				return false;
-			}
+			},
 		},
 		items: {
 			type: Array,
-			required: true
+			required: true,
 		},
 		title: {
 			type: String,
 			default() {
 				return '';
-			}
-		}
+			},
+		},
 	},
 	computed: {
 		currentEmptyLabel() {
 			return this.emptyLabel ? this.emptyLabel : this.__('common.noItemsFound');
-		}
+		},
 	},
 	watch: {
 		/**
 		 * Adjust focus when sidebar opened or closed
 		 */
-		isSidebarVisible: function(newVal, oldVal) {
+		isSidebarVisible: function (newVal, oldVal) {
 			if (newVal) {
 				this.$nextTick(() => {
 					// move focus into the sidebar when it is made visible
@@ -134,8 +134,8 @@ export default {
 					}
 				});
 			}
-		}
-	}
+		},
+	},
 };
 </script>
 

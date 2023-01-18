@@ -4,44 +4,44 @@ export default {
 	userName: 'exampleuser',
 	fullName: 'Jane Doe',
 	affiliation: {
-		en_US: 'University of Nowhere'
+		en_US: 'University of Nowhere',
 	},
 	groups: [
 		{
 			id: 1,
 			name: {
-				en_US: 'Reviewer'
+				en_US: 'Reviewer',
 			},
 			abbrev: {
-				en_US: 'RV'
+				en_US: 'RV',
 			},
 			roleId: 4096, // reviewer
 			showTitle: true,
 			permitSelfRegistration: true,
-			recommendOnly: true
-		}
+			recommendOnly: true,
+		},
 	],
 	interests: [
 		{
 			id: 123,
-			interest: 'cat'
+			interest: 'cat',
 		},
 		{
 			id: 124,
-			interest: 'dog'
+			interest: 'dog',
 		},
 		{
 			id: 125,
-			interest: 'fish'
+			interest: 'fish',
 		},
 		{
 			id: 126,
-			interest: 'bear'
+			interest: 'bear',
 		},
 		{
 			id: 127,
-			interest: 'alien'
-		}
+			interest: 'alien',
+		},
 	],
 	reviewsActive: 2,
 	reviewsCompleted: 1,
@@ -52,5 +52,5 @@ export default {
 	reviewerRating: 4,
 	orcid: '',
 	disabled: false,
-	biography: {}
+	biography: {},
 };

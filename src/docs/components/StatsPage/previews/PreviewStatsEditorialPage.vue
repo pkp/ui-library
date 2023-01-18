@@ -138,7 +138,7 @@ import debounce from 'debounce';
 
 export default {
 	extends: StatsEditorialPage,
-	data: function() {
+	data: function () {
 		const dateEndMax = new Date(new Date().setDate(new Date().getDate() - 1));
 		const startDate = new Date();
 		startDate.setDate(dateEndMax.getDate() - 30);
@@ -148,23 +148,23 @@ export default {
 				{
 					color: '#d00a0a',
 					count: 4,
-					name: 'Submission'
+					name: 'Submission',
 				},
 				{
 					color: '#e05c14',
 					count: 27,
-					name: 'Review'
+					name: 'Review',
 				},
 				{
 					color: '#006798',
 					count: 8,
-					name: 'Copyediting'
+					name: 'Copyediting',
 				},
 				{
 					color: '#00b28d',
 					count: 4,
-					name: 'Production'
-				}
+					name: 'Production',
+				},
 			],
 			dateStart: '2019-04-01',
 			dateEnd: '2019-05-01',
@@ -173,18 +173,18 @@ export default {
 				{
 					dateStart: '2019-01-31',
 					dateEnd: '2019-05-01',
-					label: 'Last 90 days'
+					label: 'Last 90 days',
 				},
 				{
 					dateStart: '2018-01-12',
 					dateEnd: '2018-12-31',
-					label: 'Last year'
+					label: 'Last year',
 				},
 				{
 					dateStart: '2017-01-12',
 					dateEnd: '2018-12-31',
-					label: 'Last two years'
-				}
+					label: 'Last two years',
+				},
 			],
 			filters: [
 				{
@@ -196,128 +196,128 @@ export default {
 						{
 							title: 'Epäjärjestelmällistyttämättömyydelläänsäkäänköhän',
 							param: 'sectionIds',
-							value: 4
-						}
-					]
-				}
+							value: 4,
+						},
+					],
+				},
 			],
 			itemsOfTotalLabel: '{$count} of {$total} articles',
 			percentageStats: [
 				'acceptanceRate',
 				'declineRate',
 				'declinedDeskRate',
-				'declinedReviewRate'
+				'declinedReviewRate',
 			],
 			tableColumns: [
 				{
 					name: 'name',
 					label: 'Name',
-					value: 'name'
+					value: 'name',
 				},
 				{
 					name: 'dateRange',
 					label: '2019-10-10 — 2019-12-10',
-					value: 'dateRange'
+					value: 'dateRange',
 				},
 				{
 					name: 'total',
 					label: 'Total',
-					value: 'total'
-				}
+					value: 'total',
+				},
 			],
 			tableRows: [
 				{
 					key: 'submissionsReceived',
 					name: 'Submissions Received',
 					dateRange: 12,
-					total: 164
+					total: 164,
 				},
 				{
 					key: 'submissionsAccepted',
 					name: 'Submissions Accepted',
 					dateRange: 3,
-					total: 75
+					total: 75,
 				},
 				{
 					key: 'submissionsDeclined',
 					name: 'Submissions Declined',
 					dateRange: 4,
-					total: 79
+					total: 79,
 				},
 				{
 					key: 'submissionsDeclinedDeskReject',
 					name: 'Submissions Declined (Desk Reject)',
 					dateRange: 3,
-					total: 14
+					total: 14,
 				},
 				{
 					key: 'submissionsDeclinedPostReview',
 					name: 'Submissions Declined (After Review)',
 					dateRange: 1,
-					total: 65
+					total: 65,
 				},
 				{
 					key: 'submissionsPublished',
 					name: 'Submissions Published',
 					dateRange: 0,
-					total: 66
+					total: 66,
 				},
 				{
 					key: 'daysToDecision',
 					name: 'Days to First Editorial Decision',
 					dateRange: 29,
-					total: 14
+					total: 14,
 				},
 				{
 					key: 'daysToAccept',
 					name: 'Days to Accept',
 					dateRange: 82,
-					total: 63
+					total: 63,
 				},
 				{
 					key: 'daysToReject',
 					name: 'Days to Reject',
 					dateRange: 87,
-					total: 92
+					total: 92,
 				},
 				{
 					key: 'acceptanceRate',
 					name: 'Acceptance Rate',
 					dateRange: '42%',
-					total: '49%'
+					total: '49%',
 				},
 				{
 					key: 'declineRate',
 					name: 'Rejection Rate',
 					dateRange: '58%',
-					total: '51%'
+					total: '51%',
 				},
 				{
 					key: 'declinedDeskRate',
 					name: 'Desk Reject Rate',
 					dateRange: '72%',
-					total: '9%'
+					total: '9%',
 				},
 				{
 					key: 'declinedReviewRate',
 					name: 'After Review Reject Rate',
 					dateRange: '49%',
-					total: '42%'
-				}
-			]
+					total: '42%',
+				},
+			],
 		};
 	},
 	methods: {
 		/**
 		 * Mock requests to the API
 		 */
-		get: debounce(function() {
+		get: debounce(function () {
 			this.isLoading = true;
 
 			setTimeout(() => {
 				this.isLoading = false;
 			}, 2000);
-		})
-	}
+		}),
+	},
 };
 </script>

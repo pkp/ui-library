@@ -10,12 +10,12 @@ import fileAttachers from '@/docs/data/fileAttachers';
 
 export default {
 	components: {
-		FileAttacher
+		FileAttacher,
 	},
 	data() {
 		return {
-			attachers: [...fileAttachers]
+			attachers: [...fileAttachers],
 		};
-	}
+	},
 };
 </script>

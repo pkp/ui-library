@@ -40,7 +40,7 @@ export default {
 	components: {
 		ListPanel,
 		PkpFilter,
-		PkpHeader
+		PkpHeader,
 	},
 	data() {
 		return {
@@ -49,21 +49,21 @@ export default {
 				{
 					param: 'color',
 					title: 'Red',
-					value: 'red'
+					value: 'red',
 				},
 				{
 					param: 'color',
 					title: 'Green',
-					value: 'green'
+					value: 'green',
 				},
 				{
 					param: 'color',
 					title: 'Blue',
-					value: 'blue'
-				}
+					value: 'blue',
+				},
 			],
 			isSidebarVisible: false,
-			items: [...items]
+			items: [...items],
 		};
 	},
 	methods: {
@@ -80,7 +80,7 @@ export default {
 			delete activeFilters[param];
 			this.activeFilters = activeFilters;
 		},
-		isFilterActive: function(param, value) {
+		isFilterActive: function (param, value) {
 			if (!Object.keys(this.activeFilters).includes(param)) {
 				return false;
 			}
@@ -88,7 +88,7 @@ export default {
 				return this.activeFilters[param].includes(value);
 			}
 			return this.activeFilters[param] === value;
-		}
-	}
+		},
+	},
 };
 </script>

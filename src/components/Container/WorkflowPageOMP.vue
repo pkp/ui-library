@@ -9,7 +9,7 @@ export default {
 			chaptersGridUrl: '',
 			editedVolumeLabel: '',
 			isLoadingWorkType: false,
-			monographLabel: ''
+			monographLabel: '',
 		};
 	},
 	computed: {
@@ -23,7 +23,7 @@ export default {
 				return this.editedVolumeLabel;
 			}
 			return this.monographLabel;
-		}
+		},
 	},
 	methods: {
 		/**
@@ -43,7 +43,7 @@ export default {
 			if (!$.pkp.classes.Handler.hasHandler($chaptersEl)) {
 				$chaptersEl.pkpHandler('$.pkp.controllers.UrlInDivHandler', {
 					sourceUrl: sourceUrl,
-					refreshOn: 'form-success'
+					refreshOn: 'form-success',
 				});
 			} else {
 				const chaptersHandler = $.pkp.classes.Handler.getHandler($chaptersEl);
@@ -78,11 +78,11 @@ export default {
 				url: this.submissionApiUrl,
 				type: 'POST',
 				data: {
-					workType: workType
+					workType: workType,
 				},
 				headers: {
 					'X-Csrf-Token': pkp.currentUser.csrfToken,
-					'X-Http-Method-Override': 'PUT'
+					'X-Http-Method-Override': 'PUT',
 				},
 				error(r) {
 					self.isLoadingWorkType = false;
@@ -92,9 +92,9 @@ export default {
 					self.submission = {};
 					self.submission = submission;
 					self.isLoadingWorkType = false;
-				}
+				},
 			});
-		}
+		},
 	},
 	watch: {
 		workingPublication(newVal, oldVal) {
@@ -102,11 +102,11 @@ export default {
 				return;
 			}
 			this.loadChaptersGrid(newVal);
-		}
+		},
 	},
 	mounted() {
 		this.loadChaptersGrid(this.workingPublication);
-	}
+	},
 };
 </script>
 

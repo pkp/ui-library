@@ -11,15 +11,15 @@ import fieldArchivingPn from '../../../helpers/field-archiving-pn';
 export default {
 	extends: PreviewFieldBase,
 	components: {
-		FieldArchivingPn
+		FieldArchivingPn,
 	},
 	data() {
 		return {
 			field: {
 				...fieldBase,
-				...fieldArchivingPn
-			}
+				...fieldArchivingPn,
+			},
 		};
-	}
+	},
 };
 </script>

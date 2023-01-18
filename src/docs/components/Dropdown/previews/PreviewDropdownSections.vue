@@ -23,14 +23,10 @@
 					</a>
 				</li>
 				<li>
-					<a href="#" class="pkpDropdown__action">
-						Français (Canada)
-					</a>
+					<a href="#" class="pkpDropdown__action">Français (Canada)</a>
 				</li>
 				<li>
-					<a href="#" class="pkpDropdown__action">
-						العربية
-					</a>
+					<a href="#" class="pkpDropdown__action">العربية</a>
 				</li>
 			</ul>
 		</div>
@@ -42,7 +38,7 @@ import Dropdown from '@/components/Dropdown/Dropdown.vue';
 
 export default {
 	components: {
-		Dropdown
-	}
+		Dropdown,
+	},
 };
 </script>

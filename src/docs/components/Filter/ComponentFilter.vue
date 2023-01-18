@@ -20,25 +20,25 @@ export default {
 				{
 					component: PreviewFilter,
 					name: 'Base',
-					template: this.extractTemplate(PreviewFilterTemplate)
+					template: this.extractTemplate(PreviewFilterTemplate),
 				},
 				{
 					component: PreviewFilterSlider,
 					name: 'Slider',
-					template: this.extractTemplate(PreviewFilterSliderTemplate)
+					template: this.extractTemplate(PreviewFilterSliderTemplate),
 				},
 				{
 					component: PreviewFilterSliderMultirange,
 					name: 'Slider (Multirange)',
-					template: this.extractTemplate(PreviewFilterSliderMultirangeTemplate)
+					template: this.extractTemplate(PreviewFilterSliderMultirangeTemplate),
 				},
 				{
 					component: PreviewFilterAutosuggest,
 					name: 'Autosuggest',
-					template: this.extractTemplate(PreviewFilterAutosuggestTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewFilterAutosuggestTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

@@ -14,10 +14,10 @@ export default {
 				{
 					component: PreviewSteps,
 					name: 'Base',
-					template: this.extractTemplate(PreviewStepsTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewStepsTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

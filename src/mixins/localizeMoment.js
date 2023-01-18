@@ -17,10 +17,10 @@ export default {
 			const map = {
 				'sr_RS@latin': 'sr',
 				'sr_RS@cyrillic': 'sr-cyrl',
-				'uz_UZ@latin': 'uz-latn'
+				'uz_UZ@latin': 'uz-latn',
 			};
 
 			return map[locale] ?? locale;
-		}
-	}
+		},
+	},
 };

@@ -11,7 +11,7 @@ import FieldBaseAutosuggest from '../../../helpers/field-autosuggest';
 export default {
 	extends: PreviewFieldBase,
 	components: {
-		FieldAutosuggestPreset
+		FieldAutosuggestPreset,
 	},
 	data() {
 		return {
@@ -22,42 +22,42 @@ export default {
 				options: [
 					{
 						value: 1,
-						label: 'Articles'
+						label: 'Articles',
 					},
 					{
 						value: 2,
-						label: 'Editorials'
+						label: 'Editorials',
 					},
 					{
 						value: 3,
-						label: 'Reviews'
+						label: 'Reviews',
 					},
 					{
 						value: 4,
-						label: 'Field Notes'
+						label: 'Field Notes',
 					},
 					{
 						value: 5,
-						label: 'Roundtables'
+						label: 'Roundtables',
 					},
 					{
 						value: 6,
-						label: 'Research Reviews'
+						label: 'Research Reviews',
 					},
 					{
 						value: 7,
-						label: 'Conference Proceedings'
-					}
+						label: 'Conference Proceedings',
+					},
 				],
 				value: [1],
 				selected: [
 					{
 						value: 1,
-						label: 'Articles'
-					}
-				]
-			}
+						label: 'Articles',
+					},
+				],
+			},
 		};
-	}
+	},
 };
 </script>

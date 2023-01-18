@@ -10,17 +10,17 @@ import Search from '@/components/Search/Search.vue';
 
 export default {
 	components: {
-		Search
+		Search,
 	},
 	data() {
 		return {
-			searchPhrase: ''
+			searchPhrase: '',
 		};
 	},
 	methods: {
 		setSearchPhrase(newVal) {
 			this.searchPhrase = newVal;
-		}
-	}
+		},
+	},
 };
 </script>

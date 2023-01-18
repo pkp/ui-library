@@ -2,9 +2,7 @@
 	<div id="app">
 		<nav class="nav" aria-label="Primary Navigation">
 			<nav-group>
-				<template slot="heading">
-					Guide
-				</template>
+				<template slot="heading">Guide</template>
 				<li>
 					<router-link to="/" class="router-link-home">
 						Introduction
@@ -19,18 +17,12 @@
 				</li>
 			</nav-group>
 			<nav-group>
-				<template slot="heading">
-					Pages
-				</template>
+				<template slot="heading">Pages</template>
 				<li>
-					<router-link to="/component/Page">
-						Page
-					</router-link>
+					<router-link to="/component/Page">Page</router-link>
 				</li>
 				<li>
-					<router-link to="/component/DecisionPage">
-						DecisionPage
-					</router-link>
+					<router-link to="/component/DecisionPage">DecisionPage</router-link>
 				</li>
 				<li>
 					<router-link to="/component/ManageEmailsPage">
@@ -43,20 +35,14 @@
 					</router-link>
 				</li>
 				<li>
-					<router-link to="/component/StatsPage">
-						StatsPage
-					</router-link>
+					<router-link to="/component/StatsPage">StatsPage</router-link>
 				</li>
 				<li>
-					<router-link to="/component/WorkflowPage">
-						WorkflowPage
-					</router-link>
+					<router-link to="/component/WorkflowPage">WorkflowPage</router-link>
 				</li>
 			</nav-group>
 			<nav-group>
-				<template slot="heading">
-					Utilities
-				</template>
+				<template slot="heading">Utilities</template>
 				<li><router-link to="/pages/container">Container</router-link></li>
 				<li><router-link to="/pages/csrf">CSRF Token</router-link></li>
 				<li><router-link to="/utilities/Dialog">Dialog</router-link></li>
@@ -68,9 +54,7 @@
 				<li><router-link to="/utilities/Notify">Notify</router-link></li>
 			</nav-group>
 			<nav-group>
-				<template slot="heading">
-					Components
-				</template>
+				<template slot="heading">Components</template>
 				<li>
 					<router-link to="/component/ActionPanel">ActionPanel</router-link>
 				</li>
@@ -86,9 +70,7 @@
 					<router-link to="/component/FileAttacher">FileAttacher</router-link>
 				</li>
 				<li>
-					<router-link to="/component/FileUploader">
-						FileUploader
-					</router-link>
+					<router-link to="/component/FileUploader">FileUploader</router-link>
 				</li>
 				<li>
 					<router-link to="/component/FileUploadProgress">
@@ -276,9 +258,7 @@
 				</li>
 
 				<li>
-					<router-link to="/component/Modal">
-						Modal
-					</router-link>
+					<router-link to="/component/Modal">Modal</router-link>
 				</li>
 				<li>
 					<router-link to="/component/MultilingualProgress">
@@ -317,11 +297,11 @@ import NavGroup from './docs/NavGroup.vue';
 
 export default {
 	components: {
-		NavGroup
+		NavGroup,
 	},
 	data() {
 		return {
-			openSubmenus: []
+			openSubmenus: [],
 		};
 	},
 	methods: {
@@ -351,8 +331,8 @@ export default {
 			} else {
 				this.openSubmenus.push(component);
 			}
-		}
-	}
+		},
+	},
 };
 </script>
 
@@ -435,7 +415,7 @@ a {
 	color: #abb2bf;
 	background: #282c34;
 	line-height: 1.5em;
-	font-size: @font-tiny;
+	font-size: @font-sml;
 	-moz-tab-size: 4;
 	-o-tab-size: 4;
 	tab-size: 4;

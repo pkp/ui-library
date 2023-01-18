@@ -20,23 +20,23 @@ export default {
 		{...FieldRadioInput, groupId: 'default'},
 		{...FieldShowEnsuringLink, groupId: 'default'},
 		{...FieldUploadCss, groupId: 'default'},
-		{...FieldUploadImageLogo, groupId: 'default'}
+		{...FieldUploadImageLogo, groupId: 'default'},
 	],
 	groups: [
 		{
 			id: 'default',
-			pageId: 'default'
-		}
+			pageId: 'default',
+		},
 	],
 	supportedFormLocales: [
 		...Form.supportedFormLocales,
 		{
 			key: 'fr_CA',
-			label: 'Français (Canada)'
+			label: 'Français (Canada)',
 		},
 		{
 			key: 'ar_AR',
-			label: 'عربى'
-		}
-	]
+			label: 'عربى',
+		},
+	],
 };

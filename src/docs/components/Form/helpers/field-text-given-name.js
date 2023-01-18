@@ -4,5 +4,5 @@ export default {
 	inputType: 'text',
 	label: 'Given Name',
 	isRequired: true,
-	value: ''
+	value: '',
 };

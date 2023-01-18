@@ -8,7 +8,7 @@
 					{{
 						__('form.errorA11y', {
 							fieldLabel: error.label,
-							errorMessage: error.message
+							errorMessage: error.message,
 						})
 					}}
 				</button>
@@ -25,7 +25,7 @@ export default {
 	name: 'FormErrors',
 	props: {
 		errors: Object,
-		fields: Array
+		fields: Array,
 	},
 	computed: {
 		/**
@@ -38,7 +38,7 @@ export default {
 				return this.__('form.errorOne');
 			} else {
 				return this.__('form.errorMany', {
-					count: Object.keys(this.errors).length
+					count: Object.keys(this.errors).length,
 				});
 			}
 		},
@@ -53,23 +53,22 @@ export default {
 		 * @return {Array}
 		 */
 		errorList() {
-			return Object.keys(this.errors).map(fieldName => {
-				const field = this.fields.find(field => field.name === fieldName);
+			return Object.keys(this.errors).map((fieldName) => {
+				const field = this.fields.find((field) => field.name === fieldName);
 				const label = field ? field.label : fieldName;
 				let errorMessage;
 				if (
 					this.errors[fieldName] !== null &&
 					typeof this.errors[fieldName] === 'object'
 				) {
-					errorMessage = this.errors[fieldName][
-						Object.keys(this.errors[fieldName])[0]
-					];
+					errorMessage =
+						this.errors[fieldName][Object.keys(this.errors[fieldName])[0]];
 				} else {
 					errorMessage = this.errors[fieldName];
 				}
 				return {fieldName: fieldName, label: label, message: errorMessage};
 			});
-		}
+		},
 	},
 	methods: {
 		/**
@@ -84,14 +83,14 @@ export default {
 		 *
 		 * @param {String} fieldName
 		 */
-		showError: function(fieldName) {
+		showError: function (fieldName) {
 			const error = this.errors[fieldName];
 			if (error && typeof error === 'object' && error.constructor === Object) {
 				this.$emit('showLocale', Object.keys(error)[0]);
 			}
 			this.$emit('showField', fieldName);
-		}
-	}
+		},
+	},
 };
 </script>
 

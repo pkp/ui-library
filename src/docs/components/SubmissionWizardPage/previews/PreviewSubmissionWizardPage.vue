@@ -10,9 +10,7 @@
 			</div>
 			<h1 class="app__pageHeading" ref="pageTitle">
 				Make Submission
-				<pkp-button>
-					Save for Later
-				</pkp-button>
+				<pkp-button>Save for Later</pkp-button>
 			</h1>
 			<div class="submissionWizard__submissionConfiguration">
 				Submitting to the
@@ -20,7 +18,7 @@
 				section in
 				<strong>English</strong>
 				.
-				<button class="-linkButton" @click="openSubmissionConfiguration">
+				<button class="-linkButton" @click="$modal.show('config')">
 					Change
 				</button>
 				<modal
@@ -101,7 +99,7 @@
 							<template v-else-if="section.type === 'review'">
 								<div
 									v-for="reviewStep in steps.filter(
-										iStep => iStep.id !== step.id
+										(iStep) => iStep.id !== step.id
 									)"
 									:key="reviewStep.id"
 									class="submissionWizard__reviewPanel"
@@ -185,7 +183,7 @@
 														class="submissionWizard__reviewPanel__list__actions"
 													>
 														<badge
-															v-if="isContributorCurrentUser(author.id)"
+															v-if="publication.primaryContactId === author.id"
 															:is-primary="true"
 														>
 															Submitting Author
@@ -273,9 +271,7 @@
 													<template v-if="submission.commentsForEditor">
 														{{ submission.commentsForEditor }}
 													</template>
-													<template v-else>
-														No comments.
-													</template>
+													<template v-else>No comments.</template>
 												</div>
 											</div>
 										</template>
@@ -314,12 +310,8 @@
 			<span v-else-if="lastSavedTimestamp" class="submissionWizard__lastSaved">
 				Last saved {{ lastSavedTimestamp }}
 			</span>
-			<pkp-button>
-				Save for Later
-			</pkp-button>
-			<pkp-button :isPrimary="true" @click="nextStep">
-				Continue
-			</pkp-button>
+			<pkp-button>Save for Later</pkp-button>
+			<pkp-button :isPrimary="true" @click="nextStep">Continue</pkp-button>
 		</button-row>
 
 		<div
@@ -374,17 +366,17 @@ export default {
 		ContributorsListPanel,
 		File,
 		PkpForm,
-		SubmissionFilesListPanel
+		SubmissionFilesListPanel,
 	},
 	data() {
 		// Set up the form for the details step
 		let detailsForm = {...titleAbstractForm};
 		detailsForm.fields = detailsForm.fields.filter(
-			field => !['prefix', 'subtitle'].includes(field.name)
+			(field) => !['prefix', 'subtitle'].includes(field.name)
 		);
 
 		// Remove save buttons from forms
-		[detailsForm, confirmForm, forTheEditorsForm].forEach(form => {
+		[detailsForm, confirmForm, forTheEditorsForm].forEach((form) => {
 			delete form.pages[0].submitButton;
 		});
 
@@ -395,8 +387,8 @@ export default {
 					form: {...submissionFileForm},
 					genres: [...genres],
 					items: [...submissionFiles],
-					options: {...dropzoneOptions}
-				}
+					options: {...dropzoneOptions},
+				},
 			},
 			publication: {...submission.publications[0]},
 			submission: {...submission},
@@ -414,9 +406,9 @@ export default {
 									submission. In addition to the main work, you may wish to
 									submit data sets, conflict of interest statements, or other
 									supplementary files if these will be helpful for our editors.
-								</p>`
-						}
-					]
+								</p>`,
+						},
+					],
 				},
 				{
 					id: 'contributors-step',
@@ -437,9 +429,9 @@ export default {
 									institution or an anonymous contributor, please do not enter a
 									fake email here. You can add this information in a message to
 									the editor at a later step in the submissio process.
-								</p>`
-						}
-					]
+								</p>`,
+						},
+					],
 				},
 				{
 					id: 'details-step',
@@ -452,7 +444,7 @@ export default {
 							description: `<p>
 									Please provide the following details to help us manage your submission in our system.
 								</p>`,
-							form: {...detailsForm}
+							form: {...detailsForm},
 						},
 						{
 							id: 'relations',
@@ -465,10 +457,10 @@ export default {
 								...detailsForm,
 								id: 'relations',
 								action: '/example/submissions/1',
-								fields: [...detailsForm.fields.slice(0, 1)]
-							}
-						}
-					]
+								fields: [...detailsForm.fields.slice(0, 1)],
+							},
+						},
+					],
 				},
 				{
 					id: 'editors-step',
@@ -484,9 +476,9 @@ export default {
 								<p>
 									When entering metdata such as keywords, provide entries that you think would be most helpful to the person managing your submission. If your submission is accepted, this information can be changed before publication.
 								</p>`,
-							form: {...forTheEditorsForm}
-						}
-					]
+							form: {...forTheEditorsForm},
+						},
+					],
 				},
 				{
 					id: 'review-step',
@@ -505,20 +497,20 @@ export default {
 									Once you complete your submission, a member of our editorial
 									team will be assigned to review it. Please ensure the details
 									you have entered here are as accurate as possible.
-								</p>`
+								</p>`,
 						},
 						{
 							id: 'confirm',
 							type: 'form',
 							name: 'Confirmation',
 							description: `<p>Please confirm the following before you submit.</p>`,
-							form: {...confirmForm}
-						}
-					]
-				}
-			]
+							form: {...confirmForm},
+						},
+					],
+				},
+			],
 		};
-	}
+	},
 };
 </script>
 

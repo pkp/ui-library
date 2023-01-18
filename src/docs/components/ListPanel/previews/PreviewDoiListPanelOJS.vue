@@ -33,8 +33,8 @@ export default {
 				errorMessageKey: 'crossref_failedMsg',
 				registeredMessageKey: null,
 				errorMessagePreamble: 'Info about error message here',
-				registeredMessagePreamble: null
-			}
+				registeredMessagePreamble: null,
+			},
 		};
 	},
 	created() {
@@ -80,7 +80,7 @@ export default {
 			'manager.dois.status.registered';
 		pkp.localeKeys['manager.dois.status.error'] = 'manager.dois.status.error';
 		pkp.localeKeys['manager.dois.status.stale'] = 'manager.dois.status.stale';
-	}
+	},
 };
 </script>
 

@@ -4,5 +4,5 @@ export default {
 	inputType: 'tel',
 	label: 'Phone',
 	groupId: 'contact',
-	value: ''
+	value: '',
 };

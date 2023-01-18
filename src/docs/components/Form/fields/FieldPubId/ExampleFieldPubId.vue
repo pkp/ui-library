@@ -6,13 +6,13 @@ import config from './config';
 export default {
 	extends: ExampleFieldBase,
 	components: {
-		FieldPubId
+		FieldPubId,
 	},
 	data() {
 		return {
 			...config,
-			component: 'field-pub-id'
+			component: 'field-pub-id',
 		};
-	}
+	},
 };
 </script>

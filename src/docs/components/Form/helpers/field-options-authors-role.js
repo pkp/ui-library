@@ -8,6 +8,6 @@ export default {
 	groupId: 'default',
 	options: [
 		{value: 14, label: 'Author'},
-		{value: 15, label: 'Translator'}
-	]
+		{value: 15, label: 'Translator'},
+	],
 };

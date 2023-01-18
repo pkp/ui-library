@@ -7,7 +7,7 @@
 			:key="locale.key"
 			:label="locale.label"
 			:class="{
-				'pkpFormLocales__locale--isActive': visible.includes(locale.key)
+				'pkpFormLocales__locale--isActive': visible.includes(locale.key),
 			}"
 			@click.prevent="toggleLocale(locale.key)"
 		>
@@ -25,16 +25,16 @@ export default {
 	props: {
 		locales: {
 			type: Array,
-			required: true
+			required: true,
 		},
 		visible: {
 			type: Array,
-			required: true
+			required: true,
 		},
 		primaryLocaleKey: {
 			type: String,
-			required: true
-		}
+			required: true,
+		},
 	},
 	computed: {
 		/**
@@ -43,7 +43,9 @@ export default {
 		 * @return {Object}
 		 */
 		primaryLocale() {
-			return this.locales.find(locale => locale.key === this.primaryLocaleKey);
+			return this.locales.find(
+				(locale) => locale.key === this.primaryLocaleKey
+			);
 		},
 
 		/**
@@ -53,9 +55,9 @@ export default {
 		 */
 		additionalLocales() {
 			return this.locales.filter(
-				locale => locale.key !== this.primaryLocaleKey
+				(locale) => locale.key !== this.primaryLocaleKey
 			);
-		}
+		},
 	},
 	methods: {
 		/**
@@ -68,7 +70,7 @@ export default {
 		 *
 		 * @param {String} localeKey "en_US"
 		 */
-		toggleLocale: function(localeKey) {
+		toggleLocale: function (localeKey) {
 			let selected = [this.primaryLocaleKey];
 			if (!this.visible.includes(localeKey)) {
 				selected.push(localeKey);
@@ -81,10 +83,10 @@ export default {
 		 *
 		 * @param {Array} selected Locales which should be visible
 		 */
-		updateLocales: function(selected) {
+		updateLocales: function (selected) {
 			this.$emit('updateLocales', selected);
-		}
-	}
+		},
+	},
 };
 </script>
 

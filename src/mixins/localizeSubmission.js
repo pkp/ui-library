@@ -15,7 +15,7 @@ export default {
 		 * @param {String} submissionLocale The submission's locale
 		 * @return {String}
 		 */
-		localizeSubmission: function(localizedString, submissionLocale) {
+		localizeSubmission: function (localizedString, submissionLocale) {
 			if (typeof localizedString === 'undefined') {
 				return '';
 			} else if (
@@ -42,6 +42,6 @@ export default {
 			}
 
 			return '';
-		}
-	}
+		},
+	},
 };

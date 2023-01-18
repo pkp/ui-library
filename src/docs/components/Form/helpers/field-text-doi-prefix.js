@@ -4,5 +4,5 @@ export default {
 	inputType: 'text',
 	label: 'DOI Prefix',
 	size: 'small',
-	value: ''
+	value: '',
 };

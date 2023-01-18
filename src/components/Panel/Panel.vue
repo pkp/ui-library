@@ -12,9 +12,9 @@ export default {
 			type: Boolean,
 			default() {
 				return false;
-			}
-		}
-	}
+			},
+		},
+	},
 };
 </script>
 

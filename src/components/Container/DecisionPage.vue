@@ -13,7 +13,7 @@ import localizeSubmission from '@/mixins/localizeSubmission.js';
 const stepTypes = {
 	email: 'email',
 	form: 'form',
-	promoteFiles: 'promoteFiles'
+	promoteFiles: 'promoteFiles',
 };
 
 export default {
@@ -25,7 +25,7 @@ export default {
 		ListPanel,
 		PkpForm,
 		SelectSubmissionFileListItem,
-		Tooltip
+		Tooltip,
 	},
 	data() {
 		return {
@@ -48,17 +48,17 @@ export default {
 			submissionApiUrl: '',
 			submissionListUrl: '',
 			viewAllSubmissionsLabel: '',
-			viewSubmissionLabel: ''
+			viewSubmissionLabel: '',
 		};
 	},
 	computed: {
 		currentStepIndex() {
-			return this.steps.findIndex(step => step.id === this.currentStep.id);
+			return this.steps.findIndex((step) => step.id === this.currentStep.id);
 		},
 		errors() {
 			return this.steps
 				.filter(
-					step =>
+					(step) =>
 						Object.keys(step.errors).length ||
 						// Form steps store errors in the form
 						(step.type === stepTypes.form &&
@@ -66,7 +66,7 @@ export default {
 				)
 				.reduce((errors, step) => {
 					errors[step.id] = this.replaceLocaleParams(this.stepErrorMessage, {
-						stepName: step.name
+						stepName: step.name,
 					});
 					return errors;
 				}, {});
@@ -76,7 +76,7 @@ export default {
 		},
 		isOnLastStep() {
 			return this.currentStepIndex === this.steps.length - 1;
-		}
+		},
 	},
 	methods: {
 		/**
@@ -93,13 +93,13 @@ export default {
 						isWarnable: true,
 						callback: () => {
 							window.location = this.submissionUrl;
-						}
+						},
 					},
 					{
 						label: this.keepWorkingLabel,
-						callback: () => this.$modal.hide('cancel')
-					}
-				]
+						callback: () => this.$modal.hide('cancel'),
+					},
+				],
 			});
 		},
 
@@ -116,14 +116,14 @@ export default {
 					$.param({stageId: this.stageId}),
 				type: 'POST',
 				data: {
-					toFileStage: toFileStage
+					toFileStage: toFileStage,
 				},
 				headers: {
 					'X-Csrf-Token': pkp.currentUser.csrfToken,
-					'X-Http-Method-Override': 'PUT'
+					'X-Http-Method-Override': 'PUT',
 				},
 				error: this.ajaxErrorCallback,
-				complete: callback
+				complete: callback,
 			});
 		},
 
@@ -131,7 +131,7 @@ export default {
 		 * Get the genre of a submission file
 		 */
 		getFileGenre(genreId) {
-			return this.fileGenres.find(genre => genre.id === genreId);
+			return this.fileGenres.find((genre) => genre.id === genreId);
 		},
 
 		/**
@@ -158,17 +158,17 @@ export default {
 					{
 						label: this.viewSubmissionLabel,
 						element: 'a',
-						href: this.submissionUrl
+						href: this.submissionUrl,
 					},
 					{
 						label: this.viewAllSubmissionsLabel,
 						element: 'a',
-						href: this.submissionListUrl
-					}
+						href: this.submissionListUrl,
+					},
 				],
 				close: () => {
 					window.location = this.submissionUrl;
-				}
+				},
 			});
 		},
 
@@ -177,7 +177,7 @@ export default {
 		 */
 		openStep(stepId) {
 			this.startedSteps = [...new Set([...this.startedSteps, stepId])];
-			this.currentStep = this.steps.find(step => step.id === stepId);
+			this.currentStep = this.steps.find((step) => step.id === stepId);
 		},
 
 		/**
@@ -215,17 +215,17 @@ export default {
 		 */
 		toggleSkippedStep(stepId) {
 			if (this.skippedSteps.includes(stepId)) {
-				this.skippedSteps = this.skippedSteps.filter(sid => sid !== stepId);
+				this.skippedSteps = this.skippedSteps.filter((sid) => sid !== stepId);
 			} else {
 				this.skippedSteps.push(stepId);
-				this.steps = this.steps.map(step => {
+				this.steps = this.steps.map((step) => {
 					if (step.id === stepId) {
 						step.errors = {};
 					}
 					return step;
 				});
 				if (
-					this.steps.findIndex(step => step.id === stepId) <
+					this.steps.findIndex((step) => step.id === stepId) <
 					this.steps.length - 1
 				) {
 					this.nextStep();
@@ -240,16 +240,18 @@ export default {
 			this.isSubmitting = true;
 			let self = this;
 			const steps = this.steps.filter(
-				step => !this.skippedSteps.includes(step.id)
+				(step) => !this.skippedSteps.includes(step.id)
 			);
 			const data = {
 				decision: this.decision,
 				actions: steps
-					.filter(step => [stepTypes.form, stepTypes.email].includes(step.type))
-					.map(step => {
+					.filter((step) =>
+						[stepTypes.form, stepTypes.email].includes(step.type)
+					)
+					.map((step) => {
 						let stepData = {id: step.id};
 						if (step.type === stepTypes.form) {
-							step.form.fields.forEach(field => {
+							step.form.fields.forEach((field) => {
 								stepData[field.name] = field.value;
 							});
 							return stepData;
@@ -264,10 +266,10 @@ export default {
 								locale: step.locale,
 								recipients: step.canChangeRecipients ? step.recipients : [],
 								subject: step.subject,
-								body: step.body
+								body: step.body,
 							};
 						}
-					})
+					}),
 			};
 
 			if (this.reviewRoundId) {
@@ -276,13 +278,13 @@ export default {
 
 			const files = steps
 				.filter(
-					step => step.type === stepTypes.promoteFiles && step.selected.length
+					(step) => step.type === stepTypes.promoteFiles && step.selected.length
 				)
 				.reduce((files, step) => {
-					step.selected.forEach(fileId => {
+					step.selected.forEach((fileId) => {
 						files.push({
 							id: fileId,
-							toFileStage: step.to
+							toFileStage: step.to,
 						});
 					});
 					return files;
@@ -293,7 +295,7 @@ export default {
 				type: 'POST',
 				data: data,
 				headers: {
-					'X-Csrf-Token': pkp.currentUser.csrfToken
+					'X-Csrf-Token': pkp.currentUser.csrfToken,
 				},
 				error(r) {
 					if (r.status && r.status === 400) {
@@ -301,8 +303,8 @@ export default {
 						if (r.responseJSON.decision) {
 							self.ajaxErrorCallback({
 								responseJSON: {
-									errorMessage: r.responseJSON.decision[0]
-								}
+									errorMessage: r.responseJSON.decision[0],
+								},
 							});
 							// An action is invalid
 						} else if (r.responseJSON.actions) {
@@ -328,10 +330,10 @@ export default {
 							clearInterval(copyCompleted);
 						}
 					};
-					files.forEach(file =>
+					files.forEach((file) =>
 						self.copyFile(file.id, file.toFileStage, copyCompleted)
 					);
-				}
+				},
 			});
 		},
 
@@ -339,32 +341,32 @@ export default {
 		 * Update the data attached to a step
 		 */
 		updateStep(stepId, data) {
-			this.steps = this.steps.map(step => {
+			this.steps = this.steps.map((step) => {
 				if (step.id !== stepId) {
 					return step;
 				}
 				// Form steps store errors in the form
 				if (step.type === stepTypes.form) {
 					let errors = {...step.form.errors};
-					Object.keys(data).forEach(key => delete errors[key]);
+					Object.keys(data).forEach((key) => delete errors[key]);
 					return {
 						...step,
 						form: {
 							...step.form,
 							...data,
-							errors: errors
-						}
+							errors: errors,
+						},
 					};
 				}
 				let errors = {...step.errors};
-				Object.keys(data).forEach(key => delete errors[key]);
+				Object.keys(data).forEach((key) => delete errors[key]);
 				return {
 					...step,
 					...data,
-					errors: errors
+					errors: errors,
 				};
 			});
-		}
+		},
 	},
 	created() {
 		// Start step 1
@@ -372,7 +374,7 @@ export default {
 			this.openStep(this.steps[0].id);
 
 			// Set up email data for each email step
-			this.steps = this.steps.map(step => {
+			this.steps = this.steps.map((step) => {
 				if (step.type !== stepTypes.email) {
 					return step;
 				}
@@ -383,11 +385,11 @@ export default {
 					body: '',
 					cc: '',
 					bcc: '',
-					recipients: step.recipientOptions.map(to => to.value)
+					recipients: step.recipientOptions.map((to) => to.value),
 				};
 			});
 		}
-	}
+	},
 };
 </script>
 

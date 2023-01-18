@@ -1,6 +1,6 @@
 <template>
 	<div class="pkpFilter--autosuggest" :class="classes">
-		<component :is="component" v-bind="autosuggestProps" @change="toggle" />
+		<component :is="component" v-bind="autosuggest" @change="toggle" />
 	</div>
 </template>
 
@@ -14,17 +14,33 @@ export default {
 	components: {
 		FieldAutosuggestPreset,
 		FieldSelectUsers,
-		FieldSelectIssues
+		FieldSelectIssues,
 	},
 	props: {
 		component: {
 			type: String,
-			required: true
+			required: true,
 		},
 		autosuggestProps: {
 			type: Object,
-			required: true
-		}
+			required: true,
+		},
+	},
+	data() {
+		return {
+			value: null,
+		};
+	},
+	computed: {
+		autosuggest() {
+			if (this.value) {
+				return {
+					...this.autosuggestProps,
+					value: this.value,
+				};
+			}
+			return {...this.autosuggestProps};
+		},
 	},
 	methods: {
 		toggle(fieldName, fieldProp, newVal, localeKey) {
@@ -35,15 +51,16 @@ export default {
 			}
 			// Update the value in the autosuggest field
 			if (this.autosuggestProps.isMultilingual) {
-				this.autosuggestProps[fieldProp][localeKey] = newVal;
+				this.value = {};
+				this.value[localeKey] = newVal;
 			} else {
-				this.autosuggestProps[fieldProp] = newVal;
+				this.value = newVal;
 			}
 		},
 		remove() {
 			this.$emit('remove-filter', this.param);
-		}
-	}
+		},
+	},
 };
 </script>
 

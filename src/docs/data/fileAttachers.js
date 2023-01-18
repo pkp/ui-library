@@ -16,7 +16,7 @@ export default [
 		backLabel: 'Back',
 		dragAndDropMessage: 'Drag and drop files here.',
 		dragAndDropOrUploadMessage: 'Or upload a file',
-		removeItemLabel: 'Remove {$item}'
+		removeItemLabel: 'Remove {$item}',
 	},
 	{
 		component: 'FileAttacherReviewFiles',
@@ -30,22 +30,22 @@ export default [
 			{
 				id: 142,
 				name: {
-					en_US: 'jpk-review-document.docx'
+					en_US: 'jpk-review-document.docx',
 				},
 				documentType: 'word',
 				url: 'http://example.org',
-				reviewerName: 'Adela Gallego'
+				reviewerName: 'Adela Gallego',
 			},
 			{
 				id: 191,
 				name: {
-					en_US: 'review-for-jpk.docx'
+					en_US: 'review-for-jpk.docx',
 				},
 				documentType: 'word',
 				url: 'http://example.org',
-				reviewerName: 'Aisla McCrae'
-			}
-		]
+				reviewerName: 'Aisla McCrae',
+			},
+		],
 	},
 	{
 		component: 'FileAttacherFileStage',
@@ -62,17 +62,17 @@ export default [
 				label: 'Revisions',
 				queryParams: {
 					fileStage: 15, // SubmissionFile::SUBMISSION_FILE_REVIEW_REVISION
-					reviewRoundId: 1
-				}
+					reviewRoundId: 1,
+				},
 			},
 			{
 				label: 'Files for Review',
 				queryParams: {
 					fileStage: 4, // SubmissionFile::SUBMISSION_FILE_REVIEW_FILE
-					reviewRoundId: 1
-				}
-			}
-		]
+					reviewRoundId: 1,
+				},
+			},
+		],
 	},
 	{
 		component: 'FileAttacherLibrary',
@@ -83,6 +83,6 @@ export default [
 		includeSubmissionId: 15,
 		attachSelectedLabel: 'Attach Selected',
 		backLabel: 'Back',
-		downloadLabel: 'Download'
-	}
+		downloadLabel: 'Download',
+	},
 ];

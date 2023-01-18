@@ -14,10 +14,10 @@ export default {
 				{
 					component: PreviewSpinner,
 					name: 'Base',
-					template: this.extractTemplate(PreviewSpinnerTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewSpinnerTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

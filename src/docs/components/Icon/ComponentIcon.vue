@@ -14,10 +14,10 @@ export default {
 				{
 					component: PreviewIcon,
 					name: 'Base',
-					template: this.extractTemplate(PreviewIconTemplate)
-				}
-			]
+					template: this.extractTemplate(PreviewIconTemplate),
+				},
+			],
 		};
-	}
+	},
 };
 </script>

@@ -11,15 +11,15 @@ import field from '../../../helpers/field-doi';
 export default {
 	extends: PreviewFieldBase,
 	components: {
-		FieldPubId
+		FieldPubId,
 	},
 	data() {
 		return {
 			field: {
 				...fieldBase,
-				...field
-			}
+				...field,
+			},
 		};
-	}
+	},
 };
 </script>

@@ -5,5 +5,5 @@ export default {
 	label: 'Email',
 	groupId: 'identity',
 	isRequired: true,
-	value: ''
+	value: '',
 };

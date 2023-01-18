@@ -15,18 +15,18 @@ export default {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		fileId: {
 			type: Number,
 			default() {
 				return 0;
-			}
+			},
 		},
 		name: {
 			type: String,
-			required: true
-		}
+			required: true,
+		},
 	},
 	computed: {
 		/**
@@ -39,8 +39,8 @@ export default {
 				!!pkp.documentTypeIcons[this.documentType]
 				? pkp.documentTypeIcons[this.documentType]
 				: 'file-o';
-		}
-	}
+		},
+	},
 };
 </script>
 

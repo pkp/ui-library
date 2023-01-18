@@ -19,7 +19,7 @@ export default {
 		List,
 		ListItem,
 		Modal,
-		Tooltip
+		Tooltip,
 	},
 	data() {
 		return {
@@ -35,7 +35,7 @@ export default {
 			orderDirection: false,
 			isLoadingTimeline: false,
 			latestTimelineGetRequest: '',
-			isDownloadingReport: false
+			isDownloadingReport: false,
 		};
 	},
 	computed: {
@@ -49,12 +49,12 @@ export default {
 				return null;
 			}
 			return {
-				labels: this.timeline.map(segment => segment.label),
+				labels: this.timeline.map((segment) => segment.label),
 				datasets: [
 					{
-						data: this.timeline.map(segment => segment.value)
-					}
-				]
+						data: this.timeline.map((segment) => segment.value),
+					},
+				],
 			};
 		},
 
@@ -110,7 +110,7 @@ export default {
 					this.getBrowserSafeDate(this.dateEndMax)
 				) > 31
 			);
-		}
+		},
 	},
 	methods: {
 		/**
@@ -121,7 +121,7 @@ export default {
 		 */
 		getParams(type) {
 			let params = {
-				...this.activeFilters
+				...this.activeFilters,
 			};
 
 			if (type != 'timeline') {
@@ -165,7 +165,7 @@ export default {
 		 */
 		getFilterDescription(filterSet) {
 			let filterTitles = [];
-			Object.values(filterSet.filters).forEach(filter => {
+			Object.values(filterSet.filters).forEach((filter) => {
 				if (
 					filter.param in this.activeFilters &&
 					this.activeFilters[filter.param].includes(filter.value)
@@ -174,7 +174,7 @@ export default {
 				}
 			});
 			let description = this.replaceLocaleParams(this.allFiltersLabel, {
-				filter: filterSet.heading
+				filter: filterSet.heading,
 			});
 			if (filterTitles.length != 0) {
 				description = filterTitles.join(this.__('common.commaListSeparator'));
@@ -216,7 +216,7 @@ export default {
 		getTimelineDescription() {
 			return this.replaceLocaleParams(this.timelineDescriptionLabel, {
 				type: this.getTimelineTypeLabel().toLowerCase(),
-				interval: this.getTimelineIntervalLabel().toLowerCase()
+				interval: this.getTimelineIntervalLabel().toLowerCase(),
 			});
 		},
 
@@ -231,7 +231,7 @@ export default {
 			}
 			return this.replaceLocaleParams(this.betweenDatesLabel, {
 				startDate: this.dateStart,
-				endDate: this.dateEnd
+				endDate: this.dateEnd,
 			});
 		},
 
@@ -243,7 +243,7 @@ export default {
 		 */
 		getReportParams(type) {
 			let params = {
-				...this.activeFilters
+				...this.activeFilters,
 			};
 
 			if (this.dateStart) {
@@ -297,10 +297,7 @@ export default {
 				[
 					'stats',
 					this.getReportFileNamePart(type),
-					new Date()
-						.toISOString()
-						.slice(0, -5)
-						.replace(':', '-')
+					new Date().toISOString().slice(0, -5).replace(':', '-'),
 				].join('_') + '.csv';
 
 			let dateRangeRow =
@@ -310,7 +307,7 @@ export default {
 				this.getDateRangeDescription() +
 				'"\n';
 			let filtersRow = [];
-			Object.values(this.filters).forEach(filterSet => {
+			Object.values(this.filters).forEach((filterSet) => {
 				filtersRow.push(
 					'"' +
 						filterSet.heading +
@@ -347,7 +344,7 @@ export default {
 				context: this,
 				headers: {
 					Accept: 'text/csv; charset=utf-8',
-					'Content-Type': 'text/csv;·charset_utf-8'
+					'Content-Type': 'text/csv;·charset_utf-8',
 				},
 				data: this.getReportParams(type),
 				error: this.ajaxErrorCallback,
@@ -367,14 +364,14 @@ export default {
 				complete(r) {
 					this.isDownloadingReport = false;
 					this.$modal.hide('export');
-				}
+				},
 			});
 		},
 
 		/**
 		 * Get statistics from the server based on the current params
 		 */
-		get: debounce(function() {
+		get: debounce(function () {
 			this.getItems();
 			this.getTimeline();
 		}, 0),
@@ -384,7 +381,7 @@ export default {
 		 */
 		setItems(result) {
 			let self = this;
-			self.items = result.items.map(row => {
+			self.items = result.items.map((row) => {
 				row.total = row.abstractViews + row.galleyViews;
 				return row;
 			});
@@ -422,7 +419,7 @@ export default {
 						return;
 					}
 					self.isLoadingItems = false;
-				}
+				},
 			});
 		},
 
@@ -457,7 +454,7 @@ export default {
 						return;
 					}
 					self.isLoadingTimeline = false;
-				}
+				},
 			});
 		},
 
@@ -506,7 +503,7 @@ export default {
 		 */
 		setTimelineInterval(timelineInterval) {
 			this.timelineInterval = timelineInterval;
-		}
+		},
 	},
 	mounted() {
 		/**
@@ -575,8 +572,8 @@ export default {
 				return;
 			}
 			this.getTimeline();
-		}
-	}
+		},
+	},
 };
 </script>
 

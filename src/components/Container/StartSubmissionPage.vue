@@ -5,11 +5,11 @@ import StartSubmissionForm from '@/components/Form/submission/StartSubmissionFor
 export default {
 	extends: Page,
 	components: {
-		StartSubmissionForm
+		StartSubmissionForm,
 	},
 	data() {
 		return {
-			form: {}
+			form: {},
 		};
 	},
 	methods: {
@@ -18,10 +18,10 @@ export default {
 		 */
 		updateForm(formId, data) {
 			let form = {...this.form};
-			Object.keys(data).forEach(key => (form[key] = data[key]));
+			Object.keys(data).forEach((key) => (form[key] = data[key]));
 			this.form = form;
-		}
-	}
+		},
+	},
 };
 </script>
 

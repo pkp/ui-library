@@ -10,7 +10,7 @@
 					:disabled="currentPage === 1"
 					:aria-label="
 						__('common.pagination.goToPage', {
-							page: __('common.pagination.previous')
+							page: __('common.pagination.previous'),
 						})
 					"
 					@click="setPage('previous')"
@@ -61,20 +61,20 @@ export default {
 	props: {
 		currentPage: {
 			type: Number,
-			required: true
+			required: true,
 		},
 		isLoading: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
 		lastPage: {
 			type: Number,
-			required: true
+			required: true,
 		},
 		showAdjacentPages: {
 			type: Number,
-			default: 1
-		}
+			default: 1,
+		},
 	},
 	computed: {
 		/**
@@ -109,14 +109,14 @@ export default {
 				items.push({
 					value: 1,
 					label: 1,
-					ariaLabel: this.getNumberAriaLabel(1)
+					ariaLabel: this.getNumberAriaLabel(1),
 				});
 			}
 
 			// Add a separator between the starting page and the inner pages
 			if (innerMin > 2) {
 				items.push({
-					isSeparator: true
+					isSeparator: true,
 				});
 			}
 
@@ -125,14 +125,14 @@ export default {
 					value: i,
 					isCurrent: this.currentPage === i,
 					label: i,
-					ariaLabel: this.getNumberAriaLabel(i)
+					ariaLabel: this.getNumberAriaLabel(i),
 				});
 			}
 
 			// Add a separator between the last page and the inner pages
 			if (innerMax < this.lastPage - 1) {
 				items.push({
-					isSeparator: true
+					isSeparator: true,
 				});
 			}
 
@@ -141,12 +141,12 @@ export default {
 				items.push({
 					value: this.lastPage,
 					label: this.lastPage,
-					ariaLabel: this.getNumberAriaLabel(this.lastPage)
+					ariaLabel: this.getNumberAriaLabel(this.lastPage),
 				});
 			}
 
 			return items;
-		}
+		},
 	},
 	methods: {
 		/**
@@ -155,7 +155,7 @@ export default {
 		 * @param {Number} page
 		 * @return {String}
 		 */
-		getNumberAriaLabel: function(page) {
+		getNumberAriaLabel: function (page) {
 			const pageLabel = this.__('common.pageNumber', {pageNumber: page});
 			return this.__('common.pagination.goToPage', {page: pageLabel});
 		},
@@ -165,7 +165,7 @@ export default {
 		 *
 		 * @param {Number} page
 		 */
-		setPage: function(page) {
+		setPage: function (page) {
 			if (page === 'previous') {
 				page = this.currentPage - 1;
 			} else if (page === 'next') {
@@ -174,8 +174,8 @@ export default {
 			if (page >= 1 && page <= this.lastPage) {
 				this.$emit('set-page', page);
 			}
-		}
-	}
+		},
+	},
 };
 </script>
 

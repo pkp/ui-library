@@ -7,20 +7,20 @@ export default {
 	props: {
 		editContextUrl: {
 			type: String,
-			required: true
-		}
+			required: true,
+		},
 	},
 	methods: {
 		/**
 		 * Redirect to the admin's context settings wizard when successful
 		 */
-		success: function(r) {
+		success: function (r) {
 			pkp.eventBus.$emit('form-success', this.id, r);
 
 			if (r.id) {
 				window.location.href = this.editContextUrl.replace('__id__', r.id);
 			}
-		}
+		},
 	},
 	watch: {
 		submitValues(newVal, oldVal) {
@@ -32,7 +32,7 @@ export default {
 				delete errors.primaryLocale;
 				this.$emit('set', this.id, {errors});
 			}
-		}
-	}
+		},
+	},
 };
 </script>

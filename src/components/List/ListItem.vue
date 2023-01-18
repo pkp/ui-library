@@ -22,8 +22,8 @@ export default {
 		},
 		hasValueSlot() {
 			return this.$slots.value;
-		}
-	}
+		},
+	},
 };
 </script>
 

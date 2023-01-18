@@ -18,28 +18,28 @@ export default {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		id: {
 			type: String,
-			required: true
+			required: true,
 		},
 		label: {
 			type: String,
 			default() {
 				return '';
-			}
+			},
 		},
 		badge: {
 			type: [String, Number],
 			default() {
 				return '';
-			}
-		}
+			},
+		},
 	},
 	data() {
 		return {
-			isActive: false
+			isActive: false,
 		};
 	},
 	computed: {
@@ -57,7 +57,7 @@ export default {
 				classes.push('pkpTab--isDisabled');
 			}
 			return classes;
-		}
-	}
+		},
+	},
 };
 </script>

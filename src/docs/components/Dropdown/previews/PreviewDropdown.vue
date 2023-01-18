@@ -25,7 +25,7 @@ import Dropdown from '@/components/Dropdown/Dropdown.vue';
 
 export default {
 	components: {
-		Dropdown
-	}
+		Dropdown,
+	},
 };
 </script>

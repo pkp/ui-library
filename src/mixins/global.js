@@ -28,7 +28,7 @@ export default {
 		 * @param {Object} params (Optional) Variables to compile with the translation
 		 * @return {String}
 		 */
-		__: function(key, params) {
+		__: function (key, params) {
 			if (typeof pkp.localeKeys[key] === 'undefined') {
 				if (process.env.NODE_ENV === 'development') {
 					// eslint-disable-next-line
@@ -74,7 +74,7 @@ export default {
 		 * @param {String} requestedLocale Optional. Request a specific locale
 		 * @return {String}
 		 */
-		localize: function(multilingualData, requestedLocale) {
+		localize: function (multilingualData, requestedLocale) {
 			if (!multilingualData) {
 				return '';
 			} else if (requestedLocale !== undefined) {
@@ -129,7 +129,7 @@ export default {
 				weekday: 'long',
 				year: 'numeric',
 				month: 'long',
-				day: 'numeric'
+				day: 'numeric',
 			});
 		},
 
@@ -175,11 +175,11 @@ export default {
 				'select',
 				'textarea',
 				'details',
-				'[tabindex]:not([tabindex="-1"])'
+				'[tabindex]:not([tabindex="-1"])',
 			];
 			let focusable = [...el.querySelectorAll(selectors.join(','))]
-				.filter(node => !node.hasAttribute('disabled'))
-				.filter(node => !node.hasAttribute('aria-hidden'));
+				.filter((node) => !node.hasAttribute('disabled'))
+				.filter((node) => !node.hasAttribute('aria-hidden'));
 			if (focusable.length) {
 				if (toLast) {
 					focusable[focusable.length - 1].focus();
@@ -203,6 +203,6 @@ export default {
 			} else if (typeof this.$refs[ref].focus !== 'undefined') {
 				this.$refs[ref].focus();
 			}
-		}
-	}
+		},
+	},
 };

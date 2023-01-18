@@ -11,15 +11,15 @@ import field from '../../../helpers/field-select-issue';
 export default {
 	extends: PreviewFieldBase,
 	components: {
-		FieldSelectIssue
+		FieldSelectIssue,
 	},
 	data() {
 		return {
 			field: {
 				...fieldBase,
-				...field
-			}
+				...field,
+			},
 		};
-	}
+	},
 };
 </script>

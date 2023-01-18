@@ -3,7 +3,7 @@ export default {
 	component: 'field-upload-image',
 	label: 'Logo',
 	options: {
-		url: 'https://httpbin.org/post'
+		url: 'https://httpbin.org/post',
 	},
 	baseUrl: 'http://localhost:8000/public/journals/1/',
 	altTextDescription:
@@ -11,5 +11,5 @@ export default {
 	altTextLabel: 'Alt Text',
 	uploadFileLabel: 'Add File',
 	restoreLabel: 'Restore',
-	thumbnailDescription: 'Preview of the currently selected image.'
+	thumbnailDescription: 'Preview of the currently selected image.',
 };

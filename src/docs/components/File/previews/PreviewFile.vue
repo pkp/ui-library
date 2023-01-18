@@ -29,8 +29,8 @@ import File from '../../../../components/File/File.vue';
 
 export default {
 	components: {
-		File
-	}
+		File,
+	},
 };
 </script>
 

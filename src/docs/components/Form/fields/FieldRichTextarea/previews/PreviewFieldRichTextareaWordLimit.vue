@@ -11,7 +11,7 @@ import field from '../../../helpers/field-rich-textarea-abstract';
 export default {
 	extends: PreviewFieldBase,
 	components: {
-		FieldRichTextarea
+		FieldRichTextarea,
 	},
 	data() {
 		return {
@@ -20,9 +20,9 @@ export default {
 				...field,
 				wordLimit: 200,
 				wordCountLabel: 'Word Count: {$count}/{$limit}',
-				isMultilingual: false
-			}
+				isMultilingual: false,
+			},
 		};
-	}
+	},
 };
 </script>

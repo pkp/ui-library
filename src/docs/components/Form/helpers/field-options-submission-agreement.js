@@ -1,7 +1,7 @@
 import exampleText from '../../../data/exampleText';
 
 const $li = exampleText.map(
-	paragraph => `<li>${paragraph.substring(0, 100)}</li>`
+	(paragraph) => `<li>${paragraph.substring(0, 100)}</li>`
 );
 
 export default {
@@ -17,8 +17,8 @@ export default {
 	options: [
 		{
 			value: true,
-			label: 'Yes, I agree to these terms.'
-		}
+			label: 'Yes, I agree to these terms.',
+		},
 	],
-	groupId: 'default'
+	groupId: 'default',
 };

@@ -19,14 +19,14 @@ let manyItems = [];
 for (let i = 1; i < 31; i++) {
 	manyItems.push({
 		id: i,
-		title: 'Item ' + i
+		title: 'Item ' + i,
 	});
 }
 
 export default {
 	components: {
 		ListPanel,
-		Pagination
+		Pagination,
 	},
 	data() {
 		return {
@@ -35,7 +35,7 @@ export default {
 			isLoading: false,
 			items: manyItems.slice(0, 5),
 			itemsMax: manyItems.length,
-			offset: 0
+			offset: 0,
 		};
 	},
 	computed: {
@@ -44,10 +44,10 @@ export default {
 		},
 		lastPage() {
 			return Math.ceil(this.itemsMax / this.count);
-		}
+		},
 	},
 	methods: {
-		setPage: function(page) {
+		setPage: function (page) {
 			// Mock a delay for a remote request
 			this.isLoading = true;
 			setTimeout(() => {
@@ -55,7 +55,7 @@ export default {
 				this.items = this.allItems.slice(this.offset, this.count + this.offset);
 				this.isLoading = false;
 			}, 1000);
-		}
-	}
+		},
+	},
 };
 </script>

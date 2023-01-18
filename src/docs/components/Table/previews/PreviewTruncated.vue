@@ -15,13 +15,13 @@ export default {
 	extends: PreviewTable,
 	data() {
 		return {
-			columns: articleStatsColumns.map(col => {
+			columns: articleStatsColumns.map((col) => {
 				if (col.name === 'title') {
 					col.truncate = 'medium';
 				}
 				return col;
-			})
+			}),
 		};
-	}
+	},
 };
 </script>

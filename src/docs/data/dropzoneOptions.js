@@ -16,5 +16,5 @@ export default {
 	dropzoneDictCancelUploadConfirmation:
 		'Are you sure you want to cancel this upload?',
 	dropzoneDictRemoveFile: 'Remove file',
-	dropzoneDictMaxFilesExceeded: 'You can not upload any more files.'
+	dropzoneDictMaxFilesExceeded: 'You can not upload any more files.',
 };

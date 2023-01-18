@@ -2,43 +2,43 @@ export default [
 	{
 		id: 1,
 		name: 'Book Manuscript',
-		isPrimary: true
+		isPrimary: true,
 	},
 	{
 		id: 2,
 		name: 'Chapter Manuscript',
-		isPrimary: true
+		isPrimary: true,
 	},
 	{
 		id: 3,
-		name: 'Preface'
+		name: 'Preface',
 	},
 	{
 		id: 4,
-		name: 'Index'
+		name: 'Index',
 	},
 	{
 		id: 5,
-		name: 'Glossary'
+		name: 'Glossary',
 	},
 	{
 		id: 7,
-		name: 'Prospectus'
+		name: 'Prospectus',
 	},
 	{
 		id: 11,
-		name: 'Table'
+		name: 'Table',
 	},
 	{
 		id: 8,
-		name: 'Figure'
+		name: 'Figure',
 	},
 	{
 		id: 9,
-		name: 'Audio'
+		name: 'Audio',
 	},
 	{
 		id: 10,
-		name: 'Other'
-	}
+		name: 'Other',
+	},
 ];

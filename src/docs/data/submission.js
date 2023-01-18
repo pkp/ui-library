@@ -20,8 +20,8 @@ export default {
 			queries: [],
 			currentUserAssignedRoles: [],
 			files: {
-				count: 0
-			}
+				count: 0,
+			},
 		},
 		{
 			id: 3,
@@ -32,9 +32,9 @@ export default {
 			status: 'Waiting for reviewers to be selected',
 			statusId: 6,
 			files: {
-				count: 0
+				count: 0,
 			},
-			currentUserCanRecommendOnly: false
+			currentUserCanRecommendOnly: false,
 		},
 		{
 			id: 4,
@@ -43,8 +43,8 @@ export default {
 			queries: [],
 			currentUserAssignedRoles: [],
 			files: {
-				count: 0
-			}
+				count: 0,
+			},
 		},
 		{
 			id: 5,
@@ -53,9 +53,9 @@ export default {
 			queries: [],
 			currentUserAssignedRoles: [],
 			files: {
-				count: 0
-			}
-		}
+				count: 0,
+			},
+		},
 	],
 	status: 1,
 	statusLabel: 'Queued',
@@ -65,5 +65,5 @@ export default {
 	urlEditorialWorkflow:
 		'http://localhost:8000/publicknowledge/workflow/access/1',
 	urlPublished: 'http://localhost:8000/publicknowledge/article/view/1',
-	urlWorkflow: 'http://localhost:8000/publicknowledge/workflow/access/1'
+	urlWorkflow: 'http://localhost:8000/publicknowledge/workflow/access/1',
 };

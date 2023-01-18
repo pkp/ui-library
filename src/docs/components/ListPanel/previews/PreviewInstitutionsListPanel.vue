@@ -19,7 +19,7 @@ import form from '@/docs/components/Form/helpers/form-institution';
 
 export default {
 	components: {
-		InstitutionsListPanel
+		InstitutionsListPanel,
 	},
 	data() {
 		const institutions = [
@@ -28,42 +28,42 @@ export default {
 				name: {
 					en_US: 'Institution 1 Name EN',
 					fr_CA: 'Institution 1 Name FR',
-					ar_AR: 'Institution 1 Name AR'
+					ar_AR: 'Institution 1 Name AR',
 				},
-				ipRanges: ['142.60.*.*']
+				ipRanges: ['142.60.*.*'],
 			},
 			{
 				id: 2,
 				name: {
 					en_US: 'Institution 2 Name EN',
 					fr_CA: 'Institution 2 Name FR',
-					ar_AR: 'Institution 2 Name AR'
+					ar_AR: 'Institution 2 Name AR',
 				},
-				ipRanges: ['142.58.103.1 - 142.58.103.4', '142.59.*.*']
+				ipRanges: ['142.58.103.1 - 142.58.103.4', '142.59.*.*'],
 			},
 			{
 				id: 3,
 				name: {
 					en_US: 'Institution 3 Name EN',
 					fr_CA: 'Institution 3 Name FR',
-					ar_AR: 'Institution 3 Name AR'
-				}
+					ar_AR: 'Institution 3 Name AR',
+				},
 			},
 			{
 				id: 4,
 				name: {
 					en_US: 'Institution 4 Name EN',
 					fr_CA: 'Institution 4 Name FR',
-					ar_AR: 'Institution 4 Name AR'
-				}
-			}
+					ar_AR: 'Institution 4 Name AR',
+				},
+			},
 		];
 
 		return {
 			form: {...form},
 			items: [...institutions],
-			itemsMax: institutions.length
+			itemsMax: institutions.length,
 		};
-	}
+	},
 };
 </script>

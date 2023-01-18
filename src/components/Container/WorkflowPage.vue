@@ -18,7 +18,7 @@ export default {
 		Composer,
 		Dropdown,
 		Modal,
-		PkpHeader
+		PkpHeader,
 	},
 	data() {
 		return {
@@ -52,7 +52,7 @@ export default {
 			versionLabel: '',
 			versionConfirmMessage: '',
 			versionConfirmTitle: '',
-			workingPublication: null
+			workingPublication: null,
 		};
 	},
 	computed: {
@@ -97,9 +97,9 @@ export default {
 		 */
 		currentPublicationTabsLabel() {
 			return this.replaceLocaleParams(this.publicationTabsLabel, {
-				version: this.workingPublication.version
+				version: this.workingPublication.version,
 			});
-		}
+		},
 	},
 	methods: {
 		/**
@@ -118,7 +118,7 @@ export default {
 					'/version',
 				type: 'POST',
 				headers: {
-					'X-Csrf-Token': pkp.currentUser.csrfToken
+					'X-Csrf-Token': pkp.currentUser.csrfToken,
 				},
 				error(r) {
 					self.isLoadingVersion = false;
@@ -129,7 +129,7 @@ export default {
 						id: r.id,
 						datePublished: r.datePublished,
 						status: r.status,
-						version: r.version
+						version: r.version,
 					});
 					self.workingPublication = {};
 					self.workingPublication = r;
@@ -153,7 +153,7 @@ export default {
 							}, timeDiff);
 						}
 					});
-				}
+				},
 			});
 		},
 
@@ -194,12 +194,11 @@ export default {
 			if (!$.pkp.classes.Handler.hasHandler($representationsEl)) {
 				$representationsEl.pkpHandler('$.pkp.controllers.UrlInDivHandler', {
 					sourceUrl: sourceUrl,
-					refreshOn: 'form-success'
+					refreshOn: 'form-success',
 				});
 			} else {
-				const representationsHandler = $.pkp.classes.Handler.getHandler(
-					$representationsEl
-				);
+				const representationsHandler =
+					$.pkp.classes.Handler.getHandler($representationsEl);
 				representationsHandler.setSourceUrl(sourceUrl);
 				representationsHandler.reload();
 			}
@@ -212,7 +211,7 @@ export default {
 			var opts = {
 				title: this.activityLogLabel,
 				url: this.editorialHistoryUrl,
-				closeCallback: () => this.$refs.activityButton.$el.focus()
+				closeCallback: () => this.$refs.activityButton.$el.focus(),
 			};
 
 			$(
@@ -239,13 +238,13 @@ export default {
 						callback: () => {
 							this.$modal.hide('createVersion');
 							this.createVersion();
-						}
+						},
 					},
 					{
 						label: this.__('common.no'),
-						callback: () => this.$modal.hide('createVersion')
-					}
-				]
+						callback: () => this.$modal.hide('createVersion'),
+					},
+				],
 			});
 		},
 
@@ -261,7 +260,7 @@ export default {
 				closeCallback: () => {
 					pkp.eventBus.$emit('refreshRevisionsGrid');
 					this.$refs.uploadFileButton.$el.focus();
-				}
+				},
 			};
 
 			$(
@@ -279,7 +278,7 @@ export default {
 			var opts = {
 				title: this.submissionLibraryLabel,
 				url: this.submissionLibraryUrl,
-				closeCallback: () => this.$refs.library.$el.focus()
+				closeCallback: () => this.$refs.library.$el.focus(),
 			};
 
 			$(
@@ -310,7 +309,7 @@ export default {
 					}
 					this.setFocusIn(this.$refs.publication);
 				},
-				closeOnFormSuccessId: pkp.const.FORM_PUBLISH
+				closeOnFormSuccessId: pkp.const.FORM_PUBLISH,
 			};
 
 			$(
@@ -345,13 +344,13 @@ export default {
 						callback: () => {
 							this.unpublish(this.workingPublication);
 							this.$modal.hide('confirmUnpublish');
-						}
+						},
 					},
 					{
 						label: this.__('common.cancel'),
-						callback: () => this.$modal.hide('confirmUnpublish')
-					}
-				]
+						callback: () => this.$modal.hide('confirmUnpublish'),
+					},
+				],
 			});
 		},
 
@@ -365,7 +364,7 @@ export default {
 				type: 'GET',
 				success(submission) {
 					// Store some publication data and discard the rest
-					submission.publications.forEach(publication =>
+					submission.publications.forEach((publication) =>
 						self.updatePublicationInList(publication)
 					);
 					delete submission.publications;
@@ -374,7 +373,7 @@ export default {
 				},
 				error(r) {
 					self.ajaxErrorCallback(r);
-				}
+				},
 			});
 		},
 
@@ -384,7 +383,7 @@ export default {
 		 * @param Object publication
 		 */
 		setPublicationForms(publication) {
-			this.publicationFormIds.forEach(formId => {
+			this.publicationFormIds.forEach((formId) => {
 				if (!this.components[formId]) {
 					return;
 				}
@@ -392,7 +391,7 @@ export default {
 				// Update form action URLs and field values
 				let form = {...this.components[formId]};
 				form.action = this.submissionApiUrl + '/publications/' + publication.id;
-				form.fields = form.fields.map(field => {
+				form.fields = form.fields.map((field) => {
 					if (Object.keys(publication).includes(field.name)) {
 						field.value = publication[field.name];
 					}
@@ -406,7 +405,7 @@ export default {
 
 				// Pass the publication status to the issue selection field
 				if (formId === pkp.const.FORM_ISSUE_ENTRY) {
-					form.fields = form.fields.map(field => {
+					form.fields = form.fields.map((field) => {
 						if (field.name === 'issueId') {
 							field.publicationStatus = publication.status;
 						}
@@ -416,7 +415,7 @@ export default {
 
 				// Pass identifier requirements to the DOI/URN fields
 				if (formId === pkp.const.FORM_PUBLICATION_IDENTIFIERS) {
-					form.fields = form.fields.map(field => {
+					form.fields = form.fields.map((field) => {
 						if (['pub-id::doi', 'pub-id::other::urn'].includes(field.name)) {
 							field.pages = publication.pages || '';
 							field.publisherId = publication['pub-id::publisher-id'] || '';
@@ -454,7 +453,7 @@ export default {
 						self.setFocusIn(self.$refs.publication);
 						self.isLoadingVersion = false;
 					});
-				}
+				},
 			});
 		},
 
@@ -474,7 +473,7 @@ export default {
 				type: 'POST',
 				headers: {
 					'X-Csrf-Token': pkp.currentUser.csrfToken,
-					'X-Http-Method-Override': 'PUT'
+					'X-Http-Method-Override': 'PUT',
 				},
 				error(r) {
 					self.isLoadingVersion = false;
@@ -489,7 +488,7 @@ export default {
 					self.isLoadingVersion = false;
 					self.setFocusIn(self.$refs.publication);
 					self.refreshSubmission();
-				}
+				},
 			});
 		},
 
@@ -499,7 +498,7 @@ export default {
 		 * @param {Object} newPublication
 		 */
 		updatePublicationInList(newPublication) {
-			this.publicationList.forEach(publication => {
+			this.publicationList.forEach((publication) => {
 				if (publication.id === newPublication.id) {
 					publication.datePublished = newPublication.datePublished;
 					publication.status = newPublication.status;
@@ -524,7 +523,7 @@ export default {
 		 */
 		setContributors(contributors) {
 			this.workingPublication.authors = [...contributors];
-		}
+		},
 	},
 	watch: {
 		workingPublication(newVal, oldVal) {
@@ -534,7 +533,7 @@ export default {
 				this.currentPublication = {};
 				this.currentPublication = newVal;
 			}
-		}
+		},
 	},
 	created() {
 		/**
@@ -566,13 +565,12 @@ export default {
 		/**
 		 * Open the modals to select the revision type when requested
 		 */
-		pkp.eventBus.$on('decision:revisions', reviewRoundId => {
-			this.components.selectRevisionDecision.hiddenFields[
-				'reviewRoundId'
-			] = reviewRoundId;
+		pkp.eventBus.$on('decision:revisions', (reviewRoundId) => {
+			this.components.selectRevisionDecision.hiddenFields['reviewRoundId'] =
+				reviewRoundId;
 			this.$modal.show('selectRevisionDecision');
 		});
-		pkp.eventBus.$on('recommendation:revisions', reviewRoundId => {
+		pkp.eventBus.$on('recommendation:revisions', (reviewRoundId) => {
 			this.components.selectRevisionRecommendation.hiddenFields[
 				'reviewRoundId'
 			] = reviewRoundId;
@@ -599,7 +597,7 @@ export default {
 		pkp.eventBus.$off('unpublish:publication');
 		pkp.eventBus.$off('decision:revisions');
 		pkp.eventBus.$off('recommendation:revisions');
-	}
+	},
 };
 </script>
 
