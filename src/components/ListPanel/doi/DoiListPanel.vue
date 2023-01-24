@@ -128,6 +128,14 @@
 							<icon icon="filter" :inline="true" />
 							{{ __('common.filter') }}
 						</h3>
+						<template slot="actions">
+							<button
+								class="doiListPanel__statusInfoButton"
+								@click="$modal.show('statusInfoModal')"
+							>
+								<icon icon="question-circle" />
+							</button>
+						</template>
 					</pkp-header>
 					<div
 						v-for="(filterSet, index) in filters"
@@ -191,6 +199,51 @@
 				/>
 			</list-panel>
 		</slot>
+
+		<!-- Status info modal -->
+		<modal
+			:close-label="__('common.close')"
+			name="statusInfoModal"
+			:title="__('manager.dois.help.statuses.title')"
+			@closed="setFocusIn($el.querySelector('.doiListPanel__statusInfoButton'))"
+		>
+			<table class="pkpTable">
+				<thead>
+					<tr>
+						<th>{{ __('common.status') }}</th>
+						<th>{{ __('common.description') }}</th>
+					</tr>
+				</thead>
+				<tr class="pkpTable__row">
+					<th>{{ __('manager.dois.status.needsDoi') }}</th>
+					<td>{{ __('manager.dois.status.needsDoi.description') }}</td>
+				</tr>
+				<tr class="pkpTable__row">
+					<th>{{ __('publication.status.unpublished') }}</th>
+					<td>{{ __('manager.dois.status.unpublished.description') }}</td>
+				</tr>
+				<tr class="pkpTable__row">
+					<th>{{ __('manager.dois.status.unregistered') }}</th>
+					<td>{{ __('manager.dois.status.unregistered.description') }}</td>
+				</tr>
+				<tr class="pkpTable__row">
+					<th>{{ __('manager.dois.status.submitted') }}</th>
+					<td>{{ __('manager.dois.status.submitted.description') }}</td>
+				</tr>
+				<tr class="pkpTable__row">
+					<th>{{ __('manager.dois.status.registered') }}</th>
+					<td>{{ __('manager.dois.status.registered.description') }}</td>
+				</tr>
+				<tr class="pkpTable__row">
+					<th>{{ __('manager.dois.status.error') }}</th>
+					<td>{{ __('manager.dois.status.error.description') }}</td>
+				</tr>
+				<tr class="pkpTable__row">
+					<th>{{ __('manager.dois.status.stale') }}</th>
+					<td>{{ __('manager.dois.status.stale.description') }}</td>
+				</tr>
+			</table>
+		</modal>
 
 		<!-- DOI action failed modal -->
 		<modal
@@ -938,6 +991,12 @@ export default {
 
 .doiListPanel__options--button {
 	margin-left: 0.25rem;
+}
+
+.doiListPanel__statusInfoButton {
+	background: transparent;
+	border: none;
+	cursor: pointer;
 }
 
 .doiListPanel__bulkActions .pkpDropdown__content {
