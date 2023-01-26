@@ -59,7 +59,7 @@ export default {
 	],
 	status: 1,
 	statusLabel: 'Queued',
-	submissionProgress: 0,
+	submissionProgress: '',
 	urlAuthorWorkflow:
 		'http://localhost:8000/publicknowledge/authorDashboard/submission/1',
 	urlEditorialWorkflow:
