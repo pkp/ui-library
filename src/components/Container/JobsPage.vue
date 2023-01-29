@@ -15,20 +15,45 @@ export default {
 			columns: [],
 			rows: [],
 			label: '',
-			description: '',
 			total: 0,
 			currentPage: 1,
 			lastPage: 1,
 			isLoadingItems: false,
 		};
 	},
-	methods: {
-		handlePagination: function (page) {
-			this.isLoadingItems = true;
-			const paged = new URL(window.location.href);
-			paged.searchParams.set('page', page);
-			window.location = paged;
-		},
+	computed: {
+		description() {
+			return this.__('admin.jobs.totalCount', {total: this.total});
+		}
 	},
+	methods: {
+		handlePagination(page) {
+			this.isLoadingItems = true;
+			this.loadList(page);
+		},
+		loadList(page) {
+			page = page || 1;
+
+			$.ajax({
+				url: this.apiUrl,
+				type: 'GET',
+				headers: {
+					'X-Csrf-Token': pkp.currentUser.csrfToken
+				},
+				data: {page: page},
+				error: this.ajaxErrorCallback,
+				success: response => {
+					this.rows = response.data;
+					this.total = response.total;
+					this.currentPage = response.pagination.currentPage;
+					this.lastPage = response.pagination.lastPage;
+					this.isLoadingItems = false;
+				}
+			});
+		}
+	},
+	created() {
+		this.loadList();
+	}
 };
 </script>

@@ -2,6 +2,7 @@
 import Page from './Page.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
 import PkpTable from '@/components/Table/Table.vue';
+import TableCell from '@/components/Table/TableCell.vue';
 import ajaxError from '@/mixins/ajaxError';
 
 export default {
@@ -9,6 +10,7 @@ export default {
 	extends: Page,
 	components: {
 		PkpTable,
+		TableCell,
 		Pagination
 	},
 	data() {
@@ -16,7 +18,6 @@ export default {
 			columns: [],
 			rows: [],
 			label: '',
-			description: '',
 			total: 0,
 			currentPage: 1,
 			lastPage: 1,
@@ -25,24 +26,23 @@ export default {
 		};
 	},
 	mixins: [ajaxError],
+	computed: {
+		description() {
+			return this.__('admin.jobs.failed.totalCount', {total: this.total});
+		}
+	},
 	methods: {
-		handlePagination: function(page) {
+		handlePagination(page) {
 			this.isLoadingItems = true;
-			const paged = new URL(window.location.href);
-			paged.searchParams.set('page', page);
-			window.location = paged;
+			this.loadList(page);
 		},
-		refreshComponent: function(data) {
+		updateJobList(data) {
 			this.rows = this.rows.filter(row => row.id !== data.id);
 			this.total = this.total - 1;
-			this.description = this.__('admin.jobs.failed.totalCount', {
-				total: this.total
-			});
-			this.$forceUpdate();
 		},
-		redispatch: function(data) {
+		redispatch(data) {
 			$.ajax({
-				url: this.apiUrl + '/redispatch/' + data.id,
+				url: data._hrefs._redispatch,
 				type: 'POST',
 				headers: {
 					'X-Csrf-Token': pkp.currentUser.csrfToken
@@ -50,13 +50,13 @@ export default {
 				error: this.ajaxErrorCallback,
 				success: response => {
 					pkp.eventBus.$emit('notify', response.message, 'success');
-					this.refreshComponent(data);
+					this.updateJobList(data);
 				}
 			});
 		},
-		remove: function(data) {
+		remove(data) {
 			$.ajax({
-				url: this.apiUrl + '/failed/delete/' + data.id,
+				url: data._hrefs._delete,
 				type: 'POST',
 				headers: {
 					'X-Csrf-Token': pkp.currentUser.csrfToken,
@@ -65,19 +65,33 @@ export default {
 				error: this.ajaxErrorCallback,
 				success: response => {
 					pkp.eventBus.$emit('notify', response.message, 'success');
-					this.refreshComponent(data);
+					this.updateJobList(data);
+				}
+			});
+		},
+		loadList(page) {
+			page = page || 1;
+
+			$.ajax({
+				url: this.apiUrl,
+				type: 'GET',
+				headers: {
+					'X-Csrf-Token': pkp.currentUser.csrfToken
+				},
+				data: {page: page},
+				error: this.ajaxErrorCallback,
+				success: response => {
+					this.rows = response.data;
+					this.total = response.total;
+					this.currentPage = response.pagination.currentPage;
+					this.lastPage = response.pagination.lastPage;
+					this.isLoadingItems = false;
 				}
 			});
 		}
 	},
 	created() {
-		pkp.eventBus.$on('redispatch-job', data => {
-			this.redispatch(data);
-		});
-
-		pkp.eventBus.$on('remove-job', data => {
-			this.remove(data);
-		});
+		this.loadList();
 	}
 };
 </script>
