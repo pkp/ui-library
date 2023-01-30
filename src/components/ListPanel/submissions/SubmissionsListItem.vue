@@ -13,14 +13,15 @@
 						{{ currentPublication.authorsStringShort }}
 					</span>
 				</div>
-				<div class="listPanel__itemSubtitle">
-					{{
+				<div
+					class="listPanel__itemSubtitle"
+					v-html="
 						localizeSubmission(
 							currentPublication.fullTitle,
 							currentPublication.locale
 						)
-					}}
-				</div>
+					"
+				></div>
 
 				<!-- Review assignment information -->
 				<div
