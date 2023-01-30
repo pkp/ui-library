@@ -48,6 +48,7 @@
 				ref="editor"
 				:id="controlId"
 				:toolbar="toolbar"
+				:plugins="plugins"
 				:init="compiledInit"
 				@onFocus="focus"
 				@onBlur="blur"
@@ -89,10 +90,6 @@
 <script>
 // Tinymce must be loaded before Vue
 import 'tinymce';
-import 'tinymce/icons/default';
-import 'tinymce/themes/silver';
-import 'tinymce/plugins/code';
-import 'tinymce/plugins/noneditable';
 import 'tinymce/plugins/paste';
 import Editor from '@tinymce/tinymce-vue';
 import FieldBase from './FieldBase.vue';
@@ -123,7 +120,7 @@ export default {
 				return 'default';
 			},
 			validator(value) {
-				return ['default', 'large'].includes(value);
+				return ['default', 'large', 'oneline'].includes(value);
 			},
 		},
 		// @see https://www.tinymce.com/docs/configure/editor-appearance/#toolbar
@@ -189,12 +186,6 @@ export default {
 				entity_encoding: 'raw',
 				browser_spellcheck: true,
 				forced_root_block: '',
-				height: 200,
-				paste_preprocess: (plugin, args) => {
-					args.stopImmediatePropagation();
-					args.stopPropagation();
-					args.preventDefault();
-				},
 				init_instance_callback: (editor) => {
 					// The inline toolbar only appears after the field has been focused.
 					// This mimics the focus event, without actually changing the user's
@@ -210,6 +201,12 @@ export default {
 							event.stopPropagation();
 							return;
 						}
+					});
+
+					editor.on('paste', (event) => {
+						event.preventDefault();
+						event.stopPropagation();
+						return;
 					});
 				},
 				...this.init,
@@ -353,6 +350,13 @@ export default {
 	.pkpFormField--richTextarea__input,
 	.tox-tinymce {
 		height: 35em !important;
+	}
+}
+
+.pkpFormField--richTextArea__control--oneline {
+	.pkpFormField--richTextarea__input,
+	.tox-tinymce {
+		height: 8em !important;
 	}
 }
 
