@@ -281,8 +281,7 @@ export default {
 		outline: 0;
 	}
 
-	&:disabled,
-	&:read-only {
+	&:disabled {
 		background: @bg-light;
 		cursor: not-allowed;
 		// Lighter than @text but accessible on @bg-light
