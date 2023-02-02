@@ -2,7 +2,7 @@
 import Form from '../Form.vue';
 
 export default {
-	name: 'DoiSettingsForm',
+	name: 'DoiSetupSettingsForm',
 	extends: Form,
 	methods: {
 		/**
