@@ -457,7 +457,7 @@ export default {
 				lastModified: '2019-06-03 18:03:32',
 				stageId: 5,
 				status: 1,
-				submissionProgress: 0,
+				submissionProgress: '',
 				urlAuthorWorkflow: '/authorDashboard/submission/1',
 				urlEditorialWorkflow: '/workflow/access/1',
 				urlWorkflow: '/workflow/access/1',

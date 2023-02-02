@@ -285,7 +285,7 @@ export default {
 				return true;
 			} else if (
 				this.userAssignedRole(pkp.const.ROLE_ID_AUTHOR) &&
-				this.item.submissionProgress !== 0
+				this.item.submissionProgress
 			) {
 				return true;
 			}
@@ -342,7 +342,7 @@ export default {
 			var notice = '';
 
 			// Incomplete submissions should not show notices
-			if (this.item.submissionProgress > 0) {
+			if (this.item.submissionProgress) {
 				return notice;
 			}
 
@@ -450,7 +450,7 @@ export default {
 		currentStageLabel() {
 			if (this.isArchived) {
 				return this.item.statusLabel;
-			} else if (this.item.submissionProgress > 0) {
+			} else if (this.item.submissionProgress) {
 				return this.__('submissions.incomplete');
 			}
 			return this.activeStage.label;
