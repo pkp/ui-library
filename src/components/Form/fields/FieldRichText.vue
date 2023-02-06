@@ -45,7 +45,7 @@ export default {
 					// Allow pasting while stripping all styles, tags, new lines and getting only text content
 					// More details at https://www.tiny.cloud/docs/tinymce/6/copy-and-paste/
 					paste_preprocess: (editor, args) => {
-						args.content = $(args.content).text();
+						args.content = $('<div>' + args.content + '</div>').text();
 					},
 
 					setup: (editor) => {
