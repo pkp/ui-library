@@ -33,14 +33,17 @@ export default {
 					// @see https://github.com/tinymce/tinymce/discussions/7342
 					forced_root_block: '',
 
-					// @see https://www.tiny.cloud/docs/tinymce/6/content-formatting/
+					// @see 6.0+ : https://www.tiny.cloud/docs/tinymce/6/content-formatting/
+					// @see 5.0+ : https://www.tiny.cloud/docs/configure/content-formatting/#formats
 					formats: {
-						bold: [{inline: 'strong', remove: 'all', exact: true}],
-						italic: [{inline: 'em', remove: 'all', exact: true}],
+						bold: [{inline: 'b', remove: 'all', exact: true}],
+						italic: [{inline: 'i', remove: 'all', exact: true}],
 						underline: [{inline: 'u', remove: 'all', exact: true}],
 						subscript: [{inline: 'sub', remove: 'all', exact: true}],
 						superscript: [{inline: 'sup', remove: 'all', exact: true}],
 					},
+					extended_valid_elements: 'b,i',
+					invalid_elements: 'em strong',
 
 					// Allow pasting while stripping all styles, tags, new lines and getting only text content
 					// More details at https://www.tiny.cloud/docs/tinymce/6/copy-and-paste/
