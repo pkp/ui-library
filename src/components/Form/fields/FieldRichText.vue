@@ -41,6 +41,8 @@ export default {
 						},
 					},
 
+					content_css: $.pkp.app.tinyMceOneLineContentCSS,
+
 					// @see 6.0+ : https://www.tiny.cloud/docs/tinymce/6/content-formatting/
 					// @see 5.0+ : https://www.tiny.cloud/docs/configure/content-formatting/#formats
 					formats: {
