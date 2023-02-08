@@ -33,6 +33,14 @@ export default {
 					// @see https://github.com/tinymce/tinymce/discussions/7342
 					forced_root_block: '',
 
+					toolbar_groups: {
+						formatgroup: {
+							icon: 'change-case',
+							tooltip: 'Formatting',
+							items: 'bold italic underline superscript subscript',
+						},
+					},
+
 					// @see 6.0+ : https://www.tiny.cloud/docs/tinymce/6/content-formatting/
 					// @see 5.0+ : https://www.tiny.cloud/docs/configure/content-formatting/#formats
 					formats: {
@@ -69,36 +77,41 @@ export default {
 </script>
 
 <style lang="less">
-.pkpFormField--richTextarea
-	.pkpFormField--richTextArea__control--oneline
-	.tox-edit-area {
-	margin-top: -5px !important;
-}
+@import '../../../styles/_import';
 
-.pkpFormField--richTextarea .pkpFormField--richTextArea__control--oneline {
-	.pkpFormField--richTextarea__input,
+.pkpFormField--richTextArea__control--oneline {
+	display: flex;
+	height: 2.5rem;
+
 	.tox-tinymce {
-		height: 5em !important;
+		height: calc(
+			2.5rem - 2px
+		) !important; // Don't cover bottom border of field control
 	}
-}
 
-.pkpFormField--richTextarea.-isFocused
-	.pkpFormField--richTextArea__control--oneline {
-	.pkpFormField--richTextarea__input,
-	.tox-tinymce {
-		height: 10em !important;
+	.tox .tox-editor-container {
+		flex-direction: row;
 	}
-}
 
-.pkpFormField--richTextarea
-	.pkpFormField--richTextArea__control--oneline
-	.tox-editor-header {
-	display: none;
-}
+	.tox .tox-edit-area {
+		margin-right: 1rem;
+	}
 
-.pkpFormField--richTextarea.-isFocused
-	.pkpFormField--richTextArea__control--oneline
 	.tox-editor-header {
-	display: block;
+		border-right: @bg-border;
+		margin-right: 0.5rem;
+	}
+
+	.tox .tox-toolbar__primary {
+		border-bottom: none;
+	}
+
+	.pkpFormField--richTextarea__controlFooter {
+		order: -1; // Move to before the input
+		width: 2.5rem;
+		padding: 0.5rem;
+		border-top: none;
+		border-right: @bg-border;
+	}
 }
 </style>
