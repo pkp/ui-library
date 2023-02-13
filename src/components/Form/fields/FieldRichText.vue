@@ -5,6 +5,10 @@ export default {
 	name: 'FieldRichText',
 	extends: FieldRichTextarea,
 	props: {
+		i18nFormattingLabel: {
+			type: String,
+			required: true,
+		},
 		size: {
 			type: String,
 			default() {
@@ -36,7 +40,7 @@ export default {
 					toolbar_groups: {
 						formatgroup: {
 							icon: 'text-color',
-							tooltip: 'Formatting',
+							tooltip: this.i18nFormattingLabel,
 							items: 'bold italic underline superscript subscript',
 						},
 					},
