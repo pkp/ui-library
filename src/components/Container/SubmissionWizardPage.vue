@@ -428,10 +428,21 @@ export default {
 						label: this.i18nSubmit,
 						isPrimary: true,
 						callback: () => {
+							const confirmData = this.steps
+								.find((step) => step.id === 'review')
+								?.sections.find((section) => section.type === 'confirm')
+								?.form.fields.filter(
+									(field) => field.component === 'field-options' && field.value
+								)
+								.reduce(
+									(data, field) => ({...data, [field.name]: field.value}),
+									{}
+								);
 							$.ajax({
 								url: this.submitApiUrl,
 								context: this,
 								method: 'POST',
+								data: confirmData,
 								headers: {
 									'X-Csrf-Token': pkp.currentUser.csrfToken,
 									'X-Http-Method-Override': 'PUT',
@@ -490,6 +501,16 @@ export default {
 		},
 
 		/**
+		 * Update an autosave form
+		 */
+		updateAutosaveForm(formId, data) {
+			this.updateForm(formId, data);
+			if (this.staleForms.indexOf(formId) === -1) {
+				this.staleForms.push(formId);
+			}
+		},
+
+		/**
 		 * Update a form with new data
 		 *
 		 * This is fired every time a form field changes, so
@@ -506,9 +527,6 @@ export default {
 						...this.steps[stepIndex].sections[sectionIndex].form,
 						...data,
 					};
-					if (this.staleForms.indexOf(formId) === -1) {
-						this.staleForms.push(formId);
-					}
 				});
 			});
 		},
