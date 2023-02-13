@@ -35,7 +35,7 @@ export default {
 
 					toolbar_groups: {
 						formatgroup: {
-							icon: 'change-case',
+							icon: 'text-color',
 							tooltip: 'Formatting',
 							items: 'bold italic underline superscript subscript',
 						},
@@ -62,7 +62,7 @@ export default {
 					},
 
 					setup: (editor) => {
-						// Disbale new line by preventing enter key
+						// Disable new line by preventing enter key
 						editor.on('keyDown', (event) => {
 							if (parseInt(event.keyCode) === 13) {
 								event.preventDefault();
@@ -73,6 +73,52 @@ export default {
 					},
 				},
 			};
+		},
+	},
+	methods: {
+		/**
+		 * When TinyMCE emits the blur event
+		 */
+		blur() {
+			FieldRichTextarea.methods.blur.apply(this);
+			this.closeToolbar();
+		},
+
+		/**
+		 * Close the popup toolbar
+		 *
+		 * The popup toolbar will remain open after the user moves focus away
+		 * from the input field. This seems to be a bug with our implementation.
+		 * I could not reproduce it in TinyMCE's official codepen examples, with
+		 * the same version of TinyMCE we're using at the time of writing this
+		 * (v5.10.7).
+		 *
+		 * This is a workaround that closes the popup toolbar when the TinyMCE
+		 * editor fires the `blur` event. This works, but the `blur` event does
+		 * not cover every case. It is possible to open the popup toolbar without
+		 * moving focus into the editor. In such cases, the `blur` event is not
+		 * fired.
+		 *
+		 * To prevent such cases, we have hidden the popup toolbar button when
+		 * the field does not have focus. That way, it can not be opened unless
+		 * the field is in a focus state so that the blur event will be fired.
+		 *
+		 * See the CSS comment below for the related CSS code.
+		 */
+		closeToolbar() {
+			const toolbarButton = this.$el.querySelector('.tox-tbtn[aria-owns]');
+			if (toolbarButton) {
+				const toolbarPopup = document.getElementById(
+					toolbarButton.getAttribute('aria-owns')
+				);
+				if (toolbarPopup) {
+					const focusEl = document.activeElement;
+					toolbarButton.click();
+					if (focusEl) {
+						focusEl.focus();
+					}
+				}
+			}
 		},
 	},
 };
@@ -92,16 +138,16 @@ export default {
 	}
 
 	.tox .tox-editor-container {
-		flex-direction: row;
+		flex-direction: row-reverse;
 	}
 
 	.tox .tox-edit-area {
-		margin-right: 1rem;
+		margin-inline-start: 1rem;
 	}
 
 	.tox-editor-header {
-		border-right: @bg-border;
-		margin-right: 0.5rem;
+		border-inline-start: @bg-border;
+		margin-inline-start: 0.5rem;
 	}
 
 	.tox .tox-toolbar__primary {
@@ -113,7 +159,21 @@ export default {
 		width: 2.5rem;
 		padding: 0.5rem;
 		border-top: none;
-		border-right: @bg-border;
+		border-inline-end: @bg-border;
 	}
+}
+
+/**
+ * Hide the toolbar popup button when the field
+ * is not focused. See the comment at closeToolbar().
+ */
+.tox-editor-header {
+	display: none;
+}
+
+.pkpFormField--richTextarea.-isFocused
+	.pkpFormField--richTextArea__control--oneline
+	.tox-editor-header {
+	display: flex;
 }
 </style>
