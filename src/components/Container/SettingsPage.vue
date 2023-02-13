@@ -5,7 +5,8 @@ import InstitutionsListPanel from '@/components/ListPanel/institutions/Instituti
 import PkpForm from '@/components/Form/Form.vue';
 import ThemeForm from '@/components/Form/context/ThemeForm.vue';
 import DateTimeForm from '@/components/Form/context/DateTimeForm.vue';
-import DoiSettingsForm from '@/components/Form/context/DoiSettingsForm';
+import DoiSetupSettingsForm from '@/components/Form/context/DoiSetupSettingsForm.vue';
+import DoiRegistrationSettingsForm from '@/components/Form/context/DoiRegistrationSettingsForm.vue';
 
 export default {
 	name: 'SettingsPage',
@@ -16,7 +17,8 @@ export default {
 		PkpForm,
 		ThemeForm,
 		DateTimeForm,
-		DoiSettingsForm,
+		DoiSetupSettingsForm,
+		DoiRegistrationSettingsForm,
 	},
 	data() {
 		return {
