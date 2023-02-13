@@ -71,6 +71,10 @@ export default {
 	padding-inline-end: 2.5rem;
 }
 
+.pkpNotification--backendPage__header {
+	margin-bottom: 1rem;
+}
+
 .pkpNotification__closeButton {
 	position: absolute;
 	top: 0;
