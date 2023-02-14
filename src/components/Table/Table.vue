@@ -6,7 +6,9 @@
 		:aria-describedBy="describedBy ? describedBy : false"
 	>
 		<caption v-if="label || description">
-			<div v-if="label" class="pkpTable__label">{{ label }}</div>
+			<div v-if="label" class="pkpTable__label">
+				<slot name="label">{{ label }}</slot>
+			</div>
 			<div
 				v-if="description"
 				class="pkpTable__description"

@@ -12,6 +12,7 @@ export default {
 	},
 	data() {
 		return {
+			i18nDescription: '',
 			columns: [],
 			rows: [],
 			label: '',
@@ -23,8 +24,10 @@ export default {
 	},
 	computed: {
 		description() {
-			return this.__('admin.jobs.totalCount', {total: this.total});
-		}
+			return this.replaceLocaleParams(this.i18nDescription, {
+				total: this.total,
+			});
+		},
 	},
 	methods: {
 		handlePagination(page) {
@@ -38,22 +41,22 @@ export default {
 				url: this.apiUrl,
 				type: 'GET',
 				headers: {
-					'X-Csrf-Token': pkp.currentUser.csrfToken
+					'X-Csrf-Token': pkp.currentUser.csrfToken,
 				},
 				data: {page: page},
 				error: this.ajaxErrorCallback,
-				success: response => {
+				success: (response) => {
 					this.rows = response.data;
 					this.total = response.total;
 					this.currentPage = response.pagination.currentPage;
 					this.lastPage = response.pagination.lastPage;
 					this.isLoadingItems = false;
-				}
+				},
 			});
-		}
+		},
 	},
 	created() {
 		this.loadList();
-	}
+	},
 };
 </script>
