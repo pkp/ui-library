@@ -2,6 +2,7 @@
 import Page from './Page.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
 import PkpTable from '@/components/Table/Table.vue';
+import ajaxError from '@/mixins/ajaxError';
 
 export default {
 	name: 'JobsPage',
@@ -20,8 +21,10 @@ export default {
 			currentPage: 1,
 			lastPage: 1,
 			isLoadingItems: false,
+			apiUrl: null,
 		};
 	},
+	mixins: [ajaxError],
 	computed: {
 		description() {
 			return this.replaceLocaleParams(this.i18nDescription, {
