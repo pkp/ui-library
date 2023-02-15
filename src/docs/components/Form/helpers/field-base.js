@@ -2,7 +2,7 @@ export default {
 	groupId: 'default',
 	formId: 'default',
 	isRequired: false,
-	primaryLocale: 'en_US',
-	locales: ['en_US'],
+	primaryLocale: 'en',
+	locales: ['en'],
 	allErrors: {},
 };

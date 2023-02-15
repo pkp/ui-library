@@ -38,7 +38,7 @@ Multilingual fields are provided as a JSON object with keys specifying the local
 ```js
 {
 	"name": {
-		"en_US": "Journal of Public Knowledge",
+		"en": "Journal of Public Knowledge",
 		"fr_CA": "Journal de la connaissance du public"
 	},
 	...

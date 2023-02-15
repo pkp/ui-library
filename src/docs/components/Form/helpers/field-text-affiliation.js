@@ -6,8 +6,8 @@ export default {
 	groupId: 'identity',
 	isMultilingual: true,
 	value: {
-		en_US: '',
+		en: '',
 		fr_CA: '',
-		ar_AR: '',
+		ar: '',
 	},
 };

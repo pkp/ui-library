@@ -11,7 +11,7 @@ export default [
 		label: 'Title',
 		isRowHeader: true,
 		value(row) {
-			return row.object.fullTitle.en_US;
+			return row.object.fullTitle.en;
 		},
 	},
 	{

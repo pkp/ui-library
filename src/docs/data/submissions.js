@@ -21,7 +21,7 @@ export default [
 					crossref_failedMsg: 'This is a sample failure message',
 				},
 				fullTitle: {
-					en_US:
+					en:
 						'Quisque vel ultrices ut vel sollicitudin vel varius suscipit phasellus',
 				},
 				isPublished: true,
@@ -50,7 +50,7 @@ export default [
 				authorsString: 'Domatilia Sokoloff',
 				authorsStringShort: 'Sokoloff',
 				fullTitle: {
-					en_US: 'Metus ut elit est ultrices vivamus mauris est quisque arcu',
+					en: 'Metus ut elit est ultrices vivamus mauris est quisque arcu',
 				},
 			},
 		],
@@ -81,7 +81,7 @@ export default [
 				authorsString: '',
 				authorsStringShort: '',
 				fullTitle: {
-					en_US:
+					en:
 						'Submission title when current user is assigned as reviewer and editor',
 				},
 			},
@@ -128,7 +128,7 @@ export default [
 				authorsString: 'Convallis Tellus',
 				authorsStringShort: 'Tellus',
 				fullTitle: {
-					en_US:
+					en:
 						'Scelerisque felis imperdiet proin fermentum: Pretium quam vulputate dignissim suspendisse in est',
 				},
 			},
@@ -188,7 +188,7 @@ export default [
 				authorsString: 'Curabitur Eget',
 				authorsStringShort: 'Eget',
 				fullTitle: {
-					en_US: 'Mi eget mauris pharetra et ultrices neque ornare aenean',
+					en: 'Mi eget mauris pharetra et ultrices neque ornare aenean',
 				},
 			},
 		],
@@ -247,7 +247,7 @@ export default [
 				authorsString: 'Sed Aenean',
 				authorsStringShort: 'Aenean',
 				fullTitle: {
-					en_US: 'Sed sed mattis amet eget aenean leo est nam sit',
+					en: 'Sed sed mattis amet eget aenean leo est nam sit',
 				},
 			},
 		],
@@ -295,7 +295,7 @@ export default [
 				authorsString: 'Lacus Agittis',
 				authorsStringShort: 'Agittis',
 				fullTitle: {
-					en_US: 'Lacus ut leo dolor nam neque nam dolor aenean sagittis',
+					en: 'Lacus ut leo dolor nam neque nam dolor aenean sagittis',
 				},
 			},
 		],
@@ -343,7 +343,7 @@ export default [
 				authorsString: 'Ullamco Excepteur',
 				authorsStringShort: 'Excepteur',
 				fullTitle: {
-					en_US:
+					en:
 						'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
 				},
 			},
@@ -390,7 +390,7 @@ export default [
 				authorsString: '',
 				authorsStringShort: '',
 				fullTitle: {
-					en_US: 'Submission title when current user has completed a review',
+					en: 'Submission title when current user has completed a review',
 				},
 			},
 		],

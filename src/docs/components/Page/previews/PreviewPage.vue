@@ -63,7 +63,7 @@
 							<li v-for="locale in locales" :key="locale.key">
 								<a :href="locale.key" class="pkpDropdown__action">
 									<icon
-										v-if="locale.key === 'en_US'"
+										v-if="locale.key === 'en'"
 										icon="check"
 										:inline="true"
 									/>
@@ -223,12 +223,12 @@ export default {
 					url: 'http://example.org',
 				},
 			],
-			currentLocale: 'en_US',
+			currentLocale: 'en',
 			hasMultipleContexts: true,
 			isLoggedInAs: 'ccorino',
 			locales: [
 				{
-					key: 'en_US',
+					key: 'en',
 					name: 'English',
 				},
 				{
@@ -236,7 +236,7 @@ export default {
 					name: 'Français (Canada)',
 				},
 				{
-					key: 'ar_AR',
+					key: 'ar',
 					name: 'العربية',
 				},
 			],

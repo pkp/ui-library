@@ -299,7 +299,7 @@ export default {
 				const items = articleStats.filter((row) => {
 					if (this.searchPhrase) {
 						if (
-							!row.object.fullTitle.en_US.includes(this.searchPhrase) &&
+							!row.object.fullTitle.en.includes(this.searchPhrase) &&
 							row.object.id != this.searchPhrase &&
 							!row.object.authorString.includes(this.searchPhrase)
 						) {

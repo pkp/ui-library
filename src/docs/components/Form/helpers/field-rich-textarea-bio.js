@@ -8,9 +8,9 @@ export default {
 	tooltip:
 		'Your biographical statement will usually include your department and rank, and may include research interests or key publications.',
 	value: {
-		en_US: '',
+		en: '',
 		fr_CA: '',
-		ar_AR: '',
+		ar: '',
 	},
 	isMultilingual: true,
 };
