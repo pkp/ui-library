@@ -30,7 +30,7 @@ export default [
 			{
 				id: 142,
 				name: {
-					en_US: 'jpk-review-document.docx',
+					en: 'jpk-review-document.docx',
 				},
 				documentType: 'word',
 				url: 'http://example.org',
@@ -39,7 +39,7 @@ export default [
 			{
 				id: 191,
 				name: {
-					en_US: 'review-for-jpk.docx',
+					en: 'review-for-jpk.docx',
 				},
 				documentType: 'word',
 				url: 'http://example.org',

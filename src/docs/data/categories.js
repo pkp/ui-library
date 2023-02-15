@@ -2,7 +2,7 @@ export default [
 	{
 		contextId: 1,
 		description: {
-			en_US: '',
+			en: '',
 			fr_CA: '',
 		},
 		id: 1,
@@ -11,14 +11,14 @@ export default [
 		sequence: 1,
 		sortOption: 'datePublished',
 		title: {
-			en_US: 'Applied Science',
+			en: 'Applied Science',
 			fr_CA: '',
 		},
 	},
 	{
 		contextId: 1,
 		description: {
-			en_US: '',
+			en: '',
 			fr_CA: '',
 		},
 		id: 2,
@@ -27,14 +27,14 @@ export default [
 		sequence: 2,
 		sortOption: 'sequence',
 		title: {
-			en_US: 'Computer Science',
+			en: 'Computer Science',
 			fr_CA: '',
 		},
 	},
 	{
 		contextId: 1,
 		description: {
-			en_US: '',
+			en: '',
 			fr_CA: '',
 		},
 		id: 3,
@@ -43,14 +43,14 @@ export default [
 		sequence: 3,
 		sortOption: 'datePublished',
 		title: {
-			en_US: 'Engineering',
+			en: 'Engineering',
 			fr_CA: '',
 		},
 	},
 	{
 		contextId: 1,
 		description: {
-			en_US: '',
+			en: '',
 			fr_CA: '',
 		},
 		id: 4,
@@ -59,14 +59,14 @@ export default [
 		sequence: 2,
 		sortOption: 'title',
 		title: {
-			en_US: 'Social Sciences',
+			en: 'Social Sciences',
 			fr_CA: '',
 		},
 	},
 	{
 		contextId: 1,
 		description: {
-			en_US: '',
+			en: '',
 			fr_CA: '',
 		},
 		id: 5,
@@ -75,14 +75,14 @@ export default [
 		sequence: 1,
 		sortOption: 'title',
 		title: {
-			en_US: 'Sociology',
+			en: 'Sociology',
 			fr_CA: '',
 		},
 	},
 	{
 		contextId: 1,
 		description: {
-			en_US: '',
+			en: '',
 			fr_CA: '',
 		},
 		id: 6,
@@ -91,7 +91,7 @@ export default [
 		sequence: 2,
 		sortOption: 'title',
 		title: {
-			en_US: 'Anthropology',
+			en: 'Anthropology',
 			fr_CA: '',
 		},
 	},

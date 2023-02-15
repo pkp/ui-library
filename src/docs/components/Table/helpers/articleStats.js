@@ -21,7 +21,7 @@ const baseStat = {
 	object: {
 		id: 1,
 		fullTitle: {
-			en_US: getRandomTitle(baseTitle),
+			en: getRandomTitle(baseTitle),
 		},
 		sectionId: 1,
 		authorString: 'Carlo Corino',
@@ -37,7 +37,7 @@ for (let i = 1; i < 61; i++) {
 			...baseStat.object,
 			id: i,
 			fullTitle: {
-				en_US: getRandomTitle(baseTitle),
+				en: getRandomTitle(baseTitle),
 			},
 			sectionId: sectionIds[Math.floor(Math.random() * sectionIds.length)],
 		},

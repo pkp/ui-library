@@ -4,16 +4,16 @@ export default {
 	userName: 'exampleuser',
 	fullName: 'Jane Doe',
 	affiliation: {
-		en_US: 'University of Nowhere',
+		en: 'University of Nowhere',
 	},
 	groups: [
 		{
 			id: 1,
 			name: {
-				en_US: 'Reviewer',
+				en: 'Reviewer',
 			},
 			abbrev: {
-				en_US: 'RV',
+				en: 'RV',
 			},
 			roleId: 4096, // reviewer
 			showTitle: true,

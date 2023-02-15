@@ -6,9 +6,9 @@ export default {
 	isRequired: true,
 	size: 'large',
 	value: {
-		en_US: 'Effect of Data Modelling and Conceptual Modelling',
+		en: 'Effect of Data Modelling and Conceptual Modelling',
 		fr_CA: '',
-		ar_AR: '',
+		ar: '',
 	},
 	isMultilingual: true,
 };

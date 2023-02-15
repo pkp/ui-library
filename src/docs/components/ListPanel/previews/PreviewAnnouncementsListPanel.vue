@@ -31,9 +31,9 @@ export default {
 				datePosted: '2020-01-29',
 				id: 1,
 				title: {
-					en_US: 'Eros in cursus turpis massa tincidunt dui ut ornare lectus',
+					en: 'Eros in cursus turpis massa tincidunt dui ut ornare lectus',
 					fr_CA: 'Eros in cursus turpis massa tincidunt dui ut ornare lectus',
-					ar_AR: 'Eros in cursus turpis massa tincidunt dui ut ornare lectus',
+					ar: 'Eros in cursus turpis massa tincidunt dui ut ornare lectus',
 				},
 			},
 			{
@@ -42,11 +42,11 @@ export default {
 				datePosted: '2019-12-12',
 				id: 2,
 				title: {
-					en_US:
+					en:
 						'Elit ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at turpis massa tincidunt dui ut ornare lectus',
 					fr_CA:
 						'Elit ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at turpis massa tincidunt dui ut ornare lectus',
-					ar_AR:
+					ar:
 						'Elit ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at turpis massa tincidunt dui ut ornare lectus',
 				},
 			},
@@ -56,9 +56,9 @@ export default {
 				datePosted: '2019-11-09',
 				id: 3,
 				title: {
-					en_US: 'Risus feugiat in ante metus dictum at',
+					en: 'Risus feugiat in ante metus dictum at',
 					fr_CA: 'Risus feugiat in ante metus dictum at',
-					ar_AR: 'Risus feugiat in ante metus dictum at',
+					ar: 'Risus feugiat in ante metus dictum at',
 				},
 			},
 			{
@@ -67,11 +67,11 @@ export default {
 				datePosted: '2019-09-21',
 				id: 4,
 				title: {
-					en_US:
+					en:
 						'Morbi tincidunt ornare massa eget egestas purus viverra accumsan',
 					fr_CA:
 						'Morbi tincidunt ornare massa eget egestas purus viverra accumsan',
-					ar_AR:
+					ar:
 						'Morbi tincidunt ornare massa eget egestas purus viverra accumsan',
 				},
 			},
@@ -81,9 +81,9 @@ export default {
 				datePosted: '2019-05-15',
 				id: 5,
 				title: {
-					en_US: 'Nibh praesent tristique magna sit amet purus gravida quis',
+					en: 'Nibh praesent tristique magna sit amet purus gravida quis',
 					fr_CA: 'Nibh praesent tristique magna sit amet purus gravida quis',
-					ar_AR: 'Nibh praesent tristique magna sit amet purus gravida quis',
+					ar: 'Nibh praesent tristique magna sit amet purus gravida quis',
 				},
 			},
 		];

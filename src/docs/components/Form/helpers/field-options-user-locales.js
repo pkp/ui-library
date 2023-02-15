@@ -9,7 +9,7 @@ export default {
 	value: [],
 	options: [
 		{
-			value: 'en_US',
+			value: 'en',
 			label: 'English',
 		},
 		{
@@ -17,7 +17,7 @@ export default {
 			label: 'French',
 		},
 		{
-			value: 'ar_AR',
+			value: 'ar',
 			label: 'عربى',
 		},
 	],

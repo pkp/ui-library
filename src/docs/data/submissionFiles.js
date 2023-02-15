@@ -3,12 +3,12 @@ export default [
 		id: 232,
 		fileId: 1232,
 		name: {
-			en_US: 'influence-lactation-final-v2-edited-final.docx',
+			en: 'influence-lactation-final-v2-edited-final.docx',
 			fr_CA: 'french-influence-lactation-final-v2-edited-final.docx',
 		},
 		genreId: 1,
 		genreName: {
-			en_US: 'Book Manuscript',
+			en: 'Book Manuscript',
 			fr_CA: 'FR Book Manuscript',
 		},
 		genreIsDependent: false,
@@ -21,12 +21,12 @@ export default [
 		id: 233,
 		fileId: 1233,
 		name: {
-			en_US: 'ccorino-disclosure-statement.docx',
+			en: 'ccorino-disclosure-statement.docx',
 			fr_CA: 'french-ccorino-disclosure-statement.docx',
 		},
 		genreId: 1,
 		genreName: {
-			en_US: 'Other',
+			en: 'Other',
 			fr_CA: 'FR Other',
 		},
 		genreIsDependent: false,
@@ -40,12 +40,12 @@ export default [
 		id: 234,
 		fileId: 1234,
 		name: {
-			en_US: 'influence-lactation-dataset-approved.xls',
+			en: 'influence-lactation-dataset-approved.xls',
 			fr_CA: 'french-influence-lactation-dataset-approved.xls',
 		},
 		genreId: 1,
 		genreName: {
-			en_US: 'Dataset',
+			en: 'Dataset',
 			fr_CA: 'FR Dataset',
 		},
 		genreIsDependent: false,

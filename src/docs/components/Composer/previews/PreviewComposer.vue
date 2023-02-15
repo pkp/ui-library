@@ -68,48 +68,48 @@ export default {
 			...emailTemplate,
 			key: 'ACCEPTED_CONDITIONAL',
 			name: {
-				en_US: 'Accepted With Conditions',
+				en: 'Accepted With Conditions',
 			},
 			subject: {
-				en_US: 'Accepted With Conditions',
+				en: 'Accepted With Conditions',
 			},
 		});
 		emailTemplates.push({
 			...emailTemplate,
 			key: 'ACCEPTED_EARLY_PUBLICATION',
 			name: {
-				en_US: 'Accepted for Early Publication',
+				en: 'Accepted for Early Publication',
 			},
 			subject: {
-				en_US: 'Accepted for Early Publication',
+				en: 'Accepted for Early Publication',
 			},
 		});
 		const recipientOptions = [
 			{
 				value: 2,
 				label: {
-					en_US: 'Carlo Corino',
+					en: 'Carlo Corino',
 					fr_CA: 'Carlo Fr Corino',
 				},
 			},
 			{
 				value: 3,
 				label: {
-					en_US: 'Daniel Barnes',
+					en: 'Daniel Barnes',
 					fr_CA: 'Daniel Fr Barnes',
 				},
 			},
 			{
 				value: 4,
 				label: {
-					en_US: 'Stephanie Minoue',
+					en: 'Stephanie Minoue',
 					fr_CA: 'Stephanie Fr Minoue',
 				},
 			},
 			{
 				value: 5,
 				label: {
-					en_US: 'Paul Hudson',
+					en: 'Paul Hudson',
 					fr_CA: 'Paul Fr Hudson',
 				},
 			},
@@ -125,10 +125,10 @@ export default {
 			emailTemplates: emailTemplates,
 			emailTemplatesApiUrl:
 				'http://localhost:8000/publicknowledge/api/v1/emailTemplates',
-			locale: 'en_US',
+			locale: 'en',
 			locales: [
 				{
-					locale: 'en_US',
+					locale: 'en',
 					name: 'English',
 				},
 				{
@@ -141,7 +141,7 @@ export default {
 			recipientOptions: recipientOptions,
 			recipients: recipientOptions.map((r) => r.value),
 			variables: {
-				en_US: [...insertContent],
+				en: [...insertContent],
 				fr_CA: [...insertContent],
 			},
 		};

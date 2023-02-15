@@ -6,9 +6,9 @@ export default {
 	description: 'Examples: A, The',
 	size: 'small',
 	value: {
-		en_US: 'The',
+		en: 'The',
 		fr_CA: '',
-		ar_AR: '',
+		ar: '',
 	},
 	isMultilingual: true,
 };

@@ -28,7 +28,7 @@ export default {
 			label: 'Français (Canada)',
 		},
 		{
-			key: 'ar_AR',
+			key: 'ar',
 			label: 'عربى',
 		},
 	],
