@@ -103,6 +103,39 @@ export default {
 					this.menu = menu;
 				}
 			}
+
+			// Update allowed pubObjects for DOI assignment on registration agency change
+			if (formId === pkp.const.FORM_DOI_REGISTRATION_SETTINGS) {
+				const newlyEnabledPlugin = context.registrationAgency;
+				const existingPlugin =
+					this.components.doiSetupSettings.enabledRegistrationAgency;
+
+				if (newlyEnabledPlugin !== existingPlugin) {
+					this.components.doiSetupSettings.enabledRegistrationAgency =
+						newlyEnabledPlugin;
+
+					this.components.doiSetupSettings.fields =
+						this.components.doiSetupSettings.fields.map((field) => {
+							if (field.name === 'enabledDoiTypes') {
+								field.options =
+									this.components.doiSetupSettings.objectTypeOptions.filter(
+										(option) => {
+											return newlyEnabledPlugin === null
+												? true
+												: option.allowedBy.includes(newlyEnabledPlugin);
+										}
+									);
+
+								let fieldValues = field.value;
+								field.value = fieldValues.filter((value) => {
+									return field.options.some((option) => option.value === value);
+								});
+							}
+
+							return field;
+						});
+				}
+			}
 		});
 	},
 	destroyed() {

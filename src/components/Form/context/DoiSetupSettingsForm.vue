@@ -4,6 +4,14 @@ import Form from '../Form.vue';
 export default {
 	name: 'DoiSetupSettingsForm',
 	extends: Form,
+	props: {
+		enabledRegistrationAgency: {
+			type: String,
+		},
+		objectTypeOptions: {
+			type: Array,
+		},
+	},
 	methods: {
 		/**
 		 * Update values when a field has changed
