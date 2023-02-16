@@ -65,6 +65,7 @@ import FieldOptions from '@/components/Form/fields/FieldOptions.vue';
 import FieldPreparedContent from '@/components/Form/fields/FieldPreparedContent.vue';
 import FieldRadioInput from '@/components/Form/fields/FieldRadioInput.vue';
 import FieldRichTextarea from '@/components/Form/fields/FieldRichTextarea.vue';
+import FieldRichText from '@/components/Form/fields/FieldRichText.vue';
 import FieldSelect from '@/components/Form/fields/FieldSelect.vue';
 import FieldSelectIssue from '@/components/Form/fields/FieldSelectIssue.vue';
 import FieldSelectSubmissions from '@/components/Form/fields/FieldSelectSubmissions.vue';
@@ -89,6 +90,7 @@ export default {
 		FieldPreparedContent,
 		FieldRadioInput,
 		FieldRichTextarea,
+		FieldRichText,
 		FieldSelect,
 		FieldSelectIssue,
 		FieldSelectSubmissions,
