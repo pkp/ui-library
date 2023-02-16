@@ -40,36 +40,36 @@
             "alternateTo": null,
             "body": {
                 "fr_CA": "Prière de saisir votre message.",
-                "en_US": "Please enter your message."
+                "en": "Please enter your message."
             },
             "contextId": null,
             "id": null,
             "key": "DISCUSSION_NOTIFICATION_COPYEDITING",
             "name": {
                 "fr_CA": "",
-                "en_US": "Discussion (Copyediting)"
+                "en": "Discussion (Copyediting)"
             },
             "subject": {
                 "fr_CA": "Un message à propos de la revue {$journalName}",
-                "en_US": "A message regarding {$journalName}"
+                "en": "A message regarding {$journalName}"
             }
         },
         {
             "_href": "http://localhost:8000/pu/api/v1/emailTemplates/CITATION_EDITOR_AUTHOR_QUERY",
             "alternateTo": "DISCUSSION_NOTIFICATION_COPYEDITING",
             "body": {
-                "en_US": "{$recipientName},<br />\n<br />\nCould you please verify or provide us with the proper citation for the following reference from your article, {$submissionTitle}:<br />\n<br />\n{$rawCitation}<br />\n<br />\nThanks!<br />\n<br />\n{$senderName}<br />\nCopy-Editor, {$journalName}<br />\n",
+                "en": "{$recipientName},<br />\n<br />\nCould you please verify or provide us with the proper citation for the following reference from your article, {$submissionTitle}:<br />\n<br />\n{$rawCitation}<br />\n<br />\nThanks!<br />\n<br />\n{$senderName}<br />\nCopy-Editor, {$journalName}<br />\n",
                 "fr_CA": "{$recipientName},<br />\n<br />\nPourriez-vous vérifier ou nous fournir la référence bibliographique complète pour la référence suivante, provenant de votre article « {$submissionTitle} »  :<br />\n<br />\n{$rawCitation}<br />\n<br />\nMerci!<br />\n<br />\n{$senderName}<br />\nRéviseur-e, revue {$journalName}<br />\n"
             },
             "contextId": 1,
             "id": 2,
             "key": "CITATION_EDITOR_AUTHOR_QUERY",
             "name": {
-                "en_US": "Question About Citation",
+                "en": "Question About Citation",
                 "fr_CA": ""
             },
             "subject": {
-                "en_US": "Citation Editing",
+                "en": "Citation Editing",
                 "fr_CA": "Modification des références bibliographiques"
             }
         },
@@ -77,18 +77,18 @@
             "_href": "http://localhost:8000/pu/api/v1/emailTemplates/COPYEDIT_REQUEST",
             "alternateTo": "DISCUSSION_NOTIFICATION_COPYEDITING",
             "body": {
-                "en_US": "<p>Dear {$recipientName},</p><p>A new submission is ready to be copyedited:</p><p><a href\"{$submissionUrl}\">{$submissionId} {$submissionTitle}</a><br />{$journalName}</p><p>Please follow these steps to complete this task:</p><ol><li>1. Click on the Submission URL below.</li><li>2. Open any files available under Draft Files and edit the files. Use the Copyediting Discussions area if you need to contact the editor(s) or author(s).</li><li>3. Save the copyedited file(s) and upload them to the Copyedited panel.</li><li>4. Use the Copyediting Discussions to notify the editor(s) that all files have been prepared, and that the Production process may begin.</li></ol><p>If you are unable to undertake this work at this time or have any questions, please contact me. Thank you for your contribution to this journal.</p><p>Kind regards,</p>{$signature}",
+                "en": "<p>Dear {$recipientName},</p><p>A new submission is ready to be copyedited:</p><p><a href\"{$submissionUrl}\">{$submissionId} {$submissionTitle}</a><br />{$journalName}</p><p>Please follow these steps to complete this task:</p><ol><li>1. Click on the Submission URL below.</li><li>2. Open any files available under Draft Files and edit the files. Use the Copyediting Discussions area if you need to contact the editor(s) or author(s).</li><li>3. Save the copyedited file(s) and upload them to the Copyedited panel.</li><li>4. Use the Copyediting Discussions to notify the editor(s) that all files have been prepared, and that the Production process may begin.</li></ol><p>If you are unable to undertake this work at this time or have any questions, please contact me. Thank you for your contribution to this journal.</p><p>Kind regards,</p>{$signature}",
                 "fr_CA": "{$recipientName},<br />\n<br />\nJ'aimerais que vous effectuiez la révision du manuscrit intitulé « {$submissionTitle} » pour la revue {$journalName} à l'aide des étapes suivantes.<br />\n1. Cliquer sur l'URL de la soumission ci-dessous.<br />\n2. Ouvrir le(s) fichier(s) disponible(s) sous Fichiers des ébauches finales et effectuer votre révision, tout en ajoutant des discussions sur la révision, le cas échéant.<br />\n3. Enregistrer le(s) fichier(s) révisé(s) et le(s) téléverser dans la section Version(s) révisée(s).<br />\n4. Informer le,la rédacteur-trice que tous les fichiers ont été révisés et que l'étape de production peut débuter.<br />\n<br />\nURL de la revue {$journalName} : {$journalUrl}<br />\nURL de la soumission : {$submissionUrl}<br />\nNom d'utilisateur-trice : {$recipientUsername}"
             },
             "contextId": 1,
             "id": 1,
             "key": "COPYEDIT_REQUEST",
             "name": {
-                "en_US": "Request Copyedit",
+                "en": "Request Copyedit",
                 "fr_CA": ""
             },
             "subject": {
-                "en_US": "Submission {$submissionId} is ready to be copyedited for {$contextAcronym}",
+                "en": "Submission {$submissionId} is ready to be copyedited for {$contextAcronym}",
                 "fr_CA": "Demande de révision d'une soumission"
             }
         }

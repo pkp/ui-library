@@ -26,35 +26,35 @@ export default {
 			{
 				id: 1,
 				name: {
-					en_US: 'Institution 1 Name EN',
+					en: 'Institution 1 Name EN',
 					fr_CA: 'Institution 1 Name FR',
-					ar_AR: 'Institution 1 Name AR',
+					ar: 'Institution 1 Name AR',
 				},
 				ipRanges: ['142.60.*.*'],
 			},
 			{
 				id: 2,
 				name: {
-					en_US: 'Institution 2 Name EN',
+					en: 'Institution 2 Name EN',
 					fr_CA: 'Institution 2 Name FR',
-					ar_AR: 'Institution 2 Name AR',
+					ar: 'Institution 2 Name AR',
 				},
 				ipRanges: ['142.58.103.1 - 142.58.103.4', '142.59.*.*'],
 			},
 			{
 				id: 3,
 				name: {
-					en_US: 'Institution 3 Name EN',
+					en: 'Institution 3 Name EN',
 					fr_CA: 'Institution 3 Name FR',
-					ar_AR: 'Institution 3 Name AR',
+					ar: 'Institution 3 Name AR',
 				},
 			},
 			{
 				id: 4,
 				name: {
-					en_US: 'Institution 4 Name EN',
+					en: 'Institution 4 Name EN',
 					fr_CA: 'Institution 4 Name FR',
-					ar_AR: 'Institution 4 Name AR',
+					ar: 'Institution 4 Name AR',
 				},
 			},
 		];

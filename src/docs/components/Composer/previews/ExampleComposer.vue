@@ -26,19 +26,19 @@ export default {
 					{
 						key: 'EDITOR_DECISION_ACCEPT',
 						subject: {
-							en_US: 'Editor Decision',
+							en: 'Editor Decision',
 						},
 					},
 					{
 						key: 'EXAMPLE_ONE',
 						subject: {
-							en_US: 'Example One',
+							en: 'Example One',
 						},
 					},
 					{
 						key: 'EXAMPLE_TWO',
 						subject: {
-							en_US: 'Example Two',
+							en: 'Example Two',
 						},
 					},
 				];

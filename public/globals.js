@@ -148,9 +148,9 @@ window.pkp = {
  */
 window.$.pkp = {
 	app: {
-		currentLocale: 'en_US',
-		primaryLocale: 'en_US',
-		rtlLocales: ['ar_AR']
+		currentLocale: 'en',
+		primaryLocale: 'en',
+		rtlLocales: ['ar']
 	},
 	pkpHandler() {
 		alert(

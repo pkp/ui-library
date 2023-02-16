@@ -207,7 +207,7 @@
 					name="body"
 					:label="bodyLabel"
 					groupId="message"
-					primaryLocale="en_US"
+					primaryLocale="en"
 					:all-errors="errors"
 					:init="bodyInit"
 					:formId="id"

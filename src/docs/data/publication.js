@@ -5,7 +5,7 @@ export default {
 	_href:
 		'http://localhost:8000/publicknowledge/api/v1/submissions/17/publications/17',
 	abstract: {
-		en_US:
+		en:
 			'<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>',
 		fr_CA:
 			'<p>FR Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>',
@@ -17,29 +17,29 @@ export default {
 	categoryIds: [2, 3],
 	citations: {
 		fr_CA: '',
-		en_US: '',
+		en: '',
 	},
 	copyrightHolder: {
 		fr_CA: '',
-		en_US: '',
+		en: '',
 	},
 	copyrightYear: null,
 	coverImage: {
 		fr_CA: null,
-		en_US: null,
+		en: null,
 	},
 	coverage: {
 		fr_CA: '',
-		en_US: '',
+		en: '',
 	},
 	datePublished: null,
 	disciplines: {
 		fr_CA: [],
-		en_US: [],
+		en: [],
 	},
 	doiObject: {...doi},
 	fullTitle: {
-		en_US:
+		en:
 			'The Lorem ipsum dolor sit amet: Excepteur sint occaecat cupidatat non proident',
 		fr_CA:
 			'Le Frorem ipsum dolor sit amet: Frexcepteur sint occaecat cupidatat non proident',
@@ -50,7 +50,7 @@ export default {
 			id: 7,
 			isApproved: false,
 			label: 'PDF',
-			locale: 'en_US',
+			locale: 'en',
 			doiObject: {...doi},
 			publicationId: 17,
 			seq: 0,
@@ -62,7 +62,7 @@ export default {
 			id: 8,
 			isApproved: false,
 			label: 'Remote',
-			locale: 'en_US',
+			locale: 'en',
 			doiObject: {...doi},
 			publicationId: 17,
 			seq: 1,
@@ -74,7 +74,7 @@ export default {
 			id: 9,
 			isApproved: false,
 			label: 'Supplementaru',
-			locale: 'en_US',
+			locale: 'en',
 			doiObject: {...doi},
 			publicationId: 17,
 			seq: 2,
@@ -87,56 +87,56 @@ export default {
 	isPublished: false,
 	issueId: null,
 	keywords: {
-		en_US: ['new keyword', 'and second keyword'],
+		en: ['new keyword', 'and second keyword'],
 		fr_CA: ['fr keyword one', 'fr keyword two'],
 	},
 	language: null,
 	lastModified: '2019-06-06 15:00:37',
 	licenseUrl: null,
-	locale: 'en_US',
+	locale: 'en',
 	pages: null,
 	prefix: {
 		fr_CA: 'Le',
-		en_US: 'The',
+		en: 'The',
 	},
 	primaryContactId: 20,
 	'pub-id::publisher-id': 'lorem-ipsum',
 	publicationDateType: 'pub',
 	publicationSummary: {
 		fr_CA: '',
-		en_US: '',
+		en: '',
 	},
 	publicationType: 'publication',
 	rights: {
 		fr_CA: '',
-		en_US: '',
+		en: '',
 	},
 	sectionId: 1,
 	seq: 0,
 	source: {
 		fr_CA: '',
-		en_US: '',
+		en: '',
 	},
 	subjects: {
 		fr_CA: [],
-		en_US: [],
+		en: [],
 	},
 	submissionId: 17,
 	subtitle: {
-		en_US: 'Excepteur sint occaecat cupidatat non proident',
+		en: 'Excepteur sint occaecat cupidatat non proident',
 		fr_CA: 'Frexcepteur sint occaecat cupidatat non proident',
 	},
 	supportingAgencies: {
 		fr_CA: [],
-		en_US: [],
+		en: [],
 	},
 	title: {
-		en_US: 'Lorem ipsum dolor sit amet',
+		en: 'Lorem ipsum dolor sit amet',
 		fr_CA: 'Frorem ipsum dolor sit amet',
 	},
 	type: {
 		fr_CA: '',
-		en_US: '',
+		en: '',
 	},
 	urlPublished:
 		'http://localhost:8000/publicknowledge/article/view/lorem-ipsum/version/17',

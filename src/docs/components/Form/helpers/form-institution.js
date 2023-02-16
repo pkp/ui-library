@@ -13,9 +13,9 @@ export default {
 			isRequired: true,
 			size: 'large',
 			value: {
-				en_US: '',
+				en: '',
 				fr_CA: '',
-				ar_AR: '',
+				ar: '',
 			},
 			isMultilingual: true,
 			groupId: 'default',
@@ -45,7 +45,7 @@ export default {
 			label: 'Français (Canada)',
 		},
 		{
-			key: 'ar_AR',
+			key: 'ar',
 			label: 'عربى',
 		},
 	],

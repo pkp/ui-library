@@ -12,7 +12,7 @@ export default {
 			label: 'Name',
 			name: 'name',
 			value: {
-				en_US: '',
+				en: '',
 				fr_CA: '',
 			},
 			isMultilingual: true,
@@ -24,7 +24,7 @@ export default {
 			label: 'Subject',
 			isMultilingual: true,
 			value: {
-				en_US: '',
+				en: '',
 				fr_CA: '',
 			},
 			groupId: 'default',
@@ -41,7 +41,7 @@ export default {
 			toolbar:
 				'bold italic superscript subscript | link | blockquote bullist numlist',
 			value: {
-				en_US: '',
+				en: '',
 				fr_CA: '',
 			},
 			insertLabel: 'Insert',
