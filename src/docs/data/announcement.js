@@ -16,20 +16,20 @@ export default {
 	dateExpire: '2022-02-03',
 	datePosted: '2020-01-29',
 	description: {
-		en_US: description,
+		en: description,
 		fr_CA: description,
-		ar_AR: description,
+		ar: description,
 	},
 	descriptionShort: {
-		en_US: descriptionShort,
+		en: descriptionShort,
 		fr_CA: descriptionShort,
-		ar_AR: descriptionShort,
+		ar: descriptionShort,
 	},
 	id: 1,
 	title: {
-		en_US: 'Eros in cursus turpis massa tincidunt dui ut ornare lectus',
+		en: 'Eros in cursus turpis massa tincidunt dui ut ornare lectus',
 		fr_CA: 'Eros in cursus turpis massa tincidunt dui ut ornare lectus',
-		ar_AR: 'Eros in cursus turpis massa tincidunt dui ut ornare lectus',
+		ar: 'Eros in cursus turpis massa tincidunt dui ut ornare lectus',
 	},
 	typeId: 1,
 };

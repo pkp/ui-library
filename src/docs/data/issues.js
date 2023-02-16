@@ -13,7 +13,7 @@ export default [
 			identifier: '10.987/iss456',
 		},
 		title: {
-			en_US: 'Issue Number 2',
+			en: 'Issue Number 2',
 			fr_CA: 'Issue Number 2',
 		},
 	},
@@ -27,7 +27,7 @@ export default [
 			identifier: '10.987/iss789',
 		},
 		title: {
-			en_US: 'Issue Number 3',
+			en: 'Issue Number 3',
 			fr_CA: 'Issue Number 3',
 		},
 	},
@@ -41,7 +41,7 @@ export default [
 			identifier: '10.987/iss012',
 		},
 		title: {
-			en_US: 'Issue Number 4',
+			en: 'Issue Number 4',
 			fr_CA: 'Issue Number 4',
 		},
 	},

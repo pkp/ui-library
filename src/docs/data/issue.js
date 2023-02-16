@@ -15,7 +15,7 @@ export default {
 					authorsString: 'Catherine Kwantes',
 					authorsStringShort: 'Kwantes',
 					fullTitle: {
-						en_US:
+						en:
 							'Quisque vel ultrices ut vel sollicitudin vel varius suscipit phasellus',
 					},
 					isPublished: true,
@@ -38,18 +38,18 @@ export default {
 		},
 	],
 	coverImageAltText: {
-		en_US: '',
+		en: '',
 		fr_CA: '',
 	},
 	coverImageUrl: {
-		en_US: '',
+		en: '',
 		fr_CA: '',
 	},
 	dateNotified: null,
 	datePublished: '2020-09-18 20:41:39',
 	doiObject: {...doi},
 	description: {
-		en_US: '',
+		en: '',
 		fr_CA: '',
 	},
 	galleys: [],
@@ -60,7 +60,7 @@ export default {
 	'pub-id::doi': '10.987/iss123',
 	publishedUrl: 'http://localhost:8080/publicknowledge/issue/view/1',
 	title: {
-		en_US: 'Issue Number 1',
+		en: 'Issue Number 1',
 		fr_CA: 'Issue Number 1',
 	},
 	volume: 1,

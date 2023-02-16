@@ -13,11 +13,11 @@ export default {
 			},
 		},
 	],
-	primaryLocale: 'en_US',
-	visibleLocales: ['en_US'],
+	primaryLocale: 'en',
+	visibleLocales: ['en'],
 	supportedFormLocales: [
 		{
-			key: 'en_US',
+			key: 'en',
 			label: 'English',
 		},
 	],

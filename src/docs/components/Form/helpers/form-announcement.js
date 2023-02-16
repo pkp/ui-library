@@ -9,9 +9,9 @@ export default {
 		{
 			...FieldTextTitle,
 			value: {
-				en_US: '',
+				en: '',
 				fr_CA: '',
-				ar_AR: '',
+				ar: '',
 			},
 			groupId: 'default',
 		},
@@ -23,9 +23,9 @@ export default {
 			plugins: 'paste,link,noneditable',
 			toolbar: 'bold italic superscript subscript | link',
 			value: {
-				en_US: '',
+				en: '',
 				fr_CA: '',
-				ar_AR: '',
+				ar: '',
 			},
 			groupId: 'default',
 		},
@@ -38,9 +38,9 @@ export default {
 			plugins: 'paste,link,noneditable',
 			toolbar: 'bold italic superscript subscript | link',
 			value: {
-				en_US: '',
+				en: '',
 				fr_CA: '',
-				ar_AR: '',
+				ar: '',
 			},
 			groupId: 'default',
 		},
@@ -84,7 +84,7 @@ export default {
 			label: 'Français (Canada)',
 		},
 		{
-			key: 'ar_AR',
+			key: 'ar',
 			label: 'عربى',
 		},
 	],

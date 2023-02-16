@@ -5,9 +5,9 @@ export default {
 	label: 'Subtitle',
 	size: 'large',
 	value: {
-		en_US: 'A comparative analysis of functionality and roles',
+		en: 'A comparative analysis of functionality and roles',
 		fr_CA: '',
-		ar_AR: '',
+		ar: '',
 	},
 	isMultilingual: true,
 };

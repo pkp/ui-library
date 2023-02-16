@@ -17,9 +17,9 @@ export default {
 					errors: {
 						email: ['Please provide a valid email address'],
 						affiliation: {
-							en_US: ['You must enter your affiliation in English.'],
+							en: ['You must enter your affiliation in English.'],
 							fr_CA: ['You must enter your affiliation in French.'],
-							ar_AR: ['You must enter your affiliation in Arabic.'],
+							ar: ['You must enter your affiliation in Arabic.'],
 						},
 						'user-locales': ['You must select at least two options.'],
 						bio: {

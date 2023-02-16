@@ -72,7 +72,7 @@
 								:items="components.submissionFiles.items"
 								:options="components.submissionFiles.options"
 								otherLabel="Other"
-								primaryLocale="en_US"
+								primaryLocale="en"
 								removeConfirmLabel="Are you sure you want to remove this file?"
 								:stageId="1"
 								title="Files"

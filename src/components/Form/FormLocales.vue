@@ -68,7 +68,7 @@ export default {
 		 * the primary locale and any other visible locale will be removed. The
 		 * primary locale is always visible.
 		 *
-		 * @param {String} localeKey "en_US"
+		 * @param {String} localeKey "en"
 		 */
 		toggleLocale: function (localeKey) {
 			let selected = [this.primaryLocaleKey];
