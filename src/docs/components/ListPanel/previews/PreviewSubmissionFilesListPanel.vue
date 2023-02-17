@@ -13,7 +13,7 @@
 		:items="components.preview.items"
 		:options="components.preview.options"
 		otherLabel="Other"
-		primaryLocale="en_US"
+		primaryLocale="en"
 		removeConfirmLabel="Are you sure you want to remove this file?"
 		:stageId="1"
 		title="Files"
@@ -44,7 +44,7 @@ export default {
 							id: 235,
 							fileId: 1234,
 							name: {
-								en_US: 'file-with-no-genre-assignment-yet.docx',
+								en: 'file-with-no-genre-assignment-yet.docx',
 								fr_CA: 'french-file-with-no-genre-assignment-yet.docx',
 							},
 							genre: null,

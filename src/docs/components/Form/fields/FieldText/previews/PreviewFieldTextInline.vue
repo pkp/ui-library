@@ -4,7 +4,7 @@
 		label="Title:"
 		:is-label-inline="true"
 		size="large"
-		localeKey="en_US"
+		localeKey="en"
 		@change="change"
 	/>
 </template>

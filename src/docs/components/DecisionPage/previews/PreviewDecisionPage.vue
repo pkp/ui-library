@@ -292,8 +292,8 @@ export default {
 								id: 'default',
 							},
 						],
-						primaryLocale: 'en_US',
-						visibleLocales: ['en_US'],
+						primaryLocale: 'en',
+						visibleLocales: ['en'],
 						supportedFormLocales: [],
 						errors: {},
 					},
@@ -310,7 +310,7 @@ export default {
 						{
 							value: 31,
 							label: {
-								en_US: 'Rana Baiyewu',
+								en: 'Rana Baiyewu',
 								fr_CA: 'Rana Fr Baiyewu',
 							},
 						},
@@ -322,42 +322,42 @@ export default {
 						{
 							...emailTemplate,
 							name: {
-								en_US: 'Accept for Publication',
+								en: 'Accept for Publication',
 							},
 							subject: {
-								en_US: 'Accept for Publication',
+								en: 'Accept for Publication',
 							},
 						},
 						{
 							...emailTemplate,
 							key: 'EDITOR_DECISION_ACCEPT_CONDITIONS',
 							name: {
-								en_US: 'Accept with Conditions',
+								en: 'Accept with Conditions',
 							},
 							subject: {
-								en_US: 'Accept with Conditions',
+								en: 'Accept with Conditions',
 							},
 						},
 						{
 							...emailTemplate,
 							key: 'EDITOR_DECISION_ACCEPT_EARLY',
 							name: {
-								en_US: 'Accept for Early Publication',
+								en: 'Accept for Early Publication',
 							},
 							subject: {
-								en_US: 'Accept for Early Publication',
+								en: 'Accept for Early Publication',
 							},
 						},
 					],
 					emailTemplatesApiUrl: 'http://example.org',
 					variables: {
-						en_US: [...insertContent],
+						en: [...insertContent],
 						fr_CA: [...insertContent],
 					},
-					locale: 'en_US',
+					locale: 'en',
 					locales: [
 						{
-							locale: 'en_US',
+							locale: 'en',
 							name: 'English',
 						},
 						{
@@ -383,14 +383,14 @@ export default {
 						{
 							value: 10,
 							label: {
-								en_US: 'Adela Gallego',
+								en: 'Adela Gallego',
 								fr_CA: 'Adela Gallego',
 							},
 						},
 						{
 							value: 9,
 							label: {
-								en_US: 'Aisla McCrae',
+								en: 'Aisla McCrae',
 								fr_CA: 'Aisla McCrae',
 							},
 						},
@@ -403,26 +403,26 @@ export default {
 							...emailTemplate,
 							key: 'EDITOR_DECISION_THANK_REVIEWERS',
 							subject: {
-								en_US: 'Thank Reviewer',
+								en: 'Thank Reviewer',
 							},
 						},
 						{
 							...emailTemplate,
 							key: 'EDITOR_DECISION_THANK_REVIEWERS_REQUEST',
 							subject: {
-								en_US: 'Thank Reviewer and Request Feedback',
+								en: 'Thank Reviewer and Request Feedback',
 							},
 						},
 					],
 					emailTemplatesApiUrl: 'http://example.org',
 					variables: {
-						en_US: [...insertContent],
+						en: [...insertContent],
 						fr_CA: [...insertContent],
 					},
-					locale: 'en_US',
+					locale: 'en',
 					locales: [
 						{
-							locale: 'en_US',
+							locale: 'en',
 							name: 'English',
 						},
 						{

@@ -1,16 +1,16 @@
 export const dbarnes = {
 	affiliation: {
-		en_US: 'Public Knowledge Project',
+		en: 'Public Knowledge Project',
 		fr_CA: '',
 	},
 	email: 'dbarnes@mailinator.com',
 	familyName: {
-		en_US: 'Barnes',
+		en: 'Barnes',
 		fr_CA: '',
 	},
 	fullName: 'Daniel Barnes',
 	givenName: {
-		en_US: 'Daniel',
+		en: 'Daniel',
 		fr_CA: '',
 	},
 	id: 20,
@@ -18,37 +18,37 @@ export const dbarnes = {
 	orcid: '',
 	preferredPublicName: {
 		fr_CA: '',
-		en_US: '',
+		en: '',
 	},
 	publicationId: 17,
 	seq: 1,
 	userGroupId: 14,
 	userGroupName: {
 		fr_CA: '',
-		en_US: 'Author',
+		en: 'Author',
 	},
 };
 
 export const lipsum = {
 	affiliation: {
-		en_US: 'University of Public Knowledge',
+		en: 'University of Public Knowledge',
 		fr_CA: '',
 	},
 	email: 'lipsum@mailinator.com',
 	familyName: {
-		en_US: 'Ipsum',
+		en: 'Ipsum',
 		fr_CA: 'Ipsum',
 	},
 	fullName: 'Dr. L. P. Ipsum',
 	givenName: {
-		en_US: 'Lorem',
+		en: 'Lorem',
 		fr_CA: 'French Lorem',
 	},
 	id: 21,
 	includeInBrowse: true,
 	orcid: 'https://orcid.org/0000-0001-5756-5406',
 	preferredPublicName: {
-		en_US: 'Dr. L. P. Ipsum',
+		en: 'Dr. L. P. Ipsum',
 		fr_CA: 'Dr F. L. P. Ipsum',
 	},
 	publicationId: 17,
@@ -56,7 +56,7 @@ export const lipsum = {
 	userGroupId: 14,
 	userGroupName: {
 		fr_CA: '',
-		en_US: 'Author',
+		en: 'Author',
 	},
 };
 
