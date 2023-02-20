@@ -171,7 +171,7 @@ export default {
  * Hide the toolbar popup button when the field
  * is not focused. See the comment at closeToolbar().
  */
-.tox-editor-header {
+.pkpFormField--richTextArea__control--oneline .tox-editor-header {
 	display: none;
 }
 
