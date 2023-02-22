@@ -225,6 +225,7 @@
 					<div
 						v-if="attachments.length"
 						class="composer__attachments"
+						ref="attachedFiles"
 						slot="footer"
 					>
 						<span class="-screenReader">
@@ -641,9 +642,9 @@ export default {
 							};
 						case 'FileAttacherFileStage':
 						case 'FileAttacherReviewFiles': {
-							let name = this.localize(file.name, this.locale).trim();
+							const name = this.localize(file.name, this.locale).trim();
 							return {
-								name: name === '' ? this.localize(file.name) : '',
+								name: name === '' ? this.localize(file.name) : name,
 								submissionFileId: file.id,
 								documentType: file.documentType,
 							};
@@ -659,7 +660,6 @@ export default {
 			];
 			this.emitChange({attachments});
 			this.$modal.hide(this.fileAttacherModalId);
-			this.$nextTick(() => this.setFocusToRef('attachFiles'));
 		},
 
 		/**
@@ -814,7 +814,13 @@ export default {
 		 * Reset the focus when the attachment modal is closed
 		 */
 		resetFocusAfterAttachment() {
-			this.$refs.attachFiles.$el.focus();
+			this.$nextTick(() => {
+				if (this.$refs.attachedFiles) {
+					this.$refs.attachedFiles.focus();
+				} else {
+					this.setFocusIn(this.$el.querySelector('.composer__body'));
+				}
+			});
 		},
 
 		/**
