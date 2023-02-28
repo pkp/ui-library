@@ -1,6 +1,6 @@
 <template>
 	<div class="pkpFilter--autosuggest" :class="classes">
-		<component :is="component" v-bind="autosuggest" @change="toggle" />
+		<component :is="component" v-bind="autosuggest" @change="changeSelection" />
 	</div>
 </template>
 
@@ -28,37 +28,35 @@ export default {
 	},
 	data() {
 		return {
-			value: null,
+			currentValue: this.value,
+			currentSelected: this.autosuggestProps.selected,
 		};
 	},
 	computed: {
 		autosuggest() {
-			if (this.value) {
-				return {
-					...this.autosuggestProps,
-					value: this.value,
-				};
-			}
-			return {...this.autosuggestProps};
+			return {
+				...this.autosuggestProps,
+				value: this.currentValue,
+				selected: this.currentSelected,
+			};
 		},
 	},
 	methods: {
-		toggle(fieldName, fieldProp, newVal, localeKey) {
+		changeSelection(fieldName, fieldProp, newVal, localeKey) {
+			if (fieldProp === 'value') {
+				this.currentValue = newVal;
+			} else if (fieldProp === 'selected') {
+				this.currentSelected = newVal;
+			}
+		},
+	},
+	watch: {
+		currentValue(newVal, oldVal) {
 			if (newVal.length) {
 				this.$emit('add-filter', this.param, newVal);
 			} else {
-				this.remove();
+				this.$emit('remove-filter', this.param);
 			}
-			// Update the value in the autosuggest field
-			if (this.autosuggestProps.isMultilingual) {
-				this.value = {};
-				this.value[localeKey] = newVal;
-			} else {
-				this.value = newVal;
-			}
-		},
-		remove() {
-			this.$emit('remove-filter', this.param);
 		},
 	},
 };
