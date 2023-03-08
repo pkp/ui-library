@@ -1,5 +1,5 @@
 module.exports = {
-	publicPath: process.env.PKP_DOCS ? '/dev/ui-library/dev/' : '/',
+	publicPath: process.env.PKP_DOCS ? '/dev/ui-library/3.3/' : '/',
 	chainWebpack: config => {
 		config.module
 			.rule('markdown')

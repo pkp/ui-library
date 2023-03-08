@@ -38,7 +38,7 @@ export default {
 				name: 'assignedTo',
 				label: 'Assigned to Editors',
 				selectedLabel: 'Assigned',
-				apiUrl: '/usernames.json'
+				apiUrl: 'usernames.json'
 			},
 			issues: {
 				...fieldBase,
