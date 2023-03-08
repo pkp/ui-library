@@ -38,7 +38,7 @@ export default {
 				name: 'assignedTo',
 				label: 'Assigned to Editors',
 				selectedLabel: 'Assigned',
-				apiUrl: '/usernames.json',
+				apiUrl: 'usernames.json',
 			},
 			issues: {
 				...fieldBase,
@@ -46,7 +46,7 @@ export default {
 				name: 'issueIds',
 				label: 'Assigned to Issues',
 				selectedLabel: 'Assigned',
-				apiUrl: '/issues.json',
+				apiUrl: 'issues.json',
 			},
 			activeFilters: {
 				assignedTo: [],

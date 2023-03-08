@@ -192,7 +192,7 @@ export default {
 		},
 		getMailable(mailable, onSuccess) {
 			$.ajax({
-				url: '/mailable.json',
+				url: 'mailable.json',
 				type: 'GET',
 				context: this,
 				error() {
@@ -209,7 +209,7 @@ export default {
 	},
 	created() {
 		$.ajax({
-			url: '/mailables.json',
+			url: 'mailables.json',
 			method: 'GET',
 			context: this,
 			success(r) {

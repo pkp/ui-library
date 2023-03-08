@@ -84,7 +84,7 @@ export default {
 							autosuggestProps: {
 								...fieldBase,
 								...fieldBaseAutosuggest,
-								apiUrl: '/issues.json',
+								apiUrl: 'issues.json',
 								name: 'issueIds',
 								label: 'Issues',
 								selectedLabel: 'Assigned',

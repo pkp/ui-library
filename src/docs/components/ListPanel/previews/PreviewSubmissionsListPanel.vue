@@ -102,7 +102,7 @@ export default {
 							autosuggestProps: {
 								...fieldBase,
 								...fieldBaseAutosuggest,
-								apiUrl: '/usernames.json',
+								apiUrl: 'usernames.json',
 								name: 'assignedTo',
 								label: 'Assigned To Editors',
 								selectedLabel: 'Assigned',
@@ -121,7 +121,7 @@ export default {
 							autosuggestProps: {
 								...fieldBase,
 								...fieldBaseAutosuggest,
-								apiUrl: '/issues.json',
+								apiUrl: 'issues.json',
 								name: 'issueIds',
 								label: 'Assigned To Issues',
 								selectedLabel: 'Assigned',

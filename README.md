@@ -20,10 +20,10 @@ npm install
 npm run serve
 ```
 
-Run the following command to build the library for inclusion in [PKP's documentation hub](https://github.com/pkp/pkp-docs)
+Run the following command to build the library with a base path of `/dev/ui-library/<version>`, so it can be included in [PKP's documentation hub](https://github.com/pkp/pkp-docs).
 
 ```bash
-npm run build-docs
+PKP_DOCS_VERSION=<version> npm run build
 ```
 
 ## Issues
