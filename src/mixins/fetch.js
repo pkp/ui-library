@@ -87,7 +87,8 @@ export default {
 			// most recent get request. When we receive the response, we
 			// can check that the response matches the most recent get request, and
 			// discard responses that are outdated.
-			this.latestGetRequest = $.pkp.classes.Helper.uuid();
+			const uuid = $.pkp.classes.Helper.uuid();
+			this.latestGetRequest = uuid;
 
 			$.ajax({
 				url: this.apiUrl,
@@ -100,24 +101,23 @@ export default {
 					count: this.count,
 					offset: this.offset,
 				},
-				_uuid: this.latestGetRequest,
 				error: function (r) {
 					// Only process latest request response
-					if (this.latestGetRequest !== this._uuid) {
+					if (this.latestGetRequest !== uuid) {
 						return;
 					}
 					this.ajaxErrorCallback(r);
 				},
 				success: function (r) {
 					// Only process latest request response
-					if (this.latestGetRequest !== this._uuid) {
+					if (this.latestGetRequest !== uuid) {
 						return;
 					}
 					this.setItems(r.items, r.itemsMax);
 				},
 				complete() {
 					// Only process latest request response
-					if (this.latestGetRequest !== this._uuid) {
+					if (this.latestGetRequest !== uuid) {
 						return;
 					}
 					this.isLoading = false;

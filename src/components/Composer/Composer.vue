@@ -889,7 +889,8 @@ export default {
 				return;
 			}
 			this.isSearching = true;
-			this.latestSearchRequest = $.pkp.classes.Helper.uuid();
+			const uuid = $.pkp.classes.Helper.uuid();
+			this.latestSearchRequest = uuid;
 			this.showSearchResultCount = 10;
 
 			$.ajax({
@@ -902,21 +903,21 @@ export default {
 				_uuid: this.latestSearchRequest,
 				error: function (r) {
 					// Only process latest request response
-					if (this.latestSearchRequest !== this._uuid) {
+					if (this.latestSearchRequest !== uuid) {
 						return;
 					}
 					this.ajaxErrorCallback(r);
 				},
 				success: function (r) {
 					// Only process latest request response
-					if (this.latestSearchRequest !== this._uuid) {
+					if (this.latestSearchRequest !== uuid) {
 						return;
 					}
 					this.searchResults = r.items;
 				},
 				complete() {
 					// Only process latest request response
-					if (this.latestSearchRequest !== this._uuid) {
+					if (this.latestSearchRequest !== uuid) {
 						return;
 					}
 					this.isSearching = false;
