@@ -94,28 +94,23 @@ export default {
 	},
 	methods: {
 		getFiles() {
-			let self = this;
 			this.isLoading = true;
 			this.files = [];
 			$.ajax({
 				url: this.libraryApiUrl,
 				type: 'GET',
+				context: this,
 				data: this.includeSubmissionId
 					? {includeSubmissionId: this.includeSubmissionId}
 					: {},
 				success(r) {
-					self.files = r.items;
+					this.files = r.items;
 				},
 				error: this.ajaxErrorCallback,
 				complete(r) {
-					self.isLoading = false;
+					this.isLoading = false;
 				},
 			});
-		},
-	},
-	watch: {
-		selected(newVal, oldVal) {
-			this.$emit('selected', newVal);
 		},
 	},
 	created() {

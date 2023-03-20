@@ -15,13 +15,11 @@
 
 ## Usage
 
-A helper component that adds accessible controls to change the order of items.
-
-The `Orderer` component can be used inside list items. In the parent component, you will need to listen for `up` and `down` events from the component and modify your list accordingly.
+A helper component that adds accessible controls to change the order of items. The `Orderer` component can be used inside list items. In the parent component, you will need to listen for `up` and `down` events from the component and modify your list accordingly.
 
 ## Drag and Drop
 
-Orderable items will _usually_ be used within a `draggable` component for drag-and-drop support. When doing so, items in the list should have a left padding of `4em` to accommodate the grab handle.
+Orderable items will _usually_ be used within a `draggable` component for drag-and-drop support. When doing so, items in the list should have a left padding of `4rem` to accommodate the grab handle.
 
 If you do not want your items to be draggable, set the `Orderer`'s `isDraggable` prop to `false` to hide the grab handle.
 

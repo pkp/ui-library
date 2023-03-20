@@ -7,11 +7,9 @@
  *
  * @see https://vuejs.org/v2/guide/mixins.html
  */
-import dialog from './dialog';
 import moment from 'moment';
 
 export default {
-	mixins: [dialog],
 	methods: {
 		/**
 		 * Compile a string translation

@@ -1,0 +1,27 @@
+@import "content.css";
+
+html {
+  padding: 0;
+}
+
+.mce-content-body {
+  height: 40px;
+  line-height: 40px;
+  padding: 0;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+sup {
+  position: relative;
+  top: -0.75em;
+  vertical-align: top;
+  font-size: 0.6em;
+}
+
+sub {
+  position: relative;
+  bottom: -0.75em;
+  vertical-align: bottom;
+  font-size: 0.6em;
+}

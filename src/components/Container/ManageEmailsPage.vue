@@ -20,7 +20,6 @@ export default {
 			currentMailable: {},
 			currentTemplate: {},
 			currentTemplateForm: {},
-			customTemplates: [],
 			i18nRemoveTemplate: '',
 			i18nRemoveTemplateMessage: '',
 			i18nResetAll: '',
@@ -34,6 +33,10 @@ export default {
 		};
 	},
 	computed: {
+		/**
+		 * Mailables currently visible in the list after
+		 * search and filters applied
+		 */
 		currentMailables() {
 			let newMailables = [...this.mailables];
 
@@ -66,6 +69,12 @@ export default {
 		},
 	},
 	methods: {
+		/**
+		 * Add a filter to the active filters list
+		 *
+		 * @param {String} param The query param to effect
+		 * @param {String|Number} value The value to add to the query param
+		 */
 		addFilter(param, value) {
 			let newFilters = {...this.activeFilters};
 			if (!newFilters[param]) {
@@ -75,6 +84,12 @@ export default {
 			}
 			this.activeFilters = newFilters;
 		},
+
+		/**
+		 * Open a confirmation dialog to remove a template
+		 *
+		 * @param {Object} template The template to remove
+		 */
 		confirmRemoveTemplate(template) {
 			this.openDialog({
 				name: 'removeTemplate',
@@ -109,6 +124,10 @@ export default {
 				],
 			});
 		},
+
+		/**
+		 * Open a confirmation dialog to reset all templates
+		 */
 		confirmResetAll() {
 			this.openDialog({
 				name: 'resetAll',
@@ -141,6 +160,12 @@ export default {
 				],
 			});
 		},
+
+		/**
+		 * Open a confirmation dialog to reset a template
+		 *
+		 * @param {Object} template The template to remove
+		 */
 		confirmResetTemplate(template) {
 			this.openDialog({
 				name: 'resetTemplate',
@@ -172,6 +197,14 @@ export default {
 				],
 			});
 		},
+
+		/**
+		 * Delete an email template
+		 *
+		 * @param {Object} template The template to remove
+		 * @param {Function} onSuccess A callback function to fire when a success response is received
+		 * @param {Function} onComplete A callback function to fire after any response is received
+		 */
 		deleteTemplate(template, onSuccess, onComplete) {
 			$.ajax({
 				url: this.templatesApiUrl + '/' + template.key,
@@ -186,6 +219,13 @@ export default {
 				complete: onComplete,
 			});
 		},
+
+		/**
+		 * Get a mailable from the API
+		 *
+		 * @param {Object} mailable The mailable to get from the API
+		 * @param {Function} onSuccess A callback function to fire when a success response is received
+		 */
 		getMailable(mailable, onSuccess) {
 			$.ajax({
 				url:
@@ -198,6 +238,13 @@ export default {
 				success: onSuccess,
 			});
 		},
+
+		/**
+		 * Get an email template from the API
+		 *
+		 * @param {Object} template The template to get from the API
+		 * @param {Function} onSuccess A callback function to fire when a success response is received
+		 */
 		getTemplate(template, onSuccess) {
 			$.ajax({
 				url: this.templatesApiUrl + '/' + encodeURIComponent(template),
@@ -207,11 +254,22 @@ export default {
 				success: onSuccess,
 			});
 		},
+
+		/**
+		 * Check if a filter is active
+		 *
+		 * @param {String} param The query param to check
+		 * @param {String|Number} value The value of the query param to check
+		 */
 		isFilterActive(param, value) {
 			return (
 				this.activeFilters[param] && this.activeFilters[param].includes(value)
 			);
 		},
+
+		/**
+		 * Fired when the mailable modal is closed
+		 */
 		mailableModalClosed() {
 			this.resetFocus();
 			setTimeout(() => {
@@ -219,6 +277,15 @@ export default {
 				this.currentTemplate = {};
 			}, 300);
 		},
+
+		/**
+		 * Open the modal to edit a mailable
+		 *
+		 * If a mailable only has one template, this will open the
+		 * email template modal instead.
+		 *
+		 * @param {Object} mailable The mailable to open
+		 */
 		openMailable(mailable) {
 			if (mailable.supportsTemplates) {
 				this.getMailable(mailable, (mailable) => {
@@ -233,12 +300,26 @@ export default {
 				});
 			}
 		},
+
+		/**
+		 * Open the modal to edit an email template
+		 *
+		 * @param {Object} template The template open
+		 */
 		openTemplate(template) {
 			template = template || {};
 			this.resetFocusTo = document.activeElement;
 			this.currentTemplate = template;
 			this.$nextTick(() => this.$modal.show('template'));
 		},
+
+		/**
+		 * Remove a filter from the active filters list
+		 *
+		 *
+		 * @param {String} param The query param to effect
+		 * @param {String|Number} value The value to remove from the query param
+		 */
 		removeFilter(param, value) {
 			if (!this.activeFilters[param]) {
 				return;
@@ -247,11 +328,24 @@ export default {
 			newFilters[param] = newFilters[param].filter((v) => v !== value);
 			this.activeFilters = newFilters;
 		},
+
+		/**
+		 * A helper function to move the focus back to the element
+		 * it was last at. This is usually used with modals to restore
+		 * the focus after a modal is closed.
+		 */
 		resetFocus() {
 			if (this.resetFocusTo) {
 				this.resetFocusTo.focus();
 			}
 		},
+
+		/**
+		 * Setup the form to edit an email template
+		 *
+		 * @param {Object} newTemplate The email template to set up the form.
+		 *   This will be empty if creating a new template.
+		 */
 		setCurrentTemplateForm(newTemplate) {
 			// Get a deep copy of the form to eliminate references
 			let templateForm = JSON.parse(JSON.stringify(this.templateForm));
@@ -303,6 +397,12 @@ export default {
 
 			this.currentTemplateForm = templateForm;
 		},
+
+		/**
+		 * Fired when the email template form has been saved
+		 *
+		 * @param {Object} template The updated values of the template
+		 */
 		templateSaved(template) {
 			const exists =
 				this.currentMailable.emailTemplates.findIndex(
@@ -320,6 +420,10 @@ export default {
 
 			setTimeout(() => this.$modal.hide('template'), 1000);
 		},
+
+		/**
+		 * Fired when the email template modal has been closed
+		 */
 		templateModalClosed() {
 			if (this.currentMailable.supportsTemplates) {
 				this.resetFocus();
@@ -330,6 +434,13 @@ export default {
 				this.mailableModalClosed();
 			}
 		},
+
+		/**
+		 * Sync the form data with user input
+		 *
+		 * @param {String} formId The id for the form. Unused
+		 * @param {Object} data The form data to be updated
+		 */
 		updateCurrentTemplateForm(formId, data) {
 			this.currentTemplateForm = {
 				...this.currentTemplateForm,
@@ -338,6 +449,10 @@ export default {
 		},
 	},
 	watch: {
+		/**
+		 * Update the email template form whenever the current
+		 * email template is changed
+		 */
 		currentTemplate(newVal) {
 			this.setCurrentTemplateForm(newVal);
 		},

@@ -15,7 +15,7 @@ export default {
 				return 'oneline';
 			},
 			validator(value) {
-				return ['default', 'large', 'oneline'].includes(value);
+				return ['oneline'].includes(value);
 			},
 		},
 	},

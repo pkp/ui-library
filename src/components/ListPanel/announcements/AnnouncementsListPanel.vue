@@ -62,6 +62,7 @@ import PkpHeader from '@/components/Header/Header.vue';
 import Modal from '@/components/Modal/Modal.vue';
 import Search from '@/components/Search/Search.vue';
 import ajaxError from '@/mixins/ajaxError';
+import dialog from '@/mixins/dialog.js';
 import fetch from '@/mixins/fetch';
 import cloneDeep from 'clone-deep';
 
@@ -74,7 +75,7 @@ export default {
 		Modal,
 		Search,
 	},
-	mixins: [fetch, ajaxError],
+	mixins: [dialog, fetch, ajaxError],
 	props: {
 		addAnnouncementLabel: {
 			type: String,

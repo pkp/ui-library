@@ -55,7 +55,7 @@
 <script>
 import Composer from './ExampleComposer.vue';
 import emailTemplate from '@/docs/data/emailTemplate';
-import fileAttachers from '@/docs/data/fileAttachers';
+import fileAttachers from '../../../data/fileAttachers';
 import insertContent from '../../../data/insertContent';
 
 export default {
@@ -124,7 +124,7 @@ export default {
 			initialTemplateKey: 'EDITOR_DECISION_ACCEPT',
 			emailTemplates: emailTemplates,
 			emailTemplatesApiUrl:
-				'http://localhost:8000/publicknowledge/api/v1/emailTemplates',
+				'https://httbin.org/publicknowledge/api/v1/emailTemplates',
 			locale: 'en',
 			locales: [
 				{

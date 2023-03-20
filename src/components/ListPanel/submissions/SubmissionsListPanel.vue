@@ -121,6 +121,12 @@ export default {
 			type: String,
 			required: true,
 		},
+		allowSubmissions: {
+			type: Boolean,
+			default() {
+				return true;
+			},
+		},
 		assignParticipantUrl: {
 			type: String,
 			default() {
@@ -156,12 +162,6 @@ export default {
 		title: {
 			type: String,
 			required: true,
-		},
-		allowSubmissions: {
-			type: Boolean,
-			default() {
-				return true;
-			},
 		},
 	},
 	data() {

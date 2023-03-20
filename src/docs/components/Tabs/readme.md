@@ -1,12 +1,22 @@
 ## Props
 
+Props for the outer `<Tabs>` element.
+
 | Key | Description |
 | --- | --- |
 | `defaultTab` | Select one of the tabs by default. Pass the tab's `id` prop. |
-| `isSideTabs` | Displays the tabs on the side with content on the right when `true`. |
-| `label` | Sets an `aria-label` for the tabs. See the [Accessible label](#accessible-label) section below. |
-| `badge` | Adds a [Badge](#/component/Badge) component beside the icon or text in the tab. |
+| `isSideTabs` | Displays the tabs on the side with content beside it when `true`. |
+| `label` | Sets an `aria-label` for the tabs. Read the [accessible label](#accessible-label) section below. |
 | `trackHistory` | When `true`, changes to the current tab will modify the browser history so that the back button can be used. |
+
+Props for each `<Tab>` element.
+
+| Key | Description |
+| --- | --- |
+| `badge` | Adds a [Badge](#/component/Badge) component beside the icon or text in the tab. |
+| `icon` | Adds an [Icon](#/component/Icon) component beside the text in the tab. |
+| `id` | A unique string for this tab. Required. |
+| `label` | A text label for this tab. |
 
 ## Events
 
@@ -14,7 +24,7 @@ This component does not emit any events.
 
 ## Usage
 
-Use this component to display content in tabs.
+Use this component to display content in tabs. This component implements the `role="tablist"` specification. Once the user has navigated to the tab headings, they should be able to change tabs by using the <kbd>←</kbd> and <kbd>→</kbd> keys. Pressing the <kbd>HOME</kbd> and <kbd>END</kbd> keys should take them to the first and last tab.
 
 ## Accessible label
 
@@ -27,7 +37,15 @@ Pass a `label` to the `Tabs` component to improve the experience for assistive t
 </tabs>
 ```
 
-A `label` is not needed when the tabs immediately follow a heading which describes the tabs. Otherwise a `label` should be used.
+A `label` is not needed when the tabs immediately follow a heading which describes the tabs.
+
+```html
+<h1>Website Settings</h1>
+<tabs>
+	<tab>...</tab>
+	<tab>...</tab>
+</tabs>
+```
 
 ## Open tab programmatically
 
@@ -55,9 +73,7 @@ If the `hello` tab is currently visible, firing `pkp.eventBus.$emit('open-tab', 
 
 ## Icon-only Tab Buttons
 
-Avoid using icon-only tabs except in rare cases. A text label is almost always easier to understand.
-
-You must still pass a `label` to a `Tab` when using the `icon` property. It will be read out by assistive technology.
+Avoid using icon-only tabs except in rare cases. A text label is almost always easier to understand. You must still pass a `label` to a `Tab` when using the `icon` property. It will be read out by assistive technology.
 
 ## Deep Nesting
 

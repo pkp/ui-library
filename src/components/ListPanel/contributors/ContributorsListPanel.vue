@@ -157,6 +157,7 @@ import Orderer from '@/components/Orderer/Orderer.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import ajaxError from '@/mixins/ajaxError';
+import dialog from '@/mixins/dialog.js';
 import cloneDeep from 'clone-deep';
 
 export default {
@@ -167,7 +168,7 @@ export default {
 		PkpForm,
 		PkpHeader,
 	},
-	mixins: [ajaxError],
+	mixins: [ajaxError, dialog],
 	props: {
 		canEditPublication: {
 			type: Boolean,

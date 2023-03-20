@@ -112,24 +112,27 @@ export default {
 	},
 	methods: {
 		getFiles() {
-			let self = this;
 			this.isLoading = true;
 			this.files = [];
 			$.ajax({
 				url: this.submissionFilesApiUrl,
 				type: 'GET',
+				context: this,
 				data: this.currentFileStage.queryParams,
 				success(r) {
-					self.files = r.items;
+					this.files = r.items;
 				},
 				error: this.ajaxErrorCallback,
 				complete(r) {
-					self.isLoading = false;
+					this.isLoading = false;
 				},
 			});
 		},
 	},
 	watch: {
+		/**
+		 * Update the files when a new file stage is selected
+		 */
 		currentFileStage(newVal, oldVal) {
 			this.getFiles();
 		},

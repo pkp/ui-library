@@ -1,7 +1,7 @@
 import publication from './publication';
 
 export default {
-	_href: 'http://localhost:8000/publicknowledge/api/v1/submissions/1',
+	_href: 'https://httbin.org/publicknowledge/api/v1/submissions/1',
 	contextId: 1,
 	currentPublicationId: 17,
 	dateLastActivity: '2019-06-25 16:52:47',
@@ -11,6 +11,7 @@ export default {
 	publications: [{...publication}],
 	reviewAssignments: [],
 	reviewRounds: [],
+	sectionId: 1,
 	stageId: 1,
 	stages: [
 		{
@@ -61,9 +62,8 @@ export default {
 	statusLabel: 'Queued',
 	submissionProgress: '',
 	urlAuthorWorkflow:
-		'http://localhost:8000/publicknowledge/authorDashboard/submission/1',
-	urlEditorialWorkflow:
-		'http://localhost:8000/publicknowledge/workflow/access/1',
-	urlPublished: 'http://localhost:8000/publicknowledge/article/view/1',
-	urlWorkflow: 'http://localhost:8000/publicknowledge/workflow/access/1',
+		'https://httbin.org/publicknowledge/authorDashboard/submission/1',
+	urlEditorialWorkflow: 'https://httbin.org/publicknowledge/workflow/access/1',
+	urlPublished: 'https://httbin.org/publicknowledge/article/view/1',
+	urlWorkflow: 'https://httbin.org/publicknowledge/workflow/access/1',
 };

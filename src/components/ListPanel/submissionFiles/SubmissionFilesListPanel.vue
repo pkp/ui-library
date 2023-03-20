@@ -64,6 +64,7 @@ import Modal from '@/components/Modal/Modal.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import SubmissionFilesListItem from '@/components/ListPanel/submissionFiles/SubmissionFilesListItem.vue';
+import dialog from '@/mixins/dialog.js';
 import cloneDeep from 'clone-deep';
 
 export default {
@@ -75,6 +76,7 @@ export default {
 		PkpHeader,
 		SubmissionFilesListItem,
 	},
+	mixins: [dialog],
 	props: {
 		addFileLabel: {
 			type: String,

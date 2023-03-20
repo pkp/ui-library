@@ -11,4 +11,4 @@ See [FieldBase](#/component/Form/fields/FieldBase).
 
 ## Usage
 
-Use this component when you want the user to select a hex color value. This component is only recommended for use in theme settings, but in special circumstances may be used elsewhere.
+Use this component when you want the user to select a hex color value. This component is only recommended for use in theme settings.

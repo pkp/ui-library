@@ -1,9 +1,11 @@
 <script>
 import PkpForm from '../Form.vue';
+import dialog from '@/mixins/dialog.js';
 
 export default {
 	name: 'NotifyUsersForm',
 	extends: PkpForm,
+	mixins: [dialog],
 	props: {
 		confirmLabel: {
 			type: String,

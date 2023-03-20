@@ -3,10 +3,9 @@ import doi from '@/docs/data/doi';
 
 export default {
 	_href:
-		'http://localhost:8000/publicknowledge/api/v1/submissions/17/publications/17',
+		'https://httbin.org/publicknowledge/api/v1/submissions/17/publications/17',
 	abstract: {
-		en:
-			'<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>',
+		en: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>',
 		fr_CA:
 			'<p>FR Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>',
 	},
@@ -39,8 +38,7 @@ export default {
 	},
 	doiObject: {...doi},
 	fullTitle: {
-		en:
-			'The Lorem ipsum dolor sit amet: Excepteur sint occaecat cupidatat non proident',
+		en: 'The Lorem ipsum dolor sit amet: Excepteur sint occaecat cupidatat non proident',
 		fr_CA:
 			'Le Frorem ipsum dolor sit amet: Frexcepteur sint occaecat cupidatat non proident',
 	},
@@ -139,5 +137,5 @@ export default {
 		en: '',
 	},
 	urlPublished:
-		'http://localhost:8000/publicknowledge/article/view/lorem-ipsum/version/17',
+		'https://httbin.org/publicknowledge/article/view/lorem-ipsum/version/17',
 };

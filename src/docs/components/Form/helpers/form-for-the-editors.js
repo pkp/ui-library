@@ -1,5 +1,4 @@
 import Form from './form';
-import FieldKeywords from './field-controlled-vocab-keywords';
 import FieldCategories from './field-options-categories';
 import FieldRichTextareaAbstract from './field-rich-textarea-abstract';
 
@@ -8,7 +7,6 @@ export default {
 	id: 'forTheEditors',
 	action: '/example/publications/1',
 	fields: [
-		{...FieldKeywords, groupId: 'default'},
 		{...FieldCategories, groupId: 'default'},
 		{
 			...FieldRichTextareaAbstract,

@@ -178,7 +178,7 @@ export default {
 			},
 			i18nRemoveTemplate: 'Remove Template',
 			i18nRemoveTemplateMessage:
-				'Are you sure you want to unassign the template <strong>{$template}</strong> from the <strong>{$mailable}</strong> email?',
+				'Are you sure you want to delete the template <strong>{$template}</strong>?',
 			i18nResetAll: 'Reset All',
 			i18nResetAllMessage:
 				'If you reset all templates, all modifications to the email templates will be lost. Do you want to confirm this operation?',

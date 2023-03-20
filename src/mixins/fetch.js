@@ -42,6 +42,7 @@ export default {
 		return {
 			activeFilters: {},
 			isLoading: false,
+			itemsMax: 0,
 			latestGetRequest: '',
 			offset: 0,
 			searchPhrase: '',
@@ -80,8 +81,6 @@ export default {
 				return;
 			}
 
-			var self = this;
-
 			this.isLoading = true;
 
 			// Address issues with multiple async get requests. Store an ID for the
@@ -93,6 +92,7 @@ export default {
 			$.ajax({
 				url: this.apiUrl,
 				type: 'GET',
+				context: this,
 				data: {
 					...this.getParams,
 					...this.activeFilters,
@@ -103,24 +103,24 @@ export default {
 				_uuid: this.latestGetRequest,
 				error: function (r) {
 					// Only process latest request response
-					if (self.latestGetRequest !== this._uuid) {
+					if (this.latestGetRequest !== this._uuid) {
 						return;
 					}
-					self.ajaxErrorCallback(r);
+					this.ajaxErrorCallback(r);
 				},
 				success: function (r) {
 					// Only process latest request response
-					if (self.latestGetRequest !== this._uuid) {
+					if (this.latestGetRequest !== this._uuid) {
 						return;
 					}
-					self.setItems(r.items, r.itemsMax);
+					this.setItems(r.items, r.itemsMax);
 				},
 				complete() {
 					// Only process latest request response
-					if (self.latestGetRequest !== this._uuid) {
+					if (this.latestGetRequest !== this._uuid) {
 						return;
 					}
-					self.isLoading = false;
+					this.isLoading = false;
 				},
 			});
 		},

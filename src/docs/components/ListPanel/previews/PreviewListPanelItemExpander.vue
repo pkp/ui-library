@@ -13,7 +13,7 @@
 				@toggle="toggleExpanded(item.id)"
 			/>
 		</template>
-		<template v-slot:itemExpanded="{}">
+		<template v-slot:item-expanded="{item}">
 			<list>
 				<list-item>Ut enim ad minim veniam, quis nostrud</list-item>
 				<list-item>
@@ -21,8 +21,10 @@
 				</list-item>
 			</list>
 			<div class="listPanel__itemExpandedActions">
-				<pkp-button @click="openModal">Approve</pkp-button>
-				<pkp-button :isWarnable="true" @click="openModal">Decline</pkp-button>
+				<pkp-button @click="openModal(item.title)">Approve</pkp-button>
+				<pkp-button :isWarnable="true" @click="openModal(item.title)">
+					Decline
+				</pkp-button>
 			</div>
 		</template>
 	</list-panel>

@@ -1,6 +1,6 @@
 export default {
 	_href:
-		'http://localhost:8000/publicknowledge/api/v1/emailTemplates/EDITOR_DECISION_ACCEPT',
+		'https://httbin.org/publicknowledge/api/v1/emailTemplates/EDITOR_DECISION_ACCEPT',
 	body: {
 		en: `<p>Dear {$senderName},</p>
 			<p>I am delighted to inform you that your submission, {$submissionTitle}, has been accepted for publication. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
@@ -19,8 +19,7 @@ export default {
 	},
 	stageId: 3,
 	subject: {
-		en:
-			'Your submission has been accepted for publication in {$journalName}',
+		en: 'Your submission has been accepted for publication in {$journalName}',
 		fr_CA:
 			'Votre soumission a été acceptée pour publication dans {$journalName}',
 	},

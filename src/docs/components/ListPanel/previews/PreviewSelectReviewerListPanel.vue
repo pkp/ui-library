@@ -20,6 +20,7 @@
 		id="previewSelectReviewerListPanel"
 		:items="items"
 		:itemsMax="items.length"
+		:lastRoundReviewers="lastRoundReviewers"
 		neverAssignedLabel="Never assigned"
 		reassignLabel="Reassign"
 		reassignWithNameLabel="Reassign {$name}"
@@ -63,12 +64,11 @@ export default {
 				fullName: 'Aisla McCrae',
 				reviewsActive: 23,
 				reviewsCompleted: 32,
-				dateLastReviewAssignment: '2019-12-31 11:22:42',
+				dateLastReviewAssignment: '2022-12-31 11:22:42',
 				reviewerRating: 5,
 				orcid: 'http://orcid.org/0000-0002-1825-0097',
 				biography: {
-					en:
-						'<p>Professor Aisla McCrae is a senior research fellow in the Publishing Studies Department in the School of Publishing at the University of Manitoba. She is the deputy chair of the Manitoba Publishing Institute and the author of <em>Publishing Now and Forever: Recent Developments in Archival Permanence</em>.</p>',
+					en: '<p>Professor Aisla McCrae is a senior research fellow in the Publishing Studies Department in the School of Publishing at the University of Manitoba. She is the deputy chair of the Manitoba Publishing Institute and the author of <em>Publishing Now and Forever: Recent Developments in Archival Permanence</em>.</p>',
 				},
 				gossip:
 					"<p>Aisla is a terrific reviewer but she takes a while to confirm and complete a review. Recommend not using her if you're on a tight deadline.</p>",
@@ -110,7 +110,7 @@ export default {
 				fullName: 'Adela Gallego',
 				reviewsActive: 1,
 				reviewsCompleted: 0,
-				dateLastReviewAssignment: '2019-01-25 11:22:42',
+				dateLastReviewAssignment: '2022-01-25 11:22:42',
 				reviewerRating: 5,
 			},
 			{
@@ -119,7 +119,7 @@ export default {
 				fullName: 'Habiba Yousef',
 				reviewsActive: 1,
 				reviewsCompleted: 0,
-				dateLastReviewAssignment: '2019-06-07 11:22:42',
+				dateLastReviewAssignment: '2022-06-07 11:22:42',
 				reviewerRating: 3,
 			},
 			{
@@ -128,7 +128,7 @@ export default {
 				fullName: 'Matthew McMatherson',
 				reviewsActive: 0,
 				reviewsCompleted: 3,
-				dateLastReviewAssignment: '2017-10-21 11:22:42',
+				dateLastReviewAssignment: '2022-10-21 11:22:42',
 				reviewerRating: 2,
 			},
 		];
@@ -184,6 +184,9 @@ export default {
 				},
 			],
 			items: [...items],
+			lastRoundReviewers: items.filter((reviewer) =>
+				[3, 4].includes(reviewer.id)
+			),
 		};
 	},
 };

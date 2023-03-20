@@ -21,12 +21,12 @@ export default [
 					crossref_failedMsg: 'This is a sample failure message',
 				},
 				fullTitle: {
-					en:
-						'Quisque vel ultrices ut vel sollicitudin vel varius suscipit phasellus',
+					en: 'Quisque vel ultrices ut vel sollicitudin vel varius suscipit phasellus',
 				},
 				isPublished: true,
 			},
 		],
+		sectionId: 2,
 		stages: submission.stages.map((stage) => {
 			return {
 				...stage,
@@ -81,8 +81,7 @@ export default [
 				authorsString: '',
 				authorsStringShort: '',
 				fullTitle: {
-					en:
-						'Submission title when current user is assigned as reviewer and editor',
+					en: 'Submission title when current user is assigned as reviewer and editor',
 				},
 			},
 		],
@@ -128,8 +127,7 @@ export default [
 				authorsString: 'Convallis Tellus',
 				authorsStringShort: 'Tellus',
 				fullTitle: {
-					en:
-						'Scelerisque felis imperdiet proin fermentum: Pretium quam vulputate dignissim suspendisse in est',
+					en: 'Scelerisque felis imperdiet proin fermentum: Pretium quam vulputate dignissim suspendisse in est',
 				},
 			},
 		],
@@ -156,6 +154,7 @@ export default [
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
 			},
 		],
+		sectionId: 2,
 		stages: submission.stages.map((stage) => {
 			if (stage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION) {
 				return {
@@ -343,8 +342,7 @@ export default [
 				authorsString: 'Ullamco Excepteur',
 				authorsStringShort: 'Excepteur',
 				fullTitle: {
-					en:
-						'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
+					en: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
 				},
 			},
 		],
@@ -404,6 +402,7 @@ export default [
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 			},
 		],
+		sectionId: 2,
 		stages: submission.stages.map((stage) => {
 			if (stage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION) {
 				return {

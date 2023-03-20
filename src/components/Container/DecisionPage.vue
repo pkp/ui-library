@@ -36,7 +36,6 @@ export default {
 			decisionCompleteLabel: '',
 			decisionCompleteDescription: '',
 			emailTemplatesApiUrl: '',
-			fileGenres: [],
 			startedSteps: [],
 			isSubmitting: false,
 			keepWorkingLabel: '',
@@ -52,9 +51,16 @@ export default {
 		};
 	},
 	computed: {
+		/**
+		 * The array index of the current step
+		 */
 		currentStepIndex() {
 			return this.steps.findIndex((step) => step.id === this.currentStep.id);
 		},
+
+		/**
+		 * Validation errors
+		 */
 		errors() {
 			return this.steps
 				.filter(
@@ -71,16 +77,25 @@ export default {
 					return errors;
 				}, {});
 		},
+
+		/**
+		 * Is the current step the first step?
+		 */
 		isOnFirstStep() {
 			return 0 === this.currentStepIndex;
 		},
+
+		/**
+		 * Is the current step the last step?
+		 */
 		isOnLastStep() {
 			return this.currentStepIndex === this.steps.length - 1;
 		},
 	},
 	methods: {
 		/**
-		 * Cancel the decision and return to the submission
+		 * Open a confirmation prompt to cancel the
+		 * decision and return to the submission
 		 */
 		cancel() {
 			this.openDialog({
@@ -105,6 +120,10 @@ export default {
 
 		/**
 		 * Copy a file to a new file stage
+		 *
+		 * @param {Number} fileId The submission file id
+		 * @param {Number} toFileStage The file stage to copy the submission to
+		 * @param {Function} callback A callback function to fire when the request finished successfully
 		 */
 		copyFile(fileId, toFileStage, callback) {
 			$.ajax({
@@ -125,13 +144,6 @@ export default {
 				error: this.ajaxErrorCallback,
 				complete: callback,
 			});
-		},
-
-		/**
-		 * Get the genre of a submission file
-		 */
-		getFileGenre(genreId) {
-			return this.fileGenres.find((genre) => genre.id === genreId);
 		},
 
 		/**
@@ -174,6 +186,8 @@ export default {
 
 		/**
 		 * Go to a step in the wizard
+		 *
+		 * @param {String} stepId The id of the step to go to
 		 */
 		openStep(stepId) {
 			this.startedSteps = [...new Set([...this.startedSteps, stepId])];
@@ -194,6 +208,8 @@ export default {
 		 * Handle errors related to the decision request
 		 *
 		 * This method maps validation errors to their step.
+		 *
+		 * @param {Object} errors A key/value map of errors where each key represents a step index
 		 */
 		setStepErrors(errors) {
 			this.steps.forEach((step, index) => {
@@ -212,6 +228,8 @@ export default {
 		/**
 		 * Skip a step and go to the next step or activate
 		 * a skipped step
+		 *
+		 * @param {String} stepId The id of the step
 		 */
 		toggleSkippedStep(stepId) {
 			if (this.skippedSteps.includes(stepId)) {
@@ -235,10 +253,13 @@ export default {
 
 		/**
 		 * Submit an editorial decision
+		 *
+		 * This posts the editorial decison and copies
+		 * all selected files when a file promotion step
+		 * exists.
 		 */
 		submit() {
 			this.isSubmitting = true;
-			let self = this;
 			const steps = this.steps.filter(
 				(step) => !this.skippedSteps.includes(step.id)
 			);
@@ -293,6 +314,7 @@ export default {
 			$.ajax({
 				url: this.submissionApiUrl + '/decisions',
 				type: 'POST',
+				context: this,
 				data: data,
 				headers: {
 					'X-Csrf-Token': pkp.currentUser.csrfToken,
@@ -301,37 +323,37 @@ export default {
 					if (r.status && r.status === 400) {
 						// The decision is invalid
 						if (r.responseJSON.decision) {
-							self.ajaxErrorCallback({
+							this.ajaxErrorCallback({
 								responseJSON: {
 									errorMessage: r.responseJSON.decision[0],
 								},
 							});
 							// An action is invalid
 						} else if (r.responseJSON.actions) {
-							self.setStepErrors(r.responseJSON.actions);
+							this.setStepErrors(r.responseJSON.actions);
 						} else {
-							self.ajaxErrorCallback(r);
+							this.ajaxErrorCallback(r);
 						}
 					} else {
-						self.ajaxErrorCallback(r);
+						this.ajaxErrorCallback(r);
 					}
-					self.isSubmitting = false;
+					this.isSubmitting = false;
 				},
 				success() {
 					if (!files.length) {
-						self.isSubmitting = false;
-						self.openCompletedDialog();
+						this.isSubmitting = false;
+						this.openCompletedDialog();
 					}
 					let copiedCount = 0;
 					const copyCompleted = () => {
 						copiedCount++;
 						if (copiedCount >= files.length) {
-							self.openCompletedDialog();
+							this.openCompletedDialog();
 							clearInterval(copyCompleted);
 						}
 					};
 					files.forEach((file) =>
-						self.copyFile(file.id, file.toFileStage, copyCompleted)
+						this.copyFile(file.id, file.toFileStage, copyCompleted)
 					);
 				},
 			});
@@ -339,6 +361,9 @@ export default {
 
 		/**
 		 * Update the data attached to a step
+		 *
+		 * @param {String} stepId The id of the step to update
+		 * @param {Object} data The data to update in the step
 		 */
 		updateStep(stepId, data) {
 			this.steps = this.steps.map((step) => {
@@ -369,11 +394,15 @@ export default {
 		},
 	},
 	created() {
-		// Start step 1
 		if (this.steps.length) {
+			/**
+			 * Start the first step
+			 */
 			this.openStep(this.steps[0].id);
 
-			// Set up email data for each email step
+			/**
+			 * Set up email data for each email step
+			 */
 			this.steps = this.steps.map((step) => {
 				if (step.type !== stepTypes.email) {
 					return step;

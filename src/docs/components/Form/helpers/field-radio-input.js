@@ -5,15 +5,15 @@ export default {
 	value: 'something',
 	options: [
 		{
-			value: 'one',
-			label: 'One',
+			value: 'yes',
+			label: 'Yes',
 		},
 		{
-			value: 'two',
-			label: 'Two',
+			value: 'no',
+			label: 'No',
 		},
 		{
-			label: 'Any',
+			label: 'Other',
 			isInput: true,
 		},
 	],

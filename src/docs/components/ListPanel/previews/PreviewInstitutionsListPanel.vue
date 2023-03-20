@@ -10,7 +10,6 @@
 		:items="items"
 		:itemsMax="itemsMax"
 		title="Institutions"
-		urlBase="https://example.com/institution/view/__id__"
 	/>
 </template>
 <script>

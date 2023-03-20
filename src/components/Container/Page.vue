@@ -1,17 +1,9 @@
 <script type="text/javascript">
 import Container from '@/components/Container/Container.vue';
-import Dropdown from '@/components/Dropdown/Dropdown.vue';
-import Notification from '@/components/Notification/Notification.vue';
-import PkpHeader from '@/components/Header/Header.vue';
 
 export default {
 	extends: Container,
 	name: 'Page',
-	components: {
-		Dropdown,
-		Notification,
-		PkpHeader,
-	},
 	data() {
 		return {
 			breadcrumbs: [],

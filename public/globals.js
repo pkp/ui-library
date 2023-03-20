@@ -17,7 +17,7 @@ window.pkp = {
 		id: 20,
 		roles: [1, 16, 65536, 1048576],
 		username: 'dbarnes',
-		preferredName: 'Daniel Barnes'
+		preferredName: 'Daniel Barnes',
 	},
 
 	/**
@@ -65,7 +65,7 @@ window.pkp = {
 		DOI_STATUS_SUBMITTED: 2,
 		DOI_STATUS_REGISTERED: 3,
 		DOI_STATUS_ERROR: 4,
-		DOI_STATUS_STALE: 5
+		DOI_STATUS_STALE: 5,
 	},
 
 	/**
@@ -81,13 +81,14 @@ window.pkp = {
 		pdf: 'file-pdf-o', // DOCUMENT_TYPE_PDF
 		word: 'file-word-o', // DOCUMENT_TYPE_WORD
 		video: 'file-video-o', // DOCUMENT_TYPE_VIDEO
-		zip: 'file-archive-o' // DOCUMENT_TYPE_ZIP
+		zip: 'file-archive-o', // DOCUMENT_TYPE_ZIP
 	},
 
 	/**
 	 * Locale keys loaded on the server-side
 	 */
 	localeKeys: {
+		'common.attachFiles': 'Attach Files',
 		'common.cancel': 'Cancel',
 		'common.clearSearch': 'Clear search',
 		'common.close': 'Close',
@@ -139,8 +140,8 @@ window.pkp = {
 		'form.multilingualProgress': '{$count}/{$total} languages completed',
 		'form.saved': 'Saved',
 		'help.help': 'Help',
-		'validator.required': 'This field is required.'
-	}
+		'validator.required': 'This field is required.',
+	},
 };
 
 /**
@@ -150,21 +151,23 @@ window.$.pkp = {
 	app: {
 		currentLocale: 'en',
 		primaryLocale: 'en',
-		rtlLocales: ['ar']
+		rtlLocales: ['ar'],
+		tinyMceContentCSS: 'styles/content.css',
+		tinyMceOneLineContentCSS: 'styles/content_oneline.css',
 	},
 	pkpHandler() {
 		alert(
-			'This action can not be completed in the UI library because it requires a legacy JS component that is part of the OJS or OMP application.'
+			'This action can not be completed in the UI library because it requires a legacy JS component that is part of the OJS, OMP or OPS application.'
 		);
 	},
 	classes: {
 		Helper: {
-			// A fake uuid generator to mock the one in the Helper component of the
-			// OJS/OMP applications. This is not guaranteed to be unique and should
+			// A fake uuid generator to mock the one in the Helper component of
+			// OJS, OMP and OPS. This is not guaranteed to be unique and should
 			// not be used in production
 			uuid() {
 				return Math.floor((1 + Math.random()) * 0x10000).toString(16);
-			}
-		}
-	}
+			},
+		},
+	},
 };

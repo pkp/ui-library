@@ -11,15 +11,15 @@ This component does not emit any events
 
 ## Usage
 
-Use this component to display a [FontAwesome v4.7](https://fontawesome.com/v4.7.0) icon. See [all icons](https://fontawesome.com/v4.7.0/icons/).
+Use this component to display an icon. Use icons when you want to visually connect two parts of the UI that are not otherwise connected. For example, the [ListPanel](#/component/ListPanel) filters use an icon to link the button with the panel it controls.
 
-Use icons when you want to visually connect two parts of the UI that are not otherwise connected. For example, the [ListPanel](#/component/ListPanel) filters use an icon to link the button with the panel it controls.
+Use any [FontAwesome v4 icon](https://fontawesome.com/v4/icons/).
 
-### Be careful when using icon-only labels
+## Be careful when using icon-only labels
 
 You may want to use icon-only labels when fitting a lot of information into a small space. Such icon-based display can be useful for presenting dense information, but these patterns tend to favor experienced users over novice ones. Use with caution.
 
-### Avoid decorative icons
+## Avoid decorative icons
 
 When adding buttons or other controls, do not add an icon when the text label sufficiently describes the action.
 

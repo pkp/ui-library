@@ -43,15 +43,20 @@
 				</panel>
 			</step>
 		</steps>
-		<div class="previewSteps__buttons">
+		<button-row>
 			<pkp-button @click="previousStep">Previous</pkp-button>
 			<pkp-button @click="nextStep">Next</pkp-button>
-		</div>
+		</button-row>
 	</div>
 </template>
 
 <script>
+import ButtonRow from '../../../../components/ButtonRow/ButtonRow.vue';
+
 export default {
+	components: {
+		ButtonRow,
+	},
 	data() {
 		return {
 			currentStep: 'first',
@@ -118,9 +123,7 @@ export default {
 	border: none;
 }
 
-.previewSteps__buttons {
+.previewSteps .buttonRow {
 	margin-top: 2rem;
-	display: flex;
-	justify-content: flex-end;
 }
 </style>
