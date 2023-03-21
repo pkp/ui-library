@@ -16,3 +16,22 @@ This is a root component. Learn about [page hydration](#/pages/pages).
 ## Usage
 
 This component is a root component which is used to render a page of the editorial backend. It manages the layout architecture, including the main navigation menu, tasks and user navigation dropdown. Nothing is needed to load the `Page` component. It is initialized automatically for every page in the editorial backend. Learn more about the [application's frontend](https://docs.pkp.sfu.ca/dev/documentation/en/frontend), including how to [initialize state](https://docs.pkp.sfu.ca/dev/documentation/en/frontend-ui-library#state).
+
+## URL Hash
+
+When the URL's `#hash` changes, this component will fire a method, `openUrlHash()`. By default, this will emit an event to open a tab. Override this method to implement other behavior, like changing the step in a [step-by-step wizard](#/component/Steps), in other page components.
+
+```html
+<script>
+import Page from '@/components/Container/Page.vue';
+
+export default {
+    extends: Page,
+    methods: {
+        openUrlHash() {
+            const hash = window.location.hash.replace('#', '');
+            // use hash to navigate somewhere
+        }
+    }
+}
+```

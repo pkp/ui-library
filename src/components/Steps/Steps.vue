@@ -206,8 +206,8 @@ export default {
 		 */
 		current(newVal, oldVal) {
 			this.setChildStepsIsActive(newVal);
-			this.setStartedLine();
 			this.$nextTick(() => {
+				this.setStartedLine();
 				this.setFocusIn(this.$el.querySelector('.pkpStep:not([hidden])'));
 				if (this.scrollTo) {
 					this.$scrollTo(this.scrollTo, 500, {

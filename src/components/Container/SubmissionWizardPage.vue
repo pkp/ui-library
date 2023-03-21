@@ -151,6 +151,9 @@ export default {
 		 * The title to show at the top of the page
 		 */
 		pageTitle() {
+			if (!this.currentStep) {
+				return '';
+			}
 			return this.i18nPageTitle.replace('{$step}', this.currentStep.name);
 		},
 	},
@@ -317,12 +320,12 @@ export default {
 		},
 
 		/**
-		 * Override the #hash behaviour for tabs
+		 * Handle changes to the #hash in the URL
 		 *
 		 * This makes sure that the the correct step
 		 * is opened when the hash is changed
 		 */
-		openUrlTab() {
+		openUrlHash() {
 			const stepId = window.location.hash.replace('#', '');
 			const newStep = this.steps.find((step) => step.id === stepId);
 			this.openStep(newStep ? newStep.id : this.steps[0].id);
@@ -725,6 +728,8 @@ export default {
 				(step) => step.id === this.submission.submissionProgress
 			);
 			this.openStep(newStep ? newStep.id : this.steps[0].id);
+		} else {
+			this.openStep(this.steps[0].id);
 		}
 
 		/**
