@@ -1,39 +1,40 @@
 # Contributing
 
-This library provides documentation and a development sandbox for building and maintaining components. If you contribute you may be asked to document your changes. This document describes how to add and edit documentation for a component.
+When creating a new component, you may be asked to document it in this library. You will need to create a component demo, document the component, and add it to the site. The following provides an outline of how the library files are structured and how to add a component demo to the library.
 
-## File Structure
+## Source Files
 
-The following directories contain code that is run by our applications.
+The following directories contain the source components, mixins and styles that make up the UI Library components. Files in these directories may be imported and used as components in the applications.
 
-| Directory | Description |
-| --- | --- |
-| `/src/components` | All of the Vue.js component source files. |
-| `/src/mixins` | [Mixins](https://vuejs.org/v2/guide/mixins.html) used in components. |
-| `/src/styles` | LESS styles that are imported into global stylesheets and components. |
+| Directory         | Description                                                                        |
+| ----------------- | ---------------------------------------------------------------------------------- |
+| `/src/components` | [Single-File Component](https://vuejs.org/guide/scaling-up/sfc.html) source files. |
+| `/src/mixins`     | [Mixins](https://vuejs.org/v2/guide/mixins.html) used in components.               |
+| `/src/styles`     | Global CSS/LESS styles, like variables and resets.                                 |
 
-The rest of the files in this library are used to run the component demos.
+## Library Files
 
-| Directory | Description |
-| --- | --- |
-| `/public` | Static site files. |
-| `/src/docs` | Document and preview components. |
-| `/src/docs/components` | Document individual components in the UI Library. |
-| `/src/docs/pages` | Markdown files for pages that are not related to a component, such as the page you are reading now. |
-| `/src/App.vue` | The main component that runs the UI Library. |
-| `/src/main.js` | Loads dependencies and initializes the UI Library. |
-| `/src/router.js` | The router for the UI Library. |
+The following files and directories contain the UI Library itself: the documentation, demo components, and application that make up this website.
 
-## Create a Component Demo
+| Directory              | Description                                                  |
+| ---------------------- | ------------------------------------------------------------ |
+| `/public`              | Static files and sample data.                                |
+| `/src/docs`            | All documentation and demonstration components.              |
+| `/src/docs/components` | Component demo for the components in `/src/components`.      |
+| `/src/docs/pages`      | Documentation not related to a component, such as this page. |
+| `/src/App.vue`         | The root component of the UI Library.                        |
+| `/src/main.js`         | Loads dependencies and initializes the UI Library.           |
+| `/src/router.js`       | The router for the UI Library.                               |
 
-Each component demo should include an example of the component in action, documentation describing the props accepted and events emitted by the component, and guidance on when and how the component should be used.
+## Add a Component Demo
 
-Create a single-file Vue component that loads an example of the component you wish to document:
+A component demo is just a wrapper component that loads the source component and passes props to it. The following example shows a demo of the [Notification](#/component/Notification) component.
 
 ```html
-<!-- /src/docs/components/Notification/previews/PreviewNotification.vue -->
+<!-- /src/docs/components/Notification/PreviewNotification.vue -->
+
 <template>
-	<div class="previewNotification">
+	<div>
 		<notification type="warning">
 			This submission does not have an editor assigned.
 		</notification>
@@ -41,7 +42,7 @@ Create a single-file Vue component that loads an example of the component you wi
 </template>
 
 <script>
-import Notification from '@/components/Notification/Notification.vue';
+import Notification from '../../components/Notification/Notification.vue';
 
 export default {
 	components: {
@@ -51,13 +52,13 @@ export default {
 </script>
 ```
 
-Create a `readme.md` file that documents how the component works.
+Place the demo into the `src/docs/components/Notification` directory and create a `readme.md` file in the same directory.
 
 ```md
 ##  Props
 
-| Key | Description |
-| --- | --- |
+| Key    | Description                                                                                  |
+| ------ | -------------------------------------------------------------------------------------------- |
 | `type` | The type of notification. Pass `warning` for notifications about errors or serious problems. |
 
 ## Events
@@ -69,14 +70,15 @@ This component does not emit any events.
 Use the `Notification` component to draw the user's attention to new information. Do not overuse notifications. If they become too common, they will no longer draw the user's attention.
 ```
 
-Create the documentation component which will load the example and readme:
+Create a new component that extends `Component`. Load the readme and demo component into this component.
 
 ```html
 <!-- /src/docs/components/Notification/ComponentNotification.vue -->
+
 <script>
 import Component from '@/docs/Component.vue';
-import PreviewNotification from './previews/PreviewNotification.vue';
-import PreviewNotificationTemplate from '!raw-loader!./previews/PreviewNotification.vue';
+import PreviewNotification from './PreviewNotification.vue';
+import PreviewNotificationTemplate from '!raw-loader!./PreviewNotification.vue';
 import readme from '!raw-loader!./readme.md';
 
 export default {
@@ -97,8 +99,6 @@ export default {
 };
 </script>
 ```
-
-Import more `Preview*` components and add them to the `examples` array if you want more than one example.
 
 Add a route to the component in `/src/router.js`:
 
@@ -122,17 +122,3 @@ Add a link to the navigation menu in `/src/App.vue`:
 	<li><router-link to="/component/Notification">Notification</router-link></li>
 ...
 ```
-
-## ESLint and Prettier
-
-This library runs ESLint and Prettier to maintain code formatting. When you are running `npm run serve`, any file changes will be linted and errors will be reported in the console.
-
-When you commit, ESLint and Prettier will run. You will not be able to commit if there are ESLint errors.
-
-## Issues
-
-Issues for for this library should be opened on the [pkp/pkp-lib](https://github.com/pkp/pkp-lib/issues/) repository. All issues related to OJS and OMP are managed there, including issues with this UI Library.
-
-## Pull Requests
-
-Pull Requests for this library should be opened on the [pkp/ui-library](https://github.com/pkp/ui-library/pulls) repository.

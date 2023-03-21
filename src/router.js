@@ -11,10 +11,9 @@ import ComponentChart from './docs/components/Chart/ComponentChart.vue';
 import ComponentComposer from './docs/components/Composer/ComponentComposer.vue';
 import ComponentDateRange from './docs/components/DateRange/ComponentDateRange.vue';
 import ComponentDecisionPage from './docs/components/DecisionPage/ComponentDecisionPage.vue';
-import ComponentDialog from './docs/utilities/Dialog/ComponentDialog.vue';
-import ComponentDoiListPanel from './docs/components/ListPanel/ComponentDoiListPanel';
-import ComponentDoiListPanelOJS from '@/docs/components/ListPanel/ComponentDoiListPanelOJS';
+import ComponentDialog from './docs/mixins/Dialog/ComponentDialog.vue';
 import ComponentDropdown from './docs/components/Dropdown/ComponentDropdown.vue';
+import ComponentFetch from './docs/mixins/Fetch/ComponentFetch.vue';
 import ComponentFieldAutosuggestPreset from './docs/components/Form/fields/FieldAutosuggestPreset/ComponentFieldAutosuggestPreset.vue';
 import ComponentFieldArchivingPn from './docs/components/Form/fields/FieldArchivingPn/ComponentFieldArchivingPn.vue';
 import ComponentFieldBaseAutosuggest from './docs/components/Form/fields/FieldBaseAutosuggest/ComponentFieldBaseAutosuggest.vue';
@@ -26,6 +25,7 @@ import ComponentFieldMetadataSetting from './docs/components/Form/fields/FieldMe
 import ComponentFieldOptions from './docs/components/Form/fields/FieldOptions/ComponentFieldOptions.vue';
 import ComponentFieldPreparedContent from './docs/components/Form/fields/FieldPreparedContent/ComponentFieldPreparedContent.vue';
 import ComponentFieldRadioInput from './docs/components/Form/fields/FieldRadioInput/ComponentFieldRadioInput.vue';
+import ComponentFieldRichText from './docs/components/Form/fields/FieldRichText/ComponentFieldRichText.vue';
 import ComponentFieldRichTextarea from './docs/components/Form/fields/FieldRichTextarea/ComponentFieldRichTextarea.vue';
 import ComponentFieldSelect from './docs/components/Form/fields/FieldSelect/ComponentFieldSelect.vue';
 import ComponentFieldSelectIssue from './docs/components/Form/fields/FieldSelectIssue/ComponentFieldSelectIssue.vue';
@@ -188,6 +188,11 @@ export default new Router({
 			component: ComponentFieldRadioInput,
 		},
 		{
+			path: '/component/Form/fields/FieldRichText/:example?',
+			name: 'Form/fields/FieldRichText',
+			component: ComponentFieldRichText,
+		},
+		{
 			path: '/component/Form/fields/FieldRichTextarea/:example?',
 			name: 'Form/fields/FieldRichTextarea',
 			component: ComponentFieldRichTextarea,
@@ -291,16 +296,6 @@ export default new Router({
 			path: '/component/ListPanel/components/CatalogListPanel/:example?',
 			name: 'CatalogListPanel',
 			component: ComponentCatalogListPanel,
-		},
-		{
-			path: '/component/ListPanel/components/DoiListPanel/:example?',
-			name: 'DoiListPanel',
-			component: ComponentDoiListPanel,
-		},
-		{
-			path: '/component/ListPanel/components/DoiListPanelOJS/:example?',
-			name: 'DoiListPanelOJS',
-			component: ComponentDoiListPanelOJS,
 		},
 		{
 			path: '/component/ListPanel/components/InstitutionsListPanel/:example?',
@@ -413,9 +408,14 @@ export default new Router({
 			component: ComponentWorkflowPage,
 		},
 		{
-			path: '/utilities/Dialog/:example?',
+			path: '/mixins/dialog/:example?',
 			name: 'Dialog',
 			component: ComponentDialog,
+		},
+		{
+			path: '/mixins/fetch/:example?',
+			name: 'Fetch',
+			component: ComponentFetch,
 		},
 		{
 			path: '/utilities/Notify/:example?',

@@ -1,12 +1,9 @@
-# PKP UI Library
+# UI Library
 
-This library contains UI components implemented or planned for the Public Knowledge Project's applications [Open Journal Systems](https://pkp.sfu.ca/ojs/), [Open Preprint Systems](https://pkp.sfu.ca/ops/) and [Open Monograph Press](https://pkp.sfu.ca/omp/).
+This library contains UI components used by the [Public Knowledge Project](https://pkp.sfu.ca)'s applications [Open Journal Systems](https://pkp.sfu.ca/software/ojs/), [Open Preprint Systems](https://pkp.sfu.ca/software/ops/) and [Open Monograph Press](https://pkp.sfu.ca/software/omp/). It is intended for coders who want to contribute to the software and developers who want to build plugins that integrate with the UI of the editorial backend.
 
-It provides a demonstration of each component, technical documentation, and usage guidance. It is intended for technical developers who want to work with the UI of the editorial backend for one of our applications.
+This library is a static site used to document the components and provide a convenient development environment to build and test new components. To learn how to integrate the UI Library with an application's frontend, read our [developer documentation](https://docs.pkp.sfu.ca/dev/documentation/en/frontend).
 
-You do not need to consult this guide unless you want to make substantial changes to the editorial backend. These may include:
+The library uses Vue 3, but most components are written using the Vue 2 syntax. In order to make it is easy for the team to maintain the UI Library, it is important to keep the code consistent between components. Use the Vue 2 syntax for new components until a decision is made to migrate all components to the Vue 3 syntax.
 
-- Create a new page with your own components
-- Replace an existing page with a customized display
-- Maintain or improve the existing components
-- Learn how to write your own components
+Next, learn more about the [root component](#/pages/pages).

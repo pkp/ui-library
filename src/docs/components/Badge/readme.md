@@ -9,7 +9,7 @@
 | `isWarnable` | Badges which describe an alert or warning |
 | `isButton` | If the badge can be used to perform an action, set this to true. |
 | `hasDot` | Adds a small dot to the left of the `content` |
-| `stage` | Pass a stage name to use a special design for stag |badges. Supports: `submission`, `review`, `copyediting`, `production`. |
+| `stage` | Pass a stage name to use a special design for stage badges. Supports: `submission`, `review`, `copyediting`, `production`. |
 
 ## Events
 

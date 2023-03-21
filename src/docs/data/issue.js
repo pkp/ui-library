@@ -2,7 +2,7 @@ import submission from '@/docs/data/submission';
 import doi from '@/docs/data/doi';
 
 export default {
-	_href: 'http://localhost:8000/publicknowledge/api/v1/issues/1',
+	_href: 'https://httbin.org/publicknowledge/api/v1/issues/1',
 	articles: [
 		{
 			...submission,
@@ -15,8 +15,7 @@ export default {
 					authorsString: 'Catherine Kwantes',
 					authorsStringShort: 'Kwantes',
 					fullTitle: {
-						en:
-							'Quisque vel ultrices ut vel sollicitudin vel varius suscipit phasellus',
+						en: 'Quisque vel ultrices ut vel sollicitudin vel varius suscipit phasellus',
 					},
 					isPublished: true,
 				},
@@ -58,7 +57,7 @@ export default {
 	isPublished: '1',
 	number: '1',
 	'pub-id::doi': '10.987/iss123',
-	publishedUrl: 'http://localhost:8080/publicknowledge/issue/view/1',
+	publishedUrl: 'https://httbin.org/publicknowledge/issue/view/1',
 	title: {
 		en: 'Issue Number 1',
 		fr_CA: 'Issue Number 1',

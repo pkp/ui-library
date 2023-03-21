@@ -14,12 +14,15 @@
 <script>
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
+import items from '../helpers/items';
 
 let manyItems = [];
 for (let i = 1; i < 31; i++) {
+	const item = items[i % 3];
 	manyItems.push({
 		id: i,
-		title: 'Item ' + i,
+		title: item.title + ' ' + i,
+		subtitle: item.subtitle,
 	});
 }
 

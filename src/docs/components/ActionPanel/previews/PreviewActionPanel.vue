@@ -18,14 +18,23 @@
 		</action-panel>
 		<action-panel>
 			<h2>Clear Cache</h2>
-			<p>
+			<p id="delete-cache-description">
 				Clear the cached data and templates across the site. This will effect
 				cached values for all journals.
 			</p>
 			<template slot="actions">
-				<pkp-button>Clear Data Cache</pkp-button>
-				<pkp-button>Clear Template/CSS Cache</pkp-button>
-				<pkp-button :isWarnable="true">Clear All Cache</pkp-button>
+				<pkp-button aria-describedby="delete-cache-description">
+					Clear Data Cache
+				</pkp-button>
+				<pkp-button aria-describedby="delete-cache-description">
+					Clear Template/CSS Cache
+				</pkp-button>
+				<pkp-button
+					:isWarnable="true"
+					aria-describedby="delete-cache-description"
+				>
+					Clear All Cache
+				</pkp-button>
 			</template>
 		</action-panel>
 		<action-panel>

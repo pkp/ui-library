@@ -10,7 +10,12 @@
 			</div>
 			<h1 class="app__pageHeading" ref="pageTitle">
 				Make Submission
-				<pkp-button>Save for Later</pkp-button>
+				<pkp-button
+					:is-disabled="isDisconnected"
+					@click="openAlert('Saves the submission for later')"
+				>
+					Save for Later
+				</pkp-button>
 			</h1>
 			<div class="submissionWizard__submissionConfiguration">
 				Submitting to the
@@ -24,9 +29,13 @@
 				<modal
 					:closeLabel="__('common.close')"
 					name="config"
-					title="##Change Submission Type##"
+					title="Change Submission Settings"
 				>
-					## TODO ##
+					<pkp-form
+						v-bind="components.reconfigureSubmission"
+						@set="set"
+						@success="openAlert('Wizard would reload.')"
+					/>
 				</modal>
 			</div>
 			<steps
@@ -35,7 +44,7 @@
 				:started-steps="startedSteps"
 				label="Complete the steps to make a submission"
 				progress-label="{$current}/{$total} steps"
-				scroll-to="$refs.pageTitle"
+				:scroll-to="$refs.pageTitle"
 				show-steps-label="Show all steps"
 				@step:open="openStep"
 			>
@@ -55,48 +64,32 @@
 								v-if="section.type === 'form'"
 								v-bind="section.form"
 								ref="autosaveForms"
+								class="submissionWizard__stepForm"
 								@set="updateForm"
 							/>
 							<submission-files-list-panel
 								v-else-if="section.type === 'files'"
-								addFileLabel="Add File"
-								apiUrl="http://localhost:8000/publicknowledge/api/v1/submissions/1/files"
-								cancelUploadLabel="Cancel Upload"
-								genrePromptLabel="What kind of file is this?"
-								emptyLabel="Upload any files the editorial team will need to evaluate your submission."
-								emptyAddLabel="Upload Files"
-								:fileStage="2"
-								:form="components.submissionFiles.form"
-								:genres="components.submissionFiles.genres"
-								:id="section.id"
-								:items="components.submissionFiles.items"
-								:options="components.submissionFiles.options"
-								otherLabel="Other"
-								primaryLocale="en"
-								removeConfirmLabel="Are you sure you want to remove this file?"
-								:stageId="1"
-								title="Files"
-								uploadProgressLabel="Uploading {$percent}% complete"
+								v-bind="components.submissionFiles"
 								@set="set"
 							/>
 							<contributors-list-panel
 								v-else-if="section.type === 'contributors'"
-								add-contributor-label="Add Contributor"
-								:can-edit-publication="true"
-								confirm-delete-message="Are you sure you want to remove {$name} as a contributor? This action can not be undone."
-								delete-contributor-label="Remove"
-								edit-contributor-label="Edit"
-								:form="{
-									/** TODO */
-								}"
-								id="contributors"
+								v-bind="components.contributors"
 								:items="publication.authors"
 								:publication="publication"
-								publication-api-url="https://localhost:8000/publicknowledge/api/v1/submissions/1/publications/1/contributors"
-								title="Contributors"
 								@updated:contributors="setContributors"
+								@updated:publication="setPublication"
 							/>
 							<template v-else-if="section.type === 'review'">
+								<notification
+									v-if="Object.keys(errors).length"
+									type="warning"
+									class="submissionWizard__review_errors"
+								>
+									There are one or more problems that need to be fixed before
+									you can submit. Please review the information below and make
+									the requested changes.
+								</notification>
 								<div
 									v-for="reviewStep in steps.filter(
 										(iStep) => iStep.id !== step.id
@@ -125,50 +118,62 @@
 										"
 									>
 										<template v-if="section.id === 'files'">
-											<ul
-												v-if="components.submissionFiles.items.length"
-												class="submissionWizard__reviewPanel__list"
+											<notification
+												v-for="(error, i) in errors.files"
+												:key="i"
+												type="warning"
+												class="submissionWizard__reviewEmptyWarning"
 											>
+												<icon icon="exclamation-triangle" :inline="true"></icon>
+												{{ error }}
+											</notification>
+											<ul class="submissionWizard__reviewPanel__list">
 												<li
 													v-for="file in components.submissionFiles.items"
 													:key="file.id"
 													class="submissionWizard__reviewPanel__item__value"
 												>
-													<file
-														:documentType="file.documentType"
-														:id="'file' + file.id"
-														:name="localize(file.name)"
-													/>
+													<a
+														:href="file.url"
+														class="submissionWizard__reviewPanel__fileLink"
+													>
+														<file
+															:document-type="file.documentType"
+															:name="localize(file.name)"
+														></file>
+													</a>
 													<span
 														class="submissionWizard__reviewPanel__list__actions"
 													>
-														<badge :is-primary="!file.genreIsSupplementary">
+														<badge
+															v-if="file.genreId"
+															:is-primary="!file.genreIsSupplementary"
+														>
 															{{ localize(file.genreName) }}
 														</badge>
-														<pkp-button
-															element="a"
-															class="submissionWizard__reviewPanel__download"
-															:href="file.url"
-															target="_blank"
-															rel="noopener noreferrer"
-															:aria-describedby="'file' + file.id"
-														>
-															<icon icon="download" />
-															<span class="-screenReader">Download</span>
-														</pkp-button>
 													</span>
 												</li>
 											</ul>
-											<notification v-else type="warning">
-												<icon icon="exclamation-triangle" :inline="true" />
-												No files have been uploaded for this submission.
-											</notification>
 										</template>
 										<template v-else-if="section.id === 'contributors'">
-											<ul
-												v-if="publication.authors.length"
-												class="submissionWizard__reviewPanel__list"
+											<notification
+												v-if="!publication.authors.length"
+												type="warning"
+												class="submissionWizard__reviewEmptyWarning"
 											>
+												<icon icon="exclamation-triangle" :inline="true"></icon>
+												No contributors have been added to this submission.
+											</notification>
+											<ul v-else class="submissionWizard__reviewPanel__list">
+												<li v-for="(error, i) in errors.contributors" :key="i">
+													<notification type="warning">
+														<icon
+															icon="exclamation-triangle"
+															:inline="true"
+														></icon>
+														{{ error }}
+													</notification>
+												</li>
 												<li
 													v-for="author in publication.authors"
 													:key="author.id"
@@ -192,21 +197,38 @@
 													</span>
 												</li>
 											</ul>
-											<notification v-else type="warning">
-												<icon icon="exclamation-triangle" :inline="true" />
-												No contributors have been added for this submission.
-											</notification>
 										</template>
 										<template v-else-if="section.id === 'details'">
 											<div class="submissionWizard__reviewPanel__item">
+												<template v-if="errors.title">
+													<notification
+														v-for="(error, i) in errors.title"
+														:key="i"
+														type="warning"
+													>
+														<icon icon="exclamation-triangle"></icon>
+														{{ error }}
+													</notification>
+												</template>
 												<h4 class="submissionWizard__reviewPanel__item__header">
 													Title
 												</h4>
-												<div class="submissionWizard__reviewPanel__item__value">
-													{{ localize(publication.title) }}
-												</div>
+												<div
+													class="submissionWizard__reviewPanel__item__value"
+													v-html="localize(publication.title)"
+												/>
 											</div>
 											<div class="submissionWizard__reviewPanel__item">
+												<template v-if="errors.abstract">
+													<notification
+														v-for="(error, i) in errors.abstract"
+														:key="i"
+														type="warning"
+													>
+														<icon icon="exclamation-triangle"></icon>
+														{{ error }}
+													</notification>
+												</template>
 												<h4 class="submissionWizard__reviewPanel__item__header">
 													Abstract
 												</h4>
@@ -215,23 +237,33 @@
 													v-html="localize(publication.abstract)"
 												/>
 											</div>
-										</template>
-										<template v-else-if="section.id === 'editors'">
 											<div
-												v-if="publication.keywords.length"
+												v-if="localize(publication.keywords).length"
 												class="submissionWizard__reviewPanel__item"
 											>
+												<template v-if="errors.abstract">
+													<notification
+														v-for="(error, i) in errors.abstract"
+														:key="i"
+														type="warning"
+													>
+														<icon icon="exclamation-triangle"></icon>
+														{{ error }}
+													</notification>
+												</template>
 												<h4 class="submissionWizard__reviewPanel__item__header">
 													Keywords
 												</h4>
 												<div class="submissionWizard__reviewPanel__item__value">
 													{{
-														publication.keywords.join(
-															pkp.localeKeys['common.commaListSeparator']
+														localize(publication.keywords).join(
+															__('common.commaListSeparator')
 														)
 													}}
 												</div>
 											</div>
+										</template>
+										<template v-else-if="section.id === 'editors'">
 											<div
 												v-if="publication.subjects.length"
 												class="submissionWizard__reviewPanel__item"
@@ -242,7 +274,7 @@
 												<div class="submissionWizard__reviewPanel__item__value">
 													{{
 														publication.subjects.join(
-															pkp.localeKeys['common.commaListSeparator']
+															__('common.commaListSeparator')
 														)
 													}}
 												</div>
@@ -299,19 +331,32 @@
 				-->
 				<span v-else></span>
 			</template>
-			<spinner v-if="isSaving"></spinner>
 			<span
-				v-else-if="isDisconnected"
-				class="submissionWizard__lastSaved submissionWizard__lastSaved--disconnected"
+				role="status"
+				aria-live="polite"
+				class="submissionWizard__lastSaved"
+				:class="
+					isDisconnected ? 'submissionWizard__lastSaved--disconnected' : ''
+				"
 			>
-				<spinner />
-				Reconnecting
+				<spinner v-if="isAutosaving || isDisconnected"></spinner>
+				<template v-if="isAutosaving">Saving</template>
+				<template v-else-if="isDisconnected">Reconnecting</template>
+				<template v-else-if="lastAutosavedMessage">
+					{{ lastAutosavedMessage }}
+				</template>
 			</span>
-			<span v-else-if="lastSavedTimestamp" class="submissionWizard__lastSaved">
-				Last saved {{ lastSavedTimestamp }}
-			</span>
-			<pkp-button>Save for Later</pkp-button>
-			<pkp-button :isPrimary="true" @click="nextStep">Continue</pkp-button>
+			<pkp-button :is-disabled="isDisconnected" @click="saveForLater">
+				Save for Later
+			</pkp-button>
+			<pkp-button
+				:is-primary="true"
+				:is-disabled="isOnLastStep && !canSubmit"
+				@click="nextStep"
+			>
+				<template v-if="isOnLastStep">Submit</template>
+				<template v-else>Continue</template>
+			</pkp-button>
 		</button-row>
 
 		<div
@@ -350,10 +395,12 @@ import File from '../../../../components/File/File.vue';
 import PkpForm from '../../../../components/Form/Form.vue';
 import SubmissionWizardPage from '@/components/Container/SubmissionWizardPage.vue';
 import SubmissionFilesListPanel from '../../../../components/ListPanel/submissionFiles/SubmissionFilesListPanel.vue';
-import confirmForm from '@/docs/components/Form/helpers/form-confirm';
 import categories from '../../../data/categories';
+import confirmForm from '@/docs/components/Form/helpers/form-confirm';
 import dropzoneOptions from '../../../data/dropzoneOptions';
 import forTheEditorsForm from '@/docs/components/Form/helpers/form-for-the-editors';
+import fieldKeywords from '../../../components/Form/helpers/field-controlled-vocab-keywords';
+import formChangeSubmission from '../../../components/Form/helpers/form-change-submission';
 import genres from '../../../data/genres';
 import submission from '../../../data/submission';
 import submissionFiles from '../../../data/submissionFiles';
@@ -374,6 +421,10 @@ export default {
 		detailsForm.fields = detailsForm.fields.filter(
 			(field) => !['prefix', 'subtitle'].includes(field.name)
 		);
+		detailsForm.fields.push({
+			...fieldKeywords,
+			groupId: 'default',
+		});
 
 		// Remove save buttons from forms
 		[detailsForm, confirmForm, forTheEditorsForm].forEach((form) => {
@@ -381,18 +432,86 @@ export default {
 		});
 
 		return {
-			categories: [...categories],
+			categories: {...categories},
 			components: {
+				contributors: {
+					canEditPublication: true,
+					emptyLabel: 'No contributors yet.',
+					form: {...submissionFileForm},
+					id: 'contributors',
+					i18nAddContributor: 'Add Contributor',
+					i18nConfirmDelete:
+						'Are you sure you want to remove this contributor?',
+					i18nDeleteContributor: 'Delete Contributor',
+					i18nEditContributor: 'Edit',
+					i18nSetPrimaryContact: 'Set Primary Contact',
+					i18nPrimaryContact: 'Primary Contact',
+					i18nContributors: 'Contributors',
+					i18nSaveOrder: 'Save Order',
+					i18nPreview: 'Preview',
+					i18nPreviewDescription:
+						'Contributors to this publication will be identified in this journal in the following formats.',
+					i18nDisplay: 'Display',
+					i18nFormat: 'Format',
+					i18nAbbreviated: 'Abbreviated',
+					i18nPublicationLists: 'Publication Lists',
+					i18nFull: 'Full',
+					publicationApiUrlFormat: '',
+					title: 'Contributors',
+				},
+				reconfigureSubmission: {...formChangeSubmission},
 				submissionFiles: {
+					addFileLabel: 'Add File',
+					apiUrl: 'http://httpbin.org/post',
+					cancelUploadLabel: 'Cancel Upload',
+					genrePromptLabel: 'What type of file is this?',
+					emptyLabel:
+						'Upload any files the editorial team will need to evaluate your submission.',
+					emptyAddLabel: 'Upload File',
+					fileStage: 1,
 					form: {...submissionFileForm},
 					genres: [...genres],
+					id: 'submissionFiles',
 					items: [...submissionFiles],
 					options: {...dropzoneOptions},
+					otherLabel: 'Other',
+					primaryLocale: 'en',
+					removeConfirmLabel: 'Are you sure you want to remove this file?',
+					stageId: 1,
+					title: 'Files',
+					uploadProgressLabel: 'Uploading {$percent}% complete',
 				},
 			},
+			i18nConfirmSubmit:
+				'The submission, <strong>{$title}</strong>, will be submitted to <strong>Journal of Public Knowledge</strong> for editorial review. Are you sure you want to complete this submission?',
+			i18nDiscardChanges: 'No, discard unsaved changes',
+			i18nDisconnected: 'Disconnected',
+			i18nLastAutosaved: 'Last saved {$when}',
+			i18nSubmit: 'Submit',
+			i18nTitleSeparator: ' | ',
+			i18nUnableToSave:
+				'An error was encountered and we were unable to save your submission. You may have been disconnected.',
+			i18nUnsavedChanges: 'Unsaved Changes',
+			i18nUnsavedChangesMessage:
+				'We found unsaved changes from {$when}. This can happen if you lose connection to the server while working. Restoring those changes may overwrite any changes you have made since then. Would you like to restore those changes now?',
 			publication: {...submission.publications[0]},
 			submission: {...submission},
 			steps: [
+				{
+					id: 'details-step',
+					name: 'Details',
+					sections: [
+						{
+							id: 'details',
+							type: 'form',
+							name: 'Submission Details',
+							description: `<p>
+									Please provide the following details to help us manage your submission in our system.
+								</p>`,
+							form: {...detailsForm},
+						},
+					],
+				},
 				{
 					id: 'files-step',
 					name: 'Upload Files',
@@ -430,35 +549,6 @@ export default {
 									fake email here. You can add this information in a message to
 									the editor at a later step in the submissio process.
 								</p>`,
-						},
-					],
-				},
-				{
-					id: 'details-step',
-					name: 'Details',
-					sections: [
-						{
-							id: 'details',
-							type: 'form',
-							name: 'Submission Details',
-							description: `<p>
-									Please provide the following details to help us manage your submission in our system.
-								</p>`,
-							form: {...detailsForm},
-						},
-						{
-							id: 'relations',
-							type: 'form',
-							name: 'Preprint Status',
-							description: `<p>
-									Let us know if this preprint has been accepted or published elsewhere.
-								</p>`,
-							form: {
-								...detailsForm,
-								id: 'relations',
-								action: '/example/submissions/1',
-								fields: [...detailsForm.fields.slice(0, 1)],
-							},
 						},
 					],
 				},
@@ -510,6 +600,25 @@ export default {
 				},
 			],
 		};
+	},
+	methods: {
+		/**
+		 * Override the browser history feature because it
+		 * doesn't play nicely with the #/ routing in the
+		 * UI Library app
+		 */
+		addHistory() {
+			//
+		},
+		/**
+		 * Override the autosave functionality
+		 */
+		_sendAutosave() {
+			//
+		},
+		openAlert(msg) {
+			alert(msg);
+		},
 	},
 };
 </script>

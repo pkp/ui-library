@@ -6,7 +6,7 @@
 import FieldPubId from '@/components/Form/fields/FieldPubId.vue';
 import PreviewFieldBase from '../../FieldBase/previews/PreviewFieldBase.vue';
 import fieldBase from '../../../helpers/field-base';
-import field from '../../../helpers/field-doi';
+import field from '../../../helpers/field-urn';
 
 export default {
 	extends: PreviewFieldBase,

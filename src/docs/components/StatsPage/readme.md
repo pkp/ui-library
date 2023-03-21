@@ -1,5 +1,7 @@
 ## Data
 
+This is a root component. Learn about [page hydration](#/pages/pages).
+
 | Key | Description |
 | --- | --- |
 | `apiUrl` | URL to the REST API endpoint to retrieve stats. |
@@ -21,10 +23,4 @@
 
 ## Usage
 
-The `StatsPage` extends the [`Container`](/#/pages/container) app. Use this app to show a page of statistics with a chart and a table.
-
-## Template
-
-The `StatsPage` app is a template-less component. You must write the template in Smarty on the server-side and it will be compiled at run time.
-
-The examples here provide sample templates for two use-cases.
+The `StatsPage` extends the [Page](#/component/Page) component. Use this page to show a page of statistics with a chart and a table.

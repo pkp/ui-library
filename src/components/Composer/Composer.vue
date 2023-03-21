@@ -514,6 +514,9 @@ export default {
 		};
 	},
 	computed: {
+		/**
+		 * A getter and setter to allow v-model on a prop
+		 */
 		bccBinded: {
 			get() {
 				return this.bcc;
@@ -522,6 +525,11 @@ export default {
 				this.emitChange({bcc: newVal});
 			},
 		},
+
+		/**
+		 * init prop to pass to the the rich text field
+		 * component for the message body
+		 */
 		bodyInit() {
 			if (!this.attachers.length) {
 				return {};
@@ -540,6 +548,10 @@ export default {
 				},
 			};
 		},
+
+		/**
+		 * A getter and setter to allow v-model on a prop
+		 */
 		ccBinded: {
 			get() {
 				return this.cc;
@@ -548,6 +560,7 @@ export default {
 				this.emitChange({cc: newVal});
 			},
 		},
+
 		/**
 		 * Override the recipientName in the email variables
 		 *
@@ -571,12 +584,24 @@ export default {
 			}
 			return variables;
 		},
+
+		/**
+		 * A unique id for the file attacher component
+		 */
 		fileAttacherModalId() {
 			return this.id + 'fileAttacher';
 		},
+
+		/**
+		 * The first X items of email template search results
+		 */
 		limitedSearchResults() {
 			return this.searchResults.slice(0, this.showSearchResultCount);
 		},
+
+		/**
+		 * The recipient options with names in the current locale
+		 */
 		localizedRecipientOptions() {
 			const locale = this.locale ?? $.pkp.app.currentLocale;
 			return this.recipientOptions.map((recipient) => {
@@ -586,15 +611,21 @@ export default {
 				};
 			});
 		},
+
+		/**
+		 * The prepared content variables in the current locale
+		 */
 		localizedVariables() {
 			return this.variables[this.locale] ? this.variables[this.locale] : [];
 		},
+
 		/**
-		 * A list of supported locales without the currently active locale
+		 * A list of supported locales other than the currently active locale
 		 */
 		otherLocales() {
 			return this.locales.filter((locale) => locale.locale !== this.locale);
 		},
+
 		/**
 		 * The names of all the recipients separated by a comma
 		 */
@@ -607,6 +638,10 @@ export default {
 			}
 			return name;
 		},
+
+		/**
+		 * A getter and setter to allow v-model on a prop
+		 */
 		subjectBinded: {
 			get() {
 				return this.subject;
@@ -615,6 +650,7 @@ export default {
 				this.emitChange({subject: newVal});
 			},
 		},
+
 		/**
 		 * The recipient options that are currently
 		 * set in the recipients array
@@ -628,6 +664,9 @@ export default {
 	methods: {
 		/**
 		 * Add file attachments to the email
+		 *
+		 * @param {String} component The name of the `FileAttacher****` component used to attach files
+		 * @param {Array} files The files attached to the email
 		 */
 		addAttachments(component, files) {
 			const attachments = [
@@ -664,6 +703,10 @@ export default {
 
 		/**
 		 * Respond to change events from the recipient autosuggest field
+		 *
+		 * @param {String} name The `name` of the input field
+		 * @param {String} prop The property that was changed.
+		 * @param {String} value The new value for the property
 		 */
 		changeRecipients(name, prop, value) {
 			if (prop === 'value') {
@@ -675,6 +718,7 @@ export default {
 		 * Get the icon to match this document type,
 		 * such as PDF, Word, spreadsheet, etc.
 		 *
+		 * @param {Object} attachment The file attachment
 		 * @return {String}
 		 */
 		getDocumentTypeIcon(attachment) {
@@ -687,6 +731,8 @@ export default {
 
 		/**
 		 * Emit an event to change a prop
+		 *
+		 * @param {Object} data The props of this component that should change
 		 */
 		emitChange(data) {
 			this.$emit('set', this.id, data);
@@ -704,6 +750,8 @@ export default {
 
 		/**
 		 * Get a plain text snippet of an email template's body
+		 *
+		 * @param {String} str An HTML string of the email template's body
 		 */
 		getBodySnippet(str) {
 			const length = 70;
@@ -718,6 +766,8 @@ export default {
 
 		/**
 		 * Load an email template and update the subject/body
+		 *
+		 * @param {String} key The email template key
 		 */
 		loadTemplate(key) {
 			this.isLoadingTemplate = true;
@@ -768,6 +818,8 @@ export default {
 
 		/**
 		 * Open a confirmation modal to change the locale
+		 *
+		 * @param {String} locale The requested locale
 		 */
 		openSwitchLocale(locale) {
 			const localeName = this.locales.find(
@@ -803,6 +855,8 @@ export default {
 
 		/**
 		 * Remove a file attachment
+		 *
+		 * @param {Number} index The array index of the attachment to remove
 		 */
 		removeAttachment(index) {
 			this.emitChange({
@@ -835,43 +889,46 @@ export default {
 				return;
 			}
 			this.isSearching = true;
-			this.latestSearchRequest = $.pkp.classes.Helper.uuid();
+			const uuid = $.pkp.classes.Helper.uuid();
+			this.latestSearchRequest = uuid;
 			this.showSearchResultCount = 10;
-			var self = this;
 
 			$.ajax({
 				url: this.emailTemplatesApiUrl,
 				type: 'GET',
+				context: this,
 				data: {
 					searchPhrase: this.searchPhrase,
 				},
 				_uuid: this.latestSearchRequest,
 				error: function (r) {
 					// Only process latest request response
-					if (self.latestSearchRequest !== this._uuid) {
+					if (this.latestSearchRequest !== uuid) {
 						return;
 					}
-					self.ajaxErrorCallback(r);
+					this.ajaxErrorCallback(r);
 				},
 				success: function (r) {
 					// Only process latest request response
-					if (self.latestSearchRequest !== this._uuid) {
+					if (this.latestSearchRequest !== uuid) {
 						return;
 					}
-					self.searchResults = r.items;
+					this.searchResults = r.items;
 				},
 				complete() {
 					// Only process latest request response
-					if (self.latestSearchRequest !== this._uuid) {
+					if (this.latestSearchRequest !== uuid) {
 						return;
 					}
-					self.isSearching = false;
+					this.isSearching = false;
 				},
 			});
 		},
 
 		/**
 		 * Emit an event to set the body of the email
+		 *
+		 * @param {String} value The new body value
 		 */
 		setBody(value) {
 			this.emitChange({body: value});
@@ -879,6 +936,8 @@ export default {
 
 		/**
 		 * Emit an event to set the subject of the email
+		 *
+		 * @param {String} value The new subject value
 		 */
 		setSubject(value) {
 			this.emitChange({
@@ -889,6 +948,8 @@ export default {
 		/**
 		 * Switch the current locale and load the default template
 		 * in the new locale
+		 *
+		 * @param {String} locale The locale key to switch to. Example: `en`
 		 */
 		switchLocale(locale) {
 			this.emitChange({locale: locale});
@@ -896,7 +957,11 @@ export default {
 		},
 
 		/**
-		 * Update the padding of the to element to account for the CC button
+		 * Update the padding of the "to" element to account for the CC button
+		 *
+		 * This makes sure that the input field does not run into the space occupied
+		 * by the button to Add CC/BCC. The width of this button will change depending
+		 * on the language, so it is calculated at run-time.
 		 */
 		updateToPadding() {
 			const inputEl = this.$el.querySelector('.pkpAutosuggest__inputWrapper');

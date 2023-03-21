@@ -29,7 +29,7 @@ export default {
 		return {
 			form: {
 				...cloneDeep(form),
-				action: 'http://localhost:8080',
+				action: 'https://httbin.org',
 				method: 'GET',
 			},
 		};

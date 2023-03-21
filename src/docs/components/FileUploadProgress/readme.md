@@ -2,9 +2,9 @@
 
 | Key | Description |
 | --- | --- |
-| `cancelUploadLabel` | A label for the button to cancel the upload. |
+| `cancelUploadLabel` | A localized string for the button to cancel the upload. |
 | `errors` | An array of error messages related to this upload. |
-| `name` | The file's name. |
+| `name` | The name of the file. |
 | `progress` | A number from `0-100` representing the percentage of the file that has been uploaded so far. |
 
 ## Events
@@ -15,4 +15,4 @@
 
 ## Usage
 
-Use this component to display a file upload in progress.
+Use this component to display a file upload in progress. Usually, this component is used with [FileUploader](#/component/FileUploader).

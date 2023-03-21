@@ -2,8 +2,8 @@
 
 | Key | Description |
 | --- | --- |
-| `chartData` | An object representing the data to be charted. This object corresponds to the `data` property in [this example](https://www.chartjs.org/docs/latest/#creating-a-chart) in the Chart.js docs. |
-| `chartOptions` | Optional. An object representing the configuration options for the chart. Options passed with this prop will be merged with defaults.<br><br>This object corresponds to the `options` property in [this example](https://www.chartjs.org/docs/latest/getting-started/usage.html#creating-a-chart) in the Chart.js docs. There are many [configuration options](https://www.chartjs.org/docs/latest/). |
+| `chartData` | An object representing the data to be charted. This object corresponds to the `data` property in [this example](https://www.chartjs.org/docs/2.9.4/#creating-a-chart) in the Chart.js docs. |
+| `chartOptions` | Optional. An object representing the configuration options for the chart. Options passed with this prop will be merged with defaults.<br><br>This object corresponds to the `options` property in [this example](https://www.chartjs.org/docs/2.9.4/getting-started/usage.html#creating-a-chart) in the Chart.js docs. There are many [configuration options](https://www.chartjs.org/docs/2.9.4/configuration/). |
 
 ## Events
 

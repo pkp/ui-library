@@ -1,65 +1,125 @@
-# Working with multiple languages
+# Localization
 
-PKP's applications support multiple languages. This means that the application itself can be localized and that data can be entered in more than one language at a time.
+Each application can be run in more than one language. This means that UI components must be localized. It also means that data used by the UI components may exist in more than one language.
 
-## Localize text
+## Locale Keys
 
-Messages in the application which have been localized to the current user's language are available globally at `pkp.localeKeys`. Use the following to display a localized phrase in a component's template.
+Some common localized strings are available in the `pkp.localeKeys` global. Use the `__()` method in any component template.
 
-```js
-{{ __('common.cancel') }}
-```
+<div class="inlinePreview">
+	<button>
+		Cancel
+	</button>
+</div>
 
-This can be accessed from component methods by using the following.
-
-```js
-const cancel = this.__('common.cancel');
+```html
+<template>
+	<button>
+		{{ __('common.cancel') }}
+	</button>
+</template>
 ```
 
 Pass parameters to the localized keys by using the following.
 
-```js
-{{ __('list.viewMore', {name: 'Daniel Barnes'}) }}
+<div class="inlinePreview">
+	<button>
+		Edit Daniel Barnes
+	</button>
+</div>
+
+```html
+<template>
+	<button>
+		{{ __('common.editItem', {item: 'Daniel Barnes'}) }}
+	</button>
+</template>
 ```
 
-The application should provide all of the localized phrases necessary from the server. On the server side, a locale key can be added to a page with the following PHP code.
+This method can be used in scripts too.
 
-```php
-$templateMgr = TemplateManager::getManager($request);
-$templateMgr->setLocaleKeys([
-	'common.cancel',
-]);
+<div class="inlinePreview">
+	<button>
+		Edit
+	</button>
+	<button>
+		Edit Daniel Barnes
+	</button>
+</div>
+
+```html
+<template>
+	<button>
+		{{ cancelLabel }}
+	</button>
+	<button>
+		{{ editItemLabel }}
+	</button>
+</template>
+
+<script>
+export default {
+	data() {
+		return {
+			name: 'Daniel Barnes'
+		};
+	},
+	computed: {
+		cancelLabel() {
+			return this.__('common.cancel')
+		},
+		editItemLabel() {
+			return this.__('common.editItem', {item: this.name})
+		}
+	}
+}
+</script>
 ```
 
-## Multilingual content
+This works for a few common strings that have been defined in `pkp.localeKeys`. This comes from the server and is configured in  `PKPTemplateManager`. For other localized strings, a component should accept them as a `prop`.
 
-Multilingual fields are provided as a JSON object with keys specifying the locale codes. The following response shows the name property of a journal in English and Canadian French.
+```html
+<script>
+export default {
+	props: {
+		i18nNewSubmission: String,
+	}
+}
+</script>
+
+<template>
+	<button>
+		{{ i18nNewSubmission }}
+	</button>
+</template>
+```
+
+## Multilingual Data
+
+Multilingual data is usually provided as a JSON object. Each key holds the locale code. The following response shows the name property of a journal in English and Canadian French.
 
 ```js
 {
 	"name": {
 		"en": "Journal of Public Knowledge",
 		"fr_CA": "Journal de la connaissance du public"
-	},
-	...
+	}
 }
 ```
 
-The following helper method is available for all components to help you retrieve a value in the correct language.
+All components can use the following helper method to get a value in the current language of the UI or, as a fallback, the primary language of the journal, press or preprint server.
 
 ```js
 var name = this.localize(this.name);
 ```
 
-This will return the value in the user's current language or the primary language of the site. If it doesn't exist in either of these locales, it will return the first locale it finds.
-
-You can also request a specific locale.
+If the data doesn't exist in either of these locales, it will return the first locale it finds. Pass a second argument to ask for the value in a specific locale.
 
 ```js
 var name = this.localize(this.name, 'fr_CA');
 ```
 
-When working with submissions, a component should use the `localizeSubmission` mixin to localize submission data. This provides a method that will fallback to the submission's primary language rather than the primary language of the site.
+When working with submissions, a component should use the `localizeSubmission` mixin to localize submission data. This method will use the submission's primary language as the default value.
 
 ```js
 import localizeSubmission from '@/mixins/localizeSubmission';
@@ -74,3 +134,5 @@ export default {
 	}
 }
 ```
+
+Learn more about how to write [accessible components](#/pages/accessibility).

@@ -61,6 +61,9 @@
 			<tab id="workflow" label="Workflow">
 				<notification type="warning">
 					This component preview does not include the full workflow.
+					<pkp-button @click="showTab('publication')">
+						Show Publication
+					</pkp-button>
 				</notification>
 			</tab>
 			<tab id="publication" label="Publication">
@@ -225,10 +228,9 @@
 						<tab id="metadata" label="Metadata">
 							<pkp-form v-bind="components.metadata" @set="set" />
 						</tab>
-						<tab v-if="supportsReferences" id="citations" label="Citations">
+						<tab v-if="supportsReferences" id="citations" label="References">
 							<pkp-form v-bind="components.citations" @set="set" />
 						</tab>
-						<tab id="identifiers" label="Identifiers">... DOIs ...</tab>
 						<tab id="galleys" label="Galleys">
 							<div id="representations-grid" ref="representations">
 								<spinner></spinner>
@@ -325,22 +327,33 @@ export default {
 			canEditPublication: true,
 			components: {
 				contributors: {
-					id: 'contributors',
-					items: [...authors],
-					title: 'Contributors',
-					i18nAddContributor: 'Add Contributor',
-					publicationApiUrl:
-						'http://localhost:8088/index.php/ts/api/v1/submissions/16/publications',
-					i18nConfirmDelete:
-						'Are you sure you want to remove {$name} as a contributor? This action can not be undone.',
-					i18nDeleteContributor: 'Delete',
-					i18nEditContributor: 'Edit',
 					canEditPublication: true,
+					id: 'contributors',
+					i18nAddContributor: 'Add Contributor',
+					i18nConfirmDelete:
+						'Are you sure you want to remove this contributor?',
+					i18nDeleteContributor: 'Delete Contributor',
+					i18nEditContributor: 'Edit',
+					i18nSetPrimaryContact: 'Set Primary Contact',
+					i18nPrimaryContact: 'Primary Contact',
+					i18nContributors: 'Contributors',
+					i18nSaveOrder: 'Save Order',
+					i18nPreview: 'Preview',
+					i18nPreviewDescription:
+						'Contributors to this publication will be identified in this journal in the following formats.',
+					i18nDisplay: 'Display',
+					i18nFormat: 'Format',
+					i18nAbbreviated: 'Abbreviated',
+					i18nPublicationLists: 'Publication Lists',
+					i18nFull: 'Full',
+					items: [...authors],
+					publicationApiUrlFormat: '',
+					title: 'Contributors',
 					form: {
 						id: 'contributor',
 						method: 'POST',
 						action:
-							'http://localhost:8088/index.php/ts/api/v1/submissions/16/publications/__publicationId__/contributors',
+							'https://httbin.org/publicknowledge/api/v1/submissions/16/publications/__publicationId__/contributors',
 						fields: [
 							{
 								...fieldGivenName,
@@ -482,6 +495,9 @@ export default {
 	methods: {
 		alert(msg) {
 			alert(msg);
+		},
+		showTab(tab) {
+			pkp.eventBus.$emit('open-tab', tab);
 		},
 	},
 	created() {

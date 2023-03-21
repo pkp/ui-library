@@ -17,6 +17,4 @@ This component does not emit any events.
 
 ## Usage
 
-Use this component to display anything from simple lists to complex management panels.
-
-A `ListPanel` will often interact with the REST API to get, search, filter and paginate items in the list. Use the [Fetch](#/pages/fetch) mixin to provide these features.
+Use this component to display anything from simple lists to complex management panels. A `ListPanel` will often interact with the REST API to get, search, filter and paginate items in the list. Use the [Fetch](#/mixins/fetch) mixin to provide these features.

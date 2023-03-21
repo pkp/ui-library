@@ -1,7 +1,7 @@
 <template>
 	<submission-files-list-panel
 		addFileLabel="Add File"
-		apiUrl="http://localhost:8000/publicknowledge/api/v1/submissions/1/files"
+		apiUrl="https://httbin.org/publicknowledge/api/v1/submissions/1/files"
 		cancelUploadLabel="Cancel Upload"
 		genrePromptLabel="What kind of file is this?"
 		emptyLabel="Upload any files the editorial team will need to evaluate your submission."

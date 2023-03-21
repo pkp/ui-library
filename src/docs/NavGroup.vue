@@ -66,28 +66,6 @@ export default {
 	li {
 		position: relative;
 	}
-
-	ul {
-		margin: 0;
-		padding: 0.25em 0;
-		list-style: none;
-		border-top: @bg-border-light;
-
-		li {
-			// font-size: @font-tiny;
-			line-height: 1.6em;
-			padding-top: 0.25em;
-			padding-bottom: 0.25em;
-		}
-	}
-
-	.-submenuOpen {
-		border: @bg-border-light;
-
-		> a {
-			background: @bg-light;
-		}
-	}
 }
 
 .navGroup + .navGroup {

@@ -15,7 +15,7 @@ pkp.eventBus.$emit('notify', 'The submission has been published.', 'success');
 Use the `warning` status to indicate an action that has failed or which may need to be corrected by the user.
 
 ```js
-pkp.eventBus.$emit('notify', 'An ORCID is required for all authors.', 'error');
+pkp.eventBus.$emit('notify', 'An ORCID is required for all authors.', 'warning');
 ```
 
 The notifications will disappear after a few seconds, unless the user is hovering their mouse over the notification. Pass the `clear-all-notify` event if you need to clear all the events off the screen immediately.
@@ -24,7 +24,7 @@ The notifications will disappear after a few seconds, unless the user is hoverin
 pkp.eventBus.$emit('clear-all-notify');
 ```
 
-A [Page](#/component/Page) must be present in order to receive the event and display the notification. This should be available on every page in the editorial backend.
+A [Page](#/component/Page) must be present in order to receive the event and display the notification. This should be available on [every page in the editorial backend](#/pages/pages).
 
 ## Accessibility
 

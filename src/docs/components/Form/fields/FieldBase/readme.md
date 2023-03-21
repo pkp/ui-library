@@ -24,10 +24,8 @@
 
 | Key | Description |
 | --- | --- |
-| `change` | Emitted when the value of the field changes. Payload: `(name, property, value, [localeKey])`. The `localeKey` will be null for fields that are not multilingual. This event is fired every time the value changes, so you should [debounce](https://www.npmjs.com/package/debounce) event callbacks that contain resource-intensive code.
+| `change` | Emitted when a field prop changes. Payload: `(fieldName, propName, newValue, [localeKey])`. The `localeKey` will be null for fields that are not multilingual. This event is fired every time the `value` changes, so you should [debounce](https://www.npmjs.com/package/debounce) event callbacks that contain resource-intensive code.
 
 ## Usage
 
-This is a base component for all `Field*` components. The props described above are available for all `Field*` components.
-
-This component should *not* be used directly. It is presented for demonstration purposes only. Use one of the other form field components.
+This is a base component for all `<Field*>` components. The props described above are available for all `<Field*>` components. This component should *not* be used directly. It is presented for documentation purposes only. Use one of the other form field components.

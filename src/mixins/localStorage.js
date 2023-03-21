@@ -21,6 +21,9 @@ export default {
 	methods: {
 		/**
 		 * Set data in local storage
+		 *
+		 * @param {String} key Any key to store and retrieve data
+		 * @param {mixed} value The data to store
 		 */
 		setLocalStorage(key, value) {
 			localStorage.setItem(key, JSON.stringify(value));
@@ -28,6 +31,8 @@ export default {
 
 		/**
 		 * Get data from local storage
+		 *
+		 * @param {String} key Any key to store and retrieve data
 		 */
 		getLocalStorage(key) {
 			const value = localStorage.getItem(key);
@@ -38,6 +43,8 @@ export default {
 
 		/**
 		 * Remove data from local storage
+		 *
+		 * @param {String} key Any key to store and retrieve data
 		 */
 		removeLocaleStorage(key) {
 			localStorage.removeItem(key);
@@ -46,7 +53,6 @@ export default {
 		/**
 		 * Set the client id from local storage or create
 		 * and save a new client id
-		 *
 		 */
 		_setClientId() {
 			const existingClientId = localStorage.getItem('clientId');
@@ -57,7 +63,7 @@ export default {
 		},
 
 		/**
-		 * Test if local storage is supported
+		 * Test if local storage is supported by the user's browser
 		 *
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
 		 * @return {Boolean}

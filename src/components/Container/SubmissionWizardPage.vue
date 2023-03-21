@@ -33,10 +33,9 @@ export default {
 	data() {
 		return {
 			autosavesKeyBase: 'submitAutosaves',
-			categories: [],
-			currentStepId: 0,
+			categories: {},
+			currentStepId: '',
 			errors: {},
-			isSaving: false,
 			isValidating: false,
 			lastAutosavedMessage: '',
 			publication: {},
@@ -64,9 +63,22 @@ export default {
 		};
 	},
 	computed: {
+		/**
+		 * A unique key for autosaves stored in local storage
+		 *
+		 * This should be unique to each submission so that autosaves
+		 * for two different submissions do not collide.
+		 */
 		autosavesKey() {
 			return this.autosavesKeyBase + this.submission.id;
 		},
+
+		/**
+		 * Can the user submit?
+		 *
+		 * Check whether the user is connected, all required data is
+		 * present, and any confirmation fields are ticked.
+		 */
 		canSubmit() {
 			return (
 				!this.isAutosaving &&
@@ -75,17 +87,34 @@ export default {
 				this.isConfirmed
 			);
 		},
+
+		/**
+		 * The titles of the selected category ids
+		 */
 		currentCategoryTitles() {
 			return this.publication.categoryIds
 				.filter((id) => !!this.categories[id])
 				.map((id) => this.categories[id]);
 		},
+
+		/**
+		 * The currently active step
+		 */
 		currentStep() {
 			return this.steps.find((step) => step.id === this.currentStepId);
 		},
+
+		/**
+		 * The index of the currently active step
+		 * in the steps array
+		 */
 		currentStepIndex() {
 			return this.steps.findIndex((step) => step.id === this.currentStepId);
 		},
+
+		/**
+		 * Are all confirmation fields checked?
+		 */
 		isConfirmed() {
 			const hasUnconfirmedField = this.steps
 				.find((step) => step.id === 'review')
@@ -96,12 +125,24 @@ export default {
 				.includes(false);
 			return !hasUnconfirmedField;
 		},
+
+		/**
+		 * Is the current step the first step?
+		 */
 		isOnFirstStep() {
 			return !this.currentStepIndex;
 		},
+
+		/**
+		 * Is the current step the last step?
+		 */
 		isOnLastStep() {
 			return this.currentStepIndex === this.steps.length - 1;
 		},
+
+		/**
+		 * Are there any validation errors?
+		 */
 		isValid() {
 			return Object.keys(this.errors).length === 0;
 		},
@@ -115,7 +156,7 @@ export default {
 	},
 	methods: {
 		/**
-		 * Add stale data that needs to be autosaved
+		 * Add stale forms that need to be autosaved
 		 */
 		addAutosaves() {
 			// Don't autosave if no form data has been changed
@@ -186,6 +227,9 @@ export default {
 		 * is complete. Use this to sync the response
 		 * data with the submission and publication
 		 * objects in data()
+		 *
+		 * @param {Object} autosave The autosave payload
+		 * @param {Object} response The server response, usually the object that was saved
 		 */
 		autosaveSucceeded(autosave, response) {
 			if (response.submissionId) {
@@ -196,9 +240,11 @@ export default {
 		},
 
 		/**
-		 * Get an author's name and affiliation
+		 * Get an author's name and affiliation separated
+		 * by a comma
 		 *
-		 * @return {String} name, affiliation
+		 * @param {Object} author An author object
+		 * @return {String}
 		 */
 		getAuthorName(author) {
 			let affiliation = this.localize(author.affiliation);
@@ -215,7 +261,10 @@ export default {
 		 *
 		 * This gets the title used in the HTML <head> so that the
 		 * browser updates the page title as the user navigates the
-		 * wizard. It is also used in the browser's history.
+		 * wizard. This is used in the browser's history.
+		 *
+		 * @param {Object} step The step just opened
+		 * @return {String}
 		 */
 		getPageTitle(step) {
 			return document.title
@@ -256,6 +305,8 @@ export default {
 
 		/**
 		 * Go to a step in the wizard
+		 *
+		 * @param {String} stepId
 		 */
 		openStep(stepId) {
 			const newStep = this.steps.find((step) => step.id === stepId);
@@ -268,7 +319,8 @@ export default {
 		/**
 		 * Override the #hash behaviour for tabs
 		 *
-		 * This opens the correct step when the hash is changed
+		 * This makes sure that the the correct step
+		 * is opened when the hash is changed
 		 */
 		openUrlTab() {
 			const stepId = window.location.hash.replace('#', '');
@@ -287,7 +339,14 @@ export default {
 		},
 
 		/**
-		 * When the form to reconfigure a submission is saved
+		 * This method is fired when the form to reconfigure
+		 * a submission is saved
+		 *
+		 * Splits the properties that need to be saved to the
+		 * publication or submission object and makes the save
+		 * requests.
+		 *
+		 * @param {Object} values The form data
 		 */
 		reconfigureSubmission(values) {
 			const getData = (data, prop) => {
@@ -414,6 +473,9 @@ export default {
 
 		/**
 		 * Complete the submission
+		 *
+		 * Opens a confirmation dialog and then makes the submission
+		 * request with any required confirmation fields
 		 */
 		submit() {
 			this.openDialog({
@@ -471,7 +533,12 @@ export default {
 		},
 
 		/**
-		 * Apply an autosave that was stored instead of saved
+		 * Apply an autosave that was stored in local
+		 * storage instead of saved
+		 *
+		 * Updates any forms of state data that is outdated
+		 *
+		 * @param {Object} payload The payload with autosave data
 		 */
 		restoreStoredAutosave(payload) {
 			let form;
@@ -502,6 +569,9 @@ export default {
 
 		/**
 		 * Update an autosave form
+		 *
+		 * @param {String} formId
+		 * @param {Object} data
 		 */
 		updateAutosaveForm(formId, data) {
 			this.updateForm(formId, data);
@@ -516,6 +586,9 @@ export default {
 		 * This is fired every time a form field changes, so
 		 * resource-intensive code should not be run every
 		 * time this method is called.
+		 *
+		 * @param {String} formId
+		 * @param {Object} data
 		 */
 		updateForm(formId, data) {
 			this.steps.forEach((step, stepIndex) => {
@@ -644,6 +717,9 @@ export default {
 		},
 	},
 	created() {
+		/**
+		 * Open the correct step when the page is loaded
+		 */
 		if (!window.location.hash) {
 			const newStep = this.steps.find(
 				(step) => step.id === this.submission.submissionProgress

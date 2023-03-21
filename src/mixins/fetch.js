@@ -42,6 +42,7 @@ export default {
 		return {
 			activeFilters: {},
 			isLoading: false,
+			itemsMax: 0,
 			latestGetRequest: '',
 			offset: 0,
 			searchPhrase: '',
@@ -80,19 +81,19 @@ export default {
 				return;
 			}
 
-			var self = this;
-
 			this.isLoading = true;
 
 			// Address issues with multiple async get requests. Store an ID for the
 			// most recent get request. When we receive the response, we
 			// can check that the response matches the most recent get request, and
 			// discard responses that are outdated.
-			this.latestGetRequest = $.pkp.classes.Helper.uuid();
+			const uuid = $.pkp.classes.Helper.uuid();
+			this.latestGetRequest = uuid;
 
 			$.ajax({
 				url: this.apiUrl,
 				type: 'GET',
+				context: this,
 				data: {
 					...this.getParams,
 					...this.activeFilters,
@@ -100,27 +101,26 @@ export default {
 					count: this.count,
 					offset: this.offset,
 				},
-				_uuid: this.latestGetRequest,
 				error: function (r) {
 					// Only process latest request response
-					if (self.latestGetRequest !== this._uuid) {
+					if (this.latestGetRequest !== uuid) {
 						return;
 					}
-					self.ajaxErrorCallback(r);
+					this.ajaxErrorCallback(r);
 				},
 				success: function (r) {
 					// Only process latest request response
-					if (self.latestGetRequest !== this._uuid) {
+					if (this.latestGetRequest !== uuid) {
 						return;
 					}
-					self.setItems(r.items, r.itemsMax);
+					this.setItems(r.items, r.itemsMax);
 				},
 				complete() {
 					// Only process latest request response
-					if (self.latestGetRequest !== this._uuid) {
+					if (this.latestGetRequest !== uuid) {
 						return;
 					}
-					self.isLoading = false;
+					this.isLoading = false;
 				},
 			});
 		},

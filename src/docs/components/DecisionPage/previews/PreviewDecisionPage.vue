@@ -16,7 +16,12 @@
 			</ol>
 		</nav>
 		<div class="app__page--decision">
-			<h1 class="app__pageHeading" ref="pageTitle">Accept Submission</h1>
+			<h1 class="app__pageHeading" ref="pageTitle">
+				Accept Submission:
+				<template v-if="steps.length > 1">
+					{{ currentStep.name }}
+				</template>
+			</h1>
 			<p class="app__pageDescription">
 				This submission will be accepted for publication and sent for
 				copyediting.
@@ -34,6 +39,7 @@
 			</notification>
 
 			<steps
+				v-if="steps.length"
 				:current="currentStep.id"
 				:started-steps="startedSteps"
 				label="Complete the following steps to take this decision"
@@ -55,11 +61,7 @@
 						</panel-section>
 						<template v-if="step.type === 'form'">
 							<panel-section>
-								<pkp-form
-									v-bind="step.form"
-									:errors="step.errors"
-									@set="updateStep"
-								></pkp-form>
+								<pkp-form v-bind="step.form" @set="updateStep"></pkp-form>
 							</panel-section>
 						</template>
 						<template v-else-if="step.type === 'email'">
@@ -77,17 +79,26 @@
 							</panel-section>
 							<panel-section v-else>
 								<composer
-									v-bind="step"
 									addCCLabel="Add CC/BCC"
-									attachFilesLabel="Attach Files"
+									:attachers="step.attachers"
 									attachedFilesLabel="Attached Files:"
+									attachFilesLabel="Attach Files"
+									:attachments="step.attachments"
+									:bcc="step.bcc"
 									bccLabel="BCC:"
+									:body="step.body"
 									bodyLabel="Message"
+									:canChangeRecipients="step.canChangeRecipients"
 									ccLabel="CC:"
+									:cc="step.cc"
 									confirmSwitchLocaleLabel="Are you sure you want to change to {$localeName} to compose this email? Any changes you have made to the subject and body of the email will be lost."
 									deselectLabel="Deselect"
-									:email-templatesApiUrl="emailTemplatesApiUrl"
+									:emailTemplates="step.emailTemplates"
+									:emailTemplatesApiUrl="emailTemplatesApiUrl"
+									:errors="step.errors"
 									findTemplateLabel="Find Template"
+									:id="step.id"
+									:initialTemplateKey="step.initialTemplateKey"
 									insertLabel="Insert"
 									insertModalLabel="Insert Content"
 									insertContentLabel="Content"
@@ -96,13 +107,17 @@
 									:locale="step.locale"
 									:locales="step.locales"
 									moreSearchResultsLabel="{$number} more"
+									:recipientOptions="step.recipientOptions"
+									:recipients="step.recipients"
+									recipientsLabel="To:"
 									removeItemLabel="Remove {$item}"
 									searchingLabel="Searching"
 									searchResultsLabel="Search Results"
+									:subject="step.subject"
 									subjectLabel="Subject:"
 									switchToLabel="Switch To:"
 									switchToNamedLanguageLabel="Switch to {$name}"
-									recipientsLabel="To:"
+									:variables="step.variables"
 									@set="updateStep"
 								></composer>
 							</panel-section>
@@ -118,8 +133,9 @@
 								>
 									<template v-slot:item="{item}">
 										<select-submission-file-list-item
-											:document-type="item.documentType"
-											download-label="Download"
+											:createdAt="item.createdAt"
+											:documentType="item.documentType"
+											downloadLabel="Download"
 											:genreName="
 												item.genreName ? localize(item.genreName) : ''
 											"
@@ -130,6 +146,7 @@
 											"
 											:file-id="item.id"
 											:name="localize(item.name)"
+											:uploadedBy="item.uploaderUserName"
 											:url="item.url"
 										>
 											<input
@@ -236,19 +253,23 @@ export default {
 	extends: DecisionPage,
 	data() {
 		return {
+			abandonDecisionLabel: 'Cancel Decision',
+			cancelConfirmationPrompt:
+				'Are you sure you want to cancel this decision?',
 			currentStep: {},
 			decision: 1,
 			emailTemplatesApiUrl:
-				'http://localhost:8000/publicknowledge/api/v1/emailTemplates',
-			stepErrorMessage: 'There is a problem with the {$stepName} step.',
-			startedSteps: [],
+				'https://httbin.org/publicknowledge/api/v1/emailTemplates',
+			keepWorkingLabel: 'Keep Working',
 			isComplete: false,
 			isSubmitting: false,
 			reviewRoundId: 2,
 			skippedSteps: [],
 			stageId: 3,
+			stepErrorMessage: 'There is a problem with the {$stepName} step.',
+			startedSteps: [],
 			submissionApiUrl:
-				'http://localhost:8000/publicknowledge/api/v1/submission/1',
+				'https://httbin.org/publicknowledge/api/v1/submission/1',
 			steps: [
 				{
 					id: 'payment',

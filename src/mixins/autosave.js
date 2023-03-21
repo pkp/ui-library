@@ -309,6 +309,9 @@ export default {
 		},
 	},
 	watch: {
+		/**
+		 * Run the reconnect handler when a lost connection is restored
+		 */
 		isDisconnected(newVal, oldVal) {
 			if (newVal && newVal !== oldVal) {
 				this._runReconnect();
@@ -321,7 +324,7 @@ export default {
 		 * in the component using this mixin
 		 */
 		const err =
-			'Missing required `{$prop}` prop or callback function. See docs for autosave.js';
+			'Missing required `{$prop}` property or callback function. See docs for autosave.js';
 		[
 			'autosavesKey',
 			'i18nDiscardChanges',

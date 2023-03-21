@@ -10,4 +10,4 @@ This component does not emit any events.
 
 ## Usage
 
-The `Header` component defines a consistent UI for providing a group of related components with a title, actions which interact with those components, and a loading spinner when requests are being processed.
+Use this component to display a title alongside actions related to that title, such as a list of buttons or a progress spinner.

@@ -1,16 +1,14 @@
 # Event Bus
 
-Use the event bus to emit and react to global events in the application. This can be useful when you want disparate parts of the application to react to a common change.
+Use the event bus to emit and react to global events in the application. This can be useful when you want two components that don't share state to react to the same event. For example, when a submission is deleted you may need to remove it from more than one list of submissions and remove any tasks related to it.
 
-For example, when a submission is deleted you may need to remove it from more than one list of submissions and remove any tasks related to it.
-
-Use the following to emit a global event.
+Emit a global event from any component.
 
 ```json
 pkp.eventBus.$emit('updated:email-template', {...});
 ```
 
-Use the following to react to a global event.
+React to the global event from any component.
 
 ```js
 // Update an email template in a list when it changes
@@ -26,7 +24,7 @@ pkp.eventBus.$on('updated:email-template', (emailTemplate) => {
 Global event names should use kebab-case (`example-name`). When appropriate, use the following naming pattern.
 
 ```js
-<event>:<object>
+<action>:<object>
 ```
 
 Examples include the following.
@@ -60,8 +58,6 @@ pkp.eventBus.$on('open-tab', tabId => {
 
 ## When to use the global event bus
 
-Use the global event bus whenever data changes, such as when `PUT` or `POST` requests are made, or when a `GET` request updates data that may be shared between components.
-
-The global event bus is exposed to plugins and third-party code in the global `pkp` variable at `pkp.eventBus`. For this reason, it is an important tool for plugins which want to react to events in the browser.
+Use the global event bus whenever data changes, such as when `PUT` or `POST` requests are made, or when a `GET` request updates data that may be shared between components. The global event bus is exposed to plugins and third-party code in the global `pkp` variable at `pkp.eventBus`. For this reason, it is an important tool for plugins which want to react to events in the browser.
 
 Even if a global event will not used in the core application, it may be a good idea to emit one.

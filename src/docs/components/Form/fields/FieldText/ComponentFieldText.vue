@@ -4,8 +4,6 @@ import PreviewFieldText from './previews/PreviewFieldText.vue';
 import PreviewFieldTextTemplate from '!raw-loader!./previews/PreviewFieldText.vue';
 import PreviewFieldTextSmall from './previews/PreviewFieldTextSmall.vue';
 import PreviewFieldTextSmallTemplate from '!raw-loader!./previews/PreviewFieldTextSmall.vue';
-import PreviewFieldTextInline from './previews/PreviewFieldTextInline.vue';
-import PreviewFieldTextInlineTemplate from '!raw-loader!./previews/PreviewFieldTextInline.vue';
 import PreviewFieldTextLarge from './previews/PreviewFieldTextLarge.vue';
 import PreviewFieldTextLargeTemplate from '!raw-loader!./previews/PreviewFieldTextLarge.vue';
 import PreviewFieldTextPrefix from './previews/PreviewFieldTextPrefix.vue';
@@ -46,11 +44,6 @@ export default {
 					component: PreviewFieldTextOptIntoEdit,
 					name: 'Editing Opt-in',
 					template: this.extractTemplate(PreviewFieldTextOptIntoEditTemplate),
-				},
-				{
-					component: PreviewFieldTextInline,
-					name: 'Inline Label',
-					template: this.extractTemplate(PreviewFieldTextInlineTemplate),
 				},
 			],
 		};

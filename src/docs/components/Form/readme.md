@@ -27,16 +27,12 @@
 | Key | Description |
 | --- | --- |
 | `form-success` | When the form is successfully submitted. The payload will include the form ID and the server response from the successful form submission. This is usually the object that was added or edited. |
-| `notify` | When an error is encountered during form submission. |
+| `notify` | When an error is encountered during form submission. See [Notify](#/utilities/Notify). |
 
 
 ## Usage
 
-Use this component to display a form.
-
-## Pass props
-
-Typically you will generate all the required props from one of the `FormComponent` classes on the server side. These props can then be passed to the form.
+Use this component to display a form. Typically you will generate all the required props from one of the `FormComponent` classes on the server side. These props can then be passed to the form.
 
 ```html
 <pkp-form
@@ -45,27 +41,19 @@ Typically you will generate all the required props from one of the `FormComponen
 />
 ```
 
+Learn more about [server-side form components](https://docs.pkp.sfu.ca/dev/documentation/en/frontend-forms).
+
 ## Multi-page Forms
 
-Use a multi-page form when you want to guide the user through a multi-step process that ends in a single action. Reviewer assignment is an example of a multi-step process:
-
-1. Select a reviewer
-2. Select a review type and enter a deadline
-3. Prepare the notification email
-
-We want to divide the action into smaller steps so that we don't overwhelm the user, but we shouldn't take any action until all steps are complete.
-
-Do _not_ use a multi-page form for all related forms, such as those on the settings page. A user may wish to only edit one setting and that change can be saved immediately without depending on further action in related forms.
-
-If you want to indicate that forms are related, without requiring them to be submitted together, use [tabs](#/component/Tab).
+Multi-page forms have not proven to be useful. This feature may be removed in a future version. Use the [Steps](#/component/Steps) component for step-by-step workflows.
 
 ## Form Submission and Error Handling
 
-A `Form` expects to receive a URL to which it can submit a `PUT` or `POST` request to the application's API. Forms can handle the following responses from the API automatically:
+The `action` prop of most `<Form>` components will be a URL to which it can submit a `PUT` or `POST` request to the application's REST API. Forms will handle the following responses from the API automatically.
 
 - A `200` response when successful with a JSON object describing the entity that was added or edited.
 - A `403` or `404` response when the server refuses the submission with a JSON object describing the error.
-- A `400` response when a validation error occurs with one of the fields. In this case, a JSON object will be returned with each invalid field as a key and an array of errors for that field.
+- A `400` response when a validation error occurs with a JSON object describing the validation errors. The `<Form>` component will map most REST API validation errors to the correct form field.
 
 See the [API Documentation](https://docs.pkp.sfu.ca/dev/api) for the specification of errors.
 

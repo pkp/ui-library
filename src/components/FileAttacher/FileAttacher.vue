@@ -64,19 +64,36 @@ export default {
 		};
 	},
 	methods: {
+		/**
+		 * Emit an event to attach files and close the current attacher
+		 */
 		attachFiles(files) {
 			this.$emit('attached:files', this.currentAttacher.component, files);
 			this.$modal.hide('attacher');
 		},
+
+		/**
+		 * Close the current attacher
+		 */
 		cancel() {
 			this.$modal.hide('attacher');
 			this.$nextTick(() => (this.currentAttacher = null));
 		},
+
+		/**
+		 * Move focus back to button that opened the last attacher
+		 */
 		resetFocus() {
 			if (this.resetFocusTo) {
 				this.resetFocusTo.focus();
 			}
 		},
+
+		/**
+		 * Set the current attacher and open the modal
+		 *
+		 * @param {Object} attacher Props for one of the `FileAttacher****` components
+		 */
 		setAttacher(attacher) {
 			this.currentAttacher = attacher;
 			this.resetFocusTo = document.activeElement;

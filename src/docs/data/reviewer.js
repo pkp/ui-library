@@ -46,7 +46,7 @@ export default {
 	reviewsActive: 2,
 	reviewsCompleted: 1,
 	averageReviewCompletionDays: 21,
-	dateLastReviewAssignment: '2019-02-03 11:22:42',
+	dateLastReviewAssignment: '2023-02-03 11:22:42',
 	reviewsDeclined: 0,
 	reviewsCancelled: 0,
 	reviewerRating: 4,

@@ -186,12 +186,6 @@ export default {
 		},
 		contextId: {
 			type: Number,
-			default() {
-				return 0;
-			},
-		},
-		csrfToken: {
-			type: String,
 			required: true,
 		},
 		filters: {

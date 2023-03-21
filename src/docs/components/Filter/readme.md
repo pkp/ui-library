@@ -38,7 +38,7 @@
 
 ## Usage
 
-Use this component when the user wants to narrow the items in a list by some criteria.
+Use this component when the user wants to narrow the items in a list by some criteria. This component is usually used with a [ListPanel](#/component/ListPanel).
 
 ## Using Filter Params and Values
 
@@ -69,7 +69,7 @@ Most filters should be able to be combined with other filters, so there may be m
 
 ```json
 {
-	stageIds: [2, 3],
-	sectionIds: [1]
+	"stageIds": [2, 3],
+	"sectionIds": [1]
 }
 ```

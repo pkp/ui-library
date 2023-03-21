@@ -42,12 +42,10 @@ export default {
 				datePosted: '2019-12-12',
 				id: 2,
 				title: {
-					en:
-						'Elit ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at turpis massa tincidunt dui ut ornare lectus',
+					en: 'Elit ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at turpis massa tincidunt dui ut ornare lectus',
 					fr_CA:
 						'Elit ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at turpis massa tincidunt dui ut ornare lectus',
-					ar:
-						'Elit ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at turpis massa tincidunt dui ut ornare lectus',
+					ar: 'Elit ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at turpis massa tincidunt dui ut ornare lectus',
 				},
 			},
 			{
@@ -67,12 +65,10 @@ export default {
 				datePosted: '2019-09-21',
 				id: 4,
 				title: {
-					en:
-						'Morbi tincidunt ornare massa eget egestas purus viverra accumsan',
+					en: 'Morbi tincidunt ornare massa eget egestas purus viverra accumsan',
 					fr_CA:
 						'Morbi tincidunt ornare massa eget egestas purus viverra accumsan',
-					ar:
-						'Morbi tincidunt ornare massa eget egestas purus viverra accumsan',
+					ar: 'Morbi tincidunt ornare massa eget egestas purus viverra accumsan',
 				},
 			},
 			{

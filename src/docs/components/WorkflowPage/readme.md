@@ -1,5 +1,7 @@
 ## Data
 
+This is a root component. Learn about [page hydration](#/pages/pages).
+
 | Key | Description |
 | --- | --- |
 | `activityLogLabel` | Label for the activity log |
@@ -31,10 +33,4 @@
 
 ## Usage
 
-The `WorkflowPage` extends the [`Container`](/#/pages/container) app. Use this app to show the submission workflow.
-
-## Template
-
-The `WorkflowPage` app is a template-less component. You must write the template in Smarty on the server-side and it will be compiled at run time.
-
-The example here provides a sample template.
+The `WorkflowPage` extends the [Page](#/component/Page) component. Use this app to show the submission workflow.

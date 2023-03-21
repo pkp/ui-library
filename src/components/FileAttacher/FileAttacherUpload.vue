@@ -135,6 +135,9 @@ export default {
 		};
 	},
 	computed: {
+		/**
+		 * Is a file upload in progress?
+		 */
 		isUploading() {
 			return (
 				this.files.filter((file) => 'progress' in file === true).length > 1
@@ -142,14 +145,25 @@ export default {
 		},
 	},
 	methods: {
+		/**
+		 * Remove an uploaded file
+		 */
 		removeFile(index) {
 			this.files = this.files.filter((file, i) => {
 				return i !== index;
 			});
 		},
+
+		/**
+		 * Open the file browser
+		 */
 		selectFile() {
 			this.$refs.uploader.openFileBrowser();
 		},
+
+		/**
+		 * Update the `files` with data from the uploader
+		 */
 		updateFiles(files) {
 			this.files = [...files];
 		},

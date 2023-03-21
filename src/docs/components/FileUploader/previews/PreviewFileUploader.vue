@@ -19,7 +19,7 @@
 		</template>
 		<file-uploader
 			ref="uploader"
-			apiUrl="http://localhost:8000/publicknowledge/api/v1/submissions/1/files"
+			apiUrl="https://example.org"
 			:files="files"
 			id="previewFileUploader"
 			:options="options"

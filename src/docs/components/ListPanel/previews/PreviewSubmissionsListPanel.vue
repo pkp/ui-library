@@ -1,6 +1,6 @@
 <template>
 	<submissions-list-panel
-		addUrl="http://localhost:8000/publicknowledge/submission/wizard"
+		addUrl="https://httbin.org/publicknowledge/submission/wizard"
 		apiUrl="http://httpbin.org/get"
 		:filters="filters"
 		id="previewSubmissionsListPanel"

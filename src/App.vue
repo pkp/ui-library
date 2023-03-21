@@ -8,12 +8,233 @@
 						Introduction
 					</router-link>
 				</li>
-				<li><router-link to="/pages/usage">Usage</router-link></li>
+				<li><router-link to="/pages/pages">Pages</router-link></li>
+				<li>
+					<router-link to="/pages/localization">Localization</router-link>
+				</li>
 				<li>
 					<router-link to="/pages/accessibility">Accessibility</router-link>
 				</li>
 				<li>
 					<router-link to="/pages/contributing">Contributing</router-link>
+				</li>
+			</nav-group>
+			<nav-group>
+				<template slot="heading">Utilities</template>
+				<li><router-link to="/pages/csrf">CSRF Token</router-link></li>
+				<li><router-link to="/pages/event-bus">Event Bus</router-link></li>
+				<li><router-link to="/utilities/Notify">Notify</router-link></li>
+			</nav-group>
+			<nav-group>
+				<template slot="heading">Global Components</template>
+				<li><router-link to="/component/Badge">Badge</router-link></li>
+				<li><router-link to="/component/Button">Button</router-link></li>
+				<li><router-link to="/component/Dropdown">Dropdown</router-link></li>
+				<li><router-link to="/component/Header">Header</router-link></li>
+				<li><router-link to="/component/Icon">Icon</router-link></li>
+				<li>
+					<router-link to="/component/Notification">Notification</router-link>
+				</li>
+				<li><router-link to="/component/Panel">Panel</router-link></li>
+				<li><router-link to="/component/Spinner">Spinner</router-link></li>
+				<li><router-link to="/component/Steps">Steps</router-link></li>
+				<li><router-link to="/component/Tabs">Tabs</router-link></li>
+			</nav-group>
+			<nav-group>
+				<template slot="heading">Other Components</template>
+				<li>
+					<router-link to="/component/ActionPanel">ActionPanel</router-link>
+				</li>
+				<li><router-link to="/component/ButtonRow">ButtonRow</router-link></li>
+				<li><router-link to="/component/Chart">Chart</router-link></li>
+				<li><router-link to="/component/Composer">Composer</router-link></li>
+				<li><router-link to="/component/DateRange">DateRange</router-link></li>
+				<li><router-link to="/component/File">File</router-link></li>
+				<li>
+					<router-link to="/component/FileAttacher">FileAttacher</router-link>
+				</li>
+				<li>
+					<router-link to="/component/FileUploader">FileUploader</router-link>
+				</li>
+				<li>
+					<router-link to="/component/FileUploadProgress">
+						FileUploadProgress
+					</router-link>
+				</li>
+				<li><router-link to="/component/Filter">Filter</router-link></li>
+				<li>
+					<router-link to="/component/HelpButton">HelpButton</router-link>
+				</li>
+				<li><router-link to="/component/List">List</router-link></li>
+				<li>
+					<router-link to="/component/Modal">Modal</router-link>
+				</li>
+				<li>
+					<router-link to="/component/MultilingualProgress">
+						MultilingualProgress
+					</router-link>
+				</li>
+				<li><router-link to="/component/Orderer">Orderer</router-link></li>
+				<li>
+					<router-link to="/component/Pagination">Pagination</router-link>
+				</li>
+				<li>
+					<router-link to="/component/ProgressBar">ProgressBar</router-link>
+				</li>
+				<li><router-link to="/component/Search">Search</router-link></li>
+				<li><router-link to="/component/Table">Table</router-link></li>
+				<li><router-link to="/component/Tooltip">Tooltip</router-link></li>
+			</nav-group>
+			<nav-group>
+				<template slot="heading">Forms</template>
+				<li>
+					<router-link to="/component/Form">Form</router-link>
+				</li>
+				<li>
+					<router-link to="/component/Form/fields/FieldBase">
+						FieldBase
+					</router-link>
+				</li>
+				<li>
+					<router-link to="/component/Form/fields/FieldArchivingPn">
+						FieldArchivingPn
+					</router-link>
+				</li>
+				<li>
+					<router-link to="/component/Form/fields/FieldAutosuggestPreset">
+						FieldAutosuggestPreset
+					</router-link>
+				</li>
+				<li>
+					<router-link to="/component/Form/fields/FieldBaseAutosuggest">
+						FieldBaseAutosuggest
+					</router-link>
+				</li>
+				<li>
+					<router-link to="/component/Form/fields/FieldColor">
+						FieldColor
+					</router-link>
+				</li>
+				<li>
+					<router-link to="/component/Form/fields/FieldHtml">
+						FieldHtml
+					</router-link>
+				</li>
+				<li>
+					<router-link to="/component/Form/fields/FieldMetadataSetting">
+						FieldMetadataSetting
+					</router-link>
+				</li>
+				<li>
+					<router-link to="/component/Form/fields/FieldOptions">
+						FieldOptions
+					</router-link>
+				</li>
+				<li>
+					<router-link to="/component/Form/fields/FieldPreparedContent">
+						FieldPreparedContent
+					</router-link>
+				</li>
+				<li>
+					<router-link to="/component/Form/fields/FieldPubId">
+						FieldPubId
+					</router-link>
+				</li>
+				<li>
+					<router-link to="/component/Form/fields/FieldRadioInput">
+						FieldRadioInput
+					</router-link>
+				</li>
+				<li>
+					<router-link to="/component/Form/fields/FieldRichText">
+						FieldRichText
+					</router-link>
+				</li>
+				<li>
+					<router-link to="/component/Form/fields/FieldRichTextarea">
+						FieldRichTextarea
+					</router-link>
+				</li>
+				<li>
+					<router-link to="/component/Form/fields/FieldSelect">
+						FieldSelect
+					</router-link>
+				</li>
+				<li>
+					<router-link to="/component/Form/fields/FieldSelectIssue">
+						FieldSelectIssue
+					</router-link>
+				</li>
+				<li>
+					<router-link to="/component/Form/fields/FieldShowEnsuringLink">
+						FieldShowEnsuringLink
+					</router-link>
+				</li>
+				<li>
+					<router-link to="/component/Form/fields/FieldText">
+						FieldText
+					</router-link>
+				</li>
+				<li>
+					<router-link to="/component/Form/fields/FieldTextarea">
+						FieldTextarea
+					</router-link>
+				</li>
+				<li>
+					<router-link to="/component/Form/fields/FieldUpload">
+						FieldUpload
+					</router-link>
+				</li>
+				<li>
+					<router-link to="/component/Form/fields/FieldUploadImage">
+						FieldUploadImage
+					</router-link>
+				</li>
+			</nav-group>
+			<nav-group>
+				<template slot="heading">ListPanels</template>
+				<li>
+					<router-link to="/component/ListPanel">Overview</router-link>
+				</li>
+				<li>
+					<router-link
+						to="/component/ListPanel/components/AnnouncementsListPanel"
+					>
+						AnnouncementsListPanel
+					</router-link>
+				</li>
+				<li>
+					<router-link to="/component/ListPanel/components/CatalogListPanel">
+						CatalogListPanel
+					</router-link>
+				</li>
+				<li>
+					<router-link
+						to="/component/ListPanel/components/InstitutionsListPanel"
+					>
+						InstitutionsListPanel
+					</router-link>
+				</li>
+				<li>
+					<router-link
+						to="/component/ListPanel/components/SelectReviewerListPanel"
+					>
+						SelectReviewerListPanel
+					</router-link>
+				</li>
+				<li>
+					<router-link
+						to="/component/ListPanel/components/SubmissionFilesListPanel"
+					>
+						SubmissionFilesListPanel
+					</router-link>
+				</li>
+				<li>
+					<router-link
+						to="/component/ListPanel/components/SubmissionsListPanel"
+					>
+						SubmissionsListPanel
+					</router-link>
 				</li>
 			</nav-group>
 			<nav-group>
@@ -42,248 +263,16 @@
 				</li>
 			</nav-group>
 			<nav-group>
-				<template slot="heading">Utilities</template>
-				<li><router-link to="/pages/container">Container</router-link></li>
-				<li><router-link to="/pages/csrf">CSRF Token</router-link></li>
-				<li><router-link to="/utilities/Dialog">Dialog</router-link></li>
-				<li><router-link to="/pages/event-bus">Event Bus</router-link></li>
-				<li><router-link to="/pages/fetch">Fetch</router-link></li>
+				<template slot="heading">Mixins</template>
+				<li><router-link to="/pages/autosave">autosave</router-link></li>
+				<li><router-link to="/mixins/dialog">dialog</router-link></li>
+				<li><router-link to="/mixins/fetch">fetch</router-link></li>
 				<li>
-					<router-link to="/pages/localization">Localization</router-link>
-				</li>
-				<li><router-link to="/utilities/Notify">Notify</router-link></li>
-			</nav-group>
-			<nav-group>
-				<template slot="heading">Components</template>
-				<li>
-					<router-link to="/component/ActionPanel">ActionPanel</router-link>
-				</li>
-				<li><router-link to="/component/Badge">Badge</router-link></li>
-				<li><router-link to="/component/Button">Button</router-link></li>
-				<li><router-link to="/component/ButtonRow">ButtonRow</router-link></li>
-				<li><router-link to="/component/Chart">Chart</router-link></li>
-				<li><router-link to="/component/Composer">Composer</router-link></li>
-				<li><router-link to="/component/DateRange">DateRange</router-link></li>
-				<li><router-link to="/component/Dropdown">Dropdown</router-link></li>
-				<li><router-link to="/component/File">File</router-link></li>
-				<li>
-					<router-link to="/component/FileAttacher">FileAttacher</router-link>
+					<router-link to="/pages/localizeMoment">localizeMoment</router-link>
 				</li>
 				<li>
-					<router-link to="/component/FileUploader">FileUploader</router-link>
+					<router-link to="/pages/localStorage">localStorage</router-link>
 				</li>
-				<li>
-					<router-link to="/component/FileUploadProgress">
-						FileUploadProgress
-					</router-link>
-				</li>
-				<li><router-link to="/component/Filter">Filter</router-link></li>
-				<li :class="{'-submenuOpen': displaySubmenu('Form')}">
-					<router-link to="/component/Form">Form</router-link>
-					<button
-						v-if="!pathIncludes('Form')"
-						class="nav__toggle"
-						@click="toggleSubmenu('Form')"
-					>
-						<span v-if="displaySubmenu('Form')">-</span>
-						<span v-else>+</span>
-					</button>
-					<ul v-if="displaySubmenu('Form')">
-						<li>
-							<router-link to="/component/Form/fields/FieldBase">
-								FieldBase
-							</router-link>
-						</li>
-					</ul>
-					<ul v-if="displaySubmenu('Form')">
-						<li>
-							<router-link to="/component/Form/fields/FieldAutosuggestPreset">
-								FieldAutosuggestPreset
-							</router-link>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldBaseAutosuggest">
-								FieldBaseAutosuggest
-							</router-link>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldHtml">
-								FieldHtml
-							</router-link>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldOptions">
-								FieldOptions
-							</router-link>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldRadioInput">
-								FieldRadioInput
-							</router-link>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldRichTextarea">
-								FieldRichTextarea
-							</router-link>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldSelect">
-								FieldSelect
-							</router-link>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldText">
-								FieldText
-							</router-link>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldTextarea">
-								FieldTextarea
-							</router-link>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldUpload">
-								FieldUpload
-							</router-link>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldUploadImage">
-								FieldUploadImage
-							</router-link>
-						</li>
-					</ul>
-					<ul v-if="displaySubmenu('Form')">
-						<li>
-							<router-link to="/component/Form/fields/FieldArchivingPn">
-								FieldArchivingPn
-							</router-link>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldColor">
-								FieldColor
-							</router-link>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldPreparedContent">
-								FieldPreparedContent
-							</router-link>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldPubId">
-								FieldPubId
-							</router-link>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldMetadataSetting">
-								FieldMetadataSetting
-							</router-link>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldSelectIssue">
-								FieldSelectIssue
-							</router-link>
-						</li>
-						<li>
-							<router-link to="/component/Form/fields/FieldShowEnsuringLink">
-								FieldShowEnsuringLink
-							</router-link>
-						</li>
-					</ul>
-				</li>
-				<li><router-link to="/component/Header">Header</router-link></li>
-				<li>
-					<router-link to="/component/HelpButton">HelpButton</router-link>
-				</li>
-				<li><router-link to="/component/Icon">Icon</router-link></li>
-				<li><router-link to="/component/List">List</router-link></li>
-				<li :class="{'-submenuOpen': displaySubmenu('ListPanel')}">
-					<router-link to="/component/ListPanel">ListPanel</router-link>
-					<button
-						v-if="!pathIncludes('ListPanel')"
-						class="nav__toggle"
-						@click="toggleSubmenu('ListPanel')"
-					>
-						<span v-if="displaySubmenu('ListPanel')">-</span>
-						<span v-else>+</span>
-					</button>
-					<ul v-if="displaySubmenu('ListPanel')">
-						<li>
-							<router-link
-								to="/component/ListPanel/components/AnnouncementsListPanel"
-							>
-								AnnouncementsListPanel
-							</router-link>
-						</li>
-						<li>
-							<router-link
-								to="/component/ListPanel/components/CatalogListPanel"
-							>
-								CatalogListPanel
-							</router-link>
-						</li>
-						<li>
-							<router-link to="/component/ListPanel/components/DoiListPanelOJS">
-								DoiListPanelOJS
-							</router-link>
-						</li>
-						<li>
-							<router-link
-								to="/component/ListPanel/components/InstitutionsListPanel"
-							>
-								InstitutionsListPanel
-							</router-link>
-						</li>
-						<li>
-							<router-link
-								to="/component/ListPanel/components/SelectReviewerListPanel"
-							>
-								SelectReviewerListPanel
-							</router-link>
-						</li>
-						<li>
-							<router-link
-								to="/component/ListPanel/components/SubmissionFilesListPanel"
-							>
-								SubmissionFilesListPanel
-							</router-link>
-						</li>
-						<li>
-							<router-link
-								to="/component/ListPanel/components/SubmissionsListPanel"
-							>
-								SubmissionsListPanel
-							</router-link>
-						</li>
-					</ul>
-				</li>
-
-				<li>
-					<router-link to="/component/Modal">Modal</router-link>
-				</li>
-				<li>
-					<router-link to="/component/MultilingualProgress">
-						MultilingualProgress
-					</router-link>
-				</li>
-				<li>
-					<router-link to="/component/Notification">Notification</router-link>
-				</li>
-				<li><router-link to="/component/Orderer">Orderer</router-link></li>
-				<li>
-					<router-link to="/component/Pagination">Pagination</router-link>
-				</li>
-				<li>
-					<router-link to="/component/Panel">Panel</router-link>
-				</li>
-				<li>
-					<router-link to="/component/ProgressBar">ProgressBar</router-link>
-				</li>
-				<li><router-link to="/component/Search">Search</router-link></li>
-				<li><router-link to="/component/Spinner">Spinner</router-link></li>
-				<li><router-link to="/component/Steps">Steps</router-link></li>
-				<li><router-link to="/component/Table">Table</router-link></li>
-				<li><router-link to="/component/Tabs">Tabs</router-link></li>
-				<li><router-link to="/component/Tooltip">Tooltip</router-link></li>
 			</nav-group>
 		</nav>
 		<div class="content" role="main">
@@ -299,38 +288,12 @@ export default {
 	components: {
 		NavGroup,
 	},
-	data() {
-		return {
-			openSubmenus: [],
-		};
-	},
 	methods: {
-		/**
-		 * Should submenu be displayed?
-		 */
-		displaySubmenu(component) {
-			return (
-				this.openSubmenus.includes(component) || this.pathIncludes(component)
-			);
-		},
-
 		/**
 		 * Does the current route path include this component
 		 */
 		pathIncludes(component) {
 			return this.$route.path.includes('/component/' + component);
-		},
-
-		/**
-		 * Open/close a submenu in the nav
-		 */
-		toggleSubmenu(component) {
-			if (this.openSubmenus.includes(component)) {
-				const i = component.indexOf(component);
-				this.openSubmenus.splice(i, 1);
-			} else {
-				this.openSubmenus.push(component);
-			}
 		},
 	},
 };
@@ -426,9 +389,9 @@ a {
 	margin-bottom: 3rem;
 	margin-left: auto;
 	margin-right: auto;
-	max-width: 50em;
-	font-size: @font-sml;
-	line-height: 1.7em;
+	padding-left: 2em;
+	padding-right: 2em;
+	max-width: 54em;
 
 	p {
 		margin-top: 1.5rem;
@@ -445,8 +408,8 @@ a {
 		background: #f9f9f9;
 		border-radius: @radius;
 		padding: 0.125em 0.25em;
-		color: #009e2b;
-		font-size: @font-tiny;
+		color: #156f2d;
+		font-size: @font-sml;
 	}
 
 	h2,
@@ -500,8 +463,8 @@ a {
 		background: #f9f9f9;
 		border-radius: @radius;
 		padding: 0.125em 0.25em;
-		color: #3fab5c;
-		font-size: @font-tiny;
+		color: #156f2d;
+		font-size: @font-sml;
 	}
 }
 </style>
