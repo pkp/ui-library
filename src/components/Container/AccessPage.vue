@@ -1,48 +1,19 @@
 <script type="text/javascript">
 import Page from './Page.vue';
 import NotifyUsersForm from '@/components/Form/context/NotifyUsersForm.vue';
-import ProgressBar from '@/components/ProgressBar/ProgressBar.vue';
 
 export default {
 	name: 'AccessPage',
 	extends: Page,
 	components: {
 		NotifyUsersForm,
-		ProgressBar,
 	},
 	data() {
 		return {
-			completedJobs: 0,
-			progressUrl: '',
-			queueId: '',
-			totalJobs: 0,
+			totalBulkJobs: 0,
 		};
 	},
 	methods: {
-		/**
-		 * Process an email jobs queue
-		 *
-		 * @param string queueId
-		 */
-		processQueue(queueId) {
-			var self = this;
-			$.ajax({
-				url: this.progressUrl.replace('{queueId}', queueId),
-				method: 'POST',
-				headers: {
-					'X-Csrf-Token': pkp.currentUser.csrfToken,
-					'X-Http-Method-Override': 'PUT',
-				},
-				error: this.ajaxErrorCallback,
-				success(r) {
-					self.completedJobs = self.totalJobs - r.pendingJobs;
-					if (r.pendingJobs) {
-						self.processQueue(queueId);
-					}
-				},
-			});
-		},
-
 		/**
 		 * Reload the page to send another email
 		 */
@@ -56,9 +27,7 @@ export default {
 				return;
 			}
 
-			this.queueId = data.queueId;
-			this.totalJobs = data.totalJobs;
-			this.processQueue(this.queueId);
+			this.totalBulkJobs = data.totalBulkJobs;
 		});
 	},
 	destroyed() {
