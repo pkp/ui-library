@@ -73,9 +73,13 @@ export default {
 		},
 
 		/**
-		 * Open the requested tab when the URL includes an anchor
+		 * Handle changes to the #hash in the URL
+		 *
+		 * By default, a page will emit events to open a tab.
+		 * Override this method in other page handlers to
+		 * respond to hash changes in a different way.
 		 */
-		openUrlTab() {
+		openUrlHash() {
 			let parts = window.location.hash.slice(1).split('/');
 			while (parts.length) {
 				pkp.eventBus.$emit('open-tab', parts.shift());
@@ -99,16 +103,15 @@ export default {
 			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
 		},
 	},
-	created() {
+	mounted() {
 		/**
-		 * Open tabs if the URL contains an anchor (#tabname)
+		 * Fire a callback when the URL #hash is changed
 		 */
 		if (window.location.hash) {
-			this.openUrlTab();
+			this.openUrlHash();
 		}
-		window.onhashchange = this.openUrlTab;
-	},
-	mounted() {
+		window.onhashchange = this.openUrlHash;
+
 		/**
 		 * Respond to notify events
 		 */
