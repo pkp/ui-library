@@ -111,7 +111,7 @@ new Vue({
 			 * TinyMCE configuration
 			 */
 			tinyMCE: {
-				skinUrl: '/styles/tinymce',
+				skinUrl: 'styles/tinymce',
 			},
 		};
 	},
