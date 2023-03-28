@@ -12,6 +12,7 @@
 | `groupId` | The ID of the group this field should appear in. |
 | `formId` | The ID of the form this field should appear in. This is passed down from the `Form`. |
 | `isRequired` | Whether or not a value for this field should be required. |
+| `disabled` | Used in the `disabled` attribute of `<input>`, `<textarea>`, `<select>` and other fields. |
 | `isMultilingual` | Whether or not this field should be presented for each supported language. |
 | `localeKey` | If the field `isMultilingual`, this will be set to the locale key of this particular instance. This is passed down from the `Form`. |
 | `primaryLocale` | The primary locale for this form. This is passed down from the `Form`. |

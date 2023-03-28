@@ -26,6 +26,7 @@ export default {
 		formId: String,
 		isMultilingual: Boolean,
 		isRequired: Boolean,
+		disabled: Boolean,
 		showWhen: [String, Array],
 		primaryLocale: String,
 		localeKey: String,

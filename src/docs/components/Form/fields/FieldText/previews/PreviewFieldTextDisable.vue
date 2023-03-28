@@ -1,11 +1,5 @@
 <template>
-	<field-text
-		v-bind="field"
-		label="Copyright Holder"
-		:optIntoEdit="true"
-		optIntoEditLabel="Override"
-		@change="change"
-	/>
+	<field-text v-bind="field" @change="change" label="Disable" />
 </template>
 
 <script>
@@ -28,15 +22,6 @@ export default {
 				disabled: true,
 			},
 		};
-	},
-	methods: {
-		change(name, prop, newValue, localeKey) {
-			if (localeKey) {
-				this.field[prop][localeKey] = newValue;
-			} else {
-				this.field[prop] = newValue;
-			}
-		},
 	},
 };
 </script>
