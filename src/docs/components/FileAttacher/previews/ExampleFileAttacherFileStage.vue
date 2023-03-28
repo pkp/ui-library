@@ -11,9 +11,18 @@ export default {
 	methods: {
 		getFiles() {
 			this.isLoading = true;
-			this.items = [];
+			this.files = [];
 			setTimeout(() => {
-				this.items = [...submissionFiles];
+				this.files = [
+					...submissionFiles,
+					{
+						...submissionFiles[0],
+						id: 235,
+						name: {
+							en: submissionFiles[0].name.en.repeat(3),
+						},
+					},
+				];
 				this.isLoading = false;
 			}, 1000);
 		},

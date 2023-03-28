@@ -145,4 +145,10 @@ export default {
 
 <style lang="less">
 @import '../../styles/_import';
+
+.fileAttacherFileStage {
+	.selectSubmissionFileListItem__label {
+		margin-inline-start: -1.5rem;
+	}
+}
 </style>
