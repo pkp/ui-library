@@ -91,6 +91,7 @@ export default {
 }
 
 .fileAttacherReviewFiles .selectSubmissionFileListItem {
-	padding: 0.75rem 0.5rem 0.75rem 1rem;
+	padding: 0.75rem 0.5rem 0.75rem 0;
+	margin-inline-start: -1rem;
 }
 </style>

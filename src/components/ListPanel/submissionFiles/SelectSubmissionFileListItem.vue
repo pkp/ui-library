@@ -141,6 +141,7 @@ export default {
 .selectSubmissionFileListItem__selector {
 	width: 3rem;
 	text-align: center;
+	flex-shrink: 0;
 }
 
 .selectSubmissionFileListItem__download {
