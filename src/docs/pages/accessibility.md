@@ -63,4 +63,4 @@ An icon may not need a text label for sighted users to understand it's purpose. 
 </li>
 ```
 
-Learn more about how to [contribute new components](#/pages/contributing).
+Learn more about how to work with the [REST API](#/pages/api).

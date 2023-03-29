@@ -15,13 +15,13 @@
 				<li>
 					<router-link to="/pages/accessibility">Accessibility</router-link>
 				</li>
+				<li><router-link to="/pages/api">API</router-link></li>
 				<li>
 					<router-link to="/pages/contributing">Contributing</router-link>
 				</li>
 			</nav-group>
 			<nav-group>
 				<template slot="heading">Utilities</template>
-				<li><router-link to="/pages/csrf">CSRF Token</router-link></li>
 				<li><router-link to="/pages/event-bus">Event Bus</router-link></li>
 				<li><router-link to="/utilities/Notify">Notify</router-link></li>
 			</nav-group>
