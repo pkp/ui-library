@@ -1,42 +1,105 @@
 ## Props
 
-| Key | Description |
-| --- | --- |
-| `columns` | An array of configuration objects for each column. |
-| `describedBy` | Optional. See "External Labelling" below. |
-| `description` | An optional description of the table. |
-| `label` | A name for the table. If no <code>label</code> is provided, you must use the <code>labelledBy</code> prop. See "External Labelling" below. |
-| `labelledBy` | Optional. See "External Labelling" below. |
-| `orderBy` | The name of the column that the rows are ordered by. |
-| `orderDirection` | The direction that rows are ordered by as a boolean. |
-| `rows` | The items to display in the table. |
+This component does not accept any props.
 
 ## Events
 
-| Key | Description |
-| --- | --- |
-| `order-by` | Emitted when items in the table should be reordered. `(orderBy, orderDirection)` |
+This component does not emit any events.
 
 ## Usage
 
-Use the `Table` component to provide tabular data when the user will interact with the data, such as sorting, searching, filtering or editing the rows. Do not use this component when the user will not interact with the table in these ways. You can write a `<table>` in plain HTML code for better performance. Use the class name, `pkpTable`, to apply consistent styles to your table.
+Use the `Table` component to display tabular data when the user will sort, search, filter or edit the rows in the table, or if interactive elements such as a button appear within the table.
 
 ## Datagrid
 
-This component implements a [Data Grid](https://www.w3.org/TR/wai-aria-practices/examples/grid/dataGrids.html), which provides accessible keyboard controls and markup for managing the data in the table.
+This component implements a [Data Grid](https://www.w3.org/TR/wai-aria-practices/examples/grid/dataGrids.html), which provides accessible keyboard controls and markup for managing the data in the table. All interactions in the table rows, including buttons or fields to edit a row, must be accessible by keyboard.
 
-When using this component with a custom row slot, pay special attention to the use of `tabindex` and `scope="row"` to ensure your table cells remain compliant with the Data Grid spec.
+## &lt;TableCell&gt;
 
-All interactions in the table rows, including buttons or fields to edit a row, must be accessible by keyboard. Navigation with the up, down, left and right arrows should not be impacted by any interactive elements in a row.
+All cells in the table must use the `<TableCell>` component in order to support the accessible keyboard navigation features. Use a `<TableCell>` inside of a `<tr>` in the same way that a `<td>` element would be used.
 
-## External Labelling
+```html
+<pkp-table>
+    <tr>
+        <table-cell :isRowHeader="true">dbarnes</table-cell>
+        <table-cell >Daniel Barnes</table-cell>
+    </tr>
+    <tr>
+        <table-cell :isRowHeader="true">sminotue</table-cell>
+        <table-cell >Stephanie Minotue</table-cell>
+    </tr>
+</pkp-table>
+```
 
-You may wish to label the table with text that is not part of the table itself. In this case, the `labelledBy` prop must be used to link the table to its label. If you have an additional description, you must use the `describedBy` prop to link this description to the table.
+### Props
 
-See the [Labelled By](#/component/Table/with-labelledby) example.
+| Name | Description |
+| --- | --- |
+| `isRowHeader` | Set this to `true` on the cell that best describes the data in the row. For example, if the row contains information about an object, specify the cell with the object's name or title as the row header. Only one cell in each row should be designated a row header. A row header will apply [&lt;th scope="row"&gt;](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/th#scope). Default: `false` |
 
-## Slots
+### Events
 
-This component supports two kinds of slots for extending the template. Read the [Vue.js documentation about slots](https://vuejs.org/v2/guide/components-slots.html).
+This component does not emit any events.
 
-Examples of the slots in use can be seen in the [Custom Header](#/component/Table/examples/with-header) and [Custom Column](#/component/Table/examples/with-column) examples.
+## &lt;TableHeader&gt;
+
+The `<TableHeader>` component should be used in the table's `head` slot to display column headers.
+
+```html
+<pkp-table>
+    <template slot="head">
+        <table-header>Username</table-header>
+        <table-header>Name</table-header>
+    </template>
+</pkp-table>
+```
+
+### Props
+
+| Name | Description |
+| --- | --- |
+| `canSort` | Whether or not the table can be sorted by this column. |
+| `sortDirection` | One of the [aria-sort](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-sort) properties. A table can only be sorted by one column at a time. If the table is not sorted by this column, the value should be `none`. Default: `none` |
+
+### Events
+
+| Name | Description |
+| --- | --- |
+| `table:sort` | Triggered when the user clicks the column header in order to sort by it. |
+
+## Sorting
+
+When a table can be sorted, you must [announce the changes](#/pages/announcer). When a sort is performed by making a request to the server, announce at both the start and end of the process.
+
+```js
+methods: {
+    sort(col) {
+        this.$announcer.set('Loading');
+        $.ajax({
+
+            // ...
+
+            success(r) {
+
+                // ...
+
+                this.$announcer.set('Sorted by ' + col);
+            }
+        });
+    }
+}
+```
+
+## Accessible Caption
+
+Every table needs an accessible caption. Use the `caption` slot to provide a title with the correct `<h*>` heading according to the page hierarchy. The description is optional.
+
+```html
+<pkp-table>
+    <pkp-header slot="caption">
+        <h2>Example Table</h2>
+    </pkp-header>
+</pkp-table>
+```
+
+If you do not use the `caption` slot, you must use the `labelledBy` prop to provide an accessible label for the table. See the [Labelled By](#/component/Table/with-labelledby) example.

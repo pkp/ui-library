@@ -213,7 +213,6 @@
 <script>
 import StatsPublicationsPage from '@/components/Container/StatsPublicationsPage.vue';
 import articleStats from '../../Table/helpers/articleStats.js';
-import articleStatsColumns from '../../Table/helpers/articleStatsColumns.js';
 
 function getRandomTimeline(startDate, endDate, timelineInterval) {
 	let timeline = [];
@@ -246,9 +245,6 @@ export default {
 			timelineInterval: 'day',
 			items: articleStats.slice(0, 30),
 			itemsMax: articleStats.length,
-			tableColumns: articleStatsColumns.filter(
-				(col) => !['id', 'author'].includes(col.name)
-			),
 			dateStart: '2019-04-01',
 			dateEnd: '2019-05-01',
 			dateEndMax: dateEndMax.toISOString().split('T')[0],

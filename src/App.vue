@@ -1,5 +1,6 @@
 <template>
 	<div id="app">
+		<vue-announcer />
 		<nav class="nav" aria-label="Primary Navigation">
 			<nav-group>
 				<template slot="heading">Guide</template>
@@ -22,6 +23,7 @@
 			</nav-group>
 			<nav-group>
 				<template slot="heading">Utilities</template>
+				<li><router-link to="/pages/announcer">Announcer</router-link></li>
 				<li><router-link to="/pages/event-bus">Event Bus</router-link></li>
 				<li><router-link to="/utilities/Notify">Notify</router-link></li>
 			</nav-group>

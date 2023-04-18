@@ -1,11 +1,28 @@
 <template>
 	<div class="previewTable">
-		<pkp-table
-			label="Example Table"
-			description="Use the Pagination component to display large data sets in a table."
-			:columns="columns"
-			:rows="currentRows"
-		/>
+		<pkp-table>
+			<pkp-header slot="caption">
+				<h2>Example Table</h2>
+			</pkp-header>
+			<template slot="head">
+				<table-header>ID</table-header>
+				<table-header>Title</table-header>
+				<table-header>Views</table-header>
+				<table-header>Downloads</table-header>
+				<table-header>Total</table-header>
+			</template>
+			<tr v-for="row in currentRows" :key="row.object.id">
+				<table-cell>{{ row.object.id }}</table-cell>
+				<table-cell :isRowHeader="true">
+					{{ row.object.fullTitle.en }}
+				</table-cell>
+				<table-cell>{{ row.views }}</table-cell>
+				<table-cell>{{ row.downloads }}</table-cell>
+				<table-cell>
+					<button @click="open(row)">{{ row.total }}</button>
+				</table-cell>
+			</tr>
+		</pkp-table>
 		<pagination
 			:currentPage="currentPage"
 			:lastPage="lastPage"

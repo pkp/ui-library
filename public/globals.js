@@ -139,6 +139,7 @@ window.pkp = {
 		'form.multilingualLabel': '{$label} in {$localeName}',
 		'form.multilingualProgress': '{$count}/{$total} languages completed',
 		'form.saved': 'Saved',
+		'grid.action.sort': 'Sort',
 		'help.help': 'Help',
 		'validator.required': 'This field is required.',
 	},
