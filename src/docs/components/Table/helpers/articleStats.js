@@ -13,11 +13,8 @@ const baseTitle =
 const sectionIds = [1, 2, 3];
 const baseStat = {
 	total: 0,
-	abstractViews: 0,
-	galleyViews: 0,
-	pdf: 0,
-	html: 0,
-	other: 0,
+	views: 0,
+	downloads: 0,
 	object: {
 		id: 1,
 		fullTitle: {
@@ -41,15 +38,11 @@ for (let i = 1; i < 61; i++) {
 			},
 			sectionId: sectionIds[Math.floor(Math.random() * sectionIds.length)],
 		},
-		abstractViews: Math.floor(Math.random() * 10000) + 1,
-		galleyViews: Math.floor(Math.random() * 1000) + 1,
+		views: Math.floor(Math.random() * 10000) + 1,
+		downloads: Math.floor(Math.random() * 1000) + 1,
 	};
 
-	let sixth = Math.floor(stat.galleyViews / 6);
-	stat.pdf = sixth * 3;
-	stat.html = sixth * 2;
-	stat.other = sixth * 1;
-	stat.total = stat.abstractViews + stat.galleyViews;
+	stat.total = stat.views + stat.downloads;
 
 	stats.push(stat);
 }
