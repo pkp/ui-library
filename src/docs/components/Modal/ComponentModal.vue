@@ -8,6 +8,8 @@ import PreviewModalTabs from './previews/PreviewModalTabs.vue';
 import PreviewModalTabsTemplate from '!raw-loader!./previews/PreviewModalTabs.vue';
 import PreviewModalActions from './previews/PreviewModalActions.vue';
 import PreviewModalActionsTemplate from '!raw-loader!./previews/PreviewModalActions.vue';
+import PreviewModalSide from './previews/PreviewModalSide.vue';
+import PreviewModalSideTemplate from '!raw-loader!./previews/PreviewModalSide.vue';
 import readme from '!raw-loader!./readme.md';
 
 export default {
@@ -36,6 +38,11 @@ export default {
 					component: PreviewModalActions,
 					name: 'With Custom Actions',
 					template: this.extractTemplate(PreviewModalActionsTemplate),
+				},
+				{
+					component: PreviewModalSide,
+					name: 'Side Panel',
+					template: this.extractTemplate(PreviewModalSideTemplate),
 				},
 			],
 		};
