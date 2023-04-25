@@ -81,14 +81,10 @@ export default {
 		border-color: @primary;
 	}
 
-	&:focus {
+	&:focus-visible {
 		color: @primary;
 		border-color: @primary;
 		outline: 1px solid @primary;
-	}
-
-	&:active {
-		box-shadow: 0 0 2px;
 	}
 }
 
@@ -102,22 +98,30 @@ export default {
 	box-shadow: 0 1px 0 @primary;
 
 	&:hover,
-	&:focus {
+	&:focus-visible {
 		background: @primary-lift;
 		color: #fff;
 	}
 }
 
 .pkpButton--isLink {
+	font-weight: @normal;
+	text-transform: uppercase;
 	box-shadow: none;
 	border-color: transparent;
+	text-decoration: underline;
+
+	&:hover {
+		color: @primary-lift;
+		border-color: transparent;
+	}
 }
 
 .pkpButton--isWarnable {
 	color: @no;
 
 	&:hover,
-	&:focus {
+	&:focus-visible {
 		border-color: @no;
 		color: @no;
 	}
@@ -133,7 +137,7 @@ export default {
 	box-shadow: 0 1px 0 @primary;
 
 	&:hover,
-	&:focus {
+	&:focus-visible {
 		background: @primary-lift;
 		color: #fff;
 	}
@@ -147,10 +151,14 @@ export default {
 	box-shadow: none;
 
 	&:hover,
-	&:focus {
+	&:focus-visible {
 		cursor: not-allowed;
 		outline: none;
 		box-shadow: none;
 	}
+}
+
+.pkpButton--isLink:disabled {
+	border-color: transparent;
 }
 </style>

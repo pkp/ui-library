@@ -13,6 +13,7 @@
 							page: __('common.pagination.previous'),
 						})
 					"
+					:is-link="true"
 					@click="setPage('previous')"
 				>
 					{{ __('common.pagination.previous') }}
@@ -35,10 +36,8 @@
 					:disabled="item.isDisabled"
 					:aria-label="item.ariaLabel"
 					:aria-current="item.isCurrent"
-					:is-link="
-						!item.isCurrent && !['previous', 'next'].includes(item.value)
-					"
-					:is-active="item.isCurrent"
+					class="pkpPagination__page"
+					:is-link="true"
 					@click="setPage(item.value)"
 				>
 					{{ item.label }}
@@ -47,6 +46,7 @@
 			<li>
 				<pkp-button
 					:disabled="currentPage === lastPage"
+					:is-link="true"
 					@click="setPage('next')"
 				>
 					{{ __('common.pagination.next') }}
@@ -183,33 +183,34 @@ export default {
 @import '../../styles/_import';
 
 .pkpPagination {
+	display: flex;
+	justify-content: flex-start;
 	font-size: @font-tiny;
 	line-height: 1.5em;
 	text-align: center;
 
 	ul {
+		display: flex;
+		align-items: center;
 		margin: 0;
 		padding: 0;
 		list-style: none;
 	}
 
-	li {
-		display: inline-block;
-		margin-left: 1px;
-		margin-right: 1px;
-
-		&:first-child {
-			float: left;
-		}
-
-		&:last-child {
-			float: right;
-		}
+	.pkpButton {
+		padding-inline-start: 0.75rem;
+		padding-inline-end: 0.75rem;
 	}
 
-	.pkpButton {
-		padding-left: 0.75rem;
-		padding-right: 0.75rem;
+	.pkpPagination__page {
+		padding-inline-start: 0.5rem;
+		padding-inline-end: 0.5rem;
+		text-decoration: none;
+		color: @text;
+
+		&[aria-current='true'] {
+			font-weight: @bold;
+		}
 	}
 }
 
@@ -224,16 +225,10 @@ export default {
 	width: 34px;
 }
 
-[dir='rtl'] {
-	.pkpPagination {
-		li {
-			&:first-child {
-				float: right;
-			}
-			&:last-child {
-				float: left;
-			}
-		}
-	}
+/**
+ * Pagination components inside of a ListPanel footer
+ */
+.listPanel__footer .pkpPagination {
+	justify-content: flex-end;
 }
 </style>

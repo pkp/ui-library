@@ -23,11 +23,13 @@
 				</table-cell>
 			</tr>
 		</pkp-table>
-		<pagination
-			:currentPage="currentPage"
-			:lastPage="lastPage"
-			@set-page="setPage"
-		/>
+		<button-row>
+			<pagination
+				:currentPage="currentPage"
+				:lastPage="lastPage"
+				@set-page="setPage"
+			/>
+		</button-row>
 	</div>
 </template>
 
@@ -35,10 +37,12 @@
 import PreviewTable from './PreviewTable.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
 import articleStats from '../helpers/articleStats.js';
+import ButtonRow from '../../../../components/ButtonRow/ButtonRow.vue';
 
 export default {
 	extends: PreviewTable,
 	components: {
+		ButtonRow,
 		Pagination,
 	},
 	data() {
