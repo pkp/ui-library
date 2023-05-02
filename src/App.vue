@@ -253,6 +253,11 @@
 					</router-link>
 				</li>
 				<li>
+					<router-link to="/component/SubmissionsPage">
+						SubmissionsPage
+					</router-link>
+				</li>
+				<li>
 					<router-link to="/component/SubmissionWizardPage">
 						SubmissionWizardPage
 					</router-link>

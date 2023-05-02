@@ -1,8 +1,16 @@
-import doi from '@/docs/data/doi';
-import reviewAssignment from '@/docs/data/reviewAssignment';
-import submission from '@/docs/data/submission';
+import doi from './doi';
+import reviewAssignment from './reviewAssignment';
+import submission from './submission';
 
-export default [
+const reviewRound = {
+	id: 1,
+	round: 1,
+	stageId: 3,
+	statusId: 1,
+	status: 'Example status',
+};
+
+let submissions = [
 	submission,
 	{
 		...submission,
@@ -27,17 +35,9 @@ export default [
 			},
 		],
 		sectionId: 2,
-		stages: submission.stages.map((stage) => {
-			return {
-				...stage,
-				currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
-			};
-		}),
+		stageId: 1,
+		stageName: 'Desk Review',
 		status: 3,
-		urlAuthorWorkflow: submission.urlAuthorWorkflow.replace('1', '2'),
-		urlEditorialWorkflow: submission.urlEditorialWorkflow.replace('1', '2'),
-		urlPublished: submission.urlPublished.replace('1', '2'),
-		urlWorkflow: submission.urlWorkflow.replace('1', '2'),
 	},
 	{
 		...submission,
@@ -54,20 +54,9 @@ export default [
 				},
 			},
 		],
-		stages: submission.stages.map((stage) => {
-			if (stage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION) {
-				return {
-					...stage,
-					status: 'No editor has been assigned to this submission.',
-					statusId: pkp.const.STAGE_STATUS_SUBMISSION_UNASSIGNED,
-				};
-			}
-			return stage;
-		}),
-		urlAuthorWorkflow: submission.urlAuthorWorkflow.replace('1', '3'),
-		urlEditorialWorkflow: submission.urlEditorialWorkflow.replace('1', '3'),
-		urlPublished: submission.urlPublished.replace('1', '3'),
-		urlWorkflow: submission.urlWorkflow.replace('1', '3'),
+		reviewRounds: [{...reviewRound}],
+		stageId: 3,
+		stageName: 'Review',
 	},
 	{
 		...submission,
@@ -95,26 +84,9 @@ export default [
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_RESPONSE_OVERDUE,
 			},
 		],
-		stages: submission.stages.map((stage) => {
-			if (stage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION) {
-				return {
-					...stage,
-					isActiveStage: false,
-				};
-			} else if (stage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) {
-				return {
-					...stage,
-					isActiveStage: true,
-					status: 'A review is overdue.',
-					statusId: pkp.const.REVIEW_ROUND_STATUS_REVIEWS_OVERDUE,
-				};
-			}
-			return stage;
-		}),
-		urlAuthorWorkflow: submission.urlAuthorWorkflow.replace('1', '4'),
-		urlEditorialWorkflow: submission.urlEditorialWorkflow.replace('1', '4'),
-		urlPublished: submission.urlPublished.replace('1', '4'),
-		urlWorkflow: submission.urlWorkflow.replace('1', '4'),
+		reviewRounds: [{...reviewRound}],
+		stageId: 3,
+		stageName: 'Review',
 	},
 	{
 		...submission,
@@ -154,27 +126,16 @@ export default [
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
 			},
 		],
+		reviewRounds: [
+			{...reviewRound},
+			{
+				...reviewRound,
+				round: 2,
+			},
+		],
 		sectionId: 2,
-		stages: submission.stages.map((stage) => {
-			if (stage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION) {
-				return {
-					...stage,
-					isActiveStage: false,
-				};
-			} else if (stage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) {
-				return {
-					...stage,
-					isActiveStage: true,
-					status: 'Awaiting responses from reviewers.',
-					statusId: pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWS,
-				};
-			}
-			return stage;
-		}),
-		urlAuthorWorkflow: submission.urlAuthorWorkflow.replace('1', '5'),
-		urlEditorialWorkflow: submission.urlEditorialWorkflow.replace('1', '5'),
-		urlPublished: submission.urlPublished.replace('1', '5'),
-		urlWorkflow: submission.urlWorkflow.replace('1', '5'),
+		stageId: 3,
+		stageName: 'Review',
 	},
 	{
 		...submission,
@@ -214,26 +175,9 @@ export default [
 				statusId: pkp.const.REVIEW_ROUND_STATUS_REVIEWS_COMPLETED,
 			},
 		],
-		stages: submission.stages.map((stage) => {
-			if (stage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION) {
-				return {
-					...stage,
-					isActiveStage: false,
-				};
-			} else if (stage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) {
-				return {
-					...stage,
-					isActiveStage: true,
-					status: 'All reviewers have responded and a decision is needed.',
-					statusId: pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWS,
-				};
-			}
-			return stage;
-		}),
-		urlAuthorWorkflow: submission.urlAuthorWorkflow.replace('1', '6'),
-		urlEditorialWorkflow: submission.urlEditorialWorkflow.replace('1', '6'),
-		urlPublished: submission.urlPublished.replace('1', '6'),
-		urlWorkflow: submission.urlWorkflow.replace('1', '6'),
+		reviewRounds: [{...reviewRound}],
+		stageId: 3,
+		stageName: 'Review',
 	},
 	{
 		...submission,
@@ -250,38 +194,8 @@ export default [
 				},
 			},
 		],
-		stages: submission.stages.map((stage) => {
-			if (stage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION) {
-				return {
-					...stage,
-					isActiveStage: false,
-				};
-			} else if (stage.id === pkp.const.WORKFLOW_STAGE_ID_EDITING) {
-				return {
-					...stage,
-					isActiveStage: true,
-					queries: [
-						{
-							assocId: 21,
-							assocType: 1048585,
-							closed: false,
-							id: 47,
-							sequence: 1,
-							stageId: 4,
-						},
-					],
-					files: {
-						count: 2,
-					},
-					currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
-				};
-			}
-			return stage;
-		}),
-		urlAuthorWorkflow: submission.urlAuthorWorkflow.replace('1', '7'),
-		urlEditorialWorkflow: submission.urlEditorialWorkflow.replace('1', '7'),
-		urlPublished: submission.urlPublished.replace('1', '7'),
-		urlWorkflow: submission.urlWorkflow.replace('1', '7'),
+		stageId: 4,
+		stageName: 'Copyediting',
 	},
 	{
 		...submission,
@@ -298,38 +212,8 @@ export default [
 				},
 			},
 		],
-		stages: submission.stages.map((stage) => {
-			if (stage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION) {
-				return {
-					...stage,
-					isActiveStage: false,
-				};
-			} else if (stage.id === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION) {
-				return {
-					...stage,
-					isActiveStage: true,
-					queries: [
-						{
-							assocId: 21,
-							assocType: 1048585,
-							closed: false,
-							id: 47,
-							sequence: 1,
-							stageId: 5,
-						},
-					],
-					files: {
-						count: 4,
-					},
-					currentUserAssignedRoles: [pkp.const.ROLE_ID_MANAGER],
-				};
-			}
-			return stage;
-		}),
-		urlAuthorWorkflow: submission.urlAuthorWorkflow.replace('1', '8'),
-		urlEditorialWorkflow: submission.urlEditorialWorkflow.replace('1', '8'),
-		urlPublished: submission.urlPublished.replace('1', '8'),
-		urlWorkflow: submission.urlWorkflow.replace('1', '8'),
+		stageId: 5,
+		stageName: 'Production',
 	},
 	{
 		...submission,
@@ -355,26 +239,9 @@ export default [
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_RESPONSE_OVERDUE,
 			},
 		],
-		stages: submission.stages.map((stage) => {
-			if (stage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION) {
-				return {
-					...stage,
-					isActiveStage: false,
-				};
-			} else if (stage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) {
-				return {
-					...stage,
-					isActiveStage: true,
-					status: 'A review is overdue.',
-					statusId: pkp.const.REVIEW_ROUND_STATUS_REVIEWS_OVERDUE,
-				};
-			}
-			return stage;
-		}),
-		urlAuthorWorkflow: submission.urlAuthorWorkflow.replace('1', '9'),
-		urlEditorialWorkflow: submission.urlEditorialWorkflow.replace('1', '9'),
-		urlPublished: submission.urlPublished.replace('1', '9'),
-		urlWorkflow: submission.urlWorkflow.replace('1', '9'),
+		reviewRounds: [{...reviewRound}],
+		stageId: 3,
+		stageName: 'Review',
 	},
 	{
 		...submission,
@@ -402,26 +269,20 @@ export default [
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 			},
 		],
+		reviewRounds: [{...reviewRound}],
 		sectionId: 2,
-		stages: submission.stages.map((stage) => {
-			if (stage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION) {
-				return {
-					...stage,
-					isActiveStage: false,
-				};
-			} else if (stage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) {
-				return {
-					...stage,
-					isActiveStage: true,
-					status: 'A new review has been submitted.',
-					statusId: pkp.const.REVIEW_ROUND_STATUS_REVIEWS_READY,
-				};
-			}
-			return stage;
-		}),
-		urlAuthorWorkflow: submission.urlAuthorWorkflow.replace('1', '10'),
-		urlEditorialWorkflow: submission.urlEditorialWorkflow.replace('1', '10'),
-		urlPublished: submission.urlPublished.replace('1', '10'),
-		urlWorkflow: submission.urlWorkflow.replace('1', '10'),
+		stageId: 3,
+		stageName: 'Review',
 	},
 ];
+
+submissions = submissions.map((s) => {
+	s.daysInStage = Math.floor(Math.random() * (200 - 0 + 1));
+	s.urlAuthorWorkflow = s.urlAuthorWorkflow.replace('1', s.id);
+	s.urlEditorialWorkflow = s.urlEditorialWorkflow.replace('1', s.id);
+	s.urlPublished = s.urlPublished.replace('1', s.id);
+	s.urlWorkflow = s.urlWorkflow.replace('1', s.id);
+	return s;
+});
+
+export default submissions;
