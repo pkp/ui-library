@@ -302,7 +302,9 @@ export default {
 				this.isLoadingSubmissions = false;
 				this.$announcer.set(this.__('common.loaded'));
 				if (cb) {
-					cb.apply(this, [...this.submissions]);
+					cb.apply(this, [
+						{items: [...submissions], itemsMax: this.submissionsMax},
+					]);
 				}
 			}, 1000);
 		},

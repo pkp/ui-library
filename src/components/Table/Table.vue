@@ -24,6 +24,14 @@
 </template>
 
 <script>
+/**
+ * Tracks which cell has tabindex="0" before
+ * the table is updated. This is used to reset
+ * the tabindex on that cell after the table is
+ * updated.
+ */
+let tabindexCell;
+
 export default {
 	methods: {
 		/**
@@ -37,7 +45,7 @@ export default {
 			const from = e.target.closest('td, th');
 			const to = from.nextElementSibling;
 			if (to) {
-				this.changeFocus(to, from);
+				this.changeFocus(to);
 			}
 		},
 
@@ -52,7 +60,7 @@ export default {
 			const from = e.target.closest('td, th');
 			const to = from.previousElementSibling;
 			if (to) {
-				this.changeFocus(to, from);
+				this.changeFocus(to);
 			}
 		},
 
@@ -73,7 +81,7 @@ export default {
 			}
 			const to = nextRow.children[columnIndex];
 			if (to) {
-				this.changeFocus(to, from);
+				this.changeFocus(to);
 			}
 		},
 
@@ -94,7 +102,7 @@ export default {
 			}
 			const to = previousRow.children[columnIndex];
 			if (to) {
-				this.changeFocus(to, from);
+				this.changeFocus(to);
 			}
 		},
 
@@ -110,7 +118,7 @@ export default {
 			const row = from.closest('tr');
 			const to = row.children[0];
 			if (to) {
-				this.changeFocus(to, from);
+				this.changeFocus(to);
 			}
 		},
 
@@ -126,7 +134,7 @@ export default {
 			const row = from.closest('tr');
 			const to = row.children[row.children.length - 1];
 			if (to) {
-				this.changeFocus(to, from);
+				this.changeFocus(to);
 			}
 		},
 
@@ -137,13 +145,12 @@ export default {
 		 *
 		 * @param Event e
 		 */
-		focusStart(e) {
-			const from = e.target.closest('td, th');
+		focusStart() {
 			const firstCell = this.$children.find(
 				(child) => child.$options._componentTag == 'table-cell'
 			);
 			if (firstCell) {
-				this.changeFocus(firstCell.$el, from);
+				this.changeFocus(firstCell.$el);
 			}
 		},
 
@@ -155,12 +162,11 @@ export default {
 		 * @param Event e
 		 */
 		focusEnd(e) {
-			const from = e.target.closest('td, th');
 			const lastCell = this.$children.findLast(
 				(child) => child.$options._componentTag == 'table-cell'
 			);
 			if (lastCell) {
-				this.changeFocus(lastCell.$el, from);
+				this.changeFocus(lastCell.$el);
 			}
 		},
 
@@ -170,23 +176,59 @@ export default {
 		 *
 		 * @see https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_roving_tabindex
 		 * @param Element to The element to move focus to
-		 * @param Element from The element losing focus
 		 */
-		changeFocus(to, from) {
+		changeFocus(to) {
+			this.$children
+				.filter((child) => {
+					return (
+						child.$options._componentTag == 'table-cell' &&
+						child.$el.getAttribute('tabindex') == 0
+					);
+				})
+				.forEach((child) => child.$el.setAttribute('tabindex', -1));
 			to.setAttribute('tabindex', 0);
 			to.focus();
-			from.setAttribute('tabindex', -1);
+		},
+
+		/**
+		 * Set the tabindex on the first cell in the table
+		 */
+		setTabindexToFirstCell() {
+			const firstCell = this.$children.find(
+				(child) => child.$options._componentTag == 'table-cell'
+			);
+			if (firstCell) {
+				firstCell.$el.setAttribute('tabindex', 0);
+			}
 		},
 	},
 	mounted() {
+		this.setTabindexToFirstCell();
+	},
+	beforeUpdate() {
 		/**
-		 * Add first cell to tab focus order
+		 * Store the cell in the tab focus order to restore
+		 * the tabindex after update
 		 */
-		const firstCell = this.$children.find(
-			(child) => child.$options._componentTag == 'table-cell'
+		tabindexCell = this.$children.find((child) => {
+			return (
+				child.$options._componentTag == 'table-cell' &&
+				child.$el.getAttribute('tabindex') == 0
+			);
+		});
+	},
+	updated() {
+		/**
+		 * Restore tabindex to the cell that was enabled
+		 * before the update
+		 */
+		tabindexCell = this.$children.find(
+			(child) => child._uid === tabindexCell._uid
 		);
-		if (firstCell) {
-			firstCell.$el.setAttribute('tabindex', 0);
+		if (tabindexCell) {
+			tabindexCell.$el.setAttribute('tabindex', 0);
+		} else {
+			this.setTabindexToFirstCell();
 		}
 	},
 };
