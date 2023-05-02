@@ -31,6 +31,23 @@ All cells in the table must use the `<TableCell>` component in order to support 
 </pkp-table>
 ```
 
+When writing a `<TableCell>` in a Smarty template, you must use a `<td>` with with the `is` attribute.
+
+```html
+<pkp-table>
+    <tr>
+        <td is="table-cell" :isRowHeader="true">dbarnes</td>
+        <td is="table-cell" >Daniel Barnes</td>
+    </tr>
+    <tr>
+        <td is="table-cell" :isRowHeader="true">sminotue</td>
+        <td is="table-cell" >Stephanie Minotue</td>
+    </tr>
+</pkp-table>
+```
+
+This is because templates written in Smarty are parsed by the browser before they are parsed by Vue. Learn more about Vue's [DOM Template Parsing Caveats](https://v2.vuejs.org/v2/guide/components.html#DOM-Template-Parsing-Caveats).
+
 ### Props
 
 | Name | Description |
