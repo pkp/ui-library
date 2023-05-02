@@ -206,7 +206,7 @@ export default {
 
 	td,
 	th {
-		padding: 0.5rem;
+		padding: 0.75rem;
 		font-weight: @normal;
 		text-align: inherit;
 
@@ -218,6 +218,10 @@ export default {
 
 	tr {
 		border-bottom: @grid-border;
+
+		&:nth-child(even) {
+			background: @bg-very-light;
+		}
 	}
 
 	caption {
@@ -239,6 +243,7 @@ export default {
 		th {
 			font-size: @font-tiny;
 			font-weight: @bold;
+			text-transform: uppercase;
 		}
 	}
 }
