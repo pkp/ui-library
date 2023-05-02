@@ -28,29 +28,32 @@
 				<div class="submissions__list__top">
 					<pkp-button :is-primary="true">Start a New Submission</pkp-button>
 				</div>
-				<h1 class="submissions__list__title">
+				<h1 class="submissions__list__title" id="table-title">
 					{{ currentView.name }}
 					<span class="submissions__view__count">
 						{{ submissionsMax }}
 					</span>
 				</h1>
-				<pkp-table>
-					<template slot="caption">
-						<button-row>
-							<template slot="end">
-								<pkp-button @click="openFilters">Filters</pkp-button>
-								<span v-if="isLoadingSubmissions">
-									<spinner></spinner>
-									Loading
-								</span>
-							</template>
-							<search
-								:search-phrase="searchPhrase"
-								search-label="Search submissions, ID, authors, keywords, etc."
-								@search-phrase-changed="(value) => (this.searchPhrase = value)"
-							/>
-						</button-row>
-					</template>
+				<div id="table-controls" class="submissions__list__controls">
+					<button-row>
+						<template slot="end">
+							<pkp-button @click="openFilters">Filters</pkp-button>
+							<span v-if="isLoadingSubmissions">
+								<spinner></spinner>
+								Loading
+							</span>
+						</template>
+						<search
+							:search-phrase="searchPhrase"
+							search-label="Search submissions, ID, authors, keywords, etc."
+							@search-phrase-changed="(value) => (this.searchPhrase = value)"
+						></search>
+					</button-row>
+				</div>
+				<pkp-table
+					aria-labelledby="table-title"
+					aria-describedby="table-controls"
+				>
 					<template slot="head">
 						<table-header
 							:can-sort="true"
