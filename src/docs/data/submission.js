@@ -13,6 +13,7 @@ export default {
 	reviewRounds: [],
 	sectionId: 1,
 	stageId: 1,
+	stageName: 'Desk Review',
 	stages: [
 		{
 			id: 1,
