@@ -39,8 +39,6 @@
 	}
 
 	tr {
-		border-bottom: @grid-border;
-
 		&:nth-child(even) {
 			background: @bg-very-light;
 		}
@@ -62,6 +60,10 @@
 	}
 
 	thead {
+		tr {
+			background: @table-header;
+		}
+
 		th {
 			font-size: @font-tiny;
 			font-weight: @semibold;

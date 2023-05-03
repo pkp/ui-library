@@ -79,6 +79,9 @@
 							<span class="submissions__list__item__author">
 								{{ submission.publications[0].authorsStringShort }}
 							</span>
+							<template v-if="submission.publications[0].authorsStringShort">
+								—
+							</template>
 							{{ submission.publications[0].fullTitle.en }}
 						</table-cell>
 						<table-cell class="submissions__list__item__stage">

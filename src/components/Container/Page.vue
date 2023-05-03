@@ -376,7 +376,7 @@ export default {
 }
 
 .app__navItem--hasSubmenu {
-	font-weight: bold;
+	font-weight: @bold;
 }
 
 a.app__navItem {
