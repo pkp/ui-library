@@ -93,11 +93,16 @@
 										submission.reviewRounds.length
 									"
 								>
-									(Round
 									{{
-										submission.reviewRounds[submission.reviewRounds.length - 1]
-											.round
-									}})
+										__('common.inParenthesis', {
+											text: i18nReviewRound.replace(
+												'{$round}',
+												submission.reviewRounds[
+													submission.reviewRounds.length - 1
+												].round
+											),
+										})
+									}}
 								</template>
 							</stage-bubble>
 						</table-cell>
@@ -219,6 +224,7 @@ export default {
 				...form,
 				action: 'emit',
 			},
+			i18nReviewRound: 'Round {$round}',
 			i18nShowingXofX: 'Showing {$start} to {$finish} of {$total}',
 			submissions: {...submissions},
 			submissionsMax: 120,
