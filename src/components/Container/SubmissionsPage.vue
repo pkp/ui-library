@@ -335,10 +335,6 @@ export default {
 	line-height: @line-sml;
 }
 
-.submissions__view {
-	border-top: @bg-border-light;
-}
-
 .submissions__view__button {
 	display: flex;
 	width: 100%;
@@ -363,6 +359,8 @@ export default {
 	height: 2rem;
 	line-height: 2rem;
 	min-width: 2rem;
+	padding-left: 0.4em;
+	padding-right: 0.4em;
 	outline: 1px solid;
 	font-size: @font-tiny;
 	border-radius: 1rem;

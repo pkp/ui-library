@@ -109,6 +109,7 @@ export default {
 	box-shadow: none;
 	border-color: transparent;
 	text-decoration: underline;
+	background: transparent;
 
 	&:hover {
 		color: @primary-lift;

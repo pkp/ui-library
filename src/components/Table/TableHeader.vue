@@ -71,6 +71,7 @@ export default {
 	border: none;
 	border-radius: 0;
 	font-weight: inherit;
+	text-transform: uppercase;
 
 	&:focus-visible {
 		outline: 1px solid @primary;
