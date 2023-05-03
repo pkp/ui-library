@@ -70,7 +70,7 @@ export default {
 	text-align: center;
 	font-size: @font-sml;
 	line-height: 2rem;
-	font-weight: @bold;
+	font-weight: @semibold;
 	color: @primary;
 	text-decoration: none;
 	box-shadow: 0 1px 0 @bg-border-color-light;
@@ -105,7 +105,6 @@ export default {
 }
 
 .pkpButton--isLink {
-	font-weight: @normal;
 	text-transform: uppercase;
 	box-shadow: none;
 	border-color: transparent;

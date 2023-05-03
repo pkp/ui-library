@@ -389,11 +389,19 @@ export default {
 	gap: 1rem;
 }
 
+.submissions__list__controls {
+	margin-bottom: 0.5rem;
+}
+
 .submissions__list__item__title {
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	max-width: 25em;
+}
+
+.submissions__list__item__author {
+	font-weight: @semibold;
 }
 
 .submissions__list__item__stage {
