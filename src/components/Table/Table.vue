@@ -28,7 +28,7 @@
 
 	td,
 	th {
-		padding: 0.75rem;
+		padding: 0.5rem 1rem;
 		font-weight: @normal;
 		text-align: inherit;
 

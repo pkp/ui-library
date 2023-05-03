@@ -108,7 +108,6 @@ export default {
 	text-transform: uppercase;
 	box-shadow: none;
 	border-color: transparent;
-	text-decoration: underline;
 	background: transparent;
 
 	&:hover {
