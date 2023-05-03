@@ -53,6 +53,7 @@ export default {
 		return {
 			activeFilters: {},
 			apiUrl: '',
+			assignParticipantUrl: '',
 			count: 30,
 			currentViewId: '',
 			filtersForm: {},
@@ -89,6 +90,15 @@ export default {
 		 */
 		currentView() {
 			return this.views.find((view) => view.id === this.currentViewId);
+		},
+
+		/**
+		 * Whether the current user is a manager (or admin)
+		 */
+		isManager() {
+			const roles = [pkp.const.ROLE_ID_MANAGER, pkp.const.ROLE_ID_SITE_ADMIN];
+
+			return !!pkp.currentUser.roles.find((role) => roles.includes(role));
 		},
 
 		/**
@@ -194,6 +204,42 @@ export default {
 					this.findView(view.id).count = r.itemsMax;
 				});
 			});
+		},
+
+		/**
+		 * Whether or not a submission needs an editor to be assigned
+		 */
+		needsEditors(submission) {
+			return !!submission.stages.find(
+				(stage) =>
+					stage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION &&
+					!!stage.statusId &&
+					stage.statusId === pkp.const.STAGE_STATUS_SUBMISSION_UNASSIGNED
+			);
+		},
+
+		/**
+		 * Load a modal displaying the assign participant options
+		 */
+		openAssignParticipant(submission) {
+			lastFocusedEl = document.activeElement;
+
+			var opts = {
+				title: this.__('submission.list.assignEditor'),
+				url: this.assignParticipantUrl
+					.replace('__id__', submission.id)
+					.replace('__stageId__', submission.stageId),
+				closeCallback: () => {
+					this.resetFocusToList();
+				},
+			};
+
+			$(
+				'<div id="' +
+					$.pkp.classes.Helper.uuid() +
+					'" ' +
+					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>'
+			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
 		},
 
 		/**

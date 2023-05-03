@@ -107,7 +107,15 @@
 							</stage-bubble>
 						</table-cell>
 						<table-cell>{{ submission.daysInStage }}</table-cell>
-						<table-cell>TODO</table-cell>
+						<table-cell>
+							<pkp-button
+								v-if="isManager && needsEditors(submission)"
+								@click="openAssignParticipant(submission)"
+							>
+								Assign Editors
+							</pkp-button>
+							<template v-else>TODO</template>
+						</table-cell>
 						<table-cell>
 							<pkp-button
 								class="submissions__list__item__view"
@@ -212,11 +220,13 @@
 
 <script>
 import SubmissionsPage from '../../../../components/Container/SubmissionsPage.vue';
+import dialog from '../../../../mixins/dialog';
 import submissions from '../../../data/submissions';
 import form from '../../Form/helpers/form-base';
 
 export default {
 	extends: SubmissionsPage,
+	mixins: [dialog],
 	data() {
 		return {
 			count: 10,
@@ -304,7 +314,7 @@ export default {
 	},
 	methods: {
 		/**
-		 * Get submissions matching the current request params
+		 * Override the get method to fake a request
 		 *
 		 * @param {Function} cb A callback function to fire when successful
 		 */
@@ -320,6 +330,17 @@ export default {
 					]);
 				}
 			}, 1000);
+		},
+
+		/**
+		 * Override the request to open a modal to assign a participant
+		 */
+		openAssignParticipant(submission) {
+			this.openDialog({
+				name: 'assignParticipant',
+				title: 'Assign Editor',
+				message: '...',
+			});
 		},
 	},
 };
