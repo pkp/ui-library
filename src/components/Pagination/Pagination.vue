@@ -207,6 +207,7 @@ export default {
 		padding-inline-end: 0.5rem;
 		text-decoration: none;
 		color: @text;
+		font-weight: @normal;
 
 		&[aria-current='true'] {
 			font-weight: @bold;

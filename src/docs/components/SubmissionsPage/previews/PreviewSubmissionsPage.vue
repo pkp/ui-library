@@ -26,7 +26,7 @@
 			</div>
 			<div class="submissions__list">
 				<div class="submissions__list__top">
-					<pkp-button :is-primary="true">Start a New Submission</pkp-button>
+					<pkp-button>Start a New Submission</pkp-button>
 				</div>
 				<h1 class="submissions__list__title" id="table-title">
 					{{ currentView.name }}
@@ -106,9 +106,10 @@
 						<table-cell>
 							<pkp-button
 								class="submissions__list__item__view"
+								:is-link="true"
 								@click="openSummary(submission)"
 							>
-								View Summary
+								Summary
 							</pkp-button>
 						</table-cell>
 					</tr>
@@ -320,4 +321,10 @@ export default {
 
 <style lang="less">
 @import '../../../../styles/_import';
+
+.component--SubmissionsPage .component__exampleWrapper {
+	padding-top: 0;
+	padding-bottom: 0;
+	padding-left: 0;
+}
 </style>

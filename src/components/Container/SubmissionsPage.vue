@@ -317,6 +317,7 @@ export default {
 }
 
 .submissions__views {
+	justify-self: stretch;
 	border-inline-end: @bg-border-light;
 }
 
@@ -339,10 +340,10 @@ export default {
 	display: flex;
 	width: 100%;
 	align-items: center;
-	gap: 1rem;
+	gap: 0.75rem;
 	border: none;
 	background: transparent;
-	padding: 1rem;
+	padding: 0.75rem 1rem;
 
 	&:hover {
 		background: @bg-very-light;
@@ -356,9 +357,9 @@ export default {
 .submissions__view__count {
 	display: inline-block;
 	text-align: center;
-	height: 2rem;
-	line-height: 2rem;
-	min-width: 2rem;
+	height: 1.5rem;
+	line-height: 1.5rem;
+	min-width: 1.5rem;
 	padding-left: 0.4em;
 	padding-right: 0.4em;
 	outline: 1px solid;
