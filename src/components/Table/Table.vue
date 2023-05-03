@@ -64,7 +64,7 @@
 	thead {
 		th {
 			font-size: @font-tiny;
-			font-weight: @bold;
+			font-weight: @semibold;
 			text-transform: uppercase;
 		}
 	}

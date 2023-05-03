@@ -76,9 +76,9 @@
 							class="submissions__list__item__title"
 							:is-row-header="true"
 						>
-							<strong>
+							<span class="submissions__list__item__author">
 								{{ submission.publications[0].authorsStringShort }}
-							</strong>
+							</span>
 							{{ submission.publications[0].fullTitle.en }}
 						</table-cell>
 						<table-cell class="submissions__list__item__stage">
