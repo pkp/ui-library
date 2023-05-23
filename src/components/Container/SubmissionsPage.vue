@@ -73,6 +73,38 @@ export default {
 	},
 	computed: {
 		/**
+		 * The activeFilters reproduced as an array of individual
+		 * filters to show to the user
+		 *
+		 * @return {Array}
+		 */
+		activeFiltersList() {
+			let list = [];
+			for (const key in this.activeFilters) {
+				const field = this.getFiltersField(key);
+				if (!field) {
+					return;
+				}
+				switch (field.component) {
+					case 'field-options':
+						this.activeFilters[key].forEach((value) => {
+							const option = field.options.find(
+								(option) => option.value === value
+							);
+							list.push({
+								queryParam: key,
+								queryValue: option.value,
+								name: field.label,
+								value: option.label,
+							});
+						});
+						break;
+				}
+			}
+			return list;
+		},
+
+		/**
 		 * The current page of results being viewed
 		 *
 		 * @return {Number}
@@ -127,7 +159,17 @@ export default {
 	},
 	methods: {
 		/**
+		 * Remove all active filters
+		 */
+		clearFilters() {
+			this.activeFilters = {};
+			this.get();
+		},
+
+		/**
 		 * Get a view by it's id
+		 *
+		 * @param {String} id The id of the view to get
 		 */
 		findView(id) {
 			return this.views.find((view) => view.id === id);
@@ -189,6 +231,16 @@ export default {
 					this.isLoadingSubmissions = false;
 				},
 			});
+		},
+
+		/**
+		 * Get a field in the filters form
+		 *
+		 * @param {String} name The field's name
+		 * @return {Object} The object which describes the field
+		 */
+		getFiltersField(name) {
+			return this.filtersForm.fields.find((field) => field.name === name);
 		},
 
 		/**
@@ -435,6 +487,12 @@ export default {
 
 .submissions__list__controls {
 	margin-bottom: 0.5rem;
+}
+
+.submissions__list__filters {
+	display: flex;
+	gap: 0.25em;
+	align-items: center;
 }
 
 .submissions__list__item__title {
