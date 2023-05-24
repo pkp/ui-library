@@ -55,25 +55,6 @@
             }
         },
         {
-            "_href": "http://localhost:8000/pu/api/v1/emailTemplates/CITATION_EDITOR_AUTHOR_QUERY",
-            "alternateTo": "DISCUSSION_NOTIFICATION_COPYEDITING",
-            "body": {
-                "en": "{$recipientName},<br />\n<br />\nCould you please verify or provide us with the proper citation for the following reference from your article, {$submissionTitle}:<br />\n<br />\n{$rawCitation}<br />\n<br />\nThanks!<br />\n<br />\n{$senderName}<br />\nCopy-Editor, {$journalName}<br />\n",
-                "fr_CA": "{$recipientName},<br />\n<br />\nPourriez-vous vérifier ou nous fournir la référence bibliographique complète pour la référence suivante, provenant de votre article « {$submissionTitle} »  :<br />\n<br />\n{$rawCitation}<br />\n<br />\nMerci!<br />\n<br />\n{$senderName}<br />\nRéviseur-e, revue {$journalName}<br />\n"
-            },
-            "contextId": 1,
-            "id": 2,
-            "key": "CITATION_EDITOR_AUTHOR_QUERY",
-            "name": {
-                "en": "Question About Citation",
-                "fr_CA": ""
-            },
-            "subject": {
-                "en": "Citation Editing",
-                "fr_CA": "Modification des références bibliographiques"
-            }
-        },
-        {
             "_href": "http://localhost:8000/pu/api/v1/emailTemplates/COPYEDIT_REQUEST",
             "alternateTo": "DISCUSSION_NOTIFICATION_COPYEDITING",
             "body": {
