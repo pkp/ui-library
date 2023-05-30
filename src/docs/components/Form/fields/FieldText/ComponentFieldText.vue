@@ -10,6 +10,8 @@ import PreviewFieldTextPrefix from './previews/PreviewFieldTextPrefix.vue';
 import PreviewFieldTextPrefixTemplate from '!raw-loader!./previews/PreviewFieldTextPrefix.vue';
 import PreviewFieldTextOptIntoEdit from './previews/PreviewFieldTextOptIntoEdit.vue';
 import PreviewFieldTextOptIntoEditTemplate from '!raw-loader!./previews/PreviewFieldTextOptIntoEdit.vue';
+import PreviewFieldTextDisable from './previews/PreviewFieldTextDisable.vue';
+import PreviewFieldTextDisableTemplate from '!raw-loader!./previews/PreviewFieldTextDisable.vue';
 import readme from '!raw-loader!./readme.md';
 
 export default {
@@ -44,6 +46,11 @@ export default {
 					component: PreviewFieldTextOptIntoEdit,
 					name: 'Editing Opt-in',
 					template: this.extractTemplate(PreviewFieldTextOptIntoEditTemplate),
+				},
+				{
+					component: PreviewFieldTextDisable,
+					name: 'Disable',
+					template: this.extractTemplate(PreviewFieldTextDisableTemplate),
 				},
 			],
 		};

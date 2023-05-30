@@ -46,14 +46,13 @@
 					:name="localizedName"
 					:aria-describedby="describedByIds"
 					:aria-invalid="errors && errors.length"
-					:disabled="isDisabled"
+					:disabled="disabled"
 					:required="isRequired"
 					:style="inputStyles"
 				/>
 				<span
 					v-if="prefix"
 					class="pkpFormField__inputPrefix"
-					v-html="prefix"
 					ref="prefix"
 					:style="prefixStyles"
 					@click="setFocus"
@@ -65,9 +64,9 @@
 					:total="locales.length"
 				/>
 				<pkp-button
-					v-if="optIntoEdit && isDisabled"
+					v-if="optIntoEdit && disabled"
 					class="pkpFormField--text__optIntoEdit"
-					@click="isDisabled = false"
+					@click="enable()"
 				>
 					{{ optIntoEditLabel }}
 				</pkp-button>
@@ -80,7 +79,6 @@
 		</div>
 	</div>
 </template>
-
 <script>
 import FieldBase from './FieldBase.vue';
 
@@ -102,7 +100,6 @@ export default {
 	data() {
 		return {
 			inputStyles: {},
-			isDisabled: false,
 			prefixStyles: {},
 		};
 	},
@@ -142,6 +139,12 @@ export default {
 		 */
 		setFocus() {
 			this.$refs.input.focus();
+		},
+		/**
+		 * Set disable prop false
+		 */
+		enable() {
+			this.$emit('change', this.disabled, 'disabled', false);
 		},
 	},
 	mounted() {
@@ -194,11 +197,6 @@ export default {
 				}
 			}, 700);
 		});
-
-		// Set the field to disabled if optIntoEdit is passed
-		if (this.optIntoEdit) {
-			this.isDisabled = true;
-		}
 	},
 };
 </script>
