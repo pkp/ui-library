@@ -204,7 +204,9 @@ export default {
 			}
 
 			$.ajax({
-				url: this.apiUrl,
+				url: Object.hasOwn(this.currentView, 'op')
+					? this.apiUrl + '/' + this.currentView.op
+					: this.apiUrl,
 				context: this,
 				data,
 				error(r) {
