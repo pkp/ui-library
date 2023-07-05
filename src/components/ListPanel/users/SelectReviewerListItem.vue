@@ -102,6 +102,11 @@
 						<icon icon="book" :inline="true" />
 						{{ interestsString }}
 					</span>
+					<span
+						v-if="authorAffiliations.includes(localize(item.affiliation))"
+						class='pkpBadge pkp_helpers_text_warn'
+					>{{ reviewerSameInstitutionLabel }}
+					</span>
 				</div>
 			</div>
 
@@ -226,6 +231,12 @@ export default {
 			type: String,
 			required: true,
 		},
+		authorAffiliations: {
+			type: Array,
+			default() {
+				return [];
+			},
+		},
 		averageCompletionLabel: {
 			type: String,
 			required: true,
@@ -283,6 +294,10 @@ export default {
 			required: true,
 		},
 		reassignWithNameLabel: {
+			type: String,
+			required: true,
+		},
+		reviewerSameInstitutionLabel: {
 			type: String,
 			required: true,
 		},
