@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="section" id="author_container">
+		<div class="section">
 			<h3>{{ components.selectReviewer.submissionAuthorList }}</h3>
 			<div :class="authorContainerclasses">
 				<div
