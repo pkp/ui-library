@@ -1,12 +1,12 @@
 <template>
 	<div>
 		<div class="section">
-			<h3>{{ components.selectReviewer.submissionAuthorList }}</h3>
+			<h3>{{ labels.submissionAuthorList }}</h3>
 			<div class="list_outline">
 				<ol :class="authorContainerclasses">
 					<li
 						class="author_row"
-						v-for="(affiliations, author) in components.selectReviewer.authors"
+						v-for="(affiliations, author) in authors"
 						:key="author"
 					>
 						<strong>{{ author }}</strong>
@@ -15,13 +15,21 @@
 					</li>
 				</ol>
 				<div class="action_container" v-if="authorCount > 4">
-					<span class="show_authors_action" v-if="!showAllAuthors" @click="toggleShowAllAuthors">
+					<span
+						class="show_authors_action"
+						v-if="!showAllAuthors"
+						@click="toggleShowAllAuthors"
+					>
 						{{
-							`${components.selectReviewer.showAll} ${authorCount} ${components.selectReviewer.authorsLabel}`
+							`${labels.showAll} ${authorCount} ${labels.authorsLabel}`
 						}}
 					</span>
-					<span class="show_authors_action" v-if="showAllAuthors" @click="toggleShowAllAuthors">
-						{{ components.selectReviewer.showLess }}
+					<span
+						class="show_authors_action"
+						v-if="showAllAuthors"
+						@click="toggleShowAllAuthors"
+					>
+						{{ labels.showLess }}
 					</span>
 				</div>
 			</div>
@@ -50,11 +58,10 @@ export default {
 	},
 	computed: {
 		authorContainerclasses() {
-			let statics = 'list_box pkpFormField__description';
-			return this.showAllAuthors ? statics : `${statics} expandable`;
+			return this.showAllAuthors ? 'list_box' : 'list_box expandable';
 		},
 		authorCount() {
-			return Object.keys(this.components.selectReviewer.authors).length;
+			return Object.keys(this.authors).length;
 		},
 	},
 };
@@ -63,11 +70,12 @@ export default {
 @import '../../styles/_import';
 
 .action_container {
-	padding: 0.9rem 1.2rem;
+	padding-left: 1.2rem;
+	padding-bottom: 0.9rem;
 }
 
 .list_box {
-	margin-bottom: 0;
+	line-height: 1.8em;
 	&.expandable {
 		max-height: 6rem;
 		overflow-y: scroll;
