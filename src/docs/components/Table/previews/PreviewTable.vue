@@ -23,10 +23,10 @@
 </template>
 
 <script>
-import PkpTable from '../../../../components/Table/Table.vue';
+import PkpTable from '../../../../components/TableNext/Table.vue';
 import articleStats from '../helpers/articleStats.js';
-import TableHeader from '../../../../components/Table/TableHeader.vue';
-import TableCell from '../../../../components/Table/TableCell.vue';
+import TableHeader from '../../../../components/TableNext/TableHeader.vue';
+import TableCell from '../../../../components/TableNext/TableCell.vue';
 import dialog from '../../../../mixins/dialog';
 
 export default {
