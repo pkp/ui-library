@@ -215,15 +215,25 @@ export default {
 }
 
 .pkpFormGroup__heading {
-	float: inline-start;
+	float: left;
 	width: 30%;
 	padding-inline-end: 1.5rem;
 	line-height: @line-sml;
 
 	+ .pkpFormGroup__fields {
-		float: inline-end;
+		float: right;
 		width: 70%;
 		padding-inline-start: 1.5rem;
+	}
+}
+
+[dir='rtl'] {
+	.pkpFormGroup__heading {
+		float: right;
+
+		.pkpFormGroup__fields {
+			float: left;
+		}
 	}
 }
 
@@ -270,13 +280,20 @@ export default {
 	}
 
 	.pkpFormGroup__locale--isVisible {
-		float: inline-start;
+		float: left;
 		width: 50%;
 		padding-inline-end: 1.5rem;
 
 		~ .pkpFormGroup__locale--isVisible {
 			padding-inline-end: 0;
 			padding-inline-start: 1.5rem;
+		}
+	}
+}
+[dir='rtl'] {
+	.pkpForm--hasManyVisibleLocales {
+		.pkpFormGroup__locale--isVisible {
+			float: right;
 		}
 	}
 }
