@@ -252,6 +252,9 @@ export default {
 
 .app__contexts .pkpDropdown__content {
 	left: 0.25rem;
+	max-width: 30em;
+	max-height: 85vh;
+	overflow-y: auto;
 }
 
 .app__tasks > button {
