@@ -1,18 +1,22 @@
 <template>
 	<div class="previewPagination">
-		<pagination
-			:current-page="currentPage"
-			:last-page="10"
-			:isLoading="isLoading"
-			@set-page="setPage"
-		/>
-		<pagination
-			:current-page="currentPage"
-			:last-page="10"
-			:show-adjacent-pages="2"
-			:isLoading="isLoading"
-			@set-page="setPage"
-		/>
+		<div style="display: flex; justify-content: center">
+			<pagination
+				:current-page="currentPage"
+				:last-page="10"
+				:isLoading="isLoading"
+				@set-page="setPage"
+			/>
+		</div>
+		<div style="display: flex; justify-content: center; margin-top: 2em">
+			<pagination
+				:current-page="currentPage"
+				:last-page="10"
+				:show-adjacent-pages="2"
+				:isLoading="isLoading"
+				@set-page="setPage"
+			/>
+		</div>
 	</div>
 </template>
 

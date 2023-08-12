@@ -53,27 +53,29 @@
 </template>
 
 <script>
-import FieldArchivingPn from '@/components/Form/fields/FieldArchivingPn.vue';
-import FieldAutosuggestPreset from '@/components/Form/fields/FieldAutosuggestPreset.vue';
-import FieldBaseAutosuggest from '@/components/Form/fields/FieldBaseAutosuggest.vue';
-import FieldColor from '@/components/Form/fields/FieldColor.vue';
-import FieldControlledVocab from '@/components/Form/fields/FieldControlledVocab.vue';
-import FieldPubId from '@/components/Form/fields/FieldPubId.vue';
-import FieldHtml from '@/components/Form/fields/FieldHtml.vue';
-import FieldMetadataSetting from '@/components/Form/fields/FieldMetadataSetting.vue';
-import FieldOptions from '@/components/Form/fields/FieldOptions.vue';
-import FieldPreparedContent from '@/components/Form/fields/FieldPreparedContent.vue';
-import FieldRadioInput from '@/components/Form/fields/FieldRadioInput.vue';
-import FieldRichTextarea from '@/components/Form/fields/FieldRichTextarea.vue';
-import FieldRichText from '@/components/Form/fields/FieldRichText.vue';
-import FieldSelect from '@/components/Form/fields/FieldSelect.vue';
-import FieldSelectIssue from '@/components/Form/fields/FieldSelectIssue.vue';
-import FieldSelectSubmissions from '@/components/Form/fields/FieldSelectSubmissions.vue';
-import FieldShowEnsuringLink from '@/components/Form/fields/FieldShowEnsuringLink.vue';
-import FieldText from '@/components/Form/fields/FieldText.vue';
-import FieldTextarea from '@/components/Form/fields/FieldTextarea.vue';
-import FieldUpload from '@/components/Form/fields/FieldUpload.vue';
-import FieldUploadImage from '@/components/Form/fields/FieldUploadImage.vue';
+import FieldArchivingPn from './fields/FieldArchivingPn.vue';
+import FieldAutosuggestPreset from './fields/FieldAutosuggestPreset.vue';
+import FieldBaseAutosuggest from './fields/FieldBaseAutosuggest.vue';
+import FieldColor from './fields/FieldColor.vue';
+import FieldControlledVocab from './fields/FieldControlledVocab.vue';
+import FieldPubId from './fields/FieldPubId.vue';
+import FieldHtml from './fields/FieldHtml.vue';
+import FieldMetadataSetting from './fields/FieldMetadataSetting.vue';
+import FieldOptions from './fields/FieldOptions.vue';
+import FieldPreparedContent from './fields/FieldPreparedContent.vue';
+import FieldRadioInput from './fields/FieldRadioInput.vue';
+import FieldRichTextarea from './fields/FieldRichTextarea.vue';
+import FieldRichText from './fields/FieldRichText.vue';
+import FieldSelect from './fields/FieldSelect.vue';
+import FieldSelectIssue from './fields/FieldSelectIssue.vue';
+import FieldSelectIssues from './fields/FieldSelectIssues.vue';
+import FieldSelectSubmissions from './fields/FieldSelectSubmissions.vue';
+import FieldSelectUsers from './fields/FieldSelectUsers.vue';
+import FieldShowEnsuringLink from './fields/FieldShowEnsuringLink.vue';
+import FieldText from './fields/FieldText.vue';
+import FieldTextarea from './fields/FieldTextarea.vue';
+import FieldUpload from './fields/FieldUpload.vue';
+import FieldUploadImage from './fields/FieldUploadImage.vue';
 
 export default {
 	name: 'FormGroup',
@@ -93,7 +95,9 @@ export default {
 		FieldRichText,
 		FieldSelect,
 		FieldSelectIssue,
+		FieldSelectIssues,
 		FieldSelectSubmissions,
+		FieldSelectUsers,
 		FieldShowEnsuringLink,
 		FieldText,
 		FieldTextarea,

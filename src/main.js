@@ -3,6 +3,7 @@ import App from './App.vue';
 import router from './router';
 
 import GlobalMixins from '@/mixins/global.js';
+import VueAnnouncer from 'vue-announcer';
 import VModal from 'vue-js-modal';
 import VTooltip from 'v-tooltip';
 import VueScrollTo from 'vue-scrollto';
@@ -21,6 +22,7 @@ import Steps from '@/components/Steps/Steps.vue';
 import Tab from '@/components/Tabs/Tab.vue';
 import Tabs from '@/components/Tabs/Tabs.vue';
 
+Vue.use(VueAnnouncer);
 Vue.use(VModal, {
 	dynamic: true,
 	injectModalsContainer: true,

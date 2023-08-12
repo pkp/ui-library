@@ -60,6 +60,7 @@ import ComponentSearch from './docs/components/Search/ComponentSearch.vue';
 import ComponentSelectReviewerListPanel from './docs/components/ListPanel/ComponentSelectReviewerListPanel.vue';
 import ComponentSubmissionFilesListPanel from './docs/components/ListPanel/ComponentSubmissionFilesListPanel.vue';
 import ComponentSubmissionsListPanel from './docs/components/ListPanel/ComponentSubmissionsListPanel.vue';
+import ComponentSubmissionsPage from './docs/components/SubmissionsPage/ComponentSubmissionsPage.vue';
 import ComponentSubmissionWizardPage from './docs/components/SubmissionWizardPage/ComponentSubmissionWizardPage.vue';
 import ComponentSpinner from './docs/components/Spinner/ComponentSpinner.vue';
 import ComponentStatsPage from './docs/components/StatsPage/ComponentStatsPage.vue';
@@ -321,6 +322,11 @@ export default new Router({
 			path: '/component/ListPanel/components/SubmissionsListPanel/:example?',
 			name: 'SubmissionsListPanel',
 			component: ComponentSubmissionsListPanel,
+		},
+		{
+			path: '/component/SubmissionsPage/:example?',
+			name: 'SubmissionsPage',
+			component: ComponentSubmissionsPage,
 		},
 		{
 			path: '/component/SubmissionWizardPage/:example?',
