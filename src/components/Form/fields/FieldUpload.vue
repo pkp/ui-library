@@ -106,13 +106,13 @@
 
 <script>
 import FieldBase from './FieldBase.vue';
-import VueDropzone from 'vue2-dropzone';
+//import VueDropzone from 'vue2-dropzone';
 
 export default {
 	name: 'FieldUpload',
 	extends: FieldBase,
 	components: {
-		VueDropzone,
+		//VueDropzone,
 	},
 	props: {
 		options: Object,

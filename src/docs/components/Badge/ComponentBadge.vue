@@ -1,8 +1,8 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewBadge from './previews/PreviewBadge.vue';
-import PreviewBadgeTemplate from '!raw-loader!./previews/PreviewBadge.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewBadgeTemplate from './previews/PreviewBadge.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

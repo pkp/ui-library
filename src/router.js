@@ -1,5 +1,4 @@
-import Vue from 'vue';
-import Router from 'vue-router';
+import {createRouter, createWebHistory} from 'vue-router';
 import Page from './docs/Page.vue';
 import ComponentActionPanel from './docs/components/ActionPanel/ComponentActionPanel.vue';
 import ComponentAnnouncementsListPanel from './docs/components/ListPanel/ComponentAnnouncementsListPanel.vue';
@@ -70,10 +69,9 @@ import ComponentTabs from './docs/components/Tabs/ComponentTabs.vue';
 import ComponentTooltip from './docs/components/Tooltip/ComponentTooltip.vue';
 import ComponentWorkflowPage from './docs/components/WorkflowPage/ComponentWorkflowPage.vue';
 
-Vue.use(Router);
-
-export default new Router({
-	base: process.env.BASE_URL,
+export default createRouter({
+	//base: process.env.BASE_URL,
+	history: createWebHistory(),
 	scrollBehavior(to, from, savedPosition) {
 		return {x: 0, y: 0};
 	},

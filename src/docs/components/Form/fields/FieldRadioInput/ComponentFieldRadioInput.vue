@@ -1,8 +1,8 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewFieldRadioInput from './previews/PreviewFieldRadioInput.vue';
-import PreviewFieldRadioInputTemplate from '!raw-loader!./previews/PreviewFieldRadioInput.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewFieldRadioInputTemplate from './previews/PreviewFieldRadioInput.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

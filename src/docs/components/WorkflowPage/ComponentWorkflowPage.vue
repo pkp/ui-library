@@ -1,8 +1,8 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewWorkflowPage from './previews/PreviewWorkflowPage.vue';
-import PreviewWorkflowPageTemplate from '!raw-loader!./previews/PreviewWorkflowPage.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewWorkflowPageTemplate from './previews/PreviewWorkflowPage.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

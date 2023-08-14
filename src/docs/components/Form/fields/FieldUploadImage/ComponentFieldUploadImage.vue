@@ -1,8 +1,8 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewFieldUploadImage from './previews/PreviewFieldUploadImage.vue';
-import PreviewFieldUploadImageTemplate from '!raw-loader!./previews/PreviewFieldUploadImage.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewFieldUploadImageTemplate from './previews/PreviewFieldUploadImage.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

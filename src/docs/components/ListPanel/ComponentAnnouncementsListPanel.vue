@@ -1,8 +1,8 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewAnnouncementsListPanel from './previews/PreviewAnnouncementsListPanel.vue';
-import PreviewAnnouncementsListPanelTemplate from '!raw-loader!./previews/PreviewAnnouncementsListPanel.vue';
-import readme from '!raw-loader!./readme-announcements.md';
+import PreviewAnnouncementsListPanelTemplate from './previews/PreviewAnnouncementsListPanel.vue?raw';
+import readme from './readme-announcements.md?raw';
 
 export default {
 	extends: Component,

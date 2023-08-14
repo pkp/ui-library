@@ -1,8 +1,8 @@
 <script>
 import Component from '@/docs/Component.vue';
 import Preview from './previews/PreviewFileUploader.vue';
-import PreviewTemplate from '!raw-loader!./previews/PreviewFileUploader.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewTemplate from './previews/PreviewFileUploader.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

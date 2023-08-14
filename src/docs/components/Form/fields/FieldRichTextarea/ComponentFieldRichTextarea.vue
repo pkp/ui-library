@@ -1,16 +1,16 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewFieldRichTextarea from './previews/PreviewFieldRichTextarea.vue';
-import PreviewFieldRichTextareaTemplate from '!raw-loader!./previews/PreviewFieldRichTextarea.vue';
+import PreviewFieldRichTextareaTemplate from './previews/PreviewFieldRichTextarea.vue?raw';
 import PreviewFieldRichTextareaLarge from './previews/PreviewFieldRichTextareaLarge.vue';
-import PreviewFieldRichTextareaLargeTemplate from '!raw-loader!./previews/PreviewFieldRichTextareaLarge.vue';
+import PreviewFieldRichTextareaLargeTemplate from './previews/PreviewFieldRichTextareaLarge.vue?raw';
 import PreviewFieldRichTextareaMediumToolbar from './previews/PreviewFieldRichTextareaMediumToolbar.vue';
-import PreviewFieldRichTextareaMediumToolbarTemplate from '!raw-loader!./previews/PreviewFieldRichTextareaMediumToolbar.vue';
+import PreviewFieldRichTextareaMediumToolbarTemplate from './previews/PreviewFieldRichTextareaMediumToolbar.vue?raw';
 import PreviewFieldRichTextareaHeavyToolbar from './previews/PreviewFieldRichTextareaHeavyToolbar.vue';
-import PreviewFieldRichTextareaHeavyToolbarTemplate from '!raw-loader!./previews/PreviewFieldRichTextareaHeavyToolbar.vue';
+import PreviewFieldRichTextareaHeavyToolbarTemplate from './previews/PreviewFieldRichTextareaHeavyToolbar.vue?raw';
 import PreviewFieldRichTextareaWordLimit from './previews/PreviewFieldRichTextareaWordLimit.vue';
-import PreviewFieldRichTextareaWordLimitTemplate from '!raw-loader!./previews/PreviewFieldRichTextareaWordLimit.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewFieldRichTextareaWordLimitTemplate from './previews/PreviewFieldRichTextareaWordLimit.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

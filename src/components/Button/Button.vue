@@ -1,10 +1,11 @@
 <template>
+	<!-- disabled attribute for a tag is not valid html -->
 	<component
 		:is="element"
 		class="pkpButton"
 		:class="classes"
 		:href="element === 'a' ? href : false"
-		:disabled="isDisabled"
+		:disabled="element === 'a' ? undefined : isDisabled"
 		@click="click"
 		@focus="$emit('focus')"
 		@blur="$emit('blur')"

@@ -1,8 +1,8 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewSubmissionsListPanel from './previews/PreviewSubmissionsListPanel.vue';
-import PreviewSubmissionsListPanelTemplate from '!raw-loader!./previews/PreviewSubmissionsListPanel.vue';
-import readme from '!raw-loader!./readme-submissions.md';
+import PreviewSubmissionsListPanelTemplate from './previews/PreviewSubmissionsListPanel.vue?raw';
+import readme from './readme-submissions.md?raw';
 
 export default {
 	extends: Component,

@@ -1,9 +1,9 @@
 <script>
-import {Doughnut, mixins} from 'vue-chartjs';
+//import {Doughnut, mixins} from 'vue-chartjs';
 
 export default {
-	extends: Doughnut,
-	mixins: [mixins.reactiveProp],
+//	extends: Doughnut,
+//	mixins: [mixins.reactiveProp],
 	props: {
 		chartData: {
 			type: Object,

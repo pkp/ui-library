@@ -1,16 +1,16 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewFieldText from './previews/PreviewFieldText.vue';
-import PreviewFieldTextTemplate from '!raw-loader!./previews/PreviewFieldText.vue';
+import PreviewFieldTextTemplate from './previews/PreviewFieldText.vue?raw';
 import PreviewFieldTextSmall from './previews/PreviewFieldTextSmall.vue';
-import PreviewFieldTextSmallTemplate from '!raw-loader!./previews/PreviewFieldTextSmall.vue';
+import PreviewFieldTextSmallTemplate from './previews/PreviewFieldTextSmall.vue?raw';
 import PreviewFieldTextLarge from './previews/PreviewFieldTextLarge.vue';
-import PreviewFieldTextLargeTemplate from '!raw-loader!./previews/PreviewFieldTextLarge.vue';
+import PreviewFieldTextLargeTemplate from './previews/PreviewFieldTextLarge.vue?raw';
 import PreviewFieldTextPrefix from './previews/PreviewFieldTextPrefix.vue';
-import PreviewFieldTextPrefixTemplate from '!raw-loader!./previews/PreviewFieldTextPrefix.vue';
+import PreviewFieldTextPrefixTemplate from './previews/PreviewFieldTextPrefix.vue?raw';
 import PreviewFieldTextOptIntoEdit from './previews/PreviewFieldTextOptIntoEdit.vue';
-import PreviewFieldTextOptIntoEditTemplate from '!raw-loader!./previews/PreviewFieldTextOptIntoEdit.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewFieldTextOptIntoEditTemplate from './previews/PreviewFieldTextOptIntoEdit.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

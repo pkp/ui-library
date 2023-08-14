@@ -1,8 +1,8 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewFieldSelect from './previews/PreviewFieldSelect.vue';
-import PreviewFieldSelectTemplate from '!raw-loader!./previews/PreviewFieldSelect.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewFieldSelectTemplate from './previews/PreviewFieldSelect.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

@@ -1,8 +1,8 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewSteps from './previews/PreviewSteps.vue';
-import PreviewStepsTemplate from '!raw-loader!./previews/PreviewSteps.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewStepsTemplate from './previews/PreviewSteps.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

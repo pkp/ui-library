@@ -1,18 +1,18 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewTabs from './previews/PreviewTabs.vue';
-import PreviewTabsTemplate from '!raw-loader!./previews/PreviewTabs.vue';
+import PreviewTabsTemplate from './previews/PreviewTabs.vue?raw';
 import PreviewNested from './previews/PreviewNested.vue';
-import PreviewNestedTemplate from '!raw-loader!./previews/PreviewNested.vue';
+import PreviewNestedTemplate from './previews/PreviewNested.vue?raw';
 import PreviewSide from './previews/PreviewSide.vue';
-import PreviewSideTemplate from '!raw-loader!./previews/PreviewSide.vue';
+import PreviewSideTemplate from './previews/PreviewSide.vue?raw';
 import PreviewIcon from './previews/PreviewIcon.vue';
-import PreviewIconTemplate from '!raw-loader!./previews/PreviewIcon.vue';
+import PreviewIconTemplate from './previews/PreviewIcon.vue?raw';
 import PreviewBadge from './previews/PreviewBadge.vue';
-import PreviewBadgeTemplate from '!raw-loader!./previews/PreviewBadge.vue';
+import PreviewBadgeTemplate from './previews/PreviewBadge.vue?raw';
 import PreviewDefault from './previews/PreviewDefault.vue';
-import PreviewDefaultTemplate from '!raw-loader!./previews/PreviewDefault.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewDefaultTemplate from './previews/PreviewDefault.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

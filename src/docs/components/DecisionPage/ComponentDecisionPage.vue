@@ -1,8 +1,8 @@
 <script>
 import Component from '@/docs/Component.vue';
 import Preview from './previews/PreviewDecisionPage.vue';
-import Template from '!raw-loader!./previews/PreviewDecisionPage.vue';
-import readme from '!raw-loader!./readme.md';
+import Template from './previews/PreviewDecisionPage.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

@@ -1,10 +1,10 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewChart from './previews/PreviewChart.vue';
-import PreviewChartTemplate from '!raw-loader!./previews/PreviewChart.vue';
+import PreviewChartTemplate from './previews/PreviewChart.vue?raw';
 import PreviewDoughnut from './previews/PreviewDoughnut.vue';
-import PreviewDoughnutTemplate from '!raw-loader!./previews/PreviewDoughnut.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewDoughnutTemplate from './previews/PreviewDoughnut.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

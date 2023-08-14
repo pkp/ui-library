@@ -1,22 +1,22 @@
 <template>
 	<list class="viewOrderer--draggable">
-		<draggable v-model="items">
+		<VueDraggable ref="el" v-model="items">
 			<list-item v-for="item in items" :key="item">
 				{{ item }}
 				<orderer :itemId="item" :itemTitle="item" @down="down" @up="up" />
 			</list-item>
-		</draggable>
+		</VueDraggable>
 	</list>
 </template>
 
 <script>
 import PreviewOrderer from './PreviewOrderer.vue';
-import draggable from 'vuedraggable';
+import {VueDraggable} from 'vue-draggable-plus';
 
 export default {
 	extends: PreviewOrderer,
 	components: {
-		draggable,
+		VueDraggable,
 	},
 	data() {
 		return {

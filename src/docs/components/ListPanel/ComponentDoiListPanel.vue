@@ -1,7 +1,7 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewDoiListPanel from './previews/PreviewDoiListPanel.vue';
-import PreviewDoiListPanelTemplate from '!raw-loader!./previews/PreviewDoiListPanel.vue';
+import PreviewDoiListPanelTemplate from './previews/PreviewDoiListPanel.vue?raw';
 
 export default {
 	extends: Component,

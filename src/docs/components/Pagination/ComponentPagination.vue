@@ -1,8 +1,8 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewPagination from './previews/PreviewPagination.vue';
-import PreviewPaginationTemplate from '!raw-loader!./previews/PreviewPagination.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewPaginationTemplate from './previews/PreviewPagination.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

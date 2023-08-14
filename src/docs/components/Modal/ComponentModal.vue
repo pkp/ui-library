@@ -1,16 +1,16 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewModal from './previews/PreviewModal.vue';
-import PreviewModalTemplate from '!raw-loader!./previews/PreviewModal.vue';
+import PreviewModalTemplate from './previews/PreviewModal.vue?raw';
 import PreviewModalForm from './previews/PreviewModalForm.vue';
-import PreviewModalFormTemplate from '!raw-loader!./previews/PreviewModalForm.vue';
+import PreviewModalFormTemplate from './previews/PreviewModalForm.vue?raw';
 import PreviewModalTabs from './previews/PreviewModalTabs.vue';
-import PreviewModalTabsTemplate from '!raw-loader!./previews/PreviewModalTabs.vue';
+import PreviewModalTabsTemplate from './previews/PreviewModalTabs.vue?raw';
 import PreviewModalActions from './previews/PreviewModalActions.vue';
-import PreviewModalActionsTemplate from '!raw-loader!./previews/PreviewModalActions.vue';
+import PreviewModalActionsTemplate from './previews/PreviewModalActions.vue?raw';
 import PreviewModalSide from './previews/PreviewModalSide.vue';
-import PreviewModalSideTemplate from '!raw-loader!./previews/PreviewModalSide.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewModalSideTemplate from './previews/PreviewModalSide.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

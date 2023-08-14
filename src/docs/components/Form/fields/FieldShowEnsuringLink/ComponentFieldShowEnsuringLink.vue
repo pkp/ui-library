@@ -1,8 +1,8 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewFieldShowEnsuringLink from './previews/PreviewFieldShowEnsuringLink.vue';
-import PreviewFieldShowEnsuringLinkTemplate from '!raw-loader!./previews/PreviewFieldShowEnsuringLink.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewFieldShowEnsuringLinkTemplate from './previews/PreviewFieldShowEnsuringLink.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

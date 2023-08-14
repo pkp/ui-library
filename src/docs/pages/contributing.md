@@ -78,8 +78,8 @@ Create a new component that extends `Component`. Load the readme and demo compon
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewNotification from './PreviewNotification.vue';
-import PreviewNotificationTemplate from '!raw-loader!./PreviewNotification.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewNotificationTemplate from './PreviewNotification.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

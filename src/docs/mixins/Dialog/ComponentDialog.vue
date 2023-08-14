@@ -1,8 +1,8 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewDialog from './previews/PreviewDialog.vue';
-import PreviewDialogTemplate from '!raw-loader!./previews/PreviewDialog.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewDialogTemplate from './previews/PreviewDialog.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

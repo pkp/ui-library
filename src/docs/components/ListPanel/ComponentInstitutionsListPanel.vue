@@ -1,8 +1,8 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewInstitutionsListPanel from './previews/PreviewInstitutionsListPanel.vue';
-import PreviewInstitutionsListPanelTemplate from '!raw-loader!./previews/PreviewInstitutionsListPanel.vue';
-import readme from '!raw-loader!./readme-institutions.md';
+import PreviewInstitutionsListPanelTemplate from './previews/PreviewInstitutionsListPanel.vue?raw';
+import readme from './readme-institutions.md?raw';
 
 export default {
 	extends: Component,

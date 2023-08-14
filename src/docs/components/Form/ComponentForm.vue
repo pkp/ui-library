@@ -1,18 +1,18 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewForm from './previews/PreviewForm.vue';
-import PreviewFormTemplate from '!raw-loader!./previews/PreviewForm.vue';
+import PreviewFormTemplate from './previews/PreviewForm.vue?raw';
 import PreviewMultilingual from './previews/PreviewMultilingual.vue';
-import PreviewMultilingualTemplate from '!raw-loader!./previews/PreviewMultilingual.vue';
+import PreviewMultilingualTemplate from './previews/PreviewMultilingual.vue?raw';
 import PreviewGroups from './previews/PreviewGroups.vue';
-import PreviewGroupsTemplate from '!raw-loader!./previews/PreviewGroups.vue';
+import PreviewGroupsTemplate from './previews/PreviewGroups.vue?raw';
 import PreviewPagination from './previews/PreviewPagination.vue';
-import PreviewPaginationTemplate from '!raw-loader!./previews/PreviewPagination.vue';
+import PreviewPaginationTemplate from './previews/PreviewPagination.vue?raw';
 import PreviewConditionalDisplay from './previews/PreviewConditionalDisplay.vue';
-import PreviewConditionalDisplayTemplate from '!raw-loader!./previews/PreviewConditionalDisplay.vue';
+import PreviewConditionalDisplayTemplate from './previews/PreviewConditionalDisplay.vue?raw';
 import PreviewErrors from './previews/PreviewErrors.vue';
-import PreviewErrorsTemplate from '!raw-loader!./previews/PreviewErrors.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewErrorsTemplate from './previews/PreviewErrors.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

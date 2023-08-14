@@ -1,8 +1,8 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewNotify from './previews/PreviewNotify.vue';
-import PreviewNotifyTemplate from '!raw-loader!./previews/PreviewNotify.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewNotifyTemplate from './previews/PreviewNotify.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

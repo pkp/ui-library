@@ -1,8 +1,8 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewManageEmailsPage from './previews/PreviewManageEmailsPage.vue';
-import PreviewManageEmailsPageTemplate from '!raw-loader!./previews/PreviewManageEmailsPage.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewManageEmailsPageTemplate from './previews/PreviewManageEmailsPage.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

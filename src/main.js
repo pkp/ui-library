@@ -1,12 +1,14 @@
-import Vue from 'vue';
+import {createApp, h} from 'vue';
+import './styles/style.css';
 import App from './App.vue';
+
 import router from './router';
 
 import GlobalMixins from '@/mixins/global.js';
-import VueAnnouncer from 'vue-announcer';
-import VModal from 'vue-js-modal';
-import VTooltip from 'v-tooltip';
-import VueScrollTo from 'vue-scrollto';
+//import VueAnnouncer from 'vue-announcer';
+//import VModal from 'vue-js-modal';
+//import VTooltip from 'v-tooltip';
+//import VueScrollTo from 'vue-scrollto';
 
 import Badge from '@/components/Badge/Badge.vue';
 import Dropdown from '@/components/Dropdown/Dropdown.vue';
@@ -22,45 +24,26 @@ import Steps from '@/components/Steps/Steps.vue';
 import Tab from '@/components/Tabs/Tab.vue';
 import Tabs from '@/components/Tabs/Tabs.vue';
 
-Vue.use(VueAnnouncer);
-Vue.use(VModal, {
+//Vue.use(VueAnnouncer);
+/*Vue.use(VModal, {
 	dynamic: true,
 	injectModalsContainer: true,
-});
-Vue.use(VTooltip, {defaultTrigger: 'click'});
-Vue.use(VueScrollTo);
+});*/
+//Vue.use(VTooltip, {defaultTrigger: 'click'});
+//Vue.use(VueScrollTo);
 
 // Global event bus
-window.pkp.eventBus = new Vue();
-
-Vue.config.productionTip = false;
-
-Vue.mixin(GlobalMixins);
-
-Vue.component('Badge', Badge);
-Vue.component('Dropdown', Dropdown);
-Vue.component('Icon', Icon);
-Vue.component('Notification', Notification);
-Vue.component('Panel', Panel);
-Vue.component('PanelSection', PanelSection);
-Vue.component('PkpButton', PkpButton);
-Vue.component('PkpHeader', PkpHeader);
-Vue.component('Spinner', Spinner);
-Vue.component('Step', Step);
-Vue.component('Steps', Steps);
-Vue.component('Tab', Tab);
-Vue.component('Tabs', Tabs);
-
-new Vue({
-	router,
-
-	/**
-	 * Fake data that is passed to the root component
-	 *
-	 * This data is usually added to every PageComponent by the
-	 * PKPTemplateManager class in OJS, OMP or OPS.
-	 */
+// TODO VUE3
+//window.pkp.eventBus = new Vue();
+const vueApp = createApp({
 	data() {
+		/**
+		 * Fake data that is passed to the root component
+		 *
+		 * This data is usually added to every PageComponent by the
+		 * PKPTemplateManager class in OJS, OMP or OPS.
+		 */
+
 		return {
 			/**
 			 * File genres
@@ -117,5 +100,27 @@ new Vue({
 			},
 		};
 	},
-	render: (h) => h(App),
-}).$mount('#app');
+	render: () => h(App),
+});
+
+vueApp.config.productionTip = false;
+
+vueApp.mixin(GlobalMixins);
+
+vueApp.component('Badge', Badge);
+vueApp.component('Dropdown', Dropdown);
+vueApp.component('Icon', Icon);
+vueApp.component('Notification', Notification);
+vueApp.component('Panel', Panel);
+vueApp.component('PanelSection', PanelSection);
+vueApp.component('PkpButton', PkpButton);
+vueApp.component('PkpHeader', PkpHeader);
+vueApp.component('Spinner', Spinner);
+vueApp.component('Step', Step);
+vueApp.component('Steps', Steps);
+vueApp.component('Tab', Tab);
+vueApp.component('Tabs', Tabs);
+
+vueApp.use(router);
+
+vueApp.mount('#app');

@@ -1,8 +1,8 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewFieldColor from './previews/PreviewFieldColor.vue';
-import PreviewFieldColorTemplate from '!raw-loader!./previews/PreviewFieldColor.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewFieldColorTemplate from './previews/PreviewFieldColor.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

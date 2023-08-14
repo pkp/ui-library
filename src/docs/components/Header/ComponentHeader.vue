@@ -1,8 +1,8 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewHeader from './previews/PreviewHeader.vue';
-import PreviewHeaderTemplate from '!raw-loader!./previews/PreviewHeader.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewHeaderTemplate from './previews/PreviewHeader.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

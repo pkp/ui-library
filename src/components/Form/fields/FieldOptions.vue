@@ -39,7 +39,8 @@
 			:id="describedByDescriptionId"
 		/>
 		<div class="pkpFormField__control">
-			<draggable
+			<VueDraggable
+				ref="el"
 				v-model="localizedOptions"
 				@end="updateValueOrder"
 				:disabled="!isOrderable"
@@ -89,7 +90,7 @@
 						:itemTitle="option.label"
 					/>
 				</label>
-			</draggable>
+			</VueDraggable>
 			<multilingual-progress
 				v-if="isMultilingual && locales.length > 1"
 				:id="multilingualProgressId"
@@ -107,14 +108,14 @@
 
 <script>
 import FieldBase from './FieldBase.vue';
-import draggable from 'vuedraggable';
+import {VueDraggable} from 'vue-draggable-plus';
 import Orderer from '@/components/Orderer/Orderer.vue';
 
 export default {
 	name: 'FieldOptions',
 	extends: FieldBase,
 	components: {
-		draggable,
+		VueDraggable,
 		Orderer,
 	},
 	props: {

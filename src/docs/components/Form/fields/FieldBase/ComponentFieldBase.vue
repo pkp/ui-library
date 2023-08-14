@@ -1,14 +1,14 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewFieldBase from './previews/PreviewFieldBase.vue';
-import PreviewFieldBaseTemplate from '!raw-loader!./previews/PreviewFieldBase.vue';
+import PreviewFieldBaseTemplate from './previews/PreviewFieldBase.vue?raw';
 import PreviewFieldBaseDescription from './previews/PreviewFieldBaseDescription.vue';
-import PreviewFieldBaseDescriptionTemplate from '!raw-loader!./previews/PreviewFieldBaseDescription.vue';
+import PreviewFieldBaseDescriptionTemplate from './previews/PreviewFieldBaseDescription.vue?raw';
 import PreviewFieldBaseTooltip from './previews/PreviewFieldBaseTooltip.vue';
-import PreviewFieldBaseTooltipTemplate from '!raw-loader!./previews/PreviewFieldBaseTooltip.vue';
+import PreviewFieldBaseTooltipTemplate from './previews/PreviewFieldBaseTooltip.vue?raw';
 import PreviewFieldBaseError from './previews/PreviewFieldBaseError.vue';
-import PreviewFieldBaseErrorTemplate from '!raw-loader!./previews/PreviewFieldBaseError.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewFieldBaseErrorTemplate from './previews/PreviewFieldBaseError.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

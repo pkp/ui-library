@@ -1,8 +1,8 @@
 <script>
 import Component from '@/docs/Component.vue';
 import Preview from './previews/PreviewButtonRow.vue';
-import PreviewTemplate from '!raw-loader!./previews/PreviewButtonRow.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewTemplate from './previews/PreviewButtonRow.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

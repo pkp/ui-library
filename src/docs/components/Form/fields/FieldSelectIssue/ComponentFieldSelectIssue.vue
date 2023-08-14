@@ -1,12 +1,12 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewFieldSelectIssue from './previews/PreviewFieldSelectIssue.vue';
-import PreviewFieldSelectIssueTemplate from '!raw-loader!./previews/PreviewFieldSelectIssue.vue';
+import PreviewFieldSelectIssueTemplate from './previews/PreviewFieldSelectIssue.vue?raw';
 import PreviewFieldSelectIssuePublished from './previews/PreviewFieldSelectIssuePublished.vue';
-import PreviewFieldSelectIssuePublishedTemplate from '!raw-loader!./previews/PreviewFieldSelectIssuePublished.vue';
+import PreviewFieldSelectIssuePublishedTemplate from './previews/PreviewFieldSelectIssuePublished.vue?raw';
 import PreviewFieldSelectIssueScheduled from './previews/PreviewFieldSelectIssueScheduled.vue';
-import PreviewFieldSelectIssueScheduledTemplate from '!raw-loader!./previews/PreviewFieldSelectIssueScheduled.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewFieldSelectIssueScheduledTemplate from './previews/PreviewFieldSelectIssueScheduled.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

@@ -1,10 +1,10 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewOrderer from './previews/PreviewOrderer.vue';
-import PreviewOrdererTemplate from '!raw-loader!./previews/PreviewOrderer.vue';
+import PreviewOrdererTemplate from './previews/PreviewOrderer.vue?raw';
 import PreviewOrdererDraggable from './previews/PreviewOrdererDraggable.vue';
-import PreviewOrdererDraggableTemplate from '!raw-loader!./previews/PreviewOrdererDraggable.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewOrdererDraggableTemplate from './previews/PreviewOrdererDraggable.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

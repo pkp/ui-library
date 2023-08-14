@@ -1,8 +1,8 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewFieldMetadataSetting from './previews/PreviewFieldMetadataSetting.vue';
-import PreviewFieldMetadataSettingTemplate from '!raw-loader!./previews/PreviewFieldMetadataSetting.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewFieldMetadataSettingTemplate from './previews/PreviewFieldMetadataSetting.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

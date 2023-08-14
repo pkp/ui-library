@@ -1,8 +1,8 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewMultilingualProgress from './previews/PreviewMultilingualProgress.vue';
-import PreviewMultilingualProgressTemplate from '!raw-loader!./previews/PreviewMultilingualProgress.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewMultilingualProgressTemplate from './previews/PreviewMultilingualProgress.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,

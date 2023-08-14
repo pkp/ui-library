@@ -1,8 +1,8 @@
 <script>
 import Component from '@/docs/Component.vue';
 import PreviewFieldArchivingPn from './previews/PreviewFieldArchivingPn.vue';
-import PreviewFieldArchivingPnTemplate from '!raw-loader!./previews/PreviewFieldArchivingPn.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewFieldArchivingPnTemplate from './previews/PreviewFieldArchivingPn.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,
