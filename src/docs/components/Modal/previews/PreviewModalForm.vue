@@ -1,13 +1,13 @@
 <template>
 	<div class="previewModal">
-		<pkp-button ref="modalFormButton" @click="$modal.show('form')">
+		<pkp-button ref="modalFormButton" @click="isModalOpened = true">
 			Modal with Form
 		</pkp-button>
 		<modal
 			closeLabel="Close"
-			name="form"
 			title="Add Announcement"
-			@closed="setFocusToRef('modalFormButton')"
+			:open="isModalOpened"
+			@close="isModalOpened = false"
 		>
 			<pkp-form v-bind="form" @set="setForm" @success="formSuccess" />
 		</modal>
@@ -32,6 +32,7 @@ export default {
 				action: 'https://httbin.org',
 				method: 'GET',
 			},
+			isModalOpened: false,
 		};
 	},
 	methods: {

@@ -1,13 +1,13 @@
 <template>
 	<div class="previewModal">
-		<pkp-button ref="modalTabsButton" @click="$modal.show('tabs')">
+		<pkp-button ref="modalTabsButton" @click="isModalOpened = true">
 			Modal with Tabs
 		</pkp-button>
 		<modal
 			closeLabel="Close"
-			name="tabs"
 			title="Nested Tabs Example"
-			@closed="setFocusToRef('modalTabsButton')"
+			:open="isModalOpened"
+			@close="isModalOpened = false"
 		>
 			<p>
 				Avoid complex interactions in modals whenever possible. Deeply nested
@@ -33,7 +33,7 @@
 				<tab id="three" label="Third Tab">This is the third tab.</tab>
 			</tabs>
 			<template slot="footer">
-				<pkp-button @click="$modal.hide('tabs')">Close</pkp-button>
+				<pkp-button @click="isModalOpened = false">Close</pkp-button>
 			</template>
 		</modal>
 	</div>
@@ -45,6 +45,11 @@ import Modal from '@/components/Modal/Modal.vue';
 export default {
 	components: {
 		Modal,
+	},
+	data: function () {
+		return {
+			isModalOpened: false,
+		};
 	},
 };
 </script>

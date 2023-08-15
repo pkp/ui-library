@@ -1,5 +1,7 @@
 import {createApp, h} from 'vue';
-import './styles/style.css';
+import emitter from 'tiny-emitter/instance';
+
+//import './styles/style.css';
 import App from './App.vue';
 
 import router from './router';
@@ -32,9 +34,13 @@ import Tabs from '@/components/Tabs/Tabs.vue';
 //Vue.use(VTooltip, {defaultTrigger: 'click'});
 //Vue.use(VueScrollTo);
 
-// Global event bus
-// TODO VUE3
-//window.pkp.eventBus = new Vue();
+export default window.pkp.eventBus = {
+	$on: (...args) => emitter.on(...args),
+	$once: (...args) => emitter.once(...args),
+	$off: (...args) => emitter.off(...args),
+	$emit: (...args) => emitter.emit(...args),
+};
+
 const vueApp = createApp({
 	data() {
 		/**

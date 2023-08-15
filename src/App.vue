@@ -1,5 +1,5 @@
 <template>
-	<vue-announcer />
+	<!--<vue-announcer />-->
 	<nav class="nav" aria-label="Primary Navigation">
 		<nav-group>
 			<template slot="heading">Guide</template>
@@ -299,6 +299,10 @@ export default {
 </script>
 
 <style lang="less">
+//@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import './styles/_import';
 @import './styles/_global';
 

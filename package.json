@@ -22,6 +22,7 @@
     "marked": "^4.2.4",
     "moment": "^2.29.4",
     "raw-loader": "^4.0.0",
+    "tiny-emitter": "^2.1.0",
     "uuid": "^9.0.0",
     "vue": "^3.3.4",
     "vue-chartjs": "^5.2.0",
@@ -101,10 +102,6 @@
   },
   "lint-staged": {
     "*.js": [
-      "vue-cli-service lint",
-      "git add"
-    ],
-    "*.vue": [
       "vue-cli-service lint",
       "git add"
     ]

@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewModal from './previews/PreviewModal.vue';
 import PreviewModalTemplate from './previews/PreviewModal.vue?raw';
@@ -20,27 +21,27 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewModal,
+					component: markRaw(PreviewModal),
 					name: 'Base',
 					template: this.extractTemplate(PreviewModalTemplate),
 				},
 				{
-					component: PreviewModalForm,
+					component: markRaw(PreviewModalForm),
 					name: 'With Form',
 					template: this.extractTemplate(PreviewModalFormTemplate),
 				},
 				{
-					component: PreviewModalTabs,
+					component: markRaw(PreviewModalTabs),
 					name: 'With Tabs',
 					template: this.extractTemplate(PreviewModalTabsTemplate),
 				},
 				{
-					component: PreviewModalActions,
+					component: markRaw(PreviewModalActions),
 					name: 'With Custom Actions',
 					template: this.extractTemplate(PreviewModalActionsTemplate),
 				},
 				{
-					component: PreviewModalSide,
+					component: markRaw(PreviewModalSide),
 					name: 'Side Panel',
 					template: this.extractTemplate(PreviewModalSideTemplate),
 				},

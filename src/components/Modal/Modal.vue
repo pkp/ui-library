@@ -1,67 +1,107 @@
 <template>
-	<div class="modal" :class="'modal--' + type">
-		<modal
-			v-bind="MODAL_PROPS"
-			:name="name"
-			@opened="setFocusToRef('keyboardTrap')"
-			@closed="(data) => this.$emit('closed', data)"
+	<TransitionRoot as="template" :show="open">
+		<Dialog
+			:open="open"
+			@close="$emit('close')"
+			class="modal"
+			:class="'modal--' + type"
 		>
-			<div class="modal__panel">
-				<span tabindex="0" @focus="setFocusIn($refs.keyboardTrap, true)" />
-				<div tabindex="0" ref="keyboardTrap" class="modal__keyboardTrap">
-					<div class="modal__header">
-						<div class="modal__header__slot">
-							<slot name="header">
-								<h2 v-if="title" class="modal__title">
-									{{ title }}
-								</h2>
-							</slot>
-						</div>
-						<button
-							class="modal__closeButton"
-							@click.stop.prevent="$modal.hide(name)"
+			<TransitionChild
+				as="template"
+				enter="ease-out duration-300"
+				enter-from="opacity-0"
+				enter-to="opacity-100"
+				leave="ease-in duration-200"
+				leave-from="opacity-100"
+				leave-to="opacity-0"
+			>
+				<div
+					class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+				/>
+			</TransitionChild>
+			<div class="fixed inset-0 z-10 overflow-y-auto">
+				<div
+					class="flex min-h-full items-end justify-center p-4 text-center sm:items-start sm:p-0"
+				>
+					<TransitionChild
+						as="template"
+						enter="ease-out duration-300"
+						enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+						enter-to="opacity-100 translate-y-0 sm:scale-100"
+						leave="ease-in duration-200"
+						leave-from="opacity-100 translate-y-0 sm:scale-100"
+						leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+					>
+						<DialogPanel
+							class="modal__panel relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all w-10/12 max-w-3xl sm:my-8 mx-3"
 						>
-							<icon
-								icon="times"
-								:aria-hidden="true"
-								class="modal__closeButton__x"
-							/>
-							<icon
-								icon="chevron-left"
-								:aria-hidden="true"
-								class="modal__closeButton__left"
-							/>
-							<icon
-								icon="chevron-right"
-								:aria-hidden="true"
-								class="modal__closeButton__right"
-							/>
-							<span class="-screenReader">{{ closeLabel }}</span>
-						</button>
-					</div>
-					<div class="modal__content">
-						<slot />
-					</div>
-					<div v-if="!!$slots.footer" class="modal__footer">
-						<slot name="footer" />
-					</div>
+							<div class="modal__header">
+								<div class="modal__header__slot">
+									<slot name="header">
+										<DialogTitle v-if="title" class="modal__title">
+											{{ title }}
+										</DialogTitle>
+									</slot>
+								</div>
+								<button class="modal__closeButton" @click="$emit('close')">
+									<icon
+										icon="times"
+										:aria-hidden="true"
+										class="modal__closeButton__x"
+									/>
+									<icon
+										icon="chevron-left"
+										:aria-hidden="true"
+										class="modal__closeButton__left"
+									/>
+									<icon
+										icon="chevron-right"
+										:aria-hidden="true"
+										class="modal__closeButton__right"
+									/>
+									<span class="-screenReader">{{ closeLabel }}</span>
+								</button>
+							</div>
+							<div class="modal__content">
+								<slot />
+							</div>
+							<div v-if="!!$slots.footer" class="modal__footer">
+								<slot name="footer" />
+							</div>
+						</DialogPanel>
+					</TransitionChild>
 				</div>
-				<span tabindex="0" @focus="setFocusIn($refs.keyboardTrap)" />
 			</div>
-		</modal>
-	</div>
+		</Dialog>
+	</TransitionRoot>
 </template>
 
 <script>
+import {
+	Dialog,
+	DialogPanel,
+	DialogTitle,
+	TransitionRoot,
+	TransitionChild,
+} from '@headlessui/vue';
+
 export default {
+	components: {
+		Dialog,
+		DialogPanel,
+		DialogTitle,
+		TransitionRoot,
+		TransitionChild,
+	},
 	props: {
+		open: {
+			type: Boolean,
+			required: true,
+		},
+
 		closeLabel: {
 			type: String,
 			required: true,
-		},
-		name: {
-			type: String,
-			reqired: true,
 		},
 		title: {
 			type: String,
@@ -81,42 +121,19 @@ export default {
 	},
 	data() {
 		return {
+			isOpen: true,
 			MODAL_PROPS: {
 				height: 'auto',
 				scrollable: true,
 			},
 		};
 	},
+	methods: {},
 };
 </script>
 
 <style lang="less">
 @import '../../styles/_import';
-
-// vue-js-modal
-.v--modal-overlay.v--modal-overlay {
-	background: rgba(0, 0, 0, 0.5);
-}
-
-.v--modal-background-click {
-	padding-top: 1rem;
-	padding-bottom: 1rem;
-}
-
-// Don't cut off dropdowns or autosuggest
-.v--modal-overlay .v--modal-box.v--modal-box {
-	overflow: visible;
-}
-
-// Fix text alignment overrides in right-to-left languages
-.v--modal.v--modal {
-	text-align: unset;
-}
-
-.modal__keyboardTrap:focus-visible {
-	outline: 2px solid @primary;
-	border-radius: @radius;
-}
 
 /**
  * All styles for the side modals
@@ -126,25 +143,6 @@ export default {
  * popup modals.
  */
 .modal--side {
-	.v--modal-background-click {
-		padding: 0 !important;
-	}
-
-	.v--modal.v--modal {
-		position: fixed;
-		top: unset !important;
-		left: 0 !important;
-		bottom: 0 !important;
-		right: 0 !important;
-		width: 100vw !important;
-		max-height: 100vh;
-		overflow-y: scroll;
-		margin: 0 !important;
-		border-radius: 0;
-		background: @bg;
-		box-shadow: 0 0 20px rgba(0, 0, 0, 0.5) !important;
-	}
-
 	.modal__header {
 		display: grid;
 		grid-template-columns: 3rem auto;
@@ -259,32 +257,6 @@ export default {
  * to remain to support existing uses of the pop-up modal.
  */
 .modal--popup {
-	// Use our own positioning strategy to work around
-	// flickering that occurs when resizing the browser
-	.v--modal.v--modal {
-		top: 0 !important;
-		left: 0 !important;
-		bottom: auto !important;
-		right: auto !important;
-		width: 90% !important;
-		max-width: 50rem;
-		margin-left: auto;
-		margin-right: auto;
-	}
-
-	.v--modal-dialog.v--modal-dialog {
-		top: 50vh !important;
-		transform: translateY(-75%);
-		max-width: 30rem;
-	}
-
-	// Don't center a dialog when it is scrollable
-	.v--modal-overlay.scrollable .v--modal-dialog.v--modal-dialog {
-		top: 0 !important;
-		transform: none;
-		max-width: 50rem;
-	}
-
 	.modal__panel {
 		font-size: @font-sml;
 		line-height: @line-sml;

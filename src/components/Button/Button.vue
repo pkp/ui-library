@@ -52,7 +52,6 @@ export default {
 			if (this.element === 'button') {
 				e.preventDefault();
 			}
-			this.$emit('click');
 		},
 	},
 };

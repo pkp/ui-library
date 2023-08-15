@@ -1,13 +1,13 @@
 <template>
 	<div class="previewModal">
-		<pkp-button ref="simpleModalButton" @click="$modal.show('simple')">
+		<pkp-button ref="simpleModalButton" @click="isModalOpened = true">
 			Open Modal
 		</pkp-button>
 		<modal
+			:open="isModalOpened"
 			closeLabel="Close"
-			name="simple"
 			title="Simple Modal"
-			@closed="setFocusToRef('simpleModalButton')"
+			@close="isModalOpened = false"
 		>
 			<p>This is an example of a simple modal.</p>
 		</modal>
@@ -20,6 +20,11 @@ import Modal from '@/components/Modal/Modal.vue';
 export default {
 	components: {
 		Modal,
+	},
+	data: function () {
+		return {
+			isModalOpened: false,
+		};
 	},
 };
 </script>
