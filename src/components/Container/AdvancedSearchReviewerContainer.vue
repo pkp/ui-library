@@ -1,12 +1,12 @@
 <template>
 	<div>
-		<div class="section">
+		<div class="section pkpAdvancedSearchReviewerContainer">
 			<h3>{{ labels.submissionAuthorList }}</h3>
 			<div class="list_outline">
-				<ol :class="authorContainerclasses">
+				<ol>
 					<li
 						class="author_row"
-						v-for="(affiliations, author) in authors"
+						v-for="(affiliations, author) in displayedItems"
 						:key="author"
 					>
 						<strong>{{ author }}</strong>
@@ -20,9 +20,7 @@
 						v-if="!showAllAuthors"
 						@click="toggleShowAllAuthors"
 					>
-						{{
-							`${labels.showAll} ${authorCount} ${labels.authorsLabel}`
-						}}
+						{{ `${labels.showAll} ${authorCount} ${labels.authorsLabel}` }}
 					</span>
 					<span
 						class="show_authors_action"
@@ -57,8 +55,19 @@ export default {
 		},
 	},
 	computed: {
-		authorContainerclasses() {
-			return this.showAllAuthors ? 'list_box' : 'list_box expandable';
+		displayedItems() {
+			if (this.showAllAuthors) {
+				return this.authors;
+			}
+
+			let firstAuthors = Object.keys(this.authors)
+				.slice(0, 4)
+				.reduce((acc, key) => {
+					acc[key] = this.authors[key];
+					return acc;
+				}, {});
+
+			return firstAuthors;
 		},
 		authorCount() {
 			return Object.keys(this.authors).length;
@@ -69,28 +78,22 @@ export default {
 <style lang="less">
 @import '../../styles/_import';
 
-.action_container {
-	padding-left: 1.2rem;
-	padding-bottom: 0.9rem;
-}
-
-.list_box {
-	line-height: 1.8em;
-	&.expandable {
-		max-height: 6rem;
-		overflow-y: scroll;
+.pkpAdvancedSearchReviewerContainer {
+	.action_container {
+		padding-left: 1.2rem;
+		padding-bottom: 0.9rem;
 	}
-}
 
-.list_outline {
-	border: 1px solid @bg-border-color-light;
-	border-radius: 2px;
-	margin-bottom: 1.3rem;
-}
+	.list_outline {
+		border: 1px solid @bg-border-color-light;
+		border-radius: 2px;
+		margin-bottom: 1.3rem;
+	}
 
-.show_authors_action {
-	color: @primary;
-	text-decoration: none;
-	cursor: pointer;
+	.show_authors_action {
+		color: @primary;
+		text-decoration: none;
+		cursor: pointer;
+	}
 }
 </style>
