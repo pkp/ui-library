@@ -3,7 +3,7 @@
 		<div class="section pkpAdvancedSearchReviewerContainer">
 			<h3>{{ labels.submissionAuthorList }}</h3>
 			<div class="list_outline">
-				<ol>
+				<ol class="list_box">
 					<li
 						class="author_row"
 						v-for="(affiliations, author) in displayedItems"
@@ -80,14 +80,18 @@ export default {
 
 .pkpAdvancedSearchReviewerContainer {
 	.action_container {
-		padding-left: 1.2rem;
+		padding-left: 1rem;
 		padding-bottom: 0.9rem;
 	}
 
 	.list_outline {
-		border: 1px solid @bg-border-color-light;
+		border: 1px solid @grid-border-color;
 		border-radius: 2px;
 		margin-bottom: 1.3rem;
+	}
+
+	.list_box {
+		padding-left: 1.9rem;
 	}
 
 	.show_authors_action {
