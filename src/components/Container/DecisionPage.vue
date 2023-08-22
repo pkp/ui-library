@@ -282,8 +282,16 @@ export default {
 							return {
 								...stepData,
 								attachments: step.attachments,
-								bcc: bcc ? bcc.split(',') : [],
-								cc: cc ? cc.split(',') : [],
+								bcc: bcc
+									? bcc.split(',').map((item) => {
+											return item.trim();
+									  })
+									: [],
+								cc: cc
+									? cc.split(',').map((item) => {
+											return item.trim();
+									  })
+									: [],
 								locale: step.locale,
 								recipients: step.canChangeRecipients ? step.recipients : [],
 								subject: step.subject,
