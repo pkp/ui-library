@@ -60,6 +60,7 @@ export default {
 			i18nUnableToSave: '',
 			i18nUnsavedChanges: '',
 			i18nUnsavedChangesMessage: '',
+			isModalOpenedConfig: false,
 		};
 	},
 	computed: {
@@ -300,7 +301,7 @@ export default {
 				actions: [
 					{
 						label: this.__('common.ok'),
-						callback: () => this.$modal.hide('saveForLaterFailed'),
+						callback: (close) => close(),
 					},
 				],
 			});
@@ -492,7 +493,7 @@ export default {
 					{
 						label: this.i18nSubmit,
 						isPrimary: true,
-						callback: () => {
+						callback: (close) => {
 							const confirmData = this.steps
 								.find((step) => step.id === 'review')
 								?.sections.find((section) => section.type === 'confirm')
@@ -518,7 +519,7 @@ export default {
 									} else {
 										this.errors = r.responseJSON;
 									}
-									this.$modal.hide('submitConfirmation');
+									close();
 								},
 								success() {
 									window.location = this.submissionWizardUrl;
@@ -529,7 +530,7 @@ export default {
 					{
 						label: this.__('common.cancel'),
 						isWarnable: true,
-						callback: () => this.$modal.hide('submitConfirmation'),
+						callback: (close) => close(),
 					},
 				],
 			});

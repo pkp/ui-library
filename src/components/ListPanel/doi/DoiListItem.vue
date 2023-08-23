@@ -104,7 +104,7 @@
 					<button
 						:ref="versionModalName"
 						:class="'-linkButton'"
-						@click="$modal.show(versionModalName)"
+						@click="isModalOpenedVersion = true"
 					>
 						{{ __('doi.manager.versions.view') }}
 					</button>
@@ -147,7 +147,7 @@
 					<pkp-button
 						ref="recordedMessageModalButton"
 						:is-disabled="isEditingDois"
-						@click="$modal.show('registeredMessageModal')"
+						@click="isModalOpenedRegisteredMessage = true"
 						v-if="isDeposited && hasRegisteredMessage"
 					>
 						{{ __('manager.dois.registration.viewRecord') }}
@@ -163,7 +163,7 @@
 						ref="errorMessageModalButton"
 						:is-disabled="isEditingDois"
 						v-if="hasErrors && hasErrorMessage"
-						@click="$modal.show(`errorMessageModal-${item.id}`)"
+						@click="isModalOpenedErrorMessage = true"
 					>
 						{{ __('manager.dois.registration.viewError') }}
 					</pkp-button>
@@ -176,7 +176,8 @@
 			:close-label="__('common.close')"
 			:name="`errorMessageModal-${item.id}`"
 			:title="__('manager.dois.registration.viewError.title')"
-			@closed="setFocusToRef('errorMessageModalButton')"
+			:open="isModalOpenedErrorMessage"
+			@close="isModalOpenedErrorMessage = false"
 		>
 			<p>{{ registrationAgencyInfo['errorMessagePreamble'] }}</p>
 			<div class="depositErrorMessage">
@@ -188,7 +189,8 @@
 			:close-label="__('common.close')"
 			name="registeredMessageModal"
 			:title="__('manager.dois.registration.viewError.title')"
-			@closed="setFocusToRef('registeredMessageModalButton')"
+			:open="isModalOpenedRegisteredMessage"
+			@close="isModalOpenedRegisteredMessage = false"
 		>
 			<p>{{ registrationAgencyInfo['registeredMessagePreamble'] }}</p>
 			<p>{{ currentVersionDoiObjects[0]['registeredMessage'] }}</p>
@@ -198,7 +200,8 @@
 			:close-label="__('common.close')"
 			:name="versionModalName"
 			:title="__('doi.manager.versions.modalTitle')"
-			@closed="setFocusToRef(versionModalName)"
+			:open="isModalOpenedVersion"
+			@close="isModalOpenedVersion = false"
 		>
 			<div
 				class="doiListItem__versionContainer"
@@ -370,6 +373,9 @@ export default {
 			isSaving: false,
 			mutableDois: [],
 			itemsToUpdate: {},
+			isModalOpenedErrorMessage: false,
+			isModalOpenedRegisteredMessage: false,
+			isModalOpenedVersion: false,
 		};
 	},
 	computed: {
@@ -781,7 +787,7 @@ export default {
 			return this.isDeposited ? this.viewRecord() : this.triggerDeposit();
 		},
 		viewRecord() {
-			this.$modal.show('registeredMessageModal');
+			this.isModalOpenedRegisteredMessage = true;
 		},
 		triggerDeposit() {
 			this.$emit('deposit-triggered', [this.item.id], 'deposit');

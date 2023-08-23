@@ -48,7 +48,8 @@
 				:closeLabel="__('common.close')"
 				name="form"
 				:title="activeFormTitle"
-				@closed="formModalClosed"
+				:open="isModalOpenedForm"
+				@close="closeFormModal"
 			>
 				<pkp-form
 					v-bind="activeForm"
@@ -128,21 +129,18 @@ export default {
 		return {
 			activeForm: null,
 			activeFormTitle: '',
-			resetFocusTo: null,
+			isModalOpenedForm: false,
 		};
 	},
 	methods: {
 		/**
 		 * Clear the active form when the modal is closed
 		 *
-		 * @param {Object} event
 		 */
-		formModalClosed(event) {
+		closeFormModal() {
 			this.activeForm = null;
 			this.activeFormTitle = '';
-			if (this.resetFocusTo) {
-				this.resetFocusTo.focus();
-			}
+			this.isModalOpenedForm = false;
 		},
 
 		/**
@@ -163,20 +161,19 @@ export default {
 				);
 				pkp.eventBus.$emit('update:institution', item);
 			}
-			this.$modal.hide('form');
+			this.closeFormModal();
 		},
 
 		/**
 		 * Open the modal to add an item
 		 */
 		openAddModal() {
-			this.resetFocusTo = document.activeElement;
 			let activeForm = cloneDeep(this.form);
 			activeForm.action = this.apiUrl;
 			activeForm.method = 'POST';
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.addInstitutionLabel;
-			this.$modal.show('form');
+			this.isModalOpenedForm = true;
 		},
 
 		/**
@@ -200,7 +197,7 @@ export default {
 					{
 						label: this.__('common.yes'),
 						isPrimary: true,
-						callback: () => {
+						callback: (close) => {
 							var self = this;
 							$.ajax({
 								url: this.apiUrl + '/' + id,
@@ -215,7 +212,7 @@ export default {
 										self.items.filter((i) => i.id !== id),
 										self.itemsMax
 									);
-									self.$modal.hide('delete');
+									close();
 									self.setFocusIn(self.$el);
 								},
 							});
@@ -224,7 +221,7 @@ export default {
 					{
 						label: this.__('common.no'),
 						isWarnable: true,
-						callback: () => this.$modal.hide('delete'),
+						callback: (close) => close(),
 					},
 				],
 			});
@@ -236,8 +233,6 @@ export default {
 		 * @param {Number} id
 		 */
 		openEditModal(id) {
-			this.resetFocusTo = document.activeElement;
-
 			const institution = this.items.find(
 				(institution) => institution.id === id
 			);
@@ -261,7 +256,7 @@ export default {
 			});
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.editInstitutionLabel;
-			this.$modal.show('form');
+			this.isModalOpenedForm = true;
 		},
 
 		/**

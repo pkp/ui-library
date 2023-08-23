@@ -813,7 +813,7 @@ export default {
 					{
 						label: this.__('common.no'),
 						isWarnable: true,
-						callback: () => this.$modal.hide('deleteSubmission'),
+						callback: (close) => close(),
 					},
 				],
 			});
@@ -822,7 +822,7 @@ export default {
 		/**
 		 * Send a request to delete the submission and handle the response
 		 */
-		deleteSubmission() {
+		deleteSubmission(closeDialog) {
 			var self = this;
 			$.ajax({
 				url: this.apiUrl + '/' + this.item.id,
@@ -836,7 +836,7 @@ export default {
 					pkp.eventBus.$emit('deleted:submission', {id: self.item.id});
 				},
 				complete() {
-					self.$modal.hide('deleteSubmission');
+					closeDialog();
 				},
 			});
 		},

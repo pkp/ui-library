@@ -4,6 +4,11 @@ import StatsPublicationsPage from '@/components/Container/StatsPublicationsPage.
 export default {
 	name: 'StatsIssuesPage',
 	extends: StatsPublicationsPage,
+	data() {
+		return {
+			isModalOpenedDownloadReport: false,
+		};
+	},
 	methods: {
 		/**
 		 * Set items and itemsMax from the API call result

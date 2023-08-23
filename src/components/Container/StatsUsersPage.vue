@@ -8,6 +8,9 @@ export default {
 	components: {
 		Modal,
 	},
+	data() {
+		return {isModalOpenedExport: false};
+	},
 	methods: {
 		/**
 		 * Load the user export

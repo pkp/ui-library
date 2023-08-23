@@ -143,7 +143,7 @@ export default {
 						{
 							label: this.__('common.yes'),
 							isPrimary: true,
-							callback: () => {
+							callback: (close) => {
 								storedAutosaves.forEach(this.restoreStoredAutosave);
 								this.removeLocaleStorage(this.autosavesKey);
 								this.$nextTick(() => {
@@ -154,7 +154,7 @@ export default {
 											return;
 										}
 										clearInterval(waitForAutosaves);
-										this.$modal.hide('loadAutosave');
+										close();
 									}, 2000); // 2 seconds so that autosaving can start before first check
 								});
 							},
@@ -162,10 +162,10 @@ export default {
 						{
 							label: this.i18nDiscardChanges,
 							isWarnable: true,
-							callback: () => {
+							callback: (close) => {
 								this.removeLocaleStorage(this.autosavesKey);
 								this.startAutosaveTimer();
-								this.$modal.hide('loadAutosave');
+								close();
 							},
 						},
 					],

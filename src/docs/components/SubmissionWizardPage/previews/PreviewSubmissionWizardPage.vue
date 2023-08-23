@@ -23,12 +23,14 @@
 				section in
 				<strong>English</strong>
 				.
-				<button class="-linkButton" @click="$modal.show('config')">
+				<button class="-linkButton" @click="isModalOpenedConfig = true">
 					Change
 				</button>
 				<modal
 					:closeLabel="__('common.close')"
 					name="config"
+					:open="isModalOpenedConfig"
+					@close="isModalOpenedConfig = false"
 					title="Change Submission Settings"
 				>
 					<pkp-form
@@ -599,6 +601,7 @@ export default {
 					],
 				},
 			],
+			isModalOpenedConfig: false,
 		};
 	},
 	methods: {

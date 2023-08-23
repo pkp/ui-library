@@ -112,7 +112,7 @@ export default {
 					},
 					{
 						label: this.keepWorkingLabel,
-						callback: () => this.$modal.hide('cancel'),
+						callback: (close) => close(),
 					},
 				],
 			});

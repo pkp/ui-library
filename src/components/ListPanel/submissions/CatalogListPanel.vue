@@ -43,10 +43,7 @@
 								{{ __('common.cancel') }}
 							</pkp-button>
 						</template>
-						<pkp-button
-							ref="addEntryButton"
-							@click="$modal.show('addCatalogEntry')"
-						>
+						<pkp-button @click="isModalOpenedAddCatalogEntry = true">
 							{{ __('submission.catalogEntry.new') }}
 						</pkp-button>
 					</template>
@@ -130,7 +127,8 @@
 			:closeLabel="__('common.close')"
 			name="addCatalogEntry"
 			:title="__('submission.catalogEntry.new')"
-			@closed="addEntryFormClosed"
+			:open="isModalOpenedAddCatalogEntry"
+			@close="closeAddEntryForm"
 		>
 			<pkp-form
 				v-bind="addEntryForm"
@@ -222,6 +220,7 @@ export default {
 			newEntries: [],
 			isOrdering: false,
 			isSidebarVisible: false,
+			isModalOpenedAddCatalogEntry: false,
 		};
 	},
 	computed: {
@@ -347,15 +346,15 @@ export default {
 		 * When the add entry form has been successfully submitted
 		 */
 		addEntryFormSuccess() {
-			this.$modal.hide('addCatalogEntry');
+			this.closeAddEntryForm();
 			this.get();
 		},
 
 		/**
 		 * When the add entry modal is closed
 		 */
-		addEntryFormClosed() {
-			this.setFocusToRef('addEntryButton');
+		closeAddEntryForm() {
+			this.isModalOpenedAddCatalogEntry = false;
 			this.addEntryForm.fields.find(
 				(f) => f.name === 'submissionIds'
 			).selected = [];

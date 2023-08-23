@@ -36,6 +36,7 @@ export default {
 			isLoadingTimeline: false,
 			latestTimelineGetRequest: '',
 			isDownloadingReport: false,
+			isModalOpenedDownloadReport: false,
 		};
 	},
 	computed: {

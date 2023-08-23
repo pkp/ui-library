@@ -50,8 +50,8 @@ export default {
 				actions: [
 					{
 						label: 'Ok',
-						callback: () => {
-							this.$modal.hide('example');
+						callback: (close) => {
+							close();
 						},
 					},
 				],

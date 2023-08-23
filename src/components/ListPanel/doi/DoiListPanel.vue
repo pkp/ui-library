@@ -131,7 +131,7 @@
 						<template slot="actions">
 							<button
 								class="doiListPanel__statusInfoButton"
-								@click="$modal.show('statusInfoModal')"
+								@click="isModalOpenedStatusInfo = true"
 							>
 								<icon icon="question-circle" />
 							</button>
@@ -206,7 +206,8 @@
 			:close-label="__('common.close')"
 			name="statusInfoModal"
 			:title="__('manager.dois.help.statuses.title')"
-			@closed="setFocusIn($el.querySelector('.doiListPanel__statusInfoButton'))"
+			:open="isModalOpenedStatusInfo"
+			@close="isModalOpenedStatusInfo = false"
 		>
 			<table class="pkpTable">
 				<thead>
@@ -251,10 +252,8 @@
 			:close-label="__('common.close')"
 			name="failedDoiActionModal"
 			:title="__('manager.dois.update.failedCreation')"
-			@closed="
-				setFocusIn($el.querySelector('.doiListPanel__bulkActions'));
-				failedDoiActions = [];
-			"
+			:open="isModalOpenedFailedDoiAction"
+			@close="closeFailedDoiActionModal"
 		>
 			<p>{{ this.__('manager.dois.update.partialFailure') }}</p>
 			<ul>
@@ -380,6 +379,8 @@ export default {
 			selected: [],
 			expanded: [],
 			failedDoiActions: [],
+			isModalOpenedStatusInfo: false,
+			isModalOpenedFailedDoiAction: false,
 		};
 	},
 	methods: {
@@ -513,7 +514,7 @@ export default {
 				registrationAgency: this.registrationAgencyInfo['displayName'],
 			});
 
-			this.openBulkActionDialog(actionLabel, actionMessage, () => {
+			this.openBulkActionDialog(actionLabel, actionMessage, (closeDialog) => {
 				let self = this;
 				self.loading = true;
 				$.ajax({
@@ -531,7 +532,7 @@ export default {
 					error: (response) => this.ajaxErrorCallback(response),
 					complete: () => {
 						self.isloading = false;
-						return this.onBulkActionComplete();
+						return this.onBulkActionComplete(closeDialog);
 					},
 				});
 			});
@@ -546,7 +547,7 @@ export default {
 				registrationAgency: this.registrationAgencyInfo['displayName'],
 			});
 
-			this.openBulkActionDialog(actionLabel, actionMessage, () => {
+			this.openBulkActionDialog(actionLabel, actionMessage, (closeDialog) => {
 				$.ajax({
 					...this.getBulkActionAjaxProps('export', 'PUT'),
 					data: {
@@ -571,7 +572,7 @@ export default {
 						);
 					},
 					error: (response) => this.ajaxErrorCallback(response),
-					complete: () => this.onBulkActionComplete(),
+					complete: () => this.onBulkActionComplete(closeDialog),
 				});
 			});
 		},
@@ -585,7 +586,7 @@ export default {
 				{count: this.selected.length}
 			);
 
-			this.openBulkActionDialog(actionLabel, actionMessage, () => {
+			this.openBulkActionDialog(actionLabel, actionMessage, (closeDialog) => {
 				$.ajax({
 					...this.getBulkActionAjaxProps('markRegistered', 'PUT'),
 					data: {
@@ -605,7 +606,7 @@ export default {
 						}
 						return this.ajaxErrorCallback(response);
 					},
-					complete: () => this.onBulkActionComplete(),
+					complete: () => this.onBulkActionComplete(closeDialog),
 				});
 			});
 		},
@@ -621,7 +622,7 @@ export default {
 				{count: this.selected.length}
 			);
 
-			this.openBulkActionDialog(actionLabel, actionMessage, () => {
+			this.openBulkActionDialog(actionLabel, actionMessage, (closeDialog) => {
 				$.ajax({
 					...this.getBulkActionAjaxProps('markUnregistered', 'PUT'),
 					data: {
@@ -635,7 +636,7 @@ export default {
 						);
 					},
 					error: (response) => this.ajaxErrorCallback(response),
-					complete: () => this.onBulkActionComplete(),
+					complete: () => this.onBulkActionComplete(closeDialog),
 				});
 			});
 		},
@@ -648,7 +649,7 @@ export default {
 				count: this.selected.length,
 			});
 
-			this.openBulkActionDialog(actionLabel, actionMessage, () => {
+			this.openBulkActionDialog(actionLabel, actionMessage, (closeDialog) => {
 				$.ajax({
 					...this.getBulkActionAjaxProps('markStale', 'PUT'),
 					data: {
@@ -668,7 +669,7 @@ export default {
 						}
 						return this.ajaxErrorCallback(response);
 					},
-					complete: () => this.onBulkActionComplete(),
+					complete: () => this.onBulkActionComplete(closeDialog),
 				});
 			});
 		},
@@ -681,7 +682,7 @@ export default {
 				count: this.selected.length,
 			});
 
-			this.openBulkActionDialog(actionLabel, actionMessage, () => {
+			this.openBulkActionDialog(actionLabel, actionMessage, (closeDialog) => {
 				$.ajax({
 					...this.getBulkActionAjaxProps('assignDois'),
 					data: {
@@ -701,7 +702,7 @@ export default {
 						}
 						return this.ajaxErrorCallback(response);
 					},
-					complete: () => this.onBulkActionComplete(),
+					complete: () => this.onBulkActionComplete(closeDialog),
 				});
 			});
 		},
@@ -714,7 +715,7 @@ export default {
 				registrationAgency: this.registrationAgencyInfo['displayName'],
 			});
 
-			this.openBulkActionDialog(actionLabel, actionMessage, () => {
+			this.openBulkActionDialog(actionLabel, actionMessage, (closeDialog) => {
 				$.ajax({
 					url: `${this.doiApiUrl}/depositAll`,
 					type: 'POST',
@@ -730,7 +731,7 @@ export default {
 						);
 					},
 					error: (response) => this.ajaxErrorCallback(response),
-					complete: () => this.onBulkActionComplete(),
+					complete: () => this.onBulkActionComplete(closeDialog),
 				});
 			});
 		},
@@ -755,7 +756,7 @@ export default {
 					{
 						label: this.__('common.cancel'),
 						isWarnable: true,
-						callback: () => this.$modal.hide('bulkActions'),
+						callback: (close) => close(),
 					},
 				],
 			});
@@ -784,8 +785,8 @@ export default {
 		/**
 		 * Performs cleanup operations after bulk actions finish
 		 */
-		onBulkActionComplete() {
-			this.$modal.hide('bulkActions');
+		onBulkActionComplete(closeDialog) {
+			closeDialog();
 			this.get();
 			this.selected = [];
 		},
@@ -924,6 +925,10 @@ export default {
 				...props,
 			};
 		},
+		closeFailedDoiActionModal() {
+			this.isModalOpenedFailedDoiAction = false;
+			this.failedDoiActions = [];
+		},
 	},
 	computed: {
 		canAssignDois() {
@@ -967,9 +972,9 @@ export default {
 		 */
 		failedDoiActions(newVal, oldVal) {
 			if (newVal.length !== 0) {
-				this.$modal.show('failedDoiActionModal');
+				this.isModalOpenedFailedDoiAction = true;
 			} else {
-				this.$modal.hide('failedDoiActionModal');
+				this.closeFailedDoiActionModal();
 			}
 		},
 	},

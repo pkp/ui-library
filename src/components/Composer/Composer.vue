@@ -258,6 +258,7 @@
 					:closeLabel="__('common.close')"
 					:name="fileAttacherModalId"
 					:title="attachFilesLabel"
+					:open="isModalOpenedFileAttacher"
 					@closed="resetFocusAfterAttachment"
 				>
 					<file-attacher
@@ -511,6 +512,7 @@ export default {
 			searchPhrase: '',
 			searchResults: [],
 			showSearchResultCount: 10,
+			isModalOpenedFileAttacher: false,
 		};
 	},
 	computed: {
@@ -541,7 +543,7 @@ export default {
 						icon: 'upload',
 						text: self.__('common.attachFiles'),
 						onAction() {
-							self.$modal.show(self.fileAttacherModalId);
+							this.isModalOpenedFileAttacher = true;
 						},
 					});
 					editor.settings.toolbar += ' | pkpAttachFiles';
@@ -698,7 +700,7 @@ export default {
 				}),
 			];
 			this.emitChange({attachments});
-			this.$modal.hide(this.fileAttacherModalId);
+			this.isModalOpenedFileAttacher = false;
 		},
 
 		/**
@@ -839,15 +841,15 @@ export default {
 							localeName
 						),
 						isPrimary: true,
-						callback: () => {
+						callback: (close) => {
 							this.switchLocale(locale);
-							this.$modal.hide('confirmLocaleSwitch');
+							close();
 						},
 					},
 					{
 						label: this.__('common.cancel'),
 						isWarnable: true,
-						callback: () => this.$modal.hide('confirmLocaleSwitch'),
+						callback: (close) => close(),
 					},
 				],
 			});
@@ -868,6 +870,7 @@ export default {
 		 * Reset the focus when the attachment modal is closed
 		 */
 		resetFocusAfterAttachment() {
+			this.isModalOpenedFileAttacher = false;
 			this.$nextTick(() => {
 				if (this.$refs.attachedFiles) {
 					this.$refs.attachedFiles.focus();

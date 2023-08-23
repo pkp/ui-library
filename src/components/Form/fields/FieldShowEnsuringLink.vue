@@ -32,8 +32,8 @@ export default {
 					confirmLabel: this.__('common.ok'),
 					message: this.message,
 					title: this.modalTitle,
-					callback: () => {
-						this.$modal.hide('ensureAnonymousReview');
+					callback: (close) => {
+						close();
 					},
 				},
 				{

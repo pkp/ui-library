@@ -69,6 +69,8 @@ export default {
 			submissionsMax: 0,
 			summarySubmission: null,
 			views: [],
+			isModalOpenedFilters: false,
+			isModalOpenedSummary: false,
 		};
 	},
 	computed: {
@@ -301,7 +303,7 @@ export default {
 		 */
 		openFilters() {
 			lastFocusedEl = document.activeElement;
-			this.$modal.show('filters');
+			this.isModalOpenedFilters = true;
 		},
 
 		/**
@@ -310,16 +312,7 @@ export default {
 		openSummary(submission) {
 			lastFocusedEl = document.activeElement;
 			this.summarySubmission = submission;
-			this.$modal.show('summary');
-		},
-
-		/**
-		 * Reset the focus to lastFocusedEl
-		 *
-		 * Used to restore focus after a modal is closed
-		 */
-		resetFocusToList() {
-			lastFocusedEl.focus();
+			this.isModalOpenedSummary = true;
 		},
 
 		/**
@@ -331,7 +324,7 @@ export default {
 					return (Array.isArray(value) && value.length) || !!value;
 				})
 			);
-			this.get(() => this.$modal.hide('filters'));
+			this.get(() => (isModalOpenedFilters = false));
 		},
 
 		/**

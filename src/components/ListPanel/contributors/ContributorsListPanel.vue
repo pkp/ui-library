@@ -417,7 +417,7 @@ export default {
 					{
 						label: this.i18nDeleteContributor,
 						isWarnable: true,
-						callback: () => {
+						callback: (close) => {
 							this.isLoading = true;
 
 							$.ajax({
@@ -433,7 +433,7 @@ export default {
 								},
 								error: this.ajaxErrorCallback,
 								success(r) {
-									this.$modal.hide('delete');
+									close();
 									this.setFocusIn(this.$el);
 
 									const newContributors = this.publication.authors.filter(
@@ -451,7 +451,7 @@ export default {
 					},
 					{
 						label: this.__('common.cancel'),
-						callback: () => this.$modal.hide('delete'),
+						callback: (close) => close(),
 					},
 				],
 			});

@@ -72,15 +72,15 @@ export default {
 					{
 						label: 'Delete',
 						isWarnable: true,
-						callback: () => {
+						callback: (close) => {
 							setTimeout(() => {
-								this.$modal.hide('deleteDialog');
+								close();
 							}, 1000);
 						},
 					},
 					{
 						label: this.__('common.cancel'),
-						callback: () => this.$modal.hide('deleteDialog'),
+						callback: (close) => close(),
 					},
 				],
 			});

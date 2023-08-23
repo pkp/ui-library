@@ -53,6 +53,8 @@ export default {
 			versionConfirmMessage: '',
 			versionConfirmTitle: '',
 			workingPublication: null,
+			isModalOpenedSelectRevisionDecision: false,
+			isModalOpenedSelectRevisionRecommendation: false,
 		};
 	},
 	computed: {
@@ -235,14 +237,14 @@ export default {
 					{
 						label: this.__('common.yes'),
 						isWarnable: true,
-						callback: () => {
-							this.$modal.hide('createVersion');
+						callback: (close) => {
+							close();
 							this.createVersion();
 						},
 					},
 					{
 						label: this.__('common.no'),
-						callback: () => this.$modal.hide('createVersion'),
+						callback: (close) => close(),
 					},
 				],
 			});
@@ -341,14 +343,14 @@ export default {
 								? this.unscheduleLabel
 								: this.unpublishLabel,
 						isPrimary: true,
-						callback: () => {
+						callback: (close) => {
 							this.unpublish(this.workingPublication);
-							this.$modal.hide('confirmUnpublish');
+							close();
 						},
 					},
 					{
 						label: this.__('common.cancel'),
-						callback: () => this.$modal.hide('confirmUnpublish'),
+						callback: (close) => close(),
 					},
 				],
 			});
@@ -568,13 +570,13 @@ export default {
 		pkp.eventBus.$on('decision:revisions', (reviewRoundId) => {
 			this.components.selectRevisionDecision.hiddenFields['reviewRoundId'] =
 				reviewRoundId;
-			this.$modal.show('selectRevisionDecision');
+			this.isModalOpenedSelectRevisionDecision = true;
 		});
 		pkp.eventBus.$on('recommendation:revisions', (reviewRoundId) => {
 			this.components.selectRevisionRecommendation.hiddenFields[
 				'reviewRoundId'
 			] = reviewRoundId;
-			this.$modal.show('selectRevisionRecommendation');
+			this.isModalOpenedSelectRevisionRecommendation = true;
 		});
 
 		/**

@@ -1,5 +1,10 @@
 <template>
 	<!--<vue-announcer />-->
+	<PkpDialog
+		:open="pkpIsDialogOpened"
+		@close="pkpIsDialogOpened = false"
+		v-bind="pkpDialogProps"
+	></PkpDialog>
 	<nav class="nav" aria-label="Primary Navigation">
 		<nav-group>
 			<template slot="heading">Guide</template>
@@ -282,11 +287,15 @@
 
 <script>
 import NavGroup from './docs/NavGroup.vue';
+import PkpDialog from './components/Modal/Dialog.vue';
+import dialogProvider from './mixins/dialogProvider';
 
 export default {
 	components: {
 		NavGroup,
+		PkpDialog,
 	},
+	mixins: [dialogProvider],
 	methods: {
 		/**
 		 * Does the current route path include this component

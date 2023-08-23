@@ -236,7 +236,7 @@ export default {
 					{
 						label: this.__('common.yes'),
 						isPrimary: true,
-						callback: () => {
+						callback: (close) => {
 							$.ajax({
 								url: this.apiUrl + '/' + item.id + '?stageId=' + this.stageId,
 								type: 'POST',
@@ -249,7 +249,7 @@ export default {
 								success(r) {
 									const items = this.items.filter((item) => item.id !== r.id);
 									this.$emit('set', this.id, {items});
-									this.$modal.hide('remove');
+									close();
 									this.$refs.addFileButton.$el.focus();
 								},
 							});
@@ -258,7 +258,7 @@ export default {
 					{
 						label: this.__('common.no'),
 						isWarnable: true,
-						callback: () => this.$modal.hide('remove'),
+						callback: (close) => close(),
 					},
 				],
 			});
