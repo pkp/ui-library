@@ -1,9 +1,19 @@
+<template>
+	<div class="chartjs-render-monitor">
+		<Doughnut :data="chartData" :options="options" />
+	</div>
+</template>
+
 <script>
-//import {Doughnut, mixins} from 'vue-chartjs';
+import {Doughnut} from 'vue-chartjs';
+import {Chart as ChartJS, Tooltip, Legend, ArcElement} from 'chart.js';
+
+ChartJS.register(Tooltip, Legend, ArcElement);
 
 export default {
-//	extends: Doughnut,
-//	mixins: [mixins.reactiveProp],
+	components: {
+		Doughnut,
+	},
 	props: {
 		chartData: {
 			type: Object,
@@ -26,7 +36,7 @@ export default {
 			return {
 				responsive: true,
 				maintainAspectRatio: false,
-				cutoutPercentage: 80,
+				cutout: '80%',
 				layout: {
 					padding: {
 						top: 32,
@@ -35,8 +45,10 @@ export default {
 						right: 32,
 					},
 				},
-				legend: {
-					display: false,
+				plugins: {
+					legend: {
+						display: false,
+					},
 				},
 				elements: {
 					arc: {
@@ -47,8 +59,14 @@ export default {
 			};
 		},
 	},
-	mounted: function () {
-		this.renderChart(this.chartData, this.options);
-	},
 };
 </script>
+
+<style lang="less" scoped>
+@import '../../styles/_import';
+
+.chartjs-render-monitor {
+	background: @bg-anchor;
+	height: 400px;
+}
+</style>

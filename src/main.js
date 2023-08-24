@@ -10,7 +10,7 @@ import GlobalMixins from '@/mixins/global.js';
 //import VueAnnouncer from 'vue-announcer';
 //import VModal from 'vue-js-modal';
 //import VTooltip from 'v-tooltip';
-//import VueScrollTo from 'vue-scrollto';
+import VueScrollTo from 'vue-scrollto';
 
 import Badge from '@/components/Badge/Badge.vue';
 import Dropdown from '@/components/Dropdown/Dropdown.vue';
@@ -128,5 +128,7 @@ vueApp.component('Tab', Tab);
 vueApp.component('Tabs', Tabs);
 
 vueApp.use(router);
+
+vueApp.use(VueScrollTo);
 
 vueApp.mount('#app');

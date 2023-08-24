@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewChart from './previews/PreviewChart.vue';
 import PreviewChartTemplate from './previews/PreviewChart.vue?raw';
@@ -14,12 +15,12 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewChart,
+					component: markRaw(PreviewChart),
 					name: 'Base',
 					template: this.extractTemplate(PreviewChartTemplate),
 				},
 				{
-					component: PreviewDoughnut,
+					component: markRaw(PreviewDoughnut),
 					name: 'Doughnut',
 					template: this.extractTemplate(PreviewDoughnutTemplate),
 				},

@@ -19,11 +19,11 @@
 </template>
 
 <script>
-//import VueDropzone from 'vue2-dropzone';
+import VueDropzone from 'vue2-dropzone-vue3';
 
 export default {
 	components: {
-		//		VueDropzone,
+		VueDropzone,
 	},
 	props: {
 		apiUrl: {
