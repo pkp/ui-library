@@ -252,6 +252,9 @@ export default {
 
 .app__contexts .pkpDropdown__content {
 	left: 0.25rem;
+	max-width: 30em;
+	max-height: 85vh;
+	overflow-y: auto;
 }
 
 .app__tasks > button {
@@ -376,7 +379,7 @@ export default {
 }
 
 .app__navItem--hasSubmenu {
-	font-weight: bold;
+	font-weight: @bold;
 }
 
 a.app__navItem {

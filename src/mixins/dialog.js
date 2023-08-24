@@ -37,7 +37,7 @@ export default {
 				{
 					height: 'auto',
 					scrollable: false,
-					classes: 'v--modal v--modal-dialog',
+					classes: 'v--modal v--modal-dialog modal modal--popup',
 					...modalProps,
 					name: props.name,
 				},
