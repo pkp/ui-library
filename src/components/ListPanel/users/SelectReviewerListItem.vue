@@ -103,9 +103,10 @@
 						{{ interestsString }}
 					</span>
 					<span
-						v-if="authorAffiliations.includes(localize(item.affiliation))"
-						class='pkpBadge pkp_helpers_text_warn'
-					>{{ reviewerSameInstitutionLabel }}
+						v-if="affiliationMatch(item.affiliation)"
+						class="pkpBadge pkp_helpers_text_warn"
+					>
+						{{ reviewerSameInstitutionLabel }}
 					</span>
 				</div>
 			</div>
@@ -451,6 +452,17 @@ export default {
 		 */
 		unlockAssignment() {
 			this.isWarningBypassed = true;
+		},
+
+		/**
+		 *
+		 * @param affiliation
+		 * @returns {boolean}
+		 */
+		affiliationMatch(affiliation) {
+			return this.authorAffiliations
+				.map((a) => a.toLowerCase())
+				.includes(this.localize(affiliation).toLowerCase());
 		},
 	},
 };

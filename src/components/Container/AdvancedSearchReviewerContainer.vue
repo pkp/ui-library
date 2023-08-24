@@ -92,6 +92,8 @@ export default {
 
 	.list_box {
 		padding-left: 1.9rem;
+		overflow-y: scroll;
+		max-height: 17em;
 	}
 
 	.show_authors_action {
