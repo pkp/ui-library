@@ -7,7 +7,7 @@ import App from './App.vue';
 import router from './router';
 
 import GlobalMixins from '@/mixins/global.js';
-//import VueAnnouncer from 'vue-announcer';
+import VueAnnouncer from '@vue-a11y/announcer';
 //import VModal from 'vue-js-modal';
 import FloatingVue from 'floating-vue';
 import 'floating-vue/dist/style.css';
@@ -132,6 +132,7 @@ vueApp.component('Tabs', Tabs);
 vueApp.use(router);
 
 vueApp.use(VueScrollTo);
+vueApp.use(VueAnnouncer);
 vueApp.use(FloatingVue, {
 	themes: {
 		'pkp-tooltip': {

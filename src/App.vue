@@ -1,5 +1,5 @@
 <template>
-	<!--<vue-announcer />-->
+	<vue-announcer class="sr-only" />
 	<PkpDialog
 		:open="pkpIsDialogOpened"
 		@close="pkpIsDialogOpened = false"

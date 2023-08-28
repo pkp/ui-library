@@ -7,16 +7,25 @@ import {marked} from 'marked';
 import highlightjs from 'highlight.js';
 
 export default {
-	computed: {
-		output() {
+	data() {
+		return {output: ''};
+	},
+	watch: {
+		'$route.params.page'(oldPage, newPage) {
+			this.loadCurrentPage();
+		},
+	},
+	methods: {
+		async loadCurrentPage() {
 			let markdown;
+
 			let page = this.$route.name;
 			if (page === 'page') {
 				page = this.$route.params.page || 'index';
 			}
 			if (page) {
 				try {
-					markdown = require('./pages/' + page + '.md');
+					markdown = await import('./pages/' + page + '.md?raw');
 				} catch (e) {
 					markdown = '';
 				}
@@ -26,11 +35,14 @@ export default {
 							return highlightjs.highlightAuto(code).value;
 						},
 					});
-					return marked.parse(markdown.default);
+					this.output = marked.parse(markdown.default);
+					return;
 				}
 			}
-			return '';
 		},
+	},
+	mounted() {
+		this.loadCurrentPage();
 	},
 };
 </script>
