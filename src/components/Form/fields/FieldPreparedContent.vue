@@ -6,7 +6,7 @@
 		:value="renderedValue"
 		@change="fieldChanged"
 	>
-		<template slot="footer">
+		<template #footer>
 			<slot name="footer" />
 			<modal
 				:closeLabel="__('common.close')"

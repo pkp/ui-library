@@ -1,8 +1,8 @@
 <template>
 	<list-panel :items="items">
-		<pkp-header slot="header">
+		<pkp-header>
 			<h2>List Panel with Search</h2>
-			<template slot="actions">
+			<template #actions>
 				<search
 					:searchPhrase="searchPhrase"
 					@search-phrase-changed="setSearchPhrase"

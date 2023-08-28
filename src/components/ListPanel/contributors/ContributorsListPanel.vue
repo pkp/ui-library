@@ -6,10 +6,10 @@
 				class="listPanel--contributor"
 				:class="isOrdering ? '-isOrdering' : ''"
 			>
-				<pkp-header slot="header">
+				<pkp-header>
 					<h2>{{ title }}</h2>
 					<spinner v-if="isLoading" />
-					<template slot="actions">
+					<template #actions>
 						<pkp-button
 							icon="sort"
 							:isActive="isOrdering"
@@ -50,13 +50,13 @@
 						</pkp-button>
 					</template>
 				</pkp-header>
-				<template v-slot:item-title="{item}">
+				<template #item-title="{item}">
 					{{ item.fullName }}
 					<badge v-if="item.userGroupName">
 						{{ localize(item.userGroupName) }}
 					</badge>
 				</template>
-				<template v-slot:item-subtitle="{item}">
+				<template #item-subtitle="{item}">
 					{{ localize(item.affiliation) }}
 				</template>
 				<template
@@ -64,7 +64,7 @@
 						publication.status !== getConstant('STATUS_PUBLISHED') &&
 						canEditPublication
 					"
-					v-slot:item-actions="{item}"
+					#item-actions="{item}"
 				>
 					<template v-if="isOrdering">
 						<orderer

@@ -64,7 +64,7 @@ The `<TableHeader>` component should be used in the table's `head` slot to displ
 
 ```html
 <pkp-table>
-    <template slot="head">
+    <template #head>
         <table-header>Username</table-header>
         <table-header>Name</table-header>
     </template>
@@ -113,7 +113,7 @@ Every table needs an accessible caption. Use the `caption` slot to provide a tit
 
 ```html
 <pkp-table>
-    <pkp-header slot="caption">
+    <pkp-header #caption>
         <h2>Example Table</h2>
     </pkp-header>
 </pkp-table>

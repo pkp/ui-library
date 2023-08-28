@@ -5,9 +5,9 @@
 			:items="currentMailables"
 			:is-sidebar-visible="true"
 		>
-			<pkp-header slot="header">
+			<pkp-header>
 				<h1>Emails</h1>
-				<template slot="actions">
+				<template #actions>
 					<search
 						search-label="Search by name or description"
 						:search-phrase="searchPhrase"
@@ -20,13 +20,13 @@
 					</pkp-button>
 				</template>
 			</pkp-header>
-			<template v-slot:item-title="{item}">
+			<template #item-title="{item}">
 				{{ item.name }}
 			</template>
-			<template v-slot:item-subtitle="{item}">
+			<template #item-subtitle="{item}">
 				{{ item.description }}
 			</template>
-			<template v-slot:item-actions="{item}">
+			<template #item-actions="{item}">
 				<pkp-button @click="openMailable(item)">
 					<span aria-hidden="true">Edit</span>
 					<span class="-screenReader">
@@ -34,7 +34,7 @@
 					</span>
 				</pkp-button>
 			</template>
-			<template slot="sidebar">
+			<template #sidebar>
 				<pkp-header>
 					<h2>
 						<icon icon="filter" :inline="true" />
@@ -98,16 +98,16 @@
 					templates you add here.
 				</p>
 				<list-panel :items="currentMailable.emailTemplates">
-					<pkp-header slot="header">
+					<pkp-header>
 						<h3>Templates</h3>
-						<template slot="actions">
+						<template #actions>
 							<pkp-button @click="openTemplate()">Add Template</pkp-button>
 						</template>
 					</pkp-header>
-					<template v-slot:item-subtitle="{item}">
+					<template #item-subtitle="{item}">
 						{{ localize(item.name) }}
 					</template>
-					<template v-slot:item-actions="{item}">
+					<template #item-actions="{item}">
 						<badge v-if="item.key === currentMailable.emailTemplateKey">
 							Default
 						</badge>

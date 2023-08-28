@@ -39,7 +39,7 @@
 					}}
 				</span>
 			</h1>
-			<template slot="actions">
+			<template #actions>
 				<pkp-button element="a" :href="submission.urlPublished">
 					{{ __('common.view') }}
 				</pkp-button>
@@ -150,7 +150,7 @@
 								</ul>
 							</dropdown>
 						</span>
-						<template slot="actions">
+						<template #actions>
 							<pkp-button
 								v-if="
 									workingPublication.status === getConstant('STATUS_QUEUED')

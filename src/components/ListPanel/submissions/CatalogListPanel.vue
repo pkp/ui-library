@@ -9,11 +9,11 @@
 				'-isLoading': isLoading,
 			}"
 		>
-			<template slot="header">
+			<template #header>
 				<pkp-header>
 					<h2>{{ title }}</h2>
 					<spinner v-if="isLoading" />
-					<template slot="actions">
+					<template #actions>
 						<search
 							:searchPhrase="searchPhrase"
 							@search-phrase-changed="setSearchPhrase"
@@ -69,7 +69,7 @@
 				</div>
 			</template>
 
-			<template slot="sidebar">
+			<template #sidebar>
 				<pkp-header :isOneLine="false">
 					<h3>
 						<icon icon="filter" :inline="true" />
@@ -95,12 +95,12 @@
 				</div>
 			</template>
 
-			<template v-if="isLoading" slot="itemsEmpty">
+			<template v-if="isLoading" #itemsEmpty>
 				<spinner />
 				{{ __('common.loading') }}
 			</template>
 
-			<template v-slot:item="{item}">
+			<template #item="{item}">
 				<catalog-list-item
 					:key="item.id"
 					:item="item"
@@ -116,7 +116,7 @@
 
 			<pagination
 				v-if="lastPage > 1"
-				slot="footer"
+				#footer
 				:currentPage="currentPage"
 				:isLoading="isLoading"
 				:lastPage="lastPage"

@@ -67,7 +67,7 @@
 			class="listPanel__itemExpanded listPanel__itemExpanded--doi"
 		>
 			<pkp-table :columns="doiListColumns" :rows="currentVersionDoiObjects">
-				<template slot-scope="{row}">
+				<template #default="{row}">
 					<table-cell :column="doiListColumns[0]" :row="row">
 						<label :for="row.uid">{{ row.displayType }}</label>
 					</table-cell>
@@ -223,7 +223,7 @@
 						)
 					"
 				>
-					<template slot-scope="{row}">
+					<template #default="{row}">
 						<table-cell :column="doiListColumns[0]" :row="row">
 							<label :for="row.uid">{{ row.displayType }}</label>
 						</table-cell>

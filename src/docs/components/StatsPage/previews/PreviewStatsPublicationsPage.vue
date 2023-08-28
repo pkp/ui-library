@@ -3,7 +3,7 @@
 		<pkp-header>
 			<h1>Articles</h1>
 			<spinner v-if="isLoadingTimeline" />
-			<template slot="actions">
+			<template #actions>
 				<date-range
 					unique-id="publication-stats-date-range"
 					:date-start="dateStart"
@@ -151,7 +151,7 @@
 							Article Details
 							<spinner v-if="isLoadingItems"></spinner>
 						</h2>
-						<template slot="actions">
+						<template #actions>
 							<div class="pkpStats__itemsOfTotal">
 								{{
 									replaceLocaleParams(itemsOfTotalLabel, {
@@ -178,13 +178,14 @@
 						:order-direction="orderDirection"
 						@order-by="setOrderBy"
 					>
-						<search
-							slot="thead-title"
-							class="pkpStats__titleSearch"
-							:search-phrase="searchPhrase"
-							search-label="Search by title, author and ID"
-							@search-phrase-changed="setSearchPhrase"
-						/>
+						<template #thead-title>
+							<search
+								class="pkpStats__titleSearch"
+								:search-phrase="searchPhrase"
+								search-label="Search by title, author and ID"
+								@search-phrase-changed="setSearchPhrase"
+							/>
+						</template>
 					</pkp-table>
 					<div v-if="!items.length" class="pkpStats__noRecords">
 						<template v-if="isLoadingItems">

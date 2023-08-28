@@ -32,7 +32,7 @@
 				<tab id="two" label="Second Tab">This is the second tab.</tab>
 				<tab id="three" label="Third Tab">This is the third tab.</tab>
 			</tabs>
-			<template slot="footer">
+			<template #footer>
 				<pkp-button @click="isModalOpened = false">Close</pkp-button>
 			</template>
 		</modal>

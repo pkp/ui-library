@@ -2,11 +2,11 @@
 	<div class="doiListPanel">
 		<slot>
 			<list-panel :items="mappedItems" :isSidebarVisible="true">
-				<template slot="header">
+				<template #header>
 					<pkp-header>
 						<h2>{{ title }}</h2>
 						<spinner v-if="isLoading" />
-						<template slot="actions">
+						<template #actions>
 							<search
 								:searchPhrase="searchPhrase"
 								@search-phrase-changed="setSearchPhrase"
@@ -122,13 +122,13 @@
 					</pkp-header>
 				</template>
 
-				<template slot="sidebar">
+				<template #sidebar>
 					<pkp-header :isOneLine="false">
 						<h3>
 							<icon icon="filter" :inline="true" />
 							{{ __('common.filter') }}
 						</h3>
-						<template slot="actions">
+						<template #actions>
 							<button
 								class="doiListPanel__statusInfoButton"
 								@click="isModalOpenedStatusInfo = true"
@@ -158,7 +158,7 @@
 					</div>
 				</template>
 
-				<template slot="itemsEmpty">
+				<template #itemsEmpty>
 					<template v-if="isLoading">
 						<spinner />
 						{{ __('common.loading') }}
@@ -168,7 +168,7 @@
 					</template>
 				</template>
 
-				<template v-slot:item="{item}">
+				<template #item="{item}">
 					<slot name="item" :item="item">
 						<doi-list-item
 							:key="item.id"
@@ -192,7 +192,7 @@
 
 				<pagination
 					v-if="lastPage > 1"
-					slot="footer"
+					#footer
 					:currentPage="currentPage"
 					:isLoading="isLoading"
 					:lastPage="lastPage"

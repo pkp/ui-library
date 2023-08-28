@@ -7,7 +7,7 @@
 		>
 			<h2>{{ attacher.label }}</h2>
 			<p v-html="attacher.description" />
-			<template slot="actions">
+			<template #actions>
 				<pkp-button
 					:aria-describedby="'attacher' + key"
 					@click="setAttacher(attacher)"

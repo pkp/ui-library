@@ -24,7 +24,7 @@
 			</select-submission-file-list-item>
 		</div>
 		<button-row class="fileAttacher__footer">
-			<template slot="end">
+			<template #end>
 				<pkp-button :is-link="true" @click="$emit('cancel')">
 					<icon icon="long-arrow-left" :inline="true" />
 					{{ backLabel }}

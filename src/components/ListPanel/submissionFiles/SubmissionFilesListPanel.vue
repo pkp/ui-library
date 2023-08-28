@@ -1,23 +1,23 @@
 <template>
 	<div class="submissionFilesListPanel">
 		<list-panel :items="items" class="listPanel--submissionFiles">
-			<pkp-header slot="header">
+			<pkp-header>
 				<h2>{{ title }}</h2>
-				<template slot="actions">
+				<template #actions>
 					<pkp-button ref="addFileButton" @click="openFileBrowser">
 						{{ addFileLabel }}
 					</pkp-button>
 				</template>
 			</pkp-header>
 
-			<template slot="itemsEmpty">
+			<template #itemsEmpty>
 				{{ emptyLabel }}
 				<button class="-linkButton" @click="openFileBrowser">
 					{{ emptyAddLabel }}
 				</button>
 			</template>
 
-			<template v-slot:item="{item}">
+			<template #item="{item}">
 				<slot name="item" :item="item">
 					<submission-files-list-item
 						:apiUrl="apiUrl"

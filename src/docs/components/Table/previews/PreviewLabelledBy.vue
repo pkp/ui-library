@@ -9,7 +9,7 @@
 			aria-labelledby="example-table-label"
 			aria-describedby="example-table-description"
 		>
-			<template slot="head">
+			<template #head>
 				<table-header>ID</table-header>
 				<table-header>Title</table-header>
 				<table-header>Views</table-header>

@@ -2,7 +2,7 @@
 	<fieldset class="previewListPanelSelect">
 		<legend class="-screenReader">List Panel with Select</legend>
 		<list-panel :items="items">
-			<template slot="header">
+			<template #header>
 				<pkp-header>
 					<h2>List Panel with Select</h2>
 				</pkp-header>
@@ -18,7 +18,7 @@
 					</label>
 				</div>
 			</template>
-			<template v-slot:item="{item}">
+			<template #item="{item}">
 				<div class="listPanel__itemSummary">
 					<label class="listPanel__selectWrapper">
 						<div class="listPanel__selector">

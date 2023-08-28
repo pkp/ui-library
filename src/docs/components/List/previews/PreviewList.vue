@@ -1,14 +1,14 @@
 <template>
 	<list>
 		<list-item>
-			<template slot="value">
+			<template #value>
 				<icon icon="comment-o" :inline="true" />
 				32
 			</template>
 			Number of active discussions in this journal.
 		</list-item>
 		<list-item>
-			<template slot="value">
+			<template #value>
 				<icon icon="clock-o" :inline="true" />
 				67
 			</template>

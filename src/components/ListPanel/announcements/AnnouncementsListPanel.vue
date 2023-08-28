@@ -2,10 +2,10 @@
 	<div class="announcementsListPanel">
 		<slot>
 			<list-panel :items="items">
-				<pkp-header slot="header">
+				<pkp-header>
 					<h2>{{ title }}</h2>
 					<spinner v-if="isLoading" />
-					<template slot="actions">
+					<template #actions>
 						<search
 							:searchPhrase="searchPhrase"
 							@search-phrase-changed="setSearchPhrase"
@@ -15,10 +15,10 @@
 						</pkp-button>
 					</template>
 				</pkp-header>
-				<template v-slot:item-title="{item}">
+				<template #item-title="{item}">
 					{{ localize(item.title) }}
 				</template>
-				<template v-slot:item-actions="{item}">
+				<template #item-actions="{item}">
 					<pkp-button element="a" :href="urlBase.replace('__id__', item.id)">
 						{{ __('common.view') }}
 					</pkp-button>
@@ -29,14 +29,15 @@
 						{{ __('common.delete') }}
 					</pkp-button>
 				</template>
-				<pagination
-					v-if="lastPage > 1"
-					slot="footer"
-					:currentPage="currentPage"
-					:isLoading="isLoading"
-					:lastPage="lastPage"
-					@set-page="setPage"
-				/>
+				<template #footer>
+					<pagination
+						v-if="lastPage > 1"
+						:currentPage="currentPage"
+						:isLoading="isLoading"
+						:lastPage="lastPage"
+						@set-page="setPage"
+					/>
+				</template>
 			</list-panel>
 			<modal
 				:closeLabel="__('common.close')"

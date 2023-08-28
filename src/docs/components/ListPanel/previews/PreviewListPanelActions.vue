@@ -1,8 +1,8 @@
 <template>
 	<list-panel :items="items">
-		<pkp-header slot="header">
+		<pkp-header>
 			<h2>List Panel with Actions</h2>
-			<template slot="actions">
+			<template #actions>
 				<pkp-button @click="openModal">Add Item</pkp-button>
 				<pkp-button @click="openModal" :isWarnable="true">
 					Reset Defaults

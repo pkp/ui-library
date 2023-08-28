@@ -139,42 +139,42 @@
 		>
 			<list>
 				<list-item>
-					<template slot="value">
+					<template #value>
 						<icon icon="clock-o" :inline="true" />
 						{{ item.reviewsActive }}
 					</template>
 					{{ activeReviewsLabel }}
 				</list-item>
 				<list-item>
-					<template slot="value">
+					<template #value>
 						<icon icon="check-circle-o" :inline="true" />
 						{{ item.reviewsCompleted }}
 					</template>
 					{{ completedReviewsLabel }}
 				</list-item>
 				<list-item>
-					<template slot="value">
+					<template #value>
 						<icon icon="times-circle-o" :inline="true" />
 						{{ item.reviewsDeclined }}
 					</template>
 					{{ declinedReviewsLabel }}
 				</list-item>
 				<list-item>
-					<template slot="value">
+					<template #value>
 						<icon icon="ban" :inline="true" />
 						{{ item.reviewsCancelled }}
 					</template>
 					{{ cancelledReviewsLabel }}
 				</list-item>
 				<list-item>
-					<template slot="value">
+					<template #value>
 						<icon icon="history" :inline="true" />
 						{{ daysSinceLastAssignment }}
 					</template>
 					{{ daysSinceLastAssignmentDescriptionLabel }}
 				</list-item>
 				<list-item>
-					<template slot="value">
+					<template #value>
 						<icon icon="calendar" :inline="true" />
 						{{ item.averageReviewCompletionDays }}
 					</template>

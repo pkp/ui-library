@@ -1,9 +1,9 @@
 <template>
 	<pkp-table>
-		<pkp-header slot="caption">
+		<pkp-header>
 			<h2>Example Table with Sorting</h2>
 		</pkp-header>
-		<template slot="head">
+		<template #head>
 			<table-header>ID</table-header>
 			<table-header>Title</table-header>
 			<table-header

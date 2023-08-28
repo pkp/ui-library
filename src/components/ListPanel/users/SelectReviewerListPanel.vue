@@ -6,12 +6,12 @@
 				:isSidebarVisible="isSidebarVisible"
 				:items="currentReviewers"
 			>
-				<pkp-header slot="header">
+				<pkp-header>
 					<h2>
 						{{ title }}
 					</h2>
 					<spinner v-if="isLoading" />
-					<template slot="actions">
+					<template #actions>
 						<search
 							:searchPhrase="searchPhrase"
 							@search-phrase-changed="setSearchPhrase"
@@ -26,7 +26,7 @@
 					</template>
 				</pkp-header>
 
-				<template slot="sidebar">
+				<template #sidebar>
 					<pkp-header :isOneLine="false">
 						<h2>
 							<icon icon="filter" :inline="true" />
@@ -45,7 +45,7 @@
 					/>
 				</template>
 
-				<template v-if="isLoading" slot="itemsEmpty">
+				<template v-if="isLoading" #itemsEmpty>
 					<template v-if="isLoading">
 						<spinner />
 						{{ __('common.loading') }}
@@ -55,7 +55,7 @@
 					</template>
 				</template>
 
-				<template v-slot:item="{item}">
+				<template #item="{item}">
 					<select-reviewer-list-item
 						:activeReviewsCountLabel="activeReviewsCountLabel"
 						:activeReviewsLabel="activeReviewsLabel"
@@ -91,7 +91,7 @@
 					/>
 				</template>
 
-				<template slot="footer">
+				<template #footer>
 					<pagination
 						v-if="lastPage > 1"
 						:currentPage="currentPage"

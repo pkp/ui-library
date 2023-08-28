@@ -38,8 +38,9 @@ export default {
 						},
 					});
 					this.output = marked.parse(markdown.default);
-					return;
 				}
+			} else {
+				this.output = '';
 			}
 		},
 	},

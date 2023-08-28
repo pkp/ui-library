@@ -68,7 +68,7 @@
 				:aria-label="'Examples of ' + this.name"
 			>
 				<nav-group>
-					<template slot="heading">Examples</template>
+					<template #heading>Examples</template>
 					<li v-for="route in exampleRoutes" :key="route.path">
 						<router-link :to="route.path">{{ route.name }}</router-link>
 					</li>

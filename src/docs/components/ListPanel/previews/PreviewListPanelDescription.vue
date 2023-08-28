@@ -1,6 +1,6 @@
 <template>
 	<list-panel :items="items" class="previewListPanelDescription">
-		<template slot="header">
+		<template #header>
 			<pkp-header>
 				<h2>ListPanel with Description</h2>
 			</pkp-header>

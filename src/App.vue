@@ -7,7 +7,7 @@
 	></PkpDialog>
 	<nav class="nav" aria-label="Primary Navigation">
 		<nav-group>
-			<template slot="heading">Guide</template>
+			<template #heading>Guide</template>
 			<li>
 				<router-link to="/" class="router-link-home">Introduction</router-link>
 			</li>
@@ -24,13 +24,13 @@
 			</li>
 		</nav-group>
 		<nav-group>
-			<template slot="heading">Utilities</template>
+			<template #heading>Utilities</template>
 			<li><router-link to="/pages/announcer">Announcer</router-link></li>
 			<li><router-link to="/pages/event-bus">Event Bus</router-link></li>
 			<li><router-link to="/utilities/Notify">Notify</router-link></li>
 		</nav-group>
 		<nav-group>
-			<template slot="heading">Global Components</template>
+			<template #heading>Global Components</template>
 			<li><router-link to="/component/Badge">Badge</router-link></li>
 			<li><router-link to="/component/Button">Button</router-link></li>
 			<li><router-link to="/component/Dropdown">Dropdown</router-link></li>
@@ -45,7 +45,7 @@
 			<li><router-link to="/component/Tabs">Tabs</router-link></li>
 		</nav-group>
 		<nav-group>
-			<template slot="heading">Other Components</template>
+			<template #heading>Other Components</template>
 			<li>
 				<router-link to="/component/ActionPanel">ActionPanel</router-link>
 			</li>
@@ -90,7 +90,7 @@
 			<li><router-link to="/component/Tooltip">Tooltip</router-link></li>
 		</nav-group>
 		<nav-group>
-			<template slot="heading">Forms</template>
+			<template #heading>Forms</template>
 			<li>
 				<router-link to="/component/Form">Form</router-link>
 			</li>
@@ -196,7 +196,7 @@
 			</li>
 		</nav-group>
 		<nav-group>
-			<template slot="heading">ListPanels</template>
+			<template #heading>ListPanels</template>
 			<li>
 				<router-link to="/component/ListPanel">Overview</router-link>
 			</li>
@@ -238,7 +238,7 @@
 			</li>
 		</nav-group>
 		<nav-group>
-			<template slot="heading">Pages</template>
+			<template #heading>Pages</template>
 			<li>
 				<router-link to="/component/Page">Page</router-link>
 			</li>
@@ -268,7 +268,7 @@
 			</li>
 		</nav-group>
 		<nav-group>
-			<template slot="heading">Mixins</template>
+			<template #heading>Mixins</template>
 			<li><router-link to="/pages/autosave">autosave</router-link></li>
 			<li><router-link to="/mixins/dialog">dialog</router-link></li>
 			<li><router-link to="/mixins/fetch">fetch</router-link></li>

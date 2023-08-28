@@ -5,10 +5,10 @@
 			:items="items"
 			class="listPanel--submissions"
 		>
-			<pkp-header slot="header">
+			<pkp-header>
 				<h2>{{ title }}</h2>
 				<spinner v-if="isLoading" />
-				<template slot="actions">
+				<template #actions>
 					<search
 						:searchPhrase="searchPhrase"
 						@search-phrase-changed="setSearchPhrase"
@@ -30,7 +30,7 @@
 				</template>
 			</pkp-header>
 
-			<template slot="sidebar">
+			<template #sidebar>
 				<pkp-header :isOneLine="false">
 					<h3>
 						<icon icon="filter" :inline="true" />
@@ -58,7 +58,7 @@
 				</div>
 			</template>
 
-			<template slot="itemsEmpty">
+			<template #itemsEmpty>
 				<template v-if="isLoading">
 					<spinner />
 					{{ __('common.loading') }}
@@ -68,7 +68,7 @@
 				</template>
 			</template>
 
-			<template v-slot:item="{item}">
+			<template #item="{item}">
 				<slot name="item" :item="item">
 					<submissions-list-item
 						:key="item.id"
@@ -83,7 +83,7 @@
 
 			<pagination
 				v-if="lastPage > 1"
-				slot="footer"
+				#footer
 				:currentPage="currentPage"
 				:isLoading="isLoading"
 				:lastPage="lastPage"

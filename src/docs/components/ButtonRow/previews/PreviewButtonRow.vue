@@ -1,6 +1,6 @@
 <template>
 	<button-row>
-		<template slot="end">
+		<template #end>
 			<pkp-button :is-link="true">
 				<icon icon="long-arrow-left" :inline="true" />
 				Back

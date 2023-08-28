@@ -1,7 +1,7 @@
 <template>
 	<panel class="composer">
 		<panel-section>
-			<template slot="header">
+			<template #header>
 				<slot name="description" />
 				<div
 					v-if="emailTemplates.length || emailTemplatesApiUrl"
@@ -222,37 +222,38 @@
 					:searchLabel="insertSearchLabel"
 					@change="(name, prop, value) => this.emitChange({body: value})"
 				>
-					<div
-						v-if="attachments.length"
-						class="composer__attachments"
-						ref="attachedFiles"
-						slot="footer"
-					>
-						<span class="-screenReader">
-							{{ attachedFilesLabel }}
-						</span>
-						<badge
-							v-for="(attachment, i) in attachments"
-							:key="i"
-							class="composer__attachment"
+					<template #footer>
+						<div
+							v-if="attachments.length"
+							class="composer__attachments"
+							ref="attachedFiles"
 						>
-							<icon
-								:icon="getDocumentTypeIcon(attachment)"
-								:inline="true"
-								class="composer__attachment__documentType"
-							/>
-							{{ attachment.name }}
-							<button
-								class="composer__attachment__remove"
-								@click="removeAttachment(i)"
+							<span class="-screenReader">
+								{{ attachedFilesLabel }}
+							</span>
+							<badge
+								v-for="(attachment, i) in attachments"
+								:key="i"
+								class="composer__attachment"
 							>
-								<icon icon="times" />
-								<span class="-screenReader">
-									{{ removeItemLabel.replace('{$item}', attachment.name) }}
-								</span>
-							</button>
-						</badge>
-					</div>
+								<icon
+									:icon="getDocumentTypeIcon(attachment)"
+									:inline="true"
+									class="composer__attachment__documentType"
+								/>
+								{{ attachment.name }}
+								<button
+									class="composer__attachment__remove"
+									@click="removeAttachment(i)"
+								>
+									<icon icon="times" />
+									<span class="-screenReader">
+										{{ removeItemLabel.replace('{$item}', attachment.name) }}
+									</span>
+								</button>
+							</badge>
+						</div>
+					</template>
 				</field-prepared-content>
 				<modal
 					:closeLabel="__('common.close')"

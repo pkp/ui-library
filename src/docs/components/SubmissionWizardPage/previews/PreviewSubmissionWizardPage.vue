@@ -58,7 +58,7 @@
 				>
 					<panel>
 						<panel-section v-for="section in step.sections" :key="section.id">
-							<template slot="header">
+							<template #header>
 								<h2>{{ section.name }}</h2>
 								<div v-html="section.description" />
 							</template>
@@ -319,7 +319,7 @@
 		</div>
 
 		<button-row class="submissionWizard__footer">
-			<template slot="end">
+			<template #end>
 				<pkp-button
 					v-if="!isOnFirstStep"
 					:isWarnable="true"

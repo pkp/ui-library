@@ -2,10 +2,10 @@
 	<div class="institutionsListPanel">
 		<slot>
 			<list-panel :items="items">
-				<pkp-header slot="header">
+				<pkp-header>
 					<h2>{{ title }}</h2>
 					<spinner v-if="isLoading" />
-					<template slot="actions">
+					<template #actions>
 						<search
 							:searchPhrase="searchPhrase"
 							@search-phrase-changed="setSearchPhrase"
@@ -15,12 +15,12 @@
 						</pkp-button>
 					</template>
 				</pkp-header>
-				<template v-slot:item-title="{item}">
+				<template #item-title="{item}">
 					<span :id="'institution-' + item.id">
 						{{ localize(item.name) }}
 					</span>
 				</template>
-				<template v-slot:item-actions="{item}">
+				<template #item-actions="{item}">
 					<pkp-button
 						:aria-describedby="'institution-' + item.id"
 						@click="openEditModal(item.id)"
@@ -37,7 +37,7 @@
 				</template>
 				<pagination
 					v-if="lastPage > 1"
-					slot="footer"
+					#footer
 					:currentPage="currentPage"
 					:isLoading="isLoading"
 					:lastPage="lastPage"

@@ -165,21 +165,21 @@
 		>
 			<list>
 				<list-item v-if="isReviewStage">
-					<template slot="value">
+					<template #value>
 						<icon icon="user-o" :inline="true" />
 						{{ completedReviewsCount }}/{{ currentReviewAssignments.length }}
 					</template>
 					{{ __('submission.list.reviewsCompleted') }}
 				</list-item>
 				<list-item v-if="!isSubmissionStage">
-					<template slot="value">
+					<template #value>
 						<icon icon="file-text-o" :inline="true" />
 						{{ activeStage.files.count }}
 					</template>
 					{{ activeStageFilesLabel }}
 				</list-item>
 				<list-item v-if="!item.submissionProgress">
-					<template slot="value">
+					<template #value>
 						<icon icon="comment-o" :inline="true" />
 						{{ openQueryCount }}
 					</template>
