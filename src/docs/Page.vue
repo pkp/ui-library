@@ -25,7 +25,9 @@ export default {
 			}
 			if (page) {
 				try {
-					markdown = await import('./pages/' + page + '.md?raw');
+					markdown = await import(
+						/* @vite-ignore */ './pages/' + page + '.md?raw'
+					);
 				} catch (e) {
 					markdown = '';
 				}

@@ -104,7 +104,7 @@ const vueApp = createApp({
 			 * TinyMCE configuration
 			 */
 			tinyMCE: {
-				skinUrl: 'styles/tinymce',
+				skinUrl: '/styles/tinymce',
 			},
 		};
 	},

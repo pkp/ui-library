@@ -155,8 +155,8 @@ window.$.pkp = {
 		currentLocale: 'en',
 		primaryLocale: 'en',
 		rtlLocales: ['ar'],
-		tinyMceContentCSS: 'styles/content.css',
-		tinyMceOneLineContentCSS: 'styles/content_oneline.css',
+		tinyMceContentCSS: '/styles/content.css',
+		tinyMceOneLineContentCSS: '/styles/content_oneline.css',
 	},
 	pkpHandler() {
 		alert(

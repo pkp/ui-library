@@ -11,6 +11,7 @@
   "dependencies": {
     "@headlessui/vue": "^1.7.15",
     "@lk77/vue3-color": "^3.0.6",
+    "@tinymce/tinymce-vue": "^5.1.1",
     "@vue-a11y/announcer": "^3.1.5",
     "chart.js": "^4.3.3",
     "clone-deep": "^4.0.1",
@@ -25,6 +26,7 @@
     "moment": "^2.29.4",
     "raw-loader": "^4.0.0",
     "tiny-emitter": "^2.1.0",
+    "tinymce": "^5.10.7",
     "uuid": "^9.0.0",
     "vue": "^3.3.4",
     "vue-chartjs": "^5.2.0",
