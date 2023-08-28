@@ -1,5 +1,12 @@
 <template>
-	<button v-tooltip="tooltip" class="tooltipButton" @click.prevent>
+	<button
+		v-tooltip="{
+			content: tooltip,
+			theme: 'pkp-tooltip',
+		}"
+		class="tooltipButton"
+		@click.prevent
+	>
 		<icon icon="question-circle" />
 		<span class="-screenReader">{{ label }}</span>
 	</button>
@@ -36,7 +43,16 @@ export default {
 	cursor: pointer;
 }
 
-.tooltip-inner a {
-	color: #fff;
+.v-popper--theme-tooltip.v-popper--theme-pkp-tooltip {
+	.v-popper__inner {
+		padding: 0.7em;
+		max-width: 320px;
+		font-size: 12px;
+		line-height: 16px;
+
+		a {
+			color: #fff;
+		}
+	}
 }
 </style>

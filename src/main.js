@@ -9,7 +9,9 @@ import router from './router';
 import GlobalMixins from '@/mixins/global.js';
 //import VueAnnouncer from 'vue-announcer';
 //import VModal from 'vue-js-modal';
-//import VTooltip from 'v-tooltip';
+import FloatingVue from 'floating-vue';
+import 'floating-vue/dist/style.css';
+
 import VueScrollTo from 'vue-scrollto';
 
 import Badge from '@/components/Badge/Badge.vue';
@@ -130,5 +132,17 @@ vueApp.component('Tabs', Tabs);
 vueApp.use(router);
 
 vueApp.use(VueScrollTo);
+vueApp.use(FloatingVue, {
+	themes: {
+		'pkp-tooltip': {
+			$extend: 'tooltip',
+			triggers: ['click'],
+			delay: {
+				show: 0,
+				hide: 0,
+			},
+		},
+	},
+});
 
 vueApp.mount('#app');
