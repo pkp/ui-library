@@ -189,15 +189,15 @@
 						/>
 					</slot>
 				</template>
-
-				<pagination
-					v-if="lastPage > 1"
-					#footer
-					:currentPage="currentPage"
-					:isLoading="isLoading"
-					:lastPage="lastPage"
-					@set-page="setPage"
-				/>
+				<template #footer>
+					<pagination
+						v-if="lastPage > 1"
+						:currentPage="currentPage"
+						:isLoading="isLoading"
+						:lastPage="lastPage"
+						@set-page="setPage"
+					/>
+				</template>
 			</list-panel>
 		</slot>
 
@@ -526,7 +526,7 @@ export default {
 						pkp.eventBus.$emit(
 							'notify',
 							this.__('manager.dois.notification.depositQueuedSuccess'),
-							'success'
+							'success',
 						);
 					},
 					error: (response) => this.ajaxErrorCallback(response),
@@ -568,7 +568,7 @@ export default {
 						pkp.eventBus.$emit(
 							'notify',
 							this.__('manager.dois.notification.exportSuccess'),
-							'success'
+							'success',
 						);
 					},
 					error: (response) => this.ajaxErrorCallback(response),
@@ -583,7 +583,7 @@ export default {
 			const actionLabel = this.__('manager.dois.actions.markRegistered.label');
 			const actionMessage = this.__(
 				'manager.dois.actions.markRegistered.prompt',
-				{count: this.selected.length}
+				{count: this.selected.length},
 			);
 
 			this.openBulkActionDialog(actionLabel, actionMessage, (closeDialog) => {
@@ -596,11 +596,16 @@ export default {
 						pkp.eventBus.$emit(
 							'notify',
 							this.__('manager.dois.notification.markRegisteredSuccess'),
-							'success'
+							'success',
 						);
 					},
 					error: (response) => {
-						if (response.responseJSON.hasOwnProperty('failedDoiActions')) {
+						if (
+							Object.prototype.hasOwnProperty.call(
+								response.responseJSON,
+								'failedDoiActions',
+							)
+						) {
 							this.failedDoiActions = response.responseJSON.failedDoiActions;
 							return;
 						}
@@ -615,11 +620,11 @@ export default {
 		 */
 		openBulkMarkUnregistered() {
 			const actionLabel = this.__(
-				'manager.dois.actions.markUnregistered.label'
+				'manager.dois.actions.markUnregistered.label',
 			);
 			const actionMessage = this.__(
 				'manager.dois.actions.markUnregistered.prompt',
-				{count: this.selected.length}
+				{count: this.selected.length},
 			);
 
 			this.openBulkActionDialog(actionLabel, actionMessage, (closeDialog) => {
@@ -632,7 +637,7 @@ export default {
 						pkp.eventBus.$emit(
 							'notify',
 							this.__('manager.dois.notification.markUnregisteredSuccess'),
-							'success'
+							'success',
 						);
 					},
 					error: (response) => this.ajaxErrorCallback(response),
@@ -659,11 +664,16 @@ export default {
 						pkp.eventBus.$emit(
 							'notify',
 							this.__('manager.dois.notification.markStaleSuccess'),
-							'success'
+							'success',
 						);
 					},
 					error: (response) => {
-						if (response.responseJSON.hasOwnProperty('failedDoiActions')) {
+						if (
+							Object.prototype.hasOwnProperty.call(
+								response.responseJSON,
+								'failedDoiActions',
+							)
+						) {
 							this.failedDoiActions = response.responseJSON.failedDoiActions;
 							return;
 						}
@@ -692,11 +702,16 @@ export default {
 						pkp.eventBus.$emit(
 							'notify',
 							this.__('manager.dois.notification.assignDoisSuccess'),
-							'success'
+							'success',
 						);
 					},
 					error: (response) => {
-						if (response.responseJSON.hasOwnProperty('failedDoiActions')) {
+						if (
+							Object.prototype.hasOwnProperty.call(
+								response.responseJSON,
+								'failedDoiActions',
+							)
+						) {
 							this.failedDoiActions = response.responseJSON.failedDoiActions;
 							return;
 						}
@@ -727,7 +742,7 @@ export default {
 						pkp.eventBus.$emit(
 							'notify',
 							this.__('manager.dois.notification.depositQueuedSuccess'),
-							'success'
+							'success',
 						);
 					},
 					error: (response) => this.ajaxErrorCallback(response),
@@ -802,7 +817,7 @@ export default {
 			pkp.eventBus.$emit(
 				'notify',
 				this.__('manger.dois.update.success'),
-				'success'
+				'success',
 			);
 			this.setItems(newItemsList, this.itemsMax);
 		},
@@ -814,7 +829,7 @@ export default {
 		 */
 		getCurrentPublication(submission) {
 			return submission.publications.find(
-				(publication) => publication.id === submission.currentPublicationId
+				(publication) => publication.id === submission.currentPublicationId,
 			);
 		},
 		// -- Mapped Items and related methods -- //

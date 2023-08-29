@@ -99,7 +99,7 @@ export default {
 				'<div id="' +
 					$.pkp.classes.Helper.uuid() +
 					'" ' +
-					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>'
+					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>',
 			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
 		},
 	},
@@ -150,10 +150,10 @@ export default {
 		 */
 		pkp.eventBus.$on(
 			'update:unread-tasks-count',
-			(data) => (this.unreadTasksCount = data.count)
+			(data) => (this.unreadTasksCount = data.count),
 		);
 	},
-	destroyed() {
+	unmounted() {
 		pkp.eventBus.$off('notify');
 		pkp.eventBus.$off('clear-all-notify');
 		clearInterval(this.notificationInterval);

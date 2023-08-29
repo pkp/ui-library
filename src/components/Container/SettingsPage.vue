@@ -123,7 +123,7 @@ export default {
 											return newlyEnabledPlugin === null
 												? true
 												: option.allowedBy.includes(newlyEnabledPlugin);
-										}
+										},
 									);
 
 								let fieldValues = field.value;
@@ -138,7 +138,7 @@ export default {
 			}
 		});
 	},
-	destroyed() {
+	unmounted() {
 		pkp.eventBus.$off('form-success');
 	},
 };

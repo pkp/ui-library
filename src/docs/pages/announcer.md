@@ -25,7 +25,7 @@ Use the `$announcer` when an action leads to a pending or loading state.
 ```js
 this.$announcer.set('Loading submission details');
 this.loadingComplete(() => {
-    this.$announcer.set('Submission details loaded');
+	this.$announcer.set('Submission details loaded');
 });
 ```
 

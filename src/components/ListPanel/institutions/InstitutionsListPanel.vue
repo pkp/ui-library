@@ -37,14 +37,15 @@
 						{{ __('common.delete') }}
 					</pkp-button>
 				</template>
-				<pagination
-					v-if="lastPage > 1"
-					#footer
-					:currentPage="currentPage"
-					:isLoading="isLoading"
-					:lastPage="lastPage"
-					@set-page="setPage"
-				/>
+				<template #footer>
+					<pagination
+						v-if="lastPage > 1"
+						:currentPage="currentPage"
+						:isLoading="isLoading"
+						:lastPage="lastPage"
+						@set-page="setPage"
+					/>
+				</template>
 			</list-panel>
 			<modal
 				:closeLabel="__('common.close')"
@@ -159,7 +160,7 @@ export default {
 			} else {
 				this.setItems(
 					this.items.map((i) => (i.id === item.id ? item : i)),
-					this.itemsMax
+					this.itemsMax,
 				);
 				pkp.eventBus.$emit('update:institution', item);
 			}
@@ -212,7 +213,7 @@ export default {
 								success: function (r) {
 									self.setItems(
 										self.items.filter((i) => i.id !== id),
-										self.itemsMax
+										self.itemsMax,
 									);
 									close();
 									self.setFocusIn(self.$el);
@@ -236,7 +237,7 @@ export default {
 		 */
 		openEditModal(id) {
 			const institution = this.items.find(
-				(institution) => institution.id === id
+				(institution) => institution.id === id,
 			);
 			if (!institution) {
 				this.ajaxErrorCallback({});

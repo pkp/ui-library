@@ -12,8 +12,8 @@
 
 ## Events
 
-| Key | Description |
-| --- | --- |
+| Key             | Description                                             |
+| --------------- | ------------------------------------------------------- |
 | `updated:files` | Emitted when the files have changed. Payload: `(files)` |
 
 ## Usage
@@ -24,9 +24,7 @@ When using `<FileUploader>`, the drag-and-drop target area will expand to fill i
 
 ```html
 <div style="width: 300px; height: 300px;">
-    <file-uploader
-        ...
-    />
+	<file-uploader ... />
 </div>
 ```
 
@@ -34,19 +32,16 @@ Use [FileUploadProgress](#/component/FileUploadProgress) to show the progress of
 
 ```html
 <div>
-    <file-upload-progress
-        v-for="(file, i) in files"
-        :key="i"
-        cancelUploadLabel="Cancel Upload"
-        :errors="file.errors"
-        :name="file.name"
-        :progress="file.progress"
-        @cancel="remove(i)"
-    />
-    <file-uploader
-        :files="files"
-        ...
-    />
+	<file-upload-progress
+		v-for="(file, i) in files"
+		:key="i"
+		cancelUploadLabel="Cancel Upload"
+		:errors="file.errors"
+		:name="file.name"
+		:progress="file.progress"
+		@cancel="remove(i)"
+	/>
+	<file-uploader :files="files" ... />
 </div>
 ```
 
@@ -54,29 +49,21 @@ Always provide a button to open the file browser for users who can't use the dra
 
 ```html
 <template>
-    <div>
-        Drag and drop files here or
-        <button @click="openFileBrowser">
-            upload a file
-        </button>
-        <file-uploader
-            ref="exampleUploader"
-            ...
-        />
-    </div>
+	<div>
+		Drag and drop files here or
+		<button @click="openFileBrowser">upload a file</button>
+		<file-uploader ref="exampleUploader" ... />
+	</div>
 </template>
 
 <script>
-export default {
-    methods: {
-        openFileBrowser() {
-            this
-                .$refs
-                .exampleUploader
-                .openFileBrowser();
-        }
-    }
-}
+	export default {
+		methods: {
+			openFileBrowser() {
+				this.$refs.exampleUploader.openFileBrowser();
+			},
+		},
+	};
 </script>
 ```
 
@@ -86,26 +73,22 @@ When `<FileUploader>` makes the `POST` request to upload a file, it will send a 
 
 ```json
 {
-    "name": "the-uploaded-filename.ext"
+	"name": "the-uploaded-filename.ext"
 }
 ```
 
 If the name needs to be sent as [localized data](#/pages/localization), set the `filenameLocale` prop.
 
 ```html
-<file-uploader
-    filenameLocale="en"
-    ...
-/>
+<file-uploader filenameLocale="en" ... />
 ```
 
 The request body will change to this.
 
-
 ```json
 {
-    "name": {
-        "en": "the-uploaded-filename.ext"
-    }
+	"name": {
+		"en": "the-uploaded-filename.ext"
+	}
 }
 ```

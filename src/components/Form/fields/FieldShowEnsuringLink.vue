@@ -39,12 +39,12 @@ export default {
 				{
 					height: 'auto',
 					scrollable: true,
-				}
+				},
 			);
 			return false;
 		});
 	},
-	beforeDestroy() {
+	beforeUnmount() {
 		/**
 		 * Clean up modal event listener
 		 */

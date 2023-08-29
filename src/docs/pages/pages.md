@@ -37,7 +37,7 @@ export default {
 </script>
 ```
 
-In practice, `Page` components are usually written without templates. Instead, the application provides the template and the `Page` component is mounted onto the template at run-time. This supports [hydration](https://en.wikipedia.org/wiki/Hydration_(web_development)) and allows plugins to modify the server-side templates. Learn more in the [frontend documentation](https://docs.pkp.sfu.ca/dev/documentation/en/frontend-pages).
+In practice, `Page` components are usually written without templates. Instead, the application provides the template and the `Page` component is mounted onto the template at run-time. This supports [hydration](<https://en.wikipedia.org/wiki/Hydration_(web_development)>) and allows plugins to modify the server-side templates. Learn more in the [frontend documentation](https://docs.pkp.sfu.ca/dev/documentation/en/frontend-pages).
 
 Because the template is not built into the `Page` component, it can be difficult to work with pages in the UI Library. Use a [demo component](#/pages/contributing) to build and test `Page` components in the UI Library with a template. First, create the `Page` component without a template.
 

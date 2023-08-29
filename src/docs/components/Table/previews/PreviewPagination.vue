@@ -1,9 +1,11 @@
 <template>
 	<div class="previewTable">
 		<pkp-table>
-			<pkp-header #caption>
-				<h2>Example Table</h2>
-			</pkp-header>
+			<template #caption>
+				<pkp-header>
+					<h2>Example Table</h2>
+				</pkp-header>
+			</template>
 			<template #head>
 				<table-header>ID</table-header>
 				<table-header>Title</table-header>

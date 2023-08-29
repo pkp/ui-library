@@ -13,15 +13,6 @@ import localizeSubmission from '@/mixins/localizeSubmission.js';
 import {v4 as uuidv4} from 'uuid';
 
 /**
- * Track the previously focused element before
- * an action occured.
- *
- * Used to reset focus after a modal or similar
- * popup is closed.
- */
-let lastFocusedEl;
-
-/**
  * A unique ID for the most recent request for submissions
  *
  * This is used to fix issues where the user makes a second request
@@ -91,7 +82,7 @@ export default {
 					case 'field-options':
 						this.activeFilters[key].forEach((value) => {
 							const option = field.options.find(
-								(option) => option.value === value
+								(option) => option.value === value,
 							);
 							list.push({
 								queryParam: key,
@@ -154,7 +145,7 @@ export default {
 				.replace('{$start}', this.offset + 1)
 				.replace(
 					'{$finish}',
-					Math.min(this.offset + this.count, this.submissionsMax)
+					Math.min(this.offset + this.count, this.submissionsMax),
 				)
 				.replace('{$total}', this.submissionsMax);
 		},
@@ -270,7 +261,7 @@ export default {
 				(stage) =>
 					stage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION &&
 					!!stage.statusId &&
-					stage.statusId === pkp.const.STAGE_STATUS_SUBMISSION_UNASSIGNED
+					stage.statusId === pkp.const.STAGE_STATUS_SUBMISSION_UNASSIGNED,
 			);
 		},
 
@@ -278,8 +269,6 @@ export default {
 		 * Load a modal displaying the assign participant options
 		 */
 		openAssignParticipant(submission) {
-			lastFocusedEl = document.activeElement;
-
 			var opts = {
 				title: this.__('submission.list.assignEditor'),
 				url: this.assignParticipantUrl
@@ -294,7 +283,7 @@ export default {
 				'<div id="' +
 					$.pkp.classes.Helper.uuid() +
 					'" ' +
-					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>'
+					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>',
 			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
 		},
 
@@ -302,7 +291,6 @@ export default {
 		 * Open the panel to select filters
 		 */
 		openFilters() {
-			lastFocusedEl = document.activeElement;
 			this.isModalOpenedFilters = true;
 		},
 
@@ -310,7 +298,6 @@ export default {
 		 * Open the submission summary panel
 		 */
 		openSummary(submission) {
-			lastFocusedEl = document.activeElement;
 			this.summarySubmission = submission;
 			this.isModalOpenedSummary = true;
 		},
@@ -322,9 +309,9 @@ export default {
 			this.activeFilters = Object.fromEntries(
 				Object.entries(data).filter(([key, value]) => {
 					return (Array.isArray(value) && value.length) || !!value;
-				})
+				}),
 			);
-			this.get(() => (isModalOpenedFilters = false));
+			this.get(() => (this.isModalOpenedFilters = false));
 		},
 
 		/**

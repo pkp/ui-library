@@ -81,15 +81,15 @@
 					/>
 				</slot>
 			</template>
-
-			<pagination
-				v-if="lastPage > 1"
-				#footer
-				:currentPage="currentPage"
-				:isLoading="isLoading"
-				:lastPage="lastPage"
-				@set-page="setPage"
-			/>
+			<template #footer>
+				<pagination
+					v-if="lastPage > 1"
+					:currentPage="currentPage"
+					:isLoading="isLoading"
+					:lastPage="lastPage"
+					@set-page="setPage"
+				/>
+			</template>
 		</list-panel>
 	</div>
 </template>
@@ -213,7 +213,7 @@ export default {
 				this.get();
 			} else {
 				let newFilters = {...this.activeFilters};
-				if (newFilters.hasOwnProperty('isIncomplete')) {
+				if (Object.prototype.hasOwnProperty.call(newFilters, 'isIncomplete')) {
 					delete newFilters.isIncomplete;
 				}
 				if (
@@ -337,11 +337,11 @@ export default {
 				this.items.filter((item) => {
 					return data.id !== item.id;
 				}),
-				this.itemsMax - 1
+				this.itemsMax - 1,
 			);
 		});
 	},
-	destroyed() {
+	unmounted() {
 		pkp.eventBus.$off('updated:submission');
 		pkp.eventBus.$off('deleted:submission');
 	},

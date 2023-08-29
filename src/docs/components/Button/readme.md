@@ -11,11 +11,11 @@
 
 ## Events
 
-| Key | Description |
-| --- | --- |
-| `click` | When the button is clicked. |
-| `focus` | When the button receives focus. |
-| `blur` | When focus moves away from the button. |
+| Key     | Description                            |
+| ------- | -------------------------------------- |
+| `click` | When the button is clicked.            |
+| `focus` | When the button receives focus.        |
+| `blur`  | When focus moves away from the button. |
 
 ## Usage
 

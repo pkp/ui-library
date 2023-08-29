@@ -1,18 +1,18 @@
 ## Props
 
-| Key              | Description                                                                                                                          |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `current`        | The `id` of the current step.                                                                                                        |
-| `label`          | A localized string describing the steps for assistive technology.                                                                    |
-| `progressLabel`  | A localized string with `{$current}` and `{$total}` that describes the current and total steps. Example: `{$current}/{$total} steps` |
-| `scrollTo`       | The DOM element to scroll into view when changing steps. This is expected to be a ref from the parent component.                     |
-| `showStepsLabel` | A localized string for the button to show all steps when the steps are viewed on a small device.                                     |
-| `startedSteps`   | An array of step `id`s that have already been started.                                                                               |
+| Key | Description |
+| --- | --- |
+| `current` | The `id` of the current step. |
+| `label` | A localized string describing the steps for assistive technology. |
+| `progressLabel` | A localized string with `{$current}` and `{$total}` that describes the current and total steps. Example: `{$current}/{$total} steps` |
+| `scrollTo` | The DOM element to scroll into view when changing steps. This is expected to be a ref from the parent component. |
+| `showStepsLabel` | A localized string for the button to show all steps when the steps are viewed on a small device. |
+| `startedSteps` | An array of step `id`s that have already been started. |
 
 ## Events
 
-| Key         | Description                                          |
-| ----------- | ---------------------------------------------------- |
+| Key | Description |
+| --- | --- |
 | `step:open` | Emitted when a new step is opened with payload of the step `id`. |
 
 ## Usage

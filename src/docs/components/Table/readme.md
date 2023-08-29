@@ -20,14 +20,14 @@ All cells in the table must use the `<TableCell>` component in order to support 
 
 ```html
 <pkp-table>
-    <tr>
-        <table-cell :isRowHeader="true">dbarnes</table-cell>
-        <table-cell >Daniel Barnes</table-cell>
-    </tr>
-    <tr>
-        <table-cell :isRowHeader="true">sminotue</table-cell>
-        <table-cell >Stephanie Minotue</table-cell>
-    </tr>
+	<tr>
+		<table-cell :isRowHeader="true">dbarnes</table-cell>
+		<table-cell>Daniel Barnes</table-cell>
+	</tr>
+	<tr>
+		<table-cell :isRowHeader="true">sminotue</table-cell>
+		<table-cell>Stephanie Minotue</table-cell>
+	</tr>
 </pkp-table>
 ```
 
@@ -35,14 +35,14 @@ When writing a `<TableCell>` in a Smarty template, you must use a `<td>` with wi
 
 ```html
 <pkp-table>
-    <tr>
-        <td is="table-cell" :isRowHeader="true">dbarnes</td>
-        <td is="table-cell" >Daniel Barnes</td>
-    </tr>
-    <tr>
-        <td is="table-cell" :isRowHeader="true">sminotue</td>
-        <td is="table-cell" >Stephanie Minotue</td>
-    </tr>
+	<tr>
+		<td is="table-cell" :isRowHeader="true">dbarnes</td>
+		<td is="table-cell">Daniel Barnes</td>
+	</tr>
+	<tr>
+		<td is="table-cell" :isRowHeader="true">sminotue</td>
+		<td is="table-cell">Stephanie Minotue</td>
+	</tr>
 </pkp-table>
 ```
 
@@ -64,10 +64,10 @@ The `<TableHeader>` component should be used in the table's `head` slot to displ
 
 ```html
 <pkp-table>
-    <template #head>
-        <table-header>Username</table-header>
-        <table-header>Name</table-header>
-    </template>
+	<template #head>
+		<table-header>Username</table-header>
+		<table-header>Name</table-header>
+	</template>
 </pkp-table>
 ```
 
@@ -113,9 +113,9 @@ Every table needs an accessible caption. Use the `caption` slot to provide a tit
 
 ```html
 <pkp-table>
-    <pkp-header #caption>
-        <h2>Example Table</h2>
-    </pkp-header>
+	<pkp-header #caption>
+		<h2>Example Table</h2>
+	</pkp-header>
 </pkp-table>
 ```
 

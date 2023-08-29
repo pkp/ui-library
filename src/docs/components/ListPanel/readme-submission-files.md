@@ -1,4 +1,3 @@
-
 ## Props
 
 | Key | Description |
@@ -24,8 +23,8 @@
 
 ## Events
 
-| Key | Description |
-| --- | --- |
+| Key   | Description                                                      |
+| ----- | ---------------------------------------------------------------- |
 | `set` | Emitted when a prop should be changed. Payload: `(id, newProps)` |
 
 ## Mixins
@@ -38,14 +37,14 @@ Use this component to upload [Submission Files](https://docs.pkp.sfu.ca/dev/docu
 
 ```json
 [
-    {
-        "id": 1,
-        "name": "Book Manuscript",
-        "isPrimary": true
-    },
-    {
-        "id": 2,
-        "name": "Preface"
-    }
+	{
+		"id": 1,
+		"name": "Book Manuscript",
+		"isPrimary": true
+	},
+	{
+		"id": 2,
+		"name": "Preface"
+	}
 ]
 ```

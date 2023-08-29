@@ -28,15 +28,15 @@ export default {
 	extends: FieldBaseAutosuggest,
 	methods: {
 		setSuggestions(newItems) {
-			this.suggestions = newItems.map(item => {
+			this.suggestions = newItems.map((item) => {
 				return {
 					value: item.id,
-					label: item.title
+					label: item.title,
 				};
-			})
-		}
-	}
-}
+			});
+		},
+	},
+};
 ```
 
 The `value` is submitted with the form.

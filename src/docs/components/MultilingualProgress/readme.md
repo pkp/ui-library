@@ -1,8 +1,8 @@
 ## Props
 
-| Key | Description |
-| --- | --- |
-| `count` | The number of completed multilingual items. |
+| Key     | Description                                                       |
+| ------- | ----------------------------------------------------------------- |
+| `count` | The number of completed multilingual items.                       |
 | `total` | The total number of multilingual items available to be completed. |
 
 ## Events

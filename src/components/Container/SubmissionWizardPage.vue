@@ -121,7 +121,7 @@ export default {
 				.find((step) => step.id === 'review')
 				?.sections.find((section) => section.id === 'confirmSubmission')
 				?.form.fields.map(
-					(field) => field.component !== 'field-options' || field.value
+					(field) => field.component !== 'field-options' || field.value,
 				)
 				.includes(false);
 			return !hasUnconfirmedField;
@@ -217,7 +217,7 @@ export default {
 				if (autosaves.length) {
 					this.setLocalStorage(
 						this.autosavesKey,
-						autosaves.filter((payload) => payload.id !== autosave.id)
+						autosaves.filter((payload) => payload.id !== autosave.id),
 					);
 				}
 			}
@@ -254,7 +254,7 @@ export default {
 			let affiliation = this.localize(author.affiliation);
 			if (affiliation) {
 				return [author.fullName, affiliation].join(
-					pkp.localeKeys['common.commaListSeparator']
+					pkp.localeKeys['common.commaListSeparator'],
 				);
 			}
 			return author.fullName;
@@ -354,18 +354,18 @@ export default {
 		 */
 		reconfigureSubmission(values) {
 			const getData = (data, prop) => {
-				if (typeof values[prop] !== undefined) {
+				if (typeof values[prop] !== 'undefined') {
 					data[prop] = values[prop];
 				}
 				return data;
 			};
 			const submissionData = this.reconfigureSubmissionProps.reduce(
 				getData,
-				{}
+				{},
 			);
 			const publicationData = this.reconfigurePublicationProps.reduce(
 				getData,
-				{}
+				{},
 			);
 
 			$.ajax({
@@ -457,7 +457,7 @@ export default {
 				'{$when}',
 				moment(this.lastSavedTimestamp)
 					.locale(this.getMomentLocale($.pkp.app.currentLocale))
-					.fromNow()
+					.fromNow(),
 			);
 		},
 
@@ -487,7 +487,7 @@ export default {
 				title: this.i18nSubmit,
 				message: this.i18nConfirmSubmit.replace(
 					'{$title}',
-					this.localize(this.publication.title)
+					this.localize(this.publication.title),
 				),
 				actions: [
 					{
@@ -498,11 +498,11 @@ export default {
 								.find((step) => step.id === 'review')
 								?.sections.find((section) => section.type === 'confirm')
 								?.form.fields.filter(
-									(field) => field.component === 'field-options' && field.value
+									(field) => field.component === 'field-options' && field.value,
 								)
 								.reduce(
 									(data, field) => ({...data, [field.name]: field.value}),
-									{}
+									{},
 								);
 							$.ajax({
 								url: this.submitApiUrl,
@@ -726,7 +726,7 @@ export default {
 		 */
 		if (!window.location.hash) {
 			const newStep = this.steps.find(
-				(step) => step.id === this.submission.submissionProgress
+				(step) => step.id === this.submission.submissionProgress,
 			);
 			this.openStep(newStep ? newStep.id : this.steps[0].id);
 		} else {

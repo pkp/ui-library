@@ -7,7 +7,7 @@
 | `isPForPress` | Whether or not a `%p` in the `pattern` stands for the context initials or page numbers. This is used in OMP when generating a pub id. |
 | `issueNumber` | The number of the issue this publication is assigned to. Used when generating a pub id. |
 | `issueVolume` | The volume of the issue this publication is assigned to. Used when generating a pub id. |
-| `pages` | The pages of this publication. Used when generating a pub id.
+| `pages` | The pages of this publication. Used when generating a pub id. |
 | `pattern` | The pattern to use when generating a pub id. This is configured in the pub id plugin settings. |
 | `prefix` | The pub id prefix to use when generating a pub id. This is configured in the pub id plugin settings. |
 | `publisherId` | The publisher id of this publication. Used when generating a pub id. |

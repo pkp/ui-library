@@ -14,14 +14,14 @@
 
 ## Events
 
-| Key | Description |
-| --- | --- |
+| Key   | Description                                                      |
+| ----- | ---------------------------------------------------------------- |
 | `set` | Emitted when a prop should be changed. Payload: `(id, newProps)` |
 
 ## Mixins
 
-| Name | Description |
-| --- | --- |
+| Name                    | Description                        |
+| ----------------------- | ---------------------------------- |
 | [fetch](#/mixins/fetch) | Get submissions from the REST API. |
 
 ## Usage

@@ -1,6 +1,6 @@
 <template>
 	<TransitionRoot as="template" :show="open">
-		<Dialog @close="onClose" class="modal" :class="'modal--' + type">
+		<HLDialog @close="onClose" class="modal" :class="'modal--' + type">
 			<TransitionChild
 				as="template"
 				enter="ease-out duration-300"
@@ -65,13 +65,13 @@
 					</TransitionChild>
 				</div>
 			</div>
-		</Dialog>
+		</HLDialog>
 	</TransitionRoot>
 </template>
 
 <script>
 import {
-	Dialog,
+	Dialog as HLDialog,
 	DialogTitle,
 	DialogPanel,
 	TransitionRoot,
@@ -82,7 +82,7 @@ import Modal from './Modal.vue';
 
 export default {
 	components: {
-		Dialog,
+		HLDialog,
 		DialogTitle,
 		DialogPanel,
 		TransitionRoot,
@@ -139,7 +139,7 @@ export default {
 		},
 	},
 	mounted() {},
-	destroyed() {
+	unmounted() {
 		if (typeof this.close === 'function') {
 			this.close();
 		}

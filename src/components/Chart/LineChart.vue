@@ -1,11 +1,11 @@
 <template>
 	<div class="chartjs-render-monitor">
-		<Line :data="chartData" :options="options" />
+		<LineChartJs :data="chartData" :options="options" />
 	</div>
 </template>
 
 <script>
-import {Line} from 'vue-chartjs';
+import {Line as LineChartJs} from 'vue-chartjs';
 import {
 	Chart as ChartJS,
 	Tooltip,
@@ -20,11 +20,11 @@ ChartJS.register(
 	LineElement,
 	CategoryScale,
 	LinearScale,
-	PointElement
+	PointElement,
 );
 
 export default {
-	components: {Line},
+	components: {LineChartJs},
 	props: {
 		chartData: {
 			type: Object,

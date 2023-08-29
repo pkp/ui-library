@@ -115,7 +115,7 @@ export default {
 						dateRangeResponse = r;
 						resolve(r);
 					},
-				})
+				}),
 			);
 
 			// Get total stats
@@ -142,7 +142,7 @@ export default {
 						totalsResponse = r;
 						resolve(r);
 					},
-				})
+				}),
 			);
 
 			// Get average stats
@@ -166,7 +166,7 @@ export default {
 						averagesResponse = r;
 						resolve(r);
 					},
-				})
+				}),
 			);
 
 			try {
@@ -182,7 +182,7 @@ export default {
 						row.total = total.value;
 					}
 					if (
-						averagesResponse.hasOwnProperty(row.key) &&
+						Object.prototype.hasOwnProperty.call(averagesResponse, row.key) &&
 						averagesResponse[row.key] > -1 &&
 						total.value > 0
 					) {

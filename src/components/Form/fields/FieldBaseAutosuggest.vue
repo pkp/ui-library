@@ -274,7 +274,7 @@ export default {
 			let newSelected = [...this.currentSelected];
 			newSelected.splice(
 				newSelected.findIndex((item) => item.value === itemToRemove.value),
-				1
+				1,
 			);
 			this.setSelected(newSelected);
 		},
@@ -357,7 +357,7 @@ export default {
 				this.name,
 				'value',
 				selected.map((s) => s.value),
-				this.localeKey
+				this.localeKey,
 			);
 		},
 
@@ -369,7 +369,7 @@ export default {
 		 */
 		setSuggestions(newItems) {
 			throw new Error(
-				'The setSuggestions method must be implemented in any component that extends FieldBaseAutosuggest.'
+				'The setSuggestions method must be implemented in any component that extends FieldBaseAutosuggest.',
 			);
 		},
 
@@ -398,18 +398,18 @@ export default {
 			this.$refs.values,
 			debounce(() => {
 				this.updateInlineLabelPadding();
-			}, 100)
+			}, 100),
 		);
 
 		// Inline labels can not be used with multilingual fields
 		if (this.isMultilingual && this.isLabelInline) {
 			throw new Error(
 				'An inline label can not be used with a multilingual autosuggest field. This error encountered in the field ' +
-					this.name
+					this.name,
 			);
 		}
 	},
-	beforeDestroy() {
+	beforeUnmount() {
 		elementResizeEvent.unbind(this.$refs.values);
 	},
 };

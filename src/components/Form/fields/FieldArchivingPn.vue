@@ -132,7 +132,7 @@ export default {
 						'<div id="' +
 							$.pkp.classes.Helper.uuid() +
 							'" ' +
-							'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>'
+							'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>',
 					).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
 
 					return false;
@@ -165,7 +165,7 @@ export default {
 				pkp.eventBus.$emit(
 					'notify',
 					this.value ? this.enablePluginSuccess : this.disablePluginSuccess,
-					'success'
+					'success',
 				);
 			} else {
 				pkp.eventBus.$emit('notify', this.__('common.unknownError'), 'warning');
@@ -224,7 +224,7 @@ export default {
 			this.addSettingsListener();
 		}
 	},
-	beforeDestroy() {
+	beforeUnmount() {
 		/**
 		 * Remove the event listener for the settings button
 		 */

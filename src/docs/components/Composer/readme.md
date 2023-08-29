@@ -1,51 +1,51 @@
 ## Props
 
-| Key                          | Description                                                                                                                                                                           |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `addCCLabel`                 | A localized string for the button to add CC/BCC recipients.                                                                                                                           |
-| `attachers`                  | An array of `<FileAttacher>`s. See "File Attachments" below. Default: `[]`                                                                                                            |
-| `attachments`                | An array of attached files. See "File Attachments" below. Default: `[]`                                                                                                               |
-| `attachFilesLabel`           | A localized string for the button to attach files.                                                                                                                                    |
-| `bcc`                        | A comma-separated list of email addresses for recipients that should be BCC'd in the email. Default: `''`                                                                             |
-| `bccLabel`                   | A localized string for the BCC field.                                                                                                                                                 |
-| `body`                       | The body of the email message. Default: `''`                                                                                                                                          |
-| `bodyLabel`                  | A localized string for the body field.                                                                                                                                                |
-| `canChangeRecipients`        | Can the user change the recipients? Default: `true`                                                                                                                                   |
-| `cc`                         | A comma-separated list of email addresses for recipients that should be CC'd in the email.                                                                                            |
-| `ccLabel`                    | A localized string for the CC field.                                                                                                                                                  |
-| `confirmSwitchLocaleLabel`   | A localized string for the confirmation dialog that appears when a user wants to change the language.                                                                                 |
-| `deselectLabel`              | A localized string for removing a recipient. |
-| `emailTemplates`             | An array of `EmailTemplate`s that have been created for this message. Default: `[]`                                                                                                   |
-| `emailTemplatesApiUrl`       | The URL to the API endpoint to get any `EmailTemplate`. When empty, no search field will be shown. Default: `''`                                                                      |
-| `errors`                     | An object describing any errors with the form. See "Errors" below. Default: `{}`                                                                                                      |
-| `findTemplateLabel`          | A localized string for the search field to find a template.                                                                                                                           |
-| `id`                         | A unique id for this component. Two `<Composer>`s on the same page should not have the same `id`. Default: `composer`                                                                 |
-| `initialTemplateKey`         | The key of an `EmailTemplate` to load automatically. If not present, the subject and body will be empty. Default: `''`                                                                |
-| `insertLabel`                | A localized string for the button to insert content from a variable. |
-| `insertModalLabel`           | A localized string for the modal to insert content from `variables`. |
-| `insertContentLabel`         | A localized string for the list of `variables` that can be inserted. |
-| `insertSearchLabel`          | A localized string for the search field when inserting content from `variables`. |
-| `loadTemplateLabel`          | A localized string for the section where a user can load templates. |
-| `locale`                     | The current locale code of the composer, such as `en` or `fr_CA`.                                                                                                                     |
-| `locales`                    | An array of objects that specify the locales that can be used in this composer. Default: `[]`                                                                                         |
-| `moreSearchResultsLabel`     | A localized string for the button to load more email template search results. Example: `{$number} more`                                                                               |
-| `recipients`                 | An array of user ids of the recipients. Default: `[]`                                                                                                                                 |
-| `recipientsLabel`            | A localized string for the recipients field. |
-| `recipientOptions`           | An array of recipient options. See "Recipients" below.                                                                                                                                |
-| `removeItemLabel`            | A localized string to remove an attachment. |
-| `searchingLabel`             | A localized string shown when an email template search is in progress. |
-| `searchResultsLabel`         | A localized string describing the email template search results. |
-| `separateEmails`             | Whether or not each recipient should be sent a separate email. Set this to `true` when each recipient should not see the name and email address of other recipients. Default: `false` |
-| `subject`                    | The subject of the email messsage. Default: `''`                                                                                                                                      |
-| `subjectLabel`               | A localized string for the subject field.                                                                                                                                             |
-| `switchToLabel`              | A localised string for the prompt to switch to another language. |
+| Key | Description |
+| --- | --- |
+| `addCCLabel` | A localized string for the button to add CC/BCC recipients. |
+| `attachers` | An array of `<FileAttacher>`s. See "File Attachments" below. Default: `[]` |
+| `attachments` | An array of attached files. See "File Attachments" below. Default: `[]` |
+| `attachFilesLabel` | A localized string for the button to attach files. |
+| `bcc` | A comma-separated list of email addresses for recipients that should be BCC'd in the email. Default: `''` |
+| `bccLabel` | A localized string for the BCC field. |
+| `body` | The body of the email message. Default: `''` |
+| `bodyLabel` | A localized string for the body field. |
+| `canChangeRecipients` | Can the user change the recipients? Default: `true` |
+| `cc` | A comma-separated list of email addresses for recipients that should be CC'd in the email. |
+| `ccLabel` | A localized string for the CC field. |
+| `confirmSwitchLocaleLabel` | A localized string for the confirmation dialog that appears when a user wants to change the language. |
+| `deselectLabel` | A localized string for removing a recipient. |
+| `emailTemplates` | An array of `EmailTemplate`s that have been created for this message. Default: `[]` |
+| `emailTemplatesApiUrl` | The URL to the API endpoint to get any `EmailTemplate`. When empty, no search field will be shown. Default: `''` |
+| `errors` | An object describing any errors with the form. See "Errors" below. Default: `{}` |
+| `findTemplateLabel` | A localized string for the search field to find a template. |
+| `id` | A unique id for this component. Two `<Composer>`s on the same page should not have the same `id`. Default: `composer` |
+| `initialTemplateKey` | The key of an `EmailTemplate` to load automatically. If not present, the subject and body will be empty. Default: `''` |
+| `insertLabel` | A localized string for the button to insert content from a variable. |
+| `insertModalLabel` | A localized string for the modal to insert content from `variables`. |
+| `insertContentLabel` | A localized string for the list of `variables` that can be inserted. |
+| `insertSearchLabel` | A localized string for the search field when inserting content from `variables`. |
+| `loadTemplateLabel` | A localized string for the section where a user can load templates. |
+| `locale` | The current locale code of the composer, such as `en` or `fr_CA`. |
+| `locales` | An array of objects that specify the locales that can be used in this composer. Default: `[]` |
+| `moreSearchResultsLabel` | A localized string for the button to load more email template search results. Example: `{$number} more` |
+| `recipients` | An array of user ids of the recipients. Default: `[]` |
+| `recipientsLabel` | A localized string for the recipients field. |
+| `recipientOptions` | An array of recipient options. See "Recipients" below. |
+| `removeItemLabel` | A localized string to remove an attachment. |
+| `searchingLabel` | A localized string shown when an email template search is in progress. |
+| `searchResultsLabel` | A localized string describing the email template search results. |
+| `separateEmails` | Whether or not each recipient should be sent a separate email. Set this to `true` when each recipient should not see the name and email address of other recipients. Default: `false` |
+| `subject` | The subject of the email messsage. Default: `''` |
+| `subjectLabel` | A localized string for the subject field. |
+| `switchToLabel` | A localised string for the prompt to switch to another language. |
 | `switchToNamedLanguageLabel` | A localized string for switching to another language. |
-| `variables`                  | An object with prepared content for each locale. See "Insert Content" below. Default: `{}`                                                                                            |
+| `variables` | An object with prepared content for each locale. See "Insert Content" below. Default: `{}` |
 
 ## Events
 
-| Key   | Description                                                                                                                |
-| ----- | -------------------------------------------------------------------------------------------------------------------------- |
+| Key | Description |
+| --- | --- |
 | `set` | Emitted whenever a prop needs to be changed. An object with one or more changed props. Example: `{subject: 'New Subject'}` |
 
 ## Usage
@@ -60,20 +60,20 @@ The `recipientOptions` prop expects to receive an array of all allowed recipient
 
 ```json
 [
-    {
-        "value": 2,
-        "label": {
-            "en": "Carlo Corino",
-            "ar": "Carlo Corino",
-        },
-    },
-    {
-        "value": 3,
-        "label": {
-            "en": "Hisham Abdel Moneim",
-            "ar": "هشام عبد المنعم",
-        },
-    }
+	{
+		"value": 2,
+		"label": {
+			"en": "Carlo Corino",
+			"ar": "Carlo Corino"
+		}
+	},
+	{
+		"value": 3,
+		"label": {
+			"en": "Hisham Abdel Moneim",
+			"ar": "هشام عبد المنعم"
+		}
+	}
 ]
 ```
 
@@ -85,30 +85,30 @@ The email subject and body will replace variables like `{$recipientName}` in an 
 
 ```json
 {
-    "en": [
-        {
-            "key": "contactName",
-            "value": "Hisham Abdel Moneim",
-            "description": "The name of the primary journal contact",
-        },
-        {
-            "key": "contactEmail",
-            "value": "hisham@example.org",
-            "description": "The email of the primary journal contact",
-        },
-    ],
-    "ar": [
-        {
-            "key": "contactName",
-            "value": "هشام عبد المنعم",
-            "description": "اسم جهة الاتصال الرئيسية في المجلة",
-        },
-        {
-            "key": "contactEmail",
-            "value": "hisham@example.org",
-            "description": "عنوان البريد الالكتروني لجهة الاتصال الرئيسية في المجلة",
-        },
-    ]
+	"en": [
+		{
+			"key": "contactName",
+			"value": "Hisham Abdel Moneim",
+			"description": "The name of the primary journal contact"
+		},
+		{
+			"key": "contactEmail",
+			"value": "hisham@example.org",
+			"description": "The email of the primary journal contact"
+		}
+	],
+	"ar": [
+		{
+			"key": "contactName",
+			"value": "هشام عبد المنعم",
+			"description": "اسم جهة الاتصال الرئيسية في المجلة"
+		},
+		{
+			"key": "contactEmail",
+			"value": "hisham@example.org",
+			"description": "عنوان البريد الالكتروني لجهة الاتصال الرئيسية في المجلة"
+		}
+	]
 }
 ```
 
@@ -118,27 +118,27 @@ The [FileAttacher](#/component/FileAttacher) component is used to attach files t
 
 ```js
 [
-    // Attachments uploaded through FileAttacherUpload.
-    {
-        name: 'example.pdf',
-        documentType: 'file-pdf-o',
-        temporaryFileId: 73,
-    },
+	// Attachments uploaded through FileAttacherUpload.
+	{
+		name: 'example.pdf',
+		documentType: 'file-pdf-o',
+		temporaryFileId: 73,
+	},
 
-    // Attachments selected from FileAttacherFileStage or FileAttacherReviewFiles
-    {
-        name: 'submission-file.docx',
-        documentType: 'file-word-o',
-        submissionFileId: 123,
-    },
+	// Attachments selected from FileAttacherFileStage or FileAttacherReviewFiles
+	{
+		name: 'submission-file.docx',
+		documentType: 'file-word-o',
+		submissionFileId: 123,
+	},
 
-    // Attachments selected from FileAttacherLibrary
-    {
-        name: 'license-waiver.pdf',
-        documentType: 'file-pdf-o',
-        libraryFileId: 32,
-    }
-]
+	// Attachments selected from FileAttacherLibrary
+	{
+		name: 'license-waiver.pdf',
+		documentType: 'file-pdf-o',
+		libraryFileId: 32,
+	},
+];
 ```
 
 Learn more about how to configure the [FileAttacher](#/component/FileAttacher).
@@ -153,6 +153,6 @@ To display user input errors, pass an object with the errors as the `error` prop
 
 ```json
 {
-    "subject": ["This is not a valid subject"]
+	"subject": ["This is not a valid subject"]
 }
 ```

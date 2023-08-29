@@ -14,8 +14,8 @@ Use this component to pair an action, like a button or link, with a title and de
 <action-panel>
 	<h2>Delete Item</h2>
 	<p>
-		Delete the item and remove it from the user's list of pending items.
-		This action can not be undone.
+		Delete the item and remove it from the user's list of pending items. This
+		action can not be undone.
 	</p>
 	<template #actions>
 		<pkp-button @click="delete">Delete</pkp-button>
@@ -29,8 +29,8 @@ Someone using assistive technology may use a shortcut to jump straight to the bu
 <action-panel>
 	<h2>Delete Item</h2>
 	<p id="delete-item-description">
-		Delete the item and remove it from the user's list of pending items.
-		This action can not be undone.
+		Delete the item and remove it from the user's list of pending items. This
+		action can not be undone.
 	</p>
 	<template #actions>
 		<pkp-button aria-describedby="delete-item-description">Delete</pkp-button>

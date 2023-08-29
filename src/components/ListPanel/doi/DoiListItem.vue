@@ -219,7 +219,7 @@
 					:columns="doiListColumns"
 					:rows="
 						item.doiObjects.filter(
-							(doiObject) => doiObject.versionNumber === version.versionNumber
+							(doiObject) => doiObject.versionNumber === version.versionNumber,
 						)
 					"
 				>
@@ -385,7 +385,7 @@ export default {
 		 */
 		currentVersionDoiObjects() {
 			return this.item.doiObjects.filter(
-				(doiObject) => doiObject.isCurrentVersion
+				(doiObject) => doiObject.isCurrentVersion,
 			);
 		},
 		/**
@@ -461,7 +461,10 @@ export default {
 		itemRegistrationAgencyName: function () {
 			const key = this.itemRegistrationAgency;
 
-			return this.registrationAgencyNames.hasOwnProperty(key)
+			return Object.prototype.hasOwnProperty.call(
+				this.registrationAgencyNames,
+				key,
+			)
 				? this.registrationAgencyNames[key]
 				: `[${key}]`;
 		},
@@ -502,7 +505,7 @@ export default {
 		 */
 		needsDoi() {
 			const hasAnyDois = this.item.doiObjects.some(
-				(doiObject) => doiObject.doiId !== null
+				(doiObject) => doiObject.doiId !== null,
 			);
 			return !hasAnyDois;
 		},
@@ -547,7 +550,7 @@ export default {
 		saveDois() {
 			this.mutableDois.forEach((mutableDoi) => {
 				const oldDoiItem = this.item.doiObjects.find(
-					(item) => item.uid === mutableDoi.uid
+					(item) => item.uid === mutableDoi.uid,
 				);
 				if (oldDoiItem.identifier !== mutableDoi.identifier) {
 					let items = {...this.itemsToUpdate};
@@ -731,7 +734,7 @@ export default {
 			this.itemsToUpdate = items;
 
 			const isAllDoisUpdated = Object.keys(this.itemsToUpdate).every(
-				(itemUid) => this.itemsToUpdate[itemUid].isFinished === true
+				(itemUid) => this.itemsToUpdate[itemUid].isFinished === true,
 			);
 
 			if (isAllDoisUpdated) {
@@ -750,7 +753,7 @@ export default {
 					pkp.eventBus.$emit(
 						'notify',
 						this.__('manager.dois.update.partialFailure'),
-						'warning'
+						'warning',
 					);
 				}
 

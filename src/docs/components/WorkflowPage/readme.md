@@ -10,7 +10,7 @@ This is a root component. Learn about [page hydration](#/pages/pages).
 | `components` | Key/value map of nested components, such as forms. |
 | `currentPublication` | The submission's current publication. |
 | `editorialHistoryUrl` | URL to get the activity log modal. |
-| `publicationFormIds` | Array containing all of the keys in `components` that match a publication form. These forms will be updated when changing versions.  |
+| `publicationFormIds` | Array containing all of the keys in `components` that match a publication form. These forms will be updated when changing versions. |
 | `publicationList` | Array containing the `id`, `datePublished`, `status` and `version` of every publication for this submission. |
 | `publicationTabsLabel` | Label for the publication details tabs. |
 | `publishLabel` | Label for the publish button. |

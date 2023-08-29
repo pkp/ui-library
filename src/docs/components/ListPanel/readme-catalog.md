@@ -1,4 +1,3 @@
-
 ## Props
 
 | Key | Description |
@@ -15,8 +14,8 @@
 
 ## Events
 
-| Key | Description |
-| --- | --- |
+| Key   | Description                                                      |
+| ----- | ---------------------------------------------------------------- |
 | `set` | Emitted when a prop should be changed. Payload: `(id, newProps)` |
 
 ## Mixins

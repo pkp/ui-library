@@ -24,12 +24,13 @@
 
 ## Events
 
-| Key | Description |
-| --- | --- |
-| set-range | The start and end dates for the date range. |
+| Key                   | Description                                      |
+| --------------------- | ------------------------------------------------ |
+| set-range             | The start and end dates for the date range.      |
 | updated:current-range | A concatenated string describing the date range. |
 
 ## Usage
+
 Use the `DateRange` component when you need the user to select a start and end date.
 
 Do not use this component inside of a `<form>`. It contains its own `<form>` element and does not support accessible entry of values for screen readers when completing forms.

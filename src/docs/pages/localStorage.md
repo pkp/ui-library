@@ -6,28 +6,28 @@ This mixin provides helper functions to read and write to the browser's [localSt
 import localStorage from '@/mixins/localStorage';
 
 export default {
-    mixins: [localStorage],
-    data() {
-        return {
-            preferences: null,
-        };
-    },
-    methods: {
-        set(preferences) {
-            if (this.isLocalStorageEnabled) {
-                this.setLocalStorage('user-preferences', preferences);
-            }
-        },
-        reset() {
-            if (this.isLocalStorageEnabled) {
-                this.removeLocaleStorage('user-preferences');
-            }
-        }
-    },
-    mounted() {
-        if (this.isLocalStorageEnabled) {
-            this.preferences = this.getLocalStorage('user-preferences');
-        }
-    }
-}
+	mixins: [localStorage],
+	data() {
+		return {
+			preferences: null,
+		};
+	},
+	methods: {
+		set(preferences) {
+			if (this.isLocalStorageEnabled) {
+				this.setLocalStorage('user-preferences', preferences);
+			}
+		},
+		reset() {
+			if (this.isLocalStorageEnabled) {
+				this.removeLocaleStorage('user-preferences');
+			}
+		},
+	},
+	mounted() {
+		if (this.isLocalStorageEnabled) {
+			this.preferences = this.getLocalStorage('user-preferences');
+		}
+	},
+};
 ```

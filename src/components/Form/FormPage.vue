@@ -107,7 +107,7 @@ export default {
 		 */
 		groupsInPage() {
 			return this.groups.filter(
-				(group) => group.pageId === this.id && this.shouldShowGroup(group)
+				(group) => group.pageId === this.id && this.shouldShowGroup(group),
 			);
 		},
 
@@ -183,7 +183,7 @@ export default {
 			const whenFieldName =
 				typeof group.showWhen === 'string' ? group.showWhen : group.showWhen[0];
 			const whenField = this.fields.find(
-				(field) => field.name === whenFieldName
+				(field) => field.name === whenFieldName,
 			);
 			if (!whenField) {
 				return false;
@@ -216,7 +216,7 @@ export default {
 			}
 		}, 250);
 	},
-	destroyed() {
+	unmounted() {
 		clearInterval(this.recentSaveInterval);
 	},
 };

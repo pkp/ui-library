@@ -35,10 +35,8 @@ For example, a search field often uses an icon of a magnifying glass to provide 
 
 ```html
 <icon icon="search" />
-<input id="searchInput" placeholder="Search submissions">
-<label for="searchInput" class="-screenReader">
-	Search submissions
-</label>
+<input id="searchInput" placeholder="Search submissions" />
+<label for="searchInput" class="-screenReader">Search submissions</label>
 ```
 
 An icon may not need a text label for sighted users to understand it's purpose. For example, when a ✘ icon appears to remove an item. In such cases, a hidden text label must be provided that indicates the action and which item the action relates to.

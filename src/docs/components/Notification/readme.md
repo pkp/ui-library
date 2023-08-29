@@ -1,4 +1,4 @@
-##  Props
+## Props
 
 | Key | Description |
 | --- | --- |

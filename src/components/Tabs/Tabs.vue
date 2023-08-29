@@ -12,8 +12,8 @@
 				role="tab"
 				:tabindex="currentTab === tab.id ? '' : -1"
 				@click="setCurrentTab(tab.id)"
-				@keydown.35.prevent="setLastTab"
-				@keydown.36.prevent="setFirstTab"
+				@keydown.end.prevent="setLastTab"
+				@keydown.home.prevent="setFirstTab"
 				@keydown.left.exact.prevent="setPreviousTab"
 				@keydown.right.exact.prevent="setNextTab"
 			>
@@ -182,7 +182,7 @@ export default {
 			});
 		});
 	},
-	destroyed() {
+	unmounted() {
 		pkp.eventBus.$off('open-tab');
 	},
 };

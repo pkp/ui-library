@@ -1,4 +1,3 @@
-
 ## Props
 
 | Key | Description |
@@ -24,8 +23,8 @@
 
 ## Mixins
 
-| Name | Description |
-| --- | --- |
+| Name                    | Description                          |
+| ----------------------- | ------------------------------------ |
 | [fetch](#/mixins/fetch) | Get announcements from the REST API. |
 
 ## Usage

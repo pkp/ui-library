@@ -1,6 +1,6 @@
 <template>
 	<TransitionRoot as="template" :show="open">
-		<Dialog
+		<HLDialog
 			:open="open"
 			@close="$emit('close')"
 			class="modal"
@@ -72,13 +72,13 @@
 					</TransitionChild>
 				</div>
 			</div>
-		</Dialog>
+		</HLDialog>
 	</TransitionRoot>
 </template>
 
 <script>
 import {
-	Dialog,
+	Dialog as HLDialog,
 	DialogPanel,
 	DialogTitle,
 	TransitionRoot,
@@ -87,7 +87,7 @@ import {
 
 export default {
 	components: {
-		Dialog,
+		HLDialog,
 		DialogPanel,
 		DialogTitle,
 		TransitionRoot,

@@ -292,7 +292,7 @@ export default {
 			return [
 				...this.lastRoundReviewers,
 				...this.items.filter(
-					(reviewer) => !this.lastRoundReviewerIds.includes(reviewer.id)
+					(reviewer) => !this.lastRoundReviewerIds.includes(reviewer.id),
 				),
 			];
 		},
@@ -325,7 +325,7 @@ export default {
 		 * @return {Boolean}
 		 */
 		isFilterActive(param, value) {
-			return this.activeFilters.hasOwnProperty(param);
+			return Object.prototype.hasOwnProperty.call(this.activeFilters, param);
 		},
 
 		/**
@@ -335,7 +335,7 @@ export default {
 		 * @param {Number|Array} value The value of the filter
 		 */
 		removeFilter(param, value) {
-			if (this.activeFilters.hasOwnProperty(param)) {
+			if (Object.prototype.hasOwnProperty.call(this.activeFilters, param)) {
 				let newFilters = {...this.activeFilters};
 				delete newFilters[param];
 				this.activeFilters = newFilters;

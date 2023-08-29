@@ -1,10 +1,10 @@
 ## Props
 
-| Key | Description |
-| --- | --- |
-| `max` | Value when progress is complete. Default: `100`. |
-| `min` | Value when no progress has been made. Default: `0`. |
-| `value` | The current value. Required. |
+| Key     | Description                                         |
+| ------- | --------------------------------------------------- |
+| `max`   | Value when progress is complete. Default: `100`.    |
+| `min`   | Value when no progress has been made. Default: `0`. |
+| `value` | The current value. Required.                        |
 
 ## Events
 

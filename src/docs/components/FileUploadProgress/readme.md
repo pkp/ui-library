@@ -9,8 +9,8 @@
 
 ## Events
 
-| Key | Description |
-| --- | --- |
+| Key      | Description                              |
+| -------- | ---------------------------------------- |
 | `cancel` | Cancel the upload before it is finished. |
 
 ## Usage

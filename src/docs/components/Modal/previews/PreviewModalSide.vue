@@ -16,7 +16,9 @@
 				<h2>Details</h2>
 			</template>
 			<panel>
-				<panel-section v-html="pars[0]" />
+				<panel-section>
+					<div v-html="pars[0]"></div>
+				</panel-section>
 			</panel>
 		</modal>
 		<modal
@@ -30,7 +32,9 @@
 				<p>Some more text in the header.</p>
 			</template>
 			<panel>
-				<panel-section v-for="(par, i) in pars" :key="i" v-html="par" />
+				<panel-section v-for="(par, i) in pars" :key="i">
+					<div v-html="par"></div>
+				</panel-section>
 			</panel>
 		</modal>
 	</div>

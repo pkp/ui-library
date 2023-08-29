@@ -100,7 +100,7 @@ export default {
 		 */
 		currentPublication() {
 			return this.item.publications.find(
-				(publication) => publication.id === this.item.currentPublicationId
+				(publication) => publication.id === this.item.currentPublicationId,
 			);
 		},
 
@@ -111,7 +111,7 @@ export default {
 		 * @return {Boolean}
 		 */
 		isFeatured() {
-			if (!this.item.hasOwnProperty('featured')) {
+			if (!Object.prototype.hasOwnProperty.call(this.item, 'featured')) {
 				return false;
 			}
 			const feature = this.item.featured.find((feature) => {
@@ -130,7 +130,7 @@ export default {
 		 * @return {Boolean}
 		 */
 		isNewRelease() {
-			if (!this.item.hasOwnProperty('newRelease')) {
+			if (!Object.prototype.hasOwnProperty.call(this.item, 'newRelease')) {
 				return false;
 			}
 			const newRelease = this.item.newRelease.find((newRelease) => {

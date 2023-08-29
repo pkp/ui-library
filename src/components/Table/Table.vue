@@ -39,10 +39,10 @@
 			</tr>
 		</thead>
 		<tbody
-			@keydown.35.ctrl.exact.prevent="focusEnd"
-			@keydown.36.ctrl.exact.prevent="focusStart"
-			@keydown.35.exact.prevent="focusLastCell"
-			@keydown.36.exact.prevent="focusFirstCell"
+			@keydown.end.ctrl.exact.prevent="focusEnd"
+			@keydown.home.ctrl.exact.prevent="focusStart"
+			@keydown.end.exact.prevent="focusLastCell"
+			@keydown.home.exact.prevent="focusFirstCell"
 			@keydown.left.exact.prevent="focusPreviousCell"
 			@keydown.up.exact.prevent="focusPreviousRow"
 			@keydown.right.exact.prevent="focusNextCell"

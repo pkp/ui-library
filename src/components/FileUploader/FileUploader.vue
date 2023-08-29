@@ -120,7 +120,7 @@ export default {
 		 */
 		cancelUpload(id) {
 			const file = this.$refs.dropzone.dropzone.files.find(
-				(f) => f.upload.uuid === id
+				(f) => f.upload.uuid === id,
 			);
 			if (file) {
 				this.$refs.dropzone.removeFile(file);
@@ -255,7 +255,7 @@ export default {
 		 */
 		dropzoneRemovedFile(file) {
 			const files = this.files.filter(
-				(item) => !item.id || item.id !== file.upload.uuid
+				(item) => !item.id || item.id !== file.upload.uuid,
 			);
 			this.$emit('updated:files', files);
 		},
@@ -286,7 +286,7 @@ export default {
 		dropzoneTotalUploadProgress(progress) {
 			this.status = this.uploadProgressLabel.replace(
 				'{$percent}',
-				progress.toFixed(0)
+				progress.toFixed(0),
 			);
 		},
 
@@ -323,7 +323,7 @@ export default {
 		document.addEventListener('dragover', this.drop, true);
 		document.addEventListener('drop', this.drop);
 	},
-	destroyed() {
+	unmounted() {
 		/**
 		 * Clean up listeners
 		 */

@@ -31,8 +31,6 @@ Every component that uses this mixin may add the following methods used by this 
 | `autosaveSucceeded(payload, response)` | This method is called whenever an autosave succeeds. Use this method to sync response data from the server with state data. |
 | `autosaveErrored(payload, xhr, status)` | This method is called whenever an autosave fails. Use this method to display a warning or handle authentication errors, for example if a user has been logged out. Not all errors need an action. For example, this method will be called when connection is lost. But the mixin should handle such scenarios by itself. |
 
-
-
 ## Usage
 
 Import the mixin and add an autosave whenever data changes.
@@ -104,6 +102,3 @@ export default {
     }
 }
 ```
-
-
-

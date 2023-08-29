@@ -113,15 +113,15 @@
 					@order-down="itemOrderDown"
 				/>
 			</template>
-
-			<pagination
-				v-if="lastPage > 1"
-				#footer
-				:currentPage="currentPage"
-				:isLoading="isLoading"
-				:lastPage="lastPage"
-				@set-page="setPage"
-			/>
+			<template #footer>
+				<pagination
+					v-if="lastPage > 1"
+					:currentPage="currentPage"
+					:isLoading="isLoading"
+					:lastPage="lastPage"
+					@set-page="setPage"
+				/>
+			</template>
 		</list-panel>
 		<modal
 			:closeLabel="__('common.close')"
@@ -317,9 +317,13 @@ export default {
 		 * @return {Number}
 		 */
 		filterAssocType() {
-			if (this.activeFilters.hasOwnProperty('categoryIds')) {
+			if (
+				Object.prototype.hasOwnProperty.call(this.activeFilters, 'categoryIds')
+			) {
 				return pkp.const.ASSOC_TYPE_CATEGORY;
-			} else if (this.activeFilters.hasOwnProperty('seriesIds')) {
+			} else if (
+				Object.prototype.hasOwnProperty.call(this.activeFilters, 'seriesIds')
+			) {
 				return pkp.const.ASSOC_TYPE_SERIES;
 			}
 			return pkp.const.ASSOC_TYPE_PRESS;
@@ -333,9 +337,13 @@ export default {
 		 * @return {Number}
 		 */
 		filterAssocId() {
-			if (this.activeFilters.hasOwnProperty('categoryIds')) {
+			if (
+				Object.prototype.hasOwnProperty.call(this.activeFilters, 'categoryIds')
+			) {
 				return this.activeFilters.categoryIds;
-			} else if (this.activeFilters.hasOwnProperty('seriesIds')) {
+			} else if (
+				Object.prototype.hasOwnProperty.call(this.activeFilters, 'seriesIds')
+			) {
 				return this.activeFilters.seriesIds;
 			}
 			return this.contextId;
@@ -356,7 +364,7 @@ export default {
 		closeAddEntryForm() {
 			this.isModalOpenedAddCatalogEntry = false;
 			this.addEntryForm.fields.find(
-				(f) => f.name === 'submissionIds'
+				(f) => f.name === 'submissionIds',
 			).selected = [];
 		},
 
@@ -526,17 +534,21 @@ export default {
 		 */
 		updateSortOrder() {
 			let getParams = {...this.getParams};
-			if (this.activeFilters.hasOwnProperty('categoryIds')) {
+			if (
+				Object.prototype.hasOwnProperty.call(this.activeFilters, 'categoryIds')
+			) {
 				const category = this.getFilter(
 					'categoryIds',
-					this.activeFilters.categoryIds
+					this.activeFilters.categoryIds,
 				);
 				getParams.orderBy = category.sortBy;
 				getParams.orderDirection = category.sortDir || this.catalogSortDir;
-			} else if (this.activeFilters.hasOwnProperty('seriesIds')) {
+			} else if (
+				Object.prototype.hasOwnProperty.call(this.activeFilters, 'seriesIds')
+			) {
 				const series = this.getFilter(
 					'seriesIds',
-					this.activeFilters.seriesIds
+					this.activeFilters.seriesIds,
 				);
 				getParams.orderBy = series.sortBy || this.catalogSortBy;
 				getParams.orderDirection = series.sortDir || this.catalogSortDir;

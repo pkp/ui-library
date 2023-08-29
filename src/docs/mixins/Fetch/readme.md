@@ -2,7 +2,6 @@
 
 The `fetch` mixin provides helpers to get data from most REST API endpoints in the application. With a few props it can make requests to the API with support for filters, searching, and pagination. Any component that uses this mixin must define a `setItems()` method.
 
-
 ```js
 import fetch from '@/mixins/fetch';
 
@@ -33,13 +32,13 @@ Call the `get()` method to fetch the items.
 </template>
 
 <script>
-export default {
-	methods: {
-		getItems() {
-			this.get();
-		}
-	}
-}
+	export default {
+		methods: {
+			getItems() {
+				this.get();
+			},
+		},
+	};
 </script>
 ```
 
@@ -48,22 +47,21 @@ The `get()` method will be called automatically when the `activeFilters` and `se
 ```html
 <template>
 	<button @click="getItems">
-		Filter by items in section 1 with the
-		phrase "lorem"
+		Filter by items in section 1 with the phrase "lorem"
 	</button>
 </template>
 
 <script>
-export default {
-	methods: {
-		getItems() {
-			this.activeFilters = {
-				sectionIds: [1]
-			};
-			this.searchPhrase = 'lorem';
-		}
-	}
-}
+	export default {
+		methods: {
+			getItems() {
+				this.activeFilters = {
+					sectionIds: [1],
+				};
+				this.searchPhrase = 'lorem';
+			},
+		},
+	};
 </script>
 ```
 
@@ -94,10 +92,10 @@ All components implementing this mixin have the following data.
 
 All components implementing this mixin have the following computed properties.
 
-| Key | Description |
-| --- | --- |
+| Key           | Description                                                  |
+| ------------- | ------------------------------------------------------------ |
 | `currentPage` | The current page being shown, based on `offset` and `count`. |
-| `lastPage` | The last page available, based on `count` and `itemsMax`. |
+| `lastPage`    | The last page available, based on `count` and `itemsMax`.    |
 
 ## Methods
 
