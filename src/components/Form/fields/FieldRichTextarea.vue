@@ -89,7 +89,7 @@
 
 <script>
 // Tinymce must be loaded before Vue
-import 'tinymce';
+import 'tinymce/tinymce';
 import 'tinymce/icons/default';
 import 'tinymce/themes/silver';
 import 'tinymce/plugins/code';
@@ -274,7 +274,8 @@ export default {
 				this.wordCount = 0;
 				return;
 			}
-			const words = this.$refs.editor.editor
+			const words = this.$refs.editor
+				.getEditor()
 				.getContent({format: 'text'})
 				.match(/\S+/g);
 			if (words !== null) {

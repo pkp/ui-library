@@ -1,14 +1,16 @@
 <template>
 	<list-panel :items="items" :isSidebarVisible="isSidebarVisible">
-		<pkp-header>
-			<h2>List Panel with Filter</h2>
-			<template #actions>
-				<pkp-button :isActive="isSidebarVisible" @click="toggleFilters">
-					<icon icon="filter" :inline="true" />
-					Filters
-				</pkp-button>
-			</template>
-		</pkp-header>
+		<template #header>
+			<pkp-header>
+				<h2>List Panel with Filter</h2>
+				<template #actions>
+					<pkp-button :isActive="isSidebarVisible" @click="toggleFilters">
+						<icon icon="filter" :inline="true" />
+						Filters
+					</pkp-button>
+				</template>
+			</pkp-header>
+		</template>
 		<template #sidebar>
 			<pkp-header :isOneLine="false">
 				<h3>

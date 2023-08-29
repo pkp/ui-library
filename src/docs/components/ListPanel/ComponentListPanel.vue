@@ -1,4 +1,6 @@
 <script>
+import {markRaw} from 'vue';
+
 import Component from '@/docs/Component.vue';
 import PreviewListPanel from './previews/PreviewListPanel.vue';
 import PreviewListPanelTemplate from './previews/PreviewListPanel.vue?raw';
@@ -30,52 +32,52 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewListPanel,
+					component: markRaw(PreviewListPanel),
 					name: 'Base',
 					template: this.extractTemplate(PreviewListPanelTemplate),
 				},
 				{
-					component: PreviewListPanelActions,
+					component: markRaw(PreviewListPanelActions),
 					name: 'With Actions',
 					template: this.extractTemplate(PreviewListPanelActionsTemplate),
 				},
 				{
-					component: PreviewListPanelDescription,
+					component: markRaw(PreviewListPanelDescription),
 					name: 'With Description',
 					template: this.extractTemplate(PreviewListPanelDescriptionTemplate),
 				},
 				{
-					component: PreviewListPanelEmpty,
+					component: markRaw(PreviewListPanelEmpty),
 					name: 'With No Items',
 					template: this.extractTemplate(PreviewListPanelEmptyTemplate),
 				},
 				{
-					component: PreviewListPanelFilter,
+					component: markRaw(PreviewListPanelFilter),
 					name: 'With Filter',
 					template: this.extractTemplate(PreviewListPanelFilterTemplate),
 				},
 				{
-					component: PreviewListPanelItemActions,
+					component: markRaw(PreviewListPanelItemActions),
 					name: 'With Item Actions',
 					template: this.extractTemplate(PreviewListPanelItemActionsTemplate),
 				},
 				{
-					component: PreviewListPanelItemExpander,
+					component: markRaw(PreviewListPanelItemExpander),
 					name: 'With Expandable Item',
 					template: this.extractTemplate(PreviewListPanelItemExpanderTemplate),
 				},
 				{
-					component: PreviewListPanelPagination,
+					component: markRaw(PreviewListPanelPagination),
 					name: 'With Pagination',
 					template: this.extractTemplate(PreviewListPanelPaginationTemplate),
 				},
 				{
-					component: PreviewListPanelSearch,
+					component: markRaw(PreviewListPanelSearch),
 					name: 'With Search',
 					template: this.extractTemplate(PreviewListPanelSearchTemplate),
 				},
 				{
-					component: PreviewListPanelSelect,
+					component: markRaw(PreviewListPanelSelect),
 					name: 'With Select',
 					template: this.extractTemplate(PreviewListPanelSelectTemplate),
 				},

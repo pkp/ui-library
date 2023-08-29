@@ -12,7 +12,8 @@
 				:closeLabel="__('common.close')"
 				:name="preparedContentId"
 				:title="insertModalLabel"
-				@close="closeInsertModal"
+				:open="isModalPreparedContentOpened"
+				@close="isModalPreparedContentOpened = false"
 			>
 				<insert-content
 					:insertLabel="insertLabel"
@@ -81,7 +82,7 @@ export default {
 	},
 	data() {
 		return {
-			resetFocusTo: null,
+			isModalPreparedContentOpened: false,
 		};
 	},
 	computed: {
@@ -134,7 +135,7 @@ export default {
 						icon: 'plus',
 						text: self.__('common.insertContent'),
 						onAction() {
-							self.$modal.show(self.preparedContentId);
+							self.isModalPreparedContentOpened = true;
 						},
 					});
 					editor.settings.toolbar += ' | pkpInsert';
@@ -162,20 +163,12 @@ export default {
 		},
 	},
 	methods: {
-		closeInsertModal() {
-			this.resetFocus();
-		},
 		fieldChanged(name, prop, newVal, localeKey) {
 			this.$emit('change', name, prop, newVal, localeKey);
 		},
 		insert(text) {
 			this.$refs.textarea.$refs.editor.editor.insertContent(text);
-			this.$modal.hide(this.preparedContentId);
-		},
-		resetFocus() {
-			if (this.resetFocusTo) {
-				this.resetFocusTo.focus();
-			}
+			this.isModalPreparedContentOpened = false;
 		},
 	},
 };

@@ -6,50 +6,52 @@
 				class="listPanel--contributor"
 				:class="isOrdering ? '-isOrdering' : ''"
 			>
-				<pkp-header>
-					<h2>{{ title }}</h2>
-					<spinner v-if="isLoading" />
-					<template #actions>
-						<pkp-button
-							icon="sort"
-							:isActive="isOrdering"
-							@click="toggleOrdering"
-							v-if="
-								publication.status !== getConstant('STATUS_PUBLISHED') &&
-								canEditPublication
-							"
-							:disabled="isLoading"
-						>
-							{{ orderingLabel }}
-						</pkp-button>
-						<pkp-button
-							v-if="isOrdering"
-							:isWarnable="true"
-							@click="cancelOrdering"
-							:disabled="isLoading"
-						>
-							{{ __('common.cancel') }}
-						</pkp-button>
-						<pkp-button
-							v-if="!isOrdering"
-							@click="openPreviewModal"
-							:disabled="isLoading"
-						>
-							{{ i18nPreview }}
-						</pkp-button>
-						<pkp-button
-							v-if="
-								!isOrdering &&
-								publication.status !== getConstant('STATUS_PUBLISHED') &&
-								canEditPublication
-							"
-							@click="openAddModal"
-							:disabled="isLoading"
-						>
-							{{ i18nAddContributor }}
-						</pkp-button>
-					</template>
-				</pkp-header>
+				<template #header>
+					<pkp-header>
+						<h2>{{ title }}</h2>
+						<spinner v-if="isLoading" />
+						<template #actions>
+							<pkp-button
+								icon="sort"
+								:isActive="isOrdering"
+								@click="toggleOrdering"
+								v-if="
+									publication.status !== getConstant('STATUS_PUBLISHED') &&
+									canEditPublication
+								"
+								:disabled="isLoading"
+							>
+								{{ orderingLabel }}
+							</pkp-button>
+							<pkp-button
+								v-if="isOrdering"
+								:isWarnable="true"
+								@click="cancelOrdering"
+								:disabled="isLoading"
+							>
+								{{ __('common.cancel') }}
+							</pkp-button>
+							<pkp-button
+								v-if="!isOrdering"
+								@click="openPreviewModal"
+								:disabled="isLoading"
+							>
+								{{ i18nPreview }}
+							</pkp-button>
+							<pkp-button
+								v-if="
+									!isOrdering &&
+									publication.status !== getConstant('STATUS_PUBLISHED') &&
+									canEditPublication
+								"
+								@click="openAddModal"
+								:disabled="isLoading"
+							>
+								{{ i18nAddContributor }}
+							</pkp-button>
+						</template>
+					</pkp-header>
+				</template>
 				<template #item-title="{item}">
 					{{ item.fullName }}
 					<badge v-if="item.userGroupName">
@@ -105,7 +107,8 @@
 				:closeLabel="__('common.close')"
 				:name="formModal"
 				:title="activeFormTitle"
-				@closed="formModalClosed"
+				:isModalOpenedForm="isModalOpenedForm"
+				@close="closeFormModal"
 			>
 				<pkp-form
 					v-bind="activeForm"
@@ -117,6 +120,8 @@
 				:closeLabel="__('common.close')"
 				:name="previewModal"
 				:title="i18nContributors"
+				:open="isModalOpenedPreview"
+				@close="isModalOpenedPreview = false"
 			>
 				<p>
 					{{ i18nPreviewDescription }}
@@ -269,6 +274,8 @@ export default {
 			isOrdering: false,
 			isLoading: false,
 			itemsBeforeReordering: null,
+			isModalOpenedForm: false,
+			isModalOpenedPreview: false,
 		};
 	},
 	computed: {
@@ -331,12 +338,10 @@ export default {
 		 *
 		 * @param {Object} event
 		 */
-		formModalClosed(event) {
+		closeFormModal(event) {
+			this.isModalOpenedForm = false;
 			this.activeForm = null;
 			this.activeFormTitle = '';
-			if (this.resetFocusTo) {
-				this.resetFocusTo.focus();
-			}
 		},
 
 		/**
@@ -361,7 +366,7 @@ export default {
 				});
 				this.$emit('updated:contributors', newContributors);
 			}
-			this.$modal.hide(this.formModal);
+			this.closeFormModal();
 		},
 
 		/**
@@ -378,7 +383,7 @@ export default {
 				success(publication) {
 					this.$emit('updated:publication', publication);
 
-					this.$modal.show(this.previewModal);
+					this.isModalOpenedPreview = true;
 				},
 				complete(r) {
 					this.isLoading = false;
@@ -396,7 +401,7 @@ export default {
 			activeForm.method = 'POST';
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.i18nAddContributor;
-			this.$modal.show(this.formModal);
+			this.isModalOpenedForm = true;
 		},
 
 		/**
@@ -487,7 +492,7 @@ export default {
 					});
 					this.activeForm = activeForm;
 					this.activeFormTitle = this.i18nEditContributor;
-					this.$modal.show(this.formModal);
+					this.isModalOpenedForm = true;
 				},
 				complete(r) {
 					this.isLoading = false;

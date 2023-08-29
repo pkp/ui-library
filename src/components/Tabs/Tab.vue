@@ -77,7 +77,6 @@ export default {
 		});
 	},
 	beforeUnmount() {
-		console.log('before destroy');
 		// Unregister the method to avoid calling methods on destroyed components
 		if (this.unregister) {
 			this.unregister();

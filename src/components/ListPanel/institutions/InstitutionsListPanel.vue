@@ -2,19 +2,21 @@
 	<div class="institutionsListPanel">
 		<slot>
 			<list-panel :items="items">
-				<pkp-header>
-					<h2>{{ title }}</h2>
-					<spinner v-if="isLoading" />
-					<template #actions>
-						<search
-							:searchPhrase="searchPhrase"
-							@search-phrase-changed="setSearchPhrase"
-						/>
-						<pkp-button @click="openAddModal">
-							{{ addInstitutionLabel }}
-						</pkp-button>
-					</template>
-				</pkp-header>
+				<template #header>
+					<pkp-header>
+						<h2>{{ title }}</h2>
+						<spinner v-if="isLoading" />
+						<template #actions>
+							<search
+								:searchPhrase="searchPhrase"
+								@search-phrase-changed="setSearchPhrase"
+							/>
+							<pkp-button @click="openAddModal">
+								{{ addInstitutionLabel }}
+							</pkp-button>
+						</template>
+					</pkp-header>
+				</template>
 				<template #item-title="{item}">
 					<span :id="'institution-' + item.id">
 						{{ localize(item.name) }}

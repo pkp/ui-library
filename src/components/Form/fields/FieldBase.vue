@@ -30,6 +30,7 @@ export default {
 		primaryLocale: String,
 		localeKey: String,
 		locales: Array,
+		error: String,
 		value: {
 			required: true,
 		},

@@ -5,21 +5,23 @@
 			:items="currentMailables"
 			:is-sidebar-visible="true"
 		>
-			<pkp-header>
-				<h1>Emails</h1>
-				<template #actions>
-					<search
-						search-label="Search by name or description"
-						:search-phrase="searchPhrase"
-						@search-phrase-changed="
-							(newSearch) => (this.searchPhrase = newSearch)
-						"
-					></search>
-					<pkp-button @click="confirmResetAll" :isWarnable="true">
-						Reset All
-					</pkp-button>
-				</template>
-			</pkp-header>
+			<template #header>
+				<pkp-header>
+					<h1>Emails</h1>
+					<template #actions>
+						<search
+							search-label="Search by name or description"
+							:search-phrase="searchPhrase"
+							@search-phrase-changed="
+								(newSearch) => (this.searchPhrase = newSearch)
+							"
+						></search>
+						<pkp-button @click="confirmResetAll" :isWarnable="true">
+							Reset All
+						</pkp-button>
+					</template>
+				</pkp-header>
+			</template>
 			<template #item-title="{item}">
 				{{ item.name }}
 			</template>
@@ -98,12 +100,14 @@
 					templates you add here.
 				</p>
 				<list-panel :items="currentMailable.emailTemplates">
-					<pkp-header>
-						<h3>Templates</h3>
-						<template #actions>
-							<pkp-button @click="openTemplate()">Add Template</pkp-button>
-						</template>
-					</pkp-header>
+					<template #header>
+						<pkp-header>
+							<h3>Templates</h3>
+							<template #actions>
+								<pkp-button @click="openTemplate()">Add Template</pkp-button>
+							</template>
+						</pkp-header>
+					</template>
 					<template #item-subtitle="{item}">
 						{{ localize(item.name) }}
 					</template>
@@ -209,7 +213,7 @@ export default {
 	},
 	created() {
 		$.ajax({
-			url: 'mailables.json',
+			url: '/mailables.json',
 			method: 'GET',
 			context: this,
 			success(r) {

@@ -1,7 +1,7 @@
 <template>
 	<th
 		scope="col"
-		:aria-sort="canSort ? sortDirection : false"
+		:aria-sort="canSort ? sortDirection : undefined"
 		class="pkpTableHeader"
 	>
 		<template v-if="canSort">

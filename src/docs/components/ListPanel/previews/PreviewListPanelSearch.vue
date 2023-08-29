@@ -1,14 +1,16 @@
 <template>
 	<list-panel :items="items">
-		<pkp-header>
-			<h2>List Panel with Search</h2>
-			<template #actions>
-				<search
-					:searchPhrase="searchPhrase"
-					@search-phrase-changed="setSearchPhrase"
-				/>
-			</template>
-		</pkp-header>
+		<template #header>
+			<pkp-header>
+				<h2>List Panel with Search</h2>
+				<template #actions>
+					<search
+						:searchPhrase="searchPhrase"
+						@search-phrase-changed="setSearchPhrase"
+					/>
+				</template>
+			</pkp-header>
+		</template>
 	</list-panel>
 </template>
 

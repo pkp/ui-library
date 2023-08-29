@@ -31,7 +31,7 @@
 									</div>
 									<div
 										class="listPanel__itemSubtitle"
-										v-if="!!$scopedSlots['item-subtitle'] || item.subtitle"
+										v-if="!!$slots['item-subtitle'] || item.subtitle"
 									>
 										<slot name="item-subtitle" :item="item">
 											{{ item.subtitle }}
@@ -39,7 +39,7 @@
 									</div>
 								</div>
 								<div
-									v-if="!!$scopedSlots['item-actions']"
+									v-if="!!$slots['item-actions']"
 									class="listPanel__itemActions"
 								>
 									<slot name="item-actions" :item="item" />

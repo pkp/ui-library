@@ -5,31 +5,32 @@
 			:items="items"
 			class="listPanel--submissions"
 		>
-			<pkp-header>
-				<h2>{{ title }}</h2>
-				<spinner v-if="isLoading" />
-				<template #actions>
-					<search
-						:searchPhrase="searchPhrase"
-						@search-phrase-changed="setSearchPhrase"
-					/>
-					<pkp-button
-						:isActive="isSidebarVisible"
-						@click="isSidebarVisible = !isSidebarVisible"
-					>
-						<icon icon="filter" :inline="true" />
-						{{ __('common.filter') }}
-					</pkp-button>
-					<pkp-button
-						v-if="addUrl && currentUserCanAddSubmission"
-						element="a"
-						:href="addUrl"
-					>
-						{{ __('submission.submit.newSubmissionSingle') }}
-					</pkp-button>
-				</template>
-			</pkp-header>
-
+			<template #header>
+				<pkp-header>
+					<h2>{{ title }}</h2>
+					<spinner v-if="isLoading" />
+					<template #actions>
+						<search
+							:searchPhrase="searchPhrase"
+							@search-phrase-changed="setSearchPhrase"
+						/>
+						<pkp-button
+							:isActive="isSidebarVisible"
+							@click="isSidebarVisible = !isSidebarVisible"
+						>
+							<icon icon="filter" :inline="true" />
+							{{ __('common.filter') }}
+						</pkp-button>
+						<pkp-button
+							v-if="addUrl && currentUserCanAddSubmission"
+							element="a"
+							:href="addUrl"
+						>
+							{{ __('submission.submit.newSubmissionSingle') }}
+						</pkp-button>
+					</template>
+				</pkp-header>
+			</template>
 			<template #sidebar>
 				<pkp-header :isOneLine="false">
 					<h3>

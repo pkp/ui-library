@@ -1,14 +1,16 @@
 <template>
 	<list-panel :items="items">
-		<pkp-header>
-			<h2>List Panel with Actions</h2>
-			<template #actions>
-				<pkp-button @click="openModal">Add Item</pkp-button>
-				<pkp-button @click="openModal" :isWarnable="true">
-					Reset Defaults
-				</pkp-button>
-			</template>
-		</pkp-header>
+		<template #header>
+			<pkp-header>
+				<h2>List Panel with Actions</h2>
+				<template #actions>
+					<pkp-button @click="openModal">Add Item</pkp-button>
+					<pkp-button @click="openModal" :isWarnable="true">
+						Reset Defaults
+					</pkp-button>
+				</template>
+			</pkp-header>
+		</template>
 	</list-panel>
 </template>
 

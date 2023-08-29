@@ -61,7 +61,13 @@ export default {
 		return {
 			currentStep: 'first',
 			startedSteps: ['first'],
-			steps: [],
+			steps: [
+				{id: 'first'},
+				{id: 'second'},
+				{id: 'third'},
+				{id: 'fourth'},
+				{id: 'fifth'},
+			],
 		};
 	},
 	computed: {
@@ -99,14 +105,6 @@ export default {
 				this.openStep(this.steps[previousIndex].id);
 			}
 		},
-	},
-	mounted() {
-		/**
-		 * Get an array of all the step components
-		 */
-		this.steps = this.$children
-			.find((child) => child.$options._componentTag === 'steps')
-			.$children.filter((child) => child.$options._componentTag === 'step');
 	},
 };
 </script>

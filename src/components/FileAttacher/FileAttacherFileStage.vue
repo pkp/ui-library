@@ -1,23 +1,25 @@
 <template>
 	<div class="fileAttacherFileStage" aria-live="polite">
 		<list-panel :items="files" :isLoading="isLoading">
-			<pkp-header>
-				<h2>{{ currentFileStage.label }}</h2>
-				<template #actions>
-					<dropdown v-if="fileStages.length > 1" label="Other Files">
-						<ul>
-							<li v-for="fileStage in fileStages" :key="fileStage.label">
-								<button
-									class="pkpDropdown__action"
-									@click="currentFileStage = fileStage"
-								>
-									{{ fileStage.label }}
-								</button>
-							</li>
-						</ul>
-					</dropdown>
-				</template>
-			</pkp-header>
+			<template #header>
+				<pkp-header>
+					<h2>{{ currentFileStage.label }}</h2>
+					<template #actions>
+						<dropdown v-if="fileStages.length > 1" label="Other Files">
+							<ul>
+								<li v-for="fileStage in fileStages" :key="fileStage.label">
+									<button
+										class="pkpDropdown__action"
+										@click="currentFileStage = fileStage"
+									>
+										{{ fileStage.label }}
+									</button>
+								</li>
+							</ul>
+						</dropdown>
+					</template>
+				</pkp-header>
+			</template>
 			<template #itemsEmpty>
 				<div v-if="isLoading">
 					<spinner />

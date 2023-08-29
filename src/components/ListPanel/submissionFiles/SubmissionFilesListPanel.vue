@@ -1,14 +1,16 @@
 <template>
 	<div class="submissionFilesListPanel">
 		<list-panel :items="items" class="listPanel--submissionFiles">
-			<pkp-header>
-				<h2>{{ title }}</h2>
-				<template #actions>
-					<pkp-button ref="addFileButton" @click="openFileBrowser">
-						{{ addFileLabel }}
-					</pkp-button>
-				</template>
-			</pkp-header>
+			<template #header>
+				<pkp-header>
+					<h2>{{ title }}</h2>
+					<template #actions>
+						<pkp-button ref="addFileButton" @click="openFileBrowser">
+							{{ addFileLabel }}
+						</pkp-button>
+					</template>
+				</pkp-header>
+			</template>
 
 			<template #itemsEmpty>
 				{{ emptyLabel }}
@@ -51,6 +53,8 @@
 			:closeLabel="__('common.close')"
 			:name="formModal"
 			:title="editingLabel"
+			:open="isModalOpenedForm"
+			@close="isModalOpenedForm = false"
 		>
 			<pkp-form v-bind="activeForm" @set="setForm" @success="formSuccess" />
 		</modal>
@@ -161,6 +165,7 @@ export default {
 			editingLabel: '',
 			isDragging: false,
 			status: '',
+			isModalOpenedForm: false,
 		};
 	},
 	computed: {
@@ -200,7 +205,7 @@ export default {
 			this.editingLabel = this.__('common.editItem', {
 				name: this.localize(item.name),
 			});
-			this.$modal.show(this.formModal);
+			this.isModalOpenedForm = true;
 		},
 
 		/**
@@ -210,7 +215,7 @@ export default {
 		 */
 		formSuccess(item) {
 			this.updateItem(item);
-			this.$modal.hide(this.formModal);
+			this.isModalOpenedForm = false;
 			this.activeForm = {};
 			this.$el.querySelector('#edit-' + item.id).focus();
 		},

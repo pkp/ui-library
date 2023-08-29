@@ -179,8 +179,8 @@ export default {
 		},
 		selected: {
 			type: [Array, Object],
-			default() {
-				return this.isMultilingual ? {} : [];
+			default(props) {
+				return props.isMultilingual ? {} : [];
 			},
 		},
 		selectedLabel: {
@@ -532,11 +532,9 @@ export default {
 		background: @primary;
 	}
 
-	ul {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
+	margin: 0;
+	padding: 0;
+	list-style: none;
 
 	.autosuggest__results-item {
 		position: relative;
