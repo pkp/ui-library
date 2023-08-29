@@ -121,10 +121,6 @@ export default {
 			type: String,
 			required: true,
 		},
-		urlBase: {
-			type: String,
-			required: true,
-		},
 	},
 	data() {
 		return {
