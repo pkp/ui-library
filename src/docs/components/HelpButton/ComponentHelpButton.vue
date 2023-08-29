@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewHelpButton from './previews/PreviewHelpButton.vue';
 import PreviewHelpButtonTemplate from './previews/PreviewHelpButton.vue?raw';
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewHelpButton,
+					component: markRaw(PreviewHelpButton),
 					name: 'Base',
 					template: this.extractTemplate(PreviewHelpButtonTemplate),
 				},

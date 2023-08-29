@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewHeader from './previews/PreviewHeader.vue';
 import PreviewHeaderTemplate from './previews/PreviewHeader.vue?raw';
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewHeader,
+					component: markRaw(PreviewHeader),
 					name: 'Base',
 					template: this.extractTemplate(PreviewHeaderTemplate),
 				},

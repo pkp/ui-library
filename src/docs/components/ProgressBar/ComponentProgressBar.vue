@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewProgressBar from './previews/PreviewProgressBar.vue';
 import PreviewProgressBarTemplate from './previews/PreviewProgressBar.vue?raw';
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewProgressBar,
+					component: markRaw(PreviewProgressBar),
 					name: 'Base',
 					template: this.extractTemplate(PreviewProgressBarTemplate),
 				},

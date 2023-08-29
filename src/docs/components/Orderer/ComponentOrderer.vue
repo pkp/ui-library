@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewOrderer from './previews/PreviewOrderer.vue';
 import PreviewOrdererTemplate from './previews/PreviewOrderer.vue?raw';
@@ -14,12 +15,12 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewOrderer,
+					component: markRaw(PreviewOrderer),
 					name: 'Base',
 					template: this.extractTemplate(PreviewOrdererTemplate),
 				},
 				{
-					component: PreviewOrdererDraggable,
+					component: markRaw(PreviewOrdererDraggable),
 					name: 'Draggable',
 					template: this.extractTemplate(PreviewOrdererDraggableTemplate),
 				},

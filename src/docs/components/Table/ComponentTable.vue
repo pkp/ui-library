@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewTable from './previews/PreviewTable.vue';
 import PreviewTableTemplate from './previews/PreviewTable.vue?raw';
@@ -18,22 +19,22 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewTable,
+					component: markRaw(PreviewTable),
 					name: 'Base',
 					template: this.extractTemplate(PreviewTableTemplate),
 				},
 				{
-					component: PreviewSorting,
+					component: markRaw(PreviewSorting),
 					name: 'With Sorting',
 					template: this.extractTemplate(PreviewSortingTemplate),
 				},
 				{
-					component: PreviewPagination,
+					component: markRaw(PreviewPagination),
 					name: 'With Pagination',
 					template: this.extractTemplate(PreviewPaginationTemplate),
 				},
 				{
-					component: PreviewLabelledBy,
+					component: markRaw(PreviewLabelledBy),
 					name: 'With LabelledBy',
 					template: this.extractTemplate(PreviewLabelledByTemplate),
 				},

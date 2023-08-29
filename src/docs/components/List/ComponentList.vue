@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewList from './previews/PreviewList.vue';
 import PreviewListTemplate from './previews/PreviewList.vue?raw';
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewList,
+					component: markRaw(PreviewList),
 					name: 'Base',
 					template: this.extractTemplate(PreviewListTemplate),
 				},

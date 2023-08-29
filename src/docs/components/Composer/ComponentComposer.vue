@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewComposer from './previews/PreviewComposer.vue';
 import PreviewComposerTemplate from './previews/PreviewComposer.vue?raw';
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewComposer,
+					component: markRaw(PreviewComposer),
 					name: 'Base',
 					template: this.extractTemplate(PreviewComposerTemplate),
 				},

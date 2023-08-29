@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewDoiListPanel from './previews/PreviewDoiListPanel.vue';
 import PreviewDoiListPanelTemplate from './previews/PreviewDoiListPanel.vue?raw';
@@ -10,7 +11,7 @@ export default {
 			name: 'DoiListPanel',
 			examples: [
 				{
-					component: PreviewDoiListPanel,
+					component: markRaw(PreviewDoiListPanel),
 					name: 'Base',
 					template: this.extractTemplate(PreviewDoiListPanelTemplate),
 				},

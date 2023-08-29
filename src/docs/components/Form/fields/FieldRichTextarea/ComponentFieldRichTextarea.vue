@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewFieldRichTextarea from './previews/PreviewFieldRichTextarea.vue';
 import PreviewFieldRichTextareaTemplate from './previews/PreviewFieldRichTextarea.vue?raw';
@@ -21,31 +22,31 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewFieldRichTextarea,
+					component: markRaw(PreviewFieldRichTextarea),
 					name: 'Base',
 					template: this.extractTemplate(PreviewFieldRichTextareaTemplate),
 				},
 				{
-					component: PreviewFieldRichTextareaLarge,
+					component: markRaw(PreviewFieldRichTextareaLarge),
 					name: 'Large',
 					template: this.extractTemplate(PreviewFieldRichTextareaLargeTemplate),
 				},
 				{
-					component: PreviewFieldRichTextareaMediumToolbar,
+					component: markRaw(PreviewFieldRichTextareaMediumToolbar),
 					name: 'Medium Toolbar',
 					template: this.extractTemplate(
 						PreviewFieldRichTextareaMediumToolbarTemplate
 					),
 				},
 				{
-					component: PreviewFieldRichTextareaHeavyToolbar,
+					component: markRaw(PreviewFieldRichTextareaHeavyToolbar),
 					name: 'Heavy Toolbar',
 					template: this.extractTemplate(
 						PreviewFieldRichTextareaHeavyToolbarTemplate
 					),
 				},
 				{
-					component: PreviewFieldRichTextareaWordLimit,
+					component: markRaw(PreviewFieldRichTextareaWordLimit),
 					name: 'Word Limit',
 					template: this.extractTemplate(
 						PreviewFieldRichTextareaWordLimitTemplate

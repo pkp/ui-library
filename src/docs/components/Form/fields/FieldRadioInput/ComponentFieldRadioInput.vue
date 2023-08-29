@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewFieldRadioInput from './previews/PreviewFieldRadioInput.vue';
 import PreviewFieldRadioInputTemplate from './previews/PreviewFieldRadioInput.vue?raw';
@@ -13,7 +14,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewFieldRadioInput,
+					component: markRaw(PreviewFieldRadioInput),
 					name: 'Base',
 					template: this.extractTemplate(PreviewFieldRadioInputTemplate),
 				},

@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewTabs from './previews/PreviewTabs.vue';
 import PreviewTabsTemplate from './previews/PreviewTabs.vue?raw';
@@ -22,32 +23,32 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewTabs,
+					component: markRaw(PreviewTabs),
 					name: 'Base',
 					template: this.extractTemplate(PreviewTabsTemplate),
 				},
 				{
-					component: PreviewNested,
+					component: markRaw(PreviewNested),
 					name: 'Nested Tabs',
 					template: this.extractTemplate(PreviewNestedTemplate),
 				},
 				{
-					component: PreviewSide,
+					component: markRaw(PreviewSide),
 					name: 'Side Tabs',
 					template: this.extractTemplate(PreviewSideTemplate),
 				},
 				{
-					component: PreviewIcon,
+					component: markRaw(PreviewIcon),
 					name: 'With Icon',
 					template: this.extractTemplate(PreviewIconTemplate),
 				},
 				{
-					component: PreviewBadge,
+					component: markRaw(PreviewBadge),
 					name: 'With Badge',
 					template: this.extractTemplate(PreviewBadgeTemplate),
 				},
 				{
-					component: PreviewDefault,
+					component: markRaw(PreviewDefault),
 					name: 'With Default Tab',
 					template: this.extractTemplate(PreviewDefaultTemplate),
 				},

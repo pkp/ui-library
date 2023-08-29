@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewFieldSelectIssue from './previews/PreviewFieldSelectIssue.vue';
 import PreviewFieldSelectIssueTemplate from './previews/PreviewFieldSelectIssue.vue?raw';
@@ -17,19 +18,19 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewFieldSelectIssue,
+					component: markRaw(PreviewFieldSelectIssue),
 					name: 'Base',
 					template: this.extractTemplate(PreviewFieldSelectIssueTemplate),
 				},
 				{
-					component: PreviewFieldSelectIssuePublished,
+					component: markRaw(PreviewFieldSelectIssuePublished),
 					name: 'Published',
 					template: this.extractTemplate(
 						PreviewFieldSelectIssuePublishedTemplate
 					),
 				},
 				{
-					component: PreviewFieldSelectIssueScheduled,
+					component: markRaw(PreviewFieldSelectIssueScheduled),
 					name: 'Scheduled',
 					template: this.extractTemplate(
 						PreviewFieldSelectIssueScheduledTemplate

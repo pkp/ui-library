@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewSteps from './previews/PreviewSteps.vue';
 import PreviewStepsTemplate from './previews/PreviewSteps.vue?raw';
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewSteps,
+					component: markRaw(PreviewSteps),
 					name: 'Base',
 					template: this.extractTemplate(PreviewStepsTemplate),
 				},

@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewFilter from './previews/PreviewFilter.vue';
 import PreviewFilterTemplate from './previews/PreviewFilter.vue?raw';
@@ -18,22 +19,22 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewFilter,
+					component: markRaw(PreviewFilter),
 					name: 'Base',
 					template: this.extractTemplate(PreviewFilterTemplate),
 				},
 				{
-					component: PreviewFilterSlider,
+					component: markRaw(PreviewFilterSlider),
 					name: 'Slider',
 					template: this.extractTemplate(PreviewFilterSliderTemplate),
 				},
 				{
-					component: PreviewFilterSliderMultirange,
+					component: markRaw(PreviewFilterSliderMultirange),
 					name: 'Slider (Multirange)',
 					template: this.extractTemplate(PreviewFilterSliderMultirangeTemplate),
 				},
 				{
-					component: PreviewFilterAutosuggest,
+					component: markRaw(PreviewFilterAutosuggest),
 					name: 'Autosuggest',
 					template: this.extractTemplate(PreviewFilterAutosuggestTemplate),
 				},

@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewDropdown from './previews/PreviewDropdown.vue';
 import PreviewDropdownTemplate from './previews/PreviewDropdown.vue?raw';
@@ -14,12 +15,12 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewDropdown,
+					component: markRaw(PreviewDropdown),
 					name: 'Base',
 					template: this.extractTemplate(PreviewDropdownTemplate),
 				},
 				{
-					component: PreviewDropdownSections,
+					component: markRaw(PreviewDropdownSections),
 					name: 'With Sections',
 					template: this.extractTemplate(PreviewDropdownSectionsTemplate),
 				},

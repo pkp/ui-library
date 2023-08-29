@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewFieldText from './previews/PreviewFieldText.vue';
 import PreviewFieldTextTemplate from './previews/PreviewFieldText.vue?raw';
@@ -21,27 +22,27 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewFieldText,
+					component: markRaw(PreviewFieldText),
 					name: 'Base',
 					template: this.extractTemplate(PreviewFieldTextTemplate),
 				},
 				{
-					component: PreviewFieldTextSmall,
+					component: markRaw(PreviewFieldTextSmall),
 					name: 'Small',
 					template: this.extractTemplate(PreviewFieldTextSmallTemplate),
 				},
 				{
-					component: PreviewFieldTextLarge,
+					component: markRaw(PreviewFieldTextLarge),
 					name: 'Large',
 					template: this.extractTemplate(PreviewFieldTextLargeTemplate),
 				},
 				{
-					component: PreviewFieldTextPrefix,
+					component: markRaw(PreviewFieldTextPrefix),
 					name: 'With Prefix',
 					template: this.extractTemplate(PreviewFieldTextPrefixTemplate),
 				},
 				{
-					component: PreviewFieldTextOptIntoEdit,
+					component: markRaw(PreviewFieldTextOptIntoEdit),
 					name: 'Editing Opt-in',
 					template: this.extractTemplate(PreviewFieldTextOptIntoEditTemplate),
 				},

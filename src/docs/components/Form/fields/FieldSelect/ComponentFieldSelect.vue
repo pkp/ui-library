@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewFieldSelect from './previews/PreviewFieldSelect.vue';
 import PreviewFieldSelectTemplate from './previews/PreviewFieldSelect.vue?raw';
@@ -13,7 +14,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewFieldSelect,
+					component: markRaw(PreviewFieldSelect),
 					name: 'Base',
 					template: this.extractTemplate(PreviewFieldSelectTemplate),
 				},

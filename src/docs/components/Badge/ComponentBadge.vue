@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewBadge from './previews/PreviewBadge.vue';
 import PreviewBadgeTemplate from './previews/PreviewBadge.vue?raw';
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewBadge,
+					component: markRaw(PreviewBadge),
 					name: 'Base',
 					template: this.extractTemplate(PreviewBadgeTemplate),
 				},

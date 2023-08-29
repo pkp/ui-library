@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewStatsEditorialPage from './previews/PreviewStatsEditorialPage.vue';
 import PreviewStatsEditorialPageTemplate from './previews/PreviewStatsEditorialPage.vue?raw';
@@ -14,12 +15,12 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewStatsEditorialPage,
+					component: markRaw(PreviewStatsEditorialPage),
 					name: 'Editorial Stats',
 					template: this.extractTemplate(PreviewStatsEditorialPageTemplate),
 				},
 				{
-					component: PreviewStatsPublicationsPage,
+					component: markRaw(PreviewStatsPublicationsPage),
 					name: 'Publication Stats',
 					template: this.extractTemplate(PreviewStatsPublicationsPageTemplate),
 				},

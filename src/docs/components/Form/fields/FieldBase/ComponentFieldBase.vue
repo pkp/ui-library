@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewFieldBase from './previews/PreviewFieldBase.vue';
 import PreviewFieldBaseTemplate from './previews/PreviewFieldBase.vue?raw';
@@ -19,22 +20,22 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewFieldBase,
+					component: markRaw(PreviewFieldBase),
 					name: 'Base',
 					template: this.extractTemplate(PreviewFieldBaseTemplate),
 				},
 				{
-					component: PreviewFieldBaseDescription,
+					component: markRaw(PreviewFieldBaseDescription),
 					name: 'With Description',
 					template: this.extractTemplate(PreviewFieldBaseDescriptionTemplate),
 				},
 				{
-					component: PreviewFieldBaseTooltip,
+					component: markRaw(PreviewFieldBaseTooltip),
 					name: 'With Tooltip',
 					template: this.extractTemplate(PreviewFieldBaseTooltipTemplate),
 				},
 				{
-					component: PreviewFieldBaseError,
+					component: markRaw(PreviewFieldBaseError),
 					name: 'With Error',
 					template: this.extractTemplate(PreviewFieldBaseErrorTemplate),
 				},

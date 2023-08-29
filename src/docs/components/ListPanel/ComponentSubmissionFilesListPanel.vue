@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewSubmissionFilesListPanel from './previews/PreviewSubmissionFilesListPanel.vue';
 import PreviewSubmissionFilesListPanelTemplate from './previews/PreviewSubmissionFilesListPanel.vue?raw';
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewSubmissionFilesListPanel,
+					component: markRaw(PreviewSubmissionFilesListPanel),
 					name: 'Base',
 					template: this.extractTemplate(
 						PreviewSubmissionFilesListPanelTemplate

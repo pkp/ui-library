@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewMultilingualProgress from './previews/PreviewMultilingualProgress.vue';
 import PreviewMultilingualProgressTemplate from './previews/PreviewMultilingualProgress.vue?raw';
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewMultilingualProgress,
+					component: markRaw(PreviewMultilingualProgress),
 					name: 'Base',
 					template: this.extractTemplate(PreviewMultilingualProgressTemplate),
 				},

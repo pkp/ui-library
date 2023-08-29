@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import Preview from './previews/PreviewPanel.vue';
 import Template from './previews/PreviewPanel.vue?raw';
@@ -16,17 +17,17 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: Preview,
+					component: markRaw(Preview),
 					name: 'Base',
 					template: this.extractTemplate(Template),
 				},
 				{
-					component: PreviewMultipleSections,
+					component: markRaw(PreviewMultipleSections),
 					name: 'Many Sections',
 					template: this.extractTemplate(TemplateMultipleSections),
 				},
 				{
-					component: PreviewStacked,
+					component: markRaw(PreviewStacked),
 					name: 'Stacked Header',
 					template: this.extractTemplate(TemplateStacked),
 				},

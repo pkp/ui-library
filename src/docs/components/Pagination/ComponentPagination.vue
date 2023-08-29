@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewPagination from './previews/PreviewPagination.vue';
 import PreviewPaginationTemplate from './previews/PreviewPagination.vue?raw';
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewPagination,
+					component: markRaw(PreviewPagination),
 					name: 'Base',
 					template: this.extractTemplate(PreviewPaginationTemplate),
 				},

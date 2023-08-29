@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewSpinner from './previews/PreviewSpinner.vue';
 import PreviewSpinnerTemplate from './previews/PreviewSpinner.vue?raw';
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewSpinner,
+					component: markRaw(PreviewSpinner),
 					name: 'Base',
 					template: this.extractTemplate(PreviewSpinnerTemplate),
 				},

@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import Preview from './previews/PreviewFetch.vue';
 import PreviewTemplate from './previews/PreviewFetch.vue?raw';
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: Preview,
+					component: markRaw(Preview),
 					name: 'Fetch',
 					template: this.extractTemplate(PreviewTemplate),
 				},

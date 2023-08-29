@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewFieldShowEnsuringLink from './previews/PreviewFieldShowEnsuringLink.vue';
 import PreviewFieldShowEnsuringLinkTemplate from './previews/PreviewFieldShowEnsuringLink.vue?raw';
@@ -13,7 +14,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewFieldShowEnsuringLink,
+					component: markRaw(PreviewFieldShowEnsuringLink),
 					name: 'Base',
 					template: this.extractTemplate(PreviewFieldShowEnsuringLinkTemplate),
 				},

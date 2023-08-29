@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewPage from './previews/PreviewPage.vue';
 import PreviewPageTemplate from './previews/PreviewPage.vue?raw';
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewPage,
+					component: markRaw(PreviewPage),
 					name: 'Base',
 					template: this.extractTemplate(PreviewPageTemplate),
 				},

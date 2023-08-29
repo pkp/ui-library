@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewFieldUploadImage from './previews/PreviewFieldUploadImage.vue';
 import PreviewFieldUploadImageTemplate from './previews/PreviewFieldUploadImage.vue?raw';
@@ -13,7 +14,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewFieldUploadImage,
+					component: markRaw(PreviewFieldUploadImage),
 					name: 'Base',
 					template: this.extractTemplate(PreviewFieldUploadImageTemplate),
 				},

@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewIcon from './previews/PreviewIcon.vue';
 import PreviewIconTemplate from './previews/PreviewIcon.vue?raw';
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewIcon,
+					component: markRaw(PreviewIcon),
 					name: 'Base',
 					template: this.extractTemplate(PreviewIconTemplate),
 				},

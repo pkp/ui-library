@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewFieldOptions from './previews/PreviewFieldOptions.vue';
 import PreviewFieldOptionsTemplate from './previews/PreviewFieldOptions.vue?raw';
@@ -19,22 +20,22 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewFieldOptions,
+					component: markRaw(PreviewFieldOptions),
 					name: 'Base',
 					template: this.extractTemplate(PreviewFieldOptionsTemplate),
 				},
 				{
-					component: PreviewFieldOptionsRadio,
+					component: markRaw(PreviewFieldOptionsRadio),
 					name: 'Radio',
 					template: this.extractTemplate(PreviewFieldOptionsRadioTemplate),
 				},
 				{
-					component: PreviewFieldOptionsConfirm,
+					component: markRaw(PreviewFieldOptionsConfirm),
 					name: 'Confirm',
 					template: this.extractTemplate(PreviewFieldOptionsConfirmTemplate),
 				},
 				{
-					component: PreviewFieldOptionsOrderable,
+					component: markRaw(PreviewFieldOptionsOrderable),
 					name: 'Orderable',
 					template: this.extractTemplate(PreviewFieldOptionsOrderableTemplate),
 				},

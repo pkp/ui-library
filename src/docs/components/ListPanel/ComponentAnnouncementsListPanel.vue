@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewAnnouncementsListPanel from './previews/PreviewAnnouncementsListPanel.vue';
 import PreviewAnnouncementsListPanelTemplate from './previews/PreviewAnnouncementsListPanel.vue?raw';
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewAnnouncementsListPanel,
+					component: markRaw(PreviewAnnouncementsListPanel),
 					name: 'Base',
 					template: this.extractTemplate(PreviewAnnouncementsListPanelTemplate),
 				},

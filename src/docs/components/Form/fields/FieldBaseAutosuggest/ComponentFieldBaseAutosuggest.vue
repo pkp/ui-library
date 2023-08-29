@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewFieldBaseAutosuggest from './previews/PreviewFieldBaseAutosuggest.vue';
 import PreviewFieldBaseAutosuggestTemplate from './previews/PreviewFieldBaseAutosuggest.vue?raw';
@@ -17,19 +18,19 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewFieldBaseAutosuggest,
+					component: markRaw(PreviewFieldBaseAutosuggest),
 					name: 'Base',
 					template: this.extractTemplate(PreviewFieldBaseAutosuggestTemplate),
 				},
 				{
-					component: PreviewFieldBaseAutosuggestDisabled,
+					component: markRaw(PreviewFieldBaseAutosuggestDisabled),
 					name: 'Disabled',
 					template: this.extractTemplate(
 						PreviewFieldBaseAutosuggestDisabledTemplate
 					),
 				},
 				{
-					component: PreviewFieldBaseAutosuggestInline,
+					component: markRaw(PreviewFieldBaseAutosuggestInline),
 					name: 'Inline',
 					template: this.extractTemplate(
 						PreviewFieldBaseAutosuggestInlineTemplate

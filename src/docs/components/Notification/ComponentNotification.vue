@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewNotification from './previews/PreviewNotification.vue';
 import PreviewNotificationTemplate from './previews/PreviewNotification.vue?raw';
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewNotification,
+					component: markRaw(PreviewNotification),
 					name: 'Base',
 					template: this.extractTemplate(PreviewNotificationTemplate),
 				},

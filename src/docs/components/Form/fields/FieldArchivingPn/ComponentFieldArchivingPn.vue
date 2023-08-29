@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewFieldArchivingPn from './previews/PreviewFieldArchivingPn.vue';
 import PreviewFieldArchivingPnTemplate from './previews/PreviewFieldArchivingPn.vue?raw';
@@ -13,7 +14,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewFieldArchivingPn,
+					component: markRaw(PreviewFieldArchivingPn),
 					name: 'Base',
 					template: this.extractTemplate(PreviewFieldArchivingPnTemplate),
 				},

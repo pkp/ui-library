@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewInstitutionsListPanel from './previews/PreviewInstitutionsListPanel.vue';
 import PreviewInstitutionsListPanelTemplate from './previews/PreviewInstitutionsListPanel.vue?raw';
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewInstitutionsListPanel,
+					component: markRaw(PreviewInstitutionsListPanel),
 					name: 'Base',
 					template: this.extractTemplate(PreviewInstitutionsListPanelTemplate),
 				},

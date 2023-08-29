@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewSearch from './previews/PreviewSearch.vue';
 import PreviewSearchTemplate from './previews/PreviewSearch.vue?raw';
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewSearch,
+					component: markRaw(PreviewSearch),
 					name: 'Base',
 					template: this.extractTemplate(PreviewSearchTemplate),
 				},

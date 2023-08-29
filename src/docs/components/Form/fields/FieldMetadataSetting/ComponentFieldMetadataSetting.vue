@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewFieldMetadataSetting from './previews/PreviewFieldMetadataSetting.vue';
 import PreviewFieldMetadataSettingTemplate from './previews/PreviewFieldMetadataSetting.vue?raw';
@@ -13,7 +14,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewFieldMetadataSetting,
+					component: markRaw(PreviewFieldMetadataSetting),
 					name: 'Base',
 					template: this.extractTemplate(PreviewFieldMetadataSettingTemplate),
 				},

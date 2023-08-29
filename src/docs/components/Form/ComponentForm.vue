@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewForm from './previews/PreviewForm.vue';
 import PreviewFormTemplate from './previews/PreviewForm.vue?raw';
@@ -22,32 +23,32 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewForm,
+					component: markRaw(PreviewForm),
 					name: 'Base',
 					template: this.extractTemplate(PreviewFormTemplate),
 				},
 				{
-					component: PreviewMultilingual,
+					component: markRaw(PreviewMultilingual),
 					name: 'Multilingual',
 					template: this.extractTemplate(PreviewMultilingualTemplate),
 				},
 				{
-					component: PreviewGroups,
+					component: markRaw(PreviewGroups),
 					name: 'With Groups',
 					template: this.extractTemplate(PreviewGroupsTemplate),
 				},
 				{
-					component: PreviewPagination,
+					component: markRaw(PreviewPagination),
 					name: 'With Pagination',
 					template: this.extractTemplate(PreviewPaginationTemplate),
 				},
 				{
-					component: PreviewConditionalDisplay,
+					component: markRaw(PreviewConditionalDisplay),
 					name: 'With Conditional Display',
 					template: this.extractTemplate(PreviewConditionalDisplayTemplate),
 				},
 				{
-					component: PreviewErrors,
+					component: markRaw(PreviewErrors),
 					name: 'With Errors',
 					template: this.extractTemplate(PreviewErrorsTemplate),
 				},

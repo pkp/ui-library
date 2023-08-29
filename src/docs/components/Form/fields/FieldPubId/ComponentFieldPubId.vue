@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewFieldPubId from './previews/PreviewFieldPubId.vue';
 import PreviewFieldPubIdTemplate from './previews/PreviewFieldPubId.vue?raw';
@@ -13,7 +14,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewFieldPubId,
+					component: markRaw(PreviewFieldPubId),
 					name: 'Base',
 					template: this.extractTemplate(PreviewFieldPubIdTemplate),
 				},

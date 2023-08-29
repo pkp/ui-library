@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewFieldTextarea from './previews/PreviewFieldTextarea.vue';
 import PreviewFieldTextareaTemplate from './previews/PreviewFieldTextarea.vue?raw';
@@ -17,17 +18,17 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewFieldTextarea,
+					component: markRaw(PreviewFieldTextarea),
 					name: 'Base',
 					template: this.extractTemplate(PreviewFieldTextareaTemplate),
 				},
 				{
-					component: PreviewFieldTextareaSmall,
+					component: markRaw(PreviewFieldTextareaSmall),
 					name: 'Small',
 					template: this.extractTemplate(PreviewFieldTextareaSmallTemplate),
 				},
 				{
-					component: PreviewFieldTextareaLarge,
+					component: markRaw(PreviewFieldTextareaLarge),
 					name: 'Large',
 					template: this.extractTemplate(PreviewFieldTextareaLargeTemplate),
 				},

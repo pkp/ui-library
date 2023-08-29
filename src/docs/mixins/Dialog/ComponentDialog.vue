@@ -1,4 +1,5 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewDialog from './previews/PreviewDialog.vue';
 import PreviewDialogTemplate from './previews/PreviewDialog.vue?raw';
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewDialog,
+					component: markRaw(PreviewDialog),
 					name: 'Dialog',
 					template: this.extractTemplate(PreviewDialogTemplate),
 				},
