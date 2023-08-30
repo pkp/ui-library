@@ -41,6 +41,7 @@ import ComponentFilter from './docs/components/Filter/ComponentFilter.vue';
 import ComponentForm from './docs/components/Form/ComponentForm.vue';
 import ComponentHeader from './docs/components/Header/ComponentHeader.vue';
 import ComponentHelpButton from './docs/components/HelpButton/ComponentHelpButton.vue';
+import ComponentHighlightsListPanel from './docs/components/ListPanel/ComponentHighlightsListPanel.vue';
 import ComponentIcon from './docs/components/Icon/ComponentIcon.vue';
 import ComponentInstitutionsListPanel from './docs/components/ListPanel/ComponentInstitutionsListPanel.vue';
 import ComponentList from './docs/components/List/ComponentList.vue';
@@ -294,6 +295,11 @@ export default createRouter({
 			path: '/component/ListPanel/components/CatalogListPanel/:example?',
 			name: 'CatalogListPanel',
 			component: ComponentCatalogListPanel,
+		},
+		{
+			path: '/component/ListPanel/components/HighlightsListPanel/:example?',
+			name: 'HighlightsListPanel',
+			component: ComponentHighlightsListPanel,
 		},
 		{
 			path: '/component/ListPanel/components/InstitutionsListPanel/:example?',

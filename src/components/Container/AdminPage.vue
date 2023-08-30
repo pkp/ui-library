@@ -1,5 +1,6 @@
 <script type="text/javascript">
 import Page from '@/components/Container/Page.vue';
+import HighlightsListPanel from '../ListPanel/highlights/HighlightsListPanel.vue';
 import ThemeForm from '@/components/Form/context/ThemeForm.vue';
 import ActionPanel from '../ActionPanel/ActionPanel.vue';
 
@@ -8,6 +9,7 @@ export default {
 	name: 'AdminPage',
 	components: {
 		ActionPanel,
+		HighlightsListPanel,
 		ThemeForm,
 	},
 };
