@@ -27,14 +27,14 @@
 						:aria-describedby="'institution-' + item.id"
 						@click="openEditModal(item.id)"
 					>
-						{{ __('common.edit') }}
+						{{ t('common.edit') }}
 					</pkp-button>
 					<pkp-button
 						:isWarnable="true"
 						:aria-describedby="'institution-' + item.id"
 						@click="openDeleteModal(item.id)"
 					>
-						{{ __('common.delete') }}
+						{{ t('common.delete') }}
 					</pkp-button>
 				</template>
 				<template #footer>
@@ -48,7 +48,7 @@
 				</template>
 			</list-panel>
 			<modal
-				:closeLabel="__('common.close')"
+				:closeLabel="t('common.close')"
 				name="form"
 				:title="activeFormTitle"
 				:open="isModalOpenedForm"
@@ -198,7 +198,7 @@ export default {
 				}),
 				actions: [
 					{
-						label: this.__('common.yes'),
+						label: this.t('common.yes'),
 						isPrimary: true,
 						callback: (close) => {
 							var self = this;
@@ -222,7 +222,7 @@ export default {
 						},
 					},
 					{
-						label: this.__('common.no'),
+						label: this.t('common.no'),
 						isWarnable: true,
 						callback: (close) => close(),
 					},

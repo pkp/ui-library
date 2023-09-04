@@ -13,7 +13,7 @@
 					:aria-hidden="true"
 				/>
 				<span class="-screenReader">
-					{{ __('grid.action.sort') }}
+					{{ t('grid.action.sort') }}
 				</span>
 			</button>
 		</template>

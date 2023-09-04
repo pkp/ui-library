@@ -68,7 +68,7 @@
 					@click="toggleSidebar"
 				>
 					<icon icon="filter" :inline="true" />
-					{{ __('common.filter') }}
+					{{ t('common.filter') }}
 				</pkp-button>
 			</template>
 		</pkp-header>

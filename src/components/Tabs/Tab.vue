@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import {computed} from 'vue';
 export default {
 	props: {
 		icon: {
@@ -70,9 +71,9 @@ export default {
 		// share state with parent <tabs> component
 		this.unregister = this.registerTab({
 			id: this.id,
-			icon: this.icon,
-			label: this.label,
-			badge: this.badge,
+			icon: computed(() => this.icon),
+			label: computed(() => this.label),
+			badge: computed(() => this.badge),
 			isActive: (active) => (this.isActive = active),
 		});
 	},

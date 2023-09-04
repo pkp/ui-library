@@ -10,7 +10,8 @@
 						type="checkbox"
 						:name="`${item.type}[]`"
 						:value="item.id"
-						v-model="isSelected"
+						:checked="isSelected"
+						@change="$emit('update:isSelected', $event.target.checked)"
 						@click="toggleSelected"
 					/>
 				</div>
@@ -97,7 +98,7 @@
 					"
 				>
 					{{
-						__('doi.manager.versions.countStatement', {
+						t('doi.manager.versions.countStatement', {
 							count: item.versions.length,
 						})
 					}}
@@ -106,7 +107,7 @@
 						:class="'-linkButton'"
 						@click="isModalOpenedVersion = true"
 					>
-						{{ __('doi.manager.versions.view') }}
+						{{ t('doi.manager.versions.view') }}
 					</button>
 				</div>
 				<spinner v-if="isSaving" />
@@ -114,7 +115,7 @@
 					:is-disabled="isDeposited || isSaving"
 					@click="isEditingDois ? saveDois() : editDois()"
 				>
-					{{ isEditingDois ? __('common.save') : __('common.edit') }}
+					{{ isEditingDois ? t('common.save') : t('common.edit') }}
 				</pkp-button>
 			</div>
 
@@ -131,17 +132,17 @@
 					{{
 						isDeposited
 							? itemRegistrationAgency === null
-								? __('manager.dois.registration.manuallyMarkedRegistered')
-								: __('manager.dois.registration.submittedDescription', {
+								? t('manager.dois.registration.manuallyMarkedRegistered')
+								: t('manager.dois.registration.submittedDescription', {
 										registrationAgency: itemRegistrationAgencyName,
 								  })
-							: __('manager.dois.registration.notSubmittedDescription', {
+							: t('manager.dois.registration.notSubmittedDescription', {
 									registrationAgency: registrationAgencyInfo['displayName'],
 							  })
 					}}
 				</span>
 				<span class="doiListItem__depositorDescription" v-else>
-					{{ __('manager.dois.registration.notPublishedDescription') }}
+					{{ t('manager.dois.registration.notPublishedDescription') }}
 				</span>
 				<div class="doiListItem__depositorActions">
 					<pkp-button
@@ -150,14 +151,14 @@
 						@click="isModalOpenedRegisteredMessage = true"
 						v-if="isDeposited && hasRegisteredMessage"
 					>
-						{{ __('manager.dois.registration.viewRecord') }}
+						{{ t('manager.dois.registration.viewRecord') }}
 					</pkp-button>
 					<pkp-button
 						:is-disabled="isEditingDois"
 						@click="handleDepositorActions"
 						v-else-if="!isDeposited && item.isPublished"
 					>
-						{{ __('manager.dois.registration.depositDois') }}
+						{{ t('manager.dois.registration.depositDois') }}
 					</pkp-button>
 					<pkp-button
 						ref="errorMessageModalButton"
@@ -165,7 +166,7 @@
 						v-if="hasErrors && hasErrorMessage"
 						@click="isModalOpenedErrorMessage = true"
 					>
-						{{ __('manager.dois.registration.viewError') }}
+						{{ t('manager.dois.registration.viewError') }}
 					</pkp-button>
 				</div>
 			</div>
@@ -173,9 +174,9 @@
 		<!-- Messages Modals -->
 		<!-- Error Message Modal -->
 		<modal
-			:close-label="__('common.close')"
+			:close-label="t('common.close')"
 			:name="`errorMessageModal-${item.id}`"
-			:title="__('manager.dois.registration.viewError.title')"
+			:title="t('manager.dois.registration.viewError.title')"
 			:open="isModalOpenedErrorMessage"
 			@close="isModalOpenedErrorMessage = false"
 		>
@@ -186,9 +187,9 @@
 		</modal>
 		<!-- Recorded Message Modal -->
 		<modal
-			:close-label="__('common.close')"
+			:close-label="t('common.close')"
 			name="registeredMessageModal"
-			:title="__('manager.dois.registration.viewError.title')"
+			:title="t('manager.dois.registration.viewError.title')"
 			:open="isModalOpenedRegisteredMessage"
 			@close="isModalOpenedRegisteredMessage = false"
 		>
@@ -197,9 +198,9 @@
 		</modal>
 		<!-- Version Modal -->
 		<modal
-			:close-label="__('common.close')"
+			:close-label="t('common.close')"
 			:name="versionModalName"
-			:title="__('doi.manager.versions.modalTitle')"
+			:title="t('doi.manager.versions.modalTitle')"
 			:open="isModalOpenedVersion"
 			@close="isModalOpenedVersion = false"
 		>
@@ -248,7 +249,7 @@
 					:is-disabled="isDeposited || isSaving"
 					@click="isEditingDois ? saveDois() : editDois()"
 				>
-					{{ isEditingDois ? __('common.save') : __('common.edit') }}
+					{{ isEditingDois ? t('common.save') : t('common.edit') }}
 				</pkp-button>
 			</div>
 		</modal>
@@ -259,7 +260,7 @@
 import Expander from '@/components/Expander/Expander.vue';
 import Modal from '@/components/Modal/Modal.vue';
 import PkpTable from '@/components/Table/Table.vue';
-import TableCell from '@/components/Table/TableCell';
+import TableCell from '@/components/Table/TableCell.vue';
 
 export default {
 	name: 'DoiListItem',
@@ -352,19 +353,20 @@ export default {
 			},
 		},
 	},
+	emits: ['update:isSelected'],
 	data() {
 		return {
 			doiListColumns: [
 				{
 					name: 'type',
-					label: this.__('common.type'),
+					label: this.t('common.type'),
 					value(row) {
 						return row.displayType;
 					},
 				},
 				{
 					name: 'doi',
-					label: this.__('manager.dois.title'),
+					label: this.t('manager.dois.title'),
 					value: 'value',
 				},
 			],
@@ -397,16 +399,16 @@ export default {
 			switch (this.itemDepositStatus) {
 				case pkp.const.DOI_STATUS_UNREGISTERED:
 					return this.needsDoi
-						? this.__('manager.dois.status.needsDoi')
-						: this.__('manager.dois.status.unregistered');
+						? this.t('manager.dois.status.needsDoi')
+						: this.t('manager.dois.status.unregistered');
 				case pkp.const.DOI_STATUS_SUBMITTED:
-					return this.__('manager.dois.status.submitted');
+					return this.t('manager.dois.status.submitted');
 				case pkp.const.DOI_STATUS_REGISTERED:
-					return this.__('manager.dois.status.registered');
+					return this.t('manager.dois.status.registered');
 				case pkp.const.DOI_STATUS_ERROR:
-					return this.__('manager.dois.status.error');
+					return this.t('manager.dois.status.error');
 				case pkp.const.DOI_STATUS_STALE:
-					return this.__('manager.dois.status.stale');
+					return this.t('manager.dois.status.stale');
 				default:
 					return '';
 			}
@@ -516,9 +518,9 @@ export default {
 		 */
 		publicationStatusLabel() {
 			if (this.item.isPublished) {
-				return this.__('publication.status.published');
+				return this.t('publication.status.published');
 			} else {
-				return this.__('publication.status.unpublished');
+				return this.t('publication.status.unpublished');
 			}
 		},
 		/**
@@ -752,7 +754,7 @@ export default {
 				if (didUpdatesFail) {
 					pkp.eventBus.$emit(
 						'notify',
-						this.__('manager.dois.update.partialFailure'),
+						this.t('manager.dois.update.partialFailure'),
 						'warning',
 					);
 				}
@@ -811,8 +813,8 @@ export default {
 			const dateInfo =
 				version.datePublished !== null
 					? `(${version.datePublished})`
-					: this.__('publication.status.unpublished');
-			return `${this.__('publication.version', {
+					: this.t('publication.status.unpublished');
+			return `${this.t('publication.version', {
 				version: version.versionNumber,
 			})} ${dateInfo}`;
 		},

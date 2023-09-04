@@ -94,12 +94,12 @@
 									"
 								>
 									{{
-										__('common.inParenthesis', {
+										t('common.inParenthesis', {
 											text: i18nReviewRound.replace(
 												'{$round}',
 												submission.reviewRounds[
 													submission.reviewRounds.length - 1
-												].round
+												].round,
 											),
 										})
 									}}
@@ -322,10 +322,10 @@ export default {
 		 */
 		get(cb) {
 			this.isLoadingSubmissions = true;
-			this.$announcer.set(this.__('common.loading'));
+			this.$announcer.set(this.t('common.loading'));
 			setTimeout(() => {
 				this.isLoadingSubmissions = false;
-				this.$announcer.set(this.__('common.loaded'));
+				this.$announcer.set(this.t('common.loaded'));
 				if (cb) {
 					cb.apply(this, [
 						{items: [...submissions], itemsMax: this.submissionsMax},

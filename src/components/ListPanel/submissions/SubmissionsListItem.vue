@@ -7,7 +7,7 @@
 				</div>
 				<div class="listPanel__itemTitle">
 					<span v-if="currentUserIsReviewer">
-						{{ __('submission.list.reviewAssignment') }}
+						{{ t('submission.list.reviewAssignment') }}
 					</span>
 					<span v-else-if="currentPublication.authorsStringShort">
 						{{ currentPublication.authorsStringShort }}
@@ -18,7 +18,7 @@
 					v-html="
 						localizeSubmission(
 							currentPublication.fullTitle,
-							currentPublication.locale
+							currentPublication.locale,
 						)
 					"
 				></div>
@@ -33,7 +33,7 @@
 						class="listPanel__item--submission__dueDate"
 					>
 						{{
-							__('submission.list.responseDue', {
+							t('submission.list.responseDue', {
 								date: currentUserLatestReviewAssignment.responseDue,
 							})
 						}}
@@ -43,7 +43,7 @@
 						class="listPanel__item--submission__dueDate"
 					>
 						{{
-							__('submission.list.reviewDue', {
+							t('submission.list.reviewDue', {
 								date: currentUserLatestReviewAssignment.due,
 							})
 						}}
@@ -65,7 +65,7 @@
 						class="-linkButton"
 						@click.stop.prevent="openAssignParticipant"
 					>
-						{{ __('submission.list.assignEditor') }}
+						{{ t('submission.list.assignEditor') }}
 					</button>
 				</div>
 			</div>
@@ -117,33 +117,33 @@
 						class="listPanel__item--submission__reviewCancelled"
 					>
 						<icon icon="exclamation-triangle" :inline="true" />
-						{{ __('submission.list.reviewCancelled') }}
+						{{ t('submission.list.reviewCancelled') }}
 					</div>
 					<div
 						v-if="currentUserLatestReviewAssignment.reviewComplete"
 						class="listPanel__item--submission__reviewComplete"
 					>
 						<icon icon="check" :inline="true" />
-						{{ __('submission.list.reviewComplete') }}
+						{{ t('submission.list.reviewComplete') }}
 					</div>
 				</template>
 
 				<!-- Actions -->
 				<pkp-button element="a" :href="item.urlWorkflow">
-					<span aria-hidden="true">{{ __('common.view') }}</span>
+					<span aria-hidden="true">{{ t('common.view') }}</span>
 					<span v-if="currentUserIsReviewer" class="-screenReader">
 						{{
-							__('common.viewWithName', {
+							t('common.viewWithName', {
 								name: localizeSubmission(
 									currentPublication.fullTitle,
-									currentPublication.locale
+									currentPublication.locale,
 								),
 							})
 						}}
 					</span>
 					<span v-else class="-screenReader">
 						{{
-							__('common.viewWithName', {
+							t('common.viewWithName', {
 								name: currentPublication.authorsStringShort,
 							})
 						}}
@@ -169,7 +169,7 @@
 						<icon icon="user-o" :inline="true" />
 						{{ completedReviewsCount }}/{{ currentReviewAssignments.length }}
 					</template>
-					{{ __('submission.list.reviewsCompleted') }}
+					{{ t('submission.list.reviewsCompleted') }}
 				</list-item>
 				<list-item v-if="!isSubmissionStage">
 					<template #value>
@@ -183,7 +183,7 @@
 						<icon icon="comment-o" :inline="true" />
 						{{ openQueryCount }}
 					</template>
-					{{ __('submission.list.discussions') }}
+					{{ t('submission.list.discussions') }}
 				</list-item>
 				<list-item v-if="dualWorkflowLinks">
 					<span v-html="dualWorkflowLinks" />
@@ -191,7 +191,7 @@
 				<list-item>
 					<span>
 						{{
-							__('common.lastActivity', {
+							t('common.lastActivity', {
 								date: localizeDate(item.dateLastActivity),
 							})
 						}}
@@ -200,14 +200,14 @@
 			</list>
 			<div class="listPanel__itemExpandedActions">
 				<pkp-button v-if="currentUserCanViewInfoCenter" @click="openInfoCenter">
-					{{ __('submission.list.infoCenter') }}
+					{{ t('submission.list.infoCenter') }}
 				</pkp-button>
 				<pkp-button
 					v-if="currentUserCanDelete"
 					:isWarnable="true"
 					@click="deleteSubmissionPrompt"
 				>
-					{{ __('common.delete') }}
+					{{ t('common.delete') }}
 				</pkp-button>
 			</div>
 		</div>
@@ -265,7 +265,7 @@ export default {
 		 */
 		currentPublication() {
 			return this.item.publications.find(
-				(publication) => publication.id === this.item.currentPublicationId
+				(publication) => publication.id === this.item.currentPublicationId,
 			);
 		},
 
@@ -452,7 +452,7 @@ export default {
 			if (this.isArchived) {
 				return this.item.statusLabel;
 			} else if (this.item.submissionProgress) {
-				return this.__('submissions.incomplete');
+				return this.t('submissions.incomplete');
 			}
 			return this.activeStage.label;
 		},
@@ -463,7 +463,7 @@ export default {
 		 * @return {String}
 		 */
 		currentStageDescription() {
-			return this.__('submission.list.currentStage', {
+			return this.t('submission.list.currentStage', {
 				stage: this.currentStageLabel,
 			});
 		},
@@ -527,11 +527,11 @@ export default {
 			switch (this.activeStage.id) {
 				case pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW:
 				case pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW:
-					return this.__('submission.list.revisionsSubmitted');
+					return this.t('submission.list.revisionsSubmitted');
 				case pkp.const.WORKFLOW_STAGE_ID_EDITING:
-					return this.__('submission.list.copyeditsSubmitted');
+					return this.t('submission.list.copyeditsSubmitted');
 				case pkp.const.WORKFLOW_STAGE_ID_PRODUCTION:
-					return this.__('submission.list.galleysCreated');
+					return this.t('submission.list.galleysCreated');
 			}
 			return '';
 		},
@@ -591,7 +591,7 @@ export default {
 			) {
 				return '';
 			}
-			return this.__('submission.list.dualWorkflowLinks', {
+			return this.t('submission.list.dualWorkflowLinks', {
 				urlAuthorWorkflow: this.item.urlAuthorWorkflow,
 				urlEditorialWorkflow: this.item.urlEditorialWorkflow,
 			});
@@ -614,7 +614,7 @@ export default {
 			) {
 				return '';
 			}
-			return this.__('submission.list.reviewerWorkflowLink', {
+			return this.t('submission.list.reviewerWorkflowLink', {
 				urlEditorialWorkflow: this.item.urlEditorialWorkflow,
 			});
 		},
@@ -744,7 +744,7 @@ export default {
 			var opts = {
 				textTitle: this.localizeSubmission(
 					this.currentPublication.fullTitle,
-					this.currentPublication.locale
+					this.currentPublication.locale,
 				),
 				url: this.infoUrl.replace('__id__', this.item.id),
 				closeCallback: this.resetFocusInfoCenter,
@@ -754,7 +754,7 @@ export default {
 				'<div id="' +
 					$.pkp.classes.Helper.uuid() +
 					'" ' +
-					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>'
+					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>',
 			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
 		},
 
@@ -771,7 +771,7 @@ export default {
 		 */
 		openAssignParticipant() {
 			var opts = {
-				title: this.__('submission.list.assignEditor'),
+				title: this.t('submission.list.assignEditor'),
 				url: this.assignParticipantUrl
 					.replace('__id__', this.item.id)
 					.replace('__stageId__', this.activeStage.id),
@@ -782,7 +782,7 @@ export default {
 				'<div id="' +
 					$.pkp.classes.Helper.uuid() +
 					'" ' +
-					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>'
+					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>',
 			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
 		},
 
@@ -802,16 +802,16 @@ export default {
 		deleteSubmissionPrompt() {
 			this.openDialog({
 				name: 'deleteSubmission',
-				title: this.__('common.delete'),
-				message: this.__('editor.submissionArchive.confirmDelete'),
+				title: this.t('common.delete'),
+				message: this.t('editor.submissionArchive.confirmDelete'),
 				actions: [
 					{
-						label: this.__('common.yes'),
+						label: this.t('common.yes'),
 						isPrimary: true,
 						callback: this.deleteSubmission,
 					},
 					{
-						label: this.__('common.no'),
+						label: this.t('common.no'),
 						isWarnable: true,
 						callback: (close) => close(),
 					},

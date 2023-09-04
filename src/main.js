@@ -8,9 +8,7 @@ import router from './router';
 
 import GlobalMixins from '@/mixins/global.js';
 import VueAnnouncer from '@vue-a11y/announcer';
-//import VModal from 'vue-js-modal';
 import FloatingVue from 'floating-vue';
-import 'floating-vue/dist/style.css';
 
 import VueScrollTo from 'vue-scrollto';
 
@@ -27,14 +25,6 @@ import Step from '@/components/Steps/Step.vue';
 import Steps from '@/components/Steps/Steps.vue';
 import Tab from '@/components/Tabs/Tab.vue';
 import Tabs from '@/components/Tabs/Tabs.vue';
-
-//Vue.use(VueAnnouncer);
-/*Vue.use(VModal, {
-	dynamic: true,
-	injectModalsContainer: true,
-});*/
-//Vue.use(VTooltip, {defaultTrigger: 'click'});
-//Vue.use(VueScrollTo);
 
 export default window.pkp.eventBus = {
 	$on: (...args) => emitter.on(...args),

@@ -17,7 +17,7 @@
 			</template>
 		</action-panel>
 		<modal
-			:closeLabel="__('common.close')"
+			:closeLabel="t('common.close')"
 			name="attacher"
 			:title="currentAttacher ? currentAttacher.label : ''"
 			:open="isModalOpenedAttacher"

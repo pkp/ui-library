@@ -3,13 +3,13 @@
 		<button v-if="isFilterActive" class="pkpFilter__remove" @click="remove">
 			<icon icon="times-circle-o" />
 			<span class="-screenReader">
-				{{ __('common.filterRemove', {filterTitle: title}) }}
+				{{ t('common.filterRemove', {filterTitle: title}) }}
 			</span>
 		</button>
 		<button v-else class="pkpFilter__add" @click="enable">
 			<icon icon="plus-square-o" />
 			<span class="-screenReader">
-				{{ __('common.filterAdd', {filterTitle: title}) }}
+				{{ t('common.filterAdd', {filterTitle: title}) }}
 			</span>
 		</button>
 		<div class="pkpFilter__inputTitle" aria-hidden="true" @click="toggle">
@@ -108,7 +108,7 @@ export default {
 		valueStyles() {
 			if (this.isFilterActive) {
 				const position = Number(
-					((this.currentValue - this.min) * 100) / (this.max - this.min)
+					((this.currentValue - this.min) * 100) / (this.max - this.min),
 				);
 				// The numbers here account for the way that the native input
 				// range filter aligns the handle on the left and right. The

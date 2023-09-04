@@ -29,7 +29,7 @@
 								@click="cancelOrdering"
 								:disabled="isLoading"
 							>
-								{{ __('common.cancel') }}
+								{{ t('common.cancel') }}
 							</pkp-button>
 							<pkp-button
 								v-if="!isOrdering"
@@ -91,20 +91,20 @@
 							{{ i18nSetPrimaryContact }}
 						</pkp-button>
 						<pkp-button @click="openEditModal(item.id)" :disabled="isLoading">
-							{{ __('common.edit') }}
+							{{ t('common.edit') }}
 						</pkp-button>
 						<pkp-button
 							:disabled="isLoading"
 							:isWarnable="true"
 							@click="openDeleteModal(item.id)"
 						>
-							{{ __('common.delete') }}
+							{{ t('common.delete') }}
 						</pkp-button>
 					</template>
 				</template>
 			</list-panel>
 			<modal
-				:closeLabel="__('common.close')"
+				:closeLabel="t('common.close')"
 				:name="formModal"
 				:title="activeFormTitle"
 				:isModalOpenedForm="isModalOpenedForm"
@@ -117,7 +117,7 @@
 				/>
 			</modal>
 			<modal
-				:closeLabel="__('common.close')"
+				:closeLabel="t('common.close')"
 				:name="previewModal"
 				:title="i18nContributors"
 				:open="isModalOpenedPreview"
@@ -285,7 +285,7 @@ export default {
 		contributorsApiUrl() {
 			return this.publicationApiUrlFormat.replace(
 				'__publicationId__',
-				this.publication.id + '/contributors'
+				this.publication.id + '/contributors',
 			);
 		},
 
@@ -309,7 +309,7 @@ export default {
 		publicationApiUrl() {
 			return this.publicationApiUrlFormat.replace(
 				'__publicationId__',
-				this.publication.id
+				this.publication.id,
 			);
 		},
 
@@ -320,7 +320,7 @@ export default {
 		 * @return {String}
 		 */
 		orderingLabel() {
-			return this.isOrdering ? this.i18nSaveOrder : this.__('common.order');
+			return this.isOrdering ? this.i18nSaveOrder : this.t('common.order');
 		},
 	},
 	methods: {
@@ -428,7 +428,7 @@ export default {
 							$.ajax({
 								url: this.contributorsApiUrl.replace(
 									'/contributors',
-									'/contributors/' + id
+									'/contributors/' + id,
 								),
 								type: 'POST',
 								context: this,
@@ -444,7 +444,7 @@ export default {
 									const newContributors = this.publication.authors.filter(
 										(author) => {
 											return author.id !== id;
-										}
+										},
 									);
 									this.$emit('updated:contributors', newContributors);
 								},
@@ -455,7 +455,7 @@ export default {
 						},
 					},
 					{
-						label: this.__('common.cancel'),
+						label: this.t('common.cancel'),
 						callback: (close) => close(),
 					},
 				],
@@ -472,7 +472,7 @@ export default {
 			this.resetFocusTo = document.activeElement;
 			const apiUrl = this.contributorsApiUrl.replace(
 				'/contributors',
-				'/contributors/' + id
+				'/contributors/' + id,
 			);
 
 			$.ajax({
@@ -552,7 +552,7 @@ export default {
 			$.ajax({
 				url: this.contributorsApiUrl.replace(
 					'/contributors',
-					'/contributors/saveOrder'
+					'/contributors/saveOrder',
 				),
 				context: this,
 				type: 'POST',

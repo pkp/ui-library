@@ -26,7 +26,7 @@ export default {
 		 * @param {Object} params (Optional) Variables to compile with the translation
 		 * @return {String}
 		 */
-		__: function (key, params) {
+		t: function (key, params) {
 			if (typeof pkp.localeKeys[key] === 'undefined') {
 				if (process.env.NODE_ENV === 'development') {
 					// eslint-disable-next-line

@@ -26,19 +26,19 @@ export default {
 					let updateWithNewDoiEndpoint = `${this.doiApiUrl}/publications/${originalItem.currentPublicationId}`;
 					updateWithNewDoiEndpoint = updateWithNewDoiEndpoint.replace(
 						/dois/g,
-						'_dois'
+						'_dois',
 					);
 
 					newMappedItem.doiObjects.push(
 						this.mapDoiObject(doiObject, {
 							id: publication.id,
 							uid: `${originalItem.id}-monograph-${publication.id}`,
-							displayType: this.__('submission.monograph'),
+							displayType: this.t('submission.monograph'),
 							type: 'publication',
 							isCurrentVersion,
 							versionNumber,
 							updateWithNewDoiEndpoint,
-						})
+						}),
 					);
 				}
 
@@ -49,7 +49,7 @@ export default {
 						let updateWithNewDoiEndpoint = `${this.doiApiUrl}/chapters/${chapter.id}`;
 						updateWithNewDoiEndpoint = updateWithNewDoiEndpoint.replace(
 							/dois/g,
-							'_dois'
+							'_dois',
 						);
 
 						newMappedItem.doiObjects.push(
@@ -61,7 +61,7 @@ export default {
 								isCurrentVersion,
 								versionNumber,
 								updateWithNewDoiEndpoint,
-							})
+							}),
 						);
 					});
 				}
@@ -74,21 +74,21 @@ export default {
 						let updateWithNewDoiEndpoint = `${this.doiApiUrl}/publicationFormats/${publicationFormat.id}`;
 						updateWithNewDoiEndpoint = updateWithNewDoiEndpoint.replace(
 							/dois/g,
-							'_dois'
+							'_dois',
 						);
 
 						newMappedItem.doiObjects.push(
 							this.mapDoiObject(doiObject, {
 								id: publicationFormat.id,
 								uid: `${originalItem.id}-representation-${publicationFormat.id}`,
-								displayType: this.__('manager.dois.formatIdentifier.file', {
+								displayType: this.t('manager.dois.formatIdentifier.file', {
 									format: this.localize(publicationFormat.name),
 								}),
 								type: 'representation',
 								isCurrentVersion,
 								versionNumber,
 								updateWithNewDoiEndpoint: updateWithNewDoiEndpoint,
-							})
+							}),
 						);
 					});
 				}
@@ -102,7 +102,7 @@ export default {
 							let updateWithNewDoiEndpoint = `${this.doiApiUrl}/submissionFiles/${submissionFile.id}`;
 							updateWithNewDoiEndpoint = updateWithNewDoiEndpoint.replace(
 								/dois/g,
-								'_dois'
+								'_dois',
 							);
 
 							newMappedItem.doiObjects.push(
@@ -110,13 +110,13 @@ export default {
 									id: submissionFile.id,
 									uid: `${originalItem.id}-file-${submissionFile.id}`,
 									displayType: `${this.localize(
-										publicationFormat.name
+										publicationFormat.name,
 									)} / ${this.localize(submissionFile.name)}`,
 									type: 'file',
 									isCurrentVersion,
 									versionNumber,
 									updateWithNewDoiEndpoint: updateWithNewDoiEndpoint,
-								})
+								}),
 							);
 						});
 					});

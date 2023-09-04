@@ -1,18 +1,22 @@
-/**
- * DialogProvider mixin
- *
- * Exposes openDialog method to the dialog mixin, used in root components (Page, App)
- *
- *
- * @see https://vuejs.org/v2/guide/mixins.html
- */
+<template>
+	<slot></slot>
+	<PkpDialog
+		:open="pkpIsDialogOpened"
+		@close="pkpIsDialogOpened = false"
+		v-bind="pkpDialogProps"
+	></PkpDialog>
+</template>
+<script>
+import PkpDialog from '../Modal/Dialog.vue';
 
 export default {
+	components: {
+		PkpDialog,
+	},
 	methods: {
 		pkpOpenDialog(props) {
 			this.pkpDialogProps = props;
 			this.pkpIsDialogOpened = true;
-			console.log('opening dialog');
 		},
 	},
 	data() {
@@ -24,3 +28,4 @@ export default {
 		};
 	},
 };
+</script>

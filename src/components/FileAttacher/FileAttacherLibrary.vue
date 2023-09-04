@@ -3,10 +3,10 @@
 		<div v-if="!files.length" class="fileAttacherLibrary__message">
 			<div v-if="isLoading">
 				<spinner />
-				{{ __('common.loading') }}
+				{{ t('common.loading') }}
 			</div>
 			<div v-else>
-				{{ __('common.noItemsFound') }}
+				{{ t('common.noItemsFound') }}
 			</div>
 		</div>
 		<div v-else>

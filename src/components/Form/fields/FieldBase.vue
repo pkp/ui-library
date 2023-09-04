@@ -219,7 +219,7 @@ export default {
 		 * @return {String}
 		 */
 		multilingualLabel() {
-			return this.__('form.multilingualLabel', {
+			return this.t('form.multilingualLabel', {
 				label: this.label,
 				localeName: this.localeLabel,
 			});

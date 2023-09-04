@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import {computed} from 'vue';
 export default {
 	props: {
 		id: {
@@ -28,7 +29,7 @@ export default {
 		// share state with parent <tabs> component
 		this.unregister = this.registerStep({
 			id: this.id,
-			label: this.label,
+			label: computed(() => this.label),
 			isActive: (active) => (this.isActive = active),
 		});
 	},

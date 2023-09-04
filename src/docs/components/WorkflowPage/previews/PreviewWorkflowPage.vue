@@ -34,14 +34,14 @@
 					{{
 						localizeSubmission(
 							currentPublication.fullTitle,
-							currentPublication.locale
+							currentPublication.locale,
 						)
 					}}
 				</span>
 			</h1>
 			<template #actions>
 				<pkp-button element="a" :href="submission.urlPublished">
-					{{ __('common.view') }}
+					{{ t('common.view') }}
 				</pkp-button>
 				<pkp-button
 					ref="activityButton"
@@ -189,7 +189,7 @@
 								ref="createVersion"
 								@click="
 									alert(
-										'Creates a new version and loads that as the working publication.'
+										'Creates a new version and loads that as the working publication.',
 									)
 								"
 							>

@@ -186,7 +186,7 @@ export default {
 						averagesResponse[row.key] > -1 &&
 						total.value > 0
 					) {
-						row.total = this.__('stats.countWithYearlyAverage', {
+						row.total = this.t('stats.countWithYearlyAverage', {
 							count: row.total,
 							average: averagesResponse[row.key],
 						});

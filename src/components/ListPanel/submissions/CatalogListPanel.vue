@@ -23,7 +23,7 @@
 							@click="isSidebarVisible = !isSidebarVisible"
 						>
 							<icon icon="filter" :inline="true" />
-							{{ __('common.filter') }}
+							{{ t('common.filter') }}
 						</pkp-button>
 						<template v-if="canOrderCurrent">
 							<pkp-button
@@ -40,11 +40,11 @@
 								:isWarnable="true"
 								@click="cancelOrdering"
 							>
-								{{ __('common.cancel') }}
+								{{ t('common.cancel') }}
 							</pkp-button>
 						</template>
 						<pkp-button @click="isModalOpenedAddCatalogEntry = true">
-							{{ __('submission.catalogEntry.new') }}
+							{{ t('submission.catalogEntry.new') }}
 						</pkp-button>
 					</template>
 				</pkp-header>
@@ -73,7 +73,7 @@
 				<pkp-header :isOneLine="false">
 					<h3>
 						<icon icon="filter" :inline="true" />
-						{{ __('common.filter') }}
+						{{ t('common.filter') }}
 					</h3>
 				</pkp-header>
 				<div
@@ -97,7 +97,7 @@
 
 			<template v-if="isLoading" #itemsEmpty>
 				<spinner />
-				{{ __('common.loading') }}
+				{{ t('common.loading') }}
 			</template>
 
 			<template #item="{item}">
@@ -124,9 +124,9 @@
 			</template>
 		</list-panel>
 		<modal
-			:closeLabel="__('common.close')"
+			:closeLabel="t('common.close')"
 			name="addCatalogEntry"
-			:title="__('submission.catalogEntry.new')"
+			:title="t('submission.catalogEntry.new')"
 			:open="isModalOpenedAddCatalogEntry"
 			@close="closeAddEntryForm"
 		>
@@ -251,8 +251,8 @@ export default {
 		 */
 		orderingLabel() {
 			return this.isOrdering
-				? this.__('submission.list.saveFeatureOrder')
-				: this.__('submission.list.orderFeatures');
+				? this.t('submission.list.saveFeatureOrder')
+				: this.t('submission.list.orderFeatures');
 		},
 
 		/**
@@ -263,11 +263,11 @@ export default {
 		 */
 		featuredLabel() {
 			if (this.filterAssocType === pkp.const.ASSOC_TYPE_CATEGORY) {
-				return this.__('catalog.manage.categoryFeatured');
+				return this.t('catalog.manage.categoryFeatured');
 			} else if (this.filterAssocType === pkp.const.ASSOC_TYPE_SERIES) {
-				return this.__('catalog.manage.seriesFeatured');
+				return this.t('catalog.manage.seriesFeatured');
 			}
-			return this.__('catalog.manage.featured');
+			return this.t('catalog.manage.featured');
 		},
 
 		/**
@@ -278,11 +278,11 @@ export default {
 		 */
 		newReleaseLabel() {
 			if (this.filterAssocType === pkp.const.ASSOC_TYPE_CATEGORY) {
-				return this.__('catalog.manage.feature.categoryNewRelease');
+				return this.t('catalog.manage.feature.categoryNewRelease');
 			} else if (this.filterAssocType === pkp.const.ASSOC_TYPE_SERIES) {
-				return this.__('catalog.manage.feature.seriesNewRelease');
+				return this.t('catalog.manage.feature.seriesNewRelease');
 			}
-			return this.__('catalog.manage.feature.newRelease');
+			return this.t('catalog.manage.feature.newRelease');
 		},
 
 		/**
@@ -300,12 +300,12 @@ export default {
 			}
 
 			if (filter) {
-				return this.__('submission.list.orderingFeaturesSection', {
+				return this.t('submission.list.orderingFeaturesSection', {
 					title: filter.title,
 				});
 			}
 
-			return this.__('submission.list.orderingFeatures');
+			return this.t('submission.list.orderingFeatures');
 		},
 
 		/**

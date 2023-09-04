@@ -14,7 +14,7 @@
 				:id="describedByHelpId"
 				:topic="helpTopic"
 				:section="helpSection"
-				:label="__('help.help')"
+				:label="t('help.help')"
 			/>
 		</legend>
 		<div

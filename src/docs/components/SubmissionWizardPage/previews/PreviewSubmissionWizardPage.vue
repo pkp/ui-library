@@ -27,7 +27,7 @@
 					Change
 				</button>
 				<modal
-					:closeLabel="__('common.close')"
+					:closeLabel="t('common.close')"
 					name="config"
 					:open="isModalOpenedConfig"
 					@close="isModalOpenedConfig = false"
@@ -94,7 +94,7 @@
 								</notification>
 								<div
 									v-for="reviewStep in steps.filter(
-										(iStep) => iStep.id !== step.id
+										(iStep) => iStep.id !== step.id,
 									)"
 									:key="reviewStep.id"
 									class="submissionWizard__reviewPanel"
@@ -259,7 +259,7 @@
 												<div class="submissionWizard__reviewPanel__item__value">
 													{{
 														localize(publication.keywords).join(
-															__('common.commaListSeparator')
+															t('common.commaListSeparator'),
 														)
 													}}
 												</div>
@@ -276,7 +276,7 @@
 												<div class="submissionWizard__reviewPanel__item__value">
 													{{
 														publication.subjects.join(
-															__('common.commaListSeparator')
+															t('common.commaListSeparator'),
 														)
 													}}
 												</div>
@@ -421,7 +421,7 @@ export default {
 		// Set up the form for the details step
 		let detailsForm = {...titleAbstractForm};
 		detailsForm.fields = detailsForm.fields.filter(
-			(field) => !['prefix', 'subtitle'].includes(field.name)
+			(field) => !['prefix', 'subtitle'].includes(field.name),
 		);
 		detailsForm.fields.push({
 			...fieldKeywords,

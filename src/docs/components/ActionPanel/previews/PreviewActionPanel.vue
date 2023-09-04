@@ -79,7 +79,7 @@ export default {
 						},
 					},
 					{
-						label: this.__('common.cancel'),
+						label: this.t('common.cancel'),
 						callback: (close) => close(),
 					},
 				],

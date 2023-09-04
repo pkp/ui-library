@@ -308,10 +308,6 @@ export default {
 </script>
 
 <style lang="less">
-//@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @import './styles/_import';
 @import './styles/_global';
 

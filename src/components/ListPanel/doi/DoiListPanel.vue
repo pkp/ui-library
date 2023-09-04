@@ -13,7 +13,7 @@
 							/>
 
 							<dropdown
-								:label="__('manager.dois.actions.bulkActions')"
+								:label="t('manager.dois.actions.bulkActions')"
 								class="doiListPanel__bulkActions"
 							>
 								<div class="pkpDropdown__section">
@@ -25,8 +25,8 @@
 											>
 												{{
 													isAllSelected
-														? __('common.selectNone')
-														: __('common.selectAll')
+														? t('common.selectNone')
+														: t('common.selectAll')
 												}}
 											</button>
 										</li>
@@ -37,8 +37,8 @@
 											>
 												{{
 													isAllExpanded
-														? __('list.collapseAll')
-														: __('list.expandAll')
+														? t('list.collapseAll')
+														: t('list.expandAll')
 												}}
 											</button>
 										</li>
@@ -48,7 +48,7 @@
 								<div class="pkpDropdown__section">
 									<div class="app__userNav__loggedInAs">
 										{{
-											__('manager.dois.actions.description', {
+											t('manager.dois.actions.description', {
 												count: selected.length,
 											})
 										}}
@@ -59,7 +59,7 @@
 												class="pkpDropdown__action"
 												@click="openBulkExport"
 											>
-												{{ __('manager.dois.actions.export.label') }}
+												{{ t('manager.dois.actions.export.label') }}
 											</button>
 										</li>
 
@@ -68,7 +68,7 @@
 												class="pkpDropdown__action"
 												@click="openBulkMarkRegistered"
 											>
-												{{ __('manager.dois.actions.markRegistered.label') }}
+												{{ t('manager.dois.actions.markRegistered.label') }}
 											</button>
 										</li>
 
@@ -77,7 +77,7 @@
 												class="pkpDropdown__action"
 												@click="openBulkMarkUnregistered"
 											>
-												{{ __('manager.dois.actions.markUnregistered.label') }}
+												{{ t('manager.dois.actions.markUnregistered.label') }}
 											</button>
 										</li>
 
@@ -86,7 +86,7 @@
 												class="pkpDropdown__action"
 												@click="openBulkMarkStale"
 											>
-												{{ __('manager.dois.actions.markStale.label') }}
+												{{ t('manager.dois.actions.markStale.label') }}
 											</button>
 										</li>
 
@@ -95,7 +95,7 @@
 												class="pkpDropdown__action"
 												@click="openBulkAssign"
 											>
-												{{ __('manager.dois.actions.assign.label') }}
+												{{ t('manager.dois.actions.assign.label') }}
 											</button>
 										</li>
 
@@ -104,7 +104,7 @@
 												class="pkpDropdown__action"
 												@click="openBulkDeposit"
 											>
-												{{ __('manager.dois.actions.deposit.label') }}
+												{{ t('manager.dois.actions.deposit.label') }}
 											</button>
 										</li>
 									</ul>
@@ -116,7 +116,7 @@
 								v-if="isRegistrationPluginConfigured"
 								@click="openBulkDepositAll"
 							>
-								{{ __('manager.dois.actions.deposit.all') }}
+								{{ t('manager.dois.actions.deposit.all') }}
 							</pkp-button>
 						</template>
 					</pkp-header>
@@ -126,7 +126,7 @@
 					<pkp-header :isOneLine="false">
 						<h3>
 							<icon icon="filter" :inline="true" />
-							{{ __('common.filter') }}
+							{{ t('common.filter') }}
 						</h3>
 						<template #actions>
 							<button
@@ -161,10 +161,10 @@
 				<template #itemsEmpty>
 					<template v-if="isLoading">
 						<spinner />
-						{{ __('common.loading') }}
+						{{ t('common.loading') }}
 					</template>
 					<template v-else>
-						{{ __('common.noItemsFound') }}
+						{{ t('common.noItemsFound') }}
 					</template>
 				</template>
 
@@ -203,59 +203,59 @@
 
 		<!-- Status info modal -->
 		<modal
-			:close-label="__('common.close')"
+			:close-label="t('common.close')"
 			name="statusInfoModal"
-			:title="__('manager.dois.help.statuses.title')"
+			:title="t('manager.dois.help.statuses.title')"
 			:open="isModalOpenedStatusInfo"
 			@close="isModalOpenedStatusInfo = false"
 		>
 			<table class="pkpTable">
 				<thead>
 					<tr>
-						<th>{{ __('common.status') }}</th>
-						<th>{{ __('common.description') }}</th>
+						<th>{{ t('common.status') }}</th>
+						<th>{{ t('common.description') }}</th>
 					</tr>
 				</thead>
 				<tr class="pkpTable__row">
-					<th>{{ __('manager.dois.status.needsDoi') }}</th>
-					<td>{{ __('manager.dois.status.needsDoi.description') }}</td>
+					<th>{{ t('manager.dois.status.needsDoi') }}</th>
+					<td>{{ t('manager.dois.status.needsDoi.description') }}</td>
 				</tr>
 				<tr class="pkpTable__row">
-					<th>{{ __('manager.dois.filters.doiAssigned') }}</th>
-					<td>{{ __('manager.dois.filters.doiAssigned.description') }}</td>
+					<th>{{ t('manager.dois.filters.doiAssigned') }}</th>
+					<td>{{ t('manager.dois.filters.doiAssigned.description') }}</td>
 				</tr>
 				<tr class="pkpTable__row">
-					<th>{{ __('manager.dois.status.unregistered') }}</th>
-					<td>{{ __('manager.dois.status.unregistered.description') }}</td>
+					<th>{{ t('manager.dois.status.unregistered') }}</th>
+					<td>{{ t('manager.dois.status.unregistered.description') }}</td>
 				</tr>
 				<tr class="pkpTable__row">
-					<th>{{ __('manager.dois.status.submitted') }}</th>
-					<td>{{ __('manager.dois.status.submitted.description') }}</td>
+					<th>{{ t('manager.dois.status.submitted') }}</th>
+					<td>{{ t('manager.dois.status.submitted.description') }}</td>
 				</tr>
 				<tr class="pkpTable__row">
-					<th>{{ __('manager.dois.status.registered') }}</th>
-					<td>{{ __('manager.dois.status.registered.description') }}</td>
+					<th>{{ t('manager.dois.status.registered') }}</th>
+					<td>{{ t('manager.dois.status.registered.description') }}</td>
 				</tr>
 				<tr class="pkpTable__row">
-					<th>{{ __('manager.dois.status.error.filterTitle') }}</th>
-					<td>{{ __('manager.dois.status.error.description') }}</td>
+					<th>{{ t('manager.dois.status.error.filterTitle') }}</th>
+					<td>{{ t('manager.dois.status.error.description') }}</td>
 				</tr>
 				<tr class="pkpTable__row">
-					<th>{{ __('manager.dois.status.stale') }}</th>
-					<td>{{ __('manager.dois.status.stale.description') }}</td>
+					<th>{{ t('manager.dois.status.stale') }}</th>
+					<td>{{ t('manager.dois.status.stale.description') }}</td>
 				</tr>
 			</table>
 		</modal>
 
 		<!-- DOI action failed modal -->
 		<modal
-			:close-label="__('common.close')"
+			:close-label="t('common.close')"
 			name="failedDoiActionModal"
-			:title="__('manager.dois.update.failedCreation')"
+			:title="t('manager.dois.update.failedCreation')"
 			:open="isModalOpenedFailedDoiAction"
 			@close="closeFailedDoiActionModal"
 		>
-			<p>{{ this.__('manager.dois.update.partialFailure') }}</p>
+			<p>{{ this.t('manager.dois.update.partialFailure') }}</p>
 			<ul>
 				<li
 					v-for="errorMessage in this.failedDoiActions"
@@ -269,9 +269,9 @@
 </template>
 
 <script>
-import DoiListItem from '@/components/ListPanel/doi/DoiListItem';
-import Dropdown from '@/components/Dropdown/Dropdown';
-import FieldSelect from '@/components/Form/fields/FieldSelect';
+import DoiListItem from '@/components/ListPanel/doi/DoiListItem.vue';
+import Dropdown from '@/components/Dropdown/Dropdown.vue';
+import FieldSelect from '@/components/Form/fields/FieldSelect.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
 import PkpFilter from '@/components/Filter/Filter.vue';
@@ -280,8 +280,8 @@ import PkpHeader from '@/components/Header/Header.vue';
 import Search from '@/components/Search/Search.vue';
 import fetch from '@/mixins/fetch';
 import ajaxError from '@/mixins/ajaxError';
-import Notification from '@/components/Notification/Notification';
-import Modal from '@/components/Modal/Modal';
+import Notification from '@/components/Notification/Notification.vue';
+import Modal from '@/components/Modal/Modal.vue';
 
 export default {
 	components: {
@@ -508,8 +508,8 @@ export default {
 			// NB: Special case, can be invoked by DoiListItem and pass along an array with an id
 			const ids = itemIds.length > 0 ? itemIds : this.selected;
 
-			const actionLabel = this.__('manager.dois.actions.deposit.label');
-			const actionMessage = this.__('manager.dois.actions.deposit.prompt', {
+			const actionLabel = this.t('manager.dois.actions.deposit.label');
+			const actionMessage = this.t('manager.dois.actions.deposit.prompt', {
 				count: ids.length,
 				registrationAgency: this.registrationAgencyInfo['displayName'],
 			});
@@ -525,7 +525,7 @@ export default {
 					success: () => {
 						pkp.eventBus.$emit(
 							'notify',
-							this.__('manager.dois.notification.depositQueuedSuccess'),
+							this.t('manager.dois.notification.depositQueuedSuccess'),
 							'success',
 						);
 					},
@@ -541,8 +541,8 @@ export default {
 		 * Opens modal for bulk item exporting and handles downloads
 		 */
 		openBulkExport() {
-			const actionLabel = this.__('manager.dois.actions.export.label');
-			const actionMessage = this.__('manager.dois.actions.export.prompt', {
+			const actionLabel = this.t('manager.dois.actions.export.label');
+			const actionMessage = this.t('manager.dois.actions.export.prompt', {
 				count: this.selected.length,
 				registrationAgency: this.registrationAgencyInfo['displayName'],
 			});
@@ -567,7 +567,7 @@ export default {
 
 						pkp.eventBus.$emit(
 							'notify',
-							this.__('manager.dois.notification.exportSuccess'),
+							this.t('manager.dois.notification.exportSuccess'),
 							'success',
 						);
 					},
@@ -580,8 +580,8 @@ export default {
 		 * Opens modal for bulk marking items registered
 		 */
 		openBulkMarkRegistered() {
-			const actionLabel = this.__('manager.dois.actions.markRegistered.label');
-			const actionMessage = this.__(
+			const actionLabel = this.t('manager.dois.actions.markRegistered.label');
+			const actionMessage = this.t(
 				'manager.dois.actions.markRegistered.prompt',
 				{count: this.selected.length},
 			);
@@ -595,7 +595,7 @@ export default {
 					success: () => {
 						pkp.eventBus.$emit(
 							'notify',
-							this.__('manager.dois.notification.markRegisteredSuccess'),
+							this.t('manager.dois.notification.markRegisteredSuccess'),
 							'success',
 						);
 					},
@@ -619,10 +619,8 @@ export default {
 		 * Opens modal for bulk marking items unregistered
 		 */
 		openBulkMarkUnregistered() {
-			const actionLabel = this.__(
-				'manager.dois.actions.markUnregistered.label',
-			);
-			const actionMessage = this.__(
+			const actionLabel = this.t('manager.dois.actions.markUnregistered.label');
+			const actionMessage = this.t(
 				'manager.dois.actions.markUnregistered.prompt',
 				{count: this.selected.length},
 			);
@@ -636,7 +634,7 @@ export default {
 					success: () => {
 						pkp.eventBus.$emit(
 							'notify',
-							this.__('manager.dois.notification.markUnregisteredSuccess'),
+							this.t('manager.dois.notification.markUnregisteredSuccess'),
 							'success',
 						);
 					},
@@ -649,8 +647,8 @@ export default {
 		 * Opens modal for bulk marking items registered
 		 */
 		openBulkMarkStale() {
-			const actionLabel = this.__('manager.dois.actions.markStale.label');
-			const actionMessage = this.__('manager.dois.actions.markStale.prompt', {
+			const actionLabel = this.t('manager.dois.actions.markStale.label');
+			const actionMessage = this.t('manager.dois.actions.markStale.prompt', {
 				count: this.selected.length,
 			});
 
@@ -663,7 +661,7 @@ export default {
 					success: () => {
 						pkp.eventBus.$emit(
 							'notify',
-							this.__('manager.dois.notification.markStaleSuccess'),
+							this.t('manager.dois.notification.markStaleSuccess'),
 							'success',
 						);
 					},
@@ -687,8 +685,8 @@ export default {
 		 * Opens modal for bulk assigning new DOIs
 		 */
 		openBulkAssign() {
-			const actionLabel = this.__('manager.dois.actions.assign.label');
-			const actionMessage = this.__('manager.dois.actions.assign.prompt', {
+			const actionLabel = this.t('manager.dois.actions.assign.label');
+			const actionMessage = this.t('manager.dois.actions.assign.prompt', {
 				count: this.selected.length,
 			});
 
@@ -701,7 +699,7 @@ export default {
 					success: () => {
 						pkp.eventBus.$emit(
 							'notify',
-							this.__('manager.dois.notification.assignDoisSuccess'),
+							this.t('manager.dois.notification.assignDoisSuccess'),
 							'success',
 						);
 					},
@@ -725,8 +723,8 @@ export default {
 		 * Opens modal for bulk depositing all outstanding DOIs
 		 */
 		openBulkDepositAll() {
-			const actionLabel = this.__('manager.dois.actions.depositAll.label');
-			const actionMessage = this.__('manager.dois.actions.depositAll.prompt', {
+			const actionLabel = this.t('manager.dois.actions.depositAll.label');
+			const actionMessage = this.t('manager.dois.actions.depositAll.prompt', {
 				registrationAgency: this.registrationAgencyInfo['displayName'],
 			});
 
@@ -741,7 +739,7 @@ export default {
 					success: () => {
 						pkp.eventBus.$emit(
 							'notify',
-							this.__('manager.dois.notification.depositQueuedSuccess'),
+							this.t('manager.dois.notification.depositQueuedSuccess'),
 							'success',
 						);
 					},
@@ -769,7 +767,7 @@ export default {
 						callback: callback,
 					},
 					{
-						label: this.__('common.cancel'),
+						label: this.t('common.cancel'),
 						isWarnable: true,
 						callback: (close) => close(),
 					},
@@ -816,7 +814,7 @@ export default {
 
 			pkp.eventBus.$emit(
 				'notify',
-				this.__('manger.dois.update.success'),
+				this.t('manger.dois.update.success'),
 				'success',
 			);
 			this.setItems(newItemsList, this.itemsMax);

@@ -50,7 +50,7 @@
 			@updated:files="setFiles"
 		/>
 		<modal
-			:closeLabel="__('common.close')"
+			:closeLabel="t('common.close')"
 			:name="formModal"
 			:title="editingLabel"
 			:open="isModalOpenedForm"
@@ -202,7 +202,7 @@ export default {
 				return field;
 			});
 			this.activeForm = activeForm;
-			this.editingLabel = this.__('common.editItem', {
+			this.editingLabel = this.t('common.editItem', {
 				name: this.localize(item.name),
 			});
 			this.isModalOpenedForm = true;
@@ -235,11 +235,11 @@ export default {
 		remove(item) {
 			this.openDialog({
 				name: 'remove',
-				title: this.__('common.remove'),
+				title: this.t('common.remove'),
 				message: this.removeConfirmLabel,
 				actions: [
 					{
-						label: this.__('common.yes'),
+						label: this.t('common.yes'),
 						isPrimary: true,
 						callback: (close) => {
 							$.ajax({
@@ -261,7 +261,7 @@ export default {
 						},
 					},
 					{
-						label: this.__('common.no'),
+						label: this.t('common.no'),
 						isWarnable: true,
 						callback: (close) => close(),
 					},

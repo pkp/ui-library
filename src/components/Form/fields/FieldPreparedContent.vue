@@ -9,7 +9,7 @@
 		<template #footer>
 			<slot name="footer" />
 			<modal
-				:closeLabel="__('common.close')"
+				:closeLabel="t('common.close')"
 				:name="preparedContentId"
 				:title="insertModalLabel"
 				:open="isModalPreparedContentOpened"
@@ -133,7 +133,7 @@ export default {
 				if (self.preparedContent.length) {
 					editor.ui.registry.addButton('pkpInsert', {
 						icon: 'plus',
-						text: self.__('common.insertContent'),
+						text: self.t('common.insertContent'),
 						onAction() {
 							self.isModalPreparedContentOpened = true;
 						},

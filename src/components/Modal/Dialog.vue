@@ -37,7 +37,7 @@
 								<button class="modal__closeButton" @click="onClose">
 									<span :aria-hidden="true">×</span>
 									<span class="-screenReader">
-										{{ closeLabel || __('common.close') }}
+										{{ closeLabel || t('common.close') }}
 									</span>
 								</button>
 							</div>

@@ -31,7 +31,7 @@ export default {
 					(total, userGroupId) => {
 						return total + this.userGroupCounts[userGroupId];
 					},
-					0
+					0,
 				);
 			}
 			this.openDialog({
@@ -48,7 +48,7 @@ export default {
 						},
 					},
 					{
-						label: this.__('common.cancel'),
+						label: this.t('common.cancel'),
 						isWarnable: true,
 						callback: (close) => close(),
 					},

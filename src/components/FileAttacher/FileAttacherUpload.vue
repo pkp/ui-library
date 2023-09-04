@@ -33,12 +33,12 @@
 							:isWarnable="true"
 							@click="removeFile(i)"
 						>
-							<span class="aria-hidden">{{ __('common.remove') }}</span>
+							<span class="aria-hidden">{{ t('common.remove') }}</span>
 							<span class="-screenReader">
 								{{
 									removeItemLabel.replace(
 										'{$item}',
-										file.form ? file.form.name : file.name
+										file.form ? file.form.name : file.name,
 									)
 								}}
 							</span>

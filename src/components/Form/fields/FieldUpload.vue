@@ -6,7 +6,7 @@
 				:label="label"
 				:localeLabel="localeLabel"
 				:isRequired="isRequired"
-				:requiredLabel="__('common.required')"
+				:requiredLabel="t('common.required')"
 				:multilingualLabel="multilingualLabel"
 			/>
 			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
@@ -21,7 +21,7 @@
 				:id="describedByHelpId"
 				:topic="helpTopic"
 				:section="helpSection"
-				:label="__('help.help')"
+				:label="t('help.help')"
 			/>
 		</div>
 		<div
@@ -42,7 +42,7 @@
 				</span>
 				<div class="pkpFormField--upload__previewActions">
 					<pkp-button :isWarnable="true" @click="clear">
-						{{ __('common.remove') }}
+						{{ t('common.remove') }}
 					</pkp-button>
 					<pkp-button v-if="initialValue && !isInitialValue" @click="revert">
 						{{ restoreLabel }}
@@ -106,13 +106,13 @@
 
 <script>
 import FieldBase from './FieldBase.vue';
-//import VueDropzone from 'vue2-dropzone';
+import VueDropzone from 'vue2-dropzone-vue3';
 
 export default {
 	name: 'FieldUpload',
 	extends: FieldBase,
 	components: {
-		//VueDropzone,
+		VueDropzone,
 	},
 	props: {
 		options: Object,
@@ -247,7 +247,7 @@ export default {
 				this.name,
 				'value',
 				this.initialValue,
-				this.localeKey
+				this.localeKey,
 			);
 			this.uploadFile = null;
 			this.setFocusToControl();
@@ -267,7 +267,7 @@ export default {
 				this.name,
 				'value',
 				{temporaryFileId: response.id},
-				this.localeKey
+				this.localeKey,
 			);
 			this.setFocusToControl();
 		},
@@ -352,7 +352,7 @@ export default {
 		this.$refs.dropzone.dropzone.hiddenFileInput.id = this.dropzoneHiddenFileId;
 		this.$refs.dropzone.dropzone.hiddenFileInput.setAttribute(
 			'aria-describedby',
-			this.describedByIds
+			this.describedByIds,
 		);
 
 		/**

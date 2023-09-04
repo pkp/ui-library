@@ -6,7 +6,7 @@
 			<li v-for="(error, index) in errorList" :key="index">
 				<button @click.prevent="showError(error.fieldName)">
 					{{
-						__('form.errorA11y', {
+						t('form.errorA11y', {
 							fieldLabel: error.label,
 							errorMessage: error.message,
 						})
@@ -15,7 +15,7 @@
 			</li>
 		</ul>
 		<button class="pkpFormErrors__goTo" @click.prevent="showNextError">
-			{{ __('form.errorGoTo') }}
+			{{ t('form.errorGoTo') }}
 		</button>
 	</div>
 </template>
@@ -35,9 +35,9 @@ export default {
 		 */
 		message() {
 			if (Object.keys(this.errors).length === 1) {
-				return this.__('form.errorOne');
+				return this.t('form.errorOne');
 			} else {
-				return this.__('form.errorMany', {
+				return this.t('form.errorMany', {
 					count: Object.keys(this.errors).length,
 				});
 			}

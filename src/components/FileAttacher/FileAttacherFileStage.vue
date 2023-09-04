@@ -23,7 +23,7 @@
 			<template #itemsEmpty>
 				<div v-if="isLoading">
 					<spinner />
-					{{ __('common.loading') }}
+					{{ t('common.loading') }}
 				</div>
 			</template>
 			<template #item="{item}">

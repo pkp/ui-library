@@ -52,7 +52,7 @@ export default {
 		 * @return {String}
 		 */
 		tooltip() {
-			return this.__('form.multilingualProgress', {
+			return this.t('form.multilingualProgress', {
 				count: this.count,
 				total: this.total,
 			});

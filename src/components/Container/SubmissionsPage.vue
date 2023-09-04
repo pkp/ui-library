@@ -175,7 +175,7 @@ export default {
 		 */
 		get(cb) {
 			this.isLoadingSubmissions = true;
-			this.$announcer.set(this.__('common.loading'));
+			this.$announcer.set(this.t('common.loading'));
 			const uuid = uuidv4();
 			lastRequest = uuid;
 
@@ -214,7 +214,7 @@ export default {
 					}
 					this.submissions = r.items;
 					this.submissionsMax = r.itemsMax;
-					this.$announcer.set(this.__('common.loaded'));
+					this.$announcer.set(this.t('common.loaded'));
 					if (cb) {
 						cb.apply(this, [r]);
 					}
@@ -270,7 +270,7 @@ export default {
 		 */
 		openAssignParticipant(submission) {
 			var opts = {
-				title: this.__('submission.list.assignEditor'),
+				title: this.t('submission.list.assignEditor'),
 				url: this.assignParticipantUrl
 					.replace('__id__', submission.id)
 					.replace('__stageId__', submission.stageId),

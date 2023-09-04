@@ -1,7 +1,7 @@
 <template>
 	<div class="fileAttacherReviewFiles">
 		<div v-if="!files.length" class="fileAttacherReviewFiles__noFiles">
-			{{ __('common.noItemsFound') }}
+			{{ t('common.noItemsFound') }}
 		</div>
 		<template v-else>
 			<select-submission-file-list-item

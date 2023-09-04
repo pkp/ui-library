@@ -29,7 +29,7 @@ export default {
 			this.openDialog(
 				{
 					name: 'ensureAnonymousReview',
-					confirmLabel: this.__('common.ok'),
+					confirmLabel: this.t('common.ok'),
 					message: this.message,
 					title: this.modalTitle,
 					callback: (close) => {

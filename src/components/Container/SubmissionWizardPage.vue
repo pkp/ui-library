@@ -300,7 +300,7 @@ export default {
 				message: this.i18nUnableToSave,
 				actions: [
 					{
-						label: this.__('common.ok'),
+						label: this.t('common.ok'),
 						callback: (close) => close(),
 					},
 				],
@@ -528,7 +528,7 @@ export default {
 						},
 					},
 					{
-						label: this.__('common.cancel'),
+						label: this.t('common.cancel'),
 						isWarnable: true,
 						callback: (close) => close(),
 					},

@@ -90,7 +90,7 @@ export default {
 			return (
 				this.getDaysBetween(
 					this.getBrowserSafeDate(this.dateStart),
-					this.getBrowserSafeDate(this.dateEnd)
+					this.getBrowserSafeDate(this.dateEnd),
 				) < 91
 			);
 		},
@@ -108,7 +108,7 @@ export default {
 			return (
 				this.getDaysBetween(
 					this.getBrowserSafeDate(this.dateStart),
-					this.getBrowserSafeDate(this.dateEndMax)
+					this.getBrowserSafeDate(this.dateEndMax),
 				) > 31
 			);
 		},
@@ -178,7 +178,7 @@ export default {
 				filter: filterSet.heading,
 			});
 			if (filterTitles.length != 0) {
-				description = filterTitles.join(this.__('common.commaListSeparator'));
+				description = filterTitles.join(this.t('common.commaListSeparator'));
 			}
 			return description;
 		},
@@ -314,7 +314,7 @@ export default {
 						filterSet.heading +
 						'","' +
 						this.getFilterDescription(filterSet) +
-						'"'
+						'"',
 				);
 			});
 			let searchPhraseRow = this.searchPhrase

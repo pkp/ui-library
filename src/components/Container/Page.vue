@@ -1,8 +1,13 @@
 <script type="text/javascript">
 import Container from '@/components/Container/Container.vue';
-
+import dialogProvider from '@/mixins/dialogProvider';
+import PkpDialog from '@/components/Modal/Dialog.vue';
 export default {
+	components: {
+		PkpDialog,
+	},
 	extends: Container,
+	mixins: [dialogProvider],
 	name: 'Page',
 	data() {
 		return {
@@ -37,7 +42,7 @@ export default {
 		 */
 		backToDashboardLabel() {
 			if (this.backToDashboardLink) {
-				return this.__('navigation.backTo', {
+				return this.t('navigation.backTo', {
 					page: this.backToDashboardLink.name,
 				});
 			}

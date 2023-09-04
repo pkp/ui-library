@@ -26,19 +26,19 @@ export default {
 					let updateWithNewDoiEndpoint = `${this.doiApiUrl}/publications/${publication.id}`;
 					updateWithNewDoiEndpoint = updateWithNewDoiEndpoint.replace(
 						/dois/g,
-						'_dois'
+						'_dois',
 					);
 
 					newMappedItem.doiObjects.push(
 						this.mapDoiObject(doiObject, {
 							id: publication.id,
 							uid: `${originalItem.id}-publication-${publication.id}`,
-							displayType: this.__('submission.publication'),
+							displayType: this.t('submission.publication'),
 							type: 'publication',
 							isCurrentVersion,
 							versionNumber,
 							updateWithNewDoiEndpoint,
-						})
+						}),
 					);
 				}
 
@@ -50,7 +50,7 @@ export default {
 						let updateWithNewDoiEndpoint = `${this.doiApiUrl}/galleys/${galley.id}`;
 						updateWithNewDoiEndpoint = updateWithNewDoiEndpoint.replace(
 							/dois/g,
-							'_dois'
+							'_dois',
 						);
 
 						newMappedItem.doiObjects.push(
@@ -62,7 +62,7 @@ export default {
 								isCurrentVersion,
 								versionNumber,
 								updateWithNewDoiEndpoint,
-							})
+							}),
 						);
 					});
 				}

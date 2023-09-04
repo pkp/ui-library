@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import 'floating-vue/dist/style.css';
+
 export default {
 	name: 'Tooltip',
 	props: {
@@ -42,7 +44,7 @@ export default {
 	background: transparent;
 	cursor: pointer;
 }
-
+/* Override default styling */
 .v-popper--theme-tooltip.v-popper--theme-pkp-tooltip {
 	.v-popper__inner {
 		padding: 0.7em;

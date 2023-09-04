@@ -32,7 +32,7 @@
 				<pkp-button @click="openMailable(item)">
 					<span aria-hidden="true">Edit</span>
 					<span class="-screenReader">
-						{{ __('common.editItem', {name: item.name}) }}
+						{{ t('common.editItem', {name: item.name}) }}
 					</span>
 				</pkp-button>
 			</template>
@@ -86,7 +86,7 @@
 			</template>
 		</list-panel>
 		<modal
-			:closeLabel="__('common.close')"
+			:closeLabel="t('common.close')"
 			name="mailable"
 			:title="currentMailable ? currentMailable.name : ''"
 			@closed="mailableModalClosed"
@@ -135,7 +135,7 @@
 			</template>
 		</modal>
 		<modal
-			:closeLabel="__('common.close')"
+			:closeLabel="t('common.close')"
 			name="template"
 			:title="currentTemplate ? 'Edit Template' : 'Add Template'"
 			@closed="templateModalClosed"

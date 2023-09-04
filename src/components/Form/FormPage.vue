@@ -30,11 +30,11 @@
 				<transition name="pkpFormPage__status">
 					<span v-if="isSaving" class="pkpFormPage__status">
 						<spinner />
-						{{ __('common.saving') }}
+						{{ t('common.saving') }}
 					</span>
 					<span v-else-if="hasRecentSave" class="pkpFormPage__status">
 						<icon icon="check" :inline="true" />
-						{{ __('form.saved') }}
+						{{ t('form.saved') }}
 					</span>
 				</transition>
 			</span>

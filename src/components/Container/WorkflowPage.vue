@@ -235,7 +235,7 @@ export default {
 				message: this.versionConfirmMessage,
 				actions: [
 					{
-						label: this.__('common.yes'),
+						label: this.t('common.yes'),
 						isWarnable: true,
 						callback: (close) => {
 							close();
@@ -243,7 +243,7 @@ export default {
 						},
 					},
 					{
-						label: this.__('common.no'),
+						label: this.t('common.no'),
 						callback: (close) => close(),
 					},
 				],
@@ -349,7 +349,7 @@ export default {
 						},
 					},
 					{
-						label: this.__('common.cancel'),
+						label: this.t('common.cancel'),
 						callback: (close) => close(),
 					},
 				],

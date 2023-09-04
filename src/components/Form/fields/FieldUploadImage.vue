@@ -6,7 +6,7 @@
 				:label="label"
 				:localeLabel="localeLabel"
 				:isRequired="isRequired"
-				:requiredLabel="__('common.required')"
+				:requiredLabel="t('common.required')"
 				:multilingualLabel="multilingualLabel"
 			/>
 			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
@@ -21,7 +21,7 @@
 				:id="describedByHelpId"
 				:topic="helpTopic"
 				:section="helpSection"
-				:label="__('help.help')"
+				:label="t('help.help')"
 			/>
 		</div>
 		<div
@@ -62,7 +62,7 @@
 				</div>
 				<div class="pkpFormField--upload__previewActions">
 					<pkp-button :isWarnable="true" @click="clear">
-						{{ __('common.remove') }}
+						{{ t('common.remove') }}
 					</pkp-button>
 					<pkp-button v-if="initialValue && !isInitialValue" @click="revert">
 						{{ restoreLabel }}
@@ -195,7 +195,7 @@ export default {
 					temporaryFileId: response.id,
 					altText: '',
 				},
-				this.localeKey
+				this.localeKey,
 			);
 			this.setFocusToControl();
 		},
@@ -242,7 +242,7 @@ export default {
 					...this.currentValue,
 					altText: newVal,
 				},
-				this.localeKey
+				this.localeKey,
 			);
 		},
 	},
@@ -254,7 +254,7 @@ export default {
 		this.$refs.dropzone.dropzone.hiddenFileInput.id = this.dropzoneHiddenFileId;
 		this.$refs.dropzone.dropzone.hiddenFileInput.setAttribute(
 			'aria-describedby',
-			this.describedByIds
+			this.describedByIds,
 		);
 
 		/**

@@ -19,14 +19,14 @@
 							@click="isSidebarVisible = !isSidebarVisible"
 						>
 							<icon icon="filter" :inline="true" />
-							{{ __('common.filter') }}
+							{{ t('common.filter') }}
 						</pkp-button>
 						<pkp-button
 							v-if="addUrl && currentUserCanAddSubmission"
 							element="a"
 							:href="addUrl"
 						>
-							{{ __('submission.submit.newSubmissionSingle') }}
+							{{ t('submission.submit.newSubmissionSingle') }}
 						</pkp-button>
 					</template>
 				</pkp-header>
@@ -35,7 +35,7 @@
 				<pkp-header :isOneLine="false">
 					<h3>
 						<icon icon="filter" :inline="true" />
-						{{ __('common.filter') }}
+						{{ t('common.filter') }}
 					</h3>
 				</pkp-header>
 				<div
@@ -62,10 +62,10 @@
 			<template #itemsEmpty>
 				<template v-if="isLoading">
 					<spinner />
-					{{ __('common.loading') }}
+					{{ t('common.loading') }}
 				</template>
 				<template v-else>
-					{{ __('submission.list.empty') }}
+					{{ t('submission.list.empty') }}
 				</template>
 			</template>
 

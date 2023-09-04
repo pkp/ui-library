@@ -22,13 +22,13 @@
 				</template>
 				<template #item-actions="{item}">
 					<pkp-button element="a" :href="urlBase.replace('__id__', item.id)">
-						{{ __('common.view') }}
+						{{ t('common.view') }}
 					</pkp-button>
 					<pkp-button @click="openEditModal(item.id)">
-						{{ __('common.edit') }}
+						{{ t('common.edit') }}
 					</pkp-button>
 					<pkp-button :isWarnable="true" @click="openDeleteModal(item.id)">
-						{{ __('common.delete') }}
+						{{ t('common.delete') }}
 					</pkp-button>
 				</template>
 				<template #footer>
@@ -42,7 +42,7 @@
 				</template>
 			</list-panel>
 			<modal
-				:closeLabel="__('common.close')"
+				:closeLabel="t('common.close')"
 				name="form"
 				:title="activeFormTitle"
 				:open="isModalOpenedForm"
@@ -158,7 +158,7 @@ export default {
 			} else {
 				this.setItems(
 					this.items.map((i) => (i.id === item.id ? item : i)),
-					this.itemsMax
+					this.itemsMax,
 				);
 				pkp.eventBus.$emit('update:announcement', item);
 			}
@@ -196,7 +196,7 @@ export default {
 				}),
 				actions: [
 					{
-						label: this.__('common.yes'),
+						label: this.t('common.yes'),
 						isPrimary: true,
 						callback: (close) => {
 							var self = this;
@@ -211,7 +211,7 @@ export default {
 								success: function (r) {
 									self.setItems(
 										self.items.filter((i) => i.id !== id),
-										self.itemsMax
+										self.itemsMax,
 									);
 									close();
 									self.setFocusIn(self.$el);
@@ -220,7 +220,7 @@ export default {
 						},
 					},
 					{
-						label: this.__('common.no'),
+						label: this.t('common.no'),
 						isWarnable: true,
 						callback: (close) => close(),
 					},
@@ -235,7 +235,7 @@ export default {
 		 */
 		openEditModal(id) {
 			const announcement = this.items.find(
-				(announcement) => announcement.id === id
+				(announcement) => announcement.id === id,
 			);
 			if (!announcement) {
 				this.ajaxErrorCallback({});

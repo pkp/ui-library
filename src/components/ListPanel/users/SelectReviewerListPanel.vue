@@ -22,7 +22,7 @@
 								@click="isSidebarVisible = !isSidebarVisible"
 							>
 								<icon icon="filter" :inline="true" />
-								{{ __('common.filter') }}
+								{{ t('common.filter') }}
 							</pkp-button>
 						</template>
 					</pkp-header>
@@ -31,7 +31,7 @@
 					<pkp-header :isOneLine="false">
 						<h2>
 							<icon icon="filter" :inline="true" />
-							{{ __('common.filter') }}
+							{{ t('common.filter') }}
 						</h2>
 					</pkp-header>
 					<component
@@ -49,7 +49,7 @@
 				<template v-if="isLoading" #itemsEmpty>
 					<template v-if="isLoading">
 						<spinner />
-						{{ __('common.loading') }}
+						{{ t('common.loading') }}
 					</template>
 					<template v-else>
 						{{ emptyLabel }}

@@ -6,13 +6,13 @@
 		<button class="orderer__up" @click.prevent="up">
 			<icon icon="angle-up" />
 			<span class="-screenReader">
-				{{ __('common.orderUp', {itemTitle: itemTitle}) }}
+				{{ t('common.orderUp', {itemTitle: itemTitle}) }}
 			</span>
 		</button>
 		<button class="orderer__down" @click.prevent="down">
 			<icon icon="angle-down" />
 			<span class="-screenReader">
-				{{ __('common.orderDown', {itemTitle: itemTitle}) }}
+				{{ t('common.orderDown', {itemTitle: itemTitle}) }}
 			</span>
 		</button>
 	</div>

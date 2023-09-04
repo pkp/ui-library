@@ -74,7 +74,7 @@
 									{{
 										moreSearchResultsLabel.replace(
 											'{$number}',
-											searchResults.length - showSearchResultCount
+											searchResults.length - showSearchResultCount,
 										)
 									}}
 								</button>
@@ -101,7 +101,7 @@
 								{{ otherLocale.name }}
 							</button>
 							<template v-if="i < otherLocales.length - 1">
-								{{ __('common.commaListSeparator') }}
+								{{ t('common.commaListSeparator') }}
 							</template>
 						</template>
 					</div>
@@ -256,7 +256,7 @@
 					</template>
 				</field-prepared-content>
 				<modal
-					:closeLabel="__('common.close')"
+					:closeLabel="t('common.close')"
 					:name="fileAttacherModalId"
 					:title="attachFilesLabel"
 					:open="isModalOpenedFileAttacher"
@@ -278,7 +278,7 @@
 					role="alert"
 				>
 					<spinner />
-					<span class="-screenReader">{{ __('common.loading') }}</span>
+					<span class="-screenReader">{{ t('common.loading') }}</span>
 				</div>
 			</div>
 		</panel-section>
@@ -542,7 +542,7 @@ export default {
 				setup: function (editor) {
 					editor.ui.registry.addButton('pkpAttachFiles', {
 						icon: 'upload',
-						text: self.__('common.attachFiles'),
+						text: self.t('common.attachFiles'),
 						onAction() {
 							this.isModalOpenedFileAttacher = true;
 						},
@@ -635,7 +635,7 @@ export default {
 		recipientVariable() {
 			let name = this.recipientsSelected
 				.map((recipient) => recipient.label)
-				.join(this.__('common.commaListSeparator'));
+				.join(this.t('common.commaListSeparator'));
 			if (!name) {
 				return '{$recipientName}';
 			}
@@ -660,7 +660,7 @@ export default {
 		 */
 		recipientsSelected() {
 			return this.localizedRecipientOptions.filter((recipient) =>
-				this.recipients.includes(recipient.value)
+				this.recipients.includes(recipient.value),
 			);
 		},
 	},
@@ -776,7 +776,7 @@ export default {
 			this.isLoadingTemplate = true;
 
 			const template = this.emailTemplates.find(
-				(template) => template.key === key
+				(template) => template.key === key,
 			);
 			if (template) {
 				// Fake a small delay so that the user notices the change
@@ -826,20 +826,20 @@ export default {
 		 */
 		openSwitchLocale(locale) {
 			const localeName = this.locales.find(
-				(iLocale) => iLocale.locale === locale
+				(iLocale) => iLocale.locale === locale,
 			).name;
 			this.openDialog({
 				name: 'confirmLocaleSwitch',
 				title: this.switchToNamedLanguageLabel.replace('{$name}', localeName),
 				message: this.confirmSwitchLocaleLabel.replace(
 					'{$localeName}',
-					localeName
+					localeName,
 				),
 				actions: [
 					{
 						label: this.switchToNamedLanguageLabel.replace(
 							'{$name}',
-							localeName
+							localeName,
 						),
 						isPrimary: true,
 						callback: (close) => {
@@ -848,7 +848,7 @@ export default {
 						},
 					},
 					{
-						label: this.__('common.cancel'),
+						label: this.t('common.cancel'),
 						isWarnable: true,
 						callback: (close) => close(),
 					},

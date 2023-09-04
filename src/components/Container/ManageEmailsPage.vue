@@ -62,7 +62,7 @@ export default {
 			Object.keys(this.activeFilters).forEach((filter) => {
 				this.activeFilters[filter].forEach((value) => {
 					newMailables = newMailables.filter((mailable) =>
-						mailable[filter].includes(value)
+						mailable[filter].includes(value),
 					);
 				});
 			});
@@ -98,7 +98,7 @@ export default {
 				title: this.i18nRemoveTemplate,
 				message: this.i18nRemoveTemplateMessage.replace(
 					'{$template}',
-					this.localize(template.subject)
+					this.localize(template.subject),
 				),
 				actions: [
 					{
@@ -110,17 +110,17 @@ export default {
 								() => {
 									this.currentMailable.emailTemplates =
 										this.currentMailable.emailTemplates.filter(
-											(t) => t.key !== template.key
+											(t) => t.key !== template.key,
 										);
 								},
 								() => {
 									close();
-								}
+								},
 							);
 						},
 					},
 					{
-						label: this.__('common.cancel'),
+						label: this.t('common.cancel'),
 						callback: (close) => close(),
 					},
 				],
@@ -156,7 +156,7 @@ export default {
 						},
 					},
 					{
-						label: this.__('common.cancel'),
+						label: this.t('common.cancel'),
 						callback: (close) => close(),
 					},
 				],
@@ -174,7 +174,7 @@ export default {
 				title: this.i18nResetTemplate,
 				message: this.i18nResetTemplateMessage.replace(
 					'{$template}',
-					this.currentMailable.name
+					this.currentMailable.name,
 				),
 				actions: [
 					{
@@ -185,7 +185,7 @@ export default {
 								this.getTemplate(template.key, (r) => {
 									this.currentMailable.emailTemplates =
 										this.currentMailable.emailTemplates.map((t) =>
-											t.key === template.key ? r : t
+											t.key === template.key ? r : t,
 										);
 									close();
 								});
@@ -193,7 +193,7 @@ export default {
 						},
 					},
 					{
-						label: this.__('common.cancel'),
+						label: this.t('common.cancel'),
 						callback: (close) => close(),
 					},
 				],
@@ -377,7 +377,7 @@ export default {
 			templateForm.fields = templateForm.fields.map((field) => {
 				if (field.name === 'body') {
 					field.preparedContent = Object.keys(
-						this.currentMailable.dataDescriptions
+						this.currentMailable.dataDescriptions,
 					).map((variable) => {
 						return {
 							key: variable,
@@ -409,13 +409,13 @@ export default {
 		templateSaved(template) {
 			const exists =
 				this.currentMailable.emailTemplates.findIndex(
-					(t) => t.key === template.key
+					(t) => t.key === template.key,
 				) > -1;
 
 			if (exists) {
 				this.currentMailable.emailTemplates =
 					this.currentMailable.emailTemplates.map((t) =>
-						t.key === template.key ? template : t
+						t.key === template.key ? template : t,
 					);
 			} else {
 				this.currentMailable.emailTemplates.push(template);

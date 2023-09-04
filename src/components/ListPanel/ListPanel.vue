@@ -116,7 +116,7 @@ export default {
 	},
 	computed: {
 		currentEmptyLabel() {
-			return this.emptyLabel ? this.emptyLabel : this.__('common.noItemsFound');
+			return this.emptyLabel ? this.emptyLabel : this.t('common.noItemsFound');
 		},
 	},
 	watch: {
@@ -183,7 +183,9 @@ export default {
 }
 
 .listPanel__sidebar-enter-active {
-	transition: opacity 0.15s ease-in-out 0.15s, margin-right 0.15s ease-in-out;
+	transition:
+		opacity 0.15s ease-in-out 0.15s,
+		margin-right 0.15s ease-in-out;
 }
 
 .listPanel__sidebar-enter-to {
@@ -202,7 +204,8 @@ export default {
 }
 
 .listPanel__sidebar-leave-active {
-	transition: opacity 0.15s ease-in-out,
+	transition:
+		opacity 0.15s ease-in-out,
 		margin-inline-end 0.15s ease-in-out 0.15s;
 }
 

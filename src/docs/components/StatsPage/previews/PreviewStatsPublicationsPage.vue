@@ -33,7 +33,7 @@
 					@click="toggleSidebar"
 				>
 					<icon icon="filter" :inline="true" />
-					{{ __('common.filter') }}
+					{{ t('common.filter') }}
 				</pkp-button>
 			</template>
 		</pkp-header>
@@ -51,7 +51,7 @@
 				>
 					<h2>
 						<icon icon="filter" :inline="true" />
-						{{ __('common.filter') }}
+						{{ t('common.filter') }}
 					</h2>
 				</pkp-header>
 				<div
@@ -331,7 +331,7 @@ export default {
 				this.timeline = getRandomTimeline(
 					this.getBrowserSafeDate(dateStart),
 					this.getBrowserSafeDate(dateEnd),
-					this.timelineInterval
+					this.timelineInterval,
 				);
 				this.isLoadingTimeline = false;
 			}, 1000);

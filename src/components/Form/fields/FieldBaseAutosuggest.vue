@@ -13,7 +13,7 @@
 				:label="label"
 				:localeLabel="localeLabel"
 				:isRequired="isRequired"
-				:requiredLabel="__('common.required')"
+				:requiredLabel="t('common.required')"
 				:multilingualLabel="multilingualLabel"
 			/>
 			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
@@ -28,7 +28,7 @@
 				:id="describedByHelpId"
 				:topic="helpTopic"
 				:section="helpSection"
-				:label="__('help.help')"
+				:label="t('help.help')"
 			/>
 		</div>
 		<div
@@ -51,7 +51,7 @@
 			>
 				<span class="-screenReader">{{ selectedLabel }}</span>
 				<span v-if="!currentValue.length" class="-screenReader">
-					{{ __('common.none') }}
+					{{ t('common.none') }}
 				</span>
 				<pkp-badge
 					v-else
