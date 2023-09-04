@@ -460,9 +460,9 @@ export default {
 		 * @returns {boolean}
 		 */
 		affiliationMatch(affiliation) {
-			return this.authorAffiliations
-				.map((a) => a.toLowerCase())
-				.includes(this.localize(affiliation).toLowerCase());
+			return this.authorAffiliations.some(
+				(a) => a && a.toLowerCase() === this.localize(affiliation).toLowerCase()
+			);
 		},
 	},
 };
