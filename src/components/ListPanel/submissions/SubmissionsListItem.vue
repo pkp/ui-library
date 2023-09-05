@@ -741,11 +741,20 @@ export default {
 		 * Load a modal displaying history and notes of a submission
 		 */
 		openInfoCenter() {
+			var map = {
+				'&': '&amp;',
+				'<': '&lt;',
+				'>': '&gt;',
+				'"': '&quot;',
+				"'": '&#039;'
+			};
 			var opts = {
 				title: this.localizeSubmission(
 					this.currentPublication.fullTitle,
 					this.currentPublication.locale
-				),
+				).replace(/[&<>"']/g, function(m) {
+					return map[m];
+				}),
 				url: this.infoUrl.replace('__id__', this.item.id),
 				closeCallback: this.resetFocusInfoCenter
 			};
