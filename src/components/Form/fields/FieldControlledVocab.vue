@@ -9,6 +9,7 @@ export default {
 		return {
 			allSuggestions: [],
 			suggestionsLoaded: false,
+			allowCustom: true,
 		};
 	},
 	methods: {
@@ -61,7 +62,7 @@ export default {
 		 */
 		selectSuggestion(suggestion) {
 			if (suggestion) {
-				this.select(suggestion.item);
+				this.select(suggestion);
 			} else if (this.inputValue) {
 				this.select({
 					value: this.inputValue,
@@ -81,20 +82,14 @@ export default {
 			// See: https://stackoverflow.com/a/3561711/1723499
 			const regex = new RegExp(
 				this.inputValue.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'),
-				'gi'
+				'gi',
 			);
 			this.suggestions = this.allSuggestions.filter(
 				(suggestion) =>
 					!this.inputValue ||
 					(this.inputValue !== suggestion.value &&
-						suggestion.value.match(regex))
+						suggestion.value.match(regex)),
 			);
-			if (this.inputValue && !this.suggestions.includes(this.inputValue)) {
-				this.suggestions.unshift({
-					value: this.inputValue,
-					label: this.inputValue,
-				});
-			}
 		}, 250),
 	},
 	watch: {
@@ -120,7 +115,7 @@ export default {
 					return;
 				}
 				this.setSelected(
-					this.allSuggestions.filter((s) => localizedValue.includes(s.value))
+					this.allSuggestions.filter((s) => localizedValue.includes(s.value)),
 				);
 			});
 		},

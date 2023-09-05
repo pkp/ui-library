@@ -89,9 +89,25 @@
 						@blur="() => (isFocused = false)"
 					/>
 					<ComboboxOptions
-						v-if="suggestions.length"
+						v-if="suggestions.length || (allowCustom && inputValue?.length)"
 						class="autosuggest__results-container autosuggest__results"
 					>
+						<ComboboxOption
+							v-if="
+								allowCustom &&
+								inputValue?.length &&
+								!suggestions.includes(inputValue)
+							"
+							as="template"
+							v-slot="{active}"
+						>
+							<li
+								class="autosuggest__results-item"
+								:class="active && 'autosuggest__results-item--highlighted'"
+							>
+								{{ inputValue }}
+							</li>
+						</ComboboxOption>
 						<ComboboxOption
 							v-for="suggestion in suggestions"
 							:key="suggestion.value"

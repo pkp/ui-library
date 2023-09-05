@@ -83,6 +83,7 @@
 			<!-- Keep the dropzone elements in the dom so they can be manipulated in mounted hook -->
 			<div :class="{'-screenReader': currentValue}">
 				<vue-dropzone
+					v-if="isComponentMounted"
 					ref="dropzone"
 					:id="dropzoneId"
 					:options="dropzoneOptions"
@@ -141,6 +142,7 @@ export default {
 		return {
 			altTextValue: '',
 			initialValue: null,
+			isReady: false,
 		};
 	},
 	computed: {
@@ -247,21 +249,29 @@ export default {
 		},
 	},
 	mounted() {
-		/**
-		 * Add attributes to the hidden file input field so that labels and
-		 * descriptions can be accessed by those using assistive devices.
-		 */
-		this.$refs.dropzone.dropzone.hiddenFileInput.id = this.dropzoneHiddenFileId;
-		this.$refs.dropzone.dropzone.hiddenFileInput.setAttribute(
-			'aria-describedby',
-			this.describedByIds,
-		);
+		this.isComponentMounted = true;
 
-		/**
-		 * Set the initial data, which can't be set in the data() function because it relies on
-		 * a computed property
-		 */
-		this.altTextValue = this.currentValue ? this.currentValue.altText : '';
+		// not ideal, but first this component needs to get mounted
+		// than vue-dropzone gets mounted and afterwards vue-dropzone
+		// DOM can be manipulated
+		setTimeout(() => {
+			/**
+			 * Add attributes to the hidden file input field so that labels and
+			 * descriptions can be accessed by those using assistive devices.
+			 */
+			this.$refs.dropzone.dropzone.hiddenFileInput.id =
+				this.dropzoneHiddenFileId;
+			this.$refs.dropzone.dropzone.hiddenFileInput.setAttribute(
+				'aria-describedby',
+				this.describedByIds,
+			);
+
+			/**
+			 * Set the initial data, which can't be set in the data() function because it relies on
+			 * a computed property
+			 */
+			this.altTextValue = this.currentValue ? this.currentValue.altText : '';
+		});
 	},
 };
 </script>

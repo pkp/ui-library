@@ -142,6 +142,7 @@ export default {
 		closeFormModal(event) {
 			this.activeForm = null;
 			this.activeFormTitle = '';
+			this.isModalOpenedForm = false;
 		},
 
 		/**

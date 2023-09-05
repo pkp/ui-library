@@ -63,6 +63,7 @@
 			<!-- Keep the dropzone elements in the dom for $refs manipulation in mounted hook -->
 			<div :class="{'-screenReader': currentValue}">
 				<vue-dropzone
+					v-if="isComponentMounted"
 					ref="dropzone"
 					:id="dropzoneId"
 					:options="dropzoneOptions"
@@ -106,7 +107,7 @@
 
 <script>
 import FieldBase from './FieldBase.vue';
-import VueDropzone from 'vue2-dropzone-vue3';
+import VueDropzone from 'dropzone-vue3';
 
 export default {
 	name: 'FieldUpload',
@@ -123,6 +124,12 @@ export default {
 		return {
 			initialValue: null,
 			uploadFile: null,
+			// tracking whether this component is mounted
+			// before rendering vue-dropzone, as it requires
+			// clickables to be mounted already, which is issue for
+			// dropzoneClickableId which by default gets mounted
+			// after DOM after vue-dropzone
+			isComponentMounted: false,
 		};
 	},
 	computed: {
@@ -202,6 +209,28 @@ export default {
 		 * @return {Object}
 		 */
 		dropzoneOptions() {
+			console.log({
+				method: 'POST',
+				thumbnailWidth: 240,
+				maxFiles: 1,
+				hiddenInputContainer: '#' + this.controlId,
+				clickable: [
+					'#' + this.controlId + ' .dropzone',
+					'#' + this.dropzoneClickableId,
+				],
+				addRemoveLinks: true,
+				previewTemplate: `<div class="dz-preview">
+					<img class="dz-image" data-dz-thumbnail />
+					<div class="dz-details">
+						<div class="dz-filename"><span data-dz-name></span></div>
+						<div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+					</div>
+				</div>`,
+				headers: {
+					'X-Csrf-Token': pkp.currentUser.csrfToken,
+				},
+				...this.options,
+			});
 			return {
 				method: 'POST',
 				thumbnailWidth: 240,
@@ -345,21 +374,29 @@ export default {
 		},
 	},
 	mounted() {
-		/**
-		 * Add attributes to the hidden file input field so that labels and
-		 * descriptions can be accessed by those using assistive devices.
-		 */
-		this.$refs.dropzone.dropzone.hiddenFileInput.id = this.dropzoneHiddenFileId;
-		this.$refs.dropzone.dropzone.hiddenFileInput.setAttribute(
-			'aria-describedby',
-			this.describedByIds,
-		);
+		this.isComponentMounted = true;
 
-		/**
-		 * Set the initial data, which can't be set in the data() function because it relies on
-		 * a computed property
-		 */
-		this.initialValue = this.currentValue ? this.currentValue : null;
+		// not ideal, but first this component needs to get mounted
+		// than vue-dropzone gets mounted and afterwards vue-dropzone
+		// DOM can be manipulated
+		setTimeout(() => {
+			/**
+			 * Add attributes to the hidden file input field so that labels and
+			 * descriptions can be accessed by those using assistive devices.
+			 */
+			this.$refs.dropzone.dropzone.hiddenFileInput.id =
+				this.dropzoneHiddenFileId;
+			this.$refs.dropzone.dropzone.hiddenFileInput.setAttribute(
+				'aria-describedby',
+				this.describedByIds,
+			);
+
+			/**
+			 * Set the initial data, which can't be set in the data() function because it relies on
+			 * a computed property
+			 */
+			this.initialValue = this.currentValue ? this.currentValue : null;
+		});
 	},
 };
 </script>

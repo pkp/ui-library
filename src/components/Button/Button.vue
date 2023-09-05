@@ -1,5 +1,4 @@
 <template>
-	<!-- disabled attribute for a tag is not valid html -->
 	<component
 		:is="element"
 		class="pkpButton"

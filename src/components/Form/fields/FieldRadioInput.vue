@@ -165,7 +165,9 @@ export default {
 			this.inputValue = this.isMultilingual
 				? this.value[this.localeKey]
 				: this.value;
-			this.$refs.inputRadio[0].checked = true;
+			if (this.$refs.inputRadio?.[0]) {
+				this.$refs.inputRadio[0].checked = true;
+			}
 		}
 	},
 };

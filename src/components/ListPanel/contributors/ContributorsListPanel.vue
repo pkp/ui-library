@@ -107,7 +107,7 @@
 				:closeLabel="t('common.close')"
 				:name="formModal"
 				:title="activeFormTitle"
-				:isModalOpenedForm="isModalOpenedForm"
+				:open="isModalOpenedForm"
 				@close="closeFormModal"
 			>
 				<pkp-form
@@ -270,7 +270,6 @@ export default {
 		return {
 			activeForm: null,
 			activeFormTitle: '',
-			resetFocusTo: null,
 			isOrdering: false,
 			isLoading: false,
 			itemsBeforeReordering: null,
@@ -395,7 +394,6 @@ export default {
 		 * Open the modal to add an item
 		 */
 		openAddModal() {
-			this.resetFocusTo = document.activeElement;
 			let activeForm = cloneDeep(this.form);
 			activeForm.action = this.contributorsApiUrl;
 			activeForm.method = 'POST';
@@ -469,7 +467,6 @@ export default {
 		 */
 		openEditModal(id) {
 			this.isLoading = true;
-			this.resetFocusTo = document.activeElement;
 			const apiUrl = this.contributorsApiUrl.replace(
 				'/contributors',
 				'/contributors/' + id,
