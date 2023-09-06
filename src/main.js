@@ -102,6 +102,7 @@ const vueApp = createApp({
 });
 
 vueApp.config.productionTip = false;
+vueApp.config.compilerOptions.whitespace = 'preserve';
 
 vueApp.mixin(GlobalMixins);
 
