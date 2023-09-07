@@ -742,7 +742,7 @@ export default {
 		 */
 		openInfoCenter() {
 			var opts = {
-				title: this.localizeSubmission(
+				textTitle: this.localizeSubmission(
 					this.currentPublication.fullTitle,
 					this.currentPublication.locale
 				),
