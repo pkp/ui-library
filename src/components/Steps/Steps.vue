@@ -133,7 +133,7 @@ export default {
 			return this.progressLabel
 				.replace(
 					'{$current}',
-					1 + this.steps.findIndex((step) => step.id === this.current)
+					1 + this.steps.findIndex((step) => step.id === this.current),
 				)
 				.replace('{$total}', this.steps.length);
 		},
