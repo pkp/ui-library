@@ -209,28 +209,6 @@ export default {
 		 * @return {Object}
 		 */
 		dropzoneOptions() {
-			console.log({
-				method: 'POST',
-				thumbnailWidth: 240,
-				maxFiles: 1,
-				hiddenInputContainer: '#' + this.controlId,
-				clickable: [
-					'#' + this.controlId + ' .dropzone',
-					'#' + this.dropzoneClickableId,
-				],
-				addRemoveLinks: true,
-				previewTemplate: `<div class="dz-preview">
-					<img class="dz-image" data-dz-thumbnail />
-					<div class="dz-details">
-						<div class="dz-filename"><span data-dz-name></span></div>
-						<div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
-					</div>
-				</div>`,
-				headers: {
-					'X-Csrf-Token': pkp.currentUser.csrfToken,
-				},
-				...this.options,
-			});
 			return {
 				method: 'POST',
 				thumbnailWidth: 240,
