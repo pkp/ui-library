@@ -1,76 +1,76 @@
 {
-	"name": "ui-library",
-	"version": "0.1.0",
-	"private": true,
-	"scripts": {
-		"serve": "vite",
-		"build": "vite build",
-		"lint": "eslint ./src --ext .vue,.js,.cjs --fix --ignore-path .gitignore",
-		"format": "prettier --write ./src",
-		"prepare": "husky install"
-	},
-	"dependencies": {
-		"@headlessui/vue": "^1.7.16",
-		"@lk77/vue3-color": "^3.0.6",
-		"@tinymce/tinymce-vue": "^5.1.1",
-		"@vue-a11y/announcer": "^3.1.5",
-		"chart.js": "^4.3.3",
-		"clone-deep": "^4.0.1",
-		"debounce": "^1.2.0",
-		"dropzone-vue3": "^1.0.2",
-		"element-resize-event": "^3.0.6",
-		"floating-vue": "^2.0.0-beta.24",
-		"highlight.js": "^10.4.1",
-		"html-entities": "^1.3.1",
-		"marked": "^4.2.4",
-		"moment": "^2.29.4",
-		"tiny-emitter": "^2.1.0",
-		"tinymce": "^5.10.7",
-		"uuid": "^9.0.0",
-		"vue": "^3.3.4",
-		"vue-chartjs": "^5.2.0",
-		"vue-draggable-plus": "^0.2.4",
-		"vue-router": "^4.2.4",
-		"vue-scrollto": "^2.20.0"
-	},
-	"devDependencies": {
-		"@rushstack/eslint-patch": "^1.3.3",
-		"@vitejs/plugin-vue": "^4.3.4",
-		"@vue/eslint-config-prettier": "^8.0.0",
-		"autoprefixer": "^10.4.14",
-		"eslint": "^8.48.0",
-		"eslint-plugin-vue": "^9.17.0",
-		"husky": "^8.0.3",
-		"less": "^4.2.0",
-		"lint-staged": "^14.0.1",
-		"postcss": "^8.4.27",
-		"prettier": "^3.0.2",
-		"tailwindcss": "^3.3.3",
-		"vite": "^4.4.9"
-	},
-	"postcss": {
-		"plugins": {
-			"autoprefixer": {},
-			"tailwindcss": {}
-		}
-	},
-	"prettier": {
-		"$schema": "https://json.schemastore.org/prettierrc",
-		"bracketSpacing": false,
-		"singleQuote": true,
-		"useTabs": true,
-		"htmlWhitespaceSensitivity": "ignore",
-		"proseWrap": "never"
-	},
-	"gitHooks": {
-		"pre-commit": "lint-staged"
-	},
-	"lint-staged": {
-		"*.{js,vue}": [
-			"eslint --fix "
-		],
-		"src/**/*": [
-			"prettier --write"
-		]
-	}
-}
+  "name": "ui-library",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vite",
+    "build": "vite build",
+    "lint": "eslint ./src --ext .vue,.js,.cjs --fix --ignore-path .gitignore",
+    "format": "prettier --write ./src",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "@headlessui/vue": "^1.7.16",
+    "@lk77/vue3-color": "^3.0.6",
+    "@tinymce/tinymce-vue": "^5.1.1",
+    "@vue-a11y/announcer": "^3.1.5",
+    "chart.js": "^4.3.3",
+    "clone-deep": "^4.0.1",
+    "debounce": "^1.2.0",
+    "dropzone-vue3": "^1.0.2",
+    "element-resize-event": "^3.0.6",
+    "floating-vue": "^2.0.0-beta.24",
+    "highlight.js": "^10.4.1",
+    "html-entities": "^1.3.1",
+    "marked": "^4.2.4",
+    "moment": "^2.29.4",
+    "tiny-emitter": "^2.1.0",
+    "tinymce": "^5.10.7",
+    "uuid": "^9.0.0",
+    "vue": "^3.3.4",
+    "vue-chartjs": "^5.2.0",
+    "vue-draggable-plus": "^0.2.4",
+    "vue-router": "^4.2.4",
+    "vue-scrollto": "^2.20.0"
+  },
+  "devDependencies": {
+    "@rushstack/eslint-patch": "^1.3.3",
+    "@vitejs/plugin-vue": "^4.3.4",
+    "@vue/eslint-config-prettier": "^8.0.0",
+    "autoprefixer": "^10.4.14",
+    "eslint": "^8.48.0",
+    "eslint-plugin-vue": "^9.17.0",
+    "husky": "^8.0.3",
+    "less": "^4.2.0",
+    "lint-staged": "^14.0.1",
+    "postcss": "^8.4.27",
+    "prettier": "^3.0.2",
+    "tailwindcss": "^3.3.3",
+    "vite": "^4.4.9"
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {},
+      "tailwindcss": {}
+    }
+  },
+  "prettier": {
+    "$schema": "https://json.schemastore.org/prettierrc",
+    "bracketSpacing": false,
+    "singleQuote": true,
+    "useTabs": true,
+    "htmlWhitespaceSensitivity": "ignore",
+    "proseWrap": "never"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,vue}": [
+      "eslint --fix "
+    ],
+    "src/**/*": [
+      "prettier --write"
+    ]
+  }
+}  
