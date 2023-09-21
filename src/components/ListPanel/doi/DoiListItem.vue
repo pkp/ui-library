@@ -353,7 +353,13 @@ export default {
 			},
 		},
 	},
-	emits: ['update:isSelected'],
+	emits: [
+		'update:isSelected',
+		'select-item',
+		'expand-item',
+		'update-successful-doi-edits',
+		'deposit-triggered',
+	],
 	data() {
 		return {
 			doiListColumns: [

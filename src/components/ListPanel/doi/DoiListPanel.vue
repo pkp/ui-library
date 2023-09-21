@@ -986,7 +986,7 @@ export default {
 		failedDoiActions(newVal, oldVal) {
 			if (newVal.length !== 0) {
 				this.isModalOpenedFailedDoiAction = true;
-			} else {
+			} else if (this.isModalOpenedFailedDoiAction === true) {
 				this.closeFailedDoiActionModal();
 			}
 		},

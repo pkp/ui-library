@@ -12,7 +12,6 @@ export default {
 		pkpOpenDialog(props) {
 			this.pkpDialogProps = props;
 			this.pkpIsDialogOpened = true;
-			console.log('opening dialog');
 		},
 	},
 	data() {
