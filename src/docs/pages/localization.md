@@ -58,10 +58,10 @@ This method can be used in scripts too.
 		},
 		computed: {
 			cancelLabel() {
-				return this.__('common.cancel');
+				return this.t('common.cancel');
 			},
 			editItemLabel() {
-				return this.__('common.editItem', {item: this.name});
+				return this.t('common.editItem', {item: this.name});
 			},
 		},
 	};

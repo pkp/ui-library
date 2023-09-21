@@ -39,16 +39,16 @@ export default {
 			if ('responseJSON' in r && 'errorMessage' in r.responseJSON) {
 				msg = r.responseJSON.errorMessage;
 			} else {
-				msg = this.__('common.unknownError');
+				msg = this.t('common.unknownError');
 			}
 
 			this.openDialog({
 				name: 'ajaxError',
-				title: this.__('common.error'),
+				title: this.t('common.error'),
 				message: msg,
 				actions: [
 					{
-						label: this.__('common.ok'),
+						label: this.t('common.ok'),
 						callback: (close) => close(),
 					},
 				],

@@ -40,7 +40,7 @@ The `$announcer` is not needed in the following instances, because they already 
 Don't forget to localize announcements.
 
 ```js
-this.$announcer.set(this.__('common.loading'));
+this.$announcer.set(this.t('common.loading'));
 ```
 
 ```js

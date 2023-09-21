@@ -1,5 +1,5 @@
 <script>
-import DoiListPanel from '@/components/ListPanel/doi/DoiListPanel';
+import DoiListPanel from '@/components/ListPanel/doi/DoiListPanel.vue';
 export default {
 	name: 'DoiListPanelOPS',
 	extends: DoiListPanel,

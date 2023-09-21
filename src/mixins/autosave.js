@@ -141,7 +141,7 @@ export default {
 					),
 					actions: [
 						{
-							label: this.__('common.yes'),
+							label: this.t('common.yes'),
 							isPrimary: true,
 							callback: (close) => {
 								storedAutosaves.forEach(this.restoreStoredAutosave);
