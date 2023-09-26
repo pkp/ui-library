@@ -6,6 +6,10 @@
 import {marked} from 'marked';
 import highlightjs from 'highlight.js';
 
+const modules = import.meta.glob('./pages/*.md', {
+	as: 'raw',
+});
+
 export default {
 	data() {
 		return {output: ''};
@@ -25,9 +29,7 @@ export default {
 			}
 			if (page) {
 				try {
-					markdown = await import(
-						/* @vite-ignore */ './pages/' + page + '.md?raw'
-					);
+					markdown = await modules[`./pages/${page}.md`]();
 				} catch (e) {
 					markdown = '';
 				}
@@ -37,7 +39,7 @@ export default {
 							return highlightjs.highlightAuto(code).value;
 						},
 					});
-					this.output = marked.parse(markdown.default);
+					this.output = marked.parse(markdown);
 				}
 			} else {
 				this.output = '';

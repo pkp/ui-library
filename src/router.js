@@ -70,8 +70,7 @@ import ComponentTooltip from './docs/components/Tooltip/ComponentTooltip.vue';
 import ComponentWorkflowPage from './docs/components/WorkflowPage/ComponentWorkflowPage.vue';
 
 export default createRouter({
-	//base: process.env.BASE_URL,
-	history: createWebHistory(),
+	history: createWebHistory(import.meta.env.BASE_URL),
 	scrollBehavior(to, from, savedPosition) {
 		return {x: 0, y: 0};
 	},
