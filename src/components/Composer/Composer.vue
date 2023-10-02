@@ -1,7 +1,7 @@
 <template>
 	<panel class="composer">
 		<panel-section>
-			<template slot="header">
+			<template #header>
 				<slot name="description" />
 				<div
 					v-if="emailTemplates.length || emailTemplatesApiUrl"
@@ -74,7 +74,7 @@
 									{{
 										moreSearchResultsLabel.replace(
 											'{$number}',
-											searchResults.length - showSearchResultCount
+											searchResults.length - showSearchResultCount,
 										)
 									}}
 								</button>
@@ -101,7 +101,7 @@
 								{{ otherLocale.name }}
 							</button>
 							<template v-if="i < otherLocales.length - 1">
-								{{ __('common.commaListSeparator') }}
+								{{ t('common.commaListSeparator') }}
 							</template>
 						</template>
 					</div>
@@ -222,42 +222,44 @@
 					:searchLabel="insertSearchLabel"
 					@change="(name, prop, value) => this.emitChange({body: value})"
 				>
-					<div
-						v-if="attachments.length"
-						class="composer__attachments"
-						ref="attachedFiles"
-						slot="footer"
-					>
-						<span class="-screenReader">
-							{{ attachedFilesLabel }}
-						</span>
-						<badge
-							v-for="(attachment, i) in attachments"
-							:key="i"
-							class="composer__attachment"
+					<template #footer>
+						<div
+							v-if="attachments.length"
+							class="composer__attachments"
+							ref="attachedFiles"
 						>
-							<icon
-								:icon="getDocumentTypeIcon(attachment)"
-								:inline="true"
-								class="composer__attachment__documentType"
-							/>
-							{{ attachment.name }}
-							<button
-								class="composer__attachment__remove"
-								@click="removeAttachment(i)"
+							<span class="-screenReader">
+								{{ attachedFilesLabel }}
+							</span>
+							<badge
+								v-for="(attachment, i) in attachments"
+								:key="i"
+								class="composer__attachment"
 							>
-								<icon icon="times" />
-								<span class="-screenReader">
-									{{ removeItemLabel.replace('{$item}', attachment.name) }}
-								</span>
-							</button>
-						</badge>
-					</div>
+								<icon
+									:icon="getDocumentTypeIcon(attachment)"
+									:inline="true"
+									class="composer__attachment__documentType"
+								/>
+								{{ attachment.name }}
+								<button
+									class="composer__attachment__remove"
+									@click="removeAttachment(i)"
+								>
+									<icon icon="times" />
+									<span class="-screenReader">
+										{{ removeItemLabel.replace('{$item}', attachment.name) }}
+									</span>
+								</button>
+							</badge>
+						</div>
+					</template>
 				</field-prepared-content>
 				<modal
-					:closeLabel="__('common.close')"
+					:closeLabel="t('common.close')"
 					:name="fileAttacherModalId"
 					:title="attachFilesLabel"
+					:open="isModalOpenedFileAttacher"
 					@closed="resetFocusAfterAttachment"
 				>
 					<file-attacher
@@ -276,7 +278,7 @@
 					role="alert"
 				>
 					<spinner />
-					<span class="-screenReader">{{ __('common.loading') }}</span>
+					<span class="-screenReader">{{ t('common.loading') }}</span>
 				</div>
 			</div>
 		</panel-section>
@@ -511,6 +513,7 @@ export default {
 			searchPhrase: '',
 			searchResults: [],
 			showSearchResultCount: 10,
+			isModalOpenedFileAttacher: false,
 		};
 	},
 	computed: {
@@ -539,9 +542,9 @@ export default {
 				setup: function (editor) {
 					editor.ui.registry.addButton('pkpAttachFiles', {
 						icon: 'upload',
-						text: self.__('common.attachFiles'),
+						text: self.t('common.attachFiles'),
 						onAction() {
-							self.$modal.show(self.fileAttacherModalId);
+							this.isModalOpenedFileAttacher = true;
 						},
 					});
 					editor.settings.toolbar += ' | pkpAttachFiles';
@@ -632,7 +635,7 @@ export default {
 		recipientVariable() {
 			let name = this.recipientsSelected
 				.map((recipient) => recipient.label)
-				.join(this.__('common.commaListSeparator'));
+				.join(this.t('common.commaListSeparator'));
 			if (!name) {
 				return '{$recipientName}';
 			}
@@ -657,7 +660,7 @@ export default {
 		 */
 		recipientsSelected() {
 			return this.localizedRecipientOptions.filter((recipient) =>
-				this.recipients.includes(recipient.value)
+				this.recipients.includes(recipient.value),
 			);
 		},
 	},
@@ -698,7 +701,7 @@ export default {
 				}),
 			];
 			this.emitChange({attachments});
-			this.$modal.hide(this.fileAttacherModalId);
+			this.isModalOpenedFileAttacher = false;
 		},
 
 		/**
@@ -773,7 +776,7 @@ export default {
 			this.isLoadingTemplate = true;
 
 			const template = this.emailTemplates.find(
-				(template) => template.key === key
+				(template) => template.key === key,
 			);
 			if (template) {
 				// Fake a small delay so that the user notices the change
@@ -823,31 +826,31 @@ export default {
 		 */
 		openSwitchLocale(locale) {
 			const localeName = this.locales.find(
-				(iLocale) => iLocale.locale === locale
+				(iLocale) => iLocale.locale === locale,
 			).name;
 			this.openDialog({
 				name: 'confirmLocaleSwitch',
 				title: this.switchToNamedLanguageLabel.replace('{$name}', localeName),
 				message: this.confirmSwitchLocaleLabel.replace(
 					'{$localeName}',
-					localeName
+					localeName,
 				),
 				actions: [
 					{
 						label: this.switchToNamedLanguageLabel.replace(
 							'{$name}',
-							localeName
+							localeName,
 						),
 						isPrimary: true,
-						callback: () => {
+						callback: (close) => {
 							this.switchLocale(locale);
-							this.$modal.hide('confirmLocaleSwitch');
+							close();
 						},
 					},
 					{
-						label: this.__('common.cancel'),
+						label: this.t('common.cancel'),
 						isWarnable: true,
-						callback: () => this.$modal.hide('confirmLocaleSwitch'),
+						callback: (close) => close(),
 					},
 				],
 			});
@@ -868,6 +871,7 @@ export default {
 		 * Reset the focus when the attachment modal is closed
 		 */
 		resetFocusAfterAttachment() {
+			this.isModalOpenedFileAttacher = false;
 			this.$nextTick(() => {
 				if (this.$refs.attachedFiles) {
 					this.$refs.attachedFiles.focus();

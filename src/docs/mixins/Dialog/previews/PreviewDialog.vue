@@ -20,15 +20,15 @@ export default {
 					{
 						label: 'Confirm',
 						isPrimary: true,
-						callback: () => {
+						callback: (close) => {
 							// Simulate a server request
-							setTimeout(() => this.$modal.hide('basic'), 2000);
+							setTimeout(() => close(), 2000);
 						},
 					},
 					{
 						label: 'Cancel',
 						isWarnable: true,
-						callback: () => this.$modal.hide('basic'),
+						callback: (close) => close(),
 					},
 				],
 			});
@@ -43,9 +43,9 @@ export default {
 					{
 						label: 'Confirm',
 						isPrimary: true,
-						callback: () => {
+						callback: (close) => {
 							// Simulate a server request
-							setTimeout(() => this.$modal.hide('full'), 2000);
+							setTimeout(() => close(), 2000);
 						},
 					},
 					{
@@ -56,7 +56,7 @@ export default {
 					{
 						label: 'Cancel',
 						isWarnable: true,
-						callback: () => this.$modal.hide('full'),
+						callback: (close) => close(),
 					},
 				],
 				close: () => console.log('closed full example dialog'), // eslint-disable-line

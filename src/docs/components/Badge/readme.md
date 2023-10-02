@@ -1,4 +1,3 @@
-
 ## Props
 
 | Key | Description |
@@ -47,7 +46,5 @@ A badge often relies on its visual proximity to indicate the meaning: a stage ba
 
 ```html
 <!-- Example: a badge representing the submission's stage -->
-<badge label="Currently in the review stage">
-	{{ stage }}
-</badge>
+<badge label="Currently in the review stage">{{ stage }}</badge>
 ```

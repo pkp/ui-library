@@ -2,53 +2,57 @@
 	<div class="institutionsListPanel">
 		<slot>
 			<list-panel :items="items">
-				<pkp-header slot="header">
-					<h2>{{ title }}</h2>
-					<spinner v-if="isLoading" />
-					<template slot="actions">
-						<search
-							:searchPhrase="searchPhrase"
-							@search-phrase-changed="setSearchPhrase"
-						/>
-						<pkp-button @click="openAddModal">
-							{{ addInstitutionLabel }}
-						</pkp-button>
-					</template>
-				</pkp-header>
-				<template v-slot:item-title="{item}">
+				<template #header>
+					<pkp-header>
+						<h2>{{ title }}</h2>
+						<spinner v-if="isLoading" />
+						<template #actions>
+							<search
+								:searchPhrase="searchPhrase"
+								@search-phrase-changed="setSearchPhrase"
+							/>
+							<pkp-button @click="openAddModal">
+								{{ addInstitutionLabel }}
+							</pkp-button>
+						</template>
+					</pkp-header>
+				</template>
+				<template #item-title="{item}">
 					<span :id="'institution-' + item.id">
 						{{ localize(item.name) }}
 					</span>
 				</template>
-				<template v-slot:item-actions="{item}">
+				<template #item-actions="{item}">
 					<pkp-button
 						:aria-describedby="'institution-' + item.id"
 						@click="openEditModal(item.id)"
 					>
-						{{ __('common.edit') }}
+						{{ t('common.edit') }}
 					</pkp-button>
 					<pkp-button
 						:isWarnable="true"
 						:aria-describedby="'institution-' + item.id"
 						@click="openDeleteModal(item.id)"
 					>
-						{{ __('common.delete') }}
+						{{ t('common.delete') }}
 					</pkp-button>
 				</template>
-				<pagination
-					v-if="lastPage > 1"
-					slot="footer"
-					:currentPage="currentPage"
-					:isLoading="isLoading"
-					:lastPage="lastPage"
-					@set-page="setPage"
-				/>
+				<template #footer>
+					<pagination
+						v-if="lastPage > 1"
+						:currentPage="currentPage"
+						:isLoading="isLoading"
+						:lastPage="lastPage"
+						@set-page="setPage"
+					/>
+				</template>
 			</list-panel>
 			<modal
-				:closeLabel="__('common.close')"
+				:closeLabel="t('common.close')"
 				name="form"
 				:title="activeFormTitle"
-				@closed="formModalClosed"
+				:open="isModalOpenedForm"
+				@close="closeFormModal"
 			>
 				<pkp-form
 					v-bind="activeForm"
@@ -128,21 +132,18 @@ export default {
 		return {
 			activeForm: null,
 			activeFormTitle: '',
-			resetFocusTo: null,
+			isModalOpenedForm: false,
 		};
 	},
 	methods: {
 		/**
 		 * Clear the active form when the modal is closed
 		 *
-		 * @param {Object} event
 		 */
-		formModalClosed(event) {
+		closeFormModal() {
 			this.activeForm = null;
 			this.activeFormTitle = '';
-			if (this.resetFocusTo) {
-				this.resetFocusTo.focus();
-			}
+			this.isModalOpenedForm = false;
 		},
 
 		/**
@@ -159,24 +160,23 @@ export default {
 			} else {
 				this.setItems(
 					this.items.map((i) => (i.id === item.id ? item : i)),
-					this.itemsMax
+					this.itemsMax,
 				);
 				pkp.eventBus.$emit('update:institution', item);
 			}
-			this.$modal.hide('form');
+			this.closeFormModal();
 		},
 
 		/**
 		 * Open the modal to add an item
 		 */
 		openAddModal() {
-			this.resetFocusTo = document.activeElement;
 			let activeForm = cloneDeep(this.form);
 			activeForm.action = this.apiUrl;
 			activeForm.method = 'POST';
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.addInstitutionLabel;
-			this.$modal.show('form');
+			this.isModalOpenedForm = true;
 		},
 
 		/**
@@ -198,9 +198,9 @@ export default {
 				}),
 				actions: [
 					{
-						label: this.__('common.yes'),
+						label: this.t('common.yes'),
 						isPrimary: true,
-						callback: () => {
+						callback: (close) => {
 							var self = this;
 							$.ajax({
 								url: this.apiUrl + '/' + id,
@@ -213,18 +213,18 @@ export default {
 								success: function (r) {
 									self.setItems(
 										self.items.filter((i) => i.id !== id),
-										self.itemsMax
+										self.itemsMax,
 									);
-									self.$modal.hide('delete');
+									close();
 									self.setFocusIn(self.$el);
 								},
 							});
 						},
 					},
 					{
-						label: this.__('common.no'),
+						label: this.t('common.no'),
 						isWarnable: true,
-						callback: () => this.$modal.hide('delete'),
+						callback: (close) => close(),
 					},
 				],
 			});
@@ -236,10 +236,8 @@ export default {
 		 * @param {Number} id
 		 */
 		openEditModal(id) {
-			this.resetFocusTo = document.activeElement;
-
 			const institution = this.items.find(
-				(institution) => institution.id === id
+				(institution) => institution.id === id,
 			);
 			if (!institution) {
 				this.ajaxErrorCallback({});
@@ -261,7 +259,7 @@ export default {
 			});
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.editInstitutionLabel;
-			this.$modal.show('form');
+			this.isModalOpenedForm = true;
 		},
 
 		/**

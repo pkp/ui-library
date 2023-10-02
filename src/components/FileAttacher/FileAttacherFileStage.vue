@@ -1,28 +1,32 @@
 <template>
 	<div class="fileAttacherFileStage" aria-live="polite">
 		<list-panel :items="files" :isLoading="isLoading">
-			<pkp-header slot="header">
-				<h2>{{ currentFileStage.label }}</h2>
-				<template slot="actions">
-					<dropdown v-if="fileStages.length > 1" label="Other Files">
-						<ul>
-							<li v-for="fileStage in fileStages" :key="fileStage.label">
-								<button
-									class="pkpDropdown__action"
-									@click="currentFileStage = fileStage"
-								>
-									{{ fileStage.label }}
-								</button>
-							</li>
-						</ul>
-					</dropdown>
-				</template>
-			</pkp-header>
-			<div v-if="isLoading" slot="itemsEmpty">
-				<spinner />
-				{{ __('common.loading') }}
-			</div>
-			<template v-slot:item="{item}">
+			<template #header>
+				<pkp-header>
+					<h2>{{ currentFileStage.label }}</h2>
+					<template #actions>
+						<dropdown v-if="fileStages.length > 1" label="Other Files">
+							<ul>
+								<li v-for="fileStage in fileStages" :key="fileStage.label">
+									<button
+										class="pkpDropdown__action"
+										@click="currentFileStage = fileStage"
+									>
+										{{ fileStage.label }}
+									</button>
+								</li>
+							</ul>
+						</dropdown>
+					</template>
+				</pkp-header>
+			</template>
+			<template #itemsEmpty>
+				<div v-if="isLoading">
+					<spinner />
+					{{ t('common.loading') }}
+				</div>
+			</template>
+			<template #item="{item}">
 				<select-submission-file-list-item
 					:documentType="item.documentType"
 					:downloadLabel="downloadLabel"
@@ -37,7 +41,7 @@
 			</template>
 		</list-panel>
 		<button-row class="fileAttacher__footer">
-			<template slot="end">
+			<template #end>
 				<pkp-button :is-link="true" @click="$emit('cancel')">
 					<icon icon="long-arrow-left" :inline="true" />
 					{{ backLabel }}

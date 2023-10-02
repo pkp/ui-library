@@ -1,8 +1,9 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewDateRange from './previews/PreviewDateRange.vue';
-import PreviewDateRangeTemplate from '!raw-loader!./previews/PreviewDateRange.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewDateRangeTemplate from './previews/PreviewDateRange.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewDateRange,
+					component: markRaw(PreviewDateRange),
 					name: 'Base',
 					template: this.extractTemplate(PreviewDateRangeTemplate),
 				},

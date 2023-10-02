@@ -1,5 +1,5 @@
 <script>
-import DoiListPanel from '@/components/ListPanel/doi/DoiListPanel';
+import DoiListPanel from '@/components/ListPanel/doi/DoiListPanel.vue';
 export default {
 	name: 'DoiListPanelOJS',
 	extends: DoiListPanel,
@@ -27,19 +27,19 @@ export default {
 						let updateWithNewDoiEndpoint = `${this.doiApiUrl}/publications/${originalItem.currentPublicationId}`;
 						updateWithNewDoiEndpoint = updateWithNewDoiEndpoint.replace(
 							/dois/g,
-							'_dois'
+							'_dois',
 						);
 
 						newMappedItem.doiObjects.push(
 							this.mapDoiObject(doiObject, {
 								id: publication.id,
 								uid: `${originalItem.id}-article-${publication.id}`,
-								displayType: this.__('article.article'),
+								displayType: this.t('article.article'),
 								type: 'publication',
 								isCurrentVersion,
 								versionNumber,
 								updateWithNewDoiEndpoint,
-							})
+							}),
 						);
 					}
 
@@ -51,7 +51,7 @@ export default {
 							let updateWithNewDoiEndpoint = `${this.doiApiUrl}/galleys/${galley.id}`;
 							updateWithNewDoiEndpoint = updateWithNewDoiEndpoint.replace(
 								/dois/g,
-								'_dois'
+								'_dois',
 							);
 
 							newMappedItem.doiObjects.push(
@@ -63,7 +63,7 @@ export default {
 									isCurrentVersion,
 									versionNumber,
 									updateWithNewDoiEndpoint,
-								})
+								}),
 							);
 						});
 					}
@@ -75,19 +75,19 @@ export default {
 					let updateWithNewDoiEndpoint = `${this.doiApiUrl}/issues/${originalItem.id}`;
 					updateWithNewDoiEndpoint = updateWithNewDoiEndpoint.replace(
 						/dois/g,
-						'_dois'
+						'_dois',
 					);
 
 					newMappedItem.doiObjects.push(
 						this.mapDoiObject(doiObject, {
 							id: originalItem.id,
 							uid: `${originalItem.id}-issue`,
-							displayType: this.__('issue.issue'),
+							displayType: this.t('issue.issue'),
 							type: 'issue',
 							isCurrentVersion: true,
 							versionNumber: 1,
 							updateWithNewDoiEndpoint,
-						})
+						}),
 					);
 				}
 			}

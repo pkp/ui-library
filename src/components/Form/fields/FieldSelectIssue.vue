@@ -5,7 +5,7 @@
 				:controlId="controlId"
 				:label="label"
 				:isRequired="isRequired"
-				:requiredLabel="__('common.required')"
+				:requiredLabel="t('common.required')"
 			/>
 			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span
@@ -19,7 +19,7 @@
 				:id="describedByHelpId"
 				:topic="helpTopic"
 				:section="helpSection"
-				:label="__('help.help')"
+				:label="t('help.help')"
 			/>
 		</div>
 		<div

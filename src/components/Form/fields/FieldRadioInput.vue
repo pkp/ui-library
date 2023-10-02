@@ -10,7 +10,7 @@
 			</template>
 			<span v-if="isRequired" class="pkpFormFieldLabel__required">
 				*
-				<span class="-screenReader">{{ __('common.required') }}</span>
+				<span class="-screenReader">{{ t('common.required') }}</span>
 			</span>
 			<tooltip
 				v-if="isPrimaryLocale && tooltip"
@@ -29,7 +29,7 @@
 				:id="describedByHelpId"
 				:topic="helpTopic"
 				:section="helpSection"
-				:label="__('help.help')"
+				:label="t('help.help')"
 			/>
 		</legend>
 		<div
@@ -165,7 +165,9 @@ export default {
 			this.inputValue = this.isMultilingual
 				? this.value[this.localeKey]
 				: this.value;
-			this.$refs.inputRadio[0].checked = true;
+			if (this.$refs.inputRadio?.[0]) {
+				this.$refs.inputRadio[0].checked = true;
+			}
 		}
 	},
 };

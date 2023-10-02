@@ -9,7 +9,7 @@ This is a root component. Learn about [page hydration](#/pages/pages).
 | `cancelConfirmationPrompt` | A localized string for the confirmation prompt to cancel recording a decision. |
 | `currentStep` | Tracks the currently open step. If not passed, the first step will be opened. Default: `{}` |
 | `decision` | An integer representing the decision type. |
-| `decisionCompleteLabel` | A localized string  when a decision has been recorded. See: `DecisionType::getCompletedLabel()` |
+| `decisionCompleteLabel` | A localized string when a decision has been recorded. See: `DecisionType::getCompletedLabel()` |
 | `decisionCompleteDescription` | A localized string when a decision has been recorded. See: `DecisionType::getCompletedLabel()` |
 | `emailTemplatesApiUrl` | A URL to the REST API to get email templates. |
 | `isSubmitting` | Whether or not the decision is being recorded. Default: `false` |
@@ -27,11 +27,11 @@ This is a root component. Learn about [page hydration](#/pages/pages).
 
 ## Mixins
 
-| Name | Description |
-| --- | --- |
-| `ajaxError` | Display an unexpected error in a dialog. |
-| [dialog](#/mixins/dialog) | Show confirmation prompts. |
-| `localizeSubmission` | Localize submission properties. |
+| Name                      | Description                              |
+| ------------------------- | ---------------------------------------- |
+| `ajaxError`               | Display an unexpected error in a dialog. |
+| [dialog](#/mixins/dialog) | Show confirmation prompts.               |
+| `localizeSubmission`      | Localize submission properties.          |
 
 ## Usage
 
@@ -95,6 +95,5 @@ The `promoteFiles` type lets the user select one or more submission files to pro
 Helper classes to generate the step data from the server side can be found at `PKP\decision\steps`. To support new step types, edit the `submit()` method of `<DecisionPage>` and add a new conditional to the template like the following.
 
 ```html
-<template v-else-if="step.type === 'your-new-type'">
+<template v-else-if="step.type === 'your-new-type'"></template>
 ```
-

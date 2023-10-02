@@ -2,9 +2,9 @@
 
 | Key | Description |
 | --- | --- |
-`itemId` | A unique id for the item to be ordered. This will be emitted in the `up` and `down` events. It may be a string or number, and does not correspond to the item's order in the list. |
-`itemTitle` | The name of the item. This is used in an accessible label for the up and down buttons. |
-`isDraggable` | Whether or not to provide drag-and-drop controls for this item. When `isDraggable` is true, the items to be ordered must be wrapped in a `<draggable>` component. |
+| `itemId` | A unique id for the item to be ordered. This will be emitted in the `up` and `down` events. It may be a string or number, and does not correspond to the item's order in the list. |
+| `itemTitle` | The name of the item. This is used in an accessible label for the up and down buttons. |
+| `isDraggable` | Whether or not to provide drag-and-drop controls for this item. When `isDraggable` is true, the items to be ordered must be wrapped in a `<draggable>` component. |
 
 ## Events
 
@@ -28,9 +28,7 @@ If you do not want your items to be draggable, set the `Orderer`'s `isDraggable`
 Orderable items will _usually_ be printed with a `v-for` loop, like this:
 
 ```html
-<li v-for="item in items" :key="item.id">
-	...
-</li>
+<li v-for="item in items" :key="item.id">...</li>
 ```
 
 When doing so, you _must_ use the `:key` attribute to provide a unique key or the keyboard focus can not travel with the item as it moves.

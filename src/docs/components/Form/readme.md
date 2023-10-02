@@ -29,16 +29,12 @@
 | `form-success` | When the form is successfully submitted. The payload will include the form ID and the server response from the successful form submission. This is usually the object that was added or edited. |
 | `notify` | When an error is encountered during form submission. See [Notify](#/utilities/Notify). |
 
-
 ## Usage
 
 Use this component to display a form. Typically you will generate all the required props from one of the `FormComponent` classes on the server side. These props can then be passed to the form.
 
 ```html
-<pkp-form
-	v-bind="formData"
-	@set="set"
-/>
+<pkp-form v-bind="formData" @set="set" />
 ```
 
 Learn more about [server-side form components](https://docs.pkp.sfu.ca/dev/documentation/en/frontend-forms).

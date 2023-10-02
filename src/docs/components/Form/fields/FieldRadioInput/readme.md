@@ -20,18 +20,18 @@ This component extends [`FieldOptions`](#/component/Form/fields/FieldOptions), b
 
 When creating an option with a custom input field, pass the `isInput` key instead of the `value` key.
 
-
 ```js
 [
 	{
 		value: 1,
-		label: "One"
+		label: 'One',
 	},
 	{
 		value: 2,
-		label: "Two"
+		label: 'Two',
 	},
 	{
-		isInput: true
-	}
-]
+		isInput: true,
+	},
+];
+```

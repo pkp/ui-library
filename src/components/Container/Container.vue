@@ -76,7 +76,7 @@ export default {
 			});
 		});
 	},
-	destroyed() {
+	unmounted() {
 		pkp.eventBus.$off('set-form-languages');
 	},
 };

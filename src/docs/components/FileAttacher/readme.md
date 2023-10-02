@@ -1,7 +1,7 @@
 ## Props
 
-| Key | Description |
-| --- | --- |
+| Key         | Description                                           |
+| ----------- | ----------------------------------------------------- |
 | `attachers` | An array of file attachers. See usage guidance below. |
 
 ## Events
@@ -16,7 +16,7 @@ Use the `<FileAttacher>` to allow a user to upload a file or select a file that 
 
 ```html
 <file-attacher
-    :attachers="[
+	:attachers="[
         {
             component: 'FileAttacherLibrary',
             label: 'Library Files',

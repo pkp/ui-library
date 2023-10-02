@@ -1,14 +1,15 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewFilter from './previews/PreviewFilter.vue';
-import PreviewFilterTemplate from '!raw-loader!./previews/PreviewFilter.vue';
+import PreviewFilterTemplate from './previews/PreviewFilter.vue?raw';
 import PreviewFilterSlider from './previews/PreviewFilterSlider.vue';
-import PreviewFilterSliderTemplate from '!raw-loader!./previews/PreviewFilterSlider.vue';
+import PreviewFilterSliderTemplate from './previews/PreviewFilterSlider.vue?raw';
 import PreviewFilterSliderMultirange from './previews/PreviewFilterSliderMultirange.vue';
-import PreviewFilterSliderMultirangeTemplate from '!raw-loader!./previews/PreviewFilterSliderMultirange.vue';
+import PreviewFilterSliderMultirangeTemplate from './previews/PreviewFilterSliderMultirange.vue?raw';
 import PreviewFilterAutosuggest from './previews/PreviewFilterAutosuggest.vue';
-import PreviewFilterAutosuggestTemplate from '!raw-loader!./previews/PreviewFilterAutosuggest.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewFilterAutosuggestTemplate from './previews/PreviewFilterAutosuggest.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,
@@ -18,22 +19,22 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewFilter,
+					component: markRaw(PreviewFilter),
 					name: 'Base',
 					template: this.extractTemplate(PreviewFilterTemplate),
 				},
 				{
-					component: PreviewFilterSlider,
+					component: markRaw(PreviewFilterSlider),
 					name: 'Slider',
 					template: this.extractTemplate(PreviewFilterSliderTemplate),
 				},
 				{
-					component: PreviewFilterSliderMultirange,
+					component: markRaw(PreviewFilterSliderMultirange),
 					name: 'Slider (Multirange)',
 					template: this.extractTemplate(PreviewFilterSliderMultirangeTemplate),
 				},
 				{
-					component: PreviewFilterAutosuggest,
+					component: markRaw(PreviewFilterAutosuggest),
 					name: 'Autosuggest',
 					template: this.extractTemplate(PreviewFilterAutosuggestTemplate),
 				},

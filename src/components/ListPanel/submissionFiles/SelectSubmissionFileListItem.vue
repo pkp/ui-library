@@ -108,12 +108,12 @@ export default {
 				return '';
 			}
 			if (this.createdAt) {
-				return this.__('common.uploadedByAndWhen', {
+				return this.t('common.uploadedByAndWhen', {
 					name: this.uploadedBy,
 					date: this.createdAt.substring(0, 10),
 				});
 			}
-			return this.__('common.uploaded');
+			return this.t('common.uploaded');
 		},
 	},
 	created() {

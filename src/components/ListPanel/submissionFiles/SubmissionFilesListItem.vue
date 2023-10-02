@@ -30,14 +30,14 @@
 						:aria-describedby="nameId"
 						@click="$emit('edit', item)"
 					>
-						{{ __('common.edit') }}
+						{{ t('common.edit') }}
 					</pkp-button>
 					<pkp-button
 						:is-warnable="true"
 						:aria-describedby="nameId"
 						@click="$emit('remove', item)"
 					>
-						{{ __('common.remove') }}
+						{{ t('common.remove') }}
 					</pkp-button>
 				</div>
 			</div>
@@ -207,7 +207,7 @@ export default {
 		 */
 		setGenre(genreId) {
 			this.isSavingGenreId = true;
-			this.status = this.__('common.saving');
+			this.status = this.t('common.saving');
 			var self = this;
 			$.ajax({
 				url: this.apiUrl + '/' + this.item.id + '?stageId=' + this.stageId,
@@ -221,7 +221,7 @@ export default {
 				},
 				error: this.ajaxErrorCallback,
 				success(r) {
-					self.status = self.__('form.saved');
+					self.status = self.t('form.saved');
 					setTimeout(() => {
 						self.$emit('update', r);
 						self.$el.querySelector('#' + self.editId).focus();

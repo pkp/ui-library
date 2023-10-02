@@ -20,15 +20,12 @@ $.ajax({
 The code below demonstrates how to add this head to [fetch](https://developer.mozilla.org/en-US/docs/Web/API/fetch).
 
 ```js
-fetch(
-	'https://...',
-	{
-		method: 'POST',
-		headers: {
-			'X-Csrf-Token': pkp.currentUser.csrfToken
-		}
-	}
-);
+fetch('https://...', {
+	method: 'POST',
+	headers: {
+		'X-Csrf-Token': pkp.currentUser.csrfToken,
+	},
+});
 ```
 
 ## PUT and DELETE requests

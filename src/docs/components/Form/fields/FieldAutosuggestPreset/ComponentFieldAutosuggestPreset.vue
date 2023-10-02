@@ -1,8 +1,9 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewFieldAutosuggestPreset from './previews/PreviewFieldAutosuggestPreset.vue';
-import PreviewFieldAutosuggestPresetTemplate from '!raw-loader!./previews/PreviewFieldAutosuggestPreset.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewFieldAutosuggestPresetTemplate from './previews/PreviewFieldAutosuggestPreset.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,
@@ -13,7 +14,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewFieldAutosuggestPreset,
+					component: markRaw(PreviewFieldAutosuggestPreset),
 					name: 'Base',
 					template: this.extractTemplate(PreviewFieldAutosuggestPresetTemplate),
 				},

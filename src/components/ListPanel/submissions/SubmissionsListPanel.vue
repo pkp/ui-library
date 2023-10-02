@@ -5,36 +5,37 @@
 			:items="items"
 			class="listPanel--submissions"
 		>
-			<pkp-header slot="header">
-				<h2>{{ title }}</h2>
-				<spinner v-if="isLoading" />
-				<template slot="actions">
-					<search
-						:searchPhrase="searchPhrase"
-						@search-phrase-changed="setSearchPhrase"
-					/>
-					<pkp-button
-						:isActive="isSidebarVisible"
-						@click="isSidebarVisible = !isSidebarVisible"
-					>
-						<icon icon="filter" :inline="true" />
-						{{ __('common.filter') }}
-					</pkp-button>
-					<pkp-button
-						v-if="addUrl && currentUserCanAddSubmission"
-						element="a"
-						:href="addUrl"
-					>
-						{{ __('submission.submit.newSubmissionSingle') }}
-					</pkp-button>
-				</template>
-			</pkp-header>
-
-			<template slot="sidebar">
+			<template #header>
+				<pkp-header>
+					<h2>{{ title }}</h2>
+					<spinner v-if="isLoading" />
+					<template #actions>
+						<search
+							:searchPhrase="searchPhrase"
+							@search-phrase-changed="setSearchPhrase"
+						/>
+						<pkp-button
+							:isActive="isSidebarVisible"
+							@click="isSidebarVisible = !isSidebarVisible"
+						>
+							<icon icon="filter" :inline="true" />
+							{{ t('common.filter') }}
+						</pkp-button>
+						<pkp-button
+							v-if="addUrl && currentUserCanAddSubmission"
+							element="a"
+							:href="addUrl"
+						>
+							{{ t('submission.submit.newSubmissionSingle') }}
+						</pkp-button>
+					</template>
+				</pkp-header>
+			</template>
+			<template #sidebar>
 				<pkp-header :isOneLine="false">
 					<h3>
 						<icon icon="filter" :inline="true" />
-						{{ __('common.filter') }}
+						{{ t('common.filter') }}
 					</h3>
 				</pkp-header>
 				<div
@@ -58,17 +59,17 @@
 				</div>
 			</template>
 
-			<template slot="itemsEmpty">
+			<template #itemsEmpty>
 				<template v-if="isLoading">
 					<spinner />
-					{{ __('common.loading') }}
+					{{ t('common.loading') }}
 				</template>
 				<template v-else>
-					{{ __('submission.list.empty') }}
+					{{ t('submission.list.empty') }}
 				</template>
 			</template>
 
-			<template v-slot:item="{item}">
+			<template #item="{item}">
 				<slot name="item" :item="item">
 					<submissions-list-item
 						:key="item.id"
@@ -80,15 +81,15 @@
 					/>
 				</slot>
 			</template>
-
-			<pagination
-				v-if="lastPage > 1"
-				slot="footer"
-				:currentPage="currentPage"
-				:isLoading="isLoading"
-				:lastPage="lastPage"
-				@set-page="setPage"
-			/>
+			<template #footer>
+				<pagination
+					v-if="lastPage > 1"
+					:currentPage="currentPage"
+					:isLoading="isLoading"
+					:lastPage="lastPage"
+					@set-page="setPage"
+				/>
+			</template>
 		</list-panel>
 	</div>
 </template>
@@ -212,7 +213,7 @@ export default {
 				this.get();
 			} else {
 				let newFilters = {...this.activeFilters};
-				if (newFilters.hasOwnProperty('isIncomplete')) {
+				if (Object.prototype.hasOwnProperty.call(newFilters, 'isIncomplete')) {
 					delete newFilters.isIncomplete;
 				}
 				if (
@@ -336,11 +337,11 @@ export default {
 				this.items.filter((item) => {
 					return data.id !== item.id;
 				}),
-				this.itemsMax - 1
+				this.itemsMax - 1,
 			);
 		});
 	},
-	destroyed() {
+	unmounted() {
 		pkp.eventBus.$off('updated:submission');
 		pkp.eventBus.$off('deleted:submission');
 	},

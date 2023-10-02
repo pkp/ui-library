@@ -25,10 +25,10 @@
 
 			<div class="listPanel__itemActions listPanel__itemActions--catalog">
 				<pkp-button element="a" :href="item.urlWorkflow">
-					{{ __('submission.list.viewSubmission') }}
+					{{ t('submission.list.viewSubmission') }}
 				</pkp-button>
 				<pkp-button element="a" :href="item.urlPublished">
-					{{ __('submission.list.viewEntry') }}
+					{{ t('submission.list.viewEntry') }}
 				</pkp-button>
 				<button
 					class="listPanel__item--catalog__select listPanel__item--catalog__select--first"
@@ -38,10 +38,10 @@
 					<icon v-else icon="square-o" />
 					<span class="-screenReader">
 						<template v-if="isFeatured">
-							{{ __('catalog.manage.isFeatured') }}
+							{{ t('catalog.manage.isFeatured') }}
 						</template>
 						<template v-else>
-							{{ __('catalog.manage.isNotFeatured') }}
+							{{ t('catalog.manage.isNotFeatured') }}
 						</template>
 					</span>
 				</button>
@@ -52,10 +52,10 @@
 					<icon :icon="isNewRelease ? 'check-square-o' : 'square-o'" />
 					<span class="-screenReader">
 						<template v-if="isNewRelease">
-							{{ __('catalog.manage.isNewRelease') }}
+							{{ t('catalog.manage.isNewRelease') }}
 						</template>
 						<template v-else>
-							{{ __('catalog.manage.isNotNewRelease') }}
+							{{ t('catalog.manage.isNotNewRelease') }}
 						</template>
 					</span>
 				</button>
@@ -100,7 +100,7 @@ export default {
 		 */
 		currentPublication() {
 			return this.item.publications.find(
-				(publication) => publication.id === this.item.currentPublicationId
+				(publication) => publication.id === this.item.currentPublicationId,
 			);
 		},
 
@@ -111,7 +111,7 @@ export default {
 		 * @return {Boolean}
 		 */
 		isFeatured() {
-			if (!this.item.hasOwnProperty('featured')) {
+			if (!Object.prototype.hasOwnProperty.call(this.item, 'featured')) {
 				return false;
 			}
 			const feature = this.item.featured.find((feature) => {
@@ -130,7 +130,7 @@ export default {
 		 * @return {Boolean}
 		 */
 		isNewRelease() {
-			if (!this.item.hasOwnProperty('newRelease')) {
+			if (!Object.prototype.hasOwnProperty.call(this.item, 'newRelease')) {
 				return false;
 			}
 			const newRelease = this.item.newRelease.find((newRelease) => {

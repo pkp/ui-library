@@ -131,7 +131,7 @@
 									:title="list.name"
 									class="decision_filesList"
 								>
-									<template v-slot:item="{item}">
+									<template #item="{item}">
 										<select-submission-file-list-item
 											:createdAt="item.createdAt"
 											:documentType="item.documentType"
@@ -166,9 +166,11 @@
 
 			<panel class="decision__footer__panel">
 				<panel-section>
-					<span slot="header">
-						<!-- empty on purpose -->
-					</span>
+					<template #header>
+						<span>
+							<!-- empty on purpose -->
+						</span>
+					</template>
 					<div
 						class="decision__footer"
 						:class="{'decision__footer--noSteps': !steps.length}"

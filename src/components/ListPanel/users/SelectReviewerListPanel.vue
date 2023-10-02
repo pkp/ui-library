@@ -6,31 +6,32 @@
 				:isSidebarVisible="isSidebarVisible"
 				:items="currentReviewers"
 			>
-				<pkp-header slot="header">
-					<h2>
-						{{ title }}
-					</h2>
-					<spinner v-if="isLoading" />
-					<template slot="actions">
-						<search
-							:searchPhrase="searchPhrase"
-							@search-phrase-changed="setSearchPhrase"
-						/>
-						<pkp-button
-							:isActive="isSidebarVisible"
-							@click="isSidebarVisible = !isSidebarVisible"
-						>
-							<icon icon="filter" :inline="true" />
-							{{ __('common.filter') }}
-						</pkp-button>
-					</template>
-				</pkp-header>
-
-				<template slot="sidebar">
+				<template #header>
+					<pkp-header>
+						<h2>
+							{{ title }}
+						</h2>
+						<spinner v-if="isLoading" />
+						<template #actions>
+							<search
+								:searchPhrase="searchPhrase"
+								@search-phrase-changed="setSearchPhrase"
+							/>
+							<pkp-button
+								:isActive="isSidebarVisible"
+								@click="isSidebarVisible = !isSidebarVisible"
+							>
+								<icon icon="filter" :inline="true" />
+								{{ t('common.filter') }}
+							</pkp-button>
+						</template>
+					</pkp-header>
+				</template>
+				<template #sidebar>
 					<pkp-header :isOneLine="false">
 						<h2>
 							<icon icon="filter" :inline="true" />
-							{{ __('common.filter') }}
+							{{ t('common.filter') }}
 						</h2>
 					</pkp-header>
 					<component
@@ -45,17 +46,17 @@
 					/>
 				</template>
 
-				<template v-if="isLoading" slot="itemsEmpty">
+				<template v-if="isLoading" #itemsEmpty>
 					<template v-if="isLoading">
 						<spinner />
-						{{ __('common.loading') }}
+						{{ t('common.loading') }}
 					</template>
 					<template v-else>
 						{{ emptyLabel }}
 					</template>
 				</template>
 
-				<template v-slot:item="{item}">
+				<template #item="{item}">
 					<select-reviewer-list-item
 						:activeReviewsCountLabel="activeReviewsCountLabel"
 						:activeReviewsLabel="activeReviewsLabel"
@@ -91,7 +92,7 @@
 					/>
 				</template>
 
-				<template slot="footer">
+				<template #footer>
 					<pagination
 						v-if="lastPage > 1"
 						:currentPage="currentPage"
@@ -291,7 +292,7 @@ export default {
 			return [
 				...this.lastRoundReviewers,
 				...this.items.filter(
-					(reviewer) => !this.lastRoundReviewerIds.includes(reviewer.id)
+					(reviewer) => !this.lastRoundReviewerIds.includes(reviewer.id),
 				),
 			];
 		},
@@ -324,7 +325,7 @@ export default {
 		 * @return {Boolean}
 		 */
 		isFilterActive(param, value) {
-			return this.activeFilters.hasOwnProperty(param);
+			return Object.prototype.hasOwnProperty.call(this.activeFilters, param);
 		},
 
 		/**
@@ -334,7 +335,7 @@ export default {
 		 * @param {Number|Array} value The value of the filter
 		 */
 		removeFilter(param, value) {
-			if (this.activeFilters.hasOwnProperty(param)) {
+			if (Object.prototype.hasOwnProperty.call(this.activeFilters, param)) {
 				let newFilters = {...this.activeFilters};
 				delete newFilters[param];
 				this.activeFilters = newFilters;

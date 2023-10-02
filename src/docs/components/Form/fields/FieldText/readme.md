@@ -4,7 +4,7 @@
 | --- | --- |
 | `...` | Supports all props in [FieldBase](#/component/Form/fields/FieldBase). |
 | `value` | The current value for this field. |
-| `inputType` |  The`type` attribute for the `<input>` field. See [available types](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Form_%3Cinput%3E_types). Default: `text`. |
+| `inputType` | The`type` attribute for the `<input>` field. See [available types](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Form_%3Cinput%3E_types). Default: `text`. |
 | `optIntoEdit` | Disables the field and adds a button that the user must click before they can edit it. Default: `false`. |
 | `optIntoEditLabel` | The label for the button added by `optIntoEdit`. |
 | `size` | One of `small`, `normal` or `large`. Default: `normal`. |

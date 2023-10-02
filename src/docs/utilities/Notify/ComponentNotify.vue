@@ -1,8 +1,9 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewNotify from './previews/PreviewNotify.vue';
-import PreviewNotifyTemplate from '!raw-loader!./previews/PreviewNotify.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewNotifyTemplate from './previews/PreviewNotify.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewNotify,
+					component: markRaw(PreviewNotify),
 					name: 'Base',
 					template: this.extractTemplate(PreviewNotifyTemplate),
 				},

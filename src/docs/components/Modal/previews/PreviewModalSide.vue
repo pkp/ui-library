@@ -1,36 +1,40 @@
 <template>
 	<div class="previewModal previewModal--side">
-		<pkp-button ref="shortModalButton" @click="$modal.show('short')">
+		<pkp-button ref="shortModalButton" @click="isModalOpenedShort = true">
 			Open Short Modal
 		</pkp-button>
-		<pkp-button ref="tallModalButton" @click="$modal.show('tall')">
+		<pkp-button ref="tallModalButton" @click="isModalOpenedTall = true">
 			Open Tall Modal
 		</pkp-button>
 		<modal
 			closeLabel="Close"
-			name="short"
 			type="side"
-			@closed="setFocusToRef('shortModalButton')"
+			:open="isModalOpenedShort"
+			@close="isModalOpenedShort = false"
 		>
-			<template slot="header">
+			<template #header>
 				<h2>Details</h2>
 			</template>
 			<panel>
-				<panel-section v-html="pars[0]" />
+				<panel-section>
+					<div v-html="pars[0]"></div>
+				</panel-section>
 			</panel>
 		</modal>
 		<modal
 			closeLabel="Close"
-			name="tall"
 			type="side"
-			@closed="setFocusToRef('tallModalButton')"
+			:open="isModalOpenedTall"
+			@close="isModalOpenedTall = false"
 		>
-			<template slot="header">
+			<template #header>
 				<h2>Details</h2>
 				<p>Some more text in the header.</p>
 			</template>
 			<panel>
-				<panel-section v-for="(par, i) in pars" :key="i" v-html="par" />
+				<panel-section v-for="(par, i) in pars" :key="i">
+					<div v-html="par"></div>
+				</panel-section>
 			</panel>
 		</modal>
 	</div>
@@ -46,6 +50,9 @@ export default {
 	},
 	data() {
 		return {
+			isModalOpenedShort: false,
+			isModalOpenedTall: false,
+
 			pars: [
 				publication.abstract.en,
 				publication.abstract.en,

@@ -2,7 +2,7 @@
 	<div class="app" :class="classes">
 		<header class="app__header" role="banner">
 			<dropdown v-if="contexts.length" class="app__headerAction app__contexts">
-				<template slot="button">
+				<template #button>
 					<icon icon="sitemap" />
 					<span class="-screenReader">Journals</span>
 				</template>
@@ -29,7 +29,7 @@
 					</button>
 				</div>
 				<dropdown class="app__headerAction app__userNav">
-					<template slot="button">
+					<template #button>
 						<icon icon="user-circle-o" />
 						<icon
 							v-if="isLoggedInAs"

@@ -1,8 +1,9 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewManageEmailsPage from './previews/PreviewManageEmailsPage.vue';
-import PreviewManageEmailsPageTemplate from '!raw-loader!./previews/PreviewManageEmailsPage.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewManageEmailsPageTemplate from './previews/PreviewManageEmailsPage.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewManageEmailsPage,
+					component: markRaw(PreviewManageEmailsPage),
 					name: 'Base',
 					template: this.extractTemplate(PreviewManageEmailsPageTemplate),
 				},

@@ -1,8 +1,13 @@
 <script type="text/javascript">
 import Container from '@/components/Container/Container.vue';
-
+import dialogProvider from '@/mixins/dialogProvider';
+import PkpDialog from '@/components/Modal/Dialog.vue';
 export default {
+	components: {
+		PkpDialog,
+	},
 	extends: Container,
+	mixins: [dialogProvider],
 	name: 'Page',
 	data() {
 		return {
@@ -37,7 +42,7 @@ export default {
 		 */
 		backToDashboardLabel() {
 			if (this.backToDashboardLink) {
-				return this.__('navigation.backTo', {
+				return this.t('navigation.backTo', {
 					page: this.backToDashboardLink.name,
 				});
 			}
@@ -99,7 +104,7 @@ export default {
 				'<div id="' +
 					$.pkp.classes.Helper.uuid() +
 					'" ' +
-					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>'
+					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>',
 			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
 		},
 	},
@@ -150,10 +155,10 @@ export default {
 		 */
 		pkp.eventBus.$on(
 			'update:unread-tasks-count',
-			(data) => (this.unreadTasksCount = data.count)
+			(data) => (this.unreadTasksCount = data.count),
 		);
 	},
-	destroyed() {
+	unmounted() {
 		pkp.eventBus.$off('notify');
 		pkp.eventBus.$off('clear-all-notify');
 		clearInterval(this.notificationInterval);

@@ -36,7 +36,7 @@
 				</h1>
 				<div id="table-controls" class="submissions__list__controls">
 					<button-row>
-						<template slot="end">
+						<template #end>
 							<pkp-button @click="openFilters">Filters</pkp-button>
 							<span v-if="isLoadingSubmissions">
 								<spinner></spinner>
@@ -54,7 +54,7 @@
 					aria-labelledby="table-title"
 					aria-describedby="table-controls"
 				>
-					<template slot="head">
+					<template #head>
 						<table-header
 							:can-sort="true"
 							:sort-direction="sortColumn === 'id' ? sortDirection : 'none'"
@@ -94,12 +94,12 @@
 									"
 								>
 									{{
-										__('common.inParenthesis', {
+										t('common.inParenthesis', {
 											text: i18nReviewRound.replace(
 												'{$round}',
 												submission.reviewRounds[
 													submission.reviewRounds.length - 1
-												].round
+												].round,
 											),
 										})
 									}}
@@ -133,7 +133,6 @@
 					</span>
 					<pagination
 						v-if="lastPage > 1"
-						slot="footer"
 						:current-page="currentPage"
 						:is-loading="isLoadingPage"
 						:last-page="lastPage"
@@ -146,63 +145,64 @@
 			close-label="Close"
 			name="summary"
 			type="side"
-			@closed="resetFocusToList"
+			:open="isModalOpenedSummary"
+			@close="isModalOpenedSummary = false"
+			v-if="summarySubmission"
 		>
-			<template v-if="summarySubmission">
-				<template slot="header">
-					<stage-bubble :stage-id="summarySubmission.stageId">
-						{{ summarySubmission.stageName }}
-						<template v-if="summarySubmission.reviewRound">
-							(Round {{ summarySubmission.reviewRound }})
-						</template>
-					</stage-bubble>
-					<span class="summary__id">
-						{{ summarySubmission.id }}
-					</span>
-				</template>
-				<h2 class="summary__authors">
-					{{ summarySubmission.publications[0].authorsStringShort }}
-				</h2>
-				<div class="summary__title">
-					{{ summarySubmission.publications[0].fullTitle.en }}
-				</div>
-				<panel>
-					<panel-section>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-							eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-							enim ad minim veniam, quis nostrud exercitation ullamco laboris
-							nisi ut aliquip ex ea commodo consequat.
-						</p>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-							eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-							enim ad minim veniam, quis nostrud exercitation ullamco laboris
-							nisi ut aliquip ex ea commodo consequat.
-						</p>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-							eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-							enim ad minim veniam, quis nostrud exercitation ullamco laboris
-							nisi ut aliquip ex ea commodo consequat.
-						</p>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-							eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-							enim ad minim veniam, quis nostrud exercitation ullamco laboris
-							nisi ut aliquip ex ea commodo consequat.
-						</p>
-					</panel-section>
-				</panel>
+			<template #header>
+				<stage-bubble :stage-id="summarySubmission.stageId">
+					{{ summarySubmission.stageName }}
+					<template v-if="summarySubmission.reviewRound">
+						(Round {{ summarySubmission.reviewRound }})
+					</template>
+				</stage-bubble>
+				<span class="summary__id">
+					{{ summarySubmission.id }}
+				</span>
 			</template>
+			<h2 class="summary__authors">
+				{{ summarySubmission.publications[0].authorsStringShort }}
+			</h2>
+			<div class="summary__title">
+				{{ summarySubmission.publications[0].fullTitle.en }}
+			</div>
+			<panel>
+				<panel-section>
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+						eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+						ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+						aliquip ex ea commodo consequat.
+					</p>
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+						eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+						ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+						aliquip ex ea commodo consequat.
+					</p>
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+						eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+						ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+						aliquip ex ea commodo consequat.
+					</p>
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+						eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+						ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+						aliquip ex ea commodo consequat.
+					</p>
+				</panel-section>
+			</panel>
 		</modal>
 		<modal
 			close-label="Close"
 			name="filters"
 			type="side"
-			@closed="resetFocusToList"
+			:open="isModalOpenedFilters"
+			@close="isModalOpenedFilters = false"
 		>
-			<template slot="header">
+			<template #header>
 				<h2>Filters</h2>
 			</template>
 			<panel>
@@ -310,6 +310,8 @@ export default {
 					count: 28234,
 				},
 			],
+			isModalOpenedSummary: false,
+			isModalOpenedFilters: false,
 		};
 	},
 	methods: {
@@ -320,10 +322,10 @@ export default {
 		 */
 		get(cb) {
 			this.isLoadingSubmissions = true;
-			this.$announcer.set(this.__('common.loading'));
+			this.$announcer.set(this.t('common.loading'));
 			setTimeout(() => {
 				this.isLoadingSubmissions = false;
-				this.$announcer.set(this.__('common.loaded'));
+				this.$announcer.set(this.t('common.loaded'));
 				if (cb) {
 					cb.apply(this, [
 						{items: [...submissions], itemsMax: this.submissionsMax},

@@ -1,6 +1,14 @@
 <template>
 	<span class="multilingualProgress" :class="classes">
-		<button v-tooltip="tooltip" type="button" aria-hidden="true" @click.prevent>
+		<button
+			v-tooltip="{
+				content: tooltip,
+				theme: 'pkp-tooltip',
+			}"
+			type="button"
+			aria-hidden="true"
+			@click.prevent
+		>
 			<icon icon="globe" />
 		</button>
 		<span class="-screenReader">{{ tooltip }}</span>
@@ -44,7 +52,7 @@ export default {
 		 * @return {String}
 		 */
 		tooltip() {
-			return this.__('form.multilingualProgress', {
+			return this.t('form.multilingualProgress', {
 				count: this.count,
 				total: this.total,
 			});

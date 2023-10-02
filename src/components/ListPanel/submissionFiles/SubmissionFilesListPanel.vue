@@ -1,23 +1,25 @@
 <template>
 	<div class="submissionFilesListPanel">
 		<list-panel :items="items" class="listPanel--submissionFiles">
-			<pkp-header slot="header">
-				<h2>{{ title }}</h2>
-				<template slot="actions">
-					<pkp-button ref="addFileButton" @click="openFileBrowser">
-						{{ addFileLabel }}
-					</pkp-button>
-				</template>
-			</pkp-header>
+			<template #header>
+				<pkp-header>
+					<h2>{{ title }}</h2>
+					<template #actions>
+						<pkp-button ref="addFileButton" @click="openFileBrowser">
+							{{ addFileLabel }}
+						</pkp-button>
+					</template>
+				</pkp-header>
+			</template>
 
-			<template slot="itemsEmpty">
+			<template #itemsEmpty>
 				{{ emptyLabel }}
 				<button class="-linkButton" @click="openFileBrowser">
 					{{ emptyAddLabel }}
 				</button>
 			</template>
 
-			<template v-slot:item="{item}">
+			<template #item="{item}">
 				<slot name="item" :item="item">
 					<submission-files-list-item
 						:apiUrl="apiUrl"
@@ -48,9 +50,11 @@
 			@updated:files="setFiles"
 		/>
 		<modal
-			:closeLabel="__('common.close')"
+			:closeLabel="t('common.close')"
 			:name="formModal"
 			:title="editingLabel"
+			:open="isModalOpenedForm"
+			@close="isModalOpenedForm = false"
 		>
 			<pkp-form v-bind="activeForm" @set="setForm" @success="formSuccess" />
 		</modal>
@@ -161,6 +165,7 @@ export default {
 			editingLabel: '',
 			isDragging: false,
 			status: '',
+			isModalOpenedForm: false,
 		};
 	},
 	computed: {
@@ -197,10 +202,10 @@ export default {
 				return field;
 			});
 			this.activeForm = activeForm;
-			this.editingLabel = this.__('common.editItem', {
+			this.editingLabel = this.t('common.editItem', {
 				name: this.localize(item.name),
 			});
-			this.$modal.show(this.formModal);
+			this.isModalOpenedForm = true;
 		},
 
 		/**
@@ -210,7 +215,7 @@ export default {
 		 */
 		formSuccess(item) {
 			this.updateItem(item);
-			this.$modal.hide(this.formModal);
+			this.isModalOpenedForm = false;
 			this.activeForm = {};
 			this.$el.querySelector('#edit-' + item.id).focus();
 		},
@@ -230,13 +235,13 @@ export default {
 		remove(item) {
 			this.openDialog({
 				name: 'remove',
-				title: this.__('common.remove'),
+				title: this.t('common.remove'),
 				message: this.removeConfirmLabel,
 				actions: [
 					{
-						label: this.__('common.yes'),
+						label: this.t('common.yes'),
 						isPrimary: true,
-						callback: () => {
+						callback: (close) => {
 							$.ajax({
 								url: this.apiUrl + '/' + item.id + '?stageId=' + this.stageId,
 								type: 'POST',
@@ -249,16 +254,16 @@ export default {
 								success(r) {
 									const items = this.items.filter((item) => item.id !== r.id);
 									this.$emit('set', this.id, {items});
-									this.$modal.hide('remove');
+									close();
 									this.$refs.addFileButton.$el.focus();
 								},
 							});
 						},
 					},
 					{
-						label: this.__('common.no'),
+						label: this.t('common.no'),
 						isWarnable: true,
-						callback: () => this.$modal.hide('remove'),
+						callback: (close) => close(),
 					},
 				],
 			});

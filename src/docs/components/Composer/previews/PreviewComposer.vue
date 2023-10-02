@@ -41,7 +41,7 @@
 			:variables="variables"
 			@set="composerChanged"
 		>
-			<template slot="description">
+			<template #description>
 				<h2>Notify Authors</h2>
 				<p>
 					Send an email to the authors to let them know that their submission

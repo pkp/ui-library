@@ -1,8 +1,9 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewSpinner from './previews/PreviewSpinner.vue';
-import PreviewSpinnerTemplate from '!raw-loader!./previews/PreviewSpinner.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewSpinnerTemplate from './previews/PreviewSpinner.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewSpinner,
+					component: markRaw(PreviewSpinner),
 					name: 'Base',
 					template: this.extractTemplate(PreviewSpinnerTemplate),
 				},

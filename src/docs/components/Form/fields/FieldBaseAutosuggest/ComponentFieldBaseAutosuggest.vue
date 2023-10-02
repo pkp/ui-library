@@ -1,12 +1,13 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewFieldBaseAutosuggest from './previews/PreviewFieldBaseAutosuggest.vue';
-import PreviewFieldBaseAutosuggestTemplate from '!raw-loader!./previews/PreviewFieldBaseAutosuggest.vue';
+import PreviewFieldBaseAutosuggestTemplate from './previews/PreviewFieldBaseAutosuggest.vue?raw';
 import PreviewFieldBaseAutosuggestDisabled from './previews/PreviewFieldBaseAutosuggestDisabled.vue';
-import PreviewFieldBaseAutosuggestDisabledTemplate from '!raw-loader!./previews/PreviewFieldBaseAutosuggestDisabled.vue';
+import PreviewFieldBaseAutosuggestDisabledTemplate from './previews/PreviewFieldBaseAutosuggestDisabled.vue?raw';
 import PreviewFieldBaseAutosuggestInline from './previews/PreviewFieldBaseAutosuggestInline.vue';
-import PreviewFieldBaseAutosuggestInlineTemplate from '!raw-loader!./previews/PreviewFieldBaseAutosuggestInline.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewFieldBaseAutosuggestInlineTemplate from './previews/PreviewFieldBaseAutosuggestInline.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,
@@ -17,19 +18,19 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewFieldBaseAutosuggest,
+					component: markRaw(PreviewFieldBaseAutosuggest),
 					name: 'Base',
 					template: this.extractTemplate(PreviewFieldBaseAutosuggestTemplate),
 				},
 				{
-					component: PreviewFieldBaseAutosuggestDisabled,
+					component: markRaw(PreviewFieldBaseAutosuggestDisabled),
 					name: 'Disabled',
 					template: this.extractTemplate(
 						PreviewFieldBaseAutosuggestDisabledTemplate
 					),
 				},
 				{
-					component: PreviewFieldBaseAutosuggestInline,
+					component: markRaw(PreviewFieldBaseAutosuggestInline),
 					name: 'Inline',
 					template: this.extractTemplate(
 						PreviewFieldBaseAutosuggestInlineTemplate

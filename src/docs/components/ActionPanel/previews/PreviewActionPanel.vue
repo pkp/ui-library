@@ -6,7 +6,7 @@
 				Delete all incomplete submissions that have not been modified in the
 				last month.
 			</p>
-			<template slot="actions">
+			<template #actions>
 				<pkp-button
 					:isWarnable="true"
 					aria-describedby="delete-title delete-description"
@@ -22,7 +22,7 @@
 				Clear the cached data and templates across the site. This will effect
 				cached values for all journals.
 			</p>
-			<template slot="actions">
+			<template #actions>
 				<pkp-button aria-describedby="delete-cache-description">
 					Clear Data Cache
 				</pkp-button>
@@ -43,7 +43,7 @@
 				Immediately expire all user sessions. This will force all users to login
 				again.
 			</p>
-			<template slot="actions">
+			<template #actions>
 				<pkp-button :isWarnable="true" aria-describedby="sessions-description">
 					Expire Sessions
 				</pkp-button>
@@ -72,15 +72,15 @@ export default {
 					{
 						label: 'Delete',
 						isWarnable: true,
-						callback: () => {
+						callback: (close) => {
 							setTimeout(() => {
-								this.$modal.hide('deleteDialog');
+								close();
 							}, 1000);
 						},
 					},
 					{
-						label: this.__('common.cancel'),
-						callback: () => this.$modal.hide('deleteDialog'),
+						label: this.t('common.cancel'),
+						callback: (close) => close(),
 					},
 				],
 			});

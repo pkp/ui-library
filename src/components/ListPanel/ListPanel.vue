@@ -31,7 +31,7 @@
 									</div>
 									<div
 										class="listPanel__itemSubtitle"
-										v-if="!!$scopedSlots['item-subtitle'] || item.subtitle"
+										v-if="!!$slots['item-subtitle'] || item.subtitle"
 									>
 										<slot name="item-subtitle" :item="item">
 											{{ item.subtitle }}
@@ -39,7 +39,7 @@
 									</div>
 								</div>
 								<div
-									v-if="!!$scopedSlots['item-actions']"
+									v-if="!!$slots['item-actions']"
 									class="listPanel__itemActions"
 								>
 									<slot name="item-actions" :item="item" />
@@ -116,7 +116,7 @@ export default {
 	},
 	computed: {
 		currentEmptyLabel() {
-			return this.emptyLabel ? this.emptyLabel : this.__('common.noItemsFound');
+			return this.emptyLabel ? this.emptyLabel : this.t('common.noItemsFound');
 		},
 	},
 	watch: {
@@ -183,7 +183,9 @@ export default {
 }
 
 .listPanel__sidebar-enter-active {
-	transition: opacity 0.15s ease-in-out 0.15s, margin-right 0.15s ease-in-out;
+	transition:
+		opacity 0.15s ease-in-out 0.15s,
+		margin-right 0.15s ease-in-out;
 }
 
 .listPanel__sidebar-enter-to {
@@ -202,7 +204,8 @@ export default {
 }
 
 .listPanel__sidebar-leave-active {
-	transition: opacity 0.15s ease-in-out,
+	transition:
+		opacity 0.15s ease-in-out,
 		margin-inline-end 0.15s ease-in-out 0.15s;
 }
 

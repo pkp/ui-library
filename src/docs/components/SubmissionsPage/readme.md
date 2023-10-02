@@ -26,10 +26,10 @@ This is a root component. Learn about [page hydration](#/pages/pages).
 
 ## Mixins
 
-| Name | Description |
-| --- | --- |
-| `ajaxError` | Display an unexpected error in a dialog. |
-| `localizeSubmission` | Localize submission properties. |
+| Name                 | Description                              |
+| -------------------- | ---------------------------------------- |
+| `ajaxError`          | Display an unexpected error in a dialog. |
+| `localizeSubmission` | Localize submission properties.          |
 
 ## Usage
 

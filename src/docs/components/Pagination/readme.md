@@ -9,8 +9,8 @@
 
 ## Events
 
-| Key | Description |
-| --- | --- |
+| Key        | Description                       |
+| ---------- | --------------------------------- |
 | `set-page` | The page that should be selected. |
 
 ## Usage
@@ -22,10 +22,7 @@ Use the `Pagination` component when users can not view all items at once.
 Pagination should be hidden when only one page of results exists. This can be done in a parent component with the following code.
 
 ```html
-<pagination
-	v-if="lastPage > 1"
-	...
-/>
+<pagination v-if="lastPage > 1" ... />
 ```
 
 ## Adjacent Pages

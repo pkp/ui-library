@@ -1,14 +1,15 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewFieldBase from './previews/PreviewFieldBase.vue';
-import PreviewFieldBaseTemplate from '!raw-loader!./previews/PreviewFieldBase.vue';
+import PreviewFieldBaseTemplate from './previews/PreviewFieldBase.vue?raw';
 import PreviewFieldBaseDescription from './previews/PreviewFieldBaseDescription.vue';
-import PreviewFieldBaseDescriptionTemplate from '!raw-loader!./previews/PreviewFieldBaseDescription.vue';
+import PreviewFieldBaseDescriptionTemplate from './previews/PreviewFieldBaseDescription.vue?raw';
 import PreviewFieldBaseTooltip from './previews/PreviewFieldBaseTooltip.vue';
-import PreviewFieldBaseTooltipTemplate from '!raw-loader!./previews/PreviewFieldBaseTooltip.vue';
+import PreviewFieldBaseTooltipTemplate from './previews/PreviewFieldBaseTooltip.vue?raw';
 import PreviewFieldBaseError from './previews/PreviewFieldBaseError.vue';
-import PreviewFieldBaseErrorTemplate from '!raw-loader!./previews/PreviewFieldBaseError.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewFieldBaseErrorTemplate from './previews/PreviewFieldBaseError.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,
@@ -19,22 +20,22 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewFieldBase,
+					component: markRaw(PreviewFieldBase),
 					name: 'Base',
 					template: this.extractTemplate(PreviewFieldBaseTemplate),
 				},
 				{
-					component: PreviewFieldBaseDescription,
+					component: markRaw(PreviewFieldBaseDescription),
 					name: 'With Description',
 					template: this.extractTemplate(PreviewFieldBaseDescriptionTemplate),
 				},
 				{
-					component: PreviewFieldBaseTooltip,
+					component: markRaw(PreviewFieldBaseTooltip),
 					name: 'With Tooltip',
 					template: this.extractTemplate(PreviewFieldBaseTooltipTemplate),
 				},
 				{
-					component: PreviewFieldBaseError,
+					component: markRaw(PreviewFieldBaseError),
 					name: 'With Error',
 					template: this.extractTemplate(PreviewFieldBaseErrorTemplate),
 				},

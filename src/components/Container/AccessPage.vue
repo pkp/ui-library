@@ -30,7 +30,7 @@ export default {
 			this.totalBulkJobs = data.totalBulkJobs;
 		});
 	},
-	destroyed() {
+	unmounted() {
 		pkp.eventBus.$off('form-success');
 	},
 };

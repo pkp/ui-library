@@ -1,9 +1,30 @@
+<template>
+	<div class="chartjs-render-monitor">
+		<LineChartJs :data="chartData" :options="options" />
+	</div>
+</template>
+
 <script>
-import {Line, mixins} from 'vue-chartjs';
+import {Line as LineChartJs} from 'vue-chartjs';
+import {
+	Chart as ChartJS,
+	Tooltip,
+	LineElement,
+	CategoryScale,
+	LinearScale,
+	PointElement,
+} from 'chart.js';
+
+ChartJS.register(
+	Tooltip,
+	LineElement,
+	CategoryScale,
+	LinearScale,
+	PointElement,
+);
 
 export default {
-	extends: Line,
-	mixins: [mixins.reactiveProp],
+	components: {LineChartJs},
 	props: {
 		chartData: {
 			type: Object,
@@ -34,8 +55,10 @@ export default {
 						right: 64,
 					},
 				},
-				legend: {
-					display: false,
+				plugins: {
+					legend: {
+						display: false,
+					},
 				},
 				elements: {
 					point: {
@@ -50,52 +73,56 @@ export default {
 					},
 				},
 				scales: {
-					xAxes: [
-						{
-							gridLines: {
-								color: 'transparent',
-								zeroLineColor: 'transparent',
-							},
-							ticks: {
-								fontColor: 'rgba(255,255,255,0.85)',
-								fontFamily:
+					x: {
+						gridLines: {
+							color: 'transparent',
+							zeroLineColor: 'transparent',
+						},
+						ticks: {
+							color: 'rgba(255,255,255,0.85)',
+							font: {
+								family:
 									'"Noto Sans", "Noto Kufi Arabic", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen-Sans", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif',
-								fontStyle: 700,
-								padding: 8,
-								maxTicksLimit: 5,
-								maxRotation: 0,
-								minRotation: 0,
+								weight: 700,
+							},
+							padding: 8,
+							maxTicksLimit: 5,
+							maxRotation: 0,
+							minRotation: 0,
+						},
+					},
+					y: {
+						grid: {
+							color: '#006798',
+							drawTicks: false,
+							tickBorderDash: [1, 10],
+						},
+						border: {
+							dash: (line) => {
+								if (line.tick.value === 0) {
+									return null;
+								}
+								return [1, 10];
 							},
 						},
-					],
-					yAxes: [
-						{
-							gridLines: {
-								color: '#006798',
-								borderDash: [1, 10],
-								zeroLineColor: '#006798',
-								drawBorder: false,
-							},
-							ticks: {
-								fontColor: 'rgba(255,255,255,0.85)',
-							},
+						ticks: {
+							color: 'rgba(255,255,255,0.85)',
+							padding: 7,
 						},
-					],
+					},
 				},
 				...this.chartOptions,
 			};
 		},
 	},
-	mounted() {
-		this.renderChart(this.chartData, this.options);
-	},
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 @import '../../styles/_import';
 
 .chartjs-render-monitor {
 	background: @bg-anchor;
+	height: 400px;
 }
 </style>

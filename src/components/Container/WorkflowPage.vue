@@ -53,6 +53,8 @@ export default {
 			versionConfirmMessage: '',
 			versionConfirmTitle: '',
 			workingPublication: null,
+			isModalOpenedSelectRevisionDecision: false,
+			isModalOpenedSelectRevisionRecommendation: false,
 		};
 	},
 	computed: {
@@ -189,7 +191,7 @@ export default {
 			const $representationsEl = $(this.$refs.representations);
 			const sourceUrl = this.representationsGridUrl.replace(
 				'__publicationId__',
-				publication.id
+				publication.id,
 			);
 			if (!$.pkp.classes.Handler.hasHandler($representationsEl)) {
 				$representationsEl.pkpHandler('$.pkp.controllers.UrlInDivHandler', {
@@ -218,7 +220,7 @@ export default {
 				'<div id="' +
 					$.pkp.classes.Helper.uuid() +
 					'" ' +
-					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>'
+					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>',
 			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
 		},
 
@@ -233,16 +235,16 @@ export default {
 				message: this.versionConfirmMessage,
 				actions: [
 					{
-						label: this.__('common.yes'),
+						label: this.t('common.yes'),
 						isWarnable: true,
-						callback: () => {
-							this.$modal.hide('createVersion');
+						callback: (close) => {
+							close();
 							this.createVersion();
 						},
 					},
 					{
-						label: this.__('common.no'),
-						callback: () => this.$modal.hide('createVersion'),
+						label: this.t('common.no'),
+						callback: (close) => close(),
 					},
 				],
 			});
@@ -267,7 +269,7 @@ export default {
 				'<div id="' +
 					$.pkp.classes.Helper.uuid() +
 					'" ' +
-					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>'
+					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>',
 			).pkpHandler('$.pkp.controllers.modal.WizardModalHandler', opts);
 		},
 
@@ -285,7 +287,7 @@ export default {
 				'<div id="' +
 					$.pkp.classes.Helper.uuid() +
 					'" ' +
-					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>'
+					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>',
 			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
 		},
 
@@ -295,7 +297,7 @@ export default {
 		openPublish() {
 			const sourceUrl = this.publishUrl.replace(
 				'__publicationId__',
-				this.workingPublication.id
+				this.workingPublication.id,
 			);
 
 			const opts = {
@@ -316,7 +318,7 @@ export default {
 				'<div id="' +
 					$.pkp.classes.Helper.uuid() +
 					'" ' +
-					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>'
+					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>',
 			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
 		},
 
@@ -341,14 +343,14 @@ export default {
 								? this.unscheduleLabel
 								: this.unpublishLabel,
 						isPrimary: true,
-						callback: () => {
+						callback: (close) => {
 							this.unpublish(this.workingPublication);
-							this.$modal.hide('confirmUnpublish');
+							close();
 						},
 					},
 					{
-						label: this.__('common.cancel'),
-						callback: () => this.$modal.hide('confirmUnpublish'),
+						label: this.t('common.cancel'),
+						callback: (close) => close(),
 					},
 				],
 			});
@@ -365,7 +367,7 @@ export default {
 				success(submission) {
 					// Store some publication data and discard the rest
 					submission.publications.forEach((publication) =>
-						self.updatePublicationInList(publication)
+						self.updatePublicationInList(publication),
 					);
 					delete submission.publications;
 					self.submission = {};
@@ -568,13 +570,13 @@ export default {
 		pkp.eventBus.$on('decision:revisions', (reviewRoundId) => {
 			this.components.selectRevisionDecision.hiddenFields['reviewRoundId'] =
 				reviewRoundId;
-			this.$modal.show('selectRevisionDecision');
+			this.isModalOpenedSelectRevisionDecision = true;
 		});
 		pkp.eventBus.$on('recommendation:revisions', (reviewRoundId) => {
 			this.components.selectRevisionRecommendation.hiddenFields[
 				'reviewRoundId'
 			] = reviewRoundId;
-			this.$modal.show('selectRevisionRecommendation');
+			this.isModalOpenedSelectRevisionRecommendation = true;
 		});
 
 		/**
@@ -592,7 +594,7 @@ export default {
 			this.loadRepresentationsGrid(this.workingPublication);
 		}, 1000);
 	},
-	destroyed() {
+	unmounted() {
 		pkp.eventBus.$off('form-success');
 		pkp.eventBus.$off('unpublish:publication');
 		pkp.eventBus.$off('decision:revisions');
@@ -695,7 +697,9 @@ export default {
 	background: #fff;
 	z-index: 99999;
 	opacity: 0;
-	transition: opacity 0.6s, visibility 0.6s;
+	transition:
+		opacity 0.6s,
+		visibility 0.6s;
 
 	&.-isVisible {
 		visibility: visible;

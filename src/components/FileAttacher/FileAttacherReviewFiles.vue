@@ -1,7 +1,7 @@
 <template>
 	<div class="fileAttacherReviewFiles">
 		<div v-if="!files.length" class="fileAttacherReviewFiles__noFiles">
-			{{ __('common.noItemsFound') }}
+			{{ t('common.noItemsFound') }}
 		</div>
 		<template v-else>
 			<select-submission-file-list-item
@@ -18,7 +18,7 @@
 			</select-submission-file-list-item>
 		</template>
 		<button-row class="fileAttacher__footer">
-			<template slot="end">
+			<template #end>
 				<pkp-button :is-link="true" @click="$emit('cancel')">
 					<icon icon="long-arrow-left" :inline="true" />
 					{{ backLabel }}

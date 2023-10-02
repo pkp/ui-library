@@ -1,8 +1,9 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import Preview from './previews/PreviewActionPanel.vue';
-import PreviewTemplate from '!raw-loader!./previews/PreviewActionPanel.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewTemplate from './previews/PreviewActionPanel.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: Preview,
+					component: markRaw(Preview),
 					name: 'Base',
 					template: this.extractTemplate(PreviewTemplate),
 				},

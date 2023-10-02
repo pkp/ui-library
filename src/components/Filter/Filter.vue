@@ -14,7 +14,7 @@
 		>
 			<icon icon="times-circle-o" />
 			<span class="-screenReader">
-				{{ __('common.filterRemove', {filterTitle: title}) }}
+				{{ t('common.filterRemove', {filterTitle: title}) }}
 			</span>
 		</button>
 	</div>

@@ -30,6 +30,7 @@ export default {
 		primaryLocale: String,
 		localeKey: String,
 		locales: Array,
+		error: String,
 		value: {
 			required: true,
 		},
@@ -218,7 +219,7 @@ export default {
 		 * @return {String}
 		 */
 		multilingualLabel() {
-			return this.__('form.multilingualLabel', {
+			return this.t('form.multilingualLabel', {
 				label: this.label,
 				localeName: this.localeLabel,
 			});

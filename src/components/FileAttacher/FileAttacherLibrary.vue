@@ -3,10 +3,10 @@
 		<div v-if="!files.length" class="fileAttacherLibrary__message">
 			<div v-if="isLoading">
 				<spinner />
-				{{ __('common.loading') }}
+				{{ t('common.loading') }}
 			</div>
 			<div v-else>
-				{{ __('common.noItemsFound') }}
+				{{ t('common.noItemsFound') }}
 			</div>
 		</div>
 		<div v-else>
@@ -24,7 +24,7 @@
 			</select-submission-file-list-item>
 		</div>
 		<button-row class="fileAttacher__footer">
-			<template slot="end">
+			<template #end>
 				<pkp-button :is-link="true" @click="$emit('cancel')">
 					<icon icon="long-arrow-left" :inline="true" />
 					{{ backLabel }}

@@ -209,7 +209,7 @@ export default {
 					Object.keys(field.value).forEach((localeKey) => {
 						if (
 							this.supportedFormLocales.filter(
-								(locale) => locale.key === localeKey
+								(locale) => locale.key === localeKey,
 							).length
 						) {
 							// See note above on converting empty arrays
@@ -340,10 +340,10 @@ export default {
 					if (field.isMultilingual) {
 						errors[field.name] = {};
 						errors[field.name][this.primaryLocale] = [
-							this.__('validator.required'),
+							this.t('validator.required'),
 						];
 					} else {
-						errors[field.name] = [this.__('validator.required')];
+						errors[field.name] = [this.t('validator.required')];
 					}
 				}
 			});
@@ -385,10 +385,10 @@ export default {
 			if (r.status && r.status === 400) {
 				pkp.eventBus.$emit(
 					'notify',
-					this.__('form.errors', {
+					this.t('form.errors', {
 						count: Object.keys(r.responseJSON).length,
 					}),
-					'warning'
+					'warning',
 				);
 				this.$emit('set', this.id, {errors: r.responseJSON});
 				// A generic error from the API endpoint
@@ -400,7 +400,7 @@ export default {
 			) {
 				pkp.eventBus.$emit('notify', r.responseJSON.errorMessage, 'warning');
 			} else {
-				pkp.eventBus.$emit('notify', this.__('common.unknownError', 'warning'));
+				pkp.eventBus.$emit('notify', this.t('common.unknownError', 'warning'));
 			}
 		},
 
@@ -444,7 +444,7 @@ export default {
 		 */
 		setCurrentPage: function (pageId) {
 			const currentPageIndex = this.pages.findIndex(
-				(page) => page.id === this.currentPage
+				(page) => page.id === this.currentPage,
 			);
 			if (pageId === true) {
 				if (this.pages.length <= currentPageIndex) {
@@ -506,7 +506,7 @@ export default {
 				// This pattern may match several elements related to the field, any one
 				// of which will be ok to scroll to.
 				let $el = document.querySelector(
-					'[id*="' + this.id + '-' + field.name + '"]'
+					'[id*="' + this.id + '-' + field.name + '"]',
 				);
 				if ($el) {
 					this.$scrollTo($el, 500, {

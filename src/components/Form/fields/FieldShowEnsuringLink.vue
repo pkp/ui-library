@@ -29,22 +29,22 @@ export default {
 			this.openDialog(
 				{
 					name: 'ensureAnonymousReview',
-					confirmLabel: this.__('common.ok'),
+					confirmLabel: this.t('common.ok'),
 					message: this.message,
 					title: this.modalTitle,
-					callback: () => {
-						this.$modal.hide('ensureAnonymousReview');
+					callback: (close) => {
+						close();
 					},
 				},
 				{
 					height: 'auto',
 					scrollable: true,
-				}
+				},
 			);
 			return false;
 		});
 	},
-	beforeDestroy() {
+	beforeUnmount() {
 		/**
 		 * Clean up modal event listener
 		 */

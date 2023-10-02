@@ -19,17 +19,26 @@ export default {
 			if (typeof localizedString === 'undefined') {
 				return '';
 			} else if (
-				localizedString.hasOwnProperty($.pkp.app.currentLocale) &&
+				Object.prototype.hasOwnProperty.call(
+					localizedString,
+					$.pkp.app.currentLocale,
+				) &&
 				localizedString[$.pkp.app.currentLocale]
 			) {
 				return localizedString[$.pkp.app.currentLocale];
 			} else if (
-				localizedString.hasOwnProperty(submissionLocale) &&
+				Object.prototype.hasOwnProperty.call(
+					localizedString,
+					submissionLocale,
+				) &&
 				localizedString[submissionLocale]
 			) {
 				return localizedString[submissionLocale];
 			} else if (
-				localizedString.hasOwnProperty($.pkp.app.primaryLocale) &&
+				Object.prototype.hasOwnProperty.call(
+					localizedString,
+					$.pkp.app.primaryLocale,
+				) &&
 				localizedString[$.pkp.app.primaryLocale]
 			) {
 				return localizedString[$.pkp.app.primaryLocale];

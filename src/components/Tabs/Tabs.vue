@@ -12,8 +12,8 @@
 				role="tab"
 				:tabindex="currentTab === tab.id ? '' : -1"
 				@click="setCurrentTab(tab.id)"
-				@keydown.35.prevent="setLastTab"
-				@keydown.36.prevent="setFirstTab"
+				@keydown.end.prevent="setLastTab"
+				@keydown.home.prevent="setFirstTab"
 				@keydown.left.exact.prevent="setPreviousTab"
 				@keydown.right.exact.prevent="setNextTab"
 			>
@@ -146,17 +146,26 @@ export default {
 		 * Update the active tab when a new tab is selected
 		 */
 		currentTab(newVal, oldVal) {
-			this.tabs.forEach((tab) => (tab.isActive = tab.id === newVal));
+			this.tabs.forEach((tab) => tab.isActive(tab.id === newVal));
 		},
 	},
-	mounted() {
-		/**
-		 * Store the nested tabs as a data property
-		 */
-		this.tabs = this.$children.filter(
-			(child) => child.$options._componentTag === 'tab'
-		);
+	provide() {
+		return {
+			registerTab: (tab) => {
+				this.tabs.push(tab);
 
+				// Return an unregistration function for cleanup
+				return () => {
+					const index = this.tabs.findIndex((_tab) => _tab.id === tab.id);
+					if (index > -1) {
+						this.tabs.splice(index, 1);
+					}
+				};
+			},
+		};
+	},
+
+	mounted() {
 		/**
 		 * Set the tab to view when loaded
 		 */
@@ -173,7 +182,7 @@ export default {
 			});
 		});
 	},
-	destroyed() {
+	unmounted() {
 		pkp.eventBus.$off('open-tab');
 	},
 };

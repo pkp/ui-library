@@ -6,7 +6,7 @@
 				:label="label"
 				:localeLabel="localeLabel"
 				:isRequired="isRequired"
-				:requiredLabel="__('common.required')"
+				:requiredLabel="t('common.required')"
 				:multilingualLabel="multilingualLabel"
 			/>
 			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
@@ -21,7 +21,7 @@
 				:id="describedByHelpId"
 				:topic="helpTopic"
 				:section="helpSection"
-				:label="__('help.help')"
+				:label="t('help.help')"
 			/>
 		</div>
 		<div
@@ -62,7 +62,7 @@
 				</div>
 				<div class="pkpFormField--upload__previewActions">
 					<pkp-button :isWarnable="true" @click="clear">
-						{{ __('common.remove') }}
+						{{ t('common.remove') }}
 					</pkp-button>
 					<pkp-button v-if="initialValue && !isInitialValue" @click="revert">
 						{{ restoreLabel }}
@@ -83,6 +83,7 @@
 			<!-- Keep the dropzone elements in the dom so they can be manipulated in mounted hook -->
 			<div :class="{'-screenReader': currentValue}">
 				<vue-dropzone
+					v-if="isComponentMounted"
 					ref="dropzone"
 					:id="dropzoneId"
 					:options="dropzoneOptions"
@@ -141,6 +142,7 @@ export default {
 		return {
 			altTextValue: '',
 			initialValue: null,
+			isReady: false,
 		};
 	},
 	computed: {
@@ -195,7 +197,7 @@ export default {
 					temporaryFileId: response.id,
 					altText: '',
 				},
-				this.localeKey
+				this.localeKey,
 			);
 			this.setFocusToControl();
 		},
@@ -242,26 +244,34 @@ export default {
 					...this.currentValue,
 					altText: newVal,
 				},
-				this.localeKey
+				this.localeKey,
 			);
 		},
 	},
 	mounted() {
-		/**
-		 * Add attributes to the hidden file input field so that labels and
-		 * descriptions can be accessed by those using assistive devices.
-		 */
-		this.$refs.dropzone.dropzone.hiddenFileInput.id = this.dropzoneHiddenFileId;
-		this.$refs.dropzone.dropzone.hiddenFileInput.setAttribute(
-			'aria-describedby',
-			this.describedByIds
-		);
+		this.isComponentMounted = true;
 
-		/**
-		 * Set the initial data, which can't be set in the data() function because it relies on
-		 * a computed property
-		 */
-		this.altTextValue = this.currentValue ? this.currentValue.altText : '';
+		// not ideal, but first this component needs to get mounted
+		// than vue-dropzone gets mounted and afterwards vue-dropzone
+		// DOM can be manipulated
+		setTimeout(() => {
+			/**
+			 * Add attributes to the hidden file input field so that labels and
+			 * descriptions can be accessed by those using assistive devices.
+			 */
+			this.$refs.dropzone.dropzone.hiddenFileInput.id =
+				this.dropzoneHiddenFileId;
+			this.$refs.dropzone.dropzone.hiddenFileInput.setAttribute(
+				'aria-describedby',
+				this.describedByIds,
+			);
+
+			/**
+			 * Set the initial data, which can't be set in the data() function because it relies on
+			 * a computed property
+			 */
+			this.altTextValue = this.currentValue ? this.currentValue.altText : '';
+		});
 	},
 };
 </script>

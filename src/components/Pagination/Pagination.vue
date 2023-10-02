@@ -2,21 +2,21 @@
 	<nav
 		class="pkpPagination"
 		role="navigation"
-		:aria-label="__('common.pagination.label')"
+		:aria-label="t('common.pagination.label')"
 	>
 		<ul>
 			<li>
 				<pkp-button
 					:disabled="currentPage === 1"
 					:aria-label="
-						__('common.pagination.goToPage', {
-							page: __('common.pagination.previous'),
+						t('common.pagination.goToPage', {
+							page: t('common.pagination.previous'),
 						})
 					"
 					:is-link="true"
 					@click="setPage('previous')"
 				>
-					{{ __('common.pagination.previous') }}
+					{{ t('common.pagination.previous') }}
 				</pkp-button>
 			</li>
 			<li v-for="(item, index) in items" :key="index">
@@ -49,7 +49,7 @@
 					:is-link="true"
 					@click="setPage('next')"
 				>
-					{{ __('common.pagination.next') }}
+					{{ t('common.pagination.next') }}
 				</pkp-button>
 			</li>
 		</ul>
@@ -89,7 +89,7 @@ export default {
 			let items = [];
 			let innerMax = Math.min(
 				this.currentPage + this.showAdjacentPages,
-				this.lastPage
+				this.lastPage,
 			);
 			let innerMin = Math.max(this.currentPage - this.showAdjacentPages, 1);
 
@@ -156,8 +156,8 @@ export default {
 		 * @return {String}
 		 */
 		getNumberAriaLabel: function (page) {
-			const pageLabel = this.__('common.pageNumber', {pageNumber: page});
-			return this.__('common.pagination.goToPage', {page: pageLabel});
+			const pageLabel = this.t('common.pageNumber', {pageNumber: page});
+			return this.t('common.pagination.goToPage', {page: pageLabel});
 		},
 
 		/**

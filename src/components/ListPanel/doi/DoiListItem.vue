@@ -10,7 +10,8 @@
 						type="checkbox"
 						:name="`${item.type}[]`"
 						:value="item.id"
-						v-model="isSelected"
+						:checked="isSelected"
+						@change="$emit('update:isSelected', $event.target.checked)"
 						@click="toggleSelected"
 					/>
 				</div>
@@ -67,7 +68,7 @@
 			class="listPanel__itemExpanded listPanel__itemExpanded--doi"
 		>
 			<pkp-table :columns="doiListColumns" :rows="currentVersionDoiObjects">
-				<template slot-scope="{row}">
+				<template #default="{row}">
 					<table-cell :column="doiListColumns[0]" :row="row">
 						<label :for="row.uid">{{ row.displayType }}</label>
 					</table-cell>
@@ -97,16 +98,16 @@
 					"
 				>
 					{{
-						__('doi.manager.versions.countStatement', {
+						t('doi.manager.versions.countStatement', {
 							count: item.versions.length,
 						})
 					}}
 					<button
 						:ref="versionModalName"
 						:class="'-linkButton'"
-						@click="$modal.show(versionModalName)"
+						@click="isModalOpenedVersion = true"
 					>
-						{{ __('doi.manager.versions.view') }}
+						{{ t('doi.manager.versions.view') }}
 					</button>
 				</div>
 				<spinner v-if="isSaving" />
@@ -114,7 +115,7 @@
 					:is-disabled="isDeposited || isSaving"
 					@click="isEditingDois ? saveDois() : editDois()"
 				>
-					{{ isEditingDois ? __('common.save') : __('common.edit') }}
+					{{ isEditingDois ? t('common.save') : t('common.edit') }}
 				</pkp-button>
 			</div>
 
@@ -131,41 +132,41 @@
 					{{
 						isDeposited
 							? itemRegistrationAgency === null
-								? __('manager.dois.registration.manuallyMarkedRegistered')
-								: __('manager.dois.registration.submittedDescription', {
+								? t('manager.dois.registration.manuallyMarkedRegistered')
+								: t('manager.dois.registration.submittedDescription', {
 										registrationAgency: itemRegistrationAgencyName,
 								  })
-							: __('manager.dois.registration.notSubmittedDescription', {
+							: t('manager.dois.registration.notSubmittedDescription', {
 									registrationAgency: registrationAgencyInfo['displayName'],
 							  })
 					}}
 				</span>
 				<span class="doiListItem__depositorDescription" v-else>
-					{{ __('manager.dois.registration.notPublishedDescription') }}
+					{{ t('manager.dois.registration.notPublishedDescription') }}
 				</span>
 				<div class="doiListItem__depositorActions">
 					<pkp-button
 						ref="recordedMessageModalButton"
 						:is-disabled="isEditingDois"
-						@click="$modal.show('registeredMessageModal')"
+						@click="isModalOpenedRegisteredMessage = true"
 						v-if="isDeposited && hasRegisteredMessage"
 					>
-						{{ __('manager.dois.registration.viewRecord') }}
+						{{ t('manager.dois.registration.viewRecord') }}
 					</pkp-button>
 					<pkp-button
 						:is-disabled="isEditingDois"
 						@click="handleDepositorActions"
 						v-else-if="!isDeposited && item.isPublished"
 					>
-						{{ __('manager.dois.registration.depositDois') }}
+						{{ t('manager.dois.registration.depositDois') }}
 					</pkp-button>
 					<pkp-button
 						ref="errorMessageModalButton"
 						:is-disabled="isEditingDois"
 						v-if="hasErrors && hasErrorMessage"
-						@click="$modal.show(`errorMessageModal-${item.id}`)"
+						@click="isModalOpenedErrorMessage = true"
 					>
-						{{ __('manager.dois.registration.viewError') }}
+						{{ t('manager.dois.registration.viewError') }}
 					</pkp-button>
 				</div>
 			</div>
@@ -173,10 +174,11 @@
 		<!-- Messages Modals -->
 		<!-- Error Message Modal -->
 		<modal
-			:close-label="__('common.close')"
+			:close-label="t('common.close')"
 			:name="`errorMessageModal-${item.id}`"
-			:title="__('manager.dois.registration.viewError.title')"
-			@closed="setFocusToRef('errorMessageModalButton')"
+			:title="t('manager.dois.registration.viewError.title')"
+			:open="isModalOpenedErrorMessage"
+			@close="isModalOpenedErrorMessage = false"
 		>
 			<p>{{ registrationAgencyInfo['errorMessagePreamble'] }}</p>
 			<div class="depositErrorMessage">
@@ -185,20 +187,22 @@
 		</modal>
 		<!-- Recorded Message Modal -->
 		<modal
-			:close-label="__('common.close')"
+			:close-label="t('common.close')"
 			name="registeredMessageModal"
-			:title="__('manager.dois.registration.viewError.title')"
-			@closed="setFocusToRef('registeredMessageModalButton')"
+			:title="t('manager.dois.registration.viewError.title')"
+			:open="isModalOpenedRegisteredMessage"
+			@close="isModalOpenedRegisteredMessage = false"
 		>
 			<p>{{ registrationAgencyInfo['registeredMessagePreamble'] }}</p>
 			<p>{{ currentVersionDoiObjects[0]['registeredMessage'] }}</p>
 		</modal>
 		<!-- Version Modal -->
 		<modal
-			:close-label="__('common.close')"
+			:close-label="t('common.close')"
 			:name="versionModalName"
-			:title="__('doi.manager.versions.modalTitle')"
-			@closed="setFocusToRef(versionModalName)"
+			:title="t('doi.manager.versions.modalTitle')"
+			:open="isModalOpenedVersion"
+			@close="isModalOpenedVersion = false"
 		>
 			<div
 				class="doiListItem__versionContainer"
@@ -216,11 +220,11 @@
 					:columns="doiListColumns"
 					:rows="
 						item.doiObjects.filter(
-							(doiObject) => doiObject.versionNumber === version.versionNumber
+							(doiObject) => doiObject.versionNumber === version.versionNumber,
 						)
 					"
 				>
-					<template slot-scope="{row}">
+					<template #default="{row}">
 						<table-cell :column="doiListColumns[0]" :row="row">
 							<label :for="row.uid">{{ row.displayType }}</label>
 						</table-cell>
@@ -245,7 +249,7 @@
 					:is-disabled="isDeposited || isSaving"
 					@click="isEditingDois ? saveDois() : editDois()"
 				>
-					{{ isEditingDois ? __('common.save') : __('common.edit') }}
+					{{ isEditingDois ? t('common.save') : t('common.edit') }}
 				</pkp-button>
 			</div>
 		</modal>
@@ -256,7 +260,7 @@
 import Expander from '@/components/Expander/Expander.vue';
 import Modal from '@/components/Modal/Modal.vue';
 import PkpTable from '@/components/Table/Table.vue';
-import TableCell from '@/components/Table/TableCell';
+import TableCell from '@/components/Table/TableCell.vue';
 
 export default {
 	name: 'DoiListItem',
@@ -349,19 +353,26 @@ export default {
 			},
 		},
 	},
+	emits: [
+		'update:isSelected',
+		'select-item',
+		'expand-item',
+		'update-successful-doi-edits',
+		'deposit-triggered',
+	],
 	data() {
 		return {
 			doiListColumns: [
 				{
 					name: 'type',
-					label: this.__('common.type'),
+					label: this.t('common.type'),
 					value(row) {
 						return row.displayType;
 					},
 				},
 				{
 					name: 'doi',
-					label: this.__('manager.dois.title'),
+					label: this.t('manager.dois.title'),
 					value: 'value',
 				},
 			],
@@ -370,6 +381,9 @@ export default {
 			isSaving: false,
 			mutableDois: [],
 			itemsToUpdate: {},
+			isModalOpenedErrorMessage: false,
+			isModalOpenedRegisteredMessage: false,
+			isModalOpenedVersion: false,
 		};
 	},
 	computed: {
@@ -379,7 +393,7 @@ export default {
 		 */
 		currentVersionDoiObjects() {
 			return this.item.doiObjects.filter(
-				(doiObject) => doiObject.isCurrentVersion
+				(doiObject) => doiObject.isCurrentVersion,
 			);
 		},
 		/**
@@ -391,16 +405,16 @@ export default {
 			switch (this.itemDepositStatus) {
 				case pkp.const.DOI_STATUS_UNREGISTERED:
 					return this.needsDoi
-						? this.__('manager.dois.status.needsDoi')
-						: this.__('manager.dois.status.unregistered');
+						? this.t('manager.dois.status.needsDoi')
+						: this.t('manager.dois.status.unregistered');
 				case pkp.const.DOI_STATUS_SUBMITTED:
-					return this.__('manager.dois.status.submitted');
+					return this.t('manager.dois.status.submitted');
 				case pkp.const.DOI_STATUS_REGISTERED:
-					return this.__('manager.dois.status.registered');
+					return this.t('manager.dois.status.registered');
 				case pkp.const.DOI_STATUS_ERROR:
-					return this.__('manager.dois.status.error');
+					return this.t('manager.dois.status.error');
 				case pkp.const.DOI_STATUS_STALE:
-					return this.__('manager.dois.status.stale');
+					return this.t('manager.dois.status.stale');
 				default:
 					return '';
 			}
@@ -455,7 +469,10 @@ export default {
 		itemRegistrationAgencyName: function () {
 			const key = this.itemRegistrationAgency;
 
-			return this.registrationAgencyNames.hasOwnProperty(key)
+			return Object.prototype.hasOwnProperty.call(
+				this.registrationAgencyNames,
+				key,
+			)
 				? this.registrationAgencyNames[key]
 				: `[${key}]`;
 		},
@@ -496,7 +513,7 @@ export default {
 		 */
 		needsDoi() {
 			const hasAnyDois = this.item.doiObjects.some(
-				(doiObject) => doiObject.doiId !== null
+				(doiObject) => doiObject.doiId !== null,
 			);
 			return !hasAnyDois;
 		},
@@ -507,9 +524,9 @@ export default {
 		 */
 		publicationStatusLabel() {
 			if (this.item.isPublished) {
-				return this.__('publication.status.published');
+				return this.t('publication.status.published');
 			} else {
-				return this.__('publication.status.unpublished');
+				return this.t('publication.status.unpublished');
 			}
 		},
 		/**
@@ -541,7 +558,7 @@ export default {
 		saveDois() {
 			this.mutableDois.forEach((mutableDoi) => {
 				const oldDoiItem = this.item.doiObjects.find(
-					(item) => item.uid === mutableDoi.uid
+					(item) => item.uid === mutableDoi.uid,
 				);
 				if (oldDoiItem.identifier !== mutableDoi.identifier) {
 					let items = {...this.itemsToUpdate};
@@ -725,7 +742,7 @@ export default {
 			this.itemsToUpdate = items;
 
 			const isAllDoisUpdated = Object.keys(this.itemsToUpdate).every(
-				(itemUid) => this.itemsToUpdate[itemUid].isFinished === true
+				(itemUid) => this.itemsToUpdate[itemUid].isFinished === true,
 			);
 
 			if (isAllDoisUpdated) {
@@ -743,8 +760,8 @@ export default {
 				if (didUpdatesFail) {
 					pkp.eventBus.$emit(
 						'notify',
-						this.__('manager.dois.update.partialFailure'),
-						'warning'
+						this.t('manager.dois.update.partialFailure'),
+						'warning',
 					);
 				}
 
@@ -781,7 +798,7 @@ export default {
 			return this.isDeposited ? this.viewRecord() : this.triggerDeposit();
 		},
 		viewRecord() {
-			this.$modal.show('registeredMessageModal');
+			this.isModalOpenedRegisteredMessage = true;
 		},
 		triggerDeposit() {
 			this.$emit('deposit-triggered', [this.item.id], 'deposit');
@@ -802,8 +819,8 @@ export default {
 			const dateInfo =
 				version.datePublished !== null
 					? `(${version.datePublished})`
-					: this.__('publication.status.unpublished');
-			return `${this.__('publication.version', {
+					: this.t('publication.status.unpublished');
+			return `${this.t('publication.version', {
 				version: version.versionNumber,
 			})} ${dateInfo}`;
 		},

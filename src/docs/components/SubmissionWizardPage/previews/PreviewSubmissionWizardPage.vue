@@ -23,12 +23,14 @@
 				section in
 				<strong>English</strong>
 				.
-				<button class="-linkButton" @click="$modal.show('config')">
+				<button class="-linkButton" @click="isModalOpenedConfig = true">
 					Change
 				</button>
 				<modal
-					:closeLabel="__('common.close')"
+					:closeLabel="t('common.close')"
 					name="config"
+					:open="isModalOpenedConfig"
+					@close="isModalOpenedConfig = false"
 					title="Change Submission Settings"
 				>
 					<pkp-form
@@ -56,7 +58,7 @@
 				>
 					<panel>
 						<panel-section v-for="section in step.sections" :key="section.id">
-							<template slot="header">
+							<template #header>
 								<h2>{{ section.name }}</h2>
 								<div v-html="section.description" />
 							</template>
@@ -92,7 +94,7 @@
 								</notification>
 								<div
 									v-for="reviewStep in steps.filter(
-										(iStep) => iStep.id !== step.id
+										(iStep) => iStep.id !== step.id,
 									)"
 									:key="reviewStep.id"
 									class="submissionWizard__reviewPanel"
@@ -257,7 +259,7 @@
 												<div class="submissionWizard__reviewPanel__item__value">
 													{{
 														localize(publication.keywords).join(
-															__('common.commaListSeparator')
+															t('common.commaListSeparator'),
 														)
 													}}
 												</div>
@@ -274,7 +276,7 @@
 												<div class="submissionWizard__reviewPanel__item__value">
 													{{
 														publication.subjects.join(
-															__('common.commaListSeparator')
+															t('common.commaListSeparator'),
 														)
 													}}
 												</div>
@@ -317,7 +319,7 @@
 		</div>
 
 		<button-row class="submissionWizard__footer">
-			<template slot="end">
+			<template #end>
 				<pkp-button
 					v-if="!isOnFirstStep"
 					:isWarnable="true"
@@ -419,7 +421,7 @@ export default {
 		// Set up the form for the details step
 		let detailsForm = {...titleAbstractForm};
 		detailsForm.fields = detailsForm.fields.filter(
-			(field) => !['prefix', 'subtitle'].includes(field.name)
+			(field) => !['prefix', 'subtitle'].includes(field.name),
 		);
 		detailsForm.fields.push({
 			...fieldKeywords,
@@ -599,6 +601,7 @@ export default {
 					],
 				},
 			],
+			isModalOpenedConfig: false,
 		};
 	},
 	methods: {

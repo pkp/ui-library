@@ -1,7 +1,7 @@
 ## Props
 
-| Key | Description |
-| --- | --- |
+| Key         | Description                                                  |
+| ----------- | ------------------------------------------------------------ |
 | `isOneLine` | Truncate the header text to fit on one line. Default: `true` |
 
 ## Events

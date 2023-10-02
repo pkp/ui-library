@@ -37,7 +37,7 @@ export default {
 		pkp.eventBus.$on('submissionFile:added', this.setSubmissionFile);
 		pkp.eventBus.$on('submissionFile:edited', this.setSubmissionFile);
 	},
-	destroyed() {
+	unmounted() {
 		pkp.eventBus.$off('galley:added');
 		pkp.eventBus.$off('galley:edited');
 		pkp.eventBus.$off('submissionFile:added');

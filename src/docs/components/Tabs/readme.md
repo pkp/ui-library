@@ -52,7 +52,7 @@ A `label` is not needed when the tabs immediately follow a heading which describ
 Tabs listen for an `open-tab` event on the global event bus. To open a tab, fire this event and pass the tab `id`:
 
 ```js
-pkp.eventBus.$emit('open-tab', 'publication')
+pkp.eventBus.$emit('open-tab', 'publication');
 ```
 
 This only works when the tab is visible. If the `publication` tab was nested inside of other tabs and was not visible, it would not be displayed. Consider the following code:

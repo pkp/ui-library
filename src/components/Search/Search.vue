@@ -21,7 +21,7 @@
 			:aria-controls="inputId"
 		>
 			<icon icon="times" />
-			<span class="-screenReader">{{ __('common.clearSearch') }}</span>
+			<span class="-screenReader">{{ t('common.clearSearch') }}</span>
 		</button>
 	</div>
 </template>
@@ -49,7 +49,7 @@ export default {
 			return this._uid;
 		},
 		currentSearchLabel() {
-			return this.searchLabel ? this.searchLabel : this.__('common.search');
+			return this.searchLabel ? this.searchLabel : this.t('common.search');
 		},
 	},
 	methods: {

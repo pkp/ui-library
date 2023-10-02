@@ -7,7 +7,7 @@
 		>
 			<h2>{{ attacher.label }}</h2>
 			<p v-html="attacher.description" />
-			<template slot="actions">
+			<template #actions>
 				<pkp-button
 					:aria-describedby="'attacher' + key"
 					@click="setAttacher(attacher)"
@@ -17,10 +17,11 @@
 			</template>
 		</action-panel>
 		<modal
-			:closeLabel="__('common.close')"
+			:closeLabel="t('common.close')"
 			name="attacher"
 			:title="currentAttacher ? currentAttacher.label : ''"
-			@closed="resetFocus"
+			:open="isModalOpenedAttacher"
+			@close="isModalOpenedAttacher = false"
 		>
 			<component
 				v-if="currentAttacher"
@@ -61,6 +62,7 @@ export default {
 		return {
 			currentAttacher: null,
 			resetFocusTo: null,
+			isModalOpenedAttacher: false,
 		};
 	},
 	methods: {
@@ -69,24 +71,15 @@ export default {
 		 */
 		attachFiles(files) {
 			this.$emit('attached:files', this.currentAttacher.component, files);
-			this.$modal.hide('attacher');
+			this.isModalOpenedAttacher = false;
 		},
 
 		/**
 		 * Close the current attacher
 		 */
 		cancel() {
-			this.$modal.hide('attacher');
+			this.isModalOpenedAttacher = false;
 			this.$nextTick(() => (this.currentAttacher = null));
-		},
-
-		/**
-		 * Move focus back to button that opened the last attacher
-		 */
-		resetFocus() {
-			if (this.resetFocusTo) {
-				this.resetFocusTo.focus();
-			}
 		},
 
 		/**
@@ -96,8 +89,7 @@ export default {
 		 */
 		setAttacher(attacher) {
 			this.currentAttacher = attacher;
-			this.resetFocusTo = document.activeElement;
-			this.$modal.show('attacher');
+			this.isModalOpenedAttacher = true;
 		},
 	},
 };

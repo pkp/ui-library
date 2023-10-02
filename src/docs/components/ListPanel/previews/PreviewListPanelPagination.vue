@@ -1,13 +1,14 @@
 <template>
 	<list-panel :items="items" title="List Panel with Pagination">
-		<pagination
-			v-if="lastPage > 1"
-			slot="footer"
-			:currentPage="currentPage"
-			:isLoading="isLoading"
-			:lastPage="lastPage"
-			@set-page="setPage"
-		/>
+		<template #footer>
+			<pagination
+				v-if="lastPage > 1"
+				:currentPage="currentPage"
+				:isLoading="isLoading"
+				:lastPage="lastPage"
+				@set-page="setPage"
+			/>
+		</template>
 	</list-panel>
 </template>
 

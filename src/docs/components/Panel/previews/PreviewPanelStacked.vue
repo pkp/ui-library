@@ -1,7 +1,7 @@
 <template>
 	<panel :stack="true">
 		<panel-section>
-			<template slot="header">
+			<template #header>
 				<h2>Journal Overview</h2>
 				<p>
 					The following details about your journal are provided for your review.
@@ -10,14 +10,14 @@
 			</template>
 			<list>
 				<list-item>
-					<template slot="value">
+					<template #value>
 						<icon icon="comment-o" :inline="true" />
 						32
 					</template>
 					Number of active discussions in this journal.
 				</list-item>
 				<list-item>
-					<template slot="value">
+					<template #value>
 						<icon icon="clock-o" :inline="true" />
 						67
 					</template>
@@ -33,7 +33,7 @@
 			</list>
 		</panel-section>
 		<panel-section>
-			<template slot="header">
+			<template #header>
 				<h2>Journal Overview</h2>
 				<p>
 					The following details about your journal are provided for your review.
@@ -42,14 +42,14 @@
 			</template>
 			<list>
 				<list-item>
-					<template slot="value">
+					<template #value>
 						<icon icon="comment-o" :inline="true" />
 						32
 					</template>
 					Number of active discussions in this journal.
 				</list-item>
 				<list-item>
-					<template slot="value">
+					<template #value>
 						<icon icon="clock-o" :inline="true" />
 						67
 					</template>

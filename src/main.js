@@ -1,11 +1,15 @@
-import Vue from 'vue';
+import {createApp, h} from 'vue';
+import emitter from 'tiny-emitter/instance';
+
+//import './styles/style.css';
 import App from './App.vue';
+
 import router from './router';
 
 import GlobalMixins from '@/mixins/global.js';
-import VueAnnouncer from 'vue-announcer';
-import VModal from 'vue-js-modal';
-import VTooltip from 'v-tooltip';
+import VueAnnouncer from '@vue-a11y/announcer';
+import FloatingVue from 'floating-vue';
+
 import VueScrollTo from 'vue-scrollto';
 
 import Badge from '@/components/Badge/Badge.vue';
@@ -22,45 +26,22 @@ import Steps from '@/components/Steps/Steps.vue';
 import Tab from '@/components/Tabs/Tab.vue';
 import Tabs from '@/components/Tabs/Tabs.vue';
 
-Vue.use(VueAnnouncer);
-Vue.use(VModal, {
-	dynamic: true,
-	injectModalsContainer: true,
-});
-Vue.use(VTooltip, {defaultTrigger: 'click'});
-Vue.use(VueScrollTo);
+export default window.pkp.eventBus = {
+	$on: (...args) => emitter.on(...args),
+	$once: (...args) => emitter.once(...args),
+	$off: (...args) => emitter.off(...args),
+	$emit: (...args) => emitter.emit(...args),
+};
 
-// Global event bus
-window.pkp.eventBus = new Vue();
-
-Vue.config.productionTip = false;
-
-Vue.mixin(GlobalMixins);
-
-Vue.component('Badge', Badge);
-Vue.component('Dropdown', Dropdown);
-Vue.component('Icon', Icon);
-Vue.component('Notification', Notification);
-Vue.component('Panel', Panel);
-Vue.component('PanelSection', PanelSection);
-Vue.component('PkpButton', PkpButton);
-Vue.component('PkpHeader', PkpHeader);
-Vue.component('Spinner', Spinner);
-Vue.component('Step', Step);
-Vue.component('Steps', Steps);
-Vue.component('Tab', Tab);
-Vue.component('Tabs', Tabs);
-
-new Vue({
-	router,
-
-	/**
-	 * Fake data that is passed to the root component
-	 *
-	 * This data is usually added to every PageComponent by the
-	 * PKPTemplateManager class in OJS, OMP or OPS.
-	 */
+const vueApp = createApp({
 	data() {
+		/**
+		 * Fake data that is passed to the root component
+		 *
+		 * This data is usually added to every PageComponent by the
+		 * PKPTemplateManager class in OJS, OMP or OPS.
+		 */
+
 		return {
 			/**
 			 * File genres
@@ -113,9 +94,47 @@ new Vue({
 			 * TinyMCE configuration
 			 */
 			tinyMCE: {
-				skinUrl: 'styles/tinymce',
+				skinUrl: '/styles/tinymce',
 			},
 		};
 	},
-	render: (h) => h(App),
-}).$mount('#app');
+	render: () => h(App),
+});
+
+vueApp.config.productionTip = false;
+vueApp.config.compilerOptions.whitespace = 'preserve';
+
+vueApp.mixin(GlobalMixins);
+
+vueApp.component('Badge', Badge);
+vueApp.component('Dropdown', Dropdown);
+vueApp.component('Icon', Icon);
+vueApp.component('Notification', Notification);
+vueApp.component('Panel', Panel);
+vueApp.component('PanelSection', PanelSection);
+vueApp.component('PkpButton', PkpButton);
+vueApp.component('PkpHeader', PkpHeader);
+vueApp.component('Spinner', Spinner);
+vueApp.component('Step', Step);
+vueApp.component('Steps', Steps);
+vueApp.component('Tab', Tab);
+vueApp.component('Tabs', Tabs);
+
+vueApp.use(router);
+
+vueApp.use(VueScrollTo);
+vueApp.use(VueAnnouncer);
+vueApp.use(FloatingVue, {
+	themes: {
+		'pkp-tooltip': {
+			$extend: 'tooltip',
+			triggers: ['click'],
+			delay: {
+				show: 0,
+				hide: 0,
+			},
+		},
+	},
+});
+
+vueApp.mount('#app');

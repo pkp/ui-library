@@ -6,57 +6,59 @@
 				class="listPanel--contributor"
 				:class="isOrdering ? '-isOrdering' : ''"
 			>
-				<pkp-header slot="header">
-					<h2>{{ title }}</h2>
-					<spinner v-if="isLoading" />
-					<template slot="actions">
-						<pkp-button
-							icon="sort"
-							:isActive="isOrdering"
-							@click="toggleOrdering"
-							v-if="
-								publication.status !== getConstant('STATUS_PUBLISHED') &&
-								canEditPublication
-							"
-							:disabled="isLoading"
-						>
-							{{ orderingLabel }}
-						</pkp-button>
-						<pkp-button
-							v-if="isOrdering"
-							:isWarnable="true"
-							@click="cancelOrdering"
-							:disabled="isLoading"
-						>
-							{{ __('common.cancel') }}
-						</pkp-button>
-						<pkp-button
-							v-if="!isOrdering"
-							@click="openPreviewModal"
-							:disabled="isLoading"
-						>
-							{{ i18nPreview }}
-						</pkp-button>
-						<pkp-button
-							v-if="
-								!isOrdering &&
-								publication.status !== getConstant('STATUS_PUBLISHED') &&
-								canEditPublication
-							"
-							@click="openAddModal"
-							:disabled="isLoading"
-						>
-							{{ i18nAddContributor }}
-						</pkp-button>
-					</template>
-				</pkp-header>
-				<template v-slot:item-title="{item}">
+				<template #header>
+					<pkp-header>
+						<h2>{{ title }}</h2>
+						<spinner v-if="isLoading" />
+						<template #actions>
+							<pkp-button
+								icon="sort"
+								:isActive="isOrdering"
+								@click="toggleOrdering"
+								v-if="
+									publication.status !== getConstant('STATUS_PUBLISHED') &&
+									canEditPublication
+								"
+								:disabled="isLoading"
+							>
+								{{ orderingLabel }}
+							</pkp-button>
+							<pkp-button
+								v-if="isOrdering"
+								:isWarnable="true"
+								@click="cancelOrdering"
+								:disabled="isLoading"
+							>
+								{{ t('common.cancel') }}
+							</pkp-button>
+							<pkp-button
+								v-if="!isOrdering"
+								@click="openPreviewModal"
+								:disabled="isLoading"
+							>
+								{{ i18nPreview }}
+							</pkp-button>
+							<pkp-button
+								v-if="
+									!isOrdering &&
+									publication.status !== getConstant('STATUS_PUBLISHED') &&
+									canEditPublication
+								"
+								@click="openAddModal"
+								:disabled="isLoading"
+							>
+								{{ i18nAddContributor }}
+							</pkp-button>
+						</template>
+					</pkp-header>
+				</template>
+				<template #item-title="{item}">
 					{{ item.fullName }}
 					<badge v-if="item.userGroupName">
 						{{ localize(item.userGroupName) }}
 					</badge>
 				</template>
-				<template v-slot:item-subtitle="{item}">
+				<template #item-subtitle="{item}">
 					{{ localize(item.affiliation) }}
 				</template>
 				<template
@@ -64,7 +66,7 @@
 						publication.status !== getConstant('STATUS_PUBLISHED') &&
 						canEditPublication
 					"
-					v-slot:item-actions="{item}"
+					#item-actions="{item}"
 				>
 					<template v-if="isOrdering">
 						<orderer
@@ -89,23 +91,24 @@
 							{{ i18nSetPrimaryContact }}
 						</pkp-button>
 						<pkp-button @click="openEditModal(item.id)" :disabled="isLoading">
-							{{ __('common.edit') }}
+							{{ t('common.edit') }}
 						</pkp-button>
 						<pkp-button
 							:disabled="isLoading"
 							:isWarnable="true"
 							@click="openDeleteModal(item.id)"
 						>
-							{{ __('common.delete') }}
+							{{ t('common.delete') }}
 						</pkp-button>
 					</template>
 				</template>
 			</list-panel>
 			<modal
-				:closeLabel="__('common.close')"
+				:closeLabel="t('common.close')"
 				:name="formModal"
 				:title="activeFormTitle"
-				@closed="formModalClosed"
+				:open="isModalOpenedForm"
+				@close="closeFormModal"
 			>
 				<pkp-form
 					v-bind="activeForm"
@@ -114,9 +117,11 @@
 				/>
 			</modal>
 			<modal
-				:closeLabel="__('common.close')"
+				:closeLabel="t('common.close')"
 				:name="previewModal"
 				:title="i18nContributors"
+				:open="isModalOpenedPreview"
+				@close="isModalOpenedPreview = false"
 			>
 				<p>
 					{{ i18nPreviewDescription }}
@@ -265,10 +270,11 @@ export default {
 		return {
 			activeForm: null,
 			activeFormTitle: '',
-			resetFocusTo: null,
 			isOrdering: false,
 			isLoading: false,
 			itemsBeforeReordering: null,
+			isModalOpenedForm: false,
+			isModalOpenedPreview: false,
 		};
 	},
 	computed: {
@@ -278,7 +284,7 @@ export default {
 		contributorsApiUrl() {
 			return this.publicationApiUrlFormat.replace(
 				'__publicationId__',
-				this.publication.id + '/contributors'
+				this.publication.id + '/contributors',
 			);
 		},
 
@@ -302,7 +308,7 @@ export default {
 		publicationApiUrl() {
 			return this.publicationApiUrlFormat.replace(
 				'__publicationId__',
-				this.publication.id
+				this.publication.id,
 			);
 		},
 
@@ -313,7 +319,7 @@ export default {
 		 * @return {String}
 		 */
 		orderingLabel() {
-			return this.isOrdering ? this.i18nSaveOrder : this.__('common.order');
+			return this.isOrdering ? this.i18nSaveOrder : this.t('common.order');
 		},
 	},
 	methods: {
@@ -331,12 +337,10 @@ export default {
 		 *
 		 * @param {Object} event
 		 */
-		formModalClosed(event) {
+		closeFormModal(event) {
+			this.isModalOpenedForm = false;
 			this.activeForm = null;
 			this.activeFormTitle = '';
-			if (this.resetFocusTo) {
-				this.resetFocusTo.focus();
-			}
 		},
 
 		/**
@@ -361,7 +365,7 @@ export default {
 				});
 				this.$emit('updated:contributors', newContributors);
 			}
-			this.$modal.hide(this.formModal);
+			this.closeFormModal();
 		},
 
 		/**
@@ -378,7 +382,7 @@ export default {
 				success(publication) {
 					this.$emit('updated:publication', publication);
 
-					this.$modal.show(this.previewModal);
+					this.isModalOpenedPreview = true;
 				},
 				complete(r) {
 					this.isLoading = false;
@@ -390,13 +394,12 @@ export default {
 		 * Open the modal to add an item
 		 */
 		openAddModal() {
-			this.resetFocusTo = document.activeElement;
 			let activeForm = cloneDeep(this.form);
 			activeForm.action = this.contributorsApiUrl;
 			activeForm.method = 'POST';
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.i18nAddContributor;
-			this.$modal.show(this.formModal);
+			this.isModalOpenedForm = true;
 		},
 
 		/**
@@ -417,13 +420,13 @@ export default {
 					{
 						label: this.i18nDeleteContributor,
 						isWarnable: true,
-						callback: () => {
+						callback: (close) => {
 							this.isLoading = true;
 
 							$.ajax({
 								url: this.contributorsApiUrl.replace(
 									'/contributors',
-									'/contributors/' + id
+									'/contributors/' + id,
 								),
 								type: 'POST',
 								context: this,
@@ -433,13 +436,13 @@ export default {
 								},
 								error: this.ajaxErrorCallback,
 								success(r) {
-									this.$modal.hide('delete');
+									close();
 									this.setFocusIn(this.$el);
 
 									const newContributors = this.publication.authors.filter(
 										(author) => {
 											return author.id !== id;
-										}
+										},
 									);
 									this.$emit('updated:contributors', newContributors);
 								},
@@ -450,8 +453,8 @@ export default {
 						},
 					},
 					{
-						label: this.__('common.cancel'),
-						callback: () => this.$modal.hide('delete'),
+						label: this.t('common.cancel'),
+						callback: (close) => close(),
 					},
 				],
 			});
@@ -464,10 +467,9 @@ export default {
 		 */
 		openEditModal(id) {
 			this.isLoading = true;
-			this.resetFocusTo = document.activeElement;
 			const apiUrl = this.contributorsApiUrl.replace(
 				'/contributors',
-				'/contributors/' + id
+				'/contributors/' + id,
 			);
 
 			$.ajax({
@@ -487,7 +489,7 @@ export default {
 					});
 					this.activeForm = activeForm;
 					this.activeFormTitle = this.i18nEditContributor;
-					this.$modal.show(this.formModal);
+					this.isModalOpenedForm = true;
 				},
 				complete(r) {
 					this.isLoading = false;
@@ -547,7 +549,7 @@ export default {
 			$.ajax({
 				url: this.contributorsApiUrl.replace(
 					'/contributors',
-					'/contributors/saveOrder'
+					'/contributors/saveOrder',
 				),
 				context: this,
 				type: 'POST',

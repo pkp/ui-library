@@ -122,7 +122,7 @@
 					<template v-else>
 						<span aria-hidden="true">{{ selectReviewerLabel }}</span>
 						<span class="-screenReader">
-							{{ __('common.selectWithName', {name: item.fullName}) }}
+							{{ t('common.selectWithName', {name: item.fullName}) }}
 						</span>
 					</template>
 				</pkp-button>
@@ -139,42 +139,42 @@
 		>
 			<list>
 				<list-item>
-					<template slot="value">
+					<template #value>
 						<icon icon="clock-o" :inline="true" />
 						{{ item.reviewsActive }}
 					</template>
 					{{ activeReviewsLabel }}
 				</list-item>
 				<list-item>
-					<template slot="value">
+					<template #value>
 						<icon icon="check-circle-o" :inline="true" />
 						{{ item.reviewsCompleted }}
 					</template>
 					{{ completedReviewsLabel }}
 				</list-item>
 				<list-item>
-					<template slot="value">
+					<template #value>
 						<icon icon="times-circle-o" :inline="true" />
 						{{ item.reviewsDeclined }}
 					</template>
 					{{ declinedReviewsLabel }}
 				</list-item>
 				<list-item>
-					<template slot="value">
+					<template #value>
 						<icon icon="ban" :inline="true" />
 						{{ item.reviewsCancelled }}
 					</template>
 					{{ cancelledReviewsLabel }}
 				</list-item>
 				<list-item>
-					<template slot="value">
+					<template #value>
 						<icon icon="history" :inline="true" />
 						{{ daysSinceLastAssignment }}
 					</template>
 					{{ daysSinceLastAssignmentDescriptionLabel }}
 				</list-item>
 				<list-item>
-					<template slot="value">
+					<template #value>
 						<icon icon="calendar" :inline="true" />
 						{{ item.averageReviewCompletionDays }}
 					</template>
@@ -368,11 +368,11 @@ export default {
 
 			return Math.floor(
 				((Date.parse(
-					fixDateForAllBrowsers(this.item.dateLastReviewAssignment)
+					fixDateForAllBrowsers(this.item.dateLastReviewAssignment),
 				) -
 					Date.now()) /
 					86400000) *
-					-1
+					-1,
 			);
 		},
 
@@ -388,7 +388,7 @@ export default {
 			if (this.daysSinceLastAssignment > 1) {
 				return this.daysSinceLastAssignmentLabel.replace(
 					'{$days}',
-					this.daysSinceLastAssignment
+					this.daysSinceLastAssignment,
 				);
 			} else {
 				return this.daySinceLastAssignmentLabel;
@@ -408,7 +408,7 @@ export default {
 				.map((i) => {
 					return i.interest;
 				})
-				.join(this.__('common.commaListSeparator'));
+				.join(this.t('common.commaListSeparator'));
 		},
 
 		/**

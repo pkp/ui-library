@@ -47,18 +47,8 @@ The filter `param` usually corresponds to a query parameter that will be sent to
 More than one `Filter` may share the same `param`, but not the same `value`. For example, filtering by the Review and Copyediting stages will use two filters.
 
 ```html
-<pkp-filter
-	label="Review"
-	param="stageIds"
-	value="2"
-	...
-/>
-<pkp-filter
-	label="Copyediting"
-	param="stageIds"
-	value="3"
-	...
-/>
+<pkp-filter label="Review" param="stageIds" value="2" ... />
+<pkp-filter label="Copyediting" param="stageIds" value="3" ... />
 ```
 
 ## Managing Active Filters

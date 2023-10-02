@@ -16,18 +16,8 @@ See [FieldBase](#/component/Form/fields/FieldBase).
 This is an implementation of [FieldBaseAutosuggest](#/component/Form/fields/FieldBaseAutosuggest) that does not require a request to an API endpoint. Instead, the list of options are passed in as a prop.
 
 ```html
-<field-autosuggest-preset
-	...
-	:options="[
-		{
-			value: 1,
-			label: "Articles"
-		},
-		{
-			value: 2,
-			label: "Reviews"
-		},
-	]">
+<field-autosuggest-preset ... :options="[ { value: 1, label: "Articles" }, {
+value: 2, label: "Reviews" }, ]">
 ```
 
 Use this component when there is a limited number of possible suggestions and a simple match with the `label` and `value` are sufficient.

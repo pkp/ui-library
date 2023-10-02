@@ -20,11 +20,10 @@ This is a root component. Learn about [page hydration](#/pages/pages).
 | `templateForm` | A "clean" copy of the form to add or edit an `EmailTemplate`. The `currentTemplateForm` is a copy of this form that has been modified to add or edit a specific template. |
 | `templatesApiUrl` | The URL to the `/emailTemplates` endpoint in the REST API. |
 
-
 ## Mixins
 
-| Name | Description |
-| --- | --- |
+| Name                      | Description                |
+| ------------------------- | -------------------------- |
 | [dialog](#/mixins/dialog) | Show confirmation prompts. |
 
 ## Usage

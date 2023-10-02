@@ -5,36 +5,38 @@
 			:items="currentMailables"
 			:is-sidebar-visible="true"
 		>
-			<pkp-header slot="header">
-				<h1>Emails</h1>
-				<template slot="actions">
-					<search
-						search-label="Search by name or description"
-						:search-phrase="searchPhrase"
-						@search-phrase-changed="
-							(newSearch) => (this.searchPhrase = newSearch)
-						"
-					></search>
-					<pkp-button @click="confirmResetAll" :isWarnable="true">
-						Reset All
-					</pkp-button>
-				</template>
-			</pkp-header>
-			<template v-slot:item-title="{item}">
+			<template #header>
+				<pkp-header>
+					<h1>Emails</h1>
+					<template #actions>
+						<search
+							search-label="Search by name or description"
+							:search-phrase="searchPhrase"
+							@search-phrase-changed="
+								(newSearch) => (this.searchPhrase = newSearch)
+							"
+						></search>
+						<pkp-button @click="confirmResetAll" :isWarnable="true">
+							Reset All
+						</pkp-button>
+					</template>
+				</pkp-header>
+			</template>
+			<template #item-title="{item}">
 				{{ item.name }}
 			</template>
-			<template v-slot:item-subtitle="{item}">
+			<template #item-subtitle="{item}">
 				{{ item.description }}
 			</template>
-			<template v-slot:item-actions="{item}">
+			<template #item-actions="{item}">
 				<pkp-button @click="openMailable(item)">
 					<span aria-hidden="true">Edit</span>
 					<span class="-screenReader">
-						{{ __('common.editItem', {name: item.name}) }}
+						{{ t('common.editItem', {name: item.name}) }}
 					</span>
 				</pkp-button>
 			</template>
-			<template slot="sidebar">
+			<template #sidebar>
 				<pkp-header>
 					<h2>
 						<icon icon="filter" :inline="true" />
@@ -84,7 +86,7 @@
 			</template>
 		</list-panel>
 		<modal
-			:closeLabel="__('common.close')"
+			:closeLabel="t('common.close')"
 			name="mailable"
 			:title="currentMailable ? currentMailable.name : ''"
 			@closed="mailableModalClosed"
@@ -98,16 +100,18 @@
 					templates you add here.
 				</p>
 				<list-panel :items="currentMailable.emailTemplates">
-					<pkp-header slot="header">
-						<h3>Templates</h3>
-						<template slot="actions">
-							<pkp-button @click="openTemplate()">Add Template</pkp-button>
-						</template>
-					</pkp-header>
-					<template v-slot:item-subtitle="{item}">
+					<template #header>
+						<pkp-header>
+							<h3>Templates</h3>
+							<template #actions>
+								<pkp-button @click="openTemplate()">Add Template</pkp-button>
+							</template>
+						</pkp-header>
+					</template>
+					<template #item-subtitle="{item}">
 						{{ localize(item.name) }}
 					</template>
-					<template v-slot:item-actions="{item}">
+					<template #item-actions="{item}">
 						<badge v-if="item.key === currentMailable.emailTemplateKey">
 							Default
 						</badge>
@@ -131,7 +135,7 @@
 			</template>
 		</modal>
 		<modal
-			:closeLabel="__('common.close')"
+			:closeLabel="t('common.close')"
 			name="template"
 			:title="currentTemplate ? 'Edit Template' : 'Add Template'"
 			@closed="templateModalClosed"
@@ -209,7 +213,7 @@ export default {
 	},
 	created() {
 		$.ajax({
-			url: 'mailables.json',
+			url: '/mailables.json',
 			method: 'GET',
 			context: this,
 			success(r) {

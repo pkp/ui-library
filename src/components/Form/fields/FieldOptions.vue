@@ -10,7 +10,7 @@
 			</template>
 			<span v-if="isRequired" class="pkpFormFieldLabel__required">
 				*
-				<span class="-screenReader">{{ __('common.required') }}</span>
+				<span class="-screenReader">{{ t('common.required') }}</span>
 			</span>
 			<tooltip
 				v-if="isPrimaryLocale && tooltip"
@@ -29,7 +29,7 @@
 				:id="describedByHelpId"
 				:topic="helpTopic"
 				:section="helpSection"
-				:label="__('help.help')"
+				:label="t('help.help')"
 			/>
 		</legend>
 		<div
@@ -39,7 +39,8 @@
 			:id="describedByDescriptionId"
 		/>
 		<div class="pkpFormField__control">
-			<draggable
+			<VueDraggable
+				ref="el"
 				v-model="localizedOptions"
 				@end="updateValueOrder"
 				:disabled="!isOrderable"
@@ -89,7 +90,7 @@
 						:itemTitle="option.label"
 					/>
 				</label>
-			</draggable>
+			</VueDraggable>
 			<multilingual-progress
 				v-if="isMultilingual && locales.length > 1"
 				:id="multilingualProgressId"
@@ -107,14 +108,14 @@
 
 <script>
 import FieldBase from './FieldBase.vue';
-import draggable from 'vuedraggable';
+import {VueDraggable} from 'vue-draggable-plus';
 import Orderer from '@/components/Orderer/Orderer.vue';
 
 export default {
 	name: 'FieldOptions',
 	extends: FieldBase,
 	components: {
-		draggable,
+		VueDraggable,
 		Orderer,
 	},
 	props: {
@@ -188,7 +189,7 @@ export default {
 			this.localizedOptions.splice(
 				index - 1,
 				0,
-				this.localizedOptions.splice(index, 1)[0]
+				this.localizedOptions.splice(index, 1)[0],
 			);
 			this.updateValueOrder();
 		},
@@ -208,7 +209,7 @@ export default {
 			this.localizedOptions.splice(
 				index + 1,
 				0,
-				this.localizedOptions.splice(index, 1)[0]
+				this.localizedOptions.splice(index, 1)[0],
 			);
 			this.updateValueOrder();
 		},

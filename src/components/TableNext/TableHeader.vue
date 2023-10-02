@@ -1,7 +1,7 @@
 <template>
 	<th
 		scope="col"
-		:aria-sort="canSort ? sortDirection : false"
+		:aria-sort="canSort ? sortDirection : undefined"
 		class="pkpTableHeader"
 	>
 		<template v-if="canSort">
@@ -13,7 +13,7 @@
 					:aria-hidden="true"
 				/>
 				<span class="-screenReader">
-					{{ __('grid.action.sort') }}
+					{{ t('grid.action.sort') }}
 				</span>
 			</button>
 		</template>

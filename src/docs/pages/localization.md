@@ -14,9 +14,7 @@ Some common localized strings are available in the `pkp.localeKeys` global. Use 
 
 ```html
 <template>
-	<button>
-		{{ __('common.cancel') }}
-	</button>
+	<button>{{ __('common.cancel') }}</button>
 </template>
 ```
 
@@ -30,9 +28,7 @@ Pass parameters to the localized keys by using the following.
 
 ```html
 <template>
-	<button>
-		{{ __('common.editItem', {item: 'Daniel Barnes'}) }}
-	</button>
+	<button>{{ __('common.editItem', {item: 'Daniel Barnes'}) }}</button>
 </template>
 ```
 
@@ -49,48 +45,42 @@ This method can be used in scripts too.
 
 ```html
 <template>
-	<button>
-		{{ cancelLabel }}
-	</button>
-	<button>
-		{{ editItemLabel }}
-	</button>
+	<button>{{ cancelLabel }}</button>
+	<button>{{ editItemLabel }}</button>
 </template>
 
 <script>
-export default {
-	data() {
-		return {
-			name: 'Daniel Barnes'
-		};
-	},
-	computed: {
-		cancelLabel() {
-			return this.__('common.cancel')
+	export default {
+		data() {
+			return {
+				name: 'Daniel Barnes',
+			};
 		},
-		editItemLabel() {
-			return this.__('common.editItem', {item: this.name})
-		}
-	}
-}
+		computed: {
+			cancelLabel() {
+				return this.t('common.cancel');
+			},
+			editItemLabel() {
+				return this.t('common.editItem', {item: this.name});
+			},
+		},
+	};
 </script>
 ```
 
-This works for a few common strings that have been defined in `pkp.localeKeys`. This comes from the server and is configured in  `PKPTemplateManager`. For other localized strings, a component should accept them as a `prop`.
+This works for a few common strings that have been defined in `pkp.localeKeys`. This comes from the server and is configured in `PKPTemplateManager`. For other localized strings, a component should accept them as a `prop`.
 
 ```html
 <script>
-export default {
-	props: {
-		i18nNewSubmission: String,
-	}
-}
+	export default {
+		props: {
+			i18nNewSubmission: String,
+		},
+	};
 </script>
 
 <template>
-	<button>
-		{{ i18nNewSubmission }}
-	</button>
+	<button>{{ i18nNewSubmission }}</button>
 </template>
 ```
 

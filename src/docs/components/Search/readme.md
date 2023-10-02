@@ -1,9 +1,9 @@
 ## Props
 
-| Key | Description |
-| --- | --- |
-| `searchLabel` | An optional label for the search field. Default: `Search` |
-| `searchPhrase` | The current search phrase. |
+| Key            | Description                                               |
+| -------------- | --------------------------------------------------------- |
+| `searchLabel`  | An optional label for the search field. Default: `Search` |
+| `searchPhrase` | The current search phrase.                                |
 
 ## Events
 

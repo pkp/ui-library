@@ -37,9 +37,8 @@
 				Trends
 				<span v-if="isLoading" class="pkpSpinner" aria-hidden="true"></span>
 			</h1>
-			<template slot="actions">
+			<template #actions>
 				<date-range
-					slot="thead-dateRange"
 					unique-id="editorial-stats-date-range"
 					:date-start="dateStart"
 					:date-end="dateEnd"
@@ -69,7 +68,7 @@
 					@click="toggleSidebar"
 				>
 					<icon icon="filter" :inline="true" />
-					{{ __('common.filter') }}
+					{{ t('common.filter') }}
 				</pkp-button>
 			</template>
 		</pkp-header>
@@ -107,7 +106,7 @@
 						:columns="tableColumns"
 						:rows="tableRows"
 					>
-						<template slot-scope="{row, rowIndex}">
+						<template #default="{row, rowIndex}">
 							<table-cell
 								v-for="(column, columnIndex) in tableColumns"
 								:key="column.name"

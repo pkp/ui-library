@@ -2,47 +2,51 @@
 	<div class="announcementsListPanel">
 		<slot>
 			<list-panel :items="items">
-				<pkp-header slot="header">
-					<h2>{{ title }}</h2>
-					<spinner v-if="isLoading" />
-					<template slot="actions">
-						<search
-							:searchPhrase="searchPhrase"
-							@search-phrase-changed="setSearchPhrase"
-						/>
-						<pkp-button @click="openAddModal">
-							{{ addAnnouncementLabel }}
-						</pkp-button>
-					</template>
-				</pkp-header>
-				<template v-slot:item-title="{item}">
+				<template #header>
+					<pkp-header>
+						<h2>{{ title }}</h2>
+						<spinner v-if="isLoading" />
+						<template #actions>
+							<search
+								:searchPhrase="searchPhrase"
+								@search-phrase-changed="setSearchPhrase"
+							/>
+							<pkp-button @click="openAddModal">
+								{{ addAnnouncementLabel }}
+							</pkp-button>
+						</template>
+					</pkp-header>
+				</template>
+				<template #item-title="{item}">
 					{{ localize(item.title) }}
 				</template>
-				<template v-slot:item-actions="{item}">
+				<template #item-actions="{item}">
 					<pkp-button element="a" :href="urlBase.replace('__id__', item.id)">
-						{{ __('common.view') }}
+						{{ t('common.view') }}
 					</pkp-button>
 					<pkp-button @click="openEditModal(item.id)">
-						{{ __('common.edit') }}
+						{{ t('common.edit') }}
 					</pkp-button>
 					<pkp-button :isWarnable="true" @click="openDeleteModal(item.id)">
-						{{ __('common.delete') }}
+						{{ t('common.delete') }}
 					</pkp-button>
 				</template>
-				<pagination
-					v-if="lastPage > 1"
-					slot="footer"
-					:currentPage="currentPage"
-					:isLoading="isLoading"
-					:lastPage="lastPage"
-					@set-page="setPage"
-				/>
+				<template #footer>
+					<pagination
+						v-if="lastPage > 1"
+						:currentPage="currentPage"
+						:isLoading="isLoading"
+						:lastPage="lastPage"
+						@set-page="setPage"
+					/>
+				</template>
 			</list-panel>
 			<modal
-				:closeLabel="__('common.close')"
+				:closeLabel="t('common.close')"
 				name="form"
 				:title="activeFormTitle"
-				@closed="formModalClosed"
+				:open="isModalOpenedForm"
+				@close="closeFormModal"
 			>
 				<pkp-form
 					v-bind="activeForm"
@@ -126,7 +130,7 @@ export default {
 		return {
 			activeForm: null,
 			activeFormTitle: '',
-			resetFocusTo: null,
+			isModalOpenedForm: false,
 		};
 	},
 	methods: {
@@ -135,12 +139,10 @@ export default {
 		 *
 		 * @param {Object} event
 		 */
-		formModalClosed(event) {
+		closeFormModal(event) {
 			this.activeForm = null;
 			this.activeFormTitle = '';
-			if (this.resetFocusTo) {
-				this.resetFocusTo.focus();
-			}
+			this.isModalOpenedForm = false;
 		},
 
 		/**
@@ -157,24 +159,23 @@ export default {
 			} else {
 				this.setItems(
 					this.items.map((i) => (i.id === item.id ? item : i)),
-					this.itemsMax
+					this.itemsMax,
 				);
 				pkp.eventBus.$emit('update:announcement', item);
 			}
-			this.$modal.hide('form');
+			this.closeFormModal();
 		},
 
 		/**
 		 * Open the modal to add an item
 		 */
 		openAddModal() {
-			this.resetFocusTo = document.activeElement;
 			let activeForm = cloneDeep(this.form);
 			activeForm.action = this.apiUrl;
 			activeForm.method = 'POST';
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.addAnnouncementLabel;
-			this.$modal.show('form');
+			this.isModalOpenedForm = true;
 		},
 
 		/**
@@ -196,9 +197,9 @@ export default {
 				}),
 				actions: [
 					{
-						label: this.__('common.yes'),
+						label: this.t('common.yes'),
 						isPrimary: true,
-						callback: () => {
+						callback: (close) => {
 							var self = this;
 							$.ajax({
 								url: this.apiUrl + '/' + id,
@@ -211,18 +212,18 @@ export default {
 								success: function (r) {
 									self.setItems(
 										self.items.filter((i) => i.id !== id),
-										self.itemsMax
+										self.itemsMax,
 									);
-									self.$modal.hide('delete');
+									close();
 									self.setFocusIn(self.$el);
 								},
 							});
 						},
 					},
 					{
-						label: this.__('common.no'),
+						label: this.t('common.no'),
 						isWarnable: true,
-						callback: () => this.$modal.hide('delete'),
+						callback: (close) => close(),
 					},
 				],
 			});
@@ -234,10 +235,8 @@ export default {
 		 * @param {Number} id
 		 */
 		openEditModal(id) {
-			this.resetFocusTo = document.activeElement;
-
 			const announcement = this.items.find(
-				(announcement) => announcement.id === id
+				(announcement) => announcement.id === id,
 			);
 			if (!announcement) {
 				this.ajaxErrorCallback({});
@@ -255,7 +254,7 @@ export default {
 			});
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.editAnnouncementLabel;
-			this.$modal.show('form');
+			this.isModalOpenedForm = true;
 		},
 
 		/**

@@ -1,8 +1,9 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewTooltip from './previews/PreviewTooltip.vue';
-import PreviewTooltipTemplate from '!raw-loader!./previews/PreviewTooltip.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewTooltipTemplate from './previews/PreviewTooltip.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewTooltip,
+					component: markRaw(PreviewTooltip),
 					name: 'Base',
 					template: this.extractTemplate(PreviewTooltipTemplate),
 				},

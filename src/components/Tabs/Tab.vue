@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import {computed} from 'vue';
 export default {
 	props: {
 		icon: {
@@ -36,6 +37,12 @@ export default {
 				return '';
 			},
 		},
+		isDisabled: {
+			type: Boolean,
+			default() {
+				return false;
+			},
+		},
 	},
 	data() {
 		return {
@@ -58,6 +65,23 @@ export default {
 			}
 			return classes;
 		},
+	},
+	inject: ['registerTab'],
+	created() {
+		// share state with parent <tabs> component
+		this.unregister = this.registerTab({
+			id: this.id,
+			icon: computed(() => this.icon),
+			label: computed(() => this.label),
+			badge: computed(() => this.badge),
+			isActive: (active) => (this.isActive = active),
+		});
+	},
+	beforeUnmount() {
+		// Unregister the method to avoid calling methods on destroyed components
+		if (this.unregister) {
+			this.unregister();
+		}
 	},
 };
 </script>

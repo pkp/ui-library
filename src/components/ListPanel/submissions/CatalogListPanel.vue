@@ -9,11 +9,11 @@
 				'-isLoading': isLoading,
 			}"
 		>
-			<template slot="header">
+			<template #header>
 				<pkp-header>
 					<h2>{{ title }}</h2>
 					<spinner v-if="isLoading" />
-					<template slot="actions">
+					<template #actions>
 						<search
 							:searchPhrase="searchPhrase"
 							@search-phrase-changed="setSearchPhrase"
@@ -23,7 +23,7 @@
 							@click="isSidebarVisible = !isSidebarVisible"
 						>
 							<icon icon="filter" :inline="true" />
-							{{ __('common.filter') }}
+							{{ t('common.filter') }}
 						</pkp-button>
 						<template v-if="canOrderCurrent">
 							<pkp-button
@@ -40,14 +40,11 @@
 								:isWarnable="true"
 								@click="cancelOrdering"
 							>
-								{{ __('common.cancel') }}
+								{{ t('common.cancel') }}
 							</pkp-button>
 						</template>
-						<pkp-button
-							ref="addEntryButton"
-							@click="$modal.show('addCatalogEntry')"
-						>
-							{{ __('submission.catalogEntry.new') }}
+						<pkp-button @click="isModalOpenedAddCatalogEntry = true">
+							{{ t('submission.catalogEntry.new') }}
 						</pkp-button>
 					</template>
 				</pkp-header>
@@ -72,11 +69,11 @@
 				</div>
 			</template>
 
-			<template slot="sidebar">
+			<template #sidebar>
 				<pkp-header :isOneLine="false">
 					<h3>
 						<icon icon="filter" :inline="true" />
-						{{ __('common.filter') }}
+						{{ t('common.filter') }}
 					</h3>
 				</pkp-header>
 				<div
@@ -98,12 +95,12 @@
 				</div>
 			</template>
 
-			<template v-if="isLoading" slot="itemsEmpty">
+			<template v-if="isLoading" #itemsEmpty>
 				<spinner />
-				{{ __('common.loading') }}
+				{{ t('common.loading') }}
 			</template>
 
-			<template v-slot:item="{item}">
+			<template #item="{item}">
 				<catalog-list-item
 					:key="item.id"
 					:item="item"
@@ -116,21 +113,22 @@
 					@order-down="itemOrderDown"
 				/>
 			</template>
-
-			<pagination
-				v-if="lastPage > 1"
-				slot="footer"
-				:currentPage="currentPage"
-				:isLoading="isLoading"
-				:lastPage="lastPage"
-				@set-page="setPage"
-			/>
+			<template #footer>
+				<pagination
+					v-if="lastPage > 1"
+					:currentPage="currentPage"
+					:isLoading="isLoading"
+					:lastPage="lastPage"
+					@set-page="setPage"
+				/>
+			</template>
 		</list-panel>
 		<modal
-			:closeLabel="__('common.close')"
+			:closeLabel="t('common.close')"
 			name="addCatalogEntry"
-			:title="__('submission.catalogEntry.new')"
-			@closed="addEntryFormClosed"
+			:title="t('submission.catalogEntry.new')"
+			:open="isModalOpenedAddCatalogEntry"
+			@close="closeAddEntryForm"
 		>
 			<pkp-form
 				v-bind="addEntryForm"
@@ -222,6 +220,7 @@ export default {
 			newEntries: [],
 			isOrdering: false,
 			isSidebarVisible: false,
+			isModalOpenedAddCatalogEntry: false,
 		};
 	},
 	computed: {
@@ -252,8 +251,8 @@ export default {
 		 */
 		orderingLabel() {
 			return this.isOrdering
-				? this.__('submission.list.saveFeatureOrder')
-				: this.__('submission.list.orderFeatures');
+				? this.t('submission.list.saveFeatureOrder')
+				: this.t('submission.list.orderFeatures');
 		},
 
 		/**
@@ -264,11 +263,11 @@ export default {
 		 */
 		featuredLabel() {
 			if (this.filterAssocType === pkp.const.ASSOC_TYPE_CATEGORY) {
-				return this.__('catalog.manage.categoryFeatured');
+				return this.t('catalog.manage.categoryFeatured');
 			} else if (this.filterAssocType === pkp.const.ASSOC_TYPE_SERIES) {
-				return this.__('catalog.manage.seriesFeatured');
+				return this.t('catalog.manage.seriesFeatured');
 			}
-			return this.__('catalog.manage.featured');
+			return this.t('catalog.manage.featured');
 		},
 
 		/**
@@ -279,11 +278,11 @@ export default {
 		 */
 		newReleaseLabel() {
 			if (this.filterAssocType === pkp.const.ASSOC_TYPE_CATEGORY) {
-				return this.__('catalog.manage.feature.categoryNewRelease');
+				return this.t('catalog.manage.feature.categoryNewRelease');
 			} else if (this.filterAssocType === pkp.const.ASSOC_TYPE_SERIES) {
-				return this.__('catalog.manage.feature.seriesNewRelease');
+				return this.t('catalog.manage.feature.seriesNewRelease');
 			}
-			return this.__('catalog.manage.feature.newRelease');
+			return this.t('catalog.manage.feature.newRelease');
 		},
 
 		/**
@@ -301,12 +300,12 @@ export default {
 			}
 
 			if (filter) {
-				return this.__('submission.list.orderingFeaturesSection', {
+				return this.t('submission.list.orderingFeaturesSection', {
 					title: filter.title,
 				});
 			}
 
-			return this.__('submission.list.orderingFeatures');
+			return this.t('submission.list.orderingFeatures');
 		},
 
 		/**
@@ -318,9 +317,13 @@ export default {
 		 * @return {Number}
 		 */
 		filterAssocType() {
-			if (this.activeFilters.hasOwnProperty('categoryIds')) {
+			if (
+				Object.prototype.hasOwnProperty.call(this.activeFilters, 'categoryIds')
+			) {
 				return pkp.const.ASSOC_TYPE_CATEGORY;
-			} else if (this.activeFilters.hasOwnProperty('seriesIds')) {
+			} else if (
+				Object.prototype.hasOwnProperty.call(this.activeFilters, 'seriesIds')
+			) {
 				return pkp.const.ASSOC_TYPE_SERIES;
 			}
 			return pkp.const.ASSOC_TYPE_PRESS;
@@ -334,9 +337,13 @@ export default {
 		 * @return {Number}
 		 */
 		filterAssocId() {
-			if (this.activeFilters.hasOwnProperty('categoryIds')) {
+			if (
+				Object.prototype.hasOwnProperty.call(this.activeFilters, 'categoryIds')
+			) {
 				return this.activeFilters.categoryIds;
-			} else if (this.activeFilters.hasOwnProperty('seriesIds')) {
+			} else if (
+				Object.prototype.hasOwnProperty.call(this.activeFilters, 'seriesIds')
+			) {
 				return this.activeFilters.seriesIds;
 			}
 			return this.contextId;
@@ -347,17 +354,17 @@ export default {
 		 * When the add entry form has been successfully submitted
 		 */
 		addEntryFormSuccess() {
-			this.$modal.hide('addCatalogEntry');
+			this.closeAddEntryForm();
 			this.get();
 		},
 
 		/**
 		 * When the add entry modal is closed
 		 */
-		addEntryFormClosed() {
-			this.setFocusToRef('addEntryButton');
+		closeAddEntryForm() {
+			this.isModalOpenedAddCatalogEntry = false;
 			this.addEntryForm.fields.find(
-				(f) => f.name === 'submissionIds'
+				(f) => f.name === 'submissionIds',
 			).selected = [];
 		},
 
@@ -527,17 +534,21 @@ export default {
 		 */
 		updateSortOrder() {
 			let getParams = {...this.getParams};
-			if (this.activeFilters.hasOwnProperty('categoryIds')) {
+			if (
+				Object.prototype.hasOwnProperty.call(this.activeFilters, 'categoryIds')
+			) {
 				const category = this.getFilter(
 					'categoryIds',
-					this.activeFilters.categoryIds
+					this.activeFilters.categoryIds,
 				);
 				getParams.orderBy = category.sortBy;
 				getParams.orderDirection = category.sortDir || this.catalogSortDir;
-			} else if (this.activeFilters.hasOwnProperty('seriesIds')) {
+			} else if (
+				Object.prototype.hasOwnProperty.call(this.activeFilters, 'seriesIds')
+			) {
 				const series = this.getFilter(
 					'seriesIds',
-					this.activeFilters.seriesIds
+					this.activeFilters.seriesIds,
 				);
 				getParams.orderBy = series.sortBy || this.catalogSortBy;
 				getParams.orderDirection = series.sortDir || this.catalogSortDir;

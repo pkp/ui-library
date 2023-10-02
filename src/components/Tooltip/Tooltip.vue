@@ -1,11 +1,20 @@
 <template>
-	<button v-tooltip="tooltip" class="tooltipButton" @click.prevent>
+	<button
+		v-tooltip="{
+			content: tooltip,
+			theme: 'pkp-tooltip',
+		}"
+		class="tooltipButton"
+		@click.prevent
+	>
 		<icon icon="question-circle" />
 		<span class="-screenReader">{{ label }}</span>
 	</button>
 </template>
 
 <script>
+import 'floating-vue/dist/style.css';
+
 export default {
 	name: 'Tooltip',
 	props: {
@@ -35,8 +44,17 @@ export default {
 	background: transparent;
 	cursor: pointer;
 }
+/* Override default styling */
+.v-popper--theme-tooltip.v-popper--theme-pkp-tooltip {
+	.v-popper__inner {
+		padding: 0.7em;
+		max-width: 320px;
+		font-size: 12px;
+		line-height: 16px;
 
-.tooltip-inner a {
-	color: #fff;
+		a {
+			color: #fff;
+		}
+	}
 }
 </style>

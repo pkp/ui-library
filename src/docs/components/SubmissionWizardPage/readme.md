@@ -86,10 +86,10 @@ All sections include a name and description, and must be one of the recognized t
 
 ```json
 {
-    "id": "contributors",
-    "name": "Contributors",
-    "description": "Please add all the contributors to this submission.",
-    "type": "contributors" // APP\pages\submission\SubmissionHandler::SECTION_TYPE_CONTRIBUTORS
+	"id": "contributors",
+	"name": "Contributors",
+	"description": "Please add all the contributors to this submission.",
+	"type": "contributors" // APP\pages\submission\SubmissionHandler::SECTION_TYPE_CONTRIBUTORS
 }
 ```
 
@@ -97,10 +97,10 @@ The `files` type will display a [SubmissionFilesListPanel](#/component/ListPanel
 
 ```json
 {
-    "id": "files",
-    "name": "Upload Files",
-    "description": "Please upload all files our editorial staff need to evaluate your submission.",
-    "type": "files" // APP\pages\submission\SubmissionHandler::SECTION_TYPE_FILES
+	"id": "files",
+	"name": "Upload Files",
+	"description": "Please upload all files our editorial staff need to evaluate your submission.",
+	"type": "files" // APP\pages\submission\SubmissionHandler::SECTION_TYPE_FILES
 }
 ```
 
@@ -136,10 +136,10 @@ The `review` type is a special type to show a review of the data. No configurati
 
 ```json
 {
-    "id": "review",
-    "name": "Review",
-    "description": "Please review this information before completing your submission.",
-    "type": "review" // APP\pages\submission\SubmissionHandler::SECTION_TYPE_REVIEW
+	"id": "review",
+	"name": "Review",
+	"description": "Please review this information before completing your submission.",
+	"type": "review" // APP\pages\submission\SubmissionHandler::SECTION_TYPE_REVIEW
 }
 ```
 
@@ -153,8 +153,8 @@ To map the values of this form to the correct API endpoint, you must set the `re
 
 ```json
 {
-    "reconfigurePublicationProps": ["sectionId"],
-    "reconfigureSubmissionProps": ["locale"]
+	"reconfigurePublicationProps": ["sectionId"],
+	"reconfigureSubmissionProps": ["locale"]
 }
 ```
 

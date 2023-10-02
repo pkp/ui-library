@@ -13,7 +13,7 @@
 				:label="label"
 				:localeLabel="localeLabel"
 				:isRequired="isRequired"
-				:requiredLabel="__('common.required')"
+				:requiredLabel="t('common.required')"
 				:multilingualLabel="multilingualLabel"
 			/>
 			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
@@ -28,7 +28,7 @@
 				:id="describedByHelpId"
 				:topic="helpTopic"
 				:section="helpSection"
-				:label="__('help.help')"
+				:label="t('help.help')"
 			/>
 		</div>
 		<div
@@ -51,7 +51,7 @@
 			>
 				<span class="-screenReader">{{ selectedLabel }}</span>
 				<span v-if="!currentValue.length" class="-screenReader">
-					{{ __('common.none') }}
+					{{ t('common.none') }}
 				</span>
 				<pkp-badge
 					v-else
@@ -71,16 +71,59 @@
 						</span>
 					</button>
 				</pkp-badge>
-				<vue-autosuggest
+				<Combobox
 					v-if="!isDisabled"
-					v-model="inputValue"
-					ref="autosuggest"
+					:id="autosuggestId"
+					:key="autosuggestId"
+					:modelValue="null"
+					@update:modelValue="selectSuggestion"
 					class="pkpAutosuggest__autosuggester"
-					v-bind="autosuggestOptions"
-					@selected="selectSuggestion"
-					@focus="() => (isFocused = true)"
-					@blur="() => (isFocused = false)"
-				/>
+					as="div"
+				>
+					<ComboboxInput
+						ref="autosuggestInput"
+						class="pkpAutosuggest__input"
+						v-bind="inputProps"
+						@change="inputValue = $event.target.value"
+						@focus="() => (isFocused = true)"
+						@blur="() => (isFocused = false)"
+					/>
+					<ComboboxOptions
+						v-if="suggestions.length || (allowCustom && inputValue?.length)"
+						class="autosuggest__results-container autosuggest__results"
+					>
+						<ComboboxOption
+							v-if="
+								allowCustom &&
+								inputValue?.length &&
+								!suggestions.includes(inputValue)
+							"
+							as="template"
+							v-slot="{active}"
+						>
+							<li
+								class="autosuggest__results-item"
+								:class="active && 'autosuggest__results-item--highlighted'"
+							>
+								{{ inputValue }}
+							</li>
+						</ComboboxOption>
+						<ComboboxOption
+							v-for="suggestion in suggestions"
+							:key="suggestion.value"
+							:value="suggestion"
+							v-slot="{active}"
+							as="template"
+						>
+							<li
+								class="autosuggest__results-item"
+								:class="active && 'autosuggest__results-item--highlighted'"
+							>
+								{{ suggestion.label }}
+							</li>
+						</ComboboxOption>
+					</ComboboxOptions>
+				</Combobox>
 			</div>
 			<multilingual-progress
 				v-if="isMultilingual && locales.length > 1"
@@ -100,7 +143,12 @@
 <script>
 import FieldBase from './FieldBase.vue';
 import PkpBadge from '@/components/Badge/Badge.vue';
-import {VueAutosuggest} from 'vue-autosuggest';
+import {
+	Combobox,
+	ComboboxInput,
+	ComboboxOption,
+	ComboboxOptions,
+} from '@headlessui/vue';
 import ajaxError from '@/mixins/ajaxError';
 import debounce from 'debounce';
 import elementResizeEvent from 'element-resize-event';
@@ -111,7 +159,10 @@ export default {
 	mixins: [ajaxError],
 	components: {
 		PkpBadge,
-		VueAutosuggest,
+		Combobox,
+		ComboboxInput,
+		ComboboxOption,
+		ComboboxOptions,
 	},
 	props: {
 		apiUrl: {
@@ -144,8 +195,8 @@ export default {
 		},
 		selected: {
 			type: [Array, Object],
-			default() {
-				return this.isMultilingual ? {} : [];
+			default(props) {
+				return props.isMultilingual ? {} : [];
 			},
 		},
 		selectedLabel: {
@@ -168,22 +219,6 @@ export default {
 		 */
 		autosuggestId() {
 			return this.compileId('autosuggest');
-		},
-
-		/**
-		 * Options to pass to the vue-autosuggest component
-		 *
-		 * @return {Object}
-		 */
-		autosuggestOptions() {
-			return {
-				id: this.autosuggestId,
-				inputProps: this.inputProps,
-				key: this.autosuggestId,
-				suggestions: [{data: this.suggestions}],
-				getSuggestionValue: (suggestion) => suggestion.item.label,
-				renderSuggestion: (suggestion) => suggestion.item.label,
-			};
 		},
 
 		/**
@@ -255,7 +290,7 @@ export default {
 			let newSelected = [...this.currentSelected];
 			newSelected.splice(
 				newSelected.findIndex((item) => item.value === itemToRemove.value),
-				1
+				1,
 			);
 			this.setSelected(newSelected);
 		},
@@ -267,7 +302,8 @@ export default {
 			if (this.isDisabled) {
 				return;
 			}
-			this.$refs.autosuggest.$el.querySelector('#' + this.controlId).focus();
+
+			this.$refs.autosuggestInput.$el.focus();
 		},
 
 		/**
@@ -314,13 +350,6 @@ export default {
 			}
 			this.setSelected([...this.currentSelected, item]);
 			this.inputValue = '';
-			this.$nextTick(() => {
-				this.$nextTick(() => {
-					this.$nextTick(() =>
-						this.$el.querySelector('#' + this.controlId).focus()
-					);
-				});
-			});
 		},
 
 		/**
@@ -331,7 +360,7 @@ export default {
 		 * @param {Object|null} suggestion
 		 */
 		selectSuggestion(suggestion) {
-			this.select(suggestion ? suggestion.item : null);
+			this.select(suggestion ? suggestion : null);
 		},
 
 		/**
@@ -344,7 +373,7 @@ export default {
 				this.name,
 				'value',
 				selected.map((s) => s.value),
-				this.localeKey
+				this.localeKey,
 			);
 		},
 
@@ -356,7 +385,7 @@ export default {
 		 */
 		setSuggestions(newItems) {
 			throw new Error(
-				'The setSuggestions method must be implemented in any component that extends FieldBaseAutosuggest.'
+				'The setSuggestions method must be implemented in any component that extends FieldBaseAutosuggest.',
 			);
 		},
 
@@ -370,68 +399,8 @@ export default {
 			this.$refs.values.style.paddingInlineStart =
 				this.$refs.heading.offsetWidth + 'px';
 		},
-
-		/**
-		 * Update the width of the input field
-		 *
-		 * The input field should expand to fill the input area after the
-		 * values have been positioned. The input field should take up any
-		 * remaining width or, if there is less than 172px, move to the
-		 * next line and take the full width.
-		 */
-		updateInputWidth() {
-			if (this.isDisabled) {
-				return;
-			}
-
-			// Use the full width when there are no values
-			if (!this.currentValue.length) {
-				this.$refs.autosuggest.$el.style.width = '100%';
-			} else {
-				// Otherwise use the remaining width based on the
-				// bottom right corner of the last value (or bottom
-				// left corner for RTL languages)
-				const containerStyle = window.getComputedStyle(this.$refs.values);
-				const containerLeftPadding = parseFloat(
-					containerStyle.getPropertyValue('padding-left')
-				);
-				const containerRightPadding = parseFloat(
-					containerStyle.getPropertyValue('padding-right')
-				);
-				const containerWidth =
-					parseFloat(containerStyle.getPropertyValue('width')) -
-					containerLeftPadding -
-					containerRightPadding;
-				const valueEls = this.$refs.values.querySelectorAll(
-					'.pkpAutosuggest__selection'
-				);
-				const lastValueEl = valueEls[valueEls.length - 1];
-				// Right-to-left languages need to calculate distance from the right edge
-				const lastPixelPosition = this.isRTL
-					? containerWidth - (lastValueEl.offsetLeft - containerRightPadding)
-					: lastValueEl.offsetLeft -
-					  containerLeftPadding +
-					  lastValueEl.offsetWidth;
-				// remainingWidth = total available space - width of values
-				const remainingWidth = containerWidth - lastPixelPosition;
-				if (remainingWidth < 172) {
-					this.$refs.autosuggest.$el.style.width = '100%';
-				} else {
-					// 32 = 16px padding + extra space for the browser's scroll bar.
-					// when the suggestion list is shown/hidden, it can cause the whole
-					// page height to exceed the viewport, which means the browser's
-					// scroll bar pops in and out of view. this causes the input field
-					// width to expand/contract. The extra space allows this to happen
-					// without shifting the input field to the next line
-					this.$refs.autosuggest.$el.style.width = remainingWidth - 32 + 'px';
-				}
-			}
-		},
 	},
 	watch: {
-		currentValue(newVal, oldVal) {
-			this.$nextTick(() => this.updateInputWidth());
-		},
 		inputValue(newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
@@ -441,24 +410,22 @@ export default {
 	},
 	mounted() {
 		this.updateInlineLabelPadding();
-		this.updateInputWidth();
 		elementResizeEvent(
 			this.$refs.values,
 			debounce(() => {
 				this.updateInlineLabelPadding();
-				this.updateInputWidth();
-			}, 100)
+			}, 100),
 		);
 
 		// Inline labels can not be used with multilingual fields
 		if (this.isMultilingual && this.isLabelInline) {
 			throw new Error(
 				'An inline label can not be used with a multilingual autosuggest field. This error encountered in the field ' +
-					this.name
+					this.name,
 			);
 		}
 	},
-	beforeDestroy() {
+	beforeUnmount() {
 		elementResizeEvent.unbind(this.$refs.values);
 	},
 };
@@ -473,6 +440,10 @@ export default {
 
 .pkpAutosuggest__control {
 	width: 100%;
+}
+
+.pkpAutosuggest__inputWrapper {
+	display: flex;
 }
 
 // Copy of .pkpFormField:focus
@@ -537,13 +508,12 @@ export default {
 .pkpAutosuggest__autosuggester {
 	position: relative;
 	line-height: 1.6rem; // prevent jank when value is added or removed
-	width: 100%;
+	flex-grow: 1;
 }
 
 .pkpAutosuggest__input {
-	width: 100%;
 	border: none;
-
+	width: 100%;
 	&:focus {
 		outline: none;
 	}
@@ -578,11 +548,9 @@ export default {
 		background: @primary;
 	}
 
-	ul {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
+	margin: 0;
+	padding: 0;
+	list-style: none;
 
 	.autosuggest__results-item {
 		position: relative;

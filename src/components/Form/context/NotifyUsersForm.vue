@@ -31,7 +31,7 @@ export default {
 					(total, userGroupId) => {
 						return total + this.userGroupCounts[userGroupId];
 					},
-					0
+					0,
 				);
 			}
 			this.openDialog({
@@ -42,15 +42,15 @@ export default {
 					{
 						label: this.sendLabel,
 						isPrimary: true,
-						callback: () => {
+						callback: (close) => {
 							this.submit();
-							this.$modal.hide('confirmNotify');
+							close();
 						},
 					},
 					{
-						label: this.__('common.cancel'),
+						label: this.t('common.cancel'),
 						isWarnable: true,
-						callback: () => this.$modal.hide('confirmNotify'),
+						callback: (close) => close(),
 					},
 				],
 			});

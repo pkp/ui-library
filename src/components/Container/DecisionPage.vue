@@ -68,7 +68,7 @@ export default {
 						Object.keys(step.errors).length ||
 						// Form steps store errors in the form
 						(step.type === stepTypes.form &&
-							Object.keys(step.form.errors).length)
+							Object.keys(step.form.errors).length),
 				)
 				.reduce((errors, step) => {
 					errors[step.id] = this.replaceLocaleParams(this.stepErrorMessage, {
@@ -98,6 +98,7 @@ export default {
 		 * decision and return to the submission
 		 */
 		cancel() {
+			console.log('click on cancel');
 			this.openDialog({
 				name: 'cancel',
 				title: this.abandonDecisionLabel,
@@ -112,7 +113,7 @@ export default {
 					},
 					{
 						label: this.keepWorkingLabel,
-						callback: () => this.$modal.hide('cancel'),
+						callback: (close) => close(),
 					},
 				],
 			});
@@ -261,13 +262,13 @@ export default {
 		submit() {
 			this.isSubmitting = true;
 			const steps = this.steps.filter(
-				(step) => !this.skippedSteps.includes(step.id)
+				(step) => !this.skippedSteps.includes(step.id),
 			);
 			const data = {
 				decision: this.decision,
 				actions: steps
 					.filter((step) =>
-						[stepTypes.form, stepTypes.email].includes(step.type)
+						[stepTypes.form, stepTypes.email].includes(step.type),
 					)
 					.map((step) => {
 						let stepData = {id: step.id};
@@ -307,7 +308,8 @@ export default {
 
 			const files = steps
 				.filter(
-					(step) => step.type === stepTypes.promoteFiles && step.selected.length
+					(step) =>
+						step.type === stepTypes.promoteFiles && step.selected.length,
 				)
 				.reduce((files, step) => {
 					step.selected.forEach((fileId) => {
@@ -361,7 +363,7 @@ export default {
 						}
 					};
 					files.forEach((file) =>
-						this.copyFile(file.id, file.toFileStage, copyCompleted)
+						this.copyFile(file.id, file.toFileStage, copyCompleted),
 					);
 				},
 			});

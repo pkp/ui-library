@@ -1,12 +1,13 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import Preview from './previews/PreviewPanel.vue';
-import Template from '!raw-loader!./previews/PreviewPanel.vue';
+import Template from './previews/PreviewPanel.vue?raw';
 import PreviewMultipleSections from './previews/PreviewPanelMultipleSections.vue';
-import TemplateMultipleSections from '!raw-loader!./previews/PreviewPanelMultipleSections.vue';
+import TemplateMultipleSections from './previews/PreviewPanelMultipleSections.vue?raw';
 import PreviewStacked from './previews/PreviewPanelStacked.vue';
-import TemplateStacked from '!raw-loader!./previews/PreviewPanelStacked.vue';
-import readme from '!raw-loader!./readme.md';
+import TemplateStacked from './previews/PreviewPanelStacked.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,
@@ -16,17 +17,17 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: Preview,
+					component: markRaw(Preview),
 					name: 'Base',
 					template: this.extractTemplate(Template),
 				},
 				{
-					component: PreviewMultipleSections,
+					component: markRaw(PreviewMultipleSections),
 					name: 'Many Sections',
 					template: this.extractTemplate(TemplateMultipleSections),
 				},
 				{
-					component: PreviewStacked,
+					component: markRaw(PreviewStacked),
 					name: 'Stacked Header',
 					template: this.extractTemplate(TemplateStacked),
 				},

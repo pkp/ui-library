@@ -7,13 +7,11 @@ import moment from 'moment';
 import localizeMoment from '@/mixins/localizeMoment';
 
 export default {
-    mixins: [localizeMoment],
-    created() {
-        const timeSince = moment(timestamp)
-            .locale(
-                this.getMomentLocale($.pkp.app.currentLocale)
-            )
-            .fromNow();
-    }
-}
+	mixins: [localizeMoment],
+	created() {
+		const timeSince = moment(timestamp)
+			.locale(this.getMomentLocale($.pkp.app.currentLocale))
+			.fromNow();
+	},
+};
 ```

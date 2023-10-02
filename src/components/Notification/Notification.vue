@@ -7,7 +7,7 @@
 			@click="$emit('dismiss')"
 		>
 			<span :aria-hidden="true">×</span>
-			<span class="-screenReader">{{ __('common.close') }}</span>
+			<span class="-screenReader">{{ t('common.close') }}</span>
 		</button>
 	</div>
 </template>

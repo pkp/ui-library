@@ -133,7 +133,7 @@ export default {
 			return this.progressLabel
 				.replace(
 					'{$current}',
-					1 + this.steps.findIndex((step) => step.id === this.current)
+					1 + this.steps.findIndex((step) => step.id === this.current),
 				)
 				.replace('{$total}', this.steps.length);
 		},
@@ -161,7 +161,7 @@ export default {
 		 * @param {String} stepId
 		 */
 		setChildStepsIsActive(stepId) {
-			this.steps.forEach((step) => (step.isActive = step.id === stepId));
+			this.steps.forEach((step) => step.isActive(step.id === stepId));
 		},
 
 		/**
@@ -217,14 +217,22 @@ export default {
 			});
 		},
 	},
-	mounted() {
-		/**
-		 * Store the nested steps as a data property
-		 */
-		this.steps = this.$children.filter(
-			(child) => child.$options._componentTag === 'step'
-		);
+	provide() {
+		return {
+			registerStep: (step) => {
+				this.steps.push(step);
 
+				// Return an unregistration function for cleanup
+				return () => {
+					const index = this.steps.findIndex((_step) => _step.id === step.id);
+					if (index > -1) {
+						this.steps.splice(index, 1);
+					}
+				};
+			},
+		};
+	},
+	mounted() {
 		/**
 		 * Set the step to view when loaded
 		 */

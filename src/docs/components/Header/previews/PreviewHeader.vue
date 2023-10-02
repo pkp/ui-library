@@ -5,7 +5,7 @@
 		</pkp-header>
 		<pkp-header>
 			<h3>Participants</h3>
-			<template slot="actions">
+			<template #actions>
 				<pkp-button>Send Message</pkp-button>
 				<pkp-button>Add Participant</pkp-button>
 			</template>
@@ -13,7 +13,7 @@
 		<pkp-header>
 			<h3>Submissions</h3>
 			<spinner v-if="isLoading" />
-			<template slot="actions">
+			<template #actions>
 				<pkp-button :isActive="isLoading" @click="isLoading = !isLoading">
 					Toggle Loading Spinner
 				</pkp-button>
@@ -25,7 +25,7 @@
 				functionality and roles within both wide and narrow scopes in a context
 				of rapid synergistic iterative evolution
 			</h1>
-			<template slot="actions">
+			<template #actions>
 				<pkp-button>Preview</pkp-button>
 				<pkp-button>Activity Log</pkp-button>
 			</template>
@@ -36,7 +36,7 @@
 				functionality and roles within both wide and narrow scopes in a context
 				of rapid synergistic iterative evolution
 			</h1>
-			<template slot="actions">
+			<template #actions>
 				<pkp-button>Preview</pkp-button>
 				<pkp-button>Activity Log</pkp-button>
 			</template>

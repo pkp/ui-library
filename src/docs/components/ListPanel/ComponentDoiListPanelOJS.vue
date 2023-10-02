@@ -1,7 +1,8 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewDoiListPanelOJS from '@/docs/components/ListPanel/previews/PreviewDoiListPanelOJS';
-import PreviewDoiListPanelOJSTemplate from '!raw-loader!./previews/PreviewDoiListPanelOJS.vue';
+import PreviewDoiListPanelOJSTemplate from './previews/PreviewDoiListPanelOJS.vue?raw';
 
 export default {
 	extends: Component,
@@ -10,7 +11,7 @@ export default {
 			name: 'DoiListPanelOJS',
 			examples: [
 				{
-					component: PreviewDoiListPanelOJS,
+					component: markRaw(PreviewDoiListPanelOJS),
 					name: 'Base',
 					template: this.extractTemplate(PreviewDoiListPanelOJSTemplate),
 				},

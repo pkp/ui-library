@@ -13,10 +13,8 @@ React to the global event from any component.
 ```js
 // Update an email template in a list when it changes
 pkp.eventBus.$on('updated:email-template', (emailTemplate) => {
-	this.templates = this.templates.map(template => {
-		return template.key === emailTemplate.key
-			? emailTemplate
-			: template;
+	this.templates = this.templates.map((template) => {
+		return template.key === emailTemplate.key ? emailTemplate : template;
 	});
 });
 ```
@@ -30,10 +28,10 @@ Global event names should use kebab-case (`example-name`). When appropriate, use
 Examples include the following.
 
 ```js
-added:announcement
-updated:announcement
-deleted:announcement
-unpublished:publication
+added: announcement;
+updated: announcement;
+deleted: announcement;
+unpublished: publication;
 ```
 
 ## Common global events
@@ -51,7 +49,7 @@ pkp.eventBus.$on('form-success', (formId, object) => {
 Use the following to react when a new tab has been selected.
 
 ```js
-pkp.eventBus.$on('open-tab', tabId => {
+pkp.eventBus.$on('open-tab', (tabId) => {
 	// ... react to `tabId` being opened
 });
 ```

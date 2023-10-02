@@ -1,31 +1,31 @@
 <template>
 	<div class="previewModal">
-		<pkp-button ref="modalReportButton" @click="$modal.show('report')">
+		<pkp-button ref="modalReportButton" @click="isModalOpened = true">
 			Modal with Custom Actions
 		</pkp-button>
 		<modal
 			closeLabel="Close"
-			name="report"
 			title="Activity Report"
-			@closed="setFocusToRef('modalReportButton')"
+			:open="isModalOpened"
+			@close="isModalOpened = false"
 		>
 			<list>
 				<list-item>
-					<template slot="value">
+					<template #value>
 						<icon icon="comment-o" :inline="true" />
 						23
 					</template>
 					Emails sent today
 				</list-item>
 				<list-item>
-					<template slot="value">
+					<template #value>
 						<icon icon="file-text-o" :inline="true" />
 						9
 					</template>
 					Submissions rejected today
 				</list-item>
 			</list>
-			<template slot="footer">
+			<template #footer>
 				<spinner v-if="isSendingReport" />
 				<pkp-button
 					:isDisabled="isSendingReport"
@@ -36,7 +36,7 @@
 				</pkp-button>
 				<pkp-button
 					:isDisabled="isSendingReport"
-					@click="$modal.hide('report')"
+					@click="isModalOpened = false"
 				>
 					Close
 				</pkp-button>
@@ -58,6 +58,7 @@ export default {
 	},
 	data() {
 		return {
+			isModalOpened: false,
 			isSendingReport: false,
 		};
 	},
@@ -67,7 +68,7 @@ export default {
 			// Simulate a server request
 			setTimeout(() => {
 				this.isSendingReport = false;
-				this.$modal.hide('report');
+				this.isModalOpened = false;
 			}, 2000);
 		},
 	},

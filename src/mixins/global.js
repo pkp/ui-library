@@ -26,7 +26,7 @@ export default {
 		 * @param {Object} params (Optional) Variables to compile with the translation
 		 * @return {String}
 		 */
-		__: function (key, params) {
+		t: function (key, params) {
 			if (typeof pkp.localeKeys[key] === 'undefined') {
 				if (process.env.NODE_ENV === 'development') {
 					// eslint-disable-next-line
@@ -76,16 +76,25 @@ export default {
 			if (!multilingualData) {
 				return '';
 			} else if (requestedLocale !== undefined) {
-				return multilingualData.hasOwnProperty(requestedLocale)
+				return Object.prototype.hasOwnProperty.call(
+					multilingualData,
+					requestedLocale,
+				)
 					? multilingualData[requestedLocale]
 					: '';
 			} else if (
-				multilingualData.hasOwnProperty($.pkp.app.currentLocale) &&
+				Object.prototype.hasOwnProperty.call(
+					multilingualData,
+					$.pkp.app.currentLocale,
+				) &&
 				multilingualData[$.pkp.app.currentLocale]
 			) {
 				return multilingualData[$.pkp.app.currentLocale];
 			} else if (
-				multilingualData.hasOwnProperty($.pkp.app.primaryLocale) &&
+				Object.prototype.hasOwnProperty.call(
+					multilingualData,
+					$.pkp.app.primaryLocale,
+				) &&
 				multilingualData[$.pkp.app.primaryLocale]
 			) {
 				return multilingualData[$.pkp.app.primaryLocale];

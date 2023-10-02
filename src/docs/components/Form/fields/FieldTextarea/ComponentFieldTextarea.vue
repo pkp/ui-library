@@ -1,12 +1,13 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewFieldTextarea from './previews/PreviewFieldTextarea.vue';
-import PreviewFieldTextareaTemplate from '!raw-loader!./previews/PreviewFieldTextarea.vue';
+import PreviewFieldTextareaTemplate from './previews/PreviewFieldTextarea.vue?raw';
 import PreviewFieldTextareaSmall from './previews/PreviewFieldTextareaSmall.vue';
-import PreviewFieldTextareaSmallTemplate from '!raw-loader!./previews/PreviewFieldTextareaSmall.vue';
+import PreviewFieldTextareaSmallTemplate from './previews/PreviewFieldTextareaSmall.vue?raw';
 import PreviewFieldTextareaLarge from './previews/PreviewFieldTextareaLarge.vue';
-import PreviewFieldTextareaLargeTemplate from '!raw-loader!./previews/PreviewFieldTextareaLarge.vue';
-import readme from '!raw-loader!./readme.md';
+import PreviewFieldTextareaLargeTemplate from './previews/PreviewFieldTextareaLarge.vue?raw';
+import readme from './readme.md?raw';
 
 export default {
 	extends: Component,
@@ -17,17 +18,17 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewFieldTextarea,
+					component: markRaw(PreviewFieldTextarea),
 					name: 'Base',
 					template: this.extractTemplate(PreviewFieldTextareaTemplate),
 				},
 				{
-					component: PreviewFieldTextareaSmall,
+					component: markRaw(PreviewFieldTextareaSmall),
 					name: 'Small',
 					template: this.extractTemplate(PreviewFieldTextareaSmallTemplate),
 				},
 				{
-					component: PreviewFieldTextareaLarge,
+					component: markRaw(PreviewFieldTextareaLarge),
 					name: 'Large',
 					template: this.extractTemplate(PreviewFieldTextareaLargeTemplate),
 				},

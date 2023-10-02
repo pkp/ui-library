@@ -6,7 +6,7 @@
 				:label="label"
 				:localeLabel="localeLabel"
 				:isRequired="isRequired"
-				:requiredLabel="__('common.required')"
+				:requiredLabel="t('common.required')"
 				:multilingualLabel="multilingualLabel"
 			/>
 			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
@@ -21,7 +21,7 @@
 				:id="describedByHelpId"
 				:topic="helpTopic"
 				:section="helpSection"
-				:label="__('help.help')"
+				:label="t('help.help')"
 			/>
 		</div>
 		<div
@@ -42,7 +42,7 @@
 				</span>
 				<div class="pkpFormField--upload__previewActions">
 					<pkp-button :isWarnable="true" @click="clear">
-						{{ __('common.remove') }}
+						{{ t('common.remove') }}
 					</pkp-button>
 					<pkp-button v-if="initialValue && !isInitialValue" @click="revert">
 						{{ restoreLabel }}
@@ -63,6 +63,7 @@
 			<!-- Keep the dropzone elements in the dom for $refs manipulation in mounted hook -->
 			<div :class="{'-screenReader': currentValue}">
 				<vue-dropzone
+					v-if="isComponentMounted"
 					ref="dropzone"
 					:id="dropzoneId"
 					:options="dropzoneOptions"
@@ -106,7 +107,7 @@
 
 <script>
 import FieldBase from './FieldBase.vue';
-import VueDropzone from 'vue2-dropzone';
+import VueDropzone from 'dropzone-vue3';
 
 export default {
 	name: 'FieldUpload',
@@ -123,6 +124,12 @@ export default {
 		return {
 			initialValue: null,
 			uploadFile: null,
+			// tracking whether this component is mounted
+			// before rendering vue-dropzone, as it requires
+			// clickables to be mounted already, which is issue for
+			// dropzoneClickableId which by default gets mounted
+			// after DOM after vue-dropzone
+			isComponentMounted: false,
 		};
 	},
 	computed: {
@@ -247,7 +254,7 @@ export default {
 				this.name,
 				'value',
 				this.initialValue,
-				this.localeKey
+				this.localeKey,
 			);
 			this.uploadFile = null;
 			this.setFocusToControl();
@@ -267,7 +274,7 @@ export default {
 				this.name,
 				'value',
 				{temporaryFileId: response.id},
-				this.localeKey
+				this.localeKey,
 			);
 			this.setFocusToControl();
 		},
@@ -345,21 +352,29 @@ export default {
 		},
 	},
 	mounted() {
-		/**
-		 * Add attributes to the hidden file input field so that labels and
-		 * descriptions can be accessed by those using assistive devices.
-		 */
-		this.$refs.dropzone.dropzone.hiddenFileInput.id = this.dropzoneHiddenFileId;
-		this.$refs.dropzone.dropzone.hiddenFileInput.setAttribute(
-			'aria-describedby',
-			this.describedByIds
-		);
+		this.isComponentMounted = true;
 
-		/**
-		 * Set the initial data, which can't be set in the data() function because it relies on
-		 * a computed property
-		 */
-		this.initialValue = this.currentValue ? this.currentValue : null;
+		// not ideal, but first this component needs to get mounted
+		// than vue-dropzone gets mounted and afterwards vue-dropzone
+		// DOM can be manipulated
+		setTimeout(() => {
+			/**
+			 * Add attributes to the hidden file input field so that labels and
+			 * descriptions can be accessed by those using assistive devices.
+			 */
+			this.$refs.dropzone.dropzone.hiddenFileInput.id =
+				this.dropzoneHiddenFileId;
+			this.$refs.dropzone.dropzone.hiddenFileInput.setAttribute(
+				'aria-describedby',
+				this.describedByIds,
+			);
+
+			/**
+			 * Set the initial data, which can't be set in the data() function because it relies on
+			 * a computed property
+			 */
+			this.initialValue = this.currentValue ? this.currentValue : null;
+		});
 	},
 };
 </script>

@@ -1,8 +1,9 @@
 <script>
+import {markRaw} from 'vue';
 import Component from '@/docs/Component.vue';
 import PreviewCatalogListPanel from './previews/PreviewCatalogListPanel.vue';
-import PreviewCatalogListPanelTemplate from '!raw-loader!./previews/PreviewCatalogListPanel.vue';
-import readme from '!raw-loader!./readme-catalog.md';
+import PreviewCatalogListPanelTemplate from './previews/PreviewCatalogListPanel.vue?raw';
+import readme from './readme-catalog.md?raw';
 
 export default {
 	extends: Component,
@@ -12,7 +13,7 @@ export default {
 			readme: readme,
 			examples: [
 				{
-					component: PreviewCatalogListPanel,
+					component: markRaw(PreviewCatalogListPanel),
 					name: 'Base',
 					template: this.extractTemplate(PreviewCatalogListPanelTemplate),
 				},

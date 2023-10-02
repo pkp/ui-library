@@ -30,6 +30,8 @@ export default {
 			searchPhrase: '',
 			templateForm: {},
 			templatesApiUrl: '',
+			isModalOpenedMailable: false,
+			isModalOpenedTemplate: false,
 		};
 	},
 	computed: {
@@ -60,7 +62,7 @@ export default {
 			Object.keys(this.activeFilters).forEach((filter) => {
 				this.activeFilters[filter].forEach((value) => {
 					newMailables = newMailables.filter((mailable) =>
-						mailable[filter].includes(value)
+						mailable[filter].includes(value),
 					);
 				});
 			});
@@ -96,30 +98,30 @@ export default {
 				title: this.i18nRemoveTemplate,
 				message: this.i18nRemoveTemplateMessage.replace(
 					'{$template}',
-					this.localize(template.subject)
+					this.localize(template.subject),
 				),
 				actions: [
 					{
 						label: this.i18nRemoveTemplate,
 						isWarnable: true,
-						callback: () => {
+						callback: (close) => {
 							this.deleteTemplate(
 								template,
 								() => {
 									this.currentMailable.emailTemplates =
 										this.currentMailable.emailTemplates.filter(
-											(t) => t.key !== template.key
+											(t) => t.key !== template.key,
 										);
 								},
 								() => {
-									this.$modal.hide('removeTemplate');
-								}
+									close();
+								},
 							);
 						},
 					},
 					{
-						label: this.__('common.cancel'),
-						callback: () => this.$modal.hide('removeTemplate'),
+						label: this.t('common.cancel'),
+						callback: (close) => close(),
 					},
 				],
 			});
@@ -154,8 +156,8 @@ export default {
 						},
 					},
 					{
-						label: this.__('common.cancel'),
-						callback: () => this.$modal.hide('resetAll'),
+						label: this.t('common.cancel'),
+						callback: (close) => close(),
 					},
 				],
 			});
@@ -172,27 +174,27 @@ export default {
 				title: this.i18nResetTemplate,
 				message: this.i18nResetTemplateMessage.replace(
 					'{$template}',
-					this.currentMailable.name
+					this.currentMailable.name,
 				),
 				actions: [
 					{
 						label: this.i18nResetTemplate,
 						isWarnable: true,
-						callback: () => {
+						callback: (close) => {
 							this.deleteTemplate(template, () => {
 								this.getTemplate(template.key, (r) => {
 									this.currentMailable.emailTemplates =
 										this.currentMailable.emailTemplates.map((t) =>
-											t.key === template.key ? r : t
+											t.key === template.key ? r : t,
 										);
-									this.$modal.hide('resetTemplate');
+									close();
 								});
 							});
 						},
 					},
 					{
-						label: this.__('common.cancel'),
-						callback: () => this.$modal.hide('resetTemplate'),
+						label: this.t('common.cancel'),
+						callback: (close) => close(),
 					},
 				],
 			});
@@ -270,7 +272,8 @@ export default {
 		/**
 		 * Fired when the mailable modal is closed
 		 */
-		mailableModalClosed() {
+		closeMailableModal() {
+			this.isModalOpenedMailable = false;
 			this.resetFocus();
 			setTimeout(() => {
 				this.currentMailable = {};
@@ -291,7 +294,7 @@ export default {
 				this.getMailable(mailable, (mailable) => {
 					this.resetFocusTo = document.activeElement;
 					this.currentMailable = mailable;
-					this.$modal.show('mailable');
+					this.isModalOpenedMailable = true;
 				});
 			} else {
 				this.getTemplate(mailable.emailTemplateKey, (template) => {
@@ -310,7 +313,7 @@ export default {
 			template = template || {};
 			this.resetFocusTo = document.activeElement;
 			this.currentTemplate = template;
-			this.$nextTick(() => this.$modal.show('template'));
+			this.$nextTick(() => (this.isModalOpenedTemplate = true));
 		},
 
 		/**
@@ -374,7 +377,7 @@ export default {
 			templateForm.fields = templateForm.fields.map((field) => {
 				if (field.name === 'body') {
 					field.preparedContent = Object.keys(
-						this.currentMailable.dataDescriptions
+						this.currentMailable.dataDescriptions,
 					).map((variable) => {
 						return {
 							key: variable,
@@ -406,32 +409,33 @@ export default {
 		templateSaved(template) {
 			const exists =
 				this.currentMailable.emailTemplates.findIndex(
-					(t) => t.key === template.key
+					(t) => t.key === template.key,
 				) > -1;
 
 			if (exists) {
 				this.currentMailable.emailTemplates =
 					this.currentMailable.emailTemplates.map((t) =>
-						t.key === template.key ? template : t
+						t.key === template.key ? template : t,
 					);
 			} else {
 				this.currentMailable.emailTemplates.push(template);
 			}
 
-			setTimeout(() => this.$modal.hide('template'), 1000);
+			setTimeout(() => this.closeTemplateModal(), 1000);
 		},
 
 		/**
 		 * Fired when the email template modal has been closed
 		 */
-		templateModalClosed() {
+		closeTemplateModal() {
+			this.isModalOpenedTemplate = false;
 			if (this.currentMailable.supportsTemplates) {
 				this.resetFocus();
 				setTimeout(() => {
 					this.currentTemplate = {};
 				}, 300);
 			} else {
-				this.mailableModalClosed();
+				this.closeMailableModal();
 			}
 		},
 

@@ -25,7 +25,6 @@ export default {
 				toolbar: 'formatgroup',
 				value: '',
 				i18nFormattingLabel: 'Formatting',
-				isMultilingual: false,
 			},
 		};
 	},

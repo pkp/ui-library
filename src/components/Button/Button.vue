@@ -4,7 +4,7 @@
 		class="pkpButton"
 		:class="classes"
 		:href="element === 'a' ? href : false"
-		:disabled="isDisabled"
+		:disabled="element === 'a' ? undefined : isDisabled"
 		@click="click"
 		@focus="$emit('focus')"
 		@blur="$emit('blur')"
@@ -51,7 +51,6 @@ export default {
 			if (this.element === 'button') {
 				e.preventDefault();
 			}
-			this.$emit('click');
 		},
 	},
 };

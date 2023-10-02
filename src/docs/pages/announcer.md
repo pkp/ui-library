@@ -25,7 +25,7 @@ Use the `$announcer` when an action leads to a pending or loading state.
 ```js
 this.$announcer.set('Loading submission details');
 this.loadingComplete(() => {
-    this.$announcer.set('Submission details loaded');
+	this.$announcer.set('Submission details loaded');
 });
 ```
 
@@ -40,7 +40,7 @@ The `$announcer` is not needed in the following instances, because they already 
 Don't forget to localize announcements.
 
 ```js
-this.$announcer.set(this.__('common.loading'));
+this.$announcer.set(this.t('common.loading'));
 ```
 
 ```js

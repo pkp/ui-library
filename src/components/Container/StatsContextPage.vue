@@ -4,6 +4,9 @@ import StatsPublicationsPage from '@/components/Container/StatsPublicationsPage.
 export default {
 	name: 'StatsContextPage',
 	extends: StatsPublicationsPage,
+	data() {
+		return {isModalOpenedDownloadReport: false};
+	},
 	methods: {
 		/**
 		 * The params to send with each GET request

@@ -6,17 +6,30 @@
 import {marked} from 'marked';
 import highlightjs from 'highlight.js';
 
+const modules = import.meta.glob('./pages/*.md', {
+	as: 'raw',
+});
+
 export default {
-	computed: {
-		output() {
+	data() {
+		return {output: ''};
+	},
+	watch: {
+		'$route.params.page'(oldPage, newPage) {
+			this.loadCurrentPage();
+		},
+	},
+	methods: {
+		async loadCurrentPage() {
 			let markdown;
+
 			let page = this.$route.name;
 			if (page === 'page') {
 				page = this.$route.params.page || 'index';
 			}
 			if (page) {
 				try {
-					markdown = require('./pages/' + page + '.md');
+					markdown = await modules[`./pages/${page}.md`]();
 				} catch (e) {
 					markdown = '';
 				}
@@ -26,11 +39,15 @@ export default {
 							return highlightjs.highlightAuto(code).value;
 						},
 					});
-					return marked.parse(markdown.default);
+					this.output = marked.parse(markdown);
 				}
+			} else {
+				this.output = '';
 			}
-			return '';
 		},
+	},
+	mounted() {
+		this.loadCurrentPage();
 	},
 };
 </script>
