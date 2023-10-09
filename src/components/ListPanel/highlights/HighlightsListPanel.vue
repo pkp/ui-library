@@ -2,41 +2,43 @@
 	<div class="highlightsListPanel" :class="{'-isOrdering': isOrdering}">
 		<slot>
 			<list-panel :items="items">
-				<pkp-header slot="header">
-					<h2>{{ title }}</h2>
-					<spinner v-if="isLoading" />
-					<template slot="actions">
-						<pkp-button
-							v-if="!isOrdering"
-							icon="sort"
-							:isActive="isOrdering"
-							@click="isOrdering = true"
-							:disabled="isLoading"
-						>
-							{{ __('common.order') }}
-						</pkp-button>
-						<template v-else>
+				<template #header>
+					<pkp-header>
+						<h2>{{ title }}</h2>
+						<spinner v-if="isLoading" />
+						<template #actions>
 							<pkp-button
+								v-if="!isOrdering"
 								icon="sort"
-								:isActive="true"
-								@click="saveOrder"
+								:isActive="isOrdering"
+								@click="isOrdering = true"
 								:disabled="isLoading"
 							>
-								{{ i18nSaveOrder }}
+								{{ t('common.order') }}
 							</pkp-button>
-							<pkp-button
-								:isWarnable="true"
-								:disabled="isLoading"
-								@click="isOrdering = false"
-							>
-								{{ __('common.cancel') }}
+							<template v-else>
+								<pkp-button
+									icon="sort"
+									:isActive="true"
+									@click="saveOrder"
+									:disabled="isLoading"
+								>
+									{{ i18nSaveOrder }}
+								</pkp-button>
+								<pkp-button
+									:isWarnable="true"
+									:disabled="isLoading"
+									@click="isOrdering = false"
+								>
+									{{ t('common.cancel') }}
+								</pkp-button>
+							</template>
+							<pkp-button :disabled="isOrdering" @click="openAddModal">
+								{{ i18nAdd }}
 							</pkp-button>
 						</template>
-						<pkp-button :disabled="isOrdering" @click="openAddModal">
-							{{ i18nAdd }}
-						</pkp-button>
-					</template>
-				</pkp-header>
+					</pkp-header>
+				</template>
 				<template v-slot:item-title="{item}">
 					{{ localize(item.title) }}
 				</template>
@@ -49,22 +51,23 @@
 						@down="orderDown(item)"
 					></orderer>
 					<pkp-button v-if="!isOrdering" @click="openEditModal(item.id)">
-						{{ __('common.edit') }}
+						{{ t('common.edit') }}
 					</pkp-button>
 					<pkp-button
 						v-if="!isOrdering"
 						:isWarnable="true"
 						@click="openDeleteModal(item.id)"
 					>
-						{{ __('common.delete') }}
+						{{ t('common.delete') }}
 					</pkp-button>
 				</template>
 			</list-panel>
 			<modal
-				:closeLabel="__('common.close')"
+				:closeLabel="t('common.close')"
 				name="form"
 				:title="activeFormTitle"
-				@closed="formModalClosed"
+				:open="isModalOpened"
+				@close="closeFormModal"
 			>
 				<pkp-form
 					v-bind="activeForm"
@@ -141,8 +144,8 @@ export default {
 			activeForm: null,
 			activeFormTitle: '',
 			isLoading: false,
+			isModalOpened: false,
 			isOrdering: false,
-			resetFocusTo: null,
 		};
 	},
 	methods: {
@@ -151,12 +154,10 @@ export default {
 		 *
 		 * @param {Object} event
 		 */
-		formModalClosed(event) {
+		closeFormModal(event) {
 			this.activeForm = null;
 			this.activeFormTitle = '';
-			if (this.resetFocusTo) {
-				this.resetFocusTo.focus();
-			}
+			this.isModalOpened = false;
 		},
 
 		/**
@@ -173,24 +174,23 @@ export default {
 			} else {
 				this.setItems(
 					this.items.map((i) => (i.id === item.id ? item : i)),
-					this.itemsMax
+					this.itemsMax,
 				);
 				pkp.eventBus.$emit('update:highlight', item);
 			}
-			this.$modal.hide('form');
+			this.isModalOpened = false;
 		},
 
 		/**
 		 * Open the modal to add an item
 		 */
 		openAddModal() {
-			this.resetFocusTo = document.activeElement;
 			let activeForm = cloneDeep(this.form);
 			activeForm.action = this.apiUrl;
 			activeForm.method = 'POST';
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.i18nAdd;
-			this.$modal.show('form');
+			this.isModalOpened = true;
 		},
 
 		/**
@@ -212,9 +212,9 @@ export default {
 				}),
 				actions: [
 					{
-						label: this.__('common.yes'),
+						label: this.t('common.yes'),
 						isPrimary: true,
-						callback: () => {
+						callback: (close) => {
 							$.ajax({
 								url: this.apiUrl + '/' + id,
 								type: 'POST',
@@ -226,18 +226,18 @@ export default {
 								success: (r) => {
 									this.setItems(
 										this.items.filter((i) => i.id !== id),
-										this.itemsMax
+										this.itemsMax,
 									);
-									this.$modal.hide('delete');
+									close();
 									this.setFocusIn(this.$el);
 								},
 							});
 						},
 					},
 					{
-						label: this.__('common.no'),
+						label: this.t('common.no'),
 						isWarnable: true,
-						callback: () => this.$modal.hide('delete'),
+						callback: (close) => close(),
 					},
 				],
 			});
@@ -249,8 +249,6 @@ export default {
 		 * @param {Number} id
 		 */
 		openEditModal(id) {
-			this.resetFocusTo = document.activeElement;
-
 			const highlight = this.items.find((highlight) => highlight.id === id);
 			if (!highlight) {
 				this.ajaxErrorCallback({});
@@ -268,7 +266,7 @@ export default {
 			});
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.i18nEdit;
-			this.$modal.show('form');
+			this.isModalOpened = false;
 		},
 
 		/**

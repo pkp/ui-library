@@ -1,19 +1,16 @@
 import Form from './form';
 import FieldTextTitle from './field-text-title';
 
-const FieldRichText = {
-	component: 'field-rich-text',
-	inputType: 'text',
+const FieldText = {
+	component: 'field-text',
+	groupId: 'default',
+	isMultilingual: true,
 	isRequired: true,
 	value: {
 		en: '',
 		fr_CA: '',
 		ar: '',
 	},
-	isMultilingual: true,
-	toolbar: 'bold italic superscript subscript | link',
-	plugins: 'paste,link,noneditable',
-	i18nFormattingLabel: 'Formatting',
 };
 
 export default {
@@ -22,13 +19,13 @@ export default {
 	action: 'https://example.org/example',
 	fields: [
 		{
-			...FieldRichText,
+			...FieldText,
 			name: 'title',
 			label: 'Title',
 			groupId: 'default',
 		},
 		{
-			...FieldRichText,
+			...FieldText,
 			name: 'description',
 			label: 'Description',
 			required: false,
