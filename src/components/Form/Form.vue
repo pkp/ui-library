@@ -211,7 +211,7 @@ export default {
 		submitValues() {
 			let values = {};
 			this.fields.forEach((field) => {
-				if (field.component === 'field-html') {
+				if (field.isInert) {
 					return;
 				}
 				if (!field.isMultilingual) {
