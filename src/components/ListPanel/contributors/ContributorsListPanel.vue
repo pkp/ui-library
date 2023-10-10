@@ -436,7 +436,7 @@ export default {
 										},
 									);
 									this.$emit('updated:contributors', newContributors);
-									
+
 									this.getAndUpdatePublication();
 								},
 								complete(r) {
@@ -475,7 +475,11 @@ export default {
 					activeForm.action = apiUrl;
 					activeForm.method = 'PUT';
 					activeForm.fields = activeForm.fields.map((field) => {
-						if (Object.keys(author).includes(field.name)) {
+						if (field.name === 'orcid') {
+							field.orcid = author['orcid'] ?? '';
+							field.authorId = author['id'];
+							field.isVerified = author['orcidIsVerified'] ?? false;
+						} else if (Object.keys(author).includes(field.name)) {
 							field.value = author[field.name];
 						}
 						return field;
@@ -654,7 +658,6 @@ export default {
 				},
 			});
 		},
-		
 	},
 };
 </script>
