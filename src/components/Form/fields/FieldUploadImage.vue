@@ -155,7 +155,14 @@ export default {
 			if (this.uploadFile) {
 				return this.uploadFile.dataURL;
 			} else if (this.currentValue && this.currentValue.uploadName) {
-				return this.baseUrl + '/' + this.currentValue.uploadName;
+				const dateUploaded = new Date(this.currentValue.dateUploaded);
+				return (
+					this.baseUrl +
+					'/' +
+					this.currentValue.uploadName +
+					'?' +
+					dateUploaded.getTime()
+				);
 			}
 			return '';
 		},

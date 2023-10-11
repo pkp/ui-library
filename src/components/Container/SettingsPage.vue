@@ -1,6 +1,7 @@
 <script type="text/javascript">
 import Page from './Page.vue';
 import AnnouncementsListPanel from '@/components/ListPanel/announcements/AnnouncementsListPanel.vue';
+import HighlightsListPanel from '@/components/ListPanel/highlights/HighlightsListPanel.vue';
 import InstitutionsListPanel from '@/components/ListPanel/institutions/InstitutionsListPanel.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import ThemeForm from '@/components/Form/context/ThemeForm.vue';
@@ -13,6 +14,7 @@ export default {
 	extends: Page,
 	components: {
 		AnnouncementsListPanel,
+		HighlightsListPanel,
 		InstitutionsListPanel,
 		PkpForm,
 		ThemeForm,
