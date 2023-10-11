@@ -209,6 +209,11 @@
 					</router-link>
 				</li>
 				<li>
+					<router-link to="/component/ListPanel/components/HighlightsListPanel">
+						HighlightsListPanel
+					</router-link>
+				</li>
+				<li>
 					<router-link
 						to="/component/ListPanel/components/InstitutionsListPanel"
 					>
