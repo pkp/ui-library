@@ -27,23 +27,29 @@
 			<list>
 				<list-item>
 					{{
-						replaceLocaleParams(this.subjectLabel, {
-							subject: item.subject
-						})
+						replaceLocaleParams(
+							this.subjectLabel,
+							{subject: item.subject},
+							{htmlEscaping: true}
+						)
 					}}
 				</list-item>
 				<list-item v-if="item.fromRoleId">
 					{{
-						replaceLocaleParams(this.fromLabel, {
-							value: getRoleLabel(item.fromRoleId)
-						})
+						replaceLocaleParams(
+							this.fromLabel,
+							{value: getRoleLabel(item.fromRoleId)},
+							{htmlEscaping: true}
+						)
 					}}
 				</list-item>
 				<list-item v-if="item.toRoleId">
 					{{
-						replaceLocaleParams(this.toLabel, {
-							value: getRoleLabel(item.toRoleId)
-						})
+						replaceLocaleParams(
+							this.toLabel,
+							{value: getRoleLabel(item.toRoleId)},
+							{htmlEscaping: true}
+						)
 					}}
 				</list-item>
 				<list-item
