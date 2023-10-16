@@ -50,8 +50,8 @@
 				:toolbar="toolbar"
 				:plugins="plugins"
 				:init="compiledInit"
-				@onFocus="focus"
-				@onBlur="blur"
+				@focus="focus"
+				@blur="blur"
 			/>
 			<div
 				v-if="(isMultilingual && locales.length > 1) || wordLimit"
