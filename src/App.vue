@@ -49,6 +49,11 @@
 			<li>
 				<router-link to="/component/ActionPanel">ActionPanel</router-link>
 			</li>
+			<li>
+				<router-link to="/component/ActivityIndicator">
+					ActivityIndicator
+				</router-link>
+			</li>
 			<li><router-link to="/component/ButtonRow">ButtonRow</router-link></li>
 			<li><router-link to="/component/Chart">Chart</router-link></li>
 			<li><router-link to="/component/Composer">Composer</router-link></li>
@@ -285,7 +290,7 @@
 			</li>
 		</nav-group>
 	</nav>
-	<div class="content" role="main">
+	<div class="content text-base" role="main">
 		<router-view />
 	</div>
 </template>

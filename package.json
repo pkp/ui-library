@@ -45,6 +45,7 @@
     "lint-staged": "^14.0.1",
     "postcss": "^8.4.27",
     "prettier": "^3.0.2",
+    "prettier-plugin-tailwindcss": "^0.5.5",
     "tailwindcss": "^3.3.3",
     "vite": "^4.4.9"
   },
@@ -60,7 +61,10 @@
     "singleQuote": true,
     "useTabs": true,
     "htmlWhitespaceSensitivity": "ignore",
-    "proseWrap": "never"
+    "proseWrap": "never",
+    "plugins": [
+      "prettier-plugin-tailwindcss"
+    ]
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
@@ -73,4 +77,4 @@
       "prettier --write"
     ]
   }
-}  
+}

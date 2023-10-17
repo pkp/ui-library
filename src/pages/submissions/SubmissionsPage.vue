@@ -1,13 +1,13 @@
 <script type="text/javascript">
-import Page from './Page.vue';
-import ButtonRow from '../ButtonRow/ButtonRow.vue';
-import Modal from '../Modal/Modal.vue';
-import Pagination from '../Pagination/Pagination.vue';
-import Search from '../Search/Search.vue';
-import StageBubble from '../StageBubble/StageBubble.vue';
-import PkpTable from '../TableNext/Table.vue';
-import TableCell from '../TableNext/TableCell.vue';
-import TableHeader from '../TableNext/TableHeader.vue';
+import Page from '@/components/Container/Page.vue';
+import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
+import SideModal from '@/components/Modal/SideModal.vue';
+import Pagination from '@/components/Pagination/Pagination.vue';
+import Search from '@/components/Search/Search.vue';
+import StageBubble from '@/components/StageBubble/StageBubble.vue';
+import PkpTable from '@/components/TableNext/Table.vue';
+import TableCell from '@/components/TableNext/TableCell.vue';
+import TableHeader from '@/components/TableNext/TableHeader.vue';
 import ajaxError from '@/mixins/ajaxError';
 import localizeSubmission from '@/mixins/localizeSubmission.js';
 import {v4 as uuidv4} from 'uuid';
@@ -32,7 +32,7 @@ export default {
 	mixins: [ajaxError, localizeSubmission],
 	components: {
 		ButtonRow,
-		Modal,
+		SideModal,
 		Pagination,
 		Search,
 		PkpTable,

@@ -219,7 +219,7 @@
 </template>
 
 <script>
-import SubmissionsPage from '../../../../components/Container/SubmissionsPage.vue';
+import SubmissionsPage from '../../../../pages/submissions/SubmissionsPage.vue';
 import dialog from '../../../../mixins/dialog';
 import submissions from '../../../data/submissions';
 import form from '../../Form/helpers/form-base';
