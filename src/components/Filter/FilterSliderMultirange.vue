@@ -3,13 +3,13 @@
 		<button v-if="isFilterActive" class="pkpFilter__remove" @click="remove">
 			<icon icon="times-circle-o" />
 			<span class="-screenReader">
-				{{ __('filterRemove', {filterTitle: title}) }}
+				{{ __('common.filterRemove', {filterTitle: title}) }}
 			</span>
 		</button>
 		<button v-else class="pkpFilter__add" @click="enable">
 			<icon icon="plus-square-o" />
 			<span class="-screenReader">
-				{{ __('filterAdd', {filterTitle: title}) }}
+				{{ __('common.filterAdd', {filterTitle: title}) }}
 			</span>
 		</button>
 		<div
