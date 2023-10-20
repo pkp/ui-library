@@ -113,7 +113,7 @@ export default {
 					date: this.createdAt.substring(0, 10),
 				});
 			}
-			return this.__('common.uploaded');
+			return this.__('common.uploadedBy', {name: this.uploadedBy});
 		},
 	},
 	created() {
