@@ -12,9 +12,9 @@ module.exports = {
 			blur: 'rgba(0,0,0,0.5)',
 		},
 		textColor: {
-			base: '#222222',
-			'on-light': '#01354F',
-			light: '#777777',
+			'color-base': '#222222',
+			'color-on-light': '#01354F',
+			'color-light': '#777777',
 		},
 		borderColor: {
 			dark: '#696969',
@@ -22,7 +22,10 @@ module.exports = {
 			darkest: '#000000',
 		},
 		borderRadius: {
-			DEFAULT: '2px',
+			DEFAULT: '4px',
+		},
+		boxShadow: {
+			DEFAULT: '0 0 4px rgba(0, 0, 0, 0.5);',
 		},
 		colors: {
 			primary: '#006798',

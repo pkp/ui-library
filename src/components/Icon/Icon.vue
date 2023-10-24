@@ -27,7 +27,7 @@
 			/>
 		</g>
 	</svg>
-	<span v-else-if="isPkpIcon">
+	<span class="inline-block" v-else-if="isPkpIcon">
 		<component :is="pkpIcons[icon]"></component>
 	</span>
 	<span v-else class="fa" :class="classes" aria-hidden="true"></span>
@@ -35,9 +35,11 @@
 
 <script>
 import EnvelopeClosed from './EnvelopeClosed.vue';
+import QuestionmarkCircle from './QuestionmarkCircle.vue';
 export default {
 	components: {
 		EnvelopeClosed,
+		QuestionmarkCircle,
 	},
 	name: 'Icon',
 	props: {
@@ -45,7 +47,12 @@ export default {
 		inline: Boolean,
 	},
 	data() {
-		return {pkpIcons: {'pkp-envelope-closed': EnvelopeClosed}};
+		return {
+			pkpIcons: {
+				'pkp-envelope-closed': EnvelopeClosed,
+				'pkp-questionmark-circle': QuestionmarkCircle,
+			},
+		};
 	},
 	computed: {
 		isPkpIcon() {

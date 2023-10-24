@@ -104,7 +104,7 @@ export default {
 }
 
 .pkpButton--isLink {
-	text-transform: uppercase;
+	padding: 0;
 	box-shadow: none;
 	border-color: transparent;
 	background: transparent;
