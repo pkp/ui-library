@@ -41,18 +41,18 @@
 				<button-row>
 					<template #end>
 						<pkp-button @click="openFilters">
-							<!--{translate key="common.filter"}-->
+							{{ t('common.filter') }}
 						</pkp-button>
 						<span v-if="isLoadingSubmissions">
 							<spinner></spinner>
-							<!--{translate key="common.loading"}-->
+							{{ t('common.loading') }}
 						</span>
 					</template>
-					<!--<search
-                        :search-phrase="searchPhrase"
-                        search-label="{translate key="editor.submission.search"}"
-                        @search-phrase-changed="setSearchPhrase"
-                    ></search>-->
+					<Search
+						:search-phrase="searchPhrase"
+						:search-label="t('editor.submission.search')"
+						@search-phrase-changed="setSearchPhrase"
+					></Search>
 				</button-row>
 				<div v-if="activeFiltersList.length" class="submissions__list__filters">
 					<badge
@@ -67,31 +67,26 @@
 					</pkp-button>
 				</div>
 			</div>
-			<pkp-table
-				aria-labelledby="table-title"
-				aria-describedby="table-controls"
-			>
-				<!--<template #head>
-                    {foreach from=$columns item="column"}
-                        <table-header
-                        {if $column->sortable}
-                            :can-sort="true"
-                            :sort-direction="sortColumn === '{$column->id}' ? sortDirection : 'none'"
-                            @table:sort="sort('{$column->id}')"
-                        {/if}
-                        >
-                            {$column->header}
-                        </table-header>
-                    {/foreach}
-                </template>-->
-				<!--<template v-for="submission in submissions">
-                    <tr :key="submission.id">
-                        {foreach from=$columns item="column"}
-                            {include file=$column->template}
-                        {/foreach}
-                    </tr>
-                </template>-->
-			</pkp-table>
+			<PkpTable aria-labelledby="table-title" aria-describedby="table-controls">
+				<template #head>
+					<TableHeader
+						v-for="column in columns"
+						:key="column.id"
+						:canSort="column.sortable"
+						:sortDirection="sortColumn === column.id ? sortDirection : 'none'"
+					>
+						{{ column.header }}
+					</TableHeader>
+				</template>
+				<tr v-for="submission in submissions" :key="submission.id">
+					<component
+						:is="column.componentName"
+						v-for="column in columns"
+						:key="column.id"
+						:submission="submission"
+					/>
+				</tr>
+			</PkpTable>
 			<div class="submissions__list__footer">
 				<span class="submission__list__showing" v-html="showingXofX"></span>
 				<pagination
@@ -138,13 +133,20 @@
 </template>
 <script type="text/javascript">
 import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
+import ColumnActions from '@/pages/submissions/columnActions.vue';
+import ColumnActivity from '@/pages/submissions/columnActivity.vue';
+import ColumnDays from '@/pages/submissions/columnDays.vue';
+import ColumnId from '@/pages/submissions/columnId.vue';
+import ColumnStage from '@/pages/submissions/columnStage.vue';
+import ColumnTitle from '@/pages/submissions/columnTitle.vue';
+
 //import SideModal from '@/components/Modal/SideModal.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
-//import Search from '@/components/Search/Search.vue';
+import Search from '@/components/Search/Search.vue';
 //import StageBubble from '@/components/StageBubble/StageBubble.vue';
 import PkpTable from '@/components/TableNext/Table.vue';
 //////import TableCell from '@/components/TableNext/TableCell.vue';
-//import TableHeader from '@/components/TableNext/TableHeader.vue';
+import TableHeader from '@/components/TableNext/TableHeader.vue';
 import ajaxError from '@/mixins/ajaxError';
 import localizeSubmission from '@/mixins/localizeSubmission.js';
 import {v4 as uuidv4} from 'uuid';
@@ -170,11 +172,15 @@ export default {
 		ButtonRow,
 		//SideModal,
 		Pagination,
-		//Search,
+		Search,
 		PkpTable,
-		//StageBubble,
-		//TableCell,
-		//TableHeader,
+		TableHeader,
+		ColumnActions,
+		ColumnActivity,
+		ColumnDays,
+		ColumnId,
+		ColumnStage,
+		ColumnTitle,
 	},
 	props: {
 		apiUrl: String,
@@ -189,6 +195,7 @@ export default {
 		initSubmissions: Array,
 		initCountMax: Number,
 		views: Array,
+		columns: Array,
 	},
 	data() {
 		console.log('HELLo', this.hi);
@@ -264,15 +271,6 @@ export default {
 		},
 
 		/**
-		 * Whether the current user is a manager (or admin)
-		 */
-		isManager() {
-			const roles = [pkp.const.ROLE_ID_MANAGER, pkp.const.ROLE_ID_SITE_ADMIN];
-
-			return !!pkp.currentUser.roles.find((role) => roles.includes(role));
-		},
-
-		/**
 		 * The number of pages available
 		 *
 		 * @return {Number}
@@ -287,13 +285,11 @@ export default {
 		 * eg - Showing 1 to 30 of 170
 		 */
 		showingXofX() {
-			return this.i18nShowingXofX
-				.replace('{$start}', this.offset + 1)
-				.replace(
-					'{$finish}',
-					Math.min(this.offset + this.count, this.submissionsMax),
-				)
-				.replace('{$total}', this.submissionsMax);
+			return this.t('common.showingXofX', {
+				start: this.offset + 1,
+				finish: Math.min(this.offset + this.count, this.submissionsMax),
+				total: this.submissionsMax,
+			});
 		},
 	},
 	methods: {
@@ -397,18 +393,6 @@ export default {
 					this.findView(view.id).count = r.itemsMax;
 				});
 			});
-		},
-
-		/**
-		 * Whether or not a submission needs an editor to be assigned
-		 */
-		needsEditors(submission) {
-			return !!submission.stages.find(
-				(stage) =>
-					stage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION &&
-					!!stage.statusId &&
-					stage.statusId === pkp.const.STAGE_STATUS_SUBMISSION_UNASSIGNED,
-			);
 		},
 
 		/**
