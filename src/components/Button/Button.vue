@@ -31,6 +31,16 @@ export default {
 	computed: {
 		classes() {
 			let classes = [];
+
+			// common classes
+			/*classes.push(
+				'inline-block min-w-[2rem] border text-center text-sm-bold leading-8 no-underline',
+			);
+
+			if (this.isPrimary || this.isActive) {
+				classes.push('bg-primary border-primary text-color-lightest');
+			}*/
+
 			if (this.isPrimary) {
 				classes.push('pkpButton--isPrimary');
 			}
@@ -60,20 +70,20 @@ export default {
 @import '../../styles/_import';
 
 .pkpButton {
-	display: inline-block;
+	display: inline-block; /* */
 	padding: 0 0.5em;
-	min-width: 2.13rem; // Always at least as wide as it is tall
+	min-width: 2.13rem; /**/ // Always at least as wide as it is tall
 	background: #fff;
 	border: @bg-border-light;
-	border-radius: @radius;
-	text-align: center;
-	font-size: @font-sml;
-	line-height: 2rem;
-	font-weight: @semibold;
+	border-radius: @radius; /* */
+	text-align: center; /** */
+	font-size: @font-sml; /** */
+	line-height: 2rem; /** */
+	font-weight: @semibold; /** */
 	color: @primary;
 	text-decoration: none;
-	box-shadow: 0 1px 0 @bg-border-color-light;
-	cursor: pointer;
+	box-shadow: 0 1px 0 @bg-border-color-light; /** */
+	cursor: pointer; /** */
 
 	&:hover {
 		color: @primary;

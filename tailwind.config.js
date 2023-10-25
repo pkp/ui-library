@@ -12,9 +12,10 @@ module.exports = {
 			blur: 'rgba(0,0,0,0.5)',
 		},
 		textColor: {
-			'color-base': '#222222',
-			'color-on-light': '#01354F',
-			'color-light': '#777777',
+			dark: '#222222',
+			'on-light': '#01354F',
+			light: '#777777',
+			lightest: '#FFFFFF',
 		},
 		borderColor: {
 			dark: '#696969',
@@ -26,6 +27,7 @@ module.exports = {
 		},
 		boxShadow: {
 			DEFAULT: '0 0 4px rgba(0, 0, 0, 0.5);',
+			down: '',
 		},
 		colors: {
 			primary: '#006798',
@@ -47,6 +49,7 @@ module.exports = {
 			'profile-4': '#89AAE0',
 			'profile-5': '#EBDA68',
 			'profile-6': '#BD726C',
+			transparent: 'transparent',
 		},
 		fontFamily: {
 			// this sets default font

@@ -1,13 +1,150 @@
+<template>
+	<div class="submissions">
+		<div class="submissions__views">
+			<h1 class="submissions__views__title">
+				{{ t('navigation.submissions') }}
+			</h1>
+			<ul class="submissions__views__list">
+				<li v-for="view in views" :key="view.id" class="submissions__view">
+					<button
+						class="submissions__view__button"
+						:class="
+							currentView.id === view.id
+								? 'submissions__view__button--current'
+								: ''
+						"
+						@click="loadView(view)"
+					>
+						<span class="submissions__view__count">
+							{{ view.count }}
+						</span>
+						<span class="submissions__view__name">
+							{{ view.name }}
+						</span>
+					</button>
+				</li>
+			</ul>
+		</div>
+		<div class="submissions__list">
+			<div class="submissions__list__top">
+				<pkp-button element="a" href="{url page='submission'}">
+					{{ t('manager.newSubmission') }}
+				</pkp-button>
+			</div>
+			<h2 class="submissions__list__title" id="table-title">
+				{{ currentView.name }}
+				<span class="submissions__view__count">
+					{{ submissionsMax }}
+				</span>
+			</h2>
+			<div id="table-controls" class="submissions__list__controls">
+				<button-row>
+					<template #end>
+						<pkp-button @click="openFilters">
+							<!--{translate key="common.filter"}-->
+						</pkp-button>
+						<span v-if="isLoadingSubmissions">
+							<spinner></spinner>
+							<!--{translate key="common.loading"}-->
+						</span>
+					</template>
+					<!--<search
+                        :search-phrase="searchPhrase"
+                        search-label="{translate key="editor.submission.search"}"
+                        @search-phrase-changed="setSearchPhrase"
+                    ></search>-->
+				</button-row>
+				<div v-if="activeFiltersList.length" class="submissions__list__filters">
+					<badge
+						v-for="filter in activeFiltersList"
+						:key="filter.name + filter.value"
+					>
+						<strong>{{ filter.name }}:</strong>
+						{{ filter.value }}
+					</badge>
+					<pkp-button :is-warnable="true" :is-link="true" @click="clearFilters">
+						<!--{translate key="common.filtersClear"}-->
+					</pkp-button>
+				</div>
+			</div>
+			<pkp-table
+				aria-labelledby="table-title"
+				aria-describedby="table-controls"
+			>
+				<!--<template #head>
+                    {foreach from=$columns item="column"}
+                        <table-header
+                        {if $column->sortable}
+                            :can-sort="true"
+                            :sort-direction="sortColumn === '{$column->id}' ? sortDirection : 'none'"
+                            @table:sort="sort('{$column->id}')"
+                        {/if}
+                        >
+                            {$column->header}
+                        </table-header>
+                    {/foreach}
+                </template>-->
+				<!--<template v-for="submission in submissions">
+                    <tr :key="submission.id">
+                        {foreach from=$columns item="column"}
+                            {include file=$column->template}
+                        {/foreach}
+                    </tr>
+                </template>-->
+			</pkp-table>
+			<div class="submissions__list__footer">
+				<span class="submission__list__showing" v-html="showingXofX"></span>
+				<pagination
+					v-if="lastPage > 1"
+					:current-page="currentPage"
+					:is-loading="isLoadingPage"
+					:last-page="lastPage"
+					:show-adjacent-pages="3"
+					@set-page="setPage"
+				></pagination>
+			</div>
+		</div>
+	</div>
+	<!--<side-modal
+        v-if="summarySubmission"    
+        close-label="Close"
+        name="summary"
+        type="side"
+        :open="isModalOpenedSummary"
+        @close="isModalOpenedSummary = false"
+    >
+            {include file="dashboard/summary.tpl"}
+    </side-modal>
+    <side-modal
+        close-label="Close"
+        :open="isModalOpenedFilters"
+        @close="isModalOpenedFilters = false"
+    >
+        <template #header>
+            <h2>
+                {translate key="common.filter"}
+            </h2>
+        </template>
+        <panel>
+            <panel-section>
+                <pkp-form
+                    v-bind="filtersForm"
+                    @set="setFiltersForm"
+                    @success="saveFilters"
+                ></pkp-form>
+            </panel-section>
+        </panel>
+    </side-modal>-->
+</template>
 <script type="text/javascript">
-import Page from '@/components/Container/Page.vue';
 import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
-import SideModal from '@/components/Modal/SideModal.vue';
+//import SideModal from '@/components/Modal/SideModal.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
-import Search from '@/components/Search/Search.vue';
-import StageBubble from '@/components/StageBubble/StageBubble.vue';
+//import Search from '@/components/Search/Search.vue';
+//import StageBubble from '@/components/StageBubble/StageBubble.vue';
 import PkpTable from '@/components/TableNext/Table.vue';
-import TableCell from '@/components/TableNext/TableCell.vue';
-import TableHeader from '@/components/TableNext/TableHeader.vue';
+//////import TableCell from '@/components/TableNext/TableCell.vue';
+//import TableHeader from '@/components/TableNext/TableHeader.vue';
 import ajaxError from '@/mixins/ajaxError';
 import localizeSubmission from '@/mixins/localizeSubmission.js';
 import {v4 as uuidv4} from 'uuid';
@@ -28,38 +165,47 @@ const sortDirections = ['descending', 'ascending', 'none'];
 
 export default {
 	name: 'SubmissionsPage',
-	extends: Page,
 	mixins: [ajaxError, localizeSubmission],
 	components: {
 		ButtonRow,
-		SideModal,
+		//SideModal,
 		Pagination,
-		Search,
+		//Search,
 		PkpTable,
-		StageBubble,
-		TableCell,
-		TableHeader,
+		//StageBubble,
+		//TableCell,
+		//TableHeader,
+	},
+	props: {
+		apiUrl: String,
+		assignParticipantUrl: String,
+		// to be renamed
+		count: {
+			type: Number,
+			default: 30,
+		},
+		initCurrentViewId: String,
+		filtersForm: Object,
+		initSubmissions: Array,
+		initCountMax: Number,
+		views: Array,
 	},
 	data() {
+		console.log('HELLo', this.hi);
 		return {
 			activeFilters: {},
-			apiUrl: '',
-			assignParticipantUrl: '',
-			count: 30,
-			currentViewId: '',
-			filtersForm: {},
-			i18nReviewRound: '',
-			i18nShowingXofX: '',
+			currentViewId: this.initCurrentViewId,
+			i18nReviewRound: 'blabla',
+			i18nShowingXofX: 'oioii',
 			isLoadingPage: false,
 			isLoadingSubmissions: false,
 			offset: 0,
 			searchPhrase: '',
 			sortColumn: '',
 			sortDirection: '',
-			submissions: [],
-			submissionsMax: 0,
+			submissions: this.initSubmissions,
+			submissionsMax: this.initCountMax,
 			summarySubmission: null,
-			views: [],
 			isModalOpenedFilters: false,
 			isModalOpenedSummary: false,
 		};
@@ -319,12 +465,12 @@ export default {
 		 *
 		 * Fired when a field in the form changes
 		 */
-		setFiltersForm(id, data) {
+		/*setFiltersForm(id, data) {
 			this.filtersForm = {
 				...this.filtersForm,
 				...data,
 			};
-		},
+		},*/
 
 		/**
 		 * Change the current page
@@ -369,9 +515,9 @@ export default {
 		 * Set the current view to the first available
 		 * view when the page is loaded
 		 */
-		if (!this.currentViewId) {
+		/*if (!this.currentViewId) {
 			this.currentViewId = this.views[0].id;
-		}
+		}*/
 	},
 };
 </script>
