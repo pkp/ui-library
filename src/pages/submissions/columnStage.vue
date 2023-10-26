@@ -1,6 +1,6 @@
 <template>
 	<TableCell class="submissions__list__item__stage">
-		<stage-bubble :stage-id="submission.stageId">
+		<StageBubble :stage-id="submission.stageId">
 			{{ submission.stageName }}
 			<template
 				v-if="
@@ -20,16 +20,18 @@
 					})
 				}}
 			</template>
-		</stage-bubble>
+		</StageBubble>
 	</TableCell>
 </template>
 
 <script>
 import TableCell from '@/components/TableNext/TableCell.vue';
+import StageBubble from '@/components/StageBubble/StageBubble.vue';
 
 export default {
 	components: {
 		TableCell,
+		StageBubble,
 	},
 	data() {
 		return {pkp: window.pkp};
