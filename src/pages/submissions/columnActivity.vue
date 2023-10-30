@@ -6,16 +6,19 @@
 		>
 			{{ t('submission.list.assignEditor') }}
 		</pkp-button>
-		<template v-else>TODO</template>
+		<template v-else>
+			<ActivityIndicatorPopup />
+		</template>
 	</TableCell>
 </template>
 
 <script>
 import TableCell from '@/components/TableNext/TableCell.vue';
-
+import ActivityIndicatorPopup from '@/components/ActivityIndicatorPopup/ActivityIndicatorPopup.vue';
 export default {
 	components: {
 		TableCell,
+		ActivityIndicatorPopup,
 	},
 	props: {
 		submission: Object,

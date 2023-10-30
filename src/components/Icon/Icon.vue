@@ -49,8 +49,8 @@ export default {
 	data() {
 		return {
 			pkpIcons: {
-				'pkp-envelope-closed': EnvelopeClosed,
-				'pkp-questionmark-circle': QuestionmarkCircle,
+				'pkp-envelope-closed': 'EnvelopeClosed',
+				'pkp-questionmark-circle': 'QuestionmarkCircle',
 			},
 		};
 	},

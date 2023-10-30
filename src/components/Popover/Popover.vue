@@ -30,3 +30,10 @@
 		</transition>
 	</Popover>
 </template>
+
+<script>
+import {PopoverButton, Popover, PopoverPanel} from '@headlessui/vue';
+export default {
+	components: {Popover, PopoverButton, PopoverPanel},
+};
+</script>

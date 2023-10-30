@@ -44,12 +44,12 @@
 import Pagination from '@/components/Pagination/Pagination.vue';
 import PkpTable from '@/components/TableNext/Table.vue';
 import TableHeader from '@/components/TableNext/TableHeader.vue';
-import ColumnActions from '@/pages/submissions/columnActions.vue';
-import ColumnActivity from '@/pages/submissions/columnActivity.vue';
-import ColumnDays from '@/pages/submissions/columnDays.vue';
-import ColumnId from '@/pages/submissions/columnId.vue';
-import ColumnStage from '@/pages/submissions/columnStage.vue';
-import ColumnTitle from '@/pages/submissions/columnTitle.vue';
+import ColumnActions from '@/pages/submissions/ColumnActions.vue';
+import ColumnActivity from '@/pages/submissions/ColumnActivity.vue';
+import ColumnDays from '@/pages/submissions/ColumnDays.vue';
+import ColumnId from '@/pages/submissions/ColumnId.vue';
+import ColumnStage from '@/pages/submissions/ColumnStage.vue';
+import ColumnTitle from '@/pages/submissions/ColumnTitle.vue';
 
 export default {
 	components: {

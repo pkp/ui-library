@@ -2,93 +2,36 @@
 	<div class="submissions">
 		<SubmissionsViews />
 		<div class="submissions__list">
-			<div class="submissions__list__top">
-				<pkp-button element="a" href="{url page='submission'}">
-					{{ t('manager.newSubmission') }}
-				</pkp-button>
-			</div>
-			<h2 class="submissions__list__title" id="table-title">
-				{{ $store.submissions.currentView.name }}
-				<span class="submissions__view__count">
-					{{ $store.submissions.submissionsCount }}
-				</span>
-			</h2>
-			<div id="table-controls" class="submissions__list__controls">
-				<ButtonRow>
-					<template #end>
-						<pkp-button @click="openFilters">
-							{{ t('common.filter') }}
-						</pkp-button>
-						<span v-if="$store.submissions.isLoadingSubmissions">
-							<spinner></spinner>
-							{{ t('common.loading') }}
-						</span>
-					</template>
-					<Search
-						:search-phrase="searchPhrase"
-						:search-label="t('editor.submission.search')"
-						@search-phrase-changed="setSearchPhrase"
-					></Search>
-				</ButtonRow>
-				<div
-					v-if="$store.submissions.activeFiltersList.length"
-					class="submissions__list__filters"
-				>
-					<Badge
-						v-for="filter in $store.submissions.activeFiltersList"
-						:key="filter.name + filter.value"
-					>
-						<strong>{{ filter.name }}:</strong>
-						{{ filter.value }}
-					</Badge>
-					<pkpButton :is-warnable="true" :is-link="true" @click="clearFilters">
-						{{ t('common.filtersClear') }}
-					</pkpButton>
-				</div>
-			</div>
+			<SubmissionsHeader />
+			<SubmissionsTableControls />
 			<SubmissionsTable />
 		</div>
 	</div>
-	<!--<side-modal
-        v-if="summarySubmission"    
-        close-label="Close"
-        name="summary"
-        type="side"
-        :open="isModalOpenedSummary"
-        @close="isModalOpenedSummary = false"
-    >
-            {include file="dashboard/summary.tpl"}
-    </side-modal>
-    <side-modal
-        close-label="Close"
-        :open="isModalOpenedFilters"
-        @close="isModalOpenedFilters = false"
-    >
-        <template #header>
-            <h2>
-                {translate key="common.filter"}
-            </h2>
-        </template>
-        <panel>
-            <panel-section>
-                <pkp-form
-                    v-bind="filtersForm"
-                    @set="setFiltersForm"
-                    @success="saveFilters"
-                ></pkp-form>
-            </panel-section>
-        </panel>
-    </side-modal>-->
+	<SideModal
+		:open="$store.submissions.isModalOpenedSummary"
+		@close="$store.submissions.closeSummaryModal"
+	>
+		<SubmissionSummaryModal />
+	</SideModal>
+	<SideModal
+		close-label="Close"
+		:open="$store.submissions.isModalOpenedFilters"
+		@close="$store.submissions.closeFiltersModal"
+	>
+		<SubmissionsFiltersModal />
+	</SideModal>
 </template>
 <script type="text/javascript">
 // store
 import {useSubmissionsStore} from '@/pages/submissions/submissionsStore.js';
 import SubmissionsTable from '@/pages/submissions/SubmissionsTable.vue';
 import SubmissionsViews from '@/pages/submissions/SubmissionsViews.vue';
-import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
+import SubmissionsHeader from '@/pages/submissions/SubmissionsHeader.vue';
+import SubmissionsTableControls from '@/pages/submissions/SubmissionsTableControls.vue';
+import SubmissionSummaryModal from '@/pages/submissions/SubmissionSummaryModal.vue';
+import SubmissionsFiltersModal from '@/pages/submissions/SubmissionsFiltersModal.vue';
 
-//import SideModal from '@/components/Modal/SideModal.vue';
-import Search from '@/components/Search/Search.vue';
+import SideModal from '@/components/Modal/SideModal.vue';
 import ajaxError from '@/mixins/ajaxError';
 import localizeSubmission from '@/mixins/localizeSubmission.js';
 
@@ -105,11 +48,13 @@ export default {
 	name: 'SubmissionsPage',
 	mixins: [ajaxError, localizeSubmission],
 	components: {
-		ButtonRow,
-		//SideModal,
-		Search,
 		SubmissionsTable,
 		SubmissionsViews,
+		SubmissionsHeader,
+		SubmissionsTableControls,
+		SubmissionSummaryModal,
+		SideModal,
+		SubmissionsFiltersModal,
 	},
 	props: {
 		storeData: Object,
@@ -121,7 +66,6 @@ export default {
 	mounted() {},
 	created() {
 		this.$store.submissions = useSubmissionsStore(this.$pinia);
-		console.log('hi', this.storeData, this);
 		this.$store.submissions.init(this.storeData);
 	},
 	methods: {

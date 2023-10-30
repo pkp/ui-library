@@ -24,6 +24,7 @@ export const useSubmissionsStore = defineStore('submissions', {
 			summarySubmission: null,
 			isModalOpenedFilters: false,
 			isModalOpenedSummary: false,
+			filtersForm: null,
 		};
 	},
 	getters: {
@@ -107,7 +108,6 @@ export const useSubmissionsStore = defineStore('submissions', {
 	// state: () => ({ count: 0 })
 	actions: {
 		init(initStoreData) {
-			console.log('store init:', initStoreData);
 			this.views = initStoreData.views;
 			this.columns = initStoreData.columns;
 			this.submissions = initStoreData.submissions;
@@ -115,6 +115,7 @@ export const useSubmissionsStore = defineStore('submissions', {
 			this.submissionsCount = initStoreData.submissionsCount;
 			this.apiUrl = initStoreData.apiUrl;
 			this.countPerPage = initStoreData.countPerPage;
+			this.filtersForm = initStoreData.filtersForm;
 		},
 		increment() {
 			this.count++;
@@ -234,28 +235,39 @@ export const useSubmissionsStore = defineStore('submissions', {
 		/**
 		 * Open the panel to select filters
 		 */
-		openFilters() {
+		openFiltersModal() {
 			this.isModalOpenedFilters = true;
+		},
+
+		closeFiltersModal() {
+			this.isModalOpenedFilters = false;
 		},
 
 		/**
 		 * Open the submission summary panel
 		 */
-		openSummary(submission) {
+		openSummaryModal(submission) {
 			this.summarySubmission = submission;
 			this.isModalOpenedSummary = true;
+		},
+
+		closeSummaryModal() {
+			console.log('close summary modal');
+			//this.summarySubmission = null;
+			this.isModalOpenedSummary = false;
 		},
 
 		/**
 		 * Fired when the filters form is saved
 		 */
-		saveFilters(data) {
+		async saveFilters(data) {
 			this.activeFilters = Object.fromEntries(
 				Object.entries(data).filter(([key, value]) => {
 					return (Array.isArray(value) && value.length) || !!value;
 				}),
 			);
-			this.get(() => (this.isModalOpenedFilters = false));
+			await this.get();
+			this.closeFiltersModal();
 		},
 
 		/**
@@ -263,12 +275,12 @@ export const useSubmissionsStore = defineStore('submissions', {
 		 *
 		 * Fired when a field in the form changes
 		 */
-		/*setFiltersForm(id, data) {
+		setFiltersForm(id, data) {
 			this.filtersForm = {
 				...this.filtersForm,
 				...data,
 			};
-		},*/
+		},
 
 		/**
 		 * Change the current page

@@ -1,6 +1,6 @@
 <template>
 	<TransitionRoot as="template" :show="open">
-		<HLDialog as="div" class="relative z-10" @close="$emit('close')">
+		<HLDialog as="div" class="relative z-10">
 			<TransitionChild
 				as="template"
 				enter="ease-in-out duration-500"
@@ -27,45 +27,9 @@
 							leave-from="translate-x-0"
 							leave-to="ltr:translate-x-full rtl:-translate-x-full"
 						>
-							<DialogPanel class="pointer-events-auto w-screen max-w-md">
-								<div
-									class="flex h-full flex-col overflow-y-auto bg-lightest py-6 shadow-xl"
-								>
-									<div class="">
-										<div class="flex items-start justify-between">
-											<div class="m-2 flex h-7 items-center">
-												<button
-													type="button"
-													class="bg-ligh rounded-md text-gray-400 hover:text-gray-500 focus:ring-indigo-500 relative focus:outline-none focus:ring-2 focus:ring-offset-2"
-													@click="$emit('close')"
-												>
-													<span class="sr-only">Close panel</span>
-													<icon
-														class="text-2xl rtl:hidden"
-														icon="chevron-left"
-														:aria-hidden="true"
-													/>
-													<icon
-														class="text-2xl ltr:hidden"
-														icon="chevron-right"
-														:aria-hidden="true"
-													/>
-												</button>
-											</div>
-											<div>
-												<DialogTitle
-													class="text-gray-900 font-semibold leading-6 text-base"
-												>
-													Panel title
-												</DialogTitle>
-											</div>
-										</div>
-									</div>
-									<div class="relative mt-6 flex-1 px-4 sm:px-6">
-										Content stuff
-									</div>
-								</div>
-							</DialogPanel>
+							<div>
+								<slot />
+							</div>
 						</TransitionChild>
 					</div>
 				</div>
@@ -77,8 +41,6 @@
 <script>
 import {
 	Dialog as HLDialog,
-	DialogPanel,
-	DialogTitle,
 	TransitionRoot,
 	TransitionChild,
 } from '@headlessui/vue';
@@ -86,8 +48,6 @@ import {
 export default {
 	components: {
 		HLDialog,
-		DialogPanel,
-		DialogTitle,
 		TransitionRoot,
 		TransitionChild,
 	},
@@ -117,16 +77,14 @@ export default {
 			},
 		},
 	},
-	data() {
+	methods: {},
+	provide() {
 		return {
-			isOpen: true,
-			MODAL_PROPS: {
-				height: 'auto',
-				scrollable: true,
+			closeModal: () => {
+				this.$emit('close');
 			},
 		};
 	},
-	methods: {},
 };
 </script>
 
