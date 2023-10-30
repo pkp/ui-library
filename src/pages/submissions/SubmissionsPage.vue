@@ -23,7 +23,7 @@
 </template>
 <script type="text/javascript">
 // store
-import {useSubmissionsStore} from '@/pages/submissions/submissionsStore.js';
+import {useSubmissionsStore} from '@/pages/submissions/SubmissionsStore.js';
 import SubmissionsTable from '@/pages/submissions/SubmissionsTable.vue';
 import SubmissionsViews from '@/pages/submissions/SubmissionsViews.vue';
 import SubmissionsHeader from '@/pages/submissions/SubmissionsHeader.vue';
