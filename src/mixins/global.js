@@ -8,7 +8,7 @@
  * @see https://vuejs.org/v2/guide/mixins.html
  */
 import moment from 'moment';
-import {replaceLocaleParams, t} from '../utils/i18n';
+import {replaceLocaleParams, t, localize} from '../utils/i18n';
 export default {
 	methods: {
 		/**
@@ -61,40 +61,7 @@ export default {
 		 * @return {String}
 		 */
 		localize: function (multilingualData, requestedLocale) {
-			if (!multilingualData) {
-				return '';
-			} else if (requestedLocale !== undefined) {
-				return Object.prototype.hasOwnProperty.call(
-					multilingualData,
-					requestedLocale,
-				)
-					? multilingualData[requestedLocale]
-					: '';
-			} else if (
-				Object.prototype.hasOwnProperty.call(
-					multilingualData,
-					$.pkp.app.currentLocale,
-				) &&
-				multilingualData[$.pkp.app.currentLocale]
-			) {
-				return multilingualData[$.pkp.app.currentLocale];
-			} else if (
-				Object.prototype.hasOwnProperty.call(
-					multilingualData,
-					$.pkp.app.primaryLocale,
-				) &&
-				multilingualData[$.pkp.app.primaryLocale]
-			) {
-				return multilingualData[$.pkp.app.primaryLocale];
-			}
-
-			for (var key in multilingualData) {
-				if (multilingualData[key]) {
-					return multilingualData[key];
-				}
-			}
-
-			return '';
+			return localize(multilingualData, requestedLocale);
 		},
 
 		/**
