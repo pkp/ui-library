@@ -8,7 +8,7 @@
  * @see https://vuejs.org/v2/guide/mixins.html
  */
 import moment from 'moment';
-
+import {replaceLocaleParams, t, localize} from '../utils/i18n';
 export default {
 	methods: {
 		/**
@@ -16,30 +16,18 @@ export default {
 		 *
 		 * This method can be used in templates:
 		 *
-		 * {{ __('key') }}
+		 * {{ t('key') }}
 		 *
 		 * And parameters can be passed in:
 		 *
-		 * {{ __('key', { count: this.item_count }) }}
+		 * {{ t('key', { count: this.item_count }) }}
 		 *
 		 * @param {String} key The translation string to use
 		 * @param {Object} params (Optional) Variables to compile with the translation
 		 * @return {String}
 		 */
 		t: function (key, params) {
-			if (typeof pkp.localeKeys[key] === 'undefined') {
-				if (process.env.NODE_ENV === 'development') {
-					// eslint-disable-next-line
-					console.error('Missing locale key: ', key);
-				}
-				return '';
-			}
-
-			if (typeof params === 'undefined') {
-				return pkp.localeKeys[key];
-			}
-
-			return this.replaceLocaleParams(pkp.localeKeys[key], params);
+			return t(key, params);
 		},
 
 		/**
@@ -73,40 +61,7 @@ export default {
 		 * @return {String}
 		 */
 		localize: function (multilingualData, requestedLocale) {
-			if (!multilingualData) {
-				return '';
-			} else if (requestedLocale !== undefined) {
-				return Object.prototype.hasOwnProperty.call(
-					multilingualData,
-					requestedLocale,
-				)
-					? multilingualData[requestedLocale]
-					: '';
-			} else if (
-				Object.prototype.hasOwnProperty.call(
-					multilingualData,
-					$.pkp.app.currentLocale,
-				) &&
-				multilingualData[$.pkp.app.currentLocale]
-			) {
-				return multilingualData[$.pkp.app.currentLocale];
-			} else if (
-				Object.prototype.hasOwnProperty.call(
-					multilingualData,
-					$.pkp.app.primaryLocale,
-				) &&
-				multilingualData[$.pkp.app.primaryLocale]
-			) {
-				return multilingualData[$.pkp.app.primaryLocale];
-			}
-
-			for (var key in multilingualData) {
-				if (multilingualData[key]) {
-					return multilingualData[key];
-				}
-			}
-
-			return '';
+			return localize(multilingualData, requestedLocale);
 		},
 
 		/**
@@ -156,16 +111,7 @@ export default {
 		 * @return {String}
 		 */
 		replaceLocaleParams(str, params) {
-			for (var param in params) {
-				let value = params[param];
-				// If a locale object is passed, take the value from the current locale
-				if (value === Object(value)) {
-					value = this.localize(value);
-				}
-				const re = new RegExp('{\\$' + param + '}', 'g');
-				str = str.replace(re, value);
-			}
-			return str;
+			return replaceLocaleParams(str, params);
 		},
 
 		/**

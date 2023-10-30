@@ -22,6 +22,7 @@ export default {
 		'isPrimary',
 		'isSuccess',
 		'isWarnable',
+		'isError',
 		'isButton',
 		'hasDot',
 		'stage',

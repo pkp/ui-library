@@ -1,6 +1,8 @@
 import {createRouter, createWebHistory} from 'vue-router';
 import Page from './docs/Page.vue';
 import ComponentActionPanel from './docs/components/ActionPanel/ComponentActionPanel.vue';
+import ComponentActivityIndicator from './docs/components/ActivityIndicator/ComponentActivityIndicator.vue';
+import ComponentActivityIndicatorPopup from './docs/components/ActivityIndicatorPopup/ComponentActivityIndicatorPopup.vue';
 import ComponentAnnouncementsListPanel from './docs/components/ListPanel/ComponentAnnouncementsListPanel.vue';
 import ComponentBadge from './docs/components/Badge/ComponentBadge.vue';
 import ComponentButton from './docs/components/Button/ComponentButton.vue';
@@ -90,6 +92,16 @@ export default createRouter({
 			path: '/component/ActionPanel/:example?',
 			name: 'ActionPanel',
 			component: ComponentActionPanel,
+		},
+		{
+			path: '/component/ActivityIndicator/:example?',
+			name: 'ActivityIndicator',
+			component: ComponentActivityIndicator,
+		},
+		{
+			path: '/component/ActivityIndicatorPopup/:example?',
+			name: 'ActivityIndicator',
+			component: ComponentActivityIndicatorPopup,
 		},
 		{
 			path: '/component/Badge/:example?',

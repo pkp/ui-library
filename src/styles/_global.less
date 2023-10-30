@@ -1,11 +1,30 @@
 // disabled for now as its different normalisation than existing one
-//@tailwind base;
+
+@tailwind base;
+
+/* 
+   Apply some styles for backward-compatibility as tailwind by 
+   default resets styling of headers
+   This is just temporary until styling is migrated to taildwind classes
+   */
+@layer base {
+	h1 {
+		@apply font-bold;
+	}
+	h2 {
+		@apply font-bold;
+	}
+	h3 {
+		@apply font-bold;
+	}
+	h4 {
+		@apply font-bold;
+	}
+}
 
 @tailwind components;
 @tailwind utilities;
 
-@import 'normalize';
 @import 'variables';
-@import 'normalize-override';
 @import 'helpers';
 @import 'elements/screen-reader';
