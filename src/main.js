@@ -1,4 +1,6 @@
 import {createApp, h} from 'vue';
+import {createPinia} from 'pinia';
+
 import emitter from 'tiny-emitter/instance';
 
 //import './styles/style.css';
@@ -9,6 +11,7 @@ import router from './router';
 import GlobalMixins from '@/mixins/global.js';
 import VueAnnouncer from '@vue-a11y/announcer';
 import FloatingVue from 'floating-vue';
+import i18nPlugin from '@/piniaPlugins/i18n.plugin.js';
 
 import VueScrollTo from 'vue-scrollto';
 
@@ -100,6 +103,13 @@ const vueApp = createApp({
 	},
 	render: () => h(App),
 });
+
+const pinia = createPinia();
+pinia.use(i18nPlugin);
+vueApp.use(pinia);
+// https://github.com/vuejs/pinia/discussions/1197
+// to be able globally share stores
+vueApp.config.globalProperties.$store = {};
 
 vueApp.config.productionTip = false;
 vueApp.config.compilerOptions.whitespace = 'preserve';

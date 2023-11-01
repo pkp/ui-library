@@ -1,23 +1,23 @@
 <template>
 	<SideModalBody>
 		<template #header>
-			<StageBubble :stage-id="summarySubmission.stageId">
-				{{ summarySubmission.stageName }}
+			<StageBubble :stage-id="submissionsStore.summarySubmission.stageId">
+				{{ submissionsStore.summarySubmission.stageName }}
 				<template
 					v-if="
-						(summarySubmission.stageId ===
+						(submissionsStore.summarySubmission.stageId ===
 							pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW ||
-							summarySubmission.stageId ===
+							submissionsStore.summarySubmission.stageId ===
 								pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) &&
-						summarySubmission.reviewRounds.length
+						submissionsStore.summarySubmission.reviewRounds.length
 					"
 				>
 					{{
 						t('common.inParenthesis', {
 							text: t('common.reviewRoundNumber', {
 								round:
-									summarySubmission.reviewRounds[
-										summarySubmission.reviewRounds.length - 1
+									submissionsStore.summarySubmission.reviewRounds[
+										submissionsStore.summarySubmission.reviewRounds.length - 1
 									].round,
 							}),
 						})
@@ -25,14 +25,16 @@
 				</template>
 			</StageBubble>
 			<span class="summary__id">
-				{{ summarySubmission.id }}
+				{{ submissionsStore.summarySubmission.id }}
 			</span>
 		</template>
 		<h2 class="summary__authors">
-			{{ summarySubmission.publications[0].authorsStringShort }}
+			{{
+				submissionsStore.summarySubmission.publications[0].authorsStringShort
+			}}
 		</h2>
 		<div class="summary__title">
-			{{ summarySubmission.publications[0].fullTitle.en }}
+			{{ submissionsStore.summarySubmission.publications[0].fullTitle.en }}
 		</div>
 		<panel>
 			<panel-section>
@@ -67,10 +69,14 @@
 </template>
 
 <script>
+import {mapStores} from 'pinia';
+
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import StageBubble from '@/components/StageBubble/StageBubble.vue';
 import Panel from '@/components/Panel/Panel.vue';
 import PanelSection from '@/components/Panel/PanelSection.vue';
+
+import {useSubmissionsStore} from '@/pages/submissions/submissionsStore';
 
 export default {
 	components: {SideModalBody, StageBubble, Panel, PanelSection},
@@ -80,11 +86,7 @@ export default {
 	data() {
 		return {pkp: window.pkp};
 	},
-	computed: {
-		summarySubmission() {
-			return this.$store.submissions.summarySubmission;
-		},
-	},
+	computed: {...mapStores(useSubmissionsStore)},
 	mounted() {
 		console.log('submission summary mounted');
 	},

@@ -5,13 +5,18 @@
 		</pkp-button>
 	</div>
 	<h2 class="submissions__list__title" id="table-title">
-		{{ $store.submissions.currentView.name }}
+		{{ submissionsStore.currentView.name }}
 		<span class="submissions__view__count">
-			{{ $store.submissions.submissionsCount }}
+			{{ submissionsStore.submissionsCount }}
 		</span>
 	</h2>
 </template>
 
 <script>
-export default {};
+import {mapStores} from 'pinia';
+import {useSubmissionsStore} from '@/pages/submissions/submissionsStore';
+
+export default {
+	computed: {...mapStores(useSubmissionsStore)},
+};
 </script>

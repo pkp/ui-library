@@ -4,7 +4,7 @@
 			class="submissions__list__item__view"
 			:aria-describedby="'submission-title-' + submission.id"
 			:is-link="true"
-			@click="$store.submissions.openSummaryModal(submission)"
+			@click="submissionsStore.openSummaryModal(submission)"
 		>
 			{{ t('editor.submission.viewSummary') }}
 		</pkp-button>
@@ -12,6 +12,8 @@
 </template>
 <script>
 import TableCell from '@/components/TableNext/TableCell.vue';
+import {mapStores} from 'pinia';
+import {useSubmissionsStore} from '@/pages/submissions/submissionsStore';
 
 export default {
 	components: {
@@ -20,5 +22,6 @@ export default {
 	props: {
 		submission: Object,
 	},
+	computed: {...mapStores(useSubmissionsStore)},
 };
 </script>

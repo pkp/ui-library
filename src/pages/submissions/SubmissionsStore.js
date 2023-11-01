@@ -1,5 +1,8 @@
 import {defineStore} from 'pinia';
-import {pkpFetch} from '@/utils/pkpFetch';
+import {fetch} from '@/utils/fetch';
+import {useDialogStore} from '@/stores/dialogStore';
+import {useAnnouncerStore} from '@/stores/announcerStore';
+
 /**
  * The allowed values for the direction of sorting
  */
@@ -143,10 +146,12 @@ export const useSubmissionsStore = defineStore('submissions', {
 		 * @param {Function} cb A callback function to fire when successful
 		 */
 		async get() {
-			this.isLoadingSubmissions = true;
-			// TODO this.$announcer.set(this.t('common.loading'));
+			const dialogStore = useDialogStore();
+			const announcerStore = useAnnouncerStore();
 
-			console.log('currentView:', this.currentView.queryParams);
+			this.isLoadingSubmissions = true;
+			announcerStore.set(this.t('common.loading'));
+
 			let query = {
 				...this.currentView.queryParams,
 				...this.activeFilters,
@@ -165,7 +170,7 @@ export const useSubmissionsStore = defineStore('submissions', {
 			}
 			let data = null;
 			try {
-				data = await pkpFetch(
+				data = await fetch(
 					Object.hasOwn(this.currentView, 'op')
 						? this.apiUrl + '/' + this.currentView.op
 						: this.apiUrl,
@@ -173,13 +178,14 @@ export const useSubmissionsStore = defineStore('submissions', {
 				);
 				this.submissions = data.items;
 				this.submissionsCount = data.itemsMax;
+				announcerStore.set(this.t('common.loaded'));
 			} catch (e) {
 				// aborted by subsequent request
 				if (e.aborted === true) {
 					return null;
 				}
-				// TODO use dialog stuff  this.ajaxErrorCallback(r);
-				alert(e);
+
+				dialogStore.openDialogNetworkError(e);
 			}
 
 			this.isLoadingSubmissions = false;

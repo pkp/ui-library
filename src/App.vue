@@ -1,9 +1,9 @@
 <template>
 	<vue-announcer class="sr-only" />
 	<PkpDialog
-		:open="pkpIsDialogOpened"
-		@close="pkpIsDialogOpened = false"
-		v-bind="pkpDialogProps"
+		:open="$store.dialog.dialogOpened"
+		@close="$store.dialog.closeDialog()"
+		v-bind="$store.dialog.dialogProps"
 	></PkpDialog>
 	<nav class="nav" aria-label="Primary Navigation">
 		<nav-group>
@@ -303,14 +303,17 @@
 <script>
 import NavGroup from './docs/NavGroup.vue';
 import PkpDialog from './components/Modal/Dialog.vue';
-import dialogProvider from './mixins/dialogProvider';
+// store
+import {useDialogStore} from '@/stores/dialogStore.js';
 
 export default {
 	components: {
 		NavGroup,
 		PkpDialog,
 	},
-	mixins: [dialogProvider],
+	created() {
+		this.$store.dialog = useDialogStore(this.$pinia);
+	},
 	methods: {
 		/**
 		 * Does the current route path include this component

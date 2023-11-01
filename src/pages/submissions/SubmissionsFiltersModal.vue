@@ -6,9 +6,9 @@
 		<Panel>
 			<PanelSection>
 				<pkp-form
-					v-bind="$store.submissions.filtersForm"
-					@set="$store.submissions.setFiltersForm"
-					@success="$store.submissions.saveFilters"
+					v-bind="submissionsStore.filtersForm"
+					@set="submissionsStore.setFiltersForm"
+					@success="submissionsStore.saveFilters"
 				></pkp-form>
 			</PanelSection>
 		</Panel>
@@ -16,11 +16,16 @@
 </template>
 
 <script>
+import {mapStores} from 'pinia';
+
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import Panel from '@/components/Panel/Panel.vue';
 import PanelSection from '@/components/Panel/PanelSection.vue';
 
+import {useSubmissionsStore} from '@/pages/submissions/submissionsStore';
+
 export default {
 	components: {SideModalBody, Panel, PanelSection},
+	computed: {...mapStores(useSubmissionsStore)},
 };
 </script>

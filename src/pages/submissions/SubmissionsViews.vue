@@ -5,18 +5,18 @@
 		</h1>
 		<ul class="submissions__views__list">
 			<li
-				v-for="view in $store.submissions.views"
+				v-for="view in submissionsStore.views"
 				:key="view.id"
 				class="submissions__view"
 			>
 				<button
 					class="submissions__view__button"
 					:class="
-						$store.submissions.currentView.id === view.id
+						submissionsStore.currentView.id === view.id
 							? 'submissions__view__button--current'
 							: ''
 					"
-					@click="$store.submissions.loadView(view)"
+					@click="submissionsStore.loadView(view)"
 				>
 					<span class="submissions__view__count">
 						{{ view.count }}
@@ -30,5 +30,10 @@
 	</div>
 </template>
 <script>
-export default {};
+import {mapStores} from 'pinia';
+import {useSubmissionsStore} from '@/pages/submissions/submissionsStore';
+
+export default {
+	computed: {...mapStores(useSubmissionsStore)},
+};
 </script>

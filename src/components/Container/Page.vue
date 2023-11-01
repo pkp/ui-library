@@ -1,13 +1,17 @@
 <script type="text/javascript">
+import {mapStores} from 'pinia';
 import Container from '@/components/Container/Container.vue';
-import dialogProvider from '@/mixins/dialogProvider';
 import PkpDialog from '@/components/Modal/Dialog.vue';
+import PkpAnnouncer from '@/components/Announcer/Announcer.vue';
+// store
+import {useDialogStore} from '@/stores/dialogStore.js';
+
 export default {
 	components: {
 		PkpDialog,
+		PkpAnnouncer,
 	},
 	extends: Container,
-	mixins: [dialogProvider],
 	name: 'Page',
 	data() {
 		return {
@@ -64,6 +68,8 @@ export default {
 				!this.menu[Object.keys(this.menu)[0]].isCurrent
 			);
 		},
+
+		...mapStores(useDialogStore),
 	},
 	methods: {
 		/**
@@ -157,6 +163,10 @@ export default {
 			'update:unread-tasks-count',
 			(data) => (this.unreadTasksCount = data.count),
 		);
+	},
+	created() {
+		// temporarly until all openDialog are migrated to dialogStore, this is used by the mixin
+		this.$store.dialog = useDialogStore(this.$pinia);
 	},
 	unmounted() {
 		pkp.eventBus.$off('notify');

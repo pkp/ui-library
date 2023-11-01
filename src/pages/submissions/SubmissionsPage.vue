@@ -8,22 +8,23 @@
 		</div>
 	</div>
 	<SideModal
-		:open="$store.submissions.isModalOpenedSummary"
-		@close="$store.submissions.closeSummaryModal"
+		:open="submissionsStore.isModalOpenedSummary"
+		@close="submissionsStore.closeSummaryModal"
 	>
 		<SubmissionSummaryModal />
 	</SideModal>
 	<SideModal
 		close-label="Close"
-		:open="$store.submissions.isModalOpenedFilters"
-		@close="$store.submissions.closeFiltersModal"
+		:open="submissionsStore.isModalOpenedFilters"
+		@close="submissionsStore.closeFiltersModal"
 	>
 		<SubmissionsFiltersModal />
 	</SideModal>
 </template>
 <script type="text/javascript">
 // store
-import {useSubmissionsStore} from '@/pages/submissions/SubmissionsStore.js';
+import {mapStores} from 'pinia';
+import {useSubmissionsStore} from '@/pages/submissions/submissionsStore.js';
 import SubmissionsTable from '@/pages/submissions/SubmissionsTable.vue';
 import SubmissionsViews from '@/pages/submissions/SubmissionsViews.vue';
 import SubmissionsHeader from '@/pages/submissions/SubmissionsHeader.vue';
@@ -62,11 +63,10 @@ export default {
 	data() {
 		return {};
 	},
-	computed: {},
+	computed: {...mapStores(useSubmissionsStore)},
 	mounted() {},
 	created() {
-		this.$store.submissions = useSubmissionsStore(this.$pinia);
-		this.$store.submissions.init(this.storeData);
+		this.submissionsStore.init(this.storeData);
 	},
 	methods: {
 		//created() {

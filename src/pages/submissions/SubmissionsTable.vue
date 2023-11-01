@@ -2,23 +2,20 @@
 	<PkpTable aria-labelledby="table-title" aria-describedby="table-controls">
 		<template #head>
 			<TableHeader
-				v-for="column in $store.submissions.columns"
+				v-for="column in submissionsStore.columns"
 				:key="column.id"
 				:canSort="column.sortable"
 				:sortDirection="
-					$store.submissions.sortColumn === column.id ? sortDirection : 'none'
+					submissionsStore.sortColumn === column.id ? sortDirection : 'none'
 				"
 			>
 				{{ column.header }}
 			</TableHeader>
 		</template>
-		<tr
-			v-for="submission in $store.submissions.submissions"
-			:key="submission.id"
-		>
+		<tr v-for="submission in submissionsStore.submissions" :key="submission.id">
 			<component
 				:is="column.componentName"
-				v-for="column in $store.submissions.columns"
+				v-for="column in submissionsStore.columns"
 				:key="column.id"
 				:submission="submission"
 			/>
@@ -27,20 +24,22 @@
 	<div class="submissions__list__footer">
 		<span
 			class="submission__list__showing"
-			v-html="$store.submissions.showingXofX"
+			v-html="submissionsStore.showingXofX"
 		></span>
 		<Pagination
-			v-if="$store.submissions.lastPage > 1"
-			:current-page="$store.submissions.currentPage"
-			:is-loading="$store.submissions.isLoadingPage"
-			:last-page="$store.submissions.lastPage"
+			v-if="submissionsStore.lastPage > 1"
+			:current-page="submissionsStore.currentPage"
+			:is-loading="submissionsStore.isLoadingPage"
+			:last-page="submissionsStore.lastPage"
 			:show-adjacent-pages="3"
-			@set-page="$store.submissions.setPage"
+			@set-page="submissionsStore.setPage"
 		></Pagination>
 	</div>
 </template>
 
 <script>
+import {mapStores} from 'pinia';
+
 import Pagination from '@/components/Pagination/Pagination.vue';
 import PkpTable from '@/components/TableNext/Table.vue';
 import TableHeader from '@/components/TableNext/TableHeader.vue';
@@ -50,6 +49,8 @@ import ColumnDays from '@/pages/submissions/ColumnDays.vue';
 import ColumnId from '@/pages/submissions/ColumnId.vue';
 import ColumnStage from '@/pages/submissions/ColumnStage.vue';
 import ColumnTitle from '@/pages/submissions/ColumnTitle.vue';
+
+import {useSubmissionsStore} from '@/pages/submissions/submissionsStore';
 
 export default {
 	components: {
@@ -63,5 +64,6 @@ export default {
 		ColumnStage,
 		ColumnTitle,
 	},
+	computed: {...mapStores(useSubmissionsStore)},
 };
 </script>
