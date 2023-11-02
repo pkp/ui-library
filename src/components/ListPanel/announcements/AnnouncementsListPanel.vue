@@ -21,7 +21,7 @@
 					{{ localize(item.title) }}
 				</template>
 				<template #item-actions="{item}">
-					<pkp-button element="a" :href="urlBase.replace('__id__', item.id)">
+					<pkp-button element="a" :href="item.url">
 						{{ t('common.view') }}
 					</pkp-button>
 					<pkp-button @click="openEditModal(item.id)">
