@@ -17,6 +17,7 @@ export const useSubmissionsStore = defineStore('submissions', {
 			countPerPage: 0,
 			submissionsCount: 0,
 			apiUrl: null,
+			assignParticipantUrl: null,
 			isLoadingPage: false,
 			isLoadingSubmissions: false,
 			sortColumn: '',
@@ -27,6 +28,7 @@ export const useSubmissionsStore = defineStore('submissions', {
 			summarySubmission: null,
 			isModalOpenedFilters: false,
 			isModalOpenedSummary: false,
+			isModalOpenedAssignEditors: false,
 			filtersForm: null,
 		};
 	},
@@ -117,6 +119,7 @@ export const useSubmissionsStore = defineStore('submissions', {
 			this.currentViewId = initStoreData.currentViewId;
 			this.submissionsCount = initStoreData.submissionsCount;
 			this.apiUrl = initStoreData.apiUrl;
+			this.assignParticipantUrl = initStoreData.assignParticipantUrl;
 			this.countPerPage = initStoreData.countPerPage;
 			this.filtersForm = initStoreData.filtersForm;
 		},
@@ -247,6 +250,14 @@ export const useSubmissionsStore = defineStore('submissions', {
 
 		closeFiltersModal() {
 			this.isModalOpenedFilters = false;
+		},
+
+		openAssignEditorsModal() {
+			this.isModalOpenedAssignEditors = true;
+		},
+
+		closeAssignEditorsModal() {
+			this.isModalOpenedAssignEditors = false;
 		},
 
 		/**

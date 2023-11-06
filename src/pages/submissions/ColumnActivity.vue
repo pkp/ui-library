@@ -2,7 +2,7 @@
 	<TableCell>
 		<pkp-button
 			v-if="isManager && needsEditors(submission)"
-			@click="openAssignParticipant(submission)"
+			@click="submissionsStore.openAssignParticipant(submission)"
 		>
 			{{ t('submission.list.assignEditor') }}
 		</pkp-button>
@@ -15,6 +15,9 @@
 <script>
 import TableCell from '@/components/TableNext/TableCell.vue';
 import ActivityIndicatorPopup from '@/components/ActivityIndicatorPopup/ActivityIndicatorPopup.vue';
+import {mapStores} from 'pinia';
+import {useSubmissionsStore} from '@/pages/submissions/submissionsStore';
+
 export default {
 	components: {
 		TableCell,
@@ -23,6 +26,7 @@ export default {
 	props: {
 		submission: Object,
 	},
+	computed: {...mapStores(useSubmissionsStore)},
 	methods: {
 		/**
 		 * Whether or not a submission needs an editor to be assigned

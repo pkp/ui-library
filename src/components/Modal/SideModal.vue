@@ -1,6 +1,6 @@
 <template>
 	<TransitionRoot as="template" :show="open">
-		<HLDialog as="div" class="relative z-10">
+		<HLDialog as="div" class="relative z-10" @close="$emit('close')">
 			<TransitionChild
 				as="template"
 				enter="ease-in-out duration-500"
@@ -51,6 +51,8 @@ export default {
 		TransitionRoot,
 		TransitionChild,
 	},
+	emits: ['close'],
+
 	props: {
 		open: {
 			type: Boolean,

@@ -38,7 +38,11 @@
 		</div>
 		<panel>
 			<panel-section>
+				<pkp-button @click="submissionsStore.openAssignEditorsModal()">
+					Assign Editors
+				</pkp-button>
 				<p>{{ t('editor.submission.daysInStage') }}: XX</p>
+				<PkpButton @click="openTestDialog()">open test dialog</PkpButton>
 				<p>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
 					eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
@@ -65,6 +69,18 @@
 				</p>
 			</panel-section>
 		</panel>
+		<PkpDialog
+			:open="testDialogOpened"
+			@close="closeTestDialog()"
+			v-bind="testDialogProps"
+		/>
+		<SideModal
+			close-label="Close"
+			:open="submissionsStore.isModalOpenedAssignEditors"
+			@close="submissionsStore.closeAssignEditorsModal"
+		>
+			<AssignEditorsModal />
+		</SideModal>
 	</SideModalBody>
 </template>
 
@@ -75,18 +91,62 @@ import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import StageBubble from '@/components/StageBubble/StageBubble.vue';
 import Panel from '@/components/Panel/Panel.vue';
 import PanelSection from '@/components/Panel/PanelSection.vue';
+import SideModal from '@/components/Modal/SideModal.vue';
+import PkpDialog from '@/components/Modal/Dialog.vue';
+
+import AssignEditorsModal from '@/pages/submissions/AssignEditorsModal.vue';
 
 import {useSubmissionsStore} from '@/pages/submissions/submissionsStore';
-
 export default {
-	components: {SideModalBody, StageBubble, Panel, PanelSection},
+	components: {
+		SideModal,
+		SideModalBody,
+		StageBubble,
+		Panel,
+		PanelSection,
+		AssignEditorsModal,
+		PkpDialog,
+	},
 	props: {
 		testProp: Function,
 	},
 	data() {
-		return {pkp: window.pkp};
+		return {
+			pkp: window.pkp,
+			testDialogOpened: false,
+		};
 	},
-	computed: {...mapStores(useSubmissionsStore)},
+	methods: {
+		openTestDialog() {
+			this.testDialogOpened = true;
+		},
+		closeTestDialog() {
+			this.testDialogOpened = false;
+		},
+	},
+	computed: {
+		...mapStores(useSubmissionsStore),
+		testDialogProps() {
+			return {
+				name: 'cancel',
+				title: 'title',
+				message: 'message',
+				actions: [
+					{
+						label: 'Action1',
+						isWarnable: true,
+						callback: () => {
+							window.location = this.submissionUrl;
+						},
+					},
+					{
+						label: 'Close',
+						callback: (close) => close(),
+					},
+				],
+			};
+		},
+	},
 	mounted() {
 		console.log('submission summary mounted');
 	},

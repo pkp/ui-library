@@ -16,7 +16,7 @@
 				leave-to="opacity-0"
 			>
 				<div
-					class="fixed inset-0 z-10 bg-gray-500 bg-opacity-75 transition-opacity"
+					class="bg-gray-500 fixed inset-0 z-10 bg-opacity-75 transition-opacity"
 				/>
 			</TransitionChild>
 			<div class="fixed inset-0 z-20 overflow-y-auto">
@@ -33,7 +33,7 @@
 						leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 					>
 						<DialogPanel
-							class="modal__panel relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all w-10/12 max-w-3xl sm:my-8 mx-3"
+							class="modal__panel rounded-lg bg-white shadow-xl relative mx-3 w-10/12 max-w-3xl transform overflow-hidden text-left transition-all sm:my-8"
 						>
 							<div class="modal__header">
 								<div class="modal__header__slot">

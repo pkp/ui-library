@@ -20,6 +20,9 @@
 	>
 		<SubmissionsFiltersModal />
 	</SideModal>
+	<SideModal close-label="Close" :open="false">
+		<AssignEditorsModal />
+	</SideModal>
 </template>
 <script type="text/javascript">
 // store
@@ -31,6 +34,7 @@ import SubmissionsHeader from '@/pages/submissions/SubmissionsHeader.vue';
 import SubmissionsTableControls from '@/pages/submissions/SubmissionsTableControls.vue';
 import SubmissionSummaryModal from '@/pages/submissions/SubmissionSummaryModal.vue';
 import SubmissionsFiltersModal from '@/pages/submissions/SubmissionsFiltersModal.vue';
+import AssignEditorsModal from '@/pages/submissions/AssignEditorsModal.vue';
 
 import SideModal from '@/components/Modal/SideModal.vue';
 import ajaxError from '@/mixins/ajaxError';
@@ -56,6 +60,7 @@ export default {
 		SubmissionSummaryModal,
 		SideModal,
 		SubmissionsFiltersModal,
+		AssignEditorsModal,
 	},
 	props: {
 		storeData: Object,

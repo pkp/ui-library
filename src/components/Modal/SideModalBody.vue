@@ -1,8 +1,9 @@
 <template>
-	<DialogPanel class="pointer-events-auto w-screen max-w-md">
-		<div
-			class="shadow-xl flex h-full flex-col overflow-y-auto bg-lightest py-6"
-		>
+	<DialogPanel
+		class="pointer-events-auto h-screen w-screen"
+		:class="secondary ? 'max-w-3xl' : 'max-w-4xl'"
+	>
+		<div class="shadow-xl flex h-full flex-col bg-lightest py-6">
 			<div class="">
 				<div class="flex items-start">
 					<div class="m-2 flex h-7 items-center">
@@ -25,7 +26,7 @@
 						</button>
 					</div>
 					<div>
-						<slot name="header" />
+						<slot name="header" :closeModal="closeModal" />
 						<!--<DialogTitle
 							class="text-gray-900 font-semibold leading-6 text-base"
 						>
@@ -34,7 +35,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="relative mt-6 flex-1 px-4 sm:px-6">
+			<div class="relative mt-6 flex-1 overflow-y-scroll px-4 sm:px-6">
 				<slot :closeModal="closeModal" />
 			</div>
 		</div>
@@ -46,6 +47,9 @@ import {DialogPanel /*DialogTitle*/} from '@headlessui/vue';
 
 export default {
 	components: {DialogPanel /*DialogTitle*/},
+	props: {
+		secondary: Boolean,
+	},
 	inject: ['closeModal'],
 };
 </script>
