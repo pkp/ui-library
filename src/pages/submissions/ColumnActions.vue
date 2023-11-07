@@ -4,7 +4,7 @@
 			class="submissions__list__item__view"
 			:aria-describedby="'submission-title-' + submission.id"
 			:is-link="true"
-			@click="submissionsStore.openSummaryModal(submission)"
+			@click="pageComponent.openSummaryModal(submission)"
 		>
 			{{ t('editor.submission.viewSummary') }}
 		</pkp-button>
@@ -23,5 +23,6 @@ export default {
 		submission: Object,
 	},
 	computed: {...mapStores(useSubmissionsStore)},
+	inject: ['pageComponent'],
 };
 </script>

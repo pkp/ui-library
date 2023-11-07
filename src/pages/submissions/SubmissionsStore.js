@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import {fetch} from '@/utils/fetch';
+import {pkpFetch} from '@/utils/pkpFetch';
 import {useDialogStore} from '@/stores/dialogStore';
 import {useAnnouncerStore} from '@/stores/announcerStore';
 
@@ -33,6 +33,11 @@ export const useSubmissionsStore = defineStore('submissions', {
 		};
 	},
 	getters: {
+		testFilters() {
+			const filters =
+				'hello' + JSON.stringify(this.$router.currentRoute.value.query);
+			return filters;
+		},
 		/**
 		 * The activeFilters reproduced as an array of individual
 		 * filters to show to the user
@@ -173,7 +178,7 @@ export const useSubmissionsStore = defineStore('submissions', {
 			}
 			let data = null;
 			try {
-				data = await fetch(
+				data = await pkpFetch(
 					Object.hasOwn(this.currentView, 'op')
 						? this.apiUrl + '/' + this.currentView.op
 						: this.apiUrl,

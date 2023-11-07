@@ -8,7 +8,7 @@ const uniqueRequestControllers = {};
  * @returns
  */
 
-export function fetch(url, opts = {}) {
+export function pkpFetch(url, opts = {}) {
 	const extraOpts = {};
 
 	// ensure that only one request with this name is being triggered

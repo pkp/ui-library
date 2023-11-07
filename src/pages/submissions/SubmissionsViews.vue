@@ -4,19 +4,15 @@
 			{{ t('navigation.submissions') }}
 		</h1>
 		<ul class="submissions__views__list">
-			<li
-				v-for="view in submissionsStore.views"
-				:key="view.id"
-				class="submissions__view"
-			>
+			<li v-for="view in views" :key="view.id" class="submissions__view">
 				<button
 					class="submissions__view__button"
 					:class="
-						submissionsStore.currentView.id === view.id
+						currentView.id === view.id
 							? 'submissions__view__button--current'
 							: ''
 					"
-					@click="submissionsStore.loadView(view)"
+					@click="$emit('loadView', view)"
 				>
 					<span class="submissions__view__count">
 						{{ view.count }}
@@ -30,10 +26,11 @@
 	</div>
 </template>
 <script>
-import {mapStores} from 'pinia';
-import {useSubmissionsStore} from '@/pages/submissions/submissionsStore';
-
 export default {
-	computed: {...mapStores(useSubmissionsStore)},
+	props: {
+		views: {type: Array, required: true},
+		currentView: {type: Object, required: true},
+	},
+	emits: ['loadView'],
 };
 </script>

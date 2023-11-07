@@ -1,23 +1,23 @@
 <template>
 	<SideModalBody>
 		<template #header>
-			<StageBubble :stage-id="submissionsStore.summarySubmission.stageId">
-				{{ submissionsStore.summarySubmission.stageName }}
+			<StageBubble :stage-id="summarySubmission.stageId">
+				{{ summarySubmission.stageName }}
 				<template
 					v-if="
-						(submissionsStore.summarySubmission.stageId ===
+						(summarySubmission.stageId ===
 							pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW ||
-							submissionsStore.summarySubmission.stageId ===
+							summarySubmission.stageId ===
 								pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) &&
-						submissionsStore.summarySubmission.reviewRounds.length
+						summarySubmission.reviewRounds.length
 					"
 				>
 					{{
 						t('common.inParenthesis', {
 							text: t('common.reviewRoundNumber', {
 								round:
-									submissionsStore.summarySubmission.reviewRounds[
-										submissionsStore.summarySubmission.reviewRounds.length - 1
+									summarySubmission.reviewRounds[
+										summarySubmission.reviewRounds.length - 1
 									].round,
 							}),
 						})
@@ -25,16 +25,14 @@
 				</template>
 			</StageBubble>
 			<span class="summary__id">
-				{{ submissionsStore.summarySubmission.id }}
+				{{ summarySubmission.id }}
 			</span>
 		</template>
 		<h2 class="summary__authors">
-			{{
-				submissionsStore.summarySubmission.publications[0].authorsStringShort
-			}}
+			{{ summarySubmission.publications[0].authorsStringShort }}
 		</h2>
 		<div class="summary__title">
-			{{ submissionsStore.summarySubmission.publications[0].fullTitle.en }}
+			{{ summarySubmission.publications[0].fullTitle.en }}
 		</div>
 		<panel>
 			<panel-section>
@@ -71,13 +69,13 @@
 		</panel>
 		<PkpDialog
 			:open="testDialogOpened"
-			@close="closeTestDialog()"
 			v-bind="testDialogProps"
+			@close="closeTestDialog()"
 		/>
 		<SideModal
 			close-label="Close"
-			:open="submissionsStore.isModalOpenedAssignEditors"
-			@close="submissionsStore.closeAssignEditorsModal"
+			:open="isModalOpenedAssignEditors"
+			@close="closeAssignEditorsModal"
 		>
 			<AssignEditorsModal />
 		</SideModal>
@@ -108,12 +106,13 @@ export default {
 		PkpDialog,
 	},
 	props: {
-		testProp: Function,
+		summarySubmission: Object,
 	},
 	data() {
 		return {
 			pkp: window.pkp,
 			testDialogOpened: false,
+			isModalOpenedAssignEditors: false,
 		};
 	},
 	methods: {

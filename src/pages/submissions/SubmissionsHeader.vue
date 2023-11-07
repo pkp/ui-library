@@ -4,19 +4,19 @@
 			{{ t('manager.newSubmission') }}
 		</pkp-button>
 	</div>
-	<h2 class="submissions__list__title" id="table-title">
-		{{ submissionsStore.currentView.name }}
+	<h2 id="table-title" class="submissions__list__title">
+		{{ currentView.name }}
 		<span class="submissions__view__count">
-			{{ submissionsStore.submissionsCount }}
+			{{ submissionsCount }}
 		</span>
 	</h2>
 </template>
 
 <script>
-import {mapStores} from 'pinia';
-import {useSubmissionsStore} from '@/pages/submissions/submissionsStore';
-
 export default {
-	computed: {...mapStores(useSubmissionsStore)},
+	props: {
+		currentView: {type: Object, required: true},
+		submissionsCount: {type: Number, required: true},
+	},
 };
 </script>
