@@ -3,6 +3,7 @@ import Page from '@/components/Container/Page.vue';
 import HighlightsListPanel from '../ListPanel/highlights/HighlightsListPanel.vue';
 import ThemeForm from '@/components/Form/context/ThemeForm.vue';
 import ActionPanel from '../ActionPanel/ActionPanel.vue';
+import AnnouncementsListPanel from '../ListPanel/announcements/AnnouncementsListPanel.vue';
 
 export default {
 	extends: Page,
@@ -10,7 +11,20 @@ export default {
 	components: {
 		ActionPanel,
 		HighlightsListPanel,
+		AnnouncementsListPanel,
 		ThemeForm,
+	},
+	data() {
+		return {
+			announcementsEnabled: false,
+		};
+	},
+	mounted() {
+		pkp.eventBus.$on('form-success', (formId, site) => {
+			if (formId === pkp.const.FORM_ANNOUNCEMENT_SETTINGS) {
+				this.announcementsEnabled = !!site.enableAnnouncements;
+			}
+		});
 	},
 };
 </script>
