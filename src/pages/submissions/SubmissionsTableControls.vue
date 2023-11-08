@@ -14,22 +14,22 @@
 				:search-phrase="searchPhrase"
 				:search-label="t('editor.submission.search')"
 				@search-phrase-changed="
-					(...args) => $emit('searchPhraseChange', ...args)
+					(...args) => $emit('searchPhraseChanged', ...args)
 				"
 			></Search>
 		</ButtonRow>
 		<div v-if="activeFiltersList.length" class="submissions__list__filters">
 			<Badge
 				v-for="filter in activeFiltersList"
-				:key="filter.name + filter.value"
+				:key="filter.fieldLabel + filter.label"
 			>
-				<strong>{{ filter.name }}:</strong>
-				{{ filter.value }}
+				<strong>{{ filter.fieldLabel }}:</strong>
+				{{ filter.label }}
 			</Badge>
 			<pkpButton
 				:is-warnable="true"
 				:is-link="true"
-				@set="(...args) => $emit('clearFilters', ...args)"
+				@click="(...args) => $emit('clearFilters', ...args)"
 			>
 				{{ t('common.filtersClear') }}
 			</pkpButton>
@@ -44,9 +44,10 @@ import Search from '@/components/Search/Search.vue';
 export default {
 	components: {ButtonRow, Search},
 	props: {
+		searchPhrase: {type: String, required: true},
 		isLoadingSubmissions: Boolean,
 		activeFiltersList: {type: Object, required: true},
 	},
-	emits: ['openFiltersModal', 'clearFilters', 'searchPhraseChange'],
+	emits: ['openFiltersModal', 'clearFilters', 'searchPhraseChanged'],
 };
 </script>

@@ -56,6 +56,7 @@ export default {
 		ColumnTitle,
 	},
 	props: {
+		submissionsFetcher: {type: Array, required: true},
 		submissions: {type: Array, required: true},
 		columns: {type: Array, required: true},
 		sortColumn: {type: String, required: true},
@@ -89,6 +90,9 @@ export default {
 		lastPage() {
 			return Math.ceil(this.submissionsCount / this.countPerPage);
 		},
+	},
+	created() {
+		console.log('submissions table created', this.submissions);
 	},
 };
 </script>

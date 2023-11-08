@@ -8,25 +8,26 @@
 		<div class="submissions__list">
 			<SubmissionsHeader
 				:current-view="currentView"
-				:submissions-count="submissionsCount"
+				:submissions-count="submissionsFetcher.itemCount"
 			/>
 			<SubmissionsTableControls
-				:is-loading-submissions="isLoadingSubmissions"
-				:search-phrase="searchPhrase"
-				:active-filters-list="activeFiltersList"
+				:is-loading-submissions="submissionsFetcher.isLoading"
+				:active-filters-list="filtersList"
 				:is-loading-page="isLoadingPage"
+				:search-phrase="searchPhrase"
 				@open-filters-modal="openFiltersModal"
 				@clear-filters="clearFilters"
 				@search-phrase-changed="setSearchPhrase"
 			/>
 			<SubmissionsTable
-				:submissions="submissions"
+				:submissions-fetcher="submissionsFetcher"
+				:submissions="submissionsFetcher.items"
 				:columns="columns"
 				:sort-column="sortColumn"
-				:submissions-count="submissionsCount"
-				:count-per-page="countPerPage"
-				:offset="offset"
-				:current-page="currentPage"
+				:submissions-count="submissionsFetcher.itemCount"
+				:count-per-page="submissionsFetcher.pageSize"
+				:offset="submissionsFetcher.offset"
+				:current-page="submissionsFetcher.page"
 			/>
 		</div>
 	</div>
@@ -39,9 +40,8 @@
 		@close="closeFiltersModal"
 	>
 		<SubmissionsFiltersModal
-			:filters-form="filtersForm"
-			@set="setFiltersForm"
-			@success="saveFilters"
+			:filters-form-initial="filtersForm"
+			@update-filters-form="updateFiltersForm"
 		/>
 	</SideModal>
 	<SideModal close-label="Close" :open="false">
@@ -49,6 +49,7 @@
 	</SideModal>
 </template>
 <script type="text/javascript">
+import {ref, computed, watch} from 'vue';
 // store
 import SubmissionsTable from '@/pages/submissions/SubmissionsTable.vue';
 import SubmissionsViews from '@/pages/submissions/SubmissionsViews.vue';
@@ -77,6 +78,10 @@ import {pkpFetch} from '@/utils/pkpFetch';
  */
 //let lastRequest;
 
+import {useFetchPaginated} from './useFetchPaginated';
+import {useFiltersForm} from './useFiltersForm';
+import {useUrlSearchParams} from '@vueuse/core';
+
 export default {
 	name: 'SubmissionsPage',
 	components: {
@@ -99,11 +104,99 @@ export default {
 	props: {
 		storeData: Object,
 	},
+	setup(props) {
+		// Reactive query params parsed from the url
+		const queryParams = useUrlSearchParams();
+
+		// Filters
+		const {
+			filtersForm,
+			filtersList,
+			filtersQueryParams,
+			filtersQueryParamsApi,
+			update: updateFiltersForm,
+			clear: clearFilters,
+			initFromQueryParams,
+		} = useFiltersForm(props.storeData.filtersForm);
+
+		// Apply query params to filtersForm
+		initFromQueryParams(queryParams);
+
+		// Search Phrase
+		const searchPhrase = ref(queryParams.searchPhrase || '');
+		function setSearchPhrase(value) {
+			searchPhrase.value = value;
+			currentPage.value = 1;
+		}
+		function resetSearchPhrase() {
+			searchPhrase.value = undefined;
+		}
+
+		// Views
+		// TODO check that such view id does exist otherwise fallback
+		const currentViewId = ref(
+			queryParams.currentViewId || props.storeData.currentViewId,
+		);
+		const currentView = computed(() =>
+			props.storeData.views.find((view) => view.id === currentViewId.value),
+		);
+		function loadView(view) {
+			currentViewId.value = view.id;
+			currentPage.value = 1;
+			clearFilters();
+			resetSearchPhrase();
+		}
+
+		// Submissions
+		const currentPage = ref(1);
+		const submissionsUrl = computed(() => {
+			const apiUrl = props.storeData.apiUrl;
+			return Object.hasOwn(currentView.value, 'op')
+				? apiUrl + '/' + currentView.value.op
+				: apiUrl;
+		});
+		const submissionsQuery = computed(() => ({
+			searchPhrase: searchPhrase.value || undefined,
+			...currentView.value.queryParams,
+			...filtersQueryParamsApi.value,
+		}));
+		const submissionsFetcher = useFetchPaginated(submissionsUrl, {
+			page: currentPage,
+			pageSize: props.storeData.countPerPage,
+			query: submissionsQuery,
+		});
+
+		// Calculate all query params that should be applied to the url
+		const queryParamsInternal = computed(() => {
+			return {
+				...filtersQueryParams.value,
+				searchPhrase: searchPhrase.value,
+				currentViewId: currentViewId.value,
+			};
+		});
+
+		// Apply queryParamsInternal to reactive queryParams to udpate url
+		watch(queryParamsInternal, (paramsToApply) => {
+			Object.keys(paramsToApply).forEach((paramKey) => {
+				queryParams[paramKey] = paramsToApply[paramKey] || undefined;
+			});
+		});
+
+		return {
+			filtersForm,
+			searchPhrase,
+			submissionsFetcher,
+			currentView,
+			loadView,
+			setSearchPhrase,
+			filtersList,
+			updateFiltersForm,
+			clearFilters,
+		};
+	},
 	data() {
 		return {
 			views: [],
-			submissions: [],
-			currentViewId: null,
 			countPerPage: 0,
 			submissionsCount: 0,
 			apiUrl: null,
@@ -112,14 +205,11 @@ export default {
 			isLoadingSubmissions: false,
 			sortColumn: '',
 			sortDirection: '',
-			searchPhrase: '',
 			offset: 0,
-			activeFilters: {},
 			summarySubmission: null,
 			isModalOpenedFilters: false,
 			isModalOpenedSummary: false,
 			isModalOpenedAssignEditors: false,
-			filtersForm: null,
 		};
 	},
 	computed: {
@@ -129,7 +219,7 @@ export default {
 		 *
 		 * @return {Array}
 		 */
-		activeFiltersList() {
+		/*activeFiltersList() {
 			let list = [];
 			for (const key in this.activeFilters) {
 				const field = this.getFiltersField(key);
@@ -153,7 +243,7 @@ export default {
 				}
 			}
 			return list;
-		},
+		},*/
 		/**
 		 * The current page of results being viewed
 		 *
@@ -170,9 +260,9 @@ export default {
 		 *
 		 * @return {Object}
 		 */
-		currentView() {
+		/*currentView() {
 			return this.views.find((view) => view.id === this.currentViewId);
-		},
+		},*/
 	},
 	created() {
 		this.init(this.storeData);
@@ -187,7 +277,7 @@ export default {
 			this.apiUrl = initStoreData.apiUrl;
 			this.assignParticipantUrl = initStoreData.assignParticipantUrl;
 			this.countPerPage = initStoreData.countPerPage;
-			this.filtersForm = initStoreData.filtersForm;
+			//this.filtersForm = initStoreData.filtersForm;
 		},
 		increment() {
 			this.count++;
@@ -195,10 +285,10 @@ export default {
 		/**
 		 * Remove all active filters
 		 */
-		clearFilters() {
+		/*clearFilters() {
 			this.activeFilters = {};
 			this.get();
-		},
+		},*/
 
 		/**
 		 * Get a view by it's id
@@ -269,14 +359,14 @@ export default {
 		 * @param {String} name The field's name
 		 * @return {Object} The object which describes the field
 		 */
-		getFiltersField(name) {
+		/*getFiltersField(name) {
 			return this.filtersForm.fields.find((field) => field.name === name);
-		},
+		},*/
 
 		/**
 		 * Open one of the pre-set views
 		 */
-		async loadView(view) {
+		/*async loadView(view) {
 			console.log('load view');
 			this.activeFilters = {};
 			this.currentViewId = view.id;
@@ -286,7 +376,7 @@ export default {
 			if (data.itemsMax) {
 				this.findView(view.id).count = data.itemsMax;
 			}
-		},
+		},*/
 
 		/**
 		 * Load a modal displaying the assign participant options
@@ -346,7 +436,7 @@ export default {
 		/**
 		 * Fired when the filters form is saved
 		 */
-		async saveFilters(data) {
+		/*async saveFilters(data) {
 			this.activeFilters = Object.fromEntries(
 				Object.entries(data).filter(([key, value]) => {
 					return (Array.isArray(value) && value.length) || !!value;
@@ -354,20 +444,20 @@ export default {
 			);
 			await this.get();
 			this.closeFiltersModal();
-		},
+		},*/
 
 		/**
 		 * Sync changes to the filter form's state data
 		 *
 		 * Fired when a field in the form changes
 		 */
-		setFiltersForm(id, data) {
+		/*setFiltersForm(id, data) {
 			console.log('SET Filters form:', JSON.stringify(data, null, 2));
 			this.filtersForm = {
 				...this.filtersForm,
 				...data,
 			};
-		},
+		},*/
 
 		/**
 		 * Change the current page
@@ -382,14 +472,14 @@ export default {
 		/**
 		 * Set the search phrase
 		 */
-		setSearchPhrase(value) {
+		/*setSearchPhrase(value) {
 			if (this.searchPhrase == value) {
 				return;
 			}
 			this.searchPhrase = value;
 			this.offset = 0;
 			this.get();
-		},
+		},*/
 
 		/**
 		 * Sort the list by a column
