@@ -20,10 +20,10 @@
 					>
 						<TransitionChild
 							as="template"
-							enter="transform transition ease-in-out duration-500 sm:duration-700"
+							enter="transform transition ease-in-out duration-500"
 							enter-from="ltr:translate-x-full rtl:-translate-x-full"
 							enter-to="translate-x-0"
-							leave="transform transition ease-in-out duration-500 sm:duration-700"
+							leave="transform transition ease-in-out duration-500"
 							leave-from="translate-x-0"
 							leave-to="ltr:translate-x-full rtl:-translate-x-full"
 						>
@@ -51,7 +51,13 @@ export default {
 		TransitionRoot,
 		TransitionChild,
 	},
-	emits: ['close'],
+	provide() {
+		return {
+			closeModal: () => {
+				this.$emit('close');
+			},
+		};
+	},
 
 	props: {
 		open: {
@@ -79,14 +85,8 @@ export default {
 			},
 		},
 	},
+	emits: ['close'],
 	methods: {},
-	provide() {
-		return {
-			closeModal: () => {
-				this.$emit('close');
-			},
-		};
-	},
 };
 </script>
 

@@ -39,7 +39,7 @@ function createSelected(values, labels) {
 export function useFiltersForm(_filtersForm) {
 	const filtersForm = ref(_filtersForm);
 
-	const filtersList = computed(() => {
+	const filtersFormList = computed(() => {
 		const list = [];
 		filtersForm.value.fields.forEach((field) => {
 			const fieldValuesArray = Array.isArray(field.value)
@@ -80,7 +80,7 @@ export function useFiltersForm(_filtersForm) {
 		return list;
 	});
 
-	const filtersQueryParamsApi = computed(() => {
+	const filtersFormQueryParamsApi = computed(() => {
 		const params = {};
 		filtersForm.value.fields.forEach((field) => {
 			if (doesValueExist(field.value)) {
@@ -91,7 +91,7 @@ export function useFiltersForm(_filtersForm) {
 		return params;
 	});
 
-	const filtersQueryParams = computed(() => {
+	const filtersFormQueryParams = computed(() => {
 		const params = {};
 		filtersForm.value.fields.forEach((field) => {
 			params[field.name] = doesValueExist(field.value) ? field.value : null;
@@ -105,7 +105,7 @@ export function useFiltersForm(_filtersForm) {
 		return params;
 	});
 
-	function initFromQueryParams(queryParams) {
+	function initFiltersFormFromQueryParams(queryParams) {
 		filtersForm.value.fields.forEach((field) => {
 			if (queryParams[field.name]) {
 				// TODO detect which fields are array and which not
@@ -120,24 +120,24 @@ export function useFiltersForm(_filtersForm) {
 		});
 	}
 
-	function update(update) {
+	function updateFiltersForm(update) {
 		filtersForm.value = {
 			...filtersForm.value,
 			...update,
 		};
 	}
 
-	function clear() {
+	function clearFiltersForm() {
 		clearForm(filtersForm.value);
 	}
 
 	return {
 		filtersForm,
-		filtersList,
-		filtersQueryParamsApi,
-		filtersQueryParams,
-		initFromQueryParams,
-		update,
-		clear,
+		filtersFormList,
+		filtersFormQueryParamsApi,
+		filtersFormQueryParams,
+		initFiltersFormFromQueryParams,
+		updateFiltersForm,
+		clearFiltersForm,
 	};
 }

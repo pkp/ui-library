@@ -1,4 +1,4 @@
-import {ref, watch, computed} from 'vue';
+import {ref, computed} from 'vue';
 import {ofetch} from 'ofetch';
 
 export function useFetchPaginated(url, options) {
@@ -10,54 +10,58 @@ export function useFetchPaginated(url, options) {
 	} = options;
 
 	const query = ref(_query);
+
 	const page = ref(_page);
 	const pageSize = ref(_pageSize);
 
 	const isLoading = ref(false);
 	const itemCount = ref(0);
 	const items = ref([]);
-	const pagesCount = ref(0);
-	const firstItemIndex = ref(0);
-	const lastItemIndex = ref(0);
-
-	// fetch everytime query/page/pageSize changes
 	const offset = computed(() => {
 		return (page.value - 1) * pageSize.value;
 	});
-	watch(
-		[url, query, page, pageSize],
-		async ([url, query, page, pageSize]) => {
-			console.log('fetch triggered', console.log(page, pageSize));
-			const queryParams = {
-				offset: offset.value,
-				count: pageSize,
-				...query,
-			};
-			const opts = {
-				query: queryParams,
-				...fetchOpts,
-			};
 
-			isLoading.value = true;
+	async function fetch() {
+		const queryParams = {
+			offset: offset.value,
+			count: pageSize.value,
+			...query.value,
+		};
+		const opts = {
+			query: queryParams,
+			...fetchOpts,
+		};
 
-			const result = await ofetch(url, opts);
-			items.value = result.items;
-			itemCount.value = result.itemsMax;
-			isLoading.value = false;
-		},
-		{immediate: true},
-	);
+		isLoading.value = true;
 
-	return ref({
-		isLoading,
-		itemCount,
-		items,
-		page,
-		pageSize,
-		pagesCount, //  Math.ceil(this.submissionsCount / this.countPerPage);
-		firstItemIndex,
-		lastItemIndex,
-		offset,
-		//fetch,
+		const result = await ofetch(url.value, opts);
+		items.value = result.items;
+		itemCount.value = result.itemsMax;
+		isLoading.value = false;
+	}
+
+	const pagination = computed(() => {
+		const firstItemIndex = offset.value + 1;
+		const lastItemIndex = Math.min(
+			offset.value + pageSize.value,
+			itemCount.value,
+		);
+		const pageCount = Math.ceil(itemCount.value / pageSize.value);
+		return {
+			page: page.value,
+			pageSize: pageSize.value,
+			pageCount,
+			firstItemIndex,
+			lastItemIndex,
+			itemCount: itemCount.value,
+			offset: offset.value,
+		};
 	});
+
+	return {
+		items,
+		isLoading,
+		pagination,
+		fetch,
+	};
 }

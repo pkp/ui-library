@@ -1,55 +1,58 @@
 <template>
 	<div class="submissions">
 		<SubmissionsViews
-			:views="views"
-			:current-view="currentView"
-			@load-view="loadView"
+			:views="store.views"
+			:current-view="store.currentView"
+			@load-view="store.loadView"
 		/>
 		<div class="submissions__list">
 			<SubmissionsHeader
-				:current-view="currentView"
-				:submissions-count="submissionsFetcher.itemCount"
+				:current-view="store.currentView"
+				:submissions-count="store.submissionsPagination.itemCount"
 			/>
 			<SubmissionsTableControls
-				:is-loading-submissions="submissionsFetcher.isLoading"
-				:active-filters-list="filtersList"
+				:is-loading-submissions="store.isSubmissionsLoading"
+				:active-filters-list="store.filtersFormList"
 				:is-loading-page="isLoadingPage"
-				:search-phrase="searchPhrase"
-				@open-filters-modal="openFiltersModal"
-				@clear-filters="clearFilters"
-				@search-phrase-changed="setSearchPhrase"
+				:search-phrase="store.searchPhrase"
+				@open-filters-modal="store.openFiltersModal"
+				@clear-filters="store.clearFiltersForm"
+				@search-phrase-changed="store.setSearchPhrase"
 			/>
 			<SubmissionsTable
-				:submissions-fetcher="submissionsFetcher"
-				:submissions="submissionsFetcher.items"
-				:columns="columns"
-				:sort-column="sortColumn"
-				:submissions-count="submissionsFetcher.itemCount"
-				:count-per-page="submissionsFetcher.pageSize"
-				:offset="submissionsFetcher.offset"
-				:current-page="submissionsFetcher.page"
+				:submissions="store.submissions"
+				:columns="store.columns"
+				:sort-column="store.sortColumnId"
+				:sort-direction="store.sortDirection"
+				:pagination="store.submissionsPagination"
+				@sort-column="store.applySort"
 			/>
 		</div>
 	</div>
-	<SideModal :open="isModalOpenedSummary" @close="closeSummaryModal">
-		<SubmissionSummaryModal :summary-submission="summarySubmission" />
+	<SideModal
+		:open="store.isModalOpenedSummary"
+		@close="store.closeSummaryModal"
+	>
+		<SubmissionSummaryModal :summary-submission="store.summarySubmission" />
 	</SideModal>
 	<SideModal
 		close-label="Close"
-		:open="isModalOpenedFilters"
-		@close="closeFiltersModal"
+		:open="store.isModalOpenedFilters"
+		@close="store.closeFiltersModal"
 	>
 		<SubmissionsFiltersModal
-			:filters-form-initial="filtersForm"
-			@update-filters-form="updateFiltersForm"
+			:filters-form-initial="store.filtersForm"
+			@update-filters-form="store.updateFiltersForm"
 		/>
 	</SideModal>
 	<SideModal close-label="Close" :open="false">
 		<AssignEditorsModal />
 	</SideModal>
 </template>
-<script type="text/javascript">
-import {ref, computed, watch} from 'vue';
+<script setup>
+console.log('submission page script setup');
+
+import {onUnmounted} from 'vue';
 // store
 import SubmissionsTable from '@/pages/submissions/SubmissionsTable.vue';
 import SubmissionsViews from '@/pages/submissions/SubmissionsViews.vue';
@@ -60,455 +63,17 @@ import SubmissionsFiltersModal from '@/pages/submissions/SubmissionsFiltersModal
 import AssignEditorsModal from '@/pages/submissions/AssignEditorsModal.vue';
 
 import SideModal from '@/components/Modal/SideModal.vue';
-import ajaxError from '@/mixins/ajaxError';
-import routeQueryParams from '@/mixins/routeQueryParams';
+import {useSubmissionsPageStore} from './submissionsPageStore';
 
-import localizeSubmission from '@/mixins/localizeSubmission.js';
+const props = defineProps({storeData: {required: true, type: Object}});
 
-const sortDirections = ['descending', 'ascending', 'none'];
+const store = useSubmissionsPageStore();
 
-import {pkpFetch} from '@/utils/pkpFetch';
+store.init(props.storeData);
 
-/**
- * A unique ID for the most recent request for submissions
- *
- * This is used to fix issues where the user makes a second request
- * for submissions before their first request is returned. The ID can
- * be used to discard responses for outdated requests.
- */
-//let lastRequest;
-
-import {useFetchPaginated} from './useFetchPaginated';
-import {useFiltersForm} from './useFiltersForm';
-import {useUrlSearchParams} from '@vueuse/core';
-
-export default {
-	name: 'SubmissionsPage',
-	components: {
-		SubmissionsTable,
-		SubmissionsViews,
-		SubmissionsHeader,
-		SubmissionsTableControls,
-		SubmissionSummaryModal,
-		SideModal,
-		SubmissionsFiltersModal,
-		AssignEditorsModal,
-	},
-	mixins: [ajaxError, localizeSubmission, routeQueryParams],
-
-	provide() {
-		return {
-			pageComponent: this,
-		};
-	},
-	props: {
-		storeData: Object,
-	},
-	setup(props) {
-		// Reactive query params parsed from the url
-		const queryParams = useUrlSearchParams();
-
-		// Filters
-		const {
-			filtersForm,
-			filtersList,
-			filtersQueryParams,
-			filtersQueryParamsApi,
-			update: updateFiltersForm,
-			clear: clearFilters,
-			initFromQueryParams,
-		} = useFiltersForm(props.storeData.filtersForm);
-
-		// Apply query params to filtersForm
-		initFromQueryParams(queryParams);
-
-		// Search Phrase
-		const searchPhrase = ref(queryParams.searchPhrase || '');
-		function setSearchPhrase(value) {
-			searchPhrase.value = value;
-			currentPage.value = 1;
-		}
-		function resetSearchPhrase() {
-			searchPhrase.value = undefined;
-		}
-
-		// Views
-		// TODO check that such view id does exist otherwise fallback
-		const currentViewId = ref(
-			queryParams.currentViewId || props.storeData.currentViewId,
-		);
-		const currentView = computed(() =>
-			props.storeData.views.find((view) => view.id === currentViewId.value),
-		);
-		function loadView(view) {
-			currentViewId.value = view.id;
-			currentPage.value = 1;
-			clearFilters();
-			resetSearchPhrase();
-		}
-
-		// Submissions
-		const currentPage = ref(1);
-		const submissionsUrl = computed(() => {
-			const apiUrl = props.storeData.apiUrl;
-			return Object.hasOwn(currentView.value, 'op')
-				? apiUrl + '/' + currentView.value.op
-				: apiUrl;
-		});
-		const submissionsQuery = computed(() => ({
-			searchPhrase: searchPhrase.value || undefined,
-			...currentView.value.queryParams,
-			...filtersQueryParamsApi.value,
-		}));
-		const submissionsFetcher = useFetchPaginated(submissionsUrl, {
-			page: currentPage,
-			pageSize: props.storeData.countPerPage,
-			query: submissionsQuery,
-		});
-
-		// Calculate all query params that should be applied to the url
-		const queryParamsInternal = computed(() => {
-			return {
-				...filtersQueryParams.value,
-				searchPhrase: searchPhrase.value,
-				currentViewId: currentViewId.value,
-			};
-		});
-
-		// Apply queryParamsInternal to reactive queryParams to udpate url
-		watch(queryParamsInternal, (paramsToApply) => {
-			Object.keys(paramsToApply).forEach((paramKey) => {
-				queryParams[paramKey] = paramsToApply[paramKey] || undefined;
-			});
-		});
-
-		return {
-			filtersForm,
-			searchPhrase,
-			submissionsFetcher,
-			currentView,
-			loadView,
-			setSearchPhrase,
-			filtersList,
-			updateFiltersForm,
-			clearFilters,
-		};
-	},
-	data() {
-		return {
-			views: [],
-			countPerPage: 0,
-			submissionsCount: 0,
-			apiUrl: null,
-			assignParticipantUrl: null,
-			isLoadingPage: false,
-			isLoadingSubmissions: false,
-			sortColumn: '',
-			sortDirection: '',
-			offset: 0,
-			summarySubmission: null,
-			isModalOpenedFilters: false,
-			isModalOpenedSummary: false,
-			isModalOpenedAssignEditors: false,
-		};
-	},
-	computed: {
-		/**
-		 * The activeFilters reproduced as an array of individual
-		 * filters to show to the user
-		 *
-		 * @return {Array}
-		 */
-		/*activeFiltersList() {
-			let list = [];
-			for (const key in this.activeFilters) {
-				const field = this.getFiltersField(key);
-				if (!field) {
-					return;
-				}
-				switch (field.component) {
-					case 'field-options':
-						this.activeFilters[key].forEach((value) => {
-							const option = field.options.find(
-								(option) => option.value === value,
-							);
-							list.push({
-								queryParam: key,
-								queryValue: option.value,
-								name: field.label,
-								value: option.label,
-							});
-						});
-						break;
-				}
-			}
-			return list;
-		},*/
-		/**
-		 * The current page of results being viewed
-		 *
-		 * @return {Number}
-		 */
-		currentPage() {
-			return Math.floor(this.offset / this.countPerPage) + 1;
-		},
-
-		/**
-		 * The selected view of submissions
-		 *
-		 * eg - Assigned to me
-		 *
-		 * @return {Object}
-		 */
-		/*currentView() {
-			return this.views.find((view) => view.id === this.currentViewId);
-		},*/
-	},
-	created() {
-		this.init(this.storeData);
-	},
-	methods: {
-		init(initStoreData) {
-			this.views = initStoreData.views;
-			this.columns = initStoreData.columns;
-			this.submissions = initStoreData.submissions;
-			this.currentViewId = initStoreData.currentViewId;
-			this.submissionsCount = initStoreData.submissionsCount;
-			this.apiUrl = initStoreData.apiUrl;
-			this.assignParticipantUrl = initStoreData.assignParticipantUrl;
-			this.countPerPage = initStoreData.countPerPage;
-			//this.filtersForm = initStoreData.filtersForm;
-		},
-		increment() {
-			this.count++;
-		},
-		/**
-		 * Remove all active filters
-		 */
-		/*clearFilters() {
-			this.activeFilters = {};
-			this.get();
-		},*/
-
-		/**
-		 * Get a view by it's id
-		 *
-		 * @param {String} id The id of the view to get
-		 */
-		findView(id) {
-			return this.views.find((view) => view.id === id);
-		},
-
-		/**
-		 * Get submissions matching the current request params
-		 *
-		 * @param {Function} cb A callback function to fire when successful
-		 */
-		async get() {
-			//const dialogStore = useDialogStore();
-			//const announcerStore = useAnnouncerStore();
-
-			console.log('GET');
-			this.isLoadingSubmissions = true;
-			this.$announcer.set(this.t('common.loading'));
-
-			let query = {
-				...this.currentView.queryParams,
-				...this.activeFilters,
-				count: this.countPerPage,
-				offset: this.offset,
-			};
-
-			if (this.sortColumn && this.sortDirection !== 'none') {
-				query.orderBy = this.sortColumn;
-				query.orderDirection =
-					this.sortDirection === 'descending' ? 'DESC' : 'ASC';
-			}
-
-			if (this.searchPhrase) {
-				query.searchPhrase = this.searchPhrase;
-			}
-			let data = null;
-			try {
-				data = await pkpFetch(
-					Object.hasOwn(this.currentView, 'op')
-						? this.apiUrl + '/' + this.currentView.op
-						: this.apiUrl,
-					{query, queueName: 'submissions'},
-				);
-				console.log(data);
-				this.submissions = data.items;
-				this.submissionsCount = data.itemsMax;
-				this.$announcer.set(this.t('common.loaded'));
-			} catch (e) {
-				// aborted by subsequent request
-				if (e.aborted === true) {
-					return null;
-				}
-				// TODO
-				//dialogStore.openDialogNetworkError(e);
-			}
-
-			this.isLoadingSubmissions = false;
-			return data;
-		},
-
-		/**
-		 * Get a field in the filters form
-		 *
-		 * @param {String} name The field's name
-		 * @return {Object} The object which describes the field
-		 */
-		/*getFiltersField(name) {
-			return this.filtersForm.fields.find((field) => field.name === name);
-		},*/
-
-		/**
-		 * Open one of the pre-set views
-		 */
-		/*async loadView(view) {
-			console.log('load view');
-			this.activeFilters = {};
-			this.currentViewId = view.id;
-			this.offset = 0;
-			this.searchPhrase = '';
-			const data = await this.get();
-			if (data.itemsMax) {
-				this.findView(view.id).count = data.itemsMax;
-			}
-		},*/
-
-		/**
-		 * Load a modal displaying the assign participant options
-		 */
-		openAssignParticipant(submission) {
-			var opts = {
-				title: this.t('submission.list.assignEditor'),
-				url: this.assignParticipantUrl
-					.replace('__id__', submission.id)
-					.replace('__stageId__', submission.stageId),
-				closeCallback: () => {
-					this.resetFocusToList();
-				},
-			};
-
-			$(
-				'<div id="' +
-					$.pkp.classes.Helper.uuid() +
-					'" ' +
-					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>',
-			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
-		},
-
-		/**
-		 * Open the panel to select filters
-		 */
-		openFiltersModal() {
-			this.isModalOpenedFilters = true;
-		},
-
-		closeFiltersModal() {
-			this.isModalOpenedFilters = false;
-		},
-
-		openAssignEditorsModal() {
-			this.isModalOpenedAssignEditors = true;
-		},
-
-		closeAssignEditorsModal() {
-			this.isModalOpenedAssignEditors = false;
-		},
-
-		/**
-		 * Open the submission summary panel
-		 */
-		openSummaryModal(submission) {
-			this.summarySubmission = submission;
-			this.isModalOpenedSummary = true;
-		},
-
-		closeSummaryModal() {
-			console.log('close summary modal');
-			//this.summarySubmission = null;
-			this.isModalOpenedSummary = false;
-		},
-
-		/**
-		 * Fired when the filters form is saved
-		 */
-		/*async saveFilters(data) {
-			this.activeFilters = Object.fromEntries(
-				Object.entries(data).filter(([key, value]) => {
-					return (Array.isArray(value) && value.length) || !!value;
-				}),
-			);
-			await this.get();
-			this.closeFiltersModal();
-		},*/
-
-		/**
-		 * Sync changes to the filter form's state data
-		 *
-		 * Fired when a field in the form changes
-		 */
-		/*setFiltersForm(id, data) {
-			console.log('SET Filters form:', JSON.stringify(data, null, 2));
-			this.filtersForm = {
-				...this.filtersForm,
-				...data,
-			};
-		},*/
-
-		/**
-		 * Change the current page
-		 */
-		async setPage(page) {
-			this.isLoadingPage = true;
-			this.offset = this.countPerPage * (page - 1);
-			await this.get();
-			this.isLoadingPage = false;
-		},
-
-		/**
-		 * Set the search phrase
-		 */
-		/*setSearchPhrase(value) {
-			if (this.searchPhrase == value) {
-				return;
-			}
-			this.searchPhrase = value;
-			this.offset = 0;
-			this.get();
-		},*/
-
-		/**
-		 * Sort the list by a column
-		 */
-		sort(column) {
-			if (column === this.sortColumn) {
-				const i = sortDirections.findIndex((dir) => dir === this.sortDirection);
-				this.sortDirection =
-					i + 1 === sortDirections.length
-						? sortDirections[0]
-						: sortDirections[i + 1];
-			} else {
-				this.sortColumn = column;
-				this.sortDirection = sortDirections[0];
-			}
-			this.get();
-		},
-
-		//created() {
-		/**
-		 * Set the current view to the first available
-		 * view when the page is loaded
-		 */
-		/*if (!this.currentViewId) {
-			this.currentViewId = this.views[0].id;
-		}*/
-		//},
-	},
-};
+onUnmounted(() => {
+	store.$dispose();
+});
 </script>
 
 <style lang="less">

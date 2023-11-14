@@ -6,6 +6,7 @@
 				:key="column.id"
 				:can-sort="column.sortable"
 				:sort-direction="sortColumn === column.id ? sortDirection : 'none'"
+				@sort-column="$emit('sortColumn', column.id)"
 			>
 				{{ column.header }}
 			</TableHeader>
@@ -22,10 +23,10 @@
 	<div class="submissions__list__footer">
 		<span class="submission__list__showing" v-html="showingXofX"></span>
 		<Pagination
-			v-if="lastPage > 1"
+			v-if="pagination.pageCount > 1"
 			:current-page="currentPage"
 			:is-loading="isLoadingPage"
-			:last-page="lastPage"
+			:last-page="pagination.pageCount"
 			:show-adjacent-pages="3"
 			@set-page="$emit((...args) => $emit('setPage', ...args))"
 		></Pagination>
@@ -56,16 +57,13 @@ export default {
 		ColumnTitle,
 	},
 	props: {
-		submissionsFetcher: {type: Array, required: true},
 		submissions: {type: Array, required: true},
 		columns: {type: Array, required: true},
 		sortColumn: {type: String, required: true},
-		submissionsCount: {type: Number, required: true},
-		offset: {type: Number, required: true},
-		currentPage: {type: Number, required: true},
-		countPerPage: {type: Number, required: true},
+		sortDirection: {type: String, required: true},
+		pagination: {type: Object, required: true},
 	},
-	emits: ['setPage'],
+	emits: ['setPage', 'sortColumn'],
 	computed: {
 		/**
 		 * A localized string with a count of the submissions being viewed
@@ -74,25 +72,11 @@ export default {
 		 */
 		showingXofX() {
 			return this.t('common.showingXofX', {
-				start: this.offset + 1,
-				finish: Math.min(
-					this.offset + this.countPerPage,
-					this.submissionsCount,
-				),
-				total: this.submissionsCount,
+				start: this.pagination.firstItemIndex,
+				finish: this.pagination.lastItemIndex,
+				total: this.pagination.itemCount,
 			});
 		},
-		/**
-		 * The number of pages available
-		 *
-		 * @return {Number}
-		 */
-		lastPage() {
-			return Math.ceil(this.submissionsCount / this.countPerPage);
-		},
-	},
-	created() {
-		console.log('submissions table created', this.submissions);
 	},
 };
 </script>

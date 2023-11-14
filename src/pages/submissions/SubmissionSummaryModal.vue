@@ -94,7 +94,7 @@ import PkpDialog from '@/components/Modal/Dialog.vue';
 
 import AssignEditorsModal from '@/pages/submissions/AssignEditorsModal.vue';
 
-import {useSubmissionsStore} from '@/pages/submissions/submissionsStore';
+import {useSubmissionsPageStore} from '@/pages/submissions/submissionsPageStore';
 export default {
 	components: {
 		SideModal,
@@ -124,7 +124,7 @@ export default {
 		},
 	},
 	computed: {
-		...mapStores(useSubmissionsStore),
+		...mapStores(useSubmissionsPageStore),
 		testDialogProps() {
 			return {
 				name: 'cancel',
