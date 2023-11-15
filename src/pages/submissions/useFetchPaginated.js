@@ -21,27 +21,50 @@ export function useFetchPaginated(url, options) {
 		return (page.value - 1) * pageSize.value;
 	});
 
+	let lastRequestController = null;
+
 	async function fetch() {
+		if (lastRequestController) {
+			// abort in-flight request
+			lastRequestController.abort();
+		}
+		lastRequestController = new AbortController();
+
 		const queryParams = {
 			offset: offset.value,
 			count: pageSize.value,
 			...query.value,
 		};
+
+		const signal = lastRequestController.signal;
+
 		const opts = {
 			query: queryParams,
 			...fetchOpts,
+			signal,
 		};
 
 		isLoading.value = true;
+		try {
+			const result = await ofetch(url.value, opts);
+			items.value = result.items;
+			itemCount.value = result.itemsMax;
+		} catch (e) {
+			items.value = [];
+			itemCount.value = 0;
 
-		const result = await ofetch(url.value, opts);
-		items.value = result.items;
-		itemCount.value = result.itemsMax;
-		isLoading.value = false;
+			if (signal) {
+				e.aborted = signal.aborted;
+			}
+			throw e;
+		} finally {
+			lastRequestController = null;
+			isLoading.value = false;
+		}
 	}
 
 	const pagination = computed(() => {
-		const firstItemIndex = offset.value + 1;
+		const firstItemIndex = itemCount.value ? offset.value + 1 : 0;
 		const lastItemIndex = Math.min(
 			offset.value + pageSize.value,
 			itemCount.value,

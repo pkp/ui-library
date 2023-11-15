@@ -49,8 +49,8 @@ export default {
 }
 
 .stageBubble__bubble {
-	width: 1.5em;
-	height: 1.5em;
+	width: 1em;
+	height: 1em;
 	background: @bg-anchor;
 	border-radius: 50%;
 }

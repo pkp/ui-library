@@ -6,11 +6,8 @@
 </template>
 
 <script>
-import {mapStores} from 'pinia';
-
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 
-import {useSubmissionsStore} from '@/pages/submissions/submissionsStore';
 import {pkpFetch} from '@/utils/pkpFetch';
 
 export default {
@@ -21,7 +18,6 @@ export default {
 	data() {
 		return {pkp: window.pkp, content: null};
 	},
-	computed: {...mapStores(useSubmissionsStore)},
 	mounted() {
 		console.log('submission summary mounted');
 		const submission = this.submissionsStore.submissions[3];
