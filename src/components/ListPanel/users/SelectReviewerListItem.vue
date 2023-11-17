@@ -308,11 +308,11 @@ export default {
 		/**
 		 * How many days has it been since they were last assigned a review
 		 *
-		 * @return {Number}
+		 * @return {?Number}
 		 */
 		daysSinceLastAssignment() {
 			if (!this.item.dateLastReviewAssignment) {
-				return 0;
+				return null;
 			}
 
 			// Needed for Safari as it will return NaN for date strings with '-' separators.
@@ -334,7 +334,7 @@ export default {
 		 * @return {String} "X days ago"
 		 */
 		daysSinceLastAssignmentLabelCompiled() {
-			if (!this.daysSinceLastAssignment) {
+			if (this.daysSinceLastAssignment === null) {
 				return this.neverAssignedLabel;
 			}
 			if (this.daysSinceLastAssignment > 1) {
