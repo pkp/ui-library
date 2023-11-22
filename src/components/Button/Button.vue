@@ -102,7 +102,7 @@ export default {
  */
 .pkpButton--isPrimary {
 	color: #fff;
-	background: @primary;
+	background: yellow;
 	border-color: @primary;
 	box-shadow: 0 1px 0 @primary;
 
