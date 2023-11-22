@@ -25,4 +25,4 @@ jobs:
         # Chromatic GitHub Action options
         with:
           # 👇 Chromatic projectToken, refer to the manage page to obtain it.
-          projectToken: chpt_d560551f1e4c0c7
+          debug: true
