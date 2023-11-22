@@ -10,7 +10,7 @@
     "prepare": "husky install",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "npx chromatic --project-token chpt_d560551f1e4c0c7"
+    "chromatic": "npx chromatic --project-token=chpt_d560551f1e4c0c7"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.16",
