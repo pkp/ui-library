@@ -40,9 +40,10 @@
 <script>
 import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
 import Search from '@/components/Search/Search.vue';
+import PkpButton from '@/components/Button/Button.vue';
 
 export default {
-	components: {ButtonRow, Search},
+	components: {ButtonRow, Search, PkpButton},
 	props: {
 		searchPhrase: {type: String, required: true},
 		isLoadingSubmissions: Boolean,

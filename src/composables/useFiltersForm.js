@@ -108,11 +108,9 @@ export function useFiltersForm(_filtersForm) {
 	function initFiltersFormFromQueryParams(queryParams) {
 		filtersForm.value.fields.forEach((field) => {
 			if (queryParams[field.name]) {
-				// TODO detect which fields are array and which not
 				const values = ensureArray(queryParams[field.name]).map(fixValueType);
 				if (queryParams[`${field.name}_label`]) {
 					const labels = ensureArray(queryParams[`${field.name}_label`]);
-					console.log(labels);
 					field.selected = createSelected(values, labels);
 				}
 				field.value = values;

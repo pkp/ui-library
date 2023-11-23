@@ -1,6 +1,6 @@
 <template>
 	<TransitionRoot as="template" :show="open">
-		<HLDialog as="div" class="relative z-10" @close="$emit('close')">
+		<HLDialog as="div" class="relative z-10" @close="handleClose">
 			<TransitionChild
 				as="template"
 				enter="ease-in-out duration-500"
@@ -38,56 +38,45 @@
 	</TransitionRoot>
 </template>
 
-<script>
+<script setup>
+import {ref, provide, defineProps, defineEmits} from 'vue';
 import {
 	Dialog as HLDialog,
 	TransitionRoot,
 	TransitionChild,
 } from '@headlessui/vue';
 
-export default {
-	components: {
-		HLDialog,
-		TransitionRoot,
-		TransitionChild,
-	},
-	provide() {
-		return {
-			closeModal: () => {
-				this.$emit('close');
-			},
-		};
+defineProps({
+	open: {
+		type: Boolean,
+		required: true,
 	},
 
-	props: {
-		open: {
-			type: Boolean,
-			required: true,
-		},
-
-		closeLabel: {
-			type: String,
-			required: true,
-		},
-		title: {
-			type: String,
-			default() {
-				return '';
-			},
-		},
-		type: {
-			type: String,
-			default() {
-				return 'popup';
-			},
-			validator(value) {
-				return ['popup', 'side'].includes(value);
-			},
-		},
+	closeLabel: {
+		type: String,
+		required: true,
 	},
-	emits: ['close'],
-	methods: {},
-};
+});
+
+const emit = defineEmits(['close']);
+
+const closeCallbacks = ref([]);
+function registerCloseCallback(callback) {
+	closeCallbacks.value.push(callback);
+}
+
+function handleClose() {
+	let canClose = true;
+	closeCallbacks.value.forEach((callback) => (canClose = callback()));
+	if (canClose) {
+		emit('close');
+	} else {
+		console.log('not closing yet');
+	}
+}
+
+provide('closeModal', handleClose);
+provide('registerCloseCallback', registerCloseCallback);
 </script>
 
 <style lang="less">

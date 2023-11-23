@@ -70,7 +70,8 @@ export default {
 @import '../../styles/_import';
 
 .pkpButton {
-	display: inline-block; /* */
+	display: inline-flex; /* */
+	align-items: center;
 	padding: 0 0.5em;
 	min-width: 2.13rem; /**/ // Always at least as wide as it is tall
 	background: #fff;

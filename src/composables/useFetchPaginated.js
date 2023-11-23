@@ -1,7 +1,10 @@
 import {ref, computed} from 'vue';
 import {ofetch} from 'ofetch';
+import {useDialogStore} from '@/stores/dialogStore';
 
 export function useFetchPaginated(url, options) {
+	const dialogStore = useDialogStore();
+
 	const {
 		query: _query,
 		page: _page,
@@ -56,7 +59,12 @@ export function useFetchPaginated(url, options) {
 			if (signal) {
 				e.aborted = signal.aborted;
 			}
-			throw e;
+
+			if (e.aborted) {
+				return; // aborted by subsequent request
+			}
+
+			dialogStore.openDialogNetworkError(e);
 		} finally {
 			lastRequestController = null;
 			isLoading.value = false;

@@ -1,11 +1,11 @@
 <template>
 	<TableCell>
-		<pkp-button
+		<PkpButton
 			v-if="isManager && needsEditors(submission)"
-			@click="useSubmissionsPageStore.openAssignParticipant(submission)"
+			@click="submissionsPageStore.openAssignParticipantModal(submission)"
 		>
 			{{ t('submission.list.assignEditor') }}
-		</pkp-button>
+		</PkpButton>
 		<template v-else>
 			<ActivityIndicatorPopup />
 		</template>
@@ -17,9 +17,10 @@ import TableCell from '@/components/TableNext/TableCell.vue';
 import ActivityIndicatorPopup from '@/components/ActivityIndicatorPopup/ActivityIndicatorPopup.vue';
 import {mapStores} from 'pinia';
 import {useSubmissionsPageStore} from '@/pages/submissions/submissionsPageStore';
-
+import PkpButton from '@/components/Button/Button.vue';
 export default {
 	components: {
+		PkpButton,
 		TableCell,
 		ActivityIndicatorPopup,
 	},

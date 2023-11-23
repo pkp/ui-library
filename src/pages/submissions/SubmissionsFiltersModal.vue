@@ -5,11 +5,11 @@
 		</template>
 		<Panel>
 			<PanelSection>
-				<pkp-form
+				<PkpForm
 					v-bind="filtersForm"
 					@set="(formId, data) => updateFiltersForm(data)"
-				></pkp-form>
-				<div class="flex">
+				></PkpForm>
+				<div class="mt-2 flex gap-2">
 					<PkpButton @click="applyFilters()">Apply Filters</PkpButton>
 					<PkpButton @click="clearFiltersForm()">Clear Filters</PkpButton>
 				</div>
@@ -23,9 +23,12 @@ import {inject} from 'vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import Panel from '@/components/Panel/Panel.vue';
 import PanelSection from '@/components/Panel/PanelSection.vue';
-import {useFiltersForm} from './useFiltersForm';
+import PkpButton from '@/components/Button/Button.vue';
+import PkpForm from '@/components/Form/Form.vue';
+
+import {useFiltersForm} from '@/composables/useFiltersForm';
 export default {
-	components: {SideModalBody, Panel, PanelSection},
+	components: {SideModalBody, Panel, PanelSection, PkpButton, PkpForm},
 	props: {
 		filtersFormInitial: {type: Object, required: true},
 	},
@@ -37,11 +40,8 @@ export default {
 		);
 
 		// handling filtersForm
-		const {
-			filtersForm,
-			update: updateFiltersForm,
-			clear: clearFiltersForm,
-		} = useFiltersForm(filtersFormCopy);
+		const {filtersForm, updateFiltersForm, clearFiltersForm} =
+			useFiltersForm(filtersFormCopy);
 
 		const closeModal = inject('closeModal');
 

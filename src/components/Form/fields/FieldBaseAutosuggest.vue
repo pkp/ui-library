@@ -151,7 +151,6 @@ import {
 } from '@headlessui/vue';
 import ajaxError from '@/mixins/ajaxError';
 import debounce from 'debounce';
-import elementResizeEvent from 'element-resize-event';
 
 export default {
 	name: 'FieldBaseAutosuggest',
@@ -410,12 +409,6 @@ export default {
 	},
 	mounted() {
 		this.updateInlineLabelPadding();
-		elementResizeEvent(
-			this.$refs.values,
-			debounce(() => {
-				this.updateInlineLabelPadding();
-			}, 100),
-		);
 
 		// Inline labels can not be used with multilingual fields
 		if (this.isMultilingual && this.isLabelInline) {
@@ -424,9 +417,6 @@ export default {
 					this.name,
 			);
 		}
-	},
-	beforeUnmount() {
-		elementResizeEvent.unbind(this.$refs.values);
 	},
 };
 </script>

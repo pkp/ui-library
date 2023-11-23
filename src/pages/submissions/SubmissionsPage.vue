@@ -45,13 +45,15 @@
 			@update-filters-form="store.updateFiltersForm"
 		/>
 	</SideModal>
-	<SideModal close-label="Close" :open="false">
+	<SideModal
+		close-label="Close"
+		:open="store.isModalOpenedAssignParticipant"
+		@close="store.closeAssignParticipantModal"
+	>
 		<AssignEditorsModal />
 	</SideModal>
 </template>
 <script setup>
-console.log('submission page script setup');
-
 import {onUnmounted} from 'vue';
 // store
 import SubmissionsTable from '@/pages/submissions/SubmissionsTable.vue';
@@ -63,16 +65,18 @@ import SubmissionsFiltersModal from '@/pages/submissions/SubmissionsFiltersModal
 import AssignEditorsModal from '@/pages/submissions/AssignEditorsModal.vue';
 
 import SideModal from '@/components/Modal/SideModal.vue';
-import {useSubmissionsPageStore} from './submissionsPageStore';
+import {
+	useSubmissionsPageStore,
+	initSubmissionsPageStore,
+	disposeSubmissionsPageStore,
+} from './submissionsPageStore';
 
 const props = defineProps({storeData: {required: true, type: Object}});
-
+initSubmissionsPageStore(props.storeData);
 const store = useSubmissionsPageStore();
 
-store.init(props.storeData);
-
 onUnmounted(() => {
-	store.$dispose();
+	disposeSubmissionsPageStore();
 });
 </script>
 

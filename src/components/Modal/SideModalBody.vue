@@ -1,7 +1,7 @@
 <template>
 	<DialogPanel
 		class="pointer-events-auto h-screen w-screen"
-		:class="secondary ? 'max-w-3xl' : 'max-w-4xl'"
+		:class="secondary ? 'max-w-4xl' : 'max-w-5xl'"
 	>
 		<div class="shadow-xl flex h-full flex-col bg-medium py-6">
 			<div class="">
@@ -13,12 +13,12 @@
 							@click="closeModal"
 						>
 							<span class="sr-only">Close panel</span>
-							<icon
+							<Icon
 								class="w-4 rtl:hidden"
 								icon="pkp-chevron-left"
 								:aria-hidden="true"
 							/>
-							<icon
+							<Icon
 								class="w-4 ltr:hidden"
 								icon="pkp-chevron-right"
 								:aria-hidden="true"
@@ -44,9 +44,9 @@
 
 <script>
 import {DialogPanel /*DialogTitle*/} from '@headlessui/vue';
-
+import Icon from '@/components/Icon/Icon.vue';
 export default {
-	components: {DialogPanel /*DialogTitle*/},
+	components: {Icon, DialogPanel /*DialogTitle*/},
 	props: {
 		secondary: Boolean,
 	},

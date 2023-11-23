@@ -3,33 +3,33 @@
 		<template #header>
 			<div class="flex">
 				<div class="flex-grow">
-					<div class="text-xl-medium">{{ summarySubmission.id }}</div>
+					<div class="text-xl-medium">{{ submission.id }}</div>
 					<h2 class="mt-1 text-4xl-bold underline">
-						{{ summarySubmission.publications[0].authorsStringShort }}
+						{{ submission.publications[0].authorsStringShort }}
 					</h2>
 					<div class="mt-1 text-3xl-normal">
-						{{ summarySubmission.publications[0].fullTitle.en }}
+						{{ submission.publications[0].fullTitle.en }}
 					</div>
 					<div class="mt-1">
-						<StageBubble :stage-id="summarySubmission.stageId">
+						<StageBubble :stage-id="submission.stageId">
 							<span class="text-lg-normal">
-								{{ summarySubmission.stageName }}
+								{{ submission.stageName }}
 							</span>
 							<template
 								v-if="
-									(summarySubmission.stageId ===
+									(submission.stageId ===
 										pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW ||
-										summarySubmission.stageId ===
+										submission.stageId ===
 											pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) &&
-									summarySubmission.reviewRounds.length
+									submission.reviewRounds.length
 								"
 							>
 								{{
 									t('common.inParenthesis', {
 										text: t('common.reviewRoundNumber', {
 											round:
-												summarySubmission.reviewRounds[
-													summarySubmission.reviewRounds.length - 1
+												submission.reviewRounds[
+													submission.reviewRounds.length - 1
 												].round,
 										}),
 									})
@@ -39,7 +39,9 @@
 					</div>
 				</div>
 				<div class="flex items-center">
-					<PkpButton>View submission in detail</PkpButton>
+					<PkpButton element="a" :href="submission.urlWorkflow">
+						View submission in detail
+					</PkpButton>
 				</div>
 			</div>
 		</template>
@@ -88,89 +90,39 @@
 						</PkpButton>
 					</div>
 				</div>
-				<div class="p-4">Editors assigned</div>
+				<div class="p-4">
+					<div class="text-lg-bold">Editors assigned:</div>
+					<div>
+						<PkpButton isLink="true" @click="store.openAssignParticipantModal">
+							Assign Editors
+						</PkpButton>
+					</div>
+				</div>
 			</div>
 		</div>
-		<PkpDialog
-			:open="testDialogOpened"
-			v-bind="testDialogProps"
-			@close="closeTestDialog()"
-		/>
 		<SideModal
 			close-label="Close"
-			:open="isModalOpenedAssignEditors"
-			@close="closeAssignEditorsModal"
+			:open="store.isModalOpenedAssignParticipantSecondary"
+			@close="store.closeAssignParticipantModal"
 		>
 			<AssignEditorsModal />
 		</SideModal>
 	</SideModalBody>
 </template>
 
-<script>
-import {mapStores} from 'pinia';
-
+<script setup>
+import PkpButton from '@/components/Button/Button.vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import StageBubble from '@/components/StageBubble/StageBubble.vue';
 import SideModal from '@/components/Modal/SideModal.vue';
-import PkpDialog from '@/components/Modal/Dialog.vue';
 
 import AssignEditorsModal from '@/pages/submissions/AssignEditorsModal.vue';
 
 import {useSubmissionsPageStore} from '@/pages/submissions/submissionsPageStore';
-export default {
-	components: {
-		SideModal,
-		SideModalBody,
-		StageBubble,
-		AssignEditorsModal,
-		PkpDialog,
-	},
-	props: {
-		summarySubmission: Object,
-	},
-	data() {
-		return {
-			pkp: window.pkp,
-			testDialogOpened: false,
-			isModalOpenedAssignEditors: false,
-		};
-	},
-	methods: {
-		openTestDialog() {
-			this.testDialogOpened = true;
-		},
-		closeTestDialog() {
-			this.testDialogOpened = false;
-		},
-	},
-	computed: {
-		...mapStores(useSubmissionsPageStore),
-		testDialogProps() {
-			return {
-				name: 'cancel',
-				title: 'title',
-				message: 'message',
-				actions: [
-					{
-						label: 'Action1',
-						isWarnable: true,
-						callback: () => {
-							window.location = this.submissionUrl;
-						},
-					},
-					{
-						label: 'Close',
-						callback: (close) => close(),
-					},
-				],
-			};
-		},
-	},
-	mounted() {
-		console.log('submission summary mounted');
-	},
-	unmounted() {
-		console.log('submission summary unmounted');
-	},
-};
+
+const pkp = window.pkp;
+
+const store = useSubmissionsPageStore();
+
+const {selectedSubmission: submission} = store;
 </script>

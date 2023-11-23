@@ -13,7 +13,12 @@
 </template>
 
 <script>
+import PkpButton from '@/components/Button/Button.vue';
+
 export default {
+	components: {
+		PkpButton,
+	},
 	props: {
 		currentView: {type: Object, required: true},
 		submissionsCount: {type: Number, required: true},
