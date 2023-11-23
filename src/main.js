@@ -11,7 +11,6 @@ import router from './router';
 import GlobalMixins from '@/mixins/global.js';
 import VueAnnouncer from '@vue-a11y/announcer';
 import FloatingVue from 'floating-vue';
-import i18nPlugin from '@/piniaPlugins/i18n.plugin.js';
 
 import VueScrollTo from 'vue-scrollto';
 
@@ -105,7 +104,6 @@ const vueApp = createApp({
 });
 
 const pinia = createPinia();
-pinia.use(i18nPlugin);
 vueApp.use(pinia);
 // https://github.com/vuejs/pinia/discussions/1197
 // to be able globally share stores
