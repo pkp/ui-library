@@ -8,10 +8,8 @@ import '../src/styles/_global.less';
 import {initializeRTL} from 'storybook-addon-rtl';
 
 import {createPinia} from 'pinia';
-import i18nPlugin from '@/piniaPlugins/i18n.plugin.js';
 
 const pinia = createPinia();
-pinia.use(i18nPlugin);
 
 initializeRTL();
 
