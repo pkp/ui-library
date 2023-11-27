@@ -2,9 +2,9 @@
 	<TransitionRoot as="template" :show="open">
 		<HLDialog
 			:open="open"
-			@close="$emit('close')"
 			class="modal"
 			:class="'modal--' + type"
+			@close="$emit('close')"
 		>
 			<TransitionChild
 				as="template"

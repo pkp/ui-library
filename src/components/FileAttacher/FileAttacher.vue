@@ -2,8 +2,8 @@
 	<div class="fileAttacher">
 		<action-panel
 			v-for="(attacher, key) in attachers"
-			:key="key"
 			:id="'attacher' + key"
+			:key="key"
 		>
 			<h2>{{ attacher.label }}</h2>
 			<p v-html="attacher.description" />
@@ -17,15 +17,15 @@
 			</template>
 		</action-panel>
 		<modal
-			:closeLabel="t('common.close')"
+			:close-label="t('common.close')"
 			name="attacher"
 			:title="currentAttacher ? currentAttacher.label : ''"
 			:open="isModalOpenedAttacher"
 			@close="isModalOpenedAttacher = false"
 		>
 			<component
-				v-if="currentAttacher"
 				:is="currentAttacher.component"
+				v-if="currentAttacher"
 				v-bind="currentAttacher"
 				@selected:files="attachFiles"
 				@cancel="cancel"

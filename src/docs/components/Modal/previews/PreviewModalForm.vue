@@ -4,7 +4,7 @@
 			Modal with Form
 		</pkp-button>
 		<modal
-			closeLabel="Close"
+			close-label="Close"
 			title="Add Announcement"
 			:open="isModalOpened"
 			@close="isModalOpened = false"

@@ -4,9 +4,9 @@ import CatalogListPanel from '@/components/ListPanel/submissions/CatalogListPane
 
 export default {
 	name: 'ManageCatalogPage',
-	extends: Page,
 	components: {
 		CatalogListPanel,
 	},
+	extends: Page,
 };
 </script>

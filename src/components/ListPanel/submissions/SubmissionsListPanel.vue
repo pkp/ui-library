@@ -1,7 +1,7 @@
 <template>
 	<div class="submissionsListPanel">
 		<list-panel
-			:isSidebarVisible="isSidebarVisible"
+			:is-sidebar-visible="isSidebarVisible"
 			:items="items"
 			class="listPanel--submissions"
 		>
@@ -11,11 +11,11 @@
 					<spinner v-if="isLoading" />
 					<template #actions>
 						<search
-							:searchPhrase="searchPhrase"
+							:search-phrase="searchPhrase"
 							@search-phrase-changed="setSearchPhrase"
 						/>
 						<pkp-button
-							:isActive="isSidebarVisible"
+							:is-active="isSidebarVisible"
 							@click="isSidebarVisible = !isSidebarVisible"
 						>
 							<icon icon="filter" :inline="true" />
@@ -32,7 +32,7 @@
 				</pkp-header>
 			</template>
 			<template #sidebar>
-				<pkp-header :isOneLine="false">
+				<pkp-header :is-one-line="false">
 					<h3>
 						<icon icon="filter" :inline="true" />
 						{{ t('common.filter') }}
@@ -47,11 +47,11 @@
 						<h4>{{ filterSet.heading }}</h4>
 					</pkp-header>
 					<component
+						:is="filter.filterType || 'pkp-filter'"
 						v-for="filter in filterSet.filters"
 						:key="filter.param + filter.value"
-						:is="filter.filterType || 'pkp-filter'"
 						v-bind="filter"
-						:isFilterActive="isFilterActive(filter.param, filter.value)"
+						:is-filter-active="isFilterActive(filter.param, filter.value)"
 						@add-filter="addFilter"
 						@remove-filter="removeFilter"
 						@update-filter="addFilter"
@@ -74,9 +74,9 @@
 					<submissions-list-item
 						:key="item.id"
 						:item="item"
-						:apiUrl="apiUrl"
-						:infoUrl="infoUrl"
-						:assignParticipantUrl="assignParticipantUrl"
+						:api-url="apiUrl"
+						:info-url="infoUrl"
+						:assign-participant-url="assignParticipantUrl"
 						@addFilter="addFilter"
 					/>
 				</slot>
@@ -84,9 +84,9 @@
 			<template #footer>
 				<pagination
 					v-if="lastPage > 1"
-					:currentPage="currentPage"
-					:isLoading="isLoading"
-					:lastPage="lastPage"
+					:current-page="currentPage"
+					:is-loading="isLoading"
+					:last-page="lastPage"
 					@set-page="setPage"
 				/>
 			</template>
@@ -106,7 +106,6 @@ import SubmissionsListItem from '@/components/ListPanel/submissions/SubmissionsL
 import fetch from '@/mixins/fetch';
 
 export default {
-	mixins: [fetch],
 	components: {
 		ListPanel,
 		Pagination,
@@ -117,6 +116,7 @@ export default {
 		Search,
 		SubmissionsListItem,
 	},
+	mixins: [fetch],
 	props: {
 		addUrl: {
 			type: String,
@@ -197,6 +197,34 @@ export default {
 				])
 			);
 		},
+	},
+	mounted() {
+		/**
+		 * Refresh the list when a submission is updated
+		 */
+		pkp.eventBus.$on('updated:submission', () => this.get());
+
+		/**
+		 * Remove a submission from the list when it is deleted
+		 */
+		pkp.eventBus.$on('deleted:submission', (data) => {
+			if (
+				!data.id ||
+				!this.items.find((submission) => submission.id === data.id)
+			) {
+				return;
+			}
+			this.setItems(
+				this.items.filter((item) => {
+					return data.id !== item.id;
+				}),
+				this.itemsMax - 1,
+			);
+		});
+	},
+	unmounted() {
+		pkp.eventBus.$off('updated:submission');
+		pkp.eventBus.$off('deleted:submission');
 	},
 	methods: {
 		/**
@@ -316,34 +344,6 @@ export default {
 
 			return hasRole;
 		},
-	},
-	mounted() {
-		/**
-		 * Refresh the list when a submission is updated
-		 */
-		pkp.eventBus.$on('updated:submission', () => this.get());
-
-		/**
-		 * Remove a submission from the list when it is deleted
-		 */
-		pkp.eventBus.$on('deleted:submission', (data) => {
-			if (
-				!data.id ||
-				!this.items.find((submission) => submission.id === data.id)
-			) {
-				return;
-			}
-			this.setItems(
-				this.items.filter((item) => {
-					return data.id !== item.id;
-				}),
-				this.itemsMax - 1,
-			);
-		});
-	},
-	unmounted() {
-		pkp.eventBus.$off('updated:submission');
-		pkp.eventBus.$off('deleted:submission');
 	},
 };
 </script>

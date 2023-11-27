@@ -5,10 +5,10 @@
 				<slot />
 			</div>
 			<file
-				class="selectSubmissionFileListItem__file"
-				:documentType="documentType"
-				:fileId="fileId"
 				:id="describedById"
+				class="selectSubmissionFileListItem__file"
+				:document-type="documentType"
+				:file-id="fileId"
 				:name="name"
 			/>
 		</label>

@@ -1,6 +1,6 @@
 <template>
 	<div class="previewChart">
-		<line-chart :chartData="chartData" :chartOptions="chartOptions" />
+		<line-chart :chart-data="chartData" :chart-options="chartOptions" />
 	</div>
 </template>
 

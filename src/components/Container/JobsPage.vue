@@ -6,11 +6,12 @@ import ajaxError from '@/mixins/ajaxError';
 
 export default {
 	name: 'JobsPage',
-	extends: Page,
 	components: {
 		PkpTable,
 		Pagination,
 	},
+	extends: Page,
+	mixins: [ajaxError],
 	data() {
 		return {
 			i18nDescription: '',
@@ -24,13 +25,15 @@ export default {
 			apiUrl: null,
 		};
 	},
-	mixins: [ajaxError],
 	computed: {
 		description() {
 			return this.replaceLocaleParams(this.i18nDescription, {
 				total: this.total,
 			});
 		},
+	},
+	created() {
+		this.loadList();
 	},
 	methods: {
 		handlePagination(page) {
@@ -57,9 +60,6 @@ export default {
 				},
 			});
 		},
-	},
-	created() {
-		this.loadList();
 	},
 };
 </script>

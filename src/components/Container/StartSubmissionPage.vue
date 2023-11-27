@@ -3,10 +3,10 @@ import Page from '@/components/Container/Page.vue';
 import StartSubmissionForm from '@/components/Form/submission/StartSubmissionForm.vue';
 
 export default {
-	extends: Page,
 	components: {
 		StartSubmissionForm,
 	},
+	extends: Page,
 	data() {
 		return {
 			form: {},

@@ -4,10 +4,10 @@ import FieldPubId from '@/components/Form/fields/FieldPubId.vue';
 import config from './config';
 
 export default {
-	extends: ExampleFieldBase,
 	components: {
 		FieldPubId,
 	},
+	extends: ExampleFieldBase,
 	data() {
 		return {
 			...config,

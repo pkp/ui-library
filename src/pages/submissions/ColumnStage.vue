@@ -33,11 +33,11 @@ export default {
 		TableCell,
 		StageBubble,
 	},
-	data() {
-		return {pkp: window.pkp};
-	},
 	props: {
 		submission: Object,
+	},
+	data() {
+		return {pkp: window.pkp};
 	},
 };
 </script>

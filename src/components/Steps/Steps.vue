@@ -16,23 +16,23 @@
 			<ol class="pkpSteps__buttons" :aria-label="label">
 				<li
 					v-for="(step, i) in steps"
+					:key="step.id"
 					class="pkpSteps__step"
 					:class="{
 						'-screenReader': collapsed && !stepsVisible && current !== step.id,
 					}"
-					:key="step.id"
 				>
 					<template v-if="startedSteps.includes(step.id)">
 						<button
+							:ref="'button' + step.id"
 							class="pkpSteps__step__label"
 							:class="
 								current === step.id
 									? 'pkpSteps__step__label--current'
 									: completedSteps.includes(step.id)
-									? 'pkpSteps__step__label--completed'
-									: ''
+									  ? 'pkpSteps__step__label--completed'
+									  : ''
 							"
-							:ref="'button' + step.id"
 							@click="setCurrent(step.id)"
 						>
 							<span class="pkpSteps__step__number">
@@ -49,7 +49,7 @@
 						</button>
 					</template>
 					<template v-else>
-						<span class="pkpSteps__step__label" :ref="'button' + step.id">
+						<span :ref="'button' + step.id" class="pkpSteps__step__label">
 							<span class="pkpSteps__step__number">{{ i + 1 }}</span>
 							{{ step.label }}
 						</span>
@@ -77,6 +77,21 @@ import debounce from 'debounce';
 import elementResizeEvent from 'element-resize-event';
 
 export default {
+	provide() {
+		return {
+			registerStep: (step) => {
+				this.steps.push(step);
+
+				// Return an unregistration function for cleanup
+				return () => {
+					const index = this.steps.findIndex((_step) => _step.id === step.id);
+					if (index > -1) {
+						this.steps.splice(index, 1);
+					}
+				};
+			},
+		};
+	},
 	props: {
 		current: {
 			type: String,
@@ -138,6 +153,50 @@ export default {
 				.replace('{$total}', this.steps.length);
 		},
 	},
+	watch: {
+		/**
+		 * When switching to the collapsed view, only show the active button
+		 */
+		collapsed(newVal, oldVal) {
+			if (newVal !== oldVal && newVal) {
+				this.stepsVisible = false;
+			}
+		},
+
+		/**
+		 * Update the currently selected step
+		 */
+		current(newVal, oldVal) {
+			this.setChildStepsIsActive(newVal);
+			this.$nextTick(() => {
+				this.setStartedLine();
+				this.setFocusIn(this.$el.querySelector('.pkpStep:not([hidden])'));
+				if (this.scrollTo) {
+					this.$scrollTo(this.scrollTo, 500, {
+						offset: -50,
+					});
+				}
+			});
+		},
+	},
+	mounted() {
+		/**
+		 * Set the step to view when loaded
+		 */
+		this.setChildStepsIsActive(this.current);
+
+		/**
+		 * Toggle collapsed view when there is not enough width
+		 * for the steps to fit
+		 */
+		this.maybeToggleCollapsedView();
+		elementResizeEvent(this.$el, debounce(this.maybeToggleCollapsedView, 100));
+
+		/**
+		 * Set the progress line
+		 */
+		this.$nextTick(() => this.setStartedLine());
+	},
 	methods: {
 		/**
 		 * Check the width of this element and switch between collapsed
@@ -190,65 +249,6 @@ export default {
 				this.$refs['button' + lastStep.id][0].offsetLeft;
 			this.$refs.line.style.right = width + 'px';
 		},
-	},
-	watch: {
-		/**
-		 * When switching to the collapsed view, only show the active button
-		 */
-		collapsed(newVal, oldVal) {
-			if (newVal !== oldVal && newVal) {
-				this.stepsVisible = false;
-			}
-		},
-
-		/**
-		 * Update the currently selected step
-		 */
-		current(newVal, oldVal) {
-			this.setChildStepsIsActive(newVal);
-			this.$nextTick(() => {
-				this.setStartedLine();
-				this.setFocusIn(this.$el.querySelector('.pkpStep:not([hidden])'));
-				if (this.scrollTo) {
-					this.$scrollTo(this.scrollTo, 500, {
-						offset: -50,
-					});
-				}
-			});
-		},
-	},
-	provide() {
-		return {
-			registerStep: (step) => {
-				this.steps.push(step);
-
-				// Return an unregistration function for cleanup
-				return () => {
-					const index = this.steps.findIndex((_step) => _step.id === step.id);
-					if (index > -1) {
-						this.steps.splice(index, 1);
-					}
-				};
-			},
-		};
-	},
-	mounted() {
-		/**
-		 * Set the step to view when loaded
-		 */
-		this.setChildStepsIsActive(this.current);
-
-		/**
-		 * Toggle collapsed view when there is not enough width
-		 * for the steps to fit
-		 */
-		this.maybeToggleCollapsedView();
-		elementResizeEvent(this.$el, debounce(this.maybeToggleCollapsedView, 100));
-
-		/**
-		 * Set the progress line
-		 */
-		this.$nextTick(() => this.setStartedLine());
 	},
 };
 </script>

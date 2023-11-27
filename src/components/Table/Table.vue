@@ -53,7 +53,7 @@
 				:key="'row' + rowIndex"
 				class="pkpTable__row"
 			>
-				<slot :row="row" :rowIndex="rowIndex">
+				<slot :row="row" :row-index="rowIndex">
 					<table-cell
 						v-for="(column, columnIndex) in columns"
 						:key="column.name"

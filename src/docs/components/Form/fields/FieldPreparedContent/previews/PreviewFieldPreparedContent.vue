@@ -1,11 +1,11 @@
 <template>
 	<field-prepared-content
 		v-bind="field"
-		insertLabel="Insert"
-		insertModalLabel="Insert Content"
-		:preparedContent="preparedContent"
-		preparedContentLabel="Content"
-		searchLabel="Find content to insert"
+		insert-label="Insert"
+		insert-modal-label="Insert Content"
+		:prepared-content="preparedContent"
+		prepared-content-label="Content"
+		search-label="Find content to insert"
 		@change="change"
 	/>
 </template>
@@ -18,10 +18,10 @@ import field from '../../../helpers/field-rich-textarea-description';
 import insertContent from '../../../../../data/insertContent';
 
 export default {
-	extends: PreviewFieldBase,
 	components: {
 		FieldPreparedContent,
 	},
+	extends: PreviewFieldBase,
 	data() {
 		return {
 			field: {

@@ -18,16 +18,16 @@
 		<div class="pkpFilter__input pkpFilter__input--slider">
 			<label class="-screenReader" for="slider">{{ title }}</label>
 			<input
+				id="slider"
+				v-model.number="currentValue"
 				type="range"
 				:max="max"
 				:min="min"
 				:disabled="!isFilterActive"
-				id="slider"
-				v-model.number="currentValue"
 			/>
 			<output
-				ref="output"
 				v-if="isFilterActive"
+				ref="output"
 				for="slider"
 				class="pkpFilter__value"
 				:style="valueStyles"
@@ -58,10 +58,10 @@ import Icon from '@/components/Icon/Icon.vue';
 import debounce from 'debounce';
 
 export default {
-	extends: Filter,
 	components: {
 		Icon,
 	},
+	extends: Filter,
 	props: {
 		max: {
 			type: Number,

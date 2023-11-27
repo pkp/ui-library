@@ -2,7 +2,7 @@
 	<example-field-user-autosuggest
 		v-bind="field"
 		label="To:"
-		:isLabelInline="true"
+		:is-label-inline="true"
 		@change="change"
 	/>
 </template>

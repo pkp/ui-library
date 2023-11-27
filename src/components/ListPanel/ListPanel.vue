@@ -11,8 +11,8 @@
 			<transition name="listPanel__sidebar">
 				<div
 					v-if="!!$slots.sidebar && isSidebarVisible"
-					class="listPanel__sidebar"
 					ref="sidebar"
+					class="listPanel__sidebar"
 				>
 					<slot name="sidebar" />
 				</div>
@@ -30,8 +30,8 @@
 										<slot name="item-title" :item="item">{{ item.title }}</slot>
 									</div>
 									<div
-										class="listPanel__itemSubtitle"
 										v-if="!!$slots['item-subtitle'] || item.subtitle"
+										class="listPanel__itemSubtitle"
 									>
 										<slot name="item-subtitle" :item="item">
 											{{ item.subtitle }}

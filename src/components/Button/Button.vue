@@ -15,7 +15,7 @@
 
 <script>
 export default {
-	name: 'pkpButton',
+	name: 'PkpButton',
 	props: {
 		element: {
 			type: String,

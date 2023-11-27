@@ -14,6 +14,13 @@ import localStorage from '@/mixins/localStorage';
 import moment from 'moment';
 
 export default {
+	components: {
+		ButtonRow,
+		ContributorsListPanel,
+		File,
+		Modal,
+		SubmissionFilesListPanel,
+	},
 	extends: Page,
 	mixins: [
 		ajaxError,
@@ -23,13 +30,6 @@ export default {
 		localizeSubmission,
 		localStorage,
 	],
-	components: {
-		ButtonRow,
-		ContributorsListPanel,
-		File,
-		Modal,
-		SubmissionFilesListPanel,
-	},
 	data() {
 		return {
 			autosavesKeyBase: 'submitAutosaves',
@@ -157,6 +157,93 @@ export default {
 			}
 			return this.i18nPageTitle.replace('{$step}', this.currentStep.name);
 		},
+	},
+	watch: {
+		/**
+		 * Update when the step changes
+		 */
+		currentStepIndex(newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+
+			// Add forms to be autosaved
+			this.addAutosaves();
+
+			// Update the list of steps that have been started
+			this.steps.forEach((step, i) => {
+				if (
+					!this.startedSteps.includes(step.id) &&
+					i <= this.currentStepIndex
+				) {
+					this.startedSteps.push(step.id);
+				}
+			});
+
+			// Track step changes in the title and browser history
+			const step = this.steps[newVal];
+			document.title = this.getPageTitle(step);
+			if (step.id !== window.location.hash.replace('#', '')) {
+				this.addHistory(step);
+			}
+
+			// Trigger validation on the review step
+			if (newVal === this.steps.length - 1) {
+				this.validate();
+			}
+		},
+
+		/**
+		 * Set form data when validation errors are changed
+		 */
+		errors(newVal, oldVal) {
+			const keys = Object.keys(newVal);
+			this.steps.forEach((step, stepIndex) => {
+				step.sections.forEach((section, sectionIndex) => {
+					if (section.type === 'form') {
+						section.form.fields.forEach((field) => {
+							if (keys.includes(field.name)) {
+								this.steps[stepIndex].sections[sectionIndex].form.errors = {
+									...this.steps[stepIndex].sections[sectionIndex].form.errors,
+									...{[field.name]: newVal[field.name]},
+								};
+							}
+						});
+					}
+				});
+			});
+
+			pkp.eventBus.$emit('submission:submit:errors', newVal, this);
+		},
+
+		/**
+		 * Update the last autosave message as soon
+		 * as autosave finishes
+		 */
+		isAutosaving(newVal, oldVal) {
+			if (!newVal && oldVal) {
+				this.setLastAutosaveMessage();
+			}
+		},
+	},
+	created() {
+		/**
+		 * Open the correct step when the page is loaded
+		 */
+		if (!window.location.hash) {
+			const newStep = this.steps.find(
+				(step) => step.id === this.submission.submissionProgress,
+			);
+			this.openStep(newStep ? newStep.id : this.steps[0].id);
+		} else {
+			this.openStep(this.steps[0].id);
+		}
+
+		/**
+		 * Regularly update the last saved message
+		 * so it shows an accurate time
+		 */
+		setInterval(this.setLastAutosaveMessage, 3000);
 	},
 	methods: {
 		/**
@@ -651,93 +738,6 @@ export default {
 				});
 			}, 500);
 		},
-	},
-	watch: {
-		/**
-		 * Update when the step changes
-		 */
-		currentStepIndex(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-
-			// Add forms to be autosaved
-			this.addAutosaves();
-
-			// Update the list of steps that have been started
-			this.steps.forEach((step, i) => {
-				if (
-					!this.startedSteps.includes(step.id) &&
-					i <= this.currentStepIndex
-				) {
-					this.startedSteps.push(step.id);
-				}
-			});
-
-			// Track step changes in the title and browser history
-			const step = this.steps[newVal];
-			document.title = this.getPageTitle(step);
-			if (step.id !== window.location.hash.replace('#', '')) {
-				this.addHistory(step);
-			}
-
-			// Trigger validation on the review step
-			if (newVal === this.steps.length - 1) {
-				this.validate();
-			}
-		},
-
-		/**
-		 * Set form data when validation errors are changed
-		 */
-		errors(newVal, oldVal) {
-			const keys = Object.keys(newVal);
-			this.steps.forEach((step, stepIndex) => {
-				step.sections.forEach((section, sectionIndex) => {
-					if (section.type === 'form') {
-						section.form.fields.forEach((field) => {
-							if (keys.includes(field.name)) {
-								this.steps[stepIndex].sections[sectionIndex].form.errors = {
-									...this.steps[stepIndex].sections[sectionIndex].form.errors,
-									...{[field.name]: newVal[field.name]},
-								};
-							}
-						});
-					}
-				});
-			});
-
-			pkp.eventBus.$emit('submission:submit:errors', newVal, this);
-		},
-
-		/**
-		 * Update the last autosave message as soon
-		 * as autosave finishes
-		 */
-		isAutosaving(newVal, oldVal) {
-			if (!newVal && oldVal) {
-				this.setLastAutosaveMessage();
-			}
-		},
-	},
-	created() {
-		/**
-		 * Open the correct step when the page is loaded
-		 */
-		if (!window.location.hash) {
-			const newStep = this.steps.find(
-				(step) => step.id === this.submission.submissionProgress,
-			);
-			this.openStep(newStep ? newStep.id : this.steps[0].id);
-		} else {
-			this.openStep(this.steps[0].id);
-		}
-
-		/**
-		 * Regularly update the last saved message
-		 * so it shows an accurate time
-		 */
-		setInterval(this.setLastAutosaveMessage, 3000);
 	},
 };
 </script>

@@ -1,14 +1,14 @@
 <template>
 	<div class="doiListPanel">
 		<slot>
-			<list-panel :items="mappedItems" :isSidebarVisible="true">
+			<list-panel :items="mappedItems" :is-sidebar-visible="true">
 				<template #header>
 					<pkp-header>
 						<h2>{{ title }}</h2>
 						<spinner v-if="isLoading" />
 						<template #actions>
 							<search
-								:searchPhrase="searchPhrase"
+								:search-phrase="searchPhrase"
 								@search-phrase-changed="setSearchPhrase"
 							/>
 
@@ -112,8 +112,8 @@
 							</dropdown>
 
 							<pkp-button
-								:is-primary="true"
 								v-if="isRegistrationPluginConfigured"
+								:is-primary="true"
 								@click="openBulkDepositAll"
 							>
 								{{ t('manager.dois.actions.deposit.all') }}
@@ -123,7 +123,7 @@
 				</template>
 
 				<template #sidebar>
-					<pkp-header :isOneLine="false">
+					<pkp-header :is-one-line="false">
 						<h3>
 							<icon icon="filter" :inline="true" />
 							{{ t('common.filter') }}
@@ -146,11 +146,11 @@
 							<h4>{{ filterSet.heading }}</h4>
 						</pkp-header>
 						<component
+							:is="filter.filterType || 'pkp-filter'"
 							v-for="filter in filterSet.filters"
 							:key="filter.param + filter.value"
-							:is="filter.filterType || 'pkp-filter'"
 							v-bind="filter"
-							:isFilterActive="isFilterActive(filter.param, filter.value)"
+							:is-filter-active="isFilterActive(filter.param, filter.value)"
 							@add-filter="addFilter"
 							@remove-filter="removeFilter"
 							@update-filter="addFilter"
@@ -192,9 +192,9 @@
 				<template #footer>
 					<pagination
 						v-if="lastPage > 1"
-						:currentPage="currentPage"
-						:isLoading="isLoading"
-						:lastPage="lastPage"
+						:current-page="currentPage"
+						:is-loading="isLoading"
+						:last-page="lastPage"
 						@set-page="setPage"
 					/>
 				</template>
@@ -255,12 +255,9 @@
 			:open="isModalOpenedFailedDoiAction"
 			@close="closeFailedDoiActionModal"
 		>
-			<p>{{ this.t('manager.dois.update.partialFailure') }}</p>
+			<p>{{ t('manager.dois.update.partialFailure') }}</p>
 			<ul>
-				<li
-					v-for="errorMessage in this.failedDoiActions"
-					v-bind:key="errorMessage.index"
-				>
+				<li v-for="errorMessage in failedDoiActions" :key="errorMessage.index">
 					{{ errorMessage }}
 				</li>
 			</ul>
@@ -382,6 +379,54 @@ export default {
 			isModalOpenedStatusInfo: false,
 			isModalOpenedFailedDoiAction: false,
 		};
+	},
+	computed: {
+		canAssignDois() {
+			return (
+				this.doiPrefix &&
+				this.doiPrefix?.length > 0 &&
+				this.enabledDoiTypes.length > 0
+			);
+		},
+		isAllSelected() {
+			return this.selected.length && this.selected.length === this.items.length;
+		},
+		isAllExpanded() {
+			return this.expanded.length && this.expanded.length === this.items.length;
+		},
+		mappedItems() {
+			return this.items.map((item) => {
+				let newItem = {
+					id: item.id,
+					type: this.itemType,
+					title: this.getItemTitle(item),
+					urlPublished: this.getUrlPublished(item),
+					isPublished: this.getIsPublished(item),
+					versions: this.getVersions(item),
+					doiObjects: [],
+				};
+				newItem = this.addDoiObjects(newItem);
+
+				return newItem;
+			});
+		},
+		isRegistrationPluginConfigured() {
+			return this.registrationAgencyInfo['isConfigured'];
+		},
+	},
+	watch: {
+		/**
+		 *
+		 * @param {Array} newVal
+		 * @param {Array} oldVal
+		 */
+		failedDoiActions(newVal, oldVal) {
+			if (newVal.length !== 0) {
+				this.isModalOpenedFailedDoiAction = true;
+			} else if (this.isModalOpenedFailedDoiAction === true) {
+				this.closeFailedDoiActionModal();
+			}
+		},
 	},
 	methods: {
 		/**
@@ -941,54 +986,6 @@ export default {
 		closeFailedDoiActionModal() {
 			this.isModalOpenedFailedDoiAction = false;
 			this.failedDoiActions = [];
-		},
-	},
-	computed: {
-		canAssignDois() {
-			return (
-				this.doiPrefix &&
-				this.doiPrefix?.length > 0 &&
-				this.enabledDoiTypes.length > 0
-			);
-		},
-		isAllSelected() {
-			return this.selected.length && this.selected.length === this.items.length;
-		},
-		isAllExpanded() {
-			return this.expanded.length && this.expanded.length === this.items.length;
-		},
-		mappedItems() {
-			return this.items.map((item) => {
-				let newItem = {
-					id: item.id,
-					type: this.itemType,
-					title: this.getItemTitle(item),
-					urlPublished: this.getUrlPublished(item),
-					isPublished: this.getIsPublished(item),
-					versions: this.getVersions(item),
-					doiObjects: [],
-				};
-				newItem = this.addDoiObjects(newItem);
-
-				return newItem;
-			});
-		},
-		isRegistrationPluginConfigured() {
-			return this.registrationAgencyInfo['isConfigured'];
-		},
-	},
-	watch: {
-		/**
-		 *
-		 * @param {Array} newVal
-		 * @param {Array} oldVal
-		 */
-		failedDoiActions(newVal, oldVal) {
-			if (newVal.length !== 0) {
-				this.isModalOpenedFailedDoiAction = true;
-			} else if (this.isModalOpenedFailedDoiAction === true) {
-				this.closeFailedDoiActionModal();
-			}
 		},
 	},
 };

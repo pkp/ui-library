@@ -15,7 +15,7 @@
 			</template>
 			<tr v-for="row in currentRows" :key="row.object.id">
 				<table-cell>{{ row.object.id }}</table-cell>
-				<table-cell :isRowHeader="true">
+				<table-cell :is-row-header="true">
 					{{ row.object.fullTitle.en }}
 				</table-cell>
 				<table-cell>{{ row.views }}</table-cell>
@@ -27,8 +27,8 @@
 		</pkp-table>
 		<button-row>
 			<pagination
-				:currentPage="currentPage"
-				:lastPage="lastPage"
+				:current-page="currentPage"
+				:last-page="lastPage"
 				@set-page="setPage"
 			/>
 		</button-row>
@@ -42,11 +42,11 @@ import articleStats from '../helpers/articleStats.js';
 import ButtonRow from '../../../../components/ButtonRow/ButtonRow.vue';
 
 export default {
-	extends: PreviewTable,
 	components: {
 		ButtonRow,
 		Pagination,
 	},
+	extends: PreviewTable,
 	data() {
 		return {
 			currentPage: 1,

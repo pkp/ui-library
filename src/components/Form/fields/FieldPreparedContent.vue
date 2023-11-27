@@ -9,18 +9,18 @@
 		<template #footer>
 			<slot name="footer" />
 			<modal
-				:closeLabel="t('common.close')"
+				:close-label="t('common.close')"
 				:name="preparedContentId"
 				:title="insertModalLabel"
 				:open="isModalPreparedContentOpened"
 				@close="isModalPreparedContentOpened = false"
 			>
 				<insert-content
-					:insertLabel="insertLabel"
-					:items="preparedContent"
-					:itemsLabel="preparedContentLabel"
-					:searchLabel="searchLabel"
 					ref="insertContent"
+					:insert-label="insertLabel"
+					:items="preparedContent"
+					:items-label="preparedContentLabel"
+					:search-label="searchLabel"
 					@insert="insert"
 				/>
 			</modal>
@@ -36,13 +36,13 @@ import preparedContent from '../../../mixins/preparedContent';
 
 export default {
 	name: 'FieldPreparedContent',
-	extends: FieldRichTextarea,
-	mixins: [preparedContent],
 	components: {
 		FieldRichTextarea,
 		InsertContent,
 		Modal,
 	},
+	extends: FieldRichTextarea,
+	mixins: [preparedContent],
 	props: {
 		/** @see InsertContent.props.insertLabel */
 		insertLabel: {

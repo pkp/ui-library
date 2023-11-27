@@ -12,7 +12,9 @@
 		</template>
 		<tr v-for="row in rows" :key="row.object.id">
 			<table-cell>{{ row.object.id }}</table-cell>
-			<table-cell :isRowHeader="true">{{ row.object.fullTitle.en }}</table-cell>
+			<table-cell :is-row-header="true">
+				{{ row.object.fullTitle.en }}
+			</table-cell>
 			<table-cell>{{ row.views }}</table-cell>
 			<table-cell>{{ row.downloads }}</table-cell>
 			<table-cell>

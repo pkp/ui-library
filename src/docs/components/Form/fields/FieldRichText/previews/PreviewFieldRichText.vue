@@ -8,10 +8,10 @@ import PreviewFieldBase from '../../FieldBase/previews/PreviewFieldBase.vue';
 import fieldBase from '../../../helpers/field-base';
 
 export default {
-	extends: PreviewFieldBase,
 	components: {
 		FieldRichText,
 	},
+	extends: PreviewFieldBase,
 	data() {
 		return {
 			field: {

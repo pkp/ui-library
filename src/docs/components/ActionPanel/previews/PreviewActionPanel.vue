@@ -8,7 +8,7 @@
 			</p>
 			<template #actions>
 				<pkp-button
-					:isWarnable="true"
+					:is-warnable="true"
 					aria-describedby="delete-title delete-description"
 					@click="openDeleteDialog"
 				>
@@ -30,7 +30,7 @@
 					Clear Template/CSS Cache
 				</pkp-button>
 				<pkp-button
-					:isWarnable="true"
+					:is-warnable="true"
 					aria-describedby="delete-cache-description"
 				>
 					Clear All Cache
@@ -44,7 +44,7 @@
 				again.
 			</p>
 			<template #actions>
-				<pkp-button :isWarnable="true" aria-describedby="sessions-description">
+				<pkp-button :is-warnable="true" aria-describedby="sessions-description">
 					Expire Sessions
 				</pkp-button>
 			</template>

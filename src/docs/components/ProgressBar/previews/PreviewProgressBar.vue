@@ -23,6 +23,9 @@ export default {
 			slowValue: 0,
 		};
 	},
+	mounted() {
+		this.start();
+	},
 	methods: {
 		start() {
 			if (this.fastInterval) {
@@ -49,9 +52,6 @@ export default {
 				}
 			}, 1700);
 		},
-	},
-	mounted() {
-		this.start();
 	},
 };
 </script>

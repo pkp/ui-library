@@ -2,18 +2,18 @@
 	<div class="pkpFormField pkpFormField--select">
 		<div class="pkpFormField__heading">
 			<form-field-label
-				:controlId="controlId"
+				:control-id="controlId"
 				:label="label"
-				:localeLabel="localeLabel"
-				:isRequired="isRequired"
-				:requiredLabel="t('common.required')"
-				:multilingualLabel="multilingualLabel"
+				:locale-label="localeLabel"
+				:is-required="isRequired"
+				:required-label="t('common.required')"
+				:multilingual-label="multilingualLabel"
 			/>
 			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span
 				v-if="tooltip"
-				class="-screenReader"
 				:id="describedByTooltipId"
+				class="-screenReader"
 				v-html="tooltip"
 			/>
 			<help-button
@@ -26,9 +26,9 @@
 		</div>
 		<div
 			v-if="isPrimaryLocale && description"
+			:id="describedByDescriptionId"
 			class="pkpFormField__description"
 			v-html="description"
-			:id="describedByDescriptionId"
 		/>
 		<div
 			class="pkpFormField__control"
@@ -38,9 +38,9 @@
 			}"
 		>
 			<select
-				class="pkpFormField__input pkpFormField--select__input"
-				v-model="currentValue"
 				:id="controlId"
+				v-model="currentValue"
+				class="pkpFormField__input pkpFormField--select__input"
 				:name="localizedName"
 				:aria-describedby="describedByIds"
 				:aria-invalid="errors && errors.length"

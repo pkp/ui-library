@@ -2,16 +2,16 @@
 	<div class="pkpFormField pkpFormField--pubid">
 		<div class="pkpFormField__heading">
 			<form-field-label
-				:controlId="controlId"
+				:control-id="controlId"
 				:label="label"
-				:isRequired="isRequired"
-				:requiredLabel="t('common.required')"
+				:is-required="isRequired"
+				:required-label="t('common.required')"
 			/>
 			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span
 				v-if="tooltip"
-				class="-screenReader"
 				:id="describedByTooltipId"
+				class="-screenReader"
 				v-html="tooltip"
 			/>
 			<help-button
@@ -24,16 +24,16 @@
 		</div>
 		<div
 			v-if="description"
+			:id="describedByDescriptionId"
 			class="pkpFormField__description"
 			v-html="description"
-			:id="describedByDescriptionId"
 		/>
 		<div class="pkpFormField__control">
 			<input
-				class="pkpFormField__input pkpFormField--text__input pkpFormField--pubid__input"
+				:id="controlId"
 				ref="input"
 				v-model="currentValue"
-				:id="controlId"
+				class="pkpFormField__input pkpFormField--text__input pkpFormField--pubid__input"
 				:name="localizedName"
 				:aria-describedby="describedByIds"
 				:aria-invalid="errors && errors.length"
@@ -50,15 +50,15 @@
 			<pkp-button
 				v-else-if="pattern && currentValue"
 				class="pkpFormField--pubid__button"
-				:isWarnable="true"
+				:is-warnable="true"
 				@click="() => (currentValue = '')"
 			>
 				{{ clearIdLabel }}
 			</pkp-button>
 			<div
 				v-if="pattern && !canGenerateId && !currentValue"
-				class="pkpFormField--pubid__warning"
 				:id="describedByDescriptionId"
+				class="pkpFormField--pubid__warning"
 			>
 				<icon icon="exclamation-triangle" :inline="true" />
 				{{ missingPartsLabel }}

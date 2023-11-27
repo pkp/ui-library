@@ -2,18 +2,18 @@
 	<div class="pkpFormField pkpFormField--upload pkpFormField--uploadImage">
 		<div class="pkpFormField__heading">
 			<form-field-label
-				:controlId="dropzoneHiddenFileId"
+				:control-id="dropzoneHiddenFileId"
 				:label="label"
-				:localeLabel="localeLabel"
-				:isRequired="isRequired"
-				:requiredLabel="t('common.required')"
-				:multilingualLabel="multilingualLabel"
+				:locale-label="localeLabel"
+				:is-required="isRequired"
+				:required-label="t('common.required')"
+				:multilingual-label="multilingualLabel"
 			/>
 			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span
 				v-if="tooltip"
-				class="-screenReader"
 				:id="describedByTooltipId"
+				class="-screenReader"
 				v-html="tooltip"
 			/>
 			<help-button
@@ -26,19 +26,19 @@
 		</div>
 		<div
 			v-if="isPrimaryLocale && description"
+			:id="describedByDescriptionId"
 			class="pkpFormField__description"
 			v-html="description"
-			:id="describedByDescriptionId"
 		/>
 		<div
-			class="pkpFormField__control pkpFormField--upload__control"
-			ref="control"
 			:id="controlId"
+			ref="control"
+			class="pkpFormField__control pkpFormField--upload__control"
 			aria-live="polite"
 		>
 			<div v-if="currentValue" class="pkpFormField--upload__preview">
 				<img
-					v-if="this.thumbnail"
+					v-if="thumbnail"
 					class="pkpFormField--uploadImage__thumbnail"
 					:alt="thumbnailDescription"
 					:src="thumbnail"
@@ -48,20 +48,20 @@
 						{{ altTextLabel }}
 					</label>
 					<input
+						:id="altTextId"
+						v-model="altTextValue"
 						class="pkpFormField__input pkpFormField--uploadImage__altTextInput"
 						type="text"
-						v-model="altTextValue"
-						:id="altTextId"
 						:aria-describedby="altTextDescriptionId"
 					/>
 					<div
+						:id="altTextDescriptionId"
 						class="pkpFormField--uploadImage__altTextDescription"
 						v-html="altTextDescription"
-						:id="altTextDescriptionId"
 					/>
 				</div>
 				<div class="pkpFormField--upload__previewActions">
-					<pkp-button :isWarnable="true" @click="clear">
+					<pkp-button :is-warnable="true" @click="clear">
 						{{ t('common.remove') }}
 					</pkp-button>
 					<pkp-button v-if="initialValue && !isInitialValue" @click="revert">
@@ -84,8 +84,8 @@
 			<div :class="{'-screenReader': currentValue}">
 				<vue-dropzone
 					v-if="isComponentMounted"
-					ref="dropzone"
 					:id="dropzoneId"
+					ref="dropzone"
 					:options="dropzoneOptions"
 					@vdropzone-file-added="onAddFile"
 					@vdropzone-thumbnail="onThumbnail"
@@ -101,9 +101,9 @@
 				<div class="pkpFormField--upload__uploadActions">
 					<!-- keyboard-accessible file upload -->
 					<pkp-button
+						:id="dropzoneClickableId"
 						class="pkpFormField--upload__addFile"
 						:disabled="!!uploadFile"
-						:id="dropzoneClickableId"
 					>
 						{{ uploadFileLabel }}
 					</pkp-button>
@@ -186,40 +186,6 @@ export default {
 			return this.compileId('altTextDescription');
 		},
 	},
-	methods: {
-		/**
-		 * Respond to dropzone.js event when a file is successfully uploaded
-		 *
-		 * @param {Object} file Details about the file
-		 * @param {Object} response The server response
-		 * @see https://www.dropzonejs.com/#event-success
-		 */
-		success: function (file, response) {
-			this.isUploading = false;
-			this.$emit(
-				'change',
-				this.name,
-				'value',
-				{
-					temporaryFileId: response.id,
-					altText: '',
-				},
-				this.localeKey,
-			);
-			this.setFocusToControl();
-		},
-
-		/**
-		 * Respond to a dropzone.js event when it creates a thumbnail
-		 *
-		 * @param {Object} file Details about the file
-		 * @see https://www.dropzonejs.com/#event-thumbnail
-		 */
-		onThumbnail: function (file) {
-			this.uploadFile = {...file};
-			this.setFocusToControl();
-		},
-	},
 	watch: {
 		/**
 		 * Whenever the current value changes, update the altTextValue to keep
@@ -279,6 +245,40 @@ export default {
 			 */
 			this.altTextValue = this.currentValue ? this.currentValue.altText : '';
 		});
+	},
+	methods: {
+		/**
+		 * Respond to dropzone.js event when a file is successfully uploaded
+		 *
+		 * @param {Object} file Details about the file
+		 * @param {Object} response The server response
+		 * @see https://www.dropzonejs.com/#event-success
+		 */
+		success: function (file, response) {
+			this.isUploading = false;
+			this.$emit(
+				'change',
+				this.name,
+				'value',
+				{
+					temporaryFileId: response.id,
+					altText: '',
+				},
+				this.localeKey,
+			);
+			this.setFocusToControl();
+		},
+
+		/**
+		 * Respond to a dropzone.js event when it creates a thumbnail
+		 *
+		 * @param {Object} file Details about the file
+		 * @see https://www.dropzonejs.com/#event-thumbnail
+		 */
+		onThumbnail: function (file) {
+			this.uploadFile = {...file};
+			this.setFocusToControl();
+		},
 	},
 };
 </script>

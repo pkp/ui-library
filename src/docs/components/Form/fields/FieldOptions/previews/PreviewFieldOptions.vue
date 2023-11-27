@@ -9,10 +9,10 @@ import fieldBase from '../../../helpers/field-base';
 import field from '../../../helpers/field-options-user-locales';
 
 export default {
-	extends: PreviewFieldBase,
 	components: {
 		FieldOptions,
 	},
+	extends: PreviewFieldBase,
 	data() {
 		return {
 			field: {

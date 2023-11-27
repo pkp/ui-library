@@ -1,6 +1,6 @@
 <template>
 	<search
-		:searchPhrase="searchPhrase"
+		:search-phrase="searchPhrase"
 		@search-phrase-changed="setSearchPhrase"
 	/>
 </template>

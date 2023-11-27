@@ -9,10 +9,10 @@ import fieldBase from '../../../helpers/field-base';
 import field from '../../../helpers/field-select-country';
 
 export default {
-	extends: PreviewFieldBase,
 	components: {
 		FieldSelect,
 	},
+	extends: PreviewFieldBase,
 	data() {
 		return {
 			field: {

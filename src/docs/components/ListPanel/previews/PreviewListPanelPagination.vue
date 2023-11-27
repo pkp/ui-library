@@ -3,9 +3,9 @@
 		<template #footer>
 			<pagination
 				v-if="lastPage > 1"
-				:currentPage="currentPage"
-				:isLoading="isLoading"
-				:lastPage="lastPage"
+				:current-page="currentPage"
+				:is-loading="isLoading"
+				:last-page="lastPage"
 				@set-page="setPage"
 			/>
 		</template>

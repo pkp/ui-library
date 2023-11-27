@@ -22,14 +22,14 @@
 			<template #item="{item}">
 				<slot name="item" :item="item">
 					<submission-files-list-item
-						:apiUrl="apiUrl"
-						:cancelUploadLabel="cancelUploadLabel"
-						:genrePromptLabel="genrePromptLabel"
-						:fileStage="fileStage"
+						:api-url="apiUrl"
+						:cancel-upload-label="cancelUploadLabel"
+						:genre-prompt-label="genrePromptLabel"
+						:file-stage="fileStage"
 						:genres="genres"
 						:item="item"
-						:otherLabel="otherLabel"
-						:stageId="stageId"
+						:other-label="otherLabel"
+						:stage-id="stageId"
 						@cancel="cancelUpload"
 						@edit="edit"
 						@remove="remove"
@@ -39,18 +39,18 @@
 			</template>
 		</list-panel>
 		<file-uploader
-			ref="uploader"
-			:apiUrl="apiUrl"
-			:filenameLocale="primaryLocale"
-			:files="items"
 			:id="id + '-uploader'"
+			ref="uploader"
+			:api-url="apiUrl"
+			:filename-locale="primaryLocale"
+			:files="items"
 			:options="options"
-			:queryParams="{fileStage}"
-			:uploadProgressLabel="uploadProgressLabel"
+			:query-params="{fileStage}"
+			:upload-progress-label="uploadProgressLabel"
 			@updated:files="setFiles"
 		/>
 		<modal
-			:closeLabel="t('common.close')"
+			:close-label="t('common.close')"
 			:name="formModal"
 			:title="editingLabel"
 			:open="isModalOpenedForm"

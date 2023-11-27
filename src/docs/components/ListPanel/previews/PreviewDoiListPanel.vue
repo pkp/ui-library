@@ -1,14 +1,14 @@
 <template>
 	<doi-list-panel
-		apiUrl="http://httpbin.org/get"
 		id="previewDoiListPanel--articles"
+		api-url="http://httpbin.org/get"
 		:items="previewItems"
-		:itemsMax="previewItemsMax"
+		:items-max="previewItemsMax"
 		title="Article DOIs"
-		:crossrefPluginEnabled="true"
-		:isSubmission="true"
+		:crossref-plugin-enabled="true"
+		:is-submission="true"
 		:filters="filters"
-		:enabledDoiTypes="enabledDoiTypes"
+		:enabled-doi-types="enabledDoiTypes"
 		:doi-prefix="doiPrefix"
 	/>
 </template>

@@ -1,16 +1,16 @@
 <template>
 	<div class="insertContent">
 		<search
-			:searchLabel="searchLabel"
-			:searchPhrase="searchPhrase"
-			@search-phrase-changed="(newVal) => (this.searchPhrase = newVal)"
+			:search-label="searchLabel"
+			:search-phrase="searchPhrase"
+			@search-phrase-changed="(newVal) => (searchPhrase = newVal)"
 		/>
 		<ol class="insertContent__items" :aria-label="itemsLabel">
 			<li
 				v-for="item in current"
+				:id="'insert-content-' + item.key"
 				:key="item.key"
 				class="insertContent__item"
-				:id="'insert-content-' + item.key"
 			>
 				<div class="insertContent__item__header">
 					<div class="insertContent__item__value">

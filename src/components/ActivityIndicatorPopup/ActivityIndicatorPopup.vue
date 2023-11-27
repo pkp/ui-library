@@ -5,7 +5,7 @@
 		</template>
 
 		<div>
-			<badge :isPrimary="true">
+			<badge :is-primary="true">
 				<icon icon="comment-o" :inline="true" />
 				Ongoing review - request accepted
 			</badge>
@@ -23,11 +23,11 @@
 			.
 		</div>
 		<div>
-			<PkpButton :isLink="true">Edit due date</PkpButton>
+			<PkpButton :is-link="true">Edit due date</PkpButton>
 		</div>
 		<div class="mt-4">
 			<PkpButton>View details</PkpButton>
-			<PkpButton class="ml-4" :isWarnable="true">Unassign</PkpButton>
+			<PkpButton class="ml-4" :is-warnable="true">Unassign</PkpButton>
 		</div>
 	</PkpPopover>
 </template>

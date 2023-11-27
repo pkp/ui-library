@@ -1,12 +1,12 @@
 <template>
 	<submissions-list-panel
-		addUrl="https://httbin.org/publicknowledge/submission/wizard"
-		apiUrl="http://httpbin.org/get"
-		:filters="filters"
 		id="previewSubmissionsListPanel"
-		infoUrl="http://httbin.org/get"
+		add-url="https://httbin.org/publicknowledge/submission/wizard"
+		api-url="http://httpbin.org/get"
+		:filters="filters"
+		info-url="http://httbin.org/get"
 		:items="items"
-		:itemsMax="itemsMax"
+		:items-max="itemsMax"
 		title="Submissions"
 	/>
 </template>
@@ -18,10 +18,10 @@ import fieldBase from '../../Form/helpers/field-base';
 import fieldBaseAutosuggest from '../../Form/helpers/field-autosuggest';
 
 export default {
-	extends: Page,
 	components: {
 		SubmissionsListPanel,
 	},
+	extends: Page,
 	data() {
 		return {
 			filters: [
@@ -151,9 +151,8 @@ export default {
 		pkp.localeKeys['submission.list.currentStage'] =
 			'Currently in the {$stage} stage.';
 		pkp.localeKeys['submission.list.discussions'] = 'Open discussions';
-		pkp.localeKeys[
-			'submission.list.dualWorkflowLinks'
-		] = `You have been assigned multiple roles for this submission. Would you like to access the <a href="{$urlAuthorWorkflow}">Author's workflow</a>  or the <a href="{$urlEditorialWorkflow}">Editorial workflow</a>?`;
+		pkp.localeKeys['submission.list.dualWorkflowLinks'] =
+			`You have been assigned multiple roles for this submission. Would you like to access the <a href="{$urlAuthorWorkflow}">Author's workflow</a>  or the <a href="{$urlEditorialWorkflow}">Editorial workflow</a>?`;
 		pkp.localeKeys['submission.list.galleysCreated'] =
 			'Copyedited files submitted';
 		pkp.localeKeys['submission.list.infoCenter'] = 'Activity Log & Notes';
@@ -162,9 +161,8 @@ export default {
 		pkp.localeKeys['submission.list.reviewCancelled'] = 'Review Cancelled';
 		pkp.localeKeys['submission.list.reviewComplete'] = 'Review Submitted';
 		pkp.localeKeys['submission.list.reviewDue'] = 'Review Due: {$date}';
-		pkp.localeKeys[
-			'submission.list.reviewerWorkflowLink'
-		] = `You have been assigned an editorial role for this submission. Would you like to access the <a href="{$urlEditorialWorkflow}">Editorial workflow</a>?`;
+		pkp.localeKeys['submission.list.reviewerWorkflowLink'] =
+			`You have been assigned an editorial role for this submission. Would you like to access the <a href="{$urlEditorialWorkflow}">Editorial workflow</a>?`;
 		pkp.localeKeys['submission.list.reviewsCompleted'] =
 			'Assigned reviews completed';
 		pkp.localeKeys['submission.list.revisionsSubmitted'] =

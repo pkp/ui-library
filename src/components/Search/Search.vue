@@ -3,22 +3,22 @@
 		<label>
 			<span class="-screenReader">{{ currentSearchLabel }}</span>
 			<input
+				:id="inputId"
 				type="search"
 				class="pkpSearch__input"
-				@keyup="searchPhraseKeyUp"
-				:id="inputId"
 				:value="searchPhrase"
 				:placeholder="currentSearchLabel"
+				@keyup="searchPhraseKeyUp"
 			/>
 			<span class="pkpSearch__icons">
 				<icon icon="search" class="pkpSearch__icons--search" />
 			</span>
 		</label>
 		<button
-			class="pkpSearch__clear"
 			v-if="searchPhrase"
-			@click.prevent="clearSearchPhrase"
+			class="pkpSearch__clear"
 			:aria-controls="inputId"
+			@click.prevent="clearSearchPhrase"
 		>
 			<icon icon="times" />
 			<span class="-screenReader">{{ t('common.clearSearch') }}</span>

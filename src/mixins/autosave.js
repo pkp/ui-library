@@ -137,7 +137,7 @@ export default {
 						'{$when}',
 						moment(storedAutosaves[0].timestamp)
 							.locale(this.getMomentLocale($.pkp.app.currentLocale))
-							.fromNow()
+							.fromNow(),
 					),
 					actions: [
 						{

@@ -5,8 +5,8 @@
 			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span
 				v-if="tooltip"
-				class="-screenReader"
 				:id="describedByTooltipId"
+				class="-screenReader"
 				v-html="tooltip"
 			/>
 			<help-button
@@ -19,9 +19,9 @@
 		</legend>
 		<div
 			v-if="description"
+			:id="describedByDescriptionId"
 			class="pkpFormField__description pkpFormField--options__description"
 			v-html="description"
-			:id="describedByDescriptionId"
 		/>
 		<field-error
 			v-if="errors && errors.length"
@@ -35,9 +35,9 @@
 				class="pkpFormField--options__option"
 			>
 				<input
+					v-model="isEnabled"
 					class="pkpFormField--options__input"
 					type="checkbox"
-					v-model="isEnabled"
 					:value="option.value"
 					:aria-describedby="describedByIds"
 					:aria-invalid="errors && errors.length"
@@ -55,8 +55,8 @@
 					class="pkpFormField--options__option"
 				>
 					<input
-						class="pkpFormField--options__input pkpFormField--metadata__submissionInput"
 						v-model="selectedValue"
+						class="pkpFormField--options__input pkpFormField--metadata__submissionInput"
 						type="radio"
 						:value="option.value"
 						:aria-invalid="errors && errors.length"

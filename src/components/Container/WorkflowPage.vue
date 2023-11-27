@@ -11,8 +11,6 @@ import dialog from '@/mixins/dialog.js';
 
 export default {
 	name: 'WorkflowPage',
-	extends: Page,
-	mixins: [LocalizeSubmission, dialog, ajaxError],
 	components: {
 		ContributorsListPanel,
 		Composer,
@@ -20,6 +18,8 @@ export default {
 		Modal,
 		PkpHeader,
 	},
+	extends: Page,
+	mixins: [LocalizeSubmission, dialog, ajaxError],
 	data() {
 		return {
 			activityLogLabel: '',
@@ -102,6 +102,79 @@ export default {
 				version: this.workingPublication.version,
 			});
 		},
+	},
+	watch: {
+		workingPublication(newVal, oldVal) {
+			this.setPublicationForms(newVal);
+			this.loadRepresentationsGrid(newVal);
+			if (newVal.id === this.currentPublication.id) {
+				this.currentPublication = {};
+				this.currentPublication = newVal;
+			}
+		},
+	},
+	created() {
+		/**
+		 * Subscribe to publication forms and update the publication
+		 * with the details that have changed
+		 */
+		pkp.eventBus.$on('form-success', (formId, newPublication) => {
+			if (this.publicationFormIds.includes(formId)) {
+				this.workingPublication = {};
+				this.workingPublication = newPublication;
+			}
+
+			// Update the submission's status when the publish form is completed
+			if (formId === pkp.const.FORM_PUBLISH) {
+				this.setPublicationForms(newPublication);
+				this.currentPublication = {};
+				this.currentPublication = newPublication;
+				this.submission.currentPublicationId = newPublication.id;
+				this.refreshSubmission();
+			}
+		});
+
+		/**
+		 * Open the unpublish confirmation modal when a global unpublish
+		 * event is fired
+		 */
+		pkp.eventBus.$on('unpublish:publication', this.openUnpublish);
+
+		/**
+		 * Open the modals to select the revision type when requested
+		 */
+		pkp.eventBus.$on('decision:revisions', (reviewRoundId) => {
+			this.components.selectRevisionDecision.hiddenFields['reviewRoundId'] =
+				reviewRoundId;
+			this.isModalOpenedSelectRevisionDecision = true;
+		});
+		pkp.eventBus.$on('recommendation:revisions', (reviewRoundId) => {
+			this.components.selectRevisionRecommendation.hiddenFields[
+				'reviewRoundId'
+			] = reviewRoundId;
+			this.isModalOpenedSelectRevisionRecommendation = true;
+		});
+
+		/**
+		 * Load forms
+		 */
+		this.setPublicationForms(this.workingPublication);
+	},
+	mounted() {
+		/**
+		 * Load publication grids
+		 *
+		 * Add a delay to allow the workflow requests to be sent first
+		 */
+		setTimeout(() => {
+			this.loadRepresentationsGrid(this.workingPublication);
+		}, 1000);
+	},
+	unmounted() {
+		pkp.eventBus.$off('form-success');
+		pkp.eventBus.$off('unpublish:publication');
+		pkp.eventBus.$off('decision:revisions');
+		pkp.eventBus.$off('recommendation:revisions');
 	},
 	methods: {
 		/**
@@ -526,79 +599,6 @@ export default {
 		setContributors(contributors) {
 			this.workingPublication.authors = [...contributors];
 		},
-	},
-	watch: {
-		workingPublication(newVal, oldVal) {
-			this.setPublicationForms(newVal);
-			this.loadRepresentationsGrid(newVal);
-			if (newVal.id === this.currentPublication.id) {
-				this.currentPublication = {};
-				this.currentPublication = newVal;
-			}
-		},
-	},
-	created() {
-		/**
-		 * Subscribe to publication forms and update the publication
-		 * with the details that have changed
-		 */
-		pkp.eventBus.$on('form-success', (formId, newPublication) => {
-			if (this.publicationFormIds.includes(formId)) {
-				this.workingPublication = {};
-				this.workingPublication = newPublication;
-			}
-
-			// Update the submission's status when the publish form is completed
-			if (formId === pkp.const.FORM_PUBLISH) {
-				this.setPublicationForms(newPublication);
-				this.currentPublication = {};
-				this.currentPublication = newPublication;
-				this.submission.currentPublicationId = newPublication.id;
-				this.refreshSubmission();
-			}
-		});
-
-		/**
-		 * Open the unpublish confirmation modal when a global unpublish
-		 * event is fired
-		 */
-		pkp.eventBus.$on('unpublish:publication', this.openUnpublish);
-
-		/**
-		 * Open the modals to select the revision type when requested
-		 */
-		pkp.eventBus.$on('decision:revisions', (reviewRoundId) => {
-			this.components.selectRevisionDecision.hiddenFields['reviewRoundId'] =
-				reviewRoundId;
-			this.isModalOpenedSelectRevisionDecision = true;
-		});
-		pkp.eventBus.$on('recommendation:revisions', (reviewRoundId) => {
-			this.components.selectRevisionRecommendation.hiddenFields[
-				'reviewRoundId'
-			] = reviewRoundId;
-			this.isModalOpenedSelectRevisionRecommendation = true;
-		});
-
-		/**
-		 * Load forms
-		 */
-		this.setPublicationForms(this.workingPublication);
-	},
-	mounted() {
-		/**
-		 * Load publication grids
-		 *
-		 * Add a delay to allow the workflow requests to be sent first
-		 */
-		setTimeout(() => {
-			this.loadRepresentationsGrid(this.workingPublication);
-		}, 1000);
-	},
-	unmounted() {
-		pkp.eventBus.$off('form-success');
-		pkp.eventBus.$off('unpublish:publication');
-		pkp.eventBus.$off('decision:revisions');
-		pkp.eventBus.$off('recommendation:revisions');
 	},
 };
 </script>

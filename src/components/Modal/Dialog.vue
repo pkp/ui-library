@@ -1,6 +1,6 @@
 <template>
 	<TransitionRoot as="template" :show="open">
-		<HLDialog @close="onClose" class="modal" :class="'modal--' + type">
+		<HLDialog class="modal" :class="'modal--' + type" @close="onClose">
 			<TransitionChild
 				as="template"
 				enter="ease-out duration-300"
@@ -51,9 +51,9 @@
 									:key="action.label"
 									:element="action.element || 'button'"
 									:href="action.href || null"
-									:isPrimary="action.isPrimary || null"
-									:isWarnable="action.isWarnable || null"
-									:isDisabled="isLoading"
+									:is-primary="action.isPrimary || null"
+									:is-warnable="action.isWarnable || null"
+									:is-disabled="isLoading"
 									@click="
 										action.callback ? fireCallback(action.callback) : null
 									"
@@ -123,6 +123,12 @@ export default {
 			isLoading: false,
 		};
 	},
+	mounted() {},
+	unmounted() {
+		if (typeof this.close === 'function') {
+			this.close();
+		}
+	},
 	methods: {
 		fireCallback(callback) {
 			this.isLoading = true;
@@ -137,12 +143,6 @@ export default {
 			this.isLoading = false;
 			this.$emit('close');
 		},
-	},
-	mounted() {},
-	unmounted() {
-		if (typeof this.close === 'function') {
-			this.close();
-		}
 	},
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-	<div class="component" :class="'component--' + this.name">
+	<div class="component" :class="'component--' + name">
 		<div class="component__titleWrapper">
 			<h1 class="component__title">{{ name }}</h1>
 			<div class="component__settings">
@@ -65,7 +65,7 @@
 			<nav
 				v-if="exampleRoutes.length > 1"
 				class="component__nav"
-				:aria-label="'Examples of ' + this.name"
+				:aria-label="'Examples of ' + name"
 			>
 				<nav-group>
 					<template #heading>Examples</template>
@@ -136,7 +136,7 @@ export default {
 			if (this.$route.params.example) {
 				return this.examples.find(
 					(example) =>
-						this.getRoutePath(example.name) === this.$route.params.example
+						this.getRoutePath(example.name) === this.$route.params.example,
 				);
 			}
 			return this.examples[0];
@@ -190,6 +190,16 @@ export default {
 			return 'auto';
 		},
 	},
+	mounted() {
+		if (this.readme) {
+			marked.setOptions({
+				highlight(code) {
+					return highlightjs.highlightAuto(code).value;
+				},
+			});
+			this.readme = marked.parse(this.readme);
+		}
+	},
 	methods: {
 		/**
 		 * Get the route path from the example name
@@ -212,21 +222,11 @@ export default {
 						.split('\n')
 						.map((line) => (line[0] === '\t' ? line.substr(1) : line))
 						.join('\n'),
-					['html']
+					['html'],
 				).value;
 			}
 			return '';
 		},
-	},
-	mounted() {
-		if (this.readme) {
-			marked.setOptions({
-				highlight(code) {
-					return highlightjs.highlightAuto(code).value;
-				},
-			});
-			this.readme = marked.parse(this.readme);
-		}
 	},
 };
 </script>

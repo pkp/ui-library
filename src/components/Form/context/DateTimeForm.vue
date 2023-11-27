@@ -43,6 +43,22 @@ export default {
 			]),
 		};
 	},
+	mounted() {
+		this.$nextTick(function () {
+			let dateTime = moment();
+			this.fields.forEach((field) => {
+				this.availableLocales.forEach((locale) => {
+					dateTime.locale(this.getMomentLocale(locale.key));
+					field.options[locale.key].forEach((option) => {
+						const formatString = this.convertDateFormat(option.label);
+						if (formatString) {
+							option.label = dateTime.format(formatString);
+						}
+					});
+				});
+			});
+		});
+	},
 	methods: {
 		/**
 		 * Update label and value of the dateTimeFormatShort and
@@ -67,7 +83,7 @@ export default {
 
 			if (
 				!['dateFormatShort', 'dateFormatLong', 'timeFormat'].find(
-					(fieldName) => fieldName === name
+					(fieldName) => fieldName === name,
 				)
 			) {
 				this.$emit('set', this.id, {fields: newFields});
@@ -75,10 +91,10 @@ export default {
 			}
 
 			const shortDate = this.fields.find(
-				(field) => field.name === 'dateFormatShort'
+				(field) => field.name === 'dateFormatShort',
 			);
 			const longDate = this.fields.find(
-				(field) => field.name === 'dateFormatLong'
+				(field) => field.name === 'dateFormatLong',
 			);
 			const time = this.fields.find((field) => field.name === 'timeFormat');
 
@@ -104,13 +120,13 @@ export default {
 
 			// Determine labels for the short and long date & time fields
 			const shortDateOption = shortDate.options[localeKey].find(
-				(option) => option.value === shortDate.value[localeKey]
+				(option) => option.value === shortDate.value[localeKey],
 			);
 			const longDateOption = longDate.options[localeKey].find(
-				(option) => option.value === longDate.value[localeKey]
+				(option) => option.value === longDate.value[localeKey],
 			);
 			const timeOption = time.options[localeKey].find(
-				(option) => option.value === time.value[localeKey]
+				(option) => option.value === time.value[localeKey],
 			);
 
 			// If there isn't label for the date or time in case of custom input, use latter as a label
@@ -129,7 +145,7 @@ export default {
 				name,
 				localeKey,
 				{value: shortDateTimeValue, label: shortDateTimeLabel},
-				{value: longDateTimeValue, label: longDateTimeLabel}
+				{value: longDateTimeValue, label: longDateTimeLabel},
 			);
 
 			this.$emit('set', this.id, {fields: newFields});
@@ -150,7 +166,7 @@ export default {
 			name,
 			localeKey,
 			shortDateTime,
-			longDateTime
+			longDateTime,
 		) {
 			return newFields.map((field) => {
 				if (
@@ -231,22 +247,6 @@ export default {
 			if (convertedLabel === strftimeFormat) return null;
 			return convertedLabel;
 		},
-	},
-	mounted() {
-		this.$nextTick(function () {
-			let dateTime = moment();
-			this.fields.forEach((field) => {
-				this.availableLocales.forEach((locale) => {
-					dateTime.locale(this.getMomentLocale(locale.key));
-					field.options[locale.key].forEach((option) => {
-						const formatString = this.convertDateFormat(option.label);
-						if (formatString) {
-							option.label = dateTime.format(formatString);
-						}
-					});
-				});
-			});
-		});
 	},
 };
 </script>

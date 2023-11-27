@@ -4,9 +4,9 @@ import AddContextForm from '@/components/Form/context/AddContextForm.vue';
 
 export default {
 	name: 'AddContextContainer',
-	extends: Container,
 	components: {
 		AddContextForm,
 	},
+	extends: Container,
 };
 </script>

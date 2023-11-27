@@ -1,5 +1,5 @@
 <template>
-	<button @click="$emit('toggle')" class="expander">
+	<button class="expander" @click="$emit('toggle')">
 		<icon v-if="isExpanded" icon="angle-up" />
 		<icon v-else icon="angle-down" />
 		<span v-if="isExpanded" class="-screenReader">

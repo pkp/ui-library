@@ -10,12 +10,12 @@ import FieldAutosuggestPreset from '@/components/Form/fields/FieldAutosuggestPre
 import FieldSelectUsers from '@/components/Form/fields/FieldSelectUsers.vue';
 import FieldSelectIssues from '@/components/Form/fields/FieldSelectIssues.vue';
 export default {
-	extends: Filter,
 	components: {
 		FieldAutosuggestPreset,
 		FieldSelectUsers,
 		FieldSelectIssues,
 	},
+	extends: Filter,
 	props: {
 		component: {
 			type: String,
@@ -41,21 +41,21 @@ export default {
 			};
 		},
 	},
-	methods: {
-		changeSelection(fieldName, fieldProp, newVal, localeKey) {
-			if (fieldProp === 'value') {
-				this.currentValue = newVal;
-			} else if (fieldProp === 'selected') {
-				this.currentSelected = newVal;
-			}
-		},
-	},
 	watch: {
 		currentValue(newVal, oldVal) {
 			if (newVal.length) {
 				this.$emit('add-filter', this.param, newVal);
 			} else {
 				this.$emit('remove-filter', this.param);
+			}
+		},
+	},
+	methods: {
+		changeSelection(fieldName, fieldProp, newVal, localeKey) {
+			if (fieldProp === 'value') {
+				this.currentValue = newVal;
+			} else if (fieldProp === 'selected') {
+				this.currentSelected = newVal;
 			}
 		},
 	},

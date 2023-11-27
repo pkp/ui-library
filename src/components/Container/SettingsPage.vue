@@ -11,7 +11,6 @@ import DoiRegistrationSettingsForm from '@/components/Form/context/DoiRegistrati
 
 export default {
 	name: 'SettingsPage',
-	extends: Page,
 	components: {
 		AnnouncementsListPanel,
 		HighlightsListPanel,
@@ -22,6 +21,7 @@ export default {
 		DoiSetupSettingsForm,
 		DoiRegistrationSettingsForm,
 	},
+	extends: Page,
 	data() {
 		return {
 			announcementsNavLink: {},

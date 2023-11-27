@@ -155,10 +155,10 @@
 			</main>
 		</div>
 		<div
+			ref="notifications"
 			aria-live="polite"
 			aria-atomic="true"
 			class="app__notifications"
-			ref="notifications"
 			role="status"
 		>
 			<transition-group name="app__notification">
@@ -190,10 +190,10 @@ import Dropdown from '@/components/Dropdown/Dropdown.vue';
 import page from '../../../data/page';
 
 export default {
-	extends: Page,
 	components: {
 		Dropdown,
 	},
+	extends: Page,
 	data() {
 		return {...page};
 	},

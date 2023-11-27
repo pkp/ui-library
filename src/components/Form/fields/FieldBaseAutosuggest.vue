@@ -7,20 +7,20 @@
 			'pkpAutosuggest--rtl': isRTL,
 		}"
 	>
-		<div class="pkpFormField__heading" ref="heading">
+		<div ref="heading" class="pkpFormField__heading">
 			<form-field-label
-				:controlId="controlId"
+				:control-id="controlId"
 				:label="label"
-				:localeLabel="localeLabel"
-				:isRequired="isRequired"
-				:requiredLabel="t('common.required')"
-				:multilingualLabel="multilingualLabel"
+				:locale-label="localeLabel"
+				:is-required="isRequired"
+				:required-label="t('common.required')"
+				:multilingual-label="multilingualLabel"
 			/>
 			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span
 				v-if="tooltip"
-				class="-screenReader"
 				:id="describedByTooltipId"
+				class="-screenReader"
 				v-html="tooltip"
 			/>
 			<help-button
@@ -33,20 +33,20 @@
 		</div>
 		<div
 			v-if="isPrimaryLocale && description"
+			:id="describedByDescriptionId"
 			class="pkpFormField__description"
 			v-html="description"
-			:id="describedByDescriptionId"
 		/>
 		<div class="pkpFormField__control pkpAutosuggest__control">
 			<div
+				:id="describedBySelectedId"
+				ref="values"
 				class="pkpAutosuggest__inputWrapper pkpFormField__input"
 				:class="{
 					'pkpAutosuggest__inputWrapper--multilingual':
 						isMultilingual && locales.length > 1,
 					'pkpAutosuggest__inputWrapper--focus': isFocused,
 				}"
-				ref="values"
-				:id="describedBySelectedId"
 				@click="setFocusToInput"
 			>
 				<span class="-screenReader">{{ selectedLabel }}</span>
@@ -54,8 +54,8 @@
 					{{ t('common.none') }}
 				</span>
 				<pkp-badge
-					v-else
 					v-for="item in currentSelected"
+					v-else
 					:key="item.value"
 					class="pkpAutosuggest__selection"
 				>
@@ -75,10 +75,10 @@
 					v-if="!isDisabled"
 					:id="autosuggestId"
 					:key="autosuggestId"
-					:modelValue="null"
-					@update:modelValue="selectSuggestion"
+					:model-value="null"
 					class="pkpAutosuggest__autosuggester"
 					as="div"
+					@update:modelValue="selectSuggestion"
 				>
 					<ComboboxInput
 						ref="autosuggestInput"
@@ -98,8 +98,8 @@
 								inputValue?.length &&
 								!suggestions.includes(inputValue)
 							"
-							as="template"
 							v-slot="{active}"
+							as="template"
 						>
 							<li
 								class="autosuggest__results-item"
@@ -111,8 +111,8 @@
 						<ComboboxOption
 							v-for="suggestion in suggestions"
 							:key="suggestion.value"
-							:value="suggestion"
 							v-slot="{active}"
+							:value="suggestion"
 							as="template"
 						>
 							<li
@@ -154,8 +154,6 @@ import debounce from 'debounce';
 
 export default {
 	name: 'FieldBaseAutosuggest',
-	extends: FieldBase,
-	mixins: [ajaxError],
 	components: {
 		PkpBadge,
 		Combobox,
@@ -163,6 +161,8 @@ export default {
 		ComboboxOption,
 		ComboboxOptions,
 	},
+	extends: FieldBase,
+	mixins: [ajaxError],
 	props: {
 		apiUrl: {
 			type: String,

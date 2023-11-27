@@ -113,7 +113,7 @@ export default {
 			const toolbarButton = this.$el.querySelector('.tox-tbtn[aria-owns]');
 			if (toolbarButton) {
 				const toolbarPopup = document.getElementById(
-					toolbarButton.getAttribute('aria-owns')
+					toolbarButton.getAttribute('aria-owns'),
 				);
 				if (toolbarPopup) {
 					const focusEl = document.activeElement;

@@ -1,7 +1,7 @@
 <template>
 	<div class="previewFilters">
 		<pkp-filter
-			:isFilterActive="isFilterActive('stageIds', 1)"
+			:is-filter-active="isFilterActive('stageIds', 1)"
 			param="stageIds"
 			title="Submission"
 			:value="1"
@@ -9,7 +9,7 @@
 			@remove-filter="removeFilter"
 		/>
 		<pkp-filter
-			:isFilterActive="isFilterActive('stageIds', 2)"
+			:is-filter-active="isFilterActive('stageIds', 2)"
 			param="stageIds"
 			title="Review"
 			:value="2"
@@ -17,7 +17,7 @@
 			@remove-filter="removeFilter"
 		/>
 		<pkp-filter
-			:isFilterActive="isFilterActive('stageIds', 3)"
+			:is-filter-active="isFilterActive('stageIds', 3)"
 			param="stageIds"
 			title="Copyeding"
 			:value="3"
@@ -25,7 +25,7 @@
 			@remove-filter="removeFilter"
 		/>
 		<pkp-filter
-			:isFilterActive="isFilterActive('stageIds', 4)"
+			:is-filter-active="isFilterActive('stageIds', 4)"
 			param="stageIds"
 			title="Production"
 			:value="4"
@@ -61,7 +61,7 @@ export default {
 		removeFilter(param, val) {
 			if (this.activeFilters[param].includes(val)) {
 				this.activeFilters[param] = this.activeFilters[param].filter(
-					(item) => item !== val
+					(item) => item !== val,
 				);
 			}
 		},

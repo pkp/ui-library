@@ -7,13 +7,13 @@ import dialog from '../../mixins/dialog';
 
 export default {
 	name: 'ManageEmailsPage',
-	extends: Page,
-	mixins: [dialog],
 	components: {
 		Modal,
 		PkpFilter,
 		Search,
 	},
+	extends: Page,
+	mixins: [dialog],
 	data() {
 		return {
 			activeFilters: {},
@@ -68,6 +68,15 @@ export default {
 			});
 
 			return newMailables;
+		},
+	},
+	watch: {
+		/**
+		 * Update the email template form whenever the current
+		 * email template is changed
+		 */
+		currentTemplate(newVal) {
+			this.setCurrentTemplateForm(newVal);
 		},
 	},
 	methods: {
@@ -450,15 +459,6 @@ export default {
 				...this.currentTemplateForm,
 				...data,
 			};
-		},
-	},
-	watch: {
-		/**
-		 * Update the email template form whenever the current
-		 * email template is changed
-		 */
-		currentTemplate(newVal) {
-			this.setCurrentTemplateForm(newVal);
 		},
 	},
 };

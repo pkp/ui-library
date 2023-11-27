@@ -8,8 +8,8 @@
 				</pkp-header>
 				<div v-if="canSelectAll" class="listPanel__selectAllWrapper">
 					<input
-						type="checkbox"
 						:id="id + '-selectAll'"
+						type="checkbox"
 						:checked="isSelectAllOn"
 						@click="toggleSelectAll"
 					/>
@@ -23,10 +23,10 @@
 					<label class="listPanel__selectWrapper">
 						<div class="listPanel__selector">
 							<input
+								v-model="selected"
 								type="checkbox"
 								name="submissions[]"
 								:value="item.id"
-								v-model="selected"
 							/>
 						</div>
 						<div class="listPanel__itemIdentity">
@@ -63,6 +63,12 @@ export default {
 			selected: [],
 		};
 	},
+	watch: {
+		selected(newVal, oldVal) {
+			this.isSelectAllOn =
+				this.selected.length && this.selected.length === this.items.length;
+		},
+	},
 	methods: {
 		toggleSelectAll() {
 			if (this.isSelectAllOn) {
@@ -70,12 +76,6 @@ export default {
 			} else {
 				this.selected = this.items.map((i) => i.id);
 			}
-		},
-	},
-	watch: {
-		selected(newVal, oldVal) {
-			this.isSelectAllOn =
-				this.selected.length && this.selected.length === this.items.length;
 		},
 	},
 };

@@ -8,7 +8,7 @@
 						<spinner v-if="isLoading" />
 						<template #actions>
 							<search
-								:searchPhrase="searchPhrase"
+								:search-phrase="searchPhrase"
 								@search-phrase-changed="setSearchPhrase"
 							/>
 							<pkp-button @click="openAddModal">
@@ -30,7 +30,7 @@
 						{{ t('common.edit') }}
 					</pkp-button>
 					<pkp-button
-						:isWarnable="true"
+						:is-warnable="true"
 						:aria-describedby="'institution-' + item.id"
 						@click="openDeleteModal(item.id)"
 					>
@@ -40,15 +40,15 @@
 				<template #footer>
 					<pagination
 						v-if="lastPage > 1"
-						:currentPage="currentPage"
-						:isLoading="isLoading"
-						:lastPage="lastPage"
+						:current-page="currentPage"
+						:is-loading="isLoading"
+						:last-page="lastPage"
 						@set-page="setPage"
 					/>
 				</template>
 			</list-panel>
 			<modal
-				:closeLabel="t('common.close')"
+				:close-label="t('common.close')"
 				name="form"
 				:title="activeFormTitle"
 				:open="isModalOpenedForm"

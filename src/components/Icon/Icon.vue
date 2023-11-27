@@ -27,7 +27,7 @@
 			/>
 		</g>
 	</svg>
-	<span class="inline-block" v-else-if="isPkpIcon">
+	<span v-else-if="isPkpIcon" class="inline-block">
 		<component :is="pkpIcons[icon]"></component>
 	</span>
 	<span v-else class="fa" :class="classes" aria-hidden="true"></span>
@@ -42,6 +42,7 @@ import OpenLeft from './OpenLeft.vue';
 import OpenRight from './OpenRight.vue';
 
 export default {
+	name: 'Icon',
 	components: {
 		EnvelopeClosed,
 		QuestionmarkCircle,
@@ -50,7 +51,6 @@ export default {
 		OpenLeft,
 		OpenRight,
 	},
-	name: 'Icon',
 	props: {
 		icon: String,
 		inline: Boolean,

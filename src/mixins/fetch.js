@@ -136,7 +136,7 @@ export default {
 		 */
 		setItems(items, itemsMax) {
 			throw new Error(
-				'Missing function to set items after get request. This mixin requires that the component implements a `setItems` method which handles the items received from the get request.'
+				'Missing function to set items after get request. This mixin requires that the component implements a `setItems` method which handles the items received from the get request.',
 			);
 		},
 

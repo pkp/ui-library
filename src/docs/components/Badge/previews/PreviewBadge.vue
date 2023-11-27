@@ -1,18 +1,18 @@
 <template>
 	<div class="previewBadge">
 		<badge label="32 submissions">32</badge>
-		<badge label="4 assigned submissions" :isPrimary="true">4</badge>
-		<badge :isSuccess="true">Published</badge>
-		<badge label="7 new messages" :isWarnable="true">7</badge>
-		<badge label="Participant assigned as author" :hasDot="true">Author</badge>
+		<badge label="4 assigned submissions" :is-primary="true">4</badge>
+		<badge :is-success="true">Published</badge>
+		<badge label="7 new messages" :is-warnable="true">7</badge>
+		<badge label="Participant assigned as author" :has-dot="true">Author</badge>
 		<badge
 			label="Currently in the submission stage"
 			stage="submission"
-			:isButton="true"
+			:is-button="true"
 		>
 			Submission
 		</badge>
-		<badge label="View all layout editors" :isButton="true">
+		<badge label="View all layout editors" :is-button="true">
 			Layout Editor
 		</badge>
 		<badge label="25 comments">

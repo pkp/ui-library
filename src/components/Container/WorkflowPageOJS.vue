@@ -12,31 +12,6 @@ export default {
 			selectIssueLabel: '',
 		};
 	},
-	methods: {
-		/**
-		 * Open a modal to select an issue if the user has opted to
-		 * schedule for publication before assigning to an issue
-		 */
-		openAssignToIssue() {
-			const sourceUrl = this.assignToIssueUrl.replace(
-				'__publicationId__',
-				this.workingPublication.id
-			);
-
-			const opts = {
-				title: this.selectIssueLabel,
-				url: sourceUrl,
-				closeOnFormSuccessId: pkp.const.FORM_ASSIGN_TO_ISSUE,
-			};
-
-			$(
-				'<div id="' +
-					$.pkp.classes.Helper.uuid() +
-					'" ' +
-					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>'
-			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
-		},
-	},
 	watch: {
 		workingPublication(newVal, oldVal) {
 			// Update the abstract word count when the section changes
@@ -144,6 +119,31 @@ export default {
 		 * event is fired
 		 */
 		pkp.eventBus.$on('schedule:publication', this.openAssignToIssue);
+	},
+	methods: {
+		/**
+		 * Open a modal to select an issue if the user has opted to
+		 * schedule for publication before assigning to an issue
+		 */
+		openAssignToIssue() {
+			const sourceUrl = this.assignToIssueUrl.replace(
+				'__publicationId__',
+				this.workingPublication.id,
+			);
+
+			const opts = {
+				title: this.selectIssueLabel,
+				url: sourceUrl,
+				closeOnFormSuccessId: pkp.const.FORM_ASSIGN_TO_ISSUE,
+			};
+
+			$(
+				'<div id="' +
+					$.pkp.classes.Helper.uuid() +
+					'" ' +
+					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>',
+			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
+		},
 	},
 };
 </script>

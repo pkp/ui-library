@@ -9,7 +9,7 @@ export default {
 			// See: https://stackoverflow.com/a/3561711/1723499
 			const regex = new RegExp(
 				this.inputValue.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'),
-				'gi'
+				'gi',
 			);
 
 			const suggestions = items

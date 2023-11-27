@@ -2,12 +2,12 @@
 	<div class="pkpFormField pkpFormField--text" :class="classes">
 		<div class="pkpFormField__heading">
 			<form-field-label
-				:controlId="controlId"
+				:control-id="controlId"
 				:label="label"
-				:localeLabel="localeLabel"
-				:isRequired="isRequired"
-				:requiredLabel="t('common.required')"
-				:multilingualLabel="multilingualLabel"
+				:locale-label="localeLabel"
+				:is-required="isRequired"
+				:required-label="t('common.required')"
+				:multilingual-label="multilingualLabel"
 			/>
 			<tooltip
 				v-if="isPrimaryLocale && tooltip"
@@ -17,8 +17,8 @@
 			/>
 			<span
 				v-if="isPrimaryLocale && tooltip"
-				class="-screenReader"
 				:id="describedByTooltipId"
+				class="-screenReader"
 				v-html="tooltip"
 			/>
 			<help-button
@@ -31,18 +31,18 @@
 		</div>
 		<div
 			v-if="isPrimaryLocale && description"
+			:id="describedByDescriptionId"
 			class="pkpFormField__description"
 			v-html="description"
-			:id="describedByDescriptionId"
 		/>
 		<div class="pkpFormField__control" :class="controlClasses">
 			<div class="pkpFormField__control_top">
 				<input
-					class="pkpFormField__input pkpFormField--text__input"
+					:id="controlId"
 					ref="input"
 					v-model="currentValue"
+					class="pkpFormField__input pkpFormField--text__input"
 					:type="inputType"
-					:id="controlId"
 					:name="localizedName"
 					:aria-describedby="describedByIds"
 					:aria-invalid="errors && errors.length"
@@ -52,11 +52,11 @@
 				/>
 				<span
 					v-if="prefix"
-					class="pkpFormField__inputPrefix"
-					v-html="prefix"
 					ref="prefix"
+					class="pkpFormField__inputPrefix"
 					:style="prefixStyles"
 					@click="setFocus"
+					v-html="prefix"
 				/>
 				<multilingual-progress
 					v-if="isMultilingual && locales.length > 1"
@@ -136,14 +136,6 @@ export default {
 			return classes;
 		},
 	},
-	methods: {
-		/**
-		 * Set focus to the control input
-		 */
-		setFocus() {
-			this.$refs.input.focus();
-		},
-	},
 	mounted() {
 		/**
 		 * Increase input padding to account for a prefix if one exists and truncate
@@ -199,6 +191,14 @@ export default {
 		if (this.optIntoEdit) {
 			this.isDisabled = true;
 		}
+	},
+	methods: {
+		/**
+		 * Set focus to the control input
+		 */
+		setFocus() {
+			this.$refs.input.focus();
+		},
 	},
 };
 </script>

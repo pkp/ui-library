@@ -9,10 +9,10 @@ import fieldBase from '../../../helpers/field-base';
 import fieldColor from '../../../helpers/field-color';
 
 export default {
-	extends: PreviewFieldBase,
 	components: {
 		FieldColor,
 	},
+	extends: PreviewFieldBase,
 	data() {
 		return {
 			field: {

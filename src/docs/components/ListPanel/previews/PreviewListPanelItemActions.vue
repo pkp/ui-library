@@ -2,7 +2,7 @@
 	<list-panel :items="items" title="List Panel with Item Actions">
 		<template #item-actions="{item}">
 			<pkp-button @click="openModal(item.title)">Edit</pkp-button>
-			<pkp-button @click="openModal(item.title)" :isWarnable="true">
+			<pkp-button :is-warnable="true" @click="openModal(item.title)">
 				Delete
 			</pkp-button>
 		</template>

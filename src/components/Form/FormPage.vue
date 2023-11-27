@@ -6,17 +6,17 @@
 			v-bind="group"
 			:fields="fields"
 			:errors="errors"
-			:primaryLocale="primaryLocale"
-			:visibleLocales="visibleLocales"
-			:availableLocales="availableLocales"
-			:formId="formId"
+			:primary-locale="primaryLocale"
+			:visible-locales="visibleLocales"
+			:available-locales="availableLocales"
+			:form-id="formId"
 			@change="fieldChanged"
 			@set-errors="setErrors"
 		/>
 		<button-row
 			v-if="hasFooter"
-			class="pkpFormPage__footer"
 			ref="footer"
+			class="pkpFormPage__footer"
 			aria-live="polite"
 		>
 			<form-errors
@@ -71,12 +71,6 @@ export default {
 		FormErrors,
 		FormGroup,
 	},
-	data() {
-		return {
-			hasRecentSave: false,
-			recentSaveInterval: null,
-		};
-	},
 	props: {
 		id: String,
 		groups: Array,
@@ -98,6 +92,12 @@ export default {
 			},
 		},
 		isSaving: Boolean,
+	},
+	data() {
+		return {
+			hasRecentSave: false,
+			recentSaveInterval: null,
+		};
 	},
 	computed: {
 		/**
@@ -123,6 +123,22 @@ export default {
 				Object.keys(this.errors).length
 			);
 		},
+	},
+	mounted() {
+		/**
+		 * Set an interval timer to check if there is a recent save
+		 */
+		this.recentSaveInterval = setInterval(() => {
+			const expire = this.lastSaveTimestamp + 5000;
+			if (this.hasRecentSave && expire < Date.now()) {
+				this.hasRecentSave = false;
+			} else if (!this.hasRecentSave && expire > Date.now()) {
+				this.hasRecentSave = true;
+			}
+		}, 250);
+	},
+	unmounted() {
+		clearInterval(this.recentSaveInterval);
 	},
 	methods: {
 		/**
@@ -202,22 +218,6 @@ export default {
 		setErrors: function (errors) {
 			this.$emit('set-errors', errors);
 		},
-	},
-	mounted() {
-		/**
-		 * Set an interval timer to check if there is a recent save
-		 */
-		this.recentSaveInterval = setInterval(() => {
-			const expire = this.lastSaveTimestamp + 5000;
-			if (this.hasRecentSave && expire < Date.now()) {
-				this.hasRecentSave = false;
-			} else if (!this.hasRecentSave && expire > Date.now()) {
-				this.hasRecentSave = true;
-			}
-		}, 250);
-	},
-	unmounted() {
-		clearInterval(this.recentSaveInterval);
 	},
 };
 </script>

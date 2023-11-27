@@ -26,14 +26,14 @@ export default {
 					component: markRaw(PreviewFieldBaseAutosuggestDisabled),
 					name: 'Disabled',
 					template: this.extractTemplate(
-						PreviewFieldBaseAutosuggestDisabledTemplate
+						PreviewFieldBaseAutosuggestDisabledTemplate,
 					),
 				},
 				{
 					component: markRaw(PreviewFieldBaseAutosuggestInline),
 					name: 'Inline',
 					template: this.extractTemplate(
-						PreviewFieldBaseAutosuggestInlineTemplate
+						PreviewFieldBaseAutosuggestInlineTemplate,
 					),
 				},
 			],

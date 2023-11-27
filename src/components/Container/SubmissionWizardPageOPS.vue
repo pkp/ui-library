@@ -8,6 +8,19 @@ export default {
 			galleys: [],
 		};
 	},
+	created() {
+		pkp.eventBus.$on('galley:added', this.addGalley);
+		pkp.eventBus.$on('galley:edited', this.editGalley);
+		pkp.eventBus.$on('galley:deleted', this.deleteGalley);
+		pkp.eventBus.$on('submissionFile:added', this.setSubmissionFile);
+		pkp.eventBus.$on('submissionFile:edited', this.setSubmissionFile);
+	},
+	unmounted() {
+		pkp.eventBus.$off('galley:added');
+		pkp.eventBus.$off('galley:edited');
+		pkp.eventBus.$off('submissionFile:added');
+		pkp.eventBus.$off('submissionFile:edited');
+	},
 	methods: {
 		addGalley(galley) {
 			this.galleys.push(galley);
@@ -29,19 +42,6 @@ export default {
 				return g;
 			});
 		},
-	},
-	created() {
-		pkp.eventBus.$on('galley:added', this.addGalley);
-		pkp.eventBus.$on('galley:edited', this.editGalley);
-		pkp.eventBus.$on('galley:deleted', this.deleteGalley);
-		pkp.eventBus.$on('submissionFile:added', this.setSubmissionFile);
-		pkp.eventBus.$on('submissionFile:edited', this.setSubmissionFile);
-	},
-	unmounted() {
-		pkp.eventBus.$off('galley:added');
-		pkp.eventBus.$off('galley:edited');
-		pkp.eventBus.$off('submissionFile:added');
-		pkp.eventBus.$off('submissionFile:edited');
 	},
 };
 </script>

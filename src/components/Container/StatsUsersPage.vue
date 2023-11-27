@@ -4,10 +4,10 @@ import Modal from '@/components/Modal/Modal.vue';
 
 export default {
 	name: 'StatsUsersPage',
-	extends: StatsPage,
 	components: {
 		Modal,
 	},
+	extends: StatsPage,
 	data() {
 		return {isModalOpenedExport: false};
 	},

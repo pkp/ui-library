@@ -25,6 +25,17 @@ export default {
 			return this.monographLabel;
 		},
 	},
+	watch: {
+		workingPublication(newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+			this.loadChaptersGrid(newVal);
+		},
+	},
+	mounted() {
+		this.loadChaptersGrid(this.workingPublication);
+	},
 	methods: {
 		/**
 		 * Load/reload the chapters grid
@@ -38,7 +49,7 @@ export default {
 			const $chaptersEl = $(this.$refs.chapters);
 			const sourceUrl = this.chaptersGridUrl.replace(
 				'__publicationId__',
-				publication.id
+				publication.id,
 			);
 			if (!$.pkp.classes.Handler.hasHandler($chaptersEl)) {
 				$chaptersEl.pkpHandler('$.pkp.controllers.UrlInDivHandler', {
@@ -95,17 +106,6 @@ export default {
 				},
 			});
 		},
-	},
-	watch: {
-		workingPublication(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			this.loadChaptersGrid(newVal);
-		},
-	},
-	mounted() {
-		this.loadChaptersGrid(this.workingPublication);
 	},
 };
 </script>

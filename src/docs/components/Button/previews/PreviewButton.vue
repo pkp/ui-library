@@ -1,19 +1,19 @@
 <template>
 	<div class="previewButton">
 		<pkp-button>Submit</pkp-button>
-		<pkp-button :isPrimary="true">Primary</pkp-button>
-		<pkp-button :isWarnable="true">Delete</pkp-button>
+		<pkp-button :is-primary="true">Primary</pkp-button>
+		<pkp-button :is-warnable="true">Delete</pkp-button>
 		<pkp-button>
 			<icon icon="filter" :inline="true" />
 			Filters
 		</pkp-button>
-		<pkp-button :isActive="isActive" @click="isActive = !isActive">
+		<pkp-button :is-active="isActive" @click="isActive = !isActive">
 			Expand Details
 		</pkp-button>
 		<pkp-button element="a" href="https://example.org">
 			Button-like Link
 		</pkp-button>
-		<pkp-button :isLink="true">Link-like Button</pkp-button>
+		<pkp-button :is-link="true">Link-like Button</pkp-button>
 	</div>
 </template>
 

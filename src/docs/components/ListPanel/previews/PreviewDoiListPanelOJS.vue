@@ -1,16 +1,16 @@
 <template>
 	<doi-list-panel-o-j-s
-		apiUrl="http://httpbin.org/get"
-		doiApiUrl="http://httpbin.org/get"
-		executeActionApiUrl="http://httpbin.org/get"
 		id="previewDoiListPanel--articles"
+		api-url="http://httpbin.org/get"
+		doi-api-url="http://httpbin.org/get"
+		execute-action-api-url="http://httpbin.org/get"
 		:filters="[]"
 		:items="items"
-		:itemsMax="itemsMax"
-		:itemType="'issue'"
+		:items-max="itemsMax"
+		:item-type="'issue'"
 		title="Article DOIs"
 		:registration-agency-info="registrationAgencyInfo"
-		:enabledDoiTypes="['article', 'issue', 'galley']"
+		:enabled-doi-types="['article', 'issue', 'galley']"
 		:doi-prefix="'10.1234'"
 	/>
 </template>

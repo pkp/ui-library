@@ -20,8 +20,8 @@
 			/>
 			<span
 				v-if="isPrimaryLocale && tooltip"
-				class="-screenReader"
 				:id="describedByTooltipId"
+				class="-screenReader"
 				v-html="tooltip"
 			/>
 			<help-button
@@ -34,16 +34,16 @@
 		</legend>
 		<div
 			v-if="isPrimaryLocale && description"
+			:id="describedByDescriptionId"
 			class="pkpFormField__description pkpFormField--options__description"
 			v-html="description"
-			:id="describedByDescriptionId"
 		/>
 		<field-error
 			v-if="errors && errors.length"
 			:id="describedByErrorId"
 			:messages="errors"
 		/>
-		<input type="hidden" v-model="selectedValue" />
+		<input v-model="selectedValue" type="hidden" />
 		<div class="pkpFormField__control">
 			<label
 				v-for="option in localizedOptions"
@@ -52,8 +52,8 @@
 			>
 				<template v-if="!option.isInput">
 					<input
-						class="pkpFormField--options__input"
 						v-model="selectedValue"
+						class="pkpFormField--options__input"
 						:value="option.value"
 						type="radio"
 						:name="localizedName"
@@ -65,9 +65,9 @@
 				</template>
 				<template v-else>
 					<input
+						ref="inputRadio"
 						class="pkpFormField--options__input"
 						type="radio"
-						ref="inputRadio"
 						:name="localizedName"
 						:aria-describedby="describedByIds"
 						:aria-invalid="errors && errors.length"
@@ -76,10 +76,10 @@
 					/>
 					<span v-if="option.label">{{ option.label }}</span>
 					<input
+						ref="inputText"
+						v-model="inputValue"
 						class="pkpFormField__input pkpFormField--options__input--text"
 						type="text"
-						v-model="inputValue"
-						ref="inputText"
 						:aria-describedby="describedByIds"
 						:aria-invalid="errors && errors.length"
 						:disabled="option.disabled"
@@ -127,23 +127,6 @@ export default {
 				.includes(this.selectedValue);
 		},
 	},
-	methods: {
-		/**
-		 * Select the option with an input field
-		 */
-		selectInput() {
-			this.selectedValue = this.inputValue;
-			this.$refs.inputRadio[0].checked = true;
-			this.$refs.inputText[0].focus();
-		},
-
-		/**
-		 * Set the seletected value to the input field's vale
-		 */
-		setInputToSelected() {
-			this.selectedValue = this.inputValue;
-		},
-	},
 	watch: {
 		/**
 		 * When the input value changes, update the selected value if the input
@@ -169,6 +152,23 @@ export default {
 				this.$refs.inputRadio[0].checked = true;
 			}
 		}
+	},
+	methods: {
+		/**
+		 * Select the option with an input field
+		 */
+		selectInput() {
+			this.selectedValue = this.inputValue;
+			this.$refs.inputRadio[0].checked = true;
+			this.$refs.inputText[0].focus();
+		},
+
+		/**
+		 * Set the seletected value to the input field's vale
+		 */
+		setInputToSelected() {
+			this.selectedValue = this.inputValue;
+		},
 	},
 };
 </script>

@@ -9,10 +9,10 @@ import fieldBase from '../../../helpers/field-base';
 import field from '../../../helpers/field-html-lorem';
 
 export default {
-	extends: PreviewFieldBase,
 	components: {
 		FieldHtml,
 	},
+	extends: PreviewFieldBase,
 	data() {
 		return {
 			field: {

@@ -1,15 +1,15 @@
 <template>
 	<highlights-list-panel
-		apiUrl="https://httpbin.org"
-		:form="form"
-		i18nAdd="Add Highlight"
-		i18nConfirmDelete="Are you sure you want to delete {$title}? This action can not be undone."
-		i18nDelete="Delete Highlight"
-		i18nEdit="Edit Highlight"
-		i18nSaveOrder="Save Order"
 		id="previewHighlightsListPanel"
+		api-url="https://httpbin.org"
+		:form="form"
+		i18n-add="Add Highlight"
+		i18n-confirm-delete="Are you sure you want to delete {$title}? This action can not be undone."
+		i18n-delete="Delete Highlight"
+		i18n-edit="Edit Highlight"
+		i18n-save-order="Save Order"
 		:items="items"
-		:itemsMax="itemsMax"
+		:items-max="itemsMax"
 		title="Highlights"
 		@set="setData"
 	/>

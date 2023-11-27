@@ -1,6 +1,6 @@
 <template>
 	<div class="fileAttacherFileStage" aria-live="polite">
-		<list-panel :items="files" :isLoading="isLoading">
+		<list-panel :items="files" :is-loading="isLoading">
 			<template #header>
 				<pkp-header>
 					<h2>{{ currentFileStage.label }}</h2>
@@ -28,15 +28,17 @@
 			</template>
 			<template #item="{item}">
 				<select-submission-file-list-item
-					:documentType="item.documentType"
-					:downloadLabel="downloadLabel"
-					:genreName="localize(item.genreName)"
-					:genreIsPrimary="!item.genreIsDependent && !item.genreIsSupplementary"
-					:fileId="item.id"
+					:document-type="item.documentType"
+					:download-label="downloadLabel"
+					:genre-name="localize(item.genreName)"
+					:genre-is-primary="
+						!item.genreIsDependent && !item.genreIsSupplementary
+					"
+					:file-id="item.id"
 					:name="localize(item.name)"
 					:url="item.url"
 				>
-					<input type="checkbox" :value="item.id" v-model="selected" />
+					<input v-model="selected" type="checkbox" :value="item.id" />
 				</select-submission-file-list-item>
 			</template>
 		</list-panel>
@@ -48,7 +50,7 @@
 				</pkp-button>
 			</template>
 			<pkp-button
-				:isDisabled="!selected.length"
+				:is-disabled="!selected.length"
 				@click="$emit('selected:files', selectedFiles)"
 			>
 				{{ attachSelectedLabel }}
@@ -67,7 +69,6 @@ import ajaxError from '@/mixins/ajaxError';
 
 export default {
 	name: 'FileAttacherFileStage',
-	mixins: [ajaxError],
 	components: {
 		ButtonRow,
 		Dropdown,
@@ -75,6 +76,7 @@ export default {
 		PkpHeader,
 		SelectSubmissionFileListItem,
 	},
+	mixins: [ajaxError],
 	props: {
 		attachSelectedLabel: {
 			type: String,
@@ -114,6 +116,17 @@ export default {
 			return this.files.filter((item) => this.selected.includes(item.id));
 		},
 	},
+	watch: {
+		/**
+		 * Update the files when a new file stage is selected
+		 */
+		currentFileStage(newVal, oldVal) {
+			this.getFiles();
+		},
+	},
+	created() {
+		this.currentFileStage = this.fileStages[0];
+	},
 	methods: {
 		getFiles() {
 			this.isLoading = true;
@@ -132,17 +145,6 @@ export default {
 				},
 			});
 		},
-	},
-	watch: {
-		/**
-		 * Update the files when a new file stage is selected
-		 */
-		currentFileStage(newVal, oldVal) {
-			this.getFiles();
-		},
-	},
-	created() {
-		this.currentFileStage = this.fileStages[0];
 	},
 };
 </script>

@@ -1,9 +1,9 @@
 <template>
 	<div
+		:id="id"
 		class="pkpTab"
 		:class="classes"
 		role="tabpanel"
-		:id="id"
 		:aria-labelledby="id + '-button'"
 		:hidden="!isActive"
 	>
@@ -14,6 +14,7 @@
 <script>
 import {computed} from 'vue';
 export default {
+	inject: ['registerTab'],
 	props: {
 		icon: {
 			type: String,
@@ -66,7 +67,6 @@ export default {
 			return classes;
 		},
 	},
-	inject: ['registerTab'],
 	created() {
 		// share state with parent <tabs> component
 		this.unregister = this.registerTab({

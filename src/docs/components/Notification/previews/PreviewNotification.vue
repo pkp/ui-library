@@ -13,7 +13,7 @@
 			This submission does not have any contributors. At least one contributor
 			must be provided.
 		</notification>
-		<notification v-if="!dismissed" :canDismiss="true" @dismiss="dismiss">
+		<notification v-if="!dismissed" :can-dismiss="true" @dismiss="dismiss">
 			This notification can be dismissed.
 		</notification>
 	</div>

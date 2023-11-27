@@ -7,7 +7,7 @@ module.exports = {
 		node: true,
 	},
 	extends: [
-		'plugin:vue/vue3-essential',
+		'plugin:vue/vue3-recommended',
 		'eslint:recommended',
 		'@vue/eslint-config-prettier/skip-formatting',
 		'plugin:storybook/recommended',

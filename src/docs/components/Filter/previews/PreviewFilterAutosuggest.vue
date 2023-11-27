@@ -1,7 +1,7 @@
 <template>
 	<div class="previewFilters">
 		<filter-autosuggest
-			:autosuggestProps="users"
+			:autosuggest-props="users"
 			component="field-select-users"
 			param="assignedTo"
 			:value="[]"
@@ -10,7 +10,7 @@
 			@remove-filter="removeFilter"
 		/>
 		<filter-autosuggest
-			:autosuggestProps="issues"
+			:autosuggest-props="issues"
 			component="field-select-issues"
 			param="issueIds"
 			:value="[]"

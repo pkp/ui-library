@@ -9,10 +9,10 @@ import fieldBase from '../../../helpers/field-base';
 import field from '../../../helpers/field-show-ensuring-link';
 
 export default {
-	extends: PreviewFieldBase,
 	components: {
 		FieldShowEnsuringLink,
 	},
+	extends: PreviewFieldBase,
 	data() {
 		return {
 			field: {

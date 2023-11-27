@@ -16,7 +16,7 @@ export default {
 					component: markRaw(PreviewSelectReviewerListPanel),
 					name: 'Base',
 					template: this.extractTemplate(
-						PreviewSelectReviewerListPanelTemplate
+						PreviewSelectReviewerListPanelTemplate,
 					),
 				},
 			],

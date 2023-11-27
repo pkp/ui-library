@@ -14,7 +14,7 @@
 			<h3>Submissions</h3>
 			<spinner v-if="isLoading" />
 			<template #actions>
-				<pkp-button :isActive="isLoading" @click="isLoading = !isLoading">
+				<pkp-button :is-active="isLoading" @click="isLoading = !isLoading">
 					Toggle Loading Spinner
 				</pkp-button>
 			</template>
@@ -30,7 +30,7 @@
 				<pkp-button>Activity Log</pkp-button>
 			</template>
 		</pkp-header>
-		<pkp-header :isOneLine="false">
+		<pkp-header :is-one-line="false">
 			<h1>
 				Data Modelling and Conceptual Modelling: a comparative analysis of
 				functionality and roles within both wide and narrow scopes in a context

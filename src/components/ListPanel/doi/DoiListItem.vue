@@ -55,8 +55,8 @@
 				</div>
 
 				<expander
-					:isExpanded="isExpanded"
-					:itemName="item.id.toString()"
+					:is-expanded="isExpanded"
+					:item-name="item.id.toString()"
 					@toggle="toggleExpanded"
 				/>
 			</div>
@@ -74,13 +74,13 @@
 					</table-cell>
 					<table-cell :column="doiListColumns[1]" :row="row">
 						<input
-							class="pkpFormField__input pkpFormField--text__input"
 							:id="row.uid"
-							type="text"
-							:readonly="!(isEditingDois && !isSaving)"
 							v-model="
 								mutableDois.find((doi) => doi.uid === row.uid).identifier
 							"
+							class="pkpFormField__input pkpFormField--text__input"
+							type="text"
+							:readonly="!(isEditingDois && !isSaving)"
 						/>
 					</table-cell>
 				</template>
@@ -89,13 +89,13 @@
 				class="listPanel__itemExpandedActions doiListPanel__itemExpandedActions"
 			>
 				<div
-					class="doiListPanel__itemExpandedActions--actionsBar"
 					v-if="
 						item.versions.length > 1 &&
 						!isEditingDois &&
 						!isSaving &&
 						versionDois
 					"
+					class="doiListPanel__itemExpandedActions--actionsBar"
 				>
 					{{
 						t('doi.manager.versions.countStatement', {
@@ -121,14 +121,14 @@
 
 			<!-- Registration Agency Actions -->
 			<div
-				class="doiListItem__depositorDetails"
 				v-if="isRegistrationPluginConfigured"
+				class="doiListItem__depositorDetails"
 			>
 				<div class="doiListItem__depositorName">
 					{{ registrationAgencyInfo['displayName'] }}
 				</div>
 
-				<span class="doiListItem__depositorDescription" v-if="item.isPublished">
+				<span v-if="item.isPublished" class="doiListItem__depositorDescription">
 					{{
 						isDeposited
 							? itemRegistrationAgency === null
@@ -141,29 +141,29 @@
 							  })
 					}}
 				</span>
-				<span class="doiListItem__depositorDescription" v-else>
+				<span v-else class="doiListItem__depositorDescription">
 					{{ t('manager.dois.registration.notPublishedDescription') }}
 				</span>
 				<div class="doiListItem__depositorActions">
 					<pkp-button
+						v-if="isDeposited && hasRegisteredMessage"
 						ref="recordedMessageModalButton"
 						:is-disabled="isEditingDois"
 						@click="isModalOpenedRegisteredMessage = true"
-						v-if="isDeposited && hasRegisteredMessage"
 					>
 						{{ t('manager.dois.registration.viewRecord') }}
 					</pkp-button>
 					<pkp-button
+						v-else-if="!isDeposited && item.isPublished"
 						:is-disabled="isEditingDois"
 						@click="handleDepositorActions"
-						v-else-if="!isDeposited && item.isPublished"
 					>
 						{{ t('manager.dois.registration.depositDois') }}
 					</pkp-button>
 					<pkp-button
+						v-if="hasErrors && hasErrorMessage"
 						ref="errorMessageModalButton"
 						:is-disabled="isEditingDois"
-						v-if="hasErrors && hasErrorMessage"
 						@click="isModalOpenedErrorMessage = true"
 					>
 						{{ t('manager.dois.registration.viewError') }}
@@ -205,9 +205,9 @@
 			@close="isModalOpenedVersion = false"
 		>
 			<div
-				class="doiListItem__versionContainer"
 				v-for="version in item.versions"
 				:key="version.id"
+				class="doiListItem__versionContainer"
 			>
 				<a
 					:href="version.urlPublished"
@@ -230,13 +230,13 @@
 						</table-cell>
 						<table-cell :column="doiListColumns[1]" :row="row">
 							<input
-								class="pkpFormField__input pkpFormField--text__input"
 								:id="row.uid"
-								type="text"
-								:readonly="!(isEditingDois && !isSaving)"
 								v-model="
 									mutableDois.find((doi) => doi.uid === row.uid).identifier
 								"
+								class="pkpFormField__input pkpFormField--text__input"
+								type="text"
+								:readonly="!(isEditingDois && !isSaving)"
 							/>
 						</table-cell>
 					</template>
@@ -537,6 +537,14 @@ export default {
 			return this.item.type + '-versionsModal-' + this.item.id;
 		},
 	},
+	watch: {
+		item: function () {
+			this.updateMutableDois(this.item.doiObjects);
+		},
+	},
+	mounted() {
+		this.updateMutableDois(this.item.doiObjects);
+	},
 	methods: {
 		updateMutableDois(doiObjects) {
 			let dois = [];
@@ -823,14 +831,6 @@ export default {
 			return `${this.t('publication.version', {
 				version: version.versionNumber,
 			})} ${dateInfo}`;
-		},
-	},
-	mounted() {
-		this.updateMutableDois(this.item.doiObjects);
-	},
-	watch: {
-		item: function () {
-			this.updateMutableDois(this.item.doiObjects);
 		},
 	},
 };
