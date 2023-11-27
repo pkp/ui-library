@@ -1,85 +1,83 @@
 <template>
 	<div class="submissions">
-		<SubmissionsViews />
+		<SubmissionsViews
+			:views="store.views"
+			:current-view="store.currentView"
+			@load-view="store.loadView"
+		/>
 		<div class="submissions__list">
-			<SubmissionsHeader />
-			<SubmissionsTableControls />
-			<SubmissionsTable />
+			<SubmissionsHeader
+				:current-view="store.currentView"
+				:submissions-count="store.submissionsPagination.itemCount"
+			/>
+			<SubmissionsTableControls
+				:is-loading-submissions="store.isSubmissionsLoading"
+				:active-filters-list="store.filtersFormList"
+				:is-loading-page="isLoadingPage"
+				:search-phrase="store.searchPhrase"
+				@open-filters-modal="store.openFiltersModal"
+				@clear-filters="store.clearFiltersForm"
+				@search-phrase-changed="store.setSearchPhrase"
+			/>
+			<SubmissionsTable
+				:submissions="store.submissions"
+				:columns="store.columns"
+				:sort-column="store.sortColumnId"
+				:sort-direction="store.sortDirection"
+				:pagination="store.submissionsPagination"
+				@sort-column="store.applySort"
+			/>
 		</div>
 	</div>
 	<SideModal
-		:open="$store.submissions.isModalOpenedSummary"
-		@close="$store.submissions.closeSummaryModal"
+		:open="store.isModalOpenedSummary"
+		@close="store.closeSummaryModal"
 	>
-		<SubmissionSummaryModal />
+		<SubmissionSummaryModal :summary-submission="store.summarySubmission" />
 	</SideModal>
 	<SideModal
 		close-label="Close"
-		:open="$store.submissions.isModalOpenedFilters"
-		@close="$store.submissions.closeFiltersModal"
+		:open="store.isModalOpenedFilters"
+		@close="store.closeFiltersModal"
 	>
-		<SubmissionsFiltersModal />
+		<SubmissionsFiltersModal
+			:filters-form-initial="store.filtersForm"
+			@update-filters-form="store.updateFiltersForm"
+		/>
+	</SideModal>
+	<SideModal
+		close-label="Close"
+		:open="store.isModalOpenedAssignParticipant"
+		@close="store.closeAssignParticipantModal"
+	>
+		<AssignEditorsModal />
 	</SideModal>
 </template>
-<script type="text/javascript">
+<script setup>
+import {onUnmounted} from 'vue';
 // store
-import {useSubmissionsStore} from '@/pages/submissions/SubmissionsStore.js';
 import SubmissionsTable from '@/pages/submissions/SubmissionsTable.vue';
 import SubmissionsViews from '@/pages/submissions/SubmissionsViews.vue';
 import SubmissionsHeader from '@/pages/submissions/SubmissionsHeader.vue';
 import SubmissionsTableControls from '@/pages/submissions/SubmissionsTableControls.vue';
 import SubmissionSummaryModal from '@/pages/submissions/SubmissionSummaryModal.vue';
 import SubmissionsFiltersModal from '@/pages/submissions/SubmissionsFiltersModal.vue';
+import AssignEditorsModal from '@/pages/submissions/AssignEditorsModal.vue';
 
 import SideModal from '@/components/Modal/SideModal.vue';
-import ajaxError from '@/mixins/ajaxError';
-import localizeSubmission from '@/mixins/localizeSubmission.js';
+import {
+	useSubmissionsPageStore,
+	initSubmissionsPageStore,
+	disposeSubmissionsPageStore,
+} from './submissionsPageStore';
 
-/**
- * A unique ID for the most recent request for submissions
- *
- * This is used to fix issues where the user makes a second request
- * for submissions before their first request is returned. The ID can
- * be used to discard responses for outdated requests.
- */
-//let lastRequest;
+const props = defineProps({storeData: {required: true, type: Object}});
+initSubmissionsPageStore(props.storeData);
+const store = useSubmissionsPageStore();
 
-export default {
-	name: 'SubmissionsPage',
-	mixins: [ajaxError, localizeSubmission],
-	components: {
-		SubmissionsTable,
-		SubmissionsViews,
-		SubmissionsHeader,
-		SubmissionsTableControls,
-		SubmissionSummaryModal,
-		SideModal,
-		SubmissionsFiltersModal,
-	},
-	props: {
-		storeData: Object,
-	},
-	data() {
-		return {};
-	},
-	computed: {},
-	mounted() {},
-	created() {
-		this.$store.submissions = useSubmissionsStore(this.$pinia);
-		this.$store.submissions.init(this.storeData);
-	},
-	methods: {
-		//created() {
-		/**
-		 * Set the current view to the first available
-		 * view when the page is loaded
-		 */
-		/*if (!this.currentViewId) {
-			this.currentViewId = this.views[0].id;
-		}*/
-		//},
-	},
-};
+onUnmounted(() => {
+	disposeSubmissionsPageStore();
+});
 </script>
 
 <style lang="less">

@@ -4,19 +4,15 @@
 			{{ t('navigation.submissions') }}
 		</h1>
 		<ul class="submissions__views__list">
-			<li
-				v-for="view in $store.submissions.views"
-				:key="view.id"
-				class="submissions__view"
-			>
+			<li v-for="view in views" :key="view.id" class="submissions__view">
 				<button
 					class="submissions__view__button"
 					:class="
-						$store.submissions.currentView.id === view.id
+						currentView.id === view.id
 							? 'submissions__view__button--current'
 							: ''
 					"
-					@click="$store.submissions.loadView(view)"
+					@click="$emit('loadView', view)"
 				>
 					<span class="submissions__view__count">
 						{{ view.count }}
@@ -30,5 +26,11 @@
 	</div>
 </template>
 <script>
-export default {};
+export default {
+	props: {
+		views: {type: Array, required: true},
+		currentView: {type: Object, required: true},
+	},
+	emits: ['loadView'],
+};
 </script>

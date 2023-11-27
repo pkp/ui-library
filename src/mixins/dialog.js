@@ -8,7 +8,6 @@
  */
 
 export default {
-	inject: ['pkpOpenDialog'],
 	methods: {
 		/**
 		 * Open a dialog modal
@@ -16,7 +15,7 @@ export default {
 		 * @param {Object} props Props to pass to the <dialog> component
 		 */
 		openDialog(props, modalProps, modalEvents) {
-			this.pkpOpenDialog(props);
+			this.$store.dialog.openDialog(props);
 		},
 	},
 };

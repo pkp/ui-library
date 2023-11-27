@@ -2,40 +2,33 @@
 	<PkpTable aria-labelledby="table-title" aria-describedby="table-controls">
 		<template #head>
 			<TableHeader
-				v-for="column in $store.submissions.columns"
+				v-for="column in columns"
 				:key="column.id"
-				:canSort="column.sortable"
-				:sortDirection="
-					$store.submissions.sortColumn === column.id ? sortDirection : 'none'
-				"
+				:can-sort="column.sortable"
+				:sort-direction="sortColumn === column.id ? sortDirection : 'none'"
+				@sort-column="$emit('sortColumn', column.id)"
 			>
 				{{ column.header }}
 			</TableHeader>
 		</template>
-		<tr
-			v-for="submission in $store.submissions.submissions"
-			:key="submission.id"
-		>
+		<tr v-for="submission in submissions" :key="submission.id">
 			<component
 				:is="column.componentName"
-				v-for="column in $store.submissions.columns"
+				v-for="column in columns"
 				:key="column.id"
 				:submission="submission"
 			/>
 		</tr>
 	</PkpTable>
 	<div class="submissions__list__footer">
-		<span
-			class="submission__list__showing"
-			v-html="$store.submissions.showingXofX"
-		></span>
+		<span class="submission__list__showing" v-html="showingXofX"></span>
 		<Pagination
-			v-if="$store.submissions.lastPage > 1"
-			:current-page="$store.submissions.currentPage"
-			:is-loading="$store.submissions.isLoadingPage"
-			:last-page="$store.submissions.lastPage"
+			v-if="pagination.pageCount > 1"
+			:current-page="currentPage"
+			:is-loading="isLoadingPage"
+			:last-page="pagination.pageCount"
 			:show-adjacent-pages="3"
-			@set-page="$store.submissions.setPage"
+			@set-page="$emit((...args) => $emit('setPage', ...args))"
 		></Pagination>
 	</div>
 </template>
@@ -62,6 +55,28 @@ export default {
 		ColumnId,
 		ColumnStage,
 		ColumnTitle,
+	},
+	props: {
+		submissions: {type: Array, required: true},
+		columns: {type: Array, required: true},
+		sortColumn: {type: String, required: true},
+		sortDirection: {type: String, required: true},
+		pagination: {type: Object, required: true},
+	},
+	emits: ['setPage', 'sortColumn'],
+	computed: {
+		/**
+		 * A localized string with a count of the submissions being viewed
+		 *
+		 * eg - Showing 1 to 30 of 170
+		 */
+		showingXofX() {
+			return this.t('common.showingXofX', {
+				start: this.pagination.firstItemIndex,
+				finish: this.pagination.lastItemIndex,
+				total: this.pagination.itemCount,
+			});
+		},
 	},
 };
 </script>

@@ -23,11 +23,11 @@
 			.
 		</div>
 		<div>
-			<pkp-button :isLink="true">Edit due date</pkp-button>
+			<PkpButton :isLink="true">Edit due date</PkpButton>
 		</div>
 		<div class="mt-4">
-			<pkp-button>View details</pkp-button>
-			<pkp-button class="ml-4" :isWarnable="true">Unassign</pkp-button>
+			<PkpButton>View details</PkpButton>
+			<PkpButton class="ml-4" :isWarnable="true">Unassign</PkpButton>
 		</div>
 	</PkpPopover>
 </template>
@@ -36,7 +36,7 @@
 import ActivityIndicator from '@/components/ActivityIndicator/ActivityIndicator.vue';
 import Badge from '@/components/Badge/Badge.vue';
 import Icon from '@/components/Icon/Icon.vue';
-
+import PkpButton from '@/components/Button/Button.vue';
 import PkpPopover from '@/components/Popover/Popover.vue';
 
 export default {
@@ -45,6 +45,7 @@ export default {
 		Badge,
 		PkpPopover,
 		Icon,
+		PkpButton,
 	},
 	data() {
 		const solutions = [

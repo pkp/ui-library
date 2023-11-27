@@ -5,7 +5,7 @@
 		class="pkpTableHeader"
 	>
 		<template v-if="canSort">
-			<button class="pkpTableHeader__sort" @click="$emit('table:sort')">
+			<button class="pkpTableHeader__sort" @click="$emit('sortColumn')">
 				<slot />
 				<icon
 					:icon="icon"
@@ -42,6 +42,7 @@ export default {
 			},
 		},
 	},
+	emits: ['sortColumn'],
 	computed: {
 		/**
 		 * The icon to use with the sortDirection

@@ -36,10 +36,19 @@
 <script>
 import EnvelopeClosed from './EnvelopeClosed.vue';
 import QuestionmarkCircle from './QuestionmarkCircle.vue';
+import ChevronLeft from './ChevronLeft.vue';
+import ChevronRight from './ChevronRight.vue';
+import OpenLeft from './OpenLeft.vue';
+import OpenRight from './OpenRight.vue';
+
 export default {
 	components: {
 		EnvelopeClosed,
 		QuestionmarkCircle,
+		ChevronLeft,
+		ChevronRight,
+		OpenLeft,
+		OpenRight,
 	},
 	name: 'Icon',
 	props: {
@@ -51,6 +60,10 @@ export default {
 			pkpIcons: {
 				'pkp-envelope-closed': 'EnvelopeClosed',
 				'pkp-questionmark-circle': 'QuestionmarkCircle',
+				'pkp-chevron-left': 'ChevronLeft',
+				'pkp-chevron-right': 'ChevronRight',
+				'pkp-open-left': 'OpenLeft',
+				'pkp-open-right': 'OpenRight',
 			},
 		};
 	},

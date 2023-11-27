@@ -2,35 +2,34 @@
 	<div id="table-controls" class="submissions__list__controls">
 		<ButtonRow>
 			<template #end>
-				<pkp-button @click="$store.submissions.openFiltersModal">
+				<pkp-button @click="$emit('openFiltersModal')">
 					{{ t('common.filter') }}
 				</pkp-button>
-				<span v-if="$store.submissions.isLoadingSubmissions">
+				<span v-if="isLoadingSubmissions">
 					<spinner></spinner>
 					{{ t('common.loading') }}
 				</span>
 			</template>
 			<Search
-				:search-phrase="$store.submissions.searchPhrase"
+				:search-phrase="searchPhrase"
 				:search-label="t('editor.submission.search')"
-				@search-phrase-changed="$store.submissions.setSearchPhrase"
+				@search-phrase-changed="
+					(...args) => $emit('searchPhraseChanged', ...args)
+				"
 			></Search>
 		</ButtonRow>
-		<div
-			v-if="$store.submissions.activeFiltersList.length"
-			class="submissions__list__filters"
-		>
+		<div v-if="activeFiltersList.length" class="submissions__list__filters">
 			<Badge
-				v-for="filter in $store.submissions.activeFiltersList"
-				:key="filter.name + filter.value"
+				v-for="filter in activeFiltersList"
+				:key="filter.fieldLabel + filter.label"
 			>
-				<strong>{{ filter.name }}:</strong>
-				{{ filter.value }}
+				<strong>{{ filter.fieldLabel }}:</strong>
+				{{ filter.label }}
 			</Badge>
 			<pkpButton
 				:is-warnable="true"
 				:is-link="true"
-				@click="$store.submissions.clearFilters"
+				@click="(...args) => $emit('clearFilters', ...args)"
 			>
 				{{ t('common.filtersClear') }}
 			</pkpButton>
@@ -41,8 +40,15 @@
 <script>
 import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
 import Search from '@/components/Search/Search.vue';
+import PkpButton from '@/components/Button/Button.vue';
 
 export default {
-	components: {ButtonRow, Search},
+	components: {ButtonRow, Search, PkpButton},
+	props: {
+		searchPhrase: {type: String, required: true},
+		isLoadingSubmissions: Boolean,
+		activeFiltersList: {type: Object, required: true},
+	},
+	emits: ['openFiltersModal', 'clearFilters', 'searchPhraseChanged'],
 };
 </script>
