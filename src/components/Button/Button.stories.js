@@ -100,17 +100,3 @@ export const LinkLikeButton = {
 	}),
 	args: {isLink: true},
 };
-
-export const LinkLikeButton2 = {
-	render: (args) => ({
-		components: {Button},
-		setup() {
-			return {args};
-		},
-		template: `
-			<Button v-bind="args">
-				Link-like Button
-			</Button>`,
-	}),
-	args: {isLink: true},
-};

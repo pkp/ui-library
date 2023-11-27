@@ -1,11 +1,15 @@
 import ExamplePage from './ExamplePage.vue';
 import SubmissionsMock from './mocks/submissions25';
+import {rest} from 'msw';
+
+const delay = (time) => new Promise((resolve) => setTimeout(resolve, time));
+
 export default {
 	title: 'Pages/Example',
 	component: ExamplePage,
 };
 
-export const Default = {
+export const ExamplePage1 = {
 	render: (args) => ({
 		components: {ExamplePage},
 		setup() {
@@ -16,17 +20,21 @@ export const Default = {
 	args: {
 		pageServerConfig: {
 			submissionsApiUrl:
-				'http://localhost/index.php/publicknowledge/api/v1/_submissions',
+				'http://mock/index.php/publicknowledge/api/v1/_submissions',
 		},
 	},
 	parameters: {
-		mockData: [
-			{
-				url: 'http://localhost/index.php/publicknowledge/api/v1/_submissions?offset=0&count=20',
-				method: 'GET',
-				status: 200,
-				response: SubmissionsMock,
-			},
-		],
+		msw: {
+			handlers: [
+				rest.get(
+					'http://mock/index.php/publicknowledge/api/v1/_submissions',
+					async (req, res, ctx) => {
+						await delay(500);
+
+						return res(ctx.json(SubmissionsMock));
+					},
+				),
+			],
+		},
 	},
 };

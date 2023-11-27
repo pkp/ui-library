@@ -6,7 +6,6 @@ const config = {
 		'@storybook/addon-essentials',
 		'@storybook/addon-interactions',
 		'storybook-addon-rtl',
-		'storybook-addon-mock',
 	],
 	framework: {
 		name: '@storybook/vue3-vite',
@@ -15,5 +14,6 @@ const config = {
 	docs: {
 		autodocs: 'tag',
 	},
+	staticDirs: ['../public', './public'],
 };
 export default config;

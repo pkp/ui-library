@@ -6,12 +6,26 @@ import GlobalMixins from '@/mixins/global.js';
 
 import '../src/styles/_global.less';
 import {initializeRTL} from 'storybook-addon-rtl';
+import {initialize, mswLoader} from 'msw-storybook-addon';
 
 import {createPinia} from 'pinia';
 
 const pinia = createPinia();
 
 initializeRTL();
+// Initialize MSW
+initialize({
+	onUnhandledRequest: ({method, url}) => {
+		if (url.pathname.includes('mock')) {
+			console.error(`Unhandled ${method} request to ${url}.
+
+        This exception has been only logged in the console, however, it's strongly recommended to resolve this error as you don't want unmocked data in Storybook stories.
+
+        If you wish to mock an error response, please refer to this guide: https://mswjs.io/docs/recipes/mocking-error-responses
+      `);
+		}
+	},
+});
 
 setup((app) => {
 	app.use(pinia);
@@ -250,6 +264,7 @@ setup((app) => {
 });
 
 const preview = {
+	loaders: [mswLoader],
 	parameters: {
 		actions: {argTypesRegex: '^on[A-Z].*'},
 		controls: {

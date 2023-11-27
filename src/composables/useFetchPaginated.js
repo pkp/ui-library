@@ -49,14 +49,10 @@ export function useFetchPaginated(url, options) {
 
 		isLoading.value = true;
 		try {
-			console.log(url);
 			const result = await ofetch(unref(url), opts);
-			console.log('result:', JSON.stringify(result, null, 2));
 			items.value = result.items;
 			itemCount.value = result.itemsMax;
 		} catch (e) {
-			console.log('uh oh');
-			console.log(e);
 			items.value = [];
 			itemCount.value = 0;
 
