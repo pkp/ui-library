@@ -12,16 +12,13 @@
 	</h2>
 </template>
 
-<script>
+<script setup>
+import {defineProps} from 'vue';
+
 import PkpButton from '@/components/Button/Button.vue';
 
-export default {
-	components: {
-		PkpButton,
-	},
-	props: {
-		currentView: {type: Object, required: true},
-		submissionsCount: {type: Number, required: true},
-	},
-};
+defineProps({
+	currentView: {type: Object, required: true},
+	submissionsCount: {type: Number, required: true},
+});
 </script>
