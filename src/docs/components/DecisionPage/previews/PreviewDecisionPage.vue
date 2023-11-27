@@ -16,7 +16,7 @@
 			</ol>
 		</nav>
 		<div class="app__page--decision">
-			<h1 class="app__pageHeading" ref="pageTitle">
+			<h1 ref="pageTitle" class="app__pageHeading">
 				Accept Submission:
 				<template v-if="steps.length > 1">
 					{{ currentStep.name }}
@@ -50,8 +50,8 @@
 			>
 				<step
 					v-for="step in steps"
-					:key="step.id"
 					:id="step.id"
+					:key="step.id"
 					:label="step.name"
 				>
 					<panel class="decision__stepPanel">
@@ -79,44 +79,44 @@
 							</panel-section>
 							<panel-section v-else>
 								<composer
-									addCCLabel="Add CC/BCC"
+									:id="step.id"
+									add-c-c-label="Add CC/BCC"
 									:attachers="step.attachers"
-									attachedFilesLabel="Attached Files:"
-									attachFilesLabel="Attach Files"
+									attached-files-label="Attached Files:"
+									attach-files-label="Attach Files"
 									:attachments="step.attachments"
 									:bcc="step.bcc"
-									bccLabel="BCC:"
+									bcc-label="BCC:"
 									:body="step.body"
-									bodyLabel="Message"
-									:canChangeRecipients="step.canChangeRecipients"
-									ccLabel="CC:"
+									body-label="Message"
+									:can-change-recipients="step.canChangeRecipients"
+									cc-label="CC:"
 									:cc="step.cc"
-									confirmSwitchLocaleLabel="Are you sure you want to change to {$localeName} to compose this email? Any changes you have made to the subject and body of the email will be lost."
-									deselectLabel="Deselect"
-									:emailTemplates="step.emailTemplates"
-									:emailTemplatesApiUrl="emailTemplatesApiUrl"
+									confirm-switch-locale-label="Are you sure you want to change to {$localeName} to compose this email? Any changes you have made to the subject and body of the email will be lost."
+									deselect-label="Deselect"
+									:email-templates="step.emailTemplates"
+									:email-templates-api-url="emailTemplatesApiUrl"
 									:errors="step.errors"
-									findTemplateLabel="Find Template"
-									:id="step.id"
-									:initialTemplateKey="step.initialTemplateKey"
-									insertLabel="Insert"
-									insertModalLabel="Insert Content"
-									insertContentLabel="Content"
-									insertSearchLabel="Find content to insert"
-									loadTemplateLabel="Email Templates"
+									find-template-label="Find Template"
+									:initial-template-key="step.initialTemplateKey"
+									insert-label="Insert"
+									insert-modal-label="Insert Content"
+									insert-content-label="Content"
+									insert-search-label="Find content to insert"
+									load-template-label="Email Templates"
 									:locale="step.locale"
 									:locales="step.locales"
-									moreSearchResultsLabel="{$number} more"
-									:recipientOptions="step.recipientOptions"
+									more-search-results-label="{$number} more"
+									:recipient-options="step.recipientOptions"
 									:recipients="step.recipients"
-									recipientsLabel="To:"
-									removeItemLabel="Remove {$item}"
-									searchingLabel="Searching"
-									searchResultsLabel="Search Results"
+									recipients-label="To:"
+									remove-item-label="Remove {$item}"
+									searching-label="Searching"
+									search-results-label="Search Results"
 									:subject="step.subject"
-									subjectLabel="Subject:"
-									switchToLabel="Switch To:"
-									switchToNamedLanguageLabel="Switch to {$name}"
+									subject-label="Subject:"
+									switch-to-label="Switch To:"
+									switch-to-named-language-label="Switch to {$name}"
 									:variables="step.variables"
 									@set="updateStep"
 								></composer>
@@ -133,27 +133,27 @@
 								>
 									<template #item="{item}">
 										<select-submission-file-list-item
-											:createdAt="item.createdAt"
-											:documentType="item.documentType"
-											downloadLabel="Download"
-											:genreName="
+											:created-at="item.createdAt"
+											:document-type="item.documentType"
+											download-label="Download"
+											:genre-name="
 												item.genreName ? localize(item.genreName) : ''
 											"
-											:genreIsPrimary="
+											:genre-is-primary="
 												item.genreId &&
 												!item.genreIsDependent &&
 												!item.genreIsSupplementary
 											"
 											:file-id="item.id"
 											:name="localize(item.name)"
-											:uploadedBy="item.uploaderUserName"
+											:uploaded-by="item.uploaderUserName"
 											:url="item.url"
 										>
 											<input
+												v-model="step.selected"
 												type="checkbox"
 												:name="'promoteFile' + item.id"
 												:value="item.id"
-												v-model="step.selected"
 											/>
 										</select-submission-file-list-item>
 									</template>
@@ -216,10 +216,10 @@
 		</div>
 
 		<div
+			ref="notifications"
 			aria-live="polite"
 			aria-atomic="true"
 			class="app__notifications"
-			ref="notifications"
 			role="status"
 		>
 			<transition-group name="app__notification">

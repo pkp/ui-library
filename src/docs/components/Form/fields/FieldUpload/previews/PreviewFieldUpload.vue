@@ -9,10 +9,10 @@ import fieldBase from '../../../helpers/field-base';
 import field from '../../../helpers/field-upload-css';
 
 export default {
-	extends: PreviewFieldBase,
 	components: {
 		FieldUpload,
 	},
+	extends: PreviewFieldBase,
 	data() {
 		return {
 			field: {

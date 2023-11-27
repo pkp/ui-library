@@ -93,7 +93,7 @@
 				<div class="p-4">
 					<div class="text-lg-bold">Editors assigned:</div>
 					<div>
-						<PkpButton isLink="true" @click="store.openAssignParticipantModal">
+						<PkpButton is-link="true" @click="store.openAssignParticipantModal">
 							Assign Editors
 						</PkpButton>
 					</div>

@@ -4,7 +4,7 @@
 			Modal with Custom Actions
 		</pkp-button>
 		<modal
-			closeLabel="Close"
+			close-label="Close"
 			title="Activity Report"
 			:open="isModalOpened"
 			@close="isModalOpened = false"
@@ -28,14 +28,14 @@
 			<template #footer>
 				<spinner v-if="isSendingReport" />
 				<pkp-button
-					:isDisabled="isSendingReport"
-					:isPrimary="true"
+					:is-disabled="isSendingReport"
+					:is-primary="true"
 					@click="sendEmailReport"
 				>
 					Send Email Report
 				</pkp-button>
 				<pkp-button
-					:isDisabled="isSendingReport"
+					:is-disabled="isSendingReport"
 					@click="isModalOpened = false"
 				>
 					Close

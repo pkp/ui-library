@@ -5,11 +5,11 @@ import TableCell from '@/components/Table/TableCell.vue';
 
 export default {
 	name: 'FailedJobDetailsPage',
-	extends: Page,
 	components: {
 		PkpTable,
 		TableCell,
 	},
+	extends: Page,
 	data() {
 		return {
 			columns: [],

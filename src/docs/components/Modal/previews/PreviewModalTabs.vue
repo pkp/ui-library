@@ -4,7 +4,7 @@
 			Modal with Tabs
 		</pkp-button>
 		<modal
-			closeLabel="Close"
+			close-label="Close"
 			title="Nested Tabs Example"
 			:open="isModalOpened"
 			@close="isModalOpened = false"

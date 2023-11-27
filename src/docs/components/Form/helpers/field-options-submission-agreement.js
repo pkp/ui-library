@@ -1,7 +1,7 @@
 import exampleText from '../../../data/exampleText';
 
 const $li = exampleText.map(
-	(paragraph) => `<li>${paragraph.substring(0, 100)}</li>`
+	(paragraph) => `<li>${paragraph.substring(0, 100)}</li>`,
 );
 
 export default {

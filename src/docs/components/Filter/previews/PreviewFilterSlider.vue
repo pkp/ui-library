@@ -1,10 +1,10 @@
 <template>
 	<div class="previewFilters">
 		<pkp-filter-slider
-			:isFilterActive="isFilterActive('activeReviews')"
+			:is-filter-active="isFilterActive('activeReviews')"
 			param="activeReviews"
 			title="Active Reviews"
-			:isVisible="true"
+			:is-visible="true"
 			:value="2"
 			:max="25"
 			:min="0"
@@ -14,10 +14,10 @@
 			@remove-filter="removeFilter"
 		/>
 		<pkp-filter-slider
-			:isFilterActive="isFilterActive('completedReviews')"
+			:is-filter-active="isFilterActive('completedReviews')"
 			param="completedReviews"
 			title="Completed Reviews"
-			:isVisible="true"
+			:is-visible="true"
 			:value="2"
 			:max="100"
 			:min="0"
@@ -27,10 +27,10 @@
 			@remove-filter="removeFilter"
 		/>
 		<pkp-filter-slider
-			:isFilterActive="isFilterActive('daysSinceLastReview')"
+			:is-filter-active="isFilterActive('daysSinceLastReview')"
 			param="daysSinceLastReview"
 			title="Days since last review"
-			:isVisible="true"
+			:is-visible="true"
 			:value="daysSinceLastReview"
 			:max="365"
 			:min="1"
@@ -40,15 +40,15 @@
 			@remove-filter="removeFilter"
 		/>
 		<pkp-filter-slider
-			:isFilterActive="isFilterActive('rating')"
+			:is-filter-active="isFilterActive('rating')"
 			param="rating"
 			title="Reviewer Rating"
-			:isVisible="true"
+			:is-visible="true"
 			:value="3"
 			:max="5"
 			:min="1"
-			:useStars="true"
-			starLabel="Reviewer rating: {$rating}"
+			:use-stars="true"
+			star-label="Reviewer rating: {$rating}"
 			@add-filter="addFilter"
 			@update-filter="addFilter"
 			@remove-filter="removeFilter"

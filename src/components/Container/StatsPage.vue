@@ -10,8 +10,6 @@ import ajaxError from '@/mixins/ajaxError';
 
 export default {
 	name: 'StatsPage',
-	extends: Page,
-	mixins: [ajaxError],
 	components: {
 		DateRange,
 		PkpFilter,
@@ -20,6 +18,8 @@ export default {
 		PkpTable,
 		TableCell,
 	},
+	extends: Page,
+	mixins: [ajaxError],
 	data() {
 		return {
 			apiUrl: '',
@@ -62,6 +62,50 @@ export default {
 			}
 			return classes;
 		},
+	},
+	watch: {
+		activeFilters(newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+			this.offset = 0;
+			this.get();
+		},
+		dateEnd(newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+			this.offset = 0;
+			this.get();
+		},
+		dateStart(newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+			this.offset = 0;
+			this.get();
+		},
+		isSidebarVisible(newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+			this.setSidebarFocus();
+
+			// move focus into the sidebar when it is made visible
+			if (newVal) {
+				this.$nextTick(() => {
+					if (newVal && Object.keys(this.$refs).includes('sidebar')) {
+						this.setFocusIn(this.$refs.sidebar);
+					}
+				});
+			}
+		},
+	},
+	mounted() {
+		/**
+		 * Set the initial tabindex attributes in the sidebar
+		 */
+		this.setSidebarFocus();
 	},
 	methods: {
 		/**
@@ -142,7 +186,7 @@ export default {
 			}
 			let filters = {...this.activeFilters};
 			filters[param] = filters[param].filter(
-				(filterVal) => filterVal !== value
+				(filterVal) => filterVal !== value,
 			);
 			this.activeFilters = filters;
 			this.get();
@@ -163,7 +207,7 @@ export default {
 			// Handle timezone offsets if date goes over Daylight Savings Time
 			// See: https://stackoverflow.com/a/11252167
 			dateStart.setMinutes(
-				dateStart.getMinutes() - dateStart.getTimezoneOffset()
+				dateStart.getMinutes() - dateStart.getTimezoneOffset(),
 			);
 			dateEnd.setMinutes(dateEnd.getMinutes() - dateEnd.getTimezoneOffset());
 
@@ -185,50 +229,6 @@ export default {
 				.querySelectorAll('button, [href], input, select, textarea')
 				.forEach((el) => (el.tabIndex = tabIndex));
 		},
-	},
-	watch: {
-		activeFilters(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			this.offset = 0;
-			this.get();
-		},
-		dateEnd(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			this.offset = 0;
-			this.get();
-		},
-		dateStart(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			this.offset = 0;
-			this.get();
-		},
-		isSidebarVisible(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			this.setSidebarFocus();
-
-			// move focus into the sidebar when it is made visible
-			if (newVal) {
-				this.$nextTick(() => {
-					if (newVal && Object.keys(this.$refs).includes('sidebar')) {
-						this.setFocusIn(this.$refs.sidebar);
-					}
-				});
-			}
-		},
-	},
-	mounted() {
-		/**
-		 * Set the initial tabindex attributes in the sidebar
-		 */
-		this.setSidebarFocus();
 	},
 };
 </script>
@@ -276,8 +276,11 @@ export default {
 	left: 0;
 	width: 25%;
 	opacity: 1;
-	transition: opacity 0.2s ease-in-out 0.2s, left 0s ease-in-out 0.1s,
-		right 0s ease-in-out 0.1s, width 0.2s ease-in-out 0s;
+	transition:
+		opacity 0.2s ease-in-out 0.2s,
+		left 0s ease-in-out 0.1s,
+		right 0s ease-in-out 0.1s,
+		width 0.2s ease-in-out 0s;
 
 	+ .pkpStats__content {
 		width: 75%;

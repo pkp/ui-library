@@ -3,9 +3,9 @@
 		<list-item v-for="item in items" :key="item">
 			{{ item }}
 			<orderer
-				:isDraggable="false"
-				:itemId="item"
-				:itemTitle="item"
+				:is-draggable="false"
+				:item-id="item"
+				:item-title="item"
 				@down="down"
 				@up="up"
 			/>

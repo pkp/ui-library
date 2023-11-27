@@ -5,12 +5,12 @@
 	>
 		<div class="pkpFormField__heading">
 			<form-field-label
-				:controlId="controlId"
+				:control-id="controlId"
 				:label="label"
-				:localeLabel="localeLabel"
-				:isRequired="isRequired"
-				:requiredLabel="t('common.required')"
-				:multilingualLabel="multilingualLabel"
+				:locale-label="localeLabel"
+				:is-required="isRequired"
+				:required-label="t('common.required')"
+				:multilingual-label="multilingualLabel"
 			/>
 			<tooltip
 				v-if="isPrimaryLocale && tooltip"
@@ -20,8 +20,8 @@
 			/>
 			<span
 				v-if="isPrimaryLocale && tooltip"
-				class="-screenReader"
 				:id="describedByTooltipId"
+				class="-screenReader"
 				v-html="tooltip"
 			/>
 			<help-button
@@ -34,19 +34,19 @@
 		</div>
 		<div
 			v-if="isPrimaryLocale && description"
+			:id="describedByDescriptionId"
 			class="pkpFormField__description"
 			v-html="description"
-			:id="describedByDescriptionId"
 		/>
 		<div
 			class="pkpFormField__control pkpFormField--richTextarea__control"
-			:class="'pkpFormField--richTextArea__control--' + this.size"
+			:class="'pkpFormField--richTextArea__control--' + size"
 		>
 			<editor
-				class="pkpFormField__input pkpFormField--richTextarea__input"
-				v-model="currentValue"
-				ref="editor"
 				:id="controlId"
+				ref="editor"
+				v-model="currentValue"
+				class="pkpFormField__input pkpFormField--richTextarea__input"
 				:toolbar="toolbar"
 				:plugins="plugins"
 				:init="compiledInit"
@@ -104,10 +104,10 @@ import debounce from 'debounce';
 
 export default {
 	name: 'FieldRichTextarea',
-	extends: FieldBase,
 	components: {
 		Editor,
 	},
+	extends: FieldBase,
 	props: {
 		// @see https://www.tiny.cloud/docs/configure/integration-and-setup/
 		init: {
@@ -251,6 +251,21 @@ export default {
 			return $.pkp.app.rtlLocales.includes(this.localeKey);
 		},
 	},
+	watch: {
+		value(newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+			if (this.isMultilingual) {
+				newVal = newVal[this.localeKey];
+			}
+			debounce(this.setWordCount, 250)();
+			this.$emit('change', this.name, 'value', newVal, this.localeKey);
+		},
+	},
+	mounted() {
+		debounce(this.setWordCount, 1000)();
+	},
 	methods: {
 		/**
 		 * When the input control loses focus
@@ -284,21 +299,6 @@ export default {
 			}
 			this.wordCount = 0;
 		},
-	},
-	watch: {
-		value(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			if (this.isMultilingual) {
-				newVal = newVal[this.localeKey];
-			}
-			debounce(this.setWordCount, 250)();
-			this.$emit('change', this.name, 'value', newVal, this.localeKey);
-		},
-	},
-	mounted() {
-		debounce(this.setWordCount, 1000)();
 	},
 };
 </script>

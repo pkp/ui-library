@@ -9,10 +9,10 @@ import fieldBase from '../../../helpers/field-base';
 import field from '../../../helpers/field-text-doi-prefix';
 
 export default {
-	extends: PreviewFieldBase,
 	components: {
 		FieldText,
 	},
+	extends: PreviewFieldBase,
 	data() {
 		return {
 			field: {

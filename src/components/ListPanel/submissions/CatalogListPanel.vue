@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<list-panel
-			:isSidebarVisible="isSidebarVisible"
+			:is-sidebar-visible="isSidebarVisible"
 			:items="items"
 			class="listPanel--catalog"
 			:class="{
@@ -15,11 +15,11 @@
 					<spinner v-if="isLoading" />
 					<template #actions>
 						<search
-							:searchPhrase="searchPhrase"
+							:search-phrase="searchPhrase"
 							@search-phrase-changed="setSearchPhrase"
 						/>
 						<pkp-button
-							:isActive="isSidebarVisible"
+							:is-active="isSidebarVisible"
 							@click="isSidebarVisible = !isSidebarVisible"
 						>
 							<icon icon="filter" :inline="true" />
@@ -29,7 +29,7 @@
 							<pkp-button
 								class="listPanel--catalog__orderToggle"
 								icon="sort"
-								:isActive="isOrdering"
+								:is-active="isOrdering"
 								@click="toggleOrdering"
 							>
 								{{ orderingLabel }}
@@ -37,7 +37,7 @@
 							<pkp-button
 								v-if="isOrdering"
 								class="listPanel--catalog__orderCancel"
-								:isWarnable="true"
+								:is-warnable="true"
 								@click="cancelOrdering"
 							>
 								{{ t('common.cancel') }}
@@ -70,7 +70,7 @@
 			</template>
 
 			<template #sidebar>
-				<pkp-header :isOneLine="false">
+				<pkp-header :is-one-line="false">
 					<h3>
 						<icon icon="filter" :inline="true" />
 						{{ t('common.filter') }}
@@ -88,7 +88,7 @@
 						v-for="filter in filterSet.filters"
 						:key="filter.param + filter.value"
 						v-bind="filter"
-						:isFilterActive="isFilterActive(filter.param, filter.value)"
+						:is-filter-active="isFilterActive(filter.param, filter.value)"
 						@add-filter="addFilter"
 						@remove-filter="removeFilter"
 					/>
@@ -104,10 +104,10 @@
 				<catalog-list-item
 					:key="item.id"
 					:item="item"
-					:filterAssocType="filterAssocType"
-					:filterAssocId="filterAssocId"
-					:isOrdering="isOrdering"
-					:apiUrl="apiUrl"
+					:filter-assoc-type="filterAssocType"
+					:filter-assoc-id="filterAssocId"
+					:is-ordering="isOrdering"
+					:api-url="apiUrl"
 					@update:item="updateItem"
 					@order-up="itemOrderUp"
 					@order-down="itemOrderDown"
@@ -116,15 +116,15 @@
 			<template #footer>
 				<pagination
 					v-if="lastPage > 1"
-					:currentPage="currentPage"
-					:isLoading="isLoading"
-					:lastPage="lastPage"
+					:current-page="currentPage"
+					:is-loading="isLoading"
+					:last-page="lastPage"
 					@set-page="setPage"
 				/>
 			</template>
 		</list-panel>
 		<modal
-			:closeLabel="t('common.close')"
+			:close-label="t('common.close')"
 			name="addCatalogEntry"
 			:title="t('submission.catalogEntry.new')"
 			:open="isModalOpenedAddCatalogEntry"
@@ -348,6 +348,21 @@ export default {
 			}
 			return this.contextId;
 		},
+	},
+	created() {
+		/**
+		 * When a filter is set, update the sort order to match the setting of
+		 * the series or catalog
+		 *
+		 * Set this watcher before the mounted hook so that the get params are
+		 * updated before the ajax request is made in SubmissionListPanel.mounted.
+		 */
+		this.$watch('activeFilters', function (newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+			this.updateSortOrder();
+		});
 	},
 	methods: {
 		/**
@@ -612,21 +627,6 @@ export default {
 			}
 			this.isOrdering = !this.isOrdering;
 		},
-	},
-	created() {
-		/**
-		 * When a filter is set, update the sort order to match the setting of
-		 * the series or catalog
-		 *
-		 * Set this watcher before the mounted hook so that the get params are
-		 * updated before the ajax request is made in SubmissionListPanel.mounted.
-		 */
-		this.$watch('activeFilters', function (newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			this.updateSortOrder();
-		});
 	},
 };
 </script>

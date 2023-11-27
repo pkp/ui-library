@@ -2,18 +2,18 @@
 	<div class="pkpFormField pkpFormField--upload">
 		<div class="pkpFormField__heading">
 			<form-field-label
-				:controlId="dropzoneHiddenFileId"
+				:control-id="dropzoneHiddenFileId"
 				:label="label"
-				:localeLabel="localeLabel"
-				:isRequired="isRequired"
-				:requiredLabel="t('common.required')"
-				:multilingualLabel="multilingualLabel"
+				:locale-label="localeLabel"
+				:is-required="isRequired"
+				:required-label="t('common.required')"
+				:multilingual-label="multilingualLabel"
 			/>
 			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span
 				v-if="tooltip"
-				class="-screenReader"
 				:id="describedByTooltipId"
+				class="-screenReader"
 				v-html="tooltip"
 			/>
 			<help-button
@@ -26,14 +26,14 @@
 		</div>
 		<div
 			v-if="isPrimaryLocale && description"
+			:id="describedByDescriptionId"
 			class="pkpFormField__description"
 			v-html="description"
-			:id="describedByDescriptionId"
 		/>
 		<div
-			class="pkpFormField__control pkpFormField--upload__control"
-			ref="control"
 			:id="controlId"
+			ref="control"
+			class="pkpFormField__control pkpFormField--upload__control"
 			aria-live="polite"
 		>
 			<div v-if="currentValue" class="pkpFormField--upload__preview">
@@ -41,7 +41,7 @@
 					{{ fileName }}
 				</span>
 				<div class="pkpFormField--upload__previewActions">
-					<pkp-button :isWarnable="true" @click="clear">
+					<pkp-button :is-warnable="true" @click="clear">
 						{{ t('common.remove') }}
 					</pkp-button>
 					<pkp-button v-if="initialValue && !isInitialValue" @click="revert">
@@ -64,8 +64,8 @@
 			<div :class="{'-screenReader': currentValue}">
 				<vue-dropzone
 					v-if="isComponentMounted"
-					ref="dropzone"
 					:id="dropzoneId"
+					ref="dropzone"
 					:options="dropzoneOptions"
 					@vdropzone-file-added="onAddFile"
 					@vdropzone-success="success"
@@ -80,9 +80,9 @@
 				<div class="pkpFormField--upload__uploadActions">
 					<!-- keyboard-accessible file upload. Keep this element in the dom for screen readers -->
 					<pkp-button
+						:id="dropzoneClickableId"
 						class="pkpFormField--upload__addFile"
 						:disabled="!!uploadFile"
-						:id="dropzoneClickableId"
 					>
 						{{ uploadFileLabel }}
 					</pkp-button>
@@ -111,10 +111,10 @@ import VueDropzone from 'dropzone-vue3';
 
 export default {
 	name: 'FieldUpload',
-	extends: FieldBase,
 	components: {
 		VueDropzone,
 	},
+	extends: FieldBase,
 	props: {
 		options: Object,
 		restoreLabel: String,
@@ -233,6 +233,31 @@ export default {
 			};
 		},
 	},
+	mounted() {
+		this.isComponentMounted = true;
+
+		// not ideal, but first this component needs to get mounted
+		// than vue-dropzone gets mounted and afterwards vue-dropzone
+		// DOM can be manipulated
+		setTimeout(() => {
+			/**
+			 * Add attributes to the hidden file input field so that labels and
+			 * descriptions can be accessed by those using assistive devices.
+			 */
+			this.$refs.dropzone.dropzone.hiddenFileInput.id =
+				this.dropzoneHiddenFileId;
+			this.$refs.dropzone.dropzone.hiddenFileInput.setAttribute(
+				'aria-describedby',
+				this.describedByIds,
+			);
+
+			/**
+			 * Set the initial data, which can't be set in the data() function because it relies on
+			 * a computed property
+			 */
+			this.initialValue = this.currentValue ? this.currentValue : null;
+		});
+	},
 	methods: {
 		/**
 		 * Clear the current value
@@ -350,31 +375,6 @@ export default {
 				}
 			});
 		},
-	},
-	mounted() {
-		this.isComponentMounted = true;
-
-		// not ideal, but first this component needs to get mounted
-		// than vue-dropzone gets mounted and afterwards vue-dropzone
-		// DOM can be manipulated
-		setTimeout(() => {
-			/**
-			 * Add attributes to the hidden file input field so that labels and
-			 * descriptions can be accessed by those using assistive devices.
-			 */
-			this.$refs.dropzone.dropzone.hiddenFileInput.id =
-				this.dropzoneHiddenFileId;
-			this.$refs.dropzone.dropzone.hiddenFileInput.setAttribute(
-				'aria-describedby',
-				this.describedByIds,
-			);
-
-			/**
-			 * Set the initial data, which can't be set in the data() function because it relies on
-			 * a computed property
-			 */
-			this.initialValue = this.currentValue ? this.currentValue : null;
-		});
 	},
 };
 </script>

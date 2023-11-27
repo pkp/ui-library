@@ -1,6 +1,6 @@
 <template>
 	<div class="previewChart">
-		<doughnut-chart :chartData="chartData" />
+		<doughnut-chart :chart-data="chartData" />
 	</div>
 </template>
 

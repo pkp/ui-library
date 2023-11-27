@@ -9,10 +9,10 @@ import fieldBase from '../../../helpers/field-base';
 import FieldBaseAutosuggest from '../../../helpers/field-autosuggest';
 
 export default {
-	extends: PreviewFieldBase,
 	components: {
 		ExampleFieldUserAutosuggest,
 	},
+	extends: PreviewFieldBase,
 	data() {
 		return {
 			field: {

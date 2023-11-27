@@ -6,12 +6,12 @@
 				<div class="listPanel__itemIdentity">
 					<div class="listPanel__itemSubtitle">
 						<a
+							:id="nameId"
 							class="listPanel__item--submissionFile__link"
 							:href="item.url"
-							:id="nameId"
 						>
 							<submission-files-file
-								:documentType="item.documentType"
+								:document-type="item.documentType"
 								:name="localize(item.name)"
 							/>
 						</a>
@@ -84,7 +84,7 @@
 		<!-- Uploads in progress not yet saved as submission files -->
 		<template v-else>
 			<file-upload-progress
-				:cancelUploadLabel="cancelUploadLabel"
+				:cancel-upload-label="cancelUploadLabel"
 				:errors="item.errors || []"
 				:name="item.name"
 				:progress="item.progress"

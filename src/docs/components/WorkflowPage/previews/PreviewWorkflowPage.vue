@@ -67,7 +67,7 @@
 				</notification>
 			</tab>
 			<tab id="publication" label="Publication">
-				<div class="pkpPublication" ref="publication" aria-live="polite">
+				<div ref="publication" class="pkpPublication" aria-live="polite">
 					<pkp-header class="pkpPublication__header" :is-one-line="false">
 						<span class="pkpPublication__status">
 							<strong>{{ statusLabel }}</strong>
@@ -215,12 +215,12 @@
 							<contributors-list-panel
 								v-bind="components.contributors"
 								class="pkpWorkflow__contributors"
-								@set="set"
 								:items="workingPublication.authors"
 								:publication="workingPublication"
 								:publication-api-url="
 									submissionApiUrl + '/publications/' + workingPublication.id
 								"
+								@set="set"
 								@updated:publication="setWorkingPublication"
 								@updated:contributors="setContributors"
 							></contributors-list-panel>
@@ -250,10 +250,10 @@
 			</tab>
 		</tabs>
 		<div
+			ref="notifications"
 			aria-live="polite"
 			aria-atomic="true"
 			class="app__notifications"
-			ref="notifications"
 			role="status"
 		>
 			<transition-group name="app__notification">
@@ -492,14 +492,6 @@ export default {
 			workingPublication: latestPublication,
 		};
 	},
-	methods: {
-		alert(msg) {
-			alert(msg);
-		},
-		showTab(tab) {
-			pkp.eventBus.$emit('open-tab', tab);
-		},
-	},
 	created() {
 		pkp.localeKeys['contributor.listPanel.preview.description'] =
 			'Contributors to this publication will be identified in this journal in the following formats.';
@@ -509,6 +501,14 @@ export default {
 		pkp.localeKeys['contributor.listPanel.preview.publicationLists'] =
 			'Publication Lists';
 		pkp.localeKeys['contributor.listPanel.preview.full'] = 'Full';
+	},
+	methods: {
+		alert(msg) {
+			alert(msg);
+		},
+		showTab(tab) {
+			pkp.eventBus.$emit('open-tab', tab);
+		},
 	},
 };
 </script>

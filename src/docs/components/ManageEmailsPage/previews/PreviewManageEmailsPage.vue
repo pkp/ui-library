@@ -12,11 +12,9 @@
 						<search
 							search-label="Search by name or description"
 							:search-phrase="searchPhrase"
-							@search-phrase-changed="
-								(newSearch) => (this.searchPhrase = newSearch)
-							"
+							@search-phrase-changed="(newSearch) => (searchPhrase = newSearch)"
 						></search>
-						<pkp-button @click="confirmResetAll" :isWarnable="true">
+						<pkp-button :is-warnable="true" @click="confirmResetAll">
 							Reset All
 						</pkp-button>
 					</template>
@@ -86,7 +84,7 @@
 			</template>
 		</list-panel>
 		<modal
-			:closeLabel="t('common.close')"
+			:close-label="t('common.close')"
 			name="mailable"
 			:title="currentMailable ? currentMailable.name : ''"
 			@closed="mailableModalClosed"
@@ -135,7 +133,7 @@
 			</template>
 		</modal>
 		<modal
-			:closeLabel="t('common.close')"
+			:close-label="t('common.close')"
 			name="template"
 			:title="currentTemplate ? 'Edit Template' : 'Add Template'"
 			@closed="templateModalClosed"
@@ -190,6 +188,19 @@ export default {
 			templateForm: {...templateForm},
 		};
 	},
+	created() {
+		$.ajax({
+			url: '/mailables.json',
+			method: 'GET',
+			context: this,
+			success(r) {
+				this.mailables = r;
+			},
+			error(r) {
+				alert('failed to load mailables from /mailables.json');
+			},
+		});
+	},
 	methods: {
 		alert(msg) {
 			alert(msg);
@@ -210,19 +221,6 @@ export default {
 				onSuccess.apply(this, [mailable.emailTemplates[0]]);
 			});
 		},
-	},
-	created() {
-		$.ajax({
-			url: '/mailables.json',
-			method: 'GET',
-			context: this,
-			success(r) {
-				this.mailables = r;
-			},
-			error(r) {
-				alert('failed to load mailables from /mailables.json');
-			},
-		});
 	},
 };
 </script>

@@ -7,7 +7,7 @@
 			Open Tall Modal
 		</pkp-button>
 		<modal
-			closeLabel="Close"
+			close-label="Close"
 			type="side"
 			:open="isModalOpenedShort"
 			@close="isModalOpenedShort = false"
@@ -22,7 +22,7 @@
 			</panel>
 		</modal>
 		<modal
-			closeLabel="Close"
+			close-label="Close"
 			type="side"
 			:open="isModalOpenedTall"
 			@close="isModalOpenedTall = false"

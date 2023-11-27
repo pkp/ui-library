@@ -9,26 +9,6 @@ export default {
 			sectionWordLimits: {},
 		};
 	},
-	methods: {
-		/**
-		 * Update the relation form to match a particular publication
-		 *
-		 * @param Object publication
-		 */
-		setRelationForm(publication) {
-			let form = {...this.components[pkp.const.FORM_ID_RELATION]};
-			form.action =
-				this.submissionApiUrl + '/publications/' + publication.id + '/relate';
-			form.fields = form.fields.map((field) => {
-				if (Object.keys(publication).includes(field.name)) {
-					field.value = publication[field.name];
-				}
-				return field;
-			});
-			this.components[pkp.const.FORM_ID_RELATION] = {};
-			this.components[pkp.const.FORM_ID_RELATION] = form;
-		},
-	},
 	watch: {
 		workingPublication(newVal, oldVal) {
 			// Update the abstract word count when the section changes
@@ -51,6 +31,26 @@ export default {
 				return;
 			}
 			this.setRelationForm(newVal);
+		},
+	},
+	methods: {
+		/**
+		 * Update the relation form to match a particular publication
+		 *
+		 * @param Object publication
+		 */
+		setRelationForm(publication) {
+			let form = {...this.components[pkp.const.FORM_ID_RELATION]};
+			form.action =
+				this.submissionApiUrl + '/publications/' + publication.id + '/relate';
+			form.fields = form.fields.map((field) => {
+				if (Object.keys(publication).includes(field.name)) {
+					field.value = publication[field.name];
+				}
+				return field;
+			});
+			this.components[pkp.const.FORM_ID_RELATION] = {};
+			this.components[pkp.const.FORM_ID_RELATION] = form;
 		},
 	},
 };

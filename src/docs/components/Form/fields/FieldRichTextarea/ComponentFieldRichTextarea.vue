@@ -35,21 +35,21 @@ export default {
 					component: markRaw(PreviewFieldRichTextareaMediumToolbar),
 					name: 'Medium Toolbar',
 					template: this.extractTemplate(
-						PreviewFieldRichTextareaMediumToolbarTemplate
+						PreviewFieldRichTextareaMediumToolbarTemplate,
 					),
 				},
 				{
 					component: markRaw(PreviewFieldRichTextareaHeavyToolbar),
 					name: 'Heavy Toolbar',
 					template: this.extractTemplate(
-						PreviewFieldRichTextareaHeavyToolbarTemplate
+						PreviewFieldRichTextareaHeavyToolbarTemplate,
 					),
 				},
 				{
 					component: markRaw(PreviewFieldRichTextareaWordLimit),
 					name: 'Word Limit',
 					template: this.extractTemplate(
-						PreviewFieldRichTextareaWordLimitTemplate
+						PreviewFieldRichTextareaWordLimitTemplate,
 					),
 				},
 			],

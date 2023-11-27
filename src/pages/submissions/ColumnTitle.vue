@@ -1,7 +1,7 @@
 <template>
 	<TableCell
-		class="submissions__list__item__title"
 		:id="'submission-title-' + submission.id"
+		class="submissions__list__item__title"
 		:is-row-header="true"
 	>
 		<span class="submissions__list__item__author">

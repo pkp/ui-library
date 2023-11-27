@@ -15,10 +15,10 @@ import fieldBase from '../../../helpers/field-base';
 import field from '../../../helpers/field-text-given-name';
 
 export default {
-	extends: PreviewFieldBase,
 	components: {
 		FieldText,
 	},
+	extends: PreviewFieldBase,
 	data() {
 		return {
 			field: {

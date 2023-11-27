@@ -4,22 +4,14 @@ import NotifyUsersForm from '@/components/Form/context/NotifyUsersForm.vue';
 
 export default {
 	name: 'AccessPage',
-	extends: Page,
 	components: {
 		NotifyUsersForm,
 	},
+	extends: Page,
 	data() {
 		return {
 			totalBulkJobs: 0,
 		};
-	},
-	methods: {
-		/**
-		 * Reload the page to send another email
-		 */
-		reload() {
-			window.location.reload();
-		},
 	},
 	mounted() {
 		pkp.eventBus.$on('form-success', (formId, data) => {
@@ -32,6 +24,14 @@ export default {
 	},
 	unmounted() {
 		pkp.eventBus.$off('form-success');
+	},
+	methods: {
+		/**
+		 * Reload the page to send another email
+		 */
+		reload() {
+			window.location.reload();
+		},
 	},
 };
 </script>

@@ -9,10 +9,10 @@ import fieldBase from '../../../helpers/field-base';
 import field from '../../../helpers/field-upload-image-logo';
 
 export default {
-	extends: PreviewFieldBase,
 	components: {
 		FieldUploadImage,
 	},
+	extends: PreviewFieldBase,
 	data() {
 		return {
 			field: {

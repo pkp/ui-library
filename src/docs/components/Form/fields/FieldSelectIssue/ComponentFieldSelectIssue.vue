@@ -26,14 +26,14 @@ export default {
 					component: markRaw(PreviewFieldSelectIssuePublished),
 					name: 'Published',
 					template: this.extractTemplate(
-						PreviewFieldSelectIssuePublishedTemplate
+						PreviewFieldSelectIssuePublishedTemplate,
 					),
 				},
 				{
 					component: markRaw(PreviewFieldSelectIssueScheduled),
 					name: 'Scheduled',
 					template: this.extractTemplate(
-						PreviewFieldSelectIssueScheduledTemplate
+						PreviewFieldSelectIssueScheduledTemplate,
 					),
 				},
 			],

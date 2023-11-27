@@ -6,7 +6,6 @@ import ActionPanel from '../ActionPanel/ActionPanel.vue';
 import AnnouncementsListPanel from '../ListPanel/announcements/AnnouncementsListPanel.vue';
 
 export default {
-	extends: Page,
 	name: 'AdminPage',
 	components: {
 		ActionPanel,
@@ -14,6 +13,7 @@ export default {
 		AnnouncementsListPanel,
 		ThemeForm,
 	},
+	extends: Page,
 	data() {
 		return {
 			announcementsEnabled: false,

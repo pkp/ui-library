@@ -1,7 +1,7 @@
 <template>
 	<div class="fileUploadProgress">
 		<div class="fileUploadProgress__row">
-			<div class="fileUploadProgress__name" :id="uuid">
+			<div :id="uuid" class="fileUploadProgress__name">
 				{{ name }}
 			</div>
 			<div class="fileUploadProgress__actions">

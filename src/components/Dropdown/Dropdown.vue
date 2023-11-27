@@ -2,10 +2,10 @@
 	<div class="pkpDropdown">
 		<pkp-button
 			ref="button"
-			:isActive="isActive"
-			:isLink="isLink"
-			:isPrimary="isPrimary"
-			:isWarnable="isWarnable"
+			:is-active="isActive"
+			:is-link="isLink"
+			:is-primary="isPrimary"
+			:is-warnable="isWarnable"
 			:aria-describedby="ariaDescribedBy"
 			:aria-controls="id"
 			:aria-expanded="isOpen"
@@ -19,8 +19,8 @@
 		</pkp-button>
 		<div
 			v-if="isOpen"
-			class="pkpDropdown__content"
 			:id="id"
+			class="pkpDropdown__content"
 			@click="preserveFocus"
 		>
 			<slot />

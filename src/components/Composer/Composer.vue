@@ -12,11 +12,11 @@
 					</div>
 					<search
 						v-if="emailTemplatesApiUrl"
-						:searchLabel="findTemplateLabel"
+						:search-label="findTemplateLabel"
 						class="composer__templates__search"
-						:searchPhrase="searchPhrase"
+						:search-phrase="searchPhrase"
 						@search-phrase-changed="
-							(newSearchPhrase) => (this.searchPhrase = newSearchPhrase)
+							(newSearchPhrase) => (searchPhrase = newSearchPhrase)
 						"
 					/>
 					<ul
@@ -113,12 +113,12 @@
 						class="composer__recipients"
 						name="to"
 						:label="recipientsLabel"
-						:isLabelInline="true"
-						:deselectLabel="deselectLabel"
+						:is-label-inline="true"
+						:deselect-label="deselectLabel"
 						:all-errors="errors"
-						groupId="composer"
-						:formId="id"
-						:selectedLabel="recipientsLabel"
+						group-id="composer"
+						:form-id="id"
+						:selected-label="recipientsLabel"
 						:options="localizedRecipientOptions"
 						:selected="recipientsSelected"
 						:value="recipients"
@@ -127,8 +127,8 @@
 					/>
 					<button
 						v-if="!ccIsEnabled"
-						class="composer__ccToggle -linkButton"
 						ref="ccButtons"
+						class="composer__ccToggle -linkButton"
 						@click="enableCC"
 					>
 						{{ addCCLabel }}
@@ -142,14 +142,14 @@
 				>
 					<label :for="id + '-cc'">{{ ccLabel }}</label>
 					<input
-						type="text"
-						name="cc"
 						:id="id + '-cc'"
 						v-model="ccBinded"
+						type="text"
+						name="cc"
 						:aria-described-by="!!errors.cc ? id + '-cc-error' : ''"
 						:aria-invalid="!!errors.cc"
-						@focus="() => (this.isFocused = 'cc')"
-						@blur="() => (this.isFocused = '')"
+						@focus="() => (isFocused = 'cc')"
+						@blur="() => (isFocused = '')"
 					/>
 				</div>
 				<field-error
@@ -165,14 +165,14 @@
 				>
 					<label :for="id + '-bcc'">{{ bccLabel }}</label>
 					<input
-						type="text"
-						name="bcc"
 						:id="id + '-bcc'"
 						v-model="bccBinded"
+						type="text"
+						name="bcc"
 						:aria-described-by="!!errors.bcc ? id + '-bcc-error' : ''"
 						:aria-invalid="!!errors.bcc"
-						@focus="() => (this.isFocused = 'bcc')"
-						@blur="() => (this.isFocused = '')"
+						@focus="() => (isFocused = 'bcc')"
+						@blur="() => (isFocused = '')"
 					/>
 				</div>
 				<field-error
@@ -187,14 +187,14 @@
 				>
 					<label :for="id + '-subject'">{{ subjectLabel }}</label>
 					<input
-						type="text"
-						name="subject"
 						:id="id + '-subject'"
 						v-model="subjectBinded"
+						type="text"
+						name="subject"
 						:aria-described-by="!!errors.subject ? id + '-subject-error' : ''"
 						:aria-invalid="!!errors.subject"
-						@focus="() => (this.isFocused = 'subject')"
-						@blur="() => (this.isFocused = '')"
+						@focus="() => (isFocused = 'subject')"
+						@blur="() => (isFocused = '')"
 					/>
 				</div>
 				<field-error
@@ -206,27 +206,27 @@
 					class="composer__body"
 					name="body"
 					:label="bodyLabel"
-					groupId="message"
-					primaryLocale="en"
+					group-id="message"
+					primary-locale="en"
 					:all-errors="errors"
 					:init="bodyInit"
-					:formId="id"
+					:form-id="id"
 					plugins="link"
 					size="large"
 					toolbar="bold italic superscript subscript | link"
 					:value="body"
-					:preparedContent="compiledVariables"
-					:insertLabel="insertLabel"
-					:insertModalLabel="insertModalLabel"
-					:preparedContentLabel="insertContentLabel"
-					:searchLabel="insertSearchLabel"
-					@change="(name, prop, value) => this.emitChange({body: value})"
+					:prepared-content="compiledVariables"
+					:insert-label="insertLabel"
+					:insert-modal-label="insertModalLabel"
+					:prepared-content-label="insertContentLabel"
+					:search-label="insertSearchLabel"
+					@change="(name, prop, value) => emitChange({body: value})"
 				>
 					<template #footer>
 						<div
 							v-if="attachments.length"
-							class="composer__attachments"
 							ref="attachedFiles"
+							class="composer__attachments"
 						>
 							<span class="-screenReader">
 								{{ attachedFilesLabel }}
@@ -256,7 +256,7 @@
 					</template>
 				</field-prepared-content>
 				<modal
-					:closeLabel="t('common.close')"
+					:close-label="t('common.close')"
 					:name="fileAttacherModalId"
 					:title="attachFilesLabel"
 					:open="isModalOpenedFileAttacher"
@@ -298,7 +298,6 @@ import preparedContent from '@/mixins/preparedContent';
 
 export default {
 	name: 'Composer',
-	mixins: [ajaxErrorCallback, dialog, preparedContent],
 	components: {
 		FieldAutosuggestPreset,
 		FieldError,
@@ -307,6 +306,7 @@ export default {
 		Modal,
 		Search,
 	},
+	mixins: [ajaxErrorCallback, dialog, preparedContent],
 	props: {
 		addCCLabel: {
 			type: String,
@@ -664,6 +664,19 @@ export default {
 			);
 		},
 	},
+	watch: {
+		searchPhrase() {
+			this.$nextTick(() => this.search());
+		},
+	},
+	created() {
+		if (this.initialTemplateKey) {
+			this.loadTemplate(this.initialTemplateKey);
+		}
+	},
+	mounted() {
+		this.updateToPadding();
+	},
 	methods: {
 		/**
 		 * Add file attachments to the email
@@ -984,19 +997,6 @@ export default {
 				resizeSensorEl.style.width = '1px';
 				setTimeout(() => (resizeSensorEl.style.width = 'auto'), 1000);
 			});
-		},
-	},
-	created() {
-		if (this.initialTemplateKey) {
-			this.loadTemplate(this.initialTemplateKey);
-		}
-	},
-	mounted() {
-		this.updateToPadding();
-	},
-	watch: {
-		searchPhrase() {
-			this.$nextTick(() => this.search());
 		},
 	},
 };

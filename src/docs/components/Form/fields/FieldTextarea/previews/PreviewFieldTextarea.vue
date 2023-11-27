@@ -9,10 +9,10 @@ import fieldBase from '../../../helpers/field-base';
 import field from '../../../helpers/field-textarea-metatags';
 
 export default {
-	extends: PreviewFieldBase,
 	components: {
 		FieldTextarea,
 	},
+	extends: PreviewFieldBase,
 	data() {
 		return {
 			field: {

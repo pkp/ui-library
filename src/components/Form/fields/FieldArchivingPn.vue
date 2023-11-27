@@ -18,8 +18,8 @@
 			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span
 				v-if="tooltip"
-				class="-screenReader"
 				:id="describedByTooltipId"
+				class="-screenReader"
 				v-html="tooltip"
 			/>
 			<help-button
@@ -32,9 +32,9 @@
 		</legend>
 		<div
 			v-if="description"
+			:id="describedByDescriptionId"
 			class="pkpFormField__description pkpFormField--options__description"
 			v-html="description"
-			:id="describedByDescriptionId"
 		/>
 		<div
 			v-if="terms && value"
@@ -46,7 +46,7 @@
 			:id="describedByErrorId"
 			:messages="errors"
 		/>
-		<input type="hidden" v-model="selectedValue" />
+		<input v-model="selectedValue" type="hidden" />
 		<div class="pkpFormField__control">
 			<label
 				v-for="option in localizedOptions"
@@ -54,8 +54,8 @@
 				class="pkpFormField--options__option"
 			>
 				<input
-					class="pkpFormField--options__input"
 					v-model="selectedValue"
+					class="pkpFormField--options__input"
 					:value="option.value"
 					type="checkbox"
 					:name="name"
@@ -110,6 +110,52 @@ export default {
 		return {
 			isSaving: false,
 		};
+	},
+	watch: {
+		/**
+		 * When the input value changes, update the selected value if the input
+		 * option is the currently selected option
+		 */
+		value: function (newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+			if (newVal) {
+				this.addSettingsListener();
+			} else {
+				this.removeSettingsListener();
+			}
+
+			this.isSaving = true;
+
+			$.ajax({
+				method: 'POST',
+				url: newVal ? this.enablePluginUrl : this.disablePluginUrl,
+				data: {
+					csrfToken: pkp.currentUser.csrfToken,
+					disableNotification: false,
+				},
+				success: this.success,
+				error: this.error,
+				complete: this.complete,
+			});
+		},
+	},
+	mounted() {
+		/**
+		 * Add the event listener to show the settings modal
+		 */
+		if (this.value) {
+			this.addSettingsListener();
+		}
+	},
+	beforeUnmount() {
+		/**
+		 * Remove the event listener for the settings button
+		 */
+		if (!this.value) {
+			$('.pkpFormField--archivingPn__terms button', this.$el).off();
+		}
 	},
 	methods: {
 		/**
@@ -185,52 +231,6 @@ export default {
 		complete() {
 			this.isSaving = false;
 		},
-	},
-	watch: {
-		/**
-		 * When the input value changes, update the selected value if the input
-		 * option is the currently selected option
-		 */
-		value: function (newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			if (newVal) {
-				this.addSettingsListener();
-			} else {
-				this.removeSettingsListener();
-			}
-
-			this.isSaving = true;
-
-			$.ajax({
-				method: 'POST',
-				url: newVal ? this.enablePluginUrl : this.disablePluginUrl,
-				data: {
-					csrfToken: pkp.currentUser.csrfToken,
-					disableNotification: false,
-				},
-				success: this.success,
-				error: this.error,
-				complete: this.complete,
-			});
-		},
-	},
-	mounted() {
-		/**
-		 * Add the event listener to show the settings modal
-		 */
-		if (this.value) {
-			this.addSettingsListener();
-		}
-	},
-	beforeUnmount() {
-		/**
-		 * Remove the event listener for the settings button
-		 */
-		if (!this.value) {
-			$('.pkpFormField--archivingPn__terms button', this.$el).off();
-		}
 	},
 };
 </script>

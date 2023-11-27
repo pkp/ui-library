@@ -6,11 +6,11 @@ import debounce from 'debounce';
 
 export default {
 	name: 'StatsEditorialPage',
-	extends: StatsPage,
 	components: {
 		DoughnutChart,
 		Tooltip,
 	},
+	extends: StatsPage,
 	data() {
 		return {
 			activeByStage: [],

@@ -1,16 +1,16 @@
 <template>
 	<announcements-list-panel
-		addAnnouncementLabel="Add Announcement"
-		apiUrl=""
-		confirmDeleteMessage="Are you sure you want to delete this announcement?"
-		deleteAnnouncementLabel="Delete Announcement"
-		editAnnouncementLabel="Edit Announcement"
-		:form="form"
 		id="previewAnnouncementsListPanel"
+		add-announcement-label="Add Announcement"
+		api-url=""
+		confirm-delete-message="Are you sure you want to delete this announcement?"
+		delete-announcement-label="Delete Announcement"
+		edit-announcement-label="Edit Announcement"
+		:form="form"
 		:items="items"
-		:itemsMax="itemsMax"
+		:items-max="itemsMax"
 		title="Announcements"
-		urlBase="https://example.com/announcement/view/__id__"
+		url-base="https://example.com/announcement/view/__id__"
 	/>
 </template>
 <script>

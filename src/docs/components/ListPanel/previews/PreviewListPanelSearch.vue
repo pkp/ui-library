@@ -5,7 +5,7 @@
 				<h2>List Panel with Search</h2>
 				<template #actions>
 					<search
-						:searchPhrase="searchPhrase"
+						:search-phrase="searchPhrase"
 						@search-phrase-changed="setSearchPhrase"
 					/>
 				</template>

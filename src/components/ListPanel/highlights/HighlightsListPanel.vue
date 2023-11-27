@@ -10,23 +10,23 @@
 							<pkp-button
 								v-if="!isOrdering"
 								icon="sort"
-								:isActive="isOrdering"
-								@click="isOrdering = true"
+								:is-active="isOrdering"
 								:disabled="isLoading"
+								@click="isOrdering = true"
 							>
 								{{ t('common.order') }}
 							</pkp-button>
 							<template v-else>
 								<pkp-button
 									icon="sort"
-									:isActive="true"
-									@click="saveOrder"
+									:is-active="true"
 									:disabled="isLoading"
+									@click="saveOrder"
 								>
 									{{ i18nSaveOrder }}
 								</pkp-button>
 								<pkp-button
-									:isWarnable="true"
+									:is-warnable="true"
 									:disabled="isLoading"
 									@click="isOrdering = false"
 								>
@@ -39,14 +39,14 @@
 						</template>
 					</pkp-header>
 				</template>
-				<template v-slot:item-title="{item}">
+				<template #item-title="{item}">
 					{{ localize(item.title) }}
 				</template>
-				<template v-slot:item-actions="{item}">
+				<template #item-actions="{item}">
 					<orderer
 						v-if="isOrdering"
-						:itemId="item.id"
-						:itemTitle="localize(item.title)"
+						:item-id="item.id"
+						:item-title="localize(item.title)"
 						@up="orderUp(item)"
 						@down="orderDown(item)"
 					></orderer>
@@ -55,7 +55,7 @@
 					</pkp-button>
 					<pkp-button
 						v-if="!isOrdering"
-						:isWarnable="true"
+						:is-warnable="true"
 						@click="openDeleteModal(item.id)"
 					>
 						{{ t('common.delete') }}
@@ -63,7 +63,7 @@
 				</template>
 			</list-panel>
 			<modal
-				:closeLabel="t('common.close')"
+				:close-label="t('common.close')"
 				name="form"
 				:title="activeFormTitle"
 				:open="isModalOpened"

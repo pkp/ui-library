@@ -2,9 +2,9 @@
 	<div v-if="locales.length" class="pkpFormLocales">
 		<button
 			v-for="locale in additionalLocales"
+			:key="locale.key"
 			class="pkpFormLocales__locale"
 			type="button"
-			:key="locale.key"
 			:label="locale.label"
 			:class="{
 				'pkpFormLocales__locale--isActive': visible.includes(locale.key),
@@ -14,7 +14,7 @@
 			{{ locale.label }}
 		</button>
 		<span class="pkpFormLocales__locale pkpFormLocales__locale--isPrimary">
-			{{ this.primaryLocale.label }}
+			{{ primaryLocale.label }}
 		</span>
 	</div>
 </template>
@@ -44,7 +44,7 @@ export default {
 		 */
 		primaryLocale() {
 			return this.locales.find(
-				(locale) => locale.key === this.primaryLocaleKey
+				(locale) => locale.key === this.primaryLocaleKey,
 			);
 		},
 
@@ -55,7 +55,7 @@ export default {
 		 */
 		additionalLocales() {
 			return this.locales.filter(
-				(locale) => locale.key !== this.primaryLocaleKey
+				(locale) => locale.key !== this.primaryLocaleKey,
 			);
 		},
 	},

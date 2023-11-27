@@ -8,8 +8,8 @@
 		<template #item-actions="{item}">
 			<pkp-button @click="openModal(item.title)">Edit</pkp-button>
 			<expander
-				:isExpanded="expanded.includes(item.id)"
-				:itemName="item.title"
+				:is-expanded="expanded.includes(item.id)"
+				:item-name="item.title"
 				@toggle="toggleExpanded(item.id)"
 			/>
 		</template>
@@ -22,7 +22,7 @@
 			</list>
 			<div class="listPanel__itemExpandedActions">
 				<pkp-button @click="openModal(item.title)">Approve</pkp-button>
-				<pkp-button :isWarnable="true" @click="openModal(item.title)">
+				<pkp-button :is-warnable="true" @click="openModal(item.title)">
 					Decline
 				</pkp-button>
 			</div>

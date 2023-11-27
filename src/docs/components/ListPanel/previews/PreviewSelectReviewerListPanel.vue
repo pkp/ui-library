@@ -1,37 +1,37 @@
 <template>
 	<select-reviewer-list-panel
-		apiUrl="http://httpbin.org/get"
-		activeReviewsCountLabel="{$count} active"
-		activeReviewsLabel="Active reviews currently assigned"
-		assignedToLastRoundLabel="This reviewer completed a review in the last round."
-		averageCompletionLabel="Average days to complete review"
-		biographyLabel="Biography"
-		cancelledReviewsLabel="Reviews cancelled"
-		completedReviewsLabel="Reviews completed"
-		:currentlyAssigned="[5]"
-		currentlyAssignedLabel="This reviewer has already been assigned to this review round."
-		daySinceLastAssignmentLabel="Yesterday"
-		daysSinceLastAssignmentLabel="{$days} days ago"
-		daysSinceLastAssignmentDescriptionLabel="Days since last review assigned"
-		declinedReviewsLabel="Reviews declined"
-		emptyLabel="No reviewers found"
-		:filters="filters"
-		gossipLabel="Editorial Notes"
 		id="previewSelectReviewerListPanel"
+		api-url="http://httpbin.org/get"
+		active-reviews-count-label="{$count} active"
+		active-reviews-label="Active reviews currently assigned"
+		assigned-to-last-round-label="This reviewer completed a review in the last round."
+		average-completion-label="Average days to complete review"
+		biography-label="Biography"
+		cancelled-reviews-label="Reviews cancelled"
+		completed-reviews-label="Reviews completed"
+		:currently-assigned="[5]"
+		currently-assigned-label="This reviewer has already been assigned to this review round."
+		day-since-last-assignment-label="Yesterday"
+		days-since-last-assignment-label="{$days} days ago"
+		days-since-last-assignment-description-label="Days since last review assigned"
+		declined-reviews-label="Reviews declined"
+		empty-label="No reviewers found"
+		:filters="filters"
+		gossip-label="Editorial Notes"
 		:items="items"
-		:itemsMax="items.length"
-		:lastRoundReviewers="lastRoundReviewers"
-		neverAssignedLabel="Never assigned"
-		reassignLabel="Reassign"
-		reassignWithNameLabel="Reassign {$name}"
-		reviewerRatingLabel="Reviewer rating: {$rating}"
-		reviewInterestsLabel="Reviewing Interests"
-		selectReviewerLabel="Select Reviewer"
-		selectorName="reviewerId"
+		:items-max="items.length"
+		:last-round-reviewers="lastRoundReviewers"
+		never-assigned-label="Never assigned"
+		reassign-label="Reassign"
+		reassign-with-name-label="Reassign {$name}"
+		reviewer-rating-label="Reviewer rating: {$rating}"
+		review-interests-label="Reviewing Interests"
+		select-reviewer-label="Select Reviewer"
+		selector-name="reviewerId"
 		title="Locate a Reviewer"
-		:warnOnAssignment="[7]"
-		warnOnAssignmentLabel="This reviewer is locked because they have been assigned a role which allows them to view the author's identity. Anonymous peer review can not be guaranteed. Would you like to unlock this reviewer anyway?"
-		warnOnAssignmentUnlockLabel="Unlock"
+		:warn-on-assignment="[7]"
+		warn-on-assignment-label="This reviewer is locked because they have been assigned a role which allows them to view the author's identity. Anonymous peer review can not be guaranteed. Would you like to unlock this reviewer anyway?"
+		warn-on-assignment-unlock-label="Unlock"
 	/>
 </template>
 <script>
@@ -185,7 +185,7 @@ export default {
 			],
 			items: [...items],
 			lastRoundReviewers: items.filter((reviewer) =>
-				[3, 4].includes(reviewer.id)
+				[3, 4].includes(reviewer.id),
 			),
 		};
 	},

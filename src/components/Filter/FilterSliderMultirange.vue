@@ -29,12 +29,12 @@
 					{{ moreThanLabel }}
 				</label>
 				<input
+					id="sliderMore"
+					v-model.number="currentValue[0]"
 					type="range"
 					:max="moreThanMax"
 					:min="min"
 					:disabled="!isFilterActive"
-					id="sliderMore"
-					v-model.number="currentValue[0]"
 				/>
 			</div>
 			<div class="pkpFilter__multirangeInput">
@@ -42,12 +42,12 @@
 					{{ lessThanLabel }}
 				</label>
 				<input
+					id="sliderLess"
+					v-model.number="currentValue[1]"
 					type="range"
 					:max="max"
 					:min="lessThanMin"
 					:disabled="!isFilterActive"
-					id="sliderLess"
-					v-model.number="currentValue[1]"
 				/>
 			</div>
 		</fieldset>

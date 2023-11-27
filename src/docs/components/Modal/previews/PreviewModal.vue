@@ -5,7 +5,7 @@
 		</pkp-button>
 		<modal
 			:open="isModalOpened"
-			closeLabel="Close"
+			close-label="Close"
 			title="Simple Modal"
 			@close="isModalOpened = false"
 		>

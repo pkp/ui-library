@@ -3,12 +3,12 @@
 		<div class="pkpTabs__buttons" role="tablist" :aria-label="label">
 			<button
 				v-for="tab in tabs"
-				:aria-selected="currentTab === tab.id"
-				:aria-controls="tab.id"
-				class="pkpTabs__button"
 				:id="tab.id + '-button'"
 				:key="tab.id"
 				:ref="'button' + tab.id"
+				:aria-selected="currentTab === tab.id"
+				:aria-controls="tab.id"
+				class="pkpTabs__button"
 				role="tab"
 				:tabindex="currentTab === tab.id ? '' : -1"
 				@click="setCurrentTab(tab.id)"

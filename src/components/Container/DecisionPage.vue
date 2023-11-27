@@ -17,8 +17,6 @@ const stepTypes = {
 };
 
 export default {
-	extends: Page,
-	mixins: [ajaxError, dialog, localizeSubmission],
 	components: {
 		ButtonRow,
 		Composer,
@@ -27,6 +25,8 @@ export default {
 		SelectSubmissionFileListItem,
 		Tooltip,
 	},
+	extends: Page,
+	mixins: [ajaxError, dialog, localizeSubmission],
 	data() {
 		return {
 			abandonDecisionLabel: '',
@@ -91,6 +91,32 @@ export default {
 		isOnLastStep() {
 			return this.currentStepIndex === this.steps.length - 1;
 		},
+	},
+	created() {
+		if (this.steps.length) {
+			/**
+			 * Start the first step
+			 */
+			this.openStep(this.steps[0].id);
+
+			/**
+			 * Set up email data for each email step
+			 */
+			this.steps = this.steps.map((step) => {
+				if (step.type !== stepTypes.email) {
+					return step;
+				}
+				return {
+					...step,
+					attachments: [],
+					subject: '',
+					body: '',
+					cc: '',
+					bcc: '',
+					recipients: step.recipientOptions.map((to) => to.value),
+				};
+			});
+		}
 	},
 	methods: {
 		/**
@@ -402,32 +428,6 @@ export default {
 				};
 			});
 		},
-	},
-	created() {
-		if (this.steps.length) {
-			/**
-			 * Start the first step
-			 */
-			this.openStep(this.steps[0].id);
-
-			/**
-			 * Set up email data for each email step
-			 */
-			this.steps = this.steps.map((step) => {
-				if (step.type !== stepTypes.email) {
-					return step;
-				}
-				return {
-					...step,
-					attachments: [],
-					subject: '',
-					body: '',
-					cc: '',
-					bcc: '',
-					recipients: step.recipientOptions.map((to) => to.value),
-				};
-			});
-		}
 	},
 };
 </script>

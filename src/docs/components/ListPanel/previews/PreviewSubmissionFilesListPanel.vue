@@ -1,23 +1,23 @@
 <template>
 	<submission-files-list-panel
-		addFileLabel="Add File"
-		apiUrl="https://httbin.org/publicknowledge/api/v1/submissions/1/files"
-		cancelUploadLabel="Cancel Upload"
-		genrePromptLabel="What kind of file is this?"
-		emptyLabel="Upload any files the editorial team will need to evaluate your submission."
-		emptyAddLabel="Upload Files"
-		:fileStage="2"
+		id="preview"
+		add-file-label="Add File"
+		api-url="https://httbin.org/publicknowledge/api/v1/submissions/1/files"
+		cancel-upload-label="Cancel Upload"
+		genre-prompt-label="What kind of file is this?"
+		empty-label="Upload any files the editorial team will need to evaluate your submission."
+		empty-add-label="Upload Files"
+		:file-stage="2"
 		:form="components.preview.form"
 		:genres="components.preview.genres"
-		id="preview"
 		:items="components.preview.items"
 		:options="components.preview.options"
-		otherLabel="Other"
-		primaryLocale="en"
-		removeConfirmLabel="Are you sure you want to remove this file?"
-		:stageId="1"
+		other-label="Other"
+		primary-locale="en"
+		remove-confirm-label="Are you sure you want to remove this file?"
+		:stage-id="1"
 		title="Files"
-		uploadProgressLabel="Uploading {$percent}% complete"
+		upload-progress-label="Uploading {$percent}% complete"
 		@set="set"
 	/>
 </template>
@@ -30,10 +30,10 @@ import dropzoneOptions from '@/docs/data/dropzoneOptions';
 import genres from '../../../data/genres';
 
 export default {
-	extends: Page,
 	components: {
 		SubmissionFilesListPanel,
 	},
+	extends: Page,
 	data() {
 		return {
 			components: {

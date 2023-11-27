@@ -1,10 +1,10 @@
 <template>
-	<list-panel :items="items" :isSidebarVisible="isSidebarVisible">
+	<list-panel :items="items" :is-sidebar-visible="isSidebarVisible">
 		<template #header>
 			<pkp-header>
 				<h2>List Panel with Filter</h2>
 				<template #actions>
-					<pkp-button :isActive="isSidebarVisible" @click="toggleFilters">
+					<pkp-button :is-active="isSidebarVisible" @click="toggleFilters">
 						<icon icon="filter" :inline="true" />
 						Filters
 					</pkp-button>
@@ -12,7 +12,7 @@
 			</pkp-header>
 		</template>
 		<template #sidebar>
-			<pkp-header :isOneLine="false">
+			<pkp-header :is-one-line="false">
 				<h3>
 					<icon icon="filter" :inline="true" />
 					Filters
@@ -24,7 +24,7 @@
 				:param="filter.param"
 				:title="filter.title"
 				:value="filter.value"
-				:isFilterActive="isFilterActive(filter.param, filter.value)"
+				:is-filter-active="isFilterActive(filter.param, filter.value)"
 				@add-filter="addFilter"
 				@remove-filter="removeFilter"
 			/>

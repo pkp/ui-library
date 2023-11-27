@@ -28,7 +28,7 @@
 				<div class="submissions__list__top">
 					<pkp-button>Start a New Submission</pkp-button>
 				</div>
-				<h1 class="submissions__list__title" id="table-title">
+				<h1 id="table-title" class="submissions__list__title">
 					{{ currentView.name }}
 					<span class="submissions__view__count">
 						{{ submissionsMax }}
@@ -46,7 +46,7 @@
 						<search
 							:search-phrase="searchPhrase"
 							search-label="Search submissions, ID, authors, keywords, etc."
-							@search-phrase-changed="(value) => (this.searchPhrase = value)"
+							@search-phrase-changed="(value) => (searchPhrase = value)"
 						></search>
 					</button-row>
 				</div>
@@ -142,12 +142,12 @@
 			</div>
 		</div>
 		<modal
+			v-if="summarySubmission"
 			close-label="Close"
 			name="summary"
 			type="side"
 			:open="isModalOpenedSummary"
 			@close="isModalOpenedSummary = false"
-			v-if="summarySubmission"
 		>
 			<template #header>
 				<stage-bubble :stage-id="summarySubmission.stageId">

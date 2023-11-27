@@ -4,14 +4,14 @@
 			<fieldset class="previewFetch__field">
 				<legend>Show items in:</legend>
 				<label v-for="(name, id) in sections" :key="id">
-					<input type="checkbox" v-model="sectionsSelected" :value="id" />
+					<input v-model="sectionsSelected" type="checkbox" :value="id" />
 					{{ name }}
 				</label>
 			</fieldset>
 			<div class="previewFetch__field">
 				<label>
 					Search:
-					<input type="search" v-model="searchPhrase" />
+					<input v-model="searchPhrase" type="search" />
 				</label>
 			</div>
 		</form>
@@ -44,6 +44,20 @@ export default {
 			submissions: [...submissions],
 		};
 	},
+	watch: {
+		searchPhrase(newVal, oldVal) {
+			this.activeFilters = {
+				...this.activeFilters,
+				searchPhrase: newVal,
+			};
+		},
+		sectionsSelected(newVal, oldVal) {
+			this.activeFilters = {
+				...this.activeFilters,
+				sectionIds: newVal.map((id) => parseInt(id, 10)),
+			};
+		},
+	},
 	methods: {
 		/**
 		 * Overwrite the `get()` method of the
@@ -68,20 +82,6 @@ export default {
 				.filter((s) => {
 					return !sectionIds.length || sectionIds.includes(s.sectionId);
 				});
-		},
-	},
-	watch: {
-		searchPhrase(newVal, oldVal) {
-			this.activeFilters = {
-				...this.activeFilters,
-				searchPhrase: newVal,
-			};
-		},
-		sectionsSelected(newVal, oldVal) {
-			this.activeFilters = {
-				...this.activeFilters,
-				sectionIds: newVal.map((id) => parseInt(id, 10)),
-			};
 		},
 	},
 };

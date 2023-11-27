@@ -14,7 +14,7 @@
 					<template v-if="'progress' in file">
 						<file-upload-progress
 							:key="i"
-							cancelUploadLabel="Cancel Upload"
+							cancel-upload-label="Cancel Upload"
 							:errors="file.errors"
 							:name="file.name"
 							:progress="file.progress"
@@ -25,12 +25,12 @@
 						<file
 							:id="'FileAttacherUpload__UploadedFile__' + i"
 							:name="file.form ? file.form.name : file.name"
-							:documentType="file.documentType || 'default'"
+							:document-type="file.documentType || 'default'"
 						/>
 						<pkp-button
 							:aria-describedby="'FileAttacherUpload__UploadedFile__' + i"
 							class="fileAttacherUploader__uploadedFile__remove"
-							:isWarnable="true"
+							:is-warnable="true"
 							@click="removeFile(i)"
 						>
 							<span class="aria-hidden">{{ t('common.remove') }}</span>
@@ -47,12 +47,12 @@
 				</template>
 			</div>
 			<file-uploader
-				ref="uploader"
-				:apiUrl="temporaryFilesApiUrl"
-				:files="files"
 				id="previewFileUploader"
+				ref="uploader"
+				:api-url="temporaryFilesApiUrl"
+				:files="files"
 				:options="dropzoneOptions"
-				uploadProgressLabel="Uploading {$percent}% complete"
+				upload-progress-label="Uploading {$percent}% complete"
 				@updated:files="updateFiles"
 			/>
 		</div>
@@ -67,8 +67,8 @@
 				{{ addFilesLabel }}
 			</pkp-button>
 			<pkp-button
-				:isPrimary="true"
-				:isDisabled="!files.length || isUploading"
+				:is-primary="true"
+				:is-disabled="!files.length || isUploading"
 				@click="$emit('selected:files', files)"
 			>
 				{{ attachFilesLabel }}

@@ -8,10 +8,10 @@ import FileAttacherFileStage from './ExampleFileAttacherFileStage.vue';
 import FileAttacherLibrary from './ExampleFileAttacherLibrary.vue';
 
 export default {
-	extends: FileAttacher,
 	components: {
 		FileAttacherFileStage,
 		FileAttacherLibrary,
 	},
+	extends: FileAttacher,
 };
 </script>

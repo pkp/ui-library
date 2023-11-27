@@ -13,14 +13,14 @@
 			<select-submission-file-list-item
 				v-for="(file, i) in files"
 				:key="i"
-				:documentType="file.documentType"
-				:downloadLabel="downloadLabel"
-				:genreName="file.typeName"
-				:fileId="file.id"
+				:document-type="file.documentType"
+				:download-label="downloadLabel"
+				:genre-name="file.typeName"
+				:file-id="file.id"
 				:name="localize(file.name)"
 				:url="file.url"
 			>
-				<input type="checkbox" :value="file.id" v-model="selected" />
+				<input v-model="selected" type="checkbox" :value="file.id" />
 			</select-submission-file-list-item>
 		</div>
 		<button-row class="fileAttacher__footer">
@@ -31,7 +31,7 @@
 				</pkp-button>
 			</template>
 			<pkp-button
-				:isDisabled="!selected.length"
+				:is-disabled="!selected.length"
 				@click="$emit('selected:files', selectedFiles)"
 			>
 				{{ attachSelectedLabel }}
@@ -47,11 +47,11 @@ import ajaxError from '@/mixins/ajaxError';
 
 export default {
 	name: 'FileAttacherLibrary',
-	mixins: [ajaxError],
 	components: {
 		ButtonRow,
 		SelectSubmissionFileListItem,
 	},
+	mixins: [ajaxError],
 	props: {
 		attachSelectedLabel: {
 			type: String,
@@ -92,6 +92,9 @@ export default {
 			return this.files.filter((file) => this.selected.includes(file.id));
 		},
 	},
+	created() {
+		this.getFiles();
+	},
 	methods: {
 		getFiles() {
 			this.isLoading = true;
@@ -112,9 +115,6 @@ export default {
 				},
 			});
 		},
-	},
-	created() {
-		this.getFiles();
 	},
 };
 </script>

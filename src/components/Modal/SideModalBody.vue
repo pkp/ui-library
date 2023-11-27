@@ -26,7 +26,7 @@
 						</button>
 					</div>
 					<div class="ml-8 mr-8 flex-grow">
-						<slot name="header" :closeModal="closeModal" />
+						<slot name="header" :close-modal="closeModal" />
 						<!--<DialogTitle
 							class="text-gray-900 font-semibold leading-6 text-base"
 						>
@@ -36,7 +36,7 @@
 				</div>
 			</div>
 			<div class="relative mt-6 flex-1 overflow-y-scroll">
-				<slot :closeModal="closeModal" />
+				<slot :close-modal="closeModal" />
 			</div>
 		</div>
 	</DialogPanel>
@@ -47,9 +47,9 @@ import {DialogPanel /*DialogTitle*/} from '@headlessui/vue';
 import Icon from '@/components/Icon/Icon.vue';
 export default {
 	components: {Icon, DialogPanel /*DialogTitle*/},
+	inject: ['closeModal'],
 	props: {
 		secondary: Boolean,
 	},
-	inject: ['closeModal'],
 };
 </script>

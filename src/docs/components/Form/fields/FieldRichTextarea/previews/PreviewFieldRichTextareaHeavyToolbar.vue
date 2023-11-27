@@ -15,10 +15,10 @@ import fieldBase from '../../../helpers/field-base';
 import field from '../../../helpers/field-rich-textarea-description';
 
 export default {
-	extends: PreviewFieldBase,
 	components: {
 		FieldRichTextarea,
 	},
+	extends: PreviewFieldBase,
 	data() {
 		return {
 			field: {

@@ -10,18 +10,6 @@ export default {
 			required: true,
 		},
 	},
-	methods: {
-		/**
-		 * Redirect to the admin's context settings wizard when successful
-		 */
-		success: function (r) {
-			pkp.eventBus.$emit('form-success', this.id, r);
-
-			if (r.id) {
-				window.location.href = this.editContextUrl.replace('__id__', r.id);
-			}
-		},
-	},
 	watch: {
 		submitValues(newVal, oldVal) {
 			// When the primaryLocale is not included in the supportedLocales,
@@ -31,6 +19,18 @@ export default {
 				let errors = {...this.errors};
 				delete errors.primaryLocale;
 				this.$emit('set', this.id, {errors});
+			}
+		},
+	},
+	methods: {
+		/**
+		 * Redirect to the admin's context settings wizard when successful
+		 */
+		success: function (r) {
+			pkp.eventBus.$emit('form-success', this.id, r);
+
+			if (r.id) {
+				window.location.href = this.editContextUrl.replace('__id__', r.id);
 			}
 		},
 	},

@@ -11,24 +11,24 @@
 		<div class="pkpFormGroup__fields">
 			<template v-for="field in fieldsInGroup">
 				<template v-if="field.isMultilingual">
-					<div class="pkpFormGroup__localeGroup -pkpClearfix" :key="field.name">
+					<div :key="field.name" class="pkpFormGroup__localeGroup -pkpClearfix">
 						<div
 							v-for="locale in availableLocales"
 							:key="locale.key"
 							class="pkpFormGroup__locale"
 							:class="{
 								'pkpFormGroup__locale--isVisible': visibleLocales.includes(
-									locale.key
+									locale.key,
 								),
 							}"
 						>
 							<component
 								:is="field.component"
 								v-bind="field"
-								:allErrors="errors"
-								:localeKey="locale.key"
-								:formId="formId"
-								:primaryLocale="primaryLocale"
+								:all-errors="errors"
+								:locale-key="locale.key"
+								:form-id="formId"
+								:primary-locale="primaryLocale"
 								:locales="availableLocales"
 								@change="fieldChanged"
 								@set-errors="setFieldErrors"
@@ -41,8 +41,8 @@
 						:is="field.component"
 						v-bind="field"
 						:key="field.name"
-						:allErrors="errors"
-						:formId="formId"
+						:all-errors="errors"
+						:form-id="formId"
 						@change="fieldChanged"
 						@set-errors="setFieldErrors"
 					></component>
@@ -125,7 +125,7 @@ export default {
 		 */
 		fieldsInGroup() {
 			return this.fields.filter(
-				(field) => field.groupId === this.id && this.shouldShowField(field)
+				(field) => field.groupId === this.id && this.shouldShowField(field),
 			);
 		},
 
@@ -164,7 +164,7 @@ export default {
 			const whenFieldName =
 				typeof field.showWhen === 'string' ? field.showWhen : field.showWhen[0];
 			const whenField = this.fields.find(
-				(field) => field.name === whenFieldName
+				(field) => field.name === whenFieldName,
 			);
 			if (!whenField) {
 				return false;

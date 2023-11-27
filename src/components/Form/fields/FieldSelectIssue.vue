@@ -2,16 +2,16 @@
 	<div class="pkpFormField pkpFormField--select pkpFormField--selectIssue">
 		<div class="pkpFormField__heading">
 			<form-field-label
-				:controlId="controlId"
+				:control-id="controlId"
 				:label="label"
-				:isRequired="isRequired"
-				:requiredLabel="t('common.required')"
+				:is-required="isRequired"
+				:required-label="t('common.required')"
 			/>
 			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span
 				v-if="tooltip"
-				class="-screenReader"
 				:id="describedByTooltipId"
+				class="-screenReader"
 				v-html="tooltip"
 			/>
 			<help-button
@@ -24,9 +24,9 @@
 		</div>
 		<div
 			v-if="description"
+			:id="describedByDescriptionId"
 			class="pkpFormField__description"
 			v-html="description"
-			:id="describedByDescriptionId"
 		/>
 		<div class="pkpFormField__control">
 			<span class="pkpFormField__description">

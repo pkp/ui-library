@@ -12,29 +12,29 @@
 						<spinner v-if="isLoading" />
 						<template #actions>
 							<pkp-button
-								icon="sort"
-								:isActive="isOrdering"
-								@click="toggleOrdering"
 								v-if="
 									publication.status !== getConstant('STATUS_PUBLISHED') &&
 									canEditPublication
 								"
+								icon="sort"
+								:is-active="isOrdering"
 								:disabled="isLoading"
+								@click="toggleOrdering"
 							>
 								{{ orderingLabel }}
 							</pkp-button>
 							<pkp-button
 								v-if="isOrdering"
-								:isWarnable="true"
-								@click="cancelOrdering"
+								:is-warnable="true"
 								:disabled="isLoading"
+								@click="cancelOrdering"
 							>
 								{{ t('common.cancel') }}
 							</pkp-button>
 							<pkp-button
 								v-if="!isOrdering"
-								@click="openPreviewModal"
 								:disabled="isLoading"
+								@click="openPreviewModal"
 							>
 								{{ i18nPreview }}
 							</pkp-button>
@@ -44,8 +44,8 @@
 									publication.status !== getConstant('STATUS_PUBLISHED') &&
 									canEditPublication
 								"
-								@click="openAddModal"
 								:disabled="isLoading"
+								@click="openAddModal"
 							>
 								{{ i18nAddContributor }}
 							</pkp-button>
@@ -70,32 +70,32 @@
 				>
 					<template v-if="isOrdering">
 						<orderer
+							:item-id="item.id"
+							:item-title="item.fullName"
 							@up="contributorItemOrderUp(item)"
 							@down="contributorItemOrderDown(item)"
-							:itemId="item.id"
-							:itemTitle="item.fullName"
 						/>
 					</template>
 					<template v-else>
 						<badge
 							v-if="publication.primaryContactId == item.id"
-							:isPrimary="true"
+							:is-primary="true"
 						>
 							{{ i18nPrimaryContact }}
 						</badge>
 						<pkp-button
 							v-else
-							@click="setPrimaryContact(item.id)"
 							:disabled="isLoading"
+							@click="setPrimaryContact(item.id)"
 						>
 							{{ i18nSetPrimaryContact }}
 						</pkp-button>
-						<pkp-button @click="openEditModal(item.id)" :disabled="isLoading">
+						<pkp-button :disabled="isLoading" @click="openEditModal(item.id)">
 							{{ t('common.edit') }}
 						</pkp-button>
 						<pkp-button
 							:disabled="isLoading"
-							:isWarnable="true"
+							:is-warnable="true"
 							@click="openDeleteModal(item.id)"
 						>
 							{{ t('common.delete') }}
@@ -104,7 +104,7 @@
 				</template>
 			</list-panel>
 			<modal
-				:closeLabel="t('common.close')"
+				:close-label="t('common.close')"
 				:name="formModal"
 				:title="activeFormTitle"
 				:open="isModalOpenedForm"
@@ -117,7 +117,7 @@
 				/>
 			</modal>
 			<modal
-				:closeLabel="t('common.close')"
+				:close-label="t('common.close')"
 				:name="previewModal"
 				:title="i18nContributors"
 				:open="isModalOpenedPreview"

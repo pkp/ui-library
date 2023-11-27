@@ -1,13 +1,13 @@
 <template>
 	<tabs label="Tabs that include another set of tabs">
-		<tab label="First tab" id="first">
+		<tab id="first" label="First tab">
 			<tabs label="Tabs nested inside of a tab">
-				<tab label="Tab A" id="A">Tab A Content</tab>
-				<tab label="Tab B" id="B">Tab B content</tab>
-				<tab label="Tab C" id="C">Tab C content</tab>
+				<tab id="A" label="Tab A">Tab A Content</tab>
+				<tab id="B" label="Tab B">Tab B content</tab>
+				<tab id="C" label="Tab C">Tab C content</tab>
 			</tabs>
 		</tab>
-		<tab label="Second tab" id="second">Second tab content</tab>
-		<tab label="Third tab" id="third">Third tab content</tab>
+		<tab id="second" label="Second tab">Second tab content</tab>
+		<tab id="third" label="Third tab">Third tab content</tab>
 	</tabs>
 </template>

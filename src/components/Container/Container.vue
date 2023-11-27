@@ -19,34 +19,6 @@ export default {
 			components: {},
 		};
 	},
-	methods: {
-		/**
-		 * Get a component by its key
-		 *
-		 * @param {String} key
-		 * @return {Object}
-		 */
-		get(key) {
-			return this.components[key] ? this.components[key] : {};
-		},
-
-		/**
-		 * Set data for a component
-		 *
-		 * Existing keys in the component that are not passed in the data
-		 * argument will not be modified or removed.
-		 *
-		 * @param {String} key
-		 * @param {Array} data Key/value object with new data
-		 */
-		set: function (key, data) {
-			let component = {...this.get(key)};
-			Object.keys(data).forEach(function (dataKey) {
-				component[dataKey] = data[dataKey];
-			});
-			this.components[key] = component;
-		},
-	},
 	mounted() {
 		/**
 		 * Listen for changes in the supported form languages and update
@@ -78,6 +50,34 @@ export default {
 	},
 	unmounted() {
 		pkp.eventBus.$off('set-form-languages');
+	},
+	methods: {
+		/**
+		 * Get a component by its key
+		 *
+		 * @param {String} key
+		 * @return {Object}
+		 */
+		get(key) {
+			return this.components[key] ? this.components[key] : {};
+		},
+
+		/**
+		 * Set data for a component
+		 *
+		 * Existing keys in the component that are not passed in the data
+		 * argument will not be modified or removed.
+		 *
+		 * @param {String} key
+		 * @param {Array} data Key/value object with new data
+		 */
+		set: function (key, data) {
+			let component = {...this.get(key)};
+			Object.keys(data).forEach(function (dataKey) {
+				component[dataKey] = data[dataKey];
+			});
+			this.components[key] = component;
+		},
 	},
 };
 </script>

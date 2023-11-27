@@ -4,9 +4,9 @@ import Page from '@/components/Container/Page.vue';
 
 export default {
 	name: 'DoiPageOPS',
-	extends: Page,
 	components: {
 		DoiListPanel,
 	},
+	extends: Page,
 };
 </script>

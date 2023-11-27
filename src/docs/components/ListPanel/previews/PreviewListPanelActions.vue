@@ -5,7 +5,7 @@
 				<h2>List Panel with Actions</h2>
 				<template #actions>
 					<pkp-button @click="openModal">Add Item</pkp-button>
-					<pkp-button @click="openModal" :isWarnable="true">
+					<pkp-button :is-warnable="true" @click="openModal">
 						Reset Defaults
 					</pkp-button>
 				</template>

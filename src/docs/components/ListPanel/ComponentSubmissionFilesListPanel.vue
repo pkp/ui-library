@@ -16,7 +16,7 @@ export default {
 					component: markRaw(PreviewSubmissionFilesListPanel),
 					name: 'Base',
 					template: this.extractTemplate(
-						PreviewSubmissionFilesListPanelTemplate
+						PreviewSubmissionFilesListPanelTemplate,
 					),
 				},
 			],

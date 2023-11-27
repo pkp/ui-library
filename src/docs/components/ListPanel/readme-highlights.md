@@ -1,4 +1,3 @@
-
 ## Props
 
 | Key | Description |
@@ -24,13 +23,12 @@
 
 ## Global Events
 
-
 ## Mixins
 
-| Name | Description |
-| --- | --- |
-| [dialog](#/mixins/dialog) | Open a dialog modal. |
-| [fetch](#/mixins/fetch) | Get highlights from the REST API. |
+| Name                      | Description                       |
+| ------------------------- | --------------------------------- |
+| [dialog](#/mixins/dialog) | Open a dialog modal.              |
+| [fetch](#/mixins/fetch)   | Get highlights from the REST API. |
 
 ## Usage
 

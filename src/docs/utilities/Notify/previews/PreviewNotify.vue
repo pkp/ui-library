@@ -12,20 +12,20 @@
 			@click="
 				notify(
 					'An unexpected error has occurred. Please refresh the page and try again.',
-					'warning'
+					'warning',
 				)
 			"
 		>
 			Warning
 		</pkp-button>
-		<pkp-button :isWarnable="true" @click="clearAll">
+		<pkp-button :is-warnable="true" @click="clearAll">
 			Clear All Notifications
 		</pkp-button>
 		<div
+			ref="notifications"
 			aria-live="polite"
 			aria-atomic="true"
 			class="app__notifications"
-			ref="notifications"
 			role="status"
 		>
 			<transition-group name="app__notification">

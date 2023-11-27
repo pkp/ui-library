@@ -3,8 +3,8 @@
 		<span class="-screenReader">{{ dateRangeLabel }}</span>
 		<span class="pkpDateRange__current" v-html="currentRange" />
 		<button
-			class="pkpDateRange__button"
 			ref="toggleButton"
+			class="pkpDateRange__button"
 			@click="toggle"
 			@blur="closeOnBlur"
 		>
@@ -13,7 +13,7 @@
 				{{ changeDateRangeLabel }}
 			</span>
 		</button>
-		<div v-if="options && this.isOpen" class="pkpDateRange__options">
+		<div v-if="options && isOpen" class="pkpDateRange__options">
 			<div class="pkpDateRange__optionGroup">
 				<div v-for="option in options" :key="option.value">
 					<button
@@ -31,15 +31,15 @@
 			>
 				<fieldset class="pkpDateRange__inputGroup">
 					<legend>{{ customRangeLabel }}</legend>
-					<div class="-screenReader" :id="uniqueId + '-describedBy'">
+					<div :id="uniqueId + '-describedBy'" class="-screenReader">
 						{{ dateFormatInstructionsLabel }}
 					</div>
 					<label>
 						<span class="-screenReader">{{ fromDateLabel }}</span>
 						<input
-							class="pkpDateRange__input pkpDateRange__input--start"
 							ref="dateStart"
 							v-model="localDateStart"
+							class="pkpDateRange__input pkpDateRange__input--start"
 							placeholder="YYYY-MM-DD"
 							:aria-describedby="uniqueId + '-describedBy'"
 							:aria-invalid="!!errorMessage"
@@ -50,9 +50,9 @@
 					<label>
 						<span class="-screenReader">{{ toDateLabel }}</span>
 						<input
-							class="pkpDateRange__input pkpDateRange__input--end"
 							ref="dateEnd"
 							v-model="localDateEnd"
+							class="pkpDateRange__input pkpDateRange__input--end"
 							placeholder="YYYY-MM-DD"
 							:aria-describedby="uniqueId + '-describedBy'"
 							:aria-invalid="!!errorMessage"
@@ -184,6 +184,17 @@ export default {
 			return this.dateStart + ' — ' + this.dateEnd;
 		},
 	},
+	watch: {
+		currentRange(newVal, oldVal) {
+			if (newVal !== oldVal) {
+				this.$emit('updated:current-range', newVal);
+			}
+		},
+	},
+	mounted() {
+		this.localDateStart = this.dateStart;
+		this.localDateEnd = this.dateEnd;
+	},
 	methods: {
 		/**
 		 * Open and close the range selection popup
@@ -257,7 +268,7 @@ export default {
 			if (!this.validateDateStartMin(this.localDateStart)) {
 				this.errorMessage = this.replaceLocaleParams(
 					this.invalidStartDateMinLabel,
-					{date: this.dateStartMin}
+					{date: this.dateStartMin},
 				);
 				return;
 			}
@@ -265,7 +276,7 @@ export default {
 			if (!this.validateDateEndMax(this.localDateEnd)) {
 				this.errorMessage = this.replaceLocaleParams(
 					this.invalidEndDateMaxLabel,
-					{date: this.dateEndMax}
+					{date: this.dateEndMax},
 				);
 				return;
 			}
@@ -368,17 +379,6 @@ export default {
 				);
 			}
 			return true;
-		},
-	},
-	mounted() {
-		this.localDateStart = this.dateStart;
-		this.localDateEnd = this.dateEnd;
-	},
-	watch: {
-		currentRange(newVal, oldVal) {
-			if (newVal !== oldVal) {
-				this.$emit('updated:current-range', newVal);
-			}
 		},
 	},
 };

@@ -2,8 +2,8 @@
 	<vue-announcer class="sr-only" />
 	<PkpDialog
 		:open="$store.dialog.dialogOpened"
-		@close="$store.dialog.closeDialog()"
 		v-bind="$store.dialog.dialogProps"
+		@close="$store.dialog.closeDialog()"
 	></PkpDialog>
 	<nav class="nav" aria-label="Primary Navigation">
 		<nav-group>

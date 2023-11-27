@@ -30,7 +30,7 @@ export default {
 				this.selectedSubmissions = [];
 			} else {
 				this.selectedSubmissions = this.components.submissions.items.map(
-					(s) => s.id
+					(s) => s.id,
 				);
 			}
 		},

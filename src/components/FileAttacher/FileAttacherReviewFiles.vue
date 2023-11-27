@@ -7,14 +7,14 @@
 			<select-submission-file-list-item
 				v-for="(file, i) in files"
 				:key="i"
-				:documentType="file.documentType"
-				:downloadLabel="downloadLabel"
-				:genreName="file.typeName"
-				:fileId="file.id"
+				:document-type="file.documentType"
+				:download-label="downloadLabel"
+				:genre-name="file.typeName"
+				:file-id="file.id"
 				:name="file.reviewerName + ' — ' + localize(file.name)"
 				:url="file.url"
 			>
-				<input type="checkbox" :value="file.id" v-model="selected" />
+				<input v-model="selected" type="checkbox" :value="file.id" />
 			</select-submission-file-list-item>
 		</template>
 		<button-row class="fileAttacher__footer">
@@ -25,7 +25,7 @@
 				</pkp-button>
 			</template>
 			<pkp-button
-				:isDisabled="!selected.length"
+				:is-disabled="!selected.length"
 				@click="$emit('selected:files', selectedFiles)"
 			>
 				{{ attachSelectedLabel }}

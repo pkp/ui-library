@@ -7,22 +7,22 @@
 			<table-header>ID</table-header>
 			<table-header>Title</table-header>
 			<table-header
-				:canSort="true"
-				:sortDirection="sortColumn === 'views' ? sortDirection : 'none'"
+				:can-sort="true"
+				:sort-direction="sortColumn === 'views' ? sortDirection : 'none'"
 				@table:sort="sort('views')"
 			>
 				Views
 			</table-header>
 			<table-header
-				:canSort="true"
-				:sortDirection="sortColumn === 'downloads' ? sortDirection : 'none'"
+				:can-sort="true"
+				:sort-direction="sortColumn === 'downloads' ? sortDirection : 'none'"
 				@table:sort="sort('downloads')"
 			>
 				Downloads
 			</table-header>
 			<table-header
-				:canSort="true"
-				:sortDirection="sortColumn === 'total' ? sortDirection : 'none'"
+				:can-sort="true"
+				:sort-direction="sortColumn === 'total' ? sortDirection : 'none'"
 				@table:sort="sort('total')"
 			>
 				Total
@@ -30,7 +30,9 @@
 		</template>
 		<tr v-for="row in rows" :key="row.object.id">
 			<table-cell>{{ row.object.id }}</table-cell>
-			<table-cell :isRowHeader="true">{{ row.object.fullTitle.en }}</table-cell>
+			<table-cell :is-row-header="true">
+				{{ row.object.fullTitle.en }}
+			</table-cell>
 			<table-cell>{{ row.views }}</table-cell>
 			<table-cell>{{ row.downloads }}</table-cell>
 			<table-cell>

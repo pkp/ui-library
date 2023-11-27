@@ -7,6 +7,7 @@
 <script>
 import {computed} from 'vue';
 export default {
+	inject: ['registerStep'],
 	props: {
 		id: {
 			type: String,
@@ -24,7 +25,6 @@ export default {
 			isActive: false,
 		};
 	},
-	inject: ['registerStep'],
 	created() {
 		// share state with parent <tabs> component
 		this.unregister = this.registerStep({

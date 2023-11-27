@@ -3,7 +3,7 @@
 		<slot>
 			<list-panel
 				class="listPanel--selectReviewer"
-				:isSidebarVisible="isSidebarVisible"
+				:is-sidebar-visible="isSidebarVisible"
 				:items="currentReviewers"
 			>
 				<template #header>
@@ -14,11 +14,11 @@
 						<spinner v-if="isLoading" />
 						<template #actions>
 							<search
-								:searchPhrase="searchPhrase"
+								:search-phrase="searchPhrase"
 								@search-phrase-changed="setSearchPhrase"
 							/>
 							<pkp-button
-								:isActive="isSidebarVisible"
+								:is-active="isSidebarVisible"
 								@click="isSidebarVisible = !isSidebarVisible"
 							>
 								<icon icon="filter" :inline="true" />
@@ -28,18 +28,18 @@
 					</pkp-header>
 				</template>
 				<template #sidebar>
-					<pkp-header :isOneLine="false">
+					<pkp-header :is-one-line="false">
 						<h2>
 							<icon icon="filter" :inline="true" />
 							{{ t('common.filter') }}
 						</h2>
 					</pkp-header>
 					<component
+						:is="filter.filterType || 'filter-slider'"
 						v-for="filter in filters"
 						:key="filter.param"
-						:is="filter.filterType || 'filter-slider'"
 						v-bind="filter"
-						:isFilterActive="isFilterActive(filter.param, filter.value)"
+						:is-filter-active="isFilterActive(filter.param, filter.value)"
 						@add-filter="addFilter"
 						@update-filter="addFilter"
 						@remove-filter="removeFilter"
@@ -58,46 +58,46 @@
 
 				<template #item="{item}">
 					<select-reviewer-list-item
-						:activeReviewsCountLabel="activeReviewsCountLabel"
-						:activeReviewsLabel="activeReviewsLabel"
-						:assignedToLastRound="lastRoundReviewerIds.includes(item.id)"
-						:assignedToLastRoundLabel="assignedToLastRoundLabel"
-						:authorAffiliations="authorAffiliations"
-						:averageCompletionLabel="averageCompletionLabel"
-						:biographyLabel="biographyLabel"
-						:cancelledReviewsLabel="cancelledReviewsLabel"
-						:completedReviewsLabel="completedReviewsLabel"
-						:currentlyAssigned="currentlyAssigned.includes(item.id)"
-						:currentlyAssignedLabel="currentlyAssignedLabel"
-						:daySinceLastAssignmentLabel="daySinceLastAssignmentLabel"
-						:daysSinceLastAssignmentLabel="daysSinceLastAssignmentLabel"
-						:daysSinceLastAssignmentDescriptionLabel="
+						:key="item.id"
+						:active-reviews-count-label="activeReviewsCountLabel"
+						:active-reviews-label="activeReviewsLabel"
+						:assigned-to-last-round="lastRoundReviewerIds.includes(item.id)"
+						:assigned-to-last-round-label="assignedToLastRoundLabel"
+						:author-affiliations="authorAffiliations"
+						:average-completion-label="averageCompletionLabel"
+						:biography-label="biographyLabel"
+						:cancelled-reviews-label="cancelledReviewsLabel"
+						:completed-reviews-label="completedReviewsLabel"
+						:currently-assigned="currentlyAssigned.includes(item.id)"
+						:currently-assigned-label="currentlyAssignedLabel"
+						:day-since-last-assignment-label="daySinceLastAssignmentLabel"
+						:days-since-last-assignment-label="daysSinceLastAssignmentLabel"
+						:days-since-last-assignment-description-label="
 							daysSinceLastAssignmentDescriptionLabel
 						"
-						:declinedReviewsLabel="declinedReviewsLabel"
-						:gossipLabel="gossipLabel"
-						:key="item.id"
+						:declined-reviews-label="declinedReviewsLabel"
+						:gossip-label="gossipLabel"
 						:item="item"
-						:neverAssignedLabel="neverAssignedLabel"
-						:reassignLabel="reassignLabel"
-						:reassignWithNameLabel="reassignWithNameLabel"
-						:reviewerSameInstitutionLabel="reviewerSameInstitutionLabel"
-						:reviewerRatingLabel="reviewerRatingLabel"
-						:reviewInterestsLabel="reviewInterestsLabel"
-						:selectReviewerLabel="selectReviewerLabel"
-						:selectorName="selectorName"
-						:warnOnAssignment="warnOnAssignment.includes(item.id)"
-						:warnOnAssignmentLabel="warnOnAssignmentLabel"
-						:warnOnAssignmentUnlockLabel="warnOnAssignmentUnlockLabel"
+						:never-assigned-label="neverAssignedLabel"
+						:reassign-label="reassignLabel"
+						:reassign-with-name-label="reassignWithNameLabel"
+						:reviewer-same-institution-label="reviewerSameInstitutionLabel"
+						:reviewer-rating-label="reviewerRatingLabel"
+						:review-interests-label="reviewInterestsLabel"
+						:select-reviewer-label="selectReviewerLabel"
+						:selector-name="selectorName"
+						:warn-on-assignment="warnOnAssignment.includes(item.id)"
+						:warn-on-assignment-label="warnOnAssignmentLabel"
+						:warn-on-assignment-unlock-label="warnOnAssignmentUnlockLabel"
 					/>
 				</template>
 
 				<template #footer>
 					<pagination
 						v-if="lastPage > 1"
-						:currentPage="currentPage"
-						:isLoading="isLoading"
-						:lastPage="lastPage"
+						:current-page="currentPage"
+						:is-loading="isLoading"
+						:last-page="lastPage"
 						@set-page="setPage"
 					/>
 				</template>
@@ -304,6 +304,17 @@ export default {
 			return this.lastRoundReviewers.map((reviewer) => reviewer.id);
 		},
 	},
+	watch: {
+		/**
+		 * Update list whenever a filter is applied
+		 */
+		activeFilters(newVal, oldVal) {
+			this.offset = 0;
+			if (newVal && Object.keys(newVal).length) {
+				this.isSidebarVisible = true;
+			}
+		},
+	},
 	methods: {
 		/**
 		 * Add a filter to the activeFilters object
@@ -353,17 +364,6 @@ export default {
 				items,
 				itemsMax,
 			});
-		},
-	},
-	watch: {
-		/**
-		 * Update list whenever a filter is applied
-		 */
-		activeFilters(newVal, oldVal) {
-			this.offset = 0;
-			if (newVal && Object.keys(newVal).length) {
-				this.isSidebarVisible = true;
-			}
 		},
 	},
 };

@@ -1,15 +1,15 @@
 <template>
 	<catalog-list-panel
-		:addEntryForm="addEntryForm"
-		apiUrl="http://httpbin.org/get"
-		catalogSortBy="datePublished"
-		:catalogSortDir="1"
-		csrfToken="1234"
-		:filters="filters"
 		id="previewCatalogListPanel"
-		infoUrl="http://httbin.org/get"
+		:add-entry-form="addEntryForm"
+		api-url="http://httpbin.org/get"
+		catalog-sort-by="datePublished"
+		:catalog-sort-dir="1"
+		csrf-token="1234"
+		:filters="filters"
+		info-url="http://httbin.org/get"
 		:items="items"
-		:itemsMax="itemsMax"
+		:items-max="itemsMax"
 		title="Catalog"
 	/>
 </template>
@@ -20,10 +20,10 @@ import CatalogListPanel from '@/components/ListPanel/submissions/CatalogListPane
 import submissions from '@/docs/data/submissions';
 
 export default {
-	extends: Page,
 	components: {
 		CatalogListPanel,
 	},
+	extends: Page,
 	data() {
 		const getRandomInt = (min, max) => {
 			return Math.floor(Math.random() * (max - min) + min);

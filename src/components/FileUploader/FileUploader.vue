@@ -1,8 +1,8 @@
 <template>
-	<div class="fileUploader" :class="{'-isDragging': isDragging}" :id="id">
+	<div :id="id" class="fileUploader" :class="{'-isDragging': isDragging}">
 		<vue-dropzone
-			ref="dropzone"
 			:id="dropzoneId"
+			ref="dropzone"
 			:options="dropzoneOptions"
 			@vdropzone-error="dropzoneError"
 			@vdropzone-files-added="dropzoneFilesAdded"
@@ -111,6 +111,24 @@ export default {
 				...this.options,
 			};
 		},
+	},
+	mounted() {
+		/**
+		 * Listen for when the user performs a drag-and-drop action
+		 */
+		document.addEventListener('dragenter', this.dragenter, true);
+		document.addEventListener('dragleave', this.dragleave, true);
+		document.addEventListener('dragover', this.drop, true);
+		document.addEventListener('drop', this.drop);
+	},
+	unmounted() {
+		/**
+		 * Clean up listeners
+		 */
+		document.removeEventListener('dragenter', this.dragenter, true);
+		document.removeEventListener('dragleave', this.dragleave, true);
+		document.removeEventListener('dragover', this.drop, true);
+		document.removeEventListener('drop', this.drop);
 	},
 	methods: {
 		/**
@@ -313,24 +331,6 @@ export default {
 		openFileBrowser() {
 			this.$refs.dropzone.dropzone.hiddenFileInput.click();
 		},
-	},
-	mounted() {
-		/**
-		 * Listen for when the user performs a drag-and-drop action
-		 */
-		document.addEventListener('dragenter', this.dragenter, true);
-		document.addEventListener('dragleave', this.dragleave, true);
-		document.addEventListener('dragover', this.drop, true);
-		document.addEventListener('drop', this.drop);
-	},
-	unmounted() {
-		/**
-		 * Clean up listeners
-		 */
-		document.removeEventListener('dragenter', this.dragenter, true);
-		document.removeEventListener('dragleave', this.dragleave, true);
-		document.removeEventListener('dragover', this.drop, true);
-		document.removeEventListener('drop', this.drop);
 	},
 };
 </script>

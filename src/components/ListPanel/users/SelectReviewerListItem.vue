@@ -73,8 +73,8 @@
 					<icon icon="lock" :inline="true" />
 					{{ warnOnAssignmentLabel }}
 					<button
-						@click.prevent="unlockAssignment"
 						class="listPanel__item--reviewer__noticeAction"
+						@click.prevent="unlockAssignment"
 					>
 						{{ warnOnAssignmentUnlockLabel }}
 					</button>
@@ -127,8 +127,8 @@
 					</template>
 				</pkp-button>
 				<expander
-					:isExpanded="isExpanded"
-					:itemName="item.fullName"
+					:is-expanded="isExpanded"
+					:item-name="item.fullName"
 					@toggle="isExpanded = !isExpanded"
 				/>
 			</div>
@@ -461,7 +461,8 @@ export default {
 		 */
 		affiliationMatch(affiliation) {
 			return this.authorAffiliations.some(
-				(a) => a && a.toLowerCase() === this.localize(affiliation).toLowerCase()
+				(a) =>
+					a && a.toLowerCase() === this.localize(affiliation).toLowerCase(),
 			);
 		},
 	},

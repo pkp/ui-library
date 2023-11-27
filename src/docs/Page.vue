@@ -19,6 +19,9 @@ export default {
 			this.loadCurrentPage();
 		},
 	},
+	mounted() {
+		this.loadCurrentPage();
+	},
 	methods: {
 		async loadCurrentPage() {
 			let markdown;
@@ -45,9 +48,6 @@ export default {
 				this.output = '';
 			}
 		},
-	},
-	mounted() {
-		this.loadCurrentPage();
 	},
 };
 </script>

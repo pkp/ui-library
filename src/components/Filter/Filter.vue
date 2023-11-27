@@ -1,9 +1,9 @@
 <template>
 	<div :class="classes">
 		<button
-			@click.prevent.stop="toggle(param, value)"
 			class="pkpFilter__label"
 			:class="{'-isActive': isFilterActive}"
+			@click.prevent.stop="toggle(param, value)"
 		>
 			{{ title }}
 		</button>

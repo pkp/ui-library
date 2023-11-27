@@ -5,26 +5,26 @@
 			<div class="list_outline">
 				<ol class="list_box">
 					<li
-						class="author_row"
 						v-for="(affiliations, author) in displayedItems"
 						:key="author"
+						class="author_row"
 					>
 						<strong>{{ author }}</strong>
-						<span v-if="affiliations"> - </span>
+						<span v-if="affiliations">-</span>
 						<span>{{ affiliations }}</span>
 					</li>
 				</ol>
-				<div class="action_container" v-if="authorCount > 4">
+				<div v-if="authorCount > 4" class="action_container">
 					<span
-						class="show_authors_action"
 						v-if="!showAllAuthors"
+						class="show_authors_action"
 						@click="toggleShowAllAuthors"
 					>
 						{{ `${labels.showAll} ${authorCount} ${labels.authorsLabel}` }}
 					</span>
 					<span
-						class="show_authors_action"
 						v-if="showAllAuthors"
+						class="show_authors_action"
 						@click="toggleShowAllAuthors"
 					>
 						{{ labels.showLess }}
@@ -49,11 +49,6 @@ export default {
 			showAllAuthors: false,
 		};
 	},
-	methods: {
-		toggleShowAllAuthors() {
-			this.showAllAuthors = !this.showAllAuthors;
-		},
-	},
 	computed: {
 		displayedItems() {
 			if (this.showAllAuthors) {
@@ -71,6 +66,11 @@ export default {
 		},
 		authorCount() {
 			return Object.keys(this.authors).length;
+		},
+	},
+	methods: {
+		toggleShowAllAuthors() {
+			this.showAllAuthors = !this.showAllAuthors;
 		},
 	},
 };

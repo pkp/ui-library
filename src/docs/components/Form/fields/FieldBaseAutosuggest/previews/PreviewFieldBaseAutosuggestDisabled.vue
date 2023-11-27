@@ -1,7 +1,7 @@
 <template>
 	<example-field-user-autosuggest
 		v-bind="field"
-		:isDisabled="true"
+		:is-disabled="true"
 		:selected="[
 			{
 				value: 1,

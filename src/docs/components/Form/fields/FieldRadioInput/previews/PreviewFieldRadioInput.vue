@@ -9,10 +9,10 @@ import fieldBase from '../../../helpers/field-base';
 import field from '../../../helpers/field-radio-input';
 
 export default {
-	extends: PreviewFieldBase,
 	components: {
 		FieldRadioInput,
 	},
+	extends: PreviewFieldBase,
 	data() {
 		return {
 			field: {

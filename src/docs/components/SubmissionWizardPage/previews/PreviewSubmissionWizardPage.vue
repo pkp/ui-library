@@ -8,7 +8,7 @@
 				<span class="app__breadcrumbsSeparator" aria-hidden="true">/</span>
 				{{ localize(publication.title) }}
 			</div>
-			<h1 class="app__pageHeading" ref="pageTitle">
+			<h1 ref="pageTitle" class="app__pageHeading">
 				Make Submission
 				<pkp-button
 					:is-disabled="isDisconnected"
@@ -27,11 +27,11 @@
 					Change
 				</button>
 				<modal
-					:closeLabel="t('common.close')"
+					:close-label="t('common.close')"
 					name="config"
 					:open="isModalOpenedConfig"
-					@close="isModalOpenedConfig = false"
 					title="Change Submission Settings"
+					@close="isModalOpenedConfig = false"
 				>
 					<pkp-form
 						v-bind="components.reconfigureSubmission"
@@ -52,8 +52,8 @@
 			>
 				<step
 					v-for="step in steps"
-					:key="step.id"
 					:id="step.id"
+					:key="step.id"
 					:label="step.name"
 				>
 					<panel>
@@ -322,7 +322,7 @@
 			<template #end>
 				<pkp-button
 					v-if="!isOnFirstStep"
-					:isWarnable="true"
+					:is-warnable="true"
 					@click="previousStep"
 				>
 					Back
@@ -362,10 +362,10 @@
 		</button-row>
 
 		<div
+			ref="notifications"
 			aria-live="polite"
 			aria-atomic="true"
 			class="app__notifications"
-			ref="notifications"
 			role="status"
 		>
 			<transition-group name="app__notification">
@@ -410,13 +410,13 @@ import submissionFileForm from '@/docs/components/Form/helpers/form-submission-f
 import titleAbstractForm from '@/docs/components/Form/helpers/form-title-abstract';
 
 export default {
-	extends: SubmissionWizardPage,
 	components: {
 		ContributorsListPanel,
 		File,
 		PkpForm,
 		SubmissionFilesListPanel,
 	},
+	extends: SubmissionWizardPage,
 	data() {
 		// Set up the form for the details step
 		let detailsForm = {...titleAbstractForm};

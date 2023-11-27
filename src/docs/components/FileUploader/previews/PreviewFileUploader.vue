@@ -10,7 +10,7 @@
 			<file-upload-progress
 				v-for="(file, i) in files"
 				:key="i"
-				cancelUploadLabel="Cancel Upload"
+				cancel-upload-label="Cancel Upload"
 				:errors="file.errors"
 				:name="file.name"
 				:progress="file.progress"
@@ -18,12 +18,12 @@
 			/>
 		</template>
 		<file-uploader
-			ref="uploader"
-			apiUrl="https://example.org"
-			:files="files"
 			id="previewFileUploader"
+			ref="uploader"
+			api-url="https://example.org"
+			:files="files"
 			:options="options"
-			uploadProgressLabel="Uploading {$percent}% complete"
+			upload-progress-label="Uploading {$percent}% complete"
 			@updated:files="updateFiles"
 		/>
 	</div>

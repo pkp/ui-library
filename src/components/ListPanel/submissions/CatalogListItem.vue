@@ -63,10 +63,10 @@
 		</div>
 		<orderer
 			v-if="isOrdering"
+			:item-id="item.id"
+			:item-title="item.title"
 			@up="$emit('order-up', item)"
 			@down="$emit('order-down', item)"
-			:itemId="item.id"
-			:itemTitle="item.title"
 		/>
 		<div
 			v-if="isSaving || isLoading"

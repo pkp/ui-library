@@ -20,8 +20,8 @@
 			/>
 			<span
 				v-if="isPrimaryLocale && tooltip"
-				class="-screenReader"
 				:id="describedByTooltipId"
+				class="-screenReader"
 				v-html="tooltip"
 			/>
 			<help-button
@@ -34,15 +34,15 @@
 		</legend>
 		<div
 			v-if="isPrimaryLocale && description"
+			:id="describedByDescriptionId"
 			class="pkpFormField__description"
 			v-html="description"
-			:id="describedByDescriptionId"
 		/>
 		<div class="pkpFormField__control">
 			<color-picker
 				:value="currentValue"
+				:disable-alpha="true"
 				@input="setValue"
-				:disableAlpha="true"
 			/>
 			<field-error
 				v-if="errors && errors.length"
@@ -59,10 +59,10 @@ import {Chrome} from '@lk77/vue3-color';
 
 export default {
 	name: 'FieldColor',
-	extends: FieldBase,
 	components: {
 		'color-picker': Chrome,
 	},
+	extends: FieldBase,
 	methods: {
 		/**
 		 * Update the current value when the color picker changes

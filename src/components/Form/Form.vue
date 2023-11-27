@@ -9,7 +9,7 @@
 		/>
 		<form-locales
 			v-if="availableLocales.length > 1"
-			:primaryLocaleKey="primaryLocale"
+			:primary-locale-key="primaryLocale"
 			:locales="availableLocales"
 			:visible="visibleLocales"
 			@updateLocales="setVisibleLocales"
@@ -44,15 +44,15 @@
 				:groups="groups"
 				:fields="fields"
 				:errors="errors"
-				:formId="id"
-				:canSubmit="canSubmit"
-				:isCurrentPage="currentPage === page.id"
-				:isLastPage="index === pages.length - 1"
-				:lastSaveTimestamp="lastSaveTimestamp"
-				:primaryLocale="primaryLocale"
-				:visibleLocales="visibleLocales"
-				:availableLocales="availableLocales"
-				:isSaving="isSaving"
+				:form-id="id"
+				:can-submit="canSubmit"
+				:is-current-page="currentPage === page.id"
+				:is-last-page="index === pages.length - 1"
+				:last-save-timestamp="lastSaveTimestamp"
+				:primary-locale="primaryLocale"
+				:visible-locales="visibleLocales"
+				:available-locales="availableLocales"
+				:is-saving="isSaving"
 				@change="fieldChanged"
 				@pageSubmitted="nextPage"
 				@previousPage="setCurrentPage(false)"
@@ -233,6 +233,12 @@ export default {
 				...this.hiddenFields,
 			};
 		},
+	},
+	mounted() {
+		// Set the current page
+		if (!this.currentPage) {
+			this.currentPage = this.pages[0].id;
+		}
 	},
 	methods: {
 		/**
@@ -553,12 +559,6 @@ export default {
 		setErrors: function (errors) {
 			this.$emit('set', this.id, {errors: errors});
 		},
-	},
-	mounted() {
-		// Set the current page
-		if (!this.currentPage) {
-			this.currentPage = this.pages[0].id;
-		}
 	},
 };
 </script>

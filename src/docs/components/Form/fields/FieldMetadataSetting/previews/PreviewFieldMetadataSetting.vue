@@ -9,10 +9,10 @@ import fieldBase from '../../../helpers/field-base';
 import fieldMetadata from '../../../helpers/field-metadata';
 
 export default {
-	extends: PreviewFieldBase,
 	components: {
 		FieldMetadataSetting,
 	},
+	extends: PreviewFieldBase,
 	data() {
 		return {
 			field: {

@@ -3,7 +3,7 @@
 		<VueDraggable ref="el" v-model="items">
 			<list-item v-for="item in items" :key="item">
 				{{ item }}
-				<orderer :itemId="item" :itemTitle="item" @down="down" @up="up" />
+				<orderer :item-id="item" :item-title="item" @down="down" @up="up" />
 			</list-item>
 		</VueDraggable>
 	</list>
@@ -14,10 +14,10 @@ import PreviewOrderer from './PreviewOrderer.vue';
 import {VueDraggable} from 'vue-draggable-plus';
 
 export default {
-	extends: PreviewOrderer,
 	components: {
 		VueDraggable,
 	},
+	extends: PreviewOrderer,
 	data() {
 		return {
 			...PreviewOrderer.data(),

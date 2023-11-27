@@ -9,10 +9,10 @@ import fieldBase from '../../../helpers/field-base';
 import field from '../../../helpers/field-urn';
 
 export default {
-	extends: PreviewFieldBase,
 	components: {
 		FieldPubId,
 	},
+	extends: PreviewFieldBase,
 	data() {
 		return {
 			field: {

@@ -1,14 +1,14 @@
 <template>
 	<institutions-list-panel
-		addInstitutionLabel="Add Institution"
-		apiUrl=""
-		confirmDeleteMessage="Are you sure you want to delete this institution?"
-		deleteInstitutionLabel="Delete Institution"
-		editInstitutionLabel="Edit Institution"
-		:form="form"
 		id="previewInstitutionsListPanel"
+		add-institution-label="Add Institution"
+		api-url=""
+		confirm-delete-message="Are you sure you want to delete this institution?"
+		delete-institution-label="Delete Institution"
+		edit-institution-label="Edit Institution"
+		:form="form"
 		:items="items"
-		:itemsMax="itemsMax"
+		:items-max="itemsMax"
 		title="Institutions"
 	/>
 </template>

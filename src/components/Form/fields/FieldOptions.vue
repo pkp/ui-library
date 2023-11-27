@@ -20,8 +20,8 @@
 			/>
 			<span
 				v-if="isPrimaryLocale && tooltip"
-				class="-screenReader"
 				:id="describedByTooltipId"
+				class="-screenReader"
 				v-html="tooltip"
 			/>
 			<help-button
@@ -34,16 +34,16 @@
 		</legend>
 		<div
 			v-if="isPrimaryLocale && description"
+			:id="describedByDescriptionId"
 			class="pkpFormField__description pkpFormField--options__description"
 			v-html="description"
-			:id="describedByDescriptionId"
 		/>
 		<div class="pkpFormField__control">
 			<VueDraggable
 				ref="el"
 				v-model="localizedOptions"
-				@end="updateValueOrder"
 				:disabled="!isOrderable"
+				@end="updateValueOrder"
 			>
 				<label
 					v-for="option in localizedOptions"
@@ -58,8 +58,8 @@
 					-->
 					<input
 						v-if="type === 'checkbox'"
-						class="pkpFormField--options__input"
 						v-model="selectedValue"
+						class="pkpFormField--options__input"
 						:value="option.value"
 						type="checkbox"
 						:name="localizedName"
@@ -69,8 +69,8 @@
 					/>
 					<input
 						v-else
-						class="pkpFormField--options__input"
 						v-model="selectedValue"
+						class="pkpFormField--options__input"
 						:value="option.value"
 						type="radio"
 						:name="localizedName"
@@ -84,10 +84,10 @@
 					/>
 					<orderer
 						v-if="isOrderable"
+						:item-id="option.value"
+						:item-title="option.label"
 						@up="optionOrderUp"
 						@down="optionOrderDown"
-						:itemId="option.value"
-						:itemTitle="option.label"
 					/>
 				</label>
 			</VueDraggable>
@@ -113,11 +113,11 @@ import Orderer from '@/components/Orderer/Orderer.vue';
 
 export default {
 	name: 'FieldOptions',
-	extends: FieldBase,
 	components: {
 		VueDraggable,
 		Orderer,
 	},
+	extends: FieldBase,
 	props: {
 		type: {
 			validator: function (value) {
@@ -173,6 +173,44 @@ export default {
 			return classes;
 		},
 	},
+	watch: {
+		/**
+		 * Sync the selectedValue to the value if it is changed programatically
+		 */
+		value(newVal, oldVal) {
+			if (JSON.stringify(newVal) === JSON.stringify(oldVal)) {
+				return;
+			}
+			this.selectedValue = this.isMultilingual
+				? this.value[this.localeKey]
+				: this.value;
+		},
+
+		/**
+		 * Whenever the selected value changes, emit an event to update the value of
+		 * this field in the form component.
+		 */
+		selectedValue: function (newVal, oldVal) {
+			if (JSON.stringify(newVal) === JSON.stringify(oldVal)) {
+				return;
+			}
+			if (this.isOrderable) {
+				newVal = this.localizedOptions
+					.filter((option) => newVal.includes(option.value))
+					.map((option) => option.value);
+			}
+			this.$emit('change', this.name, 'value', newVal, this.localeKey);
+		},
+
+		/**
+		 * Whenever the options change, override the localized options with them
+		 */
+		options: function (newVal) {
+			this.localizedOptions = this.isMultilingual
+				? newVal[this.localeKey]
+				: newVal;
+		},
+	},
 	methods: {
 		/**
 		 * Move an option up in the list
@@ -221,44 +259,6 @@ export default {
 			this.selectedValue = this.localizedOptions
 				.filter((option) => this.selectedValue.includes(option.value))
 				.map((option) => option.value);
-		},
-	},
-	watch: {
-		/**
-		 * Sync the selectedValue to the value if it is changed programatically
-		 */
-		value(newVal, oldVal) {
-			if (JSON.stringify(newVal) === JSON.stringify(oldVal)) {
-				return;
-			}
-			this.selectedValue = this.isMultilingual
-				? this.value[this.localeKey]
-				: this.value;
-		},
-
-		/**
-		 * Whenever the selected value changes, emit an event to update the value of
-		 * this field in the form component.
-		 */
-		selectedValue: function (newVal, oldVal) {
-			if (JSON.stringify(newVal) === JSON.stringify(oldVal)) {
-				return;
-			}
-			if (this.isOrderable) {
-				newVal = this.localizedOptions
-					.filter((option) => newVal.includes(option.value))
-					.map((option) => option.value);
-			}
-			this.$emit('change', this.name, 'value', newVal, this.localeKey);
-		},
-
-		/**
-		 * Whenever the options change, override the localized options with them
-		 */
-		options: function (newVal) {
-			this.localizedOptions = this.isMultilingual
-				? newVal[this.localeKey]
-				: newVal;
 		},
 	},
 };

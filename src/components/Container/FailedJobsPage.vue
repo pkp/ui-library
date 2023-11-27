@@ -5,11 +5,11 @@ import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
 
 export default {
 	name: 'FailedJobsPage',
-	extends: JobsPage,
 	components: {
 		TableCell,
 		ButtonRow,
 	},
+	extends: JobsPage,
 	data() {
 		return {
 			apiUrlRedispatchAll: null,

@@ -9,10 +9,10 @@ import fieldBase from '../../../helpers/field-base';
 import fieldArchivingPn from '../../../helpers/field-archiving-pn';
 
 export default {
-	extends: PreviewFieldBase,
 	components: {
 		FieldArchivingPn,
 	},
+	extends: PreviewFieldBase,
 	data() {
 		return {
 			field: {

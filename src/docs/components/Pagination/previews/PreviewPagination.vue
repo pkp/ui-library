@@ -4,7 +4,7 @@
 			<pagination
 				:current-page="currentPage"
 				:last-page="10"
-				:isLoading="isLoading"
+				:is-loading="isLoading"
 				@set-page="setPage"
 			/>
 		</div>
@@ -13,7 +13,7 @@
 				:current-page="currentPage"
 				:last-page="10"
 				:show-adjacent-pages="2"
-				:isLoading="isLoading"
+				:is-loading="isLoading"
 				@set-page="setPage"
 			/>
 		</div>

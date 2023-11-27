@@ -1,15 +1,15 @@
 <template>
-	<div class="previewSteps" ref="wrapper">
+	<div ref="wrapper" class="previewSteps">
 		<steps
-			:startedSteps="startedSteps"
+			:started-steps="startedSteps"
 			:current="currentStep"
 			label="Demonstration of steps component"
-			progressLabel="{$current}/{$total} steps"
-			:scrollTo="$refs.wrapper"
-			showStepsLabel="Show/hide all steps"
+			progress-label="{$current}/{$total} steps"
+			:scroll-to="$refs.wrapper"
+			show-steps-label="Show/hide all steps"
 			@step:open="openStep"
 		>
-			<step label="First step" id="first">
+			<step id="first" label="First step">
 				<panel>
 					<panel-section>
 						First step content with a
@@ -18,7 +18,7 @@
 					</panel-section>
 				</panel>
 			</step>
-			<step label="Second step" id="second">
+			<step id="second" label="Second step">
 				<panel>
 					<panel-section>
 						Second step content with a
@@ -27,17 +27,17 @@
 					</panel-section>
 				</panel>
 			</step>
-			<step label="Third step" id="third">
+			<step id="third" label="Third step">
 				<panel>
 					<panel-section>Third step content</panel-section>
 				</panel>
 			</step>
-			<step label="Fourth step" id="fourth">
+			<step id="fourth" label="Fourth step">
 				<panel>
 					<panel-section>Fourth step content</panel-section>
 				</panel>
 			</step>
-			<step label="Fifth step" id="fifth">
+			<step id="fifth" label="Fifth step">
 				<panel>
 					<panel-section>Fifth step content</panel-section>
 				</panel>

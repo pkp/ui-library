@@ -7,12 +7,12 @@ import PkpAnnouncer from '@/components/Announcer/Announcer.vue';
 import {useDialogStore} from '@/stores/dialogStore.js';
 
 export default {
+	name: 'Page',
 	components: {
 		PkpDialog,
 		PkpAnnouncer,
 	},
 	extends: Container,
-	name: 'Page',
 	data() {
 		return {
 			breadcrumbs: [],
@@ -70,49 +70,6 @@ export default {
 		},
 
 		...mapStores(useDialogStore),
-	},
-	methods: {
-		/**
-		 * Dismiss a notification
-		 *
-		 * @param {String} key Notification key
-		 */
-		dismissNotification(key) {
-			this.notifications = this.notifications.filter((n) => {
-				return n.key !== key;
-			});
-		},
-
-		/**
-		 * Handle changes to the #hash in the URL
-		 *
-		 * By default, a page will emit events to open a tab.
-		 * Override this method in other page handlers to
-		 * respond to hash changes in a different way.
-		 */
-		openUrlHash() {
-			let parts = window.location.hash.slice(1).split('/');
-			while (parts.length) {
-				pkp.eventBus.$emit('open-tab', parts.shift());
-			}
-		},
-
-		/**
-		 * Open a modal showing the user's tasks
-		 */
-		openTasks() {
-			var opts = {
-				url: this.tasksUrl,
-				closeCallback: this.$refs.tasksButton.focus(),
-			};
-
-			$(
-				'<div id="' +
-					$.pkp.classes.Helper.uuid() +
-					'" ' +
-					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>',
-			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
-		},
 	},
 	mounted() {
 		/**
@@ -173,6 +130,49 @@ export default {
 		pkp.eventBus.$off('clear-all-notify');
 		clearInterval(this.notificationInterval);
 		pkp.eventBus.$off('update:unread-tasks-count');
+	},
+	methods: {
+		/**
+		 * Dismiss a notification
+		 *
+		 * @param {String} key Notification key
+		 */
+		dismissNotification(key) {
+			this.notifications = this.notifications.filter((n) => {
+				return n.key !== key;
+			});
+		},
+
+		/**
+		 * Handle changes to the #hash in the URL
+		 *
+		 * By default, a page will emit events to open a tab.
+		 * Override this method in other page handlers to
+		 * respond to hash changes in a different way.
+		 */
+		openUrlHash() {
+			let parts = window.location.hash.slice(1).split('/');
+			while (parts.length) {
+				pkp.eventBus.$emit('open-tab', parts.shift());
+			}
+		},
+
+		/**
+		 * Open a modal showing the user's tasks
+		 */
+		openTasks() {
+			var opts = {
+				url: this.tasksUrl,
+				closeCallback: this.$refs.tasksButton.focus(),
+			};
+
+			$(
+				'<div id="' +
+					$.pkp.classes.Helper.uuid() +
+					'" ' +
+					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>',
+			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
+		},
 	},
 };
 </script>

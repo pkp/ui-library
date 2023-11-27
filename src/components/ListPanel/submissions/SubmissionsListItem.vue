@@ -97,12 +97,12 @@
 						</div>
 						<badge
 							class="listPanel__item--submission__stage"
-							:isButton="!isArchived"
+							:is-button="!isArchived"
 							:label="currentStageDescription"
 							:stage="isArchived ? '' : currentStage"
-							:isPrimary="isScheduled"
-							:isSuccess="isPublished"
-							:isWarnable="isDeclined"
+							:is-primary="isScheduled"
+							:is-success="isPublished"
+							:is-warnable="isDeclined"
 							@click="filterByStage(activeStage.id)"
 						>
 							{{ currentStageLabel }}
@@ -151,8 +151,8 @@
 				</pkp-button>
 				<expander
 					v-if="!currentUserIsReviewer"
-					:isExpanded="isExpanded"
-					:itemName="currentPublication.authorsStringShort"
+					:is-expanded="isExpanded"
+					:item-name="currentPublication.authorsStringShort"
 					@toggle="isExpanded = !isExpanded"
 				/>
 			</div>
@@ -204,7 +204,7 @@
 				</pkp-button>
 				<pkp-button
 					v-if="currentUserCanDelete"
-					:isWarnable="true"
+					:is-warnable="true"
 					@click="deleteSubmissionPrompt"
 				>
 					{{ t('common.delete') }}
@@ -225,12 +225,12 @@ import dialog from '@/mixins/dialog';
 
 export default {
 	name: 'SubmissionsListItem',
-	mixins: [ajaxError, fetch, localizeSubmission, dialog],
 	components: {
 		Expander,
 		List,
 		ListItem,
 	},
+	mixins: [ajaxError, fetch, localizeSubmission, dialog],
 	props: {
 		apiUrl: {
 			type: String,

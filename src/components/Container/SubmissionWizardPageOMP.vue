@@ -17,19 +17,19 @@ export default {
 			};
 		};
 		pkp.eventBus.$on('chapter:added', (data) =>
-			this.chapters.push(getChapter(data))
+			this.chapters.push(getChapter(data)),
 		);
 		pkp.eventBus.$on('chapter:edited', (data) => {
 			this.chapters = this.chapters.map((chapter) =>
-				chapter.id === data.id ? getChapter(data) : chapter
+				chapter.id === data.id ? getChapter(data) : chapter,
 			);
 		});
 		pkp.eventBus.$on(
 			'chapter:deleted',
 			(data) =>
 				(this.chapters = this.chapters.filter(
-					(chapter) => chapter.id !== data.id
-				))
+					(chapter) => chapter.id !== data.id,
+				)),
 		);
 	},
 };

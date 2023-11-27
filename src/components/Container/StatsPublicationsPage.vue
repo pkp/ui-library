@@ -11,7 +11,6 @@ import debounce from 'debounce';
 
 export default {
 	name: 'StatsPublicationsPage',
-	extends: StatsPage,
 	components: {
 		ActionPanel,
 		LineChart,
@@ -21,6 +20,7 @@ export default {
 		Modal,
 		Tooltip,
 	},
+	extends: StatsPage,
 	data() {
 		return {
 			count: 30,
@@ -506,12 +506,6 @@ export default {
 			this.timelineInterval = timelineInterval;
 		},
 	},
-	mounted() {
-		/**
-		 * Load the items
-		 */
-		this.getItems();
-	},
 	watch: {
 		count(newVal, oldVal) {
 			if (newVal === oldVal) {
@@ -574,6 +568,12 @@ export default {
 			}
 			this.getTimeline();
 		},
+	},
+	mounted() {
+		/**
+		 * Load the items
+		 */
+		this.getItems();
 	},
 };
 </script>
