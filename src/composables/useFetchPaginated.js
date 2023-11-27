@@ -1,4 +1,4 @@
-import {ref, computed} from 'vue';
+import {ref, computed, unref} from 'vue';
 import {ofetch} from 'ofetch';
 import {useDialogStore} from '@/stores/dialogStore';
 
@@ -12,7 +12,7 @@ export function useFetchPaginated(url, options) {
 		...fetchOpts
 	} = options;
 
-	const query = ref(_query);
+	const query = ref(_query || {});
 
 	const page = ref(_page);
 	const pageSize = ref(_pageSize);
@@ -49,10 +49,14 @@ export function useFetchPaginated(url, options) {
 
 		isLoading.value = true;
 		try {
-			const result = await ofetch(url.value, opts);
+			console.log(url);
+			const result = await ofetch(unref(url), opts);
+			console.log('result:', JSON.stringify(result, null, 2));
 			items.value = result.items;
 			itemCount.value = result.itemsMax;
 		} catch (e) {
+			console.log('uh oh');
+			console.log(e);
 			items.value = [];
 			itemCount.value = 0;
 
