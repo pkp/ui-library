@@ -20,14 +20,14 @@ export const ExamplePage1 = {
 	args: {
 		pageServerConfig: {
 			submissionsApiUrl:
-				'http://mock/index.php/publicknowledge/api/v1/_submissions',
+				'https://mock/index.php/publicknowledge/api/v1/_submissions',
 		},
 	},
 	parameters: {
 		msw: {
 			handlers: [
 				rest.get(
-					'http://mock/index.php/publicknowledge/api/v1/_submissions',
+					'https://mock/index.php/publicknowledge/api/v1/_submissions',
 					async (req, res, ctx) => {
 						await delay(500);
 
