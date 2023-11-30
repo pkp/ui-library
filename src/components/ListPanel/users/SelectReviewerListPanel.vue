@@ -77,6 +77,7 @@
 						"
 						:declined-reviews-label="declinedReviewsLabel"
 						:gossip-label="gossipLabel"
+						:private-notes-label="privateNotesLabel"
 						:item="item"
 						:never-assigned-label="neverAssignedLabel"
 						:reassign-label="reassignLabel"
@@ -199,6 +200,10 @@ export default {
 			},
 		},
 		gossipLabel: {
+			type: String,
+			required: true,
+		},
+		privateNotesLabel: {
 			type: String,
 			required: true,
 		},

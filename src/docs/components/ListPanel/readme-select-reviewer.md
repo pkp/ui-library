@@ -18,6 +18,7 @@
 | `emptyLabel` | A localized string to display when there are no reviewers to show in the list. |
 | `filters` | An array [Filter](#/component/Filter)s. Default: `[]` |
 | `gossipLabel` | A localized string for the gossip section. |
+| `privateNotesLabel` | A localized string for the private notes section. |
 | `id` | A unique id for this component. |
 | `items` | An array of reviewers. Default: `[]` |
 | `itemsMax` | A count of all reviewers in the journal, press or preprint server. Default: `0` |
