@@ -105,9 +105,6 @@ const vueApp = createApp({
 
 const pinia = createPinia();
 vueApp.use(pinia);
-// https://github.com/vuejs/pinia/discussions/1197
-// to be able globally share stores
-vueApp.config.globalProperties.$store = {};
 
 vueApp.config.productionTip = false;
 vueApp.config.compilerOptions.whitespace = 'preserve';

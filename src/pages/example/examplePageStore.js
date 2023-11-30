@@ -1,4 +1,5 @@
 //import {ref, computed, watch} from 'vue';
+import {ref} from 'vue';
 import {getActivePinia, defineStore} from 'pinia';
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
 
@@ -15,6 +16,8 @@ export function disposeExamplePageStore() {
 }
 
 export const useExamplePageStore = defineStore('examplePage', () => {
+	const title = ref('hello');
+
 	const {
 		items: submissions,
 		fetch: fetchSubmissions,
@@ -26,5 +29,5 @@ export const useExamplePageStore = defineStore('examplePage', () => {
 
 	fetchSubmissions();
 	console.log('returning example page store');
-	return {submissions, fetchSubmissions, isLoading};
+	return {submissions, fetchSubmissions, isLoading, title};
 });

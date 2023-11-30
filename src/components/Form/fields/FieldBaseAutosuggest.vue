@@ -3,11 +3,10 @@
 		class="pkpFormField pkpAutosuggest"
 		:class="{
 			'pkpAutosuggest--disabled': isDisabled,
-			'pkpAutosuggest--inline': isLabelInline,
 			'pkpAutosuggest--rtl': isRTL,
 		}"
 	>
-		<div ref="heading" class="pkpFormField__heading">
+		<div v-if="!isLabelInline" ref="heading" class="pkpFormField__heading">
 			<form-field-label
 				:control-id="controlId"
 				:label="label"
@@ -49,6 +48,37 @@
 				}"
 				@click="setFocusToInput"
 			>
+				<!-- Begin Heading part repeated for inline scenario -->
+				<div v-if="isLabelInline" ref="heading" class="pkpFormField__heading">
+					<form-field-label
+						:control-id="controlId"
+						:label="label"
+						:locale-label="localeLabel"
+						:is-required="isRequired"
+						:required-label="t('common.required')"
+						:multilingual-label="multilingualLabel"
+					/>
+					<tooltip
+						v-if="tooltip"
+						aria-hidden="true"
+						:tooltip="tooltip"
+						label=""
+					/>
+					<span
+						v-if="tooltip"
+						:id="describedByTooltipId"
+						class="-screenReader"
+						v-html="tooltip"
+					/>
+					<help-button
+						v-if="helpTopic"
+						:id="describedByHelpId"
+						:topic="helpTopic"
+						:section="helpSection"
+						:label="t('help.help')"
+					/>
+				</div>
+				<!-- End Heading part repeated for inline scenario -->
 				<span class="-screenReader">{{ selectedLabel }}</span>
 				<span v-if="!currentValue.length" class="-screenReader">
 					{{ t('common.none') }}
@@ -124,6 +154,9 @@
 						</ComboboxOption>
 					</ComboboxOptions>
 				</Combobox>
+				<span class="pkpAutosuggest__endslot">
+					<slot name="end"></slot>
+				</span>
 			</div>
 			<multilingual-progress
 				v-if="isMultilingual && locales.length > 1"
@@ -387,17 +420,6 @@ export default {
 				'The setSuggestions method must be implemented in any component that extends FieldBaseAutosuggest.',
 			);
 		},
-
-		/**
-		 * Update the padding if the label is inline
-		 */
-		updateInlineLabelPadding() {
-			if (!this.isLabelInline) {
-				return;
-			}
-			this.$refs.values.style.paddingInlineStart =
-				this.$refs.heading.offsetWidth + 'px';
-		},
 	},
 	watch: {
 		inputValue(newVal, oldVal) {
@@ -408,8 +430,6 @@ export default {
 		},
 	},
 	mounted() {
-		this.updateInlineLabelPadding();
-
 		// Inline labels can not be used with multilingual fields
 		if (this.isMultilingual && this.isLabelInline) {
 			throw new Error(
@@ -629,16 +649,15 @@ export default {
 }
 
 // Inline label
-.pkpAutosuggest--inline {
+.pkpAutosuggest__control {
 	.pkpFormField__heading {
-		position: absolute;
-		top: 0;
-		left: 0;
-		padding: 0.5rem;
-		line-height: 1.5rem;
-		z-index: 999;
-		font-size: @font-sml;
+		margin-inline-end: 0.5rem;
+		margin-inline-start: -0.5rem;
 	}
+}
+
+.pkpAutosuggest__endslot {
+	margin-inline-start: auto;
 }
 
 [dir='rtl'] {

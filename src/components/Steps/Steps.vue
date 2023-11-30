@@ -93,26 +93,30 @@ export default {
 		};
 	},
 	props: {
+		/** The `id` of the current step. */
 		current: {
 			type: String,
 			required: true,
 		},
+		/** An array of step `id`s that have already been started. */
 		startedSteps: {
 			type: Array,
 			required: true,
 		},
+		/** A localized string describing the steps for assistive technology. */
 		label: {
 			type: String,
 			required: true,
 		},
+		/** A localized string with `{$current}` and `{$total}` that describes the current and total steps. Example: `{$current}/{$total} steps` */
 		progressLabel: {
 			type: String,
 			required: true,
 		},
 		/**
 		 * The DOM element to scroll into view when changing steps.
+		 * This is expected to be a ref from the parent component.
 		 *
-		 * Pass a reference from the parent component ($refs).
 		 */
 		scrollTo: {
 			type: HTMLElement,
@@ -120,11 +124,16 @@ export default {
 				return null;
 			},
 		},
+		/** A localized string for the button to show all steps when the steps are viewed on a small device. */
 		showStepsLabel: {
 			type: String,
 			required: true,
 		},
 	},
+	emits: [
+		/** Emitted when a new step is opened with payload of the step `id`. */
+		'step:open',
+	],
 	data() {
 		return {
 			collapsed: false,

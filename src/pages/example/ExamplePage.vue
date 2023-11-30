@@ -1,5 +1,6 @@
 <template>
 	<h1 class="text-dark">Submissions</h1>
+	<h2>{{ store.title }}</h2>
 	<span v-if="store.isLoading">Is loading</span>
 
 	<ul v-else class="border p-4">

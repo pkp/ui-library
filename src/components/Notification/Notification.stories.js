@@ -1,0 +1,76 @@
+import Notification from './Notification.vue';
+import Icon from '@/components/Icon/Icon.vue';
+import {ref} from 'vue';
+
+export default {
+	title: 'Basic Components/Notification',
+	component: Notification,
+};
+
+export const Default = {
+	render: (args) => ({
+		components: {Notification},
+		setup() {
+			return {args};
+		},
+		template: `
+			<Notification v-bind="args" >
+				Revisions have been submitted and a decision is required.
+			</Notification>
+		`,
+	}),
+	args: {},
+};
+
+export const Success = {
+	render: (args) => ({
+		components: {Notification},
+		setup() {
+			return {args};
+		},
+		template: `
+			<Notification v-bind="args" >
+				This article has been been successfully published.
+				<a href="#">View Article</a>
+				.
+			</Notification>
+		`,
+	}),
+	args: {type: 'success'},
+};
+
+export const Warning = {
+	render: (args) => ({
+		components: {Notification, Icon},
+		setup() {
+			return {args};
+		},
+		template: `
+			<Notification v-bind="args" >
+				<Icon icon="exclamation-triangle" :inline="true" />
+				This submission does not have any contributors. At least one contributor
+				must be provided.
+			</Notification>
+		`,
+	}),
+	args: {type: 'warning'},
+};
+
+export const CanBeDismissed = {
+	render: (args) => ({
+		components: {Notification, Icon},
+		setup() {
+			const dismissed = ref(false);
+			function dismiss() {
+				dismissed.value = true;
+			}
+			return {args, dismissed, dismiss};
+		},
+		template: `
+			<Notification v-bind="args" v-if="!dismissed" @dismiss="dismiss" >
+				This notification can be dismissed.
+			</Notification>
+		`,
+	}),
+	args: {type: 'warning', canDismiss: true},
+};

@@ -33,7 +33,7 @@
 						leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 					>
 						<DialogPanel
-							class="modal__panel rounded-lg bg-white shadow-xl relative mx-3 w-10/12 max-w-3xl transform overflow-hidden text-left transition-all sm:my-8"
+							class="modal__panel rounded-lg shadow-xl relative mx-3 w-10/12 max-w-3xl transform overflow-hidden bg-lightest text-left transition-all sm:my-8"
 						>
 							<div class="modal__header">
 								<div class="modal__header__slot">

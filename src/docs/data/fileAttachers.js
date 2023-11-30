@@ -53,7 +53,8 @@ export default [
 		description:
 			'Attach files uploaded during the submission workflow, such as revisions or files to be reviewed.',
 		button: 'Attach Submission Files',
-		submissionFilesApiUrl: 'http://example.org',
+		submissionFilesApiUrl:
+			'https://mock/index.php/publicknowledge/api/v1/submissions/26/files',
 		attachSelectedLabel: 'Attach Selected',
 		backLabel: 'Back',
 		downloadLabel: 'Download',
@@ -79,7 +80,7 @@ export default [
 		label: 'Library Files',
 		description: 'Attach files from the Submission and Publisher Libraries.',
 		button: 'Attach Library Files',
-		libraryApiUrl: 'http://example.org',
+		libraryApiUrl: 'https://mock/index.php/publicknowledge/api/v1/_library',
 		includeSubmissionId: 15,
 		attachSelectedLabel: 'Attach Selected',
 		backLabel: 'Back',

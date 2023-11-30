@@ -21,6 +21,7 @@ export default {
 				return false;
 			},
 		},
+		/** The type of notification. Pass `warning` for notifications about errors or serious problems. */
 		type: {
 			type: String,
 			default() {

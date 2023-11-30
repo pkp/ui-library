@@ -145,6 +145,9 @@ window.pkp = {
 		'help.help': 'Help',
 		'validator.required': 'This field is required.',
 	},
+	tinyMCE: {
+		skinUrl: '/styles/tinymce',
+	},
 };
 
 /**
@@ -160,7 +163,7 @@ window.$.pkp = {
 	},
 	pkpHandler() {
 		alert(
-			'This action can not be completed in the UI library because it requires a legacy JS component that is part of the OJS, OMP or OPS application.'
+			'This action can not be completed in the UI library because it requires a legacy JS component that is part of the OJS, OMP or OPS application.',
 		);
 	},
 	classes: {

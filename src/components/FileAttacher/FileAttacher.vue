@@ -53,11 +53,16 @@ export default {
 		Modal,
 	},
 	props: {
+		/** An array of file attachers. See guidance in storybook.  */
 		attachers: {
 			type: Array,
 			required: true,
 		},
 	},
+	emits: [
+		/** Emitted when one or more files are attached using one of the `attachers`. Payload: `(attacher, files)` */
+		'attached:files',
+	],
 	data() {
 		return {
 			currentAttacher: null,

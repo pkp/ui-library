@@ -15,6 +15,7 @@
 <script>
 export default {
 	props: {
+		/** Truncate the header text to fit on one line. */
 		isOneLine: {
 			type: Boolean,
 			default: true,

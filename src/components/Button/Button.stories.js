@@ -5,41 +5,31 @@ import {ref} from 'vue';
 export default {
 	title: 'Basic Components/Button',
 	component: Button,
+	render: (args) => ({
+		components: {Button},
+		setup() {
+			return {args};
+		},
+		template: '<Button v-bind="args">{{args.slot}}</Button>',
+	}),
 };
 
 export const Default = {
-	render: (args) => ({
-		components: {Button},
-		setup() {
-			return {args};
-		},
-		template: '<Button v-bind="args">Submit</Button>',
-	}),
-	args: {},
+	args: {
+		slot: 'Submit',
+	},
 };
 
 export const Primary = {
-	render: (args) => ({
-		components: {Button},
-		setup() {
-			return {args};
-		},
-		template: '<Button v-bind="args">Primary</Button>',
-	}),
 	args: {
+		slot: 'Primary',
 		isPrimary: true,
 	},
 };
 
 export const Warnable = {
-	render: (args) => ({
-		components: {Button},
-		setup() {
-			return {args};
-		},
-		template: '<Button v-bind="args">Delete</Button>',
-	}),
 	args: {
+		slot: 'Delete',
 		isWarnable: true,
 	},
 };
@@ -73,30 +63,9 @@ export const ExpandDetails = {
 };
 
 export const ButtonLikeLink = {
-	render: (args) => ({
-		components: {Button},
-		setup() {
-			const isActive = ref(false);
-			return {args, isActive};
-		},
-		template: `
-			<Button v-bind="args">
-				Button-like Link
-			</Button>`,
-	}),
-	args: {element: 'a', href: 'https://example.org'},
+	args: {slot: 'Button-like Link', element: 'a', href: 'https://example.org'},
 };
 
 export const LinkLikeButton = {
-	render: (args) => ({
-		components: {Button},
-		setup() {
-			return {args};
-		},
-		template: `
-			<Button v-bind="args">
-				Link-like Button
-			</Button>`,
-	}),
-	args: {isLink: true},
+	args: {slot: 'Link-like Button', isLink: true},
 };
