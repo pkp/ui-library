@@ -193,11 +193,11 @@
 					</div>
 					<div v-html="item.gossip"></div>
 				</list-item>
-				<list-item v-if="item.privateNotes">
+				<list-item v-if="item.userPrivateNote">
 					<div class="listPanel__item--reviewer__detailHeading">
-					{{ privateNotesLabel }}
+					{{ userPrivateNotesLabel }}
 					</div>
-					<div v-html="item.privateNotes"></div>
+					<div v-html="item.userPrivateNote"></div>
 				</list-item>
 				<list-item v-if="localize(item.biography)">
 					<div class="listPanel__item--reviewer__detailHeading">
@@ -288,7 +288,7 @@ export default {
 			type: String,
 			required: true,
 		},
-		privateNotesLabel: {
+		userPrivateNotesLabel: {
 			type: String,
 			required: true,
 		},

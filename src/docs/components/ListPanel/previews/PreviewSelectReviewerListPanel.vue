@@ -18,7 +18,7 @@
 		empty-label="No reviewers found"
 		:filters="filters"
 		gossip-label="Editorial Notes"
-		private-notes-label="Editorial Private Notes"
+		user-private-notes-label="Editorial Private Notes"
 		:items="items"
 		:items-max="items.length"
 		:last-round-reviewers="lastRoundReviewers"
@@ -73,7 +73,7 @@ export default {
 				},
 				gossip:
 					"<p>Aisla is a terrific reviewer but she takes a while to confirm and complete a review. Recommend not using her if you're on a tight deadline.</p>",
-				privateNotes:
+				userPrivateNote:
 		  			"<p>Keep this note private. Aisla is a terrific reviewer but she takes a while to confirm and complete a review. Recommend not using her if you're on a tight deadline.</p>",
 			},
 			{

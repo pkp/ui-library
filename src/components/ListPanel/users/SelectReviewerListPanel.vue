@@ -77,7 +77,7 @@
 						"
 						:declined-reviews-label="declinedReviewsLabel"
 						:gossip-label="gossipLabel"
-						:private-notes-label="privateNotesLabel"
+						:user-private-notes-label="userPrivateNotesLabel"
 						:item="item"
 						:never-assigned-label="neverAssignedLabel"
 						:reassign-label="reassignLabel"
@@ -203,7 +203,7 @@ export default {
 			type: String,
 			required: true,
 		},
-		privateNotesLabel: {
+		userPrivateNotesLabel: {
 			type: String,
 			required: true,
 		},
