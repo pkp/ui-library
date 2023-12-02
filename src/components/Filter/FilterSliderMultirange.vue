@@ -67,14 +67,17 @@ import FilterSlider from './FilterSlider.vue';
 export default {
 	extends: FilterSlider,
 	props: {
+		/** An accessible label for the higher value. Typically "Less than". */
 		lessThanLabel: {
 			type: String,
 			required: true,
 		},
+		/** An accessible label for the lower value. Typically "Higher than". */
 		moreThanLabel: {
 			type: String,
 			required: true,
 		},
+		/** An accessible label to show current value. Typically "{$min}-{$max}"  */
 		valueLabel: {
 			type: String,
 			required: true,

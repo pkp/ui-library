@@ -18,6 +18,7 @@ import Step from '@/components/Steps/Step.vue';
 import Steps from '@/components/Steps/Steps.vue';
 import Tab from '@/components/Tabs/Tab.vue';
 import Tabs from '@/components/Tabs/Tabs.vue';
+import FloatingVue from 'floating-vue';
 
 import '../src/styles/_import.less';
 import '../src/styles/_global.less';
@@ -46,6 +47,20 @@ initialize({
 setup((app) => {
 	app.use(pinia);
 	app.mixin(GlobalMixins);
+
+	app.use(FloatingVue, {
+		themes: {
+			'pkp-tooltip': {
+				$extend: 'tooltip',
+				triggers: ['click'],
+				delay: {
+					show: 0,
+					hide: 0,
+				},
+			},
+		},
+	});
+
 	app.component('Badge', Badge);
 	app.component('Dropdown', Dropdown);
 	app.component('Icon', Icon);
@@ -61,12 +76,12 @@ setup((app) => {
 	app.component('Tabs', Tabs);
 
 	console.log('preview running');
-	/*window.pkp.eventBus = {
+	window.pkp.eventBus = {
 		$on: (...args) => emitter.on(...args),
 		$once: (...args) => emitter.once(...args),
 		$off: (...args) => emitter.off(...args),
 		$emit: (...args) => emitter.emit(...args),
-	};*/
+	};
 });
 
 const preview = {

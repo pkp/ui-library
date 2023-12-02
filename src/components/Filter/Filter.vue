@@ -23,25 +23,35 @@
 <script>
 export default {
 	props: {
+		/** Whether or not this is filter is currently on or off. */
 		isFilterActive: {
 			type: Boolean,
 			default() {
 				return false;
 			},
 		},
+		/** The query parameter to use when submitting API requests for this filter. For example, a filter for getting all submissions in a particular stage would be `stageIds`. */
 		param: {
 			type: String,
 			required: true,
 		},
+		/** The label for this filter. */
 		title: {
 			type: String,
 			required: true,
 		},
+		/** The value to use when submitting API requests for this filter. For example, a filter for getting all submissions currently in the Submission stage would have a `param` of `stageIds` and a `value` of `1`. */
 		value: {
 			type: [String, Number, Boolean, Array, Object],
 			required: true,
 		},
 	},
+	emits: [
+		/** Emitted when the filter is activated. Payload: `(param, value)` */
+		'add-filter',
+		/** Emitted when the filter is deactivated. Payload: `(param, value)` */
+		'remove-filter',
+	],
 	computed: {
 		/**
 		 * Classes to apply to the root element

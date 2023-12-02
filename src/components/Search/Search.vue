@@ -31,12 +31,14 @@ import debounce from 'debounce';
 
 export default {
 	props: {
+		/** An optional label for the search field. Default: `Search` */
 		searchLabel: {
 			type: String,
 			default() {
 				return '';
 			},
 		},
+		/** The current search phrase. */
 		searchPhrase: {
 			type: String,
 			default() {
@@ -44,6 +46,10 @@ export default {
 			},
 		},
 	},
+	emits: [
+		/** This event will be emitted when the search phrase changes. The event is debounced so that it will only be emitted when the user stops typing for 250ms. */
+		'search-phrase-changed',
+	],
 	computed: {
 		inputId() {
 			return this._uid;

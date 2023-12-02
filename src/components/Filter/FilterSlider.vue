@@ -63,20 +63,24 @@ export default {
 	},
 	extends: Filter,
 	props: {
+		/** The highest allowed value. */
 		max: {
 			type: Number,
 			required: true,
 		},
+		/** The lowest allowed value. */
 		min: {
 			type: Number,
 			required: true,
 		},
+		/** Whether or not to display the value as a star rating.  */
 		useStars: {
 			type: Boolean,
 			default() {
 				return false;
 			},
 		},
+		/** How to display the value. A label of `At least {$value}` will display as `At least 20`. */
 		valueLabel: {
 			type: String,
 			default() {
@@ -84,6 +88,13 @@ export default {
 			},
 		},
 	},
+	emits: [
+		/** Emitted when the filter is activated. Payload: `(param, value)` */
+		'add-filter',
+		/** Emitted when the filter is deactivated. Payload: `(param, value)` */
+		'remove-filter',
+		'update-filter',
+	],
 	data() {
 		return {
 			currentValue: this.value,

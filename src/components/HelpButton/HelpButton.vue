@@ -14,11 +14,14 @@
 export default {
 	name: 'HelpButton',
 	props: {
+		/** Which topic to open in the help panel. This will correspond with one of the `.md` files used in the help panel. Do not include the `.md` extension. */
 		topic: {
 			type: String,
 			required: true,
 		},
+		/** Open the help panel to a particular section of the topic. This must match one of the named anchors in the topic page, such as `<a name="workflow-library"></a>`. */
 		section: String,
+		/** A localized label for screen readers. In English this should be "Help". */
 		label: {
 			type: String,
 			required: true,
