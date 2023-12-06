@@ -1,0 +1,32 @@
+import {Primary, Controls, Stories, Meta, ArgTypes} from '@storybook/blocks';
+
+import * as FileAttacherStories from './FileAttacher.stories.js';
+
+<Meta of={FileAttacherStories} />
+
+# FileAttacher
+
+## Usage
+
+Use the `<FileAttacher>` to allow a user to upload a file or select a file that has already been uploaded. Each one of the "attachers" configures a different source of files for the `<FileAttacher>`. For example, to allow the user to attach a file from the publisher library, the `attachers` prop would add a `FileAttacherLibrary`.
+
+```html
+<file-attacher
+	:attachers="[
+        {
+            component: 'FileAttacherLibrary',
+            label: 'Library Files',
+            description: 'Attach files from the Submission and Publisher Libraries.',
+            button: 'Attach Library Files',
+            libraryApiUrl: 'http://example.org',
+            includeSubmissionId: 15,
+            attachSelectedLabel: 'Attach Selected',
+            backLabel: 'Back',
+            downloadLabel: 'Download'
+        }
+    ]"
+/>
+```
+
+<Primary />
+<ArgTypes />

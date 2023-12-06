@@ -32,30 +32,38 @@
 <script>
 export default {
 	props: {
+		/** An optional `id` of one or more elements which describe this dropdown.
+		 * It will be applied to the `<button>` in the dropdown. Optional */
 		ariaDescribedBy: {
 			type: String,
 			default: '',
 		},
+		/** See **Button** props */
 		icon: {
 			type: String,
 			default: '',
 		},
+		/** See **Button** props */
 		label: {
 			type: String,
 			default: '',
 		},
+		/** See **Button** props */
 		isActive: {
 			type: Boolean,
 			default: false,
 		},
+		/** See **Button** props */
 		isLink: {
 			type: Boolean,
 			default: false,
 		},
+		/** See **Button** props */
 		isPrimary: {
 			type: Boolean,
 			default: false,
 		},
+		/** See **Button** props */
 		isWarnable: {
 			type: Boolean,
 			default: false,

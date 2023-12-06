@@ -201,7 +201,7 @@ export default {
 				return url;
 			};
 			return {
-				skin_url: this.$root.tinyMCE.skinUrl,
+				skin_url: this.$root?.tinyMCE?.skinUrl || pkp?.tinyMCE?.skinUrl,
 				content_css: $.pkp.app.tinyMceContentCSS,
 				paste_data_images: true,
 				relative_urls: false,

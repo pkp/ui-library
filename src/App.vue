@@ -1,9 +1,9 @@
 <template>
 	<vue-announcer class="sr-only" />
 	<PkpDialog
-		:open="$store.dialog.dialogOpened"
-		v-bind="$store.dialog.dialogProps"
-		@close="$store.dialog.closeDialog()"
+		:open="dialogStore.dialogOpened"
+		v-bind="dialogStore.dialogProps"
+		@close="dialogStore.closeDialog()"
 	></PkpDialog>
 	<nav class="nav" aria-label="Primary Navigation">
 		<nav-group>
@@ -311,8 +311,10 @@ export default {
 		NavGroup,
 		PkpDialog,
 	},
-	created() {
-		this.$store.dialog = useDialogStore(this.$pinia);
+	setup() {
+		const dialogStore = useDialogStore();
+
+		return {dialogStore};
 	},
 	methods: {
 		/**

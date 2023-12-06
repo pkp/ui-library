@@ -17,15 +17,26 @@
 <script>
 export default {
 	name: 'Badge',
-	props: [
-		'label',
-		'isPrimary',
-		'isSuccess',
-		'isWarnable',
-		'isError',
-		'isButton',
-		'hasDot',
-		'stage',
+	props: {
+		/** A hidden label for users without sight */
+		label: String,
+		/** Badges which should stand out from adjacent badges */
+		isPrimary: Boolean,
+		/** Badges which describe a successful or complete state */
+		isSuccess: Boolean,
+		/** Badges which describe an alert or warning */
+		isWarnable: Boolean,
+		isError: Boolean,
+		/** If the badge can be used to perform an action, set this to true */
+		isButton: Boolean,
+		/** Adds a small dot to the left of the `content` */
+		hasDot: Boolean,
+		/** Pass a stage name to use a special design for stage badges. Supports: `submission`, `review`, `copyediting`, `production`. */
+		stage: String,
+	},
+	emits: [
+		/** This event will be emitted when the badge is clicked and `isButton` is `true`. */
+		'click',
 	],
 	computed: {
 		classes() {

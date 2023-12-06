@@ -1,0 +1,17 @@
+import {Primary, Controls, Stories, Meta, ArgTypes} from '@storybook/blocks';
+
+import * as FileStories from './File.stories.js';
+
+<Meta of={FileStories} />
+
+# File
+
+## Usage
+
+Use this component to display a file in a consistent format across all components.
+
+Show the `id` when it may be useful. For example, show it to editors when promoting files, because they may track the file ids in a separate system. But the `id` is not needed when an author makes a new submission, because the file ids won't yet have been used to track files or discuss them.
+
+<Primary />
+<Controls />
+<Stories />

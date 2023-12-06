@@ -8,6 +8,7 @@
 export default {
 	name: 'Panel',
 	props: {
+		/** Whether or not the header should appear above the panel content. */
 		stack: {
 			type: Boolean,
 			default() {

@@ -33,7 +33,7 @@
 						leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 					>
 						<DialogPanel
-							class="modal__panel rounded-lg bg-white shadow-xl relative mx-3 w-10/12 max-w-3xl transform overflow-hidden text-left transition-all sm:my-8"
+							class="modal__panel relative mx-3 w-10/12 max-w-3xl transform overflow-hidden rounded bg-lightest text-left shadow transition-all sm:my-8"
 						>
 							<div class="modal__header">
 								<div class="modal__header__slot">
@@ -93,16 +93,19 @@ export default {
 		TransitionRoot,
 		TransitionChild,
 	},
+
 	props: {
+		/** Control whether Modal is Opened */
 		open: {
 			type: Boolean,
 			required: true,
 		},
-
+		/** The accessible text on the modal's close icon (×). Required */
 		closeLabel: {
 			type: String,
 			required: true,
 		},
+		/** The title to display at the top of the modal. This is optional but should be used in most cases.  */
 		title: {
 			type: String,
 			default() {
@@ -119,6 +122,10 @@ export default {
 			},
 		},
 	},
+	emits: [
+		/** When the modal should be closed. */
+		'close',
+	],
 	data() {
 		return {
 			isOpen: true,
@@ -343,6 +350,13 @@ export default {
 	.pkpTabs {
 		margin-inline-start: -1rem;
 		margin-inline-end: -1rem;
+	}
+
+	.pkpTabs {
+		.pkpTabs {
+			margin-inline-start: -2rem;
+			margin-inline-end: -2rem;
+		}
 	}
 
 	.pkpTabs__buttons {

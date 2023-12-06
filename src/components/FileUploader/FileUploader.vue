@@ -26,41 +26,53 @@ export default {
 		VueDropzone,
 	},
 	props: {
+		/** The URL to upload files to. */
 		apiUrl: {
 			type: String,
 			required: true,
 		},
+		/** An optional locale key use for the filename. See "Localized Filenames" below. */
 		filenameLocale: {
 			type: String,
 			default() {
 				return '';
 			},
 		},
+		/** An array of uploaded files. */
 		files: {
 			type: Array,
 			required: true,
 		},
+		/** A unique id for the uploader. */
 		id: {
 			type: String,
 			required: true,
 		},
+		/** Optional [Dropzone.js](https://docs.dropzone.dev/configuration/basics/configuration-options) configuration. */
 		options: {
 			type: Object,
 			default() {
 				return {};
 			},
 		},
+		/** Any query params that should be used in the file upload request. */
 		queryParams: {
 			type: Object,
 			default() {
 				return {};
 			},
 		},
+		/** A localized string with the upload progress label, such as "Uploading {$percent}% complete". */
 		uploadProgressLabel: {
 			type: String,
 			required: true,
 		},
 	},
+	emits: [
+		'set',
+		/** Emitted when the files have changed. Payload: `(files)` */
+		'updated:files',
+	],
 	data() {
 		return {
 			dragEventCounter: 0,
@@ -251,9 +263,14 @@ export default {
 		 * @see https://www.dropzonejs.com/#event-list
 		 */
 		dropzoneFilesAdded(files) {
+			console.log('dropzone files added1');
 			// use $nextTick because file.upload is undefined on initial call
 			this.$nextTick(() => {
+				console.log('dropzone files added2');
+
 				const newFiles = Array.from(files).map((file) => {
+					console.log('dropzone files added3');
+
 					return {
 						id: file.upload.uuid,
 						name: file.upload.filename,

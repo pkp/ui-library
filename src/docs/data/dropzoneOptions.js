@@ -1,6 +1,6 @@
 export default {
 	maxFilesize: 2,
-	url: 'https://httpbin.org/post',
+	url: 'https://mock/index.php/publicknowledge/api/v1/temporaryFiles',
 	dropzoneDictDefaultMessage: 'Drop files here to upload',
 	dropzoneDictFallbackMessage:
 		"Your browser does not support drag'n'drop file uploads.",

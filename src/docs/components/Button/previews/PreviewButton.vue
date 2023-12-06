@@ -1,6 +1,6 @@
 <template>
 	<div class="previewButton">
-		<pkp-button>Submit</pkp-button>
+		<pkp-button @click="console.log('submit!')">Submit</pkp-button>
 		<pkp-button :is-primary="true">Primary</pkp-button>
 		<pkp-button :is-warnable="true">Delete</pkp-button>
 		<pkp-button>

@@ -17,15 +17,23 @@ export default {
 	},
 	extends: Filter,
 	props: {
+		/**  */
 		component: {
 			type: String,
 			required: true,
 		},
+		/** Props to be passed to the `FieldAutosuggest` component.  */
 		autosuggestProps: {
 			type: Object,
 			required: true,
 		},
 	},
+	emits: [
+		/** Emitted when the filter is activated. Payload: `(param, value)` */
+		'add-filter',
+		/** Emitted when the filter is deactivated. Payload: `(param, value)` */
+		'remove-filter',
+	],
 	data() {
 		return {
 			currentValue: this.value,

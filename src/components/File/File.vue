@@ -11,18 +11,21 @@
 <script>
 export default {
 	props: {
+		/** Optional but recommended. Pass one of the `DOCUMENT_TYPE_` constants to show an icon that will match this document type. */
 		documentType: {
 			type: String,
 			default() {
 				return '';
 			},
 		},
+		/** Optional. Show an ID with this file. See usage guidance below. */
 		fileId: {
 			type: Number,
 			default() {
 				return 0;
 			},
 		},
+		/** Required. The file's name. */
 		name: {
 			type: String,
 			required: true,

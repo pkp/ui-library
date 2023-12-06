@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-
+import {t} from '@/utils/i18n';
 export const useDialogStore = defineStore('dialog', {
 	state: () => {
 		return {
@@ -13,16 +13,15 @@ export const useDialogStore = defineStore('dialog', {
 			this.dialogOpened = true;
 		},
 		openDialogNetworkError(fetchError) {
-			const msg =
-				fetchError?.data?.errorMessage || this.t('common.unknownError');
+			const msg = fetchError?.data?.errorMessage || t('common.unknownError');
 
 			this.openDialog({
 				name: 'ajaxError',
-				title: this.t('common.error'),
+				title: t('common.error'),
 				message: msg,
 				actions: [
 					{
-						label: this.t('common.ok'),
+						label: t('common.ok'),
 						callback: (close) => close(),
 					},
 				],

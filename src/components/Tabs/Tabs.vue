@@ -38,24 +38,28 @@ import debounce from 'debounce';
 
 export default {
 	props: {
+		/** Select one of the tabs by default. Pass the tab's `id` prop. */
 		defaultTab: {
 			type: String,
 			default() {
 				return '';
 			},
 		},
+		/** Displays the tabs on the side with content beside it when `true` */
 		isSideTabs: {
 			type: Boolean,
 			default() {
 				return false;
 			},
 		},
+		/** Sets an `aria-label` for the tabs. Read the [accessible label](#accessible-label) section below. */
 		label: {
 			type: String,
 			default() {
 				return '';
 			},
 		},
+		/** When `true`, changes to the current tab will modify the browser history so that the back button can be used. */
 		trackHistory: {
 			type: Boolean,
 			default() {

@@ -124,15 +124,13 @@
 						:value="recipients"
 						:is-disabled="!canChangeRecipients"
 						@change="changeRecipients"
-					/>
-					<button
-						v-if="!ccIsEnabled"
-						ref="ccButtons"
-						class="composer__ccToggle -linkButton"
-						@click="enableCC"
 					>
-						{{ addCCLabel }}
-					</button>
+						<template #end>
+							<PkpButton v-if="!ccIsEnabled" :is-link="true" @click="enableCC">
+								{{ addCCLabel }}
+							</PkpButton>
+						</template>
+					</field-autosuggest-preset>
 				</div>
 				<div
 					v-if="ccIsEnabled"
@@ -260,7 +258,7 @@
 					:name="fileAttacherModalId"
 					:title="attachFilesLabel"
 					:open="isModalOpenedFileAttacher"
-					@closed="resetFocusAfterAttachment"
+					@close="resetFocusAfterAttachment"
 				>
 					<file-attacher
 						:attachers="attachers"
@@ -308,194 +306,234 @@ export default {
 	},
 	mixins: [ajaxErrorCallback, dialog, preparedContent],
 	props: {
+		/** A localized string for the button to add CC/BCC recipients. */
 		addCCLabel: {
 			type: String,
 			required: true,
 		},
+		/** An array of `<FileAttacher>`s. See "File Attachments" below. */
 		attachers: {
 			type: Array,
 			default() {
 				return [];
 			},
 		},
+		/** An array of attached files. See "File Attachments" below. */
 		attachments: {
 			type: Array,
 			default() {
 				return [];
 			},
 		},
+		/** A localized string for the button to attach files. */
 		attachFilesLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string as heading for attached files. */
 		attachedFilesLabel: {
 			type: String,
 			required: true,
 		},
+		/** A comma-separated list of email addresses for recipients that should be BCC'd in the email. */
 		bcc: {
 			type: String,
 			default() {
 				return '';
 			},
 		},
+		/** A localized string for the BCC field. */
 		bccLabel: {
 			type: String,
 			required: true,
 		},
+		/** The body of the email message. */
 		body: {
 			type: String,
 			default() {
 				return '';
 			},
 		},
+		/** A localized string for the body field. */
 		bodyLabel: {
 			type: String,
 			required: true,
 		},
+		/** Can the user change the recipients? */
 		canChangeRecipients: {
 			type: Boolean,
 			default() {
 				return true;
 			},
 		},
+		/** A comma-separated list of email addresses for recipients that should be CC'd in the email. */
 		cc: {
 			type: String,
 			default() {
 				return '';
 			},
 		},
+		/** A localized string for the CC field. */
 		ccLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string for the confirmation dialog that appears when a user wants to change the language. */
 		confirmSwitchLocaleLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string for removing a recipient. */
 		deselectLabel: {
 			type: String,
 			required: true,
 		},
+		/** An array of `EmailTemplate`s that have been created for this message. */
 		emailTemplates: {
 			type: Array,
 			default() {
 				return [];
 			},
 		},
+		/** The URL to the API endpoint to get any `EmailTemplate`. When empty, no search field will be shown. */
 		emailTemplatesApiUrl: {
 			type: String,
 			default() {
 				return '';
 			},
 		},
+		/** An object describing any errors with the form. See "Errors" below. */
 		errors: {
 			type: Object,
 			default() {
 				return {};
 			},
 		},
+		/** A localized string for the search field to find a template. */
 		findTemplateLabel: {
 			type: String,
 			required: true,
 		},
+		/** A unique id for this component. Two `<Composer>`s on the same page should not have the same `id`. */
 		id: {
 			type: String,
 			default() {
 				return 'composer';
 			},
 		},
+		/** The key of an `EmailTemplate` to load automatically. If not present, the subject and body will be empty.  */
 		initialTemplateKey: {
 			type: String,
 			default() {
 				return '';
 			},
 		},
+		/** A localized string for the button to insert content from a variable. */
 		insertLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string for the modal to insert content from `variables`. */
 		insertModalLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string for the list of `variables` that can be inserted. */
 		insertContentLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string for the search field when inserting content from `variables`. */
 		insertSearchLabel: {
 			type: String,
 			default() {
 				return '';
 			},
 		},
+		/** A localized string for the section where a user can load templates. */
 		loadTemplateLabel: {
 			type: String,
 			required: true,
 		},
+		/** The current locale code of the composer, such as `en` or `fr_CA`. */
 		locale: {
 			type: String,
 			required: true,
 		},
+		/** An array of objects that specify the locales that can be used in this composer. */
 		locales: {
 			type: Array,
 			default() {
 				return [];
 			},
 		},
+		/** A localized string for the button to load more email template search results. Example: `{$number} more` */
 		moreSearchResultsLabel: {
 			type: String,
 			required: true,
 		},
+		/** An array of user ids of the recipients. */
 		recipients: {
 			type: Array,
 			default() {
 				return [];
 			},
 		},
+		/** A localized string for the recipients field. */
 		recipientsLabel: {
 			type: String,
 			required: true,
 		},
+		/** An array of recipient options. See "Recipients" below. */
 		recipientOptions: {
 			type: Array,
 			required: true,
 		},
+		/** A localized string to remove an attachment. */
 		removeItemLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string shown when an email template search is in progress. */
 		searchingLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string describing the email template search results. */
 		searchResultsLabel: {
 			type: String,
 			required: true,
 		},
+		/** Whether or not each recipient should be sent a separate email. Set this to `true` when each recipient should not see the name and email address of other recipients. */
 		separateEmails: {
 			type: Boolean,
 			default() {
 				return false;
 			},
 		},
+		/** The subject of the email messsage. */
 		subject: {
 			type: String,
 			default() {
 				return '';
 			},
 		},
+		/** A localized string for the subject field. */
 		subjectLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localised string for the prompt to switch to another language. */
 		switchToLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string for switching to another language. */
 		switchToNamedLanguageLabel: {
 			type: String,
 			required: true,
 		},
+		/** An object with prepared content for each locale. See "Insert Content" below. */
 		variables: {
 			type: Object,
 			default() {
@@ -503,6 +541,10 @@ export default {
 			},
 		},
 	},
+	emits: [
+		/** Emitted whenever a prop needs to be changed. An object with one or more changed props. Example: `{subject: 'New Subject'}` */
+		'set',
+	],
 	data() {
 		return {
 			ccIsEnabled: false,
@@ -544,7 +586,7 @@ export default {
 						icon: 'upload',
 						text: self.t('common.attachFiles'),
 						onAction() {
-							this.isModalOpenedFileAttacher = true;
+							self.isModalOpenedFileAttacher = true;
 						},
 					});
 					editor.settings.toolbar += ' | pkpAttachFiles';
@@ -674,9 +716,6 @@ export default {
 			this.loadTemplate(this.initialTemplateKey);
 		}
 	},
-	mounted() {
-		this.updateToPadding();
-	},
 	methods: {
 		/**
 		 * Add file attachments to the email
@@ -759,9 +798,6 @@ export default {
 		 */
 		enableCC() {
 			this.ccIsEnabled = true;
-			this.$nextTick(() => {
-				this.updateToPadding();
-			});
 		},
 
 		/**
@@ -972,32 +1008,6 @@ export default {
 			this.emitChange({locale: locale});
 			this.$nextTick(() => this.loadTemplate(this.initialTemplateKey));
 		},
-
-		/**
-		 * Update the padding of the "to" element to account for the CC button
-		 *
-		 * This makes sure that the input field does not run into the space occupied
-		 * by the button to Add CC/BCC. The width of this button will change depending
-		 * on the language, so it is calculated at run-time.
-		 */
-		updateToPadding() {
-			const inputEl = this.$el.querySelector('.pkpAutosuggest__inputWrapper');
-			const padding = this.$refs.ccButtons
-				? this.$refs.ccButtons.offsetWidth + 'px'
-				: '';
-			if ($.pkp.app.rtlLocales.includes(this.locale)) {
-				inputEl.style.paddingLeft = padding;
-			} else {
-				inputEl.style.paddingRight = padding;
-			}
-			// Force the autosuggest/text fields to recalculate the input width
-			// by briefly resizing the object that is used by elementResizeEvent
-			const resizeSensorEls = inputEl.querySelectorAll('.resize-sensor');
-			[...resizeSensorEls].forEach((resizeSensorEl) => {
-				resizeSensorEl.style.width = '1px';
-				setTimeout(() => (resizeSensorEl.style.width = 'auto'), 1000);
-			});
-		},
 	},
 };
 </script>
@@ -1071,21 +1081,6 @@ export default {
 
 .composer__recipients__wrapper {
 	position: relative;
-}
-
-.composer__ccToggle {
-	position: absolute;
-	top: 0;
-	right: 0;
-	padding: 0.5rem;
-	line-height: 1.5rem;
-	font-size: @font-tiny;
-
-	&:focus {
-		outline: 2px solid @primary;
-		outline-offset: -1px;
-		border-radius: @radius;
-	}
 }
 
 .composer__text {
@@ -1202,12 +1197,5 @@ export default {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-}
-
-[dir='rtl'] {
-	.composer__ccToggle {
-		right: auto;
-		left: 0;
-	}
 }
 </style>

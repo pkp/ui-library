@@ -17,17 +17,29 @@
 export default {
 	name: 'PkpButton',
 	props: {
+		/** Whether to use a `button` or `a` HTML tag. */
 		element: {
 			type: String,
 			default: 'button',
 		},
+		/** URL when using a link element. `element` must be set to `a` */
 		href: String,
+		/** Use when this button represents the default or expected action in a group of actions. A single group of actions should never have more than one primary button. */
 		isPrimary: Boolean,
+		/** Use when this button represents an action such as delete, go back, revert or cancel. */
 		isWarnable: Boolean,
+		/** Use when the button controls another element, and that element is active. Think of it like an [On Air](https://www.google.co.uk/search?q=on+air+sign&tbm=isch) button. */
 		isActive: Boolean,
+		/** Use when you want the button to look more like a traditional link than a button. */
 		isLink: Boolean,
 		isDisabled: Boolean,
 	},
+	emits: [
+		/** When the button receives focus. */
+		'focus',
+		/** When focus moves away from the button. */
+		'blur',
+	],
 	computed: {
 		classes() {
 			let classes = [];

@@ -1,0 +1,31 @@
+import {Meta, Story, ArgTypes} from '@storybook/blocks';
+import * as FontsDisplayStories from './FontsDisplay.stories.js';
+import * as ColorsDisplayStories from './ColorsDisplay.stories.js';
+
+<Meta title="Guide/Style/Colors" />
+
+# Colors
+
+## Common colors
+
+List of common colors, that can be used in any tailwind class, example `text-primary`, `bg-primary`, `divide-primary`,
+
+<Story of={ColorsDisplayStories.Common} />
+
+## Text colors
+
+In addition to common colors, following colors can be used for text.
+
+<Story of={ColorsDisplayStories.Text} />
+
+## Background colors
+
+In addition to common colors, following colors can be used as background.
+
+<Story of={ColorsDisplayStories.Background} />
+
+## Border colors
+
+Following colors can be used as border.
+
+<Story of={ColorsDisplayStories.Border} />

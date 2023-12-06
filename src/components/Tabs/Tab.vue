@@ -16,22 +16,26 @@ import {computed} from 'vue';
 export default {
 	inject: ['registerTab'],
 	props: {
+		/** Adds an **Icon** component beside the text in the tab. */
 		icon: {
 			type: String,
 			default() {
 				return '';
 			},
 		},
+		/** A unique string for this tab */
 		id: {
 			type: String,
 			required: true,
 		},
+		/** A text label for this tab. */
 		label: {
 			type: String,
 			default() {
 				return '';
 			},
 		},
+		/** Adds a **Badge** component beside the icon or text in the tab. */
 		badge: {
 			type: [String, Number],
 			default() {

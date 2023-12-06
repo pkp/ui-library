@@ -22,13 +22,22 @@
 export default {
 	name: 'Orderer',
 	props: {
+		/** A unique id for the item to be ordered. This will be emitted in the `up` and `down` events. It may be a string or number, and does not correspond to the item's order in the list.  */
 		itemId: [String, Number],
+		/** The name of the item. This is used in an accessible label for the up and down buttons. */
 		itemTitle: String,
+		/** Whether or not to provide drag-and-drop controls for this item. When `isDraggable` is true, the items to be ordered must be wrapped in a `<draggable>` component. */
 		isDraggable: {
 			type: Boolean,
 			default: true,
 		},
 	},
+	emits: [
+		/** This event will be emitted when the up arrow is pressed on an item. The value will be the item's `id`.  */
+		'up',
+		/** This event will be emitted when the down arrow is pressed on an item. The value will be the item's `id`. */
+		'down',
+	],
 	methods: {
 		/**
 		 * Emit an event to move this item up

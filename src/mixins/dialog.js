@@ -7,6 +7,8 @@
  * @see https://vuejs.org/v2/guide/mixins.html
  */
 
+import {useDialogStore} from '@/stores/dialogStore';
+
 export default {
 	methods: {
 		/**
@@ -15,7 +17,8 @@ export default {
 		 * @param {Object} props Props to pass to the <dialog> component
 		 */
 		openDialog(props, modalProps, modalEvents) {
-			this.$store.dialog.openDialog(props);
+			const dialogStore = useDialogStore();
+			dialogStore.openDialog(props);
 		},
 	},
 };

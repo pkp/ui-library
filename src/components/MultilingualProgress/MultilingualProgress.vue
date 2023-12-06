@@ -19,10 +19,12 @@
 export default {
 	name: 'MultilingualProgress',
 	props: {
+		/** The number of completed multilingual items.  */
 		count: {
 			type: Number,
 			required: true,
 		},
+		/** The total number of multilingual items available to be completed. */
 		total: {
 			type: Number,
 			required: true,

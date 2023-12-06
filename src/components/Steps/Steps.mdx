@@ -1,0 +1,14 @@
+import {Primary, Controls, Stories, Meta} from '@storybook/blocks';
+
+import * as StepsStories from './Steps.stories.js';
+
+<Meta of={StepsStories} />
+
+# Steps
+
+Use the `<Steps>` and `<Step>` components to display a step-by-step wizard. When using this component, track the current and started steps in the parent component and pass these down as props. This ensures that any interactions between steps can be handled correctly. For example, if a form in step 3 needs to change based on a selection in step 2, the parent component can coordinate this dependency.
+
+Use this component alongside a **ButtonRow** to implement next/previous buttons.
+
+<Primary />
+<Controls />

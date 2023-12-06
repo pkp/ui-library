@@ -13,6 +13,11 @@ export default {
 		PkpAnnouncer,
 	},
 	extends: Container,
+	setup() {
+		const dialogStore = useDialogStore(this.$pinia);
+
+		return {dialogStore};
+	},
 	data() {
 		return {
 			breadcrumbs: [],
@@ -120,10 +125,6 @@ export default {
 			'update:unread-tasks-count',
 			(data) => (this.unreadTasksCount = data.count),
 		);
-	},
-	created() {
-		// temporarly until all openDialog are migrated to dialogStore, this is used by the mixin
-		this.$store.dialog = useDialogStore(this.$pinia);
 	},
 	unmounted() {
 		pkp.eventBus.$off('notify');

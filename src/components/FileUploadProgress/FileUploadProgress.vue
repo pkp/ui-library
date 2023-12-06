@@ -29,23 +29,31 @@ export default {
 		ProgressBar,
 	},
 	props: {
+		/** A localized string for the button to cancel the upload. */
 		cancelUploadLabel: {
 			type: String,
 			required: true,
 		},
+		/** An array of error messages related to this upload. */
 		errors: {
 			type: Array,
 			required: true,
 		},
+		/** The name of the file. */
 		name: {
 			type: String,
 			required: true,
 		},
+		/** A number from `0-100` representing the percentage of the file that has been uploaded so far. */
 		progress: {
 			type: Number,
 			required: true,
 		},
 	},
+	emits: [
+		/** Cancel the upload before it is finished. */
+		'cancel',
+	],
 	data() {
 		return {
 			uuid: '',

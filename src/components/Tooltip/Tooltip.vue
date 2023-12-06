@@ -18,10 +18,12 @@ import 'floating-vue/dist/style.css';
 export default {
 	name: 'Tooltip',
 	props: {
+		/** The message to display in the popup. */
 		tooltip: {
 			type: String,
 			required: true,
 		},
+		/** A label for the button that screenreaders will use to understand it. This should refer to the thing it is describing. A tooltip for the submission subtitle field might say "Tooltip for subtitle". */
 		label: {
 			type: String,
 			required: true,

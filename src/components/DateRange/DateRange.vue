@@ -73,88 +73,115 @@
 <script>
 export default {
 	props: {
+		/** A unique string to be used in <code>id</code> attributes. These ids are used internally for accessible labeling of the date range fields. This string should be unique on the page where the component is rendered. */
 		uniqueId: {
 			type: String,
 			required: true,
 		},
+		/** The current start date value. Expects <code>YYYY-MM-DD</code>.  */
 		dateStart: {
 			type: String,
 			default: '',
 		},
+		/** The earliest allowed start date value. <code>YYYY-MM-DD</code>. */
 		dateStartMin: {
 			type: String,
 			default: '',
 		},
+		/** The current end date value. Expects <code>YYYY-MM-DD</code>. */
 		dateEnd: {
 			type: String,
 			default: '',
 		},
+		/** The latest allowed end date value. Expects <code>YYYY-MM-DD</code>. */
 		dateEndMax: {
 			type: String,
 			default: '',
 		},
+		/** Localized label used in the component. */
 		dateRangeLabel: {
 			type: String,
 			required: true,
 		},
+		/** Localized label used in the component. */
 		dateFormatInstructionsLabel: {
 			type: String,
 			required: true,
 		},
+		/** Localized label used in the component. */
 		changeDateRangeLabel: {
 			type: String,
 			required: true,
 		},
+		/** Localized label used in the component. */
 		sinceDateLabel: {
 			type: String,
 			required: true,
 		},
+		/** Localized label used in the component. */
 		untilDateLabel: {
 			type: String,
 			required: true,
 		},
+		/** Localized label used in the component. */
 		allDatesLabel: {
 			type: String,
 			required: true,
 		},
+		/** Localized label used in the component. */
 		customRangeLabel: {
 			type: String,
 			required: true,
 		},
+		/** Localized label used in the component. */
 		fromDateLabel: {
 			type: String,
 			required: true,
 		},
+		/** Localized label used in the component. */
 		toDateLabel: {
 			type: String,
 			required: true,
 		},
+		/** Localized label used in the component. */
 		applyLabel: {
 			type: String,
 			required: true,
 		},
+		/** Localized label used in the component. */
 		invalidDateLabel: {
 			type: String,
 			required: true,
 		},
+		/** Localized label used in the component. */
 		dateDoesNotExistLabel: {
 			type: String,
 			required: true,
 		},
+		/** Localized label used in the component. */
 		invalidDateRangeLabel: {
 			type: String,
 			required: true,
 		},
+		/** Localized label used in the component. */
 		invalidStartDateMinLabel: {
 			type: String,
 			required: true,
 		},
+		/** Localized label used in the component. */
 		invalidEndDateMaxLabel: {
 			type: String,
 			required: true,
 		},
+		/** An array of quick options that the user can select instead of setting a custom range. */
 		options: Array,
 	},
+	emits: [
+		/** The start and end dates for the date range. */
+		'set-range',
+		/** A concatenated string describing the date range. */
+		'updated:current-range',
+	],
 	data() {
 		return {
 			isOpen: false,

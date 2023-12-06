@@ -71,6 +71,7 @@ import {
 	disposeSubmissionsPageStore,
 } from './submissionsPageStore';
 
+/** TODO rename to pageInitConfig */
 const props = defineProps({storeData: {required: true, type: Object}});
 initSubmissionsPageStore(props.storeData);
 const store = useSubmissionsPageStore();
@@ -81,6 +82,7 @@ onUnmounted(() => {
 </script>
 
 <style lang="less">
+/** TODO to be migrated to tailwindcss */
 @import '../../styles/_import';
 
 .pkp_page_submissions .app__main {

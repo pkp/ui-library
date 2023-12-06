@@ -1,0 +1,46 @@
+# Example page
+
+These principles applies for version 3.5 and higher, when building new pages or making significant changes to existing ones.
+
+## Folder structure
+
+```
+ui-library/src/pages/example
+  /** Main page files */
+  ExamplePage.vue
+  ExamplePage.store.js
+  ExamplePage.mdx
+  ExamplePage.stories.js
+
+  /** Page specific components to organise the page to smaller pieces */
+  ExampleCounter.vue
+  ExampleSubmissions.vue
+
+  /** Complex "sub page" that deserve own store, to be added later */
+  ExampleSummaryModal.vue
+  ExampleSummaryStore.js
+```
+
+## Page template included in Page component.
+
+To simplify the developer experience when creating Pages, we are moving from mix of smarty and Vue.js to use pure Vue.js components, which have templates as part of the component.
+
+There is dedicated [guide](../?path=/docs/guide-smarty-vs-vue-js--docs) to help with transition from some smarty features to vue.js
+
+## State management
+
+State management is intentionally done via [pinia store](../?path=/docs/guide-vue3--docs#pinia-store). Follow the link to get more details.
+
+## Server side configuration
+
+On initial page load, there is still opportunity to pass JS object from PHP to the Vue.js.
+
+This might include things like:
+
+- Form structure configuration, as we do configure forms on PHP side
+- API urls that currently can be constructed on PHP side
+- Any configuration which needs to be passed just once on page load
+
+## Api Mocking
+
+While working on new components or pages, its necessary to mock any API related communication. Storybook provides simple mechanism how to setup the mocks in the stories file.

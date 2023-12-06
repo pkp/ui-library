@@ -59,23 +59,31 @@
 <script>
 export default {
 	props: {
+		/** The page that is currently being displayed. */
 		currentPage: {
 			type: Number,
 			required: true,
 		},
+		/** Is the current page still loading? */
 		isLoading: {
 			type: Boolean,
 			default: false,
 		},
+		/** The last page that is available. */
 		lastPage: {
 			type: Number,
 			required: true,
 		},
+		/** showAdjacentPages */
 		showAdjacentPages: {
 			type: Number,
 			default: 1,
 		},
 	},
+	emits: [
+		/** The page that should be selected. */
+		'set-page',
+	],
 	computed: {
 		/**
 		 * Compile the items to display in the pagination component.
