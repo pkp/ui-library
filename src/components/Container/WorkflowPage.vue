@@ -1,6 +1,7 @@
 <script type="text/javascript">
 import Page from './Page.vue';
 import ContributorsListPanel from '@/components/ListPanel/contributors/ContributorsListPanel.vue';
+import JatsListPanel from '@/components/ListPanel/jats/SubmissionJatsListPanel.vue';
 import Composer from '@/components/Composer/Composer.vue';
 import Dropdown from '@/components/Dropdown/Dropdown.vue';
 import Modal from '@/components/Modal/Modal.vue';
@@ -17,6 +18,7 @@ export default {
 		Dropdown,
 		Modal,
 		PkpHeader,
+		JatsListPanel,
 	},
 	extends: Page,
 	mixins: [LocalizeSubmission, dialog, ajaxError],
