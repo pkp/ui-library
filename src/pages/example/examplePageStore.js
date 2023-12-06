@@ -1,33 +1,59 @@
-//import {ref, computed, watch} from 'vue';
-import {ref} from 'vue';
+import {ref, computed} from 'vue';
 import {getActivePinia, defineStore} from 'pinia';
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
 
-let pageServerConfig = null;
-export function initExamplePageStore(_pageServerConfig) {
-	pageServerConfig = _pageServerConfig;
+let pageInitConfig = null;
+export function initExamplePageStore(_pageInitConfig) {
+	pageInitConfig = _pageInitConfig;
 }
 
 export function disposeExamplePageStore() {
 	const store = useExamplePageStore();
 	store.$dispose();
-	pageServerConfig = null;
+	pageInitConfig = null;
 	delete getActivePinia().state.value[store.$id];
 }
 
 export const useExamplePageStore = defineStore('examplePage', () => {
-	const title = ref('hello');
-
+	/**
+	 * Submissions
+	 */
 	const {
 		items: submissions,
 		fetch: fetchSubmissions,
 		isLoading,
-	} = useFetchPaginated(pageServerConfig.submissionsApiUrl, {
+	} = useFetchPaginated(pageInitConfig.submissionsApiUrl, {
 		page: 1,
 		pageSize: 20,
 	});
 
 	fetchSubmissions();
-	console.log('returning example page store');
-	return {submissions, fetchSubmissions, isLoading, title};
+
+	/**
+	 * Counter
+	 */
+	const counter = ref(0);
+	const isCounterEven = computed(() => {
+		return counter.value % 2 === 0;
+	});
+
+	function increaseCounter() {
+		counter.value += 1;
+	}
+
+	return {
+		/**
+		 * Submissions
+		 */
+		submissions,
+		fetchSubmissions,
+		isLoading,
+
+		/**
+		 * Counter
+		 */
+		counter,
+		isCounterEven,
+		increaseCounter,
+	};
 });

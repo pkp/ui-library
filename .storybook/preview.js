@@ -33,7 +33,7 @@ initializeRTL();
 // Initialize MSW
 initialize({
 	onUnhandledRequest: ({method, url}) => {
-		if (url.pathname.includes('mock')) {
+		if (url.pathname.includes('://mock/')) {
 			console.error(`Unhandled ${method} request to ${url}.
 
         This exception has been only logged in the console, however, it's strongly recommended to resolve this error as you don't want unmocked data in Storybook stories.
@@ -96,6 +96,20 @@ const preview = {
 			},
 		},
 		direction: 'ltr',
+		options: {
+			/*storySort: (a, b) => {
+				if (a.id.includes('introduction--docs')) {
+					return -1;
+				}
+				if (b.id.includes('introduction--docs')) {
+					return 1;
+				}
+
+				return a.id === b.id
+					? 0
+					: a.id.localeCompare(b.id, undefined, {numeric: true});
+			},*/
+		},
 	},
 };
 

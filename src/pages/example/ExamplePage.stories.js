@@ -18,7 +18,7 @@ export const ExamplePage1 = {
 		template: '<ExamplePage v-bind="args" />',
 	}),
 	args: {
-		pageServerConfig: {
+		pageInitConfig: {
 			submissionsApiUrl:
 				'https://mock/index.php/publicknowledge/api/v1/_submissions',
 		},

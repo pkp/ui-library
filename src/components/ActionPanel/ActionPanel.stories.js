@@ -1,7 +1,7 @@
 import ActionPanel from './ActionPanel.vue';
 import PkpDialog from '@/components/Modal/Dialog.vue';
 import './ActionPanelStories.less';
-import {t} from '@/utils/i18n';
+import {useTranslation} from '@/composables/useTranslation';
 import {useDialogStore} from '@/stores/dialogStore';
 export default {
 	title: 'Components/ActionPanel',
@@ -12,6 +12,7 @@ export const Default = {
 	render: (args) => ({
 		components: {ActionPanel, PkpDialog},
 		setup() {
+			const {t} = useTranslation();
 			const dialogStore = useDialogStore();
 
 			function openDeleteDialog() {

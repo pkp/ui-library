@@ -3,25 +3,31 @@ import {getActivePinia, defineStore} from 'pinia';
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useFiltersForm} from '@/composables/useFiltersForm';
 import {useSorting} from '@/composables/useSorting';
+import {useTranslation} from '@/composables/useTranslation';
 
 import {useUrlSearchParams} from '@vueuse/core';
 import {useAnnouncerStore} from '@/stores/announcerStore';
-import {t} from '@/utils/i18n';
 
-let initState = null;
+let pageInitConfig = null;
 
-export function initSubmissionsPageStore(_initState) {
-	initState = _initState;
+export function initSubmissionsPageStore(_pageInitConfig) {
+	pageInitConfig = _pageInitConfig;
 }
 
 export function disposeSubmissionsPageStore() {
 	const store = useSubmissionsPageStore();
 	store.$dispose();
-	initState = null;
+	pageInitConfig = null;
 	delete getActivePinia().state.value[store.$id];
 }
 
 export const useSubmissionsPageStore = defineStore('submissionsPage', () => {
+	/**
+	 * Translation
+	 */
+
+	const {t} = useTranslation();
+
 	/**
 	 * Url query params
 	 */
@@ -31,12 +37,12 @@ export const useSubmissionsPageStore = defineStore('submissionsPage', () => {
 	/**
 	 * Views
 	 */
-	const views = ref(initState.views);
+	const views = ref(pageInitConfig.views);
 	const currentViewId = ref(
 		queryParamsUrl.currentViewId &&
 			views.value.find((view) => view.id === queryParamsUrl.currentViewid)
 			? queryParamsUrl.currentViewId
-			: initState.currentViewId,
+			: pageInitConfig.currentViewId,
 	);
 	const currentView = computed(
 		() => views.value.find((view) => view.id === currentViewId.value) || {},
@@ -51,7 +57,7 @@ export const useSubmissionsPageStore = defineStore('submissionsPage', () => {
 	/**
 	 * Columns
 	 */
-	const columns = ref(initState.columns);
+	const columns = ref(pageInitConfig.columns);
 
 	/**
 	 * Search Phrase
@@ -68,7 +74,7 @@ export const useSubmissionsPageStore = defineStore('submissionsPage', () => {
 	/**
 	 * Filters form
 	 */
-	const filtersForm = ref(initState.filtersForm);
+	const filtersForm = ref(pageInitConfig.filtersForm);
 
 	const {
 		filtersFormList,
@@ -91,8 +97,8 @@ export const useSubmissionsPageStore = defineStore('submissionsPage', () => {
 	 * Submissions
 	 */
 	const currentPage = ref(1);
-	const countPerPage = ref(initState.countPerPage);
-	const apiUrl = ref(initState.apiUrl);
+	const countPerPage = ref(pageInitConfig.countPerPage);
+	const apiUrl = ref(pageInitConfig.apiUrl);
 
 	const submissionsUrl = computed(() => {
 		return currentView.value?.op
@@ -163,25 +169,16 @@ export const useSubmissionsPageStore = defineStore('submissionsPage', () => {
 	/**
 	 * Assign Participant Modal
 	 */
-	const assignParticipantUrl = ref(initState.assignParticipantUrl);
+	const assignParticipantUrl = ref(pageInitConfig.assignParticipantUrl);
 	const isModalOpenedAssignParticipant = ref(false);
-	const isModalOpenedAssignParticipantSecondary = ref(false);
 
 	function openAssignParticipantModal(submission) {
-		if (isModalOpenedSummary.value) {
-			isModalOpenedAssignParticipantSecondary.value = true;
-		} else {
-			selectedSubmission.value = submission;
-			isModalOpenedAssignParticipant.value = true;
-		}
+		selectedSubmission.value = submission;
+		isModalOpenedAssignParticipant.value = true;
 	}
 	function closeAssignParticipantModal() {
-		if (isModalOpenedSummary.value) {
-			isModalOpenedAssignParticipantSecondary.value = false;
-		} else {
-			selectedSubmission.value = null;
-			isModalOpenedAssignParticipant.value = false;
-		}
+		selectedSubmission.value = null;
+		isModalOpenedAssignParticipant.value = false;
 	}
 
 	/**
@@ -255,7 +252,6 @@ export const useSubmissionsPageStore = defineStore('submissionsPage', () => {
 		// AssignParticipant Modal
 		assignParticipantUrl,
 		isModalOpenedAssignParticipant,
-		isModalOpenedAssignParticipantSecondary,
 		openAssignParticipantModal,
 		closeAssignParticipantModal,
 	};

@@ -93,7 +93,10 @@
 				<div class="p-4">
 					<div class="text-lg-bold">Editors assigned:</div>
 					<div>
-						<PkpButton is-link="true" @click="store.openAssignParticipantModal">
+						<PkpButton
+							is-link="true"
+							@click="submissionSummaryStore.openAssignParticipantModal"
+						>
 							Assign Editors
 						</PkpButton>
 					</div>
@@ -102,8 +105,8 @@
 		</div>
 		<SideModal
 			close-label="Close"
-			:open="store.isModalOpenedAssignParticipantSecondary"
-			@close="store.closeAssignParticipantModal"
+			:open="submissionSummaryStore.isModalOpenedAssignParticipant"
+			@close="submissionSummaryStore.closeAssignParticipantModal"
 		>
 			<AssignEditorsModal />
 		</SideModal>
@@ -115,14 +118,21 @@ import PkpButton from '@/components/Button/Button.vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import StageBubble from '@/components/StageBubble/StageBubble.vue';
 import SideModal from '@/components/Modal/SideModal.vue';
-
+import {onUnmounted} from 'vue';
 import AssignEditorsModal from '@/pages/submissions/AssignEditorsModal.vue';
 
-import {useSubmissionsPageStore} from '@/pages/submissions/submissionsPageStore';
+import {
+	useSubmissionSummaryStore,
+	disposeSubmissionSummaryStore,
+} from '@/pages/submissions/submissionSummaryStore';
 
 const pkp = window.pkp;
 
-const store = useSubmissionsPageStore();
+const submissionSummaryStore = useSubmissionSummaryStore();
 
-const {selectedSubmission: submission} = store;
+const {submission} = submissionSummaryStore;
+
+onUnmounted(() => {
+	disposeSubmissionSummaryStore();
+});
 </script>

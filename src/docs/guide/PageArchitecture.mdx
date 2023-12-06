@@ -1,0 +1,14 @@
+import {Meta} from '@storybook/blocks';
+
+<Meta title="Guide/Page Architecture" />
+
+# Page Architecture
+
+These principles applies for version 3.5 and higher when building new pages or making significant changes to existing ones.
+
+- Using [pinia store](https://pinia.vuejs.org) for state management. Check [vue3 guide](..?path=/docs/guide-vue3--docs#pinia-store) for more details.
+- Page and page related components are located in `src/pages` folder
+- Not using Smarty template for page itself, template is no part of the vue.js page component. Check out [this guide](../?path=/docs/guide-smarty-vs-vue-js--docs) for more details.
+- For styling use TailwindCSS, for more details check out [styling guide](../?path=/docs/guide-style-introduction--docs).
+
+Please checkout [Example Page](../?path=/docs/pages-example-examplepage--docs), which provides well documented boilerplate.
