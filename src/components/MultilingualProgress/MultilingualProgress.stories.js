@@ -1,17 +1,17 @@
-import multilingualProgress from './multilingualProgress.vue';
+import MultilingualProgress from './MultilingualProgress.vue';
 export default {
-	title: 'Components/multilingualProgress',
-	component: multilingualProgress,
+	title: 'Components/MultilingualProgress',
+	component: MultilingualProgress,
 };
 
 export const Default = {
 	render: (args) => ({
-		components: {multilingualProgress},
+		components: {MultilingualProgress},
 		setup() {
 			return {args};
 		},
 		template: `
-			<multilingual-progress v-bind="args" />
+			<MultilingualProgress v-bind="args" />
 		`,
 	}),
 
