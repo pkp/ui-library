@@ -48,7 +48,7 @@
 						</div>
 						<div v-else>
 							<div class="filePanel__fileContentFooter">
-								<span>{{ lastModifiedAtActual }}</span>
+								<span>{{ t('publication.jats.lastModified', {modificationDate: this.workingJatsProps.updatedAt, username: this.workingJatsProps.uploaderUserName}) }}</span>
 							</div>
 						</div>
 					</div>
@@ -65,7 +65,7 @@
 				:files="newJatsFiles"
 				:options="options"
 				:queryParams="{fileStage}"
-				upload-progress-label="Uploading {$percent}% complete"
+				:upload-progress-label="t('submission.upload.percentComplete')"
 				@updated:files="setJatsFile"
 			/>
 		</slot>
@@ -153,24 +153,6 @@ export default {
 				this.publication.id,
 			);
 		},
-
-		lastModifiedAtActual() {
-			var actual = '';
-			
-			if (!this.isDefaultContent) {
-				actual = this.t('publication.jats.lastModified').replace(
-					'{$modificationDate}',
-					this.workingJatsProps.updatedAt,
-				);
-
-				actual = actual.replace(
-					'{$username}',
-					this.workingJatsProps.uploaderUserName,
-				);
-			}
-
-			return actual;
-		}
 	},
 	methods: {
 		fetchWorkingJatsFile() {
@@ -326,7 +308,7 @@ export default {
 </script>
 
 <style lang="less">
-@import '../../../styles/_import';
+@import '../../styles/_import';
 
 .jatsPanel {
 	.filePanel__header {
@@ -338,24 +320,6 @@ export default {
 		grid-column: span 12;
 		background: white;
 		padding: 20px;
-	}
-
-	.pkp-button {
-		background: #007bff;
-		border: none;
-		padding: 10px 20px;
-		color: white;
-		border-radius: 5px;
-		cursor: pointer;
-		transition: background-color 0.3s ease;
-	}
-
-	.pkp-button:hover {
-		background: #0056b3;
-	}
-
-	.pkp-button:disabled {
-		background: #ccc;
 	}
 
 	.filePanel__fileContent {
