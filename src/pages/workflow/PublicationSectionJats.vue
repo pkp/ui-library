@@ -2,53 +2,58 @@
 	<div class="jatsPanel">
 		<slot>
 			<div v-if="hasLoadedContent" class="filePanel__ready">
-				<div class="filePanel__header">
-					<pkp-header>
-						<h2>{{ title }}</h2>
-						<template #actions>
-							<div v-if="isDefaultContent">
-								<pkp-button 
-									v-if="
-										publication.status !== getConstant('STATUS_PUBLISHED') &&
-										canEditPublication
-									"
-									ref="uploadXMLButton" @click="openFileBrowser"
-								>
-									{{ t('common.upload') }}
+				<div v-if="this.workingJatsProps['loadingContentError']">
+					{{ this.workingJatsProps['loadingContentError'] }}
+				</div>
+				<div v-else>
+					<div class="filePanel__header">
+						<pkp-header>
+							<h2>{{ title }}</h2>
+							<template #actions>
+								<div v-if="isDefaultContent">
+									<pkp-button 
+										v-if="
+											publication.status !== getConstant('STATUS_PUBLISHED') &&
+											canEditPublication
+										"
+										ref="uploadXMLButton" @click="openFileBrowser"
+									>
+										{{ t('common.upload') }}
+									</pkp-button>
+								</div>
+								<div v-else>
+									<pkp-button
+										v-if="
+											publication.status !== getConstant('STATUS_PUBLISHED') &&
+											canEditPublication
+										"
+										:disabled="isLoading"
+										:isWarnable="true"
+										@click="openDeleteModal"
+									>
+										{{ t('common.delete') }}
+									</pkp-button>
+								</div>
+								<pkp-button ref="downloadJatsXMLButton" @click="downloadJatsXML">
+									{{ t('common.download') }}
 								</pkp-button>
+							</template>
+						</pkp-header>
+					</div>
+					<div class="filePanel__items">
+						<div class="filePanel__fileContent">
+							<pre v-highlightjs="workingJatsContent"><code class="xml"></code></pre>
+						</div>
+						<div>
+							<div v-if="isDefaultContent" class="filePanel__hasData">
+								<div class="filePanel__defaultContentFooter">
+									<span>{{ t('publication.jats.autoCreatedMessage') }}</span>
+								</div>
 							</div>
 							<div v-else>
-								<pkp-button
-									v-if="
-										publication.status !== getConstant('STATUS_PUBLISHED') &&
-										canEditPublication
-									"
-									:disabled="isLoading"
-									:isWarnable="true"
-									@click="openDeleteModal"
-								>
-									{{ t('common.delete') }}
-								</pkp-button>
-							</div>
-							<pkp-button ref="downloadJatsXMLButton" @click="downloadJatsXML">
-								{{ t('common.download') }}
-							</pkp-button>
-						</template>
-					</pkp-header>
-				</div>
-				<div class="filePanel__items">
-					<div class="filePanel__fileContent">
-						<pre v-highlightjs="workingJatsContent"><code class="xml"></code></pre>
-					</div>
-					<div>
-						<div v-if="isDefaultContent" class="filePanel__hasData">
-							<div class="filePanel__defaultContentFooter">
-								<span>{{ t('publication.jats.autoCreatedMessage') }}</span>
-							</div>
-						</div>
-						<div v-else>
-							<div class="filePanel__fileContentFooter">
-								<span>{{ t('publication.jats.lastModified', {modificationDate: this.workingJatsProps.updatedAt, username: this.workingJatsProps.uploaderUserName}) }}</span>
+								<div class="filePanel__fileContentFooter">
+									<span>{{ t('publication.jats.lastModified', {modificationDate: this.workingJatsProps.updatedAt, username: this.workingJatsProps.uploaderUserName}) }}</span>
+								</div>
 							</div>
 						</div>
 					</div>
