@@ -65,7 +65,7 @@
 				:files="newJatsFiles"
 				:options="options"
 				:queryParams="{fileStage}"
-				:uploadProgressLabel="uploadProgressLabel"
+				upload-progress-label="Uploading {$percent}% complete"
 				@updated:files="setJatsFile"
 			/>
 		</slot>
@@ -107,10 +107,6 @@ export default {
 			type: Object,
 			required: true,
 		},
-		uploadProgressLabel: {
-			type: String,
-			required: true,
-		},
 		fileStage: {
 			type: Number,
 			required: true,
@@ -121,22 +117,6 @@ export default {
 			default() {
 				return [];
 			},
-		},
-		i18nConfirmDeleteFileTitle: {
-			type: String,
-			required: true,
-		},
-		i18nDeleteFileMessage: {
-			type: String,
-			required: true,
-		},
-		i18nConfirmDeleteFileButton: {
-			type: String,
-			required: true,
-		},
-		i18nLastModifiedAt: {
-			type: String,
-			required: true,
 		},
 		downloadDefaultJatsFileName: {
 			type: String,
@@ -178,7 +158,7 @@ export default {
 			var actual = '';
 			
 			if (!this.isDefaultContent) {
-				actual = this.i18nLastModifiedAt.replace(
+				actual = this.t('publication.jats.lastModified').replace(
 					'{$modificationDate}',
 					this.workingJatsProps.updatedAt,
 				);
@@ -236,11 +216,11 @@ export default {
 		openDeleteModal() {
 			this.openDialog({
 				name: 'delete',
-				title: this.i18nConfirmDeleteFileTitle,
-				message: this.i18nDeleteFileMessage,
+				title: this.t('publication.jats.confirmDeleteFileTitle'),
+				message: this.t('publication.jats.confirmDeleteFileMessage'),
 				actions: [
 					{
-						label: this.i18nConfirmDeleteFileButton,
+						label: this.t('publication.jats.confirmDeleteFileButton'),
 						isWarnable: true,
 						callback: (close) => {
 							this.isLoading = true;
