@@ -1,17 +1,5 @@
 import {ref, computed} from 'vue';
-
-// probably will go to some form utils
-function clearForm(form) {
-	form.fields.forEach((field) => {
-		if (field?.value?.length) {
-			field.value = [];
-		}
-
-		if (field?.selected?.length) {
-			field.selected = [];
-		}
-	});
-}
+import {useForm} from './useForm';
 
 function doesValueExist(fieldValue) {
 	if (Array.isArray(fieldValue)) {
@@ -38,6 +26,7 @@ function createSelected(values, labels) {
 
 export function useFiltersForm(_filtersForm) {
 	const filtersForm = ref(_filtersForm);
+	const {clearForm, setValue} = useForm(_filtersForm);
 
 	const filtersFormList = computed(() => {
 		const list = [];
@@ -111,9 +100,10 @@ export function useFiltersForm(_filtersForm) {
 				const values = ensureArray(queryParams[field.name]).map(fixValueType);
 				if (queryParams[`${field.name}_label`]) {
 					const labels = ensureArray(queryParams[`${field.name}_label`]);
-					field.selected = createSelected(values, labels);
+					setValue(field.name, createSelected(values, labels));
+				} else {
+					setValue(field.name, values);
 				}
-				field.value = values;
 			}
 		});
 	}
