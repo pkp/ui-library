@@ -5,10 +5,12 @@ export default {
 	name: 'FieldRichText',
 	extends: FieldRichTextarea,
 	props: {
+		/** A localized string for the button to open formatting options. */
 		i18nFormattingLabel: {
 			type: String,
 			required: true,
 		},
+		/** Must be `oneline`. */
 		size: {
 			type: String,
 			default() {

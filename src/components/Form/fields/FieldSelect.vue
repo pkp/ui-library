@@ -76,6 +76,7 @@ export default {
 	name: 'FieldSelect',
 	extends: FieldBase,
 	props: {
+		/**   An optional object containing preset information. When preset information exists, a button will appear in the toolbar. */
 		options: Array,
 	},
 	computed: {

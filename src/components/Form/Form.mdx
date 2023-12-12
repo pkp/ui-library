@@ -1,0 +1,50 @@
+import {Primary, Controls, Stories, Meta, ArgTypes} from '@storybook/blocks';
+
+import * as FormStories from './Form.stories.js';
+
+<Meta of={FormStories} />{' '}
+
+# Form
+
+## Global Events
+
+| Key | Description |
+| --- | --- |
+| `form-success` | When the form is successfully submitted. The payload will include the form ID and the server response from the successful form submission. This is usually the object that was added or edited. |
+| `notify` | When an error is encountered during form submission. See [Notify](#/utilities/Notify). |
+
+## Usage
+
+Use this component to display a form. Typically you will generate all the required props from one of the `FormComponent` classes on the server side. These props can then be passed to the form.
+
+```html
+<pkp-form v-bind="formData" @set="set" />
+```
+
+Learn more about [server-side form components](https://docs.pkp.sfu.ca/dev/documentation/en/frontend-forms).
+
+## Multi-page Forms
+
+Multi-page forms have not proven to be useful. This feature may be removed in a future version. Use the [Steps](#/component/Steps) component for step-by-step workflows.
+
+## Form Submission and Error Handling
+
+The `action` prop of most `<Form>` components will be a URL to which it can submit a `PUT` or `POST` request to the application's REST API. Forms will handle the following responses from the API automatically.
+
+- A `200` response when successful with a JSON object describing the entity that was added or edited.
+- A `403` or `404` response when the server refuses the submission with a JSON object describing the error.
+- A `400` response when a validation error occurs with a JSON object describing the validation errors. The `<Form>` component will map most REST API validation errors to the correct form field.
+
+See the [API Documentation](https://docs.pkp.sfu.ca/dev/api) for the specification of errors.
+
+## Groups and Group Descriptions
+
+Fields can be organized into groups and given a group title and description. This should be done when fields benefit from the breakdown and when sufficient horizontal space is available.
+
+If a form does not occupy the full workspace (~992px) because it is embedded in a tab or modal, avoid group titles and descriptions to ensure adequate space remains for the form fields.
+
+## Conditional Display
+
+Fields can be shown or hidden based on the value of another field. The `showWhen` prop is used to control conditional display. This prop is documented in the [FieldBase](#/component/Form/fields/FieldBase) example.
+
+<ArgTypes />

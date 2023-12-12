@@ -75,39 +75,57 @@ export default {
 		FormPage,
 	},
 	props: {
+		/** Used by a parent component, such as `Container`, to identify events emitted from the form and update the form props when necessary. */
 		id: String,
+		/** The method to use when submitting the form. This should match the API endpoint that will handle the form. It can be `POST` (create) or `PUT` (edit). */
 		method: {
 			type: String,
 			default() {
 				return '';
 			},
 		},
+		/** Where the form should be submitted. It should be a full URL (`http://...`) to the API endpoint where this form is handled. */
 		action: {
 			type: String,
 			default() {
 				return '';
 			},
 		},
+		/** A boolean indicating whether this form can be submitted. The save button will be disable if this is false. */
 		canSubmit: {
 			type: Boolean,
 			default() {
 				return true;
 			},
 		},
+		/** Key/value object of messages. The key is the field `name` and the value is an array of errors. Errors are generated during form submission and handled automatically, so this prop can be omitted in most cicumstances. */
 		errors: {
 			type: Object,
 			default() {
 				return {};
 			},
 		},
+		/** Array of form fields. This prop is typically configured on the server, using the `Form` and `Field` classes in the PHP application. */
 		fields: Array,
+		/** Array of form groups. See "Groups and Group Descriptions" below. */
 		groups: Array,
+		/** Key/value of hidden fields that should be submitted with the form. The key will be used as the field's `name` attribute. */
 		hiddenFields: Object,
+		/** Array of form pages. See "Multi-page Forms" below. */
 		pages: Array,
+		/** The primary locale for this form. This may be the primary locale of the journal/press, submission or site depending on the form. */
 		primaryLocale: String,
+		/** The locale(s) the form is currently being presented in. */
 		visibleLocales: Array,
+		/** The locale(s) supported by this form. If a form has multilingual fields, it will display a separate input control for each of these locales. */
 		supportedFormLocales: Array,
 	},
+	emits: [
+		/** When the form props need to be updated. The payload is an object with any keys that need to be modified. */
+		'set',
+		/** When the form has been successfully submitted. The payload will include the server response from the successful form submission. This is usually the object that was added or edited. */
+		'success',
+	],
 	data() {
 		return {
 			currentPage: '',

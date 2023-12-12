@@ -16,7 +16,6 @@ export const Default = {
 			const dialogStore = useDialogStore();
 
 			function openDeleteDialog() {
-				console.log('open dialog!');
 				dialogStore.openDialog({
 					name: 'deleteDialog',
 					title: 'Delete Incomplete Submissions',

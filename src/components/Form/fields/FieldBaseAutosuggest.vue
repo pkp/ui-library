@@ -197,40 +197,47 @@ export default {
 	extends: FieldBase,
 	mixins: [ajaxError],
 	props: {
+		/** A URL where suggestions can be retrieved. Suggestions are expected to be returned in a flat array. */
 		apiUrl: {
 			type: String,
 			default() {
 				return '';
 			},
 		},
+		/** A text label for the button to remove a selection. This must be included to be compatible with assistive technology. */
 		deselectLabel: {
 			type: String,
 			required: true,
 		},
+		/** Whether the input field should be disabled.  */
 		isDisabled: {
 			type: Boolean,
 			default() {
 				return false;
 			},
 		},
+		/** When `true`, the label for this field will be shown inline instead of above the input field. See usage guidance below. */
 		isLabelInline: {
 			type: Boolean,
 			default() {
 				return false;
 			},
 		},
+		/** Any query params that should be applied when getting suggestions from the API. */
 		getParams: {
 			type: Object,
 			default() {
 				return {};
 			},
 		},
+		/** The currently selected options for this field. These should be objects with `value` and `label` keys. */
 		selected: {
 			type: [Array, Object],
 			default(props) {
 				return props.isMultilingual ? {} : [];
 			},
 		},
+		/** A text label that proceeds the selected values. This must be included to be compatible with assistive technology. */
 		selectedLabel: {
 			type: String,
 			required: true,

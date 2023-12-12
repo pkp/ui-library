@@ -1,0 +1,36 @@
+import {Primary, Controls, Stories, Meta, ArgTypes} from '@storybook/blocks';
+
+import * as FieldRadioInputStories from './FieldRadioInput.stories.js';
+
+<Meta of={FieldRadioInputStories} />
+
+# FieldRadioInput
+
+## Usage
+
+Use this component for selecting one option from a list of known responses, while allowing the user to enter their own response.
+
+This component extends [`FieldOptions`](#/component/Form/fields/FieldOptions), but it does not support checkboxes, ordering or usage as a confirmation field.
+
+## Custom input
+
+When creating an option with a custom input field, pass the `isInput` key instead of the `value` key.
+
+```js
+[
+	{
+		value: 1,
+		label: 'One',
+	},
+	{
+		value: 2,
+		label: 'Two',
+	},
+	{
+		isInput: true,
+	},
+];
+```
+
+<Primary />
+<Controls />

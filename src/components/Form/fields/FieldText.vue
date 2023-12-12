@@ -88,15 +88,23 @@ export default {
 	name: 'FieldText',
 	extends: FieldBase,
 	props: {
-		inputType: String,
-		optIntoEdit: Boolean,
+		/** The`type` attribute for the `<input>` field. See [available types](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Form_%3Cinput%3E_types). */
+		inputType: {
+			type: String,
+			default: 'text',
+		},
+		/**  Disables the field and adds a button that the user must click before they can edit it. */
+		optIntoEdit: {type: Boolean, default: false},
+		/** The label for the button added by `optIntoEdit` */
 		optIntoEditLabel: String,
+		/** One of `small`, `normal` or `large`. Default: `normal`. */
 		size: {
 			default: 'normal',
 			validator: function (value) {
 				return ['small', 'normal', 'large'].indexOf(value) !== -1;
 			},
 		},
+		/** An optional prefix to show before the user's input. For example, a prefix of `http://publisher.com/` is used for the journal `path` field.  */
 		prefix: String,
 	},
 	data() {

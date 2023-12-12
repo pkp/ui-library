@@ -67,6 +67,7 @@ export default {
 	name: 'FieldTextarea',
 	extends: FieldBase,
 	props: {
+		/** One of `small`, `normal` or `large`. Default: `normal`. */
 		size: {
 			type: String,
 			default: 'normal',

@@ -20,6 +20,8 @@ import Tab from '@/components/Tabs/Tab.vue';
 import Tabs from '@/components/Tabs/Tabs.vue';
 import FloatingVue from 'floating-vue';
 
+import VueScrollTo from 'vue-scrollto';
+
 import '../src/styles/_import.less';
 import '../src/styles/_global.less';
 import {initializeRTL} from 'storybook-addon-rtl';
@@ -60,6 +62,8 @@ setup((app) => {
 			},
 		},
 	});
+
+	app.use(VueScrollTo);
 
 	app.component('Badge', Badge);
 	app.component('Dropdown', Dropdown);

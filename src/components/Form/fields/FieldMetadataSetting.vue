@@ -79,21 +79,22 @@ export default {
 	name: 'FieldMetadataSetting',
 	extends: FieldOptions,
 	props: {
-		// The value which matches a disabled state
+		/** The value which matches a disabled state. Usually the `METADATA_DISABLE` constant. */
 		disabledValue: {
 			type: Number,
 			required: true,
 		},
-		// The value which matches an enabled state, but not when it is requested
-		// or required during submission.
+		/** The value which matches an enabled state, but not when it is requested or required during submission. Usually the `METADATA_ENABLE` constant. */
 		enabledOnlyValue: {
 			type: String,
 			required: true,
 		},
+		/** The current value for this field.  */
 		value: {
 			type: [Number, String],
 			required: true,
 		},
+		/** Options for when the metadata should be requested or required. Usually includes the `METADATA_ENABLE`, `METADATA_REQUEST` and `METADATA_REQUIRE` constants. */
 		submissionOptions: {
 			type: Array,
 			required: true,

@@ -7,6 +7,7 @@ export default {
 	extends: FieldOptions,
 	mixins: [dialog],
 	props: {
+		/**  The message to display in the popup when the button in the confirmation message is clicked. */
 		message: String,
 		modalTitle: String,
 	},

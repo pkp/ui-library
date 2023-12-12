@@ -5,6 +5,7 @@ export default {
 	name: 'FieldAutosuggestPreset',
 	extends: FieldBaseAutosuggest,
 	props: {
+		/** An array of options to suggest. */
 		options: {
 			type: Array,
 			required: true,

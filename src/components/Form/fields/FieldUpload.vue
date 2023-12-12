@@ -116,6 +116,7 @@ export default {
 	},
 	extends: FieldBase,
 	props: {
+		/**  Pass [options](https://www.dropzonejs.com/#configuration-options) to Dropzone.js. */
 		options: Object,
 		restoreLabel: String,
 		uploadFileLabel: String,
