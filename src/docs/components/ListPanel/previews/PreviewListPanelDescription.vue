@@ -30,11 +30,3 @@ export default {
 	},
 };
 </script>
-
-<style lang="less">
-@import '../../../../styles/_import';
-
-.previewListPanelDescription .listPanel__header p {
-	margin: 0;
-}
-</style>

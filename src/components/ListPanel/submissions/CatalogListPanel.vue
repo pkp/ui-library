@@ -166,48 +166,57 @@ export default {
 	},
 	mixins: [ajaxError, fetch],
 	props: {
+		/**  The [Form](../?path=/docs/forms-form--docs) to add an entry to the catalog. */
 		addEntryForm: {
 			type: Object,
 			required: true,
 		},
+		/** One of the `ORDER_BY_*` constants. Default: `ORDERBY_DATE_PUBLISHED`  */
 		catalogSortBy: {
 			type: String,
 			default() {
 				return 'datePublished'; // ORDERBY_DATE_PUBLISHED
 			},
 		},
+		/** One of the `SORT_DIRECTION_*` constants. Default: `SORT_DIRECTION_ASC` */
 		catalogSortDir: {
 			type: Number,
 			default() {
 				return 1; // SORT_DIRECTION_ASC
 			},
 		},
+		/** The id of the press. */
 		contextId: {
 			type: Number,
 			required: true,
 		},
+		/** The [Filters](../?path=/docs/components-filter-base--docs) to change the list view.  */
 		filters: {
 			type: Array,
 			default() {
 				return [];
 			},
 		},
+		/** A unique id for this component. */
 		id: {
 			type: String,
 			required: true,
 		},
+		/** An array of publishable submissions. */
 		items: {
 			type: Array,
 			default() {
 				return [];
 			},
 		},
+		/** A count of all publishable submissions in the press.  */
 		itemsMax: {
 			type: Number,
 			defaut() {
 				return 0;
 			},
 		},
+		/** The title of the list panel. */
 		title: {
 			type: String,
 			default() {
@@ -215,6 +224,10 @@ export default {
 			},
 		},
 	},
+	emits: [
+		/** Emitted when a prop should be changed. Payload: `(id, newProps)` */
+		'set',
+	],
 	data() {
 		return {
 			newEntries: [],

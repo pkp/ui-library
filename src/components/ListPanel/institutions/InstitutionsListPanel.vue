@@ -87,47 +87,64 @@ export default {
 	},
 	mixins: [dialog, fetch, ajaxError],
 	props: {
+		/** A localized string for the button to add an institution. */
 		addInstitutionLabel: {
 			type: String,
 			required: true,
 		},
+		/**  A localized string for the confirmation message before deleting an institution. */
 		confirmDeleteMessage: {
 			type: String,
 			required: true,
 		},
+		/** A localized string for the button to delete an institution. */
 		deleteInstitutionLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string for the button to edit an institution. */
 		editInstitutionLabel: {
 			type: String,
 			required: true,
 		},
+		/** The [Form](../?path=/docs/forms-form--docs) to edit an institution */
 		form: {
 			type: Object,
 			required: true,
 		},
+		/** A unique id for this component. */
 		id: {
 			type: String,
 			required: true,
 		},
+		/** An array of institutions. */
 		items: {
 			type: Array,
 			default() {
 				return [];
 			},
 		},
+		/**  A count of all institutions in the journal, press or preprint server. */
 		itemsMax: {
 			type: Number,
 			default() {
 				return 0;
 			},
 		},
+		/** The title of the list panel. */
 		title: {
 			type: String,
 			required: true,
 		},
 	},
+	emits: [
+		/** Emitted when an institution is added. Payload: `(institution)` */
+		'add:institution',
+		/** Emitted when a prop should be changed. Payload: `(id, newProps)` */
+		'set',
+		/** Emitted when an institution is updated. Payload: `(institution)` */
+		'update:institution',
+	],
 	data() {
 		return {
 			activeForm: null,

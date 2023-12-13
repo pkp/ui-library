@@ -128,14 +128,17 @@ export default {
 	},
 	mixins: [fetch],
 	props: {
+		/** A localized string for the [Badge](../?path=/docs/basic-components-badge--docs) showing the number of active reviews. */
 		activeReviewsCountLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string for the active reviews row in the expanded table. */
 		activeReviewsLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string that says this reviewer was assigned in the last review round. See `lastRoundReviewers` */
 		assignedToLastRoundLabel: {
 			type: String,
 			required: true,
@@ -146,96 +149,117 @@ export default {
 				return [];
 			},
 		},
+		/** A localized string for the average days to complete a review row in the expanded table. */
 		averageCompletionLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string for the biography section. */
 		biographyLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string for the canceled reviews row in the expanded table. */
 		cancelledReviewsLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string for the completed reviews row in the expanded table. */
 		completedReviewsLabel: {
 			type: String,
 			required: true,
 		},
+		/** An array of user ids of reviewers who are already assigned to this review round. */
 		currentlyAssigned: {
 			type: Array,
 			default() {
 				return [];
 			},
 		},
+		/** A localized string that says this reviewer is already assigned to this review round. */
 		currentlyAssignedLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string to use when it has only been one day since the reviewer's last assignment. */
 		daySinceLastAssignmentLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string to use when it has been 2 or more days since the reviewer's last assignment. Example: `{$number} days ago` */
 		daysSinceLastAssignmentLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string for the days since last assignment row in the expanded table */
 		daysSinceLastAssignmentDescriptionLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string for the declined reviews row in the expanded table. */
 		declinedReviewsLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string to display when there are no reviewers to show in the list. */
 		emptyLabel: {
 			type: String,
 			required: true,
 		},
+		/** An array [Filter](../?path=/docs/components-filter-base--docs)s. */
 		filters: {
 			type: Array,
 			default() {
 				return [];
 			},
 		},
+		/** A localized string for the gossip section. */
 		gossipLabel: {
 			type: String,
 			required: true,
 		},
+		/** A unique id for this component. */
 		id: {
 			type: String,
 			required: true,
 		},
+		/** An array of reviewers. */
 		items: {
 			type: Array,
 			default() {
 				return [];
 			},
 		},
+		/**  A count of all reviewers in the journal, press or preprint server. */
 		itemsMax: {
 			type: Number,
 			default() {
 				return 0;
 			},
 		},
+		/**  An array of reviewers that were assigned in the last review round. */
 		lastRoundReviewers: {
 			type: Array,
 			default() {
 				return [];
 			},
 		},
+		/** A localized string to use when the reviewer has never been given a review assignment. */
 		neverAssignedLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string to use for the button to reassign a reviewer who was assigned to the last review round. */
 		reassignLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string to use in an accessible label for the button to reassign a reviewer who was assigned to the last review round. Example: `Reassign {$name}` */
 		reassignWithNameLabel: {
 			type: String,
 			required: true,
 		},
+		/**  A localized string to use in an accessible label for the reviewer rating.  */
 		reviewerRatingLabel: {
 			type: String,
 			required: true,
@@ -244,6 +268,7 @@ export default {
 			type: String,
 			required: true,
 		},
+		/** A localized string to use for the reviewer interests section. */
 		reviewInterestsLabel: {
 			type: String,
 			required: true,
@@ -252,29 +277,38 @@ export default {
 			type: String,
 			required: true,
 		},
+		/** A localized string to use for the button to select a reviewer. */
 		selectReviewerLabel: {
 			type: String,
 			required: true,
 		},
+		/** The title of the list panel. */
 		title: {
 			type: String,
 			required: true,
 		},
+		/** An array of user ids for reviewers that may not be able to conduct an anonymous review, because they have access to the submission details through another stage assignment. */
 		warnOnAssignment: {
 			type: Array,
 			default() {
 				return [];
 			},
 		},
+		/** A localized string that describes why this user may be unable to conduct an anonymous review. */
 		warnOnAssignmentLabel: {
 			type: String,
 			required: true,
 		},
+		/**  A localized string for the button to unlock a reviewer who may be unable to conduct an anonymous review. */
 		warnOnAssignmentUnlockLabel: {
 			type: String,
 			required: true,
 		},
 	},
+	emits: [
+		/**  Emitted when a prop should be changed. Payload: `(id, newProps)`  */
+		'set',
+	],
 	data() {
 		return {
 			isLoading: false,

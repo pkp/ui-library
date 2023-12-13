@@ -82,82 +82,104 @@ export default {
 	},
 	mixins: [dialog],
 	props: {
+		/** A localized string for the button to add a file. */
 		addFileLabel: {
 			type: String,
 			required: true,
 		},
+		/** The URL to upload files to. */
 		apiUrl: {
 			type: String,
 			required: true,
 		},
+		/** A localized string for the button to cancel an upload while it is being uploaded. */
 		cancelUploadLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string to show when there are no items in the list. */
 		emptyLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string for the button to upload a file when there are no items in the list. */
 		emptyAddLabel: {
 			type: String,
 			required: true,
 		},
+		/** The file stage to upload the submission files to. See [Submission Files](https://docs.pkp.sfu.ca/dev/documentation/en/submission-files)  */
 		fileStage: {
 			type: Number,
 			required: true,
 		},
+		/** The [Form](../?path=/docs/forms-form--docs) to select a file type. */
 		form: {
 			type: Object,
 		},
+		/** A localized string for the prompt to select a file type. */
 		genrePromptLabel: {
 			type: String,
 			required: true,
 		},
+		/**  An array of file types. See usage guidance below. */
 		genres: {
 			type: Array,
 			required: true,
 		},
+		/**  A unique id for this component.  */
 		id: {
 			type: String,
 			required: true,
 		},
+		/** An array of files uploaded or being uploaded. */
 		items: {
 			type: Array,
 			default() {
 				return [];
 			},
 		},
+		/** Pass [options](https://www.dropzonejs.com/#configuration-options) to Dropzone.js. */
 		options: {
 			type: Object,
 			default() {
 				return {};
 			},
 		},
+		/** A localized string to describe files types other than the primary file types. */
 		otherLabel: {
 			type: String,
 			required: true,
 		},
+		/** The primary locale for the submission files uploaded. This should match the submission's locale. */
 		primaryLocale: {
 			type: String,
 			required: true,
 		},
+		/** A localized string to for the confirmation modal to remove a file. */
 		removeConfirmLabel: {
 			type: String,
 			required: true,
 		},
+		/** The workflow stage id to upload files to. One of the `WORKFLOW_STAGE_ID_*` constants. */
 		stageId: {
 			type: Number,
 			required: true,
 		},
+		/** The title of the list panel. */
 		title: {
 			type: String,
 			required: true,
 		},
+		/** A localized string to show the upload progress. */
 		uploadProgressLabel: {
 			type: String,
 			required: true,
 		},
 	},
+	emits: [
+		/** Emitted when a prop should be changed. Payload: `(id, newProps)`  */
+		'set',
+	],
 	data() {
 		return {
 			activeForm: {},

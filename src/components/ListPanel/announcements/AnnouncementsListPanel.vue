@@ -81,47 +81,64 @@ export default {
 	},
 	mixins: [dialog, fetch, ajaxError],
 	props: {
+		/** A localized string for the button to add an announcement. */
 		addAnnouncementLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string for the confirmation message before deleting an announcement. */
 		confirmDeleteMessage: {
 			type: String,
 			required: true,
 		},
+		/** A localized string for the button to delete an announcement. */
 		deleteAnnouncementLabel: {
 			type: String,
 			required: true,
 		},
+		/** A localized string for the button to edit an announcement. */
 		editAnnouncementLabel: {
 			type: String,
 			required: true,
 		},
+		/** The Form to edit an announcement. */
 		form: {
 			type: Object,
 			required: true,
 		},
+		/** A unique id for this component. */
 		id: {
 			type: String,
 			required: true,
 		},
+		/** An array of announcements. */
 		items: {
 			type: Array,
 			default() {
 				return [];
 			},
 		},
+		/** A count of all announcements in the journal, press or preprint server. */
 		itemsMax: {
 			type: Number,
 			default() {
 				return 0;
 			},
 		},
+		/** The title of the list panel. */
 		title: {
 			type: String,
 			required: true,
 		},
 	},
+	emits: [
+		/** Emitted when an announcement is added. Payload: `(announcement)` */
+		'add:announcement',
+		/** Emitted when a prop should be changed. Payload: `(id, newProps)` */
+		'set',
+		/** Emitted when an announcement is updated. Payload: `(announcement)` */
+		'update:announcement',
+	],
 	data() {
 		return {
 			activeForm: null,

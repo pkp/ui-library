@@ -73,40 +73,47 @@ export default {
 		PkpHeader,
 	},
 	props: {
+		/** An optional description of this `ListPanel`. */
 		description: {
 			type: String,
 			default() {
 				return '';
 			},
 		},
+		/** An optional message to show when no items exist.  */
 		emptyLabel: {
 			type: String,
 			default() {
 				return '';
 			},
 		},
+		/** An array of item ids that are currently in expanded view. */
 		expanded: {
 			type: Array,
 			default() {
 				return [];
 			},
 		},
+		/** The HTML tag to use for the title. */
 		headingLevel: {
 			type: String,
 			default() {
 				return 'h2';
 			},
 		},
+		/** Whether or not the sidebar is visible. */
 		isSidebarVisible: {
 			type: Boolean,
 			default() {
 				return false;
 			},
 		},
+		/** Array containing items in the list. */
 		items: {
 			type: Array,
 			required: true,
 		},
+		/** The title to display for this `ListPanel`. */
 		title: {
 			type: String,
 			default() {
