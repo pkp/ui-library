@@ -18,10 +18,13 @@ import {
 } from './examplePageStore';
 
 // Define Page Props
-const props = defineProps({pageInitConfig: {required: true, type: Object}});
+const props = defineProps({
+	/** URL to fetch submissions from API */
+	submissionsApiUrl: {type: String, required: true},
+});
 
 // Expose the page server configuration to the store, before its created so it can use is during initialisation
-initExamplePageStore(props.pageInitConfig);
+initExamplePageStore(props);
 
 // Initialise store
 useExamplePageStore();

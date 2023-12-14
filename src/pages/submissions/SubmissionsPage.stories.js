@@ -25,7 +25,5 @@ export const init = {
 			],
 		},
 	},
-	args: {
-		storeData: PageInitConfigMock,
-	},
+	args: PageInitConfigMock,
 };

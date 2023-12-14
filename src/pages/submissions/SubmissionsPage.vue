@@ -71,9 +71,44 @@ import {
 	disposeSubmissionsPageStore,
 } from './submissionsPageStore';
 
-/** TODO rename to pageInitConfig */
-const props = defineProps({storeData: {required: true, type: Object}});
-initSubmissionsPageStore(props.storeData);
+const props = defineProps({
+	/** API url for fetching submissions (should be renamed) */
+	apiUrl: {
+		type: String,
+		required: true,
+	},
+	/** API url assigning participant */
+	assignParticipantUrl: {
+		type: String,
+		required: true,
+	},
+	/** List of Views */
+	views: {
+		type: Array,
+		required: true,
+	},
+	/** Initial view that should be selected*/
+	currentViewId: {
+		type: Number,
+		required: true,
+	},
+	/** Filters form config  */
+	filtersForm: {
+		type: Object,
+		required: true,
+	},
+	/** List of columns */
+	columns: {
+		type: Array,
+		required: true,
+	},
+	/** How many submissions to show per page */
+	countPerPage: {
+		type: Number,
+		required: true,
+	},
+});
+initSubmissionsPageStore(props);
 const store = useSubmissionsPageStore();
 
 onUnmounted(() => {
