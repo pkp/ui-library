@@ -1,4 +1,4 @@
-import exampleText from '../../../data/exampleText';
+import exampleText from '@/mocks/exampleText';
 
 export default {
 	name: 'options-copyright',

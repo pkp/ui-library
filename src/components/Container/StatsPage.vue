@@ -22,16 +22,24 @@ export default {
 	mixins: [ajaxError],
 	data() {
 		return {
+			/** URL to the REST API endpoint to retrieve stats. */
 			apiUrl: '',
+			/** An array of objects representing columns in the table. See [Table](#/component/Table). */
 			tableColumns: [],
+			/** Current start date in the format `YYYY-MM-DD`. */
 			dateStart: '',
+			/** Current start date in the format `YYYY-MM-DD`. */
 			dateEnd: '',
+			/** Current start date in the format `YYYY-MM-DD`. */
 			dateEndMax: '',
+			/** Array of objects representing preset date range options, such as the last 90 days. */
 			dateRangeOptions: [],
+			/** Array of filters. */
 			filters: [],
 			activeFilters: {},
 			isSidebarVisible: false,
 			isLoadingItems: false,
+			/** A label to display the count of the current page. */
 			itemsOfTotalLabel: '',
 			latestItemsGetRequest: '',
 		};

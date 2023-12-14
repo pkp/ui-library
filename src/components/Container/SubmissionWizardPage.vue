@@ -32,34 +32,63 @@ export default {
 	],
 	data() {
 		return {
+			/** A unique string. See autosave mixin below. */
 			autosavesKeyBase: 'submitAutosaves',
+			/** **Required** A key/value map of category ids and category names. Example: `{12: "Social Sciences > Sociology"}`. Not required if there is no categories field in the submission wizard. Default: `{}` */
 			categories: {},
+			/** Default: `''` */
 			currentStepId: '',
+			/** A key/value map of submission validation errors. Default: `{}` */
 			errors: {},
+			/** Is the submission validation request pending? Default: `false` */
 			isValidating: false,
+			/** A localized string describing when the last save was completed. Uses `i18nLastAutosaved`. Default: `''`  */
 			lastAutosavedMessage: '',
+			/**  **Required** The `Publication` being edited. */
 			publication: {},
+			/** **Required** The URL to the REST API endpoint for this `Publication`. */
 			publicationApiUrl: '',
+			/** An array of `Publication` property names which can be edited by the form to reconfigure the submission. See "Reconfigure Submission" below. Default: `[]` */
 			reconfigurePublicationProps: [],
+			/** An array of `Submission` property names which can be edited by the form to reconfigure the submission. See "Reconfigure Submission" below. Default: `[]`  */
 			reconfigureSubmissionProps: [],
+			/** An array of ids of forms that have changed since the last save. Default: `[]` */
 			staleForms: [],
+			/** An array of ids of steps that have been started. Default: `[]` */
 			startedSteps: [],
+			/** **Required** An array of steps. See "Steps and Sections" below. */
 			steps: [],
+			/** The `Submission` being edited. Default: `{}` */
 			submission: {},
+			/** **Required** The URL to the REST API endpoint for this submission. */
 			submissionApiUrl: '',
+			/** **Required** The URL to the page to show when a submission is saved for later. */
 			submissionSavedUrl: '',
+			/** **Required** The URL to the submission wizard page. */
 			submissionWizardUrl: '',
+			/** **Required** The URL to the REST API endpoint to submit this submission. */
 			submitApiUrl: '',
+			/** **Required** A localized string for the confirmation message before submitting. */
 			i18nConfirmSubmit: '',
+			/** **Required** A localized string for the button to discard changes when unsaved changes are found. */
 			i18nDiscardChanges: '',
+			/** **Required** A localized string to show when there is no connection to the server. */
 			i18nDisconnected: '',
+			/** **Required** A localized string describing when the last autosave occured. */
 			i18nLastAutosaved: '',
+			/** **Required** A localized string describing the page with the step. This is used in the page `<title>` so that the browser tab and browser history provide useful information. Example: `Make a Submission: {$step}`. */
 			i18nPageTitle: '',
+			/** **Required** A localized string for the submit button. */
 			i18nSubmit: '',
+			/** **Required** A localized string to use as a separator in the page title. See `i18nPageTitle`. */
 			i18nTitleSeparator: '',
+			/** **Required** A localized string to show when an error occurred during an autosave, such as a failure to connect to the server. */
 			i18nUnableToSave: '',
+			/**  **Required** A localized string for the title of the dialog that appears when unsaved changes are found in local storage. */
 			i18nUnsavedChanges: '',
+			/** **Required** A localized string for the message of the dialog that appears when unsaved changes are found in local storage. */
 			i18nUnsavedChangesMessage: '',
+
 			isModalOpenedConfig: false,
 		};
 	},

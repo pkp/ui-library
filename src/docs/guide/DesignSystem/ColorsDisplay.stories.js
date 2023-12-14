@@ -4,6 +4,7 @@ export default {
 	title: 'DocsHelpers/ColorsDisplay',
 	component: ColorsDisplay,
 	render: (args) => ({
+		components: {ColorsDisplay},
 		setup() {
 			return {args};
 		},

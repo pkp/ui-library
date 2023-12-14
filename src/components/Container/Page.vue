@@ -20,12 +20,17 @@ export default {
 	},
 	data() {
 		return {
+			/** An array of objects defining a breadcrumb to display above main page content. */
 			breadcrumbs: [],
 			isLoading: false,
+			/** An array items for the main navigation menu */
 			menu: [],
 			notifications: [],
+			/** Used internally to clear notifications. Do not set this manually. */
 			notificationInterval: null,
+			/** The URL to load the tasks grid modal. */
 			tasksUrl: '',
+			/** The current number of unread tasks. */
 			unreadTasksCount: 0,
 		};
 	},

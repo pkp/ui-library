@@ -114,7 +114,7 @@
 								:row="row"
 								:tabindex="!rowIndex && !columnIndex ? 0 : -1"
 							>
-								<template v-if="column.name === 'name'">
+								<template v-if="column.name === 'name'" #default>
 									{{ row.name }}
 									<tooltip
 										v-if="row.description"
