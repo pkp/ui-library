@@ -15,7 +15,7 @@ export const ExamplePage1 = {
 		setup() {
 			return {args};
 		},
-		template: '<ExamplePage v-bind="args" />',
+		template: '<ExamplePage v-bind="args.pageInitConfig" />',
 	}),
 	args: {
 		pageInitConfig: {

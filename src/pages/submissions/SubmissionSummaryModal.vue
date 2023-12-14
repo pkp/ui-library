@@ -3,6 +3,7 @@
 		<template #header>
 			<div class="flex">
 				<div class="flex-grow">
+					{{ hola }}
 					<div class="text-xl-medium">{{ submission.id }}</div>
 					<h2 class="mt-1 text-4xl-bold underline">
 						{{ submission.publications[0].authorsStringShort }}
@@ -95,7 +96,7 @@
 					<div>
 						<PkpButton
 							is-link="true"
-							@click="submissionSummaryStore.openAssignParticipantModal"
+							@click="summaryStore.openAssignParticipantModal"
 						>
 							Assign Editors
 						</PkpButton>
@@ -105,8 +106,8 @@
 		</div>
 		<SideModal
 			close-label="Close"
-			:open="submissionSummaryStore.isModalOpenedAssignParticipant"
-			@close="submissionSummaryStore.closeAssignParticipantModal"
+			:open="summaryStore.isModalOpenedAssignParticipant"
+			@close="summaryStore.closeAssignParticipantModal"
 		>
 			<AssignEditorsModal />
 		</SideModal>
@@ -114,25 +115,18 @@
 </template>
 
 <script setup>
+import {storeToRefs} from 'pinia';
 import PkpButton from '@/components/Button/Button.vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import StageBubble from '@/components/StageBubble/StageBubble.vue';
 import SideModal from '@/components/Modal/SideModal.vue';
-import {onUnmounted} from 'vue';
 import AssignEditorsModal from '@/pages/submissions/AssignEditorsModal.vue';
 
-import {
-	useSubmissionSummaryStore,
-	disposeSubmissionSummaryStore,
-} from '@/pages/submissions/submissionSummaryStore';
+import {useSubmissionSummaryStore} from '@/pages/submissions/submissionSummaryStore';
 
 const pkp = window.pkp;
 
-const submissionSummaryStore = useSubmissionSummaryStore();
+const summaryStore = useSubmissionSummaryStore();
 
-const {submission} = submissionSummaryStore;
-
-onUnmounted(() => {
-	disposeSubmissionSummaryStore();
-});
+const {submission} = storeToRefs(summaryStore);
 </script>

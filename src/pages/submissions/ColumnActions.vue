@@ -11,23 +11,15 @@
 		</PkpButton>
 	</TableCell>
 </template>
-<script>
+<script setup>
+import {defineProps} from 'vue';
 import PkpButton from '@/components/Button/Button.vue';
 import TableCell from '@/components/TableNext/TableCell.vue';
-import {mapStores} from 'pinia';
 import {useSubmissionsPageStore} from '@/pages/submissions/submissionsPageStore.js';
 import Icon from '@/components/Icon/Icon.vue';
 
-export default {
-	components: {
-		PkpButton,
-		Icon,
-		TableCell,
-	},
-
-	props: {
-		submission: Object,
-	},
-	computed: {...mapStores(useSubmissionsPageStore)},
-};
+defineProps({
+	submission: {type: Object, required: true},
+});
+const submissionsPageStore = useSubmissionsPageStore();
 </script>

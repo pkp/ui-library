@@ -1,17 +1,11 @@
 import {ref} from 'vue';
-import {defineStore, getActivePinia} from 'pinia';
 import {useSubmissionsPageStore} from './submissionsPageStore';
 
-export function disposeSubmissionSummaryStore() {
-	const store = useSubmissionSummaryStore();
-	store.$dispose();
-	console.log('disposing: ', store.$id);
-	delete getActivePinia().state.value[store.$id];
-}
+import {defineComponentStore} from '@/utils/defineComponentStore';
 
-export const useSubmissionSummaryStore = defineStore(
+export const useSubmissionSummaryStore = defineComponentStore(
 	'submissionSummary',
-	() => {
+	(initValues) => {
 		const submissionsPageStore = useSubmissionsPageStore();
 
 		const {selectedSubmission: submission} = submissionsPageStore;

@@ -54,7 +54,7 @@
 	</SideModal>
 </template>
 <script setup>
-import {onUnmounted} from 'vue';
+//import {onUnmounted} from 'vue';
 // store
 import SubmissionsTable from '@/pages/submissions/SubmissionsTable.vue';
 import SubmissionsViews from '@/pages/submissions/SubmissionsViews.vue';
@@ -65,11 +65,7 @@ import SubmissionsFiltersModal from '@/pages/submissions/SubmissionsFiltersModal
 import AssignEditorsModal from '@/pages/submissions/AssignEditorsModal.vue';
 
 import SideModal from '@/components/Modal/SideModal.vue';
-import {
-	useSubmissionsPageStore,
-	initSubmissionsPageStore,
-	disposeSubmissionsPageStore,
-} from './submissionsPageStore';
+import {useSubmissionsPageStore} from './submissionsPageStore';
 
 const props = defineProps({
 	/** API url for fetching submissions (should be renamed) */
@@ -108,12 +104,8 @@ const props = defineProps({
 		required: true,
 	},
 });
-initSubmissionsPageStore(props);
-const store = useSubmissionsPageStore();
 
-onUnmounted(() => {
-	disposeSubmissionsPageStore();
-});
+const store = useSubmissionsPageStore(props);
 </script>
 
 <style lang="less">
