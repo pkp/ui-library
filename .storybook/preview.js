@@ -142,7 +142,7 @@ const preview = {
 		},
 		viewport: {
 			viewports: {
-				large: {name: 'Large', styles: {width: '1024px', height: '1000px'}},
+				large: {name: 'Large', styles: {width: '1200px', height: '1000px'}},
 				/** For scrollable scenarios */
 				largeHeight: {
 					name: 'Large',
