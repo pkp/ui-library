@@ -19,6 +19,13 @@ export const Base = {
 
 			return {isModalOpened};
 		},
+		decorators: [
+			(Story) => (
+				<div style={{height: '400px'}}>
+					<Story />
+				</div>
+			),
+		],
 		template: `
 			<PkpButton ref="simpleModalButton" @click="isModalOpened = true">
 				Open Modal
