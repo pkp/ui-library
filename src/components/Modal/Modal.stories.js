@@ -19,13 +19,6 @@ export const Base = {
 
 			return {isModalOpened};
 		},
-		decorators: [
-			(Story) => (
-				<div style={{height: '400px'}}>
-					<Story />
-				</div>
-			),
-		],
 		template: `
 			<PkpButton ref="simpleModalButton" @click="isModalOpened = true">
 				Open Modal
@@ -40,6 +33,13 @@ export const Base = {
 			</Modal>
 		`,
 	}),
+	decorators: [
+		() => ({
+			template:
+				'<div style="height: 150px;background-color:red"><story/></div>',
+		}),
+	],
+
 	args: {},
 };
 
@@ -71,6 +71,13 @@ export const WithForm = {
 			</Modal>
 		`,
 	}),
+	decorators: [
+		() => ({
+			template:
+				'<div style="height: 1500px;background-color:red"><story/></div>',
+		}),
+	],
+
 	args: {},
 };
 
@@ -121,6 +128,13 @@ export const WithTabs = {
 			</modal>
 		`,
 	}),
+	decorators: [
+		() => ({
+			template:
+				'<div style="height: 500px;background-color:red"><story/></div>',
+		}),
+	],
+
 	args: {},
 };
 
@@ -187,5 +201,12 @@ export const WithActions = {
 			</Modal>
 		`,
 	}),
+	decorators: [
+		() => ({
+			template:
+				'<div style="height: 300px;background-color:red"><story/></div>',
+		}),
+	],
+
 	args: {},
 };
