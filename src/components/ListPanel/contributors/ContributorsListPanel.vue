@@ -366,6 +366,8 @@ export default {
 				this.$emit('updated:contributors', newContributors);
 			}
 			this.closeFormModal();
+
+			this.getAndUpdatePublication();
 		},
 
 		/**
@@ -374,20 +376,7 @@ export default {
 		openPreviewModal() {
 			this.isLoading = true;
 
-			$.ajax({
-				url: this.publicationApiUrl,
-				type: 'GET',
-				context: this,
-				error: this.ajaxErrorCallback,
-				success(publication) {
-					this.$emit('updated:publication', publication);
-
-					this.isModalOpenedPreview = true;
-				},
-				complete(r) {
-					this.isLoading = false;
-				},
-			});
+			this.getAndUpdatePublication();
 		},
 
 		/**
@@ -445,6 +434,8 @@ export default {
 										},
 									);
 									this.$emit('updated:contributors', newContributors);
+									
+									this.getAndUpdatePublication();
 								},
 								complete(r) {
 									this.isLoading = false;
@@ -529,6 +520,8 @@ export default {
 		cancelOrdering() {
 			this.$emit('updated:contributors', this.itemsBeforeReordering);
 
+			this.getAndUpdatePublication();
+
 			this.itemsBeforeReordering = null;
 			this.isOrdering = false;
 		},
@@ -563,20 +556,7 @@ export default {
 				success(contributors) {
 					this.$emit('updated:contributors', contributors);
 
-					// Update the publication in the background so that
-					// any author strings are updated
-					$.ajax({
-						url: this.publicationApiUrl,
-						context: this,
-						type: 'GET',
-						success(publication) {
-							this.$emit('updated:publication', publication);
-						},
-						complete() {
-							this.isLoading = false;
-							this.isOrdering = false;
-						},
-					});
+					this.getAndUpdatePublication();
 				},
 				error: this.ajaxErrorCallback,
 				complete() {
@@ -651,6 +631,26 @@ export default {
 
 			this.$emit('updated:contributors', newItems);
 		},
+
+		/**
+		 * Update the publication in the background so that
+		 * any author strings are updated
+		 */
+		getAndUpdatePublication() {
+			$.ajax({
+				url: this.publicationApiUrl,
+				context: this,
+				type: 'GET',
+				success(publication) {
+					this.$emit('updated:publication', publication);
+				},
+				complete() {
+					this.isLoading = false;
+					this.isOrdering = false;
+				},
+			});
+		},
+		
 	},
 };
 </script>
