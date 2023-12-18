@@ -97,8 +97,8 @@ const preview = {
 	decorators: [
 		withThemeByDataAttribute({
 			themes: {
-				ltr: 'LTR',
-				rtl: 'RTL',
+				LTR: 'LTR',
+				RTL: 'RTL',
 			},
 			defaultTheme: 'LTR',
 			attributeName: 'dir',
