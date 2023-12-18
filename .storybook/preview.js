@@ -97,7 +97,7 @@ const preview = {
 	decorators: [
 		(story) => ({
 			components: {story},
-			template: '<div style="margin: 10px;"><story /></div>',
+			template: '<div style="padding: 10px;"><story /></div>',
 		}),
 		/** Globally Available Dialog */
 		(story) => ({
