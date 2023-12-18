@@ -104,12 +104,12 @@ const preview = {
 			attributeName: 'dir',
 			parentSelector: '#storybook-root',
 		}),
-		/*(story) => ({
+		(story) => ({
 			components: {story},
 			template: '<div style="padding: 10px;"><story /></div>',
 		}),
 		/** Globally Available Dialog */
-		/*(story) => ({
+		(story) => ({
 			setup() {
 				const dialogStore = useDialogStore();
 				return {dialogStore};
@@ -123,7 +123,7 @@ const preview = {
 				></PkpDialog>
 				<story />
 			</div>`,
-		}),*/
+		}),
 	],
 	parameters: {
 		actions: {argTypesRegex: '^on[A-Z].*'},
