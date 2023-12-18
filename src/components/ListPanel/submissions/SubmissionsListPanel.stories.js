@@ -1,6 +1,4 @@
 import SubmissionsListPanel from './SubmissionsListPanel.vue';
-import PkpDialog from '@/components/Modal/Dialog.vue';
-import {useDialogStore} from '@/stores/dialogStore';
 
 import SubmissionsMock from '@/mocks/submissions';
 import FieldBaseMock from '@/components/Form/mocks/field-base';
@@ -13,7 +11,7 @@ export default {
 
 export const Base = {
 	render: (args) => ({
-		components: {SubmissionsListPanel, PkpDialog},
+		components: {SubmissionsListPanel},
 		setup() {
 			function setData(id, newData) {
 				Object.keys(newData).forEach((key) => {
@@ -22,8 +20,6 @@ export const Base = {
 					}
 				});
 			}
-
-			const dialogStore = useDialogStore();
 
 			/**
 			 * Add required locale keys
@@ -59,14 +55,9 @@ export const Base = {
 				'Production galleys created';
 			pkp.localeKeys['submission.list.viewSubmission'] = 'View Submission';
 
-			return {args, setData, dialogStore};
+			return {args, setData};
 		},
 		template: `
-			<PkpDialog
-				:open="dialogStore.dialogOpened"
-				v-bind="dialogStore.dialogProps"
-				@close="dialogStore.closeDialog"
-			></PkpDialog>
 			<SubmissionsListPanel
 				v-bind="args"
 			/>

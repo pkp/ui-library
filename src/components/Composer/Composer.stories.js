@@ -4,8 +4,6 @@ import Composer from './Composer.vue';
 import fileAttachers from '@/docs/data/fileAttachers';
 import insertContent from '@/docs/data/insertContent';
 import emailTemplate from '@/docs/data/emailTemplate';
-import PkpDialog from '@/components/Modal/Dialog.vue';
-import {useDialogStore} from '@/stores/dialogStore';
 
 export default {
 	title: 'Components/Composer',
@@ -14,10 +12,8 @@ export default {
 
 export const Default = {
 	render: (args) => ({
-		components: {Composer, PkpDialog},
+		components: {Composer},
 		setup() {
-			const dialogStore = useDialogStore();
-
 			const emailTemplates = [emailTemplate];
 			emailTemplates.push({
 				...emailTemplate,
@@ -106,14 +102,9 @@ export const Default = {
 					composerState.value[key] = data[key];
 				});
 			}
-			return {args, composerState, composerChanged, dialogStore};
+			return {args, composerState, composerChanged};
 		},
 		template: `
-			<PkpDialog
-				:open="dialogStore.dialogOpened"
-				v-bind="dialogStore.dialogProps"
-				@close="dialogStore.closeDialog"
-			></PkpDialog>
 
 			<Composer
 				v-bind="args"

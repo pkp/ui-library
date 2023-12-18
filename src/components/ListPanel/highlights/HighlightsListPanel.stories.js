@@ -2,7 +2,6 @@ import HighlightsListPanel from './HighlightsListPanel.vue';
 import HighlightMock from '@/mocks/highlight';
 import FormHighlightMock from '@/components/Form/mocks/form-highlight';
 import PkpDialog from '@/components/Modal/Dialog.vue';
-import {useDialogStore} from '@/stores/dialogStore';
 
 export default {
 	title: 'ListPanel/HighlightsListPanel',
@@ -69,16 +68,9 @@ export const Base = {
 				});
 			}
 
-			const dialogStore = useDialogStore();
-
-			return {args, setData, dialogStore};
+			return {args, setData};
 		},
 		template: `
-			<PkpDialog
-				:open="dialogStore.dialogOpened"
-				v-bind="dialogStore.dialogProps"
-				@close="dialogStore.closeDialog"
-			></PkpDialog>
 			<HighlightsListPanel
 				v-bind="args"
 				@set="setData"

@@ -1,8 +1,5 @@
 import SubmissionFilesListPanel from './SubmissionFilesListPanel.vue';
 
-import PkpDialog from '@/components/Modal/Dialog.vue';
-import {useDialogStore} from '@/stores/dialogStore';
-
 import FormSubmissionFileMock from '@/components/Form/mocks/form-submission-file';
 import DropzoneOptionsMock from '@/mocks/dropzoneOptions';
 import SubmissionFilesMock from '@/mocks/submissionFiles';
@@ -19,10 +16,8 @@ yesterday.setDate(new Date().getDate() - 1);
 
 export const Base = {
 	render: (args) => ({
-		components: {SubmissionFilesListPanel, PkpDialog},
+		components: {SubmissionFilesListPanel},
 		setup() {
-			const dialogStore = useDialogStore();
-
 			function get(key) {
 				return args[key] ? args[key] : {};
 			}
@@ -35,14 +30,9 @@ export const Base = {
 				args[key] = component;
 			}
 
-			return {args, set, dialogStore};
+			return {args, set};
 		},
 		template: `
-			<PkpDialog
-				:open="dialogStore.dialogOpened"
-				v-bind="dialogStore.dialogProps"
-				@close="dialogStore.closeDialog"
-			></PkpDialog>
 				<SubmissionFilesListPanel
 					v-bind="args"
 					@set="set"

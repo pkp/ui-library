@@ -2,7 +2,6 @@ import AnnouncementsListPanel from './AnnouncementsListPanel.vue';
 
 import AnnouncementMock from '@/mocks/announcement';
 import FormAnnouncementMock from '@/components/Form/mocks/form-announcement';
-import PkpDialog from '@/components/Modal/Dialog.vue';
 import {useDialogStore} from '@/stores/dialogStore';
 
 export default {
@@ -71,18 +70,13 @@ const announcements = [
 
 export const Base = {
 	render: (args) => ({
-		components: {AnnouncementsListPanel, PkpDialog},
+		components: {AnnouncementsListPanel},
 		setup() {
 			const dialogStore = useDialogStore();
 
 			return {args, dialogStore};
 		},
 		template: `
-			<PkpDialog
-				:open="dialogStore.dialogOpened"
-				v-bind="dialogStore.dialogProps"
-				@close="dialogStore.closeDialog"
-			></PkpDialog>
 			<AnnouncementsListPanel
 				v-bind="args"
 			/>

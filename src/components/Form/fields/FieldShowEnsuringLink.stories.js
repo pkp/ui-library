@@ -1,17 +1,13 @@
 import FieldShowEnsuringLink from './FieldShowEnsuringLink.vue';
 import FieldBaseMock from '../mocks/field-base';
 import FieldShowEnsuringLinkMock from '../mocks/field-show-ensuring-link';
-import {useDialogStore} from '@/stores/dialogStore';
-import PkpDialog from '@/components/Modal/Dialog.vue';
 
 export default {
 	title: 'Forms/FieldShowEnsuringLink',
 	component: FieldShowEnsuringLink,
 	render: (args) => ({
-		components: {FieldShowEnsuringLink, PkpDialog},
+		components: {FieldShowEnsuringLink},
 		setup() {
-			const dialogStore = useDialogStore();
-
 			function change(name, prop, newValue, localeKey) {
 				if (localeKey) {
 					args[prop][localeKey] = newValue;
@@ -20,15 +16,9 @@ export default {
 				}
 			}
 
-			return {args, change, dialogStore};
+			return {args, change};
 		},
 		template: `
-			<PkpDialog
-				:open="dialogStore.dialogOpened"
-				v-bind="dialogStore.dialogProps"
-				@close="dialogStore.closeDialog"
-			></PkpDialog>
-
 			<FieldShowEnsuringLink v-bind="args" @change="change" />
 		`,
 	}),

@@ -20,6 +20,9 @@ import Tab from '@/components/Tabs/Tab.vue';
 import Tabs from '@/components/Tabs/Tabs.vue';
 import FloatingVue from 'floating-vue';
 
+import PkpDialog from '@/components/Modal/Dialog.vue';
+import {useDialogStore} from '@/stores/dialogStore';
+
 import VueScrollTo from 'vue-scrollto';
 
 import '../src/styles/_import.less';
@@ -94,7 +97,23 @@ const preview = {
 	decorators: [
 		(story) => ({
 			components: {story},
-			template: '<div style="margin: 3em;"><story /></div>',
+			template: '<div style="margin: 10px;"><story /></div>',
+		}),
+		/** Globally Available Dialog */
+		(story) => ({
+			setup() {
+				const dialogStore = useDialogStore();
+				return {dialogStore};
+			},
+			components: {story, PkpDialog},
+			template: `<div>			
+				<PkpDialog
+					:open="dialogStore.dialogOpened"
+					v-bind="dialogStore.dialogProps"
+					@close="dialogStore.closeDialog"
+				></PkpDialog>
+				<story />
+			</div>`,
 		}),
 	],
 	parameters: {

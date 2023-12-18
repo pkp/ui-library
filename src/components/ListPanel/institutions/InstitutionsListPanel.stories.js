@@ -1,7 +1,6 @@
 import InstitutionsListPanel from './InstitutionsListPanel.vue';
 
 import PkpDialog from '@/components/Modal/Dialog.vue';
-import {useDialogStore} from '@/stores/dialogStore';
 import FormInstitutionMock from '@/components/Form/mocks/form-institution';
 
 export default {
@@ -58,16 +57,9 @@ export const Base = {
 				});
 			}
 
-			const dialogStore = useDialogStore();
-
-			return {args, setData, dialogStore};
+			return {args, setData};
 		},
 		template: `
-			<PkpDialog
-				:open="dialogStore.dialogOpened"
-				v-bind="dialogStore.dialogProps"
-				@close="dialogStore.closeDialog"
-			></PkpDialog>
 			<InstitutionsListPanel
 				v-bind="args"
 			/>

@@ -1,7 +1,5 @@
 import SelectReviewerListPanel from './SelectReviewerListPanel.vue';
 
-import PkpDialog from '@/components/Modal/Dialog.vue';
-import {useDialogStore} from '@/stores/dialogStore';
 import ReviewerMock from '@/mocks/reviewer';
 
 export default {
@@ -101,7 +99,7 @@ const items = [
 
 export const Base = {
 	render: (args) => ({
-		components: {SelectReviewerListPanel, PkpDialog},
+		components: {SelectReviewerListPanel},
 		setup() {
 			function setData(id, newData) {
 				Object.keys(newData).forEach((key) => {
@@ -111,16 +109,9 @@ export const Base = {
 				});
 			}
 
-			const dialogStore = useDialogStore();
-
-			return {args, setData, dialogStore};
+			return {args, setData};
 		},
 		template: `
-			<PkpDialog
-				:open="dialogStore.dialogOpened"
-				v-bind="dialogStore.dialogProps"
-				@close="dialogStore.closeDialog"
-			></PkpDialog>
 			<SelectReviewerListPanel
 				v-bind="args"
 			/>

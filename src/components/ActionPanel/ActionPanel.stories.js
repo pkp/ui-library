@@ -1,5 +1,4 @@
 import ActionPanel from './ActionPanel.vue';
-import PkpDialog from '@/components/Modal/Dialog.vue';
 import './ActionPanelStories.less';
 import {useTranslation} from '@/composables/useTranslation';
 import {useDialogStore} from '@/stores/dialogStore';
@@ -10,7 +9,7 @@ export default {
 
 export const Default = {
 	render: (args) => ({
-		components: {ActionPanel, PkpDialog},
+		components: {ActionPanel},
 		setup() {
 			const {t} = useTranslation();
 			const dialogStore = useDialogStore();
@@ -40,16 +39,10 @@ export const Default = {
 			}
 			return {
 				args,
-				dialogStore,
 				openDeleteDialog,
 			};
 		},
 		template: `
-			<PkpDialog
-				:open="dialogStore.dialogOpened"
-				v-bind="dialogStore.dialogProps"
-				@close="dialogStore.closeDialog"
-			></PkpDialog>
 
 			<div class="previewActionPanel">
 				<action-panel>
