@@ -153,6 +153,7 @@ const preview = {
 		chromatic: {
 			modes: {
 				desktop: allModes['desktop'],
+				'desktop rtl': allModes['desktop rtl'],
 			},
 		},
 	},
