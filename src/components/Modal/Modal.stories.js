@@ -6,7 +6,6 @@ import FormMock from '@/docs/components/Form/helpers/form-announcement';
 import List from '@/components/List/List.vue';
 import ListItem from '@/components/List/ListItem.vue';
 import {allModes} from '../../../.storybook/modes.js';
-//import './Modal.stories.less';
 
 export default {
 	title: 'Components/Modal',
@@ -37,8 +36,7 @@ export const Base = {
 	}),
 	decorators: [
 		() => ({
-			template:
-				'<div style="height: 150px;background-color:red"><story/></div>',
+			template: '<div style="height: 150px"><story/></div>',
 		}),
 	],
 
@@ -75,13 +73,13 @@ export const WithForm = {
 	}),
 	decorators: [
 		() => ({
-			template:
-				'<div style="height: 1500px;background-color:red"><story/></div>',
+			template: '<div style="height: 1500px"><story/></div>',
 		}),
 	],
 	parameters: {
 		chromatic: {
 			modes: {
+				desktop: {disable: true},
 				desktopLargeHeight: allModes['desktopLargeHeight'],
 			},
 		},
@@ -139,8 +137,7 @@ export const WithTabs = {
 	}),
 	decorators: [
 		() => ({
-			template:
-				'<div style="height: 500px;background-color:red"><story/></div>',
+			template: '<div style="height: 500px"><story/></div>',
 		}),
 	],
 
@@ -212,8 +209,7 @@ export const WithActions = {
 	}),
 	decorators: [
 		() => ({
-			template:
-				'<div style="height: 300px;background-color:red"><story/></div>',
+			template: '<div style="height: 300px"><story/></div>',
 		}),
 	],
 
