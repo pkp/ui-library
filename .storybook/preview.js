@@ -91,6 +91,12 @@ setup((app) => {
 
 const preview = {
 	loaders: [mswLoader],
+	decorators: [
+		(story) => ({
+			components: {story},
+			template: '<div style="margin: 3em;"><story /></div>',
+		}),
+	],
 	parameters: {
 		actions: {argTypesRegex: '^on[A-Z].*'},
 		controls: {
