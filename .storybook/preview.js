@@ -1,5 +1,7 @@
 /** @type { import('@storybook/vue3').Preview } */
 
+import {withThemeByDataAttribute} from '@storybook/addon-themes';
+
 import {setup} from '@storybook/vue3';
 
 import GlobalMixins from '@/mixins/global.js';
@@ -28,14 +30,12 @@ import VueScrollTo from 'vue-scrollto';
 import '../src/styles/_import.less';
 import '../src/styles/_global.less';
 import {allModes} from './modes';
-import {initializeRTL} from 'storybook-addon-rtl';
 import {initialize, mswLoader} from 'msw-storybook-addon';
 
 import {createPinia} from 'pinia';
 
 const pinia = createPinia();
 
-initializeRTL();
 // Initialize MSW
 initialize({
 	onUnhandledRequest: ({method, url}) => {
@@ -95,6 +95,14 @@ setup((app) => {
 const preview = {
 	loaders: [mswLoader],
 	decorators: [
+		withThemeByDataAttribute({
+			themes: {
+				ltr: 'LTR',
+				rtl: 'RTL',
+			},
+			defaultTheme: 'LTR',
+			attributeName: 'RTL',
+		}),
 		(story) => ({
 			components: {story},
 			template: '<div style="padding: 10px;"><story /></div>',
@@ -153,7 +161,7 @@ const preview = {
 		chromatic: {
 			modes: {
 				desktop: allModes['desktop'],
-				'desktop rtl': allModes['desktop rtl'],
+				'desktop RTL': allModes['desktop RTL'],
 			},
 		},
 	},
