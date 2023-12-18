@@ -114,6 +114,21 @@ const preview = {
 					: a.id.localeCompare(b.id, undefined, {numeric: true});
 			},*/
 		},
+		viewport: {
+			viewports: {
+				large: {name: 'Large', styles: {width: '1024px', height: '1000px'}},
+				/** For scrollable scenarios */
+				largeHeight: {
+					name: 'Large',
+					styles: {width: '1024px', height: '1500px'},
+				},
+			},
+		},
+		chromatic: {
+			modes: {
+				desktop: allModes['desktop'],
+			},
+		},
 	},
 };
 

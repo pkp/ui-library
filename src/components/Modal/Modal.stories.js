@@ -5,6 +5,8 @@ import cloneDeep from 'clone-deep';
 import FormMock from '@/docs/components/Form/helpers/form-announcement';
 import List from '@/components/List/List.vue';
 import ListItem from '@/components/List/ListItem.vue';
+import {allModes} from '../../../.storybook/modes.js';
+//import './Modal.stories.less';
 
 export default {
 	title: 'Components/Modal',
@@ -51,7 +53,7 @@ export const WithForm = {
 
 			const form = ref({
 				...cloneDeep(FormMock),
-				aciton: 'https://httpbin.org',
+				action: 'https://httpbin.org',
 				method: 'GET',
 			});
 
@@ -77,6 +79,13 @@ export const WithForm = {
 				'<div style="height: 1500px;background-color:red"><story/></div>',
 		}),
 	],
+	parameters: {
+		chromatic: {
+			modes: {
+				desktopLargeHeight: allModes['desktopLargeHeight'],
+			},
+		},
+	},
 
 	args: {},
 };
