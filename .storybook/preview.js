@@ -24,6 +24,7 @@ import VueScrollTo from 'vue-scrollto';
 
 import '../src/styles/_import.less';
 import '../src/styles/_global.less';
+import {allModes} from './modes';
 import {initializeRTL} from 'storybook-addon-rtl';
 import {initialize, mswLoader} from 'msw-storybook-addon';
 
