@@ -101,7 +101,7 @@ const preview = {
 				rtl: 'RTL',
 			},
 			defaultTheme: 'LTR',
-			attributeName: 'RTL',
+			attributeName: 'dir',
 		}),
 		(story) => ({
 			components: {story},
