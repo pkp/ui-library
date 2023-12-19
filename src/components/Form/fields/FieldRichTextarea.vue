@@ -251,7 +251,8 @@ export default {
 		 * Is this field for language in a RTL language?
 		 */
 		isRTL() {
-			return $.pkp.app.rtlLocales.includes(this.localeKey);
+			const direction = document.body.getAttribute('dir');
+			return direction === 'rtl';
 		},
 	},
 	watch: {

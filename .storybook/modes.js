@@ -1,11 +1,11 @@
 export const allModes = {
 	desktop: {
 		viewport: 'large',
-		theme: 'LTR',
+		theme: 'ltr',
 	},
-	'desktop RTL': {
+	'desktop rtl': {
 		viewport: 'large',
-		theme: 'RTL',
+		theme: 'rtl',
 	},
 	// for snapshotting scrollable areas with all content, like modals
 	desktopLargeHeight: {

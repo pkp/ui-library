@@ -316,7 +316,8 @@ export default {
 		 * Is this field in a right-to-left language
 		 */
 		isRTL() {
-			return $.pkp.app.rtlLocales.includes(this.localeKey);
+			var direction = document.body.getAttribute('dir');
+			return direction === 'rtl';
 		},
 	},
 	methods: {

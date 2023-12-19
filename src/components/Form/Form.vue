@@ -647,11 +647,11 @@ export default {
 }
 
 .pkpFormPage {
-	position: absolute;
-	left: -9999px;
+	display: none;
 }
 
 .pkpFormPage--current {
+	display: block;
 	position: relative;
 	left: auto;
 }

@@ -122,7 +122,7 @@ export default {
 		 */
 		classes() {
 			let classes = ['pkpFormField--size' + this.size];
-			if ($.pkp.app.rtlLocales.includes(this.localeKey)) {
+			if (this.isRTL()) {
 				classes.push('pkpFormField--text--rtl');
 			}
 			return classes;
@@ -206,6 +206,10 @@ export default {
 		 */
 		setFocus() {
 			this.$refs.input.focus();
+		},
+		isRTL() {
+			var direction = document.body.getAttribute('dir');
+			return direction === 'rtl';
 		},
 	},
 };
