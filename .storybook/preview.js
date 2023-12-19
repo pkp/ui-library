@@ -102,7 +102,7 @@ const preview = {
 			},
 			defaultTheme: 'LTR',
 			attributeName: 'dir',
-			parentSelector: '#storybook-root',
+			parentSelector: 'body',
 		}),
 		(story) => ({
 			components: {story},
