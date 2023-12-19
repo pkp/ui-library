@@ -355,7 +355,7 @@ function getRandomTimeline(startDate, endDate, timelineInterval) {
 		timeline.push({
 			date: startDate.toISOString().split('T')[0],
 			label: startDate.toString().split(' ').slice(1, labelSplice).join(' '),
-			value: Math.floor(Math.random() * 2000) + 3000,
+			value: Math.floor(startDate.getDate() * 2000) + 3000,
 		});
 		if (timelineInterval === 'month') {
 			startDate.setMonth(startDate.getMonth() + 1);
@@ -580,8 +580,13 @@ const PublicationStatsPageWithDataAndTemplate = {
 	</div>
 `,
 	data() {
-		const dateEndMax = new Date(new Date().setDate(new Date().getDate() - 1));
-		const startDate = new Date();
+		const fakeToday = 'Tue Dec 19 2023 16:00:27 GMT+0100';
+		const dateEndMax = new Date(
+			new Date().setDate(new Date().getDate(fakeToday) - 1),
+		);
+
+		const startDate = new Date(fakeToday);
+
 		startDate.setDate(dateEndMax.getDate() - 30);
 		return {
 			apiUrl: '/api/v1/stats/publications',
