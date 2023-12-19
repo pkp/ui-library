@@ -1126,9 +1126,8 @@ export default {
 	margin-top: 0.5rem;
 
 	.pkpFormFieldLabel {
-		clip: rect(1px, 1px, 1px, 1px);
-		position: absolute !important;
-		left: -2000px;
+		// use tailwind class which works better with rtl
+		@apply sr-only;
 	}
 }
 
