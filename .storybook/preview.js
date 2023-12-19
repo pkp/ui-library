@@ -1,10 +1,7 @@
 /** @type { import('@storybook/vue3').Preview } */
 
 import {withThemeByDataAttribute} from '@storybook/addon-themes';
-import {DirectionProvider} from '../DirectionProvider';
 import {setup} from '@storybook/vue3';
-import {addons, useParameter} from '@storybook/preview-api';
-import {onUpdated, onMounted, ref, watch} from 'vue';
 import GlobalMixins from '@/mixins/global.js';
 import emitter from 'tiny-emitter/instance';
 
