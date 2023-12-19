@@ -376,7 +376,9 @@ export default {
 		openPreviewModal() {
 			this.isLoading = true;
 
-			this.getAndUpdatePublication();
+			this.getAndUpdatePublication(() => {
+				this.isModalOpenedPreview = true;
+			});
 		},
 
 		/**
@@ -520,10 +522,10 @@ export default {
 		cancelOrdering() {
 			this.$emit('updated:contributors', this.itemsBeforeReordering);
 
-			this.getAndUpdatePublication();
-
 			this.itemsBeforeReordering = null;
 			this.isOrdering = false;
+
+			this.getAndUpdatePublication();
 		},
 
 		/**
@@ -636,13 +638,15 @@ export default {
 		 * Update the publication in the background so that
 		 * any author strings are updated
 		 */
-		getAndUpdatePublication() {
+		getAndUpdatePublication(onComplete = () => {}) {
 			$.ajax({
 				url: this.publicationApiUrl,
 				context: this,
 				type: 'GET',
 				success(publication) {
 					this.$emit('updated:publication', publication);
+
+					onComplete();
 				},
 				complete() {
 					this.isLoading = false;
