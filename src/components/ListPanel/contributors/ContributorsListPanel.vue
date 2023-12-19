@@ -376,7 +376,7 @@ export default {
 		openPreviewModal() {
 			this.isLoading = true;
 
-			this.getAndUpdatePublication();
+			this.getAndUpdatePublication(true);
 		},
 
 		/**
@@ -636,13 +636,17 @@ export default {
 		 * Update the publication in the background so that
 		 * any author strings are updated
 		 */
-		getAndUpdatePublication() {
+		getAndUpdatePublication(openPreview = false) {
 			$.ajax({
 				url: this.publicationApiUrl,
 				context: this,
 				type: 'GET',
 				success(publication) {
 					this.$emit('updated:publication', publication);
+
+					if (openPreview) {
+						this.isModalOpenedPreview = true;
+					}
 				},
 				complete() {
 					this.isLoading = false;
