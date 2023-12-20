@@ -8,7 +8,7 @@ import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
 import './Steps.stories.less';
 
 export default {
-	title: 'Basic Components/Steps',
+	title: 'Components/Steps',
 	component: Steps,
 };
 

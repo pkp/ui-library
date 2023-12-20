@@ -1,7 +1,7 @@
 import Dropdown from './Dropdown.vue';
 
 export default {
-	title: 'Basic Components/Dropdown',
+	title: 'Components/Dropdown',
 	component: Dropdown,
 };
 

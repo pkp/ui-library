@@ -2,7 +2,7 @@ import Tabs from './Tabs.vue';
 import Tab from './Tab.vue';
 
 export default {
-	title: 'Basic Components/Tabs',
+	title: 'Components/Tabs',
 	component: Tabs,
 };
 

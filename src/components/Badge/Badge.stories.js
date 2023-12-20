@@ -2,7 +2,7 @@ import Badge from './Badge.vue';
 import Icon from '@/components/Icon/Icon.vue';
 
 export default {
-	title: 'Basic Components/Badge',
+	title: 'Components/Badge',
 	component: Badge,
 	render: (args) => ({
 		components: {Badge},

@@ -3,7 +3,7 @@ import Icon from '@/components/Icon/Icon.vue';
 import {ref} from 'vue';
 
 export default {
-	title: 'Basic Components/Notification',
+	title: 'Components/Notification',
 	component: Notification,
 };
 

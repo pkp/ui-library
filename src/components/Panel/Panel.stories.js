@@ -5,7 +5,7 @@ import List from '@/components/List/List.vue';
 import ListItem from '@/components/List/ListItem.vue';
 
 export default {
-	title: 'Basic Components/Panel',
+	title: 'Components/Panel',
 	component: Panel,
 };
 
