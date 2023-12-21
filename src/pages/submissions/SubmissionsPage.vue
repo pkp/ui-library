@@ -54,7 +54,7 @@
 	</SideModal>
 </template>
 <script setup>
-import {onUnmounted} from 'vue';
+//import {onUnmounted} from 'vue';
 // store
 import SubmissionsTable from '@/pages/submissions/SubmissionsTable.vue';
 import SubmissionsViews from '@/pages/submissions/SubmissionsViews.vue';
@@ -65,20 +65,47 @@ import SubmissionsFiltersModal from '@/pages/submissions/SubmissionsFiltersModal
 import AssignEditorsModal from '@/pages/submissions/AssignEditorsModal.vue';
 
 import SideModal from '@/components/Modal/SideModal.vue';
-import {
-	useSubmissionsPageStore,
-	initSubmissionsPageStore,
-	disposeSubmissionsPageStore,
-} from './submissionsPageStore';
+import {useSubmissionsPageStore} from './submissionsPageStore';
 
-/** TODO rename to pageInitConfig */
-const props = defineProps({storeData: {required: true, type: Object}});
-initSubmissionsPageStore(props.storeData);
-const store = useSubmissionsPageStore();
-
-onUnmounted(() => {
-	disposeSubmissionsPageStore();
+const props = defineProps({
+	/** API url for fetching submissions (should be renamed) */
+	apiUrl: {
+		type: String,
+		required: true,
+	},
+	/** API url assigning participant */
+	assignParticipantUrl: {
+		type: String,
+		required: true,
+	},
+	/** List of Views */
+	views: {
+		type: Array,
+		required: true,
+	},
+	/** Initial view that should be selected*/
+	currentViewId: {
+		type: Number,
+		required: true,
+	},
+	/** Filters form config  */
+	filtersForm: {
+		type: Object,
+		required: true,
+	},
+	/** List of columns */
+	columns: {
+		type: Array,
+		required: true,
+	},
+	/** How many submissions to show per page */
+	countPerPage: {
+		type: Number,
+		required: true,
+	},
 });
+
+const store = useSubmissionsPageStore(props);
 </script>
 
 <style lang="less">

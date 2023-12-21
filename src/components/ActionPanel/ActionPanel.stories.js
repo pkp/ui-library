@@ -1,5 +1,4 @@
 import ActionPanel from './ActionPanel.vue';
-import PkpDialog from '@/components/Modal/Dialog.vue';
 import './ActionPanelStories.less';
 import {useTranslation} from '@/composables/useTranslation';
 import {useDialogStore} from '@/stores/dialogStore';
@@ -10,13 +9,12 @@ export default {
 
 export const Default = {
 	render: (args) => ({
-		components: {ActionPanel, PkpDialog},
+		components: {ActionPanel},
 		setup() {
 			const {t} = useTranslation();
 			const dialogStore = useDialogStore();
 
 			function openDeleteDialog() {
-				console.log('open dialog!');
 				dialogStore.openDialog({
 					name: 'deleteDialog',
 					title: 'Delete Incomplete Submissions',
@@ -41,16 +39,10 @@ export const Default = {
 			}
 			return {
 				args,
-				dialogStore,
 				openDeleteDialog,
 			};
 		},
 		template: `
-			<PkpDialog
-				:open="dialogStore.dialogOpened"
-				v-bind="dialogStore.dialogProps"
-				@close="dialogStore.closeDialog"
-			></PkpDialog>
 
 			<div class="previewActionPanel">
 				<action-panel>

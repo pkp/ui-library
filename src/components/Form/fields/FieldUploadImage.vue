@@ -135,6 +135,7 @@ export default {
 	props: {
 		altTextDescription: String,
 		altTextLabel: String,
+		/** The `baseUrl` is prepended to the filename to display previews. For example, the `baseURL` for the logo of a journal with an ID of `2` would be `http://yoursite.com/public/journals/2/` */
 		baseUrl: String,
 		thumbnailDescription: String,
 	},

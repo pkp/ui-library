@@ -1,9 +1,8 @@
 import {ref} from 'vue';
-import {rest} from 'msw';
+import {http, HttpResponse, delay} from 'msw';
 import FileAttacher from './FileAttacher.vue';
 import fileAttachers from '@/docs/data/fileAttachers';
 import submissionFiles from '@/docs/data/submissionFiles';
-const delay = (time) => new Promise((resolve) => setTimeout(resolve, time));
 
 export default {
 	title: 'Components/FileAttacher',
@@ -26,9 +25,9 @@ export const Default = {
 	parameters: {
 		msw: {
 			handlers: [
-				rest.get(
+				http.get(
 					'https://mock/index.php/publicknowledge/api/v1/submissions/26/files',
-					async (req, res, ctx) => {
+					async () => {
 						await delay(500);
 
 						const files = [
@@ -42,12 +41,12 @@ export const Default = {
 							},
 						];
 
-						return res(ctx.json({itemsMax: files.length, items: files}));
+						return HttpResponse.json({itemsMax: files.length, items: files});
 					},
 				),
-				rest.get(
+				http.get(
 					'https://mock/index.php/publicknowledge/api/v1/_library',
-					async (req, res, ctx) => {
+					async () => {
 						await delay(500);
 
 						const file = {
@@ -76,7 +75,7 @@ export const Default = {
 							},
 						];
 
-						return res(ctx.json({itemsMax: files.length, items: files}));
+						return HttpResponse.json({itemsMax: files.length, items: files});
 					},
 				),
 			],

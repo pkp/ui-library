@@ -16,19 +16,33 @@ export default {
 	mixins: [dialog],
 	data() {
 		return {
+			/** An object containing the currently active Filters */
 			activeFilters: {},
+			/**  The `Mailable` currently open in a modal. */
 			currentMailable: {},
+			/** The `EmailTemplate` currently open in a modal. */
 			currentTemplate: {},
+			/** A copy of the form to add or edit an `EmailTemplate` that is currently open in a modal. This form may have an email template's details loaded into it. */
 			currentTemplateForm: {},
+			/** A localized string for the button to remove a template. */
 			i18nRemoveTemplate: '',
+			/** A localized string for the confirmation message when removing a template. */
 			i18nRemoveTemplateMessage: '',
+			/** A localized string for the button to reset all email templates. */
 			i18nResetAll: '',
+			/**  A localized string for the confirmation message when removing a template.  */
 			i18nResetAllMessage: '',
+			/** An array of all `Mailable`s active in this journal, press or preprint server. */
 			mailables: [],
+			/** The URL to the `/mailables` endpoint in the REST API. */
 			mailablesApiUrl: '',
+			/**  Used to reset focus when a modal is closed.  */
 			resetFocusTo: {},
+			/** The value of the search input.  */
 			searchPhrase: '',
+			/** A "clean" copy of the form to add or edit an `EmailTemplate`. The `currentTemplateForm` is a copy of this form that has been modified to add or edit a specific template. */
 			templateForm: {},
+			/** The URL to the `/emailTemplates` endpoint in the REST API. */
 			templatesApiUrl: '',
 			isModalOpenedMailable: false,
 			isModalOpenedTemplate: false,

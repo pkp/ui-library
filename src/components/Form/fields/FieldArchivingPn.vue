@@ -77,10 +77,12 @@ export default {
 	name: 'FieldArchivingPn',
 	extends: FieldOptions,
 	props: {
+		/** The current value for this field. */
 		value: {
 			type: Boolean,
 			required: true,
 		},
+		/** An HTML string with a `<button>` that can be used to open the preservation plugin's settings modal. **Note: the modal will not open in this demonstration.**  */
 		terms: {
 			type: String,
 			required: true,
@@ -93,14 +95,17 @@ export default {
 			type: String,
 			required: true,
 		},
+		/** A URL to send a request to the plugin grid handler to enable this plugin. */
 		enablePluginUrl: {
 			type: String,
 			required: true,
 		},
+		/** A URL to send a request to the plugin grid handler to disable this plugin. */
 		disablePluginUrl: {
 			type: String,
 			required: true,
 		},
+		/** A URL to send a request to the plugin grid handler to display the settings for this plugin. **Note: the modal will not open in this demonstration.** */
 		settingsUrl: {
 			type: String,
 			required: true,

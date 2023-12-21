@@ -1,7 +1,7 @@
 /** @type { import('@storybook/vue3').Preview } */
 
+import {withThemeByDataAttribute} from '@storybook/addon-themes';
 import {setup} from '@storybook/vue3';
-
 import GlobalMixins from '@/mixins/global.js';
 import emitter from 'tiny-emitter/instance';
 
@@ -20,19 +20,24 @@ import Tab from '@/components/Tabs/Tab.vue';
 import Tabs from '@/components/Tabs/Tabs.vue';
 import FloatingVue from 'floating-vue';
 
+import PkpDialog from '@/components/Modal/Dialog.vue';
+import {useDialogStore} from '@/stores/dialogStore';
+
+import VueScrollTo from 'vue-scrollto';
+
 import '../src/styles/_import.less';
 import '../src/styles/_global.less';
-import {initializeRTL} from 'storybook-addon-rtl';
+import {allModes} from './modes';
 import {initialize, mswLoader} from 'msw-storybook-addon';
 
 import {createPinia} from 'pinia';
 
 const pinia = createPinia();
 
-initializeRTL();
 // Initialize MSW
 initialize({
-	onUnhandledRequest: ({method, url}) => {
+	/** To be migrated to msw2 if neede */
+	/*onUnhandledRequest: ({method, url}) => {
 		if (url.pathname.includes('://mock/')) {
 			console.error(`Unhandled ${method} request to ${url}.
 
@@ -41,7 +46,7 @@ initialize({
         If you wish to mock an error response, please refer to this guide: https://mswjs.io/docs/recipes/mocking-error-responses
       `);
 		}
-	},
+	},*/
 });
 
 setup((app) => {
@@ -60,6 +65,8 @@ setup((app) => {
 			},
 		},
 	});
+
+	app.use(VueScrollTo);
 
 	app.component('Badge', Badge);
 	app.component('Dropdown', Dropdown);
@@ -86,6 +93,43 @@ setup((app) => {
 
 const preview = {
 	loaders: [mswLoader],
+	decorators: [
+		withThemeByDataAttribute({
+			themes: {
+				ltr: 'ltr',
+				rtl: 'rtl',
+			},
+			defaultTheme: 'ltr',
+		}),
+		(story, {globals}) => {
+			/** withThemebyDataAttribute decorator applies attribute after render, which
+			 * is too late fort tinyMCE which needs to detect it on first render correctly
+			 *
+			 */
+			document.body.setAttribute('dir', globals.theme);
+			return story();
+		},
+		(story) => ({
+			components: {story},
+			template: '<div style="padding: 10px;"><story /></div>',
+		}),
+		/** Globally Available Dialog */
+		(story) => ({
+			setup() {
+				const dialogStore = useDialogStore();
+				return {dialogStore};
+			},
+			components: {story, PkpDialog},
+			template: `<div>			
+				<PkpDialog
+					:open="dialogStore.dialogOpened"
+					v-bind="dialogStore.dialogProps"
+					@close="dialogStore.closeDialog"
+				></PkpDialog>
+				<story />
+			</div>`,
+		}),
+	],
 	parameters: {
 		actions: {argTypesRegex: '^on[A-Z].*'},
 		controls: {
@@ -104,11 +148,26 @@ const preview = {
 				if (b.id.includes('introduction--docs')) {
 					return 1;
 				}
-
 				return a.id === b.id
 					? 0
 					: a.id.localeCompare(b.id, undefined, {numeric: true});
 			},*/
+		},
+		viewport: {
+			viewports: {
+				large: {name: 'Large', styles: {width: '1280px', height: '1000px'}},
+				/** For scrollable scenarios */
+				largeHeight: {
+					name: 'Large',
+					styles: {width: '1024px', height: '1500px'},
+				},
+			},
+		},
+		chromatic: {
+			modes: {
+				desktop: allModes['desktop'],
+				'desktop rtl': allModes['desktop rtl'],
+			},
 		},
 	},
 };

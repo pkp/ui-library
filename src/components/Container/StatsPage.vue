@@ -22,16 +22,24 @@ export default {
 	mixins: [ajaxError],
 	data() {
 		return {
+			/** URL to the REST API endpoint to retrieve stats. */
 			apiUrl: '',
+			/** An array of objects representing columns in the table. See [Table](#/component/Table). */
 			tableColumns: [],
+			/** Current start date in the format `YYYY-MM-DD`. */
 			dateStart: '',
+			/** Current start date in the format `YYYY-MM-DD`. */
 			dateEnd: '',
+			/** Current start date in the format `YYYY-MM-DD`. */
 			dateEndMax: '',
+			/** Array of objects representing preset date range options, such as the last 90 days. */
 			dateRangeOptions: [],
+			/** Array of filters. */
 			filters: [],
 			activeFilters: {},
 			isSidebarVisible: false,
 			isLoadingItems: false,
+			/** A label to display the count of the current page. */
 			itemsOfTotalLabel: '',
 			latestItemsGetRequest: '',
 		};
@@ -249,10 +257,12 @@ export default {
 }
 
 .pkpStats__sidebar {
-	position: absolute;
-	left: -9999px;
-	opacity: 0;
-	width: 0;
+	/** Intention here seems to be hiding from screen, but keeping for screen reader
+		Not sure if thats best practice in this case, but for now using tailwindcss classes,
+		which work with RTL. 
+	*/
+
+	@apply sr-only;
 
 	+ .pkpStats__content {
 		float: right;
@@ -271,6 +281,7 @@ export default {
 }
 
 .pkpStats__sidebar.-isVisible {
+	@apply not-sr-only;
 	float: left;
 	position: relative;
 	left: 0;
@@ -486,9 +497,6 @@ export default {
 
 [dir='rtl'] {
 	.pkpStats__sidebar {
-		left: auto;
-		right: -9999px;
-
 		+ .pkpStats__content {
 			float: left;
 		}

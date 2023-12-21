@@ -109,18 +109,19 @@ export default {
 	},
 	extends: FieldBase,
 	props: {
-		// @see https://www.tiny.cloud/docs/configure/integration-and-setup/
+		/** Provide config properties for TinyMCE's `init` method. Any props you pass will be merged with defaults and can override them. See [TinyMCE documentation](https://www.tiny.cloud/docs/configure/integration-and-setup/). */
 		init: {
 			type: Object,
 			default() {
 				return {};
 			},
 		},
-		// @see https://www.tiny.cloud/docs/configure/integration-and-setup/#plugins
+		/**  Specify plugins the TinyMCE editor should load. See [TinyMCE documentation](https://www.tiny.cloud/docs/configure/integration-and-setup/#plugins). */
 		plugins: {
 			type: String,
 			required: true,
 		},
+		/** One of `default` or `large`. */
 		size: {
 			type: String,
 			default() {
@@ -130,11 +131,12 @@ export default {
 				return ['default', 'large'].includes(value);
 			},
 		},
-		// @see https://www.tinymce.com/docs/configure/editor-appearance/#toolbar
+		/** Provide the TinyMCE editor with a custom toolbar. See [TinyMCE documentation](https://www.tinymce.com/docs/configure/editor-appearance/#toolbar). */
 		toolbar: {
 			type: String,
 			required: true,
 		},
+		/** Optionally provide a URL where images and other files can be uploaded. You still need to add the appropriate buttons and plugins to the `toolbar` and `plugins` props. The most common use is the [image](https://www.tiny.cloud/docs/plugins/image/) plugin. */
 		uploadUrl: {
 			type: String,
 			default() {
@@ -147,6 +149,7 @@ export default {
 				return '';
 			},
 		},
+		/** Optionally provide a word limit and the editor will display the word count as they type. */
 		wordLimit: {
 			type: Number,
 			default() {
@@ -248,7 +251,8 @@ export default {
 		 * Is this field for language in a RTL language?
 		 */
 		isRTL() {
-			return $.pkp.app.rtlLocales.includes(this.localeKey);
+			const direction = document.body.getAttribute('dir');
+			return direction === 'rtl';
 		},
 	},
 	watch: {

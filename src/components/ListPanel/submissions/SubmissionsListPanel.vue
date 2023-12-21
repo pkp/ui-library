@@ -118,53 +118,66 @@ export default {
 	},
 	mixins: [fetch],
 	props: {
+		/** The URL to make a new submission. */
 		addUrl: {
 			type: String,
 			required: true,
 		},
+		/** Whether or not the journal, press or preprint server allows submissions. */
 		allowSubmissions: {
 			type: Boolean,
 			default() {
 				return true;
 			},
 		},
+		/**  The URL to the component handler to assign a participant to a submission. */
 		assignParticipantUrl: {
 			type: String,
 			default() {
 				return '';
 			},
 		},
+		/** An array of [Filters](../?path=/docs/components-filter-base--docs) to change the view of the submissions list. */
 		filters: {
 			type: Array,
 			default() {
 				return [];
 			},
 		},
+		/** A unique id for this component. */
 		id: {
 			type: String,
 			required: true,
 		},
+		/** The URL to the component handler for the submission's activity log and notes. */
 		infoUrl: {
 			type: String,
 			required: true,
 		},
+		/** An array of submissions.  */
 		items: {
 			type: Array,
 			default() {
 				return [];
 			},
 		},
+		/** A count of all submissions the user can access in the journal, press or preprint server. */
 		itemsMax: {
 			type: Number,
 			defaut() {
 				return 0;
 			},
 		},
+		/** The title of the list panel. */
 		title: {
 			type: String,
 			required: true,
 		},
 	},
+	emits: [
+		/** Emitted when a prop should be changed. Payload: `(id, newProps) */
+		'set',
+	],
 	data() {
 		return {
 			isSidebarVisible: false,

@@ -5,6 +5,7 @@ import cloneDeep from 'clone-deep';
 import FormMock from '@/docs/components/Form/helpers/form-announcement';
 import List from '@/components/List/List.vue';
 import ListItem from '@/components/List/ListItem.vue';
+import {allModes} from '../../../.storybook/modes.js';
 
 export default {
 	title: 'Components/Modal',
@@ -33,6 +34,12 @@ export const Base = {
 			</Modal>
 		`,
 	}),
+	decorators: [
+		() => ({
+			template: '<div style="height: 150px"><story/></div>',
+		}),
+	],
+
 	args: {},
 };
 
@@ -44,7 +51,7 @@ export const WithForm = {
 
 			const form = ref({
 				...cloneDeep(FormMock),
-				aciton: 'https://httpbin.org',
+				action: 'https://httpbin.org',
 				method: 'GET',
 			});
 
@@ -64,6 +71,20 @@ export const WithForm = {
 			</Modal>
 		`,
 	}),
+	decorators: [
+		() => ({
+			template: '<div style="height: 1500px"><story/></div>',
+		}),
+	],
+	parameters: {
+		chromatic: {
+			modes: {
+				desktop: {disable: true},
+				desktopLargeHeight: allModes['desktopLargeHeight'],
+			},
+		},
+	},
+
 	args: {},
 };
 
@@ -114,6 +135,12 @@ export const WithTabs = {
 			</modal>
 		`,
 	}),
+	decorators: [
+		() => ({
+			template: '<div style="height: 500px"><story/></div>',
+		}),
+	],
+
 	args: {},
 };
 
@@ -180,5 +207,11 @@ export const WithActions = {
 			</Modal>
 		`,
 	}),
+	decorators: [
+		() => ({
+			template: '<div style="height: 300px"><story/></div>',
+		}),
+	],
+
 	args: {},
 };

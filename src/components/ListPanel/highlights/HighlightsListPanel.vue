@@ -100,22 +100,29 @@ export default {
 	},
 	mixins: [dialog, fetch, ajaxError],
 	props: {
+		/** The URL to the REST API endpoint for highlights. */
+		apiUrl: {type: String, required: true},
+		/** The [Form](../?path=/docs/forms-form--docs) to edit a highlight. */
 		form: {
 			type: Object,
 			required: true,
 		},
+		/**  A localized string for the button to add a highlight. */
 		i18nAdd: {
 			type: String,
 			required: true,
 		},
+		/** A localized string for the confirmation message before deleting a highlight. */
 		i18nConfirmDelete: {
 			type: String,
 			required: true,
 		},
+		/** A localized string for the button to delete a highlight. */
 		i18nDelete: {
 			type: String,
 			required: true,
 		},
+		/** A localized string for the button to edit a highlight. */
 		i18nEdit: {
 			type: String,
 			required: true,
@@ -124,21 +131,34 @@ export default {
 			type: String,
 			required: true,
 		},
+		/** A unique id for this component. */
 		id: {
 			type: String,
 			required: true,
 		},
+		/** An array of highlights. */
 		items: {
 			type: Array,
 			default() {
 				return [];
 			},
 		},
+		/** A count of all highlights in the journal, press or preprint server, or in the site for site-level highlights. */
+		itemsMax: {type: Number, required: true},
+		/** The title of the list panel. */
 		title: {
 			type: String,
 			required: true,
 		},
 	},
+	emits: [
+		/** [Event Bus](http://localhost:8080/#/pages/event-bus) | Emitted when a highlight is added. Payload: `(highlight)` */
+		'add:highligh',
+		/** Component | Emitted when a prop should be changed. Payload: `(id, newProps)`  */
+		'set',
+		/** [Event Bus](http://localhost:8080/#/pages/event-bus) | Emitted when a highlight is updated. Payload: `(highlight)` */
+		'update:highlight',
+	],
 	data() {
 		return {
 			activeForm: null,

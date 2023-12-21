@@ -1,5 +1,5 @@
 import SubmissionsPage from './SubmissionsPage.vue';
-import {rest} from 'msw';
+import {http, HttpResponse} from 'msw';
 import SubmissionsMock25 from './mocks/submissions25.js';
 import PageInitConfigMock from './mocks/pageInitConfig';
 
@@ -16,16 +16,14 @@ export const init = {
 	parameters: {
 		msw: {
 			handlers: [
-				rest.get(
+				http.get(
 					'https://mock/index.php/publicknowledge/api/v1/_submissions',
-					(req, res, ctx) => {
-						return res(ctx.json(SubmissionsMock25));
+					() => {
+						return HttpResponse.json(SubmissionsMock25);
 					},
 				),
 			],
 		},
 	},
-	args: {
-		storeData: PageInitConfigMock,
-	},
+	args: PageInitConfigMock,
 };

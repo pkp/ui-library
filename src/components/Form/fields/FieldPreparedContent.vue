@@ -58,7 +58,7 @@ export default {
 			required: true,
 		},
 
-		/** @see InsertContent.props.preparedContent */
+		/** @see InsertContent.props.preparedContent, An optional object containing preset information. When preset information exists, a button will appear in the toolbar. */
 		preparedContent: {
 			type: Array,
 			default() {

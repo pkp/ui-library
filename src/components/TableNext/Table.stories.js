@@ -5,7 +5,7 @@ import TableHeader from './TableHeader.vue';
 import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
 
-import articleStats from '@/docs/components/Table/helpers/articleStats.js';
+import articleStats from '@/components/Table/mocks/articleStats.js';
 import {useSorting} from '@/composables/useSorting';
 export default {
 	title: 'Components/Table',

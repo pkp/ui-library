@@ -14,7 +14,10 @@
  * @return {String}
  */
 export function t(key, params) {
-	if (typeof pkp.localeKeys[key] === 'undefined') {
+	if (
+		typeof pkp === 'undefined' ||
+		typeof pkp.localeKeys[key] === 'undefined'
+	) {
 		if (process.env.NODE_ENV === 'development') {
 			// eslint-disable-next-line
 			console.error('Missing locale key: ', key);

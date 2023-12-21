@@ -104,6 +104,7 @@ export default {
 	name: 'FieldRadioInput',
 	extends: FieldOptions,
 	props: {
+		/** Current value */
 		value: {
 			type: String,
 			required: true,

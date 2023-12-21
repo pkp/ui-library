@@ -1,7 +1,14 @@
 .-screenReader {
-	clip: rect(1px, 1px, 1px, 1px);
-	position: absolute !important;
-	left: -2000px;
+	/* better version of screen reader only (from tailwindcss) to work with RTL*/
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
 
 	&:focus {
 		background-color: #fff;

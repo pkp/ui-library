@@ -1,8 +1,6 @@
 import ExamplePage from './ExamplePage.vue';
 import SubmissionsMock from './mocks/submissions25';
-import {rest} from 'msw';
-
-const delay = (time) => new Promise((resolve) => setTimeout(resolve, time));
+import {http, HttpResponse, delay} from 'msw';
 
 export default {
 	title: 'Pages/Example',
@@ -15,7 +13,7 @@ export const ExamplePage1 = {
 		setup() {
 			return {args};
 		},
-		template: '<ExamplePage v-bind="args" />',
+		template: '<ExamplePage v-bind="args.pageInitConfig" />',
 	}),
 	args: {
 		pageInitConfig: {
@@ -26,12 +24,12 @@ export const ExamplePage1 = {
 	parameters: {
 		msw: {
 			handlers: [
-				rest.get(
+				http.get(
 					'https://mock/index.php/publicknowledge/api/v1/_submissions',
-					async (req, res, ctx) => {
+					async (r) => {
 						await delay(500);
 
-						return res(ctx.json(SubmissionsMock));
+						return HttpResponse.json(SubmissionsMock);
 					},
 				),
 			],

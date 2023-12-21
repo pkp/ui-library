@@ -29,24 +29,43 @@ export default {
 	mixins: [ajaxError, dialog, localizeSubmission],
 	data() {
 		return {
+			/** A localized string for the button to cancel recording a decision. */
 			abandonDecisionLabel: '',
+			/** A localized string for the confirmation prompt to cancel recording a decision. */
 			cancelConfirmationPrompt: '',
+			/** Tracks the currently open step. If not passed, the first step will be opened. Default: `{}` */
 			currentStep: {},
+			/** An integer representing the decision type. */
 			decision: 0,
+			/** A localized string when a decision has been recorded. See: `DecisionType::getCompletedLabel()` */
 			decisionCompleteLabel: '',
+			/** A localized string when a decision has been recorded. See: `DecisionType::getCompletedLabel()` */
 			decisionCompleteDescription: '',
+			/** A URL to the REST API to get email templates.  */
 			emailTemplatesApiUrl: '',
+			/** An array of the steps that have been started. Default: `[]` */
 			startedSteps: [],
+			/** Whether or not the decision is being recorded. Default: `false`  */
 			isSubmitting: false,
+			/** A localized string for the button to keep working in the confirmation prompt to cancel recording a decision. */
 			keepWorkingLabel: '',
+			/** The id of the review round this decision should be recorded in. Only pass a review round for decisions in the review stage. Default: `0` */
 			reviewRoundId: 0,
+			/** An array of steps that have been skipped. Default: `[]` */
 			skippedSteps: [],
+			/** The id of the workflow stage this decision should be recorded in. One of the `WORKFLOW_STAGE_ID_*` constants. */
 			stageId: 0,
+			/** An array of steps to record this decision. See usage guidance below. Default: `[]` */
 			steps: [],
+			/** The URL to the editorial workflow of the submission. */
 			submissionUrl: '',
+			/** The URL to the submission in the REST API. */
 			submissionApiUrl: '',
+			/** The URL to the current user's submissions list. */
 			submissionListUrl: '',
+			/** A localized string for the button to view all submissions. */
 			viewAllSubmissionsLabel: '',
+			/** A localized string for the button to view this submission. */
 			viewSubmissionLabel: '',
 		};
 	},

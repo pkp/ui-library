@@ -1,0 +1,28 @@
+import {Primary, Controls, Stories, Meta, ArgTypes} from '@storybook/blocks';
+
+import * as SubmissionFilesListPanelStories from './SubmissionFilesListPanel.stories.js';
+
+<Meta of={SubmissionFilesListPanelStories} />
+
+# SubmissionFilesListPanel
+
+## Usage
+
+Use this component to upload [Submission Files](https://docs.pkp.sfu.ca/dev/documentation/en/submission-files). Every submission file must be assigned a genre, one of the file types configured by the journal, press or preprint server. The `genre` prop expects an array of file type ids, names and whether or not the genre is one of the primary file types. See the following example.
+
+```json
+[
+	{
+		"id": 1,
+		"name": "Book Manuscript",
+		"isPrimary": true
+	},
+	{
+		"id": 2,
+		"name": "Preface"
+	}
+]
+```
+
+<Primary />
+<ArgTypes />

@@ -1,3 +1,9 @@
+import {Primary, Controls, Stories, Meta, ArgTypes} from '@storybook/blocks';
+
+import * as ExamplePageStories from './ExamplePage.stories.js';
+
+<Meta of={ExamplePageStories} />
+
 # Example page
 
 These principles applies for version 3.5 and higher, when building new pages or making significant changes to existing ones.
@@ -33,7 +39,9 @@ State management is intentionally done via [pinia store](../?path=/docs/guide-vu
 
 ## Server side configuration
 
-On initial page load, there is still opportunity to pass JS object from PHP to the Vue.js.
+On initial page load, there is still opportunity to pass JS object from PHP to the Vue.js. Best is to express individual items as props, so it can be easily displayed in storybook and its well documented:
+
+<ArgTypes />
 
 This might include things like:
 

@@ -93,18 +93,21 @@ export default {
 				return '';
 			},
 		},
+		/** Whether or not a `%p` in the `pattern` stands for the context initials or page numbers. This is used in OMP when generating a pub id. */
 		isPForPress: {
 			type: Boolean,
 			default() {
 				return false;
 			},
 		},
+		/** The number of the issue this publication is assigned to. Used when generating a pub id. */
 		issueNumber: {
 			type: [String, Number],
 			default() {
 				return '';
 			},
 		},
+		/** The volume of the issue this publication is assigned to. Used when generating a pub id. */
 		issueVolume: {
 			type: [String, Number],
 			default() {
@@ -115,44 +118,52 @@ export default {
 			type: String,
 			required: true,
 		},
+		/** The pages of this publication. Used when generating a pub id. */
 		pages: {
 			type: String,
 			default() {
 				return '';
 			},
 		},
+		/** The pattern to use when generating a pub id. This is configured in the pub id plugin settings. */
 		pattern: {
 			type: String,
 			required: true,
 		},
+		/** The pub id prefix to use when generating a pub id. This is configured in the pub id plugin settings. */
 		prefix: {
 			type: String,
 			required: true,
 		},
+		/** The publisher id of this publication. Used when generating a pub id. */
 		publisherId: {
 			type: String,
 			default() {
 				return '';
 			},
 		},
+		/** An optional separator to be added between the pub id prefix and suffix when generating the pub id. */
 		separator: {
 			type: String,
 			default() {
 				return '';
 			},
 		},
+		/** The id of the submission for which a pub id will be generated. Used when generating a pub id. */
 		submissionId: {
 			type: Number,
 			default() {
 				return 0;
 			},
 		},
+		/** The id of the publication for which a pub id will be generated. Used when generating a pub id. */
 		publicationId: {
 			type: Number,
 			default() {
 				return 0;
 			},
 		},
+		/** The year this publication was published. Will represent the issue's publication date if no `datePublished` exists for the publication. Used when generating a pub id. */
 		year: {
 			type: [String, Number],
 			default() {

@@ -68,18 +68,22 @@ export default {
 			type: String,
 			required: true,
 		},
+		/** One of the `PKPSubmission::STATUS_` constants. When set to `PKPSubmission::STATUS_QUEUED` or `PKPSubmission::STATUS_PUBLISHED` the issue selection will be hidden. */
 		publicationStatus: {
 			type: Number,
 			required: true,
 		},
+		/** Text to be displayed when the publication is published in an issue. A string replace will be called to replace `{$issueId}` and `{$issueName}` params with the selected issue. */
 		publishedNoticeBase: {
 			type: String,
 			required: true,
 		},
+		/** Text to be displayed when the publication is scheduled for publication in an issue. A string replace will be called to replace `{$issueId}` and `{$issueName}` params with the selected issue. */
 		scheduledNoticeBase: {
 			type: String,
 			required: true,
 		},
+		/** The label for the button to unschedule a scheduled publication. */
 		unscheduledNotice: {
 			type: String,
 			required: true,

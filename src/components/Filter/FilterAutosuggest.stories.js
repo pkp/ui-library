@@ -1,5 +1,5 @@
 import {ref} from 'vue';
-import {rest} from 'msw';
+import {http, HttpResponse} from 'msw';
 import FilterAutosuggest from './FilterAutosuggest.vue';
 import fieldBase from '@/docs/components/Form/helpers/field-base';
 import fieldBaseAutosuggest from '@/docs/components/Form/helpers/field-autosuggest';
@@ -78,16 +78,16 @@ export const Autosuggest = {
 	parameters: {
 		msw: {
 			handlers: [
-				rest.get(
+				http.get(
 					'https://mock/index.php/publicknowledge/api/v1/users',
-					async (req, res, ctx) => {
-						return res(ctx.json(UsernamesMock));
+					async () => {
+						return HttpResponse.json(UsernamesMock);
 					},
 				),
-				rest.get(
+				http.get(
 					'https://mock/index.php/publicknowledge/api/v1/issues',
-					async (req, res, ctx) => {
-						return res(ctx.json(IssuesMock));
+					async () => {
+						return HttpResponse.json(IssuesMock);
 					},
 				),
 			],

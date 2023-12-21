@@ -119,20 +119,24 @@ export default {
 	},
 	extends: FieldBase,
 	props: {
+		/** Type of the `<input>` field. Either `checkbox` or `radio`. */
 		type: {
 			validator: function (value) {
 				return ['checkbox', 'radio'].includes(value);
 			},
 			default: 'checkbox',
 		},
+		/** Allow the user to reorder the options. Reordering will resort the items in the `value` property.  */
 		isOrderable: {
 			type: Boolean,
 			default: false,
 		},
+		/** An array of objects defining the options which can be selected. */
 		options: {
 			type: [Array, Object],
 			required: true,
 		},
+		/** The current value for this field. */
 		value: {
 			type: [Array, Number, String, Boolean],
 			required: true,

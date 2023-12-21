@@ -1,0 +1,67 @@
+{
+	"_href": "http://localhost:8000/pu/api/v1/mailables/DISCUSSION_NOTIFICATION_COPYEDITING",
+	"dataDescriptions": {
+		"contactEmail": "The email address of the journal's primary contact",
+		"contactName": "The name of the journal's primary contact",
+		"journalAcronym": "the journal initials",
+		"journalName": "The journal's name",
+		"journalSignature": "The journal's email signature for automated emails",
+		"journalUrl": "The URL to the journal's homepage",
+		"mailingAddress": "The mailing address of the journal",
+		"passwordLostUrl": "The URL to a page where the user can recover a lost password",
+		"recipientName": "The full name of the recipient or all recipients",
+		"recipientUsername": "The username of the recipient or all recipients",
+		"senderEmail": "The email address of the sender",
+		"senderName": "The full name of the sender",
+		"signature": "The email signature of the sender",
+		"submissionsUrl": "The URL to view all of a user's assigned submissions.",
+		"userProfileUrl": "The URL for a user to view and edit their profile."
+	},
+	"description": "This email is sent when a discussion is created or replied to in the copyediting stage.",
+	"emailTemplateKey": "DISCUSSION_NOTIFICATION_COPYEDITING",
+	"fromRoleIds": [17, 4097, 65536],
+	"groupIds": ["copyediting"],
+	"name": "Discussion (Copyediting)",
+	"supportsTemplates": true,
+	"toRoleIds": [17, 4097, 65536],
+	"emailTemplates": [
+		{
+			"_href": "http://localhost:8000/pu/api/v1/emailTemplates/DISCUSSION_NOTIFICATION_COPYEDITING",
+			"alternateTo": null,
+			"body": {
+				"fr_CA": "Prière de saisir votre message.",
+				"en": "Please enter your message."
+			},
+			"contextId": null,
+			"id": null,
+			"key": "DISCUSSION_NOTIFICATION_COPYEDITING",
+			"name": {
+				"fr_CA": "",
+				"en": "Discussion (Copyediting)"
+			},
+			"subject": {
+				"fr_CA": "Un message à propos de la revue {$journalName}",
+				"en": "A message regarding {$journalName}"
+			}
+		},
+		{
+			"_href": "http://localhost:8000/pu/api/v1/emailTemplates/COPYEDIT_REQUEST",
+			"alternateTo": "DISCUSSION_NOTIFICATION_COPYEDITING",
+			"body": {
+				"en": "<p>Dear {$recipientName},</p><p>A new submission is ready to be copyedited:</p><p><a href\"{$submissionUrl}\">{$submissionId} {$submissionTitle}</a><br />{$journalName}</p><p>Please follow these steps to complete this task:</p><ol><li>1. Click on the Submission URL below.</li><li>2. Open any files available under Draft Files and edit the files. Use the Copyediting Discussions area if you need to contact the editor(s) or author(s).</li><li>3. Save the copyedited file(s) and upload them to the Copyedited panel.</li><li>4. Use the Copyediting Discussions to notify the editor(s) that all files have been prepared, and that the Production process may begin.</li></ol><p>If you are unable to undertake this work at this time or have any questions, please contact me. Thank you for your contribution to this journal.</p><p>Kind regards,</p>{$signature}",
+				"fr_CA": "{$recipientName},<br />\n<br />\nJ'aimerais que vous effectuiez la révision du manuscrit intitulé « {$submissionTitle} » pour la revue {$journalName} à l'aide des étapes suivantes.<br />\n1. Cliquer sur l'URL de la soumission ci-dessous.<br />\n2. Ouvrir le(s) fichier(s) disponible(s) sous Fichiers des ébauches finales et effectuer votre révision, tout en ajoutant des discussions sur la révision, le cas échéant.<br />\n3. Enregistrer le(s) fichier(s) révisé(s) et le(s) téléverser dans la section Version(s) révisée(s).<br />\n4. Informer le,la rédacteur-trice que tous les fichiers ont été révisés et que l'étape de production peut débuter.<br />\n<br />\nURL de la revue {$journalName} : {$journalUrl}<br />\nURL de la soumission : {$submissionUrl}<br />\nNom d'utilisateur-trice : {$recipientUsername}"
+			},
+			"contextId": 1,
+			"id": 1,
+			"key": "COPYEDIT_REQUEST",
+			"name": {
+				"en": "Request Copyedit",
+				"fr_CA": ""
+			},
+			"subject": {
+				"en": "Submission {$submissionId} is ready to be copyedited for {$contextAcronym}",
+				"fr_CA": "Demande de révision d'une soumission"
+			}
+		}
+	]
+}
