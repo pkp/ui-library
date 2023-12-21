@@ -1,7 +1,18 @@
 import {ref, unref} from 'vue';
-import {ofetch} from 'ofetch';
+import {ofetch, createFetch} from 'ofetch';
 import {useDialogStore} from '@/stores/dialogStore';
+
+let ofetchInstance = ofetch;
 export function useFetch(url, options) {
+	/**
+	 *  Workaround for testing https://github.com/unjs/ofetch/issues/295
+	 *  Can be removed once issue is addressed
+	 *  (likely getting fetch instance in runtime)
+	 * */
+	if (typeof process !== 'undefined' && process?.env?.VITEST == 'true') {
+		ofetchInstance = createFetch();
+	}
+
 	const dialogStore = useDialogStore();
 	const isLoading = ref(false);
 	const data = ref(null);
@@ -17,11 +28,11 @@ export function useFetch(url, options) {
 
 		const signal = lastRequestController.signal;
 
-		const opts = options;
+		const opts = {...options, signal};
 
 		isLoading.value = true;
 		try {
-			const result = await ofetch(unref(url), opts);
+			const result = await ofetchInstance(unref(url), opts);
 			data.value = result;
 		} catch (e) {
 			data.value = null;

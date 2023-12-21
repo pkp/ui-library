@@ -1,4 +1,4 @@
-import {rest} from 'msw';
+import {http, HttpResponse} from 'msw';
 
 import FieldBaseAutosuggest from './FieldBaseAutosuggest.vue';
 import FieldBaseMock from '../mocks/field-base';
@@ -29,10 +29,10 @@ export default {
 	parameters: {
 		msw: {
 			handlers: [
-				rest.get(
+				http.get(
 					'https://mock/index.php/publicknowledge/api/v1/users',
 					async (req, res, ctx) => {
-						return res(ctx.json(UsernamesMock));
+						return HttpResponse.json(UsernamesMock);
 					},
 				),
 			],

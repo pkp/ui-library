@@ -36,7 +36,8 @@ const pinia = createPinia();
 
 // Initialize MSW
 initialize({
-	onUnhandledRequest: ({method, url}) => {
+	/** To be migrated to msw2 if neede */
+	/*onUnhandledRequest: ({method, url}) => {
 		if (url.pathname.includes('://mock/')) {
 			console.error(`Unhandled ${method} request to ${url}.
 
@@ -45,7 +46,7 @@ initialize({
         If you wish to mock an error response, please refer to this guide: https://mswjs.io/docs/recipes/mocking-error-responses
       `);
 		}
-	},
+	},*/
 });
 
 setup((app) => {

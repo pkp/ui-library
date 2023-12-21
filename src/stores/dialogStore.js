@@ -1,35 +1,41 @@
 import {defineStore} from 'pinia';
+import {ref} from 'vue';
 import {t} from '@/utils/i18n';
-export const useDialogStore = defineStore('dialog', {
-	state: () => {
-		return {
-			dialogProps: {},
-			dialogOpened: false,
-		};
-	},
-	actions: {
-		openDialog(dialogProps) {
-			this.dialogProps = dialogProps;
-			this.dialogOpened = true;
-		},
-		openDialogNetworkError(fetchError) {
-			const msg = fetchError?.data?.errorMessage || t('common.unknownError');
+export const useDialogStore = defineStore('dialog', () => {
+	const dialogProps = ref({});
+	const dialogOpened = ref(false);
 
-			this.openDialog({
-				name: 'ajaxError',
-				title: t('common.error'),
-				message: msg,
-				actions: [
-					{
-						label: t('common.ok'),
-						callback: (close) => close(),
-					},
-				],
-			});
-		},
-		closeDialog() {
-			this.dialogProps = {};
-			this.dialogOpened = false;
-		},
-	},
+	function openDialog(_dialogProps) {
+		dialogProps.value = _dialogProps;
+		dialogOpened.value = true;
+	}
+
+	function openDialogNetworkError(fetchError) {
+		const msg = fetchError?.data?.errorMessage || t('common.unknownError');
+
+		openDialog({
+			name: 'ajaxError',
+			title: t('common.error'),
+			message: msg,
+			actions: [
+				{
+					label: t('common.ok'),
+					callback: (close) => close(),
+				},
+			],
+		});
+	}
+
+	function closeDialog() {
+		dialogProps.value = {};
+		dialogOpened.value = false;
+	}
+
+	return {
+		dialogProps,
+		dialogOpened,
+		openDialogNetworkError,
+		openDialog,
+		closeDialog,
+	};
 });

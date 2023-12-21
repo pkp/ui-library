@@ -1,4 +1,4 @@
-import {rest} from 'msw';
+import {http, HttpResponse} from 'msw';
 import MailableMock from '@/mocks/mailable.json';
 import MailablesMock from '@/mocks/mailables.json';
 
@@ -217,10 +217,10 @@ export const Default = {
 	parameters: {
 		msw: {
 			handlers: [
-				rest.get(
+				http.get(
 					'https://mock/index.php/publicknowledge/api/v1/mailable/*',
-					async (req, res, ctx) => {
-						return res(ctx.json(MailableMock));
+					async (r) => {
+						return HttpResponse.json(MailableMock);
 					},
 				),
 			],

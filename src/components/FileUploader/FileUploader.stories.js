@@ -2,7 +2,7 @@ import {ref} from 'vue';
 import FileUploader from './FileUploader.vue';
 import FileUploadProgress from '@/components/FileUploadProgress/FileUploadProgress.vue';
 import dropzoneOptions from '@/docs/data/dropzoneOptions';
-import {rest} from 'msw';
+import {http, HttpResponse} from 'msw';
 
 import './FileUploader.stories.less';
 
@@ -72,17 +72,15 @@ export const Default = {
 		// http://localhost:7003/index.php/publicknowledge/api/v1/temporaryFiles
 		msw: {
 			handlers: [
-				rest.post(
+				http.post(
 					'https://mock/index.php/publicknowledge/api/v1/temporaryFiles',
-					async (req, res, ctx) => {
-						return res(
-							ctx.json({
-								id: 5,
-								name: 'i-see-you-theme-from-avatar-violin-1.pdf',
-								mimetype: 'application/pdf',
-								documentType: 'pdf',
-							}),
-						);
+					async () => {
+						return HttpResponse.json({
+							id: 5,
+							name: 'i-see-you-theme-from-avatar-violin-1.pdf',
+							mimetype: 'application/pdf',
+							documentType: 'pdf',
+						});
 					},
 				),
 			],
