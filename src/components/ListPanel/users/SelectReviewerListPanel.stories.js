@@ -7,8 +7,8 @@ export default {
 	component: SelectReviewerListPanel,
 };
 
-const yesterday = new Date();
-yesterday.setDate(new Date().getDate() - 1);
+const yesterday = new Date('Tue Dec 19 2023 16:00:27 GMT+0100');
+yesterday.setDate(new Date('Tue Dec 19 2023 16:00:27 GMT+0100').getDate() - 1);
 
 const items = [
 	ReviewerMock,
