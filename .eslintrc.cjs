@@ -18,9 +18,6 @@ module.exports = {
 	},
 	parserOptions: {
 		ecmaVersion: 'latest',
-		ecmaFeatures: {
-			jsx: true,
-		},
 	},
 	rules: {
 		'vue/multi-word-component-names': 'off',
