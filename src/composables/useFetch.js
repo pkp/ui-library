@@ -3,7 +3,18 @@ import {ofetch, createFetch} from 'ofetch';
 import {useDialogStore} from '@/stores/dialogStore';
 
 let ofetchInstance = ofetch;
-export function useFetch(url, options) {
+
+function getCSRFToken() {
+	const FALLBACK_TOKEN = 'test_csrf_token';
+
+	if (typeof pkp !== 'undefined') {
+		return pkp?.currentUser?.csrfToken || FALLBACK_TOKEN;
+	}
+
+	return FALLBACK_TOKEN;
+}
+
+export function useFetch(url, options = {}) {
 	/**
 	 *  Workaround for testing https://github.com/unjs/ofetch/issues/295
 	 *  Can be removed once issue is addressed
@@ -13,9 +24,21 @@ export function useFetch(url, options) {
 		ofetchInstance = createFetch();
 	}
 
+	const {
+		expectValidationError,
+		query: _query,
+		body: _body,
+		...ofetchOptions
+	} = options;
+
+	const query = ref(_query || {});
+	const body = ref(_body || undefined);
+
 	const dialogStore = useDialogStore();
 	const isLoading = ref(false);
 	const data = ref(null);
+	const error = ref(null);
+	const validationError = ref(null);
 
 	let lastRequestController = null;
 
@@ -28,12 +51,33 @@ export function useFetch(url, options) {
 
 		const signal = lastRequestController.signal;
 
-		const opts = {...options, signal};
+		const opts = {
+			...ofetchOptions,
+			query: query.value,
+			body: body.value,
+			signal,
+		};
+
+		// add csrf token
+		if (['POST', 'DELETE', 'PUT'].includes(opts.method)) {
+			if (!opts.headers) {
+				opts.headers = {};
+			}
+
+			opts.headers['X-Csrf-Token'] = getCSRFToken();
+			//  add method-override for improved server compatibility https://github.com/pkp/pkp-lib/issues/5981
+			if (['DELETE', 'PUT'].includes(opts?.method)) {
+				opts.headers['X-Http-Method-Override'] = options.method;
+				opts.method = 'POST';
+			}
+		}
 
 		isLoading.value = true;
 		try {
 			const result = await ofetchInstance(unref(url), opts);
 			data.value = result;
+			error.value = null;
+			validationError.value = null;
 		} catch (e) {
 			data.value = null;
 
@@ -44,7 +88,15 @@ export function useFetch(url, options) {
 				return; // aborted by subsequent request
 			}
 
+			if (expectValidationError && e.status >= 400 && e.status < 500) {
+				validationError.value = e.data;
+				error.value = null;
+				data.value = null;
+				return;
+			}
+
 			dialogStore.openDialogNetworkError(e);
+			error.value = e;
 		} finally {
 			lastRequestController = null;
 			isLoading.value = false;
@@ -53,6 +105,8 @@ export function useFetch(url, options) {
 
 	return {
 		data,
+		error,
+		validationError,
 		isLoading,
 		fetch,
 	};

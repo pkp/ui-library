@@ -1,75 +1,35 @@
-import {ref, computed, unref} from 'vue';
-import {ofetch} from 'ofetch';
-import {useDialogStore} from '@/stores/dialogStore';
+import {ref, computed} from 'vue';
+
+import {useFetch} from './useFetch';
 
 export function useFetchPaginated(url, options) {
-	const dialogStore = useDialogStore();
-
 	const {
-		query: _query,
 		page: _page,
 		pageSize: _pageSize,
-		...fetchOpts
+		query: _query,
+		...useFetchOpts
 	} = options;
 
-	const query = ref(_query || {});
-
+	// normalise to make these options reactive if they are not already
 	const page = ref(_page);
 	const pageSize = ref(_pageSize);
+	const query = ref(_query || {});
 
-	const isLoading = ref(false);
-	const itemCount = ref(0);
-	const items = ref([]);
+	// add offset and count to query params
 	const offset = computed(() => {
 		return (page.value - 1) * pageSize.value;
 	});
+	const useFetchQuery = computed(() => {
+		return {...query.value, offset: offset.value, count: pageSize.value};
+	});
 
-	let lastRequestController = null;
+	const {data, isLoading, fetch} = useFetch(url, {
+		...useFetchOpts,
+		query: useFetchQuery,
+	});
 
-	async function fetch() {
-		if (lastRequestController) {
-			// abort in-flight request
-			lastRequestController.abort();
-		}
-		lastRequestController = new AbortController();
-
-		const queryParams = {
-			offset: offset.value,
-			count: pageSize.value,
-			...query.value,
-		};
-
-		const signal = lastRequestController.signal;
-
-		const opts = {
-			query: queryParams,
-			...fetchOpts,
-			signal,
-		};
-
-		isLoading.value = true;
-		try {
-			const result = await ofetch(unref(url), opts);
-			items.value = result.items;
-			itemCount.value = result.itemsMax;
-		} catch (e) {
-			items.value = [];
-			itemCount.value = 0;
-
-			if (signal) {
-				e.aborted = signal.aborted;
-			}
-
-			if (e.aborted) {
-				return; // aborted by subsequent request
-			}
-
-			dialogStore.openDialogNetworkError(e);
-		} finally {
-			lastRequestController = null;
-			isLoading.value = false;
-		}
-	}
+	const items = computed(() => data.value?.items);
+	const itemCount = computed(() => data.value?.itemsMax);
 
 	const pagination = computed(() => {
 		const firstItemIndex = itemCount.value ? offset.value + 1 : 0;
