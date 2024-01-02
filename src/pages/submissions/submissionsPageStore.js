@@ -7,18 +7,6 @@ import {useTranslation} from '@/composables/useTranslation';
 import {useUrlSearchParams} from '@vueuse/core';
 import {useAnnouncerStore} from '@/stores/announcerStore';
 import {defineComponentStore} from '@/utils/defineComponentStore';
-//let pageInitConfig = null;
-
-/*export function initSubmissionsPageStore(_pageInitConfig) {
-	pageInitConfig = _pageInitConfig;
-}
-
-export function disposeSubmissionsPageStore() {
-	const store = useSubmissionsPageStore();
-	store.$dispose();
-	pageInitConfig = null;
-	delete getActivePinia().state.value[store.$id];
-}*/
 
 export const useSubmissionsPageStore = defineComponentStore(
 	'submissionsPage',
