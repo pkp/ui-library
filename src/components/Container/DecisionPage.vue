@@ -533,6 +533,7 @@ export default {
 }
 
 .decision__footer--noSteps {
+	margin-top: 2rem;
 	padding: 0;
 	background: transparent;
 	border: none;
