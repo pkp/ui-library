@@ -13,11 +13,6 @@ export default {
 		PkpAnnouncer,
 	},
 	extends: Container,
-	setup() {
-		const dialogStore = useDialogStore(this.$pinia);
-
-		return {dialogStore};
-	},
 	data() {
 		return {
 			/** An array of objects defining a breadcrumb to display above main page content. */
