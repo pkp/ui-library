@@ -94,7 +94,7 @@ beforeEach(() => {
 describe('typical uses', () => {
 	test('GET 200 request', async () => {
 		const url = ref('http://mock/get/status200');
-		const {data, error, isLoading, fetch} = useFetch(url, {
+		const {data, isLoading, fetch} = useFetch(url, {
 			query: {param1: 4, param2: 5},
 		});
 
@@ -105,7 +105,6 @@ describe('typical uses', () => {
 		await fetchPromise;
 
 		expect(isLoading.value).toBe(false);
-		expect(error.value).toBe(null);
 		expect(data.value).toMatchInlineSnapshot(`
 			{
 			  "items": [
@@ -127,7 +126,7 @@ describe('typical uses', () => {
 	test('POST 200 request', async () => {
 		const body = {title: 'abc'};
 		const url = ref('http://mock/post/status200');
-		const {data, error, validationError, fetch} = useFetch(url, {
+		const {data, validationError, fetch} = useFetch(url, {
 			method: 'POST',
 			body,
 			expectValidationError: true,
@@ -135,7 +134,6 @@ describe('typical uses', () => {
 
 		await fetch();
 
-		expect(error.value).toBe(null);
 		expect(validationError.value).toBe(null);
 
 		expect(data.value).toStrictEqual(body);
@@ -143,7 +141,7 @@ describe('typical uses', () => {
 
 	test('POST 400 validation error request', async () => {
 		const url = ref('http://mock/post/status400');
-		const {data, error, validationError, fetch} = useFetch(url, {
+		const {data, validationError, fetch} = useFetch(url, {
 			method: 'POST',
 			body: {title: 'abc'},
 			headers: {'X-Csrf-Token': '___TOKEN___'},
@@ -152,7 +150,6 @@ describe('typical uses', () => {
 
 		await fetch();
 
-		expect(error.value).toBe(null);
 		expect(validationError.value).toStrictEqual({
 			title: ['has to be longer'],
 		});
@@ -162,7 +159,7 @@ describe('typical uses', () => {
 
 	test('PUT 200 request', async () => {
 		const url = ref('http://mock/put/status200');
-		const {data, error, validationError, fetch} = useFetch(url, {
+		const {data, validationError, fetch} = useFetch(url, {
 			method: 'PUT',
 			body: {title: 'abc'},
 			expectValidationError: true,
@@ -170,7 +167,6 @@ describe('typical uses', () => {
 
 		await fetch();
 
-		expect(error.value).toBe(null);
 		expect(validationError.value).toBe(null);
 		expect(data.value).toMatchInlineSnapshot(`
 			{

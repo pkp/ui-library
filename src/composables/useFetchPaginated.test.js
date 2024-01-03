@@ -38,9 +38,7 @@ export const restHandlers = [
 		const count = parseInt(params.get('count'));
 		const offset = parseInt(params.get('offset'));
 
-		console.log('params:', count, offset, offset + count);
 		const itemsSubset = items.slice(offset, offset + count);
-		console.log('itesmsubset:', itemsSubset);
 		return HttpResponse.json({
 			itemsMax: items.length,
 			items: itemsSubset,
@@ -75,6 +73,17 @@ describe('typical uses', () => {
 		});
 
 		expect(isLoading.value).toBe(false);
+		expect(pagination.value).toMatchInlineSnapshot(`
+			{
+			  "firstItemIndex": 0,
+			  "itemCount": 0,
+			  "lastItemIndex": 0,
+			  "offset": 0,
+			  "page": 1,
+			  "pageCount": 0,
+			  "pageSize": 5,
+			}
+		`);
 		const fetchPromise = fetch();
 
 		await fetchPromise;

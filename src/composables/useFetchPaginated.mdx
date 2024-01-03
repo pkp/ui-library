@@ -1,0 +1,82 @@
+import {Meta} from '@storybook/blocks';
+
+<Meta title="Composables/useFetchPaginated" />
+
+# useFetchPaginated
+
+`useFetchPaginated` is based on `useFetch` and provides additional features for pagination.
+
+## API
+
+For detailed list of options please check `useFetchPaginated.js`. For common use cases following example should provide enough guidance.
+
+## Examples
+
+All examples can be found also in `useFetchPaginated.test.js`.
+
+### GET 200
+
+```javascript
+const url = ref(submissionsGetApiUrl);
+const page = ref(1);
+const pageSize = ref(5);
+const {items, pagination, isLoading, fetch} = useFetchPaginated(url, {
+	query: {param1: 4, param2: 5},
+	page,
+	pageSize,
+});
+
+console.log(isLoading.value); // false
+console.log(items.value); // []
+console.log(pagination.value);
+/* {
+	"firstItemIndex": 0,
+	"itemCount": 0,
+	"lastItemIndex": 0,
+	"offset": 0,
+	"page": 1,
+	"pageCount": 0,
+	"pageSize": 5,
+	} 
+*/
+
+await fetch();
+
+console.log(items.value); // [{...},{...},{...},{...},{...}]
+console.log(pagination.value);
+/*
+	{
+		"firstItemIndex": 1,
+		"itemCount": 11,
+		"lastItemIndex": 5,
+		"offset": 0,
+		"page": 1,
+		"pageCount": 3,
+		"pageSize": 5,
+	}
+*/
+
+// based on user interaction, changing to second page and changing pageSize to 3
+page.value = 2;
+pageSize.value = 3;
+
+// intentionally separate execution of fetch and waiting for result to illustrate isLoading=true
+
+const fetchPromise = fetch();
+console.log(isLoading.value); // true
+await fetchPromise();
+
+console.log(items.value); // [{...}, {...}, {...}]
+console.log(pagination.value);
+/*
+{
+	"firstItemIndex": 4,
+	"itemCount": 11,
+	"lastItemIndex": 6,
+	"offset": 3,
+	"page": 2,
+	"pageCount": 4,
+	"pageSize": 3,
+}
+*/
+```

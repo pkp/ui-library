@@ -13,7 +13,26 @@ function getCSRFToken() {
 
 	return FALLBACK_TOKEN;
 }
-
+/**
+ *
+ * Composable for handling API requests
+ * Listed options should be sufficient for PKP use cases. For additional options check [ofetch](https://github.com/unjs/ofetch) docs
+ * @function useFetch
+ * @param {string} url - The URL to which the HTTP request is to be sent.
+ * @param {Object} [options={}] - Optional configuration options for the request.
+ * @param {boolean} [options.expectValidationError=false] - Set to `true` to handle validation errors separately. When set, validation errors are stored in `validationError` rather than `error`.
+ * @param {Object} [options.query] - An object representing query parameters to be included in the request.
+ * @param {Object} [options.body] - The request payload, typically used with 'POST', 'PUT', or 'DELETE' requests.
+ * @param {Object} [options.headers] - Additional HTTP headers to be sent with the request.
+ * @param {string} [options.method] - The HTTP method to be used for the request (e.g., 'GET', 'POST', etc.).
+ *
+ * @returns {Object} An object containing several reactive properties and a method for performing the fetch operation:
+ * @returns {Ref<Object|null>} return.data - A ref object containing the response data from the fetch operation.
+ * @returns {Ref<Object|null>} return.validationError - A ref object containing validation error data, relevant when `expectValidationError` is true.
+ * @returns {Ref<boolean>} return.isLoading - A ref object indicating whether the fetch operation is currently in progress.
+ * @returns {Function} return.fetch - The function to call to initiate the fetch operation. This function is async and handles the actual fetching logic.
+ *
+ */
 export function useFetch(url, options = {}) {
 	/**
 	 *  Workaround for testing https://github.com/unjs/ofetch/issues/295
@@ -37,7 +56,6 @@ export function useFetch(url, options = {}) {
 	const dialogStore = useDialogStore();
 	const isLoading = ref(false);
 	const data = ref(null);
-	const error = ref(null);
 	const validationError = ref(null);
 
 	let lastRequestController = null;
@@ -76,7 +94,6 @@ export function useFetch(url, options = {}) {
 		try {
 			const result = await ofetchInstance(unref(url), opts);
 			data.value = result;
-			error.value = null;
 			validationError.value = null;
 		} catch (e) {
 			data.value = null;
@@ -90,13 +107,11 @@ export function useFetch(url, options = {}) {
 
 			if (expectValidationError && e.status >= 400 && e.status < 500) {
 				validationError.value = e.data;
-				error.value = null;
 				data.value = null;
 				return;
 			}
 
 			dialogStore.openDialogNetworkError(e);
-			error.value = e;
 		} finally {
 			lastRequestController = null;
 			isLoading.value = false;
@@ -105,7 +120,6 @@ export function useFetch(url, options = {}) {
 
 	return {
 		data,
-		error,
 		validationError,
 		isLoading,
 		fetch,
