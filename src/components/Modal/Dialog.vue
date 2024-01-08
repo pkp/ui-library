@@ -1,6 +1,6 @@
 <template>
-	<TransitionRoot as="template" :show="open">
-		<HLDialog class="modal" :class="'modal--' + type" @close="onClose">
+	<TransitionRoot as="template" :show="opened">
+		<HLDialog class="modal" :class="'modal--popup'" @close="onClose">
 			<TransitionChild
 				as="template"
 				enter="ease-out duration-300"
@@ -31,29 +31,29 @@
 							class="modal__panel modal__panel--dialog rounded-lg shadow-xl relative mx-3 w-10/12 max-w-3xl transform overflow-hidden bg-lightest text-left transition-all sm:my-8"
 						>
 							<div class="modal__header">
-								<DialogTitle v-if="title" class="modal__title">
-									{{ title }}
+								<DialogTitle v-if="dialogProps.title" class="modal__title">
+									{{ dialogProps.title }}
 								</DialogTitle>
 								<button class="modal__closeButton" @click="onClose">
 									<span :aria-hidden="true">×</span>
 									<span class="-screenReader">
-										{{ closeLabel || t('common.close') }}
+										{{ dialogProps.closeLabel || t('common.close') }}
 									</span>
 								</button>
 							</div>
 							<div class="modal__content">
-								<div v-html="message" />
+								<div v-html="dialogProps.message" />
 							</div>
 							<div class="modal__footer">
-								<spinner v-if="isLoading" />
+								<spinner v-if="dialogProps.isLoading" />
 								<pkp-button
-									v-for="action in actions"
+									v-for="action in dialogProps.actions"
 									:key="action.label"
 									:element="action.element || 'button'"
 									:href="action.href || null"
 									:is-primary="action.isPrimary || null"
 									:is-warnable="action.isWarnable || null"
-									:is-disabled="isLoading"
+									:is-disabled="dialogProps.isLoading"
 									@click="
 										action.callback ? fireCallback(action.callback) : null
 									"
@@ -69,7 +69,10 @@
 	</TransitionRoot>
 </template>
 
-<script>
+<script setup>
+import {ref, computed, onMounted, onUnmounted} from 'vue';
+import {storeToRefs} from 'pinia';
+
 import {
 	Dialog as HLDialog,
 	DialogTitle,
@@ -78,17 +81,41 @@ import {
 	TransitionChild,
 } from '@headlessui/vue';
 
-import Modal from './Modal.vue';
+import {useDialogStore} from '@/stores/dialogStore';
+const modalLevel = ref(0);
+const dialogStore = useDialogStore();
+const {dialogProps, dialogOpened, currentLevel} = storeToRefs(dialogStore);
+const {closeDialog} = dialogStore;
 
-export default {
-	components: {
-		HLDialog,
-		DialogTitle,
-		DialogPanel,
-		TransitionRoot,
-		TransitionChild,
-	},
-	extends: Modal,
+const opened = computed(
+	() => dialogOpened.value && modalLevel.value === currentLevel.value,
+);
+
+const isLoading = ref(false);
+
+function onClose() {
+	isLoading.value = false;
+	closeDialog();
+}
+
+function fireCallback(callback) {
+	isLoading.value = true;
+	if (typeof callback === 'function') {
+		callback(() => {
+			onClose();
+		});
+	}
+}
+
+onMounted(() => {
+	currentLevel.value = currentLevel.value + 1;
+	modalLevel.value = currentLevel.value;
+});
+
+onUnmounted(() => {
+	currentLevel.value = currentLevel.value - 1;
+});
+/*export default {
 	props: {
 		actions: {
 			type: Array,
@@ -117,32 +144,5 @@ export default {
 				return '';
 			},
 		},
-	},
-	data() {
-		return {
-			isLoading: false,
-		};
-	},
-	mounted() {},
-	unmounted() {
-		if (typeof this.close === 'function') {
-			this.close();
-		}
-	},
-	methods: {
-		fireCallback(callback) {
-			this.isLoading = true;
-			if (typeof callback === 'function') {
-				callback(() => {
-					this.onClose();
-				});
-			}
-		},
-		onClose() {
-			// reset state;
-			this.isLoading = false;
-			this.$emit('close');
-		},
-	},
-};
+	},*/
 </script>

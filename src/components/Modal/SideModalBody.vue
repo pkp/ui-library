@@ -26,12 +26,23 @@
 						</button>
 					</div>
 					<div class="ml-8 mr-8 flex-grow">
-						<slot name="header" :close-modal="closeModal" />
-						<!--<DialogTitle
-							class="text-gray-900 font-semibold leading-6 text-base"
-						>
-							Panel title
-						</DialogTitle>-->
+						<div class="flex">
+							<div class="flex-grow">
+								<div class="text-xl-medium"><slot name="pre-title"></slot></div>
+								<DialogTitle as="h1" class="mt-1 text-4xl-bold">
+									<slot name="title"></slot>
+								</DialogTitle>
+								<DialogDescription class="mt-1 text-3xl-normal">
+									<slot name="description"></slot>
+								</DialogDescription>
+								<div class="mt-1">
+									<slot name="post-description"></slot>
+								</div>
+							</div>
+							<div class="flex items-center">
+								<slot name="actions" />
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -39,17 +50,19 @@
 				<slot :close-modal="closeModal" />
 			</div>
 		</div>
+		<PkpDialog></PkpDialog>
 	</DialogPanel>
 </template>
 
-<script>
-import {DialogPanel /*DialogTitle*/} from '@headlessui/vue';
+<script setup>
+import {inject} from 'vue';
+import {DialogPanel, DialogTitle, DialogDescription} from '@headlessui/vue';
 import Icon from '@/components/Icon/Icon.vue';
-export default {
-	components: {Icon, DialogPanel /*DialogTitle*/},
-	inject: ['closeModal'],
-	props: {
-		secondary: Boolean,
-	},
-};
+import PkpDialog from '@/components/Modal/Dialog.vue';
+
+const {secondary} = defineProps({
+	secondary: {type: Boolean, default: () => false},
+});
+
+const closeModal = inject('closeModal');
 </script>
