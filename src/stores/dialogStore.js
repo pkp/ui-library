@@ -2,6 +2,7 @@ import {defineStore} from 'pinia';
 import {ref} from 'vue';
 import {t} from '@/utils/i18n';
 export const useDialogStore = defineStore('dialog', () => {
+	const currentLevel = ref(0);
 	const dialogProps = ref({});
 	const dialogOpened = ref(false);
 
@@ -32,6 +33,7 @@ export const useDialogStore = defineStore('dialog', () => {
 	}
 
 	return {
+		currentLevel,
 		dialogProps,
 		dialogOpened,
 		openDialogNetworkError,

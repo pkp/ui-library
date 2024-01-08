@@ -2,6 +2,8 @@
 import {mapStores} from 'pinia';
 import Container from '@/components/Container/Container.vue';
 import PkpDialog from '@/components/Modal/Dialog.vue';
+import LegacyModalManager from '@/components/Modal/LegacyModalManager.vue';
+
 import PkpAnnouncer from '@/components/Announcer/Announcer.vue';
 // store
 import {useDialogStore} from '@/stores/dialogStore.js';
@@ -11,6 +13,7 @@ export default {
 	components: {
 		PkpDialog,
 		PkpAnnouncer,
+		LegacyModalManager,
 	},
 	extends: Container,
 	data() {

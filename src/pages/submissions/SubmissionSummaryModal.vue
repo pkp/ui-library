@@ -1,50 +1,46 @@
 <template>
 	<SideModalBody>
-		<template #header>
-			<div class="flex">
-				<div class="flex-grow">
-					{{ hola }}
-					<div class="text-xl-medium">{{ submission.id }}</div>
-					<h2 class="mt-1 text-4xl-bold underline">
-						{{ submission.publications[0].authorsStringShort }}
-					</h2>
-					<div class="mt-1 text-3xl-normal">
-						{{ submission.publications[0].fullTitle.en }}
-					</div>
-					<div class="mt-1">
-						<StageBubble :stage-id="submission.stageId">
-							<span class="text-lg-normal">
-								{{ submission.stageName }}
-							</span>
-							<template
-								v-if="
-									(submission.stageId ===
-										pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW ||
-										submission.stageId ===
-											pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) &&
-									submission.reviewRounds.length
-								"
-							>
-								{{
-									t('common.inParenthesis', {
-										text: t('common.reviewRoundNumber', {
-											round:
-												submission.reviewRounds[
-													submission.reviewRounds.length - 1
-												].round,
-										}),
-									})
-								}}
-							</template>
-						</StageBubble>
-					</div>
-				</div>
-				<div class="flex items-center">
-					<PkpButton element="a" :href="submission.urlWorkflow">
-						View submission in detail
-					</PkpButton>
-				</div>
-			</div>
+		<template #pre-title>
+			{{ submission.id }}
+		</template>
+		<template #title>
+			<span class="underline">
+				{{ submission.publications[0].authorsStringShort }}
+			</span>
+		</template>
+		<template #description>
+			{{ submission.publications[0].fullTitle.en }}
+		</template>
+		<template #post-description>
+			<StageBubble :stage-id="submission.stageId">
+				<span class="text-lg-normal">
+					{{ submission.stageName }}
+				</span>
+				<template
+					v-if="
+						(submission.stageId ===
+							pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW ||
+							submission.stageId ===
+								pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) &&
+						submission.reviewRounds.length
+					"
+				>
+					{{
+						t('common.inParenthesis', {
+							text: t('common.reviewRoundNumber', {
+								round:
+									submission.reviewRounds[submission.reviewRounds.length - 1]
+										.round,
+							}),
+						})
+					}}
+				</template>
+			</StageBubble>
+		</template>
+		<template #actions>
+			<PkpButton element="a" :href="submission.urlWorkflow">
+				View submission in detail
+			</PkpButton>
 		</template>
 		<div class="border-ligh flex w-full border-r border-t border-light">
 			<div class="w-3/5 border-r border-light p-4">
