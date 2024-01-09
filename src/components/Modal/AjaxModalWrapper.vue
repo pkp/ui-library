@@ -45,8 +45,8 @@ function catchInsideClick(e) {
 		// forward it to body
 		e.preventDefault();
 		const $self = $(e.target);
-		const options = $.extend({}, $self.data(), {caller: $self});
-		$('#pkpHelpPanel').trigger('pkp.HelpPanel.Open', options);
+		const opts = $.extend({}, $self.data(), {caller: $self});
+		$('#pkpHelpPanel').trigger('pkp.HelpPanel.Open', opts);
 	}
 }
 

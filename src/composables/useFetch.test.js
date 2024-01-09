@@ -14,7 +14,7 @@ import {HttpResponse, http, delay} from 'msw';
 import {setActivePinia, createPinia} from 'pinia';
 
 import {useFetch} from './useFetch';
-import {useDialogStore} from '@/stores/dialogStore';
+import {useModalStore} from '@/stores/modalStore';
 
 export const restHandlers = [
 	http.get('http://mock/get/status200', async ({request}) => {
@@ -198,14 +198,14 @@ describe('features', () => {
 	});
 	test('network dialog error is displayed if there is http code other than 2XX', async () => {
 		const url = ref('http://mock/get/status500');
-		const dialogStore = useDialogStore();
-		expect(dialogStore.dialogOpened).toBe(false);
+		const modalStore = useModalStore();
+		expect(modalStore.dialogOpened).toBe(false);
 
 		const {fetch} = useFetch(url);
 		await fetch();
 
-		expect(dialogStore.dialogOpened).toBe(true);
-		dialogStore.closeDialog();
-		expect(dialogStore.dialogOpened).toBe(false);
+		expect(modalStore.dialogOpened).toBe(true);
+		modalStore.closeDialog();
+		expect(modalStore.dialogOpened).toBe(false);
 	});
 });

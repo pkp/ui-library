@@ -1,6 +1,6 @@
 import {ref, unref} from 'vue';
 import {ofetch, createFetch} from 'ofetch';
-import {useDialogStore} from '@/stores/dialogStore';
+import {useModalStore} from '@/stores/modalStore';
 
 let ofetchInstance = ofetch;
 
@@ -53,7 +53,7 @@ export function useFetch(url, options = {}) {
 	const query = ref(_query || {});
 	const body = ref(_body || undefined);
 
-	const dialogStore = useDialogStore();
+	const modalStore = useModalStore();
 	const isLoading = ref(false);
 	const data = ref(null);
 	const validationError = ref(null);
@@ -111,7 +111,7 @@ export function useFetch(url, options = {}) {
 				return;
 			}
 
-			dialogStore.openDialogNetworkError(e);
+			modalStore.openDialogNetworkError(e);
 		} finally {
 			lastRequestController = null;
 			isLoading.value = false;

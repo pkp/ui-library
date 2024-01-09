@@ -1,7 +1,7 @@
 import ActionPanel from './ActionPanel.vue';
 import './ActionPanelStories.less';
 import {useTranslation} from '@/composables/useTranslation';
-import {useDialogStore} from '@/stores/dialogStore';
+import {useModalStore} from '@/stores/modalStore';
 export default {
 	title: 'Components/ActionPanel',
 	component: ActionPanel,
@@ -12,10 +12,10 @@ export const Default = {
 		components: {ActionPanel},
 		setup() {
 			const {t} = useTranslation();
-			const dialogStore = useDialogStore();
+			const modalStore = useModalStore();
 
 			function openDeleteDialog() {
-				dialogStore.openDialog({
+				modalStore.openDialog({
 					name: 'deleteDialog',
 					title: 'Delete Incomplete Submissions',
 					message:

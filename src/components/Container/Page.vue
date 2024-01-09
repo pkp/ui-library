@@ -1,19 +1,17 @@
 <script type="text/javascript">
-import {mapStores} from 'pinia';
 import Container from '@/components/Container/Container.vue';
 import PkpDialog from '@/components/Modal/Dialog.vue';
-import LegacyModalManager from '@/components/Modal/LegacyModalManager.vue';
+import ModalManager from '@/components/Modal/ModalManager.vue';
 
 import PkpAnnouncer from '@/components/Announcer/Announcer.vue';
 // store
-import {useDialogStore} from '@/stores/dialogStore.js';
 
 export default {
 	name: 'Page',
 	components: {
 		PkpDialog,
 		PkpAnnouncer,
-		LegacyModalManager,
+		ModalManager,
 	},
 	extends: Container,
 	data() {
@@ -76,8 +74,6 @@ export default {
 				!this.menu[Object.keys(this.menu)[0]].isCurrent
 			);
 		},
-
-		...mapStores(useDialogStore),
 	},
 	mounted() {
 		/**
