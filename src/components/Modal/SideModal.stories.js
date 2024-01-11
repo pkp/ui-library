@@ -208,6 +208,7 @@ export const WithTabs = {
 		chromatic: {
 			modes: {
 				desktop: {disable: true},
+				'desktop rtl': {disable: true},
 				desktopLargeHeight: allModes['desktopLargeHeight'],
 			},
 		},

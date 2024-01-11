@@ -151,7 +151,7 @@ const preview = {
 				/** For scrollable scenarios */
 				largeHeight: {
 					name: 'Large',
-					styles: {width: '1024px', height: '1500px'},
+					styles: {width: '1280px', height: '1500px'},
 				},
 			},
 		},
