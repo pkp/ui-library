@@ -79,6 +79,7 @@ export const WithForm = {
 			function closeModal() {
 				isModalOpened.value = false;
 			}
+
 			const form = ref({
 				...cloneDeep(FormMock),
 				action: 'https://httpbin.org',
@@ -122,14 +123,16 @@ export const WithForm = {
 
 	decorators: [
 		() => ({
-			template: '<div style="height: 1500px"><story/></div>',
+			template: '<div style="height: 1600px"><story/></div>',
 		}),
 	],
 	parameters: {
 		chromatic: {
 			modes: {
 				desktop: {disable: true},
+				'desktop rtl': {disable: true},
 				desktopLargeHeight: allModes['desktopLargeHeight'],
+				'desktopLargeHeight rtl': allModes['desktopLargeHeight rtl'],
 			},
 		},
 	},
@@ -201,18 +204,9 @@ export const WithTabs = {
 	}),
 	decorators: [
 		() => ({
-			template: '<div style="height: 1500px"><story/></div>',
+			template: '<div style="height: 700px"><story/></div>',
 		}),
 	],
-	parameters: {
-		chromatic: {
-			modes: {
-				desktop: {disable: true},
-				'desktop rtl': {disable: true},
-				desktopLargeHeight: allModes['desktopLargeHeight'],
-			},
-		},
-	},
 	args: {},
 	play: async ({canvasElement}) => {
 		// Assigns canvas to the component root element

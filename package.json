@@ -48,6 +48,7 @@
     "@storybook/addon-mdx-gfm": "^7.6.5",
     "@storybook/addon-themes": "^7.6.5",
     "@storybook/blocks": "^7.6.5",
+    "@storybook/jest": "^0.2.3",
     "@storybook/testing-library": "^0.2.2",
     "@storybook/vue3": "^7.6.5",
     "@storybook/vue3-vite": "^7.6.5",

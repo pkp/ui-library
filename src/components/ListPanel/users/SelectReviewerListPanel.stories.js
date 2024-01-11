@@ -1,14 +1,18 @@
 import SelectReviewerListPanel from './SelectReviewerListPanel.vue';
 
 import ReviewerMock from '@/mocks/reviewer';
+import {jest} from '@storybook/jest';
 
 export default {
 	title: 'ListPanel/SelectReviewerListPanel',
 	component: SelectReviewerListPanel,
 };
 
-const yesterday = new Date('Tue Dec 19 2023 16:00:27 GMT+0100');
-yesterday.setDate(new Date('Tue Dec 19 2023 16:00:27 GMT+0100').getDate() - 1);
+const fixedDate = '2024-01-05T12:00:00Z'; // Example fixed date
+global.Date = jest.fn(() => new Date(fixedDate));
+
+const yesterday = new Date();
+yesterday.setDate(new Date().getDate() - 1);
 
 const items = [
 	ReviewerMock,
