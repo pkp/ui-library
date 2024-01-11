@@ -8,7 +8,7 @@ import FormMock from '@/docs/components/Form/helpers/form-announcement';
 import Tabs from '@/components/Tabs/Tabs.vue';
 import Tab from '@/components/Tabs/Tab.vue';
 
-//import {allModes} from '../../../.storybook/modes.js';
+import {allModes} from '../../../.storybook/modes.js';
 
 export default {
 	title: 'Components/SideModal',
@@ -112,19 +112,27 @@ export const WithForm = {
 			</SideModal>
 		`,
 	}),
-	/*decorators: [
+	play: async ({canvasElement}) => {
+		// Assigns canvas to the component root element
+		const canvas = within(canvasElement);
+		const user = userEvent.setup();
+
+		await user.click(canvas.getByText('Modal with Form'));
+	},
+
+	decorators: [
 		() => ({
 			template: '<div style="height: 1500px"><story/></div>',
 		}),
-	],*/
-	/*parameters: {
+	],
+	parameters: {
 		chromatic: {
 			modes: {
 				desktop: {disable: true},
 				desktopLargeHeight: allModes['desktopLargeHeight'],
 			},
 		},
-	},*/
+	},
 
 	args: {},
 };
@@ -141,7 +149,7 @@ export const WithTabs = {
 		},
 		template: `
 			<PkpButton  @click="isModalOpened = true">
-				Modal with Form
+				Modal with Tabs
 			</PkpButton>
 			<SideModal
 				:open="isModalOpened"
@@ -191,7 +199,7 @@ export const WithTabs = {
 			</SideModal>
 		`,
 	}),
-	/*decorators: [
+	decorators: [
 		() => ({
 			template: '<div style="height: 1500px"><story/></div>',
 		}),
@@ -203,9 +211,15 @@ export const WithTabs = {
 				desktopLargeHeight: allModes['desktopLargeHeight'],
 			},
 		},
-	},*/
-
+	},
 	args: {},
+	play: async ({canvasElement}) => {
+		// Assigns canvas to the component root element
+		const canvas = within(canvasElement);
+		const user = userEvent.setup();
+
+		await user.click(canvas.getByText('Modal with Tabs'));
+	},
 };
 
 export const NestedModal = {
@@ -260,4 +274,13 @@ export const NestedModal = {
 		}),
 	],
 	args: {},
+	play: async ({canvasElement}) => {
+		// Get parent element, as modals are in canvasElement sibling element
+		const canvas = within(canvasElement.parentElement);
+		const user = userEvent.setup();
+		console.log(canvasElement);
+
+		await user.click(canvas.getByText('Nested modal'));
+		await user.click(await canvas.findByText('Open Second Modal'));
+	},
 };
