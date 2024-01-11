@@ -1,6 +1,8 @@
 /** @type { import('@storybook/vue3').Preview } */
 
 import {withThemeByDataAttribute} from '@storybook/addon-themes';
+import {mockDateDecorator} from 'storybook-mock-date-decorator';
+
 import {setup} from '@storybook/vue3';
 import GlobalMixins from '@/mixins/global.js';
 import emitter from 'tiny-emitter/instance';
@@ -121,6 +123,7 @@ const preview = {
 				<story />
 			</div>`,
 		}),
+		mockDateDecorator,
 	],
 	parameters: {
 		actions: {argTypesRegex: '^on[A-Z].*'},
