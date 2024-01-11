@@ -105,7 +105,7 @@ const preview = {
 			 * is too late fort tinyMCE which needs to detect it on first render correctly
 			 *
 			 */
-			document.body.setAttribute('dir', globals.theme);
+			document.body.setAttribute('dir', globals.theme || 'ltr');
 			return story();
 		},
 		(story) => ({
