@@ -1,7 +1,7 @@
 import {defineStore} from 'pinia';
 import {ref} from 'vue';
 import {t} from '@/utils/i18n';
-export const useModalStore = defineStore('moda', () => {
+export const useModalStore = defineStore('modal', () => {
 	/**
 	 * Dialog Level
 	 *
