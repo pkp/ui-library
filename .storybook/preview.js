@@ -1,6 +1,8 @@
 /** @type { import('@storybook/vue3').Preview } */
 
 import {withThemeByDataAttribute} from '@storybook/addon-themes';
+import {mockDateDecorator} from 'storybook-mock-date-decorator';
+
 import {setup} from '@storybook/vue3';
 import GlobalMixins from '@/mixins/global.js';
 import emitter from 'tiny-emitter/instance';
@@ -21,7 +23,6 @@ import Tabs from '@/components/Tabs/Tabs.vue';
 import FloatingVue from 'floating-vue';
 
 import PkpDialog from '@/components/Modal/Dialog.vue';
-import {useDialogStore} from '@/stores/dialogStore';
 
 import VueScrollTo from 'vue-scrollto';
 
@@ -106,7 +107,7 @@ const preview = {
 			 * is too late fort tinyMCE which needs to detect it on first render correctly
 			 *
 			 */
-			document.body.setAttribute('dir', globals.theme);
+			document.body.setAttribute('dir', globals.theme || 'ltr');
 			return story();
 		},
 		(story) => ({
@@ -115,22 +116,18 @@ const preview = {
 		}),
 		/** Globally Available Dialog */
 		(story) => ({
-			setup() {
-				const dialogStore = useDialogStore();
-				return {dialogStore};
-			},
+			setup() {},
 			components: {story, PkpDialog},
 			template: `<div>			
-				<PkpDialog
-					:open="dialogStore.dialogOpened"
-					v-bind="dialogStore.dialogProps"
-					@close="dialogStore.closeDialog"
-				></PkpDialog>
+				<PkpDialog></PkpDialog>
 				<story />
 			</div>`,
 		}),
+		mockDateDecorator,
 	],
 	parameters: {
+		// remove default storybook padding as it likely cuts off modals
+		layout: 'fullscreen',
 		actions: {argTypesRegex: '^on[A-Z].*'},
 		controls: {
 			expanded: true,
@@ -159,7 +156,7 @@ const preview = {
 				/** For scrollable scenarios */
 				largeHeight: {
 					name: 'Large',
-					styles: {width: '1024px', height: '1500px'},
+					styles: {width: '1280px', height: '1600px'},
 				},
 			},
 		},

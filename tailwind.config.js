@@ -25,7 +25,7 @@ const colors = {
 };
 
 export default {
-	content: ['./index.html', './**/*.vue', './**/*.tpl'],
+	content: ['./index.html', './**/*.vue', './**/*stories.js', './**/*.tpl'],
 	theme: {
 		backgroundColor: {
 			...colors,

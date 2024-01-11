@@ -1,9 +1,9 @@
 <template>
-	<SideModalBody secondary="true">
-		<template #header><h1 class="text-4xl-bold">Assign editors</h1></template>
+	<SideModalBody>
+		<template #title>Assign editors</template>
 		<div class="p-4">
 			<div class="bg-lightest p-4">
-				<AjaxModalWrapper :content-url="contentUrl" />
+				<AjaxModalWrapper :options="{url: contentUrl}" />
 			</div>
 		</div>
 	</SideModalBody>

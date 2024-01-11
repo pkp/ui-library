@@ -1,10 +1,6 @@
 <template>
 	<vue-announcer class="sr-only" />
-	<PkpDialog
-		:open="dialogStore.dialogOpened"
-		v-bind="dialogStore.dialogProps"
-		@close="dialogStore.closeDialog()"
-	></PkpDialog>
+	<PkpDialog></PkpDialog>
 	<nav class="nav" aria-label="Primary Navigation">
 		<nav-group>
 			<template #heading>Guide</template>
@@ -304,18 +300,13 @@
 import NavGroup from './docs/NavGroup.vue';
 import PkpDialog from './components/Modal/Dialog.vue';
 // store
-import {useDialogStore} from '@/stores/dialogStore.js';
 
 export default {
 	components: {
 		NavGroup,
 		PkpDialog,
 	},
-	setup() {
-		const dialogStore = useDialogStore();
-
-		return {dialogStore};
-	},
+	setup() {},
 	methods: {
 		/**
 		 * Does the current route path include this component

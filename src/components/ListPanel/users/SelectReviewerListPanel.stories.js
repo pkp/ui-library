@@ -5,6 +5,9 @@ import ReviewerMock from '@/mocks/reviewer';
 export default {
 	title: 'ListPanel/SelectReviewerListPanel',
 	component: SelectReviewerListPanel,
+	parameters: {
+		date: new Date('January 7, 2024 10:00:00'),
+	},
 };
 
 const yesterday = new Date('Tue Dec 19 2023 16:00:27 GMT+0100');

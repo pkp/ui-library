@@ -36,7 +36,6 @@
 		<SubmissionSummaryModal :summary-submission="store.summarySubmission" />
 	</SideModal>
 	<SideModal
-		close-label="Close"
 		:open="store.isModalOpenedFilters"
 		@close="store.closeFiltersModal"
 	>
@@ -46,7 +45,6 @@
 		/>
 	</SideModal>
 	<SideModal
-		close-label="Close"
 		:open="store.isModalOpenedAssignParticipant"
 		@close="store.closeAssignParticipantModal"
 	>

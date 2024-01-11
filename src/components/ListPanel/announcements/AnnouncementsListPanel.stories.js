@@ -2,7 +2,6 @@ import AnnouncementsListPanel from './AnnouncementsListPanel.vue';
 
 import AnnouncementMock from '@/mocks/announcement';
 import FormAnnouncementMock from '@/components/Form/mocks/form-announcement';
-import {useDialogStore} from '@/stores/dialogStore';
 
 export default {
 	title: 'ListPanel/AnnouncementsListPanel',
@@ -72,9 +71,7 @@ export const Base = {
 	render: (args) => ({
 		components: {AnnouncementsListPanel},
 		setup() {
-			const dialogStore = useDialogStore();
-
-			return {args, dialogStore};
+			return {args};
 		},
 		template: `
 			<AnnouncementsListPanel

@@ -5,12 +5,14 @@
 			<SideModalBodyAjax :options="options2" />
 		</SideModal>
 	</SideModal>
+	<PkpDialog></PkpDialog>
 </template>
 
 <script setup>
 import {ref} from 'vue';
 import SideModal from '@/components/Modal/SideModal.vue';
 import SideModalBodyAjax from '@/components/Modal/SideModalBodyAjax.vue';
+import PkpDialog from '@/components/Modal/Dialog.vue';
 
 const isOpened = ref(false);
 const isOpened2 = ref(false);
@@ -30,8 +32,8 @@ function close2() {
 
 // 			pkp.eventBus.$emit('open-tab', tab);
 
+/** POC, its disabled for now, it will handle legacy modals in future to improve their accessibility */
 pkp.eventBus.$on('open-modal-vue', (_options) => {
-	console.log('open modal vue:', _options);
 	if (options.value) {
 		options2.value = _options;
 		isOpened2.value = true;

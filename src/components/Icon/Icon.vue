@@ -40,6 +40,7 @@ import ChevronLeft from './ChevronLeft.vue';
 import ChevronRight from './ChevronRight.vue';
 import OpenLeft from './OpenLeft.vue';
 import OpenRight from './OpenRight.vue';
+import XMark from './XMark.vue';
 
 export default {
 	name: 'Icon',
@@ -50,6 +51,7 @@ export default {
 		ChevronRight,
 		OpenLeft,
 		OpenRight,
+		XMark,
 	},
 	props: {
 		/** Which <a href="https://fontawesome.com/">FontAwesome</a> icon to use. Drop the `fa-` prefix from the class name.
@@ -67,6 +69,7 @@ export default {
 				'pkp-chevron-right': 'ChevronRight',
 				'pkp-open-left': 'OpenLeft',
 				'pkp-open-right': 'OpenRight',
+				'pkp-x-mark': 'XMark',
 			},
 		};
 	},

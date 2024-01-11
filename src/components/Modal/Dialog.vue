@@ -28,32 +28,39 @@
 						leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 					>
 						<DialogPanel
-							class="modal__panel modal__panel--dialog rounded-lg shadow-xl relative mx-3 w-10/12 max-w-3xl transform overflow-hidden bg-lightest text-left transition-all sm:my-8"
+							class="modal__panel modal__panel--dialog relative mx-3 w-10/12 max-w-3xl transform overflow-hidden rounded bg-lightest text-start shadow transition-all sm:my-8"
 						>
-							<div class="modal__header">
-								<DialogTitle v-if="dialogProps.title" class="modal__title">
+							<div class="flex min-h-12 items-center">
+								<DialogTitle
+									v-if="dialogProps.title"
+									class="m-0 min-w-[1px] overflow-x-hidden overflow-ellipsis whitespace-nowrap px-4 py-2 text-xl-bold"
+								>
 									{{ dialogProps.title }}
 								</DialogTitle>
-								<button class="modal__closeButton" @click="onClose">
-									<span :aria-hidden="true">×</span>
+								<button
+									class="me-2 ms-auto cursor-pointer border-0 bg-transparent text-center"
+									@click="onClose"
+								>
+									<icon class="h-6 w-6" icon="pkp-x-mark" :aria-hidden="true" />
 									<span class="-screenReader">
 										{{ dialogProps.closeLabel || t('common.close') }}
 									</span>
 								</button>
 							</div>
-							<div class="modal__content">
+							<div class="modal-content p-4">
 								<div v-html="dialogProps.message" />
 							</div>
-							<div class="modal__footer">
-								<spinner v-if="dialogProps.isLoading" />
+							<div class="flex items-center justify-end p-4">
+								<spinner v-if="isLoading" />
 								<pkp-button
 									v-for="action in dialogProps.actions"
 									:key="action.label"
+									class="ms-2"
 									:element="action.element || 'button'"
 									:href="action.href || null"
 									:is-primary="action.isPrimary || null"
 									:is-warnable="action.isWarnable || null"
-									:is-disabled="dialogProps.isLoading"
+									:is-disabled="isLoading"
 									@click="
 										action.callback ? fireCallback(action.callback) : null
 									"
@@ -81,19 +88,24 @@ import {
 	TransitionChild,
 } from '@headlessui/vue';
 
-import {useDialogStore} from '@/stores/dialogStore';
-const modalLevel = ref(0);
-const dialogStore = useDialogStore();
-const {dialogProps, dialogOpened, currentLevel} = storeToRefs(dialogStore);
-const {closeDialog} = dialogStore;
+import {useModalStore} from '@/stores/modalStore';
+
+const myLevel = ref(0);
+const modalStore = useModalStore();
+const {dialogProps, dialogOpened, dialogLevel} = storeToRefs(modalStore);
+
+const {closeDialog, increaseDialogLevel, decreaseDialogLevel} = modalStore;
 
 const opened = computed(
-	() => dialogOpened.value && modalLevel.value === currentLevel.value,
+	() => dialogOpened.value && myLevel.value === dialogLevel.value,
 );
 
 const isLoading = ref(false);
 
 function onClose() {
+	if (dialogProps.value.close) {
+		dialogProps.value.close();
+	}
 	isLoading.value = false;
 	closeDialog();
 }
@@ -108,41 +120,21 @@ function fireCallback(callback) {
 }
 
 onMounted(() => {
-	currentLevel.value = currentLevel.value + 1;
-	modalLevel.value = currentLevel.value;
+	increaseDialogLevel();
+	myLevel.value = dialogLevel.value;
 });
 
 onUnmounted(() => {
-	currentLevel.value = currentLevel.value - 1;
+	decreaseDialogLevel();
 });
-/*export default {
-	props: {
-		actions: {
-			type: Array,
-			required: true,
-		},
-		open: {
-			type: Boolean,
-			required: true,
-		},
-		close: {
-			type: Function,
-			default() {
-				return () => {};
-			},
-		},
-		closeLabel: {
-			type: String,
-		},
-		message: {
-			type: String,
-			required: true,
-		},
-		title: {
-			type: String,
-			default() {
-				return '';
-			},
-		},
-	},*/
 </script>
+
+<style scoped>
+.modal-content > p:first-child {
+	margin-top: 0;
+}
+
+.modal-content > p:last-child {
+	margin-bottom: 0;
+}
+</style>
