@@ -1,3 +1,5 @@
+import {within, userEvent} from '@storybook/testing-library';
+
 import {useDialog} from './useDialog';
 import PkpButton from '@/components/Button/Button.vue';
 
@@ -38,6 +40,18 @@ export const BasicExample = {
 			},
 		],
 	},
+	play: async ({canvasElement}) => {
+		// Assigns canvas to the component root element
+		const canvas = within(canvasElement);
+		const user = userEvent.setup();
+
+		await user.click(canvas.getByText('Basic Example'));
+	},
+	decorators: [
+		() => ({
+			template: '<div style="height: 400px"><story/></div>',
+		}),
+	],
 };
 
 export const FullExample = {
@@ -70,4 +84,16 @@ export const FullExample = {
 		],
 		close: () => console.log('closed full example dialog'), // eslint-disable-line
 	},
+	play: async ({canvasElement}) => {
+		// Assigns canvas to the component root element
+		const canvas = within(canvasElement);
+		const user = userEvent.setup();
+
+		await user.click(canvas.getByText('Full Example'));
+	},
+	decorators: [
+		() => ({
+			template: '<div style="height: 400px"><story/></div>',
+		}),
+	],
 };
