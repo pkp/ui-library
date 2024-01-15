@@ -98,7 +98,7 @@
     "*.{js,vue}": [
       "eslint --fix "
     ],
-    "src/**/*": [
+    "src/**/*.{js,vue,mdx}": [
       "prettier --write"
     ]
   },
