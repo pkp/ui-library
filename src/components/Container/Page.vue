@@ -4,7 +4,7 @@ import PkpDialog from '@/components/Modal/Dialog.vue';
 import ModalManager from '@/components/Modal/ModalManager.vue';
 
 import PkpAnnouncer from '@/components/Announcer/Announcer.vue';
-// store
+import ReviewerSubmissionPage from '@/pages/reviewerSubmission/ReviewerSubmissionPage.vue';
 
 export default {
 	name: 'Page',
@@ -12,6 +12,7 @@ export default {
 		PkpDialog,
 		PkpAnnouncer,
 		ModalManager,
+		ReviewerSubmissionPage,
 	},
 	extends: Container,
 	data() {
