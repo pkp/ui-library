@@ -18,6 +18,7 @@ export const useRoundHistoryModalStore = defineComponentStore(
 			submission,
 			submissionId: props.submissionId,
 			reviewRoundId: props.reviewRoundId,
+			reviewRoundNumber: props.reviewRoundNumber,
 		};
 	},
 );

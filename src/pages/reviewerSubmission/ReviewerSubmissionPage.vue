@@ -1,5 +1,8 @@
 <template>
 	<div class="mb-4 space-x-2">
+		<span class="bg-medium text-lg-normal">
+			{{ t('reviewer.submission.reviewRound.info') }}
+		</span>
 		<PkpButton
 			v-for="review in store.reviewRoundHistories"
 			:key="review.reviewRoundId"
