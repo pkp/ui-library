@@ -28,7 +28,6 @@ window.pkp = {
 		apiBaseUrl: 'https://mock/index.php/publicknowledge/api/v1/',
 		pageBaseUrl: 'https://mock/index.php/publicknowledge/',
 	},
-
 	/**
 	 * Dummy constants required by components
 	 */
@@ -262,6 +261,7 @@ window.pkp = {
 		'manager.dois.update.partialFailure': 'Some DOI(s) could not be updated',
 		'manager.dois.update.success': 'DOI(s) successfully updated',
 		'navigation.backTo': '\u27f5 Back to {$page}',
+		'navigation.submissions': 'Submissions',
 		'publication.jats.autoCreatedMessage':
 			'This JATS file is generated automatically by the submission metadata',
 		'publication.jats.confirmDeleteFileButton': 'Delete JATS File',
@@ -273,12 +273,38 @@ window.pkp = {
 		'publication.status.published': 'Published',
 		'publication.status.unpublished': 'Unpublished',
 		'publication.version': 'Version {$version}',
-		'reviewer.article.decision.accept': 'Accept Submission',
-		'reviewer.article.decision.decline': 'Decline Submission',
-		'reviewer.article.decision.pendingRevisions': 'Revisions Required',
-		'reviewer.article.decision.resubmitElsewhere': 'Resubmit Elsewhere',
-		'reviewer.article.decision.resubmitHere': 'Resubmit for Review',
-		'reviewer.article.decision.seeComments': 'See Comments',
+		'reviewer.article.recommendation': 'Recommendation',
+		'reviewer.submission.acceptedOn': 'Review Accepted On',
+		'reviewer.submission.responseDueDate': 'Response Due Date',
+		'reviewer.submission.reviewDueDate': 'Review Due Date',
+		'reviewer.submission.reviewRequestDate': "Editor's Request",
+		'reviewer.submission.reviewRound.attachments': 'Attachments',
+		'reviewer.submission.reviewRound.attachments.description':
+			'These are files that you attached along with your review',
+		'reviewer.submission.reviewRound.comments': 'Reviewer Comments',
+		'reviewer.submission.reviewRound.comments.authorAndEditor':
+			'For editors and authors',
+		'reviewer.submission.reviewRound.comments.editorOnly': 'For editors only',
+		'reviewer.submission.reviewRound.comments.prefix': 'Comment {$index}: ',
+		'reviewer.submission.reviewRound.emailLog': 'Decline reason sent by email',
+		'reviewer.submission.reviewRound.emailLog.defaultMessage':
+			'No reason given to the decline of the review invitation.',
+		'reviewer.submission.reviewRound.files': 'Files For Review',
+		'reviewer.submission.reviewRound.files.description':
+			'These files were sent to you for review',
+		'reviewer.submission.reviewRound.general': 'General Information',
+		'reviewer.submission.reviewRound.info': 'Previous Reviews',
+		'reviewer.submission.reviewRound.info.modal.title':
+			'Round {$round} Review submitted by you for',
+		'reviewer.submission.reviewRound.info.read': 'Read Round {$round} Review',
+		'reviewer.submission.reviewRound.info.submittedOn':
+			'Round {$round} Review Submitted on {$submittedOn}',
+		'reviewer.submission.reviewRound.metadata': 'Article Metadata',
+		'reviewer.submission.reviewRound.metadata.abstract': 'Abstract',
+		'reviewer.submission.reviewRound.metadata.keywords': 'Keywords',
+		'reviewer.submission.reviewRound.metadata.type': 'Type',
+		'reviewer.submission.reviewRound.reviewDeclineDate': 'Declined Date',
+		'reviewer.submission.submittedOn': 'Review Submitted On',
 		'stats.countWithYearlyAverage': '{$count} ({$average}/year)',
 		'stats.descriptionForStat': 'Description for {$stat}',
 		'submission.list.assignEditor': 'Assign Editor',
