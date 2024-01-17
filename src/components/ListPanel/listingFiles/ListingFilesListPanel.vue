@@ -1,5 +1,11 @@
 <template>
 	<ListPanel :title="title" :description="description" :items="files">
+		<template #header>
+			<h2 class="pkpHeader__title">
+				<span class="text-dark-accent">{{ title }}</span>
+			</h2>
+			<div v-if="description">{{ description }}</div>
+		</template>
 		<template #item="{item}">
 			<div class="flex items-center">
 				<div class="me-2 flex-grow truncate">
