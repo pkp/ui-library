@@ -6,16 +6,17 @@ import {useFetch} from '@/composables/useFetch';
 export const useRoundHistoryModalStore = defineComponentStore(
 	'roundHistoryModal',
 	(props) => {
-		const {apiUrl: submissionApiUrl} = useApiUrl(
-			`submissions/${props.submissionId}`,
+		const {apiUrl: reviewRoundHistoryApiUrl} = useApiUrl(
+			`reviews/history/${props.submissionId}/${props.reviewRoundId}`,
 		);
-		const {fetch: fetchSubmission, data: submission} =
-			useFetch(submissionApiUrl);
+		const {fetch: fetchReviewRoundHistory, data: reviewRoundHistory} = useFetch(
+			reviewRoundHistoryApiUrl
+		);
 
-		fetchSubmission();
+		fetchReviewRoundHistory();
 
 		return {
-			submission,
+			reviewRoundHistory,
 			submissionId: props.submissionId,
 			reviewRoundId: props.reviewRoundId,
 			reviewRoundNumber: props.reviewRoundNumber,

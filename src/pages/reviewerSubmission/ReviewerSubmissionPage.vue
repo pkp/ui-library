@@ -8,7 +8,7 @@
 			:key="review.reviewRoundId"
 			@click="store.openRoundHistoryModal(review)"
 		>
-			{{ t('submission.round', {round: review.reviewRoundNumber}) }}
+			{{ t('common.reviewRoundNumber', {round: review.reviewRoundNumber}) }}
 		</PkpButton>
 	</div>
 	<SideModal

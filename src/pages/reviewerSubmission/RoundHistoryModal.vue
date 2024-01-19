@@ -1,58 +1,71 @@
 <template>
-	<SideModalBody>
+	<SideModalBody v-if="store.reviewRoundHistory">
 		<template #title>
 			<h1>{{ t('reviewer.submission.reviewRound.info.history') }}</h1>
 		</template>
-		<template v-if="store.submission" #description>
+		<template v-if="store.reviewRoundHistory.publicationTitle" #description>
 			<h2>
 				{{ t(
 					'reviewer.submission.reviewRound.info.modal.title',
-					{reviewRoundNumber: store.reviewRoundNumber, submissionTitle: localize(store.submission.publications[0].title)}
+					{reviewRoundNumber: store.reviewRoundNumber, submissionTitle: store.reviewRoundHistory.publicationTitle}
 				) }}
 			</h2>
 		</template>
 		<div class="p-4">
 			<div class="bg-lightest p-5">
-				<div v-if="isReviewAssignmentDeclined">
+				<div v-if="store.reviewRoundHistory.reviewAssignment.declined">
 					<Panel v-bind="panelOptions" class="mb-4">
 						<PanelSection>
 							<template #header>
-								<h2>{{ t('reviewer.submission.reviewDeclineDate') }}</h2>
+								<h2>{{ t('reviewer.submission.reviewRound.reviewDeclineDate') }}</h2>
 							</template>
-							<p>{{ formatShortDate(dateConfirmed) }}</p>
+							<p>{{ formatShortDate(store.reviewRoundHistory.reviewAssignment.dateConfirmed) }}</p>
 						</PanelSection>
 					</Panel>
 
-					<Panel v-if="declinedEmail" v-bind="panelOptions" class="mb-4">
+					<Panel v-if="store.reviewRoundHistory.declineEmail" v-bind="panelOptions" class="mb-4">
 						<PanelSection>
 							<template #header>
-								<h2>{{ t('reviewer.submission.emailLog') }}</h2>
+								<h2>{{ t('reviewer.submission.reviewRound.emailLog') }}</h2>
 							</template>
-							<p>{{ declinedEmail.subject }}<br />{{ declinedEmail.body }}</p>
+							<p v-html="store.reviewRoundHistory.declineEmail.subject" class="mb-4 font-bold"></p>
+							<hr class="opacity-50">
+							<p v-html="store.reviewRoundHistory.declineEmail.body" class="mt-4"></p>
 						</PanelSection>
 					</Panel>
-					<p v-else>{{ t('reviewer.submission.emailLog.defaultMessage') }}</p>
+					<p v-else>{{ t('reviewer.submission.reviewRound.emailLog.defaultMessage') }}</p>
 				</div>
 				<div v-else>
-					<Panel v-if="recommendation" v-bind="panelOptions" class="mb-4">
+					<Panel v-if="store.reviewRoundHistory.reviewAssignment.recommendation" v-bind="panelOptions" class="mb-4">
 						<PanelSection>
 							<template #header>
 								<h2>{{ t('reviewer.article.recommendation') }}</h2>
 							</template>
-							<p>{{ recommendation }}</p>
+							<p>{{ store.reviewRoundHistory.reviewAssignment.recommendation }}</p>
 						</PanelSection>
 					</Panel>
 
-					<Panel v-if="reviewComments.length" v-bind="panelOptions" class="mb-4">
+					<Panel v-if="store.reviewRoundHistory.comments.length || store.reviewRoundHistory.privateComments.length" v-bind="panelOptions" class="mb-4">
 						<PanelSection>
 							<template #header>
-								<h2>{{ t('reviewer.submission.comments.review') }}</h2>
+								<h2>{{ t('reviewer.submission.reviewRound.comments.review') }}</h2>
 							</template>
-							<p v-for="reviewComment in reviewComments">
-								<b v-if="reviewComment.isViewable">{{ t('reviewer.submission.comments.authorAndEditor') }}</b>
-								<b v-else>{{ t('reviewer.submission.comments.editorOnly') }}</b>
-								{{ reviewComment.content }}
-							</p>
+							<PanelSection v-if="store.reviewRoundHistory.comments.length">
+								<template #header>
+									<h3>{{ t('reviewer.submission.reviewRound.comments.authorAndEditor') }}</h3>
+								</template>
+								<p v-for="reviewComment in store.reviewRoundHistory.comments">
+									{{ reviewComment }}
+								</p>
+							</PanelSection>
+							<PanelSection v-if="store.reviewRoundHistory.privateComments.length">
+								<template #header>
+									<h3>{{ t('reviewer.submission.reviewRound.comments.editorOnly') }}</h3>
+								</template>
+								<p v-for="reviewComment in store.reviewRoundHistory.privateComments">
+									{{ reviewComment }}
+								</p>
+							</PanelSection>
 						</PanelSection>
 					</Panel>
 
@@ -63,26 +76,26 @@
 							</template>
 							<List>
 								<ListItem>
-									<b>{{ t('reviewer.submission.reviewRequestDate') }}:</b> {{ formatShortDate(dateNotified) }}
+									<p class="inline pr-2 font-bold">{{ t('reviewer.submission.reviewRequestDate') }}</p>{{ formatShortDate(store.reviewRoundHistory.reviewAssignment.dateNotified) }}
 								</ListItem>
 								<ListItem>
-									<b>{{ t('reviewer.submission.responseDueDate') }}:</b> {{ formatShortDate(dateResponseDue) }}
+									<p class="inline pr-2 font-bold">{{ t('reviewer.submission.responseDueDate') }}</p>{{ formatShortDate(store.reviewRoundHistory.reviewAssignment.dateResponseDue) }}
 								</ListItem>
 								<ListItem>
-									<b>{{ t('reviewer.submission.reviewDueDate') }}:</b> {{ formatShortDate(dateDue) }}
+									<p class="inline pr-2 font-bold">{{ t('reviewer.submission.reviewDueDate') }}</p>{{ formatShortDate(store.reviewRoundHistory.reviewAssignment.dateDue) }}
 								</ListItem>
 								<ListItem>
-									<b>{{ t('common.dateCompleted') }}:</b> {{ formatShortDate(dateCompleted) }}
+									<p class="inline pr-2 font-bold">{{ t('common.dateCompleted') }}</p>{{ formatShortDate(store.reviewRoundHistory.reviewAssignment.dateCompleted) }}
 								</ListItem>
 							</List>
 						</PanelSection>
 					</Panel>
 
-					<div v-if="hasAttachments" class="mb-4">
+					<div class="mb-4">
 						<p>TODO: display attachments grid</p>
 					</div>
 
-					<div v-if="hasFiles" class="mb-4">
+					<div v-if="store.reviewRoundHistory.displayFiles" class="mb-4">
 						<p>TODO: display files grid</p>
 					</div>
 				</div>
@@ -103,22 +116,6 @@ import ListItem from "@/components/List/ListItem.vue";
 function formatShortDate(dateString) {
 	return moment(dateString).format('YYYY-MM-DD');
 }
-
-const isReviewAssignmentDeclined = false;
-const reviewComments = [
-	{'isViewable': true, 'content': 'Comment #1'},
-	{'isViewable': false, 'content': 'Comment #2'},
-	{'isViewable': true, 'content': 'Comment #3'},
-];
-const dateConfirmed = '2024-12-25 12:00:00';
-const dateNotified = '2024-01-17 12:00:00';
-const dateResponseDue = '2023-06-24 12:00:00';
-const dateDue = '2025-12-31 12:00:00';
-const dateCompleted = '2025-02-14 12:00:00';
-const hasAttachments = true;
-const hasFiles = true;
-const declinedEmail = {'subject': 'Email Subject', 'body': 'Email Body'};
-const recommendation = "This is the recommendation";
 
 const panelOptions = { stack: true };
 
