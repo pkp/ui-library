@@ -36,12 +36,12 @@
 					<p v-else>{{ t('reviewer.submission.reviewRound.emailLog.defaultMessage') }}</p>
 				</div>
 				<div v-else>
-					<Panel v-if="store.reviewRoundHistory.reviewAssignment.recommendation" v-bind="panelOptions" class="mb-4">
+					<Panel v-if="store.reviewRoundHistory.recommendation" v-bind="panelOptions" class="mb-4">
 						<PanelSection>
 							<template #header>
 								<h2>{{ t('reviewer.article.recommendation') }}</h2>
 							</template>
-							<p>{{ store.reviewRoundHistory.reviewAssignment.recommendation }}</p>
+							<p>{{ store.reviewRoundHistory.recommendation }}</p>
 						</PanelSection>
 					</Panel>
 
