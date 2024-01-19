@@ -54,17 +54,13 @@
 								<template #header>
 									<h3>{{ t('reviewer.submission.reviewRound.comments.authorAndEditor') }}</h3>
 								</template>
-								<p v-for="reviewComment in store.reviewRoundHistory.comments">
-									{{ reviewComment }}
-								</p>
+								<p v-for="reviewComment in store.reviewRoundHistory.comments" v-html="reviewComment"></p>
 							</PanelSection>
 							<PanelSection v-if="store.reviewRoundHistory.privateComments.length">
 								<template #header>
 									<h3>{{ t('reviewer.submission.reviewRound.comments.editorOnly') }}</h3>
 								</template>
-								<p v-for="reviewComment in store.reviewRoundHistory.privateComments">
-									{{ reviewComment }}
-								</p>
+								<p v-for="reviewComment in store.reviewRoundHistory.privateComments" v-html="reviewComment"></p>
 							</PanelSection>
 						</PanelSection>
 					</Panel>
