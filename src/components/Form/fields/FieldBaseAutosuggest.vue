@@ -79,7 +79,7 @@
 					v-bind="autosuggestOptions"
 					@selected="selectSuggestion"
 					@focus="() => (isFocused = true)"
-					@blur="() => (isFocused = false)"
+					@blur="onInputBlur"
 				/>
 			</div>
 			<multilingual-progress
@@ -358,6 +358,18 @@ export default {
 			throw new Error(
 				'The setSuggestions method must be implemented in any component that extends FieldBaseAutosuggest.'
 			);
+		},
+
+		/**
+		 * #9592 On input blur its good to clear inputValue, otherwise it might look like saved
+		 * Delay is necessary so it does not interfere with blur which is triggered when option is
+		 * selected from the list
+		 */
+		onInputBlur() {
+			this.isFocused = false;
+			setTimeout(() => {
+				this.inputValue = '';
+			}, 200);
 		},
 
 		/**
