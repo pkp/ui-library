@@ -38,7 +38,7 @@ export default {
 			...colors,
 			dark: '#222222',
 			'dark-accent': '#01354F',
-			light: '#777777',
+			light: '#505050',
 			lightest: '#FFFFFF',
 		},
 		borderColor: {
