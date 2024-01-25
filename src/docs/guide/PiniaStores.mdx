@@ -1,0 +1,68 @@
+import {Meta} from '@storybook/blocks';
+
+<Meta title="Guide/Pinia Store" />
+
+# Pinia Store
+
+For more details, why Pinia store is being adopted from 3.5, check out our [Technical Roadmap](?path=/docs/guide-technical-roadmap--docs#pinia-stores-35)
+
+## Pinia Store Gotchas
+
+Intentional as first chapter to safe you some time.
+
+When destructing state from pinia store, it requires to use helpers to not loose reactivity. Alternatively using the store directly without destructing is also good practice. Check example in [Pinia documentation](https://pinia.vuejs.org/core-concepts/#Destructuring-from-a-Store).
+
+## Component Pinia Store
+
+Purpose of **Component Pinia Stores** is to contain business logic for individual **Pages**, **Complex Modals** and **Self-Contained Components**. Read more details, where to place business logic in [Page architecture](?path=/docs/guide-page-architecture--docs#where-to-place-business-logic).
+
+Compared to general pinia store, its extended with following features:
+
+- **Passing initial data**: It allows to pass inititial data when needed. That often might be configuration passed to the **Page** from PHP backend. Or some props being passed to **Complex Modal** or **Self-Contained Component**. Important to note that only the first component (its top in hirearchy) is passing the configuration. Any other child component thats connecting to the store connects to it without passing the init state as its already been initialised.
+- **Following Component Lifecycle**: It gets initialised when its called in first component. It tracks mount/unmount events and when all components using the store are unmounted it deletes its state. This is particularly useful when managing **Complex Modal** as anytime its closed - its state will be removed and it gets initialised next time the modal is opened with new props.
+
+These improvements are intended to make the developer experience very much the same as if we would define the business logic directly in the component. But still getting [benefits](<(?path=/docs/guide-technical-roadmap--docs#pinia-stores-35)>) that comes from using Pinia store.
+
+Lets look at example how the component interacts with the store. More advanced example can be found in [ExamplePage](?path=/docs/pages-example--docs).
+
+```javascript
+import {ref, computed} from 'vue';
+import {defineComponentStore} from '@/utils/defineComponentStore';
+
+export const useExamplePageStore = defineComponentStore(
+	'examplePage',
+	(props) => {
+		const itemsPublishedCount = computed(() => {
+			return props.items.filter((item) => item.status === 'published').length;
+		});
+
+		return {
+			items: props.items,
+			itemsPublishedCount,
+		};
+	},
+);
+```
+
+```html
+<template>
+	<span>Published count: {{ store.itemsPublishedCount }}</span>
+	<ul>
+		<li v-for="item in store.items">{{ item.title}}</li>
+	</ul>
+</template>
+<script setup>
+	const props = defineProps({
+		items: {
+			type: Array,
+			required: true,
+		},
+	});
+	// when
+	const store = useExamplePageStore(props);
+</script>
+```
+
+## General Pinia Store
+
+Couple of Pinia stores are also used for internal purposes, like managing announcements or dialogs. At this point these are not intended to interact with directly. There are dedicated composables for interacting with dialogs for example. Store purpose in these cases it to manage some global state.
