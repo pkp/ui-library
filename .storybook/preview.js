@@ -37,6 +37,7 @@ const pinia = createPinia();
 
 // Initialize MSW
 initialize({
+	onUnhandledRequest: 'bypass',
 	/** To be migrated to msw2 if neede */
 	/*onUnhandledRequest: ({method, url}) => {
 		if (url.pathname.includes('://mock/')) {
