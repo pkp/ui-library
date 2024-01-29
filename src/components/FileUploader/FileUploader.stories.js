@@ -1,7 +1,7 @@
 import {ref} from 'vue';
 import FileUploader from './FileUploader.vue';
 import FileUploadProgress from '@/components/FileUploadProgress/FileUploadProgress.vue';
-import dropzoneOptions from '@/docs/data/dropzoneOptions';
+import dropzoneOptions from '@/mocks/dropzoneOptions';
 import {http, HttpResponse} from 'msw';
 
 import './FileUploader.stories.less';

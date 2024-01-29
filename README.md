@@ -16,15 +16,14 @@ This library is intended to be included and used within PKP's applications. If y
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
-npm run serve
+# serve with hot reload at localhost:6006
+npm run storybook
 ```
 
-Run the following command to build the library with a base path of `/dev/ui-library/<version>`, so it can be included in [PKP's documentation hub](https://github.com/pkp/pkp-docs).
+## Links
 
-```bash
-PKP_DOCS_VERSION=<version> npm run build
-```
+- [Latest storybook build](https://main--6555d3db80418bb1681b8b17.chromatic.com/)
+- [Latest snapshots](https://www.chromatic.com/library?appId=6555d3db80418bb1681b8b17&branch=main) captured via Chromatic service for visual testing of our components and pages
 
 ## Issues
 

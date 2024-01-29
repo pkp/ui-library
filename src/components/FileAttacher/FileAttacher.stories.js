@@ -1,8 +1,8 @@
 import {ref} from 'vue';
 import {http, HttpResponse, delay} from 'msw';
 import FileAttacher from './FileAttacher.vue';
-import fileAttachers from '@/docs/data/fileAttachers';
-import submissionFiles from '@/docs/data/submissionFiles';
+import fileAttachers from '@/mocks/fileAttachers';
+import submissionFiles from '@/mocks/submissionFiles';
 
 export default {
 	title: 'Components/FileAttacher',

@@ -1,9 +1,9 @@
 import {ref} from 'vue';
 
 import Composer from './Composer.vue';
-import fileAttachers from '@/docs/data/fileAttachers';
-import insertContent from '@/docs/data/insertContent';
-import emailTemplate from '@/docs/data/emailTemplate';
+import fileAttachers from '@/mocks/fileAttachers';
+import insertContent from '@/mocks/insertContent';
+import emailTemplate from '@/mocks/emailTemplate';
 
 export default {
 	title: 'Components/Composer',
