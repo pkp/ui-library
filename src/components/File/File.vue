@@ -4,12 +4,12 @@
 		<span v-if="fileId" class="file__id">
 			{{ fileId }}
 		</span>
-		<a v-if="url" class="underline" :href="url" target="_blank">
-			{{ name }}
-		</a>
-		<template v-else>
-			{{ name }}
-		</template>
+		<span class="ms-1">
+			<a v-if="url" class="underline" href="url" target="_blank">{{ name }}</a>
+			<template v-else>
+				{{ name }}
+			</template>
+		</span>
 	</div>
 </template>
 
