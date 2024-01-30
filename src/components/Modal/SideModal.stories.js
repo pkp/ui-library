@@ -146,7 +146,7 @@ export const TwoColumnsLayout = {
 	}),
 	decorators: [
 		() => ({
-			template: '<div style="height: 300px"><story/></div>',
+			template: '<div style="height: 700px"><story/></div>',
 		}),
 	],
 
