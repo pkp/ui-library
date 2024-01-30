@@ -15,6 +15,15 @@ export default {
 	}),
 };
 
+export const WithLink = {
+	args: {
+		documentType: 'word',
+		fileId: '35',
+		name: 'ccorino-disclosure-statement.docx',
+		url: 'https://www.google.com',
+	},
+};
+
 export const Word = {
 	args: {
 		documentType: 'word',

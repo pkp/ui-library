@@ -4,7 +4,12 @@
 		<span v-if="fileId" class="file__id">
 			{{ fileId }}
 		</span>
-		{{ name }}
+		<a v-if="url" class="underline" :href="url" target="_blank">
+			{{ name }}
+		</a>
+		<template v-else>
+			{{ name }}
+		</template>
 	</div>
 </template>
 
@@ -29,6 +34,15 @@ export default {
 		name: {
 			type: String,
 			required: true,
+		},
+
+		/** Optional. If the file should be be url to download file */
+		url: {
+			type: String,
+			required: false,
+			default() {
+				return '';
+			},
 		},
 	},
 	computed: {
