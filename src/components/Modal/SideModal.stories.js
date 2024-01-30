@@ -125,7 +125,7 @@ export const TwoColumnsLayout = {
 						<template #right1>
 							<div class="text-xl-bold">Article Metadata</div>
 							<div v-for="item in metadata" class="mt-4">
-								<div class="text-lg-bold">{{ item.name }}:<div>
+								<div class="text-lg-bold">{{ item.name }}:</div>
 								<div class="text-base-normal mt-1">{{item.value}}</div>
 							</div>
 
@@ -133,7 +133,7 @@ export const TwoColumnsLayout = {
 						<template #right2>
 							<div class="text-xl-bold">General Inforation</div>
 							<div v-for="item in generalInformation" class="mt-4">
-								<div class="text-lg-bold">{{ item.name }}:<div>
+								<div class="text-lg-bold">{{ item.name }}:</div>
 								<div class="text-base-normal mt-1">{{item.value}}</div>
 							</div>
 						</template>
