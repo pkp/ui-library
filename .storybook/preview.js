@@ -37,18 +37,16 @@ const pinia = createPinia();
 
 // Initialize MSW
 initialize({
-	onUnhandledRequest: 'bypass',
-	/** To be migrated to msw2 if neede */
-	/*onUnhandledRequest: ({method, url}) => {
-		if (url.pathname.includes('://mock/')) {
-			console.error(`Unhandled ${method} request to ${url}.
+	onUnhandledRequest: (request) => {
+		if (request.url.includes('://mock/')) {
+			console.error(`Unhandled ${request.method} request to ${request.url}.
 
         This exception has been only logged in the console, however, it's strongly recommended to resolve this error as you don't want unmocked data in Storybook stories.
 
         If you wish to mock an error response, please refer to this guide: https://mswjs.io/docs/recipes/mocking-error-responses
       `);
 		}
-	},*/
+	},
 });
 
 setup((app) => {
