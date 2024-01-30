@@ -5,6 +5,7 @@
 				<pkp-header>
 					<component :is="headingLevel">{{ title }}</component>
 				</pkp-header>
+				<div v-if="description">{{ description }}</div>
 			</slot>
 		</div>
 		<div class="listPanel__body">
