@@ -6,8 +6,12 @@ if (typeof pkp === 'undefined' || !pkp?.serverContext?.configAllowedHtml) {
 
 const allowed_html = pkp.serverContext.configAllowedHtml;
 
-const ALLOWED_TAGS = [];
-const ALLOWED_ATTR = [];
+// additional tags and attrs used in po files
+const allowedTagsPO = ['button'];
+const allowedAttrsPO = [];
+
+let ALLOWED_TAGS = [];
+let ALLOWED_ATTR = [];
 
 allowed_html.split(',').forEach((tagWithAttribute) => {
 	const parts = tagWithAttribute.split('[');
@@ -19,6 +23,9 @@ allowed_html.split(',').forEach((tagWithAttribute) => {
 		attributes.forEach((attribute) => ALLOWED_ATTR.push(attribute));
 	}
 });
+
+ALLOWED_TAGS = [...ALLOWED_TAGS, ...allowedTagsPO];
+ALLOWED_ATTR = [...ALLOWED_ATTR, ...allowedAttrsPO];
 
 // DOMPurify does not support defining tags along with attributes, its separate lists
 // https://github.com/cure53/DOMPurify/issues/272
