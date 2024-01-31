@@ -37,13 +37,20 @@ const sanitizeConfig = {
 export const allowedHtmlDirective = {
 	beforeMount(el, binding) {
 		// Sanitize the content before inserting it into the element
-		const cleanContent = DOMPurify.sanitize(binding.value, sanitizeConfig);
+		const cleanContent = DOMPurify.sanitize(
+			String(binding.value),
+			sanitizeConfig,
+		);
+
 		el.innerHTML = cleanContent;
 	},
 	updated(el, binding) {
 		// Re-sanitize the content if the bound value changes
 		if (binding.value !== binding.oldValue) {
-			const cleanContent = DOMPurify.sanitize(binding.value, sanitizeConfig);
+			const cleanContent = DOMPurify.sanitize(
+				String(binding.value),
+				sanitizeConfig,
+			);
 			el.innerHTML = cleanContent;
 		}
 	},
