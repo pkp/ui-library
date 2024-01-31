@@ -11,8 +11,8 @@
 			<span
 				v-if="tooltip"
 				:id="describedByTooltipId"
+				v-pkp-allowed-html="tooltip"
 				class="-screenReader"
-				v-html="tooltip"
 			/>
 			<help-button
 				v-if="helpTopic"
@@ -25,8 +25,8 @@
 		<div
 			v-if="description"
 			:id="describedByDescriptionId"
+			v-pkp-allowed-html="description"
 			class="pkpFormField__description"
-			v-html="description"
 		/>
 		<div class="pkpFormField__control">
 			<input

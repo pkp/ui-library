@@ -48,7 +48,7 @@
 								</button>
 							</div>
 							<div class="modal-content p-4">
-								<div v-html="dialogProps.message" />
+								<div v-pkp-allowed-html="dialogProps.message" />
 							</div>
 							<div class="flex items-center justify-end p-4">
 								<spinner v-if="isLoading" />

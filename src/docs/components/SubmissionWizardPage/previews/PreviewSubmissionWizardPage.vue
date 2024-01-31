@@ -60,7 +60,7 @@
 						<panel-section v-for="section in step.sections" :key="section.id">
 							<template #header>
 								<h2>{{ section.name }}</h2>
-								<div v-html="section.description" />
+								<div v-pkp-allowed-html="section.description" />
 							</template>
 							<pkp-form
 								v-if="section.type === 'form'"
@@ -216,8 +216,8 @@
 													Title
 												</h4>
 												<div
+													v-pkp-allowed-html="localize(publication.title)"
 													class="submissionWizard__reviewPanel__item__value"
-													v-html="localize(publication.title)"
 												/>
 											</div>
 											<div class="submissionWizard__reviewPanel__item">
@@ -235,8 +235,8 @@
 													Abstract
 												</h4>
 												<div
+													v-pkp-allowed-html="localize(publication.abstract)"
 													class="submissionWizard__reviewPanel__item__value"
-													v-html="localize(publication.abstract)"
 												/>
 											</div>
 											<div

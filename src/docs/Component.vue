@@ -91,9 +91,9 @@
 						</div>
 						<pre
 							class="component__example__template"
-						><div class="language-html" v-html="currentExample.template" /></pre>
+						><div v-pkp-allowed-html="currentExample.template" class="language-html" /></pre>
 						<section v-if="readme" class="component__example__readme bodyText">
-							<div v-html="readme" />
+							<div v-pkp-allowed-html="readme" />
 						</section>
 					</template>
 					<div v-else class="component__example__none">

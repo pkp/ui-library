@@ -14,13 +14,13 @@
 					</span>
 				</div>
 				<div
-					class="listPanel__itemSubtitle"
-					v-html="
+					v-pkp-allowed-html="
 						localizeSubmission(
 							currentPublication.fullTitle,
 							currentPublication.locale,
 						)
 					"
+					class="listPanel__itemSubtitle"
 				></div>
 
 				<!-- Review assignment information -->
@@ -55,7 +55,7 @@
 					v-if="reviewerWorkflowLink"
 					class="listPanel__item--submission__notice"
 				>
-					<span v-html="reviewerWorkflowLink" />
+					<span v-pkp-allowed-html="reviewerWorkflowLink" />
 				</div>
 				<div v-else-if="notice" class="listPanel__item--submission__notice">
 					<icon icon="exclamation-triangle" :inline="true" />
@@ -186,7 +186,7 @@
 					{{ t('submission.list.discussions') }}
 				</list-item>
 				<list-item v-if="dualWorkflowLinks">
-					<span v-html="dualWorkflowLinks" />
+					<span v-pkp-allowed-html="dualWorkflowLinks" />
 				</list-item>
 				<list-item>
 					<span>
