@@ -22,6 +22,9 @@ import Tab from '@/components/Tabs/Tab.vue';
 import Tabs from '@/components/Tabs/Tabs.vue';
 import FloatingVue from 'floating-vue';
 
+// Directives
+import {allowedHtmlDirective} from '@/directive/allowedHtml.js';
+
 import PkpDialog from '@/components/Modal/Dialog.vue';
 
 import VueScrollTo from 'vue-scrollto';
@@ -51,6 +54,10 @@ initialize({
 
 setup((app) => {
 	app.use(pinia);
+
+	// directives
+	vueApp.directive('pkp-allowed-html', allowedHtmlDirective);
+
 	app.mixin(GlobalMixins);
 
 	app.use(FloatingVue, {
