@@ -56,7 +56,7 @@ setup((app) => {
 	app.use(pinia);
 
 	// directives
-	vueApp.directive('pkp-allowed-html', allowedHtmlDirective);
+	app.directive('pkp-allowed-html', allowedHtmlDirective);
 
 	app.mixin(GlobalMixins);
 

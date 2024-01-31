@@ -1,7 +1,10 @@
 import DOMPurify from 'dompurify';
 
-const allowed_html =
-	'a[href|target|title],em,strong,cite,code,ul,ol,li[class],dl,dt,dd,b,i,u,img[src|alt],sup,sub,br,p';
+if (typeof pkp === 'undefined' || !pkp?.serverContext?.configAllowedHtml) {
+	throw new Error('pkp.serverContext.configAllowedHtml is not configured');
+}
+
+const allowed_html = pkp.serverContext.configAllowedHtml;
 
 const ALLOWED_TAGS = [];
 const ALLOWED_ATTR = [];

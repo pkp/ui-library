@@ -6,14 +6,14 @@ import {ref, computed} from 'vue';
  */
 
 export function useApiUrl(_path) {
-	if (typeof pkp === 'undefined' || !pkp?.context?.apiBaseUrl) {
-		throw new Error('pkp.context.apiBaseUrl is not configured');
+	if (typeof pkp === 'undefined' || !pkp?.serverContext?.apiBaseUrl) {
+		throw new Error('pkp.serverContext.apiBaseUrl is not configured');
 	}
 
 	// normalise to be ref even if its not passed as ref
 	const path = ref(_path);
 
-	const apiUrl = computed(() => `${pkp.context.apiBaseUrl}${path.value}`);
+	const apiUrl = computed(() => `${pkp.serverContext.apiBaseUrl}${path.value}`);
 
 	return {apiUrl};
 }
