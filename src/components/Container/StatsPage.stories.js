@@ -582,7 +582,7 @@ const PublicationStatsPageWithDataAndTemplate = {
 	data() {
 		const fakeToday = 'Tue Dec 19 2023 16:00:27 GMT+0100';
 		const dateEndMax = new Date(
-			new Date().setDate(new Date(fakeToday).getDate() - 1),
+			new Date(fakeToday).setDate(new Date(fakeToday).getDate() - 1),
 		);
 
 		const startDate = new Date(fakeToday);
