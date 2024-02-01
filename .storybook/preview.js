@@ -137,6 +137,27 @@ const preview = {
 		},
 		direction: 'ltr',
 		options: {
+			storySort: {
+				order: [
+					'Guide',
+					[
+						'Page Architecture',
+						'API Interactions',
+						'Style',
+						['Introduction'],
+						'Vue Composition API',
+						'Pinia Store',
+						'Translation',
+						'Technical Roadmap',
+					],
+					'Composables',
+					'Components',
+					'Forms',
+					'ListPanel',
+					'Pages',
+				],
+			},
+
 			/*storySort: (a, b) => {
 				if (a.id.includes('introduction--docs')) {
 					return -1;

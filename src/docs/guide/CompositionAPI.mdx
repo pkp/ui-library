@@ -8,13 +8,11 @@ In version 3.5 we migrated our ui-library to new Vue3 version, which introduces 
 
 ## Composition API
 
-Composition API builds on exactly same principles as the Options API that we are used to from Vue 2. State management still consist of **state** , **computed** properties and **methods** that are updating the **state**. Only the syntax is different.
+Composition API builds on exactly same principles as the Options API that we are used to from Vue 2. State management still consist of **state** , **computed** properties and **methods** that are updating the **state**. Only the syntax is more flexible.
 
-It might take bit getting used to to new syntax, but it will reward us is with significantly better flexibility compared to mixins, which comes very handy in complex application like OJS/OPS/OMP.
+It might take bit getting used to to new syntax, but it will reward us is with significantly better flexibility compared to mixins, which comes very handy in complex application like we have.
 
-Best learning source is Vue.js [documentation](https://vuejs.org/guide/introduction.html), where you can easily explore syntax differences between options API and composition API.
-
-We follow Vue.js [recommendation](https://vuejs.org/guide/essentials/reactivity-fundamentals#limitations-of-reactive) to use exclusively `ref` to define reactive state and avoiding `reactive` API due its limits.
+Best learning source is Vue.js [documentation](https://vuejs.org/guide/introduction.html), where you can easily explore syntax differences between Options API and Composition API.
 
 ## Composables
 
@@ -24,13 +22,13 @@ Composables are replacements for mixins. More details to come about the composab
 
 Even though it seems that Composition API is lacking organizational structure, it actually gives possibility of organise the code by individual features. Every feature usually consist of some state, computed properties and methods. Good example is `SubmissionsPageStore.js`.
 
-Also it should be easy to quickly understand how the Page works when reading the business logic in store. If its too long or/and contains long functions its indication that some of the features should be moved to individual feature composables. These than can be imported to the store and connected with rest of the features in the store. This helps to get good understanding how things works together and its always possible to dive in into details in individual composables if needed.
+Also it should be easy to quickly understand how the Page works when reading the business logic in store. If its too long or/and contains long functions its indication that some of the features should be moved to individual feature composables. These can be imported to the store and connected with rest of the features in the store. This helps to get good understanding how things works together and its always possible to dive in into details in individual composables if needed.
 
 ## Refs vs reactive
 
 If you want to dive deep and understand all details between using `ref()` vs `reactive()` when creating reactive state in Composable API, you can check out [official documentation](https://vuejs.org/guide/essentials/reactivity-fundamentals) or detailed [blog post](https://mokkapps.de/blog/ref-vs-reactive-what-to-choose-using-vue-3-composition-api).
 
-But its not really necessary, as we follow [official recommendation](https://vuejs.org/guide/essentials/reactivity-fundamentals#limitations-of-reactive), which aligns with my personal experience as well, which is just always use `ref()` when defining state..
+But its not really necessary, as we follow [official recommendation](https://vuejs.org/guide/essentials/reactivity-fundamentals#limitations-of-reactive), which aligns with my personal experience as well, which is just always use `ref()` when defining state.
 
 ```javascript
 import {ref} from 'vue';

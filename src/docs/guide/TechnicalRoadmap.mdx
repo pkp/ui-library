@@ -2,13 +2,13 @@ import {Meta} from '@storybook/blocks';
 
 <Meta title="Guide/Technical Roadmap" />
 
-# Admin Frontend Technical Roadmap
+# Admin UI Technical Roadmap
 
 ## Introduction
 
 Modern web is evolving rapidly. And long term projects like OJS/OPS/OMP has to be creative in tackling technical debt, so it can keep delivering new/improved functionality, while modernising underneath.
 
-As title suggests, goal is to cover technical roadmap for the admin interface. Later it will be expanded also by plans for reader interface, where the considerations might differ.
+As title suggests, goal is to cover technical roadmap for the admin user interface. Later it will be expanded also by plans for reader interface, where the considerations might differ.
 
 ## Smarty
 
@@ -18,7 +18,7 @@ It all started as typical server side rendered Smarty templates with custom cont
 
 And there are still significant portion of the interface driven by this stack.
 
-## Smarty -> Vue.js + Smarty (3.3??)
+## Smarty -> Vue.js + Smarty (3.3)
 
 Around year 2018 team decided to start leveraging Vue.js framework. At that time it was clear that frameworks like React or Vue.js are much more capable in handling complex user interactions compared to jQuery.
 
@@ -34,10 +34,9 @@ Even though it was significant benefit to keep Smarty around at first. It also c
 
 - Combining Smarty and Vue.js syntax requires to be familiar with both of them and some Vue.js syntax needs to be escaped to work within Smarty template.
 - Different content escaping mechanism, which makes easier to make mistake (XSS attacks).
-- Developer has to decide what to render in Smarty and what in Vue.js.
+- Developer has to decide, what to render in Smarty and what in Vue.js.
 - Difficult to develop and test pages in separation (Storybook).
 - Sometime difficult to identify, which Smarty template is interpreted by which Vue.js Page component, as these lives in different folder structure.
-- Security risk with injecting Vue.js syntax to Smarty template.
 - There is relatively small performance penalty, when Vue.js is compiling the template runtime in browser (which was required to be able to consume smarty output), rather than in build time.
 
 Overall idea is that embracing client side rendering and exchanging only JSON data with backend should make overall architecture easier to grasp and maintain.
@@ -46,13 +45,13 @@ There is only couple of things, where Vue.js was lacking compared to Smarty, mai
 
 ### Migration path
 
-Having consistent Page architecture would make significantly easier to orient everyone and migrating from smarty templates that are used for Pages should be relatively low effort. We will aim to execute some migrations during 3.5 and 3.6 dev cycle.
+Having consistent Page architecture would make significantly easier to orient everyone. Migrating from smarty templates that are used for Pages should be relatively low effort. We will aim to execute some migrations during 3.5 and 3.6 dev cycle.
 
 ## Translation (3.5)
 
-We are moving from passing translations via Props to individual components to system, where all uses of translation keys are automatically identified and needed translations are exposed to Vue.js components.
+We are moving from passing translations via Props to individual components to mechanism, where all uses of translation keys are automatically identified and needed translations are exposed to Vue.js components.
 
-For more details check Translation guide.
+For more details check [Translation guide](../?path=/docs/guide-translation--docs).
 
 ### Migration path
 
@@ -64,11 +63,11 @@ Details are being worked out and will be covered in detail bit later in 3.5 deve
 
 ## Vue3 Composition API (3.5)
 
-Upgrading our ui library to Vue3 opened new posibilities. Vue3 introduced composition API, which is now recommended API. Even though its very much the same as Option API under the hood the syntax is significantly different and might be intimidating first. Eventually we decided to adopt it and here are some factors that encouraged that decision.
+Upgrading our ui library to Vue3 opened new posibilities. Vue3 introduced [composition API](../?path=/docs/guide-vue-composition-api--docs), which is now recommended API. Even though its very much the same as Option API under the hood the syntax is significantly different and might be intimidating first. Eventually we decided to adopt it and here are some factors that encouraged that decision.
 
 - Some of our admin interfaces are quite complex and composition API makes easier to split these to smaller features and than combine them as needed.
-- Composition API works lot better with type systems, like Typescript is. We have not decided to adopt such type system, but its good to have these doors opened in future.
-- Even though Options API will be supported long term, Vue.js community is leaning towards new composition API. As result in future there likely will be stronger ecosystem and documentation for composition API.
+- Composition API works lot better with type systems, like Typescript. We have not decided to adopt such type system, but its good to have these doors opened in future.
+- Even though Options API will be supported long term, Vue.js community is leaning towards new composition API. As result in future there likely will be stronger ecosystem and documentation for composition API. We can see evidence of that in big projects like [Nuxt 3](https://nuxt.com/docs/api/composables/use-app-config) or [vueuse.org](https://vueuse.org/)
 - Composition API introduced composables as replacement for mixins that are lot more flexible and easier to test. You can find several composables in our storybook already that should make easier to build new functionality.
 
 ### Migration path
@@ -77,7 +76,7 @@ Options API should be supported very long term therefore migrating individual co
 
 ## Pinia stores (3.5)
 
-Business logic has been mostly placed within top component, which we usually refer as **Page** component. And that works great, only difference we want to do is that we now connect the **Page** component to its own [Pinia store](https://pinia.vuejs.org) and use the same Composition API as we would use directly in component.
+Business logic has been mostly placed within top component, which we usually refer as **Page** component. And that works great, only difference we want to do is that we now connect the **Page** component to its own [Pinia store](http://localhost:6007/?path=/docs/guide-pinia-store--docs#component-pinia-store) and use the same Composition API as we would use directly in component.
 
 And just from moving the business logic from page component to its store we get some important benefits:
 
@@ -93,7 +92,7 @@ Given that there are some limitations when using Options API in Pinia (like miss
 
 ## TailwindCSS (3.5)
 
-We have been also revisiting our approach to CSS styling. Having now UI/UX designer on the team is pushing our interfaces to new hights. And having CSS framework which is good in capturing design system became essential.
+We have been also revisiting our approach to CSS styling. Having now UI/UX designer on the team is pushing our interfaces to new hights. And having CSS framework which is good in capturing design system became important.
 
 Here are the factors that encouraged us to adopt TailwindCSS at the end:
 
