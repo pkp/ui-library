@@ -21,7 +21,10 @@
 		</tr>
 	</PkpTable>
 	<div class="submissions__list__footer">
-		<span class="submission__list__showing" v-html="showingXofX"></span>
+		<span
+			v-pkp-allowed-html="showingXofX"
+			class="submission__list__showing"
+		></span>
 		<Pagination
 			v-if="pagination.pageCount > 1"
 			:current-page="currentPage"

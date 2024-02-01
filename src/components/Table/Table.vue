@@ -11,8 +11,8 @@
 			</div>
 			<div
 				v-if="description"
+				v-pkp-allowed-html="description"
 				class="pkpTable__description"
-				v-html="description"
 			/>
 		</caption>
 		<thead>

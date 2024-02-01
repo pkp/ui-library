@@ -9,7 +9,7 @@
 			<slot :column="column" :row="row" />
 		</template>
 		<template v-else>
-			<span v-html="value" />
+			<span v-pkp-allowed-html="value" />
 		</template>
 	</component>
 </template>

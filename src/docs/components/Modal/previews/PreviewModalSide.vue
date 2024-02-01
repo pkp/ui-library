@@ -17,7 +17,7 @@
 			</template>
 			<panel>
 				<panel-section>
-					<div v-html="pars[0]"></div>
+					<div v-pkp-allowed-html="pars[0]"></div>
 				</panel-section>
 			</panel>
 		</modal>
@@ -33,7 +33,7 @@
 			</template>
 			<panel>
 				<panel-section v-for="(par, i) in pars" :key="i">
-					<div v-html="par"></div>
+					<div v-pkp-allowed-html="par"></div>
 				</panel-section>
 			</panel>
 		</modal>

@@ -6,7 +6,7 @@
 			class="pkpFieldError__message"
 		>
 			<icon icon="exclamation-triangle" :inline="true" />
-			<span v-html="message" />
+			<span v-pkp-allowed-html="message" />
 		</div>
 	</div>
 </template>

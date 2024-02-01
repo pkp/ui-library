@@ -21,8 +21,8 @@
 			<span
 				v-if="isPrimaryLocale && tooltip"
 				:id="describedByTooltipId"
+				v-pkp-allowed-html="tooltip"
 				class="-screenReader"
-				v-html="tooltip"
 			/>
 			<help-button
 				v-if="isPrimaryLocale && helpTopic"
@@ -35,8 +35,8 @@
 		<div
 			v-if="isPrimaryLocale && description"
 			:id="describedByDescriptionId"
+			v-pkp-allowed-html="description"
 			class="pkpFormField__description pkpFormField--options__description"
-			v-html="description"
 		/>
 		<div class="pkpFormField__control">
 			<VueDraggable
@@ -79,8 +79,8 @@
 						:disabled="option.disabled"
 					/>
 					<span
+						v-pkp-allowed-html="option.label"
 						class="pkpFormField--options__optionLabel"
-						v-html="option.label"
 					/>
 					<orderer
 						v-if="isOrderable"

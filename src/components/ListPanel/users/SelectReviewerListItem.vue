@@ -191,13 +191,13 @@
 					<div class="listPanel__item--reviewer__detailHeading">
 						{{ gossipLabel }}
 					</div>
-					<div v-html="item.gossip"></div>
+					<div v-pkp-allowed-html="item.gossip"></div>
 				</list-item>
 				<list-item v-if="localize(item.biography)">
 					<div class="listPanel__item--reviewer__detailHeading">
 						{{ biographyLabel }}
 					</div>
-					<div v-html="localize(item.biography)"></div>
+					<div v-pkp-allowed-html="localize(item.biography)"></div>
 				</list-item>
 			</list>
 		</div>

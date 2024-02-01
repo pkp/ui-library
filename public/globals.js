@@ -3,6 +3,11 @@
  * are not part of the UI Library's responsibilities
  */
 window.pkp = {
+	serverContext: {
+		configAllowedHtml:
+			'a[href|target|title],em,strong,cite,code,ul,ol,li[class],dl,dt,dd,b,i,u,img[src|alt],sup,sub,br,p',
+		apiBaseUrl: 'https://mock/index.php/publicknowledge/api/v1/',
+	},
 	/**
 	 * Event bus. This will be a Vue instance but must be registered in main.js
 	 * where Vue can be imported

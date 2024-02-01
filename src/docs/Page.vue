@@ -1,5 +1,5 @@
 <template>
-	<div class="page bodyText" v-html="output" />
+	<div v-pkp-allowed-html="output" class="page bodyText" />
 </template>
 
 <script>
