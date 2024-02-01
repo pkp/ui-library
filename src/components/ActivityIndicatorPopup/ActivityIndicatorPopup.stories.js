@@ -8,7 +8,8 @@ export default {
 		setup() {
 			return {args};
 		},
-		template: '<ActivityIndicatorPopup v-bind="args">{{args.slot}}</Button>',
+		template:
+			'<ActivityIndicatorPopup v-bind="args">{{args.slot}}</ActivityIndicatorPopup>',
 	}),
 	decorators: [
 		() => ({
