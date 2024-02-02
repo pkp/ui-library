@@ -800,7 +800,7 @@ export default {
 
 			pkp.eventBus.$emit(
 				'notify',
-				this.__('manger.dois.update.success'),
+				this.__('manager.dois.update.success'),
 				'success'
 			);
 			this.setItems(newItemsList, this.itemsMax);
