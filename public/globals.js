@@ -239,7 +239,7 @@ window.pkp = {
 		'manager.dois.update.failedCreation': 'DOI Updates Failed',
 		'manager.dois.update.partialFailure': 'Some DOI(s) could not be updated',
 		'manager.newSubmission': 'New Submission',
-		'manger.dois.update.success': 'DOI(s) successfully updated',
+		'manager.dois.update.success': 'DOI(s) successfully updated',
 		'navigation.backTo': '\u27f5 Back to {$page}',
 		'navigation.submissions': 'Submissions',
 		'publication.status.published': 'Published',

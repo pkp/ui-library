@@ -859,7 +859,7 @@ export default {
 
 			pkp.eventBus.$emit(
 				'notify',
-				this.t('manger.dois.update.success'),
+				this.t('manager.dois.update.success'),
 				'success',
 			);
 			this.setItems(newItemsList, this.itemsMax);
