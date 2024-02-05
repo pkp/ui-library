@@ -3,8 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vite",
-    "build": "vite build",
     "lint": "eslint ./src --ext .vue,.js,.cjs --fix --ignore-path .gitignore",
     "format": "prettier --write ./src",
     "prepare": "husky install",
