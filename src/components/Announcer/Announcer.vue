@@ -7,12 +7,8 @@
 	/>
 </template>
 
-<script>
-import {mapStores} from 'pinia';
+<script setup>
 import {useAnnouncerStore} from '@/stores/announcerStore';
-export default {
-	computed: {
-		...mapStores(useAnnouncerStore),
-	},
-};
+
+const announcerStore = useAnnouncerStore();
 </script>
