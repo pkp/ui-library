@@ -84,7 +84,7 @@ export default {
 .pkpButton {
 	display: inline-block; /* */
 	align-items: center;
-	padding: 0 0.5em;
+	padding: 0.5em 0.5em;
 	min-width: 2.13rem; /**/ // Always at least as wide as it is tall
 	background: #fff;
 	border: @bg-border-light;
