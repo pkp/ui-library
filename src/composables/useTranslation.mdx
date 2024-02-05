@@ -65,3 +65,35 @@ This method mimics the DataObject::getLocalizedData() method from the PHP backen
 	const {localize} = useTranslation();
 </script>
 ```
+
+## localizeSubmission
+
+When working with submissions, a component should use the localizeSubmission mixin to localize submission data. This method will use the submission's primary language as the default value.
+
+```html
+<script setup>
+	import {defineProps, computed} from 'vue';
+	import {useTranslation} from '@/composables/useTranslation';
+
+	const props = defineProps({
+		submission: {
+			type: Object,
+			required: true,
+		},
+		publication: {
+			type: Object,
+			required: true,
+		},
+	});
+
+	const {localizeSubmission} = useTranslation();
+
+	const title = computed(() =>
+		localizeSubmission(props.publication.title, props.submission.locale),
+	);
+</script>
+```
+
+```
+
+```

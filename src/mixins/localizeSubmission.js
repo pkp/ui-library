@@ -3,6 +3,8 @@
  *
  * @see https://vuejs.org/v2/guide/mixins.html
  */
+
+import {localizeSubmission} from '../utils/i18n';
 export default {
 	methods: {
 		/**
@@ -16,41 +18,7 @@ export default {
 		 * @return {String}
 		 */
 		localizeSubmission: function (localizedString, submissionLocale) {
-			if (typeof localizedString === 'undefined') {
-				return '';
-			} else if (
-				Object.prototype.hasOwnProperty.call(
-					localizedString,
-					$.pkp.app.currentLocale,
-				) &&
-				localizedString[$.pkp.app.currentLocale]
-			) {
-				return localizedString[$.pkp.app.currentLocale];
-			} else if (
-				Object.prototype.hasOwnProperty.call(
-					localizedString,
-					submissionLocale,
-				) &&
-				localizedString[submissionLocale]
-			) {
-				return localizedString[submissionLocale];
-			} else if (
-				Object.prototype.hasOwnProperty.call(
-					localizedString,
-					$.pkp.app.primaryLocale,
-				) &&
-				localizedString[$.pkp.app.primaryLocale]
-			) {
-				return localizedString[$.pkp.app.primaryLocale];
-			}
-
-			for (var key in localizedString) {
-				if (localizedString[key]) {
-					return localizedString[key];
-				}
-			}
-
-			return '';
+			return localizeSubmission(localizedString, submissionLocale);
 		},
 	},
 };

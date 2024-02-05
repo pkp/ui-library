@@ -3,9 +3,8 @@ import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useFiltersForm} from '@/composables/useFiltersForm';
 import {useSorting} from '@/composables/useSorting';
 import {useTranslation} from '@/composables/useTranslation';
-
+import {useAnnouncer} from '@/composables/useAnnouncer';
 import {useUrlSearchParams} from '@vueuse/core';
-import {useAnnouncerStore} from '@/stores/announcerStore';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
 export const useSubmissionsPageStore = defineComponentStore(
@@ -16,6 +15,10 @@ export const useSubmissionsPageStore = defineComponentStore(
 		 */
 
 		const {t} = useTranslation();
+
+		/** Announcer */
+
+		const {announce} = useAnnouncer();
 
 		/**
 		 * Url query params
@@ -116,12 +119,11 @@ export const useSubmissionsPageStore = defineComponentStore(
 				if (!apiUrl.value) {
 					return;
 				}
-				const announcerStore = useAnnouncerStore();
 
-				announcerStore.set(t('common.loading'));
+				announce(t('common.loading'));
 
 				await fetchSubmissions();
-				announcerStore.set(t('common.loaded'));
+				announce(t('common.loaded'));
 			},
 			{immediate: true},
 		);
