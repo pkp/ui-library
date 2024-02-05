@@ -5,7 +5,7 @@ import SideModalBody from './SideModalBody.vue';
 import SideModalLayout2Columns from './SideModalLayout2Columns.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import cloneDeep from 'clone-deep';
-import FormMock from '@/docs/components/Form/helpers/form-announcement';
+import FormMock from '@/components/Form/mocks/form-announcement';
 import Tabs from '@/components/Tabs/Tabs.vue';
 import Tab from '@/components/Tabs/Tab.vue';
 

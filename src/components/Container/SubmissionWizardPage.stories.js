@@ -7,7 +7,7 @@ import SubmissionFilesListPanel from '@/components/ListPanel/submissionFiles/Sub
 import categories from '@/mocks/categories';
 import confirmForm from '@/components/Form/mocks/form-confirm';
 import dropzoneOptions from '@/mocks/dropzoneOptions';
-import forTheEditorsForm from '@/docs/components/Form/helpers/form-for-the-editors';
+import forTheEditorsForm from '@/components/Form/mocks/form-for-the-editors';
 import fieldKeywords from '@/components/Form/mocks/field-controlled-vocab-keywords';
 import formChangeSubmission from '@/components/Form/mocks/form-change-submission';
 import genres from '@/mocks/genres';
