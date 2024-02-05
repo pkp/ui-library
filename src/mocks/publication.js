@@ -1,5 +1,5 @@
 import authors from './authors';
-import doi from '@/docs/data/doi';
+import doi from '@/mocks/doi';
 
 export default {
 	_href:

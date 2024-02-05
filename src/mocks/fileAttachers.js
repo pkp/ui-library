@@ -1,7 +1,7 @@
 /**
  * Sample props for FileAttacher components
  */
-import dropzoneOptions from '@/docs/data/dropzoneOptions';
+import dropzoneOptions from '@/mocks/dropzoneOptions';
 
 export default [
 	{

@@ -1,8 +1,8 @@
 import {ref} from 'vue';
 import {http, HttpResponse} from 'msw';
 import FilterAutosuggest from './FilterAutosuggest.vue';
-import fieldBase from '@/docs/components/Form/helpers/field-base';
-import fieldBaseAutosuggest from '@/docs/components/Form/helpers/field-autosuggest';
+import fieldBase from '@/components/Form/mocks/field-base';
+import fieldBaseAutosuggest from '@/components/Form/mocks/field-autosuggest';
 import UsernamesMock from '@/mocks/usernames.json';
 import IssuesMock from '@/mocks/issues.json';
 

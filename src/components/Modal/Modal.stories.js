@@ -2,7 +2,7 @@ import {ref} from 'vue';
 import Modal from './Modal.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import cloneDeep from 'clone-deep';
-import FormMock from '@/docs/components/Form/helpers/form-announcement';
+import FormMock from '@/components/Form/mocks/form-announcement';
 import List from '@/components/List/List.vue';
 import ListItem from '@/components/List/ListItem.vue';
 import {allModes} from '../../../.storybook/modes.js';
