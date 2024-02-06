@@ -1,5 +1,5 @@
 <template>
-	<div class="page bodyText" v-html="output" />
+	<div class="page bodyText" v-strip-unsafe-html="output" />
 </template>
 
 <script>

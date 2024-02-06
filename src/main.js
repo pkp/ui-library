@@ -7,6 +7,9 @@ import VModal from 'vue-js-modal';
 import VTooltip from 'v-tooltip';
 import VueScrollTo from 'vue-scrollto';
 
+// Directives
+import {stripUnsafeHtml} from '@/directives/stripUnsafeHtml';
+
 import Badge from '@/components/Badge/Badge.vue';
 import Dropdown from '@/components/Dropdown/Dropdown.vue';
 import Icon from '@/components/Icon/Icon.vue';
@@ -34,6 +37,7 @@ window.pkp.eventBus = new Vue();
 Vue.config.productionTip = false;
 
 Vue.mixin(GlobalMixins);
+Vue.directive('strip-unsafe-html', stripUnsafeHtml);
 
 Vue.component('Badge', Badge);
 Vue.component('Dropdown', Dropdown);
