@@ -7,7 +7,7 @@
 				v-if="tooltip"
 				class="-screenReader"
 				:id="describedByTooltipId"
-				v-html="tooltip"
+				v-strip-unsafe-html="tooltip"
 			/>
 			<help-button
 				v-if="helpTopic"
@@ -20,7 +20,7 @@
 		<div
 			v-if="description"
 			class="pkpFormField__description pkpFormField--options__description"
-			v-html="description"
+			v-strip-unsafe-html="description"
 			:id="describedByDescriptionId"
 		/>
 		<field-error
@@ -45,7 +45,7 @@
 				/>
 				<span
 					class="pkpFormField--options__optionLabel"
-					v-html="option.label"
+					v-strip-unsafe-html="option.label"
 				/>
 			</label>
 			<div v-if="isEnabled" class="pkpFormField--metadata__submissionOptions">
@@ -64,7 +64,7 @@
 					/>
 					<span
 						class="pkpFormField--options__optionLabel"
-						v-html="option.label"
+						v-strip-unsafe-html="option.label"
 					/>
 				</label>
 			</div>

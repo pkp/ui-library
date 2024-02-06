@@ -5,7 +5,7 @@
 			<div
 				v-if="description"
 				class="pkpFormGroup__description"
-				v-html="description"
+				v-strip-unsafe-html="description"
 			></div>
 		</div>
 		<div class="pkpFormGroup__fields">
