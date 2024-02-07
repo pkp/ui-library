@@ -12,6 +12,9 @@ import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 
+// Directives
+import {stripUnsafeHtml} from '@/directives/stripUnsafeHtml';
+
 import GlobalMixins from '@/mixins/global.js';
 import VModal from 'vue-js-modal';
 import VTooltip from 'v-tooltip';
@@ -37,6 +40,8 @@ window.pkp.eventBus = new Vue();
 Vue.config.productionTip = false;
 
 Vue.mixin(GlobalMixins);
+
+Vue.directive('strip-unsafe-html', stripUnsafeHtml);
 
 Vue.component('Badge', Badge);
 Vue.component('PkpButton', PkpButton);

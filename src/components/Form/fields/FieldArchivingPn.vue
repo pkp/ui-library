@@ -20,7 +20,7 @@
 				v-if="tooltip"
 				class="-screenReader"
 				:id="describedByTooltipId"
-				v-html="tooltip"
+				v-strip-unsafe-html="tooltip"
 			/>
 			<help-button
 				v-if="helpTopic"
@@ -33,13 +33,13 @@
 		<div
 			v-if="description"
 			class="pkpFormField__description pkpFormField--options__description"
-			v-html="description"
+			v-strip-unsafe-html="description"
 			:id="describedByDescriptionId"
 		/>
 		<div
 			v-if="terms && value"
 			class="pkpFormField__description pkpFormField--options__description pkpFormField--archivingPn__terms"
-			v-html="terms"
+			v-strip-unsafe-html="terms"
 		/>
 		<field-error
 			v-if="errors && errors.length"

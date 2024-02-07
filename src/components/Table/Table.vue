@@ -10,7 +10,7 @@
 			<div
 				v-if="description"
 				class="pkpTable__description"
-				v-html="description"
+				v-strip-unsafe-html="description"
 			/>
 		</caption>
 		<thead>

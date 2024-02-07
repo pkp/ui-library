@@ -48,7 +48,7 @@
 				</list-item>
 				<list-item
 					class="listPanel__item--emailTemplates__body"
-					v-html="localize(item.body)"
+					v-strip-unsafe-html="localize(item.body)"
 				/>
 			</list>
 			<div class="listPanel__itemExpandedActions">

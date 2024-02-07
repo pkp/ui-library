@@ -14,7 +14,7 @@
 			</div>
 			<div class="modal__content">
 				<slot>
-					<div v-html="message" />
+					<div v-strip-unsafe-html="message" />
 				</slot>
 				<div class="modal__footer">
 					<slot name="actions">
