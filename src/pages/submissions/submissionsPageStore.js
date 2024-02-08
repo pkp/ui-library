@@ -2,7 +2,7 @@ import {computed, ref, watch} from 'vue';
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useFiltersForm} from '@/composables/useFiltersForm';
 import {useSorting} from '@/composables/useSorting';
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 import {useAnnouncer} from '@/composables/useAnnouncer';
 import {useUrlSearchParams} from '@vueuse/core';
 import {defineComponentStore} from '@/utils/defineComponentStore';
@@ -14,7 +14,7 @@ export const useSubmissionsPageStore = defineComponentStore(
 		 * Translation
 		 */
 
-		const {t} = useTranslation();
+		const {t} = useLocalize();
 
 		/** Announcer */
 

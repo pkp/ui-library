@@ -1,6 +1,6 @@
 import ActionPanel from './ActionPanel.vue';
 import './ActionPanelStories.less';
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 import {useModalStore} from '@/stores/modalStore';
 export default {
 	title: 'Components/ActionPanel',
@@ -11,7 +11,7 @@ export const Default = {
 	render: (args) => ({
 		components: {ActionPanel},
 		setup() {
-			const {t} = useTranslation();
+			const {t} = useLocalize();
 			const modalStore = useModalStore();
 
 			function openDeleteDialog() {
