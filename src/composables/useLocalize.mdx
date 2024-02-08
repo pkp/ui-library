@@ -1,8 +1,8 @@
 import {Meta} from '@storybook/blocks';
 
-<Meta title="Composables/useTranslation" />
+<Meta title="Composables/useLocalize" />
 
-# useTranslation
+# useLocalize
 
 ## t - translation
 
@@ -19,9 +19,9 @@ Get translation from the 'po' files, based on currently selected language.
 
 <script setup>
 	import {computed} from 'vue';
-	import {useTranslation} from '@/composables/useTranslation';
+	import {useLocalize} from '@/composables/useLocalize';
 
-	const {t} = useTranslation();
+	const {t} = useLocalize();
 
 	   const start = ref(5);
 	   const end = ref(15);
@@ -53,7 +53,7 @@ This method mimics the DataObject::getLocalizedData() method from the PHP backen
 
 <script setup>
 	import {defineProps} from 'vue';
-	import {useTranslation} from '@/composables/useTranslation';
+	import {useLocalize} from '@/composables/useLocalize';
 
 	defineProps({
 		publication: {
@@ -62,7 +62,7 @@ This method mimics the DataObject::getLocalizedData() method from the PHP backen
 		},
 	});
 
-	const {localize} = useTranslation();
+	const {localize} = useLocalize();
 </script>
 ```
 
@@ -73,7 +73,7 @@ When working with submissions, a component should use the localizeSubmission mix
 ```html
 <script setup>
 	import {defineProps, computed} from 'vue';
-	import {useTranslation} from '@/composables/useTranslation';
+	import {useLocalize} from '@/composables/useLocalize';
 
 	const props = defineProps({
 		submission: {
@@ -86,7 +86,7 @@ When working with submissions, a component should use the localizeSubmission mix
 		},
 	});
 
-	const {localizeSubmission} = useTranslation();
+	const {localizeSubmission} = useLocalize();
 
 	const title = computed(() =>
 		localizeSubmission(props.publication.title, props.submission.locale),
@@ -94,6 +94,18 @@ When working with submissions, a component should use the localizeSubmission mix
 </script>
 ```
 
-```
+## getMomentLocale
 
+When using moment, you should always use this method to localize the date.
+
+```html
+<script setup>
+	import {useLocalize} from '@/composables/useLocalize';
+
+	const {getMomentLocale} = useLocalize();
+
+	const timeSince = moment(timestamp)
+		.locale(getMomentLocale($.pkp.app.currentLocale))
+		.fromNow();
+</script>
 ```

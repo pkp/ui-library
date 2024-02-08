@@ -67,10 +67,10 @@ import {DialogPanel, DialogTitle, DialogDescription} from '@headlessui/vue';
 import Icon from '@/components/Icon/Icon.vue';
 import PkpDialog from '@/components/Modal/Dialog.vue';
 
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 import {useModalStore} from '@/stores/modalStore';
 
-const {t} = useTranslation();
+const {t} = useLocalize();
 
 const modalStore = useModalStore();
 
