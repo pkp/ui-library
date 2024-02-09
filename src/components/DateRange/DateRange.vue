@@ -1,7 +1,7 @@
 <template>
 	<div class="pkpDateRange">
 		<span class="-screenReader">{{ dateRangeLabel }}</span>
-		<span class="pkpDateRange__current" v-html="currentRange" />
+		<span class="pkpDateRange__current" v-strip-unsafe-html="currentRange" />
 		<button
 			class="pkpDateRange__button"
 			ref="toggleButton"
@@ -63,7 +63,7 @@
 				<pkp-button @click="applyCustomRange">{{ applyLabel }}</pkp-button>
 				<div v-if="errorMessage" class="pkpDateRange__error">
 					<icon icon="exclamation-triangle" :inline="true" />
-					<span v-html="errorMessage" />
+					<span v-strip-unsafe-html="errorMessage" />
 				</div>
 			</form>
 		</div>

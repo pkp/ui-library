@@ -14,7 +14,7 @@
 				</button>
 			</div>
 			<div class="modal__content">
-				<div v-html="message" />
+				<div v-strip-unsafe-html="message" />
 			</div>
 			<div class="modal__footer">
 				<spinner v-if="isLoading" />

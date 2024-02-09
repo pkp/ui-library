@@ -9,7 +9,7 @@
 			<slot :column="column" :row="row" />
 		</template>
 		<template v-else>
-			<span v-html="value" />
+			<span v-strip-unsafe-html="value" />
 		</template>
 	</component>
 </template>
