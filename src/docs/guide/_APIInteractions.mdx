@@ -4,16 +4,16 @@ import {Meta} from '@storybook/blocks';
 
 # API Interactions
 
-OJS/OMP/OPS already have substantial [Rest API interface](https://docs.pkp.sfu.ca/dev/api/ojs/3.4), well covered with documentation.
+OJS, OMP, and OPS already have a substantial [Rest API interface](https://docs.pkp.sfu.ca/dev/api/ojs/3.4).
 
 To interact with the API there are handy composables available to simplify the process.
 
 ## Compose URL
 
-Once you know which API endpoint you want to interact with, its necessary to create correct API URL based on current context. Use [useApiUrl](?path=/docs/composables-useapiurl--docs) composable to achieve that.
+Once you know which API endpoint you want to interact with, it's necessary to create the correct API URL based on the current context (journal, press, or server). Use the [useApiUrl](?path=/docs/composables-useapiurl--docs) composable to achieve that.
 
 ## Making HTTP requests
 
-To make HTTP request to the API, best is use dedicated [useFetch](?path=/docs/composables-usefetch--docs) or [useFetchPaginated](?path=/docs/composables-usefetchpaginated--docs) composables. Refer to their documentation for examples.
+To make HTTP request to the API, it's best to use the [useFetch](?path=/docs/composables-usefetch--docs) or [useFetchPaginated](?path=/docs/composables-usefetchpaginated--docs) composables. Refer to their documentation for examples.
 
-For more custom use-cases its possible to use directly underlying [ofetch](https://github.com/unjs/ofetch) package.
+For more custom use-cases it's possible to directly use the underlying [ofetch](https://github.com/unjs/ofetch) package.
