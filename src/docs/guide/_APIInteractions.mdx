@@ -1,0 +1,19 @@
+import {Meta} from '@storybook/blocks';
+
+<Meta title="Guide/API Interactions" />
+
+# API Interactions
+
+OJS/OMP/OPS already have substantial [Rest API interface](https://docs.pkp.sfu.ca/dev/api/ojs/3.4), well covered with documentation.
+
+To interact with the API there are handy composables available to simplify the process.
+
+## Compose URL
+
+Once you know which API endpoint you want to interact with, its necessary to create correct API URL based on current context. Use [useApiUrl](?path=/docs/composables-useapiurl--docs) composable to achieve that.
+
+## Making HTTP requests
+
+To make HTTP request to the API, best is use dedicated [useFetch](?path=/docs/composables-usefetch--docs) or [useFetchPaginated](?path=/docs/composables-usefetchpaginated--docs) composables. Refer to their documentation for examples.
+
+For more custom use-cases its possible to use directly underlying [ofetch](https://github.com/unjs/ofetch) package.
