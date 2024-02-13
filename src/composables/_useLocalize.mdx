@@ -1,0 +1,111 @@
+import {Meta} from '@storybook/blocks';
+
+<Meta title="Composables/useLocalize" />
+
+# useLocalize
+
+## t - translation
+
+Get translation from the 'po' files, based on currently selected language.
+
+```html
+<template>
+	<div>
+		<!-- use of translation directly in template -->
+		{{ t('common.ok') }}
+	</div>
+	<div>{{ paginationLabel }}</div>
+</template>
+
+<script setup>
+	import {computed} from 'vue';
+	import {useLocalize} from '@/composables/useLocalize';
+
+	const {t} = useLocalize();
+
+	   const start = ref(5);
+	   const end = ref(15);
+	   const total = ref(35);
+
+	   // more complex translation, dependant on state
+	const paginationLabel = computed(() => {
+		return t('common.pagination', {
+	           start: start.value,
+	           end: end.value
+	           total: total.value
+	       });
+	});
+</script>
+```
+
+## localize
+
+Most metadata has support for multiple languages. Therefore if there is need to display given metadata based on currently selected locale. `localize` function can be used.
+
+It will search for the current locale value. If there's no value for the current locale, it will revert to the primary locale. If there's still no match, it will return the first available value or an empty string.
+
+This method mimics the DataObject::getLocalizedData() method from the PHP backend.
+
+```html
+<template>
+	<span>{{ localize(publication.title)}}</span>
+</template>
+
+<script setup>
+	import {defineProps} from 'vue';
+	import {useLocalize} from '@/composables/useLocalize';
+
+	defineProps({
+		publication: {
+			type: Object,
+			required: true,
+		},
+	});
+
+	const {localize} = useLocalize();
+</script>
+```
+
+## localizeSubmission
+
+When working with submissions, a component should use the localizeSubmission mixin to localize submission data. This method will use the submission's primary language as the default value.
+
+```html
+<script setup>
+	import {defineProps, computed} from 'vue';
+	import {useLocalize} from '@/composables/useLocalize';
+
+	const props = defineProps({
+		submission: {
+			type: Object,
+			required: true,
+		},
+		publication: {
+			type: Object,
+			required: true,
+		},
+	});
+
+	const {localizeSubmission} = useLocalize();
+
+	const title = computed(() =>
+		localizeSubmission(props.publication.title, props.submission.locale),
+	);
+</script>
+```
+
+## getMomentLocale
+
+When using moment, you should always use this method to localize the date.
+
+```html
+<script setup>
+	import {useLocalize} from '@/composables/useLocalize';
+
+	const {getMomentLocale} = useLocalize();
+
+	const timeSince = moment(timestamp)
+		.locale(getMomentLocale($.pkp.app.currentLocale))
+		.fromNow();
+</script>
+```
