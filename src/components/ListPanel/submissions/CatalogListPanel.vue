@@ -478,7 +478,7 @@ export default {
 			Object.keys(data).forEach(function (key) {
 				addEntryForm[key] = data[key];
 			});
-			this.$emit('set', this.id, {addEntryForm: data});
+			this.$emit('set', this.id, {addEntryForm});
 		},
 
 		/**
