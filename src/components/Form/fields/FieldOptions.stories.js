@@ -41,3 +41,11 @@ export const Confirm = {
 export const Orderable = {
 	args: {...FieldBaseMock, ...FieldOptionsOrderable},
 };
+
+export const allowOnlySorting = {
+	args: {
+		...FieldBaseMock,
+		...FieldOptionsOrderable,
+		...{allowOnlySorting: true},
+	},
+};
