@@ -56,28 +56,30 @@
 						in an error in IE 11.
 						See: https://stackoverflow.com/a/59999459/1723499
 					-->
-					<input
-						v-if="type === 'checkbox'"
-						v-model="selectedValue"
-						class="pkpFormField--options__input"
-						:value="option.value"
-						type="checkbox"
-						:name="localizedName"
-						:aria-describedby="describedByIds"
-						:aria-invalid="errors && errors.length"
-						:disabled="option.disabled"
-					/>
-					<input
-						v-else
-						v-model="selectedValue"
-						class="pkpFormField--options__input"
-						:value="option.value"
-						type="radio"
-						:name="localizedName"
-						:aria-describedby="describedByIds"
-						:aria-invalid="errors && errors.length"
-						:disabled="option.disabled"
-					/>
+					<template v-if="!allowOnlySorting">
+						<input
+							v-if="type === 'checkbox'"
+							v-model="selectedValue"
+							class="pkpFormField--options__input"
+							:value="option.value"
+							type="checkbox"
+							:name="localizedName"
+							:aria-describedby="describedByIds"
+							:aria-invalid="errors && errors.length"
+							:disabled="option.disabled"
+						/>
+						<input
+							v-else
+							v-model="selectedValue"
+							class="pkpFormField--options__input"
+							:value="option.value"
+							type="radio"
+							:name="localizedName"
+							:aria-describedby="describedByIds"
+							:aria-invalid="errors && errors.length"
+							:disabled="option.disabled"
+						/>
+					</template>
 					<span
 						class="pkpFormField--options__optionLabel"
 						v-html="option.label"
@@ -119,6 +121,10 @@ export default {
 	},
 	extends: FieldBase,
 	props: {
+		allowOnlySorting: {
+			type: Boolean,
+			default: false,
+		},
 		/** Type of the `<input>` field. Either `checkbox` or `radio`. */
 		type: {
 			validator: function (value) {
