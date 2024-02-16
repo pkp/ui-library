@@ -81,7 +81,11 @@
 				</div>
 				<div v-if="store.reviewRoundHistory.publicationKeywords" class="mt-4">
 					<div class="text-lg-bold">{{ t('reviewer.submission.reviewRound.metadata.keywords') }}:</div>
-					<div class="text-base-normal mt-1">{{ localize(store.reviewRoundHistory.publicationKeywords).join(', ') }}</div>
+					<div class="text-base-normal mt-1">
+						<template v-for="(keyword, index) in localize(store.reviewRoundHistory.publicationKeywords)">
+							<template v-if="index > 0">, </template><span>{{ keyword }}</span>
+						</template>
+					</div>
 				</div>
 			</template>
 			<template v-if="store.reviewRoundHistory.reviewAssignment" #right2>
