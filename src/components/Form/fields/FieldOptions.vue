@@ -121,6 +121,7 @@ export default {
 	},
 	extends: FieldBase,
 	props: {
+		/** Allow only sorting (and not selection) of options. In this case only options.value(s) must be provided in the `value` property.  */
 		allowOnlySorting: {
 			type: Boolean,
 			default: false,

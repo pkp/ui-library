@@ -4,6 +4,7 @@ import FieldOptionsUserLocales from '../mocks/field-options-user-locales';
 import FieldOptionsEmails from '../mocks/field-options-emails';
 import FieldOptionsConfirmation from '../mocks/field-options-confirmation';
 import FieldOptionsOrderable from '../mocks/field-options-orderable';
+import FieldOptionsOnlySorting from '../mocks/field-options-onlySorting';
 
 export default {
 	title: 'Forms/FieldOptions',
@@ -34,6 +35,7 @@ export const Base = {
 export const Radio = {
 	args: {...FieldBaseMock, ...FieldOptionsEmails},
 };
+
 export const Confirm = {
 	args: {...FieldBaseMock, ...FieldOptionsConfirmation},
 };
@@ -42,10 +44,6 @@ export const Orderable = {
 	args: {...FieldBaseMock, ...FieldOptionsOrderable},
 };
 
-export const allowOnlySorting = {
-	args: {
-		...FieldBaseMock,
-		...FieldOptionsOrderable,
-		...{allowOnlySorting: true},
-	},
+export const OnlySorting = {
+	args: {...FieldBaseMock, ...FieldOptionsOnlySorting},
 };
