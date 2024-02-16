@@ -1,5 +1,5 @@
 <template>
-	<div class="panel p-8 mb-4">
+	<div class="bg-lightest border border-light p-8 mb-4">
 		<h2>{{ t('reviewer.submission.reviewRound.info') }}</h2>
 		<p
 			v-for="review in store.reviewRoundHistories"
@@ -13,7 +13,7 @@
 			</span>
 			<PkpButton
 				is-link="true"
-				class="ml-4"
+				class="ms-4"
 				@click="store.openRoundHistoryModal(review)"
 			>
 				{{ t('reviewer.submission.reviewRound.info.read', {round: review.reviewRoundNumber}) }}

@@ -9,41 +9,29 @@
 			</h1>
 		</template>
 		<template v-if="store.reviewRoundHistory.publicationTitle" #description>
-			{{ store.reviewRoundHistory.publicationTitle }}
+			{{ localize(store.reviewRoundHistory.publicationTitle) }}
 		</template>
 		<SideModalLayout2Columns>
 			<template #left>
 				<div v-if="store.reviewRoundHistory.reviewAssignment.declined">
-					<Panel v-bind="panelOptions" class="mb-4">
-						<PanelSection>
-							<template #header>
-								<h2>{{ t('reviewer.submission.reviewRound.reviewDeclineDate') }}</h2>
-							</template>
-							<p>{{ formatShortDate(store.reviewRoundHistory.reviewAssignment.dateConfirmed) }}</p>
-						</PanelSection>
-					</Panel>
+					<div class="border border-light p-4 mb-4">
+						<h2 class="text-2xl-bold mb-4">{{ t('reviewer.submission.reviewRound.reviewDeclineDate') }}</h2>
+						<p>{{ formatShortDate(store.reviewRoundHistory.reviewAssignment.dateConfirmed) }}</p>
+					</div>
 
-					<Panel v-if="store.reviewRoundHistory.declineEmail" v-bind="panelOptions" class="mb-4">
-						<PanelSection>
-							<template #header>
-								<h2>{{ t('reviewer.submission.reviewRound.emailLog') }}</h2>
-							</template>
-							<p v-html="store.reviewRoundHistory.declineEmail.subject" class="mb-4 font-bold"></p>
-							<hr class="opacity-50">
-							<p v-html="store.reviewRoundHistory.declineEmail.body" class="mt-4"></p>
-						</PanelSection>
-					</Panel>
+					<div v-if="store.reviewRoundHistory.declineEmail" class="border border-light p-4">
+						<h2 class="text-2xl-bold mb-4">{{ t('reviewer.submission.reviewRound.emailLog') }}</h2>
+						<p v-html="store.reviewRoundHistory.declineEmail.subject" class="font-bold mb-4"></p>
+						<hr class="opacity-50">
+						<p v-html="store.reviewRoundHistory.declineEmail.body" class="mt-4"></p>
+					</div>
 					<p v-else>{{ t('reviewer.submission.reviewRound.emailLog.defaultMessage') }}</p>
 				</div>
 				<div v-else>
-					<Panel v-if="store.reviewRoundHistory.recommendation" v-bind="panelOptions" class="mb-4">
-						<PanelSection>
-							<template #header>
-								<h2>{{ t('reviewer.article.recommendation') }}</h2>
-							</template>
-							<p>{{ store.reviewRoundHistory.recommendation }}</p>
-						</PanelSection>
-					</Panel>
+					<div v-if="store.reviewRoundHistory.recommendation" class="border border-light p-4 mb-4">
+						<h2 class="text-2xl-bold mb-4">{{ t('reviewer.article.recommendation') }}</h2>
+						<p>{{ store.reviewRoundHistory.recommendation }}</p>
+					</div>
 
 					<div v-if="store.reviewRoundHistory.comments.length || store.reviewRoundHistory.privateComments.length" class="border border-light mb-4">
 						<div class="border-b border-light p-4">
@@ -85,15 +73,15 @@
 				<div class="text-xl-bold">{{ t('reviewer.submission.reviewRound.metadata') }}</div>
 				<div v-if="store.reviewRoundHistory.publicationType" class="mt-4">
 					<div class="text-lg-bold">{{ t('reviewer.submission.reviewRound.metadata.type') }}:</div>
-					<div class="text-base-normal mt-1">{{ store.reviewRoundHistory.publicationType }}</div>
+					<div class="text-base-normal mt-1">{{ localize(store.reviewRoundHistory.publicationType) }}</div>
 				</div>
 				<div v-if="store.reviewRoundHistory.publicationAbstract" class="mt-4">
 					<div class="text-lg-bold">{{ t('reviewer.submission.reviewRound.metadata.abstract') }}:</div>
-					<div v-html="store.reviewRoundHistory.publicationAbstract" class="text-base-normal mt-1"></div>
+					<div v-html="localize(store.reviewRoundHistory.publicationAbstract)" class="text-base-normal mt-1"></div>
 				</div>
 				<div v-if="store.reviewRoundHistory.publicationKeywords" class="mt-4">
 					<div class="text-lg-bold">{{ t('reviewer.submission.reviewRound.metadata.keywords') }}:</div>
-					<div class="text-base-normal mt-1">{{ store.reviewRoundHistory.publicationKeywords }}</div>
+					<div class="text-base-normal mt-1">{{ localize(store.reviewRoundHistory.publicationKeywords).join(', ') }}</div>
 				</div>
 			</template>
 			<template v-if="store.reviewRoundHistory.reviewAssignment" #right2>
@@ -137,8 +125,6 @@ import moment from 'moment';
 function formatShortDate(dateString) {
 	return moment(dateString).format('DD-MM-YYYY');
 }
-
-const panelOptions = { stack: true };
 
 const props = defineProps({
 	submissionId: {type: Number, required: true},
