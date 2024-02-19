@@ -6,13 +6,13 @@ import {Meta} from '@storybook/blocks';
 
 ## Usage
 
-Check [useLocalize](../?path=/docs/composables-useLocalize--docs) composable for example, how to display translated string.
+Check the [useLocalize](../?path=/docs/composables-useLocalize--docs) composable for an example displaying a translated string.
 
 ## Development workflow
 
-Translation key is detected, when composable/mixin `t` function is used.
+Translation keys are detected in the source code by searching for the composable/mixin `t` function at build time.
 
-When `npm run build` or `npm run dev` is run, vite plugin will detect all uses of translation keys and saves them to `registry/uiLocaleKeysBackend.json`.
+When `npm run build` or `npm run dev` is run, a vite plugin will detect all uses of translation keys and save them to `registry/uiLocaleKeysBackend.json`.
 
 <img
 	src="guide/Translation/development_workflow.png"
@@ -26,7 +26,7 @@ Yet to be [introduced](https://github.com/pkp/pkp-lib/issues/9618).
 
 ## Runtime workflow
 
-When page is being loaded, translations are fetched separately from the `/index.php/journal_name/api/v1/_i18n/ui.js` endpoint and made available to the Vue.js.
+When the page is being loaded, translations are fetched separately from the `/index.php/journal_name/api/v1/_i18n/ui.js` endpoint and made available to the Vue.js.
 
 <img
 	src="guide/Translation/runtime_workflow.png"
@@ -38,7 +38,7 @@ When page is being loaded, translations are fetched separately from the `/index.
 
 ## Usage
 
-Check [useLocalize](../?path=/docs/composables-useLocalize--docs) composable for example.
+Check the [useLocalize](../?path=/docs/composables-useLocalize--docs) composable for an example.
 
 Multilingual data is usually provided as a JSON object. Each key holds the locale code. The following response shows the name property of a journal in English and Canadian French.
 
