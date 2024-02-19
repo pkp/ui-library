@@ -19,7 +19,7 @@ import ActivityIndicatorPopup from '@/components/ActivityIndicatorPopup/Activity
 import {useSubmissionsPageStore} from '@/pages/submissions/submissionsPageStore';
 import PkpButton from '@/components/Button/Button.vue';
 
-const {submission} = defineProps({submission: Object});
+const {submission} = defineProps({submission: {type: Object, required: true}});
 
 const submissionsPageStore = useSubmissionsPageStore();
 

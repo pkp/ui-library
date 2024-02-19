@@ -5,7 +5,7 @@ import PageInitConfigMock from './mocks/pageInitConfig';
 
 export default {title: 'Pages/Submissions', component: SubmissionsPage};
 
-export const init = {
+export const Init = {
 	render: (args) => ({
 		components: {SubmissionsPage},
 		setup() {
@@ -18,6 +18,12 @@ export const init = {
 			handlers: [
 				http.get(
 					'https://mock/index.php/publicknowledge/api/v1/_submissions',
+					() => {
+						return HttpResponse.json(SubmissionsMock25);
+					},
+				),
+				http.get(
+					'https://mock/index.php/publicknowledge/api/v1/_submissions/assigned',
 					() => {
 						return HttpResponse.json(SubmissionsMock25);
 					},

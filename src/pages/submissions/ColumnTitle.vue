@@ -1,10 +1,10 @@
 <template>
 	<TableCell
 		:id="'submission-title-' + submission.id"
-		class="submissions__list__item__title"
+		class="max-w-[25em] truncate"
 		:is-row-header="true"
 	>
-		<span class="submissions__list__item__author">
+		<span class="text-lg-semibold">
 			{{ submission.publications[0].authorsStringShort }}
 		</span>
 		<template v-if="submission.publications[0].authorsStringShort">—</template>
@@ -12,15 +12,11 @@
 		{{ submission.publications[0].fullTitle.en }}
 	</TableCell>
 </template>
-<script>
+
+<script setup>
+import {defineProps} from 'vue';
+
 import TableCell from '@/components/TableNext/TableCell.vue';
 
-export default {
-	components: {
-		TableCell,
-	},
-	props: {
-		submission: Object,
-	},
-};
+defineProps({submission: {type: Object, required: true}});
 </script>

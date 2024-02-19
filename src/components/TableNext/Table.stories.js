@@ -1,12 +1,20 @@
-import {ref, computed} from 'vue';
+import {ref, watch} from 'vue';
 import PkpTable from './Table.vue';
-import TableCell from './TableCell.vue';
 import TableHeader from './TableHeader.vue';
+import TableBody from './TableBody.vue';
+import TableColumn from './TableColumn.vue';
+import TableCell from './TableCell.vue';
+import TableRow from './TableRow.vue';
 import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
+import {http, HttpResponse} from 'msw';
 
 import articleStats from '@/components/Table/mocks/articleStats.js';
 import {useSorting} from '@/composables/useSorting';
+
+import {useFetchPaginated} from '@/composables/useFetchPaginated';
+import {useApiUrl} from '@/composables/useApiUrl';
+
 export default {
 	title: 'Components/Table',
 	component: PkpTable,
@@ -14,37 +22,41 @@ export default {
 
 export const Default = {
 	render: (args) => ({
-		components: {PkpTable, TableCell, TableHeader},
+		components: {
+			PkpTable,
+			TableHeader,
+			TableBody,
+			TableRow,
+			TableColumn,
+			TableCell,
+		},
 		setup() {
 			const rows = articleStats.slice(0, 10);
 
 			return {args, rows};
 		},
 		template: `
-			<PkpTable>
-				<template #caption>
-					<PkpHeader>
-						<h2>Example Table</h2>
-					</PkpHeader>
-				</template>
-				<template #head>
-					<TableHeader>ID</TableHeader>
-					<TableHeader>Title</TableHeader>
-					<TableHeader>Views</TableHeader>
-					<TableHeader>Downloads</TableHeader>
-					<TableHeader>Total</TableHeader>
-				</template>
-				<tr v-for="row in rows" :key="row.object.id">
-					<TableCell>{{ row.object.id }}</TableCell>
-					<TableCell :is-row-header="true">
-						{{ row.object.fullTitle.en }}
-					</TableCell>
-					<TableCell>{{ row.views }}</TableCell>
-					<TableCell>{{ row.downloads }}</TableCell>
-					<TableCell>
-						<button @click="open(row)">{{ row.total }}</button>
-					</TableCell>
-				</tr>
+			<PkpTable aria-label="Example for basic table">
+				<TableHeader>
+					<TableColumn>ID</TableColumn>
+					<TableColumn>Title</TableColumn>
+					<TableColumn>Views</TableColumn>
+					<TableColumn>Downloads</TableColumn>
+					<TableColumn>Total</TableColumn>
+				</TableHeader>
+				<TableBody>
+					<TableRow v-for="row in rows" :key="row.object.id">
+						<TableCell>{{ row.object.id }}</TableCell>
+						<TableCell :is-row-header="true">
+							{{ row.object.fullTitle.en }}
+						</TableCell>
+						<TableCell>{{ row.views }}</TableCell>
+						<TableCell>{{ row.downloads }}</TableCell>
+						<TableCell>
+							<button @click="open(row)">{{ row.total }}</button>
+						</TableCell>
+					</TableRow>
+				</TableBody>
 			</PkpTable>
 		`,
 	}),
@@ -54,56 +66,58 @@ export const Default = {
 
 export const WithSorting = {
 	render: (args) => ({
-		components: {PkpTable, TableCell, TableHeader},
+		components: {
+			PkpTable,
+			TableHeader,
+			TableBody,
+			TableRow,
+			TableColumn,
+			TableCell,
+		},
 		setup() {
 			const rows = articleStats.slice(0, 10);
-			const {sortDirection, sortColumnId, applySort} = useSorting();
+			const {sortDescriptor, applySort} = useSorting();
 
-			return {sortDirection, sortColumnId, applySort, args, rows};
+			return {sortDescriptor, applySort, args, rows};
 		},
 		template: `
-			<PkpTable>
-				<template #caption>
-					<PkpHeader>
-						<h2>Example Table with Sorting</h2>
-					</PkpHeader>
-				</template>
-				<template #head>
-					<TableHeader>ID</TableHeader>
-					<TableHeader>Title</TableHeader>
-					<TableHeader
-						:can-sort="true"
-						:sort-direction="sortColumnId === 'views' ? sortDirection : 'none'"
-						@sort-column="applySort('views')"
+			<PkpTable 
+				aria-label="Example Table with Sorting" 		
+				:sort-descriptor="sortDescriptor"
+				@sort="(columnId) => applySort(columnId)"
+			>
+				<TableHeader>
+					<TableColumn id="id">ID</TableColumn>
+					<TableColumn id="title">Title</TableColumn>
+					<TableColumn id="views"
+						:allows-sorting="true"
 					>
 						Views
-					</TableHeader>
-					<TableHeader
-						:can-sort="true"
-						:sort-direction="sortColumnId === 'downloads' ? sortDirection : 'none'"
-						@sort-column="applySort('downloads')"
+					</TableColumn>
+					<TableColumn id="downloads"
+						:allows-sorting="true"
 					>
 						Downloads
-					</TableHeader>
-					<TableHeader
-						:can-sort="true"
-						:sort-direction="sortColumnId === 'total' ? sortDirection : 'none'"
-						@sort-column="applySort('total')"
+					</TableColumn>
+					<TableColumn id="total"
+						:allows-sorting="true"
 					>
 						Total
-					</TableHeader>
-				</template>
-				<tr v-for="row in rows" :key="row.object.id">
-					<TableCell>{{ row.object.id }}</TableCell>
-					<TableCell :is-row-header="true">
-						{{ row.object.fullTitle.en }}
-					</TableCell>
-					<TableCell>{{ row.views }}</TableCell>
-					<TableCell>{{ row.downloads }}</TableCell>
-					<TableCell>
-						<button @click="open(row)">{{ row.total }}</button>
-					</TableCell>
-				</tr>
+					</TableColumn>
+				</TableHeader>
+				<TableBody>
+					<TableRow v-for="row in rows" :key="row.object.id">
+						<TableCell>{{ row.object.id }}</TableCell>
+						<TableCell :is-row-header="true">
+							{{ row.object.fullTitle.en }}
+						</TableCell>
+						<TableCell>{{ row.views }}</TableCell>
+						<TableCell>{{ row.downloads }}</TableCell>
+						<TableCell>
+							<button @click="open(row)">{{ row.total }}</button>
+						</TableCell>
+					</TableRow>
+				</TableBody>
 			</PkpTable>
 		`,
 	}),
@@ -113,71 +127,94 @@ export const WithSorting = {
 
 export const WithPagination = {
 	render: (args) => ({
-		components: {PkpTable, TableCell, TableHeader, ButtonRow, Pagination},
+		components: {
+			PkpTable,
+			TableHeader,
+			TableBody,
+			TableRow,
+			TableColumn,
+			TableCell,
+			ButtonRow,
+			Pagination,
+		},
 		setup() {
+			const {apiUrl: statsApiUrl} = useApiUrl('stats');
+
+			const pageSize = ref(10);
 			const currentPage = ref(1);
-			const isLoading = ref(false);
-			const perPage = ref(10);
-			const rows = [...articleStats];
 
-			const lastPage = computed(() => {
-				return Math.floor(rows.length / perPage.value);
+			const {items, pagination, fetch} = useFetchPaginated(statsApiUrl, {
+				currentPage,
+				pageSize,
 			});
 
-			const currentRows = computed(() => {
-				const start = currentPage.value * perPage.value - perPage.value;
-				return rows.slice(start, start + perPage.value);
-			});
+			fetch();
+			// reload after changing currentPage
+			watch(async (currentPage) => await fetch());
 
 			function setPage(page) {
 				currentPage.value = page;
 			}
 
 			return {
-				rows,
-				perPage,
-				isLoading,
+				items,
 				currentPage,
-				lastPage,
-				currentRows,
+				pagination,
 				setPage,
 			};
 		},
 		template: `
-			<PkpTable>
-				<template #caption>
-					<PkpHeader>
-						<h2>Example Table</h2>
-					</PkpHeader>
-				</template>
-				<template #head>
-					<TableHeader>ID</TableHeader>
-					<TableHeader>Title</TableHeader>
-					<TableHeader>Views</TableHeader>
-					<TableHeader>Downloads</TableHeader>
-					<TableHeader>Total</TableHeader>
-				</template>
-				<tr v-for="row in currentRows" :key="row.object.id">
-					<TableCell>{{ row.object.id }}</TableCell>
-					<TableCell :is-row-header="true">
-						{{ row.object.fullTitle.en }}
-					</TableCell>
-					<TableCell>{{ row.views }}</TableCell>
-					<TableCell>{{ row.downloads }}</TableCell>
-					<TableCell>
-						<button @click="open(row)">{{ row.total }}</button>
-					</TableCell>
-				</tr>
+			<PkpTable aria-label="Example Table with pagination">
+				<TableHeader>
+					<TableColumn>ID</TableColumn>
+					<TableColumn>Title</TableColumn>
+					<TableColumn>Views</TableColumn>
+					<TableColumn>Downloads</TableColumn>
+					<TableColumn>Total</TableColumn>
+				</TableHeader>
+				<TableBody>
+					<TableRow v-for="row in items" :key="row.object.id">
+						<TableCell>{{ row.object.id }}</TableCell>
+						<TableCell :is-row-header="true">
+							{{ row.object.fullTitle.en }}
+						</TableCell>
+						<TableCell>{{ row.views }}</TableCell>
+						<TableCell>{{ row.downloads }}</TableCell>
+						<TableCell>
+							<button @click="open(row)">{{ row.total }}</button>
+						</TableCell>
+					</TableRow>
+				</TableBody>
 			</PkpTable>
 			<ButtonRow>
 				<Pagination
-					:current-page="currentPage"
-					:last-page="lastPage"
+					:current-page="pagination.currentPage"
+					:last-page="pagination.pageCount"
 					@set-page="setPage"
 				/>
 			</ButtonRow>
 		`,
 	}),
+	parameters: {
+		msw: {
+			handlers: [
+				http.get(
+					'https://mock/index.php/publicknowledge/api/v1/stats',
+					({request}) => {
+						const url = new URL(request.url);
+						const offset = parseInt(url.searchParams.get('offset') || 0);
+						const count = parseInt(url.searchParams.get('count'));
+						const stats = articleStats.slice(offset, offset + count);
+
+						return HttpResponse.json({
+							itemsMax: articleStats.length,
+							items: stats,
+						});
+					},
+				),
+			],
+		},
+	},
 
 	args: {},
 };

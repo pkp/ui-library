@@ -1,18 +1,41 @@
 <template>
-	<table class="pkpTableNext">
-		<caption v-if="$slots.caption">
-			<slot name="caption" />
-		</caption>
-		<thead v-if="$slots.head">
-			<tr>
-				<slot name="head" />
-			</tr>
-		</thead>
-		<tbody>
-			<slot />
-		</tbody>
+	<table class="w-full max-w-full border-collapse" :aria-label="ariaLabel">
+		<slot />
 	</table>
 </template>
+
+<script setup>
+import {provide, toRefs, defineEmits} from 'vue';
+
+const emit = defineEmits([
+	/**
+	 * (columnId) => applySort(columnId), columnId is passed to TableColumn as id
+	 */
+	'sort',
+]);
+
+function onSort(columnId) {
+	emit('sort', columnId);
+}
+
+const props = defineProps({
+	/** Table description for screen reader users */
+	ariaLabel: {type: String, required: true},
+	/**
+	 * {column: String, direction: String}, use useSorting composable to control sortDescriptor
+	 */
+	sortDescriptor: {type: Object, default: null, required: false},
+});
+
+const {sortDescriptor} = toRefs(props);
+
+const tableContext = {
+	sortDescriptor,
+	onSort,
+};
+
+provide('tableContext', tableContext);
+</script>
 
 <style lang="less">
 @import '../../styles/_import';
@@ -22,7 +45,7 @@
 	max-width: 100%;
 	border: @grid-border;
 	border-collapse: collapse;
-	border-radius: @radius;
+	border-radius: 10px;
 	font-size: @font-sml;
 	line-height: 1.2em;
 
@@ -41,21 +64,6 @@
 	tr {
 		&:nth-child(even) {
 			background: @bg-very-light;
-		}
-	}
-
-	caption {
-		padding: 0.5rem 0;
-		border-top-left-radius: @radius;
-		border-top-right-radius: @radius;
-		text-align: inherit;
-
-		/**
-		* Override padding for Header components inside
-		* the caption
-		*/
-		.pkpHeader {
-			padding: 0;
 		}
 	}
 
