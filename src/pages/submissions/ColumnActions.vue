@@ -1,7 +1,7 @@
 <template>
 	<TableCell>
 		<PkpButton
-			class="submissions__list__item__view"
+			class="whitespace-nowrap"
 			:aria-describedby="'submission-title-' + submission.id"
 			:is-link="true"
 			@click="submissionsPageStore.openSummaryModal(submission)"

@@ -1,6 +1,8 @@
 import {Primary, Controls, Stories, Meta, ArgTypes} from '@storybook/blocks';
 
 import * as TableStories from './Table.stories.js';
+import TableColumn from './TableColumn.vue';
+import TableCell from './TableCell.vue';
 
 <Meta of={TableStories} />
 
@@ -8,85 +10,24 @@ import * as TableStories from './Table.stories.js';
 
 ## Usage
 
-WIP Some informations are inaccurate.
+Use the `Table` component to display tabular data when the user will sort, search, filter, or if interactive elements such as a button appear within the table.
 
-## Usage
+## Accessibility
 
-Use the `Table` component to display tabular data when the user will sort, search, filter or edit the rows in the table, or if interactive elements such as a button appear within the table.
+Table component requires aria-label attribute to describe content of table.
 
-## Datagrid
+One column should be [rowheader](https://www.w3.org/TR/wai-aria-1.1/#rowheader) to improve screen reader experience. Its prop on TableCell, not on TableColumn as one would expect as it allows for significantly easier implementation.
 
-This component implements a [Data Grid](https://www.w3.org/TR/wai-aria-practices/examples/grid/dataGrids.html), which provides accessible keyboard controls and markup for managing the data in the table. All interactions in the table rows, including buttons or fields to edit a row, must be accessible by keyboard.
-
-## &lt;TableCell&gt;
-
-All cells in the table must use the `<TableCell>` component in order to support the accessible keyboard navigation features. Use a `<TableCell>` inside of a `<tr>` in the same way that a `<td>` element would be used.
-
-```html
-<pkp-table>
-	<tr>
-		<table-cell :isRowHeader="true">dbarnes</table-cell>
-		<table-cell>Daniel Barnes</table-cell>
-	</tr>
-	<tr>
-		<table-cell :isRowHeader="true">sminotue</table-cell>
-		<table-cell>Stephanie Minotue</table-cell>
-	</tr>
-</pkp-table>
-```
-
-When writing a `<TableCell>` in a Smarty template, you must use a `<td>` with with the `is` attribute.
-
-```html
-<pkp-table>
-	<tr>
-		<td is="table-cell" :isRowHeader="true">dbarnes</td>
-		<td is="table-cell">Daniel Barnes</td>
-	</tr>
-	<tr>
-		<td is="table-cell" :isRowHeader="true">sminotue</td>
-		<td is="table-cell">Stephanie Minotue</td>
-	</tr>
-</pkp-table>
-```
-
-This is because templates written in Smarty are parsed by the browser before they are parsed by Vue. Learn more about Vue's [DOM Template Parsing Caveats](https://v2.vuejs.org/v2/guide/components.html#DOM-Template-Parsing-Caveats).
-
-## Sorting
-
-When a table can be sorted, you must [announce the changes](#/pages/announcer). When a sort is performed by making a request to the server, announce at both the start and end of the process.
-
-```js
-methods: {
-    sort(col) {
-        this.$announcer.set('Loading');
-        $.ajax({
-
-            // ...
-
-            success(r) {
-
-                // ...
-
-                this.$announcer.set('Sorted by ' + col);
-            }
-        });
-    }
-}
-```
-
-## Accessible Caption
-
-Every table needs an accessible caption. Use the `caption` slot to provide a title with the correct `<h*>` heading according to the page hierarchy. The description is optional.
-
-```html
-<pkp-table>
-	<pkp-header #caption>
-		<h2>Example Table</h2>
-	</pkp-header>
-</pkp-table>
-```
-
-If you do not use the `caption` slot, you must use the `labelledBy` prop to provide an accessible label for the table. See the [Labelled By](#/component/Table/with-labelledby) example.
+## Table Props
 
 <ArgTypes />
+
+## TableColumn Props
+
+<ArgTypes of={TableColumn} />
+
+# TableCell Props
+
+<ArgTypes of={TableCell} />
+
+<Primary />

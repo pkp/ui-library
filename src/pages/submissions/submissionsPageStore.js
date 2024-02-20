@@ -82,8 +82,7 @@ export const useSubmissionsPageStore = defineComponentStore(
 		/**
 		 * Sorting
 		 */
-		const {sortDirection, sortColumnId, sortQueryParamsApi, applySort} =
-			useSorting();
+		const {sortDescriptor, sortQueryParamsApi, applySort} = useSorting();
 
 		/**
 		 * Submissions
@@ -109,7 +108,7 @@ export const useSubmissionsPageStore = defineComponentStore(
 			isLoading: isSubmissionsLoading,
 			fetch: fetchSubmissions,
 		} = useFetchPaginated(submissionsUrl, {
-			page: currentPage,
+			currentPage,
 			pageSize: countPerPage,
 			query: submissionsQuery,
 		});
@@ -216,8 +215,7 @@ export const useSubmissionsPageStore = defineComponentStore(
 			clearFiltersForm,
 
 			// Sorting
-			sortDirection,
-			sortColumnId,
+			sortDescriptor,
 			sortQueryParamsApi,
 			applySort,
 

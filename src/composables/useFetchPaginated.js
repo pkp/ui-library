@@ -10,7 +10,7 @@ import {useFetch} from './useFetch';
  * @function useFetchPaginated
  * @param {string} url - The URL to which the HTTP request is to be sent. This should be the endpoint for the paginated data.
  * @param {Object} options - Configuration options, check useFetch.js for more options.
- * @param {number} options.page - The current page number. This is normalized internally to a reactive ref.
+ * @param {number} options.currentPage - The current page number. This is normalized internally to a reactive ref.
  * @param {number} options.pageSize - The number of items per page. This is also normalized to a reactive ref.
  *
  * @returns {Object} An object containing several reactive properties and a method for performing the fetch operation:
@@ -22,20 +22,20 @@ import {useFetch} from './useFetch';
  */
 export function useFetchPaginated(url, options) {
 	const {
-		page: _page,
+		currentPage: _currentPage,
 		pageSize: _pageSize,
 		query: _query,
 		...useFetchOpts
 	} = options;
 
 	// normalise to make these options reactive if they are not already
-	const page = ref(_page);
+	const currentPage = ref(_currentPage);
 	const pageSize = ref(_pageSize);
 	const query = ref(_query || {});
 
 	// add offset and count to query params
 	const offset = computed(() => {
-		return (page.value - 1) * pageSize.value;
+		return (currentPage.value - 1) * pageSize.value;
 	});
 	const useFetchQuery = computed(() => {
 		return {...query.value, offset: offset.value, count: pageSize.value};
@@ -57,7 +57,7 @@ export function useFetchPaginated(url, options) {
 		);
 		const pageCount = Math.ceil(itemCount.value / pageSize.value);
 		return {
-			page: page.value,
+			currentPage: currentPage.value,
 			pageSize: pageSize.value,
 			pageCount,
 			firstItemIndex,

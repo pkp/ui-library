@@ -1,5 +1,5 @@
 <template>
-	<div class="submissions">
+	<div class="submissions bg-medium/30">
 		<SubmissionsViews
 			:views="store.views"
 			:current-view="store.currentView"
@@ -22,8 +22,7 @@
 			<SubmissionsTable
 				:submissions="store.submissions"
 				:columns="store.columns"
-				:sort-column="store.sortColumnId"
-				:sort-direction="store.sortDirection"
+				:sort-descriptor="store.sortDescriptor"
 				:pagination="store.submissionsPagination"
 				@sort-column="store.applySort"
 			/>
@@ -206,26 +205,6 @@ const store = useSubmissionsPageStore(props);
 	display: flex;
 	gap: 0.25em;
 	align-items: center;
-}
-
-.submissions__list__item__title {
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	overflow: hidden;
-	max-width: 25em;
-}
-
-.submissions__list__item__author {
-	font-weight: @semibold;
-}
-
-.submissions__list__item__stage {
-	font-size: @font-tiny;
-	line-height: @line-tiny;
-}
-
-.submissions__list__item__view {
-	white-space: nowrap;
 }
 
 .submissions__list__footer {

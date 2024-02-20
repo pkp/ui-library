@@ -21,6 +21,14 @@ window.pkp = {
 	},
 
 	/**
+	 *
+	 *
+	 */
+	context: {
+		apiBaseUrl: 'https://mock/index.php/publicknowledge/api/v1/',
+	},
+
+	/**
 	 * Dummy constants required by components
 	 */
 	const: {

@@ -64,22 +64,22 @@ beforeEach(() => {
 describe('typical uses', () => {
 	test('GET 200 request', async () => {
 		const url = ref('http://mock/get/paginated200');
-		const page = ref(1);
+		const currentPage = ref(1);
 		const pageSize = ref(5);
 		const {items, pagination, isLoading, fetch} = useFetchPaginated(url, {
 			query: {param1: 4, param2: 5},
-			page,
+			currentPage,
 			pageSize,
 		});
 
 		expect(isLoading.value).toBe(false);
 		expect(pagination.value).toMatchInlineSnapshot(`
 			{
+			  "currentPage": 1,
 			  "firstItemIndex": 0,
 			  "itemCount": 0,
 			  "lastItemIndex": 0,
 			  "offset": 0,
-			  "page": 1,
 			  "pageCount": 0,
 			  "pageSize": 5,
 			}
@@ -109,17 +109,17 @@ describe('typical uses', () => {
 		`);
 		expect(pagination.value).toMatchInlineSnapshot(`
 			{
+			  "currentPage": 1,
 			  "firstItemIndex": 1,
 			  "itemCount": 11,
 			  "lastItemIndex": 5,
 			  "offset": 0,
-			  "page": 1,
 			  "pageCount": 3,
 			  "pageSize": 5,
 			}
 		`);
 
-		page.value = 2;
+		currentPage.value = 2;
 		pageSize.value = 3;
 
 		await fetch();
@@ -139,11 +139,11 @@ describe('typical uses', () => {
 		`);
 		expect(pagination.value).toMatchInlineSnapshot(`
 			{
+			  "currentPage": 2,
 			  "firstItemIndex": 4,
 			  "itemCount": 11,
 			  "lastItemIndex": 6,
 			  "offset": 3,
-			  "page": 2,
 			  "pageCount": 4,
 			  "pageSize": 3,
 			}
