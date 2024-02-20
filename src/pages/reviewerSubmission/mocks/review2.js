@@ -23,7 +23,7 @@ export default {
 	},
 	declineEmail: {
 		subject: '<p>This is the <strong>subject</strong> of my email</p>',
-		body: '<p>Editors:<br><br>I am afraid that at this time I am unable to review the submission, "<strong>Influence of long-term nutrition with different dietary fats on fatty acid composition of heavy pigs backfat</strong>" for Le partage. Thank you for thinking of me, and another time feel free to call on me.<br><br>Paul</p>',
+		body: '<p>Editors:<br><br>I am afraid that at this time I am unable to review the submission, "<strong>Influence of long-term nutrition with different dietary fats on fatty acid composition of heavy pigs backfat</strong>". Thank you for thinking of me, and another time feel free to call on me.<br><br>Paul</p>',
 	},
 	reviewAssignment: {
 		_href:
