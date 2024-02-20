@@ -55,7 +55,22 @@ export default {
 
 export const Base = {};
 
-export const OpenModal = {
+export const OpenModalAccepted = {
+	play: async ({canvasElement}) => {
+		// Assigns canvas to the component root element
+		const canvas = within(canvasElement);
+		const user = userEvent.setup();
+
+		await user.click(canvas.getByText('Read Round 1 Review'));
+	},
+	decorators: [
+		() => ({
+			template: '<div style="height: 700px"><story/></div>',
+		}),
+	],
+};
+
+export const OpenModalDeclined = {
 	play: async ({canvasElement}) => {
 		// Assigns canvas to the component root element
 		const canvas = within(canvasElement);
@@ -63,4 +78,9 @@ export const OpenModal = {
 
 		await user.click(canvas.getByText('Read Round 2 Review'));
 	},
+	decorators: [
+		() => ({
+			template: '<div style="height: 700px"><story/></div>',
+		}),
+	],
 };
