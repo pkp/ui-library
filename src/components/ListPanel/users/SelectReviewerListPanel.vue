@@ -61,6 +61,7 @@
 						:activeReviewsLabel="activeReviewsLabel"
 						:assignedToLastRound="lastRoundReviewerIds.includes(item.id)"
 						:assignedToLastRoundLabel="assignedToLastRoundLabel"
+						:authorAffiliations="authorAffiliations"
 						:averageCompletionLabel="averageCompletionLabel"
 						:biographyLabel="biographyLabel"
 						:cancelledReviewsLabel="cancelledReviewsLabel"
@@ -79,6 +80,7 @@
 						:neverAssignedLabel="neverAssignedLabel"
 						:reassignLabel="reassignLabel"
 						:reassignWithNameLabel="reassignWithNameLabel"
+						:reviewerSameInstitutionLabel="reviewerSameInstitutionLabel"
 						:reviewerRatingLabel="reviewerRatingLabel"
 						:reviewInterestsLabel="reviewInterestsLabel"
 						:selectReviewerLabel="selectReviewerLabel"
@@ -136,6 +138,12 @@ export default {
 		assignedToLastRoundLabel: {
 			type: String,
 			required: true,
+		},
+		authorAffiliations: {
+			type: Array,
+			default() {
+				return [];
+			},
 		},
 		averageCompletionLabel: {
 			type: String,
@@ -228,6 +236,10 @@ export default {
 			required: true,
 		},
 		reviewerRatingLabel: {
+			type: String,
+			required: true,
+		},
+		reviewerSameInstitutionLabel: {
 			type: String,
 			required: true,
 		},

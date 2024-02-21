@@ -3,12 +3,13 @@ import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import SelectReviewerListPanel from '@/components/ListPanel/users/SelectReviewerListPanel.vue';
 import SubmissionsListPanel from '@/components/ListPanel/submissions/SubmissionsListPanel.vue';
-
+import AdvancedSearchReviewContainer from '@/components/Container/AdvancedSearchReviewerContainer.vue';
 export default {
 	name: 'Container',
 	components: {
 		ListPanel,
 		PkpForm,
+	  AdvancedSearchReviewContainer,
 		SelectReviewerListPanel,
 		SubmissionsListPanel,
 	},
