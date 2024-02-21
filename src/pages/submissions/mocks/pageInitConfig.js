@@ -1,8 +1,7 @@
 export default {
-	apiUrl: 'https://mock/index.php/publicknowledge/api/v1/_submissions',
 	assignParticipantUrl:
 		'http://localhost:7002/index.php/publicknowledge/$$$call$$$/grid/users/stage-participant/stage-participant-grid/add-participant?submissionId=__id__&stageId=__stageId__',
-	countPerPage: 30,
+	countPerPage: 10,
 	currentViewId: 'active',
 	filtersForm: {
 		id: 'submissionFilters',
@@ -167,35 +166,35 @@ export default {
 		},
 	],
 	columns: [
-		{id: 'id', header: 'ID', componentName: 'columnId', sortable: true},
+		{id: 'id', header: 'ID', componentName: 'ColumnId', sortable: true},
 		{
 			id: 'title',
 			header: 'Submissions',
-			componentName: 'columnTitle',
+			componentName: 'ColumnTitle',
 			sortable: false,
 		},
 		{
 			id: 'stage',
 			header: 'Stage',
-			componentName: 'columnStage',
+			componentName: 'ColumnStage',
 			sortable: false,
 		},
 		{
 			id: 'days',
 			header: 'Days',
-			componentName: 'columnDays',
+			componentName: 'ColumnDays',
 			sortable: false,
 		},
 		{
 			id: 'activity',
 			header: 'Editorial Activity',
-			componentName: 'columnActivity',
+			componentName: 'ColumnActivity',
 			sortable: false,
 		},
 		{
 			id: 'actions',
 			header: 'Actions',
-			componentName: 'columnActions',
+			componentName: 'ColumnActions',
 			sortable: false,
 		},
 	],

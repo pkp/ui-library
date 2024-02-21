@@ -20,6 +20,19 @@ export const Default = {
 	},
 };
 
+export const DefaultOnDarkBackground = {
+	args: {
+		onDarkBackground: true,
+		label: '32 submissions',
+		slot: '32',
+	},
+	decorators: [
+		() => ({
+			template: '<div class="bg-primary p-2"><story/></div>',
+		}),
+	],
+};
+
 export const IsPrimary = {
 	args: {
 		slot: '4',

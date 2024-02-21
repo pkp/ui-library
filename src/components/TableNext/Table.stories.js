@@ -5,8 +5,9 @@ import TableBody from './TableBody.vue';
 import TableColumn from './TableColumn.vue';
 import TableCell from './TableCell.vue';
 import TableRow from './TableRow.vue';
+import TablePagination from './TablePagination.vue';
+
 import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
-import Pagination from '@/components/Pagination/Pagination.vue';
 import {http, HttpResponse} from 'msw';
 
 import articleStats from '@/components/Table/mocks/articleStats.js';
@@ -135,7 +136,7 @@ export const WithPagination = {
 			TableColumn,
 			TableCell,
 			ButtonRow,
-			Pagination,
+			TablePagination,
 		},
 		setup() {
 			const {apiUrl: statsApiUrl} = useApiUrl('stats');
@@ -186,13 +187,7 @@ export const WithPagination = {
 					</TableRow>
 				</TableBody>
 			</PkpTable>
-			<ButtonRow>
-				<Pagination
-					:current-page="pagination.currentPage"
-					:last-page="pagination.pageCount"
-					@set-page="setPage"
-				/>
-			</ButtonRow>
+			<TablePagination :pagination="pagination" @set-page="setPage"/>
 		`,
 	}),
 	parameters: {

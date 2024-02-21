@@ -1,43 +1,35 @@
 <template>
 	<TableCell>
 		<PkpButton
-			v-if="canAssignEditor"
+			v-if="canUserAssignEditor"
 			@click="submissionsPageStore.openAssignParticipantModal(submission)"
 		>
 			{{ t('submission.list.assignEditor') }}
 		</PkpButton>
-		<template v-else>
-			<ActivityIndicatorPopup />
+		<template v-if="isWorkflowStageExternalReview">
+			<ReviewActivityIndicatorPopup
+				v-for="reviewAssignment in activeReviewAssignments"
+				:key="reviewAssignment.id"
+				status="completed"
+			/>
 		</template>
 	</TableCell>
 </template>
 
 <script setup>
-import {defineProps, computed} from 'vue';
+import {defineProps} from 'vue';
 import TableCell from '@/components/TableNext/TableCell.vue';
-import ActivityIndicatorPopup from '@/components/ActivityIndicatorPopup/ActivityIndicatorPopup.vue';
+import ReviewActivityIndicatorPopup from '@/components/ReviewActivityIndicatorPopover/ReviewActivityIndicatorPopover.vue';
 import {useSubmissionsPageStore} from '@/pages/submissions/submissionsPageStore';
 import PkpButton from '@/components/Button/Button.vue';
+import {useSubmission} from './useSubmission';
+import {useActiveStage} from './useActiveStage';
 
-const {submission} = defineProps({submission: {type: Object, required: true}});
+const props = defineProps({submission: {type: Object, required: true}});
 
+const {canUserAssignEditor} = useSubmission(props.submission);
+const {isWorkflowStageExternalReview, activeReviewAssignments} = useActiveStage(
+	props.submission,
+);
 const submissionsPageStore = useSubmissionsPageStore();
-
-const needsEditors = computed(
-	() =>
-		!!submission.stages.find(
-			(stage) =>
-				stage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION &&
-				!!stage.statusId &&
-				stage.statusId === pkp.const.STAGE_STATUS_SUBMISSION_UNASSIGNED,
-		),
-);
-
-const roles = [pkp.const.ROLE_ID_MANAGER, pkp.const.ROLE_ID_SITE_ADMIN];
-
-const isManager = computed(
-	() => !!pkp.currentUser.roles.find((role) => roles.includes(role)),
-);
-
-const canAssignEditor = computed(() => isManager.value && needsEditors.value);
 </script>

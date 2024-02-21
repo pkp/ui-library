@@ -4,6 +4,8 @@ import {useFiltersForm} from '@/composables/useFiltersForm';
 import {useSorting} from '@/composables/useSorting';
 import {useLocalize} from '@/composables/useLocalize';
 import {useAnnouncer} from '@/composables/useAnnouncer';
+import {useApiUrl} from '@/composables/useApiUrl';
+
 import {useUrlSearchParams} from '@vueuse/core';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
@@ -88,8 +90,11 @@ export const useSubmissionsPageStore = defineComponentStore(
 		 * Submissions
 		 */
 		const currentPage = ref(1);
+		function setCurrentPage(_currentPage) {
+			currentPage.value = _currentPage;
+		}
 		const countPerPage = ref(pageInitConfig.countPerPage);
-		const apiUrl = ref(pageInitConfig.apiUrl);
+		const {apiUrl} = useApiUrl('_submissions');
 
 		const submissionsUrl = computed(() => {
 			return currentView.value?.op
@@ -224,6 +229,7 @@ export const useSubmissionsPageStore = defineComponentStore(
 			submissionsPagination,
 			isSubmissionsLoading,
 			fetchSubmissions,
+			setCurrentPage,
 
 			// Modals
 			selectedSubmission,

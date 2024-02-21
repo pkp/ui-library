@@ -1,5 +1,5 @@
 <template>
-	<div id="table-controls" class="submissions__list__controls">
+	<div id="table-controls" class="mb-2">
 		<ButtonRow>
 			<template #end>
 				<pkp-button @click="$emit('openFiltersModal')">
@@ -18,7 +18,7 @@
 				"
 			></Search>
 		</ButtonRow>
-		<div v-if="activeFiltersList.length" class="submissions__list__filters">
+		<div v-if="activeFiltersList.length" class="flex items-center gap-1">
 			<Badge
 				v-for="filter in activeFiltersList"
 				:key="filter.fieldLabel + filter.label"

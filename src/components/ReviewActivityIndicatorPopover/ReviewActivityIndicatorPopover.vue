@@ -1,7 +1,11 @@
 <template>
 	<PkpPopover>
 		<template #button>
-			<ActivityIndicator class="" progress="50"></ActivityIndicator>
+			<ReviewActivityIndicator
+				class=""
+				:status="status"
+				progress="50"
+			></ReviewActivityIndicator>
 		</template>
 
 		<div>
@@ -32,56 +36,30 @@
 	</PkpPopover>
 </template>
 
-<script>
-import ActivityIndicator from '@/components/ActivityIndicator/ActivityIndicator.vue';
+<script setup>
+import {defineProps} from 'vue';
+import ReviewActivityIndicator from './ReviewActivityIndicator.vue';
 import Badge from '@/components/Badge/Badge.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import PkpPopover from '@/components/Popover/Popover.vue';
 
-export default {
-	components: {
-		ActivityIndicator,
-		Badge,
-		PkpPopover,
-		Icon,
-		PkpButton,
+defineProps({
+	status: {
+		type: String,
+		required: true,
+		validator(value, props) {
+			// The value must match one of these strings
+			return [
+				'completed',
+				'ongoing',
+				'overdue',
+				'awaiting_confirmation',
+			].includes(value);
+		},
 	},
-	data() {
-		const solutions = [
-			{
-				name: 'Analytics',
-				description: 'Get a better understanding of your traffic',
-				href: '#',
-			},
-			{
-				name: 'Engagement',
-				description: 'Speak directly to your customers',
-				href: '#',
-			},
-			{
-				name: 'Security',
-				description: "Your customers' data will be safe and secure",
-				href: '#',
-			},
-			{
-				name: 'Integrations',
-				description: 'Connect with third-party tools',
-				href: '#',
-			},
-			{
-				name: 'Automations',
-				description: 'Build strategic funnels that will convert',
-				href: '#',
-			},
-		];
-		const callsToAction = [
-			{name: 'Watch demo', href: '#'},
-			{name: 'Contact sales', href: '#'},
-		];
-		return {solutions, callsToAction};
-	},
-};
+	progress: {type: Number, required: false, default: () => null},
+});
 </script>
 <style>
 .tooltip-arrow {

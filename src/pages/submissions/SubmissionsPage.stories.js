@@ -18,14 +18,30 @@ export const Init = {
 			handlers: [
 				http.get(
 					'https://mock/index.php/publicknowledge/api/v1/_submissions',
-					() => {
-						return HttpResponse.json(SubmissionsMock25);
+					({request}) => {
+						const url = new URL(request.url);
+						const offset = parseInt(url.searchParams.get('offset') || 0);
+						const count = parseInt(url.searchParams.get('count'));
+						const submissions = SubmissionsMock25.slice(offset, offset + count);
+
+						return HttpResponse.json({
+							itemsMax: SubmissionsMock25.length,
+							items: submissions,
+						});
 					},
 				),
 				http.get(
 					'https://mock/index.php/publicknowledge/api/v1/_submissions/assigned',
-					() => {
-						return HttpResponse.json(SubmissionsMock25);
+					({request}) => {
+						const url = new URL(request.url);
+						const offset = parseInt(url.searchParams.get('offset') || 0);
+						const count = parseInt(url.searchParams.get('count'));
+						const submissions = SubmissionsMock25.slice(offset, offset + count);
+
+						return HttpResponse.json({
+							itemsMax: SubmissionsMock25.length,
+							items: submissions,
+						});
 					},
 				),
 			],

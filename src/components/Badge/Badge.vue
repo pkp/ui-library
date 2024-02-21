@@ -29,6 +29,9 @@ export default {
 		isError: Boolean,
 		/** If the badge can be used to perform an action, set this to true */
 		isButton: Boolean,
+		/** Is badge on dark background, currently styling only for default badge (black&white) */
+		onDarkBackground: Boolean,
+		/**  */
 		/** Adds a small dot to the left of the `content` */
 		hasDot: Boolean,
 		/** Pass a stage name to use a special design for stage badges. Supports: `submission`, `review`, `copyediting`, `production`. */
@@ -41,6 +44,10 @@ export default {
 	computed: {
 		classes() {
 			let classes = [];
+
+			if (this.onDarkBackground) {
+				classes.push('pkpBadge--onDarkBackground');
+			}
 			if (this.isPrimary) {
 				classes.push('pkpBadge--isPrimary');
 			}
@@ -80,6 +87,11 @@ export default {
 	border: 1px solid @bg-border-color-light;
 	border-radius: 1.2em;
 	color: @text;
+}
+
+.pkpBadge--onDarkBackground {
+	color: #fff;
+	border-color: #fff;
 }
 
 .pkpBadge--isPrimary {
