@@ -66,6 +66,7 @@
 				class="pkpFormField--autosuggest__autosuggest"
 				v-bind="autosuggestOptions"
 				@selected="selectSuggestion"
+				@blur="onInputBlur"
 			/>
 			<div
 				v-if="currentPosition === 'below'"
@@ -348,6 +349,17 @@ export default {
 			throw new Error(
 				'The setSuggestions method must be implemented in any component that extends FieldBaseAutosuggest.'
 			);
+		},
+
+		/**
+		 * #9592 On input blur its good to clear inputValue, otherwise it might look like saved
+		 * Delay is necessary so it does not interfere with blur which is triggered when option is
+		 * selected from the list
+		 */
+		onInputBlur() {
+			setTimeout(() => {
+				this.inputValue = '';
+			}, 200);
 		},
 
 		/**
