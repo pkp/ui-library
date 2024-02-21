@@ -65,7 +65,7 @@ export const OpenModalAccepted = {
 	},
 	decorators: [
 		() => ({
-			template: '<div style="height: 700px"><story/></div>',
+			template: '<div style="height: 1200px"><story/></div>',
 		}),
 	],
 };
@@ -80,7 +80,7 @@ export const OpenModalDeclined = {
 	},
 	decorators: [
 		() => ({
-			template: '<div style="height: 700px"><story/></div>',
+			template: '<div style="height: 1200px"><story/></div>',
 		}),
 	],
 };
