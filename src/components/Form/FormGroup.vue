@@ -93,7 +93,12 @@ export default {
 		FieldHtml,
 		FieldMetadataSetting,
 		FieldOptions,
+<<<<<<< HEAD
 		FieldOrcid,
+=======
+		FieldCheckbox,
+		FieldRangeSlider,
+>>>>>>> 81f8819 (pkp/pkp-lib#5885 updated and added new UI component)
 		FieldPreparedContent,
 		FieldRadioInput,
 		FieldRichTextarea,
