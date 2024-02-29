@@ -18,7 +18,7 @@
 			<div class="relative w-7/12 flex-initial text-right">
 				<input
 					:id="controlId"
-					v-model="selectedValue"
+					v-model="currentValue"
 					type="range"
 					class="bg-gray-200 rounded-lg dark:bg-black-700 h-2 w-full cursor-pointer appearance-none"
 					:class="sliderSize[size]"
@@ -48,12 +48,12 @@
 				>
 					<span
 						v-if="valuePositionInUpdateLabel === 'before'"
-						v-html="selectedValue ? selectedValue + '' : ''"
+						v-html="currentValue ? currentValue + '' : ''"
 					></span>
 					<span v-html="updateLabel"></span>
 					<span
 						v-if="valuePositionInUpdateLabel === 'after'"
-						v-html="selectedValue ? selectedValue + '' : ''"
+						v-html="currentValue ? currentValue + '' : ''"
 					></span>
 				</button>
 			</div>
@@ -135,24 +135,8 @@ export default {
 				normal: '',
 				large: 'range-lg',
 			},
-
-			selectedValue: this.isMultilingual
-				? this.value[this.localeKey]
-				: this.value,
 		};
 	},
-	computed: {},
-	watch: {
-		/**
-		 * Sync the selectedValue to the value if it is changed programatically
-		 */
-		value: function () {
-			this.selectedValue = this.isMultilingual
-				? this.value[this.localeKey]
-				: this.value;
-		},
-	},
-	methods: {},
 };
 </script>
 
