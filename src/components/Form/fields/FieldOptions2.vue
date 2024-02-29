@@ -19,29 +19,27 @@
 			<VueDraggable
 				ref="el"
 				v-model="localizedOptions"
-				element
+				tag="ul"
 				:disabled="!isOrderable"
 				@end="updateValueOrder"
 			>
-				<ul>
-					<li
-						v-for="option in localizedOptions"
-						:key="option.value"
-						class="pkpFormField--options__option"
-					>
-						<span
-							class="pkpFormField--options__optionLabel"
-							v-html="option.label"
-						/>
-						<orderer
-							v-if="isOrderable"
-							:item-id="option.value"
-							:item-title="option.label"
-							@up="optionOrderUp"
-							@down="optionOrderDown"
-						/>
-					</li>
-				</ul>
+				<li
+					v-for="option in localizedOptions"
+					:key="option.value"
+					class="pkpFormField--options__option"
+				>
+					<span
+						class="pkpFormField--options__optionLabel"
+						v-html="option.label"
+					/>
+					<orderer
+						v-if="isOrderable"
+						:item-id="option.value"
+						:item-title="option.label"
+						@up="optionOrderUp"
+						@down="optionOrderDown"
+					/>
+				</li>
 			</VueDraggable>
 		</div>
 		<field-error
