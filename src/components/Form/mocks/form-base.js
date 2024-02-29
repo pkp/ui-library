@@ -10,7 +10,11 @@ export default {
 	action: 'http://httpbin.org/put',
 	method: 'PUT',
 	fields: [
-		{...FieldTextGivenName, groupId: 'default'},
+		{
+			...FieldTextGivenName,
+			groupId: 'default',
+			description: 'very useful and interesting description',
+		},
 		{...FieldTextFamilyName, groupId: 'default'},
 		{...FieldTextEmail, groupId: 'default'},
 		{...FieldTextareaMailingAddress, groupId: 'default'},

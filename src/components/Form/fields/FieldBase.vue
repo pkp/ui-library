@@ -185,7 +185,7 @@ export default {
 			if (this.isMultilingual) {
 				ids.push(this.multilingualProgressId);
 			}
-			return ids.length ? ids.join(' ') : false;
+			return ids.length ? ids.join(' ') : undefined;
 		},
 
 		/**
