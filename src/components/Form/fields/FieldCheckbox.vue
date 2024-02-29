@@ -143,13 +143,10 @@ export default {
 				if (!newVal && this.uncheckedLabel.trim().length !== 0) {
 					this.labelText = this.uncheckedLabel;
 				}
+
+				this.$emit('change', this.name, 'value', newVal, this.localeKey);
 			},
 		},
 	},
-	methods: {},
 };
 </script>
-
-<style lang="less">
-@import '../../../styles/_import';
-</style>
