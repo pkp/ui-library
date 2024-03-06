@@ -9,6 +9,7 @@ export default {
 			type: String,
 			required: true,
 		},
+
 		size: {
 			type: String,
 			default() {
@@ -16,6 +17,45 @@ export default {
 			},
 			validator(value) {
 				return ['oneline'].includes(value);
+			},
+		},
+
+		// @see 5.0+ : https://www.tiny.cloud/docs/configure/content-filtering/#invalid_elements
+		// @see 6.0+ : https://www.tiny.cloud/docs/tinymce/latest/content-filtering/#invalid_elements
+		invalidElements: {
+			type: String,
+			default() {
+				return 'em,strong,br';
+			},
+		},
+
+		// @see 5.0+ : https://www.tiny.cloud/docs/configure/content-filtering/#valid_elements
+		// @see 6.0+ : https://www.tiny.cloud/docs/tinymce/latest/content-filtering/#valid_elements
+		validElements: {
+			type: String,
+			default() {
+				return 'b,i,u,sup,sub';
+			},
+		},
+
+		/**
+		 * Run auto sanitization of editor content based on valid/invalid elements
+		 * and update the content. To achieve this, need to update the active
+		 * editor's contect via setContent() method.
+		 * See `invalidElements` and `validElements` doc for more details
+		 */
+		autoSanitize: {
+			type: Boolean,
+			default() {
+				return true;
+			},
+		},
+
+		// @see : https://www.tiny.cloud/docs/tinymce/6/events/#handling-editor-events
+		autoSanitizeEvents: {
+			type: Array,
+			default() {
+				return ['blur', 'submit'];
 			},
 		},
 	},
@@ -56,13 +96,28 @@ export default {
 						subscript: [{inline: 'sub', remove: 'all', exact: true}],
 						superscript: [{inline: 'sup', remove: 'all', exact: true}],
 					},
+
 					extended_valid_elements: 'b,i',
-					invalid_elements: 'em strong',
+					invalid_elements: this.invalidElements,
+					valid_elements: this.validElements,
 
 					// Allow pasting while stripping all styles, tags, new lines and getting only text content
 					// More details at https://www.tiny.cloud/docs/tinymce/6/copy-and-paste/
+					// Note that not all options available to 5.0+ that being used right now
 					paste_preprocess: (editor, args) => {
-						args.content = $('<div>' + args.content + '</div>').text();
+						// we need to have better control as tinymec is converting specials chars to html entities
+						// which in turn passed as html chars at final pasting
+						// e.g. '<img src="onerror=alert(1)">' turned into '&lt;img src=&quot;onerror=alert(1)&quot;&gt;'
+						// internally by tinymce and then final paste, it again become '<img src="onerror=alert(1)">'
+
+						let parsedPasteContent = $(
+							'<div>' + args.content + '</div>'
+						).text();
+
+						args.content = new DOMParser().parseFromString(
+							parsedPasteContent,
+							'text/html'
+						).documentElement.textContent;
 					},
 
 					setup: (editor) => {
@@ -74,12 +129,31 @@ export default {
 								return;
 							}
 						});
+
+						if (this.autoSanitize) {
+							this.autoSanitizeEvents.forEach((eventName) =>
+								editor.on(eventName, (event) =>
+									this.sanitizeEditorContent(editor, eventName)
+								)
+							);
+						}
 					},
 				},
 			};
 		},
 	},
 	methods: {
+		/**
+		 * Run auto sanitization of editor content based on valid/invalid elements
+		 * and update the content.
+		 *
+		 * This need to run a HTML Entity Decoding as The base entities <, >, &, ', and "
+		 * will always be entity encoded into their named equivalents .
+		 */
+		sanitizeEditorContent(editor, eventName) {
+			editor.setContent(_.unescape(editor.getContent()));
+		},
+
 		/**
 		 * When TinyMCE emits the blur event
 		 */
