@@ -37,27 +37,6 @@ export default {
 				return 'b,i,u,sup,sub';
 			},
 		},
-
-		/**
-		 * Run auto sanitization of editor content based on valid/invalid elements
-		 * and update the content. To achieve this, need to update the active
-		 * editor's contect via setContent() method.
-		 * See `invalidElements` and `validElements` doc for more details
-		 */
-		autoSanitize: {
-			type: Boolean,
-			default() {
-				return true;
-			},
-		},
-
-		// @see : https://www.tiny.cloud/docs/tinymce/6/events/#handling-editor-events
-		autoSanitizeEvents: {
-			type: Array,
-			default() {
-				return ['blur', 'submit'];
-			},
-		},
 	},
 	computed: {
 		/**
@@ -129,31 +108,12 @@ export default {
 								return;
 							}
 						});
-
-						if (this.autoSanitize) {
-							this.autoSanitizeEvents.forEach((eventName) =>
-								editor.on(eventName, (event) =>
-									this.sanitizeEditorContent(editor, eventName)
-								)
-							);
-						}
 					},
 				},
 			};
 		},
 	},
 	methods: {
-		/**
-		 * Run auto sanitization of editor content based on valid/invalid elements
-		 * and update the content.
-		 *
-		 * This need to run a HTML Entity Decoding as The base entities <, >, &, ', and "
-		 * will always be entity encoded into their named equivalents .
-		 */
-		sanitizeEditorContent(editor, eventName) {
-			editor.setContent(_.unescape(editor.getContent()));
-		},
-
 		/**
 		 * When TinyMCE emits the blur event
 		 */
