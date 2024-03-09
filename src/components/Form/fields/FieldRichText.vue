@@ -84,7 +84,7 @@ export default {
 					// More details at https://www.tiny.cloud/docs/tinymce/6/copy-and-paste/
 					// Note that not all options available to 5.0+ that being used right now
 					paste_preprocess: (editor, args) => {
-						// we need to have better control as tinymec is converting specials chars to html entities
+						// we need to have better control as tinymce is converting specials chars to html entities
 						// which in turn passed as html chars at final pasting
 						// e.g. '<img src="onerror=alert(1)">' turned into '&lt;img src=&quot;onerror=alert(1)&quot;&gt;'
 						// internally by tinymce and then final paste, it again become '<img src="onerror=alert(1)">'
