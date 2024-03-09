@@ -9,6 +9,7 @@ export default {
 			type: String,
 			required: true,
 		},
+
 		size: {
 			type: String,
 			default() {
@@ -16,6 +17,24 @@ export default {
 			},
 			validator(value) {
 				return ['oneline'].includes(value);
+			},
+		},
+
+		// @see 5.0+ : https://www.tiny.cloud/docs/configure/content-filtering/#invalid_elements
+		// @see 6.0+ : https://www.tiny.cloud/docs/tinymce/latest/content-filtering/#invalid_elements
+		invalidElements: {
+			type: String,
+			default() {
+				return 'em,strong,br';
+			},
+		},
+
+		// @see 5.0+ : https://www.tiny.cloud/docs/configure/content-filtering/#valid_elements
+		// @see 6.0+ : https://www.tiny.cloud/docs/tinymce/latest/content-filtering/#valid_elements
+		validElements: {
+			type: String,
+			default() {
+				return 'b,i,u,sup,sub';
 			},
 		},
 	},
@@ -56,13 +75,28 @@ export default {
 						subscript: [{inline: 'sub', remove: 'all', exact: true}],
 						superscript: [{inline: 'sup', remove: 'all', exact: true}],
 					},
+
 					extended_valid_elements: 'b,i',
-					invalid_elements: 'em strong',
+					invalid_elements: this.invalidElements,
+					valid_elements: this.validElements,
 
 					// Allow pasting while stripping all styles, tags, new lines and getting only text content
 					// More details at https://www.tiny.cloud/docs/tinymce/6/copy-and-paste/
+					// Note that not all options available to 5.0+ that being used right now
 					paste_preprocess: (editor, args) => {
-						args.content = $('<div>' + args.content + '</div>').text();
+						// we need to have better control as tinymce is converting specials chars to html entities
+						// which in turn passed as html chars at final pasting
+						// e.g. '<img src="onerror=alert(1)">' turned into '&lt;img src=&quot;onerror=alert(1)&quot;&gt;'
+						// internally by tinymce and then final paste, it again become '<img src="onerror=alert(1)">'
+
+						let parsedPasteContent = $(
+							'<div>' + args.content + '</div>'
+						).text();
+
+						args.content = new DOMParser().parseFromString(
+							parsedPasteContent,
+							'text/html'
+						).documentElement.textContent;
 					},
 
 					setup: (editor) => {
