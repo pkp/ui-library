@@ -22,7 +22,7 @@ export const Default = {
 
 export const DefaultOnDarkBackground = {
 	args: {
-		onDarkBackground: true,
+		isOnDarkBackground: true,
 		label: '32 submissions',
 		slot: '32',
 	},

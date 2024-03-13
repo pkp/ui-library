@@ -22,6 +22,7 @@ const colors = {
 	'profile-5': '#EBDA68',
 	'profile-6': '#BD726C',
 	transparent: 'transparent',
+	'review-assignment-awaiting': '#E08914',
 };
 
 export default {
@@ -44,7 +45,9 @@ export default {
 		borderColor: {
 			dark: '#696969',
 			light: '#DDDDDD',
+			medium: '#BBBBBB',
 			darkest: '#000000',
+			transparent: 'transparent',
 		},
 		borderRadius: {
 			DEFAULT: '4px',

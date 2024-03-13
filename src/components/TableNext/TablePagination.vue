@@ -6,7 +6,6 @@
 		<Pagination
 			v-if="pagination.pageCount > 1"
 			:current-page="pagination.currentPage"
-			:is-loading="isLoadingPage"
 			:last-page="pagination.pageCount"
 			:show-adjacent-pages="3"
 			@set-page="(...args) => emit('setPage', ...args)"

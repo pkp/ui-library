@@ -30,7 +30,7 @@ export default {
 		/** If the badge can be used to perform an action, set this to true */
 		isButton: Boolean,
 		/** Is badge on dark background, currently styling only for default badge (black&white) */
-		onDarkBackground: Boolean,
+		isOnDarkBackground: {type: Boolean, default: false},
 		/**  */
 		/** Adds a small dot to the left of the `content` */
 		hasDot: Boolean,
@@ -45,7 +45,7 @@ export default {
 		classes() {
 			let classes = [];
 
-			if (this.onDarkBackground) {
+			if (this.isOnDarkBackground) {
 				classes.push('pkpBadge--onDarkBackground');
 			}
 			if (this.isPrimary) {

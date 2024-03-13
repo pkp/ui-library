@@ -7,7 +7,6 @@
 			@click="submissionsPageStore.openSummaryModal(submission)"
 		>
 			{{ t('editor.submission.viewSummary') }}
-			<Icon class="ml-2 h-4 w-4" icon="pkp-open-right" :inline="true" />
 		</PkpButton>
 	</TableCell>
 </template>
@@ -16,7 +15,6 @@ import {defineProps} from 'vue';
 import PkpButton from '@/components/Button/Button.vue';
 import TableCell from '@/components/TableNext/TableCell.vue';
 import {useSubmissionsPageStore} from '@/pages/submissions/submissionsPageStore.js';
-import Icon from '@/components/Icon/Icon.vue';
 
 defineProps({
 	submission: {type: Object, required: true},

@@ -1,25 +1,37 @@
 <template>
-	<div class="grid grid-cols-[292px_auto] gap-8 bg-medium/30 text-base-normal">
+	<div class="flex gap-8 bg-medium/30 text-base-normal">
 		<DashboardViews
 			:title="t('navigation.submissions')"
 			:views="store.views"
 			:current-view="store.currentView"
 			@load-view="store.loadView"
 		/>
-		<div class="submissions__list">
-			<SubmissionsHeader
-				:current-view="store.currentView"
-				:submissions-count="store.submissionsPagination.itemCount"
-			/>
-			<div class="mt-6">
-				<SubmissionsTableControls
-					:is-loading-submissions="store.isSubmissionsLoading"
+		<div class="flex-grow">
+			<h2 class="flex items-center gap-4 py-6 text-5xl-bold">
+				{{
+					`${store.currentView.name} (${store.submissionsPagination.itemCount})`
+				}}
+			</h2>
+			<div class="mt-2">
+				<div class="flex justify-between">
+					<PkpButton @click="store.openFiltersModal">
+						{{ t('common.filter') }}
+					</PkpButton>
+					<div>
+						<Search
+							:search-phrase="searchPhrase"
+							:search-label="t('editor.submission.search')"
+							@search-phrase-changed="
+								(...args) => store.setSearchPhrase(...args)
+							"
+						></Search>
+					</div>
+				</div>
+			</div>
+			<div class="mt-4">
+				<ActiveFilters
 					:active-filters-list="store.filtersFormList"
-					:is-loading-page="isLoadingPage"
-					:search-phrase="store.searchPhrase"
-					@open-filters-modal="store.openFiltersModal"
 					@clear-filters="store.clearFiltersForm"
-					@search-phrase-changed="store.setSearchPhrase"
 				/>
 			</div>
 			<div class="mt-4">
@@ -34,6 +46,7 @@
 			</div>
 		</div>
 	</div>
+	<!-- Side Modals -->
 	<SideModal
 		:open="store.isModalOpenedSummary"
 		@close="store.closeSummaryModal"
@@ -57,13 +70,14 @@
 	</SideModal>
 </template>
 <script setup>
-import SubmissionsTable from '@/pages/submissions/SubmissionsTable.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import ActiveFilters from './ActiveFilters.vue';
+import SubmissionsTable from '@/pages/submissions/submissionsTable/SubmissionsTable.vue';
 import DashboardViews from '@/pages/submissions/DashboardViews.vue';
-import SubmissionsHeader from '@/pages/submissions/SubmissionsHeader.vue';
-import SubmissionsTableControls from '@/pages/submissions/SubmissionsTableControls.vue';
 import SubmissionSummaryModal from '@/pages/submissions/SubmissionSummaryModal.vue';
 import SubmissionsFiltersModal from '@/pages/submissions/SubmissionsFiltersModal.vue';
 import AssignEditorsModal from '@/pages/submissions/AssignEditorsModal.vue';
+import Search from '@/components/Search/Search.vue';
 
 import SideModal from '@/components/Modal/SideModal.vue';
 import {useSubmissionsPageStore} from './submissionsPageStore';
@@ -105,7 +119,15 @@ const store = useSubmissionsPageStore(props);
 </script>
 
 <style>
-.pkp_page_submissions .app__main {
+.pkp_page_dashboards .app__main {
+	@apply bg-lightest p-0;
+}
+
+.pkp_page_mySubmissions .app__main {
+	@apply bg-lightest p-0;
+}
+
+.pkp_page_reviewAssignments .app__main {
 	@apply bg-lightest p-0;
 }
 </style>

@@ -37,3 +37,16 @@ export default {
 	components: {Popover, PopoverButton, PopoverPanel},
 };
 </script>
+<style>
+.tooltip-arrow {
+	clip-path: polygon(
+		-20% -20%,
+		120% -20%,
+		100% 0%,
+		95% 10%,
+		10% 95%,
+		0% 100%,
+		-20% 120%
+	);
+}
+</style>

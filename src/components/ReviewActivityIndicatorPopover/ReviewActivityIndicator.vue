@@ -10,7 +10,8 @@
 				:cy="shadowStrokePosition.y"
 			/>
 			<circle
-				class="stroke-primary"
+				v-if="strokeColorClass"
+				:class="strokeColorClass"
 				fill="transparent"
 				:stroke-dasharray="strokeDashArray"
 				:stroke-width="colorStrokePosition.width"
@@ -18,21 +19,26 @@
 				:cx="colorStrokePosition.x"
 				:cy="colorStrokePosition.y"
 			/>
-			<!--<circle
-				class="fill-state-success"
+			<circle
+				v-if="fillColorClass"
+				:class="fillColorClass"
 				:r="singleCirclePosition.radius"
 				:cx="singleCirclePosition.x"
 				:cy="singleCirclePosition.y"
-			/>-->
+			/>
 		</svg>
-		<span v-if="true" class="absolute text-sm-normal">15</span>
-		<icon v-if="false" class="absolute w-3.5" icon="pkp-envelope-closed" />
+		<span v-if="text" class="absolute text-sm-normal">{{ text }}</span>
+		<icon
+			v-if="icon"
+			:class="textColorClass"
+			class="absolute h-5 w-5"
+			:icon="icon"
+		/>
 	</span>
 </template>
 
 <script setup>
 import {defineProps, computed} from 'vue';
-import Icon from '@/components/Icon/Icon.vue';
 
 function calculatePosition(boxWidth, strokeWidth) {
 	const radius = (boxWidth - strokeWidth) / 2;
@@ -52,20 +58,20 @@ function calculatePosition(boxWidth, strokeWidth) {
  */
 
 const props = defineProps({
-	status: {
-		type: String,
+	colorVariant: {
 		required: true,
-		validator(value, props) {
-			// The value must match one of these strings
-			return [
-				'completed',
-				'ongoing',
-				'overdue',
-				'awaiting_confirmation',
-			].includes(value);
-		},
+		type: String,
+		validator: (prop) =>
+			['primary', 'error', 'negative', 'success', 'awaiting'].includes(prop),
+	},
+	displayVariant: {
+		required: true,
+		type: String,
+		validator: (prop) => ['progress', 'fill'].includes(prop),
 	},
 	progress: {type: Number, required: false, default: () => null},
+	icon: {type: String, required: false, default: () => null},
+	text: {type: String, required: false, default: () => null},
 });
 
 const boxWidth = 24;
@@ -78,6 +84,49 @@ const shadowStrokePosition = calculatePosition(boxWidth, shadowStrokeWidth);
 const singleCirclePosition = calculatePosition(boxWidth, 0);
 
 const circumference = colorStrokePosition.radius * 2 * Math.PI;
+
+const textColorClass = computed(() => {
+	if (props.displayVariant === 'fill') {
+		if (['error', 'negative', 'awaiting'].includes(props.colorVariant)) {
+			console.log('lightest!!');
+			return 'text-lightest';
+		}
+	}
+
+	return 'text-dark';
+});
+
+const strokeColorClass = computed(() => {
+	if (props.displayVariant === 'progress') {
+		const colorVariantToClassMapping = {
+			primary: 'stroke-primary',
+			error: 'stroke-state-error',
+			negative: 'stroke-action-negative',
+			success: 'stroke-state-success',
+			awaiting: 'stroke-review-assignment-awaiting',
+		};
+
+		return colorVariantToClassMapping[props.colorVariant];
+	}
+
+	return '';
+});
+
+const fillColorClass = computed(() => {
+	if (props.displayVariant === 'fill') {
+		const colorVariantToClassMapping = {
+			primary: 'fill-primary',
+			error: 'fill-state-error',
+			negative: 'fill-action-negative',
+			success: 'fill-state-success',
+			awaiting: 'fill-review-assignment-awaiting',
+		};
+
+		return colorVariantToClassMapping[props.colorVariant];
+	}
+
+	return '';
+});
 
 const strokeDashArray = computed(() => {
 	/**

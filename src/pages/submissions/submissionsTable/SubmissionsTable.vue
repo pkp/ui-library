@@ -39,12 +39,12 @@ import TableBody from '@/components/TableNext/TableBody.vue';
 import TableRow from '@/components/TableNext/TableRow.vue';
 import TablePagination from '@/components/TableNext/TablePagination.vue';
 
-import ColumnActions from '@/pages/submissions/ColumnActions.vue';
-import ColumnActivity from '@/pages/submissions/ColumnActivity.vue';
-import ColumnDays from '@/pages/submissions/ColumnDays.vue';
-import ColumnId from '@/pages/submissions/ColumnId.vue';
-import ColumnStage from '@/pages/submissions/ColumnStage.vue';
-import ColumnTitle from '@/pages/submissions/ColumnTitle.vue';
+import ColumnSubmissionActions from './ColumnSubmissionActions.vue';
+import ColumnSubmissionActivity from './ColumnSubmissionActivity.vue';
+import ColumnSubmissionDays from './ColumnSubmissionDays.vue';
+import ColumnSubmissionId from './ColumnSubmissionId.vue';
+import ColumnSubmissionStage from './ColumnSubmissionStage.vue';
+import ColumnSubmissionTitle from './ColumnSubmissionTitle.vue';
 
 defineProps({
 	submissions: {type: Array, required: true},
@@ -55,11 +55,11 @@ defineProps({
 const emit = defineEmits(['setPage', 'sortColumn']);
 
 const columnComponents = {
-	ColumnActions,
-	ColumnActivity,
-	ColumnDays,
-	ColumnId,
-	ColumnStage,
-	ColumnTitle,
+	ColumnSubmissionActions,
+	ColumnSubmissionActivity,
+	ColumnSubmissionDays,
+	ColumnSubmissionId,
+	ColumnSubmissionStage,
+	ColumnSubmissionTitle,
 };
 </script>

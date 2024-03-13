@@ -141,7 +141,7 @@ export const WithPagination = {
 		setup() {
 			const {apiUrl: statsApiUrl} = useApiUrl('stats');
 
-			const pageSize = ref(10);
+			const pageSize = ref(11);
 			const currentPage = ref(1);
 
 			const {items, pagination, fetch} = useFetchPaginated(statsApiUrl, {

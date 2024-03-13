@@ -26,6 +26,7 @@ window.pkp = {
 	 */
 	context: {
 		apiBaseUrl: 'https://mock/index.php/publicknowledge/api/v1/',
+		pageBaseUrl: 'https://mock/index.php/publicknowledge/',
 	},
 
 	/**
@@ -51,6 +52,10 @@ window.pkp = {
 		REVIEW_ROUND_STATUS_REVIEWS_OVERDUE: 10,
 		REVIEW_ROUND_STATUS_REVISIONS_SUBMITTED: 11,
 		REVIEW_ROUND_STATUS_REVISIONS_REQUESTED: 1,
+		SUBMISSION_REVIEW_METHOD_ANONYMOUS: 1,
+		SUBMISSION_REVIEW_METHOD_DOUBLEANONYMOUS: 2,
+		SUBMISSION_REVIEW_METHOD_OPEN: 3,
+
 		ROLE_ID_MANAGER: 16,
 		ROLE_ID_SITE_ADMIN: 1,
 		ROLE_ID_AUTHOR: 65536,
@@ -276,6 +281,16 @@ window.pkp = {
 		'submission.submit.newSubmissionSingle': 'New Submission',
 		'submissions.incomplete': 'Incomplete',
 		'validator.required': 'This field is required.',
+
+		// DON'T THROW IT AWAY UNTIL IS MOVED TO PO FILES
+		'submission.list.reviewAssignment.statusDeclined.title':
+			'Review Request declined on {$date}',
+		'submission.list.reviewAssignment.statusDeclined.description':
+			'Reviewer declined the review request on <b>{$date}</b>',
+		'submission.list.reviewAssignment.action.viewDetails': 'View details',
+		'submission.list.reviewAssignment.action.resendReviewRequest':
+			'Resend Review Request',
+		'submission.list.reviewAssignment.action.cancelReviewer': 'Cancel Reviewer',
 	},
 	tinyMCE: {
 		skinUrl: '/styles/tinymce',
