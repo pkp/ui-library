@@ -62,7 +62,6 @@ import FieldPubId from './fields/FieldPubId.vue';
 import FieldHtml from './fields/FieldHtml.vue';
 import FieldMetadataSetting from './fields/FieldMetadataSetting.vue';
 import FieldOptions from './fields/FieldOptions.vue';
-import FieldCheckbox from './fields/FieldCheckbox.vue';
 import FieldRangeSlider from './fields/FieldRangeSlider.vue';
 import FieldPreparedContent from './fields/FieldPreparedContent.vue';
 import FieldRadioInput from './fields/FieldRadioInput.vue';
@@ -91,7 +90,6 @@ export default {
 		FieldHtml,
 		FieldMetadataSetting,
 		FieldOptions,
-		FieldCheckbox,
 		FieldRangeSlider,
 		FieldPreparedContent,
 		FieldRadioInput,
