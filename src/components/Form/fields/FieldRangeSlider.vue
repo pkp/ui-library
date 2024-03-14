@@ -15,18 +15,18 @@
 			></div>
 		</div>
 		<div class="flex">
-			<div class="relative w-7/12 flex-initial text-right">
+			<div class="relative w-7/12 flex-initial text-center">
 				<input
 					:id="controlId"
 					v-model="currentValue"
 					type="range"
 					class="bg-gray-200 rounded-lg dark:bg-black-700 h-2 w-full cursor-pointer appearance-none"
-					:class="sliderSize[size]"
+					:style="sliderSize[size]"
 					:name="localizedName"
 					:step="step"
 					:min="min"
 					:max="max"
-					:disabled="disable"
+					:disabled="rangeDisableState"
 				/>
 				<span
 					class="text-sm text-black-500 dark:text-black-400 absolute bottom-2 start-0 font-semibold"
@@ -58,6 +58,16 @@
 				</button>
 			</div>
 		</div>
+
+		<!-- Checkbon as button select/unselect switch -->
+		<div v-if="allowStateToggle" class="mb-2 mt-2 flex items-center">
+			<input type="checkbox" class="hidden" />
+			<label
+				class="rounded-xl border-blue-300 text-blue-600 peer-checked:bg-gray-400 peer-checked:text-blue-700 peer-checked:border-blue-600 min-w-20 max-w-40 cursor-pointer select-none border-2 px-4 py-2 font-bold transition-colors duration-200 ease-in-out"
+				@click="toogleRangeState()"
+				v-html="toggleControlLabelText"
+			></label>
+		</div>
 	</div>
 </template>
 
@@ -71,15 +81,27 @@ export default {
 		/** The disable state of range slider */
 		disable: {
 			type: Boolean,
-			required: false,
 			default: false,
+		},
+
+		/** Range slider should be disable if input field value set to NULL on render */
+		disableOnNull: {
+			type: Boolean,
+			default: true,
 		},
 
 		/** The current value for this field. */
 		value: {
 			type: Number,
 			required: false,
-			default: 0,
+			default: null,
+		},
+
+		/** Range value to set on reset when enabiling/disbaling. */
+		onResetValue: {
+			type: Number,
+			required: false,
+			default: null,
 		},
 
 		/** The min value of the slider range. */
@@ -98,7 +120,7 @@ export default {
 		step: {
 			type: Number,
 			required: false,
-			deault: 1,
+			default: 1,
 		},
 
 		/** Slider value update label on realtime */
@@ -112,7 +134,7 @@ export default {
 		size: {
 			type: String,
 			required: true,
-			default: 'small',
+			default: 'normal',
 			validator: function (value) {
 				return ['small', 'normal', 'large'].indexOf(value) !== -1;
 			},
@@ -127,20 +149,76 @@ export default {
 				return ['before', 'after'].indexOf(value) !== -1;
 			},
 		},
+
+		/** Should allow the toggle to slider state disable/enable */
+		allowStateToggle: {
+			type: Boolean,
+			default: true,
+		},
+
+		/** The disable/enable control label when disable */
+		controlLabelOnDisable: {
+			type: String,
+			required: function () {
+				return this.allowStateToggle;
+			},
+		},
+
+		/** The disable/enable control label when enable */
+		controlLabelOnEnable: {
+			type: String,
+			required: function () {
+				return this.allowStateToggle;
+			},
+		},
 	},
 	data() {
 		return {
 			sliderSize: {
-				small: 'range-sm',
-				normal: '',
-				large: 'range-lg',
+				small: {
+					'--thumb-height': '0.5em',
+					'--track-height': '0.075em',
+				},
+				normal: {
+					'--thumb-height': '0.8em',
+					'--track-height': '0.125em',
+				},
+				large: {
+					'--thumb-height': '1.2em',
+					'--track-height': '0.250em',
+				},
 			},
+
+			rangeDisableState: this.disable,
 		};
+	},
+	computed: {
+		toggleControlLabelText() {
+			return this.rangeDisableState
+				? this.controlLabelOnDisable
+				: this.controlLabelOnEnable;
+		},
+	},
+	created() {
+		if (
+			this.disableOnNull &&
+			(this.value === null || this.value === undefined)
+		) {
+			this.rangeDisableState = true;
+		}
+	},
+	methods: {
+		toogleRangeState() {
+			this.rangeDisableState = !this.rangeDisableState;
+			this.currentValue = this.rangeDisableState
+				? null
+				: this.value ?? this.onResetValue;
+		},
 	},
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 @import '../../../styles/_import';
 
 /* === range theme and appearance === */
@@ -149,10 +227,8 @@ input[type='range'] {
 }
 
 input[type='range'] {
-	color: #ef233c;
-	--thumb-height: 0.8em;
-	--track-height: 0.125em;
-	--track-color: rgba(0, 0, 0, 0.2);
+	color: rgb(0 103 152 / 1);
+	--track-color: rgb(187, 187, 187, 0.8);
 	--brightness-hover: 180%;
 	--brightness-down: 80%;
 	--clip-edges: 0.125em;
@@ -160,7 +236,7 @@ input[type='range'] {
 
 @media (prefers-color-scheme: dark) {
 	input[type='range'] {
-		color: rgb(37 99 235 / 1);
+		color: rgb(0 103 152 / 1);
 		--track-color: rgb(187, 187, 187, 0.8);
 	}
 }
