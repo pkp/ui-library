@@ -1,6 +1,6 @@
 <template>
-	<div class="bg-lightest border border-light p-8 mb-4">
-		<h2>{{ t('reviewer.submission.reviewRound.info') }}</h2>
+	<div class="bg-lightest border border-light text-dark p-8 mb-4">
+		<h2 class="text-dark-accent">{{ t('reviewer.submission.reviewRound.info') }}</h2>
 		<p
 			v-for="review in store.reviewRoundHistories"
 			:key="review.reviewRoundId"
