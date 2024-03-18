@@ -21,22 +21,6 @@ export default {
 	],
 };
 
-export const Declined = {
-	args: {
-		reviewerName: 'Julie Janssen',
-		submissionId: 15,
-		reviewAssignment: {
-			id: 5,
-			statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED,
-			due: '2024-03-25',
-			responseDue: '2024-03-15',
-			dateConfirmed: '2024-03-13',
-			dateAssigned: '2024-02-15',
-			reviewMethod: pkp.const.SUBMISSION_REVIEW_METHOD_ANONYMOUS,
-		},
-	},
-};
-
 export const AwaitingResponse = {
 	args: {
 		reviewerName: 'Julie Janssen',
@@ -44,11 +28,146 @@ export const AwaitingResponse = {
 		reviewAssignment: {
 			id: 5,
 			statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE,
-			due: '2024-03-25',
-			responseDue: '2024-03-15',
-			dateAssigned: '2024-02-15',
-			//dateConfirmed: '2024-03-13',
+			dateDue: '2024-03-25',
+			dateResponseDue: '2024-04-30',
+			dateAssigned: '2024-02-01',
+			dateConfirmed: '2024-03-13',
 			reviewMethod: pkp.const.SUBMISSION_REVIEW_METHOD_ANONYMOUS,
+			recommendation: null,
+		},
+	},
+};
+
+export const Declined = {
+	args: {
+		reviewerName: 'Julie Janssen',
+		submissionId: 15,
+		reviewAssignment: {
+			id: 5,
+			statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED,
+			dateDue: '2024-03-25',
+			dateResponseDue: '2024-03-15',
+			dateConfirmed: '2024-03-13',
+			dateAssigned: '2024-02-15',
+			reviewMethod: pkp.const.SUBMISSION_REVIEW_METHOD_ANONYMOUS,
+			recommendation: null,
+		},
+	},
+};
+
+export const ResponseOverdue = {
+	args: {
+		reviewerName: 'Julie Janssen',
+		submissionId: 15,
+		reviewAssignment: {
+			id: 5,
+			statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_RESPONSE_OVERDUE,
+			dateDue: '2024-03-25',
+			dateResponseDue: '2024-03-8',
+			dateAssigned: '2024-02-15',
+			reviewMethod: pkp.const.SUBMISSION_REVIEW_METHOD_ANONYMOUS,
+			recommendation: null,
+		},
+	},
+};
+
+export const Accepted = {
+	args: {
+		reviewerName: 'Julie Janssen',
+		submissionId: 15,
+		reviewAssignment: {
+			id: 5,
+			statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_ACCEPTED,
+			dateDue: '2024-03-25',
+			dateResponseDue: '2024-03-8',
+			dateAssigned: '2024-02-15',
+			reviewMethod: pkp.const.SUBMISSION_REVIEW_METHOD_ANONYMOUS,
+			recommendation: null,
+		},
+	},
+};
+
+export const ReviewOverdue = {
+	args: {
+		reviewerName: 'Julie Janssen',
+		submissionId: 15,
+		reviewAssignment: {
+			id: 5,
+			statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_REVIEW_OVERDUE,
+			dateDue: '2024-02-10',
+			dateResponseDue: '2024-03-8',
+			dateAssigned: '2024-02-15',
+			reviewMethod: pkp.const.SUBMISSION_REVIEW_METHOD_ANONYMOUS,
+			recommendation: null,
+		},
+	},
+};
+
+export const Received = {
+	args: {
+		reviewerName: 'Julie Janssen',
+		submissionId: 15,
+		reviewAssignment: {
+			id: 5,
+			statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
+			dateDue: '2024-02-10',
+			dateResponseDue: '2024-03-8',
+			dateAssigned: '2024-02-15',
+			dateCompleted: '2024-03-13',
+			reviewMethod: pkp.const.SUBMISSION_REVIEW_METHOD_ANONYMOUS,
+			recommendation:
+				pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_RESUBMIT_HERE,
+		},
+	},
+};
+
+export const Complete = {
+	args: {
+		reviewerName: 'Julie Janssen',
+		submissionId: 15,
+		reviewAssignment: {
+			id: 5,
+			statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
+			dateDue: '2024-02-10',
+			dateResponseDue: '2024-03-8',
+			dateAssigned: '2024-02-15',
+			dateCompleted: '2024-03-13',
+			reviewMethod: pkp.const.SUBMISSION_REVIEW_METHOD_ANONYMOUS,
+			recommendation: pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_ACCEPT,
+		},
+	},
+};
+
+export const Cancelled = {
+	args: {
+		reviewerName: 'Julie Janssen',
+		submissionId: 15,
+		reviewAssignment: {
+			id: 5,
+			statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED,
+			dateDue: '2024-02-10',
+			dateResponseDue: '2024-03-8',
+			dateAssigned: '2024-02-15',
+			dateCompleted: '2024-03-13',
+			reviewMethod: pkp.const.SUBMISSION_REVIEW_METHOD_ANONYMOUS,
+			recommendation: pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_ACCEPT,
+		},
+	},
+};
+
+export const RequestResend = {
+	args: {
+		reviewerName: 'Julie Janssen',
+		submissionId: 15,
+		reviewAssignment: {
+			id: 5,
+			statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND,
+			dateDue: '2024-02-10',
+			dateResponseDue: '2024-03-8',
+			dateAssigned: '2024-02-15',
+			dateCompleted: '2024-03-13',
+			reviewMethod: pkp.const.SUBMISSION_REVIEW_METHOD_ANONYMOUS,
+			recommendation: pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_ACCEPT,
 		},
 	},
 };

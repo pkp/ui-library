@@ -6,14 +6,10 @@
 			></ReviewActivityIndicator>
 		</template>
 
-		<div>
-			<Badge v-bind="popoverConfig.badgeProps">
-				<div :class="badgeTextColorClass" class="flex items-center">
-					<Icon
-						class="h-5 w-5"
-						:icon="popoverConfig.badgeIcon"
-						:inline="true"
-					/>
+		<div class="flex">
+			<Badge v-bind="config.badgeProps">
+				<div class="flex items-center gap-x-2">
+					<Icon class="h-5 w-5" :icon="config.badgeIcon" :inline="true" />
 					<span>{{ title }}</span>
 				</div>
 			</Badge>
@@ -29,23 +25,22 @@
 				/>
 			</span>
 		</div>
-		<div
-			class="mt-1 border-t border-light pt-4 text-start text-base-normal"
-			v-html="description"
-		></div>
+		<div class="mt-1 border-t border-light pt-4 text-start text-base-normal">
+			<p v-html="description"></p>
+		</div>
 		<div class="-ms-3 text-start">
 			<PkpButton
 				v-if="textActionLabel"
 				:is-link="true"
-				@click="() => triggerEmit(popoverConfig.textAction)"
+				@click="() => triggerEmit(config.textAction)"
 			>
 				{{ textActionLabel }}
 			</PkpButton>
 		</div>
-		<div class="mt-4">
+		<div class="mt-4 flex">
 			<PkpButton
 				v-if="primaryActionLabel"
-				@click="() => triggerEmit(popoverConfig.primaryAction)"
+				@click="() => triggerEmit(config.primaryAction)"
 			>
 				{{ primaryActionLabel }}
 			</PkpButton>
@@ -53,7 +48,7 @@
 				v-if="negativeActionLabel"
 				class="ms-4"
 				:is-warnable="true"
-				@click="() => triggerEmit(popoverConfig.negativeAction)"
+				@click="() => triggerEmit(config.negativeAction)"
 			>
 				{{ negativeActionLabel }}
 			</PkpButton>
@@ -61,6 +56,10 @@
 	</PkpPopover>
 </template>
 <script>
+import {useLocalize} from '@/composables/useLocalize';
+
+const {tk} = useLocalize();
+
 const ReviewAssignmentStatuses = [
 	pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE,
 	pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED,
@@ -80,52 +79,233 @@ const ReviewMethods = [
 	pkp.const.SUBMISSION_REVIEW_METHOD_OPEN,
 ];
 
-// TODO colors to be replaced with css variables
-const ReviewIndicatorPropsBase = {
-	[pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED]: {
-		icon: 'ReviewRequestDeclined',
-		colorVariant: 'negative',
-		displayVariant: 'fill',
-	},
-	[pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE]: {
-		colorVariant: 'awaiting',
-		displayVariant: 'progress',
-		progress: 50,
-		text: 10,
-	},
+const Recommendations = [
+	pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_ACCEPT,
+	pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_PENDING_REVISIONS,
+	pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_RESUBMIT_HERE,
+	pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_RESUBMIT_ELSEWHERE,
+	pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_DECLINE,
+	pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_SEE_COMMENTS,
+];
+
+const RecommendationTranslations = {
+	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_ACCEPT]: tk(
+		'reviewer.article.decision.accept',
+	),
+	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_PENDING_REVISIONS]: tk(
+		'reviewer.article.decision.pendingRevisions',
+	),
+	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_RESUBMIT_HERE]: tk(
+		'reviewer.article.decision.resubmitHere',
+	),
+	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_RESUBMIT_ELSEWHERE]: tk(
+		'reviewer.article.decision.resubmitElsewhere',
+	),
+	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_DECLINE]: tk(
+		'reviewer.article.decision.decline',
+	),
+	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_SEE_COMMENTS]: tk(
+		'reviewer.article.decision.seeComments',
+	),
 };
 
-const PopoverConfigPerStatus = {
-	[pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED]: {
-		badgeIcon: 'ReviewRequestDeclined',
-		badgeProps: {
-			isWarnable: true,
-		},
-		badgeTextColorClass: 'text-lightest',
-		titleKey: 'submission.list.reviewAssignment.statusDeclined.title',
-		titleDate: 'dateConfirmed',
-		descriptionKey:
-			'submission.list.reviewAssignment.statusDeclined.description',
-		descriptionDate: 'dateConfirmed',
-		indicateDays: '',
-		textAction: 'resendReviewRequest',
-		primaryAction: 'viewDetails',
-		negativeAction: 'cancelReviewer',
-	},
+const ActionButtonTranslations = {
+	resendReviewRequest: tk(
+		'submission.list.reviewAssignment.action.resendReviewRequest',
+	),
+	editDueDate: tk('submission.list.reviewAssignment.action.editDueDate'),
+	viewDetails: tk('submission.list.reviewAssignment.action.viewDetails'),
+	cancelReviewer: tk('submission.list.reviewAssignment.action.cancelReviewer'),
+	unassignReviewer: tk(
+		'submission.list.reviewAssignment.action.unassignReviewer',
+	),
+	viewRecommendation:
+		'submission.list.reviewAssignment.action.viewRecommendation',
+};
+
+const ConfigPerStatus = {
+	// request has been sent but reviewer has not responded
 	[pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE]: {
+		reviewActivityIndicator: {
+			colorVariant: 'awaiting',
+			displayVariant: 'progress',
+		},
 		badgeIcon: 'ReviewSent',
 		badgeProps: {
 			stage: 'review',
 		},
-		badgeTextColorClass: 'text-lightest',
-		titleKey: 'submission.list.reviewAssignment.statusDeclined.title',
-		titleDate: 'dateConfirmed',
-		descriptionKey:
+		titleKey: tk(
+			'submission.list.reviewAssignment.statusAwaitingResponse.title',
+		),
+		descriptionKey: tk(
+			'submission.list.reviewAssignment.statusAwaitingResponse.description',
+		),
+		textAction: 'editDueDate',
+		primaryAction: 'viewDetails',
+		negativeAction: 'unassignReviewer',
+		dateToDisplay: 'dateResponseDue',
+	},
+	// reviewer declined review request
+	[pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED]: {
+		reviewActivityIndicator: {
+			colorVariant: 'negative',
+			displayVariant: 'fill',
+			icon: 'ReviewRequestDeclined',
+		},
+		badgeIcon: 'ReviewRequestDeclined',
+		badgeProps: {
+			isWarnable: true,
+		},
+		titleKey: tk('submission.list.reviewAssignment.statusDeclined.title'),
+		descriptionKey: tk(
 			'submission.list.reviewAssignment.statusDeclined.description',
-		descriptionDate: 'dateConfirmed',
+		),
+		textAction: 'editDueDate',
+		primaryAction: 'resendReviewRequest',
+		negativeAction: 'cancelReviewer',
+		dateToDisplay: 'dateConfirmed',
+	},
+	// review not responded within due date
+	[pkp.const.REVIEW_ASSIGNMENT_STATUS_RESPONSE_OVERDUE]: {
+		reviewActivityIndicator: {
+			colorVariant: 'error',
+			displayVariant: 'progress',
+		},
+		badgeIcon: 'Overdue',
+		badgeProps: {
+			isError: true,
+		},
+		titleKey: tk(
+			'submission.list.reviewAssignment.statusResponseOverdue.title',
+		),
+		descriptionKey: tk(
+			'submission.list.reviewAssignment.statusResponseOverdue.description',
+		),
+		textAction: 'editDueDate',
+		primaryAction: 'viewDetails',
+		negativeAction: 'unassignReviewer',
+		dateToDisplay: 'dateResponseDue',
+	},
+	// reviewer has agreed to the review
+	[pkp.const.REVIEW_ASSIGNMENT_STATUS_ACCEPTED]: {
+		reviewActivityIndicator: {
+			colorVariant: 'primary',
+			displayVariant: 'progress',
+		},
+		badgeIcon: 'InProgress',
+		badgeProps: {
+			isPrimary: true,
+		},
+		titleKey: tk('submission.list.reviewAssignment.statusAccepted.title'),
+		descriptionKey: tk(
+			'submission.list.reviewAssignment.statusAccepted.description',
+		),
+		textAction: 'editDueDate',
+		primaryAction: 'viewDetails',
+		negativeAction: 'unassignReviewer',
+		dateToDisplay: 'dateDue',
+	},
+	// review not submitted within due date
+	[pkp.const.REVIEW_ASSIGNMENT_STATUS_REVIEW_OVERDUE]: {
+		reviewActivityIndicator: {
+			colorVariant: 'error',
+			displayVariant: 'fill',
+		},
+		badgeIcon: 'Overdue',
+		badgeProps: {
+			isError: true,
+		},
+		titleKey: tk('submission.list.reviewAssignment.statusReviewOverdue.title'),
+		descriptionKey: tk(
+			'submission.list.reviewAssignment.statusReviewOverdue.description',
+		),
+		textAction: 'editDueDate',
+		primaryAction: 'viewDetails',
+		negativeAction: 'unassignReviewer',
+		dateToDisplay: 'dateDue',
+	},
+	// review has been submitted
+	[pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED]: {
+		reviewActivityIndicator: {
+			colorVariant: 'success',
+			displayVariant: 'fill',
+			icon: 'Email',
+		},
+		badgeIcon: 'Complete',
+		badgeProps: {
+			isSuccess: true,
+		},
+		titleKey: tk('submission.list.reviewAssignment.statusReceived.title'),
+		descriptionKey: tk(
+			'submission.list.reviewAssignment.statusReceived.description',
+		),
+		textAction: null,
+		primaryAction: 'viewUnreadRecommendation',
+		negativeAction: null,
+		dateToDisplay: 'dateCompleted',
+	},
+	// review has been confirmed by an editor
+	[pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE]: {
+		reviewActivityIndicator: {
+			colorVariant: 'success',
+			displayVariant: 'fill',
+			icon: 'EmailOpened',
+		},
+		badgeIcon: 'Complete',
+		badgeProps: {
+			isSuccess: true,
+		},
+		// same as for STATUS_RECEIVED
+		titleKey: tk('submission.list.reviewAssignment.statusReceived.title'),
+		// same as for STATUS_RECEIVED
+		descriptionKey: tk(
+			'submission.list.reviewAssignment.statusReceived.description',
+		),
+		textAction: null,
+		primaryAction: 'viewRecommendation',
+		negativeAction: null,
+		dateToDisplay: 'dateCompleted',
+	},
+	// TODO THANKED status - pROBABLY SAME as complete
+	// reviewer cancelled review request
+	[pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED]: {
+		reviewActivityIndicator: {
+			colorVariant: 'negative',
+			displayVariant: 'fill',
+			icon: 'Cancel',
+		},
+		badgeIcon: 'Cancel',
+		badgeProps: {
+			isWarnable: true,
+		},
+		titleKey: tk('submission.list.reviewAssignment.statusCancelled.title'),
+		descriptionKey: tk(
+			'submission.list.reviewAssignment.statusCancelled.description',
+		),
 		textAction: 'resendReviewRequest',
 		primaryAction: 'viewDetails',
-		negativeAction: 'cancelReviewer',
+		negativeAction: null,
+		// TODO: its not tracked on backend
+		dateToDisplay: 'dateCancelled',
+	},
+	// request has been sent but reviewer has not responded
+	[pkp.const.REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND]: {
+		reviewActivityIndicator: {
+			colorVariant: 'awaiting',
+			displayVariant: 'progress',
+		},
+		badgeIcon: 'ReviewSent',
+		badgeProps: {
+			stage: 'review',
+		},
+		titleKey: tk('submission.list.reviewAssignment.statusRequestResend.title'),
+		descriptionKey: tk(
+			'submission.list.reviewAssignment.statusRequestResend.description',
+		),
+		textAction: 'editDueDate',
+		primaryAction: 'viewDetails',
+		negativeAction: 'unassignReviewer',
+		dateToDisplay: 'dateResponseDue',
 	},
 };
 export default {};
@@ -137,7 +317,6 @@ import Badge from '@/components/Badge/Badge.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import PkpPopover from '@/components/Popover/Popover.vue';
-import {useLocalize} from '@/composables/useLocalize';
 
 const {t} = useLocalize();
 
@@ -147,10 +326,12 @@ const props = defineProps({
 	/**
 	 * @typedef {Object} ReviewAssignment
 	 * @property {Number} id - review assignment id
-	 * @property {Number} statusId - statusId, can be check with pkp.const.REVIEW_ASSIGNMENT_STATUS*
-	 * @property {String} due - Review due date
-	 * @property {String} responseDue - Review response due date
-	 * @property {Number} reviewMethod - review method, can be checked with pkp.const.pkp.const.SUBMISSION_REVIEW_METHOD*
+	 * @property {Number} statusId - statusId, can be check against pkp.const.REVIEW_ASSIGNMENT_STATUS*
+	 * @property {String} dateDue - Review due date
+	 * @property {String} dateResponseDue - Review response due date
+	 * @property {Number} reviewMethod - review method, can be checked against pkp.const.pkp.const.SUBMISSION_REVIEW_METHOD*
+	 * @property {?Number} recommendation - recommendation, can be checked against pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION*
+
 	 */
 	reviewAssignment: {
 		type: Object,
@@ -158,15 +339,18 @@ const props = defineProps({
 		validator(value) {
 			return (
 				'id' in value &&
-				typeof value.id === 'number' &&
-				'statusId' in value &&
-				ReviewAssignmentStatuses.includes(value.statusId) &&
-				'due' in value &&
-				typeof value.due === 'string' &&
-				'responseDue' in value &&
-				typeof value.responseDue === 'string' &&
-				'reviewMethod' in value &&
-				ReviewMethods.includes(value.reviewMethod)
+					typeof value.id === 'number' &&
+					'statusId' in value &&
+					ReviewAssignmentStatuses.includes(value.statusId) &&
+					'dateDue' in value &&
+					typeof value.dateDue === 'string' &&
+					'dateResponseDue' in value &&
+					typeof value.dateResponseDue === 'string' &&
+					'reviewMethod' in value &&
+					ReviewMethods.includes(value.reviewMethod),
+				'recommendation' in value &&
+					(Recommendations.includes(value.recommendation) ||
+						value.recommendation == null)
 			);
 		},
 	},
@@ -175,38 +359,95 @@ const props = defineProps({
 const emit = defineEmits([
 	'resendReviewRequest',
 	'viewDetails',
+	'editDueDate',
+	'unassignReviewer',
 	'cancelReviewer',
+	'viewRecommendation',
 ]);
 
-const reviewActivityIndicatorProps = computed(() => {
-	const baseProps = ReviewIndicatorPropsBase[props.reviewAssignment.statusId];
-
-	return baseProps;
-});
-
-const popoverConfig = computed(() => {
-	const configBase = PopoverConfigPerStatus[props.reviewAssignment.statusId];
+const config = computed(() => {
+	const configBase = ConfigPerStatus[props.reviewAssignment.statusId];
 
 	return configBase;
 });
 
-const title = computed(() => {
-	let date = null;
-	if (popoverConfig.value.descriptionDate) {
-		date = props.reviewAssignment[popoverConfig.value.titleDate];
+function calculateDaysBetweenDates(startDate, endDate) {
+	const oneDay = 1000 * 60 * 60 * 24; // milliseconds in one day
+	const start = new Date(startDate);
+	const end = new Date(endDate);
+	const difference = end - start; // difference in milliseconds
+	return Math.round(difference / oneDay);
+}
+
+const date = computed(() => {
+	if (config.value.dateToDisplay) {
+		return props.reviewAssignment[config.value.dateToDisplay];
 	}
+
+	return null;
+});
+
+const recommendation = computed(() => {
+	return RecommendationTranslations[props.reviewAssignment.recommendation]
+		? t(RecommendationTranslations[props.reviewAssignment.recommendation])
+		: null;
+});
+
+const days = computed(() => {
+	if (config.value.dateToDisplay) {
+		return calculateDaysBetweenDates(
+			new Date(),
+			props.reviewAssignment[config.value.dateToDisplay],
+		);
+	}
+
+	return null;
+});
+
+const reviewActivityIndicatorProps = computed(() => {
+	const reviewActivityConfig = config.value.reviewActivityIndicator;
+
+	const displayProgress = reviewActivityConfig.displayVariant === 'progress';
+	let progress = null;
+
+	if (displayProgress) {
+		const start = new Date(props.reviewAssignment.dateAssigned);
+		const end = new Date(props.reviewAssignment[config.value.dateToDisplay]);
+		const today = new Date();
+
+		progress = 100 * (1 - (today - start) / (end - start));
+	}
+	// show days if icon is not defined in config
+	const text = !reviewActivityConfig.icon ? days.value : null;
+
+	return {
+		...reviewActivityConfig,
+		text,
+		progress,
+	};
+});
+
+const title = computed(() => {
 	// TODO add formatting date
-	return t(popoverConfig.value.titleKey, {date});
+	return t(config.value.titleKey, {
+		date: date.value,
+		days: Math.abs(days.value),
+	});
 });
 
 const description = computed(() => {
-	let date = null;
-	if (popoverConfig.value.descriptionDate) {
-		date = props.reviewAssignment[popoverConfig.value.descriptionDate];
-	}
-
 	// TODO add formatting date
-	return t(popoverConfig.value.descriptionKey, {date});
+	console.log('description:', {
+		date: date.value,
+		days: Math.abs(days.value),
+		recommendation: recommendation.value,
+	});
+
+	return t(config.value.descriptionKey, {
+		date: date.value,
+		days: Math.abs(days.value),
+		recommendation: recommendation.value,
+	});
 });
 const reviewMethodIcons = computed(() => {
 	switch (props.reviewAssignment.reviewMethod) {
@@ -221,46 +462,25 @@ const reviewMethodIcons = computed(() => {
 });
 
 const textActionLabel = computed(() => {
-	switch (popoverConfig.value.textAction) {
-		case 'resendReviewRequest':
-			return t('submission.list.reviewAssignment.action.resendReviewRequest');
+	if (!config.value.textAction) {
+		return null;
 	}
-
-	return null;
+	return t(ActionButtonTranslations[config.value.textAction]);
 });
 
 const primaryActionLabel = computed(() => {
-	switch (popoverConfig.value.primaryAction) {
-		case 'viewDetails':
-			return t('submission.list.reviewAssignment.action.viewDetails');
+	if (!config.value.primaryAction) {
+		return null;
 	}
-
-	return null;
+	return t(ActionButtonTranslations[config.value.primaryAction]);
 });
 
 const negativeActionLabel = computed(() => {
-	switch (popoverConfig.value.negativeAction) {
-		case 'cancelReviewer':
-			return t('submission.list.reviewAssignment.action.cancelReviewer');
+	if (!config.value.negativeAction) {
+		return null;
 	}
-
-	return null;
+	return t(ActionButtonTranslations[config.value.negativeAction]);
 });
-
-/*function calculateDaysBetweenDates(startDate, endDate) {
-	const oneDay = 1000 * 60 * 60 * 24; // milliseconds in one day
-	const start = new Date(startDate);
-	const end = new Date(endDate);
-	const difference = end - start; // difference in milliseconds
-	return Math.round(difference / oneDay);
-}*/
-
-/*const days = computed(() => {
-	return calculateDaysBetweenDates(
-		props.reviewAssignment.dateAssigned,
-		props.reviewAssignment.responseDue,
-	);
-});*/
 
 function triggerEmit(action) {
 	emit(action, props.submissionId, props.reviewAssignment.id);

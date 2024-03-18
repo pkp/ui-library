@@ -56,6 +56,13 @@ window.pkp = {
 		SUBMISSION_REVIEW_METHOD_DOUBLEANONYMOUS: 2,
 		SUBMISSION_REVIEW_METHOD_OPEN: 3,
 
+		SUBMISSION_REVIEWER_RECOMMENDATION_ACCEPT: 1,
+		SUBMISSION_REVIEWER_RECOMMENDATION_PENDING_REVISIONS: 2,
+		SUBMISSION_REVIEWER_RECOMMENDATION_RESUBMIT_HERE: 3,
+		SUBMISSION_REVIEWER_RECOMMENDATION_RESUBMIT_ELSEWHERE: 4,
+		SUBMISSION_REVIEWER_RECOMMENDATION_DECLINE: 5,
+		SUBMISSION_REVIEWER_RECOMMENDATION_SEE_COMMENTS: 6,
+
 		ROLE_ID_MANAGER: 16,
 		ROLE_ID_SITE_ADMIN: 1,
 		ROLE_ID_AUTHOR: 65536,
@@ -283,15 +290,57 @@ window.pkp = {
 		'validator.required': 'This field is required.',
 
 		// DON'T THROW IT AWAY UNTIL IS MOVED TO PO FILES
+		'submission.list.reviewAssignment.statusAwaitingResponse.title':
+			'Awaiting Response from the Reviewer',
+		'submission.list.reviewAssignment.statusAwaitingResponse.description':
+			'Review request has been shared with Julie. Response is awaited in <b>{$days} days on {$date}</b>',
 		'submission.list.reviewAssignment.statusDeclined.title':
 			'Review Request declined on {$date}',
 		'submission.list.reviewAssignment.statusDeclined.description':
 			'Reviewer declined the review request on <b>{$date}</b>',
+		'submission.list.reviewAssignment.statusResponseOverdue.title':
+			'Review Request overdue by {$days} days',
+		'submission.list.reviewAssignment.statusResponseOverdue.description':
+			'This reviewer has not responded to the review request. A response was due on <b>{$date}</b>',
+		'submission.list.reviewAssignment.statusAccepted.title':
+			'Ongoing review - request accepted',
+		'submission.list.reviewAssignment.statusAccepted.description':
+			'This reviewer has accepted the review request. Their review is due in <b>{$days} days on {$date}.</b>',
+		'submission.list.reviewAssignment.statusReviewOverdue.title':
+			'Review overdue by {$days} days',
+		'submission.list.reviewAssignment.statusReviewOverdue.description':
+			'This reviewer has not completed their review. A response was due on <b>{$date}.</b>',
+		'submission.list.reviewAssignment.statusReceived.title':
+			'Review completed on {$date}',
+		'submission.list.reviewAssignment.statusReceived.description':
+			'The review was completed on {$date} with the following recommendation: <b>{$recommendation}</b>',
+		'submission.list.reviewAssignment.statusCancelled.title':
+			'Reviewer cancelled review request',
+		'submission.list.reviewAssignment.statusCancelled.description':
+			'Reviewer has cancelled the review request on <b>{$date}</b>',
+
+		'submission.list.reviewAssignment.statusRequestResend.title':
+			'Awaiting Response from the Reviewer',
+		'submission.list.reviewAssignment.statusRequestResend.description':
+			'Review request has been reshared with reviewer. Response is awaited in {$days} days on {$date}',
+
 		'submission.list.reviewAssignment.action.viewDetails': 'View details',
 		'submission.list.reviewAssignment.action.resendReviewRequest':
 			'Resend Review Request',
 		'submission.list.reviewAssignment.action.cancelReviewer': 'Cancel Reviewer',
+		'submission.list.reviewAssignment.action.unassignReviewer': 'Unassign',
+		'submission.list.reviewAssignment.action.editDueDate': 'Edit Due Date',
+		'submission.list.reviewAssignment.action.viewRecommendation':
+			'View Recommendation',
+
+		'reviewer.article.decision.accept': 'Accept Submission',
+		'reviewer.article.decision.pendingRevisions': 'Revisions Required',
+		'reviewer.article.decision.resubmitHere': 'Resubmit for Review',
+		'reviewer.article.decision.resubmitElsewhere': 'Resubmit Elsewhere',
+		'reviewer.article.decision.decline': 'Decline Submission',
+		'reviewer.article.decision.seeComments': 'See Comments',
 	},
+
 	tinyMCE: {
 		skinUrl: '/styles/tinymce',
 	},

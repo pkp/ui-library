@@ -8,7 +8,7 @@ const colors = {
 	'state-success': '#00B24E',
 	'action-negative': '#D00A6C',
 	'stage-desk-review': '#9B6FF8',
-	'stage-in-review': '#EA9B32',
+	'stage-in-review': '#E08914',
 	'stage-copyediting': '#F66AAF',
 	'stage-production': '#4AC7E2',
 	'stage-scheduled-for-publishing': '#DED15D',
@@ -22,7 +22,6 @@ const colors = {
 	'profile-5': '#EBDA68',
 	'profile-6': '#BD726C',
 	transparent: 'transparent',
-	'review-assignment-awaiting': '#E08914',
 };
 
 export default {

@@ -27,7 +27,9 @@
 				:cy="singleCirclePosition.y"
 			/>
 		</svg>
-		<span v-if="text" class="absolute text-sm-normal">{{ text }}</span>
+		<span v-if="text" :class="textColorClass" class="absolute text-sm-normal">
+			{{ text }}
+		</span>
 		<icon
 			v-if="icon"
 			:class="textColorClass"
@@ -87,8 +89,9 @@ const circumference = colorStrokePosition.radius * 2 * Math.PI;
 
 const textColorClass = computed(() => {
 	if (props.displayVariant === 'fill') {
-		if (['error', 'negative', 'awaiting'].includes(props.colorVariant)) {
-			console.log('lightest!!');
+		if (
+			['error', 'negative', 'awaiting', 'success'].includes(props.colorVariant)
+		) {
 			return 'text-lightest';
 		}
 	}
@@ -103,7 +106,7 @@ const strokeColorClass = computed(() => {
 			error: 'stroke-state-error',
 			negative: 'stroke-action-negative',
 			success: 'stroke-state-success',
-			awaiting: 'stroke-review-assignment-awaiting',
+			awaiting: 'stroke-stage-review',
 		};
 
 		return colorVariantToClassMapping[props.colorVariant];
@@ -119,7 +122,7 @@ const fillColorClass = computed(() => {
 			error: 'fill-state-error',
 			negative: 'fill-action-negative',
 			success: 'fill-state-success',
-			awaiting: 'fill-review-assignment-awaiting',
+			awaiting: 'fill-stage-review',
 		};
 
 		return colorVariantToClassMapping[props.colorVariant];
