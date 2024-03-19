@@ -70,7 +70,6 @@ export default {
 		 * @param {String} newVal
 		 */
 		setValue: function (newVal) {
-			console.log('set value triggered');
 			if (newVal.hex === this.currentValue) {
 				return;
 			}
