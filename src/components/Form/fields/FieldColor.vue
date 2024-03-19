@@ -40,9 +40,9 @@
 		/>
 		<div class="pkpFormField__control">
 			<color-picker
-				:value="currentValue"
+				:model-value="currentValue"
 				:disable-alpha="true"
-				@input="setValue"
+				@update:model-value="setValue"
 			/>
 			<field-error
 				v-if="errors && errors.length"
@@ -70,6 +70,7 @@ export default {
 		 * @param {String} newVal
 		 */
 		setValue: function (newVal) {
+			console.log('set value triggered');
 			if (newVal.hex === this.currentValue) {
 				return;
 			}
