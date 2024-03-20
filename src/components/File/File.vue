@@ -5,7 +5,7 @@
 			{{ fileId }}
 		</span>
 		<span class="ms-1">
-			<a v-if="url" class="underline" href="url" target="_blank">{{ name }}</a>
+			<a v-if="url" class="underline" :href="url" target="_blank">{{ name }}</a>
 			<template v-else>
 				{{ name }}
 			</template>
@@ -35,7 +35,6 @@ export default {
 			type: String,
 			required: true,
 		},
-
 		/** Optional. If the file should be be url to download file */
 		url: {
 			type: String,

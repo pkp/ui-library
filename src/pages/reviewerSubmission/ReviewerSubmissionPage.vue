@@ -1,12 +1,24 @@
 <template>
-	<div class="mb-4 space-x-2">
-		<PkpButton
+	<div class="bg-lightest border border-light text-dark p-8 mb-4">
+		<h2 class="text-dark-accent">{{ t('reviewer.submission.reviewRound.info') }}</h2>
+		<p
 			v-for="review in store.reviewRoundHistories"
 			:key="review.reviewRoundId"
-			@click="store.openRoundHistoryModal(review)"
 		>
-			{{ t('submission.round', {round: review.reviewRoundNumber}) }}
-		</PkpButton>
+			<span class="text-lg-normal">
+				{{ t(
+					'reviewer.submission.reviewRound.info.submittedOn',
+					{round: review.reviewRoundNumber, submittedOn: formatShortDate(review.submittedOn)}
+				) }}
+			</span>
+			<PkpButton
+				is-link="true"
+				class="ms-4"
+				@click="store.openRoundHistoryModal(review)"
+			>
+				{{ t('reviewer.submission.reviewRound.info.read', {round: review.reviewRoundNumber}) }}
+			</PkpButton>
+		</p>
 	</div>
 	<SideModal
 		:open="store.isRoundHistoryModalOpened"
@@ -20,13 +32,15 @@
 
 <script setup>
 import {defineProps} from 'vue';
-
 import SideModal from '@/components/Modal/SideModal.vue';
 import RoundHistoryModal from './RoundHistoryModal.vue';
-
 import {useTranslation} from '@/composables/useTranslation';
-
 import {useReviewerSubmissionPageStore} from './reviewerSubmissionPageStore';
+import moment from 'moment';
+
+function formatShortDate(dateString) {
+	return moment(dateString).format('DD-MM-YYYY');
+}
 
 const {t} = useTranslation();
 

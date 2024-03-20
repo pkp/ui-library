@@ -27,7 +27,6 @@ window.pkp = {
 	context: {
 		apiBaseUrl: 'https://mock/index.php/publicknowledge/api/v1/',
 	},
-
 	/**
 	 * Dummy constants required by components
 	 */
@@ -104,6 +103,7 @@ window.pkp = {
 		'common.commaListSeparator': ', ',
 		'common.delete': 'Delete',
 		'common.description': 'Description',
+		'common.download': 'Download',
 		'common.edit': 'Edit',
 		'common.editItem': 'Edit {$name}',
 		'common.error': 'Error',
@@ -143,6 +143,7 @@ window.pkp = {
 		'common.type': 'Type',
 		'common.unknownError':
 			'An unexpected error has occurred. Please reload the page and try again.',
+		'common.upload': 'Upload',
 		'common.uploadedBy': 'Uploaded by {$name}',
 		'common.uploadedByAndWhen': 'Uploaded by {$name} on {$date}',
 		'common.view': 'View',
@@ -250,9 +251,49 @@ window.pkp = {
 		'manager.dois.update.success': 'DOI(s) successfully updated',
 		'navigation.backTo': '\u27f5 Back to {$page}',
 		'navigation.submissions': 'Submissions',
+		'publication.jats.autoCreatedMessage':
+			'This JATS file is generated automatically by the submission metadata',
+		'publication.jats.confirmDeleteFileButton': 'Delete JATS File',
+		'publication.jats.confirmDeleteFileMessage':
+			'You are about to remove the existing JATS XML File from this publication. Are you sure?',
+		'publication.jats.confirmDeleteFileTitle': 'Confirm deleting JATS XML',
+		'publication.jats.lastModified':
+			'Last Modification at {$modificationDate} by {$username}',
 		'publication.status.published': 'Published',
 		'publication.status.unpublished': 'Unpublished',
 		'publication.version': 'Version {$version}',
+		'reviewer.article.recommendation': 'Recommendation',
+		'reviewer.submission.acceptedOn': 'Review Accepted On',
+		'reviewer.submission.responseDueDate': 'Response Due Date',
+		'reviewer.submission.reviewDueDate': 'Review Due Date',
+		'reviewer.submission.reviewRequestDate': "Editor's Request",
+		'reviewer.submission.reviewRound.attachments': 'Attachments',
+		'reviewer.submission.reviewRound.attachments.description':
+			'These are files that you attached along with your review',
+		'reviewer.submission.reviewRound.comments': 'Reviewer Comments',
+		'reviewer.submission.reviewRound.comments.authorAndEditor':
+			'For editors and authors',
+		'reviewer.submission.reviewRound.comments.editorOnly': 'For editors only',
+		'reviewer.submission.reviewRound.comments.prefix': 'Comment {$index}: ',
+		'reviewer.submission.reviewRound.emailLog': 'Decline reason sent by email',
+		'reviewer.submission.reviewRound.emailLog.defaultMessage':
+			'No reason given to the decline of the review invitation.',
+		'reviewer.submission.reviewRound.files': 'Files For Review',
+		'reviewer.submission.reviewRound.files.description':
+			'These files were sent to you for review',
+		'reviewer.submission.reviewRound.general': 'General Information',
+		'reviewer.submission.reviewRound.info': 'Previous Reviews',
+		'reviewer.submission.reviewRound.info.modal.title':
+			'Round {$round} Review submitted by you for',
+		'reviewer.submission.reviewRound.info.read': 'Read Round {$round} Review',
+		'reviewer.submission.reviewRound.info.submittedOn':
+			'Round {$round} Review Submitted on {$submittedOn}',
+		'reviewer.submission.reviewRound.metadata': 'Article Metadata',
+		'reviewer.submission.reviewRound.metadata.abstract': 'Abstract',
+		'reviewer.submission.reviewRound.metadata.keywords': 'Keywords',
+		'reviewer.submission.reviewRound.metadata.type': 'Type',
+		'reviewer.submission.reviewRound.reviewDeclineDate': 'Declined Date',
+		'reviewer.submission.submittedOn': 'Review Submitted On',
 		'stats.countWithYearlyAverage': '{$count} ({$average}/year)',
 		'stats.descriptionForStat': 'Description for {$stat}',
 		'submission.list.assignEditor': 'Assign Editor',
@@ -274,6 +315,7 @@ window.pkp = {
 		'submission.list.reviewsCompleted': 'Assigned reviews completed',
 		'submission.list.revisionsSubmitted': 'Revisions submitted',
 		'submission.submit.newSubmissionSingle': 'New Submission',
+		'submission.upload.percentComplete': 'Uploading {$percent}% complete',
 		'submissions.incomplete': 'Incomplete',
 		'validator.required': 'This field is required.',
 	},

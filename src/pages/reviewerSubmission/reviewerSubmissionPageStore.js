@@ -6,8 +6,8 @@ export const useReviewerSubmissionPageStore = defineComponentStore(
 	(pageInitConfig) => {
 		const isRoundHistoryModalOpened = ref(false);
 		const roundHistoryModalProps = ref(null);
-		function openRoundHistoryModal({submissionId, reviewRoundId}) {
-			roundHistoryModalProps.value = {submissionId, reviewRoundId};
+		function openRoundHistoryModal({submissionId, reviewRoundId, reviewRoundNumber}) {
+			roundHistoryModalProps.value = {submissionId, reviewRoundId, reviewRoundNumber};
 			isRoundHistoryModalOpened.value = true;
 		}
 		function closeRoundHistoryModal() {
