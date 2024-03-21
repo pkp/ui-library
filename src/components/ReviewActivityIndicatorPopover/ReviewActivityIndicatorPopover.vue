@@ -429,7 +429,6 @@ function calculateDaysBetweenDates(startDate, endDate) {
 	const end = new Date(endDate);
 
 	const difference = end - start; // difference in milliseconds
-	console.log('calcualte days between days', start, end, difference);
 
 	return Math.round(difference / oneDay);
 }
