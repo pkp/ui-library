@@ -1,4 +1,4 @@
-import {within, userEvent} from '@storybook/test';
+import {within, userEvent} from '@storybook/testing-library';
 import {ref} from 'vue';
 import SideModal from './SideModal.vue';
 import SideModalBody from './SideModalBody.vue';
