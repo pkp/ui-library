@@ -9,6 +9,19 @@ import {useApiUrl} from '@/composables/useApiUrl';
 import {useUrlSearchParams} from '@vueuse/core';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
+// TODO add actual translation strings
+const TitleTranslations = {
+	EDITORIAL_DASHBOARD: 'Dashboards',
+	MY_REVIEW_ASSIGNMENTS: 'Review Assignments',
+	MY_SUBMISSIONS: 'My Submissions',
+};
+
+const TitleIcons = {
+	EDITORIAL_DASHBOARD: 'Dashboard',
+	MY_REVIEW_ASSIGNMENTS: 'ReviewAssignments',
+	MY_SUBMISSIONS: 'MySubmissions',
+};
+
 export const useSubmissionsPageStore = defineComponentStore(
 	'submissionsPage',
 	(pageInitConfig) => {
@@ -21,6 +34,15 @@ export const useSubmissionsPageStore = defineComponentStore(
 		/** Announcer */
 
 		const {announce} = useAnnouncer();
+
+		/** Dashboard Page */
+
+		const dashboardPageTitle = computed(() => {
+			return TitleTranslations[pageInitConfig.dashboardPage];
+		});
+		const dashboardPageIcon = computed(() => {
+			return TitleIcons[pageInitConfig.dashboardPage];
+		});
 
 		/**
 		 * Url query params
@@ -36,7 +58,7 @@ export const useSubmissionsPageStore = defineComponentStore(
 			queryParamsUrl.currentViewId &&
 				views.value.find((view) => view.id === queryParamsUrl.currentViewId)
 				? queryParamsUrl.currentViewId
-				: pageInitConfig.currentViewId,
+				: views.value[0]?.id || null,
 		);
 		const currentView = computed(
 			() => views.value.find((view) => view.id === currentViewId.value) || {},
@@ -124,6 +146,10 @@ export const useSubmissionsPageStore = defineComponentStore(
 					return;
 				}
 
+				if (currentViewId.value === null) {
+					return;
+				}
+
 				announce(t('common.loading'));
 
 				await fetchSubmissions();
@@ -197,6 +223,10 @@ export const useSubmissionsPageStore = defineComponentStore(
 		});
 
 		return {
+			// Dashboard
+			dashboardPage: pageInitConfig.dashboardPage,
+			dashboardPageTitle,
+			dashboardPageIcon,
 			// Views
 			views,
 			currentViewId,

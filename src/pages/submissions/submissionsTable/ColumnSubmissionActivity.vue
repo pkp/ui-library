@@ -2,17 +2,20 @@
 	<TableCell>
 		<PkpButton
 			v-if="canUserAssignEditor"
-			@click="submissionsPageStore.openAssignParticipantModal(submission)"
+			size-variant="compact"
+			@click="submissionsPageStore.openAssignParticipantModal(item)"
 		>
 			{{ t('submission.list.assignEditor') }}
 		</PkpButton>
-		<template v-if="isWorkflowStageExternalReview">
+		<span v-if="isWorkflowStageExternalReview" class="space-x-1">
 			<ReviewActivityIndicatorPopup
 				v-for="reviewAssignment in activeReviewAssignments"
 				:key="reviewAssignment.id"
-				status="completed"
+				:review-assignment="reviewAssignment"
+				:reviewer-name="'Reviewer name (todo)'"
+				:submission-id="item.id"
 			/>
-		</template>
+		</span>
 	</TableCell>
 </template>
 
@@ -25,11 +28,11 @@ import PkpButton from '@/components/Button/Button.vue';
 import {useSubmission} from '../useSubmission';
 import {useActiveStage} from '../useActiveStage';
 
-const props = defineProps({submission: {type: Object, required: true}});
+const props = defineProps({item: {type: Object, required: true}});
 
-const {canUserAssignEditor} = useSubmission(props.submission);
+const {canUserAssignEditor} = useSubmission(props.item);
 const {isWorkflowStageExternalReview, activeReviewAssignments} = useActiveStage(
-	props.submission,
+	props.item,
 );
 const submissionsPageStore = useSubmissionsPageStore();
 </script>

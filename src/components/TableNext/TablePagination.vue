@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="-mt-0.5 flex items-center justify-between border border-t-2 border-dark px-2 py-2"
+		class="flex items-center justify-between border border-table-heading px-2 py-2"
 	>
 		<span class="" v-html="showingXofX"></span>
 		<Pagination

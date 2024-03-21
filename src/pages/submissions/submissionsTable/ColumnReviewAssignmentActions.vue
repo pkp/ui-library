@@ -6,7 +6,7 @@
 			:is-link="true"
 			@click="submissionsPageStore.openSummaryModal(item)"
 		>
-			{{ t('editor.submission.viewSummary') }}
+			{{ 'Action (todo)' }}
 		</PkpButton>
 	</TableCell>
 </template>

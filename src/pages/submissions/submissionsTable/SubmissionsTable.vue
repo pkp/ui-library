@@ -14,12 +14,12 @@
 			</TableColumn>
 		</TableHeader>
 		<TableBody>
-			<TableRow v-for="submission in submissions" :key="submission.id">
+			<TableRow v-for="item in items" :key="item.id">
 				<component
 					:is="columnComponents[column.componentName] || column.componentName"
 					v-for="column in columns"
 					:key="column.id"
-					:submission="submission"
+					:item="item"
 				/>
 			</TableRow>
 		</TableBody>
@@ -46,8 +46,13 @@ import ColumnSubmissionId from './ColumnSubmissionId.vue';
 import ColumnSubmissionStage from './ColumnSubmissionStage.vue';
 import ColumnSubmissionTitle from './ColumnSubmissionTitle.vue';
 
+import ColumnReviewAssignmentId from './ColumnReviewAssignmentId.vue';
+import ColumnReviewAssignmentTitle from './ColumnReviewAssignmentTitle.vue';
+import ColumnReviewAssignmentActivity from './ColumnReviewAssignmentActivity.vue';
+import ColumnReviewAssignmentActions from './ColumnReviewAssignmentActions.vue';
+
 defineProps({
-	submissions: {type: Array, required: true},
+	items: {type: Array, required: true},
 	columns: {type: Array, required: true},
 	sortDescriptor: {type: Object, required: true},
 	pagination: {type: Object, required: true},
@@ -61,5 +66,9 @@ const columnComponents = {
 	ColumnSubmissionId,
 	ColumnSubmissionStage,
 	ColumnSubmissionTitle,
+	ColumnReviewAssignmentId,
+	ColumnReviewAssignmentTitle,
+	ColumnReviewAssignmentActivity,
+	ColumnReviewAssignmentActions,
 };
 </script>

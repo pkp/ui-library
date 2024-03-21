@@ -22,9 +22,24 @@ export const Primary = {
 	},
 };
 
+export const PrimaryDisabled = {
+	args: {
+		slot: 'Primary Disabled',
+		isPrimary: true,
+		isDisabled: true,
+	},
+};
+
 export const Secondary = {
 	args: {
 		slot: 'Submit',
+	},
+};
+
+export const SecondaryDisabled = {
+	args: {
+		slot: 'Submit',
+		isDisabled: true,
 	},
 };
 
@@ -38,7 +53,7 @@ export const Warnable = {
 export const IsCompact = {
 	args: {
 		slot: 'Delete',
-		isCompact: true,
+		sizeVariant: 'compact',
 	},
 };
 
@@ -50,52 +65,43 @@ export const isFullWidth = {
 		},
 		template: `
 			<div class="flex">
-				<ul class="bg-medium">
-					<li>					
-						<Button v-bind="args" isActive>
-							<Badge :on-dark-background="true">
+				<ul class="">
+					<li v-for="item in args.items" class="border-t last:border-b border-light border-l border-r">					
+						<Button v-bind="args" :is-active="item.isSelected">
+							<Badge :is-on-dark-background="item.isSelected">
 								<span class="text-base-bold">
-									{{ 15 }}
+									{{ item.number }}
 								</span>
 							</Badge>
 							<span class="ms-1">
-								Action Required by me
+								{{item.label}}
 							</span>
 						</Button>
 					</li>
-					<li class="-mt-[1px]">					
-						<Button v-bind="args">
-							<Badge>
-								<span :class="">
-									{{ 10 }}
-								</span>
-							</Badge>
-							<span class="ms-1">
-								Author revision submitted
-							</span>
-
-						</Button>
-					</li>
-					<li class="-mt-[1px]">					
-						<Button v-bind="args">
-							<Badge>
-								<span :class="">
-									{{ 10 }}
-								</span>
-							</Badge>
-							<span class="ms-1">
-								Author revision submitted long view name
-							</span>
-						</Button>
-					</li>
-				</ul>
 				</div>	
 			</div>
 			`,
 	}),
 
 	args: {
-		isFullWidth: true,
+		sizeVariant: 'fullWidth',
+		items: [
+			{
+				isSelected: true,
+				label: 'Action Required by me',
+				number: 10,
+			},
+			{
+				isSelected: false,
+				label: 'Author revision submitted',
+				number: 10,
+			},
+			{
+				isSelected: false,
+				label: 'Author revision submitted long view name',
+				number: 10,
+			},
+		],
 	},
 };
 
@@ -108,26 +114,22 @@ export const WithIcon = {
 		template: `
 			<div>
 				<div>
-					<Button >
-						<Icon class="w-5 h-5" icon="BackButton" />
+					<Button icon="BackButton" >
 						Back
 					</Button>
 				</div>	
 				<div class="mt-2">
-					<Button >
-						<Icon class="w-5 h-5" icon="Search"/>
+					<Button icon="Search">
 						Search
 					</Button>
 				</div>
 				<div class="mt-2">
-					<Button isWarnable>
-						<Icon class="w-5 h-5" icon="Cancel" />
+					<Button icon="Cancel" isWarnable>
 						Search
 					</Button>
 				</div>
 				<div class="mt-2">
-					<Button isActive>
-						<Icon class="w-5 h-5" icon="Cancel" />
+					<Button icon="Cancel" isActive>
 						Search
 					</Button>
 				</div>
@@ -155,7 +157,12 @@ export const IsActive = {
 };
 
 export const ButtonLikeLink = {
-	args: {slot: 'Button-like Link', element: 'a', href: 'https://example.org'},
+	args: {
+		slot: 'Button-like Link',
+		element: 'a',
+		href: 'https://example.org',
+		isDisabled: true,
+	},
 };
 
 export const LinkLikeButton = {
@@ -173,9 +180,15 @@ export const LinkLikeButton = {
 			<div>
 				<Button v-bind="args" isWarnable>
 					<Icon class="w-5 h-5" icon="Cancel" />
-					Link like Button
+					Link like Button Warnable
 				</Button>
 			</div>
+			<div>
+				<Button v-bind="args" icon="Cancel" isDisabled>
+					Link like Button Disabled
+				</Button>
+			</div>
+
 				
 				`,
 	}),

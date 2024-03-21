@@ -2,7 +2,7 @@
 	<SideModalBody>
 		<template #title>Title TODO</template>
 		<div class="p-4">
-			<div class="bg-lightest p-5">
+			<div class="bg-secondary p-5">
 				Here goes all metadata, submissionId: {{ store.submissionId }}, roundId:
 				{{ store.reviewRoundId }}
 

@@ -24,10 +24,10 @@ const ColorUsedIn = {
 		Success State
 		Positive State
 	`,
-	'state-error': `
+	attention: `
 		Warning or triggering alertness that something is not right and needs something to be done.
 	`,
-	'action-negative': `
+	negative: `
 		Actions in that are negative (Buttons or CTAs) or when something is performed that is not okay
 	`,
 	'stage-desk-review': `
@@ -71,7 +71,6 @@ const ColorBackgroundUsedIn = {
 
 const ColorTextUsedIn = {
 	dark: 'Default text color on light background',
-	'dark-accent': 'Heading text on light background',
 	light: `Light text on light background`,
 	lightest: `Lightest text on dark background`,
 };

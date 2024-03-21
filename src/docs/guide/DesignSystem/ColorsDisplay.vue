@@ -50,9 +50,10 @@ const {colorUsedIn, colorDefinition, displayAs} = defineProps({
 [
 	// common ones
 	'bg-primary',
-	'bg-state-error',
-	'bg-state-success',
-	'bg-action-negative',
+	'bg-hover',
+	'bg-attention',
+	'bg-success',
+	'bg-negative',
 	'bg-stage-desk-review',
 	'bg-stage-in-review',
 	'bg-stage-copyediting',
@@ -69,19 +70,22 @@ const {colorUsedIn, colorDefinition, displayAs} = defineProps({
 	'bg-profile-6',
 	'bg-transparent',
 	// text specific
-	'text-dark',
-	'text-dark-accent',
-	'text-light',
-	'text-lightest',
+	'text-default',
+	'text-secondary',
+	'text-on-dark',
+	'text-heading',
+	'text-disabled',
 	// bg specific
-	'bg-dark',
-	'bg-medium',
-	'bg-lightest',
+	'bg-default',
+	'bg-secondary',
+	'bg-tertiary',
 	'bg-blur',
+	'bg-selection-light',
+	'bg-selection-dark',
+	'bg-disabled',
 	// border specific
-	'border-dark',
 	'border-light',
-	'border-darkest',
+	'border-dark',
 ];
 
 const colors = Object.keys(colorUsedIn).map((className) => {

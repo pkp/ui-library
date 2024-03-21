@@ -1,6 +1,6 @@
 <template>
 	<table
-		class="border-b-1 border-collaps w-full max-w-full"
+		class="w-full max-w-full border-separate border-spacing-0"
 		:aria-label="ariaLabel"
 	>
 		<slot />

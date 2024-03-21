@@ -1,20 +1,20 @@
 <template>
-	<button
-		v-if="isButton"
-		class="pkpBadge pkpBadge--button"
-		:class="classes"
-		@click="click"
-	>
+	<button v-if="isButton" :class="classes" @click="click">
 		<slot />
 		<span v-if="label" class="-screenReader">{{ label }}</span>
 	</button>
-	<span v-else class="pkpBadge" :class="classes">
+	<span v-else :class="classes">
 		<slot />
 		<span v-if="label" class="-screenReader">{{ label }}</span>
 	</span>
 </template>
 
 <script>
+/**
+TODO: review the badge use cases after new submission listing
+As the dot/button use cases seems to be relevant only for previous submission listing and might be opportunity to remove them
+*/
+
 export default {
 	name: 'Badge',
 	props: {
@@ -26,11 +26,26 @@ export default {
 		isSuccess: Boolean,
 		/** Badges which describe an alert or warning */
 		isWarnable: Boolean,
-		isError: Boolean,
 		/** If the badge can be used to perform an action, set this to true */
 		isButton: Boolean,
-		/** Is badge on dark background, currently styling only for default badge (black&white) */
-		isOnDarkBackground: {type: Boolean, default: false},
+
+		/** Alternative prop to isPrimary/isSuccess/isWarnable to support wider range of color variants	*/
+		colorVariant: {
+			required: false,
+			type: String,
+			default: () => null,
+			validator: (prop) =>
+				[
+					'default-on-dark',
+					'primary',
+					'primary-bg',
+					'attention-bg',
+					//'attention'
+					'negative-bg',
+					'stage-in-review-bg',
+					'success-bg',
+				].includes(prop),
+		},
 		/**  */
 		/** Adds a small dot to the left of the `content` */
 		hasDot: Boolean,
@@ -45,9 +60,41 @@ export default {
 		classes() {
 			let classes = [];
 
-			if (this.isOnDarkBackground) {
-				classes.push('pkpBadge--onDarkBackground');
+			if (this.colorVariant) {
+				const colorVariant = this.colorVariant;
+				return {
+					// base
+					'inline-block py-1 px-4 text-base-normal rounded-[1.2em] border': true,
+					// default
+					'text-default border-light': colorVariant === 'default',
+					// default-on-dark
+					'text-on-dark border-light': colorVariant === 'default-on-dark',
+					// primary
+					'border-primary text-primary': colorVariant === 'primary',
+					// primary-bg
+					'bg-primary text-on-dark border-primary':
+						colorVariant === 'primary-bg',
+					// success-bg
+					'bg-success text-on-dark border-success':
+						colorVariant === 'success-bg',
+					// attention-bg
+					'bg-attention text-on-dark border-attention':
+						colorVariant === 'attention-bg',
+					// negative-bg
+					'bg-negative text-on-dark border-negative':
+						colorVariant === 'negative-bg',
+					// stage-in-review-bg
+					'bg-stage-in-review text-on-dark border-stage-in-review':
+						colorVariant === 'stage-in-review-bg',
+				};
+			} else {
+				classes.push('pkpBadge');
+
+				if (this.isButton) {
+					classes.push('pkpBadge--button');
+				}
 			}
+
 			if (this.isPrimary) {
 				classes.push('pkpBadge--isPrimary');
 			}
@@ -87,11 +134,6 @@ export default {
 	border: 1px solid @bg-border-color-light;
 	border-radius: 1.2em;
 	color: @text;
-}
-
-.pkpBadge--onDarkBackground {
-	color: #fff;
-	border-color: #fff;
 }
 
 .pkpBadge--isPrimary {

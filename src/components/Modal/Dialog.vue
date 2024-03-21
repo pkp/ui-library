@@ -28,7 +28,7 @@
 						leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 					>
 						<DialogPanel
-							class="modal__panel modal__panel--dialog relative mx-3 w-10/12 max-w-3xl transform overflow-hidden rounded bg-lightest text-start shadow transition-all sm:my-8"
+							class="modal__panel modal__panel--dialog relative mx-3 w-10/12 max-w-3xl transform overflow-hidden rounded bg-secondary text-start shadow transition-all sm:my-8"
 						>
 							<div class="flex min-h-12 items-center">
 								<DialogTitle

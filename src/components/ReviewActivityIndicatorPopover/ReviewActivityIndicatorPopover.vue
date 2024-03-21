@@ -9,7 +9,7 @@
 		<div class="flex">
 			<Badge v-bind="config.badgeProps">
 				<div class="flex items-center gap-x-2">
-					<Icon class="h-5 w-5" :icon="config.badgeIcon" :inline="true" />
+					<Icon class="h-6 w-6" :icon="config.badgeIcon" :inline="true" />
 					<span>{{ title }}</span>
 				</div>
 			</Badge>
@@ -60,6 +60,9 @@ import {useLocalize} from '@/composables/useLocalize';
 
 const {tk} = useLocalize();
 
+// mocked until thats implemented in https://github.com/pkp/pkp-lib/issues/9799
+pkp.const.REVIEW_ASSIGNMENT_STATUS_VIEWED = 15;
+
 const ReviewAssignmentStatuses = [
 	pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE,
 	pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED,
@@ -67,6 +70,7 @@ const ReviewAssignmentStatuses = [
 	pkp.const.REVIEW_ASSIGNMENT_STATUS_REVIEW_OVERDUE,
 	pkp.const.REVIEW_ASSIGNMENT_STATUS_ACCEPTED,
 	pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
+
 	pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 	pkp.const.REVIEW_ASSIGNMENT_STATUS_THANKED,
 	pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED,
@@ -119,20 +123,24 @@ const ActionButtonTranslations = {
 	unassignReviewer: tk(
 		'submission.list.reviewAssignment.action.unassignReviewer',
 	),
-	viewRecommendation:
+	viewRecommendation: tk(
 		'submission.list.reviewAssignment.action.viewRecommendation',
+	),
+	viewUnreadRecommendation: tk(
+		'submission.list.reviewAssignment.action.viewUnreadRecommendation',
+	),
 };
 
 const ConfigPerStatus = {
 	// request has been sent but reviewer has not responded
 	[pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE]: {
 		reviewActivityIndicator: {
-			colorVariant: 'awaiting',
+			colorVariant: 'stage-in-review',
 			displayVariant: 'progress',
 		},
 		badgeIcon: 'ReviewSent',
 		badgeProps: {
-			stage: 'review',
+			colorVariant: 'stage-in-review-bg',
 		},
 		titleKey: tk(
 			'submission.list.reviewAssignment.statusAwaitingResponse.title',
@@ -154,26 +162,26 @@ const ConfigPerStatus = {
 		},
 		badgeIcon: 'ReviewRequestDeclined',
 		badgeProps: {
-			isWarnable: true,
+			colorVariant: 'negative-bg',
 		},
 		titleKey: tk('submission.list.reviewAssignment.statusDeclined.title'),
 		descriptionKey: tk(
 			'submission.list.reviewAssignment.statusDeclined.description',
 		),
-		textAction: 'editDueDate',
-		primaryAction: 'resendReviewRequest',
+		textAction: 'resendReviewRequest',
+		primaryAction: 'viewDetails',
 		negativeAction: 'cancelReviewer',
 		dateToDisplay: 'dateConfirmed',
 	},
 	// review not responded within due date
 	[pkp.const.REVIEW_ASSIGNMENT_STATUS_RESPONSE_OVERDUE]: {
 		reviewActivityIndicator: {
-			colorVariant: 'error',
+			colorVariant: 'attention',
 			displayVariant: 'progress',
 		},
 		badgeIcon: 'Overdue',
 		badgeProps: {
-			isError: true,
+			colorVariant: 'attention-bg',
 		},
 		titleKey: tk(
 			'submission.list.reviewAssignment.statusResponseOverdue.title',
@@ -194,7 +202,7 @@ const ConfigPerStatus = {
 		},
 		badgeIcon: 'InProgress',
 		badgeProps: {
-			isPrimary: true,
+			colorVariant: 'primary-bg',
 		},
 		titleKey: tk('submission.list.reviewAssignment.statusAccepted.title'),
 		descriptionKey: tk(
@@ -208,12 +216,12 @@ const ConfigPerStatus = {
 	// review not submitted within due date
 	[pkp.const.REVIEW_ASSIGNMENT_STATUS_REVIEW_OVERDUE]: {
 		reviewActivityIndicator: {
-			colorVariant: 'error',
+			colorVariant: 'attention',
 			displayVariant: 'fill',
 		},
 		badgeIcon: 'Overdue',
 		badgeProps: {
-			isError: true,
+			colorVariant: 'attention-bg',
 		},
 		titleKey: tk('submission.list.reviewAssignment.statusReviewOverdue.title'),
 		descriptionKey: tk(
@@ -233,7 +241,7 @@ const ConfigPerStatus = {
 		},
 		badgeIcon: 'Complete',
 		badgeProps: {
-			isSuccess: true,
+			colorVariant: 'success-bg',
 		},
 		titleKey: tk('submission.list.reviewAssignment.statusReceived.title'),
 		descriptionKey: tk(
@@ -244,8 +252,8 @@ const ConfigPerStatus = {
 		negativeAction: null,
 		dateToDisplay: 'dateCompleted',
 	},
-	// review has been confirmed by an editor
-	[pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE]: {
+	// review has been viewed by editor
+	[pkp.const.REVIEW_ASSIGNMENT_STATUS_VIEWED]: {
 		reviewActivityIndicator: {
 			colorVariant: 'success',
 			displayVariant: 'fill',
@@ -253,11 +261,9 @@ const ConfigPerStatus = {
 		},
 		badgeIcon: 'Complete',
 		badgeProps: {
-			isSuccess: true,
+			colorVariant: 'success-bg',
 		},
-		// same as for STATUS_RECEIVED
 		titleKey: tk('submission.list.reviewAssignment.statusReceived.title'),
-		// same as for STATUS_RECEIVED
 		descriptionKey: tk(
 			'submission.list.reviewAssignment.statusReceived.description',
 		),
@@ -266,7 +272,53 @@ const ConfigPerStatus = {
 		negativeAction: null,
 		dateToDisplay: 'dateCompleted',
 	},
-	// TODO THANKED status - pROBABLY SAME as complete
+
+	// review has been confirmed by an editor
+	[pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE]: {
+		reviewActivityIndicator: {
+			colorVariant: 'success',
+			displayVariant: 'fill',
+			icon: 'Complete',
+		},
+		badgeIcon: 'Complete',
+		badgeProps: {
+			colorVariant: 'success-bg',
+		},
+		// same as for STATUS_RECEIVED
+		titleKey: tk('submission.list.reviewAssignment.statusComplete.title'),
+		// same as for STATUS_RECEIVED
+		descriptionKey: tk(
+			'submission.list.reviewAssignment.statusComplete.description',
+		),
+		textAction: null,
+		primaryAction: 'viewRecommendation',
+		negativeAction: null,
+		dateToDisplay: 'dateCompleted',
+	},
+	// reviewer has been thanked
+	// indicated currently exactly same as status complete
+	[pkp.const.REVIEW_ASSIGNMENT_STATUS_THANKED]: {
+		reviewActivityIndicator: {
+			colorVariant: 'success',
+			displayVariant: 'fill',
+			icon: 'Complete',
+		},
+		badgeIcon: 'Complete',
+		badgeProps: {
+			colorVariant: 'success-bg',
+		},
+		// same as for STATUS_RECEIVED
+		titleKey: tk('submission.list.reviewAssignment.statusComplete.title'),
+		// same as for STATUS_RECEIVED
+		descriptionKey: tk(
+			'submission.list.reviewAssignment.statusComplete.description',
+		),
+		textAction: null,
+		primaryAction: 'viewRecommendation',
+		negativeAction: null,
+		dateToDisplay: 'dateCompleted',
+	},
+
 	// reviewer cancelled review request
 	[pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED]: {
 		reviewActivityIndicator: {
@@ -276,7 +328,7 @@ const ConfigPerStatus = {
 		},
 		badgeIcon: 'Cancel',
 		badgeProps: {
-			isWarnable: true,
+			colorVariant: 'negative-bg',
 		},
 		titleKey: tk('submission.list.reviewAssignment.statusCancelled.title'),
 		descriptionKey: tk(
@@ -286,17 +338,17 @@ const ConfigPerStatus = {
 		primaryAction: 'viewDetails',
 		negativeAction: null,
 		// TODO: its not tracked on backend
-		dateToDisplay: 'dateCancelled',
+		dateToDisplay: 'dateConfirmed',
 	},
 	// request has been sent but reviewer has not responded
 	[pkp.const.REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND]: {
 		reviewActivityIndicator: {
-			colorVariant: 'awaiting',
+			colorVariant: 'stage-in-review',
 			displayVariant: 'progress',
 		},
 		badgeIcon: 'ReviewSent',
 		badgeProps: {
-			stage: 'review',
+			colorVariant: 'stage-in-review-bg',
 		},
 		titleKey: tk('submission.list.reviewAssignment.statusRequestResend.title'),
 		descriptionKey: tk(
@@ -428,7 +480,6 @@ const reviewActivityIndicatorProps = computed(() => {
 });
 
 const title = computed(() => {
-	// TODO add formatting date
 	return t(config.value.titleKey, {
 		date: date.value,
 		days: Math.abs(days.value),
@@ -436,13 +487,6 @@ const title = computed(() => {
 });
 
 const description = computed(() => {
-	// TODO add formatting date
-	console.log('description:', {
-		date: date.value,
-		days: Math.abs(days.value),
-		recommendation: recommendation.value,
-	});
-
 	return t(config.value.descriptionKey, {
 		date: date.value,
 		days: Math.abs(days.value),

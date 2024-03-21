@@ -3,11 +3,12 @@
 		:is="element"
 		:class="styles"
 		:href="element === 'a' ? href : false"
-		:disabled="element === 'a' ? undefined : isDisabled"
+		:disabled="element === 'a' && !isDisabled ? undefined : isDisabled"
 		@click="click"
 		@focus="emit('focus')"
 		@blur="emit('blur')"
 	>
+		<Icon v-if="icon" class="h-5 w-5" :icon="icon" />
 		<slot />
 	</component>
 </template>
@@ -34,11 +35,15 @@ const props = defineProps({
 	isActive: Boolean,
 	/** Use when you want the button to look more like a traditional link than a button. */
 	isLink: Boolean,
+	/** Icon name, always displayed on left */
+	icon: {required: false, type: String, default: () => null},
 	isDisabled: Boolean,
-	/** useful in tables for example */
-	isCompact: {type: Boolean, default: false, required: false},
-	// to fill whole space and become rectangular (used in submission when listing Views)
-	isFullWidth: {type: Boolean, default: false, required: false},
+	sizeVariant: {
+		required: false,
+		type: String,
+		default: () => 'default',
+		validator: (prop) => ['default', 'compact', 'fullWidth'].includes(prop),
+	},
 });
 
 // by default button was secondary, this is for backward compatibility
@@ -63,23 +68,28 @@ const styles = computed(() => ({
 	// Button
 	'': !props.isLink,
 	// Link (adding border to keep dimensions consistent with button)
-	'border-transparent': props.isLink,
+	'border-transparent hover:enabled:underline disabled:text-disabled':
+		props.isLink,
 	// Primary colors
-	'bg-primary border-primary text-lightest': props.isPrimary,
+	'bg-primary border-transparent text-on-dark hover:bg-hover hover:text-on-dark disabled:bg-disabled disabled:text-disabled':
+		props.isPrimary,
 	// Secondary colors
-	'border-medium text-primary': isSecondary.value,
+	'text-primary border-light  hover:text-hover disabled:text-disabled ':
+		isSecondary.value,
 	// Warnable
-	'text-action-negative': props.isWarnable,
+	'text-negative border-light': props.isWarnable,
+	// Warnable & Secondary have white background when its not link
+	'bg-secondary': (isSecondary.value || props.isWarnable) && !props.isLink,
 	// Active
-	'text-lightest bg-dark border-dark': props.isActive,
+	'text-on-dark bg-selection-dark border-transparent': props.isActive,
 	// Size Normal
-	'py-2 px-3': !props.isCompact,
+	'py-2 px-3': props.sizeVariant === 'default',
 	// Size Compact (in tables)
-	'py-[0.1875rem] px-3': props.isCompact,
+	'py-[0.1875rem] px-3': props.sizeVariant === 'compact',
 	// Full Width (and rectangular border)
-	'w-full': props.isFullWidth,
+	'py-2 px-3 w-full ': props.sizeVariant === 'fullWidth',
 	// Rounded borders  when button is not full width
-	'border rounded': !props.isFullWidth,
+	'border rounded': props.sizeVariant !== 'fullWidth',
 }));
 
 /*const classes = computed(() => {

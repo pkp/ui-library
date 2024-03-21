@@ -8,12 +8,6 @@ export function useSubmission(submission) {
 	const activeStage = useActiveStage(submission);
 
 	const canUserAssignEditor = computed(() => {
-		console.log(
-			submission.publications[0].title['en'],
-			user.isSiteAdmin.value,
-			user.isManager.value,
-			activeStage.isStatusSubmissionUnassigned.value,
-		);
 		return (
 			(user.isSiteAdmin.value || user.isManager.value) &&
 			activeStage.isStatusSubmissionUnassigned.value

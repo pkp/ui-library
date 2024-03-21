@@ -30,7 +30,7 @@
 		<span v-if="text" :class="textColorClass" class="absolute text-sm-normal">
 			{{ text }}
 		</span>
-		<icon
+		<Icon
 			v-if="icon"
 			:class="textColorClass"
 			class="absolute h-5 w-5"
@@ -40,6 +40,7 @@
 </template>
 
 <script setup>
+import Icon from '@/components/Icon/Icon.vue';
 import {defineProps, computed} from 'vue';
 
 function calculatePosition(boxWidth, strokeWidth) {
@@ -64,7 +65,13 @@ const props = defineProps({
 		required: true,
 		type: String,
 		validator: (prop) =>
-			['primary', 'error', 'negative', 'success', 'awaiting'].includes(prop),
+			[
+				'primary',
+				'attention',
+				'negative',
+				'success',
+				'stage-in-review',
+			].includes(prop),
 	},
 	displayVariant: {
 		required: true,
@@ -90,23 +97,25 @@ const circumference = colorStrokePosition.radius * 2 * Math.PI;
 const textColorClass = computed(() => {
 	if (props.displayVariant === 'fill') {
 		if (
-			['error', 'negative', 'awaiting', 'success'].includes(props.colorVariant)
+			['attention', 'negative', 'stage-in-review', 'success'].includes(
+				props.colorVariant,
+			)
 		) {
-			return 'text-lightest';
+			return 'text-on-dark';
 		}
 	}
 
-	return 'text-dark';
+	return 'text-default';
 });
 
 const strokeColorClass = computed(() => {
 	if (props.displayVariant === 'progress') {
 		const colorVariantToClassMapping = {
 			primary: 'stroke-primary',
-			error: 'stroke-state-error',
-			negative: 'stroke-action-negative',
-			success: 'stroke-state-success',
-			awaiting: 'stroke-stage-review',
+			attention: 'stroke-attention',
+			negative: 'stroke-negative',
+			success: 'stroke-success',
+			'stage-in-review': 'stroke-stage-in-review',
 		};
 
 		return colorVariantToClassMapping[props.colorVariant];
@@ -119,10 +128,10 @@ const fillColorClass = computed(() => {
 	if (props.displayVariant === 'fill') {
 		const colorVariantToClassMapping = {
 			primary: 'fill-primary',
-			error: 'fill-state-error',
-			negative: 'fill-action-negative',
-			success: 'fill-state-success',
-			awaiting: 'fill-stage-review',
+			attention: 'fill-attention',
+			negative: 'fill-negative',
+			success: 'fill-success',
+			'stage-in-review': 'fill-stage-in-review',
 		};
 
 		return colorVariantToClassMapping[props.colorVariant];

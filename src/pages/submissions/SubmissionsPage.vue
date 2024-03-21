@@ -1,11 +1,15 @@
 <template>
-	<div class="flex gap-8 bg-medium/30 text-base-normal">
-		<DashboardViews
-			:title="t('navigation.submissions')"
-			:views="store.views"
-			:current-view="store.currentView"
-			@load-view="store.loadView"
-		/>
+	<div class="flex min-h-screen gap-8 text-base-normal">
+		<div class="flex-none border-l border-r border-light">
+			<DashboardViews
+				:title="store.dashboardPageTitle"
+				:icon="store.dashboardPageIcon"
+				:dashboard-page="store.dashboardPage"
+				:views="store.views"
+				:current-view="store.currentView"
+				@load-view="store.loadView"
+			/>
+		</div>
 		<div class="flex-grow">
 			<h2 class="flex items-center gap-4 py-6 text-5xl-bold">
 				{{
@@ -36,7 +40,7 @@
 			</div>
 			<div class="mt-4">
 				<SubmissionsTable
-					:submissions="store.submissions"
+					:items="store.submissions"
 					:columns="store.columns"
 					:sort-descriptor="store.sortDescriptor"
 					:pagination="store.submissionsPagination"
@@ -83,6 +87,16 @@ import SideModal from '@/components/Modal/SideModal.vue';
 import {useSubmissionsPageStore} from './submissionsPageStore';
 
 const props = defineProps({
+	dashboardPage: {
+		required: true,
+		type: String,
+		validator: (prop) =>
+			[
+				'EDITORIAL_DASHBOARD',
+				'MY_REVIEW_ASSIGNMENTS',
+				'MY_SUBMISSIONS',
+			].includes(prop),
+	},
 	/** API url assigning participant */
 	assignParticipantUrl: {
 		type: String,
@@ -91,11 +105,6 @@ const props = defineProps({
 	/** List of Views */
 	views: {
 		type: Array,
-		required: true,
-	},
-	/** Initial view that should be selected*/
-	currentViewId: {
-		type: Number,
 		required: true,
 	},
 	/** Filters form config  */
@@ -120,14 +129,14 @@ const store = useSubmissionsPageStore(props);
 
 <style>
 .pkp_page_dashboards .app__main {
-	@apply bg-lightest p-0;
+	@apply bg-secondary p-0;
 }
 
 .pkp_page_mySubmissions .app__main {
-	@apply bg-lightest p-0;
+	@apply bg-secondary p-0;
 }
 
 .pkp_page_reviewAssignments .app__main {
-	@apply bg-lightest p-0;
+	@apply bg-secondary p-0;
 }
 </style>

@@ -20,19 +20,6 @@ export const Default = {
 	},
 };
 
-export const DefaultOnDarkBackground = {
-	args: {
-		isOnDarkBackground: true,
-		label: '32 submissions',
-		slot: '32',
-	},
-	decorators: [
-		() => ({
-			template: '<div class="bg-primary p-2"><story/></div>',
-		}),
-	],
-};
-
 export const IsPrimary = {
 	args: {
 		slot: '4',
@@ -95,4 +82,65 @@ export const Comments = {
 				<Icon icon="comment-o" :inline="true" />{{args.slot}}
 			</Badge>`,
 	}),
+};
+
+export const VariantDefaultOnDark = {
+	args: {
+		slot: 'Review overdue',
+		label: 'Review overdue',
+		colorVariant: 'default-on-dark',
+	},
+	decorators: [
+		() => ({
+			template: '<div class="bg-selection-dark p-2"><story/></div>',
+		}),
+	],
+};
+
+export const VariantPrimary = {
+	args: {
+		slot: 'Review overdue',
+		label: 'Review overdue',
+		colorVariant: 'primary',
+	},
+};
+
+export const VariantPrimaryBg = {
+	args: {
+		slot: 'Review overdue',
+		label: 'Review overdue',
+		colorVariant: 'primary-bg',
+	},
+};
+
+export const VariantSuccessBg = {
+	args: {
+		slot: 'Review overdue',
+		label: 'Review overdue',
+		colorVariant: 'success-bg',
+	},
+};
+
+export const VariantAttentionBg = {
+	args: {
+		slot: 'Review overdue',
+		label: 'Review overdue',
+		colorVariant: 'attention-bg',
+	},
+};
+
+export const VariantNegativeBg = {
+	args: {
+		slot: 'Review overdue',
+		label: 'Review overdue',
+		colorVariant: 'negative-bg',
+	},
+};
+
+export const VariantStageInReviewBg = {
+	args: {
+		slot: 'Review overdue',
+		label: 'Review overdue',
+		colorVariant: 'stage-in-review-bg',
+	},
 };

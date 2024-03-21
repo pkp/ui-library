@@ -19,6 +19,9 @@ export default {
 				'<div style="text-align:center; width: 400px; height: 300px"><story/></div>',
 		}),
 	],
+	parameters: {
+		date: new Date('March 11, 2024 10:00:00'),
+	},
 };
 
 export const AwaitingResponse = {
@@ -121,6 +124,24 @@ export const Received = {
 	},
 };
 
+export const Viewed = {
+	args: {
+		reviewerName: 'Julie Janssen',
+		submissionId: 15,
+		reviewAssignment: {
+			id: 5,
+			statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_VIEWED,
+			dateDue: '2024-02-10',
+			dateResponseDue: '2024-03-8',
+			dateAssigned: '2024-02-15',
+			dateCompleted: '2024-03-13',
+			reviewMethod: pkp.const.SUBMISSION_REVIEW_METHOD_ANONYMOUS,
+			recommendation:
+				pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_RESUBMIT_HERE,
+		},
+	},
+};
+
 export const Complete = {
 	args: {
 		reviewerName: 'Julie Janssen',
@@ -128,6 +149,24 @@ export const Complete = {
 		reviewAssignment: {
 			id: 5,
 			statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
+			dateDue: '2024-02-10',
+			dateResponseDue: '2024-03-8',
+			dateAssigned: '2024-02-15',
+			dateCompleted: '2024-03-13',
+			reviewMethod: pkp.const.SUBMISSION_REVIEW_METHOD_ANONYMOUS,
+			recommendation: pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_ACCEPT,
+		},
+	},
+};
+
+// Currently exactly same as completed
+export const Thanked = {
+	args: {
+		reviewerName: 'Julie Janssen',
+		submissionId: 15,
+		reviewAssignment: {
+			id: 5,
+			statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_THANKED,
 			dateDue: '2024-02-10',
 			dateResponseDue: '2024-03-8',
 			dateAssigned: '2024-02-15',
@@ -148,7 +187,7 @@ export const Cancelled = {
 			dateDue: '2024-02-10',
 			dateResponseDue: '2024-03-8',
 			dateAssigned: '2024-02-15',
-			dateCompleted: '2024-03-13',
+			dateConfirmed: '2024-03-11',
 			reviewMethod: pkp.const.SUBMISSION_REVIEW_METHOD_ANONYMOUS,
 			recommendation: pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_ACCEPT,
 		},

@@ -3,7 +3,7 @@
 		class="pointer-events-auto h-screen w-screen"
 		:class="levelClasses"
 	>
-		<div class="shadow-xl flex h-full flex-col bg-medium py-6">
+		<div class="shadow-xl flex h-full flex-col bg-default py-6">
 			<div class="">
 				<div class="flex items-start">
 					<div class="ms-4">
