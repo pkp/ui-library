@@ -1,5 +1,6 @@
 <script type="text/javascript">
 import Page from './Page.vue';
+import ChangeSubmissionLanguage from '@/components/Container/ChangeSubmissionLanguage.vue';
 import ContributorsListPanel from '@/components/ListPanel/contributors/ContributorsListPanel.vue';
 import PublicationSectionJats from '@/pages/workflow/PublicationSectionJats.vue';
 import Composer from '@/components/Composer/Composer.vue';
@@ -13,6 +14,7 @@ import dialog from '@/mixins/dialog.js';
 export default {
 	name: 'WorkflowPage',
 	components: {
+		ChangeSubmissionLanguage,
 		ContributorsListPanel,
 		Composer,
 		Dropdown,
@@ -26,6 +28,8 @@ export default {
 		return {
 			activityLogLabel: '',
 			canAccessPublication: false,
+			canChangeLang: false,
+			changeLangButtonLabel: '',
 			canEditPublication: false,
 			currentPublication: null,
 			decisionUrl: '',
@@ -57,6 +61,7 @@ export default {
 			workingPublication: null,
 			isModalOpenedSelectRevisionDecision: false,
 			isModalOpenedSelectRevisionRecommendation: false,
+			isModalOpenedChangeSubmissionLanguage: false,
 		};
 	},
 	computed: {
@@ -471,6 +476,15 @@ export default {
 				form.fields = form.fields.map((field) => {
 					if (Object.keys(publication).includes(field.name)) {
 						field.value = publication[field.name];
+						if (field.name === 'keywords') {
+							field.selected = Object.entries(field.value).reduce(
+								(selected, [l, kws]) => {
+									selected[l] = kws.map((kw) => ({value: kw, label: kw}));
+									return selected;
+								},
+								{},
+							);
+						}
 					}
 					return field;
 				});
@@ -601,6 +615,41 @@ export default {
 		setContributors(contributors) {
 			this.workingPublication.authors = [...contributors];
 		},
+
+		/**
+		 * Change submission language:
+		 * Update change submission locale form
+		 * Update new primary locale to forms
+		 * Update submission locale
+		 * Update working publication
+		 * Update label
+		 * Close modal
+		 *
+		 * @param {Object} form
+		 */
+		updateChangesSubmissionLanguage(form) {
+			this.components[pkp.const.FORM_CHANGE_SUBMISSION_LANGUAGE_METADATA] =
+				form;
+			const locale = form.primaryLocale;
+			Object.keys(this.components).forEach((formId) => {
+				if (typeof this.components[formId].primaryLocale !== 'undefined') {
+					this.set(formId, {primaryLocale: locale, visibleLocales: [locale]});
+				} else if (
+					typeof this.components[formId].form?.primaryLocale !== 'undefined'
+				) {
+					this.components[formId].form.primaryLocale = locale;
+					this.components[formId].form.visibleLocales = [locale];
+				}
+			});
+
+			this.submission.locale = locale;
+			this.setWorkingPublicationById(this.workingPublication.id);
+
+			this.changeLangButtonLabel = this.components[
+				pkp.const.FORM_CHANGE_SUBMISSION_LANGUAGE_METADATA
+			].supportedFormLocales.find(({key}) => key === locale).label;
+			this.isModalOpenedChangeSubmissionLanguage = false;
+		},
 	},
 };
 </script>
@@ -720,6 +769,15 @@ export default {
 			animation-duration: 0.8s;
 		}
 	}
+}
+
+.pkpSubmission__localeNotSupported {
+	margin: 0 -2rem;
+	padding: 1rem;
+	background: @primary;
+	font-size: @font-sml;
+	color: #fff;
+	text-align: center;
 }
 
 // Integrate the grids in the publication tab
