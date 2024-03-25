@@ -14,6 +14,8 @@ export const Init = {
 		template: '<SubmissionsPage v-bind="args" />',
 	}),
 	parameters: {
+		// mock date to consistently show sensible editorial activity popups
+		date: new Date('March 25, 2024 10:00:00'),
 		msw: {
 			handlers: [
 				http.get(
