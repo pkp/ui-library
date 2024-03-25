@@ -83,7 +83,7 @@ const styles = computed(() => ({
 	// Active
 	'text-on-dark bg-selection-dark border-transparent': props.isActive,
 	// Size Normal
-	'py-2 px-3': props.sizeVariant === 'default',
+	'py-[0.4375rem] px-3': props.sizeVariant === 'default',
 	// Size Compact (in tables)
 	'py-[0.1875rem] px-3': props.sizeVariant === 'compact',
 	// Full Width (and rectangular border)
