@@ -1,0 +1,27 @@
+<script>
+import Form from '../Form.vue';
+
+export default {
+	name: 'OrcidSettingsForm',
+	extends: Form,
+	props: {},
+	methods: {
+		/**
+		 * Update values when a field has changed
+		 *
+		 * @param {String} name Name of the field to modify
+		 * @param {String} prop Name of the prop to modify
+		 * @param {mixed} value The new value for the prop
+		 * @param {String} localeKey Optional locale key for multilingual props
+		 */
+		fieldChanged: function (name, prop, value, localeKey) {
+			if (name === 'orcidEnabled') {
+				this.removeError('orcidApiType', localeKey);
+				this.removeError('orcidClientId', localeKey);
+				this.removeError('orcidClientSecret', localeKey);
+			}
+			Form.methods.fieldChanged.apply(this, [name, prop, value, localeKey]);
+		},
+	},
+};
+</script>

@@ -1,11 +1,13 @@
 <script type="text/javascript">
 import Page from './Page.vue';
 import NotifyUsersForm from '@/components/Form/context/NotifyUsersForm.vue';
+import OrcidSettingsForm from '@/components/Form/context/OrcidSettingsForm.vue';
 
 export default {
 	name: 'AccessPage',
 	components: {
 		NotifyUsersForm,
+		OrcidSettingsForm,
 	},
 	extends: Page,
 	data() {
