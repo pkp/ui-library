@@ -73,9 +73,11 @@ const ColorBackgroundUsedIn = {
 };
 
 const ColorTextUsedIn = {
-	dark: 'Default text color on light background',
-	light: `Light text on light background`,
-	lightest: `Lightest text on dark background`,
+	default: 'Default text color on light background',
+	secondary: `Used for secondary information, like form field description`,
+	heading: 'Used for headings',
+	'on-dark': `Light text on dark background`,
+	disabled: 'Used on disabled buttons',
 };
 
 const ColorBorderUsedIn = {

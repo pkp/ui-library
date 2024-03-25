@@ -93,8 +93,8 @@ const colors = Object.keys(colorUsedIn).map((className) => {
 
 	if (displayAs === 'text') {
 		classNameToApply = `text-${className}`;
-		if (className === 'lightest') {
-			classNameToApply += ' bg-dark';
+		if (className === 'on-dark') {
+			classNameToApply += ' bg-primary';
 		}
 	} else if (displayAs === 'border') {
 		classNameToApply = `border-${className}`;
