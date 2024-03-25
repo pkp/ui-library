@@ -6,8 +6,6 @@ export default {
 	render: (args) => ({
 		components: {ReviewActivityIndicatorPopup},
 		setup() {
-			console.log('stories setup indicator');
-			console.log(args.test);
 			return {args};
 		},
 		template:

@@ -40,7 +40,6 @@ export default {
 					'primary',
 					'primary-bg',
 					'attention-bg',
-					//'attention'
 					'negative-bg',
 					'stage-in-review-bg',
 					'success-bg',
