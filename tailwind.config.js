@@ -34,7 +34,7 @@ export default {
 			secondary: '#FFFFFF',
 			tertiary: 'rgba(234, 237, 238, 0.3)',
 			blur: 'rgba(0,0,0,0.5)',
-			'selection-ligth': '#D5E9F2',
+			'selection-light': '#D5E9F2',
 			'selection-dark': '#002C40',
 			disabled: 'rgba(28, 27, 31, 0.1)',
 		},

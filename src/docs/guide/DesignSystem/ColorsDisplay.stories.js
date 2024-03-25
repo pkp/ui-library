@@ -20,7 +20,7 @@ const ColorUsedIn = {
 		  Used for buttons and icon
 		  Main and secondary Menu for selected states and texts.
 	`,
-	'state-success': `
+	success: `
 		Success State
 		Positive State
 	`,
@@ -63,10 +63,13 @@ const ColorUsedIn = {
 };
 
 const ColorBackgroundUsedIn = {
-	dark: 'Dark Background',
-	medium: 'Medium Background',
-	lightest: `Lightest Background`,
+	default: 'Used in panels and base backgrounds',
+	secondary:
+		'Used on top of Default background. Also used as base for workflows with tables and steppers',
+	tertiary: `Used in table rows, and elements for emphasis `,
 	blur: `Backdrop background for modals`,
+	'selection-light': 'Used to show form inputs that are selected',
+	'selection-dark': 'Used to show elements that are selected',
 };
 
 const ColorTextUsedIn = {
@@ -76,9 +79,10 @@ const ColorTextUsedIn = {
 };
 
 const ColorBorderUsedIn = {
-	dark: 'Dark border',
-	light: 'Light border',
-	darkest: 'Darkest border',
+	light: 'Dark border',
+	dark: 'Light border',
+	'form-fields': 'Specific for form fields',
+	'table-heading': 'Specific for table headings',
 };
 
 export const Common = {

@@ -68,7 +68,7 @@ export const isFullWidth = {
 				<ul class="">
 					<li v-for="item in args.items" class="border-t last:border-b border-light border-l border-r">					
 						<Button v-bind="args" :is-active="item.isSelected">
-							<Badge :is-on-dark-background="item.isSelected">
+							<Badge :color-variant="item.isSelected ? 'default-on-dark' : 'primary'">
 								<span class="text-base-bold">
 									{{ item.number }}
 								</span>
@@ -78,7 +78,7 @@ export const isFullWidth = {
 							</span>
 						</Button>
 					</li>
-				</div>	
+				</ul>	
 			</div>
 			`,
 	}),
