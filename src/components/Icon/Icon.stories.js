@@ -19,7 +19,7 @@ export const Bug = {
 };
 
 export const InfoCircle = {
-	args: {icon: 'info-circle'},
+	args: {icon: 'Help', class: 'w-5 h-5'},
 };
 
 export const ExclamationTriangle = {

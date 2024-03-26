@@ -1,11 +1,17 @@
 <template>
 	<button v-if="isButton" :class="classes" @click="click">
-		<slot />
-		<span v-if="label" class="-screenReader">{{ label }}</span>
+		<div class="flex items-center gap-x-2">
+			<Icon v-if="icon" class="h-5 w-5" :icon="icon" />
+			<slot />
+			<span v-if="label" class="-screenReader">{{ label }}</span>
+		</div>
 	</button>
 	<span v-else :class="classes">
-		<slot />
-		<span v-if="label" class="-screenReader">{{ label }}</span>
+		<div class="flex items-center">
+			<Icon v-if="icon" class="me-2 h-5 w-5" :icon="icon" />
+			<slot />
+			<span v-if="label" class="-screenReader">{{ label }}</span>
+		</div>
 	</span>
 </template>
 
@@ -28,6 +34,8 @@ export default {
 		isWarnable: Boolean,
 		/** If the badge can be used to perform an action, set this to true */
 		isButton: Boolean,
+		/** Icon name, always displayed on left */
+		icon: {required: false, type: String, default: () => null},
 
 		/** Alternative prop to isPrimary/isSuccess/isWarnable to support wider range of color variants	*/
 		colorVariant: {

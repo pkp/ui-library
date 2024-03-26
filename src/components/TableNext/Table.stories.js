@@ -5,6 +5,7 @@ import TableBody from './TableBody.vue';
 import TableColumn from './TableColumn.vue';
 import TableCell from './TableCell.vue';
 import TableRow from './TableRow.vue';
+import PkpButton from '@/components/Button/Button.vue';
 import TablePagination from './TablePagination.vue';
 
 import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
@@ -30,6 +31,7 @@ export const Default = {
 			TableRow,
 			TableColumn,
 			TableCell,
+			PkpButton,
 		},
 		setup() {
 			const rows = articleStats.slice(0, 10);
@@ -44,6 +46,7 @@ export const Default = {
 					<TableColumn>Views</TableColumn>
 					<TableColumn>Downloads</TableColumn>
 					<TableColumn>Total</TableColumn>
+					<TableColumn>Action</TableColumn>
 				</TableHeader>
 				<TableBody>
 					<TableRow v-for="row in rows" :key="row.object.id">
@@ -56,6 +59,10 @@ export const Default = {
 						<TableCell>
 							<button @click="open(row)">{{ row.total }}</button>
 						</TableCell>
+						<TableCell>
+							<PkpButton size-variant="compact" >View</PkpButton>
+						</TableCell>
+
 					</TableRow>
 				</TableBody>
 			</PkpTable>

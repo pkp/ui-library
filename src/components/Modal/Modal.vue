@@ -45,7 +45,8 @@
 								</div>
 								<button class="modal__closeButton" @click="$emit('close')">
 									<icon
-										icon="times"
+										icon="Cancel"
+										:class="'h-5 w-5 text-negative'"
 										:aria-hidden="true"
 										class="modal__closeButton__x"
 									/>

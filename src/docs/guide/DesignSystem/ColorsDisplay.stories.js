@@ -20,6 +20,7 @@ const ColorUsedIn = {
 		  Used for buttons and icon
 		  Main and secondary Menu for selected states and texts.
 	`,
+	hover: 'Hover state',
 	success: `
 		Success State
 		Positive State
@@ -70,6 +71,7 @@ const ColorBackgroundUsedIn = {
 	blur: `Backdrop background for modals`,
 	'selection-light': 'Used to show form inputs that are selected',
 	'selection-dark': 'Used to show elements that are selected',
+	disabled: 'Used on disabled buttons',
 };
 
 const ColorTextUsedIn = {

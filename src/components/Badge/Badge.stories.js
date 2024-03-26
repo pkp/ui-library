@@ -84,6 +84,15 @@ export const Comments = {
 	}),
 };
 
+export const WithIcon = {
+	args: {
+		slot: 'Review sent',
+		label: 'Review review sent',
+		icon: 'ReviewSent',
+		colorVariant: 'stage-in-review-bg',
+	},
+};
+
 export const VariantDefaultOnDark = {
 	args: {
 		slot: 'Review overdue',

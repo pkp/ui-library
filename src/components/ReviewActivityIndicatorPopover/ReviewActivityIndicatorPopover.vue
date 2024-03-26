@@ -8,10 +8,7 @@
 
 		<div class="flex">
 			<Badge v-bind="config.badgeProps">
-				<div class="flex items-center gap-x-2">
-					<Icon class="h-6 w-6" :icon="config.badgeIcon" :inline="true" />
-					<span>{{ title }}</span>
-				</div>
+				{{ title }}
 			</Badge>
 		</div>
 		<div class="flex items-start justify-between pt-5">
@@ -138,8 +135,8 @@ const ConfigPerStatus = {
 			colorVariant: 'stage-in-review',
 			displayVariant: 'progress',
 		},
-		badgeIcon: 'ReviewSent',
 		badgeProps: {
+			icon: 'ReviewSent',
 			colorVariant: 'stage-in-review-bg',
 		},
 		titleKey: tk(
@@ -160,9 +157,9 @@ const ConfigPerStatus = {
 			displayVariant: 'fill',
 			icon: 'ReviewRequestDeclined',
 		},
-		badgeIcon: 'ReviewRequestDeclined',
 		badgeProps: {
 			colorVariant: 'negative-bg',
+			icon: 'ReviewRequestDeclined',
 		},
 		titleKey: tk('submission.list.reviewAssignment.statusDeclined.title'),
 		descriptionKey: tk(
@@ -179,9 +176,9 @@ const ConfigPerStatus = {
 			colorVariant: 'attention',
 			displayVariant: 'progress',
 		},
-		badgeIcon: 'Overdue',
 		badgeProps: {
 			colorVariant: 'attention-bg',
+			icon: 'Overdue',
 		},
 		titleKey: tk(
 			'submission.list.reviewAssignment.statusResponseOverdue.title',
@@ -200,9 +197,9 @@ const ConfigPerStatus = {
 			colorVariant: 'primary',
 			displayVariant: 'progress',
 		},
-		badgeIcon: 'InProgress',
 		badgeProps: {
 			colorVariant: 'primary-bg',
+			icon: 'InProgress',
 		},
 		titleKey: tk('submission.list.reviewAssignment.statusAccepted.title'),
 		descriptionKey: tk(
@@ -219,9 +216,9 @@ const ConfigPerStatus = {
 			colorVariant: 'attention',
 			displayVariant: 'fill',
 		},
-		badgeIcon: 'Overdue',
 		badgeProps: {
 			colorVariant: 'attention-bg',
+			icon: 'Overdue',
 		},
 		titleKey: tk('submission.list.reviewAssignment.statusReviewOverdue.title'),
 		descriptionKey: tk(
@@ -239,9 +236,9 @@ const ConfigPerStatus = {
 			displayVariant: 'fill',
 			icon: 'Email',
 		},
-		badgeIcon: 'Complete',
 		badgeProps: {
 			colorVariant: 'success-bg',
+			icon: 'Complete',
 		},
 		titleKey: tk('submission.list.reviewAssignment.statusReceived.title'),
 		descriptionKey: tk(
@@ -259,9 +256,9 @@ const ConfigPerStatus = {
 			displayVariant: 'fill',
 			icon: 'EmailOpened',
 		},
-		badgeIcon: 'Complete',
 		badgeProps: {
 			colorVariant: 'success-bg',
+			icon: 'Complete',
 		},
 		titleKey: tk('submission.list.reviewAssignment.statusReceived.title'),
 		descriptionKey: tk(
@@ -280,9 +277,9 @@ const ConfigPerStatus = {
 			displayVariant: 'fill',
 			icon: 'Complete',
 		},
-		badgeIcon: 'Complete',
 		badgeProps: {
 			colorVariant: 'success-bg',
+			icon: 'Complete',
 		},
 		// same as for STATUS_RECEIVED
 		titleKey: tk('submission.list.reviewAssignment.statusComplete.title'),
@@ -303,9 +300,9 @@ const ConfigPerStatus = {
 			displayVariant: 'fill',
 			icon: 'Complete',
 		},
-		badgeIcon: 'Complete',
 		badgeProps: {
 			colorVariant: 'success-bg',
+			icon: 'Complete',
 		},
 		// same as for STATUS_RECEIVED
 		titleKey: tk('submission.list.reviewAssignment.statusComplete.title'),
@@ -326,9 +323,9 @@ const ConfigPerStatus = {
 			displayVariant: 'fill',
 			icon: 'Cancel',
 		},
-		badgeIcon: 'Cancel',
 		badgeProps: {
 			colorVariant: 'negative-bg',
+			icon: 'Cancel',
 		},
 		titleKey: tk('submission.list.reviewAssignment.statusCancelled.title'),
 		descriptionKey: tk(
@@ -346,9 +343,9 @@ const ConfigPerStatus = {
 			colorVariant: 'stage-in-review',
 			displayVariant: 'progress',
 		},
-		badgeIcon: 'ReviewSent',
 		badgeProps: {
 			colorVariant: 'stage-in-review-bg',
+			icon: 'ReviewSent',
 		},
 		titleKey: tk('submission.list.reviewAssignment.statusRequestResend.title'),
 		descriptionKey: tk(

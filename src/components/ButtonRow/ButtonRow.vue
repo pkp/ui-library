@@ -26,7 +26,7 @@ export default {
 	justify-content: flex-end;
 
 	> * + * {
-		margin-inline-start: 0.25rem;
+		margin-inline-start: 1rem;
 	}
 }
 
