@@ -1,6 +1,10 @@
 <template>
+	<!-- Keeping pkpButton class as its used to customize button styling from other components
+		Thats pattern we want to move away from, but keeping it now for backward compatibility.
+	-->
 	<component
 		:is="element"
+		class="pkpButton"
 		:class="styles"
 		:href="element === 'a' ? href : false"
 		:disabled="element === 'a' && !isDisabled ? undefined : isDisabled"
