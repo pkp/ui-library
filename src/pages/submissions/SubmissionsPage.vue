@@ -128,15 +128,7 @@ const store = useSubmissionsPageStore(props);
 </script>
 
 <style>
-.pkp_page_dashboards .app__main {
-	@apply bg-secondary p-0;
-}
-
-.pkp_page_mySubmissions .app__main {
-	@apply bg-secondary p-0;
-}
-
-.pkp_page_reviewAssignments .app__main {
+.pkp_page_dashboard .app__main {
 	@apply bg-secondary p-0;
 }
 </style>
