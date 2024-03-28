@@ -34,6 +34,7 @@ export default {
 
 .pkpHeader {
 	padding: 1rem 2rem;
+	@apply text-heading;
 }
 
 .pkpHeader__title {
@@ -82,7 +83,7 @@ export default {
 	}
 
 	> * + * {
-		margin-inline-start: 0.25rem;
+		margin-inline-start: 1rem;
 	}
 }
 

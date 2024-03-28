@@ -1,3 +1,3 @@
 <template>
-	<tbody><slot></slot></tbody>
+	<tbody class=""><slot></slot></tbody>
 </template>

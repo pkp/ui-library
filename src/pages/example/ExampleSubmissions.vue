@@ -3,7 +3,7 @@
 	<span v-if="store.isLoading">Is loading</span>
 	<ul v-else class="border p-4">
 		<li v-for="submission in store.submissions" :key="submission.id">
-			<span class="bg-medium text-lg-normal">
+			<span class="bg-tertiary text-lg-normal">
 				{{ submission.publications[0].fullTitle.en }}
 			</span>
 		</li>

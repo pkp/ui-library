@@ -1,5 +1,5 @@
 <template>
-	<h1 class="text-dark">Example page</h1>
+	<h1 class="text-default">Example page</h1>
 	<ExampleCounter />
 	<ExampleSubmissions />
 </template>

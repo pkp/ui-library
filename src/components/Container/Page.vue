@@ -295,6 +295,10 @@ export default {
 	box-shadow: 0 0 1px 1px @bg-anchor;
 }
 
+.app__userNav {
+	display: flex;
+}
+
 .app__userNav .pkpDropdown__content {
 	right: 0.25rem;
 }

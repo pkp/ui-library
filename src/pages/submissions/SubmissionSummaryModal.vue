@@ -44,7 +44,7 @@
 		</template>
 		<div class="border-ligh flex w-full border-r border-t border-light">
 			<div class="w-3/5 border-r border-light p-4">
-				<div class="bg-lightest p-5">
+				<div class="bg-secondary p-5">
 					<p>
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
 						eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim

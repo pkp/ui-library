@@ -8,6 +8,10 @@ import emailTemplate from '@/mocks/emailTemplate';
 export default {
 	title: 'Components/Composer',
 	component: Composer,
+	parameters: {
+		// Sets delay to wait until the loading indicator is gone
+		chromatic: {delay: 300},
+	},
 };
 
 export const Default = {

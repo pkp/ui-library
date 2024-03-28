@@ -101,7 +101,7 @@ export default {
 	padding-inline-start: 3.5em;
 	width: 100%;
 	height: auto;
-	border: @bg-border-light;
+	border: 1px solid #777;
 	border-radius: @radius;
 	font-size: @font-sml;
 	line-height: 2rem;
@@ -159,7 +159,7 @@ export default {
 	left: 0;
 	width: 2.5em;
 	height: 100%;
-	border-inline-end: @bg-border-light;
+	border-inline-end: 1px solid #777;
 }
 
 .pkpSearch__icons--search {

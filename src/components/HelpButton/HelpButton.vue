@@ -5,7 +5,7 @@
 		:data-section="section"
 		@click.prevent
 	>
-		<icon icon="info-circle" />
+		<icon class="h-5 w-5 text-primary" icon="Help" />
 		<span class="-screenReader">{{ label }}</span>
 	</button>
 </template>

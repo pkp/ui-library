@@ -1,4 +1,4 @@
-import {within, userEvent} from '@storybook/testing-library';
+import {within, userEvent} from '@storybook/test';
 
 import {useDialog} from './useDialog';
 import PkpButton from '@/components/Button/Button.vue';

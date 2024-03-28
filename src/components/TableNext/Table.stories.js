@@ -5,8 +5,10 @@ import TableBody from './TableBody.vue';
 import TableColumn from './TableColumn.vue';
 import TableCell from './TableCell.vue';
 import TableRow from './TableRow.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import TablePagination from './TablePagination.vue';
+
 import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
-import Pagination from '@/components/Pagination/Pagination.vue';
 import {http, HttpResponse} from 'msw';
 
 import articleStats from '@/components/Table/mocks/articleStats.js';
@@ -29,6 +31,7 @@ export const Default = {
 			TableRow,
 			TableColumn,
 			TableCell,
+			PkpButton,
 		},
 		setup() {
 			const rows = articleStats.slice(0, 10);
@@ -43,6 +46,7 @@ export const Default = {
 					<TableColumn>Views</TableColumn>
 					<TableColumn>Downloads</TableColumn>
 					<TableColumn>Total</TableColumn>
+					<TableColumn>Action</TableColumn>
 				</TableHeader>
 				<TableBody>
 					<TableRow v-for="row in rows" :key="row.object.id">
@@ -55,6 +59,10 @@ export const Default = {
 						<TableCell>
 							<button @click="open(row)">{{ row.total }}</button>
 						</TableCell>
+						<TableCell>
+							<PkpButton size-variant="compact" >View</PkpButton>
+						</TableCell>
+
 					</TableRow>
 				</TableBody>
 			</PkpTable>
@@ -135,12 +143,12 @@ export const WithPagination = {
 			TableColumn,
 			TableCell,
 			ButtonRow,
-			Pagination,
+			TablePagination,
 		},
 		setup() {
 			const {apiUrl: statsApiUrl} = useApiUrl('stats');
 
-			const pageSize = ref(10);
+			const pageSize = ref(11);
 			const currentPage = ref(1);
 
 			const {items, pagination, fetch} = useFetchPaginated(statsApiUrl, {
@@ -186,13 +194,7 @@ export const WithPagination = {
 					</TableRow>
 				</TableBody>
 			</PkpTable>
-			<ButtonRow>
-				<Pagination
-					:current-page="pagination.currentPage"
-					:last-page="pagination.pageCount"
-					@set-page="setPage"
-				/>
-			</ButtonRow>
+			<TablePagination :pagination="pagination" @set-page="setPage"/>
 		`,
 	}),
 	parameters: {

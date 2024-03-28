@@ -1,4 +1,4 @@
-import {within, userEvent} from '@storybook/testing-library';
+import {within, userEvent} from '@storybook/test';
 import {ref} from 'vue';
 import SideModal from './SideModal.vue';
 import SideModalBody from './SideModalBody.vue';
@@ -50,7 +50,7 @@ export const Base = {
 					</template>
 
 					<div class="p-4">
-						<div class="bg-lightest p-4">CONTENT</div>
+						<div class="bg-secondary p-4">CONTENT</div>
 					</div>
 				</SideModalBody>
 			</SideModal>
@@ -193,7 +193,7 @@ export const WithForm = {
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 					</template>
 					<div class="p-4">
-						<div class="bg-lightest">
+						<div class="bg-secondary">
 							<PkpForm v-bind="form" @set="setForm" @success="formSuccess" />
 						</div> 
 					</div>
@@ -255,7 +255,7 @@ export const WithTabs = {
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 					</template>
 					<div class="p-4">
-						<div class="bg-lightest p-4">
+						<div class="bg-secondary p-4">
 						<p>
 							Avoid complex interactions in modals whenever possible. Deeply nested
 							tabs like this are often a sign that a single modal is trying to do too
@@ -333,7 +333,7 @@ export const NestedModal = {
 				<SideModalBody>
 					<template #title>First Level Side Modal</template>
 					<div class="p-4">
-						<div class="p-4 bg-lightest">
+						<div class="p-4 bg-secondary">
 							<PkpButton @click="isModalOpened2 = true">Open Second Modal</PkpButton>
 						</div>
 					</div>
@@ -341,7 +341,7 @@ export const NestedModal = {
 						<SideModalBody>
 							<template #title>Second Level Side Modal</template>
 							<div class="p-4">
-								<div class="p-4 bg-lightest">
+								<div class="p-4 bg-secondary">
 									Content
 								</div>
 							</div>

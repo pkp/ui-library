@@ -6,7 +6,7 @@ import {Meta} from '@storybook/blocks';
 
 ## t - translation
 
-Get translation from the 'po' files, based on currently selected language.
+Get translation from the 'po' files, based on currently selected language. Using following syntax enable automatically detect used translation keys. If more dynamic use of translation keys is needed, checkout `tk` as alternative.
 
 ```html
 <template>
@@ -36,6 +36,31 @@ Get translation from the 'po' files, based on currently selected language.
 	       });
 	});
 </script>
+```
+
+## tk - translation keys
+
+When its useful to define translation keys without invoking the translation, there is `tk` helper function, which we can use to wrap the translation key. That ensures the translation key is detected by the vite plugin.
+
+Typical use would be when defining lots of translation based on different states and using `t` would require lots of switch&case statements.
+
+```
+const RecommendationTranslations = {
+    [pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_ACCEPT]: tk(
+        'reviewer.article.decision.accept',
+    ),
+    [pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_PENDING_REVISIONS]: tk(
+        'reviewer.article.decision.pendingRevisions',
+    ),
+    ...
+}
+
+const recommendation = computed(() => {
+    return RecommendationTranslations[props.reviewAssignment.recommendation]
+        ? t(RecommendationTranslations[props.reviewAssignment.recommendation])
+        : null;
+});
+
 ```
 
 ## localize

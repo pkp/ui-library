@@ -1,5 +1,8 @@
 <template>
-	<table class="w-full max-w-full border-collapse" :aria-label="ariaLabel">
+	<table
+		class="w-full max-w-full border-separate border-spacing-0"
+		:aria-label="ariaLabel"
+	>
 		<slot />
 	</table>
 </template>

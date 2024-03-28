@@ -3,26 +3,17 @@
 		class="pointer-events-auto h-screen w-screen"
 		:class="levelClasses"
 	>
-		<div class="shadow-xl flex h-full flex-col bg-medium py-6">
+		<div class="shadow-xl flex h-full flex-col bg-default py-6">
 			<div class="">
 				<div class="flex items-start">
 					<div class="ms-4">
 						<button
 							type="button"
-							class="bg-ligh rounded-md text-gray-400 hover:text-gray-500 focus:ring-indigo-500 relative focus:outline-none focus:ring-2 focus:ring-offset-2"
+							class="rounded-md text-gray-400 hover:text-gray-500 focus:ring-indigo-500 relative inline-flex focus:outline-none focus:ring-2 focus:ring-offset-2"
 							@click="closeModal"
 						>
 							<span class="sr-only">{{ t('common.close') }}</span>
-							<Icon
-								class="w-4 rtl:hidden"
-								icon="pkp-chevron-left"
-								:aria-hidden="true"
-							/>
-							<Icon
-								class="w-4 ltr:hidden"
-								icon="pkp-chevron-right"
-								:aria-hidden="true"
-							/>
+							<Icon class="h-8 w-8" icon="BackButton" :aria-hidden="true" />
 						</button>
 					</div>
 					<div class="ml-8 mr-8 flex-grow">
