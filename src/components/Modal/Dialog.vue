@@ -11,7 +11,7 @@
 				leave-to="opacity-0"
 			>
 				<div
-					class="bg-gray-500 fixed inset-0 z-10 bg-opacity-75 transition-opacity"
+					class="fixed inset-0 z-10 bg-blur bg-opacity-75 transition-opacity"
 				/>
 			</TransitionChild>
 			<div class="fixed inset-0 z-20 overflow-y-auto">
@@ -41,7 +41,11 @@
 									class="me-2 ms-auto cursor-pointer border-0 bg-transparent text-center"
 									@click="onClose"
 								>
-									<icon class="h-6 w-6" icon="pkp-x-mark" :aria-hidden="true" />
+									<icon
+										class="h-6 w-6 text-negative"
+										icon="Cancel"
+										:aria-hidden="true"
+									/>
 									<span class="-screenReader">
 										{{ dialogProps.closeLabel || t('common.close') }}
 									</span>
