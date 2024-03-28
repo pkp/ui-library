@@ -2,7 +2,7 @@
 	<component
 		:is="isRowHeader ? 'th' : 'td'"
 		:scope="isRowHeader ? 'row' : false"
-		class="border-b border-t border-light px-2 py-2 text-left first:border-l first:pl-3 last:border-r last:pr-3"
+		class="border-b border-t border-light px-2 py-2 text-start first:border-s first:ps-3 last:border-e last:pe-3"
 	>
 		<slot />
 	</component>
