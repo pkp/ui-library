@@ -7,7 +7,7 @@
 		</div>
 	</button>
 	<span v-else :class="classes">
-		<div class="flex items-center">
+		<div class="flex items-center justify-center">
 			<Icon v-if="icon" class="me-2 h-5 w-5" :icon="icon" />
 			<slot />
 			<span v-if="label" class="-screenReader">{{ label }}</span>
