@@ -2,7 +2,7 @@
 	<SideModalBody>
 		<template #title>Assign editors</template>
 		<div class="p-4">
-			<div class="bg-lightest p-4">
+			<div class="bg-secondary p-4">
 				<AjaxModalWrapper :options="{url: contentUrl}" />
 			</div>
 		</div>

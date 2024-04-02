@@ -9,7 +9,6 @@
 						<template #actions>
 							<pkp-button
 								v-if="!isOrdering"
-								icon="sort"
 								:is-active="isOrdering"
 								:disabled="isLoading"
 								@click="isOrdering = true"
@@ -18,7 +17,6 @@
 							</pkp-button>
 							<template v-else>
 								<pkp-button
-									icon="sort"
 									:is-active="true"
 									:disabled="isLoading"
 									@click="saveOrder"

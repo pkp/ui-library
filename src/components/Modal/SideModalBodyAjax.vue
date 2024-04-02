@@ -2,7 +2,7 @@
 	<SideModalBody :secondary="true">
 		<template #header><h1 class="text-4xl-bold">Assign editors</h1></template>
 		<div class="p-4">
-			<div class="bg-lightest p-4">
+			<div class="bg-secondary p-4">
 				<AjaxModalWrapper :options="options" />
 			</div>
 		</div>

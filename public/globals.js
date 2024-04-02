@@ -26,6 +26,7 @@ window.pkp = {
 	 */
 	context: {
 		apiBaseUrl: 'https://mock/index.php/publicknowledge/api/v1/',
+		pageBaseUrl: 'https://mock/index.php/publicknowledge/',
 	},
 
 	/**
@@ -51,6 +52,17 @@ window.pkp = {
 		REVIEW_ROUND_STATUS_REVIEWS_OVERDUE: 10,
 		REVIEW_ROUND_STATUS_REVISIONS_SUBMITTED: 11,
 		REVIEW_ROUND_STATUS_REVISIONS_REQUESTED: 1,
+		SUBMISSION_REVIEW_METHOD_ANONYMOUS: 1,
+		SUBMISSION_REVIEW_METHOD_DOUBLEANONYMOUS: 2,
+		SUBMISSION_REVIEW_METHOD_OPEN: 3,
+
+		SUBMISSION_REVIEWER_RECOMMENDATION_ACCEPT: 1,
+		SUBMISSION_REVIEWER_RECOMMENDATION_PENDING_REVISIONS: 2,
+		SUBMISSION_REVIEWER_RECOMMENDATION_RESUBMIT_HERE: 3,
+		SUBMISSION_REVIEWER_RECOMMENDATION_RESUBMIT_ELSEWHERE: 4,
+		SUBMISSION_REVIEWER_RECOMMENDATION_DECLINE: 5,
+		SUBMISSION_REVIEWER_RECOMMENDATION_SEE_COMMENTS: 6,
+
 		ROLE_ID_MANAGER: 16,
 		ROLE_ID_SITE_ADMIN: 1,
 		ROLE_ID_AUTHOR: 65536,
@@ -104,6 +116,7 @@ window.pkp = {
 		'common.commaListSeparator': ', ',
 		'common.delete': 'Delete',
 		'common.description': 'Description',
+		'common.download': 'Download',
 		'common.edit': 'Edit',
 		'common.editItem': 'Edit {$name}',
 		'common.error': 'Error',
@@ -143,6 +156,7 @@ window.pkp = {
 		'common.type': 'Type',
 		'common.unknownError':
 			'An unexpected error has occurred. Please reload the page and try again.',
+		'common.upload': 'Upload',
 		'common.uploadedBy': 'Uploaded by {$name}',
 		'common.uploadedByAndWhen': 'Uploaded by {$name} on {$date}',
 		'common.view': 'View',
@@ -246,13 +260,25 @@ window.pkp = {
 		'manager.dois.title': 'DOIs',
 		'manager.dois.update.failedCreation': 'DOI Updates Failed',
 		'manager.dois.update.partialFailure': 'Some DOI(s) could not be updated',
-		'manager.newSubmission': 'New Submission',
 		'manager.dois.update.success': 'DOI(s) successfully updated',
 		'navigation.backTo': '\u27f5 Back to {$page}',
-		'navigation.submissions': 'Submissions',
+		'publication.jats.autoCreatedMessage':
+			'This JATS file is generated automatically by the submission metadata',
+		'publication.jats.confirmDeleteFileButton': 'Delete JATS File',
+		'publication.jats.confirmDeleteFileMessage':
+			'You are about to remove the existing JATS XML File from this publication. Are you sure?',
+		'publication.jats.confirmDeleteFileTitle': 'Confirm deleting JATS XML',
+		'publication.jats.lastModified':
+			'Last Modification at {$modificationDate} by {$username}',
 		'publication.status.published': 'Published',
 		'publication.status.unpublished': 'Unpublished',
 		'publication.version': 'Version {$version}',
+		'reviewer.article.decision.accept': 'Accept Submission',
+		'reviewer.article.decision.decline': 'Decline Submission',
+		'reviewer.article.decision.pendingRevisions': 'Revisions Required',
+		'reviewer.article.decision.resubmitElsewhere': 'Resubmit Elsewhere',
+		'reviewer.article.decision.resubmitHere': 'Resubmit for Review',
+		'reviewer.article.decision.seeComments': 'See Comments',
 		'stats.countWithYearlyAverage': '{$count} ({$average}/year)',
 		'stats.descriptionForStat': 'Description for {$stat}',
 		'submission.list.assignEditor': 'Assign Editor',
@@ -266,6 +292,52 @@ window.pkp = {
 		'submission.list.infoCenter': 'Activity Log & Notes',
 		'submission.list.responseDue': 'Response Due: {$date}',
 		'submission.list.reviewAssignment': 'Review Assignment',
+		'submission.list.reviewAssignment.action.cancelReviewer': 'Cancel Reviewer',
+		'submission.list.reviewAssignment.action.editDueDate': 'Edit Due Date',
+		'submission.list.reviewAssignment.action.resendReviewRequest':
+			'Resend Review Request',
+		'submission.list.reviewAssignment.action.unassignReviewer': 'Unassign',
+		'submission.list.reviewAssignment.action.viewDetails': 'View details',
+		'submission.list.reviewAssignment.action.viewRecommendation':
+			'View recommendation',
+		'submission.list.reviewAssignment.action.viewUnreadRecommendation':
+			'View unread recommendation',
+		'submission.list.reviewAssignment.statusAccepted.description':
+			'This reviewer has accepted the review request. Their review is due in <b>{$days} days on {$date}.</b>',
+		'submission.list.reviewAssignment.statusAccepted.title':
+			'Ongoing review - request accepted',
+		'submission.list.reviewAssignment.statusAwaitingResponse.description':
+			'Review request has been shared with Reviewer. Response is awaited in <b>{$days} days on {$date}</b>',
+		'submission.list.reviewAssignment.statusAwaitingResponse.title':
+			'Awaiting Response from the Reviewer',
+		'submission.list.reviewAssignment.statusCancelled.description':
+			'Reviewer has cancelled the review request on <b>{$date}</b>',
+		'submission.list.reviewAssignment.statusCancelled.title':
+			'Reviewer cancelled review request',
+		'submission.list.reviewAssignment.statusComplete.description':
+			'The review was accepted by the editor on {$date}.</b>',
+		'submission.list.reviewAssignment.statusComplete.title':
+			'Review was confirmed by editor',
+		'submission.list.reviewAssignment.statusDeclined.description':
+			'Reviewer declined the review request on <b>{$date}</b>',
+		'submission.list.reviewAssignment.statusDeclined.title':
+			'Review Request declined on {$date}',
+		'submission.list.reviewAssignment.statusReceived.description':
+			'The review was completed on {$date} with the following recommendation: <b>{$recommendation}</b>',
+		'submission.list.reviewAssignment.statusReceived.title':
+			'Review completed on {$date}',
+		'submission.list.reviewAssignment.statusRequestResend.description':
+			'Review request has been reshared with reviewer. Response is awaited in {$days} days on {$date}',
+		'submission.list.reviewAssignment.statusRequestResend.title':
+			'Awaiting Response from the Reviewer',
+		'submission.list.reviewAssignment.statusResponseOverdue.description':
+			'This reviewer has not responded to the review request. A response was due on <b>{$date}</b>',
+		'submission.list.reviewAssignment.statusResponseOverdue.title':
+			'Review Request overdue by {$days} days',
+		'submission.list.reviewAssignment.statusReviewOverdue.description':
+			'This reviewer has not completed their review. A response was due on <b>{$date}.</b>',
+		'submission.list.reviewAssignment.statusReviewOverdue.title':
+			'Review overdue by {$days} days',
 		'submission.list.reviewCancelled': 'Review Cancelled',
 		'submission.list.reviewComplete': 'Review Submitted',
 		'submission.list.reviewDue': 'Review Due: {$date}',
@@ -273,10 +345,13 @@ window.pkp = {
 			'You have been assigned an editorial role for this submission. Would you like to access the <a href="{$urlEditorialWorkflow}">Editorial workflow</a>?',
 		'submission.list.reviewsCompleted': 'Assigned reviews completed',
 		'submission.list.revisionsSubmitted': 'Revisions submitted',
+		'submission.round': 'Round&nbsp;{$round}',
 		'submission.submit.newSubmissionSingle': 'New Submission',
+		'submission.upload.percentComplete': 'Uploading {$percent}% complete',
 		'submissions.incomplete': 'Incomplete',
 		'validator.required': 'This field is required.',
 	},
+
 	tinyMCE: {
 		skinUrl: '/styles/tinymce',
 	},

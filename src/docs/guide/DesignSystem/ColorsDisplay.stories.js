@@ -20,14 +20,15 @@ const ColorUsedIn = {
 		  Used for buttons and icon
 		  Main and secondary Menu for selected states and texts.
 	`,
-	'state-success': `
+	hover: 'Hover state',
+	success: `
 		Success State
 		Positive State
 	`,
-	'state-error': `
+	attention: `
 		Warning or triggering alertness that something is not right and needs something to be done.
 	`,
-	'action-negative': `
+	negative: `
 		Actions in that are negative (Buttons or CTAs) or when something is performed that is not okay
 	`,
 	'stage-desk-review': `
@@ -63,23 +64,29 @@ const ColorUsedIn = {
 };
 
 const ColorBackgroundUsedIn = {
-	dark: 'Dark Background',
-	medium: 'Medium Background',
-	lightest: `Lightest Background`,
+	default: 'Used in panels and base backgrounds',
+	secondary:
+		'Used on top of Default background. Also used as base for workflows with tables and steppers',
+	tertiary: `Used in table rows, and elements for emphasis `,
 	blur: `Backdrop background for modals`,
+	'selection-light': 'Used to show form inputs that are selected',
+	'selection-dark': 'Used to show elements that are selected',
+	disabled: 'Used on disabled buttons',
 };
 
 const ColorTextUsedIn = {
-	dark: 'Default text color on light background',
-	'dark-accent': 'Heading text on light background',
-	light: `Light text on light background`,
-	lightest: `Lightest text on dark background`,
+	default: 'Default text color on light background',
+	secondary: `Used for secondary information, like form field description`,
+	heading: 'Used for headings',
+	'on-dark': `Light text on dark background`,
+	disabled: 'Used on disabled buttons',
 };
 
 const ColorBorderUsedIn = {
-	dark: 'Dark border',
-	light: 'Light border',
-	darkest: 'Darkest border',
+	light: 'Dark border',
+	dark: 'Light border',
+	'form-fields': 'Specific for form fields',
+	'table-heading': 'Specific for table headings',
 };
 
 export const Common = {

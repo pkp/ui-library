@@ -244,11 +244,11 @@ export default {
 	}
 
 	+ .pkpTabs__button {
-		margin-left: 0.25rem;
+		margin-inline-start: 0.25rem;
 	}
 
 	.pkpBadge {
-		margin-left: 0.25em;
+		margin-inline-start: 0.25em;
 		margin-bottom: -3px; // Prevent change to tab height
 		padding-left: 0.5em;
 		padding-right: 0.5em;

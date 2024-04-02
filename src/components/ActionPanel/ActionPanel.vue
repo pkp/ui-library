@@ -38,7 +38,7 @@
 		width: 100%;
 
 		+ .pkpButton {
-			margin-top: 0.25rem;
+			margin-top: 0.75rem;
 		}
 	}
 }

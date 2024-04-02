@@ -127,7 +127,6 @@ const preview = {
 	parameters: {
 		// remove default storybook padding as it likely cuts off modals
 		layout: 'fullscreen',
-		actions: {argTypesRegex: '^on[A-Z].*'},
 		controls: {
 			expanded: true,
 			matchers: {

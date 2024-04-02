@@ -18,11 +18,11 @@
 				class="absolute left-1/2 z-10 mt-2 flex w-screen max-w-max -translate-x-1/2 px-4"
 			>
 				<div
-					class="tooltip-arrow absolute left-1/2 z-20 h-4 w-4 origin-top-right -translate-x-1/2 rotate-45 bg-lightest shadow"
+					class="tooltip-arrow absolute left-1/2 z-20 h-4 w-4 origin-top-right -translate-x-1/2 rotate-45 bg-secondary shadow"
 				></div>
 
 				<div
-					class="text-sm w-screen max-w-xs flex-auto overflow-hidden rounded bg-lightest shadow"
+					class="text-sm w-screen max-w-sm flex-auto overflow-hidden rounded bg-secondary shadow"
 				>
 					<div class="p-4"><slot></slot></div>
 				</div>
@@ -37,3 +37,16 @@ export default {
 	components: {Popover, PopoverButton, PopoverPanel},
 };
 </script>
+<style>
+.tooltip-arrow {
+	clip-path: polygon(
+		-20% -20%,
+		120% -20%,
+		100% 0%,
+		95% 10%,
+		10% 95%,
+		0% 100%,
+		-20% 120%
+	);
+}
+</style>
