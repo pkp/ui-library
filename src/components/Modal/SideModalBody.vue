@@ -13,7 +13,11 @@
 							@click="closeModal"
 						>
 							<span class="sr-only">{{ t('common.close') }}</span>
-							<Icon class="h-8 w-8" icon="BackButton" :aria-hidden="true" />
+							<Icon
+								class="h-8 w-8 text-primary"
+								icon="BackButton"
+								:aria-hidden="true"
+							/>
 						</button>
 					</div>
 					<div class="ml-8 mr-8 flex-grow">
@@ -21,7 +25,7 @@
 							<div class="flex-grow">
 								<!-- @slot Small text above title, might be useful for example to display submission Id-->
 								<div class="text-xl-medium"><slot name="pre-title"></slot></div>
-								<DialogTitle as="h1" class="mt-1 text-4xl-bold">
+								<DialogTitle as="h1" class="mt-1 text-4xl-bold text-heading">
 									<!-- @slot Main title, also used for accessibility (aria-labelledby) -->
 									<slot name="title"></slot>
 								</DialogTitle>

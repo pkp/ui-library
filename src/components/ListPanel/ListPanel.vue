@@ -152,9 +152,8 @@ export default {
 
 .listPanel {
 	position: relative;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 	border-radius: @radius;
-	border-top: @grid-border;
+	border: @grid-border;
 }
 
 .listPanel__header {
