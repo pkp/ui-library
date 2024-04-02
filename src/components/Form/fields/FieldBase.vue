@@ -108,6 +108,15 @@ export default {
 		},
 
 		/**
+		 * In case field is not using input element, its necessary to reference the label via aria-labelby (for example FieldSlider)
+		 *
+		 * @return {String}
+		 */
+		labelId() {
+			return this.compileId('control');
+		},
+
+		/**
 		 * A unique id for the label and control
 		 *
 		 * @return {String}
@@ -185,7 +194,7 @@ export default {
 			if (this.isMultilingual) {
 				ids.push(this.multilingualProgressId);
 			}
-			return ids.length ? ids.join(' ') : false;
+			return ids.length ? ids.join(' ') : undefined;
 		},
 
 		/**

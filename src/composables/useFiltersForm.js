@@ -56,6 +56,14 @@ export function useFiltersForm(_filtersForm) {
 						label: option.label,
 						value: option.value,
 					});
+				} else if (field.component === 'field-slider') {
+					if (fieldValue !== field.min) {
+						list.push({
+							fieldLabel: field.label,
+							value: fieldValue,
+							label: fieldValue,
+						});
+					}
 				} else {
 					list.push({
 						fieldLabel: field.label,
