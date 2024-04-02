@@ -47,13 +47,13 @@
 						:pt="sliderStyling"
 					/>
 				</div>
-				<div class="mt-2 flex justify-between text-base-normal text-light">
+				<div class="mt-2 flex justify-between text-base-normal text-secondary">
 					<div>{{ minLabel || min }}</div>
 					<div>{{ maxLabel || max }}</div>
 				</div>
 			</div>
 			<div
-				class="ms-3 w-48 self-start rounded border border-light p-2 text-center text-base-normal text-light"
+				class="ms-3 w-48 self-start rounded border border-form-fields p-2 text-center text-base-normal text-secondary"
 			>
 				{{ displayedValue }}
 			</div>
@@ -91,9 +91,11 @@ export default {
 					// Shape
 					'border-0',
 					// Colors
-					'bg-medium',
+					'bg-[#BBBBBB]',
 					// States
 					{
+						// Disabled use cases is not used, styling to be refine when needed
+
 						'select-none pointer-events-none cursor-default': props.disabled,
 					},
 				],
@@ -134,10 +136,8 @@ export default {
 						'rounded-full',
 						'border-2',
 						// Colors
-						{'bg-primary': !props.disabled},
-						{'border-primary': !props.disabled},
-						{'bg-medium': props.disabled},
-						{'border-light': props.disabled},
+						'bg-primary',
+						'border-primary',
 
 						// States
 						'hover:bg-hover hover:border-primary-500',
