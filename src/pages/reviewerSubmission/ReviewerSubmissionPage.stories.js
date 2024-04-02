@@ -1,9 +1,12 @@
-import {within, userEvent} from '@storybook/testing-library';
+import {within, userEvent} from '@storybook/test';
 import {http, HttpResponse} from 'msw';
 
 import ReviewerSubmissionPage from './ReviewerSubmissionPage.vue';
-import Review1Mock from './mocks/review1';
-import Review2Mock from './mocks/review2';
+import Review1Completed from './mocks/review1_completed.js';
+import Review2Declined from './mocks/review2_declined.js';
+import Review3Unfinished from './mocks/review3_unfinished.js';
+
+import {allModes} from '../../../.storybook/modes.js';
 
 export default {
 	title: 'Pages/ReviewerSubmission',
@@ -30,22 +33,42 @@ export default {
 					reviewRoundNumber: 2,
 					submittedOn: '2024-02-08 12:51:12',
 				},
+				{
+					submissionId: 16,
+					reviewRoundId: 17,
+					reviewRoundNumber: 3,
+					submittedOn: '2024-02-08 12:51:12',
+				},
 			],
 		},
 	},
 	parameters: {
+		chromatic: {
+			modes: {
+				desktop: {disable: true},
+				'desktop rtl': {disable: true},
+				desktopLargeHeight: allModes['desktopLargeHeight'],
+				'desktopLargeHeight rtl': allModes['desktopLargeHeight rtl'],
+			},
+		},
 		msw: {
 			handlers: [
 				http.get(
 					'https://mock/index.php/publicknowledge/api/v1/reviews/history/16/15',
 					async (r) => {
-						return HttpResponse.json(Review1Mock);
+						return HttpResponse.json(Review1Completed);
 					},
 				),
 				http.get(
 					'https://mock/index.php/publicknowledge/api/v1/reviews/history/16/16',
 					async (r) => {
-						return HttpResponse.json(Review2Mock);
+						return HttpResponse.json(Review2Declined);
+					},
+				),
+				http.get(
+					'https://mock/index.php/publicknowledge/api/v1/reviews/history/16/17',
+					async (r) => {
+						return HttpResponse.json(Review3Unfinished);
 					},
 				),
 			],
@@ -65,7 +88,7 @@ export const OpenModalAccepted = {
 	},
 	decorators: [
 		() => ({
-			template: '<div style="height: 1200px"><story/></div>',
+			template: '<div style="height: 1600px"><story/></div>',
 		}),
 	],
 };
@@ -80,7 +103,22 @@ export const OpenModalDeclined = {
 	},
 	decorators: [
 		() => ({
-			template: '<div style="height: 1200px"><story/></div>',
+			template: '<div style="height: 1600px"><story/></div>',
+		}),
+	],
+};
+
+export const OpenModalUnfinished = {
+	play: async ({canvasElement}) => {
+		// Assigns canvas to the component root element
+		const canvas = within(canvasElement);
+		const user = userEvent.setup();
+
+		await user.click(canvas.getByText('Read Round 3 Review'));
+	},
+	decorators: [
+		() => ({
+			template: '<div style="height: 1600px"><story/></div>',
 		}),
 	],
 };

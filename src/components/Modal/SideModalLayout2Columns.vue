@@ -1,6 +1,6 @@
 <template>
-	<div class="border-ligh flex h-full w-full border-r border-t border-light">
-		<div class="w-3/5 border-r border-light p-4">
+	<div class="border-ligh flex w-full border-t border-light">
+		<div class="w-3/5 border-e border-light p-4">
 			<div class="bg-secondary p-5">
 				<slot name="left"></slot>
 			</div>
