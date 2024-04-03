@@ -2,6 +2,8 @@
 	<div ref="contentDiv" @click="catchInsideClick"></div>
 </template>
 <script setup>
+/* eslint-disable */
+
 import {ref, onMounted, inject, defineProps} from 'vue';
 import {useFetch} from '@/composables/useFetch';
 
@@ -50,7 +52,16 @@ function catchInsideClick(e) {
 	}
 }
 
-function passToBridge(jQueryEvent) {
+function passToBridge(...args) {
+	console.log('HELLO');
+	console.log(args);
+	//console.log(jQueryEvent, b, c);
+	if (options.modalHandler) {
+		options.modalHandler.getHtmlElement().trigger(...args);
+	}
+
+	return;
+
 	// If we have an event bridge configured then re-trigger
 	// the event on the target object.
 	if (options.eventBridge) {
@@ -66,10 +77,13 @@ onMounted(async () => {
 	if (modalData.value) {
 		// TODO CONSIDER REMOVE BINDS ON UNMOUNT
 		$(contentDiv.value).html(modalData.value.content);
-		$(contentDiv.value).bind('formSubmitted', closeModal);
-		$(contentDiv.value).bind('formCanceled', closeModal);
-		$(contentDiv.value).bind('ajaxHtmlError', closeModal);
-		$(contentDiv.value).bind('modalFinished', closeModal);
+		$(contentDiv.value).bind(
+			'formSubmitted',
+			options.modalHandler.formSubmitted.bind(options.modalHandler),
+		);
+		$(contentDiv.value).bind('formCanceled', passToBridge);
+		$(contentDiv.value).bind('ajaxHtmlError', passToBridge);
+		$(contentDiv.value).bind('modalFinished', passToBridge);
 
 		// Publish some otherwise private events triggered
 		// by nested widgets so that they can be handled by

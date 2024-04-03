@@ -9,11 +9,12 @@
 	</SideModalBody>
 </template>
 <script setup>
+/* eslint-disable */
+
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
-import {useSubmissionsPageStore} from '@/pages/submissions/submissionsPageStore.js';
 import AjaxModalWrapper from '@/components/Modal/AjaxModalWrapper.vue';
 
-const submissionsPageStore = useSubmissionsPageStore();
+const props = defineProps({selectedSubmission: {type: Object, required: true}});
 
 const {selectedSubmission: submission} = submissionsPageStore;
 

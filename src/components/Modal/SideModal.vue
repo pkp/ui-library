@@ -60,7 +60,9 @@ function registerCloseCallback(callback) {
 	closeCallbacks.value.push(callback);
 }
 
-function handleClose() {
+function handleClose(event) {
+	console.log('handle close');
+	console.log(event);
 	let canClose = true;
 	closeCallbacks.value.forEach((callback) => (canClose = callback()));
 	if (canClose) {

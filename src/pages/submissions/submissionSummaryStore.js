@@ -1,15 +1,12 @@
 import {ref} from 'vue';
-import {useSubmissionsPageStore} from './submissionsPageStore';
 
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
 export const useSubmissionSummaryStore = defineComponentStore(
 	'submissionSummary',
 	(initValues) => {
-		const submissionsPageStore = useSubmissionsPageStore();
-
-		const {selectedSubmission: submission} = submissionsPageStore;
-
+		const submission = initValues.selectedSubmission;
+		console.log('init values:', submission);
 		/**
 		 * Assign Participant Modal
 		 */

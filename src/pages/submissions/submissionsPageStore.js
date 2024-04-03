@@ -1,4 +1,6 @@
 import {computed, ref, watch} from 'vue';
+import {useModalStore} from '@/stores/modalStore';
+
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useFiltersForm} from '@/composables/useFiltersForm';
 import {useSorting} from '@/composables/useSorting';
@@ -8,6 +10,9 @@ import {useApiUrl} from '@/composables/useApiUrl';
 
 import {useUrlSearchParams} from '@vueuse/core';
 import {defineComponentStore} from '@/utils/defineComponentStore';
+
+import SubmissionsFiltersModal from '@/pages/submissions/SubmissionsFiltersModal.vue';
+import SubmissionSummaryModal from '@/pages/submissions/SubmissionSummaryModal.vue';
 
 // TODO add actual translation strings
 const TitleTranslations = {
@@ -25,6 +30,11 @@ const TitleIcons = {
 export const useSubmissionsPageStore = defineComponentStore(
 	'submissionsPage',
 	(pageInitConfig) => {
+		/**
+		 * ModalStore
+		 */
+		const modalStore = useModalStore();
+
 		/**
 		 * Translation
 		 */
@@ -168,12 +178,16 @@ export const useSubmissionsPageStore = defineComponentStore(
 		 */
 		const isModalOpenedSummary = ref(false);
 		function openSummaryModal(submission) {
-			selectedSubmission.value = submission;
-			isModalOpenedSummary.value = true;
+			//selectedSubmission.value = submission;
+			modalStore.openSideModal(SubmissionSummaryModal, {
+				selectedSubmission: submission,
+			});
+
+			//isModalOpenedSummary.value = true;
 		}
 		function closeSummaryModal() {
-			isModalOpenedSummary.value = false;
-			selectedSubmission.value = null;
+			//isModalOpenedSummary.value = false;
+			//selectedSubmission.value = null;
 		}
 
 		/**
@@ -181,7 +195,11 @@ export const useSubmissionsPageStore = defineComponentStore(
 		 */
 		const isModalOpenedFilters = ref(false);
 		function openFiltersModal() {
-			isModalOpenedFilters.value = true;
+			//isModalOpenedFilters.value = true;
+			modalStore.openSideModal(SubmissionsFiltersModal, {
+				filtersFormInitial: filtersForm,
+				onUpdateFiltersForm: updateFiltersForm,
+			});
 		}
 		function closeFiltersModal() {
 			isModalOpenedFilters.value = false;
@@ -194,11 +212,16 @@ export const useSubmissionsPageStore = defineComponentStore(
 		const isModalOpenedAssignParticipant = ref(false);
 
 		function openAssignParticipantModal(submission) {
-			selectedSubmission.value = submission;
-			isModalOpenedAssignParticipant.value = true;
+			const url = assignParticipantUrl.value
+				.replace('__id__', submission.id)
+				.replace('__stageId__', submission.stageId);
+
+			modalStore.openSideModal('LegacyAjax', {
+				options: {url},
+			});
+			//isModalOpenedAssignParticipant.value = true;
 		}
 		function closeAssignParticipantModal() {
-			selectedSubmission.value = null;
 			isModalOpenedAssignParticipant.value = false;
 		}
 

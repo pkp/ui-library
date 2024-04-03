@@ -51,12 +51,13 @@
 		</div>
 	</div>
 	<!-- Side Modals -->
-	<SideModal
+	<!--<SideModal
 		:open="store.isModalOpenedSummary"
 		@close="store.closeSummaryModal"
 	>
 		<SubmissionSummaryModal :summary-submission="store.summarySubmission" />
-	</SideModal>
+	</SideModal>-->
+	<!--
 	<SideModal
 		:open="store.isModalOpenedFilters"
 		@close="store.closeFiltersModal"
@@ -66,20 +67,23 @@
 			@update-filters-form="store.updateFiltersForm"
 		/>
 	</SideModal>
+	-->
+	<!--
 	<SideModal
 		:open="store.isModalOpenedAssignParticipant"
 		@close="store.closeAssignParticipantModal"
 	>
 		<AssignEditorsModal />
 	</SideModal>
-</template>
+--></template>
 <script setup>
+/* eslint-disable */
+
 import PkpButton from '@/components/Button/Button.vue';
 import ActiveFilters from './ActiveFilters.vue';
 import SubmissionsTable from '@/pages/submissions/submissionsTable/SubmissionsTable.vue';
 import DashboardViews from '@/pages/submissions/DashboardViews.vue';
 import SubmissionSummaryModal from '@/pages/submissions/SubmissionSummaryModal.vue';
-import SubmissionsFiltersModal from '@/pages/submissions/SubmissionsFiltersModal.vue';
 import AssignEditorsModal from '@/pages/submissions/AssignEditorsModal.vue';
 import Search from '@/components/Search/Search.vue';
 

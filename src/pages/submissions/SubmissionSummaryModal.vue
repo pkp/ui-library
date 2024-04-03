@@ -92,7 +92,12 @@
 					<div>
 						<PkpButton
 							is-link="true"
-							@click="summaryStore.openAssignParticipantModal"
+							@click="
+								() =>
+									dashboardStore.openAssignParticipantModal(
+										props.selectedSubmission,
+									)
+							"
 						>
 							Assign Editors
 						</PkpButton>
@@ -100,29 +105,35 @@
 				</div>
 			</div>
 		</div>
-		<SideModal
+		<!--<SideModal
 			close-label="Close"
 			:open="summaryStore.isModalOpenedAssignParticipant"
 			@close="summaryStore.closeAssignParticipantModal"
 		>
 			<AssignEditorsModal />
-		</SideModal>
+		</SideModal>-->
 	</SideModalBody>
 </template>
 
 <script setup>
+/* eslint-disable */
+
 import {storeToRefs} from 'pinia';
 import PkpButton from '@/components/Button/Button.vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import StageBubble from '@/components/StageBubble/StageBubble.vue';
 import SideModal from '@/components/Modal/SideModal.vue';
-import AssignEditorsModal from '@/pages/submissions/AssignEditorsModal.vue';
+
+import {useSubmissionsPageStore} from './submissionsPageStore';
 
 import {useSubmissionSummaryStore} from '@/pages/submissions/submissionSummaryStore';
 
 const pkp = window.pkp;
 
-const summaryStore = useSubmissionSummaryStore();
+const props = defineProps({selectedSubmission: {type: Object, required: true}});
+
+const summaryStore = useSubmissionSummaryStore(props);
+const dashboardStore = useSubmissionsPageStore(props);
 
 const {submission} = storeToRefs(summaryStore);
 </script>

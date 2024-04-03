@@ -1,6 +1,6 @@
 <template>
-	<SideModalBody :secondary="true">
-		<template #header><h1 class="text-4xl-bold">Assign editors</h1></template>
+	<SideModalBody>
+		<template #title>{{ options.title }}</template>
 		<div class="p-4">
 			<div class="bg-secondary p-4">
 				<AjaxModalWrapper :options="options" />
