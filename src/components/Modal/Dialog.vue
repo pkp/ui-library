@@ -1,6 +1,6 @@
 <template>
 	<TransitionRoot as="template" :show="opened">
-		<HLDialog class="modal" :class="'modal--popup'" @close="onClose">
+		<HLDialog class="modal" @close="onClose">
 			<TransitionChild
 				as="template"
 				enter="ease-out duration-300"
