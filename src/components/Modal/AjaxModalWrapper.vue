@@ -2,8 +2,6 @@
 	<div ref="contentDiv" @click="catchInsideClick"></div>
 </template>
 <script setup>
-/* eslint-disable */
-
 import {ref, onMounted, inject, defineProps, onBeforeUnmount} from 'vue';
 import {useFetch} from '@/composables/useFetch';
 

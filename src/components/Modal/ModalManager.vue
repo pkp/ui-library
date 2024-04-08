@@ -19,8 +19,6 @@
 </template>
 
 <script setup>
-/* eslint-disable */
-
 import {computed} from 'vue';
 import {useModalStore} from '@/stores/modalStore';
 import {storeToRefs} from 'pinia';
@@ -31,7 +29,7 @@ import PkpDialog from '@/components/Modal/Dialog.vue';
 const LegacyModals = {LegacyAjax};
 
 const modalStore = useModalStore();
-const {sideModal1, sideModal2, sideModal3} = storeToRefs(useModalStore());
+const {sideModal1, sideModal2} = storeToRefs(useModalStore());
 const component1 = computed(() => {
 	if (!sideModal1.value?.component) {
 		return null;

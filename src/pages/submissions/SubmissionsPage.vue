@@ -52,17 +52,12 @@
 	</div>
 </template>
 <script setup>
-/* eslint-disable */
-
 import PkpButton from '@/components/Button/Button.vue';
 import ActiveFilters from './ActiveFilters.vue';
 import SubmissionsTable from '@/pages/submissions/submissionsTable/SubmissionsTable.vue';
 import DashboardViews from '@/pages/submissions/DashboardViews.vue';
-import SubmissionSummaryModal from '@/pages/submissions/SubmissionSummaryModal.vue';
-import AssignEditorsModal from '@/pages/submissions/AssignEditorsModal.vue';
 import Search from '@/components/Search/Search.vue';
 
-import SideModal from '@/components/Modal/SideModal.vue';
 import {useSubmissionsPageStore} from './submissionsPageStore';
 
 const props = defineProps({

@@ -109,8 +109,6 @@
 </template>
 
 <script setup>
-/* eslint-disable */
-
 import {storeToRefs} from 'pinia';
 import PkpButton from '@/components/Button/Button.vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
