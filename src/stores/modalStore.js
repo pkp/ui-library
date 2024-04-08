@@ -72,7 +72,7 @@ export const useModalStore = defineStore('modal', () => {
 
 	let modalIdCounter = 1;
 
-	function openSideModal(_component, props, _modalId = null) {
+	function openSideModal(_component, props = {}, _modalId = null) {
 		modalIdCounter++;
 		let component = null;
 		if (typeof _component !== 'string') {
