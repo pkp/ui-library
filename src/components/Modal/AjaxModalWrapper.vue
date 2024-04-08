@@ -2,10 +2,18 @@
 	<div ref="contentDiv" @click="catchInsideClick"></div>
 </template>
 <script setup>
+/**
+ * Component to mimick part of AjaxModalHandler which fetches the html content from given url
+ * and presents it to the user
+ */
 import {ref, onMounted, inject, defineProps, onBeforeUnmount} from 'vue';
 import {useFetch} from '@/composables/useFetch';
 
 const {options} = defineProps({
+	/**
+	 * Following the object used within AjaxModalHandler
+	 * Particularly important is `url` and `modalHandler`
+	 */
 	options: {
 		type: Object,
 		default: () => {},
@@ -16,10 +24,13 @@ const contentDiv = ref(null);
 // eslint-disable-next-line no-unused-vars
 const pkp = window.pkp;
 
+// Fetches html content from legacy endpoints
 const {data: modalData, fetch: fetchAssignParticipantPage} = useFetch(
 	options.url,
 );
 
+// Legacy modal has mechanism where it needs to check with form whether it can close
+// Mimicking this behaviour
 const registerCloseCallback = inject('registerCloseCallback');
 registerCloseCallback(() => {
 	// eslint-disable-next-line no-unused-vars
@@ -49,6 +60,10 @@ function catchInsideClick(e) {
 	}
 }
 
+/** The wrapping div element for modal is still created by legacy modal handler, but its not mounted
+ * only used to keep the legacy event communication going from inside modal to the outside (often its grid component)
+ *
+ */
 function passToHandlerElement(...args) {
 	if (options.modalHandler) {
 		options.modalHandler.getHtmlElement().trigger(...args);
@@ -60,7 +75,6 @@ function passToHandlerElement(...args) {
 onMounted(async () => {
 	await fetchAssignParticipantPage();
 	if (modalData.value) {
-		// TODO CONSIDER REMOVE BINDS ON UNMOUNT
 		$(contentDiv.value).html(modalData.value.content);
 		$(contentDiv.value).bind('formSubmitted', passToHandlerElement);
 		$(contentDiv.value).bind('wizardClose', passToHandlerElement);
@@ -89,10 +103,6 @@ onBeforeUnmount(() => {
 	$(contentDiv.value).unbind('formCanceled', passToHandlerElement);
 	$(contentDiv.value).unbind('ajaxHtmlError', passToHandlerElement);
 	$(contentDiv.value).unbind('modalFinished', passToHandlerElement);
-
-	// Publish some otherwise private events triggered
-	// by nested widgets so that they can be handled by
-	// the element that opened the modal.
 
 	$(contentDiv.value).unbind('redirectRequested', passToHandlerElement);
 	$(contentDiv.value).unbind('dataChanged', passToHandlerElement);

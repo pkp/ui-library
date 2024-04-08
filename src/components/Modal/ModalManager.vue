@@ -30,6 +30,8 @@ const LegacyModals = {LegacyAjax};
 
 const modalStore = useModalStore();
 const {sideModal1, sideModal2} = storeToRefs(useModalStore());
+
+// Component can be either string or actual vue component
 const component1 = computed(() => {
 	if (!sideModal1.value?.component) {
 		return null;
