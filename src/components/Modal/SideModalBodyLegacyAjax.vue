@@ -3,7 +3,7 @@
 		<template #title>{{ options.title }}</template>
 		<div class="p-4">
 			<div class="bg-secondary p-4">
-				<AjaxModalWrapper :options="options" />
+				<AjaxModalWrapper :key="options.url" :options="options" />
 			</div>
 		</div>
 	</SideModalBody>

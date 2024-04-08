@@ -107,9 +107,6 @@ const opened = computed(
 const isLoading = ref(false);
 
 function onClose() {
-	if (dialogProps.value.close) {
-		dialogProps.value.close();
-	}
 	isLoading.value = false;
 	closeDialog();
 }

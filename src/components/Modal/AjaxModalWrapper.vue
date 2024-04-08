@@ -4,7 +4,7 @@
 <script setup>
 /* eslint-disable */
 
-import {ref, onMounted, inject, defineProps} from 'vue';
+import {ref, onMounted, inject, defineProps, onBeforeUnmount} from 'vue';
 import {useFetch} from '@/composables/useFetch';
 
 const {options} = defineProps({
@@ -77,10 +77,10 @@ onMounted(async () => {
 	if (modalData.value) {
 		// TODO CONSIDER REMOVE BINDS ON UNMOUNT
 		$(contentDiv.value).html(modalData.value.content);
-		$(contentDiv.value).bind(
-			'formSubmitted',
-			options.modalHandler.formSubmitted.bind(options.modalHandler),
-		);
+		$(contentDiv.value).bind('formSubmitted', passToBridge);
+		$(contentDiv.value).bind('wizardClose', passToBridge);
+		$(contentDiv.value).bind('wizardCancel', passToBridge);
+
 		$(contentDiv.value).bind('formCanceled', passToBridge);
 		$(contentDiv.value).bind('ajaxHtmlError', passToBridge);
 		$(contentDiv.value).bind('modalFinished', passToBridge);
@@ -94,5 +94,24 @@ onMounted(async () => {
 		$(contentDiv.value).bind('updateHeader', passToBridge);
 		$(contentDiv.value).bind('gridRefreshRequested', passToBridge);
 	}
+});
+
+onBeforeUnmount(() => {
+	$(contentDiv.value).unbind('formSubmitted', passToBridge);
+	$(contentDiv.value).unbind('wizardClose', passToBridge);
+	$(contentDiv.value).unbind('wizardCancel', passToBridge);
+
+	$(contentDiv.value).unbind('formCanceled', passToBridge);
+	$(contentDiv.value).unbind('ajaxHtmlError', passToBridge);
+	$(contentDiv.value).unbind('modalFinished', passToBridge);
+
+	// Publish some otherwise private events triggered
+	// by nested widgets so that they can be handled by
+	// the element that opened the modal.
+
+	$(contentDiv.value).unbind('redirectRequested', passToBridge);
+	$(contentDiv.value).unbind('dataChanged', passToBridge);
+	$(contentDiv.value).unbind('updateHeader', passToBridge);
+	$(contentDiv.value).unbind('gridRefreshRequested', passToBridge);
 });
 </script>

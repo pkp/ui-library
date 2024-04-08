@@ -2,13 +2,13 @@
 	<SideModal
 		close-label="Close"
 		:open="sideModal1?.opened || false"
-		@close="close"
+		@close="() => close(sideModal1?.modalId)"
 	>
 		<component :is="component1" v-bind="sideModal1?.props" />
 		<SideModal
 			close-label="Close"
 			:open="sideModal2?.opened || false"
-			@close="close"
+			@close="() => close(sideModal2?.modalId)"
 		>
 			<component :is="component2" v-bind="sideModal2?.props" />
 		</SideModal>
@@ -54,8 +54,8 @@ const component2 = computed(() => {
 		: sideModal2.value.component;
 });
 
-function close() {
-	modalStore.closeSideModal();
+function close(modalId) {
+	modalStore.closeSideModal(true, modalId);
 }
 
 // 			pkp.eventBus.$emit('open-tab', tab);

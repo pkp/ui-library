@@ -26,7 +26,10 @@ export const useModalStore = defineStore('modal', () => {
 		dialogProps.value = _dialogProps;
 		dialogOpened.value = true;
 	}
-	function closeDialog() {
+	function closeDialog(triggerLegacyCloseHandler = true) {
+		if (triggerLegacyCloseHandler && dialogProps.value.closeLegacyHandler) {
+			dialogProps.value.closeLegacyHandler();
+		}
 		dialogProps.value = {};
 		dialogOpened.value = false;
 	}
@@ -63,56 +66,95 @@ export const useModalStore = defineStore('modal', () => {
 	}
 
 	const sideModalStack = ref([]);
+	const sideModal1 = ref(null);
+	const sideModal2 = ref(null);
 
-	function openSideModal(_component, props) {
+	let modalIdCounter = 1;
+
+	function openSideModal(_component, props, _modalId = null) {
+		modalIdCounter++;
 		let component = null;
 		if (typeof _component !== 'string') {
 			component = markRaw(_component);
 		} else {
 			component = _component;
 		}
-		sideModalStack.value.push({
+		const modalId = _modalId ? _modalId : modalIdCounter;
+
+		const opts = {
+			modalId,
 			opened: true,
 			component,
 			props,
-		});
+		};
+
+		if (!sideModal1.value?.opened || sideModal1.value?.toBeClosed) {
+			sideModal1.value = opts;
+		} else if (!sideModal2.value?.opened) {
+			sideModal2.value = opts;
+		}
 	}
 
-	function closeSideModal() {
-		const modalToClose = sideModalStack.value[sideModalStack.value.length - 1];
-		modalToClose.opened = false;
-		console.log(modalToClose?.props?.options?.modalHandler);
-		//if (modalToClose?.props?.options?.modalHandler) {
-		//console.log('triggereing modalCLose from store');
-		//	modalToClose.props?.options?.modalHandler.modalClose();
-		//}
+	function closeSideModal(triggerLegacyCloseHandler = true, _modalId) {
+		let modalToClose = null;
+		if (sideModal1?.value?.modalId === _modalId) {
+			modalToClose = sideModal1;
+		}
+
+		if (sideModal2?.value?.modalId === _modalId) {
+			modalToClose = sideModal2;
+		}
+		modalToClose.value.opened = false;
+		setTimeout(() => {
+			if (!modalToClose.value.opened) {
+				modalToClose.value = null;
+			}
+		}, 300);
+
+		if (
+			triggerLegacyCloseHandler &&
+			modalToClose.value?.props?.options?.modalHandler
+		) {
+			modalToClose.value?.props?.options?.modalHandler.modalClose();
+		}
 		// TODO improve to avoid edge cases from fast clicking
-		sideModalStack.value.pop();
-
-		/*setTimeout(() => {
-			sideModalStack.value.pop();
-		}, 300);*/
 	}
 
-	const sideModal1 = computed(() => {
-		return sideModalStack.value[0] || null;
-	});
-	const sideModal2 = computed(() => {
-		return sideModalStack.value[1] || null;
-	});
 	const sideModal3 = computed(() => {
 		return sideModalStack.value[2] || null;
 	});
 
 	/** POC, its disabled for now, it will handle legacy modals in future to improve their accessibility */
 	pkp.eventBus.$on('open-modal-vue', (_args) => {
-		openSideModal(_args.component, {
-			options: _args.options,
-		});
+		openSideModal(
+			_args.component,
+			{
+				options: _args.options,
+			},
+			_args.options.modalId,
+		);
 	});
 
-	pkp.eventBus.$on('close-modal-vue', () => {
-		closeSideModal();
+	pkp.eventBus.$on('close-modal-vue-soon', (_args) => {
+		const modalId = _args.modalId;
+		if (sideModal1.value?.modalId === modalId) {
+			sideModal1.value.toBeClosed = true;
+		}
+		if (sideModal2.value?.modalId === modalId) {
+			sideModal2.value.toBeClosed = true;
+		}
+	});
+
+	pkp.eventBus.$on('close-modal-vue', (_args) => {
+		closeSideModal(false, _args.modalId);
+	});
+
+	pkp.eventBus.$on('open-dialog-vue', (_args) => {
+		openDialog(_args.dialogProps);
+	});
+
+	pkp.eventBus.$on('close-dialog-vue', (_args) => {
+		closeDialog(false);
 	});
 
 	return {
