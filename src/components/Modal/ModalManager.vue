@@ -2,22 +2,18 @@
 	<SideModal
 		close-label="Close"
 		:open="sideModal1?.opened || false"
+		:modal-level="1"
 		@close="() => close(sideModal1?.modalId)"
 	>
 		<component :is="component1" v-bind="sideModal1?.props" />
 		<SideModal
 			close-label="Close"
+			:modal-level="2"
 			:open="sideModal2?.opened || false"
 			@close="() => close(sideModal2?.modalId)"
 		>
 			<component :is="component2" v-bind="sideModal2?.props" />
 		</SideModal>
-		-->
-
-		<!--<SideModalBodyAjax :options="options" />
-		<SideModal close-label="Close" :open="isOpened2" @close="close2">
-			<SideModalBodyAjax :options="options2" />
-		</SideModal>-->
 	</SideModal>
 	<PkpDialog></PkpDialog>
 </template>
@@ -57,6 +53,4 @@ const component2 = computed(() => {
 function close(modalId) {
 	modalStore.closeSideModal(true, modalId);
 }
-
-// 			pkp.eventBus.$emit('open-tab', tab);
 </script>

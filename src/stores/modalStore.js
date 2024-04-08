@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import {ref, computed, markRaw} from 'vue';
+import {ref, markRaw} from 'vue';
 import {t} from '@/utils/i18n';
 export const useModalStore = defineStore('modal', () => {
 	/**
@@ -65,8 +65,9 @@ export const useModalStore = defineStore('modal', () => {
 		modalLevel.value--;
 	}
 
-	const sideModalStack = ref([]);
+	// { modalId, props, opened, component}
 	const sideModal1 = ref(null);
+	// { modalId, props, opened, component}
 	const sideModal2 = ref(null);
 
 	let modalIdCounter = 1;
@@ -117,12 +118,7 @@ export const useModalStore = defineStore('modal', () => {
 		) {
 			modalToClose.value?.props?.options?.modalHandler.modalClose();
 		}
-		// TODO improve to avoid edge cases from fast clicking
 	}
-
-	const sideModal3 = computed(() => {
-		return sideModalStack.value[2] || null;
-	});
 
 	/** POC, its disabled for now, it will handle legacy modals in future to improve their accessibility */
 	pkp.eventBus.$on('open-modal-vue', (_args) => {
@@ -131,7 +127,7 @@ export const useModalStore = defineStore('modal', () => {
 			{
 				options: _args.options,
 			},
-			_args.options.modalId,
+			_args.modalId,
 		);
 	});
 
@@ -176,6 +172,5 @@ export const useModalStore = defineStore('modal', () => {
 		closeSideModal,
 		sideModal1,
 		sideModal2,
-		sideModal3,
 	};
 });

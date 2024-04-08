@@ -81,7 +81,7 @@
 </template>
 
 <script setup>
-import {ref, computed, onMounted, onUnmounted} from 'vue';
+import {ref, computed, onMounted, onUnmounted, watch} from 'vue';
 import {storeToRefs} from 'pinia';
 
 import {
@@ -106,8 +106,17 @@ const opened = computed(
 
 const isLoading = ref(false);
 
+// resetting state after close
+// this is not ideal approach, but given how little state the dialog has
+// its less complex than splitting dialog into two components to have proper life cycle
+// as we do with SideModal and SideModalBody
+watch(opened, (prevOpened, nextOpened) => {
+	if (prevOpened === true && nextOpened === false) {
+		isLoading.value = false;
+	}
+});
+
 function onClose() {
-	isLoading.value = false;
 	closeDialog();
 }
 
