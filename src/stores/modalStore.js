@@ -85,11 +85,11 @@ export const useModalStore = defineStore('modal', () => {
 			props,
 		};
 
-		// At this point we support two levels of side modals (we might need to extend it to 3 at somep oint)
+		// At this point we support two levels of side modals
 		//
 		// toBeClosed is used for edge case when modal close is delayed in 'onFormSuccess_' in ModalHandler to indicate
-		// form successfully submitted, which does not work well in scenario when follow-up modal is immediatelly opened and
-		// is supposed to replace it (selecting issue & publishing article flow)
+		// form was successfully submitted. This does not work well in scenario when follow-up modal is immediatelly opened and
+		// is supposed to replace it (selecting issue & confirm publishing article modals)
 		if (!sideModal1.value?.opened || sideModal1.value?.toBeClosed) {
 			sideModal1.value = opts;
 		} else if (!sideModal2.value?.opened || sideModal2.value?.toBeClosed) {
@@ -106,6 +106,7 @@ export const useModalStore = defineStore('modal', () => {
 		if (sideModal2?.value?.modalId === _modalId) {
 			modalToClose = sideModal2;
 		}
+
 		modalToClose.value.opened = false;
 
 		// To keep the side modal animation nice, it needs to keep the component&props around for bit longer
@@ -116,8 +117,10 @@ export const useModalStore = defineStore('modal', () => {
 		}, 300);
 
 		// When closing legacy modal its always important to do legacy handler clean up.
-		// Therefore it depends if the close request is coming from the legacy handler (therefore the clean up will be done as part of that)
-		// or whether close is triggered by clicking on close button or outside of the modal, which needs to trigger handler modalClose for all the clean up
+		// Therefore it depends if the close request is coming from the legacy handler, in such
+		// case the clean up will be done as part of that.
+		// Or whether close is triggered by clicking on close button or outside of the modal, which needs
+		// to trigger handler modalClose explicitelly
 		if (
 			triggerLegacyCloseHandler &&
 			modalToClose.value?.props?.options?.modalHandler
