@@ -178,16 +178,9 @@ export const useSubmissionsPageStore = defineComponentStore(
 		 */
 		const isModalOpenedSummary = ref(false);
 		function openSummaryModal(submission) {
-			//selectedSubmission.value = submission;
 			modalStore.openSideModal(SubmissionSummaryModal, {
 				selectedSubmission: submission,
 			});
-
-			//isModalOpenedSummary.value = true;
-		}
-		function closeSummaryModal() {
-			//isModalOpenedSummary.value = false;
-			//selectedSubmission.value = null;
 		}
 
 		/**
@@ -195,14 +188,10 @@ export const useSubmissionsPageStore = defineComponentStore(
 		 */
 		const isModalOpenedFilters = ref(false);
 		function openFiltersModal() {
-			//isModalOpenedFilters.value = true;
 			modalStore.openSideModal(SubmissionsFiltersModal, {
 				filtersFormInitial: filtersForm,
 				onUpdateFiltersForm: updateFiltersForm,
 			});
-		}
-		function closeFiltersModal() {
-			isModalOpenedFilters.value = false;
 		}
 
 		/**
@@ -219,10 +208,6 @@ export const useSubmissionsPageStore = defineComponentStore(
 			modalStore.openSideModal('LegacyAjax', {
 				options: {url},
 			});
-			//isModalOpenedAssignParticipant.value = true;
-		}
-		function closeAssignParticipantModal() {
-			isModalOpenedAssignParticipant.value = false;
 		}
 
 		/**
@@ -290,18 +275,15 @@ export const useSubmissionsPageStore = defineComponentStore(
 			// Summary submission Modal
 			isModalOpenedSummary,
 			openSummaryModal,
-			closeSummaryModal,
 
 			// Filters Modal
 			isModalOpenedFilters,
 			openFiltersModal,
-			closeFiltersModal,
 
 			// AssignParticipant Modal
 			assignParticipantUrl,
 			isModalOpenedAssignParticipant,
 			openAssignParticipantModal,
-			closeAssignParticipantModal,
 		};
 	},
 );
