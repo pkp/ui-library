@@ -1,14 +1,14 @@
 import {within, userEvent} from '@storybook/test';
 
-import {useDialog} from './useDialog';
+import {useModal} from './useModal';
 import PkpButton from '@/components/Button/Button.vue';
 
 export default {
-	title: 'composables/useDialog',
+	title: 'composables/useModal',
 	render: (args) => ({
 		components: {PkpButton},
 		setup() {
-			const {openDialog} = useDialog();
+			const {openDialog} = useModal();
 
 			return {openDialog, args};
 		},

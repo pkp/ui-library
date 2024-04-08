@@ -22,7 +22,6 @@ const {data: modalData, fetch: fetchAssignParticipantPage} = useFetch(
 	options.url,
 );
 
-const closeModal = inject('closeModal');
 const registerCloseCallback = inject('registerCloseCallback');
 registerCloseCallback(() => {
 	// eslint-disable-next-line no-unused-vars
@@ -52,24 +51,12 @@ function catchInsideClick(e) {
 	}
 }
 
-function passToBridge(...args) {
-	console.log('HELLO');
-	console.log(args);
-	//console.log(jQueryEvent, b, c);
+function passToHandlerElement(...args) {
 	if (options.modalHandler) {
 		options.modalHandler.getHtmlElement().trigger(...args);
 	}
 
 	return;
-
-	// If we have an event bridge configured then re-trigger
-	// the event on the target object.
-	if (options.eventBridge) {
-		$('[id^="' + options.eventBridge + '"]').trigger(
-			jQueryEvent.type,
-			jQueryEvent.data,
-		);
-	}
 }
 
 onMounted(async () => {
@@ -77,41 +64,41 @@ onMounted(async () => {
 	if (modalData.value) {
 		// TODO CONSIDER REMOVE BINDS ON UNMOUNT
 		$(contentDiv.value).html(modalData.value.content);
-		$(contentDiv.value).bind('formSubmitted', passToBridge);
-		$(contentDiv.value).bind('wizardClose', passToBridge);
-		$(contentDiv.value).bind('wizardCancel', passToBridge);
+		$(contentDiv.value).bind('formSubmitted', passToHandlerElement);
+		$(contentDiv.value).bind('wizardClose', passToHandlerElement);
+		$(contentDiv.value).bind('wizardCancel', passToHandlerElement);
 
-		$(contentDiv.value).bind('formCanceled', passToBridge);
-		$(contentDiv.value).bind('ajaxHtmlError', passToBridge);
-		$(contentDiv.value).bind('modalFinished', passToBridge);
+		$(contentDiv.value).bind('formCanceled', passToHandlerElement);
+		$(contentDiv.value).bind('ajaxHtmlError', passToHandlerElement);
+		$(contentDiv.value).bind('modalFinished', passToHandlerElement);
 
 		// Publish some otherwise private events triggered
 		// by nested widgets so that they can be handled by
 		// the element that opened the modal.
 
-		$(contentDiv.value).bind('redirectRequested', passToBridge);
-		$(contentDiv.value).bind('dataChanged', passToBridge);
-		$(contentDiv.value).bind('updateHeader', passToBridge);
-		$(contentDiv.value).bind('gridRefreshRequested', passToBridge);
+		$(contentDiv.value).bind('redirectRequested', passToHandlerElement);
+		$(contentDiv.value).bind('dataChanged', passToHandlerElement);
+		$(contentDiv.value).bind('updateHeader', passToHandlerElement);
+		$(contentDiv.value).bind('gridRefreshRequested', passToHandlerElement);
 	}
 });
 
 onBeforeUnmount(() => {
-	$(contentDiv.value).unbind('formSubmitted', passToBridge);
-	$(contentDiv.value).unbind('wizardClose', passToBridge);
-	$(contentDiv.value).unbind('wizardCancel', passToBridge);
+	$(contentDiv.value).unbind('formSubmitted', passToHandlerElement);
+	$(contentDiv.value).unbind('wizardClose', passToHandlerElement);
+	$(contentDiv.value).unbind('wizardCancel', passToHandlerElement);
 
-	$(contentDiv.value).unbind('formCanceled', passToBridge);
-	$(contentDiv.value).unbind('ajaxHtmlError', passToBridge);
-	$(contentDiv.value).unbind('modalFinished', passToBridge);
+	$(contentDiv.value).unbind('formCanceled', passToHandlerElement);
+	$(contentDiv.value).unbind('ajaxHtmlError', passToHandlerElement);
+	$(contentDiv.value).unbind('modalFinished', passToHandlerElement);
 
 	// Publish some otherwise private events triggered
 	// by nested widgets so that they can be handled by
 	// the element that opened the modal.
 
-	$(contentDiv.value).unbind('redirectRequested', passToBridge);
-	$(contentDiv.value).unbind('dataChanged', passToBridge);
-	$(contentDiv.value).unbind('updateHeader', passToBridge);
-	$(contentDiv.value).unbind('gridRefreshRequested', passToBridge);
+	$(contentDiv.value).unbind('redirectRequested', passToHandlerElement);
+	$(contentDiv.value).unbind('dataChanged', passToHandlerElement);
+	$(contentDiv.value).unbind('updateHeader', passToHandlerElement);
+	$(contentDiv.value).unbind('gridRefreshRequested', passToHandlerElement);
 });
 </script>

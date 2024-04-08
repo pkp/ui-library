@@ -22,7 +22,7 @@ import Tab from '@/components/Tabs/Tab.vue';
 import Tabs from '@/components/Tabs/Tabs.vue';
 import FloatingVue from 'floating-vue';
 
-import PkpDialog from '@/components/Modal/Dialog.vue';
+import ModalManager from '@/components/Modal/ModalManager.vue';
 
 import VueScrollTo from 'vue-scrollto';
 
@@ -116,9 +116,9 @@ const preview = {
 		/** Globally Available Dialog */
 		(story) => ({
 			setup() {},
-			components: {story, PkpDialog},
+			components: {story, ModalManager},
 			template: `<div>			
-				<PkpDialog></PkpDialog>
+				<ModalManager></ModalManager>
 				<story />
 			</div>`,
 		}),

@@ -6,7 +6,6 @@ export const useSubmissionSummaryStore = defineComponentStore(
 	'submissionSummary',
 	(initValues) => {
 		const submission = initValues.selectedSubmission;
-		console.log('init values:', submission);
 		/**
 		 * Assign Participant Modal
 		 */

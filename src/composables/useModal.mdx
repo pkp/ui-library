@@ -1,14 +1,14 @@
 import {Primary, Controls, Stories, Meta, ArgTypes} from '@storybook/blocks';
 
-import * as UseDialogStories from './useDialog.stories.js';
+import * as useModalStories from './useModal.stories.js';
 
-<Meta of={UseDialogStories} />
+<Meta of={useModalStories} />
 
-# useDialog
+# useModal
 
 # Usage
 
-Dialogs provide a quick way to show a simple confirmation prompt. Import `useDialog` composable and use the openDialog() method to create a dialog.
+Dialogs provide a quick way to show a simple confirmation prompt. Import `useModal` composable and use the openDialog() method to create a dialog.
 
 ```html
 <template>
@@ -16,9 +16,9 @@ Dialogs provide a quick way to show a simple confirmation prompt. Import `useDia
 </template>
 
 <script setup>
-	import {useDialog} from '@/composables/useDialog';
+	import {useModal} from '@/composables/useModal';
 
-	const {openDialog} = useDialog();
+	const {openDialog} = useModal();
 
 	function openWarningDialog() {
 		openDialog({

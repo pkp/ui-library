@@ -50,32 +50,7 @@
 			</div>
 		</div>
 	</div>
-	<!-- Side Modals -->
-	<!--<SideModal
-		:open="store.isModalOpenedSummary"
-		@close="store.closeSummaryModal"
-	>
-		<SubmissionSummaryModal :summary-submission="store.summarySubmission" />
-	</SideModal>-->
-	<!--
-	<SideModal
-		:open="store.isModalOpenedFilters"
-		@close="store.closeFiltersModal"
-	>
-		<SubmissionsFiltersModal
-			:filters-form-initial="store.filtersForm"
-			@update-filters-form="store.updateFiltersForm"
-		/>
-	</SideModal>
-	-->
-	<!--
-	<SideModal
-		:open="store.isModalOpenedAssignParticipant"
-		@close="store.closeAssignParticipantModal"
-	>
-		<AssignEditorsModal />
-	</SideModal>
---></template>
+</template>
 <script setup>
 /* eslint-disable */
 
