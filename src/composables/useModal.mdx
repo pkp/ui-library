@@ -6,7 +6,7 @@ import * as useModalStories from './useModal.stories.js';
 
 # useModal
 
-# Usage
+## openDialog
 
 Dialogs provide a quick way to show a simple confirmation prompt. Import `useModal` composable and use the openDialog() method to create a dialog.
 
@@ -51,4 +51,22 @@ Dialogs provide a quick way to show a simple confirmation prompt. Import `useMod
 </script>
 ```
 
-<Stories />
+## openSideModal
+
+SideModal should be created as separate component, follow examples from [SideModal](../?path=/docs/components-sidemodal--docs) component, where `openSideModal()` is also used to control the SideModals.
+
+Once you have the SideModal component created just pass the component as first argument and its props as second argument.
+
+Alternatively its possible to pass component name if its globally registered.
+
+```javascript
+
+<script setup>
+	import SummaryModal from '@/pages/submissions/summaryModal.vue'
+	const {openSideModal} = useModal();
+	function openModal() {
+		openSideModal(SummaryModal, {someProp: 5});
+	}
+</script>
+
+```

@@ -1,10 +1,10 @@
 import {computed, ref, watch} from 'vue';
-import {useModalStore} from '@/stores/modalStore';
 
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useFiltersForm} from '@/composables/useFiltersForm';
 import {useSorting} from '@/composables/useSorting';
 import {useLocalize} from '@/composables/useLocalize';
+import {useModal} from '@/composables/useModal';
 import {useAnnouncer} from '@/composables/useAnnouncer';
 import {useApiUrl} from '@/composables/useApiUrl';
 
@@ -33,7 +33,7 @@ export const useSubmissionsPageStore = defineComponentStore(
 		/**
 		 * ModalStore
 		 */
-		const modalStore = useModalStore();
+		const {openSideModal} = useModal();
 
 		/**
 		 * Translation
@@ -178,7 +178,7 @@ export const useSubmissionsPageStore = defineComponentStore(
 		 */
 		const isModalOpenedSummary = ref(false);
 		function openSummaryModal(submission) {
-			modalStore.openSideModal(SubmissionSummaryModal, {
+			openSideModal(SubmissionSummaryModal, {
 				selectedSubmission: submission,
 			});
 		}
@@ -188,7 +188,7 @@ export const useSubmissionsPageStore = defineComponentStore(
 		 */
 		const isModalOpenedFilters = ref(false);
 		function openFiltersModal() {
-			modalStore.openSideModal(SubmissionsFiltersModal, {
+			openSideModal(SubmissionsFiltersModal, {
 				filtersFormInitial: filtersForm,
 				onUpdateFiltersForm: updateFiltersForm,
 			});
@@ -205,7 +205,7 @@ export const useSubmissionsPageStore = defineComponentStore(
 				.replace('__id__', submission.id)
 				.replace('__stageId__', submission.stageId);
 
-			modalStore.openSideModal('LegacyAjax', {
+			openSideModal('LegacyAjax', {
 				options: {url},
 			});
 		}

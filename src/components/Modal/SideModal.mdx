@@ -19,9 +19,7 @@ To correctly handle accessibility (title, description) and focus management - [h
 
 ## Usage
 
-Important to keep in mind that if you need to nest these modals, its necessary to define them inside each other, which ensures they correctly handle mouse/keyboard events.
-
-We recommend to define modals as individual component files, rather than inline them, that ensures that the `setup` function and any other component life cycle event are triggered as modal is opened/closed. Therefore its easier to control when for example to fetch data from API. Note that in stories the `SideModalBody` is inlined inside `SideModal`, so its easier to see the source code of examples.
+We recommend to define modals as individual component files, rather than inline them, that ensures that the `setup` function and any other component life cycle event are triggered as modal is opened/closed. Therefore its easier to control when for example to fetch data from API. We might introduce option to define inline modals for basic use cases in future
 
 ### Defining Modal Component
 
@@ -55,29 +53,27 @@ We recommend to define modals as individual component files, rather than inline 
 </script>
 ```
 
-### Controlling Modal Component
+### Opening SideModal
+
+To open SideModal, use `openSideModal` function from [useModal](../?path=/docs/composables-usemodal--docs#opensidemodal) composable. This ensures that the SideModal is displayed correctly even if the SideModals are nested.
+
+### Closing SideModal
+
+To close the modal from the inside of the modal, there is `closeModal` slot prop available. Full example is in SideModalWithTabs story.
 
 ```html
-/** SubmissionModal.vue */
-<template>
-	<PkpButton @click="isModalOpened = true">Open Modal</PkpButton>
-	<SideModal :open="isModalOpened" @close="closeModal">
-		<SubmissionModal />
-	</SideModal>
-</template>
-<script setup>
-	import {ref} from 'vue';
-
-	const isModalOpened = ref(true);
-	function closeModal() {
-		isModalOpened.value = false;
-	}
-</script>
+<SideModalBody>
+	<template #title>Title</template>
+	<template #default="{closeModal}">
+		<div class="p-4">
+			<div class="bg-secondary p-4">
+				content
+				<PkpButton class="mt-4" @click="closeModal()">Close</PkpButton>
+			</div>
+		</div>
+	</template>
+</SideModalBody>
 ```
-
-## SideModal Props
-
-<ArgTypes />
 
 ## SideModalBody Slots
 

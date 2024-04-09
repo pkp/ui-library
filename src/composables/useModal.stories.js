@@ -18,7 +18,7 @@ export default {
 	}),
 };
 
-export const BasicExample = {
+export const DialogBasic = {
 	args: {
 		buttonName: 'Basic Example',
 		name: 'basic',
@@ -54,7 +54,7 @@ export const BasicExample = {
 	],
 };
 
-export const FullExample = {
+export const DialogComplex = {
 	args: {
 		buttonName: 'Full Example',
 
