@@ -42,6 +42,7 @@
 						v-model="currentValue"
 						:min="min"
 						:max="max"
+						:step="step"
 						class="w-full"
 						:aria-labelledby="labelId"
 						:pt="sliderStyling"
@@ -72,6 +73,7 @@ export default {
 	props: {
 		min: {required: true, type: Number},
 		max: {required: true, type: Number},
+		step: {required: false, type: Number, default: 1},
 		minLabel: {required: false, type: String, default: null},
 		maxLabel: {required: false, type: String, default: null},
 		/** Expecting translation key, which gets the value passed to it as {$value} */
