@@ -1,13 +1,18 @@
 import {computed, ref, watch} from 'vue';
+
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useFiltersForm} from '@/composables/useFiltersForm';
 import {useSorting} from '@/composables/useSorting';
 import {useLocalize} from '@/composables/useLocalize';
+import {useModal} from '@/composables/useModal';
 import {useAnnouncer} from '@/composables/useAnnouncer';
 import {useApiUrl} from '@/composables/useApiUrl';
 
 import {useUrlSearchParams} from '@vueuse/core';
 import {defineComponentStore} from '@/utils/defineComponentStore';
+
+import SubmissionsFiltersModal from '@/pages/submissions/SubmissionsFiltersModal.vue';
+import SubmissionSummaryModal from '@/pages/submissions/SubmissionSummaryModal.vue';
 
 // TODO add actual translation strings
 const TitleTranslations = {
@@ -25,6 +30,11 @@ const TitleIcons = {
 export const useSubmissionsPageStore = defineComponentStore(
 	'submissionsPage',
 	(pageInitConfig) => {
+		/**
+		 * ModalStore
+		 */
+		const {openSideModal} = useModal();
+
 		/**
 		 * Translation
 		 */
@@ -168,12 +178,9 @@ export const useSubmissionsPageStore = defineComponentStore(
 		 */
 		const isModalOpenedSummary = ref(false);
 		function openSummaryModal(submission) {
-			selectedSubmission.value = submission;
-			isModalOpenedSummary.value = true;
-		}
-		function closeSummaryModal() {
-			isModalOpenedSummary.value = false;
-			selectedSubmission.value = null;
+			openSideModal(SubmissionSummaryModal, {
+				selectedSubmission: submission,
+			});
 		}
 
 		/**
@@ -181,10 +188,10 @@ export const useSubmissionsPageStore = defineComponentStore(
 		 */
 		const isModalOpenedFilters = ref(false);
 		function openFiltersModal() {
-			isModalOpenedFilters.value = true;
-		}
-		function closeFiltersModal() {
-			isModalOpenedFilters.value = false;
+			openSideModal(SubmissionsFiltersModal, {
+				filtersFormInitial: filtersForm,
+				onUpdateFiltersForm: updateFiltersForm,
+			});
 		}
 
 		/**
@@ -194,12 +201,13 @@ export const useSubmissionsPageStore = defineComponentStore(
 		const isModalOpenedAssignParticipant = ref(false);
 
 		function openAssignParticipantModal(submission) {
-			selectedSubmission.value = submission;
-			isModalOpenedAssignParticipant.value = true;
-		}
-		function closeAssignParticipantModal() {
-			selectedSubmission.value = null;
-			isModalOpenedAssignParticipant.value = false;
+			const url = assignParticipantUrl.value
+				.replace('__id__', submission.id)
+				.replace('__stageId__', submission.stageId);
+
+			openSideModal('LegacyAjax', {
+				options: {url},
+			});
 		}
 
 		/**
@@ -267,18 +275,15 @@ export const useSubmissionsPageStore = defineComponentStore(
 			// Summary submission Modal
 			isModalOpenedSummary,
 			openSummaryModal,
-			closeSummaryModal,
 
 			// Filters Modal
 			isModalOpenedFilters,
 			openFiltersModal,
-			closeFiltersModal,
 
 			// AssignParticipant Modal
 			assignParticipantUrl,
 			isModalOpenedAssignParticipant,
 			openAssignParticipantModal,
-			closeAssignParticipantModal,
 		};
 	},
 );

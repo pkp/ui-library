@@ -46,10 +46,15 @@ import {
 	TransitionChild,
 } from '@headlessui/vue';
 
-defineProps({
+const props = defineProps({
 	open: {
 		type: Boolean,
 		required: true,
+	},
+	modalLevel: {
+		type: Number,
+		required: false,
+		default: 0,
 	},
 });
 
@@ -60,7 +65,7 @@ function registerCloseCallback(callback) {
 	closeCallbacks.value.push(callback);
 }
 
-function handleClose() {
+function handleClose(event) {
 	let canClose = true;
 	closeCallbacks.value.forEach((callback) => (canClose = callback()));
 	if (canClose) {
@@ -72,4 +77,5 @@ function handleClose() {
 
 provide('closeModal', handleClose);
 provide('registerCloseCallback', registerCloseCallback);
+provide('modalLevel', ref(props.modalLevel));
 </script>

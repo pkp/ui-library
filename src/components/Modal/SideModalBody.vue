@@ -53,34 +53,24 @@
 </template>
 
 <script setup>
-import {inject, onUnmounted, computed, ref} from 'vue';
+import {inject, computed} from 'vue';
 import {DialogPanel, DialogTitle, DialogDescription} from '@headlessui/vue';
 import Icon from '@/components/Icon/Icon.vue';
 import PkpDialog from '@/components/Modal/Dialog.vue';
 
 import {useLocalize} from '@/composables/useLocalize';
-import {useModalStore} from '@/stores/modalStore';
 
 const {t} = useLocalize();
 
-const modalStore = useModalStore();
-
 /** Handle styling for nested SideModals */
-const myLevel = ref(0);
-modalStore.increaseModalLevel();
-myLevel.value = modalStore.modalLevel;
-
 const levelClasses = computed(() => {
-	if (myLevel.value === 2) {
+	if (modalLevel.value === 2) {
 		return 'max-w-4xl';
 	}
 
 	return 'max-w-5xl';
 });
 
-onUnmounted(() => {
-	modalStore.decreaseModalLevel();
-});
-
 const closeModal = inject('closeModal');
+const modalLevel = inject('modalLevel');
 </script>

@@ -1,6 +1,5 @@
 <script type="text/javascript">
 import Container from '@/components/Container/Container.vue';
-import PkpDialog from '@/components/Modal/Dialog.vue';
 import ModalManager from '@/components/Modal/ModalManager.vue';
 
 import PkpAnnouncer from '@/components/Announcer/Announcer.vue';
@@ -9,7 +8,6 @@ import ReviewerSubmissionPage from '@/pages/reviewerSubmission/ReviewerSubmissio
 export default {
 	name: 'Page',
 	components: {
-		PkpDialog,
 		PkpAnnouncer,
 		ModalManager,
 		ReviewerSubmissionPage,

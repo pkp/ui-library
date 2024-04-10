@@ -50,40 +50,14 @@
 			</div>
 		</div>
 	</div>
-	<!-- Side Modals -->
-	<SideModal
-		:open="store.isModalOpenedSummary"
-		@close="store.closeSummaryModal"
-	>
-		<SubmissionSummaryModal :summary-submission="store.summarySubmission" />
-	</SideModal>
-	<SideModal
-		:open="store.isModalOpenedFilters"
-		@close="store.closeFiltersModal"
-	>
-		<SubmissionsFiltersModal
-			:filters-form-initial="store.filtersForm"
-			@update-filters-form="store.updateFiltersForm"
-		/>
-	</SideModal>
-	<SideModal
-		:open="store.isModalOpenedAssignParticipant"
-		@close="store.closeAssignParticipantModal"
-	>
-		<AssignEditorsModal />
-	</SideModal>
 </template>
 <script setup>
 import PkpButton from '@/components/Button/Button.vue';
 import ActiveFilters from './ActiveFilters.vue';
 import SubmissionsTable from '@/pages/submissions/submissionsTable/SubmissionsTable.vue';
 import DashboardViews from '@/pages/submissions/DashboardViews.vue';
-import SubmissionSummaryModal from '@/pages/submissions/SubmissionSummaryModal.vue';
-import SubmissionsFiltersModal from '@/pages/submissions/SubmissionsFiltersModal.vue';
-import AssignEditorsModal from '@/pages/submissions/AssignEditorsModal.vue';
 import Search from '@/components/Search/Search.vue';
 
-import SideModal from '@/components/Modal/SideModal.vue';
 import {useSubmissionsPageStore} from './submissionsPageStore';
 
 const props = defineProps({

@@ -1,14 +1,14 @@
 import {within, userEvent} from '@storybook/test';
 
-import {useDialog} from './useDialog';
+import {useModal} from './useModal';
 import PkpButton from '@/components/Button/Button.vue';
 
 export default {
-	title: 'composables/useDialog',
+	title: 'composables/useModal',
 	render: (args) => ({
 		components: {PkpButton},
 		setup() {
-			const {openDialog} = useDialog();
+			const {openDialog} = useModal();
 
 			return {openDialog, args};
 		},
@@ -18,7 +18,7 @@ export default {
 	}),
 };
 
-export const BasicExample = {
+export const DialogBasic = {
 	args: {
 		buttonName: 'Basic Example',
 		name: 'basic',
@@ -54,7 +54,7 @@ export const BasicExample = {
 	],
 };
 
-export const FullExample = {
+export const DialogComplex = {
 	args: {
 		buttonName: 'Full Example',
 

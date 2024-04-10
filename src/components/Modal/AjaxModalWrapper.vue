@@ -2,10 +2,18 @@
 	<div ref="contentDiv" @click="catchInsideClick"></div>
 </template>
 <script setup>
-import {ref, onMounted, inject, defineProps} from 'vue';
+/**
+ * Component to mimick part of AjaxModalHandler which fetches the html content from given url
+ * and presents it to the user
+ */
+import {ref, onMounted, inject, defineProps, onBeforeUnmount} from 'vue';
 import {useFetch} from '@/composables/useFetch';
 
 const {options} = defineProps({
+	/**
+	 * Following the object used within AjaxModalHandler
+	 * Particularly important is `url` and `modalHandler`
+	 */
 	options: {
 		type: Object,
 		default: () => {},
@@ -16,11 +24,13 @@ const contentDiv = ref(null);
 // eslint-disable-next-line no-unused-vars
 const pkp = window.pkp;
 
+// Fetches html content from legacy endpoints
 const {data: modalData, fetch: fetchAssignParticipantPage} = useFetch(
 	options.url,
 );
 
-const closeModal = inject('closeModal');
+// Legacy modal has mechanism where it needs to check with form whether it can close
+// Mimicking this behaviour
 const registerCloseCallback = inject('registerCloseCallback');
 registerCloseCallback(() => {
 	// eslint-disable-next-line no-unused-vars
@@ -50,35 +60,53 @@ function catchInsideClick(e) {
 	}
 }
 
-function passToBridge(jQueryEvent) {
-	// If we have an event bridge configured then re-trigger
-	// the event on the target object.
-	if (options.eventBridge) {
-		$('[id^="' + options.eventBridge + '"]').trigger(
-			jQueryEvent.type,
-			jQueryEvent.data,
-		);
+/** The wrapping div element for modal is still created by legacy modal handler, but its not mounted
+ * only used to keep the legacy event communication going from inside modal to the outside (often its grid component)
+ *
+ */
+function passToHandlerElement(...args) {
+	if (options.modalHandler) {
+		options.modalHandler.getHtmlElement().trigger(...args);
 	}
+
+	return;
 }
 
 onMounted(async () => {
 	await fetchAssignParticipantPage();
 	if (modalData.value) {
-		// TODO CONSIDER REMOVE BINDS ON UNMOUNT
 		$(contentDiv.value).html(modalData.value.content);
-		$(contentDiv.value).bind('formSubmitted', closeModal);
-		$(contentDiv.value).bind('formCanceled', closeModal);
-		$(contentDiv.value).bind('ajaxHtmlError', closeModal);
-		$(contentDiv.value).bind('modalFinished', closeModal);
+		$(contentDiv.value).bind('formSubmitted', passToHandlerElement);
+		$(contentDiv.value).bind('wizardClose', passToHandlerElement);
+		$(contentDiv.value).bind('wizardCancel', passToHandlerElement);
+
+		$(contentDiv.value).bind('formCanceled', passToHandlerElement);
+		$(contentDiv.value).bind('ajaxHtmlError', passToHandlerElement);
+		$(contentDiv.value).bind('modalFinished', passToHandlerElement);
 
 		// Publish some otherwise private events triggered
 		// by nested widgets so that they can be handled by
 		// the element that opened the modal.
 
-		$(contentDiv.value).bind('redirectRequested', passToBridge);
-		$(contentDiv.value).bind('dataChanged', passToBridge);
-		$(contentDiv.value).bind('updateHeader', passToBridge);
-		$(contentDiv.value).bind('gridRefreshRequested', passToBridge);
+		$(contentDiv.value).bind('redirectRequested', passToHandlerElement);
+		$(contentDiv.value).bind('dataChanged', passToHandlerElement);
+		$(contentDiv.value).bind('updateHeader', passToHandlerElement);
+		$(contentDiv.value).bind('gridRefreshRequested', passToHandlerElement);
 	}
+});
+
+onBeforeUnmount(() => {
+	$(contentDiv.value).unbind('formSubmitted', passToHandlerElement);
+	$(contentDiv.value).unbind('wizardClose', passToHandlerElement);
+	$(contentDiv.value).unbind('wizardCancel', passToHandlerElement);
+
+	$(contentDiv.value).unbind('formCanceled', passToHandlerElement);
+	$(contentDiv.value).unbind('ajaxHtmlError', passToHandlerElement);
+	$(contentDiv.value).unbind('modalFinished', passToHandlerElement);
+
+	$(contentDiv.value).unbind('redirectRequested', passToHandlerElement);
+	$(contentDiv.value).unbind('dataChanged', passToHandlerElement);
+	$(contentDiv.value).unbind('updateHeader', passToHandlerElement);
+	$(contentDiv.value).unbind('gridRefreshRequested', passToHandlerElement);
 });
 </script>

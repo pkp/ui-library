@@ -1,6 +1,6 @@
 <template>
 	<TransitionRoot as="template" :show="opened">
-		<HLDialog class="modal" :class="'modal--popup'" @close="onClose">
+		<HLDialog class="modal" @close="onClose">
 			<TransitionChild
 				as="template"
 				enter="ease-out duration-300"
@@ -81,7 +81,7 @@
 </template>
 
 <script setup>
-import {ref, computed, onMounted, onUnmounted} from 'vue';
+import {ref, computed, onMounted, onUnmounted, watch} from 'vue';
 import {storeToRefs} from 'pinia';
 
 import {
@@ -106,11 +106,17 @@ const opened = computed(
 
 const isLoading = ref(false);
 
-function onClose() {
-	if (dialogProps.value.close) {
-		dialogProps.value.close();
+// resetting state after close
+// this is not ideal approach, but given how little state the dialog has
+// its less complex than splitting dialog into two components to have proper life cycle
+// as we do with SideModal and SideModalBody
+watch(opened, (prevOpened, nextOpened) => {
+	if (prevOpened === true && nextOpened === false) {
+		isLoading.value = false;
 	}
-	isLoading.value = false;
+});
+
+function onClose() {
 	closeDialog();
 }
 

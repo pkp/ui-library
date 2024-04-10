@@ -1,0 +1,72 @@
+import {Primary, Controls, Stories, Meta, ArgTypes} from '@storybook/blocks';
+
+import * as useModalStories from './useModal.stories.js';
+
+<Meta of={useModalStories} />
+
+# useModal
+
+## openDialog
+
+Dialogs provide a quick way to show a simple confirmation prompt. Import `useModal` composable and use the openDialog() method to create a dialog.
+
+```html
+<template>
+	<PkpButton @click="openWarningDialog">Open Dialog</PkpButton>
+</template>
+
+<script setup>
+	import {useModal} from '@/composables/useModal';
+
+	const {openDialog} = useModal();
+
+	function openWarningDialog() {
+		openDialog({
+			name: 'example',
+			title: 'Submit Article',
+			message: 'Are you sure you want to submit this article?',
+			actions: [
+				{
+					label: 'Yes',
+					isPrimary: true,
+					callback: (close) => {
+						// user has confirmed
+						close();
+					},
+				},
+				{
+					label: 'No',
+					isWarnable: true,
+					callback: (close) => {
+						// user has cancelled. close the modal
+						close();
+					},
+				},
+			],
+			close: () => {
+				// dialog has been closed
+			},
+		});
+	}
+</script>
+```
+
+## openSideModal
+
+SideModal should be created as separate component, follow examples from [SideModal](../?path=/docs/components-sidemodal--docs) component, where `openSideModal()` is also used to control the SideModals.
+
+Once you have the SideModal component created just pass the component as first argument and its props as second argument.
+
+Alternatively its possible to pass component name if its globally registered.
+
+```javascript
+
+<script setup>
+	import SummaryModal from '@/pages/submissions/summaryModal.vue'
+	const {openSideModal} = useModal();
+	function openModal() {
+		openSideModal(SummaryModal, {someProp: 5});
+	}
+</script>
+
+```
