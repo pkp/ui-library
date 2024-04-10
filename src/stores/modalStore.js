@@ -107,6 +107,10 @@ export const useModalStore = defineStore('modal', () => {
 			modalToClose = sideModal2;
 		}
 
+		// it might have been replaced with other modal
+		if (!modalToClose) {
+			return;
+		}
 		modalToClose.value.opened = false;
 
 		// To keep the side modal animation nice, it needs to keep the component&props around for bit longer
