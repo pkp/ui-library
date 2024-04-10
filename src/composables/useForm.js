@@ -6,6 +6,20 @@ function getField(form, name) {
 	return fields.find((field) => field.name === name);
 }
 
+function getClearValue(field, localeKey = null) {
+	if (localeKey) {
+		if (field.component === 'field-slider') {
+			return field.min;
+		}
+		return Array.isArray(field.value[localeKey]) || field.selected ? [] : '';
+	}
+
+	if (field.component === 'field-slider') {
+		return field.min;
+	}
+	return Array.isArray(field.value) || field.selected ? [] : '';
+}
+
 function mapFromSelectedToValue(selected) {
 	return selected.map((iv) => iv.value);
 }
@@ -43,13 +57,12 @@ export function useForm(_form) {
 				const newValueMultilingual = {};
 				form.value.supportedFormLocales.forEach((localeObject) => {
 					const localeKey = localeObject.key;
-					const newValue =
-						Array.isArray(field.value[localeKey]) || field.selected ? [] : '';
+					const newValue = getClearValue(field, localeKey);
 					newValueMultilingual[localeKey] = newValue;
 				});
 				setValue(field.name, newValueMultilingual);
 			} else {
-				const newValue = Array.isArray(field.value) || field.selected ? [] : '';
+				const newValue = getClearValue(field);
 				setValue(field.name, newValue);
 			}
 		});

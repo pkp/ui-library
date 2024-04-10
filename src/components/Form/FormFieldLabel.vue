@@ -18,6 +18,7 @@
 export default {
 	name: 'FormFieldLabel',
 	props: {
+		labelId: String,
 		controlId: String,
 		label: String,
 		localeLabel: String,

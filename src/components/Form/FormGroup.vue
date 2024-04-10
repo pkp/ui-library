@@ -75,6 +75,7 @@ import FieldShowEnsuringLink from './fields/FieldShowEnsuringLink.vue';
 import FieldText from './fields/FieldText.vue';
 import FieldTextarea from './fields/FieldTextarea.vue';
 import FieldUpload from './fields/FieldUpload.vue';
+import FieldSlider from './fields/FieldSlider.vue';
 import FieldUploadImage from './fields/FieldUploadImage.vue';
 
 export default {
@@ -101,6 +102,7 @@ export default {
 		FieldShowEnsuringLink,
 		FieldText,
 		FieldTextarea,
+		FieldSlider,
 		FieldUpload,
 		FieldUploadImage,
 	},

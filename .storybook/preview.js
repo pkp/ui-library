@@ -2,6 +2,7 @@
 
 import {withThemeByDataAttribute} from '@storybook/addon-themes';
 import {mockDateDecorator} from 'storybook-mock-date-decorator';
+import PrimeVue from 'primevue/config';
 
 import {setup} from '@storybook/vue3';
 import GlobalMixins from '@/mixins/global.js';
@@ -51,6 +52,10 @@ initialize({
 
 setup((app) => {
 	app.use(pinia);
+	app.use(PrimeVue, {
+		unstyled: true,
+	});
+
 	app.mixin(GlobalMixins);
 
 	app.use(FloatingVue, {
