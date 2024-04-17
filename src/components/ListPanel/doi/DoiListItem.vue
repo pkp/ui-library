@@ -147,7 +147,7 @@
 					<pkp-button
 						ref="recordedMessageModalButton"
 						:is-disabled="isEditingDois"
-						@click="$modal.show('registeredMessageModal')"
+						@click="$modal.show(`registeredMessageModal-${item.id}`)"
 						v-if="isDeposited && hasRegisteredMessage"
 					>
 						{{ __('manager.dois.registration.viewRecord') }}
@@ -186,8 +186,8 @@
 		<!-- Recorded Message Modal -->
 		<modal
 			:close-label="__('common.close')"
-			name="registeredMessageModal"
-			:title="__('manager.dois.registration.viewError.title')"
+			:name="`registeredMessageModal-${item.id}`"
+			:title="__('manager.dois.registration.viewRecord.title')"
 			@closed="setFocusToRef('registeredMessageModalButton')"
 		>
 			<p>{{ registrationAgencyInfo['registeredMessagePreamble'] }}</p>
@@ -781,7 +781,7 @@ export default {
 			return this.isDeposited ? this.viewRecord() : this.triggerDeposit();
 		},
 		viewRecord() {
-			this.$modal.show('registeredMessageModal');
+			this.$modal.show(`registeredMessageModal-${this.item.id}`);
 		},
 		triggerDeposit() {
 			this.$emit('deposit-triggered', [this.item.id], 'deposit');
