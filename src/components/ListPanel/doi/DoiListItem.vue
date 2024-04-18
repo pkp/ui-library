@@ -135,10 +135,10 @@
 								? t('manager.dois.registration.manuallyMarkedRegistered')
 								: t('manager.dois.registration.submittedDescription', {
 										registrationAgency: itemRegistrationAgencyName,
-								  })
+									})
 							: t('manager.dois.registration.notSubmittedDescription', {
 									registrationAgency: registrationAgencyInfo['displayName'],
-							  })
+								})
 					}}
 				</span>
 				<span v-else class="doiListItem__depositorDescription">
@@ -188,8 +188,8 @@
 		<!-- Recorded Message Modal -->
 		<modal
 			:close-label="t('common.close')"
-			name="registeredMessageModal"
-			:title="t('manager.dois.registration.viewError.title')"
+			:name="`registeredMessageModal-${item.id}`"
+			:title="t('manager.dois.registration.viewRecord.title')"
 			:open="isModalOpenedRegisteredMessage"
 			@close="isModalOpenedRegisteredMessage = false"
 		>
