@@ -1,18 +1,21 @@
-import {computed} from 'vue';
-import {useUser} from '@/composables/useUser';
-import {useActiveStage} from './useActiveStage.js';
+export function useSubmission() {
+	function getActiveStage(submission) {
+		return submission.stages.find((stage) => stage.isActiveStage);
+	}
 
-export function useSubmission(submission) {
-	const user = useUser();
+	function getActiveReviewRound(submission) {
+		return submission?.reviewRounds?.length
+			? submission?.reviewRounds[submission.reviewRounds.length - 1]
+			: null;
+	}
 
-	const activeStage = useActiveStage(submission);
+	function getActiveReviewAssignments(submission) {
+		const activeReviewRound = getActiveReviewRound(submission);
 
-	const canUserAssignEditor = computed(() => {
-		return (
-			(user.isSiteAdmin.value || user.isManager.value) &&
-			activeStage.isStatusSubmissionUnassigned.value
+		return submission.reviewAssignments.filter(
+			(reviewAssignment) => reviewAssignment.round === activeReviewRound.round,
 		);
-	});
+	}
 
-	return {canUserAssignEditor};
+	return {getActiveStage, getActiveReviewRound, getActiveReviewAssignments};
 }

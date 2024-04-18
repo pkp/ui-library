@@ -20,6 +20,8 @@ const {legacyOptions} = defineProps({
 	},
 });
 
+const closeModal = inject('closeModal');
+
 const contentDiv = ref(null);
 // eslint-disable-next-line no-unused-vars
 const pkp = window.pkp;
@@ -67,6 +69,22 @@ function catchInsideClick(e) {
 function passToHandlerElement(...args) {
 	if (legacyOptions.modalHandler) {
 		legacyOptions.modalHandler.getHtmlElement().trigger(...args);
+	}
+	// when legacy modal opened from vue.js, it does not have handler
+	// and needs to trigger close for some events
+	else {
+		const eventType = args?.[0]?.type;
+
+		if (
+			[
+				'formSubmitted',
+				'formCanceled',
+				'ajaxHtmlError',
+				'modalFinished',
+			].includes(eventType)
+		) {
+			closeModal();
+		}
 	}
 
 	return;

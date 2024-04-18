@@ -11,6 +11,10 @@ import {useApiUrl} from '@/composables/useApiUrl';
 import {useUrlSearchParams} from '@vueuse/core';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
+import {useEditorialLogic} from './useEditorialLogic';
+
+import {useSubmission} from './useSubmission';
+
 import SubmissionsFiltersModal from '@/pages/submissions/SubmissionsFiltersModal.vue';
 import SubmissionSummaryModal from '@/pages/submissions/SubmissionSummaryModal.vue';
 
@@ -168,6 +172,37 @@ export const useSubmissionsPageStore = defineComponentStore(
 			{immediate: true},
 		);
 
+		function handleItemAction(actionName, actionArgs) {
+			console.log('handleItemAction', actionName, actionArgs);
+			if (actionName === 'assignReviewers') {
+				const submission = submissions.value.find(
+					(submission) => submission.id === actionArgs.submissionId,
+				);
+				const {getActiveReviewRound} = useSubmission();
+
+				const activeReviewRound = getActiveReviewRound(submission);
+
+				const url = pageInitConfig.addReviewerUrl
+					.replace('__id__', submission.id)
+					.replace('__stageId__', submission.stageId)
+					.replace('__reviewRoundId__', activeReviewRound.id);
+
+				openSideModal(
+					'LegacyAjax',
+					{
+						options: {url},
+					},
+					{
+						onClose: async () => {
+							await fetchSubmissions();
+						},
+					},
+				);
+			} else if (actionName === 'unassignReviewer') {
+				console.log('go');
+			}
+		}
+
 		/**
 		 * Modals
 		 */
@@ -230,6 +265,12 @@ export const useSubmissionsPageStore = defineComponentStore(
 			});
 		});
 
+		/**
+		 * Expose editorial logic function via store to make it easier
+		 * to override/extend from plugins them via pinia api
+		 */
+		const {getEditorialActivityForEditorConfig} = useEditorialLogic();
+
 		return {
 			// Dashboard
 			dashboardPage: pageInitConfig.dashboardPage,
@@ -268,6 +309,7 @@ export const useSubmissionsPageStore = defineComponentStore(
 			isSubmissionsLoading,
 			fetchSubmissions,
 			setCurrentPage,
+			handleItemAction,
 
 			// Modals
 			selectedSubmission,
@@ -284,6 +326,9 @@ export const useSubmissionsPageStore = defineComponentStore(
 			assignParticipantUrl,
 			isModalOpenedAssignParticipant,
 			openAssignParticipantModal,
+
+			// expose useEditorialLogic methods
+			getEditorialActivityForEditorConfig,
 		};
 	},
 );

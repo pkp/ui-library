@@ -76,6 +76,12 @@ const props = defineProps({
 		type: String,
 		required: true,
 	},
+	/** API url adding reviewer */
+	addReviewerUrl: {
+		type: String,
+		required: true,
+	},
+
 	/** List of Views */
 	views: {
 		type: Array,
