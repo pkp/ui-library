@@ -4,7 +4,7 @@ import {http, HttpResponse} from 'msw';
 import ReviewerSubmissionPage from './ReviewerSubmissionPage.vue';
 import Review1Completed from './mocks/review1_completed.js';
 import Review2Declined from './mocks/review2_declined.js';
-import Review3Unfinished from './mocks/review3_unfinished.js';
+import Review3Incomplete from './mocks/review3_incomplete.js';
 
 import {allModes} from '../../../.storybook/modes.js';
 
@@ -68,7 +68,7 @@ export default {
 				http.get(
 					'https://mock/index.php/publicknowledge/api/v1/reviews/history/16/17',
 					async (r) => {
-						return HttpResponse.json(Review3Unfinished);
+						return HttpResponse.json(Review3Incomplete);
 					},
 				),
 			],
@@ -108,7 +108,7 @@ export const OpenModalDeclined = {
 	],
 };
 
-export const OpenModalUnfinished = {
+export const OpenModalIncomplete = {
 	play: async ({canvasElement}) => {
 		// Assigns canvas to the component root element
 		const canvas = within(canvasElement);

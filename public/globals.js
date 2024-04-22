@@ -289,6 +289,8 @@ window.pkp = {
 		'reviewer.submission.reviewRound.emailLog': 'Decline reason sent by email',
 		'reviewer.submission.reviewRound.emailLog.defaultMessage':
 			'No reason given to the decline of the review invitation.',
+		'reviewer.submission.reviewRound.reviewNotCompleted':
+			'The review was not completed.',
 		'reviewer.submission.reviewRound.files': 'Files For Review',
 		'reviewer.submission.reviewRound.files.description':
 			'These files were sent to you for review',
