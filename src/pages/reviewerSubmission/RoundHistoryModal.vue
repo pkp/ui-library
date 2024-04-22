@@ -31,29 +31,35 @@
 						</p>
 					</div>
 
-					<div
-						v-if="store.reviewRoundHistory.declineEmail"
-						class="border border-light"
-					>
+					<div class="border border-light">
 						<div class="border-b border-light p-4">
 							<h2 class="text-lg-bold text-heading">
 								{{ t('reviewer.submission.reviewRound.emailLog') }}
 							</h2>
 						</div>
 						<div class="p-4">
-							<p
-								class="mb-4 text-lg-normal text-secondary"
-								v-html="store.reviewRoundHistory.declineEmail.subject"
-							></p>
-							<p
-								class="mt-4"
-								v-html="store.reviewRoundHistory.declineEmail.body"
-							></p>
+							<div v-if="store.reviewRoundHistory.declineEmail">
+								<p
+									class="mb-4 text-lg-normal text-secondary"
+									v-html="store.reviewRoundHistory.declineEmail.subject"
+								></p>
+								<p
+									class="mt-4"
+									v-html="store.reviewRoundHistory.declineEmail.body"
+								></p>
+							</div>
+							<p v-else>
+								{{
+									t('reviewer.submission.reviewRound.emailLog.defaultMessage')
+								}}
+							</p>
 						</div>
 					</div>
-					<p v-else>
-						{{ t('reviewer.submission.reviewRound.emailLog.defaultMessage') }}
-					</p>
+				</div>
+				<div v-else-if="store.isIncomplete">
+					<h2 class="text-lg-bold text-heading">
+						{{ t('reviewer.submission.reviewRound.reviewNotCompleted') }}
+					</h2>
 				</div>
 				<div v-else>
 					<div

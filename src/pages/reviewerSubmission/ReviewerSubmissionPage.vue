@@ -25,20 +25,10 @@
 			</PkpButton>
 		</p>
 	</div>
-	<SideModal
-		:open="store.isRoundHistoryModalOpened"
-		@close="store.closeRoundHistoryModal"
-	>
-		<RoundHistoryModal
-			v-bind="store.roundHistoryModalProps"
-		></RoundHistoryModal>
-	</SideModal>
 </template>
 
 <script setup>
 import {defineProps} from 'vue';
-import SideModal from '@/components/Modal/SideModal.vue';
-import RoundHistoryModal from './RoundHistoryModal.vue';
 import {useTranslation} from '@/composables/useTranslation';
 import {useReviewerSubmissionPageStore} from './reviewerSubmissionPageStore';
 import moment from 'moment';

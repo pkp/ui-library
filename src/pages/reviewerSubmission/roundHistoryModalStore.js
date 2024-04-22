@@ -25,10 +25,11 @@ export const useRoundHistoryModalStore = defineComponentStore(
 
 		// even incomplete submission consider as declined to keep it simple
 		const isDeclined = computed(() => {
-			return (
-				reviewRoundHistory.value?.reviewAssignment?.declined ||
-				!reviewRoundHistory.value?.reviewAssignment?.dateCompleted
-			);
+			return reviewRoundHistory.value?.reviewAssignment?.declined;
+		});
+
+		const isIncomplete = computed(() => {
+			return !reviewRoundHistory.value?.reviewAssignment?.dateCompleted;
 		});
 
 		const articleMetadata = computed(() => {
@@ -113,6 +114,7 @@ export const useRoundHistoryModalStore = defineComponentStore(
 
 		return {
 			isDeclined,
+			isIncomplete,
 			reviewRoundHistory,
 			articleMetadata,
 			generalInformation,

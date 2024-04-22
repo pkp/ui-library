@@ -1,25 +1,26 @@
-import {ref} from 'vue';
 import {defineComponentStore} from '@/utils/defineComponentStore';
+import {useModal} from '@/composables/useModal';
+import RoundHistoryModal from './RoundHistoryModal.vue';
 
 export const useReviewerSubmissionPageStore = defineComponentStore(
 	'reviewerSubmissionPage',
 	(pageInitConfig) => {
-		const isRoundHistoryModalOpened = ref(false);
-		const roundHistoryModalProps = ref(null);
-		function openRoundHistoryModal({submissionId, reviewRoundId, reviewRoundNumber}) {
-			roundHistoryModalProps.value = {submissionId, reviewRoundId, reviewRoundNumber};
-			isRoundHistoryModalOpened.value = true;
-		}
-		function closeRoundHistoryModal() {
-			isRoundHistoryModalOpened.value = false;
-			roundHistoryModalProps.value = null;
+		const {openSideModal} = useModal();
+
+		function openRoundHistoryModal({
+			submissionId,
+			reviewRoundId,
+			reviewRoundNumber,
+		}) {
+			openSideModal(RoundHistoryModal, {
+				submissionId,
+				reviewRoundId,
+				reviewRoundNumber,
+			});
 		}
 
 		return {
-			isRoundHistoryModalOpened,
 			openRoundHistoryModal,
-			closeRoundHistoryModal,
-			roundHistoryModalProps,
 			reviewRoundHistories: pageInitConfig.reviewRoundHistories,
 		};
 	},
