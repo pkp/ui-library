@@ -71,13 +71,34 @@ const props = defineProps({
 				'MY_SUBMISSIONS',
 			].includes(prop),
 	},
-	/** API url assigning participant */
+	/** Form for selection type of revision */
+	selectRevisionDecisionForm: {type: Object, required: true},
+	/** TODO */
+	selectRevisionRecommendationForm: {type: Object, required: true},
+	/** Grid url assigning participant */
 	assignParticipantUrl: {
 		type: String,
 		required: true,
 	},
-	/** API url adding reviewer */
+	/** Grid url adding reviewer */
 	addReviewerUrl: {
+		type: String,
+		required: true,
+	},
+	/** Grid url for resending request to reviewer */
+	resendRequestReviewerUrl: {type: String, required: true},
+	/** Grid url adding reviewer */
+	unassignReviewerUrl: {
+		type: String,
+		required: true,
+	},
+	/** Grid url review details */
+	reviewDetailsUrl: {
+		type: String,
+		required: true,
+	},
+	/** editReviewUrl */
+	editReviewUrl: {
 		type: String,
 		required: true,
 	},

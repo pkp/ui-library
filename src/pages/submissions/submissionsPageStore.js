@@ -6,7 +6,8 @@ import {useSorting} from '@/composables/useSorting';
 import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
 import {useAnnouncer} from '@/composables/useAnnouncer';
-import {useApiUrl} from '@/composables/useApiUrl';
+import {useUrl} from '@/composables/useUrl';
+import {useForm} from '@/composables/useForm';
 
 import {useUrlSearchParams} from '@vueuse/core';
 import {defineComponentStore} from '@/utils/defineComponentStore';
@@ -17,7 +18,7 @@ import {useSubmission} from './useSubmission';
 
 import SubmissionsFiltersModal from '@/pages/submissions/SubmissionsFiltersModal.vue';
 import SubmissionSummaryModal from '@/pages/submissions/SubmissionSummaryModal.vue';
-
+import SelectRevisionRecommendationFormModal from './SelectRevisionRecommendationFormModal.vue';
 // TODO add actual translation strings
 const TitleTranslations = {
 	EDITORIAL_DASHBOARD: 'Dashboards',
@@ -43,7 +44,7 @@ export const useSubmissionsPageStore = defineComponentStore(
 		 * Translation
 		 */
 
-		const {t} = useLocalize();
+		const {t, localize} = useLocalize();
 
 		/** Announcer */
 
@@ -130,7 +131,7 @@ export const useSubmissionsPageStore = defineComponentStore(
 			currentPage.value = _currentPage;
 		}
 		const countPerPage = ref(pageInitConfig.countPerPage);
-		const {apiUrl} = useApiUrl('_submissions');
+		const {apiUrl} = useUrl('_submissions');
 
 		const submissionsUrl = computed(() => {
 			return currentView.value?.op
@@ -174,10 +175,73 @@ export const useSubmissionsPageStore = defineComponentStore(
 
 		function handleItemAction(actionName, actionArgs) {
 			console.log('handleItemAction', actionName, actionArgs);
-			if (actionName === 'assignReviewers') {
+
+			const editorialDecisionActions = {
+				requestRevisions: {},
+				acceptSubmission: {
+					decisionId: pkp.const.DECISION_ACCEPT,
+				},
+				cancelReviewRound: {
+					decisionId: pkp.const.DECISION_CANCEL_REVIEW_ROUND,
+				},
+				declineSubmission: {
+					decisionId: pkp.const.DECISION_DECLINE,
+				},
+			};
+
+			function openDecisionPage(submissionId, decisionId) {
 				const submission = submissions.value.find(
 					(submission) => submission.id === actionArgs.submissionId,
 				);
+				const {getActiveReviewRound} = useSubmission();
+				const activeReviewRound = getActiveReviewRound(submission);
+
+				const currentPageUrl = `dashboard/editorial?${new URLSearchParams({...queryParamsUrl, summarySubmissionId: submissionId}).toString()}`;
+
+				const {redirectToPage} = useUrl(
+					`decision/record/${encodeURIComponent(actionArgs.submissionId)}`,
+					{
+						reviewRoundId: activeReviewRound.id,
+						decision: decisionId,
+						ret: currentPageUrl,
+					},
+				);
+
+				redirectToPage();
+			}
+
+			const submission = submissions.value.find(
+				(submission) => submission.id === actionArgs.submissionId,
+			);
+
+			if (editorialDecisionActions[actionName]) {
+				const {submissionId} = actionArgs;
+				if (actionName === 'requestRevisions') {
+					// open modal
+					const {set, form, getValue} = useForm(
+						pageInitConfig.selectRevisionDecisionForm,
+					);
+					openSideModal(SelectRevisionRecommendationFormModal, {
+						formProps: form,
+						onSet: set,
+						onSuccess: () => {
+							const decision = getValue('decision');
+							console.log('decision:', decision);
+							openDecisionPage(submissionId, decision);
+						},
+					});
+
+					return;
+				}
+
+				const editorialDecisionAction = editorialDecisionActions[actionName];
+
+				openDecisionPage(submissionId, editorialDecisionAction.decisionId);
+
+				// redirect to decisions page
+			}
+
+			if (actionName === 'assignReviewers') {
 				const {getActiveReviewRound} = useSubmission();
 
 				const activeReviewRound = getActiveReviewRound(submission);
@@ -190,7 +254,7 @@ export const useSubmissionsPageStore = defineComponentStore(
 				openSideModal(
 					'LegacyAjax',
 					{
-						options: {url},
+						options: {title: t('editor.submission.addStageParticipant'), url},
 					},
 					{
 						onClose: async () => {
@@ -198,8 +262,90 @@ export const useSubmissionsPageStore = defineComponentStore(
 						},
 					},
 				);
-			} else if (actionName === 'unassignReviewer') {
-				console.log('go');
+			} else if (['unassignReviewer', 'cancelReviewer'].includes(actionName)) {
+				const url = pageInitConfig.unassignReviewerUrl
+					.replace('__id__', submission.id)
+					.replace('__stageId__', submission.stageId)
+					.replace('__reviewAssignmentId__', actionArgs.reviewAssignmentId);
+
+				const modalTitle =
+					actionName === 'unassignReviewer'
+						? t('editor.review.unassignReviewer')
+						: t('editor.review.cancelReviewer');
+
+				openSideModal(
+					'LegacyAjax',
+					{
+						options: {title: modalTitle, url},
+					},
+					{
+						onClose: async () => {
+							await fetchSubmissions();
+						},
+					},
+				);
+			} else if (actionName === 'resendReviewRequest') {
+				const url = pageInitConfig.resendRequestReviewerUrl
+					.replace('__id__', submission.id)
+					.replace('__stageId__', submission.stageId)
+					.replace('__reviewAssignmentId__', actionArgs.reviewAssignmentId);
+
+				openSideModal(
+					'LegacyAjax',
+					{
+						options: {title: t('editor.review.resendRequestReviewer'), url},
+					},
+					{
+						onClose: async () => {
+							await fetchSubmissions();
+						},
+					},
+				);
+			} else if (
+				[
+					'viewDetails',
+					'viewUnreadRecommendation',
+					'viewRecommendation',
+				].includes(actionName)
+			) {
+				const url = pageInitConfig.reviewDetailsUrl
+					.replace('__id__', submission.id)
+					.replace('__stageId__', submission.stageId)
+					.replace('__reviewAssignmentId__', actionArgs.reviewAssignmentId);
+
+				const {getCurrentPublication} = useSubmission();
+
+				openSideModal(
+					'LegacyAjax',
+					{
+						options: {
+							title: `${t('editor.review.reviewDetails')}: ${localize(getCurrentPublication(submission).fullTitle)}`,
+							url,
+						},
+					},
+					{
+						onClose: async () => {
+							await fetchSubmissions();
+						},
+					},
+				);
+			} else if (actionName === 'editDueDate') {
+				const url = pageInitConfig.editReviewUrl
+					.replace('__id__', submission.id)
+					.replace('__stageId__', submission.stageId)
+					.replace('__reviewAssignmentId__', actionArgs.reviewAssignmentId);
+
+				openSideModal(
+					'LegacyAjax',
+					{
+						options: {title: t('editor.submissionReview.editReview'), url},
+					},
+					{
+						onClose: async () => {
+							await fetchSubmissions();
+						},
+					},
+				);
 			}
 		}
 
@@ -211,11 +357,24 @@ export const useSubmissionsPageStore = defineComponentStore(
 		/**
 		 * Summary submission Modal
 		 */
-		const isModalOpenedSummary = ref(false);
-		function openSummaryModal(submission) {
-			openSideModal(SubmissionSummaryModal, {
-				selectedSubmission: submission,
-			});
+
+		/** Tracking which submissionId is opened in summary modal for query params */
+		function openSummaryModal(submissionId) {
+			openSideModal(
+				SubmissionSummaryModal,
+				{
+					submissionId,
+				},
+				{
+					onClose: async () => {
+						await fetchSubmissions();
+					},
+				},
+			);
+		}
+		if (queryParamsUrl.summarySubmissionId) {
+			openSummaryModal(queryParamsUrl.summarySubmissionId);
+			queryParamsUrl.summarySubmissionId = undefined;
 		}
 
 		/**
@@ -315,7 +474,6 @@ export const useSubmissionsPageStore = defineComponentStore(
 			selectedSubmission,
 
 			// Summary submission Modal
-			isModalOpenedSummary,
 			openSummaryModal,
 
 			// Filters Modal

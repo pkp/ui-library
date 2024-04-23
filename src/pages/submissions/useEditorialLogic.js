@@ -47,5 +47,38 @@ export function useEditorialLogic() {
 		return {};
 	}
 
-	return {getEditorialActivityForEditorConfig};
+	function getSummaryModalConfig(submission) {
+		const activeStage = getActiveStage(submission);
+
+		if (activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) {
+			return {
+				editorialActions: [
+					{
+						label: 'Request Revisions',
+						type: 'secondary',
+						action: 'requestRevisions',
+					},
+					{
+						label: 'Accept Submission',
+						type: 'primary',
+						action: 'acceptSubmission',
+					},
+					{
+						label: 'Cancel Review Round',
+						type: 'negative',
+						action: 'cancelReviewRound',
+					},
+					{
+						label: 'Decline Submission',
+						type: 'negative',
+						action: 'declineSubmission',
+					},
+				],
+			};
+		}
+
+		return {editorialActions: []};
+	}
+
+	return {getEditorialActivityForEditorConfig, getSummaryModalConfig};
 }

@@ -59,6 +59,8 @@ export default {
 			steps: [],
 			/** The URL to the editorial workflow of the submission. */
 			submissionUrl: '',
+			/** The URL to the submission summary in dashboard. */
+			submissionSummaryUrl: '',
 			/** The URL to the submission in the REST API. */
 			submissionApiUrl: '',
 			/** The URL to the current user's submissions list. */
@@ -110,6 +112,23 @@ export default {
 		isOnLastStep() {
 			return this.currentStepIndex === this.steps.length - 1;
 		},
+
+		/**
+		 * Indicate the decision was triggered from submission summary page
+		 * or from workflow page
+		 */
+		returnUrlToSubmissionSummary() {
+			const queryString = window.location.search;
+			const urlParams = new URLSearchParams(queryString);
+			const ret = urlParams.get('ret');
+			console.log('RET:', ret);
+			if (ret) {
+				let returnUrl = decodeURIComponent(ret);
+				return `${pkp?.context?.pageBaseUrl}${returnUrl}`;
+			}
+
+			return null;
+		},
 	},
 	created() {
 		if (this.steps.length) {
@@ -143,7 +162,10 @@ export default {
 		 * decision and return to the submission
 		 */
 		cancel() {
-			console.log('click on cancel');
+			const submissionUrl = this.returnUrlToSubmissionSummary
+				? this.returnUrlToSubmissionSummary
+				: this.submissionUrl;
+
 			this.openDialog({
 				name: 'cancel',
 				title: this.abandonDecisionLabel,
@@ -153,7 +175,7 @@ export default {
 						label: this.abandonDecisionLabel,
 						isWarnable: true,
 						callback: () => {
-							window.location = this.submissionUrl;
+							window.location = submissionUrl;
 						},
 					},
 					{
@@ -208,11 +230,22 @@ export default {
 		 * Open the modal when decision is complete
 		 */
 		openCompletedDialog() {
-			this.openDialog({
-				name: 'completed',
-				title: this.decisionCompleteLabel,
-				message: this.decisionCompleteDescription,
-				actions: [
+			let actions;
+			let close;
+
+			if (this.returnUrlToSubmissionSummary) {
+				actions = [
+					{
+						label: this.viewSubmissionSummaryLabel,
+						element: 'a',
+						href: this.returnUrlToSubmissionSummary,
+					},
+				];
+				close = () => {
+					window.location = this.returnUrlToSubmissionSummary;
+				};
+			} else {
+				actions = [
 					{
 						label: this.viewSubmissionLabel,
 						element: 'a',
@@ -223,10 +256,17 @@ export default {
 						element: 'a',
 						href: this.submissionListUrl,
 					},
-				],
-				close: () => {
+				];
+				close = () => {
 					window.location = this.submissionUrl;
-				},
+				};
+			}
+			this.openDialog({
+				name: 'completed',
+				title: this.decisionCompleteLabel,
+				message: this.decisionCompleteDescription,
+				actions,
+				close,
 			});
 		},
 
@@ -331,12 +371,12 @@ export default {
 								bcc: bcc
 									? bcc.split(',').map((item) => {
 											return item.trim();
-									  })
+										})
 									: [],
 								cc: cc
 									? cc.split(',').map((item) => {
 											return item.trim();
-									  })
+										})
 									: [],
 								locale: step.locale,
 								recipients: step.canChangeRecipients ? step.recipients : [],

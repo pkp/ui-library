@@ -435,7 +435,7 @@ export function useReviewActivityIndicatorLogic() {
 				action: config.negativeAction,
 				label: getNegativeActionLabel(),
 			},
-			reviewerName: 'TODO',
+			reviewerName: 'Reviewer Name (todo)',
 		};
 	}
 	return {

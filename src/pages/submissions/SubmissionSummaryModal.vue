@@ -1,17 +1,17 @@
 <template>
 	<SideModalBody>
 		<template #pre-title>
-			{{ submission.id }}
+			{{ submissionId }}
 		</template>
 		<template #title>
-			<span class="underline">
+			<span v-if="submission" class="underline">
 				{{ submission.publications[0].authorsStringShort }}
 			</span>
 		</template>
-		<template #description>
+		<template v-if="submission" #description>
 			{{ submission.publications[0].fullTitle.en }}
 		</template>
-		<template #post-description>
+		<template v-if="submission" #post-description>
 			<StageBubble :stage-id="submission.stageId">
 				<span class="text-lg-normal">
 					{{ submission.stageName }}
@@ -37,12 +37,16 @@
 				</template>
 			</StageBubble>
 		</template>
-		<template #actions>
+		<template v-if="submission" #actions>
 			<PkpButton element="a" :href="submission.urlWorkflow">
 				View submission in detail
 			</PkpButton>
 		</template>
-		<div class="border-ligh flex w-full border-r border-t border-light">
+
+		<div
+			v-if="summaryStore.summaryConfig"
+			class="border-ligh flex w-full border-r border-t border-light"
+		>
 			<div class="w-3/5 border-r border-light p-4">
 				<div class="bg-secondary p-5">
 					<p>
@@ -72,35 +76,46 @@
 				</div>
 			</div>
 			<div class="w-2/5">
-				<div class="flex flex-col space-y-2 border-b border-light p-4">
-					<div>
-						<PkpButton :is-primary="true" class="inline-flex">
-							Send submission for review
-						</PkpButton>
-					</div>
-					<div>
-						<PkpButton class="inline-flex">Accept and skip review</PkpButton>
-					</div>
-					<div>
-						<PkpButton :is-warnable="true" class="inline-flex">
-							Decline submission
-						</PkpButton>
-					</div>
+				<div
+					class="flex flex-col items-start space-y-2 border-b border-light p-4"
+				>
+					<PkpButton
+						v-for="editorialAction in summaryStore.summaryConfig
+							.editorialActions"
+						:key="editorialAction.action"
+						:is-primary="editorialAction.type === 'primary'"
+						:is-secondary="editorialAction.type === 'secondary'"
+						:is-warnable="editorialAction.type === 'negative'"
+						@click="
+							() =>
+								dashboardStore.handleItemAction(editorialAction.action, {
+									submissionId: submission.id,
+								})
+						"
+					>
+						{{ editorialAction.label }}
+					</PkpButton>
 				</div>
 				<div class="p-4">
-					<div class="text-lg-bold">Editors assigned:</div>
 					<div>
-						<PkpButton
-							is-link="true"
-							@click="
-								() =>
-									dashboardStore.openAssignParticipantModal(
-										props.selectedSubmission,
-									)
-							"
-						>
-							Assign Editors
-						</PkpButton>
+						<h3 class="text-lg-bold">Editors assigned: (todo t)</h3>
+						<div>
+							<PkpButton
+								is-link="true"
+								@click="
+									() =>
+										dashboardStore.openAssignParticipantModal(
+											props.selectedSubmission,
+										)
+								"
+							>
+								Assign Editors
+							</PkpButton>
+						</div>
+					</div>
+					<div class="mt-4">
+						<h3 class="text-lg-bold">Issue No (todo t):</h3>
+						<p>Not assigned</p>
 					</div>
 				</div>
 			</div>
@@ -120,7 +135,7 @@ import {useSubmissionSummaryStore} from '@/pages/submissions/submissionSummarySt
 
 const pkp = window.pkp;
 
-const props = defineProps({selectedSubmission: {type: Object, required: true}});
+const props = defineProps({submissionId: {type: String, required: true}});
 
 const summaryStore = useSubmissionSummaryStore(props);
 const dashboardStore = useSubmissionsPageStore(props);

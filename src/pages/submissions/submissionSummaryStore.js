@@ -1,35 +1,34 @@
-import {ref} from 'vue';
+import {computed} from 'vue';
 
 import {defineComponentStore} from '@/utils/defineComponentStore';
+import {useEditorialLogic} from './useEditorialLogic';
+import {useFetch} from '@/composables/useFetch';
+import {useUrl} from '@/composables/useUrl';
 
 export const useSubmissionSummaryStore = defineComponentStore(
 	'submissionSummary',
 	(initValues) => {
-		const submission = initValues.selectedSubmission;
 		/**
-		 * Assign Participant Modal
+		 * Fetch submission details
 		 */
-		const isModalOpenedAssignParticipant = ref(false);
+		const {apiUrl} = useUrl(
+			`submissions/${encodeURIComponent(initValues.submissionId)}`,
+		);
+		const {data: submission, fetch} = useFetch(apiUrl);
 
-		function openAssignParticipantModal() {
-			isModalOpenedAssignParticipant.value = true;
-		}
-		function closeAssignParticipantModal() {
-			isModalOpenedAssignParticipant.value = false;
-		}
+		fetch();
 
-		// TODO add additional logic for submission summary &
-		// fetch additional data specific for submission
+		const {getSummaryModalConfig} = useEditorialLogic();
 
+		const summaryConfig = computed(() => {
+			if (submission.value) {
+				return getSummaryModalConfig(submission.value);
+			}
+			return null;
+		});
 		return {
 			submission,
-
-			/**
-			 * Assign Participant Modal
-			 * */
-			isModalOpenedAssignParticipant,
-			openAssignParticipantModal,
-			closeAssignParticipantModal,
+			summaryConfig,
 		};
 	},
 );

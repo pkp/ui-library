@@ -17,5 +17,16 @@ export function useSubmission() {
 		);
 	}
 
-	return {getActiveStage, getActiveReviewRound, getActiveReviewAssignments};
+	function getCurrentPublication(submission) {
+		return submission.publications.find(
+			(publication) => publication.id === submission.currentPublicationId,
+		);
+	}
+
+	return {
+		getActiveStage,
+		getActiveReviewRound,
+		getActiveReviewAssignments,
+		getCurrentPublication,
+	};
 }

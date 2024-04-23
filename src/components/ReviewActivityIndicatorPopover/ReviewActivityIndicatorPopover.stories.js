@@ -1,15 +1,41 @@
-import ReviewActivityIndicatorPopup from './ReviewActivityIndicatorPopover.vue';
+import ReviewActivityIndicatorPopover from './ReviewActivityIndicatorPopover.vue';
+import PkpPopover from '@/components/Popover/Popover.vue';
+import ReviewActivityIndicator from './ReviewActivityIndicator.vue';
+import {useReviewActivityIndicatorLogic} from '@/components/ReviewActivityIndicatorPopover/useReviewActivityIndicator';
 
 export default {
 	title: 'Components/ReviewActivityIndicatorPopup',
-	component: ReviewActivityIndicatorPopup,
+	component: ReviewActivityIndicatorPopover,
 	render: (args) => ({
-		components: {ReviewActivityIndicatorPopup},
-		setup() {
-			return {args};
+		components: {
+			ReviewActivityIndicatorPopover,
+			PkpPopover,
+			ReviewActivityIndicator,
 		},
-		template:
-			'<ReviewActivityIndicatorPopup v-bind="args"></ReviewActivityIndicatorPopup>',
+		setup() {
+			const {
+				getReviewActivityIndicatorProps,
+				getReviewActivityIndicatorPopoverProps,
+			} = useReviewActivityIndicatorLogic();
+
+			return {
+				args,
+				getReviewActivityIndicatorProps,
+				getReviewActivityIndicatorPopoverProps,
+			};
+		},
+		template: `
+		<PkpPopover>
+				<template #button>
+					<ReviewActivityIndicator
+						v-bind="getReviewActivityIndicatorProps(args.reviewAssignment)"
+					></ReviewActivityIndicator>
+				</template>
+				<ReviewActivityIndicatorPopover
+					v-bind="getReviewActivityIndicatorPopoverProps(args.reviewAssignment)"
+				/>
+		</PkpPopover>
+`,
 	}),
 	decorators: [
 		() => ({
