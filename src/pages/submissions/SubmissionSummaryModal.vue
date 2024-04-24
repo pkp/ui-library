@@ -49,6 +49,7 @@
 		>
 			<div class="w-3/5 border-r border-light p-4">
 				<div class="bg-secondary p-5">
+					<FileManager />
 					<p>
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
 						eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
@@ -128,7 +129,7 @@ import {storeToRefs} from 'pinia';
 import PkpButton from '@/components/Button/Button.vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import StageBubble from '@/components/StageBubble/StageBubble.vue';
-
+import FileManager from './FileManager.vue';
 import {useSubmissionsPageStore} from './submissionsPageStore';
 
 import {useSubmissionSummaryStore} from '@/pages/submissions/submissionSummaryStore';

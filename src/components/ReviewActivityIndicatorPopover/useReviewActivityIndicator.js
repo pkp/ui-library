@@ -259,7 +259,7 @@ const ConfigPerStatus = {
 		dateToDisplay: 'dateCompleted',
 	},
 
-	// reviewer cancelled review request
+	// editor cancelled review request
 	[pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED]: {
 		reviewActivityIndicator: {
 			colorVariant: 'negative',
@@ -278,7 +278,7 @@ const ConfigPerStatus = {
 		primaryAction: 'viewDetails',
 		negativeAction: null,
 		// TODO: its not tracked on backend
-		dateToDisplay: 'dateConfirmed',
+		dateToDisplay: 'dateCancelled',
 	},
 	// request has been sent but reviewer has not responded
 	[pkp.const.REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND]: {
@@ -358,7 +358,7 @@ export function useReviewActivityIndicatorLogic() {
 				return reviewAssignment[config.dateToDisplay];
 			}
 
-			return null;
+			return '';
 		}
 		const date = getDate(config, reviewAssignment);
 
