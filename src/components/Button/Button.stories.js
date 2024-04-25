@@ -139,6 +139,14 @@ export const WithIcon = {
 	}),
 };
 
+export const IconOnly = {
+	args: {
+		sizeVariant: 'iconOnly',
+		icon: 'Cancel',
+		slot: 'Sample text',
+	},
+};
+
 export const IsActive = {
 	render: (args) => ({
 		components: {Button},

@@ -12,8 +12,11 @@
 		@focus="emit('focus')"
 		@blur="emit('blur')"
 	>
-		<Icon v-if="icon" class="h-5 w-5" :icon="icon" />
-		<slot />
+		<Icon v-if="icon" class="h-5 w-5" :icon="icon" :inline="inlineIcon" />
+		<slot v-if="sizeVariant !== 'iconOnly'" />
+		<span v-else class="sr-only">
+			<slot />
+		</span>
 	</component>
 </template>
 
@@ -47,7 +50,8 @@ const props = defineProps({
 		required: false,
 		type: String,
 		default: () => 'default',
-		validator: (prop) => ['default', 'compact', 'fullWidth'].includes(prop),
+		validator: (prop) =>
+			['default', 'compact', 'fullWidth', 'iconOnly'].includes(prop),
 	},
 });
 
@@ -88,7 +92,8 @@ const styles = computed(() => ({
 	// Active
 	'text-on-dark bg-selection-dark border-transparent': props.isActive,
 	// Size Normal
-	'py-[0.4375rem] px-3': props.sizeVariant === 'default',
+	'py-[0.4375rem] px-3':
+		props.sizeVariant === 'default' || props.sizeVariant === 'iconOnly',
 	// Size Compact (in tables)
 	'py-[0.1875rem] px-3': props.sizeVariant === 'compact',
 	// Full Width (and rectangular border)
