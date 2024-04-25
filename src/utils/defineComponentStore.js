@@ -1,10 +1,11 @@
 import {defineStore, getActivePinia} from 'pinia';
 import {onMounted, onUnmounted} from 'vue';
 
-export function defineComponentStore(storeName, setupFn) {
+export function defineComponentStore(_storeName, setupFn) {
 	let useStore = null;
 	let mountedCount = 0;
-	return function (initConfig) {
+	return function (initConfig, _namespace = '') {
+		const storeName = _namespace ? `${_storeName}_${_namespace}` : _storeName;
 		onMounted(() => {
 			mountedCount = mountedCount + 1;
 			//console.log(`store ${storeName} mounted ${mountedCount}`);

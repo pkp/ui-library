@@ -48,32 +48,13 @@
 			class="border-ligh flex w-full border-r border-t border-light"
 		>
 			<div class="w-3/5 border-r border-light p-4">
-				<div class="bg-secondary p-5">
-					<FileManager />
-					<p>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-						eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-						ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-						aliquip ex ea commodo consequat.
-					</p>
-					<p>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-						eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-						ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-						aliquip ex ea commodo consequat.
-					</p>
-					<p>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-						eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-						ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-						aliquip ex ea commodo consequat.
-					</p>
-					<p>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-						eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-						ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-						aliquip ex ea commodo consequat.
-					</p>
+				<div class="flex flex-col gap-y-3 bg-secondary p-5">
+					<component
+						:is="Components[item.component] || item.component"
+						v-bind="item.props"
+						v-for="(item, index) in summaryStore.summaryConfig.leftColumnItems"
+						:key="index"
+					/>
 				</div>
 			</div>
 			<div class="w-2/5">
@@ -129,10 +110,12 @@ import {storeToRefs} from 'pinia';
 import PkpButton from '@/components/Button/Button.vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import StageBubble from '@/components/StageBubble/StageBubble.vue';
-import FileManager from './FileManager.vue';
+import FileManager from '@/managers/FileManager/FileManager.vue';
 import {useSubmissionsPageStore} from './submissionsPageStore';
 
 import {useSubmissionSummaryStore} from '@/pages/submissions/submissionSummaryStore';
+
+const Components = {FileManager};
 
 const pkp = window.pkp;
 

@@ -91,16 +91,16 @@ window.pkp = {
 	 * Icon map for document types
 	 */
 	documentTypeIcons: {
-		default: 'file-o', // DOCUMENT_TYPE_DEFAULT
-		audio: 'file-audio-o', // DOCUMENT_TYPE_AUDIO
-		epub: 'file-text-o', // DOCUMENT_TYPE_EPUB
-		excel: 'file-excel-o', // DOCUMENT_TYPE_EXCEL
-		html: 'file-code-o', // DOCUMENT_TYPE_HTML
-		image: 'file-image-o', // DOCUMENT_TYPE_IMAGE
-		pdf: 'file-pdf-o', // DOCUMENT_TYPE_PDF
-		word: 'file-word-o', // DOCUMENT_TYPE_WORD
-		video: 'file-video-o', // DOCUMENT_TYPE_VIDEO
-		zip: 'file-archive-o', // DOCUMENT_TYPE_ZIP
+		default: 'DocumentDefault', // DOCUMENT_TYPE_DEFAULT
+		audio: 'FileAudio', // DOCUMENT_TYPE_AUDIO
+		epub: 'FileEpub', // DOCUMENT_TYPE_EPUB
+		excel: 'FileExcel', // DOCUMENT_TYPE_EXCEL
+		html: 'FileHtml', // DOCUMENT_TYPE_HTML
+		image: 'FileImage', // DOCUMENT_TYPE_IMAGE
+		pdf: 'FilePdf', // DOCUMENT_TYPE_PDF
+		word: 'FileDoc', // DOCUMENT_TYPE_WORD
+		video: 'FileVideo', // DOCUMENT_TYPE_VIDEO
+		zip: 'file-FileZip-o', // DOCUMENT_TYPE_ZIP
 	},
 
 	/**

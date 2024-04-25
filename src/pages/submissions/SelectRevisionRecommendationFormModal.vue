@@ -24,8 +24,8 @@
 import {inject} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
-const props = defineProps({formProps: {type: Object, required: true}});
-console.log('SELECT props:', JSON.stringify(props, null, 2));
+
+defineProps({formProps: {type: Object, required: true}});
 const emit = defineEmits(['set', 'success']);
 const {t} = useLocalize();
 const closeModal = inject('closeModal');

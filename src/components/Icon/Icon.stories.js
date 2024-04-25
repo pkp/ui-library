@@ -74,6 +74,7 @@ export const iconGallery = {
 			'Email',
 			'EmailOpened',
 			'Expand',
+			'DefaultDocument',
 			'FileAudio',
 			'FileDoc',
 			'FileEpub',
