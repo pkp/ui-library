@@ -107,6 +107,7 @@ export const iconGallery = {
 			'Settings',
 			'Sort',
 			'Statistics',
+			'Tools',
 			'Underline',
 			'Url',
 			'UsefulTips',
