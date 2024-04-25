@@ -17,7 +17,7 @@ import CellContentActivityReviews from './CellContentActivityReviews.vue';
 import {defineProps, computed} from 'vue';
 import TableCell from '@/components/TableNext/TableCell.vue';
 
-import {useSubmissionsPageStore} from '@/pages/submissions/submissionsPageStore';
+import {useDashboardPageStore} from '@/pages/dashboard/dashboardPageStore';
 
 const CellContentComponents = {
 	CellContentActivityAlert,
@@ -25,7 +25,7 @@ const CellContentComponents = {
 };
 
 const {getEditorialActivityForEditorConfig, handleItemAction} =
-	useSubmissionsPageStore();
+	useDashboardPageStore();
 const props = defineProps({item: {type: Object, required: true}});
 
 const cellConfig = computed(() => {

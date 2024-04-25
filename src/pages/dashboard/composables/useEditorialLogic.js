@@ -1,4 +1,4 @@
-import {useSubmission} from './useSubmission.js';
+import {useSubmission} from '../../../composables/useSubmission.js';
 
 const {getActiveStage, getActiveReviewRound, getActiveReviewAssignments} =
 	useSubmission();

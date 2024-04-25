@@ -111,9 +111,9 @@ import PkpButton from '@/components/Button/Button.vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import StageBubble from '@/components/StageBubble/StageBubble.vue';
 import FileManager from '@/managers/FileManager/FileManager.vue';
-import {useSubmissionsPageStore} from './submissionsPageStore';
+import {useDashboardPageStore} from '../../dashboardPageStore';
 
-import {useSubmissionSummaryStore} from '@/pages/submissions/submissionSummaryStore';
+import {useSubmissionSummaryStore} from './submissionSummaryStore';
 
 const Components = {FileManager};
 
@@ -122,7 +122,8 @@ const pkp = window.pkp;
 const props = defineProps({submissionId: {type: String, required: true}});
 
 const summaryStore = useSubmissionSummaryStore(props);
-const dashboardStore = useSubmissionsPageStore(props);
+const dashboardStore = useDashboardPageStore(props);
 
 const {submission} = storeToRefs(summaryStore);
 </script>
+./DashboardPageStore

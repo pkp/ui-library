@@ -4,7 +4,7 @@
 			class="-ms-3"
 			:aria-describedby="'submission-title-' + item.id"
 			:is-link="true"
-			@click="submissionsPageStore.openSummaryModal(item.id)"
+			@click="dashboardPageStore.openSummaryModal(item.id)"
 		>
 			{{ t('editor.submission.viewSummary') }}
 		</PkpButton>
@@ -14,10 +14,10 @@
 import {defineProps} from 'vue';
 import PkpButton from '@/components/Button/Button.vue';
 import TableCell from '@/components/TableNext/TableCell.vue';
-import {useSubmissionsPageStore} from '@/pages/submissions/submissionsPageStore.js';
+import {useDashboardPageStore} from '@/pages/dashboard/dashboardPageStore.js';
 
 defineProps({
 	item: {type: Object, required: true},
 });
-const submissionsPageStore = useSubmissionsPageStore();
+const dashboardPageStore = useDashboardPageStore();
 </script>

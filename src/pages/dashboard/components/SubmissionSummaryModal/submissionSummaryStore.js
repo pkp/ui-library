@@ -1,7 +1,7 @@
 import {computed} from 'vue';
 
 import {defineComponentStore} from '@/utils/defineComponentStore';
-import {useEditorialLogic} from './useEditorialLogic';
+import {useEditorialLogic} from '../../composables/useEditorialLogic';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
 

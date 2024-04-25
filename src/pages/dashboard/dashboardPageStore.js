@@ -12,13 +12,14 @@ import {useForm} from '@/composables/useForm';
 import {useUrlSearchParams} from '@vueuse/core';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
-import {useEditorialLogic} from './useEditorialLogic';
+import {useEditorialLogic} from './composables/useEditorialLogic';
+import {useReviewActivityLogic} from './composables/useReviewActivityLogic';
 
-import {useSubmission} from './useSubmission';
+import {useSubmission} from '../../composables/useSubmission';
 
-import SubmissionsFiltersModal from '@/pages/submissions/SubmissionsFiltersModal.vue';
-import SubmissionSummaryModal from '@/pages/submissions/SubmissionSummaryModal.vue';
-import SelectRevisionRecommendationFormModal from './SelectRevisionRecommendationFormModal.vue';
+import DashboardFiltersModal from '@/pages/dashboard/components/DashboardFiltersModal.vue';
+import SubmissionSummaryModal from '@/pages/dashboard/components/SubmissionSummaryModal/SubmissionSummaryModal.vue';
+import SelectRevisionRecommendationFormModal from './components/SelectRevisionRecommendationFormModal.vue';
 // TODO add actual translation strings
 const TitleTranslations = {
 	EDITORIAL_DASHBOARD: 'Dashboards',
@@ -32,8 +33,8 @@ const TitleIcons = {
 	MY_SUBMISSIONS: 'MySubmissions',
 };
 
-export const useSubmissionsPageStore = defineComponentStore(
-	'submissionsPage',
+export const useDashboardPageStore = defineComponentStore(
+	'dashboardPage',
 	(pageInitConfig) => {
 		/**
 		 * ModalStore
@@ -382,7 +383,7 @@ export const useSubmissionsPageStore = defineComponentStore(
 		 */
 		const isModalOpenedFilters = ref(false);
 		function openFiltersModal() {
-			openSideModal(SubmissionsFiltersModal, {
+			openSideModal(DashboardFiltersModal, {
 				filtersFormInitial: filtersForm,
 				onUpdateFiltersForm: updateFiltersForm,
 			});
@@ -429,6 +430,10 @@ export const useSubmissionsPageStore = defineComponentStore(
 		 * to override/extend from plugins them via pinia api
 		 */
 		const {getEditorialActivityForEditorConfig} = useEditorialLogic();
+		const {
+			getReviewActivityIndicatorProps,
+			getReviewActivityIndicatorPopoverProps,
+		} = useReviewActivityLogic();
 
 		return {
 			// Dashboard
@@ -487,6 +492,8 @@ export const useSubmissionsPageStore = defineComponentStore(
 
 			// expose useEditorialLogic methods
 			getEditorialActivityForEditorConfig,
+			getReviewActivityIndicatorProps,
+			getReviewActivityIndicatorPopoverProps,
 		};
 	},
 );

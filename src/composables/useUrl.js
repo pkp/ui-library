@@ -5,7 +5,7 @@ import {ref, computed} from 'vue';
  *  is covered in useFetch
  */
 
-export function useUrl(_path, _queryParams = {}) {
+export function useUrl(_path, _queryParams = null) {
 	if (typeof pkp === 'undefined' || !pkp?.context?.apiBaseUrl) {
 		throw new Error('pkp.context.apiBaseUrl is not configured');
 	}

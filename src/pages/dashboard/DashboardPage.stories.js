@@ -1,17 +1,17 @@
-import SubmissionsPage from './SubmissionsPage.vue';
+import DashboardPage from './DashboardPage.vue/index.js';
 import {http, HttpResponse} from 'msw';
 import SubmissionsMock25 from './mocks/submissions25.js';
-import PageInitConfigMock from './mocks/pageInitConfig';
+import PageInitConfigMock from './mocks/pageInitConfig.js';
 
-export default {title: 'Pages/Submissions', component: SubmissionsPage};
+export default {title: 'Pages/Dashboard', component: DashboardPage};
 
 export const Init = {
 	render: (args) => ({
-		components: {SubmissionsPage},
+		components: {DashboardPage},
 		setup() {
 			return {args};
 		},
-		template: '<SubmissionsPage v-bind="args" />',
+		template: '<DashboardPage v-bind="args" />',
 	}),
 	parameters: {
 		// mock date to consistently show sensible editorial activity popups

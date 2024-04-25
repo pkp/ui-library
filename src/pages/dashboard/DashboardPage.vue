@@ -39,7 +39,7 @@
 				/>
 			</div>
 			<div class="mt-4">
-				<SubmissionsTable
+				<DashboardTable
 					:items="store.submissions"
 					:columns="store.columns"
 					:sort-descriptor="store.sortDescriptor"
@@ -53,12 +53,12 @@
 </template>
 <script setup>
 import PkpButton from '@/components/Button/Button.vue';
-import ActiveFilters from './ActiveFilters.vue';
-import SubmissionsTable from '@/pages/submissions/submissionsTable/SubmissionsTable.vue';
-import DashboardViews from '@/pages/submissions/DashboardViews.vue';
+import ActiveFilters from './components/ActiveFilters.vue';
+import DashboardTable from './components/DashboardTable/DashboardTable.vue';
+import DashboardViews from '@/pages/dashboard/components/DashboardViews.vue';
 import Search from '@/components/Search/Search.vue';
 
-import {useSubmissionsPageStore} from './submissionsPageStore';
+import {useDashboardPageStore} from './dashboardPageStore';
 
 const props = defineProps({
 	dashboardPage: {
@@ -125,7 +125,7 @@ const props = defineProps({
 	},
 });
 
-const store = useSubmissionsPageStore(props);
+const store = useDashboardPageStore(props);
 </script>
 
 <style>
@@ -133,3 +133,4 @@ const store = useSubmissionsPageStore(props);
 	@apply bg-secondary p-0;
 }
 </style>
+./DashboardPageStore./components/ActiveFilters.vue

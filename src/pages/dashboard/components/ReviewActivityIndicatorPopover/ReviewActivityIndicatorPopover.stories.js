@@ -1,7 +1,7 @@
 import ReviewActivityIndicatorPopover from './ReviewActivityIndicatorPopover.vue';
 import PkpPopover from '@/components/Popover/Popover.vue';
 import ReviewActivityIndicator from './ReviewActivityIndicator.vue';
-import {useReviewActivityIndicatorLogic} from '@/components/ReviewActivityIndicatorPopover/useReviewActivityIndicator';
+import {useReviewActivityIndicatorLogic} from '@/pages/dashboard/composables/useReviewActivityLogic';
 
 export default {
 	title: 'Components/ReviewActivityIndicatorPopup',
