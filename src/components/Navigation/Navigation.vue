@@ -1,35 +1,64 @@
 <template>
 	<div class="flex h-screen">
 		<nav
-			class="text-xs border-l border-r border-light pl-4 pr-4 pt-4 leading-6"
+			class="border-l border-r border-light pl-4 pr-4 pt-4"
 			:aria-label="ariaLabel"
 		>
 			<ul>
 				<li>
 					<PkpButton
-						:size-variant="collapsed ? 'default' : 'iconOnly'"
-						:icon="collapsed ? 'BackButton' : 'Expand'"
-						:inline="true"
+						:size-variant="collapsed ? 'iconOnly' : 'default'"
+						:icon="collapsed ? 'Expand' : 'BackButton'"
 						@click="toggleNav"
 					>
-						Collapse Main Menu
+						{{ collapsed ? 'Expand Main Menu' : 'Collapse Main Menu' }}
 					</PkpButton>
 				</li>
 				<li
 					v-for="(link, index) in links"
 					:key="index"
-					class="mt-2"
-					:class="link.addMargin ? 'mt-8' : ''"
+					:class="link.addMargin ? 'mt-8' : 'mt-2'"
 					@click="handleClick(index)"
 				>
 					<PkpButton
 						element="a"
 						:href="link.url"
 						:is-active="link.isCurrent"
-						:is-secondary="!link.isCurrent"
-						:size-variant="collapsed ? 'default' : 'iconOnly'"
+						:size-variant="collapsed ? 'iconOnly' : 'default'"
 						:icon="link.icon"
-						:inline-icon="true"
+					>
+						{{ link.name }}
+					</PkpButton>
+				</li>
+			</ul>
+		</nav>
+		<nav
+			v-if="currentLink.submenu && !collapsed"
+			class="w-60 border-r border-light pt-4 leading-6"
+			:aria-label="currentLink.name"
+		>
+			<div class="mb-10 p-3 font-bold uppercase text-heading">
+				<Icon
+					v-if="currentLink.icon"
+					class="h-9 w-9"
+					:icon="currentLink.icon"
+				/>
+				<div>
+					<span>{{ currentLink.name }}</span>
+				</div>
+			</div>
+			<ul>
+				<li
+					v-for="(link, index) in currentLink.submenu"
+					:key="index"
+					@click="handleSecondNav(currentLink.submenu, index)"
+				>
+					<PkpButton
+						element="a"
+						:href="link.url"
+						:is-active="link.isCurrent"
+						:icon="link.icon"
+						size-variant="fullWidth"
 					>
 						{{ link.name }}
 					</PkpButton>
@@ -57,14 +86,23 @@ const props = defineProps({
 });
 
 const collapsed = ref(false);
+const currentLink = ref({});
 
 function toggleNav() {
 	collapsed.value = !collapsed.value;
+}
+
+function handleSecondNav(submenu = [], index = 0) {
+	submenu.forEach((link, i) => {
+		link.isCurrent = i === index;
+	});
 }
 
 function handleClick(index) {
 	props.links.forEach((link, i) => {
 		link.isCurrent = i === index;
 	});
+	currentLink.value = props.links[index];
+	handleSecondNav(props.links[index]?.submenu, 0);
 }
 </script>

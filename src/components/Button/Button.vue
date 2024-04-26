@@ -12,7 +12,7 @@
 		@focus="emit('focus')"
 		@blur="emit('blur')"
 	>
-		<Icon v-if="icon" class="h-5 w-5" :icon="icon" :inline="inlineIcon" />
+		<Icon v-if="icon" class="h-5 w-5" :icon="icon" />
 		<slot v-if="sizeVariant !== 'iconOnly'" />
 		<span v-else class="sr-only">
 			<slot />
