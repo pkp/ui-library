@@ -49,9 +49,9 @@
 			</div>
 			<ul>
 				<li
-					v-for="(link, index) in currentLink.submenu"
-					:key="index"
-					@click="handleSecondNav(currentLink.submenu, index)"
+					v-for="(link, key) in currentLink.submenu"
+					:key="key"
+					@click="handleSecondNav(currentLink.submenu, key)"
 				>
 					<PkpButton
 						element="a"
@@ -92,9 +92,9 @@ function toggleNav() {
 	collapsed.value = !collapsed.value;
 }
 
-function handleSecondNav(submenu = [], index = 0) {
-	submenu.forEach((link, i) => {
-		link.isCurrent = i === index;
+function handleSecondNav(submenu = [], smKey) {
+	Object.keys(submenu).forEach((key) => {
+		submenu[key].isCurrent = key === smKey;
 	});
 }
 
@@ -103,6 +103,7 @@ function handleClick(index) {
 		link.isCurrent = i === index;
 	});
 	currentLink.value = props.links[index];
-	handleSecondNav(props.links[index]?.submenu, 0);
+	const submenu = props.links[index]?.submenu || [];
+	handleSecondNav(submenu, Object.keys(submenu)[0]);
 }
 </script>

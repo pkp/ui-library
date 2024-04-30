@@ -70,81 +70,81 @@ export const Default = {
 				icon: 'Settings',
 				url: '#',
 				addMargin: true,
-				submenu: [
-					{
+				submenu: {
+					context: {
 						name: 'Journal',
 						url: '#',
 						isCurrent: false,
 						icon: '',
 					},
-					{
+					website: {
 						name: 'Website',
 						url: '#',
 						isCurrent: false,
 						icon: '',
 					},
-					{
+					workflow: {
 						name: 'Workflow',
 						url: '#',
 						isCurrent: false,
 						icon: '',
 					},
-					{
+					distribution: {
 						name: 'Distribution',
 						url: '#',
 						isCurrent: false,
 						icon: '',
 					},
-					{
+					access: {
 						name: 'Users & Roles',
 						url: '#',
 						isCurrent: false,
 						icon: '',
 					},
-				],
+				},
 			},
 			{
 				name: 'Statistics',
 				icon: 'Statistics',
 				url: '#',
-				submenu: [
-					{
+				submenu: {
+					publications: {
 						name: 'Articles',
 						url: '#',
 						isCurrent: false,
 						icon: '',
 					},
-					{
+					issues: {
 						name: 'Issues',
 						url: '#',
 						isCurrent: false,
 						icon: '',
 					},
-					{
+					context: {
 						name: 'Journal',
 						url: '#',
 						isCurrent: false,
 						icon: '',
 					},
-					{
+					editorial: {
 						name: 'Editorial Activity',
 						url: '#',
 						isCurrent: false,
 						icon: '',
 					},
-					{
+					users: {
 						name: 'Users',
 						url: '#',
 						isCurrent: false,
 						icon: '',
 					},
-					{
+					reports: {
 						name: 'Reports',
 						url: '#',
 						isCurrent: false,
 						icon: '',
 					},
-				],
+				},
 			},
 			{
 				name: 'Tools',
