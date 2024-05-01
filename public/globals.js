@@ -91,7 +91,7 @@ window.pkp = {
 	 * Icon map for document types
 	 */
 	documentTypeIcons: {
-		default: 'DocumentDefault', // DOCUMENT_TYPE_DEFAULT
+		default: 'DefaultDocument', // DOCUMENT_TYPE_DEFAULT
 		audio: 'FileAudio', // DOCUMENT_TYPE_AUDIO
 		epub: 'FileEpub', // DOCUMENT_TYPE_EPUB
 		excel: 'FileExcel', // DOCUMENT_TYPE_EXCEL
