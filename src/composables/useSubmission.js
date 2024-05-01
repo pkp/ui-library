@@ -23,10 +23,23 @@ export function useSubmission() {
 		);
 	}
 
+	function getFileStageFromWorkflowStage(submission) {
+		const FileStageMapping = {
+			[pkp.const.WORKFLOW_STAGE_ID_SUBMISSION]:
+				pkp.const.SUBMISSION_FILE_SUBMISSION,
+			[pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW]:
+				pkp.const.SUBMISSION_FILE_REVIEW_REVISION,
+			[pkp.const.WORKFLOW_STAGE_ID_EDITING]: pkp.const.SUBMISSION_FILE_FINAL,
+		};
+
+		return FileStageMapping[submission.stageId];
+	}
+
 	return {
 		getActiveStage,
 		getActiveReviewRound,
 		getActiveReviewAssignments,
 		getCurrentPublication,
+		getFileStageFromWorkflowStage,
 	};
 }

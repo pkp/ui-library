@@ -7,24 +7,20 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
 import {useAnnouncer} from '@/composables/useAnnouncer';
 import {useUrl} from '@/composables/useUrl';
-import {useForm} from '@/composables/useForm';
-
 import {useUrlSearchParams} from '@vueuse/core';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
+import {useHandleActions} from './composables/useHandleActions';
 import {useEditorialLogic} from './composables/useEditorialLogic';
 import {useReviewActivityLogic} from './composables/useReviewActivityLogic';
 
-import {useSubmission} from '../../composables/useSubmission';
-
 import DashboardFiltersModal from '@/pages/dashboard/components/DashboardFiltersModal.vue';
 import SubmissionSummaryModal from '@/pages/dashboard/components/SubmissionSummaryModal/SubmissionSummaryModal.vue';
-import SelectRevisionRecommendationFormModal from './components/SelectRevisionRecommendationFormModal.vue';
 // TODO add actual translation strings
 const TitleTranslations = {
-	EDITORIAL_DASHBOARD: 'Dashboards',
-	MY_REVIEW_ASSIGNMENTS: 'Review Assignments',
-	MY_SUBMISSIONS: 'My Submissions',
+	EDITORIAL_DASHBOARD: 'Dashboards (t)',
+	MY_REVIEW_ASSIGNMENTS: 'Review Assignments (t)',
+	MY_SUBMISSIONS: 'My Submissions (t)',
 };
 
 const TitleIcons = {
@@ -45,7 +41,7 @@ export const useDashboardPageStore = defineComponentStore(
 		 * Translation
 		 */
 
-		const {t, localize} = useLocalize();
+		const {t} = useLocalize();
 
 		/** Announcer */
 
@@ -174,180 +170,17 @@ export const useDashboardPageStore = defineComponentStore(
 			{immediate: true},
 		);
 
+		const {handleSubmissionAction} = useHandleActions(pageInitConfig);
 		function handleItemAction(actionName, actionArgs) {
 			console.log('handleItemAction', actionName, actionArgs);
-
-			const editorialDecisionActions = {
-				requestRevisions: {},
-				acceptSubmission: {
-					decisionId: pkp.const.DECISION_ACCEPT,
-				},
-				cancelReviewRound: {
-					decisionId: pkp.const.DECISION_CANCEL_REVIEW_ROUND,
-				},
-				declineSubmission: {
-					decisionId: pkp.const.DECISION_DECLINE,
-				},
-			};
-
-			function openDecisionPage(submissionId, decisionId) {
-				const submission = submissions.value.find(
-					(submission) => submission.id === actionArgs.submissionId,
-				);
-				const {getActiveReviewRound} = useSubmission();
-				const activeReviewRound = getActiveReviewRound(submission);
-
-				const currentPageUrl = `dashboard/editorial?${new URLSearchParams({...queryParamsUrl, summarySubmissionId: submissionId}).toString()}`;
-
-				const {redirectToPage} = useUrl(
-					`decision/record/${encodeURIComponent(actionArgs.submissionId)}`,
-					{
-						reviewRoundId: activeReviewRound.id,
-						decision: decisionId,
-						ret: currentPageUrl,
-					},
-				);
-
-				redirectToPage();
-			}
 
 			const submission = submissions.value.find(
 				(submission) => submission.id === actionArgs.submissionId,
 			);
 
-			if (editorialDecisionActions[actionName]) {
-				const {submissionId} = actionArgs;
-				if (actionName === 'requestRevisions') {
-					// open modal
-					const {set, form, getValue} = useForm(
-						pageInitConfig.selectRevisionDecisionForm,
-					);
-					openSideModal(SelectRevisionRecommendationFormModal, {
-						formProps: form,
-						onSet: set,
-						onSuccess: () => {
-							const decision = getValue('decision');
-							console.log('decision:', decision);
-							openDecisionPage(submissionId, decision);
-						},
-					});
-
-					return;
-				}
-
-				const editorialDecisionAction = editorialDecisionActions[actionName];
-
-				openDecisionPage(submissionId, editorialDecisionAction.decisionId);
-
-				// redirect to decisions page
-			}
-
-			if (actionName === 'assignReviewers') {
-				const {getActiveReviewRound} = useSubmission();
-
-				const activeReviewRound = getActiveReviewRound(submission);
-
-				const url = pageInitConfig.addReviewerUrl
-					.replace('__id__', submission.id)
-					.replace('__stageId__', submission.stageId)
-					.replace('__reviewRoundId__', activeReviewRound.id);
-
-				openSideModal(
-					'LegacyAjax',
-					{
-						options: {title: t('editor.submission.addStageParticipant'), url},
-					},
-					{
-						onClose: async () => {
-							await fetchSubmissions();
-						},
-					},
-				);
-			} else if (['unassignReviewer', 'cancelReviewer'].includes(actionName)) {
-				const url = pageInitConfig.unassignReviewerUrl
-					.replace('__id__', submission.id)
-					.replace('__stageId__', submission.stageId)
-					.replace('__reviewAssignmentId__', actionArgs.reviewAssignmentId);
-
-				const modalTitle =
-					actionName === 'unassignReviewer'
-						? t('editor.review.unassignReviewer')
-						: t('editor.review.cancelReviewer');
-
-				openSideModal(
-					'LegacyAjax',
-					{
-						options: {title: modalTitle, url},
-					},
-					{
-						onClose: async () => {
-							await fetchSubmissions();
-						},
-					},
-				);
-			} else if (actionName === 'resendReviewRequest') {
-				const url = pageInitConfig.resendRequestReviewerUrl
-					.replace('__id__', submission.id)
-					.replace('__stageId__', submission.stageId)
-					.replace('__reviewAssignmentId__', actionArgs.reviewAssignmentId);
-
-				openSideModal(
-					'LegacyAjax',
-					{
-						options: {title: t('editor.review.resendRequestReviewer'), url},
-					},
-					{
-						onClose: async () => {
-							await fetchSubmissions();
-						},
-					},
-				);
-			} else if (
-				[
-					'viewDetails',
-					'viewUnreadRecommendation',
-					'viewRecommendation',
-				].includes(actionName)
-			) {
-				const url = pageInitConfig.reviewDetailsUrl
-					.replace('__id__', submission.id)
-					.replace('__stageId__', submission.stageId)
-					.replace('__reviewAssignmentId__', actionArgs.reviewAssignmentId);
-
-				const {getCurrentPublication} = useSubmission();
-
-				openSideModal(
-					'LegacyAjax',
-					{
-						options: {
-							title: `${t('editor.review.reviewDetails')}: ${localize(getCurrentPublication(submission).fullTitle)}`,
-							url,
-						},
-					},
-					{
-						onClose: async () => {
-							await fetchSubmissions();
-						},
-					},
-				);
-			} else if (actionName === 'editDueDate') {
-				const url = pageInitConfig.editReviewUrl
-					.replace('__id__', submission.id)
-					.replace('__stageId__', submission.stageId)
-					.replace('__reviewAssignmentId__', actionArgs.reviewAssignmentId);
-
-				openSideModal(
-					'LegacyAjax',
-					{
-						options: {title: t('editor.submissionReview.editReview'), url},
-					},
-					{
-						onClose: async () => {
-							await fetchSubmissions();
-						},
-					},
-				);
-			}
+			handleSubmissionAction(submission, actionName, actionArgs, async () => {
+				await fetchSubmissions();
+			});
 		}
 
 		/**
@@ -365,6 +198,7 @@ export const useDashboardPageStore = defineComponentStore(
 				SubmissionSummaryModal,
 				{
 					submissionId,
+					pageInitConfig,
 				},
 				{
 					onClose: async () => {
@@ -429,7 +263,9 @@ export const useDashboardPageStore = defineComponentStore(
 		 * Expose editorial logic function via store to make it easier
 		 * to override/extend from plugins them via pinia api
 		 */
-		const {getEditorialActivityForEditorConfig} = useEditorialLogic();
+		const {getEditorialActivityForEditorConfig} = useEditorialLogic(
+			pageInitConfig.dashboardPage,
+		);
 		const {
 			getReviewActivityIndicatorProps,
 			getReviewActivityIndicatorPopoverProps,

@@ -1,6 +1,8 @@
 import {useLocalize} from '@/composables/useLocalize';
+import {useDate} from '@/composables/useDate';
 
 const {tk, t} = useLocalize();
+const {calculateDaysBetweenDates} = useDate();
 /*
 const ReviewAssignmentStatuses = [
 	pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE,
@@ -301,21 +303,11 @@ const ConfigPerStatus = {
 	},
 };
 
-function calculateDaysBetweenDates(startDate, endDate) {
-	const oneDay = 1000 * 60 * 60 * 24; // milliseconds in one day
-	const start = new Date(startDate);
-	const end = new Date(endDate);
-
-	const difference = end - start; // difference in milliseconds
-
-	return Math.round(difference / oneDay);
-}
-
 function getDays(config, reviewAssignment) {
 	if (config.dateToDisplay) {
 		return calculateDaysBetweenDates(
-			new Date(),
 			reviewAssignment[config.dateToDisplay],
+			new Date(),
 		);
 	}
 

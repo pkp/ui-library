@@ -16,5 +16,6 @@ const props = defineProps({
 	title: {type: String, required: true},
 	description: {type: String, required: true},
 });
+console.log('file manager create:', props.namespace);
 const fileManagerStore = useFileManagerStore(props, props.namespace);
 </script>

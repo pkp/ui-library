@@ -102,6 +102,21 @@ const props = defineProps({
 		type: String,
 		required: true,
 	},
+	/** assignToIssueUrl */
+	assignToIssueUrl: {
+		type: String,
+		required: true,
+	},
+	/** viewActivityLogUrl */
+	viewActivityLogUrl: {
+		type: String,
+		required: true,
+	},
+	/** fileUploadWizardUrl */
+	fileUploadWizardUrl: {
+		type: String,
+		required: true,
+	},
 
 	/** List of Views */
 	views: {
@@ -133,4 +148,3 @@ const store = useDashboardPageStore(props);
 	@apply bg-secondary p-0;
 }
 </style>
-./DashboardPageStore./components/ActiveFilters.vue

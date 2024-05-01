@@ -1,6 +1,6 @@
 import {computed} from 'vue';
 
-export function useUser() {
+export function useCurrentUser() {
 	const isSiteAdmin = computed(
 		() =>
 			!!pkp.currentUser.roles.find(

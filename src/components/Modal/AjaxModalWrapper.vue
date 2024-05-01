@@ -81,6 +81,8 @@ function passToHandlerElement(...args) {
 				'formCanceled',
 				'ajaxHtmlError',
 				'modalFinished',
+				'wizardClose',
+				'wizardCancel',
 			].includes(eventType)
 		) {
 			closeModal();

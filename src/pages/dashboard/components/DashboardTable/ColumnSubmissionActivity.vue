@@ -26,6 +26,7 @@ const CellContentComponents = {
 
 const {getEditorialActivityForEditorConfig, handleItemAction} =
 	useDashboardPageStore();
+console.log('debug stuff:', handleItemAction);
 const props = defineProps({item: {type: Object, required: true}});
 
 const cellConfig = computed(() => {

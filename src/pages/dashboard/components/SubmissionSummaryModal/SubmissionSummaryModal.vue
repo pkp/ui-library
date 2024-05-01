@@ -44,7 +44,7 @@
 		</template>
 
 		<div
-			v-if="summaryStore.summaryConfig"
+			v-if="summaryStore.submission"
 			class="border-ligh flex w-full border-r border-t border-light"
 		>
 			<div class="w-3/5 border-r border-light p-4">
@@ -52,7 +52,7 @@
 					<component
 						:is="Components[item.component] || item.component"
 						v-bind="item.props"
-						v-for="(item, index) in summaryStore.summaryConfig.leftColumnItems"
+						v-for="(item, index) in primaryItems"
 						:key="index"
 					/>
 				</div>
@@ -61,44 +61,20 @@
 				<div
 					class="flex flex-col items-start space-y-2 border-b border-light p-4"
 				>
-					<PkpButton
-						v-for="editorialAction in summaryStore.summaryConfig
-							.editorialActions"
-						:key="editorialAction.action"
-						:is-primary="editorialAction.type === 'primary'"
-						:is-secondary="editorialAction.type === 'secondary'"
-						:is-warnable="editorialAction.type === 'negative'"
-						@click="
-							() =>
-								dashboardStore.handleItemAction(editorialAction.action, {
-									submissionId: submission.id,
-								})
-						"
-					>
-						{{ editorialAction.label }}
-					</PkpButton>
+					<component
+						:is="Components[item.component] || item.component"
+						v-for="(item, index) in actionItems"
+						v-bind="item.props"
+						:key="index"
+					></component>
 				</div>
-				<div class="p-4">
-					<div>
-						<h3 class="text-lg-bold">Editors assigned: (todo t)</h3>
-						<div>
-							<PkpButton
-								is-link="true"
-								@click="
-									() =>
-										dashboardStore.openAssignParticipantModal(
-											props.selectedSubmission,
-										)
-								"
-							>
-								Assign Editors
-							</PkpButton>
-						</div>
-					</div>
-					<div class="mt-4">
-						<h3 class="text-lg-bold">Issue No (todo t):</h3>
-						<p>Not assigned</p>
-					</div>
+				<div class="flex flex-col space-y-4 p-4">
+					<component
+						:is="Components[item.component] || item.component"
+						v-for="(item, index) in metaItems"
+						v-bind="item.props"
+						:key="index"
+					></component>
 				</div>
 			</div>
 		</div>
@@ -106,23 +82,69 @@
 </template>
 
 <script setup>
+import {computed} from 'vue';
 import {storeToRefs} from 'pinia';
 import PkpButton from '@/components/Button/Button.vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import StageBubble from '@/components/StageBubble/StageBubble.vue';
 import FileManager from '@/managers/FileManager/FileManager.vue';
-import {useDashboardPageStore} from '../../dashboardPageStore';
-
+import LastActivity from './primaryItems/LastActivity.vue';
+import ActionButton from './actionItems/ActionButton.vue';
+import EditorsAssigned from './metaItems/EditorsAssigned.vue';
+import BasicMetadata from './metaItems/BasicMetadata.vue';
+import IssueAssigned from './metaItems/IssueAssigned.vue';
 import {useSubmissionSummaryStore} from './submissionSummaryStore';
 
-const Components = {FileManager};
+const Components = {
+	FileManager,
+	LastActivity,
+	ActionButton,
+	EditorsAssigned,
+	BasicMetadata,
+	IssueAssigned,
+};
 
 const pkp = window.pkp;
 
-const props = defineProps({submissionId: {type: String, required: true}});
+const props = defineProps({
+	submissionId: {type: Number, required: true},
+	pageInitConfig: {type: Object, required: true},
+});
 
 const summaryStore = useSubmissionSummaryStore(props);
-const dashboardStore = useDashboardPageStore(props);
+
+const primaryItems = computed(() => {
+	return summaryStore.filterItemsBasedOnContext(
+		summaryStore.getPrimaryItems(
+			summaryStore.submission,
+			summaryStore.currentPublication,
+		),
+		summaryStore.dashboardPage,
+		summaryStore.submission,
+	);
+});
+
+const actionItems = computed(() => {
+	return summaryStore.filterItemsBasedOnContext(
+		summaryStore.getActionItems(
+			summaryStore.submission,
+			summaryStore.currentPublication,
+		),
+		summaryStore.dashboardPage,
+		summaryStore.submission,
+	);
+});
+
+const metaItems = computed(() => {
+	return summaryStore.filterItemsBasedOnContext(
+		summaryStore.getMetaItems(
+			summaryStore.submission,
+			summaryStore.currentPublication,
+		),
+		summaryStore.dashboardPage,
+		summaryStore.submission,
+	);
+});
 
 const {submission} = storeToRefs(summaryStore);
 </script>

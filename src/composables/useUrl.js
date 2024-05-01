@@ -5,7 +5,7 @@ import {ref, computed} from 'vue';
  *  is covered in useFetch
  */
 
-export function useUrl(_path, _queryParams = null) {
+export function useUrl(_path, _queryParams = {}) {
 	if (typeof pkp === 'undefined' || !pkp?.context?.apiBaseUrl) {
 		throw new Error('pkp.context.apiBaseUrl is not configured');
 	}
@@ -19,7 +19,7 @@ export function useUrl(_path, _queryParams = null) {
 	const queryParams = ref(_queryParams);
 
 	const queryParamsString = computed(() => {
-		if (queryParams.value) {
+		if (queryParams.value && Object.keys(queryParams.value).length) {
 			return `?${new URLSearchParams(queryParams.value).toString()}`;
 		}
 		return '';
