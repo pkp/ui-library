@@ -229,9 +229,17 @@ export function useHandleActions({
 				.replace('__id__', submission.id)
 				.replace('__stageId__', submission.stageId);
 
-			openSideModal('LegacyAjax', {
-				options: {url},
-			});
+			openSideModal(
+				'LegacyAjax',
+				{
+					options: {url},
+				},
+				{
+					onClose: async () => {
+						finishedCallback();
+					},
+				},
+			);
 		} else if (actionName === 'uploadRevisions') {
 			const activeReviewRound = getActiveReviewRound(submission);
 			const {getFileStageFromWorkflowStage} = useSubmission();
@@ -242,9 +250,17 @@ export function useHandleActions({
 				.replace('__fileStage__', getFileStageFromWorkflowStage(submission))
 				.replace('__reviewRoundId__', activeReviewRound.id);
 
-			openSideModal('LegacyAjax', {
-				options: {url},
-			});
+			openSideModal(
+				'LegacyAjax',
+				{
+					options: {url},
+				},
+				{
+					onClose: async () => {
+						finishedCallback();
+					},
+				},
+			);
 		}
 	}
 

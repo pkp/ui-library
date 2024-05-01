@@ -82,7 +82,7 @@
 </template>
 
 <script setup>
-import {computed} from 'vue';
+import {computed, provide} from 'vue';
 import {storeToRefs} from 'pinia';
 import PkpButton from '@/components/Button/Button.vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
@@ -147,5 +147,6 @@ const metaItems = computed(() => {
 });
 
 const {submission} = storeToRefs(summaryStore);
+
+provide('registerDataChangeCallback', summaryStore.registerDataChangeCallback);
 </script>
-./DashboardPageStore

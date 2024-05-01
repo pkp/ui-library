@@ -52,10 +52,7 @@ export function useSummaryConfig() {
 				component: 'LastActivity',
 				props: {},
 				filters: {
-					dashboardPage: [
-						DashboardPageTypes.EDITORIAL_DASHBOARD,
-						DashboardPageTypes.MY_SUBMISSIONS,
-					],
+					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
 					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
 				},
 			},
@@ -72,7 +69,10 @@ export function useSummaryConfig() {
 						'These files have been submitted by the author after visions were requested (localize)',
 				},
 				filters: {
-					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					dashboardPage: [
+						DashboardPageTypes.EDITORIAL_DASHBOARD,
+						DashboardPageTypes.MY_SUBMISSIONS,
+					],
 					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
 				},
 			},
@@ -208,7 +208,10 @@ export function useSummaryConfig() {
 					body: 'todo not in api',
 				},
 				filters: {
-					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					dashboardPage: [
+						DashboardPageTypes.EDITORIAL_DASHBOARD,
+						DashboardPageTypes.MY_SUBMISSIONS,
+					],
 					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
 				},
 			},
@@ -223,7 +226,10 @@ export function useSummaryConfig() {
 					),
 				},
 				filters: {
-					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					dashboardPage: [
+						DashboardPageTypes.EDITORIAL_DASHBOARD,
+						DashboardPageTypes.MY_SUBMISSIONS,
+					],
 					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
 				},
 			},
@@ -238,7 +244,10 @@ export function useSummaryConfig() {
 						)?.join(', ') || '',
 				},
 				filters: {
-					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					dashboardPage: [
+						DashboardPageTypes.EDITORIAL_DASHBOARD,
+						DashboardPageTypes.MY_SUBMISSIONS,
+					],
 					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
 				},
 			},
@@ -249,7 +258,10 @@ export function useSummaryConfig() {
 					body: `${currentPublication.locale} (todo show language name not locale)`,
 				},
 				filters: {
-					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					dashboardPage: [
+						DashboardPageTypes.EDITORIAL_DASHBOARD,
+						DashboardPageTypes.MY_SUBMISSIONS,
+					],
 					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
 				},
 			},

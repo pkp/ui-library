@@ -30,6 +30,6 @@ export const useFileManagerStore = defineComponentStore(
 		fetchFiles();
 		const title = ref('ahoj');
 
-		return {title, files};
+		return {title, files, fetchFiles};
 	},
 );

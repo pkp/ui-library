@@ -7,6 +7,7 @@ import {useUrl} from '@/composables/useUrl';
 import {useParticipant} from '@/composables/useParticipant';
 import {useHandleActions} from '../../composables/useHandleActions';
 import {useLocalize} from '@/composables/useLocalize';
+import {useDataChanged} from '@/composables/useDataChanged';
 
 const DashboardPageTypes = {
 	EDITORIAL_DASHBOARD: 'editorialDashboard',
@@ -20,6 +21,11 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		const dashboardPage = initValues.pageInitConfig.dashboardPage;
 
 		const {localize} = useLocalize();
+
+		/**
+		 * Data changes tracking
+		 */
+		const {registerDataChangeCallback, triggerDataChange} = useDataChanged();
 
 		/**
 		 * Fetch submission details
@@ -62,6 +68,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			if (dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD) {
 				fetchParticipants();
 			}
+			triggerDataChange();
 		}
 
 		fetchAll();
@@ -72,6 +79,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			getFirstGroupWithFollowingRoles,
 		} = useParticipant();
 
+		/** TODO: Might be moved directly to the component? */
 		const associatedEditors = computed(() => {
 			if (!participants.value) {
 				return [];
@@ -105,6 +113,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 				actionName,
 				actionArgs,
 				async () => {
+					console.log('handle Action after modal is closed');
 					fetchAll();
 				},
 			);
@@ -132,6 +141,10 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			getActionItems,
 			getMetaItems,
 			filterItemsBasedOnContext,
+
+			/** Changes tracking */
+			registerDataChangeCallback,
+			triggerDataChange,
 		};
 	},
 );

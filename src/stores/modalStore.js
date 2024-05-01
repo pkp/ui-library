@@ -105,6 +105,7 @@ export const useModalStore = defineStore('modal', () => {
 	}
 
 	function closeSideModal(triggerLegacyCloseHandler = true, _modalId) {
+		console.log('closeSideModal', _modalId);
 		let modalToClose = null;
 		if (sideModal1?.value?.modalId === _modalId && sideModal1?.value?.opened) {
 			modalToClose = sideModal1;
@@ -118,7 +119,6 @@ export const useModalStore = defineStore('modal', () => {
 		if (!modalToClose) {
 			return;
 		}
-
 		modalToClose.value.opened = false;
 		if (modalToClose.value.onClose) {
 			modalToClose.value.onClose();
