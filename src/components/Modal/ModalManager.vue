@@ -25,8 +25,9 @@ import {storeToRefs} from 'pinia';
 import SideModal from '@/components/Modal/SideModal.vue';
 import LegacyAjax from '@/components/Modal/SideModalBodyLegacyAjax.vue';
 import PkpDialog from '@/components/Modal/Dialog.vue';
+import WorkflowLogResponseForModal from '@/pages/workflow/WorkflowLogResponseForModal.vue';
 
-const LegacyModals = {LegacyAjax};
+const GlobalModals = {LegacyAjax, WorkflowLogResponseForModal};
 
 const modalStore = useModalStore();
 const {sideModal1, sideModal2} = storeToRefs(useModalStore());
@@ -37,7 +38,7 @@ const component1 = computed(() => {
 		return null;
 	}
 	return typeof sideModal1.value.component === 'string'
-		? LegacyModals[sideModal1.value.component]
+		? GlobalModals[sideModal1.value.component]
 		: sideModal1.value.component;
 });
 
@@ -46,7 +47,7 @@ const component2 = computed(() => {
 		return null;
 	}
 	return typeof sideModal2.value.component === 'string'
-		? LegacyModals[sideModal2.value.component]
+		? GlobalModals[sideModal2.value.component]
 		: sideModal2.value.component;
 });
 
