@@ -96,6 +96,7 @@ export const iconGallery = {
 			'MoreOptions',
 			'MySubmissions',
 			'NavDoi',
+			'NavAdmin',
 			'Notifications',
 			'OpenReview',
 			'Orcid',
