@@ -1,7 +1,7 @@
 <template>
-	<div class="flex h-screen">
+	<div v-if="Object.keys(links).length" class="flex h-screen">
 		<nav
-			class="border-l border-r border-light pl-4 pr-4 pt-4"
+			class="w-max border-e border-s border-light pl-4 pr-4 pt-4"
 			:aria-label="ariaLabel"
 		>
 			<ul>
@@ -15,10 +15,10 @@
 					</PkpButton>
 				</li>
 				<li
-					v-for="(link, index) in links"
-					:key="index"
+					v-for="(link, key) in links"
+					:key="key"
 					:class="link.addMargin ? 'mt-8' : 'mt-2'"
-					@click="handleClick(index)"
+					@click="handleClick(key)"
 				>
 					<PkpButton
 						element="a"
@@ -33,8 +33,8 @@
 			</ul>
 		</nav>
 		<nav
-			v-if="currentLink.submenu && !collapsed"
-			class="w-60 border-r border-light pt-4 leading-6"
+			v-if="currentLink?.submenu"
+			class="w-60 border-e border-light pt-4 leading-6"
 			:aria-label="currentLink.name"
 		>
 			<div class="mb-10 p-3 font-bold uppercase text-heading">
@@ -69,14 +69,15 @@
 </template>
 
 <script setup>
-import {defineProps, ref} from 'vue';
+import {defineProps, ref, reactive} from 'vue';
+import {useStorage} from '@vueuse/core';
 
 const props = defineProps({
 	links: {
-		type: Array,
+		type: Object,
 		required: true,
 		validator: (value) => {
-			return value.every((item) => 'name' in item);
+			return Object.keys(value).every((key) => 'name' in value[key]);
 		},
 	},
 	ariaLabel: {
@@ -85,8 +86,26 @@ const props = defineProps({
 	},
 });
 
-const collapsed = ref(false);
+const collapsed = useStorage('nav-collapsed', false);
 const currentLink = ref({});
+const modifiedLinks = reactive({...props.links});
+
+const currentLinkKey = Object.keys(modifiedLinks).find((key) => {
+	const smCurrentLink = modifiedLinks[key]?.submenu || {};
+	const activeSubmenuLink = Object.keys(smCurrentLink).find(
+		(smKey) => smCurrentLink[smKey]?.isCurrent,
+	);
+
+	// if secondary (submenu) links have the isCurrent set to true,
+	// then also set the isCurrent to true for its parent from primary links
+	if (activeSubmenuLink) {
+		modifiedLinks[key].isCurrent = true;
+	}
+
+	return modifiedLinks[key]?.isCurrent;
+});
+
+currentLink.value = modifiedLinks[currentLinkKey];
 
 function toggleNav() {
 	collapsed.value = !collapsed.value;
@@ -98,12 +117,12 @@ function handleSecondNav(submenu = [], smKey) {
 	});
 }
 
-function handleClick(index) {
-	props.links.forEach((link, i) => {
-		link.isCurrent = i === index;
+function handleClick(linkKey) {
+	Object.keys(modifiedLinks).forEach((key) => {
+		modifiedLinks[key].isCurrent = key === linkKey;
 	});
-	currentLink.value = props.links[index];
-	const submenu = props.links[index]?.submenu || [];
+	currentLink.value = modifiedLinks[linkKey];
+	const submenu = modifiedLinks[linkKey]?.submenu || [];
 	handleSecondNav(submenu, Object.keys(submenu)[0]);
 }
 </script>
