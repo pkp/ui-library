@@ -13,10 +13,10 @@
 		@blur="emit('blur')"
 	>
 		<Icon v-if="icon" class="h-5 w-5" :icon="icon" />
-		<slot v-if="sizeVariant !== 'iconOnly'" />
-		<span v-else class="sr-only">
+		<span v-if="sizeVariant === 'iconOnly' && icon" class="sr-only">
 			<slot />
 		</span>
+		<slot v-else />
 	</component>
 </template>
 
