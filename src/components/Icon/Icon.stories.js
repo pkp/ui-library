@@ -65,6 +65,7 @@ export const iconGallery = {
 			'Bold',
 			'Bullets',
 			'Cancel',
+			'Catalog',
 			'Complete',
 			'Dashboard',
 			'DecreaseTextSize',
