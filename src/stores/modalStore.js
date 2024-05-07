@@ -137,9 +137,9 @@ export const useModalStore = defineStore('modal', () => {
 		// to trigger handler modalClose explicitelly
 		if (
 			triggerLegacyCloseHandler &&
-			modalToClose.value?.props?.options?.modalHandler
+			modalToClose.value?.props?.legacyOptions?.modalHandler
 		) {
-			modalToClose.value?.props?.options?.modalHandler.modalClose();
+			modalToClose.value?.props?.legacyOptions?.modalHandler.modalClose();
 		}
 	}
 
