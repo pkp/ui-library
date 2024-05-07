@@ -80,6 +80,7 @@ import Notifications from './icons/Notifications.vue';
 import OpenReview from './icons/OpenReview.vue';
 import Orcid from './icons/Orcid.vue';
 import Overdue from './icons/Overdue.vue';
+import Payment from './icons/Payment.vue';
 import ReadRecommendation from './icons/ReadRecommendation.vue';
 import ReviewAssignments from './icons/ReviewAssignments.vue';
 import ReviewRequestDeclined from './icons/ReviewRequestDeclined.vue';
@@ -139,6 +140,7 @@ const svgIcons = {
 	OpenReview,
 	Orcid,
 	Overdue,
+	Payment,
 	ReadRecommendation,
 	ReviewAssignments,
 	ReviewRequestDeclined,
