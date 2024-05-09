@@ -1,7 +1,11 @@
 <template>
-	<div v-if="Object.keys(links).length" class="flex h-screen">
+	<div
+		v-if="Object.keys(links).length"
+		ref="navbarHeight"
+		class="sticky top-0 flex h-screen bg-secondary"
+	>
 		<nav
-			class="w-max border-e border-s border-light pl-4 pr-4 pt-4"
+			class="w-max overflow-y-auto border-e border-s border-light pl-4 pr-4 pt-4"
 			:aria-label="ariaLabel"
 		>
 			<ul>
@@ -34,7 +38,7 @@
 		</nav>
 		<nav
 			v-if="currentLink?.submenu"
-			class="w-60 border-e border-light pt-4 leading-6"
+			class="w-60 overflow-y-auto border-e border-light pt-4 leading-6"
 			:aria-label="currentLink.name"
 		>
 			<div class="mb-10 p-3 font-bold uppercase text-heading">
@@ -69,7 +73,7 @@
 </template>
 
 <script setup>
-import {defineProps, ref, reactive} from 'vue';
+import {ref, reactive, onMounted, nextTick} from 'vue';
 import {useStorage} from '@vueuse/core';
 
 const props = defineProps({
@@ -89,6 +93,8 @@ const props = defineProps({
 const collapsed = useStorage('nav-collapsed', false);
 const currentLink = ref({});
 const modifiedLinks = reactive({...props.links});
+const navbarHeight = ref(0);
+const headerHeight = ref(null);
 
 const currentLinkKey = Object.keys(modifiedLinks).find((key) => {
 	const smCurrentLink = modifiedLinks[key]?.submenu || {};
@@ -106,6 +112,19 @@ const currentLinkKey = Object.keys(modifiedLinks).find((key) => {
 });
 
 currentLink.value = modifiedLinks[currentLinkKey];
+
+onMounted(async () => {
+	await nextTick();
+
+	const headerElement = document.querySelector('header.app__header');
+	headerHeight.value = headerElement?.clientHeight;
+
+	// set the navbar's height and position
+	if (headerHeight.value) {
+		navbarHeight.value.style.top = `${headerHeight.value}px`;
+		navbarHeight.value.style.height = `calc(100vh - ${headerHeight.value}px)`;
+	}
+});
 
 function toggleNav() {
 	collapsed.value = !collapsed.value;
