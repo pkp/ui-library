@@ -15,6 +15,7 @@ import {setActivePinia, createPinia} from 'pinia';
 
 import {useFetch} from './useFetch';
 import {useModalStore} from '@/stores/modalStore';
+global.pkp = global.pkp || {};
 
 export const restHandlers = [
 	http.get('http://mock/get/status200', async ({request}) => {
