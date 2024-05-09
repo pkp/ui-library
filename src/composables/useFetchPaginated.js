@@ -38,7 +38,13 @@ export function useFetchPaginated(url, options) {
 		return (currentPage.value - 1) * pageSize.value;
 	});
 	const useFetchQuery = computed(() => {
-		return {...query.value, offset: offset.value, count: pageSize.value};
+		return {
+			...query.value,
+			offset: offset.value,
+			count: pageSize.value,
+			page: currentPage.value,
+			perPage: pageSize.value,
+		};
 	});
 
 	const {data, isLoading, fetch} = useFetch(url, {
@@ -46,8 +52,10 @@ export function useFetchPaginated(url, options) {
 		query: useFetchQuery,
 	});
 
-	const items = computed(() => data.value?.items || []);
-	const itemCount = computed(() => data.value?.itemsMax || 0);
+	const items = computed(() => data.value?.items || data.value?.data || []);
+	const itemCount = computed(
+		() => data.value?.itemsMax || data.value?.total || 0,
+	);
 
 	const pagination = computed(() => {
 		const firstItemIndex = itemCount.value ? offset.value + 1 : 0;
