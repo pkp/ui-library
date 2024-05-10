@@ -11,6 +11,7 @@
 			<ul>
 				<li>
 					<PkpButton
+						v-tooltip="addLinkTooltip('Expand Main Menu')"
 						:size-variant="collapsed ? 'iconOnly' : 'default'"
 						:icon="collapsed ? 'Expand' : 'BackButton'"
 						@click="toggleNav"
@@ -25,6 +26,7 @@
 					@click="handleClick(key)"
 				>
 					<PkpButton
+						v-tooltip="addLinkTooltip(link.name)"
 						element="a"
 						:href="link.url"
 						:is-active="link.isCurrent"
@@ -143,5 +145,11 @@ function handleClick(linkKey) {
 	currentLink.value = modifiedLinks[linkKey];
 	const submenu = modifiedLinks[linkKey]?.submenu || [];
 	handleSecondNav(submenu, Object.keys(submenu)[0]);
+}
+
+function addLinkTooltip(text) {
+	return collapsed.value
+		? {content: text, theme: 'pkp-nav', placement: 'auto-end'}
+		: {};
 }
 </script>

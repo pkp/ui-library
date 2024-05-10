@@ -68,6 +68,10 @@ setup((app) => {
 					hide: 0,
 				},
 			},
+			'pkp-nav': {
+				$extend: 'tooltip',
+				triggers: ['hover'],
+			},
 		},
 	});
 
