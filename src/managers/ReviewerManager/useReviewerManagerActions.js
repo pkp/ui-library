@@ -4,6 +4,9 @@ import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
 import {useSubmission} from '@/composables/useSubmission';
 import {useFetch, getCSRFToken} from '@/composables/useFetch';
+import WorkflowLogResponseModal from '@/managers/ReviewerManager/modals/WorkflowLogResponseModal.vue';
+import {useDashboardPageStore} from '@/pages/dashboard/dashboardPageStore';
+import {useApiUrl} from '@/composables/useApiUrl';
 
 export const Actions = {
 	REVIEWER_ADD_REVIEWER: 'reviewerAddReviewer',
@@ -22,6 +25,7 @@ export const Actions = {
 	REVIEWER_THANK_REVIEWER: 'reviewerThankReviewer',
 	REVIEWER_REVERT_CONSIDER: 'reviewerRevertConsider',
 	REVIEWER_SEND_REMINDER: 'reviewerSendReminder',
+	REVIEWER_LOG_RESPONSE: 'reviewerLogResponse',
 };
 
 export function useReviewerManagerActions() {
@@ -185,6 +189,14 @@ export function useReviewerManagerActions() {
 			name: Actions.REVIEWER_EDITORIAL_NOTES,
 			icon: 'DefaultDocument',
 		});
+
+		if (!reviewAssignment.dateConfirmed) {
+			actions.push({
+				label: t('editor.review.logResponse'),
+				name: Actions.REVIEWER_LOG_RESPONSE,
+				icon: 'ReviewAssignments',
+			});
+		}
 
 		return actions;
 	}
@@ -566,6 +578,37 @@ export function useReviewerManagerActions() {
 		openLegacyModal({title: t('editor.review.reminder')}, finishedCallback);
 	}
 
+	function reviewerLogResponse(
+		{submission, reviewAssignment, submissionStageId},
+		finishedCallback,
+	) {
+		const {openSideModal} = useModal();
+
+		const dashboardStore = useDashboardPageStore();
+		let form = dashboardStore.componentForms.logResponseForm;
+		let submissionId = submission.id;
+
+		const {getCurrentPublication} = useSubmission();
+		const currentPublication = getCurrentPublication(submission);
+		const title = `${localizeSubmission(currentPublication.fullTitle, currentPublication.locale)}`;
+
+		const {apiUrl} = useApiUrl(
+			`reviews/${submissionId}/${reviewAssignment.id}/confirmReview`,
+		);
+
+		form.action = apiUrl;
+
+		openSideModal(
+			WorkflowLogResponseModal,
+			{
+				title: title,
+				submissionId: submissionId,
+				logResponseForm: dashboardStore.componentForms.logResponseForm,
+			},
+			{onClose: finishedCallback},
+		);
+	}
+
 	return {
 		getTopActions,
 		getItemActions,
@@ -586,5 +629,6 @@ export function useReviewerManagerActions() {
 		reviewerThankReviewer,
 		reviewerRevertConsider,
 		reviewerSendReminder,
+		reviewerLogResponse,
 	};
 }

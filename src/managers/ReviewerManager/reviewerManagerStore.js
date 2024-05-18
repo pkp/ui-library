@@ -157,6 +157,13 @@ export const useReviewerManagerStore = defineComponentStore(
 			);
 		}
 
+		function reviewerLogResponse({reviewAssignment}) {
+			_actionFns.reviewerLogResponse(
+				getActionArgs({reviewAssignment}),
+				dataUpdateCallback,
+			);
+		}
+
 		function getItemActions(args) {
 			return _actionFns.getItemActions(args);
 		}
@@ -190,6 +197,7 @@ export const useReviewerManagerStore = defineComponentStore(
 			reviewerThankReviewer,
 			reviewerRevertConsider,
 			reviewerSendReminder,
+			reviewerLogResponse,
 			_reviewerManagerActionFns: _actionFns,
 		};
 	},
