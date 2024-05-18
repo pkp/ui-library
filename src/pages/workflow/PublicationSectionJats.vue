@@ -41,7 +41,7 @@
 						<div v-if="this.workingJatsProps['loadingContentError']">
 							{{ this.workingJatsProps['loadingContentError'] }}
 						</div>
-						<pre v-else v-highlightjs="workingJatsContent"><code class="xml"></code></pre>
+						<pre><code ref="highlightedCode" class="xml">{{ workingJatsContent }}</code></pre>
 					</div>
 					<div v-if="this.workingJatsProps['loadingContentError'] == null">
 						<div v-if="isDefaultContent" class="filePanel__hasData">
@@ -81,6 +81,12 @@ import PkpHeader from '@/components/Header/Header.vue';
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
 import FileUploader from '@/components/FileUploader/FileUploader.vue';
+
+import hljs from 'highlight.js/lib/core';
+import xml from 'highlight.js/lib/languages/xml';
+
+// Register the XML language with Highlight.js
+hljs.registerLanguage('xml', xml);
 
 export default {
 	components: {
@@ -287,6 +293,14 @@ export default {
 				document.body.removeChild(link);
 			}
 		},
+		highlightCode() {
+			this.$nextTick(() => {
+				const codeElement = this.$refs.highlightedCode;
+				if (codeElement) {
+					hljs.highlightElement(codeElement);
+				}
+			});
+		},
 	},
 	watch: {
 		newJatsFiles(newValue, oldValue) {
@@ -305,7 +319,12 @@ export default {
 			if (newValue != null) {
 				this.fetchWorkingJatsFile();
 			}
-		}
+		},
+		hasLoadedContent(newVal) {
+			if (newVal) {
+				this.highlightCode();
+			}
+		},
 	}
 };
 </script>
