@@ -43,108 +43,38 @@ export default {
 	pageTitleDescription:
 		'You are inviting a user to take a role in OJS along with appearing in the journal masthead',
 	primaryLocale: 'en',
-	userGroups: [
-		{
-			value: 2,
-			label: 'Journal manager',
-			disabled: false,
+	invitationType: 'RoleUpdateForNewUser',
+	invitationPayload: {
+		userId: null,
+		email: '',
+		orcid: '',
+		givenName: '',
+		familyName: '',
+		userGroups: [
+			{roleName: null, dateStart: null, dateEnd: null, masthead: null},
+		],
+		currentUserGroups: [],
+		emailComposer: {
+			body: '',
+			subject: '',
 		},
-		{
-			value: 3,
-			label: 'Journal editor',
-			disabled: false,
-		},
-		{
-			value: 4,
-			label: 'Production editor',
-			disabled: false,
-		},
-		{
-			value: 5,
-			label: 'Section editor',
-			disabled: false,
-		},
-		{
-			value: 6,
-			label: 'Guest editor',
-			disabled: false,
-		},
-		{
-			value: 7,
-			label: 'Copyeditor',
-			disabled: false,
-		},
-		{
-			value: 8,
-			label: 'Designer',
-			disabled: false,
-		},
-		{
-			value: 9,
-			label: 'Funding coordinator',
-			disabled: false,
-		},
-		{
-			value: 10,
-			label: 'Indexer',
-			disabled: false,
-		},
-		{
-			value: 11,
-			label: 'Layout Editor',
-			disabled: false,
-		},
-		{
-			value: 12,
-			label: 'Marketing and sales coordinator',
-			disabled: false,
-		},
-		{
-			value: 13,
-			label: 'Proofreader',
-			disabled: false,
-		},
-		{
-			value: 14,
-			label: 'Author',
-			disabled: false,
-		},
-		{
-			value: 15,
-			label: 'Translator',
-			disabled: false,
-		},
-		{
-			value: 16,
-			label: 'Reviewer',
-			disabled: false,
-		},
-		{
-			value: 17,
-			label: 'Reader',
-			disabled: false,
-		},
-		{
-			value: 18,
-			label: 'Subscription Manager',
-			disabled: false,
-		},
-	],
+	},
 	steps: [
 		{
 			id: 'searchUser',
 			name: 'Search User',
 			reviewName: '{$step} - Search User',
-			type: 'form',
 			description:
 				'Search for the user using their email address, username or ORCID ID. Enter at least one details to get started. If user does not exist, ypu can invite them to take up roles and be a part of your journal. If the user already exist in the system, you can view user information and invite to take a additional roles.',
+			nextButtonLabel: 'Search user (t)',
+			skipInvitationUpdate: true,
+			validateFields: null,
 			sections: [
 				{
 					id: 'searchUserForm',
 					sectionComponent: 'UserInvitationSearchFormStep',
 				},
 			],
-			reviewTemplate: '/management/invitation/userSearch.tpl',
 		},
 		{
 			id: 'userDetails',
@@ -152,6 +82,9 @@ export default {
 			reviewName: '{$step} - Enter details and invite for roles',
 			type: 'form',
 			description: 'You can invite them to take up a role in OJS',
+			nextButtonLabel: 'Save And Continue (t)',
+			skipInvitationUpdate: false,
+			validateFields: ['orcid', 'email', 'givenName', 'familyName'],
 			sections: [
 				{
 					id: 'userDetailsForm',
@@ -159,6 +92,94 @@ export default {
 					description:
 						'<p>Please provide the following details to help us manage your submission in our system.</p>',
 					sectionComponent: 'UserInvitationDetailsFormStep',
+					userGroups: [
+						{
+							value: 2,
+							label: 'Journal manager',
+							disabled: false,
+						},
+						{
+							value: 3,
+							label: 'Journal editor',
+							disabled: false,
+						},
+						{
+							value: 4,
+							label: 'Production editor',
+							disabled: false,
+						},
+						{
+							value: 5,
+							label: 'Section editor',
+							disabled: false,
+						},
+						{
+							value: 6,
+							label: 'Guest editor',
+							disabled: false,
+						},
+						{
+							value: 7,
+							label: 'Copyeditor',
+							disabled: false,
+						},
+						{
+							value: 8,
+							label: 'Designer',
+							disabled: false,
+						},
+						{
+							value: 9,
+							label: 'Funding coordinator',
+							disabled: false,
+						},
+						{
+							value: 10,
+							label: 'Indexer',
+							disabled: false,
+						},
+						{
+							value: 11,
+							label: 'Layout Editor',
+							disabled: false,
+						},
+						{
+							value: 12,
+							label: 'Marketing and sales coordinator',
+							disabled: false,
+						},
+						{
+							value: 13,
+							label: 'Proofreader',
+							disabled: false,
+						},
+						{
+							value: 14,
+							label: 'Author',
+							disabled: false,
+						},
+						{
+							value: 15,
+							label: 'Translator',
+							disabled: false,
+						},
+						{
+							value: 16,
+							label: 'Reviewer',
+							disabled: false,
+						},
+						{
+							value: 17,
+							label: 'Reader',
+							disabled: false,
+						},
+						{
+							value: 18,
+							label: 'Subscription Manager',
+							disabled: false,
+						},
+					],
+
 					form: {
 						id: 'userDetails',
 						method: 'POST',
@@ -253,7 +274,6 @@ export default {
 					},
 				},
 			],
-			reviewTemplate: '/management/invitation/userDetails.tpl',
 		},
 		{
 			id: 'userInvitedEmail',
@@ -262,6 +282,7 @@ export default {
 			type: 'email',
 			description:
 				'Send the user an email to let them know about the invitation, next steps, journal GDPR polices and ORCiD verification',
+			nextButtonLabel: 'Invite user to the role (t)',
 			sections: [
 				{
 					id: 'userInvited',
@@ -307,7 +328,6 @@ export default {
 					},
 				},
 			],
-			reviewTemplate: '/management/invitation/userInvitation.tpl',
 		},
 	],
 };

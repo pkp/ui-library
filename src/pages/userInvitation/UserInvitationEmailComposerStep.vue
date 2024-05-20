@@ -8,7 +8,6 @@
 		:attachments="section.email.attachments"
 		:bcc="section.email.bcc"
 		:bcc-label="t('email.bcc')"
-		:body="section.email.body"
 		:body-label="t('stageParticipants.notify.message')"
 		:can-change-recipients="section.email.canChangeRecipients"
 		:cc="section.email.cc"
@@ -34,24 +33,42 @@
 		:remove-item-label="t('common.removeItem')"
 		:searching-label="t('common.searching')"
 		:search-results-label="t('search.searchResults')"
-		:subject="section.email.subject"
 		:subject-label="t('email.subject')"
 		:switch-to-label="t('common.switchTo')"
 		:switch-to-named-language-label="t('common.switchToNamedItem')"
 		:variables="section.email.variables"
-		@set="store.updateStep"
+		v-bind="emailComposer"
+		@set="(componentName, update) => updateEmail(update)"
 	></composer>
 </template>
 
 <script setup>
+import {computed} from 'vue';
 import Composer from '@/components/Composer/Composer.vue';
 import {useTranslation} from '@/composables/useTranslation';
 import {defineProps} from 'vue';
 import {useUserInvitationPageStore} from './UserInvitationPageStore';
 
-defineProps({
+const props = defineProps({
 	section: {type: Object, required: true},
 });
 const {t} = useTranslation();
+
 const store = useUserInvitationPageStore();
+const emailComposer = computed(() => store.invitationPayload.emailComposer);
+
+function updateEmail(update) {
+	const emailComposerUpdate = {
+		...store.invitationPayload.emailComposer,
+		...update,
+	};
+	store.updatePayload('emailComposer', emailComposerUpdate);
+}
+
+if (!store.invitationPayload.body) {
+	updateEmail({
+		subject: props.section.email.subject,
+		body: props.section.email.body,
+	});
+}
 </script>

@@ -1,9 +1,15 @@
-import {ref} from 'vue';
+import {ref, watch} from 'vue';
 
 function getField(form, name) {
 	const fields = form.fields;
 
 	return fields.find((field) => field.name === name);
+}
+
+function doesFieldExist(form, name) {
+	const fields = form.fields;
+
+	return !!fields.find((field) => field.name === name);
 }
 
 function getClearValue(field, localeKey = null) {
@@ -26,6 +32,34 @@ function mapFromSelectedToValue(selected) {
 
 export function useForm(_form) {
 	const form = ref(_form);
+
+	function connectWithPayload(payload) {
+		watch(
+			payload,
+			(newPayload) => {
+				Object.keys(newPayload).forEach((key) => {
+					if (doesFieldExist(form.value, key)) {
+						if (getValue(key) !== newPayload[key]) {
+							setValue(key, newPayload[key]);
+						}
+					}
+				});
+			},
+			{immediate: true},
+		);
+	}
+
+	function set(key, data) {
+		Object.keys(data).forEach(function (dataKey) {
+			form.value[dataKey] = data[dataKey];
+		});
+	}
+
+	function getValue(name) {
+		const field = getField(form.value, name);
+
+		return field.value;
+	}
 
 	function setValue(name, inputValue) {
 		const field = getField(form.value, name);
@@ -69,8 +103,11 @@ export function useForm(_form) {
 	}
 
 	return {
+		set,
 		setValue,
+		getValue,
 		clearForm,
 		form,
+		connectWithPayload,
 	};
 }

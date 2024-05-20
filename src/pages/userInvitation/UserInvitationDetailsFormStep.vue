@@ -1,11 +1,9 @@
 <template>
 	<div v-if="store.user === null">
 		<pkp-form
-			v-if="section.type === 'form'"
-			v-bind="section.form"
-			ref="autosaveForms"
+			v-bind="userForm"
 			class="userInvitation__stepForm"
-			@set="store.updateAutosaveForm"
+			@set="updateUserForm"
 		></pkp-form>
 	</div>
 	<div v-if="store.user !== null">
@@ -40,7 +38,7 @@
 		</div>
 	</div>
 	<br />
-	<UserInvitationUserGroupsTable />
+	<UserInvitationUserGroupsTable :section="section" />
 </template>
 
 <script setup>
@@ -49,12 +47,25 @@ import PkpForm from '@/components/Form/Form.vue';
 import {useTranslation} from '@/composables/useTranslation';
 import UserInvitationUserGroupsTable from './UserInvitationUserGroupsTable.vue';
 import {useUserInvitationPageStore} from './UserInvitationPageStore';
+import {useForm} from '@/composables/useForm';
 
-defineProps({
-	section: {type: Object, required: true},
-});
+function updateUserForm(a, {fields}, c, d) {
+	fields.forEach((field) => {
+		if (store.invitationPayload[field.name] !== field.value) {
+			store.updatePayload(field.name, field.value);
+		}
+	});
+}
+
 const {t} = useTranslation();
 const store = useUserInvitationPageStore();
+
+const props = defineProps({
+	section: {type: Object, required: true},
+});
+
+const {form: userForm, connectWithPayload} = useForm(props.section.form);
+connectWithPayload(store.invitationPayload);
 </script>
 <style lang="less">
 select {

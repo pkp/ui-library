@@ -30,47 +30,60 @@
 					</pkp-button>
 				</TableCell>
 			</TableRow>
-			<TableRow v-for="(row, index) in store.selectedUserGroups" :key="index">
+			<TableRow v-for="(row, index) in userGroups" :key="index">
 				<TableCell>
 					<field-select
-						:key="index"
-						v-bind="store.userGroupsField"
-						:value="row.value"
-						:options="store.availableUserGroups.value"
+						name="userGroup"
+						:label="t('invitation.role.selectRole')"
+						:is-required="true"
+						:value="row.userGroup"
+						:options="availableUserGroups"
 						class="userInvitation__roleSelect"
 						@change="
 							(fieldName, propName, newValue, localeKey) =>
-								store.updateUserGroups(index, fieldName, newValue)
+								updateUserGroup(index, fieldName, newValue)
 						"
 					/>
 				</TableCell>
 				<TableCell>
 					<field-text
-						:key="index"
-						v-bind="store.dateStartField"
+						name="dateStart"
+						:label="t('invitation.role.dateStart')"
+						input-type="date"
+						:is-required="true"
+						:value="row.dateStart"
 						@change="
 							(fieldName, propName, newValue, localeKey) =>
-								store.updateUserGroups(index, fieldName, newValue)
+								updateUserGroup(index, fieldName, newValue)
 						"
 					/>
 				</TableCell>
 				<TableCell>
 					<field-text
-						:key="index"
-						v-bind="store.dateEndField"
+						name="dateEnd"
+						:label="t('invitation.role.dateEnd')"
+						input-type="date"
+						:value="row.dateEnd"
+						:is-required="true"
 						@change="
 							(fieldName, propName, newValue, localeKey) =>
-								store.updateUserGroups(index, fieldName, newValue)
+								updateUserGroup(index, fieldName, newValue)
 						"
 					/>
 				</TableCell>
 				<TableCell>
 					<field-select
-						:key="index"
-						v-bind="store.mastheadField"
+						name="masthead"
+						:label="t('invitation.role.masthead')"
+						:is-required="true"
+						:value="row.masthead"
+						:options="[
+							{label: 'Appear on the masthead', value: true},
+							{label: 'Dose not appear on the masthead', value: false},
+						]"
 						@change="
 							(fieldName, propName, newValue, localeKey) =>
-								store.updateUserGroups(index, fieldName, newValue)
+								updateUserGroup(index, fieldName, newValue)
 						"
 					/>
 				</TableCell>
@@ -78,7 +91,7 @@
 			</TableRow>
 			<TableRow>
 				<TableCell>
-					<pkp-button @click="store.addAnotherUserGroup(row)">
+					<pkp-button @click="addUserGroup()">
 						{{ t('invitation.role.addRole.button') }}
 					</pkp-button>
 				</TableCell>
@@ -92,6 +105,7 @@
 </template>
 
 <script setup>
+import {computed} from 'vue';
 import PkpTable from '@/components/TableNext/Table.vue';
 import TableCell from '@/components/TableNext/TableCell.vue';
 import TableHeader from '@/components/TableNext/TableHeader.vue';
@@ -104,6 +118,41 @@ import FieldText from '@/components/Form/fields/FieldText.vue';
 import {useUserInvitationPageStore} from './UserInvitationPageStore';
 
 const store = useUserInvitationPageStore();
+
+const userGroups = computed(() => store.invitationPayload.userGroups);
+
+const props = defineProps({
+	section: {type: Object, required: true},
+});
+
+function updateUserGroup(index, fieldName, newValue) {
+	const userGroupsUpdate = [...store.invitationPayload.userGroups];
+
+	userGroupsUpdate[index][fieldName] = newValue;
+
+	store.updatePayload('userGroups', userGroupsUpdate);
+}
+
+const availableUserGroups = computed(() => {
+	return props.section.userGroups.filter((element) => {
+		return !store.invitationPayload.currentUserGroups.find(
+			(data) => data.id === element.value,
+		);
+	});
+});
+
+function addUserGroup() {
+	const userGroupsUpdate = [...store.invitationPayload.userGroups];
+	userGroupsUpdate.push({
+		role_name: null,
+		dateStart: null,
+		dateEnd: null,
+		masthead: null,
+		value: null,
+	});
+
+	store.updatePayload('userGroups', userGroupsUpdate);
+}
 </script>
 <style>
 select {

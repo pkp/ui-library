@@ -27,7 +27,6 @@ export const Init = {
 						for (let param of params) {
 							allParams[param[0]] = param[1];
 						}
-						console.log(allParams);
 						if (
 							allParams.searchPhrase.replaceAll(/\s/g, '') ===
 							'carlo@mailinator.com'
@@ -39,6 +38,24 @@ export const Init = {
 								items: [],
 							});
 						}
+					},
+				),
+				http.post(
+					'https://mock/index.php/publicknowledge/api/v1/invitations',
+					() => {
+						return HttpResponse.json({invitationId: 15});
+					},
+				),
+				http.post(
+					'https://mock/index.php/publicknowledge/api/v1/invitations/15',
+					() => {
+						return HttpResponse.json({});
+					},
+				),
+				http.post(
+					'https://mock/index.php/publicknowledge/api/v1/invitations/15/submit',
+					() => {
+						return HttpResponse.json({});
 					},
 				),
 				http.post(

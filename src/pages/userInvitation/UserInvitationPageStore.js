@@ -1,30 +1,21 @@
-import {useTranslation} from '@/composables/useTranslation';
-
 import {defineComponentStore} from '@/utils/defineComponentStore';
 import {useFetch} from '@/composables/useFetch';
+import {useUrl} from '@/composables/useUrl';
 import {computed, onMounted, ref, watch} from 'vue';
-//let pageInitConfig = null;
-
-/*export function initSubmissionsPageStore(_pageInitConfig) {
-	pageInitConfig = _pageInitConfig;
-}
-
-export function disposeSubmissionsPageStore() {
-	const store = useSubmissionsPageStore();
-	store.$dispose();
-	pageInitConfig = null;
-	delete getActivePinia().state.value[store.$id];
-}*/
-
+import {useModal} from '@/composables/useModal';
 export const useUserInvitationPageStore = defineComponentStore(
 	'userInvitationPage',
 	(pageInitConfig) => {
-		/**
-		 * Translation
-		 */
+		const {openDialog} = useModal();
 
-		const {t} = useTranslation();
+		/** Invitation payload, initial valu */
+		const invitationPayload = ref({...pageInitConfig.invitationPayload});
 
+		function updatePayload(fieldName, value) {
+			invitationPayload.value[fieldName] = value;
+		}
+
+		/** Steps */
 		const currentStepId = ref(pageInitConfig.steps[0].id);
 		const steps = ref(pageInitConfig.steps);
 		const pageTitleDescription = ref(pageInitConfig.pageTitleDescription);
@@ -32,75 +23,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 		const errors = ref({});
 		const startedSteps = ref([]);
 		const user = ref(pageInitConfig.user);
-		const isModalOpened = ref(false);
-		const selectedUserGroups = ref([
-			{
-				role_name: null,
-				dateStart: null,
-				dateEnd: null,
-				masthead: null,
-				value: null,
-			},
-		]);
-		const currentUserGroups = ref([]);
-		const userGroups = ref(pageInitConfig.userGroups);
-		const removedUserGroups = ref([]);
 
-		const emailField = ref({
-			label: t('user.email'),
-			name: 'email',
-			size: 'large',
-			value: '',
-		});
-		const usernameField = ref({
-			label: t('user.username'),
-			name: 'username',
-			size: 'large',
-			value: '',
-		});
-		const orcidField = ref({
-			label: t('user.orcid'),
-			name: 'orcid',
-			size: 'large',
-			value: '',
-		});
-
-		const userGroupsField = ref({
-			name: 'userGroup',
-			label: t('invitation.role.selectRole'),
-			isRequired: true,
-			options: [],
-		});
-
-		const dateStartField = ref({
-			label: t('invitation.role.dateStart'),
-			name: 'dateStart',
-			size: 'small',
-			value: '',
-			inputType: 'date',
-		});
-
-		const dateEndField = ref({
-			label: t('invitation.role.dateEnd'),
-			name: 'dateEnd',
-			size: 'small',
-			value: '',
-			inputType: 'date',
-		});
-
-		const mastheadField = ref({
-			name: 'masthead',
-			label: t('invitation.role.masthead'),
-			isRequired: true,
-			options: [
-				{label: 'Appear on the masthead', value: true},
-				{label: 'Dose not appear on the masthead', value: false},
-			],
-		});
-		const email = ref('');
-		const username = ref('');
-		const orcid = ref('');
-		const recipientOptions = ref([]);
 		/**
 		 * The currently active step
 		 */
@@ -159,35 +82,74 @@ export const useUserInvitationPageStore = defineComponentStore(
 			);
 		});
 
+		/** Handling invitation */
+		const invitationId = ref(null);
 		/**
-		 * create searchPhrase
+		 * Create invitation
 		 */
-		const searchPhrase = computed(() => {
-			let seachText = '';
-			if (email.value) {
-				seachText = email.value + ' ';
-			}
-			if (orcid.value) {
-				seachText = seachText + orcid.value + ' ';
-			}
-			if (username.value) {
-				seachText = seachText + username.value;
-			}
+		async function createInvitation() {
+			const {apiUrl} = useUrl('invitations');
 
-			return seachText;
-		});
-
-		/**
-		 * create searchPhrase
-		 */
-		const availableUserGroups = computed(() => {
-			userGroups.value.forEach((element) => {
-				if (currentUserGroups.value.find((data) => data.id === element.value)) {
-					element.disabled = true;
-				}
+			const {data, fetch: createInvitation} = useFetch(apiUrl, {
+				method: 'POST',
+				body: {type: pageInitConfig.invitationType},
 			});
-			return userGroups;
-		});
+			await createInvitation();
+			invitationId.value = data.value.invitationId;
+		}
+
+		/** Update Invitation */
+		async function updateInvitation() {
+			if (!invitationId.value) {
+				await createInvitation();
+			}
+
+			const {apiUrl} = useUrl(`invitations/${invitationId.value}`);
+
+			const {fetch, validationError} = useFetch(apiUrl, {
+				method: 'POST',
+				body: invitationPayload.value,
+				expectValidationError: true,
+			});
+
+			if (validationError.value) {
+				errors.value = validationError.value;
+			} else {
+				errors.value = [];
+			}
+
+			await fetch();
+		}
+
+		/** Submit invitation */
+		async function submitInvitation() {
+			const {apiUrl} = useUrl(`invitations/${invitationId.value}/submit`);
+
+			const {data, fetch} = useFetch(apiUrl, {
+				method: 'POST',
+				body: {},
+			});
+
+			await fetch();
+			if (data.value) {
+				openDialog({
+					title: 'Invitation sent',
+					actions: [
+						{
+							label: 'Ok',
+							callback: (close) => {
+								close();
+							},
+						},
+					],
+				});
+			}
+		}
+
+		const registeredActionsForSteps = {};
+		function registerActionForStepId(stepId, callback) {
+			registeredActionsForSteps[stepId] = callback;
+		}
 
 		/**
 		 * Update when the step changes
@@ -220,27 +182,6 @@ export const useUserInvitationPageStore = defineComponentStore(
 			}
 		});
 
-		/**
-		 * Set form data when validation errors are changed
-		 */
-		watch(errors, async (newVal, oldVal) => {
-			const keys = Object.keys(newVal);
-			steps.value.forEach((step, stepIndex) => {
-				step.sections.forEach((section, sectionIndex) => {
-					if (section.type === 'form') {
-						section.form.fields.forEach((field) => {
-							if (keys.includes(field.name)) {
-								steps.value[stepIndex].sections[sectionIndex].form.errors = {
-									...steps.value[stepIndex].sections[sectionIndex].form.errors,
-									...{[field.name]: newVal[field.name]},
-								};
-							}
-						});
-					}
-				});
-			});
-		});
-
 		onMounted(() => {
 			/**
 			 * Open the correct step when the page is loaded
@@ -249,70 +190,6 @@ export const useUserInvitationPageStore = defineComponentStore(
 				openStep(steps.value[0].id);
 			}
 		});
-
-		function emailChange(fieldName, propName, newValue, localeKey) {
-			email.value = newValue;
-		}
-		function usernameChange(fieldName, propName, newValue, localeKey) {
-			username.value = newValue;
-		}
-		function orcidChange(fieldName, propName, newValue, localeKey) {
-			orcid.value = newValue;
-		}
-		function updateUserGroups(index, fieldName, newValue) {
-			if (selectedUserGroups.value[index]['value']) {
-				userGroups.value.find(
-					(data) => data.value === selectedUserGroups.value[index]['value'],
-				).disabled = false;
-			}
-			if (
-				!selectedUserGroups.value.find((data) => data.value === newValue) &&
-				fieldName === 'userGroup'
-			) {
-				userGroups.value.find((data) => data.value === newValue).disabled =
-					true;
-				selectedUserGroups.value[index]['role_name'] = userGroups.value.find(
-					(data) => data.value === newValue,
-				).label;
-				selectedUserGroups.value[index]['value'] = userGroups.value.find(
-					(data) => data.value === newValue,
-				).value;
-			}
-			if (fieldName === 'dateStart') {
-				selectedUserGroups.value[index]['date_start'] = newValue;
-			}
-			if (fieldName === 'dateEnd') {
-				selectedUserGroups.value[index]['date_end'] = newValue;
-			}
-			if (fieldName === 'masthead') {
-				selectedUserGroups.value[index]['masthead'] = newValue;
-			}
-		}
-
-		/**
-		 * add another user group
-		 */
-
-		function addAnotherUserGroup() {
-			selectedUserGroups.value.push({
-				role_name: null,
-				dateStart: null,
-				dateEnd: null,
-				masthead: null,
-				value: null,
-			});
-		}
-
-		/**
-		 * remove current user groups
-		 */
-
-		function removeUserGroup(userGroup, index) {
-			currentUserGroups.value.splice(index, 1);
-			removedUserGroups.value.push(userGroup);
-			userGroups.value.find((data) => data.value === userGroup.id).disabled =
-				false;
-		}
 
 		/**
 		 * Add a step change to the browser history so the
@@ -327,14 +204,27 @@ export const useUserInvitationPageStore = defineComponentStore(
 		/**
 		 * Go to the next step or submit if this is the last step
 		 */
-		function nextStep() {
+		async function nextStep() {
+			if (registeredActionsForSteps[currentStep.value.id]) {
+				let shouldContinue = true;
+				shouldContinue =
+					await registeredActionsForSteps[currentStep.value.id]();
+				if (!shouldContinue) {
+					return;
+				}
+			}
 			if (isOnLastStep.value) {
-				submit();
-			} else if (isOnFirstStep.value) {
-				searchUser();
+				submitInvitation();
 			} else {
-				openStep(steps.value[1 + currentStepIndex.value].id);
-				updateEmailComposer();
+				if (!currentStep.value?.skipInvitationUpdate) {
+					await updateInvitation();
+					// this needs to check only relevant errors for given step using the step.validateFields
+					if (!errors.value?.length) {
+						openStep(steps.value[1 + currentStepIndex.value].id);
+					}
+				} else {
+					openStep(steps.value[1 + currentStepIndex.value].id);
+				}
 			}
 		}
 
@@ -347,9 +237,6 @@ export const useUserInvitationPageStore = defineComponentStore(
 			const newStep = steps.value.find((step) => step.id === stepId);
 			if (!newStep) {
 				return;
-			}
-			if (stepId === 'userInvitedEmail') {
-				errors.value = {};
 			}
 			currentStepId.value = stepId;
 		}
@@ -364,204 +251,10 @@ export const useUserInvitationPageStore = defineComponentStore(
 			}
 		}
 
-		/**
-		 * Complete the submission
-		 *
-		 * Opens a confirmation dialog and then makes the submission
-		 * request with any required confirmation fields
-		 */
-		async function submit() {
-			const data = {
-				userId: user.value ? user.value.id : null,
-				actions: {},
-			};
-			steps.value.forEach((step) => {
-				step.sections.forEach((section) => {
-					if (section.type === 'form' || section.length > 0) {
-						section.form.fields.forEach((field) => {
-							if (field.value != null) {
-								data[field.name] = field.value;
-							}
-						});
-					} else if (section.type === 'email') {
-						data.actions['actionattachments'] = section.email.attachments;
-						data.actions['locale'] = section.email.locale;
-						data.actions['recipients'] = section.email.recipients;
-						data.actions['subject'] = section.email.subject;
-						data.actions['body'] = section.email.body;
-					}
-				});
-			});
-			const {
-				data: res,
-				validationError,
-				fetch,
-			} = useFetch(pageInitConfig.inviteUserApiUrl, {
-				expectValidationError: true,
-				method: 'POST',
-				body: data,
-			});
-			await fetch();
-			if (validationError.value) {
-				errors.value = validationError.value;
-			} else if (res.value && !validationError.value) {
-				isModalOpened.value = true;
-			}
-		}
-
-		/**
-		 * Update a form with new data
-		 *
-		 * This is fired every time a form field changes, so
-		 * resource-intensive code should not be run every
-		 * time this method is called.
-		 *
-		 * @param {String} formId
-		 * @param {Object} data
-		 */
-		function updateForm(formId, data) {
-			steps.value.forEach((step, stepIndex) => {
-				step.sections.forEach((section, sectionIndex) => {
-					if (section.type !== 'form' || section.form.id !== formId) {
-						return;
-					}
-					steps.value[stepIndex].sections[sectionIndex].form = {
-						...steps.value[stepIndex].sections[sectionIndex].form,
-						...data,
-					};
-					steps.value[stepIndex].sections[sectionIndex].form.fields.forEach(
-						(field) => {
-							if (data[field.name] instanceof Object) {
-								field.value = data[field.name][pageInitConfig.primaryLocale];
-							} else {
-								field.value = data[field.name];
-							}
-						},
-					);
-				});
-			});
-		}
-
-		/**
-		 * Update a form with new data
-		 *
-		 * This is fired every time a form field changes, so
-		 * resource-intensive code should not be run every
-		 * time this method is called.
-		 */
-		function updateEmailComposer() {
-			steps.value.forEach((step, stepIndex) => {
-				step.sections.forEach((section, sectionIndex) => {
-					if (section.type !== 'email') {
-						return;
-					}
-					steps.value[stepIndex].sections[sectionIndex].email.variables[
-						pageInitConfig.primaryLocale
-					].push({
-						key: 'recipientName',
-						value:
-							recipientOptions.value[0].label[pageInitConfig.primaryLocale],
-					});
-					steps.value[stepIndex].sections[sectionIndex].email = {
-						...steps.value[stepIndex].sections[sectionIndex].email,
-						recipients: recipientOptions.value.map((to) => to.value),
-						recipientOptions: recipientOptions.value,
-					};
-				});
-			});
-		}
-
-		/**
-		 * Complete the submission
-		 *
-		 * Opens a confirmation dialog and then makes the submission
-		 * request with any required confirmation fields
-		 */
-		async function searchUser() {
-			user.value = null;
-			currentUserGroups.value = [];
-			if (searchPhrase.value !== '') {
-				const {data: userData, fetch} = useFetch(
-					pageInitConfig.searchUserApiUrl,
-					{
-						query: {searchPhrase: searchPhrase.value, status: 'all'},
-					},
-				);
-				await fetch();
-				let userObj = {};
-				if (userData.value.items.length > 0) {
-					userData.value.items.forEach((data) => {
-						user.value = data;
-						email.value = data.email;
-						userObj = {
-							email: data.email,
-							givenName: data.fullName.split(' ')[0],
-							familyName: data.fullName.split(' ')[1],
-							orcid: data.orcid,
-						};
-						currentUserGroups.value = data.groups;
-						recipientOptions.value.push({
-							value: data.id,
-							label: {
-								[pageInitConfig.primaryLocale]: data.fullName,
-							},
-						});
-					});
-				} else {
-					errors.value = {
-						error: t('invitation.noUserFound'),
-					};
-					recipientOptions.value.push({
-						value: email.value,
-						label: {
-							[pageInitConfig.primaryLocale]: email.value,
-						},
-					});
-					userObj = {
-						email: email.value,
-					};
-				}
-				updateForm('userDetails', userObj);
-				openStep(steps.value[1 + currentStepIndex.value].id);
-			} else {
-				errors.value = {
-					error: t('invitation.emptySearchFields'),
-				};
-			}
-		}
-
-		/**
-		 * Update the data attached to a step
-		 *
-		 * @param {String} stepId The id of the step to update
-		 * @param {Object} data The data to update in the step
-		 */
-		function updateStep(stepId, data) {
-			steps.value.forEach((step, stepIndex) => {
-				step.sections.forEach((section, sectionIndex) => {
-					if (section.type !== 'email') {
-						return;
-					}
-					let errors = {...step.sections.errors};
-					Object.keys(data).forEach((key) => delete errors[key]);
-					steps.value[stepIndex].sections[sectionIndex].email = {
-						...steps.value[stepIndex].sections[sectionIndex].email,
-						...data,
-						errors: errors,
-					};
-				});
-			});
-		}
-
-		/**
-		 * Close modal popup
-		 */
-		function isModalClosed() {
-			isModalOpened.value = false;
-			window.location = pageInitConfig.userInvitationSavedUrl;
-		}
-
 		return {
+			invitationPayload,
+			updatePayload,
+			registerActionForStepId,
 			//computed
 			currentStep,
 			currentStepIndex,
@@ -577,37 +270,14 @@ export const useUserInvitationPageStore = defineComponentStore(
 			steps,
 			pageTitleDescription,
 			errors,
-			email,
-			userGroups,
 			user,
 
 			//form feilds
-			emailField,
-			usernameField,
-			orcidField,
-			dateStartField,
-			dateEndField,
-			userGroupsField,
-			mastheadField,
-			emailChange,
-			orcidChange,
-			usernameChange,
-			updateUserGroups,
-			removeUserGroup,
-			addAnotherUserGroup,
-			selectedUserGroups,
-			currentUserGroups,
-			availableUserGroups,
 			primaryLocale,
 
 			//methods
 			nextStep,
 			previousStep,
-			updateStep,
-
-			//modal
-			isModalOpened,
-			isModalClosed,
 		};
 	},
 );
