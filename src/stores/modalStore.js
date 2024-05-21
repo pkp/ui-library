@@ -65,7 +65,13 @@ export const useModalStore = defineStore('modal', () => {
 	// creating unique modalId to ensure correct modal is being closed
 	let modalIdCounter = 1;
 
-	function openSideModal(_component, props = {}, _modalId = null) {
+	/**
+	 *
+	 * @param {*} _component
+	 * @param {*} props
+	 * @param {*} options - modalId: explicit ID coming from legacy stack, onClose: function to be called after modal is closed
+	 */
+	function openSideModal(_component, props = {}, options = {}) {
 		modalIdCounter++;
 		let component = null;
 		if (typeof _component !== 'string') {
@@ -76,13 +82,14 @@ export const useModalStore = defineStore('modal', () => {
 		}
 
 		// modalId is either calculated internally or its comming from the legacy handler if its legacy modal
-		const modalId = _modalId ? _modalId : modalIdCounter;
+		const modalId = options?.modalId ? options?.modalId : modalIdCounter;
 
 		const opts = {
 			modalId,
 			opened: true,
 			component,
 			props,
+			onClose: options.onClose,
 		};
 
 		// At this point we support two levels of side modals
@@ -99,11 +106,11 @@ export const useModalStore = defineStore('modal', () => {
 
 	function closeSideModal(triggerLegacyCloseHandler = true, _modalId) {
 		let modalToClose = null;
-		if (sideModal1?.value?.modalId === _modalId) {
+		if (sideModal1?.value?.modalId === _modalId && sideModal1?.value?.opened) {
 			modalToClose = sideModal1;
 		}
 
-		if (sideModal2?.value?.modalId === _modalId) {
+		if (sideModal2?.value?.modalId === _modalId && sideModal2?.value?.opened) {
 			modalToClose = sideModal2;
 		}
 
@@ -111,11 +118,14 @@ export const useModalStore = defineStore('modal', () => {
 		if (!modalToClose) {
 			return;
 		}
-		modalToClose.value.opened = false;
 
+		modalToClose.value.opened = false;
+		if (modalToClose.value.onClose) {
+			modalToClose.value.onClose();
+		}
 		// To keep the side modal animation nice, it needs to keep the component&props around for bit longer
 		setTimeout(() => {
-			if (!modalToClose.value.opened) {
+			if (!modalToClose.value?.opened) {
 				modalToClose.value = null;
 			}
 		}, 300);
@@ -127,20 +137,19 @@ export const useModalStore = defineStore('modal', () => {
 		// to trigger handler modalClose explicitelly
 		if (
 			triggerLegacyCloseHandler &&
-			modalToClose.value?.props?.options?.modalHandler
+			modalToClose.value?.props?.legacyOptions?.modalHandler
 		) {
-			modalToClose.value?.props?.options?.modalHandler.modalClose();
+			modalToClose.value?.props?.legacyOptions?.modalHandler.modalClose();
 		}
 	}
 
 	// Listener for open modal requests coming from legacy handler.
 	pkp?.eventBus?.$on('open-modal-vue', (_args) => {
+		const props = _args.options?.props || {};
 		openSideModal(
 			_args.component,
-			{
-				options: _args.options,
-			},
-			_args.modalId,
+			{...props, legacyOptions: _args.options},
+			{modalId: _args.modalId},
 		);
 	});
 

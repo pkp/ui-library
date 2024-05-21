@@ -9,12 +9,12 @@
 import {ref, onMounted, inject, defineProps, onBeforeUnmount} from 'vue';
 import {useFetch} from '@/composables/useFetch';
 
-const {options} = defineProps({
+const {legacyOptions} = defineProps({
 	/**
 	 * Following the object used within AjaxModalHandler
 	 * Particularly important is `url` and `modalHandler`
 	 */
-	options: {
+	legacyOptions: {
 		type: Object,
 		default: () => {},
 	},
@@ -26,7 +26,7 @@ const pkp = window.pkp;
 
 // Fetches html content from legacy endpoints
 const {data: modalData, fetch: fetchAssignParticipantPage} = useFetch(
-	options.url,
+	legacyOptions.url,
 );
 
 // Legacy modal has mechanism where it needs to check with form whether it can close
@@ -65,8 +65,8 @@ function catchInsideClick(e) {
  *
  */
 function passToHandlerElement(...args) {
-	if (options.modalHandler) {
-		options.modalHandler.getHtmlElement().trigger(...args);
+	if (legacyOptions.modalHandler) {
+		legacyOptions.modalHandler.getHtmlElement().trigger(...args);
 	}
 
 	return;
