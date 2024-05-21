@@ -9,6 +9,7 @@ export default {
 		return {
 			allSuggestions: [],
 			suggestionsLoaded: false,
+			suggestionsLoading: false,
 			allowCustom: true,
 		};
 	},
@@ -21,6 +22,9 @@ export default {
 				this.suggestions = [];
 				return;
 			}
+			if (this.suggestionsLoading) {
+				return;
+			}
 			if (!this.suggestionsLoaded) {
 				this.loadSuggestions(this.setSuggestions);
 			}
@@ -31,6 +35,7 @@ export default {
 		 * Load suggestions from the API
 		 */
 		loadSuggestions(successCallback) {
+			this.suggestionsLoading = true;
 			$.ajax({
 				url: this.apiUrl,
 				type: 'GET',
@@ -47,6 +52,7 @@ export default {
 						};
 					});
 					this.suggestionsLoaded = true;
+					this.suggestionsLoading = false;
 					if (successCallback) {
 						successCallback.apply(this);
 					}
