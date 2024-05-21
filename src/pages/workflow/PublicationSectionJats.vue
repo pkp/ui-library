@@ -41,7 +41,9 @@
 						<div v-if="this.workingJatsProps['loadingContentError']">
 							{{ this.workingJatsProps['loadingContentError'] }}
 						</div>
-						<pre v-else v-highlightjs="workingJatsContent"><code class="xml"></code></pre>
+						<div v-else>
+							<highlightjs language="xml" :code="workingJatsContent"/>
+						</div>
 					</div>
 					<div v-if="this.workingJatsProps['loadingContentError'] == null">
 						<div v-if="isDefaultContent" class="filePanel__hasData">
