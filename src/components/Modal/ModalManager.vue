@@ -32,23 +32,19 @@ const GlobalModals = {LegacyAjax, WorkflowLogResponseForModal};
 const modalStore = useModalStore();
 const {sideModal1, sideModal2} = storeToRefs(useModalStore());
 
-// Component can be either string or actual vue component
+// Component can be either string or vue component
 const component1 = computed(() => {
 	if (!sideModal1.value?.component) {
 		return null;
 	}
-	return typeof sideModal1.value.component === 'string'
-		? GlobalModals[sideModal1.value.component]
-		: sideModal1.value.component;
+	return GlobalModals[sideModal1.value.component] || sideModal1.value.component;
 });
 
 const component2 = computed(() => {
 	if (!sideModal2.value?.component) {
 		return null;
 	}
-	return typeof sideModal2.value.component === 'string'
-		? GlobalModals[sideModal2.value.component]
-		: sideModal2.value.component;
+	return GlobalModals[sideModal2.value.component] || sideModal2.value.component;
 });
 
 function close(modalId) {
