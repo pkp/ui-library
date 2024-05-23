@@ -56,6 +56,7 @@ export function useFetch(url, options = {}) {
 	const modalStore = useModalStore();
 	const isLoading = ref(false);
 	const data = ref(null);
+	const isSuccess = ref(null);
 	const validationError = ref(null);
 
 	let lastRequestController = null;
@@ -91,12 +92,15 @@ export function useFetch(url, options = {}) {
 		}
 
 		isLoading.value = true;
+		isSuccess.value = null;
 		try {
 			const result = await ofetchInstance(unref(url), opts);
 			data.value = result;
 			validationError.value = null;
+			isSuccess.value = true;
 		} catch (e) {
 			data.value = null;
+			isSuccess.value = false;
 
 			if (signal) {
 				e.aborted = signal.aborted;
@@ -120,6 +124,7 @@ export function useFetch(url, options = {}) {
 
 	return {
 		data,
+		isSuccess,
 		validationError,
 		isLoading,
 		fetch,

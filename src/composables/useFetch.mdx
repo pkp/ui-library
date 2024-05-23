@@ -58,7 +58,7 @@ const body = {title: 'abc'};
 const url = ref(submissionPostApiUrl);
 
 // url, query and body can be normal objects or Refs
-const {data, validationError, fetch} = useFetch(url, {
+const {data, iSuccess, validationError, fetch} = useFetch(url, {
 	method: 'POST',
 	body,
 	// important if we expect endpoint to validate user input
@@ -70,6 +70,7 @@ await fetch();
 
 console.log(validationError.value); // null
 console.log(data.value); // {...} data returned from server
+console.log(data.isSuccess); // true
 ```
 
 ### POST 4xx with validation error
@@ -90,6 +91,25 @@ const {data, validationError, fetch} = useFetch(url, {
 await fetch();
 
 console.log(validationError.value); // {title: ['Unsupported characters']}
+console.log(data.value); // null
+```
+
+### POST 500
+
+```javascript
+const body = {title: 'abc'};
+const url = ref(submissionPostApiUrl);
+
+// url, query and body can be normal objects or Refs
+const {data, isSuccess, fetch} = useFetch(url, {
+	method: 'POST',
+	body,
+});
+
+await fetch();
+
+// Useful when some follow-up action should be triggered based on successfull request
+console.log(isSuccess.value); // false
 console.log(data.value); // null
 ```
 

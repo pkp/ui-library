@@ -65,6 +65,10 @@ export const restHandlers = [
 		);
 	}),
 
+	http.post('http://mock/post/status500', async ({request}) => {
+		return HttpResponse.json({}, {status: 500});
+	}),
+
 	http.post('http://mock/put/status200', async ({request}) => {
 		const postBody = await request.json();
 
@@ -127,7 +131,7 @@ describe('typical uses', () => {
 	test('POST 200 request', async () => {
 		const body = {title: 'abc'};
 		const url = ref('http://mock/post/status200');
-		const {data, validationError, fetch} = useFetch(url, {
+		const {data, isSuccess, validationError, fetch} = useFetch(url, {
 			method: 'POST',
 			body,
 			expectValidationError: true,
@@ -138,6 +142,24 @@ describe('typical uses', () => {
 		expect(validationError.value).toBe(null);
 
 		expect(data.value).toStrictEqual(body);
+		expect(isSuccess.value).toBe(true);
+	});
+
+	test('POST 500 request', async () => {
+		const body = {title: 'abc'};
+		const url = ref('http://mock/post/status500');
+		const {data, fetch, isSuccess} = useFetch(url, {
+			method: 'POST',
+			body,
+		});
+
+		expect(isSuccess.value).toBe(null);
+
+		await fetch();
+
+		expect(isSuccess.value).toBe(false);
+
+		expect(data.value).toStrictEqual(null);
 	});
 
 	test('POST 400 validation error request', async () => {
