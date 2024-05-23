@@ -27,7 +27,8 @@ const sampleXML = `<?xml version="1.0" encoding="UTF-8"?>
 <license type="CC-BY">https://creativecommons.org/licenses/by/4.0/</license>
 <abstract>
     This paper explores the significance of open access in scientific research.
-</abstract>`;
+</abstract>
+</article>`;
 
 export const XML = {
 	args: {
