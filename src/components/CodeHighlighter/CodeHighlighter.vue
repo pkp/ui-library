@@ -1,30 +1,23 @@
 <template>
-  <highlightjs
-    :language="language"
-    :code="code"
-  />
+    <highlightjs
+        :language="language"
+        :code="code"
+    />
 </template>
 
 <script>
-import hljs from 'highlight.js/lib/core';
+// import hljs from 'highlight.js/lib/core';
+import hljs from 'highlight.js/lib/common';
 import hljsVuePlugin from '@highlightjs/vue-plugin';
 
 // Importing the language modules
-import javascript from 'highlight.js/lib/languages/javascript';
 import xml from 'highlight.js/lib/languages/xml';
-import markdown from 'highlight.js/lib/languages/markdown';
-import css from 'highlight.js/lib/languages/css';
-import latex from 'highlight.js/lib/languages/latex';
 // Add more languages
 
 // A map to store language modules
 const languageMap = {
-    javascript,
     xml,
-    markdown,
-    css,
-    latex,
-    // Add more languages here
+    // Add more language modules imported above
 };
 
 const supportedLanguages = Object.keys(languageMap);
