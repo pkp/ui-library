@@ -1,8 +1,11 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {useDate} from '@/composables/useDate';
+import {useReviewAssignment} from '@/composables/useReviewAssignment';
 
 const {tk, t} = useLocalize();
+
 const {calculateDaysBetweenDates} = useDate();
+
 /*
 const ReviewAssignmentStatuses = [
 	pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE,
@@ -377,18 +380,6 @@ export function useReviewActivityLogic() {
 			});
 		}
 
-		function getReviewMethodIcons() {
-			switch (reviewAssignment.reviewMethod) {
-				case pkp.const.SUBMISSION_REVIEW_METHOD_ANONYMOUS:
-					return ['OpenReview', 'AnonymousReview'];
-				case pkp.const.SUBMISSION_REVIEW_METHOD_DOUBLEANONYMOUS:
-					return ['AnonymousReview', 'AnonymousReview'];
-				case pkp.const.SUBMISSION_REVIEW_METHOD_OPEN:
-					return ['OpenReview', 'OpenReview'];
-			}
-			return ['OpenReview', 'OpenReview'];
-		}
-
 		function getTextActionLabel() {
 			if (!config.textAction) {
 				return null;
@@ -410,11 +401,13 @@ export function useReviewActivityLogic() {
 			return t(ActionButtonTranslations[config.negativeAction]);
 		}
 
+		const {getReviewMethodIcons} = useReviewAssignment();
+
 		return {
 			titleBadgeProps: config.badgeProps,
 			title: getTitle(),
 			description: getDescription(),
-			reviewMethodIcons: getReviewMethodIcons(),
+			reviewMethodIcons: getReviewMethodIcons(reviewAssignment),
 			textButton: config.textAction && {
 				action: config.textAction,
 				label: getTextActionLabel(),

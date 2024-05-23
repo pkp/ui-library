@@ -5,20 +5,15 @@ import {useSummaryConfig} from './composables/useSummaryConfig';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
 import {useParticipant} from '@/composables/useParticipant';
-import {useHandleActions} from '../../composables/useHandleActions';
+import {useHandleActions} from '../composables/useHandleActions';
 import {useLocalize} from '@/composables/useLocalize';
 import {useDataChanged} from '@/composables/useDataChanged';
-
-const DashboardPageTypes = {
-	EDITORIAL_DASHBOARD: 'editorialDashboard',
-	MY_REVIEW_ASSIGNMENTS: 'myReviewAssignments',
-	MY_SUBMISSIONS: 'mySubmissions',
-};
+import {DashboardPageTypes} from '../dashboardPageStore';
 
 export const useSubmissionSummaryStore = defineComponentStore(
 	'submissionSummary',
-	(initValues) => {
-		const dashboardPage = initValues.pageInitConfig.dashboardPage;
+	(props) => {
+		const dashboardPage = props.pageInitConfig.dashboardPage;
 
 		const {localize} = useLocalize();
 
@@ -31,15 +26,24 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		 * Fetch submission details
 		 */
 		const {apiUrl: submissionApiUrl} = useUrl(
-			`submissions/${encodeURIComponent(initValues.submissionId)}`,
+			`submissions/${encodeURIComponent(props.submissionId)}`,
 		);
 		const {data: submission, fetch: fetchSubmission} =
 			useFetch(submissionApiUrl);
 
+		const selectedReviewAssignment = computed(() => {
+			return (
+				submission.value?.reviewAssignments?.find(
+					(reviewAssignment) =>
+						reviewAssignment.id === props.reviewAssignmentId,
+				) || null
+			);
+		});
+
 		/** Fetch publications */
 		const currentPublicationUrlRelative = computed(
 			() =>
-				`submissions/${encodeURIComponent(initValues.submissionId)}/publications/${submission.value?.currentPublicationId}`,
+				`submissions/${encodeURIComponent(props.submissionId)}/publications/${submission.value?.currentPublicationId}`,
 		);
 		const {apiUrl: currentPublicationUrl} = useUrl(
 			currentPublicationUrlRelative,
@@ -53,11 +57,25 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			fetchCurrentPublication();
 		});
 
+		/** Fetch issue */
+		const issueUrlRelative = computed(
+			() => `issues/${currentPublication.value?.issueId}`,
+		);
+		const {apiUrl: issueUrl} = useUrl(issueUrlRelative);
+		const {data: issue, fetch: fetchIssue} = useFetch(issueUrl);
+
+		watch(currentPublication, () => {
+			console.log('watching current publication:');
+			if (currentPublication.value?.issueId) {
+				fetchIssue();
+			}
+		});
+
 		/**
 		 * Fetch submission participants
 		 */
 		const {apiUrl: participantApiUrl} = useUrl(
-			`submissions/${encodeURIComponent(initValues.submissionId)}/participants`,
+			`submissions/${encodeURIComponent(props.submissionId)}/participants`,
 		);
 		const {data: participants, fetch: fetchParticipants} =
 			useFetch(participantApiUrl);
@@ -103,9 +121,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		 * Handle user actions
 		 *
 		 */
-		const {handleSubmissionAction} = useHandleActions(
-			initValues.pageInitConfig,
-		);
+		const {handleSubmissionAction} = useHandleActions(props.pageInitConfig);
 
 		function handleAction(actionName, actionArgs) {
 			handleSubmissionAction(
@@ -130,7 +146,9 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		return {
 			dashboardPage,
 			submission,
+			selectedReviewAssignment,
 			currentPublication,
+			issue,
 			associatedEditors,
 			handleAction,
 

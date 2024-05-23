@@ -92,6 +92,16 @@ function passToHandlerElement(...args) {
 	return;
 }
 
+function onVueFormSuccess(formId) {
+	console.log('onVueFormSuccesss:', formId, options);
+	if (options.closeOnFormSuccessId && options.closeOnFormSuccessId === formId) {
+		console.log('will close the modal');
+		setTimeout(function () {
+			closeModal();
+		}, 1000);
+	}
+}
+
 onMounted(async () => {
 	await fetchAssignParticipantPage();
 	if (modalData.value) {
@@ -112,6 +122,9 @@ onMounted(async () => {
 		$(contentDiv.value).bind('dataChanged', passToHandlerElement);
 		$(contentDiv.value).bind('updateHeader', passToHandlerElement);
 		$(contentDiv.value).bind('gridRefreshRequested', passToHandlerElement);
+
+		// to handle Vue.js form global form-success event, mimicking behavior from ModalHandler.js
+		pkp.eventBus.$on('form-success', onVueFormSuccess);
 	}
 });
 
@@ -128,5 +141,6 @@ onBeforeUnmount(() => {
 	$(contentDiv.value).unbind('dataChanged', passToHandlerElement);
 	$(contentDiv.value).unbind('updateHeader', passToHandlerElement);
 	$(contentDiv.value).unbind('gridRefreshRequested', passToHandlerElement);
+	pkp.eventBus.$off('form-success', onVueFormSuccess);
 });
 </script>

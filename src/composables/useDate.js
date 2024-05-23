@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export function useDate() {
 	function calculateDaysBetweenDates(startDate, endDate) {
 		const oneDay = 1000 * 60 * 60 * 24; // milliseconds in one day
@@ -8,5 +10,10 @@ export function useDate() {
 
 		return Math.round(difference / oneDay);
 	}
-	return {calculateDaysBetweenDates};
+
+	function formatShortDate(dateString) {
+		return moment(dateString).format('DD-MM-YYYY');
+	}
+
+	return {calculateDaysBetweenDates, formatShortDate};
 }

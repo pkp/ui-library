@@ -8,16 +8,21 @@ const DashboardPageTypes = {
 	MY_SUBMISSIONS: 'mySubmissions',
 };
 
-const {getActiveStage, getActiveReviewRound} = useSubmission();
+const {getActiveStage, getCurrentReviewRound} = useSubmission();
 
-const {calculateDaysBetweenDates} = useDate();
+const {calculateDaysBetweenDates, formatShortDate} = useDate();
 
 const {localizeSubmission} = useLocalize();
 
 export function useSummaryConfig() {
-	function filterItemsBasedOnContext(items, dashboardPage, submission) {
+	function filterItemsBasedOnContext(
+		items,
+		dashboardPage,
+		submission,
+		reviewAssignment = null,
+	) {
 		const activeStage = getActiveStage(submission);
-		const activeReviewRound = getActiveReviewRound(submission);
+		const activeReviewRound = getCurrentReviewRound(submission);
 		return items
 			.filter((item) => {
 				if (item?.filters?.dashboardPage) {
@@ -41,11 +46,22 @@ export function useSummaryConfig() {
 				}
 
 				return true;
+			})
+			.filter((item) => {
+				if (item?.filters?.reviewAssignmentStatusId && reviewAssignment) {
+					return item?.filters?.reviewAssignmentStatusId.includes(
+						reviewAssignment.statusId,
+					);
+				}
+				return true;
+			})
+			.map((item) => {
+				return item;
 			});
 	}
 
 	function getPrimaryItems(submission, currentPublication) {
-		const activeReviewRound = getActiveReviewRound(submission);
+		const activeReviewRound = getCurrentReviewRound(submission);
 
 		return [
 			{
@@ -88,7 +104,32 @@ export function useSummaryConfig() {
 						'These files will be sent to the reviewers to review (localize)',
 				},
 				filters: {
+					dashboardPage: [
+						DashboardPageTypes.EDITORIAL_DASHBOARD,
+						// TODO disabled for now as API is not authorising
+						DashboardPageTypes.MY_REVIEW_ASSIGNMENTS,
+					],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
+				},
+			},
+			{
+				component: 'ReviewerManager',
+				props: {
+					reviewAssignments: submission.reviewAssignments,
+				},
+				filters: {
 					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
+				},
+			},
+			{
+				component: 'ReviewerManager',
+				props: {
+					reviewAssignments: submission.reviewAssignments,
+					redactedForAuthors: true,
+				},
+				filters: {
+					dashboardPage: [DashboardPageTypes.MY_SUBMISSIONS],
 					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
 				},
 			},
@@ -165,6 +206,39 @@ export function useSummaryConfig() {
 					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
 				},
 			},
+			{
+				component: 'ActionButton',
+				props: {
+					label: 'Accept review (t)',
+					isPrimary: true,
+					action: 'openReviewForm',
+				},
+				filters: {
+					dashboardPage: [DashboardPageTypes.MY_REVIEW_ASSIGNMENTS],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
+					reviewAssignmentStatusId: [
+						pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE,
+						pkp.const.REVIEW_ASSIGNMENT_STATUS_RESPONSE_OVERDUE,
+						pkp.const.REVIEW_ASSIGNMENT_STATUS_REVIEW_OVERDUE,
+						pkp.const.REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND,
+					],
+				},
+			},
+			{
+				component: 'ActionButton',
+				props: {
+					label: 'Access review form (t)',
+					isPrimary: true,
+					action: 'openReviewForm',
+				},
+				filters: {
+					dashboardPage: [DashboardPageTypes.MY_REVIEW_ASSIGNMENTS],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
+					reviewAssignmentStatusId: [
+						pkp.const.REVIEW_ASSIGNMENT_STATUS_ACCEPTED,
+					],
+				},
+			},
 		];
 	}
 	function getMetaItems(submission, currentPublication) {
@@ -173,6 +247,17 @@ export function useSummaryConfig() {
 				component: 'EditorsAssigned',
 				filters: {
 					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
+				},
+			},
+			{
+				component: 'BasicMetadata',
+				props: {
+					heading: 'Submitted on (t)',
+					body: formatShortDate(submission.dateSubmitted),
+				},
+				filters: {
+					dashboardPage: [DashboardPageTypes.MY_SUBMISSIONS],
 					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
 				},
 			},
@@ -200,7 +285,21 @@ export function useSummaryConfig() {
 			},
 			{
 				component: 'IssueAssigned',
+				props: {isReadonly: false},
+				filters: {
+					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
+				},
 			},
+			{
+				component: 'IssueAssigned',
+				props: {isReadOnly: true},
+				filters: {
+					dashboardPage: [DashboardPageTypes.MY_SUBMISSIONS],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
+				},
+			},
+
 			{
 				component: 'BasicMetadata',
 				props: {
@@ -238,10 +337,11 @@ export function useSummaryConfig() {
 				props: {
 					heading: 'Keywords (t)',
 					body:
+						currentPublication?.keywords &&
 						localizeSubmission(
 							currentPublication?.keywords,
 							currentPublication?.locale,
-						)?.join(', ') || '',
+						).join(', '),
 				},
 				filters: {
 					dashboardPage: [
@@ -255,7 +355,7 @@ export function useSummaryConfig() {
 				component: 'BasicMetadata',
 				props: {
 					heading: 'Submission Language (t)',
-					body: `${currentPublication.locale} (todo show language name not locale)`,
+					body: `${currentPublication?.locale} (todo show language name not locale)`,
 				},
 				filters: {
 					dashboardPage: [

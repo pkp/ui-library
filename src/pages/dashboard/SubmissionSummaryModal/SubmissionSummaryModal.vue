@@ -42,12 +42,8 @@
 				View submission in detail
 			</PkpButton>
 		</template>
-
-		<div
-			v-if="summaryStore.submission"
-			class="border-ligh flex w-full border-r border-t border-light"
-		>
-			<div class="w-3/5 border-r border-light p-4">
+		<SideModalLayout2Columns>
+			<template #left>
 				<div class="flex flex-col gap-y-3 bg-secondary p-5">
 					<component
 						:is="Components[item.component] || item.component"
@@ -56,11 +52,9 @@
 						:key="index"
 					/>
 				</div>
-			</div>
-			<div class="w-2/5">
-				<div
-					class="flex flex-col items-start space-y-2 border-b border-light p-4"
-				>
+			</template>
+			<template #right1>
+				<div class="flex flex-col items-start space-y-4 p-4">
 					<component
 						:is="Components[item.component] || item.component"
 						v-for="(item, index) in actionItems"
@@ -68,6 +62,8 @@
 						:key="index"
 					></component>
 				</div>
+			</template>
+			<template #right2>
 				<div class="flex flex-col space-y-4 p-4">
 					<component
 						:is="Components[item.component] || item.component"
@@ -76,8 +72,8 @@
 						:key="index"
 					></component>
 				</div>
-			</div>
-		</div>
+			</template>
+		</SideModalLayout2Columns>
 	</SideModalBody>
 </template>
 
@@ -88,15 +84,19 @@ import PkpButton from '@/components/Button/Button.vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import StageBubble from '@/components/StageBubble/StageBubble.vue';
 import FileManager from '@/managers/FileManager/FileManager.vue';
+import ReviewerManager from '@/managers/ReviewerManager/ReviewerManager.vue';
+
 import LastActivity from './primaryItems/LastActivity.vue';
 import ActionButton from './actionItems/ActionButton.vue';
 import EditorsAssigned from './metaItems/EditorsAssigned.vue';
 import BasicMetadata from './metaItems/BasicMetadata.vue';
 import IssueAssigned from './metaItems/IssueAssigned.vue';
 import {useSubmissionSummaryStore} from './submissionSummaryStore';
+import SideModalLayout2Columns from '@/components/Modal/SideModalLayout2Columns.vue';
 
 const Components = {
 	FileManager,
+	ReviewerManager,
 	LastActivity,
 	ActionButton,
 	EditorsAssigned,
@@ -108,12 +108,16 @@ const pkp = window.pkp;
 
 const props = defineProps({
 	submissionId: {type: Number, required: true},
+	reviewAssignmentId: {type: Number, required: false, default: null},
 	pageInitConfig: {type: Object, required: true},
 });
 
 const summaryStore = useSubmissionSummaryStore(props);
 
 const primaryItems = computed(() => {
+	if (!summaryStore.submission) {
+		return [];
+	}
 	return summaryStore.filterItemsBasedOnContext(
 		summaryStore.getPrimaryItems(
 			summaryStore.submission,
@@ -121,10 +125,15 @@ const primaryItems = computed(() => {
 		),
 		summaryStore.dashboardPage,
 		summaryStore.submission,
+		summaryStore.selectedReviewAssignment,
 	);
 });
 
 const actionItems = computed(() => {
+	if (!summaryStore.submission) {
+		return [];
+	}
+
 	return summaryStore.filterItemsBasedOnContext(
 		summaryStore.getActionItems(
 			summaryStore.submission,
@@ -132,10 +141,15 @@ const actionItems = computed(() => {
 		),
 		summaryStore.dashboardPage,
 		summaryStore.submission,
+		summaryStore.selectedReviewAssignment,
 	);
 });
 
 const metaItems = computed(() => {
+	if (!summaryStore.submission) {
+		return [];
+	}
+
 	return summaryStore.filterItemsBasedOnContext(
 		summaryStore.getMetaItems(
 			summaryStore.submission,
@@ -143,6 +157,7 @@ const metaItems = computed(() => {
 		),
 		summaryStore.dashboardPage,
 		summaryStore.submission,
+		summaryStore.selectedReviewAssignment,
 	);
 });
 

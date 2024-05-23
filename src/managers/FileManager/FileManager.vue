@@ -7,7 +7,7 @@
 </template>
 <script setup>
 import {inject} from 'vue';
-import {useFileManagerStore} from './FileManagerStore.js';
+import {useFileManagerStore} from './fileManagerStore.js';
 import ListingFilesListPanel from '@/components/ListPanel/listingFiles/ListingFilesListPanel.vue';
 const props = defineProps({
 	namespace: {type: String, required: true},

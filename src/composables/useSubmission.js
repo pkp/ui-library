@@ -3,17 +3,17 @@ export function useSubmission() {
 		return submission.stages.find((stage) => stage.isActiveStage);
 	}
 
-	function getActiveReviewRound(submission) {
+	function getCurrentReviewRound(submission) {
 		return submission?.reviewRounds?.length
 			? submission?.reviewRounds[submission.reviewRounds.length - 1]
 			: null;
 	}
 
-	function getActiveReviewAssignments(submission) {
-		const activeReviewRound = getActiveReviewRound(submission);
+	function getCurrentReviewAssignments(submission) {
+		const currentReviewRound = getCurrentReviewRound(submission);
 
 		return submission.reviewAssignments.filter(
-			(reviewAssignment) => reviewAssignment.round === activeReviewRound.round,
+			(reviewAssignment) => reviewAssignment.round === currentReviewRound.round,
 		);
 	}
 
@@ -37,8 +37,8 @@ export function useSubmission() {
 
 	return {
 		getActiveStage,
-		getActiveReviewRound,
-		getActiveReviewAssignments,
+		getCurrentReviewRound,
+		getCurrentReviewAssignments,
 		getCurrentPublication,
 		getFileStageFromWorkflowStage,
 	};

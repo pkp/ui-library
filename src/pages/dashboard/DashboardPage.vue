@@ -75,48 +75,6 @@ const props = defineProps({
 	selectRevisionDecisionForm: {type: Object, required: true},
 	/** TODO */
 	selectRevisionRecommendationForm: {type: Object, required: true},
-	/** Grid url assigning participant */
-	assignParticipantUrl: {
-		type: String,
-		required: true,
-	},
-	/** Grid url adding reviewer */
-	addReviewerUrl: {
-		type: String,
-		required: true,
-	},
-	/** Grid url for resending request to reviewer */
-	resendRequestReviewerUrl: {type: String, required: true},
-	/** Grid url adding reviewer */
-	unassignReviewerUrl: {
-		type: String,
-		required: true,
-	},
-	/** Grid url review details */
-	reviewDetailsUrl: {
-		type: String,
-		required: true,
-	},
-	/** editReviewUrl */
-	editReviewUrl: {
-		type: String,
-		required: true,
-	},
-	/** assignToIssueUrl */
-	assignToIssueUrl: {
-		type: String,
-		required: true,
-	},
-	/** viewActivityLogUrl */
-	viewActivityLogUrl: {
-		type: String,
-		required: true,
-	},
-	/** fileUploadWizardUrl */
-	fileUploadWizardUrl: {
-		type: String,
-		required: true,
-	},
 
 	/** List of Views */
 	views: {

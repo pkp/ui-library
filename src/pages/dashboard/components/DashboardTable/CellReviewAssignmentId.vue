@@ -1,5 +1,5 @@
 <template>
-	<TableCell>{{ item.id }}</TableCell>
+	<TableCell>{{ item.submissionId }}</TableCell>
 </template>
 
 <script setup>

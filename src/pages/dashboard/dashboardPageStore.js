@@ -15,7 +15,7 @@ import {useEditorialLogic} from './composables/useEditorialLogic';
 import {useReviewActivityLogic} from './composables/useReviewActivityLogic';
 
 import DashboardFiltersModal from '@/pages/dashboard/components/DashboardFiltersModal.vue';
-import SubmissionSummaryModal from '@/pages/dashboard/components/SubmissionSummaryModal/SubmissionSummaryModal.vue';
+import SubmissionSummaryModal from '@/pages/dashboard/SubmissionSummaryModal/SubmissionSummaryModal.vue';
 // TODO add actual translation strings
 const TitleTranslations = {
 	EDITORIAL_DASHBOARD: 'Dashboards (t)',
@@ -27,6 +27,12 @@ const TitleIcons = {
 	EDITORIAL_DASHBOARD: 'Dashboard',
 	MY_REVIEW_ASSIGNMENTS: 'ReviewAssignments',
 	MY_SUBMISSIONS: 'MySubmissions',
+};
+
+export const DashboardPageTypes = {
+	EDITORIAL_DASHBOARD: 'editorialDashboard',
+	MY_REVIEW_ASSIGNMENTS: 'myReviewAssignments',
+	MY_SUBMISSIONS: 'mySubmissions',
 };
 
 export const useDashboardPageStore = defineComponentStore(
@@ -193,11 +199,12 @@ export const useDashboardPageStore = defineComponentStore(
 		 */
 
 		/** Tracking which submissionId is opened in summary modal for query params */
-		function openSummaryModal(submissionId) {
+		function openSummaryModal(submissionId, reviewAssignmentId = null) {
 			openSideModal(
 				SubmissionSummaryModal,
 				{
 					submissionId,
+					reviewAssignmentId,
 					pageInitConfig,
 				},
 				{
@@ -263,9 +270,11 @@ export const useDashboardPageStore = defineComponentStore(
 		 * Expose editorial logic function via store to make it easier
 		 * to override/extend from plugins them via pinia api
 		 */
-		const {getEditorialActivityForEditorConfig} = useEditorialLogic(
-			pageInitConfig.dashboardPage,
-		);
+		const {
+			getEditorialActivityForEditorialDashboard,
+			getEditorialActivityForMySubmissions,
+			getEditorialActivityForMyReviewAssignments,
+		} = useEditorialLogic(pageInitConfig.dashboardPage);
 		const {
 			getReviewActivityIndicatorProps,
 			getReviewActivityIndicatorPopoverProps,
@@ -327,7 +336,10 @@ export const useDashboardPageStore = defineComponentStore(
 			openAssignParticipantModal,
 
 			// expose useEditorialLogic methods
-			getEditorialActivityForEditorConfig,
+			getEditorialActivityForEditorialDashboard,
+			getEditorialActivityForMySubmissions,
+			getEditorialActivityForMyReviewAssignments,
+
 			getReviewActivityIndicatorProps,
 			getReviewActivityIndicatorPopoverProps,
 		};

@@ -16,7 +16,7 @@
 		<TableBody>
 			<TableRow v-for="item in items" :key="item.id">
 				<component
-					:is="columnComponents[column.componentName] || column.componentName"
+					:is="cellComponents[column.componentName] || column.componentName"
 					v-for="column in columns"
 					:key="column.id"
 					:item="item"
@@ -39,17 +39,17 @@ import TableBody from '@/components/TableNext/TableBody.vue';
 import TableRow from '@/components/TableNext/TableRow.vue';
 import TablePagination from '@/components/TableNext/TablePagination.vue';
 
-import ColumnSubmissionActions from './ColumnSubmissionActions.vue';
-import ColumnSubmissionActivity from './ColumnSubmissionActivity.vue';
-import ColumnSubmissionDays from './ColumnSubmissionDays.vue';
-import ColumnSubmissionId from './ColumnSubmissionId.vue';
-import ColumnSubmissionStage from './ColumnSubmissionStage.vue';
-import ColumnSubmissionTitle from './ColumnSubmissionTitle.vue';
+import CellSubmissionActions from './CellSubmissionActions.vue';
+import CellSubmissionActivity from './CellSubmissionActivity/CellSubmissionActivity.vue';
+import CellSubmissionDays from './CellSubmissionDays.vue';
+import CellSubmissionId from './CellSubmissionId.vue';
+import CellSubmissionStage from './CellSubmissionStage.vue';
+import CellSubmissionTitle from './CellSubmissionTitle.vue';
 
-import ColumnReviewAssignmentId from './ColumnReviewAssignmentId.vue';
-import ColumnReviewAssignmentTitle from './ColumnReviewAssignmentTitle.vue';
-import ColumnReviewAssignmentActivity from './ColumnReviewAssignmentActivity.vue';
-import ColumnReviewAssignmentActions from './ColumnReviewAssignmentActions.vue';
+import CellReviewAssignmentId from './CellReviewAssignmentId.vue';
+import CellReviewAssignmentTitle from './CellReviewAssignmentTitle.vue';
+import CellReviewAssignmentActivity from './CellReviewAssignmentActivity.vue';
+import CellReviewAssignmentActions from './CellReviewAssignmentActions.vue';
 
 defineProps({
 	items: {type: Array, required: true},
@@ -59,16 +59,16 @@ defineProps({
 });
 const emit = defineEmits(['setPage', 'sortColumn']);
 
-const columnComponents = {
-	ColumnSubmissionActions,
-	ColumnSubmissionActivity,
-	ColumnSubmissionDays,
-	ColumnSubmissionId,
-	ColumnSubmissionStage,
-	ColumnSubmissionTitle,
-	ColumnReviewAssignmentId,
-	ColumnReviewAssignmentTitle,
-	ColumnReviewAssignmentActivity,
-	ColumnReviewAssignmentActions,
+const cellComponents = {
+	CellSubmissionActions,
+	CellSubmissionActivity,
+	CellSubmissionDays,
+	CellSubmissionId,
+	CellSubmissionStage,
+	CellSubmissionTitle,
+	CellReviewAssignmentId,
+	CellReviewAssignmentTitle,
+	CellReviewAssignmentActivity,
+	CellReviewAssignmentActions,
 };
 </script>

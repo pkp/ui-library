@@ -4,20 +4,10 @@ import {useSubmission} from '@/composables/useSubmission';
 import {useUrl} from '@/composables/useUrl';
 import {useForm} from '@/composables/useForm';
 import {useUrlSearchParams} from '@vueuse/core';
+import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 
 import SelectRevisionRecommendationFormModal from '../components/SelectRevisionRecommendationFormModal.vue';
-export function useHandleActions({
-	addReviewerUrl,
-	unassignReviewerUrl,
-	resendRequestReviewerUrl,
-	reviewDetailsUrl,
-	editReviewUrl,
-	assignToIssueUrl,
-	selectRevisionDecisionForm,
-	viewActivityLogUrl,
-	assignParticipantUrl,
-	fileUploadWizardUrl,
-}) {
+export function useHandleActions({selectRevisionDecisionForm}) {
 	function handleSubmissionAction(
 		submission,
 		actionName,
@@ -28,7 +18,7 @@ export function useHandleActions({
 
 		const {openSideModal} = useModal();
 		const {t, localize} = useLocalize();
-		const {getActiveReviewRound} = useSubmission();
+		const {getCurrentReviewRound} = useSubmission();
 
 		const editorialDecisionActions = {
 			requestRevisions: {},
@@ -46,8 +36,8 @@ export function useHandleActions({
 		function openDecisionPage(submission, decisionId) {
 			const queryParamsUrl = useUrlSearchParams();
 
-			const {getActiveReviewRound} = useSubmission();
-			const activeReviewRound = getActiveReviewRound(submission);
+			const {getCurrentReviewRound} = useSubmission();
+			const activeReviewRound = getCurrentReviewRound(submission);
 
 			const currentPageUrl = `dashboard/editorial?${new URLSearchParams({...queryParamsUrl, summarySubmissionId: submission.id}).toString()}`;
 
@@ -87,19 +77,25 @@ export function useHandleActions({
 		}
 
 		if (actionName === 'assignReviewers') {
-			const activeReviewRound = getActiveReviewRound(submission);
+			const activeReviewRound = getCurrentReviewRound(submission);
 
-			const url = addReviewerUrl
-				.replace('__id__', submission.id)
-				.replace('__stageId__', submission.stageId)
-				.replace('__reviewRoundId__', activeReviewRound.id);
+			const {url} = useLegacyGridUrl({
+				component: 'grid.users.reviewer.ReviewerGridHandler',
+				op: 'showReviewerForm',
+				params: {
+					selectionType: pkp.const.REVIEWER_SELECT_ADVANCED_SEARCH,
+					submissionId: submission.id,
+					stageId: submission.stageId,
+					reviewRoundId: activeReviewRound.id,
+				},
+			});
 
 			openSideModal(
 				'LegacyAjax',
 				{
 					options: {
 						title: t('editor.submission.addStageParticipant'),
-						url,
+						url: url.value,
 					},
 				},
 				{
@@ -109,10 +105,16 @@ export function useHandleActions({
 				},
 			);
 		} else if (['unassignReviewer', 'cancelReviewer'].includes(actionName)) {
-			const url = unassignReviewerUrl
-				.replace('__id__', submission.id)
-				.replace('__stageId__', submission.stageId)
-				.replace('__reviewAssignmentId__', actionArgs.reviewAssignmentId);
+			const {url} = useLegacyGridUrl({
+				component: 'grid.users.reviewer.ReviewerGridHandler',
+				op: 'unassignReviewer',
+				params: {
+					selectionType: pkp.const.REVIEWER_SELECT_ADVANCED_SEARCH,
+					submissionId: submission.id,
+					stageId: submission.stageId,
+					reviewAssignmentId: actionArgs.reviewAssignmentId,
+				},
+			});
 
 			const modalTitle =
 				actionName === 'unassignReviewer'
@@ -131,10 +133,15 @@ export function useHandleActions({
 				},
 			);
 		} else if (actionName === 'resendReviewRequest') {
-			const url = resendRequestReviewerUrl
-				.replace('__id__', submission.id)
-				.replace('__stageId__', submission.stageId)
-				.replace('__reviewAssignmentId__', actionArgs.reviewAssignmentId);
+			const {url} = useLegacyGridUrl({
+				component: 'grid.users.reviewer.ReviewerGridHandler',
+				op: 'resendRequestReviewer',
+				params: {
+					submissionId: submission.id,
+					stageId: submission.stageId,
+					reviewAssignmentId: actionArgs.reviewAssignmentId,
+				},
+			});
 
 			openSideModal(
 				'LegacyAjax',
@@ -154,10 +161,15 @@ export function useHandleActions({
 				'viewRecommendation',
 			].includes(actionName)
 		) {
-			const url = reviewDetailsUrl
-				.replace('__id__', submission.id)
-				.replace('__stageId__', submission.stageId)
-				.replace('__reviewAssignmentId__', actionArgs.reviewAssignmentId);
+			const {url} = useLegacyGridUrl({
+				component: 'grid.users.reviewer.ReviewerGridHandler',
+				op: 'readReview',
+				params: {
+					submissionId: submission.id,
+					stageId: submission.stageId,
+					reviewAssignmentId: actionArgs.reviewAssignmentId,
+				},
+			});
 
 			const {getCurrentPublication} = useSubmission();
 
@@ -176,10 +188,15 @@ export function useHandleActions({
 				},
 			);
 		} else if (actionName === 'editDueDate') {
-			const url = editReviewUrl
-				.replace('__id__', submission.id)
-				.replace('__stageId__', submission.stageId)
-				.replace('__reviewAssignmentId__', actionArgs.reviewAssignmentId);
+			const {url} = useLegacyGridUrl({
+				component: 'grid.users.reviewer.ReviewerGridHandler',
+				op: 'editReview',
+				params: {
+					submissionId: submission.id,
+					stageId: submission.stageId,
+					reviewAssignmentId: actionArgs.reviewAssignmentId,
+				},
+			});
 
 			openSideModal(
 				'LegacyAjax',
@@ -194,15 +211,23 @@ export function useHandleActions({
 			);
 		} else if (actionName === 'assignToIssue') {
 			const {getCurrentPublication} = useSubmission();
-
-			const url = assignToIssueUrl
-				.replace('__id__', submission.id)
-				.replace('__publicationId__', getCurrentPublication(submission).id);
+			const {url} = useLegacyGridUrl({
+				component: 'modals.publish.AssignToIssueHandler',
+				op: 'assign',
+				params: {
+					submissionId: submission.id,
+					publicationId: getCurrentPublication(submission).id,
+				},
+			});
 
 			openSideModal(
 				'LegacyAjax',
 				{
-					options: {title: t('publication.selectIssue'), url},
+					options: {
+						title: t('publication.selectIssue'),
+						url,
+						closeOnFormSuccessId: pkp.const.FORM_ASSIGN_TO_ISSUE,
+					},
 				},
 				{
 					onClose: async () => {
@@ -211,7 +236,13 @@ export function useHandleActions({
 				},
 			);
 		} else if (actionName === 'viewActivityLog') {
-			const url = viewActivityLogUrl.replace('__id__', submission.id);
+			const {url} = useLegacyGridUrl({
+				component: 'informationCenter.SubmissionInformationCenterHandler',
+				op: 'viewInformationCenter',
+				params: {
+					submissionId: submission.id,
+				},
+			});
 
 			openSideModal(
 				'LegacyAjax',
@@ -225,9 +256,14 @@ export function useHandleActions({
 				},
 			);
 		} else if (actionName === 'assignParticipant') {
-			const url = assignParticipantUrl
-				.replace('__id__', submission.id)
-				.replace('__stageId__', submission.stageId);
+			const {url} = useLegacyGridUrl({
+				component: 'grid.users.stageParticipant.StageParticipantGridHandler',
+				op: 'addParticipant',
+				params: {
+					submissionId: submission.id,
+					stageId: submission.stageId,
+				},
+			});
 
 			openSideModal(
 				'LegacyAjax',
@@ -241,14 +277,20 @@ export function useHandleActions({
 				},
 			);
 		} else if (actionName === 'uploadRevisions') {
-			const activeReviewRound = getActiveReviewRound(submission);
+			const activeReviewRound = getCurrentReviewRound(submission);
 			const {getFileStageFromWorkflowStage} = useSubmission();
 
-			const url = fileUploadWizardUrl
-				.replace('__id__', submission.id)
-				.replace('__stageId__', submission.stageId)
-				.replace('__fileStage__', getFileStageFromWorkflowStage(submission))
-				.replace('__reviewRoundId__', activeReviewRound.id);
+			const {url} = useLegacyGridUrl({
+				component: 'wizard.fileUpload.FileUploadWizardHandler',
+				op: 'startWizard',
+				params: {
+					submissionId: submission.id,
+					stageId: submission.stageId,
+					uploaderRoles: pkp.const.ROLE_ID_AUTHOR,
+					fileStage: getFileStageFromWorkflowStage(submission),
+					reviewRoundId: activeReviewRound.id,
+				},
+			});
 
 			openSideModal(
 				'LegacyAjax',
@@ -261,6 +303,13 @@ export function useHandleActions({
 					},
 				},
 			);
+		} else if (actionName === 'openReviewForm') {
+			const {redirectToPage} = useUrl(
+				`reviewer/submission/${encodeURIComponent(submission.id)}`,
+				{},
+			);
+
+			redirectToPage();
 		}
 	}
 

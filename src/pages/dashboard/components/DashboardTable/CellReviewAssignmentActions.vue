@@ -4,7 +4,7 @@
 			class="-ms-3"
 			:aria-describedby="'submission-title-' + item.id"
 			:is-link="true"
-			@click="dashboardPageStore.openSummaryModal(item.id)"
+			@click="dashboardPageStore.openSummaryModal(item.submissionId, item.id)"
 		>
 			{{ 'Action (todo)' }}
 		</PkpButton>

@@ -6,8 +6,8 @@ import {useUrl} from '@/composables/useUrl';
 
 export const useFileManagerStore = defineComponentStore(
 	'fileManager',
-	(initValues) => {
-		const submissionId = ref(initValues.submissionId);
+	(props) => {
+		const submissionId = ref(props.submissionId);
 
 		const {apiUrl: filesApiUrl} = useUrl(
 			`submissions/${submissionId.value}/files`,
@@ -15,21 +15,15 @@ export const useFileManagerStore = defineComponentStore(
 
 		const {data, fetch: fetchFiles} = useFetch(filesApiUrl, {
 			query: {
-				fileStages: initValues.fileStages,
-				reviewRoundId: initValues.reviewRoundId,
+				fileStages: props.fileStages,
+				reviewRoundId: props.reviewRoundId,
 			},
 		});
 
 		const files = computed(() => data.value?.items);
-		console.log('fetchFiles:', {
-			query: {
-				fileStages: initValues.fileStages,
-				reviewRoundId: initValues.reviewRoundId,
-			},
-		});
-		fetchFiles();
-		const title = ref('ahoj');
 
-		return {title, files, fetchFiles};
+		fetchFiles();
+
+		return {title: props.title, files, fetchFiles};
 	},
 );
