@@ -164,7 +164,7 @@ function handleClick(linkKey) {
 
 function addLinkTooltip(text) {
 	return collapsed.value
-		? {content: text, theme: 'pkp-nav', placement: 'auto-end'}
+		? {content: text, theme: 'pkp-tooltip', placement: 'auto-end'}
 		: {};
 }
 </script>
