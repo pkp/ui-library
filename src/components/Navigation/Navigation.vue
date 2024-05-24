@@ -1,11 +1,12 @@
 <template>
 	<div
 		v-if="Object.keys(links).length"
-		ref="navbarHeight"
-		class="sticky top-0 flex h-screen bg-secondary"
+		ref="containerNav"
+		class="nav-section sticky top-0 flex h-screen flex-none"
 	>
 		<nav
-			class="w-max overflow-y-auto border-e border-s border-light pl-4 pr-4 pt-4"
+			ref="primaryNav"
+			class="w-max overflow-y-auto border-e border-s border-light bg-secondary pl-4 pr-4 pt-4"
 			:aria-label="ariaLabel"
 		>
 			<ul>
@@ -23,7 +24,6 @@
 					v-for="(link, key) in links"
 					:key="key"
 					:class="link.addMargin ? 'mt-8' : 'mt-2'"
-					@click="handleClick(key)"
 				>
 					<PkpButton
 						v-tooltip="addLinkTooltip(link.name)"
@@ -32,42 +32,45 @@
 						:is-active="link.isCurrent"
 						:size-variant="collapsed ? 'iconOnly' : 'default'"
 						:icon="link.icon"
+						:aria-expanded="!!link.isCurrent"
+						:aria-controls="link.submenu ? `nav_${key}` : null"
+						@click="handleClick(key)"
 					>
 						{{ link.name }}
 					</PkpButton>
-				</li>
-			</ul>
-		</nav>
-		<nav
-			v-if="currentLink?.submenu"
-			class="w-60 overflow-y-auto border-e border-light pt-4 leading-6"
-			:aria-label="currentLink.name"
-		>
-			<div class="mb-10 p-3 font-bold uppercase text-heading">
-				<Icon
-					v-if="currentLink.icon"
-					class="h-9 w-9"
-					:icon="currentLink.icon"
-				/>
-				<div>
-					<span>{{ currentLink.name }}</span>
-				</div>
-			</div>
-			<ul>
-				<li
-					v-for="(link, key) in currentLink.submenu"
-					:key="key"
-					@click="handleSecondNav(currentLink.submenu, key)"
-				>
-					<PkpButton
-						element="a"
-						:href="link.url"
-						:is-active="link.isCurrent"
-						:icon="link.icon"
-						size-variant="fullWidth"
+
+					<div
+						v-if="link?.submenu"
+						v-show="link.isCurrent && showSecondNav"
+						:ref="(el) => (secondaryNav[key] = el)"
+						class="nav-section secondary-nav absolute top-0 w-60 overflow-y-auto border-e border-light bg-secondary pt-4 leading-6"
 					>
-						{{ link.name }}
-					</PkpButton>
+						<div class="mb-10 p-3 font-bold uppercase text-heading">
+							<Icon v-if="link.icon" class="h-9 w-9" :icon="link.icon" />
+							<div>
+								<span>{{ link.name }}</span>
+							</div>
+						</div>
+						<ul :id="`nav_${key}`">
+							<li
+								v-for="(sLink, sKey) in link.submenu"
+								:key="sKey"
+								class="mt-1"
+								@click="displaySecondNav(link.submenu, sKey)"
+							>
+								<PkpButton
+									element="a"
+									class="submenu-item"
+									:href="sLink.url"
+									:is-active="sLink.isCurrent"
+									:icon="sLink.icon"
+									size-variant="fullWidth"
+								>
+									{{ sLink.name }}
+								</PkpButton>
+							</li>
+						</ul>
+					</div>
 				</li>
 			</ul>
 		</nav>
@@ -94,11 +97,14 @@ const props = defineProps({
 
 const collapsed = useStorage('nav-collapsed', false);
 const currentLink = ref({});
+const currentLinkKey = ref('');
 const modifiedLinks = reactive({...props.links});
-const navbarHeight = ref(0);
-const headerHeight = ref(null);
+const containerNav = ref(null);
+const primaryNav = ref(null);
+const secondaryNav = reactive({});
+const showSecondNav = ref(false);
 
-const currentLinkKey = Object.keys(modifiedLinks).find((key) => {
+currentLinkKey.value = Object.keys(modifiedLinks).find((key) => {
 	const smCurrentLink = modifiedLinks[key]?.submenu || {};
 	const activeSubmenuLink = Object.keys(smCurrentLink).find(
 		(smKey) => smCurrentLink[smKey]?.isCurrent,
@@ -113,29 +119,37 @@ const currentLinkKey = Object.keys(modifiedLinks).find((key) => {
 	return modifiedLinks[key]?.isCurrent;
 });
 
-currentLink.value = modifiedLinks[currentLinkKey];
+currentLink.value = modifiedLinks[currentLinkKey.value];
 
 onMounted(async () => {
 	await nextTick();
+	await document.fonts.ready;
 
-	const headerElement = document.querySelector('header.app__header');
-	headerHeight.value = headerElement?.clientHeight;
-
-	// set the navbar's height and position
-	if (headerHeight.value) {
-		navbarHeight.value.style.top = `${headerHeight.value}px`;
-		navbarHeight.value.style.height = `calc(100vh - ${headerHeight.value}px)`;
-	}
+	positionSecondaryNav();
 });
 
 function toggleNav() {
 	collapsed.value = !collapsed.value;
+	positionSecondaryNav();
 }
 
-function handleSecondNav(submenu = [], smKey) {
+function displaySecondNav(submenu = [], smKey) {
 	Object.keys(submenu).forEach((key) => {
 		submenu[key].isCurrent = key === smKey;
 	});
+	positionSecondaryNav();
+}
+
+async function positionSecondaryNav() {
+	showSecondNav.value = !!currentLink.value?.submenu;
+	if (!showSecondNav.value) return;
+
+	await nextTick();
+
+	const containerWidth = `${primaryNav.value?.offsetWidth + secondaryNav[currentLinkKey.value]?.offsetWidth}px`;
+
+	// set the main nav container's height for both
+	containerNav.value.style.width = containerWidth;
 }
 
 function handleClick(linkKey) {
@@ -143,8 +157,9 @@ function handleClick(linkKey) {
 		modifiedLinks[key].isCurrent = key === linkKey;
 	});
 	currentLink.value = modifiedLinks[linkKey];
+	currentLinkKey.value = linkKey;
 	const submenu = modifiedLinks[linkKey]?.submenu || [];
-	handleSecondNav(submenu, Object.keys(submenu)[0]);
+	displaySecondNav(submenu, Object.keys(submenu)[0]);
 }
 
 function addLinkTooltip(text) {
@@ -153,3 +168,15 @@ function addLinkTooltip(text) {
 		: {};
 }
 </script>
+
+<style lang="less" scoped>
+@import '../../styles/_import';
+
+.nav-section {
+	height: calc(100vh - 3rem);
+}
+
+.secondary-nav {
+	inset-inline-end: 0;
+}
+</style>
