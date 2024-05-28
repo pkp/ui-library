@@ -2,14 +2,12 @@
 	<highlightjs :language="language" :code="code" />
 </template>
 
-<script setup>
-import {defineProps, onBeforeMount} from 'vue';
+<script>
+import xml from 'highlight.js/lib/languages/xml';
 import hljs from 'highlight.js/lib/core';
 import hljsVuePlugin from '@highlightjs/vue-plugin';
 
-// Importing the language modules
-import xml from 'highlight.js/lib/languages/xml';
-// Add more languages
+hljs.registerLanguage('xml', xml);
 
 // A map to store language modules
 const languageMap = {
@@ -18,8 +16,10 @@ const languageMap = {
 };
 
 const supportedLanguages = Object.keys(languageMap);
+</script>
 
-const props = defineProps({
+<script setup>
+defineProps({
 	code: {
 		type: String,
 		required: true,
@@ -27,31 +27,15 @@ const props = defineProps({
 	language: {
 		type: String,
 		required: true,
+		validator: (value) => {
+			if (!supportedLanguages.includes(value)) {
+				console.warn(`Invalid language prop: ${value}`);
+				return false;
+			}
+
+			return true;
+		},
 	},
-});
-
-function loadLanguageModule(language) {
-	const languageModule = languageMap[language];
-	if (languageModule) {
-		hljs.registerLanguage(language, languageModule);
-	} else {
-		console.error(`Language module for ${language} is not available.`);
-	}
-}
-
-// Validate the language prop
-function validateLanguage(language) {
-	if (!supportedLanguages.includes(language)) {
-		console.error(
-			`Unsupported language: ${language}. Supported languages are: ${supportedLanguages.join(', ')}`,
-		);
-	}
-}
-
-validateLanguage(props.language);
-
-onBeforeMount(() => {
-	loadLanguageModule(props.language);
 });
 
 const highlightjs = hljsVuePlugin.component;
