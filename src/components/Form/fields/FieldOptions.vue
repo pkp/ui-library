@@ -39,7 +39,9 @@
 			v-html="description"
 		/>
 		<div class="pkpFormField__control">
-			<VueDraggable
+			<!-- avoid creating VueDraggable when not necessary as it was causing random problems with multiple VueDraggables in the form -->
+			<component
+				:is="isOrderable ? VueDraggable : 'div'"
 				ref="el"
 				v-model="localizedOptions"
 				:disabled="!isOrderable"
@@ -92,7 +94,7 @@
 						@down="optionOrderDown"
 					/>
 				</label>
-			</VueDraggable>
+			</component>
 			<multilingual-progress
 				v-if="isMultilingual && locales.length > 1"
 				:id="multilingualProgressId"
