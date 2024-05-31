@@ -41,7 +41,9 @@
 						<div v-if="this.workingJatsProps['loadingContentError']">
 							{{ this.workingJatsProps['loadingContentError'] }}
 						</div>
-						<pre v-else v-highlightjs="workingJatsContent"><code class="xml"></code></pre>
+						<div v-else>
+							<code-highlighter :code="workingJatsContent" language="xml" />
+						</div>
 					</div>
 					<div v-if="this.workingJatsProps['loadingContentError'] == null">
 						<div v-if="isDefaultContent" class="filePanel__hasData">
@@ -81,12 +83,14 @@ import PkpHeader from '@/components/Header/Header.vue';
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
 import FileUploader from '@/components/FileUploader/FileUploader.vue';
+import CodeHighlighter from '@/components/CodeHighlighter/CodeHighlighter.vue';
 
 export default {
 	components: {
 		FileUploader,
 		Modal,
 		PkpHeader,
+		CodeHighlighter,
 	},
 	mixins: [ajaxError, dialog],
 	props: {
