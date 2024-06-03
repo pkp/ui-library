@@ -16,12 +16,13 @@
 		<span v-if="sizeVariant === 'iconOnly' && icon" class="sr-only">
 			<slot />
 		</span>
+		<span v-else-if="sizeVariant === 'iconOnly' && !icon">{{ abbrText }}</span>
 		<slot v-else />
 	</component>
 </template>
 
 <script setup>
-import {defineProps, defineEmits, computed} from 'vue';
+import {computed, onMounted, ref, useSlots} from 'vue';
 import Icon from '@/components/Icon/Icon.vue';
 
 const props = defineProps({
@@ -54,6 +55,9 @@ const props = defineProps({
 			['default', 'compact', 'fullWidth', 'iconOnly'].includes(prop),
 	},
 });
+
+const abbrText = ref('');
+const slots = useSlots();
 
 // by default button was secondary, this is for backward compatibility
 const isSecondary = computed(
@@ -108,6 +112,15 @@ const emit = defineEmits([
 	/** When focus moves away from the button. */
 	'blur',
 ]);
+
+onMounted(() => {
+	// Retrieve the slot content and set the abbreviated text
+	if (slots.default) {
+		const slotContent = slots.default()[0]?.children || '';
+		abbrText.value =
+			typeof slotContent === 'string' ? slotContent.trim().slice(0, 3) : '';
+	}
+});
 </script>
 
 <style lang="less" scoped>

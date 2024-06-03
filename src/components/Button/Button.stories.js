@@ -140,10 +140,28 @@ export const WithIcon = {
 };
 
 export const IconOnly = {
+	render: (args) => ({
+		components: {Button},
+		setup() {
+			return {args};
+		},
+		template: `
+			<div>
+				<div class="mt-2">
+					<Button v-bind="args" icon="Cancel">
+						Cancel
+					</Button>
+				</div>
+				<div class="mt-2">
+					<Button v-bind="args">
+						Submissions
+					</Button>
+				</div>
+			</div>
+			`,
+	}),
 	args: {
 		sizeVariant: 'iconOnly',
-		icon: 'Cancel',
-		slot: 'Sample text',
 	},
 };
 
