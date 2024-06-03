@@ -2,7 +2,7 @@
 	<div
 		v-if="Object.keys(links).length"
 		ref="containerNav"
-		class="nav-section sticky top-0 flex h-screen flex-none bg-secondary"
+		class="nav-section sticky top-0 flex h-screen flex-none"
 	>
 		<nav
 			ref="primaryNav"
