@@ -2,7 +2,7 @@
 	<div
 		v-if="Object.keys(links).length"
 		ref="containerNav"
-		class="nav-section sticky top-0 flex h-screen flex-none"
+		class="nav-section sticky top-0 flex h-screen flex-none bg-secondary"
 	>
 		<nav
 			ref="primaryNav"
@@ -43,7 +43,7 @@
 						v-if="link?.submenu"
 						v-show="link.isCurrent && showSecondNav"
 						:ref="(el) => (secondaryNav[key] = el)"
-						class="nav-section secondary-nav absolute top-0 w-60 overflow-y-auto border-e border-light bg-secondary pt-4 leading-6"
+						class="nav-section secondary-nav absolute top-0 w-60 overflow-y-auto border-e border-light bg-secondary pt-4 leading-6 ltr:right-0 rtl:left-0"
 					>
 						<div class="mb-10 p-3 font-bold uppercase text-heading">
 							<Icon v-if="link.icon" class="h-9 w-9" :icon="link.icon" />
@@ -78,7 +78,7 @@
 </template>
 
 <script setup>
-import {ref, reactive, onMounted, nextTick} from 'vue';
+import {ref, reactive, onMounted, nextTick, watch} from 'vue';
 import {useStorage} from '@vueuse/core';
 
 const props = defineProps({
@@ -167,6 +167,10 @@ function addLinkTooltip(text) {
 		? {content: text, theme: 'pkp-tooltip', placement: 'auto-end'}
 		: {};
 }
+
+watch(collapsed, () => {
+	positionSecondaryNav();
+});
 </script>
 
 <style lang="less" scoped>
@@ -174,9 +178,5 @@ function addLinkTooltip(text) {
 
 .nav-section {
 	height: calc(100vh - 3rem);
-}
-
-.secondary-nav {
-	inset-inline-end: 0;
 }
 </style>
