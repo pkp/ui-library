@@ -4,16 +4,19 @@
 		class="max-w-[25em] truncate"
 		:is-row-header="true"
 	>
-		<span class="text-lg-semibold">
-			{{ 'submission title (todo)' }}
-		</span>
+		<span class="text-lg-semibold">{{ title }}</span>
 	</TableCell>
 </template>
 
 <script setup>
-import {defineProps} from 'vue';
+import {defineProps, computed} from 'vue';
+import {useLocalize} from '@/composables/useLocalize';
 
 import TableCell from '@/components/TableNext/TableCell.vue';
+const {localizeSubmission} = useLocalize();
 
-defineProps({item: {type: Object, required: true}});
+const props = defineProps({item: {type: Object, required: true}});
+
+// TODO add submission locale once available in the response
+const title = computed(() => localizeSubmission(props.item.publicationTitle));
 </script>

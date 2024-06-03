@@ -1,3 +1,7 @@
+const InProgressReviewAssignmentStatuses = [
+	pkp.const.REVIEW_ASSIGNMENT_STATUS_ACCEPTED,
+	pkp.const.REVIEW_ASSIGNMENT_STATUS_REVIEW_OVERDUE,
+];
 const CompletedReviewAssignmentStatuses = [
 	pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
 	pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
@@ -54,5 +58,6 @@ export function useReviewAssignment() {
 		getCompletedReviewAssignments,
 		getOpenReviewAssignments,
 		getReviewMethodIcons,
+		InProgressReviewAssignmentStatuses,
 	};
 }

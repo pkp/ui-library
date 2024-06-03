@@ -123,7 +123,11 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		 */
 		const {handleSubmissionAction} = useHandleActions(props.pageInitConfig);
 
-		function handleAction(actionName, actionArgs) {
+		function handleAction(actionName, _actionArgs) {
+			const actionArgs = {..._actionArgs};
+			if (selectedReviewAssignment.value) {
+				actionArgs.reviewAssignmentId = selectedReviewAssignment.value.id;
+			}
 			handleSubmissionAction(
 				submission.value,
 				actionName,

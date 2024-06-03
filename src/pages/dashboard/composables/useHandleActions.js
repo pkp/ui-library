@@ -93,7 +93,7 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 			openSideModal(
 				'LegacyAjax',
 				{
-					options: {
+					legacyOptions: {
 						title: t('editor.submission.addStageParticipant'),
 						url: url.value,
 					},
@@ -124,7 +124,7 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 			openSideModal(
 				'LegacyAjax',
 				{
-					options: {title: modalTitle, url},
+					legacyOptions: {title: modalTitle, url},
 				},
 				{
 					onClose: async () => {
@@ -146,7 +146,7 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 			openSideModal(
 				'LegacyAjax',
 				{
-					options: {title: t('editor.review.resendRequestReviewer'), url},
+					legacyOptions: {title: t('editor.review.resendRequestReviewer'), url},
 				},
 				{
 					onClose: async () => {
@@ -176,7 +176,7 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 			openSideModal(
 				'LegacyAjax',
 				{
-					options: {
+					legacyOptions: {
 						title: `${t('editor.review.reviewDetails')}: ${localize(getCurrentPublication(submission).fullTitle)}`,
 						url,
 					},
@@ -201,7 +201,7 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 			openSideModal(
 				'LegacyAjax',
 				{
-					options: {title: t('editor.submissionReview.editReview'), url},
+					legacyOptions: {title: t('editor.submissionReview.editReview'), url},
 				},
 				{
 					onClose: async () => {
@@ -223,7 +223,7 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 			openSideModal(
 				'LegacyAjax',
 				{
-					options: {
+					legacyOptions: {
 						title: t('publication.selectIssue'),
 						url,
 						closeOnFormSuccessId: pkp.const.FORM_ASSIGN_TO_ISSUE,
@@ -247,7 +247,7 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 			openSideModal(
 				'LegacyAjax',
 				{
-					options: {title: t('submission.list.infoCenter'), url},
+					legacyOptions: {title: t('submission.list.infoCenter'), url},
 				},
 				{
 					onClose: async () => {
@@ -268,7 +268,7 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 			openSideModal(
 				'LegacyAjax',
 				{
-					options: {url},
+					legacyOptions: {url},
 				},
 				{
 					onClose: async () => {
@@ -295,7 +295,7 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 			openSideModal(
 				'LegacyAjax',
 				{
-					options: {url},
+					legacyOptions: {url, title: t('editor.submissionReview.uploadFile')},
 				},
 				{
 					onClose: async () => {
@@ -310,6 +310,55 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 			);
 
 			redirectToPage();
+		} else if (actionName === 'uploadReviewerFile') {
+			const activeReviewRound = getCurrentReviewRound(submission);
+			// fileStage=5&reviewRoundId=8&assocType=517&assocId=28&submissionId=10&stageId=3&uploaderRoles=16-1-17-4096
+			const {url} = useLegacyGridUrl({
+				component: 'wizard.fileUpload.FileUploadWizardHandler',
+				op: 'startWizard',
+				params: {
+					fileStage: pkp.const.SUBMISSION_FILE_REVIEW_ATTACHMENT,
+					reviewRoundId: activeReviewRound.id,
+					assocType: pkp.const.ASSOC_TYPE_REVIEW_ASSIGNMENT,
+					assocId: actionArgs.reviewAssignmentId,
+					submissionId: submission.id,
+					stageId: submission.stageId,
+					uploaderRoles: pkp.const.ROLE_ID_REVIEWER,
+				},
+			});
+
+			openSideModal(
+				'LegacyAjax',
+				{
+					legacyOptions: {
+						url,
+						title: t('editor.submissionReview.uploadAttachment'),
+					},
+				},
+				{
+					onClose: async () => {
+						finishedCallback();
+					},
+				},
+			);
+		} else if (actionName === 'declineReviewAssignment') {
+			//publicknowledge/en/reviewer/showDeclineReview/5
+			const {pageUrl} = useUrl(`reviewer/showDeclineReview/${submission.id}`);
+
+			openSideModal(
+				'LegacyAjax',
+				{
+					legacyOptions: {
+						title: t('reviewer.submission.declineReview'),
+						url: pageUrl,
+					},
+				},
+				{
+					onClose: async () => {
+						finishedCallback();
+					},
+				},
+			);
 		}
 	}
 

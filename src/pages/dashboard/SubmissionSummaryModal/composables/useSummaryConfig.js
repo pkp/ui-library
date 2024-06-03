@@ -1,7 +1,7 @@
 import {useSubmission} from '@/composables/useSubmission.js';
 import {useLocalize} from '@/composables/useLocalize';
 import {useDate} from '@/composables/useDate';
-
+import {useReviewAssignment} from '@/composables/useReviewAssignment';
 const DashboardPageTypes = {
 	EDITORIAL_DASHBOARD: 'editorialDashboard',
 	MY_REVIEW_ASSIGNMENTS: 'myReviewAssignments',
@@ -9,7 +9,7 @@ const DashboardPageTypes = {
 };
 
 const {getActiveStage, getCurrentReviewRound} = useSubmission();
-
+const {InProgressReviewAssignmentStatuses} = useReviewAssignment();
 const {calculateDaysBetweenDates, formatShortDate} = useDate();
 
 const {localizeSubmission} = useLocalize();
@@ -236,6 +236,36 @@ export function useSummaryConfig() {
 					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
 					reviewAssignmentStatusId: [
 						pkp.const.REVIEW_ASSIGNMENT_STATUS_ACCEPTED,
+					],
+				},
+			},
+			{
+				component: 'ActionButton',
+				props: {
+					label: 'Upload File (t)',
+					isSecondary: true,
+					action: 'uploadReviewerFile',
+				},
+				filters: {
+					dashboardPage: [DashboardPageTypes.MY_REVIEW_ASSIGNMENTS],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
+					reviewAssignmentStatusId: [...InProgressReviewAssignmentStatuses],
+				},
+			},
+			{
+				component: 'ActionButton',
+				props: {
+					label: 'Decline',
+					isSecondary: true,
+					action: 'declineReviewAssignment',
+				},
+				filters: {
+					dashboardPage: [DashboardPageTypes.MY_REVIEW_ASSIGNMENTS],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
+					reviewAssignmentStatusId: [
+						pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE,
+						// TODO: can be declined after resend?
+						pkp.const.REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND,
 					],
 				},
 			},

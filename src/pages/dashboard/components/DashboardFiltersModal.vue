@@ -18,7 +18,7 @@
 	</SideModalBody>
 </template>
 
-<script>
+<script setup>
 import {inject} from 'vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import Panel from '@/components/Panel/Panel.vue';
@@ -27,30 +27,21 @@ import PkpButton from '@/components/Button/Button.vue';
 import PkpForm from '@/components/Form/Form.vue';
 
 import {useFiltersForm} from '@/composables/useFiltersForm';
-export default {
-	components: {SideModalBody, Panel, PanelSection, PkpButton, PkpForm},
-	props: {
-		filtersFormInitial: {type: Object, required: true},
-	},
-	emits: ['updateFiltersForm'],
-	setup(props, {emit}) {
-		// clone current filtersForm, so its independent until its saved
-		const filtersFormCopy = JSON.parse(
-			JSON.stringify(props.filtersFormInitial),
-		);
+const props = defineProps({
+	filtersFormInitial: {type: Object, required: true},
+});
+const emit = defineEmits(['updateFiltersForm']);
+// clone current filtersForm, so its independent until its saved
+const filtersFormCopy = JSON.parse(JSON.stringify(props.filtersFormInitial));
 
-		// handling filtersForm
-		const {filtersForm, updateFiltersForm, clearFiltersForm} =
-			useFiltersForm(filtersFormCopy);
+// handling filtersForm
+const {filtersForm, updateFiltersForm, clearFiltersForm} =
+	useFiltersForm(filtersFormCopy);
 
-		const closeModal = inject('closeModal');
+const closeModal = inject('closeModal');
 
-		function applyFilters() {
-			emit('updateFiltersForm', filtersForm.value);
-			closeModal();
-		}
-
-		return {filtersForm, updateFiltersForm, clearFiltersForm, applyFilters};
-	},
-};
+function applyFilters() {
+	emit('updateFiltersForm', filtersForm.value);
+	closeModal();
+}
 </script>
