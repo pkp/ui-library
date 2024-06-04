@@ -22,14 +22,23 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 
 		const editorialDecisionActions = {
 			requestRevisions: {},
-			acceptSubmission: {
+			decisionAccept: {
 				decisionId: pkp.const.DECISION_ACCEPT,
 			},
-			cancelReviewRound: {
+			decisionCancelReviewRound: {
 				decisionId: pkp.const.DECISION_CANCEL_REVIEW_ROUND,
 			},
 			declineSubmission: {
 				decisionId: pkp.const.DECISION_DECLINE,
+			},
+			decisionExternalReview: {
+				decisionId: pkp.const.DECISION_EXTERNAL_REVIEW,
+			},
+			decisionSkipExternalReview: {
+				decisionId: pkp.const.DECISION_SKIP_EXTERNAL_REVIEW,
+			},
+			decisionInitialDecline: {
+				decisionId: pkp.const.DECISION_INITIAL_DECLINE,
 			},
 		};
 
@@ -41,13 +50,15 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 
 			const currentPageUrl = `dashboard/editorial?${new URLSearchParams({...queryParamsUrl, summarySubmissionId: submission.id}).toString()}`;
 
+			const queryParams = {decision: decisionId, ret: currentPageUrl};
+
+			if (activeReviewRound?.id) {
+				queryParams.reviewRoundId = activeReviewRound?.id;
+			}
+
 			const {redirectToPage} = useUrl(
 				`decision/record/${encodeURIComponent(submission.id)}`,
-				{
-					reviewRoundId: activeReviewRound.id,
-					decision: decisionId,
-					ret: currentPageUrl,
-				},
+				queryParams,
 			);
 
 			redirectToPage();

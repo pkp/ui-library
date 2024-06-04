@@ -93,9 +93,10 @@ function passToHandlerElement(...args) {
 }
 
 function onVueFormSuccess(formId) {
-	console.log('onVueFormSuccesss:', formId, options);
-	if (options.closeOnFormSuccessId && options.closeOnFormSuccessId === formId) {
-		console.log('will close the modal');
+	if (
+		legacyOptions.closeOnFormSuccessId &&
+		legacyOptions.closeOnFormSuccessId === formId
+	) {
 		setTimeout(function () {
 			closeModal();
 		}, 1000);

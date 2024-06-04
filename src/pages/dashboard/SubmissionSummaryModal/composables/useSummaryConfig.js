@@ -78,7 +78,27 @@ export function useSummaryConfig() {
 					namespace: 'filesRevisions',
 
 					submissionId: submission.id,
-					reviewRoundId: activeReviewRound.id,
+					fileStages: [pkp.const.SUBMISSION_FILE_SUBMISSION],
+					title: 'Desk Review Files (t)',
+					description:
+						'These are the files that will be taken forward to the review stage in the workflow (t).',
+				},
+				filters: {
+					dashboardPage: [
+						DashboardPageTypes.EDITORIAL_DASHBOARD,
+						DashboardPageTypes.MY_SUBMISSIONS,
+					],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_SUBMISSION],
+				},
+			},
+
+			{
+				component: 'FileManager',
+				props: {
+					namespace: 'filesRevisions',
+
+					submissionId: submission.id,
+					reviewRoundId: activeReviewRound?.id,
 					fileStages: [pkp.const.SUBMISSION_FILE_REVIEW_REVISION],
 					title: 'Revisions Submitted (localize)',
 					description:
@@ -97,7 +117,7 @@ export function useSummaryConfig() {
 				props: {
 					namespace: 'filesForReview',
 					submissionId: submission.id,
-					reviewRoundId: activeReviewRound.id,
+					reviewRoundId: activeReviewRound?.id,
 					fileStages: [pkp.const.SUBMISSION_FILE_REVIEW_FILE],
 					title: 'Files for review (localize)',
 					description:
@@ -157,7 +177,45 @@ export function useSummaryConfig() {
 					],
 				},
 			},
+			//
+			{
+				component: 'ActionButton',
+				props: {
+					label: 'Send submission for review',
+					isPrimary: true,
+					action: 'decisionExternalReview',
+				},
+				filters: {
+					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_SUBMISSION],
+				},
+			},
+			{
+				component: 'ActionButton',
+				props: {
+					label: 'Accept and skip review',
+					isSecondary: true,
+					action: 'decisionSkipExternalReview',
+				},
+				filters: {
+					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_SUBMISSION],
+				},
+			},
+			{
+				component: 'ActionButton',
+				props: {
+					label: 'Decline submission',
+					isWarnable: true,
+					action: 'decisionInitialDecline',
+				},
+				filters: {
+					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_SUBMISSION],
+				},
+			},
 
+			//
 			{
 				component: 'ActionButton',
 				props: {
@@ -174,7 +232,7 @@ export function useSummaryConfig() {
 				component: 'ActionButton',
 				props: {
 					label: 'Accept Submission',
-					action: 'acceptSubmission',
+					action: 'decisionAccept',
 					isPrimary: true,
 				},
 				filters: {
@@ -187,7 +245,7 @@ export function useSummaryConfig() {
 				props: {
 					label: 'Cancel Review Round',
 					isWarnable: true,
-					action: 'cancelReviewRound',
+					action: 'decisionCancelReviewRound',
 				},
 				filters: {
 					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
@@ -199,7 +257,7 @@ export function useSummaryConfig() {
 				props: {
 					label: 'Decline Submission',
 					isWarnable: true,
-					action: 'declineSubmission',
+					action: 'decisionDecline',
 				},
 				filters: {
 					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
@@ -277,7 +335,10 @@ export function useSummaryConfig() {
 				component: 'EditorsAssigned',
 				filters: {
 					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
-					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
+					activeStageId: [
+						pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
+						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+					],
 				},
 			},
 			{
@@ -288,7 +349,10 @@ export function useSummaryConfig() {
 				},
 				filters: {
 					dashboardPage: [DashboardPageTypes.MY_SUBMISSIONS],
-					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
+					activeStageId: [
+						pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
+						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+					],
 				},
 			},
 			{
@@ -299,7 +363,21 @@ export function useSummaryConfig() {
 				},
 				filters: {
 					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
-					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
+					activeStageId: [
+						pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
+						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+					],
+				},
+			},
+			{
+				component: 'BasicMetadata',
+				props: {
+					heading: 'Days in submission: (t)',
+					body: 'todo not in api',
+				},
+				filters: {
+					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_SUBMISSION],
 				},
 			},
 			{
@@ -314,11 +392,31 @@ export function useSummaryConfig() {
 				},
 			},
 			{
+				component: 'BasicMetadata',
+				props: {
+					heading: 'Journal name: (t)',
+					body: 'todo not in api',
+				},
+				filters: {
+					dashboardPage: [
+						DashboardPageTypes.EDITORIAL_DASHBOARD,
+						DashboardPageTypes.MY_SUBMISSIONS,
+					],
+					activeStageId: [
+						pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
+						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+					],
+				},
+			},
+			{
 				component: 'IssueAssigned',
 				props: {isReadonly: false},
 				filters: {
 					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
-					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
+					activeStageId: [
+						pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
+						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+					],
 				},
 			},
 			{
@@ -341,7 +439,10 @@ export function useSummaryConfig() {
 						DashboardPageTypes.EDITORIAL_DASHBOARD,
 						DashboardPageTypes.MY_SUBMISSIONS,
 					],
-					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
+					activeStageId: [
+						pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
+						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+					],
 				},
 			},
 
@@ -359,7 +460,10 @@ export function useSummaryConfig() {
 						DashboardPageTypes.EDITORIAL_DASHBOARD,
 						DashboardPageTypes.MY_SUBMISSIONS,
 					],
-					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
+					activeStageId: [
+						pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
+						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+					],
 				},
 			},
 			{
@@ -378,7 +482,10 @@ export function useSummaryConfig() {
 						DashboardPageTypes.EDITORIAL_DASHBOARD,
 						DashboardPageTypes.MY_SUBMISSIONS,
 					],
-					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
+					activeStageId: [
+						pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
+						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+					],
 				},
 			},
 			{
@@ -392,7 +499,10 @@ export function useSummaryConfig() {
 						DashboardPageTypes.EDITORIAL_DASHBOARD,
 						DashboardPageTypes.MY_SUBMISSIONS,
 					],
-					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
+					activeStageId: [
+						pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
+						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+					],
 				},
 			},
 		];
