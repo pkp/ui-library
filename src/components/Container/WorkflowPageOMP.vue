@@ -72,9 +72,13 @@ export default {
 
 		/**
 		 * Update the work type to be an edited volume
+		 * Update authors' isVolumeEditor to bool if null
 		 */
 		setAsEditedVolume() {
 			this.updateWorkType(this.getConstant('WORK_TYPE_EDITED_VOLUME'));
+			this.workingPublication.authors.forEach(
+				(author) => (author.isVolumeEditor = !!author.isVolumeEditor),
+			);
 		},
 
 		/**

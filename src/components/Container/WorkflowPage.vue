@@ -1,11 +1,13 @@
 <script type="text/javascript">
 import Page from './Page.vue';
+import ChangeSubmissionLanguage from '@/components/Container/ChangeSubmissionLanguage.vue';
 import ContributorsListPanel from '@/components/ListPanel/contributors/ContributorsListPanel.vue';
 import PublicationSectionJats from '@/pages/workflow/PublicationSectionJats.vue';
 import Composer from '@/components/Composer/Composer.vue';
 import Dropdown from '@/components/Dropdown/Dropdown.vue';
 import Modal from '@/components/Modal/Modal.vue';
 import PkpHeader from '@/components/Header/Header.vue';
+import {useModal} from '@/composables/useModal';
 import LocalizeSubmission from '@/mixins/localizeSubmission.js';
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
@@ -13,6 +15,7 @@ import dialog from '@/mixins/dialog.js';
 export default {
 	name: 'WorkflowPage',
 	components: {
+		ChangeSubmissionLanguage,
 		ContributorsListPanel,
 		Composer,
 		Dropdown,
@@ -26,6 +29,8 @@ export default {
 		return {
 			activityLogLabel: '',
 			canAccessPublication: false,
+			canChangeSubmissionLanguage: false,
+			currentSubmissionLanguageLabel: '',
 			canEditPublication: false,
 			currentPublication: null,
 			decisionUrl: '',
@@ -57,6 +62,7 @@ export default {
 			workingPublication: null,
 			isModalOpenedSelectRevisionDecision: false,
 			isModalOpenedSelectRevisionRecommendation: false,
+			openSideModal: null,
 		};
 	},
 	computed: {
@@ -158,9 +164,23 @@ export default {
 		});
 
 		/**
+		 * Update change submission languange form and other forms
+		 */
+		pkp.eventBus.$on(
+			'updated:change-submission-language:form',
+			this.updateChangesSubmissionLanguage,
+		);
+
+		/**
 		 * Load forms
 		 */
 		this.setPublicationForms(this.workingPublication);
+
+		/**
+		 * ModalStore
+		 */
+		const {openSideModal} = useModal();
+		this.openSideModal = openSideModal;
 	},
 	mounted() {
 		/**
@@ -177,6 +197,7 @@ export default {
 		pkp.eventBus.$off('unpublish:publication');
 		pkp.eventBus.$off('decision:revisions');
 		pkp.eventBus.$off('recommendation:revisions');
+		pkp.eventBus.$off('change-submission-language:form');
 	},
 	methods: {
 		/**
@@ -297,6 +318,22 @@ export default {
 					'" ' +
 					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>',
 			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
+		},
+
+		/**
+		 * Open a modal displaying the change submission language form
+		 */
+		openChangeSubmissionLanguageModal() {
+			this.openSideModal(ChangeSubmissionLanguage, {
+				contributors: this.workingPublication.authors,
+				contributorsApiUrl: `${this.submissionApiUrl}/publications/${this.workingPublication.id}/contributors`,
+				cslmform:
+					this.components[pkp.const.FORM_CHANGE_SUBMISSION_LANGUAGE_METADATA],
+				publicationTitle: this.workingPublication.title[this.submission.locale],
+				submission: this.submission,
+				submissionApiUrl: this.submissionApiUrl,
+				submissionFileApiUrl: this.submissionFileApiUrl,
+			});
 		},
 
 		/**
@@ -601,6 +638,49 @@ export default {
 		setContributors(contributors) {
 			this.workingPublication.authors = [...contributors];
 		},
+
+		/**
+		 * Change submission language:
+		 * Update change submission locale form
+		 * Update submission files
+		 * Update new primary locale to forms
+		 * Update submission locale
+		 * Update working publication
+		 * Update label
+		 *
+		 * @param {Object} form
+		 */
+		updateChangesSubmissionLanguage(form) {
+			this.components[pkp.const.FORM_CHANGE_SUBMISSION_LANGUAGE_METADATA] =
+				form;
+			const locale = form.primaryLocale;
+			const supportedFormLocales = [...form.supportedFormLocales]
+				.sort((a, b) => a.key.localeCompare(b.key))
+				.sort((_, {key}) => (key === locale ? 1 : -1));
+
+			// For some reason reordering supportedFormLocales does not display correctly,
+			// except for contributor form
+			Object.values(this.components).forEach((f) => {
+				if (typeof f.primaryLocale !== 'undefined') {
+					this.set(f.id, {
+						primaryLocale: locale,
+						visibleLocales: [locale],
+						//supportedFormLocales: supportedFormLocales,
+					});
+				} else if (typeof f.form?.primaryLocale !== 'undefined') {
+					f.form.primaryLocale = locale;
+					f.form.visibleLocales = [locale];
+					f.form.supportedFormLocales = supportedFormLocales;
+				}
+			});
+
+			this.submission.locale = locale;
+			this.setWorkingPublicationById(this.workingPublication.id);
+
+			this.currentSubmissionLanguageLabel = this.components[
+				pkp.const.FORM_CHANGE_SUBMISSION_LANGUAGE_METADATA
+			].supportedFormLocales.find(({key}) => key === locale).label;
+		},
 	},
 };
 </script>
@@ -720,6 +800,20 @@ export default {
 			animation-duration: 0.8s;
 		}
 	}
+}
+
+.pkpSubmission__localeNotSupported {
+	margin: 0 -2rem;
+	padding: 1rem;
+	background: @primary;
+	font-size: @font-sml;
+	color: #fff;
+	text-align: center;
+}
+
+.pkpPublication__changeSubmissionLanguage {
+	display: block;
+	padding-bottom: 0.25rem;
 }
 
 // Integrate the grids in the publication tab
