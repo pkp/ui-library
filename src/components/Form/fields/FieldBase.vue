@@ -14,6 +14,7 @@ export default {
 		Tooltip,
 		MultilingualProgress,
 	},
+	inject: ['removeError'],
 	props: {
 		/** The key for this field. Used in the `name` attribute of `<input>`, `<textarea>`, `<select>` and other fields. The form will submit the value for this field under this name, so it must match an accepted value of the API endpoint. */
 		name: String,
@@ -254,6 +255,9 @@ export default {
 				localeName: this.localeLabel,
 			});
 		},
+	},
+	beforeUnmount() {
+		this.removeError(this.name, this.localeKey);
 	},
 	methods: {
 		/**

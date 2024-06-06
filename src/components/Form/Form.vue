@@ -74,6 +74,9 @@ export default {
 		FormLocales,
 		FormPage,
 	},
+	provide() {
+		return {removeError: this.removeError};
+	},
 	props: {
 		/** Used by a parent component, such as `Container`, to identify events emitted from the form and update the form props when necessary. */
 		id: String,
