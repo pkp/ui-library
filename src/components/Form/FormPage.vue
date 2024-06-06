@@ -63,7 +63,7 @@
 import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
 import FormErrors from '@/components/Form/FormErrors.vue';
 import FormGroup from '@/components/Form/FormGroup.vue';
-
+import {shouldShowGroup} from './formHelpers';
 export default {
 	name: 'FormPage',
 	components: {
@@ -107,7 +107,8 @@ export default {
 		 */
 		groupsInPage() {
 			return this.groups.filter(
-				(group) => group.pageId === this.id && this.shouldShowGroup(group),
+				(group) =>
+					group.pageId === this.id && shouldShowGroup(group, this.fields),
 			);
 		},
 
@@ -184,30 +185,6 @@ export default {
 		 */
 		showLocale: function (localeKey) {
 			this.$emit('showLocale', localeKey);
-		},
-
-		/**
-		 * Should a group be shown?
-		 *
-		 * @param {Object} group One of this.groups
-		 * @return {Boolean}
-		 */
-		shouldShowGroup: function (group) {
-			if (typeof group.showWhen === 'undefined') {
-				return true;
-			}
-			const whenFieldName =
-				typeof group.showWhen === 'string' ? group.showWhen : group.showWhen[0];
-			const whenField = this.fields.find(
-				(field) => field.name === whenFieldName,
-			);
-			if (!whenField) {
-				return false;
-			}
-			if (typeof group.showWhen === 'string') {
-				return !!whenField.value;
-			}
-			return whenField.value === group.showWhen[1];
 		},
 
 		/**

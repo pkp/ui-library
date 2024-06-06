@@ -78,6 +78,8 @@ import FieldUpload from './fields/FieldUpload.vue';
 import FieldSlider from './fields/FieldSlider.vue';
 import FieldUploadImage from './fields/FieldUploadImage.vue';
 
+import {shouldShowFieldWithinGroup} from './formHelpers';
+
 export default {
 	name: 'FormGroup',
 	components: {
@@ -127,7 +129,9 @@ export default {
 		 */
 		fieldsInGroup() {
 			return this.fields.filter(
-				(field) => field.groupId === this.id && this.shouldShowField(field),
+				(field) =>
+					field.groupId === this.id &&
+					shouldShowFieldWithinGroup(field, this.fields),
 			);
 		},
 
@@ -151,30 +155,6 @@ export default {
 		 */
 		fieldChanged: function (name, prop, value, localeKey) {
 			this.$emit('change', name, prop, value, localeKey);
-		},
-
-		/**
-		 * Should a field be shown?
-		 *
-		 * @param {Object} field One of this.fields
-		 * @return {Boolean}
-		 */
-		shouldShowField: function (field) {
-			if (typeof field.showWhen === 'undefined') {
-				return true;
-			}
-			const whenFieldName =
-				typeof field.showWhen === 'string' ? field.showWhen : field.showWhen[0];
-			const whenField = this.fields.find(
-				(field) => field.name === whenFieldName,
-			);
-			if (!whenField) {
-				return false;
-			}
-			if (typeof field.showWhen === 'string') {
-				return !!whenField.value;
-			}
-			return whenField.value === field.showWhen[1];
 		},
 
 		/**
