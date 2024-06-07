@@ -80,25 +80,6 @@ export default {
 					invalid_elements: this.invalidElements,
 					valid_elements: this.validElements,
 
-					// Allow pasting while stripping all styles, tags, new lines and getting only text content
-					// More details at https://www.tiny.cloud/docs/tinymce/6/copy-and-paste/
-					// Note that not all options available to 5.0+ that being used right now
-					paste_preprocess: (editor, args) => {
-						// we need to have better control as tinymce is converting specials chars to html entities
-						// which in turn passed as html chars at final pasting
-						// e.g. '<img src="onerror=alert(1)">' turned into '&lt;img src=&quot;onerror=alert(1)&quot;&gt;'
-						// internally by tinymce and then final paste, it again become '<img src="onerror=alert(1)">'
-
-						let parsedPasteContent = $(
-							'<div>' + args.content + '</div>'
-						).text();
-
-						args.content = new DOMParser().parseFromString(
-							parsedPasteContent,
-							'text/html'
-						).documentElement.textContent;
-					},
-
 					setup: (editor) => {
 						// Disable new line by preventing enter key
 						editor.on('keyDown', (event) => {
