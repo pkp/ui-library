@@ -16,6 +16,9 @@
 					</template>
 				</pkp-header>
 				<template v-slot:item-title="{item}">
+					<span class="listPanel__item--institution__id">
+						{{ item.id }}
+					</span>
 					<span :id="'institution-' + item.id">
 						{{ localize(item.name) }}
 					</span>
@@ -301,6 +304,14 @@ export default {
 .institutionsListPanel {
 	.listPanel__itemTitle {
 		font-weight: @normal;
+		padding-inline-start: 2.5rem;
+	}
+	.listPanel__item--institution__id {
+		position: absolute;
+		left: 0;
+		font-size: @font-tiny;
+		line-height: 1.5rem;
+		color: @text;
 	}
 }
 </style>
