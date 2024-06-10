@@ -41,6 +41,15 @@ export function shouldShowGroup(group, fields) {
 	return whenField.value === group.showWhen[1];
 }
 
+/**
+ * Should a field be shown?
+ *
+ * @param {Object} field One field to check
+ * @param {Object} fields All form fields
+ * @param {Object} groups All form groups
+ * @return {Boolean}
+ */
+
 export function shouldShowField(field, fields, groups) {
 	const group = groups.find((group) => group.id === field.groupId);
 
