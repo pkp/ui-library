@@ -165,7 +165,19 @@ export default {
 		 * @param {String} localeKey The locale key for a multilingual field
 		 */
 		setFieldErrors: function (name, errors, localeKey = '') {
-			let newErrors = {...this.errors};
+			/**
+			 * Better practice is to make to copy of data, modify it and send it upstream
+			 * But there is challenge with #9996, where each unmounted fields needs to clean up
+			 * its error. And given its happening synchronously, it does not propagate updated errors
+			 * object in between the unmounts. Therefore last operation would override the previous ones.
+			 *
+			 * Changing error object inplace ensures all the updates gets registered.
+			 *
+			 * In future better approach would be to have remove-error event, which defines what to remove
+			 * and would be correctly processed by the state manager
+			 */
+
+			let newErrors = this.errors;
 			if (!errors || !errors.length) {
 				if (localeKey && newErrors[name] && newErrors[name][localeKey]) {
 					delete newErrors[name][localeKey];
@@ -180,7 +192,7 @@ export default {
 					newErrors[name] = errors;
 				}
 			}
-			this.$emit('set-errors', newErrors);
+			this.$emit('set-errors', {...newErrors});
 		},
 	},
 };

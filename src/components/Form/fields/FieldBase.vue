@@ -14,7 +14,6 @@ export default {
 		Tooltip,
 		MultilingualProgress,
 	},
-	inject: ['removeError'],
 	props: {
 		/** The key for this field. Used in the `name` attribute of `<input>`, `<textarea>`, `<select>` and other fields. The form will submit the value for this field under this name, so it must match an accepted value of the API endpoint. */
 		name: String,
@@ -62,6 +61,7 @@ export default {
 	emits: [
 		/** Emitted when a field prop changes. Payload: `(fieldName, propName, newValue, [localeKey])`. The `localeKey` will be null for fields that are not multilingual. This event is fired every time the `value` changes, so you should [debounce](https://www.npmjs.com/package/debounce) event callbacks that contain resource-intensive code. */
 		'change',
+		'set-errors',
 	],
 	computed: {
 		/**
@@ -257,7 +257,7 @@ export default {
 		},
 	},
 	beforeUnmount() {
-		this.removeError(this.name, this.localeKey);
+		this.$emit('set-errors', this.name, [], this.localeKey);
 	},
 	methods: {
 		/**
