@@ -39,6 +39,13 @@ export function useSummaryConfig() {
 				return true;
 			})
 			.filter((item) => {
+				if (item?.filters?.submissionStatusId) {
+					return item?.filters?.submissionStatusId.includes(submission.status);
+				}
+
+				return true;
+			})
+			.filter((item) => {
 				if (item?.filters?.activeRoundStatusId) {
 					return item?.filters?.activeRoundStatusId.includes(
 						activeReviewRound.statusId,
@@ -69,13 +76,19 @@ export function useSummaryConfig() {
 				props: {},
 				filters: {
 					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
-					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
+					activeStageId: [
+						pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
+						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+						pkp.const.WORKFLOW_STAGE_ID_EDITING,
+						pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+					],
+					submissionStatusId: [pkp.const.STATUS_SCHEDULED],
 				},
 			},
 			{
 				component: 'FileManager',
 				props: {
-					namespace: 'filesRevisions',
+					namespace: 'deskReviewFiles',
 
 					submissionId: submission.id,
 					fileStages: [pkp.const.SUBMISSION_FILE_SUBMISSION],
@@ -96,7 +109,6 @@ export function useSummaryConfig() {
 				component: 'FileManager',
 				props: {
 					namespace: 'filesRevisions',
-
 					submissionId: submission.id,
 					reviewRoundId: activeReviewRound?.id,
 					fileStages: [pkp.const.SUBMISSION_FILE_REVIEW_REVISION],
@@ -132,6 +144,56 @@ export function useSummaryConfig() {
 					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
 				},
 			},
+			{
+				component: 'FileManager',
+				props: {
+					namespace: 'copyeditedFiles',
+					submissionId: submission.id,
+					fileStages: [pkp.const.SUBMISSION_FILE_COPYEDIT],
+					title: 'Copyedited Files (t)',
+					description:
+						'These are edited files that will be taken to the production stage',
+				},
+				filters: {
+					dashboardPage: [
+						DashboardPageTypes.EDITORIAL_DASHBOARD,
+						DashboardPageTypes.MY_SUBMISSIONS,
+					],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EDITING],
+				},
+			},
+			{
+				component: 'FileManager',
+				props: {
+					namespace: 'draftFiles',
+					submissionId: submission.id,
+					fileStages: [pkp.const.SUBMISSION_FILE_FINAL],
+					title: 'Draft Files (t)',
+					description:
+						'These are files from the review stage which are to be copyedited',
+				},
+				filters: {
+					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EDITING],
+				},
+			},
+
+			{
+				component: 'FileManager',
+				props: {
+					namespace: 'productionReadyFiles',
+					submissionId: submission.id,
+					fileStages: [pkp.const.SUBMISSION_FILE_PRODUCTION_READY],
+					title: 'Production Ready Files (t)',
+					description:
+						'These are the files that will be sent for publication (t)',
+				},
+				filters: {
+					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_PRODUCTION],
+				},
+			},
+
 			{
 				component: 'ReviewerManager',
 				props: {
@@ -267,6 +329,30 @@ export function useSummaryConfig() {
 			{
 				component: 'ActionButton',
 				props: {
+					label: 'Send to Production',
+					isPrimary: true,
+					action: 'decisionSendToProduction',
+				},
+				filters: {
+					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EDITING],
+				},
+			},
+			{
+				component: 'ActionButton',
+				props: {
+					label: 'Schedule for Publication',
+					isPrimary: true,
+					action: 'scheduleForPublication',
+				},
+				filters: {
+					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_PRODUCTION],
+				},
+			},
+			{
+				component: 'ActionButton',
+				props: {
 					label: 'Accept review (t)',
 					isPrimary: true,
 					action: 'openReviewForm',
@@ -338,6 +424,8 @@ export function useSummaryConfig() {
 					activeStageId: [
 						pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
 						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+						pkp.const.WORKFLOW_STAGE_ID_EDITING,
+						pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 					],
 				},
 			},
@@ -352,6 +440,8 @@ export function useSummaryConfig() {
 					activeStageId: [
 						pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
 						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+						pkp.const.WORKFLOW_STAGE_ID_EDITING,
+						pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 					],
 				},
 			},
@@ -366,6 +456,8 @@ export function useSummaryConfig() {
 					activeStageId: [
 						pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
 						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+						pkp.const.WORKFLOW_STAGE_ID_EDITING,
+						pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 					],
 				},
 			},
@@ -394,17 +486,39 @@ export function useSummaryConfig() {
 			{
 				component: 'BasicMetadata',
 				props: {
+					heading: 'Days in copyediting: (t)',
+					body: 'todo not in api',
+				},
+				filters: {
+					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EDITING],
+				},
+			},
+			{
+				component: 'BasicMetadata',
+				props: {
+					heading: 'Days in production: (t)',
+					body: 'todo not in api',
+				},
+				filters: {
+					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_PRODUCTION],
+				},
+			},
+
+			{
+				component: 'BasicMetadata',
+				props: {
 					heading: 'Journal name: (t)',
 					body: 'todo not in api',
 				},
 				filters: {
-					dashboardPage: [
-						DashboardPageTypes.EDITORIAL_DASHBOARD,
-						DashboardPageTypes.MY_SUBMISSIONS,
-					],
+					dashboardPage: [DashboardPageTypes.MY_SUBMISSIONS],
 					activeStageId: [
 						pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
 						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+						pkp.const.WORKFLOW_STAGE_ID_EDITING,
+						pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 					],
 				},
 			},
@@ -416,6 +530,8 @@ export function useSummaryConfig() {
 					activeStageId: [
 						pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
 						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+						pkp.const.WORKFLOW_STAGE_ID_EDITING,
+						pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 					],
 				},
 			},
@@ -424,7 +540,12 @@ export function useSummaryConfig() {
 				props: {isReadOnly: true},
 				filters: {
 					dashboardPage: [DashboardPageTypes.MY_SUBMISSIONS],
-					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
+					activeStageId: [
+						pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
+						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+						pkp.const.WORKFLOW_STAGE_ID_EDITING,
+						pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+					],
 				},
 			},
 
@@ -442,6 +563,8 @@ export function useSummaryConfig() {
 					activeStageId: [
 						pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
 						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+						pkp.const.WORKFLOW_STAGE_ID_EDITING,
+						pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 					],
 				},
 			},
@@ -463,6 +586,8 @@ export function useSummaryConfig() {
 					activeStageId: [
 						pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
 						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+						pkp.const.WORKFLOW_STAGE_ID_EDITING,
+						pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 					],
 				},
 			},
@@ -485,6 +610,8 @@ export function useSummaryConfig() {
 					activeStageId: [
 						pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
 						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+						pkp.const.WORKFLOW_STAGE_ID_EDITING,
+						pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 					],
 				},
 			},
@@ -502,6 +629,8 @@ export function useSummaryConfig() {
 					activeStageId: [
 						pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
 						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+						pkp.const.WORKFLOW_STAGE_ID_EDITING,
+						pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 					],
 				},
 			},

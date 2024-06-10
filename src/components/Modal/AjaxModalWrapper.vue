@@ -98,7 +98,11 @@ function onVueFormSuccess(formId) {
 		legacyOptions.closeOnFormSuccessId === formId
 	) {
 		setTimeout(function () {
-			closeModal();
+			if (legacyOptions.modalHandler) {
+				legacyOptions.modalHandler.modalClose();
+			} else {
+				closeModal();
+			}
 		}, 1000);
 	}
 }

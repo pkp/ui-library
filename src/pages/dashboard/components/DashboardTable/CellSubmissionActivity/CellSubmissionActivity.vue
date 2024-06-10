@@ -54,4 +54,3 @@ const cellConfig = computed(() => {
 	return [];
 });
 </script>
-./CellActivityActionAlert.vue

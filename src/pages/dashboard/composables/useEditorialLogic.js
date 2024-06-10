@@ -6,6 +6,19 @@ export function useEditorialLogic() {
 	function getEditorialActivityForEditorialDashboard(submission) {
 		const activeStage = getActiveStage(submission);
 
+		if (activeStage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION) {
+			if (!submission.editorAssigned) {
+				return [
+					{
+						component: 'CellSubmissionActivityActionAlert',
+						props: {
+							actionName: 'assignParticipant',
+							actionLabel: 'Assign Editor (t)',
+						},
+					},
+				];
+			}
+		}
 		if (activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) {
 			const activeRound = getCurrentReviewRound(submission);
 			if (
@@ -16,7 +29,7 @@ export function useEditorialLogic() {
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
 							actionName: 'assignReviewers',
-							actionLabel: 'Assign Reviewers', // TODO localisation
+							actionLabel: 'Assign Reviewers (t)',
 						},
 					},
 				];
@@ -28,7 +41,7 @@ export function useEditorialLogic() {
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
-							alert: 'Revisions requested from author',
+							alert: 'Revisions requested from author (t)',
 						},
 					},
 					{
@@ -47,7 +60,7 @@ export function useEditorialLogic() {
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
 							alert:
-								'Revisions requested from the author to be taken to a new review round',
+								'Revisions requested from the author to be taken to a new review round (t)',
 						},
 					},
 				];
@@ -59,7 +72,7 @@ export function useEditorialLogic() {
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
-							alert: 'Revisions submitted by author',
+							alert: 'Revisions submitted by author (t)',
 						},
 					},
 					{
@@ -77,13 +90,13 @@ export function useEditorialLogic() {
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
-							alert: 'Revisions submitted by the author',
+							alert: 'Revisions submitted by the author (t)',
 						},
 					},
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
-							alert: 'New review round to be created',
+							alert: 'New review round to be created (t)',
 						},
 					},
 				];

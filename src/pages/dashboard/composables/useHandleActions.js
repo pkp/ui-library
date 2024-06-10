@@ -40,6 +40,12 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 			decisionInitialDecline: {
 				decisionId: pkp.const.DECISION_INITIAL_DECLINE,
 			},
+			decisionSendToProduction: {
+				decisionId: pkp.const.DECISION_SEND_TO_PRODUCTION,
+			},
+			decisionBackFromCopyediting: {
+				decisionId: pkp.const.DECISION_BACK_FROM_COPYEDITING,
+			},
 		};
 
 		function openDecisionPage(submission, decisionId) {
@@ -279,7 +285,10 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 			openSideModal(
 				'LegacyAjax',
 				{
-					legacyOptions: {url},
+					legacyOptions: {
+						url,
+						title: t('editor.submission.addStageParticipant'),
+					},
 				},
 				{
 					onClose: async () => {
@@ -362,6 +371,32 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 					legacyOptions: {
 						title: t('reviewer.submission.declineReview'),
 						url: pageUrl,
+					},
+				},
+				{
+					onClose: async () => {
+						finishedCallback();
+					},
+				},
+			);
+		} else if (actionName === 'scheduleForPublication') {
+			const {getCurrentPublication} = useSubmission();
+
+			const {url} = useLegacyGridUrl({
+				component: 'modals.publish.PublishHandler',
+				op: 'publish',
+				params: {
+					submissionId: submission.id,
+					publicationId: getCurrentPublication(submission).id,
+				},
+			});
+			openSideModal(
+				'LegacyAjax',
+				{
+					legacyOptions: {
+						title: t('editor.submission.schedulePublication'),
+						url,
+						closeOnFormSuccessId: pkp.const.FORM_PUBLISH,
 					},
 				},
 				{
