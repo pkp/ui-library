@@ -33,7 +33,7 @@
 		</ul>
 		<div v-if="dashboardPage !== 'MY_REVIEW_ASSIGNMENTS'" class="mx-3 my-6">
 			<PkpButton is-primary element="a" :href="newSubmissionUrl">
-				Start A New Submission
+				{{ t('dashboard.startNewSubmission') }}
 			</PkpButton>
 		</div>
 	</div>
@@ -43,7 +43,7 @@ import {defineProps} from 'vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Badge from '@/components/Badge/Badge.vue';
 import Icon from '@/components/Icon/Icon.vue';
-
+import {useLocalize} from '@/composables/useLocalize';
 import {useUrl} from '@/composables/useUrl';
 
 defineProps({
@@ -54,6 +54,7 @@ defineProps({
 	currentView: {type: Object, required: true},
 });
 
+const {t} = useLocalize();
 const {pageUrl: newSubmissionUrl} = useUrl('submission');
 
 defineEmits(['loadView']);

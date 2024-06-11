@@ -1,6 +1,6 @@
 <template>
 	<div v-if="openReviewAssignements.length">
-		<div>Reviewers assigned (t):</div>
+		<div>{{ t('dashboard.reviewersAssigned') }}:</div>
 		<div class="mt-1 flex gap-x-1">
 			<div
 				v-for="reviewAssignment in openReviewAssignements"
@@ -31,10 +31,14 @@ import ReviewActivityIndicatorPopover from '@/pages/dashboard/components/ReviewA
 import {useReviewAssignment} from '@/composables/useReviewAssignment';
 import UserAvatar from '@/components/UserAvatar/UserAvatar.vue';
 const {getOpenReviewAssignments, getReviewMethodIcons} = useReviewAssignment();
+import {useLocalize} from '@/composables/useLocalize';
 
 const props = defineProps({
 	reviewAssignments: {type: Array, required: true},
 });
+
+const {t} = useLocalize();
+
 const openReviewAssignements = computed(() =>
 	getOpenReviewAssignments(props.reviewAssignments),
 );

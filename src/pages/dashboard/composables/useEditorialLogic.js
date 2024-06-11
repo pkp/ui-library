@@ -1,4 +1,7 @@
 import {useSubmission} from '@/composables/useSubmission.js';
+import {useLocalize} from '@/composables/useLocalize';
+
+const {t} = useLocalize();
 const {getActiveStage, getCurrentReviewRound, getCurrentReviewAssignments} =
 	useSubmission();
 
@@ -13,7 +16,7 @@ export function useEditorialLogic() {
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
 							actionName: 'assignParticipant',
-							actionLabel: 'Assign Editor (t)',
+							actionLabel: t('dashboard.assignEditor'),
 						},
 					},
 				];
@@ -29,7 +32,7 @@ export function useEditorialLogic() {
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
 							actionName: 'assignReviewers',
-							actionLabel: 'Assign Reviewers (t)',
+							actionLabel: t('dashboard.assignReviewers'),
 						},
 					},
 				];
@@ -41,7 +44,7 @@ export function useEditorialLogic() {
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
-							alert: 'Revisions requested from author (t)',
+							alert: t('dashboard.revisionRequestedFromAuthor'),
 						},
 					},
 					{
@@ -59,8 +62,7 @@ export function useEditorialLogic() {
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
-							alert:
-								'Revisions requested from the author to be taken to a new review round (t)',
+							alert: t('dashboard.revisionsRequestedFromAuthorNextRound'),
 						},
 					},
 				];
@@ -72,7 +74,7 @@ export function useEditorialLogic() {
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
-							alert: 'Revisions submitted by author (t)',
+							alert: t('dashboard.revisionsSubmittedByAuthor'),
 						},
 					},
 					{
@@ -90,13 +92,13 @@ export function useEditorialLogic() {
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
-							alert: 'Revisions submitted by the author (t)',
+							alert: t('dashboard.revisionsSubmittedByAuthor'),
 						},
 					},
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
-							alert: 'New review round to be created (t)',
+							alert: t('dashboard.newReviewRoundToBeCreated'),
 						},
 					},
 				];
@@ -132,8 +134,8 @@ export function useEditorialLogic() {
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
-							alert: 'Revision requested (t)',
-							actionLabel: 'Submit revisions',
+							alert: t('dashboard.revisionRequested'),
+							actionLabel: t('dashboard.submitRevisions'),
 							actionName: 'uploadRevisions',
 						},
 					},
@@ -162,7 +164,6 @@ export function useEditorialLogic() {
 	}
 
 	function getEditorialActivityForMyReviewAssignments(reviewAssignment) {
-		console.log('reviewAssignment:', reviewAssignment);
 		if (
 			reviewAssignment.statusId ===
 			pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE
@@ -172,7 +173,7 @@ export function useEditorialLogic() {
 				{
 					component: 'CellSubmissionActivityActionAlert',
 					props: {
-						alert: `Please accept or decline this request ${date} (t)`,
+						alert: t('dashboard.acceptOrDeclineRequestDate', {date}),
 					},
 				},
 			];
@@ -196,7 +197,7 @@ export function useEditorialLogic() {
 				{
 					component: 'CellReviewAssignmentActivityAlert',
 					props: {
-						alert: `Deadline for responding to this request has passed. Please accept or decline this request at the earliest. (t)`,
+						alert: t('dashboard.deadlineForRespondingAcceptOrDecline'),
 					},
 				},
 			];
@@ -209,7 +210,7 @@ export function useEditorialLogic() {
 				{
 					component: 'CellReviewAssignmentActivityAlert',
 					props: {
-						alert: `Please complete this review by ${date}. (t)`,
+						alert: t('dashboard.completeReviewByDate', {date}),
 					},
 				},
 			];
@@ -221,7 +222,7 @@ export function useEditorialLogic() {
 				{
 					component: 'CellReviewAssignmentActivityAlert',
 					props: {
-						alert: `Deadline for completing this review has passed. Please complete the review at the earliest. (t)`,
+						alert: t('dashboard.deadlineForComplitingReviewHasPassed'),
 					},
 				},
 			];

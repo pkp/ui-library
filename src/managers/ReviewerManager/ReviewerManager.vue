@@ -1,18 +1,20 @@
 <template>
 	<div>
 		<div class="border border-light px-3 py-4">
-			<h2 :id="headingId" class="text-lg-bold text-heading">Reviewers (t)</h2>
+			<h2 :id="headingId" class="text-lg-bold text-heading">
+				{{ t('dashboard.summary.reviewers') }}
+			</h2>
 		</div>
 		<PkpTable
 			aria-label="Example for basic table"
 			:aria-describedby="headingId"
 		>
 			<TableHeader>
-				<TableColumn>Reviewer (t)</TableColumn>
+				<TableColumn>{{ t('dashboard.summary.reviewer') }}</TableColumn>
 				<TableColumn v-if="!redactedForAuthors">
-					Reviewer status (t)
+					{{ t('dashboard.summary.reviewerStatus') }}
 				</TableColumn>
-				<TableColumn>Type (t)</TableColumn>
+				<TableColumn>{{ t('common.type"') }}</TableColumn>
 			</TableHeader>
 			<TableBody>
 				<TableRow
@@ -58,9 +60,10 @@ import Icon from '@/components/Icon/Icon.vue';
 
 import {useReviewerManagerStore} from './reviewerManagerStore.js';
 import {useId} from '@/composables/useId.js';
+import {useLocalize} from '@/composables/useLocalize.js';
 
 const {generateId} = useId();
-
+const {t} = useLocalize();
 const headingId = generateId();
 
 const props = defineProps({

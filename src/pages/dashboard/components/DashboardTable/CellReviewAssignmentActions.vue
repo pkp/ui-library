@@ -6,7 +6,7 @@
 			:is-link="true"
 			@click="dashboardPageStore.openSummaryModal(item.submissionId, item.id)"
 		>
-			{{ 'Action (todo)' }}
+			{{ t('dashboard.action') }}
 		</PkpButton>
 	</TableCell>
 </template>
@@ -15,9 +15,12 @@ import {defineProps} from 'vue';
 import PkpButton from '@/components/Button/Button.vue';
 import TableCell from '@/components/TableNext/TableCell.vue';
 import {useDashboardPageStore} from '@/pages/dashboard/dashboardPageStore.js';
+import {useLocalize} from '@/composables/useLocalize';
 
 defineProps({
 	item: {type: Object, required: true},
 });
+
+const {t} = useLocalize();
 const dashboardPageStore = useDashboardPageStore();
 </script>

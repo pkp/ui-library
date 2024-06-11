@@ -60,19 +60,17 @@ const RecommendationTranslations = {
 
 const ActionButtonTranslations = {
 	resendReviewRequest: tk(
-		'submission.list.reviewAssignment.action.resendReviewRequest',
+		'dashboard.reviewAssignment.action.resendReviewRequest',
 	),
-	editDueDate: tk('submission.list.reviewAssignment.action.editDueDate'),
-	viewDetails: tk('submission.list.reviewAssignment.action.viewDetails'),
-	cancelReviewer: tk('submission.list.reviewAssignment.action.cancelReviewer'),
-	unassignReviewer: tk(
-		'submission.list.reviewAssignment.action.unassignReviewer',
-	),
+	editDueDate: tk('dashboard.reviewAssignment.action.editDueDate'),
+	viewDetails: tk('dashboard.reviewAssignment.action.viewDetails'),
+	cancelReviewer: tk('dashboard.reviewAssignment.action.cancelReviewer'),
+	unassignReviewer: tk('dashboard.reviewAssignment.action.unassignReviewer'),
 	viewRecommendation: tk(
-		'submission.list.reviewAssignment.action.viewRecommendation',
+		'dashboard.reviewAssignment.action.viewRecommendation',
 	),
 	viewUnreadRecommendation: tk(
-		'submission.list.reviewAssignment.action.viewUnreadRecommendation',
+		'dashboard.reviewAssignment.action.viewUnreadRecommendation',
 	),
 };
 
@@ -87,11 +85,9 @@ const ConfigPerStatus = {
 			icon: 'ReviewSent',
 			colorVariant: 'stage-in-review-bg',
 		},
-		titleKey: tk(
-			'submission.list.reviewAssignment.statusAwaitingResponse.title',
-		),
+		titleKey: tk('dashboard.reviewAssignment.statusAwaitingResponse.title'),
 		descriptionKey: tk(
-			'submission.list.reviewAssignment.statusAwaitingResponse.description',
+			'dashboard.reviewAssignment.statusAwaitingResponse.description',
 		),
 		textAction: 'editDueDate',
 		primaryAction: 'viewDetails',
@@ -109,10 +105,8 @@ const ConfigPerStatus = {
 			colorVariant: 'negative-bg',
 			icon: 'ReviewRequestDeclined',
 		},
-		titleKey: tk('submission.list.reviewAssignment.statusDeclined.title'),
-		descriptionKey: tk(
-			'submission.list.reviewAssignment.statusDeclined.description',
-		),
+		titleKey: tk('dashboard.reviewAssignment.statusDeclined.title'),
+		descriptionKey: tk('dashboard.reviewAssignment.statusDeclined.description'),
 		textAction: 'resendReviewRequest',
 		primaryAction: 'viewDetails',
 		negativeAction: 'cancelReviewer',
@@ -128,11 +122,9 @@ const ConfigPerStatus = {
 			colorVariant: 'attention-bg',
 			icon: 'Overdue',
 		},
-		titleKey: tk(
-			'submission.list.reviewAssignment.statusResponseOverdue.title',
-		),
+		titleKey: tk('dashboard.reviewAssignment.statusResponseOverdue.title'),
 		descriptionKey: tk(
-			'submission.list.reviewAssignment.statusResponseOverdue.description',
+			'dashboard.reviewAssignment.statusResponseOverdue.description',
 		),
 		textAction: 'editDueDate',
 		primaryAction: 'viewDetails',
@@ -149,10 +141,8 @@ const ConfigPerStatus = {
 			colorVariant: 'primary-bg',
 			icon: 'InProgress',
 		},
-		titleKey: tk('submission.list.reviewAssignment.statusAccepted.title'),
-		descriptionKey: tk(
-			'submission.list.reviewAssignment.statusAccepted.description',
-		),
+		titleKey: tk('dashboard.reviewAssignment.statusAccepted.title'),
+		descriptionKey: tk('dashboard.reviewAssignment.statusAccepted.description'),
 		textAction: 'editDueDate',
 		primaryAction: 'viewDetails',
 		negativeAction: 'unassignReviewer',
@@ -168,9 +158,9 @@ const ConfigPerStatus = {
 			colorVariant: 'attention-bg',
 			icon: 'Overdue',
 		},
-		titleKey: tk('submission.list.reviewAssignment.statusReviewOverdue.title'),
+		titleKey: tk('dashboard.reviewAssignment.statusReviewOverdue.title'),
 		descriptionKey: tk(
-			'submission.list.reviewAssignment.statusReviewOverdue.description',
+			'dashboard.reviewAssignment.statusReviewOverdue.description',
 		),
 		textAction: 'editDueDate',
 		primaryAction: 'viewDetails',
@@ -188,10 +178,8 @@ const ConfigPerStatus = {
 			colorVariant: 'success-bg',
 			icon: 'Complete',
 		},
-		titleKey: tk('submission.list.reviewAssignment.statusReceived.title'),
-		descriptionKey: tk(
-			'submission.list.reviewAssignment.statusReceived.description',
-		),
+		titleKey: tk('dashboard.reviewAssignment.statusReceived.title'),
+		descriptionKey: tk('dashboard.reviewAssignment.statusReceived.description'),
 		textAction: null,
 		primaryAction: 'viewUnreadRecommendation',
 		negativeAction: null,
@@ -208,10 +196,8 @@ const ConfigPerStatus = {
 			colorVariant: 'success-bg',
 			icon: 'Complete',
 		},
-		titleKey: tk('submission.list.reviewAssignment.statusReceived.title'),
-		descriptionKey: tk(
-			'submission.list.reviewAssignment.statusReceived.description',
-		),
+		titleKey: tk('dashboard.reviewAssignment.statusReceived.title'),
+		descriptionKey: tk('dashboard.reviewAssignment.statusReceived.description'),
 		textAction: null,
 		primaryAction: 'viewRecommendation',
 		negativeAction: null,
@@ -230,11 +216,9 @@ const ConfigPerStatus = {
 			icon: 'Complete',
 		},
 		// same as for STATUS_RECEIVED
-		titleKey: tk('submission.list.reviewAssignment.statusComplete.title'),
+		titleKey: tk('dashboard.reviewAssignment.statusComplete.title'),
 		// same as for STATUS_RECEIVED
-		descriptionKey: tk(
-			'submission.list.reviewAssignment.statusComplete.description',
-		),
+		descriptionKey: tk('dashboard.reviewAssignment.statusComplete.description'),
 		textAction: null,
 		primaryAction: 'viewRecommendation',
 		negativeAction: null,
@@ -253,11 +237,9 @@ const ConfigPerStatus = {
 			icon: 'Complete',
 		},
 		// same as for STATUS_RECEIVED
-		titleKey: tk('submission.list.reviewAssignment.statusComplete.title'),
+		titleKey: tk('dashboard.reviewAssignment.statusComplete.title'),
 		// same as for STATUS_RECEIVED
-		descriptionKey: tk(
-			'submission.list.reviewAssignment.statusComplete.description',
-		),
+		descriptionKey: tk('dashboard.reviewAssignment.statusComplete.description'),
 		textAction: null,
 		primaryAction: 'viewRecommendation',
 		negativeAction: null,
@@ -275,9 +257,9 @@ const ConfigPerStatus = {
 			colorVariant: 'negative-bg',
 			icon: 'Cancel',
 		},
-		titleKey: tk('submission.list.reviewAssignment.statusCancelled.title'),
+		titleKey: tk('dashboard.reviewAssignment.statusCancelled.title'),
 		descriptionKey: tk(
-			'submission.list.reviewAssignment.statusCancelled.description',
+			'dashboard.reviewAssignment.statusCancelled.description',
 		),
 		textAction: 'resendReviewRequest',
 		primaryAction: 'viewDetails',
@@ -295,9 +277,9 @@ const ConfigPerStatus = {
 			colorVariant: 'stage-in-review-bg',
 			icon: 'ReviewSent',
 		},
-		titleKey: tk('submission.list.reviewAssignment.statusRequestResend.title'),
+		titleKey: tk('dashboard.reviewAssignment.statusRequestResend.title'),
 		descriptionKey: tk(
-			'submission.list.reviewAssignment.statusRequestResend.description',
+			'dashboard.reviewAssignment.statusRequestResend.description',
 		),
 		textAction: 'editDueDate',
 		primaryAction: 'viewDetails',

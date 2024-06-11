@@ -16,17 +16,19 @@ import {useReviewActivityLogic} from './composables/useReviewActivityLogic';
 
 import DashboardFiltersModal from '@/pages/dashboard/components/DashboardFiltersModal.vue';
 import SubmissionSummaryModal from '@/pages/dashboard/SubmissionSummaryModal/SubmissionSummaryModal.vue';
-// TODO add actual translation strings
+
+const {t, tk} = useLocalize();
+
 const TitleTranslations = {
-	EDITORIAL_DASHBOARD: 'Dashboards (t)',
-	MY_REVIEW_ASSIGNMENTS: 'Review Assignments (t)',
-	MY_SUBMISSIONS: 'My Submissions (t)',
+	editorialDashboard: tk('dashboard.dashboards'),
+	myReviewAssignments: tk('dashboard.reviewAssignments'),
+	mySubmissions: tk('dashboard.mySubmissions'),
 };
 
 const TitleIcons = {
-	EDITORIAL_DASHBOARD: 'Dashboard',
-	MY_REVIEW_ASSIGNMENTS: 'ReviewAssignments',
-	MY_SUBMISSIONS: 'MySubmissions',
+	editorialDashboard: 'Dashboard',
+	myReviewAssignments: 'ReviewAssignments',
+	mySubmissions: 'MySubmissions',
 };
 
 export const DashboardPageTypes = {
@@ -43,12 +45,6 @@ export const useDashboardPageStore = defineComponentStore(
 		 */
 		const {openSideModal} = useModal();
 
-		/**
-		 * Translation
-		 */
-
-		const {t} = useLocalize();
-
 		/** Announcer */
 
 		const {announce} = useAnnouncer();
@@ -56,7 +52,13 @@ export const useDashboardPageStore = defineComponentStore(
 		/** Dashboard Page */
 
 		const dashboardPageTitle = computed(() => {
-			return TitleTranslations[pageInitConfig.dashboardPage];
+			console.log(
+				'dashboard page title:',
+				t(TitleTranslations[pageInitConfig.dashboardPage]),
+				TitleTranslations,
+				pageInitConfig.dashboardPage,
+			);
+			return t(TitleTranslations[pageInitConfig.dashboardPage]);
 		});
 		const dashboardPageIcon = computed(() => {
 			return TitleIcons[pageInitConfig.dashboardPage];

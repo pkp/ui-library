@@ -10,8 +10,12 @@
 					@set="(formId, data) => updateFiltersForm(data)"
 				></PkpForm>
 				<div class="mt-2 flex gap-2">
-					<PkpButton @click="applyFilters()">Apply Filters</PkpButton>
-					<PkpButton @click="clearFiltersForm()">Clear Filters</PkpButton>
+					<PkpButton @click="applyFilters()">
+						{{ t('dashboard.applyFilters') }}
+					</PkpButton>
+					<PkpButton @click="clearFiltersForm()">
+						{{ t('dashboard.clearFilters') }}
+					</PkpButton>
 				</div>
 			</PanelSection>
 		</Panel>
@@ -25,12 +29,17 @@ import Panel from '@/components/Panel/Panel.vue';
 import PanelSection from '@/components/Panel/PanelSection.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import PkpForm from '@/components/Form/Form.vue';
-
+import {useLocalize} from '@/composables/useLocalize';
 import {useFiltersForm} from '@/composables/useFiltersForm';
+
 const props = defineProps({
 	filtersFormInitial: {type: Object, required: true},
 });
+
 const emit = defineEmits(['updateFiltersForm']);
+
+const {t} = useLocalize();
+
 // clone current filtersForm, so its independent until its saved
 const filtersFormCopy = JSON.parse(JSON.stringify(props.filtersFormInitial));
 

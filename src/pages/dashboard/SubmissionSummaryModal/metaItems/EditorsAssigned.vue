@@ -1,6 +1,8 @@
 <template>
 	<div>
-		<h3 class="text-lg-bold text-heading">Editors assigned (t):</h3>
+		<h3 class="text-lg-bold text-heading">
+			{{ t('dashboard.summary.editorsAssigned') }}:
+		</h3>
 		<ul
 			v-if="summaryStore.associatedEditors?.length"
 			class="mt-2 flex flex-col space-y-2"
@@ -38,7 +40,9 @@
 </template>
 <script setup>
 import UserAvatar from '@/components/UserAvatar/UserAvatar.vue';
+import {useLocalize} from '@/composables/useLocalize';
 import {useSubmissionSummaryStore} from '../submissionSummaryStore';
 
+const {t} = useLocalize();
 const summaryStore = useSubmissionSummaryStore();
 </script>

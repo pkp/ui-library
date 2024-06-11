@@ -12,7 +12,7 @@ const {getActiveStage, getCurrentReviewRound} = useSubmission();
 const {InProgressReviewAssignmentStatuses} = useReviewAssignment();
 const {calculateDaysBetweenDates, formatShortDate} = useDate();
 
-const {localizeSubmission} = useLocalize();
+const {localizeSubmission, t} = useLocalize();
 
 export function useSummaryConfig() {
 	function filterItemsBasedOnContext(
@@ -92,7 +92,7 @@ export function useSummaryConfig() {
 			{
 				component: 'PrimaryBasicMetadata',
 				props: {
-					heading: 'Subtitle (t)',
+					heading: t('common.subtitle'),
 					body: localizeSubmission(
 						currentPublication.subtitle,
 						currentPublication.locale,
@@ -110,7 +110,7 @@ export function useSummaryConfig() {
 			{
 				component: 'PrimaryBasicMetadata',
 				props: {
-					heading: 'DOI (t)',
+					heading: t('metadata.property.displayName.doi'),
 					body: currentPublication?.doiObject?.doi,
 				},
 				filters: {
@@ -126,7 +126,7 @@ export function useSummaryConfig() {
 			{
 				component: 'ContributorManager',
 				props: {
-					title: 'Contributors (t)',
+					title: t('publication.contributors'),
 					submissionId: submission.id,
 					publicationId: currentPublication?.id,
 				},
@@ -146,9 +146,8 @@ export function useSummaryConfig() {
 
 					submissionId: submission.id,
 					fileStages: [pkp.const.SUBMISSION_FILE_SUBMISSION],
-					title: 'Desk Review Files (t)',
-					description:
-						'These are the files that will be taken forward to the review stage in the workflow (t).',
+					title: t('dashboard.summary.deskReviewFiles'),
+					description: t('dashboard.summary.deskReviewFilesDescription'),
 				},
 				filters: {
 					dashboardPage: [
@@ -166,9 +165,8 @@ export function useSummaryConfig() {
 					submissionId: submission.id,
 					reviewRoundId: activeReviewRound?.id,
 					fileStages: [pkp.const.SUBMISSION_FILE_REVIEW_REVISION],
-					title: 'Revisions Submitted (localize)',
-					description:
-						'These files have been submitted by the author after visions were requested (localize)',
+					title: t('dashboard.summary.revisionsSubmitted'),
+					description: t('dashboard.summary.revisionsSubmittedDescription'),
 				},
 				filters: {
 					dashboardPage: [
@@ -185,9 +183,8 @@ export function useSummaryConfig() {
 					submissionId: submission.id,
 					reviewRoundId: activeReviewRound?.id,
 					fileStages: [pkp.const.SUBMISSION_FILE_REVIEW_FILE],
-					title: 'Files for review (localize)',
-					description:
-						'These files will be sent to the reviewers to review (localize)',
+					title: t('dashboard.summary.filesForReview'),
+					description: t('dashboard.summary.filesForReviewDescription'),
 				},
 				filters: {
 					dashboardPage: [
@@ -204,7 +201,7 @@ export function useSummaryConfig() {
 					namespace: 'copyeditedFiles',
 					submissionId: submission.id,
 					fileStages: [pkp.const.SUBMISSION_FILE_COPYEDIT],
-					title: 'Copyedited Files (t)',
+					title: t('dashboard.summary.copyeditedFiles'),
 					description:
 						'These are edited files that will be taken to the production stage',
 				},
@@ -222,9 +219,8 @@ export function useSummaryConfig() {
 					namespace: 'draftFiles',
 					submissionId: submission.id,
 					fileStages: [pkp.const.SUBMISSION_FILE_FINAL],
-					title: 'Draft Files (t)',
-					description:
-						'These are files from the review stage which are to be copyedited',
+					title: t('dashboard.summary.draftFiles'),
+					description: t('dashboard.summary.draftFilesDescription'),
 				},
 				filters: {
 					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
@@ -238,9 +234,8 @@ export function useSummaryConfig() {
 					namespace: 'productionReadyFiles',
 					submissionId: submission.id,
 					fileStages: [pkp.const.SUBMISSION_FILE_PRODUCTION_READY],
-					title: 'Production Ready Files (t)',
-					description:
-						'These are the files that will be sent for publication (t)',
+					title: t('dashboard.summary.productionReadyFiles'),
+					description: t('dashboard.summary.productionReadyFilesDescription'),
 				},
 				filters: {
 					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
@@ -254,7 +249,7 @@ export function useSummaryConfig() {
 					namespace: 'galleys',
 					submissionId: submission.id,
 					fileStages: [pkp.const.SUBMISSION_FILE_PROOF],
-					title: 'Galleys (t)',
+					title: t('dashboard.summary.galleys'),
 				},
 				filters: {
 					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
@@ -295,7 +290,7 @@ export function useSummaryConfig() {
 			{
 				component: 'ActionButton',
 				props: {
-					label: 'Upload Revisions',
+					label: t('dashboard.summary.uploadRevisions'),
 					isSecondary: true,
 					action: 'uploadRevisions',
 				},
@@ -315,7 +310,7 @@ export function useSummaryConfig() {
 			{
 				component: 'ActionButton',
 				props: {
-					label: 'Send submission for review',
+					label: t('dashboard.summary.sendSubmissionForReview'),
 					isPrimary: true,
 					action: 'decisionExternalReview',
 				},
@@ -327,7 +322,7 @@ export function useSummaryConfig() {
 			{
 				component: 'ActionButton',
 				props: {
-					label: 'Accept and skip review',
+					label: t('dashboard.summary.acceptAndSkipReview'),
 					isSecondary: true,
 					action: 'decisionSkipExternalReview',
 				},
@@ -339,7 +334,7 @@ export function useSummaryConfig() {
 			{
 				component: 'ActionButton',
 				props: {
-					label: 'Decline submission',
+					label: t('dashboard.summary.declineSubmission'),
 					isWarnable: true,
 					action: 'decisionInitialDecline',
 				},
@@ -353,7 +348,7 @@ export function useSummaryConfig() {
 			{
 				component: 'ActionButton',
 				props: {
-					label: 'Request Revisions',
+					label: t('dashboard.summary.requestRevisions'),
 					isSecondary: true,
 					action: 'requestRevisions',
 				},
@@ -365,7 +360,7 @@ export function useSummaryConfig() {
 			{
 				component: 'ActionButton',
 				props: {
-					label: 'Accept Submission',
+					label: t('dashboard.summary.acceptSubmission'),
 					action: 'decisionAccept',
 					isPrimary: true,
 				},
@@ -377,7 +372,7 @@ export function useSummaryConfig() {
 			{
 				component: 'ActionButton',
 				props: {
-					label: 'Cancel Review Round',
+					label: t('dashboard.summary.cancelReviewRound'),
 					isWarnable: true,
 					action: 'decisionCancelReviewRound',
 				},
@@ -389,7 +384,7 @@ export function useSummaryConfig() {
 			{
 				component: 'ActionButton',
 				props: {
-					label: 'Decline Submission',
+					label: t('dashboard.summary.declineSubmission'),
 					isWarnable: true,
 					action: 'decisionDecline',
 				},
@@ -401,7 +396,7 @@ export function useSummaryConfig() {
 			{
 				component: 'ActionButton',
 				props: {
-					label: 'Accept review (t)',
+					label: t('dashboard.summary.acceptReview'),
 					isPrimary: true,
 					action: 'openReviewForm',
 				},
@@ -419,7 +414,7 @@ export function useSummaryConfig() {
 			{
 				component: 'ActionButton',
 				props: {
-					label: 'Access review form (t)',
+					label: t('dashboard.summary.accessReviewForm'),
 					isPrimary: true,
 					action: 'openReviewForm',
 				},
@@ -434,7 +429,7 @@ export function useSummaryConfig() {
 			{
 				component: 'ActionButton',
 				props: {
-					label: 'Upload File (t)',
+					label: t('dashboard.summary.uploadFile'),
 					isSecondary: true,
 					action: 'uploadReviewerFile',
 				},
@@ -447,7 +442,7 @@ export function useSummaryConfig() {
 			{
 				component: 'ActionButton',
 				props: {
-					label: 'Decline',
+					label: t('dashboard.summary.decline'),
 					isSecondary: true,
 					action: 'declineReviewAssignment',
 				},
@@ -464,7 +459,7 @@ export function useSummaryConfig() {
 			{
 				component: 'ActionButton',
 				props: {
-					label: 'Send to Production',
+					label: t('dashboard.summary.sendToProduction'),
 					isPrimary: true,
 					action: 'decisionSendToProduction',
 				},
@@ -476,7 +471,7 @@ export function useSummaryConfig() {
 			{
 				component: 'ActionButton',
 				props: {
-					label: 'Schedule for Publication',
+					label: t('dashboard.summary.scheduleForProduction'),
 					isPrimary: true,
 					action: 'scheduleForPublication',
 				},
@@ -489,7 +484,7 @@ export function useSummaryConfig() {
 			{
 				component: 'ActionButton',
 				props: {
-					label: 'Preview',
+					label: t('dashboard.summary.preview'),
 					isSecondary: true,
 					action: 'previewPublication',
 				},
@@ -502,7 +497,7 @@ export function useSummaryConfig() {
 			{
 				component: 'ActionButton',
 				props: {
-					label: 'Unschedule',
+					label: t('dashboard.summary.unschedule'),
 					isWarnable: true,
 					action: 'unschedulePublication',
 				},
@@ -531,7 +526,7 @@ export function useSummaryConfig() {
 			{
 				component: 'BasicMetadata',
 				props: {
-					heading: 'Submitted on (t)',
+					heading: t('dashboard.summary.submittedOn'),
 					body: formatShortDate(submission.dateSubmitted),
 				},
 				filters: {
@@ -547,7 +542,7 @@ export function useSummaryConfig() {
 			{
 				component: 'BasicMetadata',
 				props: {
-					heading: 'Days since submission: (t)',
+					heading: t('dashboard.summary.daysSinceSubmission'),
 					body: calculateDaysBetweenDates(submission.dateSubmitted, new Date()),
 				},
 				filters: {
@@ -563,8 +558,8 @@ export function useSummaryConfig() {
 			{
 				component: 'BasicMetadata',
 				props: {
-					heading: 'Days in submission: (t)',
-					body: 'todo not in api',
+					heading: t('dashboard.summary.daysInSubmission'),
+					body: '(todo)',
 				},
 				filters: {
 					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
@@ -574,8 +569,8 @@ export function useSummaryConfig() {
 			{
 				component: 'BasicMetadata',
 				props: {
-					heading: 'Days in review: (t)',
-					body: 'todo not in api',
+					heading: t('dashboard.summary.daysInReview'),
+					body: '(todo)',
 				},
 				filters: {
 					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
@@ -585,8 +580,8 @@ export function useSummaryConfig() {
 			{
 				component: 'BasicMetadata',
 				props: {
-					heading: 'Days in copyediting: (t)',
-					body: 'todo not in api',
+					heading: t('dashboard.summary.daysInCopyediting'),
+					body: '(todo)',
 				},
 				filters: {
 					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
@@ -596,8 +591,8 @@ export function useSummaryConfig() {
 			{
 				component: 'BasicMetadata',
 				props: {
-					heading: 'Days in production: (t)',
-					body: 'todo not in api',
+					heading: t('dashboard.summary.daysInProduction'),
+					body: '(todo)',
 				},
 				filters: {
 					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
@@ -609,8 +604,8 @@ export function useSummaryConfig() {
 			{
 				component: 'BasicMetadata',
 				props: {
-					heading: 'Journal name: (t)',
-					body: 'todo not in api',
+					heading: t('dashboard.summary.journalName'),
+					body: '(todo)',
 				},
 				filters: {
 					dashboardPage: [DashboardPageTypes.MY_SUBMISSIONS],
@@ -652,8 +647,8 @@ export function useSummaryConfig() {
 			{
 				component: 'BasicMetadata',
 				props: {
-					heading: 'Type: (t)',
-					body: 'todo not in api',
+					heading: t('common.type'),
+					body: '(todo)',
 				},
 				filters: {
 					dashboardPage: [
@@ -672,7 +667,7 @@ export function useSummaryConfig() {
 			{
 				component: 'BasicMetadata',
 				props: {
-					heading: 'Abstract (t)',
+					heading: t('common.abstract'),
 					body: localizeSubmission(
 						currentPublication?.abstract,
 						currentPublication?.locale,
@@ -694,7 +689,7 @@ export function useSummaryConfig() {
 			{
 				component: 'BasicMetadata',
 				props: {
-					heading: 'Keywords (t)',
+					heading: t('common.keywords'),
 					body:
 						currentPublication?.keywords &&
 						localizeSubmission(
@@ -718,7 +713,7 @@ export function useSummaryConfig() {
 			{
 				component: 'BasicMetadata',
 				props: {
-					heading: 'Submission Language (t)',
+					heading: t('dashboard.summary.submissionLanguage'),
 					body: `${currentPublication?.locale} (todo show language name not locale)`,
 				},
 				filters: {

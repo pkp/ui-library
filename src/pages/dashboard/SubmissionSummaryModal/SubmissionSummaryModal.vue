@@ -4,12 +4,17 @@
 			{{ submissionId }}
 		</template>
 		<template #title>
-			<span v-if="submission" class="underline">
-				{{ submission.publications[0].authorsStringShort }}
+			<span v-if="currentPublication" class="underline">
+				{{ currentPublication.authorsStringShort }}
 			</span>
 		</template>
-		<template v-if="submission" #description>
-			{{ submission.publications[0].fullTitle.en }}
+		<template v-if="currentPublication" #description>
+			{{
+				localizeSubmission(
+					currentPublication.fullTitle,
+					currentPublication.locale,
+				)
+			}}
 		</template>
 		<template v-if="submission" #post-description>
 			<StageBubble :stage-id="submission.stageId">
@@ -39,7 +44,7 @@
 		</template>
 		<template v-if="submission" #actions>
 			<PkpButton element="a" :href="submission.urlWorkflow">
-				View submission in detail
+				{{ t('dashboard.summary.viewSubmissionInDetail') }}
 			</PkpButton>
 		</template>
 		<SideModalLayout2Columns>
@@ -96,6 +101,10 @@ import BasicMetadata from './metaItems/BasicMetadata.vue';
 import IssueAssigned from './metaItems/IssueAssigned.vue';
 import {useSubmissionSummaryStore} from './submissionSummaryStore';
 import SideModalLayout2Columns from '@/components/Modal/SideModalLayout2Columns.vue';
+
+import {useLocalize} from '@/composables/useLocalize';
+
+const {t, localizeSubmission} = useLocalize();
 
 const Components = {
 	FileManager,
@@ -167,7 +176,7 @@ const metaItems = computed(() => {
 	);
 });
 
-const {submission} = storeToRefs(summaryStore);
+const {submission, currentPublication} = storeToRefs(summaryStore);
 
 provide('registerDataChangeCallback', summaryStore.registerDataChangeCallback);
 </script>

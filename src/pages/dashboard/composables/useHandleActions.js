@@ -15,8 +15,6 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 		actionArgs,
 		finishedCallback,
 	) {
-		console.log('handleItemAction', submission.id, actionName, actionArgs);
-
 		const {openSideModal, openDialog} = useModal();
 		const {t, localize} = useLocalize();
 		const {getCurrentReviewRound} = useSubmission();
