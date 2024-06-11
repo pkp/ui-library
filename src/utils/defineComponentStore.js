@@ -11,14 +11,11 @@ export function defineComponentStore(_storeName, setupFn) {
 		}
 		onMounted(() => {
 			storesMap[storeName].mountedCount = storesMap[storeName].mountedCount + 1;
-			//console.log(`store ${storeName} mounted ${mountedCount}`);
 		});
 		onUnmounted(() => {
 			storesMap[storeName].mountedCount = storesMap[storeName].mountedCount - 1;
 
-			//console.log(`store ${storeName} unmounted ${mountedCount}`);
 			if (storesMap[storeName].mountedCount === 0) {
-				//console.log(`cleaning up ${storeName} store.`);
 				const store = storesMap[storeName].useStore();
 				store.$dispose();
 				storesMap[storeName] = null;

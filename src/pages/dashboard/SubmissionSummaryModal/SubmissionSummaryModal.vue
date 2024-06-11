@@ -85,11 +85,14 @@ import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import StageBubble from '@/components/StageBubble/StageBubble.vue';
 import FileManager from '@/managers/FileManager/FileManager.vue';
 import ReviewerManager from '@/managers/ReviewerManager/ReviewerManager.vue';
-
+import ContributorManager from '@/managers/ContributorManager/ContributorManager.vue';
 import LastActivity from './primaryItems/LastActivity.vue';
+import PrimaryBasicMetadata from './primaryItems/PrimaryBasicMetadata.vue';
+
 import ActionButton from './actionItems/ActionButton.vue';
 import EditorsAssigned from './metaItems/EditorsAssigned.vue';
 import BasicMetadata from './metaItems/BasicMetadata.vue';
+
 import IssueAssigned from './metaItems/IssueAssigned.vue';
 import {useSubmissionSummaryStore} from './submissionSummaryStore';
 import SideModalLayout2Columns from '@/components/Modal/SideModalLayout2Columns.vue';
@@ -97,10 +100,12 @@ import SideModalLayout2Columns from '@/components/Modal/SideModalLayout2Columns.
 const Components = {
 	FileManager,
 	ReviewerManager,
+	ContributorManager,
 	LastActivity,
 	ActionButton,
 	EditorsAssigned,
 	BasicMetadata,
+	PrimaryBasicMetadata,
 	IssueAssigned,
 };
 
@@ -115,9 +120,10 @@ const props = defineProps({
 const summaryStore = useSubmissionSummaryStore(props);
 
 const primaryItems = computed(() => {
-	if (!summaryStore.submission) {
+	if (!summaryStore.submission || !summaryStore.currentPublication) {
 		return [];
 	}
+
 	return summaryStore.filterItemsBasedOnContext(
 		summaryStore.getPrimaryItems(
 			summaryStore.submission,
@@ -130,7 +136,7 @@ const primaryItems = computed(() => {
 });
 
 const actionItems = computed(() => {
-	if (!summaryStore.submission) {
+	if (!summaryStore.submission || !summaryStore.currentPublication) {
 		return [];
 	}
 
@@ -146,7 +152,7 @@ const actionItems = computed(() => {
 });
 
 const metaItems = computed(() => {
-	if (!summaryStore.submission) {
+	if (!summaryStore.submission || !summaryStore.currentPublication) {
 		return [];
 	}
 

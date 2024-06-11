@@ -3,6 +3,7 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useSubmission} from '@/composables/useSubmission';
 import {useUrl} from '@/composables/useUrl';
 import {useForm} from '@/composables/useForm';
+import {useFetch} from '@/composables/useFetch';
 import {useUrlSearchParams} from '@vueuse/core';
 import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 
@@ -16,7 +17,7 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 	) {
 		console.log('handleItemAction', submission.id, actionName, actionArgs);
 
-		const {openSideModal} = useModal();
+		const {openSideModal, openDialog} = useModal();
 		const {t, localize} = useLocalize();
 		const {getCurrentReviewRound} = useSubmission();
 
@@ -405,6 +406,43 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 					},
 				},
 			);
+		} else if (actionName === 'previewPublication') {
+			const {getCurrentPublication} = useSubmission();
+
+			const {redirectToPage} = useUrl(
+				getCurrentPublication(submission).urlPublished,
+			);
+
+			redirectToPage();
+		} else if (actionName === 'unschedulePublication') {
+			openDialog({
+				title: t('publication.unschedule'),
+				message: t('publication.unschedule.confirm'),
+				actions: [
+					{
+						label: t('publication.unschedule'),
+						isPrimary: true,
+						callback: async (close) => {
+							const {getCurrentPublication} = useSubmission();
+
+							const currentPublication = getCurrentPublication(submission);
+							const {apiUrl: unschedulePublicationApiUrl} = useUrl(
+								`submissions/${submission.id}/publications/${currentPublication.id}/unpublish`,
+							);
+							const {fetch} = useFetch(unschedulePublicationApiUrl, {
+								method: 'PUT',
+							});
+							await fetch();
+							close();
+							finishedCallback();
+						},
+					},
+					{
+						label: t('common.cancel'),
+						callback: (close) => close(),
+					},
+				],
+			});
 		}
 	}
 

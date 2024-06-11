@@ -39,8 +39,13 @@ export function useSummaryConfig() {
 				return true;
 			})
 			.filter((item) => {
-				if (item?.filters?.submissionStatusId) {
-					return item?.filters?.submissionStatusId.includes(submission.status);
+				if (item?.filters?.productionStageSubmissionStatusId) {
+					return (
+						activeStage.id === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION &&
+						item?.filters?.productionStageSubmissionStatusId.includes(
+							submission.status,
+						)
+					);
 				}
 
 				return true;
@@ -82,7 +87,56 @@ export function useSummaryConfig() {
 						pkp.const.WORKFLOW_STAGE_ID_EDITING,
 						pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 					],
-					submissionStatusId: [pkp.const.STATUS_SCHEDULED],
+				},
+			},
+			{
+				component: 'PrimaryBasicMetadata',
+				props: {
+					heading: 'Subtitle (t)',
+					body: localizeSubmission(
+						currentPublication.subtitle,
+						currentPublication.locale,
+					),
+				},
+				filters: {
+					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_PRODUCTION],
+					productionStageSubmissionStatusId: [
+						pkp.const.STATUS_SCHEDULED,
+						pkp.const.STATUS_PUBLISHED,
+					],
+				},
+			},
+			{
+				component: 'PrimaryBasicMetadata',
+				props: {
+					heading: 'DOI (t)',
+					body: currentPublication?.doiObject?.doi,
+				},
+				filters: {
+					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_PRODUCTION],
+					productionStageSubmissionStatusId: [
+						pkp.const.STATUS_SCHEDULED,
+						pkp.const.STATUS_PUBLISHED,
+					],
+				},
+			},
+
+			{
+				component: 'ContributorManager',
+				props: {
+					title: 'Contributors (t)',
+					submissionId: submission.id,
+					publicationId: currentPublication?.id,
+				},
+				filters: {
+					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_PRODUCTION],
+					productionStageSubmissionStatusId: [
+						pkp.const.STATUS_SCHEDULED,
+						pkp.const.STATUS_PUBLISHED,
+					],
 				},
 			},
 			{
@@ -191,6 +245,24 @@ export function useSummaryConfig() {
 				filters: {
 					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
 					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_PRODUCTION],
+					productionStageSubmissionStatusId: [pkp.const.STATUS_QUEUED],
+				},
+			},
+			{
+				component: 'FileManager',
+				props: {
+					namespace: 'galleys',
+					submissionId: submission.id,
+					fileStages: [pkp.const.SUBMISSION_FILE_PROOF],
+					title: 'Galleys (t)',
+				},
+				filters: {
+					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_PRODUCTION],
+					productionStageSubmissionStatusId: [
+						pkp.const.STATUS_SCHEDULED,
+						pkp.const.STATUS_PUBLISHED,
+					],
 				},
 			},
 
@@ -329,30 +401,6 @@ export function useSummaryConfig() {
 			{
 				component: 'ActionButton',
 				props: {
-					label: 'Send to Production',
-					isPrimary: true,
-					action: 'decisionSendToProduction',
-				},
-				filters: {
-					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
-					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EDITING],
-				},
-			},
-			{
-				component: 'ActionButton',
-				props: {
-					label: 'Schedule for Publication',
-					isPrimary: true,
-					action: 'scheduleForPublication',
-				},
-				filters: {
-					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
-					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_PRODUCTION],
-				},
-			},
-			{
-				component: 'ActionButton',
-				props: {
 					label: 'Accept review (t)',
 					isPrimary: true,
 					action: 'openReviewForm',
@@ -411,6 +459,57 @@ export function useSummaryConfig() {
 						// TODO: can be declined after resend?
 						pkp.const.REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND,
 					],
+				},
+			},
+			{
+				component: 'ActionButton',
+				props: {
+					label: 'Send to Production',
+					isPrimary: true,
+					action: 'decisionSendToProduction',
+				},
+				filters: {
+					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EDITING],
+				},
+			},
+			{
+				component: 'ActionButton',
+				props: {
+					label: 'Schedule for Publication',
+					isPrimary: true,
+					action: 'scheduleForPublication',
+				},
+				filters: {
+					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_PRODUCTION],
+					productionStageSubmissionStatusId: [pkp.const.STATUS_QUEUED],
+				},
+			},
+			{
+				component: 'ActionButton',
+				props: {
+					label: 'Preview',
+					isSecondary: true,
+					action: 'previewPublication',
+				},
+				filters: {
+					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_PRODUCTION],
+					productionStageSubmissionStatusId: [pkp.const.STATUS_SCHEDULED],
+				},
+			},
+			{
+				component: 'ActionButton',
+				props: {
+					label: 'Unschedule',
+					isWarnable: true,
+					action: 'unschedulePublication',
+				},
+				filters: {
+					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_PRODUCTION],
+					productionStageSubmissionStatusId: [pkp.const.STATUS_SCHEDULED],
 				},
 			},
 		];
@@ -503,6 +602,7 @@ export function useSummaryConfig() {
 				filters: {
 					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
 					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_PRODUCTION],
+					productionStageSubmissionStatusId: [pkp.const.STATUS_QUEUED],
 				},
 			},
 

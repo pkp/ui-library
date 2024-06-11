@@ -28,8 +28,10 @@ export function useUrl(_path, _queryParams = {}) {
 	const apiUrl = computed(
 		() => `${pkp.context.apiBaseUrl}${path.value}${queryParamsString.value}`,
 	);
-	const pageUrl = computed(
-		() => `${pkp.context.pageBaseUrl}${path.value}${queryParamsString.value}`,
+	const pageUrl = computed(() =>
+		path.value.startsWith('http')
+			? `${path.value}${queryParamsString.value}`
+			: `${pkp.context.pageBaseUrl}${path.value}${queryParamsString.value}`,
 	);
 
 	function redirectToPage() {

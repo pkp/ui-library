@@ -199,7 +199,9 @@ export const useDashboardPageStore = defineComponentStore(
 		 */
 
 		/** Tracking which submissionId is opened in summary modal for query params */
+		const summarySubmissionId = ref(null);
 		function openSummaryModal(submissionId, reviewAssignmentId = null) {
+			summarySubmissionId.value = submissionId;
 			openSideModal(
 				SubmissionSummaryModal,
 				{
@@ -209,6 +211,7 @@ export const useDashboardPageStore = defineComponentStore(
 				},
 				{
 					onClose: async () => {
+						summarySubmissionId.value = null;
 						await fetchSubmissions();
 					},
 				},
@@ -216,7 +219,6 @@ export const useDashboardPageStore = defineComponentStore(
 		}
 		if (queryParamsUrl.summarySubmissionId) {
 			openSummaryModal(queryParamsUrl.summarySubmissionId);
-			queryParamsUrl.summarySubmissionId = undefined;
 		}
 
 		/**
@@ -256,6 +258,7 @@ export const useDashboardPageStore = defineComponentStore(
 				...filtersFormQueryParams.value,
 				searchPhrase: searchPhrase.value,
 				currentViewId: currentViewId.value,
+				summarySubmissionId: summarySubmissionId.value || undefined,
 			};
 		});
 
