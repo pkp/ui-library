@@ -59,7 +59,7 @@ defineProps({
 	title: {type: String, required: false, default: null},
 	description: {type: String, required: false, default: null},
 	reviewMethodIcons: {type: Array, required: true},
-	reviewerName: {type: String, required: true, default: 'TODO'},
+	reviewerName: {type: String, required: true, default: ''},
 	primaryButton: {type: Object, required: false, default: null},
 	negativeButton: {type: Object, required: false, default: null},
 	textButton: {type: Object, required: false, default: null},

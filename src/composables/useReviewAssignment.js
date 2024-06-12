@@ -31,13 +31,11 @@ export function useReviewAssignment() {
 	}
 
 	function getOpenReviewAssignments(reviewAssignments = []) {
-		// TODO: we don't have reviewMethod in API yet, therefore dummy logic
-		return getActiveReviewAssignments(reviewAssignments).slice(0, 2);
-		/*return reviewAssignments.filter(
+		return reviewAssignments.filter(
 			(reviewAssignment) =>
 				reviewAssignment.reviewMethod ===
 				pkp.const.SUBMISSION_REVIEW_METHOD_OPEN,
-		);*/
+		);
 	}
 
 	function getReviewMethodIcons(reviewAssignment) {

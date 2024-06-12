@@ -7,12 +7,11 @@
 				:key="reviewAssignment.id"
 			>
 				<PkpPopover>
-					<!-- TODO once the reviewer name and method are in the response, use it-->
 					<template #button>
 						<UserAvatar
 							size-variant="small"
 							:user-id="reviewAssignment.id"
-							:user-full-name="String(reviewAssignment.id)"
+							:user-full-name="String(reviewAssignment.revieweFullname)"
 						/>
 					</template>
 					<ReviewActivityIndicatorPopover

@@ -402,7 +402,7 @@ export function useReviewActivityLogic() {
 				action: config.negativeAction,
 				label: getNegativeActionLabel(),
 			},
-			reviewerName: 'Reviewer Name (todo)',
+			reviewerName: reviewAssignment.reviewerFullName,
 		};
 	}
 	return {
