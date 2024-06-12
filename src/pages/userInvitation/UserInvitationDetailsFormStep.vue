@@ -12,7 +12,7 @@
 			<div class="userInvitation__reviewPanel__item__value">
 				{{ store.invitationPayload.email }}
 			</div>
-			<h4 class="userInvitation__reviewPanel__item__header">ORCiD ID</h4>
+			<h4 class="userInvitation__reviewPanel__item__header">ORCID iD</h4>
 			<div class="userInvitation__reviewPanel__item__value">
 				{{
 					store.invitationPayload.orcid
