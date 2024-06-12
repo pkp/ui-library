@@ -87,18 +87,10 @@ async function searchUser() {
 			store.updatePayload('currentUserGroups', user.groups);
 			store.updatePayload('affiliation', user.affiliation);
 		} else {
-			// TODO: add back error handling
-			/*errors.value = {
-				error: t('invitation.noUserFound'),
-			};*/
-			// TODO: update field which has some value
 			store.updatePayload('email', fields.value.email);
 		}
 	} else {
 		// TODO: add back error handling
-		/*errors.value = {
-			error: t('invitation.emptySearchFields'),
-		};*/
 	}
 	return true;
 }

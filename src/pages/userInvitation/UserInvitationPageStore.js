@@ -8,14 +8,18 @@ export const useUserInvitationPageStore = defineComponentStore(
 	(pageInitConfig) => {
 		const {openDialog} = useModal();
 
-		/** Invitation payload, initial value */
+		/**
+		 * Invitation payload, initial value
+		 */
 		const invitationPayload = ref({...pageInitConfig.invitationPayload});
 
 		function updatePayload(fieldName, value) {
 			invitationPayload.value[fieldName] = value;
 		}
 
-		/** Steps */
+		/**
+		 * Steps
+		 */
 		const currentStepId = ref(pageInitConfig.steps[0].id);
 		const steps = ref(pageInitConfig.steps);
 		const startedSteps = ref([]);
@@ -127,14 +131,8 @@ export const useUserInvitationPageStore = defineComponentStore(
 
 			// Track step changes in the title and browser history
 			const step = steps.value[newVal];
-			// document.title = this.getPageTitle(step);
 			if (step.id !== window.location.hash.replace('#', '')) {
 				addHistory(step);
-			}
-
-			// Trigger validation on the review step
-			if (newVal === steps.value.length - 1) {
-				// validate();
 			}
 		});
 
@@ -198,7 +196,9 @@ export const useUserInvitationPageStore = defineComponentStore(
 			return error;
 		});
 
-		/** Handling invitation */
+		/**
+		 * Invitation actions
+		 */
 		const invitationId = ref(null);
 		/**
 		 * Create invitation
@@ -214,7 +214,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 			invitationId.value = data.value.invitationId;
 		}
 
-		/** Update Invitation */
+		/** Update invitation */
 		async function updateInvitation() {
 			if (!invitationId.value) {
 				await createInvitation();
@@ -281,7 +281,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 			invitationPayload,
 			updatePayload,
 			registerActionForStepId,
-			//computed
+			//computed values
 			currentStep,
 			currentStepIndex,
 			isOnFirstStep,
@@ -298,7 +298,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 			pageTitleDescription,
 			errors,
 
-			//form feilds
+			//form fields
 			primaryLocale,
 
 			//methods

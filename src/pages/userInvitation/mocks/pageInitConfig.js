@@ -65,7 +65,7 @@ export default {
 			name: 'Search User',
 			reviewName: '{$step} - Search User',
 			description:
-				'Search for the user using their email address, username or ORCID ID. Enter at least one details to get started. If user does not exist, ypu can invite them to take up roles and be a part of your journal. If the user already exist in the system, you can view user information and invite to take a additional roles.',
+				'Search for the user using their email address, username or ORCiD ID. Enter at least one details to get started. If user does not exist, ypu can invite them to take up roles and be a part of your journal. If the user already exist in the system, you can view user information and invite to take a additional roles.',
 			nextButtonLabel: 'Search user (t)',
 			skipInvitationUpdate: true,
 			sections: [
@@ -204,7 +204,7 @@ export default {
 								{
 									name: 'orcid',
 									component: 'field-text',
-									label: 'ORCID iD',
+									label: 'ORCiD ID',
 									groupId: 'default',
 									isRequired: false,
 									isMultilingual: false,
