@@ -17,6 +17,7 @@ const {localizeSubmission} = useLocalize();
 
 const props = defineProps({item: {type: Object, required: true}});
 
-// TODO add submission locale once available in the response
-const title = computed(() => localizeSubmission(props.item.publicationTitle));
+const title = computed(() =>
+	localizeSubmission(props.item.publicationTitle, props.item.submissionLocale),
+);
 </script>

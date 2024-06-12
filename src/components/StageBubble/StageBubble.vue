@@ -1,74 +1,41 @@
 <template>
-	<span class="stageBubble">
+	<span class="flex w-auto items-center gap-x-2">
 		<span
-			class="stageBubble__bubble"
-			:class="'stageBubble__bubble--' + stageClassFragment"
+			class="h-[1em] w-[1em] rounded-full"
+			:class="stageColorClass"
 			aria-hidden="true"
 		/>
-		<span class="stageBubble__slot">
+		<span class="whitespace-nowrap">
 			<slot />
 		</span>
 	</span>
 </template>
-
 <script>
-const stageMap = {
-	1: 'submission',
-	2: 'review',
-	3: 'review',
-	4: 'copyediting',
-	5: 'production',
-};
-
-export default {
-	props: {
-		stageId: {
-			type: Number,
-			required: true,
-			validator: function (value) {
-				return Object.keys(stageMap).includes(value.toString());
-			},
-		},
-	},
-	computed: {
-		stageClassFragment() {
-			return stageMap[this.stageId];
-		},
-	},
+export const ExtendedStagesColorClass = {
+	incomplete: 'bg-stage-incomplete-submission',
+	submission: 'bg-stage-desk-review',
+	externalReview: 'bg-stage-in-review',
+	editing: 'bg-stage-copyediting',
+	productionQueued: 'bg-stage-production',
+	productionScheduled: 'bg-stage-scheduled-for-publishing',
+	productionPublished: 'bg-stage-published',
+	declined: 'bg-stage-declined',
 };
 </script>
+<script setup>
+import {computed} from 'vue';
 
-<style lang="less">
-@import '../../styles/_import';
+const props = defineProps({
+	extendedStage: {
+		type: Number,
+		required: true,
+		validator: function (value) {
+			return Object.keys(ExtendedStagesColorClass).includes(value);
+		},
+	},
+});
 
-.stageBubble {
-	display: flex;
-	width: auto;
-	gap: 0 0.5em;
-	align-items: center;
-}
-
-.stageBubble__bubble {
-	width: 1em;
-	height: 1em;
-	background: @bg-anchor;
-	border-radius: 50%;
-}
-
-.stageBubble__bubble--submission {
-	background: @submission;
-}
-.stageBubble__bubble--review {
-	background: @review;
-}
-.stageBubble__bubble--copyediting {
-	background: @copyediting;
-}
-.stageBubble__bubble--production {
-	background: @production;
-}
-
-.stageBubble__slot {
-	white-space: nowrap;
-}
-</style>
+const stageColorClass = computed(
+	() => ExtendedStagesColorClass[props.extendedStage],
+);
+</script>

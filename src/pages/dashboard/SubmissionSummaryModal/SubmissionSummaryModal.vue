@@ -17,29 +17,10 @@
 			}}
 		</template>
 		<template v-if="submission" #post-description>
-			<StageBubble :stage-id="submission.stageId">
+			<StageBubble :extended-stage="extendedStage">
 				<span class="text-lg-normal">
-					{{ submission.stageName }}
+					{{ stageLabel }}
 				</span>
-				<template
-					v-if="
-						(submission.stageId ===
-							pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW ||
-							submission.stageId ===
-								pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) &&
-						submission.reviewRounds.length
-					"
-				>
-					{{
-						t('common.inParenthesis', {
-							text: t('common.reviewRoundNumber', {
-								round:
-									submission.reviewRounds[submission.reviewRounds.length - 1]
-										.round,
-							}),
-						})
-					}}
-				</template>
 			</StageBubble>
 		</template>
 		<template v-if="submission" #actions>
@@ -103,6 +84,7 @@ import {useSubmissionSummaryStore} from './submissionSummaryStore';
 import SideModalLayout2Columns from '@/components/Modal/SideModalLayout2Columns.vue';
 
 import {useLocalize} from '@/composables/useLocalize';
+import {useSubmission} from '@/composables/useSubmission';
 
 const {t, localizeSubmission} = useLocalize();
 
@@ -118,8 +100,6 @@ const Components = {
 	IssueAssigned,
 };
 
-const pkp = window.pkp;
-
 const props = defineProps({
 	submissionId: {type: Number, required: true},
 	reviewAssignmentId: {type: Number, required: false, default: null},
@@ -127,6 +107,15 @@ const props = defineProps({
 });
 
 const summaryStore = useSubmissionSummaryStore(props);
+
+const {getExtendedStage, getExtendedStageLabel} = useSubmission();
+
+const extendedStage = computed(
+	() => submission.value && getExtendedStage(submission.value),
+);
+const stageLabel = computed(
+	() => submission.value && getExtendedStageLabel(submission.value),
+);
 
 const primaryItems = computed(() => {
 	if (!summaryStore.submission || !summaryStore.currentPublication) {

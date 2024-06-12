@@ -1,5 +1,8 @@
 import {useSubmission} from '@/composables/useSubmission.js';
 import {useLocalize} from '@/composables/useLocalize';
+import {useDate} from '@/composables/useDate';
+
+const {formatShortDate} = useDate();
 
 const {t} = useLocalize();
 const {getActiveStage, getCurrentReviewRound, getCurrentReviewAssignments} =
@@ -165,21 +168,23 @@ export function useEditorialLogic() {
 
 	function getEditorialActivityForMyReviewAssignments(reviewAssignment) {
 		if (
-			reviewAssignment.statusId ===
+			reviewAssignment.status ===
 			pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE
 		) {
 			const date = reviewAssignment.dateResponseDue;
 			return [
 				{
-					component: 'CellSubmissionActivityActionAlert',
+					component: 'CellReviewAssignmentActivityAlert',
 					props: {
-						alert: t('dashboard.acceptOrDeclineRequestDate', {date}),
+						alert: t('dashboard.acceptOrDeclineRequestDate', {
+							date: formatShortDate(date),
+						}),
 					},
 				},
 			];
 			// Declined missing text
 		} else if (
-			reviewAssignment.statusId === pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED
+			reviewAssignment.status === pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED
 		) {
 			return [
 				{
@@ -190,7 +195,7 @@ export function useEditorialLogic() {
 				},
 			];
 		} else if (
-			reviewAssignment.statusId ===
+			reviewAssignment.status ===
 			pkp.const.REVIEW_ASSIGNMENT_STATUS_RESPONSE_OVERDUE
 		) {
 			return [
@@ -202,7 +207,7 @@ export function useEditorialLogic() {
 				},
 			];
 		} else if (
-			reviewAssignment.statusId === pkp.const.REVIEW_ASSIGNMENT_STATUS_ACCEPTED
+			reviewAssignment.status === pkp.const.REVIEW_ASSIGNMENT_STATUS_ACCEPTED
 		) {
 			const date = reviewAssignment.dateDue;
 
@@ -215,7 +220,7 @@ export function useEditorialLogic() {
 				},
 			];
 		} else if (
-			reviewAssignment.statusId ===
+			reviewAssignment.status ===
 			pkp.const.REVIEW_ASSIGNMENT_STATUS_REVIEW_OVERDUE
 		) {
 			return [
@@ -240,7 +245,7 @@ export function useEditorialLogic() {
 				{
 					component: 'CellReviewAssignmentActivityAlert',
 					props: {
-						alert: `Missing text`,
+						alert: `-`,
 					},
 				},
 			];
