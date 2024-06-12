@@ -11,12 +11,14 @@
 						<UserAvatar
 							size-variant="small"
 							:user-id="reviewAssignment.id"
-							:user-full-name="String(reviewAssignment.revieweFullname)"
+							:user-full-name="String(reviewAssignment.reviewerFullName)"
 						/>
 					</template>
 					<ReviewActivityIndicatorPopover
-						:reviewer-name="String(reviewAssignment.id)"
-						:review-method-icons="getReviewMethodIcons(1)"
+						:reviewer-name="reviewAssignment.reviewerFullName"
+						:review-method-icons="
+							getReviewMethodIcons(reviewAssignment.reviewMethod)
+						"
 					/>
 				</PkpPopover>
 			</div>
