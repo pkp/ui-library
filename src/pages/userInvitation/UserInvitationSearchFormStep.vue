@@ -34,9 +34,10 @@ import FieldText from '@/components/Form/fields/FieldText.vue';
 import {useUserInvitationPageStore} from './UserInvitationPageStore';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
+
 defineProps({
-	section: {
-		type: Object,
+	validateFields: {
+		type: Array,
 		default() {
 			return null;
 		},
@@ -84,6 +85,7 @@ async function searchUser() {
 			store.updatePayload('familyName', user.fullName.split(' ')[1]);
 			store.updatePayload('orcid', user.orcid);
 			store.updatePayload('currentUserGroups', user.groups);
+			store.updatePayload('affiliation', user.affiliation);
 		} else {
 			// TODO: add back error handling
 			/*errors.value = {

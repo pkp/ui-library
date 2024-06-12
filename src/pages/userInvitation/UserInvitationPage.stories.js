@@ -48,8 +48,52 @@ export const Init = {
 				),
 				http.post(
 					'https://mock/index.php/publicknowledge/api/v1/invitations/15',
-					() => {
-						return HttpResponse.json({});
+					async ({request}) => {
+						const data = await request.json();
+						let errors = {};
+
+						data.userGroupsToAdd.forEach((element, index) => {
+							let objectErrors = {};
+							Object.keys(element).forEach((key) => {
+								if (element[key] === null) {
+									objectErrors[key] = ['This field is required'];
+								}
+							});
+							if (Object.keys(objectErrors).length > 0) {
+								errors['userGroupsToAdd'] = {
+									...errors['userGroupsToAdd'],
+									[index]: objectErrors,
+								};
+							}
+						});
+
+						if (data.email === '') {
+							errors['email'] = ['This field is required'];
+						}
+						if (data.orcid === '') {
+							errors['orcid'] = ['This field is required'];
+						}
+						if (data.familyName === '') {
+							errors['familyName'] = ['This field is required'];
+						}
+						if (data.givenName === '') {
+							errors['givenName'] = ['This field is required'];
+						}
+
+						Object.keys(data.emailComposer).forEach((element) => {
+							if (data.emailComposer[element] === '') {
+								errors['emailComposer'] = {
+									...errors['emailComposer'],
+									[element]: ['This field is required'],
+								};
+							}
+						});
+
+						if (Object.keys(errors).length > 0) {
+							return HttpResponse.json(errors, {status: 422});
+						}
+
+						return HttpResponse.json({status: 201});
 					},
 				),
 				http.post(

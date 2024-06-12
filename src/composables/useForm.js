@@ -49,6 +49,20 @@ export function useForm(_form) {
 		);
 	}
 
+	function connectWithErrors(errors) {
+		watch(
+			errors,
+			(newErrors) => {
+				Object.keys(newErrors).forEach((key) => {
+					if (doesFieldExist(form.value, key)) {
+						form.value.errors[key] = newErrors[key];
+					}
+				});
+			},
+			{immediate: true},
+		);
+	}
+
 	function set(key, data) {
 		Object.keys(data).forEach(function (dataKey) {
 			form.value[dataKey] = data[dataKey];
@@ -109,5 +123,6 @@ export function useForm(_form) {
 		clearForm,
 		form,
 		connectWithPayload,
+		connectWithErrors,
 	};
 }

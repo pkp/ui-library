@@ -4,31 +4,31 @@
 		:add-c-c-label="t('common.addCCBCC')"
 		:attach-files-label="t('common.attachFiles')"
 		:attached-files-label="t('common.attachedFiles')"
-		:attachers="section.email.attachers"
-		:attachments="section.email.attachments"
-		:bcc="section.email.bcc"
+		:attachers="props.email.attachers"
+		:attachments="props.email.attachments"
+		:bcc="props.email.bcc"
 		:bcc-label="t('email.bcc')"
 		:body-label="t('stageParticipants.notify.message')"
-		:can-change-recipients="section.email.canChangeRecipients"
-		:cc="section.email.cc"
+		:can-change-recipients="props.email.canChangeRecipients"
+		:cc="props.email.cc"
 		:cc-label="t('email.cc')"
 		:confirm-switch-locale-label="t('email.confirmSwitchLocale')"
 		:deselect-label="t('common.deselect')"
-		:email-templates="section.email.emailTemplates"
+		:email-templates="props.email.emailTemplates"
 		:email-templates-api-url="store.emailTemplatesApiUrl"
-		:errors="section.email.errors"
+		:errors="sectionErrors.emailComposer"
 		:find-template-label="t('common.findTemplate')"
-		:initial-template-key="section.email.initialTemplateKey"
+		:initial-template-key="props.email.initialTemplateKey"
 		:insert-label="t('common.insert')"
 		:insert-modal-label="t('common.insertContent')"
 		:insert-content-label="t('common.content')"
 		:insert-search-label="t('common.insertContentSearch')"
 		:load-template-label="t('common.emailTemplates')"
-		:locale="section.email.locale"
-		:locales="section.email.locales"
+		:locale="props.email.locale"
+		:locales="props.email.locales"
 		:more-search-results-label="t('common.numberedMore')"
-		:recipient-options="section.email.recipientOptions"
-		:recipients="section.email.recipients"
+		:recipient-options="props.email.recipientOptions"
+		:recipients="props.email.recipients"
 		:recipients-label="t('email.to')"
 		:remove-item-label="t('common.removeItem')"
 		:searching-label="t('common.searching')"
@@ -36,7 +36,7 @@
 		:subject-label="t('email.subject')"
 		:switch-to-label="t('common.switchTo')"
 		:switch-to-named-language-label="t('common.switchToNamedItem')"
-		:variables="section.email.variables"
+		:variables="props.email.variables"
 		v-bind="emailComposer"
 		@set="(componentName, update) => updateEmail(update)"
 	></composer>
@@ -50,7 +50,13 @@ import {defineProps} from 'vue';
 import {useUserInvitationPageStore} from './UserInvitationPageStore';
 
 const props = defineProps({
-	section: {type: Object, required: true},
+	email: {type: Object, required: true},
+	validateFields: {
+		type: Array,
+		default() {
+			return null;
+		},
+	},
 });
 const {t} = useTranslation();
 
@@ -67,8 +73,17 @@ function updateEmail(update) {
 
 if (!store.invitationPayload.body) {
 	updateEmail({
-		subject: props.section.email.subject,
-		body: props.section.email.body,
+		subject: props.email.subject,
+		body: props.email.body,
 	});
 }
+
+const sectionErrors = computed(() => {
+	return props.validateFields.reduce((obj, key) => {
+		if (store.errors[key]) {
+			obj[key] = store.errors[key];
+		}
+		return obj;
+	}, {});
+});
 </script>

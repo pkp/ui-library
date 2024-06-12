@@ -31,53 +31,12 @@
 						<p>{{ step.description }}</p>
 					</panel-section>
 					<panel-section v-for="section in step.sections" :key="section.id">
-						<template v-if="step.type === 'email'">
-							<notification
-								v-if="Object.keys(store.errors).length > 0"
-								type="warning"
-							>
-								{{ t('invitation.wizard.errors') }}
-							</notification>
-						</template>
 						<component
 							:is="userInvitationComponents[section.sectionComponent]"
 							:key="section.sectionComponent"
-							:section="section"
+							v-bind="section.props"
 						/>
 					</panel-section>
-					<!-- <template v-if="step.type === 'form' && step.sections.length > 0">
-						<panel-section v-for="section in step.sections" :key="section.id">
-							<UserInvitationDetailsFormStep :section="section" />
-						</panel-section>
-					</template>
-					<template v-if="step.type === 'form' && step.sections.length === 0">
-						<panel-section :key="step.id">
-							<UserInvitationSearchFormStep
-								:email-field="store.emailField"
-								:username-field="store.usernameField"
-								:orcid-field="store.orcidField"
-								:email-change="store.emailChange"
-								:orcid-change="store.usernameChange"
-								:username-change="store.orcidChange"
-							/>
-						</panel-section>
-					</template>
-					<template v-else-if="step.type === 'email'">
-						<panel-section v-for="section in step.sections" :key="section.id">
-							<notification
-								v-if="Object.keys(store.errors).length"
-								type="warning"
-							>
-								{{ t('invitation.wizard.errors') }}
-							</notification>
-							<UserInvitationEmailComposerStep
-								:id="step.id"
-								:section="section"
-								:update-step="store.updateStep"
-								:email-templates-api-url="emailTemplatesApiUrl"
-							/>
-						</panel-section>
-					</template> -->
 				</panel>
 			</step>
 		</steps>
@@ -127,11 +86,6 @@ const props = defineProps({
 		type: Array,
 		required: true,
 	},
-	/** API url search user */
-	searchUserApiUrl: {
-		type: String,
-		required: true,
-	},
 	/** primary language */
 	primaryLocale: {
 		type: String,
@@ -139,11 +93,6 @@ const props = defineProps({
 	},
 	/** API url for fetching email templates */
 	emailTemplatesApiUrl: {
-		type: String,
-		required: true,
-	},
-	/** API url for send email invitations for users */
-	inviteUserApiUrl: {
 		type: String,
 		required: true,
 	},
@@ -155,24 +104,10 @@ const props = defineProps({
 		type: String,
 		required: true,
 	},
-	/** Url for redirect to invitations */
-	userInvitationSavedUrl: {
-		type: String,
-		required: true,
-	},
-	/** all user groups */
-	userGroups: {
-		type: Array,
-		required: true,
-	},
-	/** User object for edit invitations */
-	user: {
+	invitationPayload: {
 		type: Object,
-		default() {
-			return null;
-		},
+		required: true,
 	},
-	invitationPayload: {type: Object, required: true},
 });
 const {t} = useTranslation();
 const wrapper = ref(null);

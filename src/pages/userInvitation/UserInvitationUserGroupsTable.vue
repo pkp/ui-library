@@ -8,7 +8,10 @@
 			<TableColumn></TableColumn>
 		</TableHeader>
 		<TableBody>
-			<TableRow v-for="(row, index) in store.currentUserGroups" :key="index">
+			<TableRow
+				v-for="(row, index) in store.invitationPayload.currentUserGroups"
+				:key="index"
+			>
 				<TableCell>
 					{{ row.name[store.primaryLocale] }}
 				</TableCell>
@@ -22,15 +25,12 @@
 					{{ row.masthead ? row.masthead : '---' }}
 				</TableCell>
 				<TableCell>
-					<pkp-button
-						:is-warnable="true"
-						@click="store.removeUserGroup(row, index)"
-					>
+					<pkp-button :is-warnable="true" @click="removeUserGroup(row, index)">
 						{{ t('invitation.role.removeRole.button') }}
 					</pkp-button>
 				</TableCell>
 			</TableRow>
-			<TableRow v-for="(row, index) in userGroups" :key="index">
+			<TableRow v-for="(row, index) in allUserGroups" :key="index">
 				<TableCell>
 					<field-select
 						name="userGroup"
@@ -38,6 +38,7 @@
 						:is-required="true"
 						:value="row.userGroup"
 						:options="availableUserGroups"
+						:all-errors="userGroupErrors[index]"
 						class="userInvitation__roleSelect"
 						@change="
 							(fieldName, propName, newValue, localeKey) =>
@@ -52,6 +53,7 @@
 						input-type="date"
 						:is-required="true"
 						:value="row.dateStart"
+						:all-errors="userGroupErrors[index]"
 						@change="
 							(fieldName, propName, newValue, localeKey) =>
 								updateUserGroup(index, fieldName, newValue)
@@ -65,6 +67,7 @@
 						input-type="date"
 						:value="row.dateEnd"
 						:is-required="true"
+						:all-errors="userGroupErrors[index]"
 						@change="
 							(fieldName, propName, newValue, localeKey) =>
 								updateUserGroup(index, fieldName, newValue)
@@ -81,6 +84,7 @@
 							{label: 'Appear on the masthead', value: true},
 							{label: 'Dose not appear on the masthead', value: false},
 						]"
+						:all-errors="userGroupErrors[index]"
 						@change="
 							(fieldName, propName, newValue, localeKey) =>
 								updateUserGroup(index, fieldName, newValue)
@@ -106,6 +110,7 @@
 
 <script setup>
 import {computed} from 'vue';
+import {useTranslation} from '@/composables/useTranslation';
 import PkpTable from '@/components/TableNext/Table.vue';
 import TableCell from '@/components/TableNext/TableCell.vue';
 import TableHeader from '@/components/TableNext/TableHeader.vue';
@@ -118,23 +123,24 @@ import FieldText from '@/components/Form/fields/FieldText.vue';
 import {useUserInvitationPageStore} from './UserInvitationPageStore';
 
 const store = useUserInvitationPageStore();
+const {t} = useTranslation();
 
-const userGroups = computed(() => store.invitationPayload.userGroups);
+const allUserGroups = computed(() => store.invitationPayload.userGroupsToAdd);
 
 const props = defineProps({
-	section: {type: Object, required: true},
+	userGroups: {type: Object, required: true},
 });
 
 function updateUserGroup(index, fieldName, newValue) {
-	const userGroupsUpdate = [...store.invitationPayload.userGroups];
+	const userGroupsUpdate = [...store.invitationPayload.userGroupsToAdd];
 
 	userGroupsUpdate[index][fieldName] = newValue;
 
-	store.updatePayload('userGroups', userGroupsUpdate);
+	store.updatePayload('userGroupsToAdd', userGroupsUpdate);
 }
 
 const availableUserGroups = computed(() => {
-	return props.section.userGroups.filter((element) => {
+	return props.userGroups.filter((element) => {
 		return !store.invitationPayload.currentUserGroups.find(
 			(data) => data.id === element.value,
 		);
@@ -142,17 +148,26 @@ const availableUserGroups = computed(() => {
 });
 
 function addUserGroup() {
-	const userGroupsUpdate = [...store.invitationPayload.userGroups];
+	const userGroupsUpdate = [...store.invitationPayload.userGroupsToAdd];
 	userGroupsUpdate.push({
-		role_name: null,
+		userGroup: null,
 		dateStart: null,
 		dateEnd: null,
 		masthead: null,
-		value: null,
 	});
-
-	store.updatePayload('userGroups', userGroupsUpdate);
+	store.updatePayload('userGroupsToAdd', userGroupsUpdate);
 }
+
+function removeUserGroup(userGroup, index) {
+	store.invitationPayload.currentUserGroups.splice(index, 1);
+	const userGroupsToRemove = [...store.invitationPayload.userGroupsToRemove];
+	userGroupsToRemove.push(userGroup.id);
+	store.updatePayload('userGroupsToRemove', userGroupsToRemove);
+}
+
+const userGroupErrors = computed(() => {
+	return store.errors.userGroupsToAdd || [];
+});
 </script>
 <style>
 select {
