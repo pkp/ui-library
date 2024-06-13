@@ -677,6 +677,7 @@ export function useSummaryConfig() {
 					dashboardPage: [
 						DashboardPageTypes.EDITORIAL_DASHBOARD,
 						DashboardPageTypes.MY_SUBMISSIONS,
+						DashboardPageTypes.MY_REVIEW_ASSIGNMENTS,
 					],
 					activeStageId: [
 						pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
@@ -701,6 +702,7 @@ export function useSummaryConfig() {
 					dashboardPage: [
 						DashboardPageTypes.EDITORIAL_DASHBOARD,
 						DashboardPageTypes.MY_SUBMISSIONS,
+						DashboardPageTypes.MY_REVIEW_ASSIGNMENTS,
 					],
 					activeStageId: [
 						pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
@@ -720,6 +722,7 @@ export function useSummaryConfig() {
 					dashboardPage: [
 						DashboardPageTypes.EDITORIAL_DASHBOARD,
 						DashboardPageTypes.MY_SUBMISSIONS,
+						DashboardPageTypes.MY_REVIEW_ASSIGNMENTS,
 					],
 					activeStageId: [
 						pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,

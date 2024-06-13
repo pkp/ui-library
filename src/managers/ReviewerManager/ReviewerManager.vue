@@ -23,7 +23,7 @@
 				>
 					<TableCell :is-row-header="true">
 						<span class="text-base-normal">
-							{{ reviewAssignment.id }} (will be name)
+							{{ reviewAssignment.reviewerFullName }}
 						</span>
 					</TableCell>
 					<TableCell v-if="!redactedForAuthors">
