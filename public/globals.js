@@ -382,7 +382,7 @@ window.pkp = {
 		'invitation.wizard.success': "{$email} has been invited to a new role in OJS. You can be updated about the user's decision on the User & Role page, your OJS notification and/or your email",
 		'user.email': 'Email',
 		'user.username': 'Username',
-		'user.orcid': 'ORCID iD',
+		'user.orcid': 'ORCiD ID',
 		'invitation.notification.closeBtn':'View all users',
 		'user.password': 'Password',
 		'invitation.role.selectRole':'Select a new role',

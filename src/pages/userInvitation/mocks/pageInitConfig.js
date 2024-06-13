@@ -204,7 +204,7 @@ export default {
 								{
 									name: 'orcid',
 									component: 'field-text',
-									label: 'ORCID iD',
+									label: 'ORCiD ID',
 									groupId: 'default',
 									isRequired: false,
 									isMultilingual: false,
