@@ -67,6 +67,7 @@
 <script>
 import FormLocales from './FormLocales.vue';
 import FormPage from './FormPage.vue';
+import {shouldShowField} from './formHelpers';
 
 export default {
 	name: 'PkpForm',
@@ -332,7 +333,10 @@ export default {
 		validateRequired() {
 			let errors = {};
 			this.fields.forEach((field) => {
-				if (!field.isRequired) {
+				if (
+					!field.isRequired ||
+					!shouldShowField(field, this.fields, this.groups)
+				) {
 					return;
 				}
 				let missingValue = false;
