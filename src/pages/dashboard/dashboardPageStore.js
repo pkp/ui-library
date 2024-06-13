@@ -118,6 +118,7 @@ export const useDashboardPageStore = defineComponentStore(
 			filtersFormQueryParams,
 			updateFiltersForm,
 			clearFiltersForm,
+			clearFiltersFormField,
 			initFiltersFormFromQueryParams,
 		} = useFiltersForm(filtersForm);
 		// Apply query params to filtersForm
@@ -311,6 +312,7 @@ export const useDashboardPageStore = defineComponentStore(
 			filtersFormQueryParams,
 			updateFiltersForm,
 			clearFiltersForm,
+			clearFiltersFormField,
 
 			// Sorting
 			sortDescriptor,

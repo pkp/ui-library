@@ -4,16 +4,18 @@
 		class="max-w-[25em] truncate"
 		:is-row-header="true"
 	>
-		<span class="text-lg-semibold">
+		<span class="text-base-bold">
 			{{ currentPublication.authorsStringShort }}
 		</span>
 		<template v-if="currentPublication.authorsStringShort">—</template>
-		{{
-			localizeSubmission(
-				currentPublication.fullTitle,
-				currentPublication.locale,
-			)
-		}}
+		<span class="text-base-normal">
+			{{
+				localizeSubmission(
+					currentPublication.fullTitle,
+					currentPublication.locale,
+				)
+			}}
+		</span>
 	</TableCell>
 </template>
 

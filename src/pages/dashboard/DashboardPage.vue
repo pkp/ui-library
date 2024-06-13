@@ -1,5 +1,5 @@
 <template>
-	<div class="flex min-h-screen gap-8 text-base-normal">
+	<div class="me-3 flex min-h-screen gap-8 text-base-normal">
 		<div class="flex-none border-l border-r border-light">
 			<DashboardViews
 				:title="store.dashboardPageTitle"
@@ -36,6 +36,7 @@
 				<ActiveFilters
 					:active-filters-list="store.filtersFormList"
 					@clear-filters="store.clearFiltersForm"
+					@remove-filter="store.clearFiltersFormField"
 				/>
 			</div>
 			<div class="mt-4">

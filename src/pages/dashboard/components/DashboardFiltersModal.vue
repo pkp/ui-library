@@ -1,32 +1,34 @@
 <template>
 	<SideModalBody>
-		<template #header>
+		<template #title>
 			<h2>{{ t('common.filter') }}</h2>
 		</template>
-		<Panel>
-			<PanelSection>
+		<div class="p-4">
+			<div class="bg-secondary p-4">
 				<PkpForm
 					v-bind="filtersForm"
 					@set="(formId, data) => updateFiltersForm(data)"
 				></PkpForm>
-				<div class="mt-2 flex gap-2">
-					<PkpButton @click="applyFilters()">
-						{{ t('dashboard.applyFilters') }}
-					</PkpButton>
-					<PkpButton @click="clearFiltersForm()">
-						{{ t('dashboard.clearFilters') }}
-					</PkpButton>
+			</div>
+			<div class="border-t border-light">
+				<div class="bg-secondary p-4">
+					<div class="mt-4 flex justify-end gap-2">
+						<PkpButton @click="clearFiltersForm()">
+							{{ t('dashboard.clearFilters') }}
+						</PkpButton>
+						<PkpButton is-primary="true" @click="applyFilters()">
+							{{ t('dashboard.applyFilters') }}
+						</PkpButton>
+					</div>
 				</div>
-			</PanelSection>
-		</Panel>
+			</div>
+		</div>
 	</SideModalBody>
 </template>
 
 <script setup>
 import {inject} from 'vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
-import Panel from '@/components/Panel/Panel.vue';
-import PanelSection from '@/components/Panel/PanelSection.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import {useLocalize} from '@/composables/useLocalize';
