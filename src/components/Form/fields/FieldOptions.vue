@@ -41,7 +41,7 @@
 		<div class="pkpFormField__control">
 			<!-- avoid creating VueDraggable when not necessary as it was causing random problems with multiple VueDraggables in the form -->
 			<component
-				:is="isOrderable ? VueDraggable : 'div'"
+				:is="isOrderable ? 'VueDraggable' : 'div'"
 				ref="el"
 				v-model="localizedOptions"
 				:disabled="!isOrderable"
