@@ -945,14 +945,14 @@ export default {
 .doiListItem__versionContainer--actionsBar {
 	display: flex;
 	align-items: center;
-	justify-content: end;
+	justify-content: flex-end;
 	margin-top: 0.5rem;
 }
 
 .doiListPanel__itemExpandedActions {
 	display: flex;
 	align-items: center;
-	justify-content: end;
+	justify-content: flex-end;
 }
 
 .doiListPanel__itemExpandedActions--actionsBar {
