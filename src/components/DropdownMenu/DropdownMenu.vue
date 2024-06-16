@@ -10,7 +10,7 @@
 		>
 			<div>
 				<MenuButton
-					class="bg-white hover:bg-gray-50 inline-flex w-full justify-center gap-x-1.5 rounded px-3 py-2"
+					class="hover:bg-gray-50 inline-flex w-full justify-center gap-x-1.5 rounded bg-secondary px-3 py-2"
 					:class="[
 						name ? 'border border-light text-lg-normal' : 'text-3xl-normal',
 					]"
@@ -33,7 +33,7 @@
 				leave-to-class="transform opacity-0 scale-95"
 			>
 				<MenuItems
-					class="bg-white dropdown-shadow absolute z-10 w-max border border-light focus:outline-none"
+					class="dropdown-shadow absolute z-10 w-max border border-light bg-secondary focus:outline-none"
 					:class="
 						position === 'right'
 							? 'ltr:right-0 ltr:origin-top-right rtl:left-0 rtl:origin-top-right'
@@ -41,7 +41,7 @@
 					"
 				>
 					<MenuItem v-for="(action, i) in actions" :key="i" v-slot="{active}">
-						<div class="w-auto">
+						<div class="min-w-[96px]">
 							<PkpButton
 								v-if="action.label"
 								element="a"
