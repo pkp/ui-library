@@ -71,6 +71,7 @@ import Issues from './icons/Issues.vue';
 import Italics from './icons/Italics.vue';
 import LoginAs from './icons/LoginAs.vue';
 import MergeUser from './icons/MergeUser.vue';
+import MoreOptions from './icons/MoreOptions.vue';
 import MySubmissions from './icons/MySubmissions.vue';
 import NavDoi from './icons/NavDoi.vue';
 import Notifications from './icons/Notifications.vue';
@@ -126,6 +127,7 @@ const svgIcons = {
 	Italics,
 	LoginAs,
 	MergeUser,
+	MoreOptions,
 	MySubmissions,
 	NavDoi,
 	Notifications,

@@ -93,6 +93,7 @@ export const iconGallery = {
 			'Italics',
 			'LoginAs',
 			'MergeUser',
+			'MoreOptions',
 			'MySubmissions',
 			'NavDoi',
 			'Notifications',
