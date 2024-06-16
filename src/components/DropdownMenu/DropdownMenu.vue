@@ -10,10 +10,12 @@
 		>
 			<div>
 				<MenuButton
-					class="hover:bg-gray-50 inline-flex w-full justify-center gap-x-1.5 rounded bg-secondary px-3 py-2"
-					:class="[
-						name ? 'border border-light text-lg-normal' : 'text-3xl-normal',
-					]"
+					class="hover:bg-gray-50 inline-flex w-full justify-center gap-x-1.5 rounded px-3 py-2"
+					:class="
+						name
+							? 'border border-light bg-secondary text-lg-normal'
+							: 'text-3xl-normal'
+					"
 				>
 					{{ name }}
 					<Icon
