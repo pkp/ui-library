@@ -1,14 +1,14 @@
-import DropdownMenu from './DropdownMenu.vue';
+import DropdownActions from './DropdownActions.vue';
 
 export default {
-	title: 'Components/DropdownMenu',
-	component: DropdownMenu,
+	title: 'Components/DropdownActions',
+	component: DropdownActions,
 	render: (args) => ({
-		components: {DropdownMenu},
+		components: {DropdownActions},
 		setup() {
 			return {args};
 		},
-		template: '<DropdownMenu v-bind="args" />',
+		template: '<DropdownActions v-bind="args" />',
 	}),
 	argTypes: {
 		actions: {
