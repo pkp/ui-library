@@ -1,4 +1,5 @@
 import DropdownActions from './DropdownActions.vue';
+import {within, userEvent} from '@storybook/test';
 
 export default {
 	title: 'Components/DropdownActions',
@@ -60,9 +61,16 @@ export const Default = {
 	},
 	decorators: [
 		() => ({
-			template: '<div style="height: 200px"><story/></div>',
+			template: '<div style="height: 250px"><story/></div>',
 		}),
 	],
+	play: async ({canvasElement}) => {
+		// Assigns canvas to the component root element
+		const canvas = within(canvasElement);
+		const user = userEvent.setup();
+
+		await user.click(canvas.getByRole('button'));
+	},
 };
 
 export const EllipsisMenu = {
@@ -105,9 +113,16 @@ export const EllipsisMenu = {
 	},
 	decorators: [
 		() => ({
-			template: '<div style="height: 270px"><story/></div>',
+			template: '<div style="height: 300px"><story/></div>',
 		}),
 	],
+	play: async ({canvasElement}) => {
+		// Assigns canvas to the component root element
+		const canvas = within(canvasElement);
+		const user = userEvent.setup();
+
+		await user.click(canvas.getByRole('button'));
+	},
 };
 
 export const LeftPosition = {
@@ -118,7 +133,14 @@ export const LeftPosition = {
 	},
 	decorators: [
 		() => ({
-			template: '<div style="height: 200px"><story/></div>',
+			template: '<div style="height: 250px"><story/></div>',
 		}),
 	],
+	play: async ({canvasElement}) => {
+		// Assigns canvas to the component root element
+		const canvas = within(canvasElement);
+		const user = userEvent.setup();
+
+		await user.click(canvas.getByRole('button'));
+	},
 };
