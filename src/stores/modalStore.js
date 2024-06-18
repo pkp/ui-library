@@ -118,7 +118,6 @@ export const useModalStore = defineStore('modal', () => {
 		if (!modalToClose) {
 			return;
 		}
-
 		modalToClose.value.opened = false;
 		if (modalToClose.value.onClose) {
 			modalToClose.value.onClose();

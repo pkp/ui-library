@@ -38,7 +38,7 @@
 									<slot name="post-description"></slot>
 								</div>
 							</div>
-							<div class="flex items-center">
+							<div class="flex flex-none items-center">
 								<!-- @slot Optionally actions buttons that are placed on the right side of header -->
 								<slot name="actions" />
 							</div>

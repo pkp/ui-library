@@ -7,8 +7,8 @@ export function useModal() {
 		modalStore.openDialog(props);
 	}
 
-	function openSideModal(component, props) {
-		modalStore.openSideModal(component, props);
+	function openSideModal(component, props, opts) {
+		modalStore.openSideModal(component, props, opts);
 	}
 
 	return {openDialog, openSideModal};
