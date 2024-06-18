@@ -23,14 +23,36 @@ export default {
 		},
 		name: {
 			control: {type: 'text'},
+			table: {
+				type: {summary: 'text'},
+				defaultValue: {summary: ''},
+			},
 			description:
-				'The name of the dropdown menu component (optional). If not supplied, then the dropdown menu will use an ellipsis menu (`...`)',
+				"The text label for the button. This is optional. If `isEllipsis` is `false` and `name` is provided, it will be used as the button's label.",
 		},
 		position: {
 			control: {type: 'select'},
 			options: ['left', 'right'],
 			description:
 				'Determines where to show the dropdown button. Options include `left` and `right`.',
+		},
+		isEllipsis: {
+			control: {type: 'boolean'},
+			table: {
+				type: {summary: 'boolean'},
+				defaultValue: {summary: false},
+			},
+			description:
+				'If `true`, the button will display an ellipsis (`...`), and the `ariaLabel` prop must be provided for accessibility.',
+		},
+		ariaLabel: {
+			control: {type: 'text'},
+			table: {
+				type: {summary: 'text'},
+				defaultValue: {summary: ''},
+			},
+			description:
+				'The accessible label for the button, used by screen readers. Required if `isEllipsis` is `true`. If not provided, the component will use the `name` prop or default to "More actions".',
 		},
 	},
 };
@@ -69,7 +91,7 @@ export const Default = {
 		const canvas = within(canvasElement);
 		const user = userEvent.setup();
 
-		await user.click(canvas.getByRole('button'));
+		await user.click(canvas.getByText('Download Review Form'));
 	},
 };
 
@@ -109,7 +131,8 @@ export const EllipsisMenu = {
 				icon: 'MergeUser',
 			},
 		],
-		name: undefined,
+		isEllipsis: true,
+		ariaLabel: 'User management options',
 	},
 	decorators: [
 		() => ({
@@ -121,7 +144,7 @@ export const EllipsisMenu = {
 		const canvas = within(canvasElement);
 		const user = userEvent.setup();
 
-		await user.click(canvas.getByRole('button'));
+		await user.click(canvas.getByText('User management options'));
 	},
 };
 
@@ -141,6 +164,6 @@ export const LeftPosition = {
 		const canvas = within(canvasElement);
 		const user = userEvent.setup();
 
-		await user.click(canvas.getByRole('button'));
+		await user.click(canvas.getByText('Left Dropdown'));
 	},
 };

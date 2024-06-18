@@ -12,17 +12,20 @@
 				<MenuButton
 					class="hover:bg-gray-50 inline-flex w-full justify-center gap-x-1.5 rounded px-3 py-2"
 					:class="
-						name
-							? 'border border-light bg-secondary text-lg-normal'
-							: 'text-3xl-normal'
+						shouldUseEllipsis
+							? 'text-3xl-normal'
+							: 'border border-light bg-secondary text-lg-normal'
 					"
 				>
-					{{ name }}
+					<span v-if="!shouldUseEllipsis">{{ name }}</span>
 					<Icon
 						class="-mr-1 h-5 w-5 text-primary"
-						:icon="name ? 'Dropdown' : 'MoreOptions'"
+						:icon="shouldUseEllipsis ? 'MoreOptions' : 'Dropdown'"
 						aria-hidden="true"
 					/>
+					<span v-if="shouldUseEllipsis" class="sr-only">
+						{{ computedAriaLabel }}
+					</span>
 				</MenuButton>
 			</div>
 
@@ -66,9 +69,10 @@
 </template>
 
 <script setup>
+import {computed} from 'vue';
 import {Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue';
 
-defineProps({
+const props = defineProps({
 	actions: {
 		type: Array,
 		required: true,
@@ -81,12 +85,28 @@ defineProps({
 	},
 	name: {
 		type: String,
-		default: undefined,
+		default: '',
+	},
+	isEllipsis: {
+		type: Boolean,
+		default: false,
+	},
+	ariaLabel: {
+		type: String,
+		default: '',
 	},
 	position: {
 		type: String,
 		default: 'right',
 	},
+});
+
+const computedAriaLabel = computed(() => {
+	return props.ariaLabel || props.name || 'More actions';
+});
+
+const shouldUseEllipsis = computed(() => {
+	return props.isEllipsis || !props.name;
 });
 </script>
 
