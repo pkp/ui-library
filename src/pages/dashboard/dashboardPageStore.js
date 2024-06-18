@@ -52,12 +52,6 @@ export const useDashboardPageStore = defineComponentStore(
 		/** Dashboard Page */
 
 		const dashboardPageTitle = computed(() => {
-			console.log(
-				'dashboard page title:',
-				t(TitleTranslations[pageInitConfig.dashboardPage]),
-				TitleTranslations,
-				pageInitConfig.dashboardPage,
-			);
 			return t(TitleTranslations[pageInitConfig.dashboardPage]);
 		});
 		const dashboardPageIcon = computed(() => {
@@ -181,8 +175,6 @@ export const useDashboardPageStore = defineComponentStore(
 
 		const {handleSubmissionAction} = useHandleActions(pageInitConfig);
 		function handleItemAction(actionName, actionArgs) {
-			console.log('handleItemAction', actionName, actionArgs);
-
 			const submission = submissions.value.find(
 				(submission) => submission.id === actionArgs.submissionId,
 			);

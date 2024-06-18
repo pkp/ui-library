@@ -65,7 +65,6 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		const {data: issue, fetch: fetchIssue} = useFetch(issueUrl);
 
 		watch(currentPublication, () => {
-			console.log('watching current publication:');
 			if (currentPublication.value?.issueId) {
 				fetchIssue();
 			}
@@ -133,7 +132,6 @@ export const useSubmissionSummaryStore = defineComponentStore(
 				actionName,
 				actionArgs,
 				async () => {
-					console.log('handle Action after modal is closed');
 					fetchAll();
 				},
 			);

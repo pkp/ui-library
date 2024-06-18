@@ -121,7 +121,6 @@ export default {
 			const queryString = window.location.search;
 			const urlParams = new URLSearchParams(queryString);
 			const ret = urlParams.get('ret');
-			console.log('RET:', ret);
 			if (ret) {
 				let returnUrl = decodeURIComponent(ret);
 				return `${pkp?.context?.pageBaseUrl}${returnUrl}`;

@@ -117,7 +117,6 @@ watch(opened, (prevOpened, nextOpened) => {
 });
 
 function onClose() {
-	console.log('onClose:', dialogProps.value.close);
 	if (dialogProps.value.close) {
 		dialogProps.value.close();
 	}

@@ -15,8 +15,6 @@ export function useLegacyGridUrl({
 	const component = ref(_component);
 	const op = ref(_op);
 	const params = ref(_params);
-	let convertedString = camelCaseToDashes('StageParticipantGrid');
-	console.log(convertedString); // Outputs: "stage-participant-grid"
 
 	const queryParamsString = computed(() => {
 		if (params.value && Object.keys(params.value).length) {
