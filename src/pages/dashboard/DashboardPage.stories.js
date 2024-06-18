@@ -1,4 +1,4 @@
-import DashboardPage from './DashboardPage.vue/index.js';
+import DashboardPage from './DashboardPage.vue';
 import {http, HttpResponse} from 'msw';
 import SubmissionsMock25 from './mocks/submissions25.js';
 import PageInitConfigMock from './mocks/pageInitConfig.js';
