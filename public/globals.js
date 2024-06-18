@@ -37,6 +37,7 @@ window.pkp = {
 		ASSOC_TYPE_SECTION: 530,
 		ASSOC_TYPE_SERIES: 530, // OMP - always matches ASSOC_TYPE_SECTION
 		REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE: 0,
+		REVIEW_ASSIGNMENT_STATUS_DECLINED: 1,
 		REVIEW_ASSIGNMENT_STATUS_RESPONSE_OVERDUE: 4,
 		REVIEW_ASSIGNMENT_STATUS_REVIEW_OVERDUE: 6,
 		REVIEW_ASSIGNMENT_STATUS_ACCEPTED: 5,
@@ -108,29 +109,39 @@ window.pkp = {
 	 */
 	localeKeys: {
 		'article.article': 'Article',
+		'common.abstract': 'Abstract',
+		'common.addCCBCC': 'Add CC/BCC',
 		'common.attachFiles': 'Attach Files',
+		'common.attachedFiles': 'Attached Files',
 		'common.cancel': 'Cancel',
 		'common.clearSearch': 'Clear search phrase',
 		'common.close': 'Close',
 		'common.commaListSeparator': ', ',
+		'common.content': 'Content',
 		'common.delete': 'Delete',
 		'common.description': 'Description',
+		'common.deselect': 'Deselect',
 		'common.download': 'Download',
 		'common.edit': 'Edit',
 		'common.editItem': 'Edit {$name}',
+		'common.emailTemplates': 'Email Templates',
 		'common.error': 'Error',
 		'common.filter': 'Filters',
 		'common.filterAdd': 'Add filter: {$filterTitle}',
 		'common.filterRemove': 'Clear filter: {$filterTitle}',
 		'common.filtersClear': 'Clear Filters',
-		'common.inParenthesis': '({$text})',
+		'common.findTemplate': 'Find Template',
+		'common.insert': 'Insert',
 		'common.insertContent': 'Insert Content',
+		'common.insertContentSearch': 'Find content to insert',
+		'common.keywords': 'Keywords',
 		'common.lastActivity': 'Last activity recorded on {$date}.',
 		'common.loaded': 'Loaded',
 		'common.loading': 'Loading',
 		'common.no': 'No',
 		'common.noItemsFound': 'No items found.',
 		'common.none': 'None',
+		'common.numberedMore': '{$number} more',
 		'common.ok': 'OK',
 		'common.order': 'Order',
 		'common.orderDown': 'Decrease position of {$itemTitle}',
@@ -141,17 +152,22 @@ window.pkp = {
 		'common.pagination.next': 'Next',
 		'common.pagination.previous': 'Previous',
 		'common.remove': 'Remove',
+		'common.removeItem': 'Remove {$item}',
 		'common.required': 'Required',
-		'common.reviewRoundNumber': 'Round {$round}',
 		'common.save': 'Save',
 		'common.saving': 'Saving',
 		'common.search': 'Search',
+		'common.searching': 'Searching',
 		'common.selectAll': 'Select All',
 		'common.selectNone': 'Select None',
 		'common.selectWithName': 'Select {$name}',
+		'common.showingSteps': '{$current}/{$total} steps',
 		'common.showingXofX':
 			'Showing <strong>{$start} to {$finish}</strong> of {$total}',
 		'common.status': 'Status',
+		'common.subtitle': 'Subtitle',
+		'common.switchTo': 'Switch to',
+		'common.switchToNamedItem': 'Switch to {$name}',
 		'common.type': 'Type',
 		'common.unknownError':
 			'An unexpected error has occurred. Please reload the page and try again.',
@@ -161,14 +177,157 @@ window.pkp = {
 		'common.view': 'View',
 		'common.viewWithName': 'View {$name}',
 		'common.yes': 'Yes',
+		'dashboard.acceptOrDeclineRequestDate':
+			'Please accept or decline this request {$date}',
+		'dashboard.action': 'Action',
+		'dashboard.applyFilters': 'Apply Filters',
+		'dashboard.assignEditor': 'Assign Editor',
+		'dashboard.assignReviewers': 'Assign Reviewers',
+		'dashboard.clearFilters': 'Clear Filters',
+		'dashboard.completeReviewByDate': 'Please complete this review by {$date}.',
+		'dashboard.dashboards': 'Dashboards',
+		'dashboard.deadlineForComplitingReviewHasPassed':
+			'Deadline for completing this review has passed. Please complete the review at the earliest.',
+		'dashboard.deadlineForRespondingAcceptOrDecline':
+			'Deadline for responding to this request has passed. Please accept or decline this request at the earliest.',
+		'dashboard.mySubmissions': 'My Submissions',
+		'dashboard.newReviewRoundToBeCreated': 'New review round to be created',
+		'dashboard.reviewAssignment.action.cancelReviewer': 'Cancel Reviewer',
+		'dashboard.reviewAssignment.action.editDueDate': 'Edit Due Date',
+		'dashboard.reviewAssignment.action.resendReviewRequest':
+			'Resend Review Request',
+		'dashboard.reviewAssignment.action.unassignReviewer': 'Unassign',
+		'dashboard.reviewAssignment.action.viewDetails': 'View details',
+		'dashboard.reviewAssignment.action.viewRecommendation':
+			'View recommendation',
+		'dashboard.reviewAssignment.action.viewUnreadRecommendation':
+			'View unread recommendation',
+		'dashboard.reviewAssignment.statusAccepted.description':
+			'This reviewer has accepted the review request. Their review is due in <b>{$days} days on {$date}.</b>',
+		'dashboard.reviewAssignment.statusAccepted.title':
+			'Ongoing review - request accepted',
+		'dashboard.reviewAssignment.statusAwaitingResponse.description':
+			'Review request has been shared with reviewer. Awaiting response in <b>{$days} days on {$date}</b>',
+		'dashboard.reviewAssignment.statusAwaitingResponse.title':
+			'Awaiting Response from the reviewer',
+		'dashboard.reviewAssignment.statusCancelled.description':
+			'Reviewer has cancelled the review request on <b>{$date}</b>',
+		'dashboard.reviewAssignment.statusCancelled.title':
+			'Reviewer cancelled review request',
+		'dashboard.reviewAssignment.statusComplete.description':
+			'The review was accepted by the editor on {$date}.</b>',
+		'dashboard.reviewAssignment.statusComplete.title':
+			'Review was confirmed by editor',
+		'dashboard.reviewAssignment.statusDeclined.description':
+			'Reviewer declined the review request on <b>{$date}</b>',
+		'dashboard.reviewAssignment.statusDeclined.title':
+			'Review Request declined on {$date}',
+		'dashboard.reviewAssignment.statusReceived.description':
+			'The review was completed on {$date} with the following recommendation: <b>{$recommendation}</b>',
+		'dashboard.reviewAssignment.statusReceived.title':
+			'Review completed on {$date}',
+		'dashboard.reviewAssignment.statusRequestResend.description':
+			'Review request has been reshared with reviewer. Awaiting response in {$days} days on {$date}',
+		'dashboard.reviewAssignment.statusRequestResend.title':
+			'Awaiting Response from the reviewer',
+		'dashboard.reviewAssignment.statusResponseOverdue.description':
+			'This reviewer has not responded to the review request. A response was due on <b>{$date}</b>',
+		'dashboard.reviewAssignment.statusResponseOverdue.title':
+			'Review Request overdue by {$days} days',
+		'dashboard.reviewAssignment.statusReviewOverdue.description':
+			'This reviewer has not completed their review. A response was due on <b>{$date}.</b>',
+		'dashboard.reviewAssignment.statusReviewOverdue.title':
+			'Review overdue by {$days} days',
+		'dashboard.reviewAssignments': 'Review Assignments',
+		'dashboard.reviewUpdateCounts':
+			'Review update {$reviewsCompletedCount}/{$reviewsTotalCount}',
+		'dashboard.reviewersAssigned': 'Reviewers assigned',
+		'dashboard.revisionRequested': 'Revision requested',
+		'dashboard.revisionRequestedFromAuthor': 'Revisions requested from author',
+		'dashboard.revisionsRequestedFromAuthorNextRound':
+			'Revisions requested from the author to be taken to a new review round',
+		'dashboard.revisionsSubmittedByAuthor': 'Revisions submitted by author',
+		'dashboard.stage.copyediting': 'Copyediting',
+		'dashboard.stage.deskReview': 'Desk Review',
+		'dashboard.stage.production': 'Production',
+		'dashboard.stage.published': 'Published',
+		'dashboard.stage.reviewWithRound': 'Review (Round {$round})',
+		'dashboard.stage.scheduledForPublication': 'Scheduled For Publication',
+		'dashboard.startNewSubmission': 'Start A New Submission',
+		'dashboard.submitRevisions': 'Submit revisions',
+		'dashboard.summary.acceptAndSkipReview': 'Accept and skip review',
+		'dashboard.summary.acceptReview': 'Accept review',
+		'dashboard.summary.acceptSubmission': 'Accept Submission',
+		'dashboard.summary.accessReviewForm': 'Access review form',
+		'dashboard.summary.assignToIssue': 'Assign To Issue',
+		'dashboard.summary.cancelReviewRound': 'Cancel Review Round',
+		'dashboard.summary.copyeditedFiles': 'Copyedited Files',
+		'dashboard.summary.daysInCopyediting': 'Days in copyediting',
+		'dashboard.summary.daysInProduction': 'Days in production',
+		'dashboard.summary.daysInReview': 'Days in review',
+		'dashboard.summary.daysInSubmission': 'Days in submission',
+		'dashboard.summary.daysSinceSubmission': 'Days since submission',
+		'dashboard.summary.decline': 'Decline',
+		'dashboard.summary.declineSubmission': 'Decline Submission',
+		'dashboard.summary.deskReviewFiles': 'Desk Review Files',
+		'dashboard.summary.deskReviewFilesDescription':
+			'These are the files that will be taken forward to the review stage in the workflow.',
+		'dashboard.summary.draftFiles': 'Draft Files',
+		'dashboard.summary.draftFilesDescription':
+			'These are files from the review stage which are to be copyedited',
+		'dashboard.summary.editorsAssigned': 'Editors assigned',
+		'dashboard.summary.filesForReview': 'Files for review',
+		'dashboard.summary.filesForReviewDescription':
+			'These files will be sent to the reviewers to review',
+		'dashboard.summary.galleys': 'Galleys',
+		'dashboard.summary.issueNo': 'Issue No',
+		'dashboard.summary.journalName': 'Journal name',
+		'dashboard.summary.notAssigned': 'Not assigned',
+		'dashboard.summary.preview': 'Preview',
+		'dashboard.summary.productionReadyFiles': 'Production Ready Files',
+		'dashboard.summary.productionReadyFilesDescription':
+			'These are the files that will be sent for publication',
+		'dashboard.summary.requestRevisions': 'Request Revisions',
+		'dashboard.summary.reviewer': 'Reviewer',
+		'dashboard.summary.reviewerStatus': 'Reviewer status',
+		'dashboard.summary.reviewers': 'Reviewers',
+		'dashboard.summary.revisionsSubmitted': 'Revisions Submitted',
+		'dashboard.summary.revisionsSubmittedDescription':
+			'These files have been submitted by the author after visions were requested',
+		'dashboard.summary.scheduleForProduction': 'Schedule for Publication',
+		'dashboard.summary.sendSubmissionForReview': 'Send submission for review',
+		'dashboard.summary.sendToProduction': 'Send to Production',
+		'dashboard.summary.submissionLanguage': 'Submission Language',
+		'dashboard.summary.submittedOn': 'Submitted on',
+		'dashboard.summary.unschedule': 'Unschedule',
+		'dashboard.summary.uploadFile': 'Upload File',
+		'dashboard.summary.uploadRevisions': 'Upload Revisions',
+		'dashboard.summary.viewActivityLog': 'View activity log',
+		'dashboard.summary.viewSubmissionInDetail': 'View submission in detail',
+		'dashboard.viewSummary': 'Summary',
 		'doi.manager.versions.countStatement': 'There are {$count} versions.',
 		'doi.manager.versions.modalTitle': 'DOIs for all versions',
 		'doi.manager.versions.view': 'View all',
+		'editor.review.cancelReviewer': 'Cancel Reviewer',
+		'editor.review.resendRequestReviewer': 'Resend Review Request',
+		'editor.review.reviewDetails': 'Review Details',
+		'editor.review.unassignReviewer': 'Unassign Reviewer',
+		'editor.submission.addStageParticipant': 'Assign Participant',
+		'editor.submission.decision.requestRevisions': 'Request Revisions',
+		'editor.submission.schedulePublication': 'Schedule For Publication',
 		'editor.submission.search':
 			'Search submissions, ID, authors, keywords, etc.',
-		'editor.submission.viewSummary': 'Summary',
 		'editor.submissionArchive.confirmDelete':
 			'Are you sure you want to permanently delete this submission?',
+		'editor.submissionReview.editReview': 'Edit Review',
+		'editor.submissionReview.uploadAttachment': 'Upload File',
+		'editor.submissionReview.uploadFile': 'Upload Review File',
+		'email.bcc': 'BCC',
+		'email.cc': 'CC',
+		'email.confirmSwitchLocale':
+			'Are you sure you want to change to {$localeName} to compose this email? Any changes you have made to the subject and body of the email will be lost.',
+		'email.subject': 'Subject',
+		'email.to': 'To',
 		'form.dataHasChanged':
 			'The data on this form has changed. Do you wish to continue without saving?',
 		'form.errorA11y': 'Go to {$fieldLabel}: {$errorMessage}',
@@ -182,6 +341,15 @@ window.pkp = {
 		'form.saved': 'Saved',
 		'grid.action.sort': 'Sort',
 		'help.help': 'Help',
+		'invitation.orcid.message': '##invitation.orcid.message##',
+		'invitation.role.addRole.button': '##invitation.role.addRole.button##',
+		'invitation.role.dateEnd': '##invitation.role.dateEnd##',
+		'invitation.role.dateStart': '##invitation.role.dateStart##',
+		'invitation.role.masthead': '##invitation.role.masthead##',
+		'invitation.role.removeRole.button':
+			'##invitation.role.removeRole.button##',
+		'invitation.role.selectRole': '##invitation.role.selectRole##',
+		'invitation.wizard.completeSteps': '##invitation.wizard.completeSteps##',
 		'issue.issue': 'Issue',
 		'list.collapseAll': 'Collapse all',
 		'list.expandAll': 'Expand all',
@@ -238,6 +406,8 @@ window.pkp = {
 		'manager.dois.registration.viewError': 'View Error',
 		'manager.dois.registration.viewError.title': 'Registration Error Message',
 		'manager.dois.registration.viewRecord': 'View Record',
+		'manager.dois.registration.viewRecord.title':
+			'Successful Registration Message',
 		'manager.dois.status.error': 'Error',
 		'manager.dois.status.error.description':
 			'All items that have encountered an error in the registration process.',
@@ -260,8 +430,9 @@ window.pkp = {
 		'manager.dois.update.failedCreation': 'DOI Updates Failed',
 		'manager.dois.update.partialFailure': 'Some DOI(s) could not be updated',
 		'manager.dois.update.success': 'DOI(s) successfully updated',
+		'metadata.property.displayName.doi': 'DOI',
 		'navigation.backTo': '\u27f5 Back to {$page}',
-		'navigation.submissions': 'Submissions',
+		'publication.contributors': 'Contributors',
 		'publication.jats.autoCreatedMessage':
 			'This JATS file is generated automatically by the submission metadata',
 		'publication.jats.confirmDeleteFileButton': 'Delete JATS File',
@@ -270,11 +441,22 @@ window.pkp = {
 		'publication.jats.confirmDeleteFileTitle': 'Confirm deleting JATS XML',
 		'publication.jats.lastModified':
 			'Last Modification at {$modificationDate} by {$username}',
+		'publication.selectIssue': 'Select an issue to schedule for publication',
 		'publication.status.published': 'Published',
 		'publication.status.unpublished': 'Unpublished',
+		'publication.unschedule': 'Unschedule',
+		'publication.unschedule.confirm':
+			"Are you sure you don't want this scheduled for publication?",
 		'publication.version': 'Version {$version}',
+		'reviewer.article.decision.accept': 'Accept Submission',
+		'reviewer.article.decision.decline': 'Decline Submission',
+		'reviewer.article.decision.pendingRevisions': 'Revisions Required',
+		'reviewer.article.decision.resubmitElsewhere': 'Resubmit Elsewhere',
+		'reviewer.article.decision.resubmitHere': 'Resubmit for Review',
+		'reviewer.article.decision.seeComments': 'See Comments',
 		'reviewer.article.recommendation': 'Recommendation',
 		'reviewer.submission.acceptedOn': 'Review Accepted On',
+		'reviewer.submission.declineReview': 'Decline Review Request',
 		'reviewer.submission.responseDueDate': 'Response Due Date',
 		'reviewer.submission.reviewDueDate': 'Review Due Date',
 		'reviewer.submission.reviewRequestDate': "Editor's Request",
@@ -289,8 +471,6 @@ window.pkp = {
 		'reviewer.submission.reviewRound.emailLog': 'Decline reason sent by email',
 		'reviewer.submission.reviewRound.emailLog.defaultMessage':
 			'No reason given to the decline of the review invitation.',
-		'reviewer.submission.reviewRound.reviewNotCompleted':
-			'The review was not completed.',
 		'reviewer.submission.reviewRound.files': 'Files For Review',
 		'reviewer.submission.reviewRound.files.description':
 			'These files were sent to you for review',
@@ -306,7 +486,11 @@ window.pkp = {
 		'reviewer.submission.reviewRound.metadata.keywords': 'Keywords',
 		'reviewer.submission.reviewRound.metadata.type': 'Type',
 		'reviewer.submission.reviewRound.reviewDeclineDate': 'Declined Date',
+		'reviewer.submission.reviewRound.reviewNotCompleted':
+			'The review was not completed.',
 		'reviewer.submission.submittedOn': 'Review Submitted On',
+		'search.searchResults': 'Search Results',
+		'stageParticipants.notify.message': 'Message',
 		'stats.countWithYearlyAverage': '{$count} ({$average}/year)',
 		'stats.descriptionForStat': 'Description for {$stat}',
 		'submission.list.assignEditor': 'Assign Editor',
@@ -320,52 +504,6 @@ window.pkp = {
 		'submission.list.infoCenter': 'Activity Log & Notes',
 		'submission.list.responseDue': 'Response Due: {$date}',
 		'submission.list.reviewAssignment': 'Review Assignment',
-		'submission.list.reviewAssignment.action.cancelReviewer': 'Cancel Reviewer',
-		'submission.list.reviewAssignment.action.editDueDate': 'Edit Due Date',
-		'submission.list.reviewAssignment.action.resendReviewRequest':
-			'Resend Review Request',
-		'submission.list.reviewAssignment.action.unassignReviewer': 'Unassign',
-		'submission.list.reviewAssignment.action.viewDetails': 'View details',
-		'submission.list.reviewAssignment.action.viewRecommendation':
-			'View recommendation',
-		'submission.list.reviewAssignment.action.viewUnreadRecommendation':
-			'View unread recommendation',
-		'submission.list.reviewAssignment.statusAccepted.description':
-			'This reviewer has accepted the review request. Their review is due in <b>{$days} days on {$date}.</b>',
-		'submission.list.reviewAssignment.statusAccepted.title':
-			'Ongoing review - request accepted',
-		'submission.list.reviewAssignment.statusAwaitingResponse.description':
-			'Review request has been shared with Reviewer. Response is awaited in <b>{$days} days on {$date}</b>',
-		'submission.list.reviewAssignment.statusAwaitingResponse.title':
-			'Awaiting Response from the Reviewer',
-		'submission.list.reviewAssignment.statusCancelled.description':
-			'Reviewer has cancelled the review request on <b>{$date}</b>',
-		'submission.list.reviewAssignment.statusCancelled.title':
-			'Reviewer cancelled review request',
-		'submission.list.reviewAssignment.statusComplete.description':
-			'The review was accepted by the editor on {$date}.</b>',
-		'submission.list.reviewAssignment.statusComplete.title':
-			'Review was confirmed by editor',
-		'submission.list.reviewAssignment.statusDeclined.description':
-			'Reviewer declined the review request on <b>{$date}</b>',
-		'submission.list.reviewAssignment.statusDeclined.title':
-			'Review Request declined on {$date}',
-		'submission.list.reviewAssignment.statusReceived.description':
-			'The review was completed on {$date} with the following recommendation: <b>{$recommendation}</b>',
-		'submission.list.reviewAssignment.statusReceived.title':
-			'Review completed on {$date}',
-		'submission.list.reviewAssignment.statusRequestResend.description':
-			'Review request has been reshared with reviewer. Response is awaited in {$days} days on {$date}',
-		'submission.list.reviewAssignment.statusRequestResend.title':
-			'Awaiting Response from the Reviewer',
-		'submission.list.reviewAssignment.statusResponseOverdue.description':
-			'This reviewer has not responded to the review request. A response was due on <b>{$date}</b>',
-		'submission.list.reviewAssignment.statusResponseOverdue.title':
-			'Review Request overdue by {$days} days',
-		'submission.list.reviewAssignment.statusReviewOverdue.description':
-			'This reviewer has not completed their review. A response was due on <b>{$date}.</b>',
-		'submission.list.reviewAssignment.statusReviewOverdue.title':
-			'Review overdue by {$days} days',
 		'submission.list.reviewCancelled': 'Review Cancelled',
 		'submission.list.reviewComplete': 'Review Submitted',
 		'submission.list.reviewDue': 'Review Due: {$date}',
@@ -373,26 +511,15 @@ window.pkp = {
 			'You have been assigned an editorial role for this submission. Would you like to access the <a href="{$urlEditorialWorkflow}">Editorial workflow</a>?',
 		'submission.list.reviewsCompleted': 'Assigned reviews completed',
 		'submission.list.revisionsSubmitted': 'Revisions submitted',
-		'submission.round': 'Round&nbsp;{$round}',
 		'submission.submit.newSubmissionSingle': 'New Submission',
 		'submission.upload.percentComplete': 'Uploading {$percent}% complete',
+		'submissions.declined': 'Declined',
 		'submissions.incomplete': 'Incomplete',
-		'validator.required': 'This field is required.',
-		'invitation.notification.title': 'Invitation sent',
-		'invitation.wizard.success': "{$email} has been invited to a new role in OJS. You can be updated about the user's decision on the User & Role page, your OJS notification and/or your email",
+		todo: '##todo##',
 		'user.email': 'Email',
+		'user.orcid': 'ORCID iD',
 		'user.username': 'Username',
-		'user.orcid': 'ORCiD ID',
-		'invitation.notification.closeBtn':'View all users',
-		'user.password': 'Password',
-		'invitation.role.selectRole':'Select a new role',
-		'invitation.role.dateEnd' : 'End Date',
-  		'invitation.role.dateStart' : 'Start Date',
-  		'invitation.role.masthead' : 'Journal Masthead',
-  		'invitation.role.removeRole.button' : 'Remove Role',
-		'invitation.role.addRole.button':'Add Another Role',
-		'invitation.orcid.message':'Add Another Role',
-
+		'validator.required': 'This field is required.',
 	},
 
 	tinyMCE: {

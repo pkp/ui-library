@@ -50,10 +50,10 @@ export default {
 
 export const AwaitingResponse = {
 	args: {
-		reviewerName: 'Julie Janssen',
 		submissionId: 15,
 		reviewAssignment: {
 			id: 5,
+			reviewerFullName: 'Julie Janssen',
 			statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE,
 			dateDue: '2024-03-25',
 			dateResponseDue: '2024-04-30',
@@ -67,10 +67,10 @@ export const AwaitingResponse = {
 
 export const Declined = {
 	args: {
-		reviewerName: 'Julie Janssen',
 		submissionId: 15,
 		reviewAssignment: {
 			id: 5,
+			reviewerFullName: 'Julie Janssen',
 			statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED,
 			dateDue: '2024-03-25',
 			dateResponseDue: '2024-03-15',
@@ -84,10 +84,10 @@ export const Declined = {
 
 export const ResponseOverdue = {
 	args: {
-		reviewerName: 'Julie Janssen',
 		submissionId: 15,
 		reviewAssignment: {
 			id: 5,
+			reviewerFullName: 'Julie Janssen',
 			statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_RESPONSE_OVERDUE,
 			dateDue: '2024-03-25',
 			dateResponseDue: '2024-03-8',
@@ -100,10 +100,10 @@ export const ResponseOverdue = {
 
 export const Accepted = {
 	args: {
-		reviewerName: 'Julie Janssen',
 		submissionId: 15,
 		reviewAssignment: {
 			id: 5,
+			reviewerFullName: 'Julie Janssen',
 			statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_ACCEPTED,
 			dateDue: '2024-03-25',
 			dateResponseDue: '2024-03-8',
@@ -116,10 +116,10 @@ export const Accepted = {
 
 export const ReviewOverdue = {
 	args: {
-		reviewerName: 'Julie Janssen',
 		submissionId: 15,
 		reviewAssignment: {
 			id: 5,
+			reviewerFullName: 'Julie Janssen',
 			statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_REVIEW_OVERDUE,
 			dateDue: '2024-02-10',
 			dateResponseDue: '2024-03-8',
@@ -132,10 +132,10 @@ export const ReviewOverdue = {
 
 export const Received = {
 	args: {
-		reviewerName: 'Julie Janssen',
 		submissionId: 15,
 		reviewAssignment: {
 			id: 5,
+			reviewerFullName: 'Julie Janssen',
 			statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
 			dateDue: '2024-02-10',
 			dateResponseDue: '2024-03-8',
@@ -150,10 +150,10 @@ export const Received = {
 
 export const Viewed = {
 	args: {
-		reviewerName: 'Julie Janssen',
 		submissionId: 15,
 		reviewAssignment: {
 			id: 5,
+			reviewerFullName: 'Julie Janssen',
 			statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_VIEWED,
 			dateDue: '2024-02-10',
 			dateResponseDue: '2024-03-8',
@@ -168,10 +168,10 @@ export const Viewed = {
 
 export const Complete = {
 	args: {
-		reviewerName: 'Julie Janssen',
 		submissionId: 15,
 		reviewAssignment: {
 			id: 5,
+			reviewerFullName: 'Julie Janssen',
 			statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 			dateDue: '2024-02-10',
 			dateResponseDue: '2024-03-8',
@@ -186,10 +186,10 @@ export const Complete = {
 // Currently exactly same as completed
 export const Thanked = {
 	args: {
-		reviewerName: 'Julie Janssen',
 		submissionId: 15,
 		reviewAssignment: {
 			id: 5,
+			reviewerFullName: 'Julie Janssen',
 			statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_THANKED,
 			dateDue: '2024-02-10',
 			dateResponseDue: '2024-03-8',
@@ -203,10 +203,10 @@ export const Thanked = {
 
 export const Cancelled = {
 	args: {
-		reviewerName: 'Julie Janssen',
 		submissionId: 15,
 		reviewAssignment: {
 			id: 5,
+			reviewerFullName: 'Julie Janssen',
 			statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED,
 			dateDue: '2024-02-10',
 			dateResponseDue: '2024-03-8',
@@ -220,10 +220,10 @@ export const Cancelled = {
 
 export const RequestResend = {
 	args: {
-		reviewerName: 'Julie Janssen',
 		submissionId: 15,
 		reviewAssignment: {
 			id: 5,
+			reviewerFullName: 'Julie Janssen',
 			statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND,
 			dateDue: '2024-02-10',
 			dateResponseDue: '2024-03-8',

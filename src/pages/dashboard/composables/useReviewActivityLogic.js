@@ -291,8 +291,8 @@ const ConfigPerStatus = {
 function getDays(config, reviewAssignment) {
 	if (config.dateToDisplay) {
 		return calculateDaysBetweenDates(
-			reviewAssignment[config.dateToDisplay],
 			new Date(),
+			reviewAssignment[config.dateToDisplay],
 		);
 	}
 
