@@ -8,6 +8,8 @@ import ListItem from '@/components/List/ListItem.vue';
 import Modal from '@/components/Modal/Modal.vue';
 import Tooltip from '@/components/Tooltip/Tooltip.vue';
 import debounce from 'debounce';
+import {useModal} from '@/composables/useModal';
+import IssueDownloadReportModal from '@/pages/statsIssues/IssueDownloadReportModal.vue';
 
 export default {
 	name: 'StatsPublicationsPage',
@@ -36,7 +38,6 @@ export default {
 			isLoadingTimeline: false,
 			latestTimelineGetRequest: '',
 			isDownloadingReport: false,
-			isModalOpenedDownloadReport: false,
 		};
 	},
 	computed: {
@@ -114,6 +115,16 @@ export default {
 		},
 	},
 	methods: {
+		openDownloadReportModal() {
+			const {openSideModal} = useModal();
+			openSideModal(IssueDownloadReportModal, {
+				title: this.t('common.download'),
+				searchPhrase: this.searchPhrase,
+				timelineDescription: this.getTimelineDescription(),
+				dateRangeDescription: this.getDateRangeDescription(),
+				onDownloadReport: this.downloadReport,
+			});
+		},
 		/**
 		 * The params to send with each GET request
 		 *
@@ -364,7 +375,8 @@ export default {
 				},
 				complete(r) {
 					this.isDownloadingReport = false;
-					this.$modal.hide('export');
+					const {closeSideModal} = useModal();
+					closeSideModal(IssueDownloadReportModal);
 				},
 			});
 		},
