@@ -1,11 +1,13 @@
 <template>
-	<div class="file">
-		<icon :icon="documentTypeIcon" :inline="true" class="file__documentType" />
+	<div class="flex items-center">
+		<icon :icon="documentTypeIcon" class="h-6 w-6 flex-none text-heading" />
 		<span v-if="fileId" class="file__id">
 			{{ fileId }}
 		</span>
-		<span class="ms-1">
-			<a v-if="url" class="underline" :href="url" target="_blank">{{ name }}</a>
+		<span class="ms-2 truncate text-base-normal text-default">
+			<a v-if="url" class="hover:underline" :href="url" target="_blank">
+				{{ name }}
+			</a>
 			<template v-else>
 				{{ name }}
 			</template>
@@ -54,32 +56,8 @@ export default {
 			return !!pkp.documentTypeIcons &&
 				!!pkp.documentTypeIcons[this.documentType]
 				? pkp.documentTypeIcons[this.documentType]
-				: 'file-o';
+				: 'DocumentDefault';
 		},
 	},
 };
 </script>
-
-<style lang="less">
-@import '../../styles/_import';
-
-.file {
-	display: block;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	font-size: @font-sml;
-}
-
-.file__documentType {
-	width: 1rem;
-	text-align: center;
-	font-size: 1rem;
-	color: @primary;
-}
-
-.file__id {
-	margin: 0 0.5rem;
-	font-size: @font-tiny;
-}
-</style>

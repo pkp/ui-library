@@ -26,7 +26,7 @@ function createSelected(values, labels) {
 
 export function useFiltersForm(_filtersForm) {
 	const filtersForm = ref(_filtersForm);
-	const {clearForm, setValue} = useForm(_filtersForm);
+	const {clearForm, removeFieldValue, setValue} = useForm(_filtersForm);
 
 	const filtersFormList = computed(() => {
 		const list = [];
@@ -42,6 +42,7 @@ export function useFiltersForm(_filtersForm) {
 					);
 
 					list.push({
+						name: field.name,
 						fieldLabel: field.label,
 						label: select.label,
 						value: select.value,
@@ -52,6 +53,7 @@ export function useFiltersForm(_filtersForm) {
 					);
 
 					list.push({
+						name: field.name,
 						fieldLabel: field.label,
 						label: option.label,
 						value: option.value,
@@ -59,6 +61,7 @@ export function useFiltersForm(_filtersForm) {
 				} else if (field.component === 'field-slider') {
 					if (fieldValue !== field.min) {
 						list.push({
+							name: field.name,
 							fieldLabel: field.label,
 							value: fieldValue,
 							label: fieldValue,
@@ -66,6 +69,7 @@ export function useFiltersForm(_filtersForm) {
 					}
 				} else {
 					list.push({
+						name: field.name,
 						fieldLabel: field.label,
 						value: fieldValue,
 						label: 'TODO',
@@ -124,7 +128,11 @@ export function useFiltersForm(_filtersForm) {
 	}
 
 	function clearFiltersForm() {
-		clearForm(filtersForm.value);
+		clearForm();
+	}
+
+	function clearFiltersFormField(fieldName, fieldValue) {
+		removeFieldValue(fieldName, fieldValue);
 	}
 
 	return {
@@ -135,5 +143,6 @@ export function useFiltersForm(_filtersForm) {
 		initFiltersFormFromQueryParams,
 		updateFiltersForm,
 		clearFiltersForm,
+		clearFiltersFormField,
 	};
 }

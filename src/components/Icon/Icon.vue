@@ -52,6 +52,7 @@ import Edit from './icons/Edit.vue';
 import Email from './icons/Email.vue';
 import EmailOpened from './icons/EmailOpened.vue';
 import Expand from './icons/Expand.vue';
+import DefaultDocument from './icons/DefaultDocument.vue';
 import FileAudio from './icons/FileAudio.vue';
 import FileDoc from './icons/FileDoc.vue';
 import FileEpub from './icons/FileEpub.vue';
@@ -99,6 +100,7 @@ const svgIcons = {
 	Cancel,
 	Complete,
 	Dashboard,
+	DefaultDocument,
 	DecreaseTextSize,
 	DisableUser,
 	Dropdown,

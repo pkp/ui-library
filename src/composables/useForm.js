@@ -99,20 +99,36 @@ export function useForm(_form) {
 		}
 	}
 
+	function clearFormField(fieldName) {
+		const field = getField(form.value, fieldName);
+
+		if (field.isMultilingual) {
+			const newValueMultilingual = {};
+			form.value.supportedFormLocales.forEach((localeObject) => {
+				const localeKey = localeObject.key;
+				const newValue = getClearValue(field, localeKey);
+				newValueMultilingual[localeKey] = newValue;
+			});
+			setValue(field.name, newValueMultilingual);
+		} else {
+			const newValue = getClearValue(field);
+			setValue(field.name, newValue);
+		}
+	}
+
+	function removeFieldValue(fieldName, fieldValue) {
+		const value = getValue(fieldName);
+		if (Array.isArray(value)) {
+			const newValue = value.filter((v) => v !== fieldValue);
+			setValue(fieldName, newValue);
+		} else {
+			clearFormField(fieldName);
+		}
+	}
+
 	function clearForm() {
 		form.value.fields.forEach((field) => {
-			if (field.isMultilingual) {
-				const newValueMultilingual = {};
-				form.value.supportedFormLocales.forEach((localeObject) => {
-					const localeKey = localeObject.key;
-					const newValue = getClearValue(field, localeKey);
-					newValueMultilingual[localeKey] = newValue;
-				});
-				setValue(field.name, newValueMultilingual);
-			} else {
-				const newValue = getClearValue(field);
-				setValue(field.name, newValue);
-			}
+			clearFormField(field.name);
 		});
 	}
 
@@ -120,6 +136,7 @@ export function useForm(_form) {
 		set,
 		setValue,
 		getValue,
+		removeFieldValue,
 		clearForm,
 		form,
 		connectWithPayload,
