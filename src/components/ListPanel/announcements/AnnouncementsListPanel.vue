@@ -41,19 +41,6 @@
 					/>
 				</template>
 			</list-panel>
-			<!--<modal
-				:close-label="t('common.close')"
-				name="form"
-				:title="activeFormTitle"
-				:open="isModalOpenedForm"
-				@close="closeFormModal"
-			>
-				<pkp-form
-					v-bind="activeForm"
-					@set="updateForm"
-					@success="formSuccess"
-				/>
-			</modal>-->
 		</slot>
 	</div>
 </template>
@@ -69,8 +56,6 @@ import fetch from '@/mixins/fetch';
 import cloneDeep from 'clone-deep';
 import EditAnnouncementModal from '@/pages/announcements/EditAnnouncementModal.vue';
 import {useModal} from '@/composables/useModal';
-
-const {openSideModal, closeSideModal} = useModal();
 
 export default {
 	components: {
@@ -143,7 +128,6 @@ export default {
 		return {
 			activeForm: null,
 			activeFormTitle: '',
-			isModalOpenedForm: false,
 		};
 	},
 	methods: {
@@ -155,7 +139,8 @@ export default {
 		closeFormModal(event) {
 			this.activeForm = null;
 			this.activeFormTitle = '';
-			console.log('closeFormModal');
+			const {closeSideModal} = useModal();
+
 			closeSideModal(EditAnnouncementModal);
 		},
 
@@ -189,6 +174,8 @@ export default {
 			activeForm.method = 'POST';
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.addAnnouncementLabel;
+
+			const {openSideModal} = useModal();
 
 			openSideModal(EditAnnouncementModal, {
 				title: this.activeFormTitle,
@@ -274,6 +261,8 @@ export default {
 			});
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.editAnnouncementLabel;
+
+			const {openSideModal} = useModal();
 
 			openSideModal(EditAnnouncementModal, {
 				title: this.editAnnouncementLabel,

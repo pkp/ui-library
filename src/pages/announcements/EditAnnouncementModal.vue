@@ -4,7 +4,7 @@
 			{{ title }}
 		</template>
 		<SideModalLayoutBasic>
-			<pkp-form
+			<PkpForm
 				v-bind="activeForm"
 				@set="(...args) => emit('updateForm', ...args)"
 				@success="(...args) => emit('formSuccess', ...args)"
