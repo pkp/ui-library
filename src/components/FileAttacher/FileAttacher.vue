@@ -16,21 +16,6 @@
 				</pkp-button>
 			</template>
 		</action-panel>
-		<modal
-			:close-label="t('common.close')"
-			name="attacher"
-			:title="currentAttacher ? currentAttacher.label : ''"
-			:open="isModalOpenedAttacher"
-			@close="isModalOpenedAttacher = false"
-		>
-			<component
-				:is="currentAttacher.component"
-				v-if="currentAttacher"
-				v-bind="currentAttacher"
-				@selected:files="attachFiles"
-				@cancel="cancel"
-			/>
-		</modal>
 	</div>
 </template>
 
