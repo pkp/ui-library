@@ -41,7 +41,7 @@
 					/>
 				</template>
 			</list-panel>
-			<modal
+			<!--<modal
 				:close-label="t('common.close')"
 				name="form"
 				:title="activeFormTitle"
@@ -53,7 +53,7 @@
 					@set="updateForm"
 					@success="formSuccess"
 				/>
-			</modal>
+			</modal>-->
 		</slot>
 	</div>
 </template>
@@ -61,22 +61,22 @@
 <script>
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
-import PkpForm from '@/components/Form/Form.vue';
 import PkpHeader from '@/components/Header/Header.vue';
-import Modal from '@/components/Modal/Modal.vue';
 import Search from '@/components/Search/Search.vue';
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
 import fetch from '@/mixins/fetch';
 import cloneDeep from 'clone-deep';
+import EditAnnouncementModal from '@/pages/announcements/EditAnnouncementModal.vue';
+import {useModal} from '@/composables/useModal';
+
+const {openSideModal, closeSideModal} = useModal();
 
 export default {
 	components: {
 		ListPanel,
 		Pagination,
-		PkpForm,
 		PkpHeader,
-		Modal,
 		Search,
 	},
 	mixins: [dialog, fetch, ajaxError],
@@ -155,7 +155,8 @@ export default {
 		closeFormModal(event) {
 			this.activeForm = null;
 			this.activeFormTitle = '';
-			this.isModalOpenedForm = false;
+			console.log('closeFormModal');
+			closeSideModal(EditAnnouncementModal);
 		},
 
 		/**
@@ -188,7 +189,13 @@ export default {
 			activeForm.method = 'POST';
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.addAnnouncementLabel;
-			this.isModalOpenedForm = true;
+
+			openSideModal(EditAnnouncementModal, {
+				title: this.activeFormTitle,
+				activeForm,
+				onUpdateForm: this.updateForm,
+				onFormSuccess: this.formSuccess,
+			});
 		},
 
 		/**
@@ -267,7 +274,13 @@ export default {
 			});
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.editAnnouncementLabel;
-			this.isModalOpenedForm = true;
+
+			openSideModal(EditAnnouncementModal, {
+				title: this.editAnnouncementLabel,
+				activeForm,
+				onUpdateForm: this.updateForm,
+				onFormSuccess: this.formSuccess,
+			});
 		},
 
 		/**

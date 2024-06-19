@@ -48,6 +48,6 @@ const component2 = computed(() => {
 });
 
 function close(modalId) {
-	modalStore.closeSideModal(true, modalId);
+	modalStore.closeSideModalById(true, modalId);
 }
 </script>

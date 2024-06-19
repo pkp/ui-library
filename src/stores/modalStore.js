@@ -104,7 +104,21 @@ export const useModalStore = defineStore('modal', () => {
 		}
 	}
 
-	function closeSideModal(triggerLegacyCloseHandler = true, _modalId) {
+	function closeSideModal(component) {
+		console.log(
+			'closeSideModal:',
+			component,
+			sideModal1?.value?.component,
+			component === sideModal1?.value?.component,
+		);
+		if (sideModal1?.value?.component === component) {
+			closeSideModalById(false, sideModal1?.value?.modalId);
+		} else if (sideModal2?.value?.component === component) {
+			closeSideModalById(false, sideModal2?.value?.modalId);
+		}
+	}
+
+	function closeSideModalById(triggerLegacyCloseHandler = true, _modalId) {
 		let modalToClose = null;
 		if (sideModal1?.value?.modalId === _modalId && sideModal1?.value?.opened) {
 			modalToClose = sideModal1;
@@ -166,7 +180,7 @@ export const useModalStore = defineStore('modal', () => {
 
 	// Listener for close modal requests coming from legacy handler.
 	pkp?.eventBus?.$on('close-modal-vue', (_args) => {
-		closeSideModal(false, _args.modalId);
+		closeSideModalById(false, _args.modalId);
 	});
 
 	// Listener for open dialog modals coming from legacy handler.
@@ -192,6 +206,7 @@ export const useModalStore = defineStore('modal', () => {
 		closeDialog,
 		openSideModal,
 		closeSideModal,
+		closeSideModalById,
 		sideModal1,
 		sideModal2,
 	};
