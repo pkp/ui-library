@@ -54,7 +54,7 @@ import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
 import fetch from '@/mixins/fetch';
 import cloneDeep from 'clone-deep';
-import EditAnnouncementModal from './EditAnnouncementModal.vue';
+import AnnouncementsEditModal from './AnnouncementsEditModal.vue';
 import {useModal} from '@/composables/useModal';
 
 export default {
@@ -141,7 +141,7 @@ export default {
 			this.activeFormTitle = '';
 			const {closeSideModal} = useModal();
 
-			closeSideModal(EditAnnouncementModal);
+			closeSideModal(AnnouncementsEditModal);
 		},
 
 		/**
@@ -177,7 +177,7 @@ export default {
 
 			const {openSideModal} = useModal();
 
-			openSideModal(EditAnnouncementModal, {
+			openSideModal(AnnouncementsEditModal, {
 				title: this.activeFormTitle,
 				activeForm,
 				onUpdateForm: this.updateForm,
@@ -264,7 +264,7 @@ export default {
 
 			const {openSideModal} = useModal();
 
-			openSideModal(EditAnnouncementModal, {
+			openSideModal(AnnouncementsEditModal, {
 				title: this.editAnnouncementLabel,
 				activeForm,
 				onUpdateForm: this.updateForm,
@@ -321,3 +321,4 @@ export default {
 	}
 }
 </style>
+./AnnouncementsEditModal.vue

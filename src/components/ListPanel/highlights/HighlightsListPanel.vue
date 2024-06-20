@@ -68,7 +68,7 @@
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import Orderer from '@/components/Orderer/Orderer.vue';
-import EditHighlightsModal from './EditHighlightsModal.vue';
+import HighlightsEditModal from './HighlightsEditModal.vue';
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
 import fetch from '@/mixins/fetch';
@@ -160,7 +160,7 @@ export default {
 			this.activeForm = null;
 			this.activeFormTitle = '';
 			const {closeSideModal} = useModal();
-			closeSideModal(EditHighlightsModal);
+			closeSideModal(HighlightsEditModal);
 		},
 
 		/**
@@ -182,7 +182,7 @@ export default {
 				pkp.eventBus.$emit('update:highlight', item);
 			}
 			const {closeSideModal} = useModal();
-			closeSideModal(EditHighlightsModal);
+			closeSideModal(HighlightsEditModal);
 		},
 
 		/**
@@ -195,7 +195,7 @@ export default {
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.i18nAdd;
 			const {openSideModal} = useModal();
-			openSideModal(EditHighlightsModal, {
+			openSideModal(HighlightsEditModal, {
 				title: this.activeFormTitle,
 				activeForm: this.activeForm,
 				onUpdateForm: this.updateForm,
@@ -277,7 +277,7 @@ export default {
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.i18nEdit;
 			const {openSideModal} = useModal();
-			openSideModal(EditHighlightsModal, {
+			openSideModal(HighlightsEditModal, {
 				title: this.activeFormTitle,
 				activeForm: this.activeForm,
 				onUpdateForm: this.updateForm,
@@ -423,3 +423,4 @@ export default {
 	}
 }
 </style>
+./HighlightsEditModal.vue
