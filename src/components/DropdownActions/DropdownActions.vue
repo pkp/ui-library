@@ -1,31 +1,22 @@
 <template>
-	<div class="relative flex items-start justify-between">
-		<Menu
-			as="div"
-			:class="
-				position === 'right'
-					? 'ltr:ml-auto rtl:mr-auto'
-					: 'ltr:mr-auto rtl:ml-auto'
-			"
-		>
+	<div class="relative inline-block items-start justify-between">
+		<Menu as="div">
 			<div>
 				<MenuButton
 					class="hover:bg-gray-50 inline-flex w-full justify-center gap-x-1.5 rounded px-3 py-2"
 					:class="
-						shouldUseEllipsis
+						displayAsEllipsis
 							? 'text-3xl-normal'
 							: 'border border-light bg-secondary text-lg-normal'
 					"
+					:aria-label="ariaLabel || null"
 				>
-					<span v-if="!shouldUseEllipsis">{{ name }}</span>
+					<span :class="displayAsEllipsis ? 'sr-only' : ''">{{ label }}</span>
 					<Icon
 						class="-mr-1 h-5 w-5 text-primary"
-						:icon="shouldUseEllipsis ? 'MoreOptions' : 'Dropdown'"
+						:icon="displayAsEllipsis ? 'MoreOptions' : 'Dropdown'"
 						aria-hidden="true"
 					/>
-					<span v-if="shouldUseEllipsis" class="sr-only">
-						{{ computedAriaLabel }}
-					</span>
 				</MenuButton>
 			</div>
 
@@ -38,18 +29,18 @@
 				leave-to-class="transform opacity-0 scale-95"
 			>
 				<MenuItems
-					class="dropdown-shadow absolute z-10 w-max border border-light bg-secondary focus:outline-none"
+					class="absolute z-10 w-max border border-light bg-secondary shadow focus:outline-none"
 					:class="
-						position === 'right'
-							? 'ltr:right-0 ltr:origin-top-right rtl:left-0 rtl:origin-top-right'
-							: 'ltr:left-0 ltr:origin-top-left rtl:right-0 rtl:origin-top-left'
+						direction === 'right'
+							? 'ltr:left-0 ltr:origin-top-left rtl:right-0 rtl:origin-top-left'
+							: 'ltr:right-0 ltr:origin-top-right rtl:left-0 rtl:origin-top-right'
 					"
 				>
 					<MenuItem v-for="(action, i) in actions" :key="i" v-slot="{active}">
 						<div class="min-w-[96px]">
 							<PkpButton
 								v-if="action.label"
-								element="a"
+								:element="action.url ? 'a' : 'button'"
 								:href="action.url"
 								:icon="action.icon"
 								:is-active="active"
@@ -57,6 +48,7 @@
 								:class="i !== actions.length - 1 ? 'border-b' : ''"
 								size-variant="fullWidth"
 								class="border-light"
+								@click="action.name"
 							>
 								{{ action.label }}
 							</PkpButton>
@@ -69,10 +61,10 @@
 </template>
 
 <script setup>
-import {computed} from 'vue';
 import {Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue';
 
-const props = defineProps({
+defineProps({
+	/** An array of action objects. Each object should contain `label` (string), `url` (string) or `action` (string), an optional `icon` (string) and `isWarnable` (boolean) if the button needs the "warning" button styling from `<Button>` component. */
 	actions: {
 		type: Array,
 		required: true,
@@ -83,35 +75,25 @@ const props = defineProps({
 			);
 		},
 	},
-	name: {
+	/** The text label for the button. This is required. If `displayAsEllipsis` is `true`, the label will be used for accessibility. */
+	label: {
 		type: String,
-		default: '',
+		required: true,
 	},
-	isEllipsis: {
+	/** If `true`, the button will display an ellipsis (`...`) */
+	displayAsEllipsis: {
 		type: Boolean,
 		default: false,
 	},
+	/** The accessible label for the button, used by screen readers. This is optional. */
 	ariaLabel: {
 		type: String,
 		default: '',
 	},
-	position: {
+	/** This specifies where the dropdown appears relative to the element, such as "left," or "right." */
+	direction: {
 		type: String,
-		default: 'right',
+		default: 'left',
 	},
 });
-
-const computedAriaLabel = computed(() => {
-	return props.ariaLabel || props.name || 'More actions';
-});
-
-const shouldUseEllipsis = computed(() => {
-	return props.isEllipsis || !props.name;
-});
 </script>
-
-<style scoped>
-.dropdown-shadow {
-	box-shadow: 0px 4px 10px 1px rgba(0, 0, 0, 0.5);
-}
-</style>

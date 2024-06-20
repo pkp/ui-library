@@ -11,81 +11,38 @@ export default {
 		},
 		template: '<DropdownActions v-bind="args" />',
 	}),
-	argTypes: {
-		actions: {
-			description:
-				'An array of action objects. Each object should contain `label` (string), `url` (string), an optional `icon` (string) and `isWarnable` (boolean) if the button needs the "warning" button styling from `<Button>` component.',
-			table: {
-				type: {summary: 'Array'},
-				defaultValue: {summary: '[]'},
-			},
-			defaultValue: [],
-		},
-		name: {
-			control: {type: 'text'},
-			table: {
-				type: {summary: 'text'},
-				defaultValue: {summary: ''},
-			},
-			description:
-				"The text label for the button. This is optional. If `isEllipsis` is `false` and `name` is provided, it will be used as the button's label.",
-		},
-		position: {
-			control: {type: 'select'},
-			options: ['left', 'right'],
-			description:
-				'Determines where to show the dropdown button. Options include `left` and `right`.',
-		},
-		isEllipsis: {
-			control: {type: 'boolean'},
-			table: {
-				type: {summary: 'boolean'},
-				defaultValue: {summary: false},
-			},
-			description:
-				'If `true`, the button will display an ellipsis (`...`), and the `ariaLabel` prop must be provided for accessibility.',
-		},
-		ariaLabel: {
-			control: {type: 'text'},
-			table: {
-				type: {summary: 'text'},
-				defaultValue: {summary: ''},
-			},
-			description:
-				'The accessible label for the button, used by screen readers. Required if `isEllipsis` is `true`. If not provided, the component will use the `name` prop or default to "More actions".',
-		},
-	},
+	decorators: [
+		() => ({
+			template:
+				'<div style="height: 300px; padding: 10px;" class="text-center"><story/></div>',
+		}),
+	],
 };
 
 const downloadActions = [
 	{
 		label: 'Author-Only Sections Displayed (PDF)',
-		url: '#',
+		action: 'authorPdf',
 	},
 	{
 		label: 'Author-Only Sections Displayed (XML)',
-		url: '#',
+		action: 'authorXml',
 	},
 	{
 		label: 'Editor Forms Shows All Review Sections (PDF)',
-		url: '#',
+		action: 'editorPdf',
 	},
 	{
 		label: 'Editor Forms Shows All Review Sections (XML)',
-		url: '#',
+		action: 'editorXml',
 	},
 ];
 
 export const Default = {
 	args: {
 		actions: downloadActions,
-		name: 'Download Review Form',
+		label: 'Download Review Form',
 	},
-	decorators: [
-		() => ({
-			template: '<div style="height: 250px"><story/></div>',
-		}),
-	],
 	play: async ({canvasElement}) => {
 		// Assigns canvas to the component root element
 		const canvas = within(canvasElement);
@@ -131,14 +88,9 @@ export const EllipsisMenu = {
 				icon: 'MergeUser',
 			},
 		],
-		isEllipsis: true,
-		ariaLabel: 'User management options',
+		label: 'User management options',
+		displayAsEllipsis: true,
 	},
-	decorators: [
-		() => ({
-			template: '<div style="height: 300px"><story/></div>',
-		}),
-	],
 	play: async ({canvasElement}) => {
 		// Assigns canvas to the component root element
 		const canvas = within(canvasElement);
@@ -148,22 +100,18 @@ export const EllipsisMenu = {
 	},
 };
 
-export const LeftPosition = {
+export const RightAlignedMenu = {
 	args: {
 		actions: downloadActions,
-		name: 'Left Dropdown',
-		position: 'left',
+		label: 'Right Aligned Menu',
+		ariaLabel: 'Click to download content by available formats',
+		direction: 'right',
 	},
-	decorators: [
-		() => ({
-			template: '<div style="height: 250px"><story/></div>',
-		}),
-	],
 	play: async ({canvasElement}) => {
 		// Assigns canvas to the component root element
 		const canvas = within(canvasElement);
 		const user = userEvent.setup();
 
-		await user.click(canvas.getByText('Left Dropdown'));
+		await user.click(canvas.getByText('Right Aligned Menu'));
 	},
 };
