@@ -48,6 +48,7 @@ export const Default = {
 	args: {
 		actions: downloadActions,
 		label: 'Download Review Form',
+		ariaLabel: 'Click to download content in the available formats',
 		direction: 'left',
 	},
 	play: async ({canvasElement}) => {
@@ -112,7 +113,6 @@ export const RightAlignedMenu = {
 	args: {
 		actions: downloadActions,
 		label: 'Right Aligned Menu',
-		ariaLabel: 'Click to download content in the available formats',
 		direction: 'right',
 	},
 	play: async ({canvasElement}) => {
