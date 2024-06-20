@@ -8,38 +8,20 @@
 	>
 		<template #footer>
 			<slot name="footer" />
-			<modal
-				:close-label="t('common.close')"
-				:name="preparedContentId"
-				:title="insertModalLabel"
-				:open="isModalPreparedContentOpened"
-				@close="isModalPreparedContentOpened = false"
-			>
-				<insert-content
-					ref="insertContent"
-					:insert-label="insertLabel"
-					:items="preparedContent"
-					:items-label="preparedContentLabel"
-					:search-label="searchLabel"
-					@insert="insert"
-				/>
-			</modal>
 		</template>
 	</field-rich-textarea>
 </template>
 
 <script>
 import FieldRichTextarea from './FieldRichTextarea.vue';
-import InsertContent from '@/components/InsertContent/InsertContent.vue';
-import Modal from '@/components/Modal/Modal.vue';
+import FieldPreparedContentInsertModal from './FieldPreparedContentInsertModal.vue';
 import preparedContent from '../../../mixins/preparedContent';
+import {useModal} from '@/composables/useModal';
 
 export default {
 	name: 'FieldPreparedContent',
 	components: {
 		FieldRichTextarea,
-		InsertContent,
-		Modal,
 	},
 	extends: FieldRichTextarea,
 	mixins: [preparedContent],
@@ -135,7 +117,7 @@ export default {
 						icon: 'plus',
 						text: self.t('common.insertContent'),
 						onAction() {
-							self.isModalPreparedContentOpened = true;
+							self.openInsertModal();
 						},
 					});
 					editor.settings.toolbar += ' | pkpInsert';
@@ -163,12 +145,23 @@ export default {
 		},
 	},
 	methods: {
+		openInsertModal() {
+			const {openSideModal} = useModal(FieldPreparedContentInsertModal);
+			openSideModal(FieldPreparedContentInsertModal, {
+				title: this.insertModalLabel,
+				insertLabel: this.insertLabel,
+				preparedContent: this.preparedContent,
+				preparedContentLabel: this.preparedContentLabel,
+				onInsert: this.insert,
+			});
+		},
 		fieldChanged(name, prop, newVal, localeKey) {
 			this.$emit('change', name, prop, newVal, localeKey);
 		},
 		insert(text) {
-			this.$refs.textarea.$refs.editor.editor.insertContent(text);
-			this.isModalPreparedContentOpened = false;
+			this.$refs.textarea.$refs.editor.getEditor().insertContent(text);
+			const {closeSideModal} = useModal();
+			closeSideModal(FieldPreparedContentInsertModal);
 		},
 	},
 };
