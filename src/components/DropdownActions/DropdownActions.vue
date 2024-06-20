@@ -92,10 +92,11 @@ defineProps({
 		type: String,
 		default: '',
 	},
-	/** This specifies where the dropdown appears relative to the element, such as "left," or "right." */
+	/** This specifies where the dropdown appears relative to the element, such as "left" or "right." */
 	direction: {
 		type: String,
 		default: 'left',
+		validator: (direction) => ['left', 'right'].includes(direction),
 	},
 });
 

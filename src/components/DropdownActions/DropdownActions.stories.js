@@ -42,6 +42,7 @@ export const Default = {
 	args: {
 		actions: downloadActions,
 		label: 'Download Review Form',
+		direction: 'left',
 	},
 	play: async ({canvasElement}) => {
 		// Assigns canvas to the component root element
@@ -90,6 +91,7 @@ export const EllipsisMenu = {
 		],
 		label: 'User management options',
 		displayAsEllipsis: true,
+		direction: 'left',
 	},
 	play: async ({canvasElement}) => {
 		// Assigns canvas to the component root element
