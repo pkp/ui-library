@@ -47,19 +47,6 @@
 					/>
 				</template>
 			</list-panel>
-			<modal
-				:close-label="t('common.close')"
-				name="form"
-				:title="activeFormTitle"
-				:open="isModalOpenedForm"
-				@close="closeFormModal"
-			>
-				<pkp-form
-					v-bind="activeForm"
-					@set="updateForm"
-					@success="formSuccess"
-				/>
-			</modal>
 		</slot>
 	</div>
 </template>
@@ -67,23 +54,21 @@
 <script>
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
-import PkpForm from '@/components/Form/Form.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import Search from '@/components/Search/Search.vue';
-import Modal from '@/components/Modal/Modal.vue';
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
 import fetch from '@/mixins/fetch';
 import cloneDeep from 'clone-deep';
+import InstitutionsEditModal from './InstitutionsEditModal.vue';
+import {useModal} from '@/composables/useModal';
 
 export default {
 	components: {
 		ListPanel,
 		Pagination,
-		PkpForm,
 		PkpHeader,
 		Search,
-		Modal,
 	},
 	mixins: [dialog, fetch, ajaxError],
 	props: {
@@ -149,7 +134,6 @@ export default {
 		return {
 			activeForm: null,
 			activeFormTitle: '',
-			isModalOpenedForm: false,
 		};
 	},
 	methods: {
@@ -160,7 +144,8 @@ export default {
 		closeFormModal() {
 			this.activeForm = null;
 			this.activeFormTitle = '';
-			this.isModalOpenedForm = false;
+			const {closeSideModal} = useModal();
+			closeSideModal(InstitutionsEditModal);
 		},
 
 		/**
@@ -193,7 +178,13 @@ export default {
 			activeForm.method = 'POST';
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.addInstitutionLabel;
-			this.isModalOpenedForm = true;
+			const {openSideModal} = useModal();
+			openSideModal(InstitutionsEditModal, {
+				title: this.activeFormTitle,
+				activeForm: this.activeForm,
+				onUpdateForm: this.updateForm,
+				onFormSuccess: this.formSuccess,
+			});
 		},
 
 		/**
@@ -276,7 +267,14 @@ export default {
 			});
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.editInstitutionLabel;
-			this.isModalOpenedForm = true;
+
+			const {openSideModal} = useModal();
+			openSideModal(InstitutionsEditModal, {
+				title: this.activeFormTitle,
+				activeForm: this.activeForm,
+				onUpdateForm: this.updateForm,
+				onFormSuccess: this.formSuccess,
+			});
 		},
 
 		/**
@@ -300,7 +298,10 @@ export default {
 		 * @param {Object} data
 		 */
 		updateForm(formId, data) {
-			let activeForm = {...this.activeForm};
+			if (!this.activeForm) {
+				return;
+			}
+			let activeForm = this.activeForm;
 			Object.keys(data).forEach(function (key) {
 				activeForm[key] = data[key];
 			});

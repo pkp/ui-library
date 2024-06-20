@@ -305,7 +305,11 @@ export default {
 		 * @param {Object} data Key/value map of the data to be changed
 		 */
 		setForm(key, data) {
-			let activeForm = {...this.activeForm};
+			if (!this.activeForm) {
+				return;
+			}
+
+			let activeForm = this.activeForm;
 			Object.keys(data).forEach(function (key) {
 				activeForm[key] = data[key];
 			});
