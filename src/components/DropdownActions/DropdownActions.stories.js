@@ -22,19 +22,19 @@ export default {
 const downloadActions = [
 	{
 		label: 'Author-Only Sections Displayed (PDF)',
-		action: 'authorPdf',
+		name: 'authorPdf',
 	},
 	{
 		label: 'Author-Only Sections Displayed (XML)',
-		action: 'authorXml',
+		name: 'authorXml',
 	},
 	{
 		label: 'Editor Forms Shows All Review Sections (PDF)',
-		action: 'editorPdf',
+		name: 'editorPdf',
 	},
 	{
 		label: 'Editor Forms Shows All Review Sections (XML)',
-		action: 'editorXml',
+		name: 'editorXml',
 	},
 ];
 
@@ -104,7 +104,7 @@ export const RightAlignedMenu = {
 	args: {
 		actions: downloadActions,
 		label: 'Right Aligned Menu',
-		ariaLabel: 'Click to download content by available formats',
+		ariaLabel: 'Click to download content in the available formats',
 		direction: 'right',
 	},
 	play: async ({canvasElement}) => {

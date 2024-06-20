@@ -39,7 +39,7 @@
 					<MenuItem v-for="(action, i) in actions" :key="i" v-slot="{active}">
 						<div class="min-w-[96px]">
 							<PkpButton
-								v-if="action.label"
+								v-if="isValidAction(action)"
 								:element="action.url ? 'a' : 'button'"
 								:href="action.url"
 								:icon="action.icon"
@@ -64,15 +64,17 @@
 import {Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue';
 
 defineProps({
-	/** An array of action objects. Each object should contain `label` (string), `url` (string) or `action` (string), an optional `icon` (string) and `isWarnable` (boolean) if the button needs the "warning" button styling from `<Button>` component. */
+	/** An array of action objects. Each object should contain `label` (string), `url` (string) to navigate to if the action involves a link, or `name` (string) to perform the action when clicked, an optional `icon` (string) and `isWarnable` (boolean) if the button needs the "warning" button styling from `<Button>` component. */
 	actions: {
 		type: Array,
 		required: true,
 		validator: (actions) => {
-			return actions.every(
-				(action) =>
-					typeof action.label === 'string' && action.label.trim() !== '',
-			);
+			return actions.every((action) => {
+				const hasLabel =
+					typeof action.label === 'string' && action.label.trim() !== '';
+				const hasAction = action.url || action.name;
+				return hasLabel && hasAction;
+			});
 		},
 	},
 	/** The text label for the button. This is required. If `displayAsEllipsis` is `true`, the label will be used for accessibility. */
@@ -96,4 +98,8 @@ defineProps({
 		default: 'left',
 	},
 });
+
+const isValidAction = (action) => {
+	return action?.label && (action?.url || action?.name);
+};
 </script>
