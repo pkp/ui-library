@@ -54,7 +54,7 @@ import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
 import fetch from '@/mixins/fetch';
 import cloneDeep from 'clone-deep';
-import EditAnnouncementModal from '@/pages/announcements/EditAnnouncementModal.vue';
+import EditAnnouncementModal from './EditAnnouncementModal.vue';
 import {useModal} from '@/composables/useModal';
 
 export default {

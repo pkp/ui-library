@@ -60,40 +60,25 @@
 					</pkp-button>
 				</template>
 			</list-panel>
-			<modal
-				:close-label="t('common.close')"
-				name="form"
-				:title="activeFormTitle"
-				:open="isModalOpened"
-				@close="closeFormModal"
-			>
-				<pkp-form
-					v-bind="activeForm"
-					@set="updateForm"
-					@success="formSuccess"
-				/>
-			</modal>
 		</slot>
 	</div>
 </template>
 
 <script>
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
-import PkpForm from '@/components/Form/Form.vue';
 import PkpHeader from '@/components/Header/Header.vue';
-import Modal from '@/components/Modal/Modal.vue';
 import Orderer from '@/components/Orderer/Orderer.vue';
+import EditHighlightsModal from './EditHighlightsModal.vue';
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
 import fetch from '@/mixins/fetch';
 import cloneDeep from 'clone-deep';
+import {useModal} from '@/composables/useModal';
 
 export default {
 	components: {
 		ListPanel,
-		PkpForm,
 		PkpHeader,
-		Modal,
 		Orderer,
 	},
 	mixins: [dialog, fetch, ajaxError],
@@ -162,7 +147,6 @@ export default {
 			activeForm: null,
 			activeFormTitle: '',
 			isLoading: false,
-			isModalOpened: false,
 			isOrdering: false,
 		};
 	},
@@ -175,7 +159,8 @@ export default {
 		closeFormModal(event) {
 			this.activeForm = null;
 			this.activeFormTitle = '';
-			this.isModalOpened = false;
+			const {closeSideModal} = useModal();
+			closeSideModal(EditHighlightsModal);
 		},
 
 		/**
@@ -196,7 +181,8 @@ export default {
 				);
 				pkp.eventBus.$emit('update:highlight', item);
 			}
-			this.isModalOpened = false;
+			const {closeSideModal} = useModal();
+			closeSideModal(EditHighlightsModal);
 		},
 
 		/**
@@ -208,7 +194,13 @@ export default {
 			activeForm.method = 'POST';
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.i18nAdd;
-			this.isModalOpened = true;
+			const {openSideModal} = useModal();
+			openSideModal(EditHighlightsModal, {
+				title: this.activeFormTitle,
+				activeForm: this.activeForm,
+				onUpdateForm: this.updateForm,
+				onFormSuccess: this.formSuccess,
+			});
 		},
 
 		/**
@@ -284,7 +276,13 @@ export default {
 			});
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.i18nEdit;
-			this.isModalOpened = false;
+			const {openSideModal} = useModal();
+			openSideModal(EditHighlightsModal, {
+				title: this.activeFormTitle,
+				activeForm: this.activeForm,
+				onUpdateForm: this.updateForm,
+				onFormSuccess: this.formSuccess,
+			});
 		},
 
 		/**
