@@ -1,5 +1,7 @@
 <script>
 import StatsPublicationsPage from '@/components/Container/StatsPublicationsPage.vue';
+import ContextDownloadReportModal from '@/pages/statsContext/ContextDownloadReportModal.vue';
+import {useModal} from '@/composables/useModal';
 
 export default {
 	name: 'StatsContextPage',
@@ -8,6 +10,27 @@ export default {
 		return {isModalOpenedDownloadReport: false};
 	},
 	methods: {
+		/**
+		 * Open download report modal, for context
+		 */
+		openDownloadReportModal() {
+			const {openSideModal} = useModal();
+			openSideModal(ContextDownloadReportModal, {
+				title: this.t('common.download'),
+				timelineDescription: this.getTimelineDescription(),
+				dateRangeDescription: this.getDateRangeDescription(),
+				onDownloadReport: this.downloadReport,
+			});
+		},
+
+		/**
+		 * Close download report modal, for context
+		 */
+		closeDownloadReportModal() {
+			const {closeSideModal} = useModal();
+			closeSideModal(ContextDownloadReportModal);
+		},
+
 		/**
 		 * The params to send with each GET request
 		 *
