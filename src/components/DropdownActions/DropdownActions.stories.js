@@ -11,6 +11,12 @@ export default {
 		},
 		template: '<DropdownActions v-bind="args" />',
 	}),
+	argTypes: {
+		direction: {
+			control: {type: 'select'},
+			options: ['left', 'right'],
+		},
+	},
 	decorators: [
 		() => ({
 			template:
