@@ -105,17 +105,20 @@ export const useModalStore = defineStore('modal', () => {
 	}
 
 	function closeSideModal(component) {
-		console.log(
-			'closeSideModal:',
-			component,
-			sideModal1?.value?.component,
-			component === sideModal1?.value?.component,
-		);
 		if (sideModal1?.value?.component === component) {
 			closeSideModalById(false, sideModal1?.value?.modalId);
 		} else if (sideModal2?.value?.component === component) {
 			closeSideModalById(false, sideModal2?.value?.modalId);
 		}
+	}
+
+	function isSideModalOpened(component) {
+		if (sideModal1?.value?.component === component) {
+			return true;
+		} else if (sideModal2?.value?.component === component) {
+			return true;
+		}
+		return false;
 	}
 
 	function closeSideModalById(triggerLegacyCloseHandler = true, _modalId) {
@@ -207,6 +210,7 @@ export const useModalStore = defineStore('modal', () => {
 		openSideModal,
 		closeSideModal,
 		closeSideModalById,
+		isSideModalOpened,
 		sideModal1,
 		sideModal2,
 	};

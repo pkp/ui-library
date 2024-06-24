@@ -12,9 +12,12 @@ export function useModal() {
 	}
 
 	function closeSideModal(component) {
-		console.log('useModal, closeSideModal');
 		modalStore.closeSideModal(component);
 	}
 
-	return {openDialog, openSideModal, closeSideModal};
+	function isSideModalOpened(component) {
+		modalStore.isSideModalOpened(component);
+	}
+
+	return {openDialog, openSideModal, closeSideModal, isSideModalOpened};
 }

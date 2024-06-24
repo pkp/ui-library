@@ -131,7 +131,7 @@
 						<template #actions>
 							<button
 								class="doiListPanel__statusInfoButton"
-								@click="isModalOpenedStatusInfo = true"
+								@click="openStatusInfoModal"
 							>
 								<icon icon="question-circle" />
 							</button>
@@ -200,68 +200,6 @@
 				</template>
 			</list-panel>
 		</slot>
-
-		<!-- Status info modal -->
-		<modal
-			:close-label="t('common.close')"
-			name="statusInfoModal"
-			:title="t('manager.dois.help.statuses.title')"
-			:open="isModalOpenedStatusInfo"
-			@close="isModalOpenedStatusInfo = false"
-		>
-			<table class="pkpTable">
-				<thead>
-					<tr>
-						<th>{{ t('common.status') }}</th>
-						<th>{{ t('common.description') }}</th>
-					</tr>
-				</thead>
-				<tr class="pkpTable__row">
-					<th>{{ t('manager.dois.status.needsDoi') }}</th>
-					<td>{{ t('manager.dois.status.needsDoi.description') }}</td>
-				</tr>
-				<tr class="pkpTable__row">
-					<th>{{ t('manager.dois.filters.doiAssigned') }}</th>
-					<td>{{ t('manager.dois.filters.doiAssigned.description') }}</td>
-				</tr>
-				<tr class="pkpTable__row">
-					<th>{{ t('manager.dois.status.unregistered') }}</th>
-					<td>{{ t('manager.dois.status.unregistered.description') }}</td>
-				</tr>
-				<tr class="pkpTable__row">
-					<th>{{ t('manager.dois.status.submitted') }}</th>
-					<td>{{ t('manager.dois.status.submitted.description') }}</td>
-				</tr>
-				<tr class="pkpTable__row">
-					<th>{{ t('manager.dois.status.registered') }}</th>
-					<td>{{ t('manager.dois.status.registered.description') }}</td>
-				</tr>
-				<tr class="pkpTable__row">
-					<th>{{ t('manager.dois.status.error.filterTitle') }}</th>
-					<td>{{ t('manager.dois.status.error.description') }}</td>
-				</tr>
-				<tr class="pkpTable__row">
-					<th>{{ t('manager.dois.status.stale') }}</th>
-					<td>{{ t('manager.dois.status.stale.description') }}</td>
-				</tr>
-			</table>
-		</modal>
-
-		<!-- DOI action failed modal -->
-		<modal
-			:close-label="t('common.close')"
-			name="failedDoiActionModal"
-			:title="t('manager.dois.update.failedCreation')"
-			:open="isModalOpenedFailedDoiAction"
-			@close="closeFailedDoiActionModal"
-		>
-			<p>{{ t('manager.dois.update.partialFailure') }}</p>
-			<ul>
-				<li v-for="errorMessage in failedDoiActions" :key="errorMessage.index">
-					{{ errorMessage }}
-				</li>
-			</ul>
-		</modal>
 	</div>
 </template>
 
@@ -275,8 +213,12 @@ import PkpFilter from '@/components/Filter/Filter.vue';
 import PkpFilterAutosuggest from '@/components/Filter/FilterAutosuggest.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import Search from '@/components/Search/Search.vue';
+import DoiStatusInfoModal from './DoiStatusInfoModal.vue';
+import DoiFailedActionModal from './DoiFailedActionModal.vue';
 import fetch from '@/mixins/fetch';
 import ajaxError from '@/mixins/ajaxError';
+import {useModal} from '@/composables/useModal';
+
 import Notification from '@/components/Notification/Notification.vue';
 import Modal from '@/components/Modal/Modal.vue';
 
@@ -376,8 +318,6 @@ export default {
 			selected: [],
 			expanded: [],
 			failedDoiActions: [],
-			isModalOpenedStatusInfo: false,
-			isModalOpenedFailedDoiAction: false,
 		};
 	},
 	computed: {
@@ -421,14 +361,25 @@ export default {
 		 * @param {Array} oldVal
 		 */
 		failedDoiActions(newVal, oldVal) {
+			const {openSideModal, isSideModalOpened} = useModal();
+
 			if (newVal.length !== 0) {
-				this.isModalOpenedFailedDoiAction = true;
-			} else if (this.isModalOpenedFailedDoiAction === true) {
+				openSideModal(DoiFailedActionModal, {
+					failedDoiActions: this.failedDoiActions,
+				});
+			} else if (isSideModalOpened(DoiFailedActionModal)) {
 				this.closeFailedDoiActionModal();
 			}
 		},
 	},
 	methods: {
+		/**
+		 * Open status info modal
+		 */
+		openStatusInfoModal() {
+			const {openSideModal} = useModal();
+			openSideModal(DoiStatusInfoModal);
+		},
 		/**
 		 * Set the list of items
 		 *
@@ -984,7 +935,8 @@ export default {
 			};
 		},
 		closeFailedDoiActionModal() {
-			this.isModalOpenedFailedDoiAction = false;
+			const {closeSideModal} = useModal();
+			closeSideModal(DoiFailedActionModal);
 			this.failedDoiActions = [];
 		},
 	},
