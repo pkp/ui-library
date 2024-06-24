@@ -404,6 +404,12 @@ export default {
 		 * @param {Object} template The updated values of the template
 		 */
 		templateSaved(template) {
+			setTimeout(() => this.$modal.hide('template'), 1000);
+
+			if (!this.currentMailable.supportsTemplates) {
+				return;
+			}
+
 			const exists =
 				this.currentMailable.emailTemplates.findIndex(
 					(t) => t.key === template.key
@@ -417,8 +423,6 @@ export default {
 			} else {
 				this.currentMailable.emailTemplates.push(template);
 			}
-
-			setTimeout(() => this.$modal.hide('template'), 1000);
 		},
 
 		/**
