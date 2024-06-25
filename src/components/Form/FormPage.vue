@@ -55,6 +55,14 @@
 			>
 				{{ submitButton.label }}
 			</pkp-button>
+			<pkp-button
+				v-if="cancelButton"
+				v-bind="cancelButton"
+				:is-warnable="true"
+				@click="cancel"
+			>
+				{{ cancelButton.label || t('common.cancel') }}
+			</pkp-button>
 		</button-row>
 	</div>
 </template>
@@ -85,6 +93,7 @@ export default {
 		availableLocales: Array,
 		submitButton: Object,
 		previousButton: Object,
+		cancelButton: Object,
 		canSubmit: {
 			type: Boolean,
 			default() {
@@ -167,6 +176,13 @@ export default {
 		 */
 		previousPage() {
 			this.$emit('previousPage', this.id);
+		},
+
+		/**
+		 * Cancel the form submission process
+		 */
+		cancel: function () {
+			this.$emit('cancel', this.id);
 		},
 
 		/**

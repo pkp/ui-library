@@ -58,6 +58,7 @@
 				@previousPage="setCurrentPage(false)"
 				@showField="showField"
 				@showLocale="showLocale"
+				@cancel="cancel"
 				@set-errors="setErrors"
 			/>
 		</div>
@@ -126,6 +127,8 @@ export default {
 		'set',
 		/** When the form has been successfully submitted. The payload will include the server response from the successful form submission. This is usually the object that was added or edited. */
 		'success',
+		/** When the form submission has been cancelled */
+		'cancel',
 	],
 	data() {
 		return {
@@ -314,6 +317,13 @@ export default {
 					complete: this.complete,
 				});
 			}
+		},
+
+		/**
+		 * Cancel the form submission process
+		 */
+		cancel: function () {
+			this.$emit('cancel', this.id);
 		},
 
 		/**
