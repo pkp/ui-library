@@ -53,6 +53,11 @@
 							</div>
 							<div class="modal-content p-4">
 								<div v-html="dialogProps.message" />
+								<component
+									:is="dialogProps.bodyComponent"
+									v-if="dialogProps.bodyComponent"
+									v-bind="dialogProps.bodyProps"
+								/>
 							</div>
 							<div class="flex items-center justify-end p-4">
 								<spinner v-if="isLoading" />

@@ -214,7 +214,7 @@ import PkpFilterAutosuggest from '@/components/Filter/FilterAutosuggest.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import Search from '@/components/Search/Search.vue';
 import DoiStatusInfoModal from './DoiStatusInfoModal.vue';
-import DoiFailedActionModal from './DoiFailedActionModal.vue';
+import DoiFailedActionDialogBody from './DoiFailedActionDialogBody.vue';
 import fetch from '@/mixins/fetch';
 import ajaxError from '@/mixins/ajaxError';
 import {useModal} from '@/composables/useModal';
@@ -361,14 +361,29 @@ export default {
 		 * @param {Array} oldVal
 		 */
 		failedDoiActions(newVal, oldVal) {
-			const {openSideModal, isSideModalOpened} = useModal();
+			const {openDialog} = useModal();
 
 			if (newVal.length !== 0) {
-				openSideModal(DoiFailedActionModal, {
-					failedDoiActions: this.failedDoiActions,
+				openDialog({
+					title: this.t('manager.dois.update.failedCreation'),
+					actions: [
+						{
+							label: this.t('common.ok'),
+							isPrimary: true,
+							callback: (close) => {
+								this.failedDoiActions = [];
+								close();
+							},
+						},
+					],
+					bodyComponent: DoiFailedActionDialogBody,
+					bodyProps: {
+						failedDoiActions: this.failedDoiActions,
+					},
+					close: () => {
+						this.failedDoiActions = [];
+					},
 				});
-			} else if (isSideModalOpened(DoiFailedActionModal)) {
-				this.closeFailedDoiActionModal();
 			}
 		},
 	},
@@ -933,11 +948,6 @@ export default {
 					doiObject === null ? null : doiObject.registrationAgency,
 				...props,
 			};
-		},
-		closeFailedDoiActionModal() {
-			const {closeSideModal} = useModal();
-			closeSideModal(DoiFailedActionModal);
-			this.failedDoiActions = [];
 		},
 	},
 };

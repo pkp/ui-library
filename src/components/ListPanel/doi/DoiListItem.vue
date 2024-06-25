@@ -178,8 +178,8 @@
 import Expander from '@/components/Expander/Expander.vue';
 import PkpTable from '@/components/Table/Table.vue';
 import TableCell from '@/components/Table/TableCell.vue';
-import DoiItemViewErrorModal from './DoiItemViewErrorModal.vue';
-import DoiItemViewRegisteredMessage from './DoiItemViewRegisteredMessage.vue';
+import DoiItemViewErrorDialogBody from './DoiItemViewErrorDialogBody.vue';
+import DoiItemViewRegisteredMessageDialogBody from './DoiItemViewRegisteredMessageDialogBody.vue';
 import DoiItemVersionModal from './DoiItemVersionModal.vue';
 import {computed} from 'vue';
 import {useModal} from '@/composables/useModal';
@@ -465,11 +465,25 @@ export default {
 
 	methods: {
 		openViewErrorModal() {
-			const {openSideModal} = useModal();
-			openSideModal(DoiItemViewErrorModal, {
-				errorMessageAgencyPreamble:
-					this.registrationAgencyInfo['errorMessagePreamble'],
-				errorMessage: this.currentVersionDoiObjects[0]['errorMessage'],
+			const {openDialog} = useModal();
+
+			openDialog({
+				title: this.t('manager.dois.registration.viewError.title'),
+				bodyComponent: DoiItemViewErrorDialogBody,
+				bodyProps: {
+					errorMessageAgencyPreamble:
+						this.registrationAgencyInfo['errorMessagePreamble'],
+					errorMessage: this.currentVersionDoiObjects[0]['errorMessage'],
+				},
+				actions: [
+					{
+						label: this.t('common.ok'),
+						isPrimary: true,
+						callback: (close) => {
+							close();
+						},
+					},
+				],
 			});
 		},
 		openVersionModal() {
@@ -746,12 +760,25 @@ export default {
 			return this.isDeposited ? this.viewRecord() : this.triggerDeposit();
 		},
 		viewRecord() {
-			const {openSideModal} = useModal();
-			openSideModal(DoiItemViewRegisteredMessage, {
-				registeredMessageAgencyPreamble:
-					this.registrationAgencyInfo['registeredMessagePreamble'],
-				registeredMessage:
-					this.currentVersionDoiObjects[0]['registeredMessage'],
+			const {openDialog} = useModal();
+			openDialog({
+				title: this.t('manager.dois.registration.viewRecord.title'),
+				bodyComponent: DoiItemViewRegisteredMessageDialogBody,
+				bodyProps: {
+					registeredMessageAgencyPreamble:
+						this.registrationAgencyInfo['registeredMessagePreamble'],
+					registeredMessage:
+						this.currentVersionDoiObjects[0]['registeredMessage'],
+				},
+				actions: [
+					{
+						label: this.t('common.ok'),
+						isPrimary: true,
+						callback: (close) => {
+							close();
+						},
+					},
+				],
 			});
 		},
 		triggerDeposit() {
@@ -772,13 +799,6 @@ export default {
 
 <style lang="less">
 @import '../../../styles/_import';
-
-.depositErrorMessage {
-	background: rgb(234, 237, 238);
-	> pre {
-		white-space: pre-wrap;
-	}
-}
 
 .doiListItem__depositorDetails {
 	//width: 100%;
