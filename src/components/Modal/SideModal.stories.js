@@ -37,7 +37,6 @@ const SideModalBase = {
 			</template>
 
 			<SideModalLayoutBasic>CONTENT</SideModalLayoutBasic>
-			</div>
 		</SideModalBody>
 	`,
 };
