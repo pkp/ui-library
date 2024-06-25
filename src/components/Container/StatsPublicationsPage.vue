@@ -122,7 +122,6 @@ export default {
 		openDownloadReportModal() {
 			const {openSideModal} = useModal();
 			openSideModal(PublicationsDownloadReportModal, {
-				title: this.t('common.download'),
 				searchPhrase: this.searchPhrase,
 				timelineDescription: this.getTimelineDescription(),
 				dateRangeDescription: this.getDateRangeDescription(),

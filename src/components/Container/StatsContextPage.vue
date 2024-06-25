@@ -16,7 +16,6 @@ export default {
 		openDownloadReportModal() {
 			const {openSideModal} = useModal();
 			openSideModal(ContextDownloadReportModal, {
-				title: this.t('common.download'),
 				timelineDescription: this.getTimelineDescription(),
 				dateRangeDescription: this.getDateRangeDescription(),
 				onDownloadReport: this.downloadReport,

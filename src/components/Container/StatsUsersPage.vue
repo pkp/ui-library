@@ -15,7 +15,6 @@ export default {
 			const {openSideModal} = useModal();
 
 			openSideModal(UserExportModal, {
-				title: this.t('manager.export.usersToCsv.label'),
 				usersReportForm: this.components.usersReportForm,
 				onSet: this.set,
 				onLoadExport: this.loadExport,

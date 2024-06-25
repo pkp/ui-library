@@ -1,7 +1,7 @@
 <template>
 	<SideModalBody>
 		<template #title>
-			{{ title }}
+			{{ t('common.download') }}
 		</template>
 		<SideModalLayoutBasic>
 			<p>{{ t('stats.publications.downloadReport.description') }}</p>
@@ -95,7 +95,6 @@ import Tooltip from '@/components/Tooltip/Tooltip.vue';
 
 const {t} = useLocalize();
 defineProps({
-	title: {type: String, required: true},
 	searchPhrase: {type: String, required: false, default: ''},
 	dateRangeDescription: {type: String, required: true},
 	timelineDescription: {type: String, required: true},

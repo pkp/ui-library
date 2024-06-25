@@ -1,7 +1,7 @@
 <template>
 	<SideModalBody>
 		<template #title>
-			{{ title }}
+			{{ t('manager.export.usersToCsv.label') }}
 		</template>
 		<SideModalLayoutBasic>
 			<PkpForm
@@ -17,9 +17,10 @@
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
 import PkpForm from '@/components/Form/Form.vue';
+import {useLocalize} from '@/composables/useLocalize';
+const {t} = useLocalize();
 
 defineProps({
-	title: {type: String, required: true},
 	usersReportForm: {type: Object, required: true},
 });
 const emit = defineEmits(['set', 'loadExport']);

@@ -1,7 +1,7 @@
 <template>
 	<SideModalBody>
 		<template #title>
-			{{ title }}
+			{{ t('common.download') }}
 		</template>
 		<SideModalLayoutBasic>
 			<p>{{ t('stats.issues.downloadReport.description') }}</p>
@@ -50,7 +50,6 @@ import PkpButton from '@/components/Button/Button.vue';
 
 const {t} = useLocalize();
 defineProps({
-	title: {type: String, required: true},
 	searchPhrase: {type: String, required: false, default: ''},
 	timelineDescription: {type: String, required: true},
 	dateRangeDescription: {type: String, required: true},
