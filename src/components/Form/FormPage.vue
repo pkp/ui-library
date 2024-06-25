@@ -39,6 +39,14 @@
 				</transition>
 			</span>
 			<pkp-button
+				v-if="cancelButton"
+				v-bind="cancelButton"
+				:is-warnable="true"
+				@click="cancel"
+			>
+				{{ cancelButton.label || t('common.cancel') }}
+			</pkp-button>
+			<pkp-button
 				v-if="previousButton"
 				v-bind="previousButton"
 				@click="previousPage"
@@ -54,14 +62,6 @@
 				@click="submit"
 			>
 				{{ submitButton.label }}
-			</pkp-button>
-			<pkp-button
-				v-if="cancelButton"
-				v-bind="cancelButton"
-				:is-warnable="true"
-				@click="cancel"
-			>
-				{{ cancelButton.label || t('common.cancel') }}
 			</pkp-button>
 		</button-row>
 	</div>
