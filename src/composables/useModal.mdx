@@ -1,14 +1,10 @@
 import {Primary, Controls, Stories, Meta, ArgTypes} from '@storybook/blocks';
 
-import * as useModalStories from './useModal.stories.js';
-
-<Meta of={useModalStories} />
-
 # useModal
 
 ## openDialog
 
-Dialogs provide a quick way to show a simple confirmation prompt. Import `useModal` composable and use the openDialog() method to create a dialog.
+Dialog purpose is to display simple feedback like success and error messages. Or request confirmation for example before deleting some content. Import `useModal` composable and use the openDialog() method to create a dialog. Check [Dialog](../?path=/docs/components-dialog--docs) component for more details on available props.
 
 ```html
 <template>
@@ -22,7 +18,6 @@ Dialogs provide a quick way to show a simple confirmation prompt. Import `useMod
 
 	function openWarningDialog() {
 		openDialog({
-			name: 'example',
 			title: 'Submit Article',
 			message: 'Are you sure you want to submit this article?',
 			actions: [
@@ -68,5 +63,29 @@ Alternatively its possible to pass component name if its globally registered.
 		openSideModal(SummaryModal, {someProp: 5});
 	}
 </script>
+
+```
+
+### Using openSideModal from Options API Component
+
+Using `openSideModal()` works well also from components that are still created in Options API.
+
+One thing to watch out is reactivity. Most new modals should be used in a way, that are managing its own state and they just return (emit) to the parent, when the modal actions are done. But some of our existing modals have lots of state passed from its parent and its important that modals rerenders as this state changes. With composition API, this works perfectly fine out of the box because we define all the state via `refs`. But when for example boolean is passed (this.isSaving), it just passes the value and modal can't track the changes. This can be compensated by wrapping it as computed property in example below.
+
+```javascript
+
+openVersionModal() {
+	const {openSideModal} = useModal();
+	openSideModal(DoiItemVersionModal, {
+		isSaving: computed(() => this.isSaving),
+		isDeposited: computed(() => this.isDeposited),
+		item: this.item,
+		doiListColumns: this.doiListColumns,
+		mutableDois: this.mutableDois,
+		isEditingDois: computed(() => this.isEditingDois),
+		onSaveDois: this.saveDois,
+		onEditDois: this.editDois,
+	});
+},
 
 ```

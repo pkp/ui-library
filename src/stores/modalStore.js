@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import {ref, markRaw} from 'vue';
+import {ref, markRaw, computed} from 'vue';
 import {t} from '@/utils/i18n';
 export const useModalStore = defineStore('modal', () => {
 	/**
@@ -9,20 +9,23 @@ export const useModalStore = defineStore('modal', () => {
 	 * Dialog is also available inside SideModalBody and level helps to track
 	 * which of the existing dialogs should open
 	 */
-	const dialogLevel = ref(0);
-	function increaseDialogLevel() {
-		dialogLevel.value++;
-	}
 
-	function decreaseDialogLevel() {
-		dialogLevel.value--;
-	}
-
+	const dialogLevel = computed(() => {
+		if (sideModal2?.value?.opened) {
+			return 2;
+		} else if (sideModal1?.value?.opened) {
+			return 1;
+		}
+		return 0;
+	});
 	/** dialogProps coming from openDialog */
 	const dialogProps = ref({});
 	const dialogOpened = ref(false);
 
 	function openDialog(_dialogProps) {
+		if (_dialogProps.bodyComponent) {
+			_dialogProps.bodyComponent = markRaw(_dialogProps.bodyComponent);
+		}
 		dialogProps.value = _dialogProps;
 		dialogOpened.value = true;
 	}
@@ -198,10 +201,8 @@ export const useModalStore = defineStore('modal', () => {
 
 	return {
 		/** dialog level */
-		decreaseDialogLevel,
-		increaseDialogLevel,
-		/** opening dialog */
 		dialogLevel,
+		/** opening dialog */
 		dialogProps,
 		dialogOpened,
 		openDialogNetworkError,

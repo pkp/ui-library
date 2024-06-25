@@ -32,10 +32,10 @@
 						>
 							<div class="flex min-h-12 items-center">
 								<DialogTitle
-									v-if="dialogProps.title"
+									v-if="title"
 									class="m-0 min-w-[1px] overflow-x-hidden overflow-ellipsis whitespace-nowrap px-4 py-2 text-xl-bold"
 								>
-									{{ dialogProps.title }}
+									{{ title }}
 								</DialogTitle>
 								<button
 									class="me-2 ms-auto cursor-pointer border-0 bg-transparent text-center"
@@ -47,22 +47,22 @@
 										:aria-hidden="true"
 									/>
 									<span class="-screenReader">
-										{{ dialogProps.closeLabel || t('common.close') }}
+										{{ t('common.close') }}
 									</span>
 								</button>
 							</div>
 							<div class="modal-content p-4">
-								<div v-html="dialogProps.message" />
+								<div v-html="message" />
 								<component
-									:is="dialogProps.bodyComponent"
-									v-if="dialogProps.bodyComponent"
-									v-bind="dialogProps.bodyProps"
+									:is="bodyComponent"
+									v-if="bodyComponent"
+									v-bind="bodyProps"
 								/>
 							</div>
 							<div class="flex items-center justify-end p-4">
 								<spinner v-if="isLoading" />
 								<pkp-button
-									v-for="action in dialogProps.actions"
+									v-for="action in actions"
 									:key="action.label"
 									class="ms-2"
 									:element="action.element || 'button'"
@@ -86,8 +86,7 @@
 </template>
 
 <script setup>
-import {ref, computed, onMounted, onUnmounted, watch} from 'vue';
-import {storeToRefs} from 'pinia';
+import {ref, watch} from 'vue';
 
 import {
 	Dialog as HLDialog,
@@ -97,17 +96,24 @@ import {
 	TransitionChild,
 } from '@headlessui/vue';
 
-import {useModalStore} from '@/stores/modalStore';
+const props = defineProps({
+	/** Used only internally, don't pass this prop via openDialog */
+	opened: {type: Boolean, default: false},
+	/** Title of the dialog */
+	title: {type: String, required: true},
+	/** Message to be displayed, for more complex messages use bodyComponent&bodyProps */
+	message: {type: String, default: null},
+	/** For more complex messages Vue.js component can be passed */
+	bodyComponent: {type: Object, default: null},
+	/** Props to be passed to bodyComponent */
+	bodyProps: {type: Object, default: null},
+	/** Array of button props to display actions, following props are passed to button component: label, element, href, isPrimary, isWarnable, callback */
+	actions: {type: Array, default: () => []},
+	/** Callback when dialog is being closed by close button or clicking outside of the modal */
+	close: {type: Function, default: null},
+});
 
-const myLevel = ref(0);
-const modalStore = useModalStore();
-const {dialogProps, dialogOpened, dialogLevel} = storeToRefs(modalStore);
-
-const {closeDialog, increaseDialogLevel, decreaseDialogLevel} = modalStore;
-
-const opened = computed(
-	() => dialogOpened.value && myLevel.value === dialogLevel.value,
-);
+const emit = defineEmits(['close']);
 
 const isLoading = ref(false);
 
@@ -115,17 +121,20 @@ const isLoading = ref(false);
 // this is not ideal approach, but given how little state the dialog has
 // its less complex than splitting dialog into two components to have proper life cycle
 // as we do with SideModal and SideModalBody
-watch(opened, (prevOpened, nextOpened) => {
-	if (prevOpened === true && nextOpened === false) {
-		isLoading.value = false;
-	}
-});
+watch(
+	() => props.opened,
+	(prevOpened, nextOpened) => {
+		if (prevOpened === true && nextOpened === false) {
+			isLoading.value = false;
+		}
+	},
+);
 
 function onClose() {
-	if (dialogProps.value.close) {
-		dialogProps.value.close();
+	if (props.close) {
+		props.close();
 	}
-	closeDialog();
+	emit('close');
 }
 
 function fireCallback(callback) {
@@ -136,23 +145,4 @@ function fireCallback(callback) {
 		});
 	}
 }
-
-onMounted(() => {
-	increaseDialogLevel();
-	myLevel.value = dialogLevel.value;
-});
-
-onUnmounted(() => {
-	decreaseDialogLevel();
-});
 </script>
-
-<style scoped>
-.modal-content > p:first-child {
-	margin-top: 0;
-}
-
-.modal-content > p:last-child {
-	margin-bottom: 0;
-}
-</style>

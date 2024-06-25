@@ -3,6 +3,7 @@ import {ref} from 'vue';
 import SideModal from './SideModal.vue';
 import {useModal} from '@/composables/useModal.js';
 import SideModalBody from './SideModalBody.vue';
+import SideModalLayoutBasic from './SideModalLayoutBasic.vue';
 import SideModalLayout2Columns from './SideModalLayout2Columns.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import cloneDeep from 'clone-deep';
@@ -18,7 +19,7 @@ export default {
 };
 
 const SideModalBase = {
-	components: {SideModalBody},
+	components: {SideModalBody, SideModalLayoutBasic},
 	template: `
 		<SideModalBody>
 			<template #pre-title>325</template>
@@ -35,8 +36,7 @@ const SideModalBase = {
 				</PkpButton>
 			</template>
 
-			<div class="p-4">
-				<div class="bg-secondary p-4">CONTENT</div>
+			<SideModalLayoutBasic>CONTENT</SideModalLayoutBasic>
 			</div>
 		</SideModalBody>
 	`,

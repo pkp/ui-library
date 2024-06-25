@@ -1,10 +1,11 @@
+import PkpDialog from './Dialog.vue';
+import {useModal} from '@/composables/useModal.js';
 import {within, userEvent} from '@storybook/test';
-
-import {useModal} from './useModal';
 import PkpButton from '@/components/Button/Button.vue';
 
 export default {
-	title: 'composables/useModal',
+	title: 'Components/Dialog',
+	component: PkpDialog,
 	render: (args) => ({
 		components: {PkpButton},
 		setup() {
@@ -16,6 +17,11 @@ export default {
 			<PkpButton @click="openDialog(args)">{{args.buttonName}}</PkpButton> 
 		`,
 	}),
+	decorators: [
+		() => ({
+			template: '<div style="height: 400px"><story/></div>',
+		}),
+	],
 };
 
 export const DialogBasic = {
@@ -47,11 +53,51 @@ export const DialogBasic = {
 
 		await user.click(canvas.getByText('Basic Example'));
 	},
-	decorators: [
-		() => ({
-			template: '<div style="height: 400px"><story/></div>',
-		}),
-	],
+};
+
+const DialogBodyComponent = {
+	template: `
+    	<p>{{ 'Some DOI(s) could not be updated' }}</p>
+        <ul>
+            <li v-for="errorMessage in failedDoiActions" :key="errorMessage.index">
+                {{ errorMessage }}
+            </li>
+        </ul>
+    `,
+	props: {
+		failedDoiActions: {type: Array, required: true},
+	},
+};
+
+export const WithBodyComponent = {
+	args: {
+		buttonName: 'With Body Component',
+		title: 'Submit Article',
+		bodyComponent: DialogBodyComponent,
+		bodyProps: {
+			failedDoiActions: ['First error to display', 'Second error to display'],
+		},
+		actions: [
+			{
+				label: 'Ok',
+				isPrimary: true,
+				callback: (close) => {
+					// user has confirmed
+					close();
+				},
+			},
+		],
+		close: () => {
+			// dialog has been closed
+		},
+	},
+	play: async ({canvasElement}) => {
+		// Assigns canvas to the component root element
+		const canvas = within(canvasElement);
+		const user = userEvent.setup();
+
+		await user.click(canvas.getByText('With Body Component'));
+	},
 };
 
 export const DialogComplex = {
@@ -91,9 +137,4 @@ export const DialogComplex = {
 
 		await user.click(canvas.getByText('Full Example'));
 	},
-	decorators: [
-		() => ({
-			template: '<div style="height: 400px"><story/></div>',
-		}),
-	],
 };
