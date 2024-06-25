@@ -321,4 +321,3 @@ export default {
 	}
 }
 </style>
-./AnnouncementsEditModal.vue
