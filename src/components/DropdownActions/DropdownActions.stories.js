@@ -45,6 +45,47 @@ const downloadActions = [
 ];
 
 export const Default = {
+	render: (args) => ({
+		components: {DropdownActions},
+		setup() {
+			function authorPdf() {
+				console.log('authorPdf clicked');
+			}
+
+			function authorXml() {
+				console.log('authorXml clicked');
+			}
+
+			function editorPdf() {
+				console.log('editorPdf clicked');
+			}
+
+			function editorXml() {
+				console.log('editorXml clicked');
+			}
+
+			function handleAction(name) {
+				switch (name) {
+					case 'authorPdf':
+						authorPdf();
+						break;
+					case 'authorXml':
+						authorXml();
+						break;
+					case 'editorPdf':
+						editorPdf();
+						break;
+					case 'editorXml':
+						editorXml();
+						break;
+					default:
+						console.error(`No handler for action: ${name}`);
+				}
+			}
+			return {args, handleAction};
+		},
+		template: '<DropdownActions v-bind="args" @action="handleAction" />',
+	}),
 	args: {
 		actions: downloadActions,
 		label: 'Download Review Form',
@@ -110,6 +151,7 @@ export const EllipsisMenu = {
 };
 
 export const RightAlignedMenu = {
+	...Default,
 	args: {
 		actions: downloadActions,
 		label: 'Right Aligned Menu',
