@@ -109,12 +109,13 @@ defineProps({
 	},
 });
 
-const emit = defineEmits(['action']);
+const emit = defineEmits([
+	/** When a button is clicked from the dropdown menu */
+	'action',
+]);
 
 const emitAction = (action) => {
-	if (action.url) {
-		window.location.href = action.url;
-	} else if (action.name) {
+	if (action.name) {
 		emit('action', action.name);
 	}
 };
