@@ -36,7 +36,11 @@
 							: 'ltr:right-0 ltr:origin-top-right rtl:left-0 rtl:origin-top-right'
 					"
 				>
-					<MenuItem v-for="(action, i) in actions" :key="i" v-slot="{active}">
+					<MenuItem
+						v-for="(action, i) in actions"
+						:key="i"
+						v-slot="{active, close}"
+					>
 						<div class="min-w-[96px]">
 							<PkpButton
 								v-if="isValidAction(action)"
@@ -48,7 +52,12 @@
 								:class="i !== actions.length - 1 ? 'border-b' : ''"
 								size-variant="fullWidth"
 								class="border-light"
-								@click="action.name"
+								@click="
+									() => {
+										emitAction(action);
+										close();
+									}
+								"
 							>
 								{{ action.label }}
 							</PkpButton>
@@ -99,6 +108,16 @@ defineProps({
 		validator: (direction) => ['left', 'right'].includes(direction),
 	},
 });
+
+const emit = defineEmits(['action']);
+
+const emitAction = (action) => {
+	if (action.url) {
+		window.location.href = action.url;
+	} else if (action.name) {
+		emit('action', action.name);
+	}
+};
 
 const isValidAction = (action) => {
 	return action?.label && (action?.url || action?.name);
