@@ -119,7 +119,7 @@
 						@blur="() => (isFocused = false)"
 					/>
 					<ComboboxOptions
-						v-if="suggestions.length || (allowCustom && inputValue.trim().length)"
+						v-if="suggestions.length || (allowCustom && inputValue?.length)"
 						class="autosuggest__results-container autosuggest__results"
 					>
 						<ComboboxOption
@@ -350,7 +350,7 @@ export default {
 		 * Get suggestions from the API url
 		 */
 		getSuggestions: debounce(function () {
-			if (!this.inputValue.trim()) {
+			if (!this.inputValue) {
 				this.suggestions = [];
 				return;
 			}
@@ -360,7 +360,7 @@ export default {
 				type: 'GET',
 				data: {
 					...this.getParams,
-					searchPhrase: this.inputValue.trim(),
+					searchPhrase: this.inputValue,
 				},
 				error(r) {
 					self.ajaxErrorCallback(r);
@@ -370,7 +370,7 @@ export default {
 				},
 			});
 		}, 250),
-		
+
 		/**
 		 * Add a suggested item to the list of selected items
 		 *
