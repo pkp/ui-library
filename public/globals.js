@@ -341,14 +341,14 @@ window.pkp = {
 		'form.saved': 'Saved',
 		'grid.action.sort': 'Sort',
 		'help.help': 'Help',
-		'invitation.orcid.message': '##invitation.orcid.message##',
-		'invitation.role.addRole.button': '##invitation.role.addRole.button##',
-		'invitation.role.dateEnd': '##invitation.role.dateEnd##',
-		'invitation.role.dateStart': '##invitation.role.dateStart##',
-		'invitation.role.masthead': '##invitation.role.masthead##',
+		'invitation.orcid.message': 'On accepting the invite, the user will redirected to ORCID to verify their account, if the wish to',
+		'invitation.role.addRole.button': 'Add Another Role',
+		'invitation.role.dateEnd': 'End Date',
+		'invitation.role.dateStart': 'Start Date',
+		'invitation.role.masthead': 'Journal Masthead',
 		'invitation.role.removeRole.button':
-			'##invitation.role.removeRole.button##',
-		'invitation.role.selectRole': '##invitation.role.selectRole##',
+			'Remove Role',
+		'invitation.role.selectRole': 'Select a new role',
 		'invitation.wizard.completeSteps': '##invitation.wizard.completeSteps##',
 		'issue.issue': 'Issue',
 		'list.collapseAll': 'Collapse all',
@@ -527,6 +527,10 @@ window.pkp = {
 		'user.orcid': 'ORCID iD',
 		'user.username': 'Username',
 		'validator.required': 'This field is required.',
+		'invitation.notification.closeBtn':'View all users',
+		'user.password': 'Password',
+		'invitation.orcid.acceptInvitation.message':'Not verified. You can verify your ORCID iD from your profile section in OJS',
+
 	},
 
 	tinyMCE: {
