@@ -436,10 +436,13 @@ window.pkp = {
 		'orcid.field.verification.request': 'Request verification',
 		'orcid.field.verification.requested': 'Verification requested!',
 		'orcid.field.authorEmailModal.title': 'Request ORCID verification',
-		'orcid.field.authorEmailModal.message': 'Would you like to send an email to this author requesting they verify their ORCID?',
+		'orcid.field.authorEmailModal.message':
+			'Would you like to send an email to this author requesting they verify their ORCID?',
 		'orcid.field.deleteOrcidModal.title': 'Delete ORCID',
-		'orcid.field.deleteOrcidModal.message': 'Are you sure you want to remove this ORCID?',
-		'orcid.field.unverified.shouldRequest': 'This ORCID has not been verified. Please remove this unverified ORCID and request verification from the user/author directly.',
+		'orcid.field.deleteOrcidModal.message':
+			'Are you sure you want to remove this ORCID?',
+		'orcid.field.unverified.shouldRequest':
+			'This ORCID has not been verified. Please remove this unverified ORCID and request verification from the user/author directly.',
 		'publication.jats.autoCreatedMessage':
 			'This JATS file is generated automatically by the submission metadata',
 		'publication.jats.confirmDeleteFileButton': 'Delete JATS File',

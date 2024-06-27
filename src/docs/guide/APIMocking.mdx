@@ -1,0 +1,23 @@
+import {Meta} from '@storybook/blocks';
+
+<Meta title="Guide/API Mocking" />
+
+# API Mocking
+
+Everything that run in storybook runs indepdendently from our PHP server. Therefore any interactions with API needs to be mocked. Good example how this can be achieved with [MSW](https://mswjs.io) library can be found in `ExamplePage.stories.js` file.
+
+## API interactions with real PHP backend
+
+In case the component/page is implemented in isolation and new API is being created - its possible to point storybook to use this real API for testing purposes.
+
+To overcome CORS challenges its achieved by adding simple proxy to storybook (`./storybook/middleware.js`).
+
+Assuming that you run ojs/omp/ops via php development server (`php -S localhost:7001`), you can run storybook with alternative command:
+
+`npm run storybookWithProxy`
+
+Or if you want to customise the port, you can run it directly with following command
+
+`STORYBOOK_APP_DOMAIN_URL=http://localhost:7878 npm run storybook`
+
+As result you will be able to access your instance via storybook url (`http://localhost:6006/index.php/publicknowledge/en/login`) and for example to login to create new session, which will than be used by the page/component in storybook as well.
