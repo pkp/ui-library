@@ -1,5 +1,5 @@
 import {inject} from 'vue';
-import {defineComponentStore} from "@/utils/defineComponentStore";
+import {defineComponentStore} from '@/utils/defineComponentStore';
 
 export const useWorkflowLogResponseForModalStore = defineComponentStore(
 	'workflowLogResponseForModal',
@@ -16,5 +16,5 @@ export const useWorkflowLogResponseForModalStore = defineComponentStore(
 		}
 
 		return {form, formSuccess, updateForm};
-	}
-)
+	},
+);
