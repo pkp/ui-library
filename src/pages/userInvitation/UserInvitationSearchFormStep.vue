@@ -70,7 +70,7 @@ const searchPhrase = computed(() => {
 
 async function searchUser() {
 	if (searchPhrase.value !== '') {
-		const {apiUrl} = useUrl('users');
+		const {apiUrl} = useUrl('_user');
 
 		const {data: userData, fetch} = useFetch(apiUrl, {
 			query: {searchPhrase: searchPhrase.value, status: 'all'},
