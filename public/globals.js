@@ -25,7 +25,7 @@ window.pkp = {
 	 *
 	 */
 	context: {
-		apiBaseUrl: '/index.php/publicknowledge/api/v1/',
+		apiBaseUrl: 'https://mock/index.php/publicknowledge/api/v1/',
 		pageBaseUrl: 'https://mock/index.php/publicknowledge/',
 	},
 	/**
