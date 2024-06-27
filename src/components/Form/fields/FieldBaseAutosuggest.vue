@@ -114,12 +114,12 @@
 						ref="autosuggestInput"
 						class="pkpAutosuggest__input"
 						v-bind="inputProps"
-						@change="inputValue = $event.target.value"
+						@change="inputValue = $event.target.value.trim()"
 						@focus="() => (isFocused = true)"
 						@blur="() => (isFocused = false)"
 					/>
 					<ComboboxOptions
-						v-if="suggestions.length || (allowCustom && inputValue?.length)"
+						v-if="suggestions.length || (allowCustom && inputValue.trim().length)"
 						class="autosuggest__results-container autosuggest__results"
 					>
 						<ComboboxOption
@@ -350,7 +350,7 @@ export default {
 		 * Get suggestions from the API url
 		 */
 		getSuggestions: debounce(function () {
-			if (!this.inputValue) {
+			if (!this.inputValue.trim()) {
 				this.suggestions = [];
 				return;
 			}
@@ -360,7 +360,7 @@ export default {
 				type: 'GET',
 				data: {
 					...this.getParams,
-					searchPhrase: this.inputValue,
+					searchPhrase: this.inputValue.trim(),
 				},
 				error(r) {
 					self.ajaxErrorCallback(r);
@@ -370,7 +370,7 @@ export default {
 				},
 			});
 		}, 250),
-
+		
 		/**
 		 * Add a suggested item to the list of selected items
 		 *
