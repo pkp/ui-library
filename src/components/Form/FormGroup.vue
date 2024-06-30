@@ -93,18 +93,7 @@ export default {
 		FieldHtml,
 		FieldMetadataSetting,
 		FieldOptions,
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 		FieldOrcid,
-=======
-		FieldCheckbox,
-=======
->>>>>>> c89f0b3 (pkp/pkp-lib#5885 removed unnecessary fields and controls with field range component enhancement)
-		FieldRangeSlider,
->>>>>>> 81f8819 (pkp/pkp-lib#5885 updated and added new UI component)
-=======
->>>>>>> 7dabf2c (pkp/pkp-lib#5885 updated using new slider component)
 		FieldPreparedContent,
 		FieldRadioInput,
 		FieldRichTextarea,
