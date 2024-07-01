@@ -264,7 +264,7 @@ export function useSummaryConfig() {
 			{
 				component: 'ReviewerManager',
 				props: {
-					reviewAssignments: submission.reviewAssignments,
+					submission: submission,
 				},
 				filters: {
 					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
@@ -274,7 +274,7 @@ export function useSummaryConfig() {
 			{
 				component: 'ReviewerManager',
 				props: {
-					reviewAssignments: submission.reviewAssignments,
+					submission: submission,
 					redactedForAuthors: true,
 				},
 				filters: {

@@ -65,6 +65,9 @@ export const useModalStore = defineStore('modal', () => {
 	// object structure: { modalId, props, opened, component}
 	const sideModal2 = ref(null);
 
+	// object structure: { modalId, props, opened, component}
+	const sideModal3 = ref(null);
+
 	// creating unique modalId to ensure correct modal is being closed
 	let modalIdCounter = 1;
 
@@ -104,6 +107,8 @@ export const useModalStore = defineStore('modal', () => {
 			sideModal1.value = opts;
 		} else if (!sideModal2.value?.opened || sideModal2.value?.toBeClosed) {
 			sideModal2.value = opts;
+		} else if (!sideModal3.value?.opened || sideModal3.value?.toBeClosed) {
+			sideModal3.value = opts;
 		}
 	}
 
@@ -132,6 +137,10 @@ export const useModalStore = defineStore('modal', () => {
 
 		if (sideModal2?.value?.modalId === _modalId && sideModal2?.value?.opened) {
 			modalToClose = sideModal2;
+		}
+
+		if (sideModal3?.value?.modalId === _modalId && sideModal3?.value?.opened) {
+			modalToClose = sideModal3;
 		}
 
 		// it might have been replaced with other modal
@@ -182,6 +191,10 @@ export const useModalStore = defineStore('modal', () => {
 		if (sideModal2.value?.modalId === modalId) {
 			sideModal2.value.toBeClosed = true;
 		}
+
+		if (sideModal3.value?.modalId === modalId) {
+			sideModal3.value.toBeClosed = true;
+		}
 	});
 
 	// Listener for close modal requests coming from legacy handler.
@@ -214,5 +227,6 @@ export const useModalStore = defineStore('modal', () => {
 		isSideModalOpened,
 		sideModal1,
 		sideModal2,
+		sideModal3,
 	};
 });

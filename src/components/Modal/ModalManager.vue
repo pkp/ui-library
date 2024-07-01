@@ -24,6 +24,14 @@
 				v-bind="dialogProps"
 				@close="closeDialog"
 			></PkpDialog>
+			<SideModal
+				close-label="Close"
+				:modal-level="3"
+				:open="sideModal3?.opened || false"
+				@close="() => close(sideModal3?.modalId)"
+			>
+				<component :is="component3" v-bind="sideModal3?.props" />
+			</SideModal>
 		</SideModal>
 	</SideModal>
 	<PkpDialog
@@ -45,8 +53,14 @@ import WorkflowLogResponseForModal from '@/pages/workflow/WorkflowLogResponseFor
 const GlobalModals = {LegacyAjax, WorkflowLogResponseForModal};
 
 const modalStore = useModalStore();
-const {sideModal1, sideModal2, dialogProps, dialogOpened, dialogLevel} =
-	storeToRefs(useModalStore());
+const {
+	sideModal1,
+	sideModal2,
+	sideModal3,
+	dialogProps,
+	dialogOpened,
+	dialogLevel,
+} = storeToRefs(useModalStore());
 
 // Component can be either string or vue component
 const component1 = computed(() => {
@@ -61,6 +75,13 @@ const component2 = computed(() => {
 		return null;
 	}
 	return GlobalModals[sideModal2.value.component] || sideModal2.value.component;
+});
+
+const component3 = computed(() => {
+	if (!sideModal3.value?.component) {
+		return null;
+	}
+	return GlobalModals[sideModal3.value.component] || sideModal3.value.component;
 });
 
 function close(modalId) {

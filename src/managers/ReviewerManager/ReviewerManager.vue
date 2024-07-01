@@ -15,6 +15,7 @@
 					{{ t('dashboard.summary.reviewerStatus') }}
 				</TableColumn>
 				<TableColumn>{{ t('common.type"') }}</TableColumn>
+				<TableColumn>{{ 'action (t)' }}</TableColumn>
 			</TableHeader>
 			<TableBody>
 				<TableRow
@@ -43,6 +44,10 @@
 							/>
 						</span>
 					</TableCell>
+					<ReviewerCellActions
+						:review-assignment="reviewAssignment"
+						:submission="submission"
+					></ReviewerCellActions>
 				</TableRow>
 			</TableBody>
 		</PkpTable>
@@ -56,6 +61,7 @@ import TableHeader from '@/components/TableNext/TableHeader.vue';
 import TableBody from '@/components/TableNext/TableBody.vue';
 import TableRow from '@/components/TableNext/TableRow.vue';
 import TableCell from '@/components/TableNext/TableCell.vue';
+import ReviewerCellActions from './ReviewerCellActions.vue';
 import Icon from '@/components/Icon/Icon.vue';
 
 import {useReviewerManagerStore} from './reviewerManagerStore.js';
@@ -67,8 +73,8 @@ const {t} = useLocalize();
 const headingId = generateId();
 
 const props = defineProps({
+	submission: {type: Object, required: true},
 	redactedForAuthors: {type: Boolean, required: false, default: false},
-	reviewAssignments: {type: Array, required: true},
 });
 
 const reviewerStore = useReviewerManagerStore(props);
