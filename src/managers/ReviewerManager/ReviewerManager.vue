@@ -14,7 +14,7 @@
 				<TableColumn v-if="!redactedForAuthors">
 					{{ t('dashboard.summary.reviewerStatus') }}
 				</TableColumn>
-				<TableColumn>{{ t('common.type"') }}</TableColumn>
+				<TableColumn>{{ t('common.type') }}</TableColumn>
 				<TableColumn>{{ 'action (t)' }}</TableColumn>
 			</TableHeader>
 			<TableBody>
