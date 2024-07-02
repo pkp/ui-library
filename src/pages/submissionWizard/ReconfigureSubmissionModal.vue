@@ -17,6 +17,9 @@
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
 import PkpForm from '@/components/Form/Form.vue';
+import {useLocalize} from '@/composables/useLocalize';
+
+const {t} = useLocalize();
 
 defineProps({
 	reconfigureSubmissionForm: {type: Object, required: true},

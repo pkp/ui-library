@@ -1,7 +1,7 @@
 <template>
 	<p>{{ t('manager.dois.update.partialFailure') }}</p>
-	<ul>
-		<li v-for="errorMessage in failedDoiActions" :key="errorMessage.index">
+	<ul class="list-inside list-disc">
+		<li v-for="(errorMessage, index) in failedDoiActions" :key="index">
 			{{ errorMessage }}
 		</li>
 	</ul>

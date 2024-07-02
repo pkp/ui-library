@@ -423,4 +423,3 @@ export default {
 	}
 }
 </style>
-./HighlightsEditModal.vue
