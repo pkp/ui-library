@@ -4,6 +4,12 @@ import Modal from '../Modal/Modal.vue';
 import PkpFilter from '../Filter/Filter.vue';
 import Search from '../Search/Search.vue';
 import dialog from '../../mixins/dialog';
+import EditMailableModal from '@/pages/manageEmails/EditMailableModal.vue';
+import EditTemplateModal from '@/pages/manageEmails/EditTemplateModal.vue';
+import {useLocalize} from '@/composables/useLocalize';
+import {useModal} from '@/composables/useModal';
+
+const {t} = useLocalize();
 
 export default {
 	name: 'ManageEmailsPage',
@@ -36,8 +42,6 @@ export default {
 			mailables: [],
 			/** The URL to the `/mailables` endpoint in the REST API. */
 			mailablesApiUrl: '',
-			/**  Used to reset focus when a modal is closed.  */
-			resetFocusTo: {},
 			/** The value of the search input.  */
 			searchPhrase: '',
 			/** A "clean" copy of the form to add or edit an `EmailTemplate`. The `currentTemplateForm` is a copy of this form that has been modified to add or edit a specific template. */
@@ -296,8 +300,8 @@ export default {
 		 * Fired when the mailable modal is closed
 		 */
 		closeMailableModal() {
-			this.isModalOpenedMailable = false;
-			this.resetFocus();
+			const {closeSideModal} = useModal();
+			closeSideModal(EditMailableModal);
 			setTimeout(() => {
 				this.currentMailable = {};
 				this.currentTemplate = {};
@@ -315,9 +319,15 @@ export default {
 		openMailable(mailable) {
 			if (mailable.supportsTemplates) {
 				this.getMailable(mailable, (mailable) => {
-					this.resetFocusTo = document.activeElement;
 					this.currentMailable = mailable;
-					this.isModalOpenedMailable = true;
+					const {openSideModal} = useModal();
+					openSideModal(EditMailableModal, {
+						title: mailable ? mailable.name : '',
+						mailable: this.currentMailable,
+						onOpenTemplate: this.openTemplate,
+						onConfirmResetTemplate: this.confirmRemoveTemplate,
+						onConfirmRemoveTemplate: this.confirmRemoveTemplate,
+					});
 				});
 			} else {
 				this.getTemplate(mailable.emailTemplateKey, (template) => {
@@ -334,9 +344,18 @@ export default {
 		 */
 		openTemplate(template) {
 			template = template || {};
-			this.resetFocusTo = document.activeElement;
 			this.currentTemplate = template;
-			this.$nextTick(() => (this.isModalOpenedTemplate = true));
+			const {openSideModal} = useModal();
+			this.$nextTick(() =>
+				openSideModal(EditTemplateModal, {
+					title: this.currentTemplate
+						? t('manager.mailables.editTemplate')
+						: t('manager.emails.addEmail'),
+					currentTemplateForm: this.currentTemplateForm,
+					onUpdateCurrentTemplateForm: this.updateCurrentTemplateForm,
+					onTemplateSaved: this.templateSaved,
+				}),
+			);
 		},
 
 		/**
@@ -353,17 +372,6 @@ export default {
 			let newFilters = {...this.activeFilters};
 			newFilters[param] = newFilters[param].filter((v) => v !== value);
 			this.activeFilters = newFilters;
-		},
-
-		/**
-		 * A helper function to move the focus back to the element
-		 * it was last at. This is usually used with modals to restore
-		 * the focus after a modal is closed.
-		 */
-		resetFocus() {
-			if (this.resetFocusTo) {
-				this.resetFocusTo.focus();
-			}
 		},
 
 		/**
@@ -455,9 +463,9 @@ export default {
 		 * Fired when the email template modal has been closed
 		 */
 		closeTemplateModal() {
-			this.isModalOpenedTemplate = false;
+			const {closeSideModal} = useModal();
+			closeSideModal(EditTemplateModal);
 			if (this.currentMailable.supportsTemplates) {
-				this.resetFocus();
 				setTimeout(() => {
 					this.currentTemplate = {};
 				}, 300);

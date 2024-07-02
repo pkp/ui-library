@@ -16,41 +16,18 @@
 				</pkp-button>
 			</template>
 		</action-panel>
-		<modal
-			:close-label="t('common.close')"
-			name="attacher"
-			:title="currentAttacher ? currentAttacher.label : ''"
-			:open="isModalOpenedAttacher"
-			@close="isModalOpenedAttacher = false"
-		>
-			<component
-				:is="currentAttacher.component"
-				v-if="currentAttacher"
-				v-bind="currentAttacher"
-				@selected:files="attachFiles"
-				@cancel="cancel"
-			/>
-		</modal>
 	</div>
 </template>
 
 <script>
 import ActionPanel from '../ActionPanel/ActionPanel.vue';
-import FileAttacherFileStage from './FileAttacherFileStage.vue';
-import FileAttacherLibrary from './FileAttacherLibrary.vue';
-import FileAttacherReviewFiles from './FileAttacherReviewFiles.vue';
-import FileAttacherUpload from './FileAttacherUpload.vue';
-import Modal from '../Modal/Modal.vue';
+import AttacherModal from './AttacherModal.vue';
+import {useModal} from '@/composables/useModal';
 
 export default {
 	name: 'FileAttacher',
 	components: {
 		ActionPanel,
-		FileAttacherFileStage,
-		FileAttacherLibrary,
-		FileAttacherReviewFiles,
-		FileAttacherUpload,
-		Modal,
 	},
 	props: {
 		/** An array of file attachers. See guidance in storybook.  */
@@ -67,7 +44,6 @@ export default {
 		return {
 			currentAttacher: null,
 			resetFocusTo: null,
-			isModalOpenedAttacher: false,
 		};
 	},
 	methods: {
@@ -76,14 +52,17 @@ export default {
 		 */
 		attachFiles(files) {
 			this.$emit('attached:files', this.currentAttacher.component, files);
-			this.isModalOpenedAttacher = false;
+			const {closeSideModal} = useModal();
+			closeSideModal(AttacherModal);
 		},
 
 		/**
 		 * Close the current attacher
 		 */
 		cancel() {
-			this.isModalOpenedAttacher = false;
+			const {closeSideModal} = useModal();
+			closeSideModal(AttacherModal);
+
 			this.$nextTick(() => (this.currentAttacher = null));
 		},
 
@@ -94,7 +73,13 @@ export default {
 		 */
 		setAttacher(attacher) {
 			this.currentAttacher = attacher;
-			this.isModalOpenedAttacher = true;
+			const {openSideModal} = useModal();
+			openSideModal(AttacherModal, {
+				title: this.currentAttacher ? this.currentAttacher.label : '',
+				currentAttacher: this.currentAttacher,
+				onAttachFiles: this.attachFiles,
+				onCancel: this.cancel,
+			});
 		},
 	},
 };

@@ -36,7 +36,7 @@
 								:disabled="isLoading"
 								@click="openPreviewModal"
 							>
-								{{ i18nPreview }}
+								{{ t('contributor.listPanel.preview') }}
 							</pkp-button>
 							<pkp-button
 								v-if="
@@ -47,7 +47,7 @@
 								:disabled="isLoading"
 								@click="openAddModal"
 							>
-								{{ i18nAddContributor }}
+								{{ t('grid.action.addContributor') }}
 							</pkp-button>
 						</template>
 					</pkp-header>
@@ -81,14 +81,14 @@
 							v-if="publication.primaryContactId == item.id"
 							:is-primary="true"
 						>
-							{{ i18nPrimaryContact }}
+							{{ t('author.users.contributor.principalContact') }}
 						</badge>
 						<pkp-button
 							v-else
 							:disabled="isLoading"
 							@click="setPrimaryContact(item.id)"
 						>
-							{{ i18nSetPrimaryContact }}
+							{{ t('author.users.contributor.setPrincipalContact') }}
 						</pkp-button>
 						<pkp-button :disabled="isLoading" @click="openEditModal(item.id)">
 							{{ t('common.edit') }}
@@ -103,74 +103,26 @@
 					</template>
 				</template>
 			</list-panel>
-			<modal
-				:close-label="t('common.close')"
-				:name="formModal"
-				:title="activeFormTitle"
-				:open="isModalOpenedForm"
-				@close="closeFormModal"
-			>
-				<pkp-form
-					v-bind="activeForm"
-					@set="updateForm"
-					@success="formSuccess"
-				/>
-			</modal>
-			<modal
-				:close-label="t('common.close')"
-				:name="previewModal"
-				:title="i18nContributors"
-				:open="isModalOpenedPreview"
-				@close="isModalOpenedPreview = false"
-			>
-				<p>
-					{{ i18nPreviewDescription }}
-				</p>
-				<table class="pkpTable">
-					<thead>
-						<tr>
-							<th>{{ i18nFormat }}</th>
-							<th>{{ i18nDisplay }}</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>{{ i18nAbbreviated }}</td>
-							<td>{{ publication.authorsStringShort }}</td>
-						</tr>
-						<tr>
-							<td>
-								{{ i18nPublicationLists }}
-							</td>
-							<td>{{ publication.authorsStringIncludeInBrowse }}</td>
-						</tr>
-						<tr>
-							<td>{{ i18nFull }}</td>
-							<td>{{ publication.authorsString }}</td>
-						</tr>
-					</tbody>
-				</table>
-			</modal>
 		</slot>
 	</div>
 </template>
 
 <script>
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
-import Modal from '@/components/Modal/Modal.vue';
 import Orderer from '@/components/Orderer/Orderer.vue';
-import PkpForm from '@/components/Form/Form.vue';
 import PkpHeader from '@/components/Header/Header.vue';
+import ContributorsPreviewModal from './ContributorsPreviewModal.vue';
+import ContributorsEditModal from './ContributorsEditModal.vue';
+
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
 import cloneDeep from 'clone-deep';
+import {useModal} from '@/composables/useModal';
 
 export default {
 	components: {
 		ListPanel,
-		Modal,
 		Orderer,
-		PkpForm,
 		PkpHeader,
 	},
 	mixins: [ajaxError, dialog],
@@ -205,66 +157,6 @@ export default {
 			type: Object,
 			required: true,
 		},
-		i18nAbbreviated: {
-			type: String,
-			required: true,
-		},
-		i18nAddContributor: {
-			type: String,
-			required: true,
-		},
-		i18nConfirmDelete: {
-			type: String,
-			required: true,
-		},
-		i18nContributors: {
-			type: String,
-			required: true,
-		},
-		i18nDisplay: {
-			type: String,
-			required: true,
-		},
-		i18nDeleteContributor: {
-			type: String,
-			required: true,
-		},
-		i18nEditContributor: {
-			type: String,
-			required: true,
-		},
-		i18nFormat: {
-			type: String,
-			required: true,
-		},
-		i18nFull: {
-			type: String,
-			required: true,
-		},
-		i18nPreview: {
-			type: String,
-			required: true,
-		},
-		i18nPreviewDescription: {
-			type: String,
-			required: true,
-		},
-		i18nPrimaryContact: {
-			type: String,
-			required: true,
-		},
-		i18nPublicationLists: {
-			type: String,
-			required: true,
-		},
-		i18nSaveOrder: {
-			type: String,
-			required: true,
-		},
-		i18nSetPrimaryContact: {
-			type: String,
-			required: true,
-		},
 	},
 	data() {
 		return {
@@ -273,8 +165,6 @@ export default {
 			isOrdering: false,
 			isLoading: false,
 			itemsBeforeReordering: null,
-			isModalOpenedForm: false,
-			isModalOpenedPreview: false,
 		};
 	},
 	computed: {
@@ -319,7 +209,9 @@ export default {
 		 * @return {String}
 		 */
 		orderingLabel() {
-			return this.isOrdering ? this.i18nSaveOrder : this.t('common.order');
+			return this.isOrdering
+				? this.t('grid.action.saveOrdering')
+				: this.t('common.order');
 		},
 	},
 	methods: {
@@ -338,7 +230,8 @@ export default {
 		 * @param {Object} event
 		 */
 		closeFormModal(event) {
-			this.isModalOpenedForm = false;
+			const {closeSideModal} = useModal();
+			closeSideModal(ContributorsEditModal);
 			this.activeForm = null;
 			this.activeFormTitle = '';
 		},
@@ -377,7 +270,10 @@ export default {
 			this.isLoading = true;
 
 			this.getAndUpdatePublication(() => {
-				this.isModalOpenedPreview = true;
+				const {openSideModal} = useModal();
+				openSideModal(ContributorsPreviewModal, {
+					publication: this.publication,
+				});
 			});
 		},
 
@@ -389,8 +285,14 @@ export default {
 			activeForm.action = this.contributorsApiUrl;
 			activeForm.method = 'POST';
 			this.activeForm = activeForm;
-			this.activeFormTitle = this.i18nAddContributor;
-			this.isModalOpenedForm = true;
+			this.activeFormTitle = this.t('grid.action.addContributor');
+			const {openSideModal} = useModal();
+			openSideModal(ContributorsEditModal, {
+				title: this.activeFormTitle,
+				activeForm: this.activeForm,
+				onUpdateForm: this.updateForm,
+				onFormSuccess: this.formSuccess,
+			});
 		},
 
 		/**
@@ -403,13 +305,13 @@ export default {
 
 			this.openDialog({
 				name: 'delete',
-				title: this.i18nDeleteContributor,
-				message: this.replaceLocaleParams(this.i18nConfirmDelete, {
+				title: this.t('grid.action.deleteContributor'),
+				message: this.t('grid.action.deleteContributor.confirmationMessage', {
 					name: contributor.fullName,
 				}),
 				actions: [
 					{
-						label: this.i18nDeleteContributor,
+						label: this.t('grid.action.deleteContributor'),
 						isWarnable: true,
 						callback: (close) => {
 							this.isLoading = true;
@@ -485,8 +387,14 @@ export default {
 						return field;
 					});
 					this.activeForm = activeForm;
-					this.activeFormTitle = this.i18nEditContributor;
-					this.isModalOpenedForm = true;
+					this.activeFormTitle = this.t('grid.action.edit');
+					const {openSideModal} = useModal();
+					openSideModal(ContributorsEditModal, {
+						title: this.activeFormTitle,
+						activeForm: this.activeForm,
+						onUpdateForm: this.updateForm,
+						onFormSuccess: this.formSuccess,
+					});
 				},
 				complete(r) {
 					this.isLoading = false;
@@ -501,7 +409,11 @@ export default {
 		 * @param {Object} data
 		 */
 		updateForm(formId, data) {
-			let activeForm = {...this.activeForm};
+			if (!this.activeForm) {
+				return;
+			}
+
+			let activeForm = this.activeForm;
 			Object.keys(data).forEach(function (key) {
 				activeForm[key] = data[key];
 			});

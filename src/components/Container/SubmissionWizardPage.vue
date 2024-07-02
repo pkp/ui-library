@@ -4,6 +4,7 @@ import ButtonRow from '../ButtonRow/ButtonRow.vue';
 import ContributorsListPanel from '../ListPanel/contributors/ContributorsListPanel.vue';
 import File from '../File/File.vue';
 import Modal from '../Modal/Modal.vue';
+import ReconfigureSubmissionModal from '@/pages/submissionWizard/ReconfigureSubmissionModal.vue';
 import SubmissionFilesListPanel from '../ListPanel/submissionFiles/SubmissionFilesListPanel.vue';
 import ajaxError from '@/mixins/ajaxError';
 import autosave from '@/mixins/autosave';
@@ -12,6 +13,7 @@ import localizeMoment from '@/mixins/localizeMoment';
 import localizeSubmission from '@/mixins/localizeSubmission';
 import localStorage from '@/mixins/localStorage';
 import moment from 'moment';
+import {useModal} from '@/composables/useModal';
 
 export default {
 	components: {
@@ -88,8 +90,6 @@ export default {
 			i18nUnsavedChanges: '',
 			/** **Required** A localized string for the message of the dialog that appears when unsaved changes are found in local storage. */
 			i18nUnsavedChangesMessage: '',
-
-			isModalOpenedConfig: false,
 		};
 	},
 	computed: {
@@ -275,6 +275,18 @@ export default {
 		setInterval(this.setLastAutosaveMessage, 3000);
 	},
 	methods: {
+		/**
+		 * Open reconfigure modal
+		 * */
+		openReconfigureModal() {
+			const {openSideModal} = useModal();
+			openSideModal(ReconfigureSubmissionModal, {
+				reconfigureSubmissionForm: this.components.reconfigureSubmission,
+				onSet: this.set,
+				onReconfigureSubmission: this.reconfigureSubmission,
+			});
+		},
+
 		/**
 		 * Add stale forms that need to be autosaved
 		 */

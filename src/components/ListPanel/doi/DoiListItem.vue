@@ -105,7 +105,7 @@
 					<button
 						:ref="versionModalName"
 						:class="'-linkButton'"
-						@click="isModalOpenedVersion = true"
+						@click="openVersionModal"
 					>
 						{{ t('doi.manager.versions.view') }}
 					</button>
@@ -149,7 +149,7 @@
 						v-if="isDeposited && hasRegisteredMessage"
 						ref="recordedMessageModalButton"
 						:is-disabled="isEditingDois"
-						@click="isModalOpenedRegisteredMessage = true"
+						@click="viewRecord"
 					>
 						{{ t('manager.dois.registration.viewRecord') }}
 					</pkp-button>
@@ -164,109 +164,29 @@
 						v-if="hasErrors && hasErrorMessage"
 						ref="errorMessageModalButton"
 						:is-disabled="isEditingDois"
-						@click="isModalOpenedErrorMessage = true"
+						@click="openViewErrorModal"
 					>
 						{{ t('manager.dois.registration.viewError') }}
 					</pkp-button>
 				</div>
 			</div>
 		</div>
-		<!-- Messages Modals -->
-		<!-- Error Message Modal -->
-		<modal
-			:close-label="t('common.close')"
-			:name="`errorMessageModal-${item.id}`"
-			:title="t('manager.dois.registration.viewError.title')"
-			:open="isModalOpenedErrorMessage"
-			@close="isModalOpenedErrorMessage = false"
-		>
-			<p>{{ registrationAgencyInfo['errorMessagePreamble'] }}</p>
-			<div class="depositErrorMessage">
-				<pre>{{ currentVersionDoiObjects[0]['errorMessage'] }}</pre>
-			</div>
-		</modal>
-		<!-- Recorded Message Modal -->
-		<modal
-			:close-label="t('common.close')"
-			:name="`registeredMessageModal-${item.id}`"
-			:title="t('manager.dois.registration.viewRecord.title')"
-			:open="isModalOpenedRegisteredMessage"
-			@close="isModalOpenedRegisteredMessage = false"
-		>
-			<p>{{ registrationAgencyInfo['registeredMessagePreamble'] }}</p>
-			<p>{{ currentVersionDoiObjects[0]['registeredMessage'] }}</p>
-		</modal>
-		<!-- Version Modal -->
-		<modal
-			:close-label="t('common.close')"
-			:name="versionModalName"
-			:title="t('doi.manager.versions.modalTitle')"
-			:open="isModalOpenedVersion"
-			@close="isModalOpenedVersion = false"
-		>
-			<div
-				v-for="version in item.versions"
-				:key="version.id"
-				class="doiListItem__versionContainer"
-			>
-				<a
-					:href="version.urlPublished"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					{{ getVersionHeader(version) }}
-				</a>
-				<pkp-table
-					:columns="doiListColumns"
-					:rows="
-						item.doiObjects.filter(
-							(doiObject) => doiObject.versionNumber === version.versionNumber,
-						)
-					"
-				>
-					<template #default="{row}">
-						<table-cell :column="doiListColumns[0]" :row="row">
-							<label :for="row.uid">{{ row.displayType }}</label>
-						</table-cell>
-						<table-cell :column="doiListColumns[1]" :row="row">
-							<input
-								:id="row.uid"
-								v-model="
-									mutableDois.find((doi) => doi.uid === row.uid).identifier
-								"
-								class="pkpFormField__input pkpFormField--text__input"
-								type="text"
-								:readonly="!(isEditingDois && !isSaving)"
-							/>
-						</table-cell>
-					</template>
-				</pkp-table>
-			</div>
-
-			<div class="doiListItem__versionContainer--actionsBar">
-				<spinner v-if="isSaving" />
-				<pkp-button
-					:is-disabled="isDeposited || isSaving"
-					@click="isEditingDois ? saveDois() : editDois()"
-				>
-					{{ isEditingDois ? t('common.save') : t('common.edit') }}
-				</pkp-button>
-			</div>
-		</modal>
 	</div>
 </template>
 
 <script>
 import Expander from '@/components/Expander/Expander.vue';
-import Modal from '@/components/Modal/Modal.vue';
 import PkpTable from '@/components/Table/Table.vue';
 import TableCell from '@/components/Table/TableCell.vue';
-
+import DoiItemViewErrorDialogBody from './DoiItemViewErrorDialogBody.vue';
+import DoiItemViewRegisteredMessageDialogBody from './DoiItemViewRegisteredMessageDialogBody.vue';
+import DoiItemVersionModal from './DoiItemVersionModal.vue';
+import {computed} from 'vue';
+import {useModal} from '@/composables/useModal';
 export default {
 	name: 'DoiListItem',
 	components: {
 		Expander,
-		Modal,
 		PkpTable,
 		TableCell,
 	},
@@ -381,9 +301,6 @@ export default {
 			isSaving: false,
 			mutableDois: [],
 			itemsToUpdate: {},
-			isModalOpenedErrorMessage: false,
-			isModalOpenedRegisteredMessage: false,
-			isModalOpenedVersion: false,
 		};
 	},
 	computed: {
@@ -545,7 +462,44 @@ export default {
 	mounted() {
 		this.updateMutableDois(this.item.doiObjects);
 	},
+
 	methods: {
+		openViewErrorModal() {
+			const {openDialog} = useModal();
+
+			openDialog({
+				title: this.t('manager.dois.registration.viewError.title'),
+				bodyComponent: DoiItemViewErrorDialogBody,
+				bodyProps: {
+					errorMessageAgencyPreamble:
+						this.registrationAgencyInfo['errorMessagePreamble'],
+					errorMessage: this.currentVersionDoiObjects[0]['errorMessage'],
+				},
+				actions: [
+					{
+						label: this.t('common.ok'),
+						isPrimary: true,
+						callback: (close) => {
+							close();
+						},
+					},
+				],
+			});
+		},
+		openVersionModal() {
+			const {openSideModal} = useModal();
+			openSideModal(DoiItemVersionModal, {
+				isSaving: computed(() => this.isSaving),
+				isDeposited: computed(() => this.isDeposited),
+				item: this.item,
+				doiListColumns: this.doiListColumns,
+				mutableDois: this.mutableDois,
+				isEditingDois: computed(() => this.isEditingDois),
+				onSaveDois: this.saveDois,
+				onEditDois: this.editDois,
+			});
+		},
+
 		updateMutableDois(doiObjects) {
 			let dois = [];
 			doiObjects.forEach((item) => {
@@ -806,7 +760,26 @@ export default {
 			return this.isDeposited ? this.viewRecord() : this.triggerDeposit();
 		},
 		viewRecord() {
-			this.isModalOpenedRegisteredMessage = true;
+			const {openDialog} = useModal();
+			openDialog({
+				title: this.t('manager.dois.registration.viewRecord.title'),
+				bodyComponent: DoiItemViewRegisteredMessageDialogBody,
+				bodyProps: {
+					registeredMessageAgencyPreamble:
+						this.registrationAgencyInfo['registeredMessagePreamble'],
+					registeredMessage:
+						this.currentVersionDoiObjects[0]['registeredMessage'],
+				},
+				actions: [
+					{
+						label: this.t('common.ok'),
+						isPrimary: true,
+						callback: (close) => {
+							close();
+						},
+					},
+				],
+			});
 		},
 		triggerDeposit() {
 			this.$emit('deposit-triggered', [this.item.id], 'deposit');
@@ -820,31 +793,12 @@ export default {
 		toggleExpanded() {
 			this.$emit('expand-item', this.item.id);
 		},
-		/**
-		 * @param {PublicationVersionInfo} version
-		 */
-		getVersionHeader(version) {
-			const dateInfo =
-				version.datePublished !== null
-					? `(${version.datePublished})`
-					: this.t('publication.status.unpublished');
-			return `${this.t('publication.version', {
-				version: version.versionNumber,
-			})} ${dateInfo}`;
-		},
 	},
 };
 </script>
 
 <style lang="less">
 @import '../../../styles/_import';
-
-.depositErrorMessage {
-	background: rgb(234, 237, 238);
-	> pre {
-		white-space: pre-wrap;
-	}
-}
 
 .doiListItem__depositorDetails {
 	//width: 100%;
@@ -935,17 +889,6 @@ export default {
 }
 
 .listPanel__item--doi .listPanel__itemExpanded .pkpTable {
-	margin-top: 0.5rem;
-}
-
-.doiListItem__versionContainer {
-	margin-top: 0.5rem;
-}
-
-.doiListItem__versionContainer--actionsBar {
-	display: flex;
-	align-items: center;
-	justify-content: flex-end;
 	margin-top: 0.5rem;
 }
 

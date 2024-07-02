@@ -253,18 +253,6 @@
 						</div>
 					</template>
 				</field-prepared-content>
-				<modal
-					:close-label="t('common.close')"
-					:name="fileAttacherModalId"
-					:title="attachFilesLabel"
-					:open="isModalOpenedFileAttacher"
-					@close="resetFocusAfterAttachment"
-				>
-					<file-attacher
-						:attachers="attachers"
-						@attached:files="addAttachments"
-					/>
-				</modal>
 				<field-error
 					v-if="errors.attachments"
 					:id="id + '-attachments-error'"
@@ -287,21 +275,18 @@
 import FieldAutosuggestPreset from '@/components/Form/fields/FieldAutosuggestPreset.vue';
 import FieldError from '@/components/Form/FieldError.vue';
 import FieldPreparedContent from '@/components/Form/fields/FieldPreparedContent.vue';
-import FileAttacher from '@/components/FileAttacher/FileAttacher.vue';
-import Modal from '@/components/Modal/Modal.vue';
 import Search from '@/components/Search/Search.vue';
+import FileAttacherModal from './FileAttacherModal.vue';
 import ajaxErrorCallback from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog';
 import preparedContent from '@/mixins/preparedContent';
-
+import {useModal} from '@/composables/useModal';
 export default {
 	name: 'Composer',
 	components: {
 		FieldAutosuggestPreset,
 		FieldError,
 		FieldPreparedContent,
-		FileAttacher,
-		Modal,
 		Search,
 	},
 	mixins: [ajaxErrorCallback, dialog, preparedContent],
@@ -555,7 +540,6 @@ export default {
 			searchPhrase: '',
 			searchResults: [],
 			showSearchResultCount: 10,
-			isModalOpenedFileAttacher: false,
 		};
 	},
 	computed: {
@@ -586,7 +570,13 @@ export default {
 						icon: 'upload',
 						text: self.t('common.attachFiles'),
 						onAction() {
-							self.isModalOpenedFileAttacher = true;
+							const {openSideModal} = useModal();
+
+							openSideModal(FileAttacherModal, {
+								title: self.attachFilesLabel,
+								attachers: self.attachers,
+								onAddAttachments: self.addAttachments,
+							});
 						},
 					});
 					editor.settings.toolbar += ' | pkpAttachFiles';
@@ -753,7 +743,8 @@ export default {
 				}),
 			];
 			this.emitChange({attachments});
-			this.isModalOpenedFileAttacher = false;
+			const {closeSideModal} = useModal();
+			closeSideModal(FileAttacherModal);
 		},
 
 		/**
@@ -913,20 +904,6 @@ export default {
 		removeAttachment(index) {
 			this.emitChange({
 				attachments: this.attachments.filter((attachment, i) => i !== index),
-			});
-		},
-
-		/**
-		 * Reset the focus when the attachment modal is closed
-		 */
-		resetFocusAfterAttachment() {
-			this.isModalOpenedFileAttacher = false;
-			this.$nextTick(() => {
-				if (this.$refs.attachedFiles) {
-					this.$refs.attachedFiles.focus();
-				} else {
-					this.setFocusIn(this.$el.querySelector('.composer__body'));
-				}
 			});
 		},
 

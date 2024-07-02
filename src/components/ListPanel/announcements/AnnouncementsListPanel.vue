@@ -41,19 +41,6 @@
 					/>
 				</template>
 			</list-panel>
-			<modal
-				:close-label="t('common.close')"
-				name="form"
-				:title="activeFormTitle"
-				:open="isModalOpenedForm"
-				@close="closeFormModal"
-			>
-				<pkp-form
-					v-bind="activeForm"
-					@set="updateForm"
-					@success="formSuccess"
-				/>
-			</modal>
 		</slot>
 	</div>
 </template>
@@ -61,22 +48,20 @@
 <script>
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
-import PkpForm from '@/components/Form/Form.vue';
 import PkpHeader from '@/components/Header/Header.vue';
-import Modal from '@/components/Modal/Modal.vue';
 import Search from '@/components/Search/Search.vue';
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
 import fetch from '@/mixins/fetch';
 import cloneDeep from 'clone-deep';
+import AnnouncementsEditModal from './AnnouncementsEditModal.vue';
+import {useModal} from '@/composables/useModal';
 
 export default {
 	components: {
 		ListPanel,
 		Pagination,
-		PkpForm,
 		PkpHeader,
-		Modal,
 		Search,
 	},
 	mixins: [dialog, fetch, ajaxError],
@@ -143,7 +128,6 @@ export default {
 		return {
 			activeForm: null,
 			activeFormTitle: '',
-			isModalOpenedForm: false,
 		};
 	},
 	methods: {
@@ -155,7 +139,9 @@ export default {
 		closeFormModal(event) {
 			this.activeForm = null;
 			this.activeFormTitle = '';
-			this.isModalOpenedForm = false;
+			const {closeSideModal} = useModal();
+
+			closeSideModal(AnnouncementsEditModal);
 		},
 
 		/**
@@ -188,7 +174,15 @@ export default {
 			activeForm.method = 'POST';
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.addAnnouncementLabel;
-			this.isModalOpenedForm = true;
+
+			const {openSideModal} = useModal();
+
+			openSideModal(AnnouncementsEditModal, {
+				title: this.activeFormTitle,
+				activeForm,
+				onUpdateForm: this.updateForm,
+				onFormSuccess: this.formSuccess,
+			});
 		},
 
 		/**
@@ -267,7 +261,15 @@ export default {
 			});
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.editAnnouncementLabel;
-			this.isModalOpenedForm = true;
+
+			const {openSideModal} = useModal();
+
+			openSideModal(AnnouncementsEditModal, {
+				title: this.editAnnouncementLabel,
+				activeForm,
+				onUpdateForm: this.updateForm,
+				onFormSuccess: this.formSuccess,
+			});
 		},
 
 		/**
@@ -291,7 +293,11 @@ export default {
 		 * @param {Object} data
 		 */
 		updateForm(formId, data) {
-			let activeForm = {...this.activeForm};
+			if (!this.activeForm) {
+				return;
+			}
+
+			let activeForm = this.activeForm;
 			Object.keys(data).forEach(function (key) {
 				activeForm[key] = data[key];
 			});

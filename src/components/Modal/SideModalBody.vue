@@ -51,8 +51,6 @@
 				<slot :close-modal="closeModal" />
 			</div>
 		</div>
-		<!-- Make dialog available inside Modals as it needs to be nested in the DOM to work correclty-->
-		<PkpDialog></PkpDialog>
 	</DialogPanel>
 </template>
 
@@ -60,7 +58,6 @@
 import {inject, computed} from 'vue';
 import {DialogPanel, DialogTitle, DialogDescription} from '@headlessui/vue';
 import Icon from '@/components/Icon/Icon.vue';
-import PkpDialog from '@/components/Modal/Dialog.vue';
 
 import {useLocalize} from '@/composables/useLocalize';
 

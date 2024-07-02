@@ -11,5 +11,13 @@ export function useModal() {
 		modalStore.openSideModal(component, props, opts);
 	}
 
-	return {openDialog, openSideModal};
+	function closeSideModal(component) {
+		modalStore.closeSideModal(component);
+	}
+
+	function isSideModalOpened(component) {
+		modalStore.isSideModalOpened(component);
+	}
+
+	return {openDialog, openSideModal, closeSideModal, isSideModalOpened};
 }

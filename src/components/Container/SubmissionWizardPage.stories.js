@@ -52,19 +52,6 @@ const SubmissionWizardPageWithDataAndTemplate = {
 				<button class="-linkButton" @click="isModalOpenedConfig = true">
 					Change
 				</button>
-				<modal
-					:close-label="t('common.close')"
-					name="config"
-					:open="isModalOpenedConfig"
-					title="Change Submission Settings"
-					@close="isModalOpenedConfig = false"
-				>
-					<pkp-form
-						v-bind="components.reconfigureSubmission"
-						@set="set"
-						@success="openAlert('Wizard would reload.')"
-					/>
-				</modal>
 			</div>
 			<steps
 				class="submissionWizard__steps"

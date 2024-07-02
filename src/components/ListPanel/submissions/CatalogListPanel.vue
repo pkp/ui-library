@@ -43,7 +43,7 @@
 								{{ t('common.cancel') }}
 							</pkp-button>
 						</template>
-						<pkp-button @click="isModalOpenedAddCatalogEntry = true">
+						<pkp-button @click="openAddEntryForm">
 							{{ t('submission.catalogEntry.new') }}
 						</pkp-button>
 					</template>
@@ -123,43 +123,28 @@
 				/>
 			</template>
 		</list-panel>
-		<modal
-			:close-label="t('common.close')"
-			name="addCatalogEntry"
-			:title="t('submission.catalogEntry.new')"
-			:open="isModalOpenedAddCatalogEntry"
-			@close="closeAddEntryForm"
-		>
-			<pkp-form
-				v-bind="addEntryForm"
-				@set="setAddEntryForm"
-				@success="addEntryFormSuccess"
-			/>
-		</modal>
 	</div>
 </template>
 
 <script>
 import CatalogListItem from '@/components/ListPanel/submissions/CatalogListItem.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
-import Modal from '@/components/Modal/Modal.vue';
 import Notification from '@/components/Notification/Notification.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
-import PkpForm from '@/components/Form/Form.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import PkpFilter from '@/components/Filter/Filter.vue';
+import CatalogEditModal from './CatalogEditModal.vue';
 import Search from '@/components/Search/Search.vue';
 import ajaxError from '@/mixins/ajaxError';
 import fetch from '@/mixins/fetch';
+import {useModal} from '@/composables/useModal';
 
 export default {
 	components: {
 		CatalogListItem,
 		ListPanel,
-		Modal,
 		Notification,
 		Pagination,
-		PkpForm,
 		PkpHeader,
 		PkpFilter,
 		Search,
@@ -233,7 +218,6 @@ export default {
 			newEntries: [],
 			isOrdering: false,
 			isSidebarVisible: false,
-			isModalOpenedAddCatalogEntry: false,
 		};
 	},
 	computed: {
@@ -387,10 +371,24 @@ export default {
 		},
 
 		/**
+		 * Open add entry form
+		 */
+
+		openAddEntryForm() {
+			const {openSideModal} = useModal();
+
+			openSideModal(CatalogEditModal, {
+				activeForm: this.addEntryForm,
+				onSetAddEntryForm: this.setAddEntryForm,
+				onAddEntryFormSuccess: this.addEntryFormSuccess,
+			});
+		},
+		/**
 		 * When the add entry modal is closed
 		 */
 		closeAddEntryForm() {
-			this.isModalOpenedAddCatalogEntry = false;
+			const {closeSideModal} = useModal();
+			closeSideModal(CatalogEditModal);
 			this.addEntryForm.fields.find(
 				(f) => f.name === 'submissionIds',
 			).selected = [];

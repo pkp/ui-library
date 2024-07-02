@@ -49,34 +49,23 @@
 			:upload-progress-label="uploadProgressLabel"
 			@updated:files="setFiles"
 		/>
-		<modal
-			:close-label="t('common.close')"
-			:name="formModal"
-			:title="editingLabel"
-			:open="isModalOpenedForm"
-			@close="isModalOpenedForm = false"
-		>
-			<pkp-form v-bind="activeForm" @set="setForm" @success="formSuccess" />
-		</modal>
 	</div>
 </template>
 
 <script>
 import FileUploader from '@/components/FileUploader/FileUploader.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
-import Modal from '@/components/Modal/Modal.vue';
-import PkpForm from '@/components/Form/Form.vue';
+
 import PkpHeader from '@/components/Header/Header.vue';
 import SubmissionFilesListItem from '@/components/ListPanel/submissionFiles/SubmissionFilesListItem.vue';
 import dialog from '@/mixins/dialog.js';
 import cloneDeep from 'clone-deep';
-
+import SubmissionFilesEditModal from './SubmissionFilesEditModal.vue';
+import {useModal} from '@/composables/useModal';
 export default {
 	components: {
 		FileUploader,
 		ListPanel,
-		Modal,
-		PkpForm,
 		PkpHeader,
 		SubmissionFilesListItem,
 	},
@@ -187,7 +176,6 @@ export default {
 			editingLabel: '',
 			isDragging: false,
 			status: '',
-			isModalOpenedForm: false,
 		};
 	},
 	computed: {
@@ -227,7 +215,13 @@ export default {
 			this.editingLabel = this.t('common.editItem', {
 				name: this.localize(item.name),
 			});
-			this.isModalOpenedForm = true;
+			const {openSideModal} = useModal();
+			openSideModal(SubmissionFilesEditModal, {
+				title: this.editingLabel,
+				activeForm: this.activeForm,
+				onSetForm: this.setForm,
+				onFormSuccess: this.formSuccess,
+			});
 		},
 
 		/**
@@ -237,7 +231,9 @@ export default {
 		 */
 		formSuccess(item) {
 			this.updateItem(item);
-			this.isModalOpenedForm = false;
+			const {closeSideModal} = useModal();
+			closeSideModal(SubmissionFilesEditModal);
+
 			this.activeForm = {};
 			this.$el.querySelector('#edit-' + item.id).focus();
 		},
@@ -305,7 +301,11 @@ export default {
 		 * @param {Object} data Key/value map of the data to be changed
 		 */
 		setForm(key, data) {
-			let activeForm = {...this.activeForm};
+			if (!this.activeForm) {
+				return;
+			}
+
+			let activeForm = this.activeForm;
 			Object.keys(data).forEach(function (key) {
 				activeForm[key] = data[key];
 			});

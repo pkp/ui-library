@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import {ref, markRaw} from 'vue';
+import {ref, markRaw, computed} from 'vue';
 import {t} from '@/utils/i18n';
 export const useModalStore = defineStore('modal', () => {
 	/**
@@ -9,20 +9,23 @@ export const useModalStore = defineStore('modal', () => {
 	 * Dialog is also available inside SideModalBody and level helps to track
 	 * which of the existing dialogs should open
 	 */
-	const dialogLevel = ref(0);
-	function increaseDialogLevel() {
-		dialogLevel.value++;
-	}
 
-	function decreaseDialogLevel() {
-		dialogLevel.value--;
-	}
-
+	const dialogLevel = computed(() => {
+		if (sideModal2?.value?.opened) {
+			return 2;
+		} else if (sideModal1?.value?.opened) {
+			return 1;
+		}
+		return 0;
+	});
 	/** dialogProps coming from openDialog */
 	const dialogProps = ref({});
 	const dialogOpened = ref(false);
 
 	function openDialog(_dialogProps) {
+		if (_dialogProps.bodyComponent) {
+			_dialogProps.bodyComponent = markRaw(_dialogProps.bodyComponent);
+		}
 		dialogProps.value = _dialogProps;
 		dialogOpened.value = true;
 	}
@@ -104,7 +107,24 @@ export const useModalStore = defineStore('modal', () => {
 		}
 	}
 
-	function closeSideModal(triggerLegacyCloseHandler = true, _modalId) {
+	function closeSideModal(component) {
+		if (sideModal1?.value?.component === component) {
+			closeSideModalById(false, sideModal1?.value?.modalId);
+		} else if (sideModal2?.value?.component === component) {
+			closeSideModalById(false, sideModal2?.value?.modalId);
+		}
+	}
+
+	function isSideModalOpened(component) {
+		if (sideModal1?.value?.component === component) {
+			return true;
+		} else if (sideModal2?.value?.component === component) {
+			return true;
+		}
+		return false;
+	}
+
+	function closeSideModalById(triggerLegacyCloseHandler = true, _modalId) {
 		let modalToClose = null;
 		if (sideModal1?.value?.modalId === _modalId && sideModal1?.value?.opened) {
 			modalToClose = sideModal1;
@@ -166,7 +186,7 @@ export const useModalStore = defineStore('modal', () => {
 
 	// Listener for close modal requests coming from legacy handler.
 	pkp?.eventBus?.$on('close-modal-vue', (_args) => {
-		closeSideModal(false, _args.modalId);
+		closeSideModalById(false, _args.modalId);
 	});
 
 	// Listener for open dialog modals coming from legacy handler.
@@ -181,10 +201,8 @@ export const useModalStore = defineStore('modal', () => {
 
 	return {
 		/** dialog level */
-		decreaseDialogLevel,
-		increaseDialogLevel,
-		/** opening dialog */
 		dialogLevel,
+		/** opening dialog */
 		dialogProps,
 		dialogOpened,
 		openDialogNetworkError,
@@ -192,6 +210,8 @@ export const useModalStore = defineStore('modal', () => {
 		closeDialog,
 		openSideModal,
 		closeSideModal,
+		closeSideModalById,
+		isSideModalOpened,
 		sideModal1,
 		sideModal2,
 	};
