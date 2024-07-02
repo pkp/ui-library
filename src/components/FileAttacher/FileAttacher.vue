@@ -1,6 +1,6 @@
 <template>
 	<div class="fileAttacher">
-		<action-panel
+		<ActionPanel
 			v-for="(attacher, key) in attachers"
 			:id="'attacher' + key"
 			:key="key"
@@ -8,14 +8,14 @@
 			<h2>{{ attacher.label }}</h2>
 			<p v-html="attacher.description" />
 			<template #actions>
-				<pkp-button
+				<PkpButton
 					:aria-describedby="'attacher' + key"
 					@click="setAttacher(attacher)"
 				>
 					{{ attacher.button }}
-				</pkp-button>
+				</PkpButton>
 			</template>
-		</action-panel>
+		</ActionPanel>
 	</div>
 </template>
 
@@ -23,11 +23,13 @@
 import ActionPanel from '../ActionPanel/ActionPanel.vue';
 import AttacherModal from './AttacherModal.vue';
 import {useModal} from '@/composables/useModal';
+import PkpButton from '@/components/Button/Button.vue';
 
 export default {
 	name: 'FileAttacher',
 	components: {
 		ActionPanel,
+		PkpButton,
 	},
 	props: {
 		/** An array of file attachers. See guidance in storybook.  */

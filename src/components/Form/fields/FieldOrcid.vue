@@ -4,9 +4,9 @@
 			<span class="pkpFormFieldLabel">
 				{{ label }}
 			</span>
-			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
+			<Tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span v-if="tooltip" class="-screenReader" v-html="tooltip" />
-			<help-button
+			<HelpButton
 				v-if="helpTopic"
 				:topic="helpTopic"
 				:section="helpSection"
@@ -31,7 +31,7 @@
 				class="pkpFormField__control pkpFormField__control--html"
 				v-html="orcidDisplayValue"
 			/>
-			<pkp-button
+			<PkpButton
 				v-if="hasOrcid"
 				class="pkpFormField__control--html__button"
 				:is-warnable="true"
@@ -39,9 +39,9 @@
 				@click="openDeleteDialog"
 			>
 				{{ t('common.delete') }}
-			</pkp-button>
+			</PkpButton>
 			<!-- When ORCID is absent -->
-			<pkp-button
+			<PkpButton
 				v-if="!hasOrcid"
 				:disabled="verificationRequested || isButtonDisabled"
 				:icon="verificationRequested ? 'Complete' : null"
@@ -52,19 +52,25 @@
 						? t('orcid.field.verification.requested')
 						: t('orcid.field.verification.request')
 				}}
-			</pkp-button>
+			</PkpButton>
 		</div>
 	</div>
 </template>
 
 <script>
 import FieldBase from '@/components/Form/fields/FieldBase.vue';
+import Icon from '@/components/Icon/Icon.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import HelpButton from '@/components/HelpButton/HelpButton.vue';
+import Tooltip from '@/components/Tooltip/Tooltip.vue';
+
 import {useApiUrl} from '@/composables/useApiUrl';
 import {useFetch} from '@/composables/useFetch';
 import {useModal} from '@/composables/useModal';
 
 export default {
 	name: 'FieldOrcid',
+	components: {Icon, PkpButton, HelpButton, Tooltip},
 	extends: FieldBase,
 	props: {
 		/** ORCID URL that has been verified */

@@ -12,7 +12,7 @@
 			<div v-else class="fileAttacherUpload__files">
 				<template v-for="(file, i) in files">
 					<template v-if="'progress' in file">
-						<file-upload-progress
+						<FileUploadProgress
 							:key="i"
 							cancel-upload-label="Cancel Upload"
 							:errors="file.errors"
@@ -22,12 +22,12 @@
 						/>
 					</template>
 					<div v-else :key="i" class="fileAttacherUploader__uploadedFile">
-						<file
+						<File
 							:id="'FileAttacherUpload__UploadedFile__' + i"
 							:name="file.form ? file.form.name : file.name"
 							:document-type="file.documentType || 'default'"
 						/>
-						<pkp-button
+						<PkpButton
 							:aria-describedby="'FileAttacherUpload__UploadedFile__' + i"
 							class="fileAttacherUploader__uploadedFile__remove"
 							:is-warnable="true"
@@ -42,11 +42,11 @@
 									)
 								}}
 							</span>
-						</pkp-button>
+						</PkpButton>
 					</div>
 				</template>
 			</div>
-			<file-uploader
+			<FileUploader
 				id="previewFileUploader"
 				ref="uploader"
 				:api-url="temporaryFilesApiUrl"
@@ -56,24 +56,24 @@
 				@updated:files="updateFiles"
 			/>
 		</div>
-		<button-row class="fileAttacher__footer">
+		<ButtonRow class="fileAttacher__footer">
 			<template #end>
-				<pkp-button :is-link="true" @click="$emit('cancel')">
-					<icon icon="long-arrow-left" :inline="true" />
+				<PkpButton :is-link="true" @click="$emit('cancel')">
+					<Icon icon="long-arrow-left" :inline="true" />
 					{{ backLabel }}
-				</pkp-button>
+				</PkpButton>
 			</template>
-			<pkp-button @click="selectFile">
+			<PkpButton @click="selectFile">
 				{{ addFilesLabel }}
-			</pkp-button>
-			<pkp-button
+			</PkpButton>
+			<PkpButton
 				:is-primary="true"
 				:is-disabled="!files.length || isUploading"
 				@click="$emit('selected:files', files)"
 			>
 				{{ attachFilesLabel }}
-			</pkp-button>
-		</button-row>
+			</PkpButton>
+		</ButtonRow>
 	</div>
 </template>
 
@@ -82,10 +82,14 @@ import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
 import File from '@/components/File/File.vue';
 import FileUploader from '@/components/FileUploader/FileUploader.vue';
 import FileUploadProgress from '@/components/FileUploadProgress/FileUploadProgress.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
 
 export default {
 	name: 'FileAttacherUpload',
 	components: {
+		PkpButton,
+		Icon,
 		ButtonRow,
 		File,
 		FileUploader,

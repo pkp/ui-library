@@ -1,39 +1,39 @@
 <template>
 	<div>
 		<slot>
-			<list-panel
+			<ListPanel
 				class="listPanel--selectReviewer"
 				:is-sidebar-visible="isSidebarVisible"
 				:items="currentReviewers"
 			>
 				<template #header>
-					<pkp-header>
+					<PkpHeader>
 						<h2>
 							{{ title }}
 						</h2>
-						<spinner v-if="isLoading" />
+						<Spinner v-if="isLoading" />
 						<template #actions>
-							<search
+							<Search
 								:search-phrase="searchPhrase"
 								@search-phrase-changed="setSearchPhrase"
 							/>
-							<pkp-button
+							<PkpButton
 								:is-active="isSidebarVisible"
 								@click="isSidebarVisible = !isSidebarVisible"
 							>
-								<icon icon="filter" :inline="true" />
+								<Icon icon="filter" :inline="true" />
 								{{ t('common.filter') }}
-							</pkp-button>
+							</PkpButton>
 						</template>
-					</pkp-header>
+					</PkpHeader>
 				</template>
 				<template #sidebar>
-					<pkp-header :is-one-line="false">
+					<PkpHeader :is-one-line="false">
 						<h2>
-							<icon icon="filter" :inline="true" />
+							<Icon icon="filter" :inline="true" />
 							{{ t('common.filter') }}
 						</h2>
-					</pkp-header>
+					</PkpHeader>
 					<component
 						:is="filter.filterType || 'filter-slider'"
 						v-for="filter in filters"
@@ -48,7 +48,7 @@
 
 				<template v-if="isLoading" #itemsEmpty>
 					<template v-if="isLoading">
-						<spinner />
+						<Spinner />
 						{{ t('common.loading') }}
 					</template>
 					<template v-else>
@@ -57,7 +57,7 @@
 				</template>
 
 				<template #item="{item}">
-					<select-reviewer-list-item
+					<SelectReviewerListItem
 						:key="item.id"
 						:active-reviews-count-label="activeReviewsCountLabel"
 						:active-reviews-label="activeReviewsLabel"
@@ -93,7 +93,7 @@
 				</template>
 
 				<template #footer>
-					<pagination
+					<Pagination
 						v-if="lastPage > 1"
 						:current-page="currentPage"
 						:is-loading="isLoading"
@@ -101,12 +101,16 @@
 						@set-page="setPage"
 					/>
 				</template>
-			</list-panel>
+			</ListPanel>
 		</slot>
 	</div>
 </template>
 
 <script>
+import Spinner from '@/components/Spinner/Spinner.vue';
+import Icon from '@/components/Icon/Icon.vue';
+import PkpButton from '@/components/Button/Button.vue';
+
 import FilterSlider from '@/components/Filter/FilterSlider.vue';
 import FilterSliderMultirange from '@/components/Filter/FilterSliderMultirange.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
@@ -125,6 +129,9 @@ export default {
 		PkpHeader,
 		Search,
 		SelectReviewerListItem,
+		Icon,
+		Spinner,
+		PkpButton,
 	},
 	mixins: [fetch],
 	props: {

@@ -4,7 +4,7 @@
 			:page-title="store.pageTitle"
 			:page-title-description="store.pageTitleDescription"
 		/>
-		<steps
+		<Steps
 			v-if="store.steps.length"
 			class="userInvitation__steps"
 			:current="store.currentStep.id"
@@ -15,19 +15,19 @@
 			:scroll-to="wrapper"
 			@step:open="store.openStep"
 		>
-			<step
+			<Step
 				v-for="step in store.steps"
 				:id="step.id"
 				:key="step.id"
 				:label="step.name"
 			>
-				<panel class="decision__stepPanel">
-					<panel-section class="decision__stepHeader">
+				<Panel class="decision__stepPanel">
+					<PanelSection class="decision__stepHeader">
 						<h2>{{ store.stepTitle }}</h2>
 						<p class="error">{{ store.errors.error }}</p>
 						<p>{{ step.description }}</p>
-					</panel-section>
-					<panel-section v-for="section in step.sections" :key="section.id">
+					</PanelSection>
+					<PanelSection v-for="section in step.sections" :key="section.id">
 						<template v-if="step.type === 'review'">
 							<notification
 								v-if="Object.keys(store.errors).length > 0"
@@ -41,23 +41,23 @@
 							:key="section.sectionComponent"
 							v-bind="section.props"
 						/>
-					</panel-section>
-				</panel>
-			</step>
-		</steps>
-		<button-row class="panel panel--wide userInvitationForm__footer">
-			<pkp-button @click="store.cancel">Cancel</pkp-button>
-			<pkp-button v-if="!store.isOnFirstStep" @click="store.previousStep">
+					</PanelSection>
+				</Panel>
+			</Step>
+		</Steps>
+		<ButtonRow class="panel panel--wide userInvitationForm__footer">
+			<PkpButton @click="store.cancel">Cancel</PkpButton>
+			<PkpButton v-if="!store.isOnFirstStep" @click="store.previousStep">
 				Previous
-			</pkp-button>
-			<pkp-button
+			</PkpButton>
+			<PkpButton
 				v-if="!store.isOnFirstStep"
 				:is-primary="true"
 				@click="store.nextStep"
 			>
 				{{ store.stepButtonTitle }}
-			</pkp-button>
-		</button-row>
+			</PkpButton>
+		</ButtonRow>
 	</div>
 </template>
 

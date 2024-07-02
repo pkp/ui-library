@@ -1,6 +1,6 @@
 <template>
 	<div class="pkpFormPage" :class="{'pkpFormPage--current': isCurrentPage}">
-		<form-group
+		<FormGroup
 			v-for="group in groupsInPage"
 			:key="group.id"
 			v-bind="group"
@@ -13,13 +13,13 @@
 			@change="fieldChanged"
 			@set-errors="setErrors"
 		/>
-		<button-row
+		<ButtonRow
 			v-if="hasFooter"
 			ref="footer"
 			class="pkpFormPage__footer"
 			aria-live="polite"
 		>
-			<form-errors
+			<FormErrors
 				v-if="Object.keys(errors).length"
 				:errors="errors"
 				:fields="fields"
@@ -29,31 +29,31 @@
 			<span role="status" aria-live="polite" aria-atomic="true">
 				<transition name="pkpFormPage__status">
 					<span v-if="isSaving" class="pkpFormPage__status">
-						<spinner />
+						<Spinner />
 						{{ t('common.saving') }}
 					</span>
 					<span v-else-if="hasRecentSave" class="pkpFormPage__status">
-						<icon icon="check" :inline="true" />
+						<Icon icon="check" :inline="true" />
 						{{ t('form.saved') }}
 					</span>
 				</transition>
 			</span>
-			<pkp-button
+			<PkpButton
 				v-if="cancelButton"
 				v-bind="cancelButton"
 				:is-warnable="true"
 				@click="cancel"
 			>
 				{{ cancelButton.label || t('common.cancel') }}
-			</pkp-button>
-			<pkp-button
+			</PkpButton>
+			<PkpButton
 				v-if="previousButton"
 				v-bind="previousButton"
 				@click="previousPage"
 			>
 				{{ previousButton.label }}
-			</pkp-button>
-			<pkp-button
+			</PkpButton>
+			<PkpButton
 				v-if="submitButton"
 				v-bind="submitButton"
 				:disabled="
@@ -62,8 +62,8 @@
 				@click="submit"
 			>
 				{{ submitButton.label }}
-			</pkp-button>
-		</button-row>
+			</PkpButton>
+		</ButtonRow>
 	</div>
 </template>
 
@@ -71,6 +71,10 @@
 import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
 import FormErrors from '@/components/Form/FormErrors.vue';
 import FormGroup from '@/components/Form/FormGroup.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
+import Icon from '@/components/Icon/Icon.vue';
+
 import {shouldShowGroup} from './formHelpers';
 export default {
 	name: 'FormPage',
@@ -78,6 +82,9 @@ export default {
 		ButtonRow,
 		FormErrors,
 		FormGroup,
+		PkpButton,
+		Spinner,
+		Icon,
 	},
 	props: {
 		id: String,

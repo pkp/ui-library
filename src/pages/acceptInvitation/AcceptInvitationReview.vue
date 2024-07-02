@@ -18,13 +18,13 @@
 		<div class="acceptInvitation__reviewPanel">
 			<div class="acceptInvitation__reviewPanel__header">
 				<h3>User Details</h3>
-				<pkp-button
+				<PkpButton
 					v-if="store.userId === null"
 					class="acceptInvitation__reviewPanel__edit"
 					@click="store.openStep('userDetails')"
 				>
 					edit
-				</pkp-button>
+				</PkpButton>
 			</div>
 			<div class="acceptInvitation__reviewPanel__item">
 				<template v-if="store.userId === null">
@@ -40,7 +40,7 @@
 							? store.acceptinvitationPayload.orcid
 							: t('invitation.orcid.acceptInvitation.message')
 					}}
-					<icon
+					<Icon
 						v-if="store.acceptinvitationPayload.orcid"
 						icon="orcid"
 						:inline="true"
@@ -89,6 +89,8 @@
 import {defineProps} from 'vue';
 import AcceptInvitationUserRoles from './AcceptInvitationUserRoles.vue';
 import {useAcceptInvitationPageStore} from './AcceptInvitationPageStore';
+import Icon from '@/components/Icon/Icon.vue';
+import PkpButton from '@/components/Button/Button.vue';
 
 defineProps({});
 const store = useAcceptInvitationPageStore();

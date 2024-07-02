@@ -32,7 +32,7 @@
 				</div>
 			</div>
 		</div>
-		<select-reviewer-list-panel v-bind="components.selectReviewer" />
+		<SelectReviewerListPanel v-bind="components.selectReviewer" />
 	</div>
 </template>
 

@@ -6,7 +6,7 @@
 	>
 		<ul>
 			<li>
-				<pkp-button
+				<PkpButton
 					:disabled="currentPage === 1"
 					:aria-label="
 						t('common.pagination.goToPage', {
@@ -17,7 +17,7 @@
 					@click="setPage('previous')"
 				>
 					{{ t('common.pagination.previous') }}
-				</pkp-button>
+				</PkpButton>
 			</li>
 			<li v-for="(item, index) in items" :key="index">
 				<span
@@ -27,11 +27,11 @@
 				>
 					···
 				</span>
-				<spinner
+				<Spinner
 					v-else-if="isLoading && item.isCurrent"
 					class="pkpPagination__loading"
 				/>
-				<pkp-button
+				<PkpButton
 					v-else
 					:disabled="item.isDisabled"
 					:aria-label="item.ariaLabel"
@@ -41,23 +41,27 @@
 					@click="setPage(item.value)"
 				>
 					{{ item.label }}
-				</pkp-button>
+				</PkpButton>
 			</li>
 			<li>
-				<pkp-button
+				<PkpButton
 					:disabled="currentPage === lastPage"
 					:is-link="true"
 					@click="setPage('next')"
 				>
 					{{ t('common.pagination.next') }}
-				</pkp-button>
+				</PkpButton>
 			</li>
 		</ul>
 	</nav>
 </template>
 
 <script>
+import PkpButton from '@/components/Button/Button.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
+
 export default {
+	components: {PkpButton, Spinner},
 	props: {
 		/** The page that is currently being displayed. */
 		currentPage: {

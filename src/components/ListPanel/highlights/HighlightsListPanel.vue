@@ -1,70 +1,73 @@
 <template>
 	<div class="highlightsListPanel" :class="{'-isOrdering': isOrdering}">
 		<slot>
-			<list-panel :items="items">
+			<ListPanel :items="items">
 				<template #header>
-					<pkp-header>
+					<PkpHeader>
 						<h2>{{ title }}</h2>
-						<spinner v-if="isLoading" />
+						<Spinner v-if="isLoading" />
 						<template #actions>
-							<pkp-button
+							<PkpButton
 								v-if="!isOrdering"
 								:is-active="isOrdering"
 								:disabled="isLoading"
 								@click="isOrdering = true"
 							>
 								{{ t('common.order') }}
-							</pkp-button>
+							</PkpButton>
 							<template v-else>
-								<pkp-button
+								<PkpButton
 									:is-active="true"
 									:disabled="isLoading"
 									@click="saveOrder"
 								>
 									{{ i18nSaveOrder }}
-								</pkp-button>
-								<pkp-button
+								</PkpButton>
+								<PkpButton
 									:is-warnable="true"
 									:disabled="isLoading"
 									@click="isOrdering = false"
 								>
 									{{ t('common.cancel') }}
-								</pkp-button>
+								</PkpButton>
 							</template>
-							<pkp-button :disabled="isOrdering" @click="openAddModal">
+							<PkpButton :disabled="isOrdering" @click="openAddModal">
 								{{ i18nAdd }}
-							</pkp-button>
+							</PkpButton>
 						</template>
-					</pkp-header>
+					</PkpHeader>
 				</template>
 				<template #item-title="{item}">
 					{{ localize(item.title) }}
 				</template>
 				<template #item-actions="{item}">
-					<orderer
+					<Orderer
 						v-if="isOrdering"
 						:item-id="item.id"
 						:item-title="localize(item.title)"
 						@up="orderUp(item)"
 						@down="orderDown(item)"
-					></orderer>
-					<pkp-button v-if="!isOrdering" @click="openEditModal(item.id)">
+					></Orderer>
+					<PkpButton v-if="!isOrdering" @click="openEditModal(item.id)">
 						{{ t('common.edit') }}
-					</pkp-button>
-					<pkp-button
+					</PkpButton>
+					<PkpButton
 						v-if="!isOrdering"
 						:is-warnable="true"
 						@click="openDeleteModal(item.id)"
 					>
 						{{ t('common.delete') }}
-					</pkp-button>
+					</PkpButton>
 				</template>
-			</list-panel>
+			</ListPanel>
 		</slot>
 	</div>
 </template>
 
 <script>
+import PkpButton from '@/components/Button/Button.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
+
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import Orderer from '@/components/Orderer/Orderer.vue';
@@ -80,6 +83,8 @@ export default {
 		ListPanel,
 		PkpHeader,
 		Orderer,
+		PkpButton,
+		Spinner,
 	},
 	mixins: [dialog, fetch, ajaxError],
 	props: {

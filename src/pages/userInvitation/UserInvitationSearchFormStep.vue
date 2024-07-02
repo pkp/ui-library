@@ -1,5 +1,5 @@
 <template>
-	<field-text
+	<FieldText
 		:label="t('user.email')"
 		:value="fields.email"
 		name="email"
@@ -9,7 +9,7 @@
 	<br />
 	<p>or</p>
 	<br />
-	<field-text
+	<FieldText
 		:label="t('user.username')"
 		:value="fields.username"
 		name="username"
@@ -19,7 +19,7 @@
 	<br />
 	<p>or</p>
 	<br />
-	<field-text
+	<FieldText
 		:label="t('user.orcid')"
 		:value="fields.orcid"
 		name="orcid"

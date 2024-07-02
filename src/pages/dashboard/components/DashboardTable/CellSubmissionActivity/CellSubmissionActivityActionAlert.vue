@@ -13,6 +13,8 @@
 </template>
 
 <script setup>
+import PkpButton from '@/components/Button/Button.vue';
+
 defineProps({
 	alert: {type: String, required: false, default: null},
 	actionLabel: {type: String, required: false, default: null},

@@ -1,6 +1,6 @@
 <template>
 	<div class="insertContent">
-		<search
+		<Search
 			:search-label="searchLabel"
 			:search-phrase="searchPhrase"
 			@search-phrase-changed="(newVal) => (searchPhrase = newVal)"
@@ -16,13 +16,13 @@
 					<div class="insertContent__item__value">
 						{{ item.value }}
 					</div>
-					<pkp-button
+					<PkpButton
 						class="insertContent__item__button"
 						:aria-describedby="'insert-content-' + item.key"
 						@click="$emit('insert', item.value)"
 					>
 						{{ insertLabel }}
-					</pkp-button>
+					</PkpButton>
 				</div>
 				<div class="insertContent__item__description">
 					{{ item.description }}
@@ -34,11 +34,13 @@
 
 <script>
 import Search from '@/components/Search/Search.vue';
+import PkpButton from '@/components/Button/Button.vue';
 
 export default {
 	name: 'InsertContent',
 	components: {
 		Search,
+		PkpButton,
 	},
 	props: {
 		/**

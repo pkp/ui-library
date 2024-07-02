@@ -1,7 +1,7 @@
 <template>
 	<div class="pkpFormField pkpFormField--select">
 		<div class="pkpFormField__heading">
-			<form-field-label
+			<FormFieldLabel
 				:control-id="controlId"
 				:label="label"
 				:locale-label="localeLabel"
@@ -9,14 +9,14 @@
 				:required-label="t('common.required')"
 				:multilingual-label="multilingualLabel"
 			/>
-			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
+			<Tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span
 				v-if="tooltip"
 				:id="describedByTooltipId"
 				class="-screenReader"
 				v-html="tooltip"
 			/>
-			<help-button
+			<HelpButton
 				v-if="helpTopic"
 				:id="describedByHelpId"
 				:topic="helpTopic"
@@ -54,13 +54,13 @@
 					{{ option.label }}
 				</option>
 			</select>
-			<multilingual-progress
+			<MultilingualProgress
 				v-if="isMultilingual && locales.length > 1"
 				:id="multilingualProgressId"
 				:count="multilingualFieldsCompleted"
 				:total="locales.length"
 			/>
-			<field-error
+			<FieldError
 				v-if="errors && errors.length"
 				:id="describedByErrorId"
 				:messages="errors"
@@ -71,9 +71,21 @@
 
 <script>
 import FieldBase from './FieldBase.vue';
+import FormFieldLabel from '@/components/Form/FormFieldLabel.vue';
+import Tooltip from '@/components/Tooltip/Tooltip.vue';
+import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
+import HelpButton from '@/components/HelpButton/HelpButton.vue';
+import FieldError from '@/components/Form/FieldError.vue';
 
 export default {
 	name: 'FieldSelect',
+	components: {
+		FormFieldLabel,
+		Tooltip,
+		MultilingualProgress,
+		HelpButton,
+		FieldError,
+	},
 	extends: FieldBase,
 	props: {
 		/**   An optional object containing preset information. When preset information exists, a button will appear in the toolbar. */

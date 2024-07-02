@@ -1,13 +1,13 @@
 <template>
 	<div class="pkpFilter--slider pkpFilter--sliderMultirange" :class="classes">
 		<button v-if="isFilterActive" class="pkpFilter__remove" @click="remove">
-			<icon icon="times-circle-o" />
+			<Icon icon="times-circle-o" />
 			<span class="-screenReader">
 				{{ t('common.filterRemove', {filterTitle: title}) }}
 			</span>
 		</button>
 		<button v-else class="pkpFilter__add" @click="enable">
-			<icon icon="plus-square-o" />
+			<Icon icon="plus-square-o" />
 			<span class="-screenReader">
 				{{ t('common.filterAdd', {filterTitle: title}) }}
 			</span>
@@ -63,8 +63,10 @@
 
 <script>
 import FilterSlider from './FilterSlider.vue';
+import Icon from '@/components/Icon/Icon.vue';
 
 export default {
+	components: {Icon},
 	extends: FilterSlider,
 	props: {
 		/** An accessible label for the higher value. Typically "Less than". */

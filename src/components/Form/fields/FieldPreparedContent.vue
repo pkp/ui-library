@@ -1,5 +1,5 @@
 <template>
-	<field-rich-textarea
+	<FieldRichTextarea
 		v-bind="textareaProps"
 		ref="textarea"
 		:init="compiledInit"
@@ -9,7 +9,7 @@
 		<template #footer>
 			<slot name="footer" />
 		</template>
-	</field-rich-textarea>
+	</FieldRichTextarea>
 </template>
 
 <script>

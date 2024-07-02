@@ -16,7 +16,7 @@
 				>
 					{{ getVersionHeader(version) }}
 				</a>
-				<pkp-table
+				<PkpTable
 					:columns="doiListColumns"
 					:rows="
 						item.doiObjects.filter(
@@ -25,10 +25,10 @@
 					"
 				>
 					<template #default="{row}">
-						<table-cell :column="doiListColumns[0]" :row="row">
+						<TableCell :column="doiListColumns[0]" :row="row">
 							<label :for="row.uid">{{ row.displayType }}</label>
-						</table-cell>
-						<table-cell :column="doiListColumns[1]" :row="row">
+						</TableCell>
+						<TableCell :column="doiListColumns[1]" :row="row">
 							<input
 								:id="row.uid"
 								v-model="
@@ -38,14 +38,14 @@
 								type="text"
 								:readonly="!(isEditingDois && !isSaving)"
 							/>
-						</table-cell>
+						</TableCell>
 					</template>
-				</pkp-table>
+				</PkpTable>
 			</div>
 
 			<div class="doiListItem__versionContainer--actionsBar">
-				<spinner v-if="isSaving" />
-				<pkp-button
+				<Spinner v-if="isSaving" />
+				<PkpButton
 					:is-disabled="isDeposited || isSaving"
 					@click="
 						(...args) =>
@@ -55,7 +55,7 @@
 					"
 				>
 					{{ isEditingDois ? t('common.save') : t('common.edit') }}
-				</pkp-button>
+				</PkpButton>
 			</div>
 		</SideModalLayoutBasic>
 	</SideModalBody>
@@ -66,6 +66,8 @@ import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
 import PkpTable from '@/components/Table/Table.vue';
 import TableCell from '@/components/Table/TableCell.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
+import PkpButton from '@/components/Button/Button.vue';
 
 import {useLocalize} from '@/composables/useLocalize';
 defineProps({

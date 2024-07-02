@@ -24,18 +24,18 @@
 			</div>
 
 			<div class="listPanel__itemActions listPanel__itemActions--catalog">
-				<pkp-button element="a" :href="item.urlWorkflow">
+				<PkpButton element="a" :href="item.urlWorkflow">
 					{{ t('submission.list.viewSubmission') }}
-				</pkp-button>
-				<pkp-button element="a" :href="item.urlPublished">
+				</PkpButton>
+				<PkpButton element="a" :href="item.urlPublished">
 					{{ t('submission.list.viewEntry') }}
-				</pkp-button>
+				</PkpButton>
 				<button
 					class="listPanel__item--catalog__select listPanel__item--catalog__select--first"
 					@click.prevent="toggleFeatured"
 				>
-					<icon v-if="isFeatured" icon="check-square-o" />
-					<icon v-else icon="square-o" />
+					<Icon v-if="isFeatured" icon="check-square-o" />
+					<Icon v-else icon="square-o" />
 					<span class="-screenReader">
 						<template v-if="isFeatured">
 							{{ t('catalog.manage.isFeatured') }}
@@ -49,7 +49,7 @@
 					class="listPanel__item--catalog__select"
 					@click.prevent="toggleNewRelease"
 				>
-					<icon :icon="isNewRelease ? 'check-square-o' : 'square-o'" />
+					<Icon :icon="isNewRelease ? 'check-square-o' : 'square-o'" />
 					<span class="-screenReader">
 						<template v-if="isNewRelease">
 							{{ t('catalog.manage.isNewRelease') }}
@@ -61,7 +61,7 @@
 				</button>
 			</div>
 		</div>
-		<orderer
+		<Orderer
 			v-if="isOrdering"
 			:item-id="item.id"
 			:item-title="item.title"
@@ -76,6 +76,8 @@
 </template>
 
 <script>
+import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
 import Orderer from '@/components/Orderer/Orderer.vue';
 import ajaxError from '@/mixins/ajaxError';
 
@@ -83,6 +85,8 @@ export default {
 	name: 'CatalogListItem',
 	components: {
 		Orderer,
+		PkpButton,
+		Icon,
 	},
 	mixins: [ajaxError],
 	props: ['apiUrl', 'filterAssocType', 'filterAssocId', 'isOrdering', 'item'],

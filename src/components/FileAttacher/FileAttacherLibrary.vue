@@ -2,7 +2,7 @@
 	<div class="fileAttacherLibrary" aria-live="polite">
 		<div v-if="!files.length" class="fileAttacherLibrary__message">
 			<div v-if="isLoading">
-				<spinner />
+				<Spinner />
 				{{ t('common.loading') }}
 			</div>
 			<div v-else>
@@ -10,7 +10,7 @@
 			</div>
 		</div>
 		<div v-else>
-			<select-submission-file-list-item
+			<SelectSubmissionFileListItem
 				v-for="(file, i) in files"
 				:key="i"
 				:document-type="file.documentType"
@@ -21,22 +21,22 @@
 				:url="file.url"
 			>
 				<input v-model="selected" type="checkbox" :value="file.id" />
-			</select-submission-file-list-item>
+			</SelectSubmissionFileListItem>
 		</div>
-		<button-row class="fileAttacher__footer">
+		<ButtonRow class="fileAttacher__footer">
 			<template #end>
-				<pkp-button :is-link="true" @click="$emit('cancel')">
-					<icon icon="long-arrow-left" :inline="true" />
+				<PkpButton :is-link="true" @click="$emit('cancel')">
+					<Icon icon="long-arrow-left" :inline="true" />
 					{{ backLabel }}
-				</pkp-button>
+				</PkpButton>
 			</template>
-			<pkp-button
+			<PkpButton
 				:is-disabled="!selected.length"
 				@click="$emit('selected:files', selectedFiles)"
 			>
 				{{ attachSelectedLabel }}
-			</pkp-button>
-		</button-row>
+			</PkpButton>
+		</ButtonRow>
 	</div>
 </template>
 
@@ -44,12 +44,18 @@
 import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
 import SelectSubmissionFileListItem from '@/components/ListPanel/submissionFiles/SelectSubmissionFileListItem.vue';
 import ajaxError from '@/mixins/ajaxError';
+import Spinner from '@/components/Spinner/Spinner.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
 
 export default {
 	name: 'FileAttacherLibrary',
 	components: {
 		ButtonRow,
 		SelectSubmissionFileListItem,
+		Spinner,
+		PkpButton,
+		Icon,
 	},
 	mixins: [ajaxError],
 	props: {

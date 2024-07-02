@@ -1,20 +1,20 @@
 <template>
 	<div class="pkpFormField pkpFormField--pubid">
 		<div class="pkpFormField__heading">
-			<form-field-label
+			<FormFieldLabel
 				:control-id="controlId"
 				:label="label"
 				:is-required="isRequired"
 				:required-label="t('common.required')"
 			/>
-			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
+			<Tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span
 				v-if="tooltip"
 				:id="describedByTooltipId"
 				class="-screenReader"
 				v-html="tooltip"
 			/>
-			<help-button
+			<HelpButton
 				v-if="helpTopic"
 				:id="describedByHelpId"
 				:topic="helpTopic"
@@ -40,30 +40,30 @@
 				:disabled="!!pattern"
 				:required="isRequired"
 			/>
-			<pkp-button
+			<PkpButton
 				v-if="pattern && canGenerateId && !currentValue"
 				class="pkpFormField--pubid__button"
 				@click="assignId"
 			>
 				{{ assignIdLabel }}
-			</pkp-button>
-			<pkp-button
+			</PkpButton>
+			<PkpButton
 				v-else-if="pattern && currentValue"
 				class="pkpFormField--pubid__button"
 				:is-warnable="true"
 				@click="() => (currentValue = '')"
 			>
 				{{ clearIdLabel }}
-			</pkp-button>
+			</PkpButton>
 			<div
 				v-if="pattern && !canGenerateId && !currentValue"
 				:id="describedByDescriptionId"
 				class="pkpFormField--pubid__warning"
 			>
-				<icon icon="exclamation-triangle" :inline="true" />
+				<Icon icon="exclamation-triangle" :inline="true" />
 				{{ missingPartsLabel }}
 			</div>
-			<field-error
+			<FieldError
 				v-if="errors && errors.length"
 				:id="describedByErrorId"
 				:messages="errors"
@@ -74,9 +74,23 @@
 
 <script>
 import FieldBase from './FieldBase.vue';
+import FormFieldLabel from '@/components/Form/FormFieldLabel.vue';
+import Tooltip from '@/components/Tooltip/Tooltip.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
+import FieldError from '@/components/Form/FieldError.vue';
+import HelpButton from '@/components/HelpButton/HelpButton.vue';
 
 export default {
 	name: 'FieldPubId',
+	components: {
+		FormFieldLabel,
+		Tooltip,
+		PkpButton,
+		Icon,
+		FieldError,
+		HelpButton,
+	},
 	extends: FieldBase,
 	props: {
 		assignIdLabel: {

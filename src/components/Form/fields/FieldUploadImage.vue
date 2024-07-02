@@ -1,7 +1,7 @@
 <template>
 	<div class="pkpFormField pkpFormField--upload pkpFormField--uploadImage">
 		<div class="pkpFormField__heading">
-			<form-field-label
+			<FormFieldLabel
 				:control-id="dropzoneHiddenFileId"
 				:label="label"
 				:locale-label="localeLabel"
@@ -9,14 +9,14 @@
 				:required-label="t('common.required')"
 				:multilingual-label="multilingualLabel"
 			/>
-			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
+			<Tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span
 				v-if="tooltip"
 				:id="describedByTooltipId"
 				class="-screenReader"
 				v-html="tooltip"
 			/>
-			<help-button
+			<HelpButton
 				v-if="helpTopic"
 				:id="describedByHelpId"
 				:topic="helpTopic"
@@ -61,13 +61,13 @@
 					/>
 				</div>
 				<div class="pkpFormField--upload__previewActions">
-					<pkp-button :is-warnable="true" @click="clear">
+					<PkpButton :is-warnable="true" @click="clear">
 						{{ t('common.remove') }}
-					</pkp-button>
-					<pkp-button v-if="initialValue && !isInitialValue" @click="revert">
+					</PkpButton>
+					<PkpButton v-if="initialValue && !isInitialValue" @click="revert">
 						{{ restoreLabel }}
-					</pkp-button>
-					<multilingual-progress
+					</PkpButton>
+					<MultilingualProgress
 						v-if="isMultilingual && locales.length > 1"
 						:id="multilingualProgressId"
 						:count="multilingualFieldsCompleted"
@@ -75,14 +75,14 @@
 					/>
 				</div>
 			</div>
-			<field-error
+			<FieldError
 				v-if="currentValue && errors && errors.length"
 				:id="describedByErrorId"
 				:messages="errors"
 			/>
 			<!-- Keep the dropzone elements in the dom so they can be manipulated in mounted hook -->
 			<div :class="{'-screenReader': currentValue}">
-				<vue-dropzone
+				<VueDropzone
 					v-if="isComponentMounted"
 					:id="dropzoneId"
 					ref="dropzone"
@@ -93,28 +93,28 @@
 					@vdropzone-error="error"
 					@vdropzone-removed-file="onRemoveFile"
 				/>
-				<field-error
+				<FieldError
 					v-if="errors && errors.length"
 					:id="describedByErrorId"
 					:messages="errors"
 				/>
 				<div class="pkpFormField--upload__uploadActions">
 					<!-- keyboard-accessible file upload -->
-					<pkp-button
+					<PkpButton
 						:id="dropzoneClickableId"
 						class="pkpFormField--upload__addFile"
 						:disabled="!!uploadFile"
 					>
 						{{ uploadFileLabel }}
-					</pkp-button>
-					<pkp-button
+					</PkpButton>
+					<PkpButton
 						v-if="initialValue && !isInitialValue"
 						class="pkpFormField--upload__restore"
 						@click="revert"
 					>
 						{{ restoreLabel }}
-					</pkp-button>
-					<multilingual-progress
+					</PkpButton>
+					<MultilingualProgress
 						v-if="isMultilingual && locales.length > 1"
 						:id="multilingualProgressId"
 						:count="multilingualFieldsCompleted"
@@ -128,9 +128,25 @@
 
 <script>
 import FieldUpload from './FieldUpload.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Tooltip from '@/components/Tooltip/Tooltip.vue';
+import HelpButton from '@/components/HelpButton/HelpButton.vue';
+import FormFieldLabel from '@/components/Form/FormFieldLabel.vue';
+import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
+import FieldError from '@/components/Form/FieldError.vue';
+import VueDropzone from 'dropzone-vue3';
 
 export default {
 	name: 'FieldUploadImage',
+	components: {
+		PkpButton,
+		Tooltip,
+		HelpButton,
+		FormFieldLabel,
+		MultilingualProgress,
+		FieldError,
+		VueDropzone,
+	},
 	extends: FieldUpload,
 	props: {
 		altTextDescription: String,

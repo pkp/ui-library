@@ -2,9 +2,9 @@
 	<div class="listPanel">
 		<div class="listPanel__header">
 			<slot name="header">
-				<pkp-header>
+				<PkpHeader>
 					<component :is="headingLevel">{{ title }}</component>
-				</pkp-header>
+				</PkpHeader>
 				<div v-if="description">{{ description }}</div>
 			</slot>
 		</div>

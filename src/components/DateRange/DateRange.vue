@@ -8,7 +8,7 @@
 			@click="toggle"
 			@blur="closeOnBlur"
 		>
-			<icon icon="calendar" />
+			<Icon icon="calendar" />
 			<span class="-screenReader">
 				{{ changeDateRangeLabel }}
 			</span>
@@ -60,9 +60,9 @@
 						/>
 					</label>
 				</fieldset>
-				<pkp-button @click="applyCustomRange">{{ applyLabel }}</pkp-button>
+				<PkpButton @click="applyCustomRange">{{ applyLabel }}</PkpButton>
 				<div v-if="errorMessage" class="pkpDateRange__error">
-					<icon icon="exclamation-triangle" :inline="true" />
+					<Icon icon="exclamation-triangle" :inline="true" />
 					<span v-html="errorMessage" />
 				</div>
 			</form>
@@ -71,7 +71,11 @@
 </template>
 
 <script>
+import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
+
 export default {
+	components: {PkpButton, Icon},
 	props: {
 		/** A unique string to be used in <code>id</code> attributes. These ids are used internally for accessible labeling of the date range fields. This string should be unique on the page where the component is rendered. */
 		uniqueId: {

@@ -16,7 +16,7 @@
 						? store.acceptinvitationPayload.orcid
 						: t('invitation.orcid.acceptInvitation.message')
 				}}
-				<icon
+				<Icon
 					v-if="store.acceptinvitationPayload.orcid"
 					icon="orcid"
 					:inline="true"
@@ -24,16 +24,17 @@
 			</div>
 		</div>
 	</div>
-	<pkp-form
+	<PkpForm
 		v-bind="userForm"
 		class="userInvitation__stepForm"
 		@set="updateUserDetailsForm"
-	></pkp-form>
+	></PkpForm>
 </template>
 
 <script setup>
 import {defineProps, computed} from 'vue';
 import PkpForm from '@/components/Form/Form.vue';
+import Icon from '@/components/Icon/Icon.vue';
 import {useForm} from '@/composables/useForm';
 import {useAcceptInvitationPageStore} from './AcceptInvitationPageStore';
 

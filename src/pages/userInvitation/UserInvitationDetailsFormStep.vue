@@ -1,10 +1,10 @@
 <template>
 	<div v-if="store.invitationPayload.userId === null">
-		<pkp-form
+		<PkpForm
 			v-bind="userForm"
 			class="userInvitation__stepForm"
 			@set="updateUserForm"
-		></pkp-form>
+		></PkpForm>
 	</div>
 	<div v-if="store.invitationPayload.userId !== null">
 		<div class="userInvitation__reviewPanel__item">
@@ -19,7 +19,7 @@
 						? store.invitationPayload.orcid
 						: t('invitation.orcid.message')
 				}}
-				<icon
+				<Icon
 					v-if="store.invitationPayload.orcidValidation"
 					icon="orcid"
 					:inline="true"
@@ -48,6 +48,7 @@
 
 <script setup>
 import {defineProps, computed} from 'vue';
+import Icon from '@/components/Icon/Icon.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import {useTranslation} from '@/composables/useTranslation';
 import UserInvitationUserGroupsTable from './UserInvitationUserGroupsTable.vue';

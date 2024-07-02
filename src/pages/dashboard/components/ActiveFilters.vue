@@ -14,23 +14,25 @@
 				class="flex items-center border-0 bg-transparent"
 				@click="(...args) => emit('removeFilter', filter.name, filter.value)"
 			>
-				<icon class="h-4 w-4 text-negative" icon="Cancel" :aria-hidden="true" />
+				<Icon class="h-4 w-4 text-negative" icon="Cancel" :aria-hidden="true" />
 				<span class="sr-only">remove filter (todo better label)</span>
 			</button>
 		</div>
-		<pkpButton
+		<PkpButton
 			:is-warnable="true"
 			:is-link="true"
 			@click="(...args) => emit('clearFilters', ...args)"
 		>
 			{{ t('common.filtersClear') }}
-		</pkpButton>
+		</PkpButton>
 	</div>
 </template>
 
 <script setup>
 import {defineEmits, defineProps} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
+import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
 
 const {t} = useLocalize();
 
