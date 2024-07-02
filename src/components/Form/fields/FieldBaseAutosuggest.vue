@@ -114,7 +114,7 @@
 						ref="autosuggestInput"
 						class="pkpAutosuggest__input"
 						v-bind="inputProps"
-						@change="inputValue = $event.target.value"
+						@change="inputValue = $event.target.value.trim()"
 						@focus="() => (isFocused = true)"
 						@blur="() => (isFocused = false)"
 					/>
