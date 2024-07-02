@@ -8,7 +8,7 @@
 		</div>
 	</div>
 	<br />
-	<field-text
+	<FieldText
 		:label="t('user.username')"
 		:value="fields.username"
 		name="username"
@@ -17,7 +17,7 @@
 		@change="updateField"
 	/>
 	<br />
-	<field-text
+	<FieldText
 		:label="t('user.password')"
 		:value="fields.password"
 		name="password"
@@ -27,7 +27,7 @@
 		@change="updateField"
 	/>
 	<div>
-		<field-show-ensuring-link
+		<FieldShowEnsuringLink
 			primary-locale="en"
 			name="privacyStatement"
 			:value="fields.privacyStatement"

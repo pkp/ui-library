@@ -18,14 +18,14 @@
 				@keydown.right.exact.prevent="setNextTab"
 			>
 				<template v-if="tab.icon">
-					<icon :icon="tab.icon"></icon>
+					<Icon :icon="tab.icon"></Icon>
 					<span class="-screenReader">{{ tab.label }}</span>
 				</template>
 				<template v-else>
 					{{ tab.label }}
 				</template>
 				<template v-if="tab.badge">
-					<badge>{{ tab.badge }}</badge>
+					<Badge>{{ tab.badge }}</Badge>
 				</template>
 			</button>
 		</div>
@@ -35,8 +35,11 @@
 
 <script>
 import debounce from 'debounce';
+import Icon from '@/components/Icon/Icon.vue';
+import Badge from '@/components/Badge/Badge.vue';
 
 export default {
+	components: {Icon, Badge},
 	props: {
 		/** Select one of the tabs by default. Pass the tab's `id` prop. */
 		defaultTab: {

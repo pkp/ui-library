@@ -20,6 +20,7 @@
 	</div>
 </template>
 <script setup>
+import PkpButton from '@/components/Button/Button.vue';
 import {useSubmissionSummaryStore} from '../submissionSummaryStore';
 import {useLocalize} from '@/composables/useLocalize';
 const summaryStore = useSubmissionSummaryStore();

@@ -10,7 +10,7 @@
 							class="listPanel__item--submissionFile__link"
 							:href="item.url"
 						>
-							<submission-files-file
+							<SubmissionFilesFile
 								:document-type="item.documentType"
 								:name="localize(item.name)"
 							/>
@@ -18,32 +18,32 @@
 					</div>
 				</div>
 				<div class="listPanel__itemActions">
-					<badge
+					<Badge
 						v-if="item.genreId"
 						:is-primary="isPrimaryGenre"
 						class="listPanel--submissionFiles__itemGenre"
 					>
 						{{ localize(item.genreName) }}
-					</badge>
-					<pkp-button
+					</Badge>
+					<PkpButton
 						:id="editId"
 						:aria-describedby="nameId"
 						@click="$emit('edit', item)"
 					>
 						{{ t('common.edit') }}
-					</pkp-button>
-					<pkp-button
+					</PkpButton>
+					<PkpButton
 						:is-warnable="true"
 						:aria-describedby="nameId"
 						@click="$emit('remove', item)"
 					>
 						{{ t('common.remove') }}
-					</pkp-button>
+					</PkpButton>
 				</div>
 			</div>
 			<div v-if="!item.genreId" class="listPanel--submissionFiles__setGenre">
 				<span role="alert">
-					<icon icon="exclamation-triangle" :inline="true" />
+					<Icon icon="exclamation-triangle" :inline="true" />
 					<span
 						:id="genrePromptId"
 						class="listPanel--submissionFiles__setGenreLabel"
@@ -68,7 +68,7 @@
 					</button>
 				</span>
 				<template v-if="isSavingGenreId">
-					<spinner class="listPanel--submissionFiles__genreSpinner" />
+					<Spinner class="listPanel--submissionFiles__genreSpinner" />
 					<span
 						class="-screenReader"
 						role="status"
@@ -83,7 +83,7 @@
 
 		<!-- Uploads in progress not yet saved as submission files -->
 		<template v-else>
-			<file-upload-progress
+			<FileUploadProgress
 				:cancel-upload-label="cancelUploadLabel"
 				:errors="item.errors || []"
 				:name="item.name"
@@ -98,9 +98,15 @@
 import Badge from '@/components/Badge/Badge.vue';
 import FileUploadProgress from '@/components/FileUploadProgress/FileUploadProgress.vue';
 import SubmissionFilesFile from '../../File/File.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
 
 export default {
 	components: {
+		PkpButton,
+		Icon,
+		Spinner,
 		Badge,
 		FileUploadProgress,
 		SubmissionFilesFile,

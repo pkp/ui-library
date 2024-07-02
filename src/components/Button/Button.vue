@@ -19,6 +19,7 @@
 
 <script setup>
 import {defineProps, defineEmits, computed} from 'vue';
+import Icon from '@/components/Icon/Icon.vue';
 
 const props = defineProps({
 	/** Whether to use a `button` or `a` HTML tag. */

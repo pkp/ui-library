@@ -30,8 +30,8 @@
 								current === step.id
 									? 'pkpSteps__step__label--current'
 									: completedSteps.includes(step.id)
-									  ? 'pkpSteps__step__label--completed'
-									  : ''
+										? 'pkpSteps__step__label--completed'
+										: ''
 							"
 							@click="setCurrent(step.id)"
 						>
@@ -39,7 +39,7 @@
 								<template
 									v-if="current !== step.id && completedSteps.includes(step.id)"
 								>
-									<icon icon="check" />
+									<Icon icon="check" />
 								</template>
 								<template v-else>
 									{{ i + 1 }}
@@ -60,12 +60,12 @@
 				<span class="pkpSteps__progress">
 					{{ progress }}
 				</span>
-				<pkp-button @click="() => (stepsVisible = !stepsVisible)">
+				<PkpButton @click="() => (stepsVisible = !stepsVisible)">
 					<span class="-screenReader">
 						{{ showStepsLabel }}
 					</span>
-					<icon :icon="stepsVisible ? 'chevron-up' : 'chevron-down'" />
-				</pkp-button>
+					<Icon :icon="stepsVisible ? 'chevron-up' : 'chevron-down'" />
+				</PkpButton>
 			</div>
 		</div>
 		<slot />
@@ -75,8 +75,11 @@
 <script>
 import debounce from 'debounce';
 import elementResizeEvent from 'element-resize-event';
+import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
 
 export default {
+	components: {PkpButton, Icon},
 	provide() {
 		return {
 			registerStep: (step) => {

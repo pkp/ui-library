@@ -26,7 +26,7 @@
 				>
 					<button v-if="column.orderBy" @click="setOrderBy(column)">
 						{{ column.label }}
-						<icon
+						<Icon
 							:icon="getIconDirection(column) ? 'caret-down' : 'caret-up'"
 							class="pkpTable__sortIcon"
 						/>
@@ -54,13 +54,13 @@
 				class="pkpTable__row"
 			>
 				<slot :row="row" :row-index="rowIndex">
-					<table-cell
+					<TableCell
 						v-for="(column, columnIndex) in columns"
 						:key="column.name"
 						:column="column"
 						:row="row"
 						:tabindex="!rowIndex && !columnIndex ? 0 : -1"
-					></table-cell>
+					></TableCell>
 				</slot>
 			</tr>
 		</tbody>
@@ -69,10 +69,12 @@
 
 <script>
 import TableCell from '@/components/Table/TableCell.vue';
+import Icon from '@/components/Icon/Icon.vue';
 
 export default {
 	components: {
 		TableCell,
+		Icon,
 	},
 	props: {
 		columns: {

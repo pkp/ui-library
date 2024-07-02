@@ -1,16 +1,16 @@
 <template>
 	<div class="orderer">
 		<span v-if="isDraggable" class="orderer__dragDrop" aria-hidden="true">
-			<icon icon="sort" />
+			<Icon icon="sort" />
 		</span>
 		<button class="orderer__up" @click.prevent="up">
-			<icon icon="angle-up" />
+			<Icon icon="angle-up" />
 			<span class="-screenReader">
 				{{ t('common.orderUp', {itemTitle: itemTitle}) }}
 			</span>
 		</button>
 		<button class="orderer__down" @click.prevent="down">
-			<icon icon="angle-down" />
+			<Icon icon="angle-down" />
 			<span class="-screenReader">
 				{{ t('common.orderDown', {itemTitle: itemTitle}) }}
 			</span>
@@ -19,8 +19,11 @@
 </template>
 
 <script>
+import Icon from '@/components/Icon/Icon.vue';
+
 export default {
 	name: 'Orderer',
+	components: {Icon},
 	props: {
 		/** A unique id for the item to be ordered. This will be emitted in the `up` and `down` events. It may be a string or number, and does not correspond to the item's order in the list.  */
 		itemId: [String, Number],

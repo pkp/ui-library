@@ -1,18 +1,18 @@
 <template>
 	<div class="doiListPanel">
 		<slot>
-			<list-panel :items="mappedItems" :is-sidebar-visible="true">
+			<ListPanel :items="mappedItems" :is-sidebar-visible="true">
 				<template #header>
-					<pkp-header>
+					<PkpHeader>
 						<h2>{{ title }}</h2>
-						<spinner v-if="isLoading" />
+						<Spinner v-if="isLoading" />
 						<template #actions>
-							<search
+							<Search
 								:search-phrase="searchPhrase"
 								@search-phrase-changed="setSearchPhrase"
 							/>
 
-							<dropdown
+							<Dropdown
 								:label="t('manager.dois.actions.bulkActions')"
 								class="doiListPanel__bulkActions"
 							>
@@ -109,23 +109,23 @@
 										</li>
 									</ul>
 								</div>
-							</dropdown>
+							</Dropdown>
 
-							<pkp-button
+							<PkpButton
 								v-if="isRegistrationPluginConfigured"
 								:is-primary="true"
 								@click="openBulkDepositAll"
 							>
 								{{ t('manager.dois.actions.deposit.all') }}
-							</pkp-button>
+							</PkpButton>
 						</template>
-					</pkp-header>
+					</PkpHeader>
 				</template>
 
 				<template #sidebar>
-					<pkp-header :is-one-line="false">
+					<PkpHeader :is-one-line="false">
 						<h3>
-							<icon icon="filter" :inline="true" />
+							<Icon icon="filter" :inline="true" />
 							{{ t('common.filter') }}
 						</h3>
 						<template #actions>
@@ -133,18 +133,18 @@
 								class="doiListPanel__statusInfoButton"
 								@click="openStatusInfoModal"
 							>
-								<icon icon="question-circle" />
+								<Icon icon="question-circle" />
 							</button>
 						</template>
-					</pkp-header>
+					</PkpHeader>
 					<div
 						v-for="(filterSet, index) in filters"
 						:key="index"
 						class="listPanel__block"
 					>
-						<pkp-header v-if="filterSet.heading">
+						<PkpHeader v-if="filterSet.heading">
 							<h4>{{ filterSet.heading }}</h4>
-						</pkp-header>
+						</PkpHeader>
 						<component
 							:is="filter.filterType || 'pkp-filter'"
 							v-for="filter in filterSet.filters"
@@ -160,7 +160,7 @@
 
 				<template #itemsEmpty>
 					<template v-if="isLoading">
-						<spinner />
+						<Spinner />
 						{{ t('common.loading') }}
 					</template>
 					<template v-else>
@@ -170,7 +170,7 @@
 
 				<template #item="{item}">
 					<slot name="item" :item="item">
-						<doi-list-item
+						<DoiListItem
 							:key="item.id"
 							:item="item"
 							:api-url="apiUrl"
@@ -190,7 +190,7 @@
 					</slot>
 				</template>
 				<template #footer>
-					<pagination
+					<Pagination
 						v-if="lastPage > 1"
 						:current-page="currentPage"
 						:is-loading="isLoading"
@@ -198,12 +198,15 @@
 						@set-page="setPage"
 					/>
 				</template>
-			</list-panel>
+			</ListPanel>
 		</slot>
 	</div>
 </template>
 
 <script>
+import Spinner from '@/components/Spinner/Spinner.vue';
+import Icon from '@/components/Icon/Icon.vue';
+import PkpButton from '@/components/Button/Button.vue';
 import DoiListItem from '@/components/ListPanel/doi/DoiListItem.vue';
 import Dropdown from '@/components/Dropdown/Dropdown.vue';
 import FieldSelect from '@/components/Form/fields/FieldSelect.vue';
@@ -224,6 +227,9 @@ import Modal from '@/components/Modal/Modal.vue';
 
 export default {
 	components: {
+		PkpButton,
+		Icon,
+		Spinner,
 		Notification,
 		DoiListItem,
 		Dropdown,

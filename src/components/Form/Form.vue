@@ -7,7 +7,7 @@
 			:name="name"
 			:value="value"
 		/>
-		<form-locales
+		<FormLocales
 			v-if="availableLocales.length > 1"
 			:primary-locale-key="primaryLocale"
 			:locales="availableLocales"
@@ -28,7 +28,7 @@
 					>
 						{{ page.label }}
 					</button>
-					<icon
+					<Icon
 						v-if="pageIdsWithErrors.includes(page.id)"
 						icon="exclamation-triangle"
 						:inline="true"
@@ -37,7 +37,7 @@
 			</ol>
 		</div>
 		<div class="pkpFormPages" :class="classes">
-			<form-page
+			<FormPage
 				v-for="(page, index) in pages"
 				:key="page.id"
 				v-bind="page"
@@ -69,12 +69,14 @@
 import FormLocales from './FormLocales.vue';
 import FormPage from './FormPage.vue';
 import {shouldShowField} from './formHelpers';
+import Icon from '@/components/Icon/Icon.vue';
 
 export default {
 	name: 'PkpForm',
 	components: {
 		FormLocales,
 		FormPage,
+		Icon,
 	},
 	props: {
 		/** Used by a parent component, such as `Container`, to identify events emitted from the form and update the form props when necessary. */

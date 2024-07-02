@@ -1,6 +1,6 @@
 <template>
 	<div class="pkpDropdown">
-		<pkp-button
+		<PkpButton
 			ref="button"
 			:is-active="isActive"
 			:is-link="isLink"
@@ -13,10 +13,10 @@
 			@blur="closeOnBlur"
 		>
 			<slot name="button">
-				<icon v-if="icon" :icon="icon" :inline="true" />
+				<Icon v-if="icon" :icon="icon" :inline="true" />
 				{{ label }}
 			</slot>
-		</pkp-button>
+		</PkpButton>
 		<div
 			v-if="isOpen"
 			:id="id"
@@ -30,7 +30,11 @@
 </template>
 
 <script>
+import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
+
 export default {
+	components: {PkpButton, Icon},
 	props: {
 		/** An optional `id` of one or more elements which describe this dropdown.
 		 * It will be applied to the `<button>` in the dropdown. Optional */

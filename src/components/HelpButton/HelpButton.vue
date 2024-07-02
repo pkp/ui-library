@@ -5,14 +5,17 @@
 		:data-section="section"
 		@click.prevent
 	>
-		<icon class="h-5 w-5 text-primary" icon="Help" />
+		<Icon class="h-5 w-5 text-primary" icon="Help" />
 		<span class="-screenReader">{{ label }}</span>
 	</button>
 </template>
 
 <script>
+import Icon from '@/components/Icon/Icon.vue';
+
 export default {
 	name: 'HelpButton',
+	components: {Icon},
 	props: {
 		/** Which topic to open in the help panel. This will correspond with one of the `.md` files used in the help panel. Do not include the `.md` extension. */
 		topic: {

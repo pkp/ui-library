@@ -1,17 +1,17 @@
 <template>
 	<div class="contributorsListPanel">
 		<slot>
-			<list-panel
+			<ListPanel
 				:items="items"
 				class="listPanel--contributor"
 				:class="isOrdering ? '-isOrdering' : ''"
 			>
 				<template #header>
-					<pkp-header>
+					<PkpHeader>
 						<h2>{{ title }}</h2>
-						<spinner v-if="isLoading" />
+						<Spinner v-if="isLoading" />
 						<template #actions>
-							<pkp-button
+							<PkpButton
 								v-if="
 									publication.status !== getConstant('STATUS_PUBLISHED') &&
 									canEditPublication
@@ -22,23 +22,23 @@
 								@click="toggleOrdering"
 							>
 								{{ orderingLabel }}
-							</pkp-button>
-							<pkp-button
+							</PkpButton>
+							<PkpButton
 								v-if="isOrdering"
 								:is-warnable="true"
 								:disabled="isLoading"
 								@click="cancelOrdering"
 							>
 								{{ t('common.cancel') }}
-							</pkp-button>
-							<pkp-button
+							</PkpButton>
+							<PkpButton
 								v-if="!isOrdering"
 								:disabled="isLoading"
 								@click="openPreviewModal"
 							>
 								{{ t('contributor.listPanel.preview') }}
-							</pkp-button>
-							<pkp-button
+							</PkpButton>
+							<PkpButton
 								v-if="
 									!isOrdering &&
 									publication.status !== getConstant('STATUS_PUBLISHED') &&
@@ -48,15 +48,15 @@
 								@click="openAddModal"
 							>
 								{{ t('grid.action.addContributor') }}
-							</pkp-button>
+							</PkpButton>
 						</template>
-					</pkp-header>
+					</PkpHeader>
 				</template>
 				<template #item-title="{item}">
 					{{ item.fullName }}
-					<badge v-if="item.userGroupName">
+					<Badge v-if="item.userGroupName">
 						{{ localize(item.userGroupName) }}
-					</badge>
+					</Badge>
 				</template>
 				<template #item-subtitle="{item}">
 					{{ localize(item.affiliation) }}
@@ -69,7 +69,7 @@
 					#item-actions="{item}"
 				>
 					<template v-if="isOrdering">
-						<orderer
+						<Orderer
 							:item-id="item.id"
 							:item-title="item.fullName"
 							@up="contributorItemOrderUp(item)"
@@ -77,37 +77,40 @@
 						/>
 					</template>
 					<template v-else>
-						<badge
+						<Badge
 							v-if="publication.primaryContactId == item.id"
 							:is-primary="true"
 						>
 							{{ t('author.users.contributor.principalContact') }}
-						</badge>
-						<pkp-button
+						</Badge>
+						<PkpButton
 							v-else
 							:disabled="isLoading"
 							@click="setPrimaryContact(item.id)"
 						>
 							{{ t('author.users.contributor.setPrincipalContact') }}
-						</pkp-button>
-						<pkp-button :disabled="isLoading" @click="openEditModal(item.id)">
+						</PkpButton>
+						<PkpButton :disabled="isLoading" @click="openEditModal(item.id)">
 							{{ t('common.edit') }}
-						</pkp-button>
-						<pkp-button
+						</PkpButton>
+						<PkpButton
 							:disabled="isLoading"
 							:is-warnable="true"
 							@click="openDeleteModal(item.id)"
 						>
 							{{ t('common.delete') }}
-						</pkp-button>
+						</PkpButton>
 					</template>
 				</template>
-			</list-panel>
+			</ListPanel>
 		</slot>
 	</div>
 </template>
 
 <script>
+import Spinner from '@/components/Spinner/Spinner.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Badge from '@/components/Badge/Badge.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import Orderer from '@/components/Orderer/Orderer.vue';
 import PkpHeader from '@/components/Header/Header.vue';
@@ -121,6 +124,9 @@ import {useModal} from '@/composables/useModal';
 
 export default {
 	components: {
+		Spinner,
+		PkpButton,
+		Badge,
 		ListPanel,
 		Orderer,
 		PkpHeader,

@@ -1,6 +1,6 @@
 <template>
 	<div :id="id" class="fileUploader" :class="{'-isDragging': isDragging}">
-		<vue-dropzone
+		<VueDropzone
 			:id="dropzoneId"
 			ref="dropzone"
 			:options="dropzoneOptions"

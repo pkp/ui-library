@@ -9,15 +9,18 @@
 			aria-hidden="true"
 			@click.prevent
 		>
-			<icon icon="globe" />
+			<Icon icon="globe" />
 		</button>
 		<span class="-screenReader">{{ tooltip }}</span>
 	</span>
 </template>
 
 <script>
+import Icon from '@/components/Icon/Icon.vue';
+
 export default {
 	name: 'MultilingualProgress',
+	components: {Icon},
 	props: {
 		/** The number of completed multilingual items.  */
 		count: {

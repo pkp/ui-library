@@ -1,10 +1,11 @@
 <template>
-	<pkp-button @click="verifyOrcid">verify ORCID iD</pkp-button>
+	<PkpButton @click="verifyOrcid">verify ORCID iD</PkpButton>
 	<br />
-	<pkp-button @click="skipOrcid">Skip ORCID verification</pkp-button>
+	<PkpButton @click="skipOrcid">Skip ORCID verification</PkpButton>
 </template>
 
 <script setup>
+import PkpButton from '@/components/Button/Button.vue';
 import {defineProps} from 'vue';
 import {useAcceptInvitationPageStore} from './AcceptInvitationPageStore';
 

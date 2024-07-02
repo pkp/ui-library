@@ -6,20 +6,20 @@
 		<div class="listPanel__itemSummary">
 			<div class="listPanel__itemIdentity">
 				<div class="listPanel__itemTitle">
-					<badge
+					<Badge
 						v-if="item.reviewsActive && canSelect"
 						class="listPanel__item--reviewer__active"
 					>
 						{{
 							activeReviewsCountLabel.replace('{$count}', item.reviewsActive)
 						}}
-					</badge>
+					</Badge>
 					{{ item.fullName }}
 					<span
 						v-if="item.reviewerRating !== null && canSelect"
 						class="listPanel__item--reviewer__rating"
 					>
-						<icon
+						<Icon
 							v-for="(star, index) in stars"
 							:key="index"
 							icon="star"
@@ -49,28 +49,28 @@
 							class="listPanel__item--reviewer__orcid"
 							target="_blank"
 						>
-							<icon icon="orcid" :inline="true" />
+							<Icon icon="orcid" :inline="true" />
 							{{ item.orcid }}
 						</a>
 					</div>
 				</div>
 
 				<div v-if="currentlyAssigned" class="listPanel__item--reviewer__notice">
-					<icon icon="exclamation-triangle" :inline="true" />
+					<Icon icon="exclamation-triangle" :inline="true" />
 					{{ currentlyAssignedLabel }}
 				</div>
 				<div
 					v-else-if="assignedToLastRound"
 					class="listPanel__item--reviewer__notice"
 				>
-					<icon icon="thumb-tack" :inline="true" />
+					<Icon icon="thumb-tack" :inline="true" />
 					{{ assignedToLastRoundLabel }}
 				</div>
 				<div
 					v-else-if="warnOnAssignment && !isWarningBypassed"
 					class="listPanel__item--reviewer__notice"
 				>
-					<icon icon="lock" :inline="true" />
+					<Icon icon="lock" :inline="true" />
 					{{ warnOnAssignmentLabel }}
 					<button
 						class="listPanel__item--reviewer__noticeAction"
@@ -88,18 +88,18 @@
 					aria-hidden="true"
 				>
 					<span class="listPanel__item--reviewer__complete">
-						<icon icon="check-circle-o" :inline="true" />
+						<Icon icon="check-circle-o" :inline="true" />
 						{{ item.reviewsCompleted }}
 					</span>
 					<span class="listPanel__item--reviewer__last">
-						<icon icon="history" :inline="true" />
+						<Icon icon="history" :inline="true" />
 						{{ daysSinceLastAssignmentLabelCompiled }}
 					</span>
 					<span
 						v-if="item.interests.length"
 						class="listPanel__item--reviewer__interests"
 					>
-						<icon icon="book" :inline="true" />
+						<Icon icon="book" :inline="true" />
 						{{ interestsString }}
 					</span>
 					<span
@@ -112,7 +112,7 @@
 			</div>
 
 			<div class="listPanel__itemActions">
-				<pkp-button v-if="canSelect" @click="select">
+				<PkpButton v-if="canSelect" @click="select">
 					<template v-if="assignedToLastRound">
 						<span aria-hidden="true">{{ reassignLabel }}</span>
 						<span class="-screenReader">
@@ -125,8 +125,8 @@
 							{{ t('common.selectWithName', {name: item.fullName}) }}
 						</span>
 					</template>
-				</pkp-button>
-				<expander
+				</PkpButton>
+				<Expander
 					:is-expanded="isExpanded"
 					:item-name="item.fullName"
 					@toggle="isExpanded = !isExpanded"
@@ -137,69 +137,69 @@
 			v-if="isExpanded"
 			class="listPanel__itemExpanded listPanel__itemExpanded--reviewer"
 		>
-			<list>
-				<list-item>
+			<List>
+				<ListItem>
 					<template #value>
-						<icon icon="clock-o" :inline="true" />
+						<Icon icon="clock-o" :inline="true" />
 						{{ item.reviewsActive }}
 					</template>
 					{{ activeReviewsLabel }}
-				</list-item>
-				<list-item>
+				</ListItem>
+				<ListItem>
 					<template #value>
-						<icon icon="check-circle-o" :inline="true" />
+						<Icon icon="check-circle-o" :inline="true" />
 						{{ item.reviewsCompleted }}
 					</template>
 					{{ completedReviewsLabel }}
-				</list-item>
-				<list-item>
+				</ListItem>
+				<ListItem>
 					<template #value>
-						<icon icon="times-circle-o" :inline="true" />
+						<Icon icon="times-circle-o" :inline="true" />
 						{{ item.reviewsDeclined }}
 					</template>
 					{{ declinedReviewsLabel }}
-				</list-item>
-				<list-item>
+				</ListItem>
+				<ListItem>
 					<template #value>
-						<icon icon="ban" :inline="true" />
+						<Icon icon="ban" :inline="true" />
 						{{ item.reviewsCancelled }}
 					</template>
 					{{ cancelledReviewsLabel }}
-				</list-item>
-				<list-item>
+				</ListItem>
+				<ListItem>
 					<template #value>
-						<icon icon="history" :inline="true" />
+						<Icon icon="history" :inline="true" />
 						{{ daysSinceLastAssignment }}
 					</template>
 					{{ daysSinceLastAssignmentDescriptionLabel }}
-				</list-item>
-				<list-item>
+				</ListItem>
+				<ListItem>
 					<template #value>
-						<icon icon="calendar" :inline="true" />
+						<Icon icon="calendar" :inline="true" />
 						{{ item.averageReviewCompletionDays }}
 					</template>
 					{{ averageCompletionLabel }}
-				</list-item>
-				<list-item v-if="item.interests.length">
+				</ListItem>
+				<ListItem v-if="item.interests.length">
 					<div class="listPanel__item--reviewer__detailHeading">
-						<icon icon="book" :inline="true" />
+						<Icon icon="book" :inline="true" />
 						{{ reviewInterestsLabel }}
 					</div>
 					{{ interestsString }}
-				</list-item>
-				<list-item v-if="item.gossip">
+				</ListItem>
+				<ListItem v-if="item.gossip">
 					<div class="listPanel__item--reviewer__detailHeading">
 						{{ gossipLabel }}
 					</div>
 					<div v-html="item.gossip"></div>
-				</list-item>
-				<list-item v-if="localize(item.biography)">
+				</ListItem>
+				<ListItem v-if="localize(item.biography)">
 					<div class="listPanel__item--reviewer__detailHeading">
 						{{ biographyLabel }}
 					</div>
 					<div v-html="localize(item.biography)"></div>
-				</list-item>
-			</list>
+				</ListItem>
+			</List>
 		</div>
 	</div>
 </template>
@@ -208,12 +208,18 @@
 import Expander from '@/components/Expander/Expander.vue';
 import List from '@/components/List/List.vue';
 import ListItem from '@/components/List/ListItem.vue';
+import Badge from '@/components/Badge/Badge.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
 
 export default {
 	components: {
 		Expander,
 		List,
 		ListItem,
+		Badge,
+		PkpButton,
+		Icon,
 	},
 	props: {
 		activeReviewsCountLabel: {

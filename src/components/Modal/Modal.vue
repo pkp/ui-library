@@ -44,18 +44,18 @@
 									</slot>
 								</div>
 								<button class="modal__closeButton" @click="$emit('close')">
-									<icon
+									<Icon
 										icon="Cancel"
 										:class="'h-5 w-5 text-negative'"
 										:aria-hidden="true"
 										class="modal__closeButton__x"
 									/>
-									<icon
+									<Icon
 										icon="chevron-left"
 										:aria-hidden="true"
 										class="modal__closeButton__left"
 									/>
-									<icon
+									<Icon
 										icon="chevron-right"
 										:aria-hidden="true"
 										class="modal__closeButton__right"
@@ -86,6 +86,8 @@ import {
 	TransitionChild,
 } from '@headlessui/vue';
 
+import Icon from '@/components/Icon/Icon.vue';
+
 export default {
 	components: {
 		HLDialog,
@@ -93,6 +95,7 @@ export default {
 		DialogTitle,
 		TransitionRoot,
 		TransitionChild,
+		Icon,
 	},
 
 	props: {

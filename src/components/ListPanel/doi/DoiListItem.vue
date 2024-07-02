@@ -38,7 +38,7 @@
 				<!-- DOI item metadata -->
 				{{ item.id }}
 				<div class="doiListItem__itemMetadata">
-					<badge
+					<Badge
 						class="doiListItem__itemMetadata--badge"
 						:is-warnable="
 							item.isPublished &&
@@ -51,10 +51,10 @@
 						{{
 							!item.isPublished ? publicationStatusLabel : depositStatusString
 						}}
-					</badge>
+					</Badge>
 				</div>
 
-				<expander
+				<Expander
 					:is-expanded="isExpanded"
 					:item-name="item.id.toString()"
 					@toggle="toggleExpanded"
@@ -67,12 +67,12 @@
 			v-if="isExpanded"
 			class="listPanel__itemExpanded listPanel__itemExpanded--doi"
 		>
-			<pkp-table :columns="doiListColumns" :rows="currentVersionDoiObjects">
+			<PkpTable :columns="doiListColumns" :rows="currentVersionDoiObjects">
 				<template #default="{row}">
-					<table-cell :column="doiListColumns[0]" :row="row">
+					<TableCell :column="doiListColumns[0]" :row="row">
 						<label :for="row.uid">{{ row.displayType }}</label>
-					</table-cell>
-					<table-cell :column="doiListColumns[1]" :row="row">
+					</TableCell>
+					<TableCell :column="doiListColumns[1]" :row="row">
 						<input
 							:id="row.uid"
 							v-model="
@@ -82,9 +82,9 @@
 							type="text"
 							:readonly="!(isEditingDois && !isSaving)"
 						/>
-					</table-cell>
+					</TableCell>
 				</template>
-			</pkp-table>
+			</PkpTable>
 			<div
 				class="listPanel__itemExpandedActions doiListPanel__itemExpandedActions"
 			>
@@ -110,13 +110,13 @@
 						{{ t('doi.manager.versions.view') }}
 					</button>
 				</div>
-				<spinner v-if="isSaving" />
-				<pkp-button
+				<Spinner v-if="isSaving" />
+				<PkpButton
 					:is-disabled="isDeposited || isSaving"
 					@click="isEditingDois ? saveDois() : editDois()"
 				>
 					{{ isEditingDois ? t('common.save') : t('common.edit') }}
-				</pkp-button>
+				</PkpButton>
 			</div>
 
 			<!-- Registration Agency Actions -->
@@ -145,29 +145,29 @@
 					{{ t('manager.dois.registration.notPublishedDescription') }}
 				</span>
 				<div class="doiListItem__depositorActions">
-					<pkp-button
+					<PkpButton
 						v-if="isDeposited && hasRegisteredMessage"
 						ref="recordedMessageModalButton"
 						:is-disabled="isEditingDois"
 						@click="viewRecord"
 					>
 						{{ t('manager.dois.registration.viewRecord') }}
-					</pkp-button>
-					<pkp-button
+					</PkpButton>
+					<PkpButton
 						v-else-if="!isDeposited && item.isPublished"
 						:is-disabled="isEditingDois"
 						@click="handleDepositorActions"
 					>
 						{{ t('manager.dois.registration.depositDois') }}
-					</pkp-button>
-					<pkp-button
+					</PkpButton>
+					<PkpButton
 						v-if="hasErrors && hasErrorMessage"
 						ref="errorMessageModalButton"
 						:is-disabled="isEditingDois"
 						@click="openViewErrorModal"
 					>
 						{{ t('manager.dois.registration.viewError') }}
-					</pkp-button>
+					</PkpButton>
 				</div>
 			</div>
 		</div>
@@ -175,6 +175,10 @@
 </template>
 
 <script>
+import Badge from '@/components/Badge/Badge.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
+import PkpButton from '@/components/Button/Button.vue';
+
 import Expander from '@/components/Expander/Expander.vue';
 import PkpTable from '@/components/Table/Table.vue';
 import TableCell from '@/components/Table/TableCell.vue';
@@ -186,6 +190,9 @@ import {useModal} from '@/composables/useModal';
 export default {
 	name: 'DoiListItem',
 	components: {
+		Badge,
+		Spinner,
+		PkpButton,
 		Expander,
 		PkpTable,
 		TableCell,

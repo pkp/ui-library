@@ -25,14 +25,14 @@
 					{{ row.masthead ? row.masthead : '---' }}
 				</TableCell>
 				<TableCell>
-					<pkp-button :is-warnable="true" @click="removeUserGroup(row, index)">
+					<PkpButton :is-warnable="true" @click="removeUserGroup(row, index)">
 						{{ t('invitation.role.removeRole.button') }}
-					</pkp-button>
+					</PkpButton>
 				</TableCell>
 			</TableRow>
 			<TableRow v-for="(row, index) in allUserGroups" :key="index">
 				<TableCell>
-					<field-select
+					<FieldSelect
 						name="userGroup"
 						:label="t('invitation.role.selectRole')"
 						:is-required="true"
@@ -47,7 +47,7 @@
 					/>
 				</TableCell>
 				<TableCell>
-					<field-text
+					<FieldText
 						name="dateStart"
 						:label="t('invitation.role.dateStart')"
 						input-type="date"
@@ -61,7 +61,7 @@
 					/>
 				</TableCell>
 				<TableCell>
-					<field-text
+					<FieldText
 						name="dateEnd"
 						:label="t('invitation.role.dateEnd')"
 						input-type="date"
@@ -75,7 +75,7 @@
 					/>
 				</TableCell>
 				<TableCell>
-					<field-select
+					<FieldSelect
 						name="masthead"
 						:label="t('invitation.role.masthead')"
 						:is-required="true"
@@ -95,9 +95,9 @@
 			</TableRow>
 			<TableRow>
 				<TableCell>
-					<pkp-button @click="addUserGroup()">
+					<PkpButton @click="addUserGroup()">
 						{{ t('invitation.role.addRole.button') }}
-					</pkp-button>
+					</PkpButton>
 				</TableCell>
 				<TableCell></TableCell>
 				<TableCell></TableCell>

@@ -2,14 +2,14 @@
 	<fieldset class="pkpFormField pkpFormField--options pkpFormField--metadata">
 		<legend class="pkpFormField--options__legend">
 			{{ label }}
-			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
+			<Tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span
 				v-if="tooltip"
 				:id="describedByTooltipId"
 				class="-screenReader"
 				v-html="tooltip"
 			/>
-			<help-button
+			<HelpButton
 				v-if="helpTopic"
 				:id="describedByHelpId"
 				:topic="helpTopic"
@@ -23,7 +23,7 @@
 			class="pkpFormField__description pkpFormField--options__description"
 			v-html="description"
 		/>
-		<field-error
+		<FieldError
 			v-if="errors && errors.length"
 			:id="describedByErrorId"
 			:messages="errors"
@@ -74,9 +74,13 @@
 
 <script>
 import FieldOptions from './FieldOptions.vue';
+import Tooltip from '@/components/Tooltip/Tooltip.vue';
+import HelpButton from '@/components/HelpButton/HelpButton.vue';
+import FieldError from '@/components/Form/FieldError.vue';
 
 export default {
 	name: 'FieldMetadataSetting',
+	components: {Tooltip, HelpButton, FieldError},
 	extends: FieldOptions,
 	props: {
 		/** The value which matches a disabled state. Usually the `METADATA_DISABLE` constant. */

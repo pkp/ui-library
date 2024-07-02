@@ -4,7 +4,7 @@
 		:class="{'-isFocused': isFocused, 'pkpFormField--richTextarea--rtl': isRTL}"
 	>
 		<div class="pkpFormField__heading">
-			<form-field-label
+			<FormFieldLabel
 				:control-id="controlId"
 				:label="label"
 				:locale-label="localeLabel"
@@ -12,7 +12,7 @@
 				:required-label="t('common.required')"
 				:multilingual-label="multilingualLabel"
 			/>
-			<tooltip
+			<Tooltip
 				v-if="isPrimaryLocale && tooltip"
 				aria-hidden="true"
 				:tooltip="tooltip"
@@ -24,7 +24,7 @@
 				class="-screenReader"
 				v-html="tooltip"
 			/>
-			<help-button
+			<HelpButton
 				v-if="isPrimaryLocale && helpTopic"
 				:id="describedByHelpId"
 				:topic="helpTopic"
@@ -42,7 +42,7 @@
 			class="pkpFormField__control pkpFormField--richTextarea__control"
 			:class="'pkpFormField--richTextArea__control--' + size"
 		>
-			<editor
+			<Editor
 				:id="controlId"
 				ref="editor"
 				v-model="currentValue"
@@ -57,14 +57,14 @@
 				v-if="(isMultilingual && locales.length > 1) || wordLimit"
 				class="pkpFormField--richTextarea__controlFooter"
 			>
-				<multilingual-progress
+				<MultilingualProgress
 					v-if="isMultilingual && locales.length > 1"
 					:id="multilingualProgressId"
 					:count="multilingualFieldsCompleted"
 					:total="locales.length"
 				/>
 				<div v-if="wordLimit" class="pkpFormField--richTextarea__wordLimit">
-					<icon
+					<Icon
 						v-if="wordCount > wordLimit"
 						icon="exclamation-triangle"
 						:inline="true"
@@ -79,7 +79,7 @@
 			</div>
 			<slot name="footer" />
 		</div>
-		<field-error
+		<FieldError
 			v-if="errors && errors.length"
 			:id="describedByErrorId"
 			:messages="errors"
@@ -101,11 +101,23 @@ import 'tinymce/plugins/paste';
 import Editor from '@tinymce/tinymce-vue';
 import FieldBase from './FieldBase.vue';
 import debounce from 'debounce';
+import FormFieldLabel from '@/components/Form/FormFieldLabel.vue';
+import Icon from '@/components/Icon/Icon.vue';
+import Tooltip from '@/components/Tooltip/Tooltip.vue';
+import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
+import HelpButton from '@/components/HelpButton/HelpButton.vue';
+import FieldError from '@/components/Form/FieldError.vue';
 
 export default {
 	name: 'FieldRichTextarea',
 	components: {
 		Editor,
+		FormFieldLabel,
+		Icon,
+		Tooltip,
+		MultilingualProgress,
+		HelpButton,
+		FieldError,
 	},
 	extends: FieldBase,
 	props: {

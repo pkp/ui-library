@@ -11,28 +11,28 @@
 					<td>{{ dateRangeDescription }}</td>
 				</tr>
 			</table>
-			<action-panel class="pkpStats__reportAction">
+			<ActionPanel class="pkpStats__reportAction">
 				<h2>{{ t('context.context') }}</h2>
 				<p>
 					{{ t('stats.context.downloadReport.downloadContext.description') }}
 				</p>
 				<template #actions>
-					<pkp-button @click="() => emit('downloadReport', null)">
+					<PkpButton @click="() => emit('downloadReport', null)">
 						{{ t('stats.context.downloadReport.downloadContext') }}
-					</pkp-button>
+					</PkpButton>
 				</template>
-			</action-panel>
-			<action-panel class="pkpStats__reportAction">
+			</ActionPanel>
+			<ActionPanel class="pkpStats__reportAction">
 				<h2>{{ t('stats.timeline') }}</h2>
 				<p>
 					{{ timelineDescription }}
 				</p>
 				<template #actions>
-					<pkp-button @click="() => emit('downloadReport', 'timeline')">
+					<PkpButton @click="() => emit('downloadReport', 'timeline')">
 						{{ t('stats.timeline.downloadReport.downloadTimeline') }}
-					</pkp-button>
+					</PkpButton>
 				</template>
-			</action-panel>
+			</ActionPanel>
 		</SideModalLayoutBasic>
 	</SideModalBody>
 </template>

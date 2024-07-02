@@ -1,15 +1,15 @@
 <template>
 	<div class="submissionFilesListPanel">
-		<list-panel :items="items" class="listPanel--submissionFiles">
+		<ListPanel :items="items" class="listPanel--submissionFiles">
 			<template #header>
-				<pkp-header>
+				<PkpHeader>
 					<h2>{{ title }}</h2>
 					<template #actions>
-						<pkp-button ref="addFileButton" @click="openFileBrowser">
+						<PkpButton ref="addFileButton" @click="openFileBrowser">
 							{{ addFileLabel }}
-						</pkp-button>
+						</PkpButton>
 					</template>
-				</pkp-header>
+				</PkpHeader>
 			</template>
 
 			<template #itemsEmpty>
@@ -21,7 +21,7 @@
 
 			<template #item="{item}">
 				<slot name="item" :item="item">
-					<submission-files-list-item
+					<SubmissionFilesListItem
 						:api-url="apiUrl"
 						:cancel-upload-label="cancelUploadLabel"
 						:genre-prompt-label="genrePromptLabel"
@@ -37,8 +37,8 @@
 					/>
 				</slot>
 			</template>
-		</list-panel>
-		<file-uploader
+		</ListPanel>
+		<FileUploader
 			:id="id + '-uploader'"
 			ref="uploader"
 			:api-url="apiUrl"
@@ -55,7 +55,7 @@
 <script>
 import FileUploader from '@/components/FileUploader/FileUploader.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
-
+import PkpButton from '@/components/Button/Button.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import SubmissionFilesListItem from '@/components/ListPanel/submissionFiles/SubmissionFilesListItem.vue';
 import dialog from '@/mixins/dialog.js';
@@ -64,6 +64,7 @@ import SubmissionFilesEditModal from './SubmissionFilesEditModal.vue';
 import {useModal} from '@/composables/useModal';
 export default {
 	components: {
+		PkpButton,
 		FileUploader,
 		ListPanel,
 		PkpHeader,

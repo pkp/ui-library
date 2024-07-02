@@ -58,7 +58,7 @@
 					<span v-html="reviewerWorkflowLink" />
 				</div>
 				<div v-else-if="notice" class="listPanel__item--submission__notice">
-					<icon icon="exclamation-triangle" :inline="true" />
+					<Icon icon="exclamation-triangle" :inline="true" />
 					{{ notice }}
 					<button
 						v-if="shouldAssignEditor"
@@ -81,21 +81,21 @@
 							more easily acquired by screen readers from the details panel. -->
 						<div class="listPanel__item--submission__flags" aria-hidden="true">
 							<span v-if="isReviewStage">
-								<icon icon="user-o" :inline="true" />
+								<Icon icon="user-o" :inline="true" />
 								{{ completedReviewsCount }}/{{
 									currentReviewAssignments.length
 								}}
 							</span>
 							<span v-if="activeStage.files.count">
-								<icon icon="file-text-o" :inline="true" />
+								<Icon icon="file-text-o" :inline="true" />
 								{{ activeStage.files.count }}
 							</span>
 							<span v-if="openQueryCount">
-								<icon icon="comment-o" :inline="true" />
+								<Icon icon="comment-o" :inline="true" />
 								{{ openQueryCount }}
 							</span>
 						</div>
-						<badge
+						<Badge
 							class="listPanel__item--submission__stage"
 							:is-button="!isArchived"
 							:label="currentStageDescription"
@@ -106,7 +106,7 @@
 							@click="filterByStage(activeStage.id)"
 						>
 							{{ currentStageLabel }}
-						</badge>
+						</Badge>
 					</div>
 				</div>
 
@@ -116,20 +116,20 @@
 						v-if="currentUserLatestReviewAssignment.reviewCancelled"
 						class="listPanel__item--submission__reviewCancelled"
 					>
-						<icon icon="exclamation-triangle" :inline="true" />
+						<Icon icon="exclamation-triangle" :inline="true" />
 						{{ t('submission.list.reviewCancelled') }}
 					</div>
 					<div
 						v-if="currentUserLatestReviewAssignment.reviewComplete"
 						class="listPanel__item--submission__reviewComplete"
 					>
-						<icon icon="check" :inline="true" />
+						<Icon icon="check" :inline="true" />
 						{{ t('submission.list.reviewComplete') }}
 					</div>
 				</template>
 
 				<!-- Actions -->
-				<pkp-button element="a" :href="item.urlWorkflow">
+				<PkpButton element="a" :href="item.urlWorkflow">
 					<span aria-hidden="true">{{ t('common.view') }}</span>
 					<span v-if="currentUserIsReviewer" class="-screenReader">
 						{{
@@ -148,8 +148,8 @@
 							})
 						}}
 					</span>
-				</pkp-button>
-				<expander
+				</PkpButton>
+				<Expander
 					v-if="!currentUserIsReviewer"
 					:is-expanded="isExpanded"
 					:item-name="currentPublication.authorsStringShort"
@@ -163,32 +163,32 @@
 			v-if="isExpanded"
 			class="listPanel__itemExpanded listPanel__itemExpanded--submission"
 		>
-			<list>
-				<list-item v-if="isReviewStage">
+			<List>
+				<ListItem v-if="isReviewStage">
 					<template #value>
-						<icon icon="user-o" :inline="true" />
+						<Icon icon="user-o" :inline="true" />
 						{{ completedReviewsCount }}/{{ currentReviewAssignments.length }}
 					</template>
 					{{ t('submission.list.reviewsCompleted') }}
-				</list-item>
-				<list-item v-if="!isSubmissionStage">
+				</ListItem>
+				<ListItem v-if="!isSubmissionStage">
 					<template #value>
-						<icon icon="file-text-o" :inline="true" />
+						<Icon icon="file-text-o" :inline="true" />
 						{{ activeStage.files.count }}
 					</template>
 					{{ activeStageFilesLabel }}
-				</list-item>
-				<list-item v-if="!item.submissionProgress">
+				</ListItem>
+				<ListItem v-if="!item.submissionProgress">
 					<template #value>
-						<icon icon="comment-o" :inline="true" />
+						<Icon icon="comment-o" :inline="true" />
 						{{ openQueryCount }}
 					</template>
 					{{ t('submission.list.discussions') }}
-				</list-item>
-				<list-item v-if="dualWorkflowLinks">
+				</ListItem>
+				<ListItem v-if="dualWorkflowLinks">
 					<span v-html="dualWorkflowLinks" />
-				</list-item>
-				<list-item>
+				</ListItem>
+				<ListItem>
 					<span>
 						{{
 							t('common.lastActivity', {
@@ -196,25 +196,28 @@
 							})
 						}}
 					</span>
-				</list-item>
-			</list>
+				</ListItem>
+			</List>
 			<div class="listPanel__itemExpandedActions">
-				<pkp-button v-if="currentUserCanViewInfoCenter" @click="openInfoCenter">
+				<PkpButton v-if="currentUserCanViewInfoCenter" @click="openInfoCenter">
 					{{ t('submission.list.infoCenter') }}
-				</pkp-button>
-				<pkp-button
+				</PkpButton>
+				<PkpButton
 					v-if="currentUserCanDelete"
 					:is-warnable="true"
 					@click="deleteSubmissionPrompt"
 				>
 					{{ t('common.delete') }}
-				</pkp-button>
+				</PkpButton>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+import Icon from '@/components/Icon/Icon.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Badge from '@/components/Badge/Badge.vue';
 import Expander from '@/components/Expander/Expander.vue';
 import List from '@/components/List/List.vue';
 import ListItem from '@/components/List/ListItem.vue';
@@ -226,6 +229,9 @@ import dialog from '@/mixins/dialog';
 export default {
 	name: 'SubmissionsListItem',
 	components: {
+		Icon,
+		PkpButton,
+		Badge,
 		Expander,
 		List,
 		ListItem,

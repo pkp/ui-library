@@ -1,21 +1,21 @@
 <template>
 	<div class="institutionsListPanel">
 		<slot>
-			<list-panel :items="items">
+			<ListPanel :items="items">
 				<template #header>
-					<pkp-header>
+					<PkpHeader>
 						<h2>{{ title }}</h2>
-						<spinner v-if="isLoading" />
+						<Spinner v-if="isLoading" />
 						<template #actions>
-							<search
+							<Search
 								:search-phrase="searchPhrase"
 								@search-phrase-changed="setSearchPhrase"
 							/>
-							<pkp-button @click="openAddModal">
+							<PkpButton @click="openAddModal">
 								{{ addInstitutionLabel }}
-							</pkp-button>
+							</PkpButton>
 						</template>
-					</pkp-header>
+					</PkpHeader>
 				</template>
 				<template #item-title="{item}">
 					<span :id="'institution-' + item.id">
@@ -23,22 +23,22 @@
 					</span>
 				</template>
 				<template #item-actions="{item}">
-					<pkp-button
+					<PkpButton
 						:aria-describedby="'institution-' + item.id"
 						@click="openEditModal(item.id)"
 					>
 						{{ t('common.edit') }}
-					</pkp-button>
-					<pkp-button
+					</PkpButton>
+					<PkpButton
 						:is-warnable="true"
 						:aria-describedby="'institution-' + item.id"
 						@click="openDeleteModal(item.id)"
 					>
 						{{ t('common.delete') }}
-					</pkp-button>
+					</PkpButton>
 				</template>
 				<template #footer>
-					<pagination
+					<Pagination
 						v-if="lastPage > 1"
 						:current-page="currentPage"
 						:is-loading="isLoading"
@@ -46,12 +46,14 @@
 						@set-page="setPage"
 					/>
 				</template>
-			</list-panel>
+			</ListPanel>
 		</slot>
 	</div>
 </template>
 
 <script>
+import Spinner from '@/components/Spinner/Spinner.vue';
+import PkpButton from '@/components/Button/Button.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
 import PkpHeader from '@/components/Header/Header.vue';
@@ -69,6 +71,8 @@ export default {
 		Pagination,
 		PkpHeader,
 		Search,
+		Spinner,
+		PkpButton,
 	},
 	mixins: [dialog, fetch, ajaxError],
 	props: {

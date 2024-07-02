@@ -12,7 +12,7 @@
 				*
 				<span class="-screenReader">{{ t('common.required') }}</span>
 			</span>
-			<tooltip
+			<Tooltip
 				v-if="isPrimaryLocale && tooltip"
 				aria-hidden="true"
 				:tooltip="tooltip"
@@ -24,7 +24,7 @@
 				class="-screenReader"
 				v-html="tooltip"
 			/>
-			<help-button
+			<HelpButton
 				v-if="isPrimaryLocale && helpTopic"
 				:id="describedByHelpId"
 				:topic="helpTopic"
@@ -44,7 +44,7 @@
 				:disable-alpha="true"
 				@update:model-value="setValue"
 			/>
-			<field-error
+			<FieldError
 				v-if="errors && errors.length"
 				:id="describedByErrorId"
 				:messages="errors"
@@ -56,11 +56,17 @@
 <script>
 import FieldBase from './FieldBase.vue';
 import {Chrome} from '@lk77/vue3-color';
+import Tooltip from '@/components/Tooltip/Tooltip.vue';
+import HelpButton from '@/components/HelpButton/HelpButton.vue';
+import FieldError from '@/components/Form/FieldError.vue';
 
 export default {
 	name: 'FieldColor',
 	components: {
 		'color-picker': Chrome,
+		Tooltip,
+		HelpButton,
+		FieldError,
 	},
 	extends: FieldBase,
 	methods: {

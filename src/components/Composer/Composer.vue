@@ -1,6 +1,6 @@
 <template>
-	<panel class="composer">
-		<panel-section>
+	<Panel class="composer">
+		<PanelSection>
 			<template #header>
 				<slot name="description" />
 				<div
@@ -10,7 +10,7 @@
 					<div class="composer__templates__heading">
 						{{ loadTemplateLabel }}
 					</div>
-					<search
+					<Search
 						v-if="emailTemplatesApiUrl"
 						:search-label="findTemplateLabel"
 						class="composer__templates__search"
@@ -70,7 +70,7 @@
 									class="-linkButton composer__templates__moreSearchResults"
 									@click="showSearchResultCount = searchResults.length"
 								>
-									<icon icon="plus-circle" :inline="true" />
+									<Icon icon="plus-circle" :inline="true" />
 									{{
 										moreSearchResultsLabel.replace(
 											'{$number}',
@@ -86,7 +86,7 @@
 						class="composer__templates__searching"
 						role="alert"
 					>
-						<spinner />
+						<Spinner />
 						{{ searchingLabel }}
 					</div>
 					<div v-if="otherLocales.length" class="composer__locales">
@@ -109,7 +109,7 @@
 			</template>
 			<div class="composer__message">
 				<div class="composer__recipients__wrapper">
-					<field-autosuggest-preset
+					<FieldAutosuggestPreset
 						class="composer__recipients"
 						name="to"
 						:label="recipientsLabel"
@@ -130,7 +130,7 @@
 								{{ addCCLabel }}
 							</PkpButton>
 						</template>
-					</field-autosuggest-preset>
+					</FieldAutosuggestPreset>
 				</div>
 				<div
 					v-if="ccIsEnabled"
@@ -150,7 +150,7 @@
 						@blur="() => (isFocused = '')"
 					/>
 				</div>
-				<field-error
+				<FieldError
 					v-if="errors.cc"
 					:id="id + '-cc-error'"
 					:messages="errors.cc"
@@ -173,7 +173,7 @@
 						@blur="() => (isFocused = '')"
 					/>
 				</div>
-				<field-error
+				<FieldError
 					v-if="errors.bcc"
 					:id="id + '-bcc-error'"
 					:messages="errors.bcc"
@@ -195,12 +195,12 @@
 						@blur="() => (isFocused = '')"
 					/>
 				</div>
-				<field-error
+				<FieldError
 					v-if="errors.subject"
 					:id="id + '-subject-error'"
 					:messages="errors.subject"
 				/>
-				<field-prepared-content
+				<FieldPreparedContent
 					class="composer__body"
 					name="body"
 					:label="bodyLabel"
@@ -229,12 +229,12 @@
 							<span class="-screenReader">
 								{{ attachedFilesLabel }}
 							</span>
-							<badge
+							<Badge
 								v-for="(attachment, i) in attachments"
 								:key="i"
 								class="composer__attachment"
 							>
-								<icon
+								<Icon
 									:icon="getDocumentTypeIcon(attachment)"
 									:inline="true"
 									class="composer__attachment__documentType"
@@ -244,16 +244,16 @@
 									class="composer__attachment__remove"
 									@click="removeAttachment(i)"
 								>
-									<icon icon="times" />
+									<Icon icon="times" />
 									<span class="-screenReader">
 										{{ removeItemLabel.replace('{$item}', attachment.name) }}
 									</span>
 								</button>
-							</badge>
+							</Badge>
 						</div>
 					</template>
-				</field-prepared-content>
-				<field-error
+				</FieldPreparedContent>
+				<FieldError
 					v-if="errors.attachments"
 					:id="id + '-attachments-error'"
 					:messages="errors.attachments"
@@ -263,12 +263,12 @@
 					class="composer__loadingTemplateMask"
 					role="alert"
 				>
-					<spinner />
+					<Spinner />
 					<span class="-screenReader">{{ t('common.loading') }}</span>
 				</div>
 			</div>
-		</panel-section>
-	</panel>
+		</PanelSection>
+	</Panel>
 </template>
 
 <script>
@@ -276,6 +276,13 @@ import FieldAutosuggestPreset from '@/components/Form/fields/FieldAutosuggestPre
 import FieldError from '@/components/Form/FieldError.vue';
 import FieldPreparedContent from '@/components/Form/fields/FieldPreparedContent.vue';
 import Search from '@/components/Search/Search.vue';
+import Panel from '@/components/Panel/Panel.vue';
+import PanelSection from '@/components/Panel/PanelSection.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
+import Badge from '@/components/Badge/Badge.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
+
 import FileAttacherModal from './FileAttacherModal.vue';
 import ajaxErrorCallback from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog';
@@ -288,6 +295,12 @@ export default {
 		FieldError,
 		FieldPreparedContent,
 		Search,
+		Panel,
+		PanelSection,
+		Spinner,
+		PkpButton,
+		Icon,
+		Badge,
 	},
 	mixins: [ajaxErrorCallback, dialog, preparedContent],
 	props: {
