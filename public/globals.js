@@ -533,6 +533,11 @@ window.pkp = {
 		'invitation.notification.closeBtn':'View all users',
 		'user.password': 'Password',
 		'invitation.orcid.acceptInvitation.message':'Not verified. You can verify your ORCID iD from your profile section in OJS',
+		'userInvitation.emailField.description':'e.g. aeinstein@example.com',
+		'userInvitation.usernameField.description':'e.g. mickeymouse',
+		'userInvitation.orcidField.description':'e.g. 0000-0000-0000-0000',
+		'acceptInvitation.usernameField.description':'It should be 10 characters long and could be a combination of uppercase letters, lowercase letters or numbers',
+		'acceptInvitation.passwordField.description':'It should be 12 characters long and should be a combination of uppercase letters, lowercase letters, numbers and symbols',
 
 	},
 

@@ -1,31 +1,42 @@
 <template>
-	<field-text
-		:label="t('user.email')"
-		:value="fields.email"
-		name="email"
-		size="large"
-		@change="updateField"
-	/>
-	<br />
-	<p>or</p>
-	<br />
-	<field-text
-		:label="t('user.username')"
-		:value="fields.username"
-		name="username"
-		size="large"
-		@change="updateField"
-	/>
-	<br />
-	<p>or</p>
-	<br />
-	<field-text
-		:label="t('user.orcid')"
-		:value="fields.orcid"
-		name="orcid"
-		size="large"
-		@change="updateField"
-	/>
+	<div class="my-4">
+		<field-text
+			:label="t('user.email')"
+			:value="fields.email"
+			:description="t('userInvitation.emailField.description')"
+			name="email"
+			size="large"
+			@change="updateField"
+		/>
+	</div>
+
+	<div class="my-4">
+		<p>or</p>
+	</div>
+	<div class="my-4">
+		<field-text
+			:label="t('user.username')"
+			:value="fields.username"
+			:description="t('userInvitation.usernameField.description')"
+			name="username"
+			size="large"
+			@change="updateField"
+		/>
+	</div>
+
+	<div class="my-4">
+		<p>or</p>
+	</div>
+	<div class="my-4">
+		<field-text
+			:label="t('user.orcid')"
+			:value="fields.orcid"
+			:description="t('userInvitation.orcidField.description')"
+			name="orcid"
+			size="large"
+			@change="updateField"
+		/>
+	</div>
 </template>
 
 <script setup>

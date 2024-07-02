@@ -1,40 +1,40 @@
 <template>
 	<div>
-		<div v-if="store.userId === null" class="acceptInvitation__reviewPanel">
-			<div class="acceptInvitation__reviewPanel__header">
+		<div v-if="store.userId === null" class="border border-solid border-[#ddd]">
+			<div class="flex items-center px-2 py-4">
 				<h3>Account Details</h3>
 			</div>
-			<div class="acceptInvitation__reviewPanel__item">
-				<h4 class="acceptInvitation__reviewPanel__item__header">Username</h4>
-				<div class="acceptInvitation__reviewPanel__item__value">
+			<div class="p-4">
+				<h4 class="text-sm m-0 leading-6">Username</h4>
+				<div class="text-sm mb-4 leading-6">
 					{{ store.acceptinvitationPayload.username }}
 				</div>
-				<h4 class="acceptInvitation__reviewPanel__item__header">Password</h4>
-				<div class="acceptInvitation__reviewPanel__item__value">
+				<h4 class="text-sm m-0 leading-6">Password</h4>
+				<div class="text-sm mb-4 leading-6">
 					{{ store.acceptinvitationPayload.password }}
 				</div>
 			</div>
 		</div>
-		<div class="acceptInvitation__reviewPanel">
-			<div class="acceptInvitation__reviewPanel__header">
+		<div class="border-b border-l border-r border-solid border-[#ddd]">
+			<div class="flex items-center px-2 py-4">
 				<h3>User Details</h3>
 				<pkp-button
 					v-if="store.userId === null"
-					class="acceptInvitation__reviewPanel__edit"
+					class="ms-auto"
 					@click="store.openStep('userDetails')"
 				>
 					edit
 				</pkp-button>
 			</div>
-			<div class="acceptInvitation__reviewPanel__item">
+			<div class="p-4">
 				<template v-if="store.userId === null">
-					<h4 class="acceptInvitation__reviewPanel__item__header">Email</h4>
-					<div class="acceptInvitation__reviewPanel__item__value">
+					<h4 class="text-sm m-0 leading-6">Email</h4>
+					<div class="text-sm mb-4 leading-6">
 						{{ store.email }}
 					</div>
 				</template>
-				<h4 class="acceptInvitation__reviewPanel__item__header">ORCID ID</h4>
-				<div class="acceptInvitation__reviewPanel__item__value">
+				<h4 class="text-sm m-0 leading-6">ORCID ID</h4>
+				<div class="text-sm mb-4 leading-6">
 					{{
 						store.acceptinvitationPayload.orcid
 							? store.acceptinvitationPayload.orcid
@@ -47,36 +47,30 @@
 					/>
 				</div>
 				<template v-if="store.userId === null">
-					<h4 class="acceptInvitation__reviewPanel__item__header">
-						Given Name
-					</h4>
-					<div class="acceptInvitation__reviewPanel__item__value">
+					<h4 class="text-sm m-0 leading-6">Given Name</h4>
+					<div class="text-sm mb-4 leading-6">
 						{{ store.acceptinvitationPayload.givenName }}
 					</div>
-					<h4 class="acceptInvitation__reviewPanel__item__header">
-						Family Name
-					</h4>
-					<div class="acceptInvitation__reviewPanel__item__value">
+					<h4 class="text-sm m-0 leading-6">Family Name</h4>
+					<div class="text-sm mb-4 leading-6">
 						{{ store.acceptinvitationPayload.familyName }}
 					</div>
-					<h4 class="acceptInvitation__reviewPanel__item__header">
-						Affiliation
-					</h4>
-					<div class="acceptInvitation__reviewPanel__item__value">
+					<h4 class="text-sm m-0 leading-6">Affiliation</h4>
+					<div class="text-sm mb-4 leading-6">
 						{{ store.acceptinvitationPayload.affiliation }}
 					</div>
-					<h4 class="acceptInvitation__reviewPanel__item__header">Country</h4>
-					<div class="acceptInvitation__reviewPanel__item__value">
+					<h4 class="text-sm m-0 leading-6">Country</h4>
+					<div class="text-sm mb-4 leading-6">
 						{{ store.acceptinvitationPayload.country }}
 					</div>
 				</template>
 			</div>
 		</div>
-		<div class="acceptInvitation__reviewPanel">
-			<div class="acceptInvitation__reviewPanel__header">
+		<div class="border-b border-l border-r border-solid border-[#ddd]">
+			<div class="flex items-center px-2 py-4">
 				<h3>Roles</h3>
 			</div>
-			<div class="acceptInvitation__reviewPanel__item">
+			<div class="p-4">
 				<AcceptInvitationUserRoles
 					:rows="store.acceptinvitationPayload.userGroupsToAdd"
 				/>
@@ -93,37 +87,3 @@ import {useAcceptInvitationPageStore} from './AcceptInvitationPageStore';
 defineProps({});
 const store = useAcceptInvitationPageStore();
 </script>
-<style>
-.acceptInvitation__reviewPanel__item {
-	padding: 1rem;
-
-	&:last-child {
-		border-bottom: none;
-	}
-
-	.pkpNotification {
-		margin-bottom: 0.5rem;
-	}
-}
-.acceptInvitation__reviewPanel {
-	border: 1px solid #ddd;
-}
-.acceptInvitation__reviewPanel__header {
-	display: flex;
-	align-items: center;
-	padding: 0.5rem 1rem;
-}
-.acceptInvitation__reviewPanel__item__header {
-	margin: 0;
-	font-size: 0.875rem;
-	line-height: 1.5rem;
-}
-.acceptInvitation__reviewPanel__item__value {
-	margin-bottom: 1rem;
-	font-size: 0.875rem;
-	line-height: 1.5rem;
-}
-.acceptInvitation__reviewPanel__edit {
-	margin-inline-start: auto;
-}
-</style>

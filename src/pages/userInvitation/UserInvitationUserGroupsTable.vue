@@ -170,7 +170,7 @@ const userGroupErrors = computed(() => {
 });
 </script>
 <style>
-select {
+td select {
 	width: 13rem !important;
 }
 </style>

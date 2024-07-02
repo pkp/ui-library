@@ -1,31 +1,35 @@
 <template>
-	<div>
-		<div class="userInvitation__reviewPanel__item">
-			<h4 class="userInvitation__reviewPanel__item__header">Email Address</h4>
-			<div class="userInvitation__reviewPanel__item__value">
-				{{ store.email }}
-			</div>
+	<div class="py-1">
+		<h4 class="text-sm m-0 leading-6">Email Address</h4>
+		<div class="text-sm mb-4 leading-6">
+			{{ store.email }}
 		</div>
 	</div>
-	<br />
-	<field-text
-		:label="t('user.username')"
-		:value="fields.username"
-		name="username"
-		size="large"
-		:all-errors="sectionErrors"
-		@change="updateField"
-	/>
-	<br />
-	<field-text
-		:label="t('user.password')"
-		:value="fields.password"
-		name="password"
-		input-type="password"
-		size="large"
-		:all-errors="sectionErrors"
-		@change="updateField"
-	/>
+	<div class="my-4">
+		<field-text
+			:label="t('user.username')"
+			:value="fields.username"
+			:description="t('acceptInvitation.usernameField.description')"
+			name="username"
+			size="large"
+			:all-errors="sectionErrors"
+			@change="updateField"
+		/>
+	</div>
+
+	<div class="my-4">
+		<field-text
+			:label="t('user.password')"
+			:value="fields.password"
+			:description="t('acceptInvitation.passwordField.description')"
+			name="password"
+			input-type="password"
+			size="large"
+			:all-errors="sectionErrors"
+			@change="updateField"
+		/>
+	</div>
+
 	<div>
 		<field-show-ensuring-link
 			primary-locale="en"
@@ -74,21 +78,6 @@ const sectionErrors = computed(() => {
 });
 </script>
 <style lang="less">
-.userInvitation__reviewPanel__item {
-	&:last-child {
-		border-bottom: none;
-	}
-}
-.userInvitation__reviewPanel__item__header {
-	margin: 0;
-	font-size: 0.875rem;
-	line-height: 1.5rem;
-}
-.userInvitation__reviewPanel__item__value {
-	margin-bottom: 1rem;
-	font-size: 0.875rem;
-	line-height: 1.5rem;
-}
 div fieldset {
 	border: none !important;
 }

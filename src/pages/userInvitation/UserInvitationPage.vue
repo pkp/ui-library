@@ -23,11 +23,11 @@
 			>
 				<panel
 					v-if="store.currentStep.id === step.id"
-					class="decision__stepPanel"
+					class="rounded-none border-t-0"
 				>
-					<panel-section class="decision__stepHeader">
+					<panel-section class="userInvitation__stepHeader">
 						<h2>{{ store.stepTitle }}</h2>
-						<p class="error">{{ store.errors.error }}</p>
+						<p class="text-red font-bold">{{ store.errors.error }}</p>
 						<p>{{ step.description }}</p>
 					</panel-section>
 					<panel-section v-for="section in step.sections" :key="section.id">
@@ -116,21 +116,11 @@ const userInvitationComponents = {
 	}
 }
 
-.submissionWizard__steps {
-	margin-top: 2rem;
-}
-
 .userInvitation .pkpSteps__buttonWrapper {
 	border: @bg-border-light;
 	border-bottom: 0;
 	border-top-left-radius: @radius;
 	border-top-right-radius: @radius;
-}
-
-.userInvitation__submissionDetails,
-.userInvitation__submissionConfiguration {
-	font-size: @font-sml;
-	line-height: @line-sml;
 }
 
 // Override the form locale switcher styles
@@ -163,15 +153,17 @@ const userInvitationComponents = {
 		margin-inline-start: 0.5rem;
 	}
 }
+.userInvitation__stepHeader {
+	h2 {
+		margin: 0;
+		font-size: @font-large;
+		line-height: @line-large;
+	}
 
-.error {
-	color: red;
-	font-weight: bold;
-}
-.userInvitationModal__body {
-	padding: 0.5rem 0.75rem;
-}
-.userInvitationModal__body_success {
-	box-shadow: inset 0.25rem 0 #00b24e;
+	p {
+		margin: 0.5rem 0 0;
+		font-size: @font-sml;
+		line-height: @line-sml-tight;
+	}
 }
 </style>

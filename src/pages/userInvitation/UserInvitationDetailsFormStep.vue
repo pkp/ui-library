@@ -7,13 +7,13 @@
 		></pkp-form>
 	</div>
 	<div v-if="store.invitationPayload.userId !== null">
-		<div class="userInvitation__reviewPanel__item">
-			<h4 class="userInvitation__reviewPanel__item__header">Email Address</h4>
-			<div class="userInvitation__reviewPanel__item__value">
+		<div class="p-1">
+			<h4 class="text-sm m-0 leading-6">Email Address</h4>
+			<div class="text-sm mb-4 leading-6">
 				{{ store.invitationPayload.email }}
 			</div>
-			<h4 class="userInvitation__reviewPanel__item__header">ORCID iD</h4>
-			<div class="userInvitation__reviewPanel__item__value">
+			<h4 class="text-sm m-0 leading-6">ORCID iD</h4>
+			<div class="text-sm mb-4 leading-6">
 				{{
 					store.invitationPayload.orcid
 						? store.invitationPayload.orcid
@@ -25,16 +25,16 @@
 					:inline="true"
 				/>
 			</div>
-			<h4 class="userInvitation__reviewPanel__item__header">Given Name</h4>
-			<div class="userInvitation__reviewPanel__item__value">
+			<h4 class="text-sm m-0 leading-6">Given Name</h4>
+			<div class="text-sm mb-4 leading-6">
 				{{ store.invitationPayload.givenName }}
 			</div>
-			<h4 class="userInvitation__reviewPanel__item__header">Family Name</h4>
-			<div class="userInvitation__reviewPanel__item__value">
+			<h4 class="text-sm m-0 leading-6">Family Name</h4>
+			<div class="text-sm mb-4 leading-6">
 				{{ store.invitationPayload.familyName }}
 			</div>
-			<h4 class="userInvitation__reviewPanel__item__header">Affiliation</h4>
-			<div class="userInvitation__reviewPanel__item__value">
+			<h4 class="text-sm m-0 leading-6">Affiliation</h4>
+			<div class="text-sm mb-4 leading-6">
 				{{ store.invitationPayload.affiliation }}
 			</div>
 		</div>
@@ -91,24 +91,7 @@ const sectionErrors = computed(() => {
 connectWithErrors(sectionErrors);
 </script>
 <style lang="less">
-select {
-	width: 13rem !important;
-}
-.userInvitation__reviewPanel__item {
-	&:last-child {
-		border-bottom: none;
-	}
-}
-
-.userInvitation__reviewPanel__item__header {
-	margin: 0;
-	font-size: 0.875rem;
-	line-height: 1.5rem;
-}
-
-.userInvitation__reviewPanel__item__value {
-	margin-bottom: 1rem;
-	font-size: 0.875rem;
-	line-height: 1.5rem;
+.userInvitation__stepForm .pkpFormField--select__input {
+	width: 100% !important;
 }
 </style>

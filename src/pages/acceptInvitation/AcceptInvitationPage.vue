@@ -1,12 +1,12 @@
 <template>
-	<div class="userInvitation">
+	<div class="acceptInvitation">
 		<AcceptInvitationHeader
 			:page-title="store.pageTitle"
 			:page-title-description="store.pageTitleDescription"
 		/>
 		<steps
 			v-if="store.steps.length"
-			class="userInvitation__steps"
+			class="acceptInvitation__steps"
 			:current="store.currentStep.id"
 			:started-steps="store.startedSteps"
 			:label="t('invitation.wizard.completeSteps')"
@@ -21,10 +21,10 @@
 				:key="step.id"
 				:label="step.name"
 			>
-				<panel class="decision__stepPanel">
-					<panel-section class="decision__stepHeader">
+				<panel class="rounded-none border-t-0">
+					<panel-section class="acceptInvitation__stepHeader">
 						<h2>{{ store.stepTitle }}</h2>
-						<p class="error">{{ store.errors.error }}</p>
+						<p class="text-red font-bold">{{ store.errors.error }}</p>
 						<p>{{ step.description }}</p>
 					</panel-section>
 					<panel-section v-for="section in step.sections" :key="section.id">
@@ -45,7 +45,7 @@
 				</panel>
 			</step>
 		</steps>
-		<button-row class="panel panel--wide userInvitationForm__footer">
+		<button-row class="panel panel--wide acceptInvitationForm__footer">
 			<pkp-button @click="store.cancel">Cancel</pkp-button>
 			<pkp-button v-if="!store.isOnFirstStep" @click="store.previousStep">
 				Previous
@@ -123,7 +123,7 @@ const acceptInvitationComponents = {
 <style lang="less">
 @import '../../styles/_import';
 
-.userInvitation .app__pageHeading {
+.acceptInvitation .app__pageHeading {
 	display: flex;
 	margin: 2rem 0 0.25rem;
 
@@ -132,21 +132,21 @@ const acceptInvitationComponents = {
 	}
 }
 
-.userInvitation .pkpSteps__buttonWrapper {
+.acceptInvitation .pkpSteps__buttonWrapper {
 	border: @bg-border-light;
 	border-bottom: 0;
 	border-top-left-radius: @radius;
 	border-top-right-radius: @radius;
 }
 
-.userInvitation__submissionDetails,
-.userInvitation__submissionConfiguration {
+.acceptInvitation__submissionDetails,
+.acceptInvitation__submissionConfiguration {
 	font-size: @font-sml;
 	line-height: @line-sml;
 }
 
 // Override the form locale switcher styles
-.userInvitation__stepForm .pkpFormLocales {
+.acceptInvitation__stepForm .pkpFormLocales {
 	border: none;
 	margin-top: -1rem;
 	margin-bottom: 1rem;
@@ -159,12 +159,12 @@ const acceptInvitationComponents = {
 
 // Hide the form footer for each form, since
 // buttons and errors are handled separately
-.userInvitation__stepForm .pkpFormPage__footer {
+.acceptInvitation__stepForm .pkpFormPage__footer {
 	display: none;
 }
 
 // buttons and errors are handled separately
-.userInvitationForm__footer {
+.acceptInvitationForm__footer {
 	padding: 2rem;
 	display: flex;
 	justify-content: flex-end;
@@ -175,8 +175,17 @@ const acceptInvitationComponents = {
 		margin-inline-start: 0.5rem;
 	}
 }
-.error {
-	color: red;
-	font-weight: bold;
+.acceptInvitation__stepHeader {
+	h2 {
+		margin: 0;
+		font-size: @font-large;
+		line-height: @line-large;
+	}
+
+	p {
+		margin: 0.5rem 0 0;
+		font-size: @font-sml;
+		line-height: @line-sml-tight;
+	}
 }
 </style>

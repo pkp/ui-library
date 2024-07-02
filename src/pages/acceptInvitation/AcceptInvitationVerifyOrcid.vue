@@ -1,7 +1,10 @@
 <template>
-	<pkp-button @click="verifyOrcid">verify ORCID iD</pkp-button>
-	<br />
-	<pkp-button @click="skipOrcid">Skip ORCID verification</pkp-button>
+	<div class="m-4">
+		<pkp-button @click="verifyOrcid">verify ORCID iD</pkp-button>
+	</div>
+	<div class="m-4">
+		<pkp-button @click="skipOrcid">Skip ORCID verification</pkp-button>
+	</div>
 </template>
 
 <script setup>
