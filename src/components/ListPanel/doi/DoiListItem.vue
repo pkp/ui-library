@@ -493,7 +493,7 @@ export default {
 				isDeposited: computed(() => this.isDeposited),
 				item: this.item,
 				doiListColumns: this.doiListColumns,
-				mutableDois: this.mutableDois,
+				mutableDois: computed(() => this.mutableDois),
 				isEditingDois: computed(() => this.isEditingDois),
 				onSaveDois: this.saveDois,
 				onEditDois: this.editDois,

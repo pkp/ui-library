@@ -438,7 +438,8 @@ export default {
 		 * @param {Object} template The updated values of the template
 		 */
 		templateSaved(template) {
-			setTimeout(() => this.$modal.hide('template'), 1000);
+			const {closeSideModal} = useModal();
+			setTimeout(() => closeSideModal(EditTemplateModal), 1000);
 
 			if (!this.currentMailable.supportsTemplates) {
 				return;
