@@ -1,16 +1,16 @@
 <template>
 	<div>
-		<div class="userInvitation__reviewPanel__item">
-			<h4 class="userInvitation__reviewPanel__item__header">Email Address</h4>
-			<div class="userInvitation__reviewPanel__item__value">
+		<div class="p-1">
+			<h4 class="text-sm m-0 leading-6">Email Address</h4>
+			<div class="text-sm mb-4 leading-6">
 				{{ store.email }}
 			</div>
 		</div>
 	</div>
 	<div>
-		<div class="userInvitation__reviewPanel__item">
-			<h4 class="userInvitation__reviewPanel__item__header">ORCID iD</h4>
-			<div class="userInvitation__reviewPanel__item__value">
+		<div class="p-1">
+			<h4 class="text-sm m-0 leading-6">ORCID iD</h4>
+			<div class="text-sm mb-4 leading-6">
 				{{
 					store.acceptinvitationPayload.orcid
 						? store.acceptinvitationPayload.orcid
@@ -26,7 +26,7 @@
 	</div>
 	<pkp-form
 		v-bind="userForm"
-		class="userInvitation__stepForm"
+		class="acceptInvitation__stepForm"
 		@set="updateUserDetailsForm"
 	></pkp-form>
 </template>
@@ -72,3 +72,8 @@ const sectionErrors = computed(() => {
 
 connectWithErrors(sectionErrors);
 </script>
+<style>
+.acceptInvitation__stepForm .pkpFormField--select__input {
+	width: 100% !important;
+}
+</style>

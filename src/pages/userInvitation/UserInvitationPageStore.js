@@ -250,6 +250,9 @@ export const useUserInvitationPageStore = defineComponentStore(
 				if (data.value) {
 					openDialog({
 						title: 'Invitation sent',
+						message:
+							invitationPayload.value.email +
+							' has been invited to new role in OJS.You can be updated about users on the User and Roles page, your ojs notification and/ or your email',
 						actions: [
 							{
 								label: 'Ok',
