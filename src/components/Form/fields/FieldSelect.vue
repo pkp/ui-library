@@ -41,6 +41,7 @@
 				:id="controlId"
 				v-model="currentValue"
 				class="pkpFormField__input pkpFormField--select__input"
+				:class="inputClasses"
 				:name="localizedName"
 				:aria-describedby="describedByIds"
 				:aria-invalid="errors && errors.length"
@@ -78,8 +79,21 @@ export default {
 	props: {
 		/**   An optional object containing preset information. When preset information exists, a button will appear in the toolbar. */
 		options: Array,
+		/** One of `small`, `normal` or `large`. Default: `normal`. */
+		size: {
+			default: 'normal',
+			validator: function (value) {
+				return ['normal', 'large'].indexOf(value) !== -1;
+			},
+		},
 	},
+
 	computed: {
+		inputClasses() {
+			let classes = ['pkpFormField--select__input--size' + this.size];
+			return classes;
+		},
+
 		/**
 		 * Get localized set of options
 		 *
@@ -95,8 +109,12 @@ export default {
 <style lang="less">
 @import '../../../styles/_import';
 
-.pkpFormField--select__input {
+.pkpFormField--select__input--sizenormal {
 	width: 20em;
+}
+
+.pkpFormField--select__input--sizelarge {
+	width: 100%;
 }
 
 .pkpFormField--select__input:-moz-focusring {

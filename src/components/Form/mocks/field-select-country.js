@@ -2,6 +2,7 @@ export default {
 	name: 'country',
 	component: 'field-select',
 	label: 'Country',
+	size: 'normal',
 	options: [
 		{
 			value: '',
