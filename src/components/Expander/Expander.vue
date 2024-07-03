@@ -1,7 +1,7 @@
 <template>
 	<button class="expander" @click="$emit('toggle')">
-		<icon v-if="isExpanded" icon="angle-up" />
-		<icon v-else icon="angle-down" />
+		<Icon v-if="isExpanded" icon="angle-up" />
+		<Icon v-else icon="angle-down" />
 		<span v-if="isExpanded" class="-screenReader">
 			{{ t('list.viewLess', {name: itemName}) }}
 		</span>
@@ -12,7 +12,10 @@
 </template>
 
 <script>
+import Icon from '@/components/Icon/Icon.vue';
+
 export default {
+	components: {Icon},
 	props: {
 		isExpanded: {
 			type: Boolean,

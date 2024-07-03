@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import Icon from '@/components/Icon/Icon.vue';
+
 /**
 TODO: review the badge use cases after new submission listing
 As the dot/button use cases seems to be relevant only for previous submission listing and might be opportunity to remove them
@@ -23,6 +25,7 @@ As the dot/button use cases seems to be relevant only for previous submission li
 
 export default {
 	name: 'Badge',
+	components: {Icon},
 	props: {
 		/** A hidden label for users without sight */
 		label: String,

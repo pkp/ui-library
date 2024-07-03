@@ -1,7 +1,7 @@
 <template>
 	<div class="pkpFormField pkpFormField--textarea" :class="classes">
 		<div class="pkpFormField__heading">
-			<form-field-label
+			<FormFieldLabel
 				:control-id="controlId"
 				:label="label"
 				:locale-label="localeLabel"
@@ -9,7 +9,7 @@
 				:required-label="t('common.required')"
 				:multilingual-label="multilingualLabel"
 			/>
-			<tooltip
+			<Tooltip
 				v-if="isPrimaryLocale && tooltip"
 				aria-hidden="true"
 				:tooltip="tooltip"
@@ -21,7 +21,7 @@
 				class="-screenReader"
 				v-html="tooltip"
 			/>
-			<help-button
+			<HelpButton
 				v-if="isPrimaryLocale && helpTopic"
 				:id="describedByHelpId"
 				:topic="helpTopic"
@@ -45,14 +45,14 @@
 				:aria-invalid="errors && errors.length"
 				:required="isRequired"
 			></textarea>
-			<multilingual-progress
+			<MultilingualProgress
 				v-if="isMultilingual && locales.length > 1"
 				:id="multilingualProgressId"
 				:count="multilingualFieldsCompleted"
 				:total="locales.length"
 			/>
 		</div>
-		<field-error
+		<FieldError
 			v-if="errors && errors.length"
 			:id="describedByErrorId"
 			:messages="errors"
@@ -62,9 +62,21 @@
 
 <script>
 import FieldBase from './FieldBase.vue';
+import FormFieldLabel from '@/components/Form/FormFieldLabel.vue';
+import Tooltip from '@/components/Tooltip/Tooltip.vue';
+import HelpButton from '@/components/HelpButton/HelpButton.vue';
+import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
+import FieldError from '@/components/Form/FieldError.vue';
 
 export default {
 	name: 'FieldTextarea',
+	components: {
+		FormFieldLabel,
+		Tooltip,
+		HelpButton,
+		MultilingualProgress,
+		FieldError,
+	},
 	extends: FieldBase,
 	props: {
 		/** One of `small`, `normal` or `large`. Default: `normal`. */

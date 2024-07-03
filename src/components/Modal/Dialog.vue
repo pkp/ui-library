@@ -41,7 +41,7 @@
 									class="me-2 ms-auto cursor-pointer border-0 bg-transparent text-center"
 									@click="onClose"
 								>
-									<icon
+									<Icon
 										class="h-6 w-6 text-negative"
 										icon="Cancel"
 										:aria-hidden="true"
@@ -60,8 +60,8 @@
 								/>
 							</div>
 							<div class="flex items-center justify-end p-4">
-								<spinner v-if="isLoading" />
-								<pkp-button
+								<Spinner v-if="isLoading" />
+								<PkpButton
 									v-for="action in actions"
 									:key="action.label"
 									class="ms-2"
@@ -75,7 +75,7 @@
 									"
 								>
 									{{ action.label }}
-								</pkp-button>
+								</PkpButton>
 							</div>
 						</DialogPanel>
 					</TransitionChild>
@@ -87,6 +87,8 @@
 
 <script setup>
 import {ref, watch} from 'vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
 
 import {
 	Dialog as HLDialog,
@@ -95,6 +97,8 @@ import {
 	TransitionRoot,
 	TransitionChild,
 } from '@headlessui/vue';
+
+import Icon from '@/components/Icon/Icon.vue';
 
 const props = defineProps({
 	/** Used only internally, don't pass this prop via openDialog */

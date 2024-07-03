@@ -11,7 +11,7 @@
 				@keyup="searchPhraseKeyUp"
 			/>
 			<span class="pkpSearch__icons">
-				<icon icon="search" class="pkpSearch__icons--search" />
+				<Icon icon="search" class="pkpSearch__icons--search" />
 			</span>
 		</label>
 		<button
@@ -20,7 +20,7 @@
 			:aria-controls="inputId"
 			@click.prevent="clearSearchPhrase"
 		>
-			<icon icon="times" />
+			<Icon icon="times" />
 			<span class="-screenReader">{{ t('common.clearSearch') }}</span>
 		</button>
 	</div>
@@ -28,8 +28,10 @@
 
 <script>
 import debounce from 'debounce';
+import Icon from '@/components/Icon/Icon.vue';
 
 export default {
+	components: {Icon},
 	props: {
 		/** An optional label for the search field. Default: `Search` */
 		searchLabel: {

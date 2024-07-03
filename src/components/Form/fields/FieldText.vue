@@ -1,7 +1,7 @@
 <template>
 	<div class="pkpFormField pkpFormField--text" :class="classes">
 		<div class="pkpFormField__heading">
-			<form-field-label
+			<FormFieldLabel
 				:control-id="controlId"
 				:label="label"
 				:locale-label="localeLabel"
@@ -9,7 +9,7 @@
 				:required-label="t('common.required')"
 				:multilingual-label="multilingualLabel"
 			/>
-			<tooltip
+			<Tooltip
 				v-if="isPrimaryLocale && tooltip"
 				aria-hidden="true"
 				:tooltip="tooltip"
@@ -21,7 +21,7 @@
 				class="-screenReader"
 				v-html="tooltip"
 			/>
-			<help-button
+			<HelpButton
 				v-if="isPrimaryLocale && helpTopic"
 				:id="describedByHelpId"
 				:topic="helpTopic"
@@ -58,21 +58,21 @@
 					@click="setFocus"
 					v-html="prefix"
 				/>
-				<multilingual-progress
+				<MultilingualProgress
 					v-if="isMultilingual && locales.length > 1"
 					:id="multilingualProgressId"
 					:count="multilingualFieldsCompleted"
 					:total="locales.length"
 				/>
-				<pkp-button
+				<PkpButton
 					v-if="optIntoEdit && isDisabled"
 					class="pkpFormField--text__optIntoEdit"
 					@click="isDisabled = false"
 				>
 					{{ optIntoEditLabel }}
-				</pkp-button>
+				</PkpButton>
 			</div>
-			<field-error
+			<FieldError
 				v-if="errors && errors.length"
 				:id="describedByErrorId"
 				:messages="errors"
@@ -83,9 +83,23 @@
 
 <script>
 import FieldBase from './FieldBase.vue';
+import FormFieldLabel from '@/components/Form/FormFieldLabel.vue';
+import FieldError from '@/components/Form/FieldError.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Tooltip from '@/components/Tooltip/Tooltip.vue';
+import HelpButton from '@/components/HelpButton/HelpButton.vue';
+import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
 
 export default {
 	name: 'FieldText',
+	components: {
+		FormFieldLabel,
+		FieldError,
+		PkpButton,
+		Tooltip,
+		HelpButton,
+		MultilingualProgress,
+	},
 	extends: FieldBase,
 	props: {
 		/** The`type` attribute for the `<input>` field. See [available types](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Form_%3Cinput%3E_types). */

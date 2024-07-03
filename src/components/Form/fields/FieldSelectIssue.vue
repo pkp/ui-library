@@ -1,20 +1,20 @@
 <template>
 	<div class="pkpFormField pkpFormField--select pkpFormField--selectIssue">
 		<div class="pkpFormField__heading">
-			<form-field-label
+			<FormFieldLabel
 				:control-id="controlId"
 				:label="label"
 				:is-required="isRequired"
 				:required-label="t('common.required')"
 			/>
-			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
+			<Tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span
 				v-if="tooltip"
 				:id="describedByTooltipId"
 				class="-screenReader"
 				v-html="tooltip"
 			/>
-			<help-button
+			<HelpButton
 				v-if="helpTopic"
 				:id="describedByHelpId"
 				:topic="helpTopic"
@@ -31,16 +31,16 @@
 		<div class="pkpFormField__control">
 			<span class="pkpFormField__description">
 				<span v-html="notice" />
-				<pkp-button
+				<PkpButton
 					v-if="button"
 					v-bind="button"
 					class="pkpFormField--selectIssue__button"
 					@click="emitGlobal(button.event)"
 				>
 					{{ button.label }}
-				</pkp-button>
+				</PkpButton>
 			</span>
-			<field-error
+			<FieldError
 				v-if="errors && errors.length"
 				:id="describedByErrorId"
 				:messages="errors"
@@ -51,9 +51,15 @@
 
 <script>
 import FieldSelect from './FieldSelect.vue';
+import Tooltip from '@/components/Tooltip/Tooltip.vue';
+import FormFieldLabel from '@/components/Form/FormFieldLabel.vue';
+import HelpButton from '@/components/HelpButton/HelpButton.vue';
+import FieldError from '@/components/Form/FieldError.vue';
+import PkpButton from '@/components/Button/Button.vue';
 
 export default {
 	name: 'FieldSelectIssue',
+	components: {Tooltip, FormFieldLabel, HelpButton, FieldError, PkpButton},
 	extends: FieldSelect,
 	props: {
 		assignedNoticeBase: {

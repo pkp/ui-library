@@ -71,6 +71,8 @@
 
 <script setup>
 import {Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
 
 defineProps({
 	/** An array of action objects. Each object should contain `label` (string), `url` (string) to navigate to if the action involves a link, or `name` (string) to perform the action when clicked, an optional `icon` (string) and `isWarnable` (boolean) if the button needs the "warning" button styling from `<Button>` component. */

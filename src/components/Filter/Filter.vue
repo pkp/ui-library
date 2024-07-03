@@ -12,7 +12,7 @@
 			class="pkpFilter__remove"
 			@click.prevent.stop="remove(param, value)"
 		>
-			<icon icon="times-circle-o" />
+			<Icon icon="times-circle-o" />
 			<span class="-screenReader">
 				{{ t('common.filterRemove', {filterTitle: title}) }}
 			</span>
@@ -21,7 +21,10 @@
 </template>
 
 <script>
+import Icon from '@/components/Icon/Icon.vue';
+
 export default {
+	components: {Icon},
 	props: {
 		/** Whether or not this is filter is currently on or off. */
 		isFilterActive: {

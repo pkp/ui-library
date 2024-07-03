@@ -1,7 +1,7 @@
 <template>
 	<div class="mt-5 max-w-lg">
 		<div class="pkpFormField__heading">
-			<form-field-label
+			<FormFieldLabel
 				:id="labelId"
 				:label="label"
 				:locale-label="localeLabel"
@@ -9,7 +9,7 @@
 				:required-label="t('common.required')"
 				:multilingual-label="multilingualLabel"
 			/>
-			<tooltip
+			<Tooltip
 				v-if="isPrimaryLocale && tooltip"
 				aria-hidden="true"
 				:tooltip="tooltip"
@@ -21,7 +21,7 @@
 				class="-screenReader"
 				v-html="tooltip"
 			/>
-			<help-button
+			<HelpButton
 				v-if="isPrimaryLocale && helpTopic"
 				:id="describedByHelpId"
 				:topic="helpTopic"
@@ -65,10 +65,13 @@
 <script>
 import FieldBase from './FieldBase.vue';
 import Slider from 'primevue/slider';
+import Tooltip from '@/components/Tooltip/Tooltip.vue';
+import HelpButton from '@/components/HelpButton/HelpButton.vue';
+import FormFieldLabel from '@/components/Form/FormFieldLabel.vue';
 
 export default {
 	name: 'FieldSlider',
-	components: {Slider},
+	components: {Slider, Tooltip, HelpButton, FormFieldLabel},
 	extends: FieldBase,
 	props: {
 		min: {required: true, type: Number},

@@ -4,7 +4,7 @@
 			<div class="selectSubmissionFileListItem__selector">
 				<slot />
 			</div>
-			<file
+			<File
 				:id="describedById"
 				class="selectSubmissionFileListItem__file"
 				:document-type="documentType"
@@ -19,10 +19,10 @@
 			<span v-if="uploadedDetails">
 				{{ uploadedDetails }}
 			</span>
-			<badge v-if="genreName" :is-primary="genreIsPrimary">
+			<Badge v-if="genreName" :is-primary="genreIsPrimary">
 				{{ genreName }}
-			</badge>
-			<pkp-button
+			</Badge>
+			<PkpButton
 				v-if="url"
 				class="selectSubmissionFileListItem__download"
 				element="a"
@@ -31,19 +31,26 @@
 				rel="noopener noreferrer"
 				:aria-describedby="describedById"
 			>
-				<icon icon="download" />
+				<Icon icon="download" />
 				<span class="-screenReader">{{ downloadLabel }}</span>
-			</pkp-button>
+			</PkpButton>
 		</div>
 	</div>
 </template>
 
 <script>
+import Badge from '@/components/Badge/Badge.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
+
 import File from '../../File/File.vue';
 
 export default {
 	components: {
 		File,
+		Badge,
+		PkpButton,
+		Icon,
 	},
 	props: {
 		createdAt: {

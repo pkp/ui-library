@@ -5,15 +5,18 @@
 			:key="message"
 			class="pkpFieldError__message"
 		>
-			<icon icon="exclamation-triangle" :inline="true" />
+			<Icon icon="exclamation-triangle" :inline="true" />
 			<span v-html="message" />
 		</div>
 	</div>
 </template>
 
 <script>
+import Icon from '@/components/Icon/Icon.vue';
+
 export default {
 	name: 'FieldError',
+	components: {Icon},
 	props: {
 		messages: Array,
 	},

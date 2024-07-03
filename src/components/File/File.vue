@@ -1,6 +1,6 @@
 <template>
 	<div class="flex items-center">
-		<icon :icon="documentTypeIcon" class="h-6 w-6 flex-none text-heading" />
+		<Icon :icon="documentTypeIcon" class="h-6 w-6 flex-none text-heading" />
 		<span v-if="fileId" class="file__id">
 			{{ fileId }}
 		</span>
@@ -16,7 +16,10 @@
 </template>
 
 <script>
+import Icon from '@/components/Icon/Icon.vue';
+
 export default {
+	components: {Icon},
 	props: {
 		/** Optional but recommended. Pass one of the `DOCUMENT_TYPE_` constants to show an icon that will match this document type. */
 		documentType: {

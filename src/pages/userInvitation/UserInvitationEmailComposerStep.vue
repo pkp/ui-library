@@ -1,5 +1,5 @@
 <template>
-	<composer
+	<Composer
 		:id="store.currentStep.id"
 		:add-c-c-label="t('common.addCCBCC')"
 		:attach-files-label="t('common.attachFiles')"
@@ -39,7 +39,7 @@
 		:variables="props.email.variables"
 		v-bind="emailComposer"
 		@set="(componentName, update) => updateEmail(update)"
-	></composer>
+	></Composer>
 </template>
 
 <script setup>

@@ -1,11 +1,11 @@
 <template>
 	<div class="fileAttacherFileStage" aria-live="polite">
-		<list-panel :items="files" :is-loading="isLoading">
+		<ListPanel :items="files" :is-loading="isLoading">
 			<template #header>
-				<pkp-header>
+				<PkpHeader>
 					<h2>{{ currentFileStage.label }}</h2>
 					<template #actions>
-						<dropdown v-if="fileStages.length > 1" label="Other Files">
+						<Dropdown v-if="fileStages.length > 1" label="Other Files">
 							<ul>
 								<li v-for="fileStage in fileStages" :key="fileStage.label">
 									<button
@@ -16,18 +16,18 @@
 									</button>
 								</li>
 							</ul>
-						</dropdown>
+						</Dropdown>
 					</template>
-				</pkp-header>
+				</PkpHeader>
 			</template>
 			<template #itemsEmpty>
 				<div v-if="isLoading">
-					<spinner />
+					<Spinner />
 					{{ t('common.loading') }}
 				</div>
 			</template>
 			<template #item="{item}">
-				<select-submission-file-list-item
+				<SelectSubmissionFileListItem
 					:document-type="item.documentType"
 					:download-label="downloadLabel"
 					:genre-name="localize(item.genreName)"
@@ -39,23 +39,23 @@
 					:url="item.url"
 				>
 					<input v-model="selected" type="checkbox" :value="item.id" />
-				</select-submission-file-list-item>
+				</SelectSubmissionFileListItem>
 			</template>
-		</list-panel>
-		<button-row class="fileAttacher__footer">
+		</ListPanel>
+		<ButtonRow class="fileAttacher__footer">
 			<template #end>
-				<pkp-button :is-link="true" @click="$emit('cancel')">
-					<icon icon="long-arrow-left" :inline="true" />
+				<PkpButton :is-link="true" @click="$emit('cancel')">
+					<Icon icon="long-arrow-left" :inline="true" />
 					{{ backLabel }}
-				</pkp-button>
+				</PkpButton>
 			</template>
-			<pkp-button
+			<PkpButton
 				:is-disabled="!selected.length"
 				@click="$emit('selected:files', selectedFiles)"
 			>
 				{{ attachSelectedLabel }}
-			</pkp-button>
-		</button-row>
+			</PkpButton>
+		</ButtonRow>
 	</div>
 </template>
 
@@ -66,6 +66,9 @@ import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import SelectSubmissionFileListItem from '../ListPanel/submissionFiles/SelectSubmissionFileListItem.vue';
 import ajaxError from '@/mixins/ajaxError';
+import Spinner from '@/components/Spinner/Spinner.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
 
 export default {
 	name: 'FileAttacherFileStage',
@@ -75,6 +78,9 @@ export default {
 		ListPanel,
 		PkpHeader,
 		SelectSubmissionFileListItem,
+		Spinner,
+		PkpButton,
+		Icon,
 	},
 	mixins: [ajaxError],
 	props: {

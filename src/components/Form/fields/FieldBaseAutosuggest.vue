@@ -7,7 +7,7 @@
 		}"
 	>
 		<div v-if="!isLabelInline" ref="heading" class="pkpFormField__heading">
-			<form-field-label
+			<FormFieldLabel
 				:control-id="controlId"
 				:label="label"
 				:locale-label="localeLabel"
@@ -15,14 +15,14 @@
 				:required-label="t('common.required')"
 				:multilingual-label="multilingualLabel"
 			/>
-			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
+			<Tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span
 				v-if="tooltip"
 				:id="describedByTooltipId"
 				class="-screenReader"
 				v-html="tooltip"
 			/>
-			<help-button
+			<HelpButton
 				v-if="helpTopic"
 				:id="describedByHelpId"
 				:topic="helpTopic"
@@ -50,7 +50,7 @@
 			>
 				<!-- Begin Heading part repeated for inline scenario -->
 				<div v-if="isLabelInline" ref="heading" class="pkpFormField__heading">
-					<form-field-label
+					<FormFieldLabel
 						:control-id="controlId"
 						:label="label"
 						:locale-label="localeLabel"
@@ -58,7 +58,7 @@
 						:required-label="t('common.required')"
 						:multilingual-label="multilingualLabel"
 					/>
-					<tooltip
+					<Tooltip
 						v-if="tooltip"
 						aria-hidden="true"
 						:tooltip="tooltip"
@@ -70,7 +70,7 @@
 						class="-screenReader"
 						v-html="tooltip"
 					/>
-					<help-button
+					<HelpButton
 						v-if="helpTopic"
 						:id="describedByHelpId"
 						:topic="helpTopic"
@@ -83,7 +83,7 @@
 				<span v-if="!currentValue.length" class="-screenReader">
 					{{ t('common.none') }}
 				</span>
-				<pkp-badge
+				<PkpBadge
 					v-for="item in currentSelected"
 					v-else
 					:key="item.value"
@@ -95,12 +95,12 @@
 						class="pkpAutosuggest__deselect"
 						@click.stop.prevent="deselect(item)"
 					>
-						<icon icon="times" />
+						<Icon icon="times" />
 						<span class="-screenReader">
 							{{ deselectLabel.replace('{$item}', item.label) }}
 						</span>
 					</button>
-				</pkp-badge>
+				</PkpBadge>
 				<Combobox
 					v-if="!isDisabled"
 					:id="autosuggestId"
@@ -158,13 +158,13 @@
 					<slot name="end"></slot>
 				</span>
 			</div>
-			<multilingual-progress
+			<MultilingualProgress
 				v-if="isMultilingual && locales.length > 1"
 				:id="multilingualProgressId"
 				:count="multilingualFieldsCompleted"
 				:total="locales.length"
 			/>
-			<field-error
+			<FieldError
 				v-if="errors && errors.length"
 				:id="describedByErrorId"
 				:messages="errors"
@@ -176,6 +176,13 @@
 <script>
 import FieldBase from './FieldBase.vue';
 import PkpBadge from '@/components/Badge/Badge.vue';
+import FormFieldLabel from '@/components/Form/FormFieldLabel.vue';
+import Tooltip from '@/components/Tooltip/Tooltip.vue';
+import HelpButton from '@/components/HelpButton/HelpButton.vue';
+import FieldError from '@/components/Form/FieldError.vue';
+import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
+import Icon from '@/components/Icon/Icon.vue';
+
 import {
 	Combobox,
 	ComboboxInput,
@@ -193,6 +200,12 @@ export default {
 		ComboboxInput,
 		ComboboxOption,
 		ComboboxOptions,
+		FormFieldLabel,
+		Tooltip,
+		HelpButton,
+		FieldError,
+		Icon,
+		MultilingualProgress,
 	},
 	extends: FieldBase,
 	mixins: [ajaxError],
