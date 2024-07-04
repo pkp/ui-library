@@ -11,6 +11,11 @@ export function useModal() {
 		modalStore.openSideModal(component, props, opts);
 	}
 
+	function openDialogNetworkError(fetchError) {
+		modalStore.openDialogNetworkError(fetchError);
+	}
+
+	return {openDialog, openSideModal, openDialogNetworkError};
 	function closeSideModal(component) {
 		modalStore.closeSideModal(component);
 	}

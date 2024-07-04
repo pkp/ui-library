@@ -4,7 +4,8 @@ import {useModalStore} from '@/stores/modalStore';
 
 let ofetchInstance = ofetch;
 
-function getCSRFToken() {
+/** Exported only for legacy purposes, when csrf is included as form data */
+export function getCSRFToken() {
 	const FALLBACK_TOKEN = 'test_csrf_token';
 
 	if (typeof pkp !== 'undefined') {

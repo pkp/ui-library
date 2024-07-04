@@ -20,7 +20,7 @@ export const useFileManagerStore = defineComponentStore(
 			},
 		});
 
-		const files = computed(() => data.value?.items);
+		const files = computed(() => data.value?.items || []);
 
 		fetchFiles();
 

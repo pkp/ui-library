@@ -145,6 +145,8 @@ export function useSummaryConfig() {
 					namespace: 'deskReviewFiles',
 
 					submissionId: submission.id,
+					submissionStageId: submission.stageId,
+
 					fileStages: [pkp.const.SUBMISSION_FILE_SUBMISSION],
 					title: t('dashboard.summary.deskReviewFiles'),
 					description: t('dashboard.summary.deskReviewFilesDescription'),
@@ -163,6 +165,8 @@ export function useSummaryConfig() {
 				props: {
 					namespace: 'filesRevisions',
 					submissionId: submission.id,
+					submissionStageId: submission.stageId,
+
 					reviewRoundId: activeReviewRound?.id,
 					fileStages: [pkp.const.SUBMISSION_FILE_REVIEW_REVISION],
 					title: t('dashboard.summary.revisionsSubmitted'),
@@ -181,6 +185,8 @@ export function useSummaryConfig() {
 				props: {
 					namespace: 'filesForReview',
 					submissionId: submission.id,
+					submissionStageId: submission.stageId,
+
 					reviewRoundId: activeReviewRound?.id,
 					fileStages: [pkp.const.SUBMISSION_FILE_REVIEW_FILE],
 					title: t('dashboard.summary.filesForReview'),
@@ -200,6 +206,8 @@ export function useSummaryConfig() {
 				props: {
 					namespace: 'copyeditedFiles',
 					submissionId: submission.id,
+					submissionStageId: submission.stageId,
+
 					fileStages: [pkp.const.SUBMISSION_FILE_COPYEDIT],
 					title: t('dashboard.summary.copyeditedFiles'),
 					description:
@@ -218,6 +226,8 @@ export function useSummaryConfig() {
 				props: {
 					namespace: 'draftFiles',
 					submissionId: submission.id,
+					submissionStageId: submission.stageId,
+
 					fileStages: [pkp.const.SUBMISSION_FILE_FINAL],
 					title: t('dashboard.summary.draftFiles'),
 					description: t('dashboard.summary.draftFilesDescription'),
@@ -233,6 +243,8 @@ export function useSummaryConfig() {
 				props: {
 					namespace: 'productionReadyFiles',
 					submissionId: submission.id,
+					submissionStageId: submission.stageId,
+
 					fileStages: [pkp.const.SUBMISSION_FILE_PRODUCTION_READY],
 					title: t('dashboard.summary.productionReadyFiles'),
 					description: t('dashboard.summary.productionReadyFilesDescription'),
@@ -248,6 +260,8 @@ export function useSummaryConfig() {
 				props: {
 					namespace: 'galleys',
 					submissionId: submission.id,
+					submissionStageId: submission.stageId,
+
 					fileStages: [pkp.const.SUBMISSION_FILE_PROOF],
 					title: t('dashboard.summary.galleys'),
 				},

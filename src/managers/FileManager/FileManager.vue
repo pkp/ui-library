@@ -1,17 +1,34 @@
 <template>
-	<ListingFilesListPanel
+	<ListPanel
 		:title="title"
 		:description="description"
-		:files="fileManagerStore.files"
-	></ListingFilesListPanel>
+		:items="fileManagerStore.files"
+	>
+		<template #header>
+			<h2 class="text-lg-bold text-heading">
+				<span>{{ title }}</span>
+			</h2>
+			<div v-if="description" class="text-base-normal">{{ description }}</div>
+		</template>
+		<template #item="{item}">
+			<FileManagerItem
+				:file="item"
+				:submission-id="submissionId"
+				:submission-stage-id="submissionStageId"
+			></FileManagerItem>
+		</template>
+	</ListPanel>
 </template>
 <script setup>
 import {inject} from 'vue';
 import {useFileManagerStore} from './fileManagerStore.js';
-import ListingFilesListPanel from '@/components/ListPanel/listingFiles/ListingFilesListPanel.vue';
+import ListPanel from '@/components/ListPanel/ListPanel.vue';
+import FileManagerItem from './FileManagerItem.vue';
+
 const props = defineProps({
 	namespace: {type: String, required: true},
 	submissionId: {type: String, required: true},
+	submissionStageId: {type: String, required: true},
 	reviewRoundId: {type: String, required: true},
 	fileStages: {type: Array, required: true},
 	title: {type: String, required: true},
