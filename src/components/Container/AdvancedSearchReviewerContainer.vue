@@ -32,7 +32,10 @@
 				</div>
 			</div>
 		</div>
-		<SelectReviewerListPanel v-bind="components.selectReviewer" />
+		<SelectReviewerListPanel
+			v-bind="components.selectReviewer"
+			@set="updateReviewerList"
+		/>
 	</div>
 </template>
 
@@ -71,6 +74,12 @@ export default {
 	methods: {
 		toggleShowAllAuthors() {
 			this.showAllAuthors = !this.showAllAuthors;
+		},
+		updateReviewerList(panelId, reviewersData) {
+			this.components.selectReviewer = {
+				...this.components.selectReviewer,
+				...reviewersData,
+			};
 		},
 	},
 };
