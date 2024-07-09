@@ -75,6 +75,11 @@ function passToHandlerElement(...args) {
 	else {
 		const eventType = args?.[0]?.type;
 
+		if (eventType === 'dataChanged') {
+			// Naive implementation to check for notifications for the actions in modals that are now opened from Vue.js, instead of the grid.
+			// Logic to trigger these notifications is LinkActionHandler.dataChangedHandler_
+			$('body').trigger('notifyUser');
+		}
 		if (
 			[
 				'formSubmitted',

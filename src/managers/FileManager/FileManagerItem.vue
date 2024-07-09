@@ -18,39 +18,24 @@
 		<DropdownActions
 			label="More Actions (t)"
 			:display-as-ellipsis="true"
-			:actions="actionsList"
-			@action="handleFileAction"
+			:actions="actionItems"
+			@action="(actionName) => emit('action', actionName, {file: file})"
 		></DropdownActions>
 	</div>
 </template>
 
 <script setup>
-import {computed} from 'vue';
 import File from '@/components/File/File.vue';
 import Badge from '@/components/Badge/Badge.vue';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 
 import {useLocalize} from '@/composables/useLocalize';
-import {useReviewerManagerActions} from './useFileManagerActions';
 const {localize} = useLocalize();
 
-const props = defineProps({
-	submissionId: {type: String, required: true},
-	submissionStageId: {type: String, required: true},
+defineProps({
 	file: {type: Object, required: true},
+	actionItems: {type: Array, required: true},
 });
 
-const {handleAction, getAvailableActions} = useReviewerManagerActions();
-
-const actionsList = computed(() => {
-	return getAvailableActions(props.file);
-});
-
-function handleFileAction(actionName) {
-	handleAction(actionName, {
-		file: props.file,
-		submissionId: props.submissionId,
-		submissionStageId: props.submissionStageId,
-	});
-}
+const emit = defineEmits(['action']);
 </script>

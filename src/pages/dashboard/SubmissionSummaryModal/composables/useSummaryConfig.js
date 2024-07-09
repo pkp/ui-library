@@ -73,8 +73,6 @@ export function useSummaryConfig() {
 	}
 
 	function getPrimaryItems(submission, currentPublication) {
-		const activeReviewRound = getCurrentReviewRound(submission);
-
 		return [
 			{
 				component: 'LastActivity',
@@ -142,14 +140,9 @@ export function useSummaryConfig() {
 			{
 				component: 'FileManager',
 				props: {
-					namespace: 'deskReviewFiles',
-
+					configName: 'EDITOR_SUBMISSION_FILES',
 					submissionId: submission.id,
 					submissionStageId: submission.stageId,
-
-					fileStages: [pkp.const.SUBMISSION_FILE_SUBMISSION],
-					title: t('dashboard.summary.deskReviewFiles'),
-					description: t('dashboard.summary.deskReviewFilesDescription'),
 				},
 				filters: {
 					dashboardPage: [
@@ -160,7 +153,7 @@ export function useSummaryConfig() {
 				},
 			},
 
-			{
+			/*{
 				component: 'FileManager',
 				props: {
 					namespace: 'filesRevisions',
@@ -179,8 +172,8 @@ export function useSummaryConfig() {
 					],
 					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
 				},
-			},
-			{
+			},*/
+			/*{
 				component: 'FileManager',
 				props: {
 					namespace: 'filesForReview',
@@ -200,7 +193,7 @@ export function useSummaryConfig() {
 					],
 					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
 				},
-			},
+			},*/
 			{
 				component: 'FileManager',
 				props: {
