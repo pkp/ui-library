@@ -117,14 +117,14 @@ export function useFileManagerActions() {
 		if (enabledActions.includes(Actions.UPLOAD)) {
 			actions.push({
 				// this might be different based on fileStage, more details in AddFileLinkAction.php
-				label: 'Upload (t)',
+				label: 'Upload',
 				name: Actions.UPLOAD,
 			});
 		}
 
 		if (enabledActions.includes(Actions.SELECT_UPLOAD)) {
 			actions.push({
-				label: 'Select/Upload (t)',
+				label: 'Select/Upload',
 				name: Actions.SELECT_UPLOAD,
 			});
 		}
@@ -138,7 +138,7 @@ export function useFileManagerActions() {
 		const enabledActions = managerConfiguration.actions;
 		if (enabledActions.includes(Actions.DOWNLOAD_ALL) && filesCount) {
 			actions.push({
-				label: 'Download All (t)',
+				label: 'Download All Files',
 				name: 'downloadAll',
 			});
 		}
@@ -151,8 +151,9 @@ export function useFileManagerActions() {
 		const enabledActions = managerConfiguration.actions;
 		if (enabledActions.includes(Actions.DOWNLOAD_ALL)) {
 			actions.push({
-				label: 'More information (t)',
+				label: 'More information',
 				name: Actions.SEE_NOTES,
+				icon: 'View',
 			});
 		}
 
@@ -160,6 +161,7 @@ export function useFileManagerActions() {
 			actions.push({
 				label: 'Edit',
 				name: Actions.EDIT,
+				icon: 'Edit',
 			});
 		}
 
@@ -167,6 +169,8 @@ export function useFileManagerActions() {
 			actions.push({
 				label: 'Delete',
 				name: Actions.DELETE,
+				isWarnable: true,
+				icon: 'Cancel',
 			});
 		}
 

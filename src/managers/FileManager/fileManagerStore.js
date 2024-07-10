@@ -18,8 +18,8 @@ export const FileManagerConfigurations = {
 			Actions.SEE_NOTES,
 		],
 		fileStage: pkp.const.SUBMISSION_FILE_SUBMISSION,
-		title: tk('dashboard.summary.deskReviewFiles'),
-		description: tk('dashboard.summary.deskReviewFilesDescription'),
+		titleKey: tk('dashboard.summary.deskReviewFiles'),
+		descriptionKey: tk('dashboard.summary.deskReviewFilesDescription'),
 		wizardTitleKey: tk('submission.submit.uploadSubmissionFile'),
 	}),
 };
@@ -43,8 +43,8 @@ export const useFileManagerStore = defineComponentStore(
 
 			return {
 				...config,
-				title: t(config.title),
-				description: t(config.description),
+				title: t(config.titleKey),
+				description: t(config.descriptionKey),
 			};
 		});
 

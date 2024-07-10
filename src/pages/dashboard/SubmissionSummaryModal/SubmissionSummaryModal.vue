@@ -30,7 +30,7 @@
 		</template>
 		<SideModalLayout2Columns>
 			<template #left>
-				<div class="flex flex-col gap-y-3 bg-secondary p-5">
+				<div class="flex flex-col gap-y-5 bg-secondary p-5">
 					<component
 						:is="Components[item.component] || item.component"
 						v-bind="item.props"

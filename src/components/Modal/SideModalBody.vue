@@ -66,14 +66,14 @@ const {t} = useLocalize();
 /** Handle styling for nested SideModals */
 const levelClasses = computed(() => {
 	if (modalLevel.value === 3) {
-		return 'max-w-3xl';
+		return 'max-w-[79vw]';
 	}
 
 	if (modalLevel.value === 2) {
-		return 'max-w-4xl';
+		return 'max-w-[86vw]';
 	}
 
-	return 'max-w-5xl';
+	return 'max-w-[93vw]';
 });
 
 const closeModal = inject('closeModal');

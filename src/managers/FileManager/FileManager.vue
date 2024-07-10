@@ -1,20 +1,15 @@
 <template>
-	<ListPanel
-		:title="title"
-		:description="fileManagerStore.managerConfiguration.description"
-		:items="fileManagerStore.files"
-	>
-		<template #header>
-			<h2 class="text-lg-bold text-heading">
-				<span>{{ fileManagerStore.managerConfiguration.title }}</span>
-			</h2>
-			<div
-				v-if="fileManagerStore.managerConfiguration.description"
-				class="text-base-normal"
-			>
-				{{ fileManagerStore.managerConfiguration.description }}
+	<div>
+		<div class="flex items-center border border-light p-4">
+			<div class="flex-grow">
+				<h3 class="text-lg-bold text-heading">
+					{{ fileManagerStore.managerConfiguration.title }}
+				</h3>
+				<p class="pt-2 text-sm-normal">
+					{{ fileManagerStore.managerConfiguration.description }}
+				</p>
 			</div>
-			<div>
+			<div class="ms-2 flex flex-none space-x-2">
 				<PkpButton
 					v-for="action in fileManagerStore.topActions"
 					:key="action.name"
@@ -23,23 +18,40 @@
 					{{ action.label }}
 				</PkpButton>
 			</div>
-		</template>
-		<template #item="{item}">
-			<FileManagerItem
-				:file="item"
-				:action-items="fileManagerStore.itemActions"
-				@action="fileManagerStore.handleItemAction"
-			></FileManagerItem>
-		</template>
-	</ListPanel>
-	<div>
-		<PkpButton
-			v-for="action in fileManagerStore.bottomActions"
-			:key="action.name"
-			@click="fileManagerStore.handleAction(action.name)"
+		</div>
+		<PkpTable aria-label="Example for basic table">
+			<TableHeader>
+				<TableColumn>No</TableColumn>
+				<TableColumn>File name</TableColumn>
+				<TableColumn>Date Uploaded</TableColumn>
+				<TableColumn>Type</TableColumn>
+				<TableColumn>
+					<span class="sr-only">Actions (t)</span>
+				</TableColumn>
+			</TableHeader>
+			<TableBody>
+				<FileManagerTableRow
+					v-for="file in fileManagerStore.files"
+					:key="file.id"
+					:action-items="fileManagerStore.itemActions"
+					:file="file"
+					@action="fileManagerStore.handleItemAction"
+				></FileManagerTableRow>
+			</TableBody>
+		</PkpTable>
+		<div
+			v-if="fileManagerStore.bottomActions"
+			class="flex space-x-2 border-x border-b border-light p-2"
 		>
-			{{ action.label }}
-		</PkpButton>
+			<PkpButton
+				v-for="action in fileManagerStore.bottomActions"
+				:key="action.name"
+				is-link
+				@click="fileManagerStore.handleAction(action.name)"
+			>
+				{{ action.label }}
+			</PkpButton>
+		</div>
 	</div>
 </template>
 <script setup>
@@ -49,8 +61,11 @@ import {
 	useFileManagerStore,
 } from './fileManagerStore.js';
 import PkpButton from '@/components/Button/Button.vue';
-import ListPanel from '@/components/ListPanel/ListPanel.vue';
-import FileManagerItem from './FileManagerItem.vue';
+import PkpTable from '@/components/TableNext/Table.vue';
+import TableHeader from '@/components/TableNext/TableHeader.vue';
+import TableBody from '@/components/TableNext/TableBody.vue';
+import TableColumn from '@/components/TableNext/TableColumn.vue';
+import FileManagerTableRow from './FileManagerTableRow.vue';
 
 const props = defineProps({
 	configName: {
