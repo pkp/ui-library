@@ -14,5 +14,9 @@ export function useCurrentUser() {
 			),
 	);
 
-	return {isSiteAdmin, isManager};
+	function hasCurrentUserAtLeastOneRole(roles = []) {
+		return roles.some((role) => pkp.currentUser.roles.includes(role));
+	}
+
+	return {isSiteAdmin, isManager, hasCurrentUserAtLeastOneRole};
 }

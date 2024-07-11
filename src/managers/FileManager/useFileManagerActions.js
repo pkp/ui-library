@@ -2,7 +2,9 @@ import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
 import {useFetch, getCSRFToken} from '@/composables/useFetch';
+
 export const Actions = {
+	LIST: 'list',
 	UPLOAD: 'upload',
 	SELECT_UPLOAD: 'selectUpload',
 	DOWNLOAD_ALL: 'downloadAll',
@@ -14,17 +16,17 @@ export const Actions = {
 export function useFileManagerActions() {
 	function handleAction(
 		actionName,
-		{submissionId, reviewRoundId, submissionStageId, fileStage, wizardTitleKey},
-		finishedCallback,
-	) {
-		console.log(
-			'handle action:',
-			actionName,
-			submissionId,
+		{
+			submission,
 			reviewRoundId,
 			submissionStageId,
 			fileStage,
-		);
+			wizardTitleKey,
+			uploadSelectTitleKey,
+			gridComponent,
+		},
+		finishedCallback,
+	) {
 		const {t} = useLocalize();
 
 		if (actionName === Actions.DOWNLOAD_ALL) {
@@ -37,7 +39,7 @@ export function useFileManagerActions() {
 					// TODO this needs to be different for different grids
 					nameLocaleKey: 'editor.submission.production.productionReadyFiles',
 					fileStage,
-					submissionId: submissionId,
+					submissionId: submission.id,
 					stageId: submissionStageId,
 				},
 			});
@@ -53,7 +55,7 @@ export function useFileManagerActions() {
 					reviewRoundId: reviewRoundId,
 					//assocType: pkp.const.ASSOC_TYPE_REVIEW_ASSIGNMENT,
 					//assocId: actionArgs.reviewAssignmentId,
-					submissionId: submissionId,
+					submissionId: submission.id,
 					stageId: submissionStageId,
 					// is not used anymore, but its still required, passing anything works fine for now
 					uploaderRoles: pkp.const.ROLE_ID_REVIEWER,
@@ -76,16 +78,17 @@ export function useFileManagerActions() {
 				},
 			);
 		} else if (actionName === Actions.SELECT_UPLOAD) {
-			// http://localhost:7003/index.php/publicknowledge/$$$call$$$/grid/files/review/manage-review-files-grid/fetch-grid?submissionId=19&stageId=3&reviewRoundId=13&_=1720087308816
+			// http://localhost:7003/index.php/publicknowledge/$$$call$$$/grid/files/review/editor-review-files-grid/
+			//select-files?submissionId=13&stageId=3&reviewRoundId=14
 			const {url} = useLegacyGridUrl({
-				component: 'grid.files.review.EditorReviewFilesGridHandler',
+				component: gridComponent,
 				op: 'selectFiles',
 				params: {
 					fileStage,
 					reviewRoundId: reviewRoundId,
 					//assocType: pkp.const.ASSOC_TYPE_REVIEW_ASSIGNMENT,
 					//assocId: actionArgs.reviewAssignmentId,
-					submissionId: submissionId,
+					submissionId: submission.id,
 					stageId: submissionStageId,
 					// is not used anymore, but its still required, passing anything works fine for now
 					uploaderRoles: pkp.const.ROLE_ID_REVIEWER,
@@ -93,11 +96,18 @@ export function useFileManagerActions() {
 			});
 			const {openSideModal} = useModal();
 
+			const reviewRound =
+				reviewRoundId &&
+				submission.reviewRounds.find(
+					(reviewRound) => reviewRound.id === reviewRoundId,
+				);
+
 			openSideModal(
 				'LegacyAjax',
 				{
 					legacyOptions: {
-						title: t('editor.submissionReview.uploadFile"'),
+						// review round is optional, relevant only for review stage
+						title: t(uploadSelectTitleKey, {round: reviewRound?.round}),
 						url,
 					},
 				},
@@ -112,7 +122,7 @@ export function useFileManagerActions() {
 
 	function getTopActions({managerConfiguration}) {
 		const actions = [];
-		const enabledActions = managerConfiguration.actions;
+		const enabledActions = managerConfiguration.permittedActions;
 
 		if (enabledActions.includes(Actions.UPLOAD)) {
 			actions.push({
@@ -135,7 +145,7 @@ export function useFileManagerActions() {
 	function getBottomActions({managerConfiguration, filesCount}) {
 		console.log('getBottomActions');
 		const actions = [];
-		const enabledActions = managerConfiguration.actions;
+		const enabledActions = managerConfiguration.permittedActions;
 		if (enabledActions.includes(Actions.DOWNLOAD_ALL) && filesCount) {
 			actions.push({
 				label: 'Download All Files',
@@ -148,8 +158,8 @@ export function useFileManagerActions() {
 
 	function getItemActions({managerConfiguration}) {
 		const actions = [];
-		const enabledActions = managerConfiguration.actions;
-		if (enabledActions.includes(Actions.DOWNLOAD_ALL)) {
+		const enabledActions = managerConfiguration.permittedActions;
+		if (enabledActions.includes(Actions.SEE_NOTES)) {
 			actions.push({
 				label: 'More information',
 				name: Actions.SEE_NOTES,
@@ -179,7 +189,7 @@ export function useFileManagerActions() {
 
 	function handleItemAction(
 		actionName,
-		{file, submissionId, submissionStageId},
+		{file, submission, submissionStageId},
 		finishedCallback,
 	) {
 		const {t, localize} = useLocalize();
@@ -192,7 +202,7 @@ export function useFileManagerActions() {
 				op: 'viewInformationCenter',
 				params: {
 					submissionFileId: file.id,
-					submissionId,
+					submissionId: submission.id,
 					stageId: submissionStageId,
 				},
 			});
@@ -218,7 +228,7 @@ export function useFileManagerActions() {
 				op: 'editMetadata',
 				params: {
 					submissionFileId: file.id,
-					submissionId,
+					submissionId: submission.id,
 					stageId: submissionStageId,
 				},
 			});
@@ -259,7 +269,7 @@ export function useFileManagerActions() {
 								op: 'deleteFile',
 								params: {
 									submissionFileId: file.id,
-									submissionId,
+									submissionId: submission.id,
 									stageId: submissionStageId,
 								},
 							});

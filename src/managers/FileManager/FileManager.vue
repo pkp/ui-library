@@ -25,7 +25,7 @@
 				<TableColumn>File name</TableColumn>
 				<TableColumn>Date Uploaded</TableColumn>
 				<TableColumn>Type</TableColumn>
-				<TableColumn>
+				<TableColumn v-if="fileManagerStore.itemActions.length">
 					<span class="sr-only">Actions (t)</span>
 				</TableColumn>
 			</TableHeader>
@@ -40,7 +40,7 @@
 			</TableBody>
 		</PkpTable>
 		<div
-			v-if="fileManagerStore.bottomActions"
+			v-if="fileManagerStore.bottomActions.length"
 			class="flex space-x-2 border-x border-b border-light p-2"
 		>
 			<PkpButton
@@ -75,7 +75,7 @@ const props = defineProps({
 			return Object.keys(FileManagerConfigurations).includes(value);
 		},
 	},
-	submissionId: {type: String, required: true},
+	submission: {type: Object, required: true},
 	submissionStageId: {type: String, required: true},
 	reviewRoundId: {type: String, required: true},
 });

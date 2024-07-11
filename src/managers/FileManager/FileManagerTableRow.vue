@@ -35,7 +35,7 @@
 			</Badge>
 		</TableCell>
 
-		<TableCell no-wrap>
+		<TableCell v-if="actionItems.length" no-wrap>
 			<DropdownActions
 				label="More Actions (t)"
 				:display-as-ellipsis="true"
