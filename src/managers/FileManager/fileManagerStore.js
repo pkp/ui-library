@@ -10,7 +10,29 @@ import {useCurrentUser} from '@/composables/useCurrentUser';
 const {tk} = useLocalize();
 
 export const FileManagerConfigurations = {
-	EDITOR_SUBMISSION_FILES: ({stageId}) => ({
+	SUBMISSION_FILES: ({stageId}) => ({
+		permissions: [
+			{
+				roles: [pkp.const.ROLE_ID_AUTHOR],
+				actions: [Actions.LIST, Actions.EDIT, Actions.DOWNLOAD_ALL],
+			},
+			{
+				roles: [
+					pkp.const.ROLE_ID_SUB_EDITOR,
+					pkp.const.ROLE_ID_MANAGER,
+					pkp.const.ROLE_ID_SITE_ADMIN,
+					pkp.const.ROLE_ID_ASSISTANT,
+				],
+				actions: [
+					Actions.LIST,
+					Actions.UPLOAD,
+					Actions.DOWNLOAD_ALL,
+					Actions.EDIT,
+					Actions.DELETE,
+					Actions.SEE_NOTES,
+				],
+			},
+		],
 		actions: [
 			Actions.UPLOAD,
 			Actions.DOWNLOAD_ALL,
@@ -24,6 +46,24 @@ export const FileManagerConfigurations = {
 		wizardTitleKey: tk('submission.submit.uploadSubmissionFile'),
 	}),
 	EDITOR_REVIEW_FILES: ({stageId}) => ({
+		permissions: [
+			{
+				roles: [
+					pkp.const.ROLE_ID_SUB_EDITOR,
+					pkp.const.ROLE_ID_MANAGER,
+					pkp.const.ROLE_ID_SITE_ADMIN,
+					pkp.const.ROLE_ID_ASSISTANT,
+				],
+				actions: [
+					Actions.LIST,
+					Actions.SELECT_UPLOAD,
+					Actions.EDIT,
+					Actions.DELETE,
+					Actions.SEE_NOTES,
+				],
+			},
+		],
+
 		actions: [
 			Actions.SELECT_UPLOAD,
 			Actions.EDIT,
@@ -40,6 +80,28 @@ export const FileManagerConfigurations = {
 		uploadSelectTitleKey: tk('editor.submission.review.currentFiles'),
 	}),
 	WORKFLOW_REVIEW_REVISIONS: ({stageId}) => ({
+		permissions: [
+			{
+				roles: [pkp.const.ROLE_ID_AUTHOR],
+				actions: [Actions.LIST, Actions.UPLOAD, Actions.EDIT, Actions.DELETE],
+			},
+			{
+				roles: [
+					pkp.const.ROLE_ID_AUTHOR,
+					pkp.const.ROLE_ID_SUB_EDITOR,
+					pkp.const.ROLE_ID_MANAGER,
+					pkp.const.ROLE_ID_SITE_ADMIN,
+					pkp.const.ROLE_ID_ASSISTANT,
+				],
+				actions: [
+					Actions.LIST,
+					Actions.UPLOAD,
+					Actions.EDIT,
+					Actions.DELETE,
+					Actions.SEE_NOTES,
+				],
+			},
+		],
 		actions: [Actions.UPLOAD, Actions.EDIT, Actions.DELETE, Actions.SEE_NOTES],
 		fileStage:
 			stageId === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW

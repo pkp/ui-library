@@ -142,7 +142,7 @@ export function useSummaryConfig() {
 			{
 				component: 'FileManager',
 				props: {
-					configName: 'EDITOR_SUBMISSION_FILES',
+					configName: 'SUBMISSION_FILES',
 					submission: submission,
 					submissionStageId: submission.stageId,
 				},
