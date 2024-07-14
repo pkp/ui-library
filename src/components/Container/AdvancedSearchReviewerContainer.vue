@@ -10,7 +10,7 @@
 						class="author_row"
 					>
 						<strong>{{ author }}</strong>
-						<span v-if="affiliations">-</span>
+						<span v-if="affiliations">{{ ' - ' }}</span>
 						<span>{{ affiliations }}</span>
 					</li>
 				</ol>
