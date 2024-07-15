@@ -1,5 +1,10 @@
 <template>
-	<form class="pkpForm -pkpClearfix" :method="method" :action="action">
+	<form
+		class="pkpForm -pkpClearfix"
+		:method="method"
+		:action="action"
+		@keydown.enter.prevent=""
+	>
 		<form-locales
 			v-if="availableLocales.length > 1"
 			:primaryLocaleKey="primaryLocale"
