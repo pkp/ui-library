@@ -35,9 +35,9 @@ Use a [$ref](https://vuejs.org/v2/guide/components-edge-cases.html#Accessing-Chi
 
 ```html
 <PkpButton ref="button" @click="$modal.show('example')">Open Modal</PkpButton>
-<modal v-bind="MODAL_PROPS" name="example" @closed="setFocusToRef('button')">
+<Modal v-bind="MODAL_PROPS" name="example" @closed="setFocusToRef('button')">
 	...
-</modal>
+</Modal>
 ```
 
 A dialog will reset the focus automatically.

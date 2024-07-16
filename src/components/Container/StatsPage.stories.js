@@ -17,7 +17,7 @@ const EditorialStatsPageWithDataAndTemplate = {
 		<div v-if="activeByStage" class="pkpStats__graph">
 			<div class="pkpStats--editorial__stageWrapper -pkpClearfix">
 				<div class="pkpStats--editorial__stageChartWrapper">
-					<doughnut-chart :chart-data="chartData"></doughnut-chart>
+					<DoughnutChart :chart-data="chartData"></DoughnutChart>
 				</div>
 				<div class="pkpStats--editorial__stageList">
 					<h2
@@ -51,7 +51,7 @@ const EditorialStatsPageWithDataAndTemplate = {
 				<span v-if="isLoading" class="pkpSpinner" aria-hidden="true"></span>
 			</h1>
 			<template #actions>
-				<date-range
+				<DateRange
 					unique-id="editorial-stats-date-range"
 					:date-start="dateStart"
 					:date-end="dateEnd"
@@ -74,7 +74,7 @@ const EditorialStatsPageWithDataAndTemplate = {
 					invalid-end-date-max-label="The end date may not be later than {$date}."
 					@set-range="setDateRange"
 					@updated:current-range="setCurrentDateRange"
-				></date-range>
+				></DateRange>
 				<PkpButton
 					v-if="filters.length"
 					:is-active="isSidebarVisible"
@@ -373,7 +373,7 @@ const PublicationStatsPageWithDataAndTemplate = {
 			<h1>Articles</h1>
 			<Spinner v-if="isLoadingTimeline" />
 			<template #actions>
-				<date-range
+				<DateRange
 					unique-id="publication-stats-date-range"
 					:date-start="dateStart"
 					:date-end="dateEnd"
@@ -509,7 +509,7 @@ const PublicationStatsPageWithDataAndTemplate = {
 							</tr>
 						</tbody>
 					</table>
-					<line-chart :chart-data="chartData" aria-hidden="true"></line-chart>
+					<LineChart :chart-data="chartData" aria-hidden="true"></LineChart>
 					<span v-if="isLoadingTimeline" class="pkpStats__loadingCover">
 						<Spinner></Spinner>
 					</span>

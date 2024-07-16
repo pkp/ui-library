@@ -235,7 +235,7 @@ const WorkflowPageWithDataAndTemplate = {
 							<PkpForm v-bind="components.titleAbstract" @set="set" />
 						</tab>
 						<tab id="contributors" label="Contributors">
-							<contributors-list-panel
+							<ContributorsListPanel
 								v-bind="components.contributors"
 								class="pkpWorkflow__contributors"
 								:items="workingPublication.authors"
@@ -246,7 +246,7 @@ const WorkflowPageWithDataAndTemplate = {
 								@set="set"
 								@updated:publication="setWorkingPublication"
 								@updated:contributors="setContributors"
-							></contributors-list-panel>
+							></ContributorsListPanel>
 						</tab>
 						<tab id="metadata" label="Metadata">
 							<PkpForm v-bind="components.metadata" @set="set" />
@@ -279,7 +279,7 @@ const WorkflowPageWithDataAndTemplate = {
 			class="app__notifications"
 			role="status"
 		>
-			<transition-group name="app__notification">
+			<TransitionGroup name="app__notification">
 				<Notification
 					v-for="notification in notifications"
 					:key="notification.key"
@@ -289,7 +289,7 @@ const WorkflowPageWithDataAndTemplate = {
 				>
 					{{ notification.message }}
 				</Notification>
-			</transition-group>
+			</TransitionGroup>
 		</div>
 		<transition name="app__loading">
 			<div v-if="isLoading" class="app__loading" role="alert">

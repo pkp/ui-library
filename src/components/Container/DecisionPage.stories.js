@@ -234,7 +234,7 @@ const DecisionPageWithDataAndTemplate = {
 					class="app__notifications"
 					role="status"
 				>
-					<transition-group name="app__notification">
+					<TransitionGroup name="app__notification">
 						<Notification
 							v-for="notification in notifications"
 							:key="notification.key"
@@ -244,7 +244,7 @@ const DecisionPageWithDataAndTemplate = {
 						>
 							{{ notification.message }}
 						</Notification>
-					</transition-group>
+					</TransitionGroup>
 				</div>
 				<transition name="app__loading">
 					<div v-if="isLoading" class="app__loading" role="alert">

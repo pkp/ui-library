@@ -29,7 +29,7 @@ export default {
 		itemId: [String, Number],
 		/** The name of the item. This is used in an accessible label for the up and down buttons. */
 		itemTitle: String,
-		/** Whether or not to provide drag-and-drop controls for this item. When `isDraggable` is true, the items to be ordered must be wrapped in a `<draggable>` component. */
+		/** Whether or not to provide drag-and-drop controls for this item. When `isDraggable` is true, the items to be ordered must be wrapped in a `<Draggable>` component. */
 		isDraggable: {
 			type: Boolean,
 			default: true,
