@@ -1,62 +1,75 @@
 <template>
-	<div>
-		<div class="userInvitation__reviewPanel__item">
-			<h4 class="userInvitation__reviewPanel__item__header">Email Address</h4>
-			<div class="userInvitation__reviewPanel__item__value">
-				{{ store.email }}
-			</div>
+	<div class="p-8">
+		<div class="py-1">
+			<FormDisplayItemBasic
+				heading-element="h4"
+				:heading="t('user.emailAddress')"
+				:value="store.email"
+			></FormDisplayItemBasic>
 		</div>
-	</div>
-	<br />
-	<FieldText
-		:label="t('user.username')"
-		:value="fields.username"
-		name="username"
-		size="large"
-		:all-errors="sectionErrors"
-		@change="updateField"
-	/>
-	<br />
-	<FieldText
-		:label="t('user.password')"
-		:value="fields.password"
-		name="password"
-		input-type="password"
-		size="large"
-		:all-errors="sectionErrors"
-		@change="updateField"
-	/>
-	<div>
-		<FieldShowEnsuringLink
-			primary-locale="en"
-			name="privacyStatement"
-			:value="fields.privacyStatement"
-			:all-errors="sectionErrors"
-			:options="options"
-			@change="updateField"
-		/>
+		<div class="my-4">
+			<FieldText
+				:label="t('user.username')"
+				:value="fields.username"
+				:description="t('acceptInvitation.usernameField.description')"
+				:is-required="true"
+				name="username"
+				size="large"
+				:all-errors="sectionErrors"
+				@change="updateField"
+			/>
+		</div>
+
+		<div class="my-4">
+			<FieldText
+				:label="t('user.password')"
+				:value="fields.password"
+				:description="t('acceptInvitation.passwordField.description')"
+				:is-required="true"
+				name="password"
+				input-type="password"
+				size="large"
+				:all-errors="sectionErrors"
+				@change="updateField"
+			/>
+		</div>
+
+		<div class="flex">
+			<FieldOptions
+				component="field-options"
+				:value="fields.privacyStatement"
+				name="privacyStatement"
+				type="checkbox"
+				:options="options"
+				:all-errors="sectionErrors"
+				@change="updateField"
+			/>
+		</div>
 	</div>
 </template>
 
 <script setup>
 import {defineProps, ref, computed} from 'vue';
 import {useTranslation} from '@/composables/useTranslation';
+import FormDisplayItemBasic from '@/components/FormDisplay/FormDisplayItemBasic.vue';
 import FieldText from '@/components/Form/fields/FieldText.vue';
-import FieldShowEnsuringLink from '@/components/Form/fields/FieldShowEnsuringLink.vue';
+import FieldOptions from '@/components/Form/fields/FieldOptions.vue';
 import {useAcceptInvitationPageStore} from './AcceptInvitationPageStore';
-
 const props = defineProps({
 	validateFields: {type: Array, required: true},
 });
 const {t} = useTranslation();
 const fields = ref({username: '', password: '', privacyStatement: false});
-const options = ref([
+const options = [
 	{
 		value: true,
 		label:
-			'Yes, I agree to have my data collected and stored according to the <button>Privacy Statement</button>.',
+			t('acceptInvitation.privacyStatement.label') +
+			' <button class="text-blue-600 text-primary hover:underline"> ' +
+			t('acceptInvitation.privacyStatement.btn') +
+			'</button> ',
 	},
-]);
+];
 const store = useAcceptInvitationPageStore();
 
 function updateField(fieldName, b, fieldValue) {
@@ -73,23 +86,3 @@ const sectionErrors = computed(() => {
 	}, {});
 });
 </script>
-<style lang="less">
-.userInvitation__reviewPanel__item {
-	&:last-child {
-		border-bottom: none;
-	}
-}
-.userInvitation__reviewPanel__item__header {
-	margin: 0;
-	font-size: 0.875rem;
-	line-height: 1.5rem;
-}
-.userInvitation__reviewPanel__item__value {
-	margin-bottom: 1rem;
-	font-size: 0.875rem;
-	line-height: 1.5rem;
-}
-div fieldset {
-	border: none !important;
-}
-</style>

@@ -6,48 +6,56 @@
 			@set="updateUserForm"
 		></PkpForm>
 	</div>
-	<div v-if="store.invitationPayload.userId !== null">
-		<div class="userInvitation__reviewPanel__item">
-			<h4 class="userInvitation__reviewPanel__item__header">Email Address</h4>
-			<div class="userInvitation__reviewPanel__item__value">
-				{{ store.invitationPayload.email }}
-			</div>
-			<h4 class="userInvitation__reviewPanel__item__header">ORCID iD</h4>
-			<div class="userInvitation__reviewPanel__item__value">
-				{{
-					store.invitationPayload.orcid
-						? store.invitationPayload.orcid
-						: t('invitation.orcid.message')
-				}}
-				<Icon
-					v-if="store.invitationPayload.orcidValidation"
-					icon="orcid"
-					:inline="true"
-				/>
-			</div>
-			<h4 class="userInvitation__reviewPanel__item__header">Given Name</h4>
-			<div class="userInvitation__reviewPanel__item__value">
-				{{ store.invitationPayload.givenName }}
-			</div>
-			<h4 class="userInvitation__reviewPanel__item__header">Family Name</h4>
-			<div class="userInvitation__reviewPanel__item__value">
-				{{ store.invitationPayload.familyName }}
-			</div>
-			<h4 class="userInvitation__reviewPanel__item__header">Affiliation</h4>
-			<div class="userInvitation__reviewPanel__item__value">
-				{{ store.invitationPayload.affiliation }}
-			</div>
+	<div v-if="store.invitationPayload.userId !== null" class="p-8">
+		<div class="p-1">
+			<FormDisplayItemBasic
+				heading-element="h4"
+				:heading="t('user.emailAddress')"
+				:value="store.invitationPayload.email"
+			></FormDisplayItemBasic>
+
+			<FormDisplayItemBasic
+				heading-element="h4"
+				:heading="t('user.orcid')"
+				:value="store.invitationPayload.orcid"
+			></FormDisplayItemBasic>
+
+			<Icon
+				v-if="store.invitationPayload.orcidValidation"
+				icon="orcid"
+				:inline="true"
+			/>
+
+			<FormDisplayItemBasic
+				heading-element="h4"
+				:heading="t('user.givenName')"
+				:value="localize(store.invitationPayload.givenName)"
+			></FormDisplayItemBasic>
+
+			<FormDisplayItemBasic
+				heading-element="h4"
+				:heading="t('user.familyName')"
+				:value="localize(store.invitationPayload.familyName)"
+			></FormDisplayItemBasic>
+
+			<FormDisplayItemBasic
+				heading-element="h4"
+				:heading="t('user.affiliation')"
+				:value="localize(store.invitationPayload.affiliation)"
+			></FormDisplayItemBasic>
 		</div>
 	</div>
-	<br />
-	<UserInvitationUserGroupsTable
-		:user-groups="userGroups"
-		:errors="sectionErrors"
-	/>
+	<div class="p-8">
+		<UserInvitationUserGroupsTable
+			:user-groups="userGroups"
+			:errors="sectionErrors"
+		/>
+	</div>
 </template>
 
 <script setup>
 import {defineProps, computed} from 'vue';
+import FormDisplayItemBasic from '@/components/FormDisplay/FormDisplayItemBasic.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import {useTranslation} from '@/composables/useTranslation';
@@ -91,25 +99,3 @@ const sectionErrors = computed(() => {
 });
 connectWithErrors(sectionErrors);
 </script>
-<style lang="less">
-select {
-	width: 13rem !important;
-}
-.userInvitation__reviewPanel__item {
-	&:last-child {
-		border-bottom: none;
-	}
-}
-
-.userInvitation__reviewPanel__item__header {
-	margin: 0;
-	font-size: 0.875rem;
-	line-height: 1.5rem;
-}
-
-.userInvitation__reviewPanel__item__value {
-	margin-bottom: 1rem;
-	font-size: 0.875rem;
-	line-height: 1.5rem;
-}
-</style>

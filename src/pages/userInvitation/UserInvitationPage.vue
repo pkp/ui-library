@@ -1,12 +1,12 @@
 <template>
-	<div class="userInvitation">
+	<div>
 		<UserInvitationHeader
 			:page-title="store.pageTitle"
 			:page-title-description="store.pageTitleDescription"
 		/>
 		<Steps
 			v-if="store.steps.length"
-			class="userInvitation__steps"
+			class="border-x border-t border-light"
 			:current="store.currentStep.id"
 			:started-steps="store.startedSteps"
 			:label="t('invitation.wizard.completeSteps')"
@@ -21,28 +21,50 @@
 				:key="step.id"
 				:label="step.name"
 			>
-				<Panel
+				<div
 					v-if="store.currentStep.id === step.id"
-					class="decision__stepPanel"
+					class="border-b border-light"
 				>
-					<PanelSection class="decision__stepHeader">
-						<h2>{{ store.stepTitle }}</h2>
-						<p class="error">{{ store.errors.error }}</p>
-						<p>{{ step.description }}</p>
-					</PanelSection>
-					<PanelSection v-for="section in step.sections" :key="section.id">
-						<component
-							:is="userInvitationComponents[section.sectionComponent]"
-							:key="section.sectionComponent"
-							v-bind="section.props"
-						/>
-					</PanelSection>
-				</Panel>
+					<div class="flex border-b border-light p-4">
+						<div class="flex-1">
+							<h2 class="text-xl-bold text-heading">
+								{{ store.stepTitle }}
+							</h2>
+							<p class="font-bold text-negative">{{ store.errors.error }}</p>
+							<p class="mt-1 text-lg-normal">
+								{{ step.description }}
+							</p>
+						</div>
+					</div>
+					<div v-for="section in step.sections" :key="section.id" class="flex">
+						<div class="flex-1">
+							<template v-if="step.type === 'review'">
+								<notification
+									v-if="Object.keys(store.errors).length > 0"
+									type="warning"
+								>
+									{{ t('invitation.wizard.errors') }}
+								</notification>
+							</template>
+							<component
+								:is="userInvitationComponents[section.sectionComponent]"
+								:key="section.sectionComponent"
+								v-bind="section.props"
+							/>
+						</div>
+					</div>
+				</div>
 			</Step>
 		</Steps>
-		<ButtonRow class="panel panel--wide userInvitationForm__footer">
-			<PkpButton @click="store.cancel">Cancel</PkpButton>
-			<PkpButton @click="store.previousStep">Previous</PkpButton>
+		<ButtonRow
+			class="flex items-center justify-end border border-t-0 border-light p-8"
+		>
+			<PkpButton :is-warnable="true" @click="store.cancel">
+				{{ t('common.cancel') }}
+			</PkpButton>
+			<PkpButton v-if="!store.isOnFirstStep" @click="store.previousStep">
+				{{ t('common.back') }}
+			</PkpButton>
 			<PkpButton :is-primary="true" @click="store.nextStep">
 				{{ store.currentStep.nextButtonLabel }}
 			</PkpButton>
@@ -53,8 +75,6 @@
 <script setup>
 import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
 import PkpButton from '@/components/Button/Button.vue';
-import Panel from '@/components/Panel/Panel.vue';
-import PanelSection from '@/components/Panel/PanelSection.vue';
 import Steps from '@/components/Steps/Steps.vue';
 import Step from '@/components/Steps/Step.vue';
 import {useUserInvitationPageStore} from './UserInvitationPageStore';
@@ -103,75 +123,3 @@ const userInvitationComponents = {
 	UserInvitationEmailComposerStep,
 };
 </script>
-
-<style lang="less">
-@import '../../styles/_import';
-
-.userInvitation .app__pageHeading {
-	display: flex;
-	margin: 2rem 0 0.25rem;
-
-	> .pkpButton {
-		margin-inline-start: auto;
-	}
-}
-
-.submissionWizard__steps {
-	margin-top: 2rem;
-}
-
-.userInvitation .pkpSteps__buttonWrapper {
-	border: @bg-border-light;
-	border-bottom: 0;
-	border-top-left-radius: @radius;
-	border-top-right-radius: @radius;
-}
-
-.userInvitation__submissionDetails,
-.userInvitation__submissionConfiguration {
-	font-size: @font-sml;
-	line-height: @line-sml;
-}
-
-// Override the form locale switcher styles
-.userInvitation__stepForm .pkpFormLocales {
-	border: none;
-	margin-top: -1rem;
-	margin-bottom: 1rem;
-	padding-right: 0;
-
-	.pkpFormLocales__locale--isPrimary {
-		border: none;
-	}
-}
-
-// Hide the form footer for each form, since
-// buttons and errors are handled separately
-.userInvitation__stepForm .pkpFormPage__footer {
-	display: none;
-}
-
-// buttons and errors are handled separately
-.userInvitationForm__footer {
-	padding: 2rem;
-	display: flex;
-	justify-content: flex-end;
-	align-items: center;
-	border: none;
-
-	* + .pkpButton {
-		margin-inline-start: 0.5rem;
-	}
-}
-
-.error {
-	color: red;
-	font-weight: bold;
-}
-.userInvitationModal__body {
-	padding: 0.5rem 0.75rem;
-}
-.userInvitationModal__body_success {
-	box-shadow: inset 0.25rem 0 #00b24e;
-}
-</style>

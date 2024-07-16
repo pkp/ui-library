@@ -1,82 +1,67 @@
 <template>
 	<div>
-		<div v-if="store.userId === null" class="acceptInvitation__reviewPanel">
-			<div class="acceptInvitation__reviewPanel__header">
-				<h3>Account Details</h3>
+		<div v-if="store.userId === null" class="p-8">
+			<div class="flex items-center p-4">
+				<h3>{{ t('acceptInvitation.review.accountDetails') }}</h3>
 			</div>
-			<div class="acceptInvitation__reviewPanel__item">
-				<h4 class="acceptInvitation__reviewPanel__item__header">Username</h4>
-				<div class="acceptInvitation__reviewPanel__item__value">
-					{{ store.acceptinvitationPayload.username }}
-				</div>
-				<h4 class="acceptInvitation__reviewPanel__item__header">Password</h4>
-				<div class="acceptInvitation__reviewPanel__item__value">
-					{{ store.acceptinvitationPayload.password }}
-				</div>
+			<div class="p-4">
+				<FormDisplayItemBasic
+					heading-element="h4"
+					:heading="t('user.username')"
+					:value="store.acceptinvitationPayload.username"
+				></FormDisplayItemBasic>
+				<FormDisplayItemBasic
+					heading-element="h4"
+					:heading="t('user.password')"
+					:value="store.acceptinvitationPayload.password"
+				></FormDisplayItemBasic>
 			</div>
 		</div>
-		<div class="acceptInvitation__reviewPanel">
-			<div class="acceptInvitation__reviewPanel__header">
-				<h3>User Details</h3>
+		<div class="border-t border-solid border-[#ddd] p-8">
+			<div class="flex items-center justify-between p-4">
+				<h3>{{ t('acceptInvitation.review.userDetails') }}</h3>
 				<PkpButton
 					v-if="store.userId === null"
-					class="acceptInvitation__reviewPanel__edit"
 					@click="store.openStep('userDetails')"
 				>
-					edit
+					{{ t('common.edit') }}
 				</PkpButton>
 			</div>
-			<div class="acceptInvitation__reviewPanel__item">
-				<template v-if="store.userId === null">
-					<h4 class="acceptInvitation__reviewPanel__item__header">Email</h4>
-					<div class="acceptInvitation__reviewPanel__item__value">
-						{{ store.email }}
-					</div>
-				</template>
-				<h4 class="acceptInvitation__reviewPanel__item__header">ORCID ID</h4>
-				<div class="acceptInvitation__reviewPanel__item__value">
-					{{
+			<div class="p-4">
+				<FormDisplayItemBasic
+					v-if="store.userId === null"
+					heading-element="h4"
+					:heading="t('user.email')"
+					:value="store.email"
+				></FormDisplayItemBasic>
+				<FormDisplayItemBasic
+					heading-element="h4"
+					:heading="t('user.orcid')"
+					:value="
 						store.acceptinvitationPayload.orcid
 							? store.acceptinvitationPayload.orcid
 							: t('invitation.orcid.acceptInvitation.message')
-					}}
-					<Icon
-						v-if="store.acceptinvitationPayload.orcid"
-						icon="orcid"
-						:inline="true"
-					/>
+					"
+				></FormDisplayItemBasic>
+				<Icon
+					v-if="store.acceptinvitationPayload.orcid"
+					icon="orcid"
+					:inline="true"
+				/>
+				<div v-for="step in store.formSteps" :key="step.id">
+					<template v-if="step.id === 'userDetails'">
+						<div v-for="section in step.sections" :key="section.id">
+							<FormDisplay v-bind="section.props.form"></FormDisplay>
+						</div>
+					</template>
 				</div>
-				<template v-if="store.userId === null">
-					<h4 class="acceptInvitation__reviewPanel__item__header">
-						Given Name
-					</h4>
-					<div class="acceptInvitation__reviewPanel__item__value">
-						{{ store.acceptinvitationPayload.givenName }}
-					</div>
-					<h4 class="acceptInvitation__reviewPanel__item__header">
-						Family Name
-					</h4>
-					<div class="acceptInvitation__reviewPanel__item__value">
-						{{ store.acceptinvitationPayload.familyName }}
-					</div>
-					<h4 class="acceptInvitation__reviewPanel__item__header">
-						Affiliation
-					</h4>
-					<div class="acceptInvitation__reviewPanel__item__value">
-						{{ store.acceptinvitationPayload.affiliation }}
-					</div>
-					<h4 class="acceptInvitation__reviewPanel__item__header">Country</h4>
-					<div class="acceptInvitation__reviewPanel__item__value">
-						{{ store.acceptinvitationPayload.country }}
-					</div>
-				</template>
 			</div>
 		</div>
-		<div class="acceptInvitation__reviewPanel">
-			<div class="acceptInvitation__reviewPanel__header">
+		<div class="border-t border-solid border-[#ddd] p-8">
+			<div class="flex items-center p-4">
 				<h3>Roles</h3>
 			</div>
-			<div class="acceptInvitation__reviewPanel__item">
+			<div class="p-4">
 				<AcceptInvitationUserRoles
 					:rows="store.acceptinvitationPayload.userGroupsToAdd"
 				/>
@@ -87,45 +72,15 @@
 
 <script setup>
 import {defineProps} from 'vue';
+import {useTranslation} from '@/composables/useTranslation';
 import AcceptInvitationUserRoles from './AcceptInvitationUserRoles.vue';
 import {useAcceptInvitationPageStore} from './AcceptInvitationPageStore';
 import Icon from '@/components/Icon/Icon.vue';
 import PkpButton from '@/components/Button/Button.vue';
+import FormDisplay from '@/components/FormDisplay/FormDisplay.vue';
+import FormDisplayItemBasic from '@/components/FormDisplay/FormDisplayItemBasic.vue';
 
 defineProps({});
 const store = useAcceptInvitationPageStore();
+const {t} = useTranslation();
 </script>
-<style>
-.acceptInvitation__reviewPanel__item {
-	padding: 1rem;
-
-	&:last-child {
-		border-bottom: none;
-	}
-
-	.pkpNotification {
-		margin-bottom: 0.5rem;
-	}
-}
-.acceptInvitation__reviewPanel {
-	border: 1px solid #ddd;
-}
-.acceptInvitation__reviewPanel__header {
-	display: flex;
-	align-items: center;
-	padding: 0.5rem 1rem;
-}
-.acceptInvitation__reviewPanel__item__header {
-	margin: 0;
-	font-size: 0.875rem;
-	line-height: 1.5rem;
-}
-.acceptInvitation__reviewPanel__item__value {
-	margin-bottom: 1rem;
-	font-size: 0.875rem;
-	line-height: 1.5rem;
-}
-.acceptInvitation__reviewPanel__edit {
-	margin-inline-start: auto;
-}
-</style>

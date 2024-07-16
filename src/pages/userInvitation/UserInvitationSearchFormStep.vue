@@ -1,31 +1,32 @@
 <template>
-	<FieldText
-		:label="t('user.email')"
-		:value="fields.email"
-		name="email"
-		size="large"
-		@change="updateField"
-	/>
-	<br />
-	<p>or</p>
-	<br />
-	<FieldText
-		:label="t('user.username')"
-		:value="fields.username"
-		name="username"
-		size="large"
-		@change="updateField"
-	/>
-	<br />
-	<p>or</p>
-	<br />
-	<FieldText
-		:label="t('user.orcid')"
-		:value="fields.orcid"
-		name="orcid"
-		size="large"
-		@change="updateField"
-	/>
+	<div class="space-y-4 p-8">
+		<FieldText
+			:label="t('user.email')"
+			:value="fields.email"
+			:description="t('userInvitation.emailField.description')"
+			name="email"
+			size="large"
+			@change="updateField"
+		/>
+		<p>or</p>
+		<FieldText
+			:label="t('user.username')"
+			:value="fields.username"
+			:description="t('userInvitation.usernameField.description')"
+			name="username"
+			size="large"
+			@change="updateField"
+		/>
+		<p>or</p>
+		<FieldText
+			:label="t('user.orcid')"
+			:value="fields.orcid"
+			:description="t('userInvitation.orcidField.description')"
+			name="orcid"
+			size="large"
+			@change="updateField"
+		/>
+	</div>
 </template>
 
 <script setup>
@@ -89,9 +90,10 @@ async function searchUser() {
 		} else {
 			store.updatePayload('email', fields.value.email);
 		}
+		return true;
 	} else {
 		// TODO: add back error handling
+		return false;
 	}
-	return true;
 }
 </script>

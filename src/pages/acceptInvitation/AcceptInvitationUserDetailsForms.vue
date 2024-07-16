@@ -1,21 +1,25 @@
 <template>
-	<div>
-		<div class="userInvitation__reviewPanel__item">
-			<h4 class="userInvitation__reviewPanel__item__header">Email Address</h4>
-			<div class="userInvitation__reviewPanel__item__value">
-				{{ store.email }}
+	<div class="p-8 pb-0">
+		<div>
+			<div class="p-1">
+				<FormDisplayItemBasic
+					heading-element="h4"
+					:heading="t('user.emailAddress')"
+					:value="store.email"
+				></FormDisplayItemBasic>
 			</div>
 		</div>
-	</div>
-	<div>
-		<div class="userInvitation__reviewPanel__item">
-			<h4 class="userInvitation__reviewPanel__item__header">ORCID iD</h4>
-			<div class="userInvitation__reviewPanel__item__value">
-				{{
-					store.acceptinvitationPayload.orcid
-						? store.acceptinvitationPayload.orcid
-						: t('invitation.orcid.acceptInvitation.message')
-				}}
+		<div>
+			<div class="p-1">
+				<FormDisplayItemBasic
+					heading-element="h4"
+					:heading="t('user.orcid')"
+					:value="
+						store.acceptinvitationPayload.orcid
+							? store.acceptinvitationPayload.orcid
+							: t('invitation.orcid.acceptInvitation.message')
+					"
+				></FormDisplayItemBasic>
 				<Icon
 					v-if="store.acceptinvitationPayload.orcid"
 					icon="orcid"
@@ -26,13 +30,14 @@
 	</div>
 	<PkpForm
 		v-bind="userForm"
-		class="userInvitation__stepForm"
+		class="acceptInvitation__stepForm"
 		@set="updateUserDetailsForm"
 	></PkpForm>
 </template>
 
 <script setup>
 import {defineProps, computed} from 'vue';
+import FormDisplayItemBasic from '@/components/FormDisplay/FormDisplayItemBasic.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import {useForm} from '@/composables/useForm';

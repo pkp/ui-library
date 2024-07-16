@@ -1,20 +1,18 @@
 export default {
-	userId: null,
+	userId: 35,
 	payload: {
 		givenName: 'test',
 		familyName: '',
 		orcid: '',
 		userGroupsToAdd: [
 			{
-				dateEnd: '2024-06-29',
-				dateStart: '2024-06-19',
+				dateStart: '2024-06-29',
 				masthead: true,
 				userGroup: 12,
 				userGroupName: 'Marketing and Sales Cordinator',
 			},
 			{
-				dateEnd: '2024-06-29',
-				dateStart: '2024-06-19',
+				dateStart: '2024-06-29',
 				masthead: false,
 				userGroup: 14,
 				userGroupName: 'Author',
