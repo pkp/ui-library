@@ -61,6 +61,7 @@ export default {
 								isCurrentVersion,
 								versionNumber,
 								updateWithNewDoiEndpoint,
+								disabled: !chapter.isPageEnabled && !doiObject,
 							})
 						);
 					});
