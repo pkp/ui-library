@@ -23,22 +23,22 @@ export default {
 const WorkflowPageWithDataAndTemplate = {
 	extends: WorkflowPage,
 	template: `	<div class="pkpWorkflow">
-		<pkp-header :is-one-line="true" class="pkpWorkflow__header">
+		<PkpHeader :is-one-line="true" class="pkpWorkflow__header">
 			<h1 class="pkpWorkflow__identification">
-				<badge
+				<Badge
 					v-if="submission.status === getConstant('STATUS_PUBLISHED')"
 					class="pkpWorkflow__identificationStatus"
 					:is-success="true"
 				>
 					Published
-				</badge>
-				<badge
+				</Badge>
+				<Badge
 					v-else-if="submission.status === getConstant('STATUS_SCHEDULED')"
 					class="pkpWorkflow__identificationStatus"
 					:is-primary="true"
 				>
 					Scheduled
-				</badge>
+				</Badge>
 				<span class="pkpWorkflow__identificationId">{{ submission.id }}</span>
 				<span class="pkpWorkflow__identificationDivider">/</span>
 				<span
@@ -63,35 +63,35 @@ const WorkflowPageWithDataAndTemplate = {
 				</span>
 			</h1>
 			<template #actions>
-				<pkp-button element="a" :href="submission.urlPublished">
+				<PkpButton element="a" :href="submission.urlPublished">
 					{{ t('common.view') }}
-				</pkp-button>
-				<pkp-button
+				</PkpButton>
+				<PkpButton
 					ref="activityButton"
 					@click="alert('Opens the editorial history in a modal.')"
 				>
 					Activity Log
-				</pkp-button>
-				<pkp-button
+				</PkpButton>
+				<PkpButton
 					ref="library"
 					@click="alert('Opens the submission library in a modal.')"
 				>
 					Library
-				</pkp-button>
+				</PkpButton>
 			</template>
-		</pkp-header>
+		</PkpHeader>
 		<tabs default-tab="workflow">
 			<tab id="workflow" label="Workflow">
-				<notification type="warning">
+				<Notification type="warning">
 					This component preview does not include the full workflow.
-					<pkp-button @click="showTab('publication')">
+					<PkpButton @click="showTab('publication')">
 						Show Publication
-					</pkp-button>
-				</notification>
+					</PkpButton>
+				</Notification>
 			</tab>
 			<tab id="publication" label="Publication">
 				<div ref="publication" class="pkpPublication" aria-live="polite">
-					<pkp-header class="pkpPublication__header" :is-one-line="false">
+					<PkpHeader class="pkpPublication__header" :is-one-line="false">
 						<span class="pkpPublication__status">
 							<strong>{{ statusLabel }}</strong>
 							<span
@@ -128,7 +128,7 @@ const WorkflowPageWithDataAndTemplate = {
 						>
 							<strong tabindex="0">{{ versionLabel }}</strong>
 							{{ workingPublication.version }}
-							<dropdown
+							<Dropdown
 								class="pkpPublication__versions"
 								label="All Versions"
 								:is-link="true"
@@ -171,10 +171,10 @@ const WorkflowPageWithDataAndTemplate = {
 										</button>
 									</li>
 								</ul>
-							</dropdown>
+							</Dropdown>
 						</span>
 						<template #actions>
-							<pkp-button
+							<PkpButton
 								v-if="
 									workingPublication.status === getConstant('STATUS_QUEUED')
 								"
@@ -186,8 +186,8 @@ const WorkflowPageWithDataAndTemplate = {
 										? publishLabel
 										: schedulePublicationLabel
 								}}
-							</pkp-button>
-							<pkp-button
+							</PkpButton>
+							<PkpButton
 								v-else-if="
 									workingPublication.status === getConstant('STATUS_SCHEDULED')
 								"
@@ -197,8 +197,8 @@ const WorkflowPageWithDataAndTemplate = {
 								"
 							>
 								Unschedule
-							</pkp-button>
-							<pkp-button
+							</PkpButton>
+							<PkpButton
 								v-else-if="
 									workingPublication.status === getConstant('STATUS_PUBLISHED')
 								"
@@ -206,8 +206,8 @@ const WorkflowPageWithDataAndTemplate = {
 								@click="alert('Opens a modal to confirm unpublishing.')"
 							>
 								Unpublish
-							</pkp-button>
-							<pkp-button
+							</PkpButton>
+							<PkpButton
 								v-if="canCreateNewVersion"
 								ref="createVersion"
 								@click="
@@ -217,9 +217,9 @@ const WorkflowPageWithDataAndTemplate = {
 								"
 							>
 								Create New Version
-							</pkp-button>
+							</PkpButton>
 						</template>
-					</pkp-header>
+					</PkpHeader>
 					<div
 						v-if="workingPublication.status === getConstant('STATUS_PUBLISHED')"
 						class="pkpPublication__versionPublished"
@@ -232,7 +232,7 @@ const WorkflowPageWithDataAndTemplate = {
 						:label="currentPublicationTabsLabel"
 					>
 						<tab id="titleAbstract" label="Title & Abstract">
-							<pkp-form v-bind="components.titleAbstract" @set="set" />
+							<PkpForm v-bind="components.titleAbstract" @set="set" />
 						</tab>
 						<tab id="contributors" label="Contributors">
 							<contributors-list-panel
@@ -249,14 +249,14 @@ const WorkflowPageWithDataAndTemplate = {
 							></contributors-list-panel>
 						</tab>
 						<tab id="metadata" label="Metadata">
-							<pkp-form v-bind="components.metadata" @set="set" />
+							<PkpForm v-bind="components.metadata" @set="set" />
 						</tab>
 						<tab v-if="supportsReferences" id="citations" label="References">
-							<pkp-form v-bind="components.citations" @set="set" />
+							<PkpForm v-bind="components.citations" @set="set" />
 						</tab>
 						<tab id="galleys" label="Galleys">
 							<div id="representations-grid" ref="representations">
-								<spinner></spinner>
+								<Spinner></Spinner>
 							</div>
 						</tab>
 						<tab id="license" label="Permissions & Disclosure">
@@ -267,7 +267,7 @@ const WorkflowPageWithDataAndTemplate = {
 						</tab>
 					</tabs>
 					<span class="pkpPublication__mask" :class="publicationMaskClasses">
-						<spinner></spinner>
+						<Spinner></Spinner>
 					</span>
 				</div>
 			</tab>
@@ -280,7 +280,7 @@ const WorkflowPageWithDataAndTemplate = {
 			role="status"
 		>
 			<transition-group name="app__notification">
-				<notification
+				<Notification
 					v-for="notification in notifications"
 					:key="notification.key"
 					:type="notification.type"
@@ -288,13 +288,13 @@ const WorkflowPageWithDataAndTemplate = {
 					@dismiss="dismissNotification(notification.key)"
 				>
 					{{ notification.message }}
-				</notification>
+				</Notification>
 			</transition-group>
 		</div>
 		<transition name="app__loading">
 			<div v-if="isLoading" class="app__loading" role="alert">
 				<div class="app__loading__content">
-					<spinner></spinner>
+					<Spinner></Spinner>
 					Loading
 				</div>
 			</div>

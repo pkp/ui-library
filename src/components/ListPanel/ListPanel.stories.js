@@ -158,7 +158,7 @@ export const WithFilter = {
 						<h2>List Panel with Filter</h2>
 						<template #actions>
 							<PkpButton :is-active="isSidebarVisible" @click="toggleFilters">
-								<icon icon="filter" :inline="true" />
+								<Icon icon="filter" :inline="true" />
 								Filters
 							</PkpButton>
 						</template>
@@ -167,7 +167,7 @@ export const WithFilter = {
 				<template #sidebar>
 					<PkpHeader :is-one-line="false">
 						<h3>
-							<icon icon="filter" :inline="true" />
+							<Icon icon="filter" :inline="true" />
 							Filters
 						</h3>
 					</PkpHeader>

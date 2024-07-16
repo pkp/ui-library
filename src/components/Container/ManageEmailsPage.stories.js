@@ -14,25 +14,25 @@ export default {
 const ManageEmailsPageWithDataAndTemplate = {
 	extends: ManageEmailsPage,
 	template: `<div class="app__page width width--wide">
-		<list-panel
+		<ListPanel
 			class="manageEmails__listPanel"
 			:items="currentMailables"
 			:is-sidebar-visible="true"
 		>
 			<template #header>
-				<pkp-header>
+				<PkpHeader>
 					<h1>Emails</h1>
 					<template #actions>
-						<search
+						<Search
 							search-label="Search by name or description"
 							:search-phrase="searchPhrase"
 							@search-phrase-changed="(newSearch) => (searchPhrase = newSearch)"
-						></search>
-						<pkp-button :is-warnable="true" @click="confirmResetAll">
+						></Search>
+						<PkpButton :is-warnable="true" @click="confirmResetAll">
 							Reset All
-						</pkp-button>
+						</PkpButton>
 					</template>
-				</pkp-header>
+				</PkpHeader>
 			</template>
 			<template #item-title="{item}">
 				{{ item.name }}
@@ -41,21 +41,21 @@ const ManageEmailsPageWithDataAndTemplate = {
 				{{ item.description }}
 			</template>
 			<template #item-actions="{item}">
-				<pkp-button @click="openMailable(item)">
+				<PkpButton @click="openMailable(item)">
 					<span aria-hidden="true">Edit</span>
 					<span class="-screenReader">
 						{{ t('common.editItem', {name: item.name}) }}
 					</span>
-				</pkp-button>
+				</PkpButton>
 			</template>
 			<template #sidebar>
-				<pkp-header>
+				<PkpHeader>
 					<h2>
-						<icon icon="filter" :inline="true" />
+						<Icon icon="filter" :inline="true" />
 						Filters
 					</h2>
-				</pkp-header>
-				<pkp-filter
+				</PkpHeader>
+				<PkpFilter
 					v-for="(name, value) in groupFilters"
 					:key="value"
 					param="groupIds"
@@ -64,12 +64,12 @@ const ManageEmailsPageWithDataAndTemplate = {
 					:is-filter-active="isFilterActive('groupIds', value)"
 					@add-filter="addFilter"
 					@remove-filter="removeFilter"
-				></pkp-filter>
+				></PkpFilter>
 				<div class="listPanel__block">
-					<pkp-header>
+					<PkpHeader>
 						<h3>Sent From</h3>
-					</pkp-header>
-					<pkp-filter
+					</PkpHeader>
+					<PkpFilter
 						v-for="(name, value) in fromFilters"
 						:key="value"
 						param="fromRoleIds"
@@ -78,13 +78,13 @@ const ManageEmailsPageWithDataAndTemplate = {
 						:is-filter-active="isFilterActive('fromRoleIds', parseInt(value))"
 						@add-filter="addFilter"
 						@remove-filter="removeFilter"
-					></pkp-filter>
+					></PkpFilter>
 				</div>
 				<div class="listPanel__block">
-					<pkp-header>
+					<PkpHeader>
 						<h3>Sent To</h3>
-					</pkp-header>
-					<pkp-filter
+					</PkpHeader>
+					<PkpFilter
 						v-for="(name, value) in toFilters"
 						:key="value"
 						param="toRoleIds"
@@ -93,10 +93,10 @@ const ManageEmailsPageWithDataAndTemplate = {
 						:is-filter-active="isFilterActive('toRoleIds', parseInt(value))"
 						@add-filter="addFilter"
 						@remove-filter="removeFilter"
-					></pkp-filter>
+					></PkpFilter>
 				</div>
 			</template>
-		</list-panel>
+		</ListPanel>
 	</div>
 `,
 	data() {

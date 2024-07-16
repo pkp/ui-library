@@ -29,12 +29,12 @@
 					</PanelSection>
 					<PanelSection v-for="section in step.sections" :key="section.id">
 						<template v-if="step.type === 'review'">
-							<notification
+							<Notification
 								v-if="Object.keys(store.errors).length > 0"
 								type="warning"
 							>
 								{{ t('invitation.wizard.errors') }}
-							</notification>
+							</Notification>
 						</template>
 						<component
 							:is="acceptInvitationComponents[section.sectionComponent]"

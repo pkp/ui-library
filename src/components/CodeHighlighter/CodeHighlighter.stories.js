@@ -8,7 +8,7 @@ export default {
 		setup() {
 			return {args};
 		},
-		template: '<code-highlighter :code=args.code :language=args.language />',
+		template: '<CodeHighlighter :code=args.code :language=args.language />',
 	}),
 };
 

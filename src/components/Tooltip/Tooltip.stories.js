@@ -8,7 +8,7 @@ export default {
 			return {args};
 		},
 		template: `
-			<tooltip
+			<Tooltip
 				v-bind="args"
 			/>
 		`,

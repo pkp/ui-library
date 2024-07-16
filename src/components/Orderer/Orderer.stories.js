@@ -43,7 +43,7 @@ export const Default = {
 	<List>
 		<ListItem v-for="item in items" :key="item">
 			{{ item }}
-			<orderer
+			<Orderer
 				v-bind="args"
 				:item-id="item"
 				:item-title="item"

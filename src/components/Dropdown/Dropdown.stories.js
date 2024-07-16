@@ -12,7 +12,7 @@ export const Default = {
 			return {args};
 		},
 		template: `
-			<dropdown label="Actions">
+			<Dropdown label="Actions">
 				<ul>
 					<li>
 						<a class="pkpDropdown__action" href="#">One</a>
@@ -30,7 +30,7 @@ export const Default = {
 						<button class="pkpDropdown__action" disabled>Four (disabled)</button>
 					</li>
 				</ul>
-			</dropdown>
+			</Dropdown>
 		`,
 	}),
 };
@@ -42,7 +42,7 @@ export const WithSections = {
 			return {args};
 		},
 		template: `
-			<dropdown label="Grouped Actions">
+			<Dropdown label="Grouped Actions">
 				<div class="pkpDropdown__section">
 					You are currently logged in as dbarnes.
 				</div>
@@ -61,7 +61,7 @@ export const WithSections = {
 					<ul>
 						<li>
 							<a href="#" class="pkpDropdown__action">
-								<icon icon="check" :inline="true" />
+								<Icon icon="check" :inline="true" />
 								English
 							</a>
 						</li>
@@ -73,7 +73,7 @@ export const WithSections = {
 						</li>
 					</ul>
 				</div>
-			</dropdown>
+			</Dropdown>
 		`,
 	}),
 };

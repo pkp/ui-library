@@ -36,12 +36,12 @@ const SubmissionWizardPageWithDataAndTemplate = {
 			</div>
 			<h1 ref="pageTitle" class="app__pageHeading">
 				Make Submission
-				<pkp-button
+				<PkpButton
 					:is-disabled="isDisconnected"
 					@click="openAlert('Saves the submission for later')"
 				>
 					Save for Later
-				</pkp-button>
+				</PkpButton>
 			</h1>
 			<div class="submissionWizard__submissionConfiguration">
 				Submitting to the
@@ -53,7 +53,7 @@ const SubmissionWizardPageWithDataAndTemplate = {
 					Change
 				</button>
 			</div>
-			<steps
+			<Steps
 				class="submissionWizard__steps"
 				:current="currentStep.id"
 				:started-steps="startedSteps"
@@ -63,19 +63,19 @@ const SubmissionWizardPageWithDataAndTemplate = {
 				show-steps-label="Show all steps"
 				@step:open="openStep"
 			>
-				<step
+				<Step
 					v-for="step in steps"
 					:id="step.id"
 					:key="step.id"
 					:label="step.name"
 				>
-					<panel>
-						<panel-section v-for="section in step.sections" :key="section.id">
+					<Panel>
+						<PanelSection v-for="section in step.sections" :key="section.id">
 							<template #header>
 								<h2>{{ section.name }}</h2>
 								<div v-html="section.description" />
 							</template>
-							<pkp-form
+							<PkpForm
 								v-if="section.type === 'form'"
 								v-bind="section.form"
 								ref="autosaveForms"
@@ -96,7 +96,7 @@ const SubmissionWizardPageWithDataAndTemplate = {
 								@updated:publication="setPublication"
 							/>
 							<template v-else-if="section.type === 'review'">
-								<notification
+								<Notification
 									v-if="Object.keys(errors).length"
 									type="warning"
 									class="submissionWizard__review_errors"
@@ -104,7 +104,7 @@ const SubmissionWizardPageWithDataAndTemplate = {
 									There are one or more problems that need to be fixed before
 									you can submit. Please review the information below and make
 									the requested changes.
-								</notification>
+								</Notification>
 								<div
 									v-for="reviewStep in steps.filter(
 										(iStep) => iStep.id !== step.id,
@@ -116,13 +116,13 @@ const SubmissionWizardPageWithDataAndTemplate = {
 										<h3 :id="'review-' + reviewStep.id">
 											{{ reviewStep.name }}
 										</h3>
-										<pkp-button
+										<PkpButton
 											:aria-describedby="'review-' + reviewStep.id"
 											class="submissionWizard__reviewPanel__edit"
 											@click="openStep(reviewStep.id)"
 										>
 											Edit
-										</pkp-button>
+										</PkpButton>
 									</div>
 									<div
 										v-for="section in reviewStep.sections"
@@ -133,15 +133,15 @@ const SubmissionWizardPageWithDataAndTemplate = {
 										"
 									>
 										<template v-if="section.id === 'files'">
-											<notification
+											<Notification
 												v-for="(error, i) in errors.files"
 												:key="i"
 												type="warning"
 												class="submissionWizard__reviewEmptyWarning"
 											>
-												<icon icon="exclamation-triangle" :inline="true"></icon>
+												<Icon icon="exclamation-triangle" :inline="true"></Icon>
 												{{ error }}
-											</notification>
+											</Notification>
 											<ul class="submissionWizard__reviewPanel__list">
 												<li
 													v-for="file in components.submissionFiles.items"
@@ -152,42 +152,42 @@ const SubmissionWizardPageWithDataAndTemplate = {
 														:href="file.url"
 														class="submissionWizard__reviewPanel__fileLink"
 													>
-														<file
+														<File
 															:document-type="file.documentType"
 															:name="localize(file.name)"
-														></file>
+														></File>
 													</a>
 													<span
 														class="submissionWizard__reviewPanel__list__actions"
 													>
-														<badge
+														<Badge
 															v-if="file.genreId"
 															:is-primary="!file.genreIsSupplementary"
 														>
 															{{ localize(file.genreName) }}
-														</badge>
+														</Badge>
 													</span>
 												</li>
 											</ul>
 										</template>
 										<template v-else-if="section.id === 'contributors'">
-											<notification
+											<Notification
 												v-if="!publication.authors.length"
 												type="warning"
 												class="submissionWizard__reviewEmptyWarning"
 											>
-												<icon icon="exclamation-triangle" :inline="true"></icon>
+												<Icon icon="exclamation-triangle" :inline="true"></Icon>
 												No contributors have been added to this submission.
-											</notification>
+											</Notification>
 											<ul v-else class="submissionWizard__reviewPanel__list">
 												<li v-for="(error, i) in errors.contributors" :key="i">
-													<notification type="warning">
-														<icon
+													<Notification type="warning">
+														<Icon
 															icon="exclamation-triangle"
 															:inline="true"
-														></icon>
+														></Icon>
 														{{ error }}
-													</notification>
+													</Notification>
 												</li>
 												<li
 													v-for="author in publication.authors"
@@ -202,13 +202,13 @@ const SubmissionWizardPageWithDataAndTemplate = {
 													<span
 														class="submissionWizard__reviewPanel__list__actions"
 													>
-														<badge
+														<Badge
 															v-if="publication.primaryContactId === author.id"
 															:is-primary="true"
 														>
 															Submitting Author
-														</badge>
-														<badge>{{ localize(author.userGroupName) }}</badge>
+														</Badge>
+														<Badge>{{ localize(author.userGroupName) }}</Badge>
 													</span>
 												</li>
 											</ul>
@@ -216,14 +216,14 @@ const SubmissionWizardPageWithDataAndTemplate = {
 										<template v-else-if="section.id === 'details'">
 											<div class="submissionWizard__reviewPanel__item">
 												<template v-if="errors.title">
-													<notification
+													<Notification
 														v-for="(error, i) in errors.title"
 														:key="i"
 														type="warning"
 													>
-														<icon icon="exclamation-triangle"></icon>
+														<Icon icon="exclamation-triangle"></Icon>
 														{{ error }}
-													</notification>
+													</Notification>
 												</template>
 												<h4 class="submissionWizard__reviewPanel__item__header">
 													Title
@@ -235,14 +235,14 @@ const SubmissionWizardPageWithDataAndTemplate = {
 											</div>
 											<div class="submissionWizard__reviewPanel__item">
 												<template v-if="errors.abstract">
-													<notification
+													<Notification
 														v-for="(error, i) in errors.abstract"
 														:key="i"
 														type="warning"
 													>
-														<icon icon="exclamation-triangle"></icon>
+														<Icon icon="exclamation-triangle"></Icon>
 														{{ error }}
-													</notification>
+													</Notification>
 												</template>
 												<h4 class="submissionWizard__reviewPanel__item__header">
 													Abstract
@@ -257,14 +257,14 @@ const SubmissionWizardPageWithDataAndTemplate = {
 												class="submissionWizard__reviewPanel__item"
 											>
 												<template v-if="errors.abstract">
-													<notification
+													<Notification
 														v-for="(error, i) in errors.abstract"
 														:key="i"
 														type="warning"
 													>
-														<icon icon="exclamation-triangle"></icon>
+														<Icon icon="exclamation-triangle"></Icon>
 														{{ error }}
-													</notification>
+													</Notification>
 												</template>
 												<h4 class="submissionWizard__reviewPanel__item__header">
 													Keywords
@@ -325,21 +325,21 @@ const SubmissionWizardPageWithDataAndTemplate = {
 									</div>
 								</div>
 							</template>
-						</panel-section>
-					</panel>
-				</step>
-			</steps>
+						</PanelSection>
+					</Panel>
+				</Step>
+			</Steps>
 		</div>
 
-		<button-row class="submissionWizard__footer">
+		<ButtonRow class="submissionWizard__footer">
 			<template #end>
-				<pkp-button
+				<PkpButton
 					v-if="!isOnFirstStep"
 					:is-warnable="true"
 					@click="previousStep"
 				>
 					Back
-				</pkp-button>
+				</PkpButton>
 				<!--
 					Leave this v-else in so that the slot
 					is never empty.
@@ -354,25 +354,25 @@ const SubmissionWizardPageWithDataAndTemplate = {
 					isDisconnected ? 'submissionWizard__lastSaved--disconnected' : ''
 				"
 			>
-				<spinner v-if="isAutosaving || isDisconnected"></spinner>
+				<Spinner v-if="isAutosaving || isDisconnected"></Spinner>
 				<template v-if="isAutosaving">Saving</template>
 				<template v-else-if="isDisconnected">Reconnecting</template>
 				<template v-else-if="lastAutosavedMessage">
 					{{ lastAutosavedMessage }}
 				</template>
 			</span>
-			<pkp-button :is-disabled="isDisconnected" @click="saveForLater">
+			<PkpButton :is-disabled="isDisconnected" @click="saveForLater">
 				Save for Later
-			</pkp-button>
-			<pkp-button
+			</PkpButton>
+			<PkpButton
 				:is-primary="true"
 				:is-disabled="isOnLastStep && !canSubmit"
 				@click="nextStep"
 			>
 				<template v-if="isOnLastStep">Submit</template>
 				<template v-else>Continue</template>
-			</pkp-button>
-		</button-row>
+			</PkpButton>
+		</ButtonRow>
 
 		<div
 			ref="notifications"
@@ -382,7 +382,7 @@ const SubmissionWizardPageWithDataAndTemplate = {
 			role="status"
 		>
 			<transition-group name="app__notification">
-				<notification
+				<Notification
 					v-for="notification in notifications"
 					:key="notification.key"
 					:type="notification.type"
@@ -390,13 +390,13 @@ const SubmissionWizardPageWithDataAndTemplate = {
 					@dismiss="dismissNotification(notification.key)"
 				>
 					{{ notification.message }}
-				</notification>
+				</Notification>
 			</transition-group>
 		</div>
 		<transition name="app__loading">
 			<div v-if="isLoading" class="app__loading" role="alert">
 				<div class="app__loading__content">
-					<spinner></spinner>
+					<Spinner></Spinner>
 					Loading
 				</div>
 			</div>

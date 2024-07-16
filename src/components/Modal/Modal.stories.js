@@ -187,21 +187,21 @@ export const WithActions = {
 				<List>
 					<ListItem>
 						<template #value>
-							<icon icon="comment-o" :inline="true" />
+							<Icon icon="comment-o" :inline="true" />
 							23
 						</template>
 						Emails sent today
 					</ListItem>
 					<ListItem>
 						<template #value>
-							<icon icon="file-text-o" :inline="true" />
+							<Icon icon="file-text-o" :inline="true" />
 							9
 						</template>
 						Submissions rejected today
 					</ListItem>
 				</List>
 				<template #footer>
-					<spinner v-if="isSendingReport" />
+					<Spinner v-if="isSendingReport" />
 					<PkpButton
 						:is-disabled="isSendingReport"
 						:is-primary="true"

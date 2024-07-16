@@ -39,7 +39,7 @@ const DecisionPageWithDataAndTemplate = {
 						copyediting.
 					</p>
 
-					<notification
+					<Notification
 						v-for="(error, index) in errors"
 						:key="index"
 						type="warning"
@@ -48,9 +48,9 @@ const DecisionPageWithDataAndTemplate = {
 					>
 						{{ error }}
 						<button class="-linkButton" @click="openStep(index)">View Error</button>
-					</notification>
+					</Notification>
 
-					<steps
+					<Steps
 						v-if="steps.length"
 						:current="currentStep.id"
 						:started-steps="startedSteps"
@@ -60,25 +60,25 @@ const DecisionPageWithDataAndTemplate = {
 						show-steps-label="Show all steps"
 						@step:open="openStep"
 					>
-						<step
+						<Step
 							v-for="step in steps"
 							:id="step.id"
 							:key="step.id"
 							:label="step.name"
 						>
-							<panel class="decision__stepPanel">
-								<panel-section class="decision__stepHeader">
+							<Panel class="decision__stepPanel">
+								<PanelSection class="decision__stepHeader">
 									<h2>{{ step.name }}</h2>
 									<p>{{ step.description }}</p>
-								</panel-section>
+								</PanelSection>
 								<template v-if="step.type === 'form'">
-									<panel-section>
-										<pkp-form v-bind="step.form" @set="updateStep"></pkp-form>
-									</panel-section>
+									<PanelSection>
+										<PkpForm v-bind="step.form" @set="updateStep"></PkpForm>
+									</PanelSection>
 								</template>
 								<template v-else-if="step.type === 'email'">
-									<panel-section v-if="skippedSteps.includes(step.id)">
-										<notification type="warning">
+									<PanelSection v-if="skippedSteps.includes(step.id)">
+										<Notification type="warning">
 											This email has been skipped.
 											<button
 												class="-linkButton"
@@ -87,10 +87,10 @@ const DecisionPageWithDataAndTemplate = {
 											>
 												Don't skip email
 											</button>
-										</notification>
-									</panel-section>
-									<panel-section v-else>
-										<composer
+										</Notification>
+									</PanelSection>
+									<PanelSection v-else>
+										<Composer
 											:id="step.id"
 											add-c-c-label="Add CC/BCC"
 											:attachers="step.attachers"
@@ -131,12 +131,12 @@ const DecisionPageWithDataAndTemplate = {
 											switch-to-named-language-label="Switch to {$name}"
 											:variables="step.variables"
 											@set="updateStep"
-										></composer>
-									</panel-section>
+										></Composer>
+									</PanelSection>
 								</template>
 								<template v-else-if="step.type === 'promoteFiles'">
-									<panel-section>
-										<list-panel
+									<PanelSection>
+										<ListPanel
 											v-for="(list, i) in step.lists"
 											:key="i"
 											:items="list.files"
@@ -144,7 +144,7 @@ const DecisionPageWithDataAndTemplate = {
 											class="decision_filesList"
 										>
 											<template #item="{item}">
-												<select-submission-file-list-item
+												<SelectSubmissionFileListItem
 													:created-at="item.createdAt"
 													:document-type="item.documentType"
 													download-label="Download"
@@ -167,17 +167,17 @@ const DecisionPageWithDataAndTemplate = {
 														:name="'promoteFile' + item.id"
 														:value="item.id"
 													/>
-												</select-submission-file-list-item>
+												</SelectSubmissionFileListItem>
 											</template>
-										</list-panel>
-									</panel-section>
+										</ListPanel>
+									</PanelSection>
 								</template>
-							</panel>
-						</step>
-					</steps>
+							</Panel>
+						</Step>
+					</Steps>
 
-					<panel class="decision__footer__panel">
-						<panel-section>
+					<Panel class="decision__footer__panel">
+						<PanelSection>
 							<template #header>
 								<span>
 									<!-- empty on purpose -->
@@ -199,32 +199,32 @@ const DecisionPageWithDataAndTemplate = {
 								>
 									Skip email
 								</button>
-								<spinner v-if="isSubmitting"></spinner>
-								<pkp-button
+								<Spinner v-if="isSubmitting"></Spinner>
+								<PkpButton
 									:disabled="isSubmitting"
 									:is-warnable="true"
 									@click="cancel"
 								>
 									Cancel
-								</pkp-button>
-								<pkp-button
+								</PkpButton>
+								<PkpButton
 									v-if="!isOnFirstStep && steps.length > 1"
 									:disabled="isSubmitting"
 									@click="previousStep"
 								>
 									Previous
-								</pkp-button>
-								<pkp-button
+								</PkpButton>
+								<PkpButton
 									:disabled="isSubmitting"
 									:is-primary="isOnLastStep"
 									@click="nextStep"
 								>
 									<template v-if="isOnLastStep">Record Decision</template>
 									<template v-else>Continue</template>
-								</pkp-button>
+								</PkpButton>
 							</div>
-						</panel-section>
-					</panel>
+						</PanelSection>
+					</Panel>
 				</div>
 
 				<div
@@ -235,7 +235,7 @@ const DecisionPageWithDataAndTemplate = {
 					role="status"
 				>
 					<transition-group name="app__notification">
-						<notification
+						<Notification
 							v-for="notification in notifications"
 							:key="notification.key"
 							:type="notification.type"
@@ -243,13 +243,13 @@ const DecisionPageWithDataAndTemplate = {
 							@dismiss="dismissNotification(notification.key)"
 						>
 							{{ notification.message }}
-						</notification>
+						</Notification>
 					</transition-group>
 				</div>
 				<transition name="app__loading">
 					<div v-if="isLoading" class="app__loading" role="alert">
 						<div class="app__loading__content">
-							<spinner></spinner>
+							<Spinner></Spinner>
 							Loading
 						</div>
 					</div>
