@@ -45,55 +45,55 @@ export const Default = {
 		template: `
 
 			<div class="previewActionPanel">
-				<action-panel>
+				<ActionPanel>
 					<h2 id="delete-title">Delete Incomplete Submissions</h2>
 					<p id="delete-description">
 						Delete all incomplete submissions that have not been modified in the
 						last month.
 					</p>
 					<template #actions>
-						<pkp-button
+						<PkpButton
 							:is-warnable="true"
 							aria-describedby="delete-title delete-description"
 							@click="openDeleteDialog"
 						>
 							Delete All
-						</pkp-button>
+						</PkpButton>
 					</template>
-				</action-panel>
-				<action-panel>
+				</ActionPanel>
+				<ActionPanel>
 					<h2>Clear Cache</h2>
 					<p id="delete-cache-description">
 						Clear the cached data and templates across the site. This will effect
 						cached values for all journals.
 					</p>
 					<template #actions>
-						<pkp-button aria-describedby="delete-cache-description">
+						<PkpButton aria-describedby="delete-cache-description">
 							Clear Data Cache
-						</pkp-button>
-						<pkp-button aria-describedby="delete-cache-description">
+						</PkpButton>
+						<PkpButton aria-describedby="delete-cache-description">
 							Clear Template/CSS Cache
-						</pkp-button>
-						<pkp-button
+						</PkpButton>
+						<PkpButton
 							:is-warnable="true"
 							aria-describedby="delete-cache-description"
 						>
 							Clear All Cache
-						</pkp-button>
+						</PkpButton>
 					</template>
-				</action-panel>
-				<action-panel>
+				</ActionPanel>
+				<ActionPanel>
 					<h2 id="sessions-title">Expire User Sessions</h2>
 					<p id="sessions-description">
 						Immediately expire all user sessions. This will force all users to login
 						again.
 					</p>
 					<template #actions>
-						<pkp-button :is-warnable="true" aria-describedby="sessions-description">
+						<PkpButton :is-warnable="true" aria-describedby="sessions-description">
 							Expire Sessions
-						</pkp-button>
+						</PkpButton>
 					</template>
-				</action-panel>
+				</ActionPanel>
 			</div>
 
 		`,

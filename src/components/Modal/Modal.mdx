@@ -34,10 +34,10 @@ When a modal is opened the focus will be moved into it. When it is closed the fo
 Use a [$ref](https://vuejs.org/v2/guide/components-edge-cases.html#Accessing-Child-Component-Instances-amp-Child-Elements) to set focus back to the appropriate element.
 
 ```html
-<pkp-button ref="button" @click="$modal.show('example')">Open Modal</pkp-button>
-<modal v-bind="MODAL_PROPS" name="example" @closed="setFocusToRef('button')">
+<PkpButton ref="button" @click="$modal.show('example')">Open Modal</PkpButton>
+<Modal v-bind="MODAL_PROPS" name="example" @closed="setFocusToRef('button')">
 	...
-</modal>
+</Modal>
 ```
 
 A dialog will reset the focus automatically.

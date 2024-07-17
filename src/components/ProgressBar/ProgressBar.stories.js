@@ -12,7 +12,7 @@ export const Default = {
 			return {args};
 		},
 		template: `
-			<progress-bar v-bind="args"/>
+			<ProgressBar v-bind="args"/>
 		`,
 	}),
 	args: {
@@ -39,7 +39,7 @@ export const SlowProgress = {
 			return {value: slowValue};
 		},
 		template: `
-			<progress-bar :value="value"/>
+			<ProgressBar :value="value"/>
 		`,
 	}),
 	args: {},
@@ -64,7 +64,7 @@ export const FastProgress = {
 			return {value: slowValue};
 		},
 		template: `
-			<progress-bar :value="value"/>
+			<ProgressBar :value="value"/>
 		`,
 	}),
 	args: {},
