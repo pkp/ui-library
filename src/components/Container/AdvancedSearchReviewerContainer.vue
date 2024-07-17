@@ -32,14 +32,12 @@
 				</div>
 			</div>
 		</div>
-		<SelectReviewerListPanel
-			v-bind="components.selectReviewer"
-			@set="updateReviewerList"
-		/>
+		<SelectReviewerListPanel v-bind="components.selectReviewer" @set="set" />
 	</div>
 </template>
 
 <script>
+import Container from '@/components/Container/Container.vue';
 import SelectReviewerListPanel from '@/components/ListPanel/users/SelectReviewerListPanel.vue';
 
 export default {
@@ -47,6 +45,7 @@ export default {
 	components: {
 		SelectReviewerListPanel,
 	},
+	extends: Container,
 	data() {
 		return {
 			showAllAuthors: false,
@@ -74,12 +73,6 @@ export default {
 	methods: {
 		toggleShowAllAuthors() {
 			this.showAllAuthors = !this.showAllAuthors;
-		},
-		updateReviewerList(panelId, reviewersData) {
-			this.components.selectReviewer = {
-				...this.components.selectReviewer,
-				...reviewersData,
-			};
 		},
 	},
 };
