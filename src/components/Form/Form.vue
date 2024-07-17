@@ -1,5 +1,10 @@
 <template>
-	<form class="pkpForm -pkpClearfix" :method="method" :action="action">
+	<form
+		class="pkpForm -pkpClearfix"
+		:method="method"
+		:action="action"
+		@keydown.enter.prevent=""
+	>
 		<input
 			v-for="(value, name) in hiddenFields"
 			:key="name"
