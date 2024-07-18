@@ -120,9 +120,9 @@ export function useFileManagerActions() {
 		}
 	}
 
-	function getTopActions({managerConfiguration}) {
+	function getTopActions({managerConfig}) {
 		const actions = [];
-		const enabledActions = managerConfiguration.permittedActions;
+		const enabledActions = managerConfig.permittedActions;
 
 		if (enabledActions.includes(Actions.UPLOAD)) {
 			actions.push({
@@ -142,9 +142,9 @@ export function useFileManagerActions() {
 		return actions;
 	}
 
-	function getBottomActions({managerConfiguration, filesCount}) {
+	function getBottomActions({managerConfig, filesCount}) {
 		const actions = [];
-		const enabledActions = managerConfiguration.permittedActions;
+		const enabledActions = managerConfig.permittedActions;
 		if (enabledActions.includes(Actions.DOWNLOAD_ALL) && filesCount) {
 			actions.push({
 				label: 'Download All Files',
@@ -155,9 +155,9 @@ export function useFileManagerActions() {
 		return actions;
 	}
 
-	function getItemActions({managerConfiguration}) {
+	function getItemActions({managerConfig}) {
 		const actions = [];
-		const enabledActions = managerConfiguration.permittedActions;
+		const enabledActions = managerConfig.permittedActions;
 		if (enabledActions.includes(Actions.SEE_NOTES)) {
 			actions.push({
 				label: 'More information',

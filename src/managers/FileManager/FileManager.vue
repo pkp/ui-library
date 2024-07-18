@@ -3,10 +3,10 @@
 		<div class="flex items-center border border-light p-4">
 			<div class="flex-grow">
 				<h3 class="text-lg-bold text-heading">
-					{{ fileManagerStore.managerConfiguration.title }}
+					{{ fileManagerStore.managerConfig.title }}
 				</h3>
 				<p class="pt-2 text-sm-normal">
-					{{ fileManagerStore.managerConfiguration.description }}
+					{{ fileManagerStore.managerConfig.description }}
 				</p>
 			</div>
 			<div class="ms-2 flex flex-none space-x-2">
@@ -56,10 +56,8 @@
 </template>
 <script setup>
 import {inject} from 'vue';
-import {
-	FileManagerConfigurations,
-	useFileManagerStore,
-} from './fileManagerStore.js';
+import {useFileManagerStore} from './fileManagerStore.js';
+import {FileManagerConfigurations} from './useFileManagerConfig.js';
 import PkpButton from '@/components/Button/Button.vue';
 import PkpTable from '@/components/TableNext/Table.vue';
 import TableHeader from '@/components/TableNext/TableHeader.vue';
