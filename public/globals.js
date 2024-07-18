@@ -560,6 +560,10 @@ window.pkp = {
 		'acceptInvitation.modal.button':'View All Submissions',
 		'acceptInvitation.privacyStatement.btn':'Privacy Statement',
 		'acceptInvitation.privacyStatement.label':'Yes, I agree to have my data collected and stored according to the',
+		'invitation.cancel': 'Cancel Invite',
+		'invitation.inviteToRole.btn': 'Invite to a role',
+		'invitation.header': 'Invitation',
+
 	},
 
 	tinyMCE: {
