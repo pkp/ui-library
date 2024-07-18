@@ -77,6 +77,7 @@
 							:id="row.uid"
 							type="text"
 							:readonly="!(isEditingDois && !isSaving)"
+							:disabled="isEditingDois && row.disabled"
 							v-model="
 								mutableDois.find((doi) => doi.uid === row.uid).identifier
 							"
@@ -84,6 +85,12 @@
 					</table-cell>
 				</template>
 			</pkp-table>
+			<span
+				class="doiListItem__disabledChaptersDescription"
+				v-if="this.containsDisabledChapters"
+			>
+				{{ __('manager.dois.disabledChaptersDescription') }}
+			</span>
 			<div
 				class="listPanel__itemExpandedActions doiListPanel__itemExpandedActions"
 			>
@@ -230,6 +237,7 @@
 								:id="row.uid"
 								type="text"
 								:readonly="!(isEditingDois && !isSaving)"
+								:disabled="isEditingDois && row.disabled"
 								v-model="
 									mutableDois.find((doi) => doi.uid === row.uid).identifier
 								"
@@ -237,6 +245,12 @@
 						</table-cell>
 					</template>
 				</pkp-table>
+				<span
+					class="doiListItem__disabledChaptersDescription"
+					v-if="containsDisabledChapters"
+				>
+					{{ __('manager.dois.disabledChaptersDescription') }}
+				</span>
 			</div>
 
 			<div class="doiListItem__versionContainer--actionsBar">
@@ -499,6 +513,17 @@ export default {
 				(doiObject) => doiObject.doiId !== null
 			);
 			return !hasAnyDois;
+		},
+		/**
+		 * Whether this object has chpaters that are disabled for DOI assignemnt
+		 *
+		 * @return {boolean}
+		 */
+		containsDisabledChapters() {
+			const hasAnyDisabled = this.item.doiObjects.some(
+				(doiObject) => doiObject.type == 'chapter' && doiObject.disabled == true
+			);
+			return hasAnyDisabled;
 		},
 		/**
 		 * Display string for publication status
