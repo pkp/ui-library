@@ -1,4 +1,5 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
+import {useTranslation} from '@/composables/useTranslation';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
 import {computed, onMounted, ref, watch} from 'vue';
@@ -7,6 +8,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 	'userInvitationPage',
 	(pageInitConfig) => {
 		const {openDialog} = useModal();
+		const {t} = useTranslation();
 
 		/**
 		 * Invitation payload, initial value
@@ -94,6 +96,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 		 * @param {String} stepId
 		 */
 		function openStep(stepId) {
+			startedSteps.value = [...new Set([...startedSteps.value, stepId])];
 			const newStep = steps.value.find((step) => step.id === stepId);
 			if (!newStep) {
 				return;
@@ -143,10 +146,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 		 * The title to show at the top of the page
 		 */
 		const pageTitle = computed(() => {
-			if (!currentStep.value) {
-				return '';
-			}
-			return currentStep.value.name.replace('{$step}', currentStep.value);
+			return pageInitConfig.pageTitle;
 		});
 
 		/**
@@ -249,10 +249,13 @@ export const useUserInvitationPageStore = defineComponentStore(
 				await fetch();
 				if (data.value) {
 					openDialog({
-						title: 'Invitation sent',
+						title: t('userInvitation.modal.title'),
+						message: t('userInvitation.modal.message', {
+							email: invitationPayload.value.email,
+						}),
 						actions: [
 							{
-								label: 'Ok',
+								label: t('userInvitation.modal.button'),
 								callback: (close) => {
 									close();
 								},

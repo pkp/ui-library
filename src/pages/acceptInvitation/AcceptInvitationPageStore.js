@@ -1,4 +1,6 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
+import {useTranslation} from '@/composables/useTranslation';
+import {useAnnouncer} from '@/composables/useAnnouncer';
 import {useFetch} from '@/composables/useFetch';
 import {computed, onMounted, ref, watch} from 'vue';
 import {useUrl} from '@/composables/useUrl';
@@ -8,6 +10,11 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 	'userInvitationPage',
 	(pageInitConfig) => {
 		const {openDialog} = useModal();
+		const {t} = useTranslation();
+
+		/** Announcer */
+
+		const {announce} = useAnnouncer();
 
 		/** Accept invitation payload, initial value*/
 		const acceptinvitationPayload = ref({});
@@ -61,6 +68,9 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 				email.value = data.value.email;
 				userId.value = data.value.userId;
 				errors.value = [];
+				if (steps.value.length === 0) {
+					await submit();
+				}
 			}
 		}
 
@@ -76,7 +86,9 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 		}
 
 		/** Steps */
-		const currentStepId = ref(pageInitConfig.steps[0].id);
+		const currentStepId = ref(
+			pageInitConfig.steps[0] ? pageInitConfig.steps[0].id : '',
+		);
 		const steps = ref(pageInitConfig.steps);
 		const startedSteps = ref([]);
 		/**
@@ -106,6 +118,10 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 		 */
 		const isOnLastStep = computed(() => {
 			return currentStepIndex.value === steps.value.length - 1;
+		});
+
+		const formSteps = computed(() => {
+			return steps.value.filter((step) => step.type === 'form');
 		});
 
 		/**
@@ -138,6 +154,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 		 * @param {String} stepId
 		 */
 		function openStep(stepId) {
+			startedSteps.value = [...new Set([...startedSteps.value, stepId])];
 			const newStep = steps.value.find((step) => step.id === stepId);
 			if (!newStep) {
 				return;
@@ -198,7 +215,10 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			if (!currentStep.value) {
 				return '';
 			}
-			return currentStep.value.name.replace('{$step}', currentStep.value);
+			return currentStep.value.name.replace(
+				'{$step}',
+				pageInitConfig.pageTitle,
+			);
 		});
 
 		/**
@@ -312,10 +332,11 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 				await fetch();
 				if (data.value) {
 					openDialog({
-						title: 'You have been added as a Section Editor in OJS',
+						title: t('acceptInvitation.modal.title'),
+						message: t('acceptInvitation.modal.message'),
 						actions: [
 							{
-								label: 'Ok',
+								label: t('acceptInvitation.modal.button'),
 								callback: (close) => {
 									close();
 								},
@@ -327,10 +348,12 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 		}
 
 		onMounted(async () => {
+			announce(t('common.loading'));
 			await receiveInvitation();
-			if (!window.location.hash) {
+			if (steps.value[0]) {
 				openStep(steps.value[0].id);
 			}
+			announce(t('common.loaded'));
 		});
 
 		return {
@@ -348,6 +371,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			pageTitleDescription,
 			errors,
 			stepButtonTitle,
+			formSteps,
 
 			//methods
 			nextStep,
