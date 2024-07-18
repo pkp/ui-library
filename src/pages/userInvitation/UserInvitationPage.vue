@@ -56,19 +56,19 @@
 				</div>
 			</Step>
 		</Steps>
-		<ButtonRow
-			class="flex items-center justify-end border border-t-0 border-light p-8"
-		>
-			<PkpButton :is-warnable="true" @click="store.cancel">
-				{{ t('common.cancel') }}
-			</PkpButton>
-			<PkpButton v-if="!store.isOnFirstStep" @click="store.previousStep">
-				{{ t('common.back') }}
-			</PkpButton>
-			<PkpButton :is-primary="true" @click="store.nextStep">
-				{{ store.currentStep.nextButtonLabel }}
-			</PkpButton>
-		</ButtonRow>
+		<div class="border-x border-b border-light p-8">
+			<ButtonRow>
+				<PkpButton :is-warnable="true" @click="store.cancel">
+					{{ t('common.cancel') }}
+				</PkpButton>
+				<PkpButton v-if="!store.isOnFirstStep" @click="store.previousStep">
+					{{ t('common.back') }}
+				</PkpButton>
+				<PkpButton :is-primary="true" @click="store.nextStep">
+					{{ store.currentStep.nextButtonLabel }}
+				</PkpButton>
+			</ButtonRow>
+		</div>
 	</div>
 </template>
 
