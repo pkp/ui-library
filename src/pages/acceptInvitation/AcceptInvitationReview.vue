@@ -17,7 +17,7 @@
 				></FormDisplayItemBasic>
 			</div>
 		</div>
-		<div class="border-t border-solid border-[#ddd] p-8">
+		<div class="border-t border-light p-8">
 			<div class="flex items-center justify-between p-4">
 				<h3>{{ t('acceptInvitation.review.userDetails') }}</h3>
 				<PkpButton
@@ -57,7 +57,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="border-t border-solid border-[#ddd] p-8">
+		<div class="border-t border-light p-8">
 			<div class="flex items-center p-4">
 				<h3>Roles</h3>
 			</div>
