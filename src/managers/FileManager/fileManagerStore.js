@@ -1,6 +1,6 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
-import {ref, toRefs, computed} from 'vue';
+import {ref, computed} from 'vue';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
 import {useLocalize} from '@/composables/useLocalize';
@@ -261,35 +261,29 @@ export const useFileManagerStore = defineComponentStore(
 
 		/** Handling Actions */
 
-		const {
-			getItemActions: _getItemActions,
-			getBottomActions: _getBottomActions,
-			getTopActions: _getTopActions,
-			handleAction: _handleAction,
-			handleItemAction: _handleItemAction,
-		} = toRefs(useFileManagerActions());
+		const _actions = useFileManagerActions();
 
 		const topActions = computed(() =>
-			_getTopActions.value({
+			_actions.getTopActions.value({
 				managerConfiguration: managerConfiguration.value,
 			}),
 		);
 
 		const bottomActions = computed(() =>
-			_getBottomActions.value({
+			_actions.getBottomActions.value({
 				managerConfiguration: managerConfiguration.value,
 				filesCount: files.value.length,
 			}),
 		);
 
 		const itemActions = computed(() =>
-			_getItemActions.value({
+			_actions.getItemActions.value({
 				managerConfiguration: managerConfiguration.value,
 			}),
 		);
 
 		function handleItemAction(actionName, {file}) {
-			_handleItemAction.value(
+			_actions.handleItemAction.value(
 				actionName,
 				{
 					file,
@@ -310,7 +304,7 @@ export const useFileManagerStore = defineComponentStore(
 		}
 
 		function handleAction(actionName) {
-			_handleAction.value(
+			_actions.handleAction.value(
 				actionName,
 				{
 					submissionStageId: props.submissionStageId,
@@ -330,16 +324,13 @@ export const useFileManagerStore = defineComponentStore(
 			files,
 			fetchFiles,
 			managerConfiguration,
-			_handleAction,
-			_handleItemAction,
-			_getItemActions,
-			_getBottomActions,
-			_getTopActions,
 			topActions,
 			bottomActions,
 			itemActions,
 			handleItemAction,
 			handleAction,
+			/** exposing actions related functions via this object for extendibility purposes */
+			_actions,
 		};
 	},
 );

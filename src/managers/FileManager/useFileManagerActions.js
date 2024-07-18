@@ -143,7 +143,6 @@ export function useFileManagerActions() {
 	}
 
 	function getBottomActions({managerConfiguration, filesCount}) {
-		console.log('getBottomActions');
 		const actions = [];
 		const enabledActions = managerConfiguration.permittedActions;
 		if (enabledActions.includes(Actions.DOWNLOAD_ALL) && filesCount) {

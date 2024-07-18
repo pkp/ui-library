@@ -5,20 +5,13 @@ import {ref, onMounted} from 'vue';
 import {useFetch} from '@/composables/useFetch';
 import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 
-/**
- * 	{load_url_in_div id="queriesGrid" url=$queriesGridUrl}
- */
-
 const props = defineProps({
 	gridComponent: {type: String, required: true},
 	params: {type: Object, required: true},
 });
 
-// http://localhost:7003/index.php/publicknowledge/$$$call$$$/grid/queries/query-notes-grid/fetch-grid?submissionId=24&stageId=1
-// http://localhost:7003/index.php/publicknowledge/$$$call$$$/grid/queries/queries-grid/fetch-grid?submissionId=24&stageId=1&_=1721118709241
-
 const {url} = useLegacyGridUrl({
-	component: props.gridComponent, // 'grid.queries.QueryNotesGridHandler',
+	component: props.gridComponent,
 	op: 'fetchGrid',
 	params: props.params,
 });
