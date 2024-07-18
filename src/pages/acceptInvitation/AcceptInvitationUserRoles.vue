@@ -1,10 +1,12 @@
 <template>
 	<PkpTable aria-label="Example for basic table">
 		<TableHeader>
-			<TableColumn>Title</TableColumn>
-			<TableColumn>Start Date</TableColumn>
-			<TableColumn>End Date</TableColumn>
-			<TableColumn>Journal Masthead</TableColumn>
+			<TableColumn>{{ t('userInvitation.roleTable.role') }}</TableColumn>
+			<TableColumn>{{ t('userInvitation.roleTable.startDate') }}</TableColumn>
+			<TableColumn>{{ t('userInvitation.roleTable.endDate') }}</TableColumn>
+			<TableColumn>
+				{{ t('userInvitation.roleTable.journalMasthead') }}
+			</TableColumn>
 		</TableHeader>
 		<TableBody>
 			<TableRow v-for="(row, index) in rows" :key="index">
@@ -12,7 +14,7 @@
 					{{ row.userGroupName }}
 				</TableCell>
 				<TableCell>{{ row.dateStart }}</TableCell>
-				<TableCell>{{ row.dateEnd }}</TableCell>
+				<TableCell>{{ row.dateEnd ? row.dateEnd : '---' }}</TableCell>
 				<TableCell>
 					{{
 						row.masthead
@@ -26,6 +28,7 @@
 </template>
 
 <script setup>
+import {useTranslation} from '@/composables/useTranslation';
 import PkpTable from '@/components/TableNext/Table.vue';
 import TableCell from '@/components/TableNext/TableCell.vue';
 import TableHeader from '@/components/TableNext/TableHeader.vue';
@@ -37,4 +40,5 @@ import {defineProps} from 'vue';
 defineProps({
 	rows: {type: Array, required: true},
 });
+const {t} = useTranslation();
 </script>

@@ -1,10 +1,12 @@
 <template>
-	<PkpTable aria-label="Example for basic table">
+	<PkpTable>
 		<TableHeader>
-			<TableColumn>Title</TableColumn>
-			<TableColumn>Start Date</TableColumn>
-			<TableColumn>End Date</TableColumn>
-			<TableColumn>Journal Masthead</TableColumn>
+			<TableColumn>{{ t('userInvitation.roleTable.role') }}</TableColumn>
+			<TableColumn>{{ t('userInvitation.roleTable.startDate') }}</TableColumn>
+			<TableColumn>{{ t('userInvitation.roleTable.endDate') }}</TableColumn>
+			<TableColumn>
+				{{ t('userInvitation.roleTable.journalMasthead') }}
+			</TableColumn>
 			<TableColumn></TableColumn>
 		</TableHeader>
 		<TableBody>
@@ -13,13 +15,13 @@
 				:key="index"
 			>
 				<TableCell>
-					{{ row.name[store.primaryLocale] }}
+					{{ localize(row.name) }}
 				</TableCell>
 				<TableCell>
-					{{ row.name.date_start ? row.name.date_start : '---' }}
+					{{ row.dateStart ? row.dateStart : '---' }}
 				</TableCell>
 				<TableCell>
-					{{ row.name.date_end ? row.name.date_end : '---' }}
+					{{ row.dateEnd ? row.dateEnd : '---' }}
 				</TableCell>
 				<TableCell>
 					{{ row.masthead ? row.masthead : '---' }}
@@ -60,20 +62,7 @@
 						"
 					/>
 				</TableCell>
-				<TableCell>
-					<FieldText
-						name="dateEnd"
-						:label="t('invitation.role.dateEnd')"
-						input-type="date"
-						:value="row.dateEnd"
-						:is-required="true"
-						:all-errors="userGroupErrors[index]"
-						@change="
-							(fieldName, propName, newValue, localeKey) =>
-								updateUserGroup(index, fieldName, newValue)
-						"
-					/>
-				</TableCell>
+				<TableCell>---</TableCell>
 				<TableCell>
 					<FieldSelect
 						name="masthead"
@@ -152,7 +141,6 @@ function addUserGroup() {
 	userGroupsUpdate.push({
 		userGroup: null,
 		dateStart: null,
-		dateEnd: null,
 		masthead: null,
 	});
 	store.updatePayload('userGroupsToAdd', userGroupsUpdate);
@@ -169,8 +157,3 @@ const userGroupErrors = computed(() => {
 	return store.errors.userGroupsToAdd || [];
 });
 </script>
-<style>
-select {
-	width: 13rem !important;
-}
-</style>

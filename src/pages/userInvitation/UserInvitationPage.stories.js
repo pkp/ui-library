@@ -17,7 +17,7 @@ export const Init = {
 		msw: {
 			handlers: [
 				http.get(
-					'https://mock/index.php/publicknowledge/api/v1/_user',
+					'https://mock/index.php/publicknowledge/api/v1/users',
 					({request}) => {
 						const url = new URL(request.url);
 						let params = new URLSearchParams(url.search);
