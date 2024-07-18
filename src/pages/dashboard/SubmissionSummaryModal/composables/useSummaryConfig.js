@@ -156,6 +156,18 @@ export function useSummaryConfig() {
 			},
 
 			{
+				component: 'DiscussionManager',
+				props: {submissionId: submission.id, stageId: submission.stageId},
+				filters: {
+					dashboardPage: [
+						DashboardPageTypes.EDITORIAL_DASHBOARD,
+						DashboardPageTypes.MY_SUBMISSIONS,
+					],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_SUBMISSION],
+				},
+			},
+
+			{
 				component: 'FileManager',
 				props: {
 					configName: 'WORKFLOW_REVIEW_REVISIONS',
@@ -215,7 +227,6 @@ export function useSummaryConfig() {
 					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EDITING],
 				},
 			},
-
 			{
 				component: 'FileManager',
 				props: {

@@ -27,9 +27,7 @@ const contentDiv = ref(null);
 const pkp = window.pkp;
 
 // Fetches html content from legacy endpoints
-const {data: modalData, fetch: fetchAssignParticipantPage} = useFetch(
-	legacyOptions.url,
-);
+const {data: modalData, fetch: fetchModalData} = useFetch(legacyOptions.url);
 
 // Legacy modal has mechanism where it needs to check with form whether it can close
 // Mimicking this behaviour
@@ -113,7 +111,7 @@ function onVueFormSuccess(formId) {
 }
 
 onMounted(async () => {
-	await fetchAssignParticipantPage();
+	await fetchModalData();
 	if (modalData.value) {
 		$(contentDiv.value).html(modalData.value.content);
 		$(contentDiv.value).bind('formSubmitted', passToHandlerElement);
