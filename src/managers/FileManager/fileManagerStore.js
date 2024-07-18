@@ -261,29 +261,29 @@ export const useFileManagerStore = defineComponentStore(
 
 		/** Handling Actions */
 
-		const _actions = useFileManagerActions();
+		const _actionFns = useFileManagerActions();
 
 		const topActions = computed(() =>
-			_actions.getTopActions.value({
+			_actionFns.getTopActions.value({
 				managerConfiguration: managerConfiguration.value,
 			}),
 		);
 
 		const bottomActions = computed(() =>
-			_actions.getBottomActions.value({
+			_actionFns.getBottomActions.value({
 				managerConfiguration: managerConfiguration.value,
 				filesCount: files.value.length,
 			}),
 		);
 
 		const itemActions = computed(() =>
-			_actions.getItemActions.value({
+			_actionFns.getItemActions.value({
 				managerConfiguration: managerConfiguration.value,
 			}),
 		);
 
 		function handleItemAction(actionName, {file}) {
-			_actions.handleItemAction.value(
+			_actionFns.handleItemAction.value(
 				actionName,
 				{
 					file,
@@ -304,7 +304,7 @@ export const useFileManagerStore = defineComponentStore(
 		}
 
 		function handleAction(actionName) {
-			_actions.handleAction.value(
+			_actionFns.handleAction.value(
 				actionName,
 				{
 					submissionStageId: props.submissionStageId,
@@ -330,7 +330,7 @@ export const useFileManagerStore = defineComponentStore(
 			handleItemAction,
 			handleAction,
 			/** exposing actions related functions via this object for extendibility purposes */
-			_actions,
+			_actionFns,
 		};
 	},
 );
