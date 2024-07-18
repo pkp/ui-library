@@ -27,9 +27,7 @@ const contentDiv = ref(null);
 const pkp = window.pkp;
 
 // Fetches html content from legacy endpoints
-const {data: modalData, fetch: fetchAssignParticipantPage} = useFetch(
-	legacyOptions.url,
-);
+const {data: modalData, fetch: fetchModalData} = useFetch(legacyOptions.url);
 
 // Legacy modal has mechanism where it needs to check with form whether it can close
 // Mimicking this behaviour
@@ -75,6 +73,11 @@ function passToHandlerElement(...args) {
 	else {
 		const eventType = args?.[0]?.type;
 
+		if (eventType === 'dataChanged') {
+			// Naive implementation to check for notifications for the actions in modals that are now opened from Vue.js, instead of the grid.
+			// Logic to trigger these notifications is LinkActionHandler.dataChangedHandler_
+			$('body').trigger('notifyUser');
+		}
 		if (
 			[
 				'formSubmitted',
@@ -108,7 +111,7 @@ function onVueFormSuccess(formId) {
 }
 
 onMounted(async () => {
-	await fetchAssignParticipantPage();
+	await fetchModalData();
 	if (modalData.value) {
 		$(contentDiv.value).html(modalData.value.content);
 		$(contentDiv.value).bind('formSubmitted', passToHandlerElement);

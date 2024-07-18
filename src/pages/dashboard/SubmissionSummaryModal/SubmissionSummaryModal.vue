@@ -30,7 +30,7 @@
 		</template>
 		<SideModalLayout2Columns>
 			<template #left>
-				<div class="flex flex-col gap-y-3 bg-secondary p-5">
+				<div class="flex flex-col gap-y-5 bg-secondary p-5">
 					<component
 						:is="Components[item.component] || item.component"
 						v-bind="item.props"
@@ -70,6 +70,8 @@ import PkpButton from '@/components/Button/Button.vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import StageBubble from '@/components/StageBubble/StageBubble.vue';
 import FileManager from '@/managers/FileManager/FileManager.vue';
+import DiscussionManager from '@/managers/DiscussionManager/DiscussionManager.vue';
+
 import ReviewerManager from '@/managers/ReviewerManager/ReviewerManager.vue';
 import ContributorManager from '@/managers/ContributorManager/ContributorManager.vue';
 import LastActivity from './primaryItems/LastActivity.vue';
@@ -91,6 +93,7 @@ const {t, localizeSubmission} = useLocalize();
 const Components = {
 	FileManager,
 	ReviewerManager,
+	DiscussionManager,
 	ContributorManager,
 	LastActivity,
 	ActionButton,

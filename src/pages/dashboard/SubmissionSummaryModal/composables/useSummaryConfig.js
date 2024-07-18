@@ -142,13 +142,22 @@ export function useSummaryConfig() {
 			{
 				component: 'FileManager',
 				props: {
-					namespace: 'deskReviewFiles',
-
-					submissionId: submission.id,
-					fileStages: [pkp.const.SUBMISSION_FILE_SUBMISSION],
-					title: t('dashboard.summary.deskReviewFiles'),
-					description: t('dashboard.summary.deskReviewFilesDescription'),
+					configName: 'SUBMISSION_FILES',
+					submission: submission,
+					submissionStageId: submission.stageId,
 				},
+				filters: {
+					dashboardPage: [
+						DashboardPageTypes.EDITORIAL_DASHBOARD,
+						DashboardPageTypes.MY_SUBMISSIONS,
+					],
+					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_SUBMISSION],
+				},
+			},
+
+			{
+				component: 'DiscussionManager',
+				props: {submissionId: submission.id, stageId: submission.stageId},
 				filters: {
 					dashboardPage: [
 						DashboardPageTypes.EDITORIAL_DASHBOARD,
@@ -161,12 +170,10 @@ export function useSummaryConfig() {
 			{
 				component: 'FileManager',
 				props: {
-					namespace: 'filesRevisions',
-					submissionId: submission.id,
+					configName: 'WORKFLOW_REVIEW_REVISIONS',
+					submission: submission,
+					submissionStageId: submission.stageId,
 					reviewRoundId: activeReviewRound?.id,
-					fileStages: [pkp.const.SUBMISSION_FILE_REVIEW_REVISION],
-					title: t('dashboard.summary.revisionsSubmitted'),
-					description: t('dashboard.summary.revisionsSubmittedDescription'),
 				},
 				filters: {
 					dashboardPage: [
@@ -179,18 +186,16 @@ export function useSummaryConfig() {
 			{
 				component: 'FileManager',
 				props: {
-					namespace: 'filesForReview',
-					submissionId: submission.id,
+					configName: 'EDITOR_REVIEW_FILES',
+					submission: submission,
+					submissionStageId: submission.stageId,
 					reviewRoundId: activeReviewRound?.id,
-					fileStages: [pkp.const.SUBMISSION_FILE_REVIEW_FILE],
-					title: t('dashboard.summary.filesForReview'),
-					description: t('dashboard.summary.filesForReviewDescription'),
 				},
 				filters: {
 					dashboardPage: [
 						DashboardPageTypes.EDITORIAL_DASHBOARD,
 						// TODO disabled for now as API is not authorising
-						DashboardPageTypes.MY_REVIEW_ASSIGNMENTS,
+						//DashboardPageTypes.MY_REVIEW_ASSIGNMENTS,
 					],
 					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW],
 				},
@@ -198,12 +203,9 @@ export function useSummaryConfig() {
 			{
 				component: 'FileManager',
 				props: {
-					namespace: 'copyeditedFiles',
-					submissionId: submission.id,
-					fileStages: [pkp.const.SUBMISSION_FILE_COPYEDIT],
-					title: t('dashboard.summary.copyeditedFiles'),
-					description:
-						'These are edited files that will be taken to the production stage',
+					configName: 'COPYEDITED_FILES',
+					submission: submission,
+					submissionStageId: submission.stageId,
 				},
 				filters: {
 					dashboardPage: [
@@ -216,26 +218,21 @@ export function useSummaryConfig() {
 			{
 				component: 'FileManager',
 				props: {
-					namespace: 'draftFiles',
-					submissionId: submission.id,
-					fileStages: [pkp.const.SUBMISSION_FILE_FINAL],
-					title: t('dashboard.summary.draftFiles'),
-					description: t('dashboard.summary.draftFilesDescription'),
+					configName: 'FINAL_DRAFT_FILES',
+					submission: submission,
+					submissionStageId: submission.stageId,
 				},
 				filters: {
 					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
 					activeStageId: [pkp.const.WORKFLOW_STAGE_ID_EDITING],
 				},
 			},
-
 			{
 				component: 'FileManager',
 				props: {
-					namespace: 'productionReadyFiles',
-					submissionId: submission.id,
-					fileStages: [pkp.const.SUBMISSION_FILE_PRODUCTION_READY],
-					title: t('dashboard.summary.productionReadyFiles'),
-					description: t('dashboard.summary.productionReadyFilesDescription'),
+					configName: 'PRODUCTION_READY_FILES',
+					submission: submission,
+					submissionStageId: submission.stageId,
 				},
 				filters: {
 					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
@@ -248,6 +245,8 @@ export function useSummaryConfig() {
 				props: {
 					namespace: 'galleys',
 					submissionId: submission.id,
+					submissionStageId: submission.stageId,
+
 					fileStages: [pkp.const.SUBMISSION_FILE_PROOF],
 					title: t('dashboard.summary.galleys'),
 				},
@@ -264,7 +263,7 @@ export function useSummaryConfig() {
 			{
 				component: 'ReviewerManager',
 				props: {
-					reviewAssignments: submission.reviewAssignments,
+					submission: submission,
 				},
 				filters: {
 					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
@@ -274,7 +273,7 @@ export function useSummaryConfig() {
 			{
 				component: 'ReviewerManager',
 				props: {
-					reviewAssignments: submission.reviewAssignments,
+					submission: submission,
 					redactedForAuthors: true,
 				},
 				filters: {
