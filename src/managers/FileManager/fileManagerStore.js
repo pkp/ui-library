@@ -329,7 +329,7 @@ export const useFileManagerStore = defineComponentStore(
 			itemActions,
 			handleItemAction,
 			handleAction,
-			/** exposing actions related functions via this object for extendibility purposes */
+			/** exposed for extensibility purposes */
 			_actionFns,
 		};
 	},
