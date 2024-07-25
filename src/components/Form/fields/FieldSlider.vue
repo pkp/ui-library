@@ -163,7 +163,12 @@ export default {
 	},
 	computed: {
 		displayedValue() {
-			if (this.valueLabelMin && this.currentValue == this.min) {
+			if (
+				this.valueLabelMin &&
+				(this.currentValue == this.min ||
+					this.currentValue == null ||
+					this.currentValue == undefined)
+			) {
 				return this.replaceLocaleParams(this.valueLabelMin, {
 					value: this.currentValue,
 				});
