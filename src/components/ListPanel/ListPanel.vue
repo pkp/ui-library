@@ -23,6 +23,7 @@
 					<slot name="itemsEmpty">{{ currentEmptyLabel }}</slot>
 				</div>
 				<ul v-else class="listPanel__itemsList">
+					<li class="listPanel__item"><slot name="sub-action"></slot></li>
 					<li v-for="item in items" :key="item.id" class="listPanel__item">
 						<slot name="item" :item="item">
 							<div class="listPanel__itemSummary">

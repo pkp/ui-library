@@ -3,6 +3,13 @@
 		<div class="listPanel__itemSummary">
 			<div class="listPanel__itemIdentity listPanel__itemIdentity--submission">
 				<div class="listPanel__item--submission__id">
+					<input
+						v-if="currentUserCanBulkDeleteIncompleteSubmissions"
+						type="checkbox"
+						name="incomplete-submissions"
+						:checked="isSelectedForDeletion"
+						@change="toggleSelection"
+					/>
 					{{ item.id }}
 				</div>
 				<div class="listPanel__itemTitle">
@@ -254,6 +261,10 @@ export default {
 			type: Object,
 			required: true,
 		},
+		isSelectedForDeletion: {
+			type: Boolean,
+			required: false,
+		},
 	},
 	data() {
 		return {
@@ -297,6 +308,18 @@ export default {
 				return true;
 			}
 			return false; // @todo
+		},
+
+		/**
+		 * Can the current user bulk delete incomplete submission?
+		 *
+		 * @return {Boolean}
+		 */
+		currentUserCanBulkDeleteIncompleteSubmissions() {
+			return (
+				this.userHasRole(pkp.const.ROLE_ID_SITE_ADMIN) &&
+				this.item.submissionProgress
+			);
 		},
 
 		/**
@@ -577,6 +600,8 @@ export default {
 					}
 				});
 			});
+
+			console.log({id: this.item.id, roles});
 			return roles;
 		},
 
@@ -866,6 +891,11 @@ export default {
 			});
 
 			return hasRole;
+		},
+
+		/** Toggle selection of a Submission for bulk delete */
+		toggleSelection() {
+			this.$emit('selectedForBulkDelete', this.item.id);
 		},
 	},
 };
