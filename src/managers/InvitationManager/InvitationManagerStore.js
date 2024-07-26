@@ -1,26 +1,29 @@
-import {useTranslation} from '@/composables/useTranslation';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 import {useApiUrl} from '@/composables/useApiUrl';
 import {useUrl} from '@/composables/useUrl';
-import {useFetch} from '@/composables/useFetch';
-import {useAnnouncer} from '@/composables/useAnnouncer';
+import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {computed, ref, watch} from 'vue';
 
-export const useInvitationsPageStore = defineComponentStore(
+export const useInvitationManagerStore = defineComponentStore(
 	'invitationsPage',
 	() => {
 		/**
-		 * Translation
+		 * redirect to send invitation page
 		 */
+		const {pageUrl} = useUrl('invitation/send');
+		const sendInvitationPageUrl = computed(() => {
+			return pageUrl.value;
+		});
+		function sendInvitation() {
+			window.location = sendInvitationPageUrl.value;
+		}
 
-		const {t} = useTranslation();
-
-		/** Announcer */
-
-		const {announce} = useAnnouncer();
-		const pageTitle = ref(null);
+		/**
+		 * get invitations twith paginations
+		 */
 		const invitationCount = ref(0);
 
+		const countPerPage = ref(10);
 		const currentPage = ref(1);
 		function setCurrentPage(_currentPage) {
 			currentPage.value = _currentPage;
@@ -30,35 +33,33 @@ export const useInvitationsPageStore = defineComponentStore(
 		const getInvitationApiUrl = computed(() => {
 			return apiUrl.value;
 		});
-
-		const {pageUrl} = useUrl('management/settings/invitations');
-		const sendInvitationPageUrl = computed(() => {
-			return pageUrl.value;
-		});
-
-		function sendInvitation() {
-			window.location = sendInvitationPageUrl.value;
-		}
 		const {
 			data: invitations,
 			isLoading: isInvitationLoading,
 			fetch: fetchInvitation,
-		} = useFetch(getInvitationApiUrl, {
-			query: {page: currentPage},
+		} = useFetchPaginated(getInvitationApiUrl, {
+			currentPage,
+			pageSize: countPerPage,
 		});
 		watch(
 			[currentPage],
 			async () => {
-				announce(t('common.loading'));
-
 				await fetchInvitation();
-				announce(t('common.loaded'));
 			},
 			{immediate: true},
 		);
 
+		/**
+		 * create user full name
+		 * @param String givenName
+		 * @param String familyName
+		 * @returns String
+		 */
+		function getFullName(givenName, familyName) {
+			return givenName + ' ' + familyName;
+		}
+
 		return {
-			pageTitle,
 			invitationCount,
 			setCurrentPage,
 			sendInvitation,
@@ -66,6 +67,7 @@ export const useInvitationsPageStore = defineComponentStore(
 			// invitation table data
 			invitations,
 			isInvitationLoading,
+			getFullName,
 		};
 	},
 );

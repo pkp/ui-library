@@ -1,7 +1,7 @@
 <template>
 	<div
 		v-if="!isInvitationLoading"
-		class="m-0 flex items-center pb-2 pt-2 text-3xl-normal leading-8"
+		class="flex items-center pb-2 pt-2 text-3xl-normal"
 	>
 		<h4>{{ t('invitation.header') }}({{ store.invitations?.total }})</h4>
 		<div class="ml-auto">
@@ -12,23 +12,17 @@
 	</div>
 	<PkpTable aria-label="Example for basic table">
 		<TableHeader>
-			<TableColumn>Name</TableColumn>
-			<TableColumn>Email</TableColumn>
-			<TableColumn>Invitation</TableColumn>
-			<TableColumn>Status</TableColumn>
-			<TableColumn>Affiliation</TableColumn>
+			<TableColumn>{{ t('invitation.tableHeader.name') }}</TableColumn>
+			<TableColumn>{{ t('about.contact.email') }}</TableColumn>
+			<TableColumn>{{ t('invitation.header') }}</TableColumn>
+			<TableColumn>{{ t('common.status') }}</TableColumn>
+			<TableColumn>{{ t('user.affiliation') }}</TableColumn>
 			<TableColumn></TableColumn>
 		</TableHeader>
 		<TableBody>
 			<TableRow v-for="(row, index) in store.invitations?.data" :key="index">
 				<TableCell>
-					{{
-						row.user?.fullName
-							? row.user.fullName
-							: localize(row.payload.givenName) +
-								' ' +
-								localize(row.payload.familyName)
-					}}
+					{{ store.getFullName(row.payload.givenName, row.payload.familyName) }}
 					<Icon icon="orcid" :inline="true" />
 				</TableCell>
 				<TableCell>
@@ -36,10 +30,10 @@
 				</TableCell>
 				<TableCell>
 					<template
-						v-for="(userGroups, i) in JSON.parse(row.payload.roles)"
+						v-for="(userGroups, i) in row.payload.userGroupsToAdd"
 						:key="i"
 					>
-						<span>{{ userGroups.user_group_name }}</span>
+						<span>{{ userGroups.userGroup }}</span>
 						<br />
 					</template>
 				</TableCell>
@@ -54,22 +48,20 @@
 					}}
 				</TableCell>
 				<TableCell>
-					<Dropdown label="...">
-						<ul>
-							<li class="border-b border-solid border-[#ddd]">
-								<button class="pkpDropdown__action">
-									<Icon class="h-4 w-5" icon="View" />
-									{{ t('common.view') }}
-								</button>
-							</li>
-							<li>
-								<button class="pkpDropdown__action">
-									<Icon class="h-4 w-5" icon="Cancel" />
-									{{ t('invitation.cancel') }}
-								</button>
-							</li>
-						</ul>
-					</Dropdown>
+					<DropdownActions
+						:actions="[
+							{label: 'View', url: '#', icon: 'View'},
+							{
+								label: 'Cancel Invite',
+								url: '#',
+								icon: 'Cancel',
+								isWarnable: true,
+							},
+						]"
+						label="Invitation management options"
+						:display-as-ellipsis="true"
+						direction="left"
+					/>
 				</TableCell>
 			</TableRow>
 		</TableBody>
@@ -93,11 +85,11 @@ import TableBody from '@/components/TableNext/TableBody.vue';
 import TableRow from '@/components/TableNext/TableRow.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import PkpButton from '@/components/Button/Button.vue';
-import {useInvitationsPageStore} from './InvitationPageStore.js';
+import {useInvitationManagerStore} from './InvitationManagerStore.js';
 import Pagination from '@/components/Pagination/Pagination.vue';
 import {useTranslation} from '@/composables/useTranslation';
-import Dropdown from '@/components/Dropdown/Dropdown.vue';
+import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 
-const store = useInvitationsPageStore();
+const store = useInvitationManagerStore();
 const {t} = useTranslation();
 </script>

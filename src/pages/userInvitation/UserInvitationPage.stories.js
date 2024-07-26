@@ -41,18 +41,18 @@ export const Init = {
 					},
 				),
 				http.post(
-					'https://mock/index.php/publicknowledge/api/v1/invitations',
+					'https://mock/index.php/publicknowledge/api/v1/invitations/add/userRoleAssignment',
 					() => {
 						return HttpResponse.json({invitationId: 15});
 					},
 				),
 				http.post(
-					'https://mock/index.php/publicknowledge/api/v1/invitations/15',
+					'https://mock/index.php/publicknowledge/api/v1/invitations/15/populate',
 					async ({request}) => {
 						const data = await request.json();
 						let errors = {};
 
-						data.userGroupsToAdd.forEach((element, index) => {
+						data.invitationData.userGroupsToAdd.forEach((element, index) => {
 							let objectErrors = {};
 							Object.keys(element).forEach((key) => {
 								if (element[key] === null) {
@@ -67,27 +67,29 @@ export const Init = {
 							}
 						});
 
-						if (data.email === '') {
+						if (data.invitationData.email === '') {
 							errors['email'] = ['This field is required'];
 						}
-						if (data.orcid === '') {
+						if (data.invitationData.orcid === '') {
 							errors['orcid'] = ['This field is required'];
 						}
-						if (data.familyName === '') {
+						if (data.invitationData.familyName === '') {
 							errors['familyName'] = ['This field is required'];
 						}
-						if (data.givenName === '') {
+						if (data.invitationData.givenName === '') {
 							errors['givenName'] = ['This field is required'];
 						}
 
-						Object.keys(data.emailComposer).forEach((element) => {
-							if (data.emailComposer[element] === '') {
-								errors['emailComposer'] = {
-									...errors['emailComposer'],
-									[element]: ['This field is required'],
-								};
-							}
-						});
+						Object.keys(data.invitationData.emailComposer).forEach(
+							(element) => {
+								if (data.invitationData.emailComposer[element] === '') {
+									errors['emailComposer'] = {
+										...errors['emailComposer'],
+										[element]: ['This field is required'],
+									};
+								}
+							},
+						);
 
 						if (Object.keys(errors).length > 0) {
 							return HttpResponse.json(errors, {status: 422});
@@ -97,7 +99,7 @@ export const Init = {
 					},
 				),
 				http.post(
-					'https://mock/index.php/publicknowledge/api/v1/invitations/15/submit',
+					'https://mock/index.php/publicknowledge/api/v1/invitations/15/invite',
 					() => {
 						return HttpResponse.json({});
 					},

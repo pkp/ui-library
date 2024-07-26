@@ -1,23 +1,35 @@
 export default {
-	userId: null,
-	payload: {
-		givenName: 'test',
-		familyName: '',
-		orcid: '',
-		userGroupsToAdd: [
-			{
-				dateStart: '2024-06-29',
-				masthead: true,
-				userGroup: 12,
-				userGroupName: 'Marketing and Sales Cordinator',
-			},
-			{
-				dateStart: '2024-06-29',
-				masthead: false,
-				userGroup: 14,
-				userGroupName: 'Author',
-			},
-		],
+	invitationModel: {
+		invitation_id: 31,
+		user_id: null,
+		expiry_date: '2024-07-28T13:48:17.000000Z',
+		status: 'PENDING',
+		email: 'ipula.ranasinghe@tib.eu',
+		context_id: 1,
 	},
-	email: 'test@mailinator.com',
+	orcid: null,
+	givenName: 'Ipula',
+	familyName: 'Ranasinghe',
+	affiliation: 'TIB',
+	country: 'BD',
+	username: 'ipula',
+	password: 'admin',
+	emailSubject: null,
+	emailBody: null,
+	existingUser: null,
+	userGroupsToAdd: [
+		{
+			dateStart: '2024-06-29',
+			masthead: true,
+			userGroup: 12,
+			userGroupName: 'Marketing and Sales Cordinator',
+		},
+		{
+			dateStart: '2024-06-29',
+			masthead: false,
+			userGroup: 14,
+			userGroupName: 'Author',
+		},
+	],
+	userGroupsToRemove: [],
 };

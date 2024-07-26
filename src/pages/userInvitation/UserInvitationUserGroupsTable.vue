@@ -149,7 +149,7 @@ function addUserGroup() {
 function removeUserGroup(userGroup, index) {
 	store.invitationPayload.currentUserGroups.splice(index, 1);
 	const userGroupsToRemove = [...store.invitationPayload.userGroupsToRemove];
-	userGroupsToRemove.push(userGroup.id);
+	userGroupsToRemove.push({userGroup: userGroup.id});
 	store.updatePayload('userGroupsToRemove', userGroupsToRemove);
 }
 

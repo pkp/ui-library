@@ -51,22 +51,18 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			} else {
 				updateAcceptInvitationPayload(
 					'familyName',
-					data.value.payload.familyName,
+					data.value.familyName,
 					true,
 				);
-				updateAcceptInvitationPayload(
-					'givenName',
-					data.value.payload.givenName,
-					true,
-				);
-				updateAcceptInvitationPayload('orcid', data.value.payload.orcid, true);
+				updateAcceptInvitationPayload('givenName', data.value.givenName, true);
+				updateAcceptInvitationPayload('orcid', data.value.orcid, true);
 				updateAcceptInvitationPayload(
 					'userGroupsToAdd',
-					data.value.payload.userGroupsToAdd,
+					data.value.userGroupsToAdd,
 					true,
 				);
-				email.value = data.value.email;
-				userId.value = data.value.userId;
+				email.value = data.value.invitationModel.email;
+				userId.value = data.value.invitationModel.user_id;
 				errors.value = [];
 				if (steps.value.length === 0) {
 					await submit();
@@ -228,7 +224,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			if (!currentStep.value) {
 				return '';
 			}
-			return currentStep.value.stepName.replace(
+			return currentStep.value.stepLabel.replace(
 				'{$step}',
 				'STEP ' + (1 + currentStepIndex.value),
 			);
@@ -241,7 +237,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			if (!currentStep.value) {
 				return '';
 			}
-			return currentStep.value.stepButtonName;
+			return currentStep.value.nextButtonLabel;
 		});
 
 		/**
@@ -292,7 +288,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			const {validationError, fetch} = useFetch(updateInvitationUrl, {
 				expectValidationError: true,
 				method: 'PUT',
-				body: updatedPayload.value,
+				body: {invitationData: updatedPayload.value},
 			});
 			await fetch();
 			if (validationError.value) {
@@ -338,7 +334,8 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 							{
 								label: t('acceptInvitation.modal.button'),
 								callback: (close) => {
-									close();
+									const {redirectToPage} = useUrl('submissions');
+									redirectToPage();
 								},
 							},
 						],

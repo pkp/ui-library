@@ -3,7 +3,7 @@
 		<div class="py-1">
 			<FormDisplayItemBasic
 				heading-element="h4"
-				:heading="t('user.emailAddress')"
+				:heading="t('user.email')"
 				:value="store.email"
 			></FormDisplayItemBasic>
 		</div>

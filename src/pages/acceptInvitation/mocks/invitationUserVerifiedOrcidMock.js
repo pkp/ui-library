@@ -1,23 +1,35 @@
 export default {
-	userId: 35,
-	payload: {
-		givenName: 'test',
-		familyName: '',
-		orcid: '',
-		userGroupsToAdd: [
-			{
-				dateStart: '2024-06-29',
-				masthead: true,
-				userGroup: 12,
-				userGroupName: 'Marketing and Sales Cordinator',
-			},
-			{
-				dateStart: '2024-06-29',
-				masthead: false,
-				userGroup: 14,
-				userGroupName: 'Author',
-			},
-		],
+	invitationModel: {
+		invitation_id: 31,
+		user_id: 35,
+		expiry_date: '2024-07-28T13:48:17.000000Z',
+		status: 'PENDING',
+		email: 'test@mailinator.com',
+		context_id: 1,
 	},
-	email: 'test@mailinator.com',
+	orcid: '',
+	givenName: 'Test',
+	familyName: 'Test',
+	affiliation: 'Tst',
+	country: 'BD',
+	username: 'test',
+	password: '123456',
+	emailSubject: null,
+	emailBody: null,
+	existingUser: null,
+	userGroupsToAdd: [
+		{
+			dateStart: '2024-06-29',
+			masthead: true,
+			userGroup: 12,
+			userGroupName: 'Marketing and Sales Cordinator',
+		},
+		{
+			dateStart: '2024-06-29',
+			masthead: false,
+			userGroup: 14,
+			userGroupName: 'Author',
+		},
+	],
+	userGroupsToRemove: [],
 };

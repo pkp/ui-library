@@ -1,16 +1,19 @@
-import InvitationPage from './InvitationPage.vue';
+import InvitationManager from './InvitationManager.vue';
 import {http, HttpResponse} from 'msw';
 import {page1, page2} from './mocks/invitationMock.js';
 
-export default {title: 'Pages/InvitationPage', component: InvitationPage};
+export default {
+	title: 'Managers/InvitationManager',
+	component: InvitationManager,
+};
 
 export const Init = {
 	render: (args) => ({
-		components: {InvitationPage},
+		components: {InvitationManager},
 		setup() {
 			return {args};
 		},
-		template: '<InvitationPage/>',
+		template: '<InvitationManager/>',
 	}),
 	parameters: {
 		msw: {
