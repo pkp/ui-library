@@ -11,7 +11,7 @@ import TablePagination from './TablePagination.vue';
 import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
 import {http, HttpResponse} from 'msw';
 
-import articleStats from '@/components/Table/mocks/articleStats.js';
+import articleStats from '@/components/TableNext/mocks/articleStats.js';
 import {useSorting} from '@/composables/useSorting';
 
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
