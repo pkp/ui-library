@@ -533,7 +533,7 @@ const PublicationStatsPageWithDataAndTemplate = {
 					<PkpTable
 						aria-label="Article Details"
 						:class="tableClasses"
-						@order-by="setOrderBy"
+						@sort="setOrderBy"
 					>
 						<TableHeader>
 							<TableColumn v-for="column in tableColumns" :key="column.name" :id="column.name">
