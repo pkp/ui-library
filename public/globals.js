@@ -527,8 +527,8 @@ window.pkp = {
 		'submissions.declined': 'Declined',
 		'submissions.incomplete': 'Incomplete',
 		todo: '##todo##',
-		'user.email': 'Email',
-		'user.emailAddress': 'Email Address',
+		'about.contact.email': 'Email',
+		'user.email': 'Email Address',
 		'user.orcid': 'ORCID iD',
 		'user.username': 'Username',
 		'user.password': 'Password',
@@ -560,6 +560,11 @@ window.pkp = {
 		'acceptInvitation.modal.button':'View All Submissions',
 		'acceptInvitation.privacyStatement.btn':'Privacy Statement',
 		'acceptInvitation.privacyStatement.label':'Yes, I agree to have my data collected and stored according to the',
+		'invitation.cancel': 'Cancel Invite',
+		'invitation.inviteToRole.btn': 'Invite to a role',
+		'invitation.header': 'Invitation',
+		'invitation.tableHeader.name': 'Name',
+
 	},
 
 	tinyMCE: {

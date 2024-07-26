@@ -39,7 +39,7 @@ export default {
 	pageTitleDescription:
 		'You are inviting a user to take a role in OJS along with appearing in the journal masthead',
 	primaryLocale: 'en',
-	invitationType: 'RoleUpdateForNewUser',
+	invitationType: 'userRoleAssignment',
 	invitationPayload: {
 		userId: null,
 		email: '',
@@ -61,7 +61,7 @@ export default {
 		{
 			id: 'searchUser',
 			name: 'Search User',
-			reviewName: '{$step} - Search User',
+			stepLabel: '{$step} - Search User',
 			description:
 				'Search for the user using their email address, username or ORCID iD. Enter at least one details to get started. If user does not exist, ypu can invite them to take up roles and be a part of your journal. If the user already exist in the system, you can view user information and invite to take a additional roles.',
 			nextButtonLabel: 'Search user (t)',
@@ -79,7 +79,7 @@ export default {
 		{
 			id: 'userDetails',
 			name: 'Enter details',
-			reviewName: '{$step} - Enter details and invite for roles',
+			stepLabel: '{$step} - Enter details and invite for roles',
 			type: 'form',
 			description: 'You can invite them to take up a role in OJS',
 			nextButtonLabel: 'Save And Continue (t)',
@@ -283,7 +283,7 @@ export default {
 		{
 			id: 'userInvitedEmail',
 			name: 'Review & invite for roles',
-			reviewName: '{$step} - Modify email shared with the user',
+			stepLabel: '{$step} - Modify email shared with the user',
 			type: 'email',
 			description:
 				'Send the user an email to let them know about the invitation, next steps, journal GDPR polices and ORCiD verification',

@@ -1,7 +1,7 @@
 <template>
 	<div class="space-y-4 p-8">
 		<FieldText
-			:label="t('user.email')"
+			:label="t('about.contact.email')"
 			:value="fields.email"
 			:description="t('userInvitation.emailField.description')"
 			name="email"
@@ -35,6 +35,7 @@ import FieldText from '@/components/Form/fields/FieldText.vue';
 import {useUserInvitationPageStore} from './UserInvitationPageStore';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
+import {useLocalize} from '@/composables/useLocalize';
 
 defineProps({
 	validateFields: {
@@ -46,6 +47,7 @@ defineProps({
 });
 
 const store = useUserInvitationPageStore();
+const {localize} = useLocalize();
 store.registerActionForStepId('searchUser', searchUser);
 
 const fields = ref({email: '', username: '', orcid: ''});
@@ -86,7 +88,7 @@ async function searchUser() {
 			store.updatePayload('familyName', user.fullName.split(' ')[1]);
 			store.updatePayload('orcid', user.orcid);
 			store.updatePayload('currentUserGroups', user.groups);
-			store.updatePayload('affiliation', user.affiliation);
+			store.updatePayload('affiliation', localize(user.affiliation));
 		} else {
 			store.updatePayload('email', fields.value.email);
 		}

@@ -113,6 +113,10 @@ const props = defineProps({
 		type: Object,
 		required: true,
 	},
+	invitationType: {
+		type: String,
+		required: true,
+	},
 });
 const {t} = useTranslation();
 const wrapper = ref(null);

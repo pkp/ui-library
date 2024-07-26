@@ -10,7 +10,7 @@
 		<div class="p-1">
 			<FormDisplayItemBasic
 				heading-element="h4"
-				:heading="t('user.emailAddress')"
+				:heading="t('user.email')"
 				:value="store.invitationPayload.email"
 			></FormDisplayItemBasic>
 

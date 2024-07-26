@@ -111,7 +111,6 @@ const props = defineProps({
 		required: true,
 	},
 });
-
 const {t} = useTranslation();
 const wrapper = ref(null);
 const store = useAcceptInvitationPageStore(props);
