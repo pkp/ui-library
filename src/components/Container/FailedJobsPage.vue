@@ -1,6 +1,7 @@
 <script>
 import JobsPage from './JobsPage.vue';
-import TableCell from '@/components/Table/TableCell.vue';
+import TableCell from '@/components/TableNext/TableCell.vue';
+
 import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
 
 export default {

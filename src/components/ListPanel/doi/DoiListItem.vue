@@ -67,26 +67,37 @@
 			v-if="isExpanded"
 			class="listPanel__itemExpanded listPanel__itemExpanded--doi"
 		>
-			<PkpTable :columns="doiListColumns" :rows="currentVersionDoiObjects">
-				<template #default="{row}">
-					<TableCell :column="doiListColumns[0]" :row="row">
-						<label :for="row.uid" :class="{labelDisabled: row.disabled}">
-							{{ row.displayType }}
-						</label>
-					</TableCell>
-					<TableCell :column="doiListColumns[1]" :row="row">
-						<input
-							:id="row.uid"
-							v-model="
-								mutableDois.find((doi) => doi.uid === row.uid).identifier
-							"
-							class="pkpFormField__input pkpFormField--text__input"
-							type="text"
-							:readonly="!(isEditingDois && !isSaving)"
-							:disabled="isEditingDois && row.disabled"
-						/>
-					</TableCell>
-				</template>
+			<PkpTable :aria-label="'DOI for ' + item.title">
+				<TableHeader>
+					<TableColumn
+						v-for="column in doiListColumns"
+						:key="column.name"
+						:id="column.name"
+					>
+						{{ column.label }}
+					</TableColumn>
+				</TableHeader>
+				<TableBody>
+					<TableRow v-for="row in currentVersionDoiObjects" :key="row.column">
+						<TableCell>
+							<label :for="row.uid" :class="{labelDisabled: row.disabled}">
+								{{ row.displayType }}
+							</label>
+						</TableCell>
+						<TableCell>
+							<input
+								:id="row.uid"
+								v-model="
+									mutableDois.find((doi) => doi.uid === row.uid).identifier
+								"
+								class="pkpFormField__input pkpFormField--text__input"
+								type="text"
+								:readonly="!(isEditingDois && !isSaving)"
+								:disabled="isEditingDois && row.disabled"
+							/>
+						</TableCell>
+					</TableRow>
+				</TableBody>
 			</PkpTable>
 			<span v-if="item.hasDisabled">
 				{{ item.hasDisabledMsg }}
@@ -186,8 +197,12 @@ import Spinner from '@/components/Spinner/Spinner.vue';
 import PkpButton from '@/components/Button/Button.vue';
 
 import Expander from '@/components/Expander/Expander.vue';
-import PkpTable from '@/components/Table/Table.vue';
-import TableCell from '@/components/Table/TableCell.vue';
+import PkpTable from '@/components/TableNext/Table.vue';
+import TableCell from '@/components/TableNext/TableCell.vue';
+import TableColumn from '@/components/TableNext/TableColumn.vue';
+import TableHeader from '@/components/TableNext/TableHeader.vue';
+import TableBody from '@/components/TableNext/TableBody.vue';
+import TableRow from '@/components/TableNext/TableRow.vue';
 import DoiItemViewErrorDialogBody from './DoiItemViewErrorDialogBody.vue';
 import DoiItemViewRegisteredMessageDialogBody from './DoiItemViewRegisteredMessageDialogBody.vue';
 import DoiItemVersionModal from './DoiItemVersionModal.vue';
@@ -202,6 +217,10 @@ export default {
 		Expander,
 		PkpTable,
 		TableCell,
+		TableColumn,
+		TableHeader,
+		TableBody,
+		TableRow,
 	},
 	props: {
 		apiUrl: {

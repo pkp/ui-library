@@ -1,8 +1,8 @@
 import StatsPage from './StatsPage.vue';
 import StatsEditorialPage from '@/components/Container/StatsEditorialPage.vue';
 import StatsPublicationsPage from '@/components/Container/StatsPublicationsPage.vue';
-import ArticleStatsMock from '@/components/Table/mocks/articleStats.js';
-import ArticleStatsColumnsMock from '@/components/Table/mocks/articleStatsColumns.js';
+import ArticleStatsMock from '@/components/TableNext/mocks/articleStats.js';
+import ArticleStatsColumnsMock from '@/components/TableNext/mocks/articleStatsColumns.js';
 import debounce from 'debounce';
 
 export default {
@@ -115,28 +115,20 @@ const EditorialStatsPageWithDataAndTemplate = {
 				<div class="pkpStats__table" role="region" aria-live="polite">
 					<PkpTable
 						class="pkpTable--editorialStats"
-						labelled-by="editorialActivityTabelLabel"
-						:columns="tableColumns"
-						:rows="tableRows"
+						aria-label="Trends"
 					>
-						<template #default="{row, rowIndex}">
-							<TableCell
-								v-for="(column, columnIndex) in tableColumns"
-								:key="column.name"
-								:column="column"
-								:row="row"
-								:tabindex="!rowIndex && !columnIndex ? 0 : -1"
-							>
-								<template #default v-if="column.name === 'name'">
-									{{ row.name }}
-									<Tooltip
-										v-if="row.description"
-										:label="'Description for ' + row.name"
-										:tooltip="row.description"
-									></Tooltip>
-								</template>
-							</TableCell>
-						</template>
+						<TableHeader>
+							<TableColumn v-for="(column, columnIndex) in tableColumns" :key="column.name" :id="column.name">
+								{{column.label}}
+							</TableColumn>
+						</TableHeader>
+						<TableBody>
+							<TableRow v-for="(row, index) in tableRows" :key="index">
+								<TableCell>{{ row.name }}</TableCell>
+								<TableCell>{{ row.dateRange }}</TableCell>
+								<TableCell>{{ row.total }}</TableCell>
+							</TableRow>
+						</TableBody>
 					</PkpTable>
 				</div>
 			</div>
@@ -539,22 +531,37 @@ const PublicationStatsPageWithDataAndTemplate = {
 						</template>
 					</PkpHeader>
 					<PkpTable
-						labelled-by="articleDetailTableLabel"
+						aria-label="Article Details"
 						:class="tableClasses"
-						:columns="tableColumns"
-						:rows="items"
-						:order-by="orderBy"
-						:order-direction="orderDirection"
 						@order-by="setOrderBy"
 					>
-						<template #thead-title>
-							<Search
-								class="pkpStats__titleSearch"
-								:search-phrase="searchPhrase"
-								search-label="Search by title, author and ID"
-								@search-phrase-changed="setSearchPhrase"
-							/>
-						</template>
+						<TableHeader>
+							<TableColumn v-for="column in tableColumns" :key="column.name" :id="column.name">
+								<template v-if="column.name === 'title'">
+									{{ column.label }}
+									<Search
+										class="pkpStats__titleSearch"
+										:search-phrase="searchPhrase"
+										search-label="Search by title, author and ID"
+										@search-phrase-changed="setSearchPhrase"
+									/>
+								</template>
+								<template v-else>
+									{{ column.label }}
+								</template>
+							</TableColumn>
+						</TableHeader>
+						<TableBody>
+							<TableRow v-for="(row) in items" :key="row.key">
+								<TableCell>{{ row.object.fullTitle.en}}</TableCell>
+								<TableCell>{{ row.abstractViews }}</TableCell>
+								<TableCell>{{ row.galleyViews }}</TableCell>
+								<TableCell>{{ row.pdfViews }}</TableCell>
+								<TableCell>{{ row.htmlViews }}</TableCell>
+								<TableCell>{{ row.otherViews }}</TableCell>
+								<TableCell>{{ row.total }}</TableCell>
+							</TableRow>
+						</TableBody>
 					</PkpTable>
 					<div v-if="!items.length" class="pkpStats__noRecords">
 						<template v-if="isLoadingItems">
