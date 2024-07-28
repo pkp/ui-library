@@ -23,7 +23,12 @@
 					<slot name="itemsEmpty">{{ currentEmptyLabel }}</slot>
 				</div>
 				<ul v-else class="listPanel__itemsList">
-					<li class="listPanel__item"><slot name="sub-action"></slot></li>
+					<li
+						v-if="!!$slots['sub-action']"
+						class="listPanel__item listPanel__item__sub_action"
+					>
+						<slot name="sub-action"></slot>
+					</li>
 					<li v-for="item in items" :key="item.id" class="listPanel__item">
 						<slot name="item" :item="item">
 							<div class="listPanel__itemSummary">
@@ -332,6 +337,11 @@ export default {
 	> * + * {
 		margin-inline-start: 0.25rem;
 	}
+}
+
+.listPanel__item__sub_action {
+	padding-top: 0;
+	padding-bottom: 0;
 }
 
 .listPanel__footer {

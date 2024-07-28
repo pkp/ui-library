@@ -78,9 +78,14 @@
 
 			<template v-if="hasSubmissionsSelectedForDeletion" #sub-action>
 				<div>
-					<span class="font-bold">{{ bulkSelectionNote }}</span>
+					<span class="font-bold">
+						{{ t('admin.submissions.incomplete.bulkDelete.selectionStatus') }}
+					</span>
 					<span class="text-primary">
-						<PkpButton :is-link="true" @click="toggleAllCheckBoxes()">
+						<PkpButton
+							:is-link="true"
+							@click="toggleAllIncompleteSubmissionsSelection()"
+						>
 							{{ checkAllIncompleteSubmissionText }}
 						</PkpButton>
 					</span>
@@ -98,7 +103,7 @@
 							selectedIncompleteSubmissions.includes(item.id)
 						"
 						@addFilter="addFilter"
-						@selectedForBulkDelete="selectForBulkDelete"
+						@selectedForBulkDelete="toggleSubmissionSelection"
 					/>
 				</slot>
 			</template>
@@ -239,42 +244,51 @@ export default {
 				])
 			);
 		},
+
 		/**
 		 * Does the user currently have any Incomplete submissions selected for deletion?
+		 * @returns {Boolean}
 		 */
 		hasSubmissionsSelectedForDeletion() {
-			return this.selectedIncompleteSubmissions.length > 0;
+			return !!this.selectedIncompleteSubmissions.length;
 		},
-		totalSubmissionsSelected() {
-			return this.selectedIncompleteSubmissions.length;
-		},
+
+		/**
+		 * Has the user selected all incomplete submissions?
+		 * @returns {Boolean}
+		 */
 		hasSelectedAllIncompleteSubmissions() {
 			return (
-				this.totalSubmissionsSelected === this.incompleteSubmissions.length
+				this.selectedIncompleteSubmissions.length ===
+				this.incompleteSubmissions.length
 			);
 		},
+
+		/**
+		 * Get the Incomplete Submissions
+		 * @returns {Array}
+		 */
 		incompleteSubmissions() {
 			return this.items.filter((submission) => submission.submissionProgress);
 		},
+
+		/**
+		 * Returns a text label for toggling the selection of all incomplete submissions.
+		 * If all incomplete submissions are selected, it returns the label for deselecting all.
+		 * If not all incomplete submissions are selected, it returns the label for selecting all.
+		 */
 		checkAllIncompleteSubmissionText() {
 			return this.hasSelectedAllIncompleteSubmissions
 				? this.t('common.deselectAll')
 				: this.t('common.selectAll');
 		},
+
 		/**
-		 * Can the current user bulk delete incomplete submission?
-		 *
-		 * @return {bool}
+		 * Can the current user bulk delete incomplete submissions?
+		 * @return {Boolean}
 		 */
 		currentUserCanBulkDeleteIncompleteSubmissions() {
 			return this.userHasRole(pkp.const.ROLE_ID_SITE_ADMIN);
-		},
-
-		bulkSelectionNote() {
-			return this.t('admin.submissions.incomplete.bulkDelete.selectionStatus', {
-				selected: this.totalSubmissionsSelected,
-				total: this.incompleteSubmissions.length,
-			});
 		},
 	},
 	mounted() {
@@ -422,10 +436,13 @@ export default {
 
 			return hasRole;
 		},
+
 		/**
-		 * Add an item to the list of submissions to be bulk deleted
-		 **/
-		selectForBulkDelete(id) {
+		 * Toggles the selection of a specific Incomplete submission with given ID.
+		 * Adds the submission to the selection list if it is not already selected.
+		 * Removes the submission from the selection list if it is currently selected.
+		 */
+		toggleSubmissionSelection(id) {
 			const existingEntry = this.selectedIncompleteSubmissions.find(
 				(submissionId) => submissionId === id,
 			);
@@ -439,20 +456,56 @@ export default {
 					);
 			}
 		},
-		toggleAllCheckBoxes() {
+
+		/**
+		 * Selects or deselects all incomplete submissions based on current selection state.
+		 * If all Incomplete submissions are selected, it clears the selection.
+		 * If not all Incomplete submissions are selected, it selects them all.
+		 */
+		toggleAllIncompleteSubmissionsSelection() {
 			this.selectedIncompleteSubmissions = this
 				.hasSelectedAllIncompleteSubmissions
 				? []
 				: this.incompleteSubmissions.map(({id}) => id);
 		},
-		handleBulkDeleteButtonClick() {
-			if (this.hasSubmissionsSelectedForDeletion) {
-				this.$.modal.show('bulk-delete-confirm');
-			}
+
+		/**
+		 * Delete selected submissions
+		 */
+		deleteIncompleteSubmissions(closeDialog) {
+			const self = this;
+
+			$.ajax({
+				url:
+					this.apiUrl +
+					`?${$.param({ids: self.selectedIncompleteSubmissions.join(',')})}`,
+				type: 'POST',
+				headers: {
+					'X-Csrf-Token': pkp.currentUser.csrfToken,
+					'X-Http-Method-Override': 'DELETE',
+				},
+				error: self.ajaxErrorCallback,
+				success() {
+					self.setItems(
+						self.items.filter(
+							(item) => !self.selectedIncompleteSubmissions.includes(item.id),
+						),
+						self.itemsMax - 1,
+					);
+					pkp.eventBus.$emit(
+						'notify',
+						self.t('admin.submissions.incomplete.bulkDelete.success'),
+						'success',
+					);
+					self.selectedIncompleteSubmissions = [];
+					closeDialog();
+				},
+			});
 		},
-		deleteIncompleteSubmissions() {
-			console.log('deleting');
-		},
+
+		/**
+		 * Display a confirmation prompt before deleting submissions
+		 */
 		promptDeleteConfirmation() {
 			if (!this.hasSubmissionsSelectedForDeletion) {
 				return;
@@ -467,8 +520,7 @@ export default {
 						label: this.t('common.confirm'),
 						isPrimary: true,
 						callback: (close) => {
-							this.deleteIncompleteSubmissions();
-							close();
+							this.deleteIncompleteSubmissions(close);
 						},
 					},
 					{

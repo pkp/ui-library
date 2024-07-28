@@ -8,9 +8,10 @@
 						type="checkbox"
 						name="incomplete-submissions"
 						:checked="isSelectedForDeletion"
+						class="listPanel__item--submission__checkbox"
 						@change="toggleSelection"
 					/>
-					{{ item.id }}
+					<span>{{ item.id }}</span>
 				</div>
 				<div class="listPanel__itemTitle">
 					<span v-if="currentUserIsReviewer">
@@ -311,7 +312,7 @@ export default {
 		},
 
 		/**
-		 * Can the current user bulk delete incomplete submission?
+		 * Can the current user bulk delete incomplete submissions?
 		 *
 		 * @return {Boolean}
 		 */
@@ -600,8 +601,6 @@ export default {
 					}
 				});
 			});
-
-			console.log({id: this.item.id, roles});
 			return roles;
 		},
 
@@ -910,7 +909,7 @@ export default {
 
 .listPanel__itemIdentity--submission,
 .listPanel__itemExpanded--submission {
-	padding-inline-start: 2.5rem;
+	padding-inline-start: 5rem;
 }
 
 .listPanel__item--submission__id {
@@ -920,6 +919,14 @@ export default {
 	font-size: @font-tiny;
 	line-height: 1.5rem; // Match baseline of title/author
 	color: @text;
+	display: flex;
+	justify-content: flex-end;
+	gap: 1rem;
+	width: 3rem;
+}
+
+.listPanel__item--submission__checkbox {
+	cursor: pointer;
 }
 
 .listPanel__item--submission__title,
