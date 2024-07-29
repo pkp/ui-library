@@ -488,11 +488,12 @@ export default {
 		 * Set the orderBy and orderDirection values
 		 *
 		 * @param string orderBy What param to order by
-		 * @param boolean orderDirection true = DESC, false = ASC
 		 */
-		setOrderBy(orderBy, orderDirection) {
+		setOrderBy(orderBy) {
 			this.orderBy = orderBy;
-			this.orderDirection = orderDirection;
+
+			// Toggle the boolean value of orderDirection
+			this.orderDirection = !this.orderDirection;
 		},
 
 		/**

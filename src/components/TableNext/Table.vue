@@ -1,6 +1,6 @@
 <template>
 	<table
-		class="w-full max-w-full border-separate border-spacing-0"
+		class="pkpTable w-full max-w-full border-separate border-spacing-0"
 		:aria-label="ariaLabel"
 	>
 		<slot />
