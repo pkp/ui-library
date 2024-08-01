@@ -9,12 +9,14 @@ import PkpHeader from '@/components/Header/Header.vue';
 import LocalizeSubmission from '@/mixins/localizeSubmission.js';
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
+import ChangeSubmissionLanguage from '@/pages/workflow/ChangeSubmissionLanguage.vue';
 import SelectRevisionDecisionModal from '@/pages/workflow/SelectRevisionDecisionModal.vue';
 import {useModal} from '@/composables/useModal';
 
 export default {
 	name: 'WorkflowPage',
 	components: {
+		ChangeSubmissionLanguage,
 		ContributorsListPanel,
 		Composer,
 		Dropdown,
@@ -28,6 +30,8 @@ export default {
 		return {
 			activityLogLabel: '',
 			canAccessPublication: false,
+			canChangeSubmissionLanguage: false,
+			currentSubmissionLanguageLabel: '',
 			canEditPublication: false,
 			currentPublication: null,
 			decisionUrl: '',
@@ -309,6 +313,20 @@ export default {
 					'" ' +
 					'class="pkp_modal pkpModalWrapper" tabIndex="-1"></div>',
 			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
+		},
+
+		/**
+		 * Open a modal displaying the change submission language form
+		 */
+		openChangeSubmissionLanguageModal() {
+			const {openSideModal} = useModal();
+			openSideModal(ChangeSubmissionLanguage, {
+				form: this.components[
+					pkp.const.FORM_CHANGE_SUBMISSION_LANGUAGE_METADATA
+				],
+				publicationId: this.workingPublication.id,
+				submissionId: this.submission.id,
+			});
 		},
 
 		/**
@@ -732,6 +750,20 @@ export default {
 			animation-duration: 0.8s;
 		}
 	}
+}
+
+.pkpSubmission__localeNotSupported {
+	margin: 0 -2rem;
+	padding: 1rem;
+	background: @primary;
+	font-size: @font-sml;
+	color: #fff;
+	text-align: center;
+}
+
+.pkpPublication__changeSubmissionLanguage {
+	display: block;
+	padding-bottom: 0.25rem;
 }
 
 // Integrate the grids in the publication tab
