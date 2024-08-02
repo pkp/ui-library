@@ -1,17 +1,17 @@
 <template>
 	<div class="contributorsListPanel">
 		<slot>
-			<list-panel
+			<ListPanel
 				:items="items"
 				class="listPanel--contributor"
 				:class="isOrdering ? '-isOrdering' : ''"
 			>
 				<template #header>
-					<pkp-header>
+					<PkpHeader>
 						<h2>{{ title }}</h2>
-						<spinner v-if="isLoading" />
+						<Spinner v-if="isLoading" />
 						<template #actions>
-							<pkp-button
+							<PkpButton
 								v-if="
 									publication.status !== getConstant('STATUS_PUBLISHED') &&
 									canEditPublication
@@ -22,23 +22,23 @@
 								@click="toggleOrdering"
 							>
 								{{ orderingLabel }}
-							</pkp-button>
-							<pkp-button
+							</PkpButton>
+							<PkpButton
 								v-if="isOrdering"
 								:is-warnable="true"
 								:disabled="isLoading"
 								@click="cancelOrdering"
 							>
 								{{ t('common.cancel') }}
-							</pkp-button>
-							<pkp-button
+							</PkpButton>
+							<PkpButton
 								v-if="!isOrdering"
 								:disabled="isLoading"
 								@click="openPreviewModal"
 							>
-								{{ i18nPreview }}
-							</pkp-button>
-							<pkp-button
+								{{ t('contributor.listPanel.preview') }}
+							</PkpButton>
+							<PkpButton
 								v-if="
 									!isOrdering &&
 									publication.status !== getConstant('STATUS_PUBLISHED') &&
@@ -47,16 +47,16 @@
 								:disabled="isLoading"
 								@click="openAddModal"
 							>
-								{{ i18nAddContributor }}
-							</pkp-button>
+								{{ t('grid.action.addContributor') }}
+							</PkpButton>
 						</template>
-					</pkp-header>
+					</PkpHeader>
 				</template>
 				<template #item-title="{item}">
 					{{ item.fullName }}
-					<badge v-if="item.userGroupName">
+					<Badge v-if="item.userGroupName">
 						{{ localize(item.userGroupName) }}
-					</badge>
+					</Badge>
 				</template>
 				<template #item-subtitle="{item}">
 					{{ localize(item.affiliation) }}
@@ -69,7 +69,7 @@
 					#item-actions="{item}"
 				>
 					<template v-if="isOrdering">
-						<orderer
+						<Orderer
 							:item-id="item.id"
 							:item-title="item.fullName"
 							@up="contributorItemOrderUp(item)"
@@ -77,100 +77,58 @@
 						/>
 					</template>
 					<template v-else>
-						<badge
+						<Badge
 							v-if="publication.primaryContactId == item.id"
 							:is-primary="true"
 						>
-							{{ i18nPrimaryContact }}
-						</badge>
-						<pkp-button
+							{{ t('author.users.contributor.principalContact') }}
+						</Badge>
+						<PkpButton
 							v-else
 							:disabled="isLoading"
 							@click="setPrimaryContact(item.id)"
 						>
-							{{ i18nSetPrimaryContact }}
-						</pkp-button>
-						<pkp-button :disabled="isLoading" @click="openEditModal(item.id)">
+							{{ t('author.users.contributor.setPrincipalContact') }}
+						</PkpButton>
+						<PkpButton :disabled="isLoading" @click="openEditModal(item.id)">
 							{{ t('common.edit') }}
-						</pkp-button>
-						<pkp-button
+						</PkpButton>
+						<PkpButton
 							:disabled="isLoading"
 							:is-warnable="true"
 							@click="openDeleteModal(item.id)"
 						>
 							{{ t('common.delete') }}
-						</pkp-button>
+						</PkpButton>
 					</template>
 				</template>
-			</list-panel>
-			<modal
-				:close-label="t('common.close')"
-				:name="formModal"
-				:title="activeFormTitle"
-				:open="isModalOpenedForm"
-				@close="closeFormModal"
-			>
-				<pkp-form
-					v-bind="activeForm"
-					@set="updateForm"
-					@success="formSuccess"
-				/>
-			</modal>
-			<modal
-				:close-label="t('common.close')"
-				:name="previewModal"
-				:title="i18nContributors"
-				:open="isModalOpenedPreview"
-				@close="isModalOpenedPreview = false"
-			>
-				<p>
-					{{ i18nPreviewDescription }}
-				</p>
-				<table class="pkpTable">
-					<thead>
-						<tr>
-							<th>{{ i18nFormat }}</th>
-							<th>{{ i18nDisplay }}</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>{{ i18nAbbreviated }}</td>
-							<td>{{ publication.authorsStringShort }}</td>
-						</tr>
-						<tr>
-							<td>
-								{{ i18nPublicationLists }}
-							</td>
-							<td>{{ publication.authorsStringIncludeInBrowse }}</td>
-						</tr>
-						<tr>
-							<td>{{ i18nFull }}</td>
-							<td>{{ publication.authorsString }}</td>
-						</tr>
-					</tbody>
-				</table>
-			</modal>
+			</ListPanel>
 		</slot>
 	</div>
 </template>
 
 <script>
+import Spinner from '@/components/Spinner/Spinner.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Badge from '@/components/Badge/Badge.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
-import Modal from '@/components/Modal/Modal.vue';
 import Orderer from '@/components/Orderer/Orderer.vue';
-import PkpForm from '@/components/Form/Form.vue';
 import PkpHeader from '@/components/Header/Header.vue';
+import ContributorsPreviewModal from './ContributorsPreviewModal.vue';
+import ContributorsEditModal from './ContributorsEditModal.vue';
+
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
 import cloneDeep from 'clone-deep';
+import {useModal} from '@/composables/useModal';
 
 export default {
 	components: {
+		Spinner,
+		PkpButton,
+		Badge,
 		ListPanel,
-		Modal,
 		Orderer,
-		PkpForm,
 		PkpHeader,
 	},
 	mixins: [ajaxError, dialog],
@@ -205,66 +163,6 @@ export default {
 			type: Object,
 			required: true,
 		},
-		i18nAbbreviated: {
-			type: String,
-			required: true,
-		},
-		i18nAddContributor: {
-			type: String,
-			required: true,
-		},
-		i18nConfirmDelete: {
-			type: String,
-			required: true,
-		},
-		i18nContributors: {
-			type: String,
-			required: true,
-		},
-		i18nDisplay: {
-			type: String,
-			required: true,
-		},
-		i18nDeleteContributor: {
-			type: String,
-			required: true,
-		},
-		i18nEditContributor: {
-			type: String,
-			required: true,
-		},
-		i18nFormat: {
-			type: String,
-			required: true,
-		},
-		i18nFull: {
-			type: String,
-			required: true,
-		},
-		i18nPreview: {
-			type: String,
-			required: true,
-		},
-		i18nPreviewDescription: {
-			type: String,
-			required: true,
-		},
-		i18nPrimaryContact: {
-			type: String,
-			required: true,
-		},
-		i18nPublicationLists: {
-			type: String,
-			required: true,
-		},
-		i18nSaveOrder: {
-			type: String,
-			required: true,
-		},
-		i18nSetPrimaryContact: {
-			type: String,
-			required: true,
-		},
 	},
 	data() {
 		return {
@@ -273,8 +171,6 @@ export default {
 			isOrdering: false,
 			isLoading: false,
 			itemsBeforeReordering: null,
-			isModalOpenedForm: false,
-			isModalOpenedPreview: false,
 		};
 	},
 	computed: {
@@ -319,7 +215,9 @@ export default {
 		 * @return {String}
 		 */
 		orderingLabel() {
-			return this.isOrdering ? this.i18nSaveOrder : this.t('common.order');
+			return this.isOrdering
+				? this.t('grid.action.saveOrdering')
+				: this.t('common.order');
 		},
 	},
 	methods: {
@@ -338,7 +236,8 @@ export default {
 		 * @param {Object} event
 		 */
 		closeFormModal(event) {
-			this.isModalOpenedForm = false;
+			const {closeSideModal} = useModal();
+			closeSideModal(ContributorsEditModal);
 			this.activeForm = null;
 			this.activeFormTitle = '';
 		},
@@ -377,7 +276,10 @@ export default {
 			this.isLoading = true;
 
 			this.getAndUpdatePublication(() => {
-				this.isModalOpenedPreview = true;
+				const {openSideModal} = useModal();
+				openSideModal(ContributorsPreviewModal, {
+					publication: this.publication,
+				});
 			});
 		},
 
@@ -389,8 +291,14 @@ export default {
 			activeForm.action = this.contributorsApiUrl;
 			activeForm.method = 'POST';
 			this.activeForm = activeForm;
-			this.activeFormTitle = this.i18nAddContributor;
-			this.isModalOpenedForm = true;
+			this.activeFormTitle = this.t('grid.action.addContributor');
+			const {openSideModal} = useModal();
+			openSideModal(ContributorsEditModal, {
+				title: this.activeFormTitle,
+				activeForm: this.activeForm,
+				onUpdateForm: this.updateForm,
+				onFormSuccess: this.formSuccess,
+			});
 		},
 
 		/**
@@ -403,13 +311,13 @@ export default {
 
 			this.openDialog({
 				name: 'delete',
-				title: this.i18nDeleteContributor,
-				message: this.replaceLocaleParams(this.i18nConfirmDelete, {
+				title: this.t('grid.action.deleteContributor'),
+				message: this.t('grid.action.deleteContributor.confirmationMessage', {
 					name: contributor.fullName,
 				}),
 				actions: [
 					{
-						label: this.i18nDeleteContributor,
+						label: this.t('grid.action.deleteContributor'),
 						isWarnable: true,
 						callback: (close) => {
 							this.isLoading = true;
@@ -436,7 +344,7 @@ export default {
 										},
 									);
 									this.$emit('updated:contributors', newContributors);
-									
+
 									this.getAndUpdatePublication();
 								},
 								complete(r) {
@@ -475,14 +383,24 @@ export default {
 					activeForm.action = apiUrl;
 					activeForm.method = 'PUT';
 					activeForm.fields = activeForm.fields.map((field) => {
-						if (Object.keys(author).includes(field.name)) {
+						if (field.name === 'orcid') {
+							field.orcid = author['orcid'] ?? '';
+							field.authorId = author['id'];
+							field.isVerified = author['orcidIsVerified'] ?? false;
+						} else if (Object.keys(author).includes(field.name)) {
 							field.value = author[field.name];
 						}
 						return field;
 					});
 					this.activeForm = activeForm;
-					this.activeFormTitle = this.i18nEditContributor;
-					this.isModalOpenedForm = true;
+					this.activeFormTitle = this.t('grid.action.edit');
+					const {openSideModal} = useModal();
+					openSideModal(ContributorsEditModal, {
+						title: this.activeFormTitle,
+						activeForm: this.activeForm,
+						onUpdateForm: this.updateForm,
+						onFormSuccess: this.formSuccess,
+					});
 				},
 				complete(r) {
 					this.isLoading = false;
@@ -497,7 +415,11 @@ export default {
 		 * @param {Object} data
 		 */
 		updateForm(formId, data) {
-			let activeForm = {...this.activeForm};
+			if (!this.activeForm) {
+				return;
+			}
+
+			let activeForm = this.activeForm;
 			Object.keys(data).forEach(function (key) {
 				activeForm[key] = data[key];
 			});
@@ -654,7 +576,6 @@ export default {
 				},
 			});
 		},
-		
 	},
 };
 </script>

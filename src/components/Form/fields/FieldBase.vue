@@ -33,6 +33,13 @@ export default {
 		groupId: String,
 		/** The ID of the form this field should appear in. This is passed down from the `Form`.  */
 		formId: String,
+		/** Whether the field should be ignored when a form is submitted (e.g. purely informational field). */
+		isInert: {
+			type: Boolean,
+			default() {
+				return false;
+			},
+		},
 		/** Whether or not this field should be presented for each supported language. */
 		isMultilingual: Boolean,
 		/**  Whether or not a value for this field should be required. */

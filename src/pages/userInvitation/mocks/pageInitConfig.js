@@ -49,9 +49,7 @@ export default {
 		affiliation: '',
 		country: '',
 		orcidValidation: false,
-		userGroupsToAdd: [
-			{userGroup: null, dateStart: null, dateEnd: null, masthead: null},
-		],
+		userGroupsToAdd: [{userGroup: null, dateStart: null, masthead: null}],
 		currentUserGroups: [],
 		userGroupsToRemove: [],
 		emailComposer: {
@@ -194,6 +192,7 @@ export default {
 									groupId: 'default',
 									isRequired: true,
 									isMultilingual: false,
+									description: 'e.g. aeinstein@example.com',
 									value: 'null',
 									inputType: 'text',
 									optIntoEdit: false,
@@ -222,6 +221,8 @@ export default {
 									groupId: 'default',
 									isRequired: false,
 									isMultilingual: false,
+									description:
+										'If you know the given name of the user, you can enter the information. However, this information can be changed by the user',
 									value: null,
 									inputType: 'text',
 									optIntoEdit: false,
@@ -236,6 +237,8 @@ export default {
 									groupId: 'default',
 									isRequired: false,
 									isMultilingual: false,
+									description:
+										'If you know the family name of the user, you can enter the information. However, this information can be changed by the user',
 									value: null,
 									inputType: 'text',
 									optIntoEdit: false,
@@ -251,14 +254,7 @@ export default {
 								},
 							],
 							hiddenFields: {},
-							pages: [
-								{
-									id: 'default',
-									submitButton: {
-										label: 'Save',
-									},
-								},
-							],
+							pages: [{id: 'default', submitButton: null}],
 							primaryLocale: 'en',
 							visibleLocales: ['en'],
 							supportedFormLocales: [

@@ -1,15 +1,15 @@
 <template>
 	<div class="submissionFilesListPanel">
-		<list-panel :items="items" class="listPanel--submissionFiles">
+		<ListPanel :items="items" class="listPanel--submissionFiles">
 			<template #header>
-				<pkp-header>
+				<PkpHeader>
 					<h2>{{ title }}</h2>
 					<template #actions>
-						<pkp-button ref="addFileButton" @click="openFileBrowser">
+						<PkpButton ref="addFileButton" @click="openFileBrowser">
 							{{ addFileLabel }}
-						</pkp-button>
+						</PkpButton>
 					</template>
-				</pkp-header>
+				</PkpHeader>
 			</template>
 
 			<template #itemsEmpty>
@@ -21,7 +21,7 @@
 
 			<template #item="{item}">
 				<slot name="item" :item="item">
-					<submission-files-list-item
+					<SubmissionFilesListItem
 						:api-url="apiUrl"
 						:cancel-upload-label="cancelUploadLabel"
 						:genre-prompt-label="genrePromptLabel"
@@ -37,8 +37,8 @@
 					/>
 				</slot>
 			</template>
-		</list-panel>
-		<file-uploader
+		</ListPanel>
+		<FileUploader
 			:id="id + '-uploader'"
 			ref="uploader"
 			:api-url="apiUrl"
@@ -49,34 +49,24 @@
 			:upload-progress-label="uploadProgressLabel"
 			@updated:files="setFiles"
 		/>
-		<modal
-			:close-label="t('common.close')"
-			:name="formModal"
-			:title="editingLabel"
-			:open="isModalOpenedForm"
-			@close="isModalOpenedForm = false"
-		>
-			<pkp-form v-bind="activeForm" @set="setForm" @success="formSuccess" />
-		</modal>
 	</div>
 </template>
 
 <script>
 import FileUploader from '@/components/FileUploader/FileUploader.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
-import Modal from '@/components/Modal/Modal.vue';
-import PkpForm from '@/components/Form/Form.vue';
+import PkpButton from '@/components/Button/Button.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import SubmissionFilesListItem from '@/components/ListPanel/submissionFiles/SubmissionFilesListItem.vue';
 import dialog from '@/mixins/dialog.js';
 import cloneDeep from 'clone-deep';
-
+import SubmissionFilesEditModal from './SubmissionFilesEditModal.vue';
+import {useModal} from '@/composables/useModal';
 export default {
 	components: {
+		PkpButton,
 		FileUploader,
 		ListPanel,
-		Modal,
-		PkpForm,
 		PkpHeader,
 		SubmissionFilesListItem,
 	},
@@ -187,7 +177,6 @@ export default {
 			editingLabel: '',
 			isDragging: false,
 			status: '',
-			isModalOpenedForm: false,
 		};
 	},
 	computed: {
@@ -227,7 +216,13 @@ export default {
 			this.editingLabel = this.t('common.editItem', {
 				name: this.localize(item.name),
 			});
-			this.isModalOpenedForm = true;
+			const {openSideModal} = useModal();
+			openSideModal(SubmissionFilesEditModal, {
+				title: this.editingLabel,
+				activeForm: this.activeForm,
+				onSetForm: this.setForm,
+				onFormSuccess: this.formSuccess,
+			});
 		},
 
 		/**
@@ -237,7 +232,9 @@ export default {
 		 */
 		formSuccess(item) {
 			this.updateItem(item);
-			this.isModalOpenedForm = false;
+			const {closeSideModal} = useModal();
+			closeSideModal(SubmissionFilesEditModal);
+
 			this.activeForm = {};
 			this.$el.querySelector('#edit-' + item.id).focus();
 		},
@@ -305,7 +302,11 @@ export default {
 		 * @param {Object} data Key/value map of the data to be changed
 		 */
 		setForm(key, data) {
-			let activeForm = {...this.activeForm};
+			if (!this.activeForm) {
+				return;
+			}
+
+			let activeForm = this.activeForm;
 			Object.keys(data).forEach(function (key) {
 				activeForm[key] = data[key];
 			});

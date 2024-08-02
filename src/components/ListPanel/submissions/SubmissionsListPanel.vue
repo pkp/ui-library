@@ -1,51 +1,51 @@
 <template>
 	<div class="submissionsListPanel">
-		<list-panel
+		<ListPanel
 			:is-sidebar-visible="isSidebarVisible"
 			:items="items"
 			class="listPanel--submissions"
 		>
 			<template #header>
-				<pkp-header>
+				<PkpHeader>
 					<h2>{{ title }}</h2>
-					<spinner v-if="isLoading" />
+					<Spinner v-if="isLoading" />
 					<template #actions>
-						<search
+						<Search
 							:search-phrase="searchPhrase"
 							@search-phrase-changed="setSearchPhrase"
 						/>
-						<pkp-button
+						<PkpButton
 							:is-active="isSidebarVisible"
 							@click="isSidebarVisible = !isSidebarVisible"
 						>
-							<icon icon="filter" :inline="true" />
+							<Icon icon="filter" :inline="true" />
 							{{ t('common.filter') }}
-						</pkp-button>
-						<pkp-button
+						</PkpButton>
+						<PkpButton
 							v-if="addUrl && currentUserCanAddSubmission"
 							element="a"
 							:href="addUrl"
 						>
 							{{ t('submission.submit.newSubmissionSingle') }}
-						</pkp-button>
+						</PkpButton>
 					</template>
-				</pkp-header>
+				</PkpHeader>
 			</template>
 			<template #sidebar>
-				<pkp-header :is-one-line="false">
+				<PkpHeader :is-one-line="false">
 					<h3>
-						<icon icon="filter" :inline="true" />
+						<Icon icon="filter" :inline="true" />
 						{{ t('common.filter') }}
 					</h3>
-				</pkp-header>
+				</PkpHeader>
 				<div
 					v-for="(filterSet, index) in filters"
 					:key="index"
 					class="listPanel__block"
 				>
-					<pkp-header v-if="filterSet.heading">
+					<PkpHeader v-if="filterSet.heading">
 						<h4>{{ filterSet.heading }}</h4>
-					</pkp-header>
+					</PkpHeader>
 					<component
 						:is="filter.filterType || 'pkp-filter'"
 						v-for="filter in filterSet.filters"
@@ -61,7 +61,7 @@
 
 			<template #itemsEmpty>
 				<template v-if="isLoading">
-					<spinner />
+					<Spinner />
 					{{ t('common.loading') }}
 				</template>
 				<template v-else>
@@ -71,7 +71,7 @@
 
 			<template #item="{item}">
 				<slot name="item" :item="item">
-					<submissions-list-item
+					<SubmissionsListItem
 						:key="item.id"
 						:item="item"
 						:api-url="apiUrl"
@@ -82,7 +82,7 @@
 				</slot>
 			</template>
 			<template #footer>
-				<pagination
+				<Pagination
 					v-if="lastPage > 1"
 					:current-page="currentPage"
 					:is-loading="isLoading"
@@ -90,11 +90,14 @@
 					@set-page="setPage"
 				/>
 			</template>
-		</list-panel>
+		</ListPanel>
 	</div>
 </template>
 
 <script>
+import Spinner from '@/components/Spinner/Spinner.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
 import PkpFilter from '@/components/Filter/Filter.vue';
@@ -107,6 +110,9 @@ import fetch from '@/mixins/fetch';
 
 export default {
 	components: {
+		PkpButton,
+		Spinner,
+		Icon,
 		ListPanel,
 		Pagination,
 		PkpFilter,

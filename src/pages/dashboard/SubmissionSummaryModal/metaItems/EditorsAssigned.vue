@@ -40,6 +40,7 @@
 </template>
 <script setup>
 import UserAvatar from '@/components/UserAvatar/UserAvatar.vue';
+import PkpButton from '@/components/Button/Button.vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useSubmissionSummaryStore} from '../submissionSummaryStore';
 

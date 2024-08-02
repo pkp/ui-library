@@ -7,16 +7,18 @@
 		class="tooltipButton"
 		@click.prevent
 	>
-		<icon icon="question-circle" />
+		<Icon icon="question-circle" />
 		<span class="-screenReader">{{ label }}</span>
 	</button>
 </template>
 
 <script>
 import 'floating-vue/dist/style.css';
+import Icon from '@/components/Icon/Icon.vue';
 
 export default {
 	name: 'Tooltip',
+	components: {Icon},
 	props: {
 		/** The message to display in the popup. */
 		tooltip: {

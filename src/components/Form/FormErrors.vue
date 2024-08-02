@@ -1,6 +1,6 @@
 <template>
 	<div class="pkpFormErrors">
-		<icon icon="exclamation-triangle" :inline="true" />
+		<Icon icon="exclamation-triangle" :inline="true" />
 		{{ message }}
 		<ul class="-screenReader">
 			<li v-for="(error, index) in errorList" :key="index">
@@ -21,8 +21,11 @@
 </template>
 
 <script>
+import Icon from '@/components/Icon/Icon.vue';
+
 export default {
 	name: 'FormErrors',
+	components: {Icon},
 	props: {
 		errors: Object,
 		fields: Array,

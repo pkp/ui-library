@@ -1,18 +1,18 @@
 <template>
 	<div class="doiListPanel">
 		<slot>
-			<list-panel :items="mappedItems" :is-sidebar-visible="true">
+			<ListPanel :items="mappedItems" :is-sidebar-visible="true">
 				<template #header>
-					<pkp-header>
+					<PkpHeader>
 						<h2>{{ title }}</h2>
-						<spinner v-if="isLoading" />
+						<Spinner v-if="isLoading" />
 						<template #actions>
-							<search
+							<Search
 								:search-phrase="searchPhrase"
 								@search-phrase-changed="setSearchPhrase"
 							/>
 
-							<dropdown
+							<Dropdown
 								:label="t('manager.dois.actions.bulkActions')"
 								class="doiListPanel__bulkActions"
 							>
@@ -109,42 +109,42 @@
 										</li>
 									</ul>
 								</div>
-							</dropdown>
+							</Dropdown>
 
-							<pkp-button
+							<PkpButton
 								v-if="isRegistrationPluginConfigured"
 								:is-primary="true"
 								@click="openBulkDepositAll"
 							>
 								{{ t('manager.dois.actions.deposit.all') }}
-							</pkp-button>
+							</PkpButton>
 						</template>
-					</pkp-header>
+					</PkpHeader>
 				</template>
 
 				<template #sidebar>
-					<pkp-header :is-one-line="false">
+					<PkpHeader :is-one-line="false">
 						<h3>
-							<icon icon="filter" :inline="true" />
+							<Icon icon="filter" :inline="true" />
 							{{ t('common.filter') }}
 						</h3>
 						<template #actions>
 							<button
 								class="doiListPanel__statusInfoButton"
-								@click="isModalOpenedStatusInfo = true"
+								@click="openStatusInfoModal"
 							>
-								<icon icon="question-circle" />
+								<Icon icon="question-circle" />
 							</button>
 						</template>
-					</pkp-header>
+					</PkpHeader>
 					<div
 						v-for="(filterSet, index) in filters"
 						:key="index"
 						class="listPanel__block"
 					>
-						<pkp-header v-if="filterSet.heading">
+						<PkpHeader v-if="filterSet.heading">
 							<h4>{{ filterSet.heading }}</h4>
-						</pkp-header>
+						</PkpHeader>
 						<component
 							:is="filter.filterType || 'pkp-filter'"
 							v-for="filter in filterSet.filters"
@@ -160,7 +160,7 @@
 
 				<template #itemsEmpty>
 					<template v-if="isLoading">
-						<spinner />
+						<Spinner />
 						{{ t('common.loading') }}
 					</template>
 					<template v-else>
@@ -170,7 +170,7 @@
 
 				<template #item="{item}">
 					<slot name="item" :item="item">
-						<doi-list-item
+						<DoiListItem
 							:key="item.id"
 							:item="item"
 							:api-url="apiUrl"
@@ -190,7 +190,7 @@
 					</slot>
 				</template>
 				<template #footer>
-					<pagination
+					<Pagination
 						v-if="lastPage > 1"
 						:current-page="currentPage"
 						:is-loading="isLoading"
@@ -198,74 +198,15 @@
 						@set-page="setPage"
 					/>
 				</template>
-			</list-panel>
+			</ListPanel>
 		</slot>
-
-		<!-- Status info modal -->
-		<modal
-			:close-label="t('common.close')"
-			name="statusInfoModal"
-			:title="t('manager.dois.help.statuses.title')"
-			:open="isModalOpenedStatusInfo"
-			@close="isModalOpenedStatusInfo = false"
-		>
-			<table class="pkpTable">
-				<thead>
-					<tr>
-						<th>{{ t('common.status') }}</th>
-						<th>{{ t('common.description') }}</th>
-					</tr>
-				</thead>
-				<tr class="pkpTable__row">
-					<th>{{ t('manager.dois.status.needsDoi') }}</th>
-					<td>{{ t('manager.dois.status.needsDoi.description') }}</td>
-				</tr>
-				<tr class="pkpTable__row">
-					<th>{{ t('manager.dois.filters.doiAssigned') }}</th>
-					<td>{{ t('manager.dois.filters.doiAssigned.description') }}</td>
-				</tr>
-				<tr class="pkpTable__row">
-					<th>{{ t('manager.dois.status.unregistered') }}</th>
-					<td>{{ t('manager.dois.status.unregistered.description') }}</td>
-				</tr>
-				<tr class="pkpTable__row">
-					<th>{{ t('manager.dois.status.submitted') }}</th>
-					<td>{{ t('manager.dois.status.submitted.description') }}</td>
-				</tr>
-				<tr class="pkpTable__row">
-					<th>{{ t('manager.dois.status.registered') }}</th>
-					<td>{{ t('manager.dois.status.registered.description') }}</td>
-				</tr>
-				<tr class="pkpTable__row">
-					<th>{{ t('manager.dois.status.error.filterTitle') }}</th>
-					<td>{{ t('manager.dois.status.error.description') }}</td>
-				</tr>
-				<tr class="pkpTable__row">
-					<th>{{ t('manager.dois.status.stale') }}</th>
-					<td>{{ t('manager.dois.status.stale.description') }}</td>
-				</tr>
-			</table>
-		</modal>
-
-		<!-- DOI action failed modal -->
-		<modal
-			:close-label="t('common.close')"
-			name="failedDoiActionModal"
-			:title="t('manager.dois.update.failedCreation')"
-			:open="isModalOpenedFailedDoiAction"
-			@close="closeFailedDoiActionModal"
-		>
-			<p>{{ t('manager.dois.update.partialFailure') }}</p>
-			<ul>
-				<li v-for="errorMessage in failedDoiActions" :key="errorMessage.index">
-					{{ errorMessage }}
-				</li>
-			</ul>
-		</modal>
 	</div>
 </template>
 
 <script>
+import Spinner from '@/components/Spinner/Spinner.vue';
+import Icon from '@/components/Icon/Icon.vue';
+import PkpButton from '@/components/Button/Button.vue';
 import DoiListItem from '@/components/ListPanel/doi/DoiListItem.vue';
 import Dropdown from '@/components/Dropdown/Dropdown.vue';
 import FieldSelect from '@/components/Form/fields/FieldSelect.vue';
@@ -275,13 +216,20 @@ import PkpFilter from '@/components/Filter/Filter.vue';
 import PkpFilterAutosuggest from '@/components/Filter/FilterAutosuggest.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import Search from '@/components/Search/Search.vue';
+import DoiStatusInfoModal from './DoiStatusInfoModal.vue';
+import DoiFailedActionDialogBody from './DoiFailedActionDialogBody.vue';
 import fetch from '@/mixins/fetch';
 import ajaxError from '@/mixins/ajaxError';
+import {useModal} from '@/composables/useModal';
+
 import Notification from '@/components/Notification/Notification.vue';
 import Modal from '@/components/Modal/Modal.vue';
 
 export default {
 	components: {
+		PkpButton,
+		Icon,
+		Spinner,
 		Notification,
 		DoiListItem,
 		Dropdown,
@@ -376,8 +324,6 @@ export default {
 			selected: [],
 			expanded: [],
 			failedDoiActions: [],
-			isModalOpenedStatusInfo: false,
-			isModalOpenedFailedDoiAction: false,
 		};
 	},
 	computed: {
@@ -421,14 +367,40 @@ export default {
 		 * @param {Array} oldVal
 		 */
 		failedDoiActions(newVal, oldVal) {
+			const {openDialog} = useModal();
+
 			if (newVal.length !== 0) {
-				this.isModalOpenedFailedDoiAction = true;
-			} else if (this.isModalOpenedFailedDoiAction === true) {
-				this.closeFailedDoiActionModal();
+				openDialog({
+					title: this.t('manager.dois.update.failedCreation'),
+					actions: [
+						{
+							label: this.t('common.ok'),
+							isPrimary: true,
+							callback: (close) => {
+								this.failedDoiActions = [];
+								close();
+							},
+						},
+					],
+					bodyComponent: DoiFailedActionDialogBody,
+					bodyProps: {
+						failedDoiActions: this.failedDoiActions,
+					},
+					close: () => {
+						this.failedDoiActions = [];
+					},
+				});
 			}
 		},
 	},
 	methods: {
+		/**
+		 * Open status info modal
+		 */
+		openStatusInfoModal() {
+			const {openSideModal} = useModal();
+			openSideModal(DoiStatusInfoModal);
+		},
 		/**
 		 * Set the list of items
 		 *
@@ -982,10 +954,6 @@ export default {
 					doiObject === null ? null : doiObject.registrationAgency,
 				...props,
 			};
-		},
-		closeFailedDoiActionModal() {
-			this.isModalOpenedFailedDoiAction = false;
-			this.failedDoiActions = [];
 		},
 	},
 };

@@ -1,38 +1,38 @@
 <template>
 	<div class="announcementsListPanel">
 		<slot>
-			<list-panel :items="items">
+			<ListPanel :items="items">
 				<template #header>
-					<pkp-header>
+					<PkpHeader>
 						<h2>{{ title }}</h2>
-						<spinner v-if="isLoading" />
+						<Spinner v-if="isLoading" />
 						<template #actions>
-							<search
+							<Search
 								:search-phrase="searchPhrase"
 								@search-phrase-changed="setSearchPhrase"
 							/>
-							<pkp-button @click="openAddModal">
+							<PkpButton @click="openAddModal">
 								{{ addAnnouncementLabel }}
-							</pkp-button>
+							</PkpButton>
 						</template>
-					</pkp-header>
+					</PkpHeader>
 				</template>
 				<template #item-title="{item}">
 					{{ localize(item.title) }}
 				</template>
 				<template #item-actions="{item}">
-					<pkp-button element="a" :href="item.url">
+					<PkpButton element="a" :href="item.url">
 						{{ t('common.view') }}
-					</pkp-button>
-					<pkp-button @click="openEditModal(item.id)">
+					</PkpButton>
+					<PkpButton @click="openEditModal(item.id)">
 						{{ t('common.edit') }}
-					</pkp-button>
-					<pkp-button :is-warnable="true" @click="openDeleteModal(item.id)">
+					</PkpButton>
+					<PkpButton :is-warnable="true" @click="openDeleteModal(item.id)">
 						{{ t('common.delete') }}
-					</pkp-button>
+					</PkpButton>
 				</template>
 				<template #footer>
-					<pagination
+					<Pagination
 						v-if="lastPage > 1"
 						:current-page="currentPage"
 						:is-loading="isLoading"
@@ -40,43 +40,32 @@
 						@set-page="setPage"
 					/>
 				</template>
-			</list-panel>
-			<modal
-				:close-label="t('common.close')"
-				name="form"
-				:title="activeFormTitle"
-				:open="isModalOpenedForm"
-				@close="closeFormModal"
-			>
-				<pkp-form
-					v-bind="activeForm"
-					@set="updateForm"
-					@success="formSuccess"
-				/>
-			</modal>
+			</ListPanel>
 		</slot>
 	</div>
 </template>
 
 <script>
+import PkpButton from '@/components/Button/Button.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
-import PkpForm from '@/components/Form/Form.vue';
 import PkpHeader from '@/components/Header/Header.vue';
-import Modal from '@/components/Modal/Modal.vue';
 import Search from '@/components/Search/Search.vue';
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
 import fetch from '@/mixins/fetch';
 import cloneDeep from 'clone-deep';
+import AnnouncementsEditModal from './AnnouncementsEditModal.vue';
+import {useModal} from '@/composables/useModal';
 
 export default {
 	components: {
+		PkpButton,
+		Spinner,
 		ListPanel,
 		Pagination,
-		PkpForm,
 		PkpHeader,
-		Modal,
 		Search,
 	},
 	mixins: [dialog, fetch, ajaxError],
@@ -143,7 +132,6 @@ export default {
 		return {
 			activeForm: null,
 			activeFormTitle: '',
-			isModalOpenedForm: false,
 		};
 	},
 	methods: {
@@ -155,7 +143,9 @@ export default {
 		closeFormModal(event) {
 			this.activeForm = null;
 			this.activeFormTitle = '';
-			this.isModalOpenedForm = false;
+			const {closeSideModal} = useModal();
+
+			closeSideModal(AnnouncementsEditModal);
 		},
 
 		/**
@@ -188,7 +178,15 @@ export default {
 			activeForm.method = 'POST';
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.addAnnouncementLabel;
-			this.isModalOpenedForm = true;
+
+			const {openSideModal} = useModal();
+
+			openSideModal(AnnouncementsEditModal, {
+				title: this.activeFormTitle,
+				activeForm,
+				onUpdateForm: this.updateForm,
+				onFormSuccess: this.formSuccess,
+			});
 		},
 
 		/**
@@ -267,7 +265,15 @@ export default {
 			});
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.editAnnouncementLabel;
-			this.isModalOpenedForm = true;
+
+			const {openSideModal} = useModal();
+
+			openSideModal(AnnouncementsEditModal, {
+				title: this.editAnnouncementLabel,
+				activeForm,
+				onUpdateForm: this.updateForm,
+				onFormSuccess: this.formSuccess,
+			});
 		},
 
 		/**
@@ -291,7 +297,11 @@ export default {
 		 * @param {Object} data
 		 */
 		updateForm(formId, data) {
-			let activeForm = {...this.activeForm};
+			if (!this.activeForm) {
+				return;
+			}
+
+			let activeForm = this.activeForm;
 			Object.keys(data).forEach(function (key) {
 				activeForm[key] = data[key];
 			});

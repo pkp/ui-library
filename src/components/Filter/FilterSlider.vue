@@ -1,13 +1,13 @@
 <template>
 	<div class="pkpFilter pkpFilter--slider" :class="classes">
 		<button v-if="isFilterActive" class="pkpFilter__remove" @click="remove">
-			<icon icon="times-circle-o" />
+			<Icon icon="times-circle-o" />
 			<span class="-screenReader">
 				{{ t('common.filterRemove', {filterTitle: title}) }}
 			</span>
 		</button>
 		<button v-else class="pkpFilter__add" @click="enable">
-			<icon icon="plus-square-o" />
+			<Icon icon="plus-square-o" />
 			<span class="-screenReader">
 				{{ t('common.filterAdd', {filterTitle: title}) }}
 			</span>
@@ -38,7 +38,7 @@
 					aria-hidden="true"
 					class="pkpFilter__value--stars"
 				>
-					<icon
+					<Icon
 						v-for="i in 5"
 						:key="i"
 						:icon="i <= currentValue ? 'star' : 'star-o'"

@@ -1,8 +1,9 @@
 import {within, userEvent} from '@storybook/test';
-import {ref} from 'vue';
+import {ref, inject} from 'vue';
 import SideModal from './SideModal.vue';
 import {useModal} from '@/composables/useModal.js';
 import SideModalBody from './SideModalBody.vue';
+import SideModalLayoutBasic from './SideModalLayoutBasic.vue';
 import SideModalLayout2Columns from './SideModalLayout2Columns.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import cloneDeep from 'clone-deep';
@@ -18,7 +19,7 @@ export default {
 };
 
 const SideModalBase = {
-	components: {SideModalBody},
+	components: {SideModalBody, SideModalLayoutBasic},
 	template: `
 		<SideModalBody>
 			<template #pre-title>325</template>
@@ -35,9 +36,7 @@ const SideModalBase = {
 				</PkpButton>
 			</template>
 
-			<div class="p-4">
-				<div class="bg-secondary p-4">CONTENT</div>
-			</div>
+			<SideModalLayoutBasic>CONTENT</SideModalLayoutBasic>
 		</SideModalBody>
 	`,
 };
@@ -171,11 +170,29 @@ const SideModalWithForm = {
 	setup() {
 		const form = ref({
 			...cloneDeep(FormMock),
+			pages: [
+				{
+					id: 'default',
+					submitButton: {
+						label: 'Submit',
+						isPrimary: true,
+					},
+					cancelButton: {
+						label: 'Cancel',
+					},
+				},
+			],
 			action: 'https://httpbin.org',
 			method: 'GET',
 		});
 
-		return {form};
+		const closeModal = inject('closeModal');
+
+		function closeSideModal() {
+			closeModal();
+		}
+
+		return {form, closeSideModal};
 	},
 	template: `
 		<SideModalBody>
@@ -187,7 +204,7 @@ const SideModalWithForm = {
 			</template>
 			<div class="p-4">
 				<div class="bg-secondary">
-					<PkpForm v-bind="form" @set="setForm" @success="formSuccess" />
+					<PkpForm v-bind="form" @set="setForm" @success="formSuccess" @cancel="closeSideModal" />
 				</div> 
 			</div>
 		</SideModalBody>

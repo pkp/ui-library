@@ -6,6 +6,12 @@
 		@close="() => close(sideModal1?.modalId)"
 	>
 		<component :is="component1" v-bind="sideModal1?.props" />
+		<PkpDialog
+			:opened="dialogOpened && dialogLevel === 1"
+			v-bind="dialogProps"
+			@close="closeDialog"
+		></PkpDialog>
+
 		<SideModal
 			close-label="Close"
 			:modal-level="2"
@@ -13,9 +19,26 @@
 			@close="() => close(sideModal2?.modalId)"
 		>
 			<component :is="component2" v-bind="sideModal2?.props" />
+			<PkpDialog
+				:opened="dialogOpened && dialogLevel === 2"
+				v-bind="dialogProps"
+				@close="closeDialog"
+			></PkpDialog>
+			<SideModal
+				close-label="Close"
+				:modal-level="3"
+				:open="sideModal3?.opened || false"
+				@close="() => close(sideModal3?.modalId)"
+			>
+				<component :is="component3" v-bind="sideModal3?.props" />
+			</SideModal>
 		</SideModal>
 	</SideModal>
-	<PkpDialog></PkpDialog>
+	<PkpDialog
+		:opened="dialogOpened && dialogLevel === 0"
+		v-bind="dialogProps"
+		@close="closeDialog"
+	></PkpDialog>
 </template>
 
 <script setup>
@@ -30,7 +53,14 @@ import WorkflowLogResponseForModal from '@/pages/workflow/WorkflowLogResponseFor
 const GlobalModals = {LegacyAjax, WorkflowLogResponseForModal};
 
 const modalStore = useModalStore();
-const {sideModal1, sideModal2} = storeToRefs(useModalStore());
+const {
+	sideModal1,
+	sideModal2,
+	sideModal3,
+	dialogProps,
+	dialogOpened,
+	dialogLevel,
+} = storeToRefs(useModalStore());
 
 // Component can be either string or vue component
 const component1 = computed(() => {
@@ -47,7 +77,18 @@ const component2 = computed(() => {
 	return GlobalModals[sideModal2.value.component] || sideModal2.value.component;
 });
 
+const component3 = computed(() => {
+	if (!sideModal3.value?.component) {
+		return null;
+	}
+	return GlobalModals[sideModal3.value.component] || sideModal3.value.component;
+});
+
 function close(modalId) {
-	modalStore.closeSideModal(true, modalId);
+	modalStore.closeSideModalById(true, modalId);
+}
+
+function closeDialog() {
+	modalStore.closeDialog();
 }
 </script>

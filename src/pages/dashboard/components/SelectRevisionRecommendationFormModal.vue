@@ -24,6 +24,7 @@
 import {inject} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
+import PkpForm from '@/components/Form/Form.vue';
 
 defineProps({formProps: {type: Object, required: true}});
 const emit = defineEmits(['set', 'success']);

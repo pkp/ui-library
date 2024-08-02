@@ -9,6 +9,8 @@ import PkpHeader from '@/components/Header/Header.vue';
 import LocalizeSubmission from '@/mixins/localizeSubmission.js';
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
+import SelectRevisionDecisionModal from '@/pages/workflow/SelectRevisionDecisionModal.vue';
+import {useModal} from '@/composables/useModal';
 
 export default {
 	name: 'WorkflowPage',
@@ -55,8 +57,6 @@ export default {
 			versionConfirmMessage: '',
 			versionConfirmTitle: '',
 			workingPublication: null,
-			isModalOpenedSelectRevisionDecision: false,
-			isModalOpenedSelectRevisionRecommendation: false,
 		};
 	},
 	computed: {
@@ -148,13 +148,25 @@ export default {
 		pkp.eventBus.$on('decision:revisions', (reviewRoundId) => {
 			this.components.selectRevisionDecision.hiddenFields['reviewRoundId'] =
 				reviewRoundId;
-			this.isModalOpenedSelectRevisionDecision = true;
+			const {openSideModal} = useModal();
+			openSideModal(SelectRevisionDecisionModal, {
+				activeForm: this.components.selectRevisionDecision,
+				onSet: this.set,
+				onGoToRevisionDecision: this.goToRevisionDecision,
+			});
 		});
 		pkp.eventBus.$on('recommendation:revisions', (reviewRoundId) => {
 			this.components.selectRevisionRecommendation.hiddenFields[
 				'reviewRoundId'
 			] = reviewRoundId;
-			this.isModalOpenedSelectRevisionRecommendation = true;
+
+			const {openSideModal} = useModal();
+
+			openSideModal(SelectRevisionDecisionModal, {
+				activeForm: this.components.selectRevisionRecommendation,
+				onSet: this.set,
+				onGoToRevisionDecision: this.goToRevisionDecision,
+			});
 		});
 
 		/**

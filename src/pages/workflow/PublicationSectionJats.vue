@@ -3,49 +3,54 @@
 		<slot>
 			<div v-if="hasLoadedContent" class="filePanel__ready">
 				<div class="filePanel__header">
-					<pkp-header>
+					<PkpHeader>
 						<h2>{{ title }}</h2>
 						<template #actions>
 							<div v-if="isDefaultContent">
-								<pkp-button 
+								<PkpButton
 									v-if="
 										publication.status !== getConstant('STATUS_PUBLISHED') &&
 										canEditPublication
 									"
-									ref="uploadXMLButton" @click="openFileBrowser"
+									ref="uploadXMLButton"
+									@click="openFileBrowser"
 								>
 									{{ t('common.upload') }}
-								</pkp-button>
+								</PkpButton>
 							</div>
 							<div v-else>
-								<pkp-button
+								<PkpButton
 									v-if="
 										publication.status !== getConstant('STATUS_PUBLISHED') &&
 										canEditPublication
 									"
 									:disabled="isLoading"
-									:isWarnable="true"
+									:is-warnable="true"
 									@click="openDeleteModal"
 								>
 									{{ t('common.delete') }}
-								</pkp-button>
+								</PkpButton>
 							</div>
-							<pkp-button v-if="this.workingJatsProps['loadingContentError'] == null" ref="downloadJatsXMLButton" @click="downloadJatsXML">
+							<PkpButton
+								v-if="workingJatsProps['loadingContentError'] == null"
+								ref="downloadJatsXMLButton"
+								@click="downloadJatsXML"
+							>
 								{{ t('common.download') }}
-							</pkp-button>
+							</PkpButton>
 						</template>
-					</pkp-header>
+					</PkpHeader>
 				</div>
 				<div class="filePanel__items">
 					<div class="filePanel__fileContent">
-						<div v-if="this.workingJatsProps['loadingContentError']">
-							{{ this.workingJatsProps['loadingContentError'] }}
+						<div v-if="workingJatsProps['loadingContentError']">
+							{{ workingJatsProps['loadingContentError'] }}
 						</div>
 						<div v-else>
-							<code-highlighter :code="workingJatsContent" language="xml" />
+							<CodeHighlighter :code="workingJatsContent" language="xml" />
 						</div>
 					</div>
-					<div v-if="this.workingJatsProps['loadingContentError'] == null">
+					<div v-if="workingJatsProps['loadingContentError'] == null">
 						<div v-if="isDefaultContent" class="filePanel__hasData">
 							<div class="filePanel__defaultContentFooter">
 								<span>{{ t('publication.jats.autoCreatedMessage') }}</span>
@@ -53,7 +58,14 @@
 						</div>
 						<div v-else>
 							<div class="filePanel__fileContentFooter">
-								<span>{{ t('publication.jats.lastModified', {modificationDate: this.workingJatsProps.updatedAt, username: this.workingJatsProps.uploaderUserName}) }}</span>
+								<span>
+									{{
+										t('publication.jats.lastModified', {
+											modificationDate: workingJatsProps.updatedAt,
+											username: workingJatsProps.uploaderUserName,
+										})
+									}}
+								</span>
 							</div>
 						</div>
 					</div>
@@ -62,14 +74,14 @@
 			<div v-else class="filePanel__loading">
 				<span class="pkpSpinner" aria-hidden="true"></span>
 			</div>
-			<file-uploader
-				ref="uploader"
-				:apiUrl="publicationApiUrl"
-				:filenameLocale="primaryLocale"
+			<FileUploader
 				:id="id + '-uploader'"
+				ref="uploader"
+				:api-url="publicationApiUrl"
+				:filename-locale="primaryLocale"
 				:files="newJatsFiles"
 				:options="options"
-				:queryParams="{fileStage}"
+				:query-params="{fileStage}"
 				:upload-progress-label="t('submission.upload.percentComplete')"
 				@updated:files="setJatsFile"
 			/>
@@ -78,7 +90,7 @@
 </template>
 
 <script>
-import Modal from '@/components/Modal/Modal.vue';
+import PkpButton from '@/components/Button/Button.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
@@ -87,8 +99,8 @@ import CodeHighlighter from '@/components/CodeHighlighter/CodeHighlighter.vue';
 
 export default {
 	components: {
+		PkpButton,
 		FileUploader,
-		Modal,
 		PkpHeader,
 		CodeHighlighter,
 	},
@@ -141,9 +153,6 @@ export default {
 			hasLoadedContent: false,
 		};
 	},
-	created() {
-		this.fetchWorkingJatsFile();
-	},
 	computed: {
 		isDefaultContent() {
 			return this.workingJatsProps['isDefaultContent'];
@@ -160,6 +169,30 @@ export default {
 				this.publication.id,
 			);
 		},
+	},
+	watch: {
+		newJatsFiles(newValue, oldValue) {
+			if (oldValue != null && oldValue[0] == null) {
+				this.hasLoadedContent = false;
+			}
+
+			if (newValue != null && newValue[0] != null) {
+				if (
+					Object.prototype.hasOwnProperty.call(newValue[0], 'isDefaultContent')
+				) {
+					this.workingJatsProps = newValue[0];
+					this.hasLoadedContent = true;
+				}
+			}
+		},
+		publication(newValue, oldValue) {
+			if (newValue != null) {
+				this.fetchWorkingJatsFile();
+			}
+		},
+	},
+	created() {
+		this.fetchWorkingJatsFile();
 	},
 	methods: {
 		fetchWorkingJatsFile() {
@@ -191,8 +224,8 @@ export default {
 		},
 
 		/**
-		* Open the file browser dialog
-		*/
+		 * Open the file browser dialog
+		 */
 		openFileBrowser() {
 			this.$refs.uploader.openFileBrowser();
 		},
@@ -251,7 +284,7 @@ export default {
 		setJatsFile(files) {
 			this.$emit('set', this.id, {newJatsFiles: files});
 		},
-		
+
 		/**
 		 * Download the Contents of the file
 		 */
@@ -276,7 +309,7 @@ export default {
 				document.body.removeChild(link);
 			} else {
 				const jatsContent = this.workingJatsProps.jatsContent;
-				const blob = new Blob([jatsContent], { type: 'application/xml' });
+				const blob = new Blob([jatsContent], {type: 'application/xml'});
 				const blobUrl = URL.createObjectURL(blob);
 
 				const link = document.createElement('a');
@@ -292,25 +325,6 @@ export default {
 			}
 		},
 	},
-	watch: {
-		newJatsFiles(newValue, oldValue) {
-			if (oldValue != null && oldValue[0] == null) {
-				this.hasLoadedContent = false;
-			} 
-
-			if (newValue != null && newValue[0] != null) {
-				if (newValue[0].hasOwnProperty('isDefaultContent')) {
-					this.workingJatsProps = newValue[0];
-					this.hasLoadedContent = true;
-				}
-			}
-		},
-		publication(newValue, oldValue) {
-			if (newValue != null) {
-				this.fetchWorkingJatsFile();
-			}
-		}
-	}
 };
 </script>
 
@@ -353,11 +367,11 @@ export default {
 	}
 
 	pre {
-		white-space: pre-wrap;       /* Since CSS 2.1 */
-		white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-		white-space: -pre-wrap;      /* Opera 4-6 */
-		white-space: -o-pre-wrap;    /* Opera 7 */
-		word-wrap: break-word;       /* Internet Explorer 5.5+ */
+		white-space: pre-wrap; /* Since CSS 2.1 */
+		white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+		white-space: -pre-wrap; /* Opera 4-6 */
+		white-space: -o-pre-wrap; /* Opera 7 */
+		word-wrap: break-word; /* Internet Explorer 5.5+ */
 	}
 }
 </style>

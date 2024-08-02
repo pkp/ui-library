@@ -32,9 +32,9 @@ export const Default = {
 		template: `
 			<div class="app" :class="classes">
 				<header class="app__header" role="banner">
-					<dropdown v-if="contexts.length" class="app__headerAction app__contexts">
+					<Dropdown v-if="contexts.length" class="app__headerAction app__contexts">
 						<template #button>
-							<icon icon="sitemap" />
+							<Icon icon="sitemap" />
 							<span class="-screenReader">Journals</span>
 						</template>
 						<ul>
@@ -44,7 +44,7 @@ export const Default = {
 								</a>
 							</li>
 						</ul>
-					</dropdown>
+					</Dropdown>
 					<div class="app__contextTitle">Journal of Public Knowledge</div>
 					<div class="app__headerActions">
 						<div class="app__headerAction app__tasks">
@@ -52,17 +52,17 @@ export const Default = {
 								ref="tasksButton"
 								@click="alert('Opens the tasks grid in a modal')"
 							>
-								<icon icon="bell-o"></icon>
+								<Icon icon="bell-o"></Icon>
 								<span class="-screenReader">Tasks</span>
 								<span v-if="unreadTasksCount" class="app__tasksCount">
 									{{ unreadTasksCount }}
 								</span>
 							</button>
 						</div>
-						<dropdown class="app__headerAction app__userNav">
+						<Dropdown class="app__headerAction app__userNav">
 							<template #button>
-								<icon icon="user-circle-o" />
-								<icon
+								<Icon icon="user-circle-o" />
+								<Icon
 									v-if="isLoggedInAs"
 									icon="user-circle"
 									class="app__userNav__isLoggedInAsWarning"
@@ -93,7 +93,7 @@ export const Default = {
 								<ul>
 									<li v-for="locale in locales" :key="locale.key">
 										<a :href="locale.key" class="pkpDropdown__action">
-											<icon
+											<Icon
 												v-if="locale.key === 'en'"
 												icon="check"
 												:inline="true"
@@ -103,7 +103,7 @@ export const Default = {
 									</li>
 								</ul>
 							</div>
-						</dropdown>
+						</Dropdown>
 					</div>
 				</header>
 
@@ -192,8 +192,8 @@ export const Default = {
 					class="app__notifications"
 					role="status"
 				>
-					<transition-group name="app__notification">
-						<notification
+					<TransitionGroup name="app__notification">
+						<Notification
 							v-for="notification in notifications"
 							:key="notification.key"
 							:type="notification.type"
@@ -201,13 +201,13 @@ export const Default = {
 							@dismiss="dismissNotification(notification.key)"
 						>
 							{{ notification.message }}
-						</notification>
-					</transition-group>
+						</Notification>
+					</TransitionGroup>
 				</div>
 				<transition name="app__loading">
 					<div v-if="isLoading" class="app__loading" role="alert">
 						<div class="app__loading__content">
-							<spinner></spinner>
+							<Spinner></Spinner>
 							Loading
 						</div>
 					</div>

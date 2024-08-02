@@ -29,6 +29,7 @@
 
 <script setup>
 import {defineProps} from 'vue';
+import PkpButton from '@/components/Button/Button.vue';
 import {useTranslation} from '@/composables/useTranslation';
 import {useReviewerSubmissionPageStore} from './reviewerSubmissionPageStore';
 import moment from 'moment';

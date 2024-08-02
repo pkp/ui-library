@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<list-panel
+		<ListPanel
 			:is-sidebar-visible="isSidebarVisible"
 			:items="items"
 			class="listPanel--catalog"
@@ -10,49 +10,49 @@
 			}"
 		>
 			<template #header>
-				<pkp-header>
+				<PkpHeader>
 					<h2>{{ title }}</h2>
-					<spinner v-if="isLoading" />
+					<Spinner v-if="isLoading" />
 					<template #actions>
-						<search
+						<Search
 							:search-phrase="searchPhrase"
 							@search-phrase-changed="setSearchPhrase"
 						/>
-						<pkp-button
+						<PkpButton
 							:is-active="isSidebarVisible"
 							@click="isSidebarVisible = !isSidebarVisible"
 						>
-							<icon icon="filter" :inline="true" />
+							<Icon icon="filter" :inline="true" />
 							{{ t('common.filter') }}
-						</pkp-button>
+						</PkpButton>
 						<template v-if="canOrderCurrent">
-							<pkp-button
+							<PkpButton
 								class="listPanel--catalog__orderToggle"
 								icon="sort"
 								:is-active="isOrdering"
 								@click="toggleOrdering"
 							>
 								{{ orderingLabel }}
-							</pkp-button>
-							<pkp-button
+							</PkpButton>
+							<PkpButton
 								v-if="isOrdering"
 								class="listPanel--catalog__orderCancel"
 								:is-warnable="true"
 								@click="cancelOrdering"
 							>
 								{{ t('common.cancel') }}
-							</pkp-button>
+							</PkpButton>
 						</template>
-						<pkp-button @click="isModalOpenedAddCatalogEntry = true">
+						<PkpButton @click="openAddEntryForm">
 							{{ t('submission.catalogEntry.new') }}
-						</pkp-button>
+						</PkpButton>
 					</template>
-				</pkp-header>
+				</PkpHeader>
 
 				<!-- A notice indicating which kind of submissions are being ordered -->
-				<notification v-if="isOrdering">
+				<Notification v-if="isOrdering">
 					{{ orderingDescription }}
-				</notification>
+				</Notification>
 
 				<!-- Table-like column headers for featured/new -->
 				<div
@@ -70,21 +70,21 @@
 			</template>
 
 			<template #sidebar>
-				<pkp-header :is-one-line="false">
+				<PkpHeader :is-one-line="false">
 					<h3>
-						<icon icon="filter" :inline="true" />
+						<Icon icon="filter" :inline="true" />
 						{{ t('common.filter') }}
 					</h3>
-				</pkp-header>
+				</PkpHeader>
 				<div
 					v-for="(filterSet, index) in filters"
 					:key="index"
 					class="listPanel__block"
 				>
-					<pkp-header v-if="filterSet.heading">
+					<PkpHeader v-if="filterSet.heading">
 						<h4>{{ filterSet.heading }}</h4>
-					</pkp-header>
-					<pkp-filter
+					</PkpHeader>
+					<PkpFilter
 						v-for="filter in filterSet.filters"
 						:key="filter.param + filter.value"
 						v-bind="filter"
@@ -96,12 +96,12 @@
 			</template>
 
 			<template v-if="isLoading" #itemsEmpty>
-				<spinner />
+				<Spinner />
 				{{ t('common.loading') }}
 			</template>
 
 			<template #item="{item}">
-				<catalog-list-item
+				<CatalogListItem
 					:key="item.id"
 					:item="item"
 					:filter-assoc-type="filterAssocType"
@@ -114,7 +114,7 @@
 				/>
 			</template>
 			<template #footer>
-				<pagination
+				<Pagination
 					v-if="lastPage > 1"
 					:current-page="currentPage"
 					:is-loading="isLoading"
@@ -122,44 +122,35 @@
 					@set-page="setPage"
 				/>
 			</template>
-		</list-panel>
-		<modal
-			:close-label="t('common.close')"
-			name="addCatalogEntry"
-			:title="t('submission.catalogEntry.new')"
-			:open="isModalOpenedAddCatalogEntry"
-			@close="closeAddEntryForm"
-		>
-			<pkp-form
-				v-bind="addEntryForm"
-				@set="setAddEntryForm"
-				@success="addEntryFormSuccess"
-			/>
-		</modal>
+		</ListPanel>
 	</div>
 </template>
 
 <script>
+import Spinner from '@/components/Spinner/Spinner.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
 import CatalogListItem from '@/components/ListPanel/submissions/CatalogListItem.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
-import Modal from '@/components/Modal/Modal.vue';
 import Notification from '@/components/Notification/Notification.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
-import PkpForm from '@/components/Form/Form.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import PkpFilter from '@/components/Filter/Filter.vue';
+import CatalogEditModal from './CatalogEditModal.vue';
 import Search from '@/components/Search/Search.vue';
 import ajaxError from '@/mixins/ajaxError';
 import fetch from '@/mixins/fetch';
+import {useModal} from '@/composables/useModal';
 
 export default {
 	components: {
+		Spinner,
+		PkpButton,
+		Icon,
 		CatalogListItem,
 		ListPanel,
-		Modal,
 		Notification,
 		Pagination,
-		PkpForm,
 		PkpHeader,
 		PkpFilter,
 		Search,
@@ -233,7 +224,6 @@ export default {
 			newEntries: [],
 			isOrdering: false,
 			isSidebarVisible: false,
-			isModalOpenedAddCatalogEntry: false,
 		};
 	},
 	computed: {
@@ -387,10 +377,24 @@ export default {
 		},
 
 		/**
+		 * Open add entry form
+		 */
+
+		openAddEntryForm() {
+			const {openSideModal} = useModal();
+
+			openSideModal(CatalogEditModal, {
+				activeForm: this.addEntryForm,
+				onSetAddEntryForm: this.setAddEntryForm,
+				onAddEntryFormSuccess: this.addEntryFormSuccess,
+			});
+		},
+		/**
 		 * When the add entry modal is closed
 		 */
 		closeAddEntryForm() {
-			this.isModalOpenedAddCatalogEntry = false;
+			const {closeSideModal} = useModal();
+			closeSideModal(CatalogEditModal);
 			this.addEntryForm.fields.find(
 				(f) => f.name === 'submissionIds',
 			).selected = [];

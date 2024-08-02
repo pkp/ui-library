@@ -17,7 +17,7 @@ const EditorialStatsPageWithDataAndTemplate = {
 		<div v-if="activeByStage" class="pkpStats__graph">
 			<div class="pkpStats--editorial__stageWrapper -pkpClearfix">
 				<div class="pkpStats--editorial__stageChartWrapper">
-					<doughnut-chart :chart-data="chartData"></doughnut-chart>
+					<DoughnutChart :chart-data="chartData"></DoughnutChart>
 				</div>
 				<div class="pkpStats--editorial__stageList">
 					<h2
@@ -45,13 +45,13 @@ const EditorialStatsPageWithDataAndTemplate = {
 				</div>
 			</div>
 		</div>
-		<pkp-header>
+		<PkpHeader>
 			<h1 id="editorialActivityTabelLabel">
 				Trends
 				<span v-if="isLoading" class="pkpSpinner" aria-hidden="true"></span>
 			</h1>
 			<template #actions>
-				<date-range
+				<DateRange
 					unique-id="editorial-stats-date-range"
 					:date-start="dateStart"
 					:date-end="dateEnd"
@@ -74,17 +74,17 @@ const EditorialStatsPageWithDataAndTemplate = {
 					invalid-end-date-max-label="The end date may not be later than {$date}."
 					@set-range="setDateRange"
 					@updated:current-range="setCurrentDateRange"
-				></date-range>
-				<pkp-button
+				></DateRange>
+				<PkpButton
 					v-if="filters.length"
 					:is-active="isSidebarVisible"
 					@click="toggleSidebar"
 				>
-					<icon icon="filter" :inline="true" />
+					<Icon icon="filter" :inline="true" />
 					{{ t('common.filter') }}
-				</pkp-button>
+				</PkpButton>
 			</template>
-		</pkp-header>
+		</PkpHeader>
 		<div class="pkpStats__container -pkpClearfix">
 			<!-- Filters in the sidebar -->
 			<div
@@ -98,29 +98,29 @@ const EditorialStatsPageWithDataAndTemplate = {
 					:key="index"
 					class="pkpStats__filterSet"
 				>
-					<pkp-header v-if="filterSet.heading">
+					<PkpHeader v-if="filterSet.heading">
 						<h2>{{ filterSet.heading }}</h2>
-					</pkp-header>
-					<pkp-filter
+					</PkpHeader>
+					<PkpFilter
 						v-for="filter in filterSet.filters"
 						:key="filter.param + filter.value"
 						v-bind="filter"
 						:is-filter-active="isFilterActive(filter.param, filter.value)"
 						@add-filter="addFilter"
 						@remove-filter="removeFilter"
-					></pkp-filter>
+					></PkpFilter>
 				</div>
 			</div>
 			<div class="pkpStats__content">
 				<div class="pkpStats__table" role="region" aria-live="polite">
-					<pkp-table
+					<PkpTable
 						class="pkpTable--editorialStats"
 						labelled-by="editorialActivityTabelLabel"
 						:columns="tableColumns"
 						:rows="tableRows"
 					>
 						<template #default="{row, rowIndex}">
-							<table-cell
+							<TableCell
 								v-for="(column, columnIndex) in tableColumns"
 								:key="column.name"
 								:column="column"
@@ -129,15 +129,15 @@ const EditorialStatsPageWithDataAndTemplate = {
 							>
 								<template #default v-if="column.name === 'name'">
 									{{ row.name }}
-									<tooltip
+									<Tooltip
 										v-if="row.description"
 										:label="'Description for ' + row.name"
 										:tooltip="row.description"
-									></tooltip>
+									></Tooltip>
 								</template>
-							</table-cell>
+							</TableCell>
 						</template>
-					</pkp-table>
+					</PkpTable>
 				</div>
 			</div>
 		</div>
@@ -369,11 +369,11 @@ function getRandomTimeline(startDate, endDate, timelineInterval) {
 const PublicationStatsPageWithDataAndTemplate = {
 	extends: StatsPublicationsPage,
 	template: `		<div class="pkpStats">
-		<pkp-header>
+		<PkpHeader>
 			<h1>Articles</h1>
-			<spinner v-if="isLoadingTimeline" />
+			<Spinner v-if="isLoadingTimeline" />
 			<template #actions>
-				<date-range
+				<DateRange
 					unique-id="publication-stats-date-range"
 					:date-start="dateStart"
 					:date-end="dateEnd"
@@ -396,16 +396,16 @@ const PublicationStatsPageWithDataAndTemplate = {
 					invalid-end-date-max-label="The end date may not be later than {$date}."
 					@set-range="setDateRange"
 				/>
-				<pkp-button
+				<PkpButton
 					v-if="filters.length"
 					:is-active="isSidebarVisible"
 					@click="toggleSidebar"
 				>
-					<icon icon="filter" :inline="true" />
+					<Icon icon="filter" :inline="true" />
 					{{ t('common.filter') }}
-				</pkp-button>
+				</PkpButton>
 			</template>
-		</pkp-header>
+		</PkpHeader>
 		<div class="pkpStats__container -pkpClearfix">
 			<!-- Filters in the sidebar -->
 			<div
@@ -414,24 +414,24 @@ const PublicationStatsPageWithDataAndTemplate = {
 				class="pkpStats__sidebar"
 				:class="sidebarClasses"
 			>
-				<pkp-header
+				<PkpHeader
 					class="pkpStats__sidebarHeader"
 					:tabindex="isSidebarVisible ? 0 : -1"
 				>
 					<h2>
-						<icon icon="filter" :inline="true" />
+						<Icon icon="filter" :inline="true" />
 						{{ t('common.filter') }}
 					</h2>
-				</pkp-header>
+				</PkpHeader>
 				<div
 					v-for="(filterSet, index) in filters"
 					:key="index"
 					class="pkpStats__filterSet"
 				>
-					<pkp-header v-if="filterSet.heading">
+					<PkpHeader v-if="filterSet.heading">
 						<h3>{{ filterSet.heading }}</h3>
-					</pkp-header>
-					<pkp-filter
+					</PkpHeader>
+					<PkpFilter
 						v-for="filter in filterSet.filters"
 						:key="filter.param + filter.value"
 						v-bind="filter"
@@ -454,40 +454,40 @@ const PublicationStatsPageWithDataAndTemplate = {
 							<div
 								class="pkpStats__graphSelector pkpStats__graphSelector--timelineType"
 							>
-								<pkp-button
+								<PkpButton
 									:aria-pressed="timelineType === 'abstract'"
 									aria-describedby="publication-stats-graph-title"
 									@click="setTimelineType('abstract')"
 								>
 									Abstracts
-								</pkp-button>
-								<pkp-button
+								</PkpButton>
+								<PkpButton
 									:aria-pressed="timelineType === 'galley'"
 									aria-describedby="publication-stats-graph-title"
 									@click="setTimelineType('galley')"
 								>
 									Files
-								</pkp-button>
+								</PkpButton>
 							</div>
 							<div
 								class="pkpStats__graphSelector pkpStats__graphSelector--timelineInterval"
 							>
-								<pkp-button
+								<PkpButton
 									:aria-pressed="timelineInterval === 'day'"
 									aria-describedby="publication-stats-graph-title"
 									:disabled="!isDailyIntervalEnabled"
 									@click="setTimelineInterval('day')"
 								>
 									Daily
-								</pkp-button>
-								<pkp-button
+								</PkpButton>
+								<PkpButton
 									:aria-pressed="timelineInterval === 'month'"
 									aria-describedby="publication-stats-graph-title"
 									:disabled="!isMonthlyIntervalEnabled"
 									@click="setTimelineInterval('month')"
 								>
 									Monthly
-								</pkp-button>
+								</PkpButton>
 							</div>
 						</div>
 					</div>
@@ -509,16 +509,16 @@ const PublicationStatsPageWithDataAndTemplate = {
 							</tr>
 						</tbody>
 					</table>
-					<line-chart :chart-data="chartData" aria-hidden="true"></line-chart>
+					<LineChart :chart-data="chartData" aria-hidden="true"></LineChart>
 					<span v-if="isLoadingTimeline" class="pkpStats__loadingCover">
-						<spinner></spinner>
+						<Spinner></Spinner>
 					</span>
 				</div>
 				<div class="pkpStats__table" role="region" aria-live="polite">
-					<pkp-header>
+					<PkpHeader>
 						<h2 id="articleDetailTableLabel" class="pkpStats__tableTitle">
 							Article Details
-							<spinner v-if="isLoadingItems"></spinner>
+							<Spinner v-if="isLoadingItems"></Spinner>
 						</h2>
 						<template #actions>
 							<div class="pkpStats__itemsOfTotal">
@@ -537,8 +537,8 @@ const PublicationStatsPageWithDataAndTemplate = {
 								</a>
 							</div>
 						</template>
-					</pkp-header>
-					<pkp-table
+					</PkpHeader>
+					<PkpTable
 						labelled-by="articleDetailTableLabel"
 						:class="tableClasses"
 						:columns="tableColumns"
@@ -548,17 +548,17 @@ const PublicationStatsPageWithDataAndTemplate = {
 						@order-by="setOrderBy"
 					>
 						<template #thead-title>
-							<search
+							<Search
 								class="pkpStats__titleSearch"
 								:search-phrase="searchPhrase"
 								search-label="Search by title, author and ID"
 								@search-phrase-changed="setSearchPhrase"
 							/>
 						</template>
-					</pkp-table>
+					</PkpTable>
 					<div v-if="!items.length" class="pkpStats__noRecords">
 						<template v-if="isLoadingItems">
-							<spinner></spinner>
+							<Spinner></Spinner>
 							Loading
 						</template>
 						<template v-else>
@@ -566,7 +566,7 @@ const PublicationStatsPageWithDataAndTemplate = {
 							parameters.
 						</template>
 					</div>
-					<pagination
+					<Pagination
 						v-if="lastPage > 1"
 						id="articleDetailTablePagination"
 						:current-page="currentPage"

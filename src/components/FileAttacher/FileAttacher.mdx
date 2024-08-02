@@ -11,7 +11,7 @@ import * as FileAttacherStories from './FileAttacher.stories.js';
 Use the `<FileAttacher>` to allow a user to upload a file or select a file that has already been uploaded. Each one of the "attachers" configures a different source of files for the `<FileAttacher>`. For example, to allow the user to attach a file from the publisher library, the `attachers` prop would add a `FileAttacherLibrary`.
 
 ```html
-<file-attacher
+<FileAttacher
 	:attachers="[
         {
             component: 'FileAttacherLibrary',

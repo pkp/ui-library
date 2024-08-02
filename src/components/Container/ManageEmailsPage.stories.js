@@ -14,25 +14,25 @@ export default {
 const ManageEmailsPageWithDataAndTemplate = {
 	extends: ManageEmailsPage,
 	template: `<div class="app__page width width--wide">
-		<list-panel
+		<ListPanel
 			class="manageEmails__listPanel"
 			:items="currentMailables"
 			:is-sidebar-visible="true"
 		>
 			<template #header>
-				<pkp-header>
+				<PkpHeader>
 					<h1>Emails</h1>
 					<template #actions>
-						<search
+						<Search
 							search-label="Search by name or description"
 							:search-phrase="searchPhrase"
 							@search-phrase-changed="(newSearch) => (searchPhrase = newSearch)"
-						></search>
-						<pkp-button :is-warnable="true" @click="confirmResetAll">
+						></Search>
+						<PkpButton :is-warnable="true" @click="confirmResetAll">
 							Reset All
-						</pkp-button>
+						</PkpButton>
 					</template>
-				</pkp-header>
+				</PkpHeader>
 			</template>
 			<template #item-title="{item}">
 				{{ item.name }}
@@ -41,21 +41,21 @@ const ManageEmailsPageWithDataAndTemplate = {
 				{{ item.description }}
 			</template>
 			<template #item-actions="{item}">
-				<pkp-button @click="openMailable(item)">
+				<PkpButton @click="openMailable(item)">
 					<span aria-hidden="true">Edit</span>
 					<span class="-screenReader">
 						{{ t('common.editItem', {name: item.name}) }}
 					</span>
-				</pkp-button>
+				</PkpButton>
 			</template>
 			<template #sidebar>
-				<pkp-header>
+				<PkpHeader>
 					<h2>
-						<icon icon="filter" :inline="true" />
+						<Icon icon="filter" :inline="true" />
 						Filters
 					</h2>
-				</pkp-header>
-				<pkp-filter
+				</PkpHeader>
+				<PkpFilter
 					v-for="(name, value) in groupFilters"
 					:key="value"
 					param="groupIds"
@@ -64,12 +64,12 @@ const ManageEmailsPageWithDataAndTemplate = {
 					:is-filter-active="isFilterActive('groupIds', value)"
 					@add-filter="addFilter"
 					@remove-filter="removeFilter"
-				></pkp-filter>
+				></PkpFilter>
 				<div class="listPanel__block">
-					<pkp-header>
+					<PkpHeader>
 						<h3>Sent From</h3>
-					</pkp-header>
-					<pkp-filter
+					</PkpHeader>
+					<PkpFilter
 						v-for="(name, value) in fromFilters"
 						:key="value"
 						param="fromRoleIds"
@@ -78,13 +78,13 @@ const ManageEmailsPageWithDataAndTemplate = {
 						:is-filter-active="isFilterActive('fromRoleIds', parseInt(value))"
 						@add-filter="addFilter"
 						@remove-filter="removeFilter"
-					></pkp-filter>
+					></PkpFilter>
 				</div>
 				<div class="listPanel__block">
-					<pkp-header>
+					<PkpHeader>
 						<h3>Sent To</h3>
-					</pkp-header>
-					<pkp-filter
+					</PkpHeader>
+					<PkpFilter
 						v-for="(name, value) in toFilters"
 						:key="value"
 						param="toRoleIds"
@@ -93,75 +93,10 @@ const ManageEmailsPageWithDataAndTemplate = {
 						:is-filter-active="isFilterActive('toRoleIds', parseInt(value))"
 						@add-filter="addFilter"
 						@remove-filter="removeFilter"
-					></pkp-filter>
+					></PkpFilter>
 				</div>
 			</template>
-		</list-panel>
-		<modal
-			:close-label="t('common.close')"
-			name="mailable"
-			:open="isModalOpenedMailable"
-			:title="currentMailable ? currentMailable.name : ''"
-			@close="closeMailableModal"
-		>
-			<template v-if="currentMailable">
-				<p>{{ currentMailable.description }}</p>
-				<p>
-					Add and edit templates that you would like to make available to the
-					user when they are sending this email. The default will be loaded
-					automatically, and the user will be able to quickly load any other
-					templates you add here.
-				</p>
-				<list-panel :items="currentMailable.emailTemplates">
-					<template #header>
-						<pkp-header>
-							<h3>Templates</h3>
-							<template #actions>
-								<pkp-button @click="openTemplate()">Add Template</pkp-button>
-							</template>
-						</pkp-header>
-					</template>
-					<template #item-subtitle="{item}">
-						{{ localize(item.name) }}
-					</template>
-					<template #item-actions="{item}">
-						<badge v-if="item.key === currentMailable.emailTemplateKey">
-							Default
-						</badge>
-						<pkp-button @click="openTemplate(item)">Edit</pkp-button>
-						<pkp-button
-							v-if="item.key === currentMailable.emailTemplateKey && item.id"
-							:is-warnable="true"
-							@click="confirmResetTemplate(item)"
-						>
-							Reset
-						</pkp-button>
-						<pkp-button
-							v-else-if="item.id"
-							:is-warnable="true"
-							@click="confirmRemoveTemplate(item)"
-						>
-							Remove
-						</pkp-button>
-					</template>
-				</list-panel>
-			</template>
-		</modal>
-		<modal
-			:close-label="t('common.close')"
-			name="template"
-			:open="isModalOpenedTemplate"
-			:title="currentTemplate ? 'Edit Template' : 'Add Template'"
-			@close="closeTemplateModal"
-		>
-			<pkp-form
-				ref="templateForm"
-				class="manageEmails__templateForm"
-				v-bind="currentTemplateForm"
-				@set="updateCurrentTemplateForm"
-				@success="templateSaved"
-			></pkp-form>
-		</modal>
+		</ListPanel>
 	</div>
 `,
 	data() {

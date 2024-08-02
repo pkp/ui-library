@@ -13,13 +13,15 @@ import * as SideModalStories from './SideModal.stories.js';
 
 # Side Modal
 
-Side modal has been introduced with new submission listing and will gradually replace both legacy jQuery modal and Vue.js central modal.
-
-To correctly handle accessibility (title, description) and focus management - [headless-ui](https://headlessui.com) library is used.
+Side modal has been introduced in 3.5 all existing modals, including jquery legacy ones are now rendered as SideModal.
 
 ## Usage
 
-We recommend to define modals as individual component files, rather than inline them, that ensures that the `setup` function and any other component life cycle event are triggered as modal is opened/closed. Therefore its easier to control when for example to fetch data from API. We might introduce option to define inline modals for basic use cases in future
+It's important to create modals as separate files, which works best with our [useModal](../?path=/docs/composables-usemodal--docs#opensidemodal) composable. Also having them defined as individual components ensures that the `setup` function and any other component life cycle event are triggered as modal is opened/closed. Therefore, it's easier to control when for example to fetch data from API.
+
+## Accessibility
+
+To correctly handle accessibility (title, description) and focus management - [headless-ui](https://headlessui.com) library is used.
 
 ### Defining Modal Component
 
@@ -42,9 +44,7 @@ We recommend to define modals as individual component files, rather than inline 
 			</PkpButton>
 		</template>
 
-		<div class="p-4">
-			<div class="bg-secondary p-4">CONTENT</div>
-		</div>
+		<SideModalLayoutBasic>CONTENT</SideModalLayoutBasic>
 	</SideModalBody>
 </template>
 

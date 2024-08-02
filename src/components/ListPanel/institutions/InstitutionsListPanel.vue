@@ -1,21 +1,21 @@
 <template>
 	<div class="institutionsListPanel">
 		<slot>
-			<list-panel :items="items">
+			<ListPanel :items="items">
 				<template #header>
-					<pkp-header>
+					<PkpHeader>
 						<h2>{{ title }}</h2>
-						<spinner v-if="isLoading" />
+						<Spinner v-if="isLoading" />
 						<template #actions>
-							<search
+							<Search
 								:search-phrase="searchPhrase"
 								@search-phrase-changed="setSearchPhrase"
 							/>
-							<pkp-button @click="openAddModal">
+							<PkpButton @click="openAddModal">
 								{{ addInstitutionLabel }}
-							</pkp-button>
+							</PkpButton>
 						</template>
-					</pkp-header>
+					</PkpHeader>
 				</template>
 				<template #item-title="{item}">
 					<span :id="'institution-' + item.id">
@@ -23,22 +23,22 @@
 					</span>
 				</template>
 				<template #item-actions="{item}">
-					<pkp-button
+					<PkpButton
 						:aria-describedby="'institution-' + item.id"
 						@click="openEditModal(item.id)"
 					>
 						{{ t('common.edit') }}
-					</pkp-button>
-					<pkp-button
+					</PkpButton>
+					<PkpButton
 						:is-warnable="true"
 						:aria-describedby="'institution-' + item.id"
 						@click="openDeleteModal(item.id)"
 					>
 						{{ t('common.delete') }}
-					</pkp-button>
+					</PkpButton>
 				</template>
 				<template #footer>
-					<pagination
+					<Pagination
 						v-if="lastPage > 1"
 						:current-page="currentPage"
 						:is-loading="isLoading"
@@ -46,44 +46,33 @@
 						@set-page="setPage"
 					/>
 				</template>
-			</list-panel>
-			<modal
-				:close-label="t('common.close')"
-				name="form"
-				:title="activeFormTitle"
-				:open="isModalOpenedForm"
-				@close="closeFormModal"
-			>
-				<pkp-form
-					v-bind="activeForm"
-					@set="updateForm"
-					@success="formSuccess"
-				/>
-			</modal>
+			</ListPanel>
 		</slot>
 	</div>
 </template>
 
 <script>
+import Spinner from '@/components/Spinner/Spinner.vue';
+import PkpButton from '@/components/Button/Button.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
-import PkpForm from '@/components/Form/Form.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import Search from '@/components/Search/Search.vue';
-import Modal from '@/components/Modal/Modal.vue';
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
 import fetch from '@/mixins/fetch';
 import cloneDeep from 'clone-deep';
+import InstitutionsEditModal from './InstitutionsEditModal.vue';
+import {useModal} from '@/composables/useModal';
 
 export default {
 	components: {
 		ListPanel,
 		Pagination,
-		PkpForm,
 		PkpHeader,
 		Search,
-		Modal,
+		Spinner,
+		PkpButton,
 	},
 	mixins: [dialog, fetch, ajaxError],
 	props: {
@@ -149,7 +138,6 @@ export default {
 		return {
 			activeForm: null,
 			activeFormTitle: '',
-			isModalOpenedForm: false,
 		};
 	},
 	methods: {
@@ -160,7 +148,8 @@ export default {
 		closeFormModal() {
 			this.activeForm = null;
 			this.activeFormTitle = '';
-			this.isModalOpenedForm = false;
+			const {closeSideModal} = useModal();
+			closeSideModal(InstitutionsEditModal);
 		},
 
 		/**
@@ -193,7 +182,13 @@ export default {
 			activeForm.method = 'POST';
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.addInstitutionLabel;
-			this.isModalOpenedForm = true;
+			const {openSideModal} = useModal();
+			openSideModal(InstitutionsEditModal, {
+				title: this.activeFormTitle,
+				activeForm: this.activeForm,
+				onUpdateForm: this.updateForm,
+				onFormSuccess: this.formSuccess,
+			});
 		},
 
 		/**
@@ -276,7 +271,14 @@ export default {
 			});
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.editInstitutionLabel;
-			this.isModalOpenedForm = true;
+
+			const {openSideModal} = useModal();
+			openSideModal(InstitutionsEditModal, {
+				title: this.activeFormTitle,
+				activeForm: this.activeForm,
+				onUpdateForm: this.updateForm,
+				onFormSuccess: this.formSuccess,
+			});
 		},
 
 		/**
@@ -300,7 +302,10 @@ export default {
 		 * @param {Object} data
 		 */
 		updateForm(formId, data) {
-			let activeForm = {...this.activeForm};
+			if (!this.activeForm) {
+				return;
+			}
+			let activeForm = this.activeForm;
 			Object.keys(data).forEach(function (key) {
 				activeForm[key] = data[key];
 			});

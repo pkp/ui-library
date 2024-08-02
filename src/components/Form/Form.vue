@@ -1,5 +1,10 @@
 <template>
-	<form class="pkpForm -pkpClearfix h-full" :method="method" :action="action">
+	<form
+		class="pkpForm -pkpClearfix h-full"
+		:method="method"
+		:action="action"
+		@keydown.enter.prevent=""
+	>
 		<input
 			v-for="(value, name) in hiddenFields"
 			:key="name"
@@ -7,7 +12,7 @@
 			:name="name"
 			:value="value"
 		/>
-		<form-locales
+		<FormLocales
 			v-if="availableLocales.length > 1"
 			:primary-locale-key="primaryLocale"
 			:locales="availableLocales"
@@ -28,7 +33,7 @@
 					>
 						{{ page.label }}
 					</button>
-					<icon
+					<Icon
 						v-if="pageIdsWithErrors.includes(page.id)"
 						icon="exclamation-triangle"
 						:inline="true"
@@ -37,7 +42,7 @@
 			</ol>
 		</div>
 		<div class="pkpFormPages" :class="classes">
-			<form-page
+			<FormPage
 				v-for="(page, index) in pages"
 				:key="page.id"
 				v-bind="page"
@@ -58,6 +63,7 @@
 				@previousPage="setCurrentPage(false)"
 				@showField="showField"
 				@showLocale="showLocale"
+				@cancel="cancel"
 				@set-errors="setErrors"
 			/>
 		</div>
@@ -68,12 +74,14 @@
 import FormLocales from './FormLocales.vue';
 import FormPage from './FormPage.vue';
 import {shouldShowField} from './formHelpers';
+import Icon from '@/components/Icon/Icon.vue';
 
 export default {
 	name: 'PkpForm',
 	components: {
 		FormLocales,
 		FormPage,
+		Icon,
 	},
 	props: {
 		/** Used by a parent component, such as `Container`, to identify events emitted from the form and update the form props when necessary. */
@@ -126,6 +134,8 @@ export default {
 		'set',
 		/** When the form has been successfully submitted. The payload will include the server response from the successful form submission. This is usually the object that was added or edited. */
 		'success',
+		/** When the form submission has been cancelled */
+		'cancel',
 	],
 	data() {
 		return {
@@ -211,7 +221,7 @@ export default {
 		submitValues() {
 			let values = {};
 			this.fields.forEach((field) => {
-				if (field.component === 'field-html') {
+				if (field.isInert) {
 					return;
 				}
 				if (!field.isMultilingual) {
@@ -314,6 +324,13 @@ export default {
 					complete: this.complete,
 				});
 			}
+		},
+
+		/**
+		 * Cancel the form submission process
+		 */
+		cancel: function () {
+			this.$emit('cancel', this.id);
 		},
 
 		/**
@@ -657,8 +674,8 @@ export default {
 .pkpFormPage--current {
 	height: 100%;
 	display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+	flex-direction: column;
+	justify-content: space-between;
 	position: relative;
 	left: auto;
 }

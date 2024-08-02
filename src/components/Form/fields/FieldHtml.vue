@@ -4,9 +4,9 @@
 			<span class="pkpFormFieldLabel">
 				{{ label }}
 			</span>
-			<tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
+			<Tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span v-if="tooltip" class="-screenReader" v-html="tooltip" />
-			<help-button
+			<HelpButton
 				v-if="helpTopic"
 				:topic="helpTopic"
 				:section="helpSection"
@@ -22,9 +22,12 @@
 
 <script>
 import FieldBase from './FieldBase.vue';
+import Tooltip from '@/components/Tooltip/Tooltip.vue';
+import HelpButton from '@/components/HelpButton/HelpButton.vue';
 
 export default {
 	name: 'FieldHtml',
+	components: {Tooltip, HelpButton},
 	extends: FieldBase,
 };
 </script>

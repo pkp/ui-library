@@ -5,28 +5,30 @@
 				{{ name }}
 			</div>
 			<div class="fileUploadProgress__actions">
-				<pkp-button
+				<PkpButton
 					:is-warnable="true"
 					:aria-describedby="uuid"
 					@click="$emit('cancel')"
 				>
 					{{ cancelUploadLabel }}
-				</pkp-button>
+				</PkpButton>
 			</div>
 		</div>
-		<field-error v-if="errors.length" :messages="errors" />
-		<progress-bar v-else :value="progress" />
+		<FieldError v-if="errors.length" :messages="errors" />
+		<ProgressBar v-else :value="progress" />
 	</div>
 </template>
 
 <script>
 import FieldError from '@/components/Form/FieldError.vue';
 import ProgressBar from '@/components/ProgressBar/ProgressBar.vue';
+import PkpButton from '@/components/Button/Button.vue';
 
 export default {
 	components: {
 		FieldError,
 		ProgressBar,
+		PkpButton,
 	},
 	props: {
 		/** A localized string for the button to cancel the upload. */

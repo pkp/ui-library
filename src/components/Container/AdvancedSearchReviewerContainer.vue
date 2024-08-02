@@ -10,7 +10,7 @@
 						class="author_row"
 					>
 						<strong>{{ author }}</strong>
-						<span v-if="affiliations">-</span>
+						<span v-if="affiliations">{{ ' - ' }}</span>
 						<span>{{ affiliations }}</span>
 					</li>
 				</ol>
@@ -32,11 +32,12 @@
 				</div>
 			</div>
 		</div>
-		<select-reviewer-list-panel v-bind="components.selectReviewer" />
+		<SelectReviewerListPanel v-bind="components.selectReviewer" @set="set" />
 	</div>
 </template>
 
 <script>
+import Container from '@/components/Container/Container.vue';
 import SelectReviewerListPanel from '@/components/ListPanel/users/SelectReviewerListPanel.vue';
 
 export default {
@@ -44,6 +45,7 @@ export default {
 	components: {
 		SelectReviewerListPanel,
 	},
+	extends: Container,
 	data() {
 		return {
 			showAllAuthors: false,

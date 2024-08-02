@@ -53,6 +53,7 @@ export function useForm(_form) {
 		watch(
 			errors,
 			(newErrors) => {
+				form.value.errors = {};
 				Object.keys(newErrors).forEach((key) => {
 					if (doesFieldExist(form.value, key)) {
 						form.value.errors[key] = newErrors[key];

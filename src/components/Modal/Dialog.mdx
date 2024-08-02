@@ -1,0 +1,30 @@
+import {
+	Primary,
+	Controls,
+	Stories,
+	Meta,
+	ArgTypes,
+	Source,
+} from '@storybook/blocks';
+import Dialog from './Dialog.vue';
+import * as DialogStories from './Dialog.stories.js';
+
+<Meta of={DialogStories} />
+
+# Dialog
+
+Dialog purpose is to display simple feedback like success and error messages. Or request confirmation for example before deleting content.
+
+## Usage
+
+Dialog are opened via method `openDialog` from [useModal](../?path=/docs/composables-usemodal--docs#opensidemodal) composable. Check out the props description for details.
+
+## Accessibility
+
+To correctly handle accessibility (title, description) and focus management - [headless-ui](https://headlessui.com) library is used.
+
+### Defining Modal Component
+
+<ArgTypes of={Dialog} />
+
+<Stories />

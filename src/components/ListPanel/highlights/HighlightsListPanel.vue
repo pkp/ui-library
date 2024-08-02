@@ -1,100 +1,90 @@
 <template>
 	<div class="highlightsListPanel" :class="{'-isOrdering': isOrdering}">
 		<slot>
-			<list-panel :items="items">
+			<ListPanel :items="items">
 				<template #header>
-					<pkp-header>
+					<PkpHeader>
 						<h2>{{ title }}</h2>
-						<spinner v-if="isLoading" />
+						<Spinner v-if="isLoading" />
 						<template #actions>
-							<pkp-button
+							<PkpButton
 								v-if="!isOrdering"
 								:is-active="isOrdering"
 								:disabled="isLoading"
 								@click="isOrdering = true"
 							>
 								{{ t('common.order') }}
-							</pkp-button>
+							</PkpButton>
 							<template v-else>
-								<pkp-button
+								<PkpButton
 									:is-active="true"
 									:disabled="isLoading"
 									@click="saveOrder"
 								>
 									{{ i18nSaveOrder }}
-								</pkp-button>
-								<pkp-button
+								</PkpButton>
+								<PkpButton
 									:is-warnable="true"
 									:disabled="isLoading"
 									@click="isOrdering = false"
 								>
 									{{ t('common.cancel') }}
-								</pkp-button>
+								</PkpButton>
 							</template>
-							<pkp-button :disabled="isOrdering" @click="openAddModal">
+							<PkpButton :disabled="isOrdering" @click="openAddModal">
 								{{ i18nAdd }}
-							</pkp-button>
+							</PkpButton>
 						</template>
-					</pkp-header>
+					</PkpHeader>
 				</template>
 				<template #item-title="{item}">
 					{{ localize(item.title) }}
 				</template>
 				<template #item-actions="{item}">
-					<orderer
+					<Orderer
 						v-if="isOrdering"
 						:item-id="item.id"
 						:item-title="localize(item.title)"
 						@up="orderUp(item)"
 						@down="orderDown(item)"
-					></orderer>
-					<pkp-button v-if="!isOrdering" @click="openEditModal(item.id)">
+					></Orderer>
+					<PkpButton v-if="!isOrdering" @click="openEditModal(item.id)">
 						{{ t('common.edit') }}
-					</pkp-button>
-					<pkp-button
+					</PkpButton>
+					<PkpButton
 						v-if="!isOrdering"
 						:is-warnable="true"
 						@click="openDeleteModal(item.id)"
 					>
 						{{ t('common.delete') }}
-					</pkp-button>
+					</PkpButton>
 				</template>
-			</list-panel>
-			<modal
-				:close-label="t('common.close')"
-				name="form"
-				:title="activeFormTitle"
-				:open="isModalOpened"
-				@close="closeFormModal"
-			>
-				<pkp-form
-					v-bind="activeForm"
-					@set="updateForm"
-					@success="formSuccess"
-				/>
-			</modal>
+			</ListPanel>
 		</slot>
 	</div>
 </template>
 
 <script>
+import PkpButton from '@/components/Button/Button.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
+
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
-import PkpForm from '@/components/Form/Form.vue';
 import PkpHeader from '@/components/Header/Header.vue';
-import Modal from '@/components/Modal/Modal.vue';
 import Orderer from '@/components/Orderer/Orderer.vue';
+import HighlightsEditModal from './HighlightsEditModal.vue';
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
 import fetch from '@/mixins/fetch';
 import cloneDeep from 'clone-deep';
+import {useModal} from '@/composables/useModal';
 
 export default {
 	components: {
 		ListPanel,
-		PkpForm,
 		PkpHeader,
-		Modal,
 		Orderer,
+		PkpButton,
+		Spinner,
 	},
 	mixins: [dialog, fetch, ajaxError],
 	props: {
@@ -162,7 +152,6 @@ export default {
 			activeForm: null,
 			activeFormTitle: '',
 			isLoading: false,
-			isModalOpened: false,
 			isOrdering: false,
 		};
 	},
@@ -175,7 +164,8 @@ export default {
 		closeFormModal(event) {
 			this.activeForm = null;
 			this.activeFormTitle = '';
-			this.isModalOpened = false;
+			const {closeSideModal} = useModal();
+			closeSideModal(HighlightsEditModal);
 		},
 
 		/**
@@ -196,7 +186,8 @@ export default {
 				);
 				pkp.eventBus.$emit('update:highlight', item);
 			}
-			this.isModalOpened = false;
+			const {closeSideModal} = useModal();
+			closeSideModal(HighlightsEditModal);
 		},
 
 		/**
@@ -208,7 +199,13 @@ export default {
 			activeForm.method = 'POST';
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.i18nAdd;
-			this.isModalOpened = true;
+			const {openSideModal} = useModal();
+			openSideModal(HighlightsEditModal, {
+				title: this.activeFormTitle,
+				activeForm: this.activeForm,
+				onUpdateForm: this.updateForm,
+				onFormSuccess: this.formSuccess,
+			});
 		},
 
 		/**
@@ -284,7 +281,13 @@ export default {
 			});
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.i18nEdit;
-			this.isModalOpened = false;
+			const {openSideModal} = useModal();
+			openSideModal(HighlightsEditModal, {
+				title: this.activeFormTitle,
+				activeForm: this.activeForm,
+				onUpdateForm: this.updateForm,
+				onFormSuccess: this.formSuccess,
+			});
 		},
 
 		/**
@@ -378,7 +381,11 @@ export default {
 		 * @param {Object} data
 		 */
 		updateForm(formId, data) {
-			let activeForm = {...this.activeForm};
+			if (!this.activeForm) {
+				return;
+			}
+
+			let activeForm = this.activeForm;
 			Object.keys(data).forEach(function (key) {
 				activeForm[key] = data[key];
 			});

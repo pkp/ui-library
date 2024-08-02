@@ -2,12 +2,12 @@
 	<th
 		scope="col"
 		:aria-sort="props.allowsSorting ? tableContext.sortDirection : undefined"
-		class="border-b border-t border-table-heading px-2 py-4 text-start text-base-normal uppercase first:border-s first:ps-3 last:border-e last:pe-3"
+		class="whitespace-nowrap border-b border-t border-table-heading px-2 py-4 text-start text-base-normal uppercase first:border-s first:ps-3 last:border-e last:pe-3"
 	>
 		<template v-if="props.allowsSorting">
 			<button class="flex items-center" @click="tableContext.onSort(id)">
 				<slot />
-				<icon class="h-5 w-5 text-primary" icon="Sort" :aria-hidden="true" />
+				<Icon class="h-5 w-5 text-primary" icon="Sort" :aria-hidden="true" />
 				<span class="-screenReader">
 					{{ t('grid.action.sort') }}
 				</span>
@@ -21,6 +21,8 @@
 
 <script setup>
 import {defineProps, inject} from 'vue';
+import Icon from '@/components/Icon/Icon.vue';
+
 const props = defineProps({
 	/** Unique column identifier */
 	id: {type: String, required: true},

@@ -23,7 +23,7 @@ export default {
 			return {currentPage, isLoading, setPage, args};
 		},
 		template: `
-			<pagination
+			<Pagination
 				v-bind="args"
 				:current-page="currentPage"
 				:is-loading="isLoading"

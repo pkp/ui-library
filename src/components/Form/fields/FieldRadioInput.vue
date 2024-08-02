@@ -12,7 +12,7 @@
 				*
 				<span class="-screenReader">{{ t('common.required') }}</span>
 			</span>
-			<tooltip
+			<Tooltip
 				v-if="isPrimaryLocale && tooltip"
 				aria-hidden="true"
 				:tooltip="tooltip"
@@ -24,7 +24,7 @@
 				class="-screenReader"
 				v-html="tooltip"
 			/>
-			<help-button
+			<HelpButton
 				v-if="isPrimaryLocale && helpTopic"
 				:id="describedByHelpId"
 				:topic="helpTopic"
@@ -38,7 +38,7 @@
 			class="pkpFormField__description pkpFormField--options__description"
 			v-html="description"
 		/>
-		<field-error
+		<FieldError
 			v-if="errors && errors.length"
 			:id="describedByErrorId"
 			:messages="errors"
@@ -87,7 +87,7 @@
 					/>
 				</template>
 			</label>
-			<multilingual-progress
+			<MultilingualProgress
 				v-if="isMultilingual && locales.length > 1"
 				:id="multilingualProgressId"
 				:count="multilingualFieldsCompleted"
@@ -99,9 +99,14 @@
 
 <script>
 import FieldOptions from './FieldOptions.vue';
+import Tooltip from '@/components/Tooltip/Tooltip.vue';
+import HelpButton from '@/components/HelpButton/HelpButton.vue';
+import FieldError from '@/components/Form/FieldError.vue';
+import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
 
 export default {
 	name: 'FieldRadioInput',
+	components: {Tooltip, HelpButton, FieldError, MultilingualProgress},
 	extends: FieldOptions,
 	props: {
 		/** Current value */
