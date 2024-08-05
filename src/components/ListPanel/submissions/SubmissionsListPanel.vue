@@ -15,6 +15,13 @@
 							@search-phrase-changed="setSearchPhrase"
 						/>
 						<PkpButton
+							v-if="currentUserCanBulkDeleteIncompleteSubmissions"
+							:is-warnable="hasSubmissionsSelectedForDeletion"
+							@click="promptDeleteConfirmation"
+						>
+							{{ t('common.delete') }}
+						</PkpButton>
+						<PkpButton
 							:is-active="isSidebarVisible"
 							@click="isSidebarVisible = !isSidebarVisible"
 						>
@@ -69,6 +76,21 @@
 				</template>
 			</template>
 
+			<template v-if="hasSubmissionsSelectedForDeletion" #sub-action>
+				<div>
+					<span class="font-bold">
+						{{ t('admin.submissions.incomplete.bulkDelete.selectionStatus') }}
+					</span>
+					<span class="text-primary">
+						<PkpButton
+							:is-link="true"
+							@click="toggleAllIncompleteSubmissionsSelection()"
+						>
+							{{ checkAllIncompleteSubmissionText }}
+						</PkpButton>
+					</span>
+				</div>
+			</template>
 			<template #item="{item}">
 				<slot name="item" :item="item">
 					<SubmissionsListItem
@@ -77,7 +99,11 @@
 						:api-url="apiUrl"
 						:info-url="infoUrl"
 						:assign-participant-url="assignParticipantUrl"
+						:is-selected-for-deletion="
+							selectedIncompleteSubmissions.includes(item.id)
+						"
 						@addFilter="addFilter"
+						@selectedForBulkDelete="toggleSubmissionSelection"
 					/>
 				</slot>
 			</template>
@@ -106,6 +132,7 @@ import PkpFilterAutosuggest from '@/components/Filter/FilterAutosuggest.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import Search from '@/components/Search/Search.vue';
 import SubmissionsListItem from '@/components/ListPanel/submissions/SubmissionsListItem.vue';
+import dialog from '@/mixins/dialog';
 import fetch from '@/mixins/fetch';
 
 export default {
@@ -122,7 +149,7 @@ export default {
 		Search,
 		SubmissionsListItem,
 	},
-	mixins: [fetch],
+	mixins: [fetch, dialog],
 	props: {
 		/** The URL to make a new submission. */
 		addUrl: {
@@ -187,6 +214,7 @@ export default {
 	data() {
 		return {
 			isSidebarVisible: false,
+			selectedIncompleteSubmissions: [],
 		};
 	},
 	computed: {
@@ -215,6 +243,52 @@ export default {
 					pkp.const.ROLE_ID_REVIEWER,
 				])
 			);
+		},
+
+		/**
+		 * Does the user currently have any Incomplete submissions selected for deletion?
+		 * @returns {Boolean}
+		 */
+		hasSubmissionsSelectedForDeletion() {
+			return !!this.selectedIncompleteSubmissions.length;
+		},
+
+		/**
+		 * Has the user selected all incomplete submissions?
+		 * @returns {Boolean}
+		 */
+		hasSelectedAllIncompleteSubmissions() {
+			return (
+				this.selectedIncompleteSubmissions.length ===
+				this.incompleteSubmissions.length
+			);
+		},
+
+		/**
+		 * Get the Incomplete Submissions
+		 * @returns {Array}
+		 */
+		incompleteSubmissions() {
+			return this.items.filter((submission) => submission.submissionProgress);
+		},
+
+		/**
+		 * Returns a text label for toggling the selection of all incomplete submissions.
+		 * If all incomplete submissions are selected, it returns the label for deselecting all.
+		 * If not all incomplete submissions are selected, it returns the label for selecting all.
+		 */
+		checkAllIncompleteSubmissionText() {
+			return this.hasSelectedAllIncompleteSubmissions
+				? this.t('common.deselectAll')
+				: this.t('common.selectAll');
+		},
+
+		/**
+		 * Can the current user bulk delete incomplete submissions?
+		 * @return {Boolean}
+		 */
+		currentUserCanBulkDeleteIncompleteSubmissions() {
+			return this.userHasRole(pkp.const.ROLE_ID_SITE_ADMIN);
 		},
 	},
 	mounted() {
@@ -342,7 +416,6 @@ export default {
 				itemsMax,
 			});
 		},
-
 		/**
 		 * Helper function to determine if the current user has a role
 		 *
@@ -362,6 +435,101 @@ export default {
 			});
 
 			return hasRole;
+		},
+
+		/**
+		 * Toggles the selection of a specific Incomplete submission with given ID.
+		 * Adds the submission to the selection list if it is not already selected.
+		 * Removes the submission from the selection list if it is currently selected.
+		 */
+		toggleSubmissionSelection(id) {
+			const existingEntry = this.selectedIncompleteSubmissions.find(
+				(submissionId) => submissionId === id,
+			);
+
+			if (!existingEntry) {
+				this.selectedIncompleteSubmissions.push(id);
+			} else {
+				this.selectedIncompleteSubmissions =
+					this.selectedIncompleteSubmissions.filter(
+						(selectedId) => selectedId !== id,
+					);
+			}
+		},
+
+		/**
+		 * Selects or deselects all incomplete submissions based on current selection state.
+		 * If all Incomplete submissions are selected, it clears the selection.
+		 * If not all Incomplete submissions are selected, it selects them all.
+		 */
+		toggleAllIncompleteSubmissionsSelection() {
+			this.selectedIncompleteSubmissions = this
+				.hasSelectedAllIncompleteSubmissions
+				? []
+				: this.incompleteSubmissions.map(({id}) => id);
+		},
+
+		/**
+		 * Delete selected submissions
+		 */
+		deleteIncompleteSubmissions(closeDialog) {
+			const self = this;
+
+			$.ajax({
+				url:
+					this.apiUrl +
+					`?${$.param({ids: self.selectedIncompleteSubmissions.join(',')})}`,
+				type: 'POST',
+				headers: {
+					'X-Csrf-Token': pkp.currentUser.csrfToken,
+					'X-Http-Method-Override': 'DELETE',
+				},
+				error: self.ajaxErrorCallback,
+				success() {
+					self.setItems(
+						self.items.filter(
+							(item) => !self.selectedIncompleteSubmissions.includes(item.id),
+						),
+						self.itemsMax - 1,
+					);
+					pkp.eventBus.$emit(
+						'notify',
+						self.t('admin.submissions.incomplete.bulkDelete.success'),
+						'success',
+					);
+					self.selectedIncompleteSubmissions = [];
+					closeDialog();
+				},
+			});
+		},
+
+		/**
+		 * Display a confirmation prompt before deleting submissions
+		 */
+		promptDeleteConfirmation() {
+			if (!this.hasSubmissionsSelectedForDeletion) {
+				return;
+			}
+
+			this.openDialog({
+				name: 'bulkDeleteConfirmation',
+				title: this.t('admin.submissions.incomplete.bulkDelete.confirm'),
+				message: this.t('admin.submissions.incomplete.bulkDelete.body'),
+				actions: [
+					{
+						label: this.t('common.confirm'),
+						isPrimary: true,
+						callback: (close) => {
+							this.deleteIncompleteSubmissions(close);
+						},
+					},
+					{
+						label: this.t('common.cancel'),
+						isWarnable: true,
+						callback: (close) => close(),
+					},
+				],
+			});
 		},
 	},
 };
