@@ -35,10 +35,10 @@
 			<TableRow v-for="(row, index) in allUserGroups" :key="index">
 				<TableCell>
 					<FieldSelect
-						name="userGroup"
+						name="userGroupId"
 						:label="t('invitation.role.selectRole')"
 						:is-required="true"
-						:value="row.userGroup"
+						:value="row.userGroupId"
 						:options="availableUserGroups"
 						:all-errors="userGroupErrors[index]"
 						class="userInvitation__roleSelect"
@@ -139,8 +139,9 @@ const availableUserGroups = computed(() => {
 function addUserGroup() {
 	const userGroupsUpdate = [...store.invitationPayload.userGroupsToAdd];
 	userGroupsUpdate.push({
-		userGroup: null,
+		userGroupId: null,
 		dateStart: null,
+		dateEnd: null,
 		masthead: null,
 	});
 	store.updatePayload('userGroupsToAdd', userGroupsUpdate);
@@ -148,8 +149,11 @@ function addUserGroup() {
 
 function removeUserGroup(userGroup, index) {
 	store.invitationPayload.currentUserGroups.splice(index, 1);
-	const userGroupsToRemove = [...store.invitationPayload.userGroupsToRemove];
-	userGroupsToRemove.push(userGroup.id);
+	let userGroupsToRemove = [];
+	if (store.invitationPayload.userGroupsToRemove) {
+		userGroupsToRemove = [...store.invitationPayload.userGroupsToRemove];
+	}
+	userGroupsToRemove.push({userGroupId: userGroup.id});
 	store.updatePayload('userGroupsToRemove', userGroupsToRemove);
 }
 

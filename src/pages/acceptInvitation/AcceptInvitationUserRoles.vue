@@ -11,7 +11,7 @@
 		<TableBody>
 			<TableRow v-for="(row, index) in rows" :key="index">
 				<TableCell :is-row-header="true">
-					{{ row.userGroupName }}
+					{{ localize(row.userGroupPayload.userGroup._data.name) }}
 				</TableCell>
 				<TableCell>{{ row.dateStart }}</TableCell>
 				<TableCell>{{ row.dateEnd ? row.dateEnd : '---' }}</TableCell>

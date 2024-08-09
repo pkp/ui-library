@@ -31,7 +31,7 @@
 				<FormDisplayItemBasic
 					v-if="store.userId === null"
 					heading-element="h4"
-					:heading="t('user.email')"
+					:heading="t('about.contact.email')"
 					:value="store.email"
 				></FormDisplayItemBasic>
 				<FormDisplayItemBasic

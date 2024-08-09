@@ -14,6 +14,8 @@ export const useUserInvitationPageStore = defineComponentStore(
 		 * Invitation payload, initial value
 		 */
 		const invitationPayload = ref({...pageInitConfig.invitationPayload});
+		const invitationType = ref(pageInitConfig.invitationType);
+		const invitationMode = ref(pageInitConfig.invitationMode);
 
 		function updatePayload(fieldName, value) {
 			invitationPayload.value[fieldName] = value;
@@ -156,7 +158,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 			if (!currentStep.value) {
 				return '';
 			}
-			return currentStep.value.reviewName.replace(
+			return currentStep.value.stepLabel.replace(
 				'{$step}',
 				'STEP -' + (1 + currentStepIndex.value),
 			);
@@ -197,6 +199,32 @@ export const useUserInvitationPageStore = defineComponentStore(
 		});
 
 		/**
+		 * if user already in the system userId will be sent
+		 * if user already not in the system email will be sent
+		 */
+		const createInvitationPayload = computed(() => {
+			if (invitationPayload.value.userId) {
+				return {
+					invitationData: {
+						userId: invitationPayload.value.userId,
+					},
+				};
+			}
+			return {
+				invitationData: {
+					email: invitationPayload.value.email,
+				},
+			};
+		});
+
+		const updateInvitationPayload = computed(() => {
+			return {
+				invitationData: {
+					...invitationPayload.value,
+				},
+			};
+		});
+		/**
 		 * Invitation actions
 		 */
 		const invitationId = ref(null);
@@ -204,13 +232,19 @@ export const useUserInvitationPageStore = defineComponentStore(
 		 * Create invitation
 		 */
 		async function createInvitation() {
-			const {apiUrl} = useUrl('invitations');
+			const {apiUrl} = useUrl(`invitations/add/${invitationType.value}`);
 
 			const {data, fetch: createInvitation} = useFetch(apiUrl, {
 				method: 'POST',
-				body: {type: pageInitConfig.invitationType},
+				body: createInvitationPayload.value,
 			});
 			await createInvitation();
+			updateEmailRecipients(
+				invitationPayload.value.email
+					? invitationPayload.value.email
+					: invitationPayload.value.givenName +
+							invitationPayload.value.familyName,
+			);
 			invitationId.value = data.value.invitationId;
 		}
 
@@ -220,11 +254,11 @@ export const useUserInvitationPageStore = defineComponentStore(
 				await createInvitation();
 			}
 
-			const {apiUrl} = useUrl(`invitations/${invitationId.value}`);
+			const {apiUrl} = useUrl(`invitations/${invitationId.value}/populate`);
 
 			const {fetch, validationError} = useFetch(apiUrl, {
-				method: 'POST',
-				body: invitationPayload.value,
+				method: 'PUT',
+				body: updateInvitationPayload.value,
 				expectValidationError: true,
 			});
 			await fetch();
@@ -235,14 +269,16 @@ export const useUserInvitationPageStore = defineComponentStore(
 			}
 		}
 
+		const isSubmitting = ref(false);
 		/** Submit invitation */
 		async function submitInvitation() {
 			await updateInvitation();
 			if (isValid.value) {
-				const {apiUrl} = useUrl(`invitations/${invitationId.value}/submit`);
+				isSubmitting.value = true;
+				const {apiUrl} = useUrl(`invitations/${invitationId.value}/invite`);
 
 				const {data, fetch} = useFetch(apiUrl, {
-					method: 'POST',
+					method: 'PUT',
 					body: {},
 				});
 
@@ -257,11 +293,14 @@ export const useUserInvitationPageStore = defineComponentStore(
 							{
 								label: t('userInvitation.modal.button'),
 								callback: (close) => {
-									close();
+									const {redirectToPage} = useUrl('management/settings/access');
+									redirectToPage();
 								},
 							},
 						],
 					});
+				} else {
+					isSubmitting.value = false;
 				}
 			}
 		}
@@ -269,6 +308,31 @@ export const useUserInvitationPageStore = defineComponentStore(
 		const registeredActionsForSteps = {};
 		function registerActionForStepId(stepId, callback) {
 			registeredActionsForSteps[stepId] = callback;
+		}
+
+		/**
+		 * Update email composer with recipients
+		 */
+		function updateEmailRecipients(email) {
+			steps.value.forEach((step, stepIndex) => {
+				step.sections.forEach((section, sectionIndex) => {
+					if (step.type !== 'email') {
+						return;
+					}
+					steps.value[stepIndex].sections[sectionIndex].props.email = {
+						...steps.value[stepIndex].sections[sectionIndex].props.email,
+						recipients: [email],
+						recipientOptions: [
+							{
+								value: email,
+								label: {
+									[pageInitConfig.primaryLocale]: email,
+								},
+							},
+						],
+					};
+				});
+			});
 		}
 
 		onMounted(() => {
@@ -295,7 +359,8 @@ export const useUserInvitationPageStore = defineComponentStore(
 			stepTitle,
 			openStep,
 			currentStepErrorsPerSection,
-
+			isSubmitting,
+			invitationMode,
 			//page values
 			steps,
 			pageTitleDescription,

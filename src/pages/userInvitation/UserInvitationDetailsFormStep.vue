@@ -1,16 +1,26 @@
 <template>
-	<div v-if="store.invitationPayload.userId === null">
+	<div
+		v-if="
+			store.invitationPayload.userId === null &&
+			store.invitationMode === 'create'
+		"
+	>
 		<PkpForm
 			v-bind="userForm"
 			class="userInvitation__stepForm"
 			@set="updateUserForm"
 		></PkpForm>
 	</div>
-	<div v-if="store.invitationPayload.userId !== null" class="p-8">
+	<div
+		v-if="
+			store.invitationPayload.userId !== null || store.invitationMode === 'edit'
+		"
+		class="p-8"
+	>
 		<div class="p-1">
 			<FormDisplayItemBasic
 				heading-element="h4"
-				:heading="t('user.emailAddress')"
+				:heading="t('user.email')"
 				:value="store.invitationPayload.email"
 			></FormDisplayItemBasic>
 
