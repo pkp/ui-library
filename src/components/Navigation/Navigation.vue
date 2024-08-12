@@ -80,6 +80,8 @@
 <script setup>
 import {ref, reactive, onMounted, nextTick, watch} from 'vue';
 import {useStorage} from '@vueuse/core';
+import PkpButton from '../Button/Button.vue';
+import Icon from '../Icon/Icon.vue';
 
 const props = defineProps({
 	links: {
