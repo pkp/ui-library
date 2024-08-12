@@ -13,16 +13,12 @@
 		@blur="emit('blur')"
 	>
 		<Icon v-if="icon" class="h-5 w-5" :icon="icon" />
-		<span v-if="sizeVariant === 'iconOnly' && icon" class="sr-only">
-			<slot />
-		</span>
-		<span v-else-if="sizeVariant === 'iconOnly' && !icon">{{ abbrText }}</span>
-		<slot v-else />
+		<slot />
 	</component>
 </template>
 
 <script setup>
-import {computed, onMounted, ref, useSlots} from 'vue';
+import {computed} from 'vue';
 import Icon from '@/components/Icon/Icon.vue';
 
 const props = defineProps({
@@ -51,13 +47,9 @@ const props = defineProps({
 		required: false,
 		type: String,
 		default: () => 'default',
-		validator: (prop) =>
-			['default', 'compact', 'fullWidth', 'iconOnly'].includes(prop),
+		validator: (prop) => ['default', 'compact', 'fullWidth'].includes(prop),
 	},
 });
-
-const abbrText = ref('');
-const slots = useSlots();
 
 // by default button was secondary, this is for backward compatibility
 const isSecondary = computed(
@@ -96,8 +88,7 @@ const styles = computed(() => ({
 	// Active
 	'text-on-dark bg-selection-dark border-transparent': props.isActive,
 	// Size Normal
-	'py-[0.4375rem] px-3':
-		props.sizeVariant === 'default' || props.sizeVariant === 'iconOnly',
+	'py-[0.4375rem] px-3': props.sizeVariant === 'default',
 	// Size Compact (in tables)
 	'py-[0.1875rem] px-3': props.sizeVariant === 'compact',
 	// Full Width (and rectangular border)
@@ -112,23 +103,4 @@ const emit = defineEmits([
 	/** When focus moves away from the button. */
 	'blur',
 ]);
-
-onMounted(() => {
-	// Retrieve the slot content and set the abbreviated text
-	if (slots.default) {
-		const slotContent = slots.default()[0]?.children || '';
-		abbrText.value =
-			typeof slotContent === 'string' ? slotContent.trim().slice(0, 3) : '';
-	}
-});
 </script>
-
-<style lang="less" scoped>
-@import '../../styles/_import';
-
-a.text-on-dark:hover,
-a.text-on-dark:focus,
-a.text-on-dark:active {
-	color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-</style>
