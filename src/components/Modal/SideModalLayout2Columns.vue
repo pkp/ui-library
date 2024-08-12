@@ -1,5 +1,5 @@
 <template>
-	<div class="border-ligh flex w-full border-t border-light">
+	<div class="flex w-full border-t border-light">
 		<div class="flex-grow border-e border-light p-4">
 			<div class="bg-secondary p-5">
 				<slot name="left"></slot>

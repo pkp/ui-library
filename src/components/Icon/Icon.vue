@@ -43,6 +43,7 @@ import BackButton from './icons/BackButton.vue';
 import Bold from './icons/Bold.vue';
 import Bullets from './icons/Bullets.vue';
 import Cancel from './icons/Cancel.vue';
+import Catalog from './icons/Catalog.vue';
 import Complete from './icons/Complete.vue';
 import Dashboard from './icons/Dashboard.vue';
 import DecreaseTextSize from './icons/DecreaseTextSize.vue';
@@ -74,10 +75,12 @@ import MergeUser from './icons/MergeUser.vue';
 import MoreOptions from './icons/MoreOptions.vue';
 import MySubmissions from './icons/MySubmissions.vue';
 import NavDoi from './icons/NavDoi.vue';
+import NavAdmin from './icons/NavAdmin.vue';
 import Notifications from './icons/Notifications.vue';
 import OpenReview from './icons/OpenReview.vue';
 import Orcid from './icons/Orcid.vue';
 import Overdue from './icons/Overdue.vue';
+import Payment from './icons/Payment.vue';
 import ReadRecommendation from './icons/ReadRecommendation.vue';
 import ReviewAssignments from './icons/ReviewAssignments.vue';
 import ReviewRequestDeclined from './icons/ReviewRequestDeclined.vue';
@@ -86,6 +89,7 @@ import Search from './icons/Search.vue';
 import Settings from './icons/Settings.vue';
 import Sort from './icons/Sort.vue';
 import Statistics from './icons/Statistics.vue';
+import Tools from './icons/Tools.vue';
 import Underline from './icons/Underline.vue';
 import Url from './icons/Url.vue';
 import UsefulTips from './icons/UsefulTips.vue';
@@ -99,6 +103,7 @@ const svgIcons = {
 	Bold,
 	Bullets,
 	Cancel,
+	Catalog,
 	Complete,
 	Dashboard,
 	DefaultDocument,
@@ -130,10 +135,12 @@ const svgIcons = {
 	MoreOptions,
 	MySubmissions,
 	NavDoi,
+	NavAdmin,
 	Notifications,
 	OpenReview,
 	Orcid,
 	Overdue,
+	Payment,
 	ReadRecommendation,
 	ReviewAssignments,
 	ReviewRequestDeclined,
@@ -142,6 +149,7 @@ const svgIcons = {
 	Settings,
 	Sort,
 	Statistics,
+	Tools,
 	Underline,
 	Url,
 	UsefulTips,
