@@ -1,7 +1,7 @@
 <template>
 	<nav
 		v-if="Object.keys(links).length"
-		class="nav-section sticky top-12 flex h-screen flex-none"
+		class="sticky top-12 flex h-[calc(100vh-3rem)] h-screen flex-none"
 		:aria-label="ariaLabel"
 	>
 		<SideMenu :items="items"></SideMenu>
@@ -58,11 +58,3 @@ function convertLinksToArray(links, parent, level = 1) {
 	return result;
 }
 </script>
-
-<style lang="less" scoped>
-@import '../../styles/_import';
-
-.nav-section {
-	height: calc(100vh - 3rem);
-}
-</style>
