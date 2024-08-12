@@ -2,6 +2,7 @@ import {within, userEvent} from '@storybook/test';
 import {ref, inject} from 'vue';
 import SideModal from './SideModal.vue';
 import {useModal} from '@/composables/useModal.js';
+import SideMenu from '../SideMenu/SideMenu.vue';
 import SideModalBody from './SideModalBody.vue';
 import SideModalLayoutBasic from './SideModalLayoutBasic.vue';
 import SideModalLayout2Columns from './SideModalLayout2Columns.vue';
@@ -403,5 +404,185 @@ export const NestedModal = {
 
 		await user.click(canvas.getByText('Nested modal'));
 		await user.click(await canvas.findByText('Open Second Modal'));
+	},
+};
+
+const SideModalWithSideMenu = {
+	components: {SideModal, SideModalBody, SideModalLayout2Columns, SideMenu},
+	setup() {
+		const metadata = [
+			{name: 'Type', value: 'Article'},
+			{
+				name: 'Abstract',
+				value:
+					'Nam id quam mollis, porta dui vel, accumsan sem. Sed commodo felis tristique justo pulvinar lacinia. Etiam pulvinar tortor et dui malesuada fringilla. Nullam leo risus, luctus ut sem ut, dignissim luctus quam. Nulla vel varius urna. Cras eget odio tellus. Proin eu nisi vehicula nulla laculis lobortis.',
+			},
+		];
+		const generalInformation = [
+			{name: 'Editors request', value: 'dd-mm-yyyy'},
+			{
+				name: 'Response due date',
+				value: 'dd-mm-yyy',
+			},
+		];
+		const items = [
+			{
+				label: 'Workflow',
+				icon: 'Dashboard',
+				isCurrent: false,
+				items: [
+					{
+						label: 'Submission',
+						link: '#',
+						isCurrent: false,
+						colorStripe: 'border-stage-desk-review',
+					},
+					{
+						label: 'Review',
+						link: '#',
+						isCurrent: false,
+						items: [
+							{
+								label: 'Review Round 1',
+								link: '#',
+								isCurrent: true,
+							},
+							{
+								label: 'New Review Round',
+								link: '#',
+								isCurrent: false,
+							},
+						],
+					},
+					{
+						label: 'Copyediting',
+						link: '#',
+						isCurrent: false,
+					},
+					{
+						label: 'Production',
+						link: '#',
+						isCurrent: false,
+					},
+				],
+			},
+			{
+				label: 'Publication',
+				icon: 'MySubmissions',
+				isCurrent: false,
+				isOpen: true,
+				items: [
+					{
+						label: 'Title & Abstract',
+						link: '#',
+						isCurrent: false,
+					},
+					{
+						label: 'Contributors',
+						link: '#',
+						isCurrent: false,
+					},
+					{
+						label: 'Metadata',
+						link: '#',
+						isCurrent: false,
+					},
+					{
+						label: 'References',
+						link: '#',
+						isCurrent: false,
+					},
+					{
+						label: 'Galleys',
+						link: '#',
+						isCurrent: false,
+					},
+					{
+						label: 'Permissions & Disclosure',
+						link: '#',
+						isCurrent: false,
+					},
+					{
+						label: 'Issue',
+						link: '#',
+						isCurrent: false,
+					},
+				],
+			},
+		];
+		return {metadata, generalInformation, items};
+	},
+	template: `
+		<SideModalBody>
+			<template #pre-title>970</template>
+			<template #title><span class="underline">Round 1 Review submitted by you for</span></template>
+			<template #description>
+				Is blended e-learning as measured by an achievement test and self-assessment better than traditional classroom learning for vocational high school students?
+			</template>
+
+				<SideModalLayout2Columns>
+					<template #left>
+						<div class="flex">
+							<SideMenu :items="items"></SideMenu>
+							<p class="px-5">
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+								eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+								minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+								aliquip ex ea commodo consequat.
+							</p>
+						</div>
+					</template>
+					<template #right1>
+						<div class="text-xl-bold">Article Metadata</div>
+						<div v-for="item in metadata" class="mt-4">
+							<div class="text-lg-bold">{{ item.name }}:</div>
+							<div class="text-base-normal mt-1">{{item.value}}</div>
+						</div>
+
+					</template>
+					<template #right2>
+						<div class="text-xl-bold">General Inforation</div>
+						<div v-for="item in generalInformation" class="mt-4">
+							<div class="text-lg-bold">{{ item.name }}:</div>
+							<div class="text-base-normal mt-1">{{item.value}}</div>
+						</div>
+					</template>
+
+
+				</SideModalLayout2Columns>
+		</SideModalBody>
+	`,
+};
+
+export const WithSideMenu = {
+	render: (args) => ({
+		components: {SideModalWithSideMenu},
+		setup() {
+			const {openSideModal} = useModal();
+
+			function openModal() {
+				openSideModal(SideModalWithSideMenu);
+			}
+
+			return {openModal};
+		},
+		template: `
+			<PkpButton  @click="openModal">
+				Open Modal
+			</PkpButton>
+		`,
+	}),
+	decorators: [
+		() => ({
+			template: '<div style="height: 700px"><story/></div>',
+		}),
+	],
+	args: {},
+	play: async ({canvasElement}) => {
+		// Assigns canvas to the component root element
+		const canvas = within(canvasElement);
+		const user = userEvent.setup();
+
+		await user.click(canvas.getByText('Open Modal'));
 	},
 };
