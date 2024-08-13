@@ -76,6 +76,12 @@ export function useForm(_form) {
 		return field.value;
 	}
 
+	function setValues(values) {
+		Object.keys(values).forEach((key) => {
+			setValue(key, values[key]);
+		});
+	}
+
 	function setValue(name, inputValue) {
 		const field = getField(form.value, name);
 		if (!field) {
@@ -84,12 +90,28 @@ export function useForm(_form) {
 		if (field.selected) {
 			if (field.isMultilingual) {
 				field.value = {};
+				field.selected = {};
+
 				Object.keys(inputValue).forEach((localeKey) => {
-					field.value[localeKey] = mapFromSelectedToValue(
-						inputValue[localeKey],
-					);
+					if (
+						Object.prototype.hasOwnProperty.call(
+							inputValue[localeKey],
+							'label',
+						) &&
+						Object.prototype.hasOwnProperty.call(inputValue[localeKey], 'value')
+					) {
+						field.selected[localeKey] = inputValue[localeKey];
+						field.value[localeKey] = mapFromSelectedToValue(
+							inputValue[localeKey],
+						);
+					} else {
+						field.value[localeKey] = inputValue[localeKey];
+						field.selected[localeKey] = inputValue[localeKey].map((val) => ({
+							label: val,
+							value: val,
+						}));
+					}
 				});
-				field.selected = inputValue;
 			} else {
 				const onlyValues = mapFromSelectedToValue(inputValue);
 				field.value = onlyValues;
@@ -133,14 +155,31 @@ export function useForm(_form) {
 		});
 	}
 
+	function setLocales(_locales) {
+		if (Array.isArray(_locales)) {
+			form.value.supportedFormLocales = _locales;
+		} else {
+			form.value.supportedFormLocales = Object.keys(_locales).map(
+				(localeKey) => ({key: localeKey, label: _locales[localeKey]}),
+			);
+		}
+	}
+
+	function setAction(_action) {
+		form.value.action = _action;
+	}
+
 	return {
 		set,
 		setValue,
+		setValues,
 		getValue,
 		removeFieldValue,
 		clearForm,
 		form,
 		connectWithPayload,
 		connectWithErrors,
+		setLocales,
+		setAction,
 	};
 }

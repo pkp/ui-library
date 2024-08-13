@@ -1,5 +1,5 @@
 <template>
 	<thead>
-		<tr class="border border-table-heading"><slot></slot></tr>
+		<tr class="border-table-heading border"><slot></slot></tr>
 	</thead>
 </template>

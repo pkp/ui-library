@@ -6,13 +6,6 @@
 				v-bind="config.props"
 				v-for="(config, index) in cellConfig"
 				:key="index"
-				@action="
-					(actionName, actionArgs) =>
-						dashboardStore.handleItemAction(actionName, {
-							...actionArgs,
-							reviewAssignmentId: item.id,
-						})
-				"
 			/>
 		</div>
 	</TableCell>

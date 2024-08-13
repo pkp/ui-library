@@ -5,14 +5,29 @@
 				v-for="reviewAssignment in reviewAssignments"
 				:key="reviewAssignment.id"
 				:review-assignment="reviewAssignment"
-				@action="(...args) => emit('action', ...args)"
+				@action="
+					(actionName, {reviewAssignment}) =>
+						handleAction(actionName, {reviewAssignment})
+				"
 			></CellSubmissionActivityReviewsItem>
 		</span>
 	</div>
 </template>
 <script setup>
+import {useDashboardPageStore} from '@/pages/dashboard/dashboardPageStore';
 import CellSubmissionActivityReviewsItem from './CellSubmissionActivityReviewsItem.vue';
 
-defineProps({reviewAssignments: {type: Array, required: true}});
-const emit = defineEmits(['action']);
+const props = defineProps({
+	submissionId: {type: Number, required: true},
+	reviewAssignments: {type: Array, required: true},
+});
+
+const dashboardStore = useDashboardPageStore();
+
+function handleAction(actionName, {reviewAssignment}) {
+	dashboardStore[actionName]({
+		reviewAssignment: reviewAssignment,
+		submissionId: props.submissionId,
+	});
+}
 </script>

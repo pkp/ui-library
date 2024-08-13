@@ -4,15 +4,15 @@
 			{{ submissionId }}
 		</template>
 		<template #title>
-			<span v-if="currentPublication" class="underline">
-				{{ currentPublication.authorsStringShort }}
+			<span v-if="selectedPublication" class="underline">
+				{{ selectedPublication.authorsStringShort }}
 			</span>
 		</template>
-		<template v-if="currentPublication" #description>
+		<template v-if="selectedPublication" #description>
 			{{
 				localizeSubmission(
-					currentPublication.fullTitle,
-					currentPublication.locale,
+					selectedPublication.fullTitle,
+					selectedPublication.locale,
 				)
 			}}
 		</template>
@@ -24,88 +24,139 @@
 			</StageBubble>
 		</template>
 		<template v-if="submission" #actions>
-			<PkpButton element="a" :href="submission.urlWorkflow">
-				{{ t('dashboard.summary.viewSubmissionInDetail') }}
-			</PkpButton>
+			<div class="flex gap-x-4">
+				<component
+					:is="Components[item.component] || item.component"
+					v-bind="item.props"
+					v-for="(item, index) in summaryStore.headerItems"
+					:key="index"
+				/>
+			</div>
 		</template>
-		<SideModalLayout2Columns>
-			<template #left>
+		<SideModalLayoutMenu2Columns>
+			<template #menu>
+				<SideMenu v-bind="summaryStore.sideMenuProps"></SideMenu>
+			</template>
+			<template #heading>{{ summaryStore.stageTitle }}</template>
+			<template
+				v-if="summaryStore.publicationControlsLeft?.length"
+				#publication-controls-left
+			>
+				<div class="flex gap-x-3">
+					<component
+						:is="Components[item.component] || item.component"
+						v-bind="item.props"
+						v-for="(item, index) in summaryStore.publicationControlsLeft"
+						:key="`${index} - ${summaryStore.selectedMenuItem.key}`"
+					/>
+				</div>
+			</template>
+			<template
+				v-if="summaryStore.publicationControlsRight?.length"
+				#publication-controls-right
+			>
+				<div class="flex gap-x-3">
+					<component
+						:is="Components[item.component] || item.component"
+						v-bind="item.props"
+						v-for="(item, index) in summaryStore.publicationControlsRight"
+						:key="`${index} - ${summaryStore.selectedMenuItem.key}`"
+					/>
+				</div>
+			</template>
+
+			<template #primary>
 				<div class="flex flex-col gap-y-5 bg-secondary p-5">
 					<component
 						:is="Components[item.component] || item.component"
 						v-bind="item.props"
-						v-for="(item, index) in primaryItems"
-						:key="index"
+						v-for="(item, index) in summaryStore.primaryItems"
+						:key="`${index} - ${summaryStore.selectedMenuItem.key}`"
 					/>
 				</div>
 			</template>
-			<template #right1>
-				<div class="flex flex-col items-start space-y-4 p-4">
+			<template v-if="summaryStore.actionItems?.length" #actions>
+				<div class="flex flex-col items-start space-y-3 p-4">
 					<component
 						:is="Components[item.component] || item.component"
-						v-for="(item, index) in actionItems"
+						v-for="(item, index) in summaryStore.actionItems"
 						v-bind="item.props"
-						:key="index"
+						:key="`${index} - ${summaryStore.selectedMenuItem.key}`"
 					></component>
 				</div>
 			</template>
-			<template #right2>
+			<template v-if="summaryStore.secondaryItems?.length" #secondary>
 				<div class="flex flex-col space-y-4 p-4">
 					<component
 						:is="Components[item.component] || item.component"
-						v-for="(item, index) in metaItems"
+						v-for="(item, index) in summaryStore.secondaryItems"
 						v-bind="item.props"
-						:key="index"
+						:key="`${index} - ${summaryStore.selectedMenuItem.key}`"
 					></component>
 				</div>
 			</template>
-		</SideModalLayout2Columns>
+		</SideModalLayoutMenu2Columns>
 	</SideModalBody>
 </template>
 
 <script setup>
-import {computed, provide} from 'vue';
+import {computed} from 'vue';
 import {storeToRefs} from 'pinia';
-import PkpButton from '@/components/Button/Button.vue';
+import SideMenu from '@/components/SideMenu/SideMenu.vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import StageBubble from '@/components/StageBubble/StageBubble.vue';
 import FileManager from '@/managers/FileManager/FileManager.vue';
 import DiscussionManager from '@/managers/DiscussionManager/DiscussionManager.vue';
+import ParticipantManager from '@/managers/ParticipantManager/ParticipantManager.vue';
 
 import ReviewerManager from '@/managers/ReviewerManager/ReviewerManager.vue';
 import ContributorManager from '@/managers/ContributorManager/ContributorManager.vue';
-import LastActivity from './primaryItems/LastActivity.vue';
 import PrimaryBasicMetadata from './primaryItems/PrimaryBasicMetadata.vue';
-
+import ReviewRoundStatus from './primaryItems/ReviewRoundStatus.vue';
+// Publications
+import WorkflowNotificationDisplay from './primaryItems/WorkflowNotificationDisplay.vue';
+import WorkflowPaymentDropdown from './actionItems/WorkflowPaymentDropdown.vue';
+import PublicationForm from './primaryItems/PublicationForm.vue';
+import PublicationJats from './primaryItems/PublicationJats.vue';
+import PublicationVersionControl from './publicationControls/PublicationVersionControl.vue';
 import ActionButton from './actionItems/ActionButton.vue';
-import EditorsAssigned from './metaItems/EditorsAssigned.vue';
+import WorkflowRecommendationControls from './actionItems/WorkflowRecommendationControls.vue';
 import BasicMetadata from './metaItems/BasicMetadata.vue';
-
+import SubmissionStatus from './primaryItems/SubmissionStatus.vue';
+import GalleyManager from '@/managers/GalleyManager/GalleyManager.vue';
+import PublicationEditDisabled from './primaryItems/PublicationEditDisabled.vue';
 import IssueAssigned from './metaItems/IssueAssigned.vue';
 import {useSubmissionSummaryStore} from './submissionSummaryStore';
-import SideModalLayout2Columns from '@/components/Modal/SideModalLayout2Columns.vue';
+import SideModalLayoutMenu2Columns from '@/components/Modal/SideModalLayoutMenu2Columns.vue';
 
 import {useLocalize} from '@/composables/useLocalize';
 import {useSubmission} from '@/composables/useSubmission';
-
-const {t, localizeSubmission} = useLocalize();
+const {localizeSubmission} = useLocalize();
 
 const Components = {
 	FileManager,
 	ReviewerManager,
 	DiscussionManager,
 	ContributorManager,
-	LastActivity,
+	ParticipantManager,
+	GalleyManager,
 	ActionButton,
-	EditorsAssigned,
+	WorkflowRecommendationControls,
+	WorkflowNotificationDisplay,
 	BasicMetadata,
+	WorkflowPaymentDropdown,
 	PrimaryBasicMetadata,
 	IssueAssigned,
+	ReviewRoundStatus,
+	PublicationForm,
+	PublicationJats,
+	PublicationVersionControl,
+	SubmissionStatus,
+	PublicationEditDisabled,
 };
 
 const props = defineProps({
 	submissionId: {type: Number, required: true},
-	reviewAssignmentId: {type: Number, required: false, default: null},
 	pageInitConfig: {type: Object, required: true},
 });
 
@@ -120,55 +171,5 @@ const stageLabel = computed(
 	() => submission.value && getExtendedStageLabel(submission.value),
 );
 
-const primaryItems = computed(() => {
-	if (!summaryStore.submission || !summaryStore.currentPublication) {
-		return [];
-	}
-
-	return summaryStore.filterItemsBasedOnContext(
-		summaryStore.getPrimaryItems(
-			summaryStore.submission,
-			summaryStore.currentPublication,
-		),
-		summaryStore.dashboardPage,
-		summaryStore.submission,
-		summaryStore.selectedReviewAssignment,
-	);
-});
-
-const actionItems = computed(() => {
-	if (!summaryStore.submission || !summaryStore.currentPublication) {
-		return [];
-	}
-
-	return summaryStore.filterItemsBasedOnContext(
-		summaryStore.getActionItems(
-			summaryStore.submission,
-			summaryStore.currentPublication,
-		),
-		summaryStore.dashboardPage,
-		summaryStore.submission,
-		summaryStore.selectedReviewAssignment,
-	);
-});
-
-const metaItems = computed(() => {
-	if (!summaryStore.submission || !summaryStore.currentPublication) {
-		return [];
-	}
-
-	return summaryStore.filterItemsBasedOnContext(
-		summaryStore.getMetaItems(
-			summaryStore.submission,
-			summaryStore.currentPublication,
-		),
-		summaryStore.dashboardPage,
-		summaryStore.submission,
-		summaryStore.selectedReviewAssignment,
-	);
-});
-
-const {submission, currentPublication} = storeToRefs(summaryStore);
-
-provide('registerDataChangeCallback', summaryStore.registerDataChangeCallback);
+const {submission, selectedPublication} = storeToRefs(summaryStore);
 </script>

@@ -1,26 +1,34 @@
-import {computed, watch} from 'vue';
+import {computed, ref, watch} from 'vue';
 
 import {defineComponentStore} from '@/utils/defineComponentStore';
-import {useSummaryConfig} from './composables/useSummaryConfig';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
-import {useParticipant} from '@/composables/useParticipant';
-import {useHandleActions} from '../composables/useHandleActions';
-import {useLocalize} from '@/composables/useLocalize';
-import {useDataChanged} from '@/composables/useDataChanged';
+import {
+	useWorkflowActions,
+	Actions as WorkflowActions,
+} from '../composables/useWorkflowActions';
+
+import {
+	useWorkflowDecisions,
+	Actions as DecisionActions,
+} from '../composables/useWorkflowDecisions';
+
 import {DashboardPageTypes} from '../dashboardPageStore';
+
+import {useWorkflowEditorialConfig} from './composables/useWorkflowEditorialConfig';
+import {useWorkflowAuthorConfig} from './composables/useWorkflowAuthorConfig';
+
+import {useDataChangedProvider} from '@/composables/useDataChangedProvider';
+import {useWorkflowNavigationConfig} from './composables/useWorkflowNavigationConfig';
+import {useSubmission} from '@/composables/useSubmission';
+import {useSideMenu} from '@/composables/useSideMenu';
 
 export const useSubmissionSummaryStore = defineComponentStore(
 	'submissionSummary',
 	(props) => {
 		const dashboardPage = props.pageInitConfig.dashboardPage;
 
-		const {localize} = useLocalize();
-
-		/**
-		 * Data changes tracking
-		 */
-		const {registerDataChangeCallback, triggerDataChange} = useDataChanged();
+		const {getReviewRound, getCurrentReviewRound} = useSubmission();
 
 		/**
 		 * Fetch submission details
@@ -31,140 +39,248 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		const {data: submission, fetch: fetchSubmission} =
 			useFetch(submissionApiUrl);
 
-		const selectedReviewAssignment = computed(() => {
-			return (
-				submission.value?.reviewAssignments?.find(
-					(reviewAssignment) =>
-						reviewAssignment.id === props.reviewAssignmentId,
-				) || null
-			);
-		});
-
 		/** Fetch publications */
-		const currentPublicationUrlRelative = computed(
+		const selectedPublicationId = ref(null);
+		function selectPublicationId(publicationId) {
+			if (selectedPublicationId.value !== publicationId) {
+				selectedPublicationId.value = publicationId;
+				selectedPublication.value = null;
+				fetchSelectedPublication();
+			}
+		}
+		const selectedPublicationUrlRelative = computed(
 			() =>
-				`submissions/${encodeURIComponent(props.submissionId)}/publications/${submission.value?.currentPublicationId}`,
+				`submissions/${encodeURIComponent(props.submissionId)}/publications/${selectedPublicationId.value}`,
 		);
-		const {apiUrl: currentPublicationUrl} = useUrl(
-			currentPublicationUrlRelative,
+		const {apiUrl: selectedPublicationUrl} = useUrl(
+			selectedPublicationUrlRelative,
 		);
-		const {data: currentPublication, fetch: fetchCurrentPublication} = useFetch(
-			currentPublicationUrl,
-		);
+		const {data: selectedPublication, fetch: fetchSelectedPublication} =
+			useFetch(selectedPublicationUrl);
+
+		/**
+		 * Data changes tracking
+		 */
+		const {triggerDataChange} = useDataChangedProvider(() => {
+			return Promise.all([fetchSubmission(), fetchSelectedPublication()]);
+		});
 
 		/** Current publication is fetched always when the new submission is fetched */
-		watch(submission, () => {
-			fetchCurrentPublication();
-		});
+		watch(submission, (newSubmission, oldSubmission) => {
+			// Once the submission is fetched, select relevant stage in navigaton
+			if (!oldSubmission && newSubmission) {
+				selectedPublicationId.value =
+					newSubmission.publications[newSubmission.publications.length - 1].id;
+				fetchSelectedPublication();
 
-		/** Fetch issue */
-		const issueUrlRelative = computed(
-			() => `issues/${currentPublication.value?.issueId}`,
-		);
-		const {apiUrl: issueUrl} = useUrl(issueUrlRelative);
-		const {data: issue, fetch: fetchIssue} = useFetch(issueUrl);
-
-		watch(currentPublication, () => {
-			if (currentPublication.value?.issueId) {
-				fetchIssue();
+				if (
+					newSubmission.stageId === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW
+				) {
+					setActiveItemKey(
+						`workflow_${newSubmission.stageId}_${
+							getCurrentReviewRound(
+								newSubmission,
+								pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+							)?.id
+						}`,
+					);
+				} else if (
+					newSubmission.stageId === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION &&
+					newSubmission.status !== pkp.const.STATUS_QUEUED
+				) {
+					setActiveItemKey(`publication_titleAbstract`);
+				} else {
+					setActiveItemKey(`workflow_${newSubmission.stageId}`);
+				}
 			}
 		});
+
+		fetchSubmission();
 
 		/**
-		 * Fetch submission participants
+		 * Handling navigation
 		 */
-		const {apiUrl: participantApiUrl} = useUrl(
-			`submissions/${encodeURIComponent(props.submissionId)}/participants`,
-		);
-		const {data: participants, fetch: fetchParticipants} =
-			useFetch(participantApiUrl);
-
-		function fetchAll() {
-			fetchSubmission();
-			// TOOD consider whether this might be better to fetch within components that needs it
-			if (dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD) {
-				fetchParticipants();
-			}
-			triggerDataChange();
-		}
-
-		fetchAll();
-
-		const {
-			getEditorRoleIds,
-			hasParticipantAtLeastOneRole,
-			getFirstGroupWithFollowingRoles,
-		} = useParticipant();
-
-		/** TODO: Might be moved directly to the component? */
-		const associatedEditors = computed(() => {
-			if (!participants.value) {
+		const {getMenuItems} = useWorkflowNavigationConfig(props.pageInitConfig);
+		const menuItems = computed(() => {
+			if (!submission.value) {
 				return [];
 			}
+			return getMenuItems(submission.value);
+		});
 
-			return participants.value
-				.filter((participant) =>
-					hasParticipantAtLeastOneRole(participant, getEditorRoleIds()),
-				)
-				.map((participant) => ({
-					id: participant.id,
-					fullName: participant.fullName,
-					roleName: localize(
-						getFirstGroupWithFollowingRoles(participant, getEditorRoleIds())
-							.name,
-					),
-				}));
+		function navigateToMenu({key}) {
+			setActiveItemKey(key);
+			return;
+		}
+
+		const {
+			sideMenuProps,
+			setExpandedKeys,
+			setActiveItemKey,
+			selectedItem: selectedMenuItem,
+		} = useSideMenu(menuItems);
+
+		const selectedMenuState = computed(() => {
+			console.log('selectedMenuState:', selectedMenuItem.value?.actionArgs);
+			return selectedMenuItem.value?.actionArgs || {};
+		});
+
+		setExpandedKeys([
+			'workflow',
+			'publication',
+			`workflow_${pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW}`,
+		]);
+
+		const selectedReviewRound = computed(() => {
+			if (!selectedMenuState.value.reviewRoundId) {
+				return null;
+			}
+			const reviewRound = getReviewRound(
+				submission.value,
+				selectedMenuState.value.reviewRoundId,
+			);
+			return reviewRound;
 		});
 
 		/**
-		 * Handle user actions
+		 * Expose workflow actions
 		 *
 		 */
-		const {handleSubmissionAction} = useHandleActions(props.pageInitConfig);
+		const _workflowActionsFns = useWorkflowActions(props.pageInitConfig);
+		const workflowActions = Object.values(WorkflowActions).reduce(
+			(acc, actionName) => {
+				acc[actionName] = (noArgs, finishedCallback = null) =>
+					_workflowActionsFns[actionName](
+						{
+							submission: submission.value,
+							selectedPublication: selectedPublication.value,
+							reviewRoundId: selectedReviewRound.value?.id,
+						},
+						(finishedData) => {
+							console.log('finished workflow actions:');
+							triggerDataChange();
+							if (finishedCallback) {
+								finishedCallback(finishedData);
+							}
+						},
+					);
+				return acc;
+			},
+			{},
+		);
 
-		function handleAction(actionName, _actionArgs) {
-			const actionArgs = {..._actionArgs};
-			if (selectedReviewAssignment.value) {
-				actionArgs.reviewAssignmentId = selectedReviewAssignment.value.id;
-			}
-			handleSubmissionAction(
-				submission.value,
-				actionName,
-				actionArgs,
-				async () => {
-					fetchAll();
-				},
-			);
+		/**
+		 * Expose decision functions
+		 *
+		 * */
+		const _workflowDecisionsFns = useWorkflowDecisions();
+		const decisionActions = Object.values(DecisionActions).reduce(
+			(acc, actionName) => {
+				acc[actionName] = (noArgs) =>
+					_workflowDecisionsFns[actionName]({
+						submission: submission.value,
+						selectedPublication: selectedPublication.value,
+						reviewRoundId: selectedReviewRound.value?.id,
+					});
+				return acc;
+			},
+			{},
+		);
+
+		/**
+		 * Items
+		 *
+		 * */
+
+		const _workflowEditorialConfigFns =
+			dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD
+				? useWorkflowEditorialConfig()
+				: useWorkflowAuthorConfig();
+
+		const stageTitle = computed(() => {
+			return selectedMenuState.value?.title || '';
+		});
+
+		function _getItemsArgs() {
+			return {
+				selectedMenuState: selectedMenuState.value,
+				submission: submission.value,
+				pageInitConfig: props.pageInitConfig,
+				selectedPublication: selectedPublication.value,
+				selectedPublicationId: selectedPublicationId.value,
+				selectedReviewRound: selectedReviewRound.value,
+			};
 		}
 
-		/** Primary Items */
-		const {
-			getPrimaryItems,
-			getActionItems,
-			getMetaItems,
-			filterItemsBasedOnContext,
-		} = useSummaryConfig();
+		/** Header Actions */
+		const headerItems = computed(() => {
+			return _workflowEditorialConfigFns.getHeaderItems({
+				submission: submission.value,
+				selectedPublication: selectedPublication.value,
+				publicationSettings: props.pageInitConfig.publicationSettings,
+			});
+		});
+
+		const primaryItems = computed(() => {
+			return _workflowEditorialConfigFns.getPrimaryItems(_getItemsArgs());
+		});
+
+		const secondaryItems = computed(() => {
+			return _workflowEditorialConfigFns.getSecondaryItems(_getItemsArgs());
+		});
+
+		const actionItems = computed(() => {
+			return _workflowEditorialConfigFns.getActionItems(_getItemsArgs());
+		});
+
+		const publicationControlsLeft = computed(() => {
+			return _workflowEditorialConfigFns.getPublicationControlsLeft(
+				_getItemsArgs(),
+			);
+		});
+
+		const publicationControlsRight = computed(() => {
+			return _workflowEditorialConfigFns.getPublicationControlsRight(
+				_getItemsArgs(),
+			);
+		});
 
 		return {
 			dashboardPage,
 			submission,
-			selectedReviewAssignment,
-			currentPublication,
-			issue,
-			associatedEditors,
-			handleAction,
+			selectedPublication,
+			selectPublicationId,
+
+			/**
+			 * Navigation
+			 * */
+			selectedMenuItem,
+			sideMenuProps,
+			selectedMenuState,
+			navigateToMenu,
+
+			/** Actions
+			 *
+			 */
+			...workflowActions,
+			...decisionActions,
 
 			/**
 			 * Summary
 			 */
-			getPrimaryItems,
-			getActionItems,
-			getMetaItems,
-			filterItemsBasedOnContext,
+			stageTitle,
+			headerItems,
+			primaryItems,
+			secondaryItems,
+			actionItems,
+			publicationControlsLeft,
+			publicationControlsRight,
 
-			/** Changes tracking */
-			registerDataChangeCallback,
-			triggerDataChange,
+			/**
+			 * Expose for extensions
+			 */
+
+			_workflowActionsFns,
 		};
 	},
 );

@@ -2,7 +2,7 @@
 	<th
 		scope="col"
 		:aria-sort="props.allowsSorting ? tableContext.sortDirection : undefined"
-		class="whitespace-nowrap border-b border-t border-table-heading px-2 py-4 text-start text-base-normal uppercase first:border-s first:ps-3 last:border-e last:pe-3"
+		class="border-table-heading whitespace-nowrap border-b border-t px-2 py-4 text-start text-base-normal uppercase first:border-s first:ps-3 last:border-e last:pe-3"
 	>
 		<template v-if="props.allowsSorting">
 			<button class="flex items-center" @click="tableContext.onSort(id)">

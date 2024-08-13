@@ -51,7 +51,6 @@ export default {
 			dark: '#696969',
 			light: '#BBBBBB',
 			'form-fields': '#777777',
-			'table-heading': '#777777',
 			transparent: 'transparent',
 		},
 		borderRadius: {
