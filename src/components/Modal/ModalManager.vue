@@ -7,6 +7,7 @@
 	>
 		<component :is="component1" v-bind="sideModal1?.props" />
 		<PkpDialog
+			:key="JSON.stringify(dialogProps)"
 			:opened="dialogOpened && dialogLevel === 1"
 			v-bind="dialogProps"
 			@close="closeDialog"
@@ -20,6 +21,7 @@
 		>
 			<component :is="component2" v-bind="sideModal2?.props" />
 			<PkpDialog
+				:key="JSON.stringify(dialogProps)"
 				:opened="dialogOpened && dialogLevel === 2"
 				v-bind="dialogProps"
 				@close="closeDialog"
@@ -35,6 +37,7 @@
 		</SideModal>
 	</SideModal>
 	<PkpDialog
+		:key="JSON.stringify(dialogProps)"
 		:opened="dialogOpened && dialogLevel === 0"
 		v-bind="dialogProps"
 		@close="closeDialog"
