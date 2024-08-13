@@ -6,21 +6,21 @@ export default {
 	render: (args) => ({
 		components: {SideMenu},
 		setup() {
-			function startNewSubmission() {
-				console.log('startNewSubmission clicked');
+			function startNewSubmission(actionArgs) {
+				console.log('startNewSubmission clicked', actionArgs);
 			}
 
-			function otherAction() {
-				console.log('otherAction clicked');
+			function otherAction(actionArgs) {
+				console.log('otherAction clicked', actionArgs);
 			}
 
-			function handleActions(action) {
+			function handleActions(action, actionArgs) {
 				switch (action) {
 					case 'startNewSubmission':
-						startNewSubmission();
+						startNewSubmission(actionArgs);
 						break;
 					case 'otherAction':
-						otherAction();
+						otherAction(actionArgs);
 						break;
 					default:
 						console.error(`No handler for action: ${action}`);
@@ -167,6 +167,10 @@ export const Default = {
 						link: '#',
 						isCurrent: false,
 						action: 'startNewSubmission',
+						actionArgs: {
+							param1: 1,
+							param2: 2,
+						},
 					},
 				],
 			},
