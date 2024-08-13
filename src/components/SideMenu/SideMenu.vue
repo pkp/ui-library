@@ -46,7 +46,8 @@ const props = defineProps({
 	 * Each object should contain:
 	 * - `label` (string): The label of the menu item.
 	 * - `link` (string, optional): The URL to navigate to when the item is clicked.
-	 * - `action` (function, optional): A function to be executed when the item is clicked.
+	 * - `action` (string, optional): A function to be executed when the item is clicked.
+	 * - `actionArgs` (object, optional): An object to be passed as function arguments when the `item.action` is emitted.
 	 * - `isCurrent` (boolean, optional): Marks the item as the current selection.
 	 * - `isOpen` (boolean, optional): Identifies if the menu should be expanded.
 	 * - `badge` (object, optional): Contains `slot` (string) and other props for `<Badge>` customization.
@@ -160,7 +161,7 @@ function handleClick(item) {
 	activeItemKey.value = item.key;
 
 	if (item.action) {
-		emit('action', item.action);
+		emit('action', item.action, item.actionArgs);
 	}
 }
 
