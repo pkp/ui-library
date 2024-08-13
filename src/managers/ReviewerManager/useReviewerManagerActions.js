@@ -192,9 +192,8 @@ export function useReviewerManagerActions() {
 						},
 					},
 				],
-				title: 'Login as (t)',
-				message:
-					'Log in as this user? All actions you perform will be attributed to this user. (t)',
+				title: t('grid.action.logInAs'),
+				message: t('grid.user.confirmLogInAs'),
 			});
 		} else if (actionName === 'editorialNotes') {
 			openLegacyGriAction({

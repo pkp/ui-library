@@ -71,6 +71,7 @@ import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import StageBubble from '@/components/StageBubble/StageBubble.vue';
 import FileManager from '@/managers/FileManager/FileManager.vue';
 import DiscussionManager from '@/managers/DiscussionManager/DiscussionManager.vue';
+import ParticipantManager from '@/managers/ParticipantManager/ParticipantManager.vue';
 
 import ReviewerManager from '@/managers/ReviewerManager/ReviewerManager.vue';
 import ContributorManager from '@/managers/ContributorManager/ContributorManager.vue';
@@ -95,6 +96,7 @@ const Components = {
 	ReviewerManager,
 	DiscussionManager,
 	ContributorManager,
+	ParticipantManager,
 	LastActivity,
 	ActionButton,
 	EditorsAssigned,

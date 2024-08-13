@@ -4,18 +4,13 @@ import {defineComponentStore} from '@/utils/defineComponentStore';
 import {useSummaryConfig} from './composables/useSummaryConfig';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
-import {useParticipant} from '@/composables/useParticipant';
 import {useHandleActions} from '../composables/useHandleActions';
-import {useLocalize} from '@/composables/useLocalize';
 import {useDataChanged} from '@/composables/useDataChanged';
-import {DashboardPageTypes} from '../dashboardPageStore';
 
 export const useSubmissionSummaryStore = defineComponentStore(
 	'submissionSummary',
 	(props) => {
 		const dashboardPage = props.pageInitConfig.dashboardPage;
-
-		const {localize} = useLocalize();
 
 		/**
 		 * Data changes tracking
@@ -73,31 +68,25 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		/**
 		 * Fetch submission participants
 		 */
-		const {apiUrl: participantApiUrl} = useUrl(
+		/*const {apiUrl: participantApiUrl} = useUrl(
 			`submissions/${encodeURIComponent(props.submissionId)}/participants`,
 		);
 		const {data: participants, fetch: fetchParticipants} =
 			useFetch(participantApiUrl);
-
+*/
 		function fetchAll() {
 			fetchSubmission();
 			// TOOD consider whether this might be better to fetch within components that needs it
-			if (dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD) {
+			/*if (dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD) {
 				fetchParticipants();
-			}
+			}*/
 			triggerDataChange();
 		}
 
 		fetchAll();
 
-		const {
-			getEditorRoleIds,
-			hasParticipantAtLeastOneRole,
-			getFirstGroupWithFollowingRoles,
-		} = useParticipant();
-
 		/** TODO: Might be moved directly to the component? */
-		const associatedEditors = computed(() => {
+		/*const associatedEditors = computed(() => {
 			if (!participants.value) {
 				return [];
 			}
@@ -114,7 +103,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 							.name,
 					),
 				}));
-		});
+		});*/
 
 		/**
 		 * Handle user actions
@@ -151,7 +140,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			selectedReviewAssignment,
 			currentPublication,
 			issue,
-			associatedEditors,
+			//associatedEditors,
 			handleAction,
 
 			/**

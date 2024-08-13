@@ -511,7 +511,11 @@ export function useSummaryConfig() {
 	function getMetaItems(submission, currentPublication) {
 		return [
 			{
-				component: 'EditorsAssigned',
+				component: 'ParticipantManager',
+				props: {
+					submission,
+					submissionStageId: submission.stageId,
+				},
 				filters: {
 					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
 					activeStageId: [
