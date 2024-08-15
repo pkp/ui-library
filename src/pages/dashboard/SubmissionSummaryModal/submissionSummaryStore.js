@@ -1,11 +1,13 @@
-import {computed, watch} from 'vue';
+import {computed, ref, watch} from 'vue';
 
 import {defineComponentStore} from '@/utils/defineComponentStore';
-import {useSummaryConfig} from './composables/useSummaryConfig';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
 import {useHandleActions} from '../composables/useHandleActions';
 import {useDataChanged} from '@/composables/useDataChanged';
+import {useSummarySideNav} from './composables/useSummarySideNav';
+import {useSubmission} from '@/composables/useSubmission';
+import {useSummaryEditorialConfig} from './composables/useSummaryEditorialConfig';
 
 export const useSubmissionSummaryStore = defineComponentStore(
 	'submissionSummary',
@@ -52,28 +54,6 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			fetchCurrentPublication();
 		});
 
-		/** Fetch issue */
-		const issueUrlRelative = computed(
-			() => `issues/${currentPublication.value?.issueId}`,
-		);
-		const {apiUrl: issueUrl} = useUrl(issueUrlRelative);
-		const {data: issue, fetch: fetchIssue} = useFetch(issueUrl);
-
-		watch(currentPublication, () => {
-			if (currentPublication.value?.issueId) {
-				fetchIssue();
-			}
-		});
-
-		/**
-		 * Fetch submission participants
-		 */
-		/*const {apiUrl: participantApiUrl} = useUrl(
-			`submissions/${encodeURIComponent(props.submissionId)}/participants`,
-		);
-		const {data: participants, fetch: fetchParticipants} =
-			useFetch(participantApiUrl);
-*/
 		function fetchAll() {
 			fetchSubmission();
 			// TOOD consider whether this might be better to fetch within components that needs it
@@ -85,25 +65,53 @@ export const useSubmissionSummaryStore = defineComponentStore(
 
 		fetchAll();
 
-		/** TODO: Might be moved directly to the component? */
-		/*const associatedEditors = computed(() => {
-			if (!participants.value) {
+		/**
+		 * Handling navigation
+		 */
+
+		const selectedStageId = ref(pkp.const.WORKFLOW_STAGE_ID_SUBMISSION);
+		const selectedReviewRoundId = ref(null);
+		const {getReviewRound} = useSubmission();
+		const selectedReviewRound = computed(() => {
+			if (selectedReviewRoundId.value === null) {
+				return null;
+			}
+			return getReviewRound(submission.value, selectedReviewRoundId.value);
+		});
+
+		const {getMenuItems} = useSummarySideNav();
+		const menuItems = computed(() => {
+			if (!submission.value) {
 				return [];
 			}
+			return getMenuItems(submission.value);
+		});
 
-			return participants.value
-				.filter((participant) =>
-					hasParticipantAtLeastOneRole(participant, getEditorRoleIds()),
-				)
-				.map((participant) => ({
-					id: participant.id,
-					fullName: participant.fullName,
-					roleName: localize(
-						getFirstGroupWithFollowingRoles(participant, getEditorRoleIds())
-							.name,
-					),
-				}));
-		});*/
+		/*const {sideNavProps, openAll, open, closeAll, selectItem} =
+			useSideMenu(menuItemsConfig);
+
+		openAll();
+		selectItem([
+			'workflow',
+			pkp.const.pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
+			activeReviewRoundId,
+		]);*/
+
+		function selectMenuItem(action, actionArgs) {
+			if (action === 'submission') {
+				selectedStageId.value = pkp.const.WORKFLOW_STAGE_ID_SUBMISSION;
+				selectedReviewRoundId.value = null;
+			} else if (action.startsWith('review:')) {
+				selectedStageId.value = pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW;
+				selectedReviewRoundId.value = parseInt(action.split(':')[1]);
+			} else if (action === 'copyediting') {
+				selectedStageId.value = pkp.const.WORKFLOW_STAGE_ID_EDITING;
+				selectedReviewRoundId.value = null;
+			} else if (action === 'production') {
+				selectedStageId.value = pkp.const.WORKFLOW_STAGE_ID_PRODUCTION;
+				selectedReviewRoundId.value = null;
+			}
+		}
 
 		/**
 		 * Handle user actions
@@ -127,29 +135,67 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		}
 
 		/** Primary Items */
-		const {
-			getPrimaryItems,
-			getActionItems,
-			getMetaItems,
-			filterItemsBasedOnContext,
-		} = useSummaryConfig();
+
+		const _editorialConfigFns = useSummaryEditorialConfig();
+
+		const primaryItems = computed(() => {
+			if (!submission.value) {
+				return [];
+			}
+			console.log('primaryItems recalculate');
+			return _editorialConfigFns.getPrimaryItems({
+				submission: submission.value,
+				selectedStageId: selectedStageId.value,
+				selectedReviewRound: selectedReviewRound.value,
+			});
+		});
+
+		const secondaryItems = computed(() => {
+			if (!submission.value) {
+				return [];
+			}
+
+			return _editorialConfigFns.getSecondaryItems({
+				submission: submission.value,
+				selectedStageId: selectedStageId.value,
+				selectedReviewRound: selectedReviewRound.value,
+			});
+		});
+
+		const actionItems = computed(() => {
+			if (!submission.value) {
+				return [];
+			}
+
+			return _editorialConfigFns.getActionItems({
+				submission: submission.value,
+				selectedStageId: selectedStageId.value,
+				selectedReviewRound: selectedReviewRound.value,
+			});
+		});
 
 		return {
 			dashboardPage,
 			submission,
 			selectedReviewAssignment,
 			currentPublication,
-			issue,
 			//associatedEditors,
 			handleAction,
 
 			/**
+			 * Navigation
+			 * */
+			selectedStageId,
+			selectedReviewRoundId,
+			menuItems,
+			selectMenuItem,
+
+			/**
 			 * Summary
 			 */
-			getPrimaryItems,
-			getActionItems,
-			getMetaItems,
-			filterItemsBasedOnContext,
+			primaryItems,
+			secondaryItems,
+			actionItems,
 
 			/** Changes tracking */
 			registerDataChangeCallback,

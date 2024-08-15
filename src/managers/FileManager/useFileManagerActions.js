@@ -47,6 +47,7 @@ export function useFileManagerActions() {
 			window.location.href = url.value;
 		} else if (actionName === Actions.UPLOAD) {
 			// http://localhost:7003/index.php/publicknowledge/$$$call$$$/wizard/file-upload/file-upload-wizard/start-wizard?fileStage=15&reviewRoundId=13&submissionId=19&stageId=3&uploaderRoles=16-1-17-4097
+
 			const {url} = useLegacyGridUrl({
 				component: 'wizard.fileUpload.FileUploadWizardHandler',
 				op: 'startWizard',

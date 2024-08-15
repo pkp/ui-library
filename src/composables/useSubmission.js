@@ -37,6 +37,12 @@ export function useSubmission() {
 			: null;
 	}
 
+	function getReviewRound(submission, reviewRoundId) {
+		return submission?.reviewRounds.find(
+			(reviewRound) => reviewRound.id === reviewRoundId,
+		);
+	}
+
 	function getCurrentReviewAssignments(submission) {
 		const currentReviewRound = getCurrentReviewRound(submission);
 
@@ -105,6 +111,7 @@ export function useSubmission() {
 		getExtendedStage,
 		getExtendedStageLabel,
 		getCurrentReviewRound,
+		getReviewRound,
 		getCurrentReviewAssignments,
 		getCurrentPublication,
 		getFileStageFromWorkflowStage,

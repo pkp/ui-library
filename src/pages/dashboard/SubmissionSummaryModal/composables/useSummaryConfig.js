@@ -470,7 +470,7 @@ export function useSummaryConfig() {
 			{
 				component: 'ActionButton',
 				props: {
-					label: t('dashboard.summary.scheduleForProduction'),
+					label: t('dashboard.summary.scheduleForPublication'),
 					isPrimary: true,
 					action: 'scheduleForPublication',
 				},
