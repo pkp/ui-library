@@ -98,18 +98,10 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		]);*/
 
 		function selectMenuItem(action, actionArgs) {
-			if (action === 'submission') {
-				selectedStageId.value = pkp.const.WORKFLOW_STAGE_ID_SUBMISSION;
-				selectedReviewRoundId.value = null;
-			} else if (action.startsWith('review:')) {
-				selectedStageId.value = pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW;
-				selectedReviewRoundId.value = parseInt(action.split(':')[1]);
-			} else if (action === 'copyediting') {
-				selectedStageId.value = pkp.const.WORKFLOW_STAGE_ID_EDITING;
-				selectedReviewRoundId.value = null;
-			} else if (action === 'production') {
-				selectedStageId.value = pkp.const.WORKFLOW_STAGE_ID_PRODUCTION;
-				selectedReviewRoundId.value = null;
+			console.log('selectMenuItem:', action, actionArgs);
+			if (action === 'selectStage') {
+				selectedStageId.value = actionArgs.stageId;
+				selectedReviewRoundId.value = actionArgs.reviewRoundId || null;
 			}
 		}
 

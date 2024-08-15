@@ -31,7 +31,7 @@ export function useSummaryEditorialConfig() {
 			// TODO refine not sure if there are different discussions in different stages
 			items.push({
 				component: 'DiscussionManager',
-				props: {submissionId: submission.id, stageId: submission.stageId},
+				props: {submissionId: submission.id, stageId: selectedStageId},
 			});
 		} else if (
 			selectedStageId === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW
@@ -57,6 +57,14 @@ export function useSummaryEditorialConfig() {
 			});
 
 			items.push({
+				component: 'DiscussionManager',
+				props: {
+					submissionId: submission.id,
+					stageId: selectedStageId,
+				},
+			});
+
+			items.push({
 				component: 'ReviewerManager',
 				props: {
 					submission: submission,
@@ -66,16 +74,24 @@ export function useSummaryEditorialConfig() {
 			items.push({
 				component: 'FileManager',
 				props: {
-					configName: 'COPYEDITED_FILES',
+					configName: 'FINAL_DRAFT_FILES',
 					submission: submission,
 					submissionStageId: submission.stageId,
 				},
 			});
 
 			items.push({
+				component: 'DiscussionManager',
+				props: {
+					submissionId: submission.id,
+					stageId: selectedStageId,
+				},
+			});
+
+			items.push({
 				component: 'FileManager',
 				props: {
-					configName: 'FINAL_DRAFT_FILES',
+					configName: 'COPYEDITED_FILES',
 					submission: submission,
 					submissionStageId: submission.stageId,
 				},
@@ -89,8 +105,16 @@ export function useSummaryEditorialConfig() {
 					submissionStageId: submission.stageId,
 				},
 			});
+
+			items.push({
+				component: 'DiscussionManager',
+				props: {
+					submissionId: submission.id,
+					stageId: selectedStageId,
+				},
+			});
 		}
-		console.log('primary items:', items);
+
 		return items;
 	}
 
