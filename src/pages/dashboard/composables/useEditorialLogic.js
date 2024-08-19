@@ -127,12 +127,10 @@ export function useEditorialLogic() {
 			const activeRound = getCurrentReviewRound(submission);
 
 			if (
-				[
-					pkp.const.REVIEW_ROUND_STATUS_REVISIONS_REQUESTED,
-					pkp.const.REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW,
-				].includes(activeRound.statusId)
+				[pkp.const.REVIEW_ROUND_STATUS_REVISIONS_REQUESTED].includes(
+					activeRound.statusId,
+				)
 			) {
-				// Todo refine once these are covered in nextcloud
 				return [
 					{
 						component: 'CellSubmissionActivityActionAlert',

@@ -3,7 +3,7 @@
 		:is-primary="isPrimary"
 		:is-secondary="isSecondary"
 		:is-warnable="isWarnable"
-		@click="() => handleAction(action, {})"
+		@click="() => handleAction(action, actionArgs)"
 	>
 		{{ label }}
 	</PkpButton>
@@ -20,6 +20,7 @@ defineProps({
 	isSecondary: {type: Boolean, required: false, default: false},
 	isWarnable: {type: Boolean, required: false, default: false},
 	action: {type: String, required: true},
+	actionArgs: {type: Object, required: false, default: () => {}},
 	label: {type: String, required: true},
 });
 </script>

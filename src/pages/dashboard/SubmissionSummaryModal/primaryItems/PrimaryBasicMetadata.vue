@@ -1,7 +1,7 @@
 <template>
 	<div class="border border-light p-4">
-		<h3 class="text-lg-bold text-heading">{{ heading }}</h3>
-		<p class="pt-2 text-sm-normal">{{ body }}</p>
+		<h3 v-if="heading" class="mb-2 text-lg-bold text-heading">{{ heading }}</h3>
+		<p v-if="body" class="text-sm-normal">{{ body }}</p>
 	</div>
 </template>
 <script setup>
