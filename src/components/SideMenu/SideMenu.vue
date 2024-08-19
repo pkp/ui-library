@@ -1,6 +1,6 @@
 <template>
 	<PanelMenu
-		v-model:expandedKeys="expandedKeys"
+		v-model:expandedKeys="localExpandedKeys"
 		:model="items"
 		:pt="navigationStyling"
 		class="w-max min-w-60 overflow-y-auto border-e border-s border-light bg-secondary"
@@ -27,7 +27,7 @@
 				<Icon
 					v-if="hasSubmenu"
 					class="h-4 w-4 ltr:ml-auto rtl:mr-auto"
-					:icon="active ? 'caret-up' : 'Dropdown'"
+					:icon="active ? 'Dropup' : 'Dropdown'"
 				/>
 			</a>
 		</template>
@@ -38,18 +38,17 @@
 import PanelMenu from 'primevue/panelmenu';
 import Icon from '../Icon/Icon.vue';
 import Badge from '../Badge/Badge.vue';
-import {ref, reactive} from 'vue';
+import {ref, reactive, watch} from 'vue';
 
 const props = defineProps({
 	/**
 	 * An array of item objects for the SideMenu.
 	 * Each object should contain:
-	 * - `label` (string): The label of the menu item.
+	 * - `label` (string, required): The label of the menu item.
+	 * - `key` (string, required): A unique key for each item.
 	 * - `link` (string, optional): The URL to navigate to when the item is clicked.
 	 * - `action` (string, optional): A function to be executed when the item is clicked.
 	 * - `actionArgs` (object, optional): An object to be passed as function arguments when the `item.action` is emitted.
-	 * - `isCurrent` (boolean, optional): Marks the item as the current selection.
-	 * - `isOpen` (boolean, optional): Identifies if the menu should be expanded.
 	 * - `badge` (object, optional): Contains `slot` (string) and other props for `<Badge>` customization.
 	 * - `colorStripe` (string, optional): A border class to add a color stripe to the item.
 	 * - `items` (array, optional): An array of child items for nested menus.
@@ -61,38 +60,58 @@ const props = defineProps({
 			return items.every((item) => {
 				const hasLabel =
 					typeof item.label === 'string' && item.label.trim() !== '';
+				const hasKey = typeof item.key === 'string' && item.key.trim() !== '';
 				const validItem = item.link || item.action || item.items;
-				return hasLabel && validItem;
+				return hasLabel && hasKey && validItem;
 			});
 		},
+	},
+	expandedKeys: {
+		type: Object,
+		default: () => {},
+	},
+	activeItemKey: {
+		type: String,
+		required: true,
+		validator: (value) => !!value,
 	},
 });
 
 const emit = defineEmits([
 	/** When a panel menu item's "action" is clicked */
 	'action',
+	/** When the localActiveItemKey value changes */
+	'update:activeItemKey',
 ]);
 
-const activeItemKey = ref('');
+const localActiveItemKey = ref(props.activeItemKey);
+watch(
+	() => props.activeItemKey,
+	(newActiveItemKey) => {
+		localActiveItemKey.value = newActiveItemKey;
+	},
+);
 
-// Maps the key and level attributes which are necessary to render the nested menu
-function mapItems(_items, level = 1, _key) {
+const localExpandedKeys = ref({...props.expandedKeys});
+watch(
+	() => props.expandedKeys,
+	(newExpandedKeys) => {
+		localExpandedKeys.value = {...newExpandedKeys};
+	},
+);
+
+// Maps the level attributes which are necessary to render the nested menu
+function mapItems(_items, level = 1) {
 	const result = [];
 
-	_items.forEach((_item, index) => {
-		const key = _key ? `${_key}_${index}` : `item_${index}`;
+	_items.forEach((_item) => {
 		const item = {
 			..._item,
-			key,
 			level,
 		};
 
 		if (_item.items) {
-			item.items = mapItems(_item.items, level + 1, key);
-		}
-
-		if (item.isCurrent) {
-			activeItemKey.value = key;
+			item.items = mapItems(_item.items, level + 1);
 		}
 
 		result.push(item);
@@ -102,34 +121,6 @@ function mapItems(_items, level = 1, _key) {
 }
 
 const items = reactive(mapItems(props.items));
-
-// Defines the list of expanded keys, so it renders correctly when the component loads
-function getExpandedKeys(items) {
-	const _expandedKeys = {};
-
-	function markExpanded(items) {
-		let found = false;
-		for (const item of items) {
-			if (item.isCurrent || item.isOpen) {
-				_expandedKeys[item.key] = true;
-				found = true;
-			}
-
-			const isMarkExpanded = item.items && markExpanded(item.items);
-
-			if (item.items && isMarkExpanded) {
-				_expandedKeys[item.key] = true;
-				found = true;
-			}
-		}
-		return found;
-	}
-
-	markExpanded(items);
-	return _expandedKeys;
-}
-
-const expandedKeys = ref(getExpandedKeys(items));
 
 const navigationStyling = {
 	headerContent: () => {
@@ -157,16 +148,16 @@ const navigationStyling = {
 };
 
 function handleClick(item) {
-	// set the current active item key
-	activeItemKey.value = item.key;
+	localActiveItemKey.value = item.key;
+	emit('update:activeItemKey', localActiveItemKey.value);
 
 	if (item.action) {
-		emit('action', item.action, item.actionArgs);
+		emit('action', item.action, {...item.actionArgs, key: item.key});
 	}
 }
 
 function isActive(item) {
-	return item?.key === activeItemKey.value;
+	return localActiveItemKey.value && item?.key === localActiveItemKey.value;
 }
 
 function getButtonStyles(item) {
@@ -174,9 +165,9 @@ function getButtonStyles(item) {
 
 	const style = {
 		// Base
-		'inline-flex relative items-center gap-x-1 text-lg-semibold py-2 px-3 w-full border-b border-b-light': true,
+		'inline-flex relative items-center gap-x-1 text-lg-medium py-2 px-3 w-full border-b border-b-light': true,
 		// Default button styling
-		'text-primary border-light  hover:text-hover disabled:text-disabled bg-secondary':
+		'text-primary border-light hover:text-hover disabled:text-disabled bg-secondary':
 			!isActiveItem,
 		// Active
 		'text-on-dark bg-selection-dark': isActiveItem,
@@ -191,6 +182,8 @@ function getButtonStyles(item) {
 		// Additional border styling
 		'border-t border-t-light': item.key === 'item_0',
 		'border-s-8': item.colorStripe,
+		// Items with children
+		'!text-lg-bold': item.items && item.level === 1,
 	};
 
 	// set the additional class if the button should include a color stripe

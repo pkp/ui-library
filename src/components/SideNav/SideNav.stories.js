@@ -93,19 +93,19 @@ export const Default = {
 								isCurrent: false,
 								icon: '',
 								submenu: {
-									item1: {
+									item2_1: {
 										name: 'Item 2.1',
 										url: '#',
 										isCurrent: false,
 										icon: '',
 									},
-									item2: {
+									item2_2: {
 										name: 'Item 2.2',
 										url: '#',
 										isCurrent: false,
 										icon: '',
 									},
-									item3: {
+									item2_3: {
 										name: 'Item 2.3',
 										url: '#',
 										isCurrent: true,
