@@ -2,6 +2,7 @@ import {within, userEvent} from '@storybook/test';
 import {ref, inject} from 'vue';
 import SideModal from './SideModal.vue';
 import {useModal} from '@/composables/useModal.js';
+import {useSideMenu} from '@/composables/useSideMenu.js';
 import SideMenu from '../SideMenu/SideMenu.vue';
 import SideModalBody from './SideModalBody.vue';
 import SideModalLayoutBasic from './SideModalLayoutBasic.vue';
@@ -425,92 +426,96 @@ const SideModalWithSideMenu = {
 				value: 'dd-mm-yyy',
 			},
 		];
+
+		const {activeItemKey, setExpandedKeys} = useSideMenu('review_round_1');
+		const expandedKeys = setExpandedKeys(['workflow', 'review', 'publication']);
+
 		const items = [
 			{
 				label: 'Workflow',
+				key: 'workflow',
 				icon: 'Dashboard',
-				isCurrent: false,
 				items: [
 					{
 						label: 'Submission',
+						key: 'submission',
 						link: '#',
-						isCurrent: false,
 						colorStripe: 'border-stage-desk-review',
 					},
 					{
 						label: 'Review',
+						key: 'review',
 						link: '#',
-						isCurrent: false,
 						items: [
 							{
 								label: 'Review Round 1',
+								key: 'review_round_1',
 								link: '#',
-								isCurrent: true,
 							},
 							{
 								label: 'New Review Round',
+								key: 'new_review_round',
 								link: '#',
-								isCurrent: false,
 							},
 						],
 					},
 					{
 						label: 'Copyediting',
+						key: 'copyediting',
 						link: '#',
-						isCurrent: false,
 					},
 					{
 						label: 'Production',
+						key: 'production',
 						link: '#',
-						isCurrent: false,
 					},
 				],
 			},
 			{
 				label: 'Publication',
+				key: 'publication',
 				icon: 'MySubmissions',
-				isCurrent: false,
 				isOpen: true,
 				items: [
 					{
 						label: 'Title & Abstract',
+						key: 'title_and_abstract',
 						link: '#',
-						isCurrent: false,
 					},
 					{
 						label: 'Contributors',
+						key: 'contributors',
 						link: '#',
-						isCurrent: false,
 					},
 					{
 						label: 'Metadata',
+						key: 'metadata',
 						link: '#',
-						isCurrent: false,
 					},
 					{
 						label: 'References',
+						key: 'references',
 						link: '#',
-						isCurrent: false,
 					},
 					{
 						label: 'Galleys',
+						key: 'galleys',
 						link: '#',
-						isCurrent: false,
 					},
 					{
 						label: 'Permissions & Disclosure',
+						key: 'permissions_and_disclosure',
 						link: '#',
-						isCurrent: false,
 					},
 					{
 						label: 'Issue',
+						key: 'issue',
 						link: '#',
-						isCurrent: false,
 					},
 				],
 			},
 		];
-		return {metadata, generalInformation, items};
+		return {metadata, generalInformation, items, activeItemKey, expandedKeys};
 	},
 	template: `
 		<SideModalBody>
@@ -523,7 +528,7 @@ const SideModalWithSideMenu = {
 				<SideModalLayout2Columns>
 					<template #left>
 						<div class="flex">
-							<SideMenu :items="items"></SideMenu>
+							<SideMenu :items="items" v-model:activeItemKey="activeItemKey" :expanded-keys="expandedKeys"></SideMenu>
 							<p class="px-5">
 								Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
 								eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad

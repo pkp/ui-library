@@ -1,4 +1,5 @@
 import SideMenu from './SideMenu.vue';
+import {useSideMenu} from '@/composables/useSideMenu.js';
 
 export default {
 	title: 'Components/SideMenu',
@@ -6,6 +7,13 @@ export default {
 	render: (args) => ({
 		components: {SideMenu},
 		setup() {
+			const {activeItemKey, setExpandedKeys} = useSideMenu('action_required');
+
+			args.expandedKeys = setExpandedKeys([
+				'action_required',
+				'editorial_dashboard',
+			]);
+
 			function startNewSubmission(actionArgs) {
 				console.log('startNewSubmission clicked', actionArgs);
 			}
@@ -26,9 +34,10 @@ export default {
 						console.error(`No handler for action: ${action}`);
 				}
 			}
-			return {args, handleActions};
+			return {args, activeItemKey, handleActions};
 		},
-		template: '<SideMenu v-bind="args" @action="handleActions" />',
+		template:
+			'<SideMenu v-bind="args" @action="handleActions" v-model:activeItemKey="activeItemKey" />',
 	}),
 };
 
@@ -37,13 +46,13 @@ export const Default = {
 		items: [
 			{
 				label: 'Editorial Dashboard',
+				key: 'editorial_dashboard',
 				icon: 'Dashboard',
-				isCurrent: false,
 				items: [
 					{
 						label: 'Action required by me',
+						key: 'action_required',
 						link: '#',
-						isCurrent: true,
 						badge: {
 							slot: 20,
 							isWarnable: true,
@@ -51,56 +60,56 @@ export const Default = {
 					},
 					{
 						label: 'Assigned to me',
+						key: 'assigned_to_me',
 						link: '#',
-						isCurrent: false,
 						badge: {
 							slot: 45,
 						},
 					},
 					{
 						label: 'Active submissions',
+						key: 'active_submissions',
 						link: '#',
-						isCurrent: false,
 						badge: {
 							slot: 100,
 						},
 					},
 					{
 						label: 'All in submission stage',
+						key: 'all_in_submission_stage',
 						link: '#',
-						isCurrent: false,
 						badge: {
 							slot: 35,
 						},
 					},
 					{
 						label: 'Needs reviewers',
+						key: 'needs_reviewers',
 						link: '#',
-						isCurrent: false,
 						badge: {
 							slot: 5,
 						},
 					},
 					{
 						label: 'Awaiting reviews',
+						key: 'awaiting_reviews',
 						link: '#',
-						isCurrent: false,
 						badge: {
 							slot: 6,
 						},
 					},
 					{
 						label: 'Reviews submitted',
+						key: 'reviews_submitted',
 						link: '#',
-						isCurrent: false,
 						badge: {
 							slot: 4,
 						},
 					},
 					{
 						label: 'Reviews overdue',
+						key: 'reviews_overdue',
 						link: '#',
-						isCurrent: false,
 						badge: {
 							slot: 10,
 							isWarnable: true,
@@ -108,64 +117,64 @@ export const Default = {
 					},
 					{
 						label: 'Author revisions submitted',
+						key: 'author_revisions_submitted',
 						link: '#',
-						isCurrent: false,
 						badge: {
 							slot: 5,
 						},
 					},
 					{
 						label: 'All in review stage',
+						key: 'all_in_review_stage',
 						link: '#',
-						isCurrent: false,
 						badge: {
 							slot: 10,
 						},
 					},
 					{
 						label: 'All in copyediting stage',
+						key: 'all_in_copyediting_stage',
 						link: '#',
-						isCurrent: false,
 						badge: {
 							slot: 10,
 						},
 					},
 					{
 						label: 'All in production stage',
+						key: 'all_in_production_stage',
 						link: '#',
-						isCurrent: false,
 						badge: {
 							slot: 12,
 						},
 					},
 					{
 						label: 'Scheduled for publishing',
+						key: 'scheduled_for_publishing',
 						link: '#',
-						isCurrent: false,
 						badge: {
 							slot: 16,
 						},
 					},
 					{
 						label: 'Published',
+						key: 'published',
 						link: '#',
-						isCurrent: false,
 						badge: {
 							slot: 75,
 						},
 					},
 					{
 						label: 'Declined',
+						key: 'declined',
 						link: '#',
-						isCurrent: false,
 						badge: {
 							slot: 10,
 						},
 					},
 					{
 						label: 'Start a New Submission',
+						key: 'start_a_new_submission',
 						link: '#',
-						isCurrent: false,
 						action: 'startNewSubmission',
 						actionArgs: {
 							param1: 1,
@@ -176,38 +185,38 @@ export const Default = {
 			},
 			{
 				label: 'My Assignments as Reviewer',
+				key: 'my_assignments_as_reviewer',
 				icon: 'ReviewAssignments',
-				isCurrent: false,
 				link: '#',
 			},
 			{
 				label: 'My Submissions as Author',
+				key: 'my_submissions_as_author',
 				icon: 'MySubmissions',
-				isCurrent: false,
 				link: '#',
 			},
 			{
 				label: 'Issues',
+				key: 'issues',
 				icon: 'Issues',
-				isCurrent: false,
 				link: '#',
 			},
 			{
 				label: 'Announcements',
+				key: 'announcements',
 				icon: 'Announcements',
-				isCurrent: false,
 				link: '#',
 			},
 			{
 				label: 'DOIs',
+				key: 'dois',
 				icon: 'NavDoi',
-				isCurrent: false,
 				link: '#',
 			},
 			{
 				label: 'Institutes',
+				key: 'institutes',
 				icon: 'Institutes',
-				isCurrent: false,
 				link: '#',
 			},
 		],
@@ -215,58 +224,72 @@ export const Default = {
 };
 
 export const WithColorStripe = {
+	render: (args) => ({
+		components: {SideMenu},
+		setup() {
+			const activeItemKey = 'submission_stages';
+			const expandedKeys = ['submission_stages'];
+			const {setExpandedKeys} = useSideMenu(activeItemKey);
+
+			args.activeItemKey = activeItemKey;
+			args.expandedKeys = setExpandedKeys(expandedKeys);
+			return {args};
+		},
+		template:
+			'<SideMenu v-bind="args" v-model:activeItemKey="args.activeItemKey" />',
+	}),
 	args: {
 		items: [
 			{
 				label: 'Submission Stages',
-				isCurrent: true,
+				key: 'submission_stages',
 				items: [
 					{
 						label: 'Desk Review',
+						key: 'desk_review',
 						link: '#',
-						isCurrent: false,
 						colorStripe: 'border-stage-desk-review',
 					},
 					{
 						label: 'Review',
+						key: 'review',
 						link: '#',
-						isCurrent: false,
 						colorStripe: 'border-stage-in-review',
 					},
 					{
 						label: 'Copyediting',
+						key: 'copyediting',
 						link: '#',
-						isCurrent: false,
 						colorStripe: 'border-stage-copyediting',
 					},
 					{
 						label: 'Production',
+						key: 'production',
 						link: '#',
-						isCurrent: false,
 						colorStripe: 'border-stage-production',
 					},
 					{
 						label: 'Scheduled',
+						key: 'scheduled',
 						link: '#',
-						isCurrent: false,
 						colorStripe: 'border-stage-scheduled-for-publishing',
 					},
 					{
 						label: 'Incomoplete Submission',
+						key: 'incomplete_submission',
 						link: '#',
-						isCurrent: false,
 						colorStripe: 'border-stage-incomplete-submission',
 					},
 					{
 						label: 'Published',
+						key: 'published',
 						link: '#',
-						isCurrent: false,
 						colorStripe: 'border-stage-published',
 					},
 					{
 						label: 'Declined',
+						key: 'declined',
 						link: '#',
-						isCurrent: false,
 						colorStripe: 'border-stage-declined',
 					},
 				],
@@ -276,88 +299,102 @@ export const WithColorStripe = {
 };
 
 export const ExpandedMenu = {
+	render: (args) => ({
+		components: {SideMenu},
+		setup() {
+			const activeItemKey = 'review_round_1';
+			const expandedKeys = ['workflow', 'review', 'publication'];
+			const {setExpandedKeys} = useSideMenu(activeItemKey);
+
+			args.activeItemKey = activeItemKey;
+			args.expandedKeys = setExpandedKeys(expandedKeys);
+			return {args};
+		},
+		template:
+			'<SideMenu v-bind="args" v-model:activeItemKey="args.activeItemKey" />',
+	}),
 	args: {
 		items: [
 			{
 				label: 'Workflow',
-				icon: 'thumbs-up',
-				isCurrent: false,
+				key: 'workflow',
+				icon: 'Dashboard',
 				items: [
 					{
 						label: 'Submission',
+						key: 'submission',
 						link: '#',
-						isCurrent: false,
 						colorStripe: 'border-stage-desk-review',
 					},
 					{
 						label: 'Review',
+						key: 'review',
 						link: '#',
-						isCurrent: false,
 						items: [
 							{
 								label: 'Review Round 1',
+								key: 'review_round_1',
 								link: '#',
-								isCurrent: true,
 							},
 							{
 								label: 'New Review Round',
+								key: 'new_review_round',
 								link: '#',
-								isCurrent: false,
 							},
 						],
 					},
 					{
 						label: 'Copyediting',
+						key: 'copyediting',
 						link: '#',
-						isCurrent: false,
 					},
 					{
 						label: 'Production',
+						key: 'production',
 						link: '#',
-						isCurrent: false,
 					},
 				],
 			},
 			{
 				label: 'Publication',
+				key: 'publication',
 				icon: 'MySubmissions',
-				isCurrent: false,
 				isOpen: true,
 				items: [
 					{
 						label: 'Title & Abstract',
+						key: 'title_and_abstract',
 						link: '#',
-						isCurrent: false,
 					},
 					{
 						label: 'Contributors',
+						key: 'contributors',
 						link: '#',
-						isCurrent: false,
 					},
 					{
 						label: 'Metadata',
+						key: 'metadata',
 						link: '#',
-						isCurrent: false,
 					},
 					{
 						label: 'References',
+						key: 'references',
 						link: '#',
-						isCurrent: false,
 					},
 					{
 						label: 'Galleys',
+						key: 'galleys',
 						link: '#',
-						isCurrent: false,
 					},
 					{
 						label: 'Permissions & Disclosure',
+						key: 'permissions_and_disclosure',
 						link: '#',
-						isCurrent: false,
 					},
 					{
 						label: 'Issue',
+						key: 'issue',
 						link: '#',
-						isCurrent: false,
 					},
 				],
 			},
