@@ -71,6 +71,7 @@ export const iconGallery = {
 			'DecreaseTextSize',
 			'DisableUser',
 			'Dropdown',
+			'Dropup',
 			'Edit',
 			'Email',
 			'EmailOpened',

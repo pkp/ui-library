@@ -49,6 +49,7 @@ import Dashboard from './icons/Dashboard.vue';
 import DecreaseTextSize from './icons/DecreaseTextSize.vue';
 import DisableUser from './icons/DisableUser.vue';
 import Dropdown from './icons/Dropdown.vue';
+import Dropup from './icons/Dropup.vue';
 import Edit from './icons/Edit.vue';
 import Email from './icons/Email.vue';
 import EmailOpened from './icons/EmailOpened.vue';
@@ -110,6 +111,7 @@ const svgIcons = {
 	DecreaseTextSize,
 	DisableUser,
 	Dropdown,
+	Dropup,
 	Edit,
 	Email,
 	EmailOpened,
