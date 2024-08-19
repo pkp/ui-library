@@ -50,12 +50,25 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		);
 
 		/** Current publication is fetched always when the new submission is fetched */
-		watch(submission, () => {
+		watch(submission, (newSubmission, oldSubmission) => {
+			// Once the submission is fetched, select relevant stage in navigaton
+			if (!oldSubmission && newSubmission) {
+				selectedStageId.value = newSubmission.stageId;
+				if (
+					newSubmission.stageId === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW
+				) {
+					selectedReviewRoundId.value = getCurrentReviewRound(
+						newSubmission,
+						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+					)?.id;
+				}
+			}
+
 			fetchCurrentPublication();
 		});
 
-		function fetchAll() {
-			fetchSubmission();
+		async function fetchAll() {
+			await fetchSubmission();
 			// TOOD consider whether this might be better to fetch within components that needs it
 			/*if (dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD) {
 				fetchParticipants();
@@ -71,12 +84,17 @@ export const useSubmissionSummaryStore = defineComponentStore(
 
 		const selectedStageId = ref(pkp.const.WORKFLOW_STAGE_ID_SUBMISSION);
 		const selectedReviewRoundId = ref(null);
-		const {getReviewRound} = useSubmission();
+		const {getReviewRound, getCurrentReviewRound} = useSubmission();
 		const selectedReviewRound = computed(() => {
 			if (selectedReviewRoundId.value === null) {
 				return null;
 			}
-			return getReviewRound(submission.value, selectedReviewRoundId.value);
+			const reviewRound = getReviewRound(
+				submission.value,
+				selectedReviewRoundId.value,
+			);
+			console.log('selectedReviewRound:', selectedReviewRound);
+			return reviewRound;
 		});
 
 		const {getMenuItems} = useSummarySideNav();
@@ -102,6 +120,8 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			if (action === 'selectStage') {
 				selectedStageId.value = actionArgs.stageId;
 				selectedReviewRoundId.value = actionArgs.reviewRoundId || null;
+			} else {
+				handleAction(action, actionArgs);
 			}
 		}
 
@@ -116,6 +136,8 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			if (selectedReviewAssignment.value) {
 				actionArgs.reviewAssignmentId = selectedReviewAssignment.value.id;
 			}
+			console.log('__ handleAction:', actionName, actionArgs);
+
 			handleSubmissionAction(
 				submission.value,
 				actionName,
@@ -130,11 +152,21 @@ export const useSubmissionSummaryStore = defineComponentStore(
 
 		const _editorialConfigFns = useSummaryEditorialConfig();
 
+		const stageTitle = computed(() => {
+			if (!submission.value) {
+				return '';
+			}
+			return _editorialConfigFns.getTitle({
+				submission: submission.value,
+				selectedStageId: selectedStageId.value,
+				selectedReviewRound: selectedReviewRound.value,
+			});
+		});
+
 		const primaryItems = computed(() => {
 			if (!submission.value) {
 				return [];
 			}
-			console.log('primaryItems recalculate');
 			return _editorialConfigFns.getPrimaryItems({
 				submission: submission.value,
 				selectedStageId: selectedStageId.value,
@@ -185,6 +217,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			/**
 			 * Summary
 			 */
+			stageTitle,
 			primaryItems,
 			secondaryItems,
 			actionItems,

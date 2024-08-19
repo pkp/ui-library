@@ -1,18 +1,19 @@
 import {defineStore, getActivePinia} from 'pinia';
-import {onMounted, onUnmounted} from 'vue';
+import {onMounted, onBeforeUnmount} from 'vue';
 
 export function defineComponentStore(_storeName, setupFn) {
 	let storesMap = {};
 
 	return function (initConfig, _namespace = '') {
 		const storeName = _namespace ? `${_storeName}_${_namespace}` : _storeName;
+
 		if (!storesMap[storeName]) {
 			storesMap[storeName] = {mountedCount: 0, useStore: null};
 		}
 		onMounted(() => {
 			storesMap[storeName].mountedCount = storesMap[storeName].mountedCount + 1;
 		});
-		onUnmounted(() => {
+		onBeforeUnmount(() => {
 			storesMap[storeName].mountedCount = storesMap[storeName].mountedCount - 1;
 
 			if (storesMap[storeName].mountedCount === 0) {

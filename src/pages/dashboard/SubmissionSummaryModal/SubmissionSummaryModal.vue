@@ -36,24 +36,24 @@
 					@action="summaryStore.selectMenuItem"
 				></SideMenu>
 			</template>
-			<template #heading>Hello</template>
+			<template #heading>{{ summaryStore.stageTitle }}</template>
 			<template #primary>
 				<div class="flex flex-col gap-y-5 bg-secondary p-5">
 					<component
 						:is="Components[item.component] || item.component"
 						v-bind="item.props"
 						v-for="(item, index) in summaryStore.primaryItems"
-						:key="`${index} - ${item.props?.configName}`"
+						:key="`${index} - ${Object.values(item.props).join('-')}`"
 					/>
 				</div>
 			</template>
 			<template #actions>
-				<div class="flex flex-col items-start space-y-4 p-4">
+				<div class="flex flex-col items-start space-y-3 p-4">
 					<component
 						:is="Components[item.component] || item.component"
 						v-for="(item, index) in summaryStore.actionItems"
 						v-bind="item.props"
-						:key="index"
+						:key="`${index} - ${Object.values(item.props).join('-')}`"
 					></component>
 				</div>
 			</template>
@@ -63,7 +63,7 @@
 						:is="Components[item.component] || item.component"
 						v-for="(item, index) in summaryStore.secondaryItems"
 						v-bind="item.props"
-						:key="index"
+						:key="`${index} - ${Object.values(item.props).join('-')}`"
 					></component>
 				</div>
 			</template>
@@ -86,6 +86,7 @@ import ReviewerManager from '@/managers/ReviewerManager/ReviewerManager.vue';
 import ContributorManager from '@/managers/ContributorManager/ContributorManager.vue';
 import LastActivity from './primaryItems/LastActivity.vue';
 import PrimaryBasicMetadata from './primaryItems/PrimaryBasicMetadata.vue';
+import ReviewRoundStatus from './primaryItems/ReviewRoundStatus.vue';
 
 import ActionButton from './actionItems/ActionButton.vue';
 import EditorsAssigned from './metaItems/EditorsAssigned.vue';
@@ -111,6 +112,7 @@ const Components = {
 	BasicMetadata,
 	PrimaryBasicMetadata,
 	IssueAssigned,
+	ReviewRoundStatus,
 };
 
 const props = defineProps({

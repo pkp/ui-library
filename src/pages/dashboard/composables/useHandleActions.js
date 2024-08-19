@@ -45,20 +45,27 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 			decisionBackFromCopyediting: {
 				decisionId: pkp.const.DECISION_BACK_FROM_COPYEDITING,
 			},
+			decisionNewExternalRound: {
+				decisionId: pkp.const.DECISION_NEW_EXTERNAL_ROUND,
+			},
+			decisionBackFromProduction: {
+				decisionId: pkp.const.DECISION_BACK_FROM_PRODUCTION,
+			},
 		};
 
-		function openDecisionPage(submission, decisionId) {
+		function openDecisionPage(submission, decisionId, actionArgs) {
 			const queryParamsUrl = useUrlSearchParams();
-
-			const {getCurrentReviewRound} = useSubmission();
-			const activeReviewRound = getCurrentReviewRound(submission);
 
 			const currentPageUrl = `dashboard/editorial?${new URLSearchParams({...queryParamsUrl, summarySubmissionId: submission.id}).toString()}`;
 
 			const queryParams = {decision: decisionId, ret: currentPageUrl};
 
-			if (activeReviewRound?.id) {
-				queryParams.reviewRoundId = activeReviewRound?.id;
+			if (actionArgs?.reviewRoundId) {
+				queryParams.reviewRoundId = actionArgs?.reviewRoundId;
+			}
+
+			if (actionArgs?.stageId) {
+				queryParams.stageId = actionArgs?.stageId;
 			}
 
 			const {redirectToPage} = useUrl(
@@ -87,7 +94,11 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 
 			const editorialDecisionAction = editorialDecisionActions[actionName];
 
-			openDecisionPage(submission, editorialDecisionAction.decisionId);
+			openDecisionPage(
+				submission,
+				editorialDecisionAction.decisionId,
+				actionArgs,
+			);
 
 			// redirect to decisions page
 		}

@@ -16,7 +16,7 @@ export const ExtendedStages = {
 
 export const ExtendedStagesLabels = {
 	incomplete: tk('submissions.incomplete'),
-	submission: tk('dashboard.stage.deskReview'),
+	submission: tk('dashboard.stage.submission'),
 	internalReview: tk('todo'),
 	externalReview: tk('dashboard.stage.reviewWithRound'),
 	editing: tk('dashboard.stage.copyediting'),
@@ -31,15 +31,29 @@ export function useSubmission() {
 		return submission.stages.find((stage) => stage.isActiveStage);
 	}
 
-	function getCurrentReviewRound(submission) {
-		return submission?.reviewRounds?.length
-			? submission?.reviewRounds[submission.reviewRounds.length - 1]
-			: null;
+	function getCurrentReviewRound(
+		submission,
+		stageId = pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+	) {
+		const filteredReviewRoundByStage = submission?.reviewRounds.filter(
+			(reviewRound) => reviewRound.stageId === stageId,
+		);
+
+		if (filteredReviewRoundByStage.length) {
+			return filteredReviewRoundByStage[filteredReviewRoundByStage.length - 1];
+		}
+		return null;
 	}
 
 	function getReviewRound(submission, reviewRoundId) {
 		return submission?.reviewRounds.find(
 			(reviewRound) => reviewRound.id === reviewRoundId,
+		);
+	}
+
+	function getReviewRoundsForStage(submission, stageId) {
+		return submission?.reviewRounds.filter(
+			(reviewRound) => reviewRound.stageId === stageId,
 		);
 	}
 
@@ -106,14 +120,25 @@ export function useSubmission() {
 		return FileStageMapping[submission.stageId];
 	}
 
+	function hasSubmissionPassedStage(submission, stageId) {
+		return submission.stageId > stageId;
+	}
+
+	function hasNotSubmissionStartedStage(submission, stageId) {
+		return submission.stageId < stageId;
+	}
+
 	return {
 		getActiveStage,
 		getExtendedStage,
 		getExtendedStageLabel,
 		getCurrentReviewRound,
 		getReviewRound,
+		getReviewRoundsForStage,
 		getCurrentReviewAssignments,
 		getCurrentPublication,
 		getFileStageFromWorkflowStage,
+		hasNotSubmissionStartedStage,
+		hasSubmissionPassedStage,
 	};
 }

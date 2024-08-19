@@ -3,21 +3,38 @@ import {useSubmission} from '@/composables/useSubmission';
 export function useSummarySideNav() {
 	function getReviewItems(submission) {
 		const reviewMenuItems = [];
-		submission.reviewRounds.forEach((reviewRound, index) => {
+
+		const {getReviewRoundsForStage} = useSubmission();
+		const reviewRounds = getReviewRoundsForStage(
+			submission,
+			pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+		);
+
+		reviewRounds.forEach((reviewRound, index) => {
 			reviewMenuItems.push({
-				key: reviewRound.id,
+				key: `workflow_${pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW}_${reviewRound.id}`,
 				label: `Review Round ${index + 1}`,
 				action: 'selectStage',
-				actionsArgs: {
+				actionArgs: {
 					reviewRoundId: reviewRound.id,
 					stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 				},
 			});
 		});
 
-		reviewMenuItems.push({
-			label: 'New Review Round',
-		});
+		/*if (submission.stageId === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) {
+			reviewMenuItems.push({
+				label: 'New Review Round',
+				action: 'decisionNewExternalRound',
+				actionArgs: {
+					reviewRoundId: getCurrentReviewRound(
+						submission,
+						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+					).id,
+					stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+				},
+			});
+		}*/
 
 		return reviewMenuItems;
 	}
@@ -26,45 +43,52 @@ export function useSummarySideNav() {
 		const {getActiveStage} = useSubmission();
 
 		const activeStage = getActiveStage(submission);
+
+		const externalReviewItems = getReviewItems(submission);
 		return [
 			{
-				key: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
+				key: `workflow_${pkp.const.WORKFLOW_STAGE_ID_SUBMISSION}`,
 				label: 'Submission',
 				colorStripe:
 					activeStage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION
 						? 'border-stage-desk-review'
 						: null,
 				action: 'selectStage',
-				actionsArgs: {stageId: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION},
+				actionArgs: {stageId: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION},
 			},
 			{
-				key: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+				key: `workflow_${pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW}`,
 				label: 'Review',
 				colorStripe:
 					activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW
 						? 'border-stage-in-review'
 						: null,
-				items: getReviewItems(submission),
+
+				items: externalReviewItems,
+				action: !externalReviewItems.length ? 'selectStage' : undefined,
+				actionArgs: !externalReviewItems.length
+					? {stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW}
+					: undefined,
 			},
 			{
-				key: pkp.const.WORKFLOW_STAGE_ID_EDITING,
+				key: `workflow_${pkp.const.WORKFLOW_STAGE_ID_EDITING}`,
 				label: 'Copyediting',
 				colorStripe:
 					activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EDITING
 						? 'border-stage-copyediting'
 						: null,
 				action: 'selectStage',
-				actionsArgs: {stageId: pkp.const.WORKFLOW_STAGE_ID_EDITING},
+				actionArgs: {stageId: pkp.const.WORKFLOW_STAGE_ID_EDITING},
 			},
 			{
-				key: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
+				key: `workflow_${pkp.const.WORKFLOW_STAGE_ID_PRODUCTION}`,
 				label: 'Production',
 				colorStripe:
-					activeStage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION
+					activeStage.id === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION
 						? 'border-stage-copyediting'
 						: null,
 				action: 'selectStage',
-				actionsArgs: {stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION},
+				actionArgs: {stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION},
 			},
 		];
 	}
