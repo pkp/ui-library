@@ -1,0 +1,47 @@
+# useSideMenu
+
+`useSideMenu` is a composable function that helps manage the state of `activeItemKey` and `expandedKeys` for a [SideMenu](../?path=/docs/components-sidemenu--docs) component.
+
+```javascript
+const {activeItemKey, setActiveItemKey} = useSideMenu('menuItem1_1', {
+	menuItem1: true,
+	menuItem2: true,
+});
+```
+
+## setActiveItemKey
+
+This function allows you to set a new active item key dynamically from within your component or from other components that consume the `useSideMenu` composable. It accepts a string that represents the key of the item you want to set as active. This value will be assigned to the `activeItemKey` ref.
+
+```javascript
+const {activeItemKey, setActiveItemKey} = useSideMenu('menuItem1_1', {
+	menuItem1: true,
+	menuItem2: true,
+});
+
+function someEvent() {
+	setActiveItemKey('menuItem1_2');
+}
+```
+
+## setExpandedKeys
+
+It allows you to dynamically set which keys should be expanded in the `SideMenu` component. It accepts an array of strings where each string represents a key that should be expanded in the side menu.
+
+```javascript
+const {expandedKeys, setExpandedKeys} = useSideMenu('menuItem1_1', {
+	menuItem1: true,
+	menuItem2: true,
+});
+
+function someEvent() {
+	setExpandedKeys(['menuItem3']);
+	// this will set the expandedKeys ref to { menuItem3: true }
+}
+```
+
+### Import
+
+```javascript
+import {useSideMenu} from '@/composables/useSideMenu.js';
+```
