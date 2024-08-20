@@ -135,8 +135,6 @@ export default {
 			}
 
 			let activeForm = cloneDeep(this.form);
-			activeForm.reportId = id;
-			activeForm.action = this.apiUrl + '/' + report.Path;
 			activeForm.method = 'GET';
 			activeForm.fields = activeForm.reportFields[id];
 			this.activeForm = activeForm;
@@ -146,6 +144,7 @@ export default {
 
 			openSideModal(CounterReportsEditModal, {
 				title: this.editCounterReportLabel,
+				submitAction: this.apiUrl + '/' + report.Path,
 				activeForm,
 				onUpdateForm: this.updateForm,
 				onFormSuccess: this.formSuccess,
