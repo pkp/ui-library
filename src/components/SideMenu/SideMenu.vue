@@ -1,9 +1,10 @@
 <template>
 	<PanelMenu
-		v-model:expandedKeys="localExpandedKeys"
+		:expanded-keys="expandedKeys"
 		:model="items"
 		:pt="navigationStyling"
 		class="w-max min-w-60 overflow-y-auto border-e border-s border-light bg-secondary"
+		@update:expanded-keys="(...args) => emit('update:expandedKeys', ...args)"
 	>
 		<template #item="{item, active, hasSubmenu}">
 			<a
@@ -38,7 +39,7 @@
 import PanelMenu from 'primevue/panelmenu';
 import Icon from '../Icon/Icon.vue';
 import Badge from '../Badge/Badge.vue';
-import {ref, reactive, watch} from 'vue';
+import {reactive} from 'vue';
 
 const props = defineProps({
 	/**
@@ -80,15 +81,8 @@ const props = defineProps({
 const emit = defineEmits([
 	/** When a panel menu item's "action" is clicked */
 	'action',
+	'update:expandedKeys',
 ]);
-
-const localExpandedKeys = ref({...props.expandedKeys});
-watch(
-	() => props.expandedKeys,
-	(newExpandedKeys) => {
-		localExpandedKeys.value = {...newExpandedKeys};
-	},
-);
 
 // Maps the level attributes which are necessary to render the nested menu
 function mapItems(_items, level = 1) {
