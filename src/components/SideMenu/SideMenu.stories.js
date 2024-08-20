@@ -228,15 +228,14 @@ export const WithColorStripe = {
 		components: {SideMenu},
 		setup() {
 			const activeItemKey = 'submission_stages';
-			const expandedKeys = ['submission_stages'];
-			const {setExpandedKeys} = useSideMenu(activeItemKey);
+			const expandedKeysInit = ['submission_stages'];
+			const {sideMenuProps, setExpandedKeys} = useSideMenu(activeItemKey);
 
 			args.activeItemKey = activeItemKey;
-			args.expandedKeys = setExpandedKeys(expandedKeys);
-			return {args};
+			setExpandedKeys(expandedKeysInit);
+			return {args, sideMenuProps};
 		},
-		template:
-			'<SideMenu v-bind="args" v-model:activeItemKey="args.activeItemKey" />',
+		template: '<SideMenu :items="args.items" v-bind="sideMenuProps"  />',
 	}),
 	args: {
 		items: [

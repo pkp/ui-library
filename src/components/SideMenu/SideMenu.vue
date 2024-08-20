@@ -1,9 +1,10 @@
 <template>
 	<PanelMenu
-		v-model:expandedKeys="localExpandedKeys"
+		:expanded-keys="expandedKeys"
 		:model="items"
 		:pt="navigationStyling"
 		class="w-max min-w-60 overflow-y-auto border-e border-s border-light bg-secondary"
+		@update:expanded-keys="(...args) => emit('update:expandedKeys', ...args)"
 	>
 		<template #item="{item, active, hasSubmenu}">
 			<a
@@ -82,6 +83,7 @@ const emit = defineEmits([
 	'action',
 	/** When the localActiveItemKey value changes */
 	'update:activeItemKey',
+	'update:expandedKeys',
 ]);
 
 const localActiveItemKey = ref(props.activeItemKey);
@@ -89,14 +91,6 @@ watch(
 	() => props.activeItemKey,
 	(newActiveItemKey) => {
 		localActiveItemKey.value = newActiveItemKey;
-	},
-);
-
-const localExpandedKeys = ref({...props.expandedKeys});
-watch(
-	() => props.expandedKeys,
-	(newExpandedKeys) => {
-		localExpandedKeys.value = {...newExpandedKeys};
 	},
 );
 
