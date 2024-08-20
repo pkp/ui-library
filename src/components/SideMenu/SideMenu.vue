@@ -39,7 +39,7 @@
 import PanelMenu from 'primevue/panelmenu';
 import Icon from '../Icon/Icon.vue';
 import Badge from '../Badge/Badge.vue';
-import {reactive} from 'vue';
+import {computed} from 'vue';
 
 const props = defineProps({
 	/**
@@ -107,7 +107,7 @@ function mapItems(_items, level = 1) {
 	return result;
 }
 
-const items = reactive(mapItems(props.items));
+const items = computed(() => mapItems(props.items));
 
 const navigationStyling = {
 	headerContent: () => {
@@ -187,6 +187,7 @@ function getButtonStyles(item) {
 <style lang="less" scoped>
 @import '../../styles/_import';
 
+/* Override legacy styles for: a:hover, a:focus, where the color is being set to #008acb */
 a.text-on-dark:hover,
 a.text-on-dark:focus,
 a.text-on-dark:active {
