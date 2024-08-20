@@ -81,6 +81,9 @@ const props = defineProps({
 const emit = defineEmits([
 	/** When a panel menu item's "action" is clicked */
 	'action',
+	/** When the item with link is clicked */
+	'update:activeItemKey',
+	/** When the expandedKeys gets updated by the PanelMenu */
 	'update:expandedKeys',
 ]);
 
@@ -134,6 +137,10 @@ const navigationStyling = {
 function handleClick(item) {
 	if (item.action) {
 		emit('action', item.action, {...item.actionArgs, key: item.key});
+	}
+
+	if (item.link && !item.items) {
+		emit('update:activeItemKey', item.key);
 	}
 }
 

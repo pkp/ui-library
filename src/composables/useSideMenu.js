@@ -22,6 +22,7 @@ export function useSideMenu(_activeItemKey = '', _expandedKeys = {}) {
 
 	const sideMenuProps = computed(() => ({
 		'onUpdate:expandedKeys': updateExpandedKeys,
+		'onUpdate:activeItemKey': setActiveItemKey,
 		expandedKeys: expandedKeys.value,
 		activeItemKey: activeItemKey.value,
 	}));

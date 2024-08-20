@@ -4,11 +4,7 @@
 		class="sticky top-12 flex h-[calc(100vh-3rem)] flex-none"
 		:aria-label="ariaLabel"
 	>
-		<SideMenu
-			v-bind="sideMenuProps"
-			:items="items"
-			@action="handleActions"
-		></SideMenu>
+		<SideMenu v-bind="sideMenuProps" :items="items"></SideMenu>
 	</nav>
 </template>
 
@@ -53,7 +49,6 @@ function convertLinksToArray(links, level = 1) {
 			key,
 			label: link.name,
 			link: link.url,
-			action: 'goToPage',
 		};
 
 		if (link.submenu) {
@@ -96,14 +91,5 @@ function getExpandedKeys(items) {
 	return _expandedKeys;
 }
 
-const {sideMenuProps, setActiveItemKey} = useSideMenu(
-	currentActiveKey,
-	getExpandedKeys(items),
-);
-
-function handleActions(action, actionArgs) {
-	if (action === 'goToPage') {
-		setActiveItemKey(actionArgs.key);
-	}
-}
+const {sideMenuProps} = useSideMenu(currentActiveKey, getExpandedKeys(items));
 </script>

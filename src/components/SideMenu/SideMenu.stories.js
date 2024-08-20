@@ -173,7 +173,6 @@ export const Default = {
 					{
 						label: 'Start a New Submission',
 						key: 'start_a_new_submission',
-						link: '#',
 						action: 'startNewSubmission',
 						actionArgs: {
 							param1: 1,
