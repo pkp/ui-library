@@ -82,6 +82,7 @@ import OpenReview from './icons/OpenReview.vue';
 import Orcid from './icons/Orcid.vue';
 import Overdue from './icons/Overdue.vue';
 import Payment from './icons/Payment.vue';
+import Publication from './icons/Publication.vue';
 import ReadRecommendation from './icons/ReadRecommendation.vue';
 import ReviewAssignments from './icons/ReviewAssignments.vue';
 import ReviewRequestDeclined from './icons/ReviewRequestDeclined.vue';
@@ -95,6 +96,7 @@ import Underline from './icons/Underline.vue';
 import Url from './icons/Url.vue';
 import UsefulTips from './icons/UsefulTips.vue';
 import View from './icons/View.vue';
+import Workflow from './icons/Workflow.vue';
 
 const svgIcons = {
 	Announcements,
@@ -143,6 +145,7 @@ const svgIcons = {
 	Orcid,
 	Overdue,
 	Payment,
+	Publication,
 	ReadRecommendation,
 	ReviewAssignments,
 	ReviewRequestDeclined,
@@ -156,6 +159,7 @@ const svgIcons = {
 	Url,
 	UsefulTips,
 	View,
+	Workflow,
 };
 
 const props = defineProps({

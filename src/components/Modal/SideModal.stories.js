@@ -434,7 +434,7 @@ const SideModalWithSideMenu = {
 			{
 				label: 'Workflow',
 				key: 'workflow',
-				icon: 'Dashboard',
+				icon: 'Workflow',
 				items: [
 					{
 						label: 'Submission',
@@ -474,7 +474,7 @@ const SideModalWithSideMenu = {
 			{
 				label: 'Publication',
 				key: 'publication',
-				icon: 'MySubmissions',
+				icon: 'Publication',
 				isOpen: true,
 				items: [
 					{

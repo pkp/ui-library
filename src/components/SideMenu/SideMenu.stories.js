@@ -312,7 +312,7 @@ export const ExpandedMenu = {
 			{
 				label: 'Workflow',
 				key: 'workflow',
-				icon: 'Dashboard',
+				icon: 'Workflow',
 				items: [
 					{
 						label: 'Submission',
@@ -352,7 +352,7 @@ export const ExpandedMenu = {
 			{
 				label: 'Publication',
 				key: 'publication',
-				icon: 'MySubmissions',
+				icon: 'Publication',
 				isOpen: true,
 				items: [
 					{
