@@ -4,11 +4,7 @@
 		class="sticky top-12 flex h-[calc(100vh-3rem)] flex-none"
 		:aria-label="ariaLabel"
 	>
-		<SideMenu
-			v-model:activeItemKey="activeItemKey"
-			:items="items"
-			:expanded-keys="expandedKeys"
-		></SideMenu>
+		<SideMenu v-bind="sideMenuProps" :items="items"></SideMenu>
 	</nav>
 </template>
 
@@ -95,8 +91,5 @@ function getExpandedKeys(items) {
 	return _expandedKeys;
 }
 
-const {expandedKeys, activeItemKey} = useSideMenu(
-	currentActiveKey,
-	getExpandedKeys(items),
-);
+const {sideMenuProps} = useSideMenu(currentActiveKey, getExpandedKeys(items));
 </script>

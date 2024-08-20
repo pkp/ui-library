@@ -1,8 +1,12 @@
-import {ref} from 'vue';
+import {ref, computed} from 'vue';
 
 export function useSideMenu(_activeItemKey = '', _expandedKeys = {}) {
 	const expandedKeys = ref(_expandedKeys);
 	const activeItemKey = ref(_activeItemKey);
+
+	function updateExpandedKeys(_expandedKeys) {
+		expandedKeys.value = _expandedKeys;
+	}
 
 	const setExpandedKeys = (keys = []) => {
 		// reset expandedKeys
@@ -16,9 +20,16 @@ export function useSideMenu(_activeItemKey = '', _expandedKeys = {}) {
 		activeItemKey.value = key;
 	};
 
+	const sideMenuProps = computed(() => ({
+		'onUpdate:expandedKeys': updateExpandedKeys,
+		'onUpdate:activeItemKey': setActiveItemKey,
+		expandedKeys: expandedKeys.value,
+		activeItemKey: activeItemKey.value,
+	}));
+
 	return {
-		expandedKeys,
-		activeItemKey,
+		sideMenuProps,
+		updateExpandedKeys,
 		setExpandedKeys,
 		setActiveItemKey,
 	};

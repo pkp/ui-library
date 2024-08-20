@@ -1,9 +1,10 @@
 <template>
 	<PanelMenu
-		v-model:expandedKeys="localExpandedKeys"
+		:expanded-keys="expandedKeys"
 		:model="items"
 		:pt="navigationStyling"
 		class="w-max min-w-60 overflow-y-auto border-e border-s border-light bg-secondary"
+		@update:expanded-keys="(...args) => emit('update:expandedKeys', ...args)"
 	>
 		<template #item="{item, active, hasSubmenu}">
 			<a
@@ -38,7 +39,7 @@
 import PanelMenu from 'primevue/panelmenu';
 import Icon from '../Icon/Icon.vue';
 import Badge from '../Badge/Badge.vue';
-import {ref, reactive, watch} from 'vue';
+import {computed} from 'vue';
 
 const props = defineProps({
 	/**
@@ -80,25 +81,11 @@ const props = defineProps({
 const emit = defineEmits([
 	/** When a panel menu item's "action" is clicked */
 	'action',
-	/** When the localActiveItemKey value changes */
+	/** When the item with link is clicked */
 	'update:activeItemKey',
+	/** When the expandedKeys gets updated by the PanelMenu */
+	'update:expandedKeys',
 ]);
-
-const localActiveItemKey = ref(props.activeItemKey);
-watch(
-	() => props.activeItemKey,
-	(newActiveItemKey) => {
-		localActiveItemKey.value = newActiveItemKey;
-	},
-);
-
-const localExpandedKeys = ref({...props.expandedKeys});
-watch(
-	() => props.expandedKeys,
-	(newExpandedKeys) => {
-		localExpandedKeys.value = {...newExpandedKeys};
-	},
-);
 
 // Maps the level attributes which are necessary to render the nested menu
 function mapItems(_items, level = 1) {
@@ -120,7 +107,7 @@ function mapItems(_items, level = 1) {
 	return result;
 }
 
-const items = reactive(mapItems(props.items));
+const items = computed(() => mapItems(props.items));
 
 const navigationStyling = {
 	headerContent: () => {
@@ -148,16 +135,18 @@ const navigationStyling = {
 };
 
 function handleClick(item) {
-	localActiveItemKey.value = item.key;
-	emit('update:activeItemKey', localActiveItemKey.value);
-
 	if (item.action) {
 		emit('action', item.action, {...item.actionArgs, key: item.key});
+	}
+
+	if (item.link && !item.items) {
+		emit('update:activeItemKey', item.key);
 	}
 }
 
 function isActive(item) {
-	return localActiveItemKey.value && item?.key === localActiveItemKey.value;
+	const currentActiveKey = props.activeItemKey;
+	return currentActiveKey && currentActiveKey === item?.key;
 }
 
 function getButtonStyles(item) {
@@ -198,6 +187,7 @@ function getButtonStyles(item) {
 <style lang="less" scoped>
 @import '../../styles/_import';
 
+/* Override legacy styles for: a:hover, a:focus, where the color is being set to #008acb */
 a.text-on-dark:hover,
 a.text-on-dark:focus,
 a.text-on-dark:active {

@@ -7,19 +7,13 @@ export default {
 	render: (args) => ({
 		components: {SideMenu},
 		setup() {
-			const {activeItemKey, setExpandedKeys} = useSideMenu('action_required');
+			const {sideMenuProps, setExpandedKeys, setActiveItemKey} =
+				useSideMenu('action_required');
 
-			args.expandedKeys = setExpandedKeys([
-				'action_required',
-				'editorial_dashboard',
-			]);
+			setExpandedKeys(['action_required', 'editorial_dashboard']);
 
 			function startNewSubmission(actionArgs) {
-				console.log('startNewSubmission clicked', actionArgs);
-			}
-
-			function otherAction(actionArgs) {
-				console.log('otherAction clicked', actionArgs);
+				setActiveItemKey(actionArgs.key);
 			}
 
 			function handleActions(action, actionArgs) {
@@ -27,17 +21,14 @@ export default {
 					case 'startNewSubmission':
 						startNewSubmission(actionArgs);
 						break;
-					case 'otherAction':
-						otherAction(actionArgs);
-						break;
 					default:
 						console.error(`No handler for action: ${action}`);
 				}
 			}
-			return {args, activeItemKey, handleActions};
+			return {args, sideMenuProps, handleActions};
 		},
 		template:
-			'<SideMenu v-bind="args" @action="handleActions" v-model:activeItemKey="activeItemKey" />',
+			'<SideMenu v-bind="{...args, ...sideMenuProps}" @action="handleActions" />',
 	}),
 };
 
@@ -174,7 +165,6 @@ export const Default = {
 					{
 						label: 'Start a New Submission',
 						key: 'start_a_new_submission',
-						link: '#',
 						action: 'startNewSubmission',
 						actionArgs: {
 							param1: 1,
@@ -229,14 +219,12 @@ export const WithColorStripe = {
 		setup() {
 			const activeItemKey = 'submission_stages';
 			const expandedKeys = ['submission_stages'];
-			const {setExpandedKeys} = useSideMenu(activeItemKey);
+			const {sideMenuProps, setExpandedKeys} = useSideMenu(activeItemKey);
 
-			args.activeItemKey = activeItemKey;
-			args.expandedKeys = setExpandedKeys(expandedKeys);
-			return {args};
+			setExpandedKeys(expandedKeys);
+			return {args, sideMenuProps};
 		},
-		template:
-			'<SideMenu v-bind="args" v-model:activeItemKey="args.activeItemKey" />',
+		template: '<SideMenu v-bind="{...args, ...sideMenuProps}" />',
 	}),
 	args: {
 		items: [
@@ -304,21 +292,19 @@ export const ExpandedMenu = {
 		setup() {
 			const activeItemKey = 'review_round_1';
 			const expandedKeys = ['workflow', 'review', 'publication'];
-			const {setExpandedKeys} = useSideMenu(activeItemKey);
+			const {sideMenuProps, setExpandedKeys} = useSideMenu(activeItemKey);
 
-			args.activeItemKey = activeItemKey;
-			args.expandedKeys = setExpandedKeys(expandedKeys);
-			return {args};
+			setExpandedKeys(expandedKeys);
+			return {args, sideMenuProps};
 		},
-		template:
-			'<SideMenu v-bind="args" v-model:activeItemKey="args.activeItemKey" />',
+		template: '<SideMenu v-bind="{...args, ...sideMenuProps}" />',
 	}),
 	args: {
 		items: [
 			{
 				label: 'Workflow',
 				key: 'workflow',
-				icon: 'Dashboard',
+				icon: 'Workflow',
 				items: [
 					{
 						label: 'Submission',
@@ -358,7 +344,7 @@ export const ExpandedMenu = {
 			{
 				label: 'Publication',
 				key: 'publication',
-				icon: 'MySubmissions',
+				icon: 'Publication',
 				isOpen: true,
 				items: [
 					{

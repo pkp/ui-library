@@ -104,6 +104,7 @@ export const iconGallery = {
 			'Orcid',
 			'Overdue',
 			'Payment',
+			'Publication',
 			'ReadRecommendation',
 			'ReviewAssignments',
 			'ReviewSent',
@@ -116,6 +117,7 @@ export const iconGallery = {
 			'Url',
 			'UsefulTips',
 			'View',
+			'Workflow',
 		],
 	},
 };
