@@ -80,17 +80,7 @@ const props = defineProps({
 const emit = defineEmits([
 	/** When a panel menu item's "action" is clicked */
 	'action',
-	/** When the localActiveItemKey value changes */
-	'update:activeItemKey',
 ]);
-
-const localActiveItemKey = ref(props.activeItemKey);
-watch(
-	() => props.activeItemKey,
-	(newActiveItemKey) => {
-		localActiveItemKey.value = newActiveItemKey;
-	},
-);
 
 const localExpandedKeys = ref({...props.expandedKeys});
 watch(
@@ -148,16 +138,14 @@ const navigationStyling = {
 };
 
 function handleClick(item) {
-	localActiveItemKey.value = item.key;
-	emit('update:activeItemKey', localActiveItemKey.value);
-
 	if (item.action) {
 		emit('action', item.action, {...item.actionArgs, key: item.key});
 	}
 }
 
 function isActive(item) {
-	return localActiveItemKey.value && item?.key === localActiveItemKey.value;
+	const currentActiveKey = props.activeItemKey;
+	return currentActiveKey && currentActiveKey === item?.key;
 }
 
 function getButtonStyles(item) {

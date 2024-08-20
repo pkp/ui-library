@@ -5,9 +5,9 @@
 		:aria-label="ariaLabel"
 	>
 		<SideMenu
-			v-model:activeItemKey="activeItemKey"
+			v-bind="sideMenuProps"
 			:items="items"
-			:expanded-keys="expandedKeys"
+			@action="handleActions"
 		></SideMenu>
 	</nav>
 </template>
@@ -53,6 +53,7 @@ function convertLinksToArray(links, level = 1) {
 			key,
 			label: link.name,
 			link: link.url,
+			action: 'goToPage',
 		};
 
 		if (link.submenu) {
@@ -95,8 +96,14 @@ function getExpandedKeys(items) {
 	return _expandedKeys;
 }
 
-const {expandedKeys, activeItemKey} = useSideMenu(
+const {sideMenuProps, setActiveItemKey} = useSideMenu(
 	currentActiveKey,
 	getExpandedKeys(items),
 );
+
+function handleActions(action, actionArgs) {
+	if (action === 'goToPage') {
+		setActiveItemKey(actionArgs.key);
+	}
+}
 </script>

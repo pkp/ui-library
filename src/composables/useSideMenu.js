@@ -1,4 +1,4 @@
-import {ref} from 'vue';
+import {ref, computed} from 'vue';
 
 export function useSideMenu(_activeItemKey = '', _expandedKeys = {}) {
 	const expandedKeys = ref(_expandedKeys);
@@ -16,9 +16,13 @@ export function useSideMenu(_activeItemKey = '', _expandedKeys = {}) {
 		activeItemKey.value = key;
 	};
 
+	const sideMenuProps = computed(() => ({
+		expandedKeys: expandedKeys.value,
+		activeItemKey: activeItemKey.value,
+	}));
+
 	return {
-		expandedKeys,
-		activeItemKey,
+		sideMenuProps,
 		setExpandedKeys,
 		setActiveItemKey,
 	};

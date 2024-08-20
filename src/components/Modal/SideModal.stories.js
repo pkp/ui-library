@@ -427,8 +427,8 @@ const SideModalWithSideMenu = {
 			},
 		];
 
-		const {activeItemKey, setExpandedKeys} = useSideMenu('review_round_1');
-		const expandedKeys = setExpandedKeys(['workflow', 'review', 'publication']);
+		const {sideMenuProps, setExpandedKeys} = useSideMenu('review_round_1');
+		setExpandedKeys(['workflow', 'review', 'publication']);
 
 		const items = [
 			{
@@ -515,7 +515,7 @@ const SideModalWithSideMenu = {
 				],
 			},
 		];
-		return {metadata, generalInformation, items, activeItemKey, expandedKeys};
+		return {metadata, generalInformation, items, sideMenuProps};
 	},
 	template: `
 		<SideModalBody>
@@ -528,7 +528,7 @@ const SideModalWithSideMenu = {
 				<SideModalLayout2Columns>
 					<template #left>
 						<div class="flex">
-							<SideMenu :items="items" v-model:activeItemKey="activeItemKey" :expanded-keys="expandedKeys"></SideMenu>
+							<SideMenu :items="items" v-bind="sideMenuProps"></SideMenu>
 							<p class="px-5">
 								Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
 								eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
