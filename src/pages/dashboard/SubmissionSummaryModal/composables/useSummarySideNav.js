@@ -107,20 +107,26 @@ export function useSummarySideNav() {
 				icon: 'MySubmissions',
 				items: [
 					{
+						key: 'publication_titleAbstract',
 						label: 'Title & Abstract',
-						link: '#',
+						action: 'selectPublicationMenu',
+						actionArgs: {menu: 'titleAbstract'},
 					},
 					{
 						label: 'Contributors',
 						link: '#',
 					},
 					{
+						key: 'publication_metadata',
 						label: 'Metadata',
-						link: '#',
+						action: 'selectPublicationMenu',
+						actionArgs: {menu: 'metadata'},
 					},
 					{
+						key: 'citations',
 						label: 'References',
-						link: '#',
+						action: 'selectPublicationMenu',
+						actionArgs: {menu: 'citations'},
 					},
 					{
 						label: 'Galleys',

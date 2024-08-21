@@ -7,7 +7,9 @@ import {useHandleActions} from '../composables/useHandleActions';
 import {useDataChanged} from '@/composables/useDataChanged';
 import {useSummarySideNav} from './composables/useSummarySideNav';
 import {useSubmission} from '@/composables/useSubmission';
-import {useSummaryEditorialConfig} from './composables/useSummaryEditorialConfig';
+import {useEditorWorkflowConfig} from './composables/useEditorWorkflowConfig';
+import {useEditorPublicationConfig} from './composables/useEditorPublicationConfig';
+import {useSideMenu} from '@/composables/useSideMenu';
 
 export const useSubmissionSummaryStore = defineComponentStore(
 	'submissionSummary',
@@ -61,6 +63,11 @@ export const useSubmissionSummaryStore = defineComponentStore(
 						newSubmission,
 						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 					)?.id;
+					setActiveItemKey(
+						`workflow_${newSubmission.stageId}_${selectedReviewRoundId.value}`,
+					);
+				} else {
+					setActiveItemKey(`workflow_${newSubmission.stageId}`);
 				}
 			}
 
@@ -82,8 +89,17 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		 * Handling navigation
 		 */
 
+		const {expandedKeys, setExpandedKeys, setActiveItemKey, activeItemKey} =
+			useSideMenu();
+		setExpandedKeys([
+			'workflow',
+			'publication',
+			`workflow_${pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW}`,
+		]);
 		const selectedStageId = ref(pkp.const.WORKFLOW_STAGE_ID_SUBMISSION);
 		const selectedReviewRoundId = ref(null);
+		const selectedPublicationMenu = ref(null);
+
 		const {getReviewRound, getCurrentReviewRound} = useSubmission();
 		const selectedReviewRound = computed(() => {
 			if (selectedReviewRoundId.value === null) {
@@ -93,7 +109,6 @@ export const useSubmissionSummaryStore = defineComponentStore(
 				submission.value,
 				selectedReviewRoundId.value,
 			);
-			console.log('selectedReviewRound:', selectedReviewRound);
 			return reviewRound;
 		});
 
@@ -116,12 +131,14 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		]);*/
 
 		function selectMenuItem(action, actionArgs) {
-			console.log('selectMenuItem:', action, actionArgs);
 			if (action === 'selectStage') {
 				selectedStageId.value = actionArgs.stageId;
 				selectedReviewRoundId.value = actionArgs.reviewRoundId || null;
-			} else {
-				handleAction(action, actionArgs);
+				selectedPublicationMenu.value = null;
+			} else if (action === 'selectPublicationMenu') {
+				selectedPublicationMenu.value = actionArgs.menu;
+				selectedStageId.value = null;
+				selectedReviewRoundId.value = null;
 			}
 		}
 
@@ -136,7 +153,6 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			if (selectedReviewAssignment.value) {
 				actionArgs.reviewAssignmentId = selectedReviewAssignment.value.id;
 			}
-			console.log('__ handleAction:', actionName, actionArgs);
 
 			handleSubmissionAction(
 				submission.value,
@@ -150,13 +166,13 @@ export const useSubmissionSummaryStore = defineComponentStore(
 
 		/** Primary Items */
 
-		const _editorialConfigFns = useSummaryEditorialConfig();
-
+		const _editorWorkflowConfigFns = useEditorWorkflowConfig();
+		const _editorPublicationConfigFns = useEditorPublicationConfig();
 		const stageTitle = computed(() => {
 			if (!submission.value) {
 				return '';
 			}
-			return _editorialConfigFns.getTitle({
+			return _editorWorkflowConfigFns.getTitle({
 				submission: submission.value,
 				selectedStageId: selectedStageId.value,
 				selectedReviewRound: selectedReviewRound.value,
@@ -167,11 +183,22 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			if (!submission.value) {
 				return [];
 			}
-			return _editorialConfigFns.getPrimaryItems({
-				submission: submission.value,
-				selectedStageId: selectedStageId.value,
-				selectedReviewRound: selectedReviewRound.value,
-			});
+			if (selectedStageId.value) {
+				return _editorWorkflowConfigFns.getPrimaryItems({
+					submission: submission.value,
+					selectedStageId: selectedStageId.value,
+					selectedReviewRound: selectedReviewRound.value,
+				});
+			} else if (selectedPublicationMenu.value) {
+				return _editorPublicationConfigFns.getPrimaryItems({
+					submission: submission.value,
+					selectedPublicationMenu: selectedPublicationMenu.value,
+					pageInitConfig: props.pageInitConfig,
+					selectedPublication: currentPublication.value,
+				});
+			}
+
+			return [];
 		});
 
 		const secondaryItems = computed(() => {
@@ -179,7 +206,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 				return [];
 			}
 
-			return _editorialConfigFns.getSecondaryItems({
+			return _editorWorkflowConfigFns.getSecondaryItems({
 				submission: submission.value,
 				selectedStageId: selectedStageId.value,
 				selectedReviewRound: selectedReviewRound.value,
@@ -191,7 +218,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 				return [];
 			}
 
-			return _editorialConfigFns.getActionItems({
+			return _editorWorkflowConfigFns.getActionItems({
 				submission: submission.value,
 				selectedStageId: selectedStageId.value,
 				selectedReviewRound: selectedReviewRound.value,
@@ -212,6 +239,8 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			selectedStageId,
 			selectedReviewRoundId,
 			menuItems,
+			expandedKeys,
+			activeItemKey,
 			selectMenuItem,
 
 			/**

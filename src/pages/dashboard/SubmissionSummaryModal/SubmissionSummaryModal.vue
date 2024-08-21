@@ -33,6 +33,8 @@
 				<SideMenu
 					v-if="summaryStore.menuItems.length"
 					:items="summaryStore.menuItems"
+					:expanded-keys="summaryStore.expandedKeys"
+					:active-item-key="summaryStore.activeItemKey"
 					@action="summaryStore.selectMenuItem"
 				></SideMenu>
 			</template>
@@ -87,6 +89,8 @@ import ContributorManager from '@/managers/ContributorManager/ContributorManager
 import LastActivity from './primaryItems/LastActivity.vue';
 import PrimaryBasicMetadata from './primaryItems/PrimaryBasicMetadata.vue';
 import ReviewRoundStatus from './primaryItems/ReviewRoundStatus.vue';
+// Publications
+import PublicationTitleAbstractForm from './primaryItems/PublicationTitleAbstractForm.vue';
 
 import ActionButton from './actionItems/ActionButton.vue';
 import EditorsAssigned from './metaItems/EditorsAssigned.vue';
@@ -113,6 +117,7 @@ const Components = {
 	PrimaryBasicMetadata,
 	IssueAssigned,
 	ReviewRoundStatus,
+	PublicationTitleAbstractForm,
 };
 
 const props = defineProps({

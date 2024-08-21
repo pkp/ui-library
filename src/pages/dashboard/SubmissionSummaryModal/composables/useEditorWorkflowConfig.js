@@ -3,7 +3,7 @@ import {useSubmission} from '@/composables/useSubmission';
 
 const {t, tk} = useLocalize();
 
-export function useSummaryEditorialConfig() {
+export function useEditorWorkflowConfig() {
 	const {hasSubmissionPassedStage, hasNotSubmissionStartedStage} =
 		useSubmission();
 
