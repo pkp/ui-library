@@ -77,6 +77,10 @@ const props = defineProps({
 	/** TODO */
 	selectRevisionRecommendationForm: {type: Object, required: true},
 
+	publicationTitleAbstractForm: {type: Object, required: true},
+	publicationMetadataForm: {type: Object, required: true},
+	publicationCitationsForm: {type: Object, required: true},
+	sections: {type: Array, required: true},
 	/** List of Views */
 	views: {
 		type: Array,
