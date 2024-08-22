@@ -30,8 +30,12 @@ function mapFromSelectedToValue(selected) {
 	return selected.map((iv) => iv.value);
 }
 
-export function useForm(_form) {
+export function useForm(_form, {customSubmit}) {
 	const form = ref(_form);
+
+	if (customSubmit) {
+		form.value.customSubmit = customSubmit;
+	}
 
 	function connectWithPayload(payload) {
 		watch(

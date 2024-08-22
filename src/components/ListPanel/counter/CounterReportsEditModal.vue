@@ -4,11 +4,7 @@
 			{{ title }}
 		</template>
 		<SideModalLayoutBasic>
-			<PkpForm
-				v-bind="activeForm"
-				@set="(...args) => emit('updateForm', ...args)"
-				@success="(...args) => counterFormSubmit(...args)"
-			/>
+			<PkpForm v-bind="form" @set="set" />
 		</SideModalLayoutBasic>
 	</SideModalBody>
 </template>
@@ -18,13 +14,13 @@ import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import {useForm} from '@/composables/useForm';
+import {useFetch} from '@/composables/useFetch';
 
 const props = defineProps({
 	title: {type: String, required: true},
 	submitAction: {type: String, required: true},
 	activeForm: {type: Object, required: true},
 });
-const emit = defineEmits(['updateForm', 'formSuccess']);
 
 /**
  * Get the report parameters
@@ -66,58 +62,25 @@ function getReportParams(formSubmitValues) {
 	return params;
 }
 
-/**
- * Submit the form
- *
- * @param {Object}
- */
-function counterFormSubmit(submittedValues) {
-	const {form: form} = useForm(props.activeForm);
+const {form, set} = useForm(props.activeForm, {
+	customSubmit: async (submittedValues) => {
+		const {validationError, data, fetch} = useFetch(props.submitAction, {
+			expectValidationError: true,
+			headers: {Accept: 'text/tab-separated-values; charset=utf-8'},
+			query: getReportParams(submittedValues),
+		});
 
-	form.isSaving = true;
+		await fetch();
 
-	$.ajax({
-		context: form,
-		method: form.method,
-		url: props.submitAction,
-		headers: {
-			Accept: 'text/tab-separated-values; charset=utf-8',
-		},
-		data: getReportParams(submittedValues),
-		error(r) {
-			form.isSaving = false;
-			if (r.status && r.status === 400) {
-				if (Object.prototype.hasOwnProperty.call(r.responseJSON, 'Code')) {
-					// COUNTER speific errors should actually not occur
-					// because of the form/user input validation
-					// but consider them for any case as well.
-					pkp.eventBus.$emit(
-						'notify',
-						r.responseJSON.Code +
-							':' +
-							r.responseJSON.Message +
-							'(' +
-							r.responseJSON.Data +
-							')',
-						'warning',
-					);
-				} else {
-					// Field validation errors
-					emit('updateForm', form.id, {errors: r.responseJSON});
-				}
-			} else {
-				form.error(r);
-			}
-		},
-		success(r) {
-			var blob = new Blob([r]);
+		if (data.value) {
+			var blob = new Blob([data.value]);
 			var link = document.createElement('a');
 			link.href = window.URL.createObjectURL(blob);
 			link.download = 'counterReport.tsv';
 			link.click();
-			form.isSaving = false;
-			emit('formSuccess', this.id, r);
-		},
-	});
-}
+		}
+
+		return {data: data.value, validationError: validationError.value};
+	},
+});
 </script>
