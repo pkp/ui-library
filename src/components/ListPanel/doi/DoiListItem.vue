@@ -69,7 +69,9 @@
 			<pkp-table :columns="doiListColumns" :rows="currentVersionDoiObjects">
 				<template slot-scope="{row}">
 					<table-cell :column="doiListColumns[0]" :row="row">
-						<label :for="row.uid">{{ row.displayType }}</label>
+						<label :for="row.uid" v-bind:class="{labelDisabled: row.disabled}">
+							{{ row.displayType }}
+						</label>
 					</table-cell>
 					<table-cell :column="doiListColumns[1]" :row="row">
 						<input
@@ -77,6 +79,7 @@
 							:id="row.uid"
 							type="text"
 							:readonly="!(isEditingDois && !isSaving)"
+							:disabled="isEditingDois && row.disabled"
 							v-model="
 								mutableDois.find((doi) => doi.uid === row.uid).identifier
 							"
@@ -84,6 +87,9 @@
 					</table-cell>
 				</template>
 			</pkp-table>
+			<span v-if="item.hasDisabled">
+				{{ item.hasDisabledMsg }}
+			</span>
 			<div
 				class="listPanel__itemExpandedActions doiListPanel__itemExpandedActions"
 			>
@@ -222,7 +228,12 @@
 				>
 					<template slot-scope="{row}">
 						<table-cell :column="doiListColumns[0]" :row="row">
-							<label :for="row.uid">{{ row.displayType }}</label>
+							<label
+								:for="row.uid"
+								v-bind:class="{labelDisabled: row.disabled}"
+							>
+								{{ row.displayType }}
+							</label>
 						</table-cell>
 						<table-cell :column="doiListColumns[1]" :row="row">
 							<input
@@ -230,6 +241,7 @@
 								:id="row.uid"
 								type="text"
 								:readonly="!(isEditingDois && !isSaving)"
+								:disabled="isEditingDois && row.disabled"
 								v-model="
 									mutableDois.find((doi) => doi.uid === row.uid).identifier
 								"
@@ -237,6 +249,9 @@
 						</table-cell>
 					</template>
 				</pkp-table>
+				<span v-if="item.hasDisabled">
+					{{ item.hasDisabledMsg }}
+				</span>
 			</div>
 
 			<div class="doiListItem__versionContainer--actionsBar">
@@ -305,6 +320,7 @@ export default {
 		 * @property {string} uid - Unique identifier for item in list
 		 * @property {string} updateWithNewDoiEndpoint - API endpoint to add new DOI to item if none exists
 		 * @property {string} registrationAgency - Name of registration agency if registered, null if marked manually registered
+		 * @property {boolean} disabled - Whether object is disabled for DOI assignment i.e. a DOI cannot be assigned to the object
 		 */
 		/**
 		 * Details about top-level publication object and its DOIs
@@ -316,6 +332,8 @@ export default {
 		 * @property {boolean} isPublished - Whether item published
 		 * @property {PublicationVersionInfo} versions - Info on publication version
 		 * @property {DoiObject[]} doiObjects - All associated publication objects than can have a DOI
+		 * @property {boolean} hasDisabled - Whether an associated publication object is disabled for DOI assignment
+		 * @property {string} hasDisabledMsg - Message to display if there is a disabled associated publication object
 		 */
 		/** @type {DoiListItemData} */
 		item: {
@@ -940,5 +958,9 @@ export default {
 
 .doiListPanel__itemExpandedActions--actionsBar {
 	padding-right: 0.5rem;
+}
+
+.labelDisabled {
+	color: #4e4f4f;
 }
 </style>
