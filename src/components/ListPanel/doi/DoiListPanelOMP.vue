@@ -61,6 +61,7 @@ export default {
 								isCurrentVersion,
 								versionNumber,
 								updateWithNewDoiEndpoint,
+								disabled: !chapter.isPageEnabled && !doiObject,
 							}),
 						);
 					});
@@ -122,7 +123,25 @@ export default {
 					});
 				}
 			});
+			if (this.containsDisabled(newMappedItem)) {
+				newMappedItem.hasDisabled = true;
+				newMappedItem.hasDisabledMsg = this.t(
+					'manager.dois.disabledChaptersDescription',
+				);
+			}
 			return newMappedItem;
+		},
+		/**
+		 * Whether this item contains objects that are disabled for DOI assignment
+		 *
+		 * @return {boolean}
+		 */
+		containsDisabled(item) {
+			const hasAnyDisabled = item.doiObjects.some(
+				(doiObject) =>
+					doiObject.type == 'chapter' && doiObject.disabled == true,
+			);
+			return hasAnyDisabled;
 		},
 		/**
 		 * Gets the title to be used in mapped object with app-specific implementation.
