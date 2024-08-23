@@ -70,7 +70,9 @@
 			<PkpTable :columns="doiListColumns" :rows="currentVersionDoiObjects">
 				<template #default="{row}">
 					<TableCell :column="doiListColumns[0]" :row="row">
-						<label :for="row.uid">{{ row.displayType }}</label>
+						<label :for="row.uid" :class="{labelDisabled: row.disabled}">
+							{{ row.displayType }}
+						</label>
 					</TableCell>
 					<TableCell :column="doiListColumns[1]" :row="row">
 						<input
@@ -81,10 +83,14 @@
 							class="pkpFormField__input pkpFormField--text__input"
 							type="text"
 							:readonly="!(isEditingDois && !isSaving)"
+							:disabled="isEditingDois && row.disabled"
 						/>
 					</TableCell>
 				</template>
 			</PkpTable>
+			<span v-if="item.hasDisabled">
+				{{ item.hasDisabledMsg }}
+			</span>
 			<div
 				class="listPanel__itemExpandedActions doiListPanel__itemExpandedActions"
 			>
@@ -236,6 +242,7 @@ export default {
 		 * @property {string} uid - Unique identifier for item in list
 		 * @property {string} updateWithNewDoiEndpoint - API endpoint to add new DOI to item if none exists
 		 * @property {string} registrationAgency - Name of registration agency if registered, null if marked manually registered
+		 * @property {boolean} disabled - Whether object is disabled for DOI assignment i.e. a DOI cannot be assigned to the object
 		 */
 		/**
 		 * Details about top-level publication object and its DOIs
@@ -247,6 +254,8 @@ export default {
 		 * @property {boolean} isPublished - Whether item published
 		 * @property {PublicationVersionInfo} versions - Info on publication version
 		 * @property {DoiObject[]} doiObjects - All associated publication objects than can have a DOI
+		 * @property {boolean} hasDisabled - Whether an associated publication object is disabled for DOI assignment
+		 * @property {string} hasDisabledMsg - Message to display if there is a disabled associated publication object
 		 */
 		/** @type {DoiListItemData} */
 		item: {
@@ -907,5 +916,9 @@ export default {
 
 .doiListPanel__itemExpandedActions--actionsBar {
 	padding-right: 0.5rem;
+}
+
+.labelDisabled {
+	color: #4e4f4f;
 }
 </style>

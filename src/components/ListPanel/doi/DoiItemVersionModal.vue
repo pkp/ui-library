@@ -26,7 +26,12 @@
 				>
 					<template #default="{row}">
 						<TableCell :column="doiListColumns[0]" :row="row">
-							<label :for="row.uid">{{ row.displayType }}</label>
+							<label
+								:for="row.uid"
+								v-bind:class="{labelDisabled: row.disabled}"
+							>
+								{{ row.displayType }}
+							</label>
 						</TableCell>
 						<TableCell :column="doiListColumns[1]" :row="row">
 							<input
@@ -37,10 +42,14 @@
 								class="pkpFormField__input pkpFormField--text__input"
 								type="text"
 								:readonly="!(isEditingDois && !isSaving)"
+								:disabled="isEditingDois && row.disabled"
 							/>
 						</TableCell>
 					</template>
 				</PkpTable>
+				<span v-if="item.hasDisabled">
+					{{ item.hasDisabledMsg }}
+				</span>
 			</div>
 
 			<div class="doiListItem__versionContainer--actionsBar">
@@ -107,5 +116,9 @@ function getVersionHeader(version) {
 	align-items: center;
 	justify-content: flex-end;
 	margin-top: 0.5rem;
+}
+
+.labelDisabled {
+	color: #4e4f4f;
 }
 </style>
