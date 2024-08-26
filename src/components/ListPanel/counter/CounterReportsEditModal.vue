@@ -72,7 +72,26 @@ const {form, set} = useForm(props.activeForm, {
 
 		await fetch();
 
-		if (data.value) {
+		if (
+			validationError.value &&
+			Object.prototype.hasOwnProperty.call(validationError.value, 'Code')
+		) {
+			// COUNTER speific errors should actually not occur
+			// because of the form/user input validation
+			// but consider them for any case as well.
+			pkp.eventBus.$emit(
+				'notify',
+				validationError.value.Code +
+					': ' +
+					validationError.value.Message +
+					' (' +
+					validationError.value.Data +
+					')',
+				'warning',
+			);
+			validationError.value = null;
+			data.value = null;
+		} else if (data.value) {
 			var blob = new Blob([data.value]);
 			var link = document.createElement('a');
 			link.href = window.URL.createObjectURL(blob);

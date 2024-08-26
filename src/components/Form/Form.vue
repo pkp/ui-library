@@ -314,7 +314,7 @@ export default {
 				);
 				if (validationError) {
 					this.error({status: 400, responseJSON: validationError});
-				} else {
+				} else if (data) {
 					this.success(data);
 				}
 				this.complete();
