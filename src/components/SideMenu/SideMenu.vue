@@ -6,9 +6,9 @@
 		class="w-72 overflow-y-auto border-e border-s border-light bg-secondary"
 		@update:expanded-keys="(...args) => emit('update:expandedKeys', ...args)"
 	>
-		<template #item="{item, active, hasSubmenu}">
+		<template #item="{item, active, hasSubmenu, props}">
 			<a
-				:class="getButtonStyles(item)"
+				:class="{...getButtonStyles(item), [props?.action?.class || '']: true}"
 				:href="item.link"
 				tabindex="-1"
 				@click="handleClick(item)"
@@ -110,6 +110,10 @@ function mapItems(_items, level = 1) {
 const items = computed(() => mapItems(props.items));
 
 const navigationStyling = {
+	header: {
+		class: ['focus-visible:border-dark focus-visible:border'],
+	},
+
 	headerContent: () => {
 		return {
 			class: [
@@ -119,6 +123,13 @@ const navigationStyling = {
 			],
 		};
 	},
+	itemLink: ({context}) => ({
+		class: [
+			{
+				'border border-dark': context.focused,
+			},
+		],
+	}),
 	itemContent: {
 		class: ['transition-shadow duration-200'],
 	},
