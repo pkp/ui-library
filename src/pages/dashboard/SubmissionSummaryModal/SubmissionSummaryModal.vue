@@ -31,10 +31,8 @@
 		<SideModalLayoutMenu2Columns>
 			<template #menu>
 				<SideMenu
-					v-if="summaryStore.menuItems.length"
 					:items="summaryStore.menuItems"
-					:expanded-keys="summaryStore.expandedKeys"
-					:active-item-key="summaryStore.activeItemKey"
+					v-bind="summaryStore.sideMenuProps"
 					@action="summaryStore.selectMenuItem"
 				></SideMenu>
 			</template>
