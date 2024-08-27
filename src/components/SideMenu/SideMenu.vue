@@ -3,7 +3,7 @@
 		:expanded-keys="expandedKeys"
 		:model="items"
 		:pt="navigationStyling"
-		class="w-max min-w-60 overflow-y-auto border-e border-s border-light bg-secondary"
+		class="w-72 overflow-y-auto border-e border-s border-light bg-secondary"
 		@update:expanded-keys="(...args) => emit('update:expandedKeys', ...args)"
 	>
 		<template #item="{item, active, hasSubmenu}">
@@ -139,7 +139,7 @@ function handleClick(item) {
 		emit('action', item.action, {...item.actionArgs, key: item.key});
 	}
 
-	if (item.link && !item.items) {
+	if (!item.items) {
 		emit('update:activeItemKey', item.key);
 	}
 }
@@ -154,7 +154,7 @@ function getButtonStyles(item) {
 
 	const style = {
 		// Base
-		'inline-flex relative items-center gap-x-1 text-lg-medium py-2 px-3 w-full border-b border-b-light': true,
+		'inline-flex relative items-center gap-x-1 text-lg-medium py-2 px-3 w-full border-b border-b-light cursor-pointer': true,
 		// Default button styling
 		'text-primary border-light hover:text-hover disabled:text-disabled bg-secondary':
 			!isActiveItem,
