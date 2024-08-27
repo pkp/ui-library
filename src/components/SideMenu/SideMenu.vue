@@ -7,9 +7,10 @@
 		:class="backgroundVariant"
 		@update:expanded-keys="(...args) => emit('update:expandedKeys', ...args)"
 	>
-		<template #item="{item, active, hasSubmenu}">
+		<template #item="{item, active, hasSubmenu, props: itemProps}">
 			<a
-				:class="getButtonStyles(item)"
+				:class="getButtonStyles(item, itemProps.action?.isFocused)"
+				v-bind="itemProps.action"
 				:href="item.link"
 				tabindex="-1"
 				@click="handleClick(item)"
@@ -136,6 +137,14 @@ const navigationStyling = {
 			],
 		};
 	},
+	rootlist: {
+		class: ['focus-visible:outline-none'],
+	},
+	itemLink: ({context}) => {
+		return {
+			isFocused: context.focused,
+		};
+	},
 	itemContent: {
 		class: ['transition-shadow duration-200'],
 	},
@@ -166,7 +175,7 @@ function isActive(item) {
 	return currentActiveKey && currentActiveKey === item?.key;
 }
 
-function getButtonStyles(item) {
+function getButtonStyles(item, isFocused) {
 	const isActiveItem = isActive(item);
 
 	const style = {
@@ -191,6 +200,7 @@ function getButtonStyles(item) {
 		'border-s-8': item.colorStripe,
 		// Items with children
 		'!text-lg-bold': item.items && item.level === 1,
+		'border !border-dark': isFocused,
 	};
 
 	// set the additional class if the button should include a color stripe
