@@ -89,8 +89,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		 * Handling navigation
 		 */
 
-		const {expandedKeys, setExpandedKeys, setActiveItemKey, activeItemKey} =
-			useSideMenu();
+		const {sideMenuProps, setExpandedKeys, setActiveItemKey} = useSideMenu();
 		setExpandedKeys([
 			'workflow',
 			'publication',
@@ -239,8 +238,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			selectedStageId,
 			selectedReviewRoundId,
 			menuItems,
-			expandedKeys,
-			activeItemKey,
+			sideMenuProps,
 			selectMenuItem,
 
 			/**

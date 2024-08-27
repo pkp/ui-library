@@ -14,6 +14,21 @@ export const PublicationConfig = {
 			];
 		},
 	},
+	contributors: {
+		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
+			return [
+				{
+					component: 'ContributorsListPanel',
+					props: {
+						form: pageInitConfig.publicationTitleAbstractForm,
+						sections: pageInitConfig.sections,
+						submission,
+						publication: selectedPublication,
+					},
+				},
+			];
+		},
+	},
 	metadata: {
 		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
 			return [
