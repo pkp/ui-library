@@ -387,3 +387,94 @@ export const ExpandedMenu = {
 		],
 	},
 };
+
+export const PanelMenuTest = {
+	render: (args) => ({
+		components: {SideMenu},
+		setup() {
+			const activeItemKey = 'compose';
+			const expandedKeys = ['mail', 'compose'];
+			const {sideMenuProps, setExpandedKeys} = useSideMenu(activeItemKey);
+
+			setExpandedKeys(expandedKeys);
+			return {args, sideMenuProps};
+		},
+		template: '<SideMenu v-bind="{...args, ...sideMenuProps}" />',
+	}),
+	args: {
+		items: [
+			{
+				label: 'Mail',
+				key: 'mail',
+				icon: 'pi pi-envelope',
+				badge: 5,
+				items: [
+					{
+						label: 'Compose',
+						key: 'compose',
+						icon: 'pi pi-file-edit',
+						shortcut: '⌘+N',
+					},
+					{
+						label: 'Inbox',
+						key: 'inbox',
+						icon: 'pi pi-inbox',
+						badge: 5,
+					},
+					{
+						label: 'Sent',
+						key: 'sent',
+						icon: 'pi pi-send',
+						shortcut: '⌘+S',
+					},
+					{
+						label: 'Trash',
+						key: 'trash',
+						icon: 'pi pi-trash',
+						shortcut: '⌘+T',
+					},
+				],
+			},
+			{
+				label: 'Reports',
+				key: 'reports',
+				icon: 'pi pi-chart-bar',
+				shortcut: '⌘+R',
+				items: [
+					{
+						label: 'Sales',
+						key: 'sales',
+						icon: 'pi pi-chart-line',
+						badge: 3,
+					},
+					{
+						label: 'Products',
+						key: 'products',
+						icon: 'pi pi-list',
+						badge: 6,
+					},
+				],
+			},
+			{
+				label: 'Profile',
+				key: 'profile',
+				icon: 'pi pi-user',
+				shortcut: '⌘+W',
+				items: [
+					{
+						label: 'Settings',
+						key: 'settings',
+						icon: 'pi pi-cog',
+						shortcut: '⌘+O',
+					},
+					{
+						label: 'Privacy',
+						key: 'privacy',
+						icon: 'pi pi-shield',
+						shortcut: '⌘+P',
+					},
+				],
+			},
+		],
+	},
+};
