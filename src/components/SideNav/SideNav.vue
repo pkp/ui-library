@@ -4,7 +4,11 @@
 		class="sticky top-12 flex h-[calc(100vh-3rem)] flex-none"
 		:aria-label="ariaLabel"
 	>
-		<SideMenu v-bind="sideMenuProps" :items="items"></SideMenu>
+		<SideMenu
+			v-bind="sideMenuProps"
+			:items="items"
+			background-variant="bg-secondary"
+		></SideMenu>
 	</nav>
 </template>
 

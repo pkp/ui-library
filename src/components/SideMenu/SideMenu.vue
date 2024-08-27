@@ -3,7 +3,8 @@
 		:expanded-keys="expandedKeys"
 		:model="items"
 		:pt="navigationStyling"
-		class="w-72 overflow-y-auto border-e border-s border-light bg-secondary"
+		class="w-72 overflow-y-auto border-e border-s border-light"
+		:class="backgroundVariant"
 		@update:expanded-keys="(...args) => emit('update:expandedKeys', ...args)"
 	>
 		<template #item="{item, active, hasSubmenu}">
@@ -67,14 +68,30 @@ const props = defineProps({
 			});
 		},
 	},
+	/**
+	 * An object of keys from the SideMenu items that should be expanded by default.
+	 * Example: { key1: true, key1_1: true }
+	 */
 	expandedKeys: {
 		type: Object,
 		default: () => {},
 	},
+	/**
+	 * The item key that should be set to active by default.
+	 */
 	activeItemKey: {
 		type: String,
 		required: true,
 		validator: (value) => !!value,
+	},
+	/**
+	 * The background class that should be used for the SideMenu.
+	 * See the [list of background classes](../?path=/docs/guide-style-colors--docs) available for use.
+	 * Default: 'bg-tertiary'
+	 */
+	backgroundVariant: {
+		type: String,
+		default: 'bg-tertiary',
 	},
 });
 
@@ -156,8 +173,9 @@ function getButtonStyles(item) {
 		// Base
 		'inline-flex relative items-center gap-x-1 text-lg-medium py-2 px-3 w-full border-b border-b-light cursor-pointer': true,
 		// Default button styling
-		'text-primary border-light hover:text-hover disabled:text-disabled bg-secondary':
+		'text-primary border-light hover:text-hover disabled:text-disabled':
 			!isActiveItem,
+		backgroundVariant: !isActiveItem,
 		// Active
 		'text-on-dark bg-selection-dark': isActiveItem,
 		'border-transparent': isActiveItem && !item.colorStripe,
