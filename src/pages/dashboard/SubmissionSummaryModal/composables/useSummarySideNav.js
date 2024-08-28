@@ -17,11 +17,11 @@ export function useSummarySideNav() {
 			),
 		};
 
-		return `${t('comma', {value: t('manager.workflow')})} ${StageTitles[stageId]} `;
+		return `${t('semicolon', {label: t('manager.workflow')})} ${t(StageTitles[stageId])} `;
 	}
 
 	function getPublicationTitle(publicationMenuTitle) {
-		return `${t('comma', {value: t('submission.publication')})} ${publicationMenuTitle}`;
+		return `${t('semicolon', {label: t('submission.publication')})} ${publicationMenuTitle}`;
 	}
 
 	function getReviewItems(submission) {
@@ -56,6 +56,7 @@ export function useSummarySideNav() {
 				actionArgs: {
 					reviewRoundId: reviewRound.id,
 					stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+					title: getWorkflowTitle(pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW),
 				},
 			});
 		});
@@ -87,18 +88,19 @@ export function useSummarySideNav() {
 			{
 				key: `workflow_${pkp.const.WORKFLOW_STAGE_ID_SUBMISSION}`,
 				label: 'Submission',
-				title: getWorkflowTitle(pkp.const.WORKFLOW_STAGE_ID_SUBMISSION),
 				colorStripe:
 					activeStage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION
 						? 'border-stage-desk-review'
 						: null,
 				action: 'selectStage',
-				actionArgs: {stageId: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION},
+				actionArgs: {
+					stageId: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
+					title: getWorkflowTitle(pkp.const.WORKFLOW_STAGE_ID_SUBMISSION),
+				},
 			},
 			{
 				key: `workflow_${pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW}`,
 				label: 'Review',
-				title: getWorkflowTitle(pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW),
 				colorStripe:
 					activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW
 						? 'border-stage-in-review'
@@ -107,7 +109,12 @@ export function useSummarySideNav() {
 				items: externalReviewItems,
 				action: !externalReviewItems.length ? 'selectStage' : undefined,
 				actionArgs: !externalReviewItems.length
-					? {stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW}
+					? {
+							stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+							title: getWorkflowTitle(
+								pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+							),
+						}
 					: undefined,
 			},
 			{
@@ -119,7 +126,10 @@ export function useSummarySideNav() {
 						? 'border-stage-copyediting'
 						: null,
 				action: 'selectStage',
-				actionArgs: {stageId: pkp.const.WORKFLOW_STAGE_ID_EDITING},
+				actionArgs: {
+					stageId: pkp.const.WORKFLOW_STAGE_ID_EDITING,
+					title: getWorkflowTitle(pkp.const.WORKFLOW_STAGE_ID_EDITING),
+				},
 			},
 			{
 				key: `workflow_${pkp.const.WORKFLOW_STAGE_ID_PRODUCTION}`,
@@ -130,7 +140,10 @@ export function useSummarySideNav() {
 						? 'border-stage-copyediting'
 						: null,
 				action: 'selectStage',
-				actionArgs: {stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION},
+				actionArgs: {
+					stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+					title: getWorkflowTitle(pkp.const.WORKFLOW_STAGE_ID_PRODUCTION),
+				},
 			},
 		];
 	}
@@ -151,30 +164,37 @@ export function useSummarySideNav() {
 					{
 						key: 'publication_titleAbstract',
 						label: t('publication.titleAbstract'),
-						title: getPublicationTitle(t('publication.titleAbstract')),
 						action: 'selectPublicationMenu',
-						actionArgs: {publicationMenu: 'titleAbstract'},
+						actionArgs: {
+							publicationMenu: 'titleAbstract',
+							title: getPublicationTitle(t('publication.titleAbstract')),
+						},
 					},
 					{
 						label: t('publication.contributors'),
-						title: getPublicationTitle(t('publication.contributors')),
 						action: 'selectPublicationMenu',
-						actionArgs: {publicationMenu: 'contributors'},
+						actionArgs: {
+							publicationMenu: 'contributors',
+							title: getPublicationTitle(t('publication.contributors')),
+						},
 					},
 					{
 						key: 'publication_metadata',
 						label: t('article.metadata'),
-						title: getPublicationTitle(t('article.metadata')),
 						action: 'selectPublicationMenu',
-						actionArgs: {publicationMenu: 'metadata'},
+						actionArgs: {
+							publicationMenu: 'metadata',
+							title: getPublicationTitle(t('article.metadata')),
+						},
 					},
 					{
 						key: 'citations',
 						label: t('submission.citations'),
-						title: getPublicationTitle(t('submission.citation')),
-
 						action: 'selectPublicationMenu',
-						actionArgs: {publicationMenu: 'citations'},
+						actionArgs: {
+							publicationMenu: 'citations',
+							title: getPublicationTitle(t('submission.citation')),
+						},
 					},
 					{
 						label: 'Galleys',
@@ -195,11 +215,5 @@ export function useSummarySideNav() {
 		return menuItems;
 	}
 
-	function getTitle(itemKey) {
-		if (itemKey.startsWith('publication_')) {
-			return `${t('semicolon', {value: t('submission.publication')})}`;
-		}
-	}
-
-	return {getMenuItems, getTitle};
+	return {getMenuItems};
 }

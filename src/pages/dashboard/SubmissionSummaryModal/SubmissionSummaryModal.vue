@@ -4,15 +4,15 @@
 			{{ submissionId }}
 		</template>
 		<template #title>
-			<span v-if="currentPublication" class="underline">
-				{{ currentPublication.authorsStringShort }}
+			<span v-if="selectedPublication" class="underline">
+				{{ selectedPublication.authorsStringShort }}
 			</span>
 		</template>
-		<template v-if="currentPublication" #description>
+		<template v-if="selectedPublication" #description>
 			{{
 				localizeSubmission(
-					currentPublication.fullTitle,
-					currentPublication.locale,
+					selectedPublication.fullTitle,
+					selectedPublication.locale,
 				)
 			}}
 		</template>
@@ -30,11 +30,7 @@
 		</template>
 		<SideModalLayoutMenu2Columns>
 			<template #menu>
-				<SideMenu
-					:items="summaryStore.menuItems"
-					v-bind="summaryStore.sideMenuProps"
-					@action="summaryStore.selectMenuItem"
-				></SideMenu>
+				<SideMenu v-bind="summaryStore.sideMenuProps"></SideMenu>
 			</template>
 			<template #heading>{{ summaryStore.stageTitle }}</template>
 			<template
@@ -162,5 +158,5 @@ const stageLabel = computed(
 	() => submission.value && getExtendedStageLabel(submission.value),
 );
 
-const {submission, currentPublication} = storeToRefs(summaryStore);
+const {submission, selectedPublication} = storeToRefs(summaryStore);
 </script>

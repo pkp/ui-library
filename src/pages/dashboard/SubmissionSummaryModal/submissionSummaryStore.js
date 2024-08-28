@@ -16,6 +16,8 @@ export const useSubmissionSummaryStore = defineComponentStore(
 	(props) => {
 		const dashboardPage = props.pageInitConfig.dashboardPage;
 
+		const {getReviewRound, getCurrentReviewRound} = useSubmission();
+
 		/**
 		 * Fetch submission details
 		 */
@@ -60,21 +62,16 @@ export const useSubmissionSummaryStore = defineComponentStore(
 					newSubmission.publications[newSubmission.publications.length - 1].id;
 				fetchSelectedPublication();
 
-				selectedMenuState.value = {
-					stageId: newSubmission.stageId,
-				};
 				if (
 					newSubmission.stageId === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW
 				) {
-					selectedMenuState.value = {
-						stageId: newSubmission.stageId,
-						reviewRoundId: getCurrentReviewRound(
-							newSubmission,
-							pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
-						)?.id,
-					};
 					setActiveItemKey(
-						`workflow_${newSubmission.stageId}_${selectedMenuState.value.reviewRoundId}`,
+						`workflow_${newSubmission.stageId}_${
+							getCurrentReviewRound(
+								newSubmission,
+								pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+							)?.id
+						}`,
 					);
 				} else {
 					setActiveItemKey(`workflow_${newSubmission.stageId}`);
@@ -87,15 +84,32 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		/**
 		 * Handling navigation
 		 */
+		const {getMenuItems} = useSummarySideNav();
+		const menuItems = computed(() => {
+			if (!submission.value) {
+				return [];
+			}
+			return getMenuItems(submission.value);
+		});
 
-		const {sideMenuProps, setExpandedKeys, setActiveItemKey} = useSideMenu();
+		const {
+			sideMenuProps,
+			setExpandedKeys,
+			setActiveItemKey,
+			selectedItem: selectedMenuItem,
+		} = useSideMenu(menuItems);
+
+		const selectedMenuState = computed(() => {
+			console.log('selectedMenuState:', selectedMenuItem.value?.actionArgs);
+			return selectedMenuItem.value?.actionArgs || {};
+		});
+
 		setExpandedKeys([
 			'workflow',
 			'publication',
 			`workflow_${pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW}`,
 		]);
-		const selectedMenuState = ref({});
-		const {getReviewRound, getCurrentReviewRound} = useSubmission();
+
 		const selectedReviewRound = computed(() => {
 			if (!selectedMenuState.value.reviewRoundId) {
 				return null;
@@ -106,18 +120,6 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			);
 			return reviewRound;
 		});
-
-		const {getMenuItems} = useSummarySideNav();
-		const menuItems = computed(() => {
-			if (!submission.value) {
-				return [];
-			}
-			return getMenuItems(submission.value);
-		});
-
-		function selectMenuItem(action, actionArgs) {
-			selectedMenuState.value = actionArgs;
-		}
 
 		/**
 		 * Handle user actions
@@ -142,14 +144,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		const _editorWorkflowConfigFns = useEditorWorkflowConfig();
 		const _editorPublicationConfigFns = useEditorPublicationConfig();
 		const stageTitle = computed(() => {
-			if (!submission.value) {
-				return '';
-			}
-			return _editorWorkflowConfigFns.getTitle({
-				submission: submission.value,
-				selectedStageId: selectedMenuState.value.stageId,
-				selectedReviewRound: selectedReviewRound.value,
-			});
+			return selectedMenuState.value?.title || '';
 		});
 
 		const primaryItems = computed(() => {
@@ -242,9 +237,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			/**
 			 * Navigation
 			 * */
-			menuItems,
 			sideMenuProps,
-			selectMenuItem,
 
 			/**
 			 * Summary
