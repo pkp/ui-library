@@ -7,8 +7,10 @@ export default {
 	render: (args) => ({
 		components: {SideMenu},
 		setup() {
-			const {sideMenuProps, setExpandedKeys, setActiveItemKey} =
-				useSideMenu('action_required');
+			const {sideMenuProps, setExpandedKeys, setActiveItemKey} = useSideMenu(
+				args.items,
+				'action_required',
+			);
 
 			setExpandedKeys(['action_required', 'editorial_dashboard']);
 
@@ -27,8 +29,7 @@ export default {
 			}
 			return {args, sideMenuProps, handleActions};
 		},
-		template:
-			'<SideMenu v-bind="{...args, ...sideMenuProps}" @action="handleActions" />',
+		template: '<SideMenu v-bind="sideMenuProps" @action="handleActions" />',
 	}),
 };
 
@@ -219,12 +220,15 @@ export const WithColorStripe = {
 		setup() {
 			const activeItemKey = 'submission_stages';
 			const expandedKeys = ['submission_stages'];
-			const {sideMenuProps, setExpandedKeys} = useSideMenu(activeItemKey);
+			const {sideMenuProps, setExpandedKeys} = useSideMenu(
+				args.items,
+				activeItemKey,
+			);
 
 			setExpandedKeys(expandedKeys);
 			return {args, sideMenuProps};
 		},
-		template: '<SideMenu v-bind="{...args, ...sideMenuProps}" />',
+		template: '<SideMenu v-bind="sideMenuProps" />',
 	}),
 	args: {
 		items: [
@@ -292,12 +296,15 @@ export const ExpandedMenu = {
 		setup() {
 			const activeItemKey = 'review_round_1';
 			const expandedKeys = ['workflow', 'review', 'publication'];
-			const {sideMenuProps, setExpandedKeys} = useSideMenu(activeItemKey);
+			const {sideMenuProps, setExpandedKeys} = useSideMenu(
+				args.items,
+				activeItemKey,
+			);
 
 			setExpandedKeys(expandedKeys);
 			return {args, sideMenuProps};
 		},
-		template: '<SideMenu v-bind="{...args, ...sideMenuProps}" />',
+		template: '<SideMenu v-bind="sideMenuProps" />',
 	}),
 	args: {
 		items: [
