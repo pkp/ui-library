@@ -3,7 +3,7 @@
 		:expanded-keys="expandedKeys"
 		:model="items"
 		:pt="navigationStyling"
-		class="w-72 flex-shrink-0 overflow-y-auto border-e border-s border-light"
+		class="w-72 overflow-y-auto border-e border-s border-light"
 		:class="backgroundVariant"
 		@update:expanded-keys="(...args) => emit('update:expandedKeys', ...args)"
 	>
