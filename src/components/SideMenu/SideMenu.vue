@@ -3,12 +3,14 @@
 		:expanded-keys="expandedKeys"
 		:model="items"
 		:pt="navigationStyling"
-		class="w-max min-w-60 overflow-y-auto border-e border-s border-light bg-secondary"
+		class="w-72 overflow-y-auto border-e border-s border-light"
+		:class="backgroundVariant"
 		@update:expanded-keys="(...args) => emit('update:expandedKeys', ...args)"
 	>
-		<template #item="{item, active, hasSubmenu}">
+		<template #item="{item, active, hasSubmenu, props: itemProps}">
 			<a
-				:class="getButtonStyles(item)"
+				:class="getButtonStyles(item, itemProps.action?.isFocused)"
+				v-bind="itemProps.action"
 				:href="item.link"
 				tabindex="-1"
 				@click="handleClick(item)"
@@ -67,14 +69,30 @@ const props = defineProps({
 			});
 		},
 	},
+	/**
+	 * An object of keys from the SideMenu items that should be expanded by default.
+	 * Example: { key1: true, key1_1: true }
+	 */
 	expandedKeys: {
 		type: Object,
 		default: () => {},
 	},
+	/**
+	 * The item key that should be set to active by default.
+	 */
 	activeItemKey: {
 		type: String,
 		required: true,
 		validator: (value) => !!value,
+	},
+	/**
+	 * The background class that should be used for the SideMenu.
+	 * See the [list of background classes](../?path=/docs/guide-style-colors--docs) available for use.
+	 * Default: 'bg-tertiary'
+	 */
+	backgroundVariant: {
+		type: String,
+		default: 'bg-tertiary',
 	},
 });
 
@@ -119,6 +137,14 @@ const navigationStyling = {
 			],
 		};
 	},
+	rootlist: {
+		class: ['focus-visible:outline-none'],
+	},
+	itemLink: ({context}) => {
+		return {
+			isFocused: context.focused,
+		};
+	},
 	itemContent: {
 		class: ['transition-shadow duration-200'],
 	},
@@ -139,7 +165,7 @@ function handleClick(item) {
 		emit('action', item.action, {...item.actionArgs, key: item.key});
 	}
 
-	if (item.link && !item.items) {
+	if (!item.items) {
 		emit('update:activeItemKey', item.key);
 	}
 }
@@ -149,15 +175,16 @@ function isActive(item) {
 	return currentActiveKey && currentActiveKey === item?.key;
 }
 
-function getButtonStyles(item) {
+function getButtonStyles(item, isFocused) {
 	const isActiveItem = isActive(item);
 
 	const style = {
 		// Base
-		'inline-flex relative items-center gap-x-1 text-lg-medium py-2 px-3 w-full border-b border-b-light': true,
+		'inline-flex relative items-center gap-x-1 text-lg-medium py-2 px-3 w-full border-b border-b-light cursor-pointer': true,
 		// Default button styling
-		'text-primary border-light hover:text-hover disabled:text-disabled bg-secondary':
+		'text-primary border-light hover:text-hover disabled:text-disabled':
 			!isActiveItem,
+		backgroundVariant: !isActiveItem,
 		// Active
 		'text-on-dark bg-selection-dark': isActiveItem,
 		'border-transparent': isActiveItem && !item.colorStripe,
@@ -173,6 +200,7 @@ function getButtonStyles(item) {
 		'border-s-8': item.colorStripe,
 		// Items with children
 		'!text-lg-bold': item.items && item.level === 1,
+		'border !border-dark': isFocused,
 	};
 
 	// set the additional class if the button should include a color stripe

@@ -528,7 +528,9 @@ const SideModalWithSideMenu = {
 				<SideModalLayout2Columns>
 					<template #left>
 						<div class="flex">
-							<SideMenu :items="items" v-bind="sideMenuProps"></SideMenu>
+							<div class="flex-shrink-0">
+								<SideMenu :items="items" v-bind="sideMenuProps"></SideMenu>
+							</div>
 							<p class="px-5">
 								Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
 								eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
