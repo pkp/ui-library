@@ -3,7 +3,7 @@
 		close-label="Close"
 		:open="sideModal1?.opened || false"
 		:modal-level="1"
-		@close="() => close(sideModal1?.modalId)"
+		@close="(returnData) => close(sideModal1?.modalId, returnData)"
 	>
 		<component :is="component1" v-bind="sideModal1?.props" />
 		<PkpDialog
@@ -17,7 +17,7 @@
 			close-label="Close"
 			:modal-level="2"
 			:open="sideModal2?.opened || false"
-			@close="() => close(sideModal2?.modalId)"
+			@close="(returnData) => close(sideModal2?.modalId, returnData)"
 		>
 			<component :is="component2" v-bind="sideModal2?.props" />
 			<PkpDialog
@@ -30,7 +30,7 @@
 				close-label="Close"
 				:modal-level="3"
 				:open="sideModal3?.opened || false"
-				@close="() => close(sideModal3?.modalId)"
+				@close="(returnData) => close(sideModal3?.modalId, returnData)"
 			>
 				<component :is="component3" v-bind="sideModal3?.props" />
 			</SideModal>
@@ -87,8 +87,8 @@ const component3 = computed(() => {
 	return GlobalModals[sideModal3.value.component] || sideModal3.value.component;
 });
 
-function close(modalId) {
-	modalStore.closeSideModalById(true, modalId);
+function close(modalId, returnData) {
+	modalStore.closeSideModalById(true, modalId, returnData);
 }
 
 function closeDialog() {

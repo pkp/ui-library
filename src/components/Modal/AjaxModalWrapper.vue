@@ -95,7 +95,7 @@ function passToHandlerElement(...args) {
 	return;
 }
 
-function onVueFormSuccess(formId) {
+function onVueFormSuccess(formId, data) {
 	if (
 		legacyOptions.closeOnFormSuccessId &&
 		legacyOptions.closeOnFormSuccessId === formId
@@ -104,7 +104,7 @@ function onVueFormSuccess(formId) {
 			if (legacyOptions.modalHandler) {
 				legacyOptions.modalHandler.modalClose();
 			} else {
-				closeModal();
+				closeModal({formId, data});
 			}
 		}, 1000);
 	}

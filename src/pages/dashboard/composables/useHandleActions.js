@@ -9,12 +9,8 @@ import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 
 import SelectRevisionRecommendationFormModal from '../components/SelectRevisionRecommendationFormModal.vue';
 export function useHandleActions({selectRevisionDecisionForm}) {
-	function handleSubmissionAction(
-		submission,
-		actionName,
-		actionArgs,
-		finishedCallback,
-	) {
+	function handleSubmissionAction(actionName, actionArgs, finishedCallback) {
+		const {submission, selectedPublication} = actionArgs;
 		const {openSideModal, openDialog} = useModal();
 		const {t, localize} = useLocalize();
 		const {getCurrentReviewRound} = useSubmission();
@@ -257,7 +253,8 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 					},
 				},
 				{
-					onClose: async () => {
+					onClose: async (returnData) => {
+						console.log('returnData?:', returnData);
 						finishedCallback();
 					},
 				},
@@ -389,6 +386,48 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 					},
 				},
 			);
+		} else if (actionName === 'assignToIssueAndScheduleForPublication') {
+			if (selectedPublication.issueId === null) {
+				const {getCurrentPublication} = useSubmission();
+				const {url} = useLegacyGridUrl({
+					component: 'modals.publish.AssignToIssueHandler',
+					op: 'assign',
+					params: {
+						submissionId: submission.id,
+						publicationId: getCurrentPublication(submission).id,
+					},
+				});
+
+				openSideModal(
+					'LegacyAjax',
+					{
+						legacyOptions: {
+							title: t('publication.selectIssue'),
+							url,
+							closeOnFormSuccessId: pkp.const.FORM_ASSIGN_TO_ISSUE,
+						},
+					},
+					{
+						onClose: async ({formId, data}) => {
+							if (data?.issueId) {
+								handleSubmissionAction(
+									'scheduleForPublication',
+									actionArgs,
+									finishedCallback,
+								);
+							} else {
+								finishedCallback();
+							}
+						},
+					},
+				);
+			} else {
+				handleSubmissionAction(
+					'scheduleForPublication',
+					actionArgs,
+					finishedCallback,
+				);
+			}
 		} else if (actionName === 'scheduleForPublication') {
 			const {getCurrentPublication} = useSubmission();
 

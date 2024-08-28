@@ -37,6 +37,33 @@
 				></SideMenu>
 			</template>
 			<template #heading>{{ summaryStore.stageTitle }}</template>
+			<template
+				v-if="summaryStore.publicationControlsLeft?.length"
+				#publication-controls-left
+			>
+				<div class="flex gap-x-3">
+					<component
+						:is="Components[item.component] || item.component"
+						v-bind="item.props"
+						v-for="(item, index) in summaryStore.publicationControlsLeft"
+						:key="`${index} - ${Object.values(item.props).join('-')}`"
+					/>
+				</div>
+			</template>
+			<template
+				v-if="summaryStore.publicationControlsRight?.length"
+				#publication-controls-right
+			>
+				<div class="flex gap-x-3">
+					<component
+						:is="Components[item.component] || item.component"
+						v-bind="item.props"
+						v-for="(item, index) in summaryStore.publicationControlsRight"
+						:key="`${index} - ${Object.values(item.props).join('-')}`"
+					/>
+				</div>
+			</template>
+
 			<template #primary>
 				<div class="flex flex-col gap-y-5 bg-secondary p-5">
 					<component
@@ -47,7 +74,7 @@
 					/>
 				</div>
 			</template>
-			<template #actions>
+			<template v-if="summaryStore.actionItems?.length" #actions>
 				<div class="flex flex-col items-start space-y-3 p-4">
 					<component
 						:is="Components[item.component] || item.component"
@@ -57,7 +84,7 @@
 					></component>
 				</div>
 			</template>
-			<template #secondary>
+			<template v-if="summaryStore.secondaryItems?.length" #secondary>
 				<div class="flex flex-col space-y-4 p-4">
 					<component
 						:is="Components[item.component] || item.component"
@@ -72,7 +99,7 @@
 </template>
 
 <script setup>
-import {computed, provide} from 'vue';
+import {computed} from 'vue';
 import {storeToRefs} from 'pinia';
 import PkpButton from '@/components/Button/Button.vue';
 import SideMenu from '@/components/SideMenu/SideMenu.vue';
@@ -89,7 +116,7 @@ import PrimaryBasicMetadata from './primaryItems/PrimaryBasicMetadata.vue';
 import ReviewRoundStatus from './primaryItems/ReviewRoundStatus.vue';
 // Publications
 import PublicationTitleAbstractForm from './primaryItems/PublicationTitleAbstractForm.vue';
-
+import PublicationVersionControl from './publicationControls/PublicationVersionControl.vue';
 import ActionButton from './actionItems/ActionButton.vue';
 import EditorsAssigned from './metaItems/EditorsAssigned.vue';
 import BasicMetadata from './metaItems/BasicMetadata.vue';
@@ -116,11 +143,11 @@ const Components = {
 	IssueAssigned,
 	ReviewRoundStatus,
 	PublicationTitleAbstractForm,
+	PublicationVersionControl,
 };
 
 const props = defineProps({
 	submissionId: {type: Number, required: true},
-	reviewAssignmentId: {type: Number, required: false, default: null},
 	pageInitConfig: {type: Object, required: true},
 });
 
@@ -136,6 +163,4 @@ const stageLabel = computed(
 );
 
 const {submission, currentPublication} = storeToRefs(summaryStore);
-
-provide('registerDataChangeCallback', summaryStore.registerDataChangeCallback);
 </script>

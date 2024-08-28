@@ -5,6 +5,7 @@ import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
 import {Actions, useFileManagerActions} from './useFileManagerActions';
 import {useFileManagerConfig} from './useFileManagerConfig';
+import {useDataChanged} from '@/composables/useDataChanged';
 export const useFileManagerStore = defineComponentStore(
 	'fileManager',
 	(props) => {
@@ -35,6 +36,9 @@ export const useFileManagerStore = defineComponentStore(
 		const files = computed(() => data.value?.items || []);
 
 		fetchFiles();
+
+		/** Reload files when data on screen changes */
+		const {triggerDataChange} = useDataChanged(() => fetchFiles());
 
 		/**
 		 * Handling Actions
@@ -71,8 +75,7 @@ export const useFileManagerStore = defineComponentStore(
 					submission: props.submission,
 				},
 				() => {
-					fetchFiles();
-
+					triggerDataChange();
 					// delete actions creates legacy notifications
 					// calling explicitely to check for it
 					if (actionName === Actions.DELETE) {
@@ -94,7 +97,9 @@ export const useFileManagerStore = defineComponentStore(
 					uploadSelectTitleKey: managerConfig.value.uploadSelectTitleKey,
 					gridComponent: managerConfig.value.gridComponent,
 				},
-				() => fetchFiles(),
+				() => {
+					triggerDataChange();
+				},
 			);
 		}
 

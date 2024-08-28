@@ -1,3 +1,4 @@
+import {useLocalize} from '@/composables/useLocalize';
 export const PublicationConfig = {
 	titleAbstract: {
 		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
@@ -18,12 +19,11 @@ export const PublicationConfig = {
 		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
 			return [
 				{
-					component: 'ContributorsListPanel',
+					component: 'ContributorManager',
 					props: {
-						form: pageInitConfig.publicationTitleAbstractForm,
-						sections: pageInitConfig.sections,
-						submission,
+						submissionId: submission.id,
 						publication: selectedPublication,
+						contributorForm: {},
 					},
 				},
 			];
@@ -67,5 +67,46 @@ export function useEditorPublicationConfig() {
 		);
 	}
 
-	return {getPrimaryItems};
+	function getPublicationControlsLeft({
+		submission,
+		selectedPublicationId,
+		selectedPublication,
+	}) {
+		const items = [];
+
+		items.push({
+			component: 'PublicationVersionControl',
+			props: {
+				submission,
+				selectedPublicationId: selectedPublicationId,
+			},
+		});
+		return items;
+	}
+
+	function getPublicationControlsRight({
+		submission,
+		selectedPublicationId,
+		selectedPublication,
+	}) {
+		const items = [];
+		const {t} = useLocalize();
+		items.push({
+			component: 'ActionButton',
+			props: {
+				label: t('dashboard.summary.scheduleForPublication'),
+				isPrimary: true,
+				//action: 'scheduleForPublication',
+				action: 'assignToIssueAndScheduleForPublication',
+			},
+		});
+
+		return items;
+	}
+
+	return {
+		getPrimaryItems,
+		getPublicationControlsLeft,
+		getPublicationControlsRight,
+	};
 }

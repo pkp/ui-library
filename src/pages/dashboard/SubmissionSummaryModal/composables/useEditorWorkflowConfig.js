@@ -1,31 +1,11 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {useSubmission} from '@/composables/useSubmission';
 
-const {t, tk} = useLocalize();
+const {t} = useLocalize();
 
 export function useEditorWorkflowConfig() {
 	const {hasSubmissionPassedStage, hasNotSubmissionStartedStage} =
 		useSubmission();
-
-	function getTitle({submission, selectedStageId, selectedReviewRound}) {
-		const StageTitles = {
-			[pkp.const.WORKFLOW_STAGE_ID_SUBMISSION]: tk(
-				'dashboard.stage.submission',
-			),
-			[pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW]: tk(
-				'dashboard.stage.review',
-			),
-			[pkp.const.WORKFLOW_STAGE_ID_EDITING]: tk('dashboard.stage.copyediting'),
-			[pkp.const.WORKFLOW_STAGE_ID_PRODUCTION]: tk(
-				'dashboard.stage.production',
-			),
-		};
-
-		if (selectedStageId) {
-			return `${t('manager.workflow')}: ${t(StageTitles[selectedStageId])}`;
-		}
-		return 'ollaa';
-	}
 
 	function getPrimaryItems({
 		submission,
@@ -318,7 +298,7 @@ export function useEditorWorkflowConfig() {
 			items.push({
 				component: 'ActionButton',
 				props: {
-					label: 'New Review Round',
+					label: t('editor.submission.createNewRound'),
 					action: 'decisionNewExternalRound',
 					actionArgs,
 				},
@@ -407,5 +387,5 @@ export function useEditorWorkflowConfig() {
 		return items;
 	}
 
-	return {getTitle, getPrimaryItems, getSecondaryItems, getActionItems};
+	return {getPrimaryItems, getSecondaryItems, getActionItems};
 }
