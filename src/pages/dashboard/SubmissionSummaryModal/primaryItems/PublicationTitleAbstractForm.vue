@@ -1,4 +1,6 @@
-<template><PkpForm v-bind="form" @set="set"></PkpForm></template>
+<template>
+	<div class="-m-5"><PkpForm v-bind="form" @set="set"></PkpForm></div>
+</template>
 
 <script setup>
 import PkpForm from '@/components/Form/Form.vue';

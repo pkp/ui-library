@@ -1,37 +1,18 @@
 <template>
-	<ListPanel :items="contributorManagerStore.contributors">
-		<template #header>
-			<h2 class="text-lg-bold text-heading">
-				<span>{{ title }}</span>
-			</h2>
-		</template>
-		<template #item="{item}">
-			<div class="text-lg-medium">{{ item.fullName }}</div>
-			<div class="text-base-normal text-secondary">
-				{{ localize(item.userGroupName) }}
-			</div>
-		</template>
-	</ListPanel>
+	<ContributorsListPanel
+		v-bind="contributorManagerStore.contributorsListPanelProps"
+		class="pkpWorkflow__contributors"
+	></ContributorsListPanel>
 </template>
+
 <script setup>
-import {inject} from 'vue';
-import {useLocalize} from '@/composables/useLocalize.js';
 import {useContributorManagerStore} from './contributorManagerStore.js';
-import ListPanel from '@/components/ListPanel/ListPanel.vue';
+import ContributorsListPanel from '@/components/ListPanel/contributors/ContributorsListPanel.vue';
 const props = defineProps({
-	namespace: {type: String, required: true},
-	submissionId: {type: String, required: true},
-	publicationId: {type: String, required: true},
-	title: {type: String, required: true},
+	submissionId: {type: Number, required: true},
+	publication: {type: Object, required: true},
+	contributorForm: {type: Object, required: true},
 });
 
-const {localize} = useLocalize();
-
-const contributorManagerStore = useContributorManagerStore(
-	props,
-	props.namespace,
-);
-
-const registerDataChangeCallback = inject('registerDataChangeCallback');
-registerDataChangeCallback(() => contributorManagerStore.fetchContributors());
+const contributorManagerStore = useContributorManagerStore(props);
 </script>

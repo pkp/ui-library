@@ -1,7 +1,39 @@
 import {useSubmission} from '@/composables/useSubmission';
-
+import {useLocalize} from '@/composables/useLocalize';
 export function useSummarySideNav() {
+	const {t, tk} = useLocalize();
+
+	function getWorkflowTitle(stageId) {
+		const StageTitles = {
+			[pkp.const.WORKFLOW_STAGE_ID_SUBMISSION]: tk(
+				'dashboard.stage.submission',
+			),
+			[pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW]: tk(
+				'dashboard.stage.review',
+			),
+			[pkp.const.WORKFLOW_STAGE_ID_EDITING]: tk('dashboard.stage.copyediting'),
+			[pkp.const.WORKFLOW_STAGE_ID_PRODUCTION]: tk(
+				'dashboard.stage.production',
+			),
+		};
+
+		return `${t('comma', {value: t('manager.workflow')})} ${StageTitles[stageId]} `;
+	}
+
+	function getPublicationTitle(publicationMenuTitle) {
+		return `${t('comma', {value: t('submission.publication')})} ${publicationMenuTitle}`;
+	}
+
 	function getReviewItems(submission) {
+		const {getActiveStage, getCurrentReviewRound} = useSubmission();
+
+		const activeStage = getActiveStage(submission);
+
+		const activeReviewRound = getCurrentReviewRound(
+			submission,
+			pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+		);
+
 		const reviewMenuItems = [];
 
 		const {getReviewRoundsForStage} = useSubmission();
@@ -14,6 +46,12 @@ export function useSummarySideNav() {
 			reviewMenuItems.push({
 				key: `workflow_${pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW}_${reviewRound.id}`,
 				label: `Review Round ${index + 1}`,
+				colorStripe:
+					(activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW &&
+						activeReviewRound.id) === reviewRound.id
+						? 'border-stage-in-review'
+						: null,
+
 				action: 'selectStage',
 				actionArgs: {
 					reviewRoundId: reviewRound.id,
@@ -49,6 +87,7 @@ export function useSummarySideNav() {
 			{
 				key: `workflow_${pkp.const.WORKFLOW_STAGE_ID_SUBMISSION}`,
 				label: 'Submission',
+				title: getWorkflowTitle(pkp.const.WORKFLOW_STAGE_ID_SUBMISSION),
 				colorStripe:
 					activeStage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION
 						? 'border-stage-desk-review'
@@ -59,6 +98,7 @@ export function useSummarySideNav() {
 			{
 				key: `workflow_${pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW}`,
 				label: 'Review',
+				title: getWorkflowTitle(pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW),
 				colorStripe:
 					activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW
 						? 'border-stage-in-review'
@@ -73,6 +113,7 @@ export function useSummarySideNav() {
 			{
 				key: `workflow_${pkp.const.WORKFLOW_STAGE_ID_EDITING}`,
 				label: 'Copyediting',
+				title: getWorkflowTitle(pkp.const.WORKFLOW_STAGE_ID_EDITING),
 				colorStripe:
 					activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EDITING
 						? 'border-stage-copyediting'
@@ -83,6 +124,7 @@ export function useSummarySideNav() {
 			{
 				key: `workflow_${pkp.const.WORKFLOW_STAGE_ID_PRODUCTION}`,
 				label: 'Production',
+				title: getWorkflowTitle(pkp.const.WORKFLOW_STAGE_ID_PRODUCTION),
 				colorStripe:
 					activeStage.id === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION
 						? 'border-stage-copyediting'
@@ -108,25 +150,31 @@ export function useSummarySideNav() {
 				items: [
 					{
 						key: 'publication_titleAbstract',
-						label: 'Title & Abstract',
+						label: t('publication.titleAbstract'),
+						title: getPublicationTitle(t('publication.titleAbstract')),
 						action: 'selectPublicationMenu',
-						actionArgs: {menu: 'titleAbstract'},
+						actionArgs: {publicationMenu: 'titleAbstract'},
 					},
 					{
-						label: 'Contributors',
-						link: '#',
+						label: t('publication.contributors'),
+						title: getPublicationTitle(t('publication.contributors')),
+						action: 'selectPublicationMenu',
+						actionArgs: {publicationMenu: 'contributors'},
 					},
 					{
 						key: 'publication_metadata',
-						label: 'Metadata',
+						label: t('article.metadata'),
+						title: getPublicationTitle(t('article.metadata')),
 						action: 'selectPublicationMenu',
-						actionArgs: {menu: 'metadata'},
+						actionArgs: {publicationMenu: 'metadata'},
 					},
 					{
 						key: 'citations',
-						label: 'References',
+						label: t('submission.citations'),
+						title: getPublicationTitle(t('submission.citation')),
+
 						action: 'selectPublicationMenu',
-						actionArgs: {menu: 'citations'},
+						actionArgs: {publicationMenu: 'citations'},
 					},
 					{
 						label: 'Galleys',
@@ -147,5 +195,11 @@ export function useSummarySideNav() {
 		return menuItems;
 	}
 
-	return {getMenuItems};
+	function getTitle(itemKey) {
+		if (itemKey.startsWith('publication_')) {
+			return `${t('semicolon', {value: t('submission.publication')})}`;
+		}
+	}
+
+	return {getMenuItems, getTitle};
 }

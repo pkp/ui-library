@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="flex items-center border border-light p-4">
+		<div class="flex items-center border-x border-t border-light p-4">
 			<div class="flex-grow">
 				<h3 class="text-lg-bold text-heading">
 					{{ fileManagerStore.managerConfig.title }}
@@ -55,7 +55,6 @@
 	</div>
 </template>
 <script setup>
-import {inject} from 'vue';
 import {useFileManagerStore} from './fileManagerStore.js';
 import {FileManagerConfigurations} from './useFileManagerConfig.js';
 import PkpButton from '@/components/Button/Button.vue';
@@ -79,7 +78,4 @@ const props = defineProps({
 });
 
 const fileManagerStore = useFileManagerStore(props, props.configName);
-
-const registerDataChangeCallback = inject('registerDataChangeCallback');
-registerDataChangeCallback(() => fileManagerStore.fetchFiles());
 </script>

@@ -1,6 +1,6 @@
 <template>
 	<div class="border border-light">
-		<div class="flex items-center justify-between p-5">
+		<div class="flex items-center justify-between bg-default p-5">
 			<h3 class="text-2xl-bold uppercase text-default">
 				{{ t('editor.submission.stageParticipants') }}
 			</h3>
@@ -16,7 +16,7 @@
 			<li
 				v-for="participant in participantManagerStore.participantsList"
 				:key="participant.id"
-				class="border-t border-light p-4 text-base-normal"
+				class="border-t border-light p-4 text-base-normal even:bg-tertiary"
 			>
 				<div class="flex items-center justify-between">
 					<div class="flex">

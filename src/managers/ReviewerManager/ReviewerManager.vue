@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="border border-light px-3 py-4">
+		<div class="border-x border-t border-light px-3 py-4">
 			<h2 :id="headingId" class="text-lg-bold text-heading">
 				{{ t('dashboard.summary.reviewers') }}
 			</h2>
