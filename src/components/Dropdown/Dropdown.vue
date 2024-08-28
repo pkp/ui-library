@@ -15,6 +15,12 @@
 			<slot name="button">
 				<Icon v-if="icon" :icon="icon" :inline="true" />
 				{{ label }}
+				<Icon
+					v-if="hasDropdownIcon"
+					class="-mr-1 h-5 w-5 text-primary"
+					icon="Dropdown"
+					aria-hidden="true"
+				/>
 			</slot>
 		</PkpButton>
 		<div
@@ -69,6 +75,10 @@ export default {
 		},
 		/** See **Button** props */
 		isWarnable: {
+			type: Boolean,
+			default: false,
+		},
+		hasDropdownIcon: {
 			type: Boolean,
 			default: false,
 		},

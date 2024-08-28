@@ -1,21 +1,35 @@
 <template>
 	<div>
-		<div class="border border-light px-3 py-4">
-			<h2 :id="headingId" class="text-lg-bold text-heading">
-				{{ t('dashboard.summary.reviewers') }}
-			</h2>
-		</div>
 		<PkpTable
 			aria-label="Example for basic table"
 			:aria-describedby="headingId"
 		>
+			<template #label>
+				<h3 class="">
+					{{ t('dashboard.summary.reviewers') }}
+				</h3>
+			</template>
+			<template #top-controls>
+				<div class="flex space-x-2">
+					<PkpButton
+						v-for="action in reviewerStore.topActions"
+						:key="action.name"
+						@click="reviewerStore[action.name]()"
+					>
+						{{ action.label }}
+					</PkpButton>
+				</div>
+			</template>
 			<TableHeader>
 				<TableColumn>{{ t('dashboard.summary.reviewer') }}</TableColumn>
-				<TableColumn v-if="!redactedForAuthors">
+				<TableColumn>
 					{{ t('dashboard.summary.reviewerStatus') }}
 				</TableColumn>
 				<TableColumn>{{ t('common.type') }}</TableColumn>
-				<TableColumn>{{ 'action (t)' }}</TableColumn>
+				<TableColumn>{{ t('grid.columns.actions') }}</TableColumn>
+				<TableColumn v-if="!redactedForAuthors">
+					<span class="sr-only">{{ t('common.moreActions') }}</span>
+				</TableColumn>
 			</TableHeader>
 			<TableBody>
 				<TableRow
@@ -27,7 +41,7 @@
 							{{ reviewAssignment.reviewerFullName }}
 						</span>
 					</TableCell>
-					<TableCell v-if="!redactedForAuthors">
+					<TableCell>
 						<span class="text-base-normal">
 							{{ reviewAssignment.status }}
 						</span>
@@ -44,10 +58,17 @@
 							/>
 						</span>
 					</TableCell>
-					<ReviewerCellActions
+					<ReviewerManagerCellPrimaryActions
 						:review-assignment="reviewAssignment"
 						:submission="submission"
-					></ReviewerCellActions>
+						:redacted-for-authors="redactedForAuthors"
+					></ReviewerManagerCellPrimaryActions>
+					<ReviewerManagerCellActions
+						v-if="!redactedForAuthors"
+						:review-assignment="reviewAssignment"
+						:submission="submission"
+						:redacted-for-authors="redactedForAuthors"
+					></ReviewerManagerCellActions>
 				</TableRow>
 			</TableBody>
 		</PkpTable>
@@ -61,7 +82,9 @@ import TableHeader from '@/components/TableNext/TableHeader.vue';
 import TableBody from '@/components/TableNext/TableBody.vue';
 import TableRow from '@/components/TableNext/TableRow.vue';
 import TableCell from '@/components/TableNext/TableCell.vue';
-import ReviewerCellActions from './ReviewerCellActions.vue';
+import ReviewerManagerCellPrimaryActions from './ReviewerManagerCellPrimaryActions.vue';
+import ReviewerManagerCellActions from './ReviewerManagerCellActions.vue';
+import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
 
 import {useReviewerManagerStore} from './reviewerManagerStore.js';
@@ -74,6 +97,7 @@ const headingId = generateId();
 
 const props = defineProps({
 	submission: {type: Object, required: true},
+	reviewRoundId: {type: Number, required: true},
 	redactedForAuthors: {type: Boolean, required: false, default: false},
 });
 

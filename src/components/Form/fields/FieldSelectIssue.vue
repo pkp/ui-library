@@ -35,7 +35,7 @@
 					v-if="button"
 					v-bind="button"
 					class="pkpFormField--selectIssue__button"
-					@click="emitGlobal(button.event)"
+					@click="selectIssue"
 				>
 					{{ button.label }}
 				</PkpButton>
@@ -56,6 +56,8 @@ import FormFieldLabel from '@/components/Form/FormFieldLabel.vue';
 import HelpButton from '@/components/HelpButton/HelpButton.vue';
 import FieldError from '@/components/Form/FieldError.vue';
 import PkpButton from '@/components/Button/Button.vue';
+
+import {useSubmissionSummaryStore} from '@/pages/dashboard/SubmissionSummaryModal/submissionSummaryStore';
 
 export default {
 	name: 'FieldSelectIssue',
@@ -111,15 +113,8 @@ export default {
 		 */
 		button() {
 			let button = null;
-			if (this.publicationStatus === pkp.const.STATUS_SCHEDULED) {
+			if (this.publicationStatus !== pkp.const.STATUS_PUBLISHED) {
 				button = {
-					event: 'unpublish:publication',
-					isWarnable: true,
-					label: this.unscheduleLabel,
-				};
-			} else if (this.publicationStatus !== pkp.const.STATUS_PUBLISHED) {
-				button = {
-					event: 'schedule:publication',
 					label: this.value ? this.changeIssueLabel : this.assignLabel,
 				};
 			}
@@ -162,6 +157,16 @@ export default {
 		},
 	},
 	methods: {
+		selectIssue() {
+			const summaryStore = useSubmissionSummaryStore();
+
+			summaryStore.workflowAssignToIssue({}, (finishedData) => {
+				if (finishedData.data.issueId) {
+					this.currentValue = finishedData.data.issueId;
+				}
+			});
+		},
+
 		/**
 		 * Emit a global event
 		 *

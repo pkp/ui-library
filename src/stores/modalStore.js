@@ -112,11 +112,11 @@ export const useModalStore = defineStore('modal', () => {
 		}
 	}
 
-	function closeSideModal(component) {
+	function closeSideModal(component, returnData) {
 		if (sideModal1?.value?.component === component) {
-			closeSideModalById(false, sideModal1?.value?.modalId);
+			closeSideModalById(false, sideModal1?.value?.modalId, returnData);
 		} else if (sideModal2?.value?.component === component) {
-			closeSideModalById(false, sideModal2?.value?.modalId);
+			closeSideModalById(false, sideModal2?.value?.modalId, returnData);
 		}
 	}
 
@@ -129,7 +129,11 @@ export const useModalStore = defineStore('modal', () => {
 		return false;
 	}
 
-	function closeSideModalById(triggerLegacyCloseHandler = true, _modalId) {
+	function closeSideModalById(
+		triggerLegacyCloseHandler = true,
+		_modalId,
+		returnData,
+	) {
 		let modalToClose = null;
 		if (sideModal1?.value?.modalId === _modalId && sideModal1?.value?.opened) {
 			modalToClose = sideModal1;
@@ -149,7 +153,7 @@ export const useModalStore = defineStore('modal', () => {
 		}
 		modalToClose.value.opened = false;
 		if (modalToClose.value.onClose) {
-			modalToClose.value.onClose();
+			modalToClose.value.onClose(returnData);
 		}
 		// To keep the side modal animation nice, it needs to keep the component&props around for bit longer
 		setTimeout(() => {

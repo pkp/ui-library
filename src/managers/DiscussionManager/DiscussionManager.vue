@@ -18,4 +18,3 @@ const params = computed(() => ({
 	stageId: props.stageId,
 }));
 </script>
-//

@@ -10,42 +10,50 @@
 				class="doiListItem__versionContainer"
 			>
 				<a
+					:id="versionHeaderId"
 					:href="version.urlPublished"
 					target="_blank"
 					rel="noopener noreferrer"
 				>
 					{{ getVersionHeader(version) }}
 				</a>
-				<PkpTable
-					:columns="doiListColumns"
-					:rows="
-						item.doiObjects.filter(
-							(doiObject) => doiObject.versionNumber === version.versionNumber,
-						)
-					"
-				>
-					<template #default="{row}">
-						<TableCell :column="doiListColumns[0]" :row="row">
-							<label
-								:for="row.uid"
-								v-bind:class="{labelDisabled: row.disabled}"
-							>
-								{{ row.displayType }}
-							</label>
-						</TableCell>
-						<TableCell :column="doiListColumns[1]" :row="row">
-							<input
-								:id="row.uid"
-								v-model="
-									mutableDois.find((doi) => doi.uid === row.uid).identifier
-								"
-								class="pkpFormField__input pkpFormField--text__input"
-								type="text"
-								:readonly="!(isEditingDois && !isSaving)"
-								:disabled="isEditingDois && row.disabled"
-							/>
-						</TableCell>
-					</template>
+				<PkpTable :labelled-by="versionHeaderId">
+					<TableHeader>
+						<TableColumn
+							v-for="column in doiListColumns"
+							:id="column.name"
+							:key="column.name"
+						>
+							{{ column.label }}
+						</TableColumn>
+					</TableHeader>
+					<TableBody>
+						<TableRow
+							v-for="row in item.doiObjects.filter(
+								(doiObject) =>
+									doiObject.versionNumber === version.versionNumber,
+							)"
+							:key="row.column"
+						>
+							<TableCell>
+								<label :for="row.uid" :class="{labelDisabled: row.disabled}">
+									{{ row.displayType }}
+								</label>
+							</TableCell>
+							<TableCell>
+								<input
+									:id="row.uid"
+									v-model="
+										mutableDois.find((doi) => doi.uid === row.uid).identifier
+									"
+									class="pkpFormField__input pkpFormField--text__input"
+									type="text"
+									:readonly="!(isEditingDois && !isSaving)"
+									:disabled="isEditingDois && row.disabled"
+								/>
+							</TableCell>
+						</TableRow>
+					</TableBody>
 				</PkpTable>
 				<span v-if="item.hasDisabled">
 					{{ item.hasDisabledMsg }}
@@ -73,11 +81,16 @@
 <script setup>
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
-import PkpTable from '@/components/Table/Table.vue';
-import TableCell from '@/components/Table/TableCell.vue';
+import PkpTable from '@/components/TableNext/Table.vue';
+import TableCell from '@/components/TableNext/TableCell.vue';
+import TableColumn from '@/components/TableNext/TableColumn.vue';
+import TableHeader from '@/components/TableNext/TableHeader.vue';
+import TableBody from '@/components/TableNext/TableBody.vue';
+import TableRow from '@/components/TableNext/TableRow.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';
 import PkpButton from '@/components/Button/Button.vue';
 
+import {useId} from '@/composables/useId.js';
 import {useLocalize} from '@/composables/useLocalize';
 defineProps({
 	isSaving: {type: Boolean, required: false, default: false},
@@ -88,6 +101,8 @@ defineProps({
 	mutableDois: {type: Array, required: true},
 });
 const {t} = useLocalize();
+const {generateId} = useId();
+const versionHeaderId = generateId();
 
 const emit = defineEmits(['saveDois', 'editDois']);
 /**
