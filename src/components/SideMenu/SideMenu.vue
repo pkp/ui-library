@@ -41,7 +41,6 @@
 import PanelMenu from 'primevue/panelmenu';
 import Icon from '../Icon/Icon.vue';
 import Badge from '../Badge/Badge.vue';
-import {computed} from 'vue';
 
 const props = defineProps({
 	/**
@@ -104,28 +103,6 @@ const emit = defineEmits([
 	/** When the expandedKeys gets updated by the PanelMenu */
 	'update:expandedKeys',
 ]);
-
-// Maps the level attributes which are necessary to render the nested menu
-function mapItems(_items, level = 1) {
-	const result = [];
-
-	_items.forEach((_item) => {
-		const item = {
-			..._item,
-			level,
-		};
-
-		if (_item.items) {
-			item.items = mapItems(_item.items, level + 1);
-		}
-
-		result.push(item);
-	});
-
-	return result;
-}
-
-const items = computed(() => mapItems(props.items));
 
 const navigationStyling = {
 	headerContent: () => {

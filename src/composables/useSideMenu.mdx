@@ -1,20 +1,82 @@
 # useSideMenu
 
-`useSideMenu` is a composable function that helps manage the state of `activeItemKey` and `expandedKeys` for a [SideMenu](../?path=/docs/components-sidemenu--docs) component.
+`useSideMenu` is a composable function designed to manage the state of `activeItemKey` and `expandedKeys` for a [SideMenu](../?path=/docs/components-sidemenu--docs) component. It also provides utilities for interacting with items in the menu based on their keys.
+
+## Usage
+
+To use the `useSideMenu` composable, first import it and then invoke it within your setup function. You need to pass the `items` array that represents your menu structure, and optionally pass an initial `activeItemKey`, an object of `expandedKeys`.
 
 ```javascript
-const {activeItemKey, setActiveItemKey} = useSideMenu('menuItem1_1', {
+const items = [
+	{
+		label: 'Menu Item 1',
+		key: 'menuItem1',
+		items: [
+			{label: 'Item 1.1', key: 'menuItem1_1'},
+			{label: 'Item 1.2', key: 'menuItem1_2'},
+		],
+	},
+	{
+		label: 'Menu Item 2',
+		key: 'menuItem2',
+		items: [{label: 'Item 2.1', key: 'menuItem2_1'}],
+	},
+];
+
+const {activeItemKey, setActiveItemKey} = useSideMenu(items, 'menuItem1_1', {
 	menuItem1: true,
 	menuItem2: true,
 });
 ```
 
-## setActiveItemKey
+## API
+
+### sideMenuProps
+
+A computed property that returns an object with the current state of `items`, `expandedKeys` and `activeItemKey`. It also includes event handlers for updating these states.
+
+```javascript
+const {sideMenuProps} = useSideMenu(items);
+```
+
+Properties:
+
+- `items`: Array - The current list of items, modified with additional property "level" for each items.
+- `expandedKeys`: Object - The current state of expanded keys.
+- `activeItemKey`: String - The key of the currently active item.
+- `onUpdate:expandedKeys`: Function - Event handler to update expandedKeys.
+- `onUpdate:activeItemKey`: Function - Event handler to update activeItemKey
+
+### selectedItem
+
+A computed property that finds and returns the current selected item object from the items array based on the `activeItemKey` value.
+
+```javascript
+const items = [
+	{
+		label: 'Menu Item 1',
+		key: 'menuItem1',
+		items: [
+			{label: 'Item 1.1', key: 'menuItem1_1'},
+			{label: 'Item 1.2', key: 'menuItem1_2'},
+		],
+	},
+	{
+		label: 'Menu Item 2',
+		key: 'menuItem2',
+		items: [{label: 'Item 2.1', key: 'menuItem2_1'}],
+	},
+];
+
+const {selectedItem} = useSideMenu(items, 'menuItem2_1'); // will return {label: 'Item 2.1', key: 'menuItem2_1'}
+```
+
+### setActiveItemKey
 
 This function allows you to set a new active item key dynamically from within your component or from other components that consume the `useSideMenu` composable. It accepts a string that represents the key of the item you want to set as active. This value will be assigned to the `activeItemKey` ref.
 
 ```javascript
-const {activeItemKey, setActiveItemKey} = useSideMenu('menuItem1_1', {
+const {activeItemKey, setActiveItemKey} = useSideMenu(items, 'menuItem1_1', {
 	menuItem1: true,
 	menuItem2: true,
 });
@@ -24,12 +86,12 @@ function someEvent() {
 }
 ```
 
-## setExpandedKeys
+### setExpandedKeys
 
-It allows you to dynamically set which keys should be expanded in the `SideMenu` component. It accepts an array of strings where each string represents a key that should be expanded in the side menu.
+It allows you to dynamically update new set of keys that should be expanded in the `SideMenu` component. It accepts an array of strings where each string represents a key that should be expanded in the side menu.
 
 ```javascript
-const {expandedKeys, setExpandedKeys} = useSideMenu('menuItem1_1', {
+const {expandedKeys, setExpandedKeys} = useSideMenu(items, 'menuItem1_1', {
 	menuItem1: true,
 	menuItem2: true,
 });
@@ -40,7 +102,15 @@ function someEvent() {
 }
 ```
 
-### Import
+### updateExpandedKeys
+
+Directly updates the expandedKeys object. This is typically used internally but can be useful for more advanced use cases.
+
+```javascript
+updateExpandedKeys({menuItem1: true, menuItem3: true});
+```
+
+## Import
 
 ```javascript
 import {useSideMenu} from '@/composables/useSideMenu.js';

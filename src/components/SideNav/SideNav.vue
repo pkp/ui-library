@@ -6,7 +6,6 @@
 	>
 		<SideMenu
 			v-bind="sideMenuProps"
-			:items="items"
 			background-variant="bg-secondary"
 		></SideMenu>
 	</nav>
@@ -95,5 +94,9 @@ function getExpandedKeys(items) {
 	return _expandedKeys;
 }
 
-const {sideMenuProps} = useSideMenu(currentActiveKey, getExpandedKeys(items));
+const {sideMenuProps} = useSideMenu(
+	items,
+	currentActiveKey,
+	getExpandedKeys(items),
+);
 </script>
