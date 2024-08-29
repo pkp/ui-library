@@ -124,7 +124,14 @@ const EditorialStatsPageWithDataAndTemplate = {
 						</TableHeader>
 						<TableBody>
 							<TableRow v-for="(row, index) in tableRows" :key="index">
-								<TableCell>{{ row.name }}</TableCell>
+								<TableCell>
+									{{ row.name }}
+									 <Tooltip
+										v-if="row.description"
+										:label="'Description for ' + row.name"
+										:tooltip="row.description"
+									></Tooltip>
+								</TableCell>
 								<TableCell>{{ row.dateRange }}</TableCell>
 								<TableCell>{{ row.total }}</TableCell>
 							</TableRow>
