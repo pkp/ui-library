@@ -37,6 +37,10 @@ export default {
 			for (const [key, value] of Object.entries(formSubmitValues)) {
 				switch (key) {
 					case 'customer_id':
+						if (parseInt(value, 10) >= 0) {
+							params[key] = value;
+						}
+						break;
 					case 'begin_date':
 					case 'end_date':
 					case 'yop':
