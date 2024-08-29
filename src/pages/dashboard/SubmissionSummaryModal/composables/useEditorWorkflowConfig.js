@@ -7,16 +7,7 @@ export function useEditorWorkflowConfig() {
 	const {hasSubmissionPassedStage, hasNotSubmissionStartedStage} =
 		useSubmission();
 
-	function getPrimaryItems({
-		submission,
-		currentPublication,
-		selectedStageId,
-		selectedReviewRound,
-	}) {
-		//const activeStage = getActiveStage(submission);
-
-		//const isSelectedStageActive = selectedStageId === activeStage.id;
-
+	function getPrimaryItems({submission, selectedStageId, selectedReviewRound}) {
 		const items = [];
 
 		if (selectedStageId === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION) {
@@ -26,14 +17,7 @@ export function useEditorWorkflowConfig() {
 					pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
 				)
 			) {
-				items.push({
-					component: 'PrimaryBasicMetadata',
-					props: {
-						body: t(
-							'editor.submission.workflowDecision.submission.underReview',
-						),
-					},
-				});
+				items.push({component: 'SubmissionStatus', props: {submission}});
 			}
 
 			items.push({
@@ -161,6 +145,14 @@ export function useEditorWorkflowConfig() {
 				},
 			});
 		} else if (selectedStageId === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION) {
+			if (submission.status === pkp.const.STATUS_PUBLISHED) {
+				items.push({
+					component: 'PrimaryBasicMetadata',
+					props: {
+						body: t('editor.submission.workflowDecision.submission.published'),
+					},
+				});
+			}
 			items.push({
 				component: 'FileManager',
 				props: {
@@ -369,20 +361,22 @@ export function useEditorWorkflowConfig() {
 			items.push({
 				component: 'ActionButton',
 				props: {
-					label: t('dashboard.summary.scheduleForPublication'),
+					label: t('editor.submission.schedulePublication'),
 					isPrimary: true,
-					action: 'scheduleForPublication',
+					action: 'navigateToMenu',
+					actionArgs: {key: 'publication_titleAbstract'},
 				},
 			});
 
-			items.push({
-				component: 'ActionButton',
-				props: {
-					label: t('dashboard.summary.backToCopyediting'),
-					isWarnable: true,
-					action: 'decisionBackFromProduction',
-				},
-			});
+			if (submission.status === pkp.const.STATUS_QUEUED)
+				items.push({
+					component: 'ActionButton',
+					props: {
+						label: t('dashboard.summary.backToCopyediting'),
+						isWarnable: true,
+						action: 'decisionBackFromProduction',
+					},
+				});
 		}
 		return items;
 	}

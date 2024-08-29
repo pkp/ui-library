@@ -73,6 +73,11 @@ export const useSubmissionSummaryStore = defineComponentStore(
 							)?.id
 						}`,
 					);
+				} else if (
+					newSubmission.stageId === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION &&
+					newSubmission.status !== pkp.const.STATUS_QUEUED
+				) {
+					setActiveItemKey(`publication_titleAbstract`);
 				} else {
 					setActiveItemKey(`workflow_${newSubmission.stageId}`);
 				}
@@ -128,6 +133,11 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		const {handleSubmissionAction} = useHandleActions(props.pageInitConfig);
 
 		function handleAction(actionName, _actionArgs) {
+			if (actionName === 'navigateToMenu') {
+				setActiveItemKey(_actionArgs.key);
+				return;
+			}
+
 			const actionArgs = {
 				..._actionArgs,
 				submission: submission.value,
@@ -212,7 +222,11 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		});
 
 		const publicationControlsRight = computed(() => {
-			if (!submission.value || !selectedMenuState.value.publicationMenu) {
+			if (
+				!submission.value ||
+				!selectedPublication.value ||
+				!selectedMenuState.value.publicationMenu
+			) {
 				return [];
 			}
 

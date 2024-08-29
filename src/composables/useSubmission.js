@@ -71,6 +71,14 @@ export function useSubmission() {
 		);
 	}
 
+	function getLatestPublication(submission) {
+		return submission.publications.reduce(
+			(latestPublication, publication) =>
+				publication.id > latestPublication.id ? publication : latestPublication,
+			submission.publications[0],
+		);
+	}
+
 	function getExtendedStage(submission) {
 		const activeStage = getActiveStage(submission);
 
@@ -137,6 +145,7 @@ export function useSubmission() {
 		getReviewRoundsForStage,
 		getCurrentReviewAssignments,
 		getCurrentPublication,
+		getLatestPublication,
 		getFileStageFromWorkflowStage,
 		hasNotSubmissionStartedStage,
 		hasSubmissionPassedStage,

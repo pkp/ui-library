@@ -1,6 +1,7 @@
 import {useSubmission} from '@/composables/useSubmission.js';
 import {useLocalize} from '@/composables/useLocalize';
 import {useDate} from '@/composables/useDate';
+import {Actions} from './useHandleActions';
 
 const {formatShortDate} = useDate();
 
@@ -18,7 +19,7 @@ export function useEditorialLogic() {
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
-							actionName: 'assignParticipant',
+							actionName: Actions.ASSIGN_PARTICIPANT,
 							actionLabel: t('dashboard.assignEditor'),
 						},
 					},
@@ -34,7 +35,7 @@ export function useEditorialLogic() {
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
-							actionName: 'assignReviewers',
+							actionName: Actions.ASSIGN_REVIEWERS,
 							actionLabel: t('dashboard.assignReviewers'),
 						},
 					},
@@ -137,7 +138,7 @@ export function useEditorialLogic() {
 						props: {
 							alert: t('dashboard.revisionRequested'),
 							actionLabel: t('dashboard.submitRevisions'),
-							actionName: 'uploadRevisions',
+							actionName: Actions.UPLOAD_REVISIONS,
 						},
 					},
 				];

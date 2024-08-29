@@ -116,7 +116,8 @@ import PublicationVersionControl from './publicationControls/PublicationVersionC
 import ActionButton from './actionItems/ActionButton.vue';
 import EditorsAssigned from './metaItems/EditorsAssigned.vue';
 import BasicMetadata from './metaItems/BasicMetadata.vue';
-
+import SubmissionStatus from './primaryItems/SubmissionStatus.vue';
+import PublicationEditDisabled from './primaryItems/PublicationEditDisabled.vue';
 import IssueAssigned from './metaItems/IssueAssigned.vue';
 import {useSubmissionSummaryStore} from './submissionSummaryStore';
 import SideModalLayoutMenu2Columns from '@/components/Modal/SideModalLayoutMenu2Columns.vue';
@@ -140,6 +141,8 @@ const Components = {
 	ReviewRoundStatus,
 	PublicationTitleAbstractForm,
 	PublicationVersionControl,
+	SubmissionStatus,
+	PublicationEditDisabled,
 };
 
 const props = defineProps({

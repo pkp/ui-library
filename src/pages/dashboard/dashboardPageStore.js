@@ -14,6 +14,8 @@ import {useHandleActions} from './composables/useHandleActions';
 import {useEditorialLogic} from './composables/useEditorialLogic';
 import {useReviewActivityLogic} from './composables/useReviewActivityLogic';
 
+import {useSubmission} from '@/composables/useSubmission';
+
 import DashboardFiltersModal from '@/pages/dashboard/components/DashboardFiltersModal.vue';
 import SubmissionSummaryModal from '@/pages/dashboard/SubmissionSummaryModal/SubmissionSummaryModal.vue';
 
@@ -174,12 +176,19 @@ export const useDashboardPageStore = defineComponentStore(
 		);
 
 		const {handleSubmissionAction} = useHandleActions(pageInitConfig);
+		const {getCurrentPublication} = useSubmission();
 		function handleItemAction(actionName, actionArgs) {
 			const submission = submissions.value.find(
 				(submission) => submission.id === actionArgs.submissionId,
 			);
+			const selectedPublication = getCurrentPublication(submission);
+			const actionArgsExtended = {
+				...actionArgs,
+				submission,
+				selectedPublication,
+			};
 
-			handleSubmissionAction(submission, actionName, actionArgs, async () => {
+			handleSubmissionAction(actionName, actionArgsExtended, async () => {
 				await fetchSubmissions();
 			});
 		}

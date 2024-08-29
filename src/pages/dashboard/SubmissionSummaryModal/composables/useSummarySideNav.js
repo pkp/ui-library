@@ -136,7 +136,8 @@ export function useSummarySideNav() {
 				label: 'Production',
 				title: getWorkflowTitle(pkp.const.WORKFLOW_STAGE_ID_PRODUCTION),
 				colorStripe:
-					activeStage.id === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION
+					activeStage.id === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION &&
+					submission.status === pkp.const.STATUS_QUEUED
 						? 'border-stage-copyediting'
 						: null,
 				action: 'selectStage',

@@ -7,44 +7,83 @@ import {useFetch} from '@/composables/useFetch';
 import {useUrlSearchParams} from '@vueuse/core';
 import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 
+export const Actions = {
+	DECISION_ACCEPT: 'decisionAccept',
+	DECISION_CANCEL_REVIEW_ROUND: 'decisionCancelReviewRound',
+	DECISION_DECLINE_SUBMISSION: 'decisionDeclineSubmission',
+	DECISION_EXTERNAL_REVIEW: 'decisionExternalReview',
+	DECISION_SKIP_EXTERNAL_REVIEW: 'decisionSkipExternalReview',
+	DECISION_INITIAL_DECLINE: 'decisionInitialDecline',
+	DECISION_SEND_TO_PRODUCTION: 'decisionSendToProduction',
+	DECISION_BACK_FROM_COPYEDITING: 'decisionBackFromCopyediting',
+	DECISION_NEW_EXTERNAL_ROUND: 'decisionNewExternalRound',
+	DECISION_BACK_FROM_PRODUCTION: 'decisionBackFromProduction',
+
+	REQUEST_REVISION: 'requestRevisions',
+	ASSIGN_REVIEWERS: 'assignReviewers',
+	UNASSIGN_REVIEWER: 'unassignReviewer',
+	CANCEL_REVIEWER: 'cancelReviewer',
+	RESEND_REVIEW_REQUEST: 'resendReviewRequest',
+
+	// TODO rename so its clear whats that for
+	VIEW_DETAILS: 'viewDetails',
+	VIEW_UNREAD_RECOMMENDATION: 'viewUnreadRecommendation',
+	VIEW_RECOMMENDATION: 'viewRecommendation',
+
+	EDIT_DUE_DATE: 'editDueDate',
+	ASSIGN_TO_ISSUE: 'assignToIssue',
+	VIEW_ACTIVITY_LOG: 'viewActivityLog',
+	ASSIGN_PARTICIPANT: 'assignParticipant',
+	UPLOAD_REVISIONS: 'uploadRevisions',
+	OPEN_REVIEW_FORM: 'openReviewForm',
+	UPLOAD_REVIEWER_FILE: 'uploadReviewerFile',
+	ASSIGN_TO_ISSUE_AND_SCHEULE_FOR_PUBLICATION:
+		'assignToIssueAndScheduleForPublication',
+	SCHEDULE_FOR_PUBLICATION: 'scheduleForPublication',
+	PREVIEW_PUBLICATION: 'previewPublication',
+	UNSCHEDULE_PUBLICATION: 'unschedulePublication',
+	UNPUBLISH_PUBLICATION: 'unpublichPublication',
+	CREATE_NEW_VERSION: 'createNewVersion',
+};
+
 import SelectRevisionRecommendationFormModal from '../components/SelectRevisionRecommendationFormModal.vue';
 export function useHandleActions({selectRevisionDecisionForm}) {
 	function handleSubmissionAction(actionName, actionArgs, finishedCallback) {
 		const {submission, selectedPublication} = actionArgs;
 		const {openSideModal, openDialog} = useModal();
 		const {t, localize} = useLocalize();
-		const {getCurrentReviewRound} = useSubmission();
+		const {getCurrentReviewRound, getLatestPublication} = useSubmission();
 
 		const editorialDecisionActions = {
 			requestRevisions: {},
-			decisionAccept: {
+			[Actions.DECISION_ACCEPT]: {
 				decisionId: pkp.const.DECISION_ACCEPT,
 			},
-			decisionCancelReviewRound: {
+			[Actions.DECISION_CANCEL_REVIEW_ROUND]: {
 				decisionId: pkp.const.DECISION_CANCEL_REVIEW_ROUND,
 			},
-			declineSubmission: {
+			[Actions.DECISION_DECLINE_SUBMISSION]: {
 				decisionId: pkp.const.DECISION_DECLINE,
 			},
-			decisionExternalReview: {
+			[Actions.DECISION_EXTERNAL_REVIEW]: {
 				decisionId: pkp.const.DECISION_EXTERNAL_REVIEW,
 			},
-			decisionSkipExternalReview: {
+			[Actions.DECISION_SKIP_EXTERNAL_REVIEW]: {
 				decisionId: pkp.const.DECISION_SKIP_EXTERNAL_REVIEW,
 			},
-			decisionInitialDecline: {
+			[Actions.DECISION_INITIAL_DECLINE]: {
 				decisionId: pkp.const.DECISION_INITIAL_DECLINE,
 			},
-			decisionSendToProduction: {
+			[Actions.DECISION_SEND_TO_PRODUCTION]: {
 				decisionId: pkp.const.DECISION_SEND_TO_PRODUCTION,
 			},
-			decisionBackFromCopyediting: {
+			[Actions.DECISION_BACK_FROM_COPYEDITING]: {
 				decisionId: pkp.const.DECISION_BACK_FROM_COPYEDITING,
 			},
-			decisionNewExternalRound: {
+			[Actions.DECISION_NEW_EXTERNAL_ROUND]: {
 				decisionId: pkp.const.DECISION_NEW_EXTERNAL_ROUND,
 			},
-			decisionBackFromProduction: {
+			[Actions.DECISION_BACK_FROM_PRODUCTION]: {
 				decisionId: pkp.const.DECISION_BACK_FROM_PRODUCTION,
 			},
 		};
@@ -72,8 +111,13 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 			redirectToPage();
 		}
 
+		console.log(
+			'actionName:',
+			actionName,
+			editorialDecisionActions[actionName],
+		);
 		if (editorialDecisionActions[actionName]) {
-			if (actionName === 'requestRevisions') {
+			if (actionName === Actions.REQUEST_REVISION) {
 				// open modal
 				const {set, form, getValue} = useForm(selectRevisionDecisionForm);
 				openSideModal(SelectRevisionRecommendationFormModal, {
@@ -99,7 +143,7 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 			// redirect to decisions page
 		}
 
-		if (actionName === 'assignReviewers') {
+		if (actionName === Actions.ASSIGN_REVIEWERS) {
 			const activeReviewRound = getCurrentReviewRound(submission);
 
 			const {url} = useLegacyGridUrl({
@@ -117,7 +161,7 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 				'LegacyAjax',
 				{
 					legacyOptions: {
-						title: t('editor.submission.addStageParticipant'),
+						title: t('editor.submission.addReviewer'),
 						url: url.value,
 					},
 				},
@@ -127,7 +171,9 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 					},
 				},
 			);
-		} else if (['unassignReviewer', 'cancelReviewer'].includes(actionName)) {
+		} else if (
+			[Actions.UNASSIGN_REVIEWER, Actions.CANCEL_REVIEWER].includes(actionName)
+		) {
 			const {url} = useLegacyGridUrl({
 				component: 'grid.users.reviewer.ReviewerGridHandler',
 				op: 'unassignReviewer',
@@ -140,7 +186,7 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 			});
 
 			const modalTitle =
-				actionName === 'unassignReviewer'
+				actionName === Actions.UNASSIGN_REVIEWER
 					? t('editor.review.unassignReviewer')
 					: t('editor.review.cancelReviewer');
 
@@ -155,7 +201,7 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 					},
 				},
 			);
-		} else if (actionName === 'resendReviewRequest') {
+		} else if (actionName === Actions.RESEND_REVIEW_REQUEST) {
 			const {url} = useLegacyGridUrl({
 				component: 'grid.users.reviewer.ReviewerGridHandler',
 				op: 'resendRequestReviewer',
@@ -179,9 +225,9 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 			);
 		} else if (
 			[
-				'viewDetails',
-				'viewUnreadRecommendation',
-				'viewRecommendation',
+				Actions.VIEW_DETAILS,
+				Actions.VIEW_UNREAD_RECOMMENDATION,
+				Actions.VIEW_RECOMMENDATION,
 			].includes(actionName)
 		) {
 			const {url} = useLegacyGridUrl({
@@ -194,13 +240,11 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 				},
 			});
 
-			const {getCurrentPublication} = useSubmission();
-
 			openSideModal(
 				'LegacyAjax',
 				{
 					legacyOptions: {
-						title: `${t('editor.review.reviewDetails')}: ${localize(getCurrentPublication(submission).fullTitle)}`,
+						title: `${t('editor.review.reviewDetails')}: ${localize(selectedPublication.fullTitle)}`,
 						url,
 					},
 				},
@@ -210,7 +254,7 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 					},
 				},
 			);
-		} else if (actionName === 'editDueDate') {
+		} else if (actionName === Actions.EDIT_DUE_DATE) {
 			const {url} = useLegacyGridUrl({
 				component: 'grid.users.reviewer.ReviewerGridHandler',
 				op: 'editReview',
@@ -232,14 +276,13 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 					},
 				},
 			);
-		} else if (actionName === 'assignToIssue') {
-			const {getCurrentPublication} = useSubmission();
+		} else if (actionName === Actions.ASSIGN_TO_ISSUE) {
 			const {url} = useLegacyGridUrl({
 				component: 'modals.publish.AssignToIssueHandler',
 				op: 'assign',
 				params: {
 					submissionId: submission.id,
-					publicationId: getCurrentPublication(submission).id,
+					publicationId: selectedPublication.id,
 				},
 			});
 
@@ -259,7 +302,7 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 					},
 				},
 			);
-		} else if (actionName === 'viewActivityLog') {
+		} else if (actionName === Actions.VIEW_ACTIVITY_LOG) {
 			const {url} = useLegacyGridUrl({
 				component: 'informationCenter.SubmissionInformationCenterHandler',
 				op: 'viewInformationCenter',
@@ -279,7 +322,7 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 					},
 				},
 			);
-		} else if (actionName === 'assignParticipant') {
+		} else if (actionName === Actions.ASSIGN_PARTICIPANT) {
 			const {url} = useLegacyGridUrl({
 				component: 'grid.users.stageParticipant.StageParticipantGridHandler',
 				op: 'addParticipant',
@@ -303,7 +346,7 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 					},
 				},
 			);
-		} else if (actionName === 'uploadRevisions') {
+		} else if (actionName === Actions.UPLOAD_REVISIONS) {
 			const activeReviewRound = getCurrentReviewRound(submission);
 			const {getFileStageFromWorkflowStage} = useSubmission();
 
@@ -330,71 +373,23 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 					},
 				},
 			);
-		} else if (actionName === 'openReviewForm') {
+		} else if (actionName === Actions.OPEN_REVIEW_FORM) {
 			const {redirectToPage} = useUrl(
 				`reviewer/submission/${encodeURIComponent(submission.id)}`,
 				{},
 			);
 
 			redirectToPage();
-		} else if (actionName === 'uploadReviewerFile') {
-			const activeReviewRound = getCurrentReviewRound(submission);
-			// fileStage=5&reviewRoundId=8&assocType=517&assocId=28&submissionId=10&stageId=3&uploaderRoles=16-1-17-4096
-			const {url} = useLegacyGridUrl({
-				component: 'wizard.fileUpload.FileUploadWizardHandler',
-				op: 'startWizard',
-				params: {
-					fileStage: pkp.const.SUBMISSION_FILE_REVIEW_ATTACHMENT,
-					reviewRoundId: activeReviewRound.id,
-					assocType: pkp.const.ASSOC_TYPE_REVIEW_ASSIGNMENT,
-					assocId: actionArgs.reviewAssignmentId,
-					submissionId: submission.id,
-					stageId: submission.stageId,
-					uploaderRoles: pkp.const.ROLE_ID_REVIEWER,
-				},
-			});
-
-			openSideModal(
-				'LegacyAjax',
-				{
-					legacyOptions: {
-						url,
-						title: t('editor.submissionReview.uploadAttachment'),
-					},
-				},
-				{
-					onClose: async () => {
-						finishedCallback();
-					},
-				},
-			);
-		} else if (actionName === 'declineReviewAssignment') {
-			//publicknowledge/en/reviewer/showDeclineReview/5
-			const {pageUrl} = useUrl(`reviewer/showDeclineReview/${submission.id}`);
-
-			openSideModal(
-				'LegacyAjax',
-				{
-					legacyOptions: {
-						title: t('reviewer.submission.declineReview'),
-						url: pageUrl,
-					},
-				},
-				{
-					onClose: async () => {
-						finishedCallback();
-					},
-				},
-			);
-		} else if (actionName === 'assignToIssueAndScheduleForPublication') {
+		} else if (
+			actionName === Actions.ASSIGN_TO_ISSUE_AND_SCHEULE_FOR_PUBLICATION
+		) {
 			if (selectedPublication.issueId === null) {
-				const {getCurrentPublication} = useSubmission();
 				const {url} = useLegacyGridUrl({
 					component: 'modals.publish.AssignToIssueHandler',
 					op: 'assign',
 					params: {
 						submissionId: submission.id,
-						publicationId: getCurrentPublication(submission).id,
+						publicationId: selectedPublication.id,
 					},
 				});
 
@@ -411,7 +406,7 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 						onClose: async ({formId, data}) => {
 							if (data?.issueId) {
 								handleSubmissionAction(
-									'scheduleForPublication',
+									Actions.SCHEDULE_FOR_PUBLICATION,
 									actionArgs,
 									finishedCallback,
 								);
@@ -423,20 +418,18 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 				);
 			} else {
 				handleSubmissionAction(
-					'scheduleForPublication',
+					Actions.SCHEDULE_FOR_PUBLICATION,
 					actionArgs,
 					finishedCallback,
 				);
 			}
-		} else if (actionName === 'scheduleForPublication') {
-			const {getCurrentPublication} = useSubmission();
-
+		} else if (actionName === Actions.SCHEDULE_FOR_PUBLICATION) {
 			const {url} = useLegacyGridUrl({
 				component: 'modals.publish.PublishHandler',
 				op: 'publish',
 				params: {
 					submissionId: submission.id,
-					publicationId: getCurrentPublication(submission).id,
+					publicationId: selectedPublication.id,
 				},
 			});
 			openSideModal(
@@ -454,28 +447,34 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 					},
 				},
 			);
-		} else if (actionName === 'previewPublication') {
-			const {getCurrentPublication} = useSubmission();
-
-			const {redirectToPage} = useUrl(
-				getCurrentPublication(submission).urlPublished,
-			);
+		} else if (actionName === Actions.PREVIEW_PUBLICATION) {
+			const {redirectToPage} = useUrl(selectedPublication.urlPublished);
 
 			redirectToPage();
-		} else if (actionName === 'unschedulePublication') {
+		} else if (
+			[Actions.UNSCHEDULE_PUBLICATION, Actions.UNPUBLISH_PUBLICATION].includes(
+				actionName,
+			)
+		) {
 			openDialog({
-				title: t('publication.unschedule'),
-				message: t('publication.unschedule.confirm'),
+				title:
+					actionName === Actions.UNSCHEDULE_PUBLICATION
+						? t('publication.unschedule')
+						: t('publication.unpublish'),
+				message:
+					actionName === Actions.UNSCHEDULE_PUBLICATION
+						? t('publication.unschedule.confirm')
+						: t('publication.unpublish.confirm'),
 				actions: [
 					{
-						label: t('publication.unschedule'),
+						label:
+							actionName === Actions.UNSCHEDULE_PUBLICATION
+								? t('publication.unschedule')
+								: t('publication.unpublish'),
 						isPrimary: true,
 						callback: async (close) => {
-							const {getCurrentPublication} = useSubmission();
-
-							const currentPublication = getCurrentPublication(submission);
 							const {apiUrl: unschedulePublicationApiUrl} = useUrl(
-								`submissions/${submission.id}/publications/${currentPublication.id}/unpublish`,
+								`submissions/${submission.id}/publications/${selectedPublication.id}/unpublish`,
 							);
 							const {fetch} = useFetch(unschedulePublicationApiUrl, {
 								method: 'PUT',
@@ -487,6 +486,35 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 					},
 					{
 						label: t('common.cancel'),
+						callback: (close) => close(),
+					},
+				],
+			});
+		} else if (actionName === Actions.CREATE_NEW_VERSION) {
+			openDialog({
+				title: t('publication.createVersion'),
+				message: t('publication.version.confirm'),
+				actions: [
+					{
+						label: t('common.yes'),
+						isWarnable: true,
+						callback: async (close) => {
+							close();
+
+							const latestPublication = getLatestPublication(submission);
+
+							const {apiUrl: createNewVersionUrl} = useUrl(
+								`submissions/${submission.id}/publications/${latestPublication.id}/version`,
+							);
+							const {fetch} = useFetch(createNewVersionUrl, {
+								method: 'POST',
+							});
+							await fetch();
+							finishedCallback();
+						},
+					},
+					{
+						label: t('common.no'),
 						callback: (close) => close(),
 					},
 				],

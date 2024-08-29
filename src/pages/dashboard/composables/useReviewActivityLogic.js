@@ -1,7 +1,7 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {useDate} from '@/composables/useDate';
 import {useReviewAssignment} from '@/composables/useReviewAssignment';
-
+import {Actions} from './useHandleActions';
 const {tk, t} = useLocalize();
 
 const {calculateDaysBetweenDates} = useDate();
@@ -89,9 +89,9 @@ const ConfigPerStatus = {
 		descriptionKey: tk(
 			'dashboard.reviewAssignment.statusAwaitingResponse.description',
 		),
-		textAction: 'editDueDate',
-		primaryAction: 'viewDetails',
-		negativeAction: 'unassignReviewer',
+		textAction: Actions.EDIT_DUE_DATE,
+		primaryAction: Actions.VIEW_DETAILS,
+		negativeAction: Actions.UNASSIGN_REVIEWER,
 		dateToDisplay: 'dateResponseDue',
 	},
 	// reviewer declined review request
@@ -107,9 +107,9 @@ const ConfigPerStatus = {
 		},
 		titleKey: tk('dashboard.reviewAssignment.statusDeclined.title'),
 		descriptionKey: tk('dashboard.reviewAssignment.statusDeclined.description'),
-		textAction: 'resendReviewRequest',
-		primaryAction: 'viewDetails',
-		negativeAction: 'cancelReviewer',
+		textAction: Actions.RESEND_REVIEW_REQUEST,
+		primaryAction: Actions.VIEW_DETAILS,
+		negativeAction: Actions.CANCEL_REVIEWER,
 		dateToDisplay: 'dateConfirmed',
 	},
 	// review not responded within due date
@@ -126,9 +126,9 @@ const ConfigPerStatus = {
 		descriptionKey: tk(
 			'dashboard.reviewAssignment.statusResponseOverdue.description',
 		),
-		textAction: 'editDueDate',
-		primaryAction: 'viewDetails',
-		negativeAction: 'unassignReviewer',
+		textAction: Actions.EDIT_DUE_DATE,
+		primaryAction: Actions.VIEW_DETAILS,
+		negativeAction: Actions.UNASSIGN_REVIEWER,
 		dateToDisplay: 'dateResponseDue',
 	},
 	// reviewer has agreed to the review
@@ -143,9 +143,9 @@ const ConfigPerStatus = {
 		},
 		titleKey: tk('dashboard.reviewAssignment.statusAccepted.title'),
 		descriptionKey: tk('dashboard.reviewAssignment.statusAccepted.description'),
-		textAction: 'editDueDate',
-		primaryAction: 'viewDetails',
-		negativeAction: 'unassignReviewer',
+		textAction: Actions.EDIT_DUE_DATE,
+		primaryAction: Actions.VIEW_DETAILS,
+		negativeAction: Actions.UNASSIGN_REVIEWER,
 		dateToDisplay: 'dateDue',
 	},
 	// review not submitted within due date
@@ -162,9 +162,9 @@ const ConfigPerStatus = {
 		descriptionKey: tk(
 			'dashboard.reviewAssignment.statusReviewOverdue.description',
 		),
-		textAction: 'editDueDate',
-		primaryAction: 'viewDetails',
-		negativeAction: 'unassignReviewer',
+		textAction: Actions.EDIT_DUE_DATE,
+		primaryAction: Actions.VIEW_DETAILS,
+		negativeAction: Actions.UNASSIGN_REVIEWER,
 		dateToDisplay: 'dateDue',
 	},
 	// review has been submitted
@@ -181,7 +181,7 @@ const ConfigPerStatus = {
 		titleKey: tk('dashboard.reviewAssignment.statusReceived.title'),
 		descriptionKey: tk('dashboard.reviewAssignment.statusReceived.description'),
 		textAction: null,
-		primaryAction: 'viewUnreadRecommendation',
+		primaryAction: Actions.VIEW_UNREAD_RECOMMENDATION,
 		negativeAction: null,
 		dateToDisplay: 'dateCompleted',
 	},
@@ -199,7 +199,7 @@ const ConfigPerStatus = {
 		titleKey: tk('dashboard.reviewAssignment.statusReceived.title'),
 		descriptionKey: tk('dashboard.reviewAssignment.statusReceived.description'),
 		textAction: null,
-		primaryAction: 'viewRecommendation',
+		primaryAction: Actions.VIEW_RECOMMENDATION,
 		negativeAction: null,
 		dateToDisplay: 'dateCompleted',
 	},
@@ -220,7 +220,7 @@ const ConfigPerStatus = {
 		// same as for STATUS_RECEIVED
 		descriptionKey: tk('dashboard.reviewAssignment.statusComplete.description'),
 		textAction: null,
-		primaryAction: 'viewRecommendation',
+		primaryAction: Actions.VIEW_RECOMMENDATION,
 		negativeAction: null,
 		dateToDisplay: 'dateCompleted',
 	},
@@ -241,7 +241,7 @@ const ConfigPerStatus = {
 		// same as for STATUS_RECEIVED
 		descriptionKey: tk('dashboard.reviewAssignment.statusComplete.description'),
 		textAction: null,
-		primaryAction: 'viewRecommendation',
+		primaryAction: Actions.VIEW_RECOMMENDATION,
 		negativeAction: null,
 		dateToDisplay: 'dateCompleted',
 	},
@@ -261,8 +261,8 @@ const ConfigPerStatus = {
 		descriptionKey: tk(
 			'dashboard.reviewAssignment.statusCancelled.description',
 		),
-		textAction: 'resendReviewRequest',
-		primaryAction: 'viewDetails',
+		textAction: Actions.RESEND_REVIEW_REQUEST,
+		primaryAction: Actions.VIEW_DETAILS,
 		negativeAction: null,
 		// TODO: its not tracked on backend
 		dateToDisplay: 'dateCancelled',
@@ -281,9 +281,9 @@ const ConfigPerStatus = {
 		descriptionKey: tk(
 			'dashboard.reviewAssignment.statusRequestResend.description',
 		),
-		textAction: 'editDueDate',
-		primaryAction: 'viewDetails',
-		negativeAction: 'unassignReviewer',
+		textAction: Actions.EDIT_DUE_DATE,
+		primaryAction: Actions.VIEW_DETAILS,
+		negativeAction: Actions.UNASSIGN_REVIEWER,
 		dateToDisplay: 'dateResponseDue',
 	},
 };

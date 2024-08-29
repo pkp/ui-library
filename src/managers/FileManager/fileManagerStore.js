@@ -29,7 +29,7 @@ export const useFileManagerStore = defineComponentStore(
 		const {data, fetch: fetchFiles} = useFetch(filesApiUrl, {
 			query: {
 				fileStages: managerConfig.value.fileStage,
-				reviewRoundId: props.reviewRoundId ? props.reviewRoundId : undefined,
+				reviewRoundIds: props.reviewRoundId ? props.reviewRoundId : undefined,
 			},
 		});
 
