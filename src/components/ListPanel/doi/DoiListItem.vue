@@ -67,7 +67,7 @@
 			v-if="isExpanded"
 			class="listPanel__itemExpanded listPanel__itemExpanded--doi"
 		>
-			<PkpTable :aria-label="'DOI for ' + item.title">
+			<PkpTable>
 				<TableHeader>
 					<TableColumn
 						v-for="column in doiListColumns"
@@ -152,10 +152,10 @@
 								? t('manager.dois.registration.manuallyMarkedRegistered')
 								: t('manager.dois.registration.submittedDescription', {
 										registrationAgency: itemRegistrationAgencyName,
-									})
+								  })
 							: t('manager.dois.registration.notSubmittedDescription', {
 									registrationAgency: registrationAgencyInfo['displayName'],
-								})
+							  })
 					}}
 				</span>
 				<span v-else class="doiListItem__depositorDescription">

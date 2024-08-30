@@ -10,13 +10,14 @@
 				class="doiListItem__versionContainer"
 			>
 				<a
+					:id="versionHeaderId"
 					:href="version.urlPublished"
 					target="_blank"
 					rel="noopener noreferrer"
 				>
 					{{ getVersionHeader(version) }}
 				</a>
-				<PkpTable :aria-label="getVersionHeader(version)">
+				<PkpTable :labelled-by="versionHeaderId">
 					<TableHeader>
 						<TableColumn
 							v-for="column in doiListColumns"
@@ -92,6 +93,7 @@ import TableRow from '@/components/TableNext/TableRow.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';
 import PkpButton from '@/components/Button/Button.vue';
 
+import {useId} from '@/composables/useId.js';
 import {useLocalize} from '@/composables/useLocalize';
 defineProps({
 	isSaving: {type: Boolean, required: false, default: false},
@@ -102,6 +104,8 @@ defineProps({
 	mutableDois: {type: Array, required: true},
 });
 const {t} = useLocalize();
+const {generateId} = useId();
+const versionHeaderId = generateId();
 
 const emit = defineEmits(['saveDois', 'editDois']);
 /**
