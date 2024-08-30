@@ -1,16 +1,8 @@
 <script>
-import Pagination from '@/components/Pagination/Pagination.vue';
-import PkpTable from '@/components/TableNext/Table.vue';
-import TableCell from '@/components/TableNext/TableCell.vue';
 import ajaxError from '@/mixins/ajaxError';
 
 export default {
 	name: 'JobsPage',
-	components: {
-		PkpTable,
-		TableCell,
-		Pagination,
-	},
 	mixins: [ajaxError],
 	data() {
 		return {
