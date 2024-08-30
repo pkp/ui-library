@@ -114,8 +114,8 @@ const EditorialStatsPageWithDataAndTemplate = {
 			<div class="pkpStats__content">
 				<div class="pkpStats__table" role="region" aria-live="polite">
 					<PkpTable
+						labelled-by="editorialActivityTabelLabel"
 						class="pkpTable--editorialStats"
-						aria-label="Trends"
 					>
 						<TableHeader>
 							<TableColumn v-for="(column, columnIndex) in tableColumns" :key="column.name" :id="column.name">
@@ -538,7 +538,7 @@ const PublicationStatsPageWithDataAndTemplate = {
 						</template>
 					</PkpHeader>
 					<PkpTable
-						aria-label="Article Details"
+						labelled-by="articleDetailTableLabel"
 						:class="tableClasses"
 						@sort="setOrderBy"
 					>
