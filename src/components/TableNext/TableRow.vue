@@ -1,7 +1,5 @@
 <template>
-	<tr
-		class="pkpTable__row border-separate border border-light even:bg-tertiary"
-	>
+	<tr class="border-separate border border-light even:bg-tertiary">
 		<slot></slot>
 	</tr>
 </template>

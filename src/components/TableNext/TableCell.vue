@@ -2,7 +2,7 @@
 	<component
 		:is="isRowHeader ? 'th' : 'td'"
 		:scope="isRowHeader ? 'row' : false"
-		class="pkpTable__cell border-b border-t border-light px-2 py-2 text-start first:border-s first:ps-3 last:border-e last:pe-3"
+		class="border-b border-t border-light px-2 py-2 text-start first:border-s first:ps-3 last:border-e last:pe-3"
 		:class="classes"
 	>
 		<slot />
