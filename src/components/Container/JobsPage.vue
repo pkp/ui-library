@@ -1,5 +1,4 @@
 <script>
-import Page from './Page.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
 import PkpTable from '@/components/TableNext/Table.vue';
 import TableCell from '@/components/TableNext/TableCell.vue';
@@ -12,20 +11,37 @@ export default {
 		TableCell,
 		Pagination,
 	},
-	extends: Page,
 	mixins: [ajaxError],
 	data() {
 		return {
-			i18nDescription: '',
-			columns: [],
 			rows: [],
-			label: '',
 			total: 0,
 			currentPage: 1,
 			lastPage: 1,
 			isLoadingItems: false,
-			apiUrl: null,
 		};
+	},
+	props: {
+		label: {
+			type: String,
+			default: '',
+		},
+		i18nDescription: {
+			type: String,
+			default: '',
+		},
+		columns: {
+			type: Array,
+			default: [],
+		},
+		apiUrl: {
+			type: String,
+			default: null,
+		},
+		apiUrlRedispatchAll: {
+			type: String,
+			default: null,
+		},
 	},
 	computed: {
 		description() {
