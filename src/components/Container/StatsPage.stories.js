@@ -114,8 +114,8 @@ const EditorialStatsPageWithDataAndTemplate = {
 			<div class="pkpStats__content">
 				<div class="pkpStats__table" role="region" aria-live="polite">
 					<PkpTable
-						labelled-by="editorialActivityTabelLabel"
 						class="pkpTable--editorialStats"
+						labelled-by="editorialActivityTabelLabel"
 					>
 						<TableHeader>
 							<TableColumn v-for="(column, columnIndex) in tableColumns" :key="column.name" :id="column.name">
@@ -126,7 +126,7 @@ const EditorialStatsPageWithDataAndTemplate = {
 							<TableRow v-for="(row, index) in tableRows" :key="index">
 								<TableCell>
 									{{ row.name }}
-									 <Tooltip
+									<Tooltip
 										v-if="row.description"
 										:label="'Description for ' + row.name"
 										:tooltip="row.description"
@@ -560,7 +560,7 @@ const PublicationStatsPageWithDataAndTemplate = {
 						</TableHeader>
 						<TableBody>
 							<TableRow v-for="(row) in items" :key="row.key">
-								<TableCell>{{ row.object.fullTitle.en}}</TableCell>
+								<TableCell>{{ row.object.fullTitle.en }}</TableCell>
 								<TableCell>{{ row.abstractViews }}</TableCell>
 								<TableCell>{{ row.galleyViews }}</TableCell>
 								<TableCell>{{ row.pdfViews }}</TableCell>

@@ -3,7 +3,7 @@
 		v-if="slots.label || slots.description || slots['top-controls']"
 		class="flex justify-between bg-default p-4"
 	>
-		<div>
+		<div v-if="slots.label || slots.description">
 			<span v-if="slots.label" :id="labelId" class="text-xl-bold">
 				<slot name="label" />
 			</span>
@@ -48,9 +48,9 @@ function onSort(columnId) {
 const props = defineProps({
 	/** Table description for screen reader users */
 	ariaLabel: {type: String, default: null},
-	/** This value will be used as the `aria-labelledby` attribute for the table if there's no template "label" provided. */
+	/** This value will be used as the `aria-labelledby` attribute for the table if there's no slot/template "label" provided. */
 	labelledBy: {type: String, default: null},
-	/** This value will be used as the `aria-describedby` attribute for the table if there's no template "description" provided. */
+	/** This value will be used as the `aria-describedby` attribute for the table if there's no slot/template "description" provided. */
 	describedBy: {type: String, default: null},
 	/**
 	 * {column: String, direction: String}, use useSorting composable to control sortDescriptor
