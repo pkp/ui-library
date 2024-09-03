@@ -53,10 +53,11 @@ export function useSideMenu(_items, _activeItemKey = '', _expandedKeys = {}) {
 	function mapItems(_items, level = 1) {
 		const result = [];
 
-		_items.forEach((_item) => {
+		_items.forEach((_item, index) => {
 			const item = {
 				..._item,
 				level,
+				index,
 			};
 
 			if (_item.items) {
