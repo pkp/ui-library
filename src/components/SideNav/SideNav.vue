@@ -42,7 +42,7 @@ const props = defineProps({
 let currentActiveKey = '';
 const items = reactive(convertLinksToArray(props.links));
 
-function convertLinksToArray(links, level = 1) {
+function convertLinksToArray(links, level = 1, parentKey = '') {
 	const result = [];
 
 	for (const key in links) {
@@ -55,11 +55,15 @@ function convertLinksToArray(links, level = 1) {
 		};
 
 		if (link.submenu) {
-			item.items = convertLinksToArray(link.submenu, level + 1);
+			item.items = convertLinksToArray(link.submenu, level + 1, item.key);
+		}
+
+		if (parentKey) {
+			item.key = `${parentKey}_${item.key}`;
 		}
 
 		if (link.isCurrent) {
-			currentActiveKey = key;
+			currentActiveKey = item.key;
 		}
 
 		result.push(item);
