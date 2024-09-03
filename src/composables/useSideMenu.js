@@ -64,6 +64,12 @@ export function useSideMenu(_items, _activeItemKey = '', _expandedKeys = {}) {
 				item.items = mapItems(_item.items, level + 1);
 			}
 
+			if (level === 1 && item.link && !_item.items) {
+				item.command = () => {
+					window.location.href = item.link;
+				};
+			}
+
 			result.push(item);
 		});
 
