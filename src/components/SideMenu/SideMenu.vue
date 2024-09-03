@@ -105,6 +105,11 @@ const emit = defineEmits([
 ]);
 
 const navigationStyling = {
+	header: {
+		class: [
+			'focus-visible:outline focus-visible:outline-1 focus-visible:outline-dark',
+		],
+	},
 	headerContent: () => {
 		return {
 			class: [
@@ -157,14 +162,15 @@ function getButtonStyles(item, isFocused) {
 
 	const style = {
 		// Base
-		'inline-flex relative items-center gap-x-1 text-lg-medium py-2 px-3 w-full border-b border-b-light cursor-pointer': true,
+		'inline-flex relative items-center gap-x-1 text-lg-medium py-2 px-3 w-full cursor-pointer': true,
+
 		// Default button styling
-		'text-primary border-light hover:text-hover disabled:text-disabled':
-			!isActiveItem,
+		'text-primary hover:text-hover disabled:text-disabled': !isActiveItem,
 		backgroundVariant: !isActiveItem,
+
 		// Active
 		'text-on-dark bg-selection-dark': isActiveItem,
-		'border-transparent': isActiveItem && !item.colorStripe,
+
 		// Indentions for child menus
 		'!px-7': item.level === 2 && item.colorStripe,
 		'!px-9': item.level === 2 && !item.colorStripe,
@@ -172,12 +178,18 @@ function getButtonStyles(item, isFocused) {
 		'!px-12': item.level === 3 && !item.colorStripe,
 		'!px-14': item.level === 4 && item.colorStripe,
 		'!px-16': item.level === 4 && !item.colorStripe,
-		// Additional border styling
-		'border-t border-t-light': item.key === 'item_0',
-		'border-s-8': item.colorStripe,
-		// Items with children
+
+		// Border
+		'border-b border-b-light': true,
+		'border-transparent': isActiveItem && !item.colorStripe,
+		'border-t border-t-light': item.index === 0 && item.level === 1,
+		'!border-s-8': !!item.colorStripe,
+
+		// Outline (focus)
+		'outline outline-1 outline-dark hover:outline-none': isFocused,
+
+		// Root items with submenu
 		'!text-lg-bold': item.items && item.level === 1,
-		'border !border-dark': isFocused,
 	};
 
 	// set the additional class if the button should include a color stripe
