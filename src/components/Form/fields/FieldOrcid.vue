@@ -41,18 +41,28 @@
 				{{ t('common.delete') }}
 			</PkpButton>
 			<!-- When ORCID is absent -->
-			<PkpButton
-				v-if="!hasOrcid"
-				:disabled="verificationRequested || isButtonDisabled"
-				:icon="verificationRequested ? 'Complete' : null"
-				@click="openSendAuthorEmailDialog"
-			>
-				{{
-					verificationRequested
-						? t('orcid.field.verification.requested')
-						: t('orcid.field.verification.request')
-				}}
-			</PkpButton>
+			<div class="inline-flex">
+				<PkpButton
+					v-if="!hasOrcid"
+					:disabled="verificationRequested || isButtonDisabled"
+					:icon="verificationRequested ? 'Complete' : null"
+					:is-link="verificationRequested"
+					@click="openSendAuthorEmailDialog"
+				>
+					{{
+						verificationRequested
+							? t('orcid.field.verification.requested')
+							: t('orcid.field.verification.request')
+					}}
+				</PkpButton>
+				<PkpButton
+					v-if="!hasOrcid && verificationRequested"
+					:is-link="true"
+					@click="openSendAuthorEmailDialog"
+				>
+					{{ t('orcid.field.verification.resendRequest') }}
+				</PkpButton>
+			</div>
 		</div>
 	</div>
 </template>
