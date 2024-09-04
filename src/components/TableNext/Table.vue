@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import {provide, toRefs, defineEmits} from 'vue';
+import {provide, toRefs, defineEmits, ref} from 'vue';
 
 const emit = defineEmits([
 	/**
@@ -32,69 +32,13 @@ const props = defineProps({
 
 const {sortDescriptor} = toRefs(props);
 
+const columnsCount = ref(0);
+
 const tableContext = {
 	sortDescriptor,
 	onSort,
+	columnsCount,
 };
 
 provide('tableContext', tableContext);
 </script>
-
-<style lang="less">
-@import '../../styles/_import';
-
-.pkpTableNext {
-	width: 100%;
-	max-width: 100%;
-	border: @grid-border;
-	border-collapse: collapse;
-	border-radius: 10px;
-	font-size: @font-sml;
-	line-height: 1.2em;
-
-	td,
-	th {
-		padding: 0.5rem 1rem;
-		font-weight: @normal;
-		text-align: inherit;
-
-		&:focus {
-			outline: 0;
-			box-shadow: inset 0 0 0 1px @primary;
-		}
-	}
-
-	tr {
-		&:nth-child(even) {
-			background: @bg-very-light;
-		}
-	}
-
-	thead {
-		tr {
-			background: @table-header;
-		}
-
-		th {
-			font-size: @font-tiny;
-			font-weight: @semibold;
-			text-transform: uppercase;
-		}
-	}
-}
-
-[dir='rtl'] {
-	.pkpTable {
-		thead {
-			.pkpTable__sortIcon {
-				right: auto;
-				left: 4px;
-			}
-		}
-	}
-}
-
-.pkpTable + .pkpPagination {
-	margin-top: 1rem;
-}
-</style>

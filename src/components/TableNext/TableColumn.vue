@@ -31,8 +31,6 @@ const props = defineProps({
 });
 
 const tableContext = inject('tableContext');
-</script>
 
-<style lang="less">
-@import '../../styles/_import';
-</style>
+tableContext.columnsCount.value++;
+</script>
