@@ -1,13 +1,13 @@
 <template>
 	<tbody class="">
 		<slot></slot>
-		<slot v-if="slots['no-content'] && noContent" name="no-content" />
-		<tr v-else-if="noContent" class="">
+		<tr v-if="noContent">
 			<td
 				:colspan="tableContext.columnsCount.value"
-				class="border-x border-b border-light p-4 text-center text-base-normal"
+				class="border-x border-b border-light p-5 text-base-normal"
 			>
-				{{ emptyText }}
+				<slot v-if="slots['no-content']" name="no-content" />
+				<span v-else>{{ emptyText }}</span>
 			</td>
 		</tr>
 	</tbody>
