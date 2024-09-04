@@ -65,19 +65,6 @@ export default {
 			}
 			return classes;
 		},
-
-		/**
-		 * Add classes to the table when it is loading
-		 *
-		 * @return Array
-		 */
-		tableClasses() {
-			let classes = [];
-			if (this.isLoadingItems) {
-				classes.push('-isLoading');
-			}
-			return classes;
-		},
 	},
 	watch: {
 		activeFilters(newVal, oldVal) {

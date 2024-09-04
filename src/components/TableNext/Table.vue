@@ -17,7 +17,6 @@
 	</div>
 	<table
 		class="pkpTable w-full max-w-full border-separate border-spacing-0"
-		:class="attrs.class"
 		:aria-labelledby="labelledBy ?? (slots.label ? labelId : null)"
 		:aria-describedby="
 			describedBy ?? (slots.description ? descriptionId : null)
@@ -31,7 +30,7 @@
 </template>
 
 <script setup>
-import {provide, toRefs, defineEmits, ref, useSlots, useAttrs} from 'vue';
+import {provide, toRefs, defineEmits, ref, useSlots} from 'vue';
 import {useId} from '@/composables/useId.js';
 
 const emit = defineEmits([
@@ -69,7 +68,6 @@ const tableContext = {
 };
 
 const slots = useSlots();
-const attrs = useAttrs();
 
 const {generateId} = useId();
 const labelId = slots.label ? generateId() : null;

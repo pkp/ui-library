@@ -539,7 +539,6 @@ const PublicationStatsPageWithDataAndTemplate = {
 					</PkpHeader>
 					<PkpTable
 						labelled-by="articleDetailTableLabel"
-						:class="tableClasses"
 						@sort="setOrderBy"
 					>
 						<TableHeader>
