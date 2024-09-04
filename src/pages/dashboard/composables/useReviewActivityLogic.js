@@ -215,13 +215,14 @@ const ConfigPerStatus = {
 			colorVariant: 'success-bg',
 			icon: 'Complete',
 		},
-		// same as for STATUS_RECEIVED
 		titleKey: tk('dashboard.reviewAssignment.statusComplete.title'),
 		// same as for STATUS_RECEIVED
 		descriptionKey: tk('dashboard.reviewAssignment.statusComplete.description'),
 		textAction: null,
 		primaryAction: Actions.VIEW_RECOMMENDATION,
 		negativeAction: null,
+		// TODO: THIS IS INCORRECT this is when the review was completed!!
+		// https://github.com/pkp/pkp-lib/issues/10359
 		dateToDisplay: 'dateCompleted',
 	},
 	// reviewer has been thanked
@@ -236,9 +237,7 @@ const ConfigPerStatus = {
 			colorVariant: 'success-bg',
 			icon: 'Complete',
 		},
-		// same as for STATUS_RECEIVED
 		titleKey: tk('dashboard.reviewAssignment.statusComplete.title'),
-		// same as for STATUS_RECEIVED
 		descriptionKey: tk('dashboard.reviewAssignment.statusComplete.description'),
 		textAction: null,
 		primaryAction: Actions.VIEW_RECOMMENDATION,
@@ -264,7 +263,6 @@ const ConfigPerStatus = {
 		textAction: Actions.RESEND_REVIEW_REQUEST,
 		primaryAction: Actions.VIEW_DETAILS,
 		negativeAction: null,
-		// TODO: its not tracked on backend
 		dateToDisplay: 'dateCancelled',
 	},
 	// request has been sent but reviewer has not responded

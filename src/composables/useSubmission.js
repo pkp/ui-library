@@ -31,6 +31,12 @@ export function useSubmission() {
 		return submission.stages.find((stage) => stage.isActiveStage);
 	}
 
+	function getReviewAssignmentsForRound(submission, roundId) {
+		return submission.reviewAssignments.filter(
+			(reviewAssignment) => reviewAssignment.roundId === roundId,
+		);
+	}
+
 	function getCurrentReviewRound(
 		submission,
 		stageId = pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
@@ -81,7 +87,9 @@ export function useSubmission() {
 
 	function getExtendedStage(submission) {
 		const activeStage = getActiveStage(submission);
-
+		if (submission.status === pkp.const.STATUS_DECLINED) {
+			return ExtendedStages.DECLINED;
+		}
 		switch (activeStage.id) {
 			case pkp.const.WORKFLOW_STAGE_ID_SUBMISSION:
 				return submission.submissionProgress
@@ -99,8 +107,6 @@ export function useSubmission() {
 						return ExtendedStages.PRODUCTION_SCHEDULED;
 					case pkp.const.STATUS_PUBLISHED:
 						return ExtendedStages.PRODUCTION_PUBLISHED;
-					case pkp.const.STATUS_DECLINED:
-						return ExtendedStages.PRODUCTION_DECLINED;
 				}
 		}
 	}
@@ -149,5 +155,6 @@ export function useSubmission() {
 		getFileStageFromWorkflowStage,
 		hasNotSubmissionStartedStage,
 		hasSubmissionPassedStage,
+		getReviewAssignmentsForRound,
 	};
 }

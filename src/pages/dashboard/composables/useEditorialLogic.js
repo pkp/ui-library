@@ -78,7 +78,7 @@ export function useEditorialLogic() {
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
-							alert: t('dashboard.revisionsSubmittedByAuthor'),
+							alert: t('dashboard.revisionsSubmitted'),
 						},
 					},
 					{
@@ -90,19 +90,71 @@ export function useEditorialLogic() {
 				];
 			} else if (
 				activeRound.statusId ===
+				pkp.const.REVIEW_ROUND_STATUS_PENDING_RECOMMENDATIONS
+			) {
+				if (activeStage.currentUserCanRecommendOnly) {
+					return [];
+				}
+				return [
+					{
+						component: 'CellSubmissionActivityActionAlert',
+						props: {
+							alert: t('dashboard.recommendOnly.pendingRecommendations'),
+						},
+					},
+				];
+			} else if (
+				activeRound.statusId ===
+				pkp.const.REVIEW_ROUND_STATUS_RECOMMENDATIONS_READY
+			) {
+				return [
+					{
+						component: 'CellSubmissionActivityActionAlert',
+						props: {
+							alert: t('dashboard.recommendOnly.recommendationsReady'),
+						},
+					},
+				];
+			} else if (
+				activeRound.statusId ===
+				pkp.const.REVIEW_ROUND_STATUS_RECOMMENDATIONS_COMPLETED
+			) {
+				return [
+					{
+						component: 'CellSubmissionActivityActionAlert',
+						props: {
+							alert: t('dashboard.recommendOnly.recommendationsCompleted'),
+						},
+					},
+				];
+			} else if (
+				activeRound.statusId ===
 				pkp.const.REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW_SUBMITTED
 			) {
 				return [
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
-							alert: t('dashboard.revisionsSubmittedByAuthor'),
+							alert: t('dashboard.revisionsSubmitted'),
 						},
 					},
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
 							alert: t('dashboard.newReviewRoundToBeCreated'),
+						},
+					},
+				];
+			} else if (
+				activeRound.statusId === pkp.const.REVIEW_ROUND_STATUS_DECLINED
+			) {
+				return [
+					{
+						component: 'CellSubmissionActivityActionAlert',
+						props: {
+							alert: t('dashboard.declinedDuringStage', {
+								stageName: t('manager.publication.reviewStage'),
+							}),
 						},
 					},
 				];

@@ -1,7 +1,7 @@
 <template>
 	<div class="border border-light">
 		<div class="flex items-center justify-between bg-default p-5">
-			<h3 class="text-2xl-bold uppercase text-default">
+			<h3 class="text-2xl-bold uppercase text-heading">
 				{{ t('editor.submission.stageParticipants') }}
 			</h3>
 			<PkpButton @click="participantManagerStore.handleAction(Actions.ASSIGN)">

@@ -74,6 +74,7 @@ const headingId = generateId();
 
 const props = defineProps({
 	submission: {type: Object, required: true},
+	reviewRoundId: {type: Number, required: true},
 	redactedForAuthors: {type: Boolean, required: false, default: false},
 });
 

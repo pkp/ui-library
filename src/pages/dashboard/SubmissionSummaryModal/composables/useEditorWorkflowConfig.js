@@ -94,6 +94,7 @@ export function useEditorWorkflowConfig() {
 				component: 'ReviewerManager',
 				props: {
 					submission: submission,
+					reviewRoundId: selectedReviewRound?.id,
 				},
 			});
 
