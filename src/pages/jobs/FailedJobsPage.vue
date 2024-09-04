@@ -54,7 +54,7 @@
 	/>
 </template>
 <script>
-import JobsPage from '@/components/Container/JobsPage.vue';
+import JobsPageBase from '@/components/Container/JobsPageBase.vue';
 import PkpTable from '@/components/TableNext/Table.vue';
 import TableHeader from '@/components/TableNext/TableHeader.vue';
 import TableColumn from '@/components/TableNext/TableColumn.vue';
@@ -80,7 +80,7 @@ export default {
 		Spinner,
 		PkpButton,
 	},
-	extends: JobsPage,
+	extends: JobsPageBase,
 	methods: {
 		removeJob(data) {
 			this.rows = this.rows.filter((row) => row.id !== data.id);

@@ -2,7 +2,7 @@
 import ajaxError from '@/mixins/ajaxError';
 
 export default {
-	name: 'JobsPage',
+	name: 'JobsPageBase',
 	mixins: [ajaxError],
 	props: {
 		label: {

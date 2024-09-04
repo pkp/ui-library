@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import JobsPage from '@/components/Container/JobsPage.vue';
+import JobsPageBase from '@/components/Container/JobsPageBase.vue';
 import PkpTable from '@/components/TableNext/Table.vue';
 import TableHeader from '@/components/TableNext/TableHeader.vue';
 import TableColumn from '@/components/TableNext/TableColumn.vue';
@@ -56,6 +56,6 @@ export default {
 		TableCell,
 		Pagination,
 	},
-	extends: JobsPage,
+	extends: JobsPageBase,
 };
 </script>
