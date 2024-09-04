@@ -1,7 +1,7 @@
 <template>
 	<tbody class="">
 		<slot></slot>
-		<slot name="no-content" v-if="slots['no-content'] && noContent" />
+		<slot v-if="slots['no-content'] && noContent" name="no-content" />
 		<tr v-else-if="noContent" class="">
 			<td
 				:colspan="tableContext.columnsCount.value"

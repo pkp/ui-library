@@ -1,12 +1,12 @@
 <template>
 	<PkpTable>
-		<template #label v-if="label">
+		<template v-if="label" #label>
 			<span v-html="label"></span>
 		</template>
-		<template #description v-if="description">
+		<template v-if="description" #description>
 			<span v-html="description"></span>
 		</template>
-		<template #top-controls v-if="total > 0">
+		<template v-if="total > 0" #top-controls>
 			<Spinner v-if="isLoadingItems"></Spinner>
 			<PkpButton @click="requeueAll">
 				{{ t('admin.jobs.failed.action.redispatch.all') }}
@@ -15,20 +15,20 @@
 		<TableHeader>
 			<TableColumn
 				v-for="column in columns"
-				:key="column.name"
 				:id="column.name"
+				:key="column.name"
 			>
 				{{ column.label }}
 			</TableColumn>
 		</TableHeader>
 		<TableBody>
 			<TableRow v-for="row in rows" :key="row.key">
-				<table-cell>{{ row.id }}</table-cell>
-				<table-cell>{{ row.displayName }}</table-cell>
-				<table-cell>{{ row.queue }}</table-cell>
-				<table-cell>{{ row.connection }}</table-cell>
-				<table-cell>{{ row.failed_at }}</table-cell>
-				<table-cell>
+				<TableCell>{{ row.id }}</TableCell>
+				<TableCell>{{ row.displayName }}</TableCell>
+				<TableCell>{{ row.queue }}</TableCell>
+				<TableCell>{{ row.connection }}</TableCell>
+				<TableCell>{{ row.failed_at }}</TableCell>
+				<TableCell>
 					<ButtonRow>
 						<PkpButton @click="redispatch(row)">
 							{{ t('admin.jobs.failed.action.redispatch') }}
@@ -40,7 +40,7 @@
 							{{ t('common.details') }}
 						</PkpButton>
 					</ButtonRow>
-				</table-cell>
+				</TableCell>
 			</TableRow>
 		</TableBody>
 	</PkpTable>

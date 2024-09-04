@@ -71,8 +71,8 @@
 				<TableHeader>
 					<TableColumn
 						v-for="column in doiListColumns"
-						:key="column.name"
 						:id="column.name"
+						:key="column.name"
 					>
 						{{ column.label }}
 					</TableColumn>
@@ -152,10 +152,10 @@
 								? t('manager.dois.registration.manuallyMarkedRegistered')
 								: t('manager.dois.registration.submittedDescription', {
 										registrationAgency: itemRegistrationAgencyName,
-								  })
+									})
 							: t('manager.dois.registration.notSubmittedDescription', {
 									registrationAgency: registrationAgencyInfo['displayName'],
-							  })
+								})
 					}}
 				</span>
 				<span v-else class="doiListItem__depositorDescription">

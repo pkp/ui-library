@@ -4,15 +4,6 @@ import ajaxError from '@/mixins/ajaxError';
 export default {
 	name: 'JobsPage',
 	mixins: [ajaxError],
-	data() {
-		return {
-			rows: [],
-			total: 0,
-			currentPage: 1,
-			lastPage: 1,
-			isLoadingItems: false,
-		};
-	},
 	props: {
 		label: {
 			type: String,
@@ -24,7 +15,7 @@ export default {
 		},
 		columns: {
 			type: Array,
-			default: [],
+			default: () => [],
 		},
 		apiUrl: {
 			type: String,
@@ -34,6 +25,15 @@ export default {
 			type: String,
 			default: null,
 		},
+	},
+	data() {
+		return {
+			rows: [],
+			total: 0,
+			currentPage: 1,
+			lastPage: 1,
+			isLoadingItems: false,
+		};
 	},
 	computed: {
 		description() {

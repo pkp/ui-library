@@ -1,13 +1,13 @@
 <template>
 	<PkpTable>
-		<template #label v-if="label">
+		<template v-if="label" #label>
 			<span v-html="label"></span>
 		</template>
 		<TableHeader>
 			<TableColumn
 				v-for="column in columns"
-				:key="column.name"
 				:id="column.name"
+				:key="column.name"
 			>
 				{{ column.label }}
 			</TableColumn>
@@ -50,11 +50,11 @@ export default {
 		},
 		columns: {
 			type: Array,
-			default: [],
+			default: () => [],
 		},
 		rows: {
 			type: Array,
-			default: [],
+			default: () => [],
 		},
 	},
 };

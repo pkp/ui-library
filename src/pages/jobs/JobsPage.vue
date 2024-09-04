@@ -1,16 +1,16 @@
 <template>
 	<PkpTable>
-		<template #label v-if="label">
+		<template v-if="label" #label>
 			<span v-html="label"></span>
 		</template>
-		<template #description v-if="description">
+		<template v-if="description" #description>
 			<span v-html="description"></span>
 		</template>
 		<TableHeader>
 			<TableColumn
 				v-for="column in columns"
-				:key="column.name"
 				:id="column.name"
+				:key="column.name"
 			>
 				{{ column.label }}
 			</TableColumn>

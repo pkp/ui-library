@@ -21,8 +21,8 @@
 					<TableHeader>
 						<TableColumn
 							v-for="column in doiListColumns"
-							:key="column.name"
 							:id="column.name"
+							:key="column.name"
 						>
 							{{ column.label }}
 						</TableColumn>
@@ -36,10 +36,7 @@
 							:key="row.column"
 						>
 							<TableCell>
-								<label
-									:for="row.uid"
-									v-bind:class="{labelDisabled: row.disabled}"
-								>
+								<label :for="row.uid" :class="{labelDisabled: row.disabled}">
 									{{ row.displayType }}
 								</label>
 							</TableCell>
