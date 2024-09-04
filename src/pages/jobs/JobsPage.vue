@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import JobsPageBase from '@/components/Container/JobsPageBase.vue';
+import JobsPageBase from './JobsPageBase.vue';
 import PkpTable from '@/components/TableNext/Table.vue';
 import TableHeader from '@/components/TableNext/TableHeader.vue';
 import TableColumn from '@/components/TableNext/TableColumn.vue';
