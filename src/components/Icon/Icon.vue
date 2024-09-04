@@ -65,6 +65,7 @@ import FilePdf from './icons/FilePdf.vue';
 import FileVideo from './icons/FileVideo.vue';
 import FileZip from './icons/FileZip.vue';
 import Help from './icons/Help.vue';
+import History from './icons/History.vue';
 import InProgress from './icons/InProgress.vue';
 import IncreaseTextSize from './icons/IncreaseTextSize.vue';
 import InsertContent from './icons/InsertContent.vue';
@@ -128,6 +129,7 @@ const svgIcons = {
 	FileVideo,
 	FileZip,
 	Help,
+	History,
 	InProgress,
 	IncreaseTextSize,
 	InsertContent,

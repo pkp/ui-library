@@ -1,9 +1,18 @@
 <template>
 	<div>
-		<div class="border-x border-t border-light px-3 py-4">
+		<div class="flex justify-between border-x border-t border-light px-3 py-4">
 			<h2 :id="headingId" class="text-lg-bold text-heading">
 				{{ t('dashboard.summary.reviewers') }}
 			</h2>
+			<div>
+				<PkpButton
+					v-for="action in reviewerStore.topActions"
+					:key="action.name"
+					@click="reviewerStore.handleAction(action.name)"
+				>
+					{{ action.label }}
+				</PkpButton>
+			</div>
 		</div>
 		<PkpTable
 			aria-label="Example for basic table"
@@ -15,7 +24,7 @@
 					{{ t('dashboard.summary.reviewerStatus') }}
 				</TableColumn>
 				<TableColumn>{{ t('common.type') }}</TableColumn>
-				<TableColumn>{{ 'action (t)' }}</TableColumn>
+				<TableColumn>{{ t('common.action') }}</TableColumn>
 			</TableHeader>
 			<TableBody>
 				<TableRow
@@ -62,6 +71,7 @@ import TableBody from '@/components/TableNext/TableBody.vue';
 import TableRow from '@/components/TableNext/TableRow.vue';
 import TableCell from '@/components/TableNext/TableCell.vue';
 import ReviewerCellActions from './ReviewerCellActions.vue';
+import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
 
 import {useReviewerManagerStore} from './reviewerManagerStore.js';

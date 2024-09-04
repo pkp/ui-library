@@ -3,8 +3,8 @@
 		<DropdownActions
 			label="More Actions (t)"
 			:display-as-ellipsis="true"
-			:actions="actionsList"
-			@action="handleReviewAction"
+			:actions="itemActions"
+			@action="handleItemAction"
 		/>
 	</TableCell>
 </template>
@@ -12,21 +12,23 @@
 <script setup>
 import TableCell from '@/components/TableNext/TableCell.vue';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
-import {useReviewerManagerActions} from './useReviewerManagerActions';
+import {useReviewerManagerStore} from './reviewerManagerStore';
 import {computed} from 'vue';
 const props = defineProps({
 	reviewAssignment: {type: Object, required: true},
 	submission: {type: Object, required: true},
 });
 
-const {getAvailableActions, handleAction} = useReviewerManagerActions();
+const reviewerManagerStore = useReviewerManagerStore();
 
-const actionsList = computed(() => {
-	return getAvailableActions(props.reviewAssignment);
-});
+const itemActions = computed(() =>
+	reviewerManagerStore.getItemActions({
+		reviewAssignment: props.reviewAssignment,
+	}),
+);
 
-function handleReviewAction(actionName) {
-	handleAction(actionName, {
+function handleItemAction(actionName) {
+	reviewerManagerStore.handleItemAction(actionName, {
 		submission: props.submission,
 		submissionId: props.submission.id,
 		submissionStageId: props.submission.stageId,
