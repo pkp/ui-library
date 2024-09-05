@@ -11,7 +11,7 @@ import TablePagination from './TablePagination.vue';
 import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
 import {http, HttpResponse} from 'msw';
 
-import articleStats from '@/components/Table/mocks/articleStats.js';
+import articleStats from '@/components/TableNext/mocks/articleStats.js';
 import {useSorting} from '@/composables/useSorting';
 
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
@@ -217,6 +217,68 @@ export const WithPagination = {
 			],
 		},
 	},
+
+	args: {},
+};
+
+export const WithTitleAndDescription = {
+	render: (args) => ({
+		components: {
+			PkpTable,
+			TableHeader,
+			TableBody,
+			TableRow,
+			TableColumn,
+			TableCell,
+			PkpButton,
+		},
+		setup() {
+			const rows = articleStats.slice(0, 10);
+
+			return {args, rows};
+		},
+		template: `
+			<PkpTable>
+				<template #label>
+					View Failed Jobs
+				</template>
+				<template #description>
+					There's a total of <strong>7</strong> failed job(s).
+				</template>
+				<template #top-controls>
+					<PkpButton>Requeue All Failed Jobs</PkpButton>
+				</template>
+				<TableHeader>
+					<TableColumn>ID</TableColumn>
+					<TableColumn>Title</TableColumn>
+					<TableColumn>Views</TableColumn>
+					<TableColumn>Downloads</TableColumn>
+					<TableColumn>Total</TableColumn>
+					<TableColumn>Action</TableColumn>
+				</TableHeader>
+				<TableBody>
+					<TableRow v-for="row in rows" :key="row.object.id">
+						<TableCell>{{ row.object.id }}</TableCell>
+						<TableCell :is-row-header="true">
+							{{ row.object.fullTitle.en }}
+						</TableCell>
+						<TableCell>{{ row.views }}</TableCell>
+						<TableCell>{{ row.downloads }}</TableCell>
+						<TableCell>
+							<button @click="open(row)">{{ row.total }}</button>
+						</TableCell>
+						<TableCell>
+							<PkpButton size-variant="compact" >View</PkpButton>
+						</TableCell>
+
+					</TableRow>
+				</TableBody>
+				<template #bottom-controls>
+					<PkpButton :is-link="true">Download All Files</PkpButton>
+				</template>
+			</PkpTable>
+		`,
+	}),
 
 	args: {},
 };
