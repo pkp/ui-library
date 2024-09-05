@@ -37,7 +37,7 @@
 
 		<TableCell v-if="actionItems.length" no-wrap>
 			<DropdownActions
-				label="More Actions (t)"
+				:label="t('common.moreActions')"
 				:display-as-ellipsis="true"
 				:actions="actionItems"
 				@action="(actionName) => emit('action', actionName, {file: file})"

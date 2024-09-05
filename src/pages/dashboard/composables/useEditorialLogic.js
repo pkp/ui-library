@@ -1,7 +1,9 @@
 import {useSubmission} from '@/composables/useSubmission.js';
 import {useLocalize} from '@/composables/useLocalize';
 import {useDate} from '@/composables/useDate';
-import {Actions} from './useHandleActions';
+import {Actions as ParticipantManagerActions} from '@/managers/ParticipantManager/useParticipantManagerActions';
+import {Actions as WorkflowActions} from './useWorkflowActions';
+import {Actions as ReviewerManagerActions} from '@/managers/ReviewerManager/useReviewerManagerActions';
 
 const {formatShortDate} = useDate();
 
@@ -19,7 +21,8 @@ export function useEditorialLogic() {
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
-							actionName: Actions.ASSIGN_PARTICIPANT,
+							// TODO!!
+							actionName: ParticipantManagerActions.ASSIGN_PARTICIPANT,
 							actionLabel: t('dashboard.assignEditor'),
 						},
 					},
@@ -35,7 +38,7 @@ export function useEditorialLogic() {
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
-							actionName: Actions.ASSIGN_REVIEWERS,
+							actionName: ReviewerManagerActions.ASSIGN_REVIEWERS,
 							actionLabel: t('dashboard.assignReviewers'),
 						},
 					},
@@ -190,7 +193,7 @@ export function useEditorialLogic() {
 						props: {
 							alert: t('dashboard.revisionRequested'),
 							actionLabel: t('dashboard.submitRevisions'),
-							actionName: Actions.UPLOAD_REVISIONS,
+							actionName: WorkflowActions.UPLOAD_REVISIONS,
 						},
 					},
 				];
@@ -278,7 +281,7 @@ export function useEditorialLogic() {
 				{
 					component: 'CellReviewAssignmentActivityAlert',
 					props: {
-						alert: t('dashboard.deadlineForComplitingReviewHasPassed'),
+						alert: t('dashboard.deadlineForCompletingReviewHasPassed'),
 					},
 				},
 			];

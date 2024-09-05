@@ -11,7 +11,7 @@
 			@action="
 				(actionName) =>
 					emit('action', actionName, {
-						reviewAssignmentId: reviewAssignment.id,
+						reviewAssignment: reviewAssignment,
 					})
 			"
 		/>

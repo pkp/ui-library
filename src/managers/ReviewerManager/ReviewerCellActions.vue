@@ -1,10 +1,10 @@
 <template>
 	<TableCell>
 		<DropdownActions
-			label="More Actions (t)"
+			:label="t('common.moreActions')"
 			:display-as-ellipsis="true"
 			:actions="itemActions"
-			@action="handleItemAction"
+			@action="handleAction"
 		/>
 	</TableCell>
 </template>
@@ -27,11 +27,8 @@ const itemActions = computed(() =>
 	}),
 );
 
-function handleItemAction(actionName) {
-	reviewerManagerStore.handleItemAction(actionName, {
-		submission: props.submission,
-		submissionId: props.submission.id,
-		submissionStageId: props.submission.stageId,
+function handleAction(actionName) {
+	reviewerManagerStore.handleAction(actionName, {
 		reviewAssignment: props.reviewAssignment,
 	});
 }

@@ -36,7 +36,7 @@
 					<div>
 						<DropdownActions
 							:actions="participantManagerStore.itemActions"
-							label="More Actions (todo)"
+							:label="t('common.moreActions')"
 							:display-as-ellipsis="true"
 							@action="
 								(actionName) =>

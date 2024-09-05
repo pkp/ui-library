@@ -47,7 +47,6 @@ export const useParticipantManagerStore = defineComponentStore(
 		const itemActions = computed(() => _actionFns.getItemActions({}));
 
 		function handleAction(actionName) {
-			console.log('handleAction:', actionName);
 			_actionFns.handleAction(actionName, {submission: props.submission}, () =>
 				fetchParticipants(),
 			);

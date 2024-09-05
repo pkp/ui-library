@@ -34,23 +34,19 @@ export const useReviewerManagerStore = defineComponentStore(
 			_actionFns.getTopActions({submission: props.submission}),
 		);
 
-		function handleAction(actionName) {
+		function handleAction(actionName, args) {
 			_actionFns.handleAction(
 				actionName,
 				{
 					submission: props.submission,
 					reviewRoundId: props.reviewRoundId,
+					submissionStageId: props.submission.stageId,
+					...args,
 				},
 				() => {
 					triggerDataChange();
 				},
 			);
-		}
-
-		function handleItemAction(actionName, args) {
-			_actionFns.handleItemAction(actionName, args, () => {
-				triggerDataChange();
-			});
 		}
 
 		function getItemActions(args) {
@@ -63,7 +59,6 @@ export const useReviewerManagerStore = defineComponentStore(
 			topActions,
 			handleAction,
 			getItemActions,
-			handleItemAction,
 			_actionFns,
 		};
 	},

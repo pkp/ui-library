@@ -1,41 +1,10 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {useDate} from '@/composables/useDate';
 import {useReviewAssignment} from '@/composables/useReviewAssignment';
-import {Actions} from './useHandleActions';
+import {Actions as ReviewerManagerActions} from '@/managers/ReviewerManager/useReviewerManagerActions';
 const {tk, t} = useLocalize();
 
 const {calculateDaysBetweenDates} = useDate();
-
-/*
-const ReviewAssignmentStatuses = [
-	pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE,
-	pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED,
-	pkp.const.REVIEW_ASSIGNMENT_STATUS_RESPONSE_OVERDUE,
-	pkp.const.REVIEW_ASSIGNMENT_STATUS_REVIEW_OVERDUE,
-	pkp.const.REVIEW_ASSIGNMENT_STATUS_ACCEPTED,
-	pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
-
-	pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
-	pkp.const.REVIEW_ASSIGNMENT_STATUS_THANKED,
-	pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED,
-	pkp.const.REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND,
-];
-
-const ReviewMethods = [
-	pkp.const.SUBMISSION_REVIEW_METHOD_ANONYMOUS,
-	pkp.const.SUBMISSION_REVIEW_METHOD_DOUBLEANONYMOUS,
-	pkp.const.SUBMISSION_REVIEW_METHOD_OPEN,
-];
-
-const Recommendations = [
-	pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_ACCEPT,
-	pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_PENDING_REVISIONS,
-	pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_RESUBMIT_HERE,
-	pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_RESUBMIT_ELSEWHERE,
-	pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_DECLINE,
-	pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_SEE_COMMENTS,
-];
-*/
 
 const RecommendationTranslations = {
 	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_ACCEPT]: tk(
@@ -58,18 +27,51 @@ const RecommendationTranslations = {
 	),
 };
 
+const ReviewActivityActions = {
+	RESEND_REVIEW_REQUEST: 'resendReviewRequest',
+	EDIT_DUE_DATE: 'editDueDate',
+	VIEW_DETAILS: 'viewDetails',
+	CANCEL_REVIEWER: 'cancelReviewer',
+	UNASSIGN_REVIEWER: 'unassignReviewer',
+	VIEW_RECOMMENDATION: 'viewRecommendation',
+	VIEW_UNREAD_RECOMMENDATION: 'viewUnreadRecommendation',
+};
+
+const ActionsMapping = {
+	[ReviewActivityActions.RESEND_REVIEW_REQUEST]:
+		ReviewerManagerActions.RESEND_REQUEST,
+	[ReviewActivityActions.EDIT_DUE_DATE]: ReviewerManagerActions.EDIT_REVIEW,
+	[ReviewActivityActions.VIEW_DETAILS]: ReviewerManagerActions.REVIEW_DETAILS,
+	[ReviewActivityActions.CANCEL_REVIEWER]:
+		ReviewerManagerActions.CANCEL_REVIEWER,
+	[ReviewActivityActions.UNASSIGN_REVIEWER]:
+		ReviewerManagerActions.UNASSIGN_REVIEWER,
+	[ReviewActivityActions.VIEW_RECOMMENDATION]:
+		ReviewerManagerActions.REVIEW_DETAILS,
+	[ReviewActivityActions.VIEW_UNREAD_RECOMMENDATION]:
+		ReviewerManagerActions.REVIEW_DETAILS,
+};
+
 const ActionButtonTranslations = {
-	resendReviewRequest: tk(
+	[ReviewActivityActions.RESEND_REVIEW_REQUEST]: tk(
 		'dashboard.reviewAssignment.action.resendReviewRequest',
 	),
-	editDueDate: tk('dashboard.reviewAssignment.action.editDueDate'),
-	viewDetails: tk('dashboard.reviewAssignment.action.viewDetails'),
-	cancelReviewer: tk('dashboard.reviewAssignment.action.cancelReviewer'),
-	unassignReviewer: tk('dashboard.reviewAssignment.action.unassignReviewer'),
-	viewRecommendation: tk(
+	[ReviewActivityActions.EDIT_DUE_DATE]: tk(
+		'dashboard.reviewAssignment.action.editDueDate',
+	),
+	[ReviewActivityActions.VIEW_DETAILS]: tk(
+		'dashboard.reviewAssignment.action.viewDetails',
+	),
+	[ReviewActivityActions.CANCEL_REVIEWER]: tk(
+		'dashboard.reviewAssignment.action.cancelReviewer',
+	),
+	[ReviewActivityActions.UNASSIGN_REVIEWER]: tk(
+		'dashboard.reviewAssignment.action.unassignReviewer',
+	),
+	[ReviewActivityActions.VIEW_RECOMMENDATION]: tk(
 		'dashboard.reviewAssignment.action.viewRecommendation',
 	),
-	viewUnreadRecommendation: tk(
+	[ReviewActivityActions.VIEW_UNREAD_RECOMMENDATION]: tk(
 		'dashboard.reviewAssignment.action.viewUnreadRecommendation',
 	),
 };
@@ -89,9 +91,9 @@ const ConfigPerStatus = {
 		descriptionKey: tk(
 			'dashboard.reviewAssignment.statusAwaitingResponse.description',
 		),
-		textAction: Actions.EDIT_DUE_DATE,
-		primaryAction: Actions.VIEW_DETAILS,
-		negativeAction: Actions.UNASSIGN_REVIEWER,
+		textAction: ReviewActivityActions.EDIT_DUE_DATE,
+		primaryAction: ReviewActivityActions.VIEW_DETAILS,
+		negativeAction: ReviewActivityActions.UNASSIGN_REVIEWER,
 		dateToDisplay: 'dateResponseDue',
 	},
 	// reviewer declined review request
@@ -107,9 +109,9 @@ const ConfigPerStatus = {
 		},
 		titleKey: tk('dashboard.reviewAssignment.statusDeclined.title'),
 		descriptionKey: tk('dashboard.reviewAssignment.statusDeclined.description'),
-		textAction: Actions.RESEND_REVIEW_REQUEST,
-		primaryAction: Actions.VIEW_DETAILS,
-		negativeAction: Actions.CANCEL_REVIEWER,
+		textAction: ReviewActivityActions.RESEND_REVIEW_REQUEST,
+		primaryAction: ReviewActivityActions.VIEW_DETAILS,
+		negativeAction: ReviewActivityActions.CANCEL_REVIEWER,
 		dateToDisplay: 'dateConfirmed',
 	},
 	// review not responded within due date
@@ -126,9 +128,9 @@ const ConfigPerStatus = {
 		descriptionKey: tk(
 			'dashboard.reviewAssignment.statusResponseOverdue.description',
 		),
-		textAction: Actions.EDIT_DUE_DATE,
-		primaryAction: Actions.VIEW_DETAILS,
-		negativeAction: Actions.UNASSIGN_REVIEWER,
+		textAction: ReviewActivityActions.EDIT_DUE_DATE,
+		primaryAction: ReviewActivityActions.VIEW_DETAILS,
+		negativeAction: ReviewActivityActions.UNASSIGN_REVIEWER,
 		dateToDisplay: 'dateResponseDue',
 	},
 	// reviewer has agreed to the review
@@ -143,9 +145,9 @@ const ConfigPerStatus = {
 		},
 		titleKey: tk('dashboard.reviewAssignment.statusAccepted.title'),
 		descriptionKey: tk('dashboard.reviewAssignment.statusAccepted.description'),
-		textAction: Actions.EDIT_DUE_DATE,
-		primaryAction: Actions.VIEW_DETAILS,
-		negativeAction: Actions.UNASSIGN_REVIEWER,
+		textAction: ReviewActivityActions.EDIT_DUE_DATE,
+		primaryAction: ReviewActivityActions.VIEW_DETAILS,
+		negativeAction: ReviewActivityActions.UNASSIGN_REVIEWER,
 		dateToDisplay: 'dateDue',
 	},
 	// review not submitted within due date
@@ -162,9 +164,9 @@ const ConfigPerStatus = {
 		descriptionKey: tk(
 			'dashboard.reviewAssignment.statusReviewOverdue.description',
 		),
-		textAction: Actions.EDIT_DUE_DATE,
-		primaryAction: Actions.VIEW_DETAILS,
-		negativeAction: Actions.UNASSIGN_REVIEWER,
+		textAction: ReviewActivityActions.EDIT_DUE_DATE,
+		primaryAction: ReviewActivityActions.VIEW_DETAILS,
+		negativeAction: ReviewActivityActions.UNASSIGN_REVIEWER,
 		dateToDisplay: 'dateDue',
 	},
 	// review has been submitted
@@ -181,7 +183,7 @@ const ConfigPerStatus = {
 		titleKey: tk('dashboard.reviewAssignment.statusReceived.title'),
 		descriptionKey: tk('dashboard.reviewAssignment.statusReceived.description'),
 		textAction: null,
-		primaryAction: Actions.VIEW_UNREAD_RECOMMENDATION,
+		primaryAction: ReviewActivityActions.VIEW_UNREAD_RECOMMENDATION,
 		negativeAction: null,
 		dateToDisplay: 'dateCompleted',
 	},
@@ -199,7 +201,7 @@ const ConfigPerStatus = {
 		titleKey: tk('dashboard.reviewAssignment.statusReceived.title'),
 		descriptionKey: tk('dashboard.reviewAssignment.statusReceived.description'),
 		textAction: null,
-		primaryAction: Actions.VIEW_RECOMMENDATION,
+		primaryAction: ReviewActivityActions.VIEW_RECOMMENDATION,
 		negativeAction: null,
 		dateToDisplay: 'dateCompleted',
 	},
@@ -219,7 +221,7 @@ const ConfigPerStatus = {
 		// same as for STATUS_RECEIVED
 		descriptionKey: tk('dashboard.reviewAssignment.statusComplete.description'),
 		textAction: null,
-		primaryAction: Actions.VIEW_RECOMMENDATION,
+		primaryAction: ReviewActivityActions.VIEW_RECOMMENDATION,
 		negativeAction: null,
 		// TODO: THIS IS INCORRECT this is when the review was completed!!
 		// https://github.com/pkp/pkp-lib/issues/10359
@@ -240,7 +242,7 @@ const ConfigPerStatus = {
 		titleKey: tk('dashboard.reviewAssignment.statusComplete.title'),
 		descriptionKey: tk('dashboard.reviewAssignment.statusComplete.description'),
 		textAction: null,
-		primaryAction: Actions.VIEW_RECOMMENDATION,
+		primaryAction: ReviewActivityActions.VIEW_RECOMMENDATION,
 		negativeAction: null,
 		dateToDisplay: 'dateCompleted',
 	},
@@ -260,8 +262,8 @@ const ConfigPerStatus = {
 		descriptionKey: tk(
 			'dashboard.reviewAssignment.statusCancelled.description',
 		),
-		textAction: Actions.RESEND_REVIEW_REQUEST,
-		primaryAction: Actions.VIEW_DETAILS,
+		textAction: ReviewActivityActions.RESEND_REVIEW_REQUEST,
+		primaryAction: ReviewActivityActions.VIEW_DETAILS,
 		negativeAction: null,
 		dateToDisplay: 'dateCancelled',
 	},
@@ -279,9 +281,9 @@ const ConfigPerStatus = {
 		descriptionKey: tk(
 			'dashboard.reviewAssignment.statusRequestResend.description',
 		),
-		textAction: Actions.EDIT_DUE_DATE,
-		primaryAction: Actions.VIEW_DETAILS,
-		negativeAction: Actions.UNASSIGN_REVIEWER,
+		textAction: ReviewActivityActions.EDIT_DUE_DATE,
+		primaryAction: ReviewActivityActions.VIEW_DETAILS,
+		negativeAction: ReviewActivityActions.UNASSIGN_REVIEWER,
 		dateToDisplay: 'dateResponseDue',
 	},
 };
@@ -389,15 +391,15 @@ export function useReviewActivityLogic() {
 			description: getDescription(),
 			reviewMethodIcons: getReviewMethodIcons(reviewAssignment),
 			textButton: config.textAction && {
-				action: config.textAction,
+				action: ActionsMapping[config.textAction],
 				label: getTextActionLabel(),
 			},
 			primaryButton: config.primaryAction && {
-				action: config.primaryAction,
+				action: ActionsMapping[config.primaryAction],
 				label: getPrimaryActionLabel(),
 			},
 			negativeButton: config.negativeAction && {
-				action: config.negativeAction,
+				action: ActionsMapping[config.negativeAction],
 				label: getNegativeActionLabel(),
 			},
 			reviewerName: reviewAssignment.reviewerFullName,

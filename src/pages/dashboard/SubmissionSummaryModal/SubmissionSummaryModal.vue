@@ -114,6 +114,7 @@ import ReviewRoundStatus from './primaryItems/ReviewRoundStatus.vue';
 import PublicationTitleAbstractForm from './primaryItems/PublicationTitleAbstractForm.vue';
 import PublicationVersionControl from './publicationControls/PublicationVersionControl.vue';
 import ActionButton from './actionItems/ActionButton.vue';
+import WorkflowRecommendationControls from './actionItems/WorkflowRecommendationControls.vue';
 import EditorsAssigned from './metaItems/EditorsAssigned.vue';
 import BasicMetadata from './metaItems/BasicMetadata.vue';
 import SubmissionStatus from './primaryItems/SubmissionStatus.vue';
@@ -134,6 +135,7 @@ const Components = {
 	ParticipantManager,
 	LastActivity,
 	ActionButton,
+	WorkflowRecommendationControls,
 	EditorsAssigned,
 	BasicMetadata,
 	PrimaryBasicMetadata,

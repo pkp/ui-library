@@ -7,6 +7,8 @@ import {useFetch} from '@/composables/useFetch';
 import {useUrlSearchParams} from '@vueuse/core';
 import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 
+import SelectRevisionFormModal from '../components/SelectRevisionFormModal.vue';
+
 export const Actions = {
 	DECISION_ACCEPT: 'decisionAccept',
 	DECISION_CANCEL_REVIEW_ROUND: 'decisionCancelReviewRound',
@@ -19,7 +21,11 @@ export const Actions = {
 	DECISION_NEW_EXTERNAL_ROUND: 'decisionNewExternalRound',
 	DECISION_BACK_FROM_PRODUCTION: 'decisionBackFromProduction',
 
-	REQUEST_REVISION: 'requestRevisions',
+	RECOMMEND_REVISION: 'recommendRevision',
+	DECISION_RECOMMEND_ACCEPT: 'decisionRecommendAccept',
+	DECISION_RECOMMEND_DECLINE: 'decisionRecommendDecline',
+
+	REQUEST_REVISION: 'requestRevision',
 	ASSIGN_REVIEWERS: 'assignReviewers',
 	UNASSIGN_REVIEWER: 'unassignReviewer',
 	CANCEL_REVIEWER: 'cancelReviewer',
@@ -46,16 +52,17 @@ export const Actions = {
 	CREATE_NEW_VERSION: 'createNewVersion',
 };
 
-import SelectRevisionRecommendationFormModal from '../components/SelectRevisionRecommendationFormModal.vue';
-export function useHandleActions({selectRevisionDecisionForm}) {
-	function handleSubmissionAction(actionName, actionArgs, finishedCallback) {
-		const {submission, selectedPublication} = actionArgs;
+export function useWorkflowActions({
+	selectRevisionDecisionForm,
+	selectRevisionRecommendationForm,
+}) {
+	function handleAction(actionName, actionArgs, finishedCallback) {
+		const {submission, submissionId, selectedPublication} = actionArgs;
 		const {openSideModal, openDialog} = useModal();
-		const {t, localize} = useLocalize();
+		const {t} = useLocalize();
 		const {getCurrentReviewRound, getLatestPublication} = useSubmission();
 
 		const editorialDecisionActions = {
-			requestRevisions: {},
 			[Actions.DECISION_ACCEPT]: {
 				decisionId: pkp.const.DECISION_ACCEPT,
 			},
@@ -86,6 +93,13 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 			[Actions.DECISION_BACK_FROM_PRODUCTION]: {
 				decisionId: pkp.const.DECISION_BACK_FROM_PRODUCTION,
 			},
+			//
+			[Actions.DECISION_RECOMMEND_ACCEPT]: {
+				decisionId: pkp.const.DECISION_RECOMMEND_ACCEPT,
+			},
+			[Actions.DECISION_RECOMMEND_DECLINE]: {
+				decisionId: pkp.const.DECISION_RECOMMEND_DECLINE,
+			},
 		};
 
 		function openDecisionPage(submission, decisionId, actionArgs) {
@@ -111,27 +125,7 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 			redirectToPage();
 		}
 
-		console.log(
-			'actionName:',
-			actionName,
-			editorialDecisionActions[actionName],
-		);
 		if (editorialDecisionActions[actionName]) {
-			if (actionName === Actions.REQUEST_REVISION) {
-				// open modal
-				const {set, form, getValue} = useForm(selectRevisionDecisionForm);
-				openSideModal(SelectRevisionRecommendationFormModal, {
-					formProps: form,
-					onSet: set,
-					onSuccess: () => {
-						const decision = getValue('decision');
-						openDecisionPage(submission, decision);
-					},
-				});
-
-				return;
-			}
-
 			const editorialDecisionAction = editorialDecisionActions[actionName];
 
 			openDecisionPage(
@@ -143,7 +137,29 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 			// redirect to decisions page
 		}
 
-		if (actionName === Actions.ASSIGN_REVIEWERS) {
+		if (actionName === Actions.REQUEST_REVISION) {
+			// open modal
+			const {set, form, getValue} = useForm(selectRevisionDecisionForm);
+			openSideModal(SelectRevisionFormModal, {
+				formProps: form,
+				onSet: set,
+				onSuccess: () => {
+					const decision = getValue('decision');
+					openDecisionPage(submission, decision, actionArgs);
+				},
+			});
+		} else if (actionName === Actions.RECOMMEND_REVISION) {
+			// open modal
+			const {set, form, getValue} = useForm(selectRevisionRecommendationForm);
+			openSideModal(SelectRevisionFormModal, {
+				formProps: form,
+				onSet: set,
+				onSuccess: () => {
+					const decision = getValue('decision');
+					openDecisionPage(submission, decision, actionArgs);
+				},
+			});
+		} else if (actionName === Actions.ASSIGN_REVIEWERS) {
 			const activeReviewRound = getCurrentReviewRound(submission);
 
 			const {url} = useLegacyGridUrl({
@@ -164,111 +180,6 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 						title: t('editor.submission.addReviewer'),
 						url: url.value,
 					},
-				},
-				{
-					onClose: async () => {
-						finishedCallback();
-					},
-				},
-			);
-		} else if (
-			[Actions.UNASSIGN_REVIEWER, Actions.CANCEL_REVIEWER].includes(actionName)
-		) {
-			const {url} = useLegacyGridUrl({
-				component: 'grid.users.reviewer.ReviewerGridHandler',
-				op: 'unassignReviewer',
-				params: {
-					selectionType: pkp.const.REVIEWER_SELECT_ADVANCED_SEARCH,
-					submissionId: submission.id,
-					stageId: submission.stageId,
-					reviewAssignmentId: actionArgs.reviewAssignmentId,
-				},
-			});
-
-			const modalTitle =
-				actionName === Actions.UNASSIGN_REVIEWER
-					? t('editor.review.unassignReviewer')
-					: t('editor.review.cancelReviewer');
-
-			openSideModal(
-				'LegacyAjax',
-				{
-					legacyOptions: {title: modalTitle, url},
-				},
-				{
-					onClose: async () => {
-						finishedCallback();
-					},
-				},
-			);
-		} else if (actionName === Actions.RESEND_REVIEW_REQUEST) {
-			const {url} = useLegacyGridUrl({
-				component: 'grid.users.reviewer.ReviewerGridHandler',
-				op: 'resendRequestReviewer',
-				params: {
-					submissionId: submission.id,
-					stageId: submission.stageId,
-					reviewAssignmentId: actionArgs.reviewAssignmentId,
-				},
-			});
-
-			openSideModal(
-				'LegacyAjax',
-				{
-					legacyOptions: {title: t('editor.review.resendRequestReviewer'), url},
-				},
-				{
-					onClose: async () => {
-						finishedCallback();
-					},
-				},
-			);
-		} else if (
-			[
-				Actions.VIEW_DETAILS,
-				Actions.VIEW_UNREAD_RECOMMENDATION,
-				Actions.VIEW_RECOMMENDATION,
-			].includes(actionName)
-		) {
-			const {url} = useLegacyGridUrl({
-				component: 'grid.users.reviewer.ReviewerGridHandler',
-				op: 'readReview',
-				params: {
-					submissionId: submission.id,
-					stageId: submission.stageId,
-					reviewAssignmentId: actionArgs.reviewAssignmentId,
-				},
-			});
-
-			openSideModal(
-				'LegacyAjax',
-				{
-					legacyOptions: {
-						title: `${t('editor.review.reviewDetails')}: ${localize(selectedPublication.fullTitle)}`,
-						url,
-					},
-				},
-				{
-					onClose: async () => {
-						finishedCallback();
-					},
-				},
-			);
-		} else if (actionName === Actions.EDIT_DUE_DATE) {
-			const {url} = useLegacyGridUrl({
-				component: 'grid.users.reviewer.ReviewerGridHandler',
-				op: 'editReview',
-				params: {
-					submissionId: submission.id,
-					stageId: submission.stageId,
-					reviewAssignmentId: actionArgs.reviewAssignmentId,
-				},
-			});
-
-			openSideModal(
-				'LegacyAjax',
-				{
-					legacyOptions: {title: t('editor.submissionReview.editReview'), url},
 				},
 				{
 					onClose: async () => {
@@ -373,9 +284,10 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 					},
 				},
 			);
+			// TODO there is likely better place for this action
 		} else if (actionName === Actions.OPEN_REVIEW_FORM) {
 			const {redirectToPage} = useUrl(
-				`reviewer/submission/${encodeURIComponent(submission.id)}`,
+				`reviewer/submission/${encodeURIComponent(submissionId)}`,
 				{},
 			);
 
@@ -405,7 +317,7 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 					{
 						onClose: async ({formId, data}) => {
 							if (data?.issueId) {
-								handleSubmissionAction(
+								handleAction(
 									Actions.SCHEDULE_FOR_PUBLICATION,
 									actionArgs,
 									finishedCallback,
@@ -417,7 +329,7 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 					},
 				);
 			} else {
-				handleSubmissionAction(
+				handleAction(
 					Actions.SCHEDULE_FOR_PUBLICATION,
 					actionArgs,
 					finishedCallback,
@@ -522,5 +434,5 @@ export function useHandleActions({selectRevisionDecisionForm}) {
 		}
 	}
 
-	return {handleSubmissionAction};
+	return {handleAction};
 }

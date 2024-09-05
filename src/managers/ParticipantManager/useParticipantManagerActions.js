@@ -47,6 +47,8 @@ export function useParticipantManagerActions() {
 	}
 
 	function getItemActions() {
+		const {t} = useLocalize();
+
 		const actions = [];
 
 		// [Role::ROLE_ID_MANAGER, Role::ROLE_ID_SITE_ADMIN, Role::ROLE_ID_SUB_EDITOR],
@@ -60,57 +62,33 @@ export function useParticipantManagerActions() {
 
 		if (canAdminister) {
 			actions.push({
-				label: 'Edit (t)',
+				label: t('common.edit'),
 				name: Actions.EDIT,
 				icon: 'Edit',
 			});
 		}
 
 		actions.push({
-			label: 'Notify (t)',
+			label: t('submission.stageParticipants.notify'),
 			name: Actions.NOTIFY,
 			icon: 'Email',
 		});
 
 		// TODO https://github.com/pkp/pkp-lib/issues/10290
 		actions.push({
-			label: 'Login As (t)',
+			label: t('grid.action.logInAs'),
 			name: Actions.LOGIN_AS,
 			icon: 'LoginAs',
 		});
 
 		if (canAdminister) {
 			actions.push({
-				label: 'Remove (t)',
+				label: t('common.remove'),
 				name: Actions.REMOVE,
 				icon: 'Cancel',
 				isWarnable: true,
 			});
 		}
-		/*if (enabledActions.includes(Actions.SEE_NOTES)) {
-			actions.push({
-				label: 'More information',
-				name: Actions.SEE_NOTES,
-				icon: 'View',
-			});
-		}
-
-		if (enabledActions.includes(Actions.EDIT)) {
-			actions.push({
-				label: 'Edit',
-				name: Actions.EDIT,
-				icon: 'Edit',
-			});
-		}
-
-		if (enabledActions.includes(Actions.DELETE)) {
-			actions.push({
-				label: 'Delete',
-				name: Actions.DELETE,
-				isWarnable: true,
-				icon: 'Cancel',
-			});
-		}*/
 
 		return actions;
 	}

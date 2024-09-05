@@ -3,7 +3,7 @@ import {useUrl} from '@/composables/useUrl';
 import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
 
-const Actions = {
+export const Actions = {
 	ADD_REVIEWER: 'addReviewer',
 	REVIEW_DETAILS: 'reviewDetails',
 	EMAIL_REVIEWER: 'emailReviewer',
@@ -57,9 +57,17 @@ export function useReviewerManagerActions() {
 
 	function handleAction(
 		actionName,
-		{submission, reviewRoundId},
+		{submission, reviewRoundId, submissionStageId, reviewAssignment},
 		finishedCallback,
 	) {
+		console.log(
+			'handleAction manager:',
+			actionName,
+			submission,
+			reviewRoundId,
+			submissionStageId,
+			reviewAssignment,
+		);
 		if (actionName === Actions.ADD_REVIEWER) {
 			openLegacyGriAction(
 				{
@@ -70,6 +78,118 @@ export function useReviewerManagerActions() {
 						submissionId: submission.id,
 						stageId: submission.stageId,
 						reviewRoundId,
+					},
+				},
+				finishedCallback,
+			);
+		} else if (actionName === Actions.REVIEW_DETAILS) {
+			openLegacyGriAction(
+				{
+					title: t('editor.review.reviewDetails'),
+					op: 'readReview',
+					params: {
+						submissionId: submission.id,
+						reviewAssignmentId: reviewAssignment.id,
+						stageId: submissionStageId,
+					},
+				},
+				finishedCallback,
+			);
+		} else if (actionName === Actions.EMAIL_REVIEWER) {
+			openLegacyGriAction(
+				{
+					title: t('editor.review.emailReviewer'),
+					op: 'sendEmail',
+					params: {
+						submissionId: submission.id,
+						reviewAssignmentId: reviewAssignment.id,
+						stageId: submissionStageId,
+					},
+				},
+				finishedCallback,
+			);
+		} else if (actionName === Actions.EDIT_REVIEW) {
+			openLegacyGriAction(
+				{
+					title: t('editor.submissionReview.editReview'),
+					op: 'editReview',
+					params: {
+						submissionId: submission.id,
+						reviewAssignmentId: reviewAssignment.id,
+						stageId: submissionStageId,
+					},
+				},
+				finishedCallback,
+			);
+		} else if (
+			actionName === Actions.UNASSIGN_REVIEWER ||
+			actionName === Actions.CANCEL_REVIEWER
+		) {
+			openLegacyGriAction(
+				{
+					title:
+						actionName === Actions.UNASSIGN_REVIEWER
+							? t('editor.review.unassignReviewer')
+							: t('editor.review.cancelReviewer'),
+					op: 'unassignReviewer',
+					params: {
+						submissionId: submission.id,
+						reviewAssignmentId: reviewAssignment.id,
+						stageId: submissionStageId,
+					},
+				},
+				finishedCallback,
+			);
+		} else if (actionName === Actions.REVIEW_HISTORY) {
+			openLegacyGriAction(
+				{
+					title: t('submission.history'),
+					op: 'reviewHistory',
+					params: {
+						submissionId: submission.id,
+						reviewAssignmentId: reviewAssignment.id,
+						stageId: submissionStageId,
+					},
+				},
+				finishedCallback,
+			);
+		} else if (actionName === Actions.LOGIN_AS) {
+			const {openDialog} = useModal();
+
+			openDialog(
+				{
+					actions: [
+						{
+							label: t('common.cancel'),
+							isWarnable: true,
+							callback: (close) => {
+								close();
+							},
+						},
+						{
+							label: t('common.ok'),
+							callback: (close) => {
+								const {redirectToPage} = useUrl(
+									`login/signInAsUser/${reviewAssignment.reviewerId}`,
+								);
+								redirectToPage();
+							},
+						},
+					],
+					title: t('grid.action.logInAs'),
+					message: t('grid.user.confirmLogInAs'),
+				},
+				finishedCallback,
+			);
+		} else if (actionName === Actions.EDITORIAL_NOTES) {
+			openLegacyGriAction(
+				{
+					title: t('user.gossip'),
+					op: 'gossip',
+					params: {
+						submissionId: submission.id,
+						reviewAssignmentId: reviewAssignment.id,
+						stageId: submissionStageId,
 					},
 				},
 				finishedCallback,
@@ -165,127 +285,5 @@ export function useReviewerManagerActions() {
 		return actions;
 	}
 
-	function handleItemAction(
-		actionName,
-		{reviewAssignment, submissionId, submissionStageId},
-		finishedCallback,
-	) {
-		const {t} = useLocalize();
-
-		if (actionName === 'reviewDetails') {
-			openLegacyGriAction(
-				{
-					title: t('editor.review.reviewDetails'),
-					op: 'readReview',
-					params: {
-						submissionId: submissionId,
-						reviewAssignmentId: reviewAssignment.id,
-						stageId: submissionStageId,
-					},
-				},
-				finishedCallback,
-			);
-		} else if (actionName === 'emailReviewer') {
-			openLegacyGriAction(
-				{
-					title: t('editor.review.emailReviewer'),
-					op: 'sendEmail',
-					params: {
-						submissionId: submissionId,
-						reviewAssignmentId: reviewAssignment.id,
-						stageId: submissionStageId,
-					},
-				},
-				finishedCallback,
-			);
-		} else if (actionName === 'editReview') {
-			openLegacyGriAction(
-				{
-					title: t('editor.submissionReview.editReview'),
-					op: 'editReview',
-					params: {
-						submissionId: submissionId,
-						reviewAssignmentId: reviewAssignment.id,
-						stageId: submissionStageId,
-					},
-				},
-				finishedCallback,
-			);
-		} else if (
-			actionName === 'unassignReviewer' ||
-			actionName === 'cancelReviewer'
-		) {
-			openLegacyGriAction(
-				{
-					title:
-						actionName === 'unassignReviewer'
-							? t('editor.review.unassignReviewer')
-							: t('editor.review.cancelReviewer'),
-					op: 'unassignReviewer',
-					params: {
-						submissionId: submissionId,
-						reviewAssignmentId: reviewAssignment.id,
-						stageId: submissionStageId,
-					},
-				},
-				finishedCallback,
-			);
-		} else if (actionName === 'reviewHistory') {
-			openLegacyGriAction(
-				{
-					title: t('submission.history'),
-					op: 'reviewHistory',
-					params: {
-						submissionId: submissionId,
-						reviewAssignmentId: reviewAssignment.id,
-						stageId: submissionStageId,
-					},
-				},
-				finishedCallback,
-			);
-		} else if (actionName === 'loginAs') {
-			const {openDialog} = useModal();
-
-			openDialog(
-				{
-					actions: [
-						{
-							label: t('common.cancel'),
-							isWarnable: true,
-							callback: (close) => {
-								close();
-							},
-						},
-						{
-							label: t('common.ok'),
-							callback: (close) => {
-								const {redirectToPage} = useUrl(
-									`login/signInAsUser/${reviewAssignment.reviewerId}`,
-								);
-								redirectToPage();
-							},
-						},
-					],
-					title: t('grid.action.logInAs'),
-					message: t('grid.user.confirmLogInAs'),
-				},
-				finishedCallback,
-			);
-		} else if (actionName === 'editorialNotes') {
-			openLegacyGriAction(
-				{
-					title: t('user.gossip'),
-					op: 'gossip',
-					params: {
-						submissionId: submissionId,
-						reviewAssignmentId: reviewAssignment.id,
-						stageId: submissionStageId,
-					},
-				},
-				finishedCallback,
-			);
-		}
-	}
-
-	return {getTopActions, handleAction, getItemActions, handleItemAction};
+	return {getTopActions, handleAction, getItemActions};
 }

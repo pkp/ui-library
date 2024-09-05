@@ -1,10 +1,10 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {useSubmission} from '@/composables/useSubmission';
-
+import {Actions} from '../../composables/useWorkflowActions';
 const {t} = useLocalize();
 
 export function useEditorWorkflowConfig() {
-	const {hasSubmissionPassedStage, hasNotSubmissionStartedStage} =
+	const {hasSubmissionPassedStage, hasNotSubmissionStartedStage, getStageById} =
 		useSubmission();
 
 	function getPrimaryItems({submission, selectedStageId, selectedReviewRound}) {
@@ -217,7 +217,7 @@ export function useEditorWorkflowConfig() {
 				props: {
 					label: t('dashboard.summary.sendSubmissionForReview'),
 					isPrimary: true,
-					action: 'decisionExternalReview',
+					action: Actions.DECISION_EXTERNAL_REVIEW,
 				},
 			});
 
@@ -226,7 +226,7 @@ export function useEditorWorkflowConfig() {
 				props: {
 					label: t('dashboard.summary.acceptAndSkipReview'),
 					isSecondary: true,
-					action: 'decisionSkipExternalReview',
+					action: Actions.DECISION_SKIP_EXTERNAL_REVIEW,
 				},
 			});
 
@@ -235,7 +235,7 @@ export function useEditorWorkflowConfig() {
 				props: {
 					label: t('dashboard.summary.declineSubmission'),
 					isWarnable: true,
-					action: 'decisionInitialDecline',
+					action: Actions.DECISION_INITIAL_DECLINE,
 				},
 			});
 		} else if (
@@ -263,57 +263,70 @@ export function useEditorWorkflowConfig() {
 				return [];
 			}
 
-			const actionArgs = {
-				stageId: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
-				reviewRoundId: selectedReviewRound.id,
-			};
+			const selectedStage = getStageById(submission, selectedStageId);
 
-			items.push({
-				component: 'ActionButton',
-				props: {
-					label: t('dashboard.summary.requestRevisions'),
-					isSecondary: true,
-					action: 'requestRevisions',
-					actionArgs,
-				},
-			});
+			const isRecommendOnlyEditor = selectedStage.currentUserCanRecommendOnly;
+			if (isRecommendOnlyEditor) {
+				items.push({
+					component: 'WorkflowRecommendationControls',
+					props: {
+						stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+						reviewRoundId: selectedReviewRound.id,
+					},
+				});
+			} else {
+				const actionArgs = {
+					stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+					reviewRoundId: selectedReviewRound.id,
+				};
 
-			items.push({
-				component: 'ActionButton',
-				props: {
-					label: t('dashboard.summary.acceptSubmission'),
-					action: 'decisionAccept',
-					isPrimary: true,
-					actionArgs,
-				},
-			});
+				items.push({
+					component: 'ActionButton',
+					props: {
+						label: t('dashboard.summary.requestRevisions'),
+						isSecondary: true,
+						action: Actions.REQUEST_REVISION,
+						actionArgs,
+					},
+				});
 
-			items.push({
-				component: 'ActionButton',
-				props: {
-					label: t('editor.submission.createNewRound'),
-					action: 'decisionNewExternalRound',
-					actionArgs,
-				},
-			});
+				items.push({
+					component: 'ActionButton',
+					props: {
+						label: t('dashboard.summary.acceptSubmission'),
+						action: Actions.DECISION_ACCEPT,
+						isPrimary: true,
+						actionArgs,
+					},
+				});
 
-			items.push({
-				component: 'ActionButton',
-				props: {
-					label: t('dashboard.summary.cancelReviewRound'),
-					isWarnable: true,
-					action: 'decisionCancelReviewRound',
-				},
-			});
+				items.push({
+					component: 'ActionButton',
+					props: {
+						label: t('editor.submission.createNewRound'),
+						action: Actions.DECISION_NEW_EXTERNAL_ROUND,
+						actionArgs,
+					},
+				});
 
-			items.push({
-				component: 'ActionButton',
-				props: {
-					label: t('dashboard.summary.declineSubmission'),
-					isWarnable: true,
-					action: 'decisionDecline',
-				},
-			});
+				items.push({
+					component: 'ActionButton',
+					props: {
+						label: t('dashboard.summary.cancelReviewRound'),
+						isWarnable: true,
+						action: Actions.DECISION_CANCEL_REVIEW_ROUND,
+					},
+				});
+
+				items.push({
+					component: 'ActionButton',
+					props: {
+						label: t('dashboard.summary.declineSubmission'),
+						isWarnable: true,
+						action: Actions.DECISION_DECLINE_SUBMISSION,
+					},
+				});
+			}
 		} else if (selectedStageId === pkp.const.WORKFLOW_STAGE_ID_EDITING) {
 			if (
 				hasNotSubmissionStartedStage(
@@ -333,7 +346,7 @@ export function useEditorWorkflowConfig() {
 				props: {
 					label: t('dashboard.summary.sendToProduction'),
 					isPrimary: true,
-					action: 'decisionSendToProduction',
+					action: Actions.DECISION_SEND_TO_PRODUCTION,
 				},
 			});
 
@@ -342,7 +355,7 @@ export function useEditorWorkflowConfig() {
 				props: {
 					label: t('dashboard.summary.cancelCopyEditing'),
 					isWarnable: true,
-					action: 'decisionBackFromCopyediting',
+					action: Actions.DECISION_BACK_FROM_COPYEDITING,
 				},
 			});
 		} else if (selectedStageId === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION) {
@@ -375,7 +388,7 @@ export function useEditorWorkflowConfig() {
 					props: {
 						label: t('dashboard.summary.backToCopyediting'),
 						isWarnable: true,
-						action: 'decisionBackFromProduction',
+						action: Actions.DECISION_BACK_FROM_PRODUCTION,
 					},
 				});
 		}

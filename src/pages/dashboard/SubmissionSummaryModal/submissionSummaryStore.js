@@ -3,7 +3,7 @@ import {computed, ref, watch} from 'vue';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
-import {useHandleActions} from '../composables/useHandleActions';
+import {useWorkflowActions} from '../composables/useWorkflowActions';
 import {useDataChangedProvider} from '@/composables/useDataChangedProvider';
 import {useSummarySideNav} from './composables/useSummarySideNav';
 import {useSubmission} from '@/composables/useSubmission';
@@ -130,7 +130,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		 * Handle user actions
 		 *
 		 */
-		const {handleSubmissionAction} = useHandleActions(props.pageInitConfig);
+		const _workflowActionsFns = useWorkflowActions(props.pageInitConfig);
 
 		function handleAction(actionName, _actionArgs) {
 			if (actionName === 'navigateToMenu') {
@@ -144,7 +144,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 				selectedPublication: selectedPublication.value,
 			};
 
-			handleSubmissionAction(actionName, actionArgs, async () => {
+			_workflowActionsFns.handleAction(actionName, actionArgs, async () => {
 				triggerDataChange();
 			});
 		}
@@ -262,6 +262,12 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			actionItems,
 			publicationControlsLeft,
 			publicationControlsRight,
+
+			/**
+			 * Expose for extensions
+			 */
+
+			_workflowActionsFns,
 		};
 	},
 );

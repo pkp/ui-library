@@ -1,5 +1,5 @@
 import {useLocalize} from '@/composables/useLocalize';
-import {Actions} from '../../composables/useHandleActions';
+import {Actions} from '../../composables/useWorkflowActions';
 import {useSubmission} from '@/composables/useSubmission';
 export const PublicationConfig = {
 	titleAbstract: {
