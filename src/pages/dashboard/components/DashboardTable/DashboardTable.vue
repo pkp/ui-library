@@ -32,12 +32,12 @@
 
 <script setup>
 import {defineProps} from 'vue';
-import PkpTable from '@/components/TableNext/Table.vue';
-import TableColumn from '@/components/TableNext/TableColumn.vue';
-import TableHeader from '@/components/TableNext/TableHeader.vue';
-import TableBody from '@/components/TableNext/TableBody.vue';
-import TableRow from '@/components/TableNext/TableRow.vue';
-import TablePagination from '@/components/TableNext/TablePagination.vue';
+import PkpTable from '@/components/Table/Table.vue';
+import TableColumn from '@/components/Table/TableColumn.vue';
+import TableHeader from '@/components/Table/TableHeader.vue';
+import TableBody from '@/components/Table/TableBody.vue';
+import TableRow from '@/components/Table/TableRow.vue';
+import TablePagination from '@/components/Table/TablePagination.vue';
 
 import CellSubmissionActions from './CellSubmissionActions.vue';
 import CellSubmissionActivity from './CellSubmissionActivity/CellSubmissionActivity.vue';

@@ -1,8 +1,8 @@
 import StatsPage from './StatsPage.vue';
 import StatsEditorialPage from '@/components/Container/StatsEditorialPage.vue';
 import StatsPublicationsPage from '@/components/Container/StatsPublicationsPage.vue';
-import ArticleStatsMock from '@/components/TableNext/mocks/articleStats.js';
-import ArticleStatsColumnsMock from '@/components/TableNext/mocks/articleStatsColumns.js';
+import ArticleStatsMock from '@/components/Table/mocks/articleStats.js';
+import ArticleStatsColumnsMock from '@/components/Table/mocks/articleStatsColumns.js';
 import debounce from 'debounce';
 
 export default {

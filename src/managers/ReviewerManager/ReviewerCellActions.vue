@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import TableCell from '@/components/TableNext/TableCell.vue';
+import TableCell from '@/components/Table/TableCell.vue';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 import {useReviewerManagerActions} from './useReviewerManagerActions';
 import {computed} from 'vue';

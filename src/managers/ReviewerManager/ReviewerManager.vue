@@ -55,12 +55,12 @@
 </template>
 
 <script setup>
-import PkpTable from '@/components/TableNext/Table.vue';
-import TableColumn from '@/components/TableNext/TableColumn.vue';
-import TableHeader from '@/components/TableNext/TableHeader.vue';
-import TableBody from '@/components/TableNext/TableBody.vue';
-import TableRow from '@/components/TableNext/TableRow.vue';
-import TableCell from '@/components/TableNext/TableCell.vue';
+import PkpTable from '@/components/Table/Table.vue';
+import TableColumn from '@/components/Table/TableColumn.vue';
+import TableHeader from '@/components/Table/TableHeader.vue';
+import TableBody from '@/components/Table/TableBody.vue';
+import TableRow from '@/components/Table/TableRow.vue';
+import TableCell from '@/components/Table/TableCell.vue';
 import ReviewerCellActions from './ReviewerCellActions.vue';
 import Icon from '@/components/Icon/Icon.vue';
 

@@ -22,7 +22,7 @@
 <script setup>
 import {defineProps, computed} from 'vue';
 import {useSubmission} from '@/composables/useSubmission';
-import TableCell from '@/components/TableNext/TableCell.vue';
+import TableCell from '@/components/Table/TableCell.vue';
 import {useLocalize} from '@/composables/useLocalize';
 const props = defineProps({item: {type: Object, required: true}});
 
