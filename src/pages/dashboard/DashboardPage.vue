@@ -77,10 +77,6 @@ const props = defineProps({
 	/** Form for selection type of revision for recommending editor */
 	selectRevisionRecommendationForm: {type: Object, required: true},
 
-	publicationTitleAbstractForm: {type: Object, required: true},
-	publicationMetadataForm: {type: Object, required: true},
-	publicationCitationsForm: {type: Object, required: true},
-	sections: {type: Array, required: true},
 	/** List of Views */
 	views: {
 		type: Array,
