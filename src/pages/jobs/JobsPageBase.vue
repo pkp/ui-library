@@ -1,28 +1,38 @@
 <script>
-import Page from './Page.vue';
-import Pagination from '@/components/Pagination/Pagination.vue';
-import PkpTable from '@/components/Table/Table.vue';
 import ajaxError from '@/mixins/ajaxError';
 
 export default {
-	name: 'JobsPage',
-	components: {
-		PkpTable,
-		Pagination,
-	},
-	extends: Page,
+	name: 'JobsPageBase',
 	mixins: [ajaxError],
+	props: {
+		label: {
+			type: String,
+			default: '',
+		},
+		i18nDescription: {
+			type: String,
+			default: '',
+		},
+		columns: {
+			type: Array,
+			default: () => [],
+		},
+		apiUrl: {
+			type: String,
+			default: null,
+		},
+		apiUrlRedispatchAll: {
+			type: String,
+			default: null,
+		},
+	},
 	data() {
 		return {
-			i18nDescription: '',
-			columns: [],
 			rows: [],
-			label: '',
 			total: 0,
 			currentPage: 1,
 			lastPage: 1,
 			isLoadingItems: false,
-			apiUrl: null,
 		};
 	},
 	computed: {
