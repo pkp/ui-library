@@ -17,10 +17,8 @@
 	</div>
 	<table
 		class="pkpTable w-full max-w-full border-separate border-spacing-0"
-		:aria-labelledby="labelledBy ?? (slots.label ? labelId : null)"
-		:aria-describedby="
-			describedBy ?? (slots.description ? descriptionId : null)
-		"
+		:aria-labelledby="labelId"
+		:aria-describedby="descriptionId"
 	>
 		<slot />
 	</table>
@@ -70,8 +68,8 @@ const tableContext = {
 const slots = useSlots();
 
 const {generateId} = useId();
-const labelId = slots.label ? generateId() : null;
-const descriptionId = slots.description ? generateId() : null;
+const labelId = slots.label ? generateId() : props.labelledBy;
+const descriptionId = slots.description ? generateId() : props.describedBy;
 
 provide('tableContext', tableContext);
 </script>
