@@ -31,6 +31,20 @@ export function useEditorialLogic() {
 		}
 		if (activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) {
 			const activeRound = getCurrentReviewRound(submission);
+
+			if (activeStage.currentUserDecidingEditor) {
+				// just hack for illustration
+				switch (activeRound.statusId) {
+					case pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWERS:
+					case pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWS:
+					case pkp.const.REVIEW_ROUND_STATUS_REVIEWS_READY:
+					case pkp.const.REVIEW_ROUND_STATUS_REVIEWS_COMPLETED:
+					case pkp.const.REVIEW_ROUND_STATUS_REVIEWS_OVERDUE:
+					case pkp.const.REVIEW_ROUND_STATUS_RETURNED_TO_REVIEW:
+						activeRound.statusId =
+							pkp.const.REVIEW_ROUND_STATUS_PENDING_RECOMMENDATIONS;
+				}
+			}
 			if (
 				activeRound.statusId === pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWERS
 			) {

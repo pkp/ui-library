@@ -140,6 +140,7 @@ window.pkp = {
 		'article.metadata': 'Metadata',
 		'author.users.contributor.principalContact': 'Primary Contact',
 		'author.users.contributor.setPrincipalContact': 'Set Primary Contact',
+		'common.action': 'Action',
 		'common.addCCBCC': 'Add CC/BCC',
 		'common.assign': 'Assign',
 		'common.attachFiles': 'Attach Files',
@@ -173,6 +174,7 @@ window.pkp = {
 		'common.lastActivity': 'Last activity recorded on {$date}.',
 		'common.loaded': 'Loaded',
 		'common.loading': 'Loading',
+		'common.moreActions': 'More Actions',
 		'common.no': 'No',
 		'common.noItemsFound': 'No items found.',
 		'common.none': 'None',
@@ -225,20 +227,25 @@ window.pkp = {
 		'contributor.listPanel.preview.publicationLists': 'Publication Lists',
 		'dashboard.acceptOrDeclineRequestDate':
 			'Please accept or decline this request {$date}',
-		'dashboard.action': 'Action',
 		'dashboard.applyFilters': 'Apply Filters',
 		'dashboard.assignEditor': 'Assign Editor',
 		'dashboard.assignReviewers': 'Assign Reviewers',
 		'dashboard.clearFilters': 'Clear Filters',
 		'dashboard.completeReviewByDate': 'Please complete this review by {$date}.',
 		'dashboard.dashboards': 'Dashboards',
-		'dashboard.deadlineForComplitingReviewHasPassed':
+		'dashboard.deadlineForCompletingReviewHasPassed':
 			'Deadline for completing this review has passed. Please complete the review at the earliest.',
 		'dashboard.deadlineForRespondingAcceptOrDecline':
 			'Deadline for responding to this request has passed. Please accept or decline this request at the earliest.',
 		'dashboard.declinedDuringStage': 'Declined during the {$stageName} stage',
 		'dashboard.mySubmissions': 'My Submissions',
 		'dashboard.newReviewRoundToBeCreated': 'New review round to be created',
+		'dashboard.recommendOnly.pendingRecommendations':
+			'Recommending Editors are tasked to advise the next steps for this submission',
+		'dashboard.recommendOnly.recommendationsCompleted':
+			'All editorial recommendations have been received, and a decision is required.',
+		'dashboard.recommendOnly.recommendationsReady':
+			'An editorial recommendation has been received',
 		'dashboard.reviewAssignment.action.cancelReviewer': 'Cancel Reviewer',
 		'dashboard.reviewAssignment.action.editDueDate': 'Edit Due Date',
 		'dashboard.reviewAssignment.action.resendReviewRequest':
@@ -345,6 +352,7 @@ window.pkp = {
 		'editor.review.emailReviewer': 'Email Reviewer',
 		'editor.review.notInitiated':
 			'The review process has not yet been initiated.',
+		'editor.review.reinstateReviewer': 'Reinstate Reviewer',
 		'editor.review.resendRequestReviewer': 'Resend Review Request',
 		'editor.review.reviewDetails': 'Review Details',
 		'editor.review.unassignReviewer': 'Unassign Reviewer',
@@ -353,6 +361,10 @@ window.pkp = {
 		'editor.submission.createNewRound': 'Create New Review Round',
 		'editor.submission.decision.requestRevisions': 'Request Revisions',
 		'editor.submission.editStageParticipant': 'Edit Assignment',
+		'editor.submission.recommend.accept': 'Recommend Accept',
+		'editor.submission.recommend.decline': 'Recommend Decline',
+		'editor.submission.recommend.revisions': 'Recommend Revisions',
+		'editor.submission.recommendation': 'Recommendation',
 		'editor.submission.removeStageParticipant': 'Remove Participant',
 		'editor.submission.removeStageParticipant.description':
 			'You are about to remove this participant from <strong>all</strong> stages.',
@@ -364,6 +376,7 @@ window.pkp = {
 			'Search submissions, ID, authors, keywords, etc.',
 		'editor.submission.stageParticipants': 'Participants',
 		'editor.submission.uploadSelectFiles': 'Upload/Select Files',
+		'editor.submission.workflowDecision.changeDecision': 'Change decision',
 		'editor.submission.workflowDecision.submission.production':
 			'Sent to production.',
 		'editor.submission.workflowDecision.submission.published':
