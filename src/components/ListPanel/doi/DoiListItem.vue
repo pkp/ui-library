@@ -65,7 +65,7 @@
 		<!-- Expanded view/identifiers -->
 		<div
 			v-if="isExpanded"
-			class="listPanel__itemExpanded listPanel__itemExpanded--doi"
+			class="listPanel__itemExpanded listPanel__itemExpanded--doi mt-2"
 		>
 			<PkpTable>
 				<TableHeader>
@@ -921,10 +921,6 @@ export default {
 
 .listPanel__itemExpanded--doi {
 	margin-left: 2.25rem;
-}
-
-.listPanel__item--doi .listPanel__itemExpanded .pkpTable {
-	margin-top: 0.5rem;
 }
 
 .doiListPanel__itemExpandedActions {

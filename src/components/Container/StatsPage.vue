@@ -486,7 +486,7 @@ export default {
 	}
 }
 
-.pkpStats__table .pkpTable.-isLoading tbody {
+.pkpStats__table .-isLoading tbody {
 	opacity: 0.5;
 }
 
