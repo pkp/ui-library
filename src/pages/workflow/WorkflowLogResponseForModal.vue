@@ -10,12 +10,12 @@
 			<span>{{ description }}</span>
 		</template>
 		<div class="ml-8 mr-8 h-full bg-secondary">
-			<pkp-form
+			<PkpForm
 				class="h-full"
 				v-bind="store.form"
 				@success="store.formSuccess"
 				@set="store.updateForm"
-			></pkp-form>
+			></PkpForm>
 		</div>
 	</SideModalBody>
 </template>
