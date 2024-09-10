@@ -29,7 +29,6 @@ import PkpForm from '@/components/Form/Form.vue';
 const props = defineProps({
 	description: {type: String, required: true},
 	submissionId: {type: Number, required: true},
-	legacyOptions: {type: Object, required: true},
 	logResponseForm: {type: Object, required: true},
 });
 
