@@ -1,6 +1,6 @@
 <template>
 	<form
-		class="pkpForm -pkpClearfix h-full"
+		class="pkpForm -pkpClearfix"
 		:method="method"
 		:action="action"
 		@keydown.enter.prevent=""
@@ -151,7 +151,7 @@ export default {
 		 * @return {Array}
 		 */
 		classes() {
-			let classes = ['h-full'];
+			let classes = [];
 			if (this.visibleLocales.length > 1) {
 				classes.push('pkpForm--hasManyVisibleLocales');
 			}
@@ -672,10 +672,7 @@ export default {
 }
 
 .pkpFormPage--current {
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+	display: block;
 	position: relative;
 	left: auto;
 }
