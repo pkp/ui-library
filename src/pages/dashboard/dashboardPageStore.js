@@ -19,6 +19,11 @@ import {
 	useReviewerManagerActions,
 } from '@/managers/ReviewerManager/useReviewerManagerActions';
 
+import {
+	Actions as ParticipantManagerActions,
+	useParticipantManagerActions,
+} from '@/managers/ParticipantManager/useParticipantManagerActions';
+
 import {useEditorialLogic} from './composables/useEditorialLogic';
 import {useReviewActivityLogic} from './composables/useReviewActivityLogic';
 import {useSubmission} from '@/composables/useSubmission';
@@ -183,8 +188,9 @@ export const useDashboardPageStore = defineComponentStore(
 		);
 
 		const _workflowActionFns = useWorkflowActions(pageInitConfig);
-
 		const _reviewerManagerActionFns = useReviewerManagerActions(pageInitConfig);
+		const _participantManagerActionsFns =
+			useParticipantManagerActions(pageInitConfig);
 
 		const {getCurrentPublication} = useSubmission();
 		function handleAction(actionName, actionArgs) {
@@ -199,7 +205,7 @@ export const useDashboardPageStore = defineComponentStore(
 				);
 				const selectedPublication = getCurrentPublication(submission);
 
-				const actionArgsExtended = {
+				actionArgsExtended = {
 					...actionArgsExtended,
 					submission,
 					selectedPublication,
@@ -207,7 +213,7 @@ export const useDashboardPageStore = defineComponentStore(
 				};
 			}
 
-			if (Object.values(WorkflowActions).includes(actionName)) {
+			if (WorkflowActions[actionName]) {
 				_workflowActionFns.handleAction(
 					actionName,
 					actionArgsExtended,
@@ -215,8 +221,16 @@ export const useDashboardPageStore = defineComponentStore(
 						await fetchSubmissions();
 					},
 				);
-			} else if (Object.values(ReviewerManagerActions).includes(actionName)) {
+			} else if (ReviewerManagerActions[actionName]) {
 				_reviewerManagerActionFns.handleAction(
+					actionName,
+					actionArgsExtended,
+					async () => {
+						await fetchSubmissions();
+					},
+				);
+			} else if (ParticipantManagerActions[actionName]) {
+				_participantManagerActionsFns.handleAction(
 					actionName,
 					actionArgsExtended,
 					async () => {

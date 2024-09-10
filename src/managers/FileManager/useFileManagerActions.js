@@ -4,13 +4,13 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useFetch, getCSRFToken} from '@/composables/useFetch';
 
 export const Actions = {
-	LIST: 'list',
-	UPLOAD: 'upload',
-	SELECT_UPLOAD: 'selectUpload',
-	DOWNLOAD_ALL: 'downloadAll',
-	EDIT: 'edit',
-	DELETE: 'delete',
-	SEE_NOTES: 'seeNotes',
+	LIST: 'LIST',
+	UPLOAD: 'UPLOAD',
+	SELECT_UPLOAD: 'SELECT_UPLOAD',
+	DOWNLOAD_ALL: 'DOWNLOAD_ALL',
+	EDIT: 'EDIT',
+	DELETE: 'DELETE',
+	SEE_NOTES: 'SEE_NOTES',
 };
 
 export function useFileManagerActions() {
@@ -24,12 +24,87 @@ export function useFileManagerActions() {
 			wizardTitleKey,
 			uploadSelectTitleKey,
 			gridComponent,
+			file,
 		},
 		finishedCallback,
 	) {
-		const {t} = useLocalize();
+		const {t, localize} = useLocalize();
 
-		if (actionName === Actions.DOWNLOAD_ALL) {
+		if (actionName === Actions.SEE_NOTES) {
+			const {openLegacyModal} = useLegacyGridUrl({
+				component: 'informationCenter.FileInformationCenterHandler',
+				op: 'viewInformationCenter',
+				params: {
+					submissionFileId: file.id,
+					submissionId: submission.id,
+					stageId: submissionStageId,
+				},
+			});
+
+			openLegacyModal(
+				{
+					title: `${t('informationCenter.informationCenter')}: ${localize(file.name)}`,
+				},
+				finishedCallback,
+			);
+		} else if (actionName === Actions.EDIT) {
+			const {openLegacyModal} = useLegacyGridUrl({
+				component: 'api.file.ManageFileApiHandler',
+				op: 'editMetadata',
+				params: {
+					submissionFileId: file.id,
+					submissionId: submission.id,
+					stageId: submissionStageId,
+				},
+			});
+
+			openLegacyModal({title: t('grid.action.editFile')}, finishedCallback);
+		} else if (actionName === Actions.DELETE) {
+			// http://localhost:7003/index.php/publicknowledge/$$$call$$$/api/file/manage-file-api/delete-file?submissionFileId=31&submissionId=12&stageId=3
+
+			const {openDialog, openDialogNetworkError} = useModal();
+			openDialog({
+				actions: [
+					{
+						label: t('common.cancel'),
+						isWarnable: true,
+						callback: (close) => {
+							close();
+						},
+					},
+					{
+						label: t('common.ok'),
+						callback: async (close) => {
+							const {url} = useLegacyGridUrl({
+								component: 'api.file.ManageFileApiHandler',
+								op: 'deleteFile',
+								params: {
+									submissionFileId: file.id,
+									submissionId: submission.id,
+									stageId: submissionStageId,
+								},
+							});
+							const formData = new FormData();
+							formData.append('csrfToken', getCSRFToken());
+
+							const {fetch, data} = useFetch(url, {
+								method: 'POST',
+								body: formData,
+							});
+							await fetch();
+							close();
+							finishedCallback();
+
+							if (data.value.status !== true) {
+								openDialogNetworkError();
+							}
+						},
+					},
+				],
+				title: t('common.delete'),
+				message: t('common.confirmDelete'),
+			});
+		} else if (actionName === Actions.DOWNLOAD_ALL) {
 			// http://localhost:7003/index.php/publicknowledge/$$$call$$$/api/file/file-api/download-all-files?nameLocaleKey=editor.submission.production.productionReadyFiles&fileStage=11&submissionId=19&stageId=5
 			// $router->url($request, null, 'api.file.FileApiHandler', 'downloadAllFiles', null, $actionArgs)
 			const {url} = useLegacyGridUrl({
@@ -48,7 +123,7 @@ export function useFileManagerActions() {
 		} else if (actionName === Actions.UPLOAD) {
 			// http://localhost:7003/index.php/publicknowledge/$$$call$$$/wizard/file-upload/file-upload-wizard/start-wizard?fileStage=15&reviewRoundId=13&submissionId=19&stageId=3&uploaderRoles=16-1-17-4097
 
-			const {url} = useLegacyGridUrl({
+			const {openLegacyModal} = useLegacyGridUrl({
 				component: 'wizard.fileUpload.FileUploadWizardHandler',
 				op: 'startWizard',
 				params: {
@@ -62,26 +137,11 @@ export function useFileManagerActions() {
 					uploaderRoles: pkp.const.ROLE_ID_REVIEWER,
 				},
 			});
-			const {openSideModal} = useModal();
-
-			openSideModal(
-				'LegacyAjax',
-				{
-					legacyOptions: {
-						title: t(wizardTitleKey),
-						url,
-					},
-				},
-				{
-					onClose: async () => {
-						finishedCallback();
-					},
-				},
-			);
+			openLegacyModal({title: t(wizardTitleKey)}, finishedCallback);
 		} else if (actionName === Actions.SELECT_UPLOAD) {
 			// http://localhost:7003/index.php/publicknowledge/$$$call$$$/grid/files/review/editor-review-files-grid/
 			//select-files?submissionId=13&stageId=3&reviewRoundId=14
-			const {url} = useLegacyGridUrl({
+			const {openLegacyModal} = useLegacyGridUrl({
 				component: gridComponent,
 				op: 'selectFiles',
 				params: {
@@ -95,7 +155,6 @@ export function useFileManagerActions() {
 					uploaderRoles: pkp.const.ROLE_ID_REVIEWER,
 				},
 			});
-			const {openSideModal} = useModal();
 
 			const reviewRound =
 				reviewRoundId &&
@@ -103,20 +162,11 @@ export function useFileManagerActions() {
 					(reviewRound) => reviewRound.id === reviewRoundId,
 				);
 
-			openSideModal(
-				'LegacyAjax',
+			openLegacyModal(
 				{
-					legacyOptions: {
-						// review round is optional, relevant only for review stage
-						title: t(uploadSelectTitleKey, {round: reviewRound?.round}),
-						url,
-					},
+					title: t(uploadSelectTitleKey, {round: reviewRound?.round}),
 				},
-				{
-					onClose: async () => {
-						finishedCallback();
-					},
-				},
+				finishedCallback,
 			);
 		}
 	}
@@ -187,118 +237,9 @@ export function useFileManagerActions() {
 		return actions;
 	}
 
-	function handleItemAction(
-		actionName,
-		{file, submission, submissionStageId},
-		finishedCallback,
-	) {
-		const {t, localize} = useLocalize();
-
-		// /information-center/file-information-center/view-information-center?submissionFileId=31&submissionId=12&stageId=3
-
-		if (actionName === Actions.SEE_NOTES) {
-			const {url} = useLegacyGridUrl({
-				component: 'informationCenter.FileInformationCenterHandler',
-				op: 'viewInformationCenter',
-				params: {
-					submissionFileId: file.id,
-					submissionId: submission.id,
-					stageId: submissionStageId,
-				},
-			});
-			const {openSideModal} = useModal();
-
-			openSideModal(
-				'LegacyAjax',
-				{
-					legacyOptions: {
-						title: `${t('informationCenter.informationCenter')}: ${localize(file.name)}`,
-						url,
-					},
-				},
-				{
-					onClose: async () => {
-						finishedCallback();
-					},
-				},
-			);
-		} else if (actionName === Actions.EDIT) {
-			const {url} = useLegacyGridUrl({
-				component: 'api.file.ManageFileApiHandler',
-				op: 'editMetadata',
-				params: {
-					submissionFileId: file.id,
-					submissionId: submission.id,
-					stageId: submissionStageId,
-				},
-			});
-			const {openSideModal} = useModal();
-
-			openSideModal(
-				'LegacyAjax',
-				{
-					legacyOptions: {
-						title: t('grid.action.editFile'),
-						url,
-					},
-				},
-				{
-					onClose: async () => {
-						finishedCallback();
-					},
-				},
-			);
-		} else if (actionName === Actions.DELETE) {
-			// http://localhost:7003/index.php/publicknowledge/$$$call$$$/api/file/manage-file-api/delete-file?submissionFileId=31&submissionId=12&stageId=3
-
-			const {openDialog, openDialogNetworkError} = useModal();
-			openDialog({
-				actions: [
-					{
-						label: t('common.cancel'),
-						isWarnable: true,
-						callback: (close) => {
-							close();
-						},
-					},
-					{
-						label: t('common.ok'),
-						callback: async (close) => {
-							const {url} = useLegacyGridUrl({
-								component: 'api.file.ManageFileApiHandler',
-								op: 'deleteFile',
-								params: {
-									submissionFileId: file.id,
-									submissionId: submission.id,
-									stageId: submissionStageId,
-								},
-							});
-							const formData = new FormData();
-							formData.append('csrfToken', getCSRFToken());
-
-							const {fetch, data} = useFetch(url, {
-								method: 'POST',
-								body: formData,
-							});
-							await fetch();
-							close();
-							finishedCallback();
-
-							if (data.value.status !== true) {
-								openDialogNetworkError();
-							}
-						},
-					},
-				],
-				title: t('common.delete'),
-				message: t('common.confirmDelete'),
-			});
-		}
-	}
 	return {
 		handleAction,
 		getItemActions,
-		handleItemAction,
 		getTopActions,
 		getBottomActions,
 	};

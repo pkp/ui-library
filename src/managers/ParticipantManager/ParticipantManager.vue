@@ -40,7 +40,7 @@
 							:display-as-ellipsis="true"
 							@action="
 								(actionName) =>
-									participantManagerStore.handleItemAction(actionName, {
+									participantManagerStore.handleAction(actionName, {
 										participant: participant,
 									})
 							"

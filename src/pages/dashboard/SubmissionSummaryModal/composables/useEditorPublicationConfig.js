@@ -6,10 +6,9 @@ export const PublicationConfig = {
 		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
 			return [
 				{
-					component: 'PublicationTitleAbstractForm',
+					component: 'PublicationForm',
 					props: {
-						form: pageInitConfig.publicationTitleAbstractForm,
-						sections: pageInitConfig.sections,
+						formName: 'titleAbstract',
 						submission,
 						publication: selectedPublication,
 					},
@@ -35,9 +34,9 @@ export const PublicationConfig = {
 		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
 			return [
 				{
-					component: 'PublicationTitleAbstractForm',
+					component: 'PublicationForm',
 					props: {
-						form: pageInitConfig.publicationMetadataForm,
+						formName: 'metadata',
 						submission,
 						publication: selectedPublication,
 					},
@@ -49,10 +48,65 @@ export const PublicationConfig = {
 		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
 			return [
 				{
-					component: 'PublicationTitleAbstractForm',
+					component: 'PublicationForm',
 					props: {
-						form: pageInitConfig.publicationCitationsForm,
-						sections: pageInitConfig.sections,
+						formName: 'reference',
+						submission,
+						publication: selectedPublication,
+					},
+				},
+			];
+		},
+	},
+	identifiers: {
+		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
+			return [
+				{
+					component: 'PublicationForm',
+					props: {
+						formName: 'identifier',
+						submission,
+						publication: selectedPublication,
+					},
+				},
+			];
+		},
+	},
+	license: {
+		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
+			return [
+				{
+					component: 'PublicationForm',
+					props: {
+						formName: 'permissionDisclosure',
+						submission,
+						publication: selectedPublication,
+					},
+				},
+			];
+		},
+	},
+	issue: {
+		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
+			return [
+				{
+					component: 'PublicationForm',
+					props: {
+						formName: 'issue',
+						submission,
+						publication: selectedPublication,
+					},
+				},
+			];
+		},
+	},
+	payment: {
+		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
+			return [
+				{
+					component: 'PublicationForm',
+					props: {
+						formName: 'submissionPayment',
 						submission,
 						publication: selectedPublication,
 					},

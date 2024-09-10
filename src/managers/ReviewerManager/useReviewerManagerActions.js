@@ -4,42 +4,18 @@ import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
 
 export const Actions = {
-	ADD_REVIEWER: 'addReviewer',
-	REVIEW_DETAILS: 'reviewDetails',
-	EMAIL_REVIEWER: 'emailReviewer',
-	RESEND_REQUEST: 'resendRequest',
-	EDIT_REVIEW: 'editReview',
-	CANCEL_REVIEWER: 'cancelReviewer',
-	UNASSIGN_REVIEWER: 'unassignReviewer',
-	REINSTATE_REVIEWER: 'reinstateReviewer',
-	REVIEW_HISTORY: 'reviewHistory',
-	LOGIN_AS: 'loginAs',
-	EDITORIAL_NOTES: 'editorialNotes',
+	ADD_REVIEWER: 'ADD_REVIEWER',
+	REVIEW_DETAILS: 'REVIEW_DETAILS',
+	EMAIL_REVIEWER: 'EMAIL_REVIEWER',
+	RESEND_REQUEST: 'RESEND_REQUEST',
+	EDIT_REVIEW: 'EDIT_REVIEW',
+	CANCEL_REVIEWER: 'CANCEL_REVIEWER',
+	UNASSIGN_REVIEWER: 'UNASSIGN_REVIEWER',
+	REINSTATE_REVIEWER: 'REINSTATE_REVIEWER',
+	REVIEW_HISTORY: 'REVIEW_HISTORY',
+	LOGIN_AS: 'LOGIN_AS',
+	EDITORIAL_NOTES: 'EDITORIAL_NOTES',
 };
-
-function openLegacyGriAction({op, title, params}, finishedCallback) {
-	const {url} = useLegacyGridUrl({
-		component: 'grid.users.reviewer.ReviewerGridHandler',
-		op,
-		params,
-	});
-	const {openSideModal} = useModal();
-
-	openSideModal(
-		'LegacyAjax',
-		{
-			legacyOptions: {
-				title,
-				url,
-			},
-		},
-		{
-			onClose: async () => {
-				finishedCallback();
-			},
-		},
-	);
-}
 
 export function useReviewerManagerActions() {
 	const {t} = useLocalize();
@@ -69,90 +45,99 @@ export function useReviewerManagerActions() {
 			reviewAssignment,
 		);
 		if (actionName === Actions.ADD_REVIEWER) {
-			openLegacyGriAction(
-				{
-					op: 'showReviewerForm',
-					component: 'grid.users.reviewer.ReviewerGridHandler',
-					params: {
-						selectionType: pkp.const.REVIEWER_SELECT_ADVANCED_SEARCH,
-						submissionId: submission.id,
-						stageId: submission.stageId,
-						reviewRoundId,
-					},
+			const {openLegacyModal} = useLegacyGridUrl({
+				op: 'showReviewerForm',
+				component: 'grid.users.reviewer.ReviewerGridHandler',
+				params: {
+					selectionType: pkp.const.REVIEWER_SELECT_ADVANCED_SEARCH,
+					submissionId: submission.id,
+					stageId: submission.stageId,
+					reviewRoundId,
 				},
-				finishedCallback,
-			);
+			});
+
+			openLegacyModal({title: 'ss'}, finishedCallback);
 		} else if (actionName === Actions.REVIEW_DETAILS) {
-			openLegacyGriAction(
-				{
-					title: t('editor.review.reviewDetails'),
-					op: 'readReview',
-					params: {
-						submissionId: submission.id,
-						reviewAssignmentId: reviewAssignment.id,
-						stageId: submissionStageId,
-					},
+			const {openLegacyModal} = useLegacyGridUrl({
+				component: 'grid.users.reviewer.ReviewerGridHandler',
+				op: 'readReview',
+				params: {
+					submissionId: submission.id,
+					reviewAssignmentId: reviewAssignment.id,
+					stageId: submissionStageId,
 				},
+			});
+
+			openLegacyModal(
+				{title: t('editor.review.reviewDetails')},
 				finishedCallback,
 			);
 		} else if (actionName === Actions.EMAIL_REVIEWER) {
-			openLegacyGriAction(
-				{
-					title: t('editor.review.emailReviewer'),
-					op: 'sendEmail',
-					params: {
-						submissionId: submission.id,
-						reviewAssignmentId: reviewAssignment.id,
-						stageId: submissionStageId,
-					},
+			const {openLegacyModal} = useLegacyGridUrl({
+				component: 'grid.users.reviewer.ReviewerGridHandler',
+				op: 'sendEmail',
+				params: {
+					submissionId: submission.id,
+					reviewAssignmentId: reviewAssignment.id,
+					stageId: submissionStageId,
 				},
+			});
+
+			openLegacyModal(
+				{title: t('editor.review.emailReviewer')},
 				finishedCallback,
 			);
 		} else if (actionName === Actions.EDIT_REVIEW) {
-			openLegacyGriAction(
-				{
-					title: t('editor.submissionReview.editReview'),
-					op: 'editReview',
-					params: {
-						submissionId: submission.id,
-						reviewAssignmentId: reviewAssignment.id,
-						stageId: submissionStageId,
-					},
+			const {openLegacyModal} = useLegacyGridUrl({
+				component: 'grid.users.reviewer.ReviewerGridHandler',
+
+				op: 'editReview',
+
+				params: {
+					submissionId: submission.id,
+					reviewAssignmentId: reviewAssignment.id,
+					stageId: submissionStageId,
 				},
+			});
+
+			openLegacyModal(
+				{title: t('editor.submissionReview.editReview')},
 				finishedCallback,
 			);
 		} else if (
 			actionName === Actions.UNASSIGN_REVIEWER ||
 			actionName === Actions.CANCEL_REVIEWER
 		) {
-			openLegacyGriAction(
+			const {openLegacyModal} = useLegacyGridUrl({
+				component: 'grid.users.reviewer.ReviewerGridHandler',
+				op: 'unassignReviewer',
+				params: {
+					submissionId: submission.id,
+					reviewAssignmentId: reviewAssignment.id,
+					stageId: submissionStageId,
+				},
+			});
+			openLegacyModal(
 				{
 					title:
 						actionName === Actions.UNASSIGN_REVIEWER
 							? t('editor.review.unassignReviewer')
 							: t('editor.review.cancelReviewer'),
-					op: 'unassignReviewer',
-					params: {
-						submissionId: submission.id,
-						reviewAssignmentId: reviewAssignment.id,
-						stageId: submissionStageId,
-					},
 				},
 				finishedCallback,
 			);
 		} else if (actionName === Actions.REVIEW_HISTORY) {
-			openLegacyGriAction(
-				{
-					title: t('submission.history'),
-					op: 'reviewHistory',
-					params: {
-						submissionId: submission.id,
-						reviewAssignmentId: reviewAssignment.id,
-						stageId: submissionStageId,
-					},
+			const {openLegacyModal} = useLegacyGridUrl({
+				component: 'grid.users.reviewer.ReviewerGridHandler',
+				op: 'reviewHistory',
+				params: {
+					submissionId: submission.id,
+					reviewAssignmentId: reviewAssignment.id,
+					stageId: submissionStageId,
 				},
-				finishedCallback,
-			);
+			});
+
+			openLegacyModal({title: t('submission.history')}, finishedCallback);
 		} else if (actionName === Actions.LOGIN_AS) {
 			const {openDialog} = useModal();
 
@@ -182,18 +167,17 @@ export function useReviewerManagerActions() {
 				finishedCallback,
 			);
 		} else if (actionName === Actions.EDITORIAL_NOTES) {
-			openLegacyGriAction(
-				{
-					title: t('user.gossip'),
-					op: 'gossip',
-					params: {
-						submissionId: submission.id,
-						reviewAssignmentId: reviewAssignment.id,
-						stageId: submissionStageId,
-					},
+			const {openLegacyModal} = useLegacyGridUrl({
+				component: 'grid.users.reviewer.ReviewerGridHandler',
+				op: 'gossip',
+				params: {
+					submissionId: submission.id,
+					reviewAssignmentId: reviewAssignment.id,
+					stageId: submissionStageId,
 				},
-				finishedCallback,
-			);
+			});
+
+			openLegacyModal({title: t('user.gossip')}, finishedCallback);
 		}
 	}
 

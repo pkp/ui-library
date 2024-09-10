@@ -46,23 +46,15 @@ export const useParticipantManagerStore = defineComponentStore(
 
 		const itemActions = computed(() => _actionFns.getItemActions({}));
 
-		function handleAction(actionName) {
-			_actionFns.handleAction(actionName, {submission: props.submission}, () =>
-				fetchParticipants(),
-			);
-		}
-
-		function handleItemAction(actionName, {participant}) {
-			_actionFns.handleItemAction(
+		function handleAction(actionName, _args) {
+			_actionFns.handleAction(
 				actionName,
 				{
-					participant,
+					..._args,
 					submissionStageId: props.submissionStageId,
 					submission: props.submission,
 				},
-				() => {
-					fetchParticipants();
-				},
+				() => fetchParticipants(),
 			);
 		}
 
@@ -71,7 +63,6 @@ export const useParticipantManagerStore = defineComponentStore(
 			_actionFns,
 			handleAction,
 			itemActions,
-			handleItemAction,
 		};
 	},
 );

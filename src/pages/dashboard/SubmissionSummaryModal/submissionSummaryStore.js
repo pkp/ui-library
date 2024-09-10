@@ -143,8 +143,9 @@ export const useSubmissionSummaryStore = defineComponentStore(
 				submission: submission.value,
 				selectedPublication: selectedPublication.value,
 			};
-
+			console.log('actionName summary:', actionName, actionArgs);
 			_workflowActionsFns.handleAction(actionName, actionArgs, async () => {
+				console.log('handleAction callback summary store');
 				triggerDataChange();
 			});
 		}

@@ -10,46 +10,46 @@ import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 import SelectRevisionFormModal from '../components/SelectRevisionFormModal.vue';
 
 export const Actions = {
-	DECISION_ACCEPT: 'decisionAccept',
-	DECISION_CANCEL_REVIEW_ROUND: 'decisionCancelReviewRound',
-	DECISION_DECLINE_SUBMISSION: 'decisionDeclineSubmission',
-	DECISION_EXTERNAL_REVIEW: 'decisionExternalReview',
-	DECISION_SKIP_EXTERNAL_REVIEW: 'decisionSkipExternalReview',
-	DECISION_INITIAL_DECLINE: 'decisionInitialDecline',
-	DECISION_SEND_TO_PRODUCTION: 'decisionSendToProduction',
-	DECISION_BACK_FROM_COPYEDITING: 'decisionBackFromCopyediting',
-	DECISION_NEW_EXTERNAL_ROUND: 'decisionNewExternalRound',
-	DECISION_BACK_FROM_PRODUCTION: 'decisionBackFromProduction',
+	DECISION_ACCEPT: 'DECISION_ACCEPT',
+	DECISION_CANCEL_REVIEW_ROUND: 'DECISION_CANCEL_REVIEW_ROUND',
+	DECISION_DECLINE_SUBMISSION: 'DECISION_DECLINE_SUBMISSION',
+	DECISION_EXTERNAL_REVIEW: 'DECISION_EXTERNAL_REVIEW',
+	DECISION_SKIP_EXTERNAL_REVIEW: 'DECISION_SKIP_EXTERNAL_REVIEW',
+	DECISION_INITIAL_DECLINE: 'DECISION_INITIAL_DECLINE',
+	DECISION_SEND_TO_PRODUCTION: 'DECISION_SEND_TO_PRODUCTION',
+	DECISION_BACK_FROM_COPYEDITING: 'DECISION_BACK_FROM_COPYEDITING',
+	DECISION_NEW_EXTERNAL_ROUND: 'DECISION_NEW_EXTERNAL_ROUND',
+	DECISION_BACK_FROM_PRODUCTION: 'DECISION_BACK_FROM_PRODUCTION',
 
-	RECOMMEND_REVISION: 'recommendRevision',
-	DECISION_RECOMMEND_ACCEPT: 'decisionRecommendAccept',
-	DECISION_RECOMMEND_DECLINE: 'decisionRecommendDecline',
+	RECOMMEND_REVISION: 'RECOMMEND_REVISION',
+	DECISION_RECOMMEND_ACCEPT: 'DECISION_RECOMMEND_ACCEPT',
+	DECISION_RECOMMEND_DECLINE: 'DECISION_RECOMMEND_DECLINE',
 
-	REQUEST_REVISION: 'requestRevision',
-	ASSIGN_REVIEWERS: 'assignReviewers',
-	UNASSIGN_REVIEWER: 'unassignReviewer',
-	CANCEL_REVIEWER: 'cancelReviewer',
-	RESEND_REVIEW_REQUEST: 'resendReviewRequest',
+	REQUEST_REVISION: 'REQUEST_REVISION',
+	ASSIGN_REVIEWERS: 'ASSIGN_REVIEWERS',
+	UNASSIGN_REVIEWER: 'UNASSIGN_REVIEWER',
+	CANCEL_REVIEWER: 'CANCEL_REVIEWER',
+	RESEND_REVIEW_REQUEST: 'RESEND_REVIEW_REQUEST',
 
 	// TODO rename so its clear whats that for
-	VIEW_DETAILS: 'viewDetails',
-	VIEW_UNREAD_RECOMMENDATION: 'viewUnreadRecommendation',
-	VIEW_RECOMMENDATION: 'viewRecommendation',
+	VIEW_DETAILS: 'VIEW_DETAILS',
+	VIEW_UNREAD_RECOMMENDATION: 'VIEW_UNREAD_RECOMMENDATION',
+	VIEW_RECOMMENDATION: 'VIEW_RECOMMENDATION',
 
-	EDIT_DUE_DATE: 'editDueDate',
-	ASSIGN_TO_ISSUE: 'assignToIssue',
-	VIEW_ACTIVITY_LOG: 'viewActivityLog',
-	ASSIGN_PARTICIPANT: 'assignParticipant',
-	UPLOAD_REVISIONS: 'uploadRevisions',
-	OPEN_REVIEW_FORM: 'openReviewForm',
-	UPLOAD_REVIEWER_FILE: 'uploadReviewerFile',
+	EDIT_DUE_DATE: 'EDIT_DUE_DATE',
+	ASSIGN_TO_ISSUE: 'ASSIGN_TO_ISSUE',
+	VIEW_ACTIVITY_LOG: 'VIEW_ACTIVITY_LOG',
+	ASSIGN_PARTICIPANT: 'ASSIGN_PARTICIPANT',
+	UPLOAD_REVISIONS: 'UPLOAD_REVISIONS',
+	OPEN_REVIEW_FORM: 'OPEN_REVIEW_FORM',
+	UPLOAD_REVIEWER_FILE: 'UPLOAD_REVIEWER_FILE',
 	ASSIGN_TO_ISSUE_AND_SCHEULE_FOR_PUBLICATION:
-		'assignToIssueAndScheduleForPublication',
-	SCHEDULE_FOR_PUBLICATION: 'scheduleForPublication',
-	PREVIEW_PUBLICATION: 'previewPublication',
-	UNSCHEDULE_PUBLICATION: 'unschedulePublication',
-	UNPUBLISH_PUBLICATION: 'unpublichPublication',
-	CREATE_NEW_VERSION: 'createNewVersion',
+		'ASSIGN_TO_ISSUE_AND_SCHEULE_FOR_PUBLICATION',
+	SCHEDULE_FOR_PUBLICATION: 'SCHEDULE_FOR_PUBLICATION',
+	PREVIEW_PUBLICATION: 'PREVIEW_PUBLICATION',
+	UNSCHEDULE_PUBLICATION: 'UNSCHEDULE_PUBLICATION',
+	UNPUBLISH_PUBLICATION: 'UNPUBLISH_PUBLICATION',
+	CREATE_NEW_VERSION: 'CREATE_NEW_VERSION',
 };
 
 export function useWorkflowActions({
@@ -159,36 +159,8 @@ export function useWorkflowActions({
 					openDecisionPage(submission, decision, actionArgs);
 				},
 			});
-		} else if (actionName === Actions.ASSIGN_REVIEWERS) {
-			const activeReviewRound = getCurrentReviewRound(submission);
-
-			const {url} = useLegacyGridUrl({
-				component: 'grid.users.reviewer.ReviewerGridHandler',
-				op: 'showReviewerForm',
-				params: {
-					selectionType: pkp.const.REVIEWER_SELECT_ADVANCED_SEARCH,
-					submissionId: submission.id,
-					stageId: submission.stageId,
-					reviewRoundId: activeReviewRound.id,
-				},
-			});
-
-			openSideModal(
-				'LegacyAjax',
-				{
-					legacyOptions: {
-						title: t('editor.submission.addReviewer'),
-						url: url.value,
-					},
-				},
-				{
-					onClose: async () => {
-						finishedCallback();
-					},
-				},
-			);
 		} else if (actionName === Actions.ASSIGN_TO_ISSUE) {
-			const {url} = useLegacyGridUrl({
+			const {openLegacyModal} = useLegacyGridUrl({
 				component: 'modals.publish.AssignToIssueHandler',
 				op: 'assign',
 				params: {
@@ -197,44 +169,21 @@ export function useWorkflowActions({
 				},
 			});
 
-			openSideModal(
-				'LegacyAjax',
-				{
-					legacyOptions: {
-						title: t('publication.selectIssue'),
-						url,
-						closeOnFormSuccessId: pkp.const.FORM_ASSIGN_TO_ISSUE,
-					},
-				},
-				{
-					onClose: async (returnData) => {
-						console.log('returnData?:', returnData);
-						finishedCallback();
-					},
-				},
-			);
+			openLegacyModal({title: t('publication.selectIssue')}, finishedCallback);
 		} else if (actionName === Actions.VIEW_ACTIVITY_LOG) {
-			const {url} = useLegacyGridUrl({
+			const {openLegacyModal} = useLegacyGridUrl({
 				component: 'informationCenter.SubmissionInformationCenterHandler',
 				op: 'viewInformationCenter',
 				params: {
 					submissionId: submission.id,
 				},
 			});
-
-			openSideModal(
-				'LegacyAjax',
-				{
-					legacyOptions: {title: t('submission.list.infoCenter'), url},
-				},
-				{
-					onClose: async () => {
-						finishedCallback();
-					},
-				},
+			openLegacyModal(
+				{title: t('submission.list.infoCenter')},
+				finishedCallback,
 			);
 		} else if (actionName === Actions.ASSIGN_PARTICIPANT) {
-			const {url} = useLegacyGridUrl({
+			const {openLegacyModal} = useLegacyGridUrl({
 				component: 'grid.users.stageParticipant.StageParticipantGridHandler',
 				op: 'addParticipant',
 				params: {
@@ -243,25 +192,15 @@ export function useWorkflowActions({
 				},
 			});
 
-			openSideModal(
-				'LegacyAjax',
-				{
-					legacyOptions: {
-						url,
-						title: t('editor.submission.addStageParticipant'),
-					},
-				},
-				{
-					onClose: async () => {
-						finishedCallback();
-					},
-				},
+			openLegacyModal(
+				{title: t('editor.submission.addStageParticipant')},
+				finishedCallback,
 			);
 		} else if (actionName === Actions.UPLOAD_REVISIONS) {
 			const activeReviewRound = getCurrentReviewRound(submission);
 			const {getFileStageFromWorkflowStage} = useSubmission();
 
-			const {url} = useLegacyGridUrl({
+			const {openLegacyModal} = useLegacyGridUrl({
 				component: 'wizard.fileUpload.FileUploadWizardHandler',
 				op: 'startWizard',
 				params: {
@@ -273,17 +212,11 @@ export function useWorkflowActions({
 				},
 			});
 
-			openSideModal(
-				'LegacyAjax',
-				{
-					legacyOptions: {url, title: t('editor.submissionReview.uploadFile')},
-				},
-				{
-					onClose: async () => {
-						finishedCallback();
-					},
-				},
+			openLegacyModal(
+				{title: t('editor.submissionReview.uploadFile')},
+				finishedCallback,
 			);
+
 			// TODO there is likely better place for this action
 		} else if (actionName === Actions.OPEN_REVIEW_FORM) {
 			const {redirectToPage} = useUrl(
@@ -329,6 +262,7 @@ export function useWorkflowActions({
 					},
 				);
 			} else {
+				console.log('trigger handleAction from issue');
 				handleAction(
 					Actions.SCHEDULE_FOR_PUBLICATION,
 					actionArgs,
@@ -336,7 +270,7 @@ export function useWorkflowActions({
 				);
 			}
 		} else if (actionName === Actions.SCHEDULE_FOR_PUBLICATION) {
-			const {url} = useLegacyGridUrl({
+			const {openLegacyModal} = useLegacyGridUrl({
 				component: 'modals.publish.PublishHandler',
 				op: 'publish',
 				params: {
@@ -344,20 +278,13 @@ export function useWorkflowActions({
 					publicationId: selectedPublication.id,
 				},
 			});
-			openSideModal(
-				'LegacyAjax',
+
+			openLegacyModal(
 				{
-					legacyOptions: {
-						title: t('editor.submission.schedulePublication'),
-						url,
-						closeOnFormSuccessId: pkp.const.FORM_PUBLISH,
-					},
+					title: t('editor.submission.schedulePublication'),
+					closeOnFormSuccessId: pkp.const.FORM_PUBLISH,
 				},
-				{
-					onClose: async () => {
-						finishedCallback();
-					},
-				},
+				finishedCallback,
 			);
 		} else if (actionName === Actions.PREVIEW_PUBLICATION) {
 			const {redirectToPage} = useUrl(selectedPublication.urlPublished);

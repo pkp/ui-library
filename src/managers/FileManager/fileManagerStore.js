@@ -65,30 +65,11 @@ export const useFileManagerStore = defineComponentStore(
 			}),
 		);
 
-		function handleItemAction(actionName, {file}) {
-			_actionFns.handleItemAction(
-				actionName,
-				{
-					file,
-					submissionStageId: props.submissionStageId,
-					reviewRoundId: props.reviewRoundId,
-					submission: props.submission,
-				},
-				() => {
-					triggerDataChange();
-					// delete actions creates legacy notifications
-					// calling explicitely to check for it
-					if (actionName === Actions.DELETE) {
-						$('body').trigger('notifyUser');
-					}
-				},
-			);
-		}
-
-		function handleAction(actionName) {
+		function handleAction(actionName, _args) {
 			_actionFns.handleAction(
 				actionName,
 				{
+					..._args,
 					submissionStageId: props.submissionStageId,
 					reviewRoundId: props.reviewRoundId,
 					submission: props.submission,
@@ -99,6 +80,12 @@ export const useFileManagerStore = defineComponentStore(
 				},
 				() => {
 					triggerDataChange();
+
+					// delete actions creates legacy notifications
+					// calling explicitely to check for it
+					if (actionName === Actions.DELETE) {
+						$('body').trigger('notifyUser');
+					}
 				},
 			);
 		}
@@ -111,7 +98,6 @@ export const useFileManagerStore = defineComponentStore(
 			topActions,
 			bottomActions,
 			itemActions,
-			handleItemAction,
 			handleAction,
 			/** exposed for extensibility purposes */
 			_actionFns,

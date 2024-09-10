@@ -111,7 +111,7 @@ import LastActivity from './primaryItems/LastActivity.vue';
 import PrimaryBasicMetadata from './primaryItems/PrimaryBasicMetadata.vue';
 import ReviewRoundStatus from './primaryItems/ReviewRoundStatus.vue';
 // Publications
-import PublicationTitleAbstractForm from './primaryItems/PublicationTitleAbstractForm.vue';
+import PublicationForm from './primaryItems/PublicationForm.vue';
 import PublicationVersionControl from './publicationControls/PublicationVersionControl.vue';
 import ActionButton from './actionItems/ActionButton.vue';
 import WorkflowRecommendationControls from './actionItems/WorkflowRecommendationControls.vue';
@@ -141,7 +141,7 @@ const Components = {
 	PrimaryBasicMetadata,
 	IssueAssigned,
 	ReviewRoundStatus,
-	PublicationTitleAbstractForm,
+	PublicationForm,
 	PublicationVersionControl,
 	SubmissionStatus,
 	PublicationEditDisabled,
@@ -165,3 +165,4 @@ const stageLabel = computed(
 
 const {submission, selectedPublication} = storeToRefs(summaryStore);
 </script>
+./primaryItems/PublicationForm.vue

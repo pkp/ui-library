@@ -6,94 +6,15 @@ import {useUrl} from '@/composables/useUrl';
 import {useCurrentUser} from '@/composables/useCurrentUser';
 
 export const Actions = {
-	ASSIGN: 'assign',
-	REMOVE: 'remove',
-	EDIT: 'edit',
-	NOTIFY: 'notify',
-	LOGIN_AS: 'loginAs',
+	ASSIGN: 'ASSIGN',
+	REMOVE: 'REMOVE',
+	EDIT: 'EDIT',
+	NOTIFY: 'NOTIFY',
+	LOGIN_AS: 'LOGIN_AS',
 };
 
 export function useParticipantManagerActions() {
-	function handleAction(actionName, {submission}, finishedCallback) {
-		const {t} = useLocalize();
-
-		if (actionName === Actions.ASSIGN) {
-			const {openSideModal} = useModal();
-
-			const {url} = useLegacyGridUrl({
-				component: 'grid.users.stageParticipant.StageParticipantGridHandler',
-				op: 'addParticipant',
-				params: {
-					submissionId: submission.id,
-					stageId: submission.stageId,
-				},
-			});
-
-			openSideModal(
-				'LegacyAjax',
-				{
-					legacyOptions: {
-						url,
-						title: t('editor.submission.addStageParticipant'),
-					},
-				},
-				{
-					onClose: async () => {
-						finishedCallback();
-					},
-				},
-			);
-		}
-	}
-
-	function getItemActions() {
-		const {t} = useLocalize();
-
-		const actions = [];
-
-		// [Role::ROLE_ID_MANAGER, Role::ROLE_ID_SITE_ADMIN, Role::ROLE_ID_SUB_EDITOR],
-		const {hasCurrentUserAtLeastOneRole} = useCurrentUser();
-
-		const canAdminister = hasCurrentUserAtLeastOneRole([
-			pkp.const.ROLE_ID_MANAGER,
-			pkp.const.ROLE_ID_SITE_ADMIN,
-			pkp.const.ROLE_ID_SUB_EDITOR,
-		]);
-
-		if (canAdminister) {
-			actions.push({
-				label: t('common.edit'),
-				name: Actions.EDIT,
-				icon: 'Edit',
-			});
-		}
-
-		actions.push({
-			label: t('submission.stageParticipants.notify'),
-			name: Actions.NOTIFY,
-			icon: 'Email',
-		});
-
-		// TODO https://github.com/pkp/pkp-lib/issues/10290
-		actions.push({
-			label: t('grid.action.logInAs'),
-			name: Actions.LOGIN_AS,
-			icon: 'LoginAs',
-		});
-
-		if (canAdminister) {
-			actions.push({
-				label: t('common.remove'),
-				name: Actions.REMOVE,
-				icon: 'Cancel',
-				isWarnable: true,
-			});
-		}
-
-		return actions;
-	}
-
-	function handleItemAction(
+	function handleAction(
 		actionName,
 		{submission, submissionStageId, participant},
 		finishedCallback,
@@ -154,7 +75,7 @@ export function useParticipantManagerActions() {
 			//http://localhost:7002/index.php/publicknowledge/
 			//$$$call$$$/grid/users/stage-participant/stage-participant-grid/view-notify?submissionId=13&stageId=3&userId=4
 
-			const {url} = useLegacyGridUrl({
+			const {openLegacyModal} = useLegacyGridUrl({
 				component: 'grid.users.stageParticipant.StageParticipantGridHandler',
 				op: 'viewNotify',
 				params: {
@@ -163,27 +84,15 @@ export function useParticipantManagerActions() {
 					userId: participant.id,
 				},
 			});
-			const {openSideModal} = useModal();
-
-			openSideModal(
-				'LegacyAjax',
-				{
-					legacyOptions: {
-						title: t('submission.stageParticipants.notify'),
-						url,
-					},
-				},
-				{
-					onClose: async () => {
-						finishedCallback();
-					},
-				},
+			openLegacyModal(
+				{title: t('submission.stageParticipants.notify')},
+				finishedCallback,
 			);
 		} else if (actionName === Actions.EDIT) {
 			// http://localhost:7002/index.php/publicknowledge
 			// $$$call$$$/grid/users/stage-participant/stage-participant-grid/add-participant?submissionId=15&stageId=5&assignmentId=71
 
-			const {url} = useLegacyGridUrl({
+			const {openLegacyModal} = useLegacyGridUrl({
 				component: 'grid.users.stageParticipant.StageParticipantGridHandler',
 				op: 'addParticipant',
 				params: {
@@ -193,21 +102,10 @@ export function useParticipantManagerActions() {
 					assignmentId: participant.stageAssignmentId || 63,
 				},
 			});
-			const {openSideModal} = useModal();
 
-			openSideModal(
-				'LegacyAjax',
-				{
-					legacyOptions: {
-						title: t('editor.submission.editStageParticipant'),
-						url,
-					},
-				},
-				{
-					onClose: async () => {
-						finishedCallback();
-					},
-				},
+			openLegacyModal(
+				{title: t('editor.submission.editStageParticipant')},
+				finishedCallback,
 			);
 		} else if (actionName === Actions.LOGIN_AS) {
 			const {openDialog} = useModal();
@@ -234,11 +132,72 @@ export function useParticipantManagerActions() {
 				title: t('grid.action.logInAs'),
 				message: t('grid.user.confirmLogInAs'),
 			});
+		} else if (actionName === Actions.ASSIGN) {
+			const {openLegacyModal} = useLegacyGridUrl({
+				component: 'grid.users.stageParticipant.StageParticipantGridHandler',
+				op: 'addParticipant',
+				params: {
+					submissionId: submission.id,
+					stageId: submission.stageId,
+				},
+			});
+
+			openLegacyModal(
+				{title: t('editor.submission.addStageParticipant')},
+				finishedCallback,
+			);
 		}
 	}
+
+	function getItemActions() {
+		const {t} = useLocalize();
+
+		const actions = [];
+
+		// [Role::ROLE_ID_MANAGER, Role::ROLE_ID_SITE_ADMIN, Role::ROLE_ID_SUB_EDITOR],
+		const {hasCurrentUserAtLeastOneRole} = useCurrentUser();
+
+		const canAdminister = hasCurrentUserAtLeastOneRole([
+			pkp.const.ROLE_ID_MANAGER,
+			pkp.const.ROLE_ID_SITE_ADMIN,
+			pkp.const.ROLE_ID_SUB_EDITOR,
+		]);
+
+		if (canAdminister) {
+			actions.push({
+				label: t('common.edit'),
+				name: Actions.EDIT,
+				icon: 'Edit',
+			});
+		}
+
+		actions.push({
+			label: t('submission.stageParticipants.notify'),
+			name: Actions.NOTIFY,
+			icon: 'Email',
+		});
+
+		// TODO https://github.com/pkp/pkp-lib/issues/10290
+		actions.push({
+			label: t('grid.action.logInAs'),
+			name: Actions.LOGIN_AS,
+			icon: 'LoginAs',
+		});
+
+		if (canAdminister) {
+			actions.push({
+				label: t('common.remove'),
+				name: Actions.REMOVE,
+				icon: 'Cancel',
+				isWarnable: true,
+			});
+		}
+
+		return actions;
+	}
+
 	return {
 		getItemActions,
 		handleAction,
-		handleItemAction,
 	};
 }

@@ -198,16 +198,36 @@ export function useSummarySideNav() {
 						},
 					},
 					{
+						key: 'identifiers',
+						label: t('submission.identifiers'),
+						action: 'selectPublicationMenu',
+						actionArgs: {
+							publicationMenu: 'identifiers',
+							title: getPublicationTitle(t('submission.identifiers')),
+						},
+					},
+					// TODO JATS
+					{
 						label: 'Galleys',
 						link: '#',
 					},
 					{
-						label: 'Permissions & Disclosure',
-						link: '#',
+						label: t('publication.publicationLicense'),
+						key: 'license',
+						action: 'selectPublicationMenu',
+						actionArgs: {
+							publicationMenu: 'license',
+							title: getPublicationTitle(t('publication.publicationLicense')),
+						},
 					},
 					{
-						label: 'Issue',
-						link: '#',
+						label: t('issue.issue'),
+						key: 'issue',
+						action: 'selectPublicationMenu',
+						actionArgs: {
+							publicationMenu: 'issue',
+							title: getPublicationTitle(t('issue.issue')),
+						},
 					},
 				],
 			},
