@@ -208,8 +208,13 @@ export function useSummarySideNav() {
 					},
 					// TODO JATS
 					{
-						label: 'Galleys',
-						link: '#',
+						key: 'galleys',
+						label: t('submission.layout.galleys'),
+						action: 'selectPublicationMenu',
+						actionArgs: {
+							publicationMenu: 'galleys',
+							title: getPublicationTitle(t('submission.layout.galleys')),
+						},
 					},
 					{
 						label: t('publication.publicationLicense'),

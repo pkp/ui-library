@@ -48,9 +48,8 @@ export function useLegacyGridUrl({
 				},
 			},
 			{
-				onClose: async () => {
-					console.log('openLegacyModel OnClose');
-					finishedCallback();
+				onClose: async (closeData) => {
+					finishedCallback(closeData);
 				},
 			},
 		);

@@ -72,6 +72,19 @@ export const PublicationConfig = {
 			];
 		},
 	},
+	galleys: {
+		getPrimaryItems: ({submission, selectedPublication}) => {
+			return [
+				{
+					component: 'GalleyManager',
+					props: {
+						submission,
+						publication: selectedPublication,
+					},
+				},
+			];
+		},
+	},
 	license: {
 		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
 			return [

@@ -78,6 +78,7 @@ import MoreOptions from './icons/MoreOptions.vue';
 import MySubmissions from './icons/MySubmissions.vue';
 import NavDoi from './icons/NavDoi.vue';
 import NavAdmin from './icons/NavAdmin.vue';
+import New from './icons/New.vue';
 import Notifications from './icons/Notifications.vue';
 import OpenReview from './icons/OpenReview.vue';
 import Orcid from './icons/Orcid.vue';
@@ -142,6 +143,7 @@ const svgIcons = {
 	MySubmissions,
 	NavDoi,
 	NavAdmin,
+	New,
 	Notifications,
 	OpenReview,
 	Orcid,

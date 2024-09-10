@@ -118,6 +118,7 @@ import WorkflowRecommendationControls from './actionItems/WorkflowRecommendation
 import EditorsAssigned from './metaItems/EditorsAssigned.vue';
 import BasicMetadata from './metaItems/BasicMetadata.vue';
 import SubmissionStatus from './primaryItems/SubmissionStatus.vue';
+import GalleyManager from '@/managers/GalleyManager/GalleyManager.vue';
 import PublicationEditDisabled from './primaryItems/PublicationEditDisabled.vue';
 import IssueAssigned from './metaItems/IssueAssigned.vue';
 import {useSubmissionSummaryStore} from './submissionSummaryStore';
@@ -133,6 +134,7 @@ const Components = {
 	DiscussionManager,
 	ContributorManager,
 	ParticipantManager,
+	GalleyManager,
 	LastActivity,
 	ActionButton,
 	WorkflowRecommendationControls,
@@ -165,4 +167,3 @@ const stageLabel = computed(
 
 const {submission, selectedPublication} = storeToRefs(summaryStore);
 </script>
-./primaryItems/PublicationForm.vue

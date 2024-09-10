@@ -26,6 +26,10 @@ const contentDiv = ref(null);
 // eslint-disable-next-line no-unused-vars
 const pkp = window.pkp;
 
+// to collect data change events, which are passed on close
+// used in galleys when the new galley id is needed to open upload modal
+const dataChangedEvents = [];
+
 // Fetches html content from legacy endpoints
 const {data: modalData, fetch: fetchModalData} = useFetch(legacyOptions.url);
 
@@ -74,6 +78,8 @@ function passToHandlerElement(...args) {
 		const eventType = args?.[0]?.type;
 
 		if (eventType === 'dataChanged') {
+			dataChangedEvents.push(args?.[1]);
+
 			// Naive implementation to check for notifications for the actions in modals that are now opened from Vue.js, instead of the grid.
 			// Logic to trigger these notifications is LinkActionHandler.dataChangedHandler_
 			$('body').trigger('notifyUser');
@@ -88,7 +94,7 @@ function passToHandlerElement(...args) {
 				'wizardCancel',
 			].includes(eventType)
 		) {
-			closeModal();
+			closeModal({dataChanged: dataChangedEvents});
 		}
 	}
 

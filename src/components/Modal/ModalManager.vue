@@ -1,5 +1,6 @@
 <template>
 	<SideModal
+		:key="sideModal1?.modalId"
 		close-label="Close"
 		:open="sideModal1?.opened || false"
 		:modal-level="1"
@@ -19,7 +20,11 @@
 			:open="sideModal2?.opened || false"
 			@close="(returnData) => close(sideModal2?.modalId, returnData)"
 		>
-			<component :is="component2" v-bind="sideModal2?.props" />
+			<component
+				:is="component2"
+				:key="sideModal2?.modalId"
+				v-bind="sideModal2?.props"
+			/>
 			<PkpDialog
 				:key="JSON.stringify(dialogProps)"
 				:opened="dialogOpened && dialogLevel === 2"
@@ -32,7 +37,11 @@
 				:open="sideModal3?.opened || false"
 				@close="(returnData) => close(sideModal3?.modalId, returnData)"
 			>
-				<component :is="component3" v-bind="sideModal3?.props" />
+				<component
+					:is="component3"
+					:key="sideModal3?.modalId"
+					v-bind="sideModal3?.props"
+				/>
 			</SideModal>
 		</SideModal>
 	</SideModal>
