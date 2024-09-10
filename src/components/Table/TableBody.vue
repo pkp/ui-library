@@ -27,9 +27,9 @@ const {t} = useLocalize();
 const tableContext = inject('tableContext');
 
 const noContent = computed(() => {
-	const defaultSlot = slots.default();
+	const defaultSlot = slots.default ? slots.default() : [];
 
-	return !defaultSlot?.[0]?.children?.length;
+	return !defaultSlot?.[0]?.children?.length && !defaultSlot?.[0]?.type?.render;
 });
 
 const emptyText = computed(() => {
