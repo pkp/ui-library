@@ -189,10 +189,6 @@ export default {
 				},
 			],
 		},
-		outlineColor: {
-			...colors,
-			dark: '#101010',
-		},
 	},
 	plugins: [],
 };
