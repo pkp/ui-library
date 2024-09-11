@@ -24,7 +24,10 @@
 					{{ t('dashboard.summary.reviewerStatus') }}
 				</TableColumn>
 				<TableColumn>{{ t('common.type') }}</TableColumn>
-				<TableColumn>{{ t('common.action') }}</TableColumn>
+				<TableColumn>{{ t('grid.columns.actions') }}</TableColumn>
+				<TableColumn>
+					<span class="sr-only">{{ t('common.moreActions') }}</span>
+				</TableColumn>
 			</TableHeader>
 			<TableBody>
 				<TableRow
@@ -53,10 +56,14 @@
 							/>
 						</span>
 					</TableCell>
-					<ReviewerCellActions
+					<ReviewerManagerCellPrimaryActions
 						:review-assignment="reviewAssignment"
 						:submission="submission"
-					></ReviewerCellActions>
+					></ReviewerManagerCellPrimaryActions>
+					<ReviewerManagerCellActions
+						:review-assignment="reviewAssignment"
+						:submission="submission"
+					></ReviewerManagerCellActions>
 				</TableRow>
 			</TableBody>
 		</PkpTable>
@@ -70,7 +77,8 @@ import TableHeader from '@/components/TableNext/TableHeader.vue';
 import TableBody from '@/components/TableNext/TableBody.vue';
 import TableRow from '@/components/TableNext/TableRow.vue';
 import TableCell from '@/components/TableNext/TableCell.vue';
-import ReviewerCellActions from './ReviewerCellActions.vue';
+import ReviewerManagerCellPrimaryActions from './ReviewerManagerCellPrimaryActions.vue';
+import ReviewerManagerCellActions from './ReviewerManagerCellActions.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
 
@@ -90,3 +98,4 @@ const props = defineProps({
 
 const reviewerStore = useReviewerManagerStore(props);
 </script>
+./ReviewerManagerCellActions.vue

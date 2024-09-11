@@ -53,12 +53,17 @@ export const useReviewerManagerStore = defineComponentStore(
 			return _actionFns.getItemActions(args);
 		}
 
+		function getItemPrimaryActions(args) {
+			return _actionFns.getItemPrimaryActions(args);
+		}
+
 		return {
 			getReviewMethodIcons,
 			reviewAssignments,
 			topActions,
 			handleAction,
 			getItemActions,
+			getItemPrimaryActions,
 			_actionFns,
 		};
 	},
