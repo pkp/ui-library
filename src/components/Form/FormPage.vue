@@ -224,13 +224,6 @@ export default {
 
 <style lang="less">
 @import '../../styles/_import';
-.vue-modal .pkpFormPage__footer:nth-of-type(n) {
-	right: 0;
-	width: 100%;
-	float: right;
-	position: absolute;
-	bottom: 0;
-}
 
 .pkpFormPage__footer {
 	display: flex;

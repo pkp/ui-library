@@ -9,9 +9,8 @@
 		<template #description>
 			<span>{{ description }}</span>
 		</template>
-		<div class="vue-modal ml-8 mr-8 h-full bg-secondary">
+		<div class="ml-8 mr-8 h-full bg-secondary">
 			<PkpForm
-				class="h-full"
 				v-bind="store.form"
 				@success="store.formSuccess"
 				@set="store.updateForm"
