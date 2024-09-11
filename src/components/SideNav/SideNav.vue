@@ -98,9 +98,8 @@ function getExpandedKeys(items) {
 	return _expandedKeys;
 }
 
-const {sideMenuProps} = useSideMenu(
-	items,
-	currentActiveKey,
-	getExpandedKeys(items),
-);
+const {sideMenuProps} = useSideMenu(items, {
+	activeItemKey: currentActiveKey,
+	expandedKeys: getExpandedKeys(items),
+});
 </script>

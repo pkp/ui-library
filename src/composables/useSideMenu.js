@@ -1,6 +1,10 @@
 import {toRef, ref, computed} from 'vue';
 
-export function useSideMenu(_items, _activeItemKey = '', _expandedKeys = {}) {
+export function useSideMenu(_items, opts = {}) {
+	const _activeItemKey = opts.activeItemKey || '';
+	const _expandedKeys = opts.expandedKeys || {};
+	const onActionFn = opts.onActionFn || (() => {});
+
 	const itemsRef = toRef(_items);
 	if (typeof itemsRef.value === 'undefined') {
 		throw new Error('items must be provided to use this api');
@@ -64,9 +68,17 @@ export function useSideMenu(_items, _activeItemKey = '', _expandedKeys = {}) {
 				item.items = mapItems(_item.items, level + 1);
 			}
 
-			if (level === 1 && item.link && !_item.items) {
+			if (item.link) {
 				item.command = () => {
 					window.location.href = item.link;
+					setActiveItemKey(item.key);
+				};
+			}
+
+			if (item.action) {
+				item.command = () => {
+					onActionFn(item.action, {...item.actionArgs, key: item.key});
+					setActiveItemKey(item.key);
 				};
 			}
 

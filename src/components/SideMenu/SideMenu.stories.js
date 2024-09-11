@@ -1,5 +1,6 @@
 import SideMenu from './SideMenu.vue';
 import {useSideMenu} from '@/composables/useSideMenu.js';
+import {useModal} from '@/composables/useModal.js';
 
 export default {
 	title: 'Components/SideMenu',
@@ -7,15 +8,21 @@ export default {
 	render: (args) => ({
 		components: {SideMenu},
 		setup() {
-			const {sideMenuProps, setExpandedKeys, setActiveItemKey} = useSideMenu(
-				args.items,
-				'action_required',
-			);
+			const {sideMenuProps, setExpandedKeys} = useSideMenu(args.items, {
+				activeItemKey: 'action_required',
+				onActionFn: handleActions,
+			});
 
 			setExpandedKeys(['action_required', 'editorial_dashboard']);
 
+			const {openDialog} = useModal();
 			function startNewSubmission(actionArgs) {
-				setActiveItemKey(actionArgs.key);
+				openDialog({
+					name: 'startNewSubmission',
+					title: 'Start New Submission',
+					message: 'Modal for starting new submission',
+					close: () => {},
+				});
 			}
 
 			function handleActions(action, actionArgs) {
@@ -27,9 +34,9 @@ export default {
 						console.error(`No handler for action: ${action}`);
 				}
 			}
-			return {args, sideMenuProps, handleActions};
+			return {args, sideMenuProps};
 		},
-		template: '<SideMenu v-bind="sideMenuProps" @action="handleActions" />',
+		template: '<SideMenu v-bind="sideMenuProps" />',
 	}),
 };
 
@@ -47,7 +54,7 @@ export const Default = {
 						link: '#action_required',
 						badge: {
 							slot: 20,
-							isWarnable: true,
+							colorVariant: 'attention',
 						},
 					},
 					{
@@ -104,7 +111,7 @@ export const Default = {
 						link: '#reviews_overdue',
 						badge: {
 							slot: 10,
-							isWarnable: true,
+							colorVariant: 'attention',
 						},
 					},
 					{
@@ -220,10 +227,9 @@ export const WithColorStripe = {
 		setup() {
 			const activeItemKey = 'submission_stages';
 			const expandedKeys = ['submission_stages'];
-			const {sideMenuProps, setExpandedKeys} = useSideMenu(
-				args.items,
+			const {sideMenuProps, setExpandedKeys} = useSideMenu(args.items, {
 				activeItemKey,
-			);
+			});
 
 			setExpandedKeys(expandedKeys);
 			return {args, sideMenuProps};
@@ -296,10 +302,9 @@ export const ExpandedMenu = {
 		setup() {
 			const activeItemKey = 'review_round_1';
 			const expandedKeys = ['workflow', 'review', 'publication'];
-			const {sideMenuProps, setExpandedKeys} = useSideMenu(
-				args.items,
+			const {sideMenuProps, setExpandedKeys} = useSideMenu(args.items, {
 				activeItemKey,
-			);
+			});
 
 			setExpandedKeys(expandedKeys);
 			return {args, sideMenuProps};
