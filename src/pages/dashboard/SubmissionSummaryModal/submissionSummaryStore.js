@@ -253,6 +253,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			 * Navigation
 			 * */
 			sideMenuProps,
+			selectedMenuState,
 
 			/**
 			 * Summary

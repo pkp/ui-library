@@ -9,7 +9,7 @@
 import {useContributorManagerStore} from './contributorManagerStore.js';
 import ContributorsListPanel from '@/components/ListPanel/contributors/ContributorsListPanel.vue';
 const props = defineProps({
-	submissionId: {type: Number, required: true},
+	submission: {type: Object, required: true},
 	publication: {type: Object, required: true},
 	contributorForm: {type: Object, required: true},
 });

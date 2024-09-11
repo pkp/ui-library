@@ -22,9 +22,9 @@ export const PublicationConfig = {
 				{
 					component: 'ContributorManager',
 					props: {
-						submissionId: submission.id,
+						submission: submission,
 						publication: selectedPublication,
-						contributorForm: {},
+						contributorForm: pageInitConfig.contributorForm,
 					},
 				},
 			];

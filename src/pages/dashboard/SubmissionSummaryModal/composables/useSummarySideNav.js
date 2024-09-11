@@ -172,6 +172,7 @@ export function useSummarySideNav() {
 						},
 					},
 					{
+						key: 'publication_contributors',
 						label: t('publication.contributors'),
 						action: 'selectPublicationMenu',
 						actionArgs: {
@@ -194,7 +195,7 @@ export function useSummarySideNav() {
 						action: 'selectPublicationMenu',
 						actionArgs: {
 							publicationMenu: 'citations',
-							title: getPublicationTitle(t('submission.citation')),
+							title: getPublicationTitle(t('submission.citations')),
 						},
 					},
 					{

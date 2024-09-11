@@ -66,15 +66,19 @@ export function useGalleyManagerActions() {
 			openLegacyModal(
 				{title: t('submission.layout.newGalley')},
 				(closeData) => {
-					handleAction(
-						Actions.GALLEY_CHANGE_FILE,
-						{
-							submission,
-							publication,
-							galley: {id: closeData.dataChanged[0]},
-						},
-						finishedCallback,
-					);
+					if (closeData.dataChanged[0]) {
+						handleAction(
+							Actions.GALLEY_CHANGE_FILE,
+							{
+								submission,
+								publication,
+								galley: {id: closeData.dataChanged[0]},
+							},
+							finishedCallback,
+						);
+					} else {
+						finishedCallback();
+					}
 				},
 			);
 		} else if (actionName === Actions.GALLEY_CHANGE_FILE) {

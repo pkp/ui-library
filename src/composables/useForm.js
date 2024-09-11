@@ -155,6 +155,20 @@ export function useForm(_form) {
 		});
 	}
 
+	function setLocales(_locales) {
+		if (Array.isArray(_locales)) {
+			form.value.supportedFormLocales = _locales;
+		} else {
+			form.value.supportedFormLocales = Object.keys(_locales).map(
+				(localeKey) => ({key: localeKey, label: _locales[localeKey]}),
+			);
+		}
+	}
+
+	function setAction(_action) {
+		form.value.action = _action;
+	}
+
 	return {
 		set,
 		setValue,
@@ -165,5 +179,7 @@ export function useForm(_form) {
 		form,
 		connectWithPayload,
 		connectWithErrors,
+		setLocales,
+		setAction,
 	};
 }

@@ -76,7 +76,8 @@ const props = defineProps({
 	selectRevisionDecisionForm: {type: Object, required: true},
 	/** Form for selection type of revision for recommending editor */
 	selectRevisionRecommendationForm: {type: Object, required: true},
-
+	/** Form for Contributor manager */
+	contributorForm: {type: Object, required: true},
 	/** List of Views */
 	views: {
 		type: Array,
