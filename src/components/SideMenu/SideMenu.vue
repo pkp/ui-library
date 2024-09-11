@@ -193,7 +193,7 @@ a.text-on-dark:active {
 	color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
-/* In this case we need to set the font-color of the <a data-pc-section="itemlink"> if the current focus is in the header section */
+/* In this case we need to set the font-color of the <a data-pc-section="itemlink"> if the current focus is in the <div data-pc-section="header"> */
 div[data-pc-section='header']:focus-visible a {
 	@apply text-on-dark;
 }
