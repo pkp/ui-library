@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-import {reactive} from 'vue';
+import {reactive, toRef, watchEffect} from 'vue';
 import {useSideMenu} from '@/composables/useSideMenu.js';
 import SideMenu from '../SideMenu/SideMenu.vue';
 
@@ -40,7 +40,8 @@ const props = defineProps({
 });
 
 let currentActiveKey = '';
-const items = reactive(convertLinksToArray(props.links));
+const linksRef = toRef(props, 'links');
+const items = reactive(convertLinksToArray(linksRef.value));
 
 function convertLinksToArray(links, level = 1, parentKey = '') {
 	const result = [];
@@ -101,5 +102,9 @@ function getExpandedKeys(items) {
 const {sideMenuProps} = useSideMenu(items, {
 	activeItemKey: currentActiveKey,
 	expandedKeys: getExpandedKeys(items),
+});
+
+watchEffect(() => {
+	Object.assign(items, convertLinksToArray(linksRef.value));
 });
 </script>
