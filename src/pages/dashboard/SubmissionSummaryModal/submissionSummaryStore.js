@@ -50,8 +50,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		 * Data changes tracking
 		 */
 		const {triggerDataChange} = useDataChangedProvider(() => {
-			fetchSubmission();
-			fetchSelectedPublication();
+			return Promise.all([fetchSubmission(), fetchSelectedPublication()]);
 		});
 
 		/** Current publication is fetched always when the new submission is fetched */
@@ -149,6 +148,9 @@ export const useSubmissionSummaryStore = defineComponentStore(
 				triggerDataChange();
 			});
 		}
+
+		/** Header Actions */
+		const headerItems = computed(() => _workflowActionsFns.getHeaderItems());
 
 		/** Primary Items */
 
@@ -259,6 +261,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			 * Summary
 			 */
 			stageTitle,
+			headerItems,
 			primaryItems,
 			secondaryItems,
 			actionItems,

@@ -39,6 +39,7 @@ export const Actions = {
 	EDIT_DUE_DATE: 'EDIT_DUE_DATE',
 	ASSIGN_TO_ISSUE: 'ASSIGN_TO_ISSUE',
 	VIEW_ACTIVITY_LOG: 'VIEW_ACTIVITY_LOG',
+	VIEW_LIBRARY: 'VIEW_LIBRARY',
 	ASSIGN_PARTICIPANT: 'ASSIGN_PARTICIPANT',
 	UPLOAD_REVISIONS: 'UPLOAD_REVISIONS',
 	OPEN_REVIEW_FORM: 'OPEN_REVIEW_FORM',
@@ -180,6 +181,18 @@ export function useWorkflowActions({
 			});
 			openLegacyModal(
 				{title: t('submission.list.infoCenter')},
+				finishedCallback,
+			);
+		} else if (actionName === Actions.VIEW_LIBRARY) {
+			const {openLegacyModal} = useLegacyGridUrl({
+				component: 'modals.documentLibrary.documentLibraryHandler',
+				op: 'documentLibrary',
+				params: {
+					submissionId: submission.id,
+				},
+			});
+			openLegacyModal(
+				{title: t('grid.libraryFiles.submission.title')},
 				finishedCallback,
 			);
 		} else if (actionName === Actions.ASSIGN_PARTICIPANT) {
@@ -361,5 +374,27 @@ export function useWorkflowActions({
 		}
 	}
 
-	return {handleAction};
+	function getHeaderItems() {
+		const {t} = useLocalize();
+		const actions = [];
+
+		actions.push({
+			component: 'ActionButton',
+			props: {
+				label: t('editor.activityLog'),
+				action: Actions.VIEW_ACTIVITY_LOG,
+			},
+		});
+		actions.push({
+			component: 'ActionButton',
+			props: {
+				label: t('editor.submissionLibrary'),
+				action: Actions.VIEW_LIBRARY,
+			},
+		});
+
+		return actions;
+	}
+
+	return {handleAction, getHeaderItems};
 }

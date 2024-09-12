@@ -11,8 +11,8 @@ export function useDataChangedProvider(callback) {
 		callbacks = callbacks.filter((callback) => callback !== _callback);
 	}
 
-	function triggerDataChange() {
-		callbacks.forEach((callback) => callback());
+	async function triggerDataChange() {
+		return Promise.all(callbacks.map((callback) => callback()));
 	}
 
 	if (callback) {

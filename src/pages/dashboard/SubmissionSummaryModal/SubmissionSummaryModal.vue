@@ -24,9 +24,14 @@
 			</StageBubble>
 		</template>
 		<template v-if="submission" #actions>
-			<PkpButton element="a" :href="submission.urlWorkflow">
-				{{ t('dashboard.summary.viewSubmissionInDetail') }}
-			</PkpButton>
+			<div class="flex gap-x-4">
+				<component
+					:is="Components[item.component] || item.component"
+					v-bind="item.props"
+					v-for="(item, index) in summaryStore.headerItems"
+					:key="`${index} - ${Object.values(item.props).join('-')}`"
+				/>
+			</div>
 		</template>
 		<SideModalLayoutMenu2Columns>
 			<template #menu>
@@ -97,7 +102,6 @@
 <script setup>
 import {computed} from 'vue';
 import {storeToRefs} from 'pinia';
-import PkpButton from '@/components/Button/Button.vue';
 import SideMenu from '@/components/SideMenu/SideMenu.vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import StageBubble from '@/components/StageBubble/StageBubble.vue';
@@ -126,7 +130,7 @@ import SideModalLayoutMenu2Columns from '@/components/Modal/SideModalLayoutMenu2
 
 import {useLocalize} from '@/composables/useLocalize';
 import {useSubmission} from '@/composables/useSubmission';
-const {t, localizeSubmission} = useLocalize();
+const {localizeSubmission} = useLocalize();
 
 const Components = {
 	FileManager,

@@ -7,6 +7,7 @@ export const Actions = {
 	GALLEY_EDIT: 'GALLEY_EDIT',
 	GALLEY_CHANGE_FILE: 'GALLEY_CHANGE_FILE',
 	GALLEY_DELETE: 'GALLEY_DELETE',
+	GALLEY_ORDER: 'GALLEY_ORDER',
 };
 
 export function useGalleyManagerActions() {
@@ -16,6 +17,13 @@ export function useGalleyManagerActions() {
 		const actions = [];
 
 		actions.push({label: t('grid.action.addGalley'), name: Actions.GALLEY_ADD});
+
+		return actions;
+	}
+
+	function getTopItems() {
+		const actions = [];
+		actions.push({component: 'GalleyManagerSortButton'});
 
 		return actions;
 	}
@@ -163,5 +171,5 @@ export function useGalleyManagerActions() {
 		}
 	}
 
-	return {getItemActions, getBottomActions, handleAction};
+	return {getItemActions, getBottomActions, getTopItems, handleAction};
 }

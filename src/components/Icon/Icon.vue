@@ -44,6 +44,8 @@ import Bold from './icons/Bold.vue';
 import Bullets from './icons/Bullets.vue';
 import Cancel from './icons/Cancel.vue';
 import Catalog from './icons/Catalog.vue';
+import ChevronDown from './icons/ChevronDown.vue';
+import ChevronUp from './icons/ChevronUp.vue';
 import Complete from './icons/Complete.vue';
 import Dashboard from './icons/Dashboard.vue';
 import DecreaseTextSize from './icons/DecreaseTextSize.vue';
@@ -110,6 +112,8 @@ const svgIcons = {
 	Cancel,
 	Catalog,
 	Complete,
+	ChevronDown,
+	ChevronUp,
 	Dashboard,
 	DefaultDocument,
 	DecreaseTextSize,

@@ -1,6 +1,33 @@
 <template>
 	<PkpTable>
 		<template #label>{{ t('submission.layout.galleys') }}</template>
+		<template #top-controls>
+			<component
+				:is="Components[action.component] || action.component"
+				v-bind="action.props || {}"
+				v-for="(action, i) in galleyManagerStore.topItems"
+				:key="i"
+			>
+				{{ action.label }}
+			</component>
+		</template>
+		<TableHeader>
+			<TableColumn v-for="(column, i) in galleyManagerStore.columns" :key="i">
+				<span :class="column.headerSrOnly ? 'sr-only' : ''">
+					{{ column.header }}
+				</span>
+			</TableColumn>
+		</TableHeader>
+		<TableBody>
+			<TableRow v-for="galley in galleyManagerStore.galleys" :key="galley.id">
+				<component
+					:is="Components[column.component] || column.component"
+					v-for="(column, i) in galleyManagerStore.columns"
+					:key="i"
+					:galley="galley"
+				></component>
+			</TableRow>
+		</TableBody>
 		<template #bottom-controls>
 			<div class="space-x-y flex">
 				<PkpButton
@@ -14,23 +41,6 @@
 				</PkpButton>
 			</div>
 		</template>
-		<TableHeader>
-			<TableColumn>{{ t('common.name') }}</TableColumn>
-			<TableColumn>{{ t('common.language') }}</TableColumn>
-			<TableColumn>
-				<span class="sr-only">{{ t('common.moreActions') }}</span>
-			</TableColumn>
-		</TableHeader>
-		<TableBody>
-			<GalleyManagerTableRow
-				v-for="galley in galleyManagerStore.galleys"
-				:key="galley.id"
-				:galley="galley"
-				:metadata-locales="submission.metadataLocales"
-				:item-actions="galleyManagerStore.itemActions"
-				@action="galleyManagerStore.handleAction"
-			></GalleyManagerTableRow>
-		</TableBody>
 	</PkpTable>
 </template>
 
@@ -41,8 +51,21 @@ import PkpTable from '@/components/TableNext/Table.vue';
 import TableColumn from '@/components/TableNext/TableColumn.vue';
 import TableHeader from '@/components/TableNext/TableHeader.vue';
 import TableBody from '@/components/TableNext/TableBody.vue';
-import GalleyManagerTableRow from './GalleyManagerTableRow.vue';
+import TableRow from '@/components/TableNext/TableRow.vue';
+
 import PkpButton from '@/components/Button/Button.vue';
+
+import GalleyManagerCellName from './GalleyManagerCellName.vue';
+import GalleyManagerCellLanguage from './GalleyManagerCellLanguage.vue';
+import GalleyManagerCellActions from './GalleyManagerCellActions.vue';
+import GalleyManagerSortButton from './GalleyManagerSortButton.vue';
+
+const Components = {
+	GalleyManagerCellName,
+	GalleyManagerCellLanguage,
+	GalleyManagerCellActions,
+	GalleyManagerSortButton,
+};
 
 const props = defineProps({
 	publication: {type: Object, required: true},
