@@ -29,12 +29,12 @@
 
 <script setup>
 import {useTranslation} from '@/composables/useTranslation';
-import PkpTable from '@/components/TableNext/Table.vue';
-import TableCell from '@/components/TableNext/TableCell.vue';
-import TableHeader from '@/components/TableNext/TableHeader.vue';
-import TableColumn from '@/components/TableNext/TableColumn.vue';
-import TableBody from '@/components/TableNext/TableBody.vue';
-import TableRow from '@/components/TableNext/TableRow.vue';
+import PkpTable from '@/components/Table/Table.vue';
+import TableCell from '@/components/Table/TableCell.vue';
+import TableHeader from '@/components/Table/TableHeader.vue';
+import TableColumn from '@/components/Table/TableColumn.vue';
+import TableBody from '@/components/Table/TableBody.vue';
+import TableRow from '@/components/Table/TableRow.vue';
 import {defineProps} from 'vue';
 
 defineProps({

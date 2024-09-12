@@ -25,7 +25,7 @@ import CellSubmissionActivityReviewsUpdate from './CellSubmissionActivityReviews
 import CellSubmissionActivityReviewsOpen from './CellSubmissionActivityReviewsOpen.vue';
 
 import {defineProps, computed} from 'vue';
-import TableCell from '@/components/TableNext/TableCell.vue';
+import TableCell from '@/components/Table/TableCell.vue';
 
 import {
 	useDashboardPageStore,

@@ -59,10 +59,10 @@ import {inject} from 'vue';
 import {useFileManagerStore} from './fileManagerStore.js';
 import {FileManagerConfigurations} from './useFileManagerConfig.js';
 import PkpButton from '@/components/Button/Button.vue';
-import PkpTable from '@/components/TableNext/Table.vue';
-import TableHeader from '@/components/TableNext/TableHeader.vue';
-import TableBody from '@/components/TableNext/TableBody.vue';
-import TableColumn from '@/components/TableNext/TableColumn.vue';
+import PkpTable from '@/components/Table/Table.vue';
+import TableHeader from '@/components/Table/TableHeader.vue';
+import TableBody from '@/components/Table/TableBody.vue';
+import TableColumn from '@/components/Table/TableColumn.vue';
 import FileManagerTableRow from './FileManagerTableRow.vue';
 
 const props = defineProps({

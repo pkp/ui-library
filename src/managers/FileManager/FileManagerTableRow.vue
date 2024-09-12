@@ -48,8 +48,8 @@
 <script setup>
 import {computed} from 'vue';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
-import TableCell from '@/components/TableNext/TableCell.vue';
-import TableRow from '@/components/TableNext/TableRow.vue';
+import TableCell from '@/components/Table/TableCell.vue';
+import TableRow from '@/components/Table/TableRow.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import Badge from '@/components/Badge/Badge.vue';
 

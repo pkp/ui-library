@@ -12,7 +12,7 @@
 import {defineProps, computed} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 
-import TableCell from '@/components/TableNext/TableCell.vue';
+import TableCell from '@/components/Table/TableCell.vue';
 const {localizeSubmission} = useLocalize();
 
 const props = defineProps({item: {type: Object, required: true}});

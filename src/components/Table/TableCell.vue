@@ -1,86 +1,44 @@
 <template>
 	<component
-		:is="tag"
+		:is="isRowHeader ? 'th' : 'td'"
+		:scope="isRowHeader ? 'row' : false"
+		class="border-b border-t border-light px-2 py-2 text-start first:border-s first:ps-3 last:border-e last:pe-3"
 		:class="classes"
-		:scope="tag === 'th' ? 'row' : false"
-		:tabindex="tabindex"
 	>
-		<template v-if="hasSlot">
-			<slot :column="column" :row="row" />
-		</template>
-		<template v-else>
-			<span v-html="value" />
-		</template>
+		<slot />
 	</component>
 </template>
 
-<script>
-export default {
-	props: {
-		column: Object,
-		row: Object,
-		tabindex: [Number, Boolean],
+<script setup>
+import {defineProps, computed} from 'vue';
+
+const props = defineProps({
+	noWrap: {
+		type: Boolean,
+		default: false,
 	},
-	computed: {
-		/**
-		 * Determine what kind of tag to use for the root element
-		 */
-		tag() {
-			return this.column.isRowHeader ? 'th' : 'td';
-		},
-
-		/**
-		 * Compile classes for the root element
-		 */
-		classes() {
-			let classes = ['pkpTable__cell'];
-
-			if (this.column.truncate) {
-				classes.push('-truncate');
-				classes.push('-truncate-' + this.column.truncate);
-			}
-
-			return classes;
-		},
-
-		/**
-		 * Is there slot content in the default position?
-		 */
-		hasSlot() {
-			return this.$slots.default;
-		},
-
-		/**
-		 * The value retrieved from the row
-		 */
-		value() {
-			if (typeof this.column.value === 'function') {
-				return this.column.value(this.row);
-			} else if (typeof this.row[this.column.value] !== 'undefined') {
-				return this.row[this.column.value];
-			}
-			return '';
+	fullWidthTruncated: {
+		type: Boolean,
+		default: false,
+	},
+	/** Determine which column is suitable being [rowheader](https://www.w3.org/TR/wai-aria-1.1/#rowheader) */
+	isRowHeader: {
+		type: Boolean,
+		default() {
+			return false;
 		},
 	},
-};
+});
+
+const classes = computed(() => {
+	const list = [];
+	if (props.noWrap) {
+		list.push('whitespace-nowrap');
+	}
+
+	if (props.fullWidthTruncated) {
+		list.push('w-full max-w-0 truncate');
+	}
+	return list;
+});
 </script>
-
-<style lang="less">
-@import '../../styles/_import';
-
-.pkpTable__cell.-truncate {
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	width: 100%;
-	max-width: 20em;
-}
-
-.pkpTable__cell.-truncate-small {
-	max-width: 10em;
-}
-
-.pkpTable__cell.-truncate-large {
-	max-width: 40em;
-}
-</style>
