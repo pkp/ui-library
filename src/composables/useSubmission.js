@@ -16,7 +16,7 @@ export const ExtendedStages = {
 
 export const ExtendedStagesLabels = {
 	incomplete: tk('submissions.incomplete'),
-	submission: tk('dashboard.stage.deskReview'),
+	submission: tk('dashboard.stage.submission'),
 	internalReview: tk('todo'),
 	externalReview: tk('dashboard.stage.reviewWithRound'),
 	editing: tk('dashboard.stage.copyediting'),
@@ -31,10 +31,40 @@ export function useSubmission() {
 		return submission.stages.find((stage) => stage.isActiveStage);
 	}
 
-	function getCurrentReviewRound(submission) {
-		return submission?.reviewRounds?.length
-			? submission?.reviewRounds[submission.reviewRounds.length - 1]
-			: null;
+	function getStageById(submission, stageId) {
+		return submission.stages.find((stage) => stage.id === stageId);
+	}
+
+	function getReviewAssignmentsForRound(submission, roundId) {
+		return submission.reviewAssignments.filter(
+			(reviewAssignment) => reviewAssignment.roundId === roundId,
+		);
+	}
+
+	function getCurrentReviewRound(
+		submission,
+		stageId = pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+	) {
+		const filteredReviewRoundByStage = submission?.reviewRounds.filter(
+			(reviewRound) => reviewRound.stageId === stageId,
+		);
+
+		if (filteredReviewRoundByStage.length) {
+			return filteredReviewRoundByStage[filteredReviewRoundByStage.length - 1];
+		}
+		return null;
+	}
+
+	function getReviewRound(submission, reviewRoundId) {
+		return submission?.reviewRounds.find(
+			(reviewRound) => reviewRound.id === reviewRoundId,
+		);
+	}
+
+	function getReviewRoundsForStage(submission, stageId) {
+		return submission?.reviewRounds.filter(
+			(reviewRound) => reviewRound.stageId === stageId,
+		);
 	}
 
 	function getCurrentReviewAssignments(submission) {
@@ -51,9 +81,19 @@ export function useSubmission() {
 		);
 	}
 
+	function getLatestPublication(submission) {
+		return submission.publications.reduce(
+			(latestPublication, publication) =>
+				publication.id > latestPublication.id ? publication : latestPublication,
+			submission.publications[0],
+		);
+	}
+
 	function getExtendedStage(submission) {
 		const activeStage = getActiveStage(submission);
-
+		if (submission.status === pkp.const.STATUS_DECLINED) {
+			return ExtendedStages.DECLINED;
+		}
 		switch (activeStage.id) {
 			case pkp.const.WORKFLOW_STAGE_ID_SUBMISSION:
 				return submission.submissionProgress
@@ -71,8 +111,6 @@ export function useSubmission() {
 						return ExtendedStages.PRODUCTION_SCHEDULED;
 					case pkp.const.STATUS_PUBLISHED:
 						return ExtendedStages.PRODUCTION_PUBLISHED;
-					case pkp.const.STATUS_DECLINED:
-						return ExtendedStages.PRODUCTION_DECLINED;
 				}
 		}
 	}
@@ -100,13 +138,28 @@ export function useSubmission() {
 		return FileStageMapping[submission.stageId];
 	}
 
+	function hasSubmissionPassedStage(submission, stageId) {
+		return submission.stageId > stageId;
+	}
+
+	function hasNotSubmissionStartedStage(submission, stageId) {
+		return submission.stageId < stageId;
+	}
+
 	return {
 		getActiveStage,
+		getStageById,
 		getExtendedStage,
 		getExtendedStageLabel,
 		getCurrentReviewRound,
+		getReviewRound,
+		getReviewRoundsForStage,
 		getCurrentReviewAssignments,
 		getCurrentPublication,
+		getLatestPublication,
 		getFileStageFromWorkflowStage,
+		hasNotSubmissionStartedStage,
+		hasSubmissionPassedStage,
+		getReviewAssignmentsForRound,
 	};
 }

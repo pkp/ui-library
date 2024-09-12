@@ -86,7 +86,7 @@
 </template>
 
 <script setup>
-import {ref, watch} from 'vue';
+import {ref} from 'vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';
 
@@ -120,19 +120,6 @@ const props = defineProps({
 const emit = defineEmits(['close']);
 
 const isLoading = ref(false);
-
-// resetting state after close
-// this is not ideal approach, but given how little state the dialog has
-// its less complex than splitting dialog into two components to have proper life cycle
-// as we do with SideModal and SideModalBody
-watch(
-	() => props.opened,
-	(prevOpened, nextOpened) => {
-		if (prevOpened === true && nextOpened === false) {
-			isLoading.value = false;
-		}
-	},
-);
 
 function onClose() {
 	if (props.close) {

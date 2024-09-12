@@ -103,8 +103,8 @@ export const FileManagerConfigurations = {
 			stageId === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW
 				? pkp.const.SUBMISSION_FILE_INTERNAL_REVIEW_REVISION
 				: pkp.const.SUBMISSION_FILE_REVIEW_REVISION,
-		titleKey: tk('dashboard.summary.revisionsSubmitted'),
-		descriptionKey: tk('dashboard.summary.revisionsSubmittedDescription'),
+		titleKey: tk('dashboard.summary.revisionsUploaded'),
+		descriptionKey: tk('dashboard.summary.revisionsUploadedDescription'),
 		wizardTitleKey: tk('editor.submissionReview.uploadFile'),
 	}),
 	COPYEDITED_FILES: ({stageId}) => ({

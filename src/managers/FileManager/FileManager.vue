@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="flex items-center border border-light p-4">
+		<div class="flex items-center border-x border-t border-light p-4">
 			<div class="flex-grow">
 				<h3 class="text-lg-bold text-heading">
 					{{ fileManagerStore.managerConfig.title }}
@@ -26,7 +26,7 @@
 				<TableColumn>Date Uploaded</TableColumn>
 				<TableColumn>Type</TableColumn>
 				<TableColumn v-if="fileManagerStore.itemActions.length">
-					<span class="sr-only">Actions (t)</span>
+					<span class="sr-only">{{ t('common.moreActions') }}</span>
 				</TableColumn>
 			</TableHeader>
 			<TableBody>
@@ -35,7 +35,7 @@
 					:key="file.id"
 					:action-items="fileManagerStore.itemActions"
 					:file="file"
-					@action="fileManagerStore.handleItemAction"
+					@action="fileManagerStore.handleAction"
 				></FileManagerTableRow>
 			</TableBody>
 		</PkpTable>
@@ -55,7 +55,6 @@
 	</div>
 </template>
 <script setup>
-import {inject} from 'vue';
 import {useFileManagerStore} from './fileManagerStore.js';
 import {FileManagerConfigurations} from './useFileManagerConfig.js';
 import PkpButton from '@/components/Button/Button.vue';
@@ -64,6 +63,7 @@ import TableHeader from '@/components/TableNext/TableHeader.vue';
 import TableBody from '@/components/TableNext/TableBody.vue';
 import TableColumn from '@/components/TableNext/TableColumn.vue';
 import FileManagerTableRow from './FileManagerTableRow.vue';
+import {t} from '@/utils/i18n.js';
 
 const props = defineProps({
 	configName: {
@@ -79,7 +79,4 @@ const props = defineProps({
 });
 
 const fileManagerStore = useFileManagerStore(props, props.configName);
-
-const registerDataChangeCallback = inject('registerDataChangeCallback');
-registerDataChangeCallback(() => fileManagerStore.fetchFiles());
 </script>

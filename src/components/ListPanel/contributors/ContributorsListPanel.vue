@@ -293,6 +293,7 @@ export default {
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.t('grid.action.addContributor');
 			const {openSideModal} = useModal();
+
 			openSideModal(ContributorsEditModal, {
 				title: this.activeFormTitle,
 				activeForm: this.activeForm,

@@ -470,7 +470,7 @@ export function useSummaryConfig() {
 			{
 				component: 'ActionButton',
 				props: {
-					label: t('dashboard.summary.scheduleForProduction'),
+					label: t('dashboard.summary.scheduleForPublication'),
 					isPrimary: true,
 					action: 'scheduleForPublication',
 				},
@@ -511,7 +511,11 @@ export function useSummaryConfig() {
 	function getMetaItems(submission, currentPublication) {
 		return [
 			{
-				component: 'EditorsAssigned',
+				component: 'ParticipantManager',
+				props: {
+					submission,
+					submissionStageId: submission.stageId,
+				},
 				filters: {
 					dashboardPage: [DashboardPageTypes.EDITORIAL_DASHBOARD],
 					activeStageId: [

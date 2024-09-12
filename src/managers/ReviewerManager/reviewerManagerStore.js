@@ -1,6 +1,9 @@
 import {computed} from 'vue';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 import {useReviewAssignment} from '@/composables/useReviewAssignment';
+import {useSubmission} from '@/composables/useSubmission';
+import {useReviewerManagerActions} from './useReviewerManagerActions';
+import {useDataChanged} from '@/composables/useDataChanged';
 
 export const useReviewerManagerStore = defineComponentStore(
 	'reviewerManagerStore',
@@ -8,19 +11,60 @@ export const useReviewerManagerStore = defineComponentStore(
 		const {getReviewMethodIcons, getOpenReviewAssignments} =
 			useReviewAssignment();
 
-		// todo get only review assignment for current round
+		const {getReviewAssignmentsForRound} = useSubmission();
 
 		const reviewAssignments = computed(() => {
+			const reviewAssignmentsForSelectedRound = getReviewAssignmentsForRound(
+				props.submission,
+				props.reviewRoundId,
+			);
+
 			if (props.redactedForAuthors) {
-				return getOpenReviewAssignments(props.submission?.reviewAssignments);
+				return getOpenReviewAssignments(reviewAssignmentsForSelectedRound);
 			}
 
-			return props.submission?.reviewAssignments;
+			return reviewAssignmentsForSelectedRound;
 		});
+
+		const {triggerDataChange} = useDataChanged();
+
+		const _actionFns = useReviewerManagerActions();
+
+		const topActions = computed(() =>
+			_actionFns.getTopActions({submission: props.submission}),
+		);
+
+		function handleAction(actionName, args) {
+			_actionFns.handleAction(
+				actionName,
+				{
+					submission: props.submission,
+					reviewRoundId: props.reviewRoundId,
+					submissionStageId: props.submission.stageId,
+					...args,
+				},
+				() => {
+					triggerDataChange();
+				},
+			);
+		}
+
+		function getItemActions(args) {
+			return _actionFns.getItemActions(args);
+		}
+
+		function getItemPrimaryActions(args) {
+			return _actionFns.getItemPrimaryActions(args);
+		}
 
 		return {
 			getReviewMethodIcons,
 			reviewAssignments,
+			topActions,
+			handleAction,
+			getItemActions,
+			getItemPrimaryActions,
+			_actionFns,
 		};
 	},
 );

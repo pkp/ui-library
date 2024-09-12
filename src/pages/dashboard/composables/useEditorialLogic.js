@@ -1,6 +1,9 @@
 import {useSubmission} from '@/composables/useSubmission.js';
 import {useLocalize} from '@/composables/useLocalize';
 import {useDate} from '@/composables/useDate';
+import {Actions as ParticipantManagerActions} from '@/managers/ParticipantManager/useParticipantManagerActions';
+import {Actions as WorkflowActions} from './useWorkflowActions';
+import {Actions as ReviewerManagerActions} from '@/managers/ReviewerManager/useReviewerManagerActions';
 
 const {formatShortDate} = useDate();
 
@@ -18,7 +21,7 @@ export function useEditorialLogic() {
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
-							actionName: 'assignParticipant',
+							actionName: ParticipantManagerActions.ASSIGN,
 							actionLabel: t('dashboard.assignEditor'),
 						},
 					},
@@ -27,6 +30,20 @@ export function useEditorialLogic() {
 		}
 		if (activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) {
 			const activeRound = getCurrentReviewRound(submission);
+
+			if (activeStage.currentUserDecidingEditor) {
+				// just hack for illustration
+				switch (activeRound.statusId) {
+					case pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWERS:
+					case pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWS:
+					case pkp.const.REVIEW_ROUND_STATUS_REVIEWS_READY:
+					case pkp.const.REVIEW_ROUND_STATUS_REVIEWS_COMPLETED:
+					case pkp.const.REVIEW_ROUND_STATUS_REVIEWS_OVERDUE:
+					case pkp.const.REVIEW_ROUND_STATUS_RETURNED_TO_REVIEW:
+						activeRound.statusId =
+							pkp.const.REVIEW_ROUND_STATUS_PENDING_RECOMMENDATIONS;
+				}
+			}
 			if (
 				activeRound.statusId === pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWERS
 			) {
@@ -34,8 +51,11 @@ export function useEditorialLogic() {
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
-							actionName: 'assignReviewers',
+							actionName: ReviewerManagerActions.ADD_REVIEWER,
 							actionLabel: t('dashboard.assignReviewers'),
+							actionArgs: {
+								reviewRoundId: activeRound.id,
+							},
 						},
 					},
 				];
@@ -77,7 +97,7 @@ export function useEditorialLogic() {
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
-							alert: t('dashboard.revisionsSubmittedByAuthor'),
+							alert: t('dashboard.revisionsSubmitted'),
 						},
 					},
 					{
@@ -89,19 +109,71 @@ export function useEditorialLogic() {
 				];
 			} else if (
 				activeRound.statusId ===
+				pkp.const.REVIEW_ROUND_STATUS_PENDING_RECOMMENDATIONS
+			) {
+				if (activeStage.currentUserCanRecommendOnly) {
+					return [];
+				}
+				return [
+					{
+						component: 'CellSubmissionActivityActionAlert',
+						props: {
+							alert: t('dashboard.recommendOnly.pendingRecommendations'),
+						},
+					},
+				];
+			} else if (
+				activeRound.statusId ===
+				pkp.const.REVIEW_ROUND_STATUS_RECOMMENDATIONS_READY
+			) {
+				return [
+					{
+						component: 'CellSubmissionActivityActionAlert',
+						props: {
+							alert: t('dashboard.recommendOnly.recommendationsReady'),
+						},
+					},
+				];
+			} else if (
+				activeRound.statusId ===
+				pkp.const.REVIEW_ROUND_STATUS_RECOMMENDATIONS_COMPLETED
+			) {
+				return [
+					{
+						component: 'CellSubmissionActivityActionAlert',
+						props: {
+							alert: t('dashboard.recommendOnly.recommendationsCompleted'),
+						},
+					},
+				];
+			} else if (
+				activeRound.statusId ===
 				pkp.const.REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW_SUBMITTED
 			) {
 				return [
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
-							alert: t('dashboard.revisionsSubmittedByAuthor'),
+							alert: t('dashboard.revisionsSubmitted'),
 						},
 					},
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
 							alert: t('dashboard.newReviewRoundToBeCreated'),
+						},
+					},
+				];
+			} else if (
+				activeRound.statusId === pkp.const.REVIEW_ROUND_STATUS_DECLINED
+			) {
+				return [
+					{
+						component: 'CellSubmissionActivityActionAlert',
+						props: {
+							alert: t('dashboard.declinedDuringStage', {
+								stageName: t('manager.publication.reviewStage'),
+							}),
 						},
 					},
 				];
@@ -127,19 +199,17 @@ export function useEditorialLogic() {
 			const activeRound = getCurrentReviewRound(submission);
 
 			if (
-				[
-					pkp.const.REVIEW_ROUND_STATUS_REVISIONS_REQUESTED,
-					pkp.const.REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW,
-				].includes(activeRound.statusId)
+				[pkp.const.REVIEW_ROUND_STATUS_REVISIONS_REQUESTED].includes(
+					activeRound.statusId,
+				)
 			) {
-				// Todo refine once these are covered in nextcloud
 				return [
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
 							alert: t('dashboard.revisionRequested'),
 							actionLabel: t('dashboard.submitRevisions'),
-							actionName: 'uploadRevisions',
+							actionName: WorkflowActions.UPLOAD_REVISIONS,
 						},
 					},
 				];
@@ -227,7 +297,7 @@ export function useEditorialLogic() {
 				{
 					component: 'CellReviewAssignmentActivityAlert',
 					props: {
-						alert: t('dashboard.deadlineForComplitingReviewHasPassed'),
+						alert: t('dashboard.deadlineForCompletingReviewHasPassed'),
 					},
 				},
 			];

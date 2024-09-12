@@ -10,9 +10,23 @@ import {useUrl} from '@/composables/useUrl';
 import {useUrlSearchParams} from '@vueuse/core';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
-import {useHandleActions} from './composables/useHandleActions';
+import {
+	Actions as WorkflowActions,
+	useWorkflowActions,
+} from './composables/useWorkflowActions';
+import {
+	Actions as ReviewerManagerActions,
+	useReviewerManagerActions,
+} from '@/managers/ReviewerManager/useReviewerManagerActions';
+
+import {
+	Actions as ParticipantManagerActions,
+	useParticipantManagerActions,
+} from '@/managers/ParticipantManager/useParticipantManagerActions';
+
 import {useEditorialLogic} from './composables/useEditorialLogic';
 import {useReviewActivityLogic} from './composables/useReviewActivityLogic';
+import {useSubmission} from '@/composables/useSubmission';
 
 import DashboardFiltersModal from '@/pages/dashboard/components/DashboardFiltersModal.vue';
 import SubmissionSummaryModal from '@/pages/dashboard/SubmissionSummaryModal/SubmissionSummaryModal.vue';
@@ -173,15 +187,57 @@ export const useDashboardPageStore = defineComponentStore(
 			{immediate: true},
 		);
 
-		const {handleSubmissionAction} = useHandleActions(pageInitConfig);
-		function handleItemAction(actionName, actionArgs) {
-			const submission = submissions.value.find(
-				(submission) => submission.id === actionArgs.submissionId,
-			);
+		const _workflowActionFns = useWorkflowActions(pageInitConfig);
+		const _reviewerManagerActionFns = useReviewerManagerActions(pageInitConfig);
+		const _participantManagerActionsFns =
+			useParticipantManagerActions(pageInitConfig);
 
-			handleSubmissionAction(submission, actionName, actionArgs, async () => {
-				await fetchSubmissions();
-			});
+		const {getCurrentPublication} = useSubmission();
+		function handleAction(actionName, actionArgs) {
+			console.log('handleAction:', actionName, actionArgs);
+
+			let actionArgsExtended = {...actionArgs};
+			// TODO this should be improved, but now its to prevent accidentally
+			// cherrypick submission even if the review assignments are loaded instead
+			if (pageInitConfig.dashboardPage !== 'myReviewAssignments') {
+				const submission = submissions.value.find(
+					(submission) => submission.id === actionArgs.submissionId,
+				);
+				const selectedPublication = getCurrentPublication(submission);
+
+				actionArgsExtended = {
+					...actionArgsExtended,
+					submission,
+					selectedPublication,
+					submissionStageId: submission.stageId,
+				};
+			}
+
+			if (WorkflowActions[actionName]) {
+				_workflowActionFns.handleAction(
+					actionName,
+					actionArgsExtended,
+					async () => {
+						await fetchSubmissions();
+					},
+				);
+			} else if (ReviewerManagerActions[actionName]) {
+				_reviewerManagerActionFns.handleAction(
+					actionName,
+					actionArgsExtended,
+					async () => {
+						await fetchSubmissions();
+					},
+				);
+			} else if (ParticipantManagerActions[actionName]) {
+				_participantManagerActionsFns.handleAction(
+					actionName,
+					actionArgsExtended,
+					async () => {
+						await fetchSubmissions();
+					},
+				);
+			}
 		}
 
 		/**
@@ -195,13 +251,12 @@ export const useDashboardPageStore = defineComponentStore(
 
 		/** Tracking which submissionId is opened in summary modal for query params */
 		const summarySubmissionId = ref(null);
-		function openSummaryModal(submissionId, reviewAssignmentId = null) {
+		function openSummaryModal(submissionId) {
 			summarySubmissionId.value = submissionId;
 			openSideModal(
 				SubmissionSummaryModal,
 				{
 					submissionId,
-					reviewAssignmentId,
 					pageInitConfig,
 				},
 				{
@@ -224,22 +279,6 @@ export const useDashboardPageStore = defineComponentStore(
 			openSideModal(DashboardFiltersModal, {
 				filtersFormInitial: filtersForm,
 				onUpdateFiltersForm: updateFiltersForm,
-			});
-		}
-
-		/**
-		 * Assign Participant Modal
-		 */
-		const assignParticipantUrl = ref(pageInitConfig.assignParticipantUrl);
-		const isModalOpenedAssignParticipant = ref(false);
-
-		function openAssignParticipantModal(submission) {
-			const url = assignParticipantUrl.value
-				.replace('__id__', submission.id)
-				.replace('__stageId__', submission.stageId);
-
-			openSideModal('LegacyAjax', {
-				options: {url},
 			});
 		}
 
@@ -317,7 +356,7 @@ export const useDashboardPageStore = defineComponentStore(
 			isSubmissionsLoading,
 			fetchSubmissions,
 			setCurrentPage,
-			handleItemAction,
+			handleAction,
 
 			// Modals
 			selectedSubmission,
@@ -329,11 +368,6 @@ export const useDashboardPageStore = defineComponentStore(
 			isModalOpenedFilters,
 			openFiltersModal,
 
-			// AssignParticipant Modal
-			assignParticipantUrl,
-			isModalOpenedAssignParticipant,
-			openAssignParticipantModal,
-
 			// expose useEditorialLogic methods
 			getEditorialActivityForEditorialDashboard,
 			getEditorialActivityForMySubmissions,
@@ -341,6 +375,8 @@ export const useDashboardPageStore = defineComponentStore(
 
 			getReviewActivityIndicatorProps,
 			getReviewActivityIndicatorPopoverProps,
+
+			_workflowActionFns,
 		};
 	},
 );

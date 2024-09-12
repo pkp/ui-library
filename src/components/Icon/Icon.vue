@@ -44,6 +44,8 @@ import Bold from './icons/Bold.vue';
 import Bullets from './icons/Bullets.vue';
 import Cancel from './icons/Cancel.vue';
 import Catalog from './icons/Catalog.vue';
+import ChevronDown from './icons/ChevronDown.vue';
+import ChevronUp from './icons/ChevronUp.vue';
 import Complete from './icons/Complete.vue';
 import Dashboard from './icons/Dashboard.vue';
 import DecreaseTextSize from './icons/DecreaseTextSize.vue';
@@ -65,6 +67,7 @@ import FilePdf from './icons/FilePdf.vue';
 import FileVideo from './icons/FileVideo.vue';
 import FileZip from './icons/FileZip.vue';
 import Help from './icons/Help.vue';
+import History from './icons/History.vue';
 import InProgress from './icons/InProgress.vue';
 import IncreaseTextSize from './icons/IncreaseTextSize.vue';
 import InsertContent from './icons/InsertContent.vue';
@@ -77,6 +80,7 @@ import MoreOptions from './icons/MoreOptions.vue';
 import MySubmissions from './icons/MySubmissions.vue';
 import NavDoi from './icons/NavDoi.vue';
 import NavAdmin from './icons/NavAdmin.vue';
+import New from './icons/New.vue';
 import Notifications from './icons/Notifications.vue';
 import OpenReview from './icons/OpenReview.vue';
 import Orcid from './icons/Orcid.vue';
@@ -108,6 +112,8 @@ const svgIcons = {
 	Cancel,
 	Catalog,
 	Complete,
+	ChevronDown,
+	ChevronUp,
 	Dashboard,
 	DefaultDocument,
 	DecreaseTextSize,
@@ -128,6 +134,7 @@ const svgIcons = {
 	FileVideo,
 	FileZip,
 	Help,
+	History,
 	InProgress,
 	IncreaseTextSize,
 	InsertContent,
@@ -140,6 +147,7 @@ const svgIcons = {
 	MySubmissions,
 	NavDoi,
 	NavAdmin,
+	New,
 	Notifications,
 	OpenReview,
 	Orcid,

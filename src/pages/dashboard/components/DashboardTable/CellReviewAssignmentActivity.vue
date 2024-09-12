@@ -8,9 +8,9 @@
 				:key="index"
 				@action="
 					(actionName, actionArgs) =>
-						dashboardStore.handleItemAction(actionName, {
+						dashboardStore.handleAction(actionName, {
 							...actionArgs,
-							reviewAssignmentId: item.id,
+							reviewAssignment: item,
 						})
 				"
 			/>

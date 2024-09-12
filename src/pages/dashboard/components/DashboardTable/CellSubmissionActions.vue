@@ -6,7 +6,7 @@
 			:is-link="true"
 			@click="dashboardPageStore.openSummaryModal(item.id)"
 		>
-			{{ t('dashboard.viewSummary') }}
+			{{ t('common.view') }}
 		</PkpButton>
 	</TableCell>
 </template>

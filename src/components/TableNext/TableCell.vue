@@ -2,7 +2,7 @@
 	<component
 		:is="isRowHeader ? 'th' : 'td'"
 		:scope="isRowHeader ? 'row' : false"
-		class="border-b border-t border-light px-2 py-2 text-start first:border-s first:ps-3 last:border-e last:pe-3"
+		class="border-b border-light px-2 py-2 text-start first:border-s first:ps-3 last:border-e last:pe-3"
 		:class="classes"
 	>
 		<slot />
@@ -28,6 +28,13 @@ const props = defineProps({
 			return false;
 		},
 	},
+	/** Take only width as the content needs */
+	fitContent: {
+		type: Boolean,
+		default() {
+			return false;
+		},
+	},
 });
 
 const classes = computed(() => {
@@ -38,6 +45,10 @@ const classes = computed(() => {
 
 	if (props.fullWidthTruncated) {
 		list.push('w-full max-w-0 truncate');
+	}
+
+	if (props.fitContent) {
+		list.push('whitespace-nowrap w-1');
 	}
 	return list;
 });

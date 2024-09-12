@@ -1,24 +1,54 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
 import {computed} from 'vue';
-import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
+import {useLocalize} from '@/composables/useLocalize';
+import {useForm} from '@/composables/useForm';
+import {useDataChanged} from '@/composables/useDataChanged';
 
 export const useContributorManagerStore = defineComponentStore(
 	'contributorManager',
 	(props) => {
-		const {apiUrl: contributorApiUrl} = useUrl(
-			`submissions/${props.submissionId}/publications/${props.publicationId}/contributors`,
+		const {t} = useLocalize();
+
+		const {apiUrl: publicationApiUrlFormat} = useUrl(
+			`submissions/${props.submission.id}/publications/__publicationId__`,
 		);
 
-		const {data, fetch: fetchContributors} = useFetch(contributorApiUrl, {
-			query: {},
+		const {form, setLocales} = useForm(props.contributorForm);
+
+		setLocales(props.submission.metadataLocales);
+
+		const {triggerDataChange} = useDataChanged();
+
+		const contributorsListPanelProps = computed(() => {
+			return {
+				// TODO
+				canEditPublication: true,
+				form: form.value,
+				id: 'contributors',
+				items: props.publication.authors,
+				title: t('publication.contributors'),
+				publicationApiUrlFormat: publicationApiUrlFormat.value,
+				publication: props.publication,
+				'onUpdated:publication': (publication) => {
+					// TODO: Not good practice to update object coming from props
+					// This currently ensures that optimistic updates implemented in ContributorListPanel still works
+					// This should be addressed with larger refactor when adopting new ui and composition API
+					Object.keys(publication).forEach((key) => {
+						props.publication[key] = publication[key];
+					});
+					triggerDataChange();
+				},
+				'onUpdated:contributors': (contributors) => {
+					props.publication.authors = contributors;
+				},
+			};
 		});
 
-		const contributors = computed(() => data.value?.items || []);
-
-		fetchContributors();
-
-		return {title: props.title, contributors, fetchContributors};
+		return {
+			title: props.title,
+			contributorsListPanelProps,
+		};
 	},
 );
