@@ -11,7 +11,7 @@
 			<a
 				:class="getButtonStyles(item, itemProps.action?.isFocused)"
 				v-bind="itemProps.action"
-				:href="item.link"
+				:href="item.link || '#'"
 				tabindex="-1"
 			>
 				<Badge
@@ -23,7 +23,7 @@
 					{{ item.badge.slot }}
 				</Badge>
 				<Icon v-if="item.icon" class="h-5 w-5" :icon="item.icon" />
-				{{ item.label }}
+				<span>{{ item.label }}</span>
 				<Icon
 					v-if="hasSubmenu"
 					class="h-4 w-4 ltr:ml-auto rtl:mr-auto"
