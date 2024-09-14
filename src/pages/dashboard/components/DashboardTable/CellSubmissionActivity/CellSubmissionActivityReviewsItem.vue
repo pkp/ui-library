@@ -25,12 +25,13 @@ import ReviewActivityIndicatorPopover from '@/pages/dashboard/components/ReviewA
 
 import {useDashboardPageStore} from '@/pages/dashboard/dashboardPageStore';
 
+const props = defineProps({reviewAssignment: {type: Object, required: true}});
+
 const {
 	getReviewActivityIndicatorProps,
 	getReviewActivityIndicatorPopoverProps,
 } = useDashboardPageStore();
 
-const props = defineProps({reviewAssignment: {type: Object, required: true}});
 const emit = defineEmits('action');
 
 const reviewActivityIndicatorProps = computed(() =>

@@ -8,7 +8,7 @@ import {useFetch, getCSRFToken} from '@/composables/useFetch';
 export const Actions = {
 	ADD_REVIEWER: 'ADD_REVIEWER',
 	READ_REVIEW: 'READ_REVIEW',
-	REVIEW_DETAILS: 'REVIEW_DETAILS',
+	REVIEW_DETAILS: 'reviewerReviewDetails',
 	EMAIL_REVIEWER: 'EMAIL_REVIEWER',
 	RESEND_REQUEST: 'RESEND_REQUEST',
 	EDIT_REVIEW: 'EDIT_REVIEW',
@@ -166,6 +166,33 @@ export function useReviewerManagerActions() {
 		});
 
 		return actions;
+	}
+
+	function reviewerReviewDetails(
+		{submission, reviewAssignment, submissionStageId},
+		finishedCallback,
+	) {
+		const {openLegacyModal} = useLegacyGridUrl({
+			component: 'grid.users.reviewer.ReviewerGridHandler',
+			op: 'readReview',
+			params: {
+				submissionId: submission.id,
+				reviewAssignmentId: reviewAssignment.id,
+				stageId: submissionStageId,
+			},
+		});
+
+		const {getCurrentPublication} = useSubmission();
+		const currentPublication = getCurrentPublication(submission);
+
+		const firstPartTitle = t('editor.review.reviewDetails');
+
+		openLegacyModal(
+			{
+				title: `${t('semicolon', {label: firstPartTitle})} ${localizeSubmission(currentPublication.fullTitle, currentPublication.locale)}`,
+			},
+			finishedCallback,
+		);
 	}
 
 	function handleAction(
@@ -409,5 +436,11 @@ export function useReviewerManagerActions() {
 		}
 	}
 
-	return {getTopActions, handleAction, getItemActions, getItemPrimaryActions};
+	return {
+		getTopActions,
+		handleAction,
+		getItemActions,
+		getItemPrimaryActions,
+		reviewerReviewDetails,
+	};
 }

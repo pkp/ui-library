@@ -28,8 +28,6 @@ const itemActions = computed(() =>
 );
 
 function handleAction(actionName) {
-	reviewerManagerStore.handleAction(actionName, {
-		reviewAssignment: props.reviewAssignment,
-	});
+	reviewerManagerStore[actionName]({reviewAssignment: props.reviewAssignment});
 }
 </script>

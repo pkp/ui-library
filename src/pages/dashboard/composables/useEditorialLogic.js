@@ -73,6 +73,7 @@ export function useEditorialLogic() {
 					{
 						component: 'CellSubmissionActivityReviews',
 						props: {
+							submissionId: submission.id,
 							reviewAssignments: getCurrentReviewAssignments(submission),
 						},
 					},
@@ -103,6 +104,7 @@ export function useEditorialLogic() {
 					{
 						component: 'CellSubmissionActivityReviews',
 						props: {
+							submissionId: submission.id,
 							reviewAssignments: getCurrentReviewAssignments(submission),
 						},
 					},
@@ -182,6 +184,7 @@ export function useEditorialLogic() {
 					{
 						component: 'CellSubmissionActivityReviews',
 						props: {
+							submissionId: submission.id,
 							reviewAssignments: getCurrentReviewAssignments(submission),
 						},
 					},

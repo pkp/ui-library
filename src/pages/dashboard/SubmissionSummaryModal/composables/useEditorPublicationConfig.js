@@ -221,12 +221,7 @@ export function useEditorPublicationConfig() {
 
 			if (latestPublication.id === selectedPublication.id) {
 				items.push({
-					component: 'ActionButton',
-					props: {
-						label: t('publication.createVersion'),
-						isSecondary: true,
-						action: Actions.CREATE_NEW_VERSION,
-					},
+					component: 'WorkflowActionCreateNewVersion',
 				});
 			}
 		}

@@ -34,6 +34,21 @@ export const useReviewerManagerStore = defineComponentStore(
 			_actionFns.getTopActions({submission: props.submission}),
 		);
 
+		function dataUpdateCallback() {
+			triggerDataChange();
+		}
+
+		function reviewerReviewDetails({reviewAssignment}) {
+			_actionFns.reviewerReviewDetails(
+				{
+					submission: props.submission,
+					reviewAssignment,
+					submissionStageId: props.submission.stageId,
+				},
+				dataUpdateCallback,
+			);
+		}
+
 		function handleAction(actionName, args) {
 			_actionFns.handleAction(
 				actionName,
@@ -62,6 +77,7 @@ export const useReviewerManagerStore = defineComponentStore(
 			reviewAssignments,
 			topActions,
 			handleAction,
+			reviewerReviewDetails,
 			getItemActions,
 			getItemPrimaryActions,
 			_actionFns,

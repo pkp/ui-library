@@ -192,7 +192,20 @@ export const useDashboardPageStore = defineComponentStore(
 		const _participantManagerActionsFns =
 			useParticipantManagerActions(pageInitConfig);
 
-		const {getCurrentPublication} = useSubmission();
+		const {getCurrentPublication, getSubmissionById} = useSubmission();
+
+		function refetchCallback() {
+			fetchSubmissions();
+		}
+
+		function reviewerReviewDetails({submissionId, reviewAssignment}) {
+			const submission = getSubmissionById(submissions.value, submissionId);
+			_reviewerManagerActionFns.reviewerReviewDetails(
+				{submission, reviewAssignment, submissionStageId: submission.stageId},
+				refetchCallback,
+			);
+		}
+
 		function handleAction(actionName, actionArgs) {
 			console.log('handleAction:', actionName, actionArgs);
 
@@ -357,6 +370,9 @@ export const useDashboardPageStore = defineComponentStore(
 			fetchSubmissions,
 			setCurrentPage,
 			handleAction,
+
+			// Reviewer manager actions
+			reviewerReviewDetails,
 
 			// Modals
 			selectedSubmission,

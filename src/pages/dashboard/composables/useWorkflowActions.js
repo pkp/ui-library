@@ -57,6 +57,42 @@ export function useWorkflowActions({
 	selectRevisionDecisionForm,
 	selectRevisionRecommendationForm,
 }) {
+	const {t} = useLocalize();
+
+	function createNewPublicationVersion({submission}, finishedCallback) {
+		const {openDialog} = useModal();
+		const {getLatestPublication} = useSubmission();
+
+		openDialog({
+			title: t('publication.createVersion'),
+			message: t('publication.version.confirm'),
+			actions: [
+				{
+					label: t('common.yes'),
+					isWarnable: true,
+					callback: async (close) => {
+						close();
+
+						const latestPublication = getLatestPublication(submission);
+
+						const {apiUrl: createNewVersionUrl} = useUrl(
+							`submissions/${submission.id}/publications/${latestPublication.id}/version`,
+						);
+						const {fetch} = useFetch(createNewVersionUrl, {
+							method: 'POST',
+						});
+						await fetch();
+						finishedCallback();
+					},
+				},
+				{
+					label: t('common.no'),
+					callback: (close) => close(),
+				},
+			],
+		});
+	}
+
 	function handleAction(actionName, actionArgs, finishedCallback) {
 		const {submission, submissionId, selectedPublication} = actionArgs;
 		const {openSideModal, openDialog} = useModal();
@@ -396,5 +432,5 @@ export function useWorkflowActions({
 		return actions;
 	}
 
-	return {handleAction, getHeaderItems};
+	return {createNewPublicationVersion, handleAction, getHeaderItems};
 }

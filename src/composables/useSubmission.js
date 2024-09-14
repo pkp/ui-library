@@ -35,6 +35,10 @@ export function useSubmission() {
 		return submission.stages.find((stage) => stage.id === stageId);
 	}
 
+	function getSubmissionById(submissions, submissionId) {
+		return submissions.find((submission) => submission.id === submissionId);
+	}
+
 	function getReviewAssignmentsForRound(submission, roundId) {
 		return submission.reviewAssignments.filter(
 			(reviewAssignment) => reviewAssignment.roundId === roundId,
@@ -147,6 +151,7 @@ export function useSubmission() {
 	}
 
 	return {
+		getSubmissionById,
 		getActiveStage,
 		getStageById,
 		getExtendedStage,

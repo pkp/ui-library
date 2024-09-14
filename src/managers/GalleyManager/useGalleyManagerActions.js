@@ -53,6 +53,27 @@ export function useGalleyManagerActions() {
 		return actions;
 	}
 
+	function changeFile({galley, submission}, finishedCallback) {
+		// http://localhost:7002/index.php/publicknowledge/$$$call$$$/wizard/file-upload
+		//file-upload-wizard/start-wizard?fileStage=10&reviewRoundId&assocType=521&assocId=8&submissionId=17&stageId=5&uploaderRoles=16-1-17-4097
+
+		const {openLegacyModal} = useLegacyGridUrl({
+			component: 'wizard.fileUpload.FileUploadWizardHandler',
+			op: 'startWizard',
+			params: {
+				fileStage: pkp.const.SUBMISSION_FILE_PROOF,
+				assocType: pkp.const.ASSOC_TYPE_REPRESENTATION,
+				assocId: galley.id,
+				submissionId: submission.id,
+				stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+				// is not used anymore, but its still required, passing anything works fine for now
+				uploaderRoles: pkp.const.ROLE_ID_REVIEWER,
+			},
+		});
+
+		openLegacyModal({title: t('submission.upload.proof')}, finishedCallback);
+	}
+
 	function handleAction(
 		actionName,
 		{galley, submission, publication},
@@ -171,5 +192,11 @@ export function useGalleyManagerActions() {
 		}
 	}
 
-	return {getItemActions, getBottomActions, getTopItems, handleAction};
+	return {
+		changeFile,
+		getItemActions,
+		getBottomActions,
+		getTopItems,
+		handleAction,
+	};
 }

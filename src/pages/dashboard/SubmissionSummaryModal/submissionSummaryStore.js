@@ -131,6 +131,19 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		 */
 		const _workflowActionsFns = useWorkflowActions(props.pageInitConfig);
 
+		function triggerDataChangeCallback() {
+			triggerDataChange();
+		}
+
+		function createNewPublicationVersion() {
+			_workflowActionsFns.createNewPublicationVersion(
+				{
+					submission: submission.value,
+				},
+				triggerDataChangeCallback,
+			);
+		}
+
 		function handleAction(actionName, _actionArgs) {
 			if (actionName === 'navigateToMenu') {
 				setActiveItemKey(_actionArgs.key);
@@ -256,6 +269,11 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			 * */
 			sideMenuProps,
 			selectedMenuState,
+
+			/** Actions
+			 *
+			 */
+			createNewPublicationVersion,
 
 			/**
 			 * Summary
