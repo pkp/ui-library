@@ -10,9 +10,7 @@
 			:label="t('common.moreActions')"
 			:display-as-ellipsis="true"
 			:actions="galleyManagerStore.itemActions"
-			@action="
-				(actionName) => galleyManagerStore.handleAction(actionName, {galley})
-			"
+			@action="(actionName) => galleyManagerStore[actionName]({galley})"
 		></DropdownActions>
 	</TableCell>
 </template>

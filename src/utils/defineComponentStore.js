@@ -1,10 +1,20 @@
 import {defineStore, getActivePinia} from 'pinia';
-import {onMounted, onBeforeUnmount} from 'vue';
+import {onMounted, onBeforeUnmount, provide, inject} from 'vue';
 
-export function defineComponentStore(_storeName, setupFn) {
+export function defineComponentStore(
+	_storeName,
+	setupFn,
+	{requireNamespace} = {},
+) {
 	let storesMap = {};
 
 	return function (initConfig, _namespace = '') {
+		if (!_namespace && requireNamespace) {
+			const injectedNamespace = inject(_storeName)?.namespace;
+			if (injectedNamespace) {
+				_namespace = injectedNamespace;
+			}
+		}
 		const storeName = _namespace ? `${_storeName}_${_namespace}` : _storeName;
 
 		if (!storesMap[storeName]) {
@@ -29,8 +39,13 @@ export function defineComponentStore(_storeName, setupFn) {
 		}
 
 		if (!storesMap[storeName].useStore) {
+			if (requireNamespace) {
+				provide(_storeName, {namespace: _namespace || null});
+			}
+
 			storesMap[storeName].useStore = defineStore(storeName, setupFnWrapper);
 		}
+
 		return storesMap[storeName].useStore();
 	};
 }

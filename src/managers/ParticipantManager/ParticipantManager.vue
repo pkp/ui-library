@@ -4,7 +4,7 @@
 			<h3 class="text-2xl-bold uppercase text-heading">
 				{{ t('editor.submission.stageParticipants') }}
 			</h3>
-			<PkpButton @click="participantManagerStore.handleAction(Actions.ASSIGN)">
+			<PkpButton @click="participantManagerStore.participantAssign()">
 				{{ t('common.assign') }}
 			</PkpButton>
 		</div>
@@ -40,7 +40,7 @@
 							:display-as-ellipsis="true"
 							@action="
 								(actionName) =>
-									participantManagerStore.handleAction(actionName, {
+									participantManagerStore[actionName]({
 										participant: participant,
 									})
 							"
@@ -52,7 +52,6 @@
 	</div>
 </template>
 <script setup>
-import {Actions} from './useParticipantManagerActions';
 import UserAvatar from '@/components/UserAvatar/UserAvatar.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import {useLocalize} from '@/composables/useLocalize';

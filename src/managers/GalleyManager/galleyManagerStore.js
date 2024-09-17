@@ -113,19 +113,52 @@ export const useGalleyManagerStore = defineComponentStore(
 
 		const {triggerDataChange} = useDataChanged();
 
-		function handleAction(actionName, _args = {}) {
-			_galleyActionsFns.handleAction(
-				actionName,
+		function triggerDataChangeCallback() {
+			triggerDataChange();
+		}
+
+		function galleyAdd() {
+			_galleyActionsFns.galleyAdd(
 				{
-					..._args,
-					submission: props.submission,
 					publication: props.publication,
+					submission: props.submission,
 				},
-				() => {
-					triggerDataChange();
-				},
+				triggerDataChangeCallback,
 			);
 		}
+
+		function galleyChangeFile({galley}) {
+			_galleyActionsFns.galleyChangeFile(
+				{
+					galley,
+					submission: props.submission,
+				},
+				triggerDataChangeCallback,
+			);
+		}
+
+		function galleyEdit({galley}) {
+			_galleyActionsFns.galleyEdit(
+				{
+					galley,
+					publication: props.publication,
+					submission: props.submission,
+				},
+				triggerDataChangeCallback,
+			);
+		}
+
+		function galleyDelete({galley}) {
+			_galleyActionsFns.galleyDelete(
+				{
+					galley,
+					publication: props.publication,
+					submission: props.submission,
+				},
+				triggerDataChangeCallback,
+			);
+		}
+
 		return {
 			submission: props.submission,
 			publication: props.publication,
@@ -148,7 +181,10 @@ export const useGalleyManagerStore = defineComponentStore(
 			topItems,
 			bottomActions,
 			_galleyActionsFns,
-			handleAction,
+			galleyAdd,
+			galleyEdit,
+			galleyChangeFile,
+			galleyDelete,
 		};
 	},
 );

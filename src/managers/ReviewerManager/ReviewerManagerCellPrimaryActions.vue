@@ -32,7 +32,7 @@ const itemPrimaryActions = computed(() =>
 );
 
 function handleAction(actionName) {
-	reviewerManagerStore.handleAction(actionName, {
+	reviewerManagerStore[actionName]({
 		reviewAssignment: props.reviewAssignment,
 	});
 }

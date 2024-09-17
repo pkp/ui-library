@@ -7,6 +7,7 @@ import {useUrl} from '@/composables/useUrl';
 
 import {useLocalize} from '@/composables/useLocalize';
 import {useParticipantManagerActions} from './useParticipantManagerActions';
+import {useDataChanged} from '@/composables/useDataChanged';
 
 export const useParticipantManagerStore = defineComponentStore(
 	'participantManager',
@@ -22,6 +23,12 @@ export const useParticipantManagerStore = defineComponentStore(
 			useFetch(participantApiUrl);
 
 		fetchParticipants();
+
+		const {triggerDataChange} = useDataChanged(() => fetchParticipants());
+
+		function triggerDataChangeCallback() {
+			triggerDataChange();
+		}
 
 		const participantsList = computed(() => {
 			if (!participants.value) {
@@ -46,23 +53,58 @@ export const useParticipantManagerStore = defineComponentStore(
 
 		const itemActions = computed(() => _actionFns.getItemActions({}));
 
-		function handleAction(actionName, _args) {
-			_actionFns.handleAction(
-				actionName,
-				{
-					..._args,
-					submissionStageId: props.submissionStageId,
-					submission: props.submission,
-				},
-				() => fetchParticipants(),
+		function enrichActionArg(args) {
+			return {
+				submissionStageId: props.submissionStageId,
+				submission: props.submission,
+				...args,
+			};
+		}
+
+		function participantAssign() {
+			_actionFns.participantAssign(
+				enrichActionArg({}),
+				triggerDataChangeCallback,
+			);
+		}
+
+		function participantRemove({participant}) {
+			_actionFns.participantRemove(
+				enrichActionArg({participant}),
+				triggerDataChangeCallback,
+			);
+		}
+
+		function participantNotify({participant}) {
+			_actionFns.participantNotify(
+				enrichActionArg({participant}),
+				triggerDataChangeCallback,
+			);
+		}
+
+		function participantEdit({participant}) {
+			_actionFns.participantEdit(
+				enrichActionArg({participant}),
+				triggerDataChangeCallback,
+			);
+		}
+
+		function participantLoginAs({participant}) {
+			_actionFns.participantLoginAs(
+				enrichActionArg({participant}),
+				triggerDataChangeCallback,
 			);
 		}
 
 		return {
 			participantsList,
 			_actionFns,
-			handleAction,
 			itemActions,
+			participantAssign,
+			participantRemove,
+			participantNotify,
+			participantEdit,
+			participantLoginAs,
 		};
 	},
 );

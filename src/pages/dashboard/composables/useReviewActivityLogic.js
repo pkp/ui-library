@@ -39,17 +39,19 @@ const ReviewActivityActions = {
 
 const ActionsMapping = {
 	[ReviewActivityActions.RESEND_REVIEW_REQUEST]:
-		ReviewerManagerActions.RESEND_REQUEST,
-	[ReviewActivityActions.EDIT_DUE_DATE]: ReviewerManagerActions.EDIT_REVIEW,
-	[ReviewActivityActions.VIEW_DETAILS]: ReviewerManagerActions.REVIEW_DETAILS,
+		ReviewerManagerActions.REVIEWER_RESEND_REQUEST,
+	[ReviewActivityActions.EDIT_DUE_DATE]:
+		ReviewerManagerActions.REVIEWER_EDIT_REVIEW,
+	[ReviewActivityActions.VIEW_DETAILS]:
+		ReviewerManagerActions.REVIEWER_REVIEW_DETAILS,
 	[ReviewActivityActions.CANCEL_REVIEWER]:
-		ReviewerManagerActions.CANCEL_REVIEWER,
+		ReviewerManagerActions.REVIEWER_CANCEL_REVIEWER,
 	[ReviewActivityActions.UNASSIGN_REVIEWER]:
-		ReviewerManagerActions.UNASSIGN_REVIEWER,
+		ReviewerManagerActions.REVIEWER_UNASSIGN_REVIEWER,
 	[ReviewActivityActions.VIEW_RECOMMENDATION]:
-		ReviewerManagerActions.REVIEW_DETAILS,
+		ReviewerManagerActions.REVIEWER_REVIEW_DETAILS,
 	[ReviewActivityActions.VIEW_UNREAD_RECOMMENDATION]:
-		ReviewerManagerActions.REVIEW_DETAILS,
+		ReviewerManagerActions.REVIEWER_REVIEW_DETAILS,
 };
 
 const ActionButtonTranslations = {

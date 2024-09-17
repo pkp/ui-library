@@ -30,15 +30,14 @@
 		</TableBody>
 		<template #bottom-controls>
 			<div class="space-x-y flex">
-				<PkpButton
-					v-for="action in galleyManagerStore.bottomActions"
-					:key="action.name"
-					class="-ms-3"
-					is-link
-					@click="galleyManagerStore.handleAction(action.name)"
+				<component
+					:is="Components[action.component] || action.component"
+					v-bind="action.props || {}"
+					v-for="(action, i) in galleyManagerStore.bottomActions"
+					:key="i"
 				>
 					{{ action.label }}
-				</PkpButton>
+				</component>
 			</div>
 		</template>
 	</PkpTable>
@@ -53,8 +52,7 @@ import TableHeader from '@/components/TableNext/TableHeader.vue';
 import TableBody from '@/components/TableNext/TableBody.vue';
 import TableRow from '@/components/TableNext/TableRow.vue';
 
-import PkpButton from '@/components/Button/Button.vue';
-
+import GalleyManagerActionButton from './GalleyManagerActionButton.vue';
 import GalleyManagerCellName from './GalleyManagerCellName.vue';
 import GalleyManagerCellLanguage from './GalleyManagerCellLanguage.vue';
 import GalleyManagerCellActions from './GalleyManagerCellActions.vue';
@@ -65,6 +63,7 @@ const Components = {
 	GalleyManagerCellLanguage,
 	GalleyManagerCellActions,
 	GalleyManagerSortButton,
+	GalleyManagerActionButton,
 };
 
 const props = defineProps({

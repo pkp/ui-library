@@ -21,8 +21,9 @@ export function useEditorialLogic() {
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
-							actionName: ParticipantManagerActions.ASSIGN,
+							actionName: ParticipantManagerActions.PARTICIPANT_ASSIGN,
 							actionLabel: t('dashboard.assignEditor'),
+							actionArgs: {submissionId: submission.id},
 						},
 					},
 				];
@@ -51,10 +52,11 @@ export function useEditorialLogic() {
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
-							actionName: ReviewerManagerActions.ADD_REVIEWER,
+							actionName: ReviewerManagerActions.REVIEWER_ADD_REVIEWER,
 							actionLabel: t('dashboard.assignReviewers'),
 							actionArgs: {
 								reviewRoundId: activeRound.id,
+								submissionId: submission.id,
 							},
 						},
 					},

@@ -8,7 +8,7 @@
 				<PkpButton
 					v-for="action in reviewerStore.topActions"
 					:key="action.name"
-					@click="reviewerStore.handleAction(action.name)"
+					@click="reviewerStore[action.name]()"
 				>
 					{{ action.label }}
 				</PkpButton>

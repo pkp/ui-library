@@ -10,19 +10,10 @@ import {useUrl} from '@/composables/useUrl';
 import {useUrlSearchParams} from '@vueuse/core';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
-import {
-	Actions as WorkflowActions,
-	useWorkflowActions,
-} from './composables/useWorkflowActions';
-import {
-	Actions as ReviewerManagerActions,
-	useReviewerManagerActions,
-} from '@/managers/ReviewerManager/useReviewerManagerActions';
+import {useWorkflowActions} from './composables/useWorkflowActions';
+import {useReviewerManagerActions} from '@/managers/ReviewerManager/useReviewerManagerActions';
 
-import {
-	Actions as ParticipantManagerActions,
-	useParticipantManagerActions,
-} from '@/managers/ParticipantManager/useParticipantManagerActions';
+import {useParticipantManagerActions} from '@/managers/ParticipantManager/useParticipantManagerActions';
 
 import {useEditorialLogic} from './composables/useEditorialLogic';
 import {useReviewActivityLogic} from './composables/useReviewActivityLogic';
@@ -192,65 +183,82 @@ export const useDashboardPageStore = defineComponentStore(
 		const _participantManagerActionsFns =
 			useParticipantManagerActions(pageInitConfig);
 
-		const {getCurrentPublication, getSubmissionById} = useSubmission();
+		const {getCurrentPublication} = useSubmission();
 
 		function refetchCallback() {
 			fetchSubmissions();
 		}
 
-		function reviewerReviewDetails({submissionId, reviewAssignment}) {
-			const submission = getSubmissionById(submissions.value, submissionId);
-			_reviewerManagerActionFns.reviewerReviewDetails(
-				{submission, reviewAssignment, submissionStageId: submission.stageId},
+		/**
+		 * Reviewer actions,
+		 * available for review assignments popup
+		 */
+
+		function enrichActionArgs({submissionId, ...args}) {
+			const submission = submissions.value.find(
+				(submission) => submission.id === submissionId,
+			);
+			const selectedPublication = getCurrentPublication(submission);
+
+			return {
+				submissionStageId: submission.stageId,
+				submission,
+				submissionId,
+				selectedPublication,
+				...args,
+			};
+		}
+		function reviewerAddReviewer({reviewRoundId, submissionId}) {
+			_reviewerManagerActionFns.reviewerAddReviewer(
+				enrichActionArgs({reviewRoundId, submissionId}),
 				refetchCallback,
 			);
 		}
 
-		function handleAction(actionName, actionArgs) {
-			console.log('handleAction:', actionName, actionArgs);
+		function reviewerResendRequest({reviewAssignment, submissionId}) {
+			_reviewerManagerActionFns.reviewerResendRequest(
+				enrichActionArgs({reviewAssignment, submissionId}),
+				refetchCallback,
+			);
+		}
 
-			let actionArgsExtended = {...actionArgs};
-			// TODO this should be improved, but now its to prevent accidentally
-			// cherrypick submission even if the review assignments are loaded instead
-			if (pageInitConfig.dashboardPage !== 'myReviewAssignments') {
-				const submission = submissions.value.find(
-					(submission) => submission.id === actionArgs.submissionId,
-				);
-				const selectedPublication = getCurrentPublication(submission);
+		function reviewerEditReview({reviewAssignment, submissionId}) {
+			_reviewerManagerActionFns.reviewerEditReview(
+				enrichActionArgs({reviewAssignment, submissionId}),
+				refetchCallback,
+			);
+		}
 
-				actionArgsExtended = {
-					...actionArgsExtended,
-					submission,
-					selectedPublication,
-					submissionStageId: submission.stageId,
-				};
-			}
+		function reviewerReviewDetails({reviewAssignment, submissionId}) {
+			_reviewerManagerActionFns.reviewerReviewDetails(
+				enrichActionArgs({reviewAssignment, submissionId}),
+				refetchCallback,
+			);
+		}
 
-			if (WorkflowActions[actionName]) {
-				_workflowActionFns.handleAction(
-					actionName,
-					actionArgsExtended,
-					async () => {
-						await fetchSubmissions();
-					},
-				);
-			} else if (ReviewerManagerActions[actionName]) {
-				_reviewerManagerActionFns.handleAction(
-					actionName,
-					actionArgsExtended,
-					async () => {
-						await fetchSubmissions();
-					},
-				);
-			} else if (ParticipantManagerActions[actionName]) {
-				_participantManagerActionsFns.handleAction(
-					actionName,
-					actionArgsExtended,
-					async () => {
-						await fetchSubmissions();
-					},
-				);
-			}
+		function reviewerCancelReviewer({reviewAssignment, submissionId}) {
+			_reviewerManagerActionFns.reviewerCancelReviewer(
+				enrichActionArgs({reviewAssignment, submissionId}),
+				refetchCallback,
+			);
+		}
+
+		function reviewerUnassignReviewer({reviewAssignment, submissionId}) {
+			_reviewerManagerActionFns.reviewerUnassignReviewer(
+				enrichActionArgs({reviewAssignment, submissionId}),
+				refetchCallback,
+			);
+		}
+
+		/**
+		 * Participants Actions
+		 *
+		 * */
+		function participantAssign({submissionId}) {
+			_participantManagerActionsFns.participantAssign(
+				enrichActionArgs({submissionId}),
+				refetchCallback,
+			);
 		}
 
 		/**
@@ -369,10 +377,17 @@ export const useDashboardPageStore = defineComponentStore(
 			isSubmissionsLoading,
 			fetchSubmissions,
 			setCurrentPage,
-			handleAction,
 
 			// Reviewer manager actions
+			reviewerAddReviewer,
 			reviewerReviewDetails,
+			reviewerResendRequest,
+			reviewerEditReview,
+			reviewerCancelReviewer,
+			reviewerUnassignReviewer,
+
+			// Participant manager actions
+			participantAssign,
 
 			// Modals
 			selectedSubmission,

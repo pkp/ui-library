@@ -4,189 +4,192 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useFetch, getCSRFToken} from '@/composables/useFetch';
 
 export const Actions = {
-	LIST: 'LIST',
-	UPLOAD: 'UPLOAD',
-	SELECT_UPLOAD: 'SELECT_UPLOAD',
-	DOWNLOAD_ALL: 'DOWNLOAD_ALL',
-	EDIT: 'EDIT',
-	DELETE: 'DELETE',
-	SEE_NOTES: 'SEE_NOTES',
+	FILE_LIST: 'fileList',
+	FILE_UPLOAD: 'fileUpload',
+	FILE_SELECT_UPLOAD: 'fileSelectUpload',
+	FILE_DOWNLOAD_ALL: 'fileDownloadAll',
+	FILE_EDIT: 'fileEdit',
+	FILE_DELETE: 'fileDelete',
+	FILE_SEE_NOTES: 'fileSeeNotes',
 };
 
 export function useFileManagerActions() {
-	function handleAction(
-		actionName,
+	const {t, localize} = useLocalize();
+
+	function fileUpload(
+		{fileStage, reviewRoundId, submission, submissionStageId, wizardTitleKey},
+		finishedCallback,
+	) {
+		const {openLegacyModal} = useLegacyGridUrl({
+			component: 'wizard.fileUpload.FileUploadWizardHandler',
+			op: 'startWizard',
+			params: {
+				fileStage,
+				reviewRoundId: reviewRoundId,
+				//assocType: pkp.const.ASSOC_TYPE_REVIEW_ASSIGNMENT,
+				//assocId: actionArgs.reviewAssignmentId,
+				submissionId: submission.id,
+				stageId: submissionStageId,
+				// is not used anymore, but its still required, passing anything works fine for now
+				uploaderRoles: pkp.const.ROLE_ID_REVIEWER,
+			},
+		});
+		openLegacyModal({title: t(wizardTitleKey)}, finishedCallback);
+	}
+
+	function fileSelectUpload(
 		{
-			submission,
-			reviewRoundId,
-			submissionStageId,
-			fileStage,
-			wizardTitleKey,
-			uploadSelectTitleKey,
 			gridComponent,
-			file,
+			fileStage,
+			reviewRoundId,
+			submission,
+			submissionStageId,
+			uploadSelectTitleKey,
 		},
 		finishedCallback,
 	) {
-		const {t, localize} = useLocalize();
+		const {openLegacyModal} = useLegacyGridUrl({
+			component: gridComponent,
+			op: 'selectFiles',
+			params: {
+				fileStage,
+				reviewRoundId: reviewRoundId,
+				//assocType: pkp.const.ASSOC_TYPE_REVIEW_ASSIGNMENT,
+				//assocId: actionArgs.reviewAssignmentId,
+				submissionId: submission.id,
+				stageId: submissionStageId,
+				// is not used anymore, but its still required, passing anything works fine for now
+				uploaderRoles: pkp.const.ROLE_ID_REVIEWER,
+			},
+		});
 
-		if (actionName === Actions.SEE_NOTES) {
-			const {openLegacyModal} = useLegacyGridUrl({
-				component: 'informationCenter.FileInformationCenterHandler',
-				op: 'viewInformationCenter',
-				params: {
-					submissionFileId: file.id,
-					submissionId: submission.id,
-					stageId: submissionStageId,
-				},
-			});
-
-			openLegacyModal(
-				{
-					title: `${t('informationCenter.informationCenter')}: ${localize(file.name)}`,
-				},
-				finishedCallback,
+		const reviewRound =
+			reviewRoundId &&
+			submission.reviewRounds.find(
+				(reviewRound) => reviewRound.id === reviewRoundId,
 			);
-		} else if (actionName === Actions.EDIT) {
-			const {openLegacyModal} = useLegacyGridUrl({
-				component: 'api.file.ManageFileApiHandler',
-				op: 'editMetadata',
-				params: {
-					submissionFileId: file.id,
-					submissionId: submission.id,
-					stageId: submissionStageId,
-				},
-			});
 
-			openLegacyModal({title: t('grid.action.editFile')}, finishedCallback);
-		} else if (actionName === Actions.DELETE) {
-			// http://localhost:7003/index.php/publicknowledge/$$$call$$$/api/file/manage-file-api/delete-file?submissionFileId=31&submissionId=12&stageId=3
+		openLegacyModal(
+			{
+				title: t(uploadSelectTitleKey, {round: reviewRound?.round}),
+			},
+			finishedCallback,
+		);
+	}
 
-			const {openDialog, openDialogNetworkError} = useModal();
-			openDialog({
-				actions: [
-					{
-						label: t('common.cancel'),
-						isWarnable: true,
-						callback: (close) => {
-							close();
-						},
-					},
-					{
-						label: t('common.ok'),
-						callback: async (close) => {
-							const {url} = useLegacyGridUrl({
-								component: 'api.file.ManageFileApiHandler',
-								op: 'deleteFile',
-								params: {
-									submissionFileId: file.id,
-									submissionId: submission.id,
-									stageId: submissionStageId,
-								},
-							});
-							const formData = new FormData();
-							formData.append('csrfToken', getCSRFToken());
+	function fileDownloadAll({fileStage, submission, submissionStageId}) {
+		const {url} = useLegacyGridUrl({
+			component: 'api.file.FileApiHandler',
+			op: 'downloadAllFiles',
+			params: {
+				// TODO this needs to be different for different grids
+				nameLocaleKey: 'editor.submission.production.productionReadyFiles',
+				fileStage,
+				submissionId: submission.id,
+				stageId: submissionStageId,
+			},
+		});
 
-							const {fetch, data} = useFetch(url, {
-								method: 'POST',
-								body: formData,
-							});
-							await fetch();
-							close();
-							finishedCallback();
+		window.location.href = url.value;
+	}
 
-							if (data.value.status !== true) {
-								openDialogNetworkError();
-							}
-						},
-					},
-				],
-				title: t('common.delete'),
-				message: t('common.confirmDelete'),
-			});
-		} else if (actionName === Actions.DOWNLOAD_ALL) {
-			// http://localhost:7003/index.php/publicknowledge/$$$call$$$/api/file/file-api/download-all-files?nameLocaleKey=editor.submission.production.productionReadyFiles&fileStage=11&submissionId=19&stageId=5
-			// $router->url($request, null, 'api.file.FileApiHandler', 'downloadAllFiles', null, $actionArgs)
-			const {url} = useLegacyGridUrl({
-				component: 'api.file.FileApiHandler',
-				op: 'downloadAllFiles',
-				params: {
-					// TODO this needs to be different for different grids
-					nameLocaleKey: 'editor.submission.production.productionReadyFiles',
-					fileStage,
-					submissionId: submission.id,
-					stageId: submissionStageId,
-				},
-			});
+	function fileEdit({file, submission, submissionStageId}, finishedCallback) {
+		const {openLegacyModal} = useLegacyGridUrl({
+			component: 'api.file.ManageFileApiHandler',
+			op: 'editMetadata',
+			params: {
+				submissionFileId: file.id,
+				submissionId: submission.id,
+				stageId: submissionStageId,
+			},
+		});
 
-			window.location.href = url.value;
-		} else if (actionName === Actions.UPLOAD) {
-			// http://localhost:7003/index.php/publicknowledge/$$$call$$$/wizard/file-upload/file-upload-wizard/start-wizard?fileStage=15&reviewRoundId=13&submissionId=19&stageId=3&uploaderRoles=16-1-17-4097
+		openLegacyModal({title: t('grid.action.editFile')}, finishedCallback);
+	}
 
-			const {openLegacyModal} = useLegacyGridUrl({
-				component: 'wizard.fileUpload.FileUploadWizardHandler',
-				op: 'startWizard',
-				params: {
-					fileStage,
-					reviewRoundId: reviewRoundId,
-					//assocType: pkp.const.ASSOC_TYPE_REVIEW_ASSIGNMENT,
-					//assocId: actionArgs.reviewAssignmentId,
-					submissionId: submission.id,
-					stageId: submissionStageId,
-					// is not used anymore, but its still required, passing anything works fine for now
-					uploaderRoles: pkp.const.ROLE_ID_REVIEWER,
-				},
-			});
-			openLegacyModal({title: t(wizardTitleKey)}, finishedCallback);
-		} else if (actionName === Actions.SELECT_UPLOAD) {
-			// http://localhost:7003/index.php/publicknowledge/$$$call$$$/grid/files/review/editor-review-files-grid/
-			//select-files?submissionId=13&stageId=3&reviewRoundId=14
-			const {openLegacyModal} = useLegacyGridUrl({
-				component: gridComponent,
-				op: 'selectFiles',
-				params: {
-					fileStage,
-					reviewRoundId: reviewRoundId,
-					//assocType: pkp.const.ASSOC_TYPE_REVIEW_ASSIGNMENT,
-					//assocId: actionArgs.reviewAssignmentId,
-					submissionId: submission.id,
-					stageId: submissionStageId,
-					// is not used anymore, but its still required, passing anything works fine for now
-					uploaderRoles: pkp.const.ROLE_ID_REVIEWER,
-				},
-			});
-
-			const reviewRound =
-				reviewRoundId &&
-				submission.reviewRounds.find(
-					(reviewRound) => reviewRound.id === reviewRoundId,
-				);
-
-			openLegacyModal(
+	function fileDelete({file, submission, submissionStageId}, finishedCallback) {
+		const {openDialog, openDialogNetworkError} = useModal();
+		openDialog({
+			actions: [
 				{
-					title: t(uploadSelectTitleKey, {round: reviewRound?.round}),
+					label: t('common.cancel'),
+					isWarnable: true,
+					callback: (close) => {
+						close();
+					},
 				},
-				finishedCallback,
-			);
-		}
+				{
+					label: t('common.ok'),
+					callback: async (close) => {
+						const {url} = useLegacyGridUrl({
+							component: 'api.file.ManageFileApiHandler',
+							op: 'deleteFile',
+							params: {
+								submissionFileId: file.id,
+								submissionId: submission.id,
+								stageId: submissionStageId,
+							},
+						});
+						const formData = new FormData();
+						formData.append('csrfToken', getCSRFToken());
+
+						const {fetch, data} = useFetch(url, {
+							method: 'POST',
+							body: formData,
+						});
+						await fetch();
+						close();
+						finishedCallback();
+
+						if (data.value.status !== true) {
+							openDialogNetworkError();
+						}
+					},
+				},
+			],
+			title: t('common.delete'),
+			message: t('common.confirmDelete'),
+		});
+	}
+
+	function fileSeeNotes(
+		{file, submission, submissionStageId},
+		finishedCallback,
+	) {
+		const {openLegacyModal} = useLegacyGridUrl({
+			component: 'informationCenter.FileInformationCenterHandler',
+			op: 'viewInformationCenter',
+			params: {
+				submissionFileId: file.id,
+				submissionId: submission.id,
+				stageId: submissionStageId,
+			},
+		});
+
+		openLegacyModal(
+			{
+				title: `${t('informationCenter.informationCenter')}: ${localize(file.name)}`,
+			},
+			finishedCallback,
+		);
 	}
 
 	function getTopActions({managerConfig}) {
 		const actions = [];
 		const enabledActions = managerConfig.permittedActions;
 
-		if (enabledActions.includes(Actions.UPLOAD)) {
+		if (enabledActions.includes(Actions.FILE_UPLOAD)) {
 			actions.push({
 				// this might be different based on fileStage, more details in AddFileLinkAction.php
 				label: 'Upload',
-				name: Actions.UPLOAD,
+				name: Actions.FILE_UPLOAD,
 			});
 		}
 
-		if (enabledActions.includes(Actions.SELECT_UPLOAD)) {
+		if (enabledActions.includes(Actions.FILE_SELECT_UPLOAD)) {
 			actions.push({
 				label: 'Select/Upload',
-				name: Actions.SELECT_UPLOAD,
+				name: Actions.FILE_SELECT_UPLOAD,
 			});
 		}
 
@@ -196,7 +199,7 @@ export function useFileManagerActions() {
 	function getBottomActions({managerConfig, filesCount}) {
 		const actions = [];
 		const enabledActions = managerConfig.permittedActions;
-		if (enabledActions.includes(Actions.DOWNLOAD_ALL) && filesCount) {
+		if (enabledActions.includes(Actions.FILE_DOWNLOAD_ALL) && filesCount) {
 			actions.push({
 				label: 'Download All Files',
 				name: 'downloadAll',
@@ -209,26 +212,26 @@ export function useFileManagerActions() {
 	function getItemActions({managerConfig}) {
 		const actions = [];
 		const enabledActions = managerConfig.permittedActions;
-		if (enabledActions.includes(Actions.SEE_NOTES)) {
+		if (enabledActions.includes(Actions.FILE_SEE_NOTES)) {
 			actions.push({
 				label: 'More information',
-				name: Actions.SEE_NOTES,
+				name: Actions.FILE_SEE_NOTES,
 				icon: 'View',
 			});
 		}
 
-		if (enabledActions.includes(Actions.EDIT)) {
+		if (enabledActions.includes(Actions.FILE_EDIT)) {
 			actions.push({
 				label: 'Edit',
-				name: Actions.EDIT,
+				name: Actions.FILE_EDIT,
 				icon: 'Edit',
 			});
 		}
 
-		if (enabledActions.includes(Actions.DELETE)) {
+		if (enabledActions.includes(Actions.FILE_DELETE)) {
 			actions.push({
 				label: 'Delete',
-				name: Actions.DELETE,
+				name: Actions.FILE_DELETE,
 				isWarnable: true,
 				icon: 'Cancel',
 			});
@@ -238,7 +241,12 @@ export function useFileManagerActions() {
 	}
 
 	return {
-		handleAction,
+		fileUpload,
+		fileSelectUpload,
+		fileDownloadAll,
+		fileEdit,
+		fileDelete,
+		fileSeeNotes,
 		getItemActions,
 		getTopActions,
 		getBottomActions,

@@ -13,7 +13,7 @@
 				<PkpButton
 					v-for="action in fileManagerStore.topActions"
 					:key="action.name"
-					@click="fileManagerStore.handleAction(action.name)"
+					@click="fileManagerStore[action.name]"
 				>
 					{{ action.label }}
 				</PkpButton>
@@ -35,7 +35,6 @@
 					:key="file.id"
 					:action-items="fileManagerStore.itemActions"
 					:file="file"
-					@action="fileManagerStore.handleAction"
 				></FileManagerTableRow>
 			</TableBody>
 		</PkpTable>
@@ -47,7 +46,7 @@
 				v-for="action in fileManagerStore.bottomActions"
 				:key="action.name"
 				is-link
-				@click="fileManagerStore.handleAction(action.name)"
+				@click="fileManagerStore[action.name]"
 			>
 				{{ action.label }}
 			</PkpButton>
@@ -78,5 +77,7 @@ const props = defineProps({
 	reviewRoundId: {type: String, required: true},
 });
 
-const fileManagerStore = useFileManagerStore(props, props.configName);
+const fileManagerStore = useFileManagerStore(props, props.configName, {
+	requireNamespace: true,
+});
 </script>

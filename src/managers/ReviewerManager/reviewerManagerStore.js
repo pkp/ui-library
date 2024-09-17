@@ -28,6 +28,9 @@ export const useReviewerManagerStore = defineComponentStore(
 
 		const {triggerDataChange} = useDataChanged();
 
+		/**
+		 * Actions
+		 */
 		const _actionFns = useReviewerManagerActions();
 
 		const topActions = computed(() =>
@@ -38,29 +41,100 @@ export const useReviewerManagerStore = defineComponentStore(
 			triggerDataChange();
 		}
 
-		function reviewerReviewDetails({reviewAssignment}) {
-			_actionFns.reviewerReviewDetails(
-				{
-					submission: props.submission,
-					reviewAssignment,
-					submissionStageId: props.submission.stageId,
-				},
+		function getActionArgs(additionalArgs = {}) {
+			return {
+				submission: props.submission,
+				submissionStageId: props.submission.stageId,
+				reviewRoundId: props.reviewRoundId,
+				...additionalArgs,
+			};
+		}
+
+		function reviewerAddReviewer() {
+			_actionFns.reviewerAddReviewer(getActionArgs(), dataUpdateCallback);
+		}
+
+		function reviewerReadReview({reviewAssignment}) {
+			_actionFns.reviewerReadReview(
+				getActionArgs({reviewAssignment}),
 				dataUpdateCallback,
 			);
 		}
 
-		function handleAction(actionName, args) {
-			_actionFns.handleAction(
-				actionName,
-				{
-					submission: props.submission,
-					reviewRoundId: props.reviewRoundId,
-					submissionStageId: props.submission.stageId,
-					...args,
-				},
-				() => {
-					triggerDataChange();
-				},
+		function reviewerReviewDetails({reviewAssignment}) {
+			_actionFns.reviewerReviewDetails(
+				getActionArgs({reviewAssignment}),
+				dataUpdateCallback,
+			);
+		}
+
+		function reviewerEmailReviewer({reviewAssignment}) {
+			_actionFns.reviewerEmailReviewer(
+				getActionArgs({reviewAssignment}),
+				dataUpdateCallback,
+			);
+		}
+
+		function reviewerEditReview({reviewAssignment}) {
+			_actionFns.reviewerEditReview(
+				getActionArgs({reviewAssignment}),
+				dataUpdateCallback,
+			);
+		}
+
+		function reviewerUnassignReviewer({reviewAssignment}) {
+			_actionFns.reviewerUnassignReviewer(
+				getActionArgs({reviewAssignment}),
+				dataUpdateCallback,
+			);
+		}
+
+		function reviewerCancelReviewer({reviewAssignment}) {
+			_actionFns.reviewerCancelReviewer(
+				getActionArgs({reviewAssignment}),
+				dataUpdateCallback,
+			);
+		}
+
+		function reviewerReviewHistory({reviewAssignment}) {
+			_actionFns.reviewerReviewHistory(
+				getActionArgs({reviewAssignment}),
+				dataUpdateCallback,
+			);
+		}
+
+		function reviewerLoginAs({reviewAssignment}) {
+			_actionFns.reviewerReviewHistory(
+				getActionArgs({reviewAssignment}),
+				dataUpdateCallback,
+			);
+		}
+
+		function reviewerEditorialNotes({reviewAssignment}) {
+			_actionFns.reviewerEditorialNotes(
+				getActionArgs({reviewAssignment}),
+				dataUpdateCallback,
+			);
+		}
+
+		function reviewerThankReviewer({reviewAssignment}) {
+			_actionFns.reviewerThankReviewer(
+				getActionArgs({reviewAssignment}),
+				dataUpdateCallback,
+			);
+		}
+
+		function reviewerRevertConsider({reviewAssignment}) {
+			_actionFns.reviewerRevertConsider(
+				getActionArgs({reviewAssignment}),
+				dataUpdateCallback,
+			);
+		}
+
+		function reviewerSendReminder({reviewAssignment}) {
+			_actionFns.reviewerRevertConsider(
+				getActionArgs({reviewAssignment}),
+				dataUpdateCallback,
 			);
 		}
 
@@ -75,12 +149,25 @@ export const useReviewerManagerStore = defineComponentStore(
 		return {
 			getReviewMethodIcons,
 			reviewAssignments,
+
+			/** Actions */
 			topActions,
-			handleAction,
-			reviewerReviewDetails,
 			getItemActions,
 			getItemPrimaryActions,
-			_actionFns,
+			reviewerAddReviewer,
+			reviewerReadReview,
+			reviewerReviewDetails,
+			reviewerEmailReviewer,
+			reviewerEditReview,
+			reviewerUnassignReviewer,
+			reviewerCancelReviewer,
+			reviewerReviewHistory,
+			reviewerLoginAs,
+			reviewerEditorialNotes,
+			reviewerThankReviewer,
+			reviewerRevertConsider,
+			reviewerSendReminder,
+			_reviewerManagerActionFns: _actionFns,
 		};
 	},
 );

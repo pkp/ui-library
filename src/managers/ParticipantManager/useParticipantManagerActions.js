@@ -6,147 +6,146 @@ import {useUrl} from '@/composables/useUrl';
 import {useCurrentUser} from '@/composables/useCurrentUser';
 
 export const Actions = {
-	ASSIGN: 'ASSIGN',
-	REMOVE: 'REMOVE',
-	EDIT: 'EDIT',
-	NOTIFY: 'NOTIFY',
-	LOGIN_AS: 'LOGIN_AS',
+	PARTICIPANT_ASSIGN: 'participantAssign',
+	PARTICIPANT_REMOVE: 'participantRemove',
+	PARTICIPANT_EDIT: 'participantEdit',
+	PARTICIPANT_NOTIFY: 'participantNotify',
+	PARTICIPANT_LOGIN_AS: 'participantLoginAs',
 };
 
 export function useParticipantManagerActions() {
-	function handleAction(
-		actionName,
-		{submission, submissionStageId, participant},
+	const {t} = useLocalize();
+
+	function participantAssign({submission}, finishedCallback) {
+		const {openLegacyModal} = useLegacyGridUrl({
+			component: 'grid.users.stageParticipant.StageParticipantGridHandler',
+			op: 'addParticipant',
+			params: {
+				submissionId: submission.id,
+				stageId: submission.stageId,
+			},
+		});
+
+		openLegacyModal(
+			{title: t('editor.submission.addStageParticipant')},
+			finishedCallback,
+		);
+	}
+
+	function participantRemove(
+		{submission, participant, submissionStageId},
 		finishedCallback,
 	) {
-		const {t} = useLocalize();
+		const {openDialog, openDialogNetworkError} = useModal();
 
-		if (actionName === Actions.REMOVE) {
-			const {openDialog, openDialogNetworkError} = useModal();
-
-			openDialog({
-				actions: [
-					{
-						label: t('common.cancel'),
-						isWarnable: true,
-						callback: (close) => {
-							close();
-						},
+		openDialog({
+			actions: [
+				{
+					label: t('common.cancel'),
+					isWarnable: true,
+					callback: (close) => {
+						close();
 					},
-					{
-						label: t('common.ok'),
-						callback: async (close) => {
-							// http://localhost:7002/index.php/publicknowledge/
-							// $$$call$$$/grid/users/stage-participant/stage-participant-grid/delete-participant?submissionId=13&stageId=3&assignmentId=62
-							// $$$call$$$/grid/users/stage-participant/stage-participant-grid/delete-participant?submissionId=16&stageId=1&assignmentId=63
-
-							const {url} = useLegacyGridUrl({
-								component:
-									'grid.users.stageParticipant.StageParticipantGridHandler',
-								op: 'deleteParticipant',
-								params: {
-									submissionId: submission.id,
-									stageId: submissionStageId,
-									// TODO refine once thats in the API
-									assignmentId: participant.stageAssignmentId || 98,
-								},
-							});
-							const formData = new FormData();
-							formData.append('csrfToken', getCSRFToken());
-
-							const {fetch, data} = useFetch(url, {
-								method: 'POST',
-								body: formData,
-							});
-							await fetch();
-							close();
-							finishedCallback();
-
-							if (data.value.status !== true) {
-								openDialogNetworkError();
-							}
-						},
-					},
-				],
-				title: t('editor.submission.removeStageParticipant'),
-				message: t('editor.submission.removeStageParticipant.description'),
-			});
-		} else if (actionName === Actions.NOTIFY) {
-			//http://localhost:7002/index.php/publicknowledge/
-			//$$$call$$$/grid/users/stage-participant/stage-participant-grid/view-notify?submissionId=13&stageId=3&userId=4
-
-			const {openLegacyModal} = useLegacyGridUrl({
-				component: 'grid.users.stageParticipant.StageParticipantGridHandler',
-				op: 'viewNotify',
-				params: {
-					submissionId: submission.id,
-					stageId: submission.stageId,
-					userId: participant.id,
 				},
-			});
-			openLegacyModal(
-				{title: t('submission.stageParticipants.notify')},
-				finishedCallback,
-			);
-		} else if (actionName === Actions.EDIT) {
-			// http://localhost:7002/index.php/publicknowledge
-			// $$$call$$$/grid/users/stage-participant/stage-participant-grid/add-participant?submissionId=15&stageId=5&assignmentId=71
+				{
+					label: t('common.ok'),
+					callback: async (close) => {
+						// http://localhost:7002/index.php/publicknowledge/
+						// $$$call$$$/grid/users/stage-participant/stage-participant-grid/delete-participant?submissionId=13&stageId=3&assignmentId=62
+						// $$$call$$$/grid/users/stage-participant/stage-participant-grid/delete-participant?submissionId=16&stageId=1&assignmentId=63
 
-			const {openLegacyModal} = useLegacyGridUrl({
-				component: 'grid.users.stageParticipant.StageParticipantGridHandler',
-				op: 'addParticipant',
-				params: {
-					submissionId: submission.id,
-					stageId: submission.stageId,
-					// TODO refine once thats in the API
-					assignmentId: participant.stageAssignmentId || 63,
-				},
-			});
+						const {url} = useLegacyGridUrl({
+							component:
+								'grid.users.stageParticipant.StageParticipantGridHandler',
+							op: 'deleteParticipant',
+							params: {
+								submissionId: submission.id,
+								stageId: submissionStageId,
+								// TODO refine once thats in the API
+								assignmentId: participant.stageAssignmentId || 98,
+							},
+						});
+						const formData = new FormData();
+						formData.append('csrfToken', getCSRFToken());
 
-			openLegacyModal(
-				{title: t('editor.submission.editStageParticipant')},
-				finishedCallback,
-			);
-		} else if (actionName === Actions.LOGIN_AS) {
-			const {openDialog} = useModal();
+						const {fetch, data} = useFetch(url, {
+							method: 'POST',
+							body: formData,
+						});
+						await fetch();
+						close();
+						finishedCallback();
 
-			openDialog({
-				actions: [
-					{
-						label: t('common.cancel'),
-						isWarnable: true,
-						callback: (close) => {
-							close();
-						},
+						if (data.value.status !== true) {
+							openDialogNetworkError();
+						}
 					},
-					{
-						label: t('common.ok'),
-						callback: (close) => {
-							const {redirectToPage} = useUrl(
-								`login/signInAsUser/${participant.id}`,
-							);
-							redirectToPage();
-						},
-					},
-				],
-				title: t('grid.action.logInAs'),
-				message: t('grid.user.confirmLogInAs'),
-			});
-		} else if (actionName === Actions.ASSIGN) {
-			const {openLegacyModal} = useLegacyGridUrl({
-				component: 'grid.users.stageParticipant.StageParticipantGridHandler',
-				op: 'addParticipant',
-				params: {
-					submissionId: submission.id,
-					stageId: submission.stageId,
 				},
-			});
+			],
+			title: t('editor.submission.removeStageParticipant'),
+			message: t('editor.submission.removeStageParticipant.description'),
+		});
+	}
 
-			openLegacyModal(
-				{title: t('editor.submission.addStageParticipant')},
-				finishedCallback,
-			);
-		}
+	function participantNotify({submission, participant}, finishedCallback) {
+		const {openLegacyModal} = useLegacyGridUrl({
+			component: 'grid.users.stageParticipant.StageParticipantGridHandler',
+			op: 'viewNotify',
+			params: {
+				submissionId: submission.id,
+				stageId: submission.stageId,
+				userId: participant.id,
+			},
+		});
+		openLegacyModal(
+			{title: t('submission.stageParticipants.notify')},
+			finishedCallback,
+		);
+	}
+
+	function participantEdit({submission, participant}, finishedCallback) {
+		const {openLegacyModal} = useLegacyGridUrl({
+			component: 'grid.users.stageParticipant.StageParticipantGridHandler',
+			op: 'addParticipant',
+			params: {
+				submissionId: submission.id,
+				stageId: submission.stageId,
+				// TODO refine once thats in the API
+				assignmentId: participant.stageAssignmentId || 63,
+			},
+		});
+
+		openLegacyModal(
+			{title: t('editor.submission.editStageParticipant')},
+			finishedCallback,
+		);
+	}
+
+	function participantLoginAs({participant}) {
+		const {openDialog} = useModal();
+
+		openDialog({
+			actions: [
+				{
+					label: t('common.cancel'),
+					isWarnable: true,
+					callback: (close) => {
+						close();
+					},
+				},
+				{
+					label: t('common.ok'),
+					callback: (close) => {
+						const {redirectToPage} = useUrl(
+							`login/signInAsUser/${participant.id}`,
+						);
+						redirectToPage();
+					},
+				},
+			],
+			title: t('grid.action.logInAs'),
+			message: t('grid.user.confirmLogInAs'),
+		});
 	}
 
 	function getItemActions() {
@@ -166,28 +165,28 @@ export function useParticipantManagerActions() {
 		if (canAdminister) {
 			actions.push({
 				label: t('common.edit'),
-				name: Actions.EDIT,
+				name: Actions.PARTICIPANT_EDIT,
 				icon: 'Edit',
 			});
 		}
 
 		actions.push({
 			label: t('submission.stageParticipants.notify'),
-			name: Actions.NOTIFY,
+			name: Actions.PARTICIPANT_NOTIFY,
 			icon: 'Email',
 		});
 
 		// TODO https://github.com/pkp/pkp-lib/issues/10290
 		actions.push({
 			label: t('grid.action.logInAs'),
-			name: Actions.LOGIN_AS,
+			name: Actions.PARTICIPANT_LOGIN_AS,
 			icon: 'LoginAs',
 		});
 
 		if (canAdminister) {
 			actions.push({
 				label: t('common.remove'),
-				name: Actions.REMOVE,
+				name: Actions.PARTICIPANT_REMOVE,
 				icon: 'Cancel',
 				isWarnable: true,
 			});
@@ -198,6 +197,10 @@ export function useParticipantManagerActions() {
 
 	return {
 		getItemActions,
-		handleAction,
+		participantAssign,
+		participantRemove,
+		participantNotify,
+		participantEdit,
+		participantLoginAs,
 	};
 }

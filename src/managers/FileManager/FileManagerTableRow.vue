@@ -40,7 +40,7 @@
 				:label="t('common.moreActions')"
 				:display-as-ellipsis="true"
 				:actions="actionItems"
-				@action="(actionName) => emit('action', actionName, {file: file})"
+				@action="(actionName) => handleAction(actionName)"
 			></DropdownActions>
 		</TableCell>
 	</TableRow>
@@ -52,6 +52,7 @@ import TableCell from '@/components/TableNext/TableCell.vue';
 import TableRow from '@/components/TableNext/TableRow.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import Badge from '@/components/Badge/Badge.vue';
+import {useFileManagerStore} from './fileManagerStore.js';
 
 import {useLocalize} from '@/composables/useLocalize';
 import {useDate} from '@/composables/useDate';
@@ -60,7 +61,6 @@ const props = defineProps({
 	file: {type: Object, required: true},
 	actionItems: {type: Array, required: true},
 });
-const emit = defineEmits(['action']);
 
 const {localize} = useLocalize();
 const {formatShortDate} = useDate();
@@ -70,4 +70,10 @@ const fileIcon = computed(() =>
 		? pkp.documentTypeIcons[props.file?.documentType]
 		: 'DocumentDefault',
 );
+
+function handleAction(actionName) {
+	fileManagerStore[actionName]({file: props.file});
+}
+
+const fileManagerStore = useFileManagerStore();
 </script>
