@@ -54,6 +54,7 @@ export default {
 					'negative-bg',
 					'stage-in-review-bg',
 					'success-bg',
+					'attention',
 				].includes(prop),
 		},
 		/**  */
@@ -74,13 +75,17 @@ export default {
 				const colorVariant = this.colorVariant;
 				return {
 					// base
-					'inline-block py-1 px-4 text-base-normal rounded-[1.2em] border': true,
+					'inline-block py-1 px-3 text-base-normal rounded-[1.2em] border': true,
 					// default
 					'text-default border-light': colorVariant === 'default',
 					// default-on-dark
 					'text-on-dark border-light': colorVariant === 'default-on-dark',
 					// primary
-					'border-primary text-primary': colorVariant === 'primary',
+					'border-primary text-primary bg-secondary':
+						colorVariant === 'primary',
+					// attention-border
+					'border-attention text-attention bg-secondary':
+						colorVariant === 'attention',
 					// primary-bg
 					'bg-primary text-on-dark border-primary':
 						colorVariant === 'primary-bg',

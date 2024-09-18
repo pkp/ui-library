@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-import {reactive} from 'vue';
+import {reactive, toRef, watchEffect} from 'vue';
 import {useSideMenu} from '@/composables/useSideMenu.js';
 import SideMenu from '../SideMenu/SideMenu.vue';
 
@@ -40,9 +40,10 @@ const props = defineProps({
 });
 
 let currentActiveKey = '';
-const items = reactive(convertLinksToArray(props.links));
+const linksRef = toRef(props, 'links');
+const items = reactive(convertLinksToArray(linksRef.value));
 
-function convertLinksToArray(links, level = 1) {
+function convertLinksToArray(links, level = 1, parentKey = '') {
 	const result = [];
 
 	for (const key in links) {
@@ -55,11 +56,15 @@ function convertLinksToArray(links, level = 1) {
 		};
 
 		if (link.submenu) {
-			item.items = convertLinksToArray(link.submenu, level + 1);
+			item.items = convertLinksToArray(link.submenu, level + 1, item.key);
+		}
+
+		if (parentKey) {
+			item.key = `${parentKey}_${item.key}`;
 		}
 
 		if (link.isCurrent) {
-			currentActiveKey = key;
+			currentActiveKey = item.key;
 		}
 
 		result.push(item);
@@ -94,9 +99,12 @@ function getExpandedKeys(items) {
 	return _expandedKeys;
 }
 
-const {sideMenuProps} = useSideMenu(
-	items,
-	currentActiveKey,
-	getExpandedKeys(items),
-);
+const {sideMenuProps} = useSideMenu(items, {
+	activeItemKey: currentActiveKey,
+	expandedKeys: getExpandedKeys(items),
+});
+
+watchEffect(() => {
+	Object.assign(items, convertLinksToArray(linksRef.value));
+});
 </script>

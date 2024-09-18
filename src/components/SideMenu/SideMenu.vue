@@ -11,22 +11,19 @@
 			<a
 				:class="getButtonStyles(item, itemProps.action?.isFocused)"
 				v-bind="itemProps.action"
-				:href="item.link"
+				:href="item.link || '#'"
 				tabindex="-1"
-				@click="handleClick(item)"
 			>
 				<Badge
 					v-if="item.badge?.slot"
-					:color-variant="
-						isActive(item) && !item.badge.isWarnable ? 'default-on-dark' : null
-					"
+					:color-variant="item.badge.colorVariant || 'primary'"
 					v-bind="item.badge"
 					class="me-1"
 				>
 					{{ item.badge.slot }}
 				</Badge>
 				<Icon v-if="item.icon" class="h-5 w-5" :icon="item.icon" />
-				{{ item.label }}
+				<span>{{ item.label }}</span>
 				<Icon
 					v-if="hasSubmenu"
 					class="h-4 w-4 ltr:ml-auto rtl:mr-auto"
@@ -96,15 +93,14 @@ const props = defineProps({
 });
 
 const emit = defineEmits([
-	/** When a panel menu item's "action" is clicked */
-	'action',
-	/** When the item with link is clicked */
-	'update:activeItemKey',
 	/** When the expandedKeys gets updated by the PanelMenu */
 	'update:expandedKeys',
 ]);
 
 const navigationStyling = {
+	header: {
+		class: ['focus-visible:outline-none focus-visible:bg-hover'],
+	},
 	headerContent: () => {
 		return {
 			class: [
@@ -137,16 +133,6 @@ const navigationStyling = {
 	},
 };
 
-function handleClick(item) {
-	if (item.action) {
-		emit('action', item.action, {...item.actionArgs, key: item.key});
-	}
-
-	if (!item.items) {
-		emit('update:activeItemKey', item.key);
-	}
-}
-
 function isActive(item) {
 	const currentActiveKey = props.activeItemKey;
 	return currentActiveKey && currentActiveKey === item?.key;
@@ -157,14 +143,16 @@ function getButtonStyles(item, isFocused) {
 
 	const style = {
 		// Base
-		'inline-flex relative items-center gap-x-1 text-lg-medium py-2 px-3 w-full border-b border-b-light cursor-pointer': true,
+		'inline-flex relative items-center gap-x-1 text-lg-medium py-2 px-3 w-full cursor-pointer': true,
+
 		// Default button styling
-		'text-primary border-light hover:text-hover disabled:text-disabled':
+		'text-primary hover:text-hover disabled:text-disabled hover:bg-hover hover:text-on-dark':
 			!isActiveItem,
 		backgroundVariant: !isActiveItem,
+
 		// Active
 		'text-on-dark bg-selection-dark': isActiveItem,
-		'border-transparent': isActiveItem && !item.colorStripe,
+
 		// Indentions for child menus
 		'!px-7': item.level === 2 && item.colorStripe,
 		'!px-9': item.level === 2 && !item.colorStripe,
@@ -172,12 +160,18 @@ function getButtonStyles(item, isFocused) {
 		'!px-12': item.level === 3 && !item.colorStripe,
 		'!px-14': item.level === 4 && item.colorStripe,
 		'!px-16': item.level === 4 && !item.colorStripe,
-		// Additional border styling
-		'border-t border-t-light': item.key === 'item_0',
-		'border-s-8': item.colorStripe,
-		// Items with children
-		'!text-lg-bold': item.items && item.level === 1,
-		'border !border-dark': isFocused,
+
+		// Border
+		'border-b border-b-light': true,
+		'border-transparent': isActiveItem && !item.colorStripe,
+		'border-t border-t-light': item.index === 0 && item.level === 1,
+		'!border-s-8': !!item.colorStripe,
+
+		// Outline (focus)
+		'bg-hover !text-on-dark': isFocused && !isActiveItem,
+
+		// Root items with submenu
+		'!text-lg-bold': item.level === 1,
 	};
 
 	// set the additional class if the button should include a color stripe
@@ -197,5 +191,10 @@ a.text-on-dark:hover,
 a.text-on-dark:focus,
 a.text-on-dark:active {
 	color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+/* In this case we need to set the font-color of the <a data-pc-section="itemlink"> if the current focus is in the <div data-pc-section="header"> */
+div[data-pc-section='header']:focus-visible a {
+	@apply text-on-dark;
 }
 </style>

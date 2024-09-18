@@ -126,3 +126,14 @@ const isValidAction = (action) => {
 	return action?.label && (action?.url || action?.name);
 };
 </script>
+
+<style lang="less" scoped>
+@import '../../styles/_import';
+
+/* Override legacy styles for: a:hover, a:focus, where the color is being set to #008acb */
+a.text-on-dark:hover,
+a.text-on-dark:focus,
+a.text-on-dark:active {
+	color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+</style>
