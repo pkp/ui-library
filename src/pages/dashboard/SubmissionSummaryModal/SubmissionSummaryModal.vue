@@ -29,7 +29,7 @@
 					:is="Components[item.component] || item.component"
 					v-bind="item.props"
 					v-for="(item, index) in summaryStore.headerItems"
-					:key="`${index} - ${Object.values(item.props).join('-')}`"
+					:key="index"
 				/>
 			</div>
 		</template>
@@ -47,7 +47,7 @@
 						:is="Components[item.component] || item.component"
 						v-bind="item.props"
 						v-for="(item, index) in summaryStore.publicationControlsLeft"
-						:key="`${index} - ${Object.values(item.props).join('-')}`"
+						:key="`${index} - ${summaryStore.selectedMenuItem.key}`"
 					/>
 				</div>
 			</template>
@@ -60,7 +60,7 @@
 						:is="Components[item.component] || item.component"
 						v-bind="item.props"
 						v-for="(item, index) in summaryStore.publicationControlsRight"
-						:key="`${index} - ${Object.values(item.props).join('-')}`"
+						:key="`${index} - ${summaryStore.selectedMenuItem.key}`"
 					/>
 				</div>
 			</template>
@@ -71,7 +71,7 @@
 						:is="Components[item.component] || item.component"
 						v-bind="item.props"
 						v-for="(item, index) in summaryStore.primaryItems"
-						:key="`${index} - ${Object.values(item.props).join('-')}`"
+						:key="`${index} - ${summaryStore.selectedMenuItem.key}`"
 					/>
 				</div>
 			</template>
@@ -81,7 +81,7 @@
 						:is="Components[item.component] || item.component"
 						v-for="(item, index) in summaryStore.actionItems"
 						v-bind="item.props"
-						:key="`${index} - ${Object.values(item.props).join('-')}`"
+						:key="`${index} - ${summaryStore.selectedMenuItem.key}`"
 					></component>
 				</div>
 			</template>
@@ -91,7 +91,7 @@
 						:is="Components[item.component] || item.component"
 						v-for="(item, index) in summaryStore.secondaryItems"
 						v-bind="item.props"
-						:key="`${index} - ${Object.values(item.props).join('-')}`"
+						:key="`${index} - ${summaryStore.selectedMenuItem.key}`"
 					></component>
 				</div>
 			</template>
@@ -111,15 +111,15 @@ import ParticipantManager from '@/managers/ParticipantManager/ParticipantManager
 
 import ReviewerManager from '@/managers/ReviewerManager/ReviewerManager.vue';
 import ContributorManager from '@/managers/ContributorManager/ContributorManager.vue';
-import LastActivity from './primaryItems/LastActivity.vue';
 import PrimaryBasicMetadata from './primaryItems/PrimaryBasicMetadata.vue';
 import ReviewRoundStatus from './primaryItems/ReviewRoundStatus.vue';
 // Publications
+import WorkflowPaymentDropdown from './actionItems/WorkflowPaymentDropdown.vue';
 import PublicationForm from './primaryItems/PublicationForm.vue';
+import PublicationJats from './primaryItems/PublicationJats.vue';
 import PublicationVersionControl from './publicationControls/PublicationVersionControl.vue';
 import ActionButton from './actionItems/ActionButton.vue';
 import WorkflowRecommendationControls from './actionItems/WorkflowRecommendationControls.vue';
-import EditorsAssigned from './metaItems/EditorsAssigned.vue';
 import BasicMetadata from './metaItems/BasicMetadata.vue';
 import SubmissionStatus from './primaryItems/SubmissionStatus.vue';
 import GalleyManager from '@/managers/GalleyManager/GalleyManager.vue';
@@ -139,15 +139,15 @@ const Components = {
 	ContributorManager,
 	ParticipantManager,
 	GalleyManager,
-	LastActivity,
 	ActionButton,
 	WorkflowRecommendationControls,
-	EditorsAssigned,
 	BasicMetadata,
+	WorkflowPaymentDropdown,
 	PrimaryBasicMetadata,
 	IssueAssigned,
 	ReviewRoundStatus,
 	PublicationForm,
+	PublicationJats,
 	PublicationVersionControl,
 	SubmissionStatus,
 	PublicationEditDisabled,

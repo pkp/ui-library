@@ -72,6 +72,20 @@ export const PublicationConfig = {
 			];
 		},
 	},
+	jats: {
+		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
+			return [
+				{
+					component: 'PublicationJats',
+					props: {
+						canEditPublication: true,
+						submission,
+						publication: selectedPublication,
+					},
+				},
+			];
+		},
+	},
 	galleys: {
 		getPrimaryItems: ({submission, selectedPublication}) => {
 			return [
@@ -176,7 +190,7 @@ export function useEditorPublicationConfig() {
 				props: {
 					label: t('dashboard.summary.preview'),
 					isSecondary: true,
-					action: Actions.PREVIEW_PUBLICATION,
+					action: Actions.WORKFLOW_PREVIEW_PUBLICATION,
 				},
 			});
 
@@ -185,7 +199,7 @@ export function useEditorPublicationConfig() {
 				props: {
 					label: t('editor.submission.schedulePublication'),
 					isSecondary: true,
-					action: Actions.ASSIGN_TO_ISSUE_AND_SCHEULE_FOR_PUBLICATION,
+					action: Actions.WORKFLOW_ASSIGN_TO_ISSUE_AND_SCHEDULE_FOR_PUBLICATION,
 				},
 			});
 		} else if (selectedPublication.status === pkp.const.STATUS_SCHEDULED) {
@@ -194,7 +208,7 @@ export function useEditorPublicationConfig() {
 				props: {
 					label: t('dashboard.summary.preview'),
 					isSecondary: true,
-					action: Actions.PREVIEW_PUBLICATION,
+					action: Actions.WORKFLOW_PREVIEW_PUBLICATION,
 				},
 			});
 
@@ -203,7 +217,7 @@ export function useEditorPublicationConfig() {
 				props: {
 					label: t('publication.unschedule'),
 					isWarnable: true,
-					action: Actions.UNSCHEDULE_PUBLICATION,
+					action: Actions.WORKFLOW_UNSCHEDULE_PUBLICATION,
 				},
 			});
 		} else if (selectedPublication.status === pkp.const.STATUS_PUBLISHED) {
@@ -212,7 +226,7 @@ export function useEditorPublicationConfig() {
 				props: {
 					label: t('publication.unpublish'),
 					isWarnable: true,
-					action: Actions.UNPUBLISH_PUBLICATION,
+					action: Actions.WORKFLOW_UNPUBLISH_PUBLICATION,
 				},
 			});
 
@@ -221,7 +235,12 @@ export function useEditorPublicationConfig() {
 
 			if (latestPublication.id === selectedPublication.id) {
 				items.push({
-					component: 'WorkflowActionCreateNewVersion',
+					component: 'ActionButton',
+					props: {
+						label: t('publication.createVersion'),
+						isSecondary: true,
+						action: Actions.WORKFLOW_CREATE_NEW_VERSION,
+					},
 				});
 			}
 		}

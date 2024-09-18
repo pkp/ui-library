@@ -1,6 +1,8 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {useSubmission} from '@/composables/useSubmission';
-import {Actions} from '../../composables/useWorkflowActions';
+import {Actions as WorkflowActions} from '../../composables/useWorkflowActions';
+import {Actions as DecisionActions} from '../../composables/useWorkflowDecisions';
+
 const {t} = useLocalize();
 
 export function useEditorWorkflowConfig() {
@@ -217,7 +219,7 @@ export function useEditorWorkflowConfig() {
 				props: {
 					label: t('dashboard.summary.sendSubmissionForReview'),
 					isPrimary: true,
-					action: Actions.DECISION_EXTERNAL_REVIEW,
+					action: DecisionActions.DECISION_EXTERNAL_REVIEW,
 				},
 			});
 
@@ -226,7 +228,7 @@ export function useEditorWorkflowConfig() {
 				props: {
 					label: t('dashboard.summary.acceptAndSkipReview'),
 					isSecondary: true,
-					action: Actions.DECISION_SKIP_EXTERNAL_REVIEW,
+					action: DecisionActions.DECISION_SKIP_EXTERNAL_REVIEW,
 				},
 			});
 
@@ -235,7 +237,7 @@ export function useEditorWorkflowConfig() {
 				props: {
 					label: t('dashboard.summary.declineSubmission'),
 					isWarnable: true,
-					action: Actions.DECISION_INITIAL_DECLINE,
+					action: DecisionActions.DECISION_INITIAL_DECLINE,
 				},
 			});
 		} else if (
@@ -285,7 +287,7 @@ export function useEditorWorkflowConfig() {
 					props: {
 						label: t('dashboard.summary.requestRevisions'),
 						isSecondary: true,
-						action: Actions.REQUEST_REVISION,
+						action: WorkflowActions.WORKFLOW_REQUEST_REVISION,
 						actionArgs,
 					},
 				});
@@ -294,7 +296,7 @@ export function useEditorWorkflowConfig() {
 					component: 'ActionButton',
 					props: {
 						label: t('dashboard.summary.acceptSubmission'),
-						action: Actions.DECISION_ACCEPT,
+						action: DecisionActions.DECISION_ACCEPT,
 						isPrimary: true,
 						actionArgs,
 					},
@@ -304,7 +306,7 @@ export function useEditorWorkflowConfig() {
 					component: 'ActionButton',
 					props: {
 						label: t('editor.submission.createNewRound'),
-						action: Actions.DECISION_NEW_EXTERNAL_ROUND,
+						action: DecisionActions.DECISION_NEW_EXTERNAL_ROUND,
 						actionArgs,
 					},
 				});
@@ -314,7 +316,7 @@ export function useEditorWorkflowConfig() {
 					props: {
 						label: t('dashboard.summary.cancelReviewRound'),
 						isWarnable: true,
-						action: Actions.DECISION_CANCEL_REVIEW_ROUND,
+						action: DecisionActions.DECISION_CANCEL_REVIEW_ROUND,
 					},
 				});
 
@@ -323,7 +325,7 @@ export function useEditorWorkflowConfig() {
 					props: {
 						label: t('dashboard.summary.declineSubmission'),
 						isWarnable: true,
-						action: Actions.DECISION_DECLINE_SUBMISSION,
+						action: DecisionActions.DECISION_DECLINE_SUBMISSION,
 					},
 				});
 			}
@@ -346,7 +348,7 @@ export function useEditorWorkflowConfig() {
 				props: {
 					label: t('dashboard.summary.sendToProduction'),
 					isPrimary: true,
-					action: Actions.DECISION_SEND_TO_PRODUCTION,
+					action: DecisionActions.DECISION_SEND_TO_PRODUCTION,
 				},
 			});
 
@@ -355,7 +357,7 @@ export function useEditorWorkflowConfig() {
 				props: {
 					label: t('dashboard.summary.cancelCopyEditing'),
 					isWarnable: true,
-					action: Actions.DECISION_BACK_FROM_COPYEDITING,
+					action: DecisionActions.DECISION_BACK_FROM_COPYEDITING,
 				},
 			});
 		} else if (selectedStageId === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION) {
@@ -388,7 +390,7 @@ export function useEditorWorkflowConfig() {
 					props: {
 						label: t('dashboard.summary.backToCopyediting'),
 						isWarnable: true,
-						action: Actions.DECISION_BACK_FROM_PRODUCTION,
+						action: DecisionActions.DECISION_BACK_FROM_PRODUCTION,
 					},
 				});
 		}

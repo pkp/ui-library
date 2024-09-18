@@ -127,4 +127,5 @@ export const useFileManagerStore = defineComponentStore(
 			_actionFns,
 		};
 	},
+	{requireNamespace: true},
 );

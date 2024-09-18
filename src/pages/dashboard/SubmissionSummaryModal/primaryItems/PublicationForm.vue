@@ -1,6 +1,11 @@
 <template>
 	<div class="-m-5">
-		<PkpForm v-if="form" v-bind="form" @set="set"></PkpForm>
+		<PkpForm
+			v-if="form"
+			v-bind="form"
+			@set="set"
+			@success="triggerDataChange"
+		></PkpForm>
 	</div>
 </template>
 
@@ -10,6 +15,7 @@ import PkpForm from '@/components/Form/Form.vue';
 import {useFetch} from '@/composables/useFetch';
 import {useForm} from '@/composables/useForm';
 import {useUrl} from '@/composables/useUrl';
+import {useDataChanged} from '@/composables/useDataChanged';
 
 const props = defineProps({
 	formName: {type: String, required: true},
@@ -24,11 +30,15 @@ const relativeUrl = computed(() => {
 const {apiUrl: publicationFormUrl} = useUrl(relativeUrl);
 const {data: publicationForm, fetch: fetchForm} = useFetch(publicationFormUrl);
 
-fetchForm();
+watch(
+	relativeUrl,
+	() => {
+		fetchForm();
+	},
+	{immediate: true},
+);
 
-watch(relativeUrl, () => {
-	fetchForm();
-});
+const {triggerDataChange} = useDataChanged(() => fetchForm());
 
 const {set, form} = useForm(publicationForm);
 </script>

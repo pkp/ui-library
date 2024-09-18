@@ -77,7 +77,5 @@ const props = defineProps({
 	reviewRoundId: {type: String, required: true},
 });
 
-const fileManagerStore = useFileManagerStore(props, props.configName, {
-	requireNamespace: true,
-});
+const fileManagerStore = useFileManagerStore(props, props.configName);
 </script>

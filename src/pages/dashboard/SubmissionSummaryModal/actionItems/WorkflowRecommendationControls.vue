@@ -79,10 +79,9 @@ const currentRecommendation = computed(() => {
 
 const summaryStore = useSubmissionSummaryStore();
 function handleAction(actionName) {
-	summaryStore.handleAction(actionName, {
+	summaryStore[actionName]({
 		reviewRoundId: props.reviewRoundId,
 		stageId: props.stageId,
 	});
 }
 </script>
-../../composables/useWorkflowActions

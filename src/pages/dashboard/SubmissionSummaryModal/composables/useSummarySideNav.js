@@ -207,7 +207,15 @@ export function useSummarySideNav() {
 							title: getPublicationTitle(t('submission.identifiers')),
 						},
 					},
-					// TODO JATS
+					{
+						key: 'jats',
+						label: t('publication.jats'),
+						action: 'selectPublicationMenu',
+						actionArgs: {
+							publicationMenu: 'jats',
+							title: getPublicationTitle(t('publication.jats')),
+						},
+					},
 					{
 						key: 'galleys',
 						label: t('submission.layout.galleys'),

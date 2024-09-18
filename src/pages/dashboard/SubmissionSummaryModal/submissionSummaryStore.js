@@ -3,7 +3,16 @@ import {computed, ref, watch} from 'vue';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
-import {useWorkflowActions} from '../composables/useWorkflowActions';
+import {
+	useWorkflowActions,
+	Actions as WorkflowActions,
+} from '../composables/useWorkflowActions';
+
+import {
+	useWorkflowDecisions,
+	Actions as DecisionActions,
+} from '../composables/useWorkflowDecisions';
+
 import {useDataChangedProvider} from '@/composables/useDataChangedProvider';
 import {useSummarySideNav} from './composables/useSummarySideNav';
 import {useSubmission} from '@/composables/useSubmission';
@@ -96,6 +105,11 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			return getMenuItems(submission.value);
 		});
 
+		function navigateToMenu({key}) {
+			setActiveItemKey(key);
+			return;
+		}
+
 		const {
 			sideMenuProps,
 			setExpandedKeys,
@@ -126,44 +140,60 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		});
 
 		/**
-		 * Handle user actions
+		 * Expose workflow actions
 		 *
 		 */
 		const _workflowActionsFns = useWorkflowActions(props.pageInitConfig);
+		const workflowActions = Object.values(WorkflowActions).reduce(
+			(acc, actionName) => {
+				acc[actionName] = (noArgs, finishedCallback = null) =>
+					_workflowActionsFns[actionName](
+						{
+							submission: submission.value,
+							selectedPublication: selectedPublication.value,
+							reviewRoundId: selectedReviewRound.value?.id,
+						},
+						(finishedData) => {
+							console.log('finished workflow actions:');
+							triggerDataChange();
+							if (finishedCallback) {
+								finishedCallback(finishedData);
+							}
+						},
+					);
+				return acc;
+			},
+			{},
+		);
 
-		function triggerDataChangeCallback() {
-			triggerDataChange();
-		}
-
-		function createNewPublicationVersion() {
-			_workflowActionsFns.createNewPublicationVersion(
-				{
-					submission: submission.value,
-				},
-				triggerDataChangeCallback,
-			);
-		}
-
-		function handleAction(actionName, _actionArgs) {
-			if (actionName === 'navigateToMenu') {
-				setActiveItemKey(_actionArgs.key);
-				return;
-			}
-
-			const actionArgs = {
-				..._actionArgs,
-				submission: submission.value,
-				selectedPublication: selectedPublication.value,
-			};
-			console.log('actionName summary:', actionName, actionArgs);
-			_workflowActionsFns.handleAction(actionName, actionArgs, async () => {
-				console.log('handleAction callback summary store');
-				triggerDataChange();
-			});
-		}
+		/**
+		 * Expose decision functions
+		 *
+		 * */
+		const _workflowDecisionsFns = useWorkflowDecisions();
+		const decisionActions = Object.values(DecisionActions).reduce(
+			(acc, actionName) => {
+				acc[actionName] = (noArgs) =>
+					_workflowDecisionsFns[actionName]({
+						submission: submission.value,
+						selectedPublication: selectedPublication.value,
+						reviewRoundId: selectedReviewRound.value?.id,
+					});
+				return acc;
+			},
+			{},
+		);
 
 		/** Header Actions */
-		const headerItems = computed(() => _workflowActionsFns.getHeaderItems());
+		const headerItems = computed(() => {
+			if (!submission.value) {
+				return [];
+			}
+			return _workflowActionsFns.getHeaderItems({
+				submission: submission.value,
+				selectedPublication: selectedPublication.value,
+			});
+		});
 
 		/** Primary Items */
 
@@ -246,15 +276,13 @@ export const useSubmissionSummaryStore = defineComponentStore(
 				return [];
 			}
 
-			const toReturn = _editorPublicationConfigFns.getPublicationControlsRight({
+			return _editorPublicationConfigFns.getPublicationControlsRight({
 				submission: submission.value,
 				selectedPublicationMenu: selectedMenuState.value.publicationMenu,
 				pageInitConfig: props.pageInitConfig,
 				selectedPublication: selectedPublication.value,
 				selectedPublicationId: selectedPublicationId.value,
 			});
-
-			return toReturn;
 		});
 
 		return {
@@ -262,18 +290,20 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			submission,
 			selectedPublication,
 			selectPublicationId,
-			handleAction,
 
 			/**
 			 * Navigation
 			 * */
+			selectedMenuItem,
 			sideMenuProps,
 			selectedMenuState,
+			navigateToMenu,
 
 			/** Actions
 			 *
 			 */
-			createNewPublicationVersion,
+			...workflowActions,
+			...decisionActions,
 
 			/**
 			 * Summary
