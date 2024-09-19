@@ -86,7 +86,6 @@ const ColorBorderUsedIn = {
 	light: 'Dark border',
 	dark: 'Light border',
 	'form-fields': 'Specific for form fields',
-	'table-heading': 'Specific for table headings',
 };
 
 export const Common = {
