@@ -31,7 +31,6 @@ const {data: paymentForm, fetch: fetchForm} = useFetch(publicationFormUrl);
 watch(
 	publicationFormUrl,
 	(newRelativeUrl, prevRelativeUrl) => {
-		console.log('watching:', newRelativeUrl, prevRelativeUrl);
 		if (newRelativeUrl !== prevRelativeUrl) {
 			fetchForm();
 		}

@@ -70,7 +70,6 @@ export const useGalleyManagerStore = defineComponentStore(
 		}
 
 		function sortMoveDown(itemId) {
-			console.log('sort move down', itemId);
 			const index = galleysOrdered.value.findIndex(
 				(galley) => galley.id === itemId,
 			);
@@ -88,7 +87,6 @@ export const useGalleyManagerStore = defineComponentStore(
 		}
 
 		function sortMoveUp(itemId) {
-			console.log('sort move up', itemId);
 			const index = galleysOrdered.value.findIndex(
 				(galley) => galley.id === itemId,
 			);

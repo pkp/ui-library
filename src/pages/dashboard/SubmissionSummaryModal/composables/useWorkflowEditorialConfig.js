@@ -211,7 +211,6 @@ export const WorkflowConfig = {
 			return items;
 		},
 		getActionItems: ({submission, selectedStageId, selectedReviewRound}) => {
-			console.log('getActionItems!! in workflow');
 			const items = [];
 			const {getCurrentReviewRound} = useSubmission();
 

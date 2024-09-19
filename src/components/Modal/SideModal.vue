@@ -70,8 +70,6 @@ function handleClose(data) {
 	closeCallbacks.value.forEach((callback) => (canClose = callback()));
 	if (canClose) {
 		emit('close', data);
-	} else {
-		console.log('not closing yet');
 	}
 }
 

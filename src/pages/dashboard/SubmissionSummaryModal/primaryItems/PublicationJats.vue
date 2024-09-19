@@ -281,7 +281,6 @@ export default {
 		 * Download the Contents of the file
 		 */
 		downloadJatsXML() {
-			console.log('downloadJatsXMl:', this.downloadDefaultJatsFileName);
 			// Ensure existingJatsFile.url is available and is a string containing the URL
 			if (!this.workingJatsProps.isDefaultContent) {
 				const downloadUrl = this.workingJatsProps.url;

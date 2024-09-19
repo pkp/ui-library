@@ -121,7 +121,6 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		} = useSideMenu(menuItems);
 
 		const selectedMenuState = computed(() => {
-			console.log('selectedMenuState:', selectedMenuItem.value?.actionArgs);
 			return selectedMenuItem.value?.actionArgs || {};
 		});
 
@@ -157,7 +156,6 @@ export const useSubmissionSummaryStore = defineComponentStore(
 							reviewRoundId: selectedReviewRound.value?.id,
 						},
 						(finishedData) => {
-							console.log('finished workflow actions:');
 							triggerDataChange();
 							if (finishedCallback) {
 								finishedCallback(finishedData);

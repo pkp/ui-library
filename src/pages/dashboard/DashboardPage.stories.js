@@ -66,8 +66,6 @@ export const ReviewRoundStatusesEditor = {
 				http.get(
 					'https://mock/index.php/publicknowledge/api/v1/_submissions/assigned',
 					({request}) => {
-						//console.log('pkp const??:', pkp.const);
-
 						const submissions = EditorialActivityScenario;
 
 						return HttpResponse.json({
@@ -92,8 +90,6 @@ export const ReviewRoundStatusesDecidingEditor = {
 				http.get(
 					'https://mock/index.php/publicknowledge/api/v1/_submissions/assigned',
 					({request}) => {
-						//console.log('pkp const??:', pkp.const);
-
 						const submissions = JSON.parse(
 							JSON.stringify(EditorialActivityScenario),
 						);
