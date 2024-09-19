@@ -36,16 +36,25 @@
 <script></script>
 <script setup>
 import {defineProps, computed} from 'vue';
+import Add from './icons/Add.vue';
 import Announcements from './icons/Announcements.vue';
 import AnonymousReview from './icons/AnonymousReview.vue';
+import ArrowLeft from './icons/ArrowLeft.vue';
+import ArrowRight from './icons/ArrowRight.vue';
 import AttachFile from './icons/AttachFile.vue';
+import Attention from './icons/Attention.vue';
 import BackButton from './icons/BackButton.vue';
 import Bold from './icons/Bold.vue';
+import Book from './icons/Book.vue';
 import Bullets from './icons/Bullets.vue';
+import Calendar from './icons/Calendar.vue';
 import Cancel from './icons/Cancel.vue';
 import Catalog from './icons/Catalog.vue';
 import ChevronDown from './icons/ChevronDown.vue';
+import ChevronLeft from './icons/ChevronLeft.vue';
+import ChevronRight from './icons/ChevronRight.vue';
 import ChevronUp from './icons/ChevronUp.vue';
+import Clock from './icons/Clock.vue';
 import Complete from './icons/Complete.vue';
 import Dashboard from './icons/Dashboard.vue';
 import DecreaseTextSize from './icons/DecreaseTextSize.vue';
@@ -103,17 +112,26 @@ import View from './icons/View.vue';
 import Workflow from './icons/Workflow.vue';
 
 const svgIcons = {
+	Add,
 	Announcements,
 	AnonymousReview,
+	ArrowLeft,
+	ArrowRight,
 	AttachFile,
+	Attention,
 	BackButton,
 	Bold,
+	Book,
 	Bullets,
+	Calendar,
 	Cancel,
 	Catalog,
-	Complete,
 	ChevronDown,
+	ChevronLeft,
+	ChevronRight,
 	ChevronUp,
+	Clock,
+	Complete,
 	Dashboard,
 	DefaultDocument,
 	DecreaseTextSize,
