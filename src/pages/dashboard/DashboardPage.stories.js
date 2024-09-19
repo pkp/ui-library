@@ -3,9 +3,11 @@ import {http, HttpResponse} from 'msw';
 import SubmissionsMock25 from './mocks/submissions25.js';
 import PageInitConfigMock from './mocks/pageInitConfig.js';
 
-export default {title: 'Pages/Dashboard', component: DashboardPage};
+import {EditorialActivityScenario} from './mocks/submissionScenariosMock';
 
-export const Init = {
+export default {
+	title: 'Pages/Dashboard',
+	component: DashboardPage,
 	render: (args) => ({
 		components: {DashboardPage},
 		setup() {
@@ -13,9 +15,12 @@ export const Init = {
 		},
 		template: '<DashboardPage v-bind="args" />',
 	}),
+};
+
+export const Init = {
 	parameters: {
 		// mock date to consistently show sensible editorial activity popups
-		date: new Date('March 25, 2024 10:00:00'),
+		date: new Date('January 20, 2024 10:00:00'),
 		msw: {
 			handlers: [
 				http.get(
@@ -42,6 +47,60 @@ export const Init = {
 
 						return HttpResponse.json({
 							itemsMax: SubmissionsMock25.length,
+							items: submissions,
+						});
+					},
+				),
+			],
+		},
+	},
+	args: PageInitConfigMock,
+};
+
+export const ReviewRoundStatusesEditor = {
+	parameters: {
+		// mock date to consistently show sensible editorial activity popups
+		date: new Date('February 20, 2024 10:00:00'),
+		msw: {
+			handlers: [
+				http.get(
+					'https://mock/index.php/publicknowledge/api/v1/_submissions/assigned',
+					({request}) => {
+						const submissions = EditorialActivityScenario;
+
+						return HttpResponse.json({
+							itemsMax: 1,
+							consts: pkp.const,
+							items: submissions,
+						});
+					},
+				),
+			],
+		},
+	},
+	args: PageInitConfigMock,
+};
+
+export const ReviewRoundStatusesDecidingEditor = {
+	parameters: {
+		// mock date to consistently show sensible editorial activity popups
+		date: new Date('February 20, 2024 10:00:00'),
+		msw: {
+			handlers: [
+				http.get(
+					'https://mock/index.php/publicknowledge/api/v1/_submissions/assigned',
+					({request}) => {
+						const submissions = JSON.parse(
+							JSON.stringify(EditorialActivityScenario),
+						);
+
+						submissions.forEach((submission) => {
+							submission.stages[1].currentUserDecidingEditor = true;
+						});
+
+						return HttpResponse.json({
+							itemsMax: 1,
+							consts: pkp.const,
 							items: submissions,
 						});
 					},

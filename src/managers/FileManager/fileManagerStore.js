@@ -3,8 +3,9 @@ import {defineComponentStore} from '@/utils/defineComponentStore';
 import {ref, computed} from 'vue';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
-import {Actions, useFileManagerActions} from './useFileManagerActions';
+import {useFileManagerActions} from './useFileManagerActions';
 import {useFileManagerConfig} from './useFileManagerConfig';
+import {useDataChanged} from '@/composables/useDataChanged';
 export const useFileManagerStore = defineComponentStore(
 	'fileManager',
 	(props) => {
@@ -28,13 +29,16 @@ export const useFileManagerStore = defineComponentStore(
 		const {data, fetch: fetchFiles} = useFetch(filesApiUrl, {
 			query: {
 				fileStages: managerConfig.value.fileStage,
-				reviewRoundId: props.reviewRoundId ? props.reviewRoundId : undefined,
+				reviewRoundIds: props.reviewRoundId ? props.reviewRoundId : undefined,
 			},
 		});
 
 		const files = computed(() => data.value?.items || []);
 
 		fetchFiles();
+
+		/** Reload files when data on screen changes */
+		const {triggerDataChange} = useDataChanged(() => fetchFiles());
 
 		/**
 		 * Handling Actions
@@ -61,41 +65,47 @@ export const useFileManagerStore = defineComponentStore(
 			}),
 		);
 
-		function handleItemAction(actionName, {file}) {
-			_actionFns.handleItemAction(
-				actionName,
-				{
-					file,
-					submissionStageId: props.submissionStageId,
-					reviewRoundId: props.reviewRoundId,
-					submission: props.submission,
-				},
-				() => {
-					fetchFiles();
-
-					// delete actions creates legacy notifications
-					// calling explicitely to check for it
-					if (actionName === Actions.DELETE) {
-						$('body').trigger('notifyUser');
-					}
-				},
-			);
+		function actionFinishCallback() {
+			triggerDataChange();
+		}
+		function enrichActionArgs(_args = {}) {
+			return {
+				..._args,
+				submissionStageId: props.submissionStageId,
+				reviewRoundId: props.reviewRoundId,
+				submission: props.submission,
+				fileStage: managerConfig.value.fileStage,
+				wizardTitleKey: managerConfig.value.wizardTitleKey,
+				uploadSelectTitleKey: managerConfig.value.uploadSelectTitleKey,
+				gridComponent: managerConfig.value.gridComponent,
+			};
 		}
 
-		function handleAction(actionName) {
-			_actionFns.handleAction(
-				actionName,
-				{
-					submissionStageId: props.submissionStageId,
-					reviewRoundId: props.reviewRoundId,
-					submission: props.submission,
-					fileStage: managerConfig.value.fileStage,
-					wizardTitleKey: managerConfig.value.wizardTitleKey,
-					uploadSelectTitleKey: managerConfig.value.uploadSelectTitleKey,
-					gridComponent: managerConfig.value.gridComponent,
-				},
-				() => fetchFiles(),
-			);
+		function fileUpload() {
+			_actionFns.fileUpload(enrichActionArgs(), actionFinishCallback);
+		}
+
+		function fileSelectUpload() {
+			_actionFns.fileSelectUpload(enrichActionArgs(), actionFinishCallback);
+		}
+
+		function fileDownloadAll() {
+			_actionFns.fileDownloadAll(enrichActionArgs(), actionFinishCallback);
+		}
+
+		function fileEdit({file}) {
+			_actionFns.fileEdit(enrichActionArgs({file}), actionFinishCallback);
+		}
+
+		function fileDelete({file}) {
+			_actionFns.fileDelete(enrichActionArgs({file}), () => {
+				actionFinishCallback();
+				$('body').trigger('notifyUser');
+			});
+		}
+
+		function fileSeeNotes({file}) {
+			_actionFns.fileSeeNotes(enrichActionArgs({file}), actionFinishCallback);
 		}
 
 		return {
@@ -106,10 +116,16 @@ export const useFileManagerStore = defineComponentStore(
 			topActions,
 			bottomActions,
 			itemActions,
-			handleItemAction,
-			handleAction,
+			fileUpload,
+			fileSelectUpload,
+			fileDownloadAll,
+			fileEdit,
+			fileDelete,
+			fileSeeNotes,
+
 			/** exposed for extensibility purposes */
 			_actionFns,
 		};
 	},
+	{requireNamespace: true},
 );

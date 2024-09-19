@@ -29,9 +29,10 @@
 import {computed} from 'vue';
 import PkpPopover from '@/components/Popover/Popover.vue';
 import ReviewActivityIndicatorPopover from '@/pages/dashboard/components/ReviewActivityIndicatorPopover/ReviewActivityIndicatorPopover.vue';
-import {useReviewAssignment} from '@/composables/useReviewAssignment';
+import {useSubmission} from '@/composables/useSubmission';
 import UserAvatar from '@/components/UserAvatar/UserAvatar.vue';
-const {getOpenReviewAssignments, getReviewMethodIcons} = useReviewAssignment();
+const {getOpenReviewAssignmentsForRound, getReviewMethodIcons} =
+	useSubmission();
 import {useLocalize} from '@/composables/useLocalize';
 
 const props = defineProps({
@@ -41,6 +42,6 @@ const props = defineProps({
 const {t} = useLocalize();
 
 const openReviewAssignements = computed(() =>
-	getOpenReviewAssignments(props.reviewAssignments),
+	getOpenReviewAssignmentsForRound(props.reviewAssignments),
 );
 </script>

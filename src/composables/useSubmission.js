@@ -16,7 +16,7 @@ export const ExtendedStages = {
 
 export const ExtendedStagesLabels = {
 	incomplete: tk('submissions.incomplete'),
-	submission: tk('dashboard.stage.deskReview'),
+	submission: tk('dashboard.stage.submission'),
 	internalReview: tk('todo'),
 	externalReview: tk('dashboard.stage.reviewWithRound'),
 	editing: tk('dashboard.stage.copyediting'),
@@ -26,15 +26,66 @@ export const ExtendedStagesLabels = {
 	declined: tk('submissions.declined'),
 };
 
+const InProgressReviewAssignmentStatuses = [
+	pkp.const.REVIEW_ASSIGNMENT_STATUS_ACCEPTED,
+	pkp.const.REVIEW_ASSIGNMENT_STATUS_REVIEW_OVERDUE,
+];
+const CompletedReviewAssignmentStatuses = [
+	pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
+	pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
+	pkp.const.REVIEW_ASSIGNMENT_STATUS_THANKED,
+	pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED,
+	pkp.const.REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND,
+];
+
+const IgnoredReviewAssignmentStatuses = [
+	pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED,
+	pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED,
+];
+
 export function useSubmission() {
 	function getActiveStage(submission) {
 		return submission.stages.find((stage) => stage.isActiveStage);
 	}
 
-	function getCurrentReviewRound(submission) {
-		return submission?.reviewRounds?.length
-			? submission?.reviewRounds[submission.reviewRounds.length - 1]
-			: null;
+	function getStageById(submission, stageId) {
+		return submission.stages.find((stage) => stage.id === stageId);
+	}
+
+	function getSubmissionById(submissions, submissionId) {
+		return submissions.find((submission) => submission.id === submissionId);
+	}
+
+	function getReviewAssignmentsForRound(reviewAssignments, roundId) {
+		return reviewAssignments.filter(
+			(reviewAssignment) => reviewAssignment.roundId === roundId,
+		);
+	}
+
+	function getCurrentReviewRound(
+		submission,
+		stageId = pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+	) {
+		const filteredReviewRoundByStage = submission?.reviewRounds.filter(
+			(reviewRound) => reviewRound.stageId === stageId,
+		);
+
+		if (filteredReviewRoundByStage.length) {
+			return filteredReviewRoundByStage[filteredReviewRoundByStage.length - 1];
+		}
+		return null;
+	}
+
+	function getReviewRound(submission, reviewRoundId) {
+		return submission?.reviewRounds.find(
+			(reviewRound) => reviewRound.id === reviewRoundId,
+		);
+	}
+
+	function getReviewRoundsForStage(submission, stageId) {
+		return submission?.reviewRounds.filter(
+			(reviewRound) => reviewRound.stageId === stageId,
+		);
 	}
 
 	function getCurrentReviewAssignments(submission) {
@@ -51,9 +102,19 @@ export function useSubmission() {
 		);
 	}
 
+	function getLatestPublication(submission) {
+		return submission.publications.reduce(
+			(latestPublication, publication) =>
+				publication.id > latestPublication.id ? publication : latestPublication,
+			submission.publications[0],
+		);
+	}
+
 	function getExtendedStage(submission) {
 		const activeStage = getActiveStage(submission);
-
+		if (submission.status === pkp.const.STATUS_DECLINED) {
+			return ExtendedStages.DECLINED;
+		}
 		switch (activeStage.id) {
 			case pkp.const.WORKFLOW_STAGE_ID_SUBMISSION:
 				return submission.submissionProgress
@@ -71,8 +132,6 @@ export function useSubmission() {
 						return ExtendedStages.PRODUCTION_SCHEDULED;
 					case pkp.const.STATUS_PUBLISHED:
 						return ExtendedStages.PRODUCTION_PUBLISHED;
-					case pkp.const.STATUS_DECLINED:
-						return ExtendedStages.PRODUCTION_DECLINED;
 				}
 		}
 	}
@@ -100,13 +159,73 @@ export function useSubmission() {
 		return FileStageMapping[submission.stageId];
 	}
 
+	function hasSubmissionPassedStage(submission, stageId) {
+		return submission.stageId > stageId;
+	}
+
+	function hasNotSubmissionStartedStage(submission, stageId) {
+		return submission.stageId < stageId;
+	}
+
+	function getActiveReviewAssignments(reviewAssignments) {
+		return reviewAssignments.filter(
+			(reviewAssignment) =>
+				!IgnoredReviewAssignmentStatuses.includes(reviewAssignment.statusId),
+		);
+	}
+
+	function getCompletedReviewAssignments(reviewAssignments = []) {
+		return getActiveReviewAssignments(reviewAssignments).filter(
+			(reviewAssignment) =>
+				CompletedReviewAssignmentStatuses.includes(reviewAssignment.statusId),
+		);
+	}
+
+	function getOpenReviewAssignmentsForRound(reviewAssignments, reviewRoundId) {
+		return getReviewAssignmentsForRound(
+			reviewAssignments,
+			reviewRoundId,
+		).filter(
+			(reviewAssignment) =>
+				reviewAssignment.reviewMethod ===
+				pkp.const.SUBMISSION_REVIEW_METHOD_OPEN,
+		);
+	}
+
+	function getReviewMethodIcons(reviewAssignment) {
+		switch (reviewAssignment.reviewMethod) {
+			case pkp.const.SUBMISSION_REVIEW_METHOD_ANONYMOUS:
+				return ['OpenReview', 'AnonymousReview'];
+			case pkp.const.SUBMISSION_REVIEW_METHOD_DOUBLEANONYMOUS:
+				return ['AnonymousReview', 'AnonymousReview'];
+			case pkp.const.SUBMISSION_REVIEW_METHOD_OPEN:
+				return ['OpenReview', 'OpenReview'];
+		}
+
+		return ['OpenReview', 'OpenReview'];
+	}
+
 	return {
+		getSubmissionById,
 		getActiveStage,
+		getStageById,
 		getExtendedStage,
 		getExtendedStageLabel,
 		getCurrentReviewRound,
+		getReviewRound,
+		getReviewRoundsForStage,
 		getCurrentReviewAssignments,
 		getCurrentPublication,
+		getLatestPublication,
 		getFileStageFromWorkflowStage,
+		hasNotSubmissionStartedStage,
+		hasSubmissionPassedStage,
+		// review assignments
+		getReviewAssignmentsForRound,
+		getActiveReviewAssignments,
+		getCompletedReviewAssignments,
+		getOpenReviewAssignmentsForRound,
+		getReviewMethodIcons,
+		InProgressReviewAssignmentStatuses,
 	};
 }

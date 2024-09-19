@@ -1,4 +1,5 @@
 import {ref, computed} from 'vue';
+import {useModal} from '@/composables/useModal';
 
 function camelCaseToDashes(str) {
 	return str.replace(/([a-z]+)([A-Z])/g, '$1-$2').toLowerCase();
@@ -34,5 +35,25 @@ export function useLegacyGridUrl({
 		return `${baseUrl}${queryParamsString.value}`;
 	});
 
-	return {url};
+	function openLegacyModal({title, closeOnFormSuccessId}, finishedCallback) {
+		const {openSideModal} = useModal();
+
+		openSideModal(
+			'LegacyAjax',
+			{
+				legacyOptions: {
+					title,
+					url,
+					closeOnFormSuccessId,
+				},
+			},
+			{
+				onClose: async (closeData) => {
+					finishedCallback(closeData);
+				},
+			},
+		);
+	}
+
+	return {url, openLegacyModal};
 }

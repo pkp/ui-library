@@ -41,7 +41,7 @@ export default {
 	assignLabel: 'Assign to Issue',
 	assignedNoticeBase:
 		'This has been assigned to <a href="{$issueUrl}">{$issueName}</a> but it has not been scheduled for publication.',
-	changeIssue: 'Change Issue',
+	changeIssueLabel: 'Change Issue',
 	publishedNoticeBase:
 		'Published in <a href="http://example.com/issue/__issueId__">{$issueName}</a>.',
 	scheduledNoticeBase:
