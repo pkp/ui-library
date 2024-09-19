@@ -57,8 +57,6 @@ import HelpButton from '@/components/HelpButton/HelpButton.vue';
 import FieldError from '@/components/Form/FieldError.vue';
 import PkpButton from '@/components/Button/Button.vue';
 
-import {useSubmissionSummaryStore} from '@/pages/dashboard/SubmissionSummaryModal/submissionSummaryStore';
-
 export default {
 	name: 'FieldSelectIssue',
 	components: {Tooltip, FormFieldLabel, HelpButton, FieldError, PkpButton},
@@ -157,7 +155,14 @@ export default {
 		},
 	},
 	methods: {
-		selectIssue() {
+		async selectIssue() {
+			// workaround to avoid circular dependencies in storybook
+			// There is chain if imports, and some of them imported form
+			// which seems to be causing circular dependency
+			const {useSubmissionSummaryStore} = await import(
+				'@/pages/dashboard/SubmissionSummaryModal/submissionSummaryStore.js'
+			);
+
 			const summaryStore = useSubmissionSummaryStore();
 
 			summaryStore.workflowAssignToIssue({}, (finishedData) => {
