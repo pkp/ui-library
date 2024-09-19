@@ -14,10 +14,10 @@
 <script setup>
 import {computed} from 'vue';
 import Icon from '@/components/Icon/Icon.vue';
-import {useReviewAssignment} from '@/composables/useReviewAssignment';
+import {useSubmission} from '@/composables/useSubmission';
 import {useLocalize} from '@/composables/useLocalize';
 const {getActiveReviewAssignments, getCompletedReviewAssignments} =
-	useReviewAssignment();
+	useSubmission();
 
 const props = defineProps({
 	reviewAssignments: {type: Array, required: true},

@@ -320,33 +320,6 @@ export function useWorkflowActions({
 		redirectToPage();
 	}
 
-	function getHeaderItems({submission, selectedPublication}) {
-		const {t} = useLocalize();
-		const actions = [];
-
-		actions.push({
-			component: 'WorkflowPaymentDropdown',
-			props: {submission, selectedPublication},
-		});
-
-		actions.push({
-			component: 'ActionButton',
-			props: {
-				label: t('editor.activityLog'),
-				action: Actions.WORKFLOW_VIEW_ACTIVITY_LOG,
-			},
-		});
-		actions.push({
-			component: 'ActionButton',
-			props: {
-				label: t('editor.submissionLibrary'),
-				action: Actions.WORKFLOW_VIEW_LIBRARY,
-			},
-		});
-
-		return actions;
-	}
-
 	return {
 		workflowAssignToIssue,
 		workflowViewActivityLog,
@@ -360,6 +333,5 @@ export function useWorkflowActions({
 		workflowCreateNewVersion,
 		workflowPreviewPublication,
 		createNewPublicationVersion,
-		getHeaderItems,
 	};
 }

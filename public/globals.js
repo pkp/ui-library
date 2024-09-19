@@ -340,7 +340,7 @@ window.pkp = {
 		'dashboard.summary.reviewers': 'Reviewers',
 		'dashboard.summary.revisionsUploaded': 'Revisions Submitted',
 		'dashboard.summary.revisionsUploadedDescription':
-			'These files have been submitted by the author after visions were requested',
+			'These files have been submitted by the author after revisions were requested',
 		'dashboard.summary.sendSubmissionForReview': 'Send submission for review',
 		'dashboard.summary.sendToProduction': 'Send to Production',
 		'dashboard.summary.viewActivityLog': 'View activity log',

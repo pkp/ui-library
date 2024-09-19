@@ -17,6 +17,7 @@ import {computed} from 'vue';
 const props = defineProps({
 	reviewAssignment: {type: Object, required: true},
 	submission: {type: Object, required: true},
+	redactedForAuthors: {type: Boolean, required: true},
 });
 
 const reviewerManagerStore = useReviewerManagerStore();
@@ -24,6 +25,7 @@ const reviewerManagerStore = useReviewerManagerStore();
 const itemActions = computed(() =>
 	reviewerManagerStore.getItemActions({
 		reviewAssignment: props.reviewAssignment,
+		redactedForAuthors: props.redactedForAuthors,
 	}),
 );
 

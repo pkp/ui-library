@@ -1,5 +1,8 @@
 <template>
-	<div class="-m-5">
+	<div v-if="displayNoFieldsEnabled" class="text-lg-normal">
+		{{ noFieldsMessage }}
+	</div>
+	<div v-else class="-m-5">
 		<PkpForm
 			v-if="form"
 			v-bind="form"
@@ -19,6 +22,7 @@ import {useDataChanged} from '@/composables/useDataChanged';
 
 const props = defineProps({
 	formName: {type: String, required: true},
+	noFieldsMessage: {type: String, required: false, default: null},
 	submission: {type: Object, required: true},
 	publication: {type: Object, required: true},
 });
@@ -37,6 +41,14 @@ watch(
 	},
 	{immediate: true},
 );
+
+const displayNoFieldsEnabled = computed(() => {
+	if (publicationForm.value && publicationForm.value.fields.length === 0) {
+		return true;
+	}
+
+	return false;
+});
 
 const {triggerDataChange} = useDataChanged(() => fetchForm());
 

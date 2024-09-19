@@ -13,11 +13,14 @@ import {
 	Actions as DecisionActions,
 } from '../composables/useWorkflowDecisions';
 
+import {DashboardPageTypes} from '../dashboardPageStore';
+
+import {useWorkflowEditorialConfig} from './composables/useWorkflowEditorialConfig';
+import {useWorkflowAuthorConfig} from './composables/useWorkflowAuthorConfig';
+
 import {useDataChangedProvider} from '@/composables/useDataChangedProvider';
-import {useSummarySideNav} from './composables/useSummarySideNav';
+import {useWorkflowNavigationConfig} from './composables/useWorkflowNavigationConfig';
 import {useSubmission} from '@/composables/useSubmission';
-import {useEditorWorkflowConfig} from './composables/useEditorWorkflowConfig';
-import {useEditorPublicationConfig} from './composables/useEditorPublicationConfig';
 import {useSideMenu} from '@/composables/useSideMenu';
 
 export const useSubmissionSummaryStore = defineComponentStore(
@@ -97,7 +100,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		/**
 		 * Handling navigation
 		 */
-		const {getMenuItems} = useSummarySideNav();
+		const {getMenuItems} = useWorkflowNavigationConfig(props.pageInitConfig);
 		const menuItems = computed(() => {
 			if (!submission.value) {
 				return [];
@@ -184,105 +187,62 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			{},
 		);
 
-		/** Header Actions */
-		const headerItems = computed(() => {
-			if (!submission.value) {
-				return [];
-			}
-			return _workflowActionsFns.getHeaderItems({
-				submission: submission.value,
-				selectedPublication: selectedPublication.value,
-			});
-		});
+		/**
+		 * Items
+		 *
+		 * */
 
-		/** Primary Items */
+		const _workflowEditorialConfigFns =
+			dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD
+				? useWorkflowEditorialConfig()
+				: useWorkflowAuthorConfig();
 
-		const _editorWorkflowConfigFns = useEditorWorkflowConfig();
-		const _editorPublicationConfigFns = useEditorPublicationConfig();
 		const stageTitle = computed(() => {
 			return selectedMenuState.value?.title || '';
 		});
 
+		function _getItemsArgs() {
+			return {
+				selectedMenuState: selectedMenuState.value,
+				submission: submission.value,
+				pageInitConfig: props.pageInitConfig,
+				selectedPublication: selectedPublication.value,
+				selectedPublicationId: selectedPublicationId.value,
+				selectedReviewRound: selectedReviewRound.value,
+			};
+		}
+
+		/** Header Actions */
+		const headerItems = computed(() => {
+			return _workflowEditorialConfigFns.getHeaderItems({
+				submission: submission.value,
+				selectedPublication: selectedPublication.value,
+				publicationSettings: props.pageInitConfig.publicationSettings,
+			});
+		});
+
 		const primaryItems = computed(() => {
-			if (!submission.value) {
-				return [];
-			}
-			if (selectedMenuState.value.stageId) {
-				return _editorWorkflowConfigFns.getPrimaryItems({
-					submission: submission.value,
-					selectedStageId: selectedMenuState.value.stageId,
-					selectedReviewRound: selectedReviewRound.value,
-				});
-			} else if (selectedMenuState.value.publicationMenu) {
-				if (!selectedPublication.value) {
-					return [];
-				}
-
-				return _editorPublicationConfigFns.getPrimaryItems({
-					submission: submission.value,
-					selectedPublicationMenu: selectedMenuState.value.publicationMenu,
-					pageInitConfig: props.pageInitConfig,
-					selectedPublication: selectedPublication.value,
-				});
-			}
-
-			return [];
+			return _workflowEditorialConfigFns.getPrimaryItems(_getItemsArgs());
 		});
 
 		const secondaryItems = computed(() => {
-			if (!submission.value || selectedMenuState.value.publicationMenu) {
-				return [];
-			}
-
-			return _editorWorkflowConfigFns.getSecondaryItems({
-				submission: submission.value,
-				selectedStageId: selectedMenuState.value.stageId,
-				selectedReviewRound: selectedReviewRound.value,
-			});
+			return _workflowEditorialConfigFns.getSecondaryItems(_getItemsArgs());
 		});
 
 		const actionItems = computed(() => {
-			if (!submission.value || selectedMenuState.value.publicationMenu) {
-				return [];
-			}
-
-			return _editorWorkflowConfigFns.getActionItems({
-				submission: submission.value,
-				selectedStageId: selectedMenuState.value.stageId,
-				selectedReviewRound: selectedReviewRound.value,
-			});
+			return _workflowEditorialConfigFns.getActionItems(_getItemsArgs());
 		});
 
 		const publicationControlsLeft = computed(() => {
-			if (!submission.value || !selectedMenuState.value.publicationMenu) {
-				return [];
-			}
-
-			return _editorPublicationConfigFns.getPublicationControlsLeft({
-				submission: submission.value,
-				selectedPublicationMenu: selectedMenuState.value.publicationMenu,
-				pageInitConfig: props.pageInitConfig,
-				selectedPublication: selectedPublication.value,
-				selectedPublicationId: selectedPublicationId.value,
-			});
+			return _workflowEditorialConfigFns.getPublicationControlsLeft(
+				_getItemsArgs(),
+			);
 		});
 
 		const publicationControlsRight = computed(() => {
-			if (
-				!submission.value ||
-				!selectedPublication.value ||
-				!selectedMenuState.value.publicationMenu
-			) {
-				return [];
-			}
-
-			return _editorPublicationConfigFns.getPublicationControlsRight({
-				submission: submission.value,
-				selectedPublicationMenu: selectedMenuState.value.publicationMenu,
-				pageInitConfig: props.pageInitConfig,
-				selectedPublication: selectedPublication.value,
-				selectedPublicationId: selectedPublicationId.value,
-			});
+			return _workflowEditorialConfigFns.getPublicationControlsRight(
+				_getItemsArgs(),
+			);
 		});
 
 		return {

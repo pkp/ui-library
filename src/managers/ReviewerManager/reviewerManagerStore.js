@@ -1,6 +1,5 @@
 import {computed} from 'vue';
 import {defineComponentStore} from '@/utils/defineComponentStore';
-import {useReviewAssignment} from '@/composables/useReviewAssignment';
 import {useSubmission} from '@/composables/useSubmission';
 import {useReviewerManagerActions} from './useReviewerManagerActions';
 import {useDataChanged} from '@/composables/useDataChanged';
@@ -8,19 +7,23 @@ import {useDataChanged} from '@/composables/useDataChanged';
 export const useReviewerManagerStore = defineComponentStore(
 	'reviewerManagerStore',
 	(props) => {
-		const {getReviewMethodIcons, getOpenReviewAssignments} =
-			useReviewAssignment();
-
-		const {getReviewAssignmentsForRound} = useSubmission();
+		const {
+			getOpenReviewAssignmentsForRound,
+			getReviewMethodIcons,
+			getReviewAssignmentsForRound,
+		} = useSubmission();
 
 		const reviewAssignments = computed(() => {
 			const reviewAssignmentsForSelectedRound = getReviewAssignmentsForRound(
-				props.submission,
+				props.submission.reviewAssignments,
 				props.reviewRoundId,
 			);
 
 			if (props.redactedForAuthors) {
-				return getOpenReviewAssignments(reviewAssignmentsForSelectedRound);
+				return getOpenReviewAssignmentsForRound(
+					props.submission.reviewAssignments,
+					props.reviewRoundId,
+				);
 			}
 
 			return reviewAssignmentsForSelectedRound;
@@ -34,7 +37,10 @@ export const useReviewerManagerStore = defineComponentStore(
 		const _actionFns = useReviewerManagerActions();
 
 		const topActions = computed(() =>
-			_actionFns.getTopActions({submission: props.submission}),
+			_actionFns.getTopActions({
+				submission: props.submission,
+				redactedForAuthors: props.redactedForAuthors,
+			}),
 		);
 
 		function dataUpdateCallback() {
@@ -56,6 +62,13 @@ export const useReviewerManagerStore = defineComponentStore(
 
 		function reviewerReadReview({reviewAssignment}) {
 			_actionFns.reviewerReadReview(
+				getActionArgs({reviewAssignment}),
+				dataUpdateCallback,
+			);
+		}
+
+		function reviewerReadReviewByAuthor({reviewAssignment}) {
+			_actionFns.reviewerReadReviewByAuthor(
 				getActionArgs({reviewAssignment}),
 				dataUpdateCallback,
 			);
@@ -104,7 +117,7 @@ export const useReviewerManagerStore = defineComponentStore(
 		}
 
 		function reviewerLoginAs({reviewAssignment}) {
-			_actionFns.reviewerReviewHistory(
+			_actionFns.reviewerLoginAs(
 				getActionArgs({reviewAssignment}),
 				dataUpdateCallback,
 			);
@@ -132,7 +145,7 @@ export const useReviewerManagerStore = defineComponentStore(
 		}
 
 		function reviewerSendReminder({reviewAssignment}) {
-			_actionFns.reviewerRevertConsider(
+			_actionFns.reviewerSendReminder(
 				getActionArgs({reviewAssignment}),
 				dataUpdateCallback,
 			);
@@ -156,6 +169,7 @@ export const useReviewerManagerStore = defineComponentStore(
 			getItemPrimaryActions,
 			reviewerAddReviewer,
 			reviewerReadReview,
+			reviewerReadReviewByAuthor,
 			reviewerReviewDetails,
 			reviewerEmailReviewer,
 			reviewerEditReview,

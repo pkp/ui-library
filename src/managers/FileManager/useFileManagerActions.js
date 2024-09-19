@@ -181,14 +181,14 @@ export function useFileManagerActions() {
 		if (enabledActions.includes(Actions.FILE_UPLOAD)) {
 			actions.push({
 				// this might be different based on fileStage, more details in AddFileLinkAction.php
-				label: 'Upload',
+				label: t('common.upload'),
 				name: Actions.FILE_UPLOAD,
 			});
 		}
 
 		if (enabledActions.includes(Actions.FILE_SELECT_UPLOAD)) {
 			actions.push({
-				label: 'Select/Upload',
+				label: t('editor.submission.uploadSelectFiles'),
 				name: Actions.FILE_SELECT_UPLOAD,
 			});
 		}
@@ -201,7 +201,7 @@ export function useFileManagerActions() {
 		const enabledActions = managerConfig.permittedActions;
 		if (enabledActions.includes(Actions.FILE_DOWNLOAD_ALL) && filesCount) {
 			actions.push({
-				label: 'Download All Files',
+				label: t('submission.files.downloadAll'),
 				name: 'downloadAll',
 			});
 		}
@@ -214,7 +214,7 @@ export function useFileManagerActions() {
 		const enabledActions = managerConfig.permittedActions;
 		if (enabledActions.includes(Actions.FILE_SEE_NOTES)) {
 			actions.push({
-				label: 'More information',
+				label: t('grid.action.moreInformation'),
 				name: Actions.FILE_SEE_NOTES,
 				icon: 'View',
 			});
@@ -222,7 +222,7 @@ export function useFileManagerActions() {
 
 		if (enabledActions.includes(Actions.FILE_EDIT)) {
 			actions.push({
-				label: 'Edit',
+				label: t('grid.action.edit'),
 				name: Actions.FILE_EDIT,
 				icon: 'Edit',
 			});
@@ -230,7 +230,7 @@ export function useFileManagerActions() {
 
 		if (enabledActions.includes(Actions.FILE_DELETE)) {
 			actions.push({
-				label: 'Delete',
+				label: t('grid.action.delete'),
 				name: Actions.FILE_DELETE,
 				isWarnable: true,
 				icon: 'Cancel',

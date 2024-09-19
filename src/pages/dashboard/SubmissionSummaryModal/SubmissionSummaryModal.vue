@@ -114,6 +114,7 @@ import ContributorManager from '@/managers/ContributorManager/ContributorManager
 import PrimaryBasicMetadata from './primaryItems/PrimaryBasicMetadata.vue';
 import ReviewRoundStatus from './primaryItems/ReviewRoundStatus.vue';
 // Publications
+import WorkflowNotificationDisplay from './primaryItems/WorkflowNotificationDisplay.vue';
 import WorkflowPaymentDropdown from './actionItems/WorkflowPaymentDropdown.vue';
 import PublicationForm from './primaryItems/PublicationForm.vue';
 import PublicationJats from './primaryItems/PublicationJats.vue';
@@ -141,6 +142,7 @@ const Components = {
 	GalleyManager,
 	ActionButton,
 	WorkflowRecommendationControls,
+	WorkflowNotificationDisplay,
 	BasicMetadata,
 	WorkflowPaymentDropdown,
 	PrimaryBasicMetadata,

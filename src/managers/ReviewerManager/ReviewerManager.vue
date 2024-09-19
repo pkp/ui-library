@@ -1,31 +1,33 @@
 <template>
 	<div>
-		<div class="flex justify-between border-x border-t border-light px-3 py-4">
-			<h2 :id="headingId" class="text-lg-bold text-heading">
-				{{ t('dashboard.summary.reviewers') }}
-			</h2>
-			<div>
-				<PkpButton
-					v-for="action in reviewerStore.topActions"
-					:key="action.name"
-					@click="reviewerStore[action.name]()"
-				>
-					{{ action.label }}
-				</PkpButton>
-			</div>
-		</div>
 		<PkpTable
 			aria-label="Example for basic table"
 			:aria-describedby="headingId"
 		>
+			<template #label>
+				<h3 class="">
+					{{ t('dashboard.summary.reviewers') }}
+				</h3>
+			</template>
+			<template #top-controls>
+				<div class="flex space-x-2">
+					<PkpButton
+						v-for="action in reviewerStore.topActions"
+						:key="action.name"
+						@click="reviewerStore[action.name]()"
+					>
+						{{ action.label }}
+					</PkpButton>
+				</div>
+			</template>
 			<TableHeader>
 				<TableColumn>{{ t('dashboard.summary.reviewer') }}</TableColumn>
-				<TableColumn v-if="!redactedForAuthors">
+				<TableColumn>
 					{{ t('dashboard.summary.reviewerStatus') }}
 				</TableColumn>
 				<TableColumn>{{ t('common.type') }}</TableColumn>
 				<TableColumn>{{ t('grid.columns.actions') }}</TableColumn>
-				<TableColumn>
+				<TableColumn v-if="!redactedForAuthors">
 					<span class="sr-only">{{ t('common.moreActions') }}</span>
 				</TableColumn>
 			</TableHeader>
@@ -39,7 +41,7 @@
 							{{ reviewAssignment.reviewerFullName }}
 						</span>
 					</TableCell>
-					<TableCell v-if="!redactedForAuthors">
+					<TableCell>
 						<span class="text-base-normal">
 							{{ reviewAssignment.status }}
 						</span>
@@ -59,10 +61,13 @@
 					<ReviewerManagerCellPrimaryActions
 						:review-assignment="reviewAssignment"
 						:submission="submission"
+						:redacted-for-authors="redactedForAuthors"
 					></ReviewerManagerCellPrimaryActions>
 					<ReviewerManagerCellActions
+						v-if="!redactedForAuthors"
 						:review-assignment="reviewAssignment"
 						:submission="submission"
+						:redacted-for-authors="redactedForAuthors"
 					></ReviewerManagerCellActions>
 				</TableRow>
 			</TableBody>
@@ -98,4 +103,3 @@ const props = defineProps({
 
 const reviewerStore = useReviewerManagerStore(props);
 </script>
-./ReviewerManagerCellActions.vue

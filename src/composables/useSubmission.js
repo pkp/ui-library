@@ -26,6 +26,23 @@ export const ExtendedStagesLabels = {
 	declined: tk('submissions.declined'),
 };
 
+const InProgressReviewAssignmentStatuses = [
+	pkp.const.REVIEW_ASSIGNMENT_STATUS_ACCEPTED,
+	pkp.const.REVIEW_ASSIGNMENT_STATUS_REVIEW_OVERDUE,
+];
+const CompletedReviewAssignmentStatuses = [
+	pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
+	pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
+	pkp.const.REVIEW_ASSIGNMENT_STATUS_THANKED,
+	pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED,
+	pkp.const.REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND,
+];
+
+const IgnoredReviewAssignmentStatuses = [
+	pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED,
+	pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED,
+];
+
 export function useSubmission() {
 	function getActiveStage(submission) {
 		return submission.stages.find((stage) => stage.isActiveStage);
@@ -39,8 +56,8 @@ export function useSubmission() {
 		return submissions.find((submission) => submission.id === submissionId);
 	}
 
-	function getReviewAssignmentsForRound(submission, roundId) {
-		return submission.reviewAssignments.filter(
+	function getReviewAssignmentsForRound(reviewAssignments, roundId) {
+		return reviewAssignments.filter(
 			(reviewAssignment) => reviewAssignment.roundId === roundId,
 		);
 	}
@@ -150,6 +167,44 @@ export function useSubmission() {
 		return submission.stageId < stageId;
 	}
 
+	function getActiveReviewAssignments(reviewAssignments) {
+		return reviewAssignments.filter(
+			(reviewAssignment) =>
+				!IgnoredReviewAssignmentStatuses.includes(reviewAssignment.statusId),
+		);
+	}
+
+	function getCompletedReviewAssignments(reviewAssignments = []) {
+		return getActiveReviewAssignments(reviewAssignments).filter(
+			(reviewAssignment) =>
+				CompletedReviewAssignmentStatuses.includes(reviewAssignment.statusId),
+		);
+	}
+
+	function getOpenReviewAssignmentsForRound(reviewAssignments, reviewRoundId) {
+		return getReviewAssignmentsForRound(
+			reviewAssignments,
+			reviewRoundId,
+		).filter(
+			(reviewAssignment) =>
+				reviewAssignment.reviewMethod ===
+				pkp.const.SUBMISSION_REVIEW_METHOD_OPEN,
+		);
+	}
+
+	function getReviewMethodIcons(reviewAssignment) {
+		switch (reviewAssignment.reviewMethod) {
+			case pkp.const.SUBMISSION_REVIEW_METHOD_ANONYMOUS:
+				return ['OpenReview', 'AnonymousReview'];
+			case pkp.const.SUBMISSION_REVIEW_METHOD_DOUBLEANONYMOUS:
+				return ['AnonymousReview', 'AnonymousReview'];
+			case pkp.const.SUBMISSION_REVIEW_METHOD_OPEN:
+				return ['OpenReview', 'OpenReview'];
+		}
+
+		return ['OpenReview', 'OpenReview'];
+	}
+
 	return {
 		getSubmissionById,
 		getActiveStage,
@@ -165,6 +220,12 @@ export function useSubmission() {
 		getFileStageFromWorkflowStage,
 		hasNotSubmissionStartedStage,
 		hasSubmissionPassedStage,
+		// review assignments
 		getReviewAssignmentsForRound,
+		getActiveReviewAssignments,
+		getCompletedReviewAssignments,
+		getOpenReviewAssignmentsForRound,
+		getReviewMethodIcons,
+		InProgressReviewAssignmentStatuses,
 	};
 }

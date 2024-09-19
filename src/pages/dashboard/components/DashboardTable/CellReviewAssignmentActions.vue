@@ -5,7 +5,7 @@
 			:aria-describedby="'submission-title-' + item.id"
 			:is-link="true"
 			@click="
-				dashboardPageStore.handleAction(Actions.OPEN_REVIEW_FORM, {
+				dashboardPageStore.openReviewerForm({
 					submissionId: item.submissionId,
 				})
 			"
@@ -16,7 +16,6 @@
 </template>
 <script setup>
 import {defineProps, computed} from 'vue';
-import {Actions} from '../../composables/useWorkflowActions';
 import PkpButton from '@/components/Button/Button.vue';
 import TableCell from '@/components/TableNext/TableCell.vue';
 import {useDashboardPageStore} from '@/pages/dashboard/dashboardPageStore.js';

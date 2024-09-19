@@ -1,6 +1,8 @@
 import {useSubmission} from '@/composables/useSubmission';
 import {useLocalize} from '@/composables/useLocalize';
-export function useSummarySideNav() {
+import {DashboardPageTypes} from '@/pages/dashboard/dashboardPageStore';
+export function useWorkflowNavigationConfig(pageInitConfig) {
+	const {publicationSettings} = pageInitConfig;
 	const {t, tk} = useLocalize();
 
 	function getWorkflowTitle(stageId) {
@@ -149,6 +151,168 @@ export function useSummarySideNav() {
 		];
 	}
 
+	function getPublicationItemsAuthor(submission) {
+		const items = [];
+
+		items.push({
+			key: 'publication_titleAbstract',
+			label: t('publication.titleAbstract'),
+			action: 'selectPublicationMenu',
+			actionArgs: {
+				publicationMenu: 'titleAbstract',
+				title: getPublicationTitle(t('publication.titleAbstract')),
+			},
+		});
+
+		items.push({
+			key: 'publication_contributors',
+			label: t('publication.contributors'),
+			action: 'selectPublicationMenu',
+			actionArgs: {
+				publicationMenu: 'contributors',
+				title: getPublicationTitle(t('publication.contributors')),
+			},
+		});
+
+		items.push({
+			key: 'publication_metadata',
+			label: t('article.metadata'),
+			action: 'selectPublicationMenu',
+			actionArgs: {
+				publicationMenu: 'metadata',
+				title: getPublicationTitle(t('article.metadata')),
+			},
+		});
+
+		if (publicationSettings.supportsCitations) {
+			items.push({
+				key: 'citations',
+				label: t('submission.citations'),
+				action: 'selectPublicationMenu',
+				actionArgs: {
+					publicationMenu: 'citations',
+					title: getPublicationTitle(t('submission.citations')),
+				},
+			});
+		}
+
+		// TODO: REAL VALUE
+		const canAccessProductionStage = true;
+		if (canAccessProductionStage) {
+			items.push({
+				key: 'galleys',
+				label: t('submission.layout.galleys'),
+				action: 'selectPublicationMenu',
+				actionArgs: {
+					publicationMenu: 'galleys',
+					title: getPublicationTitle(t('submission.layout.galleys')),
+				},
+			});
+		}
+
+		return items;
+	}
+
+	function getPublicationItemsEditorial(submission) {
+		const items = [];
+
+		items.push({
+			key: 'publication_titleAbstract',
+			label: t('publication.titleAbstract'),
+			action: 'selectPublicationMenu',
+			actionArgs: {
+				publicationMenu: 'titleAbstract',
+				title: getPublicationTitle(t('publication.titleAbstract')),
+			},
+		});
+
+		items.push({
+			key: 'publication_contributors',
+			label: t('publication.contributors'),
+			action: 'selectPublicationMenu',
+			actionArgs: {
+				publicationMenu: 'contributors',
+				title: getPublicationTitle(t('publication.contributors')),
+			},
+		});
+
+		items.push({
+			key: 'publication_metadata',
+			label: t('article.metadata'),
+			action: 'selectPublicationMenu',
+			actionArgs: {
+				publicationMenu: 'metadata',
+				title: getPublicationTitle(t('article.metadata')),
+			},
+		});
+
+		if (publicationSettings.supportsCitations) {
+			items.push({
+				key: 'citations',
+				label: t('submission.citations'),
+				action: 'selectPublicationMenu',
+				actionArgs: {
+					publicationMenu: 'citations',
+					title: getPublicationTitle(t('submission.citations')),
+				},
+			});
+		}
+
+		if (publicationSettings.identifiersEnabled) {
+			items.push({
+				key: 'identifiers',
+				label: t('submission.identifiers'),
+				action: 'selectPublicationMenu',
+				actionArgs: {
+					publicationMenu: 'identifiers',
+					title: getPublicationTitle(t('submission.identifiers')),
+				},
+			});
+		}
+
+		items.push({
+			key: 'jats',
+			label: t('publication.jats'),
+			action: 'selectPublicationMenu',
+			actionArgs: {
+				publicationMenu: 'jats',
+				title: getPublicationTitle(t('publication.jats')),
+			},
+		});
+
+		items.push({
+			key: 'galleys',
+			label: t('submission.layout.galleys'),
+			action: 'selectPublicationMenu',
+			actionArgs: {
+				publicationMenu: 'galleys',
+				title: getPublicationTitle(t('submission.layout.galleys')),
+			},
+		});
+
+		items.push({
+			label: t('publication.publicationLicense'),
+			key: 'license',
+			action: 'selectPublicationMenu',
+			actionArgs: {
+				publicationMenu: 'license',
+				title: getPublicationTitle(t('publication.publicationLicense')),
+			},
+		});
+
+		items.push({
+			label: t('issue.issue'),
+			key: 'issue',
+			action: 'selectPublicationMenu',
+			actionArgs: {
+				publicationMenu: 'issue',
+				title: getPublicationTitle(t('issue.issue')),
+			},
+		});
+
+		return items;
+	}
+
 	function getMenuItems(submission) {
 		const menuItems = [
 			{
@@ -161,89 +325,11 @@ export function useSummarySideNav() {
 				key: 'publication',
 				label: 'Publication',
 				icon: 'MySubmissions',
-				items: [
-					{
-						key: 'publication_titleAbstract',
-						label: t('publication.titleAbstract'),
-						action: 'selectPublicationMenu',
-						actionArgs: {
-							publicationMenu: 'titleAbstract',
-							title: getPublicationTitle(t('publication.titleAbstract')),
-						},
-					},
-					{
-						key: 'publication_contributors',
-						label: t('publication.contributors'),
-						action: 'selectPublicationMenu',
-						actionArgs: {
-							publicationMenu: 'contributors',
-							title: getPublicationTitle(t('publication.contributors')),
-						},
-					},
-					{
-						key: 'publication_metadata',
-						label: t('article.metadata'),
-						action: 'selectPublicationMenu',
-						actionArgs: {
-							publicationMenu: 'metadata',
-							title: getPublicationTitle(t('article.metadata')),
-						},
-					},
-					{
-						key: 'citations',
-						label: t('submission.citations'),
-						action: 'selectPublicationMenu',
-						actionArgs: {
-							publicationMenu: 'citations',
-							title: getPublicationTitle(t('submission.citations')),
-						},
-					},
-					{
-						key: 'identifiers',
-						label: t('submission.identifiers'),
-						action: 'selectPublicationMenu',
-						actionArgs: {
-							publicationMenu: 'identifiers',
-							title: getPublicationTitle(t('submission.identifiers')),
-						},
-					},
-					{
-						key: 'jats',
-						label: t('publication.jats'),
-						action: 'selectPublicationMenu',
-						actionArgs: {
-							publicationMenu: 'jats',
-							title: getPublicationTitle(t('publication.jats')),
-						},
-					},
-					{
-						key: 'galleys',
-						label: t('submission.layout.galleys'),
-						action: 'selectPublicationMenu',
-						actionArgs: {
-							publicationMenu: 'galleys',
-							title: getPublicationTitle(t('submission.layout.galleys')),
-						},
-					},
-					{
-						label: t('publication.publicationLicense'),
-						key: 'license',
-						action: 'selectPublicationMenu',
-						actionArgs: {
-							publicationMenu: 'license',
-							title: getPublicationTitle(t('publication.publicationLicense')),
-						},
-					},
-					{
-						label: t('issue.issue'),
-						key: 'issue',
-						action: 'selectPublicationMenu',
-						actionArgs: {
-							publicationMenu: 'issue',
-							title: getPublicationTitle(t('issue.issue')),
-						},
-					},
-				],
+				items:
+					pageInitConfig.dashboardPage ===
+					DashboardPageTypes.EDITORIAL_DASHBOARD
+						? getPublicationItemsEditorial(submission)
+						: getPublicationItemsAuthor(submission),
 			},
 		];
 

@@ -1,6 +1,6 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {useDate} from '@/composables/useDate';
-import {useReviewAssignment} from '@/composables/useReviewAssignment';
+import {useSubmission} from '@/composables/useSubmission';
 import {Actions as ReviewerManagerActions} from '@/managers/ReviewerManager/useReviewerManagerActions';
 const {tk, t} = useLocalize();
 
@@ -385,7 +385,7 @@ export function useReviewActivityLogic() {
 			return t(ActionButtonTranslations[config.negativeAction]);
 		}
 
-		const {getReviewMethodIcons} = useReviewAssignment();
+		const {getReviewMethodIcons} = useSubmission();
 
 		return {
 			titleBadgeProps: config.badgeProps,

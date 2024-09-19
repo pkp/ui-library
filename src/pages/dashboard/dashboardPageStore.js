@@ -193,6 +193,14 @@ export const useDashboardPageStore = defineComponentStore(
 		 * Reviewer actions,
 		 * available for review assignments popup
 		 */
+		function openReviewerForm({submissionId}) {
+			const {redirectToPage} = useUrl(
+				`reviewer/submission/${encodeURIComponent(submissionId)}`,
+				{},
+			);
+
+			redirectToPage();
+		}
 
 		function enrichActionArgs({submissionId, ...args}) {
 			const submission = submissions.value.find(
@@ -270,7 +278,7 @@ export const useDashboardPageStore = defineComponentStore(
 		 * Summary submission Modal
 		 */
 
-		/** Tracking which submissionId is opened in summary modal for query params */
+		// Tracking which submissionId is opened in summary modal for query params
 		const summarySubmissionId = ref(null);
 		function openSummaryModal(submissionId) {
 			summarySubmissionId.value = submissionId;
@@ -377,6 +385,9 @@ export const useDashboardPageStore = defineComponentStore(
 			isSubmissionsLoading,
 			fetchSubmissions,
 			setCurrentPage,
+
+			// Reviewer listing
+			openReviewerForm,
 
 			// Reviewer manager actions
 			reviewerAddReviewer,

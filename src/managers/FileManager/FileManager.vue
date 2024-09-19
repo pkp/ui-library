@@ -1,30 +1,32 @@
 <template>
 	<div>
-		<div class="flex items-center border-x border-t border-light p-4">
-			<div class="flex-grow">
-				<h3 class="text-lg-bold text-heading">
+		<PkpTable>
+			<template #label>
+				<h3 class="">
 					{{ fileManagerStore.managerConfig.title }}
 				</h3>
-				<p class="pt-2 text-sm-normal">
+			</template>
+			<template #description>
+				<p>
 					{{ fileManagerStore.managerConfig.description }}
 				</p>
-			</div>
-			<div class="ms-2 flex flex-none space-x-2">
-				<PkpButton
-					v-for="action in fileManagerStore.topActions"
-					:key="action.name"
-					@click="fileManagerStore[action.name]"
-				>
-					{{ action.label }}
-				</PkpButton>
-			</div>
-		</div>
-		<PkpTable aria-label="Example for basic table">
+			</template>
+			<template #top-controls>
+				<div class="flex space-x-2">
+					<PkpButton
+						v-for="action in fileManagerStore.topActions"
+						:key="action.name"
+						@click="fileManagerStore[action.name]"
+					>
+						{{ action.label }}
+					</PkpButton>
+				</div>
+			</template>
 			<TableHeader>
-				<TableColumn>No</TableColumn>
-				<TableColumn>File name</TableColumn>
-				<TableColumn>Date Uploaded</TableColumn>
-				<TableColumn>Type</TableColumn>
+				<TableColumn>{{ t('common.id') }}</TableColumn>
+				<TableColumn>{{ t('common.fileName') }}</TableColumn>
+				<TableColumn>{{ t('common.dateUploaded') }}</TableColumn>
+				<TableColumn>{{ t('common.type') }}</TableColumn>
 				<TableColumn v-if="fileManagerStore.itemActions.length">
 					<span class="sr-only">{{ t('common.moreActions') }}</span>
 				</TableColumn>

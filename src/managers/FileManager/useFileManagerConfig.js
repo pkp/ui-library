@@ -121,6 +121,17 @@ export const FileManagerConfigurations = {
 		descriptionKey: tk('dashboard.summary.revisionsUploadedDescription'),
 		wizardTitleKey: tk('editor.submissionReview.uploadFile'),
 	}),
+	// TODO after triage
+	REVIEW_ATTACHMENTS: () => ({
+		// visible only to authors and reviewers? Add permissions for reviewers once used
+		permissions: [],
+		actions: [],
+		fileStage: pkp.const.SUBMISSION_FILE_REVIEW_ATTACHMENT,
+		gridComponent: 'grid.files.attachment.authorReviewAttachmentsGridHandler',
+		titleKey: tk('dashboard.summary.filesForReview'),
+		descriptionKey: tk('dashboard.summary.deskReviewFilesDescription'),
+		uploadSelectTitleKey: tk('editor.submission.review.currentFiles'),
+	}),
 	COPYEDITED_FILES: ({stageId}) => ({
 		permissions: [
 			{

@@ -12,11 +12,15 @@
 				>
 					<slot name="label" />
 				</span>
-				<div v-if="slots.description" :id="descriptionId">
+				<div
+					v-if="slots.description"
+					:id="descriptionId"
+					class="text-sm-normal"
+				>
 					<slot name="description" />
 				</div>
 			</div>
-			<div v-if="slots['top-controls']">
+			<div v-if="slots['top-controls']" class="flex-shrink-0">
 				<slot name="top-controls" />
 			</div>
 		</div>

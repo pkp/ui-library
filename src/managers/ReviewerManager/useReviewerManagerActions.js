@@ -8,6 +8,7 @@ import {useFetch, getCSRFToken} from '@/composables/useFetch';
 export const Actions = {
 	REVIEWER_ADD_REVIEWER: 'reviewerAddReviewer',
 	REVIEWER_READ_REVIEW: 'reviewerReadReview',
+	REVIEWER_READ_REVIEW_BY_AUTHOR: 'reviewerReadReviewByAuthor',
 	REVIEWER_REVIEW_DETAILS: 'reviewerReviewDetails',
 	REVIEWER_EMAIL_REVIEWER: 'reviewerEmailReviewer',
 	REVIEWER_RESEND_REQUEST: 'reviewerResendRequest',
@@ -26,9 +27,11 @@ export const Actions = {
 export function useReviewerManagerActions() {
 	const {t, localizeSubmission} = useLocalize();
 
-	function getTopActions() {
+	function getTopActions({redactedForAuthors}) {
 		const actions = [];
-
+		if (redactedForAuthors) {
+			return [];
+		}
 		actions.push({
 			label: t('editor.submission.addReviewer'),
 			name: Actions.REVIEWER_ADD,
@@ -37,9 +40,27 @@ export function useReviewerManagerActions() {
 		return actions;
 	}
 
-	function getItemPrimaryActions({reviewAssignment}) {
+	function getItemPrimaryActions({reviewAssignment, redactedForAuthors}) {
 		const reviewAssignmentStatusId = reviewAssignment.statusId;
 		const actions = [];
+
+		if (redactedForAuthors) {
+			if (
+				[
+					pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
+					pkp.const.REVIEW_ASSIGNMENT_STATUS_THANKED,
+					pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
+				].includes(reviewAssignmentStatusId)
+			) {
+				return [
+					{
+						label: t('editor.review.readReview'),
+						name: Actions.REVIEWER_READ_REVIEW_BY_AUTHOR,
+					},
+				];
+			}
+			return [];
+		}
 		if (
 			[
 				pkp.const.REVIEW_ASSIGNMENT_STATUS_RESPONSE_OVERDUE,
@@ -182,6 +203,31 @@ export function useReviewerManagerActions() {
 
 		openLegacyModal(
 			{title: t('editor.submission.addReviewer')},
+			finishedCallback,
+		);
+	}
+
+	function reviewerReadReviewByAuthor(
+		{submission, reviewAssignment, submissionStageId},
+		finishedCallback,
+	) {
+		const {openLegacyModal} = useLegacyGridUrl({
+			component: 'grid.users.reviewer.AuthorReviewerGridHandler',
+			op: 'readReview',
+			params: {
+				submissionId: submission.id,
+				reviewAssignmentId: reviewAssignment.id,
+				stageId: submissionStageId,
+			},
+		});
+
+		const {getCurrentPublication} = useSubmission();
+		const currentPublication = getCurrentPublication(submission);
+
+		openLegacyModal(
+			{
+				title: `${t('semicolon', {label: t('submission.review')})} ${localizeSubmission(currentPublication.fullTitle, currentPublication.locale)}`,
+			},
 			finishedCallback,
 		);
 	}
@@ -522,6 +568,7 @@ export function useReviewerManagerActions() {
 		getItemPrimaryActions,
 		reviewerAddReviewer,
 		reviewerReadReview,
+		reviewerReadReviewByAuthor,
 		reviewerReviewDetails,
 		reviewerEmailReviewer,
 		reviewerResendRequest,

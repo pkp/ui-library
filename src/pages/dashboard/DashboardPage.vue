@@ -98,6 +98,11 @@ const props = defineProps({
 		type: Number,
 		required: true,
 	},
+	/** context settings {supportsCitations, } */
+	publicationSettings: {
+		type: Object,
+		required: true,
+	},
 });
 
 const store = useDashboardPageStore(props);
