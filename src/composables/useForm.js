@@ -93,30 +93,16 @@ export function useForm(_form) {
 				field.selected = {};
 
 				Object.keys(inputValue).forEach((localeKey) => {
-					if (
-						Object.prototype.hasOwnProperty.call(
-							inputValue[localeKey],
-							'label',
-						) &&
-						Object.prototype.hasOwnProperty.call(inputValue[localeKey], 'value')
-					) {
-						field.selected[localeKey] = inputValue[localeKey];
-						field.value[localeKey] = mapFromSelectedToValue(
-							inputValue[localeKey],
-						);
-					} else {
-						field.value[localeKey] = inputValue[localeKey];
-						field.selected[localeKey] = inputValue[localeKey].map((val) => ({
-							label: val,
-							value: val,
-						}));
-					}
+					field.value[localeKey] = mapFromSelectedToValue(
+						inputValue[localeKey],
+					);
 				});
 			} else {
 				const onlyValues = mapFromSelectedToValue(inputValue);
 				field.value = onlyValues;
 				field.selected = inputValue;
 			}
+			field.selected = inputValue;
 		} else {
 			field.value = inputValue;
 		}
