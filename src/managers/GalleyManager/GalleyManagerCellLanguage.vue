@@ -8,7 +8,7 @@
 
 <script setup>
 import {computed} from 'vue';
-import TableCell from '@/components/TableNext/TableCell.vue';
+import TableCell from '@/components/Table/TableCell.vue';
 
 import {useGalleyManagerStore} from './galleyManagerStore';
 

@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import TableCell from '@/components/TableNext/TableCell.vue';
+import TableCell from '@/components/Table/TableCell.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import {useReviewerManagerStore} from './reviewerManagerStore';
 import {computed} from 'vue';

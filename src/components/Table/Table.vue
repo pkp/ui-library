@@ -1,29 +1,44 @@
 <template>
-	<div
-		v-if="slots.label || slots.description || slots['top-controls']"
-		class="flex justify-between bg-default p-4"
-	>
-		<div v-if="slots.label || slots.description">
-			<span v-if="slots.label" :id="labelId" class="text-xl-bold">
-				<slot name="label" />
-			</span>
-			<div v-if="slots.description" :id="descriptionId">
-				<slot name="description" />
+	<div>
+		<div
+			v-if="slots.label || slots.description || slots['top-controls']"
+			class="flex justify-between border-x border-t border-light bg-secondary p-4"
+		>
+			<div v-if="slots.label || slots.description">
+				<span
+					v-if="slots.label"
+					:id="labelId"
+					class="text-lg-bold text-heading"
+				>
+					<slot name="label" />
+				</span>
+				<div
+					v-if="slots.description"
+					:id="descriptionId"
+					class="text-sm-normal"
+				>
+					<slot name="description" />
+				</div>
+			</div>
+			<div v-if="slots['top-controls']" class="flex-shrink-0">
+				<slot name="top-controls" />
 			</div>
 		</div>
-		<div v-if="slots['top-controls']">
-			<slot name="top-controls" />
+		<table
+			class="pkpTable w-full max-w-full border-separate border-spacing-0"
+			:aria-labelledby="labelledBy ?? (slots.label ? labelId : null)"
+			:aria-describedby="
+				describedBy ?? (slots.description ? descriptionId : null)
+			"
+		>
+			<slot />
+		</table>
+		<div
+			v-if="slots['bottom-controls']"
+			class="flex justify-between border-x border-b border-light px-3 py-2"
+		>
+			<slot name="bottom-controls" />
 		</div>
-	</div>
-	<table
-		class="w-full max-w-full border-separate border-spacing-0"
-		:aria-labelledby="labelId"
-		:aria-describedby="descriptionId"
-	>
-		<slot />
-	</table>
-	<div v-if="slots['bottom-controls']" class="flex justify-between py-4">
-		<slot name="bottom-controls" />
 	</div>
 </template>
 
@@ -68,8 +83,8 @@ const tableContext = {
 const slots = useSlots();
 
 const {generateId} = useId();
-const labelId = slots.label ? generateId() : props.labelledBy;
-const descriptionId = slots.description ? generateId() : props.describedBy;
+const labelId = slots.label ? generateId() : null;
+const descriptionId = slots.description ? generateId() : null;
 
 provide('tableContext', tableContext);
 </script>

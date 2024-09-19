@@ -20,7 +20,7 @@
 
 <script setup>
 import {computed} from 'vue';
-import TableCell from '@/components/TableNext/TableCell.vue';
+import TableCell from '@/components/Table/TableCell.vue';
 import Icon from '@/components/Icon/Icon.vue';
 
 const props = defineProps({galley: {type: Object, required: true}});

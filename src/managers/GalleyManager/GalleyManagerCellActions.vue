@@ -22,7 +22,7 @@ defineProps({
 	galley: {type: Object, required: true},
 });
 
-import TableCell from '@/components/TableNext/TableCell.vue';
+import TableCell from '@/components/Table/TableCell.vue';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 
 const galleyManagerStore = useGalleyManagerStore();

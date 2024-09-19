@@ -22,17 +22,17 @@ const texts = computed(() => {
 				heading: t('editor.submission.workflowDecision.submission.underReview'),
 			};
 		case pkp.const.WORKFLOW_STAGE_ID_EDITING:
-			return {heading: 'a'};
+			return {heading: 'todo'};
 		case pkp.const.WORKFLOW_STAGE_ID_PRODUCTION:
 			switch (props.submission.status) {
 				case pkp.const.STATUS_QUEUED:
-					return {heading: 'a'};
+					return {heading: 'todo'};
 				case pkp.const.STATUS_SCHEDULED:
-					return {heading: 'a'};
+					return {heading: 'todo'};
 				case pkp.const.STATUS_PUBLISHED:
-					return {heading: 'a'};
+					return {heading: 'todo'};
 				case pkp.const.STATUS_DECLINED:
-					return {heading: 'a'};
+					return {heading: 'todo'};
 			}
 	}
 	return '';
