@@ -3,20 +3,26 @@
 		<Menu as="div">
 			<div>
 				<MenuButton
-					class="hover:bg-gray-50 inline-flex w-full justify-center gap-x-1.5 rounded px-3 py-2"
+					class="hover:bg-gray-50 inline-flex w-full justify-center gap-x-1.5 rounded"
 					:class="
 						displayAsEllipsis
 							? 'text-3xl-normal'
-							: 'border border-light bg-secondary text-lg-normal'
+							: 'border border-light bg-secondary px-3 py-2 text-lg-normal'
 					"
 					:aria-label="ariaLabel || null"
 				>
-					<span :class="displayAsEllipsis ? 'sr-only' : ''">{{ label }}</span>
+					<span v-if="!displayAsEllipsis">{{ label }}</span>
 					<Icon
-						class="-mr-1 h-5 w-5 text-primary"
-						:icon="displayAsEllipsis ? 'MoreOptions' : 'Dropdown'"
+						v-if="!displayAsEllipsis"
+						class="h-5 w-5 text-primary"
+						icon="Dropdown"
 						aria-hidden="true"
 					/>
+					<ButtonIcon
+						v-else
+						icon="MoreOptions"
+						:aria-label="label"
+					></ButtonIcon>
 				</MenuButton>
 			</div>
 
@@ -72,6 +78,7 @@
 <script setup>
 import {Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue';
 import PkpButton from '@/components/Button/Button.vue';
+import ButtonIcon from '@/components/ButtonIcon/ButtonIcon.vue';
 import Icon from '@/components/Icon/Icon.vue';
 
 defineProps({
