@@ -91,13 +91,17 @@ export default {
 			required: true,
 			default: false,
 		},
+		/** Whether an email requesting users verify their ORCID has been sent or not */
+		orcidVerificationRequested: {
+			type: Boolean,
+			required: true,
+		},
 	},
 	data() {
 		return {
 			/** Internal value used for displaying ORCID in component. Takes initial value from `orcid` prop */
 			orcidValue: '',
-			/** Whether an email requesting users verify their ORCID has been sent or not */
-			verificationRequested: false,
+			verificationRequested: this.orcidVerificationRequested,
 			/** Whether request verification/delete ORCID button should be disabled or not */
 			isButtonDisabled: false,
 		};
