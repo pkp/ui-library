@@ -1,12 +1,10 @@
 <template>
-	<Icon
-		v-if="iconOnly"
-		class="h-5 w-5 text-primary"
-		:icon="icon"
-		aria-hidden="true"
-	/>
-	<button v-else :class="styles" :aria-label="ariaLabel">
-		<Icon class="h-5 w-5" :icon="icon" aria-hidden="true" />
+	<button :class="styles" :aria-label="ariaLabel" :disabled="isDisabled">
+		<Icon
+			:class="enlarged ? 'h-12 w-12' : 'h-6 w-6'"
+			:icon="icon"
+			aria-hidden="true"
+		/>
 	</button>
 </template>
 
@@ -15,23 +13,28 @@ import {computed} from 'vue';
 import Icon from '@/components/Icon/Icon.vue';
 
 const props = defineProps({
+	/** Icon name to be displayed within the button */
 	icon: {
 		type: String,
 		required: true,
 	},
+	/** Accessible label for the button. */
 	ariaLabel: {
 		type: String,
 		default: null,
 	},
-	iconOnly: {
-		type: Boolean,
-		default: false,
-	},
+	/** Indicates whether the button is in an active state. */
 	isActive: {
 		type: Boolean,
 		default: false,
 	},
+	/** Disables the button, making it unclickable and styled as disabled */
 	isDisabled: {
+		type: Boolean,
+		default: false,
+	},
+	/** Displays the icon larger. */
+	enlarged: {
 		type: Boolean,
 		default: false,
 	},
@@ -39,13 +42,15 @@ const props = defineProps({
 
 const styles = computed(() => ({
 	// Base
-	'inline-flex relative items-center justify-center text-lg-semibold border-light border rounded w-10 h-10': true,
-	// Color
-	'text-primary bg-secondary': true,
+	'inline-flex relative items-center justify-center text-lg-semibold rounded w-12 h-12': true,
+	// Default
+	'text-primary bg-secondary': !props.isActive,
 	// Hover
-	'hover:text-on-dark hover:bg-hover': true,
+	'hover:text-on-dark hover:bg-hover': !props.isDisabled,
 	// Active
 	'text-on-dark bg-selection-dark border-transparent': props.isActive,
-	'text-disabled': props.isDisabled,
+	// Disabled
+	'hover:text-disabled hover:bg-secondary !text-disabled cursor-not-allowed':
+		props.isDisabled,
 }));
 </script>

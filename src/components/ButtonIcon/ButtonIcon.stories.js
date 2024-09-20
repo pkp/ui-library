@@ -12,25 +12,40 @@ export default {
 };
 
 export const Default = {
+	args: {
+		icon: 'Add',
+		ariaLabel: 'Add more items',
+	},
+};
+
+export const EnlargedIcon = {
 	render: (args) => ({
 		components: {ButtonIcon},
 		setup() {
 			return {args};
 		},
 		template: `
-			<div class="flex gap-x-1">
-				<ButtonIcon icon="ChevronUp" />
-				<ButtonIcon icon="ChevronDown" />
+			<div class="inline-flex gap-1">
+				<ButtonIcon icon="ChevronUp" :enlarged="true"/>
+				<ButtonIcon icon="ChevronDown" :enlarged="true" />
 			</div>
 			`,
 	}),
-
 	args: {},
 };
 
-export const IconOnly = {
+export const Disabled = {
 	args: {
-		icon: 'Dropdown',
-		iconOnly: true,
+		icon: 'Cancel',
+		ariaLabel: 'Cancel',
+		isDisabled: true,
+	},
+};
+
+export const Active = {
+	args: {
+		icon: 'Complete',
+		ariaLabel: 'Complete',
+		isActive: true,
 	},
 };
