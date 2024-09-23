@@ -25,9 +25,16 @@ export const EnlargedIcon = {
 			return {args};
 		},
 		template: `
+			enlarged icon:&nbsp;
 			<div class="inline-flex gap-1">
 				<ButtonIcon icon="ChevronUp" :enlarged="true"/>
 				<ButtonIcon icon="ChevronDown" :enlarged="true" />
+			</div>
+			<br>
+			vs default size:
+			<div class="inline-flex gap-1">
+				<ButtonIcon icon="ChevronUp"/>
+				<ButtonIcon icon="ChevronDown" />
 			</div>
 			`,
 	}),

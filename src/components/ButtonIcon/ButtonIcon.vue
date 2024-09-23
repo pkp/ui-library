@@ -1,7 +1,7 @@
 <template>
 	<button :class="styles" :aria-label="ariaLabel" :disabled="isDisabled">
 		<Icon
-			:class="enlarged ? 'h-12 w-12' : 'h-6 w-6'"
+			:class="enlarged ? 'h-9 w-9' : 'h-5 w-5'"
 			:icon="icon"
 			aria-hidden="true"
 		/>
@@ -42,7 +42,7 @@ const props = defineProps({
 
 const styles = computed(() => ({
 	// Base
-	'inline-flex relative items-center justify-center text-lg-semibold rounded w-12 h-12': true,
+	'inline-flex relative items-center justify-center text-lg-semibold rounded w-9 h-9': true,
 	// Default
 	'text-primary bg-secondary': !props.isActive,
 	// Hover
