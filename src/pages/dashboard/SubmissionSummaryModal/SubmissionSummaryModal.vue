@@ -29,7 +29,7 @@
 					:is="Components[item.component] || item.component"
 					v-bind="item.props"
 					v-for="(item, index) in summaryStore.headerItems"
-					:key="index"
+					:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
 				/>
 			</div>
 		</template>
@@ -47,7 +47,7 @@
 						:is="Components[item.component] || item.component"
 						v-bind="item.props"
 						v-for="(item, index) in summaryStore.publicationControlsLeft"
-						:key="`${index} - ${summaryStore.selectedMenuItem.key}`"
+						:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
 					/>
 				</div>
 			</template>
@@ -60,7 +60,7 @@
 						:is="Components[item.component] || item.component"
 						v-bind="item.props"
 						v-for="(item, index) in summaryStore.publicationControlsRight"
-						:key="`${index} - ${summaryStore.selectedMenuItem.key}`"
+						:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
 					/>
 				</div>
 			</template>
@@ -71,7 +71,7 @@
 						:is="Components[item.component] || item.component"
 						v-bind="item.props"
 						v-for="(item, index) in summaryStore.primaryItems"
-						:key="`${index} - ${summaryStore.selectedMenuItem.key}`"
+						:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
 					/>
 				</div>
 			</template>
@@ -81,7 +81,7 @@
 						:is="Components[item.component] || item.component"
 						v-for="(item, index) in summaryStore.actionItems"
 						v-bind="item.props"
-						:key="`${index} - ${summaryStore.selectedMenuItem.key}`"
+						:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
 					></component>
 				</div>
 			</template>
@@ -91,7 +91,7 @@
 						:is="Components[item.component] || item.component"
 						v-for="(item, index) in summaryStore.secondaryItems"
 						v-bind="item.props"
-						:key="`${index} - ${summaryStore.selectedMenuItem.key}`"
+						:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
 					></component>
 				</div>
 			</template>

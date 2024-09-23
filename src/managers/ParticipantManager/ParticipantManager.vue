@@ -42,6 +42,7 @@
 								(actionName) =>
 									participantManagerStore[actionName]({
 										participant: participant,
+										stageAssignmen,
 									})
 							"
 						/>

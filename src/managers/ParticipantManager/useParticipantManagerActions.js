@@ -61,8 +61,7 @@ export function useParticipantManagerActions() {
 							params: {
 								submissionId: submission.id,
 								stageId: submissionStageId,
-								// TODO refine once thats in the API
-								assignmentId: participant.stageAssignmentId || 98,
+								assignmentId: participant.stageAssignmentId,
 							},
 						});
 						const formData = new FormData();
@@ -110,8 +109,7 @@ export function useParticipantManagerActions() {
 			params: {
 				submissionId: submission.id,
 				stageId: submission.stageId,
-				// TODO refine once thats in the API
-				assignmentId: participant.stageAssignmentId || 63,
+				assignmentId: participant.stageAssignmentId,
 			},
 		});
 

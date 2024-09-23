@@ -1,6 +1,6 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
-import {ref, computed} from 'vue';
+import {ref, computed, watch} from 'vue';
 
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
@@ -16,11 +16,20 @@ export const useParticipantManagerStore = defineComponentStore(
 
 		const submissionId = ref(props.submission.id);
 
-		const {apiUrl: participantApiUrl} = useUrl(
-			`submissions/${encodeURIComponent(submissionId.value)}/participants`,
-		);
+		const relativeUrl = computed(() => {
+			console.log('stuff changed participants');
+			return `submissions/${encodeURIComponent(submissionId.value)}/participants/${props.submissionStageId}`;
+		});
+
+		const {apiUrl: participantApiUrl} = useUrl(relativeUrl);
+
 		const {data: participants, fetch: fetchParticipants} =
 			useFetch(participantApiUrl);
+
+		watch(relativeUrl, () => {
+			participants.value = null;
+			fetchParticipants();
+		});
 
 		fetchParticipants();
 
@@ -34,15 +43,32 @@ export const useParticipantManagerStore = defineComponentStore(
 			if (!participants.value) {
 				return [];
 			}
+			const list = [];
+			participants.value.forEach((participant) => {
+				participant.stageAssignments.forEach((stageAssignment) => {
+					list.push({
+						id: participant.id,
+						fullName: participant.fullName,
+						stageAssignmentId: stageAssignment.stageAssignmentId,
+						roleName: localize(stageAssignment.stageAssignmentUserGroup.name),
+						roleId: stageAssignment.stageAssignmentUserGroup.roleId,
+						userGroupId: stageAssignment.stageAssignmentUserGroup.id,
+					});
+				});
+			});
 
-			return participants.value.map((participant) => ({
-				id: participant.id,
-				fullName: participant.fullName,
-				roleName: localize(
-					// todo use the role thats will be added to the api and coming from the stage_assignments
-					participant.groups[0].name,
-				),
-			}));
+			console.log(list);
+			list.sort((participantA, participantB) => {
+				// First, compare by roleId
+				if (participantA.roleId !== participantB.roleId) {
+					return participantA.roleId - participantB.roleId;
+				}
+
+				// If roleIds are equal, compare by userGroupId
+				return participantA.userGroupId - participantB.userGroupId;
+			});
+
+			return list;
 		});
 
 		/**

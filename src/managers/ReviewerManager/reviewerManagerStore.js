@@ -2,6 +2,7 @@ import {computed} from 'vue';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 import {useSubmission} from '@/composables/useSubmission';
 import {useReviewerManagerActions} from './useReviewerManagerActions';
+import {useReviewerManagerConfig} from './useReviewerManagerConfig';
 import {useDataChanged} from '@/composables/useDataChanged';
 
 export const useReviewerManagerStore = defineComponentStore(
@@ -30,6 +31,11 @@ export const useReviewerManagerStore = defineComponentStore(
 		});
 
 		const {triggerDataChange} = useDataChanged();
+
+		/**
+		 * Config
+		 */
+		const {getCellStatusItems} = useReviewerManagerConfig();
 
 		/**
 		 * Actions
@@ -162,6 +168,9 @@ export const useReviewerManagerStore = defineComponentStore(
 		return {
 			getReviewMethodIcons,
 			reviewAssignments,
+
+			/** Config */
+			getCellStatusItems,
 
 			/** Actions */
 			topActions,

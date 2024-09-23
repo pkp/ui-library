@@ -59,7 +59,7 @@ export const WorkflowConfig = {
 				component: 'ParticipantManager',
 				props: {
 					submission,
-					submissionStageId: submission.stageId,
+					submissionStageId: selectedStageId,
 				},
 			});
 
@@ -82,9 +82,9 @@ export const WorkflowConfig = {
 			items.push({
 				component: 'FileManager',
 				props: {
-					configName: 'SUBMISSION_FILES',
+					namespace: 'SUBMISSION_FILES',
 					submission: submission,
-					submissionStageId: submission.stageId,
+					submissionStageId: selectedStageId,
 				},
 			});
 
@@ -175,9 +175,9 @@ export const WorkflowConfig = {
 			items.push({
 				component: 'FileManager',
 				props: {
-					configName: 'WORKFLOW_REVIEW_REVISIONS',
+					namespace: 'WORKFLOW_REVIEW_REVISIONS',
 					submission: submission,
-					submissionStageId: submission.stageId,
+					submissionStageId: selectedStageId,
 					reviewRoundId: selectedReviewRound?.id,
 				},
 			});
@@ -185,9 +185,9 @@ export const WorkflowConfig = {
 			items.push({
 				component: 'FileManager',
 				props: {
-					configName: 'EDITOR_REVIEW_FILES',
+					namespace: 'EDITOR_REVIEW_FILES',
 					submission: submission,
-					submissionStageId: submission.stageId,
+					submissionStageId: selectedStageId,
 					reviewRoundId: selectedReviewRound?.id,
 				},
 			});
@@ -322,9 +322,9 @@ export const WorkflowConfig = {
 			items.push({
 				component: 'FileManager',
 				props: {
-					configName: 'FINAL_DRAFT_FILES',
+					namespace: 'FINAL_DRAFT_FILES',
 					submission: submission,
-					submissionStageId: submission.stageId,
+					submissionStageId: selectedStageId,
 				},
 			});
 
@@ -339,9 +339,9 @@ export const WorkflowConfig = {
 			items.push({
 				component: 'FileManager',
 				props: {
-					configName: 'COPYEDITED_FILES',
+					namespace: 'COPYEDITED_FILES',
 					submission: submission,
-					submissionStageId: submission.stageId,
+					submissionStageId: selectedStageId,
 				},
 			});
 
@@ -403,9 +403,9 @@ export const WorkflowConfig = {
 			items.push({
 				component: 'FileManager',
 				props: {
-					configName: 'PRODUCTION_READY_FILES',
+					namespace: 'PRODUCTION_READY_FILES',
 					submission: submission,
-					submissionStageId: submission.stageId,
+					submissionStageId: selectedStageId,
 				},
 			});
 
@@ -714,6 +714,7 @@ export function useWorkflowEditorialConfig() {
 				selectedStageId: selectedMenuState.stageId,
 				selectedReviewRound,
 			};
+			console.log('itemsArgs:', itemsArgs);
 			if (!submission) {
 				return [];
 			}

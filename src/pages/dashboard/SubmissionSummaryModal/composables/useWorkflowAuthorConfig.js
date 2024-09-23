@@ -56,7 +56,7 @@ export const WorkflowConfig = {
 			items.push({
 				component: 'FileManager',
 				props: {
-					configName: 'SUBMISSION_FILES',
+					namespace: 'SUBMISSION_FILES',
 					submission: submission,
 					submissionStageId: submission.stageId,
 				},
@@ -125,7 +125,7 @@ export const WorkflowConfig = {
 			items.push({
 				component: 'FileManager',
 				props: {
-					configName: 'WORKFLOW_REVIEW_REVISIONS',
+					namespace: 'WORKFLOW_REVIEW_REVISIONS',
 					submission: submission,
 					submissionStageId: submission.stageId,
 					reviewRoundId: selectedReviewRound?.id,
@@ -172,7 +172,7 @@ export const WorkflowConfig = {
 			items.push({
 				component: 'FileManager',
 				props: {
-					configName: 'COPYEDITED_FILES',
+					namespace: 'COPYEDITED_FILES',
 					submission: submission,
 					submissionStageId: submission.stageId,
 				},
