@@ -1,10 +1,6 @@
 <template>
 	<button :class="styles" :aria-label="ariaLabel" :disabled="isDisabled">
-		<Icon
-			:class="enlarged ? 'h-9 w-9' : 'h-5 w-5'"
-			:icon="icon"
-			aria-hidden="true"
-		/>
+		<Icon class="h-5 w-5" :icon="icon" aria-hidden="true" />
 	</button>
 </template>
 
@@ -30,11 +26,6 @@ const props = defineProps({
 	},
 	/** Disables the button, making it unclickable and styled as disabled */
 	isDisabled: {
-		type: Boolean,
-		default: false,
-	},
-	/** Displays the icon larger. */
-	enlarged: {
 		type: Boolean,
 		default: false,
 	},
