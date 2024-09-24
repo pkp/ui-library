@@ -1,16 +1,6 @@
 <template>
-	<div class="me-3 flex min-h-screen gap-8 text-base-normal">
-		<div class="flex-none border-l border-r border-light">
-			<DashboardViews
-				:title="store.dashboardPageTitle"
-				:icon="store.dashboardPageIcon"
-				:dashboard-page="store.dashboardPage"
-				:views="store.views"
-				:current-view="store.currentView"
-				@load-view="store.loadView"
-			/>
-		</div>
-		<div class="flex-grow">
+	<div class="min-h-screentext-base-normal me-3 ms-5 text-base-normal">
+		<div class="">
 			<h2 class="flex items-center gap-4 py-6 text-5xl-bold">
 				{{
 					`${store.currentView.name} (${store.submissionsPagination.itemCount})`
@@ -23,7 +13,7 @@
 					</PkpButton>
 					<div>
 						<Search
-							:search-phrase="searchPhrase"
+							:search-phrase="store.searchPhrase"
 							:search-label="t('editor.submission.search')"
 							@search-phrase-changed="
 								(...args) => store.setSearchPhrase(...args)
@@ -56,7 +46,6 @@
 import PkpButton from '@/components/Button/Button.vue';
 import ActiveFilters from './components/ActiveFilters.vue';
 import DashboardTable from './components/DashboardTable/DashboardTable.vue';
-import DashboardViews from '@/pages/dashboard/components/DashboardViews.vue';
 import Search from '@/components/Search/Search.vue';
 
 import {useDashboardPageStore} from './dashboardPageStore';

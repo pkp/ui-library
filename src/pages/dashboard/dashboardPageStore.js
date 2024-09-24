@@ -7,7 +7,7 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
 import {useAnnouncer} from '@/composables/useAnnouncer';
 import {useUrl} from '@/composables/useUrl';
-import {useUrlSearchParams} from '@vueuse/core';
+import {useQueryParams} from '@/composables/useQueryParams';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
 import {useWorkflowActions} from './composables/useWorkflowActions';
@@ -67,27 +67,41 @@ export const useDashboardPageStore = defineComponentStore(
 		 * Url query params
 		 */
 		// Reactive query params parsed from the url
-		const queryParamsUrl = useUrlSearchParams();
+		const queryParamsUrl = useQueryParams();
 
 		/**
 		 * Views
 		 */
 		const views = ref(pageInitConfig.views);
-		const currentViewId = ref(
-			queryParamsUrl.currentViewId &&
-				views.value.find((view) => view.id === queryParamsUrl.currentViewId)
-				? queryParamsUrl.currentViewId
-				: views.value[0]?.id || null,
+		const currentViewId = computed(() => {
+			// does it exist
+			const view = views.value.find(
+				(view) => view.id === queryParamsUrl.currentViewId,
+			);
+			if (view) {
+				return queryParamsUrl.currentViewId;
+			} else {
+				// fallback to first available view
+				queryParamsUrl.currentViewId = views.value[0].id;
+				return views.value[0].id;
+			}
+		});
+
+		// reset filters when the view gets changed from menu
+		watch(
+			() => queryParamsUrl.currentViewId,
+			(newCurrentViewId, prevCurrentViewId) => {
+				if (newCurrentViewId !== prevCurrentViewId) {
+					currentPage.value = 1;
+					clearFiltersForm();
+					resetSearchPhrase();
+				}
+			},
 		);
+
 		const currentView = computed(
 			() => views.value.find((view) => view.id === currentViewId.value) || {},
 		);
-		function loadView(view) {
-			currentViewId.value = view.id;
-			currentPage.value = 1;
-			clearFiltersForm();
-			resetSearchPhrase();
-		}
 
 		/**
 		 * Columns
@@ -97,13 +111,27 @@ export const useDashboardPageStore = defineComponentStore(
 		/**
 		 * Search Phrase
 		 */
-		const searchPhrase = ref(queryParamsUrl.searchPhrase || '');
+		const searchPhrase = computed(() => {
+			console.log('search phrase computed:', queryParamsUrl.searchPhrase);
+			return queryParamsUrl.searchPhrase || '';
+		});
 		function setSearchPhrase(value) {
-			searchPhrase.value = value;
+			queryParamsUrl.searchPhrase = value;
 			currentPage.value = 1;
 		}
 		function resetSearchPhrase() {
-			searchPhrase.value = undefined;
+			queryParamsUrl.searchPhrase = undefined;
+		}
+
+		/**
+		 * Filters Modal
+		 */
+		const isModalOpenedFilters = ref(false);
+		function openFiltersModal() {
+			openSideModal(DashboardFiltersModal, {
+				filtersFormInitial: filtersForm,
+				onUpdateFiltersForm: updateFiltersForm,
+			});
 		}
 
 		/**
@@ -120,8 +148,31 @@ export const useDashboardPageStore = defineComponentStore(
 			clearFiltersFormField,
 			initFiltersFormFromQueryParams,
 		} = useFiltersForm(filtersForm);
-		// Apply query params to filtersForm
-		initFiltersFormFromQueryParams(queryParamsUrl);
+
+		watch(filtersFormQueryParams, (paramsToApply) => {
+			console.log('paramsToApply:', paramsToApply);
+			Object.keys(paramsToApply).forEach((paramKey) => {
+				if (
+					JSON.stringify(queryParamsUrl[paramKey]) !==
+					JSON.stringify(paramsToApply[paramKey])
+				) {
+					console.log(
+						'updating query params url:',
+						JSON.stringify(queryParamsUrl[paramKey]),
+						JSON.stringify(paramsToApply[paramKey]),
+					);
+					queryParamsUrl[paramKey] = paramsToApply[paramKey];
+				}
+			});
+		});
+
+		watch(
+			queryParamsUrl,
+			(newQueryParamsUrl) => {
+				initFiltersFormFromQueryParams(newQueryParamsUrl);
+			},
+			{immediate: true},
+		);
 
 		/**
 		 * Sorting
@@ -279,9 +330,12 @@ export const useDashboardPageStore = defineComponentStore(
 		 */
 
 		// Tracking which submissionId is opened in summary modal for query params
-		const summarySubmissionId = ref(null);
+		const summarySubmissionId = computed(() => {
+			return queryParamsUrl.summarySubmissionId;
+		});
+
 		function openSummaryModal(submissionId) {
-			summarySubmissionId.value = submissionId;
+			queryParamsUrl.summarySubmissionId = submissionId;
 			openSideModal(
 				SubmissionSummaryModal,
 				{
@@ -290,7 +344,7 @@ export const useDashboardPageStore = defineComponentStore(
 				},
 				{
 					onClose: async () => {
-						summarySubmissionId.value = null;
+						queryParamsUrl.summarySubmissionId = null;
 						await fetchSubmissions();
 					},
 				},
@@ -299,38 +353,6 @@ export const useDashboardPageStore = defineComponentStore(
 		if (queryParamsUrl.summarySubmissionId) {
 			openSummaryModal(queryParamsUrl.summarySubmissionId);
 		}
-
-		/**
-		 * Filters Modal
-		 */
-		const isModalOpenedFilters = ref(false);
-		function openFiltersModal() {
-			openSideModal(DashboardFiltersModal, {
-				filtersFormInitial: filtersForm,
-				onUpdateFiltersForm: updateFiltersForm,
-			});
-		}
-
-		/**
-		 * Sync Query params
-		 */
-
-		// Calculate all query params that should be applied to the url
-		const queryParamsInternal = computed(() => {
-			return {
-				...filtersFormQueryParams.value,
-				searchPhrase: searchPhrase.value,
-				currentViewId: currentViewId.value,
-				summarySubmissionId: summarySubmissionId.value || undefined,
-			};
-		});
-
-		// Apply queryParamsInternal to reactive queryParams to udpate url
-		watch(queryParamsInternal, (paramsToApply) => {
-			Object.keys(paramsToApply).forEach((paramKey) => {
-				queryParamsUrl[paramKey] = paramsToApply[paramKey];
-			});
-		});
 
 		/**
 		 * Expose editorial logic function via store to make it easier
@@ -355,7 +377,6 @@ export const useDashboardPageStore = defineComponentStore(
 			views,
 			currentViewId,
 			currentView,
-			loadView,
 
 			// Columns
 			columns,
@@ -385,6 +406,9 @@ export const useDashboardPageStore = defineComponentStore(
 			isSubmissionsLoading,
 			fetchSubmissions,
 			setCurrentPage,
+
+			// Workflow Page
+			summarySubmissionId,
 
 			// Reviewer listing
 			openReviewerForm,
