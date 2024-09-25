@@ -27,32 +27,24 @@
 						leave-from="opacity-100 translate-y-0 sm:scale-100"
 						leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 					>
-						<DialogPanel
-							data-cy="dialog"
-							class="modal__panel modal__panel--dialog relative mx-3 w-10/12 max-w-3xl transform overflow-hidden rounded bg-secondary text-start shadow transition-all sm:my-8"
-						>
+						<DialogPanel data-cy="dialog" :class="styles">
 							<div class="flex min-h-12 items-center">
 								<DialogTitle
 									v-if="title"
-									class="m-0 min-w-[1px] overflow-x-hidden overflow-ellipsis whitespace-nowrap px-4 py-2 text-xl-bold"
+									class="m-0 inline-flex min-w-[1px] items-center overflow-x-hidden overflow-ellipsis whitespace-nowrap px-8 pt-12 text-4xl-bold"
+									:class="icon ? 'pb-5' : 'pb-8'"
 								>
-									{{ title }}
+									<div v-if="icon" :class="iconStyles">
+										<Icon
+											:icon="icon"
+											:inline="true"
+											class="h-11 w-11 text-on-dark"
+										></Icon>
+									</div>
+									<span class="px-4">{{ title }}</span>
 								</DialogTitle>
-								<button
-									class="me-2 ms-auto cursor-pointer border-0 bg-transparent text-center"
-									@click="onClose"
-								>
-									<Icon
-										class="h-6 w-6 text-negative"
-										icon="Cancel"
-										:aria-hidden="true"
-									/>
-									<span class="-screenReader">
-										{{ t('common.close') }}
-									</span>
-								</button>
 							</div>
-							<div class="modal-content p-4">
+							<div class="modal-content" :class="icon ? 'px-24' : 'pt- px-12'">
 								<div v-html="message" />
 								<component
 									:is="bodyComponent"
@@ -60,12 +52,14 @@
 									v-bind="bodyProps"
 								/>
 							</div>
-							<div class="flex items-center justify-end p-4">
+							<div
+								class="flex items-center gap-x-4"
+								:class="icon ? 'p-10 ps-24' : 'p-12'"
+							>
 								<Spinner v-if="isLoading" />
 								<PkpButton
 									v-for="action in actions"
 									:key="action.label"
-									class="ms-2"
 									:element="action.element || 'button'"
 									:href="action.href || null"
 									:is-primary="action.isPrimary || null"
@@ -87,7 +81,7 @@
 </template>
 
 <script setup>
-import {ref} from 'vue';
+import {ref, computed} from 'vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';
 
@@ -116,7 +110,37 @@ const props = defineProps({
 	actions: {type: Array, default: () => []},
 	/** Callback when dialog is being closed by close button or clicking outside of the modal */
 	close: {type: Function, default: null},
+	/** Defines the visual style of the modal: 'default' (primary color), 'negative', or 'success'. */
+	type: {
+		type: String,
+		default: () => 'default',
+		validator: (value) => ['default', 'negative', 'success'].includes(value),
+	},
 });
+
+const styles = computed(() => ({
+	'modal__panel modal__panel--dialog relative mx-3 w-10/12 max-w-3xl transform overflow-hidden rounded bg-secondary text-start shadow transition-all sm:my-8': true,
+	'border-s-[14px] border-primary': props.type === 'default',
+	'border-s-[14px] border-success': props.type === 'success',
+	'border-s-[14px] border-negative': props.type === 'negative',
+}));
+
+const icon = computed(() => {
+	switch (props.type) {
+		case 'negative':
+			return 'Cancel';
+		case 'success':
+			return 'Complete';
+		default:
+			return null;
+	}
+});
+
+const iconStyles = computed(() => ({
+	'flex h-12 w-12 items-center justify-center rounded-full': true,
+	'bg-success': props.type === 'success',
+	'bg-negative': props.type === 'negative',
+}));
 
 const emit = defineEmits(['close']);
 

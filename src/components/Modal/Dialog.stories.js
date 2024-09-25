@@ -138,3 +138,84 @@ export const DialogComplex = {
 		await user.click(canvas.getByText('Full Example'));
 	},
 };
+
+const ErrorBodyComponent = {
+	template: `
+    	<span>Cancelling the invitation sent to Emma Stone will deactivate the acceptance link sent to her via email. Here are the invitation details:</span>
+        <ul class="list-disc ms-7">
+            <li>
+                <strong>Email Address:</strong> {email address}
+            </li>
+            <li>
+                <strong>Role:</strong> Reviewer
+            </li>
+            <li>
+                <strong>Status</strong> Invited on 17.05.2023
+            </li>
+            <li>
+                <strong>Affiliate:</strong> Stanford University
+            </li>
+        </ul>
+    `,
+	props: {
+		failedDoiActions: {type: Array, required: true},
+	},
+};
+
+export const NegativeState = {
+	args: {
+		buttonName: 'Show modal',
+		name: 'error',
+		title: 'Cancel Invitation',
+		bodyComponent: ErrorBodyComponent,
+		actions: [
+			{
+				label: 'Cancel Invitation',
+				isPrimary: true,
+				callback: (close) => {
+					// Simulate a server request
+					setTimeout(() => close(), 2000);
+				},
+			},
+			{
+				label: 'Cancel',
+				isWarnable: true,
+				callback: (close) => close(),
+			},
+		],
+		close: () => console.log('closed full example dialog'), // eslint-disable-line,
+		type: 'negative',
+	},
+	play: async ({canvasElement}) => {
+		// Assigns canvas to the component root element
+		const canvas = within(canvasElement);
+		const user = userEvent.setup();
+
+		await user.click(canvas.getByText('Show modal'));
+	},
+};
+
+export const SuccessState = {
+	args: {
+		buttonName: 'Show modal',
+		name: 'error',
+		title: "You've been added as a section editor in OJS",
+		message:
+			'Congratulations! As a section editor you might get access to more options in OJS. If you need any assistance in understanding the system, please click on "Help" buttons throughout the system to guide you through the interface.',
+		actions: [
+			{
+				label: 'View All Submissions',
+				callback: (close) => close(),
+			},
+		],
+		close: () => console.log('closed full example dialog'), // eslint-disable-line,
+		type: 'success',
+	},
+	play: async ({canvasElement}) => {
+		// Assigns canvas to the component root element
+		const canvas = within(canvasElement);
+		const user = userEvent.setup();
+
+		await user.click(canvas.getByText('Show modal'));
+	},
+};
