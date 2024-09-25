@@ -111,7 +111,7 @@ const props = defineProps({
 	/** Callback when dialog is being closed by close button or clicking outside of the modal */
 	close: {type: Function, default: null},
 	/** Defines the visual style of the modal: 'default' (primary color), 'negative', or 'success'. */
-	type: {
+	modalStyle: {
 		type: String,
 		default: () => 'default',
 		validator: (value) => ['default', 'negative', 'success'].includes(value),
@@ -120,13 +120,13 @@ const props = defineProps({
 
 const styles = computed(() => ({
 	'modal__panel modal__panel--dialog relative mx-3 w-10/12 max-w-3xl transform overflow-hidden rounded bg-secondary text-start shadow transition-all sm:my-8': true,
-	'border-s-[14px] border-primary': props.type === 'default',
-	'border-s-[14px] border-success': props.type === 'success',
-	'border-s-[14px] border-negative': props.type === 'negative',
+	'border-s-[14px] border-primary': props.modalStyle === 'default',
+	'border-s-[14px] border-success': props.modalStyle === 'success',
+	'border-s-[14px] border-negative': props.modalStyle === 'negative',
 }));
 
 const icon = computed(() => {
-	switch (props.type) {
+	switch (props.modalStyle) {
 		case 'negative':
 			return 'Cancel';
 		case 'success':
@@ -138,8 +138,8 @@ const icon = computed(() => {
 
 const iconStyles = computed(() => ({
 	'flex h-12 w-12 items-center justify-center rounded-full': true,
-	'bg-success': props.type === 'success',
-	'bg-negative': props.type === 'negative',
+	'bg-success': props.modalStyle === 'success',
+	'bg-negative': props.modalStyle === 'negative',
 }));
 
 const emit = defineEmits(['close']);
