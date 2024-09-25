@@ -184,7 +184,7 @@ export const NegativeState = {
 			},
 		],
 		close: () => console.log('closed full example dialog'), // eslint-disable-line,
-		type: 'negative',
+		modalStyle: 'negative',
 	},
 	play: async ({canvasElement}) => {
 		// Assigns canvas to the component root element
@@ -209,7 +209,7 @@ export const SuccessState = {
 			},
 		],
 		close: () => console.log('closed full example dialog'), // eslint-disable-line,
-		type: 'success',
+		modalStyle: 'success',
 	},
 	play: async ({canvasElement}) => {
 		// Assigns canvas to the component root element
