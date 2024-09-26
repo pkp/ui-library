@@ -1,6 +1,6 @@
 <template>
 	<button :class="styles" :aria-label="ariaLabel" :disabled="isDisabled">
-		<Icon class="h-5 w-5" :icon="icon" aria-hidden="true" />
+		<Icon class="h-6 w-6" :icon="icon" aria-hidden="true" />
 	</button>
 </template>
 
@@ -33,9 +33,9 @@ const props = defineProps({
 
 const styles = computed(() => ({
 	// Base
-	'inline-flex relative items-center justify-center text-lg-semibold rounded w-9 h-9': true,
+	'inline-flex relative items-center justify-center text-lg-semibold rounded w-6 h-6': true,
 	// Default
-	'text-primary bg-secondary': !props.isActive,
+	'text-primary': !props.isActive,
 	// Hover
 	'hover:text-on-dark hover:bg-hover': !props.isDisabled,
 	// Active

@@ -33,3 +33,29 @@ export const Active = {
 		isActive: true,
 	},
 };
+
+export const Order = {
+	render: (args) => ({
+		components: {ButtonIcon},
+		setup() {
+			return {args};
+		},
+		template: `
+			<div class="flex inline-flex items-center items-justify gap-2">
+				<ButtonIcon v-for="icon in args.icons" v-bind="icon" />
+			</div>
+			`,
+	}),
+	args: {
+		icons: [
+			{
+				icon: 'ChevronUp',
+				ariaLabel: 'Move up',
+			},
+			{
+				icon: 'ChevronDown',
+				ariaLabel: 'Move down',
+			},
+		],
+	},
+};
