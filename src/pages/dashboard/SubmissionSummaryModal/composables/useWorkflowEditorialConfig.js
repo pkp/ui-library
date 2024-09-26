@@ -203,17 +203,21 @@ export const WorkflowConfig = {
 			return items;
 		},
 		getSecondaryItems: ({submission, selectedReviewRound, selectedStageId}) => {
-			// TODO add isDecidingEditor boolean to api
 			const items = [];
-			items.push({
-				component: 'WorkflowRecommendOnlyListingRecommendations',
-				props: {
-					submission: submission,
-					stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
-					reviewRoundId: selectedReviewRound.id,
-				},
-			});
 
+			// TODO add isDecidingEditor boolean to api to make it more accurate
+			const selectedStage = getStageById(submission, selectedStageId);
+			const isRecommendOnlyEditor = selectedStage.currentUserCanRecommendOnly;
+			if (!isRecommendOnlyEditor) {
+				items.push({
+					component: 'WorkflowRecommendOnlyListingRecommendations',
+					props: {
+						submission: submission,
+						stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+						reviewRoundId: selectedReviewRound.id,
+					},
+				});
+			}
 			items.push({
 				component: 'ParticipantManager',
 				props: {
@@ -255,7 +259,7 @@ export const WorkflowConfig = {
 				items.push({
 					component: 'WorkflowRecommendOnlyControls',
 					props: {
-						submissionId: submission.id,
+						submission: submission,
 						userId: pkp.currentUser.id,
 						stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 						reviewRoundId: selectedReviewRound.id,
@@ -756,7 +760,6 @@ export function useWorkflowEditorialConfig() {
 				selectedStageId: selectedMenuState.stageId,
 				selectedReviewRound,
 			};
-			console.log('itemsArgs:', itemsArgs);
 			if (!submission) {
 				return [];
 			}

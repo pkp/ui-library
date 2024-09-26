@@ -1,6 +1,6 @@
 <template>
 	<div
-		v-if="!isLoading && currentRecommendation"
+		v-if="!isDecidingEditorAssigned || (!isLoading && currentRecommendation)"
 		class="w-full border border-light"
 	>
 		<div class="p-4">
@@ -8,7 +8,10 @@
 				{{ t('editor.submission.recommendation') }}
 			</h2>
 		</div>
-		<div class="flex flex-col border-t border-light p-4">
+		<div
+			v-if="isDecidingEditorAssigned"
+			class="flex flex-col border-t border-light p-4"
+		>
 			<p class="text-lg-normal text-default">
 				{{ currentRecommendation.label }}
 			</p>
@@ -17,6 +20,11 @@
 					{{ t('editor.submission.workflowDecision.changeDecision') }}
 				</PkpButton>
 			</span>
+		</div>
+		<div v-else class="p-4">
+			<p class="text-lg-normal text-default">
+				{{ t('editor.submission.recommendation.noDecidingEditors') }}
+			</p>
 		</div>
 	</div>
 	<div v-if="showRecommendationActions" class="flex flex-col gap-y-2">
@@ -44,7 +52,7 @@ import {Actions as WorkflowActions} from '../../composables/useWorkflowActions';
 const {t} = useLocalize();
 
 const props = defineProps({
-	submissionId: {type: Number, required: true},
+	submission: {type: Object, required: true},
 	reviewRoundId: {type: Number, required: true},
 	stageId: {type: Number, required: true},
 	userId: {type: Number, required: true},
@@ -59,7 +67,15 @@ const RecommendOnlyDecisions = [
 
 const explicitelyShowRecommendationActions = ref(false);
 
+const isDecidingEditorAssigned = computed(() => {
+	return props.submission?.editorAssigned;
+});
+
 const showRecommendationActions = computed(() => {
+	if (!isDecidingEditorAssigned.value) {
+		return false;
+	}
+
 	if (explicitelyShowRecommendationActions.value) {
 		return true;
 	}
@@ -101,7 +117,7 @@ const actionItems = computed(() => {
 
 const {apiUrl: recommendationApiUrl} = useUrl(
 	// TODO improve url when the query params are available
-	`submissions/${props.submissionId}/decisions`,
+	`submissions/${props.submission?.id}/decisions`,
 );
 
 const {
