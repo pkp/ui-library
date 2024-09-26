@@ -53,6 +53,7 @@ export const useParticipantManagerStore = defineComponentStore(
 						roleName: localize(stageAssignment.stageAssignmentUserGroup.name),
 						roleId: stageAssignment.stageAssignmentUserGroup.roleId,
 						userGroupId: stageAssignment.stageAssignmentUserGroup.id,
+						recommendOnly: stageAssignment.recommendOnly,
 					});
 				});
 			});

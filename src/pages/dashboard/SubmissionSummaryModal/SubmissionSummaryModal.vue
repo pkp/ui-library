@@ -120,7 +120,9 @@ import PublicationForm from './primaryItems/PublicationForm.vue';
 import PublicationJats from './primaryItems/PublicationJats.vue';
 import PublicationVersionControl from './publicationControls/PublicationVersionControl.vue';
 import ActionButton from './actionItems/ActionButton.vue';
-import WorkflowRecommendationControls from './actionItems/WorkflowRecommendationControls.vue';
+import WorkflowRecommendOnlyControls from './actionItems/WorkflowRecommendOnlyControls.vue';
+import WorkflowRecommendOnlyListingRecommendations from './components/WorkflowRecommendOnlyListingRecommendations.vue';
+
 import BasicMetadata from './metaItems/BasicMetadata.vue';
 import SubmissionStatus from './primaryItems/SubmissionStatus.vue';
 import GalleyManager from '@/managers/GalleyManager/GalleyManager.vue';
@@ -141,7 +143,8 @@ const Components = {
 	ParticipantManager,
 	GalleyManager,
 	ActionButton,
-	WorkflowRecommendationControls,
+	WorkflowRecommendOnlyControls,
+	WorkflowRecommendOnlyListingRecommendations,
 	WorkflowNotificationDisplay,
 	BasicMetadata,
 	WorkflowPaymentDropdown,

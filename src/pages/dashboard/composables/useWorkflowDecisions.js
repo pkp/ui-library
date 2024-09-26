@@ -88,13 +88,13 @@ export function useWorkflowDecisions() {
 		openDecisionPage(submission, pkp.const.DECISION_BACK_FROM_PRODUCTION);
 	}
 
-	function decisionRecommendAccept({submission}, {reviewRoundId}) {
+	function decisionRecommendAccept({submission, reviewRoundId}) {
 		openDecisionPage(submission, pkp.const.DECISION_RECOMMEND_ACCEPT, {
 			reviewRoundId,
 		});
 	}
 
-	function decisionRecommendDecline({submission}, {reviewRoundId}) {
+	function decisionRecommendDecline({submission, reviewRoundId}) {
 		openDecisionPage(submission, pkp.const.DECISION_RECOMMEND_DECLINE, {
 			reviewRoundId,
 		});

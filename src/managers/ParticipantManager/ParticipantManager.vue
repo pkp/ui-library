@@ -31,6 +31,12 @@
 							<div class="text-sm-normal text-secondary">
 								{{ participant.roleName }}
 							</div>
+							<div
+								v-if="participant.recommendOnly"
+								class="mt-0.5 text-xs-normal text-heading"
+							>
+								{{ t('dashboard.recommendOnly.onlyAllowedToRecommend') }}
+							</div>
 						</div>
 					</div>
 					<div>

@@ -226,6 +226,14 @@ export function useSubmission() {
 		return ['OpenReview', 'OpenReview'];
 	}
 
+	function getRecommendOnlyUserIdsForStage(submission, stageId) {
+		const stage = getStageById(submission, stageId);
+
+		return stage.stageAssignments
+			.filter((assignment) => assignment.recommendOnly)
+			.map((assignment) => assignment.userId);
+	}
+
 	return {
 		getSubmissionById,
 		getActiveStage,
@@ -248,5 +256,6 @@ export function useSubmission() {
 		getOpenReviewAssignmentsForRound,
 		getReviewMethodIcons,
 		InProgressReviewAssignmentStatuses,
+		getRecommendOnlyUserIdsForStage,
 	};
 }
