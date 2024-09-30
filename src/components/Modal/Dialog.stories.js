@@ -183,7 +183,7 @@ export const NegativeState = {
 				callback: (close) => close(),
 			},
 		],
-		close: () => console.log('closed full example dialog'), // eslint-disable-line,
+		close: () => console.log('closed example dialog'), // eslint-disable-line,
 		modalStyle: 'negative',
 	},
 	play: async ({canvasElement}) => {
@@ -208,8 +208,32 @@ export const SuccessState = {
 				callback: (close) => close(),
 			},
 		],
-		close: () => console.log('closed full example dialog'), // eslint-disable-line,
+		close: () => console.log('closed example dialog'), // eslint-disable-line,
 		modalStyle: 'success',
+	},
+	play: async ({canvasElement}) => {
+		// Assigns canvas to the component root element
+		const canvas = within(canvasElement);
+		const user = userEvent.setup();
+
+		await user.click(canvas.getByText('Show modal'));
+	},
+};
+
+export const PrimaryStyle = {
+	args: {
+		buttonName: 'Show modal',
+		name: 'primary',
+		title: 'Primary Color',
+		message: "This dialog uses the application's primary color.",
+		actions: [
+			{
+				label: 'Ok',
+				callback: (close) => close(),
+			},
+		],
+		close: () => console.log('closed example dialog'), // eslint-disable-line,
+		modalStyle: 'primary',
 	},
 	play: async ({canvasElement}) => {
 		// Assigns canvas to the component root element
