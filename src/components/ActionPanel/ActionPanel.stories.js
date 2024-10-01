@@ -35,6 +35,7 @@ export const Default = {
 							callback: (close) => close(),
 						},
 					],
+					modalStyle: 'negative',
 				});
 			}
 			return {

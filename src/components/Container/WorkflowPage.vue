@@ -352,6 +352,7 @@ export default {
 						callback: (close) => close(),
 					},
 				],
+				modalStyle: 'primary',
 			});
 		},
 

@@ -432,6 +432,7 @@ export default {
 						callback: (close) => close(),
 					},
 				],
+				modalStyle: 'negative',
 			});
 		},
 
@@ -661,6 +662,7 @@ export default {
 						callback: (close) => close(),
 					},
 				],
+				modalStyle: 'primary',
 			});
 		},
 

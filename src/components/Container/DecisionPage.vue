@@ -182,6 +182,7 @@ export default {
 						callback: (close) => close(),
 					},
 				],
+				modalStyle: 'negative',
 			});
 		},
 
@@ -266,6 +267,7 @@ export default {
 				message: this.decisionCompleteDescription,
 				actions,
 				close,
+				modalStyle: 'success',
 			});
 		},
 
