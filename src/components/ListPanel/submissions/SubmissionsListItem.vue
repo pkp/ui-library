@@ -813,15 +813,15 @@ export default {
 				actions: [
 					{
 						label: this.t('common.yes'),
-						isPrimary: true,
+						isWarnable: true,
 						callback: this.deleteSubmission,
 					},
 					{
 						label: this.t('common.no'),
-						isWarnable: true,
 						callback: (close) => close(),
 					},
 				],
+				modalStyle: 'negative',
 			});
 		},
 
