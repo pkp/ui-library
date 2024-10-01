@@ -169,6 +169,7 @@ export default {
 							},
 						},
 					],
+					modalStyle: 'primary',
 				});
 			});
 		},
