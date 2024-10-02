@@ -112,7 +112,6 @@ export const useDashboardPageStore = defineComponentStore(
 		 * Search Phrase
 		 */
 		const searchPhrase = computed(() => {
-			console.log('search phrase computed:', queryParamsUrl.searchPhrase);
 			return queryParamsUrl.searchPhrase || '';
 		});
 		function setSearchPhrase(value) {
@@ -150,17 +149,11 @@ export const useDashboardPageStore = defineComponentStore(
 		} = useFiltersForm(filtersForm);
 
 		watch(filtersFormQueryParams, (paramsToApply) => {
-			console.log('paramsToApply:', paramsToApply);
 			Object.keys(paramsToApply).forEach((paramKey) => {
 				if (
 					JSON.stringify(queryParamsUrl[paramKey]) !==
 					JSON.stringify(paramsToApply[paramKey])
 				) {
-					console.log(
-						'updating query params url:',
-						JSON.stringify(queryParamsUrl[paramKey]),
-						JSON.stringify(paramsToApply[paramKey]),
-					);
 					queryParamsUrl[paramKey] = paramsToApply[paramKey];
 				}
 			});

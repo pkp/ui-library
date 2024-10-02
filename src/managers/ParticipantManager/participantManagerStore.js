@@ -17,7 +17,6 @@ export const useParticipantManagerStore = defineComponentStore(
 		const submissionId = ref(props.submission.id);
 
 		const relativeUrl = computed(() => {
-			console.log('stuff changed participants');
 			return `submissions/${encodeURIComponent(submissionId.value)}/participants/${props.submissionStageId}`;
 		});
 
@@ -58,7 +57,6 @@ export const useParticipantManagerStore = defineComponentStore(
 				});
 			});
 
-			console.log(list);
 			list.sort((participantA, participantB) => {
 				// First, compare by roleId
 				if (participantA.roleId !== participantB.roleId) {
