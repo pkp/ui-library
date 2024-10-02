@@ -21,6 +21,7 @@ import {useUrl} from '@/composables/useUrl';
 import {useDataChanged} from '@/composables/useDataChanged';
 
 const props = defineProps({
+	canEditPublication: {type: Boolean, required: true},
 	formName: {type: String, required: true},
 	noFieldsMessage: {type: String, required: false, default: null},
 	submission: {type: Object, required: true},
@@ -42,6 +43,10 @@ watch(
 	{immediate: true},
 );
 
+watch(publicationForm, (newPublicationForm) => {
+	newPublicationForm.canSubmit = props.canEditPublication;
+});
+
 const displayNoFieldsEnabled = computed(() => {
 	if (publicationForm.value && publicationForm.value.fields.length === 0) {
 		return true;
@@ -50,7 +55,7 @@ const displayNoFieldsEnabled = computed(() => {
 	return false;
 });
 
-const {triggerDataChange} = useDataChanged(() => fetchForm());
+const {triggerDataChange} = useDataChanged();
 
 const {set, form} = useForm(publicationForm);
 </script>

@@ -19,7 +19,7 @@ export const Actions = {
 function openDecisionPage(submission, decisionId, actionArgs = {}) {
 	const queryParamsUrl = useUrlSearchParams();
 
-	const currentPageUrl = `dashboard/editorial?${new URLSearchParams({...queryParamsUrl, summarySubmissionId: submission.id}).toString()}`;
+	const currentPageUrl = `dashboard/editorial?${new URLSearchParams({...queryParamsUrl, workflowSubmissionId: submission.id}).toString()}`;
 
 	const queryParams = {decision: decisionId, ret: currentPageUrl};
 

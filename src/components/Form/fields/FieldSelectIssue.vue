@@ -35,7 +35,7 @@
 					v-if="button"
 					v-bind="button"
 					class="pkpFormField--selectIssue__button"
-					@click="emitGlobal(button.event)"
+					@click="selectIssue"
 				>
 					{{ button.label }}
 				</PkpButton>
@@ -111,15 +111,8 @@ export default {
 		 */
 		button() {
 			let button = null;
-			if (this.publicationStatus === pkp.const.STATUS_SCHEDULED) {
+			if (this.publicationStatus !== pkp.const.STATUS_PUBLISHED) {
 				button = {
-					event: 'unpublish:publication',
-					isWarnable: true,
-					label: this.unscheduleLabel,
-				};
-			} else if (this.publicationStatus !== pkp.const.STATUS_PUBLISHED) {
-				button = {
-					event: 'schedule:publication',
 					label: this.value ? this.changeIssueLabel : this.assignLabel,
 				};
 			}
@@ -162,6 +155,23 @@ export default {
 		},
 	},
 	methods: {
+		async selectIssue() {
+			// workaround to avoid circular dependencies in storybook
+			// There is chain if imports, and some of them imported form
+			// which seems to be causing circular dependency
+			const {useSubmissionSummaryStore} = await import(
+				'@/pages/dashboard/SubmissionSummaryModal/submissionSummaryStore.js'
+			);
+
+			const summaryStore = useSubmissionSummaryStore();
+
+			summaryStore.workflowAssignToIssue({}, (finishedData) => {
+				if (finishedData.data.issueId) {
+					this.currentValue = finishedData.data.issueId;
+				}
+			});
+		},
+
 		/**
 		 * Emit a global event
 		 *

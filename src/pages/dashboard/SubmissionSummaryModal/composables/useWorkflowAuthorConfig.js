@@ -254,7 +254,12 @@ export const PublicationConfig = {
 		},
 	},
 	titleAbstract: {
-		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
+		getPrimaryItems: ({
+			submission,
+			selectedPublication,
+			pageInitConfig,
+			permissions,
+		}) => {
 			return [
 				{
 					component: 'PublicationForm',
@@ -262,13 +267,19 @@ export const PublicationConfig = {
 						formName: 'titleAbstract',
 						submission,
 						publication: selectedPublication,
+						canEditPublication: permissions.canEditPublication,
 					},
 				},
 			];
 		},
 	},
 	contributors: {
-		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
+		getPrimaryItems: ({
+			submission,
+			selectedPublication,
+			pageInitConfig,
+			permissions,
+		}) => {
 			return [
 				{
 					component: 'ContributorManager',
@@ -282,7 +293,12 @@ export const PublicationConfig = {
 		},
 	},
 	metadata: {
-		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
+		getPrimaryItems: ({
+			submission,
+			selectedPublication,
+			pageInitConfig,
+			permissions,
+		}) => {
 			return [
 				{
 					component: 'PublicationForm',
@@ -291,13 +307,19 @@ export const PublicationConfig = {
 						submission,
 						publication: selectedPublication,
 						noFieldsMessage: 'No metadata fields are currently enabled.',
+						canEditPublication: permissions.canEditPublication,
 					},
 				},
 			];
 		},
 	},
 	citations: {
-		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
+		getPrimaryItems: ({
+			submission,
+			selectedPublication,
+			pageInitConfig,
+			permissions,
+		}) => {
 			return [
 				{
 					component: 'PublicationForm',
@@ -305,19 +327,24 @@ export const PublicationConfig = {
 						formName: 'reference',
 						submission,
 						publication: selectedPublication,
+						canEditPublication: permissions.canEditPublication,
 					},
 				},
 			];
 		},
 	},
 	galleys: {
-		getPrimaryItems: ({submission, selectedPublication}) => {
+		getPrimaryItems: ({submission, selectedPublication, permissions}) => {
+			if (!permissions.canAccessProduction) {
+				return [];
+			}
 			return [
 				{
 					component: 'GalleyManager',
 					props: {
 						submission,
 						publication: selectedPublication,
+						canEditPublication: permissions.canEditPublication,
 					},
 				},
 			];
@@ -335,6 +362,7 @@ export function useWorkflowAuthorConfig() {
 			selectedPublication,
 			selectedPublicationId,
 			selectedReviewRound,
+			permissions,
 		},
 	) {
 		if (selectedMenuState.stageId) {
@@ -344,10 +372,27 @@ export function useWorkflowAuthorConfig() {
 				selectedPublicationId,
 				selectedStageId: selectedMenuState.stageId,
 				selectedReviewRound,
+				permissions,
 			};
 			if (!submission) {
 				return [];
 			}
+
+			if (!permissions.canAccessSelectedStage) {
+				if (getterFnName === 'getPrimaryItems') {
+					return [
+						{
+							component: 'PrimaryBasicMetadata',
+							props: {
+								body: t('user.authorization.accessibleWorkflowStage'),
+							},
+						},
+					];
+				} else {
+					return [];
+				}
+			}
+
 			return [
 				...(WorkflowConfig?.common?.[getterFnName]?.(itemsArgs) || []),
 				...(WorkflowConfig[selectedMenuState.stageId]?.[getterFnName]?.(
@@ -360,6 +405,7 @@ export function useWorkflowAuthorConfig() {
 				pageInitConfig: pageInitConfig,
 				selectedPublication,
 				selectedPublicationId,
+				permissions,
 			};
 			if (!submission || !selectedPublication) {
 				return [];

@@ -1,5 +1,4 @@
 import {useLocalize} from './useLocalize';
-
 const {t, tk} = useLocalize();
 
 export const ExtendedStages = {

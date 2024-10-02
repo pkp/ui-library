@@ -35,14 +35,18 @@
 		</template>
 		<SideModalLayoutMenu2Columns>
 			<template #menu>
-				<SideMenu v-bind="summaryStore.sideMenuProps"></SideMenu>
+				<nav>
+					<SideMenu v-bind="summaryStore.sideMenuProps"></SideMenu>
+				</nav>
 			</template>
-			<template #heading>{{ summaryStore.stageTitle }}</template>
+			<template #heading>
+				<h2>{{ summaryStore.stageTitle }}</h2>
+			</template>
 			<template
 				v-if="summaryStore.publicationControlsLeft?.length"
 				#publication-controls-left
 			>
-				<div class="flex gap-x-3">
+				<div class="flex gap-x-3" data-cy="workflow-controls-left">
 					<component
 						:is="Components[item.component] || item.component"
 						v-bind="item.props"
@@ -55,7 +59,7 @@
 				v-if="summaryStore.publicationControlsRight?.length"
 				#publication-controls-right
 			>
-				<div class="flex gap-x-3">
+				<div class="flex gap-x-3" data-cy="workflow-controls-right">
 					<component
 						:is="Components[item.component] || item.component"
 						v-bind="item.props"
@@ -66,7 +70,10 @@
 			</template>
 
 			<template #primary>
-				<div class="flex flex-col gap-y-5 bg-secondary p-5">
+				<div
+					class="flex flex-col gap-y-5 bg-secondary p-5"
+					data-cy="workflow-primary-items"
+				>
 					<component
 						:is="Components[item.component] || item.component"
 						v-bind="item.props"
@@ -76,7 +83,10 @@
 				</div>
 			</template>
 			<template v-if="summaryStore.actionItems?.length" #actions>
-				<div class="flex flex-col items-start space-y-3 p-4">
+				<div
+					class="flex flex-col items-start space-y-3 p-4"
+					data-cy="workflow-action-items"
+				>
 					<component
 						:is="Components[item.component] || item.component"
 						v-for="(item, index) in summaryStore.actionItems"
@@ -86,7 +96,10 @@
 				</div>
 			</template>
 			<template v-if="summaryStore.secondaryItems?.length" #secondary>
-				<div class="flex flex-col space-y-4 p-4">
+				<div
+					class="flex flex-col space-y-4 p-4"
+					data-cy="workflow-secondary-items"
+				>
 					<component
 						:is="Components[item.component] || item.component"
 						v-for="(item, index) in summaryStore.secondaryItems"

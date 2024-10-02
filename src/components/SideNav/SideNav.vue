@@ -176,7 +176,10 @@ const {sideMenuProps} = useSideMenu(menuItemsEnriched, {
 	expandedKeys: getExpandedKeys(menuItems.value),
 });
 
-watch(props.links, (newLinks) => {
-	menuItems.value = convertLinksToArray(newLinks);
-});
+watch(
+	() => props.links,
+	(newLinks) => {
+		menuItems.value = convertLinksToArray(newLinks);
+	},
+);
 </script>

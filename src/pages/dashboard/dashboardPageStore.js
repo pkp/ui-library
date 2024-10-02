@@ -330,12 +330,12 @@ export const useDashboardPageStore = defineComponentStore(
 		 */
 
 		// Tracking which submissionId is opened in summary modal for query params
-		const summarySubmissionId = computed(() => {
-			return queryParamsUrl.summarySubmissionId;
+		const workflowSubmissionId = computed(() => {
+			return queryParamsUrl.workflowSubmissionId;
 		});
 
 		function openSummaryModal(submissionId) {
-			queryParamsUrl.summarySubmissionId = submissionId;
+			queryParamsUrl.workflowSubmissionId = submissionId;
 			openSideModal(
 				SubmissionSummaryModal,
 				{
@@ -344,14 +344,19 @@ export const useDashboardPageStore = defineComponentStore(
 				},
 				{
 					onClose: async () => {
-						queryParamsUrl.summarySubmissionId = null;
+						queryParamsUrl.workflowSubmissionId = null;
 						await fetchSubmissions();
 					},
 				},
 			);
 		}
-		if (queryParamsUrl.summarySubmissionId) {
-			openSummaryModal(queryParamsUrl.summarySubmissionId);
+		if (queryParamsUrl.workflowSubmissionId) {
+			openSummaryModal(queryParamsUrl.workflowSubmissionId);
+		}
+
+		function openSubmissionWizard(submissionId) {
+			const {redirectToPage} = useUrl(`submission?id=${submissionId}`);
+			redirectToPage();
 		}
 
 		/**
@@ -408,7 +413,7 @@ export const useDashboardPageStore = defineComponentStore(
 			setCurrentPage,
 
 			// Workflow Page
-			summarySubmissionId,
+			workflowSubmissionId,
 
 			// Reviewer listing
 			openReviewerForm,
@@ -429,6 +434,8 @@ export const useDashboardPageStore = defineComponentStore(
 
 			// Summary submission Modal
 			openSummaryModal,
+
+			openSubmissionWizard,
 
 			// Filters Modal
 			isModalOpenedFilters,

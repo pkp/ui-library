@@ -119,7 +119,7 @@ export function useParticipantManagerActions() {
 		);
 	}
 
-	function participantLoginAs({participant}) {
+	function participantLoginAs({participant, submission}) {
 		const {openDialog} = useModal();
 
 		openDialog({
@@ -134,8 +134,20 @@ export function useParticipantManagerActions() {
 				{
 					label: t('common.ok'),
 					callback: (close) => {
+						let redirectUrl = '';
+						if (participant.roleId === pkp.const.ROLE_ID_AUTHOR) {
+							const {pageUrl: authorRedirectUrl} = useUrl(
+								`dashboard/mySubmissions?workflowSubmissionId=${submission.id}`,
+							);
+							redirectUrl = authorRedirectUrl.value;
+						} else {
+							const {pageUrl: editorialRedirectUrl} = useUrl(
+								`dashboard/editorial?workflowSubmissionId=${submission.id}`,
+							);
+							redirectUrl = editorialRedirectUrl.value;
+						}
 						const {redirectToPage} = useUrl(
-							`login/signInAsUser/${participant.id}`,
+							`login/signInAsUser/${participant.id}?redirectUrl=${encodeURIComponent(redirectUrl)}`,
 						);
 						redirectToPage();
 					},

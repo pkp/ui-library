@@ -11,6 +11,7 @@ import SelectRevisionFormModal from '../components/SelectRevisionFormModal.vue';
 import {useWorkflowDecisions} from './useWorkflowDecisions';
 
 export const Actions = {
+	WORKFLOW_VIEW_PUBLISHED_SUBMISSION: 'workflowViewPublishedSubmission',
 	WORKFLOW_ASSIGN_TO_ISSUE: 'workflowAssignToIssue',
 	WORKFLOW_VIEW_ACTIVITY_LOG: 'workflowViewActivityLog',
 	WORKFLOW_VIEW_LIBRARY: 'workflowViewLibrary',
@@ -31,38 +32,10 @@ export function useWorkflowActions({
 }) {
 	const {t} = useLocalize();
 
-	function createNewPublicationVersion({submission}, finishedCallback) {
-		const {openDialog} = useModal();
-		const {getLatestPublication} = useSubmission();
+	function workflowViewPublishedSubmission({submission}, finishedCallback) {
+		const {redirectToPage} = useUrl(submission.urlPublished);
 
-		openDialog({
-			title: t('publication.createVersion'),
-			message: t('publication.version.confirm'),
-			actions: [
-				{
-					label: t('common.yes'),
-					isWarnable: true,
-					callback: async (close) => {
-						close();
-
-						const latestPublication = getLatestPublication(submission);
-
-						const {apiUrl: createNewVersionUrl} = useUrl(
-							`submissions/${submission.id}/publications/${latestPublication.id}/version`,
-						);
-						const {fetch} = useFetch(createNewVersionUrl, {
-							method: 'POST',
-						});
-						await fetch();
-						finishedCallback();
-					},
-				},
-				{
-					label: t('common.no'),
-					callback: (close) => close(),
-				},
-			],
-		});
+		redirectToPage();
 	}
 
 	function workflowAssignToIssue(
@@ -280,7 +253,7 @@ export function useWorkflowActions({
 		});
 	}
 
-	function workflowCreateNewVersion({submission}, finishedCallback) {
+	function workflowCreateNewVersion({submission, store}, finishedCallback) {
 		const {openDialog} = useModal();
 		const {getLatestPublication} = useSubmission();
 
@@ -299,10 +272,15 @@ export function useWorkflowActions({
 						const {apiUrl: createNewVersionUrl} = useUrl(
 							`submissions/${submission.id}/publications/${latestPublication.id}/version`,
 						);
-						const {fetch} = useFetch(createNewVersionUrl, {
-							method: 'POST',
-						});
+						const {fetch, data: newPublication} = useFetch(
+							createNewVersionUrl,
+							{
+								method: 'POST',
+							},
+						);
 						await fetch();
+						// select newest publication
+						store.selectPublicationId(newPublication.value.id);
 						finishedCallback();
 					},
 				},
@@ -321,6 +299,7 @@ export function useWorkflowActions({
 	}
 
 	return {
+		workflowViewPublishedSubmission,
 		workflowAssignToIssue,
 		workflowViewActivityLog,
 		workflowViewLibrary,
@@ -332,6 +311,5 @@ export function useWorkflowActions({
 		workflowUnpublishPublication,
 		workflowCreateNewVersion,
 		workflowPreviewPublication,
-		createNewPublicationVersion,
 	};
 }

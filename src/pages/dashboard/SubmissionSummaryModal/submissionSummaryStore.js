@@ -3,6 +3,7 @@ import {computed, ref, watch} from 'vue';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
+import {EditorialRoles, useCurrentUser} from '@/composables/useCurrentUser';
 import {
 	useWorkflowActions,
 	Actions as WorkflowActions,
@@ -98,6 +99,129 @@ export const useSubmissionSummaryStore = defineComponentStore(
 		fetchSubmission();
 
 		/**
+		 * UI Permissions
+		 */
+
+		const {getActiveStage, getStageById} = useSubmission();
+		const {hasCurrentUserAtLeastOneRole} = useCurrentUser();
+
+		function hasIntersection(arr1, arr2) {
+			const set = new Set(arr1);
+			return arr2.some((item) => set.has(item));
+		}
+
+		const permissions = computed(() => {
+			// View title, metadata, etc.
+			let canAccessPublication = false;
+			let canEditPublication = false;
+			// Access to galleys and issue entry
+			let canAccessProduction = false;
+			// Ability to publish, unpublish and create versions
+			let canPublish = false;
+			// Access to activity log
+			let canAccessEditorialHistory = false;
+
+			let canAccessSelectedStage = false;
+
+			if (!submission.value) {
+				return {
+					canAccessPublication,
+					canAccessProduction,
+					canEditPublication,
+					canPublish,
+					canAccessEditorialHistory,
+					canAccessSelectedStage,
+				};
+			}
+
+			const activeStage = getActiveStage(submission.value);
+			const productionStage = getStageById(
+				submission.value,
+				pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+			);
+
+			const selectedStage = selectedMenuState.value?.stageId
+				? getStageById(submission.value, selectedMenuState.value?.stageId)
+				: null;
+
+			console.log('selectedStage:', selectedStage);
+			if (selectedStage) {
+				console.log(
+					'checking perms:',
+					selectedStage,
+					selectedStage.currentUserAssignedRoles,
+				);
+				if (selectedStage.currentUserAssignedRoles.length) {
+					canAccessSelectedStage = true;
+				}
+			}
+
+			// TODO this will be replaced by with one flag from backend
+			productionStage.stageAssignments
+				.filter(
+					(stageAssignment) => stageAssignment.userId === pkp.currentUser.id,
+				)
+				.forEach((stageAssignment) => {
+					if (stageAssignment.canChangeMetadata) {
+						canEditPublication = true;
+					}
+				});
+			if (hasCurrentUserAtLeastOneRole([pkp.const.ROLE_ID_MANAGER])) {
+				canEditPublication = true;
+			}
+
+			if (
+				selectedPublication.value &&
+				selectedPublication.value?.status === pkp.const.STATUS_PUBLISHED
+			) {
+				canEditPublication = false;
+			}
+
+			if (
+				hasIntersection(activeStage.currentUserAssignedRoles, EditorialRoles)
+			) {
+				canAccessPublication = true;
+
+				if (
+					hasIntersection(
+						productionStage.currentUserAssignedRoles,
+						EditorialRoles,
+					)
+				) {
+					canAccessProduction = true;
+				}
+				if (
+					!productionStage.currentUserCanRecommendOnly &&
+					hasIntersection(productionStage.currentUserAssignedRoles, [
+						pkp.const.ROLE_ID_SITE_ADMIN,
+						pkp.const.ROLE_ID_MANAGER,
+					])
+				) {
+					canPublish = true;
+				}
+			}
+
+			if (
+				hasIntersection(activeStage.currentUserAssignedRoles, [
+					pkp.const.ROLE_ID_MANAGER,
+					pkp.const.ROLE_ID_SITE_ADMIN,
+					pkp.const.ROLE_ID_SUB_EDITOR,
+				])
+			) {
+				canAccessEditorialHistory = true;
+			}
+
+			return {
+				canAccessPublication,
+				canAccessProduction,
+				canEditPublication,
+				canPublish,
+				canAccessEditorialHistory,
+				canAccessSelectedStage,
+			};
+		});
+
+		/**
 		 * Handling navigation
 		 */
 		const {getMenuItems} = useWorkflowNavigationConfig(props.pageInitConfig);
@@ -154,6 +278,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 							submission: submission.value,
 							selectedPublication: selectedPublication.value,
 							reviewRoundId: selectedReviewRound.value?.id,
+							store,
 						},
 						(finishedData) => {
 							triggerDataChange();
@@ -207,6 +332,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 				selectedPublication: selectedPublication.value,
 				selectedPublicationId: selectedPublicationId.value,
 				selectedReviewRound: selectedReviewRound.value,
+				permissions: permissions.value,
 			};
 		}
 
@@ -216,6 +342,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 				submission: submission.value,
 				selectedPublication: selectedPublication.value,
 				publicationSettings: props.pageInitConfig.publicationSettings,
+				permissions: permissions.value,
 			});
 		});
 
@@ -243,7 +370,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			);
 		});
 
-		return {
+		const store = {
 			dashboardPage,
 			submission,
 			selectedPublication,
@@ -280,5 +407,6 @@ export const useSubmissionSummaryStore = defineComponentStore(
 
 			_workflowActionsFns,
 		};
+		return store;
 	},
 );

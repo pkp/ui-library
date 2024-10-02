@@ -1,5 +1,5 @@
 <template>
-	<PkpTable>
+	<PkpTable data-cy="galley-manager">
 		<template #label>{{ t('submission.layout.galleys') }}</template>
 		<template #top-controls>
 			<component
@@ -28,7 +28,7 @@
 				></component>
 			</TableRow>
 		</TableBody>
-		<template #bottom-controls>
+		<template v-if="galleyManagerStore.bottomActions.length" #bottom-controls>
 			<div class="space-x-y flex">
 				<component
 					:is="Components[action.component] || action.component"
@@ -69,6 +69,7 @@ const Components = {
 const props = defineProps({
 	publication: {type: Object, required: true},
 	submission: {type: Object, required: true},
+	canEditPublication: {type: Boolean, required: true},
 });
 
 const {t} = useLocalize();
