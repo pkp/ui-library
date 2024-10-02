@@ -1,0 +1,100 @@
+import FieldBaseMock from "@/components/Form/mocks/field-base";
+import FieldTextGivenNameMock from "@/components/Form/mocks/field-text-given-name";
+import FieldBaseAutosuggest from "@/components/Form/mocks/field-autosuggest";
+
+export default {
+	name: 'author-affiliations',
+	component: 'author-affiliations',
+	logo: 'https://ror.org/assets/ror-logo.svg',
+	rows: [
+		{
+			id: 1,
+			authorId: 1,
+			ror: 'https://ror.org/0213rcc28',
+			name: {
+				en: 'Simon Fraser University',
+				de: 'Simon Fraser University',
+				fr_CA: 'Simon Fraser University'
+			}
+		},
+		{
+			id: 2,
+			authorId: 1,
+			ror: 'https://ror.org/02e2c7k09',
+			name: {
+				en: 'Delft University of Technology',
+				de: '',
+				fr_CA: ''
+			}
+		},
+		{
+			id: 3,
+			authorId: 1,
+			ror: '',
+			name: {
+				en: 'German National Library of Science and Technology',
+				de: 'Technische Informationsbibliothek (TIB)',
+				fr_CA: ''
+			}
+		},
+		{
+			id: 4,
+			authorId: 1,
+			ror: 'https://ror.org/0304hq317',
+			name: {
+				en: 'Leibniz University Hannover',
+				de: 'Technische Universität Hannover',
+				fr_CA: ''
+			}
+		},
+	],
+	lookup: {
+		...FieldBaseMock,
+		...FieldTextGivenNameMock,
+		label: 'Type the institute name',
+		isRequired: false,
+		isMultilingual: false,
+	},
+	autosuggest: {
+		...FieldBaseMock,
+		...FieldBaseAutosuggest,
+		label: 'Sections',
+		options: [
+			{
+				value: 1,
+				label: 'Articles',
+			},
+			{
+				value: 2,
+				label: 'Editorials',
+			},
+			{
+				value: 3,
+				label: 'Reviews',
+			},
+			{
+				value: 4,
+				label: 'Field Notes',
+			},
+			{
+				value: 5,
+				label: 'Roundtables',
+			},
+			{
+				value: 6,
+				label: 'Research Reviews',
+			},
+			{
+				value: 7,
+				label: 'Conference Proceedings',
+			},
+		],
+		value: [1],
+		selected: [
+			{
+				value: 1,
+				label: 'Articles',
+			},
+		],
+	},
+};
