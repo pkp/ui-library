@@ -274,11 +274,17 @@ export default {
 	font-weight: @bold;
 }
 
+.full-text {
+  white-space: normal;
+  text-align: justify;
+}
+
 .listPanel__itemTitle,
-.listPanel__itemSubtitle {
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+.listPanel__itemSubtitle,
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .listPanel__empty {
