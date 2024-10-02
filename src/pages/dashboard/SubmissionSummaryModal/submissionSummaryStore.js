@@ -121,7 +121,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			// Access to activity log
 			let canAccessEditorialHistory = false;
 
-			let canAccessSelectedStage = false;
+			let accessibleStages = [];
 
 			if (!submission.value) {
 				return {
@@ -130,7 +130,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 					canEditPublication,
 					canPublish,
 					canAccessEditorialHistory,
-					canAccessSelectedStage,
+					accessibleStages,
 				};
 			}
 
@@ -140,21 +140,11 @@ export const useSubmissionSummaryStore = defineComponentStore(
 				pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 			);
 
-			const selectedStage = selectedMenuState.value?.stageId
-				? getStageById(submission.value, selectedMenuState.value?.stageId)
-				: null;
-
-			console.log('selectedStage:', selectedStage);
-			if (selectedStage) {
-				console.log(
-					'checking perms:',
-					selectedStage,
-					selectedStage.currentUserAssignedRoles,
-				);
-				if (selectedStage.currentUserAssignedRoles.length) {
-					canAccessSelectedStage = true;
+			submission.value.stages.forEach((stage) => {
+				if (stage.currentUserAssignedRoles.length) {
+					accessibleStages.push(stage.id);
 				}
-			}
+			});
 
 			// TODO this will be replaced by with one flag from backend
 			productionStage.stageAssignments
@@ -178,15 +168,18 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			}
 
 			if (
-				hasIntersection(activeStage.currentUserAssignedRoles, EditorialRoles)
+				hasIntersection(activeStage.currentUserAssignedRoles, [
+					...EditorialRoles,
+					pkp.const.ROLE_ID_AUTHOR,
+				])
 			) {
 				canAccessPublication = true;
 
 				if (
-					hasIntersection(
-						productionStage.currentUserAssignedRoles,
-						EditorialRoles,
-					)
+					hasIntersection(productionStage.currentUserAssignedRoles, [
+						...EditorialRoles,
+						pkp.const.ROLE_ID_AUTHOR,
+					])
 				) {
 					canAccessProduction = true;
 				}
@@ -217,7 +210,7 @@ export const useSubmissionSummaryStore = defineComponentStore(
 				canEditPublication,
 				canPublish,
 				canAccessEditorialHistory,
-				canAccessSelectedStage,
+				accessibleStages,
 			};
 		});
 
@@ -229,7 +222,11 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			if (!submission.value) {
 				return [];
 			}
-			return getMenuItems(submission.value);
+
+			return getMenuItems({
+				submission: submission.value,
+				permissions: permissions.value,
+			});
 		});
 
 		function navigateToMenu({key}) {

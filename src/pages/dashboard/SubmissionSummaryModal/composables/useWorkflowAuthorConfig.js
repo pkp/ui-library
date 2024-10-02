@@ -335,9 +335,6 @@ export const PublicationConfig = {
 	},
 	galleys: {
 		getPrimaryItems: ({submission, selectedPublication, permissions}) => {
-			if (!permissions.canAccessProduction) {
-				return [];
-			}
 			return [
 				{
 					component: 'GalleyManager',
@@ -378,7 +375,7 @@ export function useWorkflowAuthorConfig() {
 				return [];
 			}
 
-			if (!permissions.canAccessSelectedStage) {
+			if (!permissions.accessibleStages.includes(selectedMenuState.stageId)) {
 				if (getterFnName === 'getPrimaryItems') {
 					return [
 						{

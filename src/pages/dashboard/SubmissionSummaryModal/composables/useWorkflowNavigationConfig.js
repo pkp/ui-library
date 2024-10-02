@@ -80,7 +80,7 @@ export function useWorkflowNavigationConfig(pageInitConfig) {
 		return reviewMenuItems;
 	}
 
-	function getWorkflowItems(submission) {
+	function getWorkflowItems({submission}) {
 		const {getActiveStage} = useSubmission();
 
 		const activeStage = getActiveStage(submission);
@@ -151,7 +151,7 @@ export function useWorkflowNavigationConfig(pageInitConfig) {
 		];
 	}
 
-	function getPublicationItemsAuthor(submission) {
+	function getPublicationItemsAuthor({submission, permissions}) {
 		const items = [];
 
 		items.push({
@@ -196,9 +196,7 @@ export function useWorkflowNavigationConfig(pageInitConfig) {
 			});
 		}
 
-		// TODO: REAL VALUE
-		const canAccessProductionStage = true;
-		if (canAccessProductionStage) {
+		if (permissions.canAccessProduction) {
 			items.push({
 				key: 'galleys',
 				label: t('submission.layout.galleys'),
@@ -213,7 +211,7 @@ export function useWorkflowNavigationConfig(pageInitConfig) {
 		return items;
 	}
 
-	function getPublicationItemsEditorial(submission) {
+	function getPublicationItemsEditorial({submission, permissions}) {
 		const items = [];
 
 		items.push({
@@ -280,46 +278,48 @@ export function useWorkflowNavigationConfig(pageInitConfig) {
 			},
 		});
 
-		items.push({
-			key: 'galleys',
-			label: t('submission.layout.galleys'),
-			action: 'selectPublicationMenu',
-			actionArgs: {
-				publicationMenu: 'galleys',
-				title: getPublicationTitle(t('submission.layout.galleys')),
-			},
-		});
+		if (permissions.canAccessProduction) {
+			items.push({
+				key: 'galleys',
+				label: t('submission.layout.galleys'),
+				action: 'selectPublicationMenu',
+				actionArgs: {
+					publicationMenu: 'galleys',
+					title: getPublicationTitle(t('submission.layout.galleys')),
+				},
+			});
 
-		items.push({
-			label: t('publication.publicationLicense'),
-			key: 'license',
-			action: 'selectPublicationMenu',
-			actionArgs: {
-				publicationMenu: 'license',
-				title: getPublicationTitle(t('publication.publicationLicense')),
-			},
-		});
+			items.push({
+				label: t('publication.publicationLicense'),
+				key: 'license',
+				action: 'selectPublicationMenu',
+				actionArgs: {
+					publicationMenu: 'license',
+					title: getPublicationTitle(t('publication.publicationLicense')),
+				},
+			});
 
-		items.push({
-			label: t('issue.issue'),
-			key: 'issue',
-			action: 'selectPublicationMenu',
-			actionArgs: {
-				publicationMenu: 'issue',
-				title: getPublicationTitle(t('issue.issue')),
-			},
-		});
+			items.push({
+				label: t('issue.issue'),
+				key: 'issue',
+				action: 'selectPublicationMenu',
+				actionArgs: {
+					publicationMenu: 'issue',
+					title: getPublicationTitle(t('issue.issue')),
+				},
+			});
+		}
 
 		return items;
 	}
 
-	function getMenuItems(submission) {
+	function getMenuItems({submission, permissions}) {
 		const menuItems = [
 			{
 				key: 'workflow',
 				label: 'Workflow',
 				icon: 'Dashboard',
-				items: getWorkflowItems(submission),
+				items: getWorkflowItems({submission, permissions}),
 			},
 			{
 				key: 'publication',
@@ -328,8 +328,8 @@ export function useWorkflowNavigationConfig(pageInitConfig) {
 				items:
 					pageInitConfig.dashboardPage ===
 					DashboardPageTypes.EDITORIAL_DASHBOARD
-						? getPublicationItemsEditorial(submission)
-						: getPublicationItemsAuthor(submission),
+						? getPublicationItemsEditorial({submission, permissions})
+						: getPublicationItemsAuthor({submission, permissions}),
 			},
 		];
 

@@ -756,9 +756,6 @@ export const PublicationConfig = {
 	},
 	galleys: {
 		getPrimaryItems: ({submission, selectedPublication, permissions}) => {
-			if (!permissions.canAccessProduction) {
-				return [];
-			}
 			return [
 				{
 					component: 'GalleyManager',
@@ -778,10 +775,6 @@ export const PublicationConfig = {
 			pageInitConfig,
 			permissions,
 		}) => {
-			if (!permissions.canAccessProduction) {
-				return [];
-			}
-
 			return [
 				{
 					component: 'PublicationForm',
@@ -802,10 +795,6 @@ export const PublicationConfig = {
 			pageInitConfig,
 			permissions,
 		}) => {
-			if (!permissions.canAccessProduction) {
-				return [];
-			}
-
 			return [
 				{
 					component: 'PublicationForm',
@@ -847,7 +836,7 @@ export function useWorkflowEditorialConfig() {
 				return [];
 			}
 
-			if (!permissions.canAccessSelectedStage) {
+			if (!permissions.accessibleStages.includes(selectedMenuState.stageId)) {
 				if (getterFnName === 'getPrimaryItems') {
 					return [
 						{
