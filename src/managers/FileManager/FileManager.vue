@@ -67,7 +67,7 @@ import FileManagerTableRow from './FileManagerTableRow.vue';
 import {t} from '@/utils/i18n.js';
 
 const props = defineProps({
-	configName: {
+	namespace: {
 		type: String,
 		required: true,
 		validator: (value) => {
@@ -79,5 +79,5 @@ const props = defineProps({
 	reviewRoundId: {type: String, required: true},
 });
 
-const fileManagerStore = useFileManagerStore(props, props.configName);
+const fileManagerStore = useFileManagerStore(props, props.namespace);
 </script>

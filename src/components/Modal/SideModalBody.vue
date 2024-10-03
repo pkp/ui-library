@@ -20,7 +20,7 @@
 							/>
 						</button>
 					</div>
-					<div class="ml-8 mr-8 flex-grow">
+					<div class="ml-8 mr-8 flex-grow" data-cy="sidemodal-header">
 						<div class="flex">
 							<div class="flex-grow">
 								<!-- @slot Small text above title, might be useful for example to display submission Id-->

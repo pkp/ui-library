@@ -61,8 +61,7 @@ export function useParticipantManagerActions() {
 							params: {
 								submissionId: submission.id,
 								stageId: submissionStageId,
-								// TODO refine once thats in the API
-								assignmentId: participant.stageAssignmentId || 98,
+								assignmentId: participant.stageAssignmentId,
 							},
 						});
 						const formData = new FormData();
@@ -110,8 +109,7 @@ export function useParticipantManagerActions() {
 			params: {
 				submissionId: submission.id,
 				stageId: submission.stageId,
-				// TODO refine once thats in the API
-				assignmentId: participant.stageAssignmentId || 63,
+				assignmentId: participant.stageAssignmentId,
 			},
 		});
 
@@ -121,7 +119,7 @@ export function useParticipantManagerActions() {
 		);
 	}
 
-	function participantLoginAs({participant}) {
+	function participantLoginAs({participant, submission}) {
 		const {openDialog} = useModal();
 
 		openDialog({
@@ -136,8 +134,20 @@ export function useParticipantManagerActions() {
 				{
 					label: t('common.ok'),
 					callback: (close) => {
+						let redirectUrl = '';
+						if (participant.roleId === pkp.const.ROLE_ID_AUTHOR) {
+							const {pageUrl: authorRedirectUrl} = useUrl(
+								`dashboard/mySubmissions?workflowSubmissionId=${submission.id}`,
+							);
+							redirectUrl = authorRedirectUrl.value;
+						} else {
+							const {pageUrl: editorialRedirectUrl} = useUrl(
+								`dashboard/editorial?workflowSubmissionId=${submission.id}`,
+							);
+							redirectUrl = editorialRedirectUrl.value;
+						}
 						const {redirectToPage} = useUrl(
-							`login/signInAsUser/${participant.id}`,
+							`login/signInAsUser/${participant.id}?redirectUrl=${encodeURIComponent(redirectUrl)}`,
 						);
 						redirectToPage();
 					},

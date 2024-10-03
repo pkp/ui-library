@@ -12,6 +12,7 @@ function getHeaderItems({
 	submission,
 	selectedPublication,
 	publicationSettings,
+	permissions,
 }) {
 	if (!submission) {
 		return [];
@@ -26,13 +27,25 @@ function getHeaderItems({
 		});
 	}
 
-	actions.push({
-		component: 'ActionButton',
-		props: {
-			label: t('editor.activityLog'),
-			action: Actions.WORKFLOW_VIEW_ACTIVITY_LOG,
-		},
-	});
+	if (submission.status === pkp.const.STATUS_PUBLISHED) {
+		actions.push({
+			component: 'ActionButton',
+			props: {
+				label: t('common.view'),
+				action: Actions.WORKFLOW_VIEW_PUBLISHED_SUBMISSION,
+			},
+		});
+	}
+
+	if (permissions.canAccessEditorialHistory) {
+		actions.push({
+			component: 'ActionButton',
+			props: {
+				label: t('editor.activityLog'),
+				action: Actions.WORKFLOW_VIEW_ACTIVITY_LOG,
+			},
+		});
+	}
 	actions.push({
 		component: 'ActionButton',
 		props: {
@@ -45,27 +58,6 @@ function getHeaderItems({
 }
 
 export const WorkflowConfig = {
-	common: {
-		getSecondaryItems: ({submission, selectedReviewRound, selectedStageId}) => {
-			const items = [];
-			// When review stage has not started, show no items
-			if (selectedStageId === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) {
-				if (!selectedReviewRound) {
-					return [];
-				}
-			}
-
-			items.push({
-				component: 'ParticipantManager',
-				props: {
-					submission,
-					submissionStageId: submission.stageId,
-				},
-			});
-
-			return items;
-		},
-	},
 	[pkp.const.WORKFLOW_STAGE_ID_SUBMISSION]: {
 		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
@@ -82,9 +74,9 @@ export const WorkflowConfig = {
 			items.push({
 				component: 'FileManager',
 				props: {
-					configName: 'SUBMISSION_FILES',
+					namespace: 'SUBMISSION_FILES',
 					submission: submission,
-					submissionStageId: submission.stageId,
+					submissionStageId: selectedStageId,
 				},
 			});
 
@@ -95,6 +87,19 @@ export const WorkflowConfig = {
 
 			return items;
 		},
+		getSecondaryItems: ({submission, selectedReviewRound, selectedStageId}) => {
+			const items = [];
+			items.push({
+				component: 'ParticipantManager',
+				props: {
+					submission,
+					submissionStageId: selectedStageId,
+				},
+			});
+
+			return items;
+		},
+
 		getActionItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
 			if (
@@ -109,7 +114,7 @@ export const WorkflowConfig = {
 			items.push({
 				component: 'ActionButton',
 				props: {
-					label: t('dashboard.summary.sendSubmissionForReview'),
+					label: t('editor.submission.decision.sendExternalReview'),
 					isPrimary: true,
 					action: DecisionActions.DECISION_EXTERNAL_REVIEW,
 				},
@@ -118,7 +123,7 @@ export const WorkflowConfig = {
 			items.push({
 				component: 'ActionButton',
 				props: {
-					label: t('dashboard.summary.acceptAndSkipReview'),
+					label: t('editor.submission.decision.skipReview'),
 					isSecondary: true,
 					action: DecisionActions.DECISION_SKIP_EXTERNAL_REVIEW,
 				},
@@ -127,7 +132,7 @@ export const WorkflowConfig = {
 			items.push({
 				component: 'ActionButton',
 				props: {
-					label: t('dashboard.summary.declineSubmission'),
+					label: t('editor.submission.decision.decline'),
 					isWarnable: true,
 					action: DecisionActions.DECISION_INITIAL_DECLINE,
 				},
@@ -175,9 +180,9 @@ export const WorkflowConfig = {
 			items.push({
 				component: 'FileManager',
 				props: {
-					configName: 'WORKFLOW_REVIEW_REVISIONS',
+					namespace: 'WORKFLOW_REVIEW_REVISIONS',
 					submission: submission,
-					submissionStageId: submission.stageId,
+					submissionStageId: selectedStageId,
 					reviewRoundId: selectedReviewRound?.id,
 				},
 			});
@@ -185,9 +190,9 @@ export const WorkflowConfig = {
 			items.push({
 				component: 'FileManager',
 				props: {
-					configName: 'EDITOR_REVIEW_FILES',
+					namespace: 'EDITOR_REVIEW_FILES',
 					submission: submission,
-					submissionStageId: submission.stageId,
+					submissionStageId: selectedStageId,
 					reviewRoundId: selectedReviewRound?.id,
 				},
 			});
@@ -205,6 +210,32 @@ export const WorkflowConfig = {
 				props: {
 					submissionId: submission.id,
 					stageId: selectedStageId,
+				},
+			});
+
+			return items;
+		},
+		getSecondaryItems: ({submission, selectedReviewRound, selectedStageId}) => {
+			const items = [];
+
+			// TODO add isDecidingEditor boolean to api to make it more accurate
+			const selectedStage = getStageById(submission, selectedStageId);
+			const isRecommendOnlyEditor = selectedStage.currentUserCanRecommendOnly;
+			if (!isRecommendOnlyEditor) {
+				items.push({
+					component: 'WorkflowRecommendOnlyListingRecommendations',
+					props: {
+						submission: submission,
+						stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+						reviewRoundId: selectedReviewRound.id,
+					},
+				});
+			}
+			items.push({
+				component: 'ParticipantManager',
+				props: {
+					submission,
+					submissionStageId: selectedStageId,
 				},
 			});
 
@@ -239,8 +270,10 @@ export const WorkflowConfig = {
 			const isRecommendOnlyEditor = selectedStage.currentUserCanRecommendOnly;
 			if (isRecommendOnlyEditor) {
 				items.push({
-					component: 'WorkflowRecommendationControls',
+					component: 'WorkflowRecommendOnlyControls',
 					props: {
+						submission: submission,
+						userId: pkp.currentUser.id,
 						stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 						reviewRoundId: selectedReviewRound.id,
 					},
@@ -264,7 +297,7 @@ export const WorkflowConfig = {
 				items.push({
 					component: 'ActionButton',
 					props: {
-						label: t('dashboard.summary.acceptSubmission'),
+						label: t('editor.submission.decision.accept'),
 						action: DecisionActions.DECISION_ACCEPT,
 						isPrimary: true,
 						actionArgs,
@@ -283,7 +316,7 @@ export const WorkflowConfig = {
 				items.push({
 					component: 'ActionButton',
 					props: {
-						label: t('dashboard.summary.cancelReviewRound'),
+						label: t('editor.submission.decision.cancelReviewRound'),
 						isWarnable: true,
 						action: DecisionActions.DECISION_CANCEL_REVIEW_ROUND,
 					},
@@ -292,7 +325,7 @@ export const WorkflowConfig = {
 				items.push({
 					component: 'ActionButton',
 					props: {
-						label: t('dashboard.summary.declineSubmission'),
+						label: t('editor.submission.decision.decline'),
 						isWarnable: true,
 						action: DecisionActions.DECISION_DECLINE_SUBMISSION,
 					},
@@ -322,9 +355,9 @@ export const WorkflowConfig = {
 			items.push({
 				component: 'FileManager',
 				props: {
-					configName: 'FINAL_DRAFT_FILES',
+					namespace: 'FINAL_DRAFT_FILES',
 					submission: submission,
-					submissionStageId: submission.stageId,
+					submissionStageId: selectedStageId,
 				},
 			});
 
@@ -339,14 +372,27 @@ export const WorkflowConfig = {
 			items.push({
 				component: 'FileManager',
 				props: {
-					configName: 'COPYEDITED_FILES',
+					namespace: 'COPYEDITED_FILES',
 					submission: submission,
-					submissionStageId: submission.stageId,
+					submissionStageId: selectedStageId,
 				},
 			});
 
 			return items;
 		},
+		getSecondaryItems: ({submission, selectedReviewRound, selectedStageId}) => {
+			const items = [];
+			items.push({
+				component: 'ParticipantManager',
+				props: {
+					submission,
+					submissionStageId: selectedStageId,
+				},
+			});
+
+			return items;
+		},
+
 		getActionItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
 			if (
@@ -365,7 +411,7 @@ export const WorkflowConfig = {
 			items.push({
 				component: 'ActionButton',
 				props: {
-					label: t('dashboard.summary.sendToProduction'),
+					label: t('editor.submission.decision.sendToProduction'),
 					isPrimary: true,
 					action: DecisionActions.DECISION_SEND_TO_PRODUCTION,
 				},
@@ -374,7 +420,7 @@ export const WorkflowConfig = {
 			items.push({
 				component: 'ActionButton',
 				props: {
-					label: t('dashboard.summary.cancelCopyEditing'),
+					label: t('editor.submission.decision.backFromCopyediting'),
 					isWarnable: true,
 					action: DecisionActions.DECISION_BACK_FROM_COPYEDITING,
 				},
@@ -403,9 +449,9 @@ export const WorkflowConfig = {
 			items.push({
 				component: 'FileManager',
 				props: {
-					configName: 'PRODUCTION_READY_FILES',
+					namespace: 'PRODUCTION_READY_FILES',
 					submission: submission,
-					submissionStageId: submission.stageId,
+					submissionStageId: selectedStageId,
 				},
 			});
 
@@ -419,6 +465,19 @@ export const WorkflowConfig = {
 
 			return items;
 		},
+		getSecondaryItems: ({submission, selectedReviewRound, selectedStageId}) => {
+			const items = [];
+			items.push({
+				component: 'ParticipantManager',
+				props: {
+					submission,
+					submissionStageId: selectedStageId,
+				},
+			});
+
+			return items;
+		},
+
 		getActionItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
 			if (
@@ -448,7 +507,7 @@ export const WorkflowConfig = {
 				items.push({
 					component: 'ActionButton',
 					props: {
-						label: t('dashboard.summary.backToCopyediting'),
+						label: t('editor.submission.decision.backToCopyediting'),
 						isWarnable: true,
 						action: DecisionActions.DECISION_BACK_FROM_PRODUCTION,
 					},
@@ -497,10 +556,14 @@ export const PublicationConfig = {
 			submission,
 			selectedPublicationId,
 			selectedPublication,
+			permissions,
 		}) => {
 			const items = [];
 			const {t} = useLocalize();
 
+			if (!permissions.canPublish) {
+				return [];
+			}
 			if (selectedPublication.status === pkp.const.STATUS_QUEUED) {
 				items.push({
 					component: 'ActionButton',
@@ -514,7 +577,12 @@ export const PublicationConfig = {
 				items.push({
 					component: 'ActionButton',
 					props: {
-						label: t('editor.submission.schedulePublication'),
+						// 	{{ submission.status === getConstant('STATUS_PUBLISHED') ? publishLabel : schedulePublicationLabel }}
+
+						label:
+							submission.status === pkp.const.STATUS_PUBLISHED
+								? t('publication.publish')
+								: t('editor.submission.schedulePublication'),
 						isSecondary: true,
 						action:
 							Actions.WORKFLOW_ASSIGN_TO_ISSUE_AND_SCHEDULE_FOR_PUBLICATION,
@@ -567,7 +635,12 @@ export const PublicationConfig = {
 		},
 	},
 	titleAbstract: {
-		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
+		getPrimaryItems: ({
+			submission,
+			selectedPublication,
+			pageInitConfig,
+			permissions,
+		}) => {
 			return [
 				{
 					component: 'PublicationForm',
@@ -575,13 +648,19 @@ export const PublicationConfig = {
 						formName: 'titleAbstract',
 						submission,
 						publication: selectedPublication,
+						canEditPublication: permissions.canEditPublication,
 					},
 				},
 			];
 		},
 	},
 	contributors: {
-		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
+		getPrimaryItems: ({
+			submission,
+			selectedPublication,
+			pageInitConfig,
+			permissions,
+		}) => {
 			return [
 				{
 					component: 'ContributorManager',
@@ -589,13 +668,19 @@ export const PublicationConfig = {
 						submission: submission,
 						publication: selectedPublication,
 						contributorForm: pageInitConfig.contributorForm,
+						canEditPublication: permissions.canEditPublication,
 					},
 				},
 			];
 		},
 	},
 	metadata: {
-		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
+		getPrimaryItems: ({
+			submission,
+			selectedPublication,
+			pageInitConfig,
+			permissions,
+		}) => {
 			return [
 				{
 					component: 'PublicationForm',
@@ -604,13 +689,19 @@ export const PublicationConfig = {
 						submission,
 						publication: selectedPublication,
 						noFieldsMessage: 'No metadata fields are currently enabled.',
+						canEditPublication: permissions.canEditPublication,
 					},
 				},
 			];
 		},
 	},
 	citations: {
-		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
+		getPrimaryItems: ({
+			submission,
+			selectedPublication,
+			pageInitConfig,
+			permissions,
+		}) => {
 			return [
 				{
 					component: 'PublicationForm',
@@ -618,13 +709,19 @@ export const PublicationConfig = {
 						formName: 'reference',
 						submission,
 						publication: selectedPublication,
+						canEditPublication: permissions.canEditPublication,
 					},
 				},
 			];
 		},
 	},
 	identifiers: {
-		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
+		getPrimaryItems: ({
+			submission,
+			selectedPublication,
+			pageInitConfig,
+			permissions,
+		}) => {
 			return [
 				{
 					component: 'PublicationForm',
@@ -632,18 +729,24 @@ export const PublicationConfig = {
 						formName: 'identifier',
 						submission,
 						publication: selectedPublication,
+						canEditPublication: permissions.canEditPublication,
 					},
 				},
 			];
 		},
 	},
 	jats: {
-		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
+		getPrimaryItems: ({
+			submission,
+			selectedPublication,
+			pageInitConfig,
+			permissions,
+		}) => {
 			return [
 				{
 					component: 'PublicationJats',
 					props: {
-						canEditPublication: true,
+						canEditPublication: permissions.canEditPublication,
 						submission,
 						publication: selectedPublication,
 					},
@@ -652,20 +755,26 @@ export const PublicationConfig = {
 		},
 	},
 	galleys: {
-		getPrimaryItems: ({submission, selectedPublication}) => {
+		getPrimaryItems: ({submission, selectedPublication, permissions}) => {
 			return [
 				{
 					component: 'GalleyManager',
 					props: {
 						submission,
 						publication: selectedPublication,
+						canEditPublication: permissions.canEditPublication,
 					},
 				},
 			];
 		},
 	},
 	license: {
-		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
+		getPrimaryItems: ({
+			submission,
+			selectedPublication,
+			pageInitConfig,
+			permissions,
+		}) => {
 			return [
 				{
 					component: 'PublicationForm',
@@ -673,13 +782,19 @@ export const PublicationConfig = {
 						formName: 'permissionDisclosure',
 						submission,
 						publication: selectedPublication,
+						canEditPublication: permissions.canEditPublication,
 					},
 				},
 			];
 		},
 	},
 	issue: {
-		getPrimaryItems: ({submission, selectedPublication, pageInitConfig}) => {
+		getPrimaryItems: ({
+			submission,
+			selectedPublication,
+			pageInitConfig,
+			permissions,
+		}) => {
 			return [
 				{
 					component: 'PublicationForm',
@@ -687,6 +802,7 @@ export const PublicationConfig = {
 						formName: 'issue',
 						submission,
 						publication: selectedPublication,
+						canEditPublication: permissions.canEditPublication,
 					},
 				},
 			];
@@ -704,6 +820,7 @@ export function useWorkflowEditorialConfig() {
 			selectedPublication,
 			selectedPublicationId,
 			selectedReviewRound,
+			permissions,
 		},
 	) {
 		if (selectedMenuState.stageId) {
@@ -713,10 +830,25 @@ export function useWorkflowEditorialConfig() {
 				selectedPublicationId,
 				selectedStageId: selectedMenuState.stageId,
 				selectedReviewRound,
+				permissions,
 			};
 			if (!submission) {
 				return [];
 			}
+
+			if (!permissions.accessibleStages.includes(selectedMenuState.stageId)) {
+				if (getterFnName === 'getPrimaryItems') {
+					return [
+						{
+							component: 'PrimaryBasicMetadata',
+							props: {body: t('user.authorization.accessibleWorkflowStage')},
+						},
+					];
+				} else {
+					return [];
+				}
+			}
+
 			return [
 				...(WorkflowConfig?.common?.[getterFnName]?.(itemsArgs) || []),
 				...(WorkflowConfig[selectedMenuState.stageId]?.[getterFnName]?.(
@@ -729,6 +861,7 @@ export function useWorkflowEditorialConfig() {
 				pageInitConfig: pageInitConfig,
 				selectedPublication,
 				selectedPublicationId,
+				permissions,
 			};
 			if (!submission || !selectedPublication) {
 				return [];

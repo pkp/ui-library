@@ -1,22 +1,18 @@
-import {computed} from 'vue';
+export const EditorialRoles = [
+	pkp.const.ROLE_ID_SITE_ADMIN,
+	pkp.const.ROLE_ID_MANAGER,
+	pkp.const.ROLE_ID_SUB_EDITOR,
+	pkp.const.ROLE_ID_ASSISTANT,
+];
 
 export function useCurrentUser() {
-	const isSiteAdmin = computed(
-		() =>
-			!!pkp.currentUser.roles.find(
-				(role) => role === pkp.const.ROLE_ID_SITE_ADMIN,
-			),
-	);
-	const isManager = computed(
-		() =>
-			!!pkp.currentUser.roles.find(
-				(role) => role === pkp.const.ROLE_ID_MANAGER,
-			),
-	);
-
 	function hasCurrentUserAtLeastOneRole(roles = []) {
 		return roles.some((role) => pkp.currentUser.roles.includes(role));
 	}
 
-	return {isSiteAdmin, isManager, hasCurrentUserAtLeastOneRole};
+	function getCurrentUserId() {
+		return pkp.currentUser.id;
+	}
+
+	return {hasCurrentUserAtLeastOneRole, getCurrentUserId};
 }

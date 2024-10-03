@@ -12,9 +12,11 @@
 </template>
 
 <script setup>
-import {reactive, toRef, watchEffect} from 'vue';
+import {ref, watch, computed} from 'vue';
 import {useSideMenu} from '@/composables/useSideMenu.js';
 import SideMenu from '../SideMenu/SideMenu.vue';
+import {useUrl} from '@/composables/useUrl';
+import {useFetch} from '@/composables/useFetch';
 
 const props = defineProps({
 	/**
@@ -40,8 +42,78 @@ const props = defineProps({
 });
 
 let currentActiveKey = '';
-const linksRef = toRef(props, 'links');
-const items = reactive(convertLinksToArray(linksRef.value));
+const menuItems = ref(convertLinksToArray(props.links));
+
+/**
+ * Dashboards count
+ * */
+
+const {apiUrl: dashboardCountUrl} = useUrl('_submissions/viewsCount');
+
+const {data: dashboardCount, fetch: fetchDashboardCount} =
+	useFetch(dashboardCountUrl);
+
+const dashboardsMenuItem = menuItems.value.find(
+	(item) => item.key === 'dashboards',
+);
+if (dashboardsMenuItem) {
+	fetchDashboardCount();
+}
+
+/**
+ * mySubmissions count
+ */
+const {apiUrl: mySubmissionsCountUrl} = useUrl('_submissions/viewsCount');
+
+const {data: mySubmissionsCount, fetch: fetchMySubmissionsCount} = useFetch(
+	mySubmissionsCountUrl,
+);
+
+const mySubmissionsMenuItem = menuItems.value.find(
+	(item) => item.key === 'mySubmissions',
+);
+if (mySubmissionsMenuItem) {
+	fetchMySubmissionsCount();
+}
+
+/**
+ * reviewAssignments count
+ */
+const {apiUrl: reviewAssignmentCountUrl} = useUrl('_submissions/viewsCount');
+
+const {data: reviewAssignmentCount, fetch: fetchReviewAssignmentCount} =
+	useFetch(reviewAssignmentCountUrl);
+
+const reviewAssignmentMenuItem = menuItems.value.find(
+	(item) => item.key === 'reviewAssignments',
+);
+if (reviewAssignmentMenuItem) {
+	fetchReviewAssignmentCount();
+}
+
+// helper to attach count to the menu item
+function enrichMenuItemWithCounts(page, itemsCount) {
+	if (itemsCount.value) {
+		const menuItem = menuItems.value.find((item) => item.key === page);
+		if (menuItem) {
+			const menuItemsEnriched = menuItem.items.map((item) => ({
+				...item,
+				badge: {
+					slot: itemsCount.value[item.id],
+				},
+			}));
+			menuItem.items = menuItemsEnriched;
+		}
+	}
+}
+
+const menuItemsEnriched = computed(() => {
+	enrichMenuItemWithCounts('dashboards', dashboardCount);
+	enrichMenuItemWithCounts('mySubmissions', mySubmissionsCount);
+	enrichMenuItemWithCounts('reviewAssignments', reviewAssignmentCount);
+
+	return menuItems.value;
+});
 
 function convertLinksToArray(links, level = 1, parentKey = '') {
 	const result = [];
@@ -99,12 +171,15 @@ function getExpandedKeys(items) {
 	return _expandedKeys;
 }
 
-const {sideMenuProps} = useSideMenu(items, {
+const {sideMenuProps} = useSideMenu(menuItemsEnriched, {
 	activeItemKey: currentActiveKey,
-	expandedKeys: getExpandedKeys(items),
+	expandedKeys: getExpandedKeys(menuItems.value),
 });
 
-watchEffect(() => {
-	Object.assign(items, convertLinksToArray(linksRef.value));
-});
+watch(
+	() => props.links,
+	(newLinks) => {
+		menuItems.value = convertLinksToArray(newLinks);
+	},
+);
 </script>

@@ -13,9 +13,10 @@
 				v-bind="itemProps.action"
 				:href="item.link || '#'"
 				tabindex="-1"
+				@click.prevent="() => {}"
 			>
 				<Badge
-					v-if="item.badge?.slot"
+					v-if="item.badge?.slot != null"
 					:color-variant="item.badge.colorVariant || 'primary'"
 					v-bind="item.badge"
 					class="me-1"
