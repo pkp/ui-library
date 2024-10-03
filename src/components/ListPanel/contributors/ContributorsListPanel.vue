@@ -53,13 +53,17 @@
 					</PkpHeader>
 				</template>
 				<template #item-title="{item}">
-					{{ item.fullName }}
-					<Badge v-if="item.userGroupName">
-						{{ localize(item.userGroupName) }}
-					</Badge>
+					<div class="whitespace-normal text-justify">
+						{{ item.fullName }}
+						<Badge v-if="item.userGroupName">
+							{{ localize(item.userGroupName) }}
+						</Badge>
+					</div>
 				</template>
 				<template #item-subtitle="{item}">
-					{{ localize(item.affiliation) }}
+					<div class="whitespace-normal text-justify">
+						{{ localize(item.affiliation) }}
+					</div>
 				</template>
 				<template
 					v-if="
