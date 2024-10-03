@@ -38,6 +38,9 @@ export function shouldShowGroup(group, fields) {
 	if (typeof group.showWhen === 'string') {
 		return !!whenField.value;
 	}
+	if (Array.isArray(group.showWhen[1])) {
+		return group.showWhen[1].includes(whenField.value);
+	}
 	return whenField.value === group.showWhen[1];
 }
 

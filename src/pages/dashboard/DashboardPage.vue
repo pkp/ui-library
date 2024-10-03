@@ -74,9 +74,10 @@ const props = defineProps({
 	},
 	/** Form for selection type of revision */
 	selectRevisionDecisionForm: {type: Object, required: true},
-	/** TODO */
+	/** Form for selection type of revision for recommending editor */
 	selectRevisionRecommendationForm: {type: Object, required: true},
-
+	/** Form for Contributor manager */
+	contributorForm: {type: Object, required: true},
 	/** List of Views */
 	views: {
 		type: Array,
@@ -95,6 +96,11 @@ const props = defineProps({
 	/** How many submissions to show per page */
 	countPerPage: {
 		type: Number,
+		required: true,
+	},
+	/** context settings {supportsCitations, } */
+	publicationSettings: {
+		type: Object,
 		required: true,
 	},
 });

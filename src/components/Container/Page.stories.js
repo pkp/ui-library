@@ -1,6 +1,7 @@
 import {computed} from 'vue';
 import Page from './Page.vue';
 import Dropdown from '@/components/Dropdown/Dropdown.vue';
+import SideNav from '@/components/SideNav/SideNav.vue';
 import PageMock from '@/mocks/page';
 
 export default {
@@ -10,7 +11,7 @@ export default {
 
 export const Default = {
 	render: (args) => ({
-		components: {Page, Dropdown},
+		components: {Page, Dropdown, SideNav},
 		setup() {
 			const classes = computed(() => {
 				let _classes = [];
@@ -108,50 +109,8 @@ export const Default = {
 				</header>
 
 				<div class="app__body">
-					<nav
-						v-if="!!menu && Object.keys(menu).length > 1"
-						class="app__nav"
-						aria-label="Site Navigation"
-					>
-						<ul>
-							<li
-								v-for="(menuItem, key) in menu"
-								:key="key"
-								:class="!!menuItem.submenu ? 'app__navGroup' : ''"
-							>
-								<div
-									v-if="!!menuItem.submenu"
-									class="app__navItem app__navItem--hasSubmenu"
-								>
-									{{ menuItem.name }}
-								</div>
-								<a
-									v-else
-									class="app__navItem"
-									:class="menuItem.isCurrent ? 'app__navItem--isCurrent' : ''"
-									:href="menuItem.url"
-								>
-									{{ menuItem.name }}
-								</a>
-								<ul v-if="!!menuItem.submenu">
-									<li
-										v-for="(submenuItem, submenuKey) in menuItem.submenu"
-										:key="submenuKey"
-									>
-										<a
-											class="app__navItem"
-											:class="
-												submenuItem.isCurrent ? 'app__navItem--isCurrent' : ''
-											"
-											:href="submenuItem.url"
-										>
-											{{ submenuItem.name }}
-										</a>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</nav>
+					<SideNav :links="menu" aria-label="Site Navigation">
+					</SideNav>
 					<main class="app__main">
 						<div class="app__page">
 							<nav

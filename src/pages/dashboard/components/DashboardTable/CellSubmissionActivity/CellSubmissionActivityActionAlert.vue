@@ -5,7 +5,7 @@
 			v-if="actionName"
 			class="-ms-3"
 			size-variant="compact"
-			@click="() => emit('action', actionName, {})"
+			@click="handleAction"
 		>
 			{{ actionLabel }}
 		</PkpButton>
@@ -14,12 +14,18 @@
 
 <script setup>
 import PkpButton from '@/components/Button/Button.vue';
+import {useDashboardPageStore} from '@/pages/dashboard/dashboardPageStore';
 
-defineProps({
+const props = defineProps({
 	alert: {type: String, required: false, default: null},
 	actionLabel: {type: String, required: false, default: null},
 	actionName: {type: String, required: false, default: null},
+	actionArgs: {type: String, required: false, default: () => {}},
 });
 
-const emit = defineEmits(['action']);
+const dashboardStore = useDashboardPageStore();
+
+function handleAction() {
+	dashboardStore[props.actionName](props.actionArgs);
+}
 </script>

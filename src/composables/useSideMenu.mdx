@@ -4,7 +4,7 @@
 
 ## Usage
 
-To use the `useSideMenu` composable, first import it and then invoke it within your setup function. You need to pass the `items` array that represents your menu structure, and optionally pass an initial `activeItemKey`, an object of `expandedKeys`.
+To use the `useSideMenu` composable, first import it and then invoke it within your setup function. You need to pass the `items` array that represents your menu structure, and optionally pass an `opts` object. The `opts` object can include an initial `activeItemKey` and an `expandedKeys` object. If a menu item includes an `action` that should be triggered when clicked, you can pass this function within the `opts` object using the `onActionFn` attribute.
 
 ```javascript
 const items = [
@@ -12,20 +12,49 @@ const items = [
 		label: 'Menu Item 1',
 		key: 'menuItem1',
 		items: [
-			{label: 'Item 1.1', key: 'menuItem1_1'},
+			{
+				label: 'Item 1.1',
+				key: 'menuItem1_1',
+				action: 'openModal',
+				actionArgs: {},
+			},
 			{label: 'Item 1.2', key: 'menuItem1_2'},
 		],
 	},
 	{
 		label: 'Menu Item 2',
 		key: 'menuItem2',
-		items: [{label: 'Item 2.1', key: 'menuItem2_1'}],
+		items: [
+			{
+				label: 'Item 2.1',
+				key: 'menuItem2_1',
+				action: 'openSideModal',
+				actionArgs: {},
+			},
+		],
 	},
 ];
 
-const {activeItemKey, setActiveItemKey} = useSideMenu(items, 'menuItem1_1', {
-	menuItem1: true,
-	menuItem2: true,
+function handleActions(action, actionArgs) {
+	switch (action) {
+		case 'openModal':
+			openModal(actionArgs);
+			break;
+		case 'openSideModal':
+			openSideModal(actionArgs);
+			break;
+		default:
+			console.error(`No handler for action: ${action}`);
+	}
+}
+
+const {activeItemKey, setActiveItemKey} = useSideMenu(items, {
+	activeItemKey: 'menuItem1_1',
+	expandedKeys: {
+		menuItem1: true,
+		menuItem2: true,
+	},
+	onActionFn: handleActions,
 });
 ```
 
@@ -76,9 +105,12 @@ const {selectedItem} = useSideMenu(items, 'menuItem2_1'); // will return {label:
 This function allows you to set a new active item key dynamically from within your component or from other components that consume the `useSideMenu` composable. It accepts a string that represents the key of the item you want to set as active. This value will be assigned to the `activeItemKey` ref.
 
 ```javascript
-const {activeItemKey, setActiveItemKey} = useSideMenu(items, 'menuItem1_1', {
-	menuItem1: true,
-	menuItem2: true,
+const {activeItemKey, setActiveItemKey} = useSideMenu(items, {
+	activeItemKey: 'menuItem1_1',
+	expandedKeys: {
+		menuItem1: true,
+		menuItem2: true,
+	},
 });
 
 function someEvent() {
@@ -91,9 +123,12 @@ function someEvent() {
 It allows you to dynamically update new set of keys that should be expanded in the `SideMenu` component. It accepts an array of strings where each string represents a key that should be expanded in the side menu.
 
 ```javascript
-const {expandedKeys, setExpandedKeys} = useSideMenu(items, 'menuItem1_1', {
-	menuItem1: true,
-	menuItem2: true,
+const {expandedKeys, setExpandedKeys} = useSideMenu(items, {
+	activeItemKey: 'menuItem1_1',
+	expandedKeys: {
+		menuItem1: true,
+		menuItem2: true,
+	},
 });
 
 function someEvent() {

@@ -146,7 +146,7 @@ export const EllipsisMenu = {
 		const canvas = within(canvasElement);
 		const user = userEvent.setup();
 
-		await user.click(canvas.getByText('User management options'));
+		await user.click(canvas.getByLabelText('User management options'));
 	},
 };
 

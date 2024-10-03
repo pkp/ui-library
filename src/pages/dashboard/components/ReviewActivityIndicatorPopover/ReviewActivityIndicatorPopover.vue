@@ -65,15 +65,7 @@ defineProps({
 	textButton: {type: Object, required: false, default: null},
 	titleBadgeProps: {type: Object, required: false, default: null},
 });
-const emit = defineEmits([
-	'action',
-	'resendReviewRequest',
-	'viewDetails',
-	'editDueDate',
-	'unassignReviewer',
-	'cancelReviewer',
-	'viewRecommendation',
-]);
+const emit = defineEmits(['action']);
 
 function triggerEmit(action) {
 	emit('action', action, {});
