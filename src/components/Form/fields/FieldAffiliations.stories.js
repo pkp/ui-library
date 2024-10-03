@@ -1,4 +1,4 @@
-import {ref} from "vue";
+import {computed, ref} from "vue";
 
 import FieldAffiliations from './FieldAffiliations.vue';
 import PkpTable from "@/components/Table/Table.vue";
@@ -28,6 +28,10 @@ export default {
 			Icon,
 		},
 		setup() {
+			/* parent */
+			const primaryLocale = 'en';
+
+			/* current component */
 			const searchPhrase = ref('');
 
 			const rows = args.rows;
@@ -58,7 +62,26 @@ export default {
 				console.log('searchPhrase: ' + searchPhrase.value);
 			}
 
-			return {args, searchPhrase, rows, dummyAction, translations, lookupSearchPhrase};
+			const currentValue = computed({
+				get() {
+					return 'hello someTest';
+				},
+				// setter
+				set(newValue) {
+					return newValue;
+				}
+			});
+
+			return {
+				args,
+				searchPhrase,
+				rows,
+				dummyAction,
+				translations,
+				lookupSearchPhrase,
+				primaryLocale,
+				currentValue,
+			};
 		},
 		template: `
 			<PkpTable aria-label="Affiliations">
@@ -117,6 +140,7 @@ export default {
 			<div>
 				<div>searchPhrase: {{ searchPhrase }}</div>
 				<div>Icon: <Icon :class="'mr-2'" :icon="'ror'" :inline="true"/></div>
+				<div>currentValue: {{ currentValue }}</div>
 			</div>
 		`,
 	}),
