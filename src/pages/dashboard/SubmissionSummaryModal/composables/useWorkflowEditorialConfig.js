@@ -565,14 +565,21 @@ export const PublicationConfig = {
 				return [];
 			}
 			if (selectedPublication.status === pkp.const.STATUS_QUEUED) {
-				items.push({
-					component: 'ActionButton',
-					props: {
-						label: t('dashboard.summary.preview'),
-						isSecondary: true,
-						action: Actions.WORKFLOW_PREVIEW_PUBLICATION,
-					},
-				});
+				if (
+					hasSubmissionPassedStage(
+						submission,
+						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+					)
+				) {
+					items.push({
+						component: 'ActionButton',
+						props: {
+							label: t('common.preview'),
+							isSecondary: true,
+							action: Actions.WORKFLOW_PREVIEW_PUBLICATION,
+						},
+					});
+				}
 
 				items.push({
 					component: 'ActionButton',
