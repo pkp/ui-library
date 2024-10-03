@@ -1,3 +1,5 @@
+import {ref} from "vue";
+
 import FieldAffiliations from './FieldAffiliations.vue';
 import PkpTable from "@/components/Table/Table.vue";
 import TableHeader from "@/components/Table/TableHeader.vue";
@@ -6,11 +8,9 @@ import TableRow from "@/components/Table/TableRow.vue";
 import TableColumn from "@/components/Table/TableColumn.vue";
 import TableCell from "@/components/Table/TableCell.vue";
 import PkpButton from "@/components/Button/Button.vue";
-import FieldText from "@/components/Form/fields/FieldText.vue";
+import Icon from "@/components/Icon/Icon.vue";
 
 import FieldAffiliationsMock from '@/components/Form/mocks/field-affiliations';
-import FieldBaseMock from "@/components/Form/mocks/field-base";
-import FieldTextGivenNameMock from "@/components/Form/mocks/field-text-given-name";
 
 export default {
 	title: 'Forms/FieldAffiliations',
@@ -25,18 +25,12 @@ export default {
 			TableColumn,
 			TableCell,
 			PkpButton,
-			FieldText,
+			Icon,
 		},
 		setup() {
-			const rorLogo = 'https://ror.org/assets/ror-logo.svg';
+			const searchPhrase = ref('');
 
-			const argsLookup = {
-				...FieldBaseMock,
-				...FieldTextGivenNameMock,
-				label: 'Type the institute name',
-				isRequired: false,
-				isMultilingual: false,
-			};
+			const rows = args.rows;
 
 			function dummyAction(message){
 				alert('"' + message + '"' + ' clicked');
@@ -60,44 +54,70 @@ export default {
 				}
 			}
 
-			function lookupValue(value){
-				console.log('affiliationLookup: ' + value);
+			function lookupSearchPhrase() {
+				console.log('searchPhrase: ' + searchPhrase.value);
 			}
 
-			return {args, dummyAction, translations, lookupValue };
+			return {args, searchPhrase, rows, dummyAction, translations, lookupSearchPhrase};
 		},
 		template: `
 			<PkpTable aria-label="Affiliations">
 				<TableHeader>
 					<TableColumn>Institution</TableColumn>
 					<TableColumn>Translation</TableColumn>
-					<TableColumn> &nbsp; </TableColumn>
+					<TableColumn> &nbsp;</TableColumn>
 				</TableHeader>
 				<TableBody>
-					<TableRow v-for="row in args.rows" :key="row.id">
+					<TableRow v-for="row in rows" :key="row.id">
 						<TableCell>
 							{{ row.name.en }}
-							<img v-if="row.ror" :src="args.logo"
-								 style="height: 1rem; display: inline-flex;" alt=""/>
+							<Icon
+								v-if="row.ror"
+								:class="'mr-2'"
+								:icon="'ror'"
+								:inline="true"
+							/>
 						</TableCell>
 						<TableCell>
 							<button @click="dummyAction(translations(row))">{{ translations(row) }}</button>
 						</TableCell>
 						<TableCell>
-							<button @click="dummyAction('...')"> ... </button>
+							<button @click="dummyAction('...')"> ...</button>
 						</TableCell>
 					</TableRow>
 					<TableRow>
 						<TableCell>
-							<FieldText v-bind="args.lookup" @change="lookupValue" />
+							<div class="pkpFormField pkpFormField--text pkpFormField--sizenormal">
+								<div class="pkpFormField__heading">
+									<label for="-searchPhraseInput-control" class="pkpFormFieldLabel">
+										Type the institute name
+									</label>
+									<div class="pkpFormField__control">
+										<div class="pkpFormField__control_top">
+											<input
+												v-model="searchPhrase"
+												@keyup="lookupSearchPhrase"
+												id="-searchPhraseInput-control"
+												class="pkpFormField__input pkpFormField--text__input"
+												type="text"
+												name="searchPhraseInput" aria-invalid="0"
+											>
+										</div>
+									</div>
+								</div>
+							</div>
 						</TableCell>
 						<TableCell> &nbsp; </TableCell>
 						<TableCell>
-							<PkpButton @click="dummyAction('add')"> Add </PkpButton>
+							<PkpButton @click="dummyAction('add')"> Add</PkpButton>
 						</TableCell>
 					</TableRow>
 				</TableBody>
 			</PkpTable>
+			<div>
+				<div>searchPhrase: {{ searchPhrase }}</div>
+				<div>Icon: <Icon :class="'mr-2'" :icon="'ror'" :inline="true"/></div>
+			</div>
 		`,
 	}),
 };
