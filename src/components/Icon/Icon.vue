@@ -100,6 +100,7 @@ import ReadRecommendation from './icons/ReadRecommendation.vue';
 import ReviewAssignments from './icons/ReviewAssignments.vue';
 import ReviewRequestDeclined from './icons/ReviewRequestDeclined.vue';
 import ReviewSent from './icons/ReviewSent.vue';
+import Ror from './icons/Ror.vue';
 import Search from './icons/Search.vue';
 import Settings from './icons/Settings.vue';
 import Sort from './icons/Sort.vue';
@@ -176,6 +177,7 @@ const svgIcons = {
 	ReviewAssignments,
 	ReviewRequestDeclined,
 	ReviewSent,
+	Ror,
 	Search,
 	Settings,
 	Sort,
