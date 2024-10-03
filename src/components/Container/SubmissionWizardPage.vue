@@ -960,13 +960,6 @@ ul.submissionWizard__reviewPanel__item__value {
 	list-style: none;
 }
 
-// A table used for a review
-.submissionWizard__reviewPanel__body {
-	.pkpTable {
-		border: none;
-	}
-}
-
 .submissionWizard__reviewPanel__citation
 	+ .submissionWizard__reviewPanel__citation {
 	margin-top: 1rem;

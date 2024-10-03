@@ -6,13 +6,6 @@
 				v-bind="config.props"
 				v-for="(config, index) in cellConfig"
 				:key="index"
-				@action="
-					(actionName, actionArgs) =>
-						dashboardStore.handleItemAction(actionName, {
-							...actionArgs,
-							submissionId: item.id,
-						})
-				"
 			/>
 		</div>
 	</TableCell>
@@ -25,7 +18,7 @@ import CellSubmissionActivityReviewsUpdate from './CellSubmissionActivityReviews
 import CellSubmissionActivityReviewsOpen from './CellSubmissionActivityReviewsOpen.vue';
 
 import {defineProps, computed} from 'vue';
-import TableCell from '@/components/TableNext/TableCell.vue';
+import TableCell from '@/components/Table/TableCell.vue';
 
 import {
 	useDashboardPageStore,

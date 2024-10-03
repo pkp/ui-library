@@ -41,18 +41,28 @@
 				{{ t('common.delete') }}
 			</PkpButton>
 			<!-- When ORCID is absent -->
-			<PkpButton
-				v-if="!hasOrcid"
-				:disabled="verificationRequested || isButtonDisabled"
-				:icon="verificationRequested ? 'Complete' : null"
-				@click="openSendAuthorEmailDialog"
-			>
-				{{
-					verificationRequested
-						? t('orcid.field.verification.requested')
-						: t('orcid.field.verification.request')
-				}}
-			</PkpButton>
+			<div class="inline-flex">
+				<PkpButton
+					v-if="!hasOrcid"
+					:disabled="verificationRequested || isButtonDisabled"
+					:icon="verificationRequested ? 'Complete' : null"
+					:is-link="verificationRequested"
+					@click="openSendAuthorEmailDialog"
+				>
+					{{
+						verificationRequested
+							? t('orcid.field.verification.requested')
+							: t('orcid.field.verification.request')
+					}}
+				</PkpButton>
+				<PkpButton
+					v-if="!hasOrcid && verificationRequested"
+					:is-link="true"
+					@click="openSendAuthorEmailDialog"
+				>
+					{{ t('orcid.field.verification.resendRequest') }}
+				</PkpButton>
+			</div>
 		</div>
 	</div>
 </template>
@@ -91,13 +101,17 @@ export default {
 			required: true,
 			default: false,
 		},
+		/** Whether an email requesting users verify their ORCID has been sent or not */
+		orcidVerificationRequested: {
+			type: Boolean,
+			required: true,
+		},
 	},
 	data() {
 		return {
 			/** Internal value used for displaying ORCID in component. Takes initial value from `orcid` prop */
 			orcidValue: '',
-			/** Whether an email requesting users verify their ORCID has been sent or not */
-			verificationRequested: false,
+			verificationRequested: this.orcidVerificationRequested,
 			/** Whether request verification/delete ORCID button should be disabled or not */
 			isButtonDisabled: false,
 		};

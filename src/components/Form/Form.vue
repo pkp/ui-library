@@ -369,14 +369,9 @@ export default {
 						missingValue = !value;
 						break;
 					case 'string':
-					case 'array':
-						if (!value.length) {
-							missingValue = true;
-						}
-						break;
 					case 'object':
 						// null values are stored as objects
-						if (!value) {
+						if (!value || (Array.isArray(value) && !value.length)) {
 							missingValue = true;
 						}
 						break;

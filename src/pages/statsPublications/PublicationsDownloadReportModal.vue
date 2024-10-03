@@ -5,24 +5,26 @@
 		</template>
 		<SideModalLayoutBasic>
 			<p>{{ t('stats.publications.downloadReport.description') }}</p>
-			<table class="pkpTable pkpStats__reportParams">
-				<tr class="pkpTable__row">
-					<th>{{ t('stats.dateRange') }}</th>
-					<td>{{ dateRangeDescription }}</td>
-				</tr>
-				<tr
-					v-for="(filterSet, index) in filters"
-					:key="index"
-					class="pkpTable__row"
-				>
-					<th>{{ filterSet.heading }}</th>
-					<td>{{ getFilterDescription(filterSet) }}</td>
-				</tr>
-				<tr v-if="searchPhrase" class="pkpTable__row">
-					<th>{{ t('common.searchPhrase') }}</th>
-					<td>{{ searchPhrase }}</td>
-				</tr>
-			</table>
+			<PkpTable>
+				<TableRow>
+					<TableCell :is-row-header="true">
+						{{ t('stats.dateRange') }}
+					</TableCell>
+					<TableCell>{{ dateRangeDescription }}</TableCell>
+				</TableRow>
+				<TableRow v-for="(filterSet, index) in filters" :key="index">
+					<TableCell :is-row-header="true">
+						{{ filterSet.heading }}
+					</TableCell>
+					<TableCell>{{ getFilterDescription(filterSet) }}</TableCell>
+				</TableRow>
+				<TableRow v-if="searchPhrase">
+					<TableCell :is-row-header="true">
+						{{ t('common.searchPhrase') }}
+					</TableCell>
+					<TableCell>{{ searchPhrase }}</TableCell>
+				</TableRow>
+			</PkpTable>
 			<ActionPanel class="pkpStats__reportAction">
 				<h2>{{ t('common.publications') }}</h2>
 				<p>
@@ -92,6 +94,9 @@ import {useLocalize} from '@/composables/useLocalize';
 import ActionPanel from '@/components/ActionPanel/ActionPanel.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Tooltip from '@/components/Tooltip/Tooltip.vue';
+import PkpTable from '@/components/Table/Table.vue';
+import TableRow from '@/components/Table/TableRow.vue';
+import TableCell from '@/components/Table/TableCell.vue';
 
 const {t} = useLocalize();
 defineProps({

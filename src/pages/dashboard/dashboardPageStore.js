@@ -10,9 +10,14 @@ import {useUrl} from '@/composables/useUrl';
 import {useUrlSearchParams} from '@vueuse/core';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
-import {useHandleActions} from './composables/useHandleActions';
+import {useWorkflowActions} from './composables/useWorkflowActions';
+import {useReviewerManagerActions} from '@/managers/ReviewerManager/useReviewerManagerActions';
+
+import {useParticipantManagerActions} from '@/managers/ParticipantManager/useParticipantManagerActions';
+
 import {useEditorialLogic} from './composables/useEditorialLogic';
 import {useReviewActivityLogic} from './composables/useReviewActivityLogic';
+import {useSubmission} from '@/composables/useSubmission';
 
 import DashboardFiltersModal from '@/pages/dashboard/components/DashboardFiltersModal.vue';
 import SubmissionSummaryModal from '@/pages/dashboard/SubmissionSummaryModal/SubmissionSummaryModal.vue';
@@ -173,15 +178,95 @@ export const useDashboardPageStore = defineComponentStore(
 			{immediate: true},
 		);
 
-		const {handleSubmissionAction} = useHandleActions(pageInitConfig);
-		function handleItemAction(actionName, actionArgs) {
-			const submission = submissions.value.find(
-				(submission) => submission.id === actionArgs.submissionId,
+		const _workflowActionFns = useWorkflowActions(pageInitConfig);
+		const _reviewerManagerActionFns = useReviewerManagerActions(pageInitConfig);
+		const _participantManagerActionsFns =
+			useParticipantManagerActions(pageInitConfig);
+
+		const {getCurrentPublication} = useSubmission();
+
+		function refetchCallback() {
+			fetchSubmissions();
+		}
+
+		/**
+		 * Reviewer actions,
+		 * available for review assignments popup
+		 */
+		function openReviewerForm({submissionId}) {
+			const {redirectToPage} = useUrl(
+				`reviewer/submission/${encodeURIComponent(submissionId)}`,
+				{},
 			);
 
-			handleSubmissionAction(submission, actionName, actionArgs, async () => {
-				await fetchSubmissions();
-			});
+			redirectToPage();
+		}
+
+		function enrichActionArgs({submissionId, ...args}) {
+			const submission = submissions.value.find(
+				(submission) => submission.id === submissionId,
+			);
+			const selectedPublication = getCurrentPublication(submission);
+
+			return {
+				submissionStageId: submission.stageId,
+				submission,
+				submissionId,
+				selectedPublication,
+				...args,
+			};
+		}
+		function reviewerAddReviewer({reviewRoundId, submissionId}) {
+			_reviewerManagerActionFns.reviewerAddReviewer(
+				enrichActionArgs({reviewRoundId, submissionId}),
+				refetchCallback,
+			);
+		}
+
+		function reviewerResendRequest({reviewAssignment, submissionId}) {
+			_reviewerManagerActionFns.reviewerResendRequest(
+				enrichActionArgs({reviewAssignment, submissionId}),
+				refetchCallback,
+			);
+		}
+
+		function reviewerEditReview({reviewAssignment, submissionId}) {
+			_reviewerManagerActionFns.reviewerEditReview(
+				enrichActionArgs({reviewAssignment, submissionId}),
+				refetchCallback,
+			);
+		}
+
+		function reviewerReviewDetails({reviewAssignment, submissionId}) {
+			_reviewerManagerActionFns.reviewerReviewDetails(
+				enrichActionArgs({reviewAssignment, submissionId}),
+				refetchCallback,
+			);
+		}
+
+		function reviewerCancelReviewer({reviewAssignment, submissionId}) {
+			_reviewerManagerActionFns.reviewerCancelReviewer(
+				enrichActionArgs({reviewAssignment, submissionId}),
+				refetchCallback,
+			);
+		}
+
+		function reviewerUnassignReviewer({reviewAssignment, submissionId}) {
+			_reviewerManagerActionFns.reviewerUnassignReviewer(
+				enrichActionArgs({reviewAssignment, submissionId}),
+				refetchCallback,
+			);
+		}
+
+		/**
+		 * Participants Actions
+		 *
+		 * */
+		function participantAssign({submissionId}) {
+			_participantManagerActionsFns.participantAssign(
+				enrichActionArgs({submissionId}),
+				refetchCallback,
+			);
 		}
 
 		/**
@@ -193,15 +278,14 @@ export const useDashboardPageStore = defineComponentStore(
 		 * Summary submission Modal
 		 */
 
-		/** Tracking which submissionId is opened in summary modal for query params */
+		// Tracking which submissionId is opened in summary modal for query params
 		const summarySubmissionId = ref(null);
-		function openSummaryModal(submissionId, reviewAssignmentId = null) {
+		function openSummaryModal(submissionId) {
 			summarySubmissionId.value = submissionId;
 			openSideModal(
 				SubmissionSummaryModal,
 				{
 					submissionId,
-					reviewAssignmentId,
 					pageInitConfig,
 				},
 				{
@@ -224,22 +308,6 @@ export const useDashboardPageStore = defineComponentStore(
 			openSideModal(DashboardFiltersModal, {
 				filtersFormInitial: filtersForm,
 				onUpdateFiltersForm: updateFiltersForm,
-			});
-		}
-
-		/**
-		 * Assign Participant Modal
-		 */
-		const assignParticipantUrl = ref(pageInitConfig.assignParticipantUrl);
-		const isModalOpenedAssignParticipant = ref(false);
-
-		function openAssignParticipantModal(submission) {
-			const url = assignParticipantUrl.value
-				.replace('__id__', submission.id)
-				.replace('__stageId__', submission.stageId);
-
-			openSideModal('LegacyAjax', {
-				options: {url},
 			});
 		}
 
@@ -317,7 +385,20 @@ export const useDashboardPageStore = defineComponentStore(
 			isSubmissionsLoading,
 			fetchSubmissions,
 			setCurrentPage,
-			handleItemAction,
+
+			// Reviewer listing
+			openReviewerForm,
+
+			// Reviewer manager actions
+			reviewerAddReviewer,
+			reviewerReviewDetails,
+			reviewerResendRequest,
+			reviewerEditReview,
+			reviewerCancelReviewer,
+			reviewerUnassignReviewer,
+
+			// Participant manager actions
+			participantAssign,
 
 			// Modals
 			selectedSubmission,
@@ -329,11 +410,6 @@ export const useDashboardPageStore = defineComponentStore(
 			isModalOpenedFilters,
 			openFiltersModal,
 
-			// AssignParticipant Modal
-			assignParticipantUrl,
-			isModalOpenedAssignParticipant,
-			openAssignParticipantModal,
-
 			// expose useEditorialLogic methods
 			getEditorialActivityForEditorialDashboard,
 			getEditorialActivityForMySubmissions,
@@ -341,6 +417,8 @@ export const useDashboardPageStore = defineComponentStore(
 
 			getReviewActivityIndicatorProps,
 			getReviewActivityIndicatorPopoverProps,
+
+			_workflowActionFns,
 		};
 	},
 );

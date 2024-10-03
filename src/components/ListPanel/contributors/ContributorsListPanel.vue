@@ -293,6 +293,7 @@ export default {
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.t('grid.action.addContributor');
 			const {openSideModal} = useModal();
+
 			openSideModal(ContributorsEditModal, {
 				title: this.activeFormTitle,
 				activeForm: this.activeForm,
@@ -387,6 +388,8 @@ export default {
 							field.orcid = author['orcid'] ?? '';
 							field.authorId = author['id'];
 							field.isVerified = author['orcidIsVerified'] ?? false;
+							field.orcidVerificationRequested =
+								author['orcidVerificationRequested'];
 						} else if (Object.keys(author).includes(field.name)) {
 							field.value = author[field.name];
 						}

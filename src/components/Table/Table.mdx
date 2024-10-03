@@ -1,0 +1,62 @@
+import {Primary, Controls, Stories, Meta, ArgTypes} from '@storybook/blocks';
+
+import * as TableStories from './Table.stories.js';
+import TableColumn from './TableColumn.vue';
+import TableCell from './TableCell.vue';
+
+<Meta of={TableStories} />
+
+# Table
+
+## Usage
+
+Use the `Table` component to display tabular data when the user will sort, search, filter, or if interactive elements such as a button appear within the table.
+
+## Accessibility
+
+### General Guidelines
+
+To ensure the `Table` component is accessible:
+
+- The `aria-labelledby` and `aria-describedby` attributes are automatically linked when using the `label` and `description` slots, or they can be manually set with the `labelledBy` and `describedBy` props if using external labels and description for the table.
+- If neither `labelledBy`/`describedBy` props nor `label`/`description` slots are provided, use the `ariaLabel` prop to provide accessible information about the table.
+- One column should be [rowheader](https://www.w3.org/TR/wai-aria-1.1/#rowheader) to improve screen reader experience. It's a prop on TableCell, not on TableColumn as one would expect as it allows for significantly easier implementation.
+
+### Slots and ARIA Attributes
+
+If the table has a label or description, ensure that:
+
+- The `labelledBy` and `describedBy` props point to the correct element IDs, especially if the label or description is external to the component.
+- If you're using the `label` or `description` slots, the component will automatically assign IDs and link them to the table via `aria-labelledby` and `aria-describedby`.
+
+## Slots
+
+### `label`
+
+This slot is used to provide a custom label for the table.
+
+### `description`
+
+Use this slot to provide additional information or context about the table's content.
+
+### `top-controls`
+
+The `top-controls` slot is used to add buttons or other interactive elements that appear above the table.
+
+### `bottom-controls`
+
+The `bottom-controls` slot is used for adding controls below the table, such as pagination controls, summary information, or other actionable elements.
+
+## Table Props
+
+<ArgTypes />
+
+## TableColumn Props
+
+<ArgTypes of={TableColumn} />
+
+## TableCell Props
+
+<ArgTypes of={TableCell} />
+
+<Primary />

@@ -611,13 +611,6 @@ export default {
 	padding-top: 0;
 }
 
-.pkpStats__reportParams {
-	th {
-		font-weight: @bold;
-		border-right: @grid-border;
-	}
-}
-
 .pkpStats__reportAction {
 	margin: 2rem 0;
 }

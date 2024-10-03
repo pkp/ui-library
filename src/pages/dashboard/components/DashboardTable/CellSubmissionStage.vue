@@ -11,7 +11,7 @@
 <script setup>
 import {defineProps, computed} from 'vue';
 
-import TableCell from '@/components/TableNext/TableCell.vue';
+import TableCell from '@/components/Table/TableCell.vue';
 import StageBubble from '@/components/StageBubble/StageBubble.vue';
 import {useSubmission} from '@/composables/useSubmission';
 

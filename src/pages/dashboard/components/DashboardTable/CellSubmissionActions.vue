@@ -6,14 +6,14 @@
 			:is-link="true"
 			@click="dashboardPageStore.openSummaryModal(item.id)"
 		>
-			{{ t('dashboard.viewSummary') }}
+			{{ t('common.view') }}
 		</PkpButton>
 	</TableCell>
 </template>
 <script setup>
 import {defineProps} from 'vue';
 import PkpButton from '@/components/Button/Button.vue';
-import TableCell from '@/components/TableNext/TableCell.vue';
+import TableCell from '@/components/Table/TableCell.vue';
 import {useDashboardPageStore} from '@/pages/dashboard/dashboardPageStore.js';
 
 defineProps({

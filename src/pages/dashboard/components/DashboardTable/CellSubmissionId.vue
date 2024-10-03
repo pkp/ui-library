@@ -4,7 +4,7 @@
 
 <script setup>
 import {defineProps} from 'vue';
-import TableCell from '@/components/TableNext/TableCell.vue';
+import TableCell from '@/components/Table/TableCell.vue';
 
 defineProps({
 	item: {type: Object, required: true},
