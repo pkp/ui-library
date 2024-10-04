@@ -104,10 +104,21 @@ export const useGalleyManagerStore = defineComponentStore(
 		 * Actions
 		 */
 		const _galleyActionsFns = useGalleyManagerActions();
+		function getActionArgs() {
+			return {
+				canEditPublication: props.canEditPublication,
+			};
+		}
 
-		const itemActions = computed(() => _galleyActionsFns.getItemActions());
-		const bottomActions = computed(() => _galleyActionsFns.getBottomActions());
-		const topItems = computed(() => _galleyActionsFns.getTopItems());
+		const itemActions = computed(() =>
+			_galleyActionsFns.getItemActions(getActionArgs()),
+		);
+		const bottomActions = computed(() =>
+			_galleyActionsFns.getBottomActions(getActionArgs()),
+		);
+		const topItems = computed(() =>
+			_galleyActionsFns.getTopItems(getActionArgs()),
+		);
 
 		const {triggerDataChange} = useDataChanged();
 

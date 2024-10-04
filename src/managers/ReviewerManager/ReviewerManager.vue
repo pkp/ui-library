@@ -41,11 +41,11 @@
 							{{ reviewAssignment.reviewerFullName }}
 						</span>
 					</TableCell>
-					<TableCell>
-						<span class="text-base-normal">
-							{{ reviewAssignment.status }}
-						</span>
-					</TableCell>
+					<ReviewerManagerCellStatus
+						:review-assignment="reviewAssignment"
+						:submission="submission"
+						:redacted-for-authors="redactedForAuthors"
+					></ReviewerManagerCellStatus>
 					<TableCell>
 						<span class="flex items-center space-x-2">
 							<Icon
@@ -84,6 +84,7 @@ import TableRow from '@/components/Table/TableRow.vue';
 import TableCell from '@/components/Table/TableCell.vue';
 import ReviewerManagerCellPrimaryActions from './ReviewerManagerCellPrimaryActions.vue';
 import ReviewerManagerCellActions from './ReviewerManagerCellActions.vue';
+import ReviewerManagerCellStatus from './ReviewerManagerCellStatus.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
 

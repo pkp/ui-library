@@ -1,5 +1,6 @@
 <template>
 	<ContributorsListPanel
+		data-cy="contributor-manager"
 		v-bind="contributorManagerStore.contributorsListPanelProps"
 		class="pkpWorkflow__contributors"
 	></ContributorsListPanel>
@@ -12,6 +13,7 @@ const props = defineProps({
 	submission: {type: Object, required: true},
 	publication: {type: Object, required: true},
 	contributorForm: {type: Object, required: true},
+	canEditPublication: {type: Boolean, required: true},
 });
 
 const contributorManagerStore = useContributorManagerStore(props);

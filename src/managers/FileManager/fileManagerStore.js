@@ -15,7 +15,7 @@ export const useFileManagerStore = defineComponentStore(
 		 * Manager configuration
 		 */
 		const {managerConfig} = useFileManagerConfig({
-			configName: props.configName,
+			namespace: props.namespace,
 			submissionStageId: props.submissionStageId,
 		});
 

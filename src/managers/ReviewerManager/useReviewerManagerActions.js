@@ -34,7 +34,7 @@ export function useReviewerManagerActions() {
 		}
 		actions.push({
 			label: t('editor.submission.addReviewer'),
-			name: Actions.REVIEWER_ADD,
+			name: Actions.REVIEWER_ADD_REVIEWER,
 		});
 
 		return actions;
