@@ -1,15 +1,14 @@
-import {computed, ref} from "vue";
+import {computed, ref} from 'vue';
 
 import FieldAffiliations from './FieldAffiliations.vue';
-import PkpTable from "@/components/Table/Table.vue";
-import TableHeader from "@/components/Table/TableHeader.vue";
-import TableBody from "@/components/Table/TableBody.vue";
-import TableRow from "@/components/Table/TableRow.vue";
-import TableColumn from "@/components/Table/TableColumn.vue";
-import TableCell from "@/components/Table/TableCell.vue";
-import PkpButton from "@/components/Button/Button.vue";
-import Icon from "@/components/Icon/Icon.vue";
-
+import PkpTable from '@/components/Table/Table.vue';
+import TableHeader from '@/components/Table/TableHeader.vue';
+import TableBody from '@/components/Table/TableBody.vue';
+import TableRow from '@/components/Table/TableRow.vue';
+import TableColumn from '@/components/Table/TableColumn.vue';
+import TableCell from '@/components/Table/TableCell.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
 import FieldAffiliationsMock from '@/components/Form/mocks/field-affiliations';
 
 export default {
@@ -29,14 +28,14 @@ export default {
 		},
 		setup() {
 			/* parent */
-			const primaryLocale = 'en';
+			// todo: access locale from upstream
+			const primaryLocale = $.pkp.app.primaryLocale;
 
 			/* current component */
-			const searchPhrase = ref('');
+			const searchPhrase = ref('initial value');
+			const rows = ref(args.rows);
 
-			const rows = args.rows;
-
-			function dummyAction(message){
+			function dummyAction(message) {
 				alert('"' + message + '"' + ' clicked');
 			}
 
@@ -44,16 +43,15 @@ export default {
 				let total = Object.keys(item.name).length;
 				let translated = 0;
 
-				for(let key in item.name) {
-					if(item.name[key].length > 0){
+				for (let key in item.name) {
+					if (item.name[key].length > 0) {
 						translated++;
 					}
 				}
 
-				if(total === translated){
+				if (total === translated) {
 					return 'All Translations Available';
-				}
-				else{
+				} else {
 					return translated + ' Of ' + total + ' Languages Completed';
 				}
 			}
@@ -69,7 +67,7 @@ export default {
 				// setter
 				set(newValue) {
 					return newValue;
-				}
+				},
 			});
 
 			return {
@@ -93,7 +91,7 @@ export default {
 				<TableBody>
 					<TableRow v-for="row in rows" :key="row.id">
 						<TableCell>
-							{{ row.name.en }}
+							{{ row.name[primaryLocale] }}
 							<Icon
 								v-if="row.ror"
 								:class="'mr-2'"
@@ -102,7 +100,16 @@ export default {
 							/>
 						</TableCell>
 						<TableCell>
-							<button @click="dummyAction(translations(row))">{{ translations(row) }}</button>
+							<div v-for="([key, value], index) in Object.entries(row.name)" :key="index">
+								<input
+									v-if="key !== primaryLocale"
+									v-model="row.name[key]"
+									class="pkpFormField__input pkpFormField--text__input"
+								/>
+							</div>
+							<button @click="dummyAction(translations(row))">
+								{{ translations(row) }}
+							</button>
 						</TableCell>
 						<TableCell>
 							<button @click="dummyAction('...')"> ...</button>
@@ -139,13 +146,13 @@ export default {
 			</PkpTable>
 			<div>
 				<div>searchPhrase: {{ searchPhrase }}</div>
-				<div>Icon: <Icon :class="'mr-2'" :icon="'ror'" :inline="true"/></div>
 				<div>currentValue: {{ currentValue }}</div>
+				<textarea style="border: 1px solid #000;width:100%;height:250px;">{{ rows }}</textarea>
 			</div>
 		`,
 	}),
 };
 
 export const Base = {
-	args: { ...FieldAffiliationsMock },
+	args: {...FieldAffiliationsMock},
 };
