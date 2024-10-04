@@ -39,17 +39,16 @@ export default {
 	pageTitleDescription:
 		'You are inviting a user to take a role in OJS along with appearing in the journal masthead',
 	primaryLocale: 'en',
-	invitationType: 'RoleUpdateForNewUser',
+	invitationType: 'userRoleAssignment',
+	invitationMode: 'create',
 	invitationPayload: {
 		userId: null,
-		email: '',
+		inviteeEmail: '',
 		orcid: '',
 		givenName: '',
 		familyName: '',
-		affiliation: '',
-		country: '',
 		orcidValidation: false,
-		userGroupsToAdd: [{userGroup: null, dateStart: null, masthead: null}],
+		userGroupsToAdd: [{userGroupId: null, dateStart: null, masthead: null}],
 		currentUserGroups: [],
 		userGroupsToRemove: [],
 		emailComposer: {
@@ -61,7 +60,7 @@ export default {
 		{
 			id: 'searchUser',
 			name: 'Search User',
-			reviewName: '{$step} - Search User',
+			stepLabel: '{$step} - Search User',
 			description:
 				'Search for the user using their email address, username or ORCID iD. Enter at least one details to get started. If user does not exist, ypu can invite them to take up roles and be a part of your journal. If the user already exist in the system, you can view user information and invite to take a additional roles.',
 			nextButtonLabel: 'Search user (t)',
@@ -79,7 +78,7 @@ export default {
 		{
 			id: 'userDetails',
 			name: 'Enter details',
-			reviewName: '{$step} - Enter details and invite for roles',
+			stepLabel: '{$step} - Enter details and invite for roles',
 			type: 'form',
 			description: 'You can invite them to take up a role in OJS',
 			nextButtonLabel: 'Save And Continue (t)',
@@ -201,18 +200,16 @@ export default {
 									prefix: '',
 								},
 								{
-									name: 'orcid',
-									component: 'field-text',
-									label: 'ORCiD ID',
+									component: 'field-html',
+									description:
+										'On accepting the invite, the user will be redirected to ORCID to verify their account, if they wish to.',
 									groupId: 'default',
-									isRequired: false,
+									isInert: true,
 									isMultilingual: false,
+									isRequired: false,
+									label: 'ORCID iD',
+									name: 'orcid',
 									value: null,
-									inputType: 'text',
-									optIntoEdit: false,
-									optIntoEditLabel: '',
-									size: 'large',
-									prefix: '',
 								},
 								{
 									name: 'givenName',
@@ -220,10 +217,13 @@ export default {
 									label: 'Given Name',
 									groupId: 'default',
 									isRequired: false,
-									isMultilingual: false,
+									isMultilingual: true,
 									description:
 										'If you know the given name of the user, you can enter the information. However, this information can be changed by the user',
-									value: null,
+									value: {
+										en: '',
+										fr_CA: '',
+									},
 									inputType: 'text',
 									optIntoEdit: false,
 									optIntoEditLabel: '',
@@ -236,10 +236,13 @@ export default {
 									label: 'Family Name',
 									groupId: 'default',
 									isRequired: false,
-									isMultilingual: false,
+									isMultilingual: true,
 									description:
 										'If you know the family name of the user, you can enter the information. However, this information can be changed by the user',
-									value: null,
+									value: {
+										en: '',
+										fr_CA: '',
+									},
 									inputType: 'text',
 									optIntoEdit: false,
 									optIntoEditLabel: '',
@@ -270,8 +273,7 @@ export default {
 							errors: {},
 						},
 						validateFields: [
-							'orcid',
-							'email',
+							'inviteeEmail',
 							'givenName',
 							'familyName',
 							'userGroupsToAdd',
@@ -283,7 +285,7 @@ export default {
 		{
 			id: 'userInvitedEmail',
 			name: 'Review & invite for roles',
-			reviewName: '{$step} - Modify email shared with the user',
+			stepLabel: '{$step} - Modify email shared with the user',
 			type: 'email',
 			description:
 				'Send the user an email to let them know about the invitation, next steps, journal GDPR polices and ORCiD verification',
