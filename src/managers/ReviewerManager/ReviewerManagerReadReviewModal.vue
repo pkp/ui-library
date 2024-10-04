@@ -27,19 +27,19 @@ const {t} = useLocalize();
 const exportOptions = [
 	{
 		label: `${t('editor.review.authorOnly')} (PDF)`,
-		url: getUrl('export-p-d-f', 1),
+		url: getUrl('export-pdf', 1),
 	},
 	{
 		label: `${t('editor.review.authorOnly')} (XML)`,
-		url: getUrl('export-x-m-l', 1),
+		url: getUrl('export-xml', 1),
 	},
 	{
 		label: `${t('editor.review.allSections')} (PDF)`,
-		url: getUrl('export-p-d-f', 0),
+		url: getUrl('export-pdf', 0),
 	},
 	{
 		label: `${t('editor.review.allSections')} (XML)`,
-		url: getUrl('export-x-m-l', 0),
+		url: getUrl('export-xml', 0),
 	},
 ];
 
