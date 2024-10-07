@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import FieldAffiliations from './fields/FieldAffiliations.vue';
 import FieldArchivingPn from './fields/FieldArchivingPn.vue';
 import FieldAutosuggestPreset from './fields/FieldAutosuggestPreset.vue';
 import FieldBaseAutosuggest from './fields/FieldBaseAutosuggest.vue';
@@ -78,13 +79,13 @@ import FieldTextarea from './fields/FieldTextarea.vue';
 import FieldUpload from './fields/FieldUpload.vue';
 import FieldSlider from './fields/FieldSlider.vue';
 import FieldUploadImage from './fields/FieldUploadImage.vue';
-import FieldAffiliations from "./fields/FieldAffiliations.vue";
 
 import {shouldShowFieldWithinGroup} from './formHelpers';
 
 export default {
 	name: 'FormGroup',
 	components: {
+		FieldAffiliations,
 		FieldArchivingPn,
 		FieldAutosuggestPreset,
 		FieldBaseAutosuggest,
@@ -110,7 +111,6 @@ export default {
 		FieldSlider,
 		FieldUpload,
 		FieldUploadImage,
-		FieldAffiliations,
 	},
 	props: {
 		id: String,
