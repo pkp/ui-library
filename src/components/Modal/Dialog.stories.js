@@ -100,6 +100,50 @@ export const WithBodyComponent = {
 	},
 };
 
+export const NonDismissible = {
+	args: {
+		buttonName: 'Show non-dismissible modal',
+		name: 'non-dismissible-modal',
+		title: 'Non-Dismissible Modal',
+		message:
+			'Clicking outside will not close this modal. Use the "Cancel" button to close it.',
+		actions: [
+			{
+				label: 'Cancel',
+				callback: (close) => close(),
+			},
+		],
+		isDismissible: false,
+		close: () => console.log('closed example dialog'), // eslint-disable-line,
+	},
+	play: async ({canvasElement}) => {
+		// Assigns canvas to the component root element
+		const canvas = within(canvasElement);
+		const user = userEvent.setup();
+
+		await user.click(canvas.getByText('Show non-dismissible modal'));
+	},
+};
+
+export const NoActionButtons = {
+	args: {
+		buttonName: 'Show modal',
+		name: 'no-actions-modal',
+		title: 'Non Action Buttons Modal',
+		message:
+			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+		actions: [],
+		close: () => console.log('closed example dialog'), // eslint-disable-line,
+	},
+	play: async ({canvasElement}) => {
+		// Assigns canvas to the component root element
+		const canvas = within(canvasElement);
+		const user = userEvent.setup();
+
+		await user.click(canvas.getByText('Show modal'));
+	},
+};
+
 export const DialogComplex = {
 	args: {
 		buttonName: 'Full Example',
