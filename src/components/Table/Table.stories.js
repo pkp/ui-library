@@ -282,3 +282,45 @@ export const WithTitleAndDescription = {
 
 	args: {},
 };
+
+export const WithNoItems = {
+	render: (args) => ({
+		components: {
+			PkpTable,
+			TableHeader,
+			TableBody,
+			TableRow,
+			TableColumn,
+			TableCell,
+			PkpButton,
+		},
+		setup() {
+			return {args};
+		},
+		template: `
+			<PkpTable>
+				<template #label>
+					No Items
+				</template>
+				<template #description>
+					There's a total of <strong>0</strong> items(s).
+				</template>
+				<TableHeader>
+					<TableColumn>ID</TableColumn>
+					<TableColumn>Title</TableColumn>
+					<TableColumn>Views</TableColumn>
+					<TableColumn>Downloads</TableColumn>
+					<TableColumn>Total</TableColumn>
+					<TableColumn>Action</TableColumn>
+				</TableHeader>
+				<TableBody>
+					<template #no-content>
+						This is a custom no-content slot. No items available.
+					</template>
+				</TableBody>
+			</PkpTable>
+		`,
+	}),
+
+	args: {},
+};
