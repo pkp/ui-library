@@ -1,6 +1,6 @@
 <template>
 	<TransitionRoot as="template" :show="opened">
-		<HLDialog class="modal" @close="onClose">
+		<HLDialog class="modal" @close="onClose('default')">
 			<TransitionChild
 				as="template"
 				enter="ease-out duration-300"
@@ -28,6 +28,20 @@
 						leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 					>
 						<DialogPanel data-cy="dialog" :class="styles">
+							<button
+								v-if="noActions"
+								class="absolute right-3 top-3 cursor-pointer bg-transparent"
+								@click="onClose"
+							>
+								<Icon
+									class="h-6 w-6 text-negative"
+									icon="Cancel"
+									:aria-hidden="true"
+								/>
+								<span class="-screenReader">
+									{{ t('common.close') }}
+								</span>
+							</button>
 							<div class="flex min-h-12 items-center">
 								<DialogTitle
 									v-if="title"
@@ -117,6 +131,11 @@ const props = defineProps({
 		validator: (value) =>
 			['default', 'primary', 'negative', 'success'].includes(value),
 	},
+	/** Defines if clicking outside the modal should close it */
+	isDismissible: {
+		type: Boolean,
+		default: () => true,
+	},
 });
 
 const styles = computed(() => ({
@@ -144,14 +163,22 @@ const iconStyles = computed(() => ({
 	'bg-negative': props.modalStyle === 'negative',
 }));
 
+const noActions = computed(() => !props.actions?.length);
+
 const emit = defineEmits(['close']);
 
 const isLoading = ref(false);
 
-function onClose() {
+function onClose(evtType) {
+	// Prevent closing the modal on outside click or "Esc" key if isDismissible is false
+	if (!props.isDismissible && evtType === 'default') {
+		return;
+	}
+
 	if (props.close) {
 		props.close();
 	}
+
 	emit('close');
 }
 
