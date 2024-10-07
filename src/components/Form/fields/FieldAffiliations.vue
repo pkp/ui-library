@@ -1,350 +1,174 @@
 <template>
-	<div class="pkpFormField pkpFormField--text" :class="classes">
-		<div class="pkpFormField__heading">
-			<FormFieldLabel
-				:control-id="controlId"
-				:label="label"
-				:locale-label="localeLabel"
-				:is-required="isRequired"
-				:required-label="t('common.required')"
-				:multilingual-label="multilingualLabel"
-			/>
-			<Tooltip
-				v-if="isPrimaryLocale && tooltip"
-				aria-hidden="true"
-				:tooltip="tooltip"
-				label=""
-			/>
-			<span
-				v-if="isPrimaryLocale && tooltip"
-				:id="describedByTooltipId"
-				class="-screenReader"
-				v-html="tooltip"
-			/>
-			<HelpButton
-				v-if="isPrimaryLocale && helpTopic"
-				:id="describedByHelpId"
-				:topic="helpTopic"
-				:section="helpSection"
-				:label="t('help.help')"
-			/>
-		</div>
-		<div
-			v-if="isPrimaryLocale && description"
-			:id="describedByDescriptionId"
-			class="pkpFormField__description"
-			v-html="description"
-		/>
-		<div class="pkpFormField__control" :class="controlClasses">
-			<div class="pkpFormField__control_top">
-				<input
-					:id="controlId"
-					ref="input"
-					v-model="currentValue"
-					class="pkpFormField__input pkpFormField--text__input"
-					:type="inputType"
-					:name="localizedName"
-					:aria-describedby="describedByIds"
-					:aria-invalid="errors && errors.length"
-					:disabled="isDisabled"
-					:required="isRequired"
-					:style="inputStyles"
-				/>
-				<span
-					v-if="prefix"
-					ref="prefix"
-					class="pkpFormField__inputPrefix"
-					:style="prefixStyles"
-					@click="setFocus"
-					v-html="prefix"
-				/>
-				<MultilingualProgress
-					v-if="isMultilingual && locales.length > 1"
-					:id="multilingualProgressId"
-					:count="multilingualFieldsCompleted"
-					:total="locales.length"
-				/>
-				<PkpButton
-					v-if="optIntoEdit && isDisabled"
-					class="pkpFormField--text__optIntoEdit"
-					@click="isDisabled = false"
-				>
-					{{ optIntoEditLabel }}
-				</PkpButton>
-			</div>
-			<FieldError
-				v-if="errors && errors.length"
-				:id="describedByErrorId"
-				:messages="errors"
-			/>
-		</div>
+	<PkpTable aria-label="Affiliations">
+		<TableHeader>
+			<TableColumn>Institution</TableColumn>
+			<TableColumn>Translation</TableColumn>
+			<TableColumn> &nbsp;</TableColumn>
+		</TableHeader>
+		<TableBody>
+			<TableRow v-for="row in rows" :key="row.id">
+				<TableCell>
+					{{ row.name[primaryLocale] }}
+					<Icon
+						v-if="row.ror"
+						:class="'mr-2'"
+						:icon="'ror'"
+						:inline="true"
+					/>
+				</TableCell>
+				<TableCell>
+					<div v-for="([key, value], index) in Object.entries(row.name)" :key="index">
+						<input
+							v-if="key !== primaryLocale"
+							v-model="row.name[key]"
+							class="pkpFormField__input pkpFormField--text__input"
+						/>
+					</div>
+					<button @click="dummyAction(translations(row))">
+						{{ translations(row) }}
+					</button>
+				</TableCell>
+				<TableCell>
+					<button @click="dummyAction('...')"> ...</button>
+				</TableCell>
+			</TableRow>
+			<TableRow>
+				<TableCell>
+					<div class="pkpFormField pkpFormField--text pkpFormField--sizenormal">
+						<div class="pkpFormField__heading">
+							<label for="-searchPhraseInput-control" class="pkpFormFieldLabel">
+								Type the institute name
+							</label>
+							<div class="pkpFormField__control">
+								<div class="pkpFormField__control_top">
+									<input
+										v-model="searchPhrase"
+										@keyup="lookupSearchPhrase"
+										id="-searchPhraseInput-control"
+										class="pkpFormField__input pkpFormField--text__input"
+										type="text"
+										name="searchPhraseInput" aria-invalid="0"
+									>
+								</div>
+							</div>
+						</div>
+					</div>
+				</TableCell>
+				<TableCell> &nbsp;</TableCell>
+				<TableCell>
+					<PkpButton @click="dummyAction('add')"> Add</PkpButton>
+				</TableCell>
+			</TableRow>
+		</TableBody>
+	</PkpTable>
+	<div>
+		<div>searchPhrase: {{ searchPhrase }}</div>
+		<div>currentValue: {{ currentValue }}</div>
+		<div>value: {{ value }}</div>
+		<textarea style="border: 1px solid #000;width:100%;height:250px;">{{ rows }}</textarea>
 	</div>
 </template>
 
-<script>
+<script setup>
+import {computed, ref} from "vue";
+
 import FieldBase from './FieldBase.vue';
-import FormFieldLabel from '@/components/Form/FormFieldLabel.vue';
-import FieldError from '@/components/Form/FieldError.vue';
+import PkpTable from '@/components/Table/Table.vue';
+import TableHeader from '@/components/Table/TableHeader.vue';
+import TableBody from '@/components/Table/TableBody.vue';
+import TableRow from '@/components/Table/TableRow.vue';
+import TableColumn from '@/components/Table/TableColumn.vue';
+import TableCell from '@/components/Table/TableCell.vue';
 import PkpButton from '@/components/Button/Button.vue';
-import Tooltip from '@/components/Tooltip/Tooltip.vue';
-import HelpButton from '@/components/HelpButton/HelpButton.vue';
-import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
+import Icon from '@/components/Icon/Icon.vue';
+import FieldText from "@/components/Form/fields/FieldText.vue";
 
-export default {
-	name: 'FieldAffiliations',
-	components: {
-		FormFieldLabel,
-		FieldError,
-		PkpButton,
-		Tooltip,
-		HelpButton,
-		MultilingualProgress,
-	},
-	extends: FieldBase,
-	props: {
-		/** The`type` attribute for the `<input>` field. See [available types](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Form_%3Cinput%3E_types). */
-		inputType: {
-			type: String,
-			default: 'text',
-		},
-		/**  Disables the field and adds a button that the user must click before they can edit it. */
-		optIntoEdit: {type: Boolean, default: false},
-		/** The label for the button added by `optIntoEdit` */
-		optIntoEditLabel: String,
-		/** One of `small`, `normal` or `large`. Default: `normal`. */
-		size: {
-			default: 'normal',
-			validator: function (value) {
-				return ['small', 'normal', 'large'].indexOf(value) !== -1;
-			},
-		},
-		/** An optional prefix to show before the user's input. For example, a prefix of `http://publisher.com/` is used for the journal `path` field.  */
-		prefix: String,
-	},
-	data() {
-		return {
-			inputStyles: {},
-			isDisabled: false,
-			prefixStyles: {},
-		};
-	},
-	computed: {
-		/**
-		 * Add classes to wrapper element based on configuration
-		 *
-		 * @return {Array}
-		 */
-		classes() {
-			let classes = ['pkpFormField--size' + this.size];
-			if (this.isRTL()) {
-				classes.push('pkpFormField--text--rtl');
-			}
-			return classes;
-		},
+import FieldAffiliationsMock from '@/components/Form/mocks/field-affiliations';
 
-		/**
-		 * Add classes to the input control
-		 *
-		 * @return {Array}
-		 */
-		controlClasses() {
-			let classes = [];
-			if (this.isMultilingual && this.locales.length > 1) {
-				classes.push('pkpFormField__control--hasMultilingualIndicator');
-			}
-			if (this.prefix) {
-				classes.push('pkpFormField__control--hasPrefix');
-			}
-			return classes;
-		},
-	},
-	mounted() {
-		/**
-		 * Increase input padding to account for a prefix if one exists and truncate
-		 * prefix if it takes up the whole input area.
-		 *
-		 * In at least one case, the prefix clientWidth changes shortly after mount.
-		 * Unable to track down the source of this changing clientWidth, we instead
-		 * wait a bit before calculating the prefix padding. The delay is
-		 * generous to account for the possibility that the clientWidth update will
-		 * take longer on slower machines.
-		 */
-		this.$nextTick(() => {
-			setTimeout(() => {
-				if (this.prefix) {
-					this.inputStyles = {
-						direction: 'ltr',
-						'padding-inline-start':
-							this.$refs.prefix.clientWidth +
-							this.$refs.prefix.offsetLeft +
-							'px',
-					};
-					this.$nextTick(() => {
-						const prefixLength =
-							this.$refs.prefix.clientWidth + this.$refs.prefix.offsetLeft;
-						if (prefixLength > this.$refs.input.clientWidth - 20) {
-							this.prefixStyles = {
-								width:
-									this.$refs.input.clientWidth -
-									this.$refs.prefix.offsetLeft -
-									80 +
-									'px',
-								display: 'block',
-								'white-space': 'nowrap',
-								'overflow-x': 'hidden',
-								'text-overflow': 'ellipsis',
-							};
-							this.$nextTick(() => {
-								this.inputStyles = {
-									direction: 'ltr',
-									'padding-inline-start':
-										this.$refs.prefix.clientWidth +
-										this.$refs.prefix.offsetLeft +
-										'px',
-								};
-							});
-						}
-					});
-				}
-			}, 700);
-		});
+const name = 'FieldAffiliations';
 
-		// Set the field to disabled if optIntoEdit is passed
-		if (this.optIntoEdit) {
-			this.isDisabled = true;
-		}
-	},
-	methods: {
-		/**
-		 * Set focus to the control input
-		 */
-		setFocus() {
-			this.$refs.input.focus();
-		},
-		isRTL() {
-			var direction = document.body.getAttribute('dir');
-			return direction === 'rtl';
-		},
-	},
+const components = {
+	PkpTable,
+	TableHeader,
+	TableBody,
+	TableRow,
+	TableColumn,
+	TableCell,
+	PkpButton,
+	Icon,
+	// FieldText,
 };
+
+// extends FieldText;
+
+const args = {...FieldAffiliationsMock};
+
+const props = defineProps({
+	value: {String},
+	currentValue: String,
+});
+
+/* parent */
+// todo: access locale from upstream
+const primaryLocale = $.pkp.app.primaryLocale;
+console.log(primaryLocale);
+
+/* current component */
+const searchPhrase = ref('initial value');
+const rows = ref(args.rows);
+
+const dummyAction = function(message) {
+	alert('"' + message + '"' + ' clicked');
+}
+
+const translations = function(item) {
+	let total = Object.keys(item.name).length;
+	let translated = 0;
+
+	for (let key in item.name) {
+		if (item.name[key].length > 0) {
+			translated++;
+		}
+	}
+
+	if (total === translated) {
+		return 'All Translations Available';
+	} else {
+		return translated + ' Of ' + total + ' Languages Completed';
+	}
+}
+
+const lookupSearchPhrase = function() {
+	console.log('searchPhrase: ' + searchPhrase.value);
+}
+
+const currentValue = computed({
+	get() {
+		console.log('currentValue: ' + this.value);
+		return this.isMultilingual ? this.value[this.localeKey] : this.value;
+	},
+	set: function (newVal) {
+		console.log('newValue: ' + newVal);
+		this.$emit('change', this.name, 'value', newVal, this.localeKey);
+	},
+});
+
+const change = function(name, prop, newValue, localeKey) {
+	if (localeKey) {
+		args[prop][localeKey] = newValue;
+	} else {
+		args[prop] = newValue;
+	}
+};
+
+// const fieldText = {
+// 	name: 'affiliations',
+// 	component: 'field-text',
+// 	inputType: 'text',
+// 	label: 'Affiliations',
+// 	groupId: 'identity',
+// 	isMultilingual: false,
+// 	value: '',
+// };
+
 </script>
-
-<style lang="less">
-@import '../../../styles/_import';
-
-.pkpFormField--text {
-	position: relative;
-}
-
-.pkpFormField--text__input {
-	width: 20em;
-	display: inline-block;
-}
-
-.pkpFormField__control {
-	position: relative;
-}
-
-.pkpFormField__inputPrefix {
-	position: absolute;
-	top: 0;
-	left: 1rem;
-	height: 2.5rem;
-	line-height: 2.5rem;
-	font-size: 0.9em;
-	color: @text-light;
-}
-
-.pkpFormField__control--hasMultilingualIndicator {
-	.pkpFormField--text__input {
-		padding-inline-start: 3rem;
-	}
-
-	.pkpFormField__inputPrefix {
-		left: 3rem;
-	}
-}
-
-.pkpFormField--text .multilingualProgress {
-	position: absolute;
-	top: 0;
-	left: 0;
-
-	button {
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		left: 0;
-		width: 2.5rem;
-		height: 2.5rem;
-		border: 1px solid transparent;
-		border-inline-end: @bg-border;
-
-		&:focus {
-			outline: 0;
-			border-color: @primary;
-			box-shadow: inset 0 -3px 0 @primary;
-
-			.fa {
-				color: @primary;
-			}
-		}
-	}
-
-	.fa {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-	}
-}
-
-.pkpFormField--text__input:hover + .multilingualProgress button {
-	border-color: @shade;
-}
-
-.pkpFormField--text__input:focus + .multilingualProgress button {
-	border-color: @primary;
-}
-
-.pkpFormField--text__optIntoEdit {
-	margin-inline-start: 0.25rem;
-	height: 2.5rem; // Match input height
-}
-
-.pkpFormField--sizesmall {
-	.pkpFormField--text__input {
-		width: 10em;
-	}
-}
-
-.pkpFormField--sizelarge {
-	.pkpFormField--text__input {
-		width: 100%;
-	}
-
-	.pkpFormField--text__optIntoEdit {
-		margin-inline-start: 0;
-		margin-top: 0.25rem;
-		height: inherit;
-	}
-}
-
-[dir='rtl'] {
-	.pkpFormField--text .multilingualProgress {
-		left: auto;
-		right: 0;
-
-		button {
-			left: auto;
-			right: 0;
-		}
-	}
-
-	.pkpFormField__control--hasMultilingualIndicator {
-		.pkpFormField__inputPrefix {
-			right: 3rem;
-		}
-	}
-}
-</style>
