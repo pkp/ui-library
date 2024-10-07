@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import {defineProps, inject} from 'vue';
+import {defineProps, inject, onMounted, onUnmounted} from 'vue';
 import Icon from '@/components/Icon/Icon.vue';
 
 const props = defineProps({
@@ -32,5 +32,11 @@ const props = defineProps({
 
 const tableContext = inject('tableContext');
 
-tableContext.columnsCount.value++;
+onMounted(() => {
+	tableContext.columnsCount.value++;
+});
+
+onUnmounted(() => {
+	tableContext.columnsCount.value--;
+});
 </script>
