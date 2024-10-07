@@ -13,6 +13,7 @@
 			<div class="bg-secondary p-4">
 				<div id="changeSubmissionLanguage">
 					<PkpForm
+						v-if="store.form"
 						v-bind="store.form"
 						@set="store.setCustom"
 						@success="store.success"
@@ -31,10 +32,6 @@ import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import {useChangeSubmissionLanguageStore} from '@/pages/workflow/changeSubmissionLanguageStore';
 
 const props = defineProps({
-	form: {
-		type: Object,
-		required: true,
-	},
 	publicationId: {
 		type: Number,
 		required: true,

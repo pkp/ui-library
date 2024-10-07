@@ -58,6 +58,19 @@ function getHeaderItems({
 }
 
 export const WorkflowConfig = {
+	common: {
+		getPrimaryItems: ({submission, permissions}) => {
+			return [
+				{
+					component: 'WorkflowChangeSubmissionLanguage',
+					props: {
+						submission,
+						canChangeSubmissionLanguage: false,
+					},
+				},
+			];
+		},
+	},
 	[pkp.const.WORKFLOW_STAGE_ID_SUBMISSION]: {
 		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
@@ -539,8 +552,23 @@ export const PublicationConfig = {
 			submission,
 			selectedPublicationId,
 			selectedPublication,
+			permissions,
 		}) => {
 			const items = [];
+
+			if (
+				submission.status !== pkp.const.STATUS_PUBLISHED &&
+				submission.publications.length < 2
+			) {
+				items.push({
+					component: 'WorkflowChangeSubmissionLanguage',
+					props: {
+						submission,
+						canChangeSubmissionLanguage:
+							permissions.canChangeSubmissionLanguage,
+					},
+				});
+			}
 
 			items.push({
 				component: 'PublicationVersionControl',
