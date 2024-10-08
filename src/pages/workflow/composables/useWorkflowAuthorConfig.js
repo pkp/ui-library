@@ -1,5 +1,5 @@
 import {useLocalize} from '@/composables/useLocalize';
-import {Actions} from '../../composables/useWorkflowActions';
+import {Actions} from './useWorkflowActions';
 import {useSubmission} from '@/composables/useSubmission';
 
 const {hasSubmissionPassedStage, getOpenReviewAssignmentsForRound} =
@@ -19,7 +19,7 @@ function getHeaderItems({
 	const actions = [];
 
 	actions.push({
-		component: 'ActionButton',
+		component: 'WorkflowActionButton',
 		props: {
 			label: t('editor.submissionLibrary'),
 			action: Actions.WORKFLOW_VIEW_LIBRARY,
@@ -88,7 +88,7 @@ export const WorkflowConfig = {
 			if (!selectedReviewRound) {
 				return [
 					{
-						component: 'PrimaryBasicMetadata',
+						component: 'WorkflowPrimaryBasicMetadata',
 						props: {body: t('editor.review.notInitiated')},
 					},
 				];
@@ -102,7 +102,7 @@ export const WorkflowConfig = {
 
 			if (selectedReviewRound.round < currentReviewRound.round) {
 				items.push({
-					component: 'PrimaryBasicMetadata',
+					component: 'WorkflowPrimaryBasicMetadata',
 					props: {
 						body: t(
 							'editor.submission.workflowDecision.submission.reviewRound',
@@ -113,7 +113,7 @@ export const WorkflowConfig = {
 
 			if (selectedReviewRound.id === currentReviewRound.id) {
 				items.push({
-					component: 'ReviewRoundStatus',
+					component: 'WorkflowReviewRoundStatus',
 					props: {reviewRound: selectedReviewRound},
 				});
 			}
@@ -165,7 +165,7 @@ export const WorkflowConfig = {
 				)
 			) {
 				items.push({
-					component: 'PrimaryBasicMetadata',
+					component: 'WorkflowPrimaryBasicMetadata',
 					props: {
 						body: t('editor.submission.workflowDecision.submission.production'),
 					},
@@ -197,7 +197,7 @@ export const WorkflowConfig = {
 			const items = [];
 			if (submission.status === pkp.const.STATUS_PUBLISHED) {
 				items.push({
-					component: 'PrimaryBasicMetadata',
+					component: 'WorkflowPrimaryBasicMetadata',
 					props: {
 						body: t('editor.submission.workflowDecision.submission.published'),
 					},
@@ -232,7 +232,7 @@ export const PublicationConfig = {
 			const items = [];
 			if (selectedPublication.status === pkp.const.STATUS_PUBLISHED) {
 				items.push({
-					component: 'PublicationEditDisabled',
+					component: 'WorkflowPublicationEditDisabled',
 					props: {},
 				});
 			}
@@ -246,7 +246,7 @@ export const PublicationConfig = {
 			const items = [];
 
 			items.push({
-				component: 'PublicationVersionControl',
+				component: 'WorkflowPublicationVersionControl',
 				props: {
 					submission,
 					selectedPublicationId: selectedPublicationId,
@@ -273,7 +273,7 @@ export const PublicationConfig = {
 		}) => {
 			return [
 				{
-					component: 'PublicationForm',
+					component: 'WorkflowPublicationForm',
 					props: {
 						formName: 'titleAbstract',
 						submission,
@@ -312,7 +312,7 @@ export const PublicationConfig = {
 		}) => {
 			return [
 				{
-					component: 'PublicationForm',
+					component: 'WorkflowPublicationForm',
 					props: {
 						formName: 'metadata',
 						submission,
@@ -333,7 +333,7 @@ export const PublicationConfig = {
 		}) => {
 			return [
 				{
-					component: 'PublicationForm',
+					component: 'WorkflowPublicationForm',
 					props: {
 						formName: 'reference',
 						submission,

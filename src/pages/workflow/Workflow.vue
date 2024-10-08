@@ -28,7 +28,7 @@
 				<component
 					:is="Components[item.component] || item.component"
 					v-bind="item.props"
-					v-for="(item, index) in summaryStore.headerItems"
+					v-for="(item, index) in workflowStore.headerItems"
 					:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
 				/>
 			</div>
@@ -36,34 +36,34 @@
 		<SideModalLayoutMenu2Columns>
 			<template #menu>
 				<nav>
-					<SideMenu v-bind="summaryStore.sideMenuProps"></SideMenu>
+					<SideMenu v-bind="workflowStore.sideMenuProps"></SideMenu>
 				</nav>
 			</template>
 			<template #heading>
-				<h2>{{ summaryStore.stageTitle }}</h2>
+				<h2>{{ workflowStore.stageTitle }}</h2>
 			</template>
 			<template
-				v-if="summaryStore.publicationControlsLeft?.length"
+				v-if="workflowStore.publicationControlsLeft?.length"
 				#publication-controls-left
 			>
 				<div class="flex flex-col gap-y-2" data-cy="workflow-controls-left">
 					<component
 						:is="Components[item.component] || item.component"
 						v-bind="item.props"
-						v-for="(item, index) in summaryStore.publicationControlsLeft"
+						v-for="(item, index) in workflowStore.publicationControlsLeft"
 						:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
 					/>
 				</div>
 			</template>
 			<template
-				v-if="summaryStore.publicationControlsRight?.length"
+				v-if="workflowStore.publicationControlsRight?.length"
 				#publication-controls-right
 			>
 				<div class="flex gap-x-3" data-cy="workflow-controls-right">
 					<component
 						:is="Components[item.component] || item.component"
 						v-bind="item.props"
-						v-for="(item, index) in summaryStore.publicationControlsRight"
+						v-for="(item, index) in workflowStore.publicationControlsRight"
 						:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
 					/>
 				</div>
@@ -77,32 +77,32 @@
 					<component
 						:is="Components[item.component] || item.component"
 						v-bind="item.props"
-						v-for="(item, index) in summaryStore.primaryItems"
+						v-for="(item, index) in workflowStore.primaryItems"
 						:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
 					/>
 				</div>
 			</template>
-			<template v-if="summaryStore.actionItems?.length" #actions>
+			<template v-if="workflowStore.actionItems?.length" #actions>
 				<div
 					class="flex flex-col items-start space-y-3 p-4"
 					data-cy="workflow-action-items"
 				>
 					<component
 						:is="Components[item.component] || item.component"
-						v-for="(item, index) in summaryStore.actionItems"
+						v-for="(item, index) in workflowStore.actionItems"
 						v-bind="item.props"
 						:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
 					></component>
 				</div>
 			</template>
-			<template v-if="summaryStore.secondaryItems?.length" #secondary>
+			<template v-if="workflowStore.secondaryItems?.length" #secondary>
 				<div
 					class="flex flex-col space-y-4 p-4"
 					data-cy="workflow-secondary-items"
 				>
 					<component
 						:is="Components[item.component] || item.component"
-						v-for="(item, index) in summaryStore.secondaryItems"
+						v-for="(item, index) in workflowStore.secondaryItems"
 						v-bind="item.props"
 						:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
 					></component>
@@ -124,26 +124,24 @@ import ParticipantManager from '@/managers/ParticipantManager/ParticipantManager
 
 import ReviewerManager from '@/managers/ReviewerManager/ReviewerManager.vue';
 import ContributorManager from '@/managers/ContributorManager/ContributorManager.vue';
-import PrimaryBasicMetadata from './primaryItems/PrimaryBasicMetadata.vue';
-import ReviewRoundStatus from './primaryItems/ReviewRoundStatus.vue';
+import WorkflowPrimaryBasicMetadata from './components/primary/WorkflowPrimaryBasicMetadata.vue';
+import WorkflowReviewRoundStatus from './components/primary/WorkflowReviewRoundStatus.vue';
 // Publications
-import WorkflowNotificationDisplay from './primaryItems/WorkflowNotificationDisplay.vue';
-import WorkflowPaymentDropdown from './actionItems/WorkflowPaymentDropdown.vue';
-import PublicationForm from './primaryItems/PublicationForm.vue';
-import PublicationJats from './primaryItems/PublicationJats.vue';
-import PublicationVersionControl from './publicationControls/PublicationVersionControl.vue';
-import WorkflowChangeSubmissionLanguage from './publicationControls/WorkflowChangeSubmissionLanguage.vue';
+import WorkflowNotificationDisplay from './components/primary/WorkflowNotificationDisplay.vue';
+import WorkflowPaymentDropdown from './components/header/WorkflowPaymentDropdown.vue';
+import WorkflowPublicationForm from './components/publication/WorkflowPublicationForm.vue';
+import WorkflowPublicationJats from './components/publication/WorkflowPublicationJats.vue';
+import WorkflowPublicationVersionControl from './components/publication/WorkflowPublicationVersionControl.vue';
+import WorkflowChangeSubmissionLanguage from './components/publication/WorkflowChangeSubmissionLanguage.vue';
 
-import ActionButton from './actionItems/ActionButton.vue';
-import WorkflowRecommendOnlyControls from './actionItems/WorkflowRecommendOnlyControls.vue';
-import WorkflowRecommendOnlyListingRecommendations from './components/WorkflowRecommendOnlyListingRecommendations.vue';
+import WorkflowActionButton from './components/action/WorkflowActionButton.vue';
+import WorkflowRecommendOnlyControls from './components/action/WorkflowRecommendOnlyControls.vue';
+import WorkflowRecommendOnlyListingRecommendations from './components/secondary/WorkflowRecommendOnlyListingRecommendations.vue';
 
-import BasicMetadata from './metaItems/BasicMetadata.vue';
-import SubmissionStatus from './primaryItems/SubmissionStatus.vue';
+import WorkflowSubmissionStatus from './components/primary/WorkflowSubmissionStatus.vue';
 import GalleyManager from '@/managers/GalleyManager/GalleyManager.vue';
-import PublicationEditDisabled from './primaryItems/PublicationEditDisabled.vue';
-import IssueAssigned from './metaItems/IssueAssigned.vue';
-import {useSubmissionSummaryStore} from './submissionSummaryStore';
+import WorkflowPublicationEditDisabled from './components/publication/WorkflowPublicationEditDisabled.vue';
+import {useWorkflowStore} from './workflowStore';
 import SideModalLayoutMenu2Columns from '@/components/Modal/SideModalLayoutMenu2Columns.vue';
 
 import {useLocalize} from '@/composables/useLocalize';
@@ -157,21 +155,19 @@ const Components = {
 	ContributorManager,
 	ParticipantManager,
 	GalleyManager,
-	ActionButton,
+	WorkflowActionButton,
 	WorkflowRecommendOnlyControls,
 	WorkflowRecommendOnlyListingRecommendations,
 	WorkflowNotificationDisplay,
-	BasicMetadata,
 	WorkflowPaymentDropdown,
-	PrimaryBasicMetadata,
-	IssueAssigned,
-	ReviewRoundStatus,
-	PublicationForm,
-	PublicationJats,
-	PublicationVersionControl,
+	WorkflowPrimaryBasicMetadata,
+	WorkflowReviewRoundStatus,
+	WorkflowPublicationForm,
+	WorkflowPublicationJats,
+	WorkflowPublicationVersionControl,
 	WorkflowChangeSubmissionLanguage,
-	SubmissionStatus,
-	PublicationEditDisabled,
+	WorkflowSubmissionStatus,
+	WorkflowPublicationEditDisabled,
 };
 
 const props = defineProps({
@@ -179,7 +175,7 @@ const props = defineProps({
 	pageInitConfig: {type: Object, required: true},
 });
 
-const summaryStore = useSubmissionSummaryStore(props);
+const workflowStore = useWorkflowStore(props);
 
 const {getExtendedStage, getExtendedStageLabel} = useSubmission();
 
@@ -190,5 +186,5 @@ const stageLabel = computed(
 	() => submission.value && getExtendedStageLabel(submission.value),
 );
 
-const {submission, selectedPublication} = storeToRefs(summaryStore);
+const {submission, selectedPublication} = storeToRefs(workflowStore);
 </script>

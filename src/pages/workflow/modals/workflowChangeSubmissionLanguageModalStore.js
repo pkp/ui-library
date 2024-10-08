@@ -5,9 +5,8 @@ import {useFetch} from '@/composables/useFetch';
 import {useForm} from '@/composables/useForm';
 import {useLocalize} from '@/composables/useLocalize';
 
-export const useChangeSubmissionLanguageStore = defineComponentStore(
-	'changeSubmissionLanguage',
-	(props) => {
+export const useWorkflowChangeSubmissionLanguageModalStore =
+	defineComponentStore('workflowChangeSubmissionLanguageModal', (props) => {
 		/**
 		 * Variables and init data
 		 */
@@ -132,5 +131,4 @@ export const useChangeSubmissionLanguageStore = defineComponentStore(
 				.find(({name}) => name === 'locale')
 				.options.find(({value}) => value === locale).label;
 		}
-	},
-);
+	});

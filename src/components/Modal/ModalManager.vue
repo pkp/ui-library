@@ -70,9 +70,8 @@ import {storeToRefs} from 'pinia';
 import SideModal from '@/components/Modal/SideModal.vue';
 import LegacyAjax from '@/components/Modal/SideModalBodyLegacyAjax.vue';
 import PkpDialog from '@/components/Modal/Dialog.vue';
-import WorkflowLogResponseForModal from '@/pages/workflow/WorkflowLogResponseForModal.vue';
 
-const GlobalModals = {LegacyAjax, WorkflowLogResponseForModal};
+const GlobalModals = {LegacyAjax};
 
 const modalStore = useModalStore();
 const {
