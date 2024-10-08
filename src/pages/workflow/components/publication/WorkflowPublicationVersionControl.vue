@@ -27,7 +27,7 @@
 import {computed} from 'vue';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 import {useLocalize} from '@/composables/useLocalize';
-import {useWorkflowStore} from '@/pages/workflow/WorkflowStore';
+import {useWorkflowStore} from '@/pages/workflow/workflowStore';
 
 const props = defineProps({
 	submission: {type: Object, required: true},
