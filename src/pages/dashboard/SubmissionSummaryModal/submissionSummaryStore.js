@@ -120,6 +120,8 @@ export const useSubmissionSummaryStore = defineComponentStore(
 			let canPublish = false;
 			// Access to activity log
 			let canAccessEditorialHistory = false;
+			// Changing submission language
+			let canChangeSubmissionLanguage = false;
 
 			let accessibleStages = [];
 
@@ -204,12 +206,17 @@ export const useSubmissionSummaryStore = defineComponentStore(
 				canAccessEditorialHistory = true;
 			}
 
+			if (canPublish || canEditPublication) {
+				canChangeSubmissionLanguage = true;
+			}
+
 			return {
 				canAccessPublication,
 				canAccessProduction,
 				canEditPublication,
 				canPublish,
 				canAccessEditorialHistory,
+				canChangeSubmissionLanguage,
 				accessibleStages,
 			};
 		});

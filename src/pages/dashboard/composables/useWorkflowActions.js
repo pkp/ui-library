@@ -5,6 +5,7 @@ import {useUrl} from '@/composables/useUrl';
 import {useForm} from '@/composables/useForm';
 import {useFetch} from '@/composables/useFetch';
 import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
+import ChangeSubmissionLanguage from '@/pages/workflow/ChangeSubmissionLanguage.vue';
 
 import SelectRevisionFormModal from '../components/SelectRevisionFormModal.vue';
 
@@ -24,6 +25,7 @@ export const Actions = {
 	WORKFLOW_UNSCHEDULE_PUBLICATION: 'workflowUnschedulePublication',
 	WORKFLOW_UNPUBLISH_PUBLICATION: 'workflowUnpublishPublication',
 	WORKFLOW_CREATE_NEW_VERSION: 'workflowCreateNewVersion',
+	WORKFLOW_CHANGE_SUBMISSION_LANGUAGE: 'workflowChangeSubmissionLanguage',
 };
 
 export function useWorkflowActions({
@@ -298,6 +300,14 @@ export function useWorkflowActions({
 		redirectToPage();
 	}
 
+	function workflowChangeSubmissionLanguage({submission}) {
+		const {openSideModal} = useModal();
+		openSideModal(ChangeSubmissionLanguage, {
+			publicationId: submission.currentPublicationId,
+			submissionId: submission.id,
+		});
+	}
+
 	return {
 		workflowViewPublishedSubmission,
 		workflowAssignToIssue,
@@ -311,5 +321,6 @@ export function useWorkflowActions({
 		workflowUnpublishPublication,
 		workflowCreateNewVersion,
 		workflowPreviewPublication,
+		workflowChangeSubmissionLanguage,
 	};
 }

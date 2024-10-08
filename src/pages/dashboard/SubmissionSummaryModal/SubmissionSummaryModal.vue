@@ -46,7 +46,7 @@
 				v-if="summaryStore.publicationControlsLeft?.length"
 				#publication-controls-left
 			>
-				<div class="flex gap-x-3" data-cy="workflow-controls-left">
+				<div class="flex flex-col gap-y-2" data-cy="workflow-controls-left">
 					<component
 						:is="Components[item.component] || item.component"
 						v-bind="item.props"
@@ -132,6 +132,8 @@ import WorkflowPaymentDropdown from './actionItems/WorkflowPaymentDropdown.vue';
 import PublicationForm from './primaryItems/PublicationForm.vue';
 import PublicationJats from './primaryItems/PublicationJats.vue';
 import PublicationVersionControl from './publicationControls/PublicationVersionControl.vue';
+import WorkflowChangeSubmissionLanguage from './publicationControls/WorkflowChangeSubmissionLanguage.vue';
+
 import ActionButton from './actionItems/ActionButton.vue';
 import WorkflowRecommendOnlyControls from './actionItems/WorkflowRecommendOnlyControls.vue';
 import WorkflowRecommendOnlyListingRecommendations from './components/WorkflowRecommendOnlyListingRecommendations.vue';
@@ -167,6 +169,7 @@ const Components = {
 	PublicationForm,
 	PublicationJats,
 	PublicationVersionControl,
+	WorkflowChangeSubmissionLanguage,
 	SubmissionStatus,
 	PublicationEditDisabled,
 };

@@ -1,10 +1,9 @@
-import {inject, ref} from 'vue';
+import {inject, ref, computed, watch} from 'vue';
 import {defineComponentStore} from '@/utils/defineComponentStore';
-import {useApiUrl} from '@/composables/useApiUrl';
+import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 import {useForm} from '@/composables/useForm';
 import {useLocalize} from '@/composables/useLocalize';
-import cloneDeep from 'clone-deep';
 
 export const useChangeSubmissionLanguageStore = defineComponentStore(
 	'changeSubmissionLanguage',
@@ -26,21 +25,39 @@ export const useChangeSubmissionLanguageStore = defineComponentStore(
 
 		const {
 			apiUrl: {value: publicationApiUrl},
-		} = useApiUrl(
+		} = useUrl(
 			`submissions/${props.submissionId}/publications/${props.publicationId}`,
 		);
 
-		const {
-			form: {value: form},
-			getValue,
-			set,
-			setValue,
-		} = useForm(cloneDeep(props.form));
+		/**
+		 * Form for changing language
+		 */
+
+		const relativeUrl = computed(() => {
+			// this form is not related only to submission, not publication
+			return `submissions/${props.submissionId}/publications/${props.publicationId}/_components/changeLanguageMetadata`;
+		});
+		const {apiUrl: publicationFormUrl} = useUrl(relativeUrl);
+		const {data: changeSubmissionForm, fetch: fetchForm} =
+			useFetch(publicationFormUrl);
+
+		watch(
+			publicationFormUrl,
+			(newRelativeUrl, prevRelativeUrl) => {
+				if (newRelativeUrl !== prevRelativeUrl) {
+					fetchForm();
+				}
+			},
+			{immediate: true},
+		);
+
+		const {form, getValue, set, setValue} = useForm(changeSubmissionForm);
 		// Set action api url
 		form.action = publicationApiUrl + '/changeLocale';
 
 		// Set initial value
-		const publicationTitle = ref(getValue('title'));
+
+		const publicationTitle = ref('');
 
 		const publicationProps = {};
 		// Get publication props
@@ -61,12 +78,12 @@ export const useChangeSubmissionLanguageStore = defineComponentStore(
 		 */
 		const setCustom = (_, data) => {
 			set(_, data);
-			const oldLocale = form.primaryLocale;
+			const oldLocale = form.value.primaryLocale;
 			const newLocale = getValue('locale');
 			// Set fields when changing language
 			if (newLocale !== oldLocale) {
-				form.primaryLocale = newLocale;
-				form.fields.forEach((field) => {
+				form.value.primaryLocale = newLocale;
+				form.value.fields.forEach((field) => {
 					if (publicationProps[field.name]) {
 						setValue(
 							field.name,
@@ -95,19 +112,23 @@ export const useChangeSubmissionLanguageStore = defineComponentStore(
 		 */
 
 		async function getData() {
-			const {data, fetch} = useFetch(publicationApiUrl, {
-				method: 'GET',
-			});
-			await fetch();
+			const {data: publication, fetch: fetchPublication} = useFetch(
+				publicationApiUrl,
+				{
+					method: 'GET',
+				},
+			);
+			await fetchPublication();
 
-			Object.assign(publicationProps, data.value ?? {});
+			Object.assign(publicationProps, publication.value ?? {});
 			delete publicationProps['locale'];
 
-			publicationTitle.value = data.value.title[props.form.primaryLocale];
+			publicationTitle.value =
+				publication.value.fullTitle[publication.value.locale];
 		}
 
 		function getLocaleName(locale) {
-			return form.fields
+			return form.value.fields
 				.find(({name}) => name === 'locale')
 				.options.find(({value}) => value === locale).label;
 		}

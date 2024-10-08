@@ -31,6 +31,17 @@ function getHeaderItems({
 
 export const WorkflowConfig = {
 	common: {
+		getPrimaryItems: ({submission, permissions}) => {
+			return [
+				{
+					component: 'WorkflowChangeSubmissionLanguage',
+					props: {
+						submission,
+						canChangeSubmissionLanguage: false,
+					},
+				},
+			];
+		},
 		getSecondaryItems: ({submission, selectedReviewRound, selectedStageId}) => {
 			const items = [];
 			return items;
