@@ -27,7 +27,7 @@
 import {computed} from 'vue';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 import {useLocalize} from '@/composables/useLocalize';
-import {useSubmissionSummaryStore} from '../submissionSummaryStore';
+import {useWorkflowStore} from '@/pages/workflow/WorkflowStore';
 
 const props = defineProps({
 	submission: {type: Object, required: true},
@@ -97,9 +97,9 @@ const dropdownActionsProps = computed(() => {
 	return {label: t('publication.version.all'), actions};
 });
 
-const summaryStore = useSubmissionSummaryStore();
+const workflowStore = useWorkflowStore();
 
 function handleAction(publicationId) {
-	summaryStore.selectPublicationId(publicationId);
+	workflowStore.selectPublicationId(publicationId);
 }
 </script>

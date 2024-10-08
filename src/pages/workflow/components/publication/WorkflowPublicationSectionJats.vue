@@ -145,6 +145,7 @@ export default {
 			},
 		},
 	},
+	emits: ['set'],
 	data() {
 		return {
 			isLoading: false,

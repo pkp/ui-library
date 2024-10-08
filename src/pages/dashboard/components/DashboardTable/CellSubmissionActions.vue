@@ -24,7 +24,7 @@ function handleAction() {
 	if (props.item.submissionProgress) {
 		dashboardPageStore.openSubmissionWizard(props.item.id);
 	} else {
-		dashboardPageStore.openSummaryModal(props.item.id);
+		dashboardPageStore.openWorkflowModal(props.item.id);
 	}
 }
 

@@ -42,7 +42,7 @@
 import PkpButton from '@/components/Button/Button.vue';
 import {computed, ref, watch} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
-import {useSubmissionSummaryStore} from '../submissionSummaryStore';
+import {useWorkflowStore} from '@/pages/workflow/workflowStore';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 
@@ -153,9 +153,9 @@ const currentRecommendation = computed(() => {
 	}
 });
 
-const summaryStore = useSubmissionSummaryStore();
+const workflowStore = useWorkflowStore();
 function handleAction(actionName) {
-	summaryStore[actionName]({
+	workflowStore[actionName]({
 		reviewRoundId: props.reviewRoundId,
 		stageId: props.stageId,
 	});

@@ -159,13 +159,13 @@ export default {
 			// workaround to avoid circular dependencies in storybook
 			// There is chain if imports, and some of them imported form
 			// which seems to be causing circular dependency
-			const {useSubmissionSummaryStore} = await import(
-				'@/pages/dashboard/SubmissionSummaryModal/submissionSummaryStore.js'
+			const {useWorkflowStore} = await import(
+				'@/pages/workflow/workflowStore.js'
 			);
 
-			const summaryStore = useSubmissionSummaryStore();
+			const workflowSotre = useWorkflowStore();
 
-			summaryStore.workflowAssignToIssue({}, (finishedData) => {
+			workflowSotre.workflowAssignToIssue({}, (finishedData) => {
 				if (finishedData.data.issueId) {
 					this.currentValue = finishedData.data.issueId;
 				}

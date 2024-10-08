@@ -1,7 +1,7 @@
 <script type="text/javascript">
 import Page from './Page.vue';
 import ContributorsListPanel from '@/components/ListPanel/contributors/ContributorsListPanel.vue';
-import PublicationSectionJats from '@/pages/workflow/PublicationSectionJats.vue';
+import WorkflowPublicationJats from '@/pages/workflow/components/publication/WorkflowPublicationJats.vue';
 import Composer from '@/components/Composer/Composer.vue';
 import Dropdown from '@/components/Dropdown/Dropdown.vue';
 import Modal from '@/components/Modal/Modal.vue';
@@ -9,20 +9,20 @@ import PkpHeader from '@/components/Header/Header.vue';
 import LocalizeSubmission from '@/mixins/localizeSubmission.js';
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
-import ChangeSubmissionLanguage from '@/pages/workflow/ChangeSubmissionLanguage.vue';
-import SelectRevisionDecisionModal from '@/pages/workflow/SelectRevisionDecisionModal.vue';
+import WorkflowChangeSubmissionLanguage from '@/pages/workflow/components/publication/WorkflowChangeSubmissionLanguage.vue';
+import SelectRevisionDecisionModal from '@/pages/workflow/modals/WorkflowSelectRevisionDecisionModalLegacyWorkflow.vue';
 import {useModal} from '@/composables/useModal';
 
 export default {
 	name: 'WorkflowPage',
 	components: {
-		ChangeSubmissionLanguage,
+		WorkflowChangeSubmissionLanguage,
 		ContributorsListPanel,
 		Composer,
 		Dropdown,
 		Modal,
 		PkpHeader,
-		PublicationSectionJats,
+		WorkflowPublicationJats,
 	},
 	extends: Page,
 	mixins: [LocalizeSubmission, dialog, ajaxError],
@@ -320,7 +320,7 @@ export default {
 		 */
 		openChangeSubmissionLanguageModal() {
 			const {openSideModal} = useModal();
-			openSideModal(ChangeSubmissionLanguage, {
+			openSideModal(WorkflowChangeSubmissionLanguage, {
 				form: this.components[
 					pkp.const.FORM_CHANGE_SUBMISSION_LANGUAGE_METADATA
 				],
