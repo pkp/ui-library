@@ -2,7 +2,7 @@
 	<PkpTable aria-label="Affiliations">
 		<TableHeader>
 			<TableColumn>Institution</TableColumn>
-			<TableColumn>Translation</TableColumn>
+			<TableColumn>{{ t('user.affiliations.translation') }}</TableColumn>
 			<TableColumn> &nbsp;</TableColumn>
 		</TableHeader>
 		<TableBody>
@@ -18,7 +18,6 @@
 				</TableCell>
 				<TableCell>
 					<div v-for="([key, value], index) in Object.entries(row._data.name)" :key="index">
-						<!--						[{{ key }}][{{ value }}][{{ index }}]-->
 						<input
 							v-if="key !== primaryLocale"
 							v-model="row._data.name[key]"
@@ -45,10 +44,11 @@
 									<input
 										v-model="searchPhrase"
 										@keyup="lookupSearchPhrase"
-										id="-searchPhraseInput-control"
+										id="searchPhraseInput-control"
 										class="pkpFormField__input pkpFormField--text__input"
 										type="text"
-										name="searchPhraseInput" aria-invalid="0"
+										name="searchPhraseInput"
+										aria-invalid="0"
 									>
 								</div>
 							</div>
@@ -63,11 +63,10 @@
 		</TableBody>
 	</PkpTable>
 
-	<div><p> &nbsp; </p></div>
-
+	<div><hr/></div>
 	<div class="debug">
 		<textarea>{{ value }}</textarea>
-		<!-- <textarea>{{ currentValue }}</textarea> -->
+		<textarea>{{ currentValue }}</textarea>
 		<div>locale: {{ primaryLocale }}</div>
 		<div>searchPhrase: {{ searchPhrase }}</div>
 		<!-- <div>currentValue: {{ currentValue }}</div> -->
@@ -77,6 +76,7 @@
 
 <script setup>
 import {computed, ref} from "vue";
+
 import PkpTable from '@/components/Table/Table.vue';
 import TableHeader from '@/components/Table/TableHeader.vue';
 import TableBody from '@/components/Table/TableBody.vue';
@@ -85,38 +85,73 @@ import TableColumn from '@/components/Table/TableColumn.vue';
 import TableCell from '@/components/Table/TableCell.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
+import {t} from '@/utils/i18n.js';
 
-// Define props
-const props = defineProps({
-	value: {type: Array},
-	primaryLocale: {type: String},
-	primaryLocaleKey: {type: String},
-});
+const name = 'FieldAffiliations';
 
 const primaryLocale = $.pkp.app.primaryLocale;
 
-// Reactive state
+const props = defineProps({
+	value: {
+		type: Array,
+		default() {
+			return [];
+		},
+	},
+	localeKey: {type: String},
+	primaryLocale: {type: String},
+	primaryLocaleKey: {type: String},
+	isMultilingual: {
+		type: Boolean,
+		default() {
+			return false;
+		}
+	},
+});
+
+const emits = defineEmits([
+	'change',
+]);
+
 const searchPhrase = ref('');
 
-// Method to emit changes
-const emitChange = defineEmits();
-
 const translations = function (row) {
-	let total = Object.keys(row._data.name).length;
+	let names = row._data.name;
+	let total = Object.keys(names).length;
 	let translated = 0;
 
-	for (let key in row._data.name) {
-		if (row._data.name[key].length > 0) {
+	for (let key in names) {
+		if (names[key].length > 0) {
 			translated++;
 		}
 	}
 
 	if (total === translated) {
-		return 'All Translations Available';
+		return t('user.affiliations.translationAll', {});
 	} else {
-		return translated + ' Of ' + total + ' Languages Completed';
+		return t('user.affiliations.translationSome', {
+			translated: translated,
+			total: total
+		});
 	}
 }
+
+const currentValue = computed({
+	get() {
+		return props.isMultilingual ? props.value[props.localeKey] : props.value;
+	},
+	set: function (newVal) {
+		this.$emit('change', name, 'value', newVal);
+	},
+});
+
+const change = function (name, prop, newValue, localeKey) {
+	if (localeKey) {
+		props[prop][localeKey] = newValue;
+	} else {
+		props[prop] = newValue;
+	}
+};
 
 const dummyAction = function (message) {
 	alert('"' + message + '"' + ' clicked');

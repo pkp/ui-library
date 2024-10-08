@@ -1,4 +1,4 @@
-import {computed, ref} from 'vue';
+import {computed, reactive, ref} from 'vue';
 
 import FieldAffiliations from './FieldAffiliations.vue';
 import PkpTable from '@/components/Table/Table.vue';
@@ -10,6 +10,7 @@ import TableCell from '@/components/Table/TableCell.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import FieldAffiliationsMock from '@/components/Form/mocks/field-affiliations';
+import {t} from "@/utils/i18n";
 
 export default {
 	title: 'Forms/FieldAffiliations',
@@ -25,85 +26,117 @@ export default {
 			TableCell,
 			PkpButton,
 			Icon,
+			t
 		},
 		setup() {
-			/* parent */
-			// todo: access locale from upstream
+			const value = reactive(args.rows);
+
 			const primaryLocale = $.pkp.app.primaryLocale;
 
-			/* current component */
-			const searchPhrase = ref('initial value');
-			const rows = ref(args.rows);
+			// const props = defineProps({
+			// 	value: {
+			// 		type: Array,
+			// 		default() {
+			// 			return [];
+			// 		},
+			// 	},
+			// 	localeKey: {type: String},
+			// 	primaryLocale: {type: String},
+			// 	primaryLocaleKey: {type: String},
+			// 	isMultilingual: {
+			// 		type: Boolean,
+			// 		default() {
+			// 			return false;
+			// 		}
+			// 	},
+			// });
+			//
+			// const emits = defineEmits([
+			// 	'change',
+			// ]);
 
-			function dummyAction(message) {
-				alert('"' + message + '"' + ' clicked');
-			}
+			const searchPhrase = ref('');
 
-			function translations(item) {
-				let total = Object.keys(item.name).length;
+			const translations = function (row) {
+				let names = row._data.name;
+				let total = Object.keys(names).length;
 				let translated = 0;
 
-				for (let key in item.name) {
-					if (item.name[key].length > 0) {
+				for (let key in names) {
+					if (names[key].length > 0) {
 						translated++;
 					}
 				}
 
 				if (total === translated) {
-					return 'All Translations Available';
+					return 'All translations available';
+					// return t('user.affiliations.translationAll', {});
 				} else {
-					return translated + ' Of ' + total + ' Languages Completed';
+					return translated + ' of ' + total + ' languages completed';
+					// return t('user.affiliations.translationSome', {translated: translated, total: total});
 				}
-			}
-
-			function lookupSearchPhrase() {
-				console.log('searchPhrase: ' + searchPhrase.value);
 			}
 
 			const currentValue = computed({
 				get() {
-					return 'hello someTest';
+					return props.isMultilingual ? props.value[props.localeKey] : props.value;
 				},
-				// setter
-				set(newValue) {
-					return newValue;
+				set: function (newVal) {
+					this.$emit('change', name, 'value', newVal);
 				},
 			});
 
+			const change = function (name, prop, newValue, localeKey) {
+				if (localeKey) {
+					props[prop][localeKey] = newValue;
+				} else {
+					props[prop] = newValue;
+				}
+			};
+
+			const dummyAction = function (message) {
+				alert('"' + message + '"' + ' clicked');
+			}
+
+			const lookupSearchPhrase = function () {
+				console.log('searchPhrase: ' + searchPhrase.value);
+			}
+
 			return {
-				args,
+				value,
 				searchPhrase,
-				rows,
+				primaryLocale,
+				currentValue,
+				change,
 				dummyAction,
 				translations,
 				lookupSearchPhrase,
-				primaryLocale,
-				currentValue,
 			};
 		},
 		template: `
 			<PkpTable aria-label="Affiliations">
 				<TableHeader>
-					<TableColumn>Institution</TableColumn>
-					<TableColumn>Translation</TableColumn>
+					<TableColumn>institution</TableColumn>
+					<TableColumn>translation</TableColumn>
 					<TableColumn> &nbsp;</TableColumn>
 				</TableHeader>
 				<TableBody>
-					<TableRow v-for="row in rows" :key="row.id">
+					<TableRow v-for="([affiliationId, row], affiliationIndex) in Object.entries(value)"
+							  :key="affiliationId">
 						<TableCell>
-							{{ row.name[primaryLocale] }}
+							{{ row._data.name[primaryLocale] }}
 							<Icon
-								v-if="row.ror"
+								v-if="row._data.ror"
 								:class="'mr-2'"
 								:icon="'ror'"
 								:inline="true"
 							/>
 						</TableCell>
 						<TableCell>
-							<div v-for="([key, value], index) in Object.entries(row.name)" :key="index">
+							<div v-for="([key, value], index) in Object.entries(row._data.name)" :key="index">
 								<input
 									v-if="key !== primaryLocale"
-									v-model="row.name[key]"
+									v-model="row._data.name[key]"
 									class="pkpFormField__input pkpFormField--text__input"
 								/>
 							</div>
@@ -127,27 +160,35 @@ export default {
 											<input
 												v-model="searchPhrase"
 												@keyup="lookupSearchPhrase"
-												id="-searchPhraseInput-control"
+												id="searchPhraseInput-control"
 												class="pkpFormField__input pkpFormField--text__input"
 												type="text"
-												name="searchPhraseInput" aria-invalid="0"
+												name="searchPhraseInput"
+												aria-invalid="0"
 											>
 										</div>
 									</div>
 								</div>
 							</div>
 						</TableCell>
-						<TableCell> &nbsp; </TableCell>
+						<TableCell> &nbsp;</TableCell>
 						<TableCell>
 							<PkpButton @click="dummyAction('add')"> Add</PkpButton>
 						</TableCell>
 					</TableRow>
 				</TableBody>
 			</PkpTable>
+
 			<div>
-				<div>searchPhrase: {{ searchPhrase }}</div>
-				<div>currentValue: {{ currentValue }}</div>
-				<textarea style="border: 1px solid #000;width:100%;height:250px;">{{ rows }}</textarea>
+				<hr/>
+			</div>
+			<div class="debug">
+				<!-- <textarea>{{ value }}</textarea> -->
+				<!-- <textarea>{{ currentValue }}</textarea> -->
+				<!-- <div>locale: {{ primaryLocale }}</div> -->
+				<!-- <div>searchPhrase: {{ searchPhrase }}</div> -->
+				<!-- <div>currentValue: {{ currentValue }}</div> -->
+				<!-- <div>value: {{ value }}</div> -->
 			</div>
 		`,
 	}),
