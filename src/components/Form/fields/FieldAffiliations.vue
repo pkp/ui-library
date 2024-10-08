@@ -1,4 +1,5 @@
 <template>
+	<!--
 	<PkpTable aria-label="Affiliations">
 		<TableHeader>
 			<TableColumn>Institution</TableColumn>
@@ -61,10 +62,12 @@
 			</TableRow>
 		</TableBody>
 	</PkpTable>
+	-->
 	<div>
 		<div>searchPhrase: {{ searchPhrase }}</div>
-		<div>currentValue: {{ currentValue }}</div>
+<!--		<div>currentValue: {{ currentValue }}</div>-->
 		<div>value: {{ value }}</div>
+		<textarea style="border: 1px solid #000;width:100%;height:250px;">{{ value }}</textarea>
 		<textarea style="border: 1px solid #000;width:100%;height:250px;">{{ rows }}</textarea>
 	</div>
 </template>
@@ -104,8 +107,8 @@ const components = {
 const args = {...FieldAffiliationsMock};
 
 const props = defineProps({
-	value: {String},
-	currentValue: String,
+	value: {Array},
+	// currentValue: String,
 });
 
 /* parent */
@@ -117,11 +120,11 @@ console.log(primaryLocale);
 const searchPhrase = ref('initial value');
 const rows = ref(args.rows);
 
-const dummyAction = function(message) {
+const dummyAction = function (message) {
 	alert('"' + message + '"' + ' clicked');
 }
 
-const translations = function(item) {
+const translations = function (item) {
 	let total = Object.keys(item.name).length;
 	let translated = 0;
 
@@ -138,7 +141,7 @@ const translations = function(item) {
 	}
 }
 
-const lookupSearchPhrase = function() {
+const lookupSearchPhrase = function () {
 	console.log('searchPhrase: ' + searchPhrase.value);
 }
 
@@ -153,7 +156,7 @@ const currentValue = computed({
 	},
 });
 
-const change = function(name, prop, newValue, localeKey) {
+const change = function (name, prop, newValue, localeKey) {
 	if (localeKey) {
 		args[prop][localeKey] = newValue;
 	} else {
