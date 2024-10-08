@@ -4,7 +4,7 @@
 			{{ title }}
 		</template>
 		<SideModalLayoutBasic>
-			<PkpForm v-bind="form" @set="set" />
+			<PkpForm v-bind="form" @set="set" @success="closeModal" />
 		</SideModalLayoutBasic>
 	</SideModalBody>
 </template>
@@ -15,12 +15,15 @@ import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import {useForm} from '@/composables/useForm';
 import {useFetch} from '@/composables/useFetch';
+import {inject} from 'vue';
 
 const props = defineProps({
 	title: {type: String, required: true},
 	submitAction: {type: String, required: true},
 	activeForm: {type: Object, required: true},
 });
+
+const closeModal = inject('closeModal');
 
 /**
  * Get the report parameters

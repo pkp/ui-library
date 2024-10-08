@@ -23,7 +23,7 @@ import PanelSection from '@/components/Panel/PanelSection.vue';
 import CounterReportsListPanel from '@/components/ListPanel/counter/CounterReportsListPanel.vue';
 
 defineProps({
-	counterReportsListPanel: {type: Array, required: true},
+	counterReportsListPanel: {type: Object, required: true},
 	usageNotPossible: {type: Boolean, required: true},
 	title: {type: String, required: true},
 	description: {type: String, required: true},
