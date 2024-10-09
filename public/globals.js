@@ -451,6 +451,7 @@ window.pkp = {
 		'grid.noItems': 'No Items',
 		'grid.user.confirmLogInAs':
 			'Log in as this user? All actions you perform will be attributed to this user.',
+		'grid.user.currentUsers':'Current Users',
 		'help.help': 'Help',
 		'informationCenter.informationCenter': 'Information Center',
 		'invitation.cancelInvite.actionName': 'Cancel Invite',
@@ -770,6 +771,8 @@ window.pkp = {
 			'Are you sure want remove this role permanently?',
 		'user.role.reviewer': 'Reviewer',
 		'user.role.reviewers': 'Reviewers',
+		'user.roles': 'Roles',
+		'user.startDate': 'Start Date',
 		'user.username': 'Username',
 		'userInvitation.cancel.goBack': 'Go Back',
 		'userInvitation.cancel.message':
