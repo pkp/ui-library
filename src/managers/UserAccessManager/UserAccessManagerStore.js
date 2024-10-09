@@ -40,7 +40,7 @@ export const useUserAccessManagerStore = defineComponentStore(
 			currentPage.value = _currentPage;
 		}
 
-		const {apiUrl} = useApiUrl('invitations');
+		const {apiUrl} = useApiUrl('users');
 		const {
 			items: invitations,
 			pagination: invitationsPagination,
@@ -78,15 +78,15 @@ export const useUserAccessManagerStore = defineComponentStore(
 			return roles.substring(0, roles.length - 1);
 		}
 
-		function handleInvitationAction(actionName, invitationObj) {
-			if (actionName === 'editInvite') {
-				handleEditInvitation(invitationObj);
+		function handleInvitationAction(actionName, userObj) {
+			if (actionName === 'editUser') {
+				handleEditUser(userObj);
 			} else {
-				handleCancelInvitation(invitationObj);
+				handleCancelInvitation(userObj);
 			}
 		}
 
-		function handleEditInvitation(invitationObj) {
+		function handleEditUser(userObj) {
 			openDialog({
 				title: t('userInvitation.edit.title'),
 				message: t('userInvitation.edit.message'),
@@ -95,8 +95,7 @@ export const useUserAccessManagerStore = defineComponentStore(
 						label: t('userInvitation.edit.title'),
 						isPrimary: true,
 						callback: async (close) => {
-							window.location =
-								sendInvitationPageUrl.value + '/' + invitationObj.id;
+							window.location = sendInvitationPageUrl.value + '/' + userObj.id;
 						},
 					},
 					{
@@ -164,6 +163,23 @@ export const useUserAccessManagerStore = defineComponentStore(
 				],
 			});
 		}
+		/**
+		const searchPhrase = computed(() => {
+			let searchText = '';
+			if (fields.value.email) {
+				searchText = fields.value.email + ' ';
+			}
+			if (fields.value.orcid) {
+				searchText = searchText + fields.value.orcid + ' ';
+			}
+			if (fields.value.username) {
+				searchText = searchText + fields.value.username;
+			}
+
+			return searchText;
+		});
+			**/
+		async function search(fieldName, b, fieldValue) {}
 
 		return {
 			invitationCount,
@@ -171,10 +187,10 @@ export const useUserAccessManagerStore = defineComponentStore(
 			createNewInvitation,
 			currentPage,
 			invitationsPagination,
-
 			invitations,
 			isInvitationLoading,
 			handleInvitationAction,
+			search,
 		};
 	},
 );

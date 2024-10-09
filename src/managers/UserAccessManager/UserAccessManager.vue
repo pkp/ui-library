@@ -8,10 +8,18 @@
 			</h3>
 		</template>
 		<template #top-controls>
-			<div class="flex space-x-2">
-				<PkpButton @click="store.createNewInvitation">
-					{{ t('invitation.inviteToRole.btn') }}
-				</PkpButton>
+			<div class="flex space-x-0">
+				<Icon
+					icon="search"
+					class="border-x-2 border-y-2 p-3"
+					:inline="true"
+				></Icon>
+				<FieldText
+					:value="fields.search"
+					name="search"
+					size="large"
+					@change="store.search"
+				/>
 			</div>
 		</template>
 		<TableHeader>
@@ -55,14 +63,35 @@
 						:actions="[
 							{
 								label: t('common.edit'),
-								name: 'editInvite',
+								name: 'editUser',
 								icon: 'Edit',
 							},
 							{
-								label: t('invitation.cancelInvite.actionName'),
+								label: t('email.email'),
+								icon: 'Email',
+								name: 'sendEmail',
+							},
+							{
+								label: t('grid.action.logInAs'),
+								icon: 'LoginAs',
+								name: 'sendEmail',
+							},
+							{
+								label: t('common.cancel'),
 								icon: 'Cancel',
-								name: 'cancelInvite',
+								name: 'RemoveUser',
 								isWarnable: true,
+							},
+							{
+								label: t('grid.action.disable'),
+								icon: 'DisableUser',
+								name: 'DisableUser',
+								isWarnable: true,
+							},
+							{
+								label: t('grid.action.mergeUser'),
+								icon: 'MergeUser',
+								name: 'mergeUser',
 							},
 						]"
 						:label="t('invitation.management.options')"
@@ -96,14 +125,15 @@ import TableColumn from '@/components/Table/TableColumn.vue';
 import TableBody from '@/components/Table/TableBody.vue';
 import TableRow from '@/components/Table/TableRow.vue';
 import Icon from '@/components/Icon/Icon.vue';
-import PkpButton from '@/components/Button/Button.vue';
 import {useUserAccessManagerStore} from './UserAccessManagerStore.js';
 import Pagination from '@/components/Pagination/Pagination.vue';
 import {useTranslation} from '@/composables/useTranslation';
 import {useDate} from '@/composables/useDate';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
-
+import FieldText from '@/components/Form/fields/FieldText.vue';
+import {ref} from 'vue';
 const store = useUserAccessManagerStore();
 const {t} = useTranslation();
 const {formatShortDate} = useDate();
+const fields = ref({search: ''});
 </script>
