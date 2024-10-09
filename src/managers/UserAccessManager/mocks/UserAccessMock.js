@@ -92,7 +92,7 @@ export default {
 		{
 			_href: 'http://localhost/ojs/index.php/publicknowledge/api/v1/users/36',
 			affiliation: {
-				en: 'University Of Milano',
+				en: 'University Of Milan',
 				fr_CA: '',
 			},
 			biography: {
