@@ -49,7 +49,7 @@ export const iconGallery = {
 		template: `
 			<div v-for="icon in args.icons" class="flex mt-4 text-primary">
 				<div class="inline-flex">
-					<Icon class="w-6 h-6" :icon="icon" />
+					<Icon class="w-6 h-6" :icon="icon" />	
 				</div>
 				<div class="ms-4">{{icon}}</div>
 			</div>
