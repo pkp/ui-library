@@ -29,31 +29,9 @@ export default {
 			t
 		},
 		setup() {
-			const value = reactive(args.rows);
+			const value = reactive(args.items);
 
 			const primaryLocale = $.pkp.app.primaryLocale;
-
-			// const props = defineProps({
-			// 	value: {
-			// 		type: Array,
-			// 		default() {
-			// 			return [];
-			// 		},
-			// 	},
-			// 	localeKey: {type: String},
-			// 	primaryLocale: {type: String},
-			// 	primaryLocaleKey: {type: String},
-			// 	isMultilingual: {
-			// 		type: Boolean,
-			// 		default() {
-			// 			return false;
-			// 		}
-			// 	},
-			// });
-			//
-			// const emits = defineEmits([
-			// 	'change',
-			// ]);
 
 			const searchPhrase = ref('');
 
@@ -71,52 +49,45 @@ export default {
 				if (total === translated) {
 					return t('user.affiliations.translationAll', {});
 				} else {
-					return t('user.affiliations.translationSome', {translated: translated, total: total});
+					return t('user.affiliations.translationSome',
+						{translated: translated, total: total});
 				}
-			}
+			};
 
-			const currentValue = computed({
-				get() {
-					return props.isMultilingual ? props.value[props.localeKey] : props.value;
-				},
-				set: function (newVal) {
-					this.$emit('change', name, 'value', newVal);
-				},
-			});
+			const toggleTranslations = function () {
 
-			const change = function (name, prop, newValue, localeKey) {
-				if (localeKey) {
-					props[prop][localeKey] = newValue;
-				} else {
-					props[prop] = newValue;
+			};
+
+			const lookupSearchPhrase = function () {
+				if(searchPhrase.value.length >= 3) {
+					console.log('searchPhrase: ' + searchPhrase.value);
 				}
+			};
+
+			const isReadOnly = function (row) {
+				return !!row._data.ror;
 			};
 
 			const dummyAction = function (message) {
 				alert('"' + message + '"' + ' clicked');
-			}
-
-			const lookupSearchPhrase = function () {
-				console.log('searchPhrase: ' + searchPhrase.value);
-			}
+			};
 
 			return {
 				value,
 				searchPhrase,
 				primaryLocale,
-				currentValue,
-				change,
 				dummyAction,
 				translations,
 				lookupSearchPhrase,
+				isReadOnly,
 			};
 		},
 		template: `
 			<PkpTable aria-label="Affiliations">
 				<TableHeader>
-					<TableColumn>{{ t('user.affiliations.institution') }}</TableColumn>
-					<TableColumn>{{ t('user.affiliations.translation') }}</TableColumn>
-					<TableColumn> &nbsp;</TableColumn>
+					<TableColumn id="">{{ t('user.affiliations.institution') }}</TableColumn>
+					<TableColumn id="">{{ t('user.affiliations.translation') }}</TableColumn>
+					<TableColumn id=""> &nbsp;</TableColumn>
 				</TableHeader>
 				<TableBody>
 					<TableRow v-for="([affiliationId, row], affiliationIndex) in Object.entries(value)"
@@ -134,6 +105,7 @@ export default {
 							<div v-for="([key, value], index) in Object.entries(row._data.name)" :key="index">
 								<input
 									v-if="key !== primaryLocale"
+									:readonly="isReadOnly(row)"
 									v-model="row._data.name[key]"
 									class="pkpFormField__input pkpFormField--text__input"
 								/>
@@ -146,19 +118,20 @@ export default {
 							<button @click="dummyAction('...')"> ...</button>
 						</TableCell>
 					</TableRow>
-					<TableRow>
+					<TableRow style="background-color: #eaedee;">
 						<TableCell>
 							<div class="pkpFormField pkpFormField--text pkpFormField--sizenormal">
 								<div class="pkpFormField__heading">
-									<label for="-searchPhraseInput-control" class="pkpFormFieldLabel">
-										Type the institute name
+									<label class="pkpFormFieldLabel"
+										   for="contributor-affiliations-searchPhrase-control">
+										{{ t('user.affiliations.searchPhraseLabel', {}) }}
 									</label>
 									<div class="pkpFormField__control">
 										<div class="pkpFormField__control_top">
 											<input
 												v-model="searchPhrase"
 												@keyup="lookupSearchPhrase"
-												id="searchPhraseInput-control"
+												id="contributor-affiliations-searchPhrase-control"
 												class="pkpFormField__input pkpFormField--text__input"
 												type="text"
 												name="searchPhraseInput"
@@ -177,15 +150,15 @@ export default {
 				</TableBody>
 			</PkpTable>
 
-			 <hr/>
-			 <div class="debug">
-				 <textarea>{{ value }}</textarea>
+			<hr/>
+			<div class="debug">
+				<!-- <textarea>{{ value }}</textarea> -->
 				<!-- <textarea>{{ currentValue }}</textarea> -->
 				<!-- <div>locale: {{ primaryLocale }}</div> -->
-				 <div>searchPhrase: {{ searchPhrase }}</div>
+				<div>searchPhrase: {{ searchPhrase }}</div>
 				<!-- <div>currentValue: {{ currentValue }}</div> -->
 				<!-- <div>value: {{ value }}</div> -->
-			 </div>
+			</div>
 		`,
 	}),
 };

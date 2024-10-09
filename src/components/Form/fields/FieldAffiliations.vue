@@ -1,9 +1,9 @@
 <template>
 	<PkpTable aria-label="Affiliations">
 		<TableHeader>
-			<TableColumn>{{ t('user.affiliations.institution') }}</TableColumn>
-			<TableColumn>{{ t('user.affiliations.translation') }}</TableColumn>
-			<TableColumn> &nbsp;</TableColumn>
+			<TableColumn id="">{{ t('user.affiliations.institution') }}</TableColumn>
+			<TableColumn id="">{{ t('user.affiliations.translation') }}</TableColumn>
+			<TableColumn id=""> &nbsp;</TableColumn>
 		</TableHeader>
 		<TableBody>
 			<TableRow v-for="([affiliationId, row], affiliationIndex) in Object.entries(value)" :key="affiliationId">
@@ -36,15 +36,16 @@
 				<TableCell>
 					<div class="pkpFormField pkpFormField--text pkpFormField--sizenormal">
 						<div class="pkpFormField__heading">
-							<label for="-searchPhraseInput-control" class="pkpFormFieldLabel">
-								Type the institute name
+							<label class="pkpFormFieldLabel"
+										 for="contributor-affiliations-searchPhrase-control">
+								{{ t('user.affiliations.searchPhraseLabel', {}) }}
 							</label>
 							<div class="pkpFormField__control">
 								<div class="pkpFormField__control_top">
 									<input
 										v-model="searchPhrase"
 										@keyup="lookupSearchPhrase"
-										id="searchPhraseInput-control"
+										id="contributor-affiliations-searchPhrase-control"
 										class="pkpFormField__input pkpFormField--text__input"
 										type="text"
 										name="searchPhraseInput"
@@ -66,8 +67,8 @@
 	<hr/>
 	<div class="debug">
 		<textarea>{{ value }}</textarea>
-    <!-- <textarea>{{ currentValue }}</textarea> -->
-    <!-- <div>locale: {{ primaryLocale }}</div> -->
+		<!-- <textarea>{{ currentValue }}</textarea> -->
+		<!-- <div>locale: {{ primaryLocale }}</div> -->
 		<div>searchPhrase: {{ searchPhrase }}</div>
 		<!-- <div>currentValue: {{ currentValue }}</div> -->
 		<!-- <div>value: {{ value }}</div> -->
@@ -76,7 +77,6 @@
 
 <script setup>
 import {computed, ref} from "vue";
-
 import PkpTable from '@/components/Table/Table.vue';
 import TableHeader from '@/components/Table/TableHeader.vue';
 import TableBody from '@/components/Table/TableBody.vue';
@@ -89,29 +89,16 @@ import {t} from '@/utils/i18n.js';
 
 const name = 'FieldAffiliations';
 
-const primaryLocale = $.pkp.app.primaryLocale;
-
 const props = defineProps({
 	value: {
 		type: Array,
 		default() {
 			return [];
-		},
-	},
-	localeKey: {type: String},
-	primaryLocale: {type: String},
-	primaryLocaleKey: {type: String},
-	isMultilingual: {
-		type: Boolean,
-		default() {
-			return false;
 		}
-	},
+	}
 });
 
-const emits = defineEmits([
-	'change',
-]);
+const primaryLocale = $.pkp.app.primaryLocale;
 
 const searchPhrase = ref('');
 
@@ -129,12 +116,38 @@ const translations = function (row) {
 	if (total === translated) {
 		return t('user.affiliations.translationAll', {});
 	} else {
-		return t('user.affiliations.translationSome', {
-			translated: translated,
-			total: total
-		});
+		return t('user.affiliations.translationSome',
+			{translated: translated, total: total});
 	}
-}
+};
+
+const toggleTranslations = function () {
+
+};
+
+const lookupSearchPhrase = function () {
+	if(searchPhrase.value.length >= 3) {
+		console.log('searchPhrase: ' + searchPhrase.value);
+	}
+};
+
+const isReadOnly = function (row) {
+	if (row._data.ror) {
+		return true;
+	} else {
+		return false;
+	}
+};
+
+const dummyAction = function (message) {
+	alert('"' + message + '"' + ' clicked');
+};
+
+/*
+
+const emits = defineEmits([
+	'change',
+]);
 
 const currentValue = computed({
 	get() {
@@ -153,57 +166,51 @@ const change = function (name, prop, newValue, localeKey) {
 	}
 };
 
-const dummyAction = function (message) {
-	alert('"' + message + '"' + ' clicked');
-}
+Current value computed property
+const value = computed({
+	get() {
+		return props.value; // Access prop directly
+	},
+	set(newVal) {
+		emitChange('update:value', newVal); // Emit update event
+	},
+});
 
-const lookupSearchPhrase = function () {
-	console.log('searchPhrase: ' + searchPhrase.value);
-}
+const currentValue = computed({
+	get() {
+		return this.isMultilingual ? this.value[this.localeKey] : this.value;
+	},
+	set: function (newVal) {
+		this.$emit('change', this.name, 'value', newVal, this.localeKey);
+	},
+});
 
-// Current value computed property
-// const value = computed({
-// 	get() {
-// 		return props.value; // Access prop directly
-// 	},
-// 	set(newVal) {
-// 		emitChange('update:value', newVal); // Emit update event
-// 	},
-// });
-//
-// const currentValue = computed({
-// 	get() {
-// 		return this.isMultilingual ? this.value[this.localeKey] : this.value;
-// 	},
-// 	set: function (newVal) {
-// 		this.$emit('change', this.name, 'value', newVal, this.localeKey);
-// 	},
-// });
-//
-// const change = function (name, prop, newValue, localeKey) {
-// 	if (localeKey) {
-// 		args[prop][localeKey] = newValue;
-// 	} else {
-// 		args[prop] = newValue;
-// 	}
-// };
-//
-// const fieldText = {
-// 	name: 'affiliations',
-// 	component: 'field-text',
-// 	inputType: 'text',
-// 	label: 'Affiliations',
-// 	groupId: 'identity',
-// 	isMultilingual: false,
-// 	value: '',
-// };
+const change = function (name, prop, newValue, localeKey) {
+	if (localeKey) {
+		args[prop][localeKey] = newValue;
+	} else {
+		args[prop] = newValue;
+	}
+};
+
+const fieldText = {
+	name: 'affiliations',
+	component: 'field-text',
+	inputType: 'text',
+	label: 'Affiliations',
+	groupId: 'identity',
+	isMultilingual: false,
+	value: '',
+};
+
+*/
+
 </script>
 
 <style lang="less">
 .debug {
-	font-family: Courier, monospace;
-	font-size: 12px;
-	line-height: 16px;
+	margin-top: 10px;
+	padding: 5px;
 	border: 1px solid #000;
 	width: 100%;
 }

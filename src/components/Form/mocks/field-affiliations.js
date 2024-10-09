@@ -1,7 +1,7 @@
 export default {
 	name: 'author-affiliations',
 	component: 'author-affiliations',
-	rows: {
+	items: {
 		"1": {
 			"_data": {
 				"id": 1,
