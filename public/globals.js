@@ -422,6 +422,7 @@ window.pkp = {
 		'grid.noItems': 'No Items',
 		'grid.user.confirmLogInAs':
 			'Log in as this user? All actions you perform will be attributed to this user.',
+		'grid.user.currentUsers':'Current Users',
 		'help.help': 'Help',
 		'informationCenter.informationCenter': 'Information Center',
 		'invitation.role.addRole.button': 'Add Another Role',
@@ -684,6 +685,8 @@ window.pkp = {
 		'user.gossip': 'Editorial Notes',
 		'user.orcid': 'ORCID iD',
 		'user.password': 'Password',
+		'user.roles': 'Roles',
+		'user.startDate': 'Start Date',
 		'user.username': 'Username',
 		'validator.required': 'This field is required.',
 		'invitation.notification.closeBtn':'View all users',
