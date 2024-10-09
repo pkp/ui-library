@@ -1,5 +1,6 @@
 import {computed, reactive, ref} from 'vue';
 
+import DropdownActions from "@/components/DropdownActions/DropdownActions.vue";
 import FieldAffiliations from './FieldAffiliations.vue';
 import PkpTable from '@/components/Table/Table.vue';
 import TableHeader from '@/components/Table/TableHeader.vue';
@@ -18,6 +19,7 @@ export default {
 	args: {},
 	render: (args) => ({
 		components: {
+			DropdownActions,
 			PkpTable,
 			TableHeader,
 			TableBody,
@@ -29,7 +31,51 @@ export default {
 			t
 		},
 		setup() {
+			const apiUrl = 'http://localhost/ojs350-multiple-author-affiliations-gy/index.php/publicknowledge/api/v1/rors/?search='
+			const rorsApiResponse = args.rorsApiResponse;
+			const newAffiliation = args.newItem;
+			let organizations = rorsApiResponse.items;
+
+			const dotsActions = [
+				{
+					"label": "Edit institute name",
+					"name": "dummyAction",
+				},
+				{
+					"label": "Remove institution",
+					"name": "dummyAction",
+				},
+			];
+
+			const handleAction = function (name) {
+				switch (name) {
+					case 'dummyAction':
+						dummyAction();
+						break;
+					default:
+						console.error(`No handler for action: ${name}`);
+				}
+			}
+
 			const value = reactive(args.items);
+
+			const valueHelper = reactive(setValueHelper(value));
+
+			function setValueHelper(value){
+				let newValue = [];
+
+				Object.keys(value).forEach(key=>{
+					console.log(key ,value[key]);
+					newValue[key] = value[key];
+					newValue[key]['edit'] = false;
+					newValue[key]['actions'] = false;
+				})
+
+				return newValue;
+			}
+
+			const pendingRequests = new WeakMap();
+			const minimumSearchPhraseLength = 3;
 
 			const primaryLocale = $.pkp.app.primaryLocale;
 
@@ -54,12 +100,43 @@ export default {
 				}
 			};
 
-			const toggleTranslations = function () {
-
+			const toggleTranslations = function (affiliationId) {
+				console.log(affiliationId);
+				console.log(value[affiliationId]);
 			};
+
+			const apiLookup = function() {
+				let rors = [];
+
+				// const previousController = pendingRequests.get(this);
+				// if (previousController) previousController.abort();
+
+				if (searchPhrase.value.length < minimumSearchPhraseLength) return;
+
+				// const controller = new AbortController();
+				// pendingRequests.set(this, controller);
+
+				fetch(apiUrl + searchPhrase.value, {
+					// signal: controller.signal
+				})
+					.then(response => response.json())
+					.then(data => {
+						let items = data.items;
+						for(let i = 0; i < items.length; i++){
+							rors.push(items[i]);
+						}
+						organizations = items;
+					})
+					.catch(error => {
+						if (error.name === 'AbortError') return;
+						console.log(error);
+					});
+			}
 
 			const lookupSearchPhrase = function () {
 				if(searchPhrase.value.length >= 3) {
+					// apiLookup();
+					// organizations = rorsApiResponse;
 					console.log('searchPhrase: ' + searchPhrase.value);
 				}
 			};
@@ -68,96 +145,168 @@ export default {
 				return !!row._data.ror;
 			};
 
+			const newGuid = function () {
+				return "10000000100040008000100000000000".replace(/[018]/g, c =>
+					(+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
+				);
+			}
+
+			const toggleActions = function(affiliationId) {
+				valueHelper[affiliationId].actions = !valueHelper[affiliationId].actions;
+			};
+
+			const toggleEdit = function(affiliationId){
+				valueHelper[affiliationId].edit = !valueHelper[affiliationId].edit;
+			};
+
+			const closeEdit = function(affiliationId){
+				valueHelper[affiliationId].edit = !valueHelper[affiliationId].edit;
+				toggleActions(affiliationId);
+			};
+
+			const deleteAffiliation = function(affiliationId) {
+				console.log('Affiliation: ' + affiliationId + ' deleted');
+			}
+
 			const dummyAction = function (message) {
 				alert('"' + message + '"' + ' clicked');
 			};
 
 			return {
 				value,
+				valueHelper,
+				toggleActions,
+				toggleEdit,
+				closeEdit,
+				deleteAffiliation,
+				handleAction,
+				dotsActions,
+				rorsApiResponse,
+				organizations,
 				searchPhrase,
 				primaryLocale,
 				dummyAction,
 				translations,
 				lookupSearchPhrase,
 				isReadOnly,
+				toggleTranslations,
 			};
 		},
 		template: `
-			<PkpTable aria-label="Affiliations">
-				<TableHeader>
-					<TableColumn id="">{{ t('user.affiliations.institution') }}</TableColumn>
-					<TableColumn id="">{{ t('user.affiliations.translation') }}</TableColumn>
-					<TableColumn id=""> &nbsp;</TableColumn>
-				</TableHeader>
-				<TableBody>
-					<TableRow v-for="([affiliationId, row], affiliationIndex) in Object.entries(value)"
-							  :key="affiliationId">
-						<TableCell>
-							{{ row._data.name[primaryLocale] }}
-							<Icon
-								v-if="row._data.ror"
-								:class="'mr-2'"
-								:icon="'ror'"
-								:inline="true"
-							/>
-						</TableCell>
-						<TableCell>
-							<div v-for="([key, value], index) in Object.entries(row._data.name)" :key="index">
-								<input
-									v-if="key !== primaryLocale"
-									:readonly="isReadOnly(row)"
-									v-model="row._data.name[key]"
-									class="pkpFormField__input pkpFormField--text__input"
+			<div class="pkpFormField pkpFormAffiliations--html">
+				<PkpTable aria-label="Affiliations">
+					<TableHeader>
+						<TableColumn id="">{{ t('user.affiliations.institution') }}</TableColumn>
+						<TableColumn id="">{{ t('user.affiliations.translation') }}</TableColumn>
+						<TableColumn id="">&nbsp;</TableColumn>
+					</TableHeader>
+					<TableBody>
+						<TableRow
+							v-for="([affiliationId, row], affiliationIndex) in Object.entries(value)"
+							:key="affiliationId">
+							<TableCell>
+								{{ row._data.name[primaryLocale] }}
+								<Icon
+									v-if="row._data.ror"
+									:class="'mr-2'"
+									:icon="'ror'"
+									:inline="true"
 								/>
-							</div>
-							<button @click="dummyAction(translations(row))">
-								{{ translations(row) }}
-							</button>
-						</TableCell>
-						<TableCell>
-							<button @click="dummyAction('...')"> ...</button>
-						</TableCell>
-					</TableRow>
-					<TableRow style="background-color: #eaedee;">
-						<TableCell>
-							<div class="pkpFormField pkpFormField--text pkpFormField--sizenormal">
-								<div class="pkpFormField__heading">
-									<label class="pkpFormFieldLabel"
-										   for="contributor-affiliations-searchPhrase-control">
-										{{ t('user.affiliations.searchPhraseLabel', {}) }}
-									</label>
-									<div class="pkpFormField__control">
-										<div class="pkpFormField__control_top">
-											<input
-												v-model="searchPhrase"
-												@keyup="lookupSearchPhrase"
-												id="contributor-affiliations-searchPhrase-control"
-												class="pkpFormField__input pkpFormField--text__input"
-												type="text"
-												name="searchPhraseInput"
-												aria-invalid="0"
-											>
+							</TableCell>
+							<TableCell>
+								<div v-if="valueHelper[affiliationId].edit">
+									<div v-for="([key, value], index) in Object.entries(row._data.name)" :key="index">
+										<div v-if="key !== primaryLocale">
+											<p>
+												{{ t('user.affiliations.translationLabel', {language: key}) }}
+											</p>
+											<p>
+												<input
+													v-model="row._data.name[key]"
+													class="pkpFormField__input pkpFormField--text__input"
+												/>
+											</p>
 										</div>
 									</div>
 								</div>
-							</div>
-						</TableCell>
-						<TableCell> &nbsp;</TableCell>
-						<TableCell>
-							<PkpButton @click="dummyAction('add')"> Add</PkpButton>
-						</TableCell>
-					</TableRow>
-				</TableBody>
-			</PkpTable>
+								<div v-if="!valueHelper[affiliationId].edit">
+									{{ translations(row) }}
+								</div>
+							</TableCell>
+							<TableCell>
+								<div v-if="!valueHelper[affiliationId].edit">
+									<button @click="toggleActions(affiliationId)">...</button>
+									<div v-if="valueHelper[affiliationId].actions"
+										 class="shadow text-primary affiliations__sticky">
+										<ul>
+											<li><button @click="toggleEdit(affiliationId)">Edit</button></li>
+											<li><button @click="deleteAffiliation(affiliationId)">Delete</button></li>
+										</ul>
+									</div>
+								</div>
+								<div v-if="valueHelper[affiliationId].edit">
+									<PkpButton @click="closeEdit(affiliationId)">Close</PkpButton>
+								</div>
+							</TableCell>
+						</TableRow>
+						<TableRow>
+							<TableCell>
+								<div class="pkpFormField pkpFormField--text pkpFormField--sizelarge">
+									<label
+										class="pkpFormFieldLabel"
+										for="contributor-affiliations-searchPhrase-control"
+									>
+										{{ t('user.affiliations.searchPhraseLabel', {}) }}
+									</label>
+									<input
+										v-model="searchPhrase"
+										@keyup="lookupSearchPhrase"
+										id="contributor-affiliations-searchPhrase-control"
+										class="pkpFormField__input pkpFormField--text__input pkpFormField--sizelarge"
+										type="text"
+										name="searchPhraseInput"
+										aria-invalid="0"
+									>
+									<div v-if="searchPhrase" class="shadow text-primary searchPhraseOrganizations">
+										<ul>
+											<li v-for="(organization, index) in organizations">
+												<button
+													@click.prevent="dummyAction(index)"
+													class="pkpButton inline-flex relative gap-x-1 text-lg-semibold  text-primary border-light  hover:text-hover disabled:text-disabled  bg-secondary py-2 px-3 w-full border-light">
+													{{ organization.id }} [
+													{{ organization.name[primaryLocale] }}]
+												</button>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</TableCell>
+							<TableCell>&nbsp;</TableCell>
+							<TableCell>
+								<PkpButton @click="dummyAction('add')"> Add</PkpButton>
+							</TableCell>
+						</TableRow>
+					</TableBody>
+				</PkpTable>
 
-			<hr/>
-			<div class="debug">
-				<!-- <textarea>{{ value }}</textarea> -->
-				<!-- <textarea>{{ currentValue }}</textarea> -->
-				<!-- <div>locale: {{ primaryLocale }}</div> -->
-				<div>searchPhrase: {{ searchPhrase }}</div>
-				<!-- <div>currentValue: {{ currentValue }}</div> -->
-				<!-- <div>value: {{ value }}</div> -->
+				<div>
+					<p> &nbsp; </p>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel accumsan neque, ac tincidunt
+						risus. Sed vulputate augue ut quam ultricies elementum. In pretium euismod ipsum nec
+						consectetur. In eleifend sapien id porta lobortis. Fusce faucibus pharetra rutrum. Etiam
+						sagittis iaculis placerat. Donec ut faucibus nibh, a auctor erat. Orci varius natoque penatibus
+						et magnis dis parturient montes, nascetur ridiculus mus. Proin porttitor, nulla ac auctor
+						bibendum, urna leo dignissim arcu, id viverra justo quam vel ligula. Fusce a tincidunt justo.
+						Nulla vulputate accumsan massa, nec vulputate erat semper non.</p>
+					<p> &nbsp; </p>
+					<p>Nunc auctor mattis quam eu tempus. Integer ornare est libero, quis sollicitudin tortor commodo
+						ac. Integer nisi mauris, pellentesque quis vehicula vitae, aliquet in ex. Praesent mattis metus
+						non fermentum convallis. Integer lobortis libero ac malesuada eleifend. In consectetur felis
+						efficitur nunc tempus luctus. Cras cursus mi non ipsum suscipit, non placerat purus interdum.
+						Nulla blandit ultricies condimentum. Proin interdum nunc lacus, et gravida libero interdum
+						nec.</p>
+					<p> &nbsp; </p>
+				</div>
 			</div>
 		`,
 	}),
