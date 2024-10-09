@@ -19,7 +19,7 @@ export const Init = {
 		msw: {
 			handlers: [
 				http.get(
-					'https://mock/index.php/publicknowledge/api/v1/invitations',
+					'https://mock/index.php/publicknowledge/api/v1/users',
 					async ({request}) => {
 						const url = new URL(request.url);
 						const offset = parseInt(url.searchParams.get('offset') || 0);
@@ -32,14 +32,6 @@ export const Init = {
 						return HttpResponse.json({
 							itemsMax: invitationMock.itemsMax,
 							items: invitations,
-						});
-					},
-				),
-				http.post(
-					'https://mock/index.php/publicknowledge/api/v1/invitations/1/cancel',
-					async ({request}) => {
-						return HttpResponse.json({
-							request,
 						});
 					},
 				),
