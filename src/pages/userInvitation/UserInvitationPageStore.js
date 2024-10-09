@@ -261,6 +261,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 								},
 							},
 						],
+						modalStyle: 'primary',
 					});
 				}
 			}

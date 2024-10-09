@@ -140,15 +140,8 @@ export function useGalleyManagerActions() {
 		openDialog({
 			actions: [
 				{
-					label: t('common.cancel'),
-					isWarnable: true,
-					callback: (close) => {
-						close();
-						finishedCallback();
-					},
-				},
-				{
 					label: t('common.ok'),
+					isWarnable: true,
 					callback: async (close) => {
 						// http://localhost:7002/index.php/publicknowledge/$$$call$$$/grid/article-galleys/article-galley-grid/delete-galley
 						// ?submissionId=17&publicationId=22&representationId=9
@@ -177,9 +170,17 @@ export function useGalleyManagerActions() {
 						}
 					},
 				},
+				{
+					label: t('common.cancel'),
+					callback: (close) => {
+						close();
+						finishedCallback();
+					},
+				},
 			],
 			title: t('common.delete'),
 			message: t('common.confirmDelete'),
+			modalStyle: 'negative',
 		});
 	}
 

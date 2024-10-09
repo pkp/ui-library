@@ -375,13 +375,13 @@ export default {
 					actions: [
 						{
 							label: this.t('common.ok'),
-							isPrimary: true,
 							callback: (close) => {
 								this.failedDoiActions = [];
 								close();
 							},
 						},
 					],
+					modalStyle: 'negative',
 					bodyComponent: DoiFailedActionDialogBody,
 					bodyProps: {
 						failedDoiActions: this.failedDoiActions,

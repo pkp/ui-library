@@ -341,7 +341,7 @@ export default {
 				actions: [
 					{
 						label: this.t('common.yes'),
-						isWarnable: true,
+						isPrimary: true,
 						callback: (close) => {
 							close();
 							this.createVersion();
@@ -448,7 +448,7 @@ export default {
 							this.workingPublication.status === pkp.const.STATUS_SCHEDULED
 								? this.unscheduleLabel
 								: this.unpublishLabel,
-						isPrimary: true,
+						isWarnable: true,
 						callback: (close) => {
 							this.unpublish(this.workingPublication);
 							close();
@@ -459,6 +459,7 @@ export default {
 						callback: (close) => close(),
 					},
 				],
+				modalStyle: 'negative',
 			});
 		},
 

@@ -41,14 +41,8 @@ export function useParticipantManagerActions() {
 		openDialog({
 			actions: [
 				{
-					label: t('common.cancel'),
-					isWarnable: true,
-					callback: (close) => {
-						close();
-					},
-				},
-				{
 					label: t('common.ok'),
+					isWarnable: true,
 					callback: async (close) => {
 						// http://localhost:7002/index.php/publicknowledge/
 						// $$$call$$$/grid/users/stage-participant/stage-participant-grid/delete-participant?submissionId=13&stageId=3&assignmentId=62
@@ -80,9 +74,16 @@ export function useParticipantManagerActions() {
 						}
 					},
 				},
+				{
+					label: t('common.cancel'),
+					callback: (close) => {
+						close();
+					},
+				},
 			],
 			title: t('editor.submission.removeStageParticipant'),
 			message: t('editor.submission.removeStageParticipant.description'),
+			modalStyle: 'negative',
 		});
 	}
 
@@ -125,13 +126,6 @@ export function useParticipantManagerActions() {
 		openDialog({
 			actions: [
 				{
-					label: t('common.cancel'),
-					isWarnable: true,
-					callback: (close) => {
-						close();
-					},
-				},
-				{
 					label: t('common.ok'),
 					callback: (close) => {
 						let redirectUrl = '';
@@ -152,9 +146,17 @@ export function useParticipantManagerActions() {
 						redirectToPage();
 					},
 				},
+				{
+					label: t('common.cancel'),
+					isWarnable: true,
+					callback: (close) => {
+						close();
+					},
+				},
 			],
 			title: t('grid.action.logInAs'),
 			message: t('grid.user.confirmLogInAs'),
+			modalStyle: 'primary',
 		});
 	}
 
