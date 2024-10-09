@@ -1,10 +1,10 @@
 export default {
-	itemsMax: 1,
+	itemsMax: 2,
 	items: [
 		{
 			_href: 'http://localhost/ojs/index.php/publicknowledge/api/v1/users/35',
 			affiliation: {
-				en: 'CUNY',
+				en: 'University Of Turin',
 				fr_CA: '',
 			},
 			biography: {
@@ -88,6 +88,79 @@ export default {
 			},
 			stageAssignments: [],
 			userName: 'zwoods',
+		},
+		{
+			_href: 'http://localhost/ojs/index.php/publicknowledge/api/v1/users/36',
+			affiliation: {
+				en: 'University Of Milan',
+				fr_CA: '',
+			},
+			biography: {
+				en: '',
+				fr_CA: '',
+			},
+			disabled: false,
+			email: 'test@mailinator.com',
+			familyName: {
+				en: 'User',
+				fr_CA: '',
+			},
+			fullName: 'Test User',
+			givenName: {
+				en: 'User',
+				fr_CA: '',
+			},
+			groups: [
+				{
+					id: 14,
+					name: {
+						en: 'Author',
+						fr_CA: 'Auteur-e',
+					},
+					abbrev: {
+						en: 'AU',
+						fr_CA: 'AU',
+					},
+					roleId: 65536,
+					showTitle: true,
+					permitSelfRegistration: true,
+					permitMetadataEdit: false,
+					recommendOnly: false,
+				},
+				{
+					id: 15,
+					name: {
+						en: 'Translator',
+						fr_CA: 'Traducteur-trice',
+					},
+					abbrev: {
+						en: 'Trans',
+						fr_CA: 'Trad',
+					},
+					roleId: 65536,
+					showTitle: true,
+					permitSelfRegistration: false,
+					permitMetadataEdit: false,
+					recommendOnly: false,
+				},
+				{},
+			],
+			id: 35,
+			interests: [],
+			orcid: null,
+			orcidAccessDenied: null,
+			orcidAccessExpiresOn: null,
+			orcidAccessScope: null,
+			orcidAccessToken: null,
+			orcidIsVerified: null,
+			orcidRefreshToken: null,
+			orcidReviewPutCode: null,
+			preferredPublicName: {
+				en: '',
+				fr_CA: '',
+			},
+			stageAssignments: [],
+			userName: 'testuser',
 		},
 	],
 };
