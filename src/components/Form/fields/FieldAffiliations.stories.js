@@ -1,5 +1,4 @@
 import {computed, reactive, ref} from 'vue';
-
 import DropdownActions from "@/components/DropdownActions/DropdownActions.vue";
 import FieldAffiliations from './FieldAffiliations.vue';
 import PkpTable from '@/components/Table/Table.vue';
@@ -61,11 +60,11 @@ export default {
 
 			const valueHelper = reactive(setValueHelper(value));
 
-			function setValueHelper(value){
+			function setValueHelper(value) {
 				let newValue = [];
 
-				Object.keys(value).forEach(key=>{
-					console.log(key ,value[key]);
+				Object.keys(value).forEach(key => {
+					console.log(key, value[key]);
 					newValue[key] = value[key];
 					newValue[key]['edit'] = false;
 					newValue[key]['actions'] = false;
@@ -105,7 +104,7 @@ export default {
 				console.log(value[affiliationId]);
 			};
 
-			const apiLookup = function() {
+			const apiLookup = function () {
 				let rors = [];
 
 				// const previousController = pendingRequests.get(this);
@@ -122,7 +121,7 @@ export default {
 					.then(response => response.json())
 					.then(data => {
 						let items = data.items;
-						for(let i = 0; i < items.length; i++){
+						for (let i = 0; i < items.length; i++) {
 							rors.push(items[i]);
 						}
 						organizations = items;
@@ -134,7 +133,7 @@ export default {
 			}
 
 			const lookupSearchPhrase = function () {
-				if(searchPhrase.value.length >= 3) {
+				if (searchPhrase.value.length >= 3) {
 					// apiLookup();
 					// organizations = rorsApiResponse;
 					console.log('searchPhrase: ' + searchPhrase.value);
@@ -151,20 +150,20 @@ export default {
 				);
 			}
 
-			const toggleActions = function(affiliationId) {
+			const toggleActions = function (affiliationId) {
 				valueHelper[affiliationId].actions = !valueHelper[affiliationId].actions;
 			};
 
-			const toggleEdit = function(affiliationId){
+			const toggleEdit = function (affiliationId) {
 				valueHelper[affiliationId].edit = !valueHelper[affiliationId].edit;
 			};
 
-			const closeEdit = function(affiliationId){
+			const closeEdit = function (affiliationId) {
 				valueHelper[affiliationId].edit = !valueHelper[affiliationId].edit;
 				toggleActions(affiliationId);
 			};
 
-			const deleteAffiliation = function(affiliationId) {
+			const deleteAffiliation = function (affiliationId) {
 				console.log('Affiliation: ' + affiliationId + ' deleted');
 			}
 
@@ -201,9 +200,7 @@ export default {
 						<TableColumn id="">&nbsp;</TableColumn>
 					</TableHeader>
 					<TableBody>
-						<TableRow
-							v-for="([affiliationId, row], affiliationIndex) in Object.entries(value)"
-							:key="affiliationId">
+						<TableRow v-for="([id, row], aIndex) in Object.entries(value)" :key="id">
 							<TableCell>
 								{{ row._data.name[primaryLocale] }}
 								<Icon
@@ -214,7 +211,7 @@ export default {
 								/>
 							</TableCell>
 							<TableCell>
-								<div v-if="valueHelper[affiliationId].edit">
+								<div v-if="valueHelper[id].edit">
 									<div v-for="([key, value], index) in Object.entries(row._data.name)" :key="index">
 										<div v-if="key !== primaryLocale">
 											<p>
@@ -229,23 +226,31 @@ export default {
 										</div>
 									</div>
 								</div>
-								<div v-if="!valueHelper[affiliationId].edit">
+								<div v-if="!valueHelper[id].edit">
 									{{ translations(row) }}
 								</div>
 							</TableCell>
 							<TableCell>
-								<div v-if="!valueHelper[affiliationId].edit">
-									<button @click="toggleActions(affiliationId)">...</button>
-									<div v-if="valueHelper[affiliationId].actions"
+								<div v-if="!valueHelper[id].edit">
+									<button @click="toggleActions(id)">...</button>
+									<div v-if="valueHelper[id].actions"
 										 class="shadow text-primary affiliations__sticky">
 										<ul>
-											<li><button @click="toggleEdit(affiliationId)">Edit</button></li>
-											<li><button @click="deleteAffiliation(affiliationId)">Delete</button></li>
+											<li>
+												<button @click="toggleEdit(id)">
+													Edit
+												</button>
+											</li>
+											<li>
+												<button @click="deleteAffiliation(id)">
+													Delete
+												</button>
+											</li>
 										</ul>
 									</div>
 								</div>
-								<div v-if="valueHelper[affiliationId].edit">
-									<PkpButton @click="closeEdit(affiliationId)">Close</PkpButton>
+								<div v-if="valueHelper[id].edit">
+									<PkpButton @click="closeEdit(id)">Close</PkpButton>
 								</div>
 							</TableCell>
 						</TableRow>
@@ -254,8 +259,7 @@ export default {
 								<div class="pkpFormField pkpFormField--text pkpFormField--sizelarge">
 									<label
 										class="pkpFormFieldLabel"
-										for="contributor-affiliations-searchPhrase-control"
-									>
+										for="contributor-affiliations-searchPhrase-control">
 										{{ t('user.affiliations.searchPhraseLabel', {}) }}
 									</label>
 									<input
@@ -265,14 +269,11 @@ export default {
 										class="pkpFormField__input pkpFormField--text__input pkpFormField--sizelarge"
 										type="text"
 										name="searchPhraseInput"
-										aria-invalid="0"
-									>
+										aria-invalid="0">
 									<div v-if="searchPhrase" class="shadow text-primary searchPhraseOrganizations">
 										<ul>
-											<li v-for="(organization, index) in organizations">
-												<button
-													@click.prevent="dummyAction(index)"
-													class="pkpButton inline-flex relative gap-x-1 text-lg-semibold  text-primary border-light  hover:text-hover disabled:text-disabled  bg-secondary py-2 px-3 w-full border-light">
+											<li v-for="(organization, orgIndex) in organizations">
+												<button @click.prevent="dummyAction(orgIndex)" class="">
 													{{ organization.id }} [
 													{{ organization.name[primaryLocale] }}]
 												</button>
@@ -288,25 +289,25 @@ export default {
 						</TableRow>
 					</TableBody>
 				</PkpTable>
+			</div>
 
-				<div>
-					<p> &nbsp; </p>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel accumsan neque, ac tincidunt
-						risus. Sed vulputate augue ut quam ultricies elementum. In pretium euismod ipsum nec
-						consectetur. In eleifend sapien id porta lobortis. Fusce faucibus pharetra rutrum. Etiam
-						sagittis iaculis placerat. Donec ut faucibus nibh, a auctor erat. Orci varius natoque penatibus
-						et magnis dis parturient montes, nascetur ridiculus mus. Proin porttitor, nulla ac auctor
-						bibendum, urna leo dignissim arcu, id viverra justo quam vel ligula. Fusce a tincidunt justo.
-						Nulla vulputate accumsan massa, nec vulputate erat semper non.</p>
-					<p> &nbsp; </p>
-					<p>Nunc auctor mattis quam eu tempus. Integer ornare est libero, quis sollicitudin tortor commodo
-						ac. Integer nisi mauris, pellentesque quis vehicula vitae, aliquet in ex. Praesent mattis metus
-						non fermentum convallis. Integer lobortis libero ac malesuada eleifend. In consectetur felis
-						efficitur nunc tempus luctus. Cras cursus mi non ipsum suscipit, non placerat purus interdum.
-						Nulla blandit ultricies condimentum. Proin interdum nunc lacus, et gravida libero interdum
-						nec.</p>
-					<p> &nbsp; </p>
-				</div>
+			<div>
+				<p> &nbsp; </p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel accumsan neque, ac tincidunt
+					risus. Sed vulputate augue ut quam ultricies elementum. In pretium euismod ipsum nec
+					consectetur. In eleifend sapien id porta lobortis. Fusce faucibus pharetra rutrum. Etiam
+					sagittis iaculis placerat. Donec ut faucibus nibh, a auctor erat. Orci varius natoque penatibus
+					et magnis dis parturient montes, nascetur ridiculus mus. Proin porttitor, nulla ac auctor
+					bibendum, urna leo dignissim arcu, id viverra justo quam vel ligula. Fusce a tincidunt justo.
+					Nulla vulputate accumsan massa, nec vulputate erat semper non.</p>
+				<p> &nbsp; </p>
+				<p>Nunc auctor mattis quam eu tempus. Integer ornare est libero, quis sollicitudin tortor commodo
+					ac. Integer nisi mauris, pellentesque quis vehicula vitae, aliquet in ex. Praesent mattis metus
+					non fermentum convallis. Integer lobortis libero ac malesuada eleifend. In consectetur felis
+					efficitur nunc tempus luctus. Cras cursus mi non ipsum suscipit, non placerat purus interdum.
+					Nulla blandit ultricies condimentum. Proin interdum nunc lacus, et gravida libero interdum
+					nec.</p>
+				<p> &nbsp; </p>
 			</div>
 		`,
 	}),
