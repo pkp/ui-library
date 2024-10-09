@@ -61,14 +61,14 @@ export default {
 			const valueHelper = reactive(setValueHelper(value));
 
 			function setValueHelper(value) {
-				let newValue = [];
+				let newValue = {};
 
 				Object.keys(value).forEach(key => {
-					console.log(key, value[key]);
-					newValue[key] = value[key];
-					newValue[key]['edit'] = false;
-					newValue[key]['actions'] = false;
-				})
+					newValue[key] = {}; // value[key];
+					newValue[key].actions = false;
+					newValue[key].editMode = false;
+					newValue[key].editable = !value[key]._data.ror;
+				});
 
 				return newValue;
 			}
@@ -155,16 +155,17 @@ export default {
 			};
 
 			const toggleEdit = function (affiliationId) {
-				valueHelper[affiliationId].edit = !valueHelper[affiliationId].edit;
+				valueHelper[affiliationId].editMode = !valueHelper[affiliationId].editMode;
 			};
 
 			const closeEdit = function (affiliationId) {
-				valueHelper[affiliationId].edit = !valueHelper[affiliationId].edit;
-				toggleActions(affiliationId);
+				valueHelper[affiliationId].editMode = !valueHelper[affiliationId].editMode;
+				valueHelper[affiliationId].actions = false;
 			};
 
 			const deleteAffiliation = function (affiliationId) {
 				console.log('Affiliation: ' + affiliationId + ' deleted');
+				valueHelper[affiliationId].actions = false;
 			}
 
 			const dummyAction = function (message) {
@@ -202,7 +203,15 @@ export default {
 					<TableBody>
 						<TableRow v-for="([id, row], aIndex) in Object.entries(value)" :key="id">
 							<TableCell>
-								{{ row._data.name[primaryLocale] }}
+								{{ id }}
+								<span v-if="!valueHelper[id].editMode">{{ row._data.name[primaryLocale] }}</span>
+								<input
+									v-if="valueHelper[id].editMode"
+									:readonly="!valueHelper[id].editable"
+									v-model="row._data.name[primaryLocale]"
+									class="pkpFormField__input pkpFormField--text__input  pkpFormField--sizelarge"
+								/>
+								&nbsp;
 								<Icon
 									v-if="row._data.ror"
 									:class="'mr-2'"
@@ -211,27 +220,29 @@ export default {
 								/>
 							</TableCell>
 							<TableCell>
-								<div v-if="valueHelper[id].edit">
-									<div v-for="([key, value], index) in Object.entries(row._data.name)" :key="index">
-										<div v-if="key !== primaryLocale">
-											<p>
-												{{ t('user.affiliations.translationLabel', {language: key}) }}
-											</p>
-											<p>
-												<input
-													v-model="row._data.name[key]"
-													class="pkpFormField__input pkpFormField--text__input"
-												/>
-											</p>
-										</div>
+								<div
+									v-if="valueHelper[id].editMode"
+									v-for="([key, value], index) in Object.entries(row._data.name)"
+									:key="index">
+									<div v-if="key !== primaryLocale">
+										<p>{{ t('user.affiliations.translationLabel', {language: key}) }}</p>
+										<p>
+											<input
+												v-model="row._data.name[key]"
+												:readonly="!valueHelper[id].editable"
+												class="pkpFormField__input pkpFormField--text__input pkp FormField--sizelarge"
+											/>
+										</p>
 									</div>
 								</div>
-								<div v-if="!valueHelper[id].edit">
-									{{ translations(row) }}
+								<div>
+									<button @click="toggleEdit(id)">
+										{{ translations(row) }}
+									</button>
 								</div>
 							</TableCell>
 							<TableCell>
-								<div v-if="!valueHelper[id].edit">
+								<div v-if="!valueHelper[id].editMode">
 									<button @click="toggleActions(id)">...</button>
 									<div v-if="valueHelper[id].actions"
 										 class="shadow text-primary affiliations__sticky">
@@ -249,7 +260,7 @@ export default {
 										</ul>
 									</div>
 								</div>
-								<div v-if="valueHelper[id].edit">
+								<div v-if="valueHelper[id].editMode">
 									<PkpButton @click="closeEdit(id)">Close</PkpButton>
 								</div>
 							</TableCell>
@@ -257,19 +268,23 @@ export default {
 						<TableRow>
 							<TableCell>
 								<div class="pkpFormField pkpFormField--text pkpFormField--sizelarge">
-									<label
-										class="pkpFormFieldLabel"
-										for="contributor-affiliations-searchPhrase-control">
-										{{ t('user.affiliations.searchPhraseLabel', {}) }}
-									</label>
-									<input
-										v-model="searchPhrase"
-										@keyup="lookupSearchPhrase"
-										id="contributor-affiliations-searchPhrase-control"
-										class="pkpFormField__input pkpFormField--text__input pkpFormField--sizelarge"
-										type="text"
-										name="searchPhraseInput"
-										aria-invalid="0">
+									<p>
+										<label
+											class="pkpFormFieldLabel"
+											for="contributor-affiliations-searchPhrase-control">
+											{{ t('user.affiliations.searchPhraseLabel', {}) }}
+										</label>
+									</p>
+									<p>
+										<input
+											v-model="searchPhrase"
+											@keyup="lookupSearchPhrase"
+											id="contributor-affiliations-searchPhrase-control"
+											class="pkpFormField__input pkpFormField--text__input pkpFormField--sizelarge"
+											type="text"
+											name="searchPhraseInput"
+											aria-invalid="0">
+									</p>
 									<div v-if="searchPhrase" class="shadow text-primary searchPhraseOrganizations">
 										<ul>
 											<li v-for="(organization, orgIndex) in organizations">

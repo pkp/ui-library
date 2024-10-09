@@ -2,9 +2,9 @@ export default {
 	name: 'author-affiliations',
 	component: 'author-affiliations',
 	items: {
-		"1": {
+		"12": {
 			"_data": {
-				"id": 1,
+				"id": 12,
 				"authorId": 5,
 				"ror": "https://ror.org/0213rcc28",
 				"name": {
@@ -32,9 +32,9 @@ export default {
 				"zh_CN": "zh_Hans"
 			}
 		},
-		"2": {
+		"13": {
 			"_data": {
-				"id": 2,
+				"id": 13,
 				"authorId": 5,
 				"ror": "https://ror.org/02e2c7k09",
 				"name": {
@@ -62,9 +62,9 @@ export default {
 				"zh_CN": "zh_Hans"
 			}
 		},
-		"3": {
+		"14": {
 			"_data": {
-				"id": 3,
+				"id": 14,
 				"authorId": 5,
 				"ror": "",
 				"name": {
@@ -92,9 +92,9 @@ export default {
 				"zh_CN": "zh_Hans"
 			}
 		},
-		"4": {
+		"15": {
 			"_data": {
-				"id": 4,
+				"id": 15,
 				"authorId": 5,
 				"ror": "https://ror.org/0304hq317",
 				"name": {
