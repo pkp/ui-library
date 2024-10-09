@@ -20,7 +20,7 @@
 <script setup>
 import Panel from '@/components/Panel/Panel.vue';
 import PanelSection from '@/components/Panel/PanelSection.vue';
-import CounterReportsListPanel from '@/components/ListPanel/counter/CounterReportsListPanel.vue';
+import CounterReportsListPanel from './components/CounterReportsListPanel.vue';
 
 defineProps({
 	counterReportsListPanel: {type: Object, required: true},
