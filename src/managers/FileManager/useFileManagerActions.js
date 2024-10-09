@@ -112,14 +112,8 @@ export function useFileManagerActions() {
 		openDialog({
 			actions: [
 				{
-					label: t('common.cancel'),
-					isWarnable: true,
-					callback: (close) => {
-						close();
-					},
-				},
-				{
 					label: t('common.ok'),
+					isWarnable: true,
 					callback: async (close) => {
 						const {url} = useLegacyGridUrl({
 							component: 'api.file.ManageFileApiHandler',
@@ -146,9 +140,16 @@ export function useFileManagerActions() {
 						}
 					},
 				},
+				{
+					label: t('common.cancel'),
+					callback: (close) => {
+						close();
+					},
+				},
 			],
 			title: t('common.delete'),
 			message: t('common.confirmDelete'),
+			modalStyle: 'negative',
 		});
 	}
 

@@ -368,6 +368,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 								},
 							},
 						],
+						modalStyle: 'success',
 					});
 				}
 			}
