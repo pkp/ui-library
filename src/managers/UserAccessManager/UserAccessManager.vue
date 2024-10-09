@@ -18,7 +18,7 @@
 			<TableColumn>{{ t('invitation.tableHeader.name') }}</TableColumn>
 			<TableColumn>{{ t('about.contact.email') }}</TableColumn>
 			<TableColumn>{{ t('user.roles') }}</TableColumn>
-			<TableColumn>{{ t('common.status') }}</TableColumn>
+			<TableColumn>{{ t('user.startDate') }}</TableColumn>
 			<TableColumn>{{ t('user.affiliation') }}</TableColumn>
 			<TableColumn>
 				<span class="sr-only">{{ t('common.moreActions') }}</span>
@@ -27,45 +27,28 @@
 		<TableBody>
 			<TableRow v-for="(invitation, index) in store.invitations" :key="index">
 				<TableCell>
-					{{
-						invitation.userId
-							? invitation.existingUser.fullName
-							: invitation.newUser.fullName
-					}}
-					<Icon
-						v-if="invitation.existingUser?.orcid || invitation.newUser?.orcid"
-						icon="orcid"
-						:inline="true"
-					/>
+					{{ invitation.fullName }}
+					<Icon v-if="invitation.orcidIsVerified" icon="orcid" :inline="true" />
 				</TableCell>
 				<TableCell>
-					{{
-						invitation.userId ? invitation.existingUser.email : invitation.email
-					}}
+					{{ invitation.email }}
 				</TableCell>
 				<TableCell>
-					<template
-						v-for="(userGroups, i) in invitation.userGroupsToAdd"
-						:key="i"
-					>
+					<template v-for="(userGroups, i) in invitation.groups" :key="i">
 						<div class="flex flex-col">
-							{{ localize(userGroups.userGroupName) }}
+							{{ localize(userGroups.name) }}
 						</div>
 					</template>
 				</TableCell>
 				<TableCell>
-					{{
-						t('userInvitation.status.invited', {
-							date: formatShortDate(invitation.createdAt),
-						})
-					}}
+					<template v-for="(userGroups, i) in invitation.groups" :key="i">
+						<div class="flex flex-col">
+							{{ formatShortDate(userGroups?.startDate) }}
+						</div>
+					</template>
 				</TableCell>
 				<TableCell>
-					{{
-						invitation.userId
-							? localize(invitation.existingUser.affiliation)
-							: localize(invitation.affiliation)
-					}}
+					{{ localize(invitation.affiliation) }}
 				</TableCell>
 				<TableCell>
 					<DropdownActions
