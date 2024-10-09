@@ -69,11 +69,9 @@ export default {
 				}
 
 				if (total === translated) {
-					return 'All translations available';
-					// return t('user.affiliations.translationAll', {});
+					return t('user.affiliations.translationAll', {});
 				} else {
-					return translated + ' of ' + total + ' languages completed';
-					// return t('user.affiliations.translationSome', {translated: translated, total: total});
+					return t('user.affiliations.translationSome', {translated: translated, total: total});
 				}
 			}
 
@@ -116,8 +114,8 @@ export default {
 		template: `
 			<PkpTable aria-label="Affiliations">
 				<TableHeader>
-					<TableColumn>institution</TableColumn>
-					<TableColumn>translation</TableColumn>
+					<TableColumn>{{ t('user.affiliations.institution') }}</TableColumn>
+					<TableColumn>{{ t('user.affiliations.translation') }}</TableColumn>
 					<TableColumn> &nbsp;</TableColumn>
 				</TableHeader>
 				<TableBody>
@@ -179,17 +177,15 @@ export default {
 				</TableBody>
 			</PkpTable>
 
-			<div>
-				<hr/>
-			</div>
-			<div class="debug">
-				<!-- <textarea>{{ value }}</textarea> -->
+			 <hr/>
+			 <div class="debug">
+				 <textarea>{{ value }}</textarea>
 				<!-- <textarea>{{ currentValue }}</textarea> -->
 				<!-- <div>locale: {{ primaryLocale }}</div> -->
-				<!-- <div>searchPhrase: {{ searchPhrase }}</div> -->
+				 <div>searchPhrase: {{ searchPhrase }}</div>
 				<!-- <div>currentValue: {{ currentValue }}</div> -->
 				<!-- <div>value: {{ value }}</div> -->
-			</div>
+			 </div>
 		`,
 	}),
 };

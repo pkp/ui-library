@@ -1,7 +1,7 @@
 <template>
 	<PkpTable aria-label="Affiliations">
 		<TableHeader>
-			<TableColumn>Institution</TableColumn>
+			<TableColumn>{{ t('user.affiliations.institution') }}</TableColumn>
 			<TableColumn>{{ t('user.affiliations.translation') }}</TableColumn>
 			<TableColumn> &nbsp;</TableColumn>
 		</TableHeader>
@@ -63,11 +63,11 @@
 		</TableBody>
 	</PkpTable>
 
-	<div><hr/></div>
+	<hr/>
 	<div class="debug">
 		<textarea>{{ value }}</textarea>
-		<textarea>{{ currentValue }}</textarea>
-		<div>locale: {{ primaryLocale }}</div>
+    <!-- <textarea>{{ currentValue }}</textarea> -->
+    <!-- <div>locale: {{ primaryLocale }}</div> -->
 		<div>searchPhrase: {{ searchPhrase }}</div>
 		<!-- <div>currentValue: {{ currentValue }}</div> -->
 		<!-- <div>value: {{ value }}</div> -->
