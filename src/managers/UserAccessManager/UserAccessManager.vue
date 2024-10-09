@@ -3,106 +3,69 @@
 		<template #label>
 			<h3 class="text-3xl-bold">
 				{{ t('grid.user.currentUsers') }}({{
-					store.invitationsPagination.itemCount
+					store.userAccessPagination.itemCount
 				}})
 			</h3>
 		</template>
 		<template #top-controls>
-			<div class="flex space-x-2">
-				<PkpButton @click="store.createNewInvitation">
-					{{ t('invitation.inviteToRole.btn') }}
-				</PkpButton>
-			</div>
+			<Search
+				:search-phrase="searchPhrase"
+				:search-label="t('userAccess.search')"
+				@search-phrase-changed="store.setSearchPhrase"
+			/>
 		</template>
 		<TableHeader>
-			<TableColumn>{{ t('invitation.tableHeader.name') }}</TableColumn>
+			<TableColumn>{{ t('userAccess.tableHeader.name') }}</TableColumn>
 			<TableColumn>{{ t('about.contact.email') }}</TableColumn>
 			<TableColumn>{{ t('user.roles') }}</TableColumn>
-			<TableColumn>{{ t('common.status') }}</TableColumn>
+			<TableColumn>{{ t('userAccess.tableHeader.startDate') }}</TableColumn>
 			<TableColumn>{{ t('user.affiliation') }}</TableColumn>
 			<TableColumn>
 				<span class="sr-only">{{ t('common.moreActions') }}</span>
 			</TableColumn>
 		</TableHeader>
 		<TableBody>
-			<TableRow v-for="(invitation, index) in store.invitations" :key="index">
+			<TableRow v-for="(user, index) in store.userList" :key="index">
 				<TableCell>
-					{{
-						invitation.userId
-							? invitation.existingUser.fullName
-							: invitation.newUser.fullName
-					}}
-					<Icon
-						v-if="invitation.existingUser?.orcid || invitation.newUser?.orcid"
-						icon="orcid"
-						:inline="true"
-					/>
+					{{ user.fullName }}
+					<Icon v-if="user.orcidIsVerified" icon="orcid" :inline="true" />
 				</TableCell>
 				<TableCell>
-					{{
-						invitation.userId ? invitation.existingUser.email : invitation.email
-					}}
+					{{ user.email }}
 				</TableCell>
 				<TableCell>
-					<template
-						v-for="(userGroups, i) in invitation.userGroupsToAdd"
-						:key="i"
-					>
+					<template v-for="(userGroups, i) in user.groups" :key="i">
 						<div class="flex flex-col">
-							{{ localize(userGroups.userGroupName) }}
+							{{ localize(userGroups.name) }}
 						</div>
 					</template>
 				</TableCell>
 				<TableCell>
-					{{
-						t('userInvitation.status.invited', {
-							date: formatShortDate(invitation.createdAt),
-						})
-					}}
+					<template v-for="(userGroups, i) in user.groups" :key="i">
+						<div class="flex flex-col">
+							{{ formatShortDate(userGroups?.startDate) }}
+						</div>
+					</template>
 				</TableCell>
 				<TableCell>
-					{{
-						invitation.userId
-							? localize(invitation.existingUser.affiliation)
-							: localize(invitation.affiliation)
-					}}
+					{{ localize(user.affiliation) }}
 				</TableCell>
 				<TableCell>
 					<DropdownActions
-						:actions="[
-							{
-								label: t('common.edit'),
-								name: 'editInvite',
-								icon: 'Edit',
-							},
-							{
-								label: t('invitation.cancelInvite.actionName'),
-								icon: 'Cancel',
-								name: 'cancelInvite',
-								isWarnable: true,
-							},
-						]"
-						:label="t('invitation.management.options')"
+						:actions="store.getItemActions(user)"
+						:label="t('userAccess.management.options')"
 						:display-as-ellipsis="true"
 						direction="left"
-						@action="
-							(actionName) =>
-								store.handleInvitationAction(actionName, invitation)
-						"
+						@action="(actionName) => store[actionName](user)"
 					/>
 				</TableCell>
 			</TableRow>
 		</TableBody>
 	</PkpTable>
-	<div class="flex justify-end">
-		<Pagination
-			:current-page="store.invitationsPagination.currentPage"
-			:last-page="store.invitationsPagination.pageCount"
-			:is-loading="store.isInvitationLoading"
-			:show-adjacent-pages="3"
-			@set-page="store.setCurrentPage"
-		/>
-	</div>
+	<TablePagination
+		:pagination="store.userAccessPagination"
+		@set-page="store.setCurrentPage"
+	/>
 </template>
 
 <script setup>
@@ -113,14 +76,16 @@ import TableColumn from '@/components/Table/TableColumn.vue';
 import TableBody from '@/components/Table/TableBody.vue';
 import TableRow from '@/components/Table/TableRow.vue';
 import Icon from '@/components/Icon/Icon.vue';
-import PkpButton from '@/components/Button/Button.vue';
 import {useUserAccessManagerStore} from './UserAccessManagerStore.js';
-import Pagination from '@/components/Pagination/Pagination.vue';
+import TablePagination from '@/components/Table/TablePagination.vue';
 import {useTranslation} from '@/composables/useTranslation';
 import {useDate} from '@/composables/useDate';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
+import Search from '@/components/Search/Search.vue';
+import {ref} from 'vue';
 
 const store = useUserAccessManagerStore();
 const {t} = useTranslation();
 const {formatShortDate} = useDate();
+const searchPhrase = ref('');
 </script>
