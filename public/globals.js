@@ -406,6 +406,7 @@ window.pkp = {
 		'email.cc': 'CC',
 		'email.confirmSwitchLocale':
 			'Are you sure you want to change to {$localeName} to compose this email? Any changes you have made to the subject and body of the email will be lost.',
+		'email.email': 'Email',
 		'email.subject': 'Subject',
 		'email.to': 'To',
 		'fileManager.copyeditedFiles': 'Copyedited Files',
@@ -439,11 +440,13 @@ window.pkp = {
 		'grid.action.deleteContributor': 'Delete Contributor',
 		'grid.action.deleteContributor.confirmationMessage':
 			'Are you sure you want to remove {$name} as a contributor? This action can not be undone.',
+		'grid.action.disable': 'Disable User',
 		'grid.action.edit': 'Edit',
 		'grid.action.editFile': 'Edit a file',
 		'grid.action.logInAs': 'Login As',
 		'grid.action.moreInformation': 'More Information',
 		'grid.action.order': 'Order',
+		'grid.action.remove': 'Remove',
 		'grid.action.saveOrdering': 'Save Order',
 		'grid.action.sort': 'Sort',
 		'grid.columns.actions': 'Actions',
@@ -452,6 +455,7 @@ window.pkp = {
 		'grid.user.confirmLogInAs':
 			'Log in as this user? All actions you perform will be attributed to this user.',
 		'grid.user.currentUsers':'Current Users',
+		'grid.action.mergeUser':'Merge User',
 		'help.help': 'Help',
 		'informationCenter.informationCenter': 'Information Center',
 		'invitation.cancelInvite.actionName': 'Cancel Invite',
