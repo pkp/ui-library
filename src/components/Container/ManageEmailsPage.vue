@@ -151,6 +151,7 @@ export default {
 						callback: (close) => close(),
 					},
 				],
+				modalStyle: 'negative',
 			});
 		},
 
@@ -187,6 +188,7 @@ export default {
 						callback: (close) => close(),
 					},
 				],
+				modalStyle: 'negative',
 			});
 		},
 
@@ -224,6 +226,7 @@ export default {
 						callback: (close) => close(),
 					},
 				],
+				modalStyle: 'negative',
 			});
 		},
 
@@ -325,7 +328,7 @@ export default {
 						title: mailable ? mailable.name : '',
 						mailable: this.currentMailable,
 						onOpenTemplate: this.openTemplate,
-						onConfirmResetTemplate: this.confirmRemoveTemplate,
+						onConfirmResetTemplate: this.confirmResetTemplate,
 						onConfirmRemoveTemplate: this.confirmRemoveTemplate,
 					});
 				});

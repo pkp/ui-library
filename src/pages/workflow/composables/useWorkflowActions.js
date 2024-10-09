@@ -202,7 +202,7 @@ export function useWorkflowActions({
 			actions: [
 				{
 					label: t('publication.unschedule'),
-					isPrimary: true,
+					isWarnable: true,
 					callback: async (close) => {
 						const {apiUrl: unschedulePublicationApiUrl} = useUrl(
 							`submissions/${submission.id}/publications/${selectedPublication.id}/unpublish`,
@@ -220,6 +220,7 @@ export function useWorkflowActions({
 					callback: (close) => close(),
 				},
 			],
+			modalStyle: 'negative',
 		});
 	}
 
@@ -234,7 +235,7 @@ export function useWorkflowActions({
 			actions: [
 				{
 					label: t('publication.unpublish'),
-					isPrimary: true,
+					isWarnable: true,
 					callback: async (close) => {
 						const {apiUrl: unschedulePublicationApiUrl} = useUrl(
 							`submissions/${submission.id}/publications/${selectedPublication.id}/unpublish`,
@@ -252,6 +253,7 @@ export function useWorkflowActions({
 					callback: (close) => close(),
 				},
 			],
+			modalStyle: 'negative',
 		});
 	}
 
@@ -265,7 +267,7 @@ export function useWorkflowActions({
 			actions: [
 				{
 					label: t('common.yes'),
-					isWarnable: true,
+					isPrimary: true,
 					callback: async (close) => {
 						close();
 
@@ -291,6 +293,7 @@ export function useWorkflowActions({
 					callback: (close) => close(),
 				},
 			],
+			modalStyle: 'primary',
 		});
 	}
 
