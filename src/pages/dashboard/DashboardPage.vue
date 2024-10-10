@@ -23,7 +23,7 @@
 				</div>
 			</div>
 			<div class="mt-4">
-				<ActiveFilters
+				<DashboardActiveFilters
 					:active-filters-list="store.filtersFormList"
 					@clear-filters="store.clearFiltersForm"
 					@remove-filter="store.clearFiltersFormField"
@@ -44,7 +44,7 @@
 </template>
 <script setup>
 import PkpButton from '@/components/Button/Button.vue';
-import ActiveFilters from './components/ActiveFilters.vue';
+import DashboardActiveFilters from './components/DashboardActiveFilters.vue';
 import DashboardTable from './components/DashboardTable/DashboardTable.vue';
 import Search from '@/components/Search/Search.vue';
 
@@ -102,3 +102,4 @@ const store = useDashboardPageStore(props);
 	@apply bg-secondary p-0;
 }
 </style>
+./components/DashboardActiveFilters.vue

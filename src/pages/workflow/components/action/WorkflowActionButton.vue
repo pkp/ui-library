@@ -20,7 +20,7 @@ defineProps({
 	label: {type: String, required: true},
 });
 
-import {useSubmissionSummaryStore} from '../submissionSummaryStore';
+import {useWorkflowStore} from '@/pages/workflow/workflowStore';
 
-const store = useSubmissionSummaryStore();
+const store = useWorkflowStore();
 </script>

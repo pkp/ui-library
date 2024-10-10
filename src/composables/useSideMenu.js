@@ -53,14 +53,41 @@ export function useSideMenu(_items, opts = {}) {
 		return expandedKeys;
 	}
 
+	function findParentKeys(items, key, parents = []) {
+		for (const item of items) {
+			// if item key matches the active key, return the item parents
+			if (item.key === key) {
+				return parents;
+			}
+
+			// if the item has nested items, continue searching
+			if (item.items) {
+				const result = findParentKeys(item.items, key, [...parents, item.key]);
+				if (result) {
+					return result;
+				}
+			}
+		}
+
+		// if the key was not found, return null
+		return null;
+	}
+
 	function setActiveItemKey(key = '') {
 		activeItemKey.value = key;
+
+		const parentKeys = findParentKeys(items.value, key);
+		if (parentKeys) {
+			setExpandedKeys([...parentKeys, ...Object.keys(_expandedKeys)]);
+		}
 	}
 
 	function compareUrlPaths(url1, url2) {
-		const parsedUrl1 = new URL(url1);
-		const parsedUrl2 = new URL(url2);
+		const parsedUrl1 = isValidURL(url1) ? new URL(url1) : false;
+		const parsedUrl2 = isValidURL(url2) ? new URL(url2) : false;
 		return (
+			parsedUrl1 &&
+			parsedUrl2 &&
 			parsedUrl1.pathname === parsedUrl2.pathname &&
 			parsedUrl1.hostname === parsedUrl2.hostname
 		);
@@ -108,6 +135,15 @@ export function useSideMenu(_items, opts = {}) {
 		});
 
 		return result;
+	}
+
+	function isValidURL(string) {
+		try {
+			new URL(string);
+			return true;
+		} catch (_) {
+			return false;
+		}
 	}
 
 	const sideMenuProps = computed(() => ({
