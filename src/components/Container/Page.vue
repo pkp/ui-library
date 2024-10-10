@@ -7,6 +7,7 @@ import ReviewerSubmissionPage from '@/pages/reviewerSubmission/ReviewerSubmissio
 import JobsPage from '@/pages/jobs/JobsPage.vue';
 import FailedJobsPage from '@/pages/jobs/FailedJobsPage.vue';
 import FailedJobDetailsPage from '@/pages/jobs/FailedJobDetailsPage.vue';
+import CounterReportsPage from '@/pages/counter/CounterReportsPage.vue';
 
 export default {
 	name: 'Page',
@@ -17,6 +18,7 @@ export default {
 		JobsPage,
 		FailedJobsPage,
 		FailedJobDetailsPage,
+		CounterReportsPage,
 	},
 	extends: Container,
 	data() {
