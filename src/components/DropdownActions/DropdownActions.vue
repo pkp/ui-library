@@ -124,7 +124,9 @@ const emit = defineEmits([
 ]);
 
 const emitAction = (action) => {
-	if (action.name) {
+	if (action.name && action.id) {
+		emit('action', [action.name, action.id]);
+	} else if (action.name) {
 		emit('action', action.name);
 	}
 };
