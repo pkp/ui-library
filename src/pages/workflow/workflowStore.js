@@ -241,20 +241,18 @@ export const useWorkflowStore = defineComponentStore('workflow', (props) => {
 
 	const {
 		sideMenuProps,
-		setExpandedKeys,
 		setActiveItemKey,
 		selectedItem: selectedMenuItem,
-	} = useSideMenu(menuItems);
+	} = useSideMenu(menuItems, {
+		expandedKeys: {
+			workflow: true,
+			publication: true,
+		},
+	});
 
 	const selectedMenuState = computed(() => {
 		return selectedMenuItem.value?.actionArgs || {};
 	});
-
-	setExpandedKeys([
-		'workflow',
-		'publication',
-		`workflow_${pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW}`,
-	]);
 
 	const selectedReviewRound = computed(() => {
 		if (!selectedMenuState.value.reviewRoundId) {
