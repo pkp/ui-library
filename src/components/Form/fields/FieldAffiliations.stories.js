@@ -30,150 +30,263 @@ export default {
 			t
 		},
 		setup() {
-			const apiUrl = 'http://localhost/ojs350-multiple-author-affiliations-gy/index.php/publicknowledge/api/v1/rors/?search='
-			const rorsApiResponse = args.rorsApiResponse;
-			const newAffiliation = args.newItem;
-			let organizations = rorsApiResponse.items;
+			// Storybook
+			const organizations = args.rorsApiResponse['items'];
+			const currentValue = ref(args.items);
 
-			const dotsActions = [
-				{
-					"label": "Edit institute name",
-					"name": "dummyAction",
-				},
-				{
-					"label": "Remove institution",
-					"name": "dummyAction",
-				},
-			];
+			// FieldAffiliations.vue
+			const name = 'FieldAffiliations';
 
-			const handleAction = function (name) {
-				switch (name) {
-					case 'dummyAction':
-						dummyAction();
-						break;
-					default:
-						console.error(`No handler for action: ${name}`);
+			const props = defineProps({
+				value: {
+					type: Object,
+					default() {
+						return {};
+					}
+				},
+			});
+
+			//fixme: get these from parent
+			const apiUrl = pkp.context.apiBaseUrl + 'rors/?search=';
+			const currentLocale = $.pkp.app.primaryLocale;
+			const supportedLocales = ['en', 'de', 'fr_CA'];
+
+			// const currentValue = props.value;
+			// const organizations = ref([]);
+			const newAffiliationPending = ref({});
+			const searchPhrase = ref('');
+			const newItemPrefix = 'new';
+			let newItemCounter = 0;
+
+			// Search, select, add
+			const selectCustomOrganization = function () {
+				newAffiliationPending.value = getNewItemTemplate();
+				newAffiliationPending.value._data.name[currentLocale] = searchPhrase.value;
+				showAddMode.value = true;
+			}
+			const selectRorOrganization = function (organization) {
+				newAffiliationPending.value = getNewItemTemplate(organization);
+				newAffiliationPending.value._data.ror = organization.ror;
+				newAffiliationPending.value._data.name[currentLocale] = organization.name[currentLocale];
+				searchPhrase.value = organization.name[currentLocale];
+				showAddMode.value = true;
+			}
+			const addAffiliation = function () {
+				newItemCounter++;
+				let id = newItemPrefix + newItemCounter;
+				currentValue[id] = JSON.parse(JSON.stringify(newAffiliationPending.value));
+				valueHelper[id] = getValueHelperSchema()
+				valueHelper[id].editable = !id;
+
+				// cleanup
+				searchPhrase.value = '';
+				organizations.value = [];
+				showAddMode.value = false;
+			}
+			const deleteAffiliation = function (id) {
+				if (confirm(t('user.affiliations.deleteInstitutionConfirmation',
+					{institution: currentValue[id]['_data']['name'][currentLocale]}))
+				) {
+					delete currentValue[id];
+					// delete valueHelper[id];
 				}
 			}
 
-			const value = reactive(args.items);
+			function searchPhraseChanged() {
+				showAddMode.value = false;
+				organizations.value = [];
+				if (searchPhrase.value.length >= 3) {
+					setTimeout(() => {
+						apiLookup();
+					}, 200);
+				}
+			}
 
-			const valueHelper = reactive(setValueHelper(value));
+			// Row actions
+			const rowActionsArgs = function (id) {
+				let actions = [];
 
-			function setValueHelper(value) {
+				if (valueHelper[id].editable) {
+					actions.push(
+						{
+							"label": t('user.affiliations.translationEditActionLabel', {}),
+							"name": "edit",
+							"id": id
+						}
+					);
+				}
+
+				actions.push(
+					{
+						"label": t('user.affiliations.translationDeleteActionLabel', {}),
+						"name": "delete",
+						"id": id
+					}
+				);
+
+				return {
+					actions: actions,
+					label: '...',
+					ariaLabel: t('user.affiliations.translationActionsAriaLabel', {}),
+					direction: 'left',
+				};
+			};
+			const rowActionsHandler = function (param) {
+				if (typeof (param) === 'object' && param.length === 2) {
+					const name = param[0].trim();
+					const id = param[1].trim();
+
+					switch (name) {
+						case 'edit':
+							toggleEdit(id);
+							break;
+						case 'delete':
+							deleteAffiliation(id);
+							break;
+						default:
+							console.error(`No handler for action: ${name}`);
+					}
+				}
+			}
+
+			// GUI
+			const valueHelper = reactive(getValueHelper(currentValue));
+			const showAddMode = ref(false);
+			const showSearchResults = computed(() => {
+				if (searchPhrase.value.length >= 3
+					&& organizations.value.length > 0
+					&& showAddMode.value === false) {
+					return true;
+				}
+				return false;
+			});
+			const toggleEdit = function (id) {
+				valueHelper[id].editMode = !valueHelper[id].editMode;
+			};
+			const closeEdit = function (id) {
+				valueHelper[id].editMode = false;
+				valueHelper[id].actions = false;
+			};
+			const translations = function (row) {
+				let names = row._data.name;
+				let total = supportedLocales.length;
+				let translated = 0;
+
+				for (let key in names) {
+					if (supportedLocales.includes(key)
+						&& names[key].length > 0) {
+						translated++;
+					}
+				}
+
+				if (total === translated) {
+					return t('user.affiliations.translationsAllAvailable', {});
+				} else {
+					return t('user.affiliations.translationsSomeAvailable',
+						{translated: translated, total: total});
+				}
+			};
+
+			// Hooks
+			watch(currentValue, () => {
+				Object.keys(currentValue).forEach(key => {
+						if (!(key in valueHelper)) {
+							valueHelper[key] = getValueHelperSchema();
+						}
+					},
+					{immediate: true}
+				);
+			})
+
+			onMounted(() => {
+				makeValueConfirmAllowedLocales();
+			})
+
+			// Misc
+			function makeValueConfirmAllowedLocales() {
+				Object.keys(currentValue).forEach(key => {
+					supportedLocales.forEach((locale) => {
+						if (!(locale in currentValue[key]._data.name)) {
+							currentValue[key]._data.name[locale] = "";
+						}
+					});
+				});
+			}
+
+			function getNewItemTemplate(organization) {
+				let newItem = getAffiliationSchema();
+
+				supportedLocales.forEach((locale) => {
+					newItem._data.name[locale] = "";
+				});
+
+				return newItem;
+			}
+
+			function getAffiliationSchema() {
+				// { "id": { }, ... }
+				return {
+					"_data": {
+						"id": null,
+						"authorId": null,
+						"ror": null,
+						"name": {}
+					},
+					"_hasLoadableAdapters": false,
+					"_metadataExtractionAdapters": [],
+					"_extractionAdaptersLoaded": false,
+					"_metadataInjectionAdapters": [],
+					"_injectionAdaptersLoaded": false,
+					"_localesTable": {}
+				};
+			}
+
+			function getValueHelperSchema() {
+				return {
+					actions: false,
+					editMode: false,
+					editable: false
+				};
+			}
+
+			function getValueHelper(value) {
 				let newValue = {};
 
 				Object.keys(value).forEach(key => {
-					newValue[key] = {}; // value[key];
-					newValue[key].actions = false;
-					newValue[key].editMode = false;
+					newValue[key] = getValueHelperSchema();
 					newValue[key].editable = !value[key]._data.ror;
 				});
 
 				return newValue;
 			}
 
-			const pendingRequests = new WeakMap();
-			const minimumSearchPhraseLength = 3;
+			function getLocaleDisplayName(locale) {
+				const localeNames = new Intl.DisplayNames(
+					[currentLocale],
+					{type: 'language'}
+				);
 
-			const primaryLocale = $.pkp.app.primaryLocale;
+				return localeNames.of(locale.replace('_', '-'));
+			}
 
-			const searchPhrase = ref('');
-
-			const translations = function (row) {
-				let names = row._data.name;
-				let total = Object.keys(names).length;
-				let translated = 0;
-
-				for (let key in names) {
-					if (names[key].length > 0) {
-						translated++;
-					}
-				}
-
-				if (total === translated) {
-					return t('user.affiliations.translationAll', {});
-				} else {
-					return t('user.affiliations.translationSome',
-						{translated: translated, total: total});
-				}
-			};
-
-			const toggleTranslations = function (affiliationId) {
-				console.log(affiliationId);
-				console.log(value[affiliationId]);
-			};
-
-			const apiLookup = function () {
-				let rors = [];
-
-				// const previousController = pendingRequests.get(this);
-				// if (previousController) previousController.abort();
-
-				if (searchPhrase.value.length < minimumSearchPhraseLength) return;
-
-				// const controller = new AbortController();
-				// pendingRequests.set(this, controller);
-
-				fetch(apiUrl + searchPhrase.value, {
-					// signal: controller.signal
-				})
+			function apiLookup() {
+				fetch(apiUrl + searchPhrase.value, {})
 					.then(response => response.json())
 					.then(data => {
-						let items = data.items;
-						for (let i = 0; i < items.length; i++) {
-							rors.push(items[i]);
+						organizations.value = [];
+						if (data.items) {
+							for (let i = 0; i < data.items.length; i++) {
+								organizations.value.push(data.items[i]);
+							}
 						}
-						organizations = items;
 					})
 					.catch(error => {
-						if (error.name === 'AbortError') return;
 						console.log(error);
 					});
 			}
 
-			const lookupSearchPhrase = function () {
-				if (searchPhrase.value.length >= 3) {
-					// apiLookup();
-					// organizations = rorsApiResponse;
-					console.log('searchPhrase: ' + searchPhrase.value);
-				}
-			};
-
-			const isReadOnly = function (row) {
-				return !!row._data.ror;
-			};
-
-			const newGuid = function () {
-				return "10000000100040008000100000000000".replace(/[018]/g, c =>
-					(+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
-				);
-			}
-
-			const toggleActions = function (affiliationId) {
-				valueHelper[affiliationId].actions = !valueHelper[affiliationId].actions;
-			};
-
-			const toggleEdit = function (affiliationId) {
-				valueHelper[affiliationId].editMode = !valueHelper[affiliationId].editMode;
-			};
-
-			const closeEdit = function (affiliationId) {
-				valueHelper[affiliationId].editMode = !valueHelper[affiliationId].editMode;
-				valueHelper[affiliationId].actions = false;
-			};
-
-			const deleteAffiliation = function (affiliationId) {
-				console.log('Affiliation: ' + affiliationId + ' deleted');
-				valueHelper[affiliationId].actions = false;
-			}
-
-			const dummyAction = function (message) {
-				alert('"' + message + '"' + ' clicked');
-			};
-
 			return {
-				value,
+				currentValue,
 				valueHelper,
 				toggleActions,
 				toggleEdit,
