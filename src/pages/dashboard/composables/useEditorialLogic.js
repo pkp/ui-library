@@ -2,7 +2,7 @@ import {useSubmission} from '@/composables/useSubmission.js';
 import {useLocalize} from '@/composables/useLocalize';
 import {useDate} from '@/composables/useDate';
 import {Actions as ParticipantManagerActions} from '@/managers/ParticipantManager/useParticipantManagerActions';
-import {Actions as WorkflowActions} from './useWorkflowActions';
+import {Actions as WorkflowActions} from '@/pages/workflow/composables/useWorkflowActions';
 import {Actions as ReviewerManagerActions} from '@/managers/ReviewerManager/useReviewerManagerActions';
 
 const {formatShortDate} = useDate();

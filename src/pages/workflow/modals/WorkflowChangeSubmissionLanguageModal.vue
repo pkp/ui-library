@@ -29,7 +29,7 @@
 import {defineProps} from 'vue';
 import PkpForm from '@/components/Form/Form.vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
-import {useChangeSubmissionLanguageStore} from '@/pages/workflow/changeSubmissionLanguageStore';
+import {useWorkflowChangeSubmissionLanguageModalStore} from './workflowChangeSubmissionLanguageModalStore';
 
 const props = defineProps({
 	publicationId: {
@@ -41,7 +41,7 @@ const props = defineProps({
 		required: true,
 	},
 });
-const store = useChangeSubmissionLanguageStore({
+const store = useWorkflowChangeSubmissionLanguageModalStore({
 	form: props.form,
 	publicationId: props.publicationId,
 	submissionId: props.submissionId,

@@ -18,7 +18,7 @@
 import {computed} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import PkpButton from '@/components/Button/Button.vue';
-import {useSubmissionSummaryStore} from '../submissionSummaryStore';
+import {useWorkflowStore} from '@/pages/workflow/workflowStore';
 
 const {t} = useLocalize();
 
@@ -31,7 +31,7 @@ const languageLabel = computed(
 	() => props.submission.metadataLocales[props.submission.locale],
 );
 
-const store = useSubmissionSummaryStore();
+const store = useWorkflowStore();
 
 function handleChangeLanguage() {
 	store.workflowChangeSubmissionLanguage();

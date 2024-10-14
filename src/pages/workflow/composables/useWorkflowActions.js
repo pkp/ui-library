@@ -5,11 +5,11 @@ import {useUrl} from '@/composables/useUrl';
 import {useForm} from '@/composables/useForm';
 import {useFetch} from '@/composables/useFetch';
 import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
-import ChangeSubmissionLanguage from '@/pages/workflow/ChangeSubmissionLanguage.vue';
+import WorkflowModalChangeSubmissionLanguage from '@/pages/workflow/modals/WorkflowChangeSubmissionLanguageModal.vue';
 
-import SelectRevisionFormModal from '../components/SelectRevisionFormModal.vue';
+import WorkflowSelectRevisionFormModal from '@/pages/workflow/modals/WorkflowSelectRevisionFormModal.vue';
 
-import {useWorkflowDecisions} from './useWorkflowDecisions';
+import {useWorkflowDecisions} from '@/pages/workflow/composables/useWorkflowDecisions';
 
 export const Actions = {
 	WORKFLOW_VIEW_PUBLISHED_SUBMISSION: 'workflowViewPublishedSubmission',
@@ -94,7 +94,7 @@ export function useWorkflowActions({
 		// open modal
 		const {openSideModal} = useModal();
 		const {set, form, getValue} = useForm(selectRevisionDecisionForm);
-		openSideModal(SelectRevisionFormModal, {
+		openSideModal(WorkflowSelectRevisionFormModal, {
 			formProps: form,
 			onSet: set,
 			onSuccess: () => {
@@ -112,7 +112,7 @@ export function useWorkflowActions({
 		const {openSideModal} = useModal();
 
 		const {set, form, getValue} = useForm(selectRevisionRecommendationForm);
-		openSideModal(SelectRevisionFormModal, {
+		openSideModal(WorkflowSelectRevisionFormModal, {
 			formProps: form,
 			onSet: set,
 			onSuccess: () => {
@@ -302,7 +302,7 @@ export function useWorkflowActions({
 
 	function workflowChangeSubmissionLanguage({submission}) {
 		const {openSideModal} = useModal();
-		openSideModal(ChangeSubmissionLanguage, {
+		openSideModal(WorkflowModalChangeSubmissionLanguage, {
 			publicationId: submission.currentPublicationId,
 			submissionId: submission.id,
 		});

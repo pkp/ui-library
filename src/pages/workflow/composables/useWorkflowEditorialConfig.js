@@ -1,8 +1,8 @@
 import {useLocalize} from '@/composables/useLocalize';
-import {Actions} from '../../composables/useWorkflowActions';
+import {Actions} from './useWorkflowActions';
 import {useSubmission} from '@/composables/useSubmission';
-import {Actions as WorkflowActions} from '../../composables/useWorkflowActions';
-import {Actions as DecisionActions} from '../../composables/useWorkflowDecisions';
+import {Actions as WorkflowActions} from './useWorkflowActions';
+import {Actions as DecisionActions} from './useWorkflowDecisions';
 
 const {hasSubmissionPassedStage, hasNotSubmissionStartedStage, getStageById} =
 	useSubmission();
@@ -29,7 +29,7 @@ function getHeaderItems({
 
 	if (submission.status === pkp.const.STATUS_PUBLISHED) {
 		actions.push({
-			component: 'ActionButton',
+			component: 'WorkflowActionButton',
 			props: {
 				label: t('common.view'),
 				action: Actions.WORKFLOW_VIEW_PUBLISHED_SUBMISSION,
@@ -39,7 +39,7 @@ function getHeaderItems({
 
 	if (permissions.canAccessEditorialHistory) {
 		actions.push({
-			component: 'ActionButton',
+			component: 'WorkflowActionButton',
 			props: {
 				label: t('editor.activityLog'),
 				action: Actions.WORKFLOW_VIEW_ACTIVITY_LOG,
@@ -47,7 +47,7 @@ function getHeaderItems({
 		});
 	}
 	actions.push({
-		component: 'ActionButton',
+		component: 'WorkflowActionButton',
 		props: {
 			label: t('editor.submissionLibrary'),
 			action: Actions.WORKFLOW_VIEW_LIBRARY,
@@ -125,7 +125,7 @@ export const WorkflowConfig = {
 			}
 
 			items.push({
-				component: 'ActionButton',
+				component: 'WorkflowActionButton',
 				props: {
 					label: t('editor.submission.decision.sendExternalReview'),
 					isPrimary: true,
@@ -134,7 +134,7 @@ export const WorkflowConfig = {
 			});
 
 			items.push({
-				component: 'ActionButton',
+				component: 'WorkflowActionButton',
 				props: {
 					label: t('editor.submission.decision.skipReview'),
 					isSecondary: true,
@@ -143,7 +143,7 @@ export const WorkflowConfig = {
 			});
 
 			items.push({
-				component: 'ActionButton',
+				component: 'WorkflowActionButton',
 				props: {
 					label: t('editor.submission.decision.decline'),
 					isWarnable: true,
@@ -160,7 +160,7 @@ export const WorkflowConfig = {
 			if (!selectedReviewRound) {
 				return [
 					{
-						component: 'PrimaryBasicMetadata',
+						component: 'WorkflowPrimaryBasicMetadata',
 						props: {body: t('editor.review.notInitiated')},
 					},
 				];
@@ -174,7 +174,7 @@ export const WorkflowConfig = {
 
 			if (selectedReviewRound.round < currentReviewRound.round) {
 				items.push({
-					component: 'PrimaryBasicMetadata',
+					component: 'WorkflowPrimaryBasicMetadata',
 					props: {
 						body: t(
 							'editor.submission.workflowDecision.submission.reviewRound',
@@ -185,7 +185,7 @@ export const WorkflowConfig = {
 
 			if (selectedReviewRound.id === currentReviewRound.id) {
 				items.push({
-					component: 'ReviewRoundStatus',
+					component: 'WorkflowReviewRoundStatus',
 					props: {reviewRound: selectedReviewRound},
 				});
 			}
@@ -298,7 +298,7 @@ export const WorkflowConfig = {
 				};
 
 				items.push({
-					component: 'ActionButton',
+					component: 'WorkflowActionButton',
 					props: {
 						label: t('dashboard.summary.requestRevisions'),
 						isSecondary: true,
@@ -308,7 +308,7 @@ export const WorkflowConfig = {
 				});
 
 				items.push({
-					component: 'ActionButton',
+					component: 'WorkflowActionButton',
 					props: {
 						label: t('editor.submission.decision.accept'),
 						action: DecisionActions.DECISION_ACCEPT,
@@ -318,7 +318,7 @@ export const WorkflowConfig = {
 				});
 
 				items.push({
-					component: 'ActionButton',
+					component: 'WorkflowActionButton',
 					props: {
 						label: t('editor.submission.createNewRound'),
 						action: DecisionActions.DECISION_NEW_EXTERNAL_ROUND,
@@ -327,7 +327,7 @@ export const WorkflowConfig = {
 				});
 
 				items.push({
-					component: 'ActionButton',
+					component: 'WorkflowActionButton',
 					props: {
 						label: t('editor.submission.decision.cancelReviewRound'),
 						isWarnable: true,
@@ -336,7 +336,7 @@ export const WorkflowConfig = {
 				});
 
 				items.push({
-					component: 'ActionButton',
+					component: 'WorkflowActionButton',
 					props: {
 						label: t('editor.submission.decision.decline'),
 						isWarnable: true,
@@ -358,7 +358,7 @@ export const WorkflowConfig = {
 				)
 			) {
 				items.push({
-					component: 'PrimaryBasicMetadata',
+					component: 'WorkflowPrimaryBasicMetadata',
 					props: {
 						body: t('editor.submission.workflowDecision.submission.production'),
 					},
@@ -422,7 +422,7 @@ export const WorkflowConfig = {
 			}
 
 			items.push({
-				component: 'ActionButton',
+				component: 'WorkflowActionButton',
 				props: {
 					label: t('editor.submission.decision.sendToProduction'),
 					isPrimary: true,
@@ -431,7 +431,7 @@ export const WorkflowConfig = {
 			});
 
 			items.push({
-				component: 'ActionButton',
+				component: 'WorkflowActionButton',
 				props: {
 					label: t('editor.submission.decision.backFromCopyediting'),
 					isWarnable: true,
@@ -447,7 +447,7 @@ export const WorkflowConfig = {
 			const items = [];
 			if (submission.status === pkp.const.STATUS_PUBLISHED) {
 				items.push({
-					component: 'PrimaryBasicMetadata',
+					component: 'WorkflowPrimaryBasicMetadata',
 					props: {
 						body: t('editor.submission.workflowDecision.submission.published'),
 					},
@@ -507,7 +507,7 @@ export const WorkflowConfig = {
 			}
 
 			items.push({
-				component: 'ActionButton',
+				component: 'WorkflowActionButton',
 				props: {
 					label: t('editor.submission.schedulePublication'),
 					isPrimary: true,
@@ -518,7 +518,7 @@ export const WorkflowConfig = {
 
 			if (submission.status === pkp.const.STATUS_QUEUED) {
 				items.push({
-					component: 'ActionButton',
+					component: 'WorkflowActionButton',
 					props: {
 						label: t('editor.submission.decision.backToCopyediting'),
 						isWarnable: true,
@@ -542,7 +542,7 @@ export const PublicationConfig = {
 			const items = [];
 			if (selectedPublication.status === pkp.const.STATUS_PUBLISHED) {
 				items.push({
-					component: 'PublicationEditDisabled',
+					component: 'WorkflowPublicationEditDisabled',
 					props: {},
 				});
 			}
@@ -571,7 +571,7 @@ export const PublicationConfig = {
 			}
 
 			items.push({
-				component: 'PublicationVersionControl',
+				component: 'WorkflowPublicationVersionControl',
 				props: {
 					submission,
 					selectedPublicationId: selectedPublicationId,
@@ -600,7 +600,7 @@ export const PublicationConfig = {
 					)
 				) {
 					items.push({
-						component: 'ActionButton',
+						component: 'WorkflowActionButton',
 						props: {
 							label: t('common.preview'),
 							isSecondary: true,
@@ -610,7 +610,7 @@ export const PublicationConfig = {
 				}
 
 				items.push({
-					component: 'ActionButton',
+					component: 'WorkflowActionButton',
 					props: {
 						// 	{{ submission.status === getConstant('STATUS_PUBLISHED') ? publishLabel : schedulePublicationLabel }}
 
@@ -625,7 +625,7 @@ export const PublicationConfig = {
 				});
 			} else if (selectedPublication.status === pkp.const.STATUS_SCHEDULED) {
 				items.push({
-					component: 'ActionButton',
+					component: 'WorkflowActionButton',
 					props: {
 						label: t('dashboard.summary.preview'),
 						isSecondary: true,
@@ -634,7 +634,7 @@ export const PublicationConfig = {
 				});
 
 				items.push({
-					component: 'ActionButton',
+					component: 'WorkflowActionButton',
 					props: {
 						label: t('publication.unschedule'),
 						isWarnable: true,
@@ -643,7 +643,7 @@ export const PublicationConfig = {
 				});
 			} else if (selectedPublication.status === pkp.const.STATUS_PUBLISHED) {
 				items.push({
-					component: 'ActionButton',
+					component: 'WorkflowActionButton',
 					props: {
 						label: t('publication.unpublish'),
 						isWarnable: true,
@@ -656,7 +656,7 @@ export const PublicationConfig = {
 
 				if (latestPublication.id === selectedPublication.id) {
 					items.push({
-						component: 'ActionButton',
+						component: 'WorkflowActionButton',
 						props: {
 							label: t('publication.createVersion'),
 							isSecondary: true,
@@ -678,7 +678,7 @@ export const PublicationConfig = {
 		}) => {
 			return [
 				{
-					component: 'PublicationForm',
+					component: 'WorkflowPublicationForm',
 					props: {
 						formName: 'titleAbstract',
 						submission,
@@ -718,7 +718,7 @@ export const PublicationConfig = {
 		}) => {
 			return [
 				{
-					component: 'PublicationForm',
+					component: 'WorkflowPublicationForm',
 					props: {
 						formName: 'metadata',
 						submission,
@@ -739,7 +739,7 @@ export const PublicationConfig = {
 		}) => {
 			return [
 				{
-					component: 'PublicationForm',
+					component: 'WorkflowPublicationForm',
 					props: {
 						formName: 'reference',
 						submission,
@@ -759,7 +759,7 @@ export const PublicationConfig = {
 		}) => {
 			return [
 				{
-					component: 'PublicationForm',
+					component: 'WorkflowPublicationForm',
 					props: {
 						formName: 'identifier',
 						submission,
@@ -779,7 +779,7 @@ export const PublicationConfig = {
 		}) => {
 			return [
 				{
-					component: 'PublicationJats',
+					component: 'WorkflowPublicationJats',
 					props: {
 						canEditPublication: permissions.canEditPublication,
 						submission,
@@ -812,7 +812,7 @@ export const PublicationConfig = {
 		}) => {
 			return [
 				{
-					component: 'PublicationForm',
+					component: 'WorkflowPublicationForm',
 					props: {
 						formName: 'permissionDisclosure',
 						submission,
@@ -832,7 +832,7 @@ export const PublicationConfig = {
 		}) => {
 			return [
 				{
-					component: 'PublicationForm',
+					component: 'WorkflowPublicationForm',
 					props: {
 						formName: 'issue',
 						submission,

@@ -10,7 +10,7 @@ import {useUrl} from '@/composables/useUrl';
 import {useQueryParams} from '@/composables/useQueryParams';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
-import {useWorkflowActions} from './composables/useWorkflowActions';
+import {useWorkflowActions} from '../workflow/composables/useWorkflowActions';
 import {useReviewerManagerActions} from '@/managers/ReviewerManager/useReviewerManagerActions';
 
 import {useParticipantManagerActions} from '@/managers/ParticipantManager/useParticipantManagerActions';
@@ -19,8 +19,8 @@ import {useEditorialLogic} from './composables/useEditorialLogic';
 import {useReviewActivityLogic} from './composables/useReviewActivityLogic';
 import {useSubmission} from '@/composables/useSubmission';
 
-import DashboardFiltersModal from '@/pages/dashboard/components/DashboardFiltersModal.vue';
-import SubmissionSummaryModal from '@/pages/dashboard/SubmissionSummaryModal/SubmissionSummaryModal.vue';
+import DashboardModalFilters from '@/pages/dashboard/modals/DashboardModalFilters.vue';
+import Workflow from '@/pages/workflow/Workflow.vue';
 
 const {t, tk} = useLocalize();
 
@@ -127,7 +127,7 @@ export const useDashboardPageStore = defineComponentStore(
 		 */
 		const isModalOpenedFilters = ref(false);
 		function openFiltersModal() {
-			openSideModal(DashboardFiltersModal, {
+			openSideModal(DashboardModalFilters, {
 				filtersFormInitial: filtersForm,
 				onUpdateFiltersForm: updateFiltersForm,
 			});
@@ -319,18 +319,18 @@ export const useDashboardPageStore = defineComponentStore(
 		const selectedSubmission = ref(null);
 
 		/**
-		 * Summary submission Modal
+		 * Workflow submission Modal
 		 */
 
-		// Tracking which submissionId is opened in summary modal for query params
+		// Tracking which submissionId is opened in workflow modal for query params
 		const workflowSubmissionId = computed(() => {
 			return queryParamsUrl.workflowSubmissionId;
 		});
 
-		function openSummaryModal(submissionId) {
+		function openWorkflowModal(submissionId) {
 			queryParamsUrl.workflowSubmissionId = submissionId;
 			openSideModal(
-				SubmissionSummaryModal,
+				Workflow,
 				{
 					submissionId,
 					pageInitConfig,
@@ -344,7 +344,7 @@ export const useDashboardPageStore = defineComponentStore(
 			);
 		}
 		if (queryParamsUrl.workflowSubmissionId) {
-			openSummaryModal(queryParamsUrl.workflowSubmissionId);
+			openWorkflowModal(queryParamsUrl.workflowSubmissionId);
 		}
 
 		function openSubmissionWizard(submissionId) {
@@ -425,8 +425,8 @@ export const useDashboardPageStore = defineComponentStore(
 			// Modals
 			selectedSubmission,
 
-			// Summary submission Modal
-			openSummaryModal,
+			// Workflow Modal
+			openWorkflowModal,
 
 			openSubmissionWizard,
 
