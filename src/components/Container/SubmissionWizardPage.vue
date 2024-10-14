@@ -2,6 +2,7 @@
 import Page from '@/components/Container/Page.vue';
 import ButtonRow from '../ButtonRow/ButtonRow.vue';
 import ContributorsListPanel from '../ListPanel/contributors/ContributorsListPanel.vue';
+import ReviewerSuggestionsListPanel from '../ListPanel/reviewerSuggestions/ReviewerSuggestionsListPanel.vue';
 import File from '../File/File.vue';
 import Modal from '../Modal/Modal.vue';
 import ReconfigureSubmissionModal from '@/pages/submissionWizard/ReconfigureSubmissionModal.vue';
@@ -19,6 +20,7 @@ export default {
 	components: {
 		ButtonRow,
 		ContributorsListPanel,
+		ReviewerSuggestionsListPanel,
 		File,
 		Modal,
 		SubmissionFilesListPanel,
@@ -599,6 +601,13 @@ export default {
 		 */
 		setContributors(newContributors) {
 			this.publication.authors = newContributors;
+		},
+
+		/**
+		 * Update the reviewer suggestions in the submission
+		 */
+		setReviewerSuggestion(newReviewerSuggestions) {
+			this.submission.reviewerSuggestions = newReviewerSuggestions;
 		},
 
 		/**
