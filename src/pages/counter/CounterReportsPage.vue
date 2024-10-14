@@ -1,15 +1,13 @@
 <template>
 	<h1 class="app__pageHeading">
-		{{ title }}
+		{{ t('manager.statistics.counterR5Reports') }}
 	</h1>
-	<p v-html="description" />
-	<Notification
-		v-if="usageNotPossible"
-		type="warning"
-		class="pkpNotification--backendPage__header"
-	>
-		{{ t('manager.statistics.counterR5Reports.usageNotPossible') }}
-	</Notification>
+	<p v-html="t('manager.statistics.counterR5Reports.description')" />
+	<div class="mb-4">
+		<Notification v-if="usageNotPossible" type="warning">
+			{{ t('manager.statistics.counterR5Reports.usageNotPossible') }}
+		</Notification>
+	</div>
 	<Panel>
 		<PanelSection>
 			<CounterReportsListPanel v-bind="counterReportsListPanel" @set="set" />
@@ -21,11 +19,12 @@
 import Panel from '@/components/Panel/Panel.vue';
 import PanelSection from '@/components/Panel/PanelSection.vue';
 import CounterReportsListPanel from './components/CounterReportsListPanel.vue';
+import {useLocalize} from '@/composables/useLocalize';
+
+const {t} = useLocalize();
 
 defineProps({
 	counterReportsListPanel: {type: Object, required: true},
 	usageNotPossible: {type: Boolean, required: true},
-	title: {type: String, required: true},
-	description: {type: String, required: true},
 });
 </script>

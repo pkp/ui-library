@@ -34,7 +34,7 @@ import {useModal} from '@/composables/useModal';
 import {useFetch} from '@/composables/useFetch';
 import {useApiUrl} from '@/composables/useApiUrl';
 import {useLocalize} from '@/composables/useLocalize';
-import {ref, onMounted} from 'vue';
+import {ref, computed} from 'vue';
 
 const {t} = useLocalize();
 
@@ -44,33 +44,19 @@ const props = defineProps({
 	title: {type: String, required: true},
 });
 
-const items = ref([]);
-const isLoadingItems = ref(false);
+const items = computed(() => data.value || []);
 const activeForm = ref(null);
 const activeFormTitle = ref('');
 
-onMounted(() => {
-	/* Load the items */
-	getItems();
+const {apiUrl} = useApiUrl(`stats/sushi/reports`);
+const {
+	data,
+	fetch,
+	isLoading: isLoadingItems,
+} = useFetch(apiUrl, {
+	method: 'GET',
 });
-
-/**
- * Get the list of items (COUNTER R5 reports) from the server
- */
-async function getItems() {
-	isLoadingItems.value = true;
-
-	const {apiUrl} = useApiUrl(`stats/sushi/reports`);
-	const {data, isSuccess, fetch} = useFetch(apiUrl, {
-		method: 'GET',
-	});
-	await fetch();
-
-	if (isSuccess) {
-		items.value = data.value;
-	}
-	isLoadingItems.value = false;
-}
+fetch();
 
 /**
  * Open the modal to edit an item
@@ -96,7 +82,3 @@ function openEditModal(id) {
 	});
 }
 </script>
-
-<style lang="less">
-@import '../../../styles/_import';
-</style>
