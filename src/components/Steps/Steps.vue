@@ -220,8 +220,11 @@ export default {
 			const allSteps = this.$refs.buttons.querySelectorAll('li');
 			const allStepsWidth = Array.prototype.slice
 				.call(allSteps)
-				.reduce((totalWidth, button) => {
-					return totalWidth + button.offsetWidth;
+				.reduce((totalWidth, li) => {
+					// if the steppers are collapsed, get the width of each stepper from the span element
+					const spanWidth = li.querySelector('span')?.offsetWidth || 0;
+					const offsetWidth = li.offsetWidth === 1 ? spanWidth : li.offsetWidth;
+					return totalWidth + offsetWidth;
 				}, 0);
 			this.collapsed = allStepsWidth > totalWidth;
 		},
