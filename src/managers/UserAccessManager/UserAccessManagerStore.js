@@ -17,7 +17,7 @@ export const useUserAccessManagerStore = defineComponentStore(
 		const {announce} = useAnnouncer();
 
 		/**
-		 * get invitations with paginations
+		 * Get users with paginations
 		 */
 		const userAccessCount = ref(0);
 
@@ -63,11 +63,11 @@ export const useUserAccessManagerStore = defineComponentStore(
 
 		function handleEditUser(userObj) {
 			openDialog({
-				title: t('userInvitation.edit.title'),
-				message: t('userInvitation.edit.message'),
+				title: t('userAccess.edit.title'),
+				message: t('userAccess.edit.message'),
 				actions: [
 					{
-						label: t('userInvitation.edit.title'),
+						label: t('userAccess.edit.title'),
 						isPrimary: true,
 						callback: async (close) => {
 							window.location = editUserPageUrl.value + '/' + userObj.id;
