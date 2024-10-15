@@ -1,6 +1,6 @@
 import UserAccessManager from './UserAccessManager.vue';
 import {http, HttpResponse} from 'msw';
-import invitationMock from './mocks/UserAccessMock.js';
+import userAccessMock from './mocks/UserAccessMock.js';
 
 export default {
 	title: 'Managers/UserAccessManager',
@@ -24,14 +24,11 @@ export const Init = {
 						const url = new URL(request.url);
 						const offset = parseInt(url.searchParams.get('offset') || 0);
 						const count = parseInt(url.searchParams.get('count'));
-						const invitations = invitationMock.items.slice(
-							offset,
-							offset + count,
-						);
+						const users = userAccessMock.items.slice(offset, offset + count);
 
 						return HttpResponse.json({
-							itemsMax: invitationMock.itemsMax,
-							items: invitations,
+							itemsMax: userAccessMock.itemsMax,
+							items: users,
 						});
 					},
 				),
