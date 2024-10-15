@@ -15,10 +15,10 @@
 			/>
 		</template>
 		<TableHeader>
-			<TableColumn>{{ t('invitation.tableHeader.name') }}</TableColumn>
+			<TableColumn>{{ t('userAccess.tableHeader.name') }}</TableColumn>
 			<TableColumn>{{ t('about.contact.email') }}</TableColumn>
 			<TableColumn>{{ t('user.roles') }}</TableColumn>
-			<TableColumn>{{ t('userInvitation.roleTable.startDate') }}</TableColumn>
+			<TableColumn>{{ t('userAccess.roleTable.startDate') }}</TableColumn>
 			<TableColumn>{{ t('user.affiliation') }}</TableColumn>
 			<TableColumn>
 				<span class="sr-only">{{ t('common.moreActions') }}</span>
@@ -53,7 +53,7 @@
 				<TableCell>
 					<DropdownActions
 						:actions="actions"
-						:label="t('invitation.management.options')"
+						:label="t('userAccess.management.options')"
 						:display-as-ellipsis="true"
 						direction="left"
 						@action="
