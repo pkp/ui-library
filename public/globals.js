@@ -737,6 +737,7 @@ window.pkp = {
 		'userInvitation.edit.title':'Edit Invitation',
 		'userInvitation.edit.message':'If you edit the existing invitation or add a new role, the current invitation will be canceled and, a new one will be sent. Are you sure you want to proceed?',
 		'invitation.step':'STEP',
+		'user.search':'Search User',
 	},
 
 	tinyMCE: {
