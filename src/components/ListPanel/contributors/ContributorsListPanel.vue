@@ -683,5 +683,4 @@ export default {
 	white-space: normal;
 	text-align: justify;
 }
-
 </style>
