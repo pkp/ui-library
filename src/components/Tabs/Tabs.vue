@@ -260,6 +260,7 @@ export default {
 	position: relative;
 	padding: 1rem;
 	background: @lift;
+	min-width: 0;
 
 	&:focus {
 		z-index: 2;
