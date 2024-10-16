@@ -678,4 +678,10 @@ export default {
 		margin-inline-end: 8rem;
 	}
 }
+
+.listPanel--contributor .full-text {
+	white-space: normal;
+	text-align: justify;
+}
+
 </style>
