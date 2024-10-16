@@ -1,13 +1,17 @@
 import {defineStore, getActivePinia} from 'pinia';
 import {onMounted, onBeforeUnmount, provide, inject} from 'vue';
 
+let storesMap = {};
+
+export function getComponentStoreByName(storeName) {
+	return storesMap[storeName].useStore();
+}
+
 export function defineComponentStore(
 	_storeName,
 	setupFn,
 	{requireNamespace} = {},
 ) {
-	let storesMap = {};
-
 	return function (initConfig, _namespace = '') {
 		if (!_namespace && requireNamespace) {
 			const injectedNamespace = inject(_storeName)?.namespace;

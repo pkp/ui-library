@@ -1,5 +1,5 @@
 import {useLocalize} from '@/composables/useLocalize';
-import {Actions} from './useWorkflowActions';
+import {Actions} from '../useWorkflowActions';
 import {useSubmission} from '@/composables/useSubmission';
 
 const {hasSubmissionPassedStage, getOpenReviewAssignmentsForRound} =
@@ -7,7 +7,7 @@ const {hasSubmissionPassedStage, getOpenReviewAssignmentsForRound} =
 
 const {t} = useLocalize();
 
-function getHeaderItems({
+export function getHeaderItems({
 	submission,
 	selectedPublication,
 	publicationSettings,
@@ -278,7 +278,7 @@ export const PublicationConfig = {
 						formName: 'titleAbstract',
 						submission,
 						publication: selectedPublication,
-						canEditPublication: permissions.canEditPublication,
+						canEdit: permissions.canEditPublication,
 					},
 				},
 			];
@@ -318,7 +318,7 @@ export const PublicationConfig = {
 						submission,
 						publication: selectedPublication,
 						noFieldsMessage: 'No metadata fields are currently enabled.',
-						canEditPublication: permissions.canEditPublication,
+						canEdit: permissions.canEditPublication,
 					},
 				},
 			];
@@ -338,7 +338,7 @@ export const PublicationConfig = {
 						formName: 'reference',
 						submission,
 						publication: selectedPublication,
-						canEditPublication: permissions.canEditPublication,
+						canEdit: permissions.canEditPublication,
 					},
 				},
 			];
@@ -359,101 +359,3 @@ export const PublicationConfig = {
 		},
 	},
 };
-
-export function useWorkflowAuthorConfig() {
-	function _getItems(
-		getterFnName,
-		{
-			selectedMenuState,
-			submission,
-			pageInitConfig,
-			selectedPublication,
-			selectedPublicationId,
-			selectedReviewRound,
-			permissions,
-		},
-	) {
-		if (selectedMenuState.stageId) {
-			const itemsArgs = {
-				submission,
-				selectedPublication,
-				selectedPublicationId,
-				selectedStageId: selectedMenuState.stageId,
-				selectedReviewRound,
-				permissions,
-			};
-			if (!submission) {
-				return [];
-			}
-
-			if (!permissions.accessibleStages.includes(selectedMenuState.stageId)) {
-				if (getterFnName === 'getPrimaryItems') {
-					return [
-						{
-							component: 'PrimaryBasicMetadata',
-							props: {
-								body: t('user.authorization.accessibleWorkflowStage'),
-							},
-						},
-					];
-				} else {
-					return [];
-				}
-			}
-
-			return [
-				...(WorkflowConfig?.common?.[getterFnName]?.(itemsArgs) || []),
-				...(WorkflowConfig[selectedMenuState.stageId]?.[getterFnName]?.(
-					itemsArgs,
-				) || []),
-			];
-		} else if (selectedMenuState.publicationMenu) {
-			const itemsArgs = {
-				submission,
-				pageInitConfig: pageInitConfig,
-				selectedPublication,
-				selectedPublicationId,
-				permissions,
-			};
-			if (!submission || !selectedPublication) {
-				return [];
-			}
-
-			return [
-				...(PublicationConfig?.common?.[getterFnName]?.(itemsArgs) || []),
-				...(PublicationConfig[selectedMenuState.publicationMenu]?.[
-					getterFnName
-				]?.(itemsArgs) || []),
-			];
-		}
-	}
-
-	function getPrimaryItems(args) {
-		return _getItems('getPrimaryItems', args);
-	}
-
-	function getSecondaryItems(args) {
-		return _getItems('getSecondaryItems', args);
-	}
-
-	function getActionItems(args) {
-		return _getItems('getActionItems', args);
-	}
-
-	function getPublicationControlsLeft(args) {
-		return _getItems('getPublicationControlsLeft', args);
-	}
-
-	function getPublicationControlsRight(args) {
-		return _getItems('getPublicationControlsRight', args);
-	}
-
-	return {
-		getHeaderItems,
-		getPrimaryItems,
-		getSecondaryItems,
-		getActionItems,
-		getPublicationControlsLeft,
-		getPublicationControlsRight,
-	};
-}

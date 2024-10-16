@@ -1,6 +1,7 @@
 <script type="text/javascript">
 import Container from '@/components/Container/Container.vue';
 import ModalManager from '@/components/Modal/ModalManager.vue';
+import DashboardPage from '@/pages/dashboard/DashboardPage.vue';
 
 import PkpAnnouncer from '@/components/Announcer/Announcer.vue';
 import ReviewerSubmissionPage from '@/pages/reviewerSubmission/ReviewerSubmissionPage.vue';
@@ -19,6 +20,7 @@ export default {
 		FailedJobsPage,
 		FailedJobDetailsPage,
 		CounterReportsPage,
+		DashboardPage,
 	},
 	extends: Container,
 	data() {
