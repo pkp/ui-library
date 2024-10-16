@@ -26,6 +26,9 @@ export const Actions = {
 	WORKFLOW_UNPUBLISH_PUBLICATION: 'workflowUnpublishPublication',
 	WORKFLOW_CREATE_NEW_VERSION: 'workflowCreateNewVersion',
 	WORKFLOW_CHANGE_SUBMISSION_LANGUAGE: 'workflowChangeSubmissionLanguage',
+
+	// OMP
+	WORKFLOW_CHANGE_WORKTYPE: 'workflowChangeWorktype',
 };
 
 export function useWorkflowActions({
@@ -308,6 +311,20 @@ export function useWorkflowActions({
 		});
 	}
 
+	async function workflowChangeWorktype(
+		{submission, workType},
+		finishedCallback,
+	) {
+		const {apiUrl} = useUrl(`submissions/${submission.id}`);
+
+		console.log('workType:', workType);
+		const {fetch} = useFetch(apiUrl, {method: 'PUT', body: {workType}});
+
+		await fetch();
+
+		finishedCallback();
+	}
+
 	return {
 		workflowViewPublishedSubmission,
 		workflowAssignToIssue,
@@ -322,5 +339,6 @@ export function useWorkflowActions({
 		workflowCreateNewVersion,
 		workflowPreviewPublication,
 		workflowChangeSubmissionLanguage,
+		workflowChangeWorktype,
 	};
 }

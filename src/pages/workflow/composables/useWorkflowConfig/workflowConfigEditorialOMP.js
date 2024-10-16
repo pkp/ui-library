@@ -1,14 +1,12 @@
 import {useLocalize} from '@/composables/useLocalize';
-import {Actions} from './useWorkflowActions';
+import {Actions} from '../useWorkflowActions';
 import {useSubmission} from '@/composables/useSubmission';
-import {Actions as WorkflowActions} from './useWorkflowActions';
-import {Actions as DecisionActions} from './useWorkflowDecisions';
+import {Actions as DecisionActions} from '../useWorkflowDecisions';
 
 const {hasSubmissionPassedStage, hasNotSubmissionStartedStage, getStageById} =
 	useSubmission();
 const {t} = useLocalize();
-
-function getHeaderItems({
+export function getHeaderItems({
 	submission,
 	selectedPublication,
 	publicationSettings,
@@ -18,17 +16,17 @@ function getHeaderItems({
 		return [];
 	}
 	const {t} = useLocalize();
-	const actions = [];
+	const items = [];
 
-	if (publicationSettings.submissionPaymentsEnabled) {
-		actions.push({
-			component: 'WorkflowPaymentDropdown',
-			props: {submission, selectedPublication},
-		});
-	}
+	items.push({
+		component: 'WorkflowWorkTypeOMP',
+		props: {
+			submission: submission,
+		},
+	});
 
 	if (submission.status === pkp.const.STATUS_PUBLISHED) {
-		actions.push({
+		items.push({
 			component: 'WorkflowActionButton',
 			props: {
 				label: t('common.view'),
@@ -38,7 +36,7 @@ function getHeaderItems({
 	}
 
 	if (permissions.canAccessEditorialHistory) {
-		actions.push({
+		items.push({
 			component: 'WorkflowActionButton',
 			props: {
 				label: t('editor.activityLog'),
@@ -46,7 +44,7 @@ function getHeaderItems({
 			},
 		});
 	}
-	actions.push({
+	items.push({
 		component: 'WorkflowActionButton',
 		props: {
 			label: t('editor.submissionLibrary'),
@@ -54,23 +52,10 @@ function getHeaderItems({
 		},
 	});
 
-	return actions;
+	return items;
 }
 
 export const WorkflowConfig = {
-	common: {
-		getPrimaryItems: ({submission, permissions}) => {
-			return [
-				{
-					component: 'WorkflowChangeSubmissionLanguage',
-					props: {
-						submission,
-						canChangeSubmissionLanguage: false,
-					},
-				},
-			];
-		},
-	},
 	[pkp.const.WORKFLOW_STAGE_ID_SUBMISSION]: {
 		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
@@ -129,7 +114,7 @@ export const WorkflowConfig = {
 				props: {
 					label: t('editor.submission.decision.sendExternalReview'),
 					isPrimary: true,
-					action: DecisionActions.DECISION_EXTERNAL_REVIEW,
+					action: DecisionActions.DECISION_SKIP_EXTERNAL_REVIEW,
 				},
 			});
 
@@ -150,11 +135,20 @@ export const WorkflowConfig = {
 					action: DecisionActions.DECISION_INITIAL_DECLINE,
 				},
 			});
+
+			items.push({
+				component: 'WorkflowActionButton',
+				props: {
+					label: t('editor.submission.decision.sendInternalReview'),
+					isSecondary: true,
+					action: DecisionActions.DECISION_INTERNAL_REVIEW,
+				},
+			});
+
 			return items;
 		},
 	},
-
-	[pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW]: {
+	[pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW]: {
 		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
 			if (!selectedReviewRound) {
@@ -267,11 +261,11 @@ export const WorkflowConfig = {
 			if (
 				hasNotSubmissionStartedStage(
 					submission,
-					pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+					pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW,
 				) ||
 				hasSubmissionPassedStage(
 					submission,
-					pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+					pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW,
 				) ||
 				selectedReviewRound.round < currentReviewRound.round
 			) {
@@ -287,13 +281,13 @@ export const WorkflowConfig = {
 					props: {
 						submission: submission,
 						userId: pkp.currentUser.id,
-						stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+						stageId: pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW,
 						reviewRoundId: selectedReviewRound.id,
 					},
 				});
 			} else {
 				const actionArgs = {
-					stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+					stageId: pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW,
 					reviewRoundId: selectedReviewRound.id,
 				};
 
@@ -302,7 +296,7 @@ export const WorkflowConfig = {
 					props: {
 						label: t('dashboard.summary.requestRevisions'),
 						isSecondary: true,
-						action: WorkflowActions.WORKFLOW_REQUEST_REVISION,
+						action: DecisionActions.DECISION_PENDING_REVISIONS_INTERNAL,
 						actionArgs,
 					},
 				});
@@ -310,8 +304,8 @@ export const WorkflowConfig = {
 				items.push({
 					component: 'WorkflowActionButton',
 					props: {
-						label: t('editor.submission.decision.accept'),
-						action: DecisionActions.DECISION_ACCEPT,
+						label: t('editor.submission.decision.sendExternalReview'),
+						action: DecisionActions.DECISION_EXTERNAL_REVIEW,
 						isPrimary: true,
 						actionArgs,
 					},
@@ -320,8 +314,8 @@ export const WorkflowConfig = {
 				items.push({
 					component: 'WorkflowActionButton',
 					props: {
-						label: t('editor.submission.createNewRound'),
-						action: DecisionActions.DECISION_NEW_EXTERNAL_ROUND,
+						label: t('editor.submission.decision.accept'),
+						action: DecisionActions.DECISION_ACCEPT_INTERNAL,
 						actionArgs,
 					},
 				});
@@ -331,7 +325,8 @@ export const WorkflowConfig = {
 					props: {
 						label: t('editor.submission.decision.cancelReviewRound'),
 						isWarnable: true,
-						action: DecisionActions.DECISION_CANCEL_REVIEW_ROUND,
+						action: DecisionActions.DECISION_CANCEL_INTERNAL_REVIEW_ROUND,
+						actionArgs,
 					},
 				});
 
@@ -340,194 +335,53 @@ export const WorkflowConfig = {
 					props: {
 						label: t('editor.submission.decision.decline'),
 						isWarnable: true,
-						action: DecisionActions.DECISION_DECLINE_SUBMISSION,
+						action: DecisionActions.DECISION_DECLINE_INTERNAL,
+						actionArgs,
 					},
 				});
 			}
 			return items;
 		},
 	},
-	[pkp.const.WORKFLOW_STAGE_ID_EDITING]: {
-		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
-			const items = [];
+};
 
-			if (
-				hasSubmissionPassedStage(
-					submission,
-					pkp.const.WORKFLOW_STAGE_ID_EDITING,
-				)
-			) {
-				items.push({
-					component: 'WorkflowPrimaryBasicMetadata',
+export const MarketingConfig = {
+	audience: {
+		getPrimaryItems: ({submission, pageInitConfig, permissions}) => {
+			return [
+				{
+					component: 'WorkflowMarketingForm',
 					props: {
-						body: t('editor.submission.workflowDecision.submission.production'),
+						formName: 'audience',
+						submission,
 					},
-				});
-			}
-
-			items.push({
-				component: 'FileManager',
-				props: {
-					namespace: 'FINAL_DRAFT_FILES',
-					submission: submission,
-					submissionStageId: selectedStageId,
 				},
-			});
-
-			items.push({
-				component: 'DiscussionManager',
-				props: {
-					submissionId: submission.id,
-					stageId: selectedStageId,
-				},
-			});
-
-			items.push({
-				component: 'FileManager',
-				props: {
-					namespace: 'COPYEDITED_FILES',
-					submission: submission,
-					submissionStageId: selectedStageId,
-				},
-			});
-
-			return items;
-		},
-		getSecondaryItems: ({submission, selectedReviewRound, selectedStageId}) => {
-			const items = [];
-			items.push({
-				component: 'ParticipantManager',
-				props: {
-					submission,
-					submissionStageId: selectedStageId,
-				},
-			});
-
-			return items;
-		},
-
-		getActionItems: ({submission, selectedStageId, selectedReviewRound}) => {
-			const items = [];
-			if (
-				hasNotSubmissionStartedStage(
-					submission,
-					pkp.const.WORKFLOW_STAGE_ID_EDITING,
-				) ||
-				hasSubmissionPassedStage(
-					submission,
-					pkp.const.WORKFLOW_STAGE_ID_EDITING,
-				)
-			) {
-				return [];
-			}
-
-			items.push({
-				component: 'WorkflowActionButton',
-				props: {
-					label: t('editor.submission.decision.sendToProduction'),
-					isPrimary: true,
-					action: DecisionActions.DECISION_SEND_TO_PRODUCTION,
-				},
-			});
-
-			items.push({
-				component: 'WorkflowActionButton',
-				props: {
-					label: t('editor.submission.decision.backFromCopyediting'),
-					isWarnable: true,
-					action: DecisionActions.DECISION_BACK_FROM_COPYEDITING,
-				},
-			});
-
-			return items;
+			];
 		},
 	},
-	[pkp.const.WORKFLOW_STAGE_ID_PRODUCTION]: {
-		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
-			const items = [];
-			if (submission.status === pkp.const.STATUS_PUBLISHED) {
-				items.push({
-					component: 'WorkflowPrimaryBasicMetadata',
+	representatives: {
+		getPrimaryItems: ({submission, pageInitConfig, permissions}) => {
+			return [
+				{
+					component: 'RepresentativeManager',
 					props: {
-						body: t('editor.submission.workflowDecision.submission.published'),
+						submissionId: submission.id,
 					},
-				});
-			}
-
-			items.push({
-				component: 'WorkflowNotificationDisplay',
-				props: {submission: submission},
-			});
-
-			items.push({
-				component: 'FileManager',
-				props: {
-					namespace: 'PRODUCTION_READY_FILES',
-					submission: submission,
-					submissionStageId: selectedStageId,
 				},
-			});
-
-			items.push({
-				component: 'DiscussionManager',
-				props: {
-					submissionId: submission.id,
-					stageId: selectedStageId,
-				},
-			});
-
-			return items;
+			];
 		},
-		getSecondaryItems: ({submission, selectedReviewRound, selectedStageId}) => {
-			const items = [];
-			items.push({
-				component: 'ParticipantManager',
-				props: {
-					submission,
-					submissionStageId: selectedStageId,
-				},
-			});
-
-			return items;
-		},
-
-		getActionItems: ({submission, selectedStageId, selectedReviewRound}) => {
-			const items = [];
-			if (
-				hasNotSubmissionStartedStage(
-					submission,
-					pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-				) ||
-				hasSubmissionPassedStage(
-					submission,
-					pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-				)
-			) {
-				return [];
-			}
-
-			items.push({
-				component: 'WorkflowActionButton',
-				props: {
-					label: t('editor.submission.schedulePublication'),
-					isPrimary: true,
-					action: 'navigateToMenu',
-					actionArgs: {key: 'publication_titleAbstract'},
-				},
-			});
-
-			if (submission.status === pkp.const.STATUS_QUEUED) {
-				items.push({
-					component: 'WorkflowActionButton',
+	},
+	publicationDates: {
+		getPrimaryItems: ({submission, pageInitConfig, permissions}) => {
+			return [
+				{
+					component: 'WorkflowMarketingForm',
 					props: {
-						label: t('editor.submission.decision.backToCopyediting'),
-						isWarnable: true,
-						action: DecisionActions.DECISION_BACK_FROM_PRODUCTION,
+						formName: 'publicationDates',
+						submission,
 					},
-				});
-			}
-
-			return items;
+				},
+			];
 		},
 	},
 };
@@ -683,7 +537,7 @@ export const PublicationConfig = {
 						formName: 'titleAbstract',
 						submission,
 						publication: selectedPublication,
-						canEditPublication: permissions.canEditPublication,
+						canEdit: permissions.canEditPublication,
 					},
 				},
 			];
@@ -709,6 +563,25 @@ export const PublicationConfig = {
 			];
 		},
 	},
+	chapters: {
+		getPrimaryItems: ({
+			submission,
+			selectedPublication,
+			pageInitConfig,
+			permissions,
+		}) => {
+			return [
+				{
+					component: 'ChapterManager',
+					props: {
+						submissionId: submission.id,
+						publicationId: selectedPublication.id,
+					},
+				},
+			];
+		},
+	},
+
 	metadata: {
 		getPrimaryItems: ({
 			submission,
@@ -724,12 +597,13 @@ export const PublicationConfig = {
 						submission,
 						publication: selectedPublication,
 						noFieldsMessage: 'No metadata fields are currently enabled.',
-						canEditPublication: permissions.canEditPublication,
+						canEdit: permissions.canEditPublication,
 					},
 				},
 			];
 		},
 	},
+
 	citations: {
 		getPrimaryItems: ({
 			submission,
@@ -744,7 +618,7 @@ export const PublicationConfig = {
 						formName: 'reference',
 						submission,
 						publication: selectedPublication,
-						canEditPublication: permissions.canEditPublication,
+						canEdit: permissions.canEditPublication,
 					},
 				},
 			];
@@ -764,13 +638,13 @@ export const PublicationConfig = {
 						formName: 'identifier',
 						submission,
 						publication: selectedPublication,
-						canEditPublication: permissions.canEditPublication,
+						canEdit: permissions.canEditPublication,
 					},
 				},
 			];
 		},
 	},
-	jats: {
+	publicationFormats: {
 		getPrimaryItems: ({
 			submission,
 			selectedPublication,
@@ -779,30 +653,37 @@ export const PublicationConfig = {
 		}) => {
 			return [
 				{
-					component: 'WorkflowPublicationJats',
+					component: 'PublicationFormatManager',
 					props: {
-						canEditPublication: permissions.canEditPublication,
-						submission,
-						publication: selectedPublication,
+						submissionId: submission.id,
+						publicationId: selectedPublication.id,
 					},
 				},
 			];
 		},
 	},
-	galleys: {
-		getPrimaryItems: ({submission, selectedPublication, permissions}) => {
+
+	catalogEntry: {
+		getPrimaryItems: ({
+			submission,
+			selectedPublication,
+			pageInitConfig,
+			permissions,
+		}) => {
 			return [
 				{
-					component: 'GalleyManager',
+					component: 'WorkflowPublicationForm',
 					props: {
+						formName: 'catalogEntry',
 						submission,
 						publication: selectedPublication,
-						canEditPublication: permissions.canEditPublication,
+						canEdit: permissions.canEditPublication,
 					},
 				},
 			];
 		},
 	},
+
 	license: {
 		getPrimaryItems: ({
 			submission,
@@ -817,126 +698,10 @@ export const PublicationConfig = {
 						formName: 'permissionDisclosure',
 						submission,
 						publication: selectedPublication,
-						canEditPublication: permissions.canEditPublication,
-					},
-				},
-			];
-		},
-	},
-	issue: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublication,
-			pageInitConfig,
-			permissions,
-		}) => {
-			return [
-				{
-					component: 'WorkflowPublicationForm',
-					props: {
-						formName: 'issue',
-						submission,
-						publication: selectedPublication,
-						canEditPublication: permissions.canEditPublication,
+						canEdit: permissions.canEditPublication,
 					},
 				},
 			];
 		},
 	},
 };
-
-export function useWorkflowEditorialConfig() {
-	function _getItems(
-		getterFnName,
-		{
-			selectedMenuState,
-			submission,
-			pageInitConfig,
-			selectedPublication,
-			selectedPublicationId,
-			selectedReviewRound,
-			permissions,
-		},
-	) {
-		if (selectedMenuState.stageId) {
-			const itemsArgs = {
-				submission,
-				selectedPublication,
-				selectedPublicationId,
-				selectedStageId: selectedMenuState.stageId,
-				selectedReviewRound,
-				permissions,
-			};
-			if (!submission) {
-				return [];
-			}
-
-			if (!permissions.accessibleStages.includes(selectedMenuState.stageId)) {
-				if (getterFnName === 'getPrimaryItems') {
-					return [
-						{
-							component: 'PrimaryBasicMetadata',
-							props: {body: t('user.authorization.accessibleWorkflowStage')},
-						},
-					];
-				} else {
-					return [];
-				}
-			}
-
-			return [
-				...(WorkflowConfig?.common?.[getterFnName]?.(itemsArgs) || []),
-				...(WorkflowConfig[selectedMenuState.stageId]?.[getterFnName]?.(
-					itemsArgs,
-				) || []),
-			];
-		} else if (selectedMenuState.publicationMenu) {
-			const itemsArgs = {
-				submission,
-				pageInitConfig: pageInitConfig,
-				selectedPublication,
-				selectedPublicationId,
-				permissions,
-			};
-			if (!submission || !selectedPublication) {
-				return [];
-			}
-
-			return [
-				...(PublicationConfig?.common?.[getterFnName]?.(itemsArgs) || []),
-				...(PublicationConfig[selectedMenuState.publicationMenu]?.[
-					getterFnName
-				]?.(itemsArgs) || []),
-			];
-		}
-	}
-
-	function getPrimaryItems(args) {
-		return _getItems('getPrimaryItems', args);
-	}
-
-	function getSecondaryItems(args) {
-		return _getItems('getSecondaryItems', args);
-	}
-
-	function getActionItems(args) {
-		return _getItems('getActionItems', args);
-	}
-
-	function getPublicationControlsLeft(args) {
-		return _getItems('getPublicationControlsLeft', args);
-	}
-
-	function getPublicationControlsRight(args) {
-		return _getItems('getPublicationControlsRight', args);
-	}
-
-	return {
-		getHeaderItems,
-		getPrimaryItems,
-		getSecondaryItems,
-		getActionItems,
-		getPublicationControlsLeft,
-		getPublicationControlsRight,
-	};
-}

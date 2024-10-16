@@ -14,6 +14,23 @@ export const Actions = {
 	DECISION_BACK_FROM_PRODUCTION: 'decisionBackFromProduction',
 	DECISION_RECOMMEND_ACCEPT: 'decisionRecommendAccept',
 	DECISION_RECOMMEND_DECLINE: 'decisionRecommendDecline',
+
+	// OMP SPECIFIC
+	DECISION_INTERNAL_REVIEW: 'decisionInternalReview',
+	DECISION_RECOMMEND_EXTERNAL_REVIEW: 'decisionRecommendExternalReview',
+	DECISION_SKIP_INTERNAL_REVIEW: 'decisionSkipInternalReview',
+	DECISION_ACCEPT_INTERNAL: 'decisionAcceptInternal',
+	DECISION_PENDING_REVISIONS_INTERNAL: 'decisionPendingRevisionsInternal',
+	DECISION_RESUBMIT_INTERNAL: 'decisionResubmitInternal',
+	DECISION_DECLINE_INTERNAL: 'decisionDeclineInternal',
+	DECISION_RECOMMEND_ACCEPT_INTERNAL: 'decisionRecommendAcceptInternal',
+	DECISION_RECOMMEND_PENDING_REVISIONS_INTERNAL:
+		'decisionRecommendPendingRevisionsInternal',
+	DECISION_RECOMMEND_RESUBMIT_INTERNAL: 'decisionRecommendResubmitInternal',
+	DECISION_RECOMMEND_DECLINE_INTERNAL: 'decisionRecommendDeclineInternal',
+	DECISION_REVERT_INTERNAL_DECLINE: 'decisionRevertInternalDecline',
+	DECISION_NEW_INTERNAL_ROUND: 'decisionNewInternalRound',
+	DECISION_CANCEL_INTERNAL_REVIEW_ROUND: 'decisionCancelInternalReviewRound',
 };
 
 function openDecisionPage(submission, decisionId, actionArgs = {}) {
@@ -58,8 +75,10 @@ export function useWorkflowDecisions() {
 		});
 	}
 
-	function decisionExternalReview({submission}) {
-		openDecisionPage(submission, pkp.const.DECISION_EXTERNAL_REVIEW);
+	function decisionExternalReview({submission, reviewRoundId}) {
+		openDecisionPage(submission, pkp.const.DECISION_EXTERNAL_REVIEW, {
+			reviewRoundId,
+		});
 	}
 
 	function decisionSkipExternalReview({submission}) {
@@ -100,6 +119,111 @@ export function useWorkflowDecisions() {
 		});
 	}
 
+	// OMP Specific
+
+	function decisionInternalReview({submission}) {
+		openDecisionPage(submission, pkp.const.DECISION_INTERNAL_REVIEW);
+	}
+
+	function decisionRecommendExternalReview({submission, reviewRoundId}) {
+		openDecisionPage(submission, pkp.const.DECISION_RECOMMEND_EXTERNAL_REVIEW, {
+			reviewRoundId,
+		});
+	}
+
+	function decisionSkipInternalReview({submission}) {
+		openDecisionPage(submission, pkp.const.DECISION_SKIP_INTERNAL_REVIEW);
+	}
+
+	function decisionAcceptInternal({submission, reviewRoundId}) {
+		openDecisionPage(submission, pkp.const.DECISION_ACCEPT_INTERNAL, {
+			reviewRoundId,
+		});
+	}
+
+	function decisionPendingRevisionsInternal({submission, reviewRoundId}) {
+		openDecisionPage(
+			submission,
+			pkp.const.DECISION_PENDING_REVISIONS_INTERNAL,
+			{
+				reviewRoundId,
+			},
+		);
+	}
+
+	function decisionResubmitInternal({submission, reviewRoundId}) {
+		openDecisionPage(submission, pkp.const.DECISION_RESUBMIT_INTERNAL, {
+			reviewRoundId,
+		});
+	}
+
+	function decisionDeclineInternal({submission, reviewRoundId}) {
+		openDecisionPage(submission, pkp.const.DECISION_DECLINE_INTERNAL, {
+			reviewRoundId,
+		});
+	}
+
+	function decisionRecommendAcceptInternal({submission, reviewRoundId}) {
+		openDecisionPage(submission, pkp.const.DECISION_RECOMMEND_ACCEPT_INTERNAL, {
+			reviewRoundId,
+		});
+	}
+
+	function decisionRecommendPendingRevisionsInternal({
+		submission,
+		reviewRoundId,
+	}) {
+		openDecisionPage(
+			submission,
+			pkp.const.DECISION_RECOMMEND_PENDING_REVISIONS_INTERNAL,
+			{
+				reviewRoundId,
+			},
+		);
+	}
+
+	function decisionRecommendResubmitInternal({submission, reviewRoundId}) {
+		openDecisionPage(
+			submission,
+			pkp.const.DECISION_RECOMMEND_RESUBMIT_INTERNAL,
+			{
+				reviewRoundId,
+			},
+		);
+	}
+
+	function decisionRecommendDeclineInternal({submission, reviewRoundId}) {
+		openDecisionPage(
+			submission,
+			pkp.const.DECISION_RECOMMEND_DECLINE_INTERNAL,
+			{
+				reviewRoundId,
+			},
+		);
+	}
+
+	function decisionRevertInternalDecline({submission, reviewRoundId}) {
+		openDecisionPage(submission, pkp.const.DECISION_REVERT_INTERNAL_DECLINE, {
+			reviewRoundId,
+		});
+	}
+
+	function decisionNewInternalRound({submission, reviewRoundId}) {
+		openDecisionPage(submission, pkp.const.DECISION_NEW_INTERNAL_ROUND, {
+			reviewRoundId,
+		});
+	}
+
+	function decisionCancelInternalReviewRound({submission, reviewRoundId}) {
+		openDecisionPage(
+			submission,
+			pkp.const.DECISION_CANCEL_INTERNAL_REVIEW_ROUND,
+			{
+				reviewRoundId,
+			},
+		);
+	}
+
 	return {
 		openDecisionPage,
 		decisionAccept,
@@ -114,5 +238,20 @@ export function useWorkflowDecisions() {
 		decisionBackFromProduction,
 		decisionRecommendAccept,
 		decisionRecommendDecline,
+		// OMP
+		decisionInternalReview,
+		decisionRecommendExternalReview,
+		decisionSkipInternalReview,
+		decisionAcceptInternal,
+		decisionPendingRevisionsInternal,
+		decisionResubmitInternal,
+		decisionDeclineInternal,
+		decisionRecommendAcceptInternal,
+		decisionRecommendPendingRevisionsInternal,
+		decisionRecommendResubmitInternal,
+		decisionRecommendDeclineInternal,
+		decisionRevertInternalDecline,
+		decisionNewInternalRound,
+		decisionCancelInternalReviewRound,
 	};
 }
