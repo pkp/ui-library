@@ -1,9 +1,11 @@
 <template>
-	<GridWrapper
-		:key="`${submissionId} - ${publicationId}`"
-		grid-component="grid.catalogEntry.PublicationFormatGridHandler"
-		:params="params"
-	></GridWrapper>
+	<div data-cy="publication-format-manager">
+		<GridWrapper
+			:key="`${submissionId} - ${publicationId}`"
+			grid-component="grid.catalogEntry.PublicationFormatGridHandler"
+			:params="params"
+		></GridWrapper>
+	</div>
 </template>
 <script setup>
 import GridWrapper from '@/components/GridWrapper/GridWrapper.vue';

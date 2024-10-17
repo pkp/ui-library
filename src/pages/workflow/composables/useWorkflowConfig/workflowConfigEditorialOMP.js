@@ -114,7 +114,7 @@ export const WorkflowConfig = {
 				props: {
 					label: t('editor.submission.decision.sendExternalReview'),
 					isPrimary: true,
-					action: DecisionActions.DECISION_SKIP_EXTERNAL_REVIEW,
+					action: DecisionActions.DECISION_SKIP_INTERNAL_REVIEW,
 				},
 			});
 
@@ -233,7 +233,7 @@ export const WorkflowConfig = {
 					component: 'WorkflowRecommendOnlyListingRecommendations',
 					props: {
 						submission: submission,
-						stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+						stageId: pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW,
 						reviewRoundId: selectedReviewRound.id,
 					},
 				});
@@ -468,10 +468,7 @@ export const PublicationConfig = {
 					props: {
 						// 	{{ submission.status === getConstant('STATUS_PUBLISHED') ? publishLabel : schedulePublicationLabel }}
 
-						label:
-							submission.status === pkp.const.STATUS_PUBLISHED
-								? t('publication.publish')
-								: t('editor.submission.schedulePublication'),
+						label: t('publication.publish'),
 						isSecondary: true,
 						action:
 							Actions.WORKFLOW_ASSIGN_TO_ISSUE_AND_SCHEDULE_FOR_PUBLICATION,
