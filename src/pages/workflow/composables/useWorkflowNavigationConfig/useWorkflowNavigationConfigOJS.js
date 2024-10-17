@@ -268,6 +268,10 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 	}
 
 	function getMenuItems({submission, permissions}) {
+		if (!submission) {
+			return [];
+		}
+
 		const menuItems = [
 			{
 				key: 'workflow',

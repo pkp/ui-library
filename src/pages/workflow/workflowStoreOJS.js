@@ -15,8 +15,8 @@ import {useDataChangedProvider} from '@/composables/useDataChangedProvider';
 
 import {wrapActionFns} from '@/utils/wrapActionFns';
 
-import {useWorkflowConfigOMP as useWorkflowConfig} from './composables/useWorkflowConfig/useWorkflowConfigOMP';
-import {useWorkflowNavigationConfigOMP as useWorkflowNavigationConfig} from './composables/useWorkflowNavigationConfig/useWorkflowNavigationConfigOMP';
+import {useWorkflowConfigOJS as useWorkflowConfig} from './composables/useWorkflowConfig/useWorkflowConfigOJS';
+import {useWorkflowNavigationConfigOJS as useWorkflowNavigationConfig} from './composables/useWorkflowNavigationConfig/useWorkflowNavigationConfigOJS';
 
 import {useWorkflowDataSubmissionPublication} from './composables/useWorkflowDataSubmissionPublication';
 import {useWorkflowPermissions} from './composables/useWorkflowPermissions';
@@ -30,16 +30,13 @@ import DiscussionManager from '@/managers/DiscussionManager/DiscussionManager.vu
 import ContributorManager from '@/managers/ContributorManager/ContributorManager.vue';
 import ParticipantManager from '@/managers/ParticipantManager/ParticipantManager.vue';
 import GalleyManager from '@/managers/GalleyManager/GalleyManager.vue';
-import ChapterManager from '@/managers/ChapterManager/ChapterManager.vue';
-import PublicationFormatManager from '@/managers/PublicationFormatManager/PublicationFormatManager.vue';
-import RepresentativeManager from '@/managers/RepresentativeManager/RepresentativeManager.vue';
-import WorkflowMarketingForm from './components/publication/WorkflowMarketingForm.vue';
-import WorkflowWorkTypeOMP from './components/header/WorkflowWorkTypeOMP.vue';
 import WorkflowActionButton from './components/action/WorkflowActionButton.vue';
 import WorkflowRecommendOnlyControls from './components/action/WorkflowRecommendOnlyControls.vue';
 import WorkflowRecommendOnlyListingRecommendations from './components/secondary/WorkflowRecommendOnlyListingRecommendations.vue';
 import WorkflowNotificationDisplay from './components/primary/WorkflowNotificationDisplay.vue';
+import WorkflowPaymentDropdown from './components/header/WorkflowPaymentDropdown.vue';
 import WorkflowPublicationForm from './components/publication/WorkflowPublicationForm.vue';
+import WorkflowPublicationJats from './components/publication/WorkflowPublicationJats.vue';
 import WorkflowPublicationVersionControl from './components/publication/WorkflowPublicationVersionControl.vue';
 import WorkflowChangeSubmissionLanguage from './components/publication/WorkflowChangeSubmissionLanguage.vue';
 import WorkflowPrimaryBasicMetadata from './components/primary/WorkflowPrimaryBasicMetadata.vue';
@@ -117,7 +114,6 @@ export const useWorkflowStore = defineComponentStore('workflow', (props) => {
 		'publication',
 		'marketing',
 		`workflow_${pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW}`,
-		`workflow_${pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW}`,
 	]);
 
 	/** When submission is loaded initially - select relevant menu */
@@ -197,6 +193,7 @@ export const useWorkflowStore = defineComponentStore('workflow', (props) => {
 		selectedPublicationId: selectedPublicationId.value,
 		selectedReviewRound: selectedReviewRound.value,
 		permissions: permissions.value,
+		publicationSettings: props.pageInitConfig.publicationSettings,
 	}));
 
 	const Components = markRaw({
@@ -206,22 +203,19 @@ export const useWorkflowStore = defineComponentStore('workflow', (props) => {
 		ContributorManager,
 		ParticipantManager,
 		GalleyManager,
-		ChapterManager,
-		RepresentativeManager,
-		PublicationFormatManager,
 		WorkflowActionButton,
 		WorkflowRecommendOnlyControls,
 		WorkflowRecommendOnlyListingRecommendations,
 		WorkflowNotificationDisplay,
+		WorkflowPaymentDropdown,
 		WorkflowPrimaryBasicMetadata,
 		WorkflowReviewRoundStatus,
 		WorkflowPublicationForm,
+		WorkflowPublicationJats,
 		WorkflowPublicationVersionControl,
 		WorkflowChangeSubmissionLanguage,
 		WorkflowSubmissionStatus,
 		WorkflowPublicationEditDisabled,
-		WorkflowMarketingForm,
-		WorkflowWorkTypeOMP,
 	});
 
 	const store = {

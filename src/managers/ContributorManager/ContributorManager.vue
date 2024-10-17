@@ -13,7 +13,7 @@ const props = defineProps({
 	submission: {type: Object, required: true},
 	publication: {type: Object, required: true},
 	contributorForm: {type: Object, required: true},
-	canEditPublication: {type: Boolean, required: true},
+	canEdit: {type: Boolean, required: true},
 });
 
 const contributorManagerStore = useContributorManagerStore(props);

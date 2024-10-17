@@ -106,7 +106,7 @@ export const useGalleyManagerStore = defineComponentStore(
 		const _galleyActionsFns = useGalleyManagerActions();
 		function getActionArgs() {
 			return {
-				canEditPublication: props.canEditPublication,
+				canEdit: props.canEdit,
 			};
 		}
 
