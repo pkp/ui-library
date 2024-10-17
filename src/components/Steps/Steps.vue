@@ -23,30 +23,34 @@
 					}"
 				>
 					<template v-if="startedSteps.includes(step.id)">
-						<button
-							:ref="'button' + step.id"
-							class="pkpSteps__step__label"
-							:class="
-								current === step.id
-									? 'pkpSteps__step__label--current'
-									: completedSteps.includes(step.id)
-										? 'pkpSteps__step__label--completed'
-										: ''
-							"
-							@click="setCurrent(step.id)"
-						>
-							<span class="pkpSteps__step__number">
-								<template
-									v-if="current !== step.id && completedSteps.includes(step.id)"
-								>
-									<Icon icon="check" />
-								</template>
-								<template v-else>
-									{{ i + 1 }}
-								</template>
-							</span>
-							{{ step.label }}
-						</button>
+						<span>
+							<button
+								:ref="'button' + step.id"
+								class="pkpSteps__step__label"
+								:class="
+									current === step.id
+										? 'pkpSteps__step__label--current'
+										: completedSteps.includes(step.id)
+											? 'pkpSteps__step__label--completed'
+											: ''
+								"
+								@click="setCurrent(step.id)"
+							>
+								<span class="pkpSteps__step__number">
+									<template
+										v-if="
+											current !== step.id && completedSteps.includes(step.id)
+										"
+									>
+										<Icon icon="check" />
+									</template>
+									<template v-else>
+										{{ i + 1 }}
+									</template>
+								</span>
+								{{ step.label }}
+							</button>
+						</span>
 					</template>
 					<template v-else>
 						<span :ref="'button' + step.id" class="pkpSteps__step__label">
@@ -217,14 +221,11 @@ export default {
 		 */
 		maybeToggleCollapsedView() {
 			const totalWidth = this.$refs.buttons.offsetWidth;
-			const allSteps = this.$refs.buttons.querySelectorAll('li');
+			const allSteps = this.$refs.buttons.querySelectorAll('li>span');
 			const allStepsWidth = Array.prototype.slice
 				.call(allSteps)
-				.reduce((totalWidth, li) => {
-					// if the steppers are collapsed, get the width of each stepper from the span element
-					const spanWidth = li.querySelector('span')?.offsetWidth || 0;
-					const offsetWidth = li.offsetWidth === 1 ? spanWidth : li.offsetWidth;
-					return totalWidth + offsetWidth;
+				.reduce((totalWidth, button) => {
+					return totalWidth + button.offsetWidth;
 				}, 0);
 			this.collapsed = allStepsWidth > totalWidth;
 		},
