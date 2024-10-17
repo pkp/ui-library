@@ -7,21 +7,44 @@
 			<TableColumn>
 				{{ t('userInvitation.roleTable.journalMasthead') }}
 			</TableColumn>
+			<TableColumn></TableColumn>
 		</TableHeader>
 		<TableBody>
-			<TableRow v-for="(row, index) in rows" :key="index">
+			<TableRow v-for="(row, index) in userGroupsToRemove" :key="index">
 				<TableCell :is-row-header="true">
-					{{ row.userGroupName }}
+					{{ localize(row.userGroupName) }}
 				</TableCell>
 				<TableCell>{{ row.dateStart }}</TableCell>
 				<TableCell>{{ row.dateEnd ? row.dateEnd : '---' }}</TableCell>
 				<TableCell>
 					{{
 						row.masthead
-							? 'Appear on the masthead'
-							: 'Dose not appear on the masthead'
+							? t('invitation.masthead.show')
+							: t('invitation.masthead.hidden')
 					}}
 				</TableCell>
+				<TableCell>
+					<div
+						class="rounded border-light bg-[#fbe7f1] px-2 py-2 text-center text-lg-semibold leading-5"
+					>
+						{{ t('invitation.removeRoles') }}
+					</div>
+				</TableCell>
+			</TableRow>
+			<TableRow v-for="(row, index) in userGroupsToAdd" :key="index">
+				<TableCell :is-row-header="true">
+					{{ localize(row.userGroupName) }}
+				</TableCell>
+				<TableCell>{{ row.dateStart }}</TableCell>
+				<TableCell>{{ row.dateEnd ? row.dateEnd : '---' }}</TableCell>
+				<TableCell>
+					{{
+						row.masthead
+							? t('invitation.masthead.show')
+							: t('invitation.masthead.hidden')
+					}}
+				</TableCell>
+				<TableCell></TableCell>
 			</TableRow>
 		</TableBody>
 	</PkpTable>
@@ -38,7 +61,14 @@ import TableRow from '@/components/Table/TableRow.vue';
 import {defineProps} from 'vue';
 
 defineProps({
-	rows: {type: Array, required: true},
+	userGroupsToAdd: {type: Array, required: true},
+	userGroupsToRemove: {
+		type: Array,
+		default() {
+			return null;
+		},
+		required: false,
+	},
 });
 const {t} = useTranslation();
 </script>

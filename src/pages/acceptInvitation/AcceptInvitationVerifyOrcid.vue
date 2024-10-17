@@ -27,6 +27,7 @@ const {t} = useTranslation();
  * Go to the next step
  */
 function skipOrcid() {
+	delete store.acceptinvitationPayload.userOrcid;
 	store.openStep(store.steps[1 + store.currentStepIndex].id);
 }
 
