@@ -179,11 +179,11 @@ export default {
 			id: 'verifyOrcid',
 			name: 'Verify ORCID iD',
 			reviewName: '',
-			stepName: '{$step} - Verify ORCID iD',
+			stepLabel: '{$step} - Verify ORCID iD',
 			type: 'popup',
 			description:
 				'You can choose to verify your ORCID iD ok skip it. If you chose to skip it now, You can verify your ORCID iD from your profile section in OJS later',
-			stepButtonName: 'Save And Continue',
+			nextButtonLabel: 'Save And Continue',
 			sections: [
 				{
 					id: 'userVerifyOrcid',
@@ -196,11 +196,11 @@ export default {
 			id: 'userCreate',
 			name: 'Create OJS account',
 			reviewName: 'Account details',
-			stepName: '{$step} - Create OJS account',
+			stepLabel: '{$step} - Create OJS account',
 			type: 'form',
 			description:
 				'To get started with OJS and accept the new role, you will need to create an account with us. For this purpose please enter a username and password.',
-			stepButtonName: 'Save And Continue',
+			nextButtonLabel: 'Save And Continue',
 			sections: [
 				{
 					id: 'userCreateForm',
@@ -216,11 +216,11 @@ export default {
 			id: 'userDetails',
 			name: 'Enter details',
 			reviewName: 'User Details',
-			stepName: '{$step} - Enter details',
+			stepLabel: '{$step} - Enter details',
 			type: 'form',
 			description:
 				'Enter your details like email ID, affiliation ect. As per the GDPR compliance, this information can only modified by you. You can also choose if you want this information to be visible on your profile to the editor. ',
-			stepButtonName: 'Accept And Continue to OJS',
+			nextButtonLabel: 'Accept And Continue to OJS',
 			sections: [
 				{
 					id: 'userCreateDetailsForm',
@@ -243,7 +243,10 @@ export default {
 									isMultilingual: false,
 									description:
 										'Also known as a forename or the first name, it is tha part of a personal name that identifies a preson',
-									value: null,
+									value: {
+										en: '',
+										fr_CA: '',
+									},
 									inputType: 'text',
 									optIntoEdit: false,
 									optIntoEditLabel: '',
@@ -259,7 +262,10 @@ export default {
 									isMultilingual: false,
 									description:
 										"A surname, family name, or last name is the mostly  hereditary portion of one's personal name that indicates one's family",
-									value: null,
+									value: {
+										en: '',
+										fr_CA: '',
+									},
 									inputType: 'text',
 									optIntoEdit: false,
 									optIntoEditLabel: '',
@@ -274,7 +280,10 @@ export default {
 									isRequired: true,
 									isMultilingual: false,
 									description: 'This is the institute you are affiliated with',
-									value: null,
+									value: {
+										en: '',
+										fr_CA: '',
+									},
 									inputType: 'text',
 									optIntoEdit: false,
 									optIntoEditLabel: '',
@@ -336,10 +345,10 @@ export default {
 			id: 'userCreateReview',
 			name: 'Review & create account',
 			reviewName: 'Roles',
-			stepName: '{$step} - Review & create account',
+			stepLabel: '{$step} - Review & create account',
 			type: 'review',
 			description: 'Review details to start your new roles in OJS',
-			stepButtonName: 'Accept And Continue to OJS',
+			nextButtonLabel: 'Accept And Continue to OJS',
 			sections: [
 				{
 					id: 'userCreateRoles',

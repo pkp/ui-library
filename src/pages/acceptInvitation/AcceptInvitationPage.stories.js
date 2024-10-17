@@ -35,31 +35,31 @@ export const NewUser = {
 						const postBody = await request.json();
 						let errors = {};
 
-						if (!Object.keys(postBody).includes('username')) {
+						if (!Object.keys(postBody.invitationData).includes('username')) {
 							errors['username'] = ['This field is required'];
 						}
-						if (!Object.keys(postBody).includes('password')) {
+						if (!Object.keys(postBody.invitationData).includes('password')) {
 							errors['password'] = ['This field is required'];
 						}
-						if (!Object.keys(postBody).includes('affiliation')) {
+						if (!Object.keys(postBody.invitationData).includes('affiliation')) {
 							errors['affiliation'] = ['This field is required'];
 						}
-						if (!Object.keys(postBody).includes('familyName')) {
+						if (!Object.keys(postBody.invitationData).includes('familyName')) {
 							errors['familyName'] = ['This field is required'];
 						}
-						if (!Object.keys(postBody).includes('country')) {
+						if (!Object.keys(postBody.invitationData).includes('userCountry')) {
 							errors['country'] = ['This field is required'];
 						}
-						Object.keys(postBody).forEach((element) => {
+						Object.keys(postBody.invitationData).forEach((element) => {
 							if (element !== 'orcid') {
-								if (postBody[element] === '') {
+								if (postBody.invitationData[element] === '') {
 									errors[element] = ['This field is required'];
 								}
 							}
 						});
 
 						if (Object.keys(errors).length > 0) {
-							return HttpResponse.json(errors, {status: 422});
+							return HttpResponse.json({errors: errors}, {status: 422});
 						}
 						return HttpResponse.json(postBody, {status: 200});
 					},
