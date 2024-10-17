@@ -124,10 +124,6 @@ export const useWorkflowStore = defineComponentStore('workflow', (props) => {
 	watch(submission, (newSubmission, oldSubmission) => {
 		// Once the submission is fetched, select relevant stage in navigaton
 		if (!oldSubmission && newSubmission) {
-			console.log(
-				'navigate to menu:',
-				getInitialSelectionItemKey(newSubmission),
-			);
 			navigateToMenu(getInitialSelectionItemKey(newSubmission));
 		}
 	});

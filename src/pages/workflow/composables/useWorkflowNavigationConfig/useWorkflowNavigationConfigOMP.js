@@ -51,9 +51,6 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 			title: t('workflow.review.externalReview'),
 		});
 
-		console.log('internal review items:', internalReviewItems);
-		console.log('external review items:', externalReviewItems);
-
 		const items = [];
 
 		items.push(
