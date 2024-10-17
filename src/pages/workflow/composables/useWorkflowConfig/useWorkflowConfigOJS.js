@@ -7,7 +7,7 @@ import * as ConfigEditorialShared from './workflowConfigEditorialOJS';
 import * as ConfigAuthorOJS from './workflowConfigAuthorOJS';
 import * as ConfigEditorialOJS from './workflowConfigEditorialOJS';
 
-export function useWorkflowConfigOMP({dashboardPage}) {
+export function useWorkflowConfigOJS({dashboardPage}) {
 	const {t} = useLocalize();
 
 	let Configs = null;
@@ -82,7 +82,7 @@ export function useWorkflowConfigOMP({dashboardPage}) {
 					itemsArgs,
 				) || []),
 			];
-		} else if (selectedMenuState.publicationMenu) {
+		} else if (selectedMenuState.primaryMenuItem === 'publication') {
 			const itemsArgs = {
 				submission,
 				pageInitConfig: pageInitConfig,
@@ -97,24 +97,7 @@ export function useWorkflowConfigOMP({dashboardPage}) {
 			return [
 				...(Configs.PublicationConfig?.common?.[getterFnName]?.(itemsArgs) ||
 					[]),
-				...(Configs.PublicationConfig[selectedMenuState.publicationMenu]?.[
-					getterFnName
-				]?.(itemsArgs) || []),
-			];
-		} else if (selectedMenuState.marketingMenu) {
-			const itemsArgs = {
-				submission,
-				pageInitConfig: pageInitConfig,
-				permissions,
-			};
-
-			if (!submission) {
-				return [];
-			}
-
-			return [
-				...(Configs.MarketingConfig?.common?.[getterFnName]?.(itemsArgs) || []),
-				...(Configs.MarketingConfig[selectedMenuState.marketingMenu]?.[
+				...(Configs.PublicationConfig[selectedMenuState.secondaryMenuItem]?.[
 					getterFnName
 				]?.(itemsArgs) || []),
 			];

@@ -12,10 +12,10 @@ export const Actions = {
 export function useGalleyManagerActions() {
 	const {t} = useLocalize();
 
-	function getBottomActions({canEditPublication}) {
+	function getBottomActions({canEdit}) {
 		const actions = [];
 
-		if (!canEditPublication) {
+		if (!canEdit) {
 			return [];
 		}
 
@@ -28,9 +28,9 @@ export function useGalleyManagerActions() {
 		return actions;
 	}
 
-	function getTopItems({canEditPublication}) {
+	function getTopItems({canEdit}) {
 		const actions = [];
-		if (!canEditPublication) {
+		if (!canEdit) {
 			return [];
 		}
 
@@ -39,10 +39,10 @@ export function useGalleyManagerActions() {
 		return actions;
 	}
 
-	function getItemActions({canEditPublication}) {
+	function getItemActions({canEdit}) {
 		const actions = [];
 
-		if (!canEditPublication) {
+		if (!canEdit) {
 			return [
 				{
 					label: t('common.view'),

@@ -19,7 +19,7 @@
 		<template v-if="submission" #post-description>
 			<StageBubble :extended-stage="workflowStore.extendedStage">
 				<span class="text-lg-normal">
-					{{ stageLabel }}
+					{{ workflowStore.stageLabel }}
 				</span>
 			</StageBubble>
 		</template>

@@ -311,13 +311,13 @@ export function useWorkflowActions({
 		});
 	}
 
+	// OMP - might be moved to separate file
 	async function workflowChangeWorktype(
 		{submission, workType},
 		finishedCallback,
 	) {
 		const {apiUrl} = useUrl(`submissions/${submission.id}`);
 
-		console.log('workType:', workType);
 		const {fetch} = useFetch(apiUrl, {method: 'PUT', body: {workType}});
 
 		await fetch();
@@ -339,6 +339,7 @@ export function useWorkflowActions({
 		workflowCreateNewVersion,
 		workflowPreviewPublication,
 		workflowChangeSubmissionLanguage,
+		// OMP
 		workflowChangeWorktype,
 	};
 }

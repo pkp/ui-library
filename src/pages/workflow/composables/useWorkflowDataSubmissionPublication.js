@@ -18,6 +18,15 @@ export function useWorkflowDataSubmissionPublication({submissionId}) {
 		if (selectedPublicationId.value !== publicationId) {
 			selectedPublicationId.value = publicationId;
 			selectedPublication.value = null;
+
+			const isPublicationInSubmission = submission.value?.publications?.find(
+				(publication) => publication.id === publicationId,
+			);
+
+			if (!isPublicationInSubmission) {
+				submission.value = null;
+				fetchSubmission();
+			}
 			fetchSelectedPublication();
 		}
 	}
