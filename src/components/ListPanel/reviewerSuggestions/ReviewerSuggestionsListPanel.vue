@@ -22,11 +22,14 @@
 				</template>
 
 				<template #item-title="{item}">
-					{{ localize(item.fullName) }} {{ item.email }}
+					{{ localize(item.fullName) }}
+					<Badge>
+						{{ localize(item.affiliation) }}
+					</Badge>
 				</template>
 
 				<template #item-subtitle="{item}">
-					{{ localize(item.affiliation) }}
+					{{ item.email }}
 				</template>
 
 				<template
@@ -36,18 +39,16 @@
 					"
 					#item-actions="{item}"
 				>
-					<template>
-						<PkpButton :disabled="isLoading" @click="openEditModal(item.id)">
-							{{ t('common.edit') }}
-						</PkpButton>
-						<PkpButton
-							:disabled="isLoading"
-							:is-warnable="true"
-							@click="openDeleteModal(item.id)"
-						>
-							{{ t('common.delete') }}
-						</PkpButton>
-					</template>
+					<PkpButton :disabled="isLoading" @click="openEditModal(item.id)">
+						{{ t('common.edit') }}
+					</PkpButton>
+					<PkpButton
+						:disabled="isLoading"
+						:is-warnable="true"
+						@click="openDeleteModal(item.id)"
+					>
+						{{ t('common.delete') }}
+					</PkpButton>
 				</template>
 			</ListPanel>
 		</slot>
@@ -57,7 +58,7 @@
 <script>
 import Spinner from '@/components/Spinner/Spinner.vue';
 import PkpButton from '@/components/Button/Button.vue';
-// import Badge from '@/components/Badge/Badge.vue';
+import Badge from '@/components/Badge/Badge.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import ReviewerSuggestionsEditModal from './ReviewerSuggestionsEditModal.vue';
@@ -71,7 +72,7 @@ export default {
 	components: {
 		Spinner,
 		PkpButton,
-		// Badge,
+		Badge,
 		ListPanel,
 		PkpHeader,
 	},
@@ -99,10 +100,6 @@ export default {
 			type: String,
 			required: true,
 		},
-		publicationApiUrlFormat: {
-			type: String,
-			required: true,
-		},
 		reviewerSuggestionsApiUrl: {
 			type: String,
 			required: true,
@@ -121,7 +118,6 @@ export default {
 			activeForm: null,
 			activeFormTitle: '',
 			isLoading: false,
-			itemsBeforeReordering: null,
 		};
 	},
 	computed: {
@@ -130,16 +126,6 @@ export default {
 		 */
 		formModal() {
 			return this.id + 'form';
-		},
-
-		/**
-		 * URL to the API endpoint for the current publication
-		 */
-		publicationApiUrl() {
-			return this.publicationApiUrlFormat.replace(
-				'__publicationId__',
-				this.publication.id,
-			);
 		},
 	},
 	methods: {
@@ -171,12 +157,13 @@ export default {
 		 * @param {Object} item
 		 */
 		formSuccess(reviewerSuggestion) {
-			console.log(this.submission.reviewerSuggestions);
+			console.log(reviewerSuggestion);
 			if (this.activeForm.method === 'POST') {
 				this.offset = 0;
 
 				const newReviewerSuggestions = [...this.submission.reviewerSuggestions];
 				newReviewerSuggestions.push(reviewerSuggestion);
+				console.log(newReviewerSuggestions);
 				this.$emit('updated:reviewerSuggestions', newReviewerSuggestions);
 			} else {
 				const newReviewerSuggestions = this.submission.reviewerSuggestions.map(
@@ -189,9 +176,8 @@ export default {
 				);
 				this.$emit('updated:reviewerSuggestions', newReviewerSuggestions);
 			}
-			this.closeFormModal();
 
-			// this.getAndUpdatePublication();
+			this.closeFormModal();
 		},
 
 		/**
@@ -260,8 +246,6 @@ export default {
 										'updated:reviewerSuggestions',
 										newReviewerSuggestions,
 									);
-
-									// this.getAndUpdatePublication();
 								},
 								complete(r) {
 									this.isLoading = false;
@@ -291,19 +275,13 @@ export default {
 				type: 'GET',
 				error: this.ajaxErrorCallback,
 				context: this,
-				success(author) {
+				success(reviewerSuggestion) {
 					let activeForm = cloneDeep(this.form);
 					activeForm.action = apiUrl;
 					activeForm.method = 'PUT';
 					activeForm.fields = activeForm.fields.map((field) => {
-						if (field.name === 'orcid') {
-							field.orcid = author['orcid'] ?? '';
-							field.authorId = author['id'];
-							field.isVerified = author['orcidIsVerified'] ?? false;
-							field.orcidVerificationRequested =
-								author['orcidVerificationRequested'];
-						} else if (Object.keys(author).includes(field.name)) {
-							field.value = author[field.name];
+						if (Object.keys(reviewerSuggestion).includes(field.name)) {
+							field.value = reviewerSuggestion[field.name];
 						}
 						return field;
 					});
@@ -339,28 +317,6 @@ export default {
 				activeForm[key] = data[key];
 			});
 			this.activeForm = activeForm;
-		},
-
-		/**
-		 * Update the publication in the background so that
-		 * any author strings are updated
-		 */
-		// TODO : Probably not needed here?
-		getAndUpdatePublication(onComplete = () => {}) {
-			$.ajax({
-				url: this.publicationApiUrl,
-				context: this,
-				type: 'GET',
-				success(publication) {
-					this.$emit('updated:publication', publication);
-
-					onComplete();
-				},
-				complete() {
-					this.isLoading = false;
-					this.isOrdering = false;
-				},
-			});
 		},
 	},
 };
