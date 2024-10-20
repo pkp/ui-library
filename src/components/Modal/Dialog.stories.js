@@ -45,6 +45,7 @@ export const DialogBasic = {
 				callback: (close) => close(),
 			},
 		],
+		modalStyle: 'basic',
 	},
 	play: async ({canvasElement}) => {
 		// Assigns canvas to the component root element
@@ -110,6 +111,7 @@ export const NonDismissible = {
 		actions: [
 			{
 				label: 'Cancel',
+				isWarnable: true,
 				callback: (close) => close(),
 			},
 		],
@@ -215,7 +217,7 @@ export const NegativeState = {
 		actions: [
 			{
 				label: 'Cancel Invitation',
-				isPrimary: true,
+				isWarnable: true,
 				callback: (close) => {
 					// Simulate a server request
 					setTimeout(() => close(), 2000);
@@ -223,7 +225,6 @@ export const NegativeState = {
 			},
 			{
 				label: 'Cancel',
-				isWarnable: true,
 				callback: (close) => close(),
 			},
 		],

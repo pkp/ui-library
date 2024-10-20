@@ -124,12 +124,12 @@ const props = defineProps({
 	actions: {type: Array, default: () => []},
 	/** Callback when dialog is being closed by close button or clicking outside of the modal */
 	close: {type: Function, default: null},
-	/** Defines the visual style of the modal: 'default' (primary color), 'primary', 'negative', or 'success'. */
+	/** Defines the visual style of the modal: 'basic' (no border style)', 'primary', 'negative', or 'success'. */
 	modalStyle: {
 		type: String,
-		default: () => 'default',
+		default: () => 'primary',
 		validator: (value) =>
-			['default', 'primary', 'negative', 'success'].includes(value),
+			['primary', 'negative', 'success', 'basic'].includes(value),
 	},
 	/** Defines if clicking outside the modal should close it */
 	isDismissible: {
@@ -138,16 +138,22 @@ const props = defineProps({
 	},
 });
 
+const computedStyle = computed(() => {
+	return ['primary', 'negative', 'success', 'basic'].includes(props.modalStyle)
+		? props.modalStyle
+		: 'primary';
+});
+
 const styles = computed(() => ({
 	'modal__panel modal__panel--dialog relative mx-3 w-10/12 max-w-3xl transform overflow-hidden rounded bg-secondary text-start shadow transition-all sm:my-8': true,
-	'border-none': props.modalStyle === 'default',
-	'border-s-[14px] border-primary': props.modalStyle === 'primary',
-	'border-s-[14px] border-success': props.modalStyle === 'success',
-	'border-s-[14px] border-negative': props.modalStyle === 'negative',
+	'border-none': computedStyle.value === 'basic',
+	'border-s-[14px] border-primary': computedStyle.value === 'primary',
+	'border-s-[14px] border-success': computedStyle.value === 'success',
+	'border-s-[14px] border-negative': computedStyle.value === 'negative',
 }));
 
 const icon = computed(() => {
-	switch (props.modalStyle) {
+	switch (computedStyle.value) {
 		case 'negative':
 			return 'Cancel';
 		case 'success':
@@ -159,8 +165,8 @@ const icon = computed(() => {
 
 const iconStyles = computed(() => ({
 	'flex h-12 w-12 items-center justify-center rounded-full': true,
-	'bg-success': props.modalStyle === 'success',
-	'bg-negative': props.modalStyle === 'negative',
+	'bg-success': computedStyle.value === 'success',
+	'bg-negative': computedStyle.value === 'negative',
 }));
 
 const noActions = computed(() => !props.actions?.length);
