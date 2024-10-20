@@ -31,8 +31,9 @@ export default {
 		},
 		setup() {
 			// Storybook
-			const organizations = args.rorsApiResponse['items'];
-			const currentValue = ref(args.items);
+			const isStoryBook = true;
+			const organizations = ref(args.rorsApiResponse['items']);
+			const currentValue = args.items;
 
 			// FieldAffiliations.vue
 			const name = 'FieldAffiliations';
@@ -58,7 +59,7 @@ export default {
 			const newItemPrefix = 'new';
 			let newItemCounter = 0;
 
-			// Search, select, add
+			// Row actions
 			const selectCustomOrganization = function () {
 				newAffiliationPending.value = getNewItemTemplate();
 				newAffiliationPending.value._data.name[currentLocale] = searchPhrase.value;
@@ -75,38 +76,25 @@ export default {
 				newItemCounter++;
 				let id = newItemPrefix + newItemCounter;
 				currentValue[id] = JSON.parse(JSON.stringify(newAffiliationPending.value));
-				valueHelper[id] = getValueHelperSchema()
-				valueHelper[id].editable = !id;
 
 				// cleanup
 				searchPhrase.value = '';
-				organizations.value = [];
 				showAddMode.value = false;
+				if (typeof isStoryBook === 'undefined') {
+					organizations.value = [];
+				}
 			}
 			const deleteAffiliation = function (id) {
 				if (confirm(t('user.affiliations.deleteInstitutionConfirmation',
 					{institution: currentValue[id]['_data']['name'][currentLocale]}))
 				) {
 					delete currentValue[id];
-					// delete valueHelper[id];
 				}
 			}
-
-			function searchPhraseChanged() {
-				showAddMode.value = false;
-				organizations.value = [];
-				if (searchPhrase.value.length >= 3) {
-					setTimeout(() => {
-						apiLookup();
-					}, 200);
-				}
-			}
-
-			// Row actions
 			const rowActionsArgs = function (id) {
 				let actions = [];
 
-				if (valueHelper[id].editable) {
+				if (currentValue[id]._helper.editable) {
 					actions.push(
 						{
 							"label": t('user.affiliations.translationEditActionLabel', {}),
@@ -150,22 +138,19 @@ export default {
 			}
 
 			// GUI
-			const valueHelper = reactive(getValueHelper(currentValue));
 			const showAddMode = ref(false);
 			const showSearchResults = computed(() => {
-				if (searchPhrase.value.length >= 3
+				return searchPhrase.value.length >= 3
 					&& organizations.value.length > 0
-					&& showAddMode.value === false) {
-					return true;
-				}
-				return false;
+					&& showAddMode.value === false;
+
 			});
 			const toggleEdit = function (id) {
-				valueHelper[id].editMode = !valueHelper[id].editMode;
+				currentValue[id]._helper.editMode = !currentValue[id]._helper.editMode;
 			};
 			const closeEdit = function (id) {
-				valueHelper[id].editMode = false;
-				valueHelper[id].actions = false;
+				currentValue[id]._helper.editMode = false;
+				currentValue[id]._helper.actions = false;
 			};
 			const translations = function (row) {
 				let names = row._data.name;
@@ -189,27 +174,40 @@ export default {
 
 			// Hooks
 			watch(currentValue, () => {
-				Object.keys(currentValue).forEach(key => {
-						if (!(key in valueHelper)) {
-							valueHelper[key] = getValueHelperSchema();
-						}
-					},
-					{immediate: true}
-				);
-			})
+					makeCurrentValueConfirmComponent();
+				},
+				{immediate: true}
+			);
 
 			onMounted(() => {
-				makeValueConfirmAllowedLocales();
+				makeCurrentValueConfirmComponent();
 			})
 
 			// Misc
-			function makeValueConfirmAllowedLocales() {
+			function searchPhraseChanged() {
+				if (typeof isStoryBook === 'undefined') {
+					showAddMode.value = false;
+					organizations.value = [];
+					if (searchPhrase.value.length >= 3) {
+						setTimeout(() => {
+							apiLookup();
+						}, 200);
+					}
+				}
+			}
+
+			function makeCurrentValueConfirmComponent() {
 				Object.keys(currentValue).forEach(key => {
 					supportedLocales.forEach((locale) => {
 						if (!(locale in currentValue[key]._data.name)) {
 							currentValue[key]._data.name[locale] = "";
 						}
 					});
+
+					if (!currentValue[key]['_helper']) {
+						currentValue[key]['_helper'] = getValueHelperSchema();
+						currentValue[key]['_helper'].editable = !currentValue[key]._data.ror;
+					}
 				});
 			}
 
@@ -247,17 +245,6 @@ export default {
 					editMode: false,
 					editable: false
 				};
-			}
-
-			function getValueHelper(value) {
-				let newValue = {};
-
-				Object.keys(value).forEach(key => {
-					newValue[key] = getValueHelperSchema();
-					newValue[key].editable = !value[key]._data.ror;
-				});
-
-				return newValue;
 			}
 
 			function getLocaleDisplayName(locale) {
@@ -314,66 +301,84 @@ export default {
 						<TableColumn id="">&nbsp;</TableColumn>
 					</TableHeader>
 					<TableBody>
-						<TableRow v-for="([id, row], aIndex) in Object.entries(value)" :key="id">
+						<TableRow v-for="([id, row], aIndex) in Object.entries(currentValue)" :key="id">
 							<TableCell>
-								{{ id }}
-								<span v-if="!valueHelper[id].editMode">{{ row._data.name[primaryLocale] }}</span>
-								<input
-									v-if="valueHelper[id].editMode"
-									:readonly="!valueHelper[id].editable"
-									v-model="row._data.name[primaryLocale]"
-									class="pkpFormField__input pkpFormField--text__input  pkpFormField--sizelarge"
-								/>
-								&nbsp;
-								<Icon
-									v-if="row._data.ror"
-									:class="'mr-2'"
-									:icon="'ror'"
-									:inline="true"
-								/>
-							</TableCell>
-							<TableCell>
-								<div
-									v-if="valueHelper[id].editMode"
-									v-for="([key, value], index) in Object.entries(row._data.name)"
-									:key="index">
-									<div v-if="key !== primaryLocale">
-										<p>{{ t('user.affiliations.translationLabel', {language: key}) }}</p>
-										<p>
-											<input
-												v-model="row._data.name[key]"
-												:readonly="!valueHelper[id].editable"
-												class="pkpFormField__input pkpFormField--text__input pkp FormField--sizelarge"
-											/>
-										</p>
+								<div v-if="row._helper.editMode"
+									 class="pkpFormField pkpFormField--text pkpFormField--sizelarge">
+									<div class="pkpFormField pkpFormField--text pkpFormField--sizelarge">
+										<div class="pkpFormField__heading">
+											<label class="pkpFormFieldLabel">
+												<span v-if="!row._helper.editable">
+													{{ getLocaleDisplayName(currentLocale) }}
+												</span>
+												<span v-if="row._helper.editable">
+                                                  {{ t('user.affiliations.typeTranslationNameInLanguageLabel', {language: getLocaleDisplayName(currentLocale)}) }}
+												</span>
+											</label>
+										</div>
+										<div class="pkpFormField__control">
+											<div class="pkpFormField__control_top">
+												<input
+													v-model="row._data.name[currentLocale]"
+													:readonly="!row._helper.editable"
+													:id="'contributors-affiliations-' + id + '-' + currentLocale"
+													class="pkpFormField__input pkpFormField--text__input"
+													type="text"
+													name="searchPhraseInput"
+													aria-invalid="0">
+											</div>
+										</div>
 									</div>
 								</div>
-								<div>
-									<button @click="toggleEdit(id)">
-										{{ translations(row) }}
-									</button>
+								<div v-if="!row._helper.editMode" class="pkpFormField__heading">
+									<label class="pkpFormFieldLabel">{{ row._data.name[currentLocale] }}</label> &nbsp;
+									<Icon v-if="!row._helper.editable" :icon="'ror'" :class="'mr-2'" :inline="true"/>
 								</div>
 							</TableCell>
 							<TableCell>
-								<div v-if="!valueHelper[id].editMode">
-									<button @click="toggleActions(id)">...</button>
-									<div v-if="valueHelper[id].actions"
-										 class="shadow text-primary affiliations__sticky">
-										<ul>
-											<li>
-												<button @click="toggleEdit(id)">
-													Edit
-												</button>
-											</li>
-											<li>
-												<button @click="deleteAffiliation(id)">
-													Delete
-												</button>
-											</li>
-										</ul>
+								<div v-if="row._helper.editMode"
+									 v-for="([locale1, val], index) in Object.entries(row._data.name)"
+									 :key="index">
+									<div v-if="locale1 !== currentLocale && supportedLocales.includes(locale1)">
+										<div class="pkpFormField pkpFormField--text pkpFormField--sizelarge">
+											<div class="pkpFormField pkpFormField--text pkpFormField--sizelarge">
+												<div class="pkpFormField__heading">
+													<label v-if="!row._helper.editable" class="pkpFormFieldLabel">
+														{{ getLocaleDisplayName(locale1) }}
+													</label>
+													<label v-if="row._helper.editable">
+														{{ t('user.affiliations.typeTranslationNameInLanguageLabel', {language: getLocaleDisplayName(locale1)}) }}
+													</label>
+												</div>
+												<div class="pkpFormField__control">
+													<div class="pkpFormField__control_top">
+														<input
+															v-model="row._data.name[locale1]"
+															:readonly="!row._helper.editable"
+															:id="'contributors-affiliations-' + id + '-' + locale1"
+															class="pkpFormField__input pkpFormField--text__input"
+															type="text"
+															name="searchPhraseInput"
+															aria-invalid="0">
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
-								<div v-if="valueHelper[id].editMode">
+								<div class="pkpFormField__heading">
+									<label class="pkpFormFieldLabel">
+										<button @click="toggleEdit(id)">
+											{{ translations(row) }}
+										</button>
+									</label>
+								</div>
+							</TableCell>
+							<TableCell>
+								<div v-if="!row._helper.editMode">
+									<DropdownActions v-bind="rowActionsArgs(id)" @action="rowActionsHandler"/>
+								</div>
+								<div v-if="row._helper.editMode">
 									<PkpButton @click="closeEdit(id)">Close</PkpButton>
 								</div>
 							</TableCell>
@@ -419,8 +424,7 @@ export default {
 				</PkpTable>
 			</div>
 
-			<div>
-				<p> &nbsp; </p>
+			<div style="margin-top: 10px; padding: 10px; border: 1px solid #ccc;">
 				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel accumsan neque, ac tincidunt
 					risus. Sed vulputate augue ut quam ultricies elementum. In pretium euismod ipsum nec
 					consectetur. In eleifend sapien id porta lobortis. Fusce faucibus pharetra rutrum. Etiam
