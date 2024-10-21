@@ -216,9 +216,7 @@ const addAffiliation = function () {
 	currentValue.push(JSON.parse(JSON.stringify(newAffiliationPending.value)));
 	newAffiliationPending.value = {};
 	searchPhrase.value = '';
-	if (typeof isStoryBook === 'undefined') {
-		organizations.value = [];
-	}
+	organizations.value = []; // storybook: disable
 }
 const deleteAffiliation = function (index) {
 	if (confirm(t('user.affiliations.deleteInstitutionConfirmation',
@@ -322,9 +320,9 @@ onMounted(() => {
 
 // Misc
 function searchPhraseChanged() {
-	if (typeof isStoryBook !== 'undefined') {
-		return;
-	}
+	newAffiliationPending.value = {};
+
+	// return; // storybook: enable
 
 	organizations.value = [];
 	if (searchPhrase.value.length >= 3) {
@@ -335,10 +333,6 @@ function searchPhraseChanged() {
 }
 
 function makeCurrentValueCompatible() {
-	// if(typeof currentValue === 'undefined' || currentValue === null){
-	// 	return;
-	// }
-
 	Object.keys(currentValue).forEach(index => {
 		supportedLocales.forEach((locale) => {
 			if (!(locale in currentValue[index]._data.name)) {

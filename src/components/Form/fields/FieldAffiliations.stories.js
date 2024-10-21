@@ -68,9 +68,7 @@ export default {
 				currentValue.push(JSON.parse(JSON.stringify(newAffiliationPending.value)));
 				newAffiliationPending.value = {};
 				searchPhrase.value = '';
-				if (typeof isStoryBook === 'undefined') {
-					organizations.value = [];
-				}
+				// organizations.value = []; // storybook: disable
 			}
 			const deleteAffiliation = function (index) {
 				if (confirm(t('user.affiliations.deleteInstitutionConfirmation',
@@ -176,9 +174,7 @@ export default {
 			function searchPhraseChanged() {
 				newAffiliationPending.value = {};
 
-				if (typeof isStoryBook !== 'undefined') {
-					return;
-				}
+				return; // storybook: enable
 
 				organizations.value = [];
 				if (searchPhrase.value.length >= 3) {
