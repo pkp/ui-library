@@ -7,6 +7,7 @@
 			<DropdownActions
 				:actions="exportOptions"
 				:label="t('editor.review.download')"
+				@action="handleExport"
 			/>
 		</div>
 	</div>
@@ -15,39 +16,75 @@
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useApiUrl} from '@/composables/useApiUrl';
+import {useFetch} from '@/composables/useFetch';
 const props = defineProps({
 	title: {type: String, required: true},
-	submissionId: {type: Number, required: true},
-	reviewRoundId: {type: Number, required: true},
-	reviewAssignmentId: {type: Number, required: true},
-	submissionStageId: {type: Number, required: true},
+	submissionId: {type: String, required: true},
+	reviewRoundId: {type: String, required: true},
+	reviewAssignmentId: {type: String, required: true},
+	submissionStageId: {type: String, required: true},
 });
 
 const {t} = useLocalize();
 const exportOptions = [
 	{
 		label: `${t('editor.review.authorOnly')} (PDF)`,
-		url: getUrl('export-pdf', 1),
+		name: 'authorPdf',
 	},
 	{
 		label: `${t('editor.review.authorOnly')} (XML)`,
-		url: getUrl('export-xml', 1),
+		name: 'authorXml',
 	},
 	{
 		label: `${t('editor.review.allSections')} (PDF)`,
-		url: getUrl('export-pdf', 0),
+		name: 'editorPdf',
 	},
 	{
 		label: `${t('editor.review.allSections')} (XML)`,
-		url: getUrl('export-xml', 0),
+		name: 'editorXml',
 	},
 ];
 
-function getUrl(op, authorFriendly) {
+async function handleExport(name) {
+	let op;
+	let authorFriendly;
+	switch (name) {
+		case 'authorPdf':
+			op = 'export-pdf';
+			authorFriendly = 1;
+			break;
+		case 'authorXml':
+			op = 'export-xml';
+			authorFriendly = 1;
+			break;
+		case 'editorPdf':
+			op = 'export-pdf';
+			authorFriendly = 0;
+			break;
+		case 'editorXml':
+			op = 'export-pdf';
+			authorFriendly = 0;
+			break;
+	}
+
 	const {apiUrl} = useApiUrl(
 		`reviews/${props.submissionId}/${props.reviewAssignmentId}/${op}?authorFriendly=${authorFriendly}`,
 	);
 
-	return apiUrl.value;
+	const {data, fetch, isSuccess} = useFetch(apiUrl, {
+		method: 'GET',
+		expectValidationError: true,
+	});
+	await fetch();
+
+	if (isSuccess) {
+		const anchor = document.createElement('a');
+		anchor.href = useApiUrl(
+			`reviews/${props.submissionId}/exports/${data.value.temporaryFileId}`,
+		).apiUrl.value;
+		document.body.appendChild(anchor);
+		anchor.click();
+		document.body.removeChild(anchor);
+	}
 }
 </script>
