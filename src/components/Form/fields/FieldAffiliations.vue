@@ -190,28 +190,25 @@ const selectRorOrganization = function (organization) {
 	searchPhrase.value = organization.name[currentLocale];
 }
 const addAffiliation = function () {
-	// newItemCounter++;
 	currentValue.push(JSON.parse(JSON.stringify(newAffiliationPending.value)));
-
-	// cleanup
 	cleanupAfterAdding();
 }
-const deleteAffiliation = function (id) {
+const deleteAffiliation = function (index) {
 	if (confirm(t('user.affiliations.deleteInstitutionConfirmation',
-		{institution: currentValue[id]['_data']['name'][currentLocale]}))
+		{institution: currentValue[index]['_data']['name'][currentLocale]}))
 	) {
-		delete currentValue[id];
+		currentValue.splice(index, 1);
 	}
 }
-const rowActionsArgs = function (id) {
+const rowActionsArgs = function (index) {
 	let actions = [];
 
-	if (currentValue[id]._helper.editable) {
+	if (currentValue[index]._helper.editable) {
 		actions.push(
 			{
 				"label": t('user.affiliations.translationEditActionLabel', {}),
 				"name": "edit",
-				"id": id
+				"id": index
 			}
 		);
 	}
@@ -220,7 +217,7 @@ const rowActionsArgs = function (id) {
 		{
 			"label": t('user.affiliations.translationDeleteActionLabel', {}),
 			"name": "delete",
-			"id": id
+			"id": index
 		}
 	);
 
@@ -258,12 +255,12 @@ const showSearchResults = computed(() => {
 		&& organizations.value.length > 0
 		&& showAddMode.value === false;
 });
-const toggleEditMode = function (id) {
-	currentValue[id]._helper.editMode = !currentValue[id]._helper.editMode;
+const toggleEditMode = function (index) {
+	currentValue[index]._helper.editMode = !currentValue[index]._helper.editMode;
 };
-const closeEditMode = function (id) {
-	currentValue[id]._helper.editMode = false;
-	currentValue[id]._helper.actions = false;
+const closeEditMode = function (index) {
+	currentValue[index]._helper.editMode = false;
+	currentValue[index]._helper.actions = false;
 };
 const translations = function (row) {
 	let names = row._data.name;
