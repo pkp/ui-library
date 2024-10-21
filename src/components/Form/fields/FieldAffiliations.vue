@@ -7,37 +7,61 @@
 				<TableColumn id="">&nbsp;</TableColumn>
 			</TableHeader>
 			<TableBody>
-				<TableRow v-for="([affiliationId, row], affiliationIndex) in Object.entries(value)" :key="affiliationId">
+				<TableRow v-for="(row, indexRow) in currentValue" :key="indexRow">
 					<TableCell>
-						{{ row._data.name[primaryLocale] }}
-						<Icon
-							v-if="row._data.ror"
-							:class="'mr-2'"
-							:icon="'ror'"
-							:inline="true"
-						/>
+						<div v-if="row._helper.editMode"
+								 class="pkpFormField pkpFormField--text pkpFormField--sizelarge">
+							<div class="pkpFormField pkpFormField--text pkpFormField--sizelarge">
+								<div class="pkpFormField__heading">
+									<label class="pkpFormFieldLabel">
+										<span v-if="!row._helper.editable">
+											{{ getLocaleDisplayName(currentLocale) }}
+										</span>
+										<span v-if="row._helper.editable">
+											{{ t('user.affiliations.typeTranslationNameInLanguageLabel', {language: getLocaleDisplayName(currentLocale)}) }}
+										</span>
+									</label>
+								</div>
+								<div class="pkpFormField__control">
+									<div class="pkpFormField__control_top">
+										<input
+											v-model="row._data.name[currentLocale]"
+											:readonly="!row._helper.editable"
+											:id="'contributors-affiliations-' + indexRow + '-' + currentLocale"
+											class="pkpFormField__input pkpFormField--text__input"
+											type="text"
+											name="searchPhraseInput"
+											aria-invalid="0">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div v-if="!row._helper.editMode" class="pkpFormField__heading">
+							<label class="pkpFormFieldLabel">{{ row._data.name[currentLocale] }}</label> &nbsp;
+							<Icon v-if="!row._helper.editable" :icon="'ror'" :class="'mr-2'" :inline="true"/>
+						</div>
 					</TableCell>
 					<TableCell>
-						<div v-if="valueHelper[id].editMode"
-								 v-for="([locale1, val], index) in Object.entries(row._data.name)"
-								 :key="index">
-							<div v-if="locale1 !== currentLocale && supportedLocales.includes(locale1)">
+						<div v-if="row._helper.editMode"
+								 v-for="([localeName, valueName], indexName) in Object.entries(row._data.name)"
+								 :key="indexName">
+							<div v-if="localeName !== currentLocale && supportedLocales.includes(localeName)">
 								<div class="pkpFormField pkpFormField--text pkpFormField--sizelarge">
 									<div class="pkpFormField pkpFormField--text pkpFormField--sizelarge">
 										<div class="pkpFormField__heading">
-											<label v-if="!valueHelper[id].editable" class="pkpFormFieldLabel">
-												{{ getLocaleDisplayName(locale1) }}
+											<label v-if="!row._helper.editable" class="pkpFormFieldLabel">
+												{{ getLocaleDisplayName(localeName) }}
 											</label>
-											<label v-if="valueHelper[id].editable">
-												{{t('user.affiliations.typeTranslationNameInLanguageLabel', {language: getLocaleDisplayName(locale1)})}}
+											<label v-if="row._helper.editable">
+												{{ t('user.affiliations.typeTranslationNameInLanguageLabel', {language: getLocaleDisplayName(localeName)}) }}
 											</label>
 										</div>
 										<div class="pkpFormField__control">
 											<div class="pkpFormField__control_top">
 												<input
-													v-model="row._data.name[locale1]"
-													:readonly="!valueHelper[id].editable"
-													:id="'contributors-affiliations-' + id + '-' + locale1"
+													v-model="row._data.name[localeName]"
+													:readonly="!row._helper.editable"
+													:id="'contributors-affiliations-' + indexRow + '-' + localeName"
 													class="pkpFormField__input pkpFormField--text__input"
 													type="text"
 													name="searchPhraseInput"
@@ -57,11 +81,11 @@
 						</div>
 					</TableCell>
 					<TableCell>
-						<div v-if="!valueHelper[id].editMode">
-							<DropdownActions v-bind="rowActionsArgs(id)" @action="rowActionsHandler"/>
+						<div v-if="!row._helper.editMode">
+							<DropdownActions v-bind="rowActionsArgs(indexRow)" @action="rowActionsHandler"/>
 						</div>
-						<div v-if="valueHelper[id].editMode">
-							<PkpButton @click="closeEdit(id)">Close</PkpButton>
+						<div v-if="row._helper.editMode">
+							<PkpButton @click="closeEditMode(indexRow)">Close</PkpButton>
 						</div>
 					</TableCell>
 				</TableRow>
@@ -92,14 +116,13 @@
 						<div v-if="showSearchResults" class="shadow text-primary searchPhraseOrganizations">
 							<ul>
 								<li>
-									<a @click.prevent="selectCustomOrganization()">
+									<a @click.prevent="selectCustomOrganization">
 										{{ searchPhrase }}
 									</a>
 								</li>
 								<li v-for="(organization, orgIndex) in organizations">
 									<a @click.prevent="selectRorOrganization(organization)">
-										{{ organization.id }}: {{ organization.name[currentLocale] }}
-										&nbsp;
+										{{ organization.name[currentLocale] }} &nbsp;
 										<Icon :icon="'ror'" :class="'mr-2'" :inline="true"/>
 									</a>
 									<a :href="organization.ror" target="_blank">
@@ -121,7 +144,7 @@
 												{{ getLocaleDisplayName(localeAddMode) }}
 											</label>
 											<label v-if="newAffiliationPending._data.ror">
-												{{t('user.affiliations.typeTranslationNameInLanguageLabel', {language: getLocaleDisplayName(locale2)})}}
+												{{ t('user.affiliations.typeTranslationNameInLanguageLabel', {language: getLocaleDisplayName(localeAddMode)}) }}
 											</label>
 										</div>
 										<div class="pkpFormField__control">
@@ -142,7 +165,7 @@
 						</div>
 					</TableCell>
 					<TableCell>
-						<PkpButton @click="addAffiliation()">Add</PkpButton>
+						<PkpButton @click="addAffiliation">Add</PkpButton>
 					</TableCell>
 				</TableRow>
 			</TableBody>
@@ -393,59 +416,45 @@ function apiLookup() {
 </script>
 
 <style lang="less">
-.debug {
-	margin-top: 10px;
-	padding: 5px;
-	border: 1px solid #000;
-	width: 100%;
-}
-
-.debug textarea {
-	border-bottom: 1px solid #000;
-	width: 100%;
-	height: 200px;
-}
-
-.affiliations__sticky {
-	background-color: #fff;
-	border: 1px solid #ccc;
-	position: absolute;
-	width: 100%;
-	max-width: 100%;
-	min-width: 20rem;
-	z-index: 9999;
-}
+@import '../../../styles/_import';
 
 .searchPhraseOrganizations {
 	background-color: #fff;
-	border: 1px solid #ccc;
 	height: 140px;
 	overflow-y: scroll;
 	position: absolute;
-	width: 100%;
-	max-width: 100%;
-	min-width: 20rem;
 	z-index: 9999;
+	border: 1px solid #ccc;
 }
 
-//.searchPhraseOrganizations ul {
-//	list-style-type: none;
-//	padding: 0;
-//	margin: 0;
-//}
-//
-//.searchPhraseOrganizations ul li {
-//	padding: 0;
-//}
-//
-//.searchPhraseOrganizations ul li a {
-//	display: block;
-//	cursor: pointer;
-//	padding: 0.3rem;
-//}
-//
-//.searchPhraseOrganizations ul li a:hover {
-//	background-color: #f1f1f1;
-//}
+.searchPhraseOrganizations ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
 
+.searchPhraseOrganizations ul li {
+	border-bottom: 1px solid #ccc;
+	height: 43px;
+}
+
+.searchPhraseOrganizations ul li a {
+	cursor: pointer;
+	padding: 5px;
+	display: inline-flex;
+}
+
+.searchPhraseOrganizations ul li a:nth-child(1) {
+	width: calc(100% - 34px);
+}
+
+.searchPhraseOrganizations ul li a:nth-child(2) {
+	float: right;
+	width: 34px;
+	height: inherit;
+}
+
+.searchPhraseOrganizations ul li a:hover {
+	background-color: #f1f1f1;
+}
 </style>
