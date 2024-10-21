@@ -231,14 +231,14 @@ const rowActionsArgs = function (index) {
 const rowActionsHandler = function (param) {
 	if (typeof (param) === 'object' && param.length === 2) {
 		const name = param[0].trim();
-		const id = param[1];
+		const index = param[1];
 
 		switch (name) {
 			case 'edit':
-				toggleEditMode(id);
+				toggleEditMode(index);
 				break;
 			case 'delete':
-				deleteAffiliation(id);
+				deleteAffiliation(index);
 				break;
 			default:
 				console.error(`No handler for action: ${name}`);
