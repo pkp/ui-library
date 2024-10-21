@@ -102,7 +102,7 @@ const {selectedItem} = useSideMenu(items, 'menuItem2_1'); // will return {label:
 
 ### setActiveItemKey
 
-This function allows you to set a new active item key dynamically from within your component or from other components that consume the `useSideMenu` composable. It accepts a string that represents the key of the item you want to set as active. This value will be assigned to the `activeItemKey` ref.
+This function allows you to set a new active item key dynamically from within your component or from other components that consume the `useSideMenu` composable. It accepts a string that represents the key of the item you want to set as active. This value will be assigned to the `activeItemKey` ref. Additionally, the function updates the `expandedKeys` to include the parent keys of the active item, while retaining the initially expanded keys set in the API.
 
 ```javascript
 const {activeItemKey, setActiveItemKey} = useSideMenu(items, {

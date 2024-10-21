@@ -230,13 +230,13 @@ export const FileManagerConfigurations = {
 	}),
 };
 
-export function useFileManagerConfig({configName, submissionStageId}) {
+export function useFileManagerConfig({namespace, submissionStageId}) {
 	const {t} = useLocalize();
 
 	const {hasCurrentUserAtLeastOneRole} = useCurrentUser();
 
 	const managerConfig = computed(() => {
-		const config = FileManagerConfigurations[configName]({
+		const config = FileManagerConfigurations[namespace]({
 			stageId: submissionStageId,
 		});
 

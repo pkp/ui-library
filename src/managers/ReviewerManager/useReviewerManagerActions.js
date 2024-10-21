@@ -34,7 +34,7 @@ export function useReviewerManagerActions() {
 		}
 		actions.push({
 			label: t('editor.submission.addReviewer'),
-			name: Actions.REVIEWER_ADD,
+			name: Actions.REVIEWER_ADD_REVIEWER,
 		});
 
 		return actions;
@@ -326,6 +326,8 @@ export function useReviewerManagerActions() {
 		{submission, reviewAssignment, submissionStageId},
 		finishedCallback,
 	) {
+		// http://localhost:8000/index.php/publicknowledge/$$$call$$$/grid/users/reviewer/reviewer-grid/edit-review?submissionId=7&reviewAssignmentId=12&stageId=3
+
 		const {openLegacyModal} = useLegacyGridUrl({
 			component: 'grid.users.reviewer.ReviewerGridHandler',
 

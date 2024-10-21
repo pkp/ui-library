@@ -1,7 +1,7 @@
 <template>
 	<div
 		:id="id"
-		class="pkpTab"
+		class="pkpTab min-w-0"
 		:class="classes"
 		role="tabpanel"
 		:aria-labelledby="id + '-button'"

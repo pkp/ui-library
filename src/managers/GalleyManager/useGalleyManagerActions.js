@@ -12,8 +12,12 @@ export const Actions = {
 export function useGalleyManagerActions() {
 	const {t} = useLocalize();
 
-	function getBottomActions() {
+	function getBottomActions({canEdit}) {
 		const actions = [];
+
+		if (!canEdit) {
+			return [];
+		}
 
 		actions.push({
 			component: 'GalleyManagerActionButton',
@@ -24,15 +28,29 @@ export function useGalleyManagerActions() {
 		return actions;
 	}
 
-	function getTopItems() {
+	function getTopItems({canEdit}) {
 		const actions = [];
+		if (!canEdit) {
+			return [];
+		}
+
 		actions.push({component: 'GalleyManagerSortButton'});
 
 		return actions;
 	}
 
-	function getItemActions() {
+	function getItemActions({canEdit}) {
 		const actions = [];
+
+		if (!canEdit) {
+			return [
+				{
+					label: t('common.view'),
+					name: Actions.GALLEY_EDIT,
+					icon: 'View',
+				},
+			];
+		}
 
 		actions.push({
 			label: t('common.edit'),

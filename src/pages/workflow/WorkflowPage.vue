@@ -1,0 +1,130 @@
+<template>
+	<SideModalBody>
+		<template #pre-title>
+			{{ workflowStore.submissionId }}
+		</template>
+		<template #title>
+			<span v-if="selectedPublication" class="underline">
+				{{ selectedPublication.authorsStringShort }}
+			</span>
+		</template>
+		<template v-if="selectedPublication" #description>
+			{{
+				localizeSubmission(
+					selectedPublication.fullTitle,
+					selectedPublication.locale,
+				)
+			}}
+		</template>
+		<template v-if="submission" #post-description>
+			<StageBubble :extended-stage="workflowStore.extendedStage">
+				<span class="text-lg-normal">
+					{{ workflowStore.stageLabel }}
+				</span>
+			</StageBubble>
+		</template>
+		<template v-if="submission" #actions>
+			<div class="flex gap-x-4">
+				<component
+					:is="workflowStore.Components[item.component] || item.component"
+					v-bind="item.props"
+					v-for="(item, index) in workflowStore.headerItems"
+					:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
+				/>
+			</div>
+		</template>
+		<SideModalLayoutMenu2Columns>
+			<template #menu>
+				<nav>
+					<SideMenu v-bind="workflowStore.sideMenuProps"></SideMenu>
+				</nav>
+			</template>
+			<template #heading>
+				<h2>{{ workflowStore.menuTitle }}</h2>
+			</template>
+			<template
+				v-if="workflowStore.publicationControlsLeft?.length"
+				#publication-controls-left
+			>
+				<div class="flex flex-col gap-y-2" data-cy="workflow-controls-left">
+					<component
+						:is="workflowStore.Components[item.component] || item.component"
+						v-bind="item.props"
+						v-for="(item, index) in workflowStore.publicationControlsLeft"
+						:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
+					/>
+				</div>
+			</template>
+			<template
+				v-if="workflowStore.publicationControlsRight?.length"
+				#publication-controls-right
+			>
+				<div class="flex gap-x-3" data-cy="workflow-controls-right">
+					<component
+						:is="workflowStore.Components[item.component] || item.component"
+						v-bind="item.props"
+						v-for="(item, index) in workflowStore.publicationControlsRight"
+						:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
+					/>
+				</div>
+			</template>
+
+			<template #primary>
+				<div
+					class="flex flex-col gap-y-5 bg-secondary p-5"
+					data-cy="workflow-primary-items"
+				>
+					<component
+						:is="workflowStore.Components[item.component] || item.component"
+						v-bind="item.props"
+						v-for="(item, index) in workflowStore.primaryItems"
+						:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
+					/>
+				</div>
+			</template>
+			<template v-if="workflowStore.actionItems?.length" #actions>
+				<div
+					class="flex flex-col items-start space-y-3 p-4"
+					data-cy="workflow-action-items"
+				>
+					<component
+						:is="workflowStore.Components[item.component] || item.component"
+						v-for="(item, index) in workflowStore.actionItems"
+						v-bind="item.props"
+						:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
+					></component>
+				</div>
+			</template>
+			<template v-if="workflowStore.secondaryItems?.length" #secondary>
+				<div
+					class="flex flex-col space-y-4 p-4"
+					data-cy="workflow-secondary-items"
+				>
+					<component
+						:is="workflowStore.Components[item.component] || item.component"
+						v-for="(item, index) in workflowStore.secondaryItems"
+						v-bind="item.props"
+						:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
+					></component>
+				</div>
+			</template>
+		</SideModalLayoutMenu2Columns>
+	</SideModalBody>
+</template>
+
+<script setup>
+import {storeToRefs} from 'pinia';
+import SideMenu from '@/components/SideMenu/SideMenu.vue';
+import SideModalBody from '@/components/Modal/SideModalBody.vue';
+import StageBubble from '@/components/StageBubble/StageBubble.vue';
+
+import {useWorkflowStore} from './workflowStore';
+import SideModalLayoutMenu2Columns from '@/components/Modal/SideModalLayoutMenu2Columns.vue';
+
+import {useLocalize} from '@/composables/useLocalize';
+const {localizeSubmission} = useLocalize();
+
+const workflowStore = useWorkflowStore();
+
+const {submission, selectedPublication} = storeToRefs(workflowStore);
+</script>

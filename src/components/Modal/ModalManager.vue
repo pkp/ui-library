@@ -1,6 +1,9 @@
 <template>
 	<SideModal
 		:key="sideModal1?.modalId"
+		:data-cy="
+			activeModalId === sideModal1?.modalId ? 'active-modal' : undefined
+		"
 		close-label="Close"
 		:open="sideModal1?.opened || false"
 		:modal-level="1"
@@ -15,7 +18,11 @@
 		></PkpDialog>
 
 		<SideModal
+			:key="sideModal2?.modalId"
 			close-label="Close"
+			:data-cy="
+				activeModalId === sideModal2?.modalId ? 'active-modal' : undefined
+			"
 			:modal-level="2"
 			:open="sideModal2?.opened || false"
 			@close="(returnData) => close(sideModal2?.modalId, returnData)"
@@ -32,6 +39,9 @@
 				@close="closeDialog"
 			></PkpDialog>
 			<SideModal
+				:data-cy="
+					activeModalId === sideModal3?.modalId ? 'active-modal' : undefined
+				"
 				close-label="Close"
 				:modal-level="3"
 				:open="sideModal3?.opened || false"
@@ -60,9 +70,8 @@ import {storeToRefs} from 'pinia';
 import SideModal from '@/components/Modal/SideModal.vue';
 import LegacyAjax from '@/components/Modal/SideModalBodyLegacyAjax.vue';
 import PkpDialog from '@/components/Modal/Dialog.vue';
-import WorkflowLogResponseForModal from '@/pages/workflow/WorkflowLogResponseForModal.vue';
 
-const GlobalModals = {LegacyAjax, WorkflowLogResponseForModal};
+const GlobalModals = {LegacyAjax};
 
 const modalStore = useModalStore();
 const {
@@ -73,6 +82,18 @@ const {
 	dialogOpened,
 	dialogLevel,
 } = storeToRefs(useModalStore());
+
+const activeModalId = computed(() => {
+	if (sideModal3.value?.opened) {
+		return sideModal3.value.modalId;
+	} else if (sideModal2.value?.opened) {
+		return sideModal2.value.modalId;
+	} else if (sideModal1.value?.opened) {
+		return sideModal1.value.modalId;
+	}
+
+	return null;
+});
 
 // Component can be either string or vue component
 const component1 = computed(() => {
