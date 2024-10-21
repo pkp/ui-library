@@ -183,14 +183,14 @@ export default {
 		/**
 		 * Perform a search whenever the searchPhrase is updated
 		 */
-		searchPhrase(newVal, oldVal) {
+		searchPhrase(newVal, oldVal) {		
 			if (newVal === oldVal) {
 				return;
 			}
 			if (this.offset) {
 				this.offset = 0; // will fire this.get()
 			} else {
-				this.$nextTick(() => this.get());
+				this.$nextTick(() => this.get());			
 			}
 		},
 	},
