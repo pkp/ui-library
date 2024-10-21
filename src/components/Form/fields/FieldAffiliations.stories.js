@@ -41,7 +41,7 @@ export default {
 			const name = 'FieldAffiliations';
 
 			const props = defineProps({
-				value: {type: Object},
+				value: {type: Array},
 				currentLocale: {type: String},
 				supportedLocales: {type: Object},
 			});
@@ -66,7 +66,11 @@ export default {
 			}
 			const addAffiliation = function () {
 				currentValue.push(JSON.parse(JSON.stringify(newAffiliationPending.value)));
-				cleanupAfterAdding();
+				newAffiliationPending.value = {};
+				searchPhrase.value = '';
+				if (typeof isStoryBook === 'undefined') {
+					organizations.value = [];
+				}
 			}
 			const deleteAffiliation = function (index) {
 				if (confirm(t('user.affiliations.deleteInstitutionConfirmation',
@@ -106,14 +110,14 @@ export default {
 			const rowActionsHandler = function (param) {
 				if (typeof (param) === 'object' && param.length === 2) {
 					const name = param[0].trim();
-					const id = param[1];
+					const index = param[1];
 
 					switch (name) {
 						case 'edit':
-							toggleEditMode(id);
+							toggleEditMode(index);
 							break;
 						case 'delete':
-							deleteAffiliation(id);
+							deleteAffiliation(index);
 							break;
 						default:
 							console.error(`No handler for action: ${name}`);
@@ -170,28 +174,36 @@ export default {
 
 			// Misc
 			function searchPhraseChanged() {
-				if (typeof isStoryBook === 'undefined') {
-					organizations.value = [];
-					if (searchPhrase.value.length >= 3) {
-						setTimeout(() => {
-							apiLookup();
-						}, 200);
-					}
+				newAffiliationPending.value = {};
+
+				if (typeof isStoryBook !== 'undefined') {
+					return;
+				}
+
+				organizations.value = [];
+				if (searchPhrase.value.length >= 3) {
+					setTimeout(() => {
+						apiLookup();
+					}, 200);
 				}
 			}
 
 			function makeCurrentValueCompatible() {
-				Object.keys(currentValue).forEach(key => {
+				// if(typeof currentValue === 'undefined' || currentValue === null){
+				// 	return;
+				// }
+
+				Object.keys(currentValue).forEach(index => {
 					supportedLocales.forEach((locale) => {
-						if (!(locale in currentValue[key]._data.name)) {
-							currentValue[key]._data.name[locale] = "";
+						if (!(locale in currentValue[index]._data.name)) {
+							currentValue[index]._data.name[locale] = "";
 						}
 					});
 
-					if (!currentValue[key]['_helper']) {
-						currentValue[key]['_helper'] = getHelperSchema();
-						currentValue[key]['_helper'].editable = !currentValue[key]._data.ror;
+					if (!currentValue[index]['_helper']) {
+						currentValue[index]['_helper'] = getHelperSchema();
 					}
+					currentValue[index]['_helper'].editable = !currentValue[index]._data.ror;
 				});
 			}
 
@@ -228,6 +240,10 @@ export default {
 			}
 
 			function getLocaleDisplayName(locale) {
+				if(typeof Intl === 'undefined') {
+					return locale;
+				}
+
 				const localeNames = new Intl.DisplayNames(
 					[currentLocale],
 					{type: 'language'}
@@ -250,14 +266,6 @@ export default {
 					.catch(error => {
 						console.log(error);
 					});
-			}
-
-			function cleanupAfterAdding() {
-				newAffiliationPending.value = {};
-				searchPhrase.value = '';
-				if (typeof isStoryBook === 'undefined') {
-					organizations.value = [];
-				}
 			}
 
 			return {
