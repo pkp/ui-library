@@ -1,5 +1,5 @@
 <template>
-	<div class="border border-light">
+	<div class="border border-light" data-cy="participant-manager">
 		<div class="flex items-center justify-between bg-default p-5">
 			<h3 class="text-2xl-bold uppercase text-heading">
 				{{ t('editor.submission.stageParticipants') }}
@@ -31,17 +31,24 @@
 							<div class="text-sm-normal text-secondary">
 								{{ participant.roleName }}
 							</div>
+							<div
+								v-if="participant.recommendOnly"
+								class="mt-0.5 text-xs-normal text-heading"
+							>
+								{{ t('dashboard.recommendOnly.onlyAllowedToRecommend') }}
+							</div>
 						</div>
 					</div>
 					<div>
 						<DropdownActions
 							:actions="participantManagerStore.itemActions"
-							:label="t('common.moreActions')"
+							:label="`${participant.fullName} ${t('common.moreActions')}`"
 							:display-as-ellipsis="true"
 							@action="
 								(actionName) =>
 									participantManagerStore[actionName]({
 										participant: participant,
+										stageAssignmen,
 									})
 							"
 						/>

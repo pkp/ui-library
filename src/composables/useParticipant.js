@@ -6,13 +6,6 @@ export function useParticipant() {
 			pkp.const.ROLE_ID_ASSISTANT,
 		];
 	}
-	function hasParticipantAtLeastOneRole(participant, roleIds = []) {
-		return participant.groups.some((group) => roleIds.includes(group.roleId));
-	}
-
-	function getFirstGroupWithFollowingRoles(participant, roleIds = []) {
-		return participant.groups.find((group) => roleIds.includes(group.roleId));
-	}
 
 	function getUserAvatarInitialsFromName(fullName) {
 		const fullNameParts = fullName.split(' ');
@@ -31,7 +24,5 @@ export function useParticipant() {
 	return {
 		getUserAvatarInitialsFromName,
 		getEditorRoleIds,
-		hasParticipantAtLeastOneRole,
-		getFirstGroupWithFollowingRoles,
 	};
 }

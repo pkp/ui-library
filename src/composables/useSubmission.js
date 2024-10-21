@@ -1,5 +1,4 @@
 import {useLocalize} from './useLocalize';
-
 const {t, tk} = useLocalize();
 
 export const ExtendedStages = {
@@ -24,6 +23,27 @@ export const ExtendedStagesLabels = {
 	productionScheduled: tk('dashboard.stage.scheduledForPublication'),
 	productionPublished: tk('dashboard.stage.published'),
 	declined: tk('submissions.declined'),
+};
+
+export const RecommendationTranslations = {
+	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_ACCEPT]: tk(
+		'reviewer.article.decision.accept',
+	),
+	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_PENDING_REVISIONS]: tk(
+		'reviewer.article.decision.pendingRevisions',
+	),
+	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_RESUBMIT_HERE]: tk(
+		'reviewer.article.decision.resubmitHere',
+	),
+	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_RESUBMIT_ELSEWHERE]: tk(
+		'reviewer.article.decision.resubmitElsewhere',
+	),
+	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_DECLINE]: tk(
+		'reviewer.article.decision.decline',
+	),
+	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_SEE_COMMENTS]: tk(
+		'reviewer.article.decision.seeComments',
+	),
 };
 
 const InProgressReviewAssignmentStatuses = [
@@ -205,6 +225,14 @@ export function useSubmission() {
 		return ['OpenReview', 'OpenReview'];
 	}
 
+	function getRecommendOnlyUserIdsForStage(submission, stageId) {
+		const stage = getStageById(submission, stageId);
+
+		return stage.stageAssignments
+			.filter((assignment) => assignment.recommendOnly)
+			.map((assignment) => assignment.userId);
+	}
+
 	return {
 		getSubmissionById,
 		getActiveStage,
@@ -227,5 +255,6 @@ export function useSubmission() {
 		getOpenReviewAssignmentsForRound,
 		getReviewMethodIcons,
 		InProgressReviewAssignmentStatuses,
+		getRecommendOnlyUserIdsForStage,
 	};
 }

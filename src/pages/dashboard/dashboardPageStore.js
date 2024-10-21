@@ -7,10 +7,10 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
 import {useAnnouncer} from '@/composables/useAnnouncer';
 import {useUrl} from '@/composables/useUrl';
-import {useUrlSearchParams} from '@vueuse/core';
+import {useQueryParams} from '@/composables/useQueryParams';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
-import {useWorkflowActions} from './composables/useWorkflowActions';
+import {useWorkflowActions} from '../workflow/composables/useWorkflowActions';
 import {useReviewerManagerActions} from '@/managers/ReviewerManager/useReviewerManagerActions';
 
 import {useParticipantManagerActions} from '@/managers/ParticipantManager/useParticipantManagerActions';
@@ -19,8 +19,7 @@ import {useEditorialLogic} from './composables/useEditorialLogic';
 import {useReviewActivityLogic} from './composables/useReviewActivityLogic';
 import {useSubmission} from '@/composables/useSubmission';
 
-import DashboardFiltersModal from '@/pages/dashboard/components/DashboardFiltersModal.vue';
-import SubmissionSummaryModal from '@/pages/dashboard/SubmissionSummaryModal/SubmissionSummaryModal.vue';
+import DashboardModalFilters from '@/pages/dashboard/modals/DashboardModalFilters.vue';
 
 const {t, tk} = useLocalize();
 
@@ -67,27 +66,41 @@ export const useDashboardPageStore = defineComponentStore(
 		 * Url query params
 		 */
 		// Reactive query params parsed from the url
-		const queryParamsUrl = useUrlSearchParams();
+		const queryParamsUrl = useQueryParams();
 
 		/**
 		 * Views
 		 */
 		const views = ref(pageInitConfig.views);
-		const currentViewId = ref(
-			queryParamsUrl.currentViewId &&
-				views.value.find((view) => view.id === queryParamsUrl.currentViewId)
-				? queryParamsUrl.currentViewId
-				: views.value[0]?.id || null,
+		const currentViewId = computed(() => {
+			// does it exist
+			const view = views.value.find(
+				(view) => view.id === queryParamsUrl.currentViewId,
+			);
+			if (view) {
+				return queryParamsUrl.currentViewId;
+			} else {
+				// fallback to first available view
+				queryParamsUrl.currentViewId = views.value[0].id;
+				return views.value[0].id;
+			}
+		});
+
+		// reset filters when the view gets changed from menu
+		watch(
+			() => queryParamsUrl.currentViewId,
+			(newCurrentViewId, prevCurrentViewId) => {
+				if (newCurrentViewId !== prevCurrentViewId) {
+					currentPage.value = 1;
+					clearFiltersForm();
+					resetSearchPhrase();
+				}
+			},
 		);
+
 		const currentView = computed(
 			() => views.value.find((view) => view.id === currentViewId.value) || {},
 		);
-		function loadView(view) {
-			currentViewId.value = view.id;
-			currentPage.value = 1;
-			clearFiltersForm();
-			resetSearchPhrase();
-		}
 
 		/**
 		 * Columns
@@ -97,13 +110,26 @@ export const useDashboardPageStore = defineComponentStore(
 		/**
 		 * Search Phrase
 		 */
-		const searchPhrase = ref(queryParamsUrl.searchPhrase || '');
+		const searchPhrase = computed(() => {
+			return queryParamsUrl.searchPhrase || '';
+		});
 		function setSearchPhrase(value) {
-			searchPhrase.value = value;
+			queryParamsUrl.searchPhrase = value;
 			currentPage.value = 1;
 		}
 		function resetSearchPhrase() {
-			searchPhrase.value = undefined;
+			queryParamsUrl.searchPhrase = undefined;
+		}
+
+		/**
+		 * Filters Modal
+		 */
+		const isModalOpenedFilters = ref(false);
+		function openFiltersModal() {
+			openSideModal(DashboardModalFilters, {
+				filtersFormInitial: filtersForm,
+				onUpdateFiltersForm: updateFiltersForm,
+			});
 		}
 
 		/**
@@ -120,8 +146,25 @@ export const useDashboardPageStore = defineComponentStore(
 			clearFiltersFormField,
 			initFiltersFormFromQueryParams,
 		} = useFiltersForm(filtersForm);
-		// Apply query params to filtersForm
-		initFiltersFormFromQueryParams(queryParamsUrl);
+
+		watch(filtersFormQueryParams, (paramsToApply) => {
+			Object.keys(paramsToApply).forEach((paramKey) => {
+				if (
+					JSON.stringify(queryParamsUrl[paramKey]) !==
+					JSON.stringify(paramsToApply[paramKey])
+				) {
+					queryParamsUrl[paramKey] = paramsToApply[paramKey];
+				}
+			});
+		});
+
+		watch(
+			queryParamsUrl,
+			(newQueryParamsUrl) => {
+				initFiltersFormFromQueryParams(newQueryParamsUrl);
+			},
+			{immediate: true},
+		);
 
 		/**
 		 * Sorting
@@ -275,62 +318,38 @@ export const useDashboardPageStore = defineComponentStore(
 		const selectedSubmission = ref(null);
 
 		/**
-		 * Summary submission Modal
+		 * Workflow submission Modal
 		 */
 
-		// Tracking which submissionId is opened in summary modal for query params
-		const summarySubmissionId = ref(null);
-		function openSummaryModal(submissionId) {
-			summarySubmissionId.value = submissionId;
+		// Tracking which submissionId is opened in workflow modal for query params
+		const workflowSubmissionId = computed(() => {
+			return queryParamsUrl.workflowSubmissionId;
+		});
+
+		function openWorkflowModal(submissionId) {
+			queryParamsUrl.workflowSubmissionId = submissionId;
 			openSideModal(
-				SubmissionSummaryModal,
+				'WorkflowPage',
 				{
 					submissionId,
 					pageInitConfig,
 				},
 				{
 					onClose: async () => {
-						summarySubmissionId.value = null;
+						queryParamsUrl.workflowSubmissionId = null;
 						await fetchSubmissions();
 					},
 				},
 			);
 		}
-		if (queryParamsUrl.summarySubmissionId) {
-			openSummaryModal(queryParamsUrl.summarySubmissionId);
+		if (queryParamsUrl.workflowSubmissionId) {
+			openWorkflowModal(queryParamsUrl.workflowSubmissionId);
 		}
 
-		/**
-		 * Filters Modal
-		 */
-		const isModalOpenedFilters = ref(false);
-		function openFiltersModal() {
-			openSideModal(DashboardFiltersModal, {
-				filtersFormInitial: filtersForm,
-				onUpdateFiltersForm: updateFiltersForm,
-			});
+		function openSubmissionWizard(submissionId) {
+			const {redirectToPage} = useUrl(`submission?id=${submissionId}`);
+			redirectToPage();
 		}
-
-		/**
-		 * Sync Query params
-		 */
-
-		// Calculate all query params that should be applied to the url
-		const queryParamsInternal = computed(() => {
-			return {
-				...filtersFormQueryParams.value,
-				searchPhrase: searchPhrase.value,
-				currentViewId: currentViewId.value,
-				summarySubmissionId: summarySubmissionId.value || undefined,
-			};
-		});
-
-		// Apply queryParamsInternal to reactive queryParams to udpate url
-		watch(queryParamsInternal, (paramsToApply) => {
-			Object.keys(paramsToApply).forEach((paramKey) => {
-				queryParamsUrl[paramKey] = paramsToApply[paramKey];
-			});
-		});
 
 		/**
 		 * Expose editorial logic function via store to make it easier
@@ -355,7 +374,6 @@ export const useDashboardPageStore = defineComponentStore(
 			views,
 			currentViewId,
 			currentView,
-			loadView,
 
 			// Columns
 			columns,
@@ -386,6 +404,9 @@ export const useDashboardPageStore = defineComponentStore(
 			fetchSubmissions,
 			setCurrentPage,
 
+			// Workflow Page
+			workflowSubmissionId,
+
 			// Reviewer listing
 			openReviewerForm,
 
@@ -403,8 +424,10 @@ export const useDashboardPageStore = defineComponentStore(
 			// Modals
 			selectedSubmission,
 
-			// Summary submission Modal
-			openSummaryModal,
+			// Workflow Modal
+			openWorkflowModal,
+
+			openSubmissionWizard,
 
 			// Filters Modal
 			isModalOpenedFilters,

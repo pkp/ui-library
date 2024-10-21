@@ -1,5 +1,6 @@
 <template>
 	<GridWrapper
+		:key="`${submissionId} - ${stageId}`"
 		grid-component="grid.queries.QueriesGridHandler"
 		:params="params"
 	></GridWrapper>

@@ -1,12 +1,14 @@
 <script type="text/javascript">
 import Container from '@/components/Container/Container.vue';
 import ModalManager from '@/components/Modal/ModalManager.vue';
+import DashboardPage from '@/pages/dashboard/DashboardPage.vue';
 
 import PkpAnnouncer from '@/components/Announcer/Announcer.vue';
 import ReviewerSubmissionPage from '@/pages/reviewerSubmission/ReviewerSubmissionPage.vue';
 import JobsPage from '@/pages/jobs/JobsPage.vue';
 import FailedJobsPage from '@/pages/jobs/FailedJobsPage.vue';
 import FailedJobDetailsPage from '@/pages/jobs/FailedJobDetailsPage.vue';
+import CounterReportsPage from '@/pages/counter/CounterReportsPage.vue';
 
 export default {
 	name: 'Page',
@@ -17,6 +19,8 @@ export default {
 		JobsPage,
 		FailedJobsPage,
 		FailedJobDetailsPage,
+		CounterReportsPage,
+		DashboardPage,
 	},
 	extends: Container,
 	data() {
