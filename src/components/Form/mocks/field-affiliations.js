@@ -1,8 +1,10 @@
 export default {
 	name: 'author-affiliations',
 	component: 'author-affiliations',
-	items: {
-		"12": {
+	currentLocale: 'en',
+	supportedLocales: ['en', 'de', 'fr_CA'],
+	items: [
+		{
 			"_data": {
 				"id": 12,
 				"authorId": 5,
@@ -32,7 +34,7 @@ export default {
 				"zh_CN": "zh_Hans"
 			}
 		},
-		"13": {
+		{
 			"_data": {
 				"id": 13,
 				"authorId": 5,
@@ -62,7 +64,7 @@ export default {
 				"zh_CN": "zh_Hans"
 			}
 		},
-		"14": {
+		{
 			"_data": {
 				"id": 14,
 				"authorId": 5,
@@ -92,7 +94,7 @@ export default {
 				"zh_CN": "zh_Hans"
 			}
 		},
-		"15": {
+		{
 			"_data": {
 				"id": 15,
 				"authorId": 5,
@@ -122,8 +124,8 @@ export default {
 				"zh_CN": "zh_Hans"
 			}
 		}
-	},
-	rorsApiResponse: {
+	],
+	apiResponse: {
 		"itemsMax": 110723,
 		"items": [
 			{
@@ -427,35 +429,5 @@ export default {
 				"ror": "https://ror.org/023m51b03"
 			}
 		]
-	},
-	/* [ rorsApiResponseItem, ... ] */
-	rorsApiResponseItem: {
-		"displayLocale": "en",
-		"id": 1,
-		"isActive": true,
-		"name": {
-			"en": "Simon Fraser University",
-			"fr_CA": "Simon Fraser University",
-			"de": "Simon Fraser University",
-			"nl": "Simon Fraser University",
-			"tr": "Simon Fraser University",
-		},
-		"ror": "https://ror.org/0213rcc28"
-	},
-	newItem: {
-		"newId": {
-			"_data": {
-				"id": null,
-				"authorId": null,
-				"ror": "",
-				"name": {}
-			},
-			"_hasLoadableAdapters": false,
-			"_metadataExtractionAdapters": [],
-			"_extractionAdaptersLoaded": false,
-			"_metadataInjectionAdapters": [],
-			"_injectionAdaptersLoaded": false,
-			"_localesTable": {}
-		}
 	},
 };

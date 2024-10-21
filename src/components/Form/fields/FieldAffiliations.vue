@@ -50,7 +50,7 @@
 						</div>
 						<div class="pkpFormField__heading">
 							<label class="pkpFormFieldLabel">
-								<button @click="toggleEdit(id)">
+								<button @click="toggleEditMode(indexRow)">
 									{{ translations(row) }}
 								</button>
 							</label>
@@ -111,14 +111,14 @@
 					</TableCell>
 					<TableCell>
 						<div v-if="showAddMode"
-								 v-for="([locale2, val], index) in Object.entries(newAffiliationPending._data.name)"
-								 :key="index">
-							<div v-if="locale2 !== currentLocale && supportedLocales.includes(locale2)">
+								 v-for="([localeAddMode, valueAddMode], indexNameAddMode) in Object.entries(newAffiliationPending._data.name)"
+								 :key="indexNameAddMode">
+							<div v-if="localeAddMode !== currentLocale && supportedLocales.includes(localeAddMode)">
 								<div class="pkpFormField pkpFormField--text pkpFormField--sizelarge">
 									<div class="pkpFormField pkpFormField--text pkpFormField--sizelarge">
 										<div class="pkpFormField__heading">
 											<label v-if="!newAffiliationPending._data.ror" class="pkpFormFieldLabel">
-												{{ getLocaleDisplayName(locale2) }}
+												{{ getLocaleDisplayName(localeAddMode) }}
 											</label>
 											<label v-if="newAffiliationPending._data.ror">
 												{{t('user.affiliations.typeTranslationNameInLanguageLabel', {language: getLocaleDisplayName(locale2)})}}
@@ -127,9 +127,9 @@
 										<div class="pkpFormField__control">
 											<div class="pkpFormField__control_top">
 												<input
-													v-model="newAffiliationPending._data.name[locale2]"
+													v-model="newAffiliationPending._data.name[localeAddMode]"
 													:readonly="newAffiliationPending._data.ror"
-													:id="'contributors-affiliations-newAffiliation' + '-' + locale2"
+													:id="'contributors-affiliations-newAffiliation' + '-' + localeAddMode"
 													class="pkpFormField__input pkpFormField--text__input"
 													type="text"
 													name="searchPhraseInput"
@@ -166,75 +166,47 @@ import TableCell from '@/components/Table/TableCell.vue';
 const name = 'FieldAffiliations';
 
 const props = defineProps({
-	value: {
-		type: Object,
-		default() {
-			return {};
-		}
-	},
+	value: {type: Object},
+	currentLocale: {type: String},
+	supportedLocales: {type: Object},
 });
 
-//fixme: get these from parent
-const apiUrl = pkp.context.apiBaseUrl + 'rors/?search=';
-const currentLocale = $.pkp.app.primaryLocale;
-const supportedLocales = ['en', 'de', 'fr_CA'];
-
+const currentLocale = props.currentLocale;
+const supportedLocales = props.supportedLocales;
 const currentValue = props.value;
 const organizations = ref([]);
 const newAffiliationPending = ref({});
 const searchPhrase = ref('');
-const newItemPrefix = 'new';
-let newItemCounter = 0;
 
-// Search, select, add
+// Row actions
 const selectCustomOrganization = function () {
 	newAffiliationPending.value = getNewItemTemplate();
 	newAffiliationPending.value._data.name[currentLocale] = searchPhrase.value;
-	showAddMode.value = true;
 }
 const selectRorOrganization = function (organization) {
-	newAffiliationPending.value = getNewItemTemplate(organization);
+	newAffiliationPending.value = getNewItemTemplate();
 	newAffiliationPending.value._data.ror = organization.ror;
 	newAffiliationPending.value._data.name[currentLocale] = organization.name[currentLocale];
 	searchPhrase.value = organization.name[currentLocale];
-	showAddMode.value = true;
 }
 const addAffiliation = function () {
-	newItemCounter++;
-	let id = newItemPrefix + newItemCounter;
-	currentValue[id] = JSON.parse(JSON.stringify(newAffiliationPending.value));
-	valueHelper[id] = getValueHelperSchema()
-	valueHelper[id].editable = !id;
+	// newItemCounter++;
+	currentValue.push(JSON.parse(JSON.stringify(newAffiliationPending.value)));
 
 	// cleanup
-	searchPhrase.value = '';
-	organizations.value = [];
-	showAddMode.value = false;
+	cleanupAfterAdding();
 }
 const deleteAffiliation = function (id) {
 	if (confirm(t('user.affiliations.deleteInstitutionConfirmation',
 		{institution: currentValue[id]['_data']['name'][currentLocale]}))
 	) {
 		delete currentValue[id];
-		// delete valueHelper[id];
 	}
 }
-
-function searchPhraseChanged() {
-	showAddMode.value = false;
-	organizations.value = [];
-	if (searchPhrase.value.length >= 3) {
-		setTimeout(() => {
-			apiLookup();
-		}, 200);
-	}
-}
-
-// Row actions
 const rowActionsArgs = function (id) {
 	let actions = [];
 
-	if (valueHelper[id].editable) {
+	if (currentValue[id]._helper.editable) {
 		actions.push(
 			{
 				"label": t('user.affiliations.translationEditActionLabel', {}),
@@ -262,11 +234,11 @@ const rowActionsArgs = function (id) {
 const rowActionsHandler = function (param) {
 	if (typeof (param) === 'object' && param.length === 2) {
 		const name = param[0].trim();
-		const id = param[1].trim();
+		const id = param[1];
 
 		switch (name) {
 			case 'edit':
-				toggleEdit(id);
+				toggleEditMode(id);
 				break;
 			case 'delete':
 				deleteAffiliation(id);
@@ -278,22 +250,20 @@ const rowActionsHandler = function (param) {
 }
 
 // GUI
-const valueHelper = reactive(getValueHelper(currentValue));
-const showAddMode = ref(false);
-const showSearchResults = computed(() => {
-	if (searchPhrase.value.length >= 3
-		&& organizations.value.length > 0
-		&& showAddMode.value === false) {
-		return true;
-	}
-	return false;
+const showAddMode = computed(() => {
+	return typeof newAffiliationPending.value._data !== 'undefined';
 });
-const toggleEdit = function (id) {
-	valueHelper[id].editMode = !valueHelper[id].editMode;
+const showSearchResults = computed(() => {
+	return searchPhrase.value.length >= 3
+		&& organizations.value.length > 0
+		&& showAddMode.value === false;
+});
+const toggleEditMode = function (id) {
+	currentValue[id]._helper.editMode = !currentValue[id]._helper.editMode;
 };
-const closeEdit = function (id) {
-	valueHelper[id].editMode = false;
-	valueHelper[id].actions = false;
+const closeEditMode = function (id) {
+	currentValue[id]._helper.editMode = false;
+	currentValue[id]._helper.actions = false;
 };
 const translations = function (row) {
 	let names = row._data.name;
@@ -317,43 +287,44 @@ const translations = function (row) {
 
 // Hooks
 watch(currentValue, () => {
-	Object.keys(currentValue).forEach(key => {
-			if (!(key in valueHelper)) {
-				valueHelper[key] = getValueHelperSchema();
-			}
-		},
-		{immediate: true}
-	);
-})
+		makeCurrentValueCompatible();
+	},
+	{immediate: true}
+);
 
 onMounted(() => {
-	makeValueConfirmAllowedLocales();
+	makeCurrentValueCompatible();
 })
 
 // Misc
-function makeValueConfirmAllowedLocales() {
+function searchPhraseChanged() {
+	if (typeof isStoryBook === 'undefined') {
+		organizations.value = [];
+		if (searchPhrase.value.length >= 3) {
+			setTimeout(() => {
+				apiLookup();
+			}, 200);
+		}
+	}
+}
+
+function makeCurrentValueCompatible() {
 	Object.keys(currentValue).forEach(key => {
 		supportedLocales.forEach((locale) => {
 			if (!(locale in currentValue[key]._data.name)) {
 				currentValue[key]._data.name[locale] = "";
 			}
 		});
+
+		if (!currentValue[key]['_helper']) {
+			currentValue[key]['_helper'] = getHelperSchema();
+			currentValue[key]['_helper'].editable = !currentValue[key]._data.ror;
+		}
 	});
 }
 
-function getNewItemTemplate(organization) {
-	let newItem = getAffiliationSchema();
-
-	supportedLocales.forEach((locale) => {
-		newItem._data.name[locale] = "";
-	});
-
-	return newItem;
-}
-
-function getAffiliationSchema() {
-	// { "id": { }, ... }
-	return {
+function getNewItemTemplate() {
+	let newItem = {
 		"_data": {
 			"id": null,
 			"authorId": null,
@@ -365,27 +336,23 @@ function getAffiliationSchema() {
 		"_extractionAdaptersLoaded": false,
 		"_metadataInjectionAdapters": [],
 		"_injectionAdaptersLoaded": false,
-		"_localesTable": {}
+		"_localesTable": {},
+		"_helper": getHelperSchema()
 	};
+
+	supportedLocales.forEach((locale) => {
+		newItem._data.name[locale] = "";
+	});
+
+	return newItem;
 }
 
-function getValueHelperSchema() {
+function getHelperSchema() {
 	return {
 		actions: false,
 		editMode: false,
 		editable: false
 	};
-}
-
-function getValueHelper(value) {
-	let newValue = {};
-
-	Object.keys(value).forEach(key => {
-		newValue[key] = getValueHelperSchema();
-		newValue[key].editable = !value[key]._data.ror;
-	});
-
-	return newValue;
 }
 
 function getLocaleDisplayName(locale) {
@@ -398,7 +365,7 @@ function getLocaleDisplayName(locale) {
 }
 
 function apiLookup() {
-	fetch(apiUrl + searchPhrase.value, {})
+	fetch(pkp.context.apiBaseUrl + 'rors/?search=' + searchPhrase.value, {})
 		.then(response => response.json())
 		.then(data => {
 			organizations.value = [];
@@ -411,6 +378,14 @@ function apiLookup() {
 		.catch(error => {
 			console.log(error);
 		});
+}
+
+function cleanupAfterAdding() {
+	newAffiliationPending.value = {};
+	searchPhrase.value = '';
+	if (typeof isStoryBook === 'undefined') {
+		organizations.value = [];
+	}
 }
 </script>
 

@@ -32,57 +32,44 @@ export default {
 		setup() {
 			// Storybook
 			const isStoryBook = true;
-			const organizations = ref(args.rorsApiResponse['items']);
 			const currentValue = args.items;
+			const organizations = ref(args.apiResponse['items']);
+			const currentLocale = args.currentLocale;
+			const supportedLocales = args.supportedLocales;
 
 			// FieldAffiliations.vue
 			const name = 'FieldAffiliations';
 
 			const props = defineProps({
-				value: {
-					type: Object,
-					default() {
-						return {};
-					}
-				},
+				value: {type: Object},
+				currentLocale: {type: String},
+				supportedLocales: {type: Object},
 			});
 
-			//fixme: get these from parent
-			const apiUrl = pkp.context.apiBaseUrl + 'rors/?search=';
-			const currentLocale = $.pkp.app.primaryLocale;
-			const supportedLocales = ['en', 'de', 'fr_CA'];
-
+			// const currentLocale = props.currentLocale;
+			// const supportedLocales = props.supportedLocales;
 			// const currentValue = props.value;
 			// const organizations = ref([]);
 			const newAffiliationPending = ref({});
 			const searchPhrase = ref('');
-			const newItemPrefix = 'new';
-			let newItemCounter = 0;
 
 			// Row actions
 			const selectCustomOrganization = function () {
 				newAffiliationPending.value = getNewItemTemplate();
 				newAffiliationPending.value._data.name[currentLocale] = searchPhrase.value;
-				showAddMode.value = true;
 			}
 			const selectRorOrganization = function (organization) {
-				newAffiliationPending.value = getNewItemTemplate(organization);
+				newAffiliationPending.value = getNewItemTemplate();
 				newAffiliationPending.value._data.ror = organization.ror;
 				newAffiliationPending.value._data.name[currentLocale] = organization.name[currentLocale];
 				searchPhrase.value = organization.name[currentLocale];
-				showAddMode.value = true;
 			}
 			const addAffiliation = function () {
-				newItemCounter++;
-				let id = newItemPrefix + newItemCounter;
-				currentValue[id] = JSON.parse(JSON.stringify(newAffiliationPending.value));
+				// newItemCounter++;
+				currentValue.push(JSON.parse(JSON.stringify(newAffiliationPending.value)));
 
 				// cleanup
-				searchPhrase.value = '';
-				showAddMode.value = false;
-				if (typeof isStoryBook === 'undefined') {
-					organizations.value = [];
-				}
+				cleanupAfterAdding();
 			}
 			const deleteAffiliation = function (id) {
 				if (confirm(t('user.affiliations.deleteInstitutionConfirmation',
@@ -122,11 +109,11 @@ export default {
 			const rowActionsHandler = function (param) {
 				if (typeof (param) === 'object' && param.length === 2) {
 					const name = param[0].trim();
-					const id = param[1].trim();
+					const id = param[1];
 
 					switch (name) {
 						case 'edit':
-							toggleEdit(id);
+							toggleEditMode(id);
 							break;
 						case 'delete':
 							deleteAffiliation(id);
@@ -138,17 +125,18 @@ export default {
 			}
 
 			// GUI
-			const showAddMode = ref(false);
+			const showAddMode = computed(() => {
+				return typeof newAffiliationPending.value._data !== 'undefined';
+			});
 			const showSearchResults = computed(() => {
 				return searchPhrase.value.length >= 3
 					&& organizations.value.length > 0
 					&& showAddMode.value === false;
-
 			});
-			const toggleEdit = function (id) {
+			const toggleEditMode = function (id) {
 				currentValue[id]._helper.editMode = !currentValue[id]._helper.editMode;
 			};
-			const closeEdit = function (id) {
+			const closeEditMode = function (id) {
 				currentValue[id]._helper.editMode = false;
 				currentValue[id]._helper.actions = false;
 			};
@@ -174,19 +162,18 @@ export default {
 
 			// Hooks
 			watch(currentValue, () => {
-					makeCurrentValueConfirmComponent();
+					makeCurrentValueCompatible();
 				},
 				{immediate: true}
 			);
 
 			onMounted(() => {
-				makeCurrentValueConfirmComponent();
+				makeCurrentValueCompatible();
 			})
 
 			// Misc
 			function searchPhraseChanged() {
 				if (typeof isStoryBook === 'undefined') {
-					showAddMode.value = false;
 					organizations.value = [];
 					if (searchPhrase.value.length >= 3) {
 						setTimeout(() => {
@@ -196,7 +183,7 @@ export default {
 				}
 			}
 
-			function makeCurrentValueConfirmComponent() {
+			function makeCurrentValueCompatible() {
 				Object.keys(currentValue).forEach(key => {
 					supportedLocales.forEach((locale) => {
 						if (!(locale in currentValue[key]._data.name)) {
@@ -205,25 +192,14 @@ export default {
 					});
 
 					if (!currentValue[key]['_helper']) {
-						currentValue[key]['_helper'] = getValueHelperSchema();
+						currentValue[key]['_helper'] = getHelperSchema();
 						currentValue[key]['_helper'].editable = !currentValue[key]._data.ror;
 					}
 				});
 			}
 
-			function getNewItemTemplate(organization) {
-				let newItem = getAffiliationSchema();
-
-				supportedLocales.forEach((locale) => {
-					newItem._data.name[locale] = "";
-				});
-
-				return newItem;
-			}
-
-			function getAffiliationSchema() {
-				// { "id": { }, ... }
-				return {
+			function getNewItemTemplate() {
+				let newItem = {
 					"_data": {
 						"id": null,
 						"authorId": null,
@@ -235,11 +211,18 @@ export default {
 					"_extractionAdaptersLoaded": false,
 					"_metadataInjectionAdapters": [],
 					"_injectionAdaptersLoaded": false,
-					"_localesTable": {}
+					"_localesTable": {},
+					"_helper": getHelperSchema()
 				};
+
+				supportedLocales.forEach((locale) => {
+					newItem._data.name[locale] = "";
+				});
+
+				return newItem;
 			}
 
-			function getValueHelperSchema() {
+			function getHelperSchema() {
 				return {
 					actions: false,
 					editMode: false,
@@ -257,7 +240,7 @@ export default {
 			}
 
 			function apiLookup() {
-				fetch(apiUrl + searchPhrase.value, {})
+				fetch(pkp.context.apiBaseUrl + 'rors/?search=' + searchPhrase.value, {})
 					.then(response => response.json())
 					.then(data => {
 						organizations.value = [];
@@ -270,6 +253,14 @@ export default {
 					.catch(error => {
 						console.log(error);
 					});
+			}
+
+			function cleanupAfterAdding() {
+				newAffiliationPending.value = {};
+				searchPhrase.value = '';
+				if (typeof isStoryBook === 'undefined') {
+					organizations.value = [];
+				}
 			}
 
 			return {
