@@ -119,6 +119,17 @@ window.pkp = {
 	 * Locale keys loaded on the server-side
 	 */
 	localeKeys: {
+		'user.affiliations.institution': 'Institution',
+		'user.affiliations.translation': 'Translation',
+		'user.affiliations.translationEditActionLabel': 'Edit institution name',
+		'user.affiliations.translationDeleteActionLabel': 'Remove institution',
+		'user.affiliations.translationActionsAriaLabel': 'Click to edit or delete',
+		'user.affiliations.translationsAllAvailable': 'All translations available',
+		'user.affiliations.translationsSomeAvailable': '{$translated} of {$total} languages completed',
+		'user.affiliations.typeTranslationNameInLanguageLabel': 'Type the institute name in {$language}',
+		'user.affiliations.translationNameInLanguage': 'Institute name in {$language}',
+		'user.affiliations.deleteInstitutionConfirmation': 'Are you sure you want to delete institution "{$institution}"?',
+		'user.affiliations.searchPhraseLabel': 'Type the institute name in {$language}',
 		'acceptInvitation.modal.button': '##acceptInvitation.modal.button##',
 		'acceptInvitation.modal.message': '##acceptInvitation.modal.message##',
 		'acceptInvitation.modal.title': '##acceptInvitation.modal.title##',
