@@ -138,22 +138,16 @@ const props = defineProps({
 	},
 });
 
-const computedStyle = computed(() => {
-	return ['primary', 'negative', 'success', 'basic'].includes(props.modalStyle)
-		? props.modalStyle
-		: 'primary';
-});
-
 const styles = computed(() => ({
 	'modal__panel modal__panel--dialog relative mx-3 w-10/12 max-w-3xl transform overflow-hidden rounded bg-secondary text-start shadow transition-all sm:my-8': true,
-	'border-none': computedStyle.value === 'basic',
-	'border-s-[14px] border-primary': computedStyle.value === 'primary',
-	'border-s-[14px] border-success': computedStyle.value === 'success',
-	'border-s-[14px] border-negative': computedStyle.value === 'negative',
+	'border-none': props.modalStyle === 'basic',
+	'border-s-[14px] border-primary': props.modalStyle === 'primary',
+	'border-s-[14px] border-success': props.modalStyle === 'success',
+	'border-s-[14px] border-negative': props.modalStyle === 'negative',
 }));
 
 const icon = computed(() => {
-	switch (computedStyle.value) {
+	switch (props.modalStyle) {
 		case 'negative':
 			return 'Cancel';
 		case 'success':
@@ -165,8 +159,8 @@ const icon = computed(() => {
 
 const iconStyles = computed(() => ({
 	'flex h-12 w-12 items-center justify-center rounded-full': true,
-	'bg-success': computedStyle.value === 'success',
-	'bg-negative': computedStyle.value === 'negative',
+	'bg-success': props.modalStyle === 'success',
+	'bg-negative': props.modalStyle === 'negative',
 }));
 
 const noActions = computed(() => !props.actions?.length);
