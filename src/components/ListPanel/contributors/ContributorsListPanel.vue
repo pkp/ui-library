@@ -51,13 +51,17 @@
 					</template>
 				</pkp-header>
 				<template v-slot:item-title="{item}">
-					{{ item.fullName }}
-					<badge v-if="item.userGroupName">
-						{{ localize(item.userGroupName) }}
-					</badge>
+					<div class="full-text">
+						{{ item.fullName }}
+						<badge v-if="item.userGroupName">
+							{{ localize(item.userGroupName) }}
+						</badge>
+					</div>
 				</template>
 				<template v-slot:item-subtitle="{item}">
-					{{ localize(item.affiliation) }}
+					<div class="full-text">
+						{{ localize(item.affiliation) }}
+					</div>
 				</template>
 				<template
 					v-if="
@@ -673,5 +677,10 @@ export default {
 	.listPanel__itemSummary {
 		margin-inline-end: 8rem;
 	}
+}
+
+.listPanel--contributor .full-text {
+	white-space: normal;
+	text-align: justify;
 }
 </style>
