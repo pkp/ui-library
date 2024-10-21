@@ -513,10 +513,14 @@ const SideModalWithSideMenu = {
 			},
 		];
 
-		const {sideMenuProps, setExpandedKeys} = useSideMenu(items, {
+		const {sideMenuProps} = useSideMenu(items, {
 			activeItemKey: 'review_round_1',
+			expandedKeys: {
+				workflow: true,
+				review: true,
+				publication: true,
+			},
 		});
-		setExpandedKeys(['workflow', 'review', 'publication']);
 
 		return {metadata, generalInformation, items, sideMenuProps};
 	},

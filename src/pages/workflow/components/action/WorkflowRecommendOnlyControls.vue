@@ -59,10 +59,18 @@ const props = defineProps({
 });
 
 const RecommendOnlyDecisions = [
+	// EXTERNAL REVIEW
 	pkp.const.DECISION_RECOMMEND_ACCEPT,
 	pkp.const.DECISION_RECOMMEND_DECLINE,
 	pkp.const.DECISION_RECOMMEND_PENDING_REVISIONS,
 	pkp.const.DECISION_RECOMMEND_RESUBMIT,
+
+	// INTERNAL REVIEW
+	pkp.const.DECISION_RECOMMEND_ACCEPT_INTERNAL,
+	pkp.const.DECISION_RECOMMEND_PENDING_REVISIONS_INTERNAL,
+	pkp.const.RECOMMEND_RESUBMIT_INTERNAL,
+	pkp.const.RECOMMEND_DECLINE_INTERNAL,
+	pkp.const.RECOMMEND_EXTERNAL_REVIEW,
 ];
 
 const explicitelyShowRecommendationActions = ref(false);
@@ -93,20 +101,42 @@ function showActions() {
 function getRecommendationActions() {
 	const actions = [];
 
-	actions.push({
-		label: t('editor.submission.recommend.revisions'),
-		action: WorkflowActions.WORKFLOW_RECOMMEND_REVISION,
-	});
+	if (props.stageId === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) {
+		actions.push({
+			label: t('editor.submission.recommend.revisions'),
+			action: WorkflowActions.WORKFLOW_RECOMMEND_REVISION,
+		});
 
-	actions.push({
-		label: t('editor.submission.recommend.accept'),
-		action: DecisionActions.DECISION_RECOMMEND_ACCEPT,
-	});
+		actions.push({
+			label: t('editor.submission.recommend.accept'),
+			action: DecisionActions.DECISION_RECOMMEND_ACCEPT,
+		});
 
-	actions.push({
-		label: t('editor.submission.recommend.decline'),
-		action: DecisionActions.DECISION_RECOMMEND_DECLINE,
-	});
+		actions.push({
+			label: t('editor.submission.recommend.decline'),
+			action: DecisionActions.DECISION_RECOMMEND_DECLINE,
+		});
+	} else if (props.stageId === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW) {
+		actions.push({
+			label: t('editor.submission.recommend.revisions'),
+			action: DecisionActions.DECISION_RECOMMEND_PENDING_REVISIONS_INTERNAL,
+		});
+
+		actions.push({
+			label: t('editor.submission.recommend.accept'),
+			action: DecisionActions.DECISION_RECOMMEND_ACCEPT_INTERNAL,
+		});
+
+		actions.push({
+			label: t('editor.submission.recommend.decline'),
+			action: DecisionActions.DECISION_RECOMMEND_DECLINE_INTERNAL,
+		});
+
+		actions.push({
+			label: t('editor.submission.recommend.sendExternalReview'),
+			action: DecisionActions.DECISION_RECOMMEND_EXTERNAL_REVIEW,
+		});
+	}
 
 	return actions;
 }

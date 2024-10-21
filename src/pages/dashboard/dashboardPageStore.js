@@ -20,7 +20,6 @@ import {useReviewActivityLogic} from './composables/useReviewActivityLogic';
 import {useSubmission} from '@/composables/useSubmission';
 
 import DashboardModalFilters from '@/pages/dashboard/modals/DashboardModalFilters.vue';
-import Workflow from '@/pages/workflow/Workflow.vue';
 
 const {t, tk} = useLocalize();
 
@@ -330,7 +329,7 @@ export const useDashboardPageStore = defineComponentStore(
 		function openWorkflowModal(submissionId) {
 			queryParamsUrl.workflowSubmissionId = submissionId;
 			openSideModal(
-				Workflow,
+				'WorkflowPage',
 				{
 					submissionId,
 					pageInitConfig,

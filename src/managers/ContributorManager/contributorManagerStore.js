@@ -23,7 +23,7 @@ export const useContributorManagerStore = defineComponentStore(
 
 		const contributorsListPanelProps = computed(() => {
 			return {
-				canEditPublication: props.canEditPublication,
+				canEditPublication: props.canEdit,
 				form: form.value,
 				id: 'contributors',
 				items: props.publication.authors,

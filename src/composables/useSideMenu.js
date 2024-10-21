@@ -78,7 +78,7 @@ export function useSideMenu(_items, opts = {}) {
 
 		const parentKeys = findParentKeys(items.value, key);
 		if (parentKeys) {
-			setExpandedKeys([...parentKeys, ...Object.keys(_expandedKeys)]);
+			setExpandedKeys([...parentKeys, ...Object.keys(expandedKeys.value)]);
 		}
 	}
 

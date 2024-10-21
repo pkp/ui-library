@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div data-cy="reviewer-manager">
 		<PkpTable
 			aria-label="Example for basic table"
 			:aria-describedby="headingId"
