@@ -1,16 +1,15 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
 import {useApiUrl} from '@/composables/useApiUrl';
 import {useAnnouncer} from '@/composables/useAnnouncer';
-import {useUrl} from '@/composables/useUrl';
 import {useTranslation} from '@/composables/useTranslation';
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
-import {useModal} from '@/composables/useModal';
 import {ref, watch} from 'vue';
+import {useUserAccessManagerActions} from './useUserAccessManagerActions';
+import {useDataChanged} from '@/composables/useDataChanged';
 
 export const useUserAccessManagerStore = defineComponentStore(
 	'userAccessManager',
 	() => {
-		const {openDialog} = useModal();
 		const {t} = useTranslation();
 		/** Announcer */
 
@@ -23,7 +22,7 @@ export const useUserAccessManagerStore = defineComponentStore(
 
 		const countPerPage = ref(25);
 		const currentPage = ref(1);
-		function setCurrentPage(_currentPage) {
+		async function setCurrentPage(_currentPage) {
 			currentPage.value = _currentPage;
 		}
 
@@ -53,35 +52,39 @@ export const useUserAccessManagerStore = defineComponentStore(
 			{immediate: true},
 		);
 
-		function handleUserAccessAction(actionName, userObj) {
-			if (actionName === 'editUser') {
-				handleEditUser(userObj);
-			}
+		const {triggerDataChange} = useDataChanged();
+
+		function triggerDataChangeCallback() {
+			console.log('trigger');
+			triggerDataChange();
 		}
 
-		const {pageUrl: editUserPageUrl} = useUrl('user/edit');
+		/**
+		 * Actions
+		 */
+		const _userAccessActionsFns = useUserAccessManagerActions();
+		function getItemActions(userObj) {
+			return _userAccessActionsFns.getItemActions(userObj);
+		}
 
-		function handleEditUser(userObj) {
-			openDialog({
-				title: t('userAccess.edit.title'),
-				message: t('userAccess.edit.message'),
-				actions: [
-					{
-						label: t('userAccess.edit.title'),
-						isPrimary: true,
-						callback: async (close) => {
-							window.location = editUserPageUrl.value + '/' + userObj.id;
-						},
-					},
-					{
-						label: t('common.cancel'),
-						isWarnable: true,
-						callback: (close) => {
-							close();
-						},
-					},
-				],
-			});
+		function sendEmail(userObj) {
+			_userAccessActionsFns.sendEmail(userObj.id, triggerDataChangeCallback);
+		}
+
+		function disableUser(userObj) {
+			_userAccessActionsFns.disableUser(userObj.id, triggerDataChangeCallback);
+		}
+
+		function removeUser(userObj) {
+			_userAccessActionsFns.removeUser(userObj.id, triggerDataChangeCallback);
+		}
+
+		function mergeUser(userObj) {
+			_userAccessActionsFns.mergeUser(userObj.id, triggerDataChangeCallback);
+		}
+
+		function loginAs(userObj) {
+			_userAccessActionsFns.loginAs(userObj.id);
 		}
 
 		return {
@@ -91,8 +94,13 @@ export const useUserAccessManagerStore = defineComponentStore(
 			userAccessPagination,
 			userList,
 			isUserAccessLoading,
-			handleUserAccessAction,
 			setSearchPhrase,
+			sendEmail,
+			disableUser,
+			removeUser,
+			mergeUser,
+			loginAs,
+			getItemActions,
 		};
 	},
 );
