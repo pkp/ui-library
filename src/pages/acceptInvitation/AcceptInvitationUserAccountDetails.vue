@@ -70,9 +70,9 @@ const options = [
 			t('acceptInvitation.privacyStatement.label') +
 			' <a href=' +
 			pageUrl.value +
-			'><button class="text-blue-600 text-primary hover:underline"> ' +
+			'>' +
 			t('acceptInvitation.privacyStatement.btn') +
-			'</button></a> ',
+			'</a> ',
 	},
 ];
 const store = useAcceptInvitationPageStore();
