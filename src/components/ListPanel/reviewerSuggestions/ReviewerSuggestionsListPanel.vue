@@ -157,7 +157,6 @@ export default {
 		 * @param {Object} item
 		 */
 		formSuccess(reviewerSuggestion) {
-			console.log(reviewerSuggestion);
 			if (this.activeForm.method === 'POST') {
 				this.offset = 0;
 
