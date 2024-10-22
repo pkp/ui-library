@@ -124,7 +124,7 @@
 
 <script setup>
 import {computed} from 'vue';
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 import PkpTable from '@/components/Table/Table.vue';
 import TableCell from '@/components/Table/TableCell.vue';
 import TableHeader from '@/components/Table/TableHeader.vue';
@@ -142,7 +142,7 @@ const props = defineProps({
 });
 
 const store = useUserInvitationPageStore();
-const {t} = useTranslation();
+const {t} = useLocalize();
 const {formatShortDate} = useDate();
 
 const allUserGroupsToAdd = computed(

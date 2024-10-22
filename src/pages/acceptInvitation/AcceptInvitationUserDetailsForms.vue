@@ -15,13 +15,13 @@
 					heading-element="h4"
 					:heading="t('user.orcid')"
 					:value="
-						store.acceptinvitationPayload.orcid
-							? store.acceptinvitationPayload.orcid
+						store.acceptInvitationPayload.orcid
+							? store.acceptInvitationPayload.orcid
 							: t('invitation.orcid.acceptInvitation.message')
 					"
 				></FormDisplayItemBasic>
 				<Icon
-					v-if="store.acceptinvitationPayload.orcid"
+					v-if="store.acceptInvitationPayload.orcid"
 					icon="orcid"
 					:inline="true"
 				/>
@@ -80,18 +80,18 @@ if (!store.userId) {
 		if (field.isMultilingual) {
 			store.updateAcceptInvitationPayload(
 				field.name,
-				store.acceptinvitationPayload[field.name]
-					? store.acceptinvitationPayload[field.name]
+				store.acceptInvitationPayload[field.name]
+					? store.acceptInvitationPayload[field.name]
 					: field.value,
 				false,
 			);
 		} else {
-			if (store.acceptinvitationPayload[field.name] === null) {
+			if (store.acceptInvitationPayload[field.name] === null) {
 				store.updateAcceptInvitationPayload(field.name, field.value, true);
 			} else {
 				store.updateAcceptInvitationPayload(
 					field.name,
-					store.acceptinvitationPayload[field.name],
+					store.acceptInvitationPayload[field.name],
 					true,
 				);
 			}
@@ -99,8 +99,11 @@ if (!store.userId) {
 	});
 }
 
-connectWithPayload(store.acceptinvitationPayload);
+connectWithPayload(store.acceptInvitationPayload);
 
+/**
+ * handing errors and covert dot notation to object
+ */
 const sectionErrors = computed(() => {
 	const result = {};
 	for (const key in store.errors) {

@@ -7,7 +7,7 @@
 		></PkpForm>
 	</div>
 	<div v-if="store.invitationPayload.userId !== null" class="p-8">
-		<div class="p-1">
+		<div class="flex flex-col gap-y-2">
 			<FormDisplayItemBasic
 				heading-element="h4"
 				:heading="t('user.email')"
@@ -71,12 +71,12 @@ function updateUserForm(id, form, c, d) {
 	set(id, form, c, d);
 	if (form.fields) {
 		form.fields.forEach((field) => {
-			if (
-				field.isMultilingual &&
-				!Object.values(field.value).every(
-					(value) => value === null || value === '',
-				)
-			) {
+			if (field.isMultilingual) {
+				Object.keys(field.value).forEach((element) => {
+					if (field.value[element] === null || field.value[element] === '') {
+						delete field.value[element]; // remove empty values form the object
+					}
+				});
 				store.updatePayload(field.name, field.value, false);
 			} else {
 				store.updatePayload(field.name, field.value, false);
@@ -130,6 +130,9 @@ if (!store.invitationPayload.userId) {
 
 connectWithPayload(store.invitationPayload);
 
+/**
+ * handing errors and covert dot notation to object
+ */
 const sectionErrors = computed(() => {
 	const result = {};
 	for (const key in store.errors) {

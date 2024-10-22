@@ -32,7 +32,7 @@
 				</TableCell>
 			</TableRow>
 			<TableRow v-for="(row, index) in userGroupsToAdd" :key="index">
-				<TableCell :is-row-header="true">
+				<TableCell>
 					{{ localize(row.userGroupName) }}
 				</TableCell>
 				<TableCell>{{ row.dateStart }}</TableCell>
@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 import PkpTable from '@/components/Table/Table.vue';
 import TableCell from '@/components/Table/TableCell.vue';
 import TableHeader from '@/components/Table/TableHeader.vue';
@@ -70,5 +70,5 @@ defineProps({
 		required: false,
 	},
 });
-const {t} = useTranslation();
+const {t} = useLocalize();
 </script>

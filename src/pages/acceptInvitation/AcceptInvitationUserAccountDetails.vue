@@ -50,7 +50,7 @@
 
 <script setup>
 import {defineProps, ref, computed} from 'vue';
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 import FormDisplayItemBasic from '@/components/FormDisplay/FormDisplayItemBasic.vue';
 import FieldText from '@/components/Form/fields/FieldText.vue';
 import FieldOptions from '@/components/Form/fields/FieldOptions.vue';
@@ -60,7 +60,7 @@ import {useUrl} from '@/composables/useUrl';
 const props = defineProps({
 	validateFields: {type: Array, required: true},
 });
-const {t} = useTranslation();
+const {t} = useLocalize();
 const fields = ref({username: '', password: '', privacyStatement: false});
 const {pageUrl} = useUrl('about/privacy');
 const options = [

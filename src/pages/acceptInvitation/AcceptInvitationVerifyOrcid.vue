@@ -16,18 +16,18 @@
 <script setup>
 import PkpButton from '@/components/Button/Button.vue';
 import {defineProps} from 'vue';
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 import {useAcceptInvitationPageStore} from './AcceptInvitationPageStore';
 
 defineProps({});
 const store = useAcceptInvitationPageStore();
-const {t} = useTranslation();
+const {t} = useLocalize();
 
 /**
  * Go to the next step
  */
 function skipOrcid() {
-	delete store.acceptinvitationPayload.userOrcid;
+	delete store.acceptInvitationPayload.userOrcid;
 	store.openStep(store.steps[1 + store.currentStepIndex].id);
 }
 

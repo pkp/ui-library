@@ -3,7 +3,6 @@ import {useApiUrl} from '@/composables/useApiUrl';
 import {useAnnouncer} from '@/composables/useAnnouncer';
 import {useUrl} from '@/composables/useUrl';
 import {useLocalize} from '@/composables/useLocalize';
-import {useTranslation} from '@/composables/useTranslation';
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useFetch} from '@/composables/useFetch';
 import {useModal} from '@/composables/useModal';
@@ -15,8 +14,7 @@ export const useUserInvitationManagerStore = defineComponentStore(
 	'userInvitationsPage',
 	() => {
 		const {openDialog} = useModal();
-		const {localize} = useLocalize();
-		const {t} = useTranslation();
+		const {localize, t} = useLocalize();
 		const {formatShortDate} = useDate();
 		/** Announcer */
 

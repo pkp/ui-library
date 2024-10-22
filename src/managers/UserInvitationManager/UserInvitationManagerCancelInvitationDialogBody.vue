@@ -1,17 +1,17 @@
 <template>
 	<p>{{ message }}</p>
 	<div>
-		<ul>
-			<li>{{ t('user.email') }} : {{ email }}</li>
-			<li>{{ t('userInvitation.roleTable.role') }} : {{ roles }}</li>
-			<li>{{ t('common.status') }} : {{ status }}</li>
-			<li>{{ t('user.affiliation') }} : {{ affiliation }}</li>
+		<ul role="list">
+			<li>{{ t('user.email') }}:{{ email }}</li>
+			<li>{{ t('userInvitation.roleTable.role') }}:{{ roles }}</li>
+			<li>{{ t('common.status') }}:{{ status }}</li>
+			<li>{{ t('user.affiliation') }}:{{ affiliation }}</li>
 		</ul>
 	</div>
 </template>
 
 <script setup>
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 
 defineProps({
 	message: {type: String, required: true},
@@ -21,5 +21,5 @@ defineProps({
 	affiliation: {type: String, required: true},
 });
 
-const {t} = useTranslation();
+const {t} = useLocalize();
 </script>

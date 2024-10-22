@@ -1,5 +1,5 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 import {useAnnouncer} from '@/composables/useAnnouncer';
 import {useFetch} from '@/composables/useFetch';
 import {computed, onMounted, ref, watch} from 'vue';
@@ -10,14 +10,14 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 	'userInvitationPage',
 	(pageInitConfig) => {
 		const {openDialog} = useModal();
-		const {t} = useTranslation();
+		const {t} = useLocalize();
 
 		/** Announcer */
 
 		const {announce} = useAnnouncer();
 
 		/** Accept invitation payload, initial value*/
-		const acceptinvitationPayload = ref({});
+		const acceptInvitationPayload = ref({});
 		/** Updated values only for invitation payload*/
 		const updatedPayload = ref({});
 
@@ -105,11 +105,13 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 					data.value.country,
 					userId.value ? true : false,
 				);
+				// add username to invitation payload for validations
 				updateAcceptInvitationPayload(
 					'username',
 					null,
 					userId.value ? true : false,
 				);
+				// add password to invitation payload for validations
 				updateAcceptInvitationPayload(
 					'password',
 					null,
@@ -127,7 +129,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			value,
 			initialValue = false,
 		) {
-			acceptinvitationPayload.value[fieldName] = value;
+			acceptInvitationPayload.value[fieldName] = value;
 			if (!initialValue) {
 				updatedPayload.value[fieldName] = value;
 			}
@@ -307,11 +309,6 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 		const invitationRequestPayload = computed(() => {
 			let payload = {};
 			if (userId.value) {
-				Object.keys(updatedPayload.value).forEach((element) => {
-					if (updatedPayload.value[element] === null) {
-						delete updatedPayload.value[element];
-					}
-				});
 				payload = {
 					...updatedPayload.value,
 				};
@@ -344,7 +341,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 				method: 'PUT',
 				body: {invitationData: invitationRequestPayload.value},
 			});
-			if (!acceptinvitationPayload.value.privacyStatement) {
+			if (!acceptInvitationPayload.value.privacyStatement) {
 				errors.value = {
 					privacyStatement: [t('acceptInvitation.privacyStatement.validation')],
 				};
@@ -370,6 +367,8 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 				'/finalize'
 			);
 		});
+
+		const {redirectToPage} = useUrl('submissions');
 		/**
 		 * Complete the submission
 		 *
@@ -396,7 +395,6 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 							{
 								label: t('acceptInvitation.modal.button'),
 								callback: (close) => {
-									const {redirectToPage} = useUrl('submissions');
 									redirectToPage();
 								},
 							},
@@ -404,6 +402,29 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 					});
 				}
 			}
+		}
+
+		function cancel() {
+			openDialog({
+				name: 'cancel',
+				title: t('invitation.cancelInvite.title'),
+				message: t('acceptInvitation.cancel.message'),
+				actions: [
+					{
+						label: t('invitation.cancelInvite.actionName'),
+						isWarnable: true,
+						callback: (close) => {
+							redirectToPage();
+						},
+					},
+					{
+						label: t('userInvitation.cancel.keepWorking'),
+						callback: (close) => {
+							close();
+						},
+					},
+				],
+			});
 		}
 
 		onMounted(async () => {
@@ -436,9 +457,10 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			nextStep,
 			previousStep,
 			updateAcceptInvitationPayload,
+			cancel,
 
 			//refs
-			acceptinvitationPayload,
+			acceptInvitationPayload,
 			email,
 			userId,
 		};

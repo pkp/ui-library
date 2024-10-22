@@ -116,11 +116,11 @@ import Icon from '@/components/Icon/Icon.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import {useUserInvitationManagerStore} from './UserInvitationManagerStore.js';
 import Pagination from '@/components/Pagination/Pagination.vue';
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 import {useDate} from '@/composables/useDate';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 
 const store = useUserInvitationManagerStore();
-const {t} = useTranslation();
+const {t} = useLocalize();
 const {formatShortDate} = useDate();
 </script>

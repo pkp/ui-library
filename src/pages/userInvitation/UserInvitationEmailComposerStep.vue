@@ -2,10 +2,6 @@
 	<Composer
 		:id="store.currentStep.id"
 		:add-c-c-label="t('common.addCCBCC')"
-		:attach-files-label="t('common.attachFiles')"
-		:attached-files-label="t('common.attachedFiles')"
-		:attachers="props.email.attachers"
-		:attachments="props.email.attachments"
 		:bcc="props.email.bcc"
 		:bcc-label="t('email.bcc')"
 		:body-label="t('stageParticipants.notify.message')"
@@ -45,7 +41,7 @@
 <script setup>
 import {computed} from 'vue';
 import Composer from '@/components/Composer/Composer.vue';
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 import {defineProps} from 'vue';
 import {useUserInvitationPageStore} from './UserInvitationPageStore';
 
@@ -58,7 +54,7 @@ const props = defineProps({
 		},
 	},
 });
-const {t} = useTranslation();
+const {t} = useLocalize();
 
 const store = useUserInvitationPageStore();
 const emailComposer = computed(() => store.invitationPayload.emailComposer);

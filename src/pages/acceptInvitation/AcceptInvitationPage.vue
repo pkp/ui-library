@@ -74,7 +74,7 @@ import PkpButton from '@/components/Button/Button.vue';
 import Steps from '@/components/Steps/Steps.vue';
 import Step from '@/components/Steps/Step.vue';
 import {useAcceptInvitationPageStore} from './AcceptInvitationPageStore';
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 import {ref} from 'vue';
 import AcceptInvitationUserDetailsForms from './AcceptInvitationUserDetailsForms.vue';
 import AcceptInvitationUserAccountDetails from './AcceptInvitationUserAccountDetails.vue';
@@ -112,7 +112,7 @@ const props = defineProps({
 	},
 });
 
-const {t} = useTranslation();
+const {t} = useLocalize();
 const wrapper = ref(null);
 const store = useAcceptInvitationPageStore(props);
 

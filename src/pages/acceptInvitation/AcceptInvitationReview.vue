@@ -8,12 +8,12 @@
 				<FormDisplayItemBasic
 					heading-element="h4"
 					:heading="t('user.username')"
-					:value="store.acceptinvitationPayload.username"
+					:value="store.acceptInvitationPayload.username"
 				></FormDisplayItemBasic>
 				<FormDisplayItemBasic
 					heading-element="h4"
 					:heading="t('user.password')"
-					:value="store.acceptinvitationPayload.password"
+					:value="store.acceptInvitationPayload.password"
 				></FormDisplayItemBasic>
 			</div>
 		</div>
@@ -26,34 +26,33 @@
 					heading-element="h4"
 					:heading="t('user.orcid')"
 					:value="
-						store.acceptinvitationPayload.orcid
-							? store.acceptinvitationPayload.orcid
+						store.acceptInvitationPayload.orcid
+							? store.acceptInvitationPayload.orcid
 							: t('invitation.orcid.acceptInvitation.message')
 					"
 				></FormDisplayItemBasic>
 			</div>
 		</div>
 		<div v-else>
+			<div
+				class="flex items-center justify-between border-t border-light pl-12 pt-12"
+			>
+				<h3>{{ t('acceptInvitation.review.userDetails') }}</h3>
+				<PkpButton class="border-0" @click="store.openStep('userDetails')">
+					{{ t('common.edit') }}
+				</PkpButton>
+			</div>
 			<div v-for="step in store.formSteps" :key="step.id">
 				<template v-if="step.id === 'userDetails'">
 					<div v-for="section in step.sections" :key="section.id">
 						<div
-							v-for="(locale, index) in section.props.form.supportedFormLocales"
+							v-for="locale in section.props.form.supportedFormLocales"
 							:key="locale.key"
-							class="border-t border-light p-8"
+							class="border-light p-8 even:border-t"
 						>
-							<div
-								v-if="index === 0"
-								class="flex items-center justify-between p-4"
-							>
-								<h3>{{ t('acceptInvitation.review.userDetails') }}</h3>
-								<PkpButton @click="store.openStep('userDetails')">
-									{{ t('common.edit') }}
-								</PkpButton>
-							</div>
-							<div class="p-4">
+							<div class="p-4 pb-8">
 								<div>
-									<h4>{{ locale.label }}</h4>
+									<h5>{{ locale.label }}</h5>
 								</div>
 
 								<FormDisplayItemBasic
@@ -66,13 +65,13 @@
 									heading-element="h4"
 									:heading="t('user.orcid')"
 									:value="
-										store.acceptinvitationPayload.orcid
-											? store.acceptinvitationPayload.orcid
+										store.acceptInvitationPayload.orcid
+											? store.acceptInvitationPayload.orcid
 											: t('invitation.orcid.acceptInvitation.message')
 									"
 								></FormDisplayItemBasic>
 								<Icon
-									v-if="store.acceptinvitationPayload.orcid"
+									v-if="store.acceptInvitationPayload.orcid"
 									icon="orcid"
 									:inline="true"
 								/>
@@ -110,9 +109,9 @@
 			</div>
 			<div class="p-4">
 				<AcceptInvitationUserRoles
-					:user-groups-to-add="store.acceptinvitationPayload.userGroupsToAdd"
+					:user-groups-to-add="store.acceptInvitationPayload.userGroupsToAdd"
 					:user-groups-to-remove="
-						store.acceptinvitationPayload.userGroupsToRemove
+						store.acceptInvitationPayload.userGroupsToRemove
 					"
 				/>
 			</div>
@@ -122,7 +121,7 @@
 
 <script setup>
 import {defineProps} from 'vue';
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 import AcceptInvitationUserRoles from './AcceptInvitationUserRoles.vue';
 import {useAcceptInvitationPageStore} from './AcceptInvitationPageStore';
 import Icon from '@/components/Icon/Icon.vue';
@@ -132,5 +131,5 @@ import FieldSelectDisplay from '@/components/FormDisplay/FieldSelectDisplay.vue'
 
 defineProps({});
 const store = useAcceptInvitationPageStore();
-const {t} = useTranslation();
+const {t} = useLocalize();
 </script>

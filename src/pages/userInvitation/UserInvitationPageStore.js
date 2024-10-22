@@ -1,5 +1,5 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
 import {computed, onMounted, ref, watch} from 'vue';
@@ -8,7 +8,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 	'userInvitationPage',
 	(pageInitConfig) => {
 		const {openDialog} = useModal();
-		const {t} = useTranslation();
+		const {t} = useLocalize();
 
 		/**
 		 * Invitation payload, initial value
@@ -89,7 +89,6 @@ export const useUserInvitationPageStore = defineComponentStore(
 			} else {
 				if (!currentStep.value?.skipInvitationUpdate) {
 					await updateInvitation();
-					// this needs to check only relevant errors for given step using the step.validateFields
 					if (isValid.value) {
 						openStep(steps.value[1 + currentStepIndex.value].id);
 					}
