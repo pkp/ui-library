@@ -344,7 +344,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 				method: 'PUT',
 				body: {invitationData: invitationRequestPayload.value},
 			});
-			if (!invitationRequestPayload.value.privacyStatement) {
+			if (!acceptinvitationPayload.value.privacyStatement) {
 				errors.value = {
 					privacyStatement: [t('acceptInvitation.privacyStatement.validation')],
 				};
