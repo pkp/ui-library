@@ -5,7 +5,6 @@ import {useTranslation} from '@/composables/useTranslation';
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {ref, watch} from 'vue';
 import {useUserAccessManagerActions} from './useUserAccessManagerActions';
-import {useDataChanged} from '@/composables/useDataChanged';
 
 export const useUserAccessManagerStore = defineComponentStore(
 	'userAccessManager',
@@ -52,11 +51,8 @@ export const useUserAccessManagerStore = defineComponentStore(
 			{immediate: true},
 		);
 
-		const {triggerDataChange} = useDataChanged();
-
-		function triggerDataChangeCallback() {
-			console.log('trigger');
-			triggerDataChange();
+		async function triggerDataChangeCallback() {
+			await fetchUserList();
 		}
 
 		/**
