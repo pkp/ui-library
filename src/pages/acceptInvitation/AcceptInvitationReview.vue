@@ -44,59 +44,20 @@
 			</div>
 			<div v-for="step in store.formSteps" :key="step.id">
 				<template v-if="step.id === 'userDetails'">
-					<div v-for="section in step.sections" :key="section.id">
-						<div
-							v-for="locale in section.props.form.supportedFormLocales"
-							:key="locale.key"
-							class="border-light p-8 even:border-t"
-						>
-							<div class="p-4 pb-8">
-								<div>
-									<h5>{{ locale.label }}</h5>
-								</div>
-
-								<FormDisplayItemBasic
-									v-if="store.userId === null"
-									heading-element="h4"
-									:heading="t('about.contact.email')"
-									:value="store.email"
-								></FormDisplayItemBasic>
-								<FormDisplayItemBasic
-									heading-element="h4"
-									:heading="t('user.orcid')"
-									:value="
-										store.acceptInvitationPayload.orcid
-											? store.acceptInvitationPayload.orcid
-											: t('invitation.orcid.acceptInvitation.message')
-									"
-								></FormDisplayItemBasic>
-								<Icon
-									v-if="store.acceptInvitationPayload.orcid"
-									icon="orcid"
-									:inline="true"
-								/>
-
-								<template
-									v-for="field in section.props.form.fields"
-									:key="field.name"
-								>
-									<FormDisplayItemBasic
-										v-if="field.component === 'field-text'"
-										heading-element="h4"
-										:heading="field.label"
-										:value="
-											field.isMultilingual
-												? field.value[locale.key]
-												: field.value
-										"
-									></FormDisplayItemBasic>
-									<FieldSelectDisplay
-										v-if="field.component === 'field-select'"
-										heading-element="h4"
-										:field="field"
-									></FieldSelectDisplay>
-								</template>
-							</div>
+					<div
+						v-for="section in step.sections"
+						:key="section.id"
+						class="border-light p-8 even:border-t"
+					>
+						<div class="p-4 pb-8">
+							<FormDisplay
+								v-if="store.userId === null"
+								:fields="section.props.form.fields"
+								:supported-form-locales="
+									section.props.form.supportedFormLocales
+								"
+								heading-element="h4"
+							></FormDisplay>
 						</div>
 					</div>
 				</template>
@@ -124,10 +85,9 @@ import {defineProps} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import AcceptInvitationUserRoles from './AcceptInvitationUserRoles.vue';
 import {useAcceptInvitationPageStore} from './AcceptInvitationPageStore';
-import Icon from '@/components/Icon/Icon.vue';
 import PkpButton from '@/components/Button/Button.vue';
+import FormDisplay from '@/components/FormDisplay/FormDisplay.vue';
 import FormDisplayItemBasic from '@/components/FormDisplay/FormDisplayItemBasic.vue';
-import FieldSelectDisplay from '@/components/FormDisplay/FieldSelectDisplay.vue';
 
 defineProps({});
 const store = useAcceptInvitationPageStore();
