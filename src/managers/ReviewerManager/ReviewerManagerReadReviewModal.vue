@@ -71,13 +71,14 @@ async function handleExport(name) {
 		`reviews/${props.submissionId}/${props.reviewAssignmentId}/${op}?authorFriendly=${authorFriendly}`,
 	);
 
-	const {data, fetch, isSuccess} = useFetch(apiUrl, {
+	const {data, fetch, isSuccess, validationError} = useFetch(apiUrl, {
 		method: 'GET',
 		expectValidationError: true,
 	});
 	await fetch();
-
-	if (isSuccess) {
+	if (validationError.value) {
+		pkp.eventBus.$emit('notify', validationError.value.error, 'warning');
+	} else if (isSuccess.value) {
 		const anchor = document.createElement('a');
 		anchor.href = useApiUrl(
 			`reviews/${props.submissionId}/exports/${data.value.temporaryFileId}`,
