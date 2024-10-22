@@ -10,8 +10,8 @@
 		<div class="p-1">
 			<FormDisplayItemBasic
 				heading-element="h4"
-				:heading="t('user.emailAddress')"
-				:value="store.invitationPayload.email"
+				:heading="t('user.email')"
+				:value="store.invitationPayload.inviteeEmail"
 			></FormDisplayItemBasic>
 
 			<FormDisplayItemBasic
@@ -46,10 +46,7 @@
 		</div>
 	</div>
 	<div class="p-8">
-		<UserInvitationUserGroupsTable
-			:user-groups="userGroups"
-			:errors="sectionErrors"
-		/>
+		<UserInvitationUserGroupsTable :user-groups="userGroups" />
 	</div>
 </template>
 
@@ -63,11 +60,26 @@ import UserInvitationUserGroupsTable from './UserInvitationUserGroupsTable.vue';
 import {useUserInvitationPageStore} from './UserInvitationPageStore';
 import {useForm} from '@/composables/useForm';
 
-function updateUserForm(a, {fields}, c, d) {
-	if (fields) {
-		fields.forEach((field) => {
-			if (store.invitationPayload[field.name] !== field.value) {
-				store.updatePayload(field.name, field.value);
+/**
+ * Update the payload by using form values on multilingual or not
+ * @param id string
+ * @param form Object
+ * @param c
+ * @param d
+ */
+function updateUserForm(id, form, c, d) {
+	set(id, form, c, d);
+	if (form.fields) {
+		form.fields.forEach((field) => {
+			if (
+				field.isMultilingual &&
+				!Object.values(field.value).every(
+					(value) => value === null || value === '',
+				)
+			) {
+				store.updatePayload(field.name, field.value, false);
+			} else {
+				store.updatePayload(field.name, field.value, false);
 			}
 		});
 	}
@@ -85,17 +97,56 @@ const {
 	form: userForm,
 	connectWithPayload,
 	connectWithErrors,
+	set,
 } = useForm(props.form);
+
+/**
+ * popuplate the form with existing values in the invitation payload
+ * if its a existing user form will not populate
+ */
+if (!store.invitationPayload.userId) {
+	userForm.value.fields.forEach((field) => {
+		if (field.isMultilingual) {
+			store.updatePayload(
+				field.name,
+				store.invitationPayload[field.name]
+					? store.invitationPayload[field.name]
+					: field.value,
+				store.invitationPayload[field.name] ? false : true,
+			);
+		} else {
+			if (store.invitationPayload[field.name] === null) {
+				store.updatePayload(field.name, field.value, true);
+			} else {
+				store.updatePayload(
+					field.name,
+					store.invitationPayload[field.name],
+					true,
+				);
+			}
+		}
+	});
+}
 
 connectWithPayload(store.invitationPayload);
 
 const sectionErrors = computed(() => {
-	return props.validateFields.reduce((obj, key) => {
-		if (store.errors[key]) {
-			obj[key] = store.errors[key];
+	const result = {};
+	for (const key in store.errors) {
+		const value = store.errors[key];
+		const keys = key.split('.');
+		let current = result;
+		for (let i = 0; i < keys.length; i++) {
+			const obj = keys[i];
+			if (i === keys.length - 1) {
+				current[obj] = value;
+			} else {
+				current[obj] = current[obj] || {};
+				current = current[obj];
+			}
 		}
-		return obj;
-	}, {});
+	}
+	return result;
 });
 connectWithErrors(sectionErrors);
 </script>

@@ -3,7 +3,7 @@
 		<div class="py-1">
 			<FormDisplayItemBasic
 				heading-element="h4"
-				:heading="t('user.emailAddress')"
+				:heading="t('user.email')"
 				:value="store.email"
 			></FormDisplayItemBasic>
 		</div>
@@ -55,19 +55,24 @@ import FormDisplayItemBasic from '@/components/FormDisplay/FormDisplayItemBasic.
 import FieldText from '@/components/Form/fields/FieldText.vue';
 import FieldOptions from '@/components/Form/fields/FieldOptions.vue';
 import {useAcceptInvitationPageStore} from './AcceptInvitationPageStore';
+import {useUrl} from '@/composables/useUrl';
+
 const props = defineProps({
 	validateFields: {type: Array, required: true},
 });
 const {t} = useTranslation();
 const fields = ref({username: '', password: '', privacyStatement: false});
+const {pageUrl} = useUrl('about/privacy');
 const options = [
 	{
 		value: true,
 		label:
 			t('acceptInvitation.privacyStatement.label') +
-			' <button class="text-blue-600 text-primary hover:underline"> ' +
+			' <a href=' +
+			pageUrl.value +
+			'><button class="text-blue-600 text-primary hover:underline"> ' +
 			t('acceptInvitation.privacyStatement.btn') +
-			'</button> ',
+			'</button></a> ',
 	},
 ];
 const store = useAcceptInvitationPageStore();

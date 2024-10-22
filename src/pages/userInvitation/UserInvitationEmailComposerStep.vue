@@ -27,8 +27,8 @@
 		:locale="props.email.locale"
 		:locales="props.email.locales"
 		:more-search-results-label="t('common.numberedMore')"
-		:recipient-options="props.email.recipientOptions"
-		:recipients="props.email.recipients"
+		:recipient-options="recipientOptions"
+		:recipients="recipients"
 		:recipients-label="t('email.to')"
 		:remove-item-label="t('common.removeItem')"
 		:searching-label="t('common.searching')"
@@ -68,7 +68,7 @@ function updateEmail(update) {
 		...store.invitationPayload.emailComposer,
 		...update,
 	};
-	store.updatePayload('emailComposer', emailComposerUpdate);
+	store.updatePayload('emailComposer', emailComposerUpdate, false);
 }
 
 if (!store.invitationPayload.body) {
@@ -77,6 +77,21 @@ if (!store.invitationPayload.body) {
 		body: props.email.body,
 	});
 }
+
+const recipients = computed(() => {
+	return store.invitationPayload.inviteeEmail;
+});
+
+const recipientOptions = computed(() => {
+	return [
+		{
+			value: store.invitationPayload.inviteeEmail,
+			label: {
+				[store.primaryLocale]: store.invitationPayload.inviteeEmail,
+			},
+		},
+	];
+});
 
 const sectionErrors = computed(() => {
 	return props.validateFields.reduce((obj, key) => {

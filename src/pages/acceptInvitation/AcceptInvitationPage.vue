@@ -1,7 +1,7 @@
 <template>
 	<div v-if="store.steps.length">
 		<Steps
-			class="border-x border-t border-light"
+			class="border-x border-t border-light bg-secondary"
 			:current="store.currentStep.id"
 			:started-steps="store.startedSteps"
 			:label="t('invitation.wizard.completeSteps')"
@@ -48,7 +48,7 @@
 				</div>
 			</Step>
 		</Steps>
-		<div class="border-x border-b border-light p-8">
+		<div class="border-x border-b border-light bg-secondary p-8">
 			<ButtonRow>
 				<PkpButton :is-warnable="true" @click="store.cancel">
 					{{ t('common.cancel') }}

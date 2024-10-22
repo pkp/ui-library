@@ -7,11 +7,11 @@ export default {
 			id: 'verifyOrcid',
 			name: 'Verify ORCID iD',
 			reviewName: '',
-			stepName: '{$step} - Verify ORCID iD',
+			stepLabel: '{$step} - Verify ORCID iD',
 			type: 'popup',
 			description:
 				'You can choose to verify your ORCID iD ok skip it. If you chose to skip it now, You can verify your ORCID iD from your profile section in OJS later',
-			stepButtonName: 'Save And Continue',
+			nextButtonLabel: 'Save And Continue',
 			sections: [
 				{
 					id: 'userVerifyOrcid',
@@ -24,10 +24,10 @@ export default {
 			id: 'userCreateReview',
 			name: 'Review & create account',
 			reviewName: 'Roles',
-			stepName: '{$step} - Review & create account',
+			stepLabel: '{$step} - Review & create account',
 			type: 'review',
 			description: 'Review details to start your new roles in OJS',
-			stepButtonName: 'Accept And Continue to OJS',
+			nextButtonLabel: 'Accept And Continue to OJS',
 			sections: [
 				{
 					id: 'userCreateRoles',
