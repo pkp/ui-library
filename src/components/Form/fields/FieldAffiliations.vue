@@ -38,7 +38,9 @@
 						</div>
 						<div v-if="!row._helper.editMode" class="pkpFormField__heading">
 							<label class="pkpFormFieldLabel">{{ row._data.name[currentLocale] }}</label> &nbsp;
-							<Icon v-if="!row._helper.editable" :icon="'ror'" :class="'mr-2'" :inline="true"/>
+							<a :href="row._data.ror" target="_blank">
+								<Icon v-if="!row._helper.editable" :icon="'ror'" :class="'mr-2'" :inline="true"/>
+							</a>
 						</div>
 					</TableCell>
 					<TableCell>
@@ -120,7 +122,7 @@
 										{{ searchPhrase }}
 									</a>
 								</li>
-								<li v-for="(organization, orgIndex) in organizations">
+								<li v-for="(organization, orgIndex) in apiResponse">
 									<a @click.prevent="selectRorOrganization(organization)">
 										{{ organization.name[currentLocale] }} &nbsp;
 										<Icon :icon="'ror'" :class="'mr-2'" :inline="true"/>
@@ -189,15 +191,15 @@ import TableCell from '@/components/Table/TableCell.vue';
 const name = 'FieldAffiliations';
 
 const props = defineProps({
-	value: {type: Array},
 	currentLocale: {type: String},
 	supportedLocales: {type: Object},
+	value: {type: Array},
 });
 
 const currentLocale = props.currentLocale;
 const supportedLocales = props.supportedLocales;
 const currentValue = props.value;
-const organizations = ref([]);
+const apiResponse = ref([]);
 const newAffiliationPending = ref({});
 const searchPhrase = ref('');
 
@@ -206,17 +208,17 @@ const selectCustomOrganization = function () {
 	newAffiliationPending.value = getNewItemTemplate();
 	newAffiliationPending.value._data.name[currentLocale] = searchPhrase.value;
 }
-const selectRorOrganization = function (organization) {
+const selectRorOrganization = function (item) {
 	newAffiliationPending.value = getNewItemTemplate();
-	newAffiliationPending.value._data.ror = organization.ror;
-	newAffiliationPending.value._data.name[currentLocale] = organization.name[currentLocale];
-	searchPhrase.value = organization.name[currentLocale];
+	newAffiliationPending.value._data.ror = item.ror;
+	newAffiliationPending.value._data.name[currentLocale] = item.name[currentLocale];
+	searchPhrase.value = item.name[currentLocale];
 }
 const addAffiliation = function () {
 	currentValue.push(JSON.parse(JSON.stringify(newAffiliationPending.value)));
 	newAffiliationPending.value = {};
 	searchPhrase.value = '';
-	organizations.value = []; // storybook: disable
+	apiResponse.value = [];
 }
 const deleteAffiliation = function (index) {
 	if (confirm(t('user.affiliations.deleteInstitutionConfirmation',
@@ -277,7 +279,7 @@ const showAddMode = computed(() => {
 });
 const showSearchResults = computed(() => {
 	return searchPhrase.value.length >= 3
-		&& organizations.value.length > 0
+		&& apiResponse.value.length > 0
 		&& showAddMode.value === false;
 });
 const toggleEditMode = function (index) {
@@ -322,9 +324,7 @@ onMounted(() => {
 function searchPhraseChanged() {
 	newAffiliationPending.value = {};
 
-	// return; // storybook: enable
-
-	organizations.value = [];
+	apiResponse.value = [];
 	if (searchPhrase.value.length >= 3) {
 		setTimeout(() => {
 			apiLookup();
@@ -373,7 +373,6 @@ function getNewItemTemplate() {
 
 function getHelperSchema() {
 	return {
-		actions: false,
 		editMode: false,
 		editable: false
 	};
@@ -396,10 +395,10 @@ function apiLookup() {
 	fetch(pkp.context.apiBaseUrl + 'rors/?search=' + searchPhrase.value, {})
 		.then(response => response.json())
 		.then(data => {
-			organizations.value = [];
+			apiResponse.value = [];
 			if (data.items) {
 				for (let i = 0; i < data.items.length; i++) {
-					organizations.value.push(data.items[i]);
+					apiResponse.value.push(data.items[i]);
 				}
 			}
 		})
