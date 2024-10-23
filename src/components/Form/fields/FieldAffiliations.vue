@@ -18,123 +18,85 @@
 				<TableBody>
 					<TableRow v-for="(row, indexRow) in currentValue" :key="indexRow">
 						<TableCell>
-							<div v-if="row._helper.editMode"
-									 class="pkpFormField pkpFormField--text pkpFormField--sizelarge">
-								<div class="pkpFormField pkpFormField--text pkpFormField--sizelarge">
-									<div class="pkpFormField__heading">
-										<label class="pkpFormFieldLabel">
-											{{
-												(row._helper.editable)
-													? getLocaleDisplayName(currentLocale)
-													: t('user.affiliations.typeTranslationNameInLanguageLabel', {language: getLocaleDisplayName(currentLocale)})
-											}}
-										</label>
-									</div>
-									<div class="pkpFormField__control">
-										<div class="pkpFormField__control_top">
-											<input
-												v-model="row._data.name[currentLocale]"
-												:readonly="!row._helper.editable"
-												:id="'contributors-affiliations-' + indexRow + '-' + currentLocale"
-												class="pkpFormField__input pkpFormField--text__input"
-												type="text"
-												name="searchPhraseInput"
-												aria-invalid="0">
-										</div>
-									</div>
-								</div>
-							</div>
-							<div v-if="!row._helper.editMode" class="pkpFormField__heading">
-								<label class="pkpFormFieldLabel">{{ row._data.name[currentLocale] }}</label> &nbsp;
-								<a :href="row._data.ror" target="_blank">
-									<Icon v-if="!row._helper.editable" :icon="'ror'" :class="'mr-2'" :inline="true"/>
-								</a>
-							</div>
-						</TableCell>
-						<TableCell>
-							<div v-if="row._helper.editMode"
-									 v-for="([localeName, valueName], indexName) in Object.entries(row._data.name)"
-									 :key="indexName">
-								<div v-if="localeName !== currentLocale && supportedLocales.includes(localeName)">
-									<div class="pkpFormField pkpFormField--text pkpFormField--sizelarge">
-										<div class="pkpFormField pkpFormField--text pkpFormField--sizelarge">
-											<div class="pkpFormField__heading">
-												<label>
-													{{
-														(row._helper.editable)
-															? getLocaleDisplayName(localeName)
-															: t('user.affiliations.typeTranslationNameInLanguageLabel', {language: getLocaleDisplayName(localeName)})
-													}}
-												</label>
-											</div>
-											<div class="pkpFormField__control">
-												<div class="pkpFormField__control_top">
-													<input
-														v-model="row._data.name[localeName]"
-														:readonly="!row._helper.editable"
-														:id="'contributors-affiliations-' + indexRow + '-' + localeName"
-														class="pkpFormField__input pkpFormField--text__input"
-														type="text"
-														name="searchPhraseInput"
-														aria-invalid="0">
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="pkpFormField__heading">
-								<label class="pkpFormFieldLabel">
-									<button @click="toggleEditMode(indexRow)">
-										{{ translations(row) }}
-									</button>
-								</label>
-							</div>
+							<label class="pkpFormFieldLabel">
+								{{ row._data.name[currentLocale] }}
+							</label> &nbsp;
+							<a v-if="row._data.ror" :href="row._data.ror" target="_blank">
+								<Icon :icon="'ror'" :class="'mr-2'" :inline="true"/>
+							</a>
 						</TableCell>
 						<TableCell>
 							<div>
-								<DropdownActions
-									v-if="!row._helper.editMode"
-									v-bind="rowActionsArgs(indexRow)" @action="rowActionsHandler"/>
-								<PkpButton
-									v-if="row._helper.editMode"
-									@click="closeEditMode(indexRow)">Close
-								</PkpButton>
+								<label class="pkpFormFieldLabel">
+									<a @click.prevent="toggleEditMode(indexRow)">
+										{{ translations(row) }}
+									</a>
+								</label>
 							</div>
+							<div v-if="row._helper.editMode"
+									 v-for="([localeName, valueName], indexName) in Object.entries(row._data.name)"
+									 :key="indexName">
+								<div v-if="supportedLocales.includes(localeName)">
+									<div class="pkpFormField pkpFormField--text">
+										<div class="pkpFormField__heading">
+											<label>
+												{{
+													(row._data.ror)
+														? getLocaleDisplayName(localeName)
+														: t('user.affiliations.typeTranslationNameInLanguageLabel', {language: getLocaleDisplayName(localeName)})
+												}}
+											</label>
+										</div>
+										<div class="pkpFormField__control">
+											<div class="pkpFormField__control_top">
+												<input
+													v-model="row._data.name[localeName]"
+													:readonly="!!(row._data.ror)"
+													:id="'contributors-affiliations-' + indexRow + '-' + localeName"
+													class="pkpFormField__input pkpFormField--text__input"
+													type="text"
+													name="searchPhraseInput"
+													aria-invalid="0">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</TableCell>
+						<TableCell>
+							<DropdownActions
+								v-if="!row._helper.editMode"
+								v-bind="rowActionsArgs(indexRow)" @action="rowActionsHandler"/>
+							<PkpButton
+								v-if="row._helper.editMode"
+								@click="closeEditMode(indexRow)">Close
+							</PkpButton>
 						</TableCell>
 					</TableRow>
 					<TableRow>
 						<TableCell>
-							<div class="pkpFormField pkpFormField--text pkpFormField--sizelarge">
-								<div class="pkpFormField__heading">
-									<label
-										for="contributors-affiliations-searchPhrase-control"
-										class="pkpFormFieldLabel">
-										{{ t('user.affiliations.searchPhraseLabel', {language: getLocaleDisplayName('en')}) }}
-									</label>
-								</div>
-								<div class="pkpFormField__control">
-									<div class="pkpFormField__control_top">
-										<input
-											v-if="!showAddMode"
-											v-model="searchPhrase"
-											@keyup="searchPhraseChanged"
-											id="contributors-affiliations-searchPhrase-control"
-											class="pkpFormField__input pkpFormField--text__input  pkpFormField--sizelarge"
-											type="text"
-											name="affiliationsSearchPhraseInput"
-											aria-invalid="0"
-										/>
-										<input
-											v-if="showAddMode"
-											v-model="newAffiliationPending._data.name[currentLocale]"
-											:readonly="newAffiliationPending._data.ror"
-											:id="'contributors-affiliations-newAffiliation' + '-' + currentLocale"
-											class="pkpFormField__input pkpFormField--text__input"
-											type="text"
-											name="affiliationsNewAffiliationPendingInput"
-											aria-invalid="0">
-									</div>
+							<div class="pkpFormField__heading">
+								<label
+									for="contributors-affiliations-searchPhrase-control"
+									class="pkpFormFieldLabel">
+									{{ t('user.affiliations.searchPhraseLabel', {language: getLocaleDisplayName('en')}) }}
+								</label>
+							</div>
+							<div class="pkpFormField__control">
+								<div class="pkpFormField__control_top">
+									<input
+										v-model="searchPhrase"
+										@keyup="searchPhraseChanged"
+										id="contributors-affiliations-searchPhrase-control"
+										class="pkpFormField__input pkpFormField--text__input"
+										type="text"
+										name="affiliationsSearchPhraseInput"
+										aria-invalid="0"
+									/> &nbsp;
+									<a v-if="showAddMode && newAffiliationPending._data.ror"
+										 :href="newAffiliationPending._data.ror" target="_blank">
+										<Icon :icon="'ror'" :class="'mr-2'" :inline="true"/>
+									</a>
 								</div>
 							</div>
 							<div v-if="showSearchResults" class="shadow text-primary searchPhraseResults">
@@ -164,15 +126,15 @@
 							<div v-if="showAddMode"
 									 v-for="([localeAddMode, valueAddMode], indexNameAddMode) in Object.entries(newAffiliationPending._data.name)"
 									 :key="indexNameAddMode">
-								<div v-if="localeAddMode !== currentLocale && supportedLocales.includes(localeAddMode)">
+								<div v-if="supportedLocales.includes(localeAddMode)">
 									<div class="pkpFormField pkpFormField--text pkpFormField--sizelarge">
 										<div class="pkpFormField pkpFormField--text pkpFormField--sizelarge">
 											<div class="pkpFormField__heading">
 												<label>
 													{{
 														(newAffiliationPending._data.ror)
-															? getLocaleDisplayName(localeAddMode)
-															: t('user.affiliations.typeTranslationNameInLanguageLabel', {language: getLocaleDisplayName(localeAddMode)})
+															? t('user.affiliations.typeTranslationNameInLanguageLabel', {language: getLocaleDisplayName(localeAddMode)})
+															: getLocaleDisplayName(localeAddMode)
 													}}
 												</label>
 											</div>
@@ -180,7 +142,7 @@
 												<div class="pkpFormField__control_top">
 													<input
 														v-model="newAffiliationPending._data.name[localeAddMode]"
-														:readonly="newAffiliationPending._data.ror"
+														:readonly="!!(newAffiliationPending._data.ror)"
 														:id="'contributors-affiliations-newAffiliation' + '-' + localeAddMode"
 														class="pkpFormField__input pkpFormField--text__input"
 														type="text"
@@ -194,11 +156,8 @@
 							</div>
 						</TableCell>
 						<TableCell>
-							<div v-if="showAddMode">
-								<PkpButton @click="closeAddMode">Close</PkpButton>
-								<br/>
-								<PkpButton @click="addAffiliation">Add</PkpButton>
-							</div>
+							<PkpButton v-if="showAddMode" @click="closeAddMode">Close</PkpButton> &nbsp;
+							<PkpButton v-if="showAddMode" @click="addAffiliation">Add</PkpButton>
 						</TableCell>
 					</TableRow>
 				</TableBody>
@@ -240,13 +199,20 @@ const searchPhrase = ref('');
 const selectCustomOrganization = function () {
 	newAffiliationPending.value = getNewItemTemplate();
 	newAffiliationPending.value._data.name[currentLocale] = searchPhrase.value;
-	searchPhrase.value = '';
+	apiResponse.value = [];
+	// searchPhrase.value = '';
 }
 const selectRorOrganization = function (item) {
 	newAffiliationPending.value = getNewItemTemplate();
 	newAffiliationPending.value._data.ror = item.ror;
-	newAffiliationPending.value._data.name[currentLocale] = item.name[currentLocale];
-	searchPhrase.value = '';
+	// newAffiliationPending.value._data.name[currentLocale] = item.name[currentLocale];
+	supportedLocales.forEach((locale) => {
+		if (typeof item.name[locale] !== 'undefined') {
+			newAffiliationPending.value._data.name[locale] = item.name[locale];
+		}
+	});
+	apiResponse.value = [];
+	// searchPhrase.value = '';
 }
 const addAffiliation = function () {
 	if (typeof newAffiliationPending.value._data !== 'undefined') {
@@ -266,7 +232,7 @@ const deleteAffiliation = function (index) {
 const rowActionsArgs = function (index) {
 	let actions = [];
 
-	if (currentValue[index]._helper.editable) {
+	if (!currentValue[index]._data.ror) {
 		actions.push(
 			{
 				"label": t('user.affiliations.translationEditActionLabel', {}),
@@ -318,7 +284,8 @@ const closeAddMode = function () {
 	newAffiliationPending.value = {};
 }
 const showSearchResults = computed(() => {
-	return searchPhrase.value.length > 0;
+	return searchPhrase.value.length > 0
+		&& apiResponse.value.length > 0;
 });
 const toggleEditMode = function (index) {
 	currentValue[index]._helper.editMode = !currentValue[index]._helper.editMode;
@@ -362,19 +329,7 @@ function searchPhraseChanged() {
 
 	if (searchPhrase.value.length >= 3) {
 		setTimeout(() => {
-			fetch(apiUrl + searchPhrase.value, {})
-				.then(response => response.json())
-				.then(data => {
-					apiResponse.value = [];
-					if (data.items) {
-						for (let i = 0; i < data.items.length; i++) {
-							apiResponse.value.push(data.items[i]);
-						}
-					}
-				})
-				.catch(error => {
-					console.log(error);
-				});
+			apiLookup();
 		}, 200);
 	}
 }
@@ -390,7 +345,6 @@ function makeCurrentValueCompatible() {
 		if (!currentValue[index]['_helper']) {
 			currentValue[index]['_helper'] = getHelperSchema();
 		}
-		currentValue[index]['_helper'].editable = !currentValue[index]._data.ror;
 	});
 }
 
@@ -421,7 +375,6 @@ function getNewItemTemplate() {
 function getHelperSchema() {
 	return {
 		editMode: false,
-		editable: false
 	};
 }
 
@@ -437,6 +390,22 @@ function getLocaleDisplayName(locale) {
 
 	return localeNames.of(locale.replace('_', '-'));
 }
+
+function apiLookup() {
+	fetch(apiUrl + searchPhrase.value, {})
+		.then(response => response.json())
+		.then(data => {
+			apiResponse.value = [];
+			if (data.items) {
+				for (let i = 0; i < data.items.length; i++) {
+					apiResponse.value.push(data.items[i]);
+				}
+			}
+		})
+		.catch(error => {
+			console.log(error);
+		});
+}
 </script>
 
 <style lang="less">
@@ -448,6 +417,10 @@ function getLocaleDisplayName(locale) {
 
 .pkpFormField--affiliations__control {
 	position: relative;
+}
+
+.pkpFormField--affiliations__control a {
+	cursor: pointer;
 }
 
 .pkpFormField--affiliations__control .searchPhraseResults {
@@ -471,7 +444,6 @@ function getLocaleDisplayName(locale) {
 }
 
 .pkpFormField--affiliations__control .searchPhraseResults ul li a {
-	cursor: pointer;
 	padding: 5px;
 	display: inline-flex;
 }
