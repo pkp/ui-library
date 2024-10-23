@@ -18,8 +18,6 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 
 		/** Accept invitation payload, initial value*/
 		const acceptInvitationPayload = ref({});
-		/** Updated values only for invitation payload*/
-		const updatedPayload = ref({});
 
 		const email = ref(null);
 		const userId = ref(null);
@@ -70,53 +68,21 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 				email.value = data.value.email;
 				userId.value = data.value.userId;
 				if (data.value.familyName) {
-					updateAcceptInvitationPayload(
-						'familyName',
-						data.value.familyName,
-						userId.value ? true : false,
-					);
+					updateAcceptInvitationPayload('familyName', data.value.familyName); //if not check this override the multilingual structure
 				}
 				if (data.value.givenName) {
-					updateAcceptInvitationPayload(
-						'givenName',
-						data.value.givenName,
-						userId.value ? true : false,
-					);
+					updateAcceptInvitationPayload('givenName', data.value.givenName); //if not check this override the multilingual structure
 				}
-
-				updateAcceptInvitationPayload('userOrcid', data.value.orcid, true);
+				updateAcceptInvitationPayload('userCountry', data.value.country);
+				updateAcceptInvitationPayload('userOrcid', data.value.orcid);
 				updateAcceptInvitationPayload(
 					'privacyStatement',
 					userId.value ? true : false,
-					false,
-				);
-				updateAcceptInvitationPayload(
-					'userGroupsToAdd',
-					data.value.userGroupsToAdd,
-					true,
-				);
-				updateAcceptInvitationPayload(
-					'userGroupsToRemove',
-					data.value.userGroupsToRemove,
-					true,
-				);
-				updateAcceptInvitationPayload(
-					'userCountry',
-					data.value.country,
-					userId.value ? true : false,
 				);
 				// add username to invitation payload for validations
-				updateAcceptInvitationPayload(
-					'username',
-					null,
-					userId.value ? true : false,
-				);
+				updateAcceptInvitationPayload('username', null);
 				// add password to invitation payload for validations
-				updateAcceptInvitationPayload(
-					'password',
-					null,
-					userId.value ? true : false,
-				);
+				updateAcceptInvitationPayload('password', null);
 				errors.value = [];
 				if (steps.value.length === 0) {
 					await submit();
@@ -124,15 +90,8 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			}
 		}
 
-		function updateAcceptInvitationPayload(
-			fieldName,
-			value,
-			initialValue = false,
-		) {
+		function updateAcceptInvitationPayload(fieldName, value) {
 			acceptInvitationPayload.value[fieldName] = value;
-			if (!initialValue) {
-				updatedPayload.value[fieldName] = value;
-			}
 		}
 
 		/** Steps */
@@ -308,16 +267,17 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 
 		const invitationRequestPayload = computed(() => {
 			let payload = {};
-			if (userId.value) {
+			console.log(acceptInvitationPayload.value);
+			if (userId.value && acceptInvitationPayload.value.orcid) {
 				payload = {
-					...updatedPayload.value,
+					userOrcid: acceptInvitationPayload.value.orcid,
 				};
 			} else {
 				currentStep.value.sections.forEach((element, index) => {
 					let sectionPayload = {};
 					element.props.validateFields.forEach((field) => {
-						if (Object.keys(updatedPayload.value).includes(field)) {
-							sectionPayload[field] = updatedPayload.value[field];
+						if (Object.keys(acceptInvitationPayload.value).includes(field)) {
+							sectionPayload[field] = acceptInvitationPayload.value[field];
 						}
 					});
 					payload = {

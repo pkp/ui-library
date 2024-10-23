@@ -98,6 +98,7 @@ const {
 	connectWithPayload,
 	connectWithErrors,
 	set,
+	structuredErrors,
 } = useForm(props.form);
 
 /**
@@ -134,22 +135,7 @@ connectWithPayload(store.invitationPayload);
  * handing errors and covert dot notation to object
  */
 const sectionErrors = computed(() => {
-	const result = {};
-	for (const key in store.errors) {
-		const value = store.errors[key];
-		const keys = key.split('.');
-		let current = result;
-		for (let i = 0; i < keys.length; i++) {
-			const obj = keys[i];
-			if (i === keys.length - 1) {
-				current[obj] = value;
-			} else {
-				current[obj] = current[obj] || {};
-				current = current[obj];
-			}
-		}
-	}
-	return result;
+	return structuredErrors(store.errors);
 });
 connectWithErrors(sectionErrors);
 </script>

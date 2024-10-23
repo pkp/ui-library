@@ -60,9 +60,9 @@ function updateUserDetailsForm(a, form, c, d) {
 					(value) => value === null || value === '',
 				)
 			) {
-				store.updateAcceptInvitationPayload(field.name, field.value, false);
+				store.updateAcceptInvitationPayload(field.name, field.value);
 			} else {
-				store.updateAcceptInvitationPayload(field.name, field.value, false);
+				store.updateAcceptInvitationPayload(field.name, field.value);
 			}
 		});
 	}
@@ -73,6 +73,7 @@ const {
 	connectWithPayload,
 	connectWithErrors,
 	set,
+	structuredErrors,
 } = useForm(props.form);
 
 if (!store.userId) {
@@ -83,16 +84,14 @@ if (!store.userId) {
 				store.acceptInvitationPayload[field.name]
 					? store.acceptInvitationPayload[field.name]
 					: field.value,
-				false,
 			);
 		} else {
 			if (store.acceptInvitationPayload[field.name] === null) {
-				store.updateAcceptInvitationPayload(field.name, field.value, true);
+				store.updateAcceptInvitationPayload(field.name, field.value);
 			} else {
 				store.updateAcceptInvitationPayload(
 					field.name,
 					store.acceptInvitationPayload[field.name],
-					true,
 				);
 			}
 		}
@@ -105,23 +104,7 @@ connectWithPayload(store.acceptInvitationPayload);
  * handing errors and covert dot notation to object
  */
 const sectionErrors = computed(() => {
-	const result = {};
-	for (const key in store.errors) {
-		const value = store.errors[key];
-		const keys = key.split('.');
-		let current = result;
-		for (let i = 0; i < keys.length; i++) {
-			const obj = keys[i];
-			if (i === keys.length - 1) {
-				current[obj] = value;
-			} else {
-				current[obj] = current[obj] || {};
-				current = current[obj];
-			}
-		}
-	}
-	return result;
+	return structuredErrors(store.errors);
 });
-
 connectWithErrors(sectionErrors);
 </script>

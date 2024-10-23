@@ -155,6 +155,25 @@ export function useForm(_form, {customSubmit} = {}) {
 		}
 	}
 
+	function structuredErrors(errors) {
+		const result = {};
+		for (const key in errors) {
+			const value = errors[key];
+			const keys = key.split('.');
+			let current = result;
+			for (let i = 0; i < keys.length; i++) {
+				const obj = keys[i];
+				if (i === keys.length - 1) {
+					current[obj] = value;
+				} else {
+					current[obj] = current[obj] || {};
+					current = current[obj];
+				}
+			}
+		}
+		return result;
+	}
+
 	function setAction(_action) {
 		form.value.action = _action;
 	}
@@ -171,5 +190,6 @@ export function useForm(_form, {customSubmit} = {}) {
 		connectWithErrors,
 		setLocales,
 		setAction,
+		structuredErrors,
 	};
 }
