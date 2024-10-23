@@ -5,6 +5,7 @@ import {useUrl} from '@/composables/useUrl';
 import {useLocalize} from '@/composables/useLocalize';
 import {useForm} from '@/composables/useForm';
 import {useDataChanged} from '@/composables/useDataChanged';
+import {useDashboardPageStore} from '@/pages/dashboard/dashboardPageStore.js';
 
 export const useContributorManagerStore = defineComponentStore(
 	'contributorManager',
@@ -15,7 +16,11 @@ export const useContributorManagerStore = defineComponentStore(
 			`submissions/${props.submission.id}/publications/__publicationId__`,
 		);
 
-		const {form, setLocales} = useForm(props.contributorForm);
+		const dashboardStore = useDashboardPageStore();
+
+		const {form, setLocales} = useForm(
+			dashboardStore.componentForms.contributorForm,
+		);
 
 		setLocales(props.submission.metadataLocales);
 
