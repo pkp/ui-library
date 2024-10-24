@@ -172,6 +172,20 @@ export default {
 			return classes;
 		},
 	},
+	mounted() {
+		/**
+		 * Order selected options when isOrderable=true
+		 */
+		if (this.isOrderable && this.selectedValue?.length) {
+			this.localizedOptions = this.localizedOptions.sort((a, b) => {
+				let aIndex = this.selectedValue.findIndex(value => a.value === value);
+				let bIndex = this.selectedValue.findIndex(value => b.value === value);
+				aIndex = aIndex === -1 ? Number.MAX_SAFE_INTEGER : aIndex;
+				bIndex = bIndex === -1 ? Number.MAX_SAFE_INTEGER : bIndex;
+				return aIndex < bIndex ? -1 : 1;
+			})
+		}
+	},
 	methods: {
 		/**
 		 * Move an option up in the list
