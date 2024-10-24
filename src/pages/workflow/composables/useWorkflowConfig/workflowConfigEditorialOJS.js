@@ -701,7 +701,6 @@ export const PublicationConfig = {
 					props: {
 						submission: submission,
 						publication: selectedPublication,
-						contributorForm: pageInitConfig.contributorForm,
 						canEdit: permissions.canEditPublication,
 					},
 				},

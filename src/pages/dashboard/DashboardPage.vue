@@ -65,8 +65,8 @@ const props = defineProps({
 	selectRevisionDecisionForm: {type: Object, required: true},
 	/** Form for selection type of revision for recommending editor */
 	selectRevisionRecommendationForm: {type: Object, required: true},
-	/** Form for Contributor manager */
-	contributorForm: {type: Object, required: true},
+	/** Forms used by managers or other components within dashboard/workflow */
+	componentForms: {type: Object, required: true},
 	/** List of Views */
 	views: {
 		type: Array,
@@ -102,4 +102,3 @@ const store = useDashboardPageStore(props);
 	@apply bg-secondary p-0;
 }
 </style>
-./components/DashboardActiveFilters.vue

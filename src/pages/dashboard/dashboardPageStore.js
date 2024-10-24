@@ -441,6 +441,8 @@ export const useDashboardPageStore = defineComponentStore(
 			getReviewActivityIndicatorProps,
 			getReviewActivityIndicatorPopoverProps,
 
+			// Expose component forms, so managers and other dashboard/workflow component can access them
+			componentForms: pageInitConfig.componentForms,
 			_workflowActionFns,
 		};
 	},

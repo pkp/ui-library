@@ -12,7 +12,6 @@ import ContributorsListPanel from '@/components/ListPanel/contributors/Contribut
 const props = defineProps({
 	submission: {type: Object, required: true},
 	publication: {type: Object, required: true},
-	contributorForm: {type: Object, required: true},
 	canEdit: {type: Boolean, required: true},
 });
 
