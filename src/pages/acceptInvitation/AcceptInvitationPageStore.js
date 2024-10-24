@@ -74,6 +74,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 					updateAcceptInvitationPayload('givenName', data.value.givenName); //if not check this override the multilingual structure
 				}
 				updateAcceptInvitationPayload('userCountry', data.value.country);
+				updateAcceptInvitationPayload('userOrcid', data.value.orcid);
 				updateAcceptInvitationPayload(
 					'userGroupsToAdd',
 					data.value.userGroupsToAdd,
@@ -95,6 +96,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 
 		function updateAcceptInvitationPayload(fieldName, value) {
 			acceptInvitationPayload.value[fieldName] = value;
+			console.log(acceptInvitationPayload.value);
 		}
 
 		/** Steps */
@@ -270,9 +272,9 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 
 		const invitationRequestPayload = computed(() => {
 			let payload = {};
-			if (userId.value && acceptInvitationPayload.value.orcid) {
+			if (userId.value && acceptInvitationPayload.value.userOrcid) {
 				payload = {
-					userOrcid: acceptInvitationPayload.value.orcid,
+					userOrcid: acceptInvitationPayload.value.userOrcid,
 				};
 			} else {
 				if (currentStep.value) {
