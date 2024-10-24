@@ -513,12 +513,12 @@ export default {
 				actions: [
 					{
 						label: this.t('common.ok'),
-						isPrimary: true,
 						callback: (close) => {
 							close();
 						},
 					},
 				],
+				modalStyle: 'negative',
 			});
 		},
 		openVersionModal() {
@@ -814,6 +814,7 @@ export default {
 						},
 					},
 				],
+				modalStyle: 'primary',
 			});
 		},
 		triggerDeposit() {

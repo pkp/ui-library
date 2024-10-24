@@ -319,6 +319,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 								},
 							},
 						],
+						modalStyle: 'primary',
 					});
 				} else {
 					isSubmitting.value = false;
