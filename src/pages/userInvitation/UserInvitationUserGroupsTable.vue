@@ -137,6 +137,8 @@ import FieldText from '@/components/Form/fields/FieldText.vue';
 import {useUserInvitationPageStore} from './UserInvitationPageStore';
 import {useDate} from '@/composables/useDate';
 import {useModal} from '@/composables/useModal';
+import {useUrl} from '@/composables/useUrl';
+import {useFetch} from '@/composables/useFetch';
 
 const props = defineProps({
 	userGroups: {type: Object, required: true},
@@ -203,6 +205,8 @@ function removeUserGroup(userGroup, index) {
 					store.invitationPayload.currentUserGroups.find(
 						(data, i) => i === index,
 					).dateEnd = formatShortDate(new Date());
+					console.log(store.invitationPayload.userId, userGroup.id);
+					removeRole(store.invitationPayload.userId, userGroup.id);
 					close();
 				},
 			},
@@ -245,5 +249,14 @@ function updateWithSelectedUserGroups(userGroups) {
 			element.disabled = false;
 		}
 	});
+}
+
+/** Update invitation */
+async function removeRole(userId, roleId) {
+	const {apiUrl} = useUrl(`users/${userId}/role/${roleId}`);
+	const {fetch} = useFetch(apiUrl, {
+		method: 'DELETE',
+	});
+	await fetch();
 }
 </script>

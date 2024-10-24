@@ -107,6 +107,12 @@ export const Init = {
 						return HttpResponse.json('invitation send successfully');
 					},
 				),
+				http.post(
+					'https://mock/index.php/publicknowledge/api/v1/users/35/roles/17',
+					() => {
+						return HttpResponse.json('role remove successfully');
+					},
+				),
 			],
 		},
 	},
