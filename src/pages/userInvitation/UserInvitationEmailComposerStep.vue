@@ -12,7 +12,7 @@
 		:deselect-label="t('common.deselect')"
 		:email-templates="props.email.emailTemplates"
 		:email-templates-api-url="store.emailTemplatesApiUrl"
-		:errors="sectionErrors.emailComposer"
+		:errors="store.errors.emailComposer"
 		:find-template-label="t('common.findTemplate')"
 		:initial-template-key="props.email.initialTemplateKey"
 		:insert-label="t('common.insert')"
@@ -87,14 +87,5 @@ const recipientOptions = computed(() => {
 			},
 		},
 	];
-});
-
-const sectionErrors = computed(() => {
-	return props.validateFields.reduce((obj, key) => {
-		if (store.errors[key]) {
-			obj[key] = store.errors[key];
-		}
-		return obj;
-	}, {});
 });
 </script>

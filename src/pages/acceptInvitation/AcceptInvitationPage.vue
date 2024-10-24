@@ -112,7 +112,6 @@ const props = defineProps({
 	},
 });
 
-console.log(props);
 const {t} = useLocalize();
 const wrapper = ref(null);
 const store = useAcceptInvitationPageStore(props);
