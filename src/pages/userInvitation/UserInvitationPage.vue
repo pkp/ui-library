@@ -6,7 +6,7 @@
 		/>
 		<Steps
 			v-if="store.steps.length"
-			class="border-x border-t border-light"
+			class="border-x border-t border-light bg-secondary"
 			:current="store.currentStep.id"
 			:started-steps="store.startedSteps"
 			:label="t('invitation.wizard.completeSteps')"
@@ -30,6 +30,9 @@
 							<h2 class="text-xl-bold text-heading">
 								{{ store.stepTitle }}
 							</h2>
+							<p :class="store.userSearch.class">
+								{{ store.userSearch.message }}
+							</p>
 							<p class="font-bold text-negative">{{ store.errors.error }}</p>
 							<p class="mt-1 text-lg-normal">
 								{{ step.description }}
@@ -56,7 +59,7 @@
 				</div>
 			</Step>
 		</Steps>
-		<div class="border-x border-b border-light p-8">
+		<div class="border-x border-b border-light bg-secondary p-8">
 			<ButtonRow>
 				<PkpButton :is-warnable="true" @click="store.cancel">
 					{{ t('common.cancel') }}
@@ -64,7 +67,11 @@
 				<PkpButton v-if="!store.isOnFirstStep" @click="store.previousStep">
 					{{ t('common.back') }}
 				</PkpButton>
-				<PkpButton :is-primary="true" @click="store.nextStep">
+				<PkpButton
+					:is-primary="true"
+					:is-disabled="store.isSubmitting"
+					@click="store.nextStep"
+				>
 					{{ store.currentStep.nextButtonLabel }}
 				</PkpButton>
 			</ButtonRow>
@@ -78,7 +85,7 @@ import PkpButton from '@/components/Button/Button.vue';
 import Steps from '@/components/Steps/Steps.vue';
 import Step from '@/components/Steps/Step.vue';
 import {useUserInvitationPageStore} from './UserInvitationPageStore';
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 import {ref} from 'vue';
 import UserInvitationHeader from './UserInvitationHeader.vue';
 import UserInvitationDetailsFormStep from './UserInvitationDetailsFormStep.vue';
@@ -113,8 +120,16 @@ const props = defineProps({
 		type: Object,
 		required: true,
 	},
+	invitationType: {
+		type: String,
+		required: true,
+	},
+	invitationMode: {
+		type: String,
+		required: true,
+	},
 });
-const {t} = useTranslation();
+const {t} = useLocalize();
 const wrapper = ref(null);
 const store = useUserInvitationPageStore(props);
 const userInvitationComponents = {

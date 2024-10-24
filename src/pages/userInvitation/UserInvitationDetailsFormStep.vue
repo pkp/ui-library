@@ -7,11 +7,11 @@
 		></PkpForm>
 	</div>
 	<div v-if="store.invitationPayload.userId !== null" class="p-8">
-		<div class="p-1">
+		<div class="flex flex-col gap-y-2">
 			<FormDisplayItemBasic
 				heading-element="h4"
-				:heading="t('user.emailAddress')"
-				:value="store.invitationPayload.email"
+				:heading="t('user.email')"
+				:value="store.invitationPayload.inviteeEmail"
 			></FormDisplayItemBasic>
 
 			<FormDisplayItemBasic
@@ -46,10 +46,7 @@
 		</div>
 	</div>
 	<div class="p-8">
-		<UserInvitationUserGroupsTable
-			:user-groups="userGroups"
-			:errors="sectionErrors"
-		/>
+		<UserInvitationUserGroupsTable :user-groups="userGroups" />
 	</div>
 </template>
 
@@ -63,11 +60,26 @@ import UserInvitationUserGroupsTable from './UserInvitationUserGroupsTable.vue';
 import {useUserInvitationPageStore} from './UserInvitationPageStore';
 import {useForm} from '@/composables/useForm';
 
-function updateUserForm(a, {fields}, c, d) {
-	if (fields) {
-		fields.forEach((field) => {
-			if (store.invitationPayload[field.name] !== field.value) {
-				store.updatePayload(field.name, field.value);
+/**
+ * Update the payload by using form values on multilingual or not
+ * @param id string
+ * @param form Object
+ * @param c
+ * @param d
+ */
+function updateUserForm(id, form, c, d) {
+	set(id, form, c, d);
+	if (form.fields) {
+		form.fields.forEach((field) => {
+			if (field.isMultilingual) {
+				Object.keys(field.value).forEach((element) => {
+					if (field.value[element] === null || field.value[element] === '') {
+						delete field.value[element]; // remove empty values form the object
+					}
+				});
+				store.updatePayload(field.name, field.value, false);
+			} else {
+				store.updatePayload(field.name, field.value, false);
 			}
 		});
 	}
@@ -85,17 +97,45 @@ const {
 	form: userForm,
 	connectWithPayload,
 	connectWithErrors,
+	set,
+	structuredErrors,
 } = useForm(props.form);
+
+/**
+ * popuplate the form with existing values in the invitation payload
+ * if its a existing user form will not populate
+ */
+if (!store.invitationPayload.userId) {
+	userForm.value.fields.forEach((field) => {
+		if (field.isMultilingual) {
+			store.updatePayload(
+				field.name,
+				store.invitationPayload[field.name]
+					? store.invitationPayload[field.name]
+					: field.value,
+				store.invitationPayload[field.name] ? false : true,
+			);
+		} else {
+			if (store.invitationPayload[field.name] === null) {
+				store.updatePayload(field.name, field.value, true);
+			} else {
+				store.updatePayload(
+					field.name,
+					store.invitationPayload[field.name],
+					true,
+				);
+			}
+		}
+	});
+}
 
 connectWithPayload(store.invitationPayload);
 
+/**
+ * handing errors and covert dot notation to object
+ */
 const sectionErrors = computed(() => {
-	return props.validateFields.reduce((obj, key) => {
-		if (store.errors[key]) {
-			obj[key] = store.errors[key];
-		}
-		return obj;
-	}, {});
+	return structuredErrors(store.errors);
 });
 connectWithErrors(sectionErrors);
 </script>

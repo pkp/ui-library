@@ -1,7 +1,7 @@
 <template>
 	<div class="space-y-4 p-8">
 		<FieldText
-			:label="t('user.email')"
+			:label="t('about.contact.email')"
 			:value="fields.email"
 			:description="t('userInvitation.emailField.description')"
 			name="email"
@@ -35,6 +35,7 @@ import FieldText from '@/components/Form/fields/FieldText.vue';
 import {useUserInvitationPageStore} from './UserInvitationPageStore';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
+import {useLocalize} from '@/composables/useLocalize';
 
 defineProps({
 	validateFields: {
@@ -46,6 +47,7 @@ defineProps({
 });
 
 const store = useUserInvitationPageStore();
+const {t} = useLocalize();
 store.registerActionForStepId('searchUser', searchUser);
 
 const fields = ref({email: '', username: '', orcid: ''});
@@ -78,21 +80,45 @@ async function searchUser() {
 		});
 		await fetch();
 		if (userData.value.items.length > 0) {
-			const user = userData.value.items[0];
-			store.updatePayload('email', user.email);
-			store.updatePayload('userId', user.id);
-			// we need to pass the givenName and familyName from API!!
-			store.updatePayload('givenName', user.fullName.split(' ')[0]);
-			store.updatePayload('familyName', user.fullName.split(' ')[1]);
-			store.updatePayload('orcid', user.orcid);
-			store.updatePayload('currentUserGroups', user.groups);
-			store.updatePayload('affiliation', user.affiliation);
+			let user = {};
+			user = userData.value.items.find(
+				(value) => value.email === fields.value.email, // check provided email is exact match
+			);
+			user
+				? user
+				: (user = userData.value.items.find(
+						(value) => value.userName === fields.value.username, // check provided username is exact match
+					));
+			user
+				? user
+				: (user = userData.value.items.find(
+						(value) => value.orcid === fields.value.orcid, // check provided orcid is exact match
+					));
+
+			if (!user) {
+				store.updatePayload('inviteeEmail', fields.value.email);
+				store.userSearch.message = t('userInvitation.search.userNotFound');
+				store.userSearch.class = 'font-bold text-negative';
+			} else {
+				store.updatePayload('inviteeEmail', user.email);
+				store.updatePayload('userId', user.id);
+				store.updatePayload('givenName', user.givenName);
+				store.updatePayload('familyName', user.familyName);
+				store.updatePayload('orcid', user.orcid);
+				store.updatePayload('currentUserGroups', user.groups);
+				store.updatePayload('affiliation', user.affiliation);
+				store.updatePayload('country', user.country);
+				store.userSearch.message = t('userInvitation.search.userFound');
+				store.userSearch.class = 'font-bold text-success';
+			}
 		} else {
-			store.updatePayload('email', fields.value.email);
+			store.updatePayload('inviteeEmail', fields.value.email);
+			store.userSearch.message = t('userInvitation.search.userNotFound');
+			store.userSearch.class = 'font-bold text-negative';
 		}
 		return true;
 	} else {
-		// TODO: add back error handling
+		store.errors.error = t('invitation.searchForm.emptyError');
 		return false;
 	}
 }

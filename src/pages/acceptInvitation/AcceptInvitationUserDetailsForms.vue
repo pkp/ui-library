@@ -4,7 +4,7 @@
 			<div class="p-1">
 				<FormDisplayItemBasic
 					heading-element="h4"
-					:heading="t('user.emailAddress')"
+					:heading="t('user.email')"
 					:value="store.email"
 				></FormDisplayItemBasic>
 			</div>
@@ -15,13 +15,13 @@
 					heading-element="h4"
 					:heading="t('user.orcid')"
 					:value="
-						store.acceptinvitationPayload.orcid
-							? store.acceptinvitationPayload.orcid
+						store.acceptInvitationPayload.orcid
+							? store.acceptInvitationPayload.orcid
 							: t('invitation.orcid.acceptInvitation.message')
 					"
 				></FormDisplayItemBasic>
 				<Icon
-					v-if="store.acceptinvitationPayload.orcid"
+					v-if="store.acceptInvitationPayload.orcid"
 					icon="orcid"
 					:inline="true"
 				/>
@@ -50,10 +50,18 @@ const props = defineProps({
 
 const store = useAcceptInvitationPageStore();
 
-function updateUserDetailsForm(a, {fields}, c, d) {
-	if (fields) {
-		fields.forEach((field) => {
-			if (store.acceptinvitationPayload[field.name] !== field.value) {
+function updateUserDetailsForm(a, form, c, d) {
+	set(a, form, c, d);
+	if (form.fields) {
+		form.fields.forEach((field) => {
+			if (
+				field.isMultilingual &&
+				!Object.values(field.value).every(
+					(value) => value === null || value === '',
+				)
+			) {
+				store.updateAcceptInvitationPayload(field.name, field.value);
+			} else {
 				store.updateAcceptInvitationPayload(field.name, field.value);
 			}
 		});
@@ -64,17 +72,39 @@ const {
 	form: userForm,
 	connectWithPayload,
 	connectWithErrors,
+	set,
+	structuredErrors,
 } = useForm(props.form);
-connectWithPayload(store.acceptinvitationPayload);
 
-const sectionErrors = computed(() => {
-	return props.validateFields.reduce((obj, key) => {
-		if (store.errors[key]) {
-			obj[key] = store.errors[key];
+if (!store.userId) {
+	userForm.value.fields.forEach((field) => {
+		if (field.isMultilingual) {
+			store.updateAcceptInvitationPayload(
+				field.name,
+				store.acceptInvitationPayload[field.name]
+					? store.acceptInvitationPayload[field.name]
+					: field.value,
+			);
+		} else {
+			if (store.acceptInvitationPayload[field.name] === null) {
+				store.updateAcceptInvitationPayload(field.name, field.value);
+			} else {
+				store.updateAcceptInvitationPayload(
+					field.name,
+					store.acceptInvitationPayload[field.name],
+				);
+			}
 		}
-		return obj;
-	}, {});
-});
+	});
+}
 
+connectWithPayload(store.acceptInvitationPayload);
+
+/**
+ * handing errors and covert dot notation to object
+ */
+const sectionErrors = computed(() => {
+	return structuredErrors(store.errors);
+});
 connectWithErrors(sectionErrors);
 </script>

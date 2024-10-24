@@ -1,5 +1,5 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
 import {computed, onMounted, ref, watch} from 'vue';
@@ -8,15 +8,33 @@ export const useUserInvitationPageStore = defineComponentStore(
 	'userInvitationPage',
 	(pageInitConfig) => {
 		const {openDialog} = useModal();
-		const {t} = useTranslation();
+		const {t} = useLocalize();
 
 		/**
 		 * Invitation payload, initial value
 		 */
 		const invitationPayload = ref({...pageInitConfig.invitationPayload});
+		/**
+		 * Invitation updated payload, updated by adding new values
+		 */
+		const updatedPayload = ref({});
+		const invitationType = ref(pageInitConfig.invitationType);
+		const invitationMode = ref(pageInitConfig.invitationMode);
 
-		function updatePayload(fieldName, value) {
+		function updatePayload(fieldName, value, initialValue = true) {
 			invitationPayload.value[fieldName] = value;
+			if (!initialValue) {
+				updatedPayload.value[fieldName] = value;
+				// when user type and remove the values, updated fields should remove from the payloads
+				if (
+					value !== null &&
+					typeof value === 'object' &&
+					Object.keys(value).length === 0
+				) {
+					delete invitationPayload.value[fieldName];
+					delete updatedPayload.value[fieldName];
+				}
+			}
 		}
 
 		/**
@@ -80,8 +98,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 			} else {
 				if (!currentStep.value?.skipInvitationUpdate) {
 					await updateInvitation();
-					// this needs to check only relevant errors for given step using the step.validateFields
-					if (currentStepErrorsPerSection.value.length === 0) {
+					if (isValid.value) {
 						openStep(steps.value[1 + currentStepIndex.value].id);
 					}
 				} else {
@@ -112,6 +129,10 @@ export const useUserInvitationPageStore = defineComponentStore(
 			const previousIndex = currentStepIndex.value - 1;
 			if (previousIndex >= 0) {
 				openStep(steps.value[previousIndex].id);
+				userSearch.value = {
+					message: '',
+					class: '',
+				};
 			}
 		}
 		/**
@@ -139,6 +160,21 @@ export const useUserInvitationPageStore = defineComponentStore(
 			}
 		});
 
+		watch(
+			invitationPayload,
+			async (newVal, oldVal) => {
+				if (
+					newVal.inviteeEmail === createInvitationPayload.value.inviteeEmail
+				) {
+					return;
+				}
+
+				// If change of email new invitation will be created
+				invitationId.value = null;
+			},
+			{deep: true},
+		);
+
 		/** Page titles */
 		const pageTitleDescription = ref(pageInitConfig.pageTitleDescription);
 		const primaryLocale = ref(pageInitConfig.primaryLocale);
@@ -156,14 +192,19 @@ export const useUserInvitationPageStore = defineComponentStore(
 			if (!currentStep.value) {
 				return '';
 			}
-			return currentStep.value.reviewName.replace(
+			return currentStep.value.stepLabel.replace(
 				'{$step}',
-				'STEP -' + (1 + currentStepIndex.value),
+				t('invitation.step') + ' ' + (1 + currentStepIndex.value),
 			);
 		});
 
-		/** All Erros */
+		/** All Errors */
 		const errors = ref({});
+		/** User search message */
+		const userSearch = ref({
+			message: '',
+			class: '',
+		});
 
 		/**
 		 * Are there any validation errors?
@@ -172,30 +213,30 @@ export const useUserInvitationPageStore = defineComponentStore(
 			return !Object.keys(errors.value).length;
 		});
 
-		/**
-		 * set current step section errors
-		 */
-		const currentStepErrorsPerSection = computed(() => {
-			let error = [];
-			if (Object.keys(errors.value).length != 0) {
-				currentStep.value.sections.forEach((element, index) => {
-					if (element.props.validateFields.length > 0) {
-						let sectionErr = {};
-						element.props.validateFields.forEach((field) => {
-							if (Object.keys(errors.value).includes(field)) {
-								sectionErr[field] = errors.value[field];
-							}
-						});
-						if (Object.keys(sectionErr).length != 0) {
-							error[index] = sectionErr;
-						}
-					}
-				});
+		const createInvitationPayload = computed(() => {
+			if (invitationPayload.value.userId) {
+				return {
+					invitationData: {
+						userId: invitationPayload.value.userId,
+					},
+				};
 			}
-
-			return error;
+			return {
+				invitationData: {
+					inviteeEmail: invitationPayload.value.inviteeEmail,
+				},
+			};
 		});
 
+		const updateInvitationPayload = computed(() => {
+			let invitationData = {
+				...updatedPayload.value,
+				userGroupsToAdd: invitationPayload.value.userGroupsToAdd,
+			};
+			return {
+				invitationData: invitationData,
+			};
+		});
 		/**
 		 * Invitation actions
 		 */
@@ -204,45 +245,62 @@ export const useUserInvitationPageStore = defineComponentStore(
 		 * Create invitation
 		 */
 		async function createInvitation() {
-			const {apiUrl} = useUrl('invitations');
+			const {apiUrl} = useUrl(`invitations/add/${invitationType.value}`);
 
-			const {data, fetch: createInvitation} = useFetch(apiUrl, {
+			const {
+				data,
+				fetch: createInvitation,
+				validationError,
+			} = useFetch(apiUrl, {
 				method: 'POST',
-				body: {type: pageInitConfig.invitationType},
+				body: createInvitationPayload.value,
+				expectValidationError: true,
 			});
 			await createInvitation();
-			invitationId.value = data.value.invitationId;
+
+			if (validationError.value) {
+				errors.value = validationError.value.errors;
+			} else {
+				errors.value = [];
+				invitationId.value = data.value.invitationId;
+			}
 		}
 
 		/** Update invitation */
 		async function updateInvitation() {
+			errors.value = [];
+			userSearch.value = {};
 			if (!invitationId.value) {
 				await createInvitation();
 			}
+			if (isValid.value) {
+				const {apiUrl} = useUrl(`invitations/${invitationId.value}/populate`);
 
-			const {apiUrl} = useUrl(`invitations/${invitationId.value}`);
-
-			const {fetch, validationError} = useFetch(apiUrl, {
-				method: 'POST',
-				body: invitationPayload.value,
-				expectValidationError: true,
-			});
-			await fetch();
-			if (validationError.value) {
-				errors.value = validationError.value;
-			} else {
-				errors.value = [];
+				const {fetch, validationError} = useFetch(apiUrl, {
+					method: 'PUT',
+					body: updateInvitationPayload.value,
+					expectValidationError: true,
+				});
+				await fetch();
+				if (validationError.value) {
+					errors.value = validationError.value.errors;
+				} else {
+					errors.value = [];
+				}
 			}
 		}
 
+		const {redirectToPage} = useUrl('management/settings/access');
+		const isSubmitting = ref(false);
 		/** Submit invitation */
 		async function submitInvitation() {
 			await updateInvitation();
 			if (isValid.value) {
-				const {apiUrl} = useUrl(`invitations/${invitationId.value}/submit`);
+				isSubmitting.value = true;
+				const {apiUrl} = useUrl(`invitations/${invitationId.value}/invite`);
 
 				const {data, fetch} = useFetch(apiUrl, {
-					method: 'POST',
+					method: 'PUT',
 					body: {},
 				});
 
@@ -251,23 +309,51 @@ export const useUserInvitationPageStore = defineComponentStore(
 					openDialog({
 						title: t('userInvitation.modal.title'),
 						message: t('userInvitation.modal.message', {
-							email: invitationPayload.value.email,
+							email: invitationPayload.value.inviteeEmail,
 						}),
 						actions: [
 							{
 								label: t('userInvitation.modal.button'),
 								callback: (close) => {
-									close();
+									redirectToPage();
 								},
 							},
 						],
 					});
+				} else {
+					isSubmitting.value = false;
 				}
 			}
 		}
 
+		function cancel() {
+			openDialog({
+				name: 'cancel',
+				title: t('invitation.cancelInvite.title'),
+				message: t('userInvitation.cancel.message'),
+				actions: [
+					{
+						label: t('invitation.cancelInvite.actionName'),
+						isWarnable: true,
+						callback: (close) => {
+							redirectToPage();
+						},
+					},
+					{
+						label: t('userInvitation.cancel.keepWorking'),
+						callback: (close) => {
+							close();
+						},
+					},
+				],
+			});
+		}
+
 		const registeredActionsForSteps = {};
 		function registerActionForStepId(stepId, callback) {
+			if (stepId === 'searchUser') {
+				invitationId.value = null;
+			}
 			registeredActionsForSteps[stepId] = callback;
 		}
 
@@ -284,7 +370,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 			invitationPayload,
 			updatePayload,
 			registerActionForStepId,
-			//computed values
+
 			currentStep,
 			currentStepIndex,
 			isOnFirstStep,
@@ -294,19 +380,19 @@ export const useUserInvitationPageStore = defineComponentStore(
 			startedSteps,
 			stepTitle,
 			openStep,
-			currentStepErrorsPerSection,
+			isSubmitting,
+			invitationMode,
 
-			//page values
 			steps,
 			pageTitleDescription,
 			errors,
+			userSearch,
 
-			//form fields
 			primaryLocale,
 
-			//methods
 			nextStep,
 			previousStep,
+			cancel,
 		};
 	},
 );

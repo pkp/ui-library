@@ -1,7 +1,7 @@
 <template>
 	<div v-if="store.steps.length">
 		<Steps
-			class="border-x border-t border-light"
+			class="border-x border-t border-light bg-secondary"
 			:current="store.currentStep.id"
 			:started-steps="store.startedSteps"
 			:label="t('invitation.wizard.completeSteps')"
@@ -48,7 +48,7 @@
 				</div>
 			</Step>
 		</Steps>
-		<div class="border-x border-b border-light p-8">
+		<div class="border-x border-b border-light bg-secondary p-8">
 			<ButtonRow>
 				<PkpButton :is-warnable="true" @click="store.cancel">
 					{{ t('common.cancel') }}
@@ -74,7 +74,7 @@ import PkpButton from '@/components/Button/Button.vue';
 import Steps from '@/components/Steps/Steps.vue';
 import Step from '@/components/Steps/Step.vue';
 import {useAcceptInvitationPageStore} from './AcceptInvitationPageStore';
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 import {ref} from 'vue';
 import AcceptInvitationUserDetailsForms from './AcceptInvitationUserDetailsForms.vue';
 import AcceptInvitationUserAccountDetails from './AcceptInvitationUserAccountDetails.vue';
@@ -112,7 +112,7 @@ const props = defineProps({
 	},
 });
 
-const {t} = useTranslation();
+const {t} = useLocalize();
 const wrapper = ref(null);
 const store = useAcceptInvitationPageStore(props);
 

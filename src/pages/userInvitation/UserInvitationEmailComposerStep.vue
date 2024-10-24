@@ -2,10 +2,6 @@
 	<Composer
 		:id="store.currentStep.id"
 		:add-c-c-label="t('common.addCCBCC')"
-		:attach-files-label="t('common.attachFiles')"
-		:attached-files-label="t('common.attachedFiles')"
-		:attachers="props.email.attachers"
-		:attachments="props.email.attachments"
 		:bcc="props.email.bcc"
 		:bcc-label="t('email.bcc')"
 		:body-label="t('stageParticipants.notify.message')"
@@ -16,7 +12,7 @@
 		:deselect-label="t('common.deselect')"
 		:email-templates="props.email.emailTemplates"
 		:email-templates-api-url="store.emailTemplatesApiUrl"
-		:errors="sectionErrors.emailComposer"
+		:errors="store.errors.emailComposer"
 		:find-template-label="t('common.findTemplate')"
 		:initial-template-key="props.email.initialTemplateKey"
 		:insert-label="t('common.insert')"
@@ -27,8 +23,8 @@
 		:locale="props.email.locale"
 		:locales="props.email.locales"
 		:more-search-results-label="t('common.numberedMore')"
-		:recipient-options="props.email.recipientOptions"
-		:recipients="props.email.recipients"
+		:recipient-options="recipientOptions"
+		:recipients="recipients"
 		:recipients-label="t('email.to')"
 		:remove-item-label="t('common.removeItem')"
 		:searching-label="t('common.searching')"
@@ -45,7 +41,7 @@
 <script setup>
 import {computed} from 'vue';
 import Composer from '@/components/Composer/Composer.vue';
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 import {defineProps} from 'vue';
 import {useUserInvitationPageStore} from './UserInvitationPageStore';
 
@@ -58,7 +54,7 @@ const props = defineProps({
 		},
 	},
 });
-const {t} = useTranslation();
+const {t} = useLocalize();
 
 const store = useUserInvitationPageStore();
 const emailComposer = computed(() => store.invitationPayload.emailComposer);
@@ -68,7 +64,7 @@ function updateEmail(update) {
 		...store.invitationPayload.emailComposer,
 		...update,
 	};
-	store.updatePayload('emailComposer', emailComposerUpdate);
+	store.updatePayload('emailComposer', emailComposerUpdate, false);
 }
 
 if (!store.invitationPayload.body) {
@@ -78,12 +74,18 @@ if (!store.invitationPayload.body) {
 	});
 }
 
-const sectionErrors = computed(() => {
-	return props.validateFields.reduce((obj, key) => {
-		if (store.errors[key]) {
-			obj[key] = store.errors[key];
-		}
-		return obj;
-	}, {});
+const recipients = computed(() => {
+	return store.invitationPayload.inviteeEmail;
+});
+
+const recipientOptions = computed(() => {
+	return [
+		{
+			value: store.invitationPayload.inviteeEmail,
+			label: {
+				[store.primaryLocale]: store.invitationPayload.inviteeEmail,
+			},
+		},
+	];
 });
 </script>
