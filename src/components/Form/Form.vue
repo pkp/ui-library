@@ -3,8 +3,9 @@
 		class="pkpForm -pkpClearfix"
 		:method="method"
 		:action="action"
-		@keydown.enter.prevent=""
+		@submit.prevent="() => {}"
 	>
+		<input type="submit" value="i9884" style="display: none" />
 		<form-locales
 			v-if="availableLocales.length > 1"
 			:primaryLocaleKey="primaryLocale"
