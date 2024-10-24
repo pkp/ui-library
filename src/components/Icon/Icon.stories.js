@@ -122,6 +122,7 @@ export const iconGallery = {
 			'ReviewAssignments',
 			'ReviewRequestDeclined',
 			'ReviewSent',
+			'Ror',
 			'Search',
 			'Settings',
 			'Sort',
