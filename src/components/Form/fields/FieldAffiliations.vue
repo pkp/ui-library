@@ -19,10 +19,10 @@
 					<TableRow v-for="(row, indexRow) in currentValue" :key="indexRow">
 						<TableCell>
 							<label class="pkpFormFieldLabel">
-								{{ row._data.name[currentLocale] }}
-							</label> &nbsp;
-							<a v-if="row._data.ror" :href="row._data.ror" target="_blank">
-								<Icon :icon="'ror'" :class="'mr-2'" :inline="true"/>
+								{{ row.name[currentLocale] }}
+							</label>
+							<a v-if="row.ror" :href="row.ror" target="_blank">
+								&nbsp;<Icon :icon="'ror'" :class="'mr-2'" :inline="true"/>
 							</a>
 						</TableCell>
 						<TableCell>
@@ -33,15 +33,15 @@
 									</a>
 								</label>
 							</div>
-							<div v-if="row._helper.editMode"
-									 v-for="([localeName, valueName], indexName) in Object.entries(row._data.name)"
+							<div v-if="(indexRow === indexEditMode)"
+									 v-for="([localeName, valueName], indexName) in Object.entries(row.name)"
 									 :key="indexName">
 								<div v-if="supportedLocales.includes(localeName)">
 									<div class="pkpFormField pkpFormField--text">
 										<div class="pkpFormField__heading">
 											<label>
 												{{
-													(row._data.ror)
+													(row.ror)
 														? getLocaleDisplayName(localeName)
 														: t('user.affiliations.typeTranslationNameInLanguageLabel', {language: getLocaleDisplayName(localeName)})
 												}}
@@ -50,8 +50,8 @@
 										<div class="pkpFormField__control">
 											<div class="pkpFormField__control_top">
 												<input
-													v-model="row._data.name[localeName]"
-													:readonly="!!(row._data.ror)"
+													v-model="row.name[localeName]"
+													:readonly="!!(row.ror)"
 													:id="'contributors-affiliations-' + indexRow + '-' + localeName"
 													class="pkpFormField__input pkpFormField--text__input"
 													type="text"
@@ -64,12 +64,18 @@
 							</div>
 						</TableCell>
 						<TableCell>
+							<Icon
+								class="h-5 w-5 text-primary"
+								icon="Dropdown"
+								aria-hidden="true"
+							/>
 							<DropdownActions
-								v-if="!row._helper.editMode"
-								v-bind="rowActionsArgs(indexRow)" @action="rowActionsHandler"/>
+								v-if="!(indexRow === indexEditMode)"
+								v-bind="rowActionsArgs(indexRow)"
+								@action="rowActionsHandler"/>
 							<PkpButton
-								v-if="row._helper.editMode"
-								@click="closeEditMode(indexRow)">Close
+								v-if="(indexRow === indexEditMode)"
+								@click="closeEditMode()">Close
 							</PkpButton>
 						</TableCell>
 					</TableRow>
@@ -93,8 +99,8 @@
 										name="affiliationsSearchPhraseInput"
 										aria-invalid="0"
 									/> &nbsp;
-									<a v-if="showAddMode && newAffiliationPending._data.ror"
-										 :href="newAffiliationPending._data.ror" target="_blank">
+									<a v-if="showAddMode && newAffiliationPending.ror"
+										 :href="newAffiliationPending.ror" target="_blank">
 										<Icon :icon="'ror'" :class="'mr-2'" :inline="true"/>
 									</a>
 								</div>
@@ -123,32 +129,35 @@
 							</div>
 						</TableCell>
 						<TableCell>
+							<div v-if="showAddMode">
+								<label class="pkpFormFieldLabel">
+									{{ translations(newAffiliationPending) }}
+								</label>
+							</div>
 							<div v-if="showAddMode"
-									 v-for="([localeAddMode, valueAddMode], indexNameAddMode) in Object.entries(newAffiliationPending._data.name)"
+									 v-for="([localeAddMode, valueAddMode], indexNameAddMode) in Object.entries(newAffiliationPending.name)"
 									 :key="indexNameAddMode">
 								<div v-if="supportedLocales.includes(localeAddMode)">
-									<div class="pkpFormField pkpFormField--text pkpFormField--sizelarge">
-										<div class="pkpFormField pkpFormField--text pkpFormField--sizelarge">
-											<div class="pkpFormField__heading">
-												<label>
-													{{
-														(newAffiliationPending._data.ror)
-															? t('user.affiliations.typeTranslationNameInLanguageLabel', {language: getLocaleDisplayName(localeAddMode)})
-															: getLocaleDisplayName(localeAddMode)
-													}}
-												</label>
-											</div>
-											<div class="pkpFormField__control">
-												<div class="pkpFormField__control_top">
-													<input
-														v-model="newAffiliationPending._data.name[localeAddMode]"
-														:readonly="!!(newAffiliationPending._data.ror)"
-														:id="'contributors-affiliations-newAffiliation' + '-' + localeAddMode"
-														class="pkpFormField__input pkpFormField--text__input"
-														type="text"
-														name="affiliationsNewAffiliationPendingInput"
-														aria-invalid="0">
-												</div>
+									<div class="pkpFormField pkpFormField--text">
+										<div class="pkpFormField__heading">
+											<label>
+												{{
+													(newAffiliationPending.ror)
+														? t('user.affiliations.typeTranslationNameInLanguageLabel', {language: getLocaleDisplayName(localeAddMode)})
+														: getLocaleDisplayName(localeAddMode)
+												}}
+											</label>
+										</div>
+										<div class="pkpFormField__control">
+											<div class="pkpFormField__control_top">
+												<input
+													v-model="newAffiliationPending.name[localeAddMode]"
+													:readonly="!!(newAffiliationPending.ror)"
+													:id="'contributors-affiliations-newAffiliation' + '-' + localeAddMode"
+													class="pkpFormField__input pkpFormField--text__input"
+													type="text"
+													name="affiliationsNewAffiliationPendingInput"
+													aria-invalid="0">
 											</div>
 										</div>
 									</div>
@@ -156,8 +165,9 @@
 							</div>
 						</TableCell>
 						<TableCell>
-							<PkpButton v-if="showAddMode" @click="closeAddMode">Close</PkpButton> &nbsp;
 							<PkpButton v-if="showAddMode" @click="addAffiliation">Add</PkpButton>
+							<br/><br/>
+							<PkpButton v-if="showAddMode" @click="closeAddMode">Close</PkpButton>
 						</TableCell>
 					</TableRow>
 				</TableBody>
@@ -178,6 +188,9 @@ import TableBody from '@/components/Table/TableBody.vue';
 import TableRow from '@/components/Table/TableRow.vue';
 import TableColumn from '@/components/Table/TableColumn.vue';
 import TableCell from '@/components/Table/TableCell.vue';
+import {useApiUrl} from "@/composables/useApiUrl";
+import {useFetch} from "@/composables/useFetch";
+import {useModal} from "@/composables/useModal";
 
 const name = 'FieldAffiliations';
 
@@ -187,7 +200,6 @@ const props = defineProps({
 	value: {type: Array},
 });
 
-const apiUrl = pkp.context.apiBaseUrl + 'rors/?search=';
 const currentLocale = props.currentLocale;
 const supportedLocales = props.supportedLocales;
 const currentValue = props.value;
@@ -198,24 +210,21 @@ const searchPhrase = ref('');
 // Row actions
 const selectCustomOrganization = function () {
 	newAffiliationPending.value = getNewItemTemplate();
-	newAffiliationPending.value._data.name[currentLocale] = searchPhrase.value;
+	newAffiliationPending.value.name[currentLocale] = searchPhrase.value;
 	apiResponse.value = [];
-	// searchPhrase.value = '';
 }
 const selectRorOrganization = function (item) {
 	newAffiliationPending.value = getNewItemTemplate();
-	newAffiliationPending.value._data.ror = item.ror;
-	// newAffiliationPending.value._data.name[currentLocale] = item.name[currentLocale];
+	newAffiliationPending.value.ror = item.ror;
 	supportedLocales.forEach((locale) => {
 		if (typeof item.name[locale] !== 'undefined') {
-			newAffiliationPending.value._data.name[locale] = item.name[locale];
+			newAffiliationPending.value.name[locale] = item.name[locale];
 		}
 	});
 	apiResponse.value = [];
-	// searchPhrase.value = '';
 }
 const addAffiliation = function () {
-	if (typeof newAffiliationPending.value._data !== 'undefined') {
+	if (typeof newAffiliationPending.value.id !== 'undefined') {
 		currentValue.push(JSON.parse(JSON.stringify(newAffiliationPending.value)));
 		newAffiliationPending.value = {};
 		searchPhrase.value = '';
@@ -223,16 +232,37 @@ const addAffiliation = function () {
 	}
 }
 const deleteAffiliation = function (index) {
-	if (confirm(t('user.affiliations.deleteInstitutionConfirmation',
-		{institution: currentValue[index]['_data']['name'][currentLocale]}))
-	) {
-		currentValue.splice(index, 1);
-	}
+	const {openDialog} = useModal();
+	openDialog({
+		name: 'sendAuthorEmail',
+		title: t('user.affiliations.deleteModal.title', {}),
+		message: t('user.affiliations.deleteModal.message',
+			{institution: currentValue[index]['name'][currentLocale]}),
+		actions: [
+			{
+				label: t('common.yes', {}),
+				isWarnable: true,
+				callback: async (close) => {
+					currentValue.splice(index, 1);
+					close();
+				},
+			},
+			{
+				label: t('common.no', {}),
+				isPrimary: true,
+				callback: (close) => {
+					close();
+				},
+			},
+		],
+		close: () => {
+		},
+	});
 }
 const rowActionsArgs = function (index) {
 	let actions = [];
 
-	if (!currentValue[index]._data.ror) {
+	if (!currentValue[index].ror) {
 		actions.push(
 			{
 				"label": t('user.affiliations.translationEditActionLabel', {}),
@@ -246,15 +276,17 @@ const rowActionsArgs = function (index) {
 		{
 			"label": t('user.affiliations.translationDeleteActionLabel', {}),
 			"name": "delete",
+			"isWarnable": true,
 			"id": index
 		}
 	);
 
 	return {
-		actions: actions,
-		label: '...',
-		ariaLabel: t('user.affiliations.translationActionsAriaLabel', {}),
-		direction: 'left',
+		"actions": actions,
+		"label": t('user.affiliations.translationActionsAriaLabel', {}),
+		"ariaLabel": t('user.affiliations.translationActionsAriaLabel', {}),
+		"direction": 'left',
+		"displayAsEllipsis": true,
 	};
 };
 const rowActionsHandler = function (param) {
@@ -276,11 +308,11 @@ const rowActionsHandler = function (param) {
 }
 
 // GUI
+const indexEditMode = ref(-1);
 const showAddMode = computed(() => {
-	return typeof newAffiliationPending.value._data !== 'undefined';
+	return typeof newAffiliationPending.value.id !== 'undefined';
 });
 const closeAddMode = function () {
-	searchPhrase.value = newAffiliationPending.value._data.name[currentLocale];
 	newAffiliationPending.value = {};
 }
 const showSearchResults = computed(() => {
@@ -288,13 +320,17 @@ const showSearchResults = computed(() => {
 		&& apiResponse.value.length > 0;
 });
 const toggleEditMode = function (index) {
-	currentValue[index]._helper.editMode = !currentValue[index]._helper.editMode;
+	if (indexEditMode.value === index) {
+		indexEditMode.value = -1;
+	} else {
+		indexEditMode.value = index;
+	}
 };
-const closeEditMode = function (index) {
-	currentValue[index]._helper.editMode = false;
+const closeEditMode = function () {
+	indexEditMode.value = -1;
 };
 const translations = function (row) {
-	let names = row._data.name;
+	let names = row.name;
 	let total = supportedLocales.length;
 	let translated = 0;
 
@@ -335,47 +371,33 @@ function searchPhraseChanged() {
 }
 
 function makeCurrentValueCompatible() {
-	Object.keys(currentValue).forEach(index => {
-		supportedLocales.forEach((locale) => {
-			if (!(locale in currentValue[index]._data.name)) {
-				currentValue[index]._data.name[locale] = "";
+	Object
+		.keys(currentValue)
+		.forEach(index => {
+				supportedLocales
+					.forEach((locale) => {
+							if (!(locale in currentValue[index].name)) {
+								currentValue[index].name[locale] = "";
+							}
+						}
+					);
 			}
-		});
-
-		if (!currentValue[index]['_helper']) {
-			currentValue[index]['_helper'] = getHelperSchema();
-		}
-	});
+		);
 }
 
 function getNewItemTemplate() {
 	let newItem = {
-		"_data": {
-			"id": null,
-			"authorId": null,
-			"ror": null,
-			"name": {}
-		},
-		"_hasLoadableAdapters": false,
-		"_metadataExtractionAdapters": [],
-		"_extractionAdaptersLoaded": false,
-		"_metadataInjectionAdapters": [],
-		"_injectionAdaptersLoaded": false,
-		"_localesTable": {},
-		"_helper": getHelperSchema()
+		"id": null,
+		"authorId": null,
+		"ror": null,
+		"name": {}
 	};
 
 	supportedLocales.forEach((locale) => {
-		newItem._data.name[locale] = "";
+		newItem.name[locale] = "";
 	});
 
 	return newItem;
-}
-
-function getHelperSchema() {
-	return {
-		editMode: false,
-	};
 }
 
 function getLocaleDisplayName(locale) {
@@ -391,8 +413,27 @@ function getLocaleDisplayName(locale) {
 	return localeNames.of(locale.replace('_', '-'));
 }
 
-function apiLookup() {
-	fetch(apiUrl + searchPhrase.value, {})
+async function apiLookup() {
+	const {apiUrl} = useApiUrl(`rors/?searchPhrase=${searchPhrase.value}`);
+	const {data, isSuccess, validationError, isLoading, fetch} = useFetch(apiUrl, {method: 'GET'});
+
+	await fetch();
+
+	if (isSuccess) {
+		console.log('FieldAffiliations.vue');
+		console.log(data);
+		apiResponse.value = [];
+		if (data.value.items) {
+			for (let i = 0; i < data.value.items.length; i++) {
+				apiResponse.value.push(data.value.items[i]);
+			}
+		}
+		console.log(searchPhrase.value + ' fetched successfully.');
+	}
+}
+
+function apiLookup2(url) {
+	fetch(url, {})
 		.then(response => response.json())
 		.then(data => {
 			apiResponse.value = [];
@@ -421,6 +462,22 @@ function apiLookup() {
 
 .pkpFormField--affiliations__control a {
 	cursor: pointer;
+}
+
+.pkpFormField--affiliations__control input[type=text] {
+	width: 90%;
+}
+
+.pkpFormField--affiliations__control table th:nth-child(1) {
+	width: 45%;
+}
+
+.pkpFormField--affiliations__control table th:nth-child(3) {
+	width: 100px;
+}
+
+.pkpFormField--affiliations__control table td:nth-child(3) {
+	text-align: right;
 }
 
 .pkpFormField--affiliations__control .searchPhraseResults {
@@ -455,7 +512,6 @@ function apiLookup() {
 .pkpFormField--affiliations__control .searchPhraseResults ul li a:nth-child(2) {
 	float: right;
 	width: 30px;
-	height: 42px;
 	display: block;
 }
 

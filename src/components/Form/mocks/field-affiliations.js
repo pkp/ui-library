@@ -310,142 +310,40 @@ export default {
 	},
 	value: [
 		{
-			"_data": {
-				"id": 12,
-				"authorId": 5,
-				"ror": "https://ror.org/0213rcc28",
-				"name": {
-					"en": "Simon Fraser University",
-					"fr_CA": "Simon Fraser University",
-					"de": "Simon Fraser University",
-					"nl": "Simon Fraser University",
-					"tr": "Simon Fraser University",
-				}
-			},
-			"_hasLoadableAdapters": false,
-			"_metadataExtractionAdapters": [],
-			"_extractionAdaptersLoaded": false,
-			"_metadataInjectionAdapters": [],
-			"_injectionAdaptersLoaded": false,
-			"_localesTable": {
-				"be@cyrillic": "be",
-				"bs": "bs_Latn",
-				"fr_FR": "fr",
-				"nb": "nb_NO",
-				"sr@cyrillic": "sr_Cyrl",
-				"sr@latin": "sr_Latn",
-				"uz@cyrillic": "uz",
-				"uz@latin": "uz_Latn",
-				"zh_CN": "zh_Hans"
-			},
+			"id": 12,
+			"authorId": 5,
+			"ror": "https://ror.org/0213rcc28",
+			"name": {
+				"en": "Simon Fraser University",
+				"fr_CA": "Simon Fraser University",
+				"de": "Simon Fraser University",
+			}
 		},
 		{
-			"_data": {
-				"id": 13,
-				"authorId": 5,
-				"ror": "https://ror.org/02e2c7k09",
-				"name": {
-					"en": "Delft University of Technology",
-					"fr_CA": "",
-					"de": "",
-					"nl": "Technische Universiteit Delft",
-					"tr": "Delft University of Technology",
-				}
-			},
-			"_hasLoadableAdapters": false,
-			"_metadataExtractionAdapters": [],
-			"_extractionAdaptersLoaded": false,
-			"_metadataInjectionAdapters": [],
-			"_injectionAdaptersLoaded": false,
-			"_localesTable": {
-				"be@cyrillic": "be",
-				"bs": "bs_Latn",
-				"fr_FR": "fr",
-				"nb": "nb_NO",
-				"sr@cyrillic": "sr_Cyrl",
-				"sr@latin": "sr_Latn",
-				"uz@cyrillic": "uz",
-				"uz@latin": "uz_Latn",
-				"zh_CN": "zh_Hans"
-			},
+			"id": 13,
+			"authorId": 5,
+			"ror": "https://ror.org/02e2c7k09",
+			"name": {
+				"en": "Delft University of Technology",
+				"fr_CA": "",
+				"de": "Technische Universität Delft",
+			}
 		},
 		{
-			"_data": {
-				"id": 14,
-				"authorId": 5,
-				"ror": "",
-				"name": {
-					"en": "German National Library of Science and Technology",
-					"fr_CA": "",
-					"de": "Technische Informationsbibliothek (TIB)",
-					"nl": "",
-					"tr": "",
-				}
-			},
-			"_hasLoadableAdapters": false,
-			"_metadataExtractionAdapters": [],
-			"_extractionAdaptersLoaded": false,
-			"_metadataInjectionAdapters": [],
-			"_injectionAdaptersLoaded": false,
-			"_localesTable": {
-				"be@cyrillic": "be",
-				"bs": "bs_Latn",
-				"fr_FR": "fr",
-				"nb": "nb_NO",
-				"sr@cyrillic": "sr_Cyrl",
-				"sr@latin": "sr_Latn",
-				"uz@cyrillic": "uz",
-				"uz@latin": "uz_Latn",
-				"zh_CN": "zh_Hans"
-			},
+			"id": 14,
+			"authorId": 5,
+			"ror": "",
+			"name": {
+				"en": "German National Library of Science and Technology",
+				"fr_CA": "",
+				"de": "Technische Informationsbibliothek (TIB)",
+			}
 		},
-		{
-			"_data": {
-				"id": 15,
-				"authorId": 5,
-				"ror": "https://ror.org/0304hq317",
-				"name": {
-					"en": "Leibniz University Hannover",
-					"fr_CA": "",
-					"de": "Technische Universität Hannover",
-					"nl": "",
-					"tr": "",
-				}
-			},
-			"_hasLoadableAdapters": false,
-			"_metadataExtractionAdapters": [],
-			"_extractionAdaptersLoaded": false,
-			"_metadataInjectionAdapters": [],
-			"_injectionAdaptersLoaded": false,
-			"_localesTable": {
-				"be@cyrillic": "be",
-				"bs": "bs_Latn",
-				"fr_FR": "fr",
-				"nb": "nb_NO",
-				"sr@cyrillic": "sr_Cyrl",
-				"sr@latin": "sr_Latn",
-				"uz@cyrillic": "uz",
-				"uz@latin": "uz_Latn",
-				"zh_CN": "zh_Hans"
-			},
-		}
 	],
 	newAffiliationPending: {
-		"_data": {
-			"id": null,
-			"authorId": null,
-			"ror": null,
-			"name": {}
-		},
-		"_hasLoadableAdapters": false,
-		"_metadataExtractionAdapters": [],
-		"_extractionAdaptersLoaded": false,
-		"_metadataInjectionAdapters": [],
-		"_injectionAdaptersLoaded": false,
-		"_localesTable": {},
-		"_helper": {
-			editMode: false,
-			editable: false
-		}
+		"id": null,
+		"authorId": null,
+		"ror": null,
+		"name": {}
 	}
 };
