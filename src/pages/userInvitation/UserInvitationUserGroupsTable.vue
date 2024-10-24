@@ -136,6 +136,7 @@ import PkpButton from '@/components/Button/Button.vue';
 import FieldText from '@/components/Form/fields/FieldText.vue';
 import {useUserInvitationPageStore} from './UserInvitationPageStore';
 import {useDate} from '@/composables/useDate';
+import {useModal} from '@/composables/useModal';
 
 const props = defineProps({
 	userGroups: {type: Object, required: true},
@@ -183,21 +184,36 @@ function addUserGroup() {
 	store.updatePayload('userGroupsToAdd', userGroupsUpdate, false);
 }
 
+const {openDialog} = useModal();
 /**
  * remove user groups form user
  * @param userGroup Object
  * @param index Number
  */
 function removeUserGroup(userGroup, index) {
-	store.invitationPayload.currentUserGroups.find(
-		(data, i) => i === index,
-	).dateEnd = formatShortDate(new Date());
-	let userGroupsToRemove = [];
-	if (store.invitationPayload.userGroupsToRemove) {
-		userGroupsToRemove = [...store.invitationPayload.userGroupsToRemove];
-	}
-	userGroupsToRemove.push({userGroupId: userGroup.id});
-	store.updatePayload('userGroupsToRemove', userGroupsToRemove, false);
+	openDialog({
+		name: 'removeRole',
+		title: t('invitation.role.removeRole.button'),
+		message: t('user.removeRole.message'),
+		actions: [
+			{
+				label: t('common.yes'),
+				isWarnable: true,
+				callback: (close) => {
+					store.invitationPayload.currentUserGroups.find(
+						(data, i) => i === index,
+					).dateEnd = formatShortDate(new Date());
+					close();
+				},
+			},
+			{
+				label: t('common.no'),
+				callback: (close) => {
+					close();
+				},
+			},
+		],
+	});
 }
 
 /**

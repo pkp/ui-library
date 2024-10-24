@@ -74,7 +74,10 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 					updateAcceptInvitationPayload('givenName', data.value.givenName); //if not check this override the multilingual structure
 				}
 				updateAcceptInvitationPayload('userCountry', data.value.country);
-				updateAcceptInvitationPayload('userOrcid', data.value.orcid);
+				updateAcceptInvitationPayload(
+					'userGroupsToAdd',
+					data.value.userGroupsToAdd,
+				);
 				updateAcceptInvitationPayload(
 					'privacyStatement',
 					userId.value ? true : false,
@@ -267,24 +270,25 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 
 		const invitationRequestPayload = computed(() => {
 			let payload = {};
-			console.log(acceptInvitationPayload.value);
 			if (userId.value && acceptInvitationPayload.value.orcid) {
 				payload = {
 					userOrcid: acceptInvitationPayload.value.orcid,
 				};
 			} else {
-				currentStep.value.sections.forEach((element, index) => {
-					let sectionPayload = {};
-					element.props.validateFields.forEach((field) => {
-						if (Object.keys(acceptInvitationPayload.value).includes(field)) {
-							sectionPayload[field] = acceptInvitationPayload.value[field];
-						}
+				if (currentStep.value) {
+					currentStep.value.sections.forEach((element, index) => {
+						let sectionPayload = {};
+						element.props.validateFields.forEach((field) => {
+							if (Object.keys(acceptInvitationPayload.value).includes(field)) {
+								sectionPayload[field] = acceptInvitationPayload.value[field];
+							}
+						});
+						payload = {
+							...payload,
+							...sectionPayload,
+						};
 					});
-					payload = {
-						...payload,
-						...sectionPayload,
-					};
-				});
+				}
 			}
 			return payload;
 		});

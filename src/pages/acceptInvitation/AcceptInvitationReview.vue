@@ -10,11 +10,6 @@
 					:heading="t('user.username')"
 					:value="store.acceptInvitationPayload.username"
 				></FormDisplayItemBasic>
-				<FormDisplayItemBasic
-					heading-element="h4"
-					:heading="t('user.password')"
-					:value="store.acceptInvitationPayload.password"
-				></FormDisplayItemBasic>
 			</div>
 		</div>
 		<div v-if="store.userId != null" class="border-t border-light p-8">
@@ -42,25 +37,15 @@
 					{{ t('common.edit') }}
 				</PkpButton>
 			</div>
-			<div v-for="step in store.formSteps" :key="step.id">
-				<template v-if="step.id === 'userDetails'">
-					<div
-						v-for="section in step.sections"
-						:key="section.id"
-						class="border-light p-8 even:border-t"
-					>
-						<div class="p-4 pb-8">
-							<FormDisplay
-								v-if="store.userId === null"
-								:fields="section.props.form.fields"
-								:supported-form-locales="
-									section.props.form.supportedFormLocales
-								"
-								heading-element="h4"
-							></FormDisplay>
-						</div>
-					</div>
-				</template>
+			<div class="p-8">
+				<div class="p-4 pb-8">
+					<FormDisplay
+						v-if="store.userId === null"
+						:fields="userForm.fields"
+						:supported-form-locales="userForm.supportedFormLocales"
+						heading-element="h4"
+					></FormDisplay>
+				</div>
 			</div>
 		</div>
 
@@ -71,9 +56,6 @@
 			<div class="p-4">
 				<AcceptInvitationUserRoles
 					:user-groups-to-add="store.acceptInvitationPayload.userGroupsToAdd"
-					:user-groups-to-remove="
-						store.acceptInvitationPayload.userGroupsToRemove
-					"
 				/>
 			</div>
 		</div>
@@ -88,8 +70,14 @@ import {useAcceptInvitationPageStore} from './AcceptInvitationPageStore';
 import PkpButton from '@/components/Button/Button.vue';
 import FormDisplay from '@/components/FormDisplay/FormDisplay.vue';
 import FormDisplayItemBasic from '@/components/FormDisplay/FormDisplayItemBasic.vue';
+import {useForm} from '@/composables/useForm';
 
-defineProps({});
+const props = defineProps({
+	form: {type: Object, required: true},
+});
 const store = useAcceptInvitationPageStore();
 const {t} = useLocalize();
+
+const {form: userForm, connectWithPayload} = useForm(props.form);
+connectWithPayload(store.acceptInvitationPayload);
 </script>

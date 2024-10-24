@@ -27,11 +27,13 @@
 		<TableBody>
 			<TableRow v-for="(invitation, index) in store.invitations" :key="index">
 				<TableCell>
-					{{
-						invitation.userId
-							? invitation.existingUser.fullName
-							: invitation.newUser.fullName
-					}}
+					<span class="text-lg-normal">
+						{{
+							invitation.userId
+								? invitation.existingUser.fullName
+								: invitation.newUser.fullName
+						}}
+					</span>
 					<Icon
 						v-if="invitation.existingUser?.orcid || invitation.newUser?.orcid"
 						icon="orcid"
@@ -39,33 +41,43 @@
 					/>
 				</TableCell>
 				<TableCell>
-					{{
-						invitation.userId ? invitation.existingUser.email : invitation.email
-					}}
+					<span class="text-lg-normal">
+						{{
+							invitation.userId
+								? invitation.existingUser.email
+								: invitation.email
+						}}
+					</span>
 				</TableCell>
 				<TableCell>
-					<template
-						v-for="(userGroups, i) in invitation.userGroupsToAdd"
-						:key="i"
-					>
-						<div class="flex flex-col">
-							{{ localize(userGroups.userGroupName) }}
-						</div>
-					</template>
+					<span class="text-lg-normal">
+						<template
+							v-for="(userGroups, i) in invitation.userGroupsToAdd"
+							:key="i"
+						>
+							<div class="flex flex-col">
+								{{ localize(userGroups.userGroupName) }}
+							</div>
+						</template>
+					</span>
 				</TableCell>
 				<TableCell>
-					{{
-						t('userInvitation.status.invited', {
-							date: formatShortDate(invitation.createdAt),
-						})
-					}}
+					<span class="text-lg-normal">
+						{{
+							t('userInvitation.status.invited', {
+								date: formatShortDate(invitation.createdAt),
+							})
+						}}
+					</span>
 				</TableCell>
 				<TableCell>
-					{{
-						invitation.userId
-							? localize(invitation.existingUser.affiliation)
-							: localize(invitation.affiliation)
-					}}
+					<span class="text-lg-normal">
+						{{
+							invitation.userId
+								? localize(invitation.existingUser.affiliation)
+								: localize(invitation.affiliation)
+						}}
+					</span>
 				</TableCell>
 				<TableCell>
 					<DropdownActions

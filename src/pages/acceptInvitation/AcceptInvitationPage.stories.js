@@ -35,19 +35,28 @@ export const NewUser = {
 						const postBody = await request.json();
 						let errors = {};
 
-						if (!Object.keys(postBody.invitationData).includes('username')) {
+						if (
+							Object.keys(postBody.invitationData).includes('username') &&
+							postBody.invitationData['username'] === ''
+						) {
 							errors['username'] = ['This field is required'];
 						}
-						if (!Object.keys(postBody.invitationData).includes('password')) {
+						if (
+							Object.keys(postBody.invitationData).includes('password') &&
+							postBody.invitationData['password'] === ''
+						) {
 							errors['password'] = ['This field is required'];
 						}
-						if (!Object.keys(postBody.invitationData).includes('affiliation')) {
-							errors['affiliation'] = ['This field is required'];
+						if (
+							Object.keys(postBody.invitationData).includes('givenName') &&
+							postBody.invitationData['givenName']['en'] === ''
+						) {
+							errors['givenName'] = ['This field is required'];
 						}
-						if (!Object.keys(postBody.invitationData).includes('familyName')) {
-							errors['familyName'] = ['This field is required'];
-						}
-						if (!Object.keys(postBody.invitationData).includes('userCountry')) {
+						if (
+							Object.keys(postBody.invitationData).includes('userCountry') &&
+							postBody.invitationData['userCountry'] === ''
+						) {
 							errors['country'] = ['This field is required'];
 						}
 						Object.keys(postBody.invitationData).forEach((element) => {

@@ -170,6 +170,108 @@ const countries = [
 	},
 ];
 
+const form = {
+	id: 'userDetails',
+	method: 'POST',
+	action: 'http://localhost/ojs/index.php/publicknowledge/api/v1/users',
+	fields: [
+		{
+			name: 'givenName',
+			component: 'field-text',
+			label: 'Given Name',
+			groupId: 'default',
+			isRequired: true,
+			isMultilingual: true,
+			description:
+				'Also known as a forename or the first name, it is tha part of a personal name that identifies a preson',
+			value: {
+				en: '',
+				fr_CA: '',
+			},
+			inputType: 'text',
+			optIntoEdit: false,
+			optIntoEditLabel: '',
+			size: 'large',
+			prefix: '',
+		},
+		{
+			name: 'familyName',
+			component: 'field-text',
+			label: 'Family Name',
+			groupId: 'default',
+			isRequired: true,
+			isMultilingual: true,
+			description:
+				"A surname, family name, or last name is the mostly  hereditary portion of one's personal name that indicates one's family",
+			value: {
+				en: '',
+				fr_CA: '',
+			},
+			inputType: 'text',
+			optIntoEdit: false,
+			optIntoEditLabel: '',
+			size: 'large',
+			prefix: '',
+		},
+		{
+			name: 'affiliation',
+			component: 'field-text',
+			label: 'Affiliation',
+			groupId: 'default',
+			isRequired: true,
+			isMultilingual: true,
+			description: 'This is the institute you are affiliated with',
+			value: {
+				en: '',
+				fr_CA: '',
+			},
+			inputType: 'text',
+			optIntoEdit: false,
+			optIntoEditLabel: '',
+			size: 'large',
+			prefix: '',
+		},
+		{
+			name: 'country',
+			component: 'field-select',
+			label: 'County of affiliation',
+			groupId: 'default',
+			isRequired: true,
+			isMultilingual: false,
+			description:
+				'This is a country in which the institute you are affiliated with is situated',
+			value: null,
+			inputType: 'text',
+			optIntoEdit: false,
+			optIntoEditLabel: '',
+			options: countries,
+			size: 'large',
+			prefix: '',
+		},
+	],
+	groups: [
+		{
+			id: 'default',
+			pageId: 'default',
+		},
+	],
+	hiddenFields: {},
+	pages: [{id: 'default', submitButton: null}],
+	primaryLocale: 'en',
+	visibleLocales: ['en'],
+	supportedFormLocales: [
+		{
+			key: 'en',
+			label: 'English',
+		},
+		{
+			key: 'fr_CA',
+			label: 'French',
+		},
+	],
+	errors: {},
+};
+
 export default {
 	primaryLocale: 'en',
 	invitationId: 65,
@@ -188,7 +290,9 @@ export default {
 				{
 					id: 'userVerifyOrcid',
 					sectionComponent: 'AcceptInvitationVerifyOrcid',
-					props: {},
+					props: {
+						validateFields: [],
+					},
 				},
 			],
 		},
@@ -228,108 +332,7 @@ export default {
 					description:
 						'<p>Please provide the following details to help us manage your submission in our system.</p>',
 					props: {
-						form: {
-							id: 'userDetails',
-							method: 'POST',
-							action:
-								'http://localhost/ojs/index.php/publicknowledge/api/v1/users',
-							fields: [
-								{
-									name: 'givenName',
-									component: 'field-text',
-									label: 'Given Name',
-									groupId: 'default',
-									isRequired: true,
-									isMultilingual: false,
-									description:
-										'Also known as a forename or the first name, it is tha part of a personal name that identifies a preson',
-									value: {
-										en: '',
-										fr_CA: '',
-									},
-									inputType: 'text',
-									optIntoEdit: false,
-									optIntoEditLabel: '',
-									size: 'large',
-									prefix: '',
-								},
-								{
-									name: 'familyName',
-									component: 'field-text',
-									label: 'Family Name',
-									groupId: 'default',
-									isRequired: true,
-									isMultilingual: false,
-									description:
-										"A surname, family name, or last name is the mostly  hereditary portion of one's personal name that indicates one's family",
-									value: {
-										en: '',
-										fr_CA: '',
-									},
-									inputType: 'text',
-									optIntoEdit: false,
-									optIntoEditLabel: '',
-									size: 'large',
-									prefix: '',
-								},
-								{
-									name: 'affiliation',
-									component: 'field-text',
-									label: 'Affiliation',
-									groupId: 'default',
-									isRequired: true,
-									isMultilingual: false,
-									description: 'This is the institute you are affiliated with',
-									value: {
-										en: '',
-										fr_CA: '',
-									},
-									inputType: 'text',
-									optIntoEdit: false,
-									optIntoEditLabel: '',
-									size: 'large',
-									prefix: '',
-								},
-								{
-									name: 'country',
-									component: 'field-select',
-									label: 'County of affiliation',
-									groupId: 'default',
-									isRequired: true,
-									isMultilingual: false,
-									description:
-										'This is a country in which the institute you are affiliated with is situated',
-									value: null,
-									inputType: 'text',
-									optIntoEdit: false,
-									optIntoEditLabel: '',
-									options: countries,
-									size: 'large',
-									prefix: '',
-								},
-							],
-							groups: [
-								{
-									id: 'default',
-									pageId: 'default',
-								},
-							],
-							hiddenFields: {},
-							pages: [{id: 'default', submitButton: null}],
-							primaryLocale: 'en',
-							visibleLocales: ['en'],
-							supportedFormLocales: [
-								{
-									key: 'en',
-									label: 'English',
-								},
-								{
-									key: 'fr_CA',
-									label: 'French',
-								},
-							],
-							errors: {},
-						},
+						form: form,
 						validateFields: [
 							'affiliation',
 							'givenName',
@@ -355,7 +358,10 @@ export default {
 					sectionComponent: 'AcceptInvitationReview',
 					type: 'table',
 					description: '',
-					props: {},
+					props: {
+						form: form,
+						validateFields: [],
+					},
 				},
 			],
 		},
