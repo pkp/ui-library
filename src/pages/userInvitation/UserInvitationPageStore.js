@@ -25,15 +25,15 @@ export const useUserInvitationPageStore = defineComponentStore(
 			invitationPayload.value[fieldName] = value;
 			if (!initialValue) {
 				updatedPayload.value[fieldName] = value;
-			}
-			// when user type and remove the values, updated fields should remove from the payloads
-			if (
-				!invitationPayload.value.userId &&
-				typeof value === 'object' &&
-				Object.keys(value).length === 0
-			) {
-				delete invitationPayload.value[fieldName];
-				delete updatedPayload.value[fieldName];
+				// when user type and remove the values, updated fields should remove from the payloads
+				if (
+					value !== null &&
+					typeof value === 'object' &&
+					Object.keys(value).length === 0
+				) {
+					delete invitationPayload.value[fieldName];
+					delete updatedPayload.value[fieldName];
+				}
 			}
 		}
 

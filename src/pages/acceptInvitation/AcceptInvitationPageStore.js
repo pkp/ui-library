@@ -96,7 +96,6 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 
 		function updateAcceptInvitationPayload(fieldName, value) {
 			acceptInvitationPayload.value[fieldName] = value;
-			console.log(acceptInvitationPayload.value);
 		}
 
 		/** Steps */
@@ -272,11 +271,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 
 		const invitationRequestPayload = computed(() => {
 			let payload = {};
-			if (userId.value && acceptInvitationPayload.value.userOrcid) {
-				payload = {
-					userOrcid: acceptInvitationPayload.value.userOrcid,
-				};
-			} else {
+			if (!userId.value) {
 				if (currentStep.value) {
 					currentStep.value.sections.forEach((element, index) => {
 						let sectionPayload = {};
