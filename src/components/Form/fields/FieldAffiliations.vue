@@ -207,7 +207,6 @@ const apiResponse = ref([]);
 const newAffiliationPending = ref({});
 const searchPhrase = ref('');
 
-// Row actions
 const selectCustomOrganization = function () {
 	newAffiliationPending.value = getNewItemTemplate();
 	newAffiliationPending.value.name[currentLocale] = searchPhrase.value;
@@ -306,8 +305,6 @@ const rowActionsHandler = function (param) {
 		}
 	}
 }
-
-// GUI
 const indexEditMode = ref(-1);
 const showAddMode = computed(() => {
 	return typeof newAffiliationPending.value.id !== 'undefined';
@@ -349,7 +346,6 @@ const translations = function (row) {
 	}
 };
 
-// Hooks
 watch(currentValue, () => {
 	makeCurrentValueCompatible();
 }, {immediate: true});
@@ -358,7 +354,6 @@ onMounted(() => {
 	makeCurrentValueCompatible();
 })
 
-// Misc
 function searchPhraseChanged() {
 	newAffiliationPending.value = {};
 	apiResponse.value = [];
@@ -420,33 +415,15 @@ async function apiLookup() {
 	await fetch();
 
 	if (isSuccess) {
-		console.log('FieldAffiliations.vue');
-		console.log(data);
 		apiResponse.value = [];
 		if (data.value.items) {
 			for (let i = 0; i < data.value.items.length; i++) {
 				apiResponse.value.push(data.value.items[i]);
 			}
 		}
-		console.log(searchPhrase.value + ' fetched successfully.');
 	}
 }
 
-function apiLookup2(url) {
-	fetch(url, {})
-		.then(response => response.json())
-		.then(data => {
-			apiResponse.value = [];
-			if (data.items) {
-				for (let i = 0; i < data.items.length; i++) {
-					apiResponse.value.push(data.items[i]);
-				}
-			}
-		})
-		.catch(error => {
-			console.log(error);
-		});
-}
 </script>
 
 <style lang="less">
