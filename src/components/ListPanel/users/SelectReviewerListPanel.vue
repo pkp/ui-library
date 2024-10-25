@@ -2,6 +2,40 @@
 	<div>
 		<slot>
 			<ListPanel
+				v-if="suggestions.length > 0"
+				class="listPanel--selectReviewer"
+				:items="suggestions"
+			>
+				<template #header>
+					<PkpHeader>
+						<h2>
+							{{ title }}
+						</h2>
+						<Spinner v-if="isLoading" />
+					</PkpHeader>
+				</template>
+
+				<template v-if="isLoading" #itemsEmpty>
+					<template v-if="isLoading">
+						<Spinner />
+						{{ t('common.loading') }}
+					</template>
+					<template v-else>
+						{{ emptyLabel }}
+					</template>
+				</template>
+
+				<template #item="{item}">
+					<SelectReviewerSuggestionListItem
+						:key="item.id"
+						:item="item"
+						:select-reviewer-label="selectReviewerLabel"
+						:api-url="suggestionAddApiUrl"
+					/>
+				</template>
+			</ListPanel>
+
+			<ListPanel
 				class="listPanel--selectReviewer"
 				:is-sidebar-visible="isSidebarVisible"
 				:items="currentReviewers"
@@ -118,6 +152,7 @@ import Pagination from '@/components/Pagination/Pagination.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import Search from '@/components/Search/Search.vue';
 import SelectReviewerListItem from '@/components/ListPanel/users/SelectReviewerListItem.vue';
+import SelectReviewerSuggestionListItem from '@/components/ListPanel/users/SelectReviewerSuggestionListItem.vue';
 import fetch from '@/mixins/fetch';
 
 export default {
@@ -129,6 +164,7 @@ export default {
 		PkpHeader,
 		Search,
 		SelectReviewerListItem,
+		SelectReviewerSuggestionListItem,
 		Icon,
 		Spinner,
 		PkpButton,
@@ -310,6 +346,19 @@ export default {
 		warnOnAssignmentUnlockLabel: {
 			type: String,
 			required: true,
+		},
+		/** An array of reviewer suggestion if there are any */
+		suggestions: {
+			type: Array,
+			default() {
+				return [];
+			},
+		},
+		suggestionAddApiUrl: {
+			type: String,
+			default() {
+				return '';
+			},
 		},
 	},
 	emits: [
