@@ -5,6 +5,7 @@
 		:action="action"
 		@submit.prevent="() => {}"
 	>
+		<!-- Intentionally added to cover some edge cases described in https://github.com/pkp/pkp-lib/issues/9884 -->
 		<input type="submit" value="i9884" style="display: none" />
 		<form-locales
 			v-if="availableLocales.length > 1"
