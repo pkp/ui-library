@@ -74,18 +74,18 @@ export function useUserAccessManagerActions() {
 		openLegacyModal({title: t('grid.user.email')}, finishedCallback);
 	}
 
-	function disableUser(userId, finishedCallback) {
+	function disableUser(user, finishedCallback) {
 		const {openLegacyModal} = useLegacyGridUrl({
 			component: 'grid.settings.user.UserGridHandler',
 			op: 'edit-disable-user',
 			params: {
-				rowId: userId,
+				rowId: user.id,
+				enable: user.disabled ? '1' : '',
 			},
 		});
 
 		openLegacyModal({title: t('grid.user.disable')}, (closeData) => {
 			if (closeData.dataChanged[0]) {
-				console.log(closeData.dataChanged[0]);
 				finishedCallback();
 			} else {
 				finishedCallback();
