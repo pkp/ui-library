@@ -1,5 +1,6 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
 import {useApiUrl} from '@/composables/useApiUrl';
+import {useUrl} from '@/composables/useUrl';
 import {useAnnouncer} from '@/composables/useAnnouncer';
 import {useTranslation} from '@/composables/useTranslation';
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
@@ -58,6 +59,14 @@ export const useUserAccessManagerStore = defineComponentStore(
 		/**
 		 * Actions
 		 */
+
+		/*
+		 * redirect to send invitation page
+		 */
+		const {pageUrl: sendInvitationPageUrl} = useUrl('invitation/editUser');
+		function editUser(userObj) {
+			window.location = sendInvitationPageUrl.value + '/' + userObj.id;
+		}
 		const _userAccessActionsFns = useUserAccessManagerActions();
 		function getItemActions(userObj) {
 			return _userAccessActionsFns.getItemActions(userObj);
@@ -68,7 +77,7 @@ export const useUserAccessManagerStore = defineComponentStore(
 		}
 
 		function disableUser(userObj) {
-			_userAccessActionsFns.disableUser(userObj.id, triggerDataChangeCallback);
+			_userAccessActionsFns.disableUser(userObj, triggerDataChangeCallback);
 		}
 
 		function removeUser(userObj) {
@@ -97,6 +106,7 @@ export const useUserAccessManagerStore = defineComponentStore(
 			mergeUser,
 			loginAs,
 			getItemActions,
+			editUser,
 		};
 	},
 );
