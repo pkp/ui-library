@@ -59,13 +59,13 @@ function updateField(fieldName, b, fieldValue) {
 const searchPhrase = computed(() => {
 	let searchText = '';
 	if (fields.value.email) {
-		searchText = fields.value.email + ' ';
+		searchText = fields.value.email.trim() + ' ';
 	}
 	if (fields.value.orcid) {
-		searchText = searchText + fields.value.orcid + ' ';
+		searchText = searchText + fields.value.orcid.trim() + ' ';
 	}
 	if (fields.value.username) {
-		searchText = searchText + fields.value.username;
+		searchText = searchText + fields.value.username.trim();
 	}
 
 	return searchText;
@@ -82,21 +82,21 @@ async function searchUser() {
 		if (userData.value.items.length > 0) {
 			let user = {};
 			user = userData.value.items.find(
-				(value) => value.email === fields.value.email, // check provided email is exact match
+				(value) => value.email === fields.value.email.trim(), // check provided email is exact match
 			);
 			user
 				? user
 				: (user = userData.value.items.find(
-						(value) => value.userName === fields.value.username, // check provided username is exact match
+						(value) => value.userName === fields.value.username.trim(), // check provided username is exact match
 					));
 			user
 				? user
 				: (user = userData.value.items.find(
-						(value) => value.orcid === fields.value.orcid, // check provided orcid is exact match
+						(value) => value.orcid === fields.value.orcid.trim(), // check provided orcid is exact match
 					));
 
 			if (!user) {
-				store.updatePayload('inviteeEmail', fields.value.email);
+				store.updatePayload('inviteeEmail', fields.value.email.trim());
 				store.userSearch.message = t('userInvitation.search.userNotFound');
 				store.userSearch.class = 'font-bold text-negative';
 			} else {
@@ -112,7 +112,7 @@ async function searchUser() {
 				store.userSearch.class = 'font-bold text-success';
 			}
 		} else {
-			store.updatePayload('inviteeEmail', fields.value.email);
+			store.updatePayload('inviteeEmail', fields.value.email.trim());
 			store.userSearch.message = t('userInvitation.search.userNotFound');
 			store.userSearch.class = 'font-bold text-negative';
 		}
