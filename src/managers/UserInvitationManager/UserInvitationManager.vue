@@ -106,7 +106,10 @@
 			</TableRow>
 		</TableBody>
 	</PkpTable>
-	<div class="flex justify-end">
+	<div
+		v-if="store.invitationsPagination.itemCount > 0"
+		class="flex justify-end"
+	>
 		<Pagination
 			:current-page="store.invitationsPagination.currentPage"
 			:last-page="store.invitationsPagination.pageCount"
