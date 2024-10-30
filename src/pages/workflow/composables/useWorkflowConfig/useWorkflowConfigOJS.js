@@ -29,6 +29,7 @@ export function useWorkflowConfigOJS({dashboardPage}) {
 		if (selectedMenuState.stageId) {
 			const itemsArgs = {
 				submission,
+				pageInitConfig,
 				selectedPublication,
 				selectedPublicationId,
 				selectedStageId: selectedMenuState.stageId,
