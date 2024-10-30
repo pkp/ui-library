@@ -3,6 +3,7 @@
 		<div class="listPanel__itemSummary">
 			<div class="listPanel__itemIdentity">
 				<div class="listPanel__itemTitle">
+					<!-- TODO: check why localize(fullName) causing error -->
 					{{ fullName }}
 					<Badge class="listPanel__item--reviewer__active">
 						{{ affiliation }}
@@ -11,6 +12,7 @@
 
 				<div class="listPanel__itemSubtitle">
 					<div class="listPanel__item--reviewer__affiliation">
+						<!-- TODO: how to show without v-html -->
 						{{ suggestionReason }}
 					</div>
 				</div>
@@ -29,20 +31,15 @@
 </template>
 
 <script>
-// import List from '@/components/List/List.vue';
-// import ListItem from '@/components/List/ListItem.vue';
 import Badge from '@/components/Badge/Badge.vue';
 import PkpButton from '@/components/Button/Button.vue';
-
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
-// import cloneDeep from 'clone-deep';
-// import {useModal} from '@/composables/useModal';
+import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
+import {useLocalize} from '@/composables/useLocalize';
 
 export default {
 	components: {
-		// List,
-		// ListItem,
 		Badge,
 		PkpButton,
 	},
@@ -52,11 +49,19 @@ export default {
 			type: Object,
 			required: true,
 		},
-		selectReviewerLabel: {
-			type: String,
+		submissionId: {
+			type: Number,
 			required: true,
 		},
-		apiUrl: {
+		stageId: {
+			type: Number,
+			required: true,
+		},
+		reviewRoundId: {
+			type: Number,
+			required: true,
+		},
+		selectReviewerLabel: {
 			type: String,
 			required: true,
 		},
@@ -100,21 +105,27 @@ export default {
 		 * @param
 		 */
 		select() {
+			const {t} = useLocalize();
+
 			// this.$emit('select', this.item);
 			// pkp.eventBus.$emit('selected:reviewerSuggestion', this.item);
 
-			$.ajax({
-				url: this.apiUrl,
-				type: 'POST',
-				error: this.ajaxErrorCallback,
-				context: this,
-				success(response) {
-					// console.log(response)
-				},
-				complete(r) {
-					// this.isLoading = false;
+			const {openLegacyModal} = useLegacyGridUrl({
+				component: 'grid.users.reviewer.ReviewerGridHandler',
+				op: 'showReviewerForm',
+				params: {
+					submissionId: this.submissionId,
+					stageId: this.stageId,
+					reviewRoundId: this.reviewRoundId,
+					selectionType: pkp.const.REVIEWER_SELECT_CREATE,
+					reviewerSuggestionId: this.item.id,
 				},
 			});
+
+			openLegacyModal(
+				{title: t('editor.submission.addReviewer')},
+				function () {},
+			);
 		},
 	},
 };
