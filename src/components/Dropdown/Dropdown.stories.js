@@ -61,7 +61,7 @@ export const WithSections = {
 					<ul>
 						<li>
 							<a href="#" class="pkpDropdown__action">
-								<Icon icon="check" :inline="true" />
+								<Icon icon="Complete" class="h-5 w-5" :inline="true" />
 								English
 							</a>
 						</li>

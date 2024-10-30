@@ -33,7 +33,7 @@
 						{{ t('common.saving') }}
 					</span>
 					<span v-else-if="hasRecentSave" class="pkpFormPage__status">
-						<Icon icon="check" :inline="true" />
+						<Icon icon="Complete" class="h-5 w-5 text-success" :inline="true" />
 						{{ t('form.saved') }}
 					</span>
 				</transition>
@@ -249,10 +249,6 @@ export default {
 	transition: all 0.3s;
 	white-space: nowrap;
 	flex-shrink: 0;
-
-	.fa {
-		color: @yes;
-	}
 
 	.pkpSpinner {
 		margin-inline-end: 0.25rem;

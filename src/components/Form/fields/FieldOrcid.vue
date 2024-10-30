@@ -23,7 +23,8 @@
 			<Icon
 				v-if="isVerified && hasOrcid"
 				:class="'mr-2'"
-				:icon="'orcid'"
+				icon="Orcid"
+				class="h-6 w-6"
 				:inline="true"
 			/>
 			<div

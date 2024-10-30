@@ -22,7 +22,8 @@
 
 			<Icon
 				v-if="store.invitationPayload.orcidValidation"
-				icon="orcid"
+				icon="Orcid"
+				class="h-4 w-4"
 				:inline="true"
 			/>
 

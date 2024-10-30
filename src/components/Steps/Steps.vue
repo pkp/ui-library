@@ -42,7 +42,7 @@
 											current !== step.id && completedSteps.includes(step.id)
 										"
 									>
-										<Icon icon="check" />
+										<Icon icon="Complete" class="h-4 w-4" />
 									</template>
 									<template v-else>
 										{{ i + 1 }}
@@ -61,14 +61,20 @@
 				</li>
 			</ol>
 			<div v-if="collapsed" class="pkpSteps__controls" aria-hidden="true">
-				<span class="pkpSteps__progress">
+				<span class="relative bottom-1 me-1 text-lg-normal">
 					{{ progress }}
 				</span>
-				<PkpButton @click="() => (stepsVisible = !stepsVisible)">
+				<PkpButton
+					class="!px-2 !py-1"
+					@click="() => (stepsVisible = !stepsVisible)"
+				>
 					<span class="-screenReader">
 						{{ showStepsLabel }}
 					</span>
-					<Icon :icon="stepsVisible ? 'chevron-up' : 'chevron-down'" />
+					<Icon
+						:icon="stepsVisible ? 'ChevronUp' : 'ChevronDown'"
+						class="h-5 w-5"
+					/>
 				</PkpButton>
 			</div>
 		</div>
@@ -298,11 +304,6 @@ export default {
 
 .pkpSteps__controls {
 	padding: 0.75rem;
-}
-
-.pkpSteps__progress {
-	font-size: @font-sml;
-	margin-right: 0.25rem;
 }
 
 .pkpSteps__step {

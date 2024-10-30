@@ -1,5 +1,5 @@
 <template>
-	<button
+	<span
 		v-tooltip="{
 			content: tooltip,
 			theme: 'pkp-tooltip',
@@ -7,9 +7,9 @@
 		class="tooltipButton"
 		@click.prevent
 	>
-		<Icon icon="question-circle" />
-		<span class="-screenReader">{{ label }}</span>
-	</button>
+		<Icon icon="UsefulTips" class="h-4 w-4" />
+		<span v-if="label" class="-screenReader">{{ label }}</span>
+	</span>
 </template>
 
 <script>

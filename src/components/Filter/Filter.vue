@@ -12,7 +12,7 @@
 			class="pkpFilter__remove"
 			@click.prevent.stop="remove(param, value)"
 		>
-			<Icon icon="times-circle-o" />
+			<Icon icon="Cancel" class="h-4 w-4 text-negative" />
 			<span class="-screenReader">
 				{{ t('common.filterRemove', {filterTitle: title}) }}
 			</span>

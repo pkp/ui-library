@@ -79,7 +79,7 @@ export const Comments = {
 		},
 		template: `
 			<Badge v-bind="args" >			
-				<Icon icon="comment-o" :inline="true" />{{args.slot}}
+				<Icon icon="Comment" class="h-3 w-3 me-1" :inline="true" />{{args.slot}}
 			</Badge>`,
 	}),
 };

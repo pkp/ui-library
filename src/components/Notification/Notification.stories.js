@@ -47,9 +47,11 @@ export const Warning = {
 		},
 		template: `
 			<Notification v-bind="args" >
-				<Icon icon="exclamation-triangle" :inline="true" />
-				This submission does not have any contributors. At least one contributor
-				must be provided.
+				<div class="flex items-center">
+					<Icon icon="Error" class="h-5 w-5 me-1" :inline="true" />
+					This submission does not have any contributors. At least one contributor
+					must be provided.
+				</div>
 			</Notification>
 		`,
 	}),

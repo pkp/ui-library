@@ -85,7 +85,7 @@ export const WithIcon = {
 		},
 		template: `
 			<Tabs v-bind="args">
-				<Tab id="first" icon="bell-o" label="First tab">First tab content</Tab>
+				<Tab id="first" icon="Notifications" label="First tab">First tab content</Tab>
 				<Tab id="second" label="Second tab">Second tab content</Tab>
 				<Tab id="third" label="Third tab">Third tab content</Tab>
 			</Tabs>

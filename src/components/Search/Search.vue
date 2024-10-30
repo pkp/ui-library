@@ -11,16 +11,19 @@
 				@keyup="searchPhraseKeyUp"
 			/>
 			<span class="pkpSearch__icons">
-				<Icon icon="search" class="pkpSearch__icons--search" />
+				<Icon
+					icon="Search"
+					class="absolute left-2/4 top-2/4 h-5 w-5 -translate-x-1/2 -translate-y-1/2 transform text-primary"
+				/>
 			</span>
 		</label>
 		<button
 			v-if="searchPhrase"
-			class="pkpSearch__clear"
+			class="absolute top-0 h-full w-8 text-negative hover:bg-negative hover:text-on-dark focus:bg-negative focus:text-on-dark ltr:right-0 rtl:left-0 rtl:right-auto"
 			:aria-controls="inputId"
 			@click.prevent="clearSearchPhrase"
 		>
-			<Icon icon="times" />
+			<Icon icon="Cancel" class="relative bottom-[2px] h-4 w-4" />
 			<span class="-screenReader">{{ t('common.clearSearch') }}</span>
 		</button>
 	</div>
@@ -125,34 +128,16 @@ export default {
 			border-color: @primary;
 			background: @primary;
 
-			.pkpSearch__icons--search:before {
-				color: #fff;
+			span {
+				@apply text-on-dark;
 			}
 		}
 	}
 }
 
-.pkpSearch__clear {
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: 2rem;
-	height: 100%;
-	background: transparent;
-	border: none;
-	border-top-right-radius: @radius;
-	border-bottom-right-radius: @radius;
-	vertical-align: middle;
-	text-align: center;
-	color: @offset;
-	cursor: pointer;
-
-	&:hover,
-	&:focus {
-		outline: 0;
-		background: @offset;
-		color: #fff;
-	}
+.pkpSearch__input::-webkit-search-cancel-button {
+	-webkit-appearance: none;
+	appearance: none;
 }
 
 .pkpSearch__icons {
@@ -164,20 +149,7 @@ export default {
 	border-inline-end: 1px solid #777;
 }
 
-.pkpSearch__icons--search {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	color: @primary;
-}
-
 [dir='rtl'] {
-	.pkpSearch__clear {
-		right: auto;
-		left: 0;
-	}
-
 	.pkpSearch__icons {
 		left: auto;
 		right: 0;

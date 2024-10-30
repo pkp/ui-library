@@ -22,7 +22,8 @@
 				></FormDisplayItemBasic>
 				<Icon
 					v-if="store.acceptInvitationPayload.orcid"
-					icon="orcid"
+					icon="Orcid"
+					class="h-4 w-4"
 					:inline="true"
 				/>
 			</div>

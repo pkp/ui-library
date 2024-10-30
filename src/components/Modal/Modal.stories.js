@@ -187,14 +187,14 @@ export const WithActions = {
 				<List>
 					<ListItem>
 						<template #value>
-							<Icon icon="comment-o" :inline="true" />
+							<Icon icon="Comment" class="h-3 w-3" :inline="true" />
 							23
 						</template>
 						Emails sent today
 					</ListItem>
 					<ListItem>
 						<template #value>
-							<Icon icon="file-text-o" :inline="true" />
+							<Icon icon="MySubmissions" class="h-4 w-4" :inline="true" />
 							9
 						</template>
 						Submissions rejected today

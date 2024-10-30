@@ -139,7 +139,7 @@ const SubmissionWizardPageWithDataAndTemplate = {
 												type="warning"
 												class="submissionWizard__reviewEmptyWarning"
 											>
-												<Icon icon="exclamation-triangle" :inline="true"></Icon>
+												<Icon icon="Error" class="h-5 w-5" :inline="true"></Icon>
 												{{ error }}
 											</Notification>
 											<ul class="submissionWizard__reviewPanel__list">
@@ -176,14 +176,15 @@ const SubmissionWizardPageWithDataAndTemplate = {
 												type="warning"
 												class="submissionWizard__reviewEmptyWarning"
 											>
-												<Icon icon="exclamation-triangle" :inline="true"></Icon>
+												<Icon icon="Error" class="h-5 w-5" :inline="true"></Icon>
 												No contributors have been added to this submission.
 											</Notification>
 											<ul v-else class="submissionWizard__reviewPanel__list">
 												<li v-for="(error, i) in errors.contributors" :key="i">
 													<Notification type="warning">
 														<Icon
-															icon="exclamation-triangle"
+															icon="Error"
+															class="h-5 w-5"
 															:inline="true"
 														></Icon>
 														{{ error }}
@@ -221,7 +222,7 @@ const SubmissionWizardPageWithDataAndTemplate = {
 														:key="i"
 														type="warning"
 													>
-														<Icon icon="exclamation-triangle"></Icon>
+														<Icon icon="Error" class="h-5 w-5"></Icon>
 														{{ error }}
 													</Notification>
 												</template>
@@ -240,7 +241,7 @@ const SubmissionWizardPageWithDataAndTemplate = {
 														:key="i"
 														type="warning"
 													>
-														<Icon icon="exclamation-triangle"></Icon>
+														<Icon icon="Error" class="h-5 w-5"></Icon>
 														{{ error }}
 													</Notification>
 												</template>
@@ -262,7 +263,7 @@ const SubmissionWizardPageWithDataAndTemplate = {
 														:key="i"
 														type="warning"
 													>
-														<Icon icon="exclamation-triangle"></Icon>
+														<Icon icon="Error" class="h-5 w-5"></Icon>
 														{{ error }}
 													</Notification>
 												</template>

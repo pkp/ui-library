@@ -1,16 +1,16 @@
 <template>
 	<div class="orderer">
 		<span v-if="isDraggable" class="orderer__dragDrop" aria-hidden="true">
-			<Icon icon="sort" />
+			<Icon icon="Sort" class="h-5 w-5" />
 		</span>
 		<button class="orderer__up" @click.prevent="up">
-			<Icon icon="angle-up" />
+			<Icon icon="ChevronUp" class="h-5 w-5" />
 			<span class="-screenReader">
 				{{ t('common.orderUp', {itemTitle: itemTitle}) }}
 			</span>
 		</button>
 		<button class="orderer__down" @click.prevent="down">
-			<Icon icon="angle-down" />
+			<Icon icon="ChevronDown" class="h-5 w-5" />
 			<span class="-screenReader">
 				{{ t('common.orderDown', {itemTitle: itemTitle}) }}
 			</span>
@@ -91,7 +91,7 @@ export default {
 		outline: 0;
 	}
 
-	.fa {
+	span {
 		position: absolute;
 		top: 50%;
 		left: 50%;
@@ -120,11 +120,6 @@ export default {
 
 	&:focus {
 		background: @bg-light;
-	}
-
-	.fa {
-		font-size: 20px;
-		font-weight: @bold;
 	}
 }
 

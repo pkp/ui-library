@@ -18,7 +18,7 @@
 				@keydown.right.exact.prevent="setNextTab"
 			>
 				<template v-if="tab.icon">
-					<Icon :icon="tab.icon"></Icon>
+					<Icon :icon="tab.icon" class="h-4 w-4"></Icon>
 					<span class="-screenReader">{{ tab.label }}</span>
 				</template>
 				<template v-else>

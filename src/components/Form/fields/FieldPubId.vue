@@ -58,9 +58,9 @@
 			<div
 				v-if="pattern && !canGenerateId && !currentValue"
 				:id="describedByDescriptionId"
-				class="pkpFormField--pubid__warning"
+				class="mt-1 flex items-center text-base-normal"
 			>
-				<Icon icon="exclamation-triangle" :inline="true" />
+				<Icon icon="Error" class="h-4 w-4" :inline="true" />
 				{{ missingPartsLabel }}
 			</div>
 			<FieldError
@@ -258,11 +258,5 @@ export default {
 .pkpFormField--pubid__button {
 	margin-inline-start: 0.25rem;
 	height: 2.5rem; // Match input height
-}
-
-.pkpFormField--pubid__warning {
-	font-size: @font-tiny;
-	line-height: 1.65em;
-	margin-top: 0.25rem;
 }
 </style>

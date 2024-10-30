@@ -9,7 +9,7 @@
 			aria-hidden="true"
 			@click.prevent
 		>
-			<Icon icon="globe" />
+			<Icon icon="Globe" class="h-5 w-5" />
 		</button>
 		<span class="-screenReader">{{ tooltip }}</span>
 	</span>
@@ -81,20 +81,20 @@ export default {
 		cursor: pointer;
 	}
 
-	.fa {
+	span {
 		font-size: @line-sml;
 	}
 }
 
-.multilingualProgress--isEmpty .fa {
+.multilingualProgress--isEmpty span {
 	color: @text-light;
 }
 
-.multilingualProgress--isIncomplete .fa {
+.multilingualProgress--isIncomplete span {
 	color: @no;
 }
 
-.multilingualProgress--isComplete .fa {
+.multilingualProgress--isComplete span {
 	color: @yes;
 }
 </style>

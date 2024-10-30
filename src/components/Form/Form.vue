@@ -37,7 +37,8 @@
 					</button>
 					<Icon
 						v-if="pageIdsWithErrors.includes(page.id)"
-						icon="exclamation-triangle"
+						icon="Error"
+						class="h-4 w-4"
 						:inline="true"
 					/>
 				</li>
@@ -654,7 +655,7 @@ export default {
 		margin-top: 1em;
 	}
 
-	.fa {
+	span {
 		position: absolute;
 		top: 50%;
 		left: 100%;

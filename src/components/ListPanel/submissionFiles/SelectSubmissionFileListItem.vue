@@ -31,7 +31,7 @@
 				rel="noopener noreferrer"
 				:aria-describedby="describedById"
 			>
-				<Icon icon="download" />
+				<Icon icon="Download" class="h-4 w-4" />
 				<span class="-screenReader">{{ downloadLabel }}</span>
 			</PkpButton>
 		</div>

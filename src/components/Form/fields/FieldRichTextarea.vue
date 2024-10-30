@@ -66,7 +66,8 @@
 				<div v-if="wordLimit" class="pkpFormField--richTextarea__wordLimit">
 					<Icon
 						v-if="wordCount > wordLimit"
-						icon="exclamation-triangle"
+						icon="Error"
+						class="h-4 w-4"
 						:inline="true"
 					/>
 					{{

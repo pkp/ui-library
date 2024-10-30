@@ -70,7 +70,7 @@
 									class="-linkButton composer__templates__moreSearchResults"
 									@click="showSearchResultCount = searchResults.length"
 								>
-									<Icon icon="plus-circle" :inline="true" />
+									<Icon icon="Add" class="h-3 w-3" :inline="true" />
 									{{
 										moreSearchResultsLabel.replace(
 											'{$number}',
@@ -241,10 +241,10 @@
 								/>
 								{{ attachment.name }}
 								<button
-									class="composer__attachment__remove"
+									class="composer__attachment__remove text-negative hover:text-on-dark"
 									@click="removeAttachment(i)"
 								>
-									<Icon icon="times" />
+									<Icon icon="Cancel" class="h-3 w-3" />
 									<span class="-screenReader">
 										{{ removeItemLabel.replace('{$item}', attachment.name) }}
 									</span>
@@ -785,7 +785,7 @@ export default {
 				!!attachment.documentType &&
 				!!pkp.documentTypeIcons[attachment.documentType]
 				? pkp.documentTypeIcons[attachment.documentType]
-				: 'file-o';
+				: 'DefaultDocument';
 		},
 
 		/**
@@ -1157,14 +1157,6 @@ export default {
 	border-top-right-radius: 1.2em; // matches radius on button in Badge.vue
 	border-bottom-right-radius: 1.2em;
 	color: @no;
-
-	.fa {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		margin-left: -1px;
-	}
 
 	&:hover,
 	&:focus {

@@ -22,13 +22,13 @@
 							:is-active="isSidebarVisible"
 							@click="isSidebarVisible = !isSidebarVisible"
 						>
-							<Icon icon="filter" :inline="true" />
+							<Icon icon="Filter" class="h-4 w-4" :inline="true" />
 							{{ t('common.filter') }}
 						</PkpButton>
 						<template v-if="canOrderCurrent">
 							<PkpButton
 								class="listPanel--catalog__orderToggle"
-								icon="sort"
+								icon="Sort"
 								:is-active="isOrdering"
 								@click="toggleOrdering"
 							>
@@ -72,7 +72,7 @@
 			<template #sidebar>
 				<PkpHeader :is-one-line="false">
 					<h3>
-						<Icon icon="filter" :inline="true" />
+						<Icon icon="Filter" class="h-4 w-4" :inline="true" />
 						{{ t('common.filter') }}
 					</h3>
 				</PkpHeader>
