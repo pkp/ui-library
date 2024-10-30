@@ -5,9 +5,10 @@
 			theme: 'pkp-tooltip',
 		}"
 		class="tooltipButton"
+		:class="flex ? 'flex' : 'inline-block'"
 		@click.prevent
 	>
-		<Icon icon="UsefulTips" class="h-4 w-4" />
+		<Icon icon="UsefulTips" :class="iconClass" />
 		<span v-if="label" class="-screenReader">{{ label }}</span>
 	</span>
 </template>
@@ -30,6 +31,22 @@ export default {
 			type: String,
 			required: true,
 		},
+		iconSize: {
+			type: String,
+			default: () => 'normal',
+			validator: (value) => {
+				return ['normal', 'small'].includes(value);
+			},
+		},
+		flex: {
+			type: Boolean,
+			default: () => false,
+		},
+	},
+	computed: {
+		iconClass() {
+			return this.iconSize === 'small' ? 'h-3 w-3' : 'h-4 w-4';
+		},
 	},
 };
 </script>
@@ -42,7 +59,6 @@ export default {
 }
 
 .tooltipButton {
-	display: inline-block;
 	border: none;
 	padding: 0 0.25em;
 	background: transparent;

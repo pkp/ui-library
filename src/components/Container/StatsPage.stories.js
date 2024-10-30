@@ -130,6 +130,7 @@ const EditorialStatsPageWithDataAndTemplate = {
 										v-if="row.description"
 										:label="'Description for ' + row.name"
 										:tooltip="row.description"
+										icon-size="small"
 									></Tooltip>
 								</TableCell>
 								<TableCell>{{ row.dateRange }}</TableCell>

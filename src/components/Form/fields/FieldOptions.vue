@@ -1,6 +1,6 @@
 <template>
 	<fieldset class="pkpFormField pkpFormField--options" :class="classes">
-		<legend class="pkpFormField--options__legend">
+		<legend class="pkpFormField--options__legend flex items-center">
 			<template v-if="localeLabel">
 				<span class="aria-hidden">{{ localeLabel }}</span>
 				<span class="-screenReader">{{ multilingualLabel }}</span>
@@ -17,6 +17,7 @@
 				aria-hidden="true"
 				:tooltip="tooltip"
 				label=""
+				:flex="true"
 			/>
 			<span
 				v-if="isPrimaryLocale && tooltip"
@@ -30,6 +31,7 @@
 				:topic="helpTopic"
 				:section="helpSection"
 				:label="t('help.help')"
+				:flex="true"
 			/>
 		</legend>
 		<div
@@ -238,12 +240,12 @@ export default {
 		 */
 		if (this.isOrderable && this.selectedValue?.length) {
 			this.localizedOptions = this.localizedOptions.sort((a, b) => {
-				let aIndex = this.selectedValue.findIndex(value => a.value === value);
-				let bIndex = this.selectedValue.findIndex(value => b.value === value);
+				let aIndex = this.selectedValue.findIndex((value) => a.value === value);
+				let bIndex = this.selectedValue.findIndex((value) => b.value === value);
 				aIndex = aIndex === -1 ? Number.MAX_SAFE_INTEGER : aIndex;
 				bIndex = bIndex === -1 ? Number.MAX_SAFE_INTEGER : bIndex;
 				return aIndex < bIndex ? -1 : 1;
-			})
+			});
 		}
 	},
 	methods: {

@@ -63,11 +63,12 @@
 				</template>
 			</ActionPanel>
 			<ActionPanel v-if="geoReportType" class="pkpStats__reportAction">
-				<h2>
+				<h2 class="flex items-center">
 					{{ t('common.geographic') }}
 					<Tooltip
 						:tooltip="t('stats.geographic.ccAttribution')"
 						:label="t('stats.geographic.tooltip.label')"
+						:flex="true"
 					></Tooltip>
 				</h2>
 				<p>

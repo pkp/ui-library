@@ -1,6 +1,6 @@
 <template>
 	<fieldset class="pkpFormField pkpFormField--color">
-		<legend class="pkpFormField__heading--legend">
+		<legend class="pkpFormField__heading--legend flex items-center">
 			<template v-if="localeLabel">
 				<span class="aria-hidden">{{ localeLabel }}</span>
 				<span class="-screenReader">{{ multilingualLabel }}</span>
@@ -17,6 +17,7 @@
 				aria-hidden="true"
 				:tooltip="tooltip"
 				label=""
+				:flex="true"
 			/>
 			<span
 				v-if="isPrimaryLocale && tooltip"
@@ -30,6 +31,7 @@
 				:topic="helpTopic"
 				:section="helpSection"
 				:label="t('help.help')"
+				:flex="true"
 			/>
 		</legend>
 		<div

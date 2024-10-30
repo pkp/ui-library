@@ -1,6 +1,6 @@
 <template>
 	<div class="pkpFormField pkpFormField--upload">
-		<div class="pkpFormField__heading">
+		<div class="pkpFormField__heading flex items-center">
 			<FormFieldLabel
 				:control-id="dropzoneHiddenFileId"
 				:label="label"
@@ -9,7 +9,13 @@
 				:required-label="t('common.required')"
 				:multilingual-label="multilingualLabel"
 			/>
-			<Tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
+			<Tooltip
+				v-if="tooltip"
+				aria-hidden="true"
+				:tooltip="tooltip"
+				label=""
+				:flex="true"
+			/>
 			<span
 				v-if="tooltip"
 				:id="describedByTooltipId"
@@ -22,6 +28,7 @@
 				:topic="helpTopic"
 				:section="helpSection"
 				:label="t('help.help')"
+				:flex="true"
 			/>
 		</div>
 		<div

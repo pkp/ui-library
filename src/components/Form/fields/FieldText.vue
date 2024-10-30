@@ -1,6 +1,6 @@
 <template>
 	<div class="pkpFormField pkpFormField--text" :class="classes">
-		<div class="pkpFormField__heading">
+		<div class="pkpFormField__heading flex items-center">
 			<FormFieldLabel
 				:control-id="controlId"
 				:label="label"
@@ -14,6 +14,7 @@
 				aria-hidden="true"
 				:tooltip="tooltip"
 				label=""
+				:flex="true"
 			/>
 			<span
 				v-if="isPrimaryLocale && tooltip"
@@ -27,6 +28,7 @@
 				:topic="helpTopic"
 				:section="helpSection"
 				:label="t('help.help')"
+				:flex="true"
 			/>
 		</div>
 		<div
