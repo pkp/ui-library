@@ -29,8 +29,10 @@
 					<SelectReviewerSuggestionListItem
 						:key="item.id"
 						:item="item"
+						:submission-id="getParams.submissionId"
+						:stage-id="getParams.reviewStage"
+						:review-round-id="getParams.reviewRoundId"
 						:select-reviewer-label="selectReviewerLabel"
-						:api-url="suggestionAddApiUrl"
 					/>
 				</template>
 			</ListPanel>
@@ -352,12 +354,6 @@ export default {
 			type: Array,
 			default() {
 				return [];
-			},
-		},
-		suggestionAddApiUrl: {
-			type: String,
-			default() {
-				return '';
 			},
 		},
 	},

@@ -319,7 +319,12 @@ export const WorkflowConfig = {
 
 			return items;
 		},
-		getSecondaryItems: ({submission, selectedReviewRound, selectedStageId}) => {
+		getSecondaryItems: ({
+			submission,
+			selectedReviewRound,
+			selectedStageId,
+			pageInitConfig,
+		}) => {
 			const items = [];
 			if (!selectedReviewRound) {
 				return [];
@@ -344,6 +349,17 @@ export const WorkflowConfig = {
 					submissionStageId: selectedStageId,
 				},
 			});
+
+			if (pageInitConfig.publicationSettings.isReviewerSuggestionEnabled) {
+				items.push({
+					component: 'ReviewerSuggestionManager',
+					props: {
+						submission,
+						submissionStageId: selectedStageId,
+						reviewRoundId: selectedReviewRound.id,
+					},
+				});
+			}
 
 			return items;
 		},
