@@ -76,6 +76,8 @@ export const iconGallery = {
 			'Calendar',
 			'Cancel',
 			'Catalog',
+			'Checkbox',
+			'CheckboxTicked',
 			'ChevronDown',
 			'ChevronLeft',
 			'ChevronRight',
