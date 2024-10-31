@@ -26,6 +26,23 @@ export const IsSecondary = {
 	args: {givenName: 'David', familyName: 'Buskins', isSecondary: true},
 };
 
-export const Undefined = {
+export const IsWarnable = {
+	args: {givenName: 'Aisla', familyName: 'McCrae', isWarnable: true},
+};
+
+export const IsDisabled = {
+	args: {
+		givenName: 'Adela',
+		familyName: 'Gallego',
+		isSecondary: true,
+		isDisabled: true,
+	},
+};
+
+export const UndefinedName = {
 	args: {},
+};
+
+export const SmallIcon = {
+	args: {givenName: 'Paul', familyName: 'Hudson', shrink: true},
 };
