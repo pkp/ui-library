@@ -31,6 +31,7 @@ export default {
 			type: String,
 			required: true,
 		},
+		/** Indicates whether the icon should be displayed in normal size (16px) or smaller (14 px) */
 		iconSize: {
 			type: String,
 			default: () => 'normal',
@@ -38,6 +39,7 @@ export default {
 				return ['normal', 'small'].includes(value);
 			},
 		},
+		/** Display mode of the icon container 'flex' or 'inline-block' (default)  */
 		flex: {
 			type: Boolean,
 			default: () => false,
