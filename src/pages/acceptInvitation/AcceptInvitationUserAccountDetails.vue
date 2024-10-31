@@ -66,13 +66,9 @@ const {pageUrl} = useUrl('about/privacy');
 const options = [
 	{
 		value: true,
-		label:
-			t('acceptInvitation.privacyStatement.label') +
-			' <a href=' +
-			pageUrl.value +
-			'>' +
-			t('acceptInvitation.privacyStatement.btn') +
-			'</a> ',
+		label: t('acceptInvitation.privacyStatement.label', {
+			url: `<a href='${pageUrl.value}'>${t('acceptInvitation.privacyStatement.btn')}</a>`,
+		}),
 	},
 ];
 const store = useAcceptInvitationPageStore();
