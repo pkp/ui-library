@@ -708,7 +708,7 @@ window.pkp = {
 		'acceptInvitation.modal.message':'Congratulations on your new role in OJS! You might now have access to new options. If you need assistance navigating the system, please click on the “Help” buttons throughout the interface for guidance',
 		'acceptInvitation.modal.button':'View All Submissions',
 		'acceptInvitation.privacyStatement.btn':'Privacy Statement',
-		'acceptInvitation.privacyStatement.label':'Yes, I agree to have my data collected and stored according to the',
+		'acceptInvitation.privacyStatement.label':'Yes, I agree to have my data collected and stored according to the {$url}',
 		'invitation.cancel': 'Cancel Invite',
 		'invitation.inviteToRole.btn': 'Invite to a role',
 		'invitation.header': 'Invitation',
