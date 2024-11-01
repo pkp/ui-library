@@ -3,13 +3,13 @@
 		<slot>
 			<ListPanel
 				v-if="suggestions.length > 0"
-				class="listPanel--selectReviewer"
+				class="listPanel--selectReviewer reviewer-sugestions-list"
 				:items="suggestions"
 			>
 				<template #header>
 					<PkpHeader>
 						<h2>
-							{{ title }}
+							{{ suggestionTitle ?? title }}
 						</h2>
 						<Spinner v-if="isLoading" />
 					</PkpHeader>
@@ -349,6 +349,11 @@ export default {
 			type: String,
 			required: true,
 		},
+		/** The list panel title of reviewer suggestion list */
+		suggestionTitle: {
+			type: String,
+			required: false,
+		},
 		/** An array of reviewer suggestion if there are any */
 		suggestions: {
 			type: Array,
@@ -454,3 +459,11 @@ export default {
 	},
 };
 </script>
+
+<style lang="less">
+@import '../../../styles/_import';
+
+.reviewer-sugestions-list {
+	margin-bottom: 4rem;
+}
+</style>
