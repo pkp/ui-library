@@ -12,7 +12,7 @@
 						{{ affiliation }}
 					</div>
 					<!-- TODO: check alternative of v-html as v-strip-unsafe-html not working -->
-					<div v-strip-unsafe-html="suggestionReason"></div>
+					<div v-html="suggestionReason"></div>
 				</div>
 			</div>
 
