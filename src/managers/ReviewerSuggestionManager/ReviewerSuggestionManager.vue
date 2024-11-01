@@ -24,8 +24,13 @@
 								{{ reviewerSuggestion.fullName }}
 							</div>
 							<div class="text-sm-normal text-secondary">
-								{{ reviewerSuggestion.suggestionReason }}
+								{{ reviewerSuggestion.affiliation }}
 							</div>
+							<!-- TODO: check alternative of v-html as v-strip-unsafe-html not working -->
+							<div
+								v-strip-unsafe-html="reviewerSuggestion.suggestionReason"
+								class="text-sm-normal text-secondary"
+							></div>
 						</div>
 					</div>
 					<div>

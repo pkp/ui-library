@@ -162,7 +162,7 @@ export default {
 
 				const newReviewerSuggestions = [...this.submission.reviewerSuggestions];
 				newReviewerSuggestions.push(reviewerSuggestion);
-				console.log(newReviewerSuggestions);
+
 				this.$emit('updated:reviewerSuggestions', newReviewerSuggestions);
 			} else {
 				const newReviewerSuggestions = this.submission.reviewerSuggestions.map(

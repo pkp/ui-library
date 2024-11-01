@@ -5,16 +5,14 @@
 				<div class="listPanel__itemTitle">
 					<!-- TODO: check why localize(fullName) causing error -->
 					{{ fullName }}
-					<Badge class="listPanel__item--reviewer__active">
-						{{ affiliation }}
-					</Badge>
 				</div>
 
 				<div class="listPanel__itemSubtitle">
 					<div class="listPanel__item--reviewer__affiliation">
-						<!-- TODO: how to show without v-html -->
-						{{ suggestionReason }}
+						{{ affiliation }}
 					</div>
+					<!-- TODO: check alternative of v-html as v-strip-unsafe-html not working -->
+					<div v-strip-unsafe-html="suggestionReason"></div>
 				</div>
 			</div>
 
@@ -31,7 +29,6 @@
 </template>
 
 <script>
-import Badge from '@/components/Badge/Badge.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
@@ -40,7 +37,6 @@ import {useLocalize} from '@/composables/useLocalize';
 
 export default {
 	components: {
-		Badge,
 		PkpButton,
 	},
 	mixins: [ajaxError, dialog],
@@ -107,9 +103,6 @@ export default {
 		select() {
 			const {t} = useLocalize();
 
-			// this.$emit('select', this.item);
-			// pkp.eventBus.$emit('selected:reviewerSuggestion', this.item);
-
 			const {openLegacyModal} = useLegacyGridUrl({
 				component: 'grid.users.reviewer.ReviewerGridHandler',
 				op: 'showReviewerForm',
@@ -130,32 +123,3 @@ export default {
 	},
 };
 </script>
-
-<style lang="less">
-@import '../../../styles/_import';
-
-.listPanel__item--reviewer__active {
-	margin-inline-end: 0.25rem;
-	font-weight: @normal;
-}
-
-// Reviewer locked or already assigned
-.listPanel__item--reviewer__notice {
-	font-size: @font-tiny;
-}
-
-// Make the button look like a link
-.listPanel__item--reviewer__noticeAction {
-	border: none;
-	padding: 0;
-	background: transparent;
-	color: @primary;
-	text-decoration: underline;
-	cursor: pointer;
-
-	&:hover,
-	&:focus {
-		color: @primary-lift;
-	}
-}
-</style>
