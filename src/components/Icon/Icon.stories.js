@@ -14,16 +14,16 @@ export default {
 	}),
 };
 
-export const Bug = {
-	args: {icon: 'bug'},
+export const UsefulTips = {
+	args: {icon: 'UsefulTips', class: 'h-5 w-5'},
 };
 
-export const InfoCircle = {
-	args: {icon: 'Help', class: 'w-5 h-5'},
+export const Help = {
+	args: {icon: 'Help', class: 'h-5 w-5'},
 };
 
-export const ExclamationTriangle = {
-	args: {icon: 'exclamation-triangle'},
+export const Error = {
+	args: {icon: 'Error', class: 'h-5 w-5'},
 };
 
 export const InlineIcon = {
@@ -37,10 +37,27 @@ export const InlineIcon = {
 		`,
 	}),
 
-	args: {icon: 'search', inline: true},
+	args: {icon: 'Search', class: 'h-5 w-5', inline: true},
 };
 
-export const iconGallery = {
+export const VerticallyAligned = {
+	render: (args) => ({
+		components: {Icon},
+		setup() {
+			return {args};
+		},
+		template: `
+			<div class="flex items-center space-x-1">
+				<span>Add files</span>
+				<Icon v-bind="args" />
+			</div>
+		`,
+	}),
+
+	args: {icon: 'Add', class: 'h-4 w-4', inline: true},
+};
+
+export const IconGallery = {
 	render: (args) => ({
 		components: {Icon},
 		setup() {

@@ -1,12 +1,7 @@
 <template>
-	<span
-		v-if="isSvgIcon"
-		class="inline-block align-middle rtl:scale-x-[-1]"
-		:class="{'text-negative': icon === 'Error'}"
-	>
+	<span :class="classes">
 		<component :is="svgIcons[icon]"></component>
 	</span>
-	<span v-else class="fa" :class="classes" aria-hidden="true"></span>
 </template>
 
 <script setup>
@@ -230,24 +225,19 @@ const svgIcons = {
 };
 
 const props = defineProps({
-	/** Which <a href="https://fontawesome.com/">FontAwesome</a> icon to use. Drop the `fa-` prefix from the class name.
-	 * If you want to use `fa-bug`, the value of this prop should be `bug`.  */
-	icon: String,
+	/** Which icon to use from our [Icon Gallery](?path=/story/components-icon--icon-gallery) */
+	icon: {type: String, required: true},
 	/** Use when an icon sits alongside text to ensure adequate spacing between the icon and text. */
 	inline: Boolean,
 });
 
-const isSvgIcon = computed(() => !!svgIcons[props.icon]);
-
 const classes = computed(() => {
-	let classes = [];
-	if (props.icon !== 'orcid') {
-		classes.push('fa-' + props.icon);
-	}
-	if (props.inline) {
-		classes.push('pkpIcon--inline');
-	}
-	return classes;
+	return {
+		'inline-block align-middle rtl:scale-x-[-1]': true,
+		'text-negative': props.icon === 'Error',
+		'text-success': props.icon === 'Help',
+		'pkpIcon--inline': props.inline,
+	};
 });
 </script>
 
