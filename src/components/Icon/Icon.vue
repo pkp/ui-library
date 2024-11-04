@@ -1,6 +1,9 @@
 <template>
 	<span :class="classes">
-		<component :is="svgIcons[icon]"></component>
+		<component
+			:is="svgIcons[icon]"
+			:is-primary="isPrimary ? true : null"
+		></component>
 	</span>
 </template>
 
@@ -229,13 +232,18 @@ const props = defineProps({
 	icon: {type: String, required: true},
 	/** Use when an icon sits alongside text to ensure adequate spacing between the icon and text. */
 	inline: Boolean,
+	/** If the icon color should use primary color (blue) */
+	isPrimary: {
+		type: Boolean,
+		default: false,
+	},
 });
 
 const classes = computed(() => {
 	return {
 		'inline-block align-middle rtl:scale-x-[-1]': true,
 		'text-negative': props.icon === 'Error',
-		'text-success': props.icon === 'Help',
+		'text-primary': props.isPrimary,
 		'pkpIcon--inline': props.inline,
 	};
 });

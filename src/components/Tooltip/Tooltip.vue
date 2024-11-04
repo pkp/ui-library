@@ -8,7 +8,7 @@
 		:class="flex ? 'flex' : 'inline-block'"
 		@click.prevent
 	>
-		<Icon icon="UsefulTips" :class="iconClass" />
+		<Icon icon="UsefulTips" :class="iconClass" :is-primary="isPrimary" />
 		<span v-if="label" class="-screenReader">{{ label }}</span>
 	</span>
 </template>
@@ -43,6 +43,11 @@ export default {
 		flex: {
 			type: Boolean,
 			default: () => false,
+		},
+		/** If the icon color should use primary color (blue) */
+		isPrimary: {
+			type: Boolean,
+			default: false,
 		},
 	},
 	computed: {
