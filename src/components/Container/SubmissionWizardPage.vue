@@ -514,7 +514,7 @@ export default {
 								},
 								error(r) {
 									if (!r.responseJSON) {
-										this.ajaxErrorCallback();
+										this.ajaxErrorCallback({});
 									} else {
 										this.errors = r.responseJSON;
 									}
@@ -636,7 +636,7 @@ export default {
 					},
 					error(r) {
 						if (!r.responseJSON) {
-							this.ajaxErrorCallback();
+							this.ajaxErrorCallback({});
 						} else {
 							this.errors = r.responseJSON;
 						}
