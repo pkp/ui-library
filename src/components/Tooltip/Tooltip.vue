@@ -8,7 +8,10 @@
 		:class="flex ? 'flex' : 'inline-block'"
 		@click.prevent
 	>
-		<Icon icon="UsefulTips" :class="iconClass" :is-primary="isPrimary" />
+		<Icon
+			:icon="isPrimary ? 'UsefulTipsPrimary' : 'UsefulTips'"
+			:class="iconClass"
+		/>
 		<span v-if="label" class="-screenReader">{{ label }}</span>
 	</span>
 </template>
@@ -52,7 +55,11 @@ export default {
 	},
 	computed: {
 		iconClass() {
-			return this.iconSize === 'small' ? 'h-3 w-3' : 'h-4 w-4';
+			return {
+				'h-4 w-4': this.iconSize !== 'small',
+				'h-3 w-3': this.iconSize === 'small',
+				'text-primary': this.isPrimary,
+			};
 		},
 	},
 };

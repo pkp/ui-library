@@ -1,9 +1,6 @@
 <template>
 	<span :class="classes">
-		<component
-			:is="svgIcons[icon]"
-			:is-primary="isPrimary ? true : null"
-		></component>
+		<component :is="svgIcons[icon]"></component>
 	</span>
 </template>
 
@@ -113,6 +110,7 @@ import Unlock from './icons/Unlock.vue';
 import Upload from './icons/Upload.vue';
 import Url from './icons/Url.vue';
 import UsefulTips from './icons/UsefulTips.vue';
+import UsefulTipsPrimary from './icons/UsefulTipsPrimary.vue';
 import User from './icons/User.vue';
 import View from './icons/View.vue';
 import Workflow from './icons/Workflow.vue';
@@ -222,6 +220,7 @@ const svgIcons = {
 	Upload,
 	Url,
 	UsefulTips,
+	UsefulTipsPrimary,
 	User,
 	View,
 	Workflow,
@@ -232,18 +231,12 @@ const props = defineProps({
 	icon: {type: String, required: true},
 	/** Use when an icon sits alongside text to ensure adequate spacing between the icon and text. */
 	inline: Boolean,
-	/** If the icon color should use primary color (blue) */
-	isPrimary: {
-		type: Boolean,
-		default: false,
-	},
 });
 
 const classes = computed(() => {
 	return {
 		'inline-block align-middle rtl:scale-x-[-1]': true,
 		'text-negative': props.icon === 'Error',
-		'text-primary': props.isPrimary,
 		'pkpIcon--inline': props.inline,
 	};
 });
