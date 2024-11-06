@@ -127,9 +127,8 @@ if (!store.invitationPayload.userId) {
 			}
 		}
 	});
+	connectWithPayload(store.invitationPayload);
 }
-
-connectWithPayload(store.invitationPayload);
 
 /**
  * handing errors and covert dot notation to object
