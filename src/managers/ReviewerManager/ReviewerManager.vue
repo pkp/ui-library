@@ -81,6 +81,7 @@ const props = defineProps({
 	reviewRoundId: {type: Number, required: true},
 	redactedForAuthors: {type: Boolean, required: false, default: false},
 	componentForms: {type: Object, required: true},
+	recommendations: {type: Array, required: false, default: () => []},
 });
 
 const reviewerStore = useReviewerManagerStore(props);

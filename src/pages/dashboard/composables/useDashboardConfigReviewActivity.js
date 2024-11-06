@@ -1,8 +1,7 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {useDate} from '@/composables/useDate';
-import {RecommendationTranslations} from '@/composables/useSubmission';
 import {Actions as ReviewerManagerActions} from '@/managers/ReviewerManager/useReviewerManagerActions';
-const {tk, t} = useLocalize();
+const {tk, t, localize} = useLocalize();
 
 const {calculateDaysBetweenDates, formatShortDate} = useDate();
 const ReviewActivityActions = {
@@ -292,7 +291,7 @@ function getDate(config, reviewAssignment) {
 	return '';
 }
 
-export function useDashboardConfigReviewActivity() {
+export function useDashboardConfigReviewActivity({recommendations}) {
 	function getReviewActivityIndicatorProps({reviewAssignment}) {
 		const config = ConfigPerStatus[reviewAssignment.statusId];
 
@@ -329,9 +328,11 @@ export function useDashboardConfigReviewActivity() {
 
 		const date = getDate(config, reviewAssignment);
 		function getRecommendation() {
-			return RecommendationTranslations[reviewAssignment.recommendation]
-				? t(RecommendationTranslations[reviewAssignment.recommendation])
-				: null;
+			const recommendation = recommendations.find(
+				(r) => r.id === reviewAssignment.recommendationId,
+			);
+
+			return recommendation ? localize(recommendation.title) : null;
 		}
 
 		const days = getDays(config, reviewAssignment);
