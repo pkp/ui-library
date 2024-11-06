@@ -3,6 +3,14 @@ import {useLocalize} from '@/composables/useLocalize';
 export function useGalleyManagerConfiguration() {
 	const {t} = useLocalize();
 
+	function getGalleyGridComponent() {
+		if (pkp.context.app === 'ops') {
+			return 'grid.preprintGalleys.PreprintGalleyGridHandler';
+		} else {
+			return 'grid.articleGalleys.ArticleGalleyGridHandler';
+		}
+	}
+
 	function getColumns() {
 		const columns = [];
 
@@ -29,5 +37,5 @@ export function useGalleyManagerConfiguration() {
 		return columns;
 	}
 
-	return {getColumns};
+	return {getColumns, getGalleyGridComponent};
 }

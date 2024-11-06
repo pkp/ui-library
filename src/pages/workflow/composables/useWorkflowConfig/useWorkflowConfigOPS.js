@@ -1,40 +1,34 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {DashboardPageTypes} from '@/pages/dashboard/dashboardPageStore';
 
-import * as ConfigAuthorOJS from './workflowConfigAuthorOJS';
-import * as ConfigEditorialOJS from './workflowConfigEditorialOJS';
+import * as ConfigAuthorOPS from './workflowConfigAuthorOPS';
+import * as ConfigEditorialOPS from './workflowConfigEditorialOPS';
 
-import * as ConfigAuthorOMP from './workflowConfigAuthorOMP';
-import * as ConfigEditorialOMP from './workflowConfigEditorialOMP';
-
-export function useWorkflowConfigOMP({dashboardPage}) {
+export function useWorkflowConfigOPS({dashboardPage}) {
 	const {t} = useLocalize();
 
 	let Configs = null;
 
 	if (dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD) {
 		Configs = {
-			getHeaderItems: ConfigEditorialOMP.getHeaderItems,
+			getHeaderItems: ConfigEditorialOPS.getHeaderItems,
 			WorkflowConfig: {
-				...ConfigEditorialOJS.WorkflowConfig,
-				...ConfigEditorialOMP.WorkflowConfig,
+				//...ConfigEditorialShared.WorkflowConfig,
+				...ConfigEditorialOPS.WorkflowConfig,
 			},
 			PublicationConfig: {
-				...ConfigEditorialOJS.PublicationConfig,
-				...ConfigEditorialOMP.PublicationConfig,
+				//...ConfigEditorialShared.PublicationConfig,
+				...ConfigEditorialOPS.PublicationConfig,
 			},
-			MarketingConfig: ConfigEditorialOMP.MarketingConfig,
 		};
 	} else {
 		Configs = {
-			getHeaderItems: ConfigEditorialOMP.getHeaderItems,
+			getHeaderItems: ConfigEditorialOPS.getHeaderItems,
 			WorkflowConfig: {
-				...ConfigAuthorOJS.WorkflowConfig,
-				...ConfigAuthorOMP.WorkflowConfig,
+				...ConfigAuthorOPS.WorkflowConfig,
 			},
 			PublicationConfig: {
-				...ConfigAuthorOJS.PublicationConfig,
-				...ConfigAuthorOMP.PublicationConfig,
+				...ConfigAuthorOPS.PublicationConfig,
 			},
 		};
 	}
@@ -99,23 +93,6 @@ export function useWorkflowConfigOMP({dashboardPage}) {
 				...(Configs.PublicationConfig?.common?.[getterFnName]?.(itemsArgs) ||
 					[]),
 				...(Configs.PublicationConfig[selectedMenuState.secondaryMenuItem]?.[
-					getterFnName
-				]?.(itemsArgs) || []),
-			];
-		} else if (selectedMenuState.primaryMenuItem === 'marketing') {
-			const itemsArgs = {
-				submission,
-				pageInitConfig: pageInitConfig,
-				permissions,
-			};
-
-			if (!submission) {
-				return [];
-			}
-
-			return [
-				...(Configs.MarketingConfig?.common?.[getterFnName]?.(itemsArgs) || []),
-				...(Configs.MarketingConfig[selectedMenuState.secondaryMenuItem]?.[
 					getterFnName
 				]?.(itemsArgs) || []),
 			];
