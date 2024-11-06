@@ -47,12 +47,29 @@
 				#publication-controls-left
 			>
 				<div class="flex flex-col gap-y-2" data-cy="workflow-controls-left">
-					<component
-						:is="workflowStore.Components[item.component] || item.component"
-						v-bind="item.props"
+					<template
 						v-for="(item, index) in workflowStore.publicationControlsLeft"
-						:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
-					/>
+					>
+						<div v-if="Array.isArray(item)" :key="`${index}`">
+							<div class="flex gap-x-2">
+								<component
+									:is="
+										workflowStore.Components[subitem.component] ||
+										subitem.component
+									"
+									v-bind="subitem.props"
+									v-for="(subitem, subindex) in item"
+									:key="`${subindex} - ${subitem.component} - ${subitem?.props?.namespace}`"
+								/>
+							</div>
+						</div>
+						<component
+							:is="workflowStore.Components[item.component] || item.component"
+							v-else
+							v-bind="item.props"
+							:key="`else ${index} - ${item.component} - ${item?.props?.namespace}`"
+						/>
+					</template>
 				</div>
 			</template>
 			<template

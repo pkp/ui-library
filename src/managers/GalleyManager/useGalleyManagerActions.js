@@ -9,7 +9,7 @@ export const Actions = {
 	GALLEY_DELETE: 'galleyDelete',
 };
 
-export function useGalleyManagerActions() {
+export function useGalleyManagerActions({galleyGridComponent}) {
 	const {t} = useLocalize();
 
 	function getBottomActions({canEdit}) {
@@ -76,7 +76,7 @@ export function useGalleyManagerActions() {
 
 	function galleyAdd({submission, publication}, finishedCallback) {
 		const {openLegacyModal} = useLegacyGridUrl({
-			component: 'grid.articleGalleys.ArticleGalleyGridHandler',
+			component: galleyGridComponent,
 			op: 'addGalley',
 			params: {
 				submissionId: submission.id,
@@ -123,7 +123,7 @@ export function useGalleyManagerActions() {
 
 	function galleyEdit({submission, publication, galley}, finishedCallback) {
 		const {openLegacyModal} = useLegacyGridUrl({
-			component: 'grid.articleGalleys.ArticleGalleyGridHandler',
+			component: galleyGridComponent,
 			op: 'editGalley',
 			params: {
 				submissionId: submission.id,
@@ -153,7 +153,7 @@ export function useGalleyManagerActions() {
 						// http://localhost:7002/index.php/publicknowledge/$$$call$$$/grid/article-galleys/article-galley-grid/delete-galley
 						// ?submissionId=17&publicationId=22&representationId=9
 						const {url} = useLegacyGridUrl({
-							component: 'grid.articleGalleys.ArticleGalleyGridHandler',
+							component: galleyGridComponent,
 							op: 'deleteGalley',
 							params: {
 								submissionId: submission.id,

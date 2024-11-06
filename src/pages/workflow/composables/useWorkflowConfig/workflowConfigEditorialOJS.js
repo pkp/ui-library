@@ -511,7 +511,7 @@ export const WorkflowConfig = {
 					label: t('editor.submission.schedulePublication'),
 					isPrimary: true,
 					action: 'navigateToMenu',
-					actionArgs: {key: 'publication_titleAbstract'},
+					actionArgs: 'publication_titleAbstract',
 				},
 			});
 
