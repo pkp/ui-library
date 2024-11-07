@@ -48,15 +48,15 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			});
 			await fetch();
 			if (validationError.value) {
-				steps.value.length = 0;
 				openDialog({
 					title: t('acceptInvitation.authorization.shouldBeAnonymous'),
 					message: t('acceptInvitation.authorization.message'),
 					actions: [
 						{
 							label: t('user.logOut'),
-							callback: (close) => {
-								close();
+							callback: () => {
+								const {redirectToPage} = useUrl(`login/signOut`);
+								redirectToPage();
 							},
 						},
 						{
