@@ -20,7 +20,7 @@ export const Actions = {
 	WORKFLOW_RECOMMEND_REVISION: 'workflowRecommendRevision',
 	WORKFLOW_ASSIGN_TO_ISSUE_AND_SCHEDULE_FOR_PUBLICATION:
 		'workflowAssignToIssueAndScheduleForPublication',
-	WORKFLOW_SCHEDULE_FOR_PUBLICATION: 'workflowUnschedulePublication',
+	WORKFLOW_SCHEDULE_FOR_PUBLICATION: 'workflowScheduleForPublication',
 	WORKFLOW_PREVIEW_PUBLICATION: 'workflowPreviewPublication',
 	WORKFLOW_UNSCHEDULE_PUBLICATION: 'workflowUnschedulePublication',
 	WORKFLOW_UNPUBLISH_PUBLICATION: 'workflowUnpublishPublication',

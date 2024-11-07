@@ -8,13 +8,14 @@ export const Actions = {
 	DECISION_EXTERNAL_REVIEW: 'decisionExternalReview',
 	DECISION_SKIP_EXTERNAL_REVIEW: 'decisionSkipExternalReview',
 	DECISION_INITIAL_DECLINE: 'decisionInitialDecline',
+	DECISION_REVERT_INITIAL_DECLINE: 'decisionRevertInitialDecline',
+
 	DECISION_SEND_TO_PRODUCTION: 'decisionSendToProduction',
 	DECISION_BACK_FROM_COPYEDITING: 'decisionBackFromCopyediting',
 	DECISION_NEW_EXTERNAL_ROUND: 'decisionNewExternalRound',
 	DECISION_BACK_FROM_PRODUCTION: 'decisionBackFromProduction',
 	DECISION_RECOMMEND_ACCEPT: 'decisionRecommendAccept',
 	DECISION_RECOMMEND_DECLINE: 'decisionRecommendDecline',
-
 	// OMP SPECIFIC
 	DECISION_INTERNAL_REVIEW: 'decisionInternalReview',
 	DECISION_RECOMMEND_EXTERNAL_REVIEW: 'decisionRecommendExternalReview',
@@ -87,6 +88,10 @@ export function useWorkflowDecisions() {
 
 	function decisionInitialDecline({submission}) {
 		openDecisionPage(submission, pkp.const.DECISION_INITIAL_DECLINE);
+	}
+
+	function decisionRevertInitialDecline({submission}) {
+		openDecisionPage(submission, pkp.const.DECISION_REVERT_INITIAL_DECLINE);
 	}
 
 	function decisionSendToProduction({submission}) {
@@ -232,6 +237,7 @@ export function useWorkflowDecisions() {
 		decisionExternalReview,
 		decisionSkipExternalReview,
 		decisionInitialDecline,
+		decisionRevertInitialDecline,
 		decisionSendToProduction,
 		decisionBackFromCopyediting,
 		decisionNewExternalRound,
