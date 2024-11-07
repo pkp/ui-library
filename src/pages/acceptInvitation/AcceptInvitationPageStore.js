@@ -49,11 +49,19 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			await fetch();
 			if (validationError.value) {
 				openDialog({
-					title: t('common.error'),
-					message: validationError.value.errorMessage,
+					title: t('acceptInvitation.authorization.shouldBeAnonymous'),
+					message: t('acceptInvitation.authorization.message'),
 					actions: [
 						{
+							label: t('user.logOut'),
+							callback: () => {
+								const {redirectToPage} = useUrl(`login/signOut`);
+								redirectToPage();
+							},
+						},
+						{
 							label: t('common.close'),
+							isWarnable: true,
 							callback: (close) => {
 								close();
 							},
@@ -368,18 +376,18 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 		function cancel() {
 			openDialog({
 				name: 'cancel',
-				title: t('invitation.cancelInvite.title'),
+				title: t('acceptInvitation.cancelInvite.title'),
 				message: t('acceptInvitation.cancel.message'),
 				actions: [
 					{
-						label: t('invitation.cancelInvite.actionName'),
+						label: t('acceptInvitation.cancelInvite.button'),
 						isWarnable: true,
 						callback: (close) => {
 							redirectToPage();
 						},
 					},
 					{
-						label: t('userInvitation.cancel.keepWorking'),
+						label: t('userInvitation.cancel.goBack'),
 						callback: (close) => {
 							close();
 						},

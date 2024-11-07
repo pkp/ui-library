@@ -128,6 +128,11 @@ export const useUserInvitationPageStore = defineComponentStore(
 		function previousStep() {
 			const previousIndex = currentStepIndex.value - 1;
 			if (previousIndex >= 0) {
+				// when user search and go back agin to search reset payload to initial state
+				if (previousIndex === 0) {
+					invitationPayload.value = {...pageInitConfig.invitationPayload};
+					updatedPayload.value = {};
+				}
 				openStep(steps.value[previousIndex].id);
 				userSearch.value = {
 					message: '',
@@ -340,8 +345,9 @@ export const useUserInvitationPageStore = defineComponentStore(
 						},
 					},
 					{
-						label: t('userInvitation.cancel.keepWorking'),
+						label: t('userInvitation.cancel.goBack'),
 						callback: (close) => {
+							redirectToPage();
 							close();
 						},
 					},

@@ -250,11 +250,15 @@ function updateWithSelectedUserGroups(userGroups) {
 	});
 }
 
-/** Update invitation */
+/**
+ * remove user roles
+ * @param userId Number
+ * @param roleId Number
+ */
 async function removeRole(userId, roleId) {
-	const {apiUrl} = useUrl(`users/${userId}/role/${roleId}`);
+	const {apiUrl} = useUrl(`users/${userId}/endRole/${roleId}`);
 	const {fetch} = useFetch(apiUrl, {
-		method: 'DELETE',
+		method: 'PUT',
 	});
 	await fetch();
 }
