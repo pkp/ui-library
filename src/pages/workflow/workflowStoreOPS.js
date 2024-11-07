@@ -31,6 +31,7 @@ import ContributorManager from '@/managers/ContributorManager/ContributorManager
 import ParticipantManager from '@/managers/ParticipantManager/ParticipantManager.vue';
 import GalleyManager from '@/managers/GalleyManager/GalleyManager.vue';
 import WorkflowActionButton from './components/action/WorkflowActionButton.vue';
+import WorkflowActionChangeDecision from './components/action/WorkflowActionChangeDecision.vue';
 import WorkflowNotificationDisplay from './components/primary/WorkflowNotificationDisplay.vue';
 import WorkflowPublicationForm from './components/publication/WorkflowPublicationForm.vue';
 import WorkflowPublicationVersionControl from './components/publication/WorkflowPublicationVersionControl.vue';
@@ -191,6 +192,7 @@ export const useWorkflowStore = defineComponentStore('workflow', (props) => {
 		ParticipantManager,
 		GalleyManager,
 		WorkflowActionButton,
+		WorkflowActionChangeDecision,
 		WorkflowNotificationDisplay,
 		WorkflowPrimaryBasicMetadata,
 		WorkflowPublicationForm,

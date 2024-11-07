@@ -117,6 +117,29 @@ export const WorkflowConfig = {
 				return [];
 			}
 
+			if (submission.status === pkp.const.STATUS_DECLINED) {
+				items.push({
+					component: 'WorkflowActionChangeDecision',
+					props: {
+						actionButtonsProps: [
+							{
+								label: t('editor.submission.schedulePublication'),
+								isPrimary: true,
+								action: 'navigateToMenu',
+								actionArgs: 'publication_titleAbstract',
+							},
+							{
+								label: t('editor.submission.decision.revertDecline'),
+								isSecondary: true,
+								action: DecisionActions.DECISION_REVERT_INITIAL_DECLINE,
+							},
+						],
+					},
+				});
+
+				return items;
+			}
+
 			items.push({
 				component: 'WorkflowActionButton',
 				props: {
@@ -230,13 +253,9 @@ export const PublicationConfig = {
 					props: {
 						// 	{{ submission.status === getConstant('STATUS_PUBLISHED') ? publishLabel : schedulePublicationLabel }}
 
-						label:
-							submission.status === pkp.const.STATUS_PUBLISHED
-								? t('publication.publish')
-								: t('editor.submission.schedulePublication'),
+						label: t('publication.publish'),
 						isSecondary: true,
-						action:
-							Actions.WORKFLOW_ASSIGN_TO_ISSUE_AND_SCHEDULE_FOR_PUBLICATION,
+						action: Actions.WORKFLOW_SCHEDULE_FOR_PUBLICATION,
 					},
 				});
 			} else if (selectedPublication.status === pkp.const.STATUS_SCHEDULED) {
