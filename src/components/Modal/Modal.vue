@@ -52,6 +52,7 @@
 									/>
 									<Icon
 										icon="ChevronLeft"
+										:aria-hidden="true"
 										class="modal__closeButton__left h-5 w-5"
 									/>
 									<Icon
