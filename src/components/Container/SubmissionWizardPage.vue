@@ -642,12 +642,13 @@ export default {
 									'X-Http-Method-Override': 'PUT',
 								},
 								error(r) {
+									close();
+
 									if (!r.responseJSON) {
 										this.ajaxErrorCallback({});
 									} else {
 										this.errors = r.responseJSON;
 									}
-									close();
 								},
 								success() {
 									window.location = this.submissionWizardUrl;
