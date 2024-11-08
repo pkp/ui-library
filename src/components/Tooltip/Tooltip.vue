@@ -5,7 +5,6 @@
 			theme: 'pkp-tooltip',
 		}"
 		class="tooltipButton"
-		:class="flex ? 'flex' : 'inline-block'"
 		@click.prevent
 	>
 		<Icon
@@ -34,18 +33,13 @@ export default {
 			type: String,
 			required: true,
 		},
-		/** Indicates whether the icon should be displayed in normal size (16px) or smaller (14 px) */
+		/** Indicates the icon size: medium (16px), small (14 px) */
 		iconSize: {
 			type: String,
-			default: () => 'normal',
+			default: () => 'medium',
 			validator: (value) => {
-				return ['normal', 'small'].includes(value);
+				return ['medium', 'small'].includes(value);
 			},
-		},
-		/** Display mode of the icon container 'flex' or 'inline-block' (default)  */
-		flex: {
-			type: Boolean,
-			default: () => false,
 		},
 		/** If the icon color should use primary color (blue) */
 		isPrimary: {
@@ -73,6 +67,7 @@ export default {
 }
 
 .tooltipButton {
+	display: inline-block;
 	border: none;
 	padding: 0 0.25em;
 	background: transparent;

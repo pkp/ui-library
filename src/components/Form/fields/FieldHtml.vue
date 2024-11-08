@@ -1,23 +1,16 @@
 <template>
 	<div class="pkpFormField pkpFormField--html">
-		<div class="pkpFormField__heading flex items-center">
-			<span class="pkpFormFieldLabel">
+		<div class="pkpFormField__heading">
+			<span class="pkpFormFieldLabel align-middle">
 				{{ label }}
 			</span>
-			<Tooltip
-				v-if="tooltip"
-				aria-hidden="true"
-				:tooltip="tooltip"
-				label=""
-				:flex="true"
-			/>
+			<Tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span v-if="tooltip" class="-screenReader" v-html="tooltip" />
 			<HelpButton
 				v-if="helpTopic"
 				:topic="helpTopic"
 				:section="helpSection"
 				:label="t('help.help')"
-				:flex="true"
 			/>
 		</div>
 		<div

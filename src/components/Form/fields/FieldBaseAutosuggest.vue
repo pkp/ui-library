@@ -6,11 +6,7 @@
 			'pkpAutosuggest--rtl': isRTL,
 		}"
 	>
-		<div
-			v-if="!isLabelInline"
-			ref="heading"
-			class="pkpFormField__heading flex items-center"
-		>
+		<div v-if="!isLabelInline" ref="heading" class="pkpFormField__heading">
 			<FormFieldLabel
 				:control-id="controlId"
 				:label="label"
@@ -18,14 +14,9 @@
 				:is-required="isRequired"
 				:required-label="t('common.required')"
 				:multilingual-label="multilingualLabel"
+				class="align-middle"
 			/>
-			<Tooltip
-				v-if="tooltip"
-				aria-hidden="true"
-				:tooltip="tooltip"
-				label=""
-				:flex="true"
-			/>
+			<Tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span
 				v-if="tooltip"
 				:id="describedByTooltipId"
@@ -38,7 +29,6 @@
 				:topic="helpTopic"
 				:section="helpSection"
 				:label="t('help.help')"
-				:flex="true"
 			/>
 		</div>
 		<div

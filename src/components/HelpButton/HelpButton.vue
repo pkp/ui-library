@@ -1,7 +1,6 @@
 <template>
 	<button
 		class="helpButton requestHelpPanel"
-		:class="flex ? 'flex' : 'inline-block'"
 		:data-topic="topic"
 		:data-section="section"
 		@click.prevent
@@ -30,10 +29,6 @@ export default {
 			type: String,
 			required: true,
 		},
-		flex: {
-			type: Boolean,
-			default: () => false,
-		},
 	},
 };
 </script>
@@ -42,6 +37,7 @@ export default {
 @import '../../styles/_import';
 
 .helpButton {
+	display: inline-block;
 	border: none;
 	padding: 0 0.25em;
 	background: transparent;

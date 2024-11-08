@@ -1,6 +1,6 @@
 <template>
 	<div class="mt-5 max-w-lg">
-		<div class="pkpFormField__heading flex items-center">
+		<div class="pkpFormField__heading">
 			<FormFieldLabel
 				:id="labelId"
 				:label="label"
@@ -8,13 +8,13 @@
 				:is-required="isRequired"
 				:required-label="t('common.required')"
 				:multilingual-label="multilingualLabel"
+				class="align-middle"
 			/>
 			<Tooltip
 				v-if="isPrimaryLocale && tooltip"
 				aria-hidden="true"
 				:tooltip="tooltip"
 				label=""
-				:flex="true"
 			/>
 			<span
 				v-if="isPrimaryLocale && tooltip"
@@ -28,7 +28,6 @@
 				:topic="helpTopic"
 				:section="helpSection"
 				:label="t('help.help')"
-				:flex="true"
 			/>
 		</div>
 		<div

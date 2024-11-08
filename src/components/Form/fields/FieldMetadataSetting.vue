@@ -1,14 +1,8 @@
 <template>
 	<fieldset class="pkpFormField pkpFormField--options pkpFormField--metadata">
-		<legend class="pkpFormField--options__legend flex items-center">
-			{{ label }}
-			<Tooltip
-				v-if="tooltip"
-				aria-hidden="true"
-				:tooltip="tooltip"
-				label=""
-				:flex="true"
-			/>
+		<legend class="pkpFormField--options__legend">
+			<span class="align-middle">{{ label }}</span>
+			<Tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span
 				v-if="tooltip"
 				:id="describedByTooltipId"
@@ -21,7 +15,6 @@
 				:topic="helpTopic"
 				:section="helpSection"
 				:label="t('help.help')"
-				:flex="true"
 			/>
 		</legend>
 		<div
