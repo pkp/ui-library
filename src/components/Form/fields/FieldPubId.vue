@@ -59,10 +59,10 @@
 			<div
 				v-if="pattern && !canGenerateId && !currentValue"
 				:id="describedByDescriptionId"
-				class="mt-1 flex items-center text-base-normal"
+				class="mt-1 text-base-normal"
 			>
 				<Icon icon="Error" class="h-4 w-4" :inline="true" />
-				{{ missingPartsLabel }}
+				<span class="align-middle">{{ missingPartsLabel }}</span>
 			</div>
 			<FieldError
 				v-if="errors && errors.length"

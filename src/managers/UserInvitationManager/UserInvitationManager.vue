@@ -27,8 +27,8 @@
 		<TableBody>
 			<TableRow v-for="(invitation, index) in store.invitations" :key="index">
 				<TableCell>
-					<span class="flex items-center space-x-1">
-						<span class="text-lg-normal">
+					<span class="space-x-1">
+						<span class="align-middle text-lg-normal">
 							{{
 								invitation.userId
 									? invitation.existingUser.fullName

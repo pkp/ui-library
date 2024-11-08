@@ -42,11 +42,11 @@
 				</div>
 			</div>
 			<div v-if="!item.genreId" class="listPanel--submissionFiles__setGenre">
-				<span role="alert" class="flex items-center">
+				<span role="alert">
 					<Icon icon="Error" class="me-1 h-4 w-4" :inline="true" />
 					<span
 						:id="genrePromptId"
-						class="listPanel--submissionFiles__setGenreLabel"
+						class="listPanel--submissionFiles__setGenreLabel align-middle"
 					>
 						{{ genrePromptLabel }}
 					</span>

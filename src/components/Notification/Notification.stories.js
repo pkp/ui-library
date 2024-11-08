@@ -47,11 +47,11 @@ export const Warning = {
 		},
 		template: `
 			<Notification v-bind="args" >
-				<div class="flex items-center">
-					<Icon icon="Error" class="h-5 w-5 me-1" :inline="true" />
+				<Icon icon="Error" class="h-5 w-5 me-1" :inline="true" />
+				<span class="align-middle">
 					This submission does not have any contributors. At least one contributor
 					must be provided.
-				</div>
+				</span>
 			</Notification>
 		`,
 	}),

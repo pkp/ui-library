@@ -65,12 +65,9 @@
 					</label>
 				</fieldset>
 				<PkpButton @click="applyCustomRange">{{ applyLabel }}</PkpButton>
-				<div
-					v-if="errorMessage"
-					class="flex items-center pt-2 text-base-normal"
-				>
+				<div v-if="errorMessage" class="pt-2 text-base-normal">
 					<Icon icon="Error" class="me-1 h-5 w-5" :inline="true" />
-					<span v-html="errorMessage" />
+					<span class="align-middle" v-html="errorMessage" />
 				</div>
 			</form>
 		</div>

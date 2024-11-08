@@ -57,18 +57,19 @@
 				>
 					<span v-html="reviewerWorkflowLink" />
 				</div>
-				<div v-else-if="notice" class="listPanel__item--submission__notice">
-					<div class="flex items-center space-x-1">
-						<Icon icon="Error" class="h-4 w-4" :inline="true" />
-						<span>{{ notice }}</span>
-						<button
-							v-if="shouldAssignEditor"
-							class="-linkButton"
-							@click.stop.prevent="openAssignParticipant"
-						>
-							{{ t('submission.list.assignEditor') }}
-						</button>
-					</div>
+				<div
+					v-else-if="notice"
+					class="listPanel__item--submission__notice space-x-1"
+				>
+					<Icon icon="Error" class="h-4 w-4" :inline="true" />
+					<span class="align-middle">{{ notice }}</span>
+					<button
+						v-if="shouldAssignEditor"
+						class="-linkButton"
+						@click.stop.prevent="openAssignParticipant"
+					>
+						{{ t('submission.list.assignEditor') }}
+					</button>
 				</div>
 			</div>
 
@@ -128,21 +129,22 @@
 				<template v-else>
 					<div
 						v-if="currentUserLatestReviewAssignment.reviewCancelled"
-						class="listPanel__item--submission__reviewCancelled flex items-center"
+						class="listPanel__item--submission__reviewCancelled"
 					>
 						<Icon icon="Error" class="me-1 h-4 w-4" :inline="true" />
-						{{ t('submission.list.reviewCancelled') }}
+						<span class="align-middle">
+							{{ t('submission.list.reviewCancelled') }}
+						</span>
 					</div>
-					<div
-						v-if="currentUserLatestReviewAssignment.reviewComplete"
-						class="flex items-center"
-					>
+					<div v-if="currentUserLatestReviewAssignment.reviewComplete">
 						<Icon
 							icon="Complete"
 							class="me-1 h-4 w-4 text-success"
 							:inline="true"
 						/>
-						{{ t('submission.list.reviewComplete') }}
+						<span class="align-middle">
+							{{ t('submission.list.reviewComplete') }}
+						</span>
 					</div>
 				</template>
 

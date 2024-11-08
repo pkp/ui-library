@@ -40,12 +40,14 @@ export const Default = {
 							</template>
 							Days until next issue is published.
 						</ListItem>
-						<ListItem class="flex items-center">
+						<ListItem>
 							<Icon icon="Error" class="h-5 w-5 me-1" :inline="true" />
-							This journal is not currently available for the public to view. Would
-							you like to
-							<a href="#">make it public</a>
-							?
+							<span class="align-middle">
+								This journal is not currently available for the public to view. Would
+								you like to
+								<a href="#">make it public</a>
+								?
+							</span>
 						</ListItem>
 					</List>
 		</PanelSection>
@@ -86,12 +88,14 @@ export const ManySections = {
 							</template>
 							Days until next issue is published.
 						</ListItem>
-						<ListItem class="flex items-center">
+						<ListItem>
 							<Icon icon="Error" class="h-5 w-5 me-1" :inline="true" />
-							This journal is not currently available for the public to view. Would
-							you like to
-							<a href="#">make it public</a>
-							?
+							<span class="align-middle">
+								This journal is not currently available for the public to view. Would
+								you like to
+								<a href="#">make it public</a>
+								?
+							</span>
 						</ListItem>
 					</List>
 				</PanelSection>
@@ -118,12 +122,14 @@ export const ManySections = {
 							</template>
 							Days until next issue is published.
 						</ListItem>
-						<ListItem class="flex items-center">
+						<ListItem>
 							<Icon icon="Error" class="h-5 w-5 me-1" :inline="true" />
-							This journal is not currently available for the public to view. Would
-							you like to
-							<a href="#">make it public</a>
-							?
+							<span class="align-middle">
+								This journal is not currently available for the public to view. Would
+								you like to
+								<a href="#">make it public</a>
+								?
+							</span>
 						</ListItem>
 					</List>
 				</PanelSection>
@@ -164,12 +170,14 @@ export const StackHeader = {
 							</template>
 							Days until next issue is published.
 						</ListItem>
-						<ListItem class="flex items-center">
+						<ListItem>
 							<Icon icon="Error" class="h-5 w-5 me-1" :inline="true" />
-							This journal is not currently available for the public to view. Would
-							you like to
-							<a href="#">make it public</a>
-							?
+							<span class="align-middle">
+								This journal is not currently available for the public to view. Would
+								you like to
+								<a href="#">make it public</a>
+								?
+							</span>
 						</ListItem>
 					</List>
 				</PanelSection>
@@ -196,12 +204,14 @@ export const StackHeader = {
 							</template>
 							Days until next issue is published.
 						</ListItem>
-						<ListItem class="flex items-center">
+						<ListItem>
 							<Icon icon="Error" class="h-5 w-5 me-1" :inline="true" />
-							This journal is not currently available for the public to view. Would
-							you like to
-							<a href="#">make it public</a>
-							?
+							<span class="align-middle">
+								This journal is not currently available for the public to view. Would
+								you like to
+								<a href="#">make it public</a>
+								?
+							</span>
 						</ListItem>
 					</List>
 				</PanelSection>

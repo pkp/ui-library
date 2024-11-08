@@ -40,23 +40,6 @@ export const InlineIcon = {
 	args: {icon: 'Search', class: 'h-5 w-5', inline: true},
 };
 
-export const VerticallyAligned = {
-	render: (args) => ({
-		components: {Icon},
-		setup() {
-			return {args};
-		},
-		template: `
-			<div class="flex items-center space-x-1">
-				<span>Add files</span>
-				<Icon v-bind="args" />
-			</div>
-		`,
-	}),
-
-	args: {icon: 'Add', class: 'h-4 w-4', inline: true},
-};
-
 export const IconGallery = {
 	render: (args) => ({
 		components: {Icon},

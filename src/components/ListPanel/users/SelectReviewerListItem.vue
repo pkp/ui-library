@@ -51,26 +51,23 @@
 					</div>
 				</div>
 
-				<div
-					v-if="currentlyAssigned"
-					class="listPanel__item--reviewer__notice flex items-center"
-				>
+				<div v-if="currentlyAssigned" class="listPanel__item--reviewer__notice">
 					<Icon icon="Error" class="me-1 h-4 w-4" :inline="true" />
-					{{ currentlyAssignedLabel }}
+					<span class="align-middle">{{ currentlyAssignedLabel }}</span>
 				</div>
 				<div
 					v-else-if="assignedToLastRound"
-					class="listPanel__item--reviewer__notice flex items-center"
+					class="listPanel__item--reviewer__notice"
 				>
 					<Icon icon="Pin" class="me-1 h-3 w-3" :inline="true" />
-					{{ assignedToLastRoundLabel }}
+					<span class="align-middle">{{ assignedToLastRoundLabel }}</span>
 				</div>
 				<div
 					v-else-if="warnOnAssignment && !isWarningBypassed"
-					class="listPanel__item--reviewer__notice flex items-center space-x-1"
+					class="listPanel__item--reviewer__notice space-x-1"
 				>
 					<Icon icon="Lock" class="me-1 h-3 w-3" :inline="true" />
-					{{ warnOnAssignmentLabel }}
+					<span class="align-middle">{{ warnOnAssignmentLabel }}</span>
 					<button
 						class="listPanel__item--reviewer__noticeAction"
 						@click.prevent="unlockAssignment"
@@ -87,37 +84,21 @@
 					aria-hidden="true"
 				>
 					<span class="listPanel__item--reviewer__complete">
-						<div class="flex items-center">
-							<Icon
-								icon="Complete"
-								class="me-1 h-4 w-4 text-default"
-								:inline="true"
-							/>
-							{{ item.reviewsCompleted }}
-						</div>
+						<Icon icon="Complete" class="h-4 w-4 text-default" :inline="true" />
+						<span class="align-middle">{{ item.reviewsCompleted }}</span>
 					</span>
 					<span class="listPanel__item--reviewer__last">
-						<div class="flex items-center">
-							<Icon
-								icon="History"
-								class="me-1 h-4 w-4 text-default"
-								:inline="true"
-							/>
+						<Icon icon="History" class="h-4 w-4 text-default" :inline="true" />
+						<span class="align-middle">
 							{{ daysSinceLastAssignmentLabelCompiled }}
-						</div>
+						</span>
 					</span>
 					<span
 						v-if="item.interests.length"
 						class="listPanel__item--reviewer__interests"
 					>
-						<div class="flex items-center">
-							<Icon
-								icon="Book"
-								class="me-1 h-4 w-4 text-default"
-								:inline="true"
-							/>
-							{{ interestsString }}
-						</div>
+						<Icon icon="Book" class="h-4 w-4 text-default" :inline="true" />
+						<span class="align-middle">{{ interestsString }}</span>
 					</span>
 					<span
 						v-if="affiliationMatch(item.affiliation)"
