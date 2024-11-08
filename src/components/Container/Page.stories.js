@@ -64,7 +64,12 @@ export const Default = {
 						<Dropdown class="app__headerAction app__userNav">
 							<template #button>
 								<InitialsAvatar :is-secondary="true" given-name="Test" family-name="User"></InitialsAvatar>
-								<Icon v-if="isLoggedInAs" icon="User" class="absolute right-2 top-2 text-on-dark bg-negative rounded-full h-5 w-5"></Icon>
+								<InitialsAvatar
+									v-if="isLoggedInAs"
+									class="absolute right-2 top-2 rounded-full h-5 w-5"
+									:is-warnable="true"
+									:shrink="true"
+								></InitialsAvatar>
 								<span class="-screenReader">Options for {{ currentUsername }}</span>
 							</template>
 							<div v-if="isLoggedInAs" class="pkpDropdown__section">
