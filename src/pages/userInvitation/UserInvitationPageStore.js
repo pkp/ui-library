@@ -353,6 +353,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 						},
 					},
 				],
+				modalStyle: 'negative',
 			});
 		}
 

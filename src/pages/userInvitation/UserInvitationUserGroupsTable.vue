@@ -216,6 +216,7 @@ function removeUserGroup(userGroup, index) {
 				},
 			},
 		],
+		modalStyle: 'negative',
 	});
 }
 

@@ -71,6 +71,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 						const {redirectToPage} = useUrl('submissions');
 						redirectToPage();
 					},
+					modalStyle: 'negative',
 				});
 			} else {
 				email.value = data.value.email;
@@ -394,6 +395,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 						},
 					},
 				],
+				modalStyle: 'negative',
 			});
 		}
 
