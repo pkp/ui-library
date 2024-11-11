@@ -1,5 +1,9 @@
-<template v-if="reviewerSuggestionManagerStore.reviewerSuggestionsList?.length">
-	<div class="border border-light" data-cy="reviewer-sguuestion-manager">
+<template>
+	<div
+		v-if="reviewerSuggestionManagerStore.reviewerSuggestionsList.length > 0"
+		class="border border-light"
+		data-cy="reviewer-sguuestion-manager"
+	>
 		<div class="flex items-center justify-between bg-default p-5">
 			<h3 class="text-2xl-bold uppercase text-heading">
 				{{ t('editor.submission.reviewerSuggestions') }}
