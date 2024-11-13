@@ -1,12 +1,18 @@
 <template>
 	<div>
-		<PkpButton v-if="!isActionsShowed" class="" is-link @click="showActions">
+		<PkpButton
+			v-if="!isActionsShowed && showChangeDecision"
+			class=""
+			is-link
+			@click="showActions"
+		>
 			{{ t('editor.submission.workflowDecision.changeDecision') }}
 		</PkpButton>
 		<div v-else class="flex flex-col space-y-3">
-			<WorkflowActionButton
-				v-for="(actionProps, index) in actionButtonsProps"
-				v-bind="actionProps"
+			<component
+				:is="workflowStore.Components[item.component] || item.component"
+				v-for="(item, index) in items"
+				v-bind="item.props"
 				:key="`${index}`"
 			/>
 		</div>
@@ -16,11 +22,15 @@
 <script setup>
 import {ref} from 'vue';
 import PkpButton from '@/components/Button/Button.vue';
-import WorkflowActionButton from '@/pages/workflow/components/action/WorkflowActionButton.vue';
-
-defineProps({actionButtonsProps: {type: Array, required: true}});
+import {useWorkflowStore} from '../../workflowStore';
+defineProps({
+	showChangeDecision: {type: Boolean, required: true, default: false},
+	items: {type: Array, required: true},
+});
 
 const isActionsShowed = ref(false);
+
+const workflowStore = useWorkflowStore();
 
 function showActions() {
 	isActionsShowed.value = true;

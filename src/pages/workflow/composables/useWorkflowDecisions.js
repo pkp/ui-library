@@ -4,10 +4,11 @@ import {useUrl} from '@/composables/useUrl';
 export const Actions = {
 	DECISION_ACCEPT: 'decisionAccept',
 	DECISION_CANCEL_REVIEW_ROUND: 'decisionCancelReviewRound',
-	DECISION_DECLINE_SUBMISSION: 'decisionDeclineSubmission',
+	DECISION_DECLINE: 'decisionDecline',
 	DECISION_EXTERNAL_REVIEW: 'decisionExternalReview',
 	DECISION_SKIP_EXTERNAL_REVIEW: 'decisionSkipExternalReview',
 	DECISION_INITIAL_DECLINE: 'decisionInitialDecline',
+	DECISION_REVERT_DECLINE: 'decisionRevertDecline',
 	DECISION_REVERT_INITIAL_DECLINE: 'decisionRevertInitialDecline',
 
 	DECISION_SEND_TO_PRODUCTION: 'decisionSendToProduction',
@@ -70,8 +71,14 @@ export function useWorkflowDecisions() {
 		});
 	}
 
-	function decisionDeclineSubmission({submission, reviewRoundId}) {
+	function decisionDecline({submission, reviewRoundId}) {
 		openDecisionPage(submission, pkp.const.DECISION_DECLINE, {
+			reviewRoundId,
+		});
+	}
+
+	function decisionRevertDecline({submission, reviewRoundId}) {
+		openDecisionPage(submission, pkp.const.DECISION_REVERT_DECLINE, {
 			reviewRoundId,
 		});
 	}
@@ -233,7 +240,8 @@ export function useWorkflowDecisions() {
 		openDecisionPage,
 		decisionAccept,
 		decisionCancelReviewRound,
-		decisionDeclineSubmission,
+		decisionDecline,
+		decisionRevertDecline,
 		decisionExternalReview,
 		decisionSkipExternalReview,
 		decisionInitialDecline,
