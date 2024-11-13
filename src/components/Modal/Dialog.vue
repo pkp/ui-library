@@ -169,9 +169,9 @@ const emit = defineEmits(['close']);
 
 const isLoading = ref(false);
 
-function onClose(evtType) {
-	// Prevent closing the modal on outside click or "Esc" key if isDismissible is false
-	if (!props.isDismissible && evtType === 'default') {
+function onClose(triggerOrigin) {
+	// Prevent closing the modal on outside clicks or "Esc" key presses if isDismissible is false
+	if (!props.isDismissible && triggerOrigin === 'default') {
 		return;
 	}
 
