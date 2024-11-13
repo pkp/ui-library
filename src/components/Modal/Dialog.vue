@@ -139,7 +139,7 @@ const props = defineProps({
 });
 
 const styles = computed(() => ({
-	'modal__panel modal__panel--dialog relative mx-3 w-10/12 max-w-3xl transform overflow-hidden rounded bg-secondary text-start shadow transition-all sm:my-8': true,
+	'relative mx-3 w-10/12 max-w-3xl transform overflow-hidden rounded bg-secondary text-start shadow transition-all sm:my-8': true,
 	'border-none': props.modalStyle === 'basic',
 	'border-s-[14px] border-primary': props.modalStyle === 'primary',
 	'border-s-[14px] border-success': props.modalStyle === 'success',
