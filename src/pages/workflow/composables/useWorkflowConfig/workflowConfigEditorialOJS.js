@@ -133,10 +133,8 @@ export const WorkflowConfig = {
 		getActionItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			let items = [];
 
-			const decisionItems = [];
-
 			addItemIf(
-				decisionItems,
+				items,
 				{
 					component: 'WorkflowActionButton',
 					props: {
@@ -149,7 +147,7 @@ export const WorkflowConfig = {
 			);
 
 			addItemIf(
-				decisionItems,
+				items,
 				{
 					component: 'WorkflowActionButton',
 					props: {
@@ -165,7 +163,7 @@ export const WorkflowConfig = {
 			);
 
 			addItemIf(
-				decisionItems,
+				items,
 				{
 					component: 'WorkflowActionButton',
 					props: {
@@ -178,7 +176,7 @@ export const WorkflowConfig = {
 			);
 
 			addItemIf(
-				decisionItems,
+				items,
 				{
 					component: 'WorkflowActionButton',
 					props: {
@@ -191,18 +189,6 @@ export const WorkflowConfig = {
 					submission,
 					pkp.const.DECISION_REVERT_INITIAL_DECLINE,
 				),
-			);
-
-			addItemIf(
-				items,
-				{
-					component: 'WorkflowActionChangeDecision',
-					props: {
-						showChangeDecision: submission.status === pkp.const.STATUS_DECLINED,
-						items: decisionItems,
-					},
-				},
-				!!decisionItems.length,
 			);
 
 			return items;
