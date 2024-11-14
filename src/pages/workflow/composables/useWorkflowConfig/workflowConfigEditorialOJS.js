@@ -5,13 +5,13 @@ import {Actions as WorkflowActions} from '../useWorkflowActions';
 import {Actions as DecisionActions} from '../useWorkflowDecisions';
 const {
 	hasSubmissionPassedStage,
-	hasNotSubmissionStartedStage,
+	getActiveStage,
 	getStageById,
 	isDecisionAvailable,
 } = useSubmission();
 const {t} = useLocalize();
 
-function addItemIf(items, item, condition) {
+export function addItemIf(items, item, condition) {
 	if (condition) {
 		items.push(item);
 	}
@@ -68,14 +68,6 @@ export function getHeaderItems({
 
 export const WorkflowConfig = {
 	common: {
-		getActionItems: ({submission, selectedStageId, selectedReviewRound}) => {
-			if (
-				hasNotSubmissionStartedStage(submission, selectedStageId) ||
-				hasSubmissionPassedStage(submission, selectedStageId)
-			) {
-				return [];
-			}
-		},
 		getPrimaryItems: ({submission, permissions}) => {
 			return [
 				{
@@ -567,15 +559,20 @@ export const WorkflowConfig = {
 		getActionItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
 
-			items.push({
-				component: 'WorkflowActionButton',
-				props: {
-					label: t('editor.submission.schedulePublication'),
-					isPrimary: true,
-					action: 'navigateToMenu',
-					actionArgs: 'publication_titleAbstract',
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.schedulePublication'),
+						isPrimary: true,
+						action: 'navigateToMenu',
+						actionArgs: 'publication_titleAbstract',
+					},
 				},
-			});
+				getActiveStage(submission).id ===
+					pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+			);
 
 			addItemIf(
 				items,

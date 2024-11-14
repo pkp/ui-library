@@ -2,8 +2,8 @@ import {useLocalize} from '@/composables/useLocalize';
 import {Actions} from '../useWorkflowActions';
 import {useSubmission} from '@/composables/useSubmission';
 import {Actions as DecisionActions} from '../useWorkflowDecisions';
-
-const {hasSubmissionPassedStage, hasNotSubmissionStartedStage, getStageById} =
+import {addItemIf} from './workflowConfigEditorialOJS';
+const {hasSubmissionPassedStage, getStageById, isDecisionAvailable} =
 	useSubmission();
 const {t} = useLocalize();
 export function getHeaderItems({
@@ -100,50 +100,80 @@ export const WorkflowConfig = {
 
 		getActionItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
-			if (
-				hasSubmissionPassedStage(
+
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.decision.sendExternalReview'),
+						isPrimary: true,
+						action: DecisionActions.DECISION_SKIP_INTERNAL_REVIEW,
+					},
+				},
+				isDecisionAvailable(
 					submission,
-					pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
-				)
-			) {
-				return [];
-			}
+					pkp.const.DECISION_SKIP_INTERNAL_REVIEW,
+				),
+			);
 
-			items.push({
-				component: 'WorkflowActionButton',
-				props: {
-					label: t('editor.submission.decision.sendExternalReview'),
-					isPrimary: true,
-					action: DecisionActions.DECISION_SKIP_INTERNAL_REVIEW,
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.decision.skipReview'),
+						isSecondary: true,
+						action: DecisionActions.DECISION_SKIP_EXTERNAL_REVIEW,
+					},
 				},
-			});
+				isDecisionAvailable(
+					submission,
+					pkp.const.DECISION_SKIP_EXTERNAL_REVIEW,
+				),
+			);
 
-			items.push({
-				component: 'WorkflowActionButton',
-				props: {
-					label: t('editor.submission.decision.skipReview'),
-					isSecondary: true,
-					action: DecisionActions.DECISION_SKIP_EXTERNAL_REVIEW,
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.decision.decline'),
+						isWarnable: true,
+						action: DecisionActions.DECISION_INITIAL_DECLINE,
+					},
 				},
-			});
+				isDecisionAvailable(submission, pkp.const.DECISION_INITIAL_DECLINE),
+			);
 
-			items.push({
-				component: 'WorkflowActionButton',
-				props: {
-					label: t('editor.submission.decision.decline'),
-					isWarnable: true,
-					action: DecisionActions.DECISION_INITIAL_DECLINE,
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.decision.revertDecline'),
+						isSecondary: true,
+						action: DecisionActions.DECISION_REVERT_INITIAL_DECLINE,
+					},
 				},
-			});
+				isDecisionAvailable(
+					submission,
+					pkp.const.DECISION_REVERT_INITIAL_DECLINE,
+				),
+			);
 
-			items.push({
-				component: 'WorkflowActionButton',
-				props: {
-					label: t('editor.submission.decision.sendInternalReview'),
-					isSecondary: true,
-					action: DecisionActions.DECISION_INTERNAL_REVIEW,
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.decision.sendInternalReview'),
+						isSecondary: true,
+						action: DecisionActions.DECISION_INTERNAL_REVIEW,
+					},
 				},
-			});
+				isDecisionAvailable(submission, pkp.const.DECISION_INTERNAL_REVIEW),
+			);
 
 			return items;
 		},
@@ -258,17 +288,7 @@ export const WorkflowConfig = {
 			);
 
 			// if review stage has not started show no items
-			if (
-				hasNotSubmissionStartedStage(
-					submission,
-					pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW,
-				) ||
-				hasSubmissionPassedStage(
-					submission,
-					pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW,
-				) ||
-				selectedReviewRound.round < currentReviewRound.round
-			) {
+			if (selectedReviewRound.round < currentReviewRound.round) {
 				return [];
 			}
 
@@ -291,54 +311,98 @@ export const WorkflowConfig = {
 					reviewRoundId: selectedReviewRound.id,
 				};
 
-				items.push({
-					component: 'WorkflowActionButton',
-					props: {
-						label: t('dashboard.summary.requestRevisions'),
-						isSecondary: true,
-						action: DecisionActions.DECISION_PENDING_REVISIONS_INTERNAL,
-						actionArgs,
+				addItemIf(
+					items,
+					{
+						component: 'WorkflowActionButton',
+						props: {
+							label: t('dashboard.summary.requestRevisions'),
+							isSecondary: true,
+							action: DecisionActions.DECISION_PENDING_REVISIONS_INTERNAL,
+							actionArgs,
+						},
 					},
-				});
+					isDecisionAvailable(
+						submission,
+						pkp.const.DECISION_PENDING_REVISIONS_INTERNAL,
+					),
+				);
 
-				items.push({
-					component: 'WorkflowActionButton',
-					props: {
-						label: t('editor.submission.decision.sendExternalReview'),
-						action: DecisionActions.DECISION_EXTERNAL_REVIEW,
-						isPrimary: true,
-						actionArgs,
+				addItemIf(
+					items,
+					{
+						component: 'WorkflowActionButton',
+						props: {
+							label: t('editor.submission.decision.sendExternalReview'),
+							action: DecisionActions.DECISION_EXTERNAL_REVIEW,
+							isPrimary: true,
+							actionArgs,
+						},
 					},
-				});
+					isDecisionAvailable(submission, pkp.const.DECISION_EXTERNAL_REVIEW),
+				);
 
-				items.push({
-					component: 'WorkflowActionButton',
-					props: {
-						label: t('editor.submission.decision.accept'),
-						action: DecisionActions.DECISION_ACCEPT_INTERNAL,
-						actionArgs,
+				addItemIf(
+					items,
+					{
+						component: 'WorkflowActionButton',
+						props: {
+							label: t('editor.submission.decision.accept'),
+							action: DecisionActions.DECISION_ACCEPT_INTERNAL,
+							isPrimary: true,
+							actionArgs,
+						},
 					},
-				});
+					isDecisionAvailable(submission, pkp.const.DECISION_ACCEPT_INTERNAL),
+				);
 
-				items.push({
-					component: 'WorkflowActionButton',
-					props: {
-						label: t('editor.submission.decision.cancelReviewRound'),
-						isWarnable: true,
-						action: DecisionActions.DECISION_CANCEL_INTERNAL_REVIEW_ROUND,
-						actionArgs,
+				addItemIf(
+					items,
+					{
+						component: 'WorkflowActionButton',
+						props: {
+							label: t('editor.submission.decision.cancelReviewRound'),
+							isWarnable: true,
+							action: DecisionActions.DECISION_CANCEL_INTERNAL_REVIEW_ROUND,
+							actionArgs,
+						},
 					},
-				});
+					isDecisionAvailable(
+						submission,
+						pkp.const.DECISION_CANCEL_INTERNAL_REVIEW_ROUND,
+					),
+				);
 
-				items.push({
-					component: 'WorkflowActionButton',
-					props: {
-						label: t('editor.submission.decision.decline'),
-						isWarnable: true,
-						action: DecisionActions.DECISION_DECLINE_INTERNAL,
-						actionArgs,
+				addItemIf(
+					items,
+					{
+						component: 'WorkflowActionButton',
+						props: {
+							label: t('editor.submission.decision.decline'),
+							isWarnable: true,
+							action: DecisionActions.DECISION_DECLINE_INTERNAL,
+							actionArgs,
+						},
 					},
-				});
+					isDecisionAvailable(submission, pkp.const.DECISION_DECLINE_INTERNAL),
+				);
+
+				addItemIf(
+					items,
+					{
+						component: 'WorkflowActionButton',
+						props: {
+							label: t('editor.submission.decision.revertDecline'),
+							isSecondary: true,
+							action: DecisionActions.DECISION_REVERT_INTERNAL_DECLINE,
+							actionArgs,
+						},
+					},
+					isDecisionAvailable(
+						submission,
+						pkp.const.DECISION_REVERT_INTERNAL_DECLINE,
+					),
+				);
 			}
 			return items;
 		},
