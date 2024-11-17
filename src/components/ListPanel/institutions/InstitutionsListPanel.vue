@@ -211,7 +211,7 @@ export default {
 				actions: [
 					{
 						label: this.t('common.yes'),
-						isPrimary: true,
+						isWarnable: true,
 						callback: (close) => {
 							var self = this;
 							$.ajax({
@@ -235,10 +235,10 @@ export default {
 					},
 					{
 						label: this.t('common.no'),
-						isWarnable: true,
 						callback: (close) => close(),
 					},
 				],
+				modalStyle: 'negative',
 			});
 		},
 

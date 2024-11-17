@@ -433,13 +433,6 @@ export function useReviewerManagerActions() {
 			{
 				actions: [
 					{
-						label: t('common.cancel'),
-						isWarnable: true,
-						callback: (close) => {
-							close();
-						},
-					},
-					{
 						label: t('common.ok'),
 						callback: (close) => {
 							const {redirectToPage} = useUrl(
@@ -448,9 +441,17 @@ export function useReviewerManagerActions() {
 							redirectToPage();
 						},
 					},
+					{
+						label: t('common.cancel'),
+						isWarnable: true,
+						callback: (close) => {
+							close();
+						},
+					},
 				],
 				title: t('grid.action.logInAs'),
 				message: t('grid.user.confirmLogInAs'),
+				modalStyle: 'primary',
 			},
 			finishedCallback,
 		);
@@ -503,14 +504,8 @@ export function useReviewerManagerActions() {
 			{
 				actions: [
 					{
-						label: t('common.cancel'),
-						isWarnable: true,
-						callback: (close) => {
-							close();
-						},
-					},
-					{
 						label: t('common.ok'),
+						isWarnable: true,
 						callback: async (close) => {
 							// http://localhost:7002/index.php/publicknowledge/$$$call$$$/grid/users/reviewer/reviewer-grid/unconsider-review?submissionId=12&reviewAssignmentId=17&stageId=3
 
@@ -539,9 +534,16 @@ export function useReviewerManagerActions() {
 							}
 						},
 					},
+					{
+						label: t('common.cancel'),
+						callback: (close) => {
+							close();
+						},
+					},
 				],
 				title: t('editor.review.unconsiderReview'),
 				message: t('editor.review.unconsiderReviewText'),
+				modalStyle: 'negative',
 			},
 			finishedCallback,
 		);

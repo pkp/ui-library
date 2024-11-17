@@ -228,7 +228,7 @@ export default {
 				actions: [
 					{
 						label: this.t('common.yes'),
-						isPrimary: true,
+						isWarnable: true,
 						callback: (close) => {
 							$.ajax({
 								url: this.apiUrl + '/' + id,
@@ -251,10 +251,10 @@ export default {
 					},
 					{
 						label: this.t('common.no'),
-						isWarnable: true,
 						callback: (close) => close(),
 					},
 				],
+				modalStyle: 'negative',
 			});
 		},
 

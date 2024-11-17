@@ -36,7 +36,8 @@ export default {
 			],
 			close: () => {
 				// dialog has been closed
-			}
+			},
+			modalStyle: 'primary',
 		});
 	}
 }
@@ -58,6 +59,7 @@ The `openDialog()` method accepts a configuration object with the following para
 | `title` | A localized title to display in the dialog. |
 | `message` | A localized message to display in the dialog. |
 | `close` | A callback function that will be fired when the dialog is closed. |
+| `modalStyle` | The visual style of the modal: 'basic' (no border style)', 'primary', 'negative', or 'success'. |
 | `actions` | An array of buttons to add to the dialog. |
 | `actions[0].label` | The label for the button. |
 | `actions[0].callback` | A callback function that will be fired when the button is pressed. |

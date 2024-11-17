@@ -259,7 +259,7 @@ export default {
 				actions: [
 					{
 						label: this.t('common.yes'),
-						isPrimary: true,
+						isWarnable: true,
 						callback: (close) => {
 							$.ajax({
 								url: this.apiUrl + '/' + item.id + '?stageId=' + this.stageId,
@@ -281,10 +281,10 @@ export default {
 					},
 					{
 						label: this.t('common.no'),
-						isWarnable: true,
 						callback: (close) => close(),
 					},
 				],
+				modalStyle: 'negative',
 			});
 		},
 

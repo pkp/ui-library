@@ -363,6 +363,7 @@ export default {
 						callback: (close) => close(),
 					},
 				],
+				modalStyle: 'negative',
 			});
 		},
 

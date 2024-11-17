@@ -23,7 +23,7 @@ export default {
 	},
 	mounted() {
 		/**
-		 * Show the requested message in a modal when the link in the messgae is
+		 * Show the requested message in a modal when the link in the message is
 		 * clicked.
 		 */
 		$('.pkpFormField--options__option button', this.$el).click(() => {
@@ -36,6 +36,7 @@ export default {
 					callback: (close) => {
 						close();
 					},
+					modalStyle: 'primary',
 				},
 				{
 					height: 'auto',

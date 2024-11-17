@@ -190,6 +190,7 @@ export default {
 						},
 					},
 				],
+				modalStyle: 'primary',
 				close: () => {},
 			});
 		},
@@ -227,7 +228,7 @@ export default {
 				actions: [
 					{
 						label: this.t('common.yes'),
-						isPrimary: true,
+						isWarnable: true,
 						callback: async (close) => {
 							await this.deleteOrcid();
 							close();
@@ -235,12 +236,12 @@ export default {
 					},
 					{
 						label: this.t('common.no'),
-						isWarnable: true,
 						callback: (close) => {
 							close();
 						},
 					},
 				],
+				modalStyle: 'negative',
 				close: () => {},
 			});
 		},

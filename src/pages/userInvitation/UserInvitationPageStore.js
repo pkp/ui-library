@@ -324,6 +324,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 								},
 							},
 						],
+						modalStyle: 'primary',
 					});
 				} else {
 					isSubmitting.value = false;
@@ -352,6 +353,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 						},
 					},
 				],
+				modalStyle: 'negative',
 			});
 		}
 

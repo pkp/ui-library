@@ -51,6 +51,7 @@ export const useModalStore = defineStore('modal', () => {
 					callback: (close) => close(),
 				},
 			],
+			modalStyle: 'negative',
 		});
 	}
 
