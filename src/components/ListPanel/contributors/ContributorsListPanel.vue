@@ -294,6 +294,13 @@ export default {
 			let activeForm = cloneDeep(this.form);
 			activeForm.action = this.contributorsApiUrl;
 			activeForm.method = 'POST';
+			activeForm.fields = activeForm.fields.map((field) => {
+				if (field.name === 'affiliations') {
+					field.primaryLocale = activeForm.primaryLocale;
+					field.supportedFormLocales = activeForm.supportedFormLocales;
+				}
+				return field;
+			});
 			this.activeForm = activeForm;
 			this.activeFormTitle = this.t('grid.action.addContributor');
 			const {openSideModal} = useModal();
@@ -395,6 +402,11 @@ export default {
 							field.isVerified = author['orcidIsVerified'] ?? false;
 							field.orcidVerificationRequested =
 								author['orcidVerificationRequested'];
+						} else if (field.name === 'affiliations') {
+							field.authorId = author['id'];
+							field.primaryLocale = activeForm.primaryLocale;
+							field.supportedFormLocales = activeForm.supportedFormLocales;
+							field.value = author[field.name];
 						} else if (Object.keys(author).includes(field.name)) {
 							field.value = author[field.name];
 						}

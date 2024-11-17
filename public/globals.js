@@ -747,6 +747,21 @@ window.pkp = {
 			"Invitation not accepted. You're logged in as a different user.",
 		'acceptInvitation.authorization.message':
 			'Please log out and sign in with the correct account to accept this invitation.',
+		'user.affiliations': 'Affiliations',
+		'user.affiliations.description': 'Enter the full name of the institution below, avoiding any acronyms. Select the name from the dropdown and click "Add" to include the affiliation in your profile. (e.g. "Simon Fraser University")',
+		'user.affiliations.institution': 'Institution',
+		'user.affiliations.translation': 'Translation',
+		'user.affiliations.translationEditActionLabel': 'Edit institution name',
+		'user.affiliations.translationDeleteActionLabel': 'Remove institution',
+		'user.affiliations.translationActionsAriaLabel': 'Click to edit or delete',
+		'user.affiliations.translationsAllAvailable': 'All translations available',
+		'user.affiliations.translationsSomeAvailable': '{$translated} of {$total} languages completed',
+		'user.affiliations.typeTranslationNameInLanguageLabel': 'Type the institute name in {$language}',
+		'user.affiliations.translationNameInLanguage': 'Institute name in {$language}',
+		'user.affiliations.deleteModal.title': 'Are you sure?',
+		'user.affiliations.deleteModal.message': 'The institution <strong>{$institution}</strong> will be deleted.',
+		'user.affiliations.searchPhraseLabel': 'Type the institute name in {$language}',
+		'user.affiliations.searchPhraseNothingFound': 'Your search phrase could not be found'
 	},
 
 	tinyMCE: {
