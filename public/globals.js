@@ -761,7 +761,8 @@ window.pkp = {
 		'user.affiliations.deleteModal.title': 'Are you sure?',
 		'user.affiliations.deleteModal.message': 'The institution <strong>{$institution}</strong> will be deleted.',
 		'user.affiliations.searchPhraseLabel': 'Type the institute name in {$language}',
-		'user.affiliations.searchPhraseNothingFound': 'Your search phrase could not be found'
+		'user.affiliations.searchPhraseNothingFound': 'Your search phrase could not be found',
+		'user.affiliations.primaryLocaleRequired': 'The primary language {$primaryLocale} is required',
 	},
 
 	tinyMCE: {

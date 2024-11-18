@@ -22,11 +22,21 @@
 				<TableBody>
 					<TableRow v-for="(row, indexRow) in currentValue" :key="indexRow">
 						<TableCell>
-							<span class="text-lg-semibold">
+							<span v-if="row.name[primaryLocale]" class="text-lg-semibold">
+								{{ row.name[primaryLocale] }}
+							</span>
+							<Icon
+								v-if="!row.name[primaryLocale]"
+								v-bind="{icon: 'exclamation-triangle'}"
+							/>
+							<span
+								v-if="!row.name[primaryLocale]"
+								class="text-lg-semibold text-negative"
+							>
 								{{
-									row.name[primaryLocale]
-										? row.name[primaryLocale]
-										: getAlternativeDisplayName(row.name)
+									t('user.affiliations.primaryLocaleRequired', {
+										primaryLocale: getLocaleDisplayName(primaryLocale),
+									})
 								}}
 							</span>
 							<a v-if="row.ror" :href="row.ror" target="_blank">
@@ -50,7 +60,7 @@
 								>
 									<div>
 										<label
-											v-if="supportedFormLocalesKeys.includes(localeName)"
+											v-if="supportedFormLocaleKeys.includes(localeName)"
 											:for="
 												'contributors-affiliations-' +
 												indexRow +
@@ -71,7 +81,7 @@
 									</div>
 									<div>
 										<input
-											v-if="supportedFormLocalesKeys.includes(localeName)"
+											v-if="supportedFormLocaleKeys.includes(localeName)"
 											:id="
 												'contributors-affiliations-' +
 												indexRow +
@@ -90,15 +100,10 @@
 							</div>
 						</TableCell>
 						<TableCell>
-							<Icon
-								class="h-5 w-5 text-primary"
-								icon="'MoreOptions'"
-								aria-hidden="true"
-							/>
 							<DropdownActions
 								v-if="!(indexRow === indexEditMode)"
 								v-bind="rowActionsArgs(indexRow)"
-								:class="'border-transparent'"
+								:class="'dropDownActions border-transparent'"
 								@action="rowActionsHandler"
 							/>
 							<button
@@ -119,7 +124,7 @@
 								>
 									{{
 										t('user.affiliations.searchPhraseLabel', {
-											language: getLocaleDisplayName('en'),
+											language: getLocaleDisplayName(defaultLocale),
 										})
 									}}
 								</label>
@@ -157,7 +162,7 @@
 											class="cursor-pointer border-transparent px-2 py-2 text-lg-normal text-primary hover:bg-hover hover:text-on-dark hover:enabled:underline"
 											@click="selectRorOrganization(organization)"
 										>
-											{{ organization.displayName }} | &nbsp;
+											{{ organization.displayName }} &nbsp;
 											<Icon :icon="'ror'" :class="'mr-2'" :inline="true" />
 										</a>
 										<a
@@ -195,7 +200,7 @@
 								>
 									<div>
 										<span
-											v-if="supportedFormLocalesKeys.includes(localeAddMode)"
+											v-if="supportedFormLocaleKeys.includes(localeAddMode)"
 											class="text-lg-normal"
 										>
 											{{
@@ -210,7 +215,7 @@
 									</div>
 									<div>
 										<input
-											v-if="supportedFormLocalesKeys.includes(localeAddMode)"
+											v-if="supportedFormLocaleKeys.includes(localeAddMode)"
 											:id="
 												'contributors-affiliations-newAffiliation' +
 												'-' +
@@ -231,6 +236,7 @@
 							<div v-if="showAddMode">
 								<button
 									class="pkpButton border-transparent py-2 text-lg-semibold text-primary hover:enabled:underline"
+									:disabled="!validate(newAffiliationPending)"
 									@click="addAffiliation"
 								>
 									{{ t('common.insert', {}) }}
@@ -277,7 +283,7 @@ const props = defineProps({
 	},
 	supportedFormLocales: {
 		type: Array,
-		default: () => {},
+		default: () => [],
 	},
 	value: {
 		type: Array,
@@ -288,27 +294,32 @@ const props = defineProps({
 const authorId = props.authorId;
 const primaryLocale = props.primaryLocale;
 const supportedFormLocales = props.supportedFormLocales;
-const supportedFormLocalesKeys = supportedFormLocales.map(function (language) {
-	return language.key;
-});
 const currentValue = props.value;
 const apiResponse = ref([]);
 const newAffiliationPending = ref({});
 const searchPhrase = ref('');
+const supportedFormLocaleKeys = supportedFormLocales.map(function (language) {
+	return language.key;
+});
+const defaultLocale = 'en';
 
 const selectCustomOrganization = function () {
 	newAffiliationPending.value = getNewItemTemplate();
 	newAffiliationPending.value.name[primaryLocale] = searchPhrase.value;
+
 	apiResponse.value = [];
 };
 const selectRorOrganization = function (item) {
 	newAffiliationPending.value = getNewItemTemplate();
 	newAffiliationPending.value.ror = item.ror;
-	supportedFormLocalesKeys.forEach((locale) => {
+	newAffiliationPending.value.name[primaryLocale] = item.displayName;
+
+	supportedFormLocaleKeys.forEach((locale) => {
 		if (typeof item.name[locale] !== 'undefined') {
 			newAffiliationPending.value.name[locale] = item.name[locale];
 		}
 	});
+
 	apiResponse.value = [];
 };
 const addAffiliation = function () {
@@ -416,14 +427,14 @@ const closeEditMode = function () {
 };
 const translations = function (row) {
 	let names = row.name;
-	let total = supportedFormLocalesKeys.length;
+	let total = supportedFormLocaleKeys.length;
 	let translated = 0;
 
-	for (let key in names) {
-		if (supportedFormLocalesKeys.includes(key) && names[key].length > 0) {
+	Object.keys(names).forEach((key) => {
+		if (supportedFormLocaleKeys.includes(key) && names[key].length > 0) {
 			translated++;
 		}
-	}
+	});
 
 	if (total === translated) {
 		return t('user.affiliations.translationsAllAvailable', {});
@@ -433,6 +444,9 @@ const translations = function (row) {
 			total: total,
 		});
 	}
+};
+const validate = function (item) {
+	return !!(item.ror || item.name[primaryLocale]);
 };
 
 watch(
@@ -472,67 +486,61 @@ async function searchPhraseChanged() {
 }
 
 function makeCurrentValueCompatible() {
-	Object.keys(currentValue).forEach((index) => {
-		supportedFormLocalesKeys.forEach((locale) => {
+	currentValue.forEach((value, index) => {
+		supportedFormLocaleKeys.forEach((locale) => {
 			if (!(locale in currentValue[index].name)) {
 				currentValue[index].name[locale] = '';
 			}
+
+			currentValue[index].name = sortNamesPrimaryFirst(
+				currentValue[index].name,
+			);
 		});
-
-		// position name for primaryLocale first
-		let namePrimaryLocale = {};
-		namePrimaryLocale[primaryLocale] = currentValue[index].name[primaryLocale];
-		let nameRest = Object.keys(currentValue[index].name)
-			.filter((key) => !primaryLocale.includes(key))
-			.reduce((obj, key) => {
-				obj[key] = currentValue[index].name[key];
-				return obj;
-			}, {});
-
-		currentValue[index].name = {...namePrimaryLocale, ...nameRest};
 	});
 }
 
 function getNewItemTemplate() {
-	let newItem = {
+	let names = {};
+
+	names[primaryLocale] = '';
+	supportedFormLocaleKeys.forEach((locale) => {
+		names[locale] = '';
+	});
+
+	names = sortNamesPrimaryFirst(names);
+
+	return {
 		id: null,
 		authorId: authorId,
 		ror: null,
-		name: {},
+		name: names,
 	};
-
-	supportedFormLocalesKeys.forEach((locale) => {
-		newItem.name[locale] = '';
-	});
-
-	return newItem;
 }
 
 function getLocaleDisplayName(locale) {
 	let displayName = locale;
 	supportedFormLocales.forEach((language) => {
-		if (language['key'] === locale) {
-			displayName = language['label'];
+		if (language.key === locale) {
+			displayName = language.label;
 		}
 	});
 
 	return displayName;
 }
 
-function getAlternativeDisplayName(names) {
-	let locale = '';
+function sortNamesPrimaryFirst(names) {
+	let nameFirst = {};
+	let nameRest = {};
+
 	Object.keys(names).forEach((key) => {
-		if (names[key].length > 0) {
-			locale = key;
-			return false;
+		if (key === primaryLocale) {
+			nameFirst[primaryLocale] = names[key];
+		} else {
+			nameRest[key] = names[key];
 		}
 	});
 
-	if (locale.length > 0) {
-		return names[locale] + ' [' + getLocaleDisplayName(locale) + ']';
-	}
-
-	return '';
+	return {...nameFirst, ...nameRest};
 }
 </script>
 
@@ -560,6 +568,10 @@ function getAlternativeDisplayName(names) {
 
 	table td:nth-child(3) {
 		text-align: right;
+	}
+
+	.dropDownActions svg {
+		width: 1.5em;
 	}
 }
 
