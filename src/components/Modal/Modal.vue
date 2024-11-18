@@ -259,9 +259,108 @@ export default {
 	}
 }
 
+/**
+ * Isolate all of the styles for a popup modal
+ *
+ * As part of UX changes, our designer is encouraging us to move to
+ * the side-panel style of modal. Ideally, popup modals will only
+ * be used for simple Dialogs. Until then, these styles will need
+ * to remain to support existing uses of the pop-up modal.
+ */
+.modal--popup {
+	.modal__panel {
+		font-size: @font-sml;
+		line-height: @line-sml;
+	}
+	.modal__header {
+		display: flex;
+		align-items: center;
+		min-height: 3rem;
+	}
+	.modal__title {
+		margin: 0;
+		min-width: 1px;
+		padding: 0.5rem 1rem;
+		font-size: @font-base;
+		white-space: nowrap;
+		overflow-x: hidden;
+		text-overflow: ellipsis;
+	}
+	.modal__closeButton {
+		margin-inline-start: auto; // fix position when no title exists
+		margin-inline-end: 0.5rem;
+		border: none;
+		font-size: @font-lead;
+		line-height: 1;
+		width: 2rem;
+		height: 2rem;
+		text-align: center;
+		background: transparent;
+		cursor: pointer;
+	}
+	.modal__closeButton:focus-visible {
+		outline: 0;
+		border-radius: @radius;
+		border: 1px solid @primary;
+	}
+	.modal__closeButton__left,
+	.modal__closeButton__right {
+		display: none;
+	}
+	.modal__content {
+		padding: 1rem;
+		> p:first-child {
+			margin-top: 0;
+		}
+		> p:last-child {
+			margin-bottom: 0;
+		}
+	}
+	.modal__footer {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		padding: 1rem;
+		* + .pkpButton {
+			margin-inline-start: 0.5rem;
+		}
+	}
+	// Forms in popupmodals
+	.pkpForm {
+		margin: -1rem;
+	}
+	.pkpFormLocales {
+		border-top: @bg-border-light;
+	}
+	.pkpFormGroup {
+		padding-inline-start: 1rem;
+		padding-inline-end: 1rem;
+	}
+	// Tabs in popup modals
+	.pkpTabs {
+		margin-inline-start: -1rem;
+		margin-inline-end: -1rem;
+	}
+	.pkpTabs {
+		.pkpTabs {
+			margin-inline-start: -2rem;
+			margin-inline-end: -2rem;
+		}
+	}
+	.pkpTabs__buttons {
+		padding-inline-start: 1rem;
+		padding-inline-end: 1rem;
+	}
+	.pkpTab {
+		border-left: none;
+		border-right: none;
+		border-bottom: none;
+	}
+}
+
 // Override collapsed padding when a popup
 // modal is nested inside of a section
-.panelSection .pkpFormGroup {
+.panelSection .modal--popup .pkpFormGroup {
 	padding: 2rem 1rem;
 }
 </style>
