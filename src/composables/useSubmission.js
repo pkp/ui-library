@@ -233,6 +233,13 @@ export function useSubmission() {
 			.map((assignment) => assignment.userId);
 	}
 
+	function isDecisionAvailable(submission, decisionId) {
+		const stage = getActiveStage(submission);
+		return stage?.availableEditorialDecisions?.some(
+			(decision) => decision.id === decisionId,
+		);
+	}
+
 	return {
 		getSubmissionById,
 		getActiveStage,
@@ -256,5 +263,6 @@ export function useSubmission() {
 		getReviewMethodIcons,
 		InProgressReviewAssignmentStatuses,
 		getRecommendOnlyUserIdsForStage,
+		isDecisionAvailable,
 	};
 }

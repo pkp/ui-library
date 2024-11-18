@@ -3,9 +3,19 @@ import {Actions} from '../useWorkflowActions';
 import {useSubmission} from '@/composables/useSubmission';
 import {Actions as WorkflowActions} from '../useWorkflowActions';
 import {Actions as DecisionActions} from '../useWorkflowDecisions';
-const {hasSubmissionPassedStage, hasNotSubmissionStartedStage, getStageById} =
-	useSubmission();
+const {
+	hasSubmissionPassedStage,
+	getActiveStage,
+	getStageById,
+	isDecisionAvailable,
+} = useSubmission();
 const {t} = useLocalize();
+
+export function addItemIf(items, item, condition) {
+	if (condition) {
+		items.push(item);
+	}
+}
 
 export function getHeaderItems({
 	submission,
@@ -113,42 +123,66 @@ export const WorkflowConfig = {
 		},
 
 		getActionItems: ({submission, selectedStageId, selectedReviewRound}) => {
-			const items = [];
-			if (
-				hasSubmissionPassedStage(
+			let items = [];
+
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.decision.sendExternalReview'),
+						isPrimary: true,
+						action: DecisionActions.DECISION_EXTERNAL_REVIEW,
+					},
+				},
+				isDecisionAvailable(submission, pkp.const.DECISION_EXTERNAL_REVIEW),
+			);
+
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.decision.skipReview'),
+						isSecondary: true,
+						action: DecisionActions.DECISION_SKIP_EXTERNAL_REVIEW,
+					},
+				},
+				isDecisionAvailable(
 					submission,
-					pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
-				)
-			) {
-				return [];
-			}
+					pkp.const.DECISION_SKIP_EXTERNAL_REVIEW,
+				),
+			);
 
-			items.push({
-				component: 'WorkflowActionButton',
-				props: {
-					label: t('editor.submission.decision.sendExternalReview'),
-					isPrimary: true,
-					action: DecisionActions.DECISION_EXTERNAL_REVIEW,
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.decision.decline'),
+						isWarnable: true,
+						action: DecisionActions.DECISION_INITIAL_DECLINE,
+					},
 				},
-			});
+				isDecisionAvailable(submission, pkp.const.DECISION_INITIAL_DECLINE),
+			);
 
-			items.push({
-				component: 'WorkflowActionButton',
-				props: {
-					label: t('editor.submission.decision.skipReview'),
-					isSecondary: true,
-					action: DecisionActions.DECISION_SKIP_EXTERNAL_REVIEW,
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.decision.revertDecline'),
+						isSecondary: true,
+						action: DecisionActions.DECISION_REVERT_INITIAL_DECLINE,
+					},
 				},
-			});
+				isDecisionAvailable(
+					submission,
+					pkp.const.DECISION_REVERT_INITIAL_DECLINE,
+				),
+			);
 
-			items.push({
-				component: 'WorkflowActionButton',
-				props: {
-					label: t('editor.submission.decision.decline'),
-					isWarnable: true,
-					action: DecisionActions.DECISION_INITIAL_DECLINE,
-				},
-			});
 			return items;
 		},
 	},
@@ -254,7 +288,7 @@ export const WorkflowConfig = {
 			return items;
 		},
 		getActionItems: ({submission, selectedStageId, selectedReviewRound}) => {
-			const items = [];
+			let items = [];
 			const {getCurrentReviewRound} = useSubmission();
 
 			const currentReviewRound = getCurrentReviewRound(
@@ -263,19 +297,14 @@ export const WorkflowConfig = {
 			);
 
 			// if review stage has not started show no items
-			if (
-				hasNotSubmissionStartedStage(
-					submission,
-					pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
-				) ||
-				hasSubmissionPassedStage(
-					submission,
-					pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
-				) ||
-				selectedReviewRound.round < currentReviewRound.round
-			) {
+			if (selectedReviewRound.round < currentReviewRound.round) {
 				return [];
 			}
+
+			const actionArgs = {
+				stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+				reviewRoundId: selectedReviewRound.id,
+			};
 
 			const selectedStage = getStageById(submission, selectedStageId);
 
@@ -291,57 +320,95 @@ export const WorkflowConfig = {
 					},
 				});
 			} else {
-				const actionArgs = {
-					stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
-					reviewRoundId: selectedReviewRound.id,
-				};
-
-				items.push({
-					component: 'WorkflowActionButton',
-					props: {
-						label: t('dashboard.summary.requestRevisions'),
-						isSecondary: true,
-						action: WorkflowActions.WORKFLOW_REQUEST_REVISION,
-						actionArgs,
+				addItemIf(
+					items,
+					{
+						component: 'WorkflowActionButton',
+						props: {
+							label: t('dashboard.summary.requestRevisions'),
+							isSecondary: true,
+							action: WorkflowActions.WORKFLOW_REQUEST_REVISION,
+							actionArgs,
+						},
 					},
-				});
+					isDecisionAvailable(submission, pkp.const.DECISION_RESUBMIT) ||
+						isDecisionAvailable(
+							submission,
+							pkp.const.DECISION_PENDING_REVISIONS,
+						),
+				);
 
-				items.push({
-					component: 'WorkflowActionButton',
-					props: {
-						label: t('editor.submission.decision.accept'),
-						action: DecisionActions.DECISION_ACCEPT,
-						isPrimary: true,
-						actionArgs,
+				addItemIf(
+					items,
+					{
+						component: 'WorkflowActionButton',
+						props: {
+							label: t('editor.submission.decision.accept'),
+							action: DecisionActions.DECISION_ACCEPT,
+							isPrimary: true,
+							actionArgs,
+						},
 					},
-				});
+					isDecisionAvailable(submission, pkp.const.DECISION_ACCEPT),
+				);
 
-				items.push({
-					component: 'WorkflowActionButton',
-					props: {
-						label: t('editor.submission.createNewRound'),
-						action: DecisionActions.DECISION_NEW_EXTERNAL_ROUND,
-						actionArgs,
+				addItemIf(
+					items,
+					{
+						component: 'WorkflowActionButton',
+						props: {
+							label: t('editor.submission.createNewRound'),
+							action: DecisionActions.DECISION_NEW_EXTERNAL_ROUND,
+							actionArgs,
+						},
 					},
-				});
+					isDecisionAvailable(
+						submission,
+						pkp.const.DECISION_NEW_EXTERNAL_ROUND,
+					),
+				);
 
-				items.push({
-					component: 'WorkflowActionButton',
-					props: {
-						label: t('editor.submission.decision.cancelReviewRound'),
-						isWarnable: true,
-						action: DecisionActions.DECISION_CANCEL_REVIEW_ROUND,
+				addItemIf(
+					items,
+					{
+						component: 'WorkflowActionButton',
+						props: {
+							label: t('editor.submission.decision.cancelReviewRound'),
+							isWarnable: true,
+							action: DecisionActions.DECISION_CANCEL_REVIEW_ROUND,
+						},
 					},
-				});
+					isDecisionAvailable(
+						submission,
+						pkp.const.DECISION_CANCEL_REVIEW_ROUND,
+					),
+				);
 
-				items.push({
-					component: 'WorkflowActionButton',
-					props: {
-						label: t('editor.submission.decision.decline'),
-						isWarnable: true,
-						action: DecisionActions.DECISION_DECLINE_SUBMISSION,
+				addItemIf(
+					items,
+					{
+						component: 'WorkflowActionButton',
+						props: {
+							label: t('editor.submission.decision.decline'),
+							isWarnable: true,
+							action: DecisionActions.DECISION_DECLINE,
+						},
 					},
-				});
+					isDecisionAvailable(submission, pkp.const.DECISION_DECLINE),
+				);
+
+				addItemIf(
+					items,
+					{
+						component: 'WorkflowActionButton',
+						props: {
+							label: t('editor.submission.decision.revertDecline'),
+							isSecondary: true,
+							action: DecisionActions.DECISION_REVERT_DECLINE,
+						},
+					},
+					isDecisionAvailable(submission, pkp.const.DECISION_REVERT_DECLINE),
+				);
 			}
 			return items;
 		},
@@ -407,36 +474,35 @@ export const WorkflowConfig = {
 
 		getActionItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
-			if (
-				hasNotSubmissionStartedStage(
-					submission,
-					pkp.const.WORKFLOW_STAGE_ID_EDITING,
-				) ||
-				hasSubmissionPassedStage(
-					submission,
-					pkp.const.WORKFLOW_STAGE_ID_EDITING,
-				)
-			) {
-				return [];
-			}
 
-			items.push({
-				component: 'WorkflowActionButton',
-				props: {
-					label: t('editor.submission.decision.sendToProduction'),
-					isPrimary: true,
-					action: DecisionActions.DECISION_SEND_TO_PRODUCTION,
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.decision.sendToProduction'),
+						isPrimary: true,
+						action: DecisionActions.DECISION_SEND_TO_PRODUCTION,
+					},
 				},
-			});
+				isDecisionAvailable(submission, pkp.const.DECISION_SEND_TO_PRODUCTION),
+			);
 
-			items.push({
-				component: 'WorkflowActionButton',
-				props: {
-					label: t('editor.submission.decision.backFromCopyediting'),
-					isWarnable: true,
-					action: DecisionActions.DECISION_BACK_FROM_COPYEDITING,
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.decision.backFromCopyediting'),
+						isWarnable: true,
+						action: DecisionActions.DECISION_BACK_FROM_COPYEDITING,
+					},
 				},
-			});
+				isDecisionAvailable(
+					submission,
+					pkp.const.DECISION_BACK_FROM_COPYEDITING,
+				),
+			);
 
 			return items;
 		},
@@ -492,39 +558,37 @@ export const WorkflowConfig = {
 
 		getActionItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
-			if (
-				hasNotSubmissionStartedStage(
-					submission,
-					pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-				) ||
-				hasSubmissionPassedStage(
-					submission,
-					pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-				)
-			) {
-				return [];
-			}
 
-			items.push({
-				component: 'WorkflowActionButton',
-				props: {
-					label: t('editor.submission.schedulePublication'),
-					isPrimary: true,
-					action: 'navigateToMenu',
-					actionArgs: 'publication_titleAbstract',
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.schedulePublication'),
+						isPrimary: true,
+						action: 'navigateToMenu',
+						actionArgs: 'publication_titleAbstract',
+					},
 				},
-			});
+				getActiveStage(submission).id ===
+					pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+			);
 
-			if (submission.status === pkp.const.STATUS_QUEUED) {
-				items.push({
+			addItemIf(
+				items,
+				{
 					component: 'WorkflowActionButton',
 					props: {
 						label: t('editor.submission.decision.backToCopyediting'),
 						isWarnable: true,
 						action: DecisionActions.DECISION_BACK_FROM_PRODUCTION,
 					},
-				});
-			}
+				},
+				isDecisionAvailable(
+					submission,
+					pkp.const.DECISION_BACK_FROM_PRODUCTION,
+				),
+			);
 
 			return items;
 		},

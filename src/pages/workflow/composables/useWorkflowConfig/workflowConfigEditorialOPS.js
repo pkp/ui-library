@@ -2,7 +2,8 @@ import {useLocalize} from '@/composables/useLocalize';
 import {Actions} from '../useWorkflowActions';
 import {useSubmission} from '@/composables/useSubmission';
 import {Actions as DecisionActions} from '../useWorkflowDecisions';
-const {hasSubmissionPassedStage, hasNotSubmissionStartedStage} =
+import {addItemIf} from './workflowConfigEditorialOJS';
+const {hasSubmissionPassedStage, isDecisionAvailable, getActiveStage} =
 	useSubmission();
 const {t} = useLocalize();
 
@@ -104,60 +105,50 @@ export const WorkflowConfig = {
 
 		getActionItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
-			if (
-				hasNotSubmissionStartedStage(
-					submission,
-					pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-				) ||
-				hasSubmissionPassedStage(
-					submission,
-					pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-				)
-			) {
-				return [];
-			}
 
-			if (submission.status === pkp.const.STATUS_DECLINED) {
-				items.push({
-					component: 'WorkflowActionChangeDecision',
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
 					props: {
-						actionButtonsProps: [
-							{
-								label: t('editor.submission.schedulePublication'),
-								isPrimary: true,
-								action: 'navigateToMenu',
-								actionArgs: 'publication_titleAbstract',
-							},
-							{
-								label: t('editor.submission.decision.revertDecline'),
-								isSecondary: true,
-								action: DecisionActions.DECISION_REVERT_INITIAL_DECLINE,
-							},
-						],
+						label: t('editor.submission.schedulePublication'),
+						isPrimary: true,
+						action: 'navigateToMenu',
+						actionArgs: 'publication_titleAbstract',
 					},
-				});
-
-				return items;
-			}
-
-			items.push({
-				component: 'WorkflowActionButton',
-				props: {
-					label: t('editor.submission.schedulePublication'),
-					isPrimary: true,
-					action: 'navigateToMenu',
-					actionArgs: 'publication_titleAbstract',
 				},
-			});
+				getActiveStage(submission).id ===
+					pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+			);
 
-			items.push({
-				component: 'WorkflowActionButton',
-				props: {
-					label: t('editor.submission.decision.decline'),
-					isWarnable: true,
-					action: DecisionActions.DECISION_INITIAL_DECLINE,
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.decision.decline'),
+						isWarnable: true,
+						action: DecisionActions.DECISION_INITIAL_DECLINE,
+					},
 				},
-			});
+				isDecisionAvailable(submission, pkp.const.DECISION_INITIAL_DECLINE),
+			);
+
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.decision.revertDecline'),
+						isSecondary: true,
+						action: DecisionActions.DECISION_REVERT_INITIAL_DECLINE,
+					},
+				},
+				isDecisionAvailable(
+					submission,
+					pkp.const.DECISION_REVERT_INITIAL_DECLINE,
+				),
+			);
 
 			return items;
 		},
