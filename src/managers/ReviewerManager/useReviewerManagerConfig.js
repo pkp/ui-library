@@ -1,27 +1,32 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {useDate} from '@/composables/useDate';
-import {RecommendationTranslations} from '@/composables/useSubmission';
 import {Actions} from './useReviewerManagerActions';
 
-export function useReviewerManagerConfig() {
-	const {t} = useLocalize();
+export function useReviewerManagerConfig(recommendations) {
+	const {t, localize} = useLocalize();
 	const {formatShortDate} = useDate();
 
 	function getCellStatusItems({reviewAssignment}) {
 		const items = [];
 
 		function getRecommendationString(reviewAssignment) {
-			const recommendationString = reviewAssignment.recommendation
-				? t(RecommendationTranslations[reviewAssignment.recommendation])
-				: null;
+			// const recommendationString = reviewAssignment.recommendation
+			// 	? t(RecommendationTranslations[reviewAssignment.recommendation])
+			// 	: null;
 
-			if (recommendationString) {
-				return t('submission.recommendation', {
-					recommendation: recommendationString,
-				});
-			}
+			// if (recommendationString) {
+			// 	return t('submission.recommendation', {
+			// 		recommendation: recommendationString,
+			// 	});
+			// }
 
-			return null;
+			// return null;
+
+			const recommendation = recommendations.filter(
+				(r) => r.value === reviewAssignment.recommendation,
+			)[0];
+
+			return recommendation ? localize(recommendation.title) : null;
 		}
 
 		function getCompetingInterests(reviewAssignment) {
