@@ -25,26 +25,26 @@ export const ExtendedStagesLabels = {
 	declined: tk('submissions.declined'),
 };
 
-export const RecommendationTranslations = {
-	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_ACCEPT]: tk(
-		'reviewer.article.decision.accept',
-	),
-	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_PENDING_REVISIONS]: tk(
-		'reviewer.article.decision.pendingRevisions',
-	),
-	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_RESUBMIT_HERE]: tk(
-		'reviewer.article.decision.resubmitHere',
-	),
-	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_RESUBMIT_ELSEWHERE]: tk(
-		'reviewer.article.decision.resubmitElsewhere',
-	),
-	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_DECLINE]: tk(
-		'reviewer.article.decision.decline',
-	),
-	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_SEE_COMMENTS]: tk(
-		'reviewer.article.decision.seeComments',
-	),
-};
+// export const RecommendationTranslations = {
+// 	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_ACCEPT]: tk(
+// 		'reviewer.article.decision.accept',
+// 	),
+// 	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_PENDING_REVISIONS]: tk(
+// 		'reviewer.article.decision.pendingRevisions',
+// 	),
+// 	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_RESUBMIT_HERE]: tk(
+// 		'reviewer.article.decision.resubmitHere',
+// 	),
+// 	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_RESUBMIT_ELSEWHERE]: tk(
+// 		'reviewer.article.decision.resubmitElsewhere',
+// 	),
+// 	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_DECLINE]: tk(
+// 		'reviewer.article.decision.decline',
+// 	),
+// 	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_SEE_COMMENTS]: tk(
+// 		'reviewer.article.decision.seeComments',
+// 	),
+// };
 
 const InProgressReviewAssignmentStatuses = [
 	pkp.const.REVIEW_ASSIGNMENT_STATUS_ACCEPTED,
