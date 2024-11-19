@@ -75,7 +75,7 @@
 													: t(
 															'user.affiliations.typeTranslationNameInLanguageLabel',
 															{language: getLocaleDisplayName(localeName)},
-														)
+													  )
 											}}
 										</label>
 									</div>
@@ -106,13 +106,13 @@
 								:class="'dropDownActions border-transparent'"
 								@action="rowActionsHandler"
 							/>
-							<button
+							<a
 								v-if="indexRow === indexEditMode"
-								class="pkpButton border-transparent py-2 text-lg-semibold text-primary hover:enabled:underline"
+								class="pkpButton cursor-pointer border-transparent py-2 text-lg-semibold text-primary hover:enabled:underline"
 								@click="closeEditMode()"
 							>
 								{{ t('common.close', {}) }}
-							</button>
+							</a>
 						</TableCell>
 					</TableRow>
 					<TableRow>
@@ -208,7 +208,7 @@
 													? t(
 															'user.affiliations.typeTranslationNameInLanguageLabel',
 															{language: getLocaleDisplayName(localeAddMode)},
-														)
+													  )
 													: getLocaleDisplayName(localeAddMode)
 											}}
 										</span>
@@ -234,20 +234,20 @@
 						</TableCell>
 						<TableCell>
 							<div v-if="showAddMode">
-								<button
-									class="pkpButton border-transparent py-2 text-lg-semibold text-primary hover:enabled:underline"
-									:disabled="!validate(newAffiliationPending)"
+								<a
+									class="pkpButton cursor-pointer border-transparent py-2 text-lg-semibold text-primary hover:enabled:underline"
+									:class="{'link-disabled': !validate(newAffiliationPending)}"
 									@click="addAffiliation"
 								>
 									{{ t('common.insert', {}) }}
-								</button>
+								</a>
 								<br />
-								<button
-									class="pkpButton border-transparent py-2 text-lg-semibold text-primary hover:enabled:underline"
+								<a
+									class="pkpButton cursor-pointer border-transparent py-2 text-lg-semibold text-primary hover:enabled:underline"
 									@click="closeAddMode"
 								>
 									{{ t('common.close', {}) }}
-								</button>
+								</a>
 							</div>
 						</TableCell>
 					</TableRow>
@@ -572,6 +572,11 @@ function sortNamesPrimaryFirst(names) {
 
 	.dropDownActions svg {
 		width: 1.5em;
+	}
+
+	.link-disabled {
+		opacity: 0.5;
+		pointer-events: none;
 	}
 }
 
