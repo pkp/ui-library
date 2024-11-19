@@ -109,6 +109,11 @@ const props = defineProps({
 		type: Object,
 		required: true,
 	},
+	/** context available reviewer recommendations */
+	recommendations: {
+		type: Array,
+		required: true,
+	},
 });
 
 const store = useDashboardPageStore(props);

@@ -407,7 +407,7 @@ export const useDashboardPageStore = defineComponentStore(
 		const {
 			getReviewActivityIndicatorProps,
 			getReviewActivityIndicatorPopoverProps,
-		} = useReviewActivityLogic();
+		} = useReviewActivityLogic(pageInitConfig.recommendations);
 
 		return {
 			// Dashboard
