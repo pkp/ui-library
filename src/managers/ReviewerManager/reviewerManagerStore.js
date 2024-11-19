@@ -35,7 +35,9 @@ export const useReviewerManagerStore = defineComponentStore(
 		/**
 		 * Config
 		 */
-		const {getCellStatusItems} = useReviewerManagerConfig();
+		const {getCellStatusItems} = useReviewerManagerConfig(
+			props.recommendations,
+		);
 
 		/**
 		 * Actions
