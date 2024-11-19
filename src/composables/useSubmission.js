@@ -54,31 +54,6 @@ export const StageLabels = {
 };
 
 /**
- * Translation keys for reviewer recommendations
- * @type {Object}
- */
-export const RecommendationTranslations = {
-	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_ACCEPT]: tk(
-		'reviewer.article.decision.accept',
-	),
-	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_PENDING_REVISIONS]: tk(
-		'reviewer.article.decision.pendingRevisions',
-	),
-	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_RESUBMIT_HERE]: tk(
-		'reviewer.article.decision.resubmitHere',
-	),
-	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_RESUBMIT_ELSEWHERE]: tk(
-		'reviewer.article.decision.resubmitElsewhere',
-	),
-	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_DECLINE]: tk(
-		'reviewer.article.decision.decline',
-	),
-	[pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_SEE_COMMENTS]: tk(
-		'reviewer.article.decision.seeComments',
-	),
-};
-
-/**
  * Review assignment statuses that indicate the review is in progress
  * @type {Array<number>}
  */
