@@ -100,6 +100,7 @@ const props = defineProps({
 	submission: {type: Object, required: true},
 	reviewRoundId: {type: Number, required: true},
 	redactedForAuthors: {type: Boolean, required: false, default: false},
+	recommendations: {type: Array, required: true},
 });
 
 const reviewerStore = useReviewerManagerStore(props);
