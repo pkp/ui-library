@@ -80,6 +80,7 @@ import MySubmissions from './icons/MySubmissions.vue';
 import NavDoi from './icons/NavDoi.vue';
 import NavAdmin from './icons/NavAdmin.vue';
 import New from './icons/New.vue';
+import NewTab from './icons/NewTab.vue';
 import Notifications from './icons/Notifications.vue';
 import NotVisible from './icons/NotVisible.vue';
 import OpenReview from './icons/OpenReview.vue';
@@ -97,6 +98,7 @@ import ReinstateReviewer from './icons/ReinstateReviewer.vue';
 import ReviewAssignments from './icons/ReviewAssignments.vue';
 import ReviewRequestDeclined from './icons/ReviewRequestDeclined.vue';
 import ReviewSent from './icons/ReviewSent.vue';
+import ROR from './icons/ROR.vue';
 import Search from './icons/Search.vue';
 import Settings from './icons/Settings.vue';
 import Sitemap from './icons/Sitemap.vue';
@@ -190,6 +192,7 @@ const svgIcons = {
 	NavDoi,
 	NavAdmin,
 	New,
+	NewTab,
 	Notifications,
 	NotVisible,
 	OpenReview,
@@ -207,6 +210,7 @@ const svgIcons = {
 	ReviewAssignments,
 	ReviewRequestDeclined,
 	ReviewSent,
+	ROR,
 	Search,
 	Settings,
 	Sitemap,
