@@ -65,6 +65,8 @@ export const useReviewerSuggestionManagerStore = defineComponentStore(
 
 		const itemActions = computed(() => _actionFns.getItemActions({}));
 
+		const hasActiveReviewStage = props.reviewRoundId ? true : false;
+
 		function enrichActionArg(args) {
 			return {
 				submissionStageId: props.submissionStageId,
@@ -86,6 +88,7 @@ export const useReviewerSuggestionManagerStore = defineComponentStore(
 			_actionFns,
 			itemActions,
 			reviewerSuggestionApprove,
+			hasActiveReviewStage,
 		};
 	},
 );
