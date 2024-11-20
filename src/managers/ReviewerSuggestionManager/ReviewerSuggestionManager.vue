@@ -37,7 +37,7 @@
 							></div>
 						</div>
 					</div>
-					<div>
+					<div v-if="reviewerSuggestionManagerStore.hasActiveReviewStage">
 						<DropdownActions
 							:actions="reviewerSuggestionManagerStore.itemActions"
 							:label="`${reviewerSuggestion.fullName} ${t('common.moreActions')}`"
@@ -66,7 +66,7 @@ import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 const props = defineProps({
 	submission: {type: Object, required: true},
 	submissionStageId: {type: String, required: true},
-	reviewRoundId: {type: Number, required: true},
+	reviewRoundId: {type: Number, required: false},
 });
 
 const reviewerSuggestionManagerStore = useReviewerSuggestionManagerStore(props);
