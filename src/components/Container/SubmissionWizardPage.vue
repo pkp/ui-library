@@ -643,12 +643,13 @@ export default {
 									'X-Http-Method-Override': 'PUT',
 								},
 								error(r) {
+									close();
+
 									if (!r.responseJSON) {
-										this.ajaxErrorCallback();
+										this.ajaxErrorCallback({});
 									} else {
 										this.errors = r.responseJSON;
 									}
-									close();
 								},
 								success() {
 									window.location = this.submissionWizardUrl;
@@ -767,7 +768,7 @@ export default {
 					},
 					error(r) {
 						if (!r.responseJSON) {
-							this.ajaxErrorCallback();
+							this.ajaxErrorCallback({});
 						} else {
 							this.errors = r.responseJSON;
 						}
