@@ -1,0 +1,54 @@
+{
+	"items": [
+		{
+			"id": 1,
+			"fullName": "University of Toronto",
+			"ror": true
+		},
+		{
+			"id": 2,
+			"fullName": "University of Bath",
+			"ror": true
+		},
+		{
+			"id": 3,
+			"fullName": "University of Melbourne",
+			"ror": true
+		},
+		{
+			"id": 4,
+			"fullName": "Technical University of Berlin",
+			"ror": true
+		},
+		{
+			"id": 5,
+			"fullName": "University of West Los Angeles",
+			"ror": true
+		},
+		{
+			"id": 6,
+			"fullName": "Niagara College",
+			"ror": true
+		},
+		{
+			"id": 7,
+			"fullName": "Innovate Niagara",
+			"ror": true
+		},
+		{
+			"id": 8,
+			"fullName": "Regional Municipality of Niagara",
+			"ror": true
+		},
+		{
+			"id": 9,
+			"fullName": "Niagara University",
+			"ror": true
+		},
+		{
+			"id": 10,
+			"fullName": "Niagara Association of Medicine"
+		}
+	],
+	"itemsMax": 10
+}

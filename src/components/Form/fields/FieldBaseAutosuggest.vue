@@ -91,6 +91,7 @@
 					class="pkpAutosuggest__selection"
 				>
 					{{ item.label }}
+					<slot v-if="item.hasSlot" name="input-slot" />
 					<button
 						v-if="!isDisabled"
 						class="pkpAutosuggest__deselect text-negative hover:text-on-dark"
@@ -102,59 +103,20 @@
 						</span>
 					</button>
 				</PkpBadge>
-				<Combobox
+				<FieldComboBox
 					v-if="!isDisabled"
 					:id="autosuggestId"
-					:key="autosuggestId"
-					:model-value="null"
-					class="pkpAutosuggest__autosuggester"
-					as="div"
-					@update:modelValue="selectSuggestion"
+					ref="cb"
+					v-model:inputValue="inputValue"
+					v-model:isFocused="isFocused"
+					:input-props="inputProps"
+					:suggestions="suggestions"
+					@update:model-value="selectSuggestion"
 				>
-					<ComboboxInput
-						ref="autosuggestInput"
-						class="pkpAutosuggest__input"
-						v-bind="inputProps"
-						@change="inputValue = $event.target.value.trim()"
-						@focus="() => (isFocused = true)"
-						@blur="() => (isFocused = false)"
-					/>
-					<ComboboxOptions
-						v-if="suggestions.length || (allowCustom && inputValue?.length)"
-						class="autosuggest__results-container autosuggest__results"
-					>
-						<ComboboxOption
-							v-if="
-								allowCustom &&
-								inputValue?.length &&
-								!suggestions.includes(inputValue)
-							"
-							v-slot="{active}"
-							as="template"
-						>
-							<li
-								class="autosuggest__results-item"
-								:class="active && 'autosuggest__results-item--highlighted'"
-							>
-								{{ inputValue }}
-							</li>
-						</ComboboxOption>
-						<ComboboxOption
-							v-for="suggestion in suggestions"
-							:key="suggestion.value"
-							v-slot="{active}"
-							:value="suggestion"
-							as="template"
-						>
-							<li
-								class="autosuggest__results-item"
-								:class="active && 'autosuggest__results-item--highlighted'"
-							>
-								{{ suggestion.label }}
-							</li>
-						</ComboboxOption>
-					</ComboboxOptions>
-				</Combobox>
+					<template v-if="$slots.option" #option="{suggestion}">
+						<slot name="option" :suggestion="suggestion"></slot>
+					</template>
+				</FieldComboBox>
 				<span class="pkpAutosuggest__endslot">
 					<slot name="end"></slot>
 				</span>
@@ -176,6 +138,7 @@
 
 <script>
 import FieldBase from './FieldBase.vue';
+import FieldComboBox from './FieldComboBox.vue';
 import PkpBadge from '@/components/Badge/Badge.vue';
 import FormFieldLabel from '@/components/Form/FormFieldLabel.vue';
 import Tooltip from '@/components/Tooltip/Tooltip.vue';
@@ -184,12 +147,6 @@ import FieldError from '@/components/Form/FieldError.vue';
 import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
 import Icon from '@/components/Icon/Icon.vue';
 
-import {
-	Combobox,
-	ComboboxInput,
-	ComboboxOption,
-	ComboboxOptions,
-} from '@headlessui/vue';
 import ajaxError from '@/mixins/ajaxError';
 import debounce from 'debounce';
 
@@ -197,16 +154,13 @@ export default {
 	name: 'FieldBaseAutosuggest',
 	components: {
 		PkpBadge,
-		Combobox,
-		ComboboxInput,
-		ComboboxOption,
-		ComboboxOptions,
 		FormFieldLabel,
 		Tooltip,
 		HelpButton,
 		FieldError,
 		Icon,
 		MultilingualProgress,
+		FieldComboBox,
 	},
 	extends: FieldBase,
 	mixins: [ajaxError],
@@ -255,6 +209,11 @@ export default {
 		selectedLabel: {
 			type: String,
 			required: true,
+		},
+		/** If the combobox should allow multiple options to be selected */
+		isMultiple: {
+			type: Boolean,
+			default: () => true,
 		},
 	},
 	data() {
@@ -357,7 +316,7 @@ export default {
 				return;
 			}
 
-			this.$refs.autosuggestInput.$el.focus();
+			this.$refs.cb.$refs.autosuggestInput.$el.focus();
 		},
 
 		/**
@@ -421,6 +380,11 @@ export default {
 		 * Emit events to change the selected items and the field's value
 		 */
 		setSelected(selected) {
+			if (selected?.length > 1 && !this.isMultiple) {
+				// override selected value if only one option can be selected
+				selected = [selected[1]];
+			}
+
 			this.$emit('change', this.name, 'selected', selected, this.localeKey);
 			this.$emit(
 				'change',
