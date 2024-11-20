@@ -1,7 +1,7 @@
 <template>
 	<div class="pkpFormField pkpFormField--html">
 		<div class="pkpFormField__heading">
-			<span class="pkpFormFieldLabel">
+			<span class="pkpFormFieldLabel align-middle">
 				{{ label }}
 			</span>
 			<Tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />

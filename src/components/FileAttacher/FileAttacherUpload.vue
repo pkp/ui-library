@@ -59,7 +59,7 @@
 		<ButtonRow class="fileAttacher__footer">
 			<template #end>
 				<PkpButton :is-link="true" @click="$emit('cancel')">
-					<Icon icon="long-arrow-left" :inline="true" />
+					<Icon icon="ArrowLeft" class="h-4 w-4" :inline="true" />
 					{{ backLabel }}
 				</PkpButton>
 			</template>

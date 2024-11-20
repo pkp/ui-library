@@ -6,6 +6,7 @@
 				:label="label"
 				:is-required="isRequired"
 				:required-label="t('common.required')"
+				class="align-middle"
 			/>
 			<Tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span

@@ -1,7 +1,7 @@
 <template>
 	<button class="expander" @click="$emit('toggle')">
-		<Icon v-if="isExpanded" icon="angle-up" />
-		<Icon v-else icon="angle-down" />
+		<Icon v-if="isExpanded" icon="ChevronUp" class="h-5 w-5" :inline="true" />
+		<Icon v-else icon="ChevronDown" class="h-5 w-5" :inline="true" />
 		<span v-if="isExpanded" class="-screenReader">
 			{{ t('list.viewLess', {name: itemName}) }}
 		</span>
@@ -35,7 +35,6 @@ export default {
 @import '../../styles/_import';
 
 .expander {
-	width: 2rem;
 	padding: 0 0.5em;
 	background: transparent;
 	border: @bg-border-light;

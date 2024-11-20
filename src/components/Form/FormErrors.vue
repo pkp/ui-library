@@ -1,6 +1,6 @@
 <template>
 	<div class="pkpFormErrors">
-		<Icon icon="exclamation-triangle" :inline="true" />
+		<Icon icon="Error" class="h-5 w-5" :inline="true" />
 		{{ message }}
 		<ul class="-screenReader">
 			<li v-for="(error, index) in errorList" :key="index">

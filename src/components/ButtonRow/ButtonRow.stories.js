@@ -14,7 +14,7 @@ export const Default = {
 			<ButtonRow v-bind="args">
 				<template #end>
 					<PkpButton :is-link="true">
-						<Icon icon="long-arrow-left" :inline="true" />
+						<Icon icon="ArrowLeft" class="h-4 w-4" :inline="true" />
 						Back
 					</PkpButton>
 				</template>

@@ -6,6 +6,7 @@
 				:label="label"
 				:is-required="isRequired"
 				:required-label="t('common.required')"
+				class="align-middle"
 			/>
 			<Tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span
@@ -58,10 +59,10 @@
 			<div
 				v-if="pattern && !canGenerateId && !currentValue"
 				:id="describedByDescriptionId"
-				class="pkpFormField--pubid__warning"
+				class="mt-1 text-base-normal"
 			>
-				<Icon icon="exclamation-triangle" :inline="true" />
-				{{ missingPartsLabel }}
+				<Icon icon="Error" class="h-4 w-4" :inline="true" />
+				<span class="align-middle">{{ missingPartsLabel }}</span>
 			</div>
 			<FieldError
 				v-if="errors && errors.length"
@@ -258,11 +259,5 @@ export default {
 .pkpFormField--pubid__button {
 	margin-inline-start: 0.25rem;
 	height: 2.5rem; // Match input height
-}
-
-.pkpFormField--pubid__warning {
-	font-size: @font-tiny;
-	line-height: 1.65em;
-	margin-top: 0.25rem;
 }
 </style>

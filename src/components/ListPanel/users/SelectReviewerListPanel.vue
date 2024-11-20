@@ -21,7 +21,7 @@
 								:is-active="isSidebarVisible"
 								@click="isSidebarVisible = !isSidebarVisible"
 							>
-								<Icon icon="filter" :inline="true" />
+								<Icon icon="Filter" class="h-4 w-4" :inline="true" />
 								{{ t('common.filter') }}
 							</PkpButton>
 						</template>
@@ -29,8 +29,8 @@
 				</template>
 				<template #sidebar>
 					<PkpHeader :is-one-line="false">
-						<h2>
-							<Icon icon="filter" :inline="true" />
+						<h2 class="flex items-center">
+							<Icon icon="Filter" class="me-1 h-4 w-4" :inline="true" />
 							{{ t('common.filter') }}
 						</h2>
 					</PkpHeader>

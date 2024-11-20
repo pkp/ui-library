@@ -2,6 +2,7 @@ import {computed} from 'vue';
 import Page from './Page.vue';
 import Dropdown from '@/components/Dropdown/Dropdown.vue';
 import SideNav from '@/components/SideNav/SideNav.vue';
+import InitialsAvatar from '@/components/InitialsAvatar/InitialsAvatar.vue';
 import PageMock from '@/mocks/page';
 
 export default {
@@ -11,7 +12,7 @@ export default {
 
 export const Default = {
 	render: (args) => ({
-		components: {Page, Dropdown, SideNav},
+		components: {Page, Dropdown, SideNav, InitialsAvatar},
 		setup() {
 			const classes = computed(() => {
 				let _classes = [];
@@ -35,7 +36,7 @@ export const Default = {
 				<header class="app__header" role="banner">
 					<Dropdown v-if="contexts.length" class="app__headerAction app__contexts">
 						<template #button>
-							<Icon icon="sitemap" />
+							<Icon icon="Sitemap" class="h-7 w-7" />
 							<span class="-screenReader">Journals</span>
 						</template>
 						<ul>
@@ -53,7 +54,7 @@ export const Default = {
 								ref="tasksButton"
 								@click="alert('Opens the tasks grid in a modal')"
 							>
-								<Icon icon="bell-o"></Icon>
+								<Icon icon="Notifications" class="h-7 w-7"></Icon>
 								<span class="-screenReader">Tasks</span>
 								<span v-if="unreadTasksCount" class="app__tasksCount">
 									{{ unreadTasksCount }}
@@ -62,12 +63,13 @@ export const Default = {
 						</div>
 						<Dropdown class="app__headerAction app__userNav">
 							<template #button>
-								<Icon icon="user-circle-o" />
-								<Icon
+								<InitialsAvatar :is-secondary="true" given-name="Test" family-name="User"></InitialsAvatar>
+								<InitialsAvatar
 									v-if="isLoggedInAs"
-									icon="user-circle"
-									class="app__userNav__isLoggedInAsWarning"
-								/>
+									class="absolute right-2 top-2 rounded-full h-5 w-5"
+									:is-warnable="true"
+									:shrink="true"
+								></InitialsAvatar>
 								<span class="-screenReader">Options for {{ currentUsername }}</span>
 							</template>
 							<div v-if="isLoggedInAs" class="pkpDropdown__section">
@@ -96,7 +98,8 @@ export const Default = {
 										<a :href="locale.key" class="pkpDropdown__action">
 											<Icon
 												v-if="locale.key === 'en'"
-												icon="check"
+												icon="Complete"
+												class="h-5 w-5"
 												:inline="true"
 											/>
 											{{ locale.name }}

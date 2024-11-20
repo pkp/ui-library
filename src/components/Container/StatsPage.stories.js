@@ -80,7 +80,7 @@ const EditorialStatsPageWithDataAndTemplate = {
 					:is-active="isSidebarVisible"
 					@click="toggleSidebar"
 				>
-					<Icon icon="filter" :inline="true" />
+					<Icon icon="Filter" class="h-4 w-4" :inline="true" />
 					{{ t('common.filter') }}
 				</PkpButton>
 			</template>
@@ -130,6 +130,7 @@ const EditorialStatsPageWithDataAndTemplate = {
 										v-if="row.description"
 										:label="'Description for ' + row.name"
 										:tooltip="row.description"
+										icon-size="small"
 									></Tooltip>
 								</TableCell>
 								<TableCell>{{ row.dateRange }}</TableCell>
@@ -400,7 +401,7 @@ const PublicationStatsPageWithDataAndTemplate = {
 					:is-active="isSidebarVisible"
 					@click="toggleSidebar"
 				>
-					<Icon icon="filter" :inline="true" />
+					<Icon icon="Filter" class="h-4 w-4" :inline="true" />
 					{{ t('common.filter') }}
 				</PkpButton>
 			</template>
@@ -418,7 +419,7 @@ const PublicationStatsPageWithDataAndTemplate = {
 					:tabindex="isSidebarVisible ? 0 : -1"
 				>
 					<h2>
-						<Icon icon="filter" :inline="true" />
+						<Icon icon="Filter" class="h-4 w-4" :inline="true" />
 						{{ t('common.filter') }}
 					</h2>
 				</PkpHeader>

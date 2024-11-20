@@ -2,11 +2,11 @@
 	<fieldset class="pkpFormField pkpFormField--options" :class="classes">
 		<legend class="pkpFormField--options__legend">
 			<template v-if="localeLabel">
-				<span class="aria-hidden">{{ localeLabel }}</span>
+				<span class="aria-hidden align-middle">{{ localeLabel }}</span>
 				<span class="-screenReader">{{ multilingualLabel }}</span>
 			</template>
 			<template v-else>
-				{{ label }}
+				<span class="align-middle">{{ label }}</span>
 			</template>
 			<span v-if="isRequired" class="pkpFormFieldLabel__required">
 				*
@@ -238,12 +238,12 @@ export default {
 		 */
 		if (this.isOrderable && this.selectedValue?.length) {
 			this.localizedOptions = this.localizedOptions.sort((a, b) => {
-				let aIndex = this.selectedValue.findIndex(value => a.value === value);
-				let bIndex = this.selectedValue.findIndex(value => b.value === value);
+				let aIndex = this.selectedValue.findIndex((value) => a.value === value);
+				let bIndex = this.selectedValue.findIndex((value) => b.value === value);
 				aIndex = aIndex === -1 ? Number.MAX_SAFE_INTEGER : aIndex;
 				bIndex = bIndex === -1 ? Number.MAX_SAFE_INTEGER : bIndex;
 				return aIndex < bIndex ? -1 : 1;
-			})
+			});
 		}
 	},
 	methods: {

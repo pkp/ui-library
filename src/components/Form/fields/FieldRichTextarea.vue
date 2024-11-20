@@ -11,6 +11,7 @@
 				:is-required="isRequired"
 				:required-label="t('common.required')"
 				:multilingual-label="multilingualLabel"
+				class="align-middle"
 			/>
 			<Tooltip
 				v-if="isPrimaryLocale && tooltip"
@@ -66,7 +67,8 @@
 				<div v-if="wordLimit" class="pkpFormField--richTextarea__wordLimit">
 					<Icon
 						v-if="wordCount > wordLimit"
-						icon="exclamation-triangle"
+						icon="Error"
+						class="h-4 w-4"
 						:inline="true"
 					/>
 					{{

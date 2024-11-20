@@ -31,11 +31,11 @@
 					{{ t('submission.list.viewEntry') }}
 				</PkpButton>
 				<button
-					class="listPanel__item--catalog__select listPanel__item--catalog__select--first"
+					class="listPanel__item--catalog__select listPanel__item--catalog__select--first text-secondary"
 					@click.prevent="toggleFeatured"
 				>
-					<Icon v-if="isFeatured" icon="check-square-o" />
-					<Icon v-else icon="square-o" />
+					<Icon v-if="isFeatured" icon="CheckboxTicked" class="h-4 w-4" />
+					<Icon v-else icon="Checkbox" class="h-4 w-4" />
 					<span class="-screenReader">
 						<template v-if="isFeatured">
 							{{ t('catalog.manage.isFeatured') }}
@@ -46,10 +46,13 @@
 					</span>
 				</button>
 				<button
-					class="listPanel__item--catalog__select"
+					class="listPanel__item--catalog__select text-secondary"
 					@click.prevent="toggleNewRelease"
 				>
-					<Icon :icon="isNewRelease ? 'check-square-o' : 'square-o'" />
+					<Icon
+						:icon="isNewRelease ? 'CheckboxTicked' : 'Checkbox'"
+						class="h-4 w-4"
+					/>
 					<span class="-screenReader">
 						<template v-if="isNewRelease">
 							{{ t('catalog.manage.isNewRelease') }}

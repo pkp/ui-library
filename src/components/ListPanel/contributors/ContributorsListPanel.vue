@@ -16,7 +16,7 @@
 									publication.status !== getConstant('STATUS_PUBLISHED') &&
 									canEditPublication
 								"
-								icon="sort"
+								icon="Sort"
 								:is-active="isOrdering"
 								:disabled="isLoading"
 								@click="toggleOrdering"

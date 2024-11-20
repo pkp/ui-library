@@ -1,13 +1,13 @@
 <template>
 	<div class="pkpFilter--slider pkpFilter--sliderMultirange" :class="classes">
 		<button v-if="isFilterActive" class="pkpFilter__remove" @click="remove">
-			<Icon icon="times-circle-o" />
+			<Icon icon="Cancel" class="h-4 w-4 text-negative" />
 			<span class="-screenReader">
 				{{ t('common.filterRemove', {filterTitle: title}) }}
 			</span>
 		</button>
 		<button v-else class="pkpFilter__add" @click="enable">
-			<Icon icon="plus-square-o" />
+			<Icon icon="Add" class="h-4 w-4" />
 			<span class="-screenReader">
 				{{ t('common.filterAdd', {filterTitle: title}) }}
 			</span>

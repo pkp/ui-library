@@ -22,3 +22,10 @@ export const Default = {
 		label: 'Tooltip for the demonstration component.',
 	},
 };
+
+export const IsPrimary = {
+	args: {
+		tooltip: 'This tooltip uses the primary color for the icon',
+		isPrimary: true,
+	},
+};

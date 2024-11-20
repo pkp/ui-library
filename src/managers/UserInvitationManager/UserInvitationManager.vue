@@ -27,18 +27,21 @@
 		<TableBody>
 			<TableRow v-for="(invitation, index) in store.invitations" :key="index">
 				<TableCell>
-					<span class="text-lg-normal">
-						{{
-							invitation.userId
-								? invitation.existingUser.fullName
-								: invitation.newUser.fullName
-						}}
+					<span class="space-x-1">
+						<span class="align-middle text-lg-normal">
+							{{
+								invitation.userId
+									? invitation.existingUser.fullName
+									: invitation.newUser.fullName
+							}}
+						</span>
+						<Icon
+							v-if="invitation.existingUser?.orcid || invitation.newUser?.orcid"
+							icon="Orcid"
+							class="h-4 w-4"
+							:inline="true"
+						/>
 					</span>
-					<Icon
-						v-if="invitation.existingUser?.orcid || invitation.newUser?.orcid"
-						icon="orcid"
-						:inline="true"
-					/>
 				</TableCell>
 				<TableCell>
 					<span class="text-lg-normal">

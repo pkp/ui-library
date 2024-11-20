@@ -14,6 +14,7 @@
 				:is-required="isRequired"
 				:required-label="t('common.required')"
 				:multilingual-label="multilingualLabel"
+				class="align-middle"
 			/>
 			<Tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
 			<span
@@ -92,10 +93,10 @@
 					{{ item.label }}
 					<button
 						v-if="!isDisabled"
-						class="pkpAutosuggest__deselect"
+						class="pkpAutosuggest__deselect text-negative hover:text-on-dark"
 						@click.stop.prevent="deselect(item)"
 					>
-						<Icon icon="times" />
+						<Icon icon="Cancel" class="h-3 w-3" />
 						<span class="-screenReader">
 							{{ deselectLabel.replace('{$item}', item.label) }}
 						</span>
@@ -518,14 +519,6 @@ export default {
 	border-top-right-radius: 1.2em; // matches radius on button in Badge.vue
 	border-bottom-right-radius: 1.2em;
 	color: @no;
-
-	.fa {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		margin-left: -1px;
-	}
 
 	&:hover,
 	&:focus {

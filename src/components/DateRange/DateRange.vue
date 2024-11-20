@@ -8,7 +8,11 @@
 			@click="toggle"
 			@blur="closeOnBlur"
 		>
-			<Icon icon="calendar" />
+			<div
+				class="flex h-8 w-8 items-center justify-center border-e border-e-light border-opacity-40 text-primary"
+			>
+				<Icon icon="Calendar" class="h-5 w-5" :inline="true" />
+			</div>
 			<span class="-screenReader">
 				{{ changeDateRangeLabel }}
 			</span>
@@ -61,9 +65,9 @@
 					</label>
 				</fieldset>
 				<PkpButton @click="applyCustomRange">{{ applyLabel }}</PkpButton>
-				<div v-if="errorMessage" class="pkpDateRange__error">
-					<Icon icon="exclamation-triangle" :inline="true" />
-					<span v-html="errorMessage" />
+				<div v-if="errorMessage" class="pt-2 text-base-normal">
+					<Icon icon="Error" class="me-1 h-5 w-5" :inline="true" />
+					<span class="align-middle" v-html="errorMessage" />
 				</div>
 			</form>
 		</div>
@@ -452,25 +456,8 @@ export default {
 		border-color: @primary;
 		outline: 0;
 
-		.fa {
-			border-inline-end-color: @primary;
-		}
-	}
-
-	.fa {
-		position: absolute;
-		top: 0;
-		left: 0;
-		bottom: 0;
-		width: 2rem;
-		border-inline-end: @bg-border-light;
-		color: @primary;
-
-		&:before {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
+		div {
+			@apply border-e-primary;
 		}
 	}
 }
@@ -556,12 +543,6 @@ export default {
 
 .pkpDateRange__separator {
 	color: @bg-border-color;
-}
-
-.pkpDateRange__error {
-	padding-top: 0.5rem;
-	font-size: @font-tiny;
-	line-height: 1.5em;
 }
 
 [dir='rtl'] {

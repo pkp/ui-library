@@ -1,5 +1,5 @@
 <template>
-	<button
+	<span
 		v-tooltip="{
 			content: tooltip,
 			theme: 'pkp-tooltip',
@@ -7,9 +7,12 @@
 		class="tooltipButton"
 		@click.prevent
 	>
-		<Icon icon="question-circle" />
-		<span class="-screenReader">{{ label }}</span>
-	</button>
+		<Icon
+			:icon="isPrimary ? 'UsefulTipsPrimary' : 'UsefulTips'"
+			:class="iconClass"
+		/>
+		<span v-if="label" class="-screenReader">{{ label }}</span>
+	</span>
 </template>
 
 <script>
@@ -29,6 +32,28 @@ export default {
 		label: {
 			type: String,
 			required: true,
+		},
+		/** Indicates the icon size: medium (16px), small (14 px) */
+		iconSize: {
+			type: String,
+			default: () => 'medium',
+			validator: (value) => {
+				return ['medium', 'small'].includes(value);
+			},
+		},
+		/** If the icon color should use primary color (blue) */
+		isPrimary: {
+			type: Boolean,
+			default: false,
+		},
+	},
+	computed: {
+		iconClass() {
+			return {
+				'h-4 w-4': this.iconSize !== 'small',
+				'h-3 w-3': this.iconSize === 'small',
+				'text-primary': this.isPrimary,
+			};
 		},
 	},
 };

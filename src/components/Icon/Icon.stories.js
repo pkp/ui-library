@@ -14,16 +14,16 @@ export default {
 	}),
 };
 
-export const Bug = {
-	args: {icon: 'bug'},
+export const UsefulTips = {
+	args: {icon: 'UsefulTips', class: 'h-5 w-5'},
 };
 
-export const InfoCircle = {
-	args: {icon: 'Help', class: 'w-5 h-5'},
+export const Help = {
+	args: {icon: 'Help', class: 'h-5 w-5'},
 };
 
-export const ExclamationTriangle = {
-	args: {icon: 'exclamation-triangle'},
+export const Error = {
+	args: {icon: 'Error', class: 'h-5 w-5'},
 };
 
 export const InlineIcon = {
@@ -37,10 +37,10 @@ export const InlineIcon = {
 		`,
 	}),
 
-	args: {icon: 'search', inline: true},
+	args: {icon: 'Search', class: 'h-5 w-5', inline: true},
 };
 
-export const iconGallery = {
+export const IconGallery = {
 	render: (args) => ({
 		components: {Icon},
 		setup() {
@@ -59,8 +59,12 @@ export const iconGallery = {
 	args: {
 		icons: [
 			'Add',
+			'AlignCenter',
+			'AlignLeft',
+			'AlignRight',
 			'Announcements',
 			'AnonymousReview',
+			'ArchivedFile',
 			'ArrowLeft',
 			'ArrowRight',
 			'AttachFile',
@@ -72,31 +76,44 @@ export const iconGallery = {
 			'Calendar',
 			'Cancel',
 			'Catalog',
+			'Checkbox',
+			'CheckboxTicked',
 			'ChevronDown',
 			'ChevronLeft',
 			'ChevronRight',
 			'ChevronUp',
 			'Clock',
+			'Comment',
 			'Complete',
 			'Dashboard',
+			'Declined',
 			'DefaultDocument',
 			'DecreaseTextSize',
+			'Desktop',
 			'DisableUser',
+			'Download',
 			'Dropdown',
 			'Dropup',
 			'Edit',
 			'Email',
 			'EmailOpened',
+			'Error',
 			'Expand',
 			'FileAudio',
+			'FileCode',
 			'FileDoc',
 			'FileEpub',
 			'FileExcel',
 			'FileHtml',
 			'FileImage',
 			'FilePdf',
+			'FilePowerpoint',
+			'FileText',
 			'FileVideo',
 			'FileZip',
+			'Filter',
+			'Globe',
+			'Hdd',
 			'Help',
 			'History',
 			'InProgress',
@@ -105,31 +122,47 @@ export const iconGallery = {
 			'Institutes',
 			'Issues',
 			'Italics',
+			'Lock',
 			'LoginAs',
 			'MergeUser',
+			'Minus',
+			'Money',
 			'MoreOptions',
 			'MySubmissions',
 			'NavDoi',
 			'NavAdmin',
 			'New',
 			'Notifications',
+			'NotVisible',
 			'OpenReview',
 			'Orcid',
 			'Overdue',
+			'Paste',
 			'Payment',
+			'Photo',
+			'Pin',
+			'Print',
 			'Publication',
+			'Question',
 			'ReadRecommendation',
+			'ReinstateReviewer',
 			'ReviewAssignments',
 			'ReviewRequestDeclined',
 			'ReviewSent',
 			'Search',
 			'Settings',
+			'Sitemap',
 			'Sort',
+			'Star',
+			'StarTicked',
 			'Statistics',
 			'Tools',
 			'Underline',
+			'Unlock',
+			'Upload',
 			'Url',
 			'UsefulTips',
+			'User',
 			'View',
 			'Workflow',
 		],

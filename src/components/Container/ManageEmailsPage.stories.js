@@ -51,7 +51,7 @@ const ManageEmailsPageWithDataAndTemplate = {
 			<template #sidebar>
 				<PkpHeader>
 					<h2>
-						<Icon icon="filter" :inline="true" />
+						<Icon icon="Filter" class="h-4 w-4" :inline="true" />
 						Filters
 					</h2>
 				</PkpHeader>

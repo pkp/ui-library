@@ -51,14 +51,14 @@
 										class="modal__closeButton__x"
 									/>
 									<Icon
-										icon="chevron-left"
+										icon="ChevronLeft"
 										:aria-hidden="true"
-										class="modal__closeButton__left"
+										class="modal__closeButton__left h-5 w-5"
 									/>
 									<Icon
-										icon="chevron-right"
+										icon="ChevronRight"
 										:aria-hidden="true"
-										class="modal__closeButton__right"
+										class="modal__closeButton__right h-5 w-5"
 									/>
 									<span class="-screenReader">{{ closeLabel }}</span>
 								</button>

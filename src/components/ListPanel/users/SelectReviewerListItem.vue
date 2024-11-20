@@ -22,12 +22,8 @@
 						<Icon
 							v-for="(star, index) in stars"
 							:key="index"
-							icon="star"
-							:class="
-								star
-									? 'listPanel__item--reviewer__star--on'
-									: 'listPanel__item--reviewer__star--off'
-							"
+							:icon="star ? 'StarTicked' : 'Star'"
+							class="h-4 w-4 text-stage-in-review"
 						/>
 						<span class="-screenReader">
 							{{
@@ -49,29 +45,29 @@
 							class="listPanel__item--reviewer__orcid"
 							target="_blank"
 						>
-							<Icon icon="orcid" :inline="true" />
+							<Icon icon="Orcid" :inline="true" class="me-1 h-5 w-5" />
 							{{ item.orcid }}
 						</a>
 					</div>
 				</div>
 
 				<div v-if="currentlyAssigned" class="listPanel__item--reviewer__notice">
-					<Icon icon="exclamation-triangle" :inline="true" />
-					{{ currentlyAssignedLabel }}
+					<Icon icon="Error" class="me-1 h-4 w-4" :inline="true" />
+					<span class="align-middle">{{ currentlyAssignedLabel }}</span>
 				</div>
 				<div
 					v-else-if="assignedToLastRound"
 					class="listPanel__item--reviewer__notice"
 				>
-					<Icon icon="thumb-tack" :inline="true" />
-					{{ assignedToLastRoundLabel }}
+					<Icon icon="Pin" class="me-1 h-3 w-3" :inline="true" />
+					<span class="align-middle">{{ assignedToLastRoundLabel }}</span>
 				</div>
 				<div
 					v-else-if="warnOnAssignment && !isWarningBypassed"
-					class="listPanel__item--reviewer__notice"
+					class="listPanel__item--reviewer__notice space-x-1"
 				>
-					<Icon icon="lock" :inline="true" />
-					{{ warnOnAssignmentLabel }}
+					<Icon icon="Lock" class="me-1 h-3 w-3" :inline="true" />
+					<span class="align-middle">{{ warnOnAssignmentLabel }}</span>
 					<button
 						class="listPanel__item--reviewer__noticeAction"
 						@click.prevent="unlockAssignment"
@@ -88,19 +84,21 @@
 					aria-hidden="true"
 				>
 					<span class="listPanel__item--reviewer__complete">
-						<Icon icon="check-circle-o" :inline="true" />
-						{{ item.reviewsCompleted }}
+						<Icon icon="Complete" class="h-4 w-4 text-default" :inline="true" />
+						<span class="align-middle">{{ item.reviewsCompleted }}</span>
 					</span>
 					<span class="listPanel__item--reviewer__last">
-						<Icon icon="history" :inline="true" />
-						{{ daysSinceLastAssignmentLabelCompiled }}
+						<Icon icon="History" class="h-4 w-4 text-default" :inline="true" />
+						<span class="align-middle">
+							{{ daysSinceLastAssignmentLabelCompiled }}
+						</span>
 					</span>
 					<span
 						v-if="item.interests.length"
 						class="listPanel__item--reviewer__interests"
 					>
-						<Icon icon="book" :inline="true" />
-						{{ interestsString }}
+						<Icon icon="Book" class="h-4 w-4 text-default" :inline="true" />
+						<span class="align-middle">{{ interestsString }}</span>
 					</span>
 					<span
 						v-if="affiliationMatch(item.affiliation)"
@@ -140,49 +138,77 @@
 			<List>
 				<ListItem>
 					<template #value>
-						<Icon icon="clock-o" :inline="true" />
+						<Icon
+							icon="Clock"
+							class="me-1 h-4 w-4 text-default"
+							:inline="true"
+						/>
 						{{ item.reviewsActive }}
 					</template>
 					{{ activeReviewsLabel }}
 				</ListItem>
 				<ListItem>
 					<template #value>
-						<Icon icon="check-circle-o" :inline="true" />
+						<Icon
+							icon="Complete"
+							class="me-1 h-4 w-4 text-default"
+							:inline="true"
+						/>
 						{{ item.reviewsCompleted }}
 					</template>
 					{{ completedReviewsLabel }}
 				</ListItem>
 				<ListItem>
 					<template #value>
-						<Icon icon="times-circle-o" :inline="true" />
+						<Icon
+							icon="Cancel"
+							class="me-1 h-4 w-4 text-default"
+							:inline="true"
+						/>
 						{{ item.reviewsDeclined }}
 					</template>
 					{{ declinedReviewsLabel }}
 				</ListItem>
 				<ListItem>
 					<template #value>
-						<Icon icon="ban" :inline="true" />
+						<Icon
+							icon="Declined"
+							class="me-1 h-4 w-4 text-default"
+							:inline="true"
+						/>
 						{{ item.reviewsCancelled }}
 					</template>
 					{{ cancelledReviewsLabel }}
 				</ListItem>
 				<ListItem>
 					<template #value>
-						<Icon icon="history" :inline="true" />
+						<Icon
+							icon="History"
+							class="me-1 h-4 w-4 text-default"
+							:inline="true"
+						/>
 						{{ daysSinceLastAssignment }}
 					</template>
 					{{ daysSinceLastAssignmentDescriptionLabel }}
 				</ListItem>
 				<ListItem>
 					<template #value>
-						<Icon icon="calendar" :inline="true" />
+						<Icon
+							icon="Calendar"
+							class="me-1 h-4 w-4 text-default"
+							:inline="true"
+						/>
 						{{ item.averageReviewCompletionDays }}
 					</template>
 					{{ averageCompletionLabel }}
 				</ListItem>
 				<ListItem v-if="item.interests.length">
 					<div class="listPanel__item--reviewer__detailHeading">
-						<Icon icon="book" :inline="true" />
+						<Icon
+							icon="Book"
+							class="me-1 h-4 w-4 text-default"
+							:inline="true"
+						/>
 						{{ reviewInterestsLabel }}
 					</div>
 					{{ interestsString }}
@@ -511,12 +537,6 @@ export default {
 
 .listPanel__item--reviewer__last {
 	min-width: 9em;
-}
-
-.listPanel__item--reviewer__brief .fa,
-.listPanel__itemExpanded--reviewer .fa {
-	color: @bg-dark;
-	font-size: @font-sml;
 }
 
 .listPanel__item--reviewer__detailHeading {

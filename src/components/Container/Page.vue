@@ -311,16 +311,6 @@ export default {
 	right: 0.25rem;
 }
 
-.app__userNav > .pkpButton > .app__userNav__isLoggedInAsWarning {
-	position: absolute;
-	right: 0.5em;
-	top: 0.5em;
-	font-size: 1rem;
-	color: #fff;
-	background: @primary;
-	border-radius: 50%;
-}
-
 .app__userNav .pkpDropdown__content {
 	min-width: 13rem;
 }

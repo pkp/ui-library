@@ -57,9 +57,12 @@
 				>
 					<span v-html="reviewerWorkflowLink" />
 				</div>
-				<div v-else-if="notice" class="listPanel__item--submission__notice">
-					<Icon icon="exclamation-triangle" :inline="true" />
-					{{ notice }}
+				<div
+					v-else-if="notice"
+					class="listPanel__item--submission__notice space-x-1"
+				>
+					<Icon icon="Error" class="h-4 w-4" :inline="true" />
+					<span class="align-middle">{{ notice }}</span>
 					<button
 						v-if="shouldAssignEditor"
 						class="-linkButton"
@@ -81,17 +84,29 @@
 							more easily acquired by screen readers from the details panel. -->
 						<div class="listPanel__item--submission__flags" aria-hidden="true">
 							<span v-if="isReviewStage">
-								<Icon icon="user-o" :inline="true" />
+								<Icon
+									icon="User"
+									class="me-1 h-4 w-4 text-secondary"
+									:inline="true"
+								/>
 								{{ completedReviewsCount }}/{{
 									currentReviewAssignments.length
 								}}
 							</span>
 							<span v-if="activeStage.files.count">
-								<Icon icon="file-text-o" :inline="true" />
+								<Icon
+									icon="MySubmissions"
+									class="me-1 h-4 w-4 text-secondary"
+									:inline="true"
+								/>
 								{{ activeStage.files.count }}
 							</span>
 							<span v-if="openQueryCount">
-								<Icon icon="comment-o" :inline="true" />
+								<Icon
+									icon="Comment"
+									class="me-1 h-4 w-4 text-secondary"
+									:inline="true"
+								/>
 								{{ openQueryCount }}
 							</span>
 						</div>
@@ -116,15 +131,20 @@
 						v-if="currentUserLatestReviewAssignment.reviewCancelled"
 						class="listPanel__item--submission__reviewCancelled"
 					>
-						<Icon icon="exclamation-triangle" :inline="true" />
-						{{ t('submission.list.reviewCancelled') }}
+						<Icon icon="Error" class="me-1 h-4 w-4" :inline="true" />
+						<span class="align-middle">
+							{{ t('submission.list.reviewCancelled') }}
+						</span>
 					</div>
-					<div
-						v-if="currentUserLatestReviewAssignment.reviewComplete"
-						class="listPanel__item--submission__reviewComplete"
-					>
-						<Icon icon="check" :inline="true" />
-						{{ t('submission.list.reviewComplete') }}
+					<div v-if="currentUserLatestReviewAssignment.reviewComplete">
+						<Icon
+							icon="Complete"
+							class="me-1 h-4 w-4 text-success"
+							:inline="true"
+						/>
+						<span class="align-middle">
+							{{ t('submission.list.reviewComplete') }}
+						</span>
 					</div>
 				</template>
 
@@ -166,21 +186,21 @@
 			<List>
 				<ListItem v-if="isReviewStage">
 					<template #value>
-						<Icon icon="user-o" :inline="true" />
+						<Icon icon="User" class="me-2 h-4 w-4" :inline="true" />
 						{{ completedReviewsCount }}/{{ currentReviewAssignments.length }}
 					</template>
 					{{ t('submission.list.reviewsCompleted') }}
 				</ListItem>
 				<ListItem v-if="!isSubmissionStage">
 					<template #value>
-						<Icon icon="file-text-o" :inline="true" />
+						<Icon icon="MySubmissions" class="me-2 h-4 w-4" :inline="true" />
 						{{ activeStage.files.count }}
 					</template>
 					{{ activeStageFilesLabel }}
 				</ListItem>
 				<ListItem v-if="!item.submissionProgress">
 					<template #value>
-						<Icon icon="comment-o" :inline="true" />
+						<Icon icon="Comment" class="me-2 h-4 w-4" :inline="true" />
 						{{ openQueryCount }}
 					</template>
 					{{ t('submission.list.discussions') }}
@@ -930,12 +950,6 @@ export default {
 	> * {
 		margin-inline-end: 1em;
 	}
-
-	.fa {
-		margin-inline-end: 0.25em;
-		font-size: @font-sml;
-		color: @text-light-rgba;
-	}
 }
 
 .listPanel__item--submission__stage {
@@ -955,10 +969,6 @@ export default {
 
 .listPanel__item--submission__dueDate {
 	margin-inline-end: 1rem;
-}
-
-.listPanel__item--submission__reviewComplete .fa {
-	color: @yes;
 }
 
 [dir='rtl'] {

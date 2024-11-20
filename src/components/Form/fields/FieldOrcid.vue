@@ -1,7 +1,7 @@
 <template>
 	<div class="pkpFormField pkpFormField--html">
 		<div class="pkpFormField__heading">
-			<span class="pkpFormFieldLabel">
+			<span class="pkpFormFieldLabel align-middle">
 				{{ label }}
 			</span>
 			<Tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
@@ -23,7 +23,8 @@
 			<Icon
 				v-if="isVerified && hasOrcid"
 				:class="'mr-2'"
-				:icon="'orcid'"
+				icon="Orcid"
+				class="h-6 w-6"
 				:inline="true"
 			/>
 			<div

@@ -8,6 +8,7 @@
 				:is-required="isRequired"
 				:required-label="t('common.required')"
 				:multilingual-label="multilingualLabel"
+				class="align-middle"
 			/>
 			<Tooltip
 				v-if="isPrimaryLocale && tooltip"

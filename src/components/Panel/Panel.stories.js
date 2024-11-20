@@ -28,24 +28,26 @@ export const Default = {
 					<List>
 						<ListItem>
 							<template #value>
-								<Icon icon="comment-o" :inline="true" />
+								<Icon icon="Comment" class="h-4 w-4 me-1" :inline="true" />
 								32
 							</template>
 							Number of active discussions in this journal.
 						</ListItem>
 						<ListItem>
 							<template #value>
-								<Icon icon="clock-o" :inline="true" />
+								<Icon icon="Clock" class="h-4 w-4 me-1" :inline="true" />
 								67
 							</template>
 							Days until next issue is published.
 						</ListItem>
 						<ListItem>
-							<Icon icon="exclamation-triangle" :inline="true" />
-							This journal is not currently available for the public to view. Would
-							you like to
-							<a href="#">make it public</a>
-							?
+							<Icon icon="Error" class="h-5 w-5 me-1" :inline="true" />
+							<span class="align-middle">
+								This journal is not currently available for the public to view. Would
+								you like to
+								<a href="#">make it public</a>
+								?
+							</span>
 						</ListItem>
 					</List>
 		</PanelSection>
@@ -74,24 +76,26 @@ export const ManySections = {
 					<List>
 						<ListItem>
 							<template #value>
-								<Icon icon="comment-o" :inline="true" />
+								<Icon icon="Comment" class="h-4 w-4 me-1" :inline="true" />
 								32
 							</template>
 							Number of active discussions in this journal.
 						</ListItem>
 						<ListItem>
 							<template #value>
-								<Icon icon="clock-o" :inline="true" />
+								<Icon icon="Clock" class="h-4 w-4 me-1" :inline="true" />
 								67
 							</template>
 							Days until next issue is published.
 						</ListItem>
 						<ListItem>
-							<Icon icon="exclamation-triangle" :inline="true" />
-							This journal is not currently available for the public to view. Would
-							you like to
-							<a href="#">make it public</a>
-							?
+							<Icon icon="Error" class="h-5 w-5 me-1" :inline="true" />
+							<span class="align-middle">
+								This journal is not currently available for the public to view. Would
+								you like to
+								<a href="#">make it public</a>
+								?
+							</span>
 						</ListItem>
 					</List>
 				</PanelSection>
@@ -106,24 +110,26 @@ export const ManySections = {
 					<List>
 						<ListItem>
 							<template #value>
-								<Icon icon="comment-o" :inline="true" />
+								<Icon icon="Comment" class="h-4 w-4 me-1" :inline="true" />
 								32
 							</template>
 							Number of active discussions in this journal.
 						</ListItem>
 						<ListItem>
 							<template #value>
-								<Icon icon="clock-o" :inline="true" />
+								<Icon icon="Clock" class="h-4 w-4 me-1" :inline="true" />
 								67
 							</template>
 							Days until next issue is published.
 						</ListItem>
 						<ListItem>
-							<Icon icon="exclamation-triangle" :inline="true" />
-							This journal is not currently available for the public to view. Would
-							you like to
-							<a href="#">make it public</a>
-							?
+							<Icon icon="Error" class="h-5 w-5 me-1" :inline="true" />
+							<span class="align-middle">
+								This journal is not currently available for the public to view. Would
+								you like to
+								<a href="#">make it public</a>
+								?
+							</span>
 						</ListItem>
 					</List>
 				</PanelSection>
@@ -152,24 +158,26 @@ export const StackHeader = {
 					<List>
 						<ListItem>
 							<template #value>
-								<Icon icon="comment-o" :inline="true" />
+								<Icon icon="Comment" class="h-4 w-4 me-1" :inline="true" />
 								32
 							</template>
 							Number of active discussions in this journal.
 						</ListItem>
 						<ListItem>
 							<template #value>
-								<Icon icon="clock-o" :inline="true" />
+								<Icon icon="Clock" class="h-4 w-4 me-1" :inline="true" />
 								67
 							</template>
 							Days until next issue is published.
 						</ListItem>
 						<ListItem>
-							<Icon icon="exclamation-triangle" :inline="true" />
-							This journal is not currently available for the public to view. Would
-							you like to
-							<a href="#">make it public</a>
-							?
+							<Icon icon="Error" class="h-5 w-5 me-1" :inline="true" />
+							<span class="align-middle">
+								This journal is not currently available for the public to view. Would
+								you like to
+								<a href="#">make it public</a>
+								?
+							</span>
 						</ListItem>
 					</List>
 				</PanelSection>
@@ -184,24 +192,26 @@ export const StackHeader = {
 					<List>
 						<ListItem>
 							<template #value>
-								<Icon icon="comment-o" :inline="true" />
+								<Icon icon="Comment" class="h-4 w-4 me-1" :inline="true" />
 								32
 							</template>
 							Number of active discussions in this journal.
 						</ListItem>
 						<ListItem>
 							<template #value>
-								<Icon icon="clock-o" :inline="true" />
+								<Icon icon="Clock" class="h-4 w-4 me-1" :inline="true" />
 								67
 							</template>
 							Days until next issue is published.
 						</ListItem>
 						<ListItem>
-							<Icon icon="exclamation-triangle" :inline="true" />
-							This journal is not currently available for the public to view. Would
-							you like to
-							<a href="#">make it public</a>
-							?
+							<Icon icon="Error" class="h-5 w-5 me-1" :inline="true" />
+							<span class="align-middle">
+								This journal is not currently available for the public to view. Would
+								you like to
+								<a href="#">make it public</a>
+								?
+							</span>
 						</ListItem>
 					</List>
 				</PanelSection>

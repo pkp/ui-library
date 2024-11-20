@@ -125,7 +125,7 @@
 				<template #sidebar>
 					<PkpHeader :is-one-line="false">
 						<h3>
-							<Icon icon="filter" :inline="true" />
+							<Icon icon="Filter" class="h-4 w-4" :inline="true" />
 							{{ t('common.filter') }}
 						</h3>
 						<template #actions>
@@ -133,7 +133,7 @@
 								class="doiListPanel__statusInfoButton"
 								@click="openStatusInfoModal"
 							>
-								<Icon icon="question-circle" />
+								<Icon icon="AnonymousReview" class="mt-1 h-4 w-4" />
 							</button>
 						</template>
 					</PkpHeader>

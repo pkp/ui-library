@@ -5,7 +5,7 @@
 			:key="message"
 			class="pkpFieldError__message"
 		>
-			<Icon icon="exclamation-triangle" :inline="true" />
+			<Icon icon="Error" class="me-1 h-4 w-4 text-on-dark" :inline="true" />
 			<span v-html="message" />
 		</div>
 	</div>
