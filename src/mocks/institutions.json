@@ -1,0 +1,94 @@
+{
+	"items": [
+		{
+			"id": "https://ror.org/03dbr7087",
+			"names": [
+				{
+					"types": "ror_display",
+					"value": "University of Toronto"
+				}
+			]
+		},
+		{
+			"id": "https://ror.org/002h8g185",
+			"names": [
+				{
+					"types": "ror_display",
+					"value": "University of Bath"
+				}
+			]
+		},
+		{
+			"id": "https://ror.org/01ej9dk98",
+			"names": [
+				{
+					"types": "ror_display",
+					"value": "University of Melbourne"
+				}
+			]
+		},
+		{
+			"id": "https://ror.org/046ak2485",
+			"names": [
+				{
+					"types": "ror_display",
+					"value": "Technical University of Berlin"
+				}
+			]
+		},
+		{
+			"id": "https://ror.org/045zwes19",
+			"names": [
+				{
+					"types": "ror_display",
+					"value": "University of West Los Angeles"
+				}
+			]
+		},
+		{
+			"id": "https://ror.org/015h4rf69",
+			"names": [
+				{
+					"types": "ror_display",
+					"value": "Niagara College"
+				}
+			]
+		},
+		{
+			"id": "https://ror.org/03tjw1547",
+			"names": [
+				{
+					"types": "ror_display",
+					"value": "Innovate Niagara"
+				}
+			]
+		},
+		{
+			"id": "https://ror.org/05r04zn83",
+			"names": [
+				{
+					"types": "ror_display",
+					"value": "Regional Municipality of Niagara"
+				}
+			]
+		},
+		{
+			"id": "https://ror.org/05309tf52",
+			"names": [
+				{
+					"types": "ror_display",
+					"value": "Niagara University"
+				}
+			]
+		},
+		{
+			"names": [
+				{
+					"types": "ror_display",
+					"value": "Niagara Association of Medicine"
+				}
+			]
+		}
+	],
+	"itemsMax": 10
+}

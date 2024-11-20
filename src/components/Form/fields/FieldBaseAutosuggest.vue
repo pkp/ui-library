@@ -45,7 +45,7 @@
 				:class="{
 					'pkpAutosuggest__inputWrapper--multilingual':
 						isMultilingual && locales.length > 1,
-					'pkpAutosuggest__inputWrapper--focus': isFocused,
+					'pkpAutosuggest__inputWrapper--focus': inputFocused,
 				}"
 				@click="setFocusToInput"
 			>
@@ -80,81 +80,21 @@
 					/>
 				</div>
 				<!-- End Heading part repeated for inline scenario -->
-				<span class="-screenReader">{{ selectedLabel }}</span>
-				<span v-if="!currentValue.length" class="-screenReader">
-					{{ t('common.none') }}
-				</span>
-				<PkpBadge
-					v-for="item in currentSelected"
-					v-else
-					:key="item.value"
-					class="pkpAutosuggest__selection"
+				<Autosuggest
+					v-bind="autoSuggestProps"
+					ref="inputRef"
+					v-model:inputValue="inputValue"
+					@select-suggestion="selectSuggestion"
+					@deselect="deselect"
+					@focus-changed="changeFocus"
 				>
-					{{ item.label }}
-					<button
-						v-if="!isDisabled"
-						class="pkpAutosuggest__deselect text-negative hover:text-on-dark"
-						@click.stop.prevent="deselect(item)"
-					>
-						<Icon icon="Cancel" class="h-3 w-3" />
-						<span class="-screenReader">
-							{{ deselectLabel.replace('{$item}', item.label) }}
-						</span>
-					</button>
-				</PkpBadge>
-				<Combobox
-					v-if="!isDisabled"
-					:id="autosuggestId"
-					:key="autosuggestId"
-					:model-value="null"
-					class="pkpAutosuggest__autosuggester"
-					as="div"
-					@update:modelValue="selectSuggestion"
-				>
-					<ComboboxInput
-						ref="autosuggestInput"
-						class="pkpAutosuggest__input"
-						v-bind="inputProps"
-						@change="inputValue = $event.target.value.trim()"
-						@focus="() => (isFocused = true)"
-						@blur="() => (isFocused = false)"
-					/>
-					<ComboboxOptions
-						v-if="suggestions.length || (allowCustom && inputValue?.length)"
-						class="autosuggest__results-container autosuggest__results"
-					>
-						<ComboboxOption
-							v-if="
-								allowCustom &&
-								inputValue?.length &&
-								!suggestions.includes(inputValue)
-							"
-							v-slot="{active}"
-							as="template"
-						>
-							<li
-								class="autosuggest__results-item"
-								:class="active && 'autosuggest__results-item--highlighted'"
-							>
-								{{ inputValue }}
-							</li>
-						</ComboboxOption>
-						<ComboboxOption
-							v-for="suggestion in suggestions"
-							:key="suggestion.value"
-							v-slot="{active}"
-							:value="suggestion"
-							as="template"
-						>
-							<li
-								class="autosuggest__results-item"
-								:class="active && 'autosuggest__results-item--highlighted'"
-							>
-								{{ suggestion.label }}
-							</li>
-						</ComboboxOption>
-					</ComboboxOptions>
-				</Combobox>
+					<template v-if="$slots['input-slot']" #input-slot>
+						<slot name="input-slot"></slot>
+					</template>
+					<template v-if="$slots.option" #option="{suggestion}">
+						<slot name="option" :suggestion="suggestion"></slot>
+					</template>
+				</Autosuggest>
 				<span class="pkpAutosuggest__endslot">
 					<slot name="end"></slot>
 				</span>
@@ -176,37 +116,25 @@
 
 <script>
 import FieldBase from './FieldBase.vue';
-import PkpBadge from '@/components/Badge/Badge.vue';
+import Autosuggest from './Autosuggest.vue';
 import FormFieldLabel from '@/components/Form/FormFieldLabel.vue';
 import Tooltip from '@/components/Tooltip/Tooltip.vue';
 import HelpButton from '@/components/HelpButton/HelpButton.vue';
 import FieldError from '@/components/Form/FieldError.vue';
 import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
-import Icon from '@/components/Icon/Icon.vue';
 
-import {
-	Combobox,
-	ComboboxInput,
-	ComboboxOption,
-	ComboboxOptions,
-} from '@headlessui/vue';
 import ajaxError from '@/mixins/ajaxError';
 import debounce from 'debounce';
 
 export default {
 	name: 'FieldBaseAutosuggest',
 	components: {
-		PkpBadge,
-		Combobox,
-		ComboboxInput,
-		ComboboxOption,
-		ComboboxOptions,
 		FormFieldLabel,
 		Tooltip,
 		HelpButton,
 		FieldError,
-		Icon,
 		MultilingualProgress,
+		Autosuggest,
 	},
 	extends: FieldBase,
 	mixins: [ajaxError],
@@ -256,11 +184,16 @@ export default {
 			type: String,
 			required: true,
 		},
+		/** If the combobox should allow multiple options to be selected */
+		isMultiple: {
+			type: Boolean,
+			default: () => true,
+		},
 	},
 	data() {
 		return {
 			inputValue: '',
-			isFocused: false,
+			inputFocused: false,
 			suggestions: [],
 		};
 	},
@@ -309,30 +242,39 @@ export default {
 		},
 
 		/**
-		 * Props to pass to the input field
-		 *
-		 * @return {Object}
-		 */
-		inputProps() {
-			let props = {
-				'aria-describedby': this.describedByIds,
-				class: 'pkpAutosuggest__input',
-				id: this.controlId,
-				name: this.name,
-			};
-			if (this.isDisabled) {
-				props.disabled = 'disabled';
-			}
-			return props;
-		},
-
-		/**
 		 * Is this field in a right-to-left language
 		 */
 		isRTL() {
 			var direction = document.body.getAttribute('dir');
 			return direction === 'rtl';
 		},
+		autoSuggestProps() {
+			return {
+				id: this.autosuggestId,
+				suggestions: this.suggestions,
+				selectedLabel: this.selectedLabel,
+				currentSelected: this.currentSelected,
+				isDisabled: this.isDisabled,
+				controlPrefixId: this.compileId(),
+			};
+		},
+	},
+	watch: {
+		inputValue(newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+			this.getSuggestions();
+		},
+	},
+	mounted() {
+		// Inline labels can not be used with multilingual fields
+		if (this.isMultilingual && this.isLabelInline) {
+			throw new Error(
+				'An inline label can not be used with a multilingual autosuggest field. This error encountered in the field ' +
+					this.name,
+			);
+		}
 	},
 	methods: {
 		/**
@@ -357,7 +299,14 @@ export default {
 				return;
 			}
 
-			this.$refs.autosuggestInput.$el.focus();
+			this.$refs.inputRef.handleFocus(true);
+		},
+
+		/**
+		 * Change the input focus state
+		 */
+		changeFocus(state) {
+			this.inputFocused = state;
 		},
 
 		/**
@@ -421,6 +370,11 @@ export default {
 		 * Emit events to change the selected items and the field's value
 		 */
 		setSelected(selected) {
+			if (selected?.length > 1 && !this.isMultiple) {
+				// override selected value if only one option can be selected
+				selected = [selected[1]];
+			}
+
 			this.$emit('change', this.name, 'selected', selected, this.localeKey);
 			this.$emit(
 				'change',
@@ -442,23 +396,6 @@ export default {
 				'The setSuggestions method must be implemented in any component that extends FieldBaseAutosuggest.',
 			);
 		},
-	},
-	watch: {
-		inputValue(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			this.getSuggestions();
-		},
-	},
-	mounted() {
-		// Inline labels can not be used with multilingual fields
-		if (this.isMultilingual && this.isLabelInline) {
-			throw new Error(
-				'An inline label can not be used with a multilingual autosuggest field. This error encountered in the field ' +
-					this.name,
-			);
-		}
 	},
 };
 </script>
