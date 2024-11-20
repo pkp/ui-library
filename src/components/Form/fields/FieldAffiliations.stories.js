@@ -1,6 +1,6 @@
 import FieldAffiliations from './FieldAffiliations.vue';
 import FieldAffiliationsMock from '@/components/Form/mocks/field-affiliations';
-import {http, HttpResponse} from "msw";
+import {http, HttpResponse} from 'msw';
 
 const args = {...FieldAffiliationsMock};
 
@@ -14,7 +14,7 @@ export default {
 				http.get(
 					'https://mock/index.php/publicknowledge/api/v1/rors/?searchPhrase=Simon+Fraser+University',
 					async () => {
-						return HttpResponse.json(args.apiResponse);
+						return HttpResponse.json(args.searchResults);
 					},
 				),
 			],
@@ -23,10 +23,10 @@ export default {
 	render: (args) => ({
 		components: {FieldAffiliations},
 		setup() {
-			return {args}
+			return {args};
 		},
 		template: `
-			<FieldAffiliations v-bind="args"/>`
+			<FieldAffiliations v-bind="args"/>`,
 	}),
 	decorators: [
 		() => ({

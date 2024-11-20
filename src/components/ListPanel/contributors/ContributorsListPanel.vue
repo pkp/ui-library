@@ -297,7 +297,7 @@ export default {
 			activeForm.fields = activeForm.fields.map((field) => {
 				if (field.name === 'affiliations') {
 					field.primaryLocale = activeForm.primaryLocale;
-					field.supportedFormLocales = activeForm.supportedFormLocales;
+					field.locales = activeForm.supportedFormLocales;
 				}
 				return field;
 			});
@@ -405,7 +405,7 @@ export default {
 						} else if (field.name === 'affiliations') {
 							field.authorId = author['id'];
 							field.primaryLocale = activeForm.primaryLocale;
-							field.supportedFormLocales = activeForm.supportedFormLocales;
+							field.locales = activeForm.supportedFormLocales;
 							field.value = author[field.name];
 						} else if (Object.keys(author).includes(field.name)) {
 							field.value = author[field.name];

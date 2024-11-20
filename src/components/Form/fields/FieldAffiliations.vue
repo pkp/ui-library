@@ -20,17 +20,23 @@
 					<TableColumn id="">&nbsp;</TableColumn>
 				</TableHeader>
 				<TableBody>
-					<TableRow v-for="(row, indexRow) in currentValue" :key="indexRow">
+					<TableRow
+						v-for="(affiliation, affiliationIndex) in currentValue"
+						:key="affiliationIndex"
+					>
 						<TableCell>
-							<span v-if="row.name[primaryLocale]" class="text-lg-semibold">
-								{{ row.name[primaryLocale] }}
+							<span
+								v-if="affiliation.name[primaryLocale]"
+								class="text-lg-semibold"
+							>
+								{{ affiliation.name[primaryLocale] }}
 							</span>
 							<Icon
-								v-if="!row.name[primaryLocale]"
+								v-if="!affiliation.name[primaryLocale]"
 								v-bind="{icon: 'exclamation-triangle'}"
 							/>
 							<span
-								v-if="!row.name[primaryLocale]"
+								v-if="!affiliation.name[primaryLocale]"
 								class="text-lg-semibold text-negative"
 							>
 								{{
@@ -39,7 +45,7 @@
 									})
 								}}
 							</span>
-							<a v-if="row.ror" :href="row.ror" target="_blank">
+							<a v-if="affiliation.ror" :href="affiliation.ror" target="_blank">
 								&nbsp;
 								<Icon :icon="'ror'" :class="'mr-2'" :inline="true" />
 							</a>
@@ -48,48 +54,65 @@
 							<div>
 								<a
 									class="pkpButton cursor-pointer border-transparent py-2 text-lg-semibold text-primary hover:enabled:underline"
-									@click="toggleEditMode(indexRow)"
+									@click="toggleEditMode(affiliationIndex)"
 								>
-									{{ translations(row) }}
+									<MultilingualProgress
+										v-bind="{
+											count: translations(affiliation).count,
+											total: translations(affiliation).total,
+										}"
+									/>
+									&nbsp;
+									{{ translations(affiliation).label }}
 								</a>
 							</div>
-							<div v-if="indexRow === indexEditMode">
+							<div v-if="affiliationIndex === indexEditMode">
 								<div
-									v-for="([localeName], indexName) in Object.entries(row.name)"
-									:key="indexName"
+									v-for="[affiliationNameLocale] in Object.entries(
+										affiliation.name,
+									)"
+									:key="affiliationNameLocale"
 								>
 									<div>
 										<label
-											v-if="supportedFormLocaleKeys.includes(localeName)"
+											v-if="
+												supportedFormLocaleKeys.includes(affiliationNameLocale)
+											"
 											:for="
 												'contributors-affiliations-' +
-												indexRow +
+												affiliationIndex +
 												'-' +
-												localeName
+												affiliationNameLocale
 											"
 											class="text-lg-semibold"
 										>
 											{{
-												row.ror
-													? getLocaleDisplayName(localeName)
+												affiliation.ror
+													? getLocaleDisplayName(affiliationNameLocale)
 													: t(
 															'user.affiliations.typeTranslationNameInLanguageLabel',
-															{language: getLocaleDisplayName(localeName)},
-													  )
+															{
+																language: getLocaleDisplayName(
+																	affiliationNameLocale,
+																),
+															},
+														)
 											}}
 										</label>
 									</div>
 									<div>
 										<input
-											v-if="supportedFormLocaleKeys.includes(localeName)"
+											v-if="
+												supportedFormLocaleKeys.includes(affiliationNameLocale)
+											"
 											:id="
 												'contributors-affiliations-' +
-												indexRow +
+												affiliationIndex +
 												'-' +
-												localeName
+												affiliationNameLocale
 											"
-											v-model="row.name[localeName]"
-											:readonly="!!row.ror"
+											v-model="affiliation.name[affiliationNameLocale]"
+											:readonly="!!affiliation.ror"
 											class="pkpFormField__input pkpFormField--text__input"
 											type="text"
 											name="searchPhraseInput"
@@ -101,18 +124,18 @@
 						</TableCell>
 						<TableCell>
 							<DropdownActions
-								v-if="!(indexRow === indexEditMode)"
-								v-bind="rowActionsArgs(indexRow)"
+								v-if="!(affiliationIndex === indexEditMode)"
+								v-bind="rowActionsArgs(affiliationIndex)"
 								:class="'dropDownActions border-transparent'"
 								@action="rowActionsHandler"
 							/>
-							<a
-								v-if="indexRow === indexEditMode"
+							<button
+								v-if="affiliationIndex === indexEditMode"
 								class="pkpButton cursor-pointer border-transparent py-2 text-lg-semibold text-primary hover:enabled:underline"
 								@click="closeEditMode()"
 							>
 								{{ t('common.close', {}) }}
-							</a>
+							</button>
 						</TableCell>
 					</TableRow>
 					<TableRow>
@@ -155,8 +178,8 @@
 										</a>
 									</li>
 									<li
-										v-for="(organization, orgIndex) in apiResponse"
-										:key="orgIndex"
+										v-for="organization in searchResults"
+										:key="organization.id"
 									>
 										<a
 											class="cursor-pointer border-transparent px-2 py-2 text-lg-normal text-primary hover:bg-hover hover:text-on-dark hover:enabled:underline"
@@ -177,15 +200,22 @@
 							</div>
 						</TableCell>
 						<TableCell>
-							<div v-if="showAddMode">
+							<div v-if="showNewAffiliation">
 								<div>
 									<span class="inline-block py-2 text-lg-semibold">
-										{{ translations(newAffiliationPending) }}
+										<MultilingualProgress
+											v-bind="{
+												count: translations(newAffiliation).count,
+												total: translations(newAffiliation).total,
+											}"
+										/>
+										&nbsp;
+										{{ translations(newAffiliation).label }}
 									</span>
 									&nbsp;
 									<a
-										v-if="newAffiliationPending.ror"
-										:href="newAffiliationPending.ror"
+										v-if="newAffiliation.ror"
+										:href="newAffiliation.ror"
 										class="inline-block py-2"
 										target="_blank"
 									>
@@ -193,36 +223,48 @@
 									</a>
 								</div>
 								<div
-									v-for="([localeAddMode], indexNameAddMode) in Object.entries(
-										newAffiliationPending.name,
+									v-for="[newAffiliationNameLocale] in Object.entries(
+										newAffiliation.name,
 									)"
-									:key="indexNameAddMode"
+									:key="newAffiliationNameLocale"
 								>
 									<div>
 										<span
-											v-if="supportedFormLocaleKeys.includes(localeAddMode)"
+											v-if="
+												supportedFormLocaleKeys.includes(
+													newAffiliationNameLocale,
+												)
+											"
 											class="text-lg-normal"
 										>
 											{{
-												newAffiliationPending.ror
+												newAffiliation.ror
 													? t(
 															'user.affiliations.typeTranslationNameInLanguageLabel',
-															{language: getLocaleDisplayName(localeAddMode)},
-													  )
-													: getLocaleDisplayName(localeAddMode)
+															{
+																language: getLocaleDisplayName(
+																	newAffiliationNameLocale,
+																),
+															},
+														)
+													: getLocaleDisplayName(newAffiliationNameLocale)
 											}}
 										</span>
 									</div>
 									<div>
 										<input
-											v-if="supportedFormLocaleKeys.includes(localeAddMode)"
+											v-if="
+												supportedFormLocaleKeys.includes(
+													newAffiliationNameLocale,
+												)
+											"
 											:id="
 												'contributors-affiliations-newAffiliation' +
 												'-' +
-												localeAddMode
+												newAffiliationNameLocale
 											"
-											v-model="newAffiliationPending.name[localeAddMode]"
-											:readonly="!!newAffiliationPending.ror"
+											v-model="newAffiliation.name[newAffiliationNameLocale]"
+											:readonly="!!newAffiliation.ror"
 											class="pkpFormField__input pkpFormField--text__input"
 											type="text"
 											name="affiliationsNewAffiliationPendingInput"
@@ -233,21 +275,21 @@
 							</div>
 						</TableCell>
 						<TableCell>
-							<div v-if="showAddMode">
-								<a
+							<div v-if="showNewAffiliation">
+								<button
 									class="pkpButton cursor-pointer border-transparent py-2 text-lg-semibold text-primary hover:enabled:underline"
-									:class="{'link-disabled': !validate(newAffiliationPending)}"
+									:disabled="!validate(newAffiliation)"
 									@click="addAffiliation"
 								>
-									{{ t('common.insert', {}) }}
-								</a>
+									{{ t('common.add', {}) }}
+								</button>
 								<br />
-								<a
+								<button
 									class="pkpButton cursor-pointer border-transparent py-2 text-lg-semibold text-primary hover:enabled:underline"
-									@click="closeAddMode"
+									@click="closeNewAffiliation"
 								>
 									{{ t('common.close', {}) }}
-								</a>
+								</button>
 							</div>
 						</TableCell>
 					</TableRow>
@@ -258,10 +300,11 @@
 </template>
 
 <script setup>
-import {ref, computed, onMounted, watch} from 'vue';
+import {ref, computed, onMounted, watch, onBeforeUnmount} from 'vue';
 import {t} from '@/utils/i18n';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 import Icon from '@/components/Icon/Icon.vue';
+import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
 import PkpTable from '@/components/Table/Table.vue';
 import TableHeader from '@/components/Table/TableHeader.vue';
 import TableBody from '@/components/Table/TableBody.vue';
@@ -272,78 +315,144 @@ import {useApiUrl} from '@/composables/useApiUrl';
 import {useFetch} from '@/composables/useFetch';
 import {useModal} from '@/composables/useModal';
 
+/** Define component props */
 const props = defineProps({
-	authorId: {
-		type: Number,
+	/** Field key used for form submission */
+	name: {
+		type: String,
 		default: null,
 	},
-	primaryLocale: {
-		type: String,
-		default: 'en',
-	},
-	supportedFormLocales: {
-		type: Array,
-		default: () => [],
-	},
+	/** Current value of the field */
 	value: {
 		type: Array,
 		default: () => [],
 	},
+	/** ID of the author associated with the affiliations */
+	authorId: {
+		type: Number,
+		default: null,
+	},
+	/** Default locale of the form */
+	primaryLocale: {
+		type: String,
+		default: 'en',
+	},
+	/** Locale key for multilingual support */
+	localeKey: {
+		type: String,
+		default: '',
+	},
+	/** List of supported locales */
+	locales: {
+		type: Array,
+		default: () => [],
+	},
+	/** Object containing all form errors */
+	allErrors: {
+		type: Object,
+		default() {
+			return {};
+		},
+	},
+	/** Indicates if the field supports multiple languages */
+	isMultilingual: {
+		type: Boolean,
+		default: true,
+	},
 });
 
+/** Emits component events */
+const emit = defineEmits(['change', 'set-errors']);
+
+/** Stores the ID of the author associated with this component */
 const authorId = props.authorId;
+
+/** Stores the primary locale of the form */
 const primaryLocale = props.primaryLocale;
-const supportedFormLocales = props.supportedFormLocales;
-const currentValue = props.value;
-const apiResponse = ref([]);
-const newAffiliationPending = ref({});
-const searchPhrase = ref('');
-const supportedFormLocaleKeys = supportedFormLocales.map(function (language) {
-	return language.key;
+
+/** Stores the list of supported locales */
+const locales = props.locales;
+
+/** Current value of the field, with a setter to emit changes */
+const currentValue = computed({
+	get: () => props.value,
+	set: (newVal) => emit('change', props.name, 'value', newVal),
 });
+
+/** Current search input for affiliations */
+const searchPhrase = ref('');
+
+/** Results from the search */
+const searchResults = ref([]);
+
+/** New affiliation being created */
+const newAffiliation = ref({});
+
+/** Keys of supported locales */
+const supportedFormLocaleKeys = props.locales.map((language) => language.key);
+
+/** Default locale for the application */
 const defaultLocale = 'en';
 
+/** Computed property to determine error messages for the field */
+computed(() => {
+	if (!Object.keys(props.allErrors).includes(props.name)) {
+		return [];
+	}
+	let errors = props.allErrors[props.name];
+	if (props.isMultilingual && Object.keys(errors).includes(props.localeKey)) {
+		return errors[props.localeKey];
+	} else if (!props.isMultilingual) {
+		return errors;
+	}
+	return [];
+});
+
+/** Handles selecting a custom organization */
 const selectCustomOrganization = function () {
-	newAffiliationPending.value = getNewItemTemplate();
-	newAffiliationPending.value.name[primaryLocale] = searchPhrase.value;
-
-	apiResponse.value = [];
+	newAffiliation.value = getNewItemTemplate();
+	newAffiliation.value.name[primaryLocale] = searchPhrase.value;
+	searchResults.value = [];
 };
-const selectRorOrganization = function (item) {
-	newAffiliationPending.value = getNewItemTemplate();
-	newAffiliationPending.value.ror = item.ror;
-	newAffiliationPending.value.name[primaryLocale] = item.displayName;
 
+/** Handles selecting an organization from the ROR API results */
+const selectRorOrganization = function (item) {
+	newAffiliation.value = getNewItemTemplate();
+	newAffiliation.value.ror = item.ror;
+	newAffiliation.value.name[primaryLocale] = item.displayName;
 	supportedFormLocaleKeys.forEach((locale) => {
 		if (typeof item.name[locale] !== 'undefined') {
-			newAffiliationPending.value.name[locale] = item.name[locale];
+			newAffiliation.value.name[locale] = item.name[locale];
 		}
 	});
-
-	apiResponse.value = [];
+	searchResults.value = [];
 };
+
+/** Adds a new affiliation to the current value */
 const addAffiliation = function () {
-	if (typeof newAffiliationPending.value.id !== 'undefined') {
-		currentValue.push(JSON.parse(JSON.stringify(newAffiliationPending.value)));
-		newAffiliationPending.value = {};
+	if (typeof newAffiliation.value.id !== 'undefined') {
+		currentValue.value.push(JSON.parse(JSON.stringify(newAffiliation.value)));
+		newAffiliation.value = {};
 		searchPhrase.value = '';
-		apiResponse.value = [];
+		searchResults.value = [];
 	}
 };
+
+/** Deletes an affiliation with a confirmation dialog */
 const deleteAffiliation = function (index) {
 	const {openDialog} = useModal();
 	openDialog({
 		name: 'sendAuthorEmail',
 		title: t('user.affiliations.deleteModal.title', {}),
 		message: t('user.affiliations.deleteModal.message', {
-			institution: currentValue[index]['name'][primaryLocale],
+			affiliation: currentValue.value[index]['name'][primaryLocale],
 		}),
 		actions: [
 			{
 				label: t('common.yes', {}),
 				isWarnable: true,
 				callback: async (close) => {
-					currentValue.splice(index, 1);
+					currentValue.value.splice(index, 1);
 					close();
 				},
 			},
@@ -358,24 +467,26 @@ const deleteAffiliation = function (index) {
 		close: () => {},
 	});
 };
+
+/** Tracks the row being edited */
+const indexEditMode = ref(-1);
+
+/** Provides the arguments for row action buttons */
 const rowActionsArgs = function (index) {
 	let actions = [];
-
-	if (!currentValue[index].ror) {
+	if (!currentValue.value[index].ror) {
 		actions.push({
 			label: t('user.affiliations.translationEditActionLabel', {}),
 			name: 'edit',
 			id: index,
 		});
 	}
-
 	actions.push({
 		label: t('user.affiliations.translationDeleteActionLabel', {}),
 		name: 'delete',
 		isWarnable: true,
 		id: index,
 	});
-
 	return {
 		actions: actions,
 		label: t('user.affiliations.translationActionsAriaLabel', {}),
@@ -384,6 +495,8 @@ const rowActionsArgs = function (index) {
 		displayAsEllipsis: true,
 	};
 };
+
+/** Handles row action events */
 const rowActionsHandler = function (param) {
 	if (typeof param === 'object' && param.length === 2) {
 		const name = param[0].trim();
@@ -401,20 +514,17 @@ const rowActionsHandler = function (param) {
 		}
 	}
 };
-const indexEditMode = ref(-1);
-const showAddMode = computed(() => {
-	return typeof newAffiliationPending.value.id !== 'undefined';
-});
-const closeAddMode = function () {
-	newAffiliationPending.value = {};
-};
+
+/** Determines whether to show the search results dropdown */
 const showSearchResults = computed(() => {
 	return (
-		(searchPhrase.value.length > 0 && apiResponse.value.length > 0) ||
-		(searchPhrase.value.length > 0 && apiResponse.value.length === 0) ||
+		(searchPhrase.value.length > 0 && searchResults.value.length > 0) ||
+		(searchPhrase.value.length > 0 && searchResults.value.length === 0) ||
 		!(searchPhrase.value.length === 0)
 	);
 });
+
+/** Toggles edit mode for a specific row */
 const toggleEditMode = function (index) {
 	if (indexEditMode.value === index) {
 		indexEditMode.value = -1;
@@ -422,33 +532,52 @@ const toggleEditMode = function (index) {
 		indexEditMode.value = index;
 	}
 };
+
+/** Exits edit mode */
 const closeEditMode = function () {
 	indexEditMode.value = -1;
 };
-const translations = function (row) {
-	let names = row.name;
-	let total = supportedFormLocaleKeys.length;
-	let translated = 0;
 
+/** Determines whether to show the new affiliation form */
+const showNewAffiliation = computed(() => {
+	return typeof newAffiliation.value.id !== 'undefined';
+});
+
+/** Closes the new affiliation form */
+const closeNewAffiliation = function () {
+	newAffiliation.value = {};
+};
+
+/** Returns the translation status of an affiliation */
+const translations = function (affiliation) {
+	let result = {
+		label: '',
+		count: 0,
+		total: supportedFormLocaleKeys.length,
+	};
+	let names = affiliation.name;
 	Object.keys(names).forEach((key) => {
 		if (supportedFormLocaleKeys.includes(key) && names[key].length > 0) {
-			translated++;
+			result.count++;
 		}
 	});
-
-	if (total === translated) {
-		return t('user.affiliations.translationsAllAvailable', {});
+	if (result.total === result.count) {
+		result.label = t('user.affiliations.translationsAllAvailable', {});
 	} else {
-		return t('user.affiliations.translationsSomeAvailable', {
-			translated: translated,
-			total: total,
+		result.label = t('user.affiliations.translationsSomeAvailable', {
+			count: result.count,
+			total: result.total,
 		});
 	}
-};
-const validate = function (item) {
-	return !!(item.ror || item.name[primaryLocale]);
+	return result;
 };
 
+/** Validates an affiliation */
+const validate = function (affiliation) {
+	return !!(affiliation.ror || affiliation.name[primaryLocale]);
+};
+
+/** Watch for changes in currentValue to ensure compatibility */
 watch(
 	currentValue,
 	() => {
@@ -457,58 +586,60 @@ watch(
 	{immediate: true},
 );
 
+/** On component mount, ensure currentValue is compatible */
 onMounted(() => {
 	makeCurrentValueCompatible();
 });
 
-async function searchPhraseChanged() {
-	newAffiliationPending.value = {};
-	apiResponse.value = [];
+/** Before unmounting, reset any errors for this field */
+onBeforeUnmount(() => {
+	emit('set-errors', props.name, []);
+});
 
+/** Updates search results based on the search phrase */
+async function searchPhraseChanged() {
+	newAffiliation.value = {};
+	searchResults.value = [];
 	if (searchPhrase.value.length >= 3) {
 		const {apiUrl} = useApiUrl(`rors/?searchPhrase=${searchPhrase.value}`);
 		const {data, isSuccess, fetch} = useFetch(apiUrl.value, {method: 'GET'});
-
 		await fetch();
-
 		if (isSuccess) {
-			apiResponse.value = [];
+			searchResults.value = [];
 			if (data.value.items) {
 				for (let i = 0; i < data.value.items.length; i++) {
 					let row = data.value.items[i];
 					row['displayName'] =
 						data.value.items[i]['name'][row['displayLocale']];
-					apiResponse.value.push(row);
+					searchResults.value.push(row);
 				}
 			}
 		}
 	}
 }
 
+/** Ensures current value has a compatible structure with the expected locale keys */
 function makeCurrentValueCompatible() {
-	currentValue.forEach((value, index) => {
+	currentValue.value.forEach((value, index) => {
 		supportedFormLocaleKeys.forEach((locale) => {
-			if (!(locale in currentValue[index].name)) {
-				currentValue[index].name[locale] = '';
+			if (!(locale in currentValue.value[index].name)) {
+				currentValue.value[index].name[locale] = '';
 			}
-
-			currentValue[index].name = sortNamesPrimaryFirst(
-				currentValue[index].name,
+			currentValue.value[index].name = sortNamesPrimaryFirst(
+				currentValue.value[index].name,
 			);
 		});
 	});
 }
 
+/** Returns a template for creating a new affiliation */
 function getNewItemTemplate() {
 	let names = {};
-
 	names[primaryLocale] = '';
 	supportedFormLocaleKeys.forEach((locale) => {
 		names[locale] = '';
 	});
-
 	names = sortNamesPrimaryFirst(names);
-
 	return {
 		id: null,
 		authorId: authorId,
@@ -517,21 +648,21 @@ function getNewItemTemplate() {
 	};
 }
 
+/** Returns the display name for a given locale */
 function getLocaleDisplayName(locale) {
 	let displayName = locale;
-	supportedFormLocales.forEach((language) => {
+	locales.forEach((language) => {
 		if (language.key === locale) {
 			displayName = language.label;
 		}
 	});
-
 	return displayName;
 }
 
+/** Ensures the primary locale name is listed first in the names object */
 function sortNamesPrimaryFirst(names) {
 	let nameFirst = {};
 	let nameRest = {};
-
 	Object.keys(names).forEach((key) => {
 		if (key === primaryLocale) {
 			nameFirst[primaryLocale] = names[key];
@@ -539,7 +670,6 @@ function sortNamesPrimaryFirst(names) {
 			nameRest[key] = names[key];
 		}
 	});
-
 	return {...nameFirst, ...nameRest};
 }
 </script>
@@ -572,11 +702,6 @@ function sortNamesPrimaryFirst(names) {
 
 	.dropDownActions svg {
 		width: 1.5em;
-	}
-
-	.link-disabled {
-		opacity: 0.5;
-		pointer-events: none;
 	}
 }
 

@@ -3,7 +3,7 @@ export default {
 	component: 'author-affiliations',
 	authorId: 1,
 	primaryLocale: 'en',
-	supportedFormLocales: [
+	locales: [
 		{key: 'en', label: 'English'},
 		{key: 'fr_CA', label: 'French (Canada)'},
 		{key: 'de', label: 'German'},
@@ -41,7 +41,7 @@ export default {
 			},
 		},
 	],
-	apiResponse: {
+	searchResults: {
 		itemsMax: 110723,
 		items: [
 			{
@@ -376,7 +376,7 @@ export default {
 			},
 		],
 	},
-	newAffiliationPending: {
+	newAffiliation: {
 		id: null,
 		authorId: 1,
 		ror: null,
