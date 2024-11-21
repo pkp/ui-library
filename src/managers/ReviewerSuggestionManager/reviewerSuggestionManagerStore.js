@@ -51,6 +51,8 @@ export const useReviewerSuggestionManagerStore = defineComponentStore(
 					fullName: localize(reviewerSuggestion.fullName),
 					affiliation: localize(reviewerSuggestion.affiliation),
 					suggestionReason: localize(reviewerSuggestion.suggestionReason),
+					existingReviewerRole: reviewerSuggestion.existingReviewerRole,
+					existingUserId: reviewerSuggestion.existingUserId,
 				});
 			});
 
