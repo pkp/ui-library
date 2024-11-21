@@ -19,7 +19,11 @@ export function useReviewerSuggestionManagerActions() {
 				submissionId: submission.id,
 				stageId: submissionStageId,
 				reviewRoundId: reviewRoundId,
-				selectionType: pkp.const.REVIEWER_SELECT_CREATE,
+				selectionType: reviewerSuggestion.existingUserId
+					? reviewerSuggestion.existingReviewerRole
+						? pkp.const.REVIEWER_SELECT_ADVANCED_SEARCH
+						: pkp.const.REVIEWER_SELECT_ENROLL_EXISTING
+					: pkp.const.REVIEWER_SELECT_CREATE,
 				reviewerSuggestionId: reviewerSuggestion.id,
 			},
 		});

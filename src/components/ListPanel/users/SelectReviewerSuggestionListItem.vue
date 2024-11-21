@@ -101,6 +101,14 @@ export default {
 		 * @param
 		 */
 		select() {
+			if (this.item.existingUserId && this.item.existingReviewerRole) {
+				pkp.eventBus.$emit('selected:reviewer', {
+					id: this.item.existingUserId,
+					fullName: this.localize(this.item.fullName),
+				});
+				return;
+			}
+
 			const {t} = useLocalize();
 
 			const {openLegacyModal} = useLegacyGridUrl({
@@ -110,7 +118,11 @@ export default {
 					submissionId: this.submissionId,
 					stageId: this.stageId,
 					reviewRoundId: this.reviewRoundId,
-					selectionType: pkp.const.REVIEWER_SELECT_CREATE,
+					selectionType: this.item.existingUserId
+						? this.item.existingReviewerRole
+							? pkp.const.REVIEWER_SELECT_ADVANCED_SEARCH
+							: pkp.const.REVIEWER_SELECT_ENROLL_EXISTING
+						: pkp.const.REVIEWER_SELECT_CREATE,
 					reviewerSuggestionId: this.item.id,
 				},
 			});
