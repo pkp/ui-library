@@ -1,6 +1,6 @@
 <template>
 	<span class="-screenReader">{{ selectedLabel }}</span>
-	<span v-if="!currentSelected.length" class="-screenReader">
+	<span v-if="!currentValue.length" class="-screenReader">
 		{{ t('common.none') }}
 	</span>
 	<PkpBadge
@@ -16,7 +16,7 @@
 			class="pkpAutosuggest__deselect text-negative hover:text-on-dark"
 			@click.stop.prevent="deselect(item)"
 		>
-			<Icon icon="times" />
+			<Icon icon="Cancel" class="h-3 w-3" />
 			<span class="-screenReader">
 				{{ deselectLabel.replace('{$item}', item.label) }}
 			</span>
