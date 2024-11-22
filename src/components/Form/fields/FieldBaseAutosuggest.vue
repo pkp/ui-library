@@ -80,43 +80,22 @@
 					/>
 				</div>
 				<!-- End Heading part repeated for inline scenario -->
-				<span class="-screenReader">{{ selectedLabel }}</span>
-				<span v-if="!currentValue.length" class="-screenReader">
-					{{ t('common.none') }}
-				</span>
-				<PkpBadge
-					v-for="item in currentSelected"
-					v-else
-					:key="item.value"
-					class="pkpAutosuggest__selection"
-				>
-					{{ item.label }}
-					<slot v-if="item.hasSlot" name="input-slot" />
-					<button
-						v-if="!isDisabled"
-						class="pkpAutosuggest__deselect text-negative hover:text-on-dark"
-						@click.stop.prevent="deselect(item)"
-					>
-						<Icon icon="Cancel" class="h-3 w-3" />
-						<span class="-screenReader">
-							{{ deselectLabel.replace('{$item}', item.label) }}
-						</span>
-					</button>
-				</PkpBadge>
-				<FieldComboBox
+				<Autosuggest
 					v-if="!isDisabled"
-					:id="autosuggestId"
+					v-bind="autoSuggestProps"
 					ref="cb"
 					v-model:inputValue="inputValue"
 					v-model:isFocused="isFocused"
-					:input-props="inputProps"
-					:suggestions="suggestions"
-					@update:model-value="selectSuggestion"
+					@select-suggestion="selectSuggestion"
+					@deselect="deselect"
 				>
+					<template v-if="$slots['input-slot']" #input-slot>
+						<slot name="input-slot"></slot>
+					</template>
 					<template v-if="$slots.option" #option="{suggestion}">
 						<slot name="option" :suggestion="suggestion"></slot>
 					</template>
-				</FieldComboBox>
+				</Autosuggest>
 				<span class="pkpAutosuggest__endslot">
 					<slot name="end"></slot>
 				</span>
@@ -138,14 +117,13 @@
 
 <script>
 import FieldBase from './FieldBase.vue';
-import FieldComboBox from './FieldComboBox.vue';
-import PkpBadge from '@/components/Badge/Badge.vue';
+import Autosuggest from './Autosuggest.vue';
 import FormFieldLabel from '@/components/Form/FormFieldLabel.vue';
 import Tooltip from '@/components/Tooltip/Tooltip.vue';
 import HelpButton from '@/components/HelpButton/HelpButton.vue';
 import FieldError from '@/components/Form/FieldError.vue';
 import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
-import Icon from '@/components/Icon/Icon.vue';
+import {useAutosuggest} from '@/composables/useAutosuggest';
 
 import ajaxError from '@/mixins/ajaxError';
 import debounce from 'debounce';
@@ -153,14 +131,12 @@ import debounce from 'debounce';
 export default {
 	name: 'FieldBaseAutosuggest',
 	components: {
-		PkpBadge,
 		FormFieldLabel,
 		Tooltip,
 		HelpButton,
 		FieldError,
-		Icon,
 		MultilingualProgress,
-		FieldComboBox,
+		Autosuggest,
 	},
 	extends: FieldBase,
 	mixins: [ajaxError],
@@ -292,6 +268,36 @@ export default {
 			var direction = document.body.getAttribute('dir');
 			return direction === 'rtl';
 		},
+		autoSuggestProps() {
+			const {autoSuggestProps} = useAutosuggest(
+				this.inputProps,
+				this.autosuggestId,
+				this.suggestions,
+				this.selectedLabel,
+				this.currentValue,
+				this.currentSelected,
+				this.isDisabled,
+				this.deselectLabel,
+			);
+			return autoSuggestProps;
+		},
+	},
+	watch: {
+		inputValue(newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+			this.getSuggestions();
+		},
+	},
+	mounted() {
+		// Inline labels can not be used with multilingual fields
+		if (this.isMultilingual && this.isLabelInline) {
+			throw new Error(
+				'An inline label can not be used with a multilingual autosuggest field. This error encountered in the field ' +
+					this.name,
+			);
+		}
 	},
 	methods: {
 		/**
@@ -406,23 +412,6 @@ export default {
 				'The setSuggestions method must be implemented in any component that extends FieldBaseAutosuggest.',
 			);
 		},
-	},
-	watch: {
-		inputValue(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			this.getSuggestions();
-		},
-	},
-	mounted() {
-		// Inline labels can not be used with multilingual fields
-		if (this.isMultilingual && this.isLabelInline) {
-			throw new Error(
-				'An inline label can not be used with a multilingual autosuggest field. This error encountered in the field ' +
-					this.name,
-			);
-		}
 	},
 };
 </script>
