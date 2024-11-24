@@ -123,7 +123,6 @@ import Tooltip from '@/components/Tooltip/Tooltip.vue';
 import HelpButton from '@/components/HelpButton/HelpButton.vue';
 import FieldError from '@/components/Form/FieldError.vue';
 import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
-import {useAutosuggest} from '@/composables/useAutosuggest';
 
 import ajaxError from '@/mixins/ajaxError';
 import debounce from 'debounce';
@@ -269,17 +268,16 @@ export default {
 			return direction === 'rtl';
 		},
 		autoSuggestProps() {
-			const {autoSuggestProps} = useAutosuggest(
-				this.inputProps,
-				this.autosuggestId,
-				this.suggestions,
-				this.selectedLabel,
-				this.currentValue,
-				this.currentSelected,
-				this.isDisabled,
-				this.deselectLabel,
-			);
-			return autoSuggestProps;
+			return {
+				id: this.autosuggestId,
+				inputProps: this.inputProps,
+				suggestions: this.suggestions,
+				selectedLabel: this.selectedLabel,
+				currentValue: this.currentValue,
+				currentSelected: this.currentSelected,
+				isDisabled: this.isDisabled,
+				deselectLabel: this.deselectLabel,
+			};
 		},
 	},
 	watch: {
