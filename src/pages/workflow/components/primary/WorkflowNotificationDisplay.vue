@@ -9,10 +9,12 @@
 import {computed, watch} from 'vue';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
+import {useApp} from '@/composables/useApp';
 
 const props = defineProps({submission: {type: Object, required: true}});
 
 const {pageUrl} = useUrl(`notification/fetchNotification`);
+const {isOJS, isOMP} = useApp();
 
 function getRequestOptionsPerStage(stageId) {
 	switch (stageId) {
@@ -31,24 +33,36 @@ function getRequestOptionsPerStage(stageId) {
 				[pkp.const.NOTIFICATION_LEVEL_TRIVIAL]: 0,
 			};
 		case pkp.const.WORKFLOW_STAGE_ID_PRODUCTION:
-			return {
-				[pkp.const.NOTIFICATION_LEVEL_NORMAL]: {
-					/**  OMP specific */
-					[pkp.const.NOTIFICATION_TYPE_VISIT_CATALOG]: {
-						assocType: pkp.const.ASSOC_TYPE_SUBMISSION,
-						assocId: props.submission.id,
+			if (isOJS()) {
+				return {
+					[pkp.const.NOTIFICATION_LEVEL_NORMAL]: {
+						[pkp.const.NOTIFICATION_TYPE_ASSIGN_PRODUCTIONUSER]: {
+							assocType: pkp.const.ASSOC_TYPE_SUBMISSION,
+							assocId: props.submission.id,
+						},
+						[pkp.const.NOTIFICATION_TYPE_AWAITING_REPRESENTATIONS]: {
+							assocType: pkp.const.ASSOC_TYPE_SUBMISSION,
+							assocId: props.submission.id,
+						},
 					},
-					[pkp.const.NOTIFICATION_TYPE_ASSIGN_PRODUCTIONUSER]: {
-						assocType: pkp.const.ASSOC_TYPE_SUBMISSION,
-						assocId: props.submission.id,
+					[pkp.const.NOTIFICATION_LEVEL_TRIVIAL]: 0,
+				};
+			} else if (isOMP()) {
+				return {
+					[pkp.const.NOTIFICATION_LEVEL_NORMAL]: {
+						[pkp.const.NOTIFICATION_TYPE_VISIT_CATALOG]: {
+							assocType: pkp.const.ASSOC_TYPE_SUBMISSION,
+							assocId: props.submission.id,
+						},
+						[pkp.const.NOTIFICATION_TYPE_FORMAT_NEEDS_APPROVED_SUBMISSION]: {
+							assocType: pkp.const.ASSOC_TYPE_SUBMISSION,
+							assocId: props.submission.id,
+						},
 					},
-					[pkp.const.NOTIFICATION_TYPE_AWAITING_REPRESENTATIONS]: {
-						assocType: pkp.const.ASSOC_TYPE_SUBMISSION,
-						assocId: props.submission.id,
-					},
-				},
-				[pkp.const.NOTIFICATION_LEVEL_TRIVIAL]: 0,
-			};
+					[pkp.const.NOTIFICATION_LEVEL_TRIVIAL]: 0,
+				};
+			}
+			return null;
 		default:
 			return null;
 	}

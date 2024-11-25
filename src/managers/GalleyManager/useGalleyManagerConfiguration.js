@@ -1,10 +1,11 @@
 import {useLocalize} from '@/composables/useLocalize';
+import {useApp} from '@/composables/useApp';
 
 export function useGalleyManagerConfiguration() {
 	const {t} = useLocalize();
-
+	const {isOPS} = useApp();
 	function getGalleyGridComponent() {
-		if (pkp.context.app === 'ops') {
+		if (isOPS()) {
 			return 'grid.preprintGalleys.PreprintGalleyGridHandler';
 		} else {
 			return 'grid.articleGalleys.ArticleGalleyGridHandler';
