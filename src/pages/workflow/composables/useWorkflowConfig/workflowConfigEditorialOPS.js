@@ -51,16 +51,33 @@ export function getHeaderItems({
 
 export const WorkflowConfig = {
 	common: {
-		getPrimaryItems: ({submission, permissions}) => {
-			return [
-				{
-					component: 'WorkflowChangeSubmissionLanguage',
-					props: {
-						submission,
-						canChangeSubmissionLanguage: false,
+		getPrimaryItems: ({submission, permissions, selectedStageId}) => {
+			if (!permissions.accessibleStages.includes(selectedStageId)) {
+				return {
+					shouldContinue: false,
+					items: [
+						{
+							component: 'PrimaryBasicMetadata',
+							props: {
+								body: t('user.authorization.accessibleWorkflowStage'),
+							},
+						},
+					],
+				};
+			}
+
+			return {
+				shouldContinue: true,
+				items: [
+					{
+						component: 'WorkflowChangeSubmissionLanguage',
+						props: {
+							submission,
+							canChangeSubmissionLanguage: false,
+						},
 					},
-				},
-			];
+				],
+			};
 		},
 	},
 	[pkp.const.WORKFLOW_STAGE_ID_PRODUCTION]: {
@@ -169,7 +186,7 @@ export const PublicationConfig = {
 					props: {},
 				});
 			}
-			return items;
+			return {items, shouldContinue: true};
 		},
 		getPublicationControlsLeft: ({
 			submission,
@@ -208,7 +225,7 @@ export const PublicationConfig = {
 				},
 			]);
 
-			return items;
+			return {items, shouldContinue: true};
 		},
 		getPublicationControlsRight: ({
 			submission,
@@ -292,7 +309,7 @@ export const PublicationConfig = {
 				}
 			}
 
-			return items;
+			return {items, shouldContinue: true};
 		},
 	},
 	titleAbstract: {

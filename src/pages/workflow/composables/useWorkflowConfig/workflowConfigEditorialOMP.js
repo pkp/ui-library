@@ -254,6 +254,9 @@ export const WorkflowConfig = {
 		},
 		getSecondaryItems: ({submission, selectedReviewRound, selectedStageId}) => {
 			const items = [];
+			if (!selectedReviewRound) {
+				return [];
+			}
 
 			// TODO add isDecidingEditor boolean to api to make it more accurate
 			const selectedStage = getStageById(submission, selectedStageId);
@@ -452,52 +455,6 @@ export const MarketingConfig = {
 
 export const PublicationConfig = {
 	common: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublicationId,
-			selectedPublication,
-		}) => {
-			const items = [];
-			if (selectedPublication.status === pkp.const.STATUS_PUBLISHED) {
-				items.push({
-					component: 'WorkflowPublicationEditDisabled',
-					props: {},
-				});
-			}
-			return items;
-		},
-		getPublicationControlsLeft: ({
-			submission,
-			selectedPublicationId,
-			selectedPublication,
-			permissions,
-		}) => {
-			const items = [];
-
-			if (
-				submission.status !== pkp.const.STATUS_PUBLISHED &&
-				submission.publications.length < 2
-			) {
-				items.push({
-					component: 'WorkflowChangeSubmissionLanguage',
-					props: {
-						submission,
-						canChangeSubmissionLanguage:
-							permissions.canChangeSubmissionLanguage,
-					},
-				});
-			}
-
-			items.push({
-				component: 'WorkflowPublicationVersionControl',
-				props: {
-					submission,
-					selectedPublicationId: selectedPublicationId,
-				},
-			});
-
-			return items;
-		},
 		getPublicationControlsRight: ({
 			submission,
 			selectedPublicationId,
@@ -534,8 +491,7 @@ export const PublicationConfig = {
 
 						label: t('publication.publish'),
 						isSecondary: true,
-						action:
-							Actions.WORKFLOW_ASSIGN_TO_ISSUE_AND_SCHEDULE_FOR_PUBLICATION,
+						action: Actions.WORKFLOW_SCHEDULE_FOR_PUBLICATION,
 					},
 				});
 			} else if (selectedPublication.status === pkp.const.STATUS_SCHEDULED) {
@@ -581,7 +537,7 @@ export const PublicationConfig = {
 				}
 			}
 
-			return items;
+			return {items, shouldContinue: true};
 		},
 	},
 	titleAbstract: {

@@ -77,8 +77,16 @@ export function useWorkflowConfigOMP({dashboardPage}) {
 				}
 			}
 
+			const commonItems =
+				Configs.WorkflowConfig?.common?.[getterFnName]?.(itemsArgs);
+
+			// early return, if common logic decides there is nothing more to show
+			if (commonItems?.shouldContinue === false) {
+				return commonItems?.items || [];
+			}
+
 			return [
-				...(Configs.WorkflowConfig?.common?.[getterFnName]?.(itemsArgs) || []),
+				...(commonItems?.items || []),
 				...(Configs.WorkflowConfig[selectedMenuState.stageId]?.[getterFnName]?.(
 					itemsArgs,
 				) || []),
@@ -95,9 +103,14 @@ export function useWorkflowConfigOMP({dashboardPage}) {
 				return [];
 			}
 
+			const commonItems =
+				Configs.PublicationConfig?.common?.[getterFnName]?.(itemsArgs);
+
+			if (commonItems?.shouldContinue === false) {
+				return commonItems?.items || [];
+			}
 			return [
-				...(Configs.PublicationConfig?.common?.[getterFnName]?.(itemsArgs) ||
-					[]),
+				...(commonItems?.items || []),
 				...(Configs.PublicationConfig[selectedMenuState.secondaryMenuItem]?.[
 					getterFnName
 				]?.(itemsArgs) || []),
@@ -113,8 +126,15 @@ export function useWorkflowConfigOMP({dashboardPage}) {
 				return [];
 			}
 
+			const commonItems =
+				Configs.MarketingConfig?.common?.[getterFnName]?.(itemsArgs);
+
+			if (commonItems?.shouldContinue === false) {
+				return commonItems?.items || [];
+			}
+
 			return [
-				...(Configs.MarketingConfig?.common?.[getterFnName]?.(itemsArgs) || []),
+				...(commonItems?.items || []),
 				...(Configs.MarketingConfig[selectedMenuState.secondaryMenuItem]?.[
 					getterFnName
 				]?.(itemsArgs) || []),

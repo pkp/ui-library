@@ -13,11 +13,9 @@ export function useWorkflowConfigOPS({dashboardPage}) {
 		Configs = {
 			getHeaderItems: ConfigEditorialOPS.getHeaderItems,
 			WorkflowConfig: {
-				//...ConfigEditorialShared.WorkflowConfig,
 				...ConfigEditorialOPS.WorkflowConfig,
 			},
 			PublicationConfig: {
-				//...ConfigEditorialShared.PublicationConfig,
 				...ConfigEditorialOPS.PublicationConfig,
 			},
 		};
@@ -70,9 +68,16 @@ export function useWorkflowConfigOPS({dashboardPage}) {
 					return [];
 				}
 			}
+			const commonItems =
+				Configs.WorkflowConfig?.common?.[getterFnName]?.(itemsArgs);
+
+			// early return, if common logic decides there is nothing more to show
+			if (commonItems?.shouldContinue === false) {
+				return commonItems?.items || [];
+			}
 
 			return [
-				...(Configs.WorkflowConfig?.common?.[getterFnName]?.(itemsArgs) || []),
+				...(commonItems?.items || []),
 				...(Configs.WorkflowConfig[selectedMenuState.stageId]?.[getterFnName]?.(
 					itemsArgs,
 				) || []),
@@ -89,9 +94,15 @@ export function useWorkflowConfigOPS({dashboardPage}) {
 				return [];
 			}
 
+			const commonItems =
+				Configs.PublicationConfig?.common?.[getterFnName]?.(itemsArgs);
+
+			if (commonItems?.shouldContinue === false) {
+				return commonItems?.items || [];
+			}
+
 			return [
-				...(Configs.PublicationConfig?.common?.[getterFnName]?.(itemsArgs) ||
-					[]),
+				...(commonItems?.items || []),
 				...(Configs.PublicationConfig[selectedMenuState.secondaryMenuItem]?.[
 					getterFnName
 				]?.(itemsArgs) || []),

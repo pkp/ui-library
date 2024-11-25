@@ -34,6 +34,7 @@ import WorkflowActionButton from './components/action/WorkflowActionButton.vue';
 import WorkflowRecommendOnlyControls from './components/action/WorkflowRecommendOnlyControls.vue';
 import WorkflowRecommendOnlyListingRecommendations from './components/secondary/WorkflowRecommendOnlyListingRecommendations.vue';
 import WorkflowNotificationDisplay from './components/primary/WorkflowNotificationDisplay.vue';
+import WorkflowListingEmails from './components/primary/WorkflowListingEmails.vue';
 import WorkflowPaymentDropdown from './components/header/WorkflowPaymentDropdown.vue';
 import WorkflowPublicationForm from './components/publication/WorkflowPublicationForm.vue';
 import WorkflowPublicationJats from './components/publication/WorkflowPublicationJats.vue';
@@ -203,6 +204,7 @@ export const useWorkflowStore = defineComponentStore('workflow', (props) => {
 		WorkflowRecommendOnlyControls,
 		WorkflowRecommendOnlyListingRecommendations,
 		WorkflowNotificationDisplay,
+		WorkflowListingEmails,
 		WorkflowPaymentDropdown,
 		WorkflowPrimaryBasicMetadata,
 		WorkflowReviewRoundStatus,

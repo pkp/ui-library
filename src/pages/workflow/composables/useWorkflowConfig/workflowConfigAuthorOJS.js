@@ -31,24 +31,33 @@ export function getHeaderItems({
 
 export const WorkflowConfig = {
 	common: {
-		getPrimaryItems: ({submission, permissions}) => {
-			return [
-				{
-					component: 'WorkflowChangeSubmissionLanguage',
-					props: {
-						submission,
-						canChangeSubmissionLanguage: false,
+		getPrimaryItems: ({submission, permissions, selectedStageId}) => {
+			if (!permissions.accessibleStages.includes(selectedStageId)) {
+				return {
+					shouldContinue: false,
+					items: [
+						{
+							component: 'PrimaryBasicMetadata',
+							props: {
+								body: t('user.authorization.accessibleWorkflowStage'),
+							},
+						},
+					],
+				};
+			}
+
+			return {
+				shouldContinue: true,
+				items: [
+					{
+						component: 'WorkflowChangeSubmissionLanguage',
+						props: {
+							submission,
+							canChangeSubmissionLanguage: false,
+						},
 					},
-				},
-			];
-		},
-		getSecondaryItems: ({submission, selectedReviewRound, selectedStageId}) => {
-			const items = [];
-			return items;
-		},
-		getActionsItems: ({submission, selectedReviewRound, selectedStageId}) => {
-			const items = [];
-			return items;
+				],
+			};
 		},
 	},
 	[pkp.const.WORKFLOW_STAGE_ID_SUBMISSION]: {
@@ -117,6 +126,11 @@ export const WorkflowConfig = {
 					props: {reviewRound: selectedReviewRound},
 				});
 			}
+
+			items.push({
+				component: 'WorkflowListingEmails',
+				props: {submission, selectedStageId: selectedStageId},
+			});
 
 			if (
 				getOpenReviewAssignmentsForRound(
@@ -205,11 +219,6 @@ export const WorkflowConfig = {
 			}
 
 			items.push({
-				component: 'WorkflowNotificationDisplay',
-				props: {submission: submission},
-			});
-
-			items.push({
 				component: 'DiscussionManager',
 				props: {
 					submissionId: submission.id,
@@ -236,7 +245,7 @@ export const PublicationConfig = {
 					props: {},
 				});
 			}
-			return items;
+			return {items, shouldContinue: true};
 		},
 		getPublicationControlsLeft: ({
 			submission,
@@ -253,15 +262,7 @@ export const PublicationConfig = {
 				},
 			});
 
-			return items;
-		},
-		getPublicationControlsRight: ({
-			submission,
-			selectedPublicationId,
-			selectedPublication,
-		}) => {
-			const items = [];
-			return items;
+			return {items, shouldContinue: true};
 		},
 	},
 	titleAbstract: {

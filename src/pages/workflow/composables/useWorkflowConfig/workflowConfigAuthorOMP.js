@@ -30,27 +30,7 @@ export function getHeaderItems({
 }
 
 export const WorkflowConfig = {
-	common: {
-		getPrimaryItems: ({submission, permissions}) => {
-			return [
-				{
-					component: 'WorkflowChangeSubmissionLanguage',
-					props: {
-						submission,
-						canChangeSubmissionLanguage: false,
-					},
-				},
-			];
-		},
-		getSecondaryItems: ({submission, selectedReviewRound, selectedStageId}) => {
-			const items = [];
-			return items;
-		},
-		getActionsItems: ({submission, selectedReviewRound, selectedStageId}) => {
-			const items = [];
-			return items;
-		},
-	},
+	common: {},
 	[pkp.const.WORKFLOW_STAGE_ID_SUBMISSION]: {
 		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
@@ -223,47 +203,6 @@ export const WorkflowConfig = {
 };
 
 export const PublicationConfig = {
-	common: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublicationId,
-			selectedPublication,
-		}) => {
-			const items = [];
-			if (selectedPublication.status === pkp.const.STATUS_PUBLISHED) {
-				items.push({
-					component: 'WorkflowPublicationEditDisabled',
-					props: {},
-				});
-			}
-			return items;
-		},
-		getPublicationControlsLeft: ({
-			submission,
-			selectedPublicationId,
-			selectedPublication,
-		}) => {
-			const items = [];
-
-			items.push({
-				component: 'WorkflowPublicationVersionControl',
-				props: {
-					submission,
-					selectedPublicationId: selectedPublicationId,
-				},
-			});
-
-			return items;
-		},
-		getPublicationControlsRight: ({
-			submission,
-			selectedPublicationId,
-			selectedPublication,
-		}) => {
-			const items = [];
-			return items;
-		},
-	},
 	titleAbstract: {
 		getPrimaryItems: ({
 			submission,

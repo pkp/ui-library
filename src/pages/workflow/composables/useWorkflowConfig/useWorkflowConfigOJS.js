@@ -1,4 +1,3 @@
-import {useLocalize} from '@/composables/useLocalize';
 import {DashboardPageTypes} from '@/pages/dashboard/dashboardPageStore';
 
 import * as ConfigAuthorShared from './workflowConfigAuthorOJS';
@@ -8,8 +7,6 @@ import * as ConfigAuthorOJS from './workflowConfigAuthorOJS';
 import * as ConfigEditorialOJS from './workflowConfigEditorialOJS';
 
 export function useWorkflowConfigOJS({dashboardPage}) {
-	const {t} = useLocalize();
-
 	let Configs = null;
 
 	if (dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD) {
@@ -63,21 +60,16 @@ export function useWorkflowConfigOJS({dashboardPage}) {
 				return [];
 			}
 
-			if (!permissions.accessibleStages.includes(selectedMenuState.stageId)) {
-				if (getterFnName === 'getPrimaryItems') {
-					return [
-						{
-							component: 'PrimaryBasicMetadata',
-							props: {body: t('user.authorization.accessibleWorkflowStage')},
-						},
-					];
-				} else {
-					return [];
-				}
+			const commonItems =
+				Configs.WorkflowConfig?.common?.[getterFnName]?.(itemsArgs);
+
+			// early return, if common logic decides there is nothing more to show
+			if (commonItems?.shouldContinue === false) {
+				return commonItems?.items || [];
 			}
 
 			return [
-				...(Configs.WorkflowConfig?.common?.[getterFnName]?.(itemsArgs) || []),
+				...(commonItems?.items || []),
 				...(Configs.WorkflowConfig[selectedMenuState.stageId]?.[getterFnName]?.(
 					itemsArgs,
 				) || []),
@@ -94,9 +86,15 @@ export function useWorkflowConfigOJS({dashboardPage}) {
 				return [];
 			}
 
+			const commonItems =
+				Configs.PublicationConfig?.common?.[getterFnName]?.(itemsArgs);
+
+			if (commonItems?.shouldContinue === false) {
+				return commonItems?.items || [];
+			}
+
 			return [
-				...(Configs.PublicationConfig?.common?.[getterFnName]?.(itemsArgs) ||
-					[]),
+				...(commonItems?.items || []),
 				...(Configs.PublicationConfig[selectedMenuState.secondaryMenuItem]?.[
 					getterFnName
 				]?.(itemsArgs) || []),

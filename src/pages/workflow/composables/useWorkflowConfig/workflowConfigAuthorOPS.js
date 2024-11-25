@@ -39,7 +39,7 @@ export const PublicationConfig = {
 					props: {},
 				});
 			}
-			return items;
+			return {items, shouldContinue: true};
 		},
 		getPublicationControlsLeft: ({
 			submission,
@@ -62,14 +62,6 @@ export const PublicationConfig = {
 				},
 			]);
 
-			return items;
-		},
-		getPublicationControlsRight: ({
-			submission,
-			selectedPublicationId,
-			selectedPublication,
-		}) => {
-			const items = [];
 			return items;
 		},
 	},

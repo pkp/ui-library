@@ -1,10 +1,12 @@
 <template>
-	<div v-for="(notification, i) in notificationsToDisplay" :key="i">
-		{{ notification.text }}
+	<div v-if="notificationsToDisplay?.length">
+		<div v-for="(notification, i) in notificationsToDisplay" :key="i">
+			{{ notification.text }}
+		</div>
 	</div>
 </template>
 <script setup>
-import {computed} from 'vue';
+import {computed, watch} from 'vue';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 
@@ -12,41 +14,45 @@ const props = defineProps({submission: {type: Object, required: true}});
 
 const {pageUrl} = useUrl(`notification/fetchNotification`);
 
-/**
- *
- *
-  return [
-    Notification::NOTIFICATION_LEVEL_NORMAL => [
-        Notification::NOTIFICATION_TYPE_VISIT_CATALOG => [Application::ASSOC_TYPE_SUBMISSION, $submissionId],
-        Notification::NOTIFICATION_TYPE_ASSIGN_PRODUCTIONUSER => [Application::ASSOC_TYPE_SUBMISSION, $submissionId],
-        Notification::NOTIFICATION_TYPE_AWAITING_REPRESENTATIONS => [Application::ASSOC_TYPE_SUBMISSION, $submissionId],
-    ],
-    Notification::NOTIFICATION_LEVEL_TRIVIAL => []
-];
-
- *
- *
- */
-
-const requestData = {
-	requestOptions: {
-		[pkp.const.NOTIFICATION_LEVEL_NORMAL]: {
-			[pkp.const.NOTIFICATION_TYPE_VISIT_CATALOG]: {
-				assocType: pkp.const.ASSOC_TYPE_SUBMISSION,
-				assocId: props.submission.id,
-			},
-			[pkp.const.NOTIFICATION_TYPE_ASSIGN_PRODUCTIONUSER]: {
-				assocType: pkp.const.ASSOC_TYPE_SUBMISSION,
-				assocId: props.submission.id,
-			},
-			[pkp.const.NOTIFICATION_TYPE_AWAITING_REPRESENTATIONS]: {
-				assocType: pkp.const.ASSOC_TYPE_SUBMISSION,
-				assocId: props.submission.id,
-			},
-		},
-		[pkp.const.NOTIFICATION_LEVEL_TRIVIAL]: 0,
-	},
-};
+function getRequestOptionsPerStage(stageId) {
+	switch (stageId) {
+		case pkp.const.WORKFLOW_STAGE_ID_EDITING:
+			return {
+				[pkp.const.NOTIFICATION_LEVEL_NORMAL]: {
+					[pkp.const.NOTIFICATION_TYPE_ASSIGN_COPYEDITOR]: {
+						assocType: pkp.const.ASSOC_TYPE_SUBMISSION,
+						assocId: props.submission.id,
+					},
+					[pkp.const.NOTIFICATION_TYPE_AWAITING_COPYEDITS]: {
+						assocType: pkp.const.ASSOC_TYPE_SUBMISSION,
+						assocId: props.submission.id,
+					},
+				},
+				[pkp.const.NOTIFICATION_LEVEL_TRIVIAL]: 0,
+			};
+		case pkp.const.WORKFLOW_STAGE_ID_PRODUCTION:
+			return {
+				[pkp.const.NOTIFICATION_LEVEL_NORMAL]: {
+					/**  OMP specific */
+					[pkp.const.NOTIFICATION_TYPE_VISIT_CATALOG]: {
+						assocType: pkp.const.ASSOC_TYPE_SUBMISSION,
+						assocId: props.submission.id,
+					},
+					[pkp.const.NOTIFICATION_TYPE_ASSIGN_PRODUCTIONUSER]: {
+						assocType: pkp.const.ASSOC_TYPE_SUBMISSION,
+						assocId: props.submission.id,
+					},
+					[pkp.const.NOTIFICATION_TYPE_AWAITING_REPRESENTATIONS]: {
+						assocType: pkp.const.ASSOC_TYPE_SUBMISSION,
+						assocId: props.submission.id,
+					},
+				},
+				[pkp.const.NOTIFICATION_LEVEL_TRIVIAL]: 0,
+			};
+		default:
+			return null;
+	}
+}
 
 function objectToFormData(obj, formData = new FormData(), parentKey = '') {
 	for (const key in obj) {
@@ -64,12 +70,27 @@ function objectToFormData(obj, formData = new FormData(), parentKey = '') {
 	return formData;
 }
 
+const requestBody = computed(() => {
+	const requestOptions = getRequestOptionsPerStage(props.submission.stageId);
+	if (requestOptions) {
+		return objectToFormData({requestOptions});
+	}
+	return null;
+});
 const {data, fetch} = useFetch(pageUrl, {
 	method: 'POST',
-	body: objectToFormData(requestData),
+	body: requestBody,
 });
 
-fetch();
+watch(
+	requestBody,
+	(requestBodyNew) => {
+		if (requestBodyNew) {
+			fetch();
+		}
+	},
+	{immediate: true},
+);
 
 const notificationsToDisplay = computed(() => {
 	const notifications = [];

@@ -68,16 +68,33 @@ export function getHeaderItems({
 
 export const WorkflowConfig = {
 	common: {
-		getPrimaryItems: ({submission, permissions}) => {
-			return [
-				{
-					component: 'WorkflowChangeSubmissionLanguage',
-					props: {
-						submission,
-						canChangeSubmissionLanguage: false,
+		getPrimaryItems: ({submission, permissions, selectedStageId}) => {
+			if (!permissions.accessibleStages.includes(selectedStageId)) {
+				return {
+					shouldContinue: false,
+					items: [
+						{
+							component: 'PrimaryBasicMetadata',
+							props: {
+								body: t('user.authorization.accessibleWorkflowStage'),
+							},
+						},
+					],
+				};
+			}
+
+			return {
+				shouldContinue: true,
+				items: [
+					{
+						component: 'WorkflowChangeSubmissionLanguage',
+						props: {
+							submission,
+							canChangeSubmissionLanguage: false,
+						},
 					},
-				},
-			];
+				],
+			};
 		},
 	},
 	[pkp.const.WORKFLOW_STAGE_ID_SUBMISSION]: {
@@ -263,6 +280,9 @@ export const WorkflowConfig = {
 		},
 		getSecondaryItems: ({submission, selectedReviewRound, selectedStageId}) => {
 			const items = [];
+			if (!selectedReviewRound) {
+				return [];
+			}
 
 			// TODO add isDecidingEditor boolean to api to make it more accurate
 			const selectedStage = getStageById(submission, selectedStageId);
@@ -289,6 +309,11 @@ export const WorkflowConfig = {
 		},
 		getActionItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			let items = [];
+
+			if (!selectedReviewRound) {
+				return [];
+			}
+
 			const {getCurrentReviewRound} = useSubmission();
 
 			const currentReviewRound = getCurrentReviewRound(
@@ -432,6 +457,11 @@ export const WorkflowConfig = {
 			}
 
 			items.push({
+				component: 'WorkflowNotificationDisplay',
+				props: {submission: submission},
+			});
+
+			items.push({
 				component: 'FileManager',
 				props: {
 					namespace: 'FINAL_DRAFT_FILES',
@@ -461,6 +491,7 @@ export const WorkflowConfig = {
 		},
 		getSecondaryItems: ({submission, selectedReviewRound, selectedStageId}) => {
 			const items = [];
+
 			items.push({
 				component: 'ParticipantManager',
 				props: {
@@ -605,11 +636,16 @@ export const PublicationConfig = {
 			const items = [];
 			if (selectedPublication.status === pkp.const.STATUS_PUBLISHED) {
 				items.push({
-					component: 'WorkflowPublicationEditDisabled',
-					props: {},
+					shouldContinue: true,
+					items: [
+						{
+							component: 'WorkflowPublicationEditDisabled',
+							props: {},
+						},
+					],
 				});
 			}
-			return items;
+			return {items, shouldContinue: true};
 		},
 		getPublicationControlsLeft: ({
 			submission,
@@ -641,7 +677,7 @@ export const PublicationConfig = {
 				},
 			});
 
-			return items;
+			return {items, shouldContinue: true};
 		},
 		getPublicationControlsRight: ({
 			submission,
@@ -729,7 +765,7 @@ export const PublicationConfig = {
 				}
 			}
 
-			return items;
+			return {items, shouldContinue: true};
 		},
 	},
 	titleAbstract: {
