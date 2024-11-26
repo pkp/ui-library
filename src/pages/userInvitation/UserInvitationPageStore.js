@@ -9,7 +9,10 @@ export const useUserInvitationPageStore = defineComponentStore(
 	(pageInitConfig) => {
 		const {openDialog} = useModal();
 		const {t} = useLocalize();
-
+		/**
+		 * email templates api url for search emails
+		 */
+		const emailTemplatesApiUrl = ref(pageInitConfig.emailTemplatesApiUrl);
 		/**
 		 * Invitation payload, initial value
 		 */
@@ -378,6 +381,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 			invitationPayload,
 			updatePayload,
 			registerActionForStepId,
+			emailTemplatesApiUrl,
 
 			currentStep,
 			currentStepIndex,
