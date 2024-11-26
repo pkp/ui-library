@@ -1,42 +1,20 @@
-import {useLocalize} from '@/composables/useLocalize';
 import {DashboardPageTypes} from '@/pages/dashboard/dashboardPageStore';
-
+import {deepMerge} from '@/utils/deepMerge';
 import * as ConfigAuthorOJS from './workflowConfigAuthorOJS';
 import * as ConfigEditorialOJS from './workflowConfigEditorialOJS';
 
 import * as ConfigAuthorOMP from './workflowConfigAuthorOMP';
 import * as ConfigEditorialOMP from './workflowConfigEditorialOMP';
 
-export function useWorkflowConfigOMP({dashboardPage}) {
-	const {t} = useLocalize();
+import {consolidateCommonAndSpecificItems} from './workflowConfigHelpers';
 
+export function useWorkflowConfigOMP({dashboardPage}) {
 	let Configs = null;
 
 	if (dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD) {
-		Configs = {
-			getHeaderItems: ConfigEditorialOMP.getHeaderItems,
-			WorkflowConfig: {
-				...ConfigEditorialOJS.WorkflowConfig,
-				...ConfigEditorialOMP.WorkflowConfig,
-			},
-			PublicationConfig: {
-				...ConfigEditorialOJS.PublicationConfig,
-				...ConfigEditorialOMP.PublicationConfig,
-			},
-			MarketingConfig: ConfigEditorialOMP.MarketingConfig,
-		};
+		Configs = deepMerge(deepMerge({}, ConfigEditorialOJS), ConfigEditorialOMP);
 	} else {
-		Configs = {
-			getHeaderItems: ConfigEditorialOMP.getHeaderItems,
-			WorkflowConfig: {
-				...ConfigAuthorOJS.WorkflowConfig,
-				...ConfigAuthorOMP.WorkflowConfig,
-			},
-			PublicationConfig: {
-				...ConfigAuthorOJS.PublicationConfig,
-				...ConfigAuthorOMP.PublicationConfig,
-			},
-		};
+		Configs = deepMerge(deepMerge({}, ConfigAuthorOJS), ConfigAuthorOMP);
 	}
 
 	function _getItems(
@@ -64,33 +42,12 @@ export function useWorkflowConfigOMP({dashboardPage}) {
 				return [];
 			}
 
-			if (!permissions.accessibleStages.includes(selectedMenuState.stageId)) {
-				if (getterFnName === 'getPrimaryItems') {
-					return [
-						{
-							component: 'PrimaryBasicMetadata',
-							props: {body: t('user.authorization.accessibleWorkflowStage')},
-						},
-					];
-				} else {
-					return [];
-				}
-			}
-
-			const commonItems =
-				Configs.WorkflowConfig?.common?.[getterFnName]?.(itemsArgs);
-
-			// early return, if common logic decides there is nothing more to show
-			if (commonItems?.shouldContinue === false) {
-				return commonItems?.items || [];
-			}
-
-			return [
-				...(commonItems?.items || []),
-				...(Configs.WorkflowConfig[selectedMenuState.stageId]?.[getterFnName]?.(
-					itemsArgs,
-				) || []),
-			];
+			return consolidateCommonAndSpecificItems(
+				Configs.WorkflowConfig,
+				selectedMenuState.stageId,
+				getterFnName,
+				itemsArgs,
+			);
 		} else if (selectedMenuState.primaryMenuItem === 'publication') {
 			const itemsArgs = {
 				submission,
@@ -103,18 +60,12 @@ export function useWorkflowConfigOMP({dashboardPage}) {
 				return [];
 			}
 
-			const commonItems =
-				Configs.PublicationConfig?.common?.[getterFnName]?.(itemsArgs);
-
-			if (commonItems?.shouldContinue === false) {
-				return commonItems?.items || [];
-			}
-			return [
-				...(commonItems?.items || []),
-				...(Configs.PublicationConfig[selectedMenuState.secondaryMenuItem]?.[
-					getterFnName
-				]?.(itemsArgs) || []),
-			];
+			return consolidateCommonAndSpecificItems(
+				Configs.PublicationConfig,
+				selectedMenuState.secondaryMenuItem,
+				getterFnName,
+				itemsArgs,
+			);
 		} else if (selectedMenuState.primaryMenuItem === 'marketing') {
 			const itemsArgs = {
 				submission,
@@ -126,19 +77,12 @@ export function useWorkflowConfigOMP({dashboardPage}) {
 				return [];
 			}
 
-			const commonItems =
-				Configs.MarketingConfig?.common?.[getterFnName]?.(itemsArgs);
-
-			if (commonItems?.shouldContinue === false) {
-				return commonItems?.items || [];
-			}
-
-			return [
-				...(commonItems?.items || []),
-				...(Configs.MarketingConfig[selectedMenuState.secondaryMenuItem]?.[
-					getterFnName
-				]?.(itemsArgs) || []),
-			];
+			return consolidateCommonAndSpecificItems(
+				Configs.MarketingConfig,
+				selectedMenuState.secondaryMenuItem,
+				getterFnName,
+				itemsArgs,
+			);
 		}
 	}
 

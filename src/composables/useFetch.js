@@ -1,6 +1,7 @@
 import {ref, unref} from 'vue';
 import {ofetch, createFetch} from 'ofetch';
 import {useModalStore} from '@/stores/modalStore';
+import {useDebounceFn} from '@vueuse/core';
 
 let ofetchInstance = ofetch;
 
@@ -26,7 +27,8 @@ export function getCSRFToken() {
  * @param {Object} [options.body] - The request payload, typically used with 'POST', 'PUT', or 'DELETE' requests.
  * @param {Object} [options.headers] - Additional HTTP headers to be sent with the request.
  * @param {string} [options.method] - The HTTP method to be used for the request (e.g., 'GET', 'POST', etc.).
- *
+ * @param {number} options.debouncedMs - When the fetch should be debounce, this defines the delay
+
  * @returns {Object} An object containing several reactive properties and a method for performing the fetch operation:
  * @returns {Ref<Object|null>} return.data - A ref object containing the response data from the fetch operation.
  * @returns {Ref<Object|null>} return.validationError - A ref object containing validation error data, relevant when `expectValidationError` is true.
@@ -62,7 +64,7 @@ export function useFetch(url, options = {}) {
 
 	let lastRequestController = null;
 
-	async function fetch() {
+	async function _fetch() {
 		if (lastRequestController) {
 			// abort in-flight request
 			lastRequestController.abort();
@@ -123,6 +125,10 @@ export function useFetch(url, options = {}) {
 		}
 	}
 
+	let fetch = _fetch;
+	if (options.debouncedMs) {
+		fetch = useDebounceFn(_fetch);
+	}
 	return {
 		data,
 		isSuccess,

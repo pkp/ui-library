@@ -2,7 +2,8 @@ import {useLocalize} from '@/composables/useLocalize';
 import {Actions} from '../useWorkflowActions';
 import {useSubmission} from '@/composables/useSubmission';
 import {Actions as DecisionActions} from '../useWorkflowDecisions';
-import {addItemIf} from './workflowConfigEditorialOJS';
+import {addItemIf} from './workflowConfigHelpers';
+
 const {hasSubmissionPassedStage, isDecisionAvailable, getActiveStage} =
 	useSubmission();
 const {t} = useLocalize();
@@ -407,25 +408,6 @@ export const PublicationConfig = {
 						submission,
 						publication: selectedPublication,
 						canEdit: permissions.canEditPublication,
-					},
-				},
-			];
-		},
-	},
-	jats: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublication,
-			pageInitConfig,
-			permissions,
-		}) => {
-			return [
-				{
-					component: 'WorkflowPublicationJats',
-					props: {
-						canEdit: permissions.canEditPublication,
-						submission,
-						publication: selectedPublication,
 					},
 				},
 			];

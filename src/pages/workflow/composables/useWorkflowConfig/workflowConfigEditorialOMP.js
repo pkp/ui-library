@@ -2,10 +2,11 @@ import {useLocalize} from '@/composables/useLocalize';
 import {Actions} from '../useWorkflowActions';
 import {useSubmission} from '@/composables/useSubmission';
 import {Actions as DecisionActions} from '../useWorkflowDecisions';
-import {addItemIf} from './workflowConfigEditorialOJS';
+import {addItemIf} from './workflowConfigHelpers';
 const {hasSubmissionPassedStage, getStageById, isDecisionAvailable} =
 	useSubmission();
 const {t} = useLocalize();
+
 export function getHeaderItems({
 	submission,
 	selectedPublication,
@@ -57,50 +58,8 @@ export function getHeaderItems({
 
 export const WorkflowConfig = {
 	[pkp.const.WORKFLOW_STAGE_ID_SUBMISSION]: {
-		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
-			const items = [];
-
-			if (
-				hasSubmissionPassedStage(
-					submission,
-					pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
-				)
-			) {
-				items.push({component: 'SubmissionStatus', props: {submission}});
-			}
-
-			items.push({
-				component: 'FileManager',
-				props: {
-					namespace: 'SUBMISSION_FILES',
-					submission: submission,
-					submissionStageId: selectedStageId,
-				},
-			});
-
-			items.push({
-				component: 'DiscussionManager',
-				props: {submissionId: submission.id, stageId: selectedStageId},
-			});
-
-			return items;
-		},
-		getSecondaryItems: ({submission, selectedReviewRound, selectedStageId}) => {
-			const items = [];
-			items.push({
-				component: 'ParticipantManager',
-				props: {
-					submission,
-					submissionStageId: selectedStageId,
-				},
-			});
-
-			return items;
-		},
-
 		getActionItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
-
 			addItemIf(
 				items,
 				{

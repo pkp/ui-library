@@ -3,6 +3,7 @@ import {Actions} from '../useWorkflowActions';
 import {useSubmission} from '@/composables/useSubmission';
 import {Actions as WorkflowActions} from '../useWorkflowActions';
 import {Actions as DecisionActions} from '../useWorkflowDecisions';
+import {addItemIf} from './workflowConfigHelpers';
 const {
 	hasSubmissionPassedStage,
 	getActiveStage,
@@ -10,12 +11,6 @@ const {
 	isDecisionAvailable,
 } = useSubmission();
 const {t} = useLocalize();
-
-export function addItemIf(items, item, condition) {
-	if (condition) {
-		items.push(item);
-	}
-}
 
 export function getHeaderItems({
 	submission,

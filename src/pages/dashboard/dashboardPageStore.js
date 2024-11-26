@@ -201,6 +201,8 @@ export const useDashboardPageStore = defineComponentStore(
 			currentPage,
 			pageSize: countPerPage,
 			query: submissionsQuery,
+			// to avoid multiple fetch calls while view changing watchers triggers query params recalculation
+			debouncedMs: 2,
 		});
 		watch(
 			[submissionsUrl, submissionsQuery, currentPage],
