@@ -49,11 +49,7 @@
 									:class="icon ? 'pb-5' : 'pb-8'"
 								>
 									<div v-if="icon" :class="iconStyles">
-										<Icon
-											:icon="icon"
-											:inline="true"
-											class="h-11 w-11 text-on-dark"
-										></Icon>
+										<Icon :icon="icon" class="h-11 w-11 text-on-dark"></Icon>
 									</div>
 									<span class="px-4">{{ title }}</span>
 								</DialogTitle>
