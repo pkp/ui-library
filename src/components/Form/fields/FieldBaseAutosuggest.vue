@@ -85,7 +85,10 @@
 					v-bind="autoSuggestProps"
 					ref="cb"
 					v-model:inputValue="inputValue"
+					v-model:suggestions="suggestions"
 					v-model:isFocused="isFocused"
+					v-model:currentSelected="currentSelected"
+					v-model:currentValue="currentValue"
 					@select-suggestion="selectSuggestion"
 					@deselect="deselect"
 				>
@@ -116,6 +119,7 @@
 </template>
 
 <script>
+import {reactive} from 'vue';
 import FieldBase from './FieldBase.vue';
 import Autosuggest from './Autosuggest.vue';
 import FormFieldLabel from '@/components/Form/FormFieldLabel.vue';
@@ -123,9 +127,9 @@ import Tooltip from '@/components/Tooltip/Tooltip.vue';
 import HelpButton from '@/components/HelpButton/HelpButton.vue';
 import FieldError from '@/components/Form/FieldError.vue';
 import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
+import {useAutosuggest} from '@/composables/useAutosuggest';
 
 import ajaxError from '@/mixins/ajaxError';
-import debounce from 'debounce';
 
 export default {
 	name: 'FieldBaseAutosuggest',
@@ -267,26 +271,44 @@ export default {
 			var direction = document.body.getAttribute('dir');
 			return direction === 'rtl';
 		},
-		autoSuggestProps() {
-			return {
-				id: this.autosuggestId,
-				inputProps: this.inputProps,
-				suggestions: this.suggestions,
-				selectedLabel: this.selectedLabel,
-				currentValue: this.currentValue,
-				currentSelected: this.currentSelected,
-				isDisabled: this.isDisabled,
-				deselectLabel: this.deselectLabel,
-			};
-		},
 	},
 	watch: {
 		inputValue(newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
-			this.getSuggestions();
+
+			this.state.inputValue = newVal;
+			this.getSuggestions(this.getParams);
 		},
+	},
+	created() {
+		const opts = {
+			id: this.autosuggestId,
+			inputProps: this.inputProps,
+			suggestions: this.suggestions,
+			selectedLabel: this.selectedLabel,
+			isMultiple: this.isMultiple,
+			currentValue: this.currentValue,
+			name: this.name,
+			isDisabled: this.isDisabled,
+			deselectLabel: this.deselectLabel,
+			apiUrl: this.apiUrl,
+			isMultilingual: this.isMultilingual,
+		};
+
+		this.state = reactive({
+			inputValue: this.inputValue,
+			currentSelected: this.currentSelected,
+		});
+
+		const {autoSuggestProps, getSuggestions, selectSuggestion, deselect} =
+			useAutosuggest(this.state, opts, this.$emit, this.setSuggestions);
+
+		this.autoSuggestProps = autoSuggestProps;
+		this.getSuggestions = getSuggestions;
+		this.selectSuggestion = selectSuggestion;
+		this.deselect = deselect;
 	},
 	mounted() {
 		// Inline labels can not be used with multilingual fields
@@ -299,20 +321,6 @@ export default {
 	},
 	methods: {
 		/**
-		 * Remove an item from the selected list
-		 *
-		 * @param {Object} itemToRemove
-		 */
-		deselect(itemToRemove) {
-			let newSelected = [...this.currentSelected];
-			newSelected.splice(
-				newSelected.findIndex((item) => item.value === itemToRemove.value),
-				1,
-			);
-			this.setSelected(newSelected);
-		},
-
-		/**
 		 * Move focus to the input field
 		 */
 		setFocusToInput() {
@@ -321,82 +329,6 @@ export default {
 			}
 
 			this.$refs.cb.$refs.autosuggestInput.$el.focus();
-		},
-
-		/**
-		 * Get suggestions from the API url
-		 */
-		getSuggestions: debounce(function () {
-			if (!this.inputValue) {
-				this.suggestions = [];
-				return;
-			}
-			var self = this;
-			$.ajax({
-				url: this.apiUrl,
-				type: 'GET',
-				data: {
-					...this.getParams,
-					searchPhrase: this.inputValue,
-				},
-				error(r) {
-					self.ajaxErrorCallback(r);
-				},
-				success(r) {
-					self.setSuggestions(r.items);
-				},
-			});
-		}, 250),
-
-		/**
-		 * Add a suggested item to the list of selected items
-		 *
-		 * This method may be called without a null item argument
-		 * when the user types into the field and hits enter. In
-		 * such cases, select the first autosuggestion result if
-		 * one exists
-		 *
-		 * @param {Object|null} item The item that was selected
-		 */
-		select(item) {
-			if (!item) {
-				if (!this.inputValue || !this.suggestions.length) {
-					return;
-				}
-				item = this.suggestions[0];
-			}
-			this.setSelected([...this.currentSelected, item]);
-			this.inputValue = '';
-		},
-
-		/**
-		 * Respond to selected events from vue-autosuggest
-		 *
-		 * This wrapper passes the selected item to the select method.
-		 *
-		 * @param {Object|null} suggestion
-		 */
-		selectSuggestion(suggestion) {
-			this.select(suggestion ? suggestion : null);
-		},
-
-		/**
-		 * Emit events to change the selected items and the field's value
-		 */
-		setSelected(selected) {
-			if (selected?.length > 1 && !this.isMultiple) {
-				// override selected value if only one option can be selected
-				selected = [selected[1]];
-			}
-
-			this.$emit('change', this.name, 'selected', selected, this.localeKey);
-			this.$emit(
-				'change',
-				this.name,
-				'value',
-				selected.map((s) => s.value),
-				this.localeKey,
-			);
 		},
 
 		/**
