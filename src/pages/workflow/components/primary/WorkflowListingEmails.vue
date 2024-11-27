@@ -1,13 +1,25 @@
 <template>
-	<div v-if="emails?.length" class="border border-light p-4">
+	<div v-if="emails?.length" class="border border-light">
+		<h3 class="lg-bold m-3 text-heading">
+			{{ t('notification.notifications') }}
+		</h3>
 		<ul>
-			<li v-for="email in emails" :key="email.id">
-				<span>
-					<PkpButton is-link @click="openEmail(email.id)">
+			<li
+				v-for="email in emails"
+				:key="email.id"
+				class="flex items-center border-t border-light px-3 py-1"
+			>
+				<span class="flex-1 truncate">
+					<a
+						class="text cursor-pointer text-base-normal hover:underline"
+						@click.prevent="openEmail(email.id)"
+					>
 						{{ email.subject }}
-					</PkpButton>
+					</a>
 				</span>
-				<span>{{ formatShortDate(email.dateSent) }}</span>
+				<span class="ms-4 shrink-0 text-base-normal text-secondary">
+					{{ formatDateAndTime(email.dateSent) }}
+				</span>
 			</li>
 		</ul>
 	</div>
@@ -15,7 +27,6 @@
 
 <script setup>
 import {computed, watch} from 'vue';
-import PkpButton from '@/components/Button/Button.vue';
 
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
@@ -29,7 +40,7 @@ const props = defineProps({
 });
 
 const {t} = useLocalize();
-const {formatShortDate} = useDate();
+const {formatDateAndTime} = useDate();
 const {apiUrl} = useUrl('emails/authorEmails');
 
 const requestQuery = computed(() => {

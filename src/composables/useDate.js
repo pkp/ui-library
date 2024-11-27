@@ -15,5 +15,9 @@ export function useDate() {
 		return moment(dateString).format('DD-MM-YYYY');
 	}
 
-	return {calculateDaysBetweenDates, formatShortDate};
+	function formatDateAndTime(dateString) {
+		return moment(dateString).format('YYYY-MM-DD hh:mm A');
+	}
+
+	return {calculateDaysBetweenDates, formatShortDate, formatDateAndTime};
 }

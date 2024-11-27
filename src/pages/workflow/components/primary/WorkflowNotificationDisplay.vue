@@ -1,7 +1,12 @@
 <template>
-	<div v-if="notificationsToDisplay?.length">
-		<div v-for="(notification, i) in notificationsToDisplay" :key="i">
-			{{ notification.text }}
+	<div v-if="notificationsToDisplay?.length" class="flex flex-row space-y-3">
+		<div
+			v-for="(notification, i) in notificationsToDisplay"
+			:key="i"
+			class="w-full border border-light p-3"
+		>
+			<h3 class="lg-bold text-heading">{{ notification.title }}</h3>
+			<p class="pt-2 text-base-normal">{{ notification.text }}</p>
 		</div>
 	</div>
 </template>
