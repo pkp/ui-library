@@ -290,7 +290,6 @@ export default {
 		margin-inline-start: auto; // fix position when no title exists
 		margin-inline-end: 0.5rem;
 		border: none;
-		font-size: @font-lead;
 		line-height: 1;
 		width: 2rem;
 		height: 2rem;
