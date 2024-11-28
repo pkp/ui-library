@@ -2,7 +2,8 @@ import {useLocalize} from '@/composables/useLocalize';
 import {Actions} from '../useWorkflowActions';
 import {useSubmission} from '@/composables/useSubmission';
 import {Actions as DecisionActions} from '../useWorkflowDecisions';
-import {addItemIf} from './workflowConfigEditorialOJS';
+import {addItemIf} from './workflowConfigHelpers';
+
 const {hasSubmissionPassedStage, isDecisionAvailable, getActiveStage} =
 	useSubmission();
 const {t} = useLocalize();
@@ -50,30 +51,9 @@ export function getHeaderItems({
 }
 
 export const WorkflowConfig = {
-	common: {
-		getPrimaryItems: ({submission, permissions}) => {
-			return [
-				{
-					component: 'WorkflowChangeSubmissionLanguage',
-					props: {
-						submission,
-						canChangeSubmissionLanguage: false,
-					},
-				},
-			];
-		},
-	},
 	[pkp.const.WORKFLOW_STAGE_ID_PRODUCTION]: {
 		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
-			if (submission.status === pkp.const.STATUS_PUBLISHED) {
-				items.push({
-					component: 'WorkflowPrimaryBasicMetadata',
-					props: {
-						body: t('editor.submission.workflowDecision.submission.published'),
-					},
-				});
-			}
 
 			items.push({
 				component: 'WorkflowNotificationDisplay',
@@ -85,18 +65,6 @@ export const WorkflowConfig = {
 				props: {
 					submissionId: submission.id,
 					stageId: selectedStageId,
-				},
-			});
-
-			return items;
-		},
-		getSecondaryItems: ({submission, selectedReviewRound, selectedStageId}) => {
-			const items = [];
-			items.push({
-				component: 'ParticipantManager',
-				props: {
-					submission,
-					submissionStageId: selectedStageId,
 				},
 			});
 
@@ -157,20 +125,6 @@ export const WorkflowConfig = {
 
 export const PublicationConfig = {
 	common: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublicationId,
-			selectedPublication,
-		}) => {
-			const items = [];
-			if (selectedPublication.status === pkp.const.STATUS_PUBLISHED) {
-				items.push({
-					component: 'WorkflowPublicationEditDisabled',
-					props: {},
-				});
-			}
-			return items;
-		},
 		getPublicationControlsLeft: ({
 			submission,
 			selectedPublicationId,
@@ -208,7 +162,7 @@ export const PublicationConfig = {
 				},
 			]);
 
-			return items;
+			return {items, shouldContinue: true};
 		},
 		getPublicationControlsRight: ({
 			submission,
@@ -292,160 +246,7 @@ export const PublicationConfig = {
 				}
 			}
 
-			return items;
-		},
-	},
-	titleAbstract: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublication,
-			pageInitConfig,
-			permissions,
-		}) => {
-			return [
-				{
-					component: 'WorkflowPublicationForm',
-					props: {
-						formName: 'titleAbstract',
-						submission,
-						publication: selectedPublication,
-						canEdit: permissions.canEditPublication,
-					},
-				},
-			];
-		},
-	},
-	contributors: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublication,
-			pageInitConfig,
-			permissions,
-		}) => {
-			return [
-				{
-					component: 'ContributorManager',
-					props: {
-						submission: submission,
-						publication: selectedPublication,
-						canEdit: permissions.canEditPublication,
-					},
-				},
-			];
-		},
-	},
-	metadata: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublication,
-			pageInitConfig,
-			permissions,
-		}) => {
-			return [
-				{
-					component: 'WorkflowPublicationForm',
-					props: {
-						formName: 'metadata',
-						submission,
-						publication: selectedPublication,
-						noFieldsMessage: 'No metadata fields are currently enabled.',
-						canEdit: permissions.canEditPublication,
-					},
-				},
-			];
-		},
-	},
-	citations: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublication,
-			pageInitConfig,
-			permissions,
-		}) => {
-			return [
-				{
-					component: 'WorkflowPublicationForm',
-					props: {
-						formName: 'reference',
-						submission,
-						publication: selectedPublication,
-						canEdit: permissions.canEditPublication,
-					},
-				},
-			];
-		},
-	},
-	identifiers: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublication,
-			pageInitConfig,
-			permissions,
-		}) => {
-			return [
-				{
-					component: 'WorkflowPublicationForm',
-					props: {
-						formName: 'identifier',
-						submission,
-						publication: selectedPublication,
-						canEdit: permissions.canEditPublication,
-					},
-				},
-			];
-		},
-	},
-	jats: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublication,
-			pageInitConfig,
-			permissions,
-		}) => {
-			return [
-				{
-					component: 'WorkflowPublicationJats',
-					props: {
-						canEdit: permissions.canEditPublication,
-						submission,
-						publication: selectedPublication,
-					},
-				},
-			];
-		},
-	},
-	galleys: {
-		getPrimaryItems: ({submission, selectedPublication, permissions}) => {
-			return [
-				{
-					component: 'GalleyManager',
-					props: {
-						submission,
-						publication: selectedPublication,
-						canEdit: permissions.canEditPublication,
-					},
-				},
-			];
-		},
-	},
-	license: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublication,
-			pageInitConfig,
-			permissions,
-		}) => {
-			return [
-				{
-					component: 'WorkflowPublicationForm',
-					props: {
-						formName: 'permissionDisclosure',
-						submission,
-						publication: selectedPublication,
-						canEdit: permissions.canEditPublication,
-					},
-				},
-			];
+			return {items, shouldContinue: true};
 		},
 	},
 	preprintEntry: {

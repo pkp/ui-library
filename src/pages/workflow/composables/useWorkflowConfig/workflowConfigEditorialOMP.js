@@ -2,10 +2,11 @@ import {useLocalize} from '@/composables/useLocalize';
 import {Actions} from '../useWorkflowActions';
 import {useSubmission} from '@/composables/useSubmission';
 import {Actions as DecisionActions} from '../useWorkflowDecisions';
-import {addItemIf} from './workflowConfigEditorialOJS';
+import {addItemIf} from './workflowConfigHelpers';
 const {hasSubmissionPassedStage, getStageById, isDecisionAvailable} =
 	useSubmission();
 const {t} = useLocalize();
+
 export function getHeaderItems({
 	submission,
 	selectedPublication,
@@ -57,50 +58,8 @@ export function getHeaderItems({
 
 export const WorkflowConfig = {
 	[pkp.const.WORKFLOW_STAGE_ID_SUBMISSION]: {
-		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
-			const items = [];
-
-			if (
-				hasSubmissionPassedStage(
-					submission,
-					pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
-				)
-			) {
-				items.push({component: 'SubmissionStatus', props: {submission}});
-			}
-
-			items.push({
-				component: 'FileManager',
-				props: {
-					namespace: 'SUBMISSION_FILES',
-					submission: submission,
-					submissionStageId: selectedStageId,
-				},
-			});
-
-			items.push({
-				component: 'DiscussionManager',
-				props: {submissionId: submission.id, stageId: selectedStageId},
-			});
-
-			return items;
-		},
-		getSecondaryItems: ({submission, selectedReviewRound, selectedStageId}) => {
-			const items = [];
-			items.push({
-				component: 'ParticipantManager',
-				props: {
-					submission,
-					submissionStageId: selectedStageId,
-				},
-			});
-
-			return items;
-		},
-
 		getActionItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
-
 			addItemIf(
 				items,
 				{
@@ -181,38 +140,6 @@ export const WorkflowConfig = {
 	[pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW]: {
 		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
-			if (!selectedReviewRound) {
-				return [
-					{
-						component: 'WorkflowPrimaryBasicMetadata',
-						props: {body: t('editor.review.notInitiated')},
-					},
-				];
-			}
-			const {getCurrentReviewRound} = useSubmission();
-
-			const currentReviewRound = getCurrentReviewRound(
-				submission,
-				selectedStageId,
-			);
-
-			if (selectedReviewRound.round < currentReviewRound.round) {
-				items.push({
-					component: 'WorkflowPrimaryBasicMetadata',
-					props: {
-						body: t(
-							'editor.submission.workflowDecision.submission.reviewRound',
-						),
-					},
-				});
-			}
-
-			if (selectedReviewRound.id === currentReviewRound.id) {
-				items.push({
-					component: 'WorkflowReviewRoundStatus',
-					props: {reviewRound: selectedReviewRound},
-				});
-			}
 
 			items.push({
 				component: 'FileManager',
@@ -254,6 +181,9 @@ export const WorkflowConfig = {
 		},
 		getSecondaryItems: ({submission, selectedReviewRound, selectedStageId}) => {
 			const items = [];
+			if (!selectedReviewRound) {
+				return [];
+			}
 
 			// TODO add isDecidingEditor boolean to api to make it more accurate
 			const selectedStage = getStageById(submission, selectedStageId);
@@ -361,6 +291,22 @@ export const WorkflowConfig = {
 					{
 						component: 'WorkflowActionButton',
 						props: {
+							label: t('editor.submission.createNewRound'),
+							action: DecisionActions.DECISION_NEW_INTERNAL_ROUND,
+							actionArgs,
+						},
+					},
+					isDecisionAvailable(
+						submission,
+						pkp.const.DECISION_NEW_INTERNAL_ROUND,
+					),
+				);
+
+				addItemIf(
+					items,
+					{
+						component: 'WorkflowActionButton',
+						props: {
 							label: t('editor.submission.decision.cancelReviewRound'),
 							isWarnable: true,
 							action: DecisionActions.DECISION_CANCEL_INTERNAL_REVIEW_ROUND,
@@ -452,52 +398,6 @@ export const MarketingConfig = {
 
 export const PublicationConfig = {
 	common: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublicationId,
-			selectedPublication,
-		}) => {
-			const items = [];
-			if (selectedPublication.status === pkp.const.STATUS_PUBLISHED) {
-				items.push({
-					component: 'WorkflowPublicationEditDisabled',
-					props: {},
-				});
-			}
-			return items;
-		},
-		getPublicationControlsLeft: ({
-			submission,
-			selectedPublicationId,
-			selectedPublication,
-			permissions,
-		}) => {
-			const items = [];
-
-			if (
-				submission.status !== pkp.const.STATUS_PUBLISHED &&
-				submission.publications.length < 2
-			) {
-				items.push({
-					component: 'WorkflowChangeSubmissionLanguage',
-					props: {
-						submission,
-						canChangeSubmissionLanguage:
-							permissions.canChangeSubmissionLanguage,
-					},
-				});
-			}
-
-			items.push({
-				component: 'WorkflowPublicationVersionControl',
-				props: {
-					submission,
-					selectedPublicationId: selectedPublicationId,
-				},
-			});
-
-			return items;
-		},
 		getPublicationControlsRight: ({
 			submission,
 			selectedPublicationId,
@@ -534,8 +434,7 @@ export const PublicationConfig = {
 
 						label: t('publication.publish'),
 						isSecondary: true,
-						action:
-							Actions.WORKFLOW_ASSIGN_TO_ISSUE_AND_SCHEDULE_FOR_PUBLICATION,
+						action: Actions.WORKFLOW_SCHEDULE_FOR_PUBLICATION,
 					},
 				});
 			} else if (selectedPublication.status === pkp.const.STATUS_SCHEDULED) {
@@ -581,46 +480,7 @@ export const PublicationConfig = {
 				}
 			}
 
-			return items;
-		},
-	},
-	titleAbstract: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublication,
-			pageInitConfig,
-			permissions,
-		}) => {
-			return [
-				{
-					component: 'WorkflowPublicationForm',
-					props: {
-						formName: 'titleAbstract',
-						submission,
-						publication: selectedPublication,
-						canEdit: permissions.canEditPublication,
-					},
-				},
-			];
-		},
-	},
-	contributors: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublication,
-			pageInitConfig,
-			permissions,
-		}) => {
-			return [
-				{
-					component: 'ContributorManager',
-					props: {
-						submission: submission,
-						publication: selectedPublication,
-						canEditPublication: permissions.canEditPublication,
-					},
-				},
-			];
+			return {items, shouldContinue: true};
 		},
 	},
 	chapters: {
@@ -642,68 +502,6 @@ export const PublicationConfig = {
 		},
 	},
 
-	metadata: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublication,
-			pageInitConfig,
-			permissions,
-		}) => {
-			return [
-				{
-					component: 'WorkflowPublicationForm',
-					props: {
-						formName: 'metadata',
-						submission,
-						publication: selectedPublication,
-						noFieldsMessage: 'No metadata fields are currently enabled.',
-						canEdit: permissions.canEditPublication,
-					},
-				},
-			];
-		},
-	},
-
-	citations: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublication,
-			pageInitConfig,
-			permissions,
-		}) => {
-			return [
-				{
-					component: 'WorkflowPublicationForm',
-					props: {
-						formName: 'reference',
-						submission,
-						publication: selectedPublication,
-						canEdit: permissions.canEditPublication,
-					},
-				},
-			];
-		},
-	},
-	identifiers: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublication,
-			pageInitConfig,
-			permissions,
-		}) => {
-			return [
-				{
-					component: 'WorkflowPublicationForm',
-					props: {
-						formName: 'identifier',
-						submission,
-						publication: selectedPublication,
-						canEdit: permissions.canEditPublication,
-					},
-				},
-			];
-		},
-	},
 	publicationFormats: {
 		getPrimaryItems: ({
 			submission,
@@ -735,27 +533,6 @@ export const PublicationConfig = {
 					component: 'WorkflowPublicationForm',
 					props: {
 						formName: 'catalogEntry',
-						submission,
-						publication: selectedPublication,
-						canEdit: permissions.canEditPublication,
-					},
-				},
-			];
-		},
-	},
-
-	license: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublication,
-			pageInitConfig,
-			permissions,
-		}) => {
-			return [
-				{
-					component: 'WorkflowPublicationForm',
-					props: {
-						formName: 'permissionDisclosure',
 						submission,
 						publication: selectedPublication,
 						canEdit: permissions.canEditPublication,

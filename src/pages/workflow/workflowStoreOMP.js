@@ -39,11 +39,11 @@ import WorkflowActionButton from './components/action/WorkflowActionButton.vue';
 import WorkflowRecommendOnlyControls from './components/action/WorkflowRecommendOnlyControls.vue';
 import WorkflowRecommendOnlyListingRecommendations from './components/secondary/WorkflowRecommendOnlyListingRecommendations.vue';
 import WorkflowNotificationDisplay from './components/primary/WorkflowNotificationDisplay.vue';
+import WorkflowListingEmails from './components/primary/WorkflowListingEmails.vue';
 import WorkflowPublicationForm from './components/publication/WorkflowPublicationForm.vue';
 import WorkflowPublicationVersionControl from './components/publication/WorkflowPublicationVersionControl.vue';
 import WorkflowChangeSubmissionLanguage from './components/publication/WorkflowChangeSubmissionLanguage.vue';
 import WorkflowPrimaryBasicMetadata from './components/primary/WorkflowPrimaryBasicMetadata.vue';
-import WorkflowReviewRoundStatus from './components/primary/WorkflowReviewRoundStatus.vue';
 import WorkflowSubmissionStatus from './components/primary/WorkflowSubmissionStatus.vue';
 import WorkflowPublicationEditDisabled from './components/publication/WorkflowPublicationEditDisabled.vue';
 
@@ -209,8 +209,8 @@ export const useWorkflowStore = defineComponentStore('workflow', (props) => {
 		WorkflowRecommendOnlyControls,
 		WorkflowRecommendOnlyListingRecommendations,
 		WorkflowNotificationDisplay,
+		WorkflowListingEmails,
 		WorkflowPrimaryBasicMetadata,
-		WorkflowReviewRoundStatus,
 		WorkflowPublicationForm,
 		WorkflowPublicationVersionControl,
 		WorkflowChangeSubmissionLanguage,

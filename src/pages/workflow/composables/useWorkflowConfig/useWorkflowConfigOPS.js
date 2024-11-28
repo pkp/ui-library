@@ -1,36 +1,21 @@
-import {useLocalize} from '@/composables/useLocalize';
 import {DashboardPageTypes} from '@/pages/dashboard/dashboardPageStore';
+import {deepMerge} from '@/utils/deepMerge';
+
+import * as ConfigAuthorOJS from './workflowConfigAuthorOJS';
+import * as ConfigEditorialOJS from './workflowConfigEditorialOJS';
 
 import * as ConfigAuthorOPS from './workflowConfigAuthorOPS';
 import * as ConfigEditorialOPS from './workflowConfigEditorialOPS';
 
-export function useWorkflowConfigOPS({dashboardPage}) {
-	const {t} = useLocalize();
+import {consolidateCommonAndSpecificItems} from './workflowConfigHelpers';
 
+export function useWorkflowConfigOPS({dashboardPage}) {
 	let Configs = null;
 
 	if (dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD) {
-		Configs = {
-			getHeaderItems: ConfigEditorialOPS.getHeaderItems,
-			WorkflowConfig: {
-				//...ConfigEditorialShared.WorkflowConfig,
-				...ConfigEditorialOPS.WorkflowConfig,
-			},
-			PublicationConfig: {
-				//...ConfigEditorialShared.PublicationConfig,
-				...ConfigEditorialOPS.PublicationConfig,
-			},
-		};
+		Configs = deepMerge(deepMerge({}, ConfigEditorialOJS), ConfigEditorialOPS);
 	} else {
-		Configs = {
-			getHeaderItems: ConfigEditorialOPS.getHeaderItems,
-			WorkflowConfig: {
-				...ConfigAuthorOPS.WorkflowConfig,
-			},
-			PublicationConfig: {
-				...ConfigAuthorOPS.PublicationConfig,
-			},
-		};
+		Configs = deepMerge(deepMerge({}, ConfigAuthorOJS), ConfigAuthorOPS);
 	}
 
 	function _getItems(
@@ -58,25 +43,12 @@ export function useWorkflowConfigOPS({dashboardPage}) {
 				return [];
 			}
 
-			if (!permissions.accessibleStages.includes(selectedMenuState.stageId)) {
-				if (getterFnName === 'getPrimaryItems') {
-					return [
-						{
-							component: 'PrimaryBasicMetadata',
-							props: {body: t('user.authorization.accessibleWorkflowStage')},
-						},
-					];
-				} else {
-					return [];
-				}
-			}
-
-			return [
-				...(Configs.WorkflowConfig?.common?.[getterFnName]?.(itemsArgs) || []),
-				...(Configs.WorkflowConfig[selectedMenuState.stageId]?.[getterFnName]?.(
-					itemsArgs,
-				) || []),
-			];
+			return consolidateCommonAndSpecificItems(
+				Configs.WorkflowConfig,
+				selectedMenuState.stageId,
+				getterFnName,
+				itemsArgs,
+			);
 		} else if (selectedMenuState.primaryMenuItem === 'publication') {
 			const itemsArgs = {
 				submission,
@@ -89,13 +61,12 @@ export function useWorkflowConfigOPS({dashboardPage}) {
 				return [];
 			}
 
-			return [
-				...(Configs.PublicationConfig?.common?.[getterFnName]?.(itemsArgs) ||
-					[]),
-				...(Configs.PublicationConfig[selectedMenuState.secondaryMenuItem]?.[
-					getterFnName
-				]?.(itemsArgs) || []),
-			];
+			return consolidateCommonAndSpecificItems(
+				Configs.PublicationConfig,
+				selectedMenuState.secondaryMenuItem,
+				getterFnName,
+				itemsArgs,
+			);
 		}
 	}
 

@@ -2,8 +2,11 @@ import {useLocalize} from '@/composables/useLocalize';
 import {Actions} from '../useWorkflowActions';
 import {useSubmission} from '@/composables/useSubmission';
 
-const {hasSubmissionPassedStage, getOpenReviewAssignmentsForRound} =
-	useSubmission();
+const {
+	hasSubmissionPassedStage,
+	getOpenReviewAssignmentsForRound,
+	hasNotSubmissionStartedStage,
+} = useSubmission();
 
 const {t} = useLocalize();
 
@@ -31,24 +34,54 @@ export function getHeaderItems({
 
 export const WorkflowConfig = {
 	common: {
-		getPrimaryItems: ({submission, permissions}) => {
-			return [
-				{
-					component: 'WorkflowChangeSubmissionLanguage',
-					props: {
-						submission,
-						canChangeSubmissionLanguage: false,
-					},
+		getPrimaryItems: ({
+			submission,
+			permissions,
+			selectedStageId,
+			selectedReviewRound,
+		}) => {
+			if (!permissions.accessibleStages.includes(selectedStageId)) {
+				return {
+					shouldContinue: false,
+					items: [
+						{
+							component: 'WorkflowPrimaryBasicMetadata',
+							props: {
+								body: t('user.authorization.accessibleWorkflowStage'),
+							},
+						},
+					],
+				};
+			}
+
+			const items = [];
+
+			items.push({
+				component: 'WorkflowChangeSubmissionLanguage',
+				props: {
+					submission,
+					canChangeSubmissionLanguage: false,
 				},
-			];
-		},
-		getSecondaryItems: ({submission, selectedReviewRound, selectedStageId}) => {
-			const items = [];
-			return items;
-		},
-		getActionsItems: ({submission, selectedReviewRound, selectedStageId}) => {
-			const items = [];
-			return items;
+			});
+
+			const shouldContinue = !hasNotSubmissionStartedStage(
+				submission,
+				selectedStageId,
+			);
+
+			items.push({
+				component: 'WorkflowSubmissionStatus',
+				props: {
+					submission,
+					selectedStageId,
+					selectedReviewRoundId: selectedReviewRound?.id,
+				},
+			});
+
+			return {
+				shouldContinue,
+				items,
+			};
 		},
 	},
 	[pkp.const.WORKFLOW_STAGE_ID_SUBMISSION]: {
@@ -85,38 +118,11 @@ export const WorkflowConfig = {
 	[pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW]: {
 		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
-			if (!selectedReviewRound) {
-				return [
-					{
-						component: 'WorkflowPrimaryBasicMetadata',
-						props: {body: t('editor.review.notInitiated')},
-					},
-				];
-			}
-			const {getCurrentReviewRound} = useSubmission();
 
-			const currentReviewRound = getCurrentReviewRound(
-				submission,
-				selectedStageId,
-			);
-
-			if (selectedReviewRound.round < currentReviewRound.round) {
-				items.push({
-					component: 'WorkflowPrimaryBasicMetadata',
-					props: {
-						body: t(
-							'editor.submission.workflowDecision.submission.reviewRound',
-						),
-					},
-				});
-			}
-
-			if (selectedReviewRound.id === currentReviewRound.id) {
-				items.push({
-					component: 'WorkflowReviewRoundStatus',
-					props: {reviewRound: selectedReviewRound},
-				});
-			}
+			items.push({
+				component: 'WorkflowListingEmails',
+				props: {submission, selectedStageId: selectedStageId},
+			});
 
 			if (
 				getOpenReviewAssignmentsForRound(
@@ -158,20 +164,6 @@ export const WorkflowConfig = {
 		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
 
-			if (
-				hasSubmissionPassedStage(
-					submission,
-					pkp.const.WORKFLOW_STAGE_ID_EDITING,
-				)
-			) {
-				items.push({
-					component: 'WorkflowPrimaryBasicMetadata',
-					props: {
-						body: t('editor.submission.workflowDecision.submission.production'),
-					},
-				});
-			}
-
 			items.push({
 				component: 'DiscussionManager',
 				props: {
@@ -195,19 +187,6 @@ export const WorkflowConfig = {
 	[pkp.const.WORKFLOW_STAGE_ID_PRODUCTION]: {
 		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
-			if (submission.status === pkp.const.STATUS_PUBLISHED) {
-				items.push({
-					component: 'WorkflowPrimaryBasicMetadata',
-					props: {
-						body: t('editor.submission.workflowDecision.submission.published'),
-					},
-				});
-			}
-
-			items.push({
-				component: 'WorkflowNotificationDisplay',
-				props: {submission: submission},
-			});
 
 			items.push({
 				component: 'DiscussionManager',
@@ -236,7 +215,7 @@ export const PublicationConfig = {
 					props: {},
 				});
 			}
-			return items;
+			return {items, shouldContinue: true};
 		},
 		getPublicationControlsLeft: ({
 			submission,
@@ -253,15 +232,7 @@ export const PublicationConfig = {
 				},
 			});
 
-			return items;
-		},
-		getPublicationControlsRight: ({
-			submission,
-			selectedPublicationId,
-			selectedPublication,
-		}) => {
-			const items = [];
-			return items;
+			return {items, shouldContinue: true};
 		},
 	},
 	titleAbstract: {

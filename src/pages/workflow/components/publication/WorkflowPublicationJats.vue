@@ -10,7 +10,7 @@
 								<PkpButton
 									v-if="
 										publication.status !== getConstant('STATUS_PUBLISHED') &&
-										canEditPublication
+										canEdit
 									"
 									ref="uploadXMLButton"
 									@click="openFileBrowser"
@@ -22,7 +22,7 @@
 								<PkpButton
 									v-if="
 										publication.status !== getConstant('STATUS_PUBLISHED') &&
-										canEditPublication
+										canEdit
 									"
 									:disabled="isLoading"
 									:is-warnable="true"
@@ -106,7 +106,7 @@ export default {
 	},
 	mixins: [ajaxError, dialog],
 	props: {
-		canEditPublication: {
+		canEdit: {
 			type: Boolean,
 			required: true,
 		},

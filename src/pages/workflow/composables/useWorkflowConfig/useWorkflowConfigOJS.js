@@ -1,41 +1,16 @@
-import {useLocalize} from '@/composables/useLocalize';
 import {DashboardPageTypes} from '@/pages/dashboard/dashboardPageStore';
-
-import * as ConfigAuthorShared from './workflowConfigAuthorOJS';
-import * as ConfigEditorialShared from './workflowConfigEditorialOJS';
 
 import * as ConfigAuthorOJS from './workflowConfigAuthorOJS';
 import * as ConfigEditorialOJS from './workflowConfigEditorialOJS';
+import {consolidateCommonAndSpecificItems} from './workflowConfigHelpers';
 
 export function useWorkflowConfigOJS({dashboardPage}) {
-	const {t} = useLocalize();
-
 	let Configs = null;
 
 	if (dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD) {
-		Configs = {
-			getHeaderItems: ConfigEditorialOJS.getHeaderItems,
-			WorkflowConfig: {
-				...ConfigEditorialShared.WorkflowConfig,
-				...ConfigEditorialOJS.WorkflowConfig,
-			},
-			PublicationConfig: {
-				...ConfigEditorialShared.PublicationConfig,
-				...ConfigEditorialOJS.PublicationConfig,
-			},
-		};
+		Configs = ConfigEditorialOJS;
 	} else {
-		Configs = {
-			getHeaderItems: ConfigEditorialOJS.getHeaderItems,
-			WorkflowConfig: {
-				...ConfigAuthorShared.WorkflowConfig,
-				...ConfigAuthorOJS.WorkflowConfig,
-			},
-			PublicationConfig: {
-				...ConfigAuthorShared.PublicationConfig,
-				...ConfigAuthorOJS.PublicationConfig,
-			},
-		};
+		Configs = ConfigAuthorOJS;
 	}
 
 	function _getItems(
@@ -63,25 +38,13 @@ export function useWorkflowConfigOJS({dashboardPage}) {
 				return [];
 			}
 
-			if (!permissions.accessibleStages.includes(selectedMenuState.stageId)) {
-				if (getterFnName === 'getPrimaryItems') {
-					return [
-						{
-							component: 'PrimaryBasicMetadata',
-							props: {body: t('user.authorization.accessibleWorkflowStage')},
-						},
-					];
-				} else {
-					return [];
-				}
-			}
-
-			return [
-				...(Configs.WorkflowConfig?.common?.[getterFnName]?.(itemsArgs) || []),
-				...(Configs.WorkflowConfig[selectedMenuState.stageId]?.[getterFnName]?.(
-					itemsArgs,
-				) || []),
-			];
+			return consolidateCommonAndSpecificItems(
+				Configs.WorkflowConfig,
+				// workflow config is using stageId as keys
+				selectedMenuState.stageId,
+				getterFnName,
+				itemsArgs,
+			);
 		} else if (selectedMenuState.primaryMenuItem === 'publication') {
 			const itemsArgs = {
 				submission,
@@ -94,13 +57,13 @@ export function useWorkflowConfigOJS({dashboardPage}) {
 				return [];
 			}
 
-			return [
-				...(Configs.PublicationConfig?.common?.[getterFnName]?.(itemsArgs) ||
-					[]),
-				...(Configs.PublicationConfig[selectedMenuState.secondaryMenuItem]?.[
-					getterFnName
-				]?.(itemsArgs) || []),
-			];
+			return consolidateCommonAndSpecificItems(
+				Configs.PublicationConfig,
+				// publication config is using menu name as keys
+				selectedMenuState.secondaryMenuItem,
+				getterFnName,
+				itemsArgs,
+			);
 		}
 	}
 

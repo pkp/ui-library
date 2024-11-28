@@ -1,6 +1,6 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
-import {ref, computed} from 'vue';
+import {ref, computed, watch} from 'vue';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
 import {useFileManagerActions} from './useFileManagerActions';
@@ -26,16 +26,25 @@ export const useFileManagerStore = defineComponentStore(
 			`submissions/${submissionId.value}/files`,
 		);
 
+		const queryParams = computed(() => ({
+			fileStages: managerConfig.value.fileStage,
+			reviewRoundIds: props.reviewRoundId ? props.reviewRoundId : undefined,
+		}));
+
 		const {data, fetch: fetchFiles} = useFetch(filesApiUrl, {
-			query: {
-				fileStages: managerConfig.value.fileStage,
-				reviewRoundIds: props.reviewRoundId ? props.reviewRoundId : undefined,
-			},
+			query: queryParams,
 		});
 
 		const files = computed(() => data.value?.items || []);
 
-		fetchFiles();
+		watch(
+			[filesApiUrl, queryParams],
+			() => {
+				files.value = null;
+				fetchFiles();
+			},
+			{immediate: true},
+		);
 
 		/** Reload files when data on screen changes */
 		const {triggerDataChange} = useDataChanged(() => fetchFiles());
