@@ -194,7 +194,7 @@ export const WorkflowConfig = {
 					props: {
 						submission: submission,
 						stageId: pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW,
-						reviewRoundId: selectedReviewRound.id,
+						reviewRoundId: selectedReviewRound?.id,
 					},
 				});
 			}
@@ -218,7 +218,11 @@ export const WorkflowConfig = {
 			);
 
 			// if review stage has not started show no items
-			if (selectedReviewRound.round < currentReviewRound.round) {
+			if (
+				!selectedReviewRound ||
+				!currentReviewRound ||
+				selectedReviewRound.round < currentReviewRound.round
+			) {
 				return [];
 			}
 
