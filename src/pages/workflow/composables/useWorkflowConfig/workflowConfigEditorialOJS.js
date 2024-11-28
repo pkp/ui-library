@@ -631,13 +631,8 @@ export const PublicationConfig = {
 			const items = [];
 			if (selectedPublication.status === pkp.const.STATUS_PUBLISHED) {
 				items.push({
-					shouldContinue: true,
-					items: [
-						{
-							component: 'WorkflowPublicationEditDisabled',
-							props: {},
-						},
-					],
+					component: 'WorkflowPublicationEditDisabled',
+					props: {},
 				});
 			}
 			return {items, shouldContinue: true};
