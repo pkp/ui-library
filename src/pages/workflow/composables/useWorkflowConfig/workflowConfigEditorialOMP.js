@@ -291,6 +291,22 @@ export const WorkflowConfig = {
 					{
 						component: 'WorkflowActionButton',
 						props: {
+							label: t('editor.submission.createNewRound'),
+							action: DecisionActions.DECISION_NEW_INTERNAL_ROUND,
+							actionArgs,
+						},
+					},
+					isDecisionAvailable(
+						submission,
+						pkp.const.DECISION_NEW_INTERNAL_ROUND,
+					),
+				);
+
+				addItemIf(
+					items,
+					{
+						component: 'WorkflowActionButton',
+						props: {
 							label: t('editor.submission.decision.cancelReviewRound'),
 							isWarnable: true,
 							action: DecisionActions.DECISION_CANCEL_INTERNAL_REVIEW_ROUND,
