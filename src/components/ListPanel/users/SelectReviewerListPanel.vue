@@ -27,12 +27,14 @@
 
 				<template #item="{item}">
 					<SelectReviewerSuggestionListItem
+						v-if="!item.approvedAt"
 						:key="item.id"
 						:item="item"
 						:submission-id="getParams.submissionId"
 						:stage-id="getParams.reviewStage"
 						:review-round-id="getParams.reviewRoundId"
 						:select-reviewer-label="selectReviewerLabel"
+						@update:suggestions="updateReviewerSuggestionList"
 					/>
 				</template>
 			</ListPanel>
@@ -361,6 +363,11 @@ export default {
 				return [];
 			},
 		},
+		/** The API Url to obtain reviewer suggestion for this submission */
+		reviewerSuggestionsApiUrl: {
+			type: String,
+			required: false,
+		},
 	},
 	emits: [
 		/**  Emitted when a prop should be changed. Payload: `(id, newProps)`  */
@@ -454,6 +461,37 @@ export default {
 			this.$emit('set', this.id, {
 				items,
 				itemsMax,
+			});
+		},
+
+		/**
+		 * Update the list of reviewer suggestions list
+		 *
+		 * @param {Number} reviewerSuggestionId
+		 */
+		updateReviewerSuggestionList(reviewerSuggestionId) {
+			this.isLoading = true;
+			$.ajax({
+				url: this.reviewerSuggestionsApiUrl + '/' + reviewerSuggestionId,
+				type: 'GET',
+				context: this,
+				headers: {
+					'X-Csrf-Token': pkp.currentUser.csrfToken,
+				},
+				error: this.ajaxErrorCallback,
+				success(r) {
+					// TODO : may be some better appraoch than this ?
+					if (r.approvedAt) {
+						this.suggestions.forEach((reviewerSuggestion) => {
+							if (reviewerSuggestion.id == reviewerSuggestionId) {
+								reviewerSuggestion.approvedAt = r.approvedAt;
+							}
+						});
+					}
+				},
+				complete(r) {
+					this.isLoading = false;
+				},
 			});
 		},
 	},

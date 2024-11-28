@@ -127,9 +127,8 @@ export default {
 				},
 			});
 
-			openLegacyModal(
-				{title: t('editor.submission.addReviewer')},
-				function () {},
+			openLegacyModal({title: t('editor.submission.addReviewer')}, () =>
+				this.$emit('update:suggestions', this.item.id),
 			);
 		},
 	},
