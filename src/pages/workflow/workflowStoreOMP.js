@@ -44,7 +44,6 @@ import WorkflowPublicationForm from './components/publication/WorkflowPublicatio
 import WorkflowPublicationVersionControl from './components/publication/WorkflowPublicationVersionControl.vue';
 import WorkflowChangeSubmissionLanguage from './components/publication/WorkflowChangeSubmissionLanguage.vue';
 import WorkflowPrimaryBasicMetadata from './components/primary/WorkflowPrimaryBasicMetadata.vue';
-import WorkflowReviewRoundStatus from './components/primary/WorkflowReviewRoundStatus.vue';
 import WorkflowSubmissionStatus from './components/primary/WorkflowSubmissionStatus.vue';
 import WorkflowPublicationEditDisabled from './components/publication/WorkflowPublicationEditDisabled.vue';
 
@@ -212,7 +211,6 @@ export const useWorkflowStore = defineComponentStore('workflow', (props) => {
 		WorkflowNotificationDisplay,
 		WorkflowListingEmails,
 		WorkflowPrimaryBasicMetadata,
-		WorkflowReviewRoundStatus,
 		WorkflowPublicationForm,
 		WorkflowPublicationVersionControl,
 		WorkflowChangeSubmissionLanguage,

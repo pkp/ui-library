@@ -27,20 +27,6 @@ export const WorkflowConfig = {};
 
 export const PublicationConfig = {
 	common: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublicationId,
-			selectedPublication,
-		}) => {
-			const items = [];
-			if (selectedPublication.status === pkp.const.STATUS_PUBLISHED) {
-				items.push({
-					component: 'WorkflowPublicationEditDisabled',
-					props: {},
-				});
-			}
-			return {items, shouldContinue: true};
-		},
 		getPublicationControlsLeft: ({
 			submission,
 			selectedPublicationId,
@@ -63,99 +49,6 @@ export const PublicationConfig = {
 			]);
 
 			return items;
-		},
-	},
-	titleAbstract: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublication,
-			pageInitConfig,
-			permissions,
-		}) => {
-			return [
-				{
-					component: 'WorkflowPublicationForm',
-					props: {
-						formName: 'titleAbstract',
-						submission,
-						publication: selectedPublication,
-						canEdit: permissions.canEditPublication,
-					},
-				},
-			];
-		},
-	},
-	contributors: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublication,
-			pageInitConfig,
-			permissions,
-		}) => {
-			return [
-				{
-					component: 'ContributorManager',
-					props: {
-						submission: submission,
-						publication: selectedPublication,
-					},
-				},
-			];
-		},
-	},
-	metadata: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublication,
-			pageInitConfig,
-			permissions,
-		}) => {
-			return [
-				{
-					component: 'WorkflowPublicationForm',
-					props: {
-						formName: 'metadata',
-						submission,
-						publication: selectedPublication,
-						noFieldsMessage: 'No metadata fields are currently enabled.',
-						canEdit: permissions.canEditPublication,
-					},
-				},
-			];
-		},
-	},
-	citations: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublication,
-			pageInitConfig,
-			permissions,
-		}) => {
-			return [
-				{
-					component: 'WorkflowPublicationForm',
-					props: {
-						formName: 'reference',
-						submission,
-						publication: selectedPublication,
-						canEdit: permissions.canEditPublication,
-					},
-				},
-			];
-		},
-	},
-	galleys: {
-		getPrimaryItems: ({submission, selectedPublication, permissions}) => {
-			return [
-				{
-					component: 'GalleyManager',
-					props: {
-						submission,
-						publication: selectedPublication,
-						canEditPublication: permissions.canEditPublication,
-					},
-				},
-			];
 		},
 	},
 	discussions: {

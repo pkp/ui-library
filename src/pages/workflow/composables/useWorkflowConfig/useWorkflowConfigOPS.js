@@ -1,4 +1,8 @@
 import {DashboardPageTypes} from '@/pages/dashboard/dashboardPageStore';
+import {deepMerge} from '@/utils/deepMerge';
+
+import * as ConfigAuthorOJS from './workflowConfigAuthorOJS';
+import * as ConfigEditorialOJS from './workflowConfigEditorialOJS';
 
 import * as ConfigAuthorOPS from './workflowConfigAuthorOPS';
 import * as ConfigEditorialOPS from './workflowConfigEditorialOPS';
@@ -9,9 +13,9 @@ export function useWorkflowConfigOPS({dashboardPage}) {
 	let Configs = null;
 
 	if (dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD) {
-		Configs = ConfigEditorialOPS;
+		Configs = deepMerge(deepMerge({}, ConfigEditorialOJS), ConfigEditorialOPS);
 	} else {
-		Configs = ConfigAuthorOPS;
+		Configs = deepMerge(deepMerge({}, ConfigAuthorOJS), ConfigAuthorOPS);
 	}
 
 	function _getItems(

@@ -9,6 +9,7 @@ const {
 	getActiveStage,
 	getStageById,
 	isDecisionAvailable,
+	hasNotSubmissionStartedStage,
 } = useSubmission();
 const {t} = useLocalize();
 
@@ -63,13 +64,18 @@ export function getHeaderItems({
 
 export const WorkflowConfig = {
 	common: {
-		getPrimaryItems: ({submission, permissions, selectedStageId}) => {
+		getPrimaryItems: ({
+			submission,
+			permissions,
+			selectedStageId,
+			selectedReviewRound,
+		}) => {
 			if (!permissions.accessibleStages.includes(selectedStageId)) {
 				return {
 					shouldContinue: false,
 					items: [
 						{
-							component: 'PrimaryBasicMetadata',
+							component: 'WorkflowPrimaryBasicMetadata',
 							props: {
 								body: t('user.authorization.accessibleWorkflowStage'),
 							},
@@ -78,32 +84,39 @@ export const WorkflowConfig = {
 				};
 			}
 
+			const items = [];
+
+			items.push({
+				component: 'WorkflowChangeSubmissionLanguage',
+				props: {
+					submission,
+					canChangeSubmissionLanguage: false,
+				},
+			});
+
+			const shouldContinue = !hasNotSubmissionStartedStage(
+				submission,
+				selectedStageId,
+			);
+
+			items.push({
+				component: 'WorkflowSubmissionStatus',
+				props: {
+					submission,
+					selectedStageId,
+					selectedReviewRoundId: selectedReviewRound?.id,
+				},
+			});
+
 			return {
-				shouldContinue: true,
-				items: [
-					{
-						component: 'WorkflowChangeSubmissionLanguage',
-						props: {
-							submission,
-							canChangeSubmissionLanguage: false,
-						},
-					},
-				],
+				shouldContinue,
+				items,
 			};
 		},
 	},
 	[pkp.const.WORKFLOW_STAGE_ID_SUBMISSION]: {
 		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
-
-			if (
-				hasSubmissionPassedStage(
-					submission,
-					pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
-				)
-			) {
-				items.push({component: 'SubmissionStatus', props: {submission}});
-			}
 
 			items.push({
 				component: 'FileManager',
@@ -202,38 +215,6 @@ export const WorkflowConfig = {
 	[pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW]: {
 		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
-			if (!selectedReviewRound) {
-				return [
-					{
-						component: 'WorkflowPrimaryBasicMetadata',
-						props: {body: t('editor.review.notInitiated')},
-					},
-				];
-			}
-			const {getCurrentReviewRound} = useSubmission();
-
-			const currentReviewRound = getCurrentReviewRound(
-				submission,
-				selectedStageId,
-			);
-
-			if (selectedReviewRound.round < currentReviewRound.round) {
-				items.push({
-					component: 'WorkflowPrimaryBasicMetadata',
-					props: {
-						body: t(
-							'editor.submission.workflowDecision.submission.reviewRound',
-						),
-					},
-				});
-			}
-
-			if (selectedReviewRound.id === currentReviewRound.id) {
-				items.push({
-					component: 'WorkflowReviewRoundStatus',
-					props: {reviewRound: selectedReviewRound},
-				});
-			}
 
 			items.push({
 				component: 'FileManager',
@@ -437,20 +418,6 @@ export const WorkflowConfig = {
 		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
 
-			if (
-				hasSubmissionPassedStage(
-					submission,
-					pkp.const.WORKFLOW_STAGE_ID_EDITING,
-				)
-			) {
-				items.push({
-					component: 'WorkflowPrimaryBasicMetadata',
-					props: {
-						body: t('editor.submission.workflowDecision.submission.production'),
-					},
-				});
-			}
-
 			items.push({
 				component: 'WorkflowNotificationDisplay',
 				props: {submission: submission},
@@ -536,15 +503,6 @@ export const WorkflowConfig = {
 	[pkp.const.WORKFLOW_STAGE_ID_PRODUCTION]: {
 		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
-			if (submission.status === pkp.const.STATUS_PUBLISHED) {
-				items.push({
-					component: 'WorkflowPrimaryBasicMetadata',
-					props: {
-						body: t('editor.submission.workflowDecision.submission.published'),
-					},
-				});
-			}
-
 			items.push({
 				component: 'WorkflowNotificationDisplay',
 				props: {submission: submission},

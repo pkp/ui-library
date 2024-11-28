@@ -5,8 +5,6 @@ import {useSubmission} from '@/composables/useSubmission';
 const {hasSubmissionPassedStage, getOpenReviewAssignmentsForRound} =
 	useSubmission();
 
-const {t} = useLocalize();
-
 export function getHeaderItems({
 	submission,
 	selectedPublication,
@@ -65,39 +63,6 @@ export const WorkflowConfig = {
 	[pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW]: {
 		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
-			if (!selectedReviewRound) {
-				return [
-					{
-						component: 'WorkflowPrimaryBasicMetadata',
-						props: {body: t('editor.review.notInitiated')},
-					},
-				];
-			}
-			const {getCurrentReviewRound} = useSubmission();
-
-			const currentReviewRound = getCurrentReviewRound(
-				submission,
-				selectedStageId,
-			);
-
-			if (selectedReviewRound.round < currentReviewRound.round) {
-				items.push({
-					component: 'WorkflowPrimaryBasicMetadata',
-					props: {
-						body: t(
-							'editor.submission.workflowDecision.submission.reviewRound',
-						),
-					},
-				});
-			}
-
-			if (selectedReviewRound.id === currentReviewRound.id) {
-				items.push({
-					component: 'WorkflowReviewRoundStatus',
-					props: {reviewRound: selectedReviewRound},
-				});
-			}
-
 			if (
 				getOpenReviewAssignmentsForRound(
 					submission.reviewAssignments,
@@ -138,20 +103,6 @@ export const WorkflowConfig = {
 		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
 
-			if (
-				hasSubmissionPassedStage(
-					submission,
-					pkp.const.WORKFLOW_STAGE_ID_EDITING,
-				)
-			) {
-				items.push({
-					component: 'WorkflowPrimaryBasicMetadata',
-					props: {
-						body: t('editor.submission.workflowDecision.submission.production'),
-					},
-				});
-			}
-
 			items.push({
 				component: 'DiscussionManager',
 				props: {
@@ -173,16 +124,8 @@ export const WorkflowConfig = {
 		},
 	},
 	[pkp.const.WORKFLOW_STAGE_ID_PRODUCTION]: {
-		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
+		getPrimaryItems: ({submission, selectedStageId}) => {
 			const items = [];
-			if (submission.status === pkp.const.STATUS_PUBLISHED) {
-				items.push({
-					component: 'WorkflowPrimaryBasicMetadata',
-					props: {
-						body: t('editor.submission.workflowDecision.submission.published'),
-					},
-				});
-			}
 
 			items.push({
 				component: 'WorkflowNotificationDisplay',
@@ -203,44 +146,6 @@ export const WorkflowConfig = {
 };
 
 export const PublicationConfig = {
-	titleAbstract: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublication,
-			pageInitConfig,
-			permissions,
-		}) => {
-			return [
-				{
-					component: 'WorkflowPublicationForm',
-					props: {
-						formName: 'titleAbstract',
-						submission,
-						publication: selectedPublication,
-						canEdit: permissions.canEditPublication,
-					},
-				},
-			];
-		},
-	},
-	contributors: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublication,
-			pageInitConfig,
-			permissions,
-		}) => {
-			return [
-				{
-					component: 'ContributorManager',
-					props: {
-						submission: submission,
-						publication: selectedPublication,
-					},
-				},
-			];
-		},
-	},
 	chapters: {
 		getPrimaryItems: ({
 			submission,
@@ -254,62 +159,6 @@ export const PublicationConfig = {
 					props: {
 						submissionId: submission.id,
 						publicationId: selectedPublication.id,
-					},
-				},
-			];
-		},
-	},
-
-	metadata: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublication,
-			pageInitConfig,
-			permissions,
-		}) => {
-			return [
-				{
-					component: 'WorkflowPublicationForm',
-					props: {
-						formName: 'metadata',
-						submission,
-						publication: selectedPublication,
-						noFieldsMessage: 'No metadata fields are currently enabled.',
-						canEdit: permissions.canEditPublication,
-					},
-				},
-			];
-		},
-	},
-	citations: {
-		getPrimaryItems: ({
-			submission,
-			selectedPublication,
-			pageInitConfig,
-			permissions,
-		}) => {
-			return [
-				{
-					component: 'WorkflowPublicationForm',
-					props: {
-						formName: 'reference',
-						submission,
-						publication: selectedPublication,
-						canEdit: permissions.canEditPublication,
-					},
-				},
-			];
-		},
-	},
-	galleys: {
-		getPrimaryItems: ({submission, selectedPublication, permissions}) => {
-			return [
-				{
-					component: 'GalleyManager',
-					props: {
-						submission,
-						publication: selectedPublication,
-						canEdit: permissions.canEditPublication,
 					},
 				},
 			];
