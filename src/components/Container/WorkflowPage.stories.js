@@ -220,12 +220,6 @@ const WorkflowPageWithDataAndTemplate = {
 							</PkpButton>
 						</template>
 					</PkpHeader>
-					<div
-						v-if="workingPublication.status === getConstant('STATUS_PUBLISHED')"
-						class="pkpPublication__versionPublished"
-					>
-						This version has been published and can not be edited.
-					</div>
 					<tabs
 						class="pkpPublication__tabs"
 						:is-side-tabs="true"
