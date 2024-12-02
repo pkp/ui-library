@@ -17,7 +17,10 @@ export const useReviewerSuggestionManagerStore = defineComponentStore(
 		const submissionId = ref(props.submission.id);
 
 		const relativeUrl = computed(() => {
-			return `submissions/${encodeURIComponent(submissionId.value)}/reviewers/suggestions?approved=false`;
+			if (props.reviewRoundId) {
+				return `submissions/${encodeURIComponent(submissionId.value)}/reviewers/suggestions?approved=false`;
+			}
+			return `submissions/${encodeURIComponent(submissionId.value)}/reviewers/suggestions`;
 		});
 
 		const {apiUrl: reviewerSuggestionApiUrl} = useUrl(relativeUrl);
@@ -45,16 +48,20 @@ export const useReviewerSuggestionManagerStore = defineComponentStore(
 
 			const list = [];
 
-			reviewerSuggestions.value.items.forEach((reviewerSuggestion) => {
-				list.push({
-					id: reviewerSuggestion.id,
-					fullName: localize(reviewerSuggestion.fullName),
-					affiliation: localize(reviewerSuggestion.affiliation),
-					suggestionReason: localize(reviewerSuggestion.suggestionReason),
-					existingReviewerRole: reviewerSuggestion.existingReviewerRole,
-					existingUserId: reviewerSuggestion.existingUserId,
+			reviewerSuggestions.value.items
+				.filter((reviewerSuggestion) =>
+					props.reviewRoundId ? !reviewerSuggestion.reviewerId : true,
+				)
+				.forEach((reviewerSuggestion) => {
+					list.push({
+						id: reviewerSuggestion.id,
+						fullName: localize(reviewerSuggestion.fullName),
+						affiliation: localize(reviewerSuggestion.affiliation),
+						suggestionReason: localize(reviewerSuggestion.suggestionReason),
+						existingReviewerRole: reviewerSuggestion.existingReviewerRole,
+						existingUserId: reviewerSuggestion.existingUserId,
+					});
 				});
-			});
 
 			return list;
 		});
