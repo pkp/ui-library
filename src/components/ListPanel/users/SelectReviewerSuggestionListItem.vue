@@ -14,6 +14,11 @@
 					<!-- TODO: check alternative of v-html as v-strip-unsafe-html not working -->
 					<div v-html="suggestionReason"></div>
 				</div>
+
+				<div v-if="currentlyAssigned" class="listPanel__item--reviewer__notice">
+					<Icon icon="Error" class="me-1 h-4 w-4" :inline="true" />
+					<span class="align-middle">{{ currentlyAssignedLabel }}</span>
+				</div>
 			</div>
 
 			<div class="listPanel__itemActions">
@@ -30,6 +35,7 @@
 
 <script>
 import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
 import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
@@ -38,6 +44,7 @@ import {useLocalize} from '@/composables/useLocalize';
 export default {
 	components: {
 		PkpButton,
+		Icon,
 	},
 	mixins: [ajaxError, dialog],
 	props: {
@@ -61,6 +68,14 @@ export default {
 			type: String,
 			required: true,
 		},
+		currentlyAssigned: {
+			type: Boolean,
+			required: true,
+		},
+		currentlyAssignedLabel: {
+			type: String,
+			required: true,
+		},
 	},
 	data() {
 		return {};
@@ -75,6 +90,10 @@ export default {
 		 * @return {Boolean}
 		 */
 		canSelect() {
+			if (this.currentlyAssigned) {
+				return false;
+			}
+
 			if (this.approvedAt === null || this.approvedAt === undefined) {
 				return true;
 			}
