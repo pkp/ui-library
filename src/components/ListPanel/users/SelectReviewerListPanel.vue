@@ -34,6 +34,10 @@
 						:stage-id="getParams.reviewStage"
 						:review-round-id="getParams.reviewRoundId"
 						:select-reviewer-label="selectReviewerLabel"
+						:currently-assigned="
+							currentlyAssigned.includes(item.existingUserId)
+						"
+						:currently-assigned-label="currentlyAssignedLabel"
 						@update:suggestions="updateReviewerSuggestionList"
 					/>
 				</template>
@@ -478,6 +482,9 @@ export default {
 				headers: {
 					'X-Csrf-Token': pkp.currentUser.csrfToken,
 				},
+				data: {
+					include_reviewer_data: true,
+				},
 				error: this.ajaxErrorCallback,
 				success(r) {
 					// TODO : may be some better appraoch than this ?
@@ -487,6 +494,13 @@ export default {
 								reviewerSuggestion.approvedAt = r.approvedAt;
 							}
 						});
+
+						if (r.reviewer) {
+							let reviewers = this.items.map((i) => i);
+							reviewers.push(r.reviewer);
+							this.setItems(reviewers, this.itemsMax + 1);
+							this.currentlyAssigned.push(r.reviewer.id);
+						}
 					}
 				},
 				complete(r) {
