@@ -273,7 +273,6 @@ export default {
 				inputProps: this.inputProps,
 				suggestions: this.suggestions,
 				selectedLabel: this.selectedLabel,
-				currentValue: this.currentValue,
 				currentSelected: this.currentSelected,
 				isDisabled: this.isDisabled,
 				deselectLabel: this.deselectLabel,

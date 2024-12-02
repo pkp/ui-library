@@ -1,6 +1,6 @@
 <template>
 	<span class="-screenReader">{{ selectedLabel }}</span>
-	<span v-if="!currentValue.length" class="-screenReader">
+	<span v-if="!currentSelected.length" class="-screenReader">
 		{{ t('common.none') }}
 	</span>
 	<PkpBadge
@@ -34,9 +34,9 @@
 			ref="autosuggestInput"
 			class="pkpAutosuggest__input"
 			v-bind="inputProps"
-			@change="(event) => handleChange(event, emit)"
-			@focus="() => handleFocus(emit)"
-			@blur="() => handleBlur(emit)"
+			@change="(event) => handleChange(event)"
+			@focus="() => handleFocus()"
+			@blur="() => handleBlur()"
 		/>
 		<ComboboxOptions
 			v-if="suggestions.length || (allowCustom && localInputValue?.length)"
@@ -77,7 +77,7 @@
 	</Combobox>
 </template>
 <script setup>
-import {useSlots} from 'vue';
+import {useSlots, ref, inject} from 'vue';
 import {
 	Combobox,
 	ComboboxInput,
@@ -86,11 +86,10 @@ import {
 } from '@headlessui/vue';
 import PkpBadge from '@/components/Badge/Badge.vue';
 import Icon from '@/components/Icon/Icon.vue';
-import {useAutosuggest} from '@/composables/useAutosuggest';
 
 const slots = useSlots();
 
-defineProps({
+const props = defineProps({
 	id: {
 		type: String,
 		required: true,
@@ -107,23 +106,25 @@ defineProps({
 		type: String,
 		required: true,
 	},
-	currentValue: {
-		type: Array,
-		default: () => [],
-	},
 	currentSelected: {
 		type: Array,
 		default: () => [],
 	},
 	isDisabled: {
 		type: Boolean,
-		default() {
-			return false;
-		},
+		default: () => false,
 	},
 	deselectLabel: {
 		type: String,
 		required: true,
+	},
+	inputValue: {
+		type: String,
+		default: () => '',
+	},
+	isFocused: {
+		type: Boolean,
+		default: () => false,
 	},
 });
 
@@ -134,8 +135,24 @@ const emit = defineEmits([
 	'deselect',
 ]);
 
-const {allowCustom, localInputValue, handleChange, handleFocus, handleBlur} =
-	useAutosuggest();
+const allowCustom = inject('allowCustom', false);
+const localInputValue = ref('');
+const localIsFocused = ref(props.isFocused);
+
+function handleChange(event) {
+	localInputValue.value = event.target.value.trim();
+	emit('update:inputValue', localInputValue.value);
+}
+
+function handleFocus() {
+	localIsFocused.value = true;
+	emit('update:isFocused', localIsFocused.value);
+}
+
+function handleBlur() {
+	localIsFocused.value = false;
+	emit('update:isFocused', localIsFocused.value);
+}
 
 function selectSuggestion(suggestion) {
 	emit('select-suggestion', suggestion);
