@@ -34,9 +34,9 @@
 			ref="autosuggestInput"
 			class="pkpAutosuggest__input"
 			v-bind="inputProps"
-			@change="(event) => handleChange(event)"
-			@focus="() => handleFocus()"
-			@blur="() => handleBlur()"
+			@change="(event) => handleChange(event, emit)"
+			@focus="() => handleFocus(emit)"
+			@blur="() => handleBlur(emit)"
 		/>
 		<ComboboxOptions
 			v-if="suggestions.length || (allowCustom && localInputValue?.length)"
@@ -77,7 +77,7 @@
 	</Combobox>
 </template>
 <script setup>
-import {useSlots, ref, inject} from 'vue';
+import {useSlots} from 'vue';
 import {
 	Combobox,
 	ComboboxInput,
@@ -86,10 +86,11 @@ import {
 } from '@headlessui/vue';
 import PkpBadge from '@/components/Badge/Badge.vue';
 import Icon from '@/components/Icon/Icon.vue';
+import {useAutosuggest} from '@/composables/useAutosuggest';
 
 const slots = useSlots();
 
-const props = defineProps({
+defineProps({
 	id: {
 		type: String,
 		required: true,
@@ -116,19 +117,13 @@ const props = defineProps({
 	},
 	isDisabled: {
 		type: Boolean,
-		default: () => false,
+		default() {
+			return false;
+		},
 	},
 	deselectLabel: {
 		type: String,
 		required: true,
-	},
-	inputValue: {
-		type: String,
-		default: () => '',
-	},
-	isFocused: {
-		type: Boolean,
-		default: () => false,
 	},
 });
 
@@ -139,24 +134,8 @@ const emit = defineEmits([
 	'deselect',
 ]);
 
-const allowCustom = inject('allowCustom', false);
-const localInputValue = ref('');
-const localIsFocused = ref(props.isFocused);
-
-function handleChange(event) {
-	localInputValue.value = event.target.value.trim();
-	emit('update:inputValue', localInputValue.value);
-}
-
-function handleFocus() {
-	localIsFocused.value = true;
-	emit('update:isFocused', localIsFocused.value);
-}
-
-function handleBlur() {
-	localIsFocused.value = false;
-	emit('update:isFocused', localIsFocused.value);
-}
+const {allowCustom, localInputValue, handleChange, handleFocus, handleBlur} =
+	useAutosuggest();
 
 function selectSuggestion(suggestion) {
 	emit('select-suggestion', suggestion);
