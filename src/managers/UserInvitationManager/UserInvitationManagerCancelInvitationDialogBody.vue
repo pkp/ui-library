@@ -2,10 +2,10 @@
 	<p>{{ message }}</p>
 	<div>
 		<ul role="list">
-			<li>{{ t('user.email') }}:{{ email }}</li>
-			<li>{{ t('userInvitation.roleTable.role') }}:{{ roles }}</li>
-			<li>{{ t('common.status') }}:{{ status }}</li>
-			<li>{{ t('user.affiliation') }}:{{ affiliation }}</li>
+			<li>{{ t('user.email') }}: {{ email }}</li>
+			<li>{{ t('userInvitation.roleTable.role') }}: {{ roles }}</li>
+			<li>{{ t('common.status') }}: {{ status }}</li>
+			<li>{{ t('user.affiliation') }}: {{ affiliation }}</li>
 		</ul>
 	</div>
 </template>

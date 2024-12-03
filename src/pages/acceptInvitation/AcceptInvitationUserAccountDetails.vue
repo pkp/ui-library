@@ -10,7 +10,7 @@
 		<div class="my-4">
 			<FieldText
 				:label="t('user.username')"
-				:value="fields.username"
+				:value="store.acceptInvitationPayload.username"
 				:description="t('acceptInvitation.usernameField.description')"
 				:is-required="true"
 				name="username"
@@ -61,7 +61,7 @@ const props = defineProps({
 	validateFields: {type: Array, required: true},
 });
 const {t} = useLocalize();
-const fields = ref({username: '', password: '', privacyStatement: false});
+const fields = ref({password: '', privacyStatement: false});
 const {pageUrl} = useUrl('about/privacy');
 const options = [
 	{

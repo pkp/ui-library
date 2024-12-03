@@ -21,6 +21,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 
 		const email = ref(null);
 		const userId = ref(null);
+		const existingUser = ref(null);
 
 		/** All Errors */
 		const errors = ref({});
@@ -82,8 +83,37 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 				if (data.value.givenName) {
 					updateAcceptInvitationPayload('givenName', data.value.givenName); //if not check this override the multilingual structure
 				}
+				if (data.value.affiliation) {
+					updateAcceptInvitationPayload('affiliation', data.value.affiliation);
+				}
 				updateAcceptInvitationPayload('userCountry', data.value.country);
-				updateAcceptInvitationPayload('userOrcid', data.value.orcid);
+
+				updateAcceptInvitationPayload('orcid', data.value.orcid);
+				updateAcceptInvitationPayload(
+					'orcidIsVerified',
+					data.value.orcidIsVerified,
+				);
+				updateAcceptInvitationPayload(
+					'orcidAccessDenied',
+					data.value.orcidAccessDenied,
+				);
+				updateAcceptInvitationPayload(
+					'orcidAccessToken',
+					data.value.orcidAccessToken,
+				);
+				updateAcceptInvitationPayload(
+					'orcidAccessScope',
+					data.value.orcidAccessScope,
+				);
+				updateAcceptInvitationPayload(
+					'orcidRefreshToken',
+					data.value.orcidRefreshToken,
+				);
+				updateAcceptInvitationPayload(
+					'orcidAccessExpiresOn',
+					data.value.orcidAccessExpiresOn,
+				);
+
 				updateAcceptInvitationPayload(
 					'userGroupsToAdd',
 					data.value.userGroupsToAdd,
@@ -93,9 +123,11 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 					userId.value ? true : false,
 				);
 				// add username to invitation payload for validations
-				updateAcceptInvitationPayload('username', null);
+				updateAcceptInvitationPayload('username', data.value.username);
 				// add password to invitation payload for validations
 				updateAcceptInvitationPayload('password', null);
+
+				existingUser.value = data.existingUser;
 				errors.value = [];
 				if (steps.value.length === 0) {
 					await submit();
@@ -106,6 +138,61 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 		function updateAcceptInvitationPayload(fieldName, value) {
 			acceptInvitationPayload.value[fieldName] = value;
 		}
+
+		/**
+		 * Sets ORCID data in invitation payload. If data is null, all ORCID related fields will be set to null/zero value.
+		 *
+		 * @param {Object|null} data - The ORCID OAuth data object.
+		 * @param {string} data.orcid - The ORCID URL of the user.
+		 * @param {boolean} data.orcidIsVerified - Indicates if the user's ORCID is verified.
+		 * @param {null|string} data.orcidAccessDenied - Indicates if access to ORCID is denied (null if not denied).
+		 * @param {string} data.orcidAccessToken - The access token for ORCID API.
+		 * @param {string} data.orcidAccessScope - The scope of access for the ORCID API.
+		 * @param {string} data.orcidRefreshToken - The refresh token for obtaining new access tokens.
+		 * @param {string} data.orcidAccessExpiresOn - The expiration date and time of the access token in ISO format.
+		 * @param data
+		 */
+		function setOrcidData(data) {
+			const fields = [
+				'orcid',
+				'orcidIsVerified',
+				'orcidAccessDenied',
+				'orcidAccessToken',
+				'orcidAccessScope',
+				'orcidRefreshToken',
+				'orcidAccessExpiresOn',
+			];
+			const isDataNull = data === null;
+			fields.forEach((fieldName) => {
+				acceptInvitationPayload.value[fieldName] = isDataNull
+					? null
+					: data[fieldName];
+			});
+		}
+
+		const hasValidOrcid = computed(() => {
+			if (acceptInvitationPayload.value['orcidIsVerified']) {
+				return true;
+			} else if (existingUser.value.orcidIsVerified) {
+				return true;
+			}
+
+			return false;
+		});
+
+		const orcidUri = computed(() => {
+			const invitationOrcid = acceptInvitationPayload.value['orcid'];
+			if (invitationOrcid) {
+				return invitationOrcid;
+			}
+
+			const userOrcid = existingUser.value['orcid'];
+			if (userOrcid) {
+				return userOrcid;
+			}
+
+			return null;
+		});
 
 		/** Steps */
 		const currentStepId = ref(
@@ -311,7 +398,12 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 				method: 'PUT',
 				body: {invitationData: invitationRequestPayload.value},
 			});
-			if (!acceptInvitationPayload.value.privacyStatement) {
+			// FIXME: Privacy statement check blocks ORCID from saving before hand.
+			//  		  Can this check be moved outside of update payload check?
+			if (
+				!acceptInvitationPayload.value.privacyStatement &&
+				currentStep.value.id !== 'verifyOrcid'
+			) {
 				errors.value = {
 					privacyStatement: [t('acceptInvitation.privacyStatement.validation')],
 				};
@@ -412,6 +504,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			//computed
 			currentStep,
 			currentStepIndex,
+			hasValidOrcid,
 			isOnFirstStep,
 			isOnLastStep,
 			isValid,
@@ -419,6 +512,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			startedSteps,
 			stepTitle,
 			openStep,
+			orcidUri,
 			steps,
 			pageTitleDescription,
 			errors,
@@ -428,6 +522,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			//methods
 			nextStep,
 			previousStep,
+			setOrcidData,
 			updateAcceptInvitationPayload,
 			cancel,
 

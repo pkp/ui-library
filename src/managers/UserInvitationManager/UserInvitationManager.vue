@@ -139,6 +139,6 @@ import {useDate} from '@/composables/useDate';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 
 const store = useUserInvitationManagerStore();
-const {t} = useLocalize();
+const {t, localize} = useLocalize();
 const {formatShortDate} = useDate();
 </script>

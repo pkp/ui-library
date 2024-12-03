@@ -57,7 +57,7 @@
 					{{ t('common.back') }}
 				</PkpButton>
 				<PkpButton
-					v-if="!store.isOnFirstStep"
+					v-if="store.currentStep.id !== 'verifyOrcid'"
 					:is-primary="true"
 					@click="store.nextStep"
 				>
