@@ -1,6 +1,6 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {useDate} from '@/composables/useDate';
-// import {RecommendationTranslations} from '@/composables/useSubmission';
+
 export function useReviewerManagerConfig(recommendations) {
 	const {t, localize} = useLocalize();
 	const {formatShortDate} = useDate();
@@ -9,18 +9,6 @@ export function useReviewerManagerConfig(recommendations) {
 		const items = [];
 
 		function getRecommendationString(reviewAssignment) {
-			// const recommendationString = reviewAssignment.recommendation
-			// 	? t(RecommendationTranslations[reviewAssignment.recommendation])
-			// 	: null;
-
-			// if (recommendationString) {
-			// 	return t('submission.recommendation', {
-			// 		recommendation: recommendationString,
-			// 	});
-			// }
-
-			// return null;
-
 			const recommendation = recommendations.filter(
 				(r) => r.value === reviewAssignment.recommendation,
 			)[0];
