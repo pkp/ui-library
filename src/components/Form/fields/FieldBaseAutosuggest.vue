@@ -45,7 +45,7 @@
 				:class="{
 					'pkpAutosuggest__inputWrapper--multilingual':
 						isMultilingual && locales.length > 1,
-					'pkpAutosuggest__inputWrapper--focus': isFocused,
+					'pkpAutosuggest__inputWrapper--focus': inputFocused,
 				}"
 				@click="setFocusToInput"
 			>
@@ -83,11 +83,11 @@
 				<Autosuggest
 					v-if="!isDisabled"
 					v-bind="autoSuggestProps"
-					ref="cb"
+					ref="inputRef"
 					v-model:inputValue="inputValue"
-					v-model:isFocused="isFocused"
 					@select-suggestion="selectSuggestion"
 					@deselect="deselect"
+					@focus-changed="changeFocus"
 				>
 					<template v-if="$slots['input-slot']" #input-slot>
 						<slot name="input-slot"></slot>
@@ -194,7 +194,7 @@ export default {
 	data() {
 		return {
 			inputValue: '',
-			isFocused: false,
+			inputFocused: false,
 			suggestions: [],
 		};
 	},
@@ -243,24 +243,6 @@ export default {
 		},
 
 		/**
-		 * Props to pass to the input field
-		 *
-		 * @return {Object}
-		 */
-		inputProps() {
-			let props = {
-				'aria-describedby': this.describedByIds,
-				class: 'pkpAutosuggest__input',
-				id: this.controlId,
-				name: this.name,
-			};
-			if (this.isDisabled) {
-				props.disabled = 'disabled';
-			}
-			return props;
-		},
-
-		/**
 		 * Is this field in a right-to-left language
 		 */
 		isRTL() {
@@ -270,12 +252,14 @@ export default {
 		autoSuggestProps() {
 			return {
 				id: this.autosuggestId,
-				inputProps: this.inputProps,
 				suggestions: this.suggestions,
 				selectedLabel: this.selectedLabel,
 				currentSelected: this.currentSelected,
 				isDisabled: this.isDisabled,
 				deselectLabel: this.deselectLabel,
+				inputDescribedByIds: this.describedByIds,
+				inputControlId: this.controlId,
+				inputName: this.name,
 			};
 		},
 	},
@@ -319,7 +303,14 @@ export default {
 				return;
 			}
 
-			this.$refs.cb.$refs.autosuggestInput.$el.focus();
+			this.$refs.inputRef.handleFocus(true);
+		},
+
+		/**
+		 * Change the input focus state
+		 */
+		changeFocus(state) {
+			this.inputFocused = state;
 		},
 
 		/**

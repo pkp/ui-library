@@ -18,7 +18,7 @@
 		>
 			<Icon icon="Cancel" class="h-3 w-3" />
 			<span class="-screenReader">
-				{{ deselectLabel.replace('{$item}', item.label) }}
+				{{ deselectLabel?.replace('{$item}', item.label) }}
 			</span>
 		</button>
 	</PkpBadge>
@@ -31,17 +31,35 @@
 		@update:model-value="selectSuggestion"
 	>
 		<ComboboxInput
-			ref="autosuggestInput"
 			class="pkpAutosuggest__input"
 			v-bind="inputProps"
+			autocomplete="off"
 			@change="(event) => handleChange(event)"
-			@focus="() => handleFocus()"
-			@blur="() => handleBlur()"
+			@focus="() => handleFocus(true)"
+			@blur="() => handleFocus(false)"
 		/>
 		<ComboboxOptions
-			v-if="suggestions.length || (allowCustom && localInputValue?.length)"
+			v-if="
+				suggestions.length ||
+				(allowCustom && localInputValue?.length) ||
+				isLoading
+			"
 			class="autosuggest__results-container autosuggest__results"
 		>
+			<ComboboxOption
+				v-if="isLoading"
+				v-slot="{active}"
+				as="template"
+				:disabled="true"
+			>
+				<li
+					class="autosuggest__results-item"
+					:class="active && 'autosuggest__results-item--highlighted'"
+				>
+					<Spinner />
+					{{ t('common.loading') }}
+				</li>
+			</ComboboxOption>
 			<ComboboxOption
 				v-if="
 					allowCustom &&
@@ -58,21 +76,27 @@
 					{{ localInputValue }}
 				</li>
 			</ComboboxOption>
-			<ComboboxOption
-				v-for="suggestion in suggestions"
-				:key="suggestion.value"
-				v-slot="{active}"
-				:value="suggestion"
-				as="template"
-			>
-				<li
-					class="autosuggest__results-item flex items-center"
-					:class="active && 'autosuggest__results-item--highlighted'"
+			<template v-if="!isLoading">
+				<ComboboxOption
+					v-for="suggestion in suggestions"
+					:key="suggestion.value"
+					v-slot="{active}"
+					:value="suggestion"
+					as="template"
 				>
-					<slot v-if="slots['option']" name="option" :suggestion="suggestion" />
-					<span v-else>{{ suggestion.label }}</span>
-				</li>
-			</ComboboxOption>
+					<li
+						class="autosuggest__results-item flex items-center"
+						:class="active && 'autosuggest__results-item--highlighted'"
+					>
+						<slot
+							v-if="slots['option']"
+							name="option"
+							:suggestion="suggestion"
+						/>
+						<span v-else>{{ suggestion.label }}</span>
+					</li>
+				</ComboboxOption>
+			</template>
 		</ComboboxOptions>
 	</Combobox>
 </template>
@@ -86,16 +110,13 @@ import {
 } from '@headlessui/vue';
 import PkpBadge from '@/components/Badge/Badge.vue';
 import Icon from '@/components/Icon/Icon.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
 
 const slots = useSlots();
 
 const props = defineProps({
 	id: {
 		type: String,
-		required: true,
-	},
-	inputProps: {
-		type: Object,
 		required: true,
 	},
 	suggestions: {
@@ -122,36 +143,54 @@ const props = defineProps({
 		type: String,
 		default: () => '',
 	},
-	isFocused: {
+	isLoading: {
 		type: Boolean,
 		default: () => false,
 	},
+	inputDescribedByIds: {
+		type: String,
+		required: true,
+	},
+	inputControlId: {
+		type: String,
+		required: true,
+	},
+	inputName: {
+		type: String,
+		default: () => 'autosuggest',
+	},
 });
+
+/**
+ * Props to pass to the input field
+ */
+const inputProps = {
+	'aria-describedby': props.inputDescribedByIds,
+	class: 'pkpAutosuggest__input',
+	id: props.inputControlId,
+	name: props.inputName,
+	disabled: props.isDisabled,
+};
 
 const emit = defineEmits([
 	'update:inputValue',
-	'update:isFocused',
+	'focus-changed',
 	'select-suggestion',
 	'deselect',
 ]);
 
 const allowCustom = inject('allowCustom', false);
 const localInputValue = ref('');
-const localIsFocused = ref(props.isFocused);
+const isFocused = ref(false);
 
 function handleChange(event) {
 	localInputValue.value = event.target.value.trim();
 	emit('update:inputValue', localInputValue.value);
 }
 
-function handleFocus() {
-	localIsFocused.value = true;
-	emit('update:isFocused', localIsFocused.value);
-}
-
-function handleBlur() {
-	localIsFocused.value = false;
-	emit('update:isFocused', localIsFocused.value);
+function handleFocus(state) {
+	isFocused.value = state;
+	emit('focus-changed', state);
 }
 
 function selectSuggestion(suggestion) {
@@ -161,4 +200,6 @@ function selectSuggestion(suggestion) {
 function deselect(item) {
 	emit('deselect', item);
 }
+
+defineExpose({handleFocus});
 </script>

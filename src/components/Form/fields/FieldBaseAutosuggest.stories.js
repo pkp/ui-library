@@ -112,12 +112,12 @@ const RORExample = {
 			);
 
 			const suggestions = items
-				.filter((u) => u.fullName.match(regex))
+				.filter((u) => u.name.match(regex))
 				.filter((u) => !this.currentValue.includes(u.id))
 				.map((u) => {
 					return {
 						value: u.id,
-						label: u.fullName,
+						label: u.name,
 						hasSlot: u.ror,
 					};
 				});
