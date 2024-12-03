@@ -13,24 +13,37 @@
 						</template>
 					</PkpHeader>
 				</template>
+
 				<template #item-title="{item}">
 					{{ localize(item.title) }}
-					<Badge v-bind="item.status ? {isPrimary: true} : {isWarnable: true}">
-						{{ item.status ? t('common.active') : t('common.inactive') }}
-					</Badge>
 				</template>
+
 				<template #item-actions="{item}">
-					<PkpButton @click="openEditModal(item.id)">
-						{{ t('common.edit') }}
-					</PkpButton>
-					<PkpButton
-						v-if="item.removable"
-						:is-warnable="true"
-						@click="openDeleteModal(item.id)"
-					>
-						{{ t('common.delete') }}
-					</PkpButton>
+					<label class="recommendationListItem__selectWrapper">
+						<div class="recommendationListItem__selector">
+							<input
+								type="checkbox"
+								:name="`recommendation_status[]`"
+								:value="item.id"
+								:checked="item.status"
+								@click.prevent="
+									(event) => openStatusToggleConfirmationModal(item.id, event)
+								"
+							/>
+						</div>
+					</label>
+
+					<div class="recommendationList__actions">
+						<DropdownActions
+							:actions="getActions(item)"
+							:label="t('reviewer.recommendation.management.options')"
+							:display-as-ellipsis="true"
+							direction="left"
+							@action="(actionName) => handleAction(actionName, item)"
+						/>
+					</div>
 				</template>
+
 				<template #footer>
 					<Pagination
 						v-if="lastPage > 1"
@@ -47,17 +60,20 @@
 
 <script>
 import PkpButton from '@/components/Button/Button.vue';
-import Badge from '@/components/Badge/Badge.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
 import PkpHeader from '@/components/Header/Header.vue';
+import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
 import fetch from '@/mixins/fetch';
 import cloneDeep from 'clone-deep';
 import ReviewerRecommendationsEditModal from './ReviewerRecommendationsEditModal.vue';
 import {useModal} from '@/composables/useModal';
+import {useLocalize} from '@/composables/useLocalize';
+
+const {t} = useLocalize();
 
 export default {
 	components: {
@@ -66,7 +82,7 @@ export default {
 		ListPanel,
 		Pagination,
 		PkpHeader,
-		Badge,
+		DropdownActions,
 	},
 	mixins: [dialog, fetch, ajaxError],
 	props: {
@@ -87,6 +103,26 @@ export default {
 		},
 		/** A localized string for the button to edit an recommendation. */
 		editRecommendationLabel: {
+			type: String,
+			required: true,
+		},
+		/** A localized string for title when activating the recommendation on modal confirmation. */
+		activateTitle: {
+			type: String,
+			required: true,
+		},
+		/** A localized string to confirm activating recommendation. */
+		confirmActivateMessage: {
+			type: String,
+			required: true,
+		},
+		/** A localized string for title when deactivating the recommendation on modal confirmation. */
+		deactivateTitle: {
+			type: String,
+			required: true,
+		},
+		/** A localized string to confirm deactivating recommendation. */
+		confirmDeactivateMessage: {
 			type: String,
 			required: true,
 		},
@@ -135,6 +171,108 @@ export default {
 		};
 	},
 	methods: {
+		/**
+		 * Get the actions for recommendation items
+		 *
+		 * @param {Object} recommendation
+		 */
+		getActions(recommendation) {
+			let actions = [
+				{
+					label: t('common.edit'),
+					name: 'openEditModal',
+					icon: 'Edit',
+				},
+			];
+
+			if (recommendation.removable) {
+				actions.push({
+					label: t('common.delete'),
+					name: 'openDeleteModal',
+					icon: 'Delete',
+					isWarnable: true,
+				});
+			}
+
+			return actions;
+		},
+
+		/**
+		 * Handle action on recommendation item
+		 *
+		 * @param {String} actionName
+		 * @param {Object} recommendation
+		 */
+		handleAction(actionName, recommendation) {
+			this[actionName](recommendation.id);
+		},
+
+		/**
+		 * Show the confirmation modal to activate/deactivate recommendation
+		 *
+		 * @param {Number} id
+		 * @param {Object} event
+		 */
+		openStatusToggleConfirmationModal(id, event) {
+			const recommendation = this.items.find((a) => a.id === id);
+
+			if (typeof recommendation === 'undefined') {
+				this.ajaxErrorCallback({});
+				return;
+			}
+
+			this.openDialog({
+				name: 'edit',
+				title: recommendation.status
+					? this.deactivateTitle
+					: this.activateTitle,
+				message: this.replaceLocaleParams(
+					recommendation.status
+						? this.confirmDeactivateMessage
+						: this.confirmActivateMessage,
+					{
+						title: this.localize(recommendation.title),
+					},
+				),
+				actions: [
+					{
+						label: this.t('common.yes'),
+						isPrimary: true,
+						callback: (close) => {
+							var self = this;
+							$.ajax({
+								url: this.apiUrl + '/' + id + '/status',
+								type: 'POST',
+								headers: {
+									'X-Csrf-Token': pkp.currentUser.csrfToken,
+									'X-Http-Method-Override': 'PUT',
+								},
+								data: {
+									status: Number(!recommendation.status),
+								},
+								error: self.ajaxErrorCallback,
+								success: function (r) {
+									self.items.forEach((item) => {
+										if (item.id == recommendation.id) {
+											item.status = !recommendation.status;
+											$(event.target).prop('checked', !recommendation.status);
+										}
+									});
+									close();
+									self.setFocusIn(self.$el);
+								},
+							});
+						},
+					},
+					{
+						label: this.t('common.no'),
+						isWarnable: recommendation.status ? true : false,
+						callback: (close) => close(),
+					},
+				],
+			});
+		},
+
 		/**
 		 * Clear the active form when the modal is closed
 		 *
@@ -322,6 +460,23 @@ export default {
 
 	.listPanel__itemTitle {
 		font-weight: @normal;
+	}
+
+	.recommendationListItem__selectWrapper {
+		display: flex;
+		align-items: center;
+		margin-left: -1rem;
+	}
+
+	.recommendationListItem__selector {
+		line-height: 100%;
+		width: 3rem;
+		padding-left: 1rem;
+		padding-right: 7rem;
+	}
+
+	.recommendationList__actions {
+		padding-right: 2rem;
 	}
 }
 </style>
