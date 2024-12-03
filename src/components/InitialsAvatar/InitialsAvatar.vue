@@ -44,10 +44,18 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
+	/** The user's custom initials to be displayed instead of initials derived from the user's name */
+	preferredInitials: {
+		type: String,
+		default: '',
+	},
 });
 
 const initials = computed(() => {
-	return `${props.givenName?.charAt(0) || ''}${props.familyName?.charAt(0) || ''}`.toUpperCase();
+	return (
+		props.preferredInitials ||
+		`${props.givenName?.charAt(0) || ''}${props.familyName?.charAt(0) || ''}`.toUpperCase()
+	);
 });
 
 const classes = computed(() => ({
