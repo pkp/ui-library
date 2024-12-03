@@ -10,7 +10,7 @@
 		<div class="my-4">
 			<FieldText
 				:label="t('user.username')"
-				:value="fields.username"
+				:value="store.acceptInvitationPayload.username"
 				:description="t('acceptInvitation.usernameField.description')"
 				:is-required="true"
 				name="username"
