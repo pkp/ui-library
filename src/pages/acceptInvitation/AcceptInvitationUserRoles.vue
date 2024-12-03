@@ -12,7 +12,7 @@
 		<TableBody>
 			<TableRow v-for="(row, index) in userGroupsToAdd" :key="index">
 				<TableCell :is-row-header="true">
-					{{ localize(row.userGroupName) }}
+					{{ row.userGroupName }}
 				</TableCell>
 				<TableCell>{{ row.dateStart }}</TableCell>
 				<TableCell>{{ row.dateEnd ? row.dateEnd : '---' }}</TableCell>
