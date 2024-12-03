@@ -21,7 +21,9 @@ const props = defineProps({
 		default: () => 'large',
 		validator: (prop) => ['large', 'small'].includes(prop),
 	},
-	userFullName: {type: String, required: true},
+	userFullName: {type: String, default: () => ''},
+	/** The user's custom initials to be displayed instead of initials derived from the user's name */
+	preferredInitials: {type: String, default: () => ''},
 	userId: {type: Number, required: true},
 });
 
@@ -50,6 +52,8 @@ const initialsClasses = computed(() => {
 });
 
 const initials = computed(() => {
-	return getUserAvatarInitialsFromName(props.userFullName);
+	return (
+		props.preferredInitials || getUserAvatarInitialsFromName(props.userFullName)
+	);
 });
 </script>
