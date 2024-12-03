@@ -92,8 +92,9 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 					'privacyStatement',
 					userId.value ? true : false,
 				);
+				updateAcceptInvitationPayload('affiliation', data.value.affiliation);
 				// add username to invitation payload for validations
-				updateAcceptInvitationPayload('username', null);
+				updateAcceptInvitationPayload('username', data.value.username);
 				// add password to invitation payload for validations
 				updateAcceptInvitationPayload('password', null);
 				errors.value = [];

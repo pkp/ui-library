@@ -131,7 +131,7 @@ export const useUserInvitationManagerStore = defineComponentStore(
 					}),
 					affiliation: invitationObj.existingUser
 						? localize(invitationObj.existingUser.affiliation)
-						: invitationObj.affiliation,
+						: localize(invitationObj.affiliation),
 				},
 				actions: [
 					{
