@@ -67,13 +67,6 @@ window.pkp = {
 		SUBMISSION_REVIEW_METHOD_DOUBLEANONYMOUS: 2,
 		SUBMISSION_REVIEW_METHOD_OPEN: 3,
 
-		// SUBMISSION_REVIEWER_RECOMMENDATION_ACCEPT: 1,
-		// SUBMISSION_REVIEWER_RECOMMENDATION_PENDING_REVISIONS: 2,
-		// SUBMISSION_REVIEWER_RECOMMENDATION_RESUBMIT_HERE: 3,
-		// SUBMISSION_REVIEWER_RECOMMENDATION_RESUBMIT_ELSEWHERE: 4,
-		// SUBMISSION_REVIEWER_RECOMMENDATION_DECLINE: 5,
-		// SUBMISSION_REVIEWER_RECOMMENDATION_SEE_COMMENTS: 6,
-
 		ROLE_ID_MANAGER: 16,
 		ROLE_ID_SITE_ADMIN: 1,
 		ROLE_ID_AUTHOR: 65536,
@@ -747,6 +740,7 @@ window.pkp = {
 			"Invitation not accepted. You're logged in as a different user.",
 		'acceptInvitation.authorization.message':
 			'Please log out and sign in with the correct account to accept this invitation.',
+		'reviewer.recommendation.management.options': 'Recommendation management options',
 	},
 
 	tinyMCE: {
