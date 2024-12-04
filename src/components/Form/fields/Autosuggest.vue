@@ -116,45 +116,50 @@ import Spinner from '@/components/Spinner/Spinner.vue';
 const slots = useSlots();
 
 const props = defineProps({
+	/* ID to be assigned to the Combobox component */
 	id: {
 		type: String,
 		required: true,
 	},
+	/* Array of suggestions to the autosuggest component */
 	suggestions: {
 		type: Array,
 		default: () => [],
 	},
+	/* Label to be used for the selected items */
 	selectedLabel: {
 		type: String,
 		required: true,
 	},
+	/* Array of currently selected items */
 	currentSelected: {
 		type: Array,
 		default: () => [],
 	},
-	isDisabled: {
-		type: Boolean,
-		default: () => false,
-	},
+	/* The input model value */
 	inputValue: {
 		type: String,
 		default: () => '',
 	},
+	/* If the autosuggest component is disabled */
+	isDisabled: {
+		type: Boolean,
+		default: () => false,
+	},
+	/* If the list of suggestions is loading */
 	isLoading: {
 		type: Boolean,
 		default: () => false,
 	},
+	/* If multiple entries are allowed to be selected */
 	isMultiple: {
 		type: Boolean,
 		default: () => true,
 	},
-	inputDescribedByIds: {
+	/* Prefix of the input's parent container and its label */
+	controlPrefixId: {
 		type: String,
-		required: true,
-	},
-	inputControlId: {
-		type: String,
-		required: true,
+		default: () => 'default-autosuggest',
 	},
 });
 
@@ -162,9 +167,9 @@ const props = defineProps({
  * Props to pass to the input field
  */
 const inputProps = {
-	'aria-describedby': props.inputDescribedByIds,
+	'aria-describedby': `${props.controlPrefixId}-selected`,
 	class: 'pkpAutosuggest__input',
-	id: props.inputControlId,
+	id: `${props.controlPrefixId}-control`,
 	disabled: props.isDisabled,
 };
 

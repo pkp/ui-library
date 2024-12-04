@@ -75,8 +75,6 @@ const {
 const staticProps = {
 	id: 'default-autosuggest-autosuggest',
 	selectedLabel: 'Selected',
-	inputDescribedByIds: 'default-autosuggest-selected',
-	inputControlId: 'default-autosuggest-control',
 	isMultiple: false,
 };
 

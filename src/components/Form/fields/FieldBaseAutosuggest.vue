@@ -255,8 +255,7 @@ export default {
 				selectedLabel: this.selectedLabel,
 				currentSelected: this.currentSelected,
 				isDisabled: this.isDisabled,
-				inputDescribedByIds: this.describedByIds,
-				inputControlId: this.controlId,
+				controlPrefixId: this.compileId(),
 			};
 		},
 	},
