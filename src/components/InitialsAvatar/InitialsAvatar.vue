@@ -44,7 +44,7 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
-	/** The user's custom initials to be displayed instead of initials derived from the user's name */
+	/** Initials to display instead of those derived from the `givenName` and `familyName` props. */
 	preferredInitials: {
 		type: String,
 		default: '',
