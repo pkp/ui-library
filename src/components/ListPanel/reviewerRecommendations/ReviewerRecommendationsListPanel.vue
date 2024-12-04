@@ -22,6 +22,7 @@
 					<label class="recommendationListItem__selectWrapper">
 						<div class="recommendationListItem__selector">
 							<input
+								class="text-blue-900 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600 h-5 w-5 rounded focus:ring-2"
 								type="checkbox"
 								:name="`recommendation_status[]`"
 								:value="item.id"
@@ -166,6 +167,7 @@ export default {
 	],
 	data() {
 		return {
+			isLoading: false,
 			activeForm: null,
 			activeFormTitle: '',
 		};
@@ -189,7 +191,7 @@ export default {
 				actions.push({
 					label: t('common.delete'),
 					name: 'openDeleteModal',
-					icon: 'Delete',
+					icon: 'Cancel',
 					isWarnable: true,
 				});
 			}
@@ -254,7 +256,7 @@ export default {
 								success: function (r) {
 									self.items.forEach((item) => {
 										if (item.id == recommendation.id) {
-											item.status = !recommendation.status;
+											item.status = Number(!recommendation.status);
 											$(event.target).prop('checked', !recommendation.status);
 										}
 									});
@@ -266,7 +268,7 @@ export default {
 					},
 					{
 						label: this.t('common.no'),
-						isWarnable: recommendation.status ? true : false,
+						isWarnable: true,
 						callback: (close) => close(),
 					},
 				],
@@ -470,12 +472,13 @@ export default {
 
 	.recommendationListItem__selector {
 		line-height: 100%;
-		width: 3rem;
+		width: 2rem;
 		padding-left: 1rem;
-		padding-right: 7rem;
+		padding-right: 1rem;
 	}
 
 	.recommendationList__actions {
+		padding-left: 5rem;
 		padding-right: 2rem;
 	}
 }
