@@ -1,19 +1,15 @@
 <template>
-	<!--<TableCellSelect :value="isChecked" @change="toggle"></TableCellSelect>-->
-
 	<TableCellSelect
-		v-if="canBeDeleted"
+		:disabled="!canBeDeleted"
 		:checked="isChecked"
 		:described-by="'submission-title-' + item.id"
 		@change="change"
 	/>
-	<TableCell v-else></TableCell>
 </template>
 
 <script setup>
 import {computed} from 'vue';
 import TableCellSelect from '@/components/Table/TableCellSelect.vue';
-import TableCell from '@/components/Table/TableCell.vue';
 
 import {useDashboardPageStore} from '@/pages/dashboard/dashboardPageStore';
 
