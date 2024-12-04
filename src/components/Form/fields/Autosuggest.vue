@@ -173,7 +173,7 @@ const enableSuggestions = computed(() => {
 		return true;
 	}
 
-	// disable multiple selections if only a single item is allowed and an item is already selected."
+	// disable multiple selections if only a single item is allowed and an item is already selected.
 	return !props.currentSelected.length;
 });
 

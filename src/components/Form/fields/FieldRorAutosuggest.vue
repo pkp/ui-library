@@ -55,16 +55,20 @@ import Autosuggest from './Autosuggest.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import {useFetch} from '@/composables/useFetch';
 
-const suggestions = ref([]);
 const currentSelected = ref([]);
 const inputValue = ref('');
 const isFocused = ref(false);
 
 const url = 'https://api.ror.org/v2/organizations';
-const queryParams = ref({
+const queryParams = computed(() => ({
 	query: inputValue.value,
-});
-const {data, isLoading, fetch} = useFetch(url, {
+}));
+
+const {
+	data: suggestions,
+	isLoading,
+	fetch: fetchSuggestions,
+} = useFetch(url, {
 	query: queryParams,
 });
 
@@ -78,25 +82,13 @@ const staticProps = {
 
 const autoSuggestProps = computed(() => ({
 	...staticProps,
-	suggestions: suggestions.value,
+	suggestions: mappedSuggestions.value,
 	currentSelected: currentSelected.value,
 	isLoading: isLoading.value,
 }));
 
-watch(inputValue, (newValue, oldValue) => {
-	if (newValue === oldValue) {
-		return;
-	}
-
-	getSuggestions();
-});
-
-function mapResult(items) {
-	if (!items) {
-		return [];
-	}
-
-	return items.map((item) => {
+const mappedSuggestions = computed(() => {
+	return suggestions.value?.items.map((item) => {
 		// get the name from "ror_display" type
 		const name = item.names?.find((i) =>
 			i.types.includes('ror_display'),
@@ -109,12 +101,14 @@ function mapResult(items) {
 			href: item.id,
 		};
 	});
-}
+});
+
+watch(queryParams, () => {
+	getSuggestions();
+});
 
 async function getSuggestions() {
-	queryParams.value.query = inputValue.value;
-	await fetch();
-	suggestions.value = mapResult(data.value?.items);
+	await fetchSuggestions();
 }
 
 function updateInputValue(value) {
@@ -125,20 +119,10 @@ function changeFocus(focused) {
 	isFocused.value = focused;
 }
 
-// Removes the currently selected items from the suggestions
-function omitSelectedFromSuggestions() {
-	const currentIds = currentSelected.value.map((c) => c.value);
-	suggestions.value = suggestions.value.filter(
-		(i) => !currentIds.includes(i.value),
-	);
-}
-
 function handleSelect(suggestion) {
 	if (!currentSelected.value.some((item) => item.value === suggestion.value)) {
 		currentSelected.value.push(suggestion);
 	}
-
-	omitSelectedFromSuggestions();
 }
 
 function handleDeselect(item) {
