@@ -34,6 +34,7 @@
 			class="pkpAutosuggest__input"
 			v-bind="inputProps"
 			autocomplete="off"
+			:disabled="isDisabled || !enableSuggestions"
 			@change="(event) => handleChange(event)"
 			@focus="() => handleFocus(true)"
 			@blur="() => handleFocus(false)"
@@ -76,7 +77,7 @@
 					{{ localInputValue }}
 				</li>
 			</ComboboxOption>
-			<template v-if="!isLoading">
+			<template v-if="!isLoading && enableSuggestions">
 				<ComboboxOption
 					v-for="suggestion in suggestions"
 					:key="suggestion.value"
@@ -101,7 +102,7 @@
 	</Combobox>
 </template>
 <script setup>
-import {useSlots, ref, inject} from 'vue';
+import {useSlots, ref, inject, computed} from 'vue';
 import {
 	Combobox,
 	ComboboxInput,
@@ -147,6 +148,10 @@ const props = defineProps({
 		type: Boolean,
 		default: () => false,
 	},
+	isMultiple: {
+		type: Boolean,
+		default: () => true,
+	},
 	inputDescribedByIds: {
 		type: String,
 		required: true,
@@ -171,6 +176,15 @@ const inputProps = {
 	name: props.inputName,
 	disabled: props.isDisabled,
 };
+
+const enableSuggestions = computed(() => {
+	if (props.isMultiple) {
+		return true;
+	}
+
+	// disable multiple selections if only a single item is allowed and an item is already selected."
+	return !props.currentSelected.length;
+});
 
 const emit = defineEmits([
 	'update:inputValue',

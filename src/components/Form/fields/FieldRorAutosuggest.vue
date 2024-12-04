@@ -71,11 +71,10 @@ const {data, isLoading, fetch} = useFetch(url, {
 const staticProps = {
 	id: 'default-autosuggest-autosuggest',
 	selectedLabel: 'Selected',
-	isDisabled: false,
 	deselectLabel: 'Remove {$item}',
 	inputDescribedByIds: 'default-autosuggest-selected',
 	inputControlId: 'default-autosuggest-control',
-	// isMultiple: true,
+	isMultiple: false,
 };
 
 const reactiveProps = reactive({
