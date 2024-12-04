@@ -14,5 +14,25 @@ export function useCurrentUser() {
 		return pkp.currentUser.id;
 	}
 
-	return {hasCurrentUserAtLeastOneRole, getCurrentUserId};
+	function hasCurrentUserAtLeastOneAssignedRoleInAnyStage(
+		submission,
+		roles = [],
+	) {
+		const assignedRoleIds = [];
+		submission.stages.forEach((stage) => {
+			stage.currentUserAssignedRoles.forEach((assignedRoleId) => {
+				if (!assignedRoleIds.includes(assignedRoleId)) {
+					assignedRoleIds.push(assignedRoleId);
+				}
+			});
+		});
+
+		return roles.some((role) => assignedRoleIds.includes(role));
+	}
+
+	return {
+		hasCurrentUserAtLeastOneRole,
+		getCurrentUserId,
+		hasCurrentUserAtLeastOneAssignedRoleInAnyStage,
+	};
 }
