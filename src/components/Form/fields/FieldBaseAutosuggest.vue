@@ -81,7 +81,6 @@
 				</div>
 				<!-- End Heading part repeated for inline scenario -->
 				<Autosuggest
-					v-if="!isDisabled"
 					v-bind="autoSuggestProps"
 					ref="inputRef"
 					v-model:inputValue="inputValue"
