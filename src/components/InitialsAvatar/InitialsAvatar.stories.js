@@ -46,3 +46,19 @@ export const UndefinedName = {
 export const SmallIcon = {
 	args: {givenName: 'Paul', familyName: 'Hudson', shrink: true},
 };
+
+export const PreferredInitialsOnly = {
+	args: {
+		preferredInitials: 'TG',
+		userId: 136,
+	},
+};
+
+export const GivenNameWithFamilyNameAndPreferredInitials = {
+	args: {
+		preferredInitials: 'TG',
+		givenName: 'Adela',
+		familyName: 'Gallego',
+		userId: 136,
+	},
+};

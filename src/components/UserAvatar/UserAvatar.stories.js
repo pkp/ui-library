@@ -25,3 +25,18 @@ export const Arabic = {
 		userId: 136,
 	},
 };
+
+export const PreferredInitialsOnly = {
+	args: {
+		preferredInitials: 'TG',
+		userId: 136,
+	},
+};
+
+export const UserFullNameAndPreferredInitials = {
+	args: {
+		preferredInitials: 'TG',
+		userFullName: 'Nama Sampan-Nirmal Lengkap',
+		userId: 136,
+	},
+};

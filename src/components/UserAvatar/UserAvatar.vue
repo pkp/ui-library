@@ -22,7 +22,7 @@ const props = defineProps({
 		validator: (prop) => ['large', 'small'].includes(prop),
 	},
 	userFullName: {type: String, default: () => ''},
-	/** The user's custom initials to be displayed instead of initials derived from the user's name */
+	/** Initials to display instead of those derived from the `userFullName` prop. */
 	preferredInitials: {type: String, default: () => ''},
 	userId: {type: Number, required: true},
 });
