@@ -18,7 +18,7 @@
 		>
 			<Icon icon="Cancel" class="h-3 w-3" />
 			<span class="-screenReader">
-				{{ deselectLabel?.replace('{$item}', item.label) }}
+				{{ t('common.removeItem', {item: item.label}) }}
 			</span>
 		</button>
 	</PkpBadge>
@@ -136,10 +136,6 @@ const props = defineProps({
 		type: Boolean,
 		default: () => false,
 	},
-	deselectLabel: {
-		type: String,
-		required: true,
-	},
 	inputValue: {
 		type: String,
 		default: () => '',
@@ -160,10 +156,6 @@ const props = defineProps({
 		type: String,
 		required: true,
 	},
-	inputName: {
-		type: String,
-		default: () => 'autosuggest',
-	},
 });
 
 /**
@@ -173,7 +165,6 @@ const inputProps = {
 	'aria-describedby': props.inputDescribedByIds,
 	class: 'pkpAutosuggest__input',
 	id: props.inputControlId,
-	name: props.inputName,
 	disabled: props.isDisabled,
 };
 

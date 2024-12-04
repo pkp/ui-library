@@ -256,10 +256,8 @@ export default {
 				selectedLabel: this.selectedLabel,
 				currentSelected: this.currentSelected,
 				isDisabled: this.isDisabled,
-				deselectLabel: this.deselectLabel,
 				inputDescribedByIds: this.describedByIds,
 				inputControlId: this.controlId,
-				inputName: this.name,
 			};
 		},
 	},

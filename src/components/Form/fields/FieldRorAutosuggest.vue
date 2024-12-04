@@ -50,7 +50,7 @@
 </template>
 
 <script setup>
-import {ref, watch, reactive, computed} from 'vue';
+import {ref, watch, computed} from 'vue';
 import Autosuggest from './Autosuggest.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import {useFetch} from '@/composables/useFetch';
@@ -71,21 +71,16 @@ const {data, isLoading, fetch} = useFetch(url, {
 const staticProps = {
 	id: 'default-autosuggest-autosuggest',
 	selectedLabel: 'Selected',
-	deselectLabel: 'Remove {$item}',
 	inputDescribedByIds: 'default-autosuggest-selected',
 	inputControlId: 'default-autosuggest-control',
 	isMultiple: false,
 };
 
-const reactiveProps = reactive({
-	suggestions,
-	currentSelected,
-	isLoading,
-});
-
 const autoSuggestProps = computed(() => ({
 	...staticProps,
-	...reactiveProps,
+	suggestions: suggestions.value,
+	currentSelected: currentSelected.value,
+	isLoading: isLoading.value,
 }));
 
 watch(inputValue, (newValue, oldValue) => {
