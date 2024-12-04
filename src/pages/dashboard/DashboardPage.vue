@@ -8,9 +8,12 @@
 			</h2>
 			<div class="mt-2">
 				<div class="flex justify-between">
-					<PkpButton @click="store.openFiltersModal">
-						{{ t('common.filter') }}
-					</PkpButton>
+					<div class="flex flex-row space-x-2">
+						<PkpButton @click="store.openFiltersModal">
+							{{ t('common.filter') }}
+						</PkpButton>
+						<DashboardBulkDeleteButton />
+					</div>
 					<div>
 						<Search
 							:search-phrase="store.searchPhrase"
@@ -46,6 +49,7 @@
 import PkpButton from '@/components/Button/Button.vue';
 import DashboardActiveFilters from './components/DashboardActiveFilters.vue';
 import DashboardTable from './components/DashboardTable/DashboardTable.vue';
+import DashboardBulkDeleteButton from './components/DashboardBulkDeleteButton.vue';
 import Search from '@/components/Search/Search.vue';
 
 import {useDashboardPageStore} from './dashboardPageStore';

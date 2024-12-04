@@ -12,7 +12,7 @@ import {defineComponentStore} from '@/utils/defineComponentStore';
 
 import {useWorkflowActions} from '../workflow/composables/useWorkflowActions';
 import {useReviewerManagerActions} from '@/managers/ReviewerManager/useReviewerManagerActions';
-
+import {useDashboardBulkDelete} from './composables/useDashboardBulkDelete';
 import {useParticipantManagerActions} from '@/managers/ParticipantManager/useParticipantManagerActions';
 
 import {useEditorialLogic} from './composables/useEditorialLogic';
@@ -235,6 +235,35 @@ export const useDashboardPageStore = defineComponentStore(
 		}
 
 		/**
+		 * Bulk delete
+		 */
+		const {
+			bulkDeleteDisplayDeleteButton,
+
+			bulkDeleteEnabled,
+			bulkDeleteToggleEnabled,
+
+			bulkDeleteSelectedItems,
+			bulkDeleteSelectItem,
+			bulkDeleteDeselectItem,
+			bulkDeleteSubmissionIdsCanBeDeleted,
+			bulkDeleteActionDelete,
+
+			bulkDeleteResetSelection,
+		} = useDashboardBulkDelete({
+			submissions,
+			dashboardPage: pageInitConfig.dashboardPage,
+			onSubmissionDeleteCallback: () => {
+				fetchSubmissions();
+			},
+		});
+
+		// reset selection when changing view/search/filters
+		watch(submissionsQuery, () => {
+			bulkDeleteResetSelection();
+		});
+
+		/**
 		 * Reviewer actions,
 		 * available for review assignments popup
 		 */
@@ -405,6 +434,18 @@ export const useDashboardPageStore = defineComponentStore(
 			isSubmissionsLoading,
 			fetchSubmissions,
 			setCurrentPage,
+
+			// Bulk delete
+			bulkDeleteDisplayDeleteButton,
+
+			bulkDeleteEnabled,
+			bulkDeleteToggleEnabled,
+
+			bulkDeleteSelectedItems,
+			bulkDeleteSelectItem,
+			bulkDeleteDeselectItem,
+			bulkDeleteSubmissionIdsCanBeDeleted,
+			bulkDeleteActionDelete,
 
 			// Workflow Page
 			workflowSubmissionId,

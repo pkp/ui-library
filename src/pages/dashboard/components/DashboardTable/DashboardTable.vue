@@ -4,6 +4,11 @@
 		@sort="(columnId) => $emit('sortColumn', columnId)"
 	>
 		<TableHeader>
+			<TableColumn v-if="dashboardStore.bulkDeleteEnabled">
+				<span class="sr-only">
+					{{ t('admin.submissions.incomplete.bulkDelete.column.description') }}
+				</span>
+			</TableColumn>
 			<TableColumn
 				v-for="column in columns"
 				:id="column.id"
@@ -15,6 +20,7 @@
 		</TableHeader>
 		<TableBody>
 			<TableRow v-for="item in items" :key="item.id">
+				<CellBulkDelete v-if="dashboardStore.bulkDeleteEnabled" :item="item" />
 				<component
 					:is="cellComponents[column.componentName] || column.componentName"
 					v-for="column in columns"
@@ -38,7 +44,7 @@ import TableHeader from '@/components/Table/TableHeader.vue';
 import TableBody from '@/components/Table/TableBody.vue';
 import TableRow from '@/components/Table/TableRow.vue';
 import TablePagination from '@/components/Table/TablePagination.vue';
-
+import CellBulkDelete from './CellBulkDelete.vue';
 import CellSubmissionActions from './CellSubmissionActions.vue';
 import CellSubmissionActivity from './CellSubmissionActivity/CellSubmissionActivity.vue';
 import CellSubmissionDays from './CellSubmissionDays.vue';
@@ -50,6 +56,8 @@ import CellReviewAssignmentId from './CellReviewAssignmentId.vue';
 import CellReviewAssignmentTitle from './CellReviewAssignmentTitle.vue';
 import CellReviewAssignmentActivity from './CellReviewAssignmentActivity.vue';
 import CellReviewAssignmentActions from './CellReviewAssignmentActions.vue';
+
+import {useDashboardPageStore} from '@/pages/dashboard/dashboardPageStore';
 
 defineProps({
 	items: {type: Array, required: true},
@@ -71,4 +79,6 @@ const cellComponents = {
 	CellReviewAssignmentActivity,
 	CellReviewAssignmentActions,
 };
+
+const dashboardStore = useDashboardPageStore();
 </script>
