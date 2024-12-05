@@ -1,10 +1,14 @@
 import {useLocalize} from '@/composables/useLocalize';
-import {Actions} from '../useWorkflowActions';
+import {Actions as WorkflowActions} from '../useWorkflowActions';
 import {useSubmission} from '@/composables/useSubmission';
+import {useCurrentUser} from '@/composables/useCurrentUser';
+
 import {Actions as DecisionActions} from '../useWorkflowDecisions';
 import {addItemIf} from './workflowConfigHelpers';
 const {hasSubmissionPassedStage, getStageById, isDecisionAvailable} =
 	useSubmission();
+const {hasCurrentUserAtLeastOneAssignedRoleInAnyStage} = useCurrentUser();
+
 const {t} = useLocalize();
 
 export function getHeaderItems({
@@ -31,7 +35,7 @@ export function getHeaderItems({
 			component: 'WorkflowActionButton',
 			props: {
 				label: t('common.view'),
-				action: Actions.WORKFLOW_VIEW_PUBLISHED_SUBMISSION,
+				action: WorkflowActions.WORKFLOW_VIEW_PUBLISHED_SUBMISSION,
 			},
 		});
 	}
@@ -41,7 +45,7 @@ export function getHeaderItems({
 			component: 'WorkflowActionButton',
 			props: {
 				label: t('editor.activityLog'),
-				action: Actions.WORKFLOW_VIEW_ACTIVITY_LOG,
+				action: WorkflowActions.WORKFLOW_VIEW_ACTIVITY_LOG,
 			},
 		});
 	}
@@ -49,7 +53,7 @@ export function getHeaderItems({
 		component: 'WorkflowActionButton',
 		props: {
 			label: t('editor.submissionLibrary'),
-			action: Actions.WORKFLOW_VIEW_LIBRARY,
+			action: WorkflowActions.WORKFLOW_VIEW_LIBRARY,
 		},
 	});
 
@@ -119,6 +123,26 @@ export const WorkflowConfig = {
 					submission,
 					pkp.const.DECISION_REVERT_INITIAL_DECLINE,
 				),
+			);
+
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('common.delete'),
+						isWarnable: true,
+						action: WorkflowActions.WORKFLOW_DELETE_SUBMISSION,
+					},
+				},
+				isDecisionAvailable(
+					submission,
+					pkp.const.DECISION_REVERT_INITIAL_DECLINE,
+				) &&
+					hasCurrentUserAtLeastOneAssignedRoleInAnyStage(submission, [
+						pkp.const.ROLE_ID_MANAGER,
+						pkp.const.ROLE_ID_SITE_ADMIN,
+					]),
 			);
 
 			addItemIf(
@@ -349,6 +373,26 @@ export const WorkflowConfig = {
 						pkp.const.DECISION_REVERT_INTERNAL_DECLINE,
 					),
 				);
+
+				addItemIf(
+					items,
+					{
+						component: 'WorkflowActionButton',
+						props: {
+							label: t('common.delete'),
+							isWarnable: true,
+							action: WorkflowActions.WORKFLOW_DELETE_SUBMISSION,
+						},
+					},
+					isDecisionAvailable(
+						submission,
+						pkp.const.DECISION_REVERT_INTERNAL_DECLINE,
+					) &&
+						hasCurrentUserAtLeastOneAssignedRoleInAnyStage(submission, [
+							pkp.const.ROLE_ID_MANAGER,
+							pkp.const.ROLE_ID_SITE_ADMIN,
+						]),
+				);
 			}
 			return items;
 		},
@@ -422,7 +466,7 @@ export const PublicationConfig = {
 						props: {
 							label: t('common.preview'),
 							isSecondary: true,
-							action: Actions.WORKFLOW_PREVIEW_PUBLICATION,
+							action: WorkflowActions.WORKFLOW_PREVIEW_PUBLICATION,
 						},
 					});
 				}
@@ -434,7 +478,7 @@ export const PublicationConfig = {
 
 						label: t('publication.publish'),
 						isSecondary: true,
-						action: Actions.WORKFLOW_SCHEDULE_FOR_PUBLICATION,
+						action: WorkflowActions.WORKFLOW_SCHEDULE_FOR_PUBLICATION,
 					},
 				});
 			} else if (selectedPublication.status === pkp.const.STATUS_SCHEDULED) {
@@ -443,7 +487,7 @@ export const PublicationConfig = {
 					props: {
 						label: t('dashboard.summary.preview'),
 						isSecondary: true,
-						action: Actions.WORKFLOW_PREVIEW_PUBLICATION,
+						action: WorkflowActions.WORKFLOW_PREVIEW_PUBLICATION,
 					},
 				});
 
@@ -452,7 +496,7 @@ export const PublicationConfig = {
 					props: {
 						label: t('publication.unschedule'),
 						isWarnable: true,
-						action: Actions.WORKFLOW_UNSCHEDULE_PUBLICATION,
+						action: WorkflowActions.WORKFLOW_UNSCHEDULE_PUBLICATION,
 					},
 				});
 			} else if (selectedPublication.status === pkp.const.STATUS_PUBLISHED) {
@@ -461,7 +505,7 @@ export const PublicationConfig = {
 					props: {
 						label: t('publication.unpublish'),
 						isWarnable: true,
-						action: Actions.WORKFLOW_UNPUBLISH_PUBLICATION,
+						action: WorkflowActions.WORKFLOW_UNPUBLISH_PUBLICATION,
 					},
 				});
 
@@ -474,7 +518,7 @@ export const PublicationConfig = {
 						props: {
 							label: t('publication.createVersion'),
 							isSecondary: true,
-							action: Actions.WORKFLOW_CREATE_NEW_VERSION,
+							action: WorkflowActions.WORKFLOW_CREATE_NEW_VERSION,
 						},
 					});
 				}
