@@ -14,29 +14,7 @@ export default {
 
 export const Default = {
 	args: {
-		userFullName: 'Nama Sampan-Nirmal Lengkap',
-		userId: 136,
-	},
-};
-
-export const Arabic = {
-	args: {
-		userFullName: 'خالد محمود الفارسي',
-		userId: 136,
-	},
-};
-
-export const PreferredInitialsOnly = {
-	args: {
-		preferredInitials: 'TG',
-		userId: 136,
-	},
-};
-
-export const UserFullNameAndPreferredInitials = {
-	args: {
-		preferredInitials: 'TG',
-		userFullName: 'Nama Sampan-Nirmal Lengkap',
+		initials: 'NL',
 		userId: 136,
 	},
 };
