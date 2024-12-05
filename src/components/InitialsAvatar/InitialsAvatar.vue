@@ -9,16 +9,6 @@
 import {computed} from 'vue';
 import Icon from '../Icon/Icon.vue';
 const props = defineProps({
-	/** User's given name */
-	givenName: {
-		type: String,
-		required: true,
-	},
-	/** User's family name  */
-	familyName: {
-		type: String,
-		default: '',
-	},
 	/** If the background should use primary color (blue) */
 	isPrimary: {
 		type: Boolean,
@@ -44,18 +34,11 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
-	/** Initials to display instead of those derived from the `givenName` and `familyName` props. */
-	preferredInitials: {
+	/** Initials to display */
+	initials: {
 		type: String,
-		default: '',
+		required: true,
 	},
-});
-
-const initials = computed(() => {
-	return (
-		props.preferredInitials ||
-		`${props.givenName?.charAt(0) || ''}${props.familyName?.charAt(0) || ''}`.toUpperCase()
-	);
 });
 
 const classes = computed(() => ({
