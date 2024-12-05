@@ -7,7 +7,7 @@
 	>
 		<div class="relative mt-1 w-full">
 			<div
-				:id="autoSuggestProps.inputDescribedByIds"
+				:id="autosuggestContainerId"
 				ref="values"
 				class="pkpAutosuggest__inputWrapper pkpFormField__input"
 				:class="{
@@ -54,15 +54,19 @@ import {ref, watch, computed} from 'vue';
 import Autosuggest from './Autosuggest.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import {useFetch} from '@/composables/useFetch';
+import {useId} from '@/composables/useId';
+
+const {generateId} = useId();
 
 const currentSelected = ref([]);
 const inputValue = ref('');
 const isFocused = ref(false);
-
 const url = 'https://api.ror.org/v2/organizations';
 const queryParams = computed(() => ({
 	query: inputValue.value,
 }));
+
+const autosuggestContainerId = generateId();
 
 const {
 	data: suggestions,
@@ -76,6 +80,7 @@ const staticProps = {
 	id: 'default-autosuggest-autosuggest',
 	selectedLabel: 'Selected',
 	isMultiple: false,
+	describedBy: autosuggestContainerId,
 };
 
 const autoSuggestProps = computed(() => ({

@@ -156,20 +156,19 @@ const props = defineProps({
 		type: Boolean,
 		default: () => true,
 	},
-	/* Prefix of the input's parent container and its label */
-	controlPrefixId: {
-		type: String,
-		default: () => 'default-autosuggest',
-	},
+	/** Field input id, usually used to connect with FormFieldLabel  */
+	inputId: {type: String, required: false, default: null},
+	/** aria-describedby ids */
+	describedBy: {type: String, required: false, default: ''},
 });
 
 /**
  * Props to pass to the input field
  */
 const inputProps = {
-	'aria-describedby': `${props.controlPrefixId}-selected`,
+	'aria-describedby': `${props.describedBy}`,
 	class: 'pkpAutosuggest__input',
-	id: `${props.controlPrefixId}-control`,
+	id: props.inputId,
 	disabled: props.isDisabled,
 };
 
