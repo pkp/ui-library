@@ -12,7 +12,8 @@
 						<PkpButton @click="store.openFiltersModal">
 							{{ t('common.filter') }}
 						</PkpButton>
-						<DashboardBulkDeleteButton />
+						<!-- Temporarly hide it on main branch until permissions details are decided -->
+						<!--<DashboardBulkDeleteButton />-->
 					</div>
 					<div>
 						<Search
@@ -49,7 +50,7 @@
 import PkpButton from '@/components/Button/Button.vue';
 import DashboardActiveFilters from './components/DashboardActiveFilters.vue';
 import DashboardTable from './components/DashboardTable/DashboardTable.vue';
-import DashboardBulkDeleteButton from './components/DashboardBulkDeleteButton.vue';
+//import DashboardBulkDeleteButton from './components/DashboardBulkDeleteButton.vue';
 import Search from '@/components/Search/Search.vue';
 
 import {useDashboardPageStore} from './dashboardPageStore';
