@@ -11,9 +11,7 @@
 
 <script setup>
 import {computed} from 'vue';
-import {useParticipant} from '@/composables/useParticipant';
 
-const {getUserAvatarInitialsFromName} = useParticipant();
 const props = defineProps({
 	sizeVariant: {
 		required: false,
@@ -21,9 +19,8 @@ const props = defineProps({
 		default: () => 'large',
 		validator: (prop) => ['large', 'small'].includes(prop),
 	},
-	userFullName: {type: String, default: () => ''},
-	/** Initials to display instead of those derived from the `userFullName` prop. */
-	preferredInitials: {type: String, default: () => ''},
+	/** Initials to display */
+	initials: {type: String, required: true},
 	userId: {type: Number, required: true},
 });
 
@@ -49,11 +46,5 @@ const initialsClasses = computed(() => {
 	const textSizeClass =
 		props.sizeVariant === 'large' ? 'text-2xl-bold' : 'text-lg-bold';
 	return [textSizeClass];
-});
-
-const initials = computed(() => {
-	return (
-		props.preferredInitials || getUserAvatarInitialsFromName(props.userFullName)
-	);
 });
 </script>

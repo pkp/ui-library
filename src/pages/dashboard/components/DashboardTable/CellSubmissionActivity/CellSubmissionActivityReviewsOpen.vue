@@ -11,7 +11,7 @@
 						<UserAvatar
 							size-variant="small"
 							:user-id="reviewAssignment.id"
-							:user-full-name="String(reviewAssignment.reviewerFullName)"
+							:initials="reviewAssignment.reviewerInitials"
 						/>
 					</template>
 					<ReviewActivityIndicatorPopover
