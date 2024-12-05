@@ -1,4 +1,4 @@
-import {computed, watch, markRaw} from 'vue';
+import {computed, watch, markRaw, inject} from 'vue';
 
 import {defineComponentStore} from '@/utils/defineComponentStore';
 import {
@@ -49,6 +49,11 @@ import WorkflowPublicationEditDisabled from './components/publication/WorkflowPu
 
 export const useWorkflowStore = defineComponentStore('workflow', (props) => {
 	const dashboardPage = props.pageInitConfig.dashboardPage;
+
+	/**
+	 * Action to close the workflow from inside
+	 * */
+	const closeWorkflowModal = inject('closeModal');
 
 	/**
 	 * Submission & Publication
@@ -222,6 +227,8 @@ export const useWorkflowStore = defineComponentStore('workflow', (props) => {
 
 	const store = {
 		dashboardPage,
+		closeWorkflowModal,
+
 		submission,
 		submissionId,
 		selectedPublication,

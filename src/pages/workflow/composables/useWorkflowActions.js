@@ -26,6 +26,7 @@ export const Actions = {
 	WORKFLOW_UNPUBLISH_PUBLICATION: 'workflowUnpublishPublication',
 	WORKFLOW_CREATE_NEW_VERSION: 'workflowCreateNewVersion',
 	WORKFLOW_CHANGE_SUBMISSION_LANGUAGE: 'workflowChangeSubmissionLanguage',
+	WORKFLOW_DELETE_SUBMISSION: 'workflowDeleteSubmission',
 
 	// OMP
 	WORKFLOW_CHANGE_WORKTYPE: 'workflowChangeWorktype',
@@ -314,6 +315,34 @@ export function useWorkflowActions({
 		});
 	}
 
+	function workflowDeleteSubmission({submission, store}) {
+		const {apiUrl} = useUrl(`_submissions/${submission.id}`);
+		const {fetch: fetchDelete} = useFetch(apiUrl, {method: 'DELETE'});
+		const {openDialog} = useModal();
+
+		openDialog({
+			title: t('common.delete'),
+			message: t('editor.submissionArchive.confirmDelete'),
+			actions: [
+				{
+					label: t('common.confirm'),
+					isPrimary: true,
+					callback: async (close) => {
+						await fetchDelete();
+						close();
+						store.closeWorkflowModal();
+					},
+				},
+				{
+					label: t('common.cancel'),
+					isWarnable: true,
+					callback: (close) => close(),
+				},
+			],
+			modalStyle: 'negative',
+		});
+	}
+
 	// OMP - might be moved to separate file
 	async function workflowChangeWorktype(
 		{submission, workType},
@@ -342,6 +371,7 @@ export function useWorkflowActions({
 		workflowCreateNewVersion,
 		workflowPreviewPublication,
 		workflowChangeSubmissionLanguage,
+		workflowDeleteSubmission,
 		// OMP
 		workflowChangeWorktype,
 	};

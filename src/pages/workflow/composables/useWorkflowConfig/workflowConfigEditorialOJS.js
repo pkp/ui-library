@@ -1,6 +1,8 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {Actions} from '../useWorkflowActions';
 import {useSubmission} from '@/composables/useSubmission';
+import {useCurrentUser} from '@/composables/useCurrentUser';
+
 import {Actions as WorkflowActions} from '../useWorkflowActions';
 import {Actions as DecisionActions} from '../useWorkflowDecisions';
 import {addItemIf} from './workflowConfigHelpers';
@@ -11,6 +13,9 @@ const {
 	isDecisionAvailable,
 	hasNotSubmissionStartedStage,
 } = useSubmission();
+
+const {hasCurrentUserAtLeastOneAssignedRoleInAnyStage} = useCurrentUser();
+
 const {t} = useLocalize();
 
 export function getHeaderItems({
@@ -206,6 +211,27 @@ export const WorkflowConfig = {
 					submission,
 					pkp.const.DECISION_REVERT_INITIAL_DECLINE,
 				),
+			);
+
+			// Delete submission
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('common.delete'),
+						isWarnable: true,
+						action: WorkflowActions.WORKFLOW_DELETE_SUBMISSION,
+					},
+				},
+				isDecisionAvailable(
+					submission,
+					pkp.const.DECISION_REVERT_INITIAL_DECLINE,
+				) &&
+					hasCurrentUserAtLeastOneAssignedRoleInAnyStage(submission, [
+						pkp.const.ROLE_ID_MANAGER,
+						pkp.const.ROLE_ID_SITE_ADMIN,
+					]),
 			);
 
 			return items;
@@ -409,6 +435,24 @@ export const WorkflowConfig = {
 						},
 					},
 					isDecisionAvailable(submission, pkp.const.DECISION_REVERT_DECLINE),
+				);
+
+				// Delete submission
+				addItemIf(
+					items,
+					{
+						component: 'WorkflowActionButton',
+						props: {
+							label: t('common.delete'),
+							isWarnable: true,
+							action: WorkflowActions.WORKFLOW_DELETE_SUBMISSION,
+						},
+					},
+					isDecisionAvailable(submission, pkp.const.DECISION_REVERT_DECLINE) &&
+						hasCurrentUserAtLeastOneAssignedRoleInAnyStage(submission, [
+							pkp.const.ROLE_ID_MANAGER,
+							pkp.const.ROLE_ID_SITE_ADMIN,
+						]),
 				);
 			}
 			return items;
