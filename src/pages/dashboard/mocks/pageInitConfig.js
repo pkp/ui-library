@@ -427,17 +427,6 @@ export default {
 			_extractionAdaptersLoaded: false,
 			_metadataInjectionAdapters: [],
 			_injectionAdaptersLoaded: false,
-			_localesTable: {
-				'be@cyrillic': 'be',
-				bs: 'bs_Latn',
-				fr_FR: 'fr',
-				nb: 'nb_NO',
-				'sr@cyrillic': 'sr_Cyrl',
-				'sr@latin': 'sr_Latn',
-				'uz@cyrillic': 'uz',
-				'uz@latin': 'uz_Latn',
-				zh_CN: 'zh_Hans',
-			},
 		},
 		2: {
 			_data: {
@@ -475,17 +464,6 @@ export default {
 			_extractionAdaptersLoaded: false,
 			_metadataInjectionAdapters: [],
 			_injectionAdaptersLoaded: false,
-			_localesTable: {
-				'be@cyrillic': 'be',
-				bs: 'bs_Latn',
-				fr_FR: 'fr',
-				nb: 'nb_NO',
-				'sr@cyrillic': 'sr_Cyrl',
-				'sr@latin': 'sr_Latn',
-				'uz@cyrillic': 'uz',
-				'uz@latin': 'uz_Latn',
-				zh_CN: 'zh_Hans',
-			},
 		},
 	},
 	publicationTitleAbstractForm: {
