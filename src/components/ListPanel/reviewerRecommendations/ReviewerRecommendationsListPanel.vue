@@ -1,40 +1,54 @@
 <template>
-	<div class="reviewerRecommendationsListPanel">
-		<slot>
-			<ListPanel :items="items">
-				<template #header>
-					<PkpHeader>
-						<h2>{{ title }}</h2>
-						<Spinner v-if="isLoading" />
-						<template #actions>
-							<PkpButton @click="openAddModal">
-								{{ addRecommendationLabel }}
-							</PkpButton>
-						</template>
-					</PkpHeader>
-				</template>
+	<div data-cy="reviewer-recommendation-list-panel">
+		<PkpTable
+			aria-label="Reviewer recommendations list"
+			:aria-describedby="headingId"
+		>
+			<template #label>
+				<h3 class="">
+					{{ title }}
+				</h3>
+			</template>
 
-				<template #item-title="{item}">
-					{{ localize(item.title) }}
-				</template>
+			<template #top-controls>
+				<div class="flex space-x-2">
+					<PkpButton @click="openAddModal">
+						{{ addRecommendationLabel }}
+					</PkpButton>
+				</div>
+			</template>
 
-				<template #item-actions="{item}">
-					<label class="recommendationListItem__selectWrapper">
-						<div class="recommendationListItem__selector">
+			<TableHeader>
+				<TableColumn>{{ recommendationNameTitle }}</TableColumn>
+				<TableColumn> {{ recommendationStatusTitle }} </TableColumn>
+				<TableColumn>{{ t('grid.columns.actions') }}</TableColumn>
+			</TableHeader>
+
+			<TableBody>
+				<TableRow
+					v-for="item in items"
+					:key="item.id"
+				>
+					<TableCell :is-row-header="true">
+						<span class="text-base-normal">
+							{{ localize(item.title) }}
+						</span>
+					</TableCell>
+
+					<TableCell>
+						<label>
 							<input
 								class="text-blue-900 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600 h-5 w-5 rounded focus:ring-2"
 								type="checkbox"
 								:name="`recommendation_status[]`"
 								:value="item.id"
 								:checked="item.status"
-								@click.prevent="
-									(event) => openStatusToggleConfirmationModal(item.id, event)
-								"
+								@click.prevent="(event) => openStatusToggleConfirmationModal(item.id, event)"
 							/>
-						</div>
-					</label>
+						</label>
+					</TableCell>
 
-					<div class="recommendationList__actions">
+					<TableCell>
 						<DropdownActions
 							:actions="getActions(item)"
 							:label="t('reviewer.recommendation.management.options')"
@@ -42,47 +56,45 @@
 							direction="left"
 							@action="(actionName) => handleAction(actionName, item)"
 						/>
-					</div>
-				</template>
-
-				<template #footer>
-					<Pagination
-						v-if="lastPage > 1"
-						:current-page="currentPage"
-						:is-loading="isLoading"
-						:last-page="lastPage"
-						@set-page="setPage"
-					/>
-				</template>
-			</ListPanel>
-		</slot>
+					</TableCell>
+				</TableRow>
+			</TableBody>
+		</PkpTable>
 	</div>
 </template>
 
 <script>
+import PkpTable from '@/components/Table/Table.vue';
+import TableColumn from '@/components/Table/TableColumn.vue';
+import TableHeader from '@/components/Table/TableHeader.vue';
+import TableBody from '@/components/Table/TableBody.vue';
+import TableRow from '@/components/Table/TableRow.vue';
+import TableCell from '@/components/Table/TableCell.vue';
 import PkpButton from '@/components/Button/Button.vue';
-import Spinner from '@/components/Spinner/Spinner.vue';
-import ListPanel from '@/components/ListPanel/ListPanel.vue';
-import Pagination from '@/components/Pagination/Pagination.vue';
-import PkpHeader from '@/components/Header/Header.vue';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
 import fetch from '@/mixins/fetch';
 import cloneDeep from 'clone-deep';
 import ReviewerRecommendationsEditModal from './ReviewerRecommendationsEditModal.vue';
+
 import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
+import {useId} from '@/composables/useId.js';
 
 const {t} = useLocalize();
+const {generateId} = useId();
+const headingId = generateId();
 
 export default {
 	components: {
+		PkpTable,
+		TableColumn,
+		TableHeader,
+		TableBody,
+		TableRow,
+		TableCell,
 		PkpButton,
-		Spinner,
-		ListPanel,
-		Pagination,
-		PkpHeader,
 		DropdownActions,
 	},
 	mixins: [dialog, fetch, ajaxError],
@@ -124,6 +136,16 @@ export default {
 		},
 		/** A localized string to confirm deactivating recommendation. */
 		confirmDeactivateMessage: {
+			type: String,
+			required: true,
+		},
+		/** A localized string as the heading title of recommendation name/title in table header. */
+		recommendationNameTitle: {
+			type: String,
+			required: true,
+		},
+		/** A localized string as the heading title of recommendation status in table header. */
+		recommendationStatusTitle: {
 			type: String,
 			required: true,
 		},
@@ -336,10 +358,12 @@ export default {
 		 */
 		openDeleteModal(id) {
 			const recommendation = this.items.find((a) => a.id === id);
+
 			if (typeof recommendation === 'undefined') {
 				this.ajaxErrorCallback({});
 				return;
 			}
+
 			this.openDialog({
 				name: 'delete',
 				title: this.deleteRecommendationLabel,
@@ -450,36 +474,3 @@ export default {
 	},
 };
 </script>
-
-<style lang="less">
-@import '../../../styles/_import';
-
-.reviewerRecommendationsListPanel {
-	.listPanel__item {
-		padding-top: 0.25rem;
-		padding-bottom: 0.25rem;
-	}
-
-	.listPanel__itemTitle {
-		font-weight: @normal;
-	}
-
-	.recommendationListItem__selectWrapper {
-		display: flex;
-		align-items: center;
-		margin-left: -1rem;
-	}
-
-	.recommendationListItem__selector {
-		line-height: 100%;
-		width: 2rem;
-		padding-left: 1rem;
-		padding-right: 1rem;
-	}
-
-	.recommendationList__actions {
-		padding-left: 5rem;
-		padding-right: 2rem;
-	}
-}
-</style>
