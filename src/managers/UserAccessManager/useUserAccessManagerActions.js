@@ -34,11 +34,12 @@ export function useUserAccessManagerActions() {
 		});
 
 		if (getCurrentUserId() !== userObj.id) {
-			actions.push({
-				label: t('grid.action.logInAs'),
-				icon: 'LoginAs',
-				name: Actions.USER_ACCESS_LOGIN_AS,
-			});
+			userObj.canLoginAs &&
+				actions.push({
+					label: t('grid.action.logInAs'),
+					icon: 'LoginAs',
+					name: Actions.USER_ACCESS_LOGIN_AS,
+				});
 
 			actions.push({
 				label: t('grid.action.remove'),
@@ -56,11 +57,12 @@ export function useUserAccessManagerActions() {
 				isWarnable: true,
 			});
 
-			actions.push({
-				label: t('grid.action.mergeUser'),
-				icon: 'MergeUser',
-				name: Actions.USER_ACCESS_MERGE_USER,
-			});
+			userObj.canMergeUser &&
+				actions.push({
+					label: t('grid.action.mergeUser'),
+					icon: 'MergeUser',
+					name: Actions.USER_ACCESS_MERGE_USER,
+				});
 		}
 
 		return actions;

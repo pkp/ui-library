@@ -40,7 +40,11 @@ export const useUserAccessManagerStore = defineComponentStore(
 		} = useFetchPaginated(apiUrl, {
 			currentPage,
 			pageSize: countPerPage,
-			query: {searchPhrase: searchPhrase, status: 'all'},
+			query: {
+				searchPhrase: searchPhrase,
+				status: 'all',
+				includePermissions: true,
+			},
 		});
 		watch(
 			[currentPage, searchPhrase],
