@@ -371,11 +371,6 @@ export default {
 		 * Emit events to change the selected items and the field's value
 		 */
 		setSelected(selected) {
-			if (selected?.length > 1 && !this.isMultiple) {
-				// override selected value if only one option can be selected
-				selected = [selected[1]];
-			}
-
 			this.$emit('change', this.name, 'selected', selected, this.localeKey);
 			this.$emit(
 				'change',

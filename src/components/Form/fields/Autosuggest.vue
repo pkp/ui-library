@@ -23,6 +23,7 @@
 		</button>
 	</PkpBadge>
 	<Combobox
+		v-if="!isDisabled"
 		:id="id"
 		:key="id"
 		:model-value="null"
