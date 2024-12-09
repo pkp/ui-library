@@ -44,6 +44,23 @@
 				:heading="t('user.affiliation')"
 				:value="localize(store.invitationPayload.affiliation)"
 			></FormDisplayItemBasic>
+			<FormDisplayItemBasic
+				v-if="store.invitationPayload.phone"
+				heading-element="h4"
+				:heading="t('user.phone')"
+				:value="store.invitationPayload.phone"
+			></FormDisplayItemBasic>
+			<FormDisplayItemBasic
+				v-if="localize(store.invitationPayload.biography)"
+				heading-element="h4"
+				:heading="t('user.biography')"
+				:value="
+					localize(store.invitationPayload.biography).replace(
+						/(<([^>]+)>)/gi,
+						'',
+					)
+				"
+			></FormDisplayItemBasic>
 		</div>
 	</div>
 	<div class="p-8">
