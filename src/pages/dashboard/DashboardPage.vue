@@ -1,11 +1,20 @@
 <template>
 	<div class="min-h-screentext-base-normal me-3 ms-5 text-base-normal">
 		<div class="">
-			<h1 class="flex items-center gap-4 py-6 text-5xl-bold">
-				{{
-					`${store.currentView.name} (${store.submissionsPagination.itemCount})`
-				}}
-			</h1>
+			<span>
+				<h1 class="flex-inline items-center gap-4 py-6 text-5xl-bold">
+					{{
+						`${store.currentView.name} (${store.submissionsPagination.itemCount})`
+					}}
+					<span class="ms-3">
+						<Spinner
+							size-variant="big"
+							:class="!store.isSubmissionsLoading ? 'invisible' : ''"
+						/>
+					</span>
+				</h1>
+			</span>
+
 			<div class="mt-2">
 				<div class="flex justify-between">
 					<div class="flex flex-row items-center space-x-3">
@@ -56,6 +65,7 @@ import DashboardBulkDeleteButton from './components/DashboardBulkDeleteButton.vu
 import Search from '@/components/Search/Search.vue';
 
 import {useDashboardPageStore} from './dashboardPageStore';
+import Spinner from '@/components/Spinner/Spinner.vue';
 
 const props = defineProps({
 	dashboardPage: {
