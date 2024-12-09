@@ -80,7 +80,7 @@ import MySubmissions from './icons/MySubmissions.vue';
 import NavDoi from './icons/NavDoi.vue';
 import NavAdmin from './icons/NavAdmin.vue';
 import New from './icons/New.vue';
-import NewTab from './icons/NewTab.vue';
+import OpenNewTab from './icons/OpenNewTab.vue';
 import Notifications from './icons/Notifications.vue';
 import NotVisible from './icons/NotVisible.vue';
 import OpenReview from './icons/OpenReview.vue';
@@ -192,7 +192,7 @@ const svgIcons = {
 	NavDoi,
 	NavAdmin,
 	New,
-	NewTab,
+	OpenNewTab,
 	Notifications,
 	NotVisible,
 	OpenReview,

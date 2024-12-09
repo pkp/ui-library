@@ -371,11 +371,6 @@ export default {
 		 * Emit events to change the selected items and the field's value
 		 */
 		setSelected(selected) {
-			if (selected?.length > 1 && !this.isMultiple) {
-				// override selected value if only one option can be selected
-				selected = [selected[1]];
-			}
-
 			this.$emit('change', this.name, 'selected', selected, this.localeKey);
 			this.$emit(
 				'change',
@@ -429,112 +424,6 @@ export default {
 	height: auto;
 	padding-top: 0.25rem;
 	padding-bottom: 0.25rem;
-}
-
-// Space between items in the input wrapper
-.pkpAutosuggest__selection,
-.pkpAutosuggest__autosuggester {
-	margin-top: 0.125rem;
-	margin-bottom: 0.125rem;
-	margin-inline-end: 0.25rem;
-}
-
-.pkpAutosuggest__selection {
-	position: relative;
-	padding-right: 2.5em;
-}
-
-.pkpAutosuggest__deselect {
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	width: 2em;
-	padding: 0;
-	background: transparent;
-	border: 1px solid transparent;
-	border-left-color: @bg-border-color-light;
-	border-top-right-radius: 1.2em; // matches radius on button in Badge.vue
-	border-bottom-right-radius: 1.2em;
-	color: @no;
-
-	&:hover,
-	&:focus {
-		outline: 0;
-		border-color: @no;
-		background: @no;
-		color: #fff;
-	}
-}
-
-.pkpAutosuggest__autosuggester {
-	position: relative;
-	line-height: 1.6rem; // prevent jank when value is added or removed
-	flex-grow: 1;
-}
-
-.pkpAutosuggest__input {
-	border: none;
-	width: 100%;
-	&:focus {
-		outline: none;
-	}
-}
-
-.autosuggest__results-container {
-	position: absolute;
-	top: 100%;
-	margin-top: -2px;
-	width: 100%;
-	max-width: 100%;
-	min-width: 20rem;
-	z-index: 9999;
-}
-
-.autosuggest__results {
-	border: 1px solid @primary;
-	border-bottom-right-radius: @radius;
-	border-bottom-left-radius: @radius;
-	background: @lift;
-	box-shadow: 0 0.75rem 0.75rem rgba(0, 0, 0, 0.2);
-	font-size: @font-sml;
-
-	&:after {
-		content: '';
-		position: absolute;
-		top: 50%;
-		left: 0;
-		transform: translateY(-50%);
-		height: 100%;
-		width: 3px;
-		background: @primary;
-	}
-
-	margin: 0;
-	padding: 0;
-	list-style: none;
-
-	.autosuggest__results-item {
-		position: relative;
-		padding: 0.5rem 1rem;
-		line-height: 1.5em;
-
-		&:before {
-			content: '';
-			position: absolute;
-			top: 50%;
-			left: 0;
-			transform: translateY(-50%);
-			width: 3px;
-			height: 100%;
-			background: @primary;
-			transition: width 0.3s;
-		}
-	}
-
-	.autosuggest__results-item--highlighted {
-		background: @bg;
-	}
 }
 
 .pkpAutosuggest__inputWrapper--multilingual {

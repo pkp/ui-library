@@ -132,7 +132,7 @@ export const IconGallery = {
 			'NavDoi',
 			'NavAdmin',
 			'New',
-			'NewTab',
+			'OpenNewTab',
 			'Notifications',
 			'NotVisible',
 			'OpenReview',
