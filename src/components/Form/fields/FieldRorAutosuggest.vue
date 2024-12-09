@@ -40,7 +40,11 @@
 							class="ms-auto flex"
 						>
 							<span class="sr-only">Open link in new tab</span>
-							<Icon icon="NewTab" class="h-5 w-5 text-primary" :inline="true" />
+							<Icon
+								icon="OpenNewTab"
+								class="h-5 w-5 text-primary"
+								:inline="true"
+							/>
 						</a>
 					</template>
 				</Autosuggest>
