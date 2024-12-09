@@ -5,6 +5,7 @@ import {useUrl} from '@/composables/useUrl';
 import {useForm} from '@/composables/useForm';
 import {useFetch} from '@/composables/useFetch';
 import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
+
 import WorkflowModalChangeSubmissionLanguage from '@/pages/workflow/modals/WorkflowChangeSubmissionLanguageModal.vue';
 
 import WorkflowSelectRevisionFormModal from '@/pages/workflow/modals/WorkflowSelectRevisionFormModal.vue';
@@ -284,6 +285,7 @@ export function useWorkflowActions({
 							createNewVersionUrl,
 							{
 								method: 'POST',
+								showFullScreenSpinner: true,
 							},
 						);
 						await fetch();

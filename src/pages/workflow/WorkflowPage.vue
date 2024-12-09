@@ -2,6 +2,17 @@
 	<SideModalBody>
 		<template #pre-title>
 			{{ workflowStore.submissionId }}
+			<span class="ms-3">
+				<Spinner
+					size-variant="big"
+					:message="t('common.refreshingData')"
+					:class="
+						progressStore.screensInProgress.includes('modal_1')
+							? ''
+							: 'invisible'
+					"
+				/>
+			</span>
 		</template>
 		<template #title>
 			<span v-if="selectedPublication" class="underline">
@@ -134,14 +145,16 @@ import {storeToRefs} from 'pinia';
 import SideMenu from '@/components/SideMenu/SideMenu.vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import StageBubble from '@/components/StageBubble/StageBubble.vue';
-
+import Spinner from '@/components/Spinner/Spinner.vue';
 import {useWorkflowStore} from './workflowStore';
+import {useProgressStore} from '@/stores/progressStore';
 import SideModalLayoutMenu2Columns from '@/components/Modal/SideModalLayoutMenu2Columns.vue';
 
 import {useLocalize} from '@/composables/useLocalize';
 const {localizeSubmission} = useLocalize();
 
 const workflowStore = useWorkflowStore();
+const progressStore = useProgressStore();
 
 const {submission, selectedPublication} = storeToRefs(workflowStore);
 </script>

@@ -1,6 +1,8 @@
-import {ref, unref} from 'vue';
+import {ref, unref, inject} from 'vue';
 import {ofetch, createFetch} from 'ofetch';
 import {useModalStore} from '@/stores/modalStore';
+import {useProgressStore} from '@/stores/progressStore';
+
 import {useDebounceFn} from '@vueuse/core';
 
 let ofetchInstance = ofetch;
@@ -15,6 +17,7 @@ export function getCSRFToken() {
 
 	return FALLBACK_TOKEN;
 }
+
 /**
  *
  * Composable for handling API requests
@@ -27,7 +30,8 @@ export function getCSRFToken() {
  * @param {Object} [options.body] - The request payload, typically used with 'POST', 'PUT', or 'DELETE' requests.
  * @param {Object} [options.headers] - Additional HTTP headers to be sent with the request.
  * @param {string} [options.method] - The HTTP method to be used for the request (e.g., 'GET', 'POST', etc.).
- * @param {number} options.debouncedMs - When the fetch should be debounce, this defines the delay
+ * @param {number} [options.debouncedMs] - When the fetch should be debounce, this defines the delay
+ * @param {boolean} [options.showFullScreenSpinner] - Automatically shows full screen spinner, when set to true
 
  * @returns {Object} An object containing several reactive properties and a method for performing the fetch operation:
  * @returns {Ref<Object|null>} return.data - A ref object containing the response data from the fetch operation.
@@ -64,6 +68,10 @@ export function useFetch(url, options = {}) {
 
 	let lastRequestController = null;
 
+	const modalLevel = inject('modalLevel');
+	const screenName = modalLevel?.value ? `modal_${modalLevel.value}` : 'base';
+	const progressStore = useProgressStore();
+
 	async function _fetch() {
 		if (lastRequestController) {
 			// abort in-flight request
@@ -95,6 +103,11 @@ export function useFetch(url, options = {}) {
 		}
 
 		isLoading.value = true;
+		progressStore.fetchStarted(screenName);
+		if (opts.showFullScreenSpinner) {
+			progressStore.startFullScreenSpinner();
+		}
+
 		isSuccess.value = null;
 		try {
 			const result = await ofetchInstance(unref(url), opts);
@@ -122,6 +135,10 @@ export function useFetch(url, options = {}) {
 		} finally {
 			lastRequestController = null;
 			isLoading.value = false;
+			progressStore.fetchFinished(screenName);
+			if (opts.showFullScreenSpinner) {
+				progressStore.stopFullScreenSpinner();
+			}
 		}
 	}
 
