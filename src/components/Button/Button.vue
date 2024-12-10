@@ -12,7 +12,7 @@
 		@focus="emit('focus')"
 		@blur="emit('blur')"
 	>
-		<Icon v-if="icon" class="h-5 w-5" :icon="icon" />
+		<Icon v-if="icon" class="h-5 w-5" :icon="icon" aria-hidden="true" />
 		<slot />
 	</component>
 </template>
