@@ -82,6 +82,9 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 				if (data.value.givenName) {
 					updateAcceptInvitationPayload('givenName', data.value.givenName); //if not check this override the multilingual structure
 				}
+				if (data.value.affiliation) {
+					updateAcceptInvitationPayload('affiliation', data.value.affiliation);
+				}
 				updateAcceptInvitationPayload('userCountry', data.value.country);
 				updateAcceptInvitationPayload('userOrcid', data.value.orcid);
 				updateAcceptInvitationPayload(
@@ -92,7 +95,6 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 					'privacyStatement',
 					userId.value ? true : false,
 				);
-				updateAcceptInvitationPayload('affiliation', data.value.affiliation);
 				// add username to invitation payload for validations
 				updateAcceptInvitationPayload('username', data.value.username);
 				// add password to invitation payload for validations
