@@ -19,7 +19,11 @@ import {defineProps} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useAcceptInvitationPageStore} from './AcceptInvitationPageStore';
 
-defineProps({});
+const props = defineProps({
+	orcidUrl: {type: String, required: true},
+	orcidOAuthUrl: {type: String, required: true},
+});
+
 const store = useAcceptInvitationPageStore();
 const {t} = useLocalize();
 
@@ -28,10 +32,20 @@ const {t} = useLocalize();
  */
 function skipOrcid() {
 	delete store.acceptInvitationPayload.userOrcid;
-	store.openStep(store.steps[1 + store.currentStepIndex].id);
+	store.openStep(store.steps.value[1 + store.currentStepIndex].id);
 }
 
 function verifyOrcid() {
-	store.openStep(store.steps[1 + store.currentStepIndex].id);
+	openOrcidOAuth();
+	store.openStep(store.steps.value[1 + store.currentStepIndex].id);
+}
+
+function openOrcidOAuth() {
+	const oauthWindow = window.open(
+		props.orcidOAuthUrl,
+		'_blank',
+		'toolbar=no, scrollbars=yes, width=540, height=700, top=500, left=500',
+	);
+	oauthWindow.opener = self;
 }
 </script>
