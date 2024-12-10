@@ -4,7 +4,7 @@
 		@sort="(columnId) => $emit('sortColumn', columnId)"
 	>
 		<TableHeader>
-			<TableColumn v-if="dashboardStore.bulkDeleteEnabled">
+			<TableColumn v-if="dashboardStore.bulkDeleteSelectionEnabled">
 				<span class="sr-only">
 					{{ t('admin.submissions.incomplete.bulkDelete.column.description') }}
 				</span>
@@ -20,7 +20,10 @@
 		</TableHeader>
 		<TableBody>
 			<TableRow v-for="item in items" :key="item.id">
-				<CellBulkDelete v-if="dashboardStore.bulkDeleteEnabled" :item="item" />
+				<CellBulkDelete
+					v-if="dashboardStore.bulkDeleteSelectionEnabled"
+					:item="item"
+				/>
 				<component
 					:is="cellComponents[column.componentName] || column.componentName"
 					v-for="column in columns"

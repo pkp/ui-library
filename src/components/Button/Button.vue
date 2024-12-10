@@ -82,7 +82,7 @@ const styles = computed(() => ({
 	'text-primary border-light  hover:text-hover disabled:text-disabled ':
 		isSecondary.value,
 	// Warnable
-	'text-negative border-light': props.isWarnable,
+	'text-negative border-light disabled:text-disabled': props.isWarnable,
 	// Warnable & Secondary have white background when its not link
 	'bg-secondary': (isSecondary.value || props.isWarnable) && !props.isLink,
 	// Active

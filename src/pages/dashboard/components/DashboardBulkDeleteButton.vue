@@ -1,17 +1,9 @@
 <template>
 	<PkpButton
-		v-if="store.bulkDeleteDisplayDeleteButton"
-		:is-disabled="store.bulkDeleteSubmissionIdsCanBeDeleted.length === 0"
-		:is-active="
-			store.bulkDeleteEnabled && store.bulkDeleteSelectedItems.length === 0
-		"
-		:is-warnable="!!store.bulkDeleteSelectedItems.length"
-		@click="
-			() =>
-				store.bulkDeleteSelectedItems.length
-					? store.bulkDeleteActionDelete()
-					: store.bulkDeleteToggleEnabled()
-		"
+		v-if="store.bulkDeleteSelectionEnabled"
+		:is-disabled="store.bulkDeleteSelectedItems.length === 0"
+		:is-warnable="true"
+		@click="() => store.bulkDeleteActionDelete()"
 	>
 		{{ t('admin.submissions.incomplete.bulkDelete.button') }}
 	</PkpButton>

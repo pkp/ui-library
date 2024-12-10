@@ -240,8 +240,9 @@ export const useDashboardPageStore = defineComponentStore(
 		const {
 			bulkDeleteDisplayDeleteButton,
 
-			bulkDeleteEnabled,
-			bulkDeleteToggleEnabled,
+			bulkDeleteSelectionEnabled,
+			bulkDeleteSelectionEnable,
+			bulkDeleteSelectionDisable,
 
 			bulkDeleteSelectedItems,
 			bulkDeleteSelectItem,
@@ -438,8 +439,9 @@ export const useDashboardPageStore = defineComponentStore(
 			// Bulk delete
 			bulkDeleteDisplayDeleteButton,
 
-			bulkDeleteEnabled,
-			bulkDeleteToggleEnabled,
+			bulkDeleteSelectionEnabled,
+			bulkDeleteSelectionEnable,
+			bulkDeleteSelectionDisable,
 
 			bulkDeleteSelectedItems,
 			bulkDeleteSelectItem,

@@ -14,21 +14,21 @@ export function useDashboardBulkDelete({
 }) {
 	const {t} = useLocalize();
 
-	// Display only for admins on editorial dashboard and for author dashboard, where user can delete own submissions
-	const bulkDeleteDisplayDeleteButton = computed(() => {
-		if (
-			dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD &&
-			hasCurrentUserAtLeastOneRole([pkp.const.ROLE_ID_SITE_ADMIN])
-		) {
-			return true;
-		} else if (dashboardPage === DashboardPageTypes.MY_SUBMISSIONS) {
-			return true;
-		}
+	/**
+	 * Enabling the checkboxes to select submissions to be deleted
+	 * */
+	const bulkDeleteSelectionEnabled = ref(false);
+	function bulkDeleteSelectionEnable() {
+		bulkDeleteSelectionEnabled.value = true;
+	}
 
-		return false;
-	});
+	function bulkDeleteSelectionDisable() {
+		bulkDeleteSelectionEnabled.value = false;
+	}
 
-	const bulkDeleteEnabled = ref(false);
+	/**
+	 * Managing the list of selected items
+	 * */
 	const bulkDeleteSelectedItems = ref([]);
 	function bulkDeleteSelectItem(submissionId) {
 		if (!bulkDeleteSelectedItems.value.includes(submissionId)) {
@@ -42,10 +42,9 @@ export function useDashboardBulkDelete({
 		);
 	}
 
-	function bulkDeleteToggleEnabled() {
-		bulkDeleteEnabled.value = !bulkDeleteEnabled.value;
-	}
-
+	/**
+	 * Permissions
+	 * */
 	const {
 		hasCurrentUserAtLeastOneAssignedRoleInAnyStage,
 		hasCurrentUserAtLeastOneRole,
@@ -65,6 +64,26 @@ export function useDashboardBulkDelete({
 
 		return false;
 	}
+
+	// Display only for admins and journal managers on editorial dashboard and for author dashboard, where user can delete own submissions
+	// Display only if some incomplete submissions are in the listing
+	const bulkDeleteDisplayDeleteButton = computed(() => {
+		if (bulkDeleteSubmissionIdsCanBeDeleted.value.length > 0) {
+			if (
+				dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD &&
+				hasCurrentUserAtLeastOneRole([
+					pkp.const.ROLE_ID_SITE_ADMIN,
+					pkp.const.ROLE_ID_MANAGER,
+				])
+			) {
+				return true;
+			} else if (dashboardPage === DashboardPageTypes.MY_SUBMISSIONS) {
+				return true;
+			}
+		}
+
+		return false;
+	});
 
 	const bulkDeleteSubmissionIdsCanBeDeleted = computed(() => {
 		const submissionIds = [];
@@ -94,7 +113,7 @@ export function useDashboardBulkDelete({
 
 	function bulkDeleteResetSelection() {
 		bulkDeleteSelectedItems.value = [];
-		bulkDeleteEnabled.value = false;
+		bulkDeleteSelectionEnabled.value = false;
 	}
 
 	function bulkDeleteActionDelete() {
@@ -115,6 +134,7 @@ export function useDashboardBulkDelete({
 					label: t('common.cancel'),
 					isWarnable: true,
 					callback: (close) => {
+						bulkDeleteResetSelection();
 						close();
 					},
 				},
@@ -126,9 +146,9 @@ export function useDashboardBulkDelete({
 
 	return {
 		bulkDeleteDisplayDeleteButton,
-		bulkDeleteEnabled,
-		bulkDeleteToggleEnabled,
-
+		bulkDeleteSelectionEnabled,
+		bulkDeleteSelectionEnable,
+		bulkDeleteSelectionDisable,
 		bulkDeleteSelectedItems,
 		bulkDeleteSelectItem,
 		bulkDeleteDeselectItem,
