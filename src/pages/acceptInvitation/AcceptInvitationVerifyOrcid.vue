@@ -31,13 +31,14 @@ const {t} = useLocalize();
  * Go to the next step
  */
 function skipOrcid() {
-	delete store.acceptInvitationPayload.userOrcid;
-	store.openStep(store.steps.value[1 + store.currentStepIndex].id);
+	// TODO: See how this should be handled given updated ORCID fields
+	// delete store.acceptInvitationPayload.userOrcid;
+	store.openStep(store.steps[1 + store.currentStepIndex].id);
 }
 
 function verifyOrcid() {
 	openOrcidOAuth();
-	store.openStep(store.steps.value[1 + store.currentStepIndex].id);
+	store.openStep(store.steps[1 + store.currentStepIndex].id);
 }
 
 function openOrcidOAuth() {
