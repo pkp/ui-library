@@ -1,11 +1,11 @@
 <template>
 	<div class="min-h-screentext-base-normal me-3 ms-5 text-base-normal">
 		<div class="">
-			<h2 class="flex items-center gap-4 py-6 text-5xl-bold">
+			<h1 class="flex items-center gap-4 py-6 text-5xl-bold">
 				{{
 					`${store.currentView.name} (${store.submissionsPagination.itemCount})`
 				}}
-			</h2>
+			</h1>
 			<div class="mt-2">
 				<div class="flex justify-between">
 					<div class="flex flex-row space-x-2">
