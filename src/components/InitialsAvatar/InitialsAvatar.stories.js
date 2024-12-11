@@ -15,34 +15,29 @@ export default {
 };
 
 export const Default = {
-	args: {givenName: 'Ramiro', familyName: 'Vaca'},
-};
-
-export const GivenNameOnly = {
-	args: {givenName: 'Daniel'},
+	args: {initials: 'RV'},
 };
 
 export const IsSecondary = {
-	args: {givenName: 'David', familyName: 'Buskins', isSecondary: true},
+	args: {initials: 'DB', isSecondary: true},
 };
 
 export const IsWarnable = {
-	args: {givenName: 'Aisla', familyName: 'McCrae', isWarnable: true},
+	args: {initials: 'AG', isWarnable: true},
 };
 
 export const IsDisabled = {
 	args: {
-		givenName: 'Adela',
-		familyName: 'Gallego',
+		initials: 'AG',
 		isSecondary: true,
 		isDisabled: true,
 	},
 };
 
-export const UndefinedName = {
+export const UndefinedInitials = {
 	args: {},
 };
 
 export const SmallIcon = {
-	args: {givenName: 'Paul', familyName: 'Hudson', shrink: true},
+	args: {initials: 'PH', shrink: true},
 };
