@@ -20,8 +20,8 @@ export const ExtendedStagesLabels = {
 	externalReview: tk('submission.stage.externalReviewWithRound'),
 	editing: tk('submission.copyediting'),
 	productionQueued: tk('manager.publication.productionStage'),
-	productionScheduled: tk('submission.dashboard.view.scheduled'),
-	productionPublished: tk('submission.dashboard.view.published'),
+	productionScheduled: tk('submission.stage.scheduledForPublication'),
+	productionPublished: tk('submission.stage.published'),
 	declined: tk('submissions.declined'),
 };
 
