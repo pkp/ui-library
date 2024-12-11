@@ -744,8 +744,7 @@ window.pkp = {
 		'submission.publication': 'Publication',
 		'submission.recommendation': 'Recommendation: {$recommendation}',
 		'submission.review': 'Review',
-		'submission.stage.externalReviewWithRound':
-			'##submission.stage.externalReviewWithRound##',
+		'submission.stage.externalReviewWithRound': 'Review (Round {$round})',
 		'submission.stageParticipants.notify': 'Notify',
 		'submission.submit.newSubmissionSingle': 'New Submission',
 		'submission.submit.submissionFiles': 'Submission Files',
