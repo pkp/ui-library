@@ -23,7 +23,7 @@
 						<div>
 							<UserAvatar
 								:user-id="participant.id"
-								:initials="participant.initials"
+								:initials="participant.displayInitials"
 							></UserAvatar>
 						</div>
 						<div class="ms-2 flex flex-col justify-center">
