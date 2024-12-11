@@ -15,13 +15,13 @@ export const ExtendedStages = {
 
 export const ExtendedStagesLabels = {
 	incomplete: tk('submissions.incomplete'),
-	submission: tk('dashboard.stage.submission'),
+	submission: tk('manager.publication.submissionStage'),
 	internalReview: tk('todo'),
-	externalReview: tk('dashboard.stage.reviewWithRound'),
-	editing: tk('dashboard.stage.copyediting'),
-	productionQueued: tk('dashboard.stage.production'),
-	productionScheduled: tk('dashboard.stage.scheduledForPublication'),
-	productionPublished: tk('dashboard.stage.published'),
+	externalReview: tk('submission.stage.externalReviewWithRound'),
+	editing: tk('submission.copyediting'),
+	productionQueued: tk('manager.publication.productionStage'),
+	productionScheduled: tk('submission.dashboard.view.scheduled'),
+	productionPublished: tk('submission.dashboard.view.published'),
 	declined: tk('submissions.declined'),
 };
 

@@ -32,7 +32,7 @@ export function useWorkflowNavigationConfigOPS(pageInitConfig) {
 		items.push(
 			getWorkflowItem({
 				stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-				label: t('dashboard.stage.production'),
+				label: t('manager.publication.productionStage'),
 				isActive: activeStage.id === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 			}),
 		);

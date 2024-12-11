@@ -24,9 +24,9 @@ import DashboardModalFilters from '@/pages/dashboard/modals/DashboardModalFilter
 const {t, tk} = useLocalize();
 
 const TitleTranslations = {
-	editorialDashboard: tk('dashboard.dashboards'),
-	myReviewAssignments: tk('dashboard.reviewAssignments'),
-	mySubmissions: tk('dashboard.mySubmissions'),
+	editorialDashboard: tk('navigation.dashboards'),
+	myReviewAssignments: tk('navigation.reviewAssignments'),
+	mySubmissions: tk('navigation.mySubmissions'),
 };
 
 const TitleIcons = {

@@ -232,7 +232,7 @@ export const PublicationConfig = {
 				items.push({
 					component: 'WorkflowActionButton',
 					props: {
-						label: t('dashboard.summary.preview'),
+						label: t('common.preview'),
 						isSecondary: true,
 						action: WorkflowActions.WORKFLOW_PREVIEW_PUBLICATION,
 					},

@@ -270,7 +270,7 @@ export const WorkflowConfig = {
 					{
 						component: 'WorkflowActionButton',
 						props: {
-							label: t('dashboard.summary.requestRevisions'),
+							label: t('editor.submission.decision.requestRevisions'),
 							isSecondary: true,
 							action: DecisionActions.DECISION_PENDING_REVISIONS_INTERNAL,
 							actionArgs,
@@ -485,7 +485,7 @@ export const PublicationConfig = {
 				items.push({
 					component: 'WorkflowActionButton',
 					props: {
-						label: t('dashboard.summary.preview'),
+						label: t('common.preview'),
 						isSecondary: true,
 						action: WorkflowActions.WORKFLOW_PREVIEW_PUBLICATION,
 					},

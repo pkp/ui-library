@@ -14,7 +14,7 @@
 				<div class="bg-secondary p-4">
 					<div class="mt-4 flex justify-end gap-2">
 						<PkpButton @click="clearFiltersForm()">
-							{{ t('dashboard.clearFilters') }}
+							{{ t('common.filtersClear') }}
 						</PkpButton>
 						<PkpButton is-primary="true" @click="applyFilters()">
 							{{ t('dashboard.applyFilters') }}
