@@ -54,7 +54,10 @@ export function useDashboardBulkDelete({
 		// incomplete submission can be deleted by author of the submission or admin
 		if (submission.submissionProgress)
 			if (
-				hasCurrentUserAtLeastOneRole([pkp.const.ROLE_ID_SITE_ADMIN]) ||
+				hasCurrentUserAtLeastOneRole([
+					pkp.const.ROLE_ID_SITE_ADMIN,
+					pkp.const.ROLE_ID_MANAGER,
+				]) ||
 				hasCurrentUserAtLeastOneAssignedRoleInAnyStage(submission, [
 					pkp.const.ROLE_ID_AUTHOR,
 				])
@@ -65,23 +68,18 @@ export function useDashboardBulkDelete({
 		return false;
 	}
 
-	// Display only for admins and journal managers on editorial dashboard and for author dashboard, where user can delete own submissions
-	// Display only if some incomplete submissions are in the listing
-	const bulkDeleteDisplayDeleteButton = computed(() => {
-		if (bulkDeleteSubmissionIdsCanBeDeleted.value.length > 0) {
-			if (
-				dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD &&
-				hasCurrentUserAtLeastOneRole([
-					pkp.const.ROLE_ID_SITE_ADMIN,
-					pkp.const.ROLE_ID_MANAGER,
-				])
-			) {
-				return true;
-			} else if (dashboardPage === DashboardPageTypes.MY_SUBMISSIONS) {
-				return true;
-			}
+	const bulkDeleteIsAvailableForUser = computed(() => {
+		if (
+			dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD &&
+			hasCurrentUserAtLeastOneRole([
+				pkp.const.ROLE_ID_SITE_ADMIN,
+				pkp.const.ROLE_ID_MANAGER,
+			])
+		) {
+			return true;
+		} else if (dashboardPage === DashboardPageTypes.MY_SUBMISSIONS) {
+			return true;
 		}
-
 		return false;
 	});
 
@@ -94,7 +92,6 @@ export function useDashboardBulkDelete({
 				}
 			});
 		}
-
 		return submissionIds;
 	});
 
@@ -145,7 +142,7 @@ export function useDashboardBulkDelete({
 	}
 
 	return {
-		bulkDeleteDisplayDeleteButton,
+		bulkDeleteIsAvailableForUser,
 		bulkDeleteSelectionEnabled,
 		bulkDeleteSelectionEnable,
 		bulkDeleteSelectionDisable,

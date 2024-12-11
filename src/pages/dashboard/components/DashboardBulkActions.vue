@@ -18,12 +18,13 @@ const {t} = useLocalize();
 const actions = computed(() => {
 	const _actions = [];
 
-	if (dashboardStore.bulkDeleteDisplayDeleteButton) {
+	if (dashboardStore.bulkDeleteIsAvailableForUser) {
 		_actions.push({
 			label: t('admin.submissions.incomplete.bulkDelete.button'),
 			name: 'bulkDeleteSelectionEnable',
 			isWarnable: true,
 			icon: 'Cancel',
+			disabled: dashboardStore.bulkDeleteSubmissionIdsCanBeDeleted.length === 0,
 		});
 	}
 
