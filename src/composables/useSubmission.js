@@ -17,7 +17,7 @@ export const ExtendedStagesLabels = {
 	incomplete: tk('submissions.incomplete'),
 	submission: tk('manager.publication.submissionStage'),
 	internalReview: tk('todo'),
-	externalReview: tk('manager.publication.reviewStage'),
+	externalReview: tk('submission.stage.externalReviewWithRound'),
 	editing: tk('submission.copyediting'),
 	productionQueued: tk('manager.publication.productionStage'),
 	productionScheduled: tk('submission.dashboard.view.scheduled'),
