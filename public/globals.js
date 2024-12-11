@@ -119,8 +119,41 @@ window.pkp = {
 	 * Locale keys loaded on the server-side
 	 */
 	localeKeys: {
+		'about.contact.email': 'Email',
+		'acceptInvitation.authorization.message':
+			'Please log out and sign in with the correct account to accept this invitation.',
+		'acceptInvitation.authorization.shouldBeAnonymous':
+			"Invitation not accepted. You're logged in as a different user.",
+		'acceptInvitation.cancel.message':
+			'Are you sure you want to cancel? Canceling now will stop the role acceptance process, and you\u2019ll need to restart from the invitation email to accept the role again. If you\u2019re already a user, you\u2019ll be taken back to the dashboard. If not, you\u2019ll need to access the invitation email to start the process again.',
+		'acceptInvitation.cancelInvite.button': 'Cancel Invitation Process',
+		'acceptInvitation.cancelInvite.title': 'Cancel Role Invitation Process?',
+		'acceptInvitation.modal.button': 'View All Submissions',
+		'acceptInvitation.modal.message':
+			'Congratulations on your new role in OJS! You might now have access to new options. If you need assistance navigating the system, please click on the \u201cHelp\u201d buttons throughout the interface for guidance',
+		'acceptInvitation.modal.title': "You've been assigned a new role in OJS",
+		'acceptInvitation.passwordField.description':
+			'It should be at least 6 characters long and could be a combination of uppercase letters, lowercase letters, numbers and symbols',
+		'acceptInvitation.privacyStatement.btn': 'Privacy Statement',
+		'acceptInvitation.privacyStatement.label':
+			'Yes, I agree to have my data collected and stored according to the {$url}',
+		'acceptInvitation.privacyStatement.validation':
+			'Please confirm that you have read and agree privacy statement',
+		'acceptInvitation.review.accountDetails': 'Account Details',
+		'acceptInvitation.review.userDetails': 'User Details',
+		'acceptInvitation.skipVerifyOrcid': 'Skip ORCID verification',
+		'acceptInvitation.usernameField.description':
+			'It could be a combination of uppercase letters, lowercase letters or numbers',
+		'acceptInvitation.verifyOrcid': 'Verify ORCID iD',
 		'admin.jobs.failed.action.redispatch': 'Try Again',
 		'admin.jobs.failed.action.redispatch.all': 'Requeue All Failed Jobs',
+		'admin.submissions.incomplete.bulkDelete.body':
+			'##admin.submissions.incomplete.bulkDelete.body##',
+		'admin.submissions.incomplete.bulkDelete.column.description':
+			'##admin.submissions.incomplete.bulkDelete.column.description##',
+		'admin.submissions.incomplete.bulkDelete.confirm':
+			'##admin.submissions.incomplete.bulkDelete.confirm##',
+		'admin.version': 'Version',
 		'article.article': 'Article',
 		'article.metadata': 'Metadata',
 		'author.users.contributor.principalContact': 'Primary Contact',
@@ -128,12 +161,13 @@ window.pkp = {
 		'common.addCCBCC': 'Add CC/BCC',
 		'common.assign': 'Assign',
 		'common.attachFiles': 'Attach Files',
-		'common.attachedFiles': 'Attached Files',
 		'common.back': 'Back',
 		'common.cancel': 'Cancel',
 		'common.clearSearch': 'Clear search phrase',
 		'common.close': 'Close',
 		'common.commaListSeparator': ', ',
+		'common.complete': 'Complete',
+		'common.confirm': 'Confirm',
 		'common.confirmDelete':
 			'Are you sure you wish to delete this item? This action cannot be undone.',
 		'common.content': 'Content',
@@ -173,12 +207,14 @@ window.pkp = {
 		'common.order': 'Order',
 		'common.orderDown': 'Decrease position of {$itemTitle}',
 		'common.orderUp': 'Increase position of {$itemTitle}',
+		'common.overdue': 'Overdue',
 		'common.pageNumber': 'Page {$pageNumber}',
 		'common.pagination.goToPage': 'Go to {$page}',
 		'common.pagination.label': 'View additional pages',
 		'common.pagination.next': 'Next',
 		'common.pagination.previous': 'Previous',
 		'common.payments': 'Payments',
+		'common.preview': 'Preview',
 		'common.publications': 'Articles',
 		'common.remove': 'Remove',
 		'common.removeItem': 'Remove {$item}',
@@ -219,17 +255,13 @@ window.pkp = {
 		'dashboard.acceptOrDeclineRequestDate':
 			'Please accept or decline this request {$date}',
 		'dashboard.applyFilters': 'Apply Filters',
-		'dashboard.assignEditor': 'Assign Editor',
 		'dashboard.assignReviewers': 'Assign Reviewers',
-		'dashboard.clearFilters': 'Clear Filters',
 		'dashboard.completeReviewByDate': 'Please complete this review by {$date}.',
-		'dashboard.dashboards': 'Dashboards',
 		'dashboard.deadlineForCompletingReviewHasPassed':
 			'Deadline for completing this review has passed. Please complete the review at the earliest.',
 		'dashboard.deadlineForRespondingAcceptOrDecline':
 			'Deadline for responding to this request has passed. Please accept or decline this request at the earliest.',
 		'dashboard.declinedDuringStage': 'Declined during the {$stageName} stage',
-		'dashboard.mySubmissions': 'My Submissions',
 		'dashboard.newReviewRoundToBeCreated': 'New review round to be created',
 		'dashboard.recommendOnly.pendingRecommendations':
 			'Recommending Editors are tasked to advise the next steps for this submission',
@@ -283,7 +315,6 @@ window.pkp = {
 			'This reviewer has not completed their review. A response was due on <b>{$date}.</b>',
 		'dashboard.reviewAssignment.statusReviewOverdue.title':
 			'Review overdue by {$days} days',
-		'dashboard.reviewAssignments': 'Review Assignments',
 		'dashboard.reviewUpdateCounts':
 			'Review update {$reviewsCompletedCount}/{$reviewsTotalCount}',
 		'dashboard.reviewersAssigned': 'Reviewers assigned',
@@ -291,62 +322,37 @@ window.pkp = {
 		'dashboard.revisionRequestedFromAuthor': 'Revisions requested from author',
 		'dashboard.revisionsRequestedFromAuthorNextRound':
 			'Revisions requested from the author to be taken to a new review round',
-		'dashboard.revisionsSubmitted': 'Revisions submitted',
-		'dashboard.stage.copyediting': 'Copyediting',
-		'dashboard.stage.production': 'Production',
-		'dashboard.stage.published': 'Published',
-		'dashboard.stage.review': 'Review',
-		'dashboard.stage.reviewWithRound': 'Review (Round {$round})',
-		'dashboard.stage.scheduledForPublication': 'Scheduled For Publication',
-		'dashboard.stage.submission': 'Submission',
-		'dashboard.startNewSubmission': 'Start A New Submission',
 		'dashboard.submitRevisions': 'Submit revisions',
-		'dashboard.summary.acceptAndSkipReview': 'Accept and skip review',
-		'dashboard.summary.acceptSubmission': 'Accept Submission',
-		'dashboard.summary.assignToIssue': 'Assign To Issue',
-		'dashboard.summary.backToCopyediting': 'Back to Copyediting',
-		'dashboard.summary.cancelCopyEditing': 'Cancel Copyediting',
-		'dashboard.summary.cancelReviewRound': 'Cancel Review Round',
-		'dashboard.summary.copyeditedFiles': 'Copyedited Files',
-		'dashboard.summary.copyeditedFilesDescription':
-			'These are edited files that will be taken to the production stage',
-		'dashboard.summary.declineSubmission': 'Decline Submission',
-		'dashboard.summary.deskReviewFiles': 'Desk Review Files',
-		'dashboard.summary.deskReviewFilesDescription':
-			'These are the files that will be taken forward to the review stage in the workflow.',
-		'dashboard.summary.draftFiles': 'Draft Files',
-		'dashboard.summary.draftFilesDescription':
-			'These are files from the review stage which are to be copyedited',
-		'dashboard.summary.filesForReview': 'Files for review',
-		'dashboard.summary.issueNo': 'Issue No',
-		'dashboard.summary.notAssigned': 'Not assigned',
-		'dashboard.summary.preview': 'Preview',
-		'dashboard.summary.productionReadyFiles': 'Production Ready Files',
-		'dashboard.summary.productionReadyFilesDescription':
-			'These are the files that will be sent for publication',
-		'dashboard.summary.requestRevisions': 'Request Revisions',
-		'dashboard.summary.reviewer': 'Reviewer',
-		'dashboard.summary.reviewerStatus': 'Reviewer status',
-		'dashboard.summary.reviewers': 'Reviewers',
-		'dashboard.summary.revisionsUploaded': 'Revisions Submitted',
-		'dashboard.summary.revisionsUploadedDescription':
-			'These files have been submitted by the author after revisions were requested',
-		'dashboard.summary.sendSubmissionForReview': 'Send submission for review',
-		'dashboard.summary.sendToProduction': 'Send to Production',
 		'doi.manager.versions.countStatement': 'There are {$count} versions.',
 		'doi.manager.versions.modalTitle': 'DOIs for all versions',
 		'doi.manager.versions.view': 'View all',
 		'editor.activityLog': 'Activity Log',
+		'editor.review.ReviewerResendRequest': 'Request Resent',
+		'editor.review.allSections': 'Editor Form Shows All Review Sections',
+		'editor.review.authorOnly': 'Author-Only Sections Displayed',
 		'editor.review.cancelReviewer': 'Cancel Reviewer',
+		'editor.review.download': 'Download Review Form',
 		'editor.review.emailReviewer': 'Email Reviewer',
-		'editor.review.notInitiated':
-			'The review process has not yet been initiated.',
+		'editor.review.logResponse': 'Log Response',
+		'editor.review.logResponse.for': 'Log Response for',
 		'editor.review.readReview': 'Read Review',
 		'editor.review.reinstateReviewer': 'Reinstate Reviewer',
 		'editor.review.reminder': 'Review Reminder',
+		'editor.review.requestAccepted': 'Request Accepted',
+		'editor.review.requestCancelled': 'Request Cancelled',
+		'editor.review.requestCancelled.tooltip':
+			'The editor cancelled this review request.',
+		'editor.review.requestDeclined': 'Request Declined',
+		'editor.review.requestDeclined.tooltip':
+			'The reviewer declined this review request.',
+		'editor.review.requestSent': 'Request Sent',
 		'editor.review.resendRequestReviewer': 'Resend Review Request',
+		'editor.review.responseDue': 'Response due: {$date}',
 		'editor.review.revertDecision': 'Revert Decision',
 		'editor.review.reviewDetails': 'Review Details',
+		'editor.review.reviewDue': 'Review due: {$date}',
+		'editor.review.reviewSubmitted': 'Review Submitted',
+		'editor.review.reviewerThanked': 'Reviewer Thanked',
 		'editor.review.sendReminder': 'Send Reminder',
 		'editor.review.thankReviewer': 'Thank Reviewer',
 		'editor.review.unassignReviewer': 'Unassign Reviewer',
@@ -356,12 +362,27 @@ window.pkp = {
 		'editor.submission.addReviewer': 'Add Reviewer',
 		'editor.submission.addStageParticipant': 'Assign Participant',
 		'editor.submission.createNewRound': 'Create New Review Round',
+		'editor.submission.decision.accept': 'Accept Submission',
+		'editor.submission.decision.backFromCopyediting': 'Cancel Copyediting',
+		'editor.submission.decision.backToCopyediting': 'Back To Copyediting',
+		'editor.submission.decision.cancelReviewRound': 'Cancel Review Round',
+		'editor.submission.decision.decline': 'Decline Submission',
 		'editor.submission.decision.requestRevisions': 'Request Revisions',
+		'editor.submission.decision.revertDecline': 'Revert Decline',
+		'editor.submission.decision.sendExternalReview': 'Send for Review',
+		'editor.submission.decision.sendToProduction': 'Send To Production',
+		'editor.submission.decision.skipReview': 'Accept and Skip Review',
 		'editor.submission.editStageParticipant': 'Edit Assignment',
+		'editor.submission.production.productionReadyFiles':
+			'Production Ready Files',
 		'editor.submission.recommend.accept': 'Recommend Accept',
 		'editor.submission.recommend.decline': 'Recommend Decline',
 		'editor.submission.recommend.revisions': 'Recommend Revisions',
+		'editor.submission.recommend.sendExternalReview':
+			'##editor.submission.recommend.sendExternalReview##',
 		'editor.submission.recommendation': 'Recommendation',
+		'editor.submission.recommendation.noDecidingEditors':
+			'You can not make a recommendation until an editor is assigned with permission to record a decision.',
 		'editor.submission.removeStageParticipant': 'Remove Participant',
 		'editor.submission.removeStageParticipant.description':
 			'You are about to remove this participant from <strong>all</strong> stages.',
@@ -374,14 +395,8 @@ window.pkp = {
 		'editor.submission.stageParticipants': 'Participants',
 		'editor.submission.uploadSelectFiles': 'Upload/Select Files',
 		'editor.submission.workflowDecision.changeDecision': 'Change decision',
-		'editor.submission.workflowDecision.submission.production':
-			'Sent to production.',
 		'editor.submission.workflowDecision.submission.published':
 			'Submission published.',
-		'editor.submission.workflowDecision.submission.reviewRound':
-			'Sent for a new round of reviews.',
-		'editor.submission.workflowDecision.submission.underReview':
-			'Submission accepted for review.',
 		'editor.submissionArchive.confirmDelete':
 			'Are you sure you want to permanently delete this submission?',
 		'editor.submissionLibrary': 'Library',
@@ -393,6 +408,20 @@ window.pkp = {
 			'Are you sure you want to change to {$localeName} to compose this email? Any changes you have made to the subject and body of the email will be lost.',
 		'email.subject': 'Subject',
 		'email.to': 'To',
+		'fileManager.copyeditedFiles': 'Copyedited Files',
+		'fileManager.copyeditedFilesDescription':
+			'These are edited files that will be taken to the production stage',
+		'fileManager.deskReviewFilesDescription':
+			'##fileManager.deskReviewFilesDescription##',
+		'fileManager.draftFilesDescription':
+			'These are files from the review stage which are to be copyedited',
+		'fileManager.filesForReview': 'Files for review',
+		'fileManager.productionReadyFilesDescription':
+			'These are the files that will be sent for publication',
+		'fileManager.revisionsUploadedDescription':
+			'These files have been submitted by the author after revisions were requested',
+		'fileManager.submissionFilesDescription':
+			'These are the files that will be taken forward to the review stage in the workflow.',
 		'form.dataHasChanged':
 			'The data on this form has changed. Do you wish to continue without saving?',
 		'form.errorA11y': 'Go to {$fieldLabel}: {$errorMessage}',
@@ -424,11 +453,26 @@ window.pkp = {
 			'Log in as this user? All actions you perform will be attributed to this user.',
 		'help.help': 'Help',
 		'informationCenter.informationCenter': 'Information Center',
+		'invitation.cancelInvite.actionName': 'Cancel Invite',
+		'invitation.cancelInvite.message':
+			'Canceling the invitation sent to {$givenName} {$familyName} will deactivate acceptance link sent via email. Here are the invitation details: ',
+		'invitation.cancelInvite.title': 'Cancel Invitation',
+		'invitation.header': 'Invitations',
+		'invitation.inviteToRole.btn': 'Invite to a role',
+		'invitation.management.options': 'Invitation management options',
+		'invitation.masthead.hidden': 'Does not appear on the masthead',
+		'invitation.masthead.show': 'Appear on the masthead',
+		'invitation.orcid.acceptInvitation.message':
+			'Not verified. You can verify your ORCID iD from your profile section in OJS',
+		'invitation.removeRoles': 'User Removed From Role',
 		'invitation.role.addRole.button': 'Add Another Role',
 		'invitation.role.dateStart': 'Start Date',
 		'invitation.role.masthead': 'Journal Masthead',
 		'invitation.role.removeRole.button': 'Remove Role',
 		'invitation.role.selectRole': 'Select a new role',
+		'invitation.searchForm.emptyError': 'Provide at least one search criteria.',
+		'invitation.step': 'STEP',
+		'invitation.tableHeader.name': 'Name',
 		'invitation.wizard.completeSteps': '##invitation.wizard.completeSteps##',
 		'invitation.wizard.errors': '##invitation.wizard.errors##',
 		'issue.issue': 'Issue',
@@ -518,9 +562,22 @@ window.pkp = {
 			'Add and edit templates that you would like to make available to the user when they are sending this email. The default will be loaded automatically, and the user will be able to quickly load any other templates you add here.',
 		'manager.mailables.editTemplate': 'Edit Template',
 		'manager.mailables.templates': 'Templates',
+		'manager.publication.productionStage': 'Production',
 		'manager.publication.reviewStage': 'Review',
+		'manager.publication.submissionStage': 'Submission',
+		'manager.roles': 'Roles',
+		'manager.statistics.counterR5Report.settings': 'Report Settings',
+		'manager.statistics.counterR5Reports': 'Counter R5 Reports',
+		'manager.statistics.counterR5Reports.description':
+			'See <a href="https://cop5.projectcounter.org/en/5.0.3/04-reports/index.html" target="_new">COUNTER 5.0.3 documentation</a> for more information about each report.',
+		'manager.statistics.counterR5Reports.usageNotPossible':
+			'There are no COUNTER R5 usage statistics available yet.',
 		'manager.workflow': 'Workflow',
 		'navigation.backTo': '\u27f5 Back to {$page}',
+		'navigation.dashboards': 'Dashboards',
+		'navigation.mySubmissions': 'My Submissions',
+		'navigation.reviewAssignments': 'Review Assignments',
+		'notification.notifications': 'Notifications',
 		'notification.type.roundStatusTitle': 'Round {$round} Status',
 		'orcid.field.authorEmailModal.message':
 			'Would you like to send an email to this author requesting they verify their ORCID?',
@@ -531,7 +588,11 @@ window.pkp = {
 		'orcid.field.unverified.shouldRequest':
 			'This ORCID has not been verified. Please remove this unverified ORCID and request verification from the user/author directly.',
 		'orcid.field.verification.request': 'Request verification',
-		'orcid.field.verification.requested': 'Verification requested!',
+		'orcid.field.verification.requested':
+			'ORCID Verification has been requested!',
+		'orcid.field.verification.resendRequest': 'Resend Verification Email',
+		'participantManager.onlyAllowedToRecommend':
+			'Only allowed to recommend an editorial decision',
 		'publication.contributors': 'Contributors',
 		'publication.createVersion': 'Create New Version',
 		'publication.editDisabled':
@@ -546,6 +607,7 @@ window.pkp = {
 		'publication.jats.lastModified':
 			'Last Modification at {$modificationDate} by {$username}',
 		'publication.publicationLicense': 'Permissions & Disclosure',
+		'publication.publish': 'Publish',
 		'publication.selectIssue': 'Select an issue to schedule for publication',
 		'publication.status.published': 'Published',
 		'publication.status.scheduled': 'Scheduled',
@@ -559,6 +621,7 @@ window.pkp = {
 		'publication.unschedule.confirm':
 			"Are you sure you don't want this scheduled for publication?",
 		'publication.version': 'Version {$version}',
+		'publication.version.all': 'All Versions',
 		'publication.version.confirm':
 			'Are you sure you want to create a new version?',
 		'reviewer.article.decision.accept': 'Accept Submission',
@@ -568,6 +631,7 @@ window.pkp = {
 		'reviewer.article.decision.resubmitHere': 'Resubmit for Review',
 		'reviewer.article.decision.seeComments': 'See Comments',
 		'reviewer.article.recommendation': 'Recommendation',
+		'reviewer.competingInterests': 'Competing Interests',
 		'reviewer.submission.acceptedOn': 'Review Accepted On',
 		'reviewer.submission.responseDueDate': 'Response Due Date',
 		'reviewer.submission.reviewDueDate': 'Review Due Date',
@@ -601,6 +665,7 @@ window.pkp = {
 		'reviewer.submission.reviewRound.reviewNotCompleted':
 			'The review was not completed.',
 		'reviewer.submission.submittedOn': 'Review Submitted On',
+		'reviewerManager.reviewerStatus': 'Reviewer status',
 		'search.searchResults': 'Search Results',
 		semicolon: '{$label}:',
 		'stageParticipants.notify.message': 'Message',
@@ -638,13 +703,26 @@ window.pkp = {
 		'submission.changeFile': 'Change File',
 		'submission.citations': 'References',
 		'submission.contributors': 'List of Contributors',
+		'submission.copyediting': 'Copyediting',
+		'submission.dashboard.view.published': 'Published',
+		'submission.dashboard.view.scheduled': 'Scheduled for publication',
 		'submission.files': 'Files',
 		'submission.files.downloadAll': 'Download All Files',
+		'submission.finalDraft': 'Draft Files',
 		'submission.history': 'History',
 		'submission.identifiers': 'Identifiers',
 		'submission.layout.galleys': 'Galleys',
 		'submission.layout.newGalley': 'Create New Galley',
 		'submission.list.assignEditor': 'Assign Editor',
+		'submission.list.changeSubmissionLanguage.buttonLabel': 'Change',
+		'submission.list.changeSubmissionLanguage.currentLanguage':
+			'Current Submission Language:',
+		'submission.list.changeSubmissionLanguage.metadataDescription.abstract':
+			'Including the abstract in {$language} is recommended. This helps ensure that the content is accessible',
+		'submission.list.changeSubmissionLanguage.metadataDescription.title':
+			'Enter submission title here in {$language}. You can format your title as needed',
+		'submission.list.changeSubmissionLanguage.title':
+			'Change Submission Language For',
 		'submission.list.copyeditsSubmitted': 'Copyedited files submitted',
 		'submission.list.currentStage': 'Currently in the {$stage} stage.',
 		'submission.list.discussions': 'Open discussions',
@@ -662,93 +740,72 @@ window.pkp = {
 			'You have been assigned an editorial role for this submission. Would you like to access the <a href="{$urlEditorialWorkflow}">Editorial workflow</a>?',
 		'submission.list.reviewsCompleted': 'Assigned reviews completed',
 		'submission.list.revisionsSubmitted': 'Revisions submitted',
+		'submission.production': 'Production',
 		'submission.publication': 'Publication',
+		'submission.recommendation': 'Recommendation: {$recommendation}',
 		'submission.review': 'Review',
+		'submission.stage.externalReviewWithRound':
+			'##submission.stage.externalReviewWithRound##',
 		'submission.stageParticipants.notify': 'Notify',
 		'submission.submit.newSubmissionSingle': 'New Submission',
+		'submission.submit.submissionFiles': 'Submission Files',
 		'submission.submit.uploadSubmissionFile': 'Upload Submission File',
 		'submission.upload.percentComplete': 'Uploading {$percent}% complete',
 		'submission.upload.productionReady': 'Upload a Production Ready File',
 		'submission.upload.proof': 'Upload a File Ready for Publication',
-		'submission.versions': 'Versions',
 		'submission.wizard.changeSubmission': 'Change Submission Settings',
 		'submissions.declined': 'Declined',
 		'submissions.incomplete': 'Incomplete',
 		todo: '##todo##',
-		'about.contact.email': 'Email',
-		'user.email': 'Email Address',
 		'user.affiliation': 'Affiliation',
+		'user.authorization.accessibleWorkflowStage':
+			"You don't currently have access to that stage of the workflow.",
+		'user.email': 'Email',
 		'user.familyName': 'Family Name',
 		'user.givenName': 'Given Name',
 		'user.gossip': 'Editorial Notes',
+		'user.logOut': 'Logout',
 		'user.orcid': 'ORCID iD',
 		'user.password': 'Password',
+		'user.removeRole.message':
+			'Are you sure want remove this role permanently?',
+		'user.role.reviewer': 'Reviewer',
+		'user.role.reviewers': 'Reviewers',
 		'user.username': 'Username',
-		'validator.required': 'This field is required.',
-		'invitation.notification.closeBtn': 'View all users',
-		'invitation.orcid.acceptInvitation.message':
-			'Not verified. You can verify your ORCID iD from your profile section in OJS',
-		'userInvitation.emailField.description': 'e.g. aeinstein@example.com',
-		'userInvitation.usernameField.description': 'e.g. mickeymouse',
-		'userInvitation.orcidField.description': 'e.g. 0000-0000-0000-0000',
-		'userInvitation.roleTable.role': 'Role',
-		'userInvitation.roleTable.startDate': 'Start Date',
-		'userInvitation.roleTable.endDate': 'End Date',
-		'userInvitation.roleTable.journalMasthead': 'Journal Masthead',
-		'userInvitation.modal.title': 'Invitation Sent',
-		'userInvitation.modal.message':
-			'{$email} has been invited to new role in OJS.You can be updated about users on the User and Roles page, your ojs notification and/ or your email',
-		'userInvitation.modal.button': 'View All Users',
-		'acceptInvitation.usernameField.description':
-			'It should be 10 characters long and could be a combination of uppercase letters, lowercase letters or numbers',
-		'acceptInvitation.passwordField.description':
-			'It should be 12 characters long and should be a combination of uppercase letters, lowercase letters, numbers and symbols',
-		'acceptInvitation.review.userDetails': 'User Details',
-		'acceptInvitation.review.accountDetails': 'Account Details',
-		'acceptInvitation.verifyOrcid': 'Verify ORCID iD',
-		'acceptInvitation.skipVerifyOrcid': 'Skip ORCID verification',
-		'acceptInvitation.modal.title': "You've been assigned a new role in OJS",
-		'acceptInvitation.modal.message':
-			'Congratulations on your new role in OJS! You might now have access to new options. If you need assistance navigating the system, please click on the “Help” buttons throughout the interface for guidance',
-		'acceptInvitation.modal.button': 'View All Submissions',
-		'acceptInvitation.privacyStatement.btn': 'Privacy Statement',
-		'acceptInvitation.privacyStatement.label':
-			'Yes, I agree to have my data collected and stored according to the {$url}',
-		'invitation.cancel': 'Cancel Invite',
-		'invitation.inviteToRole.btn': 'Invite to a role',
-		'invitation.header': 'Invitation',
-		'invitation.tableHeader.name': 'Name',
-		'invitation.searchForm.emptyError': 'At least provide one search criteria.',
-		'invitation.cancelInvite.actionName': 'Cancel Invite',
-		'invitation.cancelInvite.title': 'Cancel Invitation',
-		'invitation.cancelInvite.message':
-			'Cancel the invitation sent to {$givenName} {$familyName} will deactivate acceptance link sent via email. Here are the invitation details:',
-		'invitation.role.modifyRole.button': 'Modify Role',
-		'invitation.masthead.show': 'Appear on the masthead',
-		'invitation.masthead.hidden': 'Does not appear on the masthead',
-		'invitation.removeRoles': 'Remove Role',
-		'invitation.management.options': 'Invitation management options',
-		'userInvitation.cancel.message':
-			'Are you sure wnat to cancel this invitation ?',
 		'userInvitation.cancel.goBack': 'Go Back',
-		'userInvitation.status.invited': 'Invited {$date}',
-		'userInvitation.search.userNotFound':
-			'The user does not have a role in this journal',
-		'userInvitation.search.userFound': 'The user already exists in the journal',
-		'userInvitation.edit.title': 'Edit Invitation',
+		'userInvitation.cancel.message':
+			'Are you sure want to cancel this invitation?',
 		'userInvitation.edit.message':
 			'If you edit the existing invitation or add a new role, the current invitation will be canceled and, a new one will be sent. Are you sure you want to proceed?',
-		'invitation.step': 'STEP',
-		'acceptInvitation.cancelInvite.title': 'Cancel Role Invitation Process?',
-		'acceptInvitation.cancel.message':
-			"Are you sure you want to cancel? Canceling now will stop the role acceptance process, and you’ll need to restart from the invitation email to accept the role again.If you’re already a user, you’ll be taken back to the dashboard. If not, you’ll need to access the invitation email to start the process again.",
-		'acceptInvitation.cancelInvite.button': 'Cancel Invitation Process',
-		'acceptInvitation.authorization.shouldBeAnonymous':
-			"Invitation not accepted. You're logged in as a different user.",
-		'acceptInvitation.authorization.message':
-			'Please log out and sign in with the correct account to accept this invitation.',
+		'userInvitation.edit.title': 'Edit Invitation',
+		'userInvitation.emailField.description': 'e.g. aeinstein@example.com',
+		'userInvitation.modal.button': 'View All Users',
+		'userInvitation.modal.message':
+			"{$email} has been invited to new role in OJS. You can be updated about the user's decision on the User and Role page, your OJS notification and/or your email",
+		'userInvitation.modal.title': 'Invitation Sent',
+		'userInvitation.orcidField.description': 'e.g. 0000-0000-0000-0000',
+		'userInvitation.roleTable.endDate': 'End Date',
+		'userInvitation.roleTable.journalMasthead': 'Journal Masthead',
+		'userInvitation.roleTable.role': 'Role',
+		'userInvitation.roleTable.startDate': 'Start Date',
+		'userInvitation.search.userFound': 'The user already exists in the journal',
+		'userInvitation.search.userNotFound':
+			'The user does not have a role in this journal',
+		'userInvitation.status.invited': 'Invited {$date}',
+		'userInvitation.usernameField.description': 'e.g. mickeymouse',
+		'validator.required': 'This field is required.',
+		'workflow.review.externalReview': 'Review',
+		'workflow.review.internalReview': 'Internal Review',
+		'workflow.reviewRoundN': 'Review Round {$number}',
+		'workflow.stageNotStarted':
+			'The {$stage} stage has not yet been initiated.',
+		'workflow.submissionInFutureStage':
+			'The submission is currently in the {$stage} stage.',
+		'workflow.submissionInNextReviewRound':
+			'The submission has been advanced to the next round of review',
+		'workflow.submissionNextReviewRoundInFutureStage':
+			'The submission advanced to the next review round, was accepted, and is currently in the {$stage} stage.',
 	},
-
 	tinyMCE: {
 		skinUrl: '/styles/tinymce',
 	},
