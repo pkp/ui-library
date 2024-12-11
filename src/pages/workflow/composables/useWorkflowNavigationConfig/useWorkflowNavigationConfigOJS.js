@@ -80,7 +80,7 @@ export function getReviewItems({submission, stageId, title}) {
 export function getReviewItem({stageId, reviewRound, isActive, title}) {
 	return {
 		key: `workflow_${stageId}_${reviewRound.id}`,
-		label: t('dashboard.workflow.reviewRoundN', {number: reviewRound.round}),
+		label: t('workflow.reviewRoundN', {number: reviewRound.round}),
 		colorStripe: isActive ? StageColors[stageId] : null,
 		action: 'selectMenu',
 		actionArgs: {
@@ -104,7 +104,7 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 		const externalReviewItems = getReviewItems({
 			submission,
 			stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
-			title: t('dashboard.stage.review'),
+			title: t('manager.publication.reviewStage'),
 		});
 
 		const items = [];
@@ -112,7 +112,7 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 		items.push(
 			getWorkflowItem({
 				stageId: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
-				label: t('dashboard.stage.submission'),
+				label: t('manager.publication.submissionStage'),
 				isActive: activeStage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
 			}),
 		);
@@ -120,7 +120,7 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 		items.push(
 			getWorkflowItem({
 				stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
-				label: t('dashboard.stage.review'),
+				label: t('manager.publication.reviewStage'),
 				isActive:
 					activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 				isDisabled: externalReviewItems.length,
@@ -131,7 +131,7 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 		items.push(
 			getWorkflowItem({
 				stageId: pkp.const.WORKFLOW_STAGE_ID_EDITING,
-				label: t('dashboard.stage.copyediting'),
+				label: t('submission.copyediting'),
 				isActive: activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EDITING,
 			}),
 		);
@@ -139,7 +139,7 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 		items.push(
 			getWorkflowItem({
 				stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-				label: t('dashboard.stage.production'),
+				label: t('manager.publication.productionStage'),
 				isActive: activeStage.id === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 			}),
 		);

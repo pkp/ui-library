@@ -6,7 +6,7 @@
 		>
 			<template #label>
 				<h3 class="">
-					{{ t('dashboard.summary.reviewers') }}
+					{{ t('user.role.reviewers') }}
 				</h3>
 			</template>
 			<template #top-controls>
@@ -21,9 +21,9 @@
 				</div>
 			</template>
 			<TableHeader>
-				<TableColumn>{{ t('dashboard.summary.reviewer') }}</TableColumn>
+				<TableColumn>{{ t('user.role.reviewer') }}</TableColumn>
 				<TableColumn>
-					{{ t('dashboard.summary.reviewerStatus') }}
+					{{ t('reviewerManager.reviewerStatus') }}
 				</TableColumn>
 				<TableColumn>{{ t('common.type') }}</TableColumn>
 				<TableColumn>{{ t('grid.columns.actions') }}</TableColumn>

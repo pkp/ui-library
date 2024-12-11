@@ -41,8 +41,8 @@ export const FileManagerConfigurations = {
 			Actions.FILE_SEE_NOTES,
 		],
 		fileStage: pkp.const.SUBMISSION_FILE_SUBMISSION,
-		titleKey: tk('dashboard.summary.deskReviewFiles'),
-		descriptionKey: tk('dashboard.summary.deskReviewFilesDescription'),
+		titleKey: tk('submission.submit.submissionFiles'),
+		descriptionKey: tk('fileManager.submissionFilesDescription'),
 		wizardTitleKey: tk('submission.submit.uploadSubmissionFile'),
 	}),
 	EDITOR_REVIEW_FILES: ({stageId}) => ({
@@ -75,8 +75,8 @@ export const FileManagerConfigurations = {
 				? pkp.const.SUBMISSION_FILE_INTERNAL_REVIEW_FILE
 				: pkp.const.SUBMISSION_FILE_REVIEW_FILE,
 		gridComponent: 'grid.files.review.EditorReviewFilesGridHandler',
-		titleKey: tk('dashboard.summary.filesForReview'),
-		descriptionKey: tk('dashboard.summary.deskReviewFilesDescription'),
+		titleKey: tk('fileManager.filesForReview'),
+		descriptionKey: tk('fileManager.submissionFilesDescription'),
 		uploadSelectTitleKey: tk('editor.submission.review.currentFiles'),
 	}),
 	WORKFLOW_REVIEW_REVISIONS: ({stageId}) => ({
@@ -117,8 +117,8 @@ export const FileManagerConfigurations = {
 			stageId === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW
 				? pkp.const.SUBMISSION_FILE_INTERNAL_REVIEW_REVISION
 				: pkp.const.SUBMISSION_FILE_REVIEW_REVISION,
-		titleKey: tk('dashboard.summary.revisionsUploaded'),
-		descriptionKey: tk('dashboard.summary.revisionsUploadedDescription'),
+		titleKey: tk('submission.list.revisionsSubmitted'),
+		descriptionKey: tk('fileManager.revisionsUploadedDescription'),
 		wizardTitleKey: tk('editor.submissionReview.uploadFile'),
 	}),
 	// TODO after triage
@@ -128,8 +128,8 @@ export const FileManagerConfigurations = {
 		actions: [],
 		fileStage: pkp.const.SUBMISSION_FILE_REVIEW_ATTACHMENT,
 		gridComponent: 'grid.files.attachment.authorReviewAttachmentsGridHandler',
-		titleKey: tk('dashboard.summary.filesForReview'),
-		descriptionKey: tk('dashboard.summary.deskReviewFilesDescription'),
+		titleKey: tk('fileManager.filesForReview'),
+		descriptionKey: tk('fileManager.deskReviewFilesDescription'),
 		uploadSelectTitleKey: tk('editor.submission.review.currentFiles'),
 	}),
 	COPYEDITED_FILES: ({stageId}) => ({
@@ -162,8 +162,8 @@ export const FileManagerConfigurations = {
 			Actions.FILE_SEE_NOTES,
 		],
 		fileStage: pkp.const.SUBMISSION_FILE_COPYEDIT,
-		titleKey: tk('dashboard.summary.copyeditedFiles'),
-		descriptionKey: tk('dashboard.summary.copyeditedFilesDescription'),
+		titleKey: tk('fileManager.copyeditedFiles'),
+		descriptionKey: tk('fileManager.copyeditedFilesDescription'),
 		gridComponent: 'grid.files.copyedit.CopyeditFilesGridHandler',
 		uploadSelectTitleKey: tk('editor.submissionReview.uploadFile'),
 	}),
@@ -193,8 +193,8 @@ export const FileManagerConfigurations = {
 			Actions.FILE_SEE_NOTES,
 		],
 		fileStage: pkp.const.SUBMISSION_FILE_FINAL,
-		titleKey: tk('dashboard.summary.draftFiles'),
-		descriptionKey: tk('dashboard.summary.draftFilesDescription'),
+		titleKey: tk('submission.finalDraft'),
+		descriptionKey: tk('fileManager.draftFilesDescription'),
 		gridComponent: 'grid.files.final.FinalDraftFilesGridHandler',
 		uploadSelectTitleKey: tk('editor.submission.uploadSelectFiles'),
 	}),
@@ -224,8 +224,8 @@ export const FileManagerConfigurations = {
 			Actions.FILE_SEE_NOTES,
 		],
 		fileStage: pkp.const.SUBMISSION_FILE_PRODUCTION_READY,
-		titleKey: tk('dashboard.summary.productionReadyFiles'),
-		descriptionKey: tk('dashboard.summary.productionReadyFilesDescription'),
+		titleKey: tk('editor.submission.production.productionReadyFiles'),
+		descriptionKey: tk('fileManager.productionReadyFilesDescription'),
 		wizardTitleKey: tk('submission.upload.productionReady'),
 	}),
 };

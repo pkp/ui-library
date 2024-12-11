@@ -22,7 +22,7 @@ export function useEditorialLogic() {
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
 							actionName: ParticipantManagerActions.PARTICIPANT_ASSIGN,
-							actionLabel: t('dashboard.assignEditor'),
+							actionLabel: t('submission.list.assignEditor'),
 							actionArgs: {submissionId: submission.id},
 						},
 					},
@@ -100,7 +100,7 @@ export function useEditorialLogic() {
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
-							alert: t('dashboard.revisionsSubmitted'),
+							alert: t('submission.list.revisionsSubmitted'),
 						},
 					},
 					{
@@ -158,7 +158,7 @@ export function useEditorialLogic() {
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
-							alert: t('dashboard.revisionsSubmitted'),
+							alert: t('submission.list.revisionsSubmitted'),
 						},
 					},
 					{

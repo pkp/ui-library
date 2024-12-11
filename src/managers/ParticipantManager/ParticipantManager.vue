@@ -35,7 +35,7 @@
 								v-if="participant.recommendOnly"
 								class="mt-0.5 text-xs-normal text-heading"
 							>
-								{{ t('dashboard.recommendOnly.onlyAllowedToRecommend') }}
+								{{ t('participantManager.onlyAllowedToRecommend') }}
 							</div>
 						</div>
 					</div>

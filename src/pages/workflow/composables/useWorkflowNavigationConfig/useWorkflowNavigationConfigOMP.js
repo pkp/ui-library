@@ -56,7 +56,7 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 		items.push(
 			getWorkflowItem({
 				stageId: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
-				label: t('dashboard.stage.submission'),
+				label: t('manager.publication.submissionStage'),
 				isActive: activeStage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
 			}),
 		);
@@ -86,7 +86,7 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 		items.push(
 			getWorkflowItem({
 				stageId: pkp.const.WORKFLOW_STAGE_ID_EDITING,
-				label: t('dashboard.stage.copyediting'),
+				label: t('submission.copyediting'),
 				isActive: activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EDITING,
 			}),
 		);
@@ -94,7 +94,7 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 		items.push(
 			getWorkflowItem({
 				stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-				label: t('dashboard.stage.production'),
+				label: t('manager.publication.productionStage'),
 				isActive: activeStage.id === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 			}),
 		);
