@@ -236,8 +236,8 @@ export function useFileManagerConfig({namespace, submissionStageId}) {
 	const {hasCurrentUserAtLeastOneRole} = useCurrentUser();
 
 	const managerConfig = computed(() => {
-		const config = FileManagerConfigurations[namespace]({
-			stageId: submissionStageId,
+		const config = FileManagerConfigurations[namespace.value]({
+			stageId: submissionStageId.value,
 		});
 
 		const permittedActions = config.actions.filter((action) => {
