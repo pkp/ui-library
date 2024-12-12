@@ -14,6 +14,7 @@
 export const ExtendedStagesColorClass = {
 	incomplete: 'bg-stage-incomplete-submission',
 	submission: 'bg-stage-desk-review',
+	internalReview: 'bg-stage-in-review',
 	externalReview: 'bg-stage-in-review',
 	editing: 'bg-stage-copyediting',
 	productionQueued: 'bg-stage-production',

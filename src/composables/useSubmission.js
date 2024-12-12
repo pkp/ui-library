@@ -16,7 +16,7 @@ export const ExtendedStages = {
 export const ExtendedStagesLabels = {
 	incomplete: tk('submissions.incomplete'),
 	submission: tk('manager.publication.submissionStage'),
-	internalReview: tk('todo'),
+	internalReview: tk('submission.stage.internalReviewWithRound'),
 	externalReview: tk('submission.stage.externalReviewWithRound'),
 	editing: tk('submission.copyediting'),
 	productionQueued: tk('manager.publication.productionStage'),
@@ -108,8 +108,8 @@ export function useSubmission() {
 		);
 	}
 
-	function getCurrentReviewAssignments(submission) {
-		const currentReviewRound = getCurrentReviewRound(submission);
+	function getCurrentReviewAssignments(submission, stageId) {
+		const currentReviewRound = getCurrentReviewRound(submission, stageId);
 
 		return submission.reviewAssignments.filter(
 			(reviewAssignment) => reviewAssignment.round === currentReviewRound.round,
@@ -140,6 +140,8 @@ export function useSubmission() {
 				return submission.submissionProgress
 					? ExtendedStages.INCOMPLETE
 					: ExtendedStages.SUBMISSION;
+			case pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW:
+				return ExtendedStages.INTERNAL_REVIEW;
 			case pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW:
 				return ExtendedStages.EXTERNAL_REVIEW;
 			case pkp.const.WORKFLOW_STAGE_ID_EDITING:
@@ -158,25 +160,22 @@ export function useSubmission() {
 
 	function getExtendedStageLabel(submission) {
 		const extendedStage = getExtendedStage(submission);
-		const round =
-			extendedStage === ExtendedStages.EXTERNAL_REVIEW
-				? submission.reviewRounds[submission.reviewRounds.length - 1].round
-				: undefined;
+
+		let round = undefined;
+
+		const activeStage = getActiveStage(submission);
+
+		if (
+			activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW ||
+			activeStage.id === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW
+		) {
+			const rounds = getReviewRoundsForStage(submission, activeStage.id);
+			round = rounds[rounds.length - 1].round;
+		}
+
 		return t(ExtendedStagesLabels[extendedStage], {
 			round,
 		});
-	}
-
-	function getFileStageFromWorkflowStage(submission) {
-		const FileStageMapping = {
-			[pkp.const.WORKFLOW_STAGE_ID_SUBMISSION]:
-				pkp.const.SUBMISSION_FILE_SUBMISSION,
-			[pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW]:
-				pkp.const.SUBMISSION_FILE_REVIEW_REVISION,
-			[pkp.const.WORKFLOW_STAGE_ID_EDITING]: pkp.const.SUBMISSION_FILE_FINAL,
-		};
-
-		return FileStageMapping[submission.stageId];
 	}
 
 	function hasSubmissionPassedStage(submission, stageId) {
@@ -184,6 +183,14 @@ export function useSubmission() {
 	}
 
 	function hasNotSubmissionStartedStage(submission, stageId) {
+		if (
+			submission.stageId === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW ||
+			submission.stageId === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW
+		) {
+			const rounds = getReviewRoundsForStage(submission, stageId);
+			return rounds?.length === 0;
+		}
+
 		return submission.stageId < stageId;
 	}
 
@@ -252,7 +259,6 @@ export function useSubmission() {
 		getCurrentReviewAssignments,
 		getCurrentPublication,
 		getLatestPublication,
-		getFileStageFromWorkflowStage,
 		hasNotSubmissionStartedStage,
 		hasSubmissionPassedStage,
 		// review assignments
