@@ -147,12 +147,12 @@ window.pkp = {
 		'acceptInvitation.verifyOrcid': 'Verify ORCID iD',
 		'admin.jobs.failed.action.redispatch': 'Try Again',
 		'admin.jobs.failed.action.redispatch.all': 'Requeue All Failed Jobs',
-		'admin.submissions.incomplete.bulkDelete.body':
-			'##admin.submissions.incomplete.bulkDelete.body##',
-		'admin.submissions.incomplete.bulkDelete.column.description':
-			'##admin.submissions.incomplete.bulkDelete.column.description##',
-		'admin.submissions.incomplete.bulkDelete.confirm':
-			'##admin.submissions.incomplete.bulkDelete.confirm##',
+		'dashboard.submissions.incomplete.bulkDelete.body':
+			'##dashboard.submissions.incomplete.bulkDelete.body##',
+		'dashboard.submissions.incomplete.bulkDelete.column.description':
+			'##dashboard.submissions.incomplete.bulkDelete.column.description##',
+		'dashboard.submissions.incomplete.bulkDelete.confirm':
+			'##dashboard.submissions.incomplete.bulkDelete.confirm##',
 		'admin.version': 'Version',
 		'article.article': 'Article',
 		'article.metadata': 'Metadata',

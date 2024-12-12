@@ -46,6 +46,7 @@
 						v-for="(action, i) in actions"
 						:key="i"
 						v-slot="{active, close}"
+						:disabled="action.disabled || false"
 					>
 						<div class="min-w-[96px]">
 							<PkpButton
@@ -57,6 +58,7 @@
 								:is-warnable="action.isWarnable"
 								:class="i !== actions.length - 1 ? 'border-b' : ''"
 								size-variant="fullWidth"
+								:is-disabled="action.disabled || false"
 								class="border-light"
 								@click="
 									() => {
@@ -82,7 +84,16 @@ import ButtonIcon from '@/components/ButtonIcon/ButtonIcon.vue';
 import Icon from '@/components/Icon/Icon.vue';
 
 defineProps({
-	/** An array of action objects. Each object should contain `label` (string), `url` (string) to navigate to if the action involves a link, or `name` (string) to perform the action when clicked, an optional `icon` (string) and `isWarnable` (boolean) if the button needs the "warning" button styling from `<Button>` component. */
+	/**
+	 * An array of action objects.
+	 * Each object should contain
+	 * 	`label` (string),
+	 * 	`url` (string) to navigate to if the action involves a link, or
+	 * 	`name` (string) to perform the action when clicked, an optional
+	 * 	`icon` (string) and
+	 * 	`isWarnable` (boolean) if the button needs the "warning" button styling from `<Button>` component.
+	 *  `disabled` (boolean) when the item is not available
+	 * */
 	actions: {
 		type: Array,
 		required: true,

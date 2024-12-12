@@ -50,6 +50,14 @@ export const Warnable = {
 	},
 };
 
+export const WarnableDisabled = {
+	args: {
+		slot: 'Delete',
+		isWarnable: true,
+		isDisabled: true,
+	},
+};
+
 export const IsCompact = {
 	args: {
 		slot: 'Delete',

@@ -8,12 +8,12 @@
 			</h1>
 			<div class="mt-2">
 				<div class="flex justify-between">
-					<div class="flex flex-row space-x-2">
+					<div class="flex flex-row items-center space-x-3">
 						<PkpButton @click="store.openFiltersModal">
 							{{ t('common.filter') }}
 						</PkpButton>
-						<!-- Temporarly hide it on main branch until permissions details are decided -->
-						<!--<DashboardBulkDeleteButton />-->
+						<DashboardBulkActions />
+						<DashboardBulkDeleteButton />
 					</div>
 					<div>
 						<Search
@@ -50,7 +50,9 @@
 import PkpButton from '@/components/Button/Button.vue';
 import DashboardActiveFilters from './components/DashboardActiveFilters.vue';
 import DashboardTable from './components/DashboardTable/DashboardTable.vue';
-//import DashboardBulkDeleteButton from './components/DashboardBulkDeleteButton.vue';
+import DashboardBulkActions from './components/DashboardBulkActions.vue';
+import DashboardBulkDeleteButton from './components/DashboardBulkDeleteButton.vue';
+
 import Search from '@/components/Search/Search.vue';
 
 import {useDashboardPageStore} from './dashboardPageStore';
