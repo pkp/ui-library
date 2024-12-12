@@ -5,7 +5,7 @@
 		:is-warnable="true"
 		@click="() => store.bulkDeleteActionDelete()"
 	>
-		{{ t('admin.submissions.incomplete.bulkDelete.button') }}
+		{{ t('dashboard.submissions.incomplete.bulkDelete.button') }}
 	</PkpButton>
 </template>
 

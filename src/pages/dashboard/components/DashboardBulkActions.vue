@@ -20,7 +20,7 @@ const actions = computed(() => {
 
 	if (dashboardStore.bulkDeleteIsAvailableForUser) {
 		_actions.push({
-			label: t('admin.submissions.incomplete.bulkDelete.button'),
+			label: t('dashboard.submissions.incomplete.bulkDelete.button'),
 			name: 'bulkDeleteSelectionEnable',
 			isWarnable: true,
 			icon: 'Cancel',

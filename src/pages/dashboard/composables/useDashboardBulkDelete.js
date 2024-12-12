@@ -116,8 +116,8 @@ export function useDashboardBulkDelete({
 	function bulkDeleteActionDelete() {
 		const {openDialog} = useModal();
 		openDialog({
-			title: t('admin.submissions.incomplete.bulkDelete.confirm'),
-			message: t('admin.submissions.incomplete.bulkDelete.body'),
+			title: t('dashboard.submissions.incomplete.bulkDelete.confirm'),
+			message: t('dashboard.submissions.incomplete.bulkDelete.body'),
 			actions: [
 				{
 					label: t('common.confirm'),

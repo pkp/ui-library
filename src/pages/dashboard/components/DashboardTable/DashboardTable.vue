@@ -6,7 +6,9 @@
 		<TableHeader>
 			<TableColumn v-if="dashboardStore.bulkDeleteSelectionEnabled">
 				<span class="sr-only">
-					{{ t('admin.submissions.incomplete.bulkDelete.column.description') }}
+					{{
+						t('dashboard.submissions.incomplete.bulkDelete.column.description')
+					}}
 				</span>
 			</TableColumn>
 			<TableColumn
