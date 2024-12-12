@@ -234,6 +234,11 @@ export const WorkflowConfig = {
 		},
 		getActionItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
+
+			if (!selectedReviewRound) {
+				return [];
+			}
+
 			const {getCurrentReviewRound} = useSubmission();
 
 			const currentReviewRound = getCurrentReviewRound(
