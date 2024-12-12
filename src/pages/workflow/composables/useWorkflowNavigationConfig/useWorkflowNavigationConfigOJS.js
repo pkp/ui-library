@@ -7,6 +7,7 @@ const {t} = useLocalize();
 
 const StageColors = {
 	[pkp.const.WORKFLOW_STAGE_ID_SUBMISSION]: 'border-stage-desk-review',
+	[pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW]: 'border-stage-in-review',
 	[pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW]: 'border-stage-in-review',
 	[pkp.const.WORKFLOW_STAGE_ID_EDITING]: 'border-stage-copyediting',
 	[pkp.const.WORKFLOW_STAGE_ID_PRODUCTION]: 'border-stage-production',

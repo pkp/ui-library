@@ -29,8 +29,11 @@ export function useEditorialLogic() {
 				];
 			}
 		}
-		if (activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) {
-			const activeRound = getCurrentReviewRound(submission);
+		if (
+			activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW ||
+			activeStage.id === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW
+		) {
+			const activeRound = getCurrentReviewRound(submission, activeStage.id);
 
 			if (activeStage.currentUserDecidingEditor) {
 				// just hack for illustration
@@ -76,7 +79,10 @@ export function useEditorialLogic() {
 						component: 'CellSubmissionActivityReviews',
 						props: {
 							submissionId: submission.id,
-							reviewAssignments: getCurrentReviewAssignments(submission),
+							reviewAssignments: getCurrentReviewAssignments(
+								submission,
+								activeStage.id,
+							),
 						},
 					},
 				];
@@ -107,7 +113,10 @@ export function useEditorialLogic() {
 						component: 'CellSubmissionActivityReviews',
 						props: {
 							submissionId: submission.id,
-							reviewAssignments: getCurrentReviewAssignments(submission),
+							reviewAssignments: getCurrentReviewAssignments(
+								submission,
+								activeStage.id,
+							),
 						},
 					},
 				];
@@ -187,7 +196,10 @@ export function useEditorialLogic() {
 						component: 'CellSubmissionActivityReviews',
 						props: {
 							submissionId: submission.id,
-							reviewAssignments: getCurrentReviewAssignments(submission),
+							reviewAssignments: getCurrentReviewAssignments(
+								submission,
+								activeStage.id,
+							),
 						},
 					},
 				];
@@ -219,7 +231,10 @@ export function useEditorialLogic() {
 					},
 				];
 			} else {
-				const reviewAssignments = getCurrentReviewAssignments(submission);
+				const reviewAssignments = getCurrentReviewAssignments(
+					submission,
+					activeStage.id,
+				);
 
 				return [
 					{

@@ -1,6 +1,6 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
-import {ref, computed, watch} from 'vue';
+import {ref, computed, watch, toRefs} from 'vue';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
 import {useFileManagerActions} from './useFileManagerActions';
@@ -10,13 +10,13 @@ export const useFileManagerStore = defineComponentStore(
 	'fileManager',
 	(props) => {
 		const submissionId = ref(props.submission.id);
-
+		const {namespace, submissionStageId} = toRefs(props);
 		/**
 		 * Manager configuration
 		 */
 		const {managerConfig} = useFileManagerConfig({
-			namespace: props.namespace,
-			submissionStageId: props.submissionStageId,
+			namespace: namespace,
+			submissionStageId: submissionStageId,
 		});
 
 		/**

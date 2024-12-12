@@ -328,11 +328,6 @@ export const WorkflowConfig = {
 				return [];
 			}
 
-			const actionArgs = {
-				stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
-				reviewRoundId: selectedReviewRound.id,
-			};
-
 			const selectedStage = getStageById(submission, selectedStageId);
 
 			const isRecommendOnlyEditor = selectedStage.currentUserCanRecommendOnly;
@@ -347,6 +342,11 @@ export const WorkflowConfig = {
 					},
 				});
 			} else {
+				const actionArgs = {
+					stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+					reviewRoundId: selectedReviewRound.id,
+				};
+
 				addItemIf(
 					items,
 					{
