@@ -9,6 +9,8 @@ import JobsPage from '@/pages/jobs/JobsPage.vue';
 import FailedJobsPage from '@/pages/jobs/FailedJobsPage.vue';
 import FailedJobDetailsPage from '@/pages/jobs/FailedJobDetailsPage.vue';
 import CounterReportsPage from '@/pages/counter/CounterReportsPage.vue';
+import UserInvitationPage from "@/pages/userInvitation/UserInvitationPage.vue";
+import AcceptInvitationPage from "@/pages/acceptInvitation/AcceptInvitationPage.vue";
 
 export default {
 	name: 'Page',
@@ -21,6 +23,8 @@ export default {
 		FailedJobDetailsPage,
 		CounterReportsPage,
 		DashboardPage,
+		UserInvitationPage,
+		AcceptInvitationPage,
 	},
 	extends: Container,
 	data() {
