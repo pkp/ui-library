@@ -5,7 +5,7 @@
 			:key="i"
 			class="w-full border border-light p-3"
 		>
-			<h3 class="lg-bold text-heading">{{ notification.title }}</h3>
+			<h3 class="text-lg-bold text-heading">{{ notification.title }}</h3>
 			<p class="pt-2 text-base-normal">{{ notification.text }}</p>
 		</div>
 	</div>
