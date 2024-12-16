@@ -34,7 +34,7 @@ onMounted(() => {
 /**
  * Processes ORCID data for an invitation.
  *
- * @param {Object} data - The ORCID OAuth data object.
+ * @param {Object|null} data - The ORCID OAuth data object.
  * @param {string} data.orcid - The ORCID URL of the user.
  * @param {boolean} data.orcidIsVerified - Indicates if the user's ORCID is verified.
  * @param {null|string} data.orcidAccessDenied - Indicates if access to ORCID is denied (null if not denied).
@@ -54,8 +54,6 @@ async function setOrcidData(data) {
  * Go to the next step
  */
 function skipOrcid() {
-	// TODO: See how this should be handled given updated ORCID fields
-	// delete store.acceptInvitationPayload.orcid;
 	store.openStep(store.steps[1 + store.currentStepIndex].id);
 }
 

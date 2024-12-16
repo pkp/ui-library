@@ -21,6 +21,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 
 		const email = ref(null);
 		const userId = ref(null);
+		const existingUser = ref(null);
 
 		/** All Errors */
 		const errors = ref({});
@@ -125,6 +126,8 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 				updateAcceptInvitationPayload('username', data.value.username);
 				// add password to invitation payload for validations
 				updateAcceptInvitationPayload('password', null);
+
+				existingUser.value = data.existingUser;
 				errors.value = [];
 				if (steps.value.length === 0) {
 					await submit();
@@ -166,6 +169,30 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 					: data[fieldName];
 			});
 		}
+
+		const hasValidOrcid = computed(() => {
+			if (acceptInvitationPayload.value['orcidIsVerified']) {
+				return true;
+			} else if (existingUser.value.orcidIsVerified) {
+				return true;
+			}
+
+			return false;
+		});
+
+		const orcidUri = computed(() => {
+			const invitationOrcid = acceptInvitationPayload.value['orcid'];
+			if (invitationOrcid) {
+				return invitationOrcid;
+			}
+
+			const userOrcid = existingUser.value['orcid'];
+			if (userOrcid) {
+				return userOrcid;
+			}
+
+			return null;
+		});
 
 		/** Steps */
 		const currentStepId = ref(
@@ -477,6 +504,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			//computed
 			currentStep,
 			currentStepIndex,
+			hasValidOrcid,
 			isOnFirstStep,
 			isOnLastStep,
 			isValid,
@@ -484,6 +512,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			startedSteps,
 			stepTitle,
 			openStep,
+			orcidUri,
 			steps,
 			pageTitleDescription,
 			errors,
