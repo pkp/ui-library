@@ -147,7 +147,7 @@ export const FileManagerConfigurations = {
 				],
 				actions: [
 					Actions.FILE_LIST,
-					Actions.FILE_UPLOAD,
+					Actions.FILE_SELECT_UPLOAD,
 					Actions.FILE_EDIT,
 					Actions.FILE_DELETE,
 					Actions.FILE_SEE_NOTES,
@@ -156,7 +156,7 @@ export const FileManagerConfigurations = {
 		],
 		actions: [
 			Actions.FILE_LIST,
-			Actions.FILE_UPLOAD,
+			Actions.FILE_SELECT_UPLOAD,
 			Actions.FILE_EDIT,
 			Actions.FILE_DELETE,
 			Actions.FILE_SEE_NOTES,

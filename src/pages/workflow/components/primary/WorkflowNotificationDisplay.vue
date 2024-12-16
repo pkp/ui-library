@@ -15,6 +15,7 @@ import {computed, watch} from 'vue';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 import {useApp} from '@/composables/useApp';
+import {useDataChanged} from '@/composables/useDataChanged';
 
 const props = defineProps({
 	submission: {type: Object, required: true},
@@ -114,6 +115,9 @@ watch(
 	},
 	{immediate: true},
 );
+
+/** Reload notifications when data on screen changes */
+useDataChanged(() => fetch());
 
 const notificationsToDisplay = computed(() => {
 	const notifications = [];
