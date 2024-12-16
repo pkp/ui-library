@@ -9,8 +9,10 @@ import JobsPage from '@/pages/jobs/JobsPage.vue';
 import FailedJobsPage from '@/pages/jobs/FailedJobsPage.vue';
 import FailedJobDetailsPage from '@/pages/jobs/FailedJobDetailsPage.vue';
 import CounterReportsPage from '@/pages/counter/CounterReportsPage.vue';
-import UserInvitationPage from "@/pages/userInvitation/UserInvitationPage.vue";
-import AcceptInvitationPage from "@/pages/acceptInvitation/AcceptInvitationPage.vue";
+import UserInvitationPage from '@/pages/userInvitation/UserInvitationPage.vue';
+import AcceptInvitationPage from '@/pages/acceptInvitation/AcceptInvitationPage.vue';
+
+import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 
 export default {
 	name: 'Page',
@@ -174,17 +176,12 @@ export default {
 		 * Open a modal showing the user's tasks
 		 */
 		openTasks() {
-			var opts = {
-				url: this.tasksUrl,
-				closeCallback: this.$refs.tasksButton.focus(),
-			};
+			const {openLegacyModal} = useLegacyGridUrl({
+				component: 'grid.notifications.taskNotificationsGridHandler',
+				op: 'fetchGrid',
+			});
 
-			$(
-				'<div id="' +
-					$.pkp.classes.Helper.uuid() +
-					'" ' +
-					'class="pkp_modal pkpModalWrapper" tabindex="-1"></div>',
-			).pkpHandler('$.pkp.controllers.modal.AjaxModalHandler', opts);
+			openLegacyModal({});
 		},
 	},
 };
