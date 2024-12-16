@@ -260,7 +260,7 @@ export default {
 			name: 'Needs editor',
 			count: 1,
 			queryParams: {
-				assignedTo: -1,
+				isUnassigned: true,
 				status: [1],
 			},
 		},
