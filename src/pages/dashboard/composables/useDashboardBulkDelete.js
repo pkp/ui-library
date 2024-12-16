@@ -14,21 +14,21 @@ export function useDashboardBulkDelete({
 }) {
 	const {t} = useLocalize();
 
-	// Display only for admins on editorial dashboard and for author dashboard, where user can delete own submissions
-	const bulkDeleteDisplayDeleteButton = computed(() => {
-		if (
-			dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD &&
-			hasCurrentUserAtLeastOneRole([pkp.const.ROLE_ID_SITE_ADMIN])
-		) {
-			return true;
-		} else if (dashboardPage === DashboardPageTypes.MY_SUBMISSIONS) {
-			return true;
-		}
+	/**
+	 * Enabling the checkboxes to select submissions to be deleted
+	 * */
+	const bulkDeleteSelectionEnabled = ref(false);
+	function bulkDeleteSelectionEnable() {
+		bulkDeleteSelectionEnabled.value = true;
+	}
 
-		return false;
-	});
+	function bulkDeleteSelectionDisable() {
+		bulkDeleteSelectionEnabled.value = false;
+	}
 
-	const bulkDeleteEnabled = ref(false);
+	/**
+	 * Managing the list of selected items
+	 * */
 	const bulkDeleteSelectedItems = ref([]);
 	function bulkDeleteSelectItem(submissionId) {
 		if (!bulkDeleteSelectedItems.value.includes(submissionId)) {
@@ -42,10 +42,9 @@ export function useDashboardBulkDelete({
 		);
 	}
 
-	function bulkDeleteToggleEnabled() {
-		bulkDeleteEnabled.value = !bulkDeleteEnabled.value;
-	}
-
+	/**
+	 * Permissions
+	 * */
 	const {
 		hasCurrentUserAtLeastOneAssignedRoleInAnyStage,
 		hasCurrentUserAtLeastOneRole,
@@ -55,7 +54,10 @@ export function useDashboardBulkDelete({
 		// incomplete submission can be deleted by author of the submission or admin
 		if (submission.submissionProgress)
 			if (
-				hasCurrentUserAtLeastOneRole([pkp.const.ROLE_ID_SITE_ADMIN]) ||
+				hasCurrentUserAtLeastOneRole([
+					pkp.const.ROLE_ID_SITE_ADMIN,
+					pkp.const.ROLE_ID_MANAGER,
+				]) ||
 				hasCurrentUserAtLeastOneAssignedRoleInAnyStage(submission, [
 					pkp.const.ROLE_ID_AUTHOR,
 				])
@@ -66,6 +68,21 @@ export function useDashboardBulkDelete({
 		return false;
 	}
 
+	const bulkDeleteIsAvailableForUser = computed(() => {
+		if (
+			dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD &&
+			hasCurrentUserAtLeastOneRole([
+				pkp.const.ROLE_ID_SITE_ADMIN,
+				pkp.const.ROLE_ID_MANAGER,
+			])
+		) {
+			return true;
+		} else if (dashboardPage === DashboardPageTypes.MY_SUBMISSIONS) {
+			return true;
+		}
+		return false;
+	});
+
 	const bulkDeleteSubmissionIdsCanBeDeleted = computed(() => {
 		const submissionIds = [];
 		if (submissions.value && submissions.value?.length) {
@@ -75,7 +92,6 @@ export function useDashboardBulkDelete({
 				}
 			});
 		}
-
 		return submissionIds;
 	});
 
@@ -94,14 +110,14 @@ export function useDashboardBulkDelete({
 
 	function bulkDeleteResetSelection() {
 		bulkDeleteSelectedItems.value = [];
-		bulkDeleteEnabled.value = false;
+		bulkDeleteSelectionEnabled.value = false;
 	}
 
 	function bulkDeleteActionDelete() {
 		const {openDialog} = useModal();
 		openDialog({
-			title: t('admin.submissions.incomplete.bulkDelete.confirm'),
-			message: t('admin.submissions.incomplete.bulkDelete.body'),
+			title: t('dashboard.submissions.incomplete.bulkDelete.confirm'),
+			message: t('dashboard.submissions.incomplete.bulkDelete.body'),
 			actions: [
 				{
 					label: t('common.confirm'),
@@ -115,6 +131,7 @@ export function useDashboardBulkDelete({
 					label: t('common.cancel'),
 					isWarnable: true,
 					callback: (close) => {
+						bulkDeleteResetSelection();
 						close();
 					},
 				},
@@ -125,10 +142,10 @@ export function useDashboardBulkDelete({
 	}
 
 	return {
-		bulkDeleteDisplayDeleteButton,
-		bulkDeleteEnabled,
-		bulkDeleteToggleEnabled,
-
+		bulkDeleteIsAvailableForUser,
+		bulkDeleteSelectionEnabled,
+		bulkDeleteSelectionEnable,
+		bulkDeleteSelectionDisable,
 		bulkDeleteSelectedItems,
 		bulkDeleteSelectItem,
 		bulkDeleteDeselectItem,

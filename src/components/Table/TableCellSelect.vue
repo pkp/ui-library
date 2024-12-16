@@ -1,6 +1,7 @@
 <template>
 	<TableCell>
 		<input
+			:class="{'sr-only': disabled}"
 			type="checkbox"
 			:checked="props.checked"
 			:aria-describedby="describedBy"
