@@ -16,7 +16,10 @@ import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 import {useApp} from '@/composables/useApp';
 
-const props = defineProps({submission: {type: Object, required: true}});
+const props = defineProps({
+	submission: {type: Object, required: true},
+	selectedStageId: {type: Number, required: true},
+});
 
 const {pageUrl} = useUrl(`notification/fetchNotification`);
 const {isOJS, isOMP} = useApp();
@@ -90,7 +93,7 @@ function objectToFormData(obj, formData = new FormData(), parentKey = '') {
 }
 
 const requestBody = computed(() => {
-	const requestOptions = getRequestOptionsPerStage(props.submission.stageId);
+	const requestOptions = getRequestOptionsPerStage(props.selectedStageId);
 	if (requestOptions) {
 		return objectToFormData({requestOptions});
 	}
@@ -104,6 +107,7 @@ const {data, fetch} = useFetch(pageUrl, {
 watch(
 	requestBody,
 	(requestBodyNew) => {
+		data.value = null;
 		if (requestBodyNew) {
 			fetch();
 		}

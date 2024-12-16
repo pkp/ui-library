@@ -464,7 +464,7 @@ export const WorkflowConfig = {
 
 			items.push({
 				component: 'WorkflowNotificationDisplay',
-				props: {submission: submission},
+				props: {submission: submission, selectedStageId},
 			});
 
 			items.push({
@@ -547,9 +547,10 @@ export const WorkflowConfig = {
 	[pkp.const.WORKFLOW_STAGE_ID_PRODUCTION]: {
 		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
+
 			items.push({
 				component: 'WorkflowNotificationDisplay',
-				props: {submission: submission},
+				props: {submission: submission, selectedStageId},
 			});
 
 			items.push({

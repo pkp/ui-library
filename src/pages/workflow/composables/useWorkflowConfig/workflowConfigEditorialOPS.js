@@ -61,7 +61,7 @@ export const WorkflowConfig = {
 
 			items.push({
 				component: 'WorkflowNotificationDisplay',
-				props: {submission: submission},
+				props: {submission: submission, selectedStageId},
 			});
 
 			items.push({
