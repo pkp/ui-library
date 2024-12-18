@@ -184,8 +184,8 @@ export function useSubmission() {
 
 	function hasNotSubmissionStartedStage(submission, stageId) {
 		if (
-			submission.stageId === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW ||
-			submission.stageId === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW
+			stageId === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW ||
+			stageId === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW
 		) {
 			const rounds = getReviewRoundsForStage(submission, stageId);
 			return rounds?.length === 0;
