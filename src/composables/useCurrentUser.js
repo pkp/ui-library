@@ -1,3 +1,5 @@
+import {useSubmission} from './useSubmission';
+
 export const EditorialRoles = [
 	pkp.const.ROLE_ID_SITE_ADMIN,
 	pkp.const.ROLE_ID_MANAGER,
@@ -12,6 +14,29 @@ export function useCurrentUser() {
 
 	function getCurrentUserId() {
 		return pkp.currentUser.id;
+	}
+
+	function hasCurrentUserAtLeastOneAssignedRoleInStage(
+		submission,
+		stageId,
+		roles = [],
+	) {
+		const {getStageById} = useSubmission();
+		const assignedRoleIds = [];
+
+		const stage = getStageById(submission, stageId);
+		stage.currentUserAssignedRoles.forEach((assignedRoleId) => {
+			if (!assignedRoleIds.includes(assignedRoleId)) {
+				assignedRoleIds.push(assignedRoleId);
+			}
+		});
+
+		console.log('hasCurrentUserAtLeastOneAssignedRoleInStage');
+		console.log(
+			assignedRoleIds,
+			roles.some((role) => assignedRoleIds.includes(role)),
+		);
+		return roles.some((role) => assignedRoleIds.includes(role));
 	}
 
 	function hasCurrentUserAtLeastOneAssignedRoleInAnyStage(
@@ -33,6 +58,7 @@ export function useCurrentUser() {
 	return {
 		hasCurrentUserAtLeastOneRole,
 		getCurrentUserId,
+		hasCurrentUserAtLeastOneAssignedRoleInStage,
 		hasCurrentUserAtLeastOneAssignedRoleInAnyStage,
 	};
 }

@@ -77,13 +77,17 @@ export function useFileManagerActions() {
 		);
 	}
 
-	function fileDownloadAll({fileStage, submission, submissionStageId}) {
+	function fileDownloadAll({
+		fileStage,
+		submission,
+		submissionStageId,
+		titleKey,
+	}) {
 		const {url} = useLegacyGridUrl({
 			component: 'api.file.FileApiHandler',
 			op: 'downloadAllFiles',
 			params: {
-				// TODO this needs to be different for different grids
-				nameLocaleKey: 'editor.submission.production.productionReadyFiles',
+				nameLocaleKey: titleKey,
 				fileStage,
 				submissionId: submission.id,
 				stageId: submissionStageId,
@@ -203,7 +207,7 @@ export function useFileManagerActions() {
 		if (enabledActions.includes(Actions.FILE_DOWNLOAD_ALL) && filesCount) {
 			actions.push({
 				label: t('submission.files.downloadAll'),
-				name: 'downloadAll',
+				name: Actions.FILE_DOWNLOAD_ALL,
 			});
 		}
 

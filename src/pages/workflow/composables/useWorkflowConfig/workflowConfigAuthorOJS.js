@@ -144,7 +144,7 @@ export const WorkflowConfig = {
 				props: {
 					namespace: 'WORKFLOW_REVIEW_REVISIONS',
 					submission: submission,
-					submissionStageId: submission.stageId,
+					submissionStageId: selectedStageId,
 					reviewRoundId: selectedReviewRound?.id,
 				},
 			});
