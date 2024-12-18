@@ -69,11 +69,11 @@ function click(e) {
 
 const styles = computed(() => ({
 	// Base
-	'inline-flex relative items-center gap-x-1 text-lg-semibold': true,
+	'inline-flex relative items-center gap-x-1 ': true,
 	// Button
-	'': !props.isLink,
+	'text-lg-semibold': !props.isLink,
 	// Link (adding border to keep dimensions consistent with button)
-	'border-transparent hover:enabled:underline disabled:text-disabled':
+	'border-transparent hover:enabled:underline disabled:text-disabled text-lg-medium':
 		props.isLink,
 	// Primary colors
 	'bg-primary border-transparent text-on-dark hover:bg-hover hover:text-on-dark disabled:bg-disabled disabled:text-disabled':

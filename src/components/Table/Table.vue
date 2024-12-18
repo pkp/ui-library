@@ -36,6 +36,7 @@
 		<div
 			v-if="slots['bottom-controls']"
 			class="flex justify-between border-x border-b border-light px-3 py-2"
+			:class="{'bg-tertiary': isFooterDarker}"
 		>
 			<slot name="bottom-controls" />
 		</div>
@@ -43,7 +44,7 @@
 </template>
 
 <script setup>
-import {provide, toRefs, defineEmits, ref, useSlots} from 'vue';
+import {provide, toRefs, defineEmits, ref, useSlots, computed} from 'vue';
 import {useId} from '@/composables/useId.js';
 
 const emit = defineEmits([
@@ -73,11 +74,27 @@ const props = defineProps({
 const {sortDescriptor} = toRefs(props);
 
 const columnsCount = ref(0);
+const rowCount = ref(0);
+
+const registerRow = () => {
+	rowCount.value++;
+};
+
+const unregisterRow = () => {
+	rowCount.value--;
+};
+
+const isFooterDarker = computed(() => {
+	return !!(rowCount.value % 2);
+});
 
 const tableContext = {
 	sortDescriptor,
 	onSort,
 	columnsCount,
+	rowCount,
+	registerRow,
+	unregisterRow,
 };
 
 const slots = useSlots();

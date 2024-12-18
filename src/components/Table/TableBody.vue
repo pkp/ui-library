@@ -1,7 +1,7 @@
 <template>
 	<tbody class="">
 		<slot></slot>
-		<tr v-if="!rowCount">
+		<tr v-if="!tableContext.rowCount.value">
 			<td
 				:colspan="tableContext.columnsCount.value"
 				class="border-x border-b border-light p-5 text-base-normal"
@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import {useSlots, computed, inject, provide, ref} from 'vue';
+import {useSlots, computed, inject} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 
 const props = defineProps({
@@ -25,18 +25,6 @@ const slots = useSlots();
 const {t} = useLocalize();
 
 const tableContext = inject('tableContext');
-const rowCount = ref(0);
-
-const registerRow = () => {
-	rowCount.value++;
-};
-
-const unregisterRow = () => {
-	rowCount.value--;
-};
-
-provide('registerRow', registerRow);
-provide('unregisterRow', unregisterRow);
 
 const emptyText = computed(() => {
 	return props.emptyText || t('grid.noItems');

@@ -1,6 +1,6 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
-import {ref, computed, watch, toRefs} from 'vue';
+import {computed, watch, toRefs} from 'vue';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
 import {useFileManagerActions} from './useFileManagerActions';
@@ -9,21 +9,21 @@ import {useDataChanged} from '@/composables/useDataChanged';
 export const useFileManagerStore = defineComponentStore(
 	'fileManager',
 	(props) => {
-		const submissionId = ref(props.submission.id);
-		const {namespace, submissionStageId} = toRefs(props);
+		const {namespace, submissionStageId, submission} = toRefs(props);
 		/**
 		 * Manager configuration
 		 */
 		const {managerConfig} = useFileManagerConfig({
 			namespace: namespace,
 			submissionStageId: submissionStageId,
+			submission,
 		});
 
 		/**
 		 *  Files fetching
 		 */
 		const {apiUrl: filesApiUrl} = useUrl(
-			`submissions/${submissionId.value}/files`,
+			`submissions/${submission.value.id}/files`,
 		);
 
 		const queryParams = computed(() => ({
@@ -39,9 +39,14 @@ export const useFileManagerStore = defineComponentStore(
 
 		watch(
 			[filesApiUrl, queryParams],
-			() => {
-				files.value = null;
-				fetchFiles();
+			([newFilesApiUrl, newQueryParams], [oldFilesApiUrl, oldQueryParams]) => {
+				if (
+					newFilesApiUrl !== oldFilesApiUrl ||
+					JSON.stringify(newQueryParams) !== JSON.stringify(oldQueryParams)
+				) {
+					files.value = null;
+					fetchFiles();
+				}
 			},
 			{immediate: true},
 		);
@@ -87,6 +92,7 @@ export const useFileManagerStore = defineComponentStore(
 				wizardTitleKey: managerConfig.value.wizardTitleKey,
 				uploadSelectTitleKey: managerConfig.value.uploadSelectTitleKey,
 				gridComponent: managerConfig.value.gridComponent,
+				titleKey: managerConfig.value.titleKey,
 			};
 		}
 

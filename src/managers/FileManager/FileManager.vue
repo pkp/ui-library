@@ -39,20 +39,17 @@
 					:file="file"
 				></FileManagerTableRow>
 			</TableBody>
+			<template v-if="fileManagerStore.bottomActions.length" #bottom-controls>
+				<PkpButton
+					v-for="action in fileManagerStore.bottomActions"
+					:key="action.name"
+					is-link
+					@click="fileManagerStore[action.name]"
+				>
+					{{ action.label }}
+				</PkpButton>
+			</template>
 		</PkpTable>
-		<div
-			v-if="fileManagerStore.bottomActions.length"
-			class="flex space-x-2 border-x border-b border-light p-2"
-		>
-			<PkpButton
-				v-for="action in fileManagerStore.bottomActions"
-				:key="action.name"
-				is-link
-				@click="fileManagerStore[action.name]"
-			>
-				{{ action.label }}
-			</PkpButton>
-		</div>
 	</div>
 </template>
 <script setup>

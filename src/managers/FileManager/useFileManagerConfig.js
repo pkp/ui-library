@@ -76,7 +76,7 @@ export const FileManagerConfigurations = {
 				: pkp.const.SUBMISSION_FILE_REVIEW_FILE,
 		gridComponent: 'grid.files.review.EditorReviewFilesGridHandler',
 		titleKey: tk('fileManager.filesForReview'),
-		descriptionKey: tk('fileManager.submissionFilesDescription'),
+		descriptionKey: tk('fileManager.filesForReviewDescription'),
 		uploadSelectTitleKey: tk('editor.submission.review.currentFiles'),
 	}),
 	WORKFLOW_REVIEW_REVISIONS: ({stageId}) => ({
@@ -92,7 +92,6 @@ export const FileManagerConfigurations = {
 			},
 			{
 				roles: [
-					pkp.const.ROLE_ID_AUTHOR,
 					pkp.const.ROLE_ID_SUB_EDITOR,
 					pkp.const.ROLE_ID_MANAGER,
 					pkp.const.ROLE_ID_SITE_ADMIN,
@@ -117,20 +116,9 @@ export const FileManagerConfigurations = {
 			stageId === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW
 				? pkp.const.SUBMISSION_FILE_INTERNAL_REVIEW_REVISION
 				: pkp.const.SUBMISSION_FILE_REVIEW_REVISION,
-		titleKey: tk('submission.list.revisionsSubmitted'),
+		titleKey: tk('fileManager.revisionsUploaded'),
 		descriptionKey: tk('fileManager.revisionsUploadedDescription'),
 		wizardTitleKey: tk('editor.submissionReview.uploadFile'),
-	}),
-	// TODO after triage
-	REVIEW_ATTACHMENTS: () => ({
-		// visible only to authors and reviewers? Add permissions for reviewers once used
-		permissions: [],
-		actions: [],
-		fileStage: pkp.const.SUBMISSION_FILE_REVIEW_ATTACHMENT,
-		gridComponent: 'grid.files.attachment.authorReviewAttachmentsGridHandler',
-		titleKey: tk('fileManager.filesForReview'),
-		descriptionKey: tk('fileManager.deskReviewFilesDescription'),
-		uploadSelectTitleKey: tk('editor.submission.review.currentFiles'),
 	}),
 	COPYEDITED_FILES: ({stageId}) => ({
 		permissions: [
@@ -213,6 +201,7 @@ export const FileManagerConfigurations = {
 					Actions.FILE_EDIT,
 					Actions.FILE_DELETE,
 					Actions.FILE_SEE_NOTES,
+					Actions.FILE_DOWNLOAD_ALL,
 				],
 			},
 		],
@@ -222,6 +211,7 @@ export const FileManagerConfigurations = {
 			Actions.FILE_EDIT,
 			Actions.FILE_DELETE,
 			Actions.FILE_SEE_NOTES,
+			Actions.FILE_DOWNLOAD_ALL,
 		],
 		fileStage: pkp.const.SUBMISSION_FILE_PRODUCTION_READY,
 		titleKey: tk('editor.submission.production.productionReadyFiles'),
@@ -230,10 +220,14 @@ export const FileManagerConfigurations = {
 	}),
 };
 
-export function useFileManagerConfig({namespace, submissionStageId}) {
+export function useFileManagerConfig({
+	namespace,
+	submissionStageId,
+	submission,
+}) {
 	const {t} = useLocalize();
 
-	const {hasCurrentUserAtLeastOneRole} = useCurrentUser();
+	const {hasCurrentUserAtLeastOneAssignedRoleInStage} = useCurrentUser();
 
 	const managerConfig = computed(() => {
 		const config = FileManagerConfigurations[namespace.value]({
@@ -244,7 +238,11 @@ export function useFileManagerConfig({namespace, submissionStageId}) {
 			return config.permissions.some((perm) => {
 				return (
 					perm.actions.includes(action) &&
-					hasCurrentUserAtLeastOneRole(perm.roles)
+					hasCurrentUserAtLeastOneAssignedRoleInStage(
+						submission.value,
+						submissionStageId.value,
+						perm.roles,
+					)
 				);
 			});
 		});
@@ -253,6 +251,7 @@ export function useFileManagerConfig({namespace, submissionStageId}) {
 			fileStage: config.fileStage,
 			permittedActions,
 			title: t(config.titleKey),
+			titleKey: config.titleKey,
 			description: t(config.descriptionKey),
 			wizardTitleKey: config.wizardTitleKey,
 			uploadSelectTitleKey: config.uploadSelectTitleKey,

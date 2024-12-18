@@ -7,7 +7,7 @@
 			</div>
 		</TableCell>
 		<TableCell :is-row-header="true" full-width-truncated>
-			<span class="ms-2 truncate text-base-normal text-default">
+			<span class="ms-2 truncate text-lg-normal text-default">
 				<a
 					v-if="file.url"
 					class="hover:underline"
