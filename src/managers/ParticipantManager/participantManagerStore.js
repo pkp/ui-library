@@ -5,15 +5,12 @@ import {ref, computed, watch} from 'vue';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
 
-import {useLocalize} from '@/composables/useLocalize';
 import {useParticipantManagerActions} from './useParticipantManagerActions';
 import {useDataChanged} from '@/composables/useDataChanged';
 
 export const useParticipantManagerStore = defineComponentStore(
 	'participantManager',
 	(props) => {
-		const {localize} = useLocalize();
-
 		const submissionId = ref(props.submission.id);
 
 		const relativeUrl = computed(() => {
@@ -49,7 +46,7 @@ export const useParticipantManagerStore = defineComponentStore(
 						id: participant.id,
 						fullName: participant.fullName,
 						stageAssignmentId: stageAssignment.stageAssignmentId,
-						roleName: localize(stageAssignment.stageAssignmentUserGroup.name),
+						roleName: stageAssignment.stageAssignmentUserGroup.name,
 						roleId: stageAssignment.stageAssignmentUserGroup.roleId,
 						userGroupId: stageAssignment.stageAssignmentUserGroup.id,
 						recommendOnly: stageAssignment.recommendOnly,
