@@ -183,7 +183,7 @@ export default {
 				aIndex = aIndex === -1 ? Number.MAX_SAFE_INTEGER : aIndex;
 				bIndex = bIndex === -1 ? Number.MAX_SAFE_INTEGER : bIndex;
 				return aIndex < bIndex ? -1 : 1;
-			})
+			});
 		}
 	},
 	methods: {
