@@ -7,6 +7,13 @@
 	>
 		{{ t('dashboard.submissions.incomplete.bulkDelete.button') }}
 	</PkpButton>
+	<PkpButton
+		v-if="store.bulkDeleteSelectionEnabled"
+		:is-warnable="true"
+		@click="() => store.bulkDeleteSelectionDisable()"
+	>
+		{{ t('common.cancel') }}
+	</PkpButton>
 </template>
 
 <script setup>
