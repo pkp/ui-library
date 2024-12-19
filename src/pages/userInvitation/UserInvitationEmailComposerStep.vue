@@ -79,13 +79,16 @@ const recipients = computed(() => {
 });
 
 const recipientOptions = computed(() => {
-	return [
-		{
-			value: store.invitationPayload.inviteeEmail,
-			label: {
-				[store.primaryLocale]: store.invitationPayload.inviteeEmail,
-			},
-		},
-	];
+	let userEmails = {
+		value: store.invitationPayload.inviteeEmail,
+		label: {},
+	};
+	props.email.locales.forEach((element) => {
+		userEmails.label = {
+			...userEmails.label,
+			[element.locale]: store.invitationPayload.inviteeEmail,
+		};
+	});
+	return [userEmails];
 });
 </script>
