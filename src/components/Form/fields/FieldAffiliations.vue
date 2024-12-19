@@ -47,7 +47,7 @@
 							</span>
 							<a v-if="affiliation.ror" :href="affiliation.ror" target="_blank">
 								&nbsp;
-								<Icon :icon="'ror'" :class="'mr-2'" :inline="true" />
+								<Icon :icon="'ROR'" :class="'mr-2 h-6 w-6'" :inline="true" />
 							</a>
 						</TableCell>
 						<TableCell>
@@ -698,10 +698,6 @@ function sortNamesPrimaryFirst(names) {
 
 	table td:nth-child(3) {
 		text-align: right;
-	}
-
-	.dropDownActions svg {
-		width: 1.5em;
 	}
 }
 
