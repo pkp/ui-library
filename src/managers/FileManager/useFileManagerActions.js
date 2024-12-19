@@ -217,19 +217,20 @@ export function useFileManagerActions() {
 	function getItemActions({managerConfig}) {
 		const actions = [];
 		const enabledActions = managerConfig.permittedActions;
-		if (enabledActions.includes(Actions.FILE_SEE_NOTES)) {
-			actions.push({
-				label: t('grid.action.moreInformation'),
-				name: Actions.FILE_SEE_NOTES,
-				icon: 'View',
-			});
-		}
 
 		if (enabledActions.includes(Actions.FILE_EDIT)) {
 			actions.push({
 				label: t('grid.action.edit'),
 				name: Actions.FILE_EDIT,
 				icon: 'Edit',
+			});
+		}
+
+		if (enabledActions.includes(Actions.FILE_SEE_NOTES)) {
+			actions.push({
+				label: t('grid.action.moreInformation'),
+				name: Actions.FILE_SEE_NOTES,
+				icon: 'View',
 			});
 		}
 

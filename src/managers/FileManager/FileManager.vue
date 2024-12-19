@@ -23,7 +23,7 @@
 				</div>
 			</template>
 			<TableHeader>
-				<TableColumn>{{ t('common.id') }}</TableColumn>
+				<TableColumn>{{ t('common.numero') }}</TableColumn>
 				<TableColumn>{{ t('common.fileName') }}</TableColumn>
 				<TableColumn>{{ t('common.dateUploaded') }}</TableColumn>
 				<TableColumn>{{ t('common.type') }}</TableColumn>

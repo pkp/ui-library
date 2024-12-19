@@ -3,7 +3,7 @@
 		<span class="text-lg-normal">
 			{{ t('submission.list.changeSubmissionLanguage.currentLanguage') }}
 		</span>
-		<span class="text-lg-bold">{{ languageLabel }}</span>
+		<span class="text-lg-bold text-heading">{{ languageLabel }}</span>
 		<PkpButton
 			v-if="canChangeSubmissionLanguage"
 			is-link

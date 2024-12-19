@@ -51,7 +51,7 @@ export function getPublicationTitle(publicationMenuTitle) {
 	})} ${publicationMenuTitle}`;
 }
 
-export function getReviewItems({submission, stageId, title}) {
+export function getReviewItems({submission, stageId}) {
 	const {getActiveStage, getCurrentReviewRound} = useSubmission();
 
 	const activeStage = getActiveStage(submission);
@@ -63,6 +63,13 @@ export function getReviewItems({submission, stageId, title}) {
 	const {getReviewRoundsForStage} = useSubmission();
 	const reviewRounds = getReviewRoundsForStage(submission, stageId);
 
+	const TitleKeys = {
+		[pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW]:
+			'submission.stage.externalReviewWithRound',
+		[pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW]:
+			'submission.stage.internalReviewWithRound',
+	};
+
 	reviewRounds.forEach((reviewRound) => {
 		reviewMenuItems.push(
 			getReviewItem({
@@ -70,7 +77,9 @@ export function getReviewItems({submission, stageId, title}) {
 				reviewRound,
 				isActive:
 					activeStage.id === stageId && activeReviewRound.id === reviewRound.id,
-				title: title,
+				title: getWorkflowTitle(
+					t(TitleKeys[stageId], {round: reviewRound.round}),
+				),
 			}),
 		);
 	});

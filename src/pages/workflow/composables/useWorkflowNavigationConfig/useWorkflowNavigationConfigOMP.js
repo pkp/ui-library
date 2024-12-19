@@ -42,13 +42,11 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 		const internalReviewItems = getReviewItems({
 			submission,
 			stageId: pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW,
-			title: t('workflow.review.internalReview'),
 		});
 
 		const externalReviewItems = getReviewItems({
 			submission,
 			stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
-			title: t('workflow.review.externalReview'),
 		});
 
 		const items = [];
