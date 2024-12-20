@@ -186,7 +186,11 @@
 											@click="selectRorOrganization(organization)"
 										>
 											{{ organization.displayName }} &nbsp;
-											<Icon :icon="'ror'" :class="'mr-2'" :inline="true" />
+											<Icon
+												:icon="'ROR'"
+												:class="'mr-2 h-6 w-6'"
+												:inline="true"
+											/>
 										</a>
 										<a
 											:href="organization.ror"
@@ -703,7 +707,8 @@ function sortNamesPrimaryFirst(names) {
 
 .pkpFormField--affiliations__control .searchPhraseResults {
 	background-color: #fff;
-	height: 140px;
+	height: auto;
+	max-height: 200px;
 	overflow-y: scroll;
 	position: absolute;
 	z-index: 9999;
