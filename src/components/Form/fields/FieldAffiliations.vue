@@ -223,7 +223,11 @@
 										class="inline-block py-2"
 										target="_blank"
 									>
-										<Icon :icon="'ror'" :class="'mr-2'" :inline="true" />
+										<Icon
+											:icon="'ROR'"
+											:class="'mr-2 h-6 w-6'"
+											:inline="true"
+										/>
 									</a>
 								</div>
 								<div
