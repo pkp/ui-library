@@ -54,7 +54,7 @@
 </template>
 
 <script setup>
-import {ref, watch, computed} from 'vue';
+import {ref, watch, computed, provide} from 'vue';
 import Autosuggest from './Autosuggest.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import {useFetch} from '@/composables/useFetch';
@@ -69,6 +69,8 @@ const url = 'https://api.ror.org/v2/organizations';
 const queryParams = computed(() => ({
 	query: inputValue.value,
 }));
+
+provide('allowCustom', true);
 
 const autosuggestContainerId = generateId();
 
@@ -127,6 +129,17 @@ function changeFocus(focused) {
 }
 
 function handleSelect(suggestion) {
+	if (!suggestion) {
+		if (!inputValue.value || !mappedSuggestions.value.length) {
+			return;
+		}
+
+		suggestion = {
+			value: inputValue.value,
+			label: inputValue.value,
+		};
+	}
+
 	if (!currentSelected.value.some((item) => item.value === suggestion.value)) {
 		currentSelected.value.push(suggestion);
 	}
