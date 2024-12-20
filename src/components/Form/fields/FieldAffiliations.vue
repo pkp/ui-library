@@ -56,11 +56,15 @@
 									class="pkpButton cursor-pointer border-transparent py-2 text-lg-semibold text-primary hover:enabled:underline"
 									@click="toggleEditMode(affiliationIndex)"
 								>
-									<MultilingualProgress
-										v-bind="{
-											count: translations(affiliation).count,
-											total: translations(affiliation).total,
-										}"
+									<Icon
+										:icon="
+											translations(affiliation).count ===
+											translations(affiliation).total
+												? 'Complete'
+												: 'InProgress'
+										"
+										:class="'mr-2 h-6 w-6'"
+										:inline="true"
 									/>
 									&nbsp;
 									{{ translations(affiliation).label }}
@@ -100,7 +104,7 @@
 											}}
 										</label>
 									</div>
-									<div>
+									<div class="pkpFormField--sizelarge">
 										<input
 											v-if="
 												supportedFormLocaleKeys.includes(affiliationNameLocale)
@@ -197,7 +201,10 @@
 											class="cursor-pointer border-transparent px-2 py-2 text-lg-normal text-primary hover:bg-hover hover:text-on-dark hover:enabled:underline"
 											target="_blank"
 										>
-											<Icon :icon="'external-link'" :inline="true" />
+											<span
+												class="fa fa-external-link pkpIcon--inline mr-2 inline-block h-6 w-6 align-middle rtl:scale-x-[-1]"
+												aria-hidden="true"
+											></span>
 										</a>
 									</li>
 								</ul>
@@ -207,11 +214,15 @@
 							<div v-if="showNewAffiliation">
 								<div>
 									<span class="inline-block py-2 text-lg-semibold">
-										<MultilingualProgress
-											v-bind="{
-												count: translations(newAffiliation).count,
-												total: translations(newAffiliation).total,
-											}"
+										<Icon
+											:icon="
+												translations(newAffiliation).count ===
+												translations(newAffiliation).total
+													? 'Complete'
+													: 'InProgress'
+											"
+											:class="'mr-2 h-6 w-6'"
+											:inline="true"
 										/>
 										&nbsp;
 										{{ translations(newAffiliation).label }}
@@ -259,7 +270,7 @@
 											}}
 										</span>
 									</div>
-									<div>
+									<div class="pkpFormField--sizelarge">
 										<input
 											v-if="
 												supportedFormLocaleKeys.includes(
@@ -283,16 +294,22 @@
 							</div>
 						</TableCell>
 						<TableCell>
-							<div v-if="showNewAffiliation">
+							<div>
 								<button
-									class="pkpButton cursor-pointer border-transparent py-2 text-lg-semibold text-primary hover:enabled:underline"
-									:disabled="!validate(newAffiliation)"
+									class="pkpButton border-transparent py-2 text-lg-semibold text-primary"
+									:class="
+										!showNewAffiliation
+											? 'disabled'
+											: 'cursor-pointer hover:enabled:underline'
+									"
+									:disabled="!showNewAffiliation"
 									@click="addAffiliation"
 								>
 									{{ t('common.add', {}) }}
 								</button>
 								<br />
 								<button
+									v-if="showNewAffiliation"
 									class="pkpButton cursor-pointer border-transparent py-2 text-lg-semibold text-primary hover:enabled:underline"
 									@click="closeNewAffiliation"
 								>
@@ -312,7 +329,6 @@ import {ref, computed, onMounted, watch, onBeforeUnmount} from 'vue';
 import {t} from '@/utils/i18n';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 import Icon from '@/components/Icon/Icon.vue';
-import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
 import PkpTable from '@/components/Table/Table.vue';
 import TableHeader from '@/components/Table/TableHeader.vue';
 import TableBody from '@/components/Table/TableBody.vue';
@@ -580,11 +596,6 @@ const translations = function (affiliation) {
 	return result;
 };
 
-/** Validates an affiliation */
-const validate = function (affiliation) {
-	return !!(affiliation.ror || affiliation.name[primaryLocale]);
-};
-
 /** Watch for changes in currentValue to ensure compatibility */
 watch(
 	currentValue,
@@ -702,6 +713,7 @@ function sortNamesPrimaryFirst(names) {
 
 	table td a {
 		display: inline-block;
+		line-height: 24px;
 	}
 
 	table td:nth-child(3) {
@@ -713,10 +725,10 @@ function sortNamesPrimaryFirst(names) {
 	background-color: #fff;
 	height: auto;
 	max-height: 200px;
+	overflow-x: hidden;
 	overflow-y: scroll;
 	position: absolute;
 	z-index: 9999;
-	border: 1px solid #ccc;
 	min-width: 30%;
 
 	ul {
@@ -736,11 +748,17 @@ function sortNamesPrimaryFirst(names) {
 
 	ul li:nth-child(1n + 2) a:nth-child(1) {
 		width: calc(100% - 30px);
+		text-wrap: nowrap;
 	}
 
 	ul li:nth-child(1n + 2) a:nth-child(2) {
 		float: right;
 		width: 30px;
+		display: block;
+	}
+
+	ul li:nth-child(1n + 2) a:nth-child(2) span {
+		line-height: inherit;
 	}
 }
 </style>
