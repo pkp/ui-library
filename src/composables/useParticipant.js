@@ -7,22 +7,7 @@ export function useParticipant() {
 		];
 	}
 
-	function getUserAvatarInitialsFromName(fullName) {
-		const fullNameParts = fullName.split(' ');
-
-		return fullNameParts
-			.map((part) => {
-				const partTrimmed = part.trim();
-				if (partTrimmed.length) {
-					return partTrimmed[0].toUpperCase();
-				}
-				return '';
-			})
-			.join('')
-			.substring(0, 3);
-	}
 	return {
-		getUserAvatarInitialsFromName,
 		getEditorRoleIds,
 	};
 }

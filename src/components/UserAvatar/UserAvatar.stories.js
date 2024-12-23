@@ -14,14 +14,7 @@ export default {
 
 export const Default = {
 	args: {
-		userFullName: 'Nama Sampan-Nirmal Lengkap',
-		userId: 136,
-	},
-};
-
-export const Arabic = {
-	args: {
-		userFullName: 'خالد محمود الفارسي',
+		initials: 'NL',
 		userId: 136,
 	},
 };

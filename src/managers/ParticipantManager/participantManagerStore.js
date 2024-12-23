@@ -50,6 +50,7 @@ export const useParticipantManagerStore = defineComponentStore(
 						roleId: stageAssignment.stageAssignmentUserGroup.roleId,
 						userGroupId: stageAssignment.stageAssignmentUserGroup.id,
 						recommendOnly: stageAssignment.recommendOnly,
+						displayInitials: participant.displayInitials,
 					});
 				});
 			});
