@@ -3,7 +3,15 @@
 		<div class="listPanel__itemSummary">
 			<div class="listPanel__itemIdentity listPanel__itemIdentity--submission">
 				<div class="listPanel__item--submission__id">
-					{{ item.id }}
+					<input
+						v-if="currentUserCanBulkDeleteIncompleteSubmissions"
+						type="checkbox"
+						name="incomplete-submissions"
+						:checked="isSelectedForDeletion"
+						class="listPanel__item--submission__checkbox"
+						@change="toggleSelection"
+					/>
+					<span>{{ item.id }}</span>
 				</div>
 				<div class="listPanel__itemTitle">
 					<span v-if="currentUserIsReviewer">
@@ -274,6 +282,10 @@ export default {
 			type: Object,
 			required: true,
 		},
+		isSelectedForDeletion: {
+			type: Boolean,
+			required: false,
+		},
 	},
 	data() {
 		return {
@@ -317,6 +329,18 @@ export default {
 				return true;
 			}
 			return false; // @todo
+		},
+
+		/**
+		 * Can the current user bulk delete incomplete submissions?
+		 *
+		 * @return {Boolean}
+		 */
+		currentUserCanBulkDeleteIncompleteSubmissions() {
+			return (
+				this.userHasRole(pkp.const.ROLE_ID_SITE_ADMIN) &&
+				this.item.submissionProgress
+			);
 		},
 
 		/**
@@ -887,6 +911,11 @@ export default {
 
 			return hasRole;
 		},
+
+		/** Toggle selection of a Submission for bulk delete */
+		toggleSelection() {
+			this.$emit('selectedForBulkDelete', this.item.id);
+		},
 	},
 };
 </script>
@@ -900,7 +929,7 @@ export default {
 
 .listPanel__itemIdentity--submission,
 .listPanel__itemExpanded--submission {
-	padding-inline-start: 2.5rem;
+	padding-inline-start: 5rem;
 }
 
 .listPanel__item--submission__id {
@@ -910,6 +939,14 @@ export default {
 	font-size: @font-tiny;
 	line-height: 1.5rem; // Match baseline of title/author
 	color: @text;
+	display: flex;
+	justify-content: flex-end;
+	gap: 1rem;
+	width: 3rem;
+}
+
+.listPanel__item--submission__checkbox {
+	cursor: pointer;
 }
 
 .listPanel__item--submission__title,
