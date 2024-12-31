@@ -172,6 +172,10 @@ export const useReviewerManagerStore = defineComponentStore(
 			return _actionFns.getItemPrimaryActions(args);
 		}
 
+		function reviewerSendToOrcid({reviewAssignment}) {
+			return _actionFns.reviewerSendToOrcid(getActionArgs({reviewAssignment}));
+		}
+
 		return {
 			getReviewMethodIcons,
 			reviewAssignments,
@@ -198,6 +202,7 @@ export const useReviewerManagerStore = defineComponentStore(
 			reviewerRevertConsider,
 			reviewerSendReminder,
 			reviewerLogResponse,
+			reviewerSendToOrcid,
 			_reviewerManagerActionFns: _actionFns,
 		};
 	},
