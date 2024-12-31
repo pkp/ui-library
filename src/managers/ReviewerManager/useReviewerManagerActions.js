@@ -26,6 +26,7 @@ export const Actions = {
 	REVIEWER_REVERT_CONSIDER: 'reviewerRevertConsider',
 	REVIEWER_SEND_REMINDER: 'reviewerSendReminder',
 	REVIEWER_LOG_RESPONSE: 'reviewerLogResponse',
+	REVIEWER_SEND_TO_ORCID: 'reviewerSendToOrcid',
 };
 
 export function useReviewerManagerActions() {
@@ -195,6 +196,18 @@ export function useReviewerManagerActions() {
 				label: t('editor.review.logResponse'),
 				name: Actions.REVIEWER_LOG_RESPONSE,
 				icon: 'ReviewAssignments',
+			});
+		}
+
+		// ORCID reviewer deposit
+		if (
+			reviewAssignment.reviewerHasOrcid &&
+			pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE
+		) {
+			actions.push({
+				label: t('dashboard.reviewAssignment.action.sendReviewToOrcid'),
+				name: Actions.REVIEWER_SEND_TO_ORCID,
+				icon: 'Orcid',
 			});
 		}
 
@@ -609,6 +622,49 @@ export function useReviewerManagerActions() {
 		);
 	}
 
+	function reviewerSendToOrcid({
+		submission,
+		reviewAssignment,
+	}) {
+		const {openDialog, openDialogNetworkError} = useModal();
+
+		let submissionId = submission.id;
+
+		openDialog({
+			actions: [
+				{
+					label: t('common.ok'),
+					isPrimary: true,
+					callback: async (close) => {
+						const {apiUrl} = useApiUrl(
+							`reviews/${submissionId}/${reviewAssignment.id}/sendToOrcid`,
+						);
+
+						const formData = new FormData();
+						formData.append('csrfToken', getCSRFToken());
+
+						const {fetch, isSuccess} = useFetch(apiUrl, {
+							method: 'POST',
+							body: formData,
+						});
+
+						await fetch();
+						close();
+						if (!isSuccess.value) {
+							openDialogNetworkError();
+						}
+					},
+				},
+				{
+					label: t('common.cancel'),
+					callback: (close) => close(),
+				},
+			],
+			title: t('dashboard.reviewAssignment.action.sendReviewToOrcid'),
+			message: t('dashboard.reviewAssignment.action.sendReviewToOrcid.confirm'),
+		});
+	}
+
 	return {
 		getTopActions,
 		getItemActions,
@@ -630,5 +686,6 @@ export function useReviewerManagerActions() {
 		reviewerRevertConsider,
 		reviewerSendReminder,
 		reviewerLogResponse,
+		reviewerSendToOrcid,
 	};
 }
