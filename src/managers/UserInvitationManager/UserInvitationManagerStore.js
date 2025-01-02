@@ -38,7 +38,7 @@ export const useUserInvitationManagerStore = defineComponentStore(
 			currentPage.value = _currentPage;
 		}
 
-		const {apiUrl} = useApiUrl('invitations');
+		const {apiUrl} = useApiUrl('invitations/userRoleAssignment');
 		const {
 			items: invitations,
 			pagination: invitationsPagination,
