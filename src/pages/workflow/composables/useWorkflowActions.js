@@ -274,8 +274,6 @@ export function useWorkflowActions({
 					label: t('common.yes'),
 					isPrimary: true,
 					callback: async (close) => {
-						close();
-
 						const latestPublication = getLatestPublication(submission);
 
 						const {apiUrl: createNewVersionUrl} = useUrl(
@@ -285,12 +283,13 @@ export function useWorkflowActions({
 							createNewVersionUrl,
 							{
 								method: 'POST',
-								showFullScreenSpinner: true,
 							},
 						);
 						await fetch();
 						// select newest publication
 						store.selectPublicationId(newPublication.value.id);
+						close();
+
 						finishedCallback();
 					},
 				},
