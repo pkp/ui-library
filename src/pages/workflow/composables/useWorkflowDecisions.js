@@ -44,7 +44,7 @@ function openDecisionPage(submission, decisionId, actionArgs = {}) {
 	});
 
 	// Given that decision often change the stage - its better to let workflow page to calculate current stage
-	urlSearchParams.delete('selectedMenuKey');
+	urlSearchParams.delete('workflowMenuKey');
 
 	const currentPageUrl = `dashboard/editorial?${urlSearchParams.toString()}`;
 
