@@ -158,6 +158,9 @@ export const useDashboardPageStore = defineComponentStore(
 			});
 		});
 
+		// Teoretically initFiltersFormFromQueryParams could be called only on the page load.
+		// Motivation to use watch here is to keep using the url as source of the truth, to
+		// catch bugs early, without testing all possible filters being loaded just from the url.
 		watch(
 			queryParamsUrl,
 			(newQueryParamsUrl) => {
@@ -369,6 +372,7 @@ export const useDashboardPageStore = defineComponentStore(
 				{
 					onClose: async () => {
 						queryParamsUrl.workflowSubmissionId = null;
+						queryParamsUrl.workflowMenuKey = null;
 						await fetchSubmissions();
 					},
 				},
