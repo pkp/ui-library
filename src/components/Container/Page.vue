@@ -45,51 +45,7 @@ export default {
 			unreadTasksCount: 0,
 		};
 	},
-	computed: {
-		/**
-		 * The menu item entry for a back-to-dashboard link
-		 *
-		 * @return {Object|null}
-		 */
-		backToDashboardLink() {
-			if (this.useBackToDashboard) {
-				return this.menu[Object.keys(this.menu)[0]];
-			}
-			return null;
-		},
-
-		/**
-		 * The new label for the back-to-dashboard link
-		 *
-		 * Converts "Submissions" to "Back to Submissions"
-		 *
-		 * @return {String}
-		 */
-		backToDashboardLabel() {
-			if (this.backToDashboardLink) {
-				return this.t('navigation.backTo', {
-					page: this.backToDashboardLink.name,
-				});
-			}
-			return null;
-		},
-
-		/**
-		 * Should a back-to-dashboard link be shown instead of a
-		 * full navigation menu?
-		 *
-		 * This is the case when the nav menu contains only one link.
-		 *
-		 * @return {Boolean}
-		 */
-		useBackToDashboard() {
-			return (
-				!!this.menu &&
-				Object.keys(this.menu).length === 1 &&
-				!this.menu[Object.keys(this.menu)[0]].isCurrent
-			);
-		},
-	},
+	computed: {},
 	mounted() {
 		/**
 		 * Fire a callback when the URL #hash is changed
