@@ -1,4 +1,4 @@
-import {computed, watch, inject} from 'vue';
+import {computed, inject} from 'vue';
 
 import {defineComponentStore} from '@/utils/defineComponentStore';
 import {
@@ -45,7 +45,19 @@ export const useWorkflowStore = defineComponentStore(
 			submissionId: props.submissionId,
 		});
 
-		const {getExtendedStage, getExtendedStageLabel} = useSubmission();
+		const selectedReviewRound = computed(() => {
+			if (!selectedMenuState.value.reviewRoundId) {
+				return null;
+			}
+			const reviewRound = getReviewRound(
+				submission.value,
+				selectedMenuState.value.reviewRoundId,
+			);
+			return reviewRound;
+		});
+
+		const {getExtendedStage, getExtendedStageLabel, getReviewRound} =
+			useSubmission();
 
 		/**
 		 * Current Stage Indication
@@ -90,18 +102,9 @@ export const useWorkflowStore = defineComponentStore(
 			menuTitle,
 			navigateToMenu,
 			selectedMenuState,
-			selectedReviewRound,
 			setExpandedKeys,
 			sideMenuProps,
-		} = useWorkflowMenu({menuItems, submission});
-
-		/** When submission is loaded initially - select relevant menu */
-		watch(submission, (newSubmission, oldSubmission) => {
-			// Once the submission is fetched, select relevant stage in navigaton
-			if (!oldSubmission && newSubmission) {
-				navigateToMenu(getInitialSelectionItemKey(newSubmission));
-			}
-		});
+		} = useWorkflowMenu({menuItems, submission, getInitialSelectionItemKey});
 
 		/**
 		 * Expose workflow actions

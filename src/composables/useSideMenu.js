@@ -74,12 +74,16 @@ export function useSideMenu(_items, opts = {}) {
 	}
 
 	function setActiveItemKey(key = '') {
-		activeItemKey.value = key;
+		if (!findItemByKey(items.value, key)) {
+			return false;
+		}
 
+		activeItemKey.value = key;
 		const parentKeys = findParentKeys(items.value, key);
 		if (parentKeys) {
 			setExpandedKeys([...parentKeys, ...Object.keys(expandedKeys.value)]);
 		}
+		return true;
 	}
 
 	function compareUrlPaths(url1, url2) {

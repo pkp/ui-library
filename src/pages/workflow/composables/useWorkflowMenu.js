@@ -1,16 +1,24 @@
 import {useSideMenu} from '@/composables/useSideMenu';
-import {computed} from 'vue';
-import {useSubmission} from '@/composables/useSubmission';
+import {computed, watch} from 'vue';
+import {useQueryParams} from '@/composables/useQueryParams';
 
-const {getReviewRound} = useSubmission();
-
-export function useWorkflowMenu({menuItems, submission}) {
+export function useWorkflowMenu({
+	menuItems,
+	submission,
+	getInitialSelectionItemKey,
+}) {
 	const {
 		sideMenuProps,
 		setExpandedKeys,
 		setActiveItemKey,
 		selectedItem: selectedMenuItem,
 	} = useSideMenu(menuItems);
+
+	/**
+	 * Url query params
+	 */
+	// Reactive query params parsed from the url
+	const queryParamsUrl = useQueryParams();
 
 	/**
 	 * primaryMenuItem: workflow/publication/marketing
@@ -26,30 +34,42 @@ export function useWorkflowMenu({menuItems, submission}) {
 		};
 	});
 
+	const selectedMenuKey = computed(() => {
+		return selectedMenuItem.value?.key || null;
+	});
+
 	const menuTitle = computed(() => {
 		return selectedMenuState.value?.title || '';
 	});
 
-	const selectedReviewRound = computed(() => {
-		if (!selectedMenuState.value.reviewRoundId) {
-			return null;
+	function navigateToMenu(key) {
+		return setActiveItemKey(key);
+	}
+
+	watch(submission, (newSubmission, oldSubmission) => {
+		// Once the submission is fetched, select relevant stage in navigation
+		if (!oldSubmission && newSubmission) {
+			// use the menu selection from the url, if it does exist, otherwise fallback
+			if (queryParamsUrl?.workflowMenuKey?.length) {
+				const doesKeyExist = navigateToMenu(queryParamsUrl?.workflowMenuKey);
+				if (doesKeyExist) {
+					return;
+				}
+			}
+			navigateToMenu(getInitialSelectionItemKey(newSubmission));
 		}
-		const reviewRound = getReviewRound(
-			submission.value,
-			selectedMenuState.value.reviewRoundId,
-		);
-		return reviewRound;
 	});
 
-	function navigateToMenu(key) {
-		setActiveItemKey(key);
-	}
+	// Update selectedMenuKey in url when menu selection changes
+	watch(selectedMenuKey, (newSelectedMenuKey) => {
+		queryParamsUrl.workflowMenuKey = newSelectedMenuKey;
+	});
 
 	return {
 		menuTitle,
 		navigateToMenu,
+		selectedMenuKey,
 		selectedMenuState,
-		selectedReviewRound,
 		setExpandedKeys,
 		sideMenuProps,
 	};

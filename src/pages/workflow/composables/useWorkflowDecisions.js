@@ -38,7 +38,15 @@ export const Actions = {
 function openDecisionPage(submission, decisionId, actionArgs = {}) {
 	const queryParamsUrl = useUrlSearchParams();
 
-	const currentPageUrl = `dashboard/editorial?${new URLSearchParams({...queryParamsUrl, workflowSubmissionId: submission.id}).toString()}`;
+	const urlSearchParams = new URLSearchParams({
+		...queryParamsUrl,
+		workflowSubmissionId: submission.id,
+	});
+
+	// Given that decision often change the stage - its better to let workflow page to calculate current stage
+	urlSearchParams.delete('workflowMenuKey');
+
+	const currentPageUrl = `dashboard/editorial?${urlSearchParams.toString()}`;
 
 	const queryParams = {decision: decisionId, ret: currentPageUrl};
 
