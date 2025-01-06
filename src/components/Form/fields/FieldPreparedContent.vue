@@ -89,7 +89,6 @@ export default {
 			}
 
 			if (self.preparedContent.length) {
-				props.plugins.push('pkpInsert');
 				props.toolbar += '| pkpInsert';
 			}
 
