@@ -88,7 +88,7 @@ export default {
 				parent = parent.extends ? parent.extends : null;
 			}
 
-			if (self.preparedContent.length) {
+			if (self.preparedContent.length && typeof props.toolbar === 'string') {
 				props.toolbar += '| pkpInsert';
 			}
 
