@@ -31,11 +31,6 @@ export function useCurrentUser() {
 			}
 		});
 
-		console.log('hasCurrentUserAtLeastOneAssignedRoleInStage');
-		console.log(
-			assignedRoleIds,
-			roles.some((role) => assignedRoleIds.includes(role)),
-		);
 		return roles.some((role) => assignedRoleIds.includes(role));
 	}
 

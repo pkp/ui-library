@@ -11,7 +11,7 @@ export const FileManagerConfigurations = {
 			{
 				roles: [pkp.const.ROLE_ID_AUTHOR],
 				actions: [
-					Actions.FILE_FILE_LIST,
+					Actions.FILE_LIST,
 					Actions.FILE_EDIT,
 					Actions.FILE_DOWNLOAD_ALL,
 				],

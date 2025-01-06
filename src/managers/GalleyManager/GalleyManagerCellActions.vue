@@ -1,12 +1,15 @@
 <template>
 	<TableCell class="w-28">
-		<TableRowRortControls
+		<TableRowSortControls
 			v-if="galleyManagerStore.sortingEnabled"
 			@up="galleyManagerStore.sortMoveUp(galley.id)"
 			@down="galleyManagerStore.sortMoveDown(galley.id)"
 		/>
 		<DropdownActions
-			v-else
+			v-if="
+				!galleyManagerStore.sortingEnabled &&
+				galleyManagerStore.itemActions.length
+			"
 			:label="t('common.moreActions')"
 			:display-as-ellipsis="true"
 			:actions="galleyManagerStore.itemActions"
@@ -16,7 +19,7 @@
 </template>
 <script setup>
 import {useGalleyManagerStore} from './galleyManagerStore';
-import TableRowRortControls from './TableRowSortControls.vue';
+import TableRowSortControls from './TableRowSortControls.vue';
 
 defineProps({
 	galley: {type: Object, required: true},
