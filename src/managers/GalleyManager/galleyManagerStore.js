@@ -1,5 +1,5 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
-import {ref, computed} from 'vue';
+import {ref, computed, toRefs} from 'vue';
 import {useFetch, getCSRFToken} from '@/composables/useFetch';
 import {useModal} from '@/composables/useModal';
 import {useGalleyManagerActions} from './useGalleyManagerActions';
@@ -9,6 +9,8 @@ import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 export const useGalleyManagerStore = defineComponentStore(
 	'galleyManager',
 	(props) => {
+		const {submission, publication} = toRefs(props);
+
 		const galleys = computed(() => {
 			return sortingEnabled.value
 				? galleysOrdered.value
@@ -18,7 +20,10 @@ export const useGalleyManagerStore = defineComponentStore(
 		/** Reload files when data on screen changes */
 
 		/** Columns */
-		const _galleyConfigurationFns = useGalleyManagerConfiguration();
+		const _galleyConfigurationFns = useGalleyManagerConfiguration({
+			submission,
+			publication,
+		});
 		const columns = computed(() => _galleyConfigurationFns.getColumns());
 
 		/**
@@ -108,7 +113,9 @@ export const useGalleyManagerStore = defineComponentStore(
 		});
 		function getActionArgs() {
 			return {
-				canEdit: props.canEdit,
+				config: _galleyConfigurationFns.config.value,
+				galleys: galleys,
+				publication: publication.value,
 			};
 		}
 

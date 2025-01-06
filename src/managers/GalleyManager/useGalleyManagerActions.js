@@ -3,73 +3,78 @@ import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 import {useModal} from '@/composables/useModal';
 import {useFetch, getCSRFToken} from '@/composables/useFetch';
 export const Actions = {
+	GALLEY_LIST: 'galleyList',
 	GALLEY_ADD: 'galleyAdd',
 	GALLEY_EDIT: 'galleyEdit',
 	GALLEY_CHANGE_FILE: 'galleyChangeFile',
 	GALLEY_DELETE: 'galleyDelete',
+	GALLEY_SORT: 'galleySort',
 };
 
 export function useGalleyManagerActions({galleyGridComponent}) {
 	const {t} = useLocalize();
 
-	function getBottomActions({canEdit}) {
+	function getBottomActions({config}) {
 		const actions = [];
 
-		if (!canEdit) {
-			return [];
+		if (config.permittedActions.includes(Actions.GALLEY_ADD)) {
+			actions.push({
+				component: 'GalleyManagerActionButton',
+				props: {label: t('grid.action.addGalley'), action: Actions.GALLEY_ADD},
+				isLink: true,
+			});
 		}
-
-		actions.push({
-			component: 'GalleyManagerActionButton',
-			props: {label: t('grid.action.addGalley'), action: Actions.GALLEY_ADD},
-			isLink: true,
-		});
 
 		return actions;
 	}
 
-	function getTopItems({canEdit}) {
+	function getTopItems({config, galleys}) {
 		const actions = [];
-		if (!canEdit) {
-			return [];
+
+		if (
+			config.permittedActions.includes(Actions.GALLEY_SORT) &&
+			galleys.value.length
+		) {
+			actions.push({component: 'GalleyManagerSortButton'});
 		}
-
-		actions.push({component: 'GalleyManagerSortButton'});
-
 		return actions;
 	}
 
-	function getItemActions({canEdit}) {
+	function getItemActions({config, publication}) {
 		const actions = [];
 
-		if (!canEdit) {
-			return [
-				{
-					label: t('common.view'),
-					name: Actions.GALLEY_EDIT,
-					icon: 'View',
-				},
-			];
+		if (config.permittedActions.includes(Actions.GALLEY_EDIT)) {
+			const label =
+				publication.status === pkp.const.STATUS_PUBLISHED
+					? t('common.view')
+					: t('common.edit');
+
+			const icon =
+				publication.status === pkp.const.STATUS_PUBLISHED ? 'View' : 'Edit';
+
+			actions.push({
+				label,
+				name: Actions.GALLEY_EDIT,
+				icon,
+			});
 		}
 
-		actions.push({
-			label: t('common.edit'),
-			name: Actions.GALLEY_EDIT,
-			icon: 'Edit',
-		});
+		if (config.permittedActions.includes(Actions.GALLEY_CHANGE_FILE)) {
+			actions.push({
+				label: t('submission.changeFile'),
+				name: Actions.GALLEY_CHANGE_FILE,
+				icon: 'New',
+			});
+		}
 
-		actions.push({
-			label: t('submission.changeFile'),
-			name: Actions.GALLEY_CHANGE_FILE,
-			icon: 'New',
-		});
-
-		actions.push({
-			label: t('common.delete'),
-			name: Actions.GALLEY_DELETE,
-			icon: 'Cancel',
-			isWarnable: true,
-		});
+		if (config.permittedActions.includes(Actions.GALLEY_DELETE)) {
+			actions.push({
+				label: t('common.delete'),
+				name: Actions.GALLEY_DELETE,
+				icon: 'Cancel',
+				isWarnable: true,
+			});
+		}
 
 		return actions;
 	}

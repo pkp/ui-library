@@ -322,7 +322,6 @@ export const PublicationConfig = {
 					props: {
 						submission,
 						publication: selectedPublication,
-						canEditPublication: permissions.canEditPublication,
 					},
 				},
 			];
