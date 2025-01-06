@@ -209,9 +209,9 @@
 					:all-errors="errors"
 					:init="bodyInit"
 					:form-id="id"
-					plugins="link"
+					:plugins="['link']"
 					size="large"
-					toolbar="bold italic superscript subscript | link"
+					:toolbar="toolbar"
 					:value="body"
 					:prepared-content="compiledVariables"
 					:insert-label="insertLabel"
@@ -553,6 +553,7 @@ export default {
 			searchPhrase: '',
 			searchResults: [],
 			showSearchResultCount: 10,
+			toolbar: 'bold italic superscript subscript | link',
 		};
 	},
 	computed: {
@@ -577,6 +578,9 @@ export default {
 				return {};
 			}
 			let self = this;
+
+			self.toolbar += ' | pkpAttachFiles';
+
 			return {
 				setup: function (editor) {
 					editor.ui.registry.addButton('pkpAttachFiles', {
@@ -592,7 +596,6 @@ export default {
 							});
 						},
 					});
-					editor.settings.toolbar += ' | pkpAttachFiles';
 				},
 			};
 		},
