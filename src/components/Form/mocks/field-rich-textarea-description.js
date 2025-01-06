@@ -3,7 +3,7 @@ export default {
 	component: 'field-rich-textarea',
 	label: 'Journal Description',
 	value: '',
-	plugins: 'paste,link,lists,image,code',
+	plugins: ['link', 'lists', 'image', 'code'],
 	toolbar:
 		'bold italic superscript subscript | link | blockquote bullist numlist | image | code',
 };

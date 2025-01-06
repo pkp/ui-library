@@ -31,7 +31,7 @@ export const Base = {
 		label: 'Title',
 		groupId: 'default',
 		isMultilingual: false,
-		plugins: 'paste',
+		plugins: [],
 		toolbar: 'formatgroup',
 		value: '',
 		i18nFormattingLabel: 'Formatting',

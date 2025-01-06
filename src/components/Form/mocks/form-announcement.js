@@ -20,7 +20,7 @@ export default {
 			component: 'field-rich-textarea',
 			label: 'Short Description',
 			isMultilingual: true,
-			plugins: 'paste,link,noneditable',
+			plugins: ['link'],
 			toolbar: 'bold italic superscript subscript | link',
 			value: {
 				en: '',
@@ -35,7 +35,7 @@ export default {
 			label: 'Description',
 			isMultilingual: true,
 			size: 'large',
-			plugins: 'paste,link,noneditable',
+			plugins: ['link'],
 			toolbar: 'bold italic superscript subscript | link',
 			value: {
 				en: '',

@@ -37,7 +37,7 @@ export default {
 				'Use the "Insert Content" button to use dynamic data in your template. These variables will be replaced with real data before the email is sent.',
 			isMultilingual: true,
 			size: 'large',
-			plugins: 'paste,link,lists',
+			plugins: ['link', 'lists'],
 			toolbar:
 				'bold italic superscript subscript | link | blockquote bullist numlist',
 			value: {
