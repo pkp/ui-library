@@ -9,7 +9,7 @@ import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 export const useGalleyManagerStore = defineComponentStore(
 	'galleyManager',
 	(props) => {
-		const {submission} = toRefs(props);
+		const {submission, publication} = toRefs(props);
 
 		const galleys = computed(() => {
 			return sortingEnabled.value
@@ -20,7 +20,10 @@ export const useGalleyManagerStore = defineComponentStore(
 		/** Reload files when data on screen changes */
 
 		/** Columns */
-		const _galleyConfigurationFns = useGalleyManagerConfiguration({submission});
+		const _galleyConfigurationFns = useGalleyManagerConfiguration({
+			submission,
+			publication,
+		});
 		const columns = computed(() => _galleyConfigurationFns.getColumns());
 
 		/**
@@ -112,6 +115,7 @@ export const useGalleyManagerStore = defineComponentStore(
 			return {
 				config: _galleyConfigurationFns.config.value,
 				galleys: galleys,
+				publication: publication.value,
 			};
 		}
 

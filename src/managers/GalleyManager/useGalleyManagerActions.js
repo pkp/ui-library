@@ -40,14 +40,22 @@ export function useGalleyManagerActions({galleyGridComponent}) {
 		return actions;
 	}
 
-	function getItemActions({config}) {
+	function getItemActions({config, publication}) {
 		const actions = [];
 
 		if (config.permittedActions.includes(Actions.GALLEY_EDIT)) {
+			const label =
+				publication.status === pkp.const.STATUS_PUBLISHED
+					? t('common.view')
+					: t('common.edit');
+
+			const icon =
+				publication.status === pkp.const.STATUS_PUBLISHED ? 'View' : 'Edit';
+
 			actions.push({
-				label: t('common.edit'),
+				label,
 				name: Actions.GALLEY_EDIT,
-				icon: 'Edit',
+				icon,
 			});
 		}
 

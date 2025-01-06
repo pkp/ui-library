@@ -35,9 +35,15 @@ export const GalleyManagerConfiguration = {
 		Actions.GALLEY_EDIT,
 		Actions.GALLEY_SORT,
 	],
+	actionsRequiresUnpublishedState: [
+		Actions.GALLEY_ADD,
+		Actions.GALLEY_CHANGE_FILE,
+		Actions.GALLEY_DELETE,
+		Actions.GALLEY_SORT,
+	],
 };
 
-export function useGalleyManagerConfiguration({submission}) {
+export function useGalleyManagerConfiguration({submission, publication}) {
 	const {t} = useLocalize();
 	const {hasCurrentUserAtLeastOneAssignedRoleInStage} = useCurrentUser();
 
@@ -77,8 +83,20 @@ export function useGalleyManagerConfiguration({submission}) {
 	}
 
 	const config = computed(() => {
-		const permittedActions = GalleyManagerConfiguration.actions.filter(
-			(action) => {
+		const permittedActions = GalleyManagerConfiguration.actions
+			.filter((action) => {
+				if (
+					publication.value.status === pkp.const.STATUS_PUBLISHED &&
+					GalleyManagerConfiguration.actionsRequiresUnpublishedState.includes(
+						action,
+					)
+				) {
+					return false;
+				}
+
+				return true;
+			})
+			.filter((action) => {
 				return GalleyManagerConfiguration.permissions.some((perm) => {
 					return (
 						perm.actions.includes(action) &&
@@ -89,8 +107,7 @@ export function useGalleyManagerConfiguration({submission}) {
 						)
 					);
 				});
-			},
-		);
+			});
 		return {permittedActions};
 	});
 
