@@ -16,7 +16,7 @@
 				:key="index"
 			>
 				<TableCell>
-					{{ localize(currentUserGroup.name) }}
+					{{ currentUserGroup.name }}
 				</TableCell>
 				<TableCell>
 					{{ currentUserGroup.dateStart ? currentUserGroup.dateStart : '---' }}
