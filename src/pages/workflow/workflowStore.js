@@ -11,6 +11,8 @@ import {
 	Actions as DecisionActions,
 } from './composables/useWorkflowDecisions';
 
+import {useFileManagerActions} from '@/managers/FileManager/useFileManagerActions';
+
 import {useDataChangedProvider} from '@/composables/useDataChangedProvider';
 
 import {wrapActionFns} from '@/utils/wrapActionFns';
@@ -150,6 +152,26 @@ export const useWorkflowStore = defineComponentStore(
 		);
 
 		/**
+		 * File Manager actions
+		 */
+		/**
+		 * File Manager actions
+		 */
+		const _fileManagerActionFns = useFileManagerActions();
+
+		function fileUpload(args) {
+			_fileManagerActionFns.fileUpload(
+				{
+					submission: submission.value,
+					selectedPublication: selectedPublication.value,
+					reviewRoundId: selectedReviewRound.value?.id,
+					...args,
+				},
+				() => triggerDataChange(),
+			);
+		}
+
+		/**
 		 * Items
 		 *
 		 * */
@@ -198,6 +220,11 @@ export const useWorkflowStore = defineComponentStore(
 			 */
 			...workflowActions,
 			...decisionActions,
+
+			/**
+			 * File manager actions
+			 */
+			fileUpload,
 
 			/**
 			 * Summary

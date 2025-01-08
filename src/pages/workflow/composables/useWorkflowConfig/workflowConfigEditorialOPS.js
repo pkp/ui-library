@@ -34,6 +34,20 @@ export function getHeaderItems({
 		});
 	}
 
+	if (
+		submission.status !== pkp.const.STATUS_PUBLISHED &&
+		(submission.stageId === pkp.const.WORKFLOW_STAGE_ID_EDITING ||
+			submission.stageId === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION)
+	) {
+		actions.push({
+			component: 'WorkflowActionButton',
+			props: {
+				label: t('common.preview'),
+				action: WorkflowActions.WORKFLOW_VIEW_PUBLISHED_SUBMISSION,
+			},
+		});
+	}
+
 	if (permissions.canAccessEditorialHistory) {
 		actions.push({
 			component: 'WorkflowActionButton',
