@@ -19,7 +19,7 @@ export const Init = {
 		msw: {
 			handlers: [
 				http.get(
-					'https://mock/index.php/publicknowledge/api/v1/invitations',
+					'https://mock/index.php/publicknowledge/api/v1/invitations/userRoleAssignment',
 					async ({request}) => {
 						const url = new URL(request.url);
 						const offset = parseInt(url.searchParams.get('offset') || 0);

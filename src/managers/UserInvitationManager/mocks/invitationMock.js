@@ -21,10 +21,7 @@ export default {
 			userGroupsToAdd: [
 				{
 					userGroupId: 2,
-					userGroupName: {
-						en: 'Journal manager',
-						fr_CA: 'Directeur-trice de la revue',
-					},
+					userGroupName: 'Journal manager',
 					masthead: true,
 					dateStart: '2024-09-10',
 					dateEnd: null,
@@ -64,10 +61,7 @@ export default {
 			userGroupsToAdd: [
 				{
 					userGroupId: 16,
-					userGroupName: {
-						en: 'Reviewer',
-						fr_CA: '\u00c9valuateur-trice',
-					},
+					userGroupName: 'Reviewer',
 					masthead: true,
 					dateStart: '2024-09-10',
 					dateEnd: null,
@@ -76,10 +70,7 @@ export default {
 			userGroupsToRemove: [
 				{
 					userGroupId: 9,
-					userGroupName: {
-						en: 'Funding coordinator',
-						fr_CA: 'Coordonnateur-trice du financement',
-					},
+					userGroupName: 'Funding coordinator',
 					masthead: null,
 					dateStart: null,
 					dateEnd: null,
