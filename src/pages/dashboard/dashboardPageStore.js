@@ -14,6 +14,7 @@ import {useWorkflowActions} from '../workflow/composables/useWorkflowActions';
 import {useReviewerManagerActions} from '@/managers/ReviewerManager/useReviewerManagerActions';
 import {useDashboardBulkDelete} from './composables/useDashboardBulkDelete';
 import {useParticipantManagerActions} from '@/managers/ParticipantManager/useParticipantManagerActions';
+import {useFileManagerActions} from '@/managers/FileManager/useFileManagerActions';
 
 import {useEditorialLogic} from './composables/useEditorialLogic';
 import {useReviewActivityLogic} from './composables/useReviewActivityLogic';
@@ -230,7 +231,7 @@ export const useDashboardPageStore = defineComponentStore(
 		const _reviewerManagerActionFns = useReviewerManagerActions(pageInitConfig);
 		const _participantManagerActionsFns =
 			useParticipantManagerActions(pageInitConfig);
-
+		const _fileManagerActionFns = useFileManagerActions();
 		const {getCurrentPublication} = useSubmission();
 
 		function refetchCallback() {
@@ -334,6 +335,13 @@ export const useDashboardPageStore = defineComponentStore(
 				enrichActionArgs({reviewAssignment, submissionId}),
 				refetchCallback,
 			);
+		}
+
+		/**
+		 * File Manager actions
+		 */
+		function fileUpload(args) {
+			_fileManagerActionFns.fileUpload(enrichActionArgs(args), refetchCallback);
 		}
 
 		/**
@@ -458,6 +466,9 @@ export const useDashboardPageStore = defineComponentStore(
 
 			// Reviewer listing
 			openReviewerForm,
+
+			// File manager actions
+			fileUpload,
 
 			// Reviewer manager actions
 			reviewerAddReviewer,

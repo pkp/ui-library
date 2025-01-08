@@ -2,9 +2,8 @@ import {useSubmission} from '@/composables/useSubmission.js';
 import {useLocalize} from '@/composables/useLocalize';
 import {useDate} from '@/composables/useDate';
 import {Actions as ParticipantManagerActions} from '@/managers/ParticipantManager/useParticipantManagerActions';
-import {Actions as WorkflowActions} from '@/pages/workflow/composables/useWorkflowActions';
 import {Actions as ReviewerManagerActions} from '@/managers/ReviewerManager/useReviewerManagerActions';
-
+import {Actions as FileManagerActions} from '@/managers/FileManager/useFileManagerActions';
 const {formatShortDate} = useDate();
 
 const {t} = useLocalize();
@@ -212,7 +211,10 @@ export function useEditorialLogic() {
 	function getEditorialActivityForMySubmissions(submission) {
 		const activeStage = getActiveStage(submission);
 
-		if (activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) {
+		if (
+			activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW ||
+			activeStage.id === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW
+		) {
 			const activeRound = getCurrentReviewRound(submission);
 
 			if (
@@ -220,13 +222,23 @@ export function useEditorialLogic() {
 					activeRound.statusId,
 				)
 			) {
+				const fileStage =
+					activeStage.id === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW
+						? pkp.const.SUBMISSION_FILE_INTERNAL_REVIEW_REVISION
+						: pkp.const.SUBMISSION_FILE_REVIEW_REVISION;
 				return [
 					{
 						component: 'CellSubmissionActivityActionAlert',
 						props: {
 							alert: t('dashboard.revisionRequested'),
 							actionLabel: t('dashboard.submitRevisions'),
-							actionName: WorkflowActions.UPLOAD_REVISIONS,
+							actionName: FileManagerActions.FILE_UPLOAD,
+							actionArgs: {
+								submissionId: submission.id,
+								fileStage,
+								reviewRoundId: activeRound.id,
+								wizardTitleKey: t('editor.submissionReview.uploadFile'),
+							},
 						},
 					},
 				];
