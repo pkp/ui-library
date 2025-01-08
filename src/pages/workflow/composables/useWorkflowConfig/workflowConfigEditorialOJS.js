@@ -1,5 +1,4 @@
 import {useLocalize} from '@/composables/useLocalize';
-import {Actions} from '../useWorkflowActions';
 import {useSubmission} from '@/composables/useSubmission';
 import {useCurrentUser} from '@/composables/useCurrentUser';
 
@@ -42,7 +41,7 @@ export function getHeaderItems({
 			component: 'WorkflowActionButton',
 			props: {
 				label: t('common.view'),
-				action: Actions.WORKFLOW_VIEW_PUBLISHED_SUBMISSION,
+				action: WorkflowActions.WORKFLOW_VIEW_PUBLISHED_SUBMISSION,
 			},
 		});
 	}
@@ -56,7 +55,7 @@ export function getHeaderItems({
 			component: 'WorkflowActionButton',
 			props: {
 				label: t('common.preview'),
-				action: Actions.WORKFLOW_VIEW_PUBLISHED_SUBMISSION,
+				action: WorkflowActions.WORKFLOW_VIEW_PUBLISHED_SUBMISSION,
 			},
 		});
 	}
@@ -66,7 +65,7 @@ export function getHeaderItems({
 			component: 'WorkflowActionButton',
 			props: {
 				label: t('editor.activityLog'),
-				action: Actions.WORKFLOW_VIEW_ACTIVITY_LOG,
+				action: WorkflowActions.WORKFLOW_VIEW_ACTIVITY_LOG,
 			},
 		});
 	}
@@ -74,7 +73,7 @@ export function getHeaderItems({
 		component: 'WorkflowActionButton',
 		props: {
 			label: t('editor.submissionLibrary'),
-			action: Actions.WORKFLOW_VIEW_LIBRARY,
+			action: WorkflowActions.WORKFLOW_VIEW_LIBRARY,
 		},
 	});
 
@@ -710,7 +709,7 @@ export const PublicationConfig = {
 						props: {
 							label: t('common.preview'),
 							isSecondary: true,
-							action: Actions.WORKFLOW_PREVIEW_PUBLICATION,
+							action: WorkflowActions.WORKFLOW_PREVIEW_PUBLICATION,
 						},
 					});
 				}
@@ -726,7 +725,7 @@ export const PublicationConfig = {
 								: t('editor.submission.schedulePublication'),
 						isSecondary: true,
 						action:
-							Actions.WORKFLOW_ASSIGN_TO_ISSUE_AND_SCHEDULE_FOR_PUBLICATION,
+							WorkflowActions.WORKFLOW_ASSIGN_TO_ISSUE_AND_SCHEDULE_FOR_PUBLICATION,
 					},
 				});
 			} else if (selectedPublication.status === pkp.const.STATUS_SCHEDULED) {
@@ -735,7 +734,7 @@ export const PublicationConfig = {
 					props: {
 						label: t('common.preview'),
 						isSecondary: true,
-						action: Actions.WORKFLOW_PREVIEW_PUBLICATION,
+						action: WorkflowActions.WORKFLOW_PREVIEW_PUBLICATION,
 					},
 				});
 
@@ -744,7 +743,7 @@ export const PublicationConfig = {
 					props: {
 						label: t('publication.unschedule'),
 						isWarnable: true,
-						action: Actions.WORKFLOW_UNSCHEDULE_PUBLICATION,
+						action: WorkflowActions.WORKFLOW_UNSCHEDULE_PUBLICATION,
 					},
 				});
 			} else if (selectedPublication.status === pkp.const.STATUS_PUBLISHED) {
@@ -753,7 +752,7 @@ export const PublicationConfig = {
 					props: {
 						label: t('publication.unpublish'),
 						isWarnable: true,
-						action: Actions.WORKFLOW_UNPUBLISH_PUBLICATION,
+						action: WorkflowActions.WORKFLOW_UNPUBLISH_PUBLICATION,
 					},
 				});
 
@@ -766,7 +765,7 @@ export const PublicationConfig = {
 						props: {
 							label: t('publication.createVersion'),
 							isSecondary: true,
-							action: Actions.WORKFLOW_CREATE_NEW_VERSION,
+							action: WorkflowActions.WORKFLOW_CREATE_NEW_VERSION,
 						},
 					});
 				}

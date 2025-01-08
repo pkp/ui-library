@@ -21,17 +21,10 @@ export function getHeaderItems({
 		return [];
 	}
 	const {t} = useLocalize();
-	const items = [];
-
-	items.push({
-		component: 'WorkflowWorkTypeOMP',
-		props: {
-			submission: submission,
-		},
-	});
+	const actions = [];
 
 	if (submission.status === pkp.const.STATUS_PUBLISHED) {
-		items.push({
+		actions.push({
 			component: 'WorkflowActionButton',
 			props: {
 				label: t('common.view'),
@@ -40,8 +33,22 @@ export function getHeaderItems({
 		});
 	}
 
+	if (
+		submission.status !== pkp.const.STATUS_PUBLISHED &&
+		(submission.stageId === pkp.const.WORKFLOW_STAGE_ID_EDITING ||
+			submission.stageId === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION)
+	) {
+		actions.push({
+			component: 'WorkflowActionButton',
+			props: {
+				label: t('common.preview'),
+				action: WorkflowActions.WORKFLOW_VIEW_PUBLISHED_SUBMISSION,
+			},
+		});
+	}
+
 	if (permissions.canAccessEditorialHistory) {
-		items.push({
+		actions.push({
 			component: 'WorkflowActionButton',
 			props: {
 				label: t('editor.activityLog'),
@@ -49,7 +56,7 @@ export function getHeaderItems({
 			},
 		});
 	}
-	items.push({
+	actions.push({
 		component: 'WorkflowActionButton',
 		props: {
 			label: t('editor.submissionLibrary'),
@@ -57,7 +64,14 @@ export function getHeaderItems({
 		},
 	});
 
-	return items;
+	actions.push({
+		component: 'WorkflowWorkTypeOMP',
+		props: {
+			submission: submission,
+		},
+	});
+
+	return actions;
 }
 
 export const WorkflowConfig = {

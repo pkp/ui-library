@@ -1,6 +1,7 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {Actions} from '../useWorkflowActions';
 import {useSubmission} from '@/composables/useSubmission';
+import {Actions as FileManagerActions} from '@/managers/FileManager/useFileManagerActions';
 
 const {hasSubmissionPassedStage, getOpenReviewAssignmentsForRound} =
 	useSubmission();
@@ -97,6 +98,34 @@ export const WorkflowConfig = {
 			});
 
 			return items;
+		},
+		getActionItems: ({submission, selectedReviewRound}) => {
+			const actions = [];
+			const {t} = useLocalize();
+
+			if (
+				[
+					pkp.const.REVIEW_ROUND_STATUS_REVISIONS_REQUESTED,
+					pkp.const.REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW,
+					pkp.const.REVIEW_ROUND_STATUS_REVISIONS_SUBMITTED,
+					pkp.const.REVIEW_ROUND_STATUS_REVISIONS_SUBMITTED,
+				].includes(selectedReviewRound.statusId)
+			)
+				actions.push({
+					component: 'WorkflowActionButton',
+					props: {
+						action: FileManagerActions.FILE_UPLOAD,
+						label: t('dashboard.submitRevisions'),
+						actionArgs: {
+							submissionId: submission.id,
+							fileStage: pkp.const.SUBMISSION_FILE_INTERNAL_REVIEW_REVISION,
+							reviewRoundId: selectedReviewRound.id,
+							wizardTitleKey: 'editor.submissionReview.uploadFile',
+							submissionStageId: pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW,
+						},
+					},
+				});
+			return actions;
 		},
 	},
 	[pkp.const.WORKFLOW_STAGE_ID_EDITING]: {

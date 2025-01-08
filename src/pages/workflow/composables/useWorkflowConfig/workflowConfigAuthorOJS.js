@@ -1,5 +1,6 @@
 import {useLocalize} from '@/composables/useLocalize';
-import {Actions} from '../useWorkflowActions';
+import {Actions as WorkflowActions} from '../useWorkflowActions';
+import {Actions as FileManagerActions} from '@/managers/FileManager/useFileManagerActions';
 import {useSubmission} from '@/composables/useSubmission';
 
 const {
@@ -25,7 +26,7 @@ export function getHeaderItems({
 		component: 'WorkflowActionButton',
 		props: {
 			label: t('editor.submissionLibrary'),
-			action: Actions.WORKFLOW_VIEW_LIBRARY,
+			action: WorkflowActions.WORKFLOW_VIEW_LIBRARY,
 		},
 	});
 
@@ -159,9 +160,37 @@ export const WorkflowConfig = {
 
 			return items;
 		},
+		getActionItems: ({submission, selectedReviewRound}) => {
+			const actions = [];
+
+			if (
+				[
+					pkp.const.REVIEW_ROUND_STATUS_REVISIONS_REQUESTED,
+					pkp.const.REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW,
+					pkp.const.REVIEW_ROUND_STATUS_REVISIONS_SUBMITTED,
+					pkp.const.REVIEW_ROUND_STATUS_REVISIONS_SUBMITTED,
+				].includes(selectedReviewRound.statusId)
+			)
+				actions.push({
+					component: 'WorkflowActionButton',
+					props: {
+						action: FileManagerActions.FILE_UPLOAD,
+						label: t('dashboard.submitRevisions'),
+						actionArgs: {
+							submissionId: submission.id,
+							fileStage: pkp.const.SUBMISSION_FILE_REVIEW_REVISION,
+							reviewRoundId: selectedReviewRound.id,
+							wizardTitleKey: 'editor.submissionReview.uploadFile',
+							submissionStageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+						},
+					},
+				});
+			return actions;
+		},
 	},
+
 	[pkp.const.WORKFLOW_STAGE_ID_EDITING]: {
-		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
+		getPrimaryItems: ({submission, selectedStageId}) => {
 			const items = [];
 
 			items.push({
