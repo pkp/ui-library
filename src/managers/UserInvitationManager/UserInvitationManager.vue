@@ -59,7 +59,7 @@
 							:key="i"
 						>
 							<div class="flex flex-col">
-								{{ localize(userGroups.userGroupName) }}
+								{{ userGroups.userGroupName }}
 							</div>
 						</template>
 					</span>
