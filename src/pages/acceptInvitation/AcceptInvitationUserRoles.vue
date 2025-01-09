@@ -14,8 +14,10 @@
 				<TableCell :is-row-header="true">
 					{{ row.userGroupName }}
 				</TableCell>
-				<TableCell>{{ row.dateStart }}</TableCell>
-				<TableCell>{{ row.dateEnd ? row.dateEnd : '---' }}</TableCell>
+				<TableCell>{{ formatShortDate(row.dateStart) }}</TableCell>
+				<TableCell>
+					{{ row.dateEnd ? formatShortDate(row.dateEnd) : '---' }}
+				</TableCell>
 				<TableCell>
 					{{
 						row.masthead
@@ -38,9 +40,11 @@ import TableColumn from '@/components/Table/TableColumn.vue';
 import TableBody from '@/components/Table/TableBody.vue';
 import TableRow from '@/components/Table/TableRow.vue';
 import {defineProps} from 'vue';
+import {useDate} from '@/composables/useDate';
 
 defineProps({
 	userGroupsToAdd: {type: Array, required: true},
 });
 const {t} = useLocalize();
+const {formatShortDate} = useDate();
 </script>
