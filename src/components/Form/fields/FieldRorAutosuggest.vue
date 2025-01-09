@@ -54,7 +54,7 @@
 </template>
 
 <script setup>
-import {ref, watch, computed, provide} from 'vue';
+import {ref, watch, computed} from 'vue';
 import Autosuggest from './Autosuggest.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import {useFetch} from '@/composables/useFetch';
@@ -69,8 +69,6 @@ const url = 'https://api.ror.org/v2/organizations';
 const queryParams = computed(() => ({
 	query: inputValue.value,
 }));
-
-provide('allowCustom', true);
 
 const autosuggestContainerId = generateId();
 
@@ -87,6 +85,7 @@ const staticProps = {
 	selectedLabel: 'Selected',
 	isMultiple: false,
 	describedBy: autosuggestContainerId,
+	allowCustom: true,
 };
 
 const autoSuggestProps = computed(() => ({

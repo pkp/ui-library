@@ -189,6 +189,11 @@ export default {
 			type: Boolean,
 			default: () => true,
 		},
+		/** If custom items can be selected */
+		allowCustom: {
+			type: Boolean,
+			default: () => false,
+		},
 	},
 	data() {
 		return {
@@ -257,6 +262,7 @@ export default {
 				isDisabled: this.isDisabled,
 				inputId: this.controlId,
 				describedBy: this.describedByIds,
+				allowCustom: this.allowCustom,
 			};
 		},
 	},

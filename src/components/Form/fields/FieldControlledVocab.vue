@@ -1,13 +1,16 @@
 <script>
-import {provide} from 'vue';
 import FieldBaseAutosuggest from './FieldBaseAutosuggest.vue';
 import debounce from 'debounce';
 
 export default {
 	name: 'FieldControlledVocab',
 	extends: FieldBaseAutosuggest,
-	setup() {
-		provide('allowCustom', true);
+	props: {
+		/** An array of options to suggest. */
+		allowCustom: {
+			type: Boolean,
+			default: true,
+		},
 	},
 	data() {
 		return {

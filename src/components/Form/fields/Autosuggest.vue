@@ -103,7 +103,7 @@
 	</Combobox>
 </template>
 <script setup>
-import {useSlots, ref, inject, computed} from 'vue';
+import {useSlots, ref, computed} from 'vue';
 import {
 	Combobox,
 	ComboboxInput,
@@ -157,6 +157,11 @@ const props = defineProps({
 		type: Boolean,
 		default: () => true,
 	},
+	/** If custom items can be selected */
+	allowCustom: {
+		type: Boolean,
+		default: () => false,
+	},
 	/** Field input id, usually used to connect with FormFieldLabel  */
 	inputId: {type: String, required: false, default: null},
 	/** aria-describedby ids */
@@ -189,7 +194,6 @@ const emit = defineEmits([
 	'deselect',
 ]);
 
-const allowCustom = inject('allowCustom', false);
 const localInputValue = ref('');
 const isFocused = ref(false);
 
