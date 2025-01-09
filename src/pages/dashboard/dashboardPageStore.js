@@ -221,7 +221,7 @@ export const useDashboardPageStore = defineComponentStore(
 
 				announce(t('common.loading'));
 
-				await fetchSubmissions();
+				await fetchSubmissions({clearData: true});
 				announce(t('common.loaded'));
 			},
 			{immediate: true},

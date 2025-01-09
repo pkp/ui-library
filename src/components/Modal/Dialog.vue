@@ -66,7 +66,6 @@
 								class="flex items-center gap-x-4"
 								:class="icon ? 'p-10 ps-24' : 'p-12'"
 							>
-								<Spinner v-if="isLoading" />
 								<PkpButton
 									v-for="action in actions"
 									:key="action.label"
@@ -81,6 +80,7 @@
 								>
 									{{ action.label }}
 								</PkpButton>
+								<Spinner v-if="isLoading" />
 							</div>
 						</DialogPanel>
 					</TransitionChild>
