@@ -1,5 +1,5 @@
 <template>
-	<div class="flex items-center space-x-2">
+	<div class="flex items-center gap-x-2">
 		<div v-if="alert">{{ alert }}</div>
 	</div>
 </template>

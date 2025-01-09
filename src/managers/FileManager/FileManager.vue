@@ -12,7 +12,7 @@
 				</p>
 			</template>
 			<template #top-controls>
-				<div class="flex space-x-2">
+				<div class="flex gap-x-2">
 					<PkpButton
 						v-for="action in fileManagerStore.topActions"
 						:key="action.name"

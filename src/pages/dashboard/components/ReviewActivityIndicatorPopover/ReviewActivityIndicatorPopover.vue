@@ -6,7 +6,7 @@
 	</div>
 	<div class="flex items-center justify-between">
 		<span class="text-lg-bold">{{ reviewerName }}</span>
-		<span class="space-x-2">
+		<span class="flex gap-x-2">
 			<Icon
 				v-for="icon in reviewMethodIcons"
 				:key="icon"
