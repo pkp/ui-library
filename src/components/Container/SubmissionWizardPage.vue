@@ -90,6 +90,10 @@ export default {
 			i18nUnsavedChanges: '',
 			/** **Required** A localized string for the message of the dialog that appears when unsaved changes are found in local storage. */
 			i18nUnsavedChangesMessage: '',
+			/** The URL to the REST API endpoint to cancel this submission. */
+			submissionCancelApiUrl: '',
+			/** The URL to the page to display after a submission is cancelled. */
+			submissionCancelledUrl: '',
 		};
 	},
 	computed: {
@@ -782,6 +786,52 @@ export default {
 				});
 			}, 500);
 		},
+
+		/**
+		 * Cancel a submission.
+		 */
+		cancelSubmission(){
+			this.openDialog({
+				name: 'SubmissionCancel',
+				title: this.t('submission.wizard.submissionCancel'),
+				message: this.t('submission.wizard.cancel.confirmation'),
+				actions: [
+					{
+						label: this.t('common.ok'),
+						isPrimary: true,
+						callback: (close) => {
+							$.ajax({
+								url: this.submissionCancelApiUrl,
+								context: this,
+								method: 'POST',
+								headers: {
+									'X-Csrf-Token': pkp.currentUser.csrfToken,
+									'X-Http-Method-Override': 'DELETE',
+								},
+								error(r) {
+									close();
+
+									if (!r.responseJSON) {
+										this.ajaxErrorCallback({});
+									} else {
+										this.errors = r.responseJSON;
+									}
+								},
+								success() {
+									window.location = this.submissionCancelledUrl;
+								},
+							});
+						},
+					},
+					{
+						label: this.t('common.cancel'),
+						isWarnable: true,
+						callback: (close) => close(),
+					},
+				],
+				modalStyle: 'negative',
+			});
+		}
 	},
 };
 </script>
