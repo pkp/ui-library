@@ -29,7 +29,7 @@
 			</TableRow>
 		</TableBody>
 		<template v-if="galleyManagerStore.bottomActions.length" #bottom-controls>
-			<div class="space-x-y flex">
+			<div class="flex gap-x-2">
 				<component
 					:is="Components[action.component] || action.component"
 					v-bind="action.props || {}"

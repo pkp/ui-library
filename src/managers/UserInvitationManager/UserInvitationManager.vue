@@ -8,7 +8,7 @@
 			</h3>
 		</template>
 		<template #top-controls>
-			<div class="flex space-x-2">
+			<div class="flex gap-x-2">
 				<PkpButton @click="store.createNewInvitation">
 					{{ t('invitation.inviteToRole.btn') }}
 				</PkpButton>
@@ -27,7 +27,7 @@
 		<TableBody>
 			<TableRow v-for="(invitation, index) in store.invitations" :key="index">
 				<TableCell>
-					<span class="space-x-1">
+					<span class="gap-x-1">
 						<span class="align-middle text-lg-normal">
 							{{
 								invitation.userId

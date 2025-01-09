@@ -10,7 +10,7 @@
 				</h3>
 			</template>
 			<template #top-controls>
-				<div class="flex space-x-2">
+				<div class="flex gap-x-2">
 					<PkpButton
 						v-for="action in reviewerStore.topActions"
 						:key="action.name"
@@ -47,7 +47,7 @@
 						:redacted-for-authors="redactedForAuthors"
 					></ReviewerManagerCellStatus>
 					<TableCell>
-						<span class="flex items-center space-x-2">
+						<span class="flex items-center gap-x-2">
 							<Icon
 								v-for="icon in reviewerStore.getReviewMethodIcons(
 									reviewAssignment,

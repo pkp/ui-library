@@ -1,6 +1,6 @@
 <template>
 	<div v-if="reviewAssignments.length">
-		<span class="space-x-1">
+		<span class="flex gap-x-1">
 			<CellSubmissionActivityReviewsItem
 				v-for="reviewAssignment in reviewAssignments"
 				:key="reviewAssignment.id"
