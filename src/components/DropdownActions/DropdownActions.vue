@@ -1,30 +1,22 @@
 <template>
-	<div class="relative inline-block items-start justify-between">
+	<div
+		class="relative inline-block items-start justify-between"
+		:class="{'leading-none': displayAsEllipsis}"
+	>
 		<Menu as="div">
-			<div>
-				<MenuButton
-					class="hover:bg-gray-50 inline-flex w-full justify-center gap-x-1.5 rounded"
-					:class="
-						displayAsEllipsis
-							? 'text-3xl-normal'
-							: 'border border-light bg-secondary px-3 py-2 text-lg-normal'
-					"
-					:aria-label="ariaLabel || null"
-				>
-					<span v-if="!displayAsEllipsis">{{ label }}</span>
-					<Icon
-						v-if="!displayAsEllipsis"
-						class="h-5 w-5 text-primary"
-						icon="Dropdown"
-						aria-hidden="true"
-					/>
-					<ButtonIcon
-						v-else
-						icon="MoreOptions"
-						:aria-label="label"
-					></ButtonIcon>
-				</MenuButton>
-			</div>
+			<MenuButton
+				:class="menuButtonStyle"
+				:aria-label="displayAsEllipsis ? label : ariaLabel"
+			>
+				<span v-if="!displayAsEllipsis">{{ label }}</span>
+				<Icon
+					v-if="!displayAsEllipsis"
+					class="h-5 w-5 text-primary"
+					icon="Dropdown"
+					aria-hidden="true"
+				/>
+				<Icon v-else class="h-6 w-6" icon="MoreOptions" aria-hidden="true" />
+			</MenuButton>
 
 			<transition
 				enter-active-class="transition ease-out duration-100"
@@ -80,10 +72,10 @@
 <script setup>
 import {Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue';
 import PkpButton from '@/components/Button/Button.vue';
-import ButtonIcon from '@/components/ButtonIcon/ButtonIcon.vue';
 import Icon from '@/components/Icon/Icon.vue';
+import {computed} from 'vue';
 
-defineProps({
+const props = defineProps({
 	/**
 	 * An array of action objects.
 	 * Each object should contain
@@ -139,6 +131,16 @@ const emitAction = (action) => {
 		emit('action', action.name);
 	}
 };
+
+const menuButtonStyle = computed(() => ({
+	// Base
+	'hover:bg-gray-50 w-full justify-center rounded': true,
+	// Default
+	'inline-flex border border-light bg-secondary px-3 py-2 text-lg-normal gap-x-1.5':
+		!props.displayAsEllipsis,
+	// Ellipsis Menu
+	'leading-none hover:text-on-dark hover:bg-hover': props.displayAsEllipsis,
+}));
 
 const isValidAction = (action) => {
 	return action?.label && (action?.url || action?.name);
