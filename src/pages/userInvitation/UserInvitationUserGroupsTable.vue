@@ -19,13 +19,25 @@
 					{{ currentUserGroup.name }}
 				</TableCell>
 				<TableCell>
-					{{ currentUserGroup.dateStart ? currentUserGroup.dateStart : '---' }}
+					{{
+						currentUserGroup.dateStart
+							? formatShortDate(currentUserGroup.dateStart)
+							: '---'
+					}}
 				</TableCell>
 				<TableCell>
-					{{ currentUserGroup.dateEnd ? currentUserGroup.dateEnd : '---' }}
+					{{
+						currentUserGroup.dateEnd
+							? formatShortDate(currentUserGroup.dateEnd)
+							: '---'
+					}}
 				</TableCell>
 				<TableCell>
-					{{ currentUserGroup.masthead ? currentUserGroup.masthead : '---' }}
+					{{
+						currentUserGroup.masthead
+							? t('invitation.masthead.show')
+							: t('invitation.masthead.hidden')
+					}}
 				</TableCell>
 				<TableCell v-if="!currentUserGroup.dateEnd">
 					<PkpButton
