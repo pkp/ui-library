@@ -17,7 +17,7 @@
 
 			<div class="mt-2">
 				<div class="flex justify-between">
-					<div class="flex flex-row items-center space-x-3">
+					<div class="flex flex-row items-center gap-x-3">
 						<PkpButton @click="store.openFiltersModal">
 							{{ t('common.filter') }}
 						</PkpButton>
