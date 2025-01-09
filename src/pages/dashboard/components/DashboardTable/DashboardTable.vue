@@ -20,7 +20,13 @@
 				{{ column.header }}
 			</TableColumn>
 		</TableHeader>
-		<TableBody>
+		<TableBody
+			:empty-text="
+				dashboardStore.isSubmissionsLoading
+					? t('common.loading')
+					: t('grid.noItems')
+			"
+		>
 			<TableRow v-for="item in items" :key="item.id">
 				<CellBulkDelete
 					v-if="dashboardStore.bulkDeleteSelectionEnabled"

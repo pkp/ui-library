@@ -39,6 +39,10 @@ export function getCSRFToken() {
  * @returns {Ref<boolean>} return.isLoading - A ref object indicating whether the fetch operation is currently in progress.
  * @returns {Function} return.fetch - The function to call to initiate the fetch operation. This function is async and handles the actual fetching logic.
  *
+ *  * The `fetch` function accepts the following optional parameter:
+ * @param {Object} [fetchOptions={}] - Options to customize the fetch operation.
+ * @param {boolean} [fetchOptions.clearData=false] - If set to `true`, processes and cleans the fetched data before storing it in `data`. Defaults to `false`.
+ 
  */
 export function useFetch(url, options = {}) {
 	/**
@@ -72,7 +76,7 @@ export function useFetch(url, options = {}) {
 	const screenName = modalLevel?.value ? `modal_${modalLevel.value}` : 'base';
 	const progressStore = useProgressStore();
 
-	async function _fetch() {
+	async function _fetch({clearData} = {clearData: false}) {
 		if (lastRequestController) {
 			// abort in-flight request
 			lastRequestController.abort();
@@ -109,6 +113,9 @@ export function useFetch(url, options = {}) {
 		}
 
 		isSuccess.value = null;
+		if (clearData) {
+			data.value = null;
+		}
 		try {
 			const result = await ofetchInstance(unref(url), opts);
 			data.value = result;
@@ -144,7 +151,7 @@ export function useFetch(url, options = {}) {
 
 	let fetch = _fetch;
 	if (options.debouncedMs) {
-		fetch = useDebounceFn(_fetch);
+		fetch = useDebounceFn(_fetch, options.debouncedMs);
 	}
 	return {
 		data,
