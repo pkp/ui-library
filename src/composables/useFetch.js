@@ -19,6 +19,32 @@ export function getCSRFToken() {
 }
 
 /**
+ * This workaround addresses the limitation where ofetch does not handle array query params in PHP friendly way.
+ * Once this issue is resolved in ofetch, this function can be removed.
+ * Fo reference see:
+ * - https://github.com/unjs/ufo/issues/185
+ * - https://github.com/unjs/ufo/issues/208
+ * - https://github.com/unjs/ofetch/pull/440
+ * 
+ */
+function _formatQueryParams(params) {
+	if (!params) {
+		return {}
+	}
+
+	const formatedParams = {};
+	Object.entries(params).forEach(([key, value]) => {
+		if (Array.isArray(value)) {
+			formatedParams[`${key}[]`] = value;
+		} else {
+			formatedParams[key] = value;
+		}
+	});
+
+	return formatedParams;
+}
+
+/**
  *
  * Composable for handling API requests
  * Listed options should be sufficient for PKP use cases. For additional options check [ofetch](https://github.com/unjs/ofetch) docs
@@ -87,7 +113,7 @@ export function useFetch(url, options = {}) {
 
 		const opts = {
 			...ofetchOptions,
-			query: query.value,
+			query: _formatQueryParams(query.value),
 			body: body.value,
 			signal,
 		};
