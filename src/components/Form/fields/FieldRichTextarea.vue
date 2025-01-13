@@ -213,6 +213,7 @@ export default {
 				return url;
 			};
 			return {
+				license_key: 'gpl',
 				skin_url: this.$root?.tinyMCE?.skinUrl || pkp?.tinyMCE?.skinUrl,
 				content_css: $.pkp.app.tinyMceContentCSS,
 				paste_data_images: true,
