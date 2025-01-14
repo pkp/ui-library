@@ -1,6 +1,6 @@
 import {computed} from 'vue';
 import {useSubmission} from '@/composables/useSubmission';
-import {EditorialRoles, useCurrentUser} from '@/composables/useCurrentUser';
+import {EditorialRoles} from '@/composables/useCurrentUser';
 
 function hasIntersection(arr1, arr2) {
 	const set = new Set(arr1);
@@ -9,7 +9,6 @@ function hasIntersection(arr1, arr2) {
 
 export function useWorkflowPermissions({submission, selectedPublication}) {
 	const {getActiveStage, getStageById} = useSubmission();
-	const {hasCurrentUserAtLeastOneRole} = useCurrentUser();
 
 	const permissions = computed(() => {
 		// View title, metadata, etc.
@@ -49,19 +48,7 @@ export function useWorkflowPermissions({submission, selectedPublication}) {
 			}
 		});
 
-		// TODO this will be replaced by with one flag from backend
-		productionStage.stageAssignments
-			.filter(
-				(stageAssignment) => stageAssignment.userId === pkp.currentUser.id,
-			)
-			.forEach((stageAssignment) => {
-				if (stageAssignment.canChangeMetadata) {
-					canEditPublication = true;
-				}
-			});
-		if (hasCurrentUserAtLeastOneRole([pkp.const.ROLE_ID_MANAGER])) {
-			canEditPublication = true;
-		}
+		canEditPublication = submission.value.canCurrentUserChangeMetadata;
 
 		if (
 			selectedPublication.value &&

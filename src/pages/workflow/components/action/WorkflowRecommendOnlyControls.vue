@@ -13,7 +13,7 @@
 			class="flex flex-col border-t border-light p-4"
 		>
 			<p class="text-lg-normal text-default">
-				{{ currentRecommendation.label }}
+				{{ currentRecommendation }}
 			</p>
 			<span v-if="!showRecommendationActions" class="-ms-4 mt-2">
 				<PkpButton class="" is-link @click="showActions">
@@ -40,11 +40,10 @@
 </template>
 <script setup>
 import PkpButton from '@/components/Button/Button.vue';
-import {computed, ref, watch} from 'vue';
+import {computed, ref} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useWorkflowStore} from '@/pages/workflow/workflowStore';
-import {useUrl} from '@/composables/useUrl';
-import {useFetch} from '@/composables/useFetch';
+import {useSubmission} from '@/composables/useSubmission';
 
 import {Actions as DecisionActions} from '../../composables/useWorkflowDecisions';
 import {Actions as WorkflowActions} from '../../composables/useWorkflowActions';
@@ -57,21 +56,6 @@ const props = defineProps({
 	stageId: {type: Number, required: true},
 	userId: {type: Number, required: true},
 });
-
-const RecommendOnlyDecisions = [
-	// EXTERNAL REVIEW
-	pkp.const.DECISION_RECOMMEND_ACCEPT,
-	pkp.const.DECISION_RECOMMEND_DECLINE,
-	pkp.const.DECISION_RECOMMEND_PENDING_REVISIONS,
-	pkp.const.DECISION_RECOMMEND_RESUBMIT,
-
-	// INTERNAL REVIEW
-	pkp.const.DECISION_RECOMMEND_ACCEPT_INTERNAL,
-	pkp.const.DECISION_RECOMMEND_PENDING_REVISIONS_INTERNAL,
-	pkp.const.RECOMMEND_RESUBMIT_INTERNAL,
-	pkp.const.RECOMMEND_DECLINE_INTERNAL,
-	pkp.const.RECOMMEND_EXTERNAL_REVIEW,
-];
 
 const explicitelyShowRecommendationActions = ref(false);
 
@@ -88,7 +72,7 @@ const showRecommendationActions = computed(() => {
 		return true;
 	}
 
-	if (!isLoading.value && !currentRecommendation.value) {
+	if (!currentRecommendation.value) {
 		return true;
 	}
 
@@ -145,42 +129,16 @@ const actionItems = computed(() => {
 	return getRecommendationActions();
 });
 
-const {apiUrl: recommendationApiUrl} = useUrl(
-	// TODO improve url when the query params are available
-	`submissions/${props.submission?.id}/decisions`,
-);
-
-const {
-	data: recommendations,
-	fetch: fetchRecommendations,
-	isLoading,
-} = useFetch(recommendationApiUrl);
-
-fetchRecommendations();
-watch(props, () => fetchRecommendations());
+const {getStageById} = useSubmission();
 
 const currentRecommendation = computed(() => {
-	if (!recommendations) {
+	const selectedStage = getStageById(props.submission, props.stageId);
+
+	if (!selectedStage?.currentUserRecommendation) {
 		return null;
 	}
 
-	let recommendationsFromLatest = [...recommendations.value].reverse();
-
-	const myLastRecommendation = recommendationsFromLatest.find(
-		(recommendation) => {
-			return (
-				recommendation.editorId === props.userId &&
-				recommendation.reviewRoundId === props.reviewRoundId &&
-				RecommendOnlyDecisions.includes(recommendation.decision)
-			);
-		},
-	);
-
-	if (myLastRecommendation) {
-		return {label: myLastRecommendation.label};
-	} else {
-		return null;
-	}
+	return selectedStage.currentUserRecommendation.label;
 });
 
 const workflowStore = useWorkflowStore();

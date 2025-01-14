@@ -232,14 +232,6 @@ export function useSubmission() {
 		return ['OpenReview', 'OpenReview'];
 	}
 
-	function getRecommendOnlyUserIdsForStage(submission, stageId) {
-		const stage = getStageById(submission, stageId);
-
-		return stage.stageAssignments
-			.filter((assignment) => assignment.recommendOnly)
-			.map((assignment) => assignment.userId);
-	}
-
 	function isDecisionAvailable(submission, decisionId) {
 		const stage = getActiveStage(submission);
 		return stage?.availableEditorialDecisions?.some(
@@ -268,7 +260,6 @@ export function useSubmission() {
 		getOpenReviewAssignmentsForRound,
 		getReviewMethodIcons,
 		InProgressReviewAssignmentStatuses,
-		getRecommendOnlyUserIdsForStage,
 		isDecisionAvailable,
 	};
 }

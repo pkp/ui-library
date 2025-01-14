@@ -299,10 +299,8 @@ export const WorkflowConfig = {
 				return [];
 			}
 
-			// TODO add isDecidingEditor boolean to api to make it more accurate
 			const selectedStage = getStageById(submission, selectedStageId);
-			const isRecommendOnlyEditor = selectedStage.currentUserCanRecommendOnly;
-			if (!isRecommendOnlyEditor) {
+			if (selectedStage?.isCurrentUserDecidingEditor) {
 				items.push({
 					component: 'WorkflowRecommendOnlyListingRecommendations',
 					props: {
@@ -312,6 +310,7 @@ export const WorkflowConfig = {
 					},
 				});
 			}
+
 			items.push({
 				component: 'ParticipantManager',
 				props: {
