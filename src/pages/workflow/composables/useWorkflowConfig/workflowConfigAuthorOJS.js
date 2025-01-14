@@ -175,7 +175,7 @@ export const WorkflowConfig = {
 					component: 'WorkflowActionButton',
 					props: {
 						action: FileManagerActions.FILE_UPLOAD,
-						label: t('dashboard.submitRevisions'),
+						label: t('workflow.uploadRevisions'),
 						actionArgs: {
 							submissionId: submission.id,
 							fileStage: pkp.const.SUBMISSION_FILE_REVIEW_REVISION,

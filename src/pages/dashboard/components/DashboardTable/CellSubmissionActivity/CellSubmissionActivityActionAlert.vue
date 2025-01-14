@@ -1,12 +1,7 @@
 <template>
 	<div class="flex items-center gap-x-2">
 		<div v-if="alert">{{ alert }}</div>
-		<PkpButton
-			v-if="actionName"
-			class="-ms-3"
-			size-variant="compact"
-			@click="handleAction"
-		>
+		<PkpButton v-if="actionName" size-variant="compact" @click="handleAction">
 			{{ actionLabel }}
 		</PkpButton>
 	</div>
