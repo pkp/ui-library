@@ -9,10 +9,10 @@
 			aria-hidden="true"
 		/>
 		<span class="ms-1 text-base-normal">{{ statusProps.label }}</span>
-		<span class="ms-4 text-lg-bold">
+		<span class="ms-6 text-lg-bold">
 			{{ t('semicolon', {label: t('admin.version')}) }}
 		</span>
-		<span class="text-base-normal">
+		<span class="ms-2 text-base-normal">
 			{{ selectedPublication.version }}
 		</span>
 		<span class="ms-2">
