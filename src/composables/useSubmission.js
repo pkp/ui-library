@@ -234,8 +234,8 @@ export function useSubmission() {
 
 	function isDecisionAvailable(submission, decisionId) {
 		const stage = getActiveStage(submission);
-		return stage?.availableEditorialDecisions?.some(
-			(decision) => decision.id === decisionId,
+		return submission?.availableEditorialDecisions?.some(
+			(decision) => decision.id === decisionId && decision.stageId === stage.id,
 		);
 	}
 
