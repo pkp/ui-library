@@ -48,6 +48,7 @@
 				ref="editor"
 				v-model="currentValue"
 				class="pkpFormField__input pkpFormField--richTextarea__input"
+				license-key="gpl"
 				:toolbar="toolbar"
 				:plugins="plugins"
 				:init="compiledInit"
