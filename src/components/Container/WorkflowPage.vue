@@ -105,7 +105,7 @@ export default {
 		 */
 		currentPublicationTabsLabel() {
 			return this.replaceLocaleParams(this.publicationTabsLabel, {
-				version: this.workingPublication.version,
+				version: this.workingPublication.versionDataDisplay,
 			});
 		},
 	},
@@ -611,7 +611,7 @@ export default {
 				if (publication.id === newPublication.id) {
 					publication.datePublished = newPublication.datePublished;
 					publication.status = newPublication.status;
-					publication.version = newPublication.version;
+					publication.versionDataDisplay = newPublication.versionDataDisplay;
 				}
 			});
 		},

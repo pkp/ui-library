@@ -127,7 +127,7 @@ const WorkflowPageWithDataAndTemplate = {
 							class="pkpPublication__version"
 						>
 							<strong tabindex="0">{{ versionLabel }}</strong>
-							{{ workingPublication.version }}
+							{{ workingPublication.versionDataDisplay }}
 							<Dropdown
 								class="pkpPublication__versions"
 								label="All Versions"
@@ -144,7 +144,7 @@ const WorkflowPageWithDataAndTemplate = {
 											:disabled="publication.id === workingPublication.id"
 											@click="setWorkingPublicationById(publication.id)"
 										>
-											{{ publication.version }} /
+											{{ publication.versionDataDisplay }} /
 											<template
 												v-if="
 													publication.status === getConstant('STATUS_QUEUED') &&
@@ -448,13 +448,13 @@ const WorkflowPageWithDataAndTemplate = {
 					id: currentPublication.id,
 					datePublished: currentPublication.datePublished,
 					status: currentPublication.status,
-					version: currentPublication.version,
+					version: currentPublication.versionDataDisplay,
 				},
 				{
 					id: latestPublication.id,
 					datePublished: latestPublication.datePublished,
 					status: latestPublication.status,
-					version: latestPublication.version,
+					version: latestPublication.versionDataDisplay,
 				},
 			],
 			publicationTabsLabel: 'Publication details for version {$version}',
