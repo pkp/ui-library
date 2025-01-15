@@ -54,9 +54,9 @@ export default {
 			return {
 				...init,
 				...{
-					// This will not have any impact on TinyMCE 6.0+ ,
+					// Need to set to <div> wrapper, to resolve deprecated option forced_root_block of empty string
 					// @see https://github.com/tinymce/tinymce/discussions/7342
-					forced_root_block: '',
+					forced_root_block: 'div',
 
 					toolbar_groups: {
 						formatgroup: {
@@ -90,6 +90,15 @@ export default {
 								event.stopPropagation();
 								return;
 							}
+						});
+
+						editor.on('PostProcess', function (ed) {
+							// TinyMCE by default inserts a wrapper <p> around the content
+							// for each editor. We need to set forced_root_block with value "div"
+							// to use this as the wrapper, and then remove as a workaround to a
+							// deprecated option & value "{ forced_root_block: '' }"
+							// @see https://github.com/tinymce/tinymce/discussions/7342
+							ed.content = ed.content.replace(/^<div>(.*)<\/div>$/, '$1');
 						});
 					},
 				},
