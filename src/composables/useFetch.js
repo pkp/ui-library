@@ -25,11 +25,11 @@ export function getCSRFToken() {
  * - https://github.com/unjs/ufo/issues/185
  * - https://github.com/unjs/ufo/issues/208
  * - https://github.com/unjs/ofetch/pull/440
- * 
+ *
  */
 function _formatQueryParams(params) {
 	if (!params) {
-		return {}
+		return {};
 	}
 
 	const formatedParams = {};
@@ -166,7 +166,6 @@ export function useFetch(url, options = {}) {
 
 			modalStore.openDialogNetworkError(e);
 		} finally {
-			lastRequestController = null;
 			isLoading.value = false;
 			progressStore.fetchFinished(screenName);
 			if (opts.showFullScreenSpinner) {
