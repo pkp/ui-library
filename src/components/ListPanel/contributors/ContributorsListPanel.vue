@@ -392,6 +392,7 @@ export default {
 						if (field.name === 'orcid') {
 							field.orcid = author['orcid'] ?? '';
 							field.authorId = author['id'];
+							field.orcidDisplayValue = author['orcidDisplayValue'];
 							field.isVerified = author['orcidIsVerified'] ?? false;
 							field.orcidVerificationRequested =
 								author['orcidVerificationRequested'];

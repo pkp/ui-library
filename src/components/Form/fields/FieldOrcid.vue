@@ -27,10 +27,18 @@
 				class="h-6 w-6"
 				:inline="true"
 			/>
+
+			<Icon
+				v-if="!isVerified && hasOrcid"
+				:class="'mr-2'"
+				icon="OrcidUnauthenticated"
+				class="w-6"
+				:inline="true"
+			/>
 			<div
 				v-if="hasOrcid"
 				class="pkpFormField__control pkpFormField__control--html"
-				v-html="orcidDisplayValue"
+				v-html="orcidDisplayText"
 			/>
 			<PkpButton
 				v-if="hasOrcid"
@@ -107,6 +115,11 @@ export default {
 			type: Boolean,
 			required: true,
 		},
+		orcidDisplayValue: {
+			type: String,
+			required: true,
+			default: '',
+		},
 	},
 	data() {
 		return {
@@ -129,9 +142,9 @@ export default {
 		 * Wraps ORCID in <a> tag for HTML display
 		 * @returns {string}
 		 */
-		orcidDisplayValue: function () {
+		orcidDisplayText: function () {
 			if (this.hasOrcid) {
-				return `<a target="_blank" class="underline" href="${this.orcidValue}">${this.orcidValue}</a>`;
+				return `<a target="_blank" class="underline" href="${this.orcidValue}">${this.orcidDisplayValue}</a>`;
 			} else {
 				return this.orcidValue;
 			}

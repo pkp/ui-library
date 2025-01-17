@@ -85,6 +85,7 @@ import Notifications from './icons/Notifications.vue';
 import NotVisible from './icons/NotVisible.vue';
 import OpenReview from './icons/OpenReview.vue';
 import Orcid from './icons/Orcid.vue';
+import OrcidUnauthenticated from './icons/OrcidUnauthenticated.vue';
 import Overdue from './icons/Overdue.vue';
 import Paste from './icons/Paste.vue';
 import Payment from './icons/Payment.vue';
@@ -228,6 +229,7 @@ const svgIcons = {
 	User,
 	View,
 	Workflow,
+	OrcidUnauthenticated,
 };
 
 const props = defineProps({

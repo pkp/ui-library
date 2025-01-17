@@ -137,6 +137,7 @@ export const IconGallery = {
 			'NotVisible',
 			'OpenReview',
 			'Orcid',
+			'OrcidUnauthenticated',
 			'Overdue',
 			'Paste',
 			'Payment',
