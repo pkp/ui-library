@@ -16,13 +16,16 @@ export const Actions = {
 export function useParticipantManagerActions() {
 	const {t} = useLocalize();
 
-	function participantAssign({submission}, finishedCallback) {
+	function participantAssign(
+		{submission, submissionStageId},
+		finishedCallback,
+	) {
 		const {openLegacyModal} = useLegacyGridUrl({
 			component: 'grid.users.stageParticipant.StageParticipantGridHandler',
 			op: 'addParticipant',
 			params: {
 				submissionId: submission.id,
-				stageId: submission.stageId,
+				stageId: submissionStageId,
 			},
 		});
 
@@ -87,13 +90,16 @@ export function useParticipantManagerActions() {
 		});
 	}
 
-	function participantNotify({submission, participant}, finishedCallback) {
+	function participantNotify(
+		{submission, submissionStageId, participant},
+		finishedCallback,
+	) {
 		const {openLegacyModal} = useLegacyGridUrl({
 			component: 'grid.users.stageParticipant.StageParticipantGridHandler',
 			op: 'viewNotify',
 			params: {
 				submissionId: submission.id,
-				stageId: submission.stageId,
+				stageId: submissionStageId,
 				userId: participant.id,
 			},
 		});
@@ -103,13 +109,16 @@ export function useParticipantManagerActions() {
 		);
 	}
 
-	function participantEdit({submission, participant}, finishedCallback) {
+	function participantEdit(
+		{submission, submissionStageId, participant},
+		finishedCallback,
+	) {
 		const {openLegacyModal} = useLegacyGridUrl({
 			component: 'grid.users.stageParticipant.StageParticipantGridHandler',
 			op: 'addParticipant',
 			params: {
 				submissionId: submission.id,
-				stageId: submission.stageId,
+				stageId: submissionStageId,
 				assignmentId: participant.stageAssignmentId,
 			},
 		});
