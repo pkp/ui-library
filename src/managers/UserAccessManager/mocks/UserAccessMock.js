@@ -95,14 +95,8 @@ export default {
 			groups: [
 				{
 					id: 14,
-					name: {
-						en: 'Author',
-						fr_CA: 'Auteur-e',
-					},
-					abbrev: {
-						en: 'AU',
-						fr_CA: 'AU',
-					},
+					name: 'Author',
+					abbrev: 'AU',
 					roleId: 65536,
 					showTitle: true,
 					permitSelfRegistration: true,
@@ -111,14 +105,8 @@ export default {
 				},
 				{
 					id: 15,
-					name: {
-						en: 'Translator',
-						fr_CA: 'Traducteur-trice',
-					},
-					abbrev: {
-						en: 'Trans',
-						fr_CA: 'Trad',
-					},
+					name: 'Translator',
+					abbrev: 'Trans',
 					roleId: 65536,
 					showTitle: true,
 					permitSelfRegistration: false,
