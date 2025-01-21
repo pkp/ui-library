@@ -1,5 +1,5 @@
 <template>
-	<PkpTable>
+	<PkpTable class="mt-2">
 		<template #label>
 			<h3 class="text-3xl-bold">
 				{{ t('grid.user.currentUsers') }}({{
