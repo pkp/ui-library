@@ -215,7 +215,7 @@ export function useEditorialLogic() {
 			activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW ||
 			activeStage.id === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW
 		) {
-			const activeRound = getCurrentReviewRound(submission);
+			const activeRound = getCurrentReviewRound(submission, activeStage.id);
 
 			if (
 				[pkp.const.REVIEW_ROUND_STATUS_REVISIONS_REQUESTED].includes(
