@@ -14,7 +14,7 @@ export const useParticipantManagerStore = defineComponentStore(
 		const submissionId = ref(props.submission.id);
 
 		const relativeUrl = computed(() => {
-			return `submissions/${encodeURIComponent(submissionId.value)}/participants/${props.submissionStageId}`;
+			return `submissions/${encodeURIComponent(submissionId.value)}/participants/${props.submissionStageId}?includeCanLoginAs=1&includeGossip=1`;
 		});
 
 		const {apiUrl: participantApiUrl} = useUrl(relativeUrl);
@@ -50,7 +50,8 @@ export const useParticipantManagerStore = defineComponentStore(
 						roleId: stageAssignment.stageAssignmentUserGroup.roleId,
 						userGroupId: stageAssignment.stageAssignmentUserGroup.id,
 						recommendOnly: stageAssignment.recommendOnly,
-						displayInitials: participant.displayInitials,
+						canLoginAs: participant.canLoginAs,
+						canGossip: participant.canGossip,
 					});
 				});
 			});
@@ -74,7 +75,10 @@ export const useParticipantManagerStore = defineComponentStore(
 
 		const _actionFns = useParticipantManagerActions();
 
-		const itemActions = computed(() => _actionFns.getItemActions({}));
+		const itemActions = (participant) => {
+			return _actionFns.getItemActions(participant);
+		};
+		
 
 		function enrichActionArg(args) {
 			return {

@@ -41,7 +41,7 @@
 					</div>
 					<div>
 						<DropdownActions
-							:actions="participantManagerStore.itemActions"
+							:actions="participantManagerStore.itemActions(participant)"
 							:label="`${participant.fullName} ${t('common.moreActions')}`"
 							:display-as-ellipsis="true"
 							@action="
