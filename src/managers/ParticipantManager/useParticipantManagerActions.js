@@ -169,14 +169,16 @@ export function useParticipantManagerActions() {
 		});
 	}
 
-	function getItemActions() {
+	// take participant as a parameter
+	function getItemActions(participant) {
 		const {t} = useLocalize();
 
 		const actions = [];
+		console.log('Participant ID:', participant.id, 'canLoginAs:', participant.canLoginAs, 'Type:', typeof participant.canLoginAs);
+
 
 		// [Role::ROLE_ID_MANAGER, Role::ROLE_ID_SITE_ADMIN, Role::ROLE_ID_SUB_EDITOR],
 		const {hasCurrentUserAtLeastOneRole} = useCurrentUser();
-
 		const canAdminister = hasCurrentUserAtLeastOneRole([
 			pkp.const.ROLE_ID_MANAGER,
 			pkp.const.ROLE_ID_SITE_ADMIN,
@@ -197,12 +199,15 @@ export function useParticipantManagerActions() {
 			icon: 'Email',
 		});
 
-		// TODO https://github.com/pkp/pkp-lib/issues/10290
-		actions.push({
-			label: t('grid.action.logInAs'),
-			name: Actions.PARTICIPANT_LOGIN_AS,
-			icon: 'LoginAs',
-		});
+		// show "Login As" if participant.canLoginAs is true
+		if (
+			participant.canLoginAs === true) {
+			actions.push({
+			  label: t('grid.action.logInAs'),
+			  name: Actions.PARTICIPANT_LOGIN_AS,
+			  icon: 'LoginAs',
+			});
+		  }
 
 		if (canAdminister) {
 			actions.push({

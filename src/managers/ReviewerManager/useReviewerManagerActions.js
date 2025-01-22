@@ -178,11 +178,13 @@ export function useReviewerManagerActions() {
 		});
 
 		// Login as TODO condition
-		actions.push({
-			label: t('grid.action.logInAs'),
-			name: Actions.REVIEWER_LOGIN_AS,
-			icon: 'LoginAs',
-		});
+		if (reviewAssignment.canLoginAs) {
+			actions.push({
+			  label: t('grid.action.logInAs'),
+			  name: Actions.REVIEWER_LOGIN_AS,
+			  icon: 'LoginAs',
+			});
+		  }
 
 		// Gossip TODO condition
 		actions.push({
