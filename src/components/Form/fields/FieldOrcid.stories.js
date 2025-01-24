@@ -52,6 +52,7 @@ export const WithOrcid = {
 		...FieldBaseMock,
 		...FieldOrcidMock,
 		orcid: 'https://sandbox.orcid.org/0009-0009-3222-5777',
+		orcidDisplayValue: 'https://sandbox.orcid.org/0009-0009-3222-5777',
 		isVerified: true,
 	},
 };
@@ -61,5 +62,7 @@ export const WithUnverifiedOrcid = {
 		...FieldBaseMock,
 		...FieldOrcidMock,
 		orcid: 'https://sandbox.orcid.org/0009-0009-3222-5777',
+		orcidDisplayValue:
+			'https://sandbox.orcid.org/0009-0009-3222-5777 (unauthenticated)',
 	},
 };

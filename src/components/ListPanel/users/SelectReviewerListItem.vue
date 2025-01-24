@@ -45,8 +45,12 @@
 							class="listPanel__item--reviewer__orcid"
 							target="_blank"
 						>
-							<Icon icon="Orcid" :inline="true" class="me-1 h-5 w-5" />
-							{{ item.orcid }}
+							<Icon
+								:icon="item.orcidIsVerified ? 'Orcid' : 'OrcidUnauthenticated'"
+								:inline="true"
+								class="me-1 w-6"
+							/>
+							{{ item.orcidDisplayValue }}
 						</a>
 					</div>
 				</div>

@@ -34,6 +34,7 @@ const items = [
 		dateLastReviewAssignment: '2022-12-31 11:22:42',
 		reviewerRating: 5,
 		orcid: 'http://orcid.org/0000-0002-1825-0097',
+		orcidDisplayValue: 'http://orcid.org/0000-0002-1825-0097',
 		biography: {
 			en: '<p>Professor Aisla McCrae is a senior research fellow in the Publishing Studies Department in the School of Publishing at the University of Manitoba. She is the deputy chair of the Manitoba Publishing Institute and the author of <em>Publishing Now and Forever: Recent Developments in Archival Permanence</em>.</p>',
 		},

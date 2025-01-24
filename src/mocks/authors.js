@@ -47,6 +47,7 @@ export const lipsum = {
 	id: 21,
 	includeInBrowse: true,
 	orcid: 'https://orcid.org/0000-0001-5756-5406',
+	orcidDisplayValue: 'https://orcid.org/0000-0001-5756-5406',
 	preferredPublicName: {
 		en: 'Dr. L. P. Ipsum',
 		fr_CA: 'Dr F. L. P. Ipsum',
