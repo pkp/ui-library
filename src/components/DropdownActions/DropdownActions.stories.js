@@ -101,6 +101,22 @@ export const Default = {
 	},
 };
 
+export const RightAlignedMenu = {
+	...Default,
+	args: {
+		actions: downloadActions,
+		label: 'Right Aligned Menu',
+		direction: 'right',
+	},
+	play: async ({canvasElement}) => {
+		// Assigns canvas to the component root element
+		const canvas = within(canvasElement);
+		const user = userEvent.setup();
+
+		await user.click(canvas.getByText('Right Aligned Menu'));
+	},
+};
+
 export const EllipsisMenu = {
 	args: {
 		actions: [
@@ -138,7 +154,7 @@ export const EllipsisMenu = {
 			},
 		],
 		label: 'User management options',
-		displayAsEllipsis: true,
+		buttonType: 'ellipsis',
 		direction: 'left',
 	},
 	play: async ({canvasElement}) => {
@@ -150,11 +166,20 @@ export const EllipsisMenu = {
 	},
 };
 
-export const RightAlignedMenu = {
-	...Default,
+export const TextButton = {
 	args: {
-		actions: downloadActions,
-		label: 'Right Aligned Menu',
+		actions: [
+			{
+				label: 'Version 1: 2024-8-13',
+				url: '#',
+			},
+			{
+				label: 'Version 2: Unpublished',
+				url: '#',
+			},
+		],
+		label: 'All Versions',
+		buttonType: 'text',
 		direction: 'right',
 	},
 	play: async ({canvasElement}) => {
@@ -162,6 +187,6 @@ export const RightAlignedMenu = {
 		const canvas = within(canvasElement);
 		const user = userEvent.setup();
 
-		await user.click(canvas.getByText('Right Aligned Menu'));
+		await user.click(canvas.getByText('All Versions'));
 	},
 };
