@@ -1,8 +1,12 @@
 <template>
 	<div v-if="store.invitationPayload.userId === null">
+		<div v-if="Object.keys(store.errors).length" class="p-4">
+			<FormErrorSummary :errors="store.errors" />
+		</div>
 		<PkpForm
 			v-bind="userForm"
 			class="userInvitation__stepForm"
+			:show-error-footer="false"
 			@set="updateUserForm"
 		></PkpForm>
 	</div>
@@ -60,6 +64,7 @@ import {useTranslation} from '@/composables/useTranslation';
 import UserInvitationUserGroupsTable from './UserInvitationUserGroupsTable.vue';
 import {useUserInvitationPageStore} from './UserInvitationPageStore';
 import {useForm} from '@/composables/useForm';
+import FormErrorSummary from '@/components/Form/FormErrorSummary.vue';
 
 /**
  * Update the payload by using form values on multilingual or not
