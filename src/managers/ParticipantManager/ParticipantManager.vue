@@ -43,7 +43,7 @@
 						<DropdownActions
 							:actions="participantManagerStore.itemActions"
 							:label="`${participant.fullName} ${t('common.moreActions')}`"
-							:display-as-ellipsis="true"
+							:button-type="ellipsis"
 							@action="
 								(actionName) =>
 									participantManagerStore[actionName]({

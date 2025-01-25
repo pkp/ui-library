@@ -2,7 +2,7 @@
 	<TableCell>
 		<DropdownActions
 			:label="t('common.moreActions')"
-			:display-as-ellipsis="true"
+			:button-type="ellipsis"
 			:actions="itemActions"
 			@action="handleAction"
 		/>
