@@ -20,7 +20,7 @@
 			aria-live="polite"
 		>
 			<FormErrors
-				v-if="Object.keys(errors).length"
+				v-if="Object.keys(errors).length && showErrorFooter"
 				:errors="errors"
 				:fields="fields"
 				@showField="showField"
@@ -108,6 +108,12 @@ export default {
 			},
 		},
 		isSaving: Boolean,
+		showErrorFooter: {
+			type: Boolean,
+			default() {
+				return true;
+			},
+		},
 	},
 	data() {
 		return {
