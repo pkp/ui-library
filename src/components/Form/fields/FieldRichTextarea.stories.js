@@ -30,6 +30,7 @@ export const Base = {
 		...FieldBaseMock,
 		...FieldRichTextareaBioMock,
 		isMultilingual: false,
+		value: '',
 	},
 };
 
@@ -38,10 +39,11 @@ export const MediumToolbar = {
 		...FieldBaseMock,
 		...FieldRichTextareaBioMock,
 		isMultilingual: false,
+		value: '',
 
 		toolbar:
 			'bold italic superscript subscript | link | blockquote bullist numlist',
-		plugins: 'paste,link,noneditable,lists',
+		plugins: ['link', 'lists'],
 	},
 };
 
@@ -50,10 +52,11 @@ export const HeavyToolbar = {
 		...FieldBaseMock,
 		...FieldRichTextareaBioMock,
 		isMultilingual: false,
+		value: '',
 
 		toolbar:
 			'bold italic superscript subscript | link | blockquote bullist numlist | image | code',
-		plugins: 'paste,link,lists,image,code',
+		plugins: ['link', 'lists', 'image', 'code'],
 	},
 };
 
@@ -64,5 +67,6 @@ export const WordLimit = {
 		wordLimit: 200,
 		wordCountLabel: 'Word Count: {$count}/{$limit}',
 		isMultilingual: false,
+		value: '',
 	},
 };

@@ -12,7 +12,7 @@ export default {
 	},
 	groupId: 'contact',
 	isMultilingual: true,
-	plugins: 'paste,link,noneditable',
+	plugins: ['link'],
 	toolbar: 'bold italic superscript subscript | link',
 	value: {
 		en: '',

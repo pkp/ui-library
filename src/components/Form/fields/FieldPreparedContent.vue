@@ -76,6 +76,7 @@ export default {
 		 * for accepted props
 		 */
 		textareaProps() {
+			const self = this;
 			let props = {};
 			let parent = FieldRichTextarea;
 			while (parent) {
@@ -86,6 +87,11 @@ export default {
 				});
 				parent = parent.extends ? parent.extends : null;
 			}
+
+			if (self.preparedContent.length && typeof props.toolbar === 'string') {
+				props.toolbar += '| pkpInsert';
+			}
+
 			return props;
 		},
 
@@ -120,7 +126,6 @@ export default {
 							self.openInsertModal();
 						},
 					});
-					editor.settings.toolbar += ' | pkpInsert';
 				}
 			};
 			return {

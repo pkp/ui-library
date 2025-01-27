@@ -15,7 +15,7 @@ export default {
 		{
 			...FieldRichTextareaAbstract,
 			toolbar: 'bold italic superscript subscript | link',
-			plugins: 'paste,link',
+			plugins: ['link'],
 			groupId: 'default',
 		},
 	],

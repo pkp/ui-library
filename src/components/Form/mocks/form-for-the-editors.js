@@ -16,7 +16,7 @@ export default {
 				'Add any information that you think our editorial staff should know when evaluating your submission.',
 			value: '',
 			toolbar: 'bold italic superscript subscript | link',
-			plugins: 'paste,link',
+			plugins: ['link'],
 			groupId: 'default',
 		},
 	],

@@ -48,6 +48,7 @@
 				ref="editor"
 				v-model="currentValue"
 				class="pkpFormField__input pkpFormField--richTextarea__input"
+				license-key="gpl"
 				:toolbar="toolbar"
 				:plugins="plugins"
 				:init="compiledInit"
@@ -98,8 +99,7 @@ import 'tinymce/plugins/code';
 import 'tinymce/plugins/image';
 import 'tinymce/plugins/link';
 import 'tinymce/plugins/lists';
-import 'tinymce/plugins/noneditable';
-import 'tinymce/plugins/paste';
+import 'tinymce/models/dom';
 import Editor from '@tinymce/tinymce-vue';
 import FieldBase from './FieldBase.vue';
 import debounce from 'debounce';
@@ -132,7 +132,7 @@ export default {
 		},
 		/**  Specify plugins the TinyMCE editor should load. See [TinyMCE documentation](https://www.tiny.cloud/docs/configure/integration-and-setup/#plugins). */
 		plugins: {
-			type: String,
+			type: Array,
 			required: true,
 		},
 		/** One of `default` or `large`. */
@@ -210,14 +210,11 @@ export default {
 				const smartyVariable = /\{\$(\w*)\}/.exec(url);
 				if (smartyVariable) {
 					url = smartyVariable[0];
-				} else {
-					this.settings.urlconverter_callback = false; // eslint-disable-line
-					url = this.convertURL(url);
-					this.settings.urlconverter_callback = urlConverterCallback; // eslint-disable-line
 				}
 				return url;
 			};
 			return {
+				license_key: 'gpl',
 				skin_url: this.$root?.tinyMCE?.skinUrl || pkp?.tinyMCE?.skinUrl,
 				content_css: $.pkp.app.tinyMceContentCSS,
 				paste_data_images: true,
@@ -230,6 +227,10 @@ export default {
 				statusbar: false,
 				entity_encoding: 'raw',
 				browser_spellcheck: true,
+				language:
+					$.pkp?.plugins?.generic?.tinymceplugin?.tinymceParams?.language,
+				language_url:
+					$.pkp?.plugins?.generic?.tinymceplugin?.tinymceParams?.language_url,
 				// See: https://www.tiny.cloud/docs/general-configuration-guide/upload-images/#rollingyourimagehandler
 				images_upload_handler(blobInfo, success, failure) {
 					const data = new FormData();

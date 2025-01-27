@@ -3,7 +3,7 @@ export default {
 	component: 'field-rich-textarea',
 	label: 'Bio Statement',
 	groupId: 'profile',
-	plugins: 'paste,link,noneditable',
+	plugins: ['link'],
 	toolbar: 'bold italic superscript subscript | link',
 	tooltip:
 		'Your biographical statement will usually include your department and rank, and may include research interests or key publications.',

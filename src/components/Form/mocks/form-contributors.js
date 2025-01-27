@@ -94,7 +94,7 @@ export default {
 			isMultilingual: true,
 			isInert: false,
 			value: {en: '', es: '', fr_CA: '', pt: ''},
-			plugins: 'paste,link,noneditable',
+			plugins: ['link'],
 			toolbar: 'bold italic superscript subscript | link',
 		},
 		{
