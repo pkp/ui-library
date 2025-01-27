@@ -216,8 +216,8 @@ function removeUserGroup(userGroup, index) {
 				callback: (close) => {
 					store.invitationPayload.currentUserGroups.find(
 						(data, i) => i === index,
-					).dateEnd = formatShortDate(new Date());
-					removeRole(store.invitationPayload.userId, userGroup.id);
+					).dateEnd = new Date();
+					removeRole(store.invitationPayload.userId, userGroup.userGroupId);
 					close();
 				},
 			},
