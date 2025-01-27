@@ -158,7 +158,7 @@ export const WithPagination = {
 
 			fetch();
 			// reload after changing currentPage
-			watch(async (currentPage) => await fetch());
+			watch(currentPage, async (currentPage) => await fetch());
 
 			function setPage(page) {
 				currentPage.value = page;
