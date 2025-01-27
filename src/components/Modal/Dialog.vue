@@ -45,7 +45,7 @@
 							<div class="flex min-h-12 items-center">
 								<DialogTitle
 									v-if="title"
-									class="m-0 inline-flex min-w-[1px] items-center overflow-x-hidden overflow-ellipsis whitespace-nowrap px-8 pt-12 text-4xl-bold"
+									class="m-0 inline-flex min-w-[1px] items-center overflow-x-hidden overflow-ellipsis px-8 pt-12 text-4xl-bold"
 									:class="icon ? 'pb-5' : 'pb-8'"
 								>
 									<div v-if="icon" :class="iconStyles">
