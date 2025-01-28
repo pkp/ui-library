@@ -507,11 +507,9 @@ export default {
 					return field;
 				});
 
-				// Add/remove save button depending on publication status or user permissions
-				form.canSubmit =
-					this.canEditPublication &&
-					publication.status !== pkp.const.STATUS_PUBLISHED;
-
+				// Add/remove save button depending on user permissions
+				form.canSubmit = this.canEditPublication;
+				
 				// Pass the publication status to the issue selection field
 				if (formId === pkp.const.FORM_ISSUE_ENTRY) {
 					form.fields = form.fields.map((field) => {
