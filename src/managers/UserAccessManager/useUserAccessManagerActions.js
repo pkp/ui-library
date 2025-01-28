@@ -68,45 +68,41 @@ export function useUserAccessManagerActions() {
 		return actions;
 	}
 
-	function sendEmail(userId, finishedCallback) {
+	function sendEmail(userData, finishedCallback) {
 		const {openLegacyModal} = useLegacyGridUrl({
 			component: 'grid.settings.user.UserGridHandler',
 			op: 'edit-email',
 			params: {
-				rowId: userId,
+				rowId: userData.user.id,
 			},
 		});
 
 		openLegacyModal({title: t('grid.user.email')}, finishedCallback);
 	}
 
-	function disableUser(user, finishedCallback) {
+	function disableUser(userData, finishedCallback) {
 		const {openLegacyModal} = useLegacyGridUrl({
 			component: 'grid.settings.user.UserGridHandler',
 			op: 'edit-disable-user',
 			params: {
-				rowId: user.id,
-				enable: user.disabled ? '1' : '',
+				rowId: userData.user.id,
+				enable: userData.user.disabled ? '1' : '',
 			},
 		});
 
 		openLegacyModal({title: t('grid.user.disable')}, (closeData) => {
-			if (closeData.dataChanged[0]) {
-				finishedCallback();
-			} else {
-				finishedCallback();
-			}
+			finishedCallback();
 		});
 	}
 
 	const {openDialog, openDialogNetworkError} = useModal();
 
-	function removeUser(userId, finishedCallback) {
+	function removeUser(userData, finishedCallback) {
 		const {url} = useLegacyGridUrl({
 			component: 'grid.settings.user.UserGridHandler',
 			op: 'remove-user',
 			params: {
-				rowId: userId,
+				rowId: userData.user.id,
 			},
 		});
 		openDialog(
@@ -147,8 +143,8 @@ export function useUserAccessManagerActions() {
 		);
 	}
 
-	function loginAs(userId) {
-		const {redirectToPage} = useUrl(`login/signInAsUser/${userId}`);
+	function loginAs(userData) {
+		const {redirectToPage} = useUrl(`login/signInAsUser/${userData.user.id}`);
 		openDialog({
 			title: t('grid.action.logInAs'),
 			message: t('grid.user.confirmLogInAs'),
@@ -172,12 +168,12 @@ export function useUserAccessManagerActions() {
 		});
 	}
 
-	function mergeUser(userId, finishedCallback) {
+	function mergeUser(userData, finishedCallback) {
 		const {openLegacyModal} = useLegacyGridUrl({
 			component: 'grid.settings.user.UserGridHandler',
 			op: 'merge-users',
 			params: {
-				oldUserId: userId,
+				oldUserId: userData.user.id,
 			},
 		});
 
