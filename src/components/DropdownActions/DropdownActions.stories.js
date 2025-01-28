@@ -154,7 +154,7 @@ export const EllipsisMenu = {
 			},
 		],
 		label: 'User management options',
-		buttonType: 'ellipsis',
+		buttonVariant: 'ellipsis',
 		direction: 'left',
 	},
 	play: async ({canvasElement}) => {
@@ -179,7 +179,7 @@ export const TextButton = {
 			},
 		],
 		label: 'All Versions',
-		buttonType: 'text',
+		buttonVariant: 'text',
 		direction: 'right',
 	},
 	play: async ({canvasElement}) => {

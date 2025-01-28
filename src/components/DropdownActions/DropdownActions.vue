@@ -10,7 +10,7 @@
 			>
 				<span v-if="!displayAsEllipsis">{{ label }}</span>
 				<Icon
-					v-if="buttonType === 'dropdown'"
+					v-if="buttonVariant === 'dropdown'"
 					class="h-5 w-5 text-primary"
 					icon="Dropdown"
 					aria-hidden="true"
@@ -103,13 +103,13 @@ const props = defineProps({
 			});
 		},
 	},
-	/** The text label for the button. This is required. If buttonType is `ellipsis`, the label will be used for accessibility. */
+	/** The text label for the button. This is required. If buttonVariant is `ellipsis`, the label will be used for accessibility. */
 	label: {
 		type: String,
 		required: true,
 	},
 	/** Defines the type of button used to display the options. Accepted values are: 'dropdown', 'ellipsis', or 'text'. */
-	buttonType: {
+	buttonVariant: {
 		type: String,
 		default: 'dropdown',
 		validator: (val) => ['dropdown', 'ellipsis', 'text'].includes(val),
@@ -127,7 +127,7 @@ const props = defineProps({
 	},
 });
 
-const displayAsEllipsis = computed(() => props.buttonType === 'ellipsis');
+const displayAsEllipsis = computed(() => props.buttonVariant === 'ellipsis');
 
 const emit = defineEmits([
 	/** When a button is clicked from the dropdown menu */
@@ -145,9 +145,9 @@ const menuButtonStyle = computed(() => ({
 	'w-full justify-center': true,
 	// Default: "dropdown" button type
 	'inline-flex rounded border border-light bg-secondary px-3 py-2 text-lg-normal gap-x-1.5':
-		props.buttonType === 'dropdown',
+		props.buttonVariant === 'dropdown',
 	// "text" button type
-	'text-primary hover:text-hover mb-1': props.buttonType === 'text',
+	'text-primary hover:text-hover mb-1': props.buttonVariant === 'text',
 	// Ellipsis Menu
 	'leading-none rounded hover:text-on-dark hover:bg-hover':
 		displayAsEllipsis.value,
