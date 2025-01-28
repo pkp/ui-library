@@ -61,7 +61,7 @@ import {useFetch} from '@/composables/useFetch';
 import {useId} from '@/composables/useId';
 
 const {generateId} = useId();
-
+const autosuggestContainerId = generateId();
 const currentSelected = ref([]);
 const inputValue = ref('');
 const isFocused = ref(false);
@@ -69,8 +69,7 @@ const url = 'https://api.ror.org/v2/organizations';
 const queryParams = computed(() => ({
 	query: inputValue.value,
 }));
-
-const autosuggestContainerId = generateId();
+const noLangCode = 'no_lang_code';
 
 const {
 	data: suggestions,
@@ -97,14 +96,29 @@ const autoSuggestProps = computed(() => ({
 
 const mappedSuggestions = computed(() => {
 	return suggestions.value?.items.map((item) => {
-		// get the name from "ror_display" type
-		const name = item.names?.find((i) =>
-			i.types.includes('ror_display'),
-		)?.value;
+		const displayLocale =
+			item.names?.find((i) => i.types.includes('ror_display'))?.lang !== null
+				? item.names?.find((i) => i.types.includes('ror_display'))?.lang
+				: noLangCode;
+
+		let names = {};
+		item.names?.forEach((name) => {
+			if (name.types.includes('label') || name.types.includes('ror_display')) {
+				const locale = name.lang !== null ? name.lang : noLangCode;
+				names[locale] = name.value;
+			}
+		});
 
 		return {
-			value: item.id,
-			label: name,
+			value: {
+				id: null,
+				ror: item.id,
+				displayLocale: displayLocale,
+				isActive: item.status === 'active' ? 1 : 0,
+				name: names,
+				_href: null,
+			},
+			label: names[displayLocale],
 			hasSlot: true,
 			href: item.id,
 		};
@@ -112,7 +126,9 @@ const mappedSuggestions = computed(() => {
 });
 
 watch(queryParams, () => {
-	getSuggestions();
+	if (inputValue.value.length > 3) {
+		getSuggestions();
+	}
 });
 
 async function getSuggestions() {
@@ -129,7 +145,7 @@ function changeFocus(focused) {
 
 function handleSelect(suggestion) {
 	if (!suggestion) {
-		if (!inputValue.value || !mappedSuggestions.value.length) {
+		if (!inputValue.value) {
 			return;
 		}
 
@@ -139,8 +155,8 @@ function handleSelect(suggestion) {
 		};
 	}
 
-	if (!currentSelected.value.some((item) => item.value === suggestion.value)) {
-		currentSelected.value.push(suggestion);
+	if (currentSelected.value !== suggestion.value) {
+		currentSelected.value = [suggestion];
 	}
 }
 
@@ -149,4 +165,8 @@ function handleDeselect(item) {
 		(selected) => selected.value !== item.value,
 	);
 }
+
+defineExpose({
+	currentSelected,
+});
 </script>
