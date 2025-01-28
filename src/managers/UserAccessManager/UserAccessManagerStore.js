@@ -43,7 +43,7 @@ export const useUserAccessManagerStore = defineComponentStore(
 			query: {
 				searchPhrase: searchPhrase,
 				status: 'all',
-				includePermissions: true,
+				// includePermissions: true,
 			},
 		});
 		watch(
@@ -61,39 +61,73 @@ export const useUserAccessManagerStore = defineComponentStore(
 		}
 
 		/**
+		 * User access table columns
+		 * @returns array
+		 */
+		function getColumns() {
+			const columns = [];
+
+			columns.push({
+				header: t('userAccess.tableHeader.name'),
+			});
+
+			columns.push({
+				header: t('about.contact.email'),
+			});
+
+			columns.push({
+				header: t('user.roles'),
+			});
+			columns.push({
+				header: t('userAccess.tableHeader.startDate'),
+			});
+			columns.push({
+				header: t('user.affiliation'),
+			});
+
+			columns.push({
+				header: t('common.moreActions'),
+				headerSrOnly: true,
+			});
+
+			return columns;
+		}
+		/**
 		 * Actions
 		 */
 
 		/*
 		 * redirect to send invitation page
 		 */
-		const {pageUrl: sendInvitationPageUrl} = useUrl('invitation/editUser');
-		function editUser(userObj) {
-			window.location = sendInvitationPageUrl.value + '/' + userObj.id;
+		function editUser({user}) {
+			const {redirectToPage} = useUrl(`invitation/editUser/${user.id}`);
+			redirectToPage();
 		}
+
 		const _userAccessActionsFns = useUserAccessManagerActions();
-		function getItemActions(userObj) {
-			return _userAccessActionsFns.getItemActions(userObj);
+
+		function getItemActions(user) {
+			return _userAccessActionsFns.getItemActions(user);
 		}
 
-		function sendEmail(userObj) {
-			_userAccessActionsFns.sendEmail(userObj.id, triggerDataChangeCallback);
+		function sendEmail({user}) {
+			_userAccessActionsFns.sendEmail({user}, triggerDataChangeCallback);
 		}
 
-		function disableUser(userObj) {
-			_userAccessActionsFns.disableUser(userObj, triggerDataChangeCallback);
+		function disableUser({user}) {
+			_userAccessActionsFns.disableUser({user}, triggerDataChangeCallback);
 		}
 
-		function removeUser(userObj) {
-			_userAccessActionsFns.removeUser(userObj.id, triggerDataChangeCallback);
+		function removeUser({user}) {
+			_userAccessActionsFns.removeUser({user}, triggerDataChangeCallback);
 		}
 
-		function mergeUser(userObj) {
-			_userAccessActionsFns.mergeUser(userObj.id, triggerDataChangeCallback);
+		function mergeUser({user}) {
+			_userAccessActionsFns.mergeUser({user}, triggerDataChangeCallback);
 		}
 
-		function loginAs(userObj) {
-			_userAccessActionsFns.loginAs(userObj.id);
+		function loginAs({user}) {
+			_userAccessActionsFns.loginAs({user});
 		}
 
 		return {
@@ -111,6 +145,7 @@ export const useUserAccessManagerStore = defineComponentStore(
 			loginAs,
 			getItemActions,
 			editUser,
+			getColumns,
 		};
 	},
 );

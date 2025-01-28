@@ -15,13 +15,10 @@
 			/>
 		</template>
 		<TableHeader>
-			<TableColumn>{{ t('userAccess.tableHeader.name') }}</TableColumn>
-			<TableColumn>{{ t('about.contact.email') }}</TableColumn>
-			<TableColumn>{{ t('user.roles') }}</TableColumn>
-			<TableColumn>{{ t('userAccess.tableHeader.startDate') }}</TableColumn>
-			<TableColumn>{{ t('user.affiliation') }}</TableColumn>
-			<TableColumn>
-				<span class="sr-only">{{ t('common.moreActions') }}</span>
+			<TableColumn v-for="(column, i) in store.columns" :key="i">
+				<span :class="column.headerSrOnly ? 'sr-only' : ''">
+					{{ column.header }}
+				</span>
 			</TableColumn>
 		</TableHeader>
 		<TableBody>
@@ -56,7 +53,7 @@
 						:label="t('userAccess.management.options')"
 						:display-as-ellipsis="true"
 						direction="left"
-						@action="(actionName) => store[actionName](user)"
+						@action="(actionName) => store[actionName]({user})"
 					/>
 				</TableCell>
 			</TableRow>
