@@ -98,7 +98,7 @@
 							},
 						]"
 						:label="t('invitation.management.options')"
-						:display-as-ellipsis="true"
+						:button-variant="ellipsis"
 						direction="left"
 						@action="
 							(actionName) =>
