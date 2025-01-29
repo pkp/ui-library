@@ -41,7 +41,7 @@ const styles = computed(() => ({
 	// Active
 	'text-on-dark bg-selection-dark border-transparent': props.isActive,
 	// Disabled
-	'hover:text-disabled hover:bg-secondary !text-disabled cursor-not-allowed':
+	'hover:text-disabled hover:bg-secondary text-disabled! cursor-not-allowed':
 		props.isDisabled,
 }));
 </script>

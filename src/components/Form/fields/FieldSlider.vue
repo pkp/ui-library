@@ -49,13 +49,13 @@
 						:pt="sliderStyling"
 					/>
 				</div>
-				<div class="mt-2 flex justify-between text-base-normal text-secondary">
+				<div class="text-base-normal text-secondary mt-2 flex justify-between">
 					<div>{{ minLabel || min }}</div>
 					<div>{{ maxLabel || max }}</div>
 				</div>
 			</div>
 			<div
-				class="ms-3 w-48 self-start rounded border border-form-fields p-2 text-center text-base-normal text-secondary"
+				class="border-form-fields text-base-normal text-secondary ms-3 w-48 self-start rounded border p-2 text-center"
 			>
 				{{ displayedValue }}
 			</div>
@@ -147,7 +147,7 @@ export default {
 
 						// States
 						'hover:bg-hover hover:border-primary-500',
-						'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring',
+						'focus-visible:outline-hidden focus-visible:outline-offset-0 focus-visible:ring-3',
 						'ring-primary/50',
 						// Transitions
 						'transition duration-200',

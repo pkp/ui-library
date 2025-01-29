@@ -474,7 +474,7 @@ export default {
 	}
 
 	.dz-details {
-		flex-grow: 1;
+		grow: 1;
 	}
 
 	.dz-filename {
