@@ -10,6 +10,7 @@ const colors = {
 	negative: '#D00A6C',
 	'stage-desk-review': '#9B6FF8',
 	'stage-in-review': '#E08914',
+	'stage-in-internal-review': '#42427F',
 	'stage-copyediting': '#F66AAF',
 	'stage-production': '#4AC7E2',
 	'stage-scheduled-for-publishing': '#DED15D',
@@ -26,7 +27,13 @@ const colors = {
 };
 
 export default {
-	content: ['./index.html', './**/*.vue', './**/*stories.js', './**/*.tpl'],
+	content: [
+		'./index.html',
+		'./**/*.js',
+		'./**/*.vue',
+		'./**/*stories.js',
+		'./**/*.tpl',
+	],
 	theme: {
 		backgroundColor: {
 			...colors,
