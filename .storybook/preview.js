@@ -27,7 +27,7 @@ import ModalManager from '@/components/Modal/ModalManager.vue';
 
 import VueScrollTo from 'vue-scrollto';
 
-import '../src/styles/_import.less';
+import '../tailwind.css';
 import '../src/styles/_global.less';
 import {allModes} from './modes';
 import {initialize, mswLoader} from 'msw-storybook-addon';

@@ -1008,6 +1008,7 @@ export default {
 
 <style lang="less">
 @import '../../styles/_import';
+@reference '../../../tailwind.css';
 
 .composer__message {
 	position: relative;
