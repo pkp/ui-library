@@ -105,3 +105,48 @@ const descriptionId = slots.description ? generateId() : null;
 
 provide('tableContext', tableContext);
 </script>
+
+<style lang="less">
+@import '../../styles/_import';
+
+/** 
+Keeping subset of table styling to support urn plugin, which inserts table via FieldHtml 
+Better solution in future would be to implement custom Field, which would use our table component directly.
+*/
+
+.pkpTable {
+	width: 100%;
+	max-width: 100%;
+	border: @grid-border;
+	border-collapse: collapse;
+	border-radius: @radius;
+	font-size: @font-sml;
+	line-height: 1.2em;
+
+	td,
+	th {
+		padding: 0.5rem;
+		font-weight: @normal;
+		text-align: inherit;
+	}
+
+	tr {
+		border-bottom: @grid-border;
+	}
+
+	caption {
+		background: @bg-light;
+		padding: 1rem;
+		border-top-left-radius: @radius;
+		border-top-right-radius: @radius;
+		text-align: inherit;
+	}
+
+	thead {
+		th {
+			font-size: @font-tiny;
+			font-weight: @bold;
+		}
+	}
+}
+</style>
