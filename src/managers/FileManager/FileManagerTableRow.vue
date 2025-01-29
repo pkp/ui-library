@@ -38,7 +38,7 @@
 		<TableCell v-if="actionItems.length" no-wrap>
 			<DropdownActions
 				:label="t('common.moreActions')"
-				:button-variant="ellipsis"
+				button-variant="ellipsis"
 				:actions="actionItems"
 				@action="(actionName) => handleAction(actionName)"
 			></DropdownActions>

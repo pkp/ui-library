@@ -2,7 +2,7 @@
 	<DropdownActions
 		v-if="actions.length"
 		:label="t('common.moreActions')"
-		:button-variant="ellipsis"
+		button-variant="ellipsis"
 		:actions="actions"
 		direction="right"
 		@action="handleAction"

@@ -11,7 +11,7 @@
 				galleyManagerStore.itemActions.length
 			"
 			:label="t('common.moreActions')"
-			:button-variant="ellipsis"
+			button-variant="ellipsis"
 			:actions="galleyManagerStore.itemActions"
 			@action="(actionName) => galleyManagerStore[actionName]({galley})"
 		></DropdownActions>
