@@ -29,7 +29,7 @@ const colors = {
 export default {
 	content: [
 		'./index.html',
-		'./**/*.js',
+		'./lib/ui-library/src/**/*.js',
 		'./**/*.vue',
 		'./**/*stories.js',
 		'./**/*.tpl',
