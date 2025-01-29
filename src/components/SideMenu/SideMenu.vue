@@ -3,7 +3,7 @@
 		:expanded-keys="expandedKeys"
 		:model="items"
 		:pt="navigationStyling"
-		class="w-72 overflow-y-auto border-e border-s border-light"
+		class="border-light w-72 overflow-y-auto border-s border-e"
 		:class="backgroundVariant"
 		@update:expanded-keys="(...args) => emit('update:expandedKeys', ...args)"
 	>
@@ -100,7 +100,7 @@ const emit = defineEmits([
 
 const navigationStyling = {
 	header: {
-		class: ['focus-visible:outline-none focus-visible:bg-hover'],
+		class: ['focus-visible:outline-hidden focus-visible:bg-hover'],
 	},
 	headerContent: () => {
 		return {
@@ -112,7 +112,7 @@ const navigationStyling = {
 		};
 	},
 	rootlist: {
-		class: ['focus-visible:outline-none'],
+		class: ['focus-visible:outline-hidden'],
 	},
 	itemLink: ({context}) => {
 		return {
@@ -155,24 +155,24 @@ function getButtonStyles(item, isFocused) {
 		'text-on-dark bg-selection-dark': isActiveItem,
 
 		// Indentions for child menus
-		'!px-7': item.level === 2 && item.colorStripe,
-		'!px-9': item.level === 2 && !item.colorStripe,
-		'!px-10': item.level === 3 && item.colorStripe,
-		'!px-12': item.level === 3 && !item.colorStripe,
-		'!px-14': item.level === 4 && item.colorStripe,
-		'!px-16': item.level === 4 && !item.colorStripe,
+		'px-7!': item.level === 2 && item.colorStripe,
+		'px-9!': item.level === 2 && !item.colorStripe,
+		'px-10!': item.level === 3 && item.colorStripe,
+		'px-12!': item.level === 3 && !item.colorStripe,
+		'px-14!': item.level === 4 && item.colorStripe,
+		'px-16!': item.level === 4 && !item.colorStripe,
 
 		// Border
 		'border-b border-b-light': true,
 		'border-transparent': isActiveItem && !item.colorStripe,
 		'border-t border-t-light': item.index === 0 && item.level === 1,
-		'!border-s-8': !!item.colorStripe,
+		'border-s-8!': !!item.colorStripe,
 
 		// Outline (focus)
-		'bg-hover !text-on-dark': isFocused && !isActiveItem,
+		'bg-hover text-on-dark!': isFocused && !isActiveItem,
 
 		// Root items with submenu
-		'!text-lg-bold': item.level === 1,
+		'text-lg-bold!': item.level === 1,
 	};
 
 	// set the additional class if the button should include a color stripe

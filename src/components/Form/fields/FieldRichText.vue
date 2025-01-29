@@ -124,9 +124,9 @@ export default {
 		 * (v5.10.7).
 		 *
 		 * This is a workaround that closes the popup toolbar when the TinyMCE
-		 * editor fires the `blur` event. This works, but the `blur` event does
+		 * editor fires the `blur-sm` event. This works, but the `blur-sm` event does
 		 * not cover every case. It is possible to open the popup toolbar without
-		 * moving focus into the editor. In such cases, the `blur` event is not
+		 * moving focus into the editor. In such cases, the `blur-sm` event is not
 		 * fired.
 		 *
 		 * To prevent such cases, we have hidden the popup toolbar button when

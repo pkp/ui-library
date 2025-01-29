@@ -260,7 +260,7 @@ defineExpose({handleFocus});
 .pkpAutosuggest__autosuggester {
 	position: relative;
 	line-height: 1.6rem; // prevent jank when value is added or removed
-	flex-grow: 1;
+	grow: 1;
 }
 
 .autosuggest__results {
