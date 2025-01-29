@@ -13,13 +13,13 @@
 			<span class="pkpSearch__icons">
 				<Icon
 					icon="Search"
-					class="absolute left-2/4 top-2/4 h-5 w-5 -translate-x-1/2 -translate-y-1/2 transform text-primary"
+					class="text-primary absolute top-2/4 left-2/4 h-5 w-5 -translate-x-1/2 -translate-y-1/2 transform"
 				/>
 			</span>
 		</label>
 		<button
 			v-if="searchPhrase"
-			class="absolute top-0 h-full w-8 text-negative hover:bg-negative hover:text-on-dark focus:bg-negative focus:text-on-dark ltr:right-0 rtl:left-0 rtl:right-auto"
+			class="text-negative hover:bg-negative hover:text-on-dark focus:bg-negative focus:text-on-dark absolute top-0 h-full w-8 ltr:right-0 rtl:right-auto rtl:left-0"
 			:aria-controls="inputId"
 			@click.prevent="clearSearchPhrase"
 		>
@@ -90,6 +90,7 @@ export default {
 
 <style lang="less">
 @import '../../styles/_import';
+@reference '../../../tailwind.css';
 
 .pkpSearch {
 	position: relative;

@@ -238,6 +238,7 @@ export default {
 
 <style lang="less">
 @import '../../styles/_import';
+@reference '../../../tailwind.css';
 
 .pkpStats > .pkpHeader {
 	padding: 0.5rem 0;
