@@ -4,7 +4,7 @@
 		class="max-w-[25em] truncate"
 		:is-row-header="true"
 	>
-		<span class="text-lg-semibold">{{ title }}</span>
+		<span class="text-lg-semibold" v-html="title"></span>
 	</TableCell>
 </template>
 
