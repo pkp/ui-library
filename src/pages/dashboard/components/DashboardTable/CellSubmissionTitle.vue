@@ -8,14 +8,15 @@
 			{{ currentPublication.authorsStringShort }}
 		</span>
 		<template v-if="currentPublication.authorsStringShort">—</template>
-		<span class="text-base-normal">
-			{{
+		<span
+			class="text-base-normal"
+			v-html="
 				localizeSubmission(
 					currentPublication.fullTitle,
 					currentPublication.locale,
 				)
-			}}
-		</span>
+			"
+		></span>
 	</TableCell>
 </template>
 
