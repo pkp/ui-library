@@ -95,7 +95,25 @@
 							name="option"
 							:suggestion="suggestion"
 						/>
-						<span v-else>{{ suggestion.label }}</span>
+						<ul v-else>
+							<li>
+								{{ suggestion.label }}
+							</li>
+							<li v-if="suggestion.identifier?.match(/^http/)">
+								<a :href="suggestion.identifier" target="_blank" @click.stop>
+									{{ suggestion.identifier }}
+								</a>
+							</li>
+							<li v-else-if="suggestion.identifier">
+								{{ suggestion.identifier }}
+							</li>
+							<li
+								v-for="(extraItem, extraItemKey) in suggestion.extraItems ?? {}"
+								:key="extraItemKey"
+							>
+								{{ extraItem }}
+							</li>
+						</ul>
 					</li>
 				</ComboboxOption>
 			</template>
@@ -301,6 +319,12 @@ defineExpose({handleFocus});
 			height: 100%;
 			background: @primary;
 			transition: width 0.3s;
+		}
+
+		& ul li {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
 		}
 	}
 
