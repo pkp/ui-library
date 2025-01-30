@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="overflow-x-auto">
 		<div
 			v-if="slots.label || slots.description || slots['top-controls']"
 			class="flex justify-between border-x border-t border-light bg-secondary p-4"
