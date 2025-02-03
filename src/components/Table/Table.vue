@@ -25,7 +25,7 @@
 			</div>
 		</div>
 		<table
-			class="pkpTable w-full max-w-full border-separate border-spacing-0"
+			class="w-full max-w-full border-separate border-spacing-0"
 			:aria-labelledby="labelledBy ?? (slots.label ? labelId : null)"
 			:aria-describedby="
 				describedBy ?? (slots.description ? descriptionId : null)
