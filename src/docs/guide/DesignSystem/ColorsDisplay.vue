@@ -2,7 +2,8 @@
 	<table class="min-w-full divide-y divide-light">
 		<tr>
 			<th class="text-left">Colour</th>
-			<th class="px-2 text-left">Class name</th>
+			<th class="px-2 text-left">Class Name</th>
+			<th class="px-2 text-left">CSS Variable Name</th>
 			<th class="px-2 text-left">Value</th>
 			<th class="px-2 text-left">Used In</th>
 		</tr>
@@ -23,6 +24,7 @@
 			<!-- First column -->
 
 			<td class="whitespace-nowrap px-2">{{ color.className }}</td>
+			<td class="px-2">{{ color.cssVar }}</td>
 			<td class="px-2">{{ color.value }}</td>
 			<td class="whitespace-pre-line px-2">
 				{{ color.usedIn }}
@@ -99,10 +101,14 @@ const colors = Object.keys(colorUsedIn).map((className) => {
 	} else if (displayAs === 'border') {
 		classNameToApply = `border-${className}`;
 	}
+	const cssVar = colorDefinition[className].replace(/^var\((.+)\)$/, '$1');
 	return {
 		className: classNameToApply,
 		classNameToApply,
-		value: colorDefinition[className],
+		value: getComputedStyle(document.documentElement)
+			.getPropertyValue(cssVar)
+			.trim(),
+		cssVar,
 		usedIn: colorUsedIn[className].trim(),
 	};
 });
