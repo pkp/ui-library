@@ -1,5 +1,5 @@
 <template>
-	<TableCell>{{ item.submissionId }}</TableCell>
+	<TableCell fit-content>{{ item.submissionId }}</TableCell>
 </template>
 
 <script setup>

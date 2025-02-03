@@ -115,6 +115,10 @@ const store = useDashboardPageStore(props);
 </script>
 
 <style>
+.pkp_page_dashboard {
+	@apply min-w-max;
+}
+
 .pkp_page_dashboard .app__main {
 	@apply bg-secondary p-0;
 }
