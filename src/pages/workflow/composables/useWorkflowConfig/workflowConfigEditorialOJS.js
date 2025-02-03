@@ -131,6 +131,32 @@ export const WorkflowConfig = {
 				items,
 			};
 		},
+		getSecondaryItems: ({
+			submission,
+			selectedReviewRound,
+			selectedStageId,
+			permissions,
+		}) => {
+			if (!permissions.accessibleStages.includes(selectedStageId)) {
+				return {
+					shouldContinue: false,
+					items: [],
+				};
+			}
+		},
+		getActionItems: ({
+			submission,
+			selectedStageId,
+			selectedReviewRound,
+			permissions,
+		}) => {
+			if (!permissions.accessibleStages.includes(selectedStageId)) {
+				return {
+					shouldContinue: false,
+					items: [],
+				};
+			}
+		},
 	},
 	[pkp.const.WORKFLOW_STAGE_ID_SUBMISSION]: {
 		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
