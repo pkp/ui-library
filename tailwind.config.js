@@ -92,7 +92,7 @@ export default {
 				'var(--text-sm-normal)' /** 11px */,
 				{
 					lineHeight: 'var(--text-sm-normal--line-height)',
-					fontWeight: 'var(--text-sm-normal-font-weight)',
+					fontWeight: 'var(--text-sm-normal--font-weight)',
 				},
 			],
 			'base-light': [
