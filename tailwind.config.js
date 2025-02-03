@@ -57,7 +57,7 @@ export default {
 			dark: 'var(--border-color-dark)',
 			light: 'var(--border-color-light)',
 			'form-fields': 'var(--border-color-form-fields)',
-			transparent: 'var(--border-color-transparent)',
+			transparent: 'var(--color-transparent)',
 		},
 		borderRadius: {
 			DEFAULT: 'var(--radius)',
