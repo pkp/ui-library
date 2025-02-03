@@ -1,5 +1,5 @@
 <template>
-	<TableCell>{{ item.id }}</TableCell>
+	<TableCell fit-content>{{ item.id }}</TableCell>
 </template>
 
 <script setup>
