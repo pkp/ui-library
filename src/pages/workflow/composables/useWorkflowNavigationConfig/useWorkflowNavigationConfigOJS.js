@@ -191,14 +191,12 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 			);
 		}
 
-		if (permissions.canAccessProduction) {
-			items.push(
-				getPublicationItem({
-					name: 'galleys',
-					label: t('submission.layout.galleys'),
-				}),
-			);
-		}
+		items.push(
+			getPublicationItem({
+				name: 'galleys',
+				label: t('submission.layout.galleys'),
+			}),
+		);
 
 		return items;
 	}
@@ -283,25 +281,35 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 			return [];
 		}
 
-		const menuItems = [
-			{
-				key: 'workflow',
-				label: t('manager.workflow'),
-				icon: 'Dashboard',
-				items: getWorkflowItems({submission, permissions}),
-			},
-			{
+		let menuItems = [];
+
+		menuItems.push({
+			key: 'workflow',
+			label: t('manager.workflow'),
+			icon: 'Dashboard',
+			items: getWorkflowItems({submission, permissions}),
+		});
+
+		if (
+			pageInitConfig.dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD &&
+			permissions.canAccessPublication
+		) {
+			menuItems.push({
 				key: 'publication',
 				label: t('submission.publication'),
 				icon: 'MySubmissions',
-				items:
-					pageInitConfig.dashboardPage ===
-					DashboardPageTypes.EDITORIAL_DASHBOARD
-						? getPublicationItemsEditorial({submission, permissions})
-						: getPublicationItemsAuthor({submission, permissions}),
-			},
-		];
-
+				items: getPublicationItemsEditorial({submission, permissions}),
+			});
+		} else if (
+			pageInitConfig.dashboardPage === DashboardPageTypes.MY_SUBMISSIONS
+		) {
+			menuItems.push({
+				key: 'publication',
+				label: t('submission.publication'),
+				icon: 'MySubmissions',
+				items: getPublicationItemsAuthor({submission, permissions}),
+			});
+		}
 		return menuItems;
 	}
 

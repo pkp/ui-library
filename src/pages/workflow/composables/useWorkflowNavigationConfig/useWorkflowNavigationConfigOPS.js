@@ -176,15 +176,26 @@ export function useWorkflowNavigationConfigOPS(pageInitConfig) {
 			});
 		}
 
-		menuItems.push({
-			key: 'publication',
-			label: t('submission.publication'),
-			icon: 'MySubmissions',
-			items:
-				pageInitConfig.dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD
-					? getPublicationItemsEditorial({submission, permissions})
-					: getPublicationItemsAuthor({submission, permissions}),
-		});
+		if (
+			pageInitConfig.dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD &&
+			permissions.canAccessPublication
+		) {
+			menuItems.push({
+				key: 'publication',
+				label: t('submission.publication'),
+				icon: 'MySubmissions',
+				items: getPublicationItemsEditorial({submission, permissions}),
+			});
+		} else if (
+			pageInitConfig.dashboardPage === DashboardPageTypes.MY_SUBMISSIONS
+		) {
+			menuItems.push({
+				key: 'publication',
+				label: t('submission.publication'),
+				icon: 'MySubmissions',
+				items: getPublicationItemsAuthor({submission, permissions}),
+			});
+		}
 
 		return menuItems;
 	}

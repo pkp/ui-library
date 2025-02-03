@@ -58,17 +58,13 @@ export function useWorkflowPermissions({submission, selectedPublication}) {
 		}
 
 		if (
-			hasIntersection(activeStage.currentUserAssignedRoles, [
-				...EditorialRoles,
-				pkp.const.ROLE_ID_AUTHOR,
-			])
+			hasIntersection(activeStage.currentUserAssignedRoles, [...EditorialRoles])
 		) {
 			canAccessPublication = true;
 
 			if (
 				hasIntersection(productionStage.currentUserAssignedRoles, [
 					...EditorialRoles,
-					pkp.const.ROLE_ID_AUTHOR,
 				])
 			) {
 				canAccessProduction = true;

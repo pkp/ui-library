@@ -147,14 +147,12 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 			);
 		}
 
-		if (permissions.canAccessProduction) {
-			items.push(
-				getPublicationItem({
-					name: 'galleys',
-					label: t('submission.layout.galleys'),
-				}),
-			);
-		}
+		items.push(
+			getPublicationItem({
+				name: 'galleys',
+				label: t('submission.layout.galleys'),
+			}),
+		);
 
 		return items;
 	}
@@ -298,15 +296,26 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 				items: getMarketingItems({submission, permissions}),
 			});
 		}
-		menuItems.push({
-			key: 'publication',
-			label: t('submission.publication'),
-			icon: 'MySubmissions',
-			items:
-				pageInitConfig.dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD
-					? getPublicationItemsEditorial({submission, permissions})
-					: getPublicationItemsAuthor({submission, permissions}),
-		});
+		if (
+			pageInitConfig.dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD &&
+			permissions.canAccessPublication
+		) {
+			menuItems.push({
+				key: 'publication',
+				label: t('submission.publication'),
+				icon: 'MySubmissions',
+				items: getPublicationItemsEditorial({submission, permissions}),
+			});
+		} else if (
+			pageInitConfig.dashboardPage === DashboardPageTypes.MY_SUBMISSIONS
+		) {
+			menuItems.push({
+				key: 'publication',
+				label: t('submission.publication'),
+				icon: 'MySubmissions',
+				items: getPublicationItemsAuthor({submission, permissions}),
+			});
+		}
 
 		return menuItems;
 	}
