@@ -1,5 +1,9 @@
 <template>
-	<div class="pkpFormField pkpFormField--affiliations">
+	<!-- To be able to scroll to this field on error-->
+	<div
+		:id="`${props.formId}-${props.name}`"
+		class="pkpFormField pkpFormField--affiliations"
+	>
 		<div class="pkpFormField__heading">
 			<label class="pkpFormFieldLabel">
 				{{ t('user.affiliations', {}) }}
@@ -70,7 +74,12 @@
 									/>
 									{{ translations(affiliation).label }}
 								</a>
-								<div v-if="affiliationIndex === indexEditMode">
+								<div
+									v-if="
+										affiliationIndex === indexEditMode ||
+										errors?.[affiliationIndex]?.name
+									"
+								>
 									<div
 										v-for="[affiliationNameLocale] in Object.entries(
 											affiliation.name,
@@ -80,45 +89,27 @@
 										<div
 											v-if="supportedLocales.includes(affiliationNameLocale)"
 										>
-											<div>
-												<span class="text-lg-semibold">
-													{{ getTextFieldLabel(affiliationNameLocale) }}
-												</span>
-												<span
-													v-if="affiliationNameLocale === primaryLocale"
-													class="pkpFormFieldLabel__required"
-												>
-													<span class="aria-hidden">*</span>
-													<span class="-screenReader">Required</span>
-												</span>
-											</div>
-											<div class="pkpFormField--sizelarge">
-												<input
-													:id="
-														'contributors-affiliations-' +
-														affiliationIndex +
-														'-' +
+											<FieldText
+												:label="getTextFieldLabel(affiliationNameLocale)"
+												:value="affiliation.name[affiliationNameLocale]"
+												name="name"
+												:all-errors="{
+													name: errors?.[affiliationIndex]?.name?.[
 														affiliationNameLocale
-													"
-													v-model="affiliation.name[affiliationNameLocale]"
-													:name="
-														'contributors-affiliations-' +
-														affiliationIndex +
-														'-' +
-														affiliationNameLocale
-													"
-													class="pkpFormField__input pkpFormField--text__input"
-													type="text"
-													:aria-invalid="false"
-												/>
-												<FieldError
-													v-if="
-														affiliationNameLocale === primaryLocale &&
-														!affiliation.name[affiliationNameLocale].trim()
-													"
-													:messages="[t('validator.required', {})]"
-												/>
-											</div>
+													],
+												}"
+												size="large"
+												:is-required="affiliationNameLocale === primaryLocale"
+												@change="
+													(fieldName, _, fieldValue) => {
+														updateAffiliationName(
+															affiliationIndex,
+															affiliationNameLocale,
+															fieldValue,
+														);
+													}
+												"
+											/>
 										</div>
 									</div>
 								</div>
@@ -128,7 +119,6 @@
 							<DropdownActions
 								v-if="!(affiliationIndex === indexEditMode)"
 								v-bind="rowActionsArgs(affiliationIndex)"
-								:class="'dropDownActions border-transparent'"
 								@action="rowActionsHandler"
 							/>
 						</TableCell>
@@ -259,6 +249,7 @@ import {ref, computed, onMounted, watch, onBeforeUnmount} from 'vue';
 import {t} from '@/utils/i18n';
 import {useModal} from '@/composables/useModal';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
+import FieldText from '@/components/Form/fields/FieldText.vue';
 import FieldError from '@/components/Form/FieldError.vue';
 import FieldAffiliationsRorAutoSuggest from '@/components/Form/fields/FieldAffiliationsRorAutoSuggest.vue';
 import Icon from '@/components/Icon/Icon.vue';
@@ -343,17 +334,11 @@ const {fetch: postRorObject} = useFetch(apiUrl.value, {
 	body: rorObjectToBeUpdated,
 });
 
-computed(() => {
+const errors = computed(() => {
 	if (!Object.keys(props.allErrors).includes(props.name)) {
 		return [];
 	}
-	let errors = props.allErrors[props.name];
-	if (props.isMultilingual && Object.keys(errors).includes(props.localeKey)) {
-		return errors[props.localeKey];
-	} else if (!props.isMultilingual) {
-		return errors;
-	}
-	return [];
+	return props.allErrors[props.name];
 });
 
 watch(
@@ -444,7 +429,7 @@ const rowActionsArgs = function (index) {
 		label: t('user.affiliations.translationActionsAriaLabel', {}),
 		ariaLabel: t('user.affiliations.translationActionsAriaLabel', {}),
 		direction: 'left',
-		displayAsEllipsis: true,
+		buttonVariant: 'ellipsis',
 	};
 };
 
@@ -500,6 +485,21 @@ function deleteRow(index) {
 			},
 		],
 		close: () => {},
+	});
+}
+
+function updateAffiliationName(affiliationIndex, locale, value) {
+	currentValue.value = currentValue.value.map((affiliation, index) => {
+		if (index !== affiliationIndex) {
+			return affiliation;
+		}
+		return {
+			...affiliation,
+			name: {
+				...affiliation.name,
+				[locale]: value,
+			},
+		};
 	});
 }
 
