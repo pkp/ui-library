@@ -1,7 +1,7 @@
 <template>
 	<TableCell>
 		<DropdownActions
-			:actions="store.getItemActions(user)"
+			:actions="store.getItemActions({user})"
 			:label="t('userAccess.management.options')"
 			button-variant="ellipsis"
 			direction="left"

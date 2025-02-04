@@ -118,8 +118,8 @@ export const useUserAccessManagerStore = defineComponentStore(
 
 		const _userAccessActionsFns = useUserAccessManagerActions();
 
-		function getItemActions(user) {
-			return _userAccessActionsFns.getItemActions(user);
+		function getItemActions({user}) {
+			return _userAccessActionsFns.getItemActions({user});
 		}
 
 		function sendEmail({user}) {

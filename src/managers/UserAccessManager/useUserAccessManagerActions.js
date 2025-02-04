@@ -18,7 +18,7 @@ export function useUserAccessManagerActions() {
 	const {t} = useLocalize();
 	const {getCurrentUserId} = useCurrentUser();
 
-	function getItemActions(userObj) {
+	function getItemActions({user}) {
 		const actions = [];
 
 		actions.push({
@@ -33,8 +33,8 @@ export function useUserAccessManagerActions() {
 			name: Actions.USER_ACCESS_SEND_MAIL,
 		});
 
-		if (getCurrentUserId() !== userObj.id) {
-			userObj.canLoginAs &&
+		if (getCurrentUserId() !== user.id) {
+			user.canLoginAs &&
 				actions.push({
 					label: t('grid.action.logInAs'),
 					icon: 'LoginAs',
@@ -49,7 +49,7 @@ export function useUserAccessManagerActions() {
 			});
 
 			actions.push({
-				label: userObj.disabled
+				label: user.disabled
 					? t('grid.action.enable')
 					: t('grid.action.disable'),
 				icon: 'DisableUser',
@@ -57,7 +57,7 @@ export function useUserAccessManagerActions() {
 				isWarnable: true,
 			});
 
-			userObj.canMergeUser &&
+			user.canMergeUser &&
 				actions.push({
 					label: t('grid.action.mergeUser'),
 					icon: 'MergeUser',
@@ -68,25 +68,25 @@ export function useUserAccessManagerActions() {
 		return actions;
 	}
 
-	function sendEmail(userData, finishedCallback) {
+	function sendEmail({user}, finishedCallback) {
 		const {openLegacyModal} = useLegacyGridUrl({
 			component: 'grid.settings.user.UserGridHandler',
 			op: 'edit-email',
 			params: {
-				rowId: userData.user.id,
+				rowId: user.id,
 			},
 		});
 
 		openLegacyModal({title: t('grid.user.email')}, finishedCallback);
 	}
 
-	function disableUser(userData, finishedCallback) {
+	function disableUser({user}, finishedCallback) {
 		const {openLegacyModal} = useLegacyGridUrl({
 			component: 'grid.settings.user.UserGridHandler',
 			op: 'edit-disable-user',
 			params: {
-				rowId: userData.user.id,
-				enable: userData.user.disabled ? '1' : '',
+				rowId: user.id,
+				enable: user.disabled ? '1' : '',
 			},
 		});
 
@@ -97,12 +97,12 @@ export function useUserAccessManagerActions() {
 
 	const {openDialog, openDialogNetworkError} = useModal();
 
-	function removeUser(userData, finishedCallback) {
+	function removeUser({user}, finishedCallback) {
 		const {url} = useLegacyGridUrl({
 			component: 'grid.settings.user.UserGridHandler',
 			op: 'remove-user',
 			params: {
-				rowId: userData.user.id,
+				rowId: user.id,
 			},
 		});
 		openDialog(
@@ -143,8 +143,8 @@ export function useUserAccessManagerActions() {
 		);
 	}
 
-	function loginAs(userData) {
-		const {redirectToPage} = useUrl(`login/signInAsUser/${userData.user.id}`);
+	function loginAs({user}) {
+		const {redirectToPage} = useUrl(`login/signInAsUser/${user.id}`);
 		openDialog({
 			title: t('grid.action.logInAs'),
 			message: t('grid.user.confirmLogInAs'),
@@ -168,12 +168,12 @@ export function useUserAccessManagerActions() {
 		});
 	}
 
-	function mergeUser(userData, finishedCallback) {
+	function mergeUser({user}, finishedCallback) {
 		const {openLegacyModal} = useLegacyGridUrl({
 			component: 'grid.settings.user.UserGridHandler',
 			op: 'merge-users',
 			params: {
-				oldUserId: userData.user.id,
+				oldUserId: user.id,
 			},
 		});
 
