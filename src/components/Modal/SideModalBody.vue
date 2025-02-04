@@ -46,7 +46,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="relative mt-6 flex-1 overflow-y-scroll">
+			<!-- pkp-modal-scroll-container is important for scrolling within form-->
+			<div
+				class="pkp-modal-scroll-container relative mt-6 flex-1 overflow-y-scroll"
+			>
 				<!-- @slot Body content -->
 				<slot :close-modal="closeModal" />
 			</div>
