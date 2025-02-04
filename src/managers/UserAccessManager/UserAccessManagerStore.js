@@ -69,24 +69,36 @@ export const useUserAccessManagerStore = defineComponentStore(
 
 			columns.push({
 				header: t('userAccess.tableHeader.name'),
+				component: 'UserAccessManagerCellName',
+				props: {},
 			});
 
 			columns.push({
 				header: t('about.contact.email'),
+				component: 'UserAccessManagerCellEmail',
+				props: {},
 			});
 
 			columns.push({
 				header: t('user.roles'),
+				component: 'UserAccessManagerCellUserGroups',
+				props: {},
 			});
 			columns.push({
 				header: t('userAccess.tableHeader.startDate'),
+				component: 'UserAccessManagerCellStartDate',
+				props: {},
 			});
 			columns.push({
 				header: t('user.affiliation'),
+				component: 'UserAccessManagerCellAffiliation',
+				props: {},
 			});
 
 			columns.push({
 				header: t('common.moreActions'),
+				component: 'UserAccessManagerCellActions',
+				props: {},
 				headerSrOnly: true,
 			});
 
