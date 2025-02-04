@@ -65,6 +65,6 @@ const {set, form} = useForm(publicationForm);
 
 async function metadataDataChange() {
 	// Some metadata fields need extra data from db not in publication object
-	fetchForm();
+	await fetchForm();
 }
 </script>

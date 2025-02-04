@@ -99,13 +99,18 @@
 							<li>
 								{{ suggestion.label }}
 							</li>
-							<li v-if="suggestion.identifier?.match(/^http/)">
-								<a :href="suggestion.identifier" target="_blank" @click.stop>
+							<li v-if="suggestion.identifier">
+								<a
+									v-if="suggestion.identifier.match(/^http/)"
+									:href="suggestion.identifier"
+									target="_blank"
+									@click.stop
+								>
 									{{ suggestion.identifier }}
 								</a>
-							</li>
-							<li v-else-if="suggestion.identifier">
-								{{ suggestion.identifier }}
+								<template v-else>
+									{{ suggestion.identifier }}
+								</template>
 							</li>
 							<li
 								v-for="(extraItem, extraItemKey) in suggestion.extraItems ?? {}"
