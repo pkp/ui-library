@@ -43,7 +43,7 @@ export const useUserAccessManagerStore = defineComponentStore(
 			query: {
 				searchPhrase: searchPhrase,
 				status: 'all',
-				// includePermissions: true,
+				includePermissions: true,
 			},
 		});
 		watch(
