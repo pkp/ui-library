@@ -1,5 +1,5 @@
 <template>
-	<TableCell fit-content>{{ days }}</TableCell>
+	<TableCell>{{ days }}</TableCell>
 </template>
 <script setup>
 import {computed} from 'vue';

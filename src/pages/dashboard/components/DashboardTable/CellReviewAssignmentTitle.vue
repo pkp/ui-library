@@ -1,7 +1,7 @@
 <template>
 	<TableCell
 		:id="'submission-title-' + item.id"
-		full-width-truncated
+		class="max-w-[25em] truncate"
 		:is-row-header="true"
 	>
 		<span class="text-lg-semibold" v-html="title"></span>

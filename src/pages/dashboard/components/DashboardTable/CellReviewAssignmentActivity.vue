@@ -1,5 +1,5 @@
 <template>
-	<TableCell class="min-w-[17rem]">
+	<TableCell>
 		<div class="flex flex-col justify-center gap-y-2">
 			<component
 				:is="Components[config.component] || config.component"
