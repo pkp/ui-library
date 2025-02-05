@@ -133,32 +133,34 @@ export const WithErrorSummary = {
 		components: {PkpForm: Form, FormErrorSummary},
 		setup() {
 			const {get, set, components} = useContainerStateManager();
-			const errors = {
-				email: ['Please provide a valid email address'],
-				affiliation: {
-					en: ['You must enter your affiliation in English.'],
-					fr_CA: ['You must enter your affiliation in French.'],
-					ar: ['You must enter your affiliation in Arabic.'],
-				},
-				'user-locales': ['You must select at least two options.'],
-				bio: {
-					en: ['Please provide a bio statement to accompany your publication.'],
-				},
-				country: ['Please select your country.'],
-				'mailing-address': [
-					'You must enter a mailing address where you can receive post.',
-				],
-			};
-			set('errorSummary', {
+			set('example', {
 				...FormUser,
 				...args,
-				errors,
+				errors: {
+					email: ['Please provide a valid email address'],
+					affiliation: {
+						en: ['You must enter your affiliation in English.'],
+						fr_CA: ['You must enter your affiliation in French.'],
+						ar: ['You must enter your affiliation in Arabic.'],
+					},
+					'user-locales': ['You must select at least two options.'],
+					bio: {
+						en: [
+							'Please provide a bio statement to accompany your publication.',
+						],
+					},
+					country: ['Please select your country.'],
+					'mailing-address': [
+						'You must enter a mailing address where you can receive post.',
+					],
+				},
 			});
-			return {args, errors, get, set, components};
+
+			return {args, get, set, components};
 		},
 		template: `
-			<FormErrorSummary :errors="errors"/>
-			<PkpForm v-bind="components.errorSummary" @set="set" />
+			<FormErrorSummary :errors="components.example.errors"/>
+			<PkpForm v-bind="components.example" @set="set" />
 		`,
 	}),
 

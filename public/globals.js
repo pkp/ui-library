@@ -431,6 +431,10 @@ window.pkp = {
 		'form.errorOne': 'Please correct one error.',
 		'form.errors':
 			'The form was not saved because {$count} error(s) were encountered. Please correct these errors and try again.',
+		'form.errorSummaryOne':
+			'1 error detected! Please correct the error below before proceeding.',
+		'form.errorSummaryMany':
+			'{$count} errors detected! Please correct the errors below before proceeding.',
 		'form.multilingualLabel': '{$label} in {$localeName}',
 		'form.multilingualProgress': '{$count}/{$total} languages completed',
 		'form.saved': 'Saved',
@@ -454,8 +458,8 @@ window.pkp = {
 		'grid.noItems': 'No Items',
 		'grid.user.confirmLogInAs':
 			'Log in as this user? All actions you perform will be attributed to this user.',
-		'grid.user.currentUsers':'Current Users',
-		'grid.action.mergeUser':'Merge User',
+		'grid.user.currentUsers': 'Current Users',
+		'grid.action.mergeUser': 'Merge User',
 		'help.help': 'Help',
 		'informationCenter.informationCenter': 'Information Center',
 		'invitation.cancelInvite.actionName': 'Cancel Invite',

@@ -15,6 +15,9 @@
 <script setup>
 import {computed} from 'vue';
 import Icon from '@/components/Icon/Icon.vue';
+import {useLocalize} from '@/composables/useLocalize';
+
+const {t} = useLocalize();
 
 const props = defineProps({
 	errors: {
@@ -26,7 +29,10 @@ const props = defineProps({
 const errorsCount = computed(() => Object.keys(props.errors).length);
 
 const message = computed(() => {
-	const error = errorsCount.value > 1 ? 'errors' : 'error';
-	return `${errorsCount.value} ${error} detected! Please correct the following ${error} before proceeding.`;
+	const count = errorsCount.value;
+	if (count > 1) {
+		return t('form.errorSummaryMany', {count});
+	}
+	return t('form.errorSummaryOne');
 });
 </script>
