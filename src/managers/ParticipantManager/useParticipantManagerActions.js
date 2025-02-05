@@ -169,19 +169,48 @@ export function useParticipantManagerActions() {
 		});
 	}
 
-	function getItemActions() {
+	function getTopItems({submission, submissionStageId}) {
 		const {t} = useLocalize();
 
 		const actions = [];
 
-		// [Role::ROLE_ID_MANAGER, Role::ROLE_ID_SITE_ADMIN, Role::ROLE_ID_SUB_EDITOR],
-		const {hasCurrentUserAtLeastOneRole} = useCurrentUser();
+		const {hasCurrentUserAtLeastOneAssignedRoleInStage} = useCurrentUser();
 
-		const canAdminister = hasCurrentUserAtLeastOneRole([
-			pkp.const.ROLE_ID_MANAGER,
-			pkp.const.ROLE_ID_SITE_ADMIN,
-			pkp.const.ROLE_ID_SUB_EDITOR,
-		]);
+		const canAdminister = hasCurrentUserAtLeastOneAssignedRoleInStage(
+			submission,
+			submissionStageId,
+			[
+				pkp.const.ROLE_ID_MANAGER,
+				pkp.const.ROLE_ID_SITE_ADMIN,
+				pkp.const.ROLE_ID_SUB_EDITOR,
+			],
+		);
+
+		if (canAdminister) {
+			actions.push({
+				component: 'ParticipantManagerActionButton',
+				props: {label: t('common.assign'), action: Actions.PARTICIPANT_ASSIGN},
+			});
+		}
+		return actions;
+	}
+
+	function getItemActions({submission, submissionStageId}) {
+		const {t} = useLocalize();
+
+		const actions = [];
+
+		const {hasCurrentUserAtLeastOneAssignedRoleInStage} = useCurrentUser();
+
+		const canAdminister = hasCurrentUserAtLeastOneAssignedRoleInStage(
+			submission,
+			submissionStageId,
+			[
+				pkp.const.ROLE_ID_MANAGER,
+				pkp.const.ROLE_ID_SITE_ADMIN,
+				pkp.const.ROLE_ID_SUB_EDITOR,
+			],
+		);
 
 		if (canAdminister) {
 			actions.push({
@@ -217,6 +246,7 @@ export function useParticipantManagerActions() {
 	}
 
 	return {
+		getTopItems,
 		getItemActions,
 		participantAssign,
 		participantRemove,

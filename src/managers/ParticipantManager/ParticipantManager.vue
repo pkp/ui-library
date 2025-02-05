@@ -4,9 +4,14 @@
 			<h3 class="text-2xl-bold uppercase text-heading">
 				{{ t('editor.submission.stageParticipants') }}
 			</h3>
-			<PkpButton @click="participantManagerStore.participantAssign()">
-				{{ t('common.assign') }}
-			</PkpButton>
+			<div class="flex gap-x-2">
+				<component
+					:is="Components[action.component] || action.component"
+					v-bind="action.props || {}"
+					v-for="(action, i) in participantManagerStore.topItems"
+					:key="i"
+				></component>
+			</div>
 		</div>
 		<ul
 			v-if="participantManagerStore.participantsList?.length"
@@ -60,15 +65,19 @@
 </template>
 <script setup>
 import UserAvatar from '@/components/UserAvatar/UserAvatar.vue';
-import PkpButton from '@/components/Button/Button.vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useParticipantManagerStore} from './participantManagerStore';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
+import ParticipantManagerActionButton from './ParticipantManagerActionButton.vue';
 
 const props = defineProps({
 	submission: {type: Object, required: true},
 	submissionStageId: {type: String, required: true},
 });
+
+const Components = {
+	ParticipantManagerActionButton,
+};
 
 const participantManagerStore = useParticipantManagerStore(props);
 

@@ -74,7 +74,19 @@ export const useParticipantManagerStore = defineComponentStore(
 
 		const _actionFns = useParticipantManagerActions();
 
-		const itemActions = computed(() => _actionFns.getItemActions({}));
+		const topItems = computed(() =>
+			_actionFns.getTopItems({
+				submission: props.submission,
+				submissionStageId: props.submissionStageId,
+			}),
+		);
+
+		const itemActions = computed(() =>
+			_actionFns.getItemActions({
+				submission: props.submission,
+				submissionStageId: props.submissionStageId,
+			}),
+		);
 
 		function enrichActionArg(args) {
 			return {
@@ -122,6 +134,7 @@ export const useParticipantManagerStore = defineComponentStore(
 		return {
 			participantsList,
 			_actionFns,
+			topItems,
 			itemActions,
 			participantAssign,
 			participantRemove,
