@@ -12,7 +12,7 @@
 		<TableBody>
 			<TableRow v-for="(row, index) in userGroupsToAdd" :key="index">
 				<TableCell :is-row-header="true">
-					{{ localize(row.userGroupName) }}
+					{{ row.userGroupName }}
 				</TableCell>
 				<TableCell>{{ formatShortDate(row.dateStart) }}</TableCell>
 				<TableCell>
@@ -45,6 +45,6 @@ import {useDate} from '@/composables/useDate';
 defineProps({
 	userGroupsToAdd: {type: Array, required: true},
 });
-const {t, localize} = useLocalize();
+const {t} = useLocalize();
 const {formatShortDate} = useDate();
 </script>
