@@ -1,5 +1,5 @@
 <template>
-	<TableCell fit-content>
+	<TableCell>
 		<span class="text-base-normal">
 			<StageBubble :extended-stage="extendedStage">
 				{{ stageLabel }}

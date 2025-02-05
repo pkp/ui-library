@@ -1,5 +1,5 @@
 <template>
-	<TableCell fit-content>
+	<TableCell>
 		<PkpButton
 			class="-ms-3"
 			:aria-describedby="'submission-title-' + item.id"
