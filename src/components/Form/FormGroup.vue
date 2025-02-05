@@ -43,6 +43,8 @@
 						:key="field.name"
 						:all-errors="errors"
 						:form-id="formId"
+						:primary-locale="primaryLocale"
+						:locales="availableLocales"
 						@change="fieldChanged"
 						@set-errors="setFieldErrors"
 					></component>
@@ -53,6 +55,7 @@
 </template>
 
 <script>
+import FieldAffiliations from './fields/FieldAffiliations.vue';
 import FieldArchivingPn from './fields/FieldArchivingPn.vue';
 import FieldAutosuggestPreset from './fields/FieldAutosuggestPreset.vue';
 import FieldBaseAutosuggest from './fields/FieldBaseAutosuggest.vue';
@@ -84,6 +87,7 @@ import {shouldShowFieldWithinGroup} from './formHelpers';
 export default {
 	name: 'FormGroup',
 	components: {
+		FieldAffiliations,
 		FieldArchivingPn,
 		FieldAutosuggestPreset,
 		FieldBaseAutosuggest,

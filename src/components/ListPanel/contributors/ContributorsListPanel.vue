@@ -396,6 +396,9 @@ export default {
 							field.isVerified = author['orcidIsVerified'] ?? false;
 							field.orcidVerificationRequested =
 								author['orcidVerificationRequested'];
+						} else if (field.name === 'affiliations') {
+							field.authorId = author['id'];
+							field.value = author[field.name];
 						} else if (Object.keys(author).includes(field.name)) {
 							field.value = author[field.name];
 						}
