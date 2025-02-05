@@ -18,11 +18,11 @@ export const useContributorManagerStore = defineComponentStore(
 
 		const dashboardStore = useDashboardPageStore();
 
-		const {form, setLocales} = useForm(
+		const {form, setLocalesForSubmission} = useForm(
 			dashboardStore.componentForms.contributorForm,
 		);
 
-		setLocales(props.submission.metadataLocales);
+		setLocalesForSubmission(props.submission);
 
 		const {triggerDataChange} = useDataChanged();
 

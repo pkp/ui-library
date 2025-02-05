@@ -145,14 +145,21 @@ export function useForm(_form, {customSubmit} = {}) {
 		});
 	}
 
-	function setLocales(_locales) {
-		if (Array.isArray(_locales)) {
-			form.value.supportedFormLocales = _locales;
+	function setLocalesForSubmission(submission) {
+		const supportedFormLocales = submission.metadataLocales;
+		if (Array.isArray(supportedFormLocales)) {
+			form.value.supportedFormLocales = supportedFormLocales;
 		} else {
-			form.value.supportedFormLocales = Object.keys(_locales).map(
-				(localeKey) => ({key: localeKey, label: _locales[localeKey]}),
+			form.value.supportedFormLocales = Object.keys(supportedFormLocales).map(
+				(localeKey) => ({
+					key: localeKey,
+					label: supportedFormLocales[localeKey],
+				}),
 			);
 		}
+
+		form.value.primaryLocale = submission.locale;
+		form.value.visibleLocales = [submission.locale];
 	}
 
 	function structuredErrors(errors) {
@@ -188,7 +195,7 @@ export function useForm(_form, {customSubmit} = {}) {
 		form,
 		connectWithPayload,
 		connectWithErrors,
-		setLocales,
+		setLocalesForSubmission,
 		setAction,
 		structuredErrors,
 	};
