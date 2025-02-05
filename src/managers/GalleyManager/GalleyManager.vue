@@ -7,9 +7,7 @@
 				v-bind="action.props || {}"
 				v-for="(action, i) in galleyManagerStore.topItems"
 				:key="i"
-			>
-				{{ action.label }}
-			</component>
+			></component>
 		</template>
 		<TableHeader>
 			<TableColumn v-for="(column, i) in galleyManagerStore.columns" :key="i">
@@ -35,9 +33,7 @@
 					v-bind="action.props || {}"
 					v-for="(action, i) in galleyManagerStore.bottomActions"
 					:key="i"
-				>
-					{{ action.label }}
-				</component>
+				></component>
 			</div>
 		</template>
 	</PkpTable>
