@@ -61,6 +61,7 @@
 				:visible-locales="visibleLocales"
 				:available-locales="availableLocales"
 				:is-saving="isSaving"
+				:show-error-footer="showErrorFooter"
 				@change="fieldChanged"
 				@page-submitted="nextPage"
 				@previous-page="setCurrentPage(false)"
@@ -135,6 +136,13 @@ export default {
 		 *  Async function, receiving data from form and returning {validationError, data} from useFetch
 		 */
 		customSubmit: Function,
+		/** If the error summary is shown in the form's footer. */
+		showErrorFooter: {
+			type: Boolean,
+			default() {
+				return true;
+			},
+		},
 	},
 	emits: [
 		/** When the form props need to be updated. The payload is an object with any keys that need to be modified. */

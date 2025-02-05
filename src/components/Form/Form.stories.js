@@ -1,4 +1,5 @@
 import Form from './Form.vue';
+import FormErrorSummary from './FormErrorSummary.vue';
 import {useContainerStateManager} from '@/composables/useContainerStateManager';
 import FormBase from './mocks/form-base';
 import FormMultilingual from './mocks/form-multilingual';
@@ -125,4 +126,45 @@ export const WithErrors = {
 	}),
 
 	args: {},
+};
+
+export const WithErrorSummary = {
+	render: (args) => ({
+		components: {PkpForm: Form, FormErrorSummary},
+		setup() {
+			const {get, set, components} = useContainerStateManager();
+			set('example', {
+				...FormUser,
+				...args,
+				errors: {
+					email: ['Please provide a valid email address'],
+					affiliation: {
+						en: ['You must enter your affiliation in English.'],
+						fr_CA: ['You must enter your affiliation in French.'],
+						ar: ['You must enter your affiliation in Arabic.'],
+					},
+					'user-locales': ['You must select at least two options.'],
+					bio: {
+						en: [
+							'Please provide a bio statement to accompany your publication.',
+						],
+					},
+					country: ['Please select your country.'],
+					'mailing-address': [
+						'You must enter a mailing address where you can receive post.',
+					],
+				},
+			});
+
+			return {args, get, set, components};
+		},
+		template: `
+			<FormErrorSummary :errors="components.example.errors"/>
+			<PkpForm v-bind="components.example" @set="set" />
+		`,
+	}),
+
+	args: {
+		showErrorFooter: false,
+	},
 };
