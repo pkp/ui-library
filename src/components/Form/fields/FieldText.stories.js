@@ -50,6 +50,15 @@ export const Large = {
 	},
 };
 
+export const Disabled = {
+	args: {
+		...FieldBaseMock,
+		...FieldTextGivenNameMock,
+		isRequired: false,
+		disabled: true,
+	},
+};
+
 export const WithPrefix = {
 	args: {
 		...FieldBaseMock,

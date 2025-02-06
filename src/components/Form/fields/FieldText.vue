@@ -121,6 +121,11 @@ export default {
 		},
 		/** An optional prefix to show before the user's input. For example, a prefix of `http://publisher.com/` is used for the journal `path` field.  */
 		prefix: String,
+		/** A boolean value make text field disable */
+		disabled: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	data() {
 		return {
@@ -211,7 +216,7 @@ export default {
 		});
 
 		// Set the field to disabled if optIntoEdit is passed
-		if (this.optIntoEdit) {
+		if (this.optIntoEdit || this.disabled) {
 			this.isDisabled = true;
 		}
 	},
