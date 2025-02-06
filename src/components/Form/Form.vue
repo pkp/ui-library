@@ -574,8 +574,17 @@ export default {
 					'[id*="' + this.id + '-' + field.name + '"]',
 				);
 				if ($el) {
+					// Handle scrolling within new side modals
+					const containers = document.querySelectorAll(
+						'div.pkp-modal-scroll-container',
+					);
+					const lastContainer =
+						containers.length > 0
+							? containers[containers.length - 1]
+							: undefined;
 					this.$scrollTo($el, 500, {
 						offset: -50,
+						container: lastContainer,
 					});
 				} else {
 					this.setCurrentPage(group.pageId);
