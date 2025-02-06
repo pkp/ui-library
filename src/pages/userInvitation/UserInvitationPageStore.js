@@ -336,28 +336,33 @@ export const useUserInvitationPageStore = defineComponentStore(
 		}
 
 		function cancel() {
-			openDialog({
-				name: 'cancel',
-				title: t('invitation.cancelInvite.title'),
-				message: t('userInvitation.cancel.message'),
-				actions: [
-					{
-						label: t('invitation.cancelInvite.actionName'),
-						isWarnable: true,
-						callback: (close) => {
-							redirectToPage();
+			if (invitationMode.value === 'editUser') {
+				redirectToPage();
+				close();
+			} else {
+				openDialog({
+					name: 'cancel',
+					title: t('invitation.cancelInvite.title'),
+					message: t('userInvitation.cancel.message'),
+					actions: [
+						{
+							label: t('invitation.cancelInvite.actionName'),
+							isWarnable: true,
+							callback: (close) => {
+								redirectToPage();
+							},
 						},
-					},
-					{
-						label: t('userInvitation.cancel.goBack'),
-						callback: (close) => {
-							redirectToPage();
-							close();
+						{
+							label: t('userInvitation.cancel.goBack'),
+							callback: (close) => {
+								redirectToPage();
+								close();
+							},
 						},
-					},
-				],
-				modalStyle: 'negative',
-			});
+					],
+					modalStyle: 'negative',
+				});
+			}
 		}
 
 		const registeredActionsForSteps = {};
