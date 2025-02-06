@@ -147,12 +147,6 @@ window.pkp = {
 		'acceptInvitation.verifyOrcid': 'Verify ORCID iD',
 		'admin.jobs.failed.action.redispatch': 'Try Again',
 		'admin.jobs.failed.action.redispatch.all': 'Requeue All Failed Jobs',
-		'dashboard.submissions.incomplete.bulkDelete.body':
-			'##dashboard.submissions.incomplete.bulkDelete.body##',
-		'dashboard.submissions.incomplete.bulkDelete.column.description':
-			'##dashboard.submissions.incomplete.bulkDelete.column.description##',
-		'dashboard.submissions.incomplete.bulkDelete.confirm':
-			'##dashboard.submissions.incomplete.bulkDelete.confirm##',
 		'admin.version': 'Version',
 		'article.article': 'Article',
 		'article.metadata': 'Metadata',
@@ -190,7 +184,6 @@ window.pkp = {
 		'common.filtersClear': 'Clear Filters',
 		'common.findTemplate': 'Find Template',
 		'common.geographic': 'Geographic',
-		'common.id': 'ID',
 		'common.insert': 'Insert',
 		'common.insertContent': 'Insert Content',
 		'common.insertContentSearch': 'Find content to insert',
@@ -204,6 +197,7 @@ window.pkp = {
 		'common.noItemsFound': 'No items found.',
 		'common.none': 'None',
 		'common.numberedMore': '{$number} more',
+		'common.numero': 'No',
 		'common.ok': 'OK',
 		'common.order': 'Order',
 		'common.orderDown': 'Decrease position of {$itemTitle}',
@@ -217,6 +211,7 @@ window.pkp = {
 		'common.payments': 'Payments',
 		'common.preview': 'Preview',
 		'common.publications': 'Articles',
+		'common.refreshingData': 'Refreshing data',
 		'common.remove': 'Remove',
 		'common.removeItem': 'Remove {$item}',
 		'common.required': 'Required',
@@ -253,16 +248,11 @@ window.pkp = {
 		'contributor.listPanel.preview.format': 'Format',
 		'contributor.listPanel.preview.full': 'Full',
 		'contributor.listPanel.preview.publicationLists': 'Publication Lists',
-		'dashboard.acceptOrDeclineRequestDate':
-			'Please accept or decline this request {$date}',
+		'dashboard.actions.finishReview': 'Finish review',
+		'dashboard.actions.respondToRequest': 'Respond to request',
 		'dashboard.applyFilters': 'Apply Filters',
 		'dashboard.assignReviewers': 'Assign Reviewers',
-		'dashboard.completeReviewByDate': 'Please complete this review by {$date}.',
-		'dashboard.deadlineForCompletingReviewHasPassed':
-			'Deadline for completing this review has passed. Please complete the review at the earliest.',
-		'dashboard.deadlineForRespondingAcceptOrDecline':
-			'Deadline for responding to this request has passed. Please accept or decline this request at the earliest.',
-		'dashboard.declinedDuringStage': 'Declined during the {$stageName} stage',
+		'dashboard.declinedDuringStage': 'Declined during the {$stageName} stage.',
 		'dashboard.newReviewRoundToBeCreated': 'New review round to be created',
 		'dashboard.recommendOnly.pendingRecommendations':
 			'Recommending Editors are tasked to advise the next steps for this submission',
@@ -270,16 +260,30 @@ window.pkp = {
 			'All editorial recommendations have been received, and a decision is required.',
 		'dashboard.recommendOnly.recommendationsReady':
 			'An editorial recommendation has been received',
+		'dashboard.reviewAssignment.acceptOrDeclineRequestDate':
+			'Please accept or decline this request by {$date}',
 		'dashboard.reviewAssignment.action.cancelReviewer': 'Cancel Reviewer',
 		'dashboard.reviewAssignment.action.editDueDate': 'Edit Due Date',
 		'dashboard.reviewAssignment.action.resendReviewRequest':
 			'Resend Review Request',
+		'dashboard.reviewAssignment.action.sendReviewToOrcid':
+			'Send Review To ORCID',
+		'dashboard.reviewAssignment.action.sendReviewToOrcid.confirm':
+			"Send this review to the reviewer's ORCID?",
 		'dashboard.reviewAssignment.action.unassignReviewer': 'Unassign',
 		'dashboard.reviewAssignment.action.viewDetails': 'View details',
 		'dashboard.reviewAssignment.action.viewRecommendation':
 			'View recommendation',
 		'dashboard.reviewAssignment.action.viewUnreadRecommendation':
 			'View unread recommendation',
+		'dashboard.reviewAssignment.completeReviewByDate':
+			'Please complete this review by {$date}.',
+		'dashboard.reviewAssignment.deadlineForCompletingReviewHasPassed':
+			'Deadline for completing this review has passed. Please complete the review at the earliest.',
+		'dashboard.reviewAssignment.deadlineForRespondingAcceptOrDecline':
+			'Deadline for responding to this request has passed. Please accept or decline this request at the earliest.',
+		'dashboard.reviewAssignment.declined': 'Request declined on {$date}',
+		'dashboard.reviewAssignment.reviewSubmitted': 'Review submitted on {$date}',
 		'dashboard.reviewAssignment.statusAccepted.description':
 			'This reviewer has accepted the review request. Their review is due in <b>{$days} days on {$date}.</b>',
 		'dashboard.reviewAssignment.statusAccepted.title':
@@ -323,6 +327,14 @@ window.pkp = {
 		'dashboard.revisionRequestedFromAuthor': 'Revisions requested from author',
 		'dashboard.revisionsRequestedFromAuthorNextRound':
 			'Revisions requested from the author to be taken to a new review round',
+		'dashboard.submissions.incomplete.bulkDelete.body':
+			'Are you sure you want to delete the selected items? This action cannot be undone. Please confirm to proceed.',
+		'dashboard.submissions.incomplete.bulkDelete.button':
+			'Delete Incomplete Submissions',
+		'dashboard.submissions.incomplete.bulkDelete.column.description':
+			'Select incomplete submissions to be deleted.',
+		'dashboard.submissions.incomplete.bulkDelete.confirm':
+			'Confirm Delete of Incomplete Submissions',
 		'dashboard.submitRevisions': 'Submit revisions',
 		'doi.manager.versions.countStatement': 'There are {$count} versions.',
 		'doi.manager.versions.modalTitle': 'DOIs for all versions',
@@ -413,17 +425,18 @@ window.pkp = {
 		'fileManager.copyeditedFiles': 'Copyedited Files',
 		'fileManager.copyeditedFilesDescription':
 			'These are edited files that will be taken to the production stage',
-		'fileManager.deskReviewFilesDescription':
-			'##fileManager.deskReviewFilesDescription##',
 		'fileManager.draftFilesDescription':
 			'These are files from the review stage which are to be copyedited',
-		'fileManager.filesForReview': 'Files for review',
+		'fileManager.filesForReview': 'Files for Review',
+		'fileManager.filesForReviewDescription':
+			'These files will be sent to the reviewers to review',
 		'fileManager.productionReadyFilesDescription':
 			'These are the files that will be sent for publication',
+		'fileManager.revisionsUploaded': 'Revisions Uploaded',
 		'fileManager.revisionsUploadedDescription':
 			'These files have been submitted by the author after revisions were requested',
 		'fileManager.submissionFilesDescription':
-			'These are the files that will be taken forward to the review stage in the workflow.',
+			'Files uploaded at the time of submission',
 		'form.dataHasChanged':
 			'The data on this form has changed. Do you wish to continue without saving?',
 		'form.errorA11y': 'Go to {$fieldLabel}: {$errorMessage}',
@@ -583,7 +596,6 @@ window.pkp = {
 		'manager.statistics.counterR5Reports.usageNotPossible':
 			'There are no COUNTER R5 usage statistics available yet.',
 		'manager.workflow': 'Workflow',
-		'navigation.backTo': '\u27f5 Back to {$page}',
 		'navigation.dashboards': 'Dashboards',
 		'navigation.mySubmissions': 'My Submissions',
 		'navigation.reviewAssignments': 'Review Assignments',
@@ -714,8 +726,6 @@ window.pkp = {
 		'submission.citations': 'References',
 		'submission.contributors': 'List of Contributors',
 		'submission.copyediting': 'Copyediting',
-		'submission.dashboard.view.published': 'Published',
-		'submission.dashboard.view.scheduled': 'Scheduled for publication',
 		'submission.files': 'Files',
 		'submission.files.downloadAll': 'Download All Files',
 		'submission.finalDraft': 'Draft Files',
@@ -755,6 +765,10 @@ window.pkp = {
 		'submission.recommendation': 'Recommendation: {$recommendation}',
 		'submission.review': 'Review',
 		'submission.stage.externalReviewWithRound': 'Review (Round {$round})',
+		'submission.stage.internalReviewWithRound':
+			'##submission.stage.internalReviewWithRound##',
+		'submission.stage.published': 'Published',
+		'submission.stage.scheduledForPublication': 'Scheduled For Publication',
 		'submission.stageParticipants.notify': 'Notify',
 		'submission.submit.newSubmissionSingle': 'New Submission',
 		'submission.submit.submissionFiles': 'Submission Files',
@@ -762,10 +776,12 @@ window.pkp = {
 		'submission.upload.percentComplete': 'Uploading {$percent}% complete',
 		'submission.upload.productionReady': 'Upload a Production Ready File',
 		'submission.upload.proof': 'Upload a File Ready for Publication',
+		'submission.wizard.cancel.confirmation':
+			'Are you sure you wish to cancel this submission? This will delete the submission and all associated data. This action cannot be undone.',
 		'submission.wizard.changeSubmission': 'Change Submission Settings',
+		'submission.wizard.submissionCancel': 'Cancel submission',
 		'submissions.declined': 'Declined',
 		'submissions.incomplete': 'Incomplete',
-		todo: '##todo##',
 		'user.affiliation': 'Affiliation',
 		'user.authorization.accessibleWorkflowStage':
 			"You don't currently have access to that stage of the workflow.",
@@ -817,21 +833,30 @@ window.pkp = {
 		'workflow.submissionNextReviewRoundInFutureStage':
 			'The submission advanced to the next review round, was accepted, and is currently in the {$stage} stage.',
 		'user.affiliations': 'Affiliations',
-		'user.affiliations.description': 'Enter the full name of the institution below, avoiding any acronyms. Select the name from the dropdown and click "Add" to include the affiliation in your profile. (e.g. "Simon Fraser University")',
+		'user.affiliations.description':
+			'Enter the full name of the institution below, avoiding any acronyms. Select the name from the dropdown and click "Add" to include the affiliation in your profile. (e.g. "Simon Fraser University")',
 		'user.affiliations.institution': 'Institution',
 		'user.affiliations.translation': 'More information',
 		'user.affiliations.translationEditActionLabel': 'Edit institution name',
 		'user.affiliations.translationDeleteActionLabel': 'Remove institution',
 		'user.affiliations.translationActionsAriaLabel': 'Click to edit or delete',
 		'user.affiliations.translationsAllAvailable': 'All translations available',
-		'user.affiliations.translationsSomeAvailable': '{$count} of {$total} languages completed',
-		'user.affiliations.typeTranslationNameInLanguageLabel': 'Type the institute name in {$language}',
-		'user.affiliations.translationNameInLanguage': 'Institute name in {$language}',
+		'user.affiliations.translationsSomeAvailable':
+			'{$count} of {$total} languages completed',
+		'user.affiliations.typeTranslationNameInLanguageLabel':
+			'Type the institute name in {$language}',
+		'user.affiliations.translationNameInLanguage':
+			'Institute name in {$language}',
 		'user.affiliations.deleteModal.title': 'Are you sure?',
-		'user.affiliations.deleteModal.message': 'The affiliation <strong>{$affiliation}</strong> will be deleted.',
-		'user.affiliations.searchPhraseLabel': 'Type the institute name in {$language}',
-		'user.affiliations.searchPhraseNothingFound': 'Your search phrase could not be found',
-		'user.affiliations.primaryLocaleRequired': 'The primary language {$primaryLocale} is required',
+		'user.affiliations.deleteModal.message':
+			'The affiliation <strong>{$affiliation}</strong> will be deleted.',
+		'user.affiliations.searchPhraseLabel':
+			'Type the institute name in {$language}',
+		'user.affiliations.searchPhraseNothingFound':
+			'Your search phrase could not be found',
+		'user.affiliations.primaryLocaleRequired':
+			'The primary language {$primaryLocale} is required',
+		'workflow.uploadRevisions': 'Upload revisions',
 	},
 	tinyMCE: {
 		skinUrl: '/styles/tinymce',

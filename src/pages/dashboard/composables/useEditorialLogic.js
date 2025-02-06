@@ -270,29 +270,35 @@ export function useEditorialLogic() {
 
 	function getEditorialActivityForMyReviewAssignments(reviewAssignment) {
 		if (
-			reviewAssignment.status ===
-			pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE
+			[
+				pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE,
+				pkp.const.REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND,
+			].includes(reviewAssignment.status)
 		) {
 			const date = reviewAssignment.dateResponseDue;
 			return [
 				{
 					component: 'CellReviewAssignmentActivityAlert',
 					props: {
-						alert: t('dashboard.acceptOrDeclineRequestDate', {
+						alert: t('dashboard.reviewAssignment.acceptOrDeclineRequestDate', {
 							date: formatShortDate(date),
 						}),
 					},
 				},
 			];
-			// Declined missing text
 		} else if (
 			reviewAssignment.status === pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED
 		) {
+			// indeed when declined, the dateConfirmed gets set regardless if its accepted or declined
+			const date = reviewAssignment.dateConfirmed;
+
 			return [
 				{
 					component: 'CellReviewAssignmentActivityAlert',
 					props: {
-						alert: `Missing text`,
+						alert: t('dashboard.reviewAssignment.declined', {
+							date: formatShortDate(date),
+						}),
 					},
 				},
 			];
@@ -304,7 +310,9 @@ export function useEditorialLogic() {
 				{
 					component: 'CellReviewAssignmentActivityAlert',
 					props: {
-						alert: t('dashboard.deadlineForRespondingAcceptOrDecline'),
+						alert: t(
+							'dashboard.reviewAssignment.deadlineForRespondingAcceptOrDecline',
+						),
 					},
 				},
 			];
@@ -317,7 +325,7 @@ export function useEditorialLogic() {
 				{
 					component: 'CellReviewAssignmentActivityAlert',
 					props: {
-						alert: t('dashboard.completeReviewByDate', {date}),
+						alert: t('dashboard.reviewAssignment.completeReviewByDate', {date}),
 					},
 				},
 			];
@@ -329,7 +337,9 @@ export function useEditorialLogic() {
 				{
 					component: 'CellReviewAssignmentActivityAlert',
 					props: {
-						alert: t('dashboard.deadlineForCompletingReviewHasPassed'),
+						alert: t(
+							'dashboard.reviewAssignment.deadlineForCompletingReviewHasPassed',
+						),
 					},
 				},
 			];
@@ -339,9 +349,23 @@ export function useEditorialLogic() {
 				pkp.const.REVIEW_ASSIGNMENT_STATUS_VIEWED,
 				pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 				pkp.const.REVIEW_ASSIGNMENT_STATUS_THANKED,
-				pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED,
-				pkp.const.REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND,
 			].includes(reviewAssignment.statusId)
+		) {
+			const date = reviewAssignment.dateCompleted;
+
+			return [
+				{
+					component: 'CellReviewAssignmentActivityAlert',
+					props: {
+						alert: t('dashboard.reviewAssignment.reviewSubmitted', {
+							date: formatShortDate(date),
+						}),
+					},
+				},
+			];
+		} else if (
+			// Cancelled review assignments should be filtered out, this should not appear, just for documentation
+			reviewAssignment.status === pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED
 		) {
 			return [
 				{
@@ -354,14 +378,6 @@ export function useEditorialLogic() {
 		}
 
 		return [];
-		/**
-
-
-
-				Deadline for completing this review has passed. Please complete the review at the earliest.
-
-				Review in progress. Deadline is 2023.04.15 - shown when the reviewer has started filling the form but the form is incomplete
-			 */
 	}
 
 	return {

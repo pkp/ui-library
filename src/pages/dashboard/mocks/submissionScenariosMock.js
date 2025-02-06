@@ -1,9 +1,13 @@
 import {getSubmissionMock} from './submissionMock';
 import {getPublicationMock} from './publicationMock';
 import {getReviewRoundMock} from './reviewRoundsMock';
-import {getReviewAssignmentMock} from './reviewAssignmentsMock';
+import {getReviewAssignmentShortMock} from './reviewAssignmentsMock';
 
 export const EditorialActivityScenario = [
+	// Submission stage
+	getSubmissionMock({stageId: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION}),
+
+	// Review stage
 	// REVIEW_ROUND_STATUS_REVISIONS_REQUESTED
 	getSubmissionMock({
 		publications: [
@@ -13,7 +17,7 @@ export const EditorialActivityScenario = [
 			}),
 		],
 		reviewAssignments: [
-			getReviewAssignmentMock({
+			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
 				recommendation:
 					pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_PENDING_REVISIONS,
@@ -34,7 +38,7 @@ export const EditorialActivityScenario = [
 			}),
 		],
 		reviewAssignments: [
-			getReviewAssignmentMock({
+			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
 				recommendation:
 					pkp.const.SUBMISSION_REVIEWER_RECOMMENDATION_PENDING_REVISIONS,
@@ -58,7 +62,7 @@ export const EditorialActivityScenario = [
 			}),
 		],
 		reviewAssignments: [
-			getReviewAssignmentMock({
+			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 			}),
 		],
@@ -88,10 +92,10 @@ export const EditorialActivityScenario = [
 			}),
 		],
 		reviewAssignments: [
-			getReviewAssignmentMock({
+			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 			}),
-			getReviewAssignmentMock({
+			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_ACCEPTED,
 			}),
 		],
@@ -110,10 +114,10 @@ export const EditorialActivityScenario = [
 			}),
 		],
 		reviewAssignments: [
-			getReviewAssignmentMock({
+			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 			}),
-			getReviewAssignmentMock({
+			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
 				dateCompleted: '2024-01-20',
 				recommendation:
@@ -135,10 +139,10 @@ export const EditorialActivityScenario = [
 			}),
 		],
 		reviewAssignments: [
-			getReviewAssignmentMock({
+			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 			}),
-			getReviewAssignmentMock({
+			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 			}),
 		],
@@ -157,10 +161,10 @@ export const EditorialActivityScenario = [
 			}),
 		],
 		reviewAssignments: [
-			getReviewAssignmentMock({
+			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 			}),
-			getReviewAssignmentMock({
+			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_RESPONSE_OVERDUE,
 			}),
 		],
@@ -179,10 +183,10 @@ export const EditorialActivityScenario = [
 			}),
 		],
 		reviewAssignments: [
-			getReviewAssignmentMock({
+			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 			}),
-			getReviewAssignmentMock({
+			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
 			}),
 		],
@@ -201,10 +205,10 @@ export const EditorialActivityScenario = [
 			}),
 		],
 		reviewAssignments: [
-			getReviewAssignmentMock({
+			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 			}),
-			getReviewAssignmentMock({
+			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
 			}),
 		],
@@ -223,10 +227,10 @@ export const EditorialActivityScenario = [
 			}),
 		],
 		reviewAssignments: [
-			getReviewAssignmentMock({
+			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 			}),
-			getReviewAssignmentMock({
+			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
 			}),
 		],
@@ -246,10 +250,10 @@ export const EditorialActivityScenario = [
 			}),
 		],
 		reviewAssignments: [
-			getReviewAssignmentMock({
+			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 			}),
-			getReviewAssignmentMock({
+			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
 			}),
 		],
@@ -268,10 +272,10 @@ export const EditorialActivityScenario = [
 			}),
 		],
 		reviewAssignments: [
-			getReviewAssignmentMock({
+			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 			}),
-			getReviewAssignmentMock({
+			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
 			}),
 		],
@@ -290,10 +294,10 @@ export const EditorialActivityScenario = [
 			}),
 		],
 		reviewAssignments: [
-			getReviewAssignmentMock({
+			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 			}),
-			getReviewAssignmentMock({
+			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
 			}),
 		],
