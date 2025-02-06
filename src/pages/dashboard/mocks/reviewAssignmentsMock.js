@@ -96,6 +96,5 @@ export function getReviewAssignmentFullMock(overrides = {}) {
 	// copy statusId to status as thats whats expected there
 	result.status = result.statusId;
 	delete result.statusId;
-	console.log(result);
 	return result;
 }

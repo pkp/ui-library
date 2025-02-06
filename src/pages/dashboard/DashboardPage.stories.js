@@ -163,7 +163,7 @@ export const ReviewAssignmentStatusesReviewer = {
 			<li><b>9.REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND</b> - request resent to reviewer after they declined</li>
 			<li><b>10.REVIEW_ASSIGNMENT_STATUS_VIEWED</b> -editor viewed the review, but not confirm</li>
 			<li><b>11.REVIEW_ASSIGNMENT_STATUS_CANCELLED</b> - reviewer cancelled review request // should not be displayed </li>
-		<ul>
+	</ul>
 		
 		<DashboardPage v-bind="args" />`,
 	}),
