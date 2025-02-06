@@ -7,6 +7,7 @@ const config = {
 		'@storybook/addon-interactions',
 		'@storybook/addon-themes',
 		'@storybook/addon-mdx-gfm',
+		'@storybook/addon-a11y',
 	],
 	framework: {
 		name: '@storybook/vue3-vite',
