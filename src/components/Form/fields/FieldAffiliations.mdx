@@ -1,0 +1,23 @@
+import {Primary, Controls, Stories, Meta, ArgTypes} from '@storybook/blocks';
+
+import * as FieldAffiliationsStories from './FieldAffiliations.stories.js';
+
+<Meta of={FieldAffiliationsStories} />
+
+# FieldAffiliation
+
+## Usage
+
+A special component to maintain affiliations (institutions) of authors (contributors).
+
+The Affiliations currently saved are shown in a tabular way.
+
+The default locale name and a clickable status message is shown, which shows which translations are saved. The affiliation name can be retrieved from an API or entered manually. If retrieved from the API, the values will be read only.
+
+The data of the API is from a cached data dump from https://ror.org. Getting and saving the data dump is done with the classes in the namespace "PKP\ror".
+
+The `value` are an array of Affiliation objects.
+
+<Primary />
+<Controls />
+<Stories />
