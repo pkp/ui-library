@@ -487,7 +487,6 @@ export default {
 				},
 				error: this.ajaxErrorCallback,
 				success(r) {
-					// TODO : may be some better appraoch than this ?
 					if (r.approvedAt) {
 						this.suggestions.forEach((reviewerSuggestion) => {
 							if (reviewerSuggestion.id == reviewerSuggestionId) {

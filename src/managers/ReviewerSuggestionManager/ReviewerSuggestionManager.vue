@@ -20,7 +20,7 @@
 						<div>
 							<UserAvatar
 								:user-id="reviewerSuggestion.id"
-								:user-full-name="reviewerSuggestion.fullName"
+								:initials="reviewerSuggestion.displayInitial"
 							></UserAvatar>
 						</div>
 						<div class="ms-2 flex flex-col justify-center">
@@ -37,16 +37,16 @@
 							></div>
 						</div>
 					</div>
-					<div v-if="reviewerSuggestionManagerStore.hasActiveReviewStage">
+					<div v-if="reviewerSuggestionManagerStore.atActiveReviewStage()">
 						<DropdownActions
 							:actions="reviewerSuggestionManagerStore.itemActions"
 							:label="`${reviewerSuggestion.fullName} ${t('common.moreActions')}`"
-							:display-as-ellipsis="true"
+							button-variant="ellipsis"
 							@action="
 								(actionName) =>
 									reviewerSuggestionManagerStore[actionName]({
 										reviewerSuggestion: reviewerSuggestion,
-										stageAssignmen,
+										stageAssignment,
 									})
 							"
 						/>
