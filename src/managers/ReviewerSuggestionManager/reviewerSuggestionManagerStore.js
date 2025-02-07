@@ -25,17 +25,17 @@ export const useReviewerSuggestionManagerStore = defineComponentStore(
 
 		const {apiUrl: reviewerSuggestionApiUrl} = useUrl(relativeUrl);
 
-		const {data: reviewerSuggestions, fetch: fetchreviewerSuggestion} =
+		const {data: reviewerSuggestions, fetch: fetchReviewerSuggestion} =
 			useFetch(reviewerSuggestionApiUrl);
 
 		watch(relativeUrl, () => {
 			reviewerSuggestions.value = null;
-			fetchreviewerSuggestion();
+			fetchReviewerSuggestion();
 		});
 
-		fetchreviewerSuggestion();
+		fetchReviewerSuggestion();
 
-		const {triggerDataChange} = useDataChanged(() => fetchreviewerSuggestion());
+		const {triggerDataChange} = useDataChanged(() => fetchReviewerSuggestion());
 
 		function triggerDataChangeCallback() {
 			triggerDataChange();
@@ -56,6 +56,7 @@ export const useReviewerSuggestionManagerStore = defineComponentStore(
 					list.push({
 						id: reviewerSuggestion.id,
 						fullName: localize(reviewerSuggestion.fullName),
+						displayInitial: localize(reviewerSuggestion.displayInitial),
 						affiliation: localize(reviewerSuggestion.affiliation),
 						suggestionReason: localize(reviewerSuggestion.suggestionReason),
 						existingReviewerRole: reviewerSuggestion.existingReviewerRole,
@@ -74,7 +75,13 @@ export const useReviewerSuggestionManagerStore = defineComponentStore(
 
 		const itemActions = computed(() => _actionFns.getItemActions({}));
 
-		const hasActiveReviewStage = props.reviewRoundId ? true : false;
+		function atActiveReviewStage() {
+			return props.reviewRoundId
+				&& (
+					props.submissionStageId == pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW 
+					|| props.submissionStageId == pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW
+				);
+		}
 
 		function enrichActionArg(args) {
 			return {
@@ -97,7 +104,7 @@ export const useReviewerSuggestionManagerStore = defineComponentStore(
 			_actionFns,
 			itemActions,
 			reviewerSuggestionApprove,
-			hasActiveReviewStage,
+			atActiveReviewStage,
 		};
 	},
 );

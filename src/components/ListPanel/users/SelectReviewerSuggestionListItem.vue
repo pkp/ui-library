@@ -3,16 +3,18 @@
 		<div class="listPanel__itemSummary">
 			<div class="listPanel__itemIdentity">
 				<div class="listPanel__itemTitle">
-					<!-- TODO: check why localize(fullName) causing error -->
-					{{ fullName }}
+					{{ localize(item.fullName) }}
 				</div>
 
 				<div class="listPanel__itemSubtitle">
 					<div class="listPanel__item--reviewer__affiliation">
-						{{ affiliation }}
+						{{ localize(item.affiliation) }}
 					</div>
 					<!-- TODO: check alternative of v-html as v-strip-unsafe-html not working -->
-					<div v-html="suggestionReason"></div>
+					<div 
+						class="reviewer_sugestion_reason_container"
+						v-html="localize(item.suggestionReason)"
+					></div>
 				</div>
 
 				<div v-if="currentlyAssigned" class="listPanel__item--reviewer__notice">
@@ -100,18 +102,6 @@ export default {
 
 			return false;
 		},
-
-		fullName() {
-			return this.localize(this.item.fullName);
-		},
-
-		affiliation() {
-			return this.localize(this.item.affiliation);
-		},
-
-		suggestionReason() {
-			return this.localize(this.item.suggestionReason);
-		},
 	},
 	methods: {
 		/**
@@ -153,3 +143,13 @@ export default {
 	},
 };
 </script>
+
+<style lang="less">
+@import '../../../styles/_import';
+
+.reviewer_sugestion_reason_container {
+	white-space: normal;
+	margin-right: 4rem;
+	text-align: justify;
+}
+</style>

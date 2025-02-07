@@ -447,7 +447,8 @@ export default {
 		 */
 		error: function (r) {
 			// Field validation errors
-			if (r.status && r.status === 400) {
+			// [422 --> Unprocessable Content/Entities] represent standard validation errors
+			if (r.status && (r.status === 400 || r.status === 422)) {
 				pkp.eventBus.$emit(
 					'notify',
 					this.t('form.errors', {
