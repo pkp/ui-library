@@ -60,6 +60,13 @@ import Icon from '@/components/Icon/Icon.vue';
 import {useFetch} from '@/composables/useFetch';
 import {useId} from '@/composables/useId';
 
+const props = defineProps({
+	filterIds: {
+		type: Array,
+		default: () => [],
+	},
+});
+const filterRorIds = props.filterIds;
 const {generateId} = useId();
 const autosuggestContainerId = generateId();
 const currentSelected = ref([]);
@@ -96,35 +103,41 @@ const autoSuggestProps = computed(() => ({
 }));
 
 const mappedSuggestions = computed(() => {
-	return suggestions.value?.items.map((item) => {
-		const displayLocale =
-			item.names?.find((i) => i.types.includes('ror_display'))?.lang !== null
-				? item.names?.find((i) => i.types.includes('ror_display'))?.lang
-				: noLangCode;
-
-		let names = {};
-		item.names?.forEach((name) => {
-			if (name.types.includes('label') || name.types.includes('ror_display')) {
-				const locale = name.lang !== null ? name.lang : noLangCode;
-				names[locale] = name.value;
-			}
+	return suggestions.value?.items
+		.filter((item) => !filterRorIds.value?.includes(item.id))
+		.map((item) => {
+			return mapSuggestion(item);
 		});
-
-		return {
-			value: {
-				id: null,
-				ror: item.id,
-				displayLocale: displayLocale,
-				isActive: item.status === 'active' ? 1 : 0,
-				name: names,
-				_href: null,
-			},
-			label: names[displayLocale],
-			hasSlot: true,
-			href: item.id,
-		};
-	});
 });
+
+function mapSuggestion(item) {
+	const displayLocale =
+		item.names?.find((i) => i.types.includes('ror_display'))?.lang !== null
+			? item.names?.find((i) => i.types.includes('ror_display'))?.lang
+			: noLangCode;
+
+	let names = {};
+	item.names?.forEach((name) => {
+		if (name.types.includes('label') || name.types.includes('ror_display')) {
+			const locale = name.lang !== null ? name.lang : noLangCode;
+			names[locale] = name.value;
+		}
+	});
+
+	return {
+		value: {
+			id: null,
+			ror: item.id,
+			displayLocale: displayLocale,
+			isActive: item.status === 'active' ? 1 : 0,
+			name: names,
+			_href: null,
+		},
+		label: names[displayLocale],
+		hasSlot: true,
+		href: item.id,
+	};
+}
 
 watch(queryParams, () => {
 	if (inputValue.value.length > 3) {
