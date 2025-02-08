@@ -136,7 +136,10 @@
 									})
 								}}
 							</span>
-							<FieldAffiliationsRorAutoSuggest ref="autoSuggestRef" />
+							<FieldAffiliationsRorAutoSuggest
+								ref="autoSuggestRef"
+								:filter-ids="currentValueRorIds"
+							/>
 						</TableCell>
 						<TableCell>
 							<div v-if="showNewAffiliationForm">
@@ -248,6 +251,11 @@ const props = defineProps({
 		type: String,
 		default: null,
 	},
+	/** The ID of the form this field should appear in. This is passed down from the `Form`.  */
+	formId: {
+		type: String,
+		default: null,
+	},
 	/** Current value of the field */
 	value: {
 		type: Array,
@@ -282,6 +290,13 @@ const locales = props.locales;
 const currentValue = computed({
 	get: () => props.value,
 	set: (newVal) => emit('change', props.name, 'value', newVal),
+});
+const currentValueRorIds = computed(() => {
+	return currentValue.value
+		.filter((item) => item['ror'])
+		.map((item) => {
+			return item['ror'];
+		});
 });
 const supportedLocales = props.locales.map((language) => language.key);
 const autoSuggestRef = ref(null);
