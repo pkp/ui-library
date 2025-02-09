@@ -29,16 +29,24 @@
 						:key="affiliationIndex"
 					>
 						<TableCell>
-							<div v-if="affiliation.name[primaryLocale]">
-								<span class="text-lg-semibold">
+							<div
+								v-if="affiliation.name[primaryLocale]"
+								class="flex items-center"
+							>
+								<span class="inline-block align-middle text-lg-semibold">
 									{{ affiliation.name[primaryLocale] }}
 								</span>
 								<a
 									v-if="affiliation.ror"
 									:href="affiliation.ror"
+									class="inline-block align-middle"
 									target="_blank"
 								>
-									<Icon icon="ROR" :class="'ms-1 h-6 w-6'" :inline="true" />
+									<Icon
+										icon="ROR"
+										:class="'ms-2 inline-block h-auto w-6 align-middle'"
+										:inline="true"
+									/>
 								</a>
 							</div>
 							<div v-else>
@@ -51,15 +59,19 @@
 								</span>
 							</div>
 						</TableCell>
-						<TableCell>
+						<TableCell class="">
 							<div v-if="affiliation.ror">
-								<span class="text-lg-semibold">
+								<a
+									:href="affiliation.ror"
+									class="inline-block cursor-pointer align-middle text-lg-semibold"
+									target="_blank"
+								>
 									{{ affiliation.ror }}
-								</span>
+								</a>
 							</div>
 							<div v-else>
 								<a
-									class="pkpButton cursor-pointer border-transparent py-2 text-lg-semibold text-primary hover:enabled:underline"
+									class="pkpButton flex cursor-pointer items-center border-transparent py-2 text-lg-semibold text-primary hover:enabled:underline"
 									@click="toggleEditMode(affiliationIndex)"
 								>
 									<Icon
@@ -69,7 +81,7 @@
 												? 'Complete'
 												: 'InProgress'
 										"
-										:class="'h-6 w-6'"
+										:class="'inline-block h-auto w-6 align-middle'"
 										:inline="true"
 									/>
 									{{ translations(affiliation).label }}
@@ -115,11 +127,11 @@
 								</div>
 							</div>
 						</TableCell>
-						<TableCell class="text-right">
+						<TableCell>
 							<DropdownActions
 								v-if="!(affiliationIndex === indexEditMode)"
 								v-bind="rowActionsArgs(affiliationIndex)"
-								:class="'dropDownActions border-transparent'"
+								:class="'dropDownActions border-transparent py-1.5'"
 								@action="
 									(actionName) =>
 										rowActionsHandler(actionName, affiliationIndex)
@@ -128,7 +140,7 @@
 						</TableCell>
 					</TableRow>
 					<TableRow>
-						<TableCell>
+						<TableCell class="align-top">
 							<span class="text-lg-semibold">
 								{{
 									t('user.affiliations.searchPhraseLabel', {
@@ -141,23 +153,27 @@
 								:filter-ids="currentValueRorIds"
 							/>
 						</TableCell>
-						<TableCell>
+						<TableCell class="">
 							<div v-if="showNewAffiliationForm">
 								<div v-if="newAffiliation.ror">
-									<span class="text-lg-semibold">
-										{{ newAffiliation.ror }}
-									</span>
+									<span class="text-lg-semibold">&nbsp;</span>
+									<br />
 									<a
 										:href="newAffiliation.ror"
-										class="inline-block py-2"
+										class="flex cursor-pointer items-center text-lg-semibold"
 										target="_blank"
 									>
-										<Icon icon="ROR" :class="'ms-1 h-6 w-6'" :inline="true" />
+										{{ newAffiliation.ror }}
+										<Icon
+											icon="ROR"
+											:class="'ms-2 inline-block h-auto w-6 align-middle'"
+											:inline="true"
+										/>
 									</a>
 								</div>
 								<div v-else>
 									<div>
-										<span class="inline-block py-2 text-lg-semibold">
+										<span class="flex items-center text-lg-semibold">
 											<Icon
 												:icon="
 													translations(newAffiliation).count ===
@@ -165,10 +181,12 @@
 														? 'Complete'
 														: 'InProgress'
 												"
-												:class="'h-6 w-6'"
+												:class="'ms-2 inline-block h-auto w-6 align-middle'"
 												:inline="true"
 											/>
-											{{ translations(newAffiliation).label }}
+											<span class="align-middle">
+												{{ translations(newAffiliation).label }}
+											</span>
 										</span>
 									</div>
 									<div
