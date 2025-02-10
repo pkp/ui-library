@@ -78,10 +78,8 @@ export const useReviewerSuggestionManagerStore = defineComponentStore(
 		function atActiveReviewStage() {
 			return (
 				props.reviewRoundId &&
-				(props.submissionStageId ===
-					pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW ||
-					props.submissionStageId ===
-						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) &&
+				props.submissionStageId ===
+					pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW &&
 				props.submissionStageId === props.submission.stageId
 			);
 		}
