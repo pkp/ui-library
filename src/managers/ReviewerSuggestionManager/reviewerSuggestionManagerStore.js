@@ -76,11 +76,14 @@ export const useReviewerSuggestionManagerStore = defineComponentStore(
 		const itemActions = computed(() => _actionFns.getItemActions({}));
 
 		function atActiveReviewStage() {
-			return props.reviewRoundId
-				&& (
-					props.submissionStageId == pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW 
-					|| props.submissionStageId == pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW
-				);
+			return (
+				props.reviewRoundId &&
+				(props.submissionStageId ===
+					pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW ||
+					props.submissionStageId ===
+						pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) &&
+				props.submissionStageId === props.submission.stageId
+			);
 		}
 
 		function enrichActionArg(args) {
