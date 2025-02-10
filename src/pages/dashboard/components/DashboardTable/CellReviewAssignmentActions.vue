@@ -19,23 +19,25 @@ import {defineProps, computed} from 'vue';
 import PkpButton from '@/components/Button/Button.vue';
 import TableCell from '@/components/Table/TableCell.vue';
 import {useDashboardPageStore} from '@/pages/dashboard/dashboardPageStore.js';
+import {useLocalize} from '@/composables/useLocalize';
+
+const {t} = useLocalize();
 
 const props = defineProps({
 	item: {type: Object, required: true},
 });
 
-// TODO refine that further once more example is provided
-// Plus localisation once the labels are settleed
 const actionLabel = computed(() => {
 	switch (props.item.status) {
 		case pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE:
 		case pkp.const.REVIEW_ASSIGNMENT_STATUS_RESPONSE_OVERDUE:
-			return 'Respond to request';
+		case pkp.const.REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND:
+			return t('dashboard.actions.respondToRequest');
 		case pkp.const.REVIEW_ASSIGNMENT_STATUS_ACCEPTED:
 		case pkp.const.REVIEW_ASSIGNMENT_STATUS_REVIEW_OVERDUE:
-			return 'Finish review';
+			return t('dashboard.actions.finishReview');
 		default:
-			return 'View';
+			return t('common.view');
 	}
 });
 

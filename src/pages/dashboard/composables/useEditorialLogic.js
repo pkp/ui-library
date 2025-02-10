@@ -33,22 +33,22 @@ export function useEditorialLogic() {
 			activeStage.id === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW
 		) {
 			const activeRound = getCurrentReviewRound(submission, activeStage.id);
-
-			if (activeStage.currentUserDecidingEditor) {
+			let activeRoundStatusId = activeRound.statusId;
+			if (activeStage.isCurrentUserDecidingEditor) {
 				// just hack for illustration
-				switch (activeRound.statusId) {
+				switch (activeRoundStatusId) {
 					case pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWERS:
 					case pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWS:
 					case pkp.const.REVIEW_ROUND_STATUS_REVIEWS_READY:
 					case pkp.const.REVIEW_ROUND_STATUS_REVIEWS_COMPLETED:
 					case pkp.const.REVIEW_ROUND_STATUS_REVIEWS_OVERDUE:
 					case pkp.const.REVIEW_ROUND_STATUS_RETURNED_TO_REVIEW:
-						activeRound.statusId =
+						activeRoundStatusId =
 							pkp.const.REVIEW_ROUND_STATUS_PENDING_RECOMMENDATIONS;
 				}
 			}
 			if (
-				activeRound.statusId === pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWERS
+				activeRoundStatusId === pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWERS
 			) {
 				return [
 					{
@@ -64,7 +64,7 @@ export function useEditorialLogic() {
 					},
 				];
 			} else if (
-				activeRound.statusId ===
+				activeRoundStatusId ===
 				pkp.const.REVIEW_ROUND_STATUS_REVISIONS_REQUESTED
 			) {
 				return [
@@ -86,7 +86,7 @@ export function useEditorialLogic() {
 					},
 				];
 			} else if (
-				activeRound.statusId ===
+				activeRoundStatusId ===
 				pkp.const.REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW
 			) {
 				return [
@@ -98,7 +98,7 @@ export function useEditorialLogic() {
 					},
 				];
 			} else if (
-				activeRound.statusId ===
+				activeRoundStatusId ===
 				pkp.const.REVIEW_ROUND_STATUS_REVISIONS_SUBMITTED
 			) {
 				return [
@@ -120,11 +120,22 @@ export function useEditorialLogic() {
 					},
 				];
 			} else if (
-				activeRound.statusId ===
+				activeRoundStatusId ===
 				pkp.const.REVIEW_ROUND_STATUS_PENDING_RECOMMENDATIONS
 			) {
 				if (activeStage.currentUserCanRecommendOnly) {
-					return [];
+					return [
+						{
+							component: 'CellSubmissionActivityReviews',
+							props: {
+								submissionId: submission.id,
+								reviewAssignments: getCurrentReviewAssignments(
+									submission,
+									activeStage.id,
+								),
+							},
+						},
+					];
 				}
 				return [
 					{
@@ -135,9 +146,24 @@ export function useEditorialLogic() {
 					},
 				];
 			} else if (
-				activeRound.statusId ===
+				activeRoundStatusId ===
 				pkp.const.REVIEW_ROUND_STATUS_RECOMMENDATIONS_READY
 			) {
+				if (activeStage.currentUserCanRecommendOnly) {
+					return [
+						{
+							component: 'CellSubmissionActivityReviews',
+							props: {
+								submissionId: submission.id,
+								reviewAssignments: getCurrentReviewAssignments(
+									submission,
+									activeStage.id,
+								),
+							},
+						},
+					];
+				}
+
 				return [
 					{
 						component: 'CellSubmissionActivityActionAlert',
@@ -147,9 +173,24 @@ export function useEditorialLogic() {
 					},
 				];
 			} else if (
-				activeRound.statusId ===
+				activeRoundStatusId ===
 				pkp.const.REVIEW_ROUND_STATUS_RECOMMENDATIONS_COMPLETED
 			) {
+				if (activeStage.currentUserCanRecommendOnly) {
+					return [
+						{
+							component: 'CellSubmissionActivityReviews',
+							props: {
+								submissionId: submission.id,
+								reviewAssignments: getCurrentReviewAssignments(
+									submission,
+									activeStage.id,
+								),
+							},
+						},
+					];
+				}
+
 				return [
 					{
 						component: 'CellSubmissionActivityActionAlert',
@@ -159,7 +200,7 @@ export function useEditorialLogic() {
 					},
 				];
 			} else if (
-				activeRound.statusId ===
+				activeRoundStatusId ===
 				pkp.const.REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW_SUBMITTED
 			) {
 				return [
@@ -177,7 +218,7 @@ export function useEditorialLogic() {
 					},
 				];
 			} else if (
-				activeRound.statusId === pkp.const.REVIEW_ROUND_STATUS_DECLINED
+				activeRoundStatusId === pkp.const.REVIEW_ROUND_STATUS_DECLINED
 			) {
 				return [
 					{
@@ -270,29 +311,35 @@ export function useEditorialLogic() {
 
 	function getEditorialActivityForMyReviewAssignments(reviewAssignment) {
 		if (
-			reviewAssignment.status ===
-			pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE
+			[
+				pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE,
+				pkp.const.REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND,
+			].includes(reviewAssignment.status)
 		) {
 			const date = reviewAssignment.dateResponseDue;
 			return [
 				{
 					component: 'CellReviewAssignmentActivityAlert',
 					props: {
-						alert: t('dashboard.acceptOrDeclineRequestDate', {
+						alert: t('dashboard.reviewAssignment.acceptOrDeclineRequestDate', {
 							date: formatShortDate(date),
 						}),
 					},
 				},
 			];
-			// Declined missing text
 		} else if (
 			reviewAssignment.status === pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED
 		) {
+			// indeed when declined, the dateConfirmed gets set regardless if its accepted or declined
+			const date = reviewAssignment.dateConfirmed;
+
 			return [
 				{
 					component: 'CellReviewAssignmentActivityAlert',
 					props: {
-						alert: `Missing text`,
+						alert: t('dashboard.reviewAssignment.declined', {
+							date: formatShortDate(date),
+						}),
 					},
 				},
 			];
@@ -304,7 +351,9 @@ export function useEditorialLogic() {
 				{
 					component: 'CellReviewAssignmentActivityAlert',
 					props: {
-						alert: t('dashboard.deadlineForRespondingAcceptOrDecline'),
+						alert: t(
+							'dashboard.reviewAssignment.deadlineForRespondingAcceptOrDecline',
+						),
 					},
 				},
 			];
@@ -317,7 +366,7 @@ export function useEditorialLogic() {
 				{
 					component: 'CellReviewAssignmentActivityAlert',
 					props: {
-						alert: t('dashboard.completeReviewByDate', {date}),
+						alert: t('dashboard.reviewAssignment.completeReviewByDate', {date}),
 					},
 				},
 			];
@@ -329,7 +378,9 @@ export function useEditorialLogic() {
 				{
 					component: 'CellReviewAssignmentActivityAlert',
 					props: {
-						alert: t('dashboard.deadlineForCompletingReviewHasPassed'),
+						alert: t(
+							'dashboard.reviewAssignment.deadlineForCompletingReviewHasPassed',
+						),
 					},
 				},
 			];
@@ -339,9 +390,23 @@ export function useEditorialLogic() {
 				pkp.const.REVIEW_ASSIGNMENT_STATUS_VIEWED,
 				pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 				pkp.const.REVIEW_ASSIGNMENT_STATUS_THANKED,
-				pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED,
-				pkp.const.REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND,
 			].includes(reviewAssignment.statusId)
+		) {
+			const date = reviewAssignment.dateCompleted;
+
+			return [
+				{
+					component: 'CellReviewAssignmentActivityAlert',
+					props: {
+						alert: t('dashboard.reviewAssignment.reviewSubmitted', {
+							date: formatShortDate(date),
+						}),
+					},
+				},
+			];
+		} else if (
+			// Cancelled review assignments should be filtered out, this should not appear, just for documentation
+			reviewAssignment.status === pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED
 		) {
 			return [
 				{
@@ -354,14 +419,6 @@ export function useEditorialLogic() {
 		}
 
 		return [];
-		/**
-
-
-
-				Deadline for completing this review has passed. Please complete the review at the earliest.
-
-				Review in progress. Deadline is 2023.04.15 - shown when the reviewer has started filling the form but the form is incomplete
-			 */
 	}
 
 	return {

@@ -1,4 +1,6 @@
-const CommonDefault = {
+// this one is in submission.reviewAssignments
+const CommonDefaultShort = {
+	id: 1,
 	round: 1,
 	roundId: 10,
 	reviewerFullName: 'Julie Janssen',
@@ -9,6 +11,14 @@ const CommonDefault = {
 	reviewMethod: pkp.const.SUBMISSION_REVIEW_METHOD_ANONYMOUS,
 	recommendation: null,
 	statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE,
+};
+
+const CommonDefaultFull = {
+	publicationTitle: {
+		en: 'Sodium butyrate improves growth performance of weaned piglets during the first period after weaning',
+		fr_CA: '',
+	},
+	submissionId: 2,
 };
 
 const ReviewAssignmentsPerStatus = {
@@ -39,8 +49,8 @@ const ReviewAssignmentsPerStatus = {
 	},
 	[pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE]: {
 		statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
-		// to be added to the api
 		dateConfirmed: '2024-01-25',
+		dateCompleted: '2024-01-20',
 	},
 	[pkp.const.REVIEW_ASSIGNMENT_STATUS_THANKED]: {
 		statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_THANKED,
@@ -57,13 +67,34 @@ const ReviewAssignmentsPerStatus = {
 	},
 };
 
-export function getReviewAssignmentMock(overrides = {}) {
-	let reviewAssignment = {...CommonDefault};
+// Thats returned on submission object as submission.reviewAssignment
+
+export function getReviewAssignmentShortMock(overrides = {}) {
+	let reviewAssignment = {...CommonDefaultShort};
 	if (overrides.statusId) {
 		reviewAssignment = {
 			...reviewAssignment,
 			...ReviewAssignmentsPerStatus[overrides.statusId],
 		};
 	}
-	return {...reviewAssignment, ...overrides};
+	const result = {...reviewAssignment, ...overrides};
+
+	return result;
+}
+
+// Thats returned from the _submissions/reviewAssignments
+export function getReviewAssignmentFullMock(overrides = {}) {
+	let reviewAssignment = {...CommonDefaultShort, ...CommonDefaultFull};
+	if (overrides.statusId) {
+		reviewAssignment = {
+			...reviewAssignment,
+			...ReviewAssignmentsPerStatus[overrides.statusId],
+		};
+	}
+	const result = {...reviewAssignment, ...overrides};
+
+	// copy statusId to status as thats whats expected there
+	result.status = result.statusId;
+	delete result.statusId;
+	return result;
 }

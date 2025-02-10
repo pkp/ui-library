@@ -1,12 +1,14 @@
 const CommonDefaults = {
 	contextId: 1,
 	currentPublicationId: 20,
-	dateLastActivity: '2024-03-23 11:01:48',
+	dateLastActivity: '2024-02-17 11:01:48',
 	dateSubmitted: '2024-03-23 11:01:02',
 	id: 19,
 	lastModified: '2024-03-23 11:01:02',
 	status: 1,
 	submissionProgress: '',
+	stageId: 3,
+	editorAssigned: true,
 	publications: [
 		{
 			_href:
@@ -101,5 +103,12 @@ const CommonDefaults = {
 };
 
 export function getSubmissionMock(overrides = {}) {
-	return {...CommonDefaults, ...overrides};
+	const stages = CommonDefaults.stages.map((stage) => {
+		let isActiveStage = stage.isActiveStage;
+		if (overrides.stageId) {
+			isActiveStage = overrides.stageId === stage.id;
+		}
+		return {...stage, isActiveStage};
+	});
+	return {...CommonDefaults, stages, ...overrides};
 }
