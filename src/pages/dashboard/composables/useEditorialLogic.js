@@ -33,22 +33,22 @@ export function useEditorialLogic() {
 			activeStage.id === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW
 		) {
 			const activeRound = getCurrentReviewRound(submission, activeStage.id);
-
-			if (activeStage.currentUserDecidingEditor) {
+			let activeRoundStatusId = activeRound.statusId;
+			if (activeStage.isCurrentUserDecidingEditor) {
 				// just hack for illustration
-				switch (activeRound.statusId) {
+				switch (activeRoundStatusId) {
 					case pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWERS:
 					case pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWS:
 					case pkp.const.REVIEW_ROUND_STATUS_REVIEWS_READY:
 					case pkp.const.REVIEW_ROUND_STATUS_REVIEWS_COMPLETED:
 					case pkp.const.REVIEW_ROUND_STATUS_REVIEWS_OVERDUE:
 					case pkp.const.REVIEW_ROUND_STATUS_RETURNED_TO_REVIEW:
-						activeRound.statusId =
+						activeRoundStatusId =
 							pkp.const.REVIEW_ROUND_STATUS_PENDING_RECOMMENDATIONS;
 				}
 			}
 			if (
-				activeRound.statusId === pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWERS
+				activeRoundStatusId === pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWERS
 			) {
 				return [
 					{
@@ -64,7 +64,7 @@ export function useEditorialLogic() {
 					},
 				];
 			} else if (
-				activeRound.statusId ===
+				activeRoundStatusId ===
 				pkp.const.REVIEW_ROUND_STATUS_REVISIONS_REQUESTED
 			) {
 				return [
@@ -86,7 +86,7 @@ export function useEditorialLogic() {
 					},
 				];
 			} else if (
-				activeRound.statusId ===
+				activeRoundStatusId ===
 				pkp.const.REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW
 			) {
 				return [
@@ -98,7 +98,7 @@ export function useEditorialLogic() {
 					},
 				];
 			} else if (
-				activeRound.statusId ===
+				activeRoundStatusId ===
 				pkp.const.REVIEW_ROUND_STATUS_REVISIONS_SUBMITTED
 			) {
 				return [
@@ -120,11 +120,22 @@ export function useEditorialLogic() {
 					},
 				];
 			} else if (
-				activeRound.statusId ===
+				activeRoundStatusId ===
 				pkp.const.REVIEW_ROUND_STATUS_PENDING_RECOMMENDATIONS
 			) {
 				if (activeStage.currentUserCanRecommendOnly) {
-					return [];
+					return [
+						{
+							component: 'CellSubmissionActivityReviews',
+							props: {
+								submissionId: submission.id,
+								reviewAssignments: getCurrentReviewAssignments(
+									submission,
+									activeStage.id,
+								),
+							},
+						},
+					];
 				}
 				return [
 					{
@@ -135,9 +146,24 @@ export function useEditorialLogic() {
 					},
 				];
 			} else if (
-				activeRound.statusId ===
+				activeRoundStatusId ===
 				pkp.const.REVIEW_ROUND_STATUS_RECOMMENDATIONS_READY
 			) {
+				if (activeStage.currentUserCanRecommendOnly) {
+					return [
+						{
+							component: 'CellSubmissionActivityReviews',
+							props: {
+								submissionId: submission.id,
+								reviewAssignments: getCurrentReviewAssignments(
+									submission,
+									activeStage.id,
+								),
+							},
+						},
+					];
+				}
+
 				return [
 					{
 						component: 'CellSubmissionActivityActionAlert',
@@ -147,9 +173,24 @@ export function useEditorialLogic() {
 					},
 				];
 			} else if (
-				activeRound.statusId ===
+				activeRoundStatusId ===
 				pkp.const.REVIEW_ROUND_STATUS_RECOMMENDATIONS_COMPLETED
 			) {
+				if (activeStage.currentUserCanRecommendOnly) {
+					return [
+						{
+							component: 'CellSubmissionActivityReviews',
+							props: {
+								submissionId: submission.id,
+								reviewAssignments: getCurrentReviewAssignments(
+									submission,
+									activeStage.id,
+								),
+							},
+						},
+					];
+				}
+
 				return [
 					{
 						component: 'CellSubmissionActivityActionAlert',
@@ -159,7 +200,7 @@ export function useEditorialLogic() {
 					},
 				];
 			} else if (
-				activeRound.statusId ===
+				activeRoundStatusId ===
 				pkp.const.REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW_SUBMITTED
 			) {
 				return [
@@ -177,7 +218,7 @@ export function useEditorialLogic() {
 					},
 				];
 			} else if (
-				activeRound.statusId === pkp.const.REVIEW_ROUND_STATUS_DECLINED
+				activeRoundStatusId === pkp.const.REVIEW_ROUND_STATUS_DECLINED
 			) {
 				return [
 					{

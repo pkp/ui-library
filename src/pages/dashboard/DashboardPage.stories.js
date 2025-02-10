@@ -18,12 +18,14 @@ export default {
 		},
 		template: '<DashboardPage v-bind="args" />',
 	}),
+	parameters: {
+		date: new Date('February 20, 2024 10:00:00'),
+	},
 };
 
 export const Init = {
 	parameters: {
 		// mock date to consistently show sensible editorial activity popups
-		date: new Date('January 20, 2024 10:00:00'),
 		msw: {
 			handlers: [
 				http.get(
@@ -60,10 +62,30 @@ export const Init = {
 	args: PageInitConfigEditorialMock,
 };
 
-export const ReviewRoundStatusesEditor = {
+const SubmissionScenariosDescription = `<ul class="text-sm-normal">
+			<li>1. Submission stage</li>
+			<li>2. Submission stage - no editors assigned</li>
+			<li>3. Review stage - REVIEW_ROUND_STATUS_REVISIONS_REQUESTED: Revisions requested for the same round</li>
+			<li>4. Review stage - REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW: Revisions requested, to be used in next round</li>
+			<li>5. Review stage - REVIEW_ROUND_STATUS_DECLINED: Declined in review stage</li>
+			<li>6. Review stage - REVIEW_ROUND_STATUS_PENDING_REVIEWERS: No reviewers have been assigned</li>
+			<li>7. Review stage - REVIEW_ROUND_STATUS_PENDING_REVIEWS: Waiting for reviews to be submitted by reviewers</li>
+			<li>8. Review stage - REVIEW_ROUND_STATUS_REVIEWS_READY: One or more reviews is ready for an editor to view</li>
+			<li>9. Review stage - REVIEW_ROUND_STATUS_REVIEWS_COMPLETED: All assigned reviews have been confirmed by an editor</li>
+			<li>10. Review stage - REVIEW_ROUND_STATUS_REVIEWS_OVERDUE: One or more reviews is overdue</li>
+			<li>11. Review stage - REVIEW_ROUND_STATUS_REVISIONS_SUBMITTED: at least one revision file has been uploaded</li>
+			<li>12. Review stage - REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW_SUBMITTED:  at least one revision file has been uploaded.</li>
+			<li>13. Review stage - REVIEW_ROUND_STATUS_RETURNED_TO_REVIEW:The following status is set when a submission return back from copyediting stage to last review round again </li>
+			<li>14. Review stage - REVIEW_ROUND_STATUS_PENDING_RECOMMENDATIONS: Waiting for recommendations to be submitted by recommendOnly editors</li>
+			<li>15. Review stage - REVIEW_ROUND_STATUS_RECOMMENDATIONS_READY: One or more recommendations are ready for an editor to view</li>
+			<li>16. Review stage - REVIEW_ROUND_STATUS_RECOMMENDATIONS_COMPLETED: All assigned recommendOnly editors have made a recommendation</li>
+			<li>17. Copyediting stage </li>
+			<li>18. Production stage</li>
+		</ul>`;
+
+export const EditorEditorialActivity = {
 	parameters: {
 		// mock date to consistently show sensible editorial activity popups
-		date: new Date('February 20, 2024 10:00:00'),
 		msw: {
 			handlers: [
 				http.get(
@@ -81,13 +103,21 @@ export const ReviewRoundStatusesEditor = {
 			],
 		},
 	},
+	render: (args) => ({
+		components: {DashboardPage},
+		setup() {
+			return {args};
+		},
+		template: `${SubmissionScenariosDescription}
+		<DashboardPage v-bind="args" />`,
+	}),
+
 	args: PageInitConfigEditorialMock,
 };
 
-export const ReviewRoundStatusesDecidingEditor = {
+export const AuthorEditorialActivity = {
 	parameters: {
 		// mock date to consistently show sensible editorial activity popups
-		date: new Date('February 20, 2024 10:00:00'),
 		msw: {
 			handlers: [
 				http.get(
@@ -111,37 +141,89 @@ export const ReviewRoundStatusesDecidingEditor = {
 			],
 		},
 	},
-	args: PageInitConfigEditorialMock,
-};
-
-export const ReviewRoundStatusesAuthor = {
-	parameters: {
-		// mock date to consistently show sensible editorial activity popups
-		date: new Date('February 20, 2024 10:00:00'),
-		msw: {
-			handlers: [
-				http.get(
-					'https://mock/index.php/publicknowledge/api/v1/_submissions/assigned',
-					({request}) => {
-						const submissions = JSON.parse(
-							JSON.stringify(EditorialActivityScenario),
-						);
-
-						submissions.forEach((submission) => {
-							submission.stages[1].currentUserDecidingEditor = true;
-						});
-
-						return HttpResponse.json({
-							itemsMax: 1,
-							consts: pkp.const,
-							items: submissions,
-						});
-					},
-				),
-			],
+	render: (args) => ({
+		components: {DashboardPage},
+		setup() {
+			return {args};
 		},
-	},
+		template: `${SubmissionScenariosDescription}
+		<DashboardPage v-bind="args" />`,
+	}),
 	args: {...PageInitConfigMySubmissionsMock},
+};
+
+export const DecidingEditorEditorialActivity = {
+	parameters: {
+		// mock date to consistently show sensible editorial activity popups
+		msw: {
+			handlers: [
+				http.get(
+					'https://mock/index.php/publicknowledge/api/v1/_submissions/assigned',
+					({request}) => {
+						const submissions = JSON.parse(
+							JSON.stringify(EditorialActivityScenario),
+						);
+
+						submissions.forEach((submission) => {
+							submission.stages[1].currentUserDecidingEditor = true;
+						});
+
+						return HttpResponse.json({
+							itemsMax: 1,
+							consts: pkp.const,
+							items: submissions,
+						});
+					},
+				),
+			],
+		},
+	},
+	render: (args) => ({
+		components: {DashboardPage},
+		setup() {
+			return {args};
+		},
+		template: `${SubmissionScenariosDescription}
+		<DashboardPage v-bind="args" />`,
+	}),
+	args: PageInitConfigEditorialMock,
+};
+
+export const RecommendingEditorEditorialActivity = {
+	parameters: {
+		// mock date to consistently show sensible editorial activity popups
+		msw: {
+			handlers: [
+				http.get(
+					'https://mock/index.php/publicknowledge/api/v1/_submissions/assigned',
+					({request}) => {
+						const submissions = JSON.parse(
+							JSON.stringify(EditorialActivityScenario),
+						);
+
+						submissions.forEach((submission) => {
+							submission.stages[1].currentUserCanRecommendOnly = true;
+						});
+
+						return HttpResponse.json({
+							itemsMax: 1,
+							consts: pkp.const,
+							items: submissions,
+						});
+					},
+				),
+			],
+		},
+	},
+	render: (args) => ({
+		components: {DashboardPage},
+		setup() {
+			return {args};
+		},
+		template: `${SubmissionScenariosDescription}
+		<DashboardPage v-bind="args" />`,
+	}),
+	args: PageInitConfigEditorialMock,
 };
 
 export const ReviewAssignmentStatusesReviewer = {
@@ -169,8 +251,6 @@ export const ReviewAssignmentStatusesReviewer = {
 	}),
 
 	parameters: {
-		// mock date to consistently show sensible editorial activity popups
-		date: new Date('February 20, 2024 10:00:00'),
 		msw: {
 			handlers: [
 				http.get(
