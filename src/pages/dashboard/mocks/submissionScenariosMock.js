@@ -245,14 +245,37 @@ export const EditorialActivityScenario = [
 			}),
 		],
 	}),
-	// Editorial stage
+	// Open review assignments
 	getSubmissionMock({
 		id: 17,
+		reviewAssignments: [
+			getReviewAssignmentShortMock({
+				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
+				reviewMethod: pkp.const.SUBMISSION_REVIEW_METHOD_OPEN,
+			}),
+			getReviewAssignmentShortMock({
+				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
+				reviewMethod: pkp.const.SUBMISSION_REVIEW_METHOD_OPEN,
+				reviewerId: 11,
+				reviewerFullName: 'Paul Hudson',
+				reviewerDisplayInitials: 'PH',
+			}),
+		],
+		reviewRounds: [
+			getReviewRoundMock({
+				statusId: pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWS,
+			}),
+		],
+	}),
+
+	// Editorial stage
+	getSubmissionMock({
+		id: 18,
 		stageId: pkp.const.WORKFLOW_STAGE_ID_EDITING,
 	}),
 	// Production stage
 	getSubmissionMock({
-		id: 18,
+		id: 19,
 		stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 	}),
 ];

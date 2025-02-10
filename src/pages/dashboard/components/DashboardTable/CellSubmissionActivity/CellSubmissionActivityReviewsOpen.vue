@@ -10,7 +10,7 @@
 					<template #button>
 						<UserAvatar
 							size-variant="small"
-							:user-id="reviewAssignment.id"
+							:user-id="reviewAssignment.reviewerId"
 							:initials="String(reviewAssignment.reviewerDisplayInitials)"
 						/>
 					</template>
@@ -31,8 +31,11 @@ import PkpPopover from '@/components/Popover/Popover.vue';
 import ReviewActivityIndicatorPopover from '@/pages/dashboard/components/ReviewActivityIndicatorPopover/ReviewActivityIndicatorPopover.vue';
 import {useSubmission} from '@/composables/useSubmission';
 import UserAvatar from '@/components/UserAvatar/UserAvatar.vue';
-const {getOpenReviewAssignmentsForRound, getReviewMethodIcons} =
-	useSubmission();
+const {
+	getOpenReviewAssignments,
+	getReviewMethodIcons,
+	getCompletedReviewAssignments,
+} = useSubmission();
 import {useLocalize} from '@/composables/useLocalize';
 
 const props = defineProps({
@@ -41,7 +44,9 @@ const props = defineProps({
 
 const {t} = useLocalize();
 
-const openReviewAssignements = computed(() =>
-	getOpenReviewAssignmentsForRound(props.reviewAssignments),
-);
+const openReviewAssignements = computed(() => {
+	return getOpenReviewAssignments(
+		getCompletedReviewAssignments(props.reviewAssignments),
+	);
+});
 </script>
