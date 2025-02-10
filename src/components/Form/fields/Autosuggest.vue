@@ -47,6 +47,7 @@
 				isLoading
 			"
 			class="autosuggest__results-container autosuggest__results"
+			:class="props.isFixedHeight ? 'h-[20rem] overflow-auto' : ''"
 		>
 			<ComboboxOption
 				v-if="isLoading"
@@ -166,6 +167,11 @@ const props = defineProps({
 	inputId: {type: String, required: false, default: null},
 	/** aria-describedby ids */
 	describedBy: {type: String, required: false, default: ''},
+	/** If set, the results container will have a scrollable fixed height */
+	isFixedHeight: {
+		type: Boolean,
+		default: false,
+	},
 });
 
 /**
