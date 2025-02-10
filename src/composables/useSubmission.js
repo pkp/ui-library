@@ -208,6 +208,14 @@ export function useSubmission() {
 		);
 	}
 
+	function getOpenReviewAssignments(reviewAssignments) {
+		return reviewAssignments.filter(
+			(reviewAssignment) =>
+				reviewAssignment.reviewMethod ===
+				pkp.const.SUBMISSION_REVIEW_METHOD_OPEN,
+		);
+	}
+
 	function getOpenReviewAssignmentsForRound(reviewAssignments, reviewRoundId) {
 		return getReviewAssignmentsForRound(
 			reviewAssignments,
@@ -257,6 +265,7 @@ export function useSubmission() {
 		getReviewAssignmentsForRound,
 		getActiveReviewAssignments,
 		getCompletedReviewAssignments,
+		getOpenReviewAssignments,
 		getOpenReviewAssignmentsForRound,
 		getReviewMethodIcons,
 		InProgressReviewAssignmentStatuses,

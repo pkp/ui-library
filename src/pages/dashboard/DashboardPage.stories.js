@@ -79,8 +79,9 @@ const SubmissionScenariosDescription = `<ul class="text-sm-normal">
 			<li>14. Review stage - REVIEW_ROUND_STATUS_PENDING_RECOMMENDATIONS: Waiting for recommendations to be submitted by recommendOnly editors</li>
 			<li>15. Review stage - REVIEW_ROUND_STATUS_RECOMMENDATIONS_READY: One or more recommendations are ready for an editor to view</li>
 			<li>16. Review stage - REVIEW_ROUND_STATUS_RECOMMENDATIONS_COMPLETED: All assigned recommendOnly editors have made a recommendation</li>
-			<li>17. Copyediting stage </li>
-			<li>18. Production stage</li>
+			<li>17. Review stage - Open reviews</li>
+			<li>18. Copyediting stage </li>
+			<li>19. Production stage</li>
 		</ul>`;
 
 export const EditorEditorialActivity = {
@@ -128,7 +129,7 @@ export const AuthorEditorialActivity = {
 						);
 
 						return HttpResponse.json({
-							itemsMax: 1,
+							itemsMax: submissions.length,
 							consts: pkp.const,
 							items: submissions,
 						});
