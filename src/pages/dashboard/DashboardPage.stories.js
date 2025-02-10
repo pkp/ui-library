@@ -127,10 +127,6 @@ export const AuthorEditorialActivity = {
 							JSON.stringify(EditorialActivityScenario),
 						);
 
-						submissions.forEach((submission) => {
-							submission.stages[1].currentUserDecidingEditor = true;
-						});
-
 						return HttpResponse.json({
 							itemsMax: 1,
 							consts: pkp.const,
@@ -165,7 +161,7 @@ export const DecidingEditorEditorialActivity = {
 						);
 
 						submissions.forEach((submission) => {
-							submission.stages[1].currentUserDecidingEditor = true;
+							submission.stages[1].isCurrentUserDecidingEditor = true;
 						});
 
 						return HttpResponse.json({
