@@ -5,7 +5,10 @@
 		class="whitespace-nowrap border-b border-t border-light px-2 py-4 text-start text-base-normal uppercase text-heading first:border-s first:ps-3 last:border-e last:pe-3"
 	>
 		<template v-if="props.allowsSorting">
-			<button class="flex items-center" @click="tableContext.onSort(id)">
+			<button
+				class="flex items-center uppercase"
+				@click="tableContext.onSort(id)"
+			>
 				<slot />
 				<Icon class="h-5 w-5 text-primary" icon="Sort" :aria-hidden="true" />
 				<span class="-screenReader">
