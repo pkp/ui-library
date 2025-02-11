@@ -41,12 +41,14 @@ export function useUserAccessManagerActions() {
 					name: Actions.USER_ACCESS_LOGIN_AS,
 				});
 
-			actions.push({
-				label: t('grid.action.remove'),
-				icon: 'Cancel',
-				name: Actions.USER_ACCESS_REMOVE_USER,
-				isWarnable: true,
-			});
+			if (user.groups.find((value) => value.dateEnd === null)) {
+				actions.push({
+					label: t('grid.action.remove'),
+					icon: 'Cancel',
+					name: Actions.USER_ACCESS_REMOVE_USER,
+					isWarnable: true,
+				});
+			}
 
 			actions.push({
 				label: user.disabled
