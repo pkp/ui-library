@@ -29,6 +29,7 @@ import VueScrollTo from 'vue-scrollto';
 
 import '../src/styles/_import.less';
 import '../src/styles/_global.less';
+import '../src/styles/style.css';
 import {allModes} from './modes';
 import {initialize, mswLoader} from 'msw-storybook-addon';
 
