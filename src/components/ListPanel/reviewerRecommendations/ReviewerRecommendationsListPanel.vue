@@ -53,7 +53,7 @@
 							v-if="item.removable"
 							:actions="getActions(item)"
 							:label="t('reviewer.recommendation.management.options')"
-							:display-as-ellipsis="true"
+							button-variant="ellipsis"
 							direction="left"
 							@action="(actionName) => handleAction(actionName, item)"
 						/>
