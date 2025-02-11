@@ -30,6 +30,10 @@ function mapFromSelectedToValue(selected) {
 	return selected.map((iv) => iv.value);
 }
 
+export function isFieldValueArray(field) {
+	return Array.isArray(field.value) || field.selected ? true : false;
+}
+
 export function useForm(_form, {customSubmit} = {}) {
 	const form = ref(_form);
 
@@ -131,8 +135,15 @@ export function useForm(_form, {customSubmit} = {}) {
 
 	function removeFieldValue(fieldName, fieldValue) {
 		const value = getValue(fieldName);
+		const field = getField(form.value, fieldName);
 		if (Array.isArray(value)) {
-			const newValue = value.filter((v) => v !== fieldValue);
+			let newValue = null;
+			if (field.selected) {
+				newValue = field.selected.filter((v) => v.value !== fieldValue);
+			} else {
+				newValue = value.filter((v) => v !== fieldValue);
+			}
+
 			setValue(fieldName, newValue);
 		} else {
 			clearFormField(fieldName);
@@ -191,6 +202,7 @@ export function useForm(_form, {customSubmit} = {}) {
 		setValues,
 		getValue,
 		removeFieldValue,
+		isFieldValueArray,
 		clearForm,
 		form,
 		connectWithPayload,
