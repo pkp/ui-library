@@ -26,7 +26,8 @@ function createSelected(values, labels) {
 
 export function useFiltersForm(_filtersForm) {
 	const filtersForm = ref(_filtersForm);
-	const {clearForm, removeFieldValue, setValue} = useForm(_filtersForm);
+	const {clearForm, removeFieldValue, setValue, isFieldValueArray} =
+		useForm(_filtersForm);
 
 	const filtersFormList = computed(() => {
 		const list = [];
@@ -109,7 +110,10 @@ export function useFiltersForm(_filtersForm) {
 	function initFiltersFormFromQueryParams(queryParams) {
 		filtersForm.value.fields.forEach((field) => {
 			if (queryParams[field.name]) {
-				const values = ensureArray(queryParams[field.name]).map(fixValueType);
+				const values = isFieldValueArray(field)
+					? ensureArray(queryParams[field.name]).map(fixValueType)
+					: fixValueType(queryParams[field.name]);
+
 				if (queryParams[`${field.name}_label`]) {
 					const labels = ensureArray(queryParams[`${field.name}_label`]);
 					setValue(field.name, createSelected(values, labels));
