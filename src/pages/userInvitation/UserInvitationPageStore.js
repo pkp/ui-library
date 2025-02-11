@@ -267,7 +267,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 			await createInvitation();
 
 			if (validationError.value) {
-				errors.value = validationError.value.errors;
+				errors.value = validationError.value.errors['inviteeEmail'];
 			} else {
 				errors.value = [];
 				invitationId.value = data.value.invitationId;
