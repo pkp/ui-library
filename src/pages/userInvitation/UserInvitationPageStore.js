@@ -336,7 +336,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 		}
 
 		function cancel() {
-			if (invitationMode.value === 'editUser') {
+			if (invitationMode.value === 'editUser' || isOnFirstStep.value) {
 				redirectToPage();
 				close();
 			} else {
