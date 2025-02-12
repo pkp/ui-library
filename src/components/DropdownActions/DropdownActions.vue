@@ -11,7 +11,7 @@
 				<span v-if="!displayAsEllipsis">{{ label }}</span>
 				<Icon
 					v-if="buttonVariant === 'dropdown'"
-					class="h-5 w-5 text-primary"
+					class="text-primary h-5 w-5"
 					icon="Dropdown"
 					aria-hidden="true"
 				/>
@@ -32,7 +32,7 @@
 				leave-to-class="transform opacity-0 scale-95"
 			>
 				<MenuItems
-					class="absolute z-10 w-max border border-light bg-secondary shadow focus:outline-none"
+					class="border-light bg-secondary absolute z-10 w-max border shadow focus:outline-hidden"
 					:class="
 						direction === 'right'
 							? 'ltr:left-0 ltr:origin-top-left rtl:right-0 rtl:origin-top-left'

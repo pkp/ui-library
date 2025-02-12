@@ -53,7 +53,7 @@
 				:plugins="plugins"
 				:init="compiledInit"
 				@focus="focus"
-				@blur="blur"
+				@blur="blur - sm"
 			/>
 			<div
 				v-if="(isMultilingual && locales.length > 1) || wordLimit"
@@ -257,7 +257,7 @@ export default {
 					// This mimics the focus event, without actually changing the user's
 					// focus.
 					editor.fire('focus');
-					editor.fire('blur');
+					editor.fire('blur-sm');
 				},
 				...this.init,
 			};

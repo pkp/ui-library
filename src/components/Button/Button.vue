@@ -10,7 +10,7 @@
 		:disabled="element === 'a' && !isDisabled ? undefined : isDisabled"
 		@click="click"
 		@focus="emit('focus')"
-		@blur="emit('blur')"
+		@blur="emit('blur-sm')"
 	>
 		<Icon v-if="icon" class="h-5 w-5" :icon="icon" aria-hidden="true" />
 		<slot />
@@ -101,6 +101,6 @@ const emit = defineEmits([
 	/** When the button receives focus. */
 	'focus',
 	/** When focus moves away from the button. */
-	'blur',
+	'blur-sm',
 ]);
 </script>
