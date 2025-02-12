@@ -356,7 +356,6 @@ export const useUserInvitationPageStore = defineComponentStore(
 						{
 							label: t('userInvitation.cancel.goBack'),
 							callback: (close) => {
-								redirectToPage();
 								close();
 							},
 						},
