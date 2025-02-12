@@ -38,7 +38,7 @@ onMounted(() => {
 						if (prop.startsWith('--') && !prop.startsWith('--tw')) {
 							const value = rule.style.getPropertyValue(prop).trim();
 
-							if (prop === '--background-color-primary') {
+							if (prop === '--color-primary') {
 								primaryColor = value;
 							}
 							let styles;
