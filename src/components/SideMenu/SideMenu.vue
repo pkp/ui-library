@@ -186,6 +186,7 @@ function getButtonStyles(item, isFocused) {
 
 <style lang="less" scoped>
 @import '../../styles/_import';
+@reference '../../../tailwind.config.css';
 
 /* Override legacy styles for: a:hover, a:focus, where the color is being set to #008acb */
 a.text-on-dark:hover,
