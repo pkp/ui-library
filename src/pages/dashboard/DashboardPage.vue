@@ -1,8 +1,8 @@
 <template>
-	<div class="min-h-screentext-base-normal me-3 ms-5 text-base-normal">
+	<div class="min-h-screentext-base-normal text-base-normal ms-5 me-3">
 		<div class="">
 			<span>
-				<h1 class="flex-inline items-center gap-4 py-6 text-5xl-bold">
+				<h1 class="flex-inline text-5xl-bold items-center gap-4 py-6">
 					{{
 						`${store.currentView.name} (${store.submissionsPagination.itemCount})`
 					}}
@@ -115,6 +115,8 @@ const store = useDashboardPageStore(props);
 </script>
 
 <style>
+@reference '../../../tailwind.config.css';
+
 .pkp_page_dashboard {
 	@apply min-w-max;
 }
