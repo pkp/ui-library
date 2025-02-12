@@ -36,7 +36,6 @@ export default {
 	],
 	theme: {
 		backgroundColor: {
-			...colors,
 			default: '#EAEDEE',
 			secondary: '#FFFFFF',
 			tertiary: 'rgba(234, 237, 238, 0.3)',
@@ -46,7 +45,6 @@ export default {
 			disabled: 'rgba(28, 27, 31, 0.1)',
 		},
 		textColor: {
-			...colors,
 			default: '#222222',
 			secondary: '#505050',
 			heading: '#01354F',
@@ -54,7 +52,6 @@ export default {
 			'on-dark': '#FFFFFF',
 		},
 		borderColor: {
-			...colors,
 			dark: '#696969',
 			light: '#BBBBBB',
 			'form-fields': '#777777',
