@@ -62,7 +62,7 @@ export default {
 			name: 'Search User',
 			stepLabel: '{$step} - Search User',
 			description:
-				'If user does not exist, ypu can invite them to take up roles and be a part of your journal. If the user already exist in the system, you can view user information and invite to take a additional roles.',
+				'If the user does not exist, you can invite them to take on roles and become part of your journal. If the user already exists in the system, you can view their information and invite them to take on additional roles.',
 			nextButtonLabel: 'Search user (t)',
 			skipInvitationUpdate: true,
 			sections: [
