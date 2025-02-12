@@ -2,7 +2,7 @@
 	<div class="">
 		<div
 			v-if="slots.label || slots.description || slots['top-controls']"
-			class="flex justify-between border-x border-t border-light bg-secondary p-4"
+			class="border-light bg-secondary flex justify-between border-x border-t p-4"
 		>
 			<div v-if="slots.label || slots.description">
 				<span
@@ -20,7 +20,7 @@
 					<slot name="description" />
 				</div>
 			</div>
-			<div v-if="slots['top-controls']" class="flex-shrink-0">
+			<div v-if="slots['top-controls']" class="shrink-0">
 				<slot name="top-controls" />
 			</div>
 		</div>
@@ -35,7 +35,7 @@
 		</table>
 		<div
 			v-if="slots['bottom-controls']"
-			class="flex justify-between border-x border-b border-light px-3 py-2"
+			class="border-light flex justify-between border-x border-b px-3 py-2"
 			:class="{'bg-tertiary': isFooterDarker}"
 		>
 			<slot name="bottom-controls" />

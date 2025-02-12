@@ -9,7 +9,7 @@
 			@blur="closeOnBlur"
 		>
 			<div
-				class="flex h-8 w-8 items-center justify-center border-e border-e-light border-opacity-40 text-primary"
+				class="border-e-light border-opacity-40 text-primary flex h-8 w-8 items-center justify-center border-e"
 			>
 				<Icon icon="Calendar" class="h-5 w-5" :inline="true" />
 			</div>
@@ -65,7 +65,7 @@
 					</label>
 				</fieldset>
 				<PkpButton @click="applyCustomRange">{{ applyLabel }}</PkpButton>
-				<div v-if="errorMessage" class="pt-2 text-base-normal">
+				<div v-if="errorMessage" class="text-base-normal pt-2">
 					<Icon icon="Error" class="me-1 h-5 w-5" :inline="true" />
 					<span class="align-middle" v-html="errorMessage" />
 				</div>
@@ -421,6 +421,7 @@ export default {
 
 <style lang="less">
 @import '../../styles/_import';
+@reference '../../../tailwind.config.css';
 
 .pkpDateRange {
 	position: relative;

@@ -11,7 +11,7 @@
 				leave-to="opacity-0"
 			>
 				<div
-					class="fixed inset-0 z-10 bg-blur bg-opacity-75 transition-opacity"
+					class="bg-blur bg-opacity-75 fixed inset-0 z-10 transition-opacity"
 				/>
 			</TransitionChild>
 			<div class="fixed inset-0 z-20 overflow-y-auto">
@@ -30,11 +30,11 @@
 						<DialogPanel data-cy="dialog" :class="styles">
 							<button
 								v-if="noActions"
-								class="absolute right-3 top-3 cursor-pointer bg-transparent"
+								class="absolute top-3 right-3 cursor-pointer bg-transparent"
 								@click="onClose"
 							>
 								<Icon
-									class="h-6 w-6 text-negative"
+									class="text-negative h-6 w-6"
 									icon="Cancel"
 									:aria-hidden="true"
 								/>
@@ -45,11 +45,11 @@
 							<div class="flex min-h-12 items-center">
 								<DialogTitle
 									v-if="title"
-									class="m-0 inline-flex min-w-[1px] items-center overflow-x-hidden overflow-ellipsis px-8 pt-12 text-4xl-bold"
+									class="text-4xl-bold m-0 inline-flex min-w-[1px] items-center overflow-x-hidden px-8 pt-12 text-ellipsis"
 									:class="icon ? 'pb-5' : 'pb-8'"
 								>
 									<div v-if="icon" :class="iconStyles">
-										<Icon :icon="icon" class="h-11 w-11 text-on-dark"></Icon>
+										<Icon :icon="icon" class="text-on-dark h-11 w-11"></Icon>
 									</div>
 									<span class="px-4">{{ title }}</span>
 								</DialogTitle>

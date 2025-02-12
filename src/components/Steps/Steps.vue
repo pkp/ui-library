@@ -61,11 +61,11 @@
 				</li>
 			</ol>
 			<div v-if="collapsed" class="pkpSteps__controls" aria-hidden="true">
-				<span class="relative bottom-1 me-1 text-lg-normal">
+				<span class="text-lg-normal relative bottom-1 me-1">
 					{{ progress }}
 				</span>
 				<PkpButton
-					class="!px-2 !py-1"
+					class="px-2! py-1!"
 					@click="() => (stepsVisible = !stepsVisible)"
 				>
 					<span class="-screenReader">
