@@ -8,14 +8,14 @@
 		</template>
 		<template #item="{item}">
 			<div class="flex items-center">
-				<div class="me-2 flex-grow truncate">
+				<div class="me-2 grow truncate">
 					<File
 						:name="localize(item.name)"
 						:document-type="item.documentType"
 						:url="item.url"
 					/>
 				</div>
-				<div class="flex-shrink-0">
+				<div class="shrink-0">
 					<Badge
 						v-if="item.genreName"
 						:is-primary="!item.genreIsDependent && !item.genreIsSupplementary"

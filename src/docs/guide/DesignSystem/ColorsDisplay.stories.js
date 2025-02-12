@@ -1,5 +1,4 @@
 import ColorsDisplay from './ColorsDisplay.vue';
-import TailwindConfig from '../../../../tailwind.config.js';
 export default {
 	title: 'DocsHelpers/ColorsDisplay',
 	component: ColorsDisplay,
@@ -91,7 +90,7 @@ const ColorBorderUsedIn = {
 export const Common = {
 	args: {
 		colorUsedIn: ColorUsedIn,
-		colorDefinition: TailwindConfig.theme.colors,
+		colorDefinition: 'common',
 	},
 };
 
@@ -99,14 +98,14 @@ export const Text = {
 	args: {
 		displayAs: 'text',
 		colorUsedIn: ColorTextUsedIn,
-		colorDefinition: TailwindConfig.theme.textColor,
+		colorDefinition: 'text',
 	},
 };
 
 export const Background = {
 	args: {
 		colorUsedIn: ColorBackgroundUsedIn,
-		colorDefinition: TailwindConfig.theme.backgroundColor,
+		colorDefinition: 'background',
 	},
 };
 
@@ -114,6 +113,6 @@ export const Border = {
 	args: {
 		displayAs: 'border',
 		colorUsedIn: ColorBorderUsedIn,
-		colorDefinition: TailwindConfig.theme.borderColor,
+		colorDefinition: 'border',
 	},
 };

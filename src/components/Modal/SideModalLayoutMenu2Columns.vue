@@ -1,25 +1,25 @@
 <template>
 	<div class="min-w-max p-4">
-		<div class="flex w-full bg-secondary">
-			<div class="flex flex-col border-t border-light">
+		<div class="bg-secondary flex w-full">
+			<div class="border-light flex flex-col border-t">
 				<slot name="menu"></slot>
-				<div class="flex-grow border-x border-b border-light bg-tertiary"></div>
+				<div class="border-light bg-tertiary grow border-x border-b"></div>
 			</div>
-			<div class="flex w-full flex-col border-y border-e border-s border-light">
+			<div class="border-light flex w-full flex-col border-y border-s border-e">
 				<div
-					class="border-b border-light p-5 text-3xl-bold uppercase text-heading"
+					class="border-light text-3xl-bold text-heading border-b p-5 uppercase"
 				>
 					<slot name="heading"></slot>
 				</div>
-				<div class="flex-grow">
+				<div class="grow">
 					<div class="flex h-full">
-						<div class="flex-grow border-e border-light">
+						<div class="border-light grow border-e">
 							<div
 								v-if="
 									$slots['publication-controls-left'] ||
 									$slots['publication-controls-right']
 								"
-								class="flex justify-between border-b border-light p-4"
+								class="border-light flex justify-between border-b p-4"
 							>
 								<div class="">
 									<slot name="publication-controls-left"></slot>
@@ -33,9 +33,9 @@
 						</div>
 						<div
 							v-if="$slots.secondary || $slots.actions"
-							class="w-96 border-s border-light"
+							class="border-light w-96 border-s"
 						>
-							<div class="border-b border-light"><slot name="actions" /></div>
+							<div class="border-light border-b"><slot name="actions" /></div>
 							<div><slot name="secondary"></slot></div>
 						</div>
 					</div>

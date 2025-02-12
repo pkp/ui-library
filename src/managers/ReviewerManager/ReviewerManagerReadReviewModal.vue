@@ -1,9 +1,9 @@
 <template>
 	<div class="flex">
-		<div class="flex-grow">
+		<div class="grow">
 			<h2>{{ title }}</h2>
 		</div>
-		<div class="flex-shrink-0">
+		<div class="shrink-0">
 			<DropdownActions
 				:actions="exportOptions"
 				:label="t('editor.review.download')"
