@@ -55,7 +55,16 @@ const displayNoFieldsEnabled = computed(() => {
 	return false;
 });
 
-const {triggerDataChange} = useDataChanged();
+const customFns = {
+	metadata: metadataDataChange,
+};
+
+const {triggerDataChange} = useDataChanged(customFns[props.formName]);
 
 const {set, form} = useForm(publicationForm);
+
+async function metadataDataChange() {
+	// Some metadata fields need extra data from db not in publication object
+	await fetchForm();
+}
 </script>
