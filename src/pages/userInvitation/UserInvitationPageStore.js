@@ -300,7 +300,19 @@ export const useUserInvitationPageStore = defineComponentStore(
 		}
 
 		const {redirectToPage} = useUrl('management/settings/access');
-		const isSubmitting = ref(false);
+		const isSubmitting = ref(invitationPayload.value.disabled ? true : false);
+
+		/**
+		 * change isSubmitting value based on
+		 * user disable or not for disable submit button
+		 */
+		watch(
+			invitationPayload,
+			async (newVal, oldVal) => {
+				isSubmitting.value = invitationPayload.value.disabled;
+			},
+			{deep: true},
+		);
 		/** Submit invitation */
 		async function submitInvitation() {
 			await updateInvitation();
