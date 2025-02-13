@@ -447,7 +447,7 @@ export default {
 		 */
 		error: function (r) {
 			// Field validation errors
-			if (r.status && r.status === 400) {
+			if (r.status && [400, 422].includes(r.status)) {
 				pkp.eventBus.$emit(
 					'notify',
 					this.t('form.errors', {
