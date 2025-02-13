@@ -839,7 +839,8 @@ window.pkp = {
 		'userInvitation.edit.message':
 			'If you edit the existing invitation or add a new role, the current invitation will be canceled and, a new one will be sent. Are you sure you want to proceed?',
 		'userInvitation.edit.title': 'Edit Invitation',
-		'userInvitation.searchField.description': 'e.g. aeinstein@example.com or aeinstein or 0000-0000-0000-0000',
+		'userInvitation.searchField.description':
+			'e.g. aeinstein@example.com or aeinstein or 0000-0000-0000-0000',
 		'userInvitation.modal.button': 'View All Users',
 		'userInvitation.modal.message':
 			"{$email} has been invited to new role in OJS. You can be updated about the user's decision on the User and Role page, your OJS notification and/or your email",
@@ -865,7 +866,16 @@ window.pkp = {
 		'workflow.submissionNextReviewRoundInFutureStage':
 			'The submission advanced to the next review round, was accepted, and is currently in the {$stage} stage.',
 		'workflow.uploadRevisions': 'Upload revisions',
-			'userInvitation.searchField':'Search for a user by email address, username, or ORCID iD. Enter only one to get started!'
+		'userInvitation.searchField':
+			'Search for a user by email address, username, or ORCID iD. Enter only one to get started!',
+		'grid.user.enable': 'Enable User',
+		'grid.user.disable': 'Disable User',
+		'grid.user.remove': 'Remove User',
+		'grid.user.logInAs': 'Login As',
+		'grid.user.grid.user.enableReasonDescription':
+			"Once the user enabled, they will regain access to OJS, and you'll be able to invite them to roles as needed.",
+		'grid.user.grid.user.disableReasonDescription':
+			"Please note that once a user is disabled, you won't be able to add them to any roles until they are enabled again.",
 	},
 	tinyMCE: {
 		skinUrl: '/styles/tinymce',
