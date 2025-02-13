@@ -17,6 +17,7 @@
 			>
 				<Autosuggest
 					v-bind="autoSuggestProps"
+					:is-fixed-height="true"
 					@update:input-value="updateInputValue"
 					@select-suggestion="handleSelect"
 					@deselect="handleDeselect"
