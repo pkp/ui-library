@@ -67,6 +67,9 @@ async function searchUser() {
 					));
 
 			if (!user) {
+				valid(fields.value.search.trim())
+					? store.updatePayload('inviteeEmail', fields.value.search.trim())
+					: '';
 				store.userSearch.message = t('userInvitation.search.userNotFound');
 				store.userSearch.class = 'font-bold text-negative';
 			} else {
@@ -78,10 +81,14 @@ async function searchUser() {
 				store.updatePayload('currentUserGroups', user.groups);
 				store.updatePayload('affiliation', user.affiliation);
 				store.updatePayload('country', user.country);
+				store.updatePayload('disabled', user.disabled);
 				store.userSearch.message = t('userInvitation.search.userFound');
 				store.userSearch.class = 'font-bold text-success';
 			}
 		} else {
+			valid(fields.value.search.trim())
+				? store.updatePayload('inviteeEmail', fields.value.search.trim())
+				: '';
 			store.userSearch.message = t('userInvitation.search.userNotFound');
 			store.userSearch.class = 'font-bold text-negative';
 		}
@@ -89,6 +96,11 @@ async function searchUser() {
 	} else {
 		store.errors.error = t('invitation.searchForm.emptyError');
 		return false;
+	}
+
+	function valid(email) {
+		const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		return pattern.test(email);
 	}
 }
 </script>

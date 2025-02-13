@@ -36,14 +36,14 @@ export function useUserAccessManagerActions() {
 		if (getCurrentUserId() !== user.id) {
 			user.canLoginAs &&
 				actions.push({
-					label: t('grid.action.logInAs'),
+					label: t('grid.user.logInAs'),
 					icon: 'LoginAs',
 					name: Actions.USER_ACCESS_LOGIN_AS,
 				});
 
 			if (user.groups.find((value) => value.dateEnd === null)) {
 				actions.push({
-					label: t('grid.action.remove'),
+					label: t('grid.user.remove'),
 					icon: 'Cancel',
 					name: Actions.USER_ACCESS_REMOVE_USER,
 					isWarnable: true,
@@ -51,9 +51,7 @@ export function useUserAccessManagerActions() {
 			}
 
 			actions.push({
-				label: user.disabled
-					? t('grid.action.enable')
-					: t('grid.action.disable'),
+				label: user.disabled ? t('grid.user.enable') : t('grid.user.disable'),
 				icon: 'DisableUser',
 				name: Actions.USER_ACCESS_DISABLE_USER,
 				isWarnable: true,

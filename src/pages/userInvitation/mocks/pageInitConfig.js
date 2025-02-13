@@ -48,6 +48,7 @@ export default {
 		givenName: '',
 		familyName: '',
 		orcidValidation: false,
+		disabled: false,
 		userGroupsToAdd: [{userGroupId: null, dateStart: null, masthead: null}],
 		currentUserGroups: [],
 		userGroupsToRemove: [],

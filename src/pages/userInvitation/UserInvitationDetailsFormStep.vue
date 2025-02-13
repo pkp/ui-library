@@ -1,4 +1,15 @@
 <template>
+	<div
+		v-if="store.invitationPayload.disabled"
+		class="m-8 border-x border-b border-t border-light bg-secondary p-4"
+	>
+		<h2 class="text-xl-bold text-heading">
+			{{ t('userInvitation.user.disableTitle') }}
+		</h2>
+		<p class="text-base-normal text-secondary">
+			{{ t('userInvitation.user.disableMessage') }}
+		</p>
+	</div>
 	<div v-if="store.invitationPayload.userId === null">
 		<div v-if="Object.keys(store.errors).length" class="p-4">
 			<FormErrorSummary :errors="store.errors" />
