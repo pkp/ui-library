@@ -46,6 +46,7 @@ window.pkp = {
 		REVIEW_ASSIGNMENT_STATUS_THANKED: 9,
 		REVIEW_ASSIGNMENT_STATUS_CANCELLED: 10,
 		REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND: 11,
+		REVIEW_ASSIGNMENT_STATUS_VIEWED: 12,
 		REVIEW_ROUND_STATUS_REVISIONS_REQUESTED: 1,
 		REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW: 2,
 		REVIEW_ROUND_STATUS_SENT_TO_EXTERNAL: 3,
@@ -365,6 +366,7 @@ window.pkp = {
 		'editor.review.reviewDetails': 'Review Details',
 		'editor.review.reviewDue': 'Review due: {$date}',
 		'editor.review.reviewSubmitted': 'Review Submitted',
+		'editor.review.reviewViewed': 'Review Viewed',
 		'editor.review.reviewerThanked': 'Reviewer Thanked',
 		'editor.review.sendReminder': 'Send Reminder',
 		'editor.review.thankReviewer': 'Thank Reviewer',
@@ -413,7 +415,11 @@ window.pkp = {
 		'editor.submissionArchive.confirmDelete':
 			'Are you sure you want to permanently delete this submission?',
 		'editor.submissionLibrary': 'Library',
+		'editor.submissionReview.anonymous': 'Anonymous Reviewer/Disclosed Author',
+		'editor.submissionReview.doubleAnonymous':
+			'Anonymous Reviewer/Anonymous Author',
 		'editor.submissionReview.editReview': 'Edit Review',
+		'editor.submissionReview.open': 'Open',
 		'editor.submissionReview.uploadFile': 'Upload Review File',
 		'email.bcc': 'BCC',
 		'email.cc': 'CC',
@@ -443,12 +449,12 @@ window.pkp = {
 		'form.errorGoTo': 'Jump to next error',
 		'form.errorMany': 'Please correct {$count} errors.',
 		'form.errorOne': 'Please correct one error.',
-		'form.errors':
-			'The form was not saved because {$count} error(s) were encountered. Please correct these errors and try again.',
-		'form.errorSummaryOne':
-			'1 error detected! Please correct the error below before proceeding.',
 		'form.errorSummaryMany':
 			'{$count} errors detected! Please correct the errors below before proceeding.',
+		'form.errorSummaryOne':
+			'1 error detected! Please correct the error below before proceeding.',
+		'form.errors':
+			'The form was not saved because {$count} error(s) were encountered. Please correct these errors and try again.',
 		'form.multilingualLabel': '{$label} in {$localeName}',
 		'form.multilingualProgress': '{$count}/{$total} languages completed',
 		'form.saved': 'Saved',
@@ -458,10 +464,12 @@ window.pkp = {
 		'grid.action.deleteContributor': 'Delete Contributor',
 		'grid.action.deleteContributor.confirmationMessage':
 			'Are you sure you want to remove {$name} as a contributor? This action can not be undone.',
-		'grid.action.disable': 'Disable User',
+		'grid.action.disable': 'Disable',
 		'grid.action.edit': 'Edit',
 		'grid.action.editFile': 'Edit a file',
+		'grid.action.enable': 'Enable',
 		'grid.action.logInAs': 'Login As',
+		'grid.action.mergeUser': 'Merge user',
 		'grid.action.moreInformation': 'More Information',
 		'grid.action.order': 'Order',
 		'grid.action.remove': 'Remove',
@@ -473,7 +481,8 @@ window.pkp = {
 		'grid.user.confirmLogInAs':
 			'Log in as this user? All actions you perform will be attributed to this user.',
 		'grid.user.currentUsers': 'Current Users',
-		'grid.action.mergeUser': 'Merge User',
+		'grid.user.disable': 'Disable',
+		'grid.user.email': 'Email',
 		'help.help': 'Help',
 		'informationCenter.informationCenter': 'Information Center',
 		'invitation.cancelInvite.actionName': 'Cancel Invite',
@@ -585,6 +594,8 @@ window.pkp = {
 			'Add and edit templates that you would like to make available to the user when they are sending this email. The default will be loaded automatically, and the user will be able to quickly load any other templates you add here.',
 		'manager.mailables.editTemplate': 'Edit Template',
 		'manager.mailables.templates': 'Templates',
+		'manager.people.confirmRemove':
+			'Remove this user from this journal? This action will unenroll the user from all roles within this journal.',
 		'manager.publication.productionStage': 'Production',
 		'manager.publication.reviewStage': 'Review',
 		'manager.publication.submissionStage': 'Submission',
@@ -783,6 +794,26 @@ window.pkp = {
 		'submissions.declined': 'Declined',
 		'submissions.incomplete': 'Incomplete',
 		'user.affiliation': 'Affiliation',
+		'user.affiliations': 'Affiliations',
+		'user.affiliations.deleteModal.message':
+			'The affiliation <strong>{$affiliation}</strong> will be deleted.',
+		'user.affiliations.deleteModal.title': 'Are you sure?',
+		'user.affiliations.description':
+			'Enter the full name of the institution below, avoiding any acronyms. Select the name from the dropdown and click "Add" to include the affiliation in your profile. (e.g. "Simon Fraser University")',
+		'user.affiliations.institution': 'Institution',
+		'user.affiliations.primaryLocaleRequired':
+			'The primary language {$primaryLocale} is required',
+		'user.affiliations.searchPhraseLabel':
+			'Type the institute name in {$language}',
+		'user.affiliations.translation': 'More information',
+		'user.affiliations.translationActionsAriaLabel': 'Click to edit or delete',
+		'user.affiliations.translationDeleteActionLabel': 'Remove institution',
+		'user.affiliations.translationEditActionLabel': 'Edit institution name',
+		'user.affiliations.translationsAllAvailable': 'All translations available',
+		'user.affiliations.translationsSomeAvailable':
+			'{$count} of {$total} languages completed',
+		'user.affiliations.typeTranslationNameInLanguageLabel':
+			'Type the institute name in {$language}',
 		'user.authorization.accessibleWorkflowStage':
 			"You don't currently have access to that stage of the workflow.",
 		'user.email': 'Email',
@@ -797,8 +828,11 @@ window.pkp = {
 		'user.role.reviewer': 'Reviewer',
 		'user.role.reviewers': 'Reviewers',
 		'user.roles': 'Roles',
-		'user.startDate': 'Start Date',
 		'user.username': 'Username',
+		'userAccess.management.options': '##userAccess.management.options##',
+		'userAccess.search': 'Search User',
+		'userAccess.tableHeader.name': 'Name',
+		'userAccess.tableHeader.startDate': 'Start Date',
 		'userInvitation.cancel.goBack': 'Go Back',
 		'userInvitation.cancel.message':
 			'Are you sure want to cancel this invitation?',
@@ -832,30 +866,6 @@ window.pkp = {
 			'The submission has been advanced to the next round of review',
 		'workflow.submissionNextReviewRoundInFutureStage':
 			'The submission advanced to the next review round, was accepted, and is currently in the {$stage} stage.',
-		'user.affiliations': 'Affiliations',
-		'user.affiliations.description':
-			'Enter the full name of the institution below, avoiding any acronyms. Select the name from the dropdown and click "Add" to include the affiliation in your profile. (e.g. "Simon Fraser University")',
-		'user.affiliations.institution': 'Institution',
-		'user.affiliations.translation': 'More information',
-		'user.affiliations.translationEditActionLabel': 'Edit institution name',
-		'user.affiliations.translationDeleteActionLabel': 'Remove institution',
-		'user.affiliations.translationActionsAriaLabel': 'Click to edit or delete',
-		'user.affiliations.translationsAllAvailable': 'All translations available',
-		'user.affiliations.translationsSomeAvailable':
-			'{$count} of {$total} languages completed',
-		'user.affiliations.typeTranslationNameInLanguageLabel':
-			'Type the institute name in {$language}',
-		'user.affiliations.translationNameInLanguage':
-			'Institute name in {$language}',
-		'user.affiliations.deleteModal.title': 'Are you sure?',
-		'user.affiliations.deleteModal.message':
-			'The affiliation <strong>{$affiliation}</strong> will be deleted.',
-		'user.affiliations.searchPhraseLabel':
-			'Type the institute name in {$language}',
-		'user.affiliations.searchPhraseNothingFound':
-			'Your search phrase could not be found',
-		'user.affiliations.primaryLocaleRequired':
-			'The primary language {$primaryLocale} is required',
 		'workflow.uploadRevisions': 'Upload revisions',
 	},
 	tinyMCE: {

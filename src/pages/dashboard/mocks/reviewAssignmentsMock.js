@@ -15,6 +15,7 @@ const CommonDefaultShort = {
 	statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE,
 };
 
+// Thats returned from the _submissions/reviewAssignments
 const CommonDefaultFull = {
 	publicationTitle: {
 		en: 'Sodium butyrate improves growth performance of weaned piglets during the first period after weaning',

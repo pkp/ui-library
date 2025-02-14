@@ -143,16 +143,69 @@ export function useReviewerManagerConfig() {
 						title: t('editor.review.ReviewerResendRequest'),
 						description: t('editor.review.responseDue', {
 							date: formatShortDate(reviewAssignment.dateDue),
-							competingInterests: getCompetingInterests(reviewAssignment),
 						}),
+						competingInterests: getCompetingInterests(reviewAssignment),
 					},
 				});
 				break;
+			case pkp.const.REVIEW_ASSIGNMENT_STATUS_VIEWED:
+				items.push({
+					component: 'ReviewerManagerCellStatusInfo',
+					props: {
+						title: t('editor.review.reviewViewed'),
+						competingInterests: getCompetingInterests(reviewAssignment),
+					},
+				});
+				break;
+
 			default:
 		}
 
 		return items;
 	}
 
-	return {getCellStatusItems};
+	function getColumns({submission, redactedForAuthors}) {
+		const columns = [];
+
+		const props = {submission, redactedForAuthors};
+
+		columns.push({
+			header: t('user.role.reviewer'),
+			component: 'ReviewerManagerCellReviewer',
+			props,
+		});
+
+		if (!redactedForAuthors) {
+			columns.push({
+				header: t('reviewerManager.reviewerStatus'),
+				component: 'ReviewerManagerCellStatus',
+				props,
+			});
+		}
+
+		columns.push({
+			header: t('common.type'),
+			component: 'ReviewerManagerCellReviewType',
+			props,
+		});
+
+		columns.push({
+			header: t('grid.columns.actions'),
+			component: 'ReviewerManagerCellPrimaryActions',
+			props,
+		});
+
+		if (!redactedForAuthors) {
+			columns.push({
+				header: t('common.moreActions'),
+				srOnly: true,
+				component: 'ReviewerManagerCellActions',
+				props,
+			});
+		}
+
+		return columns;
+	}
+
+	return {getCellStatusItems, getColumns};
 }

@@ -278,7 +278,12 @@ export const WorkflowConfig = {
 	},
 
 	[pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW]: {
-		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
+		getPrimaryItems: ({
+			submission,
+			selectedStageId,
+			selectedReviewRound,
+			pageInitConfig,
+		}) => {
 			const items = [];
 
 			items.push({
@@ -306,6 +311,7 @@ export const WorkflowConfig = {
 				props: {
 					submission: submission,
 					reviewRoundId: selectedReviewRound?.id,
+					componentForms: pageInitConfig.componentForms,
 				},
 			});
 

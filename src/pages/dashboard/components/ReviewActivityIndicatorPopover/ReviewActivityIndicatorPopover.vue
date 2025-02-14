@@ -6,14 +6,7 @@
 	</div>
 	<div class="flex items-center justify-between">
 		<span class="text-lg-bold">{{ reviewerName }}</span>
-		<span class="flex gap-x-2">
-			<Icon
-				v-for="icon in reviewMethodIcons"
-				:key="icon"
-				class="h-6 w-6"
-				:icon="icon"
-			/>
-		</span>
+		<ReviewMethodIcons size-variants="large" :review-method="reviewMethod" />
 	</div>
 	<div
 		v-if="description"
@@ -53,12 +46,13 @@ export default {};
 <script setup>
 import {defineProps} from 'vue';
 import Badge from '@/components/Badge/Badge.vue';
-import Icon from '@/components/Icon/Icon.vue';
 import PkpButton from '@/components/Button/Button.vue';
+import ReviewMethodIcons from '@/components/ReviewMethodIcons/ReviewMethodIcons.vue';
+
 defineProps({
 	title: {type: String, required: false, default: null},
 	description: {type: String, required: false, default: null},
-	reviewMethodIcons: {type: Array, required: true},
+	reviewMethod: {type: Number, required: true},
 	reviewerName: {type: String, required: true, default: ''},
 	primaryButton: {type: Object, required: false, default: null},
 	negativeButton: {type: Object, required: false, default: null},

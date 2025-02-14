@@ -130,6 +130,14 @@ export const VariantSuccessBg = {
 	},
 };
 
+export const VariantAttention = {
+	args: {
+		slot: 'Competing interests',
+		label: 'Competing interests',
+		colorVariant: 'attention',
+	},
+};
+
 export const VariantAttentionBg = {
 	args: {
 		slot: 'Review overdue',

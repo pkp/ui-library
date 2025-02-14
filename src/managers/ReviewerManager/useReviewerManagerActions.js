@@ -5,7 +5,6 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useSubmission} from '@/composables/useSubmission';
 import {useFetch, getCSRFToken} from '@/composables/useFetch';
 import WorkflowLogResponseModal from '@/managers/ReviewerManager/modals/WorkflowLogResponseModal.vue';
-import {useDashboardPageStore} from '@/pages/dashboard/dashboardPageStore';
 import {useApiUrl} from '@/composables/useApiUrl';
 
 export const Actions = {
@@ -55,6 +54,7 @@ export function useReviewerManagerActions() {
 					pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 					pkp.const.REVIEW_ASSIGNMENT_STATUS_THANKED,
 					pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
+					pkp.const.REVIEW_ASSIGNMENT_STATUS_VIEWED,
 				].includes(reviewAssignmentStatusId)
 			) {
 				return [
@@ -95,7 +95,10 @@ export function useReviewerManagerActions() {
 				name: Actions.REVIEWER_REVERT_CONSIDER,
 			});
 		} else if (
-			reviewAssignmentStatusId === pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED
+			[
+				pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
+				pkp.const.REVIEW_ASSIGNMENT_STATUS_VIEWED,
+			].includes(reviewAssignmentStatusId)
 		) {
 			actions.push({
 				label: t('editor.review.readReview'),
@@ -592,13 +595,12 @@ export function useReviewerManagerActions() {
 	}
 
 	function reviewerLogResponse(
-		{submission, reviewAssignment, submissionStageId},
+		{submission, reviewAssignment, submissionStageId, componentForms},
 		finishedCallback,
 	) {
 		const {openSideModal} = useModal();
 
-		const dashboardStore = useDashboardPageStore();
-		let form = dashboardStore.componentForms.logResponseForm;
+		let form = componentForms.logResponseForm;
 		let submissionId = submission.id;
 
 		const {getCurrentPublication} = useSubmission();
@@ -616,16 +618,13 @@ export function useReviewerManagerActions() {
 			{
 				title: title,
 				submissionId: submissionId,
-				logResponseForm: dashboardStore.componentForms.logResponseForm,
+				logResponseForm: componentForms.logResponseForm,
 			},
 			{onClose: finishedCallback},
 		);
 	}
 
-	function reviewerSendToOrcid({
-		submission,
-		reviewAssignment,
-	}) {
+	function reviewerSendToOrcid({submission, reviewAssignment}) {
 		const {openDialog, openDialogNetworkError} = useModal();
 
 		let submissionId = submission.id;

@@ -44,7 +44,7 @@ export const useFileManagerStore = defineComponentStore(
 					newFilesApiUrl !== oldFilesApiUrl ||
 					JSON.stringify(newQueryParams) !== JSON.stringify(oldQueryParams)
 				) {
-					files.value = null;
+					data.value = null;
 					fetchFiles();
 				}
 			},

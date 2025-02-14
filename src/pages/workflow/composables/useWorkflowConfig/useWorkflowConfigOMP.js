@@ -36,6 +36,7 @@ export function useWorkflowConfigOMP({dashboardPage}) {
 				selectedPublicationId,
 				selectedStageId: selectedMenuState.stageId,
 				selectedReviewRound,
+				pageInitConfig,
 				permissions,
 			};
 			if (!submission) {
