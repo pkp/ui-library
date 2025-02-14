@@ -17,6 +17,7 @@
 			>
 				<Autosuggest
 					v-bind="autoSuggestProps"
+					:hide-if-disabled="true"
 					@update:input-value="updateInputValue"
 					@select-suggestion="handleSelect"
 					@deselect="handleDeselect"
