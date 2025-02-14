@@ -8,7 +8,9 @@
 						:key="icon"
 						:class="iconSize"
 						:icon="icon"
+						aria-hidden="true"
 					/>
+					<span class="sr-only">{{ label }}</span>
 				</span>
 			</template>
 			<span class="text-base-normal uppercase text-default">{{ label }}</span>
