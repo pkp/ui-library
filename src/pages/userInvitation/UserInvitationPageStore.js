@@ -352,27 +352,31 @@ export const useUserInvitationPageStore = defineComponentStore(
 
 		function cancel() {
 			if (detectChanges.value) {
-				openDialog({
-					name: 'cancel',
-					title: t('invitation.cancelInvite.title'),
-					message: t('userInvitation.cancel.message'),
-					actions: [
-						{
-							label: t('invitation.cancelInvite.actionName'),
-							isWarnable: true,
-							callback: (close) => {
-								redirectToPage();
+				if (invitationMode.value === 'editUser') {
+					confirm(t('form.dataHasChanged')) ? redirectToPage() : '';
+				} else {
+					openDialog({
+						name: 'cancel',
+						title: t('invitation.cancelInvite.title'),
+						message: t('userInvitation.cancel.message'),
+						actions: [
+							{
+								label: t('invitation.cancelInvite.actionName'),
+								isWarnable: true,
+								callback: (close) => {
+									redirectToPage();
+								},
 							},
-						},
-						{
-							label: t('userInvitation.cancel.goBack'),
-							callback: (close) => {
-								close();
+							{
+								label: t('userInvitation.cancel.goBack'),
+								callback: (close) => {
+									close();
+								},
 							},
-						},
-					],
-					modalStyle: 'negative',
-				});
+						],
+						modalStyle: 'negative',
+					});
+				}
 			} else {
 				redirectToPage();
 			}

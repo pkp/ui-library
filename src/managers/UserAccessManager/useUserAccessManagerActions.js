@@ -89,11 +89,19 @@ export function useUserAccessManagerActions() {
 				enable: user.disabled ? '1' : '',
 			},
 		});
+		let currentRoles = '';
+		user.groups.forEach((group) => {
+			currentRoles = currentRoles + group.name + ',';
+		});
 
 		openLegacyModal(
 			{
-				title: !user.disabled ? t('grid.user.disable') : t('grid.user.enable'),
-				description: 'Currnet Roles :',
+				title: !user.disabled
+					? t('user.disabledModal.title', {fullName: user.fullName})
+					: t('user.enabledModal.title', {fullName: user.fullName}),
+				description: t('user.disabledModal.description', {
+					roles: currentRoles.replace(/,\s*$/, ''),
+				}),
 			},
 			(closeData) => {
 				finishedCallback();
