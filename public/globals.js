@@ -876,6 +876,9 @@ window.pkp = {
 			"Once the user enabled, they will regain access to OJS, and you'll be able to invite them to roles as needed.",
 		'grid.user.grid.user.disableReasonDescription':
 			"Please note that once a user is disabled, you won't be able to add them to any roles until they are enabled again.",
+		'user.disabledModal.description': 'Current Roles : {$roles}',
+		'user.disabledModal.title': 'Disable {$fullName}',
+		'user.enabledModal.title': 'Enable {$fullName}',
 	},
 	tinyMCE: {
 		skinUrl: '/styles/tinymce',

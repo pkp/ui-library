@@ -35,7 +35,10 @@ export function useLegacyGridUrl({
 		return `${baseUrl}${queryParamsString.value}`;
 	});
 
-	function openLegacyModal({title, closeOnFormSuccessId}, finishedCallback) {
+	function openLegacyModal(
+		{title, closeOnFormSuccessId, description},
+		finishedCallback,
+	) {
 		const {openSideModal} = useModal();
 
 		openSideModal(
@@ -45,6 +48,7 @@ export function useLegacyGridUrl({
 					title,
 					url,
 					closeOnFormSuccessId,
+					description,
 				},
 			},
 			{
