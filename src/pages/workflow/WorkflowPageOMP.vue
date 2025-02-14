@@ -15,6 +15,7 @@ import ReviewerManager from '@/managers/ReviewerManager/ReviewerManager.vue';
 import DiscussionManager from '@/managers/DiscussionManager/DiscussionManager.vue';
 import ContributorManager from '@/managers/ContributorManager/ContributorManager.vue';
 import ParticipantManager from '@/managers/ParticipantManager/ParticipantManager.vue';
+import ReviewerSuggestionManager from '@/managers/ReviewerSuggestionManager/ReviewerSuggestionManager.vue';
 import GalleyManager from '@/managers/GalleyManager/GalleyManager.vue';
 import ChapterManager from '@/managers/ChapterManager/ChapterManager.vue';
 import PublicationFormatManager from '@/managers/PublicationFormatManager/PublicationFormatManager.vue';
@@ -44,6 +45,7 @@ const Components = markRaw({
 	DiscussionManager,
 	ContributorManager,
 	ParticipantManager,
+	ReviewerSuggestionManager,
 	GalleyManager,
 	ChapterManager,
 	RepresentativeManager,

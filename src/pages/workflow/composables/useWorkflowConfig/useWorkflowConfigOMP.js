@@ -32,6 +32,7 @@ export function useWorkflowConfigOMP({dashboardPage}) {
 		if (selectedMenuState.stageId) {
 			const itemsArgs = {
 				submission,
+				pageInitConfig,
 				selectedPublication,
 				selectedPublicationId,
 				selectedStageId: selectedMenuState.stageId,
