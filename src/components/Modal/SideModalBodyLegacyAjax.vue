@@ -1,6 +1,9 @@
 <template>
 	<SideModalBody>
 		<template #title>{{ legacyOptions.title }}</template>
+		<template #description>
+			<p class="mt-1 text-lg-normal">{{ legacyOptions.description }}</p>
+		</template>
 		<div class="p-4">
 			<div class="bg-secondary p-4">
 				<AjaxModalWrapper

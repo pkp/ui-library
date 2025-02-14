@@ -55,79 +55,84 @@
 					</div>
 				</TableCell>
 			</TableRow>
-			<TableRow
-				v-for="(userGroupToAdd, index) in allUserGroupsToAdd"
-				:key="index"
-			>
-				<TableCell>
-					<FieldSelect
-						name="userGroupId"
-						:label="t('invitation.role.selectRole')"
-						:is-required="true"
-						:value="userGroupToAdd.userGroupId"
-						:options="availableUserGroups"
-						:all-errors="{
-							userGroupId:
-								userGroupErrors['userGroupsToAdd.' + index + '.userGroupId'],
-						}"
-						class="userInvitation__roleSelect"
-						@change="
-							(fieldName, propName, newValue, localeKey) =>
-								updateUserGroup(index, fieldName, newValue)
-						"
-					/>
-				</TableCell>
-				<TableCell>
-					<FieldText
-						name="dateStart"
-						:label="t('invitation.role.dateStart')"
-						input-type="date"
-						:is-required="true"
-						:value="userGroupToAdd.dateStart"
-						:all-errors="{
-							dateStart:
-								userGroupErrors['userGroupsToAdd.' + index + '.dateStart'],
-						}"
-						@change="
-							(fieldName, propName, newValue, localeKey) =>
-								updateUserGroup(index, fieldName, newValue)
-						"
-					/>
-				</TableCell>
-				<TableCell>---</TableCell>
-				<TableCell>
-					<FieldSelect
-						name="masthead"
-						:label="t('invitation.role.masthead')"
-						:is-required="true"
-						:value="userGroupToAdd.masthead"
-						:options="[
-							{label: t('invitation.masthead.show'), value: true},
-							{label: t('invitation.masthead.hidden'), value: false},
-						]"
-						:all-errors="{
-							masthead:
-								userGroupErrors['userGroupsToAdd.' + index + '.masthead'],
-						}"
-						@change="
-							(fieldName, propName, newValue, localeKey) =>
-								updateUserGroup(index, fieldName, newValue)
-						"
-					/>
-				</TableCell>
-				<TableCell>
-					<PkpButton
-						v-if="index > 0"
-						:is-warnable="true"
-						@click="removeInvitedUserGroup(index)"
-					>
-						{{ t('invitation.role.removeRole.button') }}
-					</PkpButton>
-				</TableCell>
-			</TableRow>
+			<template v-if="!store.invitationPayload.disabled">
+				<TableRow
+					v-for="(userGroupToAdd, index) in allUserGroupsToAdd"
+					:key="index"
+				>
+					<TableCell>
+						<FieldSelect
+							name="userGroupId"
+							:label="t('invitation.role.selectRole')"
+							:is-required="true"
+							:value="userGroupToAdd.userGroupId"
+							:options="availableUserGroups"
+							:all-errors="{
+								userGroupId:
+									userGroupErrors['userGroupsToAdd.' + index + '.userGroupId'],
+							}"
+							class="userInvitation__roleSelect"
+							@change="
+								(fieldName, propName, newValue, localeKey) =>
+									updateUserGroup(index, fieldName, newValue)
+							"
+						/>
+					</TableCell>
+					<TableCell>
+						<FieldText
+							name="dateStart"
+							:label="t('invitation.role.dateStart')"
+							input-type="date"
+							:is-required="true"
+							:value="userGroupToAdd.dateStart"
+							:all-errors="{
+								dateStart:
+									userGroupErrors['userGroupsToAdd.' + index + '.dateStart'],
+							}"
+							@change="
+								(fieldName, propName, newValue, localeKey) =>
+									updateUserGroup(index, fieldName, newValue)
+							"
+						/>
+					</TableCell>
+					<TableCell>---</TableCell>
+					<TableCell>
+						<FieldSelect
+							name="masthead"
+							:label="t('invitation.role.masthead')"
+							:is-required="true"
+							:value="userGroupToAdd.masthead"
+							:options="[
+								{label: t('invitation.masthead.show'), value: true},
+								{label: t('invitation.masthead.hidden'), value: false},
+							]"
+							:all-errors="{
+								masthead:
+									userGroupErrors['userGroupsToAdd.' + index + '.masthead'],
+							}"
+							@change="
+								(fieldName, propName, newValue, localeKey) =>
+									updateUserGroup(index, fieldName, newValue)
+							"
+						/>
+					</TableCell>
+					<TableCell>
+						<PkpButton
+							v-if="index > 0"
+							:is-warnable="true"
+							@click="removeInvitedUserGroup(index)"
+						>
+							{{ t('invitation.role.removeRole.button') }}
+						</PkpButton>
+					</TableCell>
+				</TableRow>
+			</template>
 		</TableBody>
 		<template #bottom-controls>
-			<PkpButton @click="addUserGroup()">
+			<PkpButton
+				:is-disabled="store.invitationPayload.disabled"
+				@click="addUserGroup()"
+			>
 				{{ t('invitation.role.addRole.button') }}
 			</PkpButton>
 		</template>
