@@ -1,6 +1,6 @@
 <template>
 	<span>
-		<PkpPopover>
+		<PkpPopover size-variant="content">
 			<template #button>
 				<span class="flex gap-x-1">
 					<Icon

@@ -95,7 +95,7 @@ export default {
 					'border-primary text-primary bg-secondary':
 						colorVariant === 'primary',
 					// attention-border
-					'border-attention text-attention bg-secondary':
+					'border-dark text-attention bg-secondary':
 						colorVariant === 'attention',
 					// primary-bg
 					'bg-primary text-on-dark border-primary':

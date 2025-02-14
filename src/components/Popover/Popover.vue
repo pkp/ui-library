@@ -22,7 +22,8 @@
 				></div>
 
 				<div
-					class="text-sm w-screen max-w-sm flex-auto overflow-hidden rounded bg-secondary shadow"
+					:class="sizeClasses"
+					class="text-sm flex-auto overflow-hidden rounded bg-secondary shadow"
 				>
 					<div class="p-4"><slot></slot></div>
 				</div>
@@ -31,11 +32,26 @@
 	</Popover>
 </template>
 
-<script>
+<script setup>
+import {computed} from 'vue';
 import {PopoverButton, Popover, PopoverPanel} from '@headlessui/vue';
-export default {
-	components: {Popover, PopoverButton, PopoverPanel},
-};
+
+const props = defineProps({
+	sizeVariant: {
+		required: false,
+		type: String,
+		default: () => 'default',
+		validator: (prop) => ['default', 'content'].includes(prop),
+	},
+});
+
+const sizeClasses = computed(() => {
+	if (props.sizeVariant === 'content') {
+		return 'max-w-sm';
+	}
+
+	return 'w-screen max-w-sm';
+});
 </script>
 <style>
 .tooltip-arrow {
