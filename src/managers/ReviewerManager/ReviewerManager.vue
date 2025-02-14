@@ -21,14 +21,10 @@
 				</div>
 			</template>
 			<TableHeader>
-				<TableColumn>{{ t('user.role.reviewer') }}</TableColumn>
-				<TableColumn>
-					{{ t('reviewerManager.reviewerStatus') }}
-				</TableColumn>
-				<TableColumn>{{ t('common.type') }}</TableColumn>
-				<TableColumn>{{ t('grid.columns.actions') }}</TableColumn>
-				<TableColumn v-if="!redactedForAuthors">
-					<span class="sr-only">{{ t('common.moreActions') }}</span>
+				<TableColumn v-for="(column, i) in reviewerStore.columns" :key="i">
+					<span :class="column.headerSrOnly ? 'sr-only' : ''">
+						{{ column.header }}
+					</span>
 				</TableColumn>
 			</TableHeader>
 			<TableBody>
@@ -36,39 +32,13 @@
 					v-for="reviewAssignment in reviewerStore.reviewAssignments"
 					:key="reviewAssignment.id"
 				>
-					<TableCell :is-row-header="true">
-						<span class="text-base-normal">
-							{{ reviewAssignment.reviewerFullName }}
-						</span>
-					</TableCell>
-					<ReviewerManagerCellStatus
+					<component
+						:is="Components[column.component] || column.component"
+						v-for="(column, i) in reviewerStore.columns"
+						:key="i"
+						v-bind="column.props"
 						:review-assignment="reviewAssignment"
-						:submission="submission"
-						:redacted-for-authors="redactedForAuthors"
-					></ReviewerManagerCellStatus>
-					<TableCell>
-						<span class="flex items-center gap-x-2">
-							<Icon
-								v-for="icon in reviewerStore.getReviewMethodIcons(
-									reviewAssignment,
-								)"
-								:key="icon"
-								class="h-5 w-5"
-								:icon="icon"
-							/>
-						</span>
-					</TableCell>
-					<ReviewerManagerCellPrimaryActions
-						:review-assignment="reviewAssignment"
-						:submission="submission"
-						:redacted-for-authors="redactedForAuthors"
-					></ReviewerManagerCellPrimaryActions>
-					<ReviewerManagerCellActions
-						v-if="!redactedForAuthors"
-						:review-assignment="reviewAssignment"
-						:submission="submission"
-						:redacted-for-authors="redactedForAuthors"
-					></ReviewerManagerCellActions>
+					></component>
 				</TableRow>
 			</TableBody>
 		</PkpTable>
@@ -81,12 +51,14 @@ import TableColumn from '@/components/Table/TableColumn.vue';
 import TableHeader from '@/components/Table/TableHeader.vue';
 import TableBody from '@/components/Table/TableBody.vue';
 import TableRow from '@/components/Table/TableRow.vue';
-import TableCell from '@/components/Table/TableCell.vue';
+
+import ReviewerManagerCellReviewer from './ReviewerManagerCellReviewer.vue';
 import ReviewerManagerCellPrimaryActions from './ReviewerManagerCellPrimaryActions.vue';
 import ReviewerManagerCellActions from './ReviewerManagerCellActions.vue';
 import ReviewerManagerCellStatus from './ReviewerManagerCellStatus.vue';
+import ReviewerManagerCellReviewType from './ReviewerManagerCellReviewType.vue';
+
 import PkpButton from '@/components/Button/Button.vue';
-import Icon from '@/components/Icon/Icon.vue';
 
 import {useReviewerManagerStore} from './reviewerManagerStore.js';
 import {useId} from '@/composables/useId.js';
@@ -96,10 +68,19 @@ const {generateId} = useId();
 const {t} = useLocalize();
 const headingId = generateId();
 
+const Components = {
+	ReviewerManagerCellReviewer,
+	ReviewerManagerCellStatus,
+	ReviewerManagerCellReviewType,
+	ReviewerManagerCellPrimaryActions,
+	ReviewerManagerCellActions,
+};
+
 const props = defineProps({
 	submission: {type: Object, required: true},
 	reviewRoundId: {type: Number, required: true},
 	redactedForAuthors: {type: Boolean, required: false, default: false},
+	componentForms: {type: Object, required: true},
 });
 
 const reviewerStore = useReviewerManagerStore(props);

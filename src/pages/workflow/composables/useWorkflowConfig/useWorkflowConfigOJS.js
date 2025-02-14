@@ -33,6 +33,7 @@ export function useWorkflowConfigOJS({dashboardPage}) {
 				selectedStageId: selectedMenuState.stageId,
 				selectedReviewRound,
 				permissions,
+				pageInitConfig,
 			};
 			if (!submission) {
 				return [];

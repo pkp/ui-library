@@ -62,7 +62,12 @@ export const WorkflowConfig = {
 	},
 
 	[pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW]: {
-		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
+		getPrimaryItems: ({
+			submission,
+			selectedStageId,
+			selectedReviewRound,
+			pageInitConfig,
+		}) => {
 			const items = [];
 			if (
 				getOpenReviewAssignmentsForRound(
@@ -76,6 +81,7 @@ export const WorkflowConfig = {
 						submission: submission,
 						reviewRoundId: selectedReviewRound?.id,
 						redactedForAuthors: true,
+						componentForms: pageInitConfig.componentForms,
 					},
 				});
 			}

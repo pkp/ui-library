@@ -1,9 +1,6 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {useDate} from '@/composables/useDate';
-import {
-	useSubmission,
-	RecommendationTranslations,
-} from '@/composables/useSubmission';
+import {RecommendationTranslations} from '@/composables/useSubmission';
 import {Actions as ReviewerManagerActions} from '@/managers/ReviewerManager/useReviewerManagerActions';
 const {tk, t} = useLocalize();
 
@@ -366,13 +363,11 @@ export function useReviewActivityLogic() {
 			return t(ActionButtonTranslations[config.negativeAction]);
 		}
 
-		const {getReviewMethodIcons} = useSubmission();
-
 		return {
 			titleBadgeProps: config.badgeProps,
 			title: getTitle(),
 			description: getDescription(),
-			reviewMethodIcons: getReviewMethodIcons(reviewAssignment),
+			reviewMethod: reviewAssignment.method,
 			textButton: config.textAction && {
 				action: ActionsMapping[config.textAction],
 				label: getTextActionLabel(),

@@ -5,7 +5,7 @@ import {useSubmission} from '@/composables/useSubmission';
 
 const {
 	hasSubmissionPassedStage,
-	getOpenReviewAssignmentsForRound,
+	getOpenAndCompletedReviewAssignmentsForRound,
 	hasNotSubmissionStartedStage,
 } = useSubmission();
 
@@ -143,7 +143,12 @@ export const WorkflowConfig = {
 	},
 
 	[pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW]: {
-		getPrimaryItems: ({submission, selectedStageId, selectedReviewRound}) => {
+		getPrimaryItems: ({
+			submission,
+			selectedStageId,
+			selectedReviewRound,
+			pageInitConfig,
+		}) => {
 			const items = [];
 
 			items.push({
@@ -152,7 +157,7 @@ export const WorkflowConfig = {
 			});
 
 			if (
-				getOpenReviewAssignmentsForRound(
+				getOpenAndCompletedReviewAssignmentsForRound(
 					submission.reviewAssignments,
 					selectedReviewRound.id,
 				).length
@@ -163,6 +168,7 @@ export const WorkflowConfig = {
 						submission: submission,
 						reviewRoundId: selectedReviewRound?.id,
 						redactedForAuthors: true,
+						componentForms: pageInitConfig.componentForms,
 					},
 				});
 			}

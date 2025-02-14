@@ -57,6 +57,12 @@ export default {
 					'attention',
 				].includes(prop),
 		},
+		sizeVariant: {
+			required: false,
+			default: () => 'default',
+			// compact is used in reviewer status for competing interest
+			validator: (prop) => ['default', 'compact'].includes(prop),
+		},
 		/**  */
 		/** Adds a small dot to the left of the `content` */
 		hasDot: Boolean,
@@ -75,11 +81,16 @@ export default {
 				const colorVariant = this.colorVariant;
 				return {
 					// base
-					'inline-block py-1 px-3 text-base-normal rounded-[1.2em] border': true,
+					'inline-block rounded-[1.2em] border': true,
+					// size default
+					'text-base-normal py-1 px-3': this.sizeVariant === 'default',
+					// size compact
+					'text-sm-normal py-[0.18rem] px-2': this.sizeVariant === 'compact',
 					// default
 					'text-default border-light': colorVariant === 'default',
 					// default-on-dark
 					'text-on-dark border-light': colorVariant === 'default-on-dark',
+
 					// primary
 					'border-primary text-primary bg-secondary':
 						colorVariant === 'primary',

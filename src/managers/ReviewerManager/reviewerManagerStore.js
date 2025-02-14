@@ -9,8 +9,7 @@ export const useReviewerManagerStore = defineComponentStore(
 	'reviewerManagerStore',
 	(props) => {
 		const {
-			getOpenReviewAssignmentsForRound,
-			getReviewMethodIcons,
+			getOpenAndCompletedReviewAssignmentsForRound,
 			getReviewAssignmentsForRound,
 		} = useSubmission();
 
@@ -21,12 +20,11 @@ export const useReviewerManagerStore = defineComponentStore(
 			);
 
 			if (props.redactedForAuthors) {
-				return getOpenReviewAssignmentsForRound(
+				return getOpenAndCompletedReviewAssignmentsForRound(
 					props.submission.reviewAssignments,
 					props.reviewRoundId,
 				);
 			}
-
 			return reviewAssignmentsForSelectedRound;
 		});
 
@@ -35,7 +33,14 @@ export const useReviewerManagerStore = defineComponentStore(
 		/**
 		 * Config
 		 */
-		const {getCellStatusItems} = useReviewerManagerConfig();
+		const {getCellStatusItems, getColumns} = useReviewerManagerConfig();
+
+		const columns = computed(() =>
+			getColumns({
+				submission: props.submission,
+				redactedForAuthors: props.redactedForAuthors,
+			}),
+		);
 
 		/**
 		 * Actions
@@ -58,6 +63,7 @@ export const useReviewerManagerStore = defineComponentStore(
 				submission: props.submission,
 				submissionStageId: props.submission.stageId,
 				reviewRoundId: props.reviewRoundId,
+				componentForms: props.componentForms,
 				...additionalArgs,
 			};
 		}
@@ -177,11 +183,11 @@ export const useReviewerManagerStore = defineComponentStore(
 		}
 
 		return {
-			getReviewMethodIcons,
 			reviewAssignments,
 
 			/** Config */
 			getCellStatusItems,
+			columns,
 
 			/** Actions */
 			topActions,

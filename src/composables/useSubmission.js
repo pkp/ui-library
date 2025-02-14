@@ -227,17 +227,14 @@ export function useSubmission() {
 		);
 	}
 
-	function getReviewMethodIcons(reviewAssignment) {
-		switch (reviewAssignment.reviewMethod) {
-			case pkp.const.SUBMISSION_REVIEW_METHOD_ANONYMOUS:
-				return ['OpenReview', 'AnonymousReview'];
-			case pkp.const.SUBMISSION_REVIEW_METHOD_DOUBLEANONYMOUS:
-				return ['AnonymousReview', 'AnonymousReview'];
-			case pkp.const.SUBMISSION_REVIEW_METHOD_OPEN:
-				return ['OpenReview', 'OpenReview'];
-		}
-
-		return ['OpenReview', 'OpenReview'];
+	function getOpenAndCompletedReviewAssignmentsForRound(
+		reviewAssignments,
+		reviewRoundId,
+	) {
+		return getOpenReviewAssignmentsForRound(
+			reviewAssignments,
+			reviewRoundId,
+		).filter((reviewAssignment) => !!reviewAssignment.dateCompleted);
 	}
 
 	function isDecisionAvailable(submission, decisionId) {
@@ -267,7 +264,7 @@ export function useSubmission() {
 		getCompletedReviewAssignments,
 		getOpenReviewAssignments,
 		getOpenReviewAssignmentsForRound,
-		getReviewMethodIcons,
+		getOpenAndCompletedReviewAssignmentsForRound,
 		InProgressReviewAssignmentStatuses,
 		isDecisionAvailable,
 	};
