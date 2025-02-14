@@ -52,9 +52,9 @@ export function useUserAccessManagerActions() {
 
 			actions.push({
 				label: user.disabled ? t('grid.user.enable') : t('grid.user.disable'),
-				icon: 'DisableUser',
+				icon: user.disabled ? 'User' : 'DisableUser',
 				name: Actions.USER_ACCESS_DISABLE_USER,
-				isWarnable: true,
+				isWarnable: !user.disabled,
 			});
 
 			user.canMergeUser &&
@@ -90,9 +90,15 @@ export function useUserAccessManagerActions() {
 			},
 		});
 
-		openLegacyModal({title: t('grid.user.disable')}, (closeData) => {
-			finishedCallback();
-		});
+		openLegacyModal(
+			{
+				title: !user.disabled ? t('grid.user.disable') : t('grid.user.enable'),
+				description: 'Currnet Roles :',
+			},
+			(closeData) => {
+				finishedCallback();
+			},
+		);
 	}
 
 	const {openDialog, openDialogNetworkError} = useModal();

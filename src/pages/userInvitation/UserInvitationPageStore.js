@@ -23,6 +23,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 		const updatedPayload = ref({});
 		const invitationType = ref(pageInitConfig.invitationType);
 		const invitationMode = ref(pageInitConfig.invitationMode);
+		const detectChanges = ref(false);
 
 		function updatePayload(fieldName, value, initialValue = true) {
 			invitationPayload.value[fieldName] = value;
@@ -310,6 +311,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 			invitationPayload,
 			async (newVal, oldVal) => {
 				isSubmitting.value = invitationPayload.value.disabled;
+				detectChanges.value = true;
 			},
 			{deep: true},
 		);
@@ -349,10 +351,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 		}
 
 		function cancel() {
-			if (invitationMode.value === 'editUser' || isOnFirstStep.value) {
-				redirectToPage();
-				close();
-			} else {
+			if (detectChanges.value) {
 				openDialog({
 					name: 'cancel',
 					title: t('invitation.cancelInvite.title'),
@@ -374,6 +373,8 @@ export const useUserInvitationPageStore = defineComponentStore(
 					],
 					modalStyle: 'negative',
 				});
+			} else {
+				redirectToPage();
 			}
 		}
 
