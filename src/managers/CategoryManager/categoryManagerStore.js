@@ -1,4 +1,4 @@
-import {computed, ref} from 'vue';
+import {computed, ref, nextTick, watch} from 'vue';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
@@ -14,17 +14,81 @@ const Actions = {
 	CATEGORY_ADD: 'categoryAdd',
 	CATEGORY_DELETE: 'categoryDelete',
 };
+
+const ActionFormLabel = {
+	[Actions.CATEGORY_EDIT]: 'Edit category',
+	[Actions.CATEGORY_ADD]: 'Add category',
+};
 export const useCategoryManagerStore = defineComponentStore(
 	'categoryManagerStore',
 	(props) => {
-		const _categories = ref(props.categories || []);
 		const {apiUrl} = useUrl('categories');
+		const {t} = useLocalize();
+
+		const _categories = ref(props.categories || []);
 		const _expandedIds = ref(new Set());
+		const _currentCategory = ref({});
+		const _currentAction = ref({});
+
 		const columns = computed(() => props.columns);
 		const expanded = computed(() => Array.from(_expandedIds.value));
+
 		const categories = computed(() => _categories.value);
+
 		const currentCategoryForm = ref({});
-		const {t} = useLocalize();
+		const categoryForm = props.categoryForm; //blank form
+
+		watch(_currentCategory, (newVal) => {
+			setCurrentCategoryForm(newVal);
+		});
+
+		function setCurrentCategoryForm(category) {
+			// Get a deep copy of the form to eliminate references
+			let preparedForm = JSON.parse(JSON.stringify(categoryForm));
+
+			// If we are adding a new Category as sub category of an existing one, then set existing category ID as parent ID of new category
+			if (
+				Object.entries(category).length &&
+				_currentAction.value === Actions.CATEGORY_ADD
+			) {
+				preparedForm.fields.map((field) => {
+					if (field.name === 'parentId') {
+						field.value = category.value.id;
+					}
+				});
+			}
+
+			// return empty form if adding a new, top level category
+			if (
+				!category ||
+				!Object.entries(category).length ||
+				_currentAction.value === Actions.CATEGORY_ADD
+			) {
+				currentCategoryForm.value = preparedForm;
+				return;
+			}
+
+			// Prepare form for editing existing category
+			if (Object.entries(category).length) {
+				preparedForm.method = 'PUT';
+				preparedForm.action = category._href;
+				props = Object.keys(category);
+
+				preparedForm.fields = preparedForm.fields.map((field) => {
+					if (props.includes(field.name)) {
+						field.value = field.isMultilingual
+							? {...category[field.name]}
+							: category[field.name];
+					}
+
+					if (field.name === 'subEditors') {
+						field.value = category.assignedSubeditors;
+					}
+					return field;
+				});
+			}
+			currentCategoryForm.value = preparedForm;
+		}
 
 		function getItemActions() {
 			return [
@@ -46,10 +110,9 @@ export const useCategoryManagerStore = defineComponentStore(
 			];
 		}
 
-		async function handleItemAction(actionName, category = {}) {
+		async function handleItemAction(actionName, category = null) {
 			if (actionName === Actions.CATEGORY_DELETE) {
 				const {openDialog, openDialogNetworkError} = useModal();
-
 				openDialog({
 					actions: [
 						{
@@ -91,29 +154,39 @@ export const useCategoryManagerStore = defineComponentStore(
 					message: t('common.confirmDelete'),
 					modalStyle: 'negative',
 				});
-			} else if (actionName === Actions.CATEGORY_EDIT) {
-				alert('Edit category');
-			} else if (actionName === Actions.CATEGORY_ADD) {
-				openCategoryFormModal(category);
+			} else if (
+				[Actions.CATEGORY_ADD, Actions.CATEGORY_EDIT].includes(actionName)
+			) {
+				_currentAction.value = actionName;
+				_currentCategory.value = category || {};
+				openCategoryFormModal(ActionFormLabel[actionName]);
 			}
 		}
 
-		function openCategoryFormModal(category) {
-			currentCategoryForm.value = category; // create watcher
-			const {openSideModal} = useModal();
+		function openCategoryFormModal(title, actionName) {
+			if (
+				![Actions.CATEGORY_ADD, Actions.CATEGORY_EDIT].includes(
+					_currentAction.value,
+				)
+			) {
+				return;
+			}
 
-			this.$nextTick(() => {
+			const {openSideModal} = useModal();
+			nextTick(() => {
 				openSideModal(EditCategory, {
-					title: 'Add Category',
-					currentTemplateForm: {name: 'hey world'},
+					title,
+					currentTemplateForm: currentCategoryForm,
 				});
 			});
 		}
+
 		async function refreshCategories() {
 			const {data, fetch} = useFetch(apiUrl, {method: 'GET'});
 			await fetch();
 			_categories.value = data.value;
 		}
+
 		function toggleItemExpansion(item) {
 			const id = item.value.id;
 
