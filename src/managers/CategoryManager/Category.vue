@@ -62,7 +62,7 @@
 							</TreeItem>
 						</TableCell>
 
-						<TableCell>{{ !item.parentId ? 'Taslan' : '' }}</TableCell>
+						<TableCell>{{ !item.parentId ? 'TBD' : '' }}</TableCell>
 						<TableCell :style="{'padding-right': `${item.level + 1}rem`}">
 							<div class="flex cursor-pointer justify-end gap-4">
 								<DropdownActions
@@ -71,7 +71,10 @@
 									:actions="categoryManagerStore.getItemActions()"
 									@action="
 										(actionName) =>
-											categoryManagerStore.handleItemAction(actionName, item)
+											categoryManagerStore.handleItemAction(
+												actionName,
+												item.value,
+											)
 									"
 								/>
 								<span
