@@ -19,8 +19,8 @@
 			<span
 				v-if="isPrimaryLocale && tooltip"
 				:id="describedByTooltipId"
+				v-strip-unsafe-html="tooltip"
 				class="-screenReader"
-				v-html="tooltip"
 			/>
 			<HelpButton
 				v-if="isPrimaryLocale && helpTopic"
@@ -33,8 +33,8 @@
 		<div
 			v-if="isPrimaryLocale && description"
 			:id="describedByDescriptionId"
+			v-strip-unsafe-html="description"
 			class="pkpFormField__description"
-			v-html="description"
 		/>
 		<div class="pkpFormField__control" :class="controlClasses">
 			<div class="pkpFormField__control_top">
@@ -54,10 +54,10 @@
 				<span
 					v-if="prefix"
 					ref="prefix"
+					v-strip-unsafe-html="prefix"
 					class="pkpFormField__inputPrefix"
 					:style="prefixStyles"
 					@click="setFocus"
-					v-html="prefix"
 				/>
 				<MultilingualProgress
 					v-if="isMultilingual && locales.length > 1"

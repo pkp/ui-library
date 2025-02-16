@@ -6,7 +6,7 @@
 			class="pkpFieldError__message"
 		>
 			<Icon icon="Error" class="me-1 h-4 w-4 text-on-dark" :inline="true" />
-			<span v-html="message" />
+			<span v-strip-unsafe-html="message" />
 		</div>
 	</div>
 </template>

@@ -14,13 +14,13 @@
 					</span>
 				</div>
 				<div
-					class="listPanel__itemSubtitle"
-					v-html="
+					v-strip-unsafe-html="
 						localizeSubmission(
 							currentPublication.fullTitle,
 							currentPublication.locale,
 						)
 					"
+					class="listPanel__itemSubtitle"
 				></div>
 
 				<!-- Review assignment information -->
@@ -55,7 +55,7 @@
 					v-if="reviewerWorkflowLink"
 					class="listPanel__item--submission__notice"
 				>
-					<span v-html="reviewerWorkflowLink" />
+					<span v-strip-unsafe-html="reviewerWorkflowLink" />
 				</div>
 				<div
 					v-else-if="notice"
@@ -206,7 +206,7 @@
 					{{ t('submission.list.discussions') }}
 				</ListItem>
 				<ListItem v-if="dualWorkflowLinks">
-					<span v-html="dualWorkflowLinks" />
+					<span v-strip-unsafe-html="dualWorkflowLinks" />
 				</ListItem>
 				<ListItem>
 					<span>
