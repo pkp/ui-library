@@ -4,7 +4,7 @@ const sanitizeConfig = {
 	USE_PROFILES: {html: true},
 };
 
-export default {
+export const stripUnsafeHtml = {
 	// Called only once, when the directive is first bound to the element.
 	// This is where you can do one-time setup work.
 	mounted(el, binding) {
@@ -23,3 +23,5 @@ export default {
 		}
 	},
 };
+
+export default stripUnsafeHtml;
