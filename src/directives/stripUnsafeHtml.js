@@ -14,7 +14,7 @@ export const stripUnsafeHtml = {
 		el.innerHTML = cleanContent;
 	},
 	// Called whenever the bound value changes.
-	update(el, binding) {
+	updated(el, binding) {
 		// Only re-sanitize and update if the value has changed, handling null and undefined
 		if (binding.value !== binding.oldValue) {
 			const value = binding.value == null ? '' : String(binding.value);
