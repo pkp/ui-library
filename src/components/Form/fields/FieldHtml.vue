@@ -5,7 +5,11 @@
 				{{ label }}
 			</span>
 			<Tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
-			<span v-if="tooltip" class="-screenReader" v-html="tooltip" />
+			<span
+				v-if="tooltip"
+				v-strip-unsafe-html="tooltip"
+				class="-screenReader"
+			/>
 			<HelpButton
 				v-if="helpTopic"
 				:topic="helpTopic"
@@ -14,8 +18,8 @@
 			/>
 		</div>
 		<div
+			v-strip-unsafe-html="description"
 			class="pkpFormField__control pkpFormField__control--html"
-			v-html="description"
 		/>
 	</div>
 </template>

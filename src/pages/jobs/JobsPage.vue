@@ -1,10 +1,10 @@
 <template>
 	<PkpTable>
 		<template v-if="label" #label>
-			<span v-html="label"></span>
+			<span v-strip-unsafe-html="label"></span>
 		</template>
 		<template v-if="description" #description>
-			<span v-html="description"></span>
+			<span v-strip-unsafe-html="description"></span>
 		</template>
 		<TableHeader>
 			<TableColumn

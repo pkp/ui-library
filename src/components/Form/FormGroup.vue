@@ -4,8 +4,8 @@
 			<legend class="pkpFormGroup__legend">{{ label }}</legend>
 			<div
 				v-if="description"
+				v-strip-unsafe-html="description"
 				class="pkpFormGroup__description"
-				v-html="description"
 			></div>
 		</div>
 		<div class="pkpFormGroup__fields">

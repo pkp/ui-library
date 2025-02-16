@@ -14,8 +14,8 @@
 			<span
 				v-if="tooltip"
 				:id="describedByTooltipId"
+				v-strip-unsafe-html="tooltip"
 				class="-screenReader"
-				v-html="tooltip"
 			/>
 			<HelpButton
 				v-if="helpTopic"
@@ -28,8 +28,8 @@
 		<div
 			v-if="isPrimaryLocale && description"
 			:id="describedByDescriptionId"
+			v-strip-unsafe-html="description"
 			class="pkpFormField__description"
-			v-html="description"
 		/>
 		<div
 			:id="controlId"
@@ -57,8 +57,8 @@
 					/>
 					<div
 						:id="altTextDescriptionId"
+						v-strip-unsafe-html="altTextDescription"
 						class="pkpFormField--uploadImage__altTextDescription"
-						v-html="altTextDescription"
 					/>
 				</div>
 				<div class="pkpFormField--upload__previewActions">

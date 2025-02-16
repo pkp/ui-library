@@ -221,13 +221,13 @@
 					<div class="listPanel__item--reviewer__detailHeading">
 						{{ gossipLabel }}
 					</div>
-					<div v-html="item.gossip"></div>
+					<div v-strip-unsafe-html="item.gossip"></div>
 				</ListItem>
 				<ListItem v-if="localize(item.biography)">
 					<div class="listPanel__item--reviewer__detailHeading">
 						{{ biographyLabel }}
 					</div>
-					<div v-html="localize(item.biography)"></div>
+					<div v-strip-unsafe-html="localize(item.biography)"></div>
 				</ListItem>
 			</List>
 		</div>
