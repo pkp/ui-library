@@ -9,13 +9,13 @@
 		</span>
 		<template v-if="currentPublication.authorsStringShort">—</template>
 		<span
-			class="text-base-normal"
-			v-html="
+			v-strip-unsafe-html="
 				localizeSubmission(
 					currentPublication.fullTitle,
 					currentPublication.locale,
 				)
 			"
+			class="text-base-normal"
 		></span>
 	</TableCell>
 </template>

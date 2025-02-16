@@ -40,12 +40,16 @@
 						<div class="p-4">
 							<div v-if="store.reviewRoundHistory.declineEmail">
 								<p
+									v-strip-unsafe-html="
+										store.reviewRoundHistory.declineEmail.subject
+									"
 									class="mb-4 text-lg-normal text-secondary"
-									v-html="store.reviewRoundHistory.declineEmail.subject"
 								></p>
 								<p
+									v-strip-unsafe-html="
+										store.reviewRoundHistory.declineEmail.body
+									"
 									class="mt-4"
-									v-html="store.reviewRoundHistory.declineEmail.body"
 								></p>
 							</div>
 							<p v-else>
@@ -106,7 +110,7 @@
 											})
 										}}
 									</dt>
-									<dd v-html="reviewComment"></dd>
+									<dd v-strip-unsafe-html="reviewComment"></dd>
 								</template>
 							</dl>
 						</div>
@@ -130,7 +134,7 @@
 											})
 										}}
 									</dt>
-									<dd v-html="reviewComment"></dd>
+									<dd v-strip-unsafe-html="reviewComment"></dd>
 								</template>
 							</dl>
 						</div>
@@ -168,7 +172,10 @@
 				>
 					<h3 class="text-lg-bold text-heading">{{ metadata.heading }}:</h3>
 					<p v-if="metadata.body">{{ metadata.body }}</p>
-					<div v-if="metadata.bodyHtml" v-html="metadata.bodyHtml"></div>
+					<div
+						v-if="metadata.bodyHtml"
+						v-strip-unsafe-html="metadata.bodyHtml"
+					></div>
 				</div>
 			</template>
 			<template v-if="store.reviewRoundHistory.reviewAssignment" #right2>

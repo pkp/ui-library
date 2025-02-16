@@ -20,8 +20,8 @@
 			<span
 				v-if="tooltip"
 				:id="describedByTooltipId"
+				v-strip-unsafe-html="tooltip"
 				class="-screenReader"
-				v-html="tooltip"
 			/>
 			<HelpButton
 				v-if="helpTopic"
@@ -34,8 +34,8 @@
 		<div
 			v-if="isPrimaryLocale && description"
 			:id="describedByDescriptionId"
+			v-strip-unsafe-html="description"
 			class="pkpFormField__description"
-			v-html="description"
 		/>
 		<div class="pkpFormField__control pkpAutosuggest__control">
 			<div
@@ -68,8 +68,8 @@
 					<span
 						v-if="tooltip"
 						:id="describedByTooltipId"
+						v-strip-unsafe-html="tooltip"
 						class="-screenReader"
-						v-html="tooltip"
 					/>
 					<HelpButton
 						v-if="helpTopic"

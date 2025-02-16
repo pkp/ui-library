@@ -12,7 +12,7 @@
 		v-if="description"
 		class="mt-1 border-t border-light pt-4 text-start text-base-normal"
 	>
-		<p v-html="description"></p>
+		<p v-strip-unsafe-html="description"></p>
 	</div>
 	<div v-if="textButton" class="-ms-3 text-start">
 		<PkpButton

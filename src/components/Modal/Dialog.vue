@@ -55,7 +55,7 @@
 								</DialogTitle>
 							</div>
 							<div class="modal-content" :class="icon ? 'px-24' : 'pt- px-12'">
-								<div v-html="message" />
+								<div v-strip-unsafe-html="message" />
 								<component
 									:is="bodyComponent"
 									v-if="bodyComponent"

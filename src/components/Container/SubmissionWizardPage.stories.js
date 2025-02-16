@@ -73,7 +73,7 @@ const SubmissionWizardPageWithDataAndTemplate = {
 						<PanelSection v-for="section in step.sections" :key="section.id">
 							<template #header>
 								<h2>{{ section.name }}</h2>
-								<div v-html="section.description" />
+								<div v-strip-unsafe-html="section.description" />
 							</template>
 							<PkpForm
 								v-if="section.type === 'form'"
@@ -231,7 +231,7 @@ const SubmissionWizardPageWithDataAndTemplate = {
 												</h4>
 												<div
 													class="submissionWizard__reviewPanel__item__value"
-													v-html="localize(publication.title)"
+													v-strip-unsafe-html="localize(publication.title)"
 												/>
 											</div>
 											<div class="submissionWizard__reviewPanel__item">
@@ -250,7 +250,7 @@ const SubmissionWizardPageWithDataAndTemplate = {
 												</h4>
 												<div
 													class="submissionWizard__reviewPanel__item__value"
-													v-html="localize(publication.abstract)"
+													v-strip-unsafe-html="localize(publication.abstract)"
 												/>
 											</div>
 											<div

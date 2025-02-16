@@ -1,7 +1,7 @@
 <template>
 	<PkpTable>
 		<template v-if="label" #label>
-			<span v-html="label"></span>
+			<span v-strip-unsafe-html="label"></span>
 		</template>
 		<TableHeader>
 			<TableColumn
