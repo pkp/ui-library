@@ -8,6 +8,8 @@ import {setup} from '@storybook/vue3';
 import GlobalMixins from '@/mixins/global.js';
 import emitter from 'tiny-emitter/instance';
 
+import stripUnsafeHtml from '@/directives/stripUnsafeHtml.js';
+
 import Badge from '@/components/Badge/Badge.vue';
 import Dropdown from '@/components/Dropdown/Dropdown.vue';
 import Icon from '@/components/Icon/Icon.vue';
@@ -73,6 +75,8 @@ setup((app) => {
 	});
 
 	app.use(VueScrollTo);
+
+	app.directive('strip-unsafe-html', stripUnsafeHtml);
 
 	app.component('Badge', Badge);
 	app.component('Dropdown', Dropdown);
