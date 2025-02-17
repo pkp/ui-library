@@ -64,9 +64,19 @@ import {useReviewerSuggestionManagerStore} from './reviewerSuggestionManagerStor
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 
 const props = defineProps({
-	submission: {type: Object, required: true},
-	submissionStageId: {type: String, required: true},
-	reviewRoundId: {type: Number, required: false},
+	submission: {
+		type: Object,
+		required: true,
+	},
+	submissionStageId: {
+		type: Number,
+		required: true,
+	},
+	reviewRoundId: {
+		type: Number,
+		required: false,
+		default: null,
+	},
 });
 
 const reviewerSuggestionManagerStore = useReviewerSuggestionManagerStore(props);

@@ -359,6 +359,7 @@ export default {
 		suggestionTitle: {
 			type: String,
 			required: false,
+			default: null,
 		},
 		/** An array of reviewer suggestion if there are any */
 		suggestions: {
@@ -371,6 +372,7 @@ export default {
 		reviewerSuggestionsApiUrl: {
 			type: String,
 			required: false,
+			default: null,
 		},
 	},
 	emits: [

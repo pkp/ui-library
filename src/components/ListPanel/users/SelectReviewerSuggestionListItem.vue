@@ -79,6 +79,9 @@ export default {
 			required: true,
 		},
 	},
+	emits: [
+		'update:suggestions'
+	],
 	data() {
 		return {};
 	},

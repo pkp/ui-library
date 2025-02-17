@@ -113,6 +113,9 @@ export default {
 			required: true,
 		},
 	},
+	emits: [
+		'updated:reviewerSuggestions'
+	],
 	data() {
 		return {
 			activeForm: null,
