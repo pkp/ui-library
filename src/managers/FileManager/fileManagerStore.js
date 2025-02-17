@@ -13,11 +13,22 @@ export const useFileManagerStore = defineComponentStore(
 		/**
 		 * Manager configuration
 		 */
-		const {managerConfig} = useFileManagerConfig({
+		const {
+			managerConfig,
+			getColumns,
+			getBottomItems,
+			getTopItems,
+			getItemActions,
+		} = useFileManagerConfig({
 			namespace: namespace,
 			submissionStageId: submissionStageId,
 			submission,
 		});
+
+		/**
+		 * Columns
+		 */
+		const columns = computed(() => getColumns());
 
 		/**
 		 *  Files fetching
@@ -60,21 +71,21 @@ export const useFileManagerStore = defineComponentStore(
 
 		const _actionFns = useFileManagerActions();
 
-		const topActions = computed(() =>
-			_actionFns.getTopActions({
+		const topItems = computed(() =>
+			getTopItems({
 				managerConfig: managerConfig.value,
 			}),
 		);
 
-		const bottomActions = computed(() =>
-			_actionFns.getBottomActions({
+		const bottomItems = computed(() =>
+			getBottomItems({
 				managerConfig: managerConfig.value,
-				filesCount: files.value.length,
+				filesCount: files.value?.length,
 			}),
 		);
 
 		const itemActions = computed(() =>
-			_actionFns.getItemActions({
+			getItemActions({
 				managerConfig: managerConfig.value,
 			}),
 		);
@@ -128,8 +139,9 @@ export const useFileManagerStore = defineComponentStore(
 			files,
 			fetchFiles,
 			managerConfig,
-			topActions,
-			bottomActions,
+			columns,
+			topItems,
+			bottomItems,
 			itemActions,
 			fileUpload,
 			fileSelectUpload,

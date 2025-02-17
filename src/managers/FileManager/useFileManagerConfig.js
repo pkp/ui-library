@@ -259,5 +259,121 @@ export function useFileManagerConfig({
 		};
 	});
 
-	return {managerConfig};
+	function getColumns() {
+		const columns = [];
+
+		columns.push({
+			header: t('common.numero'),
+			component: 'FileManagerCellNumero',
+			props: {},
+		});
+		columns.push({
+			header: t('common.fileName'),
+			component: 'FileManagerCellFileName',
+			props: {},
+		});
+		columns.push({
+			header: t('common.dateUploaded'),
+			component: 'FileManagerCellDateUploaded',
+			props: {},
+		});
+		columns.push({
+			header: t('common.type'),
+			component: 'FileManagerCellType',
+			props: {},
+		});
+
+		columns.push({
+			headerSrOnly: true,
+			header: t('common.moreActions'),
+			component: 'FileManagerCellMoreActions',
+			props: {},
+		});
+
+		return columns;
+	}
+
+	function getTopItems({managerConfig}) {
+		const actions = [];
+		const enabledActions = managerConfig.permittedActions;
+
+		if (enabledActions.includes(Actions.FILE_UPLOAD)) {
+			actions.push({
+				component: 'FileManagerActionButton',
+				props: {
+					label: t('common.upload'),
+					action: Actions.FILE_UPLOAD,
+				},
+			});
+		}
+
+		if (enabledActions.includes(Actions.FILE_SELECT_UPLOAD)) {
+			actions.push({
+				component: 'FileManagerActionButton',
+				props: {
+					label: t('editor.submission.uploadSelectFiles'),
+					action: Actions.FILE_SELECT_UPLOAD,
+				},
+			});
+		}
+
+		return actions;
+	}
+
+	function getBottomItems({managerConfig, filesCount}) {
+		const actions = [];
+		const enabledActions = managerConfig.permittedActions;
+		if (enabledActions.includes(Actions.FILE_DOWNLOAD_ALL) && filesCount) {
+			actions.push({
+				component: 'FileManagerActionButton',
+				props: {
+					label: t('submission.files.downloadAll'),
+					action: Actions.FILE_DOWNLOAD_ALL,
+					isLink: true,
+				},
+			});
+		}
+
+		return actions;
+	}
+
+	function getItemActions({managerConfig}) {
+		const actions = [];
+		const enabledActions = managerConfig.permittedActions;
+
+		if (enabledActions.includes(Actions.FILE_EDIT)) {
+			actions.push({
+				label: t('grid.action.edit'),
+				name: Actions.FILE_EDIT,
+				icon: 'Edit',
+			});
+		}
+
+		if (enabledActions.includes(Actions.FILE_SEE_NOTES)) {
+			actions.push({
+				label: t('grid.action.moreInformation'),
+				name: Actions.FILE_SEE_NOTES,
+				icon: 'View',
+			});
+		}
+
+		if (enabledActions.includes(Actions.FILE_DELETE)) {
+			actions.push({
+				label: t('grid.action.delete'),
+				name: Actions.FILE_DELETE,
+				isWarnable: true,
+				icon: 'Cancel',
+			});
+		}
+
+		return actions;
+	}
+
+	return {
+		managerConfig,
+		getColumns,
+		getBottomItems,
+		getTopItems,
+		getItemActions,
+	};
 }
