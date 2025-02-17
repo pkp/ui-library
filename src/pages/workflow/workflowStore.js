@@ -22,12 +22,14 @@ import {useWorkflowPermissions} from './composables/useWorkflowPermissions';
 import {useWorkflowMenu} from './composables/useWorkflowMenu';
 import {useWorkflowItems} from './composables/useWorkflowItems';
 import {useSubmission} from '@/composables/useSubmission';
+import {useExtender} from '@/composables/useExtender';
 
 export const useWorkflowStore = defineComponentStore(
 	'workflow',
 	({props, Components, useWorkflowConfig, useWorkflowNavigationConfig}) => {
 		const dashboardPage = props.pageInitConfig.dashboardPage;
 
+		const extender = useExtender();
 		/**
 		 * Action to close the workflow from inside
 		 * */
@@ -176,7 +178,9 @@ export const useWorkflowStore = defineComponentStore(
 		 *
 		 * */
 
-		const _workflowConfigFns = useWorkflowConfig({dashboardPage});
+		const _workflowConfigFns = extender.addFns(
+			useWorkflowConfig({dashboardPage}),
+		);
 
 		const {
 			headerItems,
@@ -245,6 +249,7 @@ export const useWorkflowStore = defineComponentStore(
 			_workflowDecisionsFns,
 
 			Components,
+			extender,
 		};
 		return store;
 	},

@@ -66,6 +66,8 @@ export function useWorkflowConfigOJS({dashboardPage}) {
 				itemsArgs,
 			);
 		}
+
+		return [];
 	}
 
 	function getHeaderItems(args) {
