@@ -2,12 +2,14 @@
 	<PkpTable data-cy="galley-manager">
 		<template #label>{{ t('submission.layout.galleys') }}</template>
 		<template #top-controls>
-			<component
-				:is="Components[action.component] || action.component"
-				v-bind="action.props || {}"
-				v-for="(action, i) in galleyManagerStore.topItems"
-				:key="i"
-			></component>
+			<div class="flex gap-x-2">
+				<component
+					:is="Components[action.component] || action.component"
+					v-bind="action.props || {}"
+					v-for="(action, i) in galleyManagerStore.topItems"
+					:key="i"
+				></component>
+			</div>
 		</template>
 		<TableHeader>
 			<TableColumn v-for="(column, i) in galleyManagerStore.columns" :key="i">

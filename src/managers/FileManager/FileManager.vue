@@ -13,41 +13,39 @@
 			</template>
 			<template #top-controls>
 				<div class="flex gap-x-2">
-					<PkpButton
-						v-for="action in fileManagerStore.topActions"
-						:key="action.name"
-						@click="fileManagerStore[action.name]"
-					>
-						{{ action.label }}
-					</PkpButton>
+					<component
+						:is="Components[action.component] || action.component"
+						v-bind="action.props || {}"
+						v-for="(action, i) in fileManagerStore.topItems"
+						:key="i"
+					></component>
 				</div>
 			</template>
 			<TableHeader>
-				<TableColumn>{{ t('common.numero') }}</TableColumn>
-				<TableColumn>{{ t('common.fileName') }}</TableColumn>
-				<TableColumn>{{ t('common.dateUploaded') }}</TableColumn>
-				<TableColumn>{{ t('common.type') }}</TableColumn>
-				<TableColumn v-if="fileManagerStore.itemActions.length">
-					<span class="sr-only">{{ t('common.moreActions') }}</span>
+				<TableColumn v-for="(column, i) in fileManagerStore.columns" :key="i">
+					<span :class="column.headerSrOnly ? 'sr-only' : ''">
+						{{ column.header }}
+					</span>
 				</TableColumn>
 			</TableHeader>
 			<TableBody>
-				<FileManagerTableRow
-					v-for="file in fileManagerStore.files"
-					:key="file.id"
-					:action-items="fileManagerStore.itemActions"
-					:file="file"
-				></FileManagerTableRow>
+				<TableRow v-for="file in fileManagerStore.files" :key="file.id">
+					<component
+						:is="Components[column.component] || column.component"
+						v-for="(column, i) in fileManagerStore.columns"
+						:key="i"
+						:file="file"
+						v-bind="column.props"
+					></component>
+				</TableRow>
 			</TableBody>
-			<template v-if="fileManagerStore.bottomActions.length" #bottom-controls>
-				<PkpButton
-					v-for="action in fileManagerStore.bottomActions"
-					:key="action.name"
-					is-link
-					@click="fileManagerStore[action.name]"
-				>
-					{{ action.label }}
-				</PkpButton>
+			<template v-if="fileManagerStore.bottomItems.length" #bottom-controls>
+				<component
+					:is="Components[action.component] || action.component"
+					v-bind="action.props || {}"
+					v-for="(action, i) in fileManagerStore.bottomItems"
+					:key="i"
+				></component>
 			</template>
 		</PkpTable>
 	</div>
@@ -55,13 +53,27 @@
 <script setup>
 import {useFileManagerStore} from './fileManagerStore.js';
 import {FileManagerConfigurations} from './useFileManagerConfig.js';
-import PkpButton from '@/components/Button/Button.vue';
 import PkpTable from '@/components/Table/Table.vue';
 import TableHeader from '@/components/Table/TableHeader.vue';
 import TableBody from '@/components/Table/TableBody.vue';
 import TableColumn from '@/components/Table/TableColumn.vue';
-import FileManagerTableRow from './FileManagerTableRow.vue';
-import {t} from '@/utils/i18n.js';
+import TableRow from '@/components/Table/TableRow.vue';
+
+import FileManagerCellNumero from './FileManagerCellNumero.vue';
+import FileManagerCellFileName from './FileManagerCellFileName.vue';
+import FileManagerCellDateUploaded from './FileManagerCellDateUploaded.vue';
+import FileManagerCellType from './FileManagerCellType.vue';
+import FileManagerCellMoreActions from './FileManagerCellMoreActions.vue';
+import FileManagerActionButton from './FileManagerActionButton.vue';
+
+const Components = {
+	FileManagerCellNumero,
+	FileManagerCellFileName,
+	FileManagerCellDateUploaded,
+	FileManagerCellType,
+	FileManagerCellMoreActions,
+	FileManagerActionButton,
+};
 
 const props = defineProps({
 	namespace: {

@@ -179,73 +179,6 @@ export function useFileManagerActions() {
 		);
 	}
 
-	function getTopActions({managerConfig}) {
-		const actions = [];
-		const enabledActions = managerConfig.permittedActions;
-
-		if (enabledActions.includes(Actions.FILE_UPLOAD)) {
-			actions.push({
-				// this might be different based on fileStage, more details in AddFileLinkAction.php
-				label: t('common.upload'),
-				name: Actions.FILE_UPLOAD,
-			});
-		}
-
-		if (enabledActions.includes(Actions.FILE_SELECT_UPLOAD)) {
-			actions.push({
-				label: t('editor.submission.uploadSelectFiles'),
-				name: Actions.FILE_SELECT_UPLOAD,
-			});
-		}
-
-		return actions;
-	}
-
-	function getBottomActions({managerConfig, filesCount}) {
-		const actions = [];
-		const enabledActions = managerConfig.permittedActions;
-		if (enabledActions.includes(Actions.FILE_DOWNLOAD_ALL) && filesCount) {
-			actions.push({
-				label: t('submission.files.downloadAll'),
-				name: Actions.FILE_DOWNLOAD_ALL,
-			});
-		}
-
-		return actions;
-	}
-
-	function getItemActions({managerConfig}) {
-		const actions = [];
-		const enabledActions = managerConfig.permittedActions;
-
-		if (enabledActions.includes(Actions.FILE_EDIT)) {
-			actions.push({
-				label: t('grid.action.edit'),
-				name: Actions.FILE_EDIT,
-				icon: 'Edit',
-			});
-		}
-
-		if (enabledActions.includes(Actions.FILE_SEE_NOTES)) {
-			actions.push({
-				label: t('grid.action.moreInformation'),
-				name: Actions.FILE_SEE_NOTES,
-				icon: 'View',
-			});
-		}
-
-		if (enabledActions.includes(Actions.FILE_DELETE)) {
-			actions.push({
-				label: t('grid.action.delete'),
-				name: Actions.FILE_DELETE,
-				isWarnable: true,
-				icon: 'Cancel',
-			});
-		}
-
-		return actions;
-	}
-
 	return {
 		fileUpload,
 		fileSelectUpload,
@@ -253,8 +186,5 @@ export function useFileManagerActions() {
 		fileEdit,
 		fileDelete,
 		fileSeeNotes,
-		getItemActions,
-		getTopActions,
-		getBottomActions,
 	};
 }
