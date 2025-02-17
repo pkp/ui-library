@@ -301,7 +301,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 		}
 
 		const {redirectToPage} = useUrl('management/settings/access');
-		const isSubmitting = ref(invitationPayload.value.disabled ? true : false);
+		const isSubmitting = ref(invitationPayload.value.disabled);
 
 		/**
 		 * change isSubmitting value based on

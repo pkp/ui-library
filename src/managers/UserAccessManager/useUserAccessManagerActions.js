@@ -89,10 +89,7 @@ export function useUserAccessManagerActions() {
 				enable: user.disabled ? '1' : '',
 			},
 		});
-		let currentRoles = '';
-		user.groups.forEach((group) => {
-			currentRoles = currentRoles + group.name + ',';
-		});
+		const currentRoles = user.groups.map((group) => group.name).join(', ');
 
 		openLegacyModal(
 			{
@@ -100,7 +97,7 @@ export function useUserAccessManagerActions() {
 					? t('user.disabledModal.title', {fullName: user.fullName})
 					: t('user.enabledModal.title', {fullName: user.fullName}),
 				description: t('user.disabledModal.description', {
-					roles: currentRoles.replace(/,\s*$/, ''),
+					roles: currentRoles,
 				}),
 			},
 			(closeData) => {
