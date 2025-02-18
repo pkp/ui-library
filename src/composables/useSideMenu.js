@@ -74,6 +74,7 @@ export function useSideMenu(_items, opts = {}) {
 	}
 
 	function setActiveItemKey(key = '') {
+		console.log('setActiveItemKey:', key);
 		if (!findItemByKey(items.value, key)) {
 			return false;
 		}

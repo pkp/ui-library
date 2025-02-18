@@ -5,7 +5,7 @@ import {useQueryParams} from '@/composables/useQueryParams';
 export function useWorkflowMenu({
 	menuItems,
 	submission,
-	getInitialSelectionItemKey,
+	workflowNavigationConfig,
 }) {
 	const {
 		sideMenuProps,
@@ -56,7 +56,9 @@ export function useWorkflowMenu({
 					return;
 				}
 			}
-			navigateToMenu(getInitialSelectionItemKey(newSubmission));
+			navigateToMenu(
+				workflowNavigationConfig.getInitialSelectionItemKey(newSubmission),
+			);
 		}
 	});
 

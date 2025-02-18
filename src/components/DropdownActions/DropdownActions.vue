@@ -90,6 +90,7 @@ const props = defineProps({
 	 * 	`icon` (string) and
 	 * 	`isWarnable` (boolean) if the button needs the "warning" button styling from `<Button>` component.
 	 *  `disabled` (boolean) when the item is not available
+	 *  `actionFn` (function) its possible to provide action function directly to be triggered instead of the emit, useful for plugins
 	 * */
 	actions: {
 		type: Array,
@@ -102,6 +103,12 @@ const props = defineProps({
 				return hasLabel && hasAction;
 			});
 		},
+	},
+	/** Arguments that are passed as second argument to the emit */
+	actionArgs: {
+		type: Object,
+		required: false,
+		default: () => null,
 	},
 	/** The text label for the button. This is required. If buttonVariant is `ellipsis`, the label will be used for accessibility. */
 	label: {
@@ -135,8 +142,10 @@ const emit = defineEmits([
 ]);
 
 const emitAction = (action) => {
-	if (action.name) {
-		emit('action', action.name);
+	if (action.actionFn) {
+		action.actionFn(props?.actionArgs);
+	} else if (action.name) {
+		emit('action', action.name, props?.actionArgs || {});
 	}
 };
 

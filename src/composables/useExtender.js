@@ -2,7 +2,6 @@ export function useExtender() {
 	const availableFunctions = {};
 
 	function addFns(extendableFns) {
-		console.log('addFns:', Object.keys(extendableFns));
 		Object.keys(extendableFns).forEach((fnName) => {
 			availableFunctions[fnName] = extendableFns[fnName];
 		});

@@ -6,29 +6,31 @@ import {useUrl} from '@/composables/useUrl';
 import {useFileManagerActions} from './useFileManagerActions';
 import {useFileManagerConfig} from './useFileManagerConfig';
 import {useDataChanged} from '@/composables/useDataChanged';
+import {useExtender} from '@/composables/useExtender';
 export const useFileManagerStore = defineComponentStore(
 	'fileManager',
 	(props) => {
+		const extender = useExtender();
+
 		const {namespace, submissionStageId, submission} = toRefs(props);
 		/**
 		 * Manager configuration
 		 */
-		const {
-			managerConfig,
-			getColumns,
-			getBottomItems,
-			getTopItems,
-			getItemActions,
-		} = useFileManagerConfig({
-			namespace: namespace,
-			submissionStageId: submissionStageId,
-			submission,
-		});
+		const fileManagerConfig = extender.addFns(useFileManagerConfig());
+
+		const managerConfig = computed(() =>
+			fileManagerConfig.getManagerConfig({
+				namespace: namespace,
+				submissionStageId: submissionStageId,
+				submission,
+			}),
+		);
 
 		/**
 		 * Columns
 		 */
-		const columns = computed(() => getColumns());
+
+		const columns = computed(() => fileManagerConfig.getColumns());
 
 		/**
 		 *  Files fetching
@@ -72,20 +74,20 @@ export const useFileManagerStore = defineComponentStore(
 		const _actionFns = useFileManagerActions();
 
 		const topItems = computed(() =>
-			getTopItems({
+			fileManagerConfig.getTopItems({
 				managerConfig: managerConfig.value,
 			}),
 		);
 
 		const bottomItems = computed(() =>
-			getBottomItems({
+			fileManagerConfig.getBottomItems({
 				managerConfig: managerConfig.value,
 				filesCount: files.value?.length,
 			}),
 		);
 
 		const itemActions = computed(() =>
-			getItemActions({
+			fileManagerConfig.getItemActions({
 				managerConfig: managerConfig.value,
 			}),
 		);
@@ -151,7 +153,7 @@ export const useFileManagerStore = defineComponentStore(
 			fileSeeNotes,
 
 			/** exposed for extensibility purposes */
-			_actionFns,
+			extender,
 		};
 	},
 	{requireNamespace: true},
