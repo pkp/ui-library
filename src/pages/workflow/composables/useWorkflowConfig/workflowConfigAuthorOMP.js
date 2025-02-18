@@ -115,7 +115,7 @@ export const WorkflowConfig = {
 					pkp.const.REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW,
 					pkp.const.REVIEW_ROUND_STATUS_REVISIONS_SUBMITTED,
 					pkp.const.REVIEW_ROUND_STATUS_REVISIONS_SUBMITTED,
-				].includes(selectedReviewRound.statusId)
+				].includes(selectedReviewRound?.statusId)
 			)
 				actions.push({
 					component: 'WorkflowActionButton',
