@@ -92,11 +92,12 @@ export const useWorkflowStore = defineComponentStore(
 		 * Navigation
 		 */
 
-		const {getMenuItems, getInitialSelectionItemKey} =
-			useWorkflowNavigationConfig(props.pageInitConfig);
+		const workflowNavigationConfig = extender.addFns(
+			useWorkflowNavigationConfig(props.pageInitConfig),
+		);
 
 		const menuItems = computed(() =>
-			getMenuItems({
+			workflowNavigationConfig.getMenuItems({
 				submission: submission.value,
 				permissions: permissions.value,
 			}),
@@ -108,7 +109,7 @@ export const useWorkflowStore = defineComponentStore(
 			selectedMenuState,
 			setExpandedKeys,
 			sideMenuProps,
-		} = useWorkflowMenu({menuItems, submission, getInitialSelectionItemKey});
+		} = useWorkflowMenu({menuItems, submission, workflowNavigationConfig});
 
 		/**
 		 * Expose workflow actions

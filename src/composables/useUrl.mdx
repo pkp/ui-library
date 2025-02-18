@@ -1,15 +1,13 @@
 import {Meta} from '@storybook/blocks';
 
-<Meta title="Composables/useApiUrl" />
+<Meta title="Composables/useUrl" />
 
-# useApiUrl
+# useUrl
 
 Simple composable to generate API URL. It correctly generates API URL based on currect context (Journal) selected. It does not cover adding query params, as query params are passed separately when making the request with [useFetch](?path=/docs/composables-usefetch--docs).
 
 ```javascript
-import {useApiUrl} from '@/composables/useApiUrl';
+import {useApiUrl} from '@/composables/useUrl';
 
-const {apiUrl: submissionApiUrl} = useApiUrl(
-	`submissions/${props.submissionId}`,
-);
+const {apiUrl: submissionApiUrl} = useUrl(`submissions/${props.submissionId}`);
 ```

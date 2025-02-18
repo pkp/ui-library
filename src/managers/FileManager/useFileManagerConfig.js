@@ -1,6 +1,5 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {Actions} from './useFileManagerActions';
-import {computed} from 'vue';
 import {useCurrentUser} from '@/composables/useCurrentUser';
 
 const {tk} = useLocalize();
@@ -220,16 +219,12 @@ export const FileManagerConfigurations = {
 	}),
 };
 
-export function useFileManagerConfig({
-	namespace,
-	submissionStageId,
-	submission,
-}) {
+export function useFileManagerConfig() {
 	const {t} = useLocalize();
 
 	const {hasCurrentUserAtLeastOneAssignedRoleInStage} = useCurrentUser();
 
-	const managerConfig = computed(() => {
+	function getManagerConfig({namespace, submissionStageId, submission}) {
 		const config = FileManagerConfigurations[namespace.value]({
 			stageId: submissionStageId.value,
 		});
@@ -257,11 +252,10 @@ export function useFileManagerConfig({
 			uploadSelectTitleKey: config.uploadSelectTitleKey,
 			gridComponent: config.gridComponent,
 		};
-	});
+	}
 
 	function getColumns() {
 		const columns = [];
-
 		columns.push({
 			header: t('common.numero'),
 			component: 'FileManagerCellNumero',
@@ -370,7 +364,7 @@ export function useFileManagerConfig({
 	}
 
 	return {
-		managerConfig,
+		getManagerConfig,
 		getColumns,
 		getBottomItems,
 		getTopItems,

@@ -5,7 +5,10 @@
 			:label="t('common.moreActions')"
 			button-variant="ellipsis"
 			:actions="fileManagerStore.itemActions"
-			@action="(actionName) => fileManagerStore[actionName]({file})"
+			:action-args="{file}"
+			@action="
+				(actionName, actionArgs) => fileManagerStore[actionName](actionArgs)
+			"
 		></DropdownActions>
 	</TableCell>
 </template>
