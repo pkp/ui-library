@@ -198,7 +198,7 @@ export function useReviewerManagerConfig() {
 		if (!redactedForAuthors) {
 			columns.push({
 				header: t('common.moreActions'),
-				srOnly: true,
+				headerSrOnly: true,
 				component: 'ReviewerManagerCellActions',
 				props,
 			});
