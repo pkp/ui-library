@@ -219,7 +219,7 @@ export const EditorialActivityScenario = [
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 			}),
 			getReviewAssignmentShortMock({
-				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
+				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 			}),
 		],
 		reviewRounds: [
@@ -245,9 +245,32 @@ export const EditorialActivityScenario = [
 			}),
 		],
 	}),
-	// Open review assignments
+	// Recommend only editor provided recommendation
 	getSubmissionMock({
 		id: 17,
+		stages: [
+			{
+				id: 3,
+				currentUserRecommendation: {decision: 3, label: 'Accept'},
+			},
+		],
+		reviewAssignments: [
+			getReviewAssignmentShortMock({
+				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
+			}),
+			getReviewAssignmentShortMock({
+				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
+			}),
+		],
+		reviewRounds: [
+			getReviewRoundMock({
+				statusId: pkp.const.REVIEW_ROUND_STATUS_RECOMMENDATIONS_COMPLETED,
+			}),
+		],
+	}),
+	// Open review assignments
+	getSubmissionMock({
+		id: 18,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
@@ -270,12 +293,12 @@ export const EditorialActivityScenario = [
 
 	// Editorial stage
 	getSubmissionMock({
-		id: 18,
+		id: 19,
 		stageId: pkp.const.WORKFLOW_STAGE_ID_EDITING,
 	}),
 	// Production stage
 	getSubmissionMock({
-		id: 19,
+		id: 20,
 		stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 	}),
 ];

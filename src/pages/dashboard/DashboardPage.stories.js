@@ -79,9 +79,10 @@ const SubmissionScenariosDescription = `<ul class="text-sm-normal">
 			<li>14. Review stage - REVIEW_ROUND_STATUS_PENDING_RECOMMENDATIONS: Waiting for recommendations to be submitted by recommendOnly editors</li>
 			<li>15. Review stage - REVIEW_ROUND_STATUS_RECOMMENDATIONS_READY: One or more recommendations are ready for an editor to view</li>
 			<li>16. Review stage - REVIEW_ROUND_STATUS_RECOMMENDATIONS_COMPLETED: All assigned recommendOnly editors have made a recommendation</li>
-			<li>17. Review stage - Open reviews</li>
-			<li>18. Copyediting stage </li>
-			<li>19. Production stage</li>
+			<li>17. Review stage -  Recommend only editor provided recommendation (relevant only for recommend only editor)
+			<li>18. Review stage - Open reviews</li>
+			<li>19. Copyediting stage </li>
+			<li>20. Production stage</li>
 		</ul>`;
 
 export const EditorEditorialActivity = {
@@ -197,7 +198,6 @@ export const RecommendingEditorEditorialActivity = {
 						const submissions = JSON.parse(
 							JSON.stringify(EditorialActivityScenario),
 						);
-
 						submissions.forEach((submission) => {
 							submission.stages[1].currentUserCanRecommendOnly = true;
 						});
