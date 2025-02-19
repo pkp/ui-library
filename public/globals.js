@@ -404,6 +404,10 @@ window.pkp = {
 		'editor.submission.review.currentFiles':
 			'Current Review Files For Round {$round}',
 		'editor.submission.revisions': 'Revisions',
+		'editor.submission.roundStatus.recommendationMadeByYou':
+			'Recommendation has been made by you.',
+		'editor.submission.roundStatus.reviewsCompleted':
+			'All reviews are confirmed and a decision is needed.',
 		'editor.submission.schedulePublication': 'Schedule For Publication',
 		'editor.submission.search':
 			'Search submissions, ID, authors, keywords, etc.',

@@ -102,13 +102,21 @@ const CommonDefaults = {
 	],
 };
 
-export function getSubmissionMock(overrides = {}) {
+export function getSubmissionMock(_overrides = {}) {
+	// if overrides has stages array, apply individual stage overrides
+	const {stages: overrideStages, ...overrides} = _overrides;
+	if (overrideStages) {
+		delete overrides.stages;
+	}
+
 	const stages = CommonDefaults.stages.map((stage) => {
 		let isActiveStage = stage.isActiveStage;
 		if (overrides.stageId) {
 			isActiveStage = overrides.stageId === stage.id;
 		}
-		return {...stage, isActiveStage};
+		const overrideStage =
+			overrideStages?.find((os) => os.id === stage.id) || {};
+		return {...stage, isActiveStage, ...overrideStage};
 	});
 	return {...CommonDefaults, stages, ...overrides};
 }

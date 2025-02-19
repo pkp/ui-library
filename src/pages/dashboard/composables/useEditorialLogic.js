@@ -7,8 +7,13 @@ import {Actions as FileManagerActions} from '@/managers/FileManager/useFileManag
 const {formatShortDate} = useDate();
 
 const {t} = useLocalize();
-const {getActiveStage, getCurrentReviewRound, getCurrentReviewAssignments} =
-	useSubmission();
+const {
+	getActiveStage,
+	getCurrentReviewRound,
+	getCurrentReviewAssignments,
+	getActiveReviewAssignments,
+	getReviewAssignmentsForRound,
+} = useSubmission();
 
 export function useEditorialLogic() {
 	function getEditorialActivityForEditorialDashboard(submission) {
@@ -34,8 +39,11 @@ export function useEditorialLogic() {
 		) {
 			const activeRound = getCurrentReviewRound(submission, activeStage.id);
 			let activeRoundStatusId = activeRound.statusId;
+
+			// Workaround to customise deciding editor messaging, until we have way to provide personalised on backend
 			if (activeStage.isCurrentUserDecidingEditor) {
-				// just hack for illustration
+				// Avoid overloading deciding editor with details about review assignments
+				// Until some/all recommendation(s) is ready
 				switch (activeRoundStatusId) {
 					case pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWERS:
 					case pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWS:
@@ -47,6 +55,50 @@ export function useEditorialLogic() {
 							pkp.const.REVIEW_ROUND_STATUS_PENDING_RECOMMENDATIONS;
 				}
 			}
+
+			// Workaround to customise deciding editor messaging, until we have way to provide personalised on backend
+			if (activeStage.currentUserCanRecommendOnly) {
+				// If the recommend only editor already submmited his recommendation, its detected from the `currentUserRecommendation`
+
+				if (activeStage.currentUserRecommendation) {
+					return [
+						{
+							component: 'CellSubmissionActivityActionAlert',
+							props: {
+								alert: t(
+									'editor.submission.roundStatus.recommendationMadeByYou',
+								),
+							},
+						},
+					];
+				}
+
+				// Recommendation statuses are useful for deciding editor, but not recommendOnly editor. R
+				if (
+					[
+						pkp.const.REVIEW_ROUND_STATUS_PENDING_RECOMMENDATIONS,
+						pkp.const.REVIEW_ROUND_STATUS_RECOMMENDATIONS_READY,
+						pkp.const.REVIEW_ROUND_STATUS_RECOMMENDATIONS_COMPLETED,
+					].includes(activeRoundStatusId)
+				) {
+					const areAllReviewAssignmentsCompleted = getActiveReviewAssignments(
+						getReviewAssignmentsForRound(
+							submission.reviewAssignments,
+							activeRound.id,
+						),
+					).every((reviewAssignment) => !!reviewAssignment.dateConfirmed);
+					// When getting RECOMMENDATION related status, the information about review assignment related status is lost
+					// Only review assignment related status, where we provide messaging is REVIEW_ROUND_STATUS_REVIEWS_COMPLETED
+					// For other statuses we only show review assignment indications and therefore can fallback for example to REVIEW_ROUND_STATUS_PENDING_REVIEWS
+					if (areAllReviewAssignmentsCompleted) {
+						activeRoundStatusId =
+							pkp.const.REVIEW_ROUND_STATUS_REVIEWS_COMPLETED;
+					} else {
+						activeRoundStatusId = pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWS;
+					}
+				}
+			}
+
 			if (
 				activeRoundStatusId === pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWERS
 			) {
@@ -123,20 +175,6 @@ export function useEditorialLogic() {
 				activeRoundStatusId ===
 				pkp.const.REVIEW_ROUND_STATUS_PENDING_RECOMMENDATIONS
 			) {
-				if (activeStage.currentUserCanRecommendOnly) {
-					return [
-						{
-							component: 'CellSubmissionActivityReviews',
-							props: {
-								submissionId: submission.id,
-								reviewAssignments: getCurrentReviewAssignments(
-									submission,
-									activeStage.id,
-								),
-							},
-						},
-					];
-				}
 				return [
 					{
 						component: 'CellSubmissionActivityActionAlert',
@@ -149,21 +187,6 @@ export function useEditorialLogic() {
 				activeRoundStatusId ===
 				pkp.const.REVIEW_ROUND_STATUS_RECOMMENDATIONS_READY
 			) {
-				if (activeStage.currentUserCanRecommendOnly) {
-					return [
-						{
-							component: 'CellSubmissionActivityReviews',
-							props: {
-								submissionId: submission.id,
-								reviewAssignments: getCurrentReviewAssignments(
-									submission,
-									activeStage.id,
-								),
-							},
-						},
-					];
-				}
-
 				return [
 					{
 						component: 'CellSubmissionActivityActionAlert',
@@ -176,21 +199,6 @@ export function useEditorialLogic() {
 				activeRoundStatusId ===
 				pkp.const.REVIEW_ROUND_STATUS_RECOMMENDATIONS_COMPLETED
 			) {
-				if (activeStage.currentUserCanRecommendOnly) {
-					return [
-						{
-							component: 'CellSubmissionActivityReviews',
-							props: {
-								submissionId: submission.id,
-								reviewAssignments: getCurrentReviewAssignments(
-									submission,
-									activeStage.id,
-								),
-							},
-						},
-					];
-				}
-
 				return [
 					{
 						component: 'CellSubmissionActivityActionAlert',
@@ -227,6 +235,27 @@ export function useEditorialLogic() {
 							alert: t('dashboard.declinedDuringStage', {
 								stageName: t('manager.publication.reviewStage'),
 							}),
+						},
+					},
+				];
+			} else if (
+				activeRoundStatusId === pkp.const.REVIEW_ROUND_STATUS_REVIEWS_COMPLETED
+			) {
+				return [
+					{
+						component: 'CellSubmissionActivityActionAlert',
+						props: {
+							alert: t('editor.submission.roundStatus.reviewsCompleted'),
+						},
+					},
+					{
+						component: 'CellSubmissionActivityReviews',
+						props: {
+							submissionId: submission.id,
+							reviewAssignments: getCurrentReviewAssignments(
+								submission,
+								activeStage.id,
+							),
 						},
 					},
 				];
