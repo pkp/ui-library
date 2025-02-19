@@ -758,6 +758,7 @@ window.pkp = {
 			'Enter submission title here in {$language}. You can format your title as needed',
 		'submission.list.changeSubmissionLanguage.title':
 			'Change Submission Language For',
+		'submission.list.completeSubmission': 'Complete submission',
 		'submission.list.copyeditsSubmitted': 'Copyedited files submitted',
 		'submission.list.currentStage': 'Currently in the {$stage} stage.',
 		'submission.list.discussions': 'Open discussions',
@@ -785,6 +786,7 @@ window.pkp = {
 		'submission.stage.published': 'Published',
 		'submission.stage.scheduledForPublication': 'Scheduled For Publication',
 		'submission.stageParticipants.notify': 'Notify',
+		'submission.status.scheduled': 'Scheduled',
 		'submission.submit.newSubmissionSingle': 'New Submission',
 		'submission.submit.submissionFiles': 'Submission Files',
 		'submission.submit.uploadSubmissionFile': 'Upload Submission File',

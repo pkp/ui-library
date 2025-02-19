@@ -20,9 +20,25 @@ export const ExtendedStagesLabels = {
 	externalReview: tk('submission.stage.externalReviewWithRound'),
 	editing: tk('submission.copyediting'),
 	productionQueued: tk('manager.publication.productionStage'),
-	productionScheduled: tk('submission.stage.scheduledForPublication'),
+	productionScheduled: tk('submission.status.scheduled'),
 	productionPublished: tk('submission.stage.published'),
 	declined: tk('submissions.declined'),
+};
+
+export const StageLabels = {
+	[pkp.const.WORKFLOW_STAGE_ID_SUBMISSION]: tk(
+		'manager.publication.submissionStage',
+	),
+	[pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW]: tk(
+		'submission.stage.internalReviewWithRound',
+	),
+	[pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW]: tk(
+		'submission.stage.externalReviewWithRound',
+	),
+	[pkp.const.WORKFLOW_STAGE_ID_EDITING]: tk('submission.copyediting'),
+	[pkp.const.WORKFLOW_STAGE_ID_PRODUCTION]: tk(
+		'manager.publication.productionStage',
+	),
 };
 
 export const RecommendationTranslations = {
@@ -178,6 +194,10 @@ export function useSubmission() {
 		});
 	}
 
+	function getStageLabel(submission) {
+		return t(StageLabels[submission.stageId]);
+	}
+
 	function hasSubmissionPassedStage(submission, stageId) {
 		return submission.stageId > stageId;
 	}
@@ -248,6 +268,7 @@ export function useSubmission() {
 		getSubmissionById,
 		getActiveStage,
 		getStageById,
+		getStageLabel,
 		getExtendedStage,
 		getExtendedStageLabel,
 		getCurrentReviewRound,

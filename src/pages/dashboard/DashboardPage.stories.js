@@ -63,26 +63,28 @@ export const Init = {
 };
 
 const SubmissionScenariosDescription = `<ul class="text-sm-normal">
-			<li>1. Submission stage</li>
-			<li>2. Submission stage - no editors assigned</li>
-			<li>3. Review stage - REVIEW_ROUND_STATUS_REVISIONS_REQUESTED: Revisions requested for the same round</li>
-			<li>4. Review stage - REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW: Revisions requested, to be used in next round</li>
-			<li>5. Review stage - REVIEW_ROUND_STATUS_DECLINED: Declined in review stage</li>
-			<li>6. Review stage - REVIEW_ROUND_STATUS_PENDING_REVIEWERS: No reviewers have been assigned</li>
-			<li>7. Review stage - REVIEW_ROUND_STATUS_PENDING_REVIEWS: Waiting for reviews to be submitted by reviewers</li>
-			<li>8. Review stage - REVIEW_ROUND_STATUS_REVIEWS_READY: One or more reviews is ready for an editor to view</li>
-			<li>9. Review stage - REVIEW_ROUND_STATUS_REVIEWS_COMPLETED: All assigned reviews have been confirmed by an editor</li>
-			<li>10. Review stage - REVIEW_ROUND_STATUS_REVIEWS_OVERDUE: One or more reviews is overdue</li>
-			<li>11. Review stage - REVIEW_ROUND_STATUS_REVISIONS_SUBMITTED: at least one revision file has been uploaded</li>
-			<li>12. Review stage - REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW_SUBMITTED:  at least one revision file has been uploaded.</li>
-			<li>13. Review stage - REVIEW_ROUND_STATUS_RETURNED_TO_REVIEW:The following status is set when a submission return back from copyediting stage to last review round again </li>
-			<li>14. Review stage - REVIEW_ROUND_STATUS_PENDING_RECOMMENDATIONS: Waiting for recommendations to be submitted by recommendOnly editors</li>
-			<li>15. Review stage - REVIEW_ROUND_STATUS_RECOMMENDATIONS_READY: One or more recommendations are ready for an editor to view</li>
-			<li>16. Review stage - REVIEW_ROUND_STATUS_RECOMMENDATIONS_COMPLETED: All assigned recommendOnly editors have made a recommendation</li>
-			<li>17. Review stage -  Recommend only editor provided recommendation (relevant only for recommend only editor)
-			<li>18. Review stage - Open reviews</li>
-			<li>19. Copyediting stage </li>
-			<li>20. Production stage</li>
+			<li>1. Incomplete submission</li>
+			<li>2. Declined in submission stage</li>
+			<li>3. Submission stage</li>
+			<li>4. Submission stage - no editors assigned</li>
+			<li>5. Review stage - REVIEW_ROUND_STATUS_REVISIONS_REQUESTED: Revisions requested for the same round</li>
+			<li>6. Review stage - REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW: Revisions requested, to be used in next round</li>
+			<li>7. Review stage - REVIEW_ROUND_STATUS_DECLINED: Declined in review stage</li>
+			<li>8. Review stage - REVIEW_ROUND_STATUS_PENDING_REVIEWERS: No reviewers have been assigned</li>
+			<li>9. Review stage - REVIEW_ROUND_STATUS_PENDING_REVIEWS: Waiting for reviews to be submitted by reviewers</li>
+			<li>10. Review stage - REVIEW_ROUND_STATUS_REVIEWS_READY: One or more reviews is ready for an editor to view</li>
+			<li>11. Review stage - REVIEW_ROUND_STATUS_REVIEWS_COMPLETED: All assigned reviews have been confirmed by an editor</li>
+			<li>12. Review stage - REVIEW_ROUND_STATUS_REVIEWS_OVERDUE: One or more reviews is overdue</li>
+			<li>13. Review stage - REVIEW_ROUND_STATUS_REVISIONS_SUBMITTED: at least one revision file has been uploaded</li>
+			<li>14. Review stage - REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW_SUBMITTED:  at least one revision file has been uploaded.</li>
+			<li>15. Review stage - REVIEW_ROUND_STATUS_RETURNED_TO_REVIEW:The following status is set when a submission return back from copyediting stage to last review round again </li>
+			<li>16. Review stage - REVIEW_ROUND_STATUS_PENDING_RECOMMENDATIONS: Waiting for recommendations to be submitted by recommendOnly editors</li>
+			<li>17. Review stage - REVIEW_ROUND_STATUS_RECOMMENDATIONS_READY: One or more recommendations are ready for an editor to view</li>
+			<li>18. Review stage - REVIEW_ROUND_STATUS_RECOMMENDATIONS_COMPLETED: All assigned recommendOnly editors have made a recommendation</li>
+			<li>19. Review stage -  Recommend only editor provided recommendation (relevant only for recommend only editor)
+			<li>20. Review stage - Open reviews</li>
+			<li>21. Copyediting stage </li>
+			<li>22. Production stage</li>
 		</ul>`;
 
 export const EditorEditorialActivity = {
