@@ -81,16 +81,21 @@ export function useEditorialLogic() {
 						pkp.const.REVIEW_ROUND_STATUS_RECOMMENDATIONS_COMPLETED,
 					].includes(activeRoundStatusId)
 				) {
-					const areAllReviewAssignmentsCompleted = getActiveReviewAssignments(
+					const areAllReviewAssignmentsConfirmed = getActiveReviewAssignments(
 						getReviewAssignmentsForRound(
 							submission.reviewAssignments,
 							activeRound.id,
 						),
-					).every((reviewAssignment) => !!reviewAssignment.dateConfirmed);
+					).every((reviewAssignment) =>
+						[
+							pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
+							pkp.const.REVIEW_ASSIGNMENT_STATUS_THANKED,
+						].includes(reviewAssignment.statusId),
+					);
 					// When getting RECOMMENDATION related status, the information about review assignment related status is lost
 					// Only review assignment related status, where we provide messaging is REVIEW_ROUND_STATUS_REVIEWS_COMPLETED
 					// For other statuses we only show review assignment indications and therefore can fallback for example to REVIEW_ROUND_STATUS_PENDING_REVIEWS
-					if (areAllReviewAssignmentsCompleted) {
+					if (areAllReviewAssignmentsConfirmed) {
 						activeRoundStatusId =
 							pkp.const.REVIEW_ROUND_STATUS_REVIEWS_COMPLETED;
 					} else {
