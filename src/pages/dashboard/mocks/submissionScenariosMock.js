@@ -3,14 +3,26 @@ import {getReviewRoundMock} from './reviewRoundsMock';
 import {getReviewAssignmentShortMock} from './reviewAssignmentsMock';
 
 export const EditorialActivityScenario = [
-	// Submission stage
+	// Incomplete
 	getSubmissionMock({
 		id: 1,
+		stageId: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
+		submissionProgress: true,
+	}),
+	// Declined
+	getSubmissionMock({
+		id: 2,
+		stageId: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
+		status: pkp.const.STATUS_DECLINED,
+	}),
+	// Submission stage
+	getSubmissionMock({
+		id: 3,
 		stageId: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
 	}),
 	// Submission page - assign editor
 	getSubmissionMock({
-		id: 2,
+		id: 4,
 		stageId: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
 		editorAssigned: false,
 	}),
@@ -18,7 +30,7 @@ export const EditorialActivityScenario = [
 	// Review stage
 	// REVIEW_ROUND_STATUS_REVISIONS_REQUESTED
 	getSubmissionMock({
-		id: 3,
+		id: 5,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
@@ -34,7 +46,7 @@ export const EditorialActivityScenario = [
 	}),
 	//REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW
 	getSubmissionMock({
-		id: 4,
+		id: 6,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
@@ -52,7 +64,7 @@ export const EditorialActivityScenario = [
 	// -- Does not happen as its moved to next stage
 	// REVIEW_ROUND_STATUS_DECLINED
 	getSubmissionMock({
-		id: 5,
+		id: 7,
 		status: pkp.const.STATUS_DECLINED,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
@@ -67,13 +79,13 @@ export const EditorialActivityScenario = [
 	}),
 	// REVIEW_ROUND_STATUS_PENDING_REVIEWERS
 	getSubmissionMock({
-		id: 6,
+		id: 8,
 		reviewAssignments: [],
 		reviewRounds: [getReviewRoundMock()],
 	}),
 	// REVIEW_ROUND_STATUS_PENDING_REVIEWS
 	getSubmissionMock({
-		id: 7,
+		id: 9,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
@@ -90,7 +102,7 @@ export const EditorialActivityScenario = [
 	}),
 	// REVIEW_ROUND_STATUS_REVIEWS_READY
 	getSubmissionMock({
-		id: 8,
+		id: 10,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
@@ -110,7 +122,7 @@ export const EditorialActivityScenario = [
 	}),
 	// REVIEW_ROUND_STATUS_REVIEWS_COMPLETED
 	getSubmissionMock({
-		id: 9,
+		id: 11,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
@@ -127,7 +139,7 @@ export const EditorialActivityScenario = [
 	}),
 	// REVIEW_ROUND_STATUS_REVIEWS_OVERDUE
 	getSubmissionMock({
-		id: 10,
+		id: 12,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
@@ -144,7 +156,7 @@ export const EditorialActivityScenario = [
 	}),
 	// REVIEW_ROUND_STATUS_REVISIONS_SUBMITTED
 	getSubmissionMock({
-		id: 11,
+		id: 13,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
@@ -161,7 +173,7 @@ export const EditorialActivityScenario = [
 	}),
 	// REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW_SUBMITTED
 	getSubmissionMock({
-		id: 12,
+		id: 14,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
@@ -178,7 +190,7 @@ export const EditorialActivityScenario = [
 	}),
 	// REVIEW_ROUND_STATUS_RETURNED_TO_REVIEW
 	getSubmissionMock({
-		id: 13,
+		id: 15,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
@@ -196,7 +208,7 @@ export const EditorialActivityScenario = [
 
 	// REVIEW_ROUND_STATUS_PENDING_RECOMMENDATIONS
 	getSubmissionMock({
-		id: 14,
+		id: 16,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
@@ -213,7 +225,7 @@ export const EditorialActivityScenario = [
 	}),
 	// REVIEW_ROUND_STATUS_RECOMMENDATIONS_READY
 	getSubmissionMock({
-		id: 15,
+		id: 17,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
@@ -230,7 +242,7 @@ export const EditorialActivityScenario = [
 	}),
 	// REVIEW_ROUND_STATUS_RECOMMENDATIONS_COMPLETED
 	getSubmissionMock({
-		id: 16,
+		id: 18,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
@@ -247,7 +259,7 @@ export const EditorialActivityScenario = [
 	}),
 	// Recommend only editor provided recommendation
 	getSubmissionMock({
-		id: 17,
+		id: 19,
 		stages: [
 			{
 				id: 3,
@@ -270,7 +282,7 @@ export const EditorialActivityScenario = [
 	}),
 	// Open review assignments
 	getSubmissionMock({
-		id: 18,
+		id: 20,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
@@ -290,15 +302,20 @@ export const EditorialActivityScenario = [
 			}),
 		],
 	}),
-
 	// Editorial stage
 	getSubmissionMock({
-		id: 19,
+		id: 21,
 		stageId: pkp.const.WORKFLOW_STAGE_ID_EDITING,
+	}),
+	// Scheduled
+	getSubmissionMock({
+		id: 22,
+		stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+		status: pkp.const.STATUS_SCHEDULED,
 	}),
 	// Production stage
 	getSubmissionMock({
-		id: 20,
+		id: 23,
 		stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 	}),
 ];

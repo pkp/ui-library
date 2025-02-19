@@ -4,6 +4,7 @@ import {useDate} from '@/composables/useDate';
 import {Actions as ParticipantManagerActions} from '@/managers/ParticipantManager/useParticipantManagerActions';
 import {Actions as ReviewerManagerActions} from '@/managers/ReviewerManager/useReviewerManagerActions';
 import {Actions as FileManagerActions} from '@/managers/FileManager/useFileManagerActions';
+
 const {formatShortDate} = useDate();
 
 const {t} = useLocalize();
@@ -13,13 +14,38 @@ const {
 	getCurrentReviewAssignments,
 	getActiveReviewAssignments,
 	getReviewAssignmentsForRound,
+	getStageLabel,
 } = useSubmission();
 
 export function useEditorialLogic() {
 	function getEditorialActivityForEditorialDashboard(submission) {
 		const activeStage = getActiveStage(submission);
 
+		if (submission.status === pkp.const.STATUS_DECLINED) {
+			return [
+				{
+					component: 'CellSubmissionActivityActionAlert',
+					props: {
+						alert: t('dashboard.declinedDuringStage', {
+							stageName: getStageLabel(submission),
+						}),
+					},
+				},
+			];
+		}
 		if (activeStage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION) {
+			if (submission.submissionProgress) {
+				return [
+					{
+						component: 'CellSubmissionActivityActionAlert',
+						props: {
+							actionName: 'openSubmissionWizard',
+							actionLabel: t('submission.list.completeSubmission'),
+							actionArgs: {submissionId: submission.id},
+						},
+					},
+				];
+			}
 			if (!submission.editorAssigned) {
 				return [
 					{

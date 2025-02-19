@@ -390,7 +390,7 @@ export const useDashboardPageStore = defineComponentStore(
 			openWorkflowModal(queryParamsUrl.workflowSubmissionId);
 		}
 
-		function openSubmissionWizard(submissionId) {
+		function openSubmissionWizard({submissionId}) {
 			const {redirectToPage} = useUrl(`submission?id=${submissionId}`);
 			redirectToPage();
 		}
