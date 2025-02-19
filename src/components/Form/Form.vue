@@ -460,10 +460,11 @@ export default {
 			} else if (
 				r.status &&
 				[403, 404].includes(r.status) &&
-				r.responseJSON &&
-				r.responseJSON.errorMessage
+				(r.responseJSON?.errorMessage || r.responseJSON?.error)
 			) {
-				pkp.eventBus.$emit('notify', r.responseJSON.errorMessage, 'warning');
+				const errorMessage =
+					r.responseJSON.errorMessage || r.responseJSON.error;
+				pkp.eventBus.$emit('notify', errorMessage, 'warning');
 			} else {
 				pkp.eventBus.$emit('notify', this.t('common.unknownError', 'warning'));
 			}
