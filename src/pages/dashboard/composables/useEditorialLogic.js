@@ -73,7 +73,7 @@ export function useEditorialLogic() {
 					];
 				}
 
-				// Recommendation statuses are useful for deciding editor, but not recommendOnly editor. R
+				// Recommendation statuses are useful for deciding editor, but not recommendOnly editor.
 				if (
 					[
 						pkp.const.REVIEW_ROUND_STATUS_PENDING_RECOMMENDATIONS,
