@@ -11,9 +11,9 @@ const props = defineProps({
 	item: {type: Object, required: true},
 });
 
-const {calculateDaysFromNow} = useDate();
+const {calculateDaysBetweenDates} = useDate();
 
 const days = computed(() => {
-	return calculateDaysFromNow(props.item.dateLastActivity);
+	return calculateDaysBetweenDates(props.item.dateLastActivity, new Date());
 });
 </script>
