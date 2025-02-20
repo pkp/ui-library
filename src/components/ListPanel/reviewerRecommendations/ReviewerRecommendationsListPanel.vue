@@ -1,11 +1,8 @@
 <template>
 	<div data-cy="reviewer-recommendation-list-panel">
-		<PkpTable
-			aria-label="Reviewer recommendations list"
-			:aria-describedby="headingId"
-		>
+		<PkpTable aria-label="Reviewer recommendations list">
 			<template #label>
-				<h3 class="">
+				<h3 class="text-3xl-bold">
 					{{ title }}
 				</h3>
 			</template>
@@ -20,15 +17,12 @@
 
 			<TableHeader>
 				<TableColumn>{{ recommendationNameTitle }}</TableColumn>
-				<TableColumn> {{ recommendationStatusTitle }} </TableColumn>
-				<TableColumn>{{ t('grid.columns.actions') }}</TableColumn>
+				<TableColumn>{{ recommendationStatusTitle }}</TableColumn>
+				<TableColumn></TableColumn>
 			</TableHeader>
 
 			<TableBody>
-				<TableRow
-					v-for="item in items"
-					:key="item.id"
-				>
+				<TableRow v-for="item in items" :key="item.id">
 					<TableCell :is-row-header="true">
 						<span class="text-base-normal">
 							{{ localize(item.title) }}
@@ -43,7 +37,9 @@
 								:name="`recommendation_status[]`"
 								:value="item.id"
 								:checked="item.status"
-								@click.prevent="(event) => openStatusToggleConfirmationModal(item.id, event)"
+								@click.prevent="
+									(event) => openStatusToggleConfirmationModal(item.id, event)
+								"
 							/>
 						</label>
 					</TableCell>
@@ -81,11 +77,8 @@ import ReviewerRecommendationsEditModal from './ReviewerRecommendationsEditModal
 
 import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
-import {useId} from '@/composables/useId.js';
 
 const {t} = useLocalize();
-const {generateId} = useId();
-const headingId = generateId();
 
 export default {
 	components: {
