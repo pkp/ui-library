@@ -4,7 +4,7 @@ import {RecommendationTranslations} from '@/composables/useSubmission';
 import {Actions as ReviewerManagerActions} from '@/managers/ReviewerManager/useReviewerManagerActions';
 const {tk, t} = useLocalize();
 
-const {calculateDaysBetweenDates} = useDate();
+const {calculateDaysFromNow} = useDate();
 const ReviewActivityActions = {
 	RESEND_REVIEW_REQUEST: 'resendReviewRequest',
 	EDIT_DUE_DATE: 'editDueDate',
@@ -270,10 +270,7 @@ const ConfigPerStatus = {
 
 function getDays(config, reviewAssignment) {
 	if (config.dateToDisplay) {
-		return calculateDaysBetweenDates(
-			new Date(),
-			reviewAssignment[config.dateToDisplay],
-		);
+		return calculateDaysFromNow(reviewAssignment[config.dateToDisplay]);
 	}
 
 	return null;
@@ -297,7 +294,7 @@ export function useReviewActivityLogic() {
 		}
 		// show days if icon is not defined in config
 		const text = !reviewActivityConfig.icon
-			? getDays(config, reviewAssignment)
+			? String(getDays(config, reviewAssignment))
 			: null;
 
 		return {

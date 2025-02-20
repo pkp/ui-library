@@ -30,10 +30,10 @@ export const StageLabels = {
 		'manager.publication.submissionStage',
 	),
 	[pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW]: tk(
-		'submission.stage.internalReviewWithRound',
+		'workflow.review.internalReview',
 	),
 	[pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW]: tk(
-		'submission.stage.externalReviewWithRound',
+		'workflow.review.externalReview',
 	),
 	[pkp.const.WORKFLOW_STAGE_ID_EDITING]: tk('submission.copyediting'),
 	[pkp.const.WORKFLOW_STAGE_ID_PRODUCTION]: tk(
