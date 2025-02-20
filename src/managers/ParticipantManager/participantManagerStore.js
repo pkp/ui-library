@@ -7,6 +7,7 @@ import {useUrl} from '@/composables/useUrl';
 
 import {useParticipantManagerActions} from './useParticipantManagerActions';
 import {useDataChanged} from '@/composables/useDataChanged';
+import {useParticipantManagerConfig} from './useParticipantManagerConfig';
 
 export const useParticipantManagerStore = defineComponentStore(
 	'participantManager',
@@ -51,6 +52,7 @@ export const useParticipantManagerStore = defineComponentStore(
 						userGroupId: stageAssignment.stageAssignmentUserGroup.id,
 						recommendOnly: stageAssignment.recommendOnly,
 						displayInitials: participant.displayInitials,
+						canLoginAs: participant.canLoginAs,
 					});
 				});
 			});
@@ -69,24 +71,30 @@ export const useParticipantManagerStore = defineComponentStore(
 		});
 
 		/**
+		 * Config
+		 */
+		const participantManagerConfig = useParticipantManagerConfig();
+
+		/**
 		 * Handling actions
 		 */
 
 		const _actionFns = useParticipantManagerActions();
 
 		const topItems = computed(() =>
-			_actionFns.getTopItems({
+			participantManagerConfig.getTopItems({
 				submission: props.submission,
 				submissionStageId: props.submissionStageId,
 			}),
 		);
 
-		const itemActions = computed(() =>
-			_actionFns.getItemActions({
+		function getItemActions({participant}) {
+			return participantManagerConfig.getItemActions({
 				submission: props.submission,
 				submissionStageId: props.submissionStageId,
-			}),
-		);
+				participant,
+			});
+		}
 
 		function enrichActionArg(args) {
 			return {
@@ -135,7 +143,7 @@ export const useParticipantManagerStore = defineComponentStore(
 			participantsList,
 			_actionFns,
 			topItems,
-			itemActions,
+			getItemActions,
 			participantAssign,
 			participantRemove,
 			participantNotify,
