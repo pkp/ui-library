@@ -327,22 +327,20 @@ export const WorkflowConfig = {
 		},
 		getSecondaryItems: ({submission, selectedReviewRound, selectedStageId}) => {
 			const items = [];
-			if (!selectedReviewRound) {
-				return [];
-			}
 
-			const selectedStage = getStageById(submission, selectedStageId);
-			if (selectedStage?.isCurrentUserDecidingEditor) {
-				items.push({
-					component: 'WorkflowRecommendOnlyListingRecommendations',
-					props: {
-						submission: submission,
-						stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
-						reviewRoundId: selectedReviewRound.id,
-					},
-				});
+			if (selectedReviewRound) {
+				const selectedStage = getStageById(submission, selectedStageId);
+				if (selectedStage?.isCurrentUserDecidingEditor) {
+					items.push({
+						component: 'WorkflowRecommendOnlyListingRecommendations',
+						props: {
+							submission: submission,
+							stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+							reviewRoundId: selectedReviewRound.id,
+						},
+					});
+				}
 			}
-
 			items.push({
 				component: 'ParticipantManager',
 				props: {

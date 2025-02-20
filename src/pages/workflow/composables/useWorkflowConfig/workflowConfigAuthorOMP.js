@@ -110,6 +110,7 @@ export const WorkflowConfig = {
 			const {t} = useLocalize();
 
 			if (
+				selectedReviewRound &&
 				[
 					pkp.const.REVIEW_ROUND_STATUS_REVISIONS_REQUESTED,
 					pkp.const.REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW,
