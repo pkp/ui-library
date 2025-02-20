@@ -298,7 +298,7 @@ export const EditorialActivityScenario = [
 		],
 		reviewRounds: [
 			getReviewRoundMock({
-				statusId: pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWS,
+				statusId: pkp.const.REVIEW_ROUND_STATUS_REVIEWS_COMPLETED,
 			}),
 		],
 	}),
