@@ -4,7 +4,7 @@ import {RecommendationTranslations} from '@/composables/useSubmission';
 import {Actions as ReviewerManagerActions} from '@/managers/ReviewerManager/useReviewerManagerActions';
 const {tk, t} = useLocalize();
 
-const {calculateDaysFromNow} = useDate();
+const {calculateDaysBetweenDates} = useDate();
 const ReviewActivityActions = {
 	RESEND_REVIEW_REQUEST: 'resendReviewRequest',
 	EDIT_DUE_DATE: 'editDueDate',
@@ -270,7 +270,10 @@ const ConfigPerStatus = {
 
 function getDays(config, reviewAssignment) {
 	if (config.dateToDisplay) {
-		return calculateDaysFromNow(reviewAssignment[config.dateToDisplay]);
+		return calculateDaysBetweenDates(
+			new Date(),
+			reviewAssignment[config.dateToDisplay],
+		);
 	}
 
 	return null;
