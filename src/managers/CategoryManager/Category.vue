@@ -10,11 +10,7 @@
 						<div class="flex flex-row items-center gap-x-3">
 							<PkpButton>Order</PkpButton>
 							<PkpButton
-								@click="
-									categoryManagerStore.handleItemAction(
-										categoryManagerStore.Actions.CATEGORY_ADD,
-									)
-								"
+								@click="categoryManagerStore.handleItemAction('categoryAdd')"
 							>
 								Add Category
 							</PkpButton>
@@ -79,7 +75,9 @@
 								/>
 								<span
 									v-if="item.hasChildren"
-									@click="categoryManagerStore.toggleItemExpansion(item)"
+									@click="
+										categoryManagerStore.toggleItemExpansion(item.value.id)
+									"
 								>
 									<Icon
 										:icon="
@@ -101,7 +99,6 @@
 
 <script setup>
 import {TreeItem, TreeRoot} from 'reka-ui';
-// import {computed, ref} from 'vue';
 import Icon from '@/components/Icon/Icon.vue';
 import PkpTable from '@/components/Table/Table.vue';
 import TableHeader from '@/components/Table/TableHeader.vue';
@@ -140,6 +137,10 @@ const props = defineProps({
 		type: Array,
 		required: true,
 	},
+	/**
+	 * Empty Category Form used when creating new categories. However, this form is not used for editing a category.
+	 * Instead, the form for editing will be fetched from API with firm fields populated.
+	 **/
 	categoryForm: {
 		type: Object,
 		required: true,
