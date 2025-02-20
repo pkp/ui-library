@@ -301,7 +301,11 @@ export const useUserInvitationPageStore = defineComponentStore(
 		}
 
 		const {redirectToPage} = useUrl('management/settings/access');
-		const isSubmitting = ref(invitationPayload.value.disabled);
+		const isSubmitting = ref(
+			invitationMode.value === 'editUser'
+				? true
+				: invitationPayload.value.disabled,
+		);
 
 		/**
 		 * change isSubmitting value based on
@@ -311,6 +315,9 @@ export const useUserInvitationPageStore = defineComponentStore(
 			invitationPayload,
 			async (newVal, oldVal) => {
 				isSubmitting.value = invitationPayload.value.disabled;
+				if (invitationPayload.value.userGroupsToAdd.length === 0) {
+					isSubmitting.value = true;
+				}
 				detectChanges.value = true;
 			},
 			{deep: true},
