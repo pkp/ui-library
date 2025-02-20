@@ -147,13 +147,6 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 			);
 		}
 
-		items.push(
-			getPublicationItem({
-				name: 'galleys',
-				label: t('submission.layout.galleys'),
-			}),
-		);
-
 		return items;
 	}
 
@@ -213,21 +206,7 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 			);
 		}
 
-		items.push(
-			getPublicationItem({
-				name: 'jats',
-				label: t('publication.jats'),
-			}),
-		);
-
 		if (permissions.canAccessProduction) {
-			items.push(
-				getPublicationItem({
-					name: 'galleys',
-					label: t('submission.layout.galleys'),
-				}),
-			);
-
 			items.push(
 				getPublicationItem({
 					name: 'catalogEntry',

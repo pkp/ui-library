@@ -200,4 +200,22 @@ export const PublicationConfig = {
 			];
 		},
 	},
+	publicationFormats: {
+		getPrimaryItems: ({
+			submission,
+			selectedPublication,
+			pageInitConfig,
+			permissions,
+		}) => {
+			return [
+				{
+					component: 'PublicationFormatManager',
+					props: {
+						submissionId: submission.id,
+						publicationId: selectedPublication.id,
+					},
+				},
+			];
+		},
+	},
 };
