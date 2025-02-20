@@ -8,7 +8,8 @@
 				<PkpForm
 					ref="editCategory"
 					class="categories__categoryForm"
-					v-bind="currentTemplateForm"
+					v-bind="formProps"
+					@success="(...args) => $emit('categorySaved', ...args)"
 				></PkpForm>
 			</SideModalLayoutBasic>
 		</SideModalBody>
@@ -22,8 +23,8 @@ import PkpForm from '@/components/Form/Form.vue';
 
 defineProps({
 	title: {type: String, required: true},
-	currentTemplateForm: {required: true, type: Object},
+	formProps: {required: true, type: Object},
 });
 
-// const emit = defineEmits(['hax', 'categorySaved']);
+defineEmits(['categorySaved']);
 </script>
