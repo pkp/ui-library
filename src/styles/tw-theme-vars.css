@@ -1,0 +1,119 @@
+:root {
+	--color-primary: #006798;
+	--color-hover: #0082bf;
+	--color-attention: #d00a0a;
+	--color-success: #00b24e;
+	--color-negative: #d00a6c;
+	--color-stage-desk-review: #9b6ff8;
+	--color-stage-in-review: #e08914;
+	--color-stage-in-internal-review: #42427f;
+	--color-stage-copyediting: #f66aaf;
+	--color-stage-production: #4ac7e2;
+	--color-stage-scheduled-for-publishing: #ded15d;
+	--color-stage-incomplete-submission: #777777;
+	--color-stage-published: #00b24e;
+	--color-stage-declined: #d00a0a;
+	--color-profile-1: #ab7d94;
+	--color-profile-2: #598d70;
+	--color-profile-3: #9b7cdc;
+	--color-profile-4: #89aae0;
+	--color-profile-5: #ebda68;
+	--color-profile-6: #bd726c;
+	--color-transparent: transparent;
+
+	--background-color-default: #eaedee;
+	--background-color-secondary: #ffffff;
+	--background-color-tertiary: rgba(234, 237, 238, 0.3);
+	--background-color-blur: rgba(0, 0, 0, 0.5);
+	--background-color-selection-light: #d5e9f2;
+	--background-color-selection-dark: #002c40;
+	--background-color-disabled: rgba(28, 27, 31, 0.1);
+
+	--text-color-default: #222222;
+	--text-color-secondary: #505050;
+	--text-color-heading: #01354f;
+	--text-color-disabled: #4e4f4f;
+	--text-color-on-dark: #ffffff;
+
+	--border-color-dark: #696969;
+	--border-color-light: #bbbbbb;
+	--border-color-form-fields: #777777;
+	--border-color-transparent: transparent;
+
+	--radius: 4px;
+	--radius-full: 9999px;
+
+	--shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+
+	--font-sans: 'Noto Sans', ui-sans-serif, system-ui, sans-serif,
+		'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+	/** 10px */
+	--text-xs-normal: 0.625rem;
+	--text-xs-normal--line-height: 0.75rem;
+	--text-xs-normal--font-weight: 400;
+
+	/** 11px */
+	--text-sm-light: 0.6875rem;
+	--text-sm-light--line-height: 0.875rem;
+	--text-sm-light--font-weight: 300;
+	--text-sm-normal: 0.6875rem;
+	--text-sm-normal--line-height: 0.875rem;
+	--text-sm-normal--font-weight: 400;
+
+	/** 12px */
+	--text-base-light: 0.75rem;
+	--text-base-light--line-height: 1rem;
+	--text-base-light--font-weight: 300;
+	--text-base-normal: 0.75rem;
+	--text-base-normal--line-height: 1rem;
+	--text-base-normal--font-weight: 400;
+	--text-base-bold: 0.75rem;
+	--text-base-bold--line-height: 1rem;
+	--text-base-bold--font-weight: 700;
+
+	/** 14px */
+	--text-lg-normal: 0.875rem;
+	--text-lg-normal--line-height: 1.25rem;
+	--text-lg-normal--font-weight: 400;
+	--text-lg-medium: 0.875rem;
+	--text-lg-medium--line-height: 1.25rem;
+	--text-lg-medium--font-weight: 500;
+	--text-lg-semibold: 0.875rem;
+	--text-lg-semibold--line-height: 1.25rem;
+	--text-lg-semibold--font-weight: 600;
+	--text-lg-bold: 0.875rem;
+	--text-lg-bold--line-height: 1.25rem;
+	--text-lg-bold--font-weight: 700;
+
+	/** 16px */
+	--text-xl-bold: 1rem;
+	--text-xl-bold--line-height: 1.5rem;
+	--text-xl-bold--font-weight: 700;
+
+	/** 18px */
+	--text-2xl-bold: 1.125rem;
+	--text-2xl-bold--line-height: 1.75rem;
+	--text-2xl-bold--font-weight: 700;
+
+	/** 20px */
+	--text-3xl-normal: 1.25rem;
+	--text-3xl-normal--line-height: 1.75rem;
+	--text-3xl-normal--font-weight: 400;
+	--text-3xl-medium: 1.25rem;
+	--text-3xl-medium--line-height: 1.75rem;
+	--text-3xl-medium--font-weight: 500;
+	--text-3xl-bold: 1.25rem;
+	--text-3xl-bold--line-height: 1.75rem;
+	--text-3xl-bold--font-weight: 700;
+
+	/** 24px */
+	--text-4xl-bold: 1.5rem;
+	--text-4xl-bold--line-height: 2rem;
+	--text-4xl-bold--font-weight: 700;
+
+	/** 36px */
+	--text-5xl-bold: 2.25rem;
+	--text-5xl-bold--line-height: 2.5rem;
+	--text-5xl-bold--font-weight: 700;
+}
