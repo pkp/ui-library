@@ -158,7 +158,7 @@ export function useFetch(url, options = {}) {
 				return; // aborted by subsequent request
 			}
 
-			if (expectValidationError && e.status >= 400 && e.status < 500) {
+			if (expectValidationError && [400, 422].includes(e.status)) {
 				validationError.value = e.data;
 				data.value = null;
 				return;

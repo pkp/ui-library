@@ -447,7 +447,7 @@ export default {
 		 */
 		error: function (r) {
 			// Field validation errors
-			if (r.status && r.status === 400) {
+			if (r.status && [400, 422].includes(r.status)) {
 				pkp.eventBus.$emit(
 					'notify',
 					this.t('form.errors', {
@@ -460,10 +460,11 @@ export default {
 			} else if (
 				r.status &&
 				[403, 404].includes(r.status) &&
-				r.responseJSON &&
-				r.responseJSON.errorMessage
+				(r.responseJSON?.errorMessage || r.responseJSON?.error)
 			) {
-				pkp.eventBus.$emit('notify', r.responseJSON.errorMessage, 'warning');
+				const errorMessage =
+					r.responseJSON.errorMessage || r.responseJSON.error;
+				pkp.eventBus.$emit('notify', errorMessage, 'warning');
 			} else {
 				pkp.eventBus.$emit('notify', this.t('common.unknownError', 'warning'));
 			}

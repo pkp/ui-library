@@ -36,8 +36,8 @@ export default {
 			}
 
 			let msg;
-			if ('responseJSON' in r && 'errorMessage' in r.responseJSON) {
-				msg = r.responseJSON.errorMessage;
+			if (r?.responseJSON?.errorMessage || r?.responseJSON?.error) {
+				msg = r.responseJSON.errorMessage || r.responseJSON.error;
 			} else {
 				msg = this.t('common.unknownError');
 			}

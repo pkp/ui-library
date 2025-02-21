@@ -39,7 +39,10 @@ export const useModalStore = defineStore('modal', () => {
 
 	/** Default network error */
 	function openDialogNetworkError(fetchError) {
-		const msg = fetchError?.data?.errorMessage || t('common.unknownError');
+		const msg =
+			fetchError?.data?.errorMessage ||
+			fetchError?.data?.error ||
+			t('common.unknownError');
 
 		openDialog({
 			name: 'ajaxError',
