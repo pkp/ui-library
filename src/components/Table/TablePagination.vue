@@ -2,7 +2,7 @@
 	<div
 		class="flex items-center justify-between border-x border-b border-light px-2 py-2"
 	>
-		<span class="" v-html="showingXofX"></span>
+		<span v-strip-unsafe-html="showingXofX" class=""></span>
 		<Pagination
 			v-if="pagination.pageCount > 1"
 			:current-page="pagination.currentPage"

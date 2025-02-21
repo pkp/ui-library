@@ -21,8 +21,8 @@
 			<span
 				v-if="isPrimaryLocale && tooltip"
 				:id="describedByTooltipId"
+				v-strip-unsafe-html="tooltip"
 				class="-screenReader"
-				v-html="tooltip"
 			/>
 			<HelpButton
 				v-if="isPrimaryLocale && helpTopic"
@@ -35,8 +35,8 @@
 		<div
 			v-if="isPrimaryLocale && description"
 			:id="describedByDescriptionId"
+			v-strip-unsafe-html="description"
 			class="pkpFormField__description pkpFormField--options__description"
-			v-html="description"
 		/>
 		<div class="pkpFormField__control">
 			<!-- avoid creating VueDraggable when not necessary as it was causing random problems with multiple VueDraggables in the form -->
@@ -83,8 +83,8 @@
 						/>
 					</template>
 					<span
+						v-strip-unsafe-html="option.label"
 						class="pkpFormField--options__optionLabel"
-						v-html="option.label"
 					/>
 					<Orderer
 						v-if="isOrderable"

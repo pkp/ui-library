@@ -2,7 +2,9 @@
 	<h1 class="app__pageHeading">
 		{{ t('manager.statistics.counterR5Reports') }}
 	</h1>
-	<p v-html="t('manager.statistics.counterR5Reports.description')" />
+	<p
+		v-strip-unsafe-html="t('manager.statistics.counterR5Reports.description')"
+	/>
 	<div class="mb-4">
 		<Notification v-if="usageNotPossible" type="warning">
 			{{ t('manager.statistics.counterR5Reports.usageNotPossible') }}

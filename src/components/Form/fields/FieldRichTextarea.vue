@@ -22,8 +22,8 @@
 			<span
 				v-if="isPrimaryLocale && tooltip"
 				:id="describedByTooltipId"
+				v-strip-unsafe-html="tooltip"
 				class="-screenReader"
-				v-html="tooltip"
 			/>
 			<HelpButton
 				v-if="isPrimaryLocale && helpTopic"
@@ -36,8 +36,8 @@
 		<div
 			v-if="isPrimaryLocale && description"
 			:id="describedByDescriptionId"
+			v-strip-unsafe-html="description"
 			class="pkpFormField__description"
-			v-html="description"
 		/>
 		<div
 			class="pkpFormField__control pkpFormField--richTextarea__control"

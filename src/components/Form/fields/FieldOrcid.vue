@@ -5,7 +5,11 @@
 				{{ label }}
 			</span>
 			<Tooltip v-if="tooltip" aria-hidden="true" :tooltip="tooltip" label="" />
-			<span v-if="tooltip" class="-screenReader" v-html="tooltip" />
+			<span
+				v-if="tooltip"
+				v-strip-unsafe-html="tooltip"
+				class="-screenReader"
+			/>
 			<HelpButton
 				v-if="helpTopic"
 				:topic="helpTopic"
@@ -15,8 +19,8 @@
 		</div>
 		<div
 			v-if="!isVerified && hasOrcid"
+			v-strip-unsafe-html="t('orcid.field.unverified.shouldRequest')"
 			class="pkpFormField__description"
-			v-html="t('orcid.field.unverified.shouldRequest')"
 		/>
 		<div>
 			<!-- When ORCID is present -->
@@ -37,8 +41,8 @@
 			/>
 			<div
 				v-if="hasOrcid"
+				v-strip-unsafe-html="orcidDisplayText"
 				class="pkpFormField__control pkpFormField__control--html"
-				v-html="orcidDisplayText"
 			/>
 			<PkpButton
 				v-if="hasOrcid"
