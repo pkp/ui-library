@@ -153,6 +153,7 @@ export function useReviewerManagerConfig() {
 					component: 'ReviewerManagerCellStatusInfo',
 					props: {
 						title: t('editor.review.reviewViewed'),
+						recommendation: getRecommendationString(reviewAssignment),
 						competingInterests: getCompetingInterests(reviewAssignment),
 					},
 				});
