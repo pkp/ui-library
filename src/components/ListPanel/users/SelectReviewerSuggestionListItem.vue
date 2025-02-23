@@ -10,10 +10,9 @@
 					<div class="listPanel__item--reviewer__affiliation">
 						{{ localize(item.affiliation) }}
 					</div>
-					<!-- TODO: check alternative of v-html as v-strip-unsafe-html not working -->
-					<div 
+					<div
+						v-strip-unsafe-html="localize(item.suggestionReason)"
 						class="reviewer_sugestion_reason_container"
-						v-html="localize(item.suggestionReason)"
 					></div>
 				</div>
 
@@ -79,9 +78,7 @@ export default {
 			required: true,
 		},
 	},
-	emits: [
-		'update:suggestions'
-	],
+	emits: ['update:suggestions'],
 	data() {
 		return {};
 	},
