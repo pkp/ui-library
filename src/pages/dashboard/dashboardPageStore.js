@@ -11,15 +11,14 @@ import {useQueryParams} from '@/composables/useQueryParams';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 import {useExtender} from '@/composables/useExtender';
 
-import {useWorkflowActions} from '../workflow/composables/useWorkflowActions';
 import {useReviewerManagerActions} from '@/managers/ReviewerManager/useReviewerManagerActions';
 import {useDashboardBulkDelete} from './composables/useDashboardBulkDelete';
 import {useParticipantManagerActions} from '@/managers/ParticipantManager/useParticipantManagerActions';
 import {useFileManagerActions} from '@/managers/FileManager/useFileManagerActions';
 
-import {useEditorialLogic} from './composables/useEditorialLogic';
+import {useDashboardConfigurationEditorialActivity} from './composables/useDashboardConfigurationEditorialActivity';
 import {useDashboardConfiguration} from './composables/useDashboardConfiguration';
-import {useReviewActivityLogic} from './composables/useReviewActivityLogic';
+import {useDashboardConfigurationReviewActivity} from './composables/useDashboardConfigurationReviewActivity';
 import {useSubmission} from '@/composables/useSubmission';
 
 import DashboardModalFilters from '@/pages/dashboard/modals/DashboardModalFilters.vue';
@@ -45,7 +44,7 @@ export const DashboardPageTypes = {
 };
 
 export const useDashboardPageStore = defineComponentStore(
-	'dashboardPage',
+	'dashboard',
 	(pageInitConfig) => {
 		const extender = useExtender();
 
@@ -244,7 +243,6 @@ export const useDashboardPageStore = defineComponentStore(
 			{immediate: true},
 		);
 
-		const _workflowActionFns = useWorkflowActions(pageInitConfig);
 		const _reviewerManagerActionFns = useReviewerManagerActions(pageInitConfig);
 		const _participantManagerActionsFns =
 			useParticipantManagerActions(pageInitConfig);
@@ -413,18 +411,49 @@ export const useDashboardPageStore = defineComponentStore(
 		}
 
 		/**
-		 * Expose editorial logic function via store to make it easier
-		 * to override/extend from plugins them via pinia api
-		 */
-		const {
-			getEditorialActivityForEditorialDashboard,
-			getEditorialActivityForMySubmissions,
-			getEditorialActivityForMyReviewAssignments,
-		} = useEditorialLogic(pageInitConfig.dashboardPage);
-		const {
-			getReviewActivityIndicatorProps,
-			getReviewActivityIndicatorPopoverProps,
-		} = useReviewActivityLogic();
+		 * Config functions for editorial activity
+		 * */
+		const dashboardConfigEditorialActivity = extender.addFns(
+			useDashboardConfigurationEditorialActivity(),
+		);
+
+		function getEditorialActivityForEditorialDashboard(...args) {
+			return dashboardConfigEditorialActivity.getEditorialActivityForEditorialDashboard(
+				...args,
+			);
+		}
+
+		function getEditorialActivityForMySubmissions(...args) {
+			return dashboardConfigEditorialActivity.getEditorialActivityForMySubmissions(
+				...args,
+			);
+		}
+
+		function getEditorialActivityForMyReviewAssignments(...args) {
+			return dashboardConfigEditorialActivity.getEditorialActivityForMyReviewAssignments(
+				...args,
+			);
+		}
+
+		/**
+		 * Config functions for individual review assignments within editorial activity
+		 * */
+
+		const dashboardConfigReviewActivity = extender.addFns(
+			useDashboardConfigurationReviewActivity(),
+		);
+
+		function getReviewActivityIndicatorProps(...args) {
+			return dashboardConfigReviewActivity.getReviewActivityIndicatorProps(
+				...args,
+			);
+		}
+
+		function getReviewActivityIndicatorPopoverProps(...args) {
+			return dashboardConfigReviewActivity.getReviewActivityIndicatorPopoverProps(
+				...args,
+			);
+		}
 
 		return {
 			// Dashboard
@@ -525,7 +554,9 @@ export const useDashboardPageStore = defineComponentStore(
 
 			// Expose component forms, so managers and other dashboard/workflow component can access them
 			componentForms: pageInitConfig.componentForms,
-			_workflowActionFns,
+
+			// Extender
+			extender,
 		};
 	},
 );

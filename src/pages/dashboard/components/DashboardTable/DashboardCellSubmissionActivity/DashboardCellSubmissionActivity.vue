@@ -47,4 +47,3 @@ const cellConfig = computed(() => {
 	return [];
 });
 </script>
-./DashboardDashboardCellSubmissionActivityActionAlert.vue./DashboardDashboardCellSubmissionActivityReviews.vue./DashboardDashboardCellSubmissionActivityReviewsOpen.vue./DashboardDashboardCellSubmissionActivityReviewsUpdate.vue
