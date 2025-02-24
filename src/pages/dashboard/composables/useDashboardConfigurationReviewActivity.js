@@ -279,7 +279,7 @@ function getDays(config, reviewAssignment) {
 	return null;
 }
 
-export function useReviewActivityLogic() {
+export function useDashboardConfigurationReviewActivity() {
 	function getReviewActivityIndicatorProps(reviewAssignment) {
 		const config = ConfigPerStatus[reviewAssignment.statusId];
 

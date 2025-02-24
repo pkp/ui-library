@@ -31,4 +31,3 @@ function handleAction(actionName, {reviewAssignment}) {
 	});
 }
 </script>
-./DashboardDashboardCellSubmissionActivityReviewsItem.vue
