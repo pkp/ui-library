@@ -466,7 +466,7 @@ export const MarketingConfig = {
 
 export const PublicationConfig = {
 	common: {
-		getPublicationControlsRight: ({
+		getPrimaryControlsRight: ({
 			submission,
 			selectedPublicationId,
 			selectedPublication,

@@ -164,7 +164,7 @@ export const WorkflowConfig = {
 
 export const PublicationConfig = {
 	common: {
-		getPublicationControlsLeft: ({
+		getPrimaryControlsLeft: ({
 			submission,
 			selectedPublicationId,
 			selectedPublication,
@@ -203,7 +203,7 @@ export const PublicationConfig = {
 
 			return {items, shouldContinue: true};
 		},
-		getPublicationControlsRight: ({
+		getPrimaryControlsRight: ({
 			submission,
 			selectedPublicationId,
 			selectedPublication,

@@ -86,12 +86,12 @@ export function useWorkflowConfigOJS({dashboardPage}) {
 		return _getItems('getActionItems', args);
 	}
 
-	function getPublicationControlsLeft(args) {
-		return _getItems('getPublicationControlsLeft', args);
+	function getPrimaryControlsLeft(args) {
+		return _getItems('getPrimaryControlsLeft', args);
 	}
 
-	function getPublicationControlsRight(args) {
-		return _getItems('getPublicationControlsRight', args);
+	function getPrimaryControlsRight(args) {
+		return _getItems('getPrimaryControlsRight', args);
 	}
 
 	return {
@@ -99,7 +99,7 @@ export function useWorkflowConfigOJS({dashboardPage}) {
 		getPrimaryItems,
 		getSecondaryItems,
 		getActionItems,
-		getPublicationControlsLeft,
-		getPublicationControlsRight,
+		getPrimaryControlsLeft,
+		getPrimaryControlsRight,
 	};
 }

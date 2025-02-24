@@ -179,18 +179,16 @@ export const useWorkflowStore = defineComponentStore(
 		 *
 		 * */
 
-		const _workflowConfigFns = extender.addFns(
-			useWorkflowConfig({dashboardPage}),
-		);
+		const workflowConfig = extender.addFns(useWorkflowConfig({dashboardPage}));
 
 		const {
 			headerItems,
 			primaryItems,
 			secondaryItems,
 			actionItems,
-			publicationControlsLeft,
-			publicationControlsRight,
-		} = useWorkflowItems(_workflowConfigFns, () => ({
+			primaryControlsLeft,
+			primaryControlsRight,
+		} = useWorkflowItems(workflowConfig, () => ({
 			selectedMenuState: selectedMenuState.value,
 			submission: submission.value,
 			pageInitConfig: props.pageInitConfig,
@@ -212,6 +210,15 @@ export const useWorkflowStore = defineComponentStore(
 			extendedStage,
 			stageLabel,
 
+			/** Config */
+			menuTitle,
+			headerItems,
+			primaryItems,
+			secondaryItems,
+			actionItems,
+			primaryControlsLeft,
+			primaryControlsRight,
+
 			/**
 			 * Navigation
 			 * */
@@ -230,24 +237,6 @@ export const useWorkflowStore = defineComponentStore(
 			 * File manager actions
 			 */
 			fileUpload,
-
-			/**
-			 * Summary
-			 */
-			menuTitle,
-			headerItems,
-			primaryItems,
-			secondaryItems,
-			actionItems,
-			publicationControlsLeft,
-			publicationControlsRight,
-
-			/**
-			 * Expose for extensions
-			 */
-
-			_workflowActionsFns,
-			_workflowDecisionsFns,
 
 			Components,
 			extender,
