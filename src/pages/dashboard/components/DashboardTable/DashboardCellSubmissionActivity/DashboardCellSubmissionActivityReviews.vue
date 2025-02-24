@@ -1,7 +1,7 @@
 <template>
 	<div v-if="reviewAssignments.length">
 		<span class="flex gap-x-1">
-			<CellSubmissionActivityReviewsItem
+			<DashboardCellSubmissionActivityReviewsItem
 				v-for="reviewAssignment in reviewAssignments"
 				:key="reviewAssignment.id"
 				:review-assignment="reviewAssignment"
@@ -9,13 +9,13 @@
 					(actionName, {reviewAssignment}) =>
 						handleAction(actionName, {reviewAssignment})
 				"
-			></CellSubmissionActivityReviewsItem>
+			></DashboardCellSubmissionActivityReviewsItem>
 		</span>
 	</div>
 </template>
 <script setup>
 import {useDashboardPageStore} from '@/pages/dashboard/dashboardPageStore';
-import CellSubmissionActivityReviewsItem from './CellSubmissionActivityReviewsItem.vue';
+import DashboardCellSubmissionActivityReviewsItem from './DashboardCellSubmissionActivityReviewsItem.vue';
 
 const props = defineProps({
 	submissionId: {type: Number, required: true},
@@ -31,3 +31,4 @@ function handleAction(actionName, {reviewAssignment}) {
 	});
 }
 </script>
+./DashboardDashboardCellSubmissionActivityReviewsItem.vue

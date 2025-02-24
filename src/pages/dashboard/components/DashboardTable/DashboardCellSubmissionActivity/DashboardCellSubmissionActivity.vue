@@ -12,10 +12,10 @@
 </template>
 
 <script setup>
-import CellSubmissionActivityActionAlert from './CellSubmissionActivityActionAlert.vue';
-import CellSubmissionActivityReviews from './CellSubmissionActivityReviews.vue';
-import CellSubmissionActivityReviewsUpdate from './CellSubmissionActivityReviewsUpdate.vue';
-import CellSubmissionActivityReviewsOpen from './CellSubmissionActivityReviewsOpen.vue';
+import DashboardCellSubmissionActivityActionAlert from './DashboardCellSubmissionActivityActionAlert.vue';
+import DashboardCellSubmissionActivityReviews from './DashboardCellSubmissionActivityReviews.vue';
+import DashboardCellSubmissionActivityReviewsUpdate from './DashboardCellSubmissionActivityReviewsUpdate.vue';
+import DashboardCellSubmissionActivityReviewsOpen from './DashboardCellSubmissionActivityReviewsOpen.vue';
 
 import {defineProps, computed} from 'vue';
 import TableCell from '@/components/Table/TableCell.vue';
@@ -26,10 +26,10 @@ import {
 } from '@/pages/dashboard/dashboardPageStore';
 
 const Components = {
-	CellSubmissionActivityActionAlert,
-	CellSubmissionActivityReviews,
-	CellSubmissionActivityReviewsUpdate,
-	CellSubmissionActivityReviewsOpen,
+	DashboardCellSubmissionActivityActionAlert,
+	DashboardCellSubmissionActivityReviews,
+	DashboardCellSubmissionActivityReviewsUpdate,
+	DashboardCellSubmissionActivityReviewsOpen,
 };
 
 const dashboardStore = useDashboardPageStore();
@@ -47,3 +47,4 @@ const cellConfig = computed(() => {
 	return [];
 });
 </script>
+./DashboardDashboardCellSubmissionActivityActionAlert.vue./DashboardDashboardCellSubmissionActivityReviews.vue./DashboardDashboardCellSubmissionActivityReviewsOpen.vue./DashboardDashboardCellSubmissionActivityReviewsUpdate.vue

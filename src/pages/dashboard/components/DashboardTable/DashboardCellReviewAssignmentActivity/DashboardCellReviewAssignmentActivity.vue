@@ -14,11 +14,11 @@
 <script setup>
 import {defineProps, computed} from 'vue';
 import TableCell from '@/components/Table/TableCell.vue';
-import CellReviewAssignmentActivityAlert from './CellReviewAssignmentActivity/CellReviewAssignmentActivityAlert.vue';
+import DashboardCellReviewAssignmentActivityAlert from './DashboardCellReviewAssignmentActivityAlert.vue';
 import {useDashboardPageStore} from '@/pages/dashboard/dashboardPageStore';
 
 const Components = {
-	CellReviewAssignmentActivityAlert,
+	DashboardCellReviewAssignmentActivityAlert,
 };
 
 const dashboardStore = useDashboardPageStore();

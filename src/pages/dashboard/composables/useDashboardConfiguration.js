@@ -38,105 +38,105 @@ export function useDashboardConfiguration() {
 			columns.push({
 				id: 'id',
 				header: t('common.id'),
-				component: 'CellReviewAssignmentId',
+				component: 'DashboardCellReviewAssignmentId',
 				sortable: true,
 			});
 
 			columns.push({
 				id: 'title',
 				header: t('navigation.submissions'),
-				component: 'CellReviewAssignmentTitle',
+				component: 'DashboardCellReviewAssignmentTitle',
 				sortable: false,
 			});
 
 			columns.push({
 				id: 'activity',
 				header: t('stats.editorialActivity'),
-				component: 'CellReviewAssignmentActivity',
+				component: 'DashboardCellReviewAssignmentActivity',
 				sortable: false,
 			});
 
 			columns.push({
 				id: 'actions',
 				header: t('admin.jobs.list.actions'),
-				component: 'CellReviewAssignmentActions',
+				component: 'DashboardCellReviewAssignmentActions',
 				sortable: false,
 			});
 		} else if (dashboardPage === DashboardPageTypes.MY_SUBMISSIONS) {
 			columns.push({
 				id: 'id',
 				header: t('common.id'),
-				component: 'CellSubmissionId',
+				component: 'DashboardCellSubmissionId',
 				sortable: true,
 			});
 
 			columns.push({
 				id: 'title',
 				header: t('navigation.submissions'),
-				component: 'CellSubmissionTitle',
+				component: 'DashboardCellSubmissionTitle',
 				sortable: false,
 			});
 
 			columns.push({
 				id: 'stage',
 				header: t('workflow.stage'),
-				component: 'CellSubmissionStage',
+				component: 'DashboardCellSubmissionStage',
 				sortable: false,
 			});
 
 			columns.push({
 				id: 'activity',
 				header: t('stats.editorialActivity'),
-				component: 'CellSubmissionActivity',
+				component: 'DashboardCellSubmissionActivity',
 				sortable: false,
 			});
 
 			columns.push({
 				id: 'actions',
 				header: t('admin.jobs.list.actions'),
-				component: 'CellSubmissionActions',
+				component: 'DashboardCellSubmissionActions',
 				sortable: false,
 			});
 		} else {
 			columns.push({
 				id: 'id',
 				header: t('common.id'),
-				component: 'CellSubmissionId',
+				component: 'DashboardCellSubmissionId',
 				sortable: true,
 			});
 
 			columns.push({
 				id: 'title',
 				header: t('navigation.submissions'),
-				component: 'CellSubmissionTitle',
+				component: 'DashboardCellSubmissionTitle',
 				sortable: false,
 			});
 
 			columns.push({
 				id: 'stage',
 				header: t('workflow.stage'),
-				component: 'CellSubmissionStage',
+				component: 'DashboardCellSubmissionStage',
 				sortable: false,
 			});
 
 			columns.push({
 				id: 'lastActivity',
 				header: t('editor.submission.days'),
-				component: 'CellSubmissionDays',
+				component: 'DashboardCellSubmissionDays',
 				sortable: true,
 			});
 
 			columns.push({
 				id: 'activity',
 				header: t('stats.editorialActivity'),
-				component: 'CellSubmissionActivity',
+				component: 'DashboardCellSubmissionActivity',
 				sortable: false,
 			});
 
 			columns.push({
 				id: 'actions',
 				header: t('admin.jobs.list.actions'),
-				component: 'CellSubmissionActions',
+				component: 'DashboardCellSubmissionActions',
 				sortable: false,
 			});
 		}
