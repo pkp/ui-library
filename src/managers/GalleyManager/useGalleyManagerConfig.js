@@ -42,7 +42,7 @@ export const GalleyManagerConfiguration = {
 	],
 };
 
-export function useGalleyManagerConfiguration() {
+export function useGalleyManagerConfig() {
 	const {t} = useLocalize();
 	const {hasCurrentUserAtLeastOneAssignedRoleInStage} = useCurrentUser();
 
