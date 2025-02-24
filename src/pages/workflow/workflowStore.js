@@ -100,6 +100,7 @@ export const useWorkflowStore = defineComponentStore(
 			workflowNavigationConfig.getMenuItems({
 				submission: submission.value,
 				permissions: permissions.value,
+				dashboardPage,
 			}),
 		);
 
@@ -109,7 +110,12 @@ export const useWorkflowStore = defineComponentStore(
 			selectedMenuState,
 			setExpandedKeys,
 			sideMenuProps,
-		} = useWorkflowMenu({menuItems, submission, workflowNavigationConfig});
+		} = useWorkflowMenu({
+			menuItems,
+			submission,
+			workflowNavigationConfig,
+			dashboardPage,
+		});
 
 		/**
 		 * Expose workflow actions

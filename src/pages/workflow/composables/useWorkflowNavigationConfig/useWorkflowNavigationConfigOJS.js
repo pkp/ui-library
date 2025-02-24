@@ -313,7 +313,7 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 		return menuItems;
 	}
 
-	function getInitialSelectionItemKey(submission) {
+	function getInitialSelectionItemKey({submission}) {
 		if (
 			submission.stageId === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW ||
 			submission.stageId === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW

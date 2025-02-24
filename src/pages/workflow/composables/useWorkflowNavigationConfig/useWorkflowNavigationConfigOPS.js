@@ -200,7 +200,7 @@ export function useWorkflowNavigationConfigOPS(pageInitConfig) {
 		return menuItems;
 	}
 
-	function getInitialSelectionItemKey(submission) {
+	function getInitialSelectionItemKey({submission}) {
 		if (
 			submission.stageId === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION &&
 			submission.status !== pkp.const.STATUS_QUEUED

@@ -24,6 +24,7 @@ export function useDashboardConfig() {
 
 		return items;
 	}
+
 	function getRightControls() {
 		const items = [];
 
