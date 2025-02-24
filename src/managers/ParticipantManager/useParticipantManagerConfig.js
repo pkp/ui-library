@@ -31,7 +31,6 @@ export function useParticipantManagerConfig() {
 
 	function getItemActions({submission, submissionStageId, participant}) {
 		const {t} = useLocalize();
-		console.log('getItemActions');
 		const actions = [];
 
 		const {hasCurrentUserAtLeastOneAssignedRoleInStage} = useCurrentUser();
@@ -80,8 +79,24 @@ export function useParticipantManagerConfig() {
 		return actions;
 	}
 
+	function getItemInfoItems({participant}) {
+		const items = [];
+
+		items.push({component: 'ParticipantManagerItemInfoName', props: {}});
+		items.push({component: 'ParticipantManagerItemInfoRole', props: {}});
+		if (participant.recommendOnly) {
+			items.push({
+				component: 'ParticipantManagerItemInfoRecommendOnly',
+				props: {},
+			});
+		}
+
+		return items;
+	}
+
 	return {
 		getTopItems,
 		getItemActions,
+		getItemInfoItems,
 	};
 }

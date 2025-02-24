@@ -6,9 +6,13 @@ import {useGalleyManagerActions} from './useGalleyManagerActions';
 import {useDataChanged} from '@/composables/useDataChanged';
 import {useGalleyManagerConfiguration} from './useGalleyManagerConfiguration';
 import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
+import {useExtender} from '@/composables/useExtender';
+
 export const useGalleyManagerStore = defineComponentStore(
 	'galleyManager',
 	(props) => {
+		const extender = useExtender();
+
 		const {submission, publication} = toRefs(props);
 
 		const galleys = computed(() => {
@@ -20,11 +24,30 @@ export const useGalleyManagerStore = defineComponentStore(
 		/** Reload files when data on screen changes */
 
 		/** Columns */
-		const _galleyConfigurationFns = useGalleyManagerConfiguration({
-			submission,
-			publication,
-		});
-		const columns = computed(() => _galleyConfigurationFns.getColumns());
+		const galleyManagerConfig = extender.addFns(
+			useGalleyManagerConfiguration(),
+		);
+		const columns = computed(() => galleyManagerConfig.getColumns());
+
+		/**
+		 * Configs
+		 */
+		const galleyConfig = computed(() =>
+			galleyManagerConfig.getManagerConfig({
+				submission,
+				publication,
+			}),
+		);
+
+		const itemActions = computed(() =>
+			galleyManagerConfig.getItemActions(getActionArgs()),
+		);
+		const bottomItems = computed(() =>
+			galleyManagerConfig.getBottomItems(getActionArgs()),
+		);
+		const topItems = computed(() =>
+			galleyManagerConfig.getTopItems(getActionArgs()),
+		);
 
 		/**
 		 * Sorting
@@ -108,26 +131,17 @@ export const useGalleyManagerStore = defineComponentStore(
 		/**
 		 * Actions
 		 */
-		const _galleyActionsFns = useGalleyManagerActions({
-			galleyGridComponent: _galleyConfigurationFns.getGalleyGridComponent(),
+		const galleyManagerActions = useGalleyManagerActions({
+			galleyGridComponent: galleyManagerConfig.getGalleyGridComponent(),
 		});
+
 		function getActionArgs() {
 			return {
-				config: _galleyConfigurationFns.config.value,
+				config: galleyConfig.value,
 				galleys: galleys,
 				publication: publication.value,
 			};
 		}
-
-		const itemActions = computed(() =>
-			_galleyActionsFns.getItemActions(getActionArgs()),
-		);
-		const bottomActions = computed(() =>
-			_galleyActionsFns.getBottomActions(getActionArgs()),
-		);
-		const topItems = computed(() =>
-			_galleyActionsFns.getTopItems(getActionArgs()),
-		);
 
 		const {triggerDataChange} = useDataChanged();
 
@@ -136,7 +150,7 @@ export const useGalleyManagerStore = defineComponentStore(
 		}
 
 		function galleyAdd() {
-			_galleyActionsFns.galleyAdd(
+			galleyManagerActions.galleyAdd(
 				{
 					publication: props.publication,
 					submission: props.submission,
@@ -146,7 +160,7 @@ export const useGalleyManagerStore = defineComponentStore(
 		}
 
 		function galleyChangeFile({galley}) {
-			_galleyActionsFns.galleyChangeFile(
+			galleyManagerActions.galleyChangeFile(
 				{
 					galley,
 					submission: props.submission,
@@ -156,7 +170,7 @@ export const useGalleyManagerStore = defineComponentStore(
 		}
 
 		function galleyEdit({galley}) {
-			_galleyActionsFns.galleyEdit(
+			galleyManagerActions.galleyEdit(
 				{
 					galley,
 					publication: props.publication,
@@ -167,7 +181,7 @@ export const useGalleyManagerStore = defineComponentStore(
 		}
 
 		function galleyDelete({galley}) {
-			_galleyActionsFns.galleyDelete(
+			galleyManagerActions.galleyDelete(
 				{
 					galley,
 					publication: props.publication,
@@ -180,29 +194,29 @@ export const useGalleyManagerStore = defineComponentStore(
 		return {
 			submission: props.submission,
 			publication: props.publication,
-
-			/** columns */
-			columns,
-			_galleyConfigurationFns,
-			/** items */
 			galleys,
 
-			/** sorting */
+			/** Config */
+			columns,
+			itemActions,
+			topItems,
+			bottomItems,
+
+			/** Sorting */
 			sortingEnabled,
 			startSorting,
 			saveSorting,
 			sortMoveDown,
 			sortMoveUp,
 
-			/** actions */
-			itemActions,
-			topItems,
-			bottomActions,
-			_galleyActionsFns,
+			/** Actions */
 			galleyAdd,
 			galleyEdit,
 			galleyChangeFile,
 			galleyDelete,
+
+			/** Extender */
+			extender,
 		};
 	},
 );

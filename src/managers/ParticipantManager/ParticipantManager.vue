@@ -32,16 +32,15 @@
 							></UserAvatar>
 						</div>
 						<div class="ms-2 flex flex-col justify-center">
-							<div class="text-base-bold">{{ participant.fullName }}</div>
-							<div class="text-sm-normal text-secondary">
-								{{ participant.roleName }}
-							</div>
-							<div
-								v-if="participant.recommendOnly"
-								class="mt-0.5 text-xs-normal text-heading"
-							>
-								{{ t('participantManager.onlyAllowedToRecommend') }}
-							</div>
+							<component
+								:is="Components[action.component] || action.component"
+								v-for="(action, i) in participantManagerStore.getItemInfoItems({
+									participant,
+								})"
+								v-bind="action.props || {}"
+								:key="i"
+								:participant="participant"
+							></component>
 						</div>
 					</div>
 					<div>
@@ -69,6 +68,9 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useParticipantManagerStore} from './participantManagerStore';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 import ParticipantManagerActionButton from './ParticipantManagerActionButton.vue';
+import ParticipantManagerItemInfoName from './ParticipantManagerItemInfoName.vue';
+import ParticipantManagerItemInfoRole from './ParticipantManagerItemInfoRole.vue';
+import ParticipantManagerItemInfoRecommendOnly from './ParticipantManagerItemInfoRecommendOnly.vue';
 
 const props = defineProps({
 	submission: {type: Object, required: true},
@@ -77,6 +79,9 @@ const props = defineProps({
 
 const Components = {
 	ParticipantManagerActionButton,
+	ParticipantManagerItemInfoName,
+	ParticipantManagerItemInfoRole,
+	ParticipantManagerItemInfoRecommendOnly,
 };
 
 const participantManagerStore = useParticipantManagerStore(props);

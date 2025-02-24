@@ -28,12 +28,12 @@
 				></component>
 			</TableRow>
 		</TableBody>
-		<template v-if="galleyManagerStore.bottomActions.length" #bottom-controls>
+		<template v-if="galleyManagerStore.bottomItems.length" #bottom-controls>
 			<div class="flex gap-x-2">
 				<component
 					:is="Components[action.component] || action.component"
 					v-bind="action.props || {}"
-					v-for="(action, i) in galleyManagerStore.bottomActions"
+					v-for="(action, i) in galleyManagerStore.bottomItems"
 					:key="i"
 				></component>
 			</div>

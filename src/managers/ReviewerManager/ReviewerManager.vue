@@ -11,13 +11,12 @@
 			</template>
 			<template #top-controls>
 				<div class="flex gap-x-2">
-					<PkpButton
-						v-for="action in reviewerStore.topActions"
-						:key="action.name"
-						@click="reviewerStore[action.name]()"
-					>
-						{{ action.label }}
-					</PkpButton>
+					<component
+						:is="Components[action.component] || action.component"
+						v-bind="action.props || {}"
+						v-for="(action, i) in reviewerStore.topItems"
+						:key="i"
+					></component>
 				</div>
 			</template>
 			<TableHeader>
@@ -58,7 +57,7 @@ import ReviewerManagerCellActions from './ReviewerManagerCellActions.vue';
 import ReviewerManagerCellStatus from './ReviewerManagerCellStatus.vue';
 import ReviewerManagerCellReviewType from './ReviewerManagerCellReviewType.vue';
 
-import PkpButton from '@/components/Button/Button.vue';
+import ReviewerManagerActionButton from './ReviewerManagerActionButton.vue';
 
 import {useReviewerManagerStore} from './reviewerManagerStore.js';
 import {useId} from '@/composables/useId.js';
@@ -74,6 +73,7 @@ const Components = {
 	ReviewerManagerCellReviewType,
 	ReviewerManagerCellPrimaryActions,
 	ReviewerManagerCellActions,
+	ReviewerManagerActionButton,
 };
 
 const props = defineProps({
