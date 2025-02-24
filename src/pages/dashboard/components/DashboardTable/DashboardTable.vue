@@ -33,7 +33,7 @@
 					:item="item"
 				/>
 				<component
-					:is="cellComponents[column.componentName] || column.componentName"
+					:is="cellComponents[column.component] || column.component"
 					v-for="column in columns"
 					:key="column.id"
 					:item="item"

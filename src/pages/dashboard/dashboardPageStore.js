@@ -9,6 +9,7 @@ import {useAnnouncer} from '@/composables/useAnnouncer';
 import {useUrl} from '@/composables/useUrl';
 import {useQueryParams} from '@/composables/useQueryParams';
 import {defineComponentStore} from '@/utils/defineComponentStore';
+import {useExtender} from '@/composables/useExtender';
 
 import {useWorkflowActions} from '../workflow/composables/useWorkflowActions';
 import {useReviewerManagerActions} from '@/managers/ReviewerManager/useReviewerManagerActions';
@@ -17,6 +18,7 @@ import {useParticipantManagerActions} from '@/managers/ParticipantManager/usePar
 import {useFileManagerActions} from '@/managers/FileManager/useFileManagerActions';
 
 import {useEditorialLogic} from './composables/useEditorialLogic';
+import {useDashboardConfiguration} from './composables/useDashboardConfiguration';
 import {useReviewActivityLogic} from './composables/useReviewActivityLogic';
 import {useSubmission} from '@/composables/useSubmission';
 
@@ -45,6 +47,8 @@ export const DashboardPageTypes = {
 export const useDashboardPageStore = defineComponentStore(
 	'dashboardPage',
 	(pageInitConfig) => {
+		const extender = useExtender();
+
 		/**
 		 * ModalStore
 		 */
@@ -68,6 +72,15 @@ export const useDashboardPageStore = defineComponentStore(
 		 */
 		// Reactive query params parsed from the url
 		const queryParamsUrl = useQueryParams();
+
+		/**
+		 * Config
+		 */
+		const dashboardConfig = extender.addFns(useDashboardConfiguration());
+		const leftControlItems = computed(() => dashboardConfig.getLeftControls());
+		const rightControlItems = computed(() =>
+			dashboardConfig.getRightControls(),
+		);
 
 		/**
 		 * Views
@@ -106,7 +119,11 @@ export const useDashboardPageStore = defineComponentStore(
 		/**
 		 * Columns
 		 */
-		const columns = ref(pageInitConfig.columns);
+		const columns = computed(() =>
+			dashboardConfig.getColumns({
+				dashboardPage: pageInitConfig.dashboardPage,
+			}),
+		);
 
 		/**
 		 * Search Phrase
@@ -414,6 +431,11 @@ export const useDashboardPageStore = defineComponentStore(
 			dashboardPage: pageInitConfig.dashboardPage,
 			dashboardPageTitle,
 			dashboardPageIcon,
+
+			// Config
+			leftControlItems,
+			rightControlItems,
+
 			// Views
 			views,
 			currentViewId,
