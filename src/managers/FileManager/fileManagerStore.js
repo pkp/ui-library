@@ -14,7 +14,7 @@ export const useFileManagerStore = defineComponentStore(
 
 		const {namespace, submissionStageId, submission} = toRefs(props);
 		/**
-		 * Manager configuration
+		 * Config
 		 */
 		const fileManagerConfig = extender.addFns(useFileManagerConfig());
 
@@ -26,11 +26,25 @@ export const useFileManagerStore = defineComponentStore(
 			}),
 		);
 
-		/**
-		 * Columns
-		 */
-
 		const columns = computed(() => fileManagerConfig.getColumns());
+		const topItems = computed(() =>
+			fileManagerConfig.getTopItems({
+				managerConfig: managerConfig.value,
+			}),
+		);
+
+		const bottomItems = computed(() =>
+			fileManagerConfig.getBottomItems({
+				managerConfig: managerConfig.value,
+				filesCount: files.value?.length,
+			}),
+		);
+
+		const itemActions = computed(() =>
+			fileManagerConfig.getItemActions({
+				managerConfig: managerConfig.value,
+			}),
+		);
 
 		/**
 		 *  Files fetching
@@ -70,27 +84,7 @@ export const useFileManagerStore = defineComponentStore(
 		/**
 		 * Handling Actions
 		 */
-
-		const _actionFns = useFileManagerActions();
-
-		const topItems = computed(() =>
-			fileManagerConfig.getTopItems({
-				managerConfig: managerConfig.value,
-			}),
-		);
-
-		const bottomItems = computed(() =>
-			fileManagerConfig.getBottomItems({
-				managerConfig: managerConfig.value,
-				filesCount: files.value?.length,
-			}),
-		);
-
-		const itemActions = computed(() =>
-			fileManagerConfig.getItemActions({
-				managerConfig: managerConfig.value,
-			}),
-		);
+		const fileManagerActions = useFileManagerActions();
 
 		function actionFinishCallback() {
 			triggerDataChange();
@@ -110,41 +104,61 @@ export const useFileManagerStore = defineComponentStore(
 		}
 
 		function fileUpload() {
-			_actionFns.fileUpload(enrichActionArgs(), actionFinishCallback);
+			fileManagerActions.fileUpload(enrichActionArgs(), actionFinishCallback);
 		}
 
 		function fileSelectUpload() {
-			_actionFns.fileSelectUpload(enrichActionArgs(), actionFinishCallback);
+			fileManagerActions.fileSelectUpload(
+				enrichActionArgs(),
+				actionFinishCallback,
+			);
 		}
 
 		function fileDownloadAll() {
-			_actionFns.fileDownloadAll(enrichActionArgs(), actionFinishCallback);
+			fileManagerActions.fileDownloadAll(
+				enrichActionArgs(),
+				actionFinishCallback,
+			);
 		}
 
 		function fileEdit({file}) {
-			_actionFns.fileEdit(enrichActionArgs({file}), actionFinishCallback);
+			fileManagerActions.fileEdit(
+				enrichActionArgs({file}),
+				actionFinishCallback,
+			);
 		}
 
 		function fileDelete({file}) {
-			_actionFns.fileDelete(enrichActionArgs({file}), () => {
+			fileManagerActions.fileDelete(enrichActionArgs({file}), () => {
 				actionFinishCallback();
 				$('body').trigger('notifyUser');
 			});
 		}
 
 		function fileSeeNotes({file}) {
-			_actionFns.fileSeeNotes(enrichActionArgs({file}), actionFinishCallback);
+			fileManagerActions.fileSeeNotes(
+				enrichActionArgs({file}),
+				actionFinishCallback,
+			);
 		}
 
 		return {
 			title: props.title,
 			files,
 			fetchFiles,
+
+			/**
+			 * Config
+			 * */
 			managerConfig,
 			columns,
 			topItems,
 			bottomItems,
 			itemActions,
+
+			/**
+			 * Actions
+			 * */
 			fileUpload,
 			fileSelectUpload,
 			fileDownloadAll,

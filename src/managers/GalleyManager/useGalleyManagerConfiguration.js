@@ -2,7 +2,6 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useApp} from '@/composables/useApp';
 import {Actions} from './useGalleyManagerActions';
 import {useCurrentUser} from '@/composables/useCurrentUser';
-import {computed} from 'vue';
 
 export const GalleyManagerConfiguration = {
 	permissions: [
@@ -43,7 +42,7 @@ export const GalleyManagerConfiguration = {
 	],
 };
 
-export function useGalleyManagerConfiguration({submission, publication}) {
+export function useGalleyManagerConfiguration() {
 	const {t} = useLocalize();
 	const {hasCurrentUserAtLeastOneAssignedRoleInStage} = useCurrentUser();
 
@@ -82,7 +81,7 @@ export function useGalleyManagerConfiguration({submission, publication}) {
 		return columns;
 	}
 
-	const config = computed(() => {
+	function getManagerConfig({submission, publication}) {
 		const permittedActions = GalleyManagerConfiguration.actions
 			.filter((action) => {
 				if (
@@ -109,7 +108,79 @@ export function useGalleyManagerConfiguration({submission, publication}) {
 				});
 			});
 		return {permittedActions};
-	});
+	}
 
-	return {getColumns, getGalleyGridComponent, config};
+	function getBottomItems({config}) {
+		const actions = [];
+
+		if (config.permittedActions.includes(Actions.GALLEY_ADD)) {
+			actions.push({
+				component: 'GalleyManagerActionButton',
+				props: {label: t('grid.action.addGalley'), action: Actions.GALLEY_ADD},
+				isLink: true,
+			});
+		}
+
+		return actions;
+	}
+
+	function getTopItems({config, galleys}) {
+		const actions = [];
+
+		if (
+			config.permittedActions.includes(Actions.GALLEY_SORT) &&
+			galleys.value.length
+		) {
+			actions.push({component: 'GalleyManagerSortButton'});
+		}
+		return actions;
+	}
+
+	function getItemActions({config, publication}) {
+		const actions = [];
+
+		if (config.permittedActions.includes(Actions.GALLEY_EDIT)) {
+			const label =
+				publication.status === pkp.const.STATUS_PUBLISHED
+					? t('common.view')
+					: t('common.edit');
+
+			const icon =
+				publication.status === pkp.const.STATUS_PUBLISHED ? 'View' : 'Edit';
+
+			actions.push({
+				label,
+				name: Actions.GALLEY_EDIT,
+				icon,
+			});
+		}
+
+		if (config.permittedActions.includes(Actions.GALLEY_CHANGE_FILE)) {
+			actions.push({
+				label: t('submission.changeFile'),
+				name: Actions.GALLEY_CHANGE_FILE,
+				icon: 'New',
+			});
+		}
+
+		if (config.permittedActions.includes(Actions.GALLEY_DELETE)) {
+			actions.push({
+				label: t('common.delete'),
+				name: Actions.GALLEY_DELETE,
+				icon: 'Cancel',
+				isWarnable: true,
+			});
+		}
+
+		return actions;
+	}
+
+	return {
+		getColumns,
+		getItemActions,
+		getBottomItems,
+		getTopItems,
+		getGalleyGridComponent,
+		getManagerConfig,
+	};
 }

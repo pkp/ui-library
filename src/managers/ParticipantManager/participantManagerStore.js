@@ -8,10 +8,12 @@ import {useUrl} from '@/composables/useUrl';
 import {useParticipantManagerActions} from './useParticipantManagerActions';
 import {useDataChanged} from '@/composables/useDataChanged';
 import {useParticipantManagerConfig} from './useParticipantManagerConfig';
+import {useExtender} from '@/composables/useExtender';
 
 export const useParticipantManagerStore = defineComponentStore(
 	'participantManager',
 	(props) => {
+		const extender = useExtender();
 		const submissionId = ref(props.submission.id);
 
 		const relativeUrl = computed(() => {
@@ -53,6 +55,7 @@ export const useParticipantManagerStore = defineComponentStore(
 						recommendOnly: stageAssignment.recommendOnly,
 						displayInitials: participant.displayInitials,
 						canLoginAs: participant.canLoginAs,
+						_participantFull: participant,
 					});
 				});
 			});
@@ -73,13 +76,9 @@ export const useParticipantManagerStore = defineComponentStore(
 		/**
 		 * Config
 		 */
-		const participantManagerConfig = useParticipantManagerConfig();
-
-		/**
-		 * Handling actions
-		 */
-
-		const _actionFns = useParticipantManagerActions();
+		const participantManagerConfig = extender.addFns(
+			useParticipantManagerConfig(),
+		);
 
 		const topItems = computed(() =>
 			participantManagerConfig.getTopItems({
@@ -96,6 +95,20 @@ export const useParticipantManagerStore = defineComponentStore(
 			});
 		}
 
+		function getItemInfoItems({participant}) {
+			return participantManagerConfig.getItemInfoItems({
+				submission: props.submission,
+				submissionStageId: props.submissionStageId,
+				participant,
+			});
+		}
+
+		/**
+		 * Handling actions
+		 */
+
+		const participantManagerActions = useParticipantManagerActions();
+
 		function enrichActionArg(args) {
 			return {
 				submissionStageId: props.submissionStageId,
@@ -105,35 +118,35 @@ export const useParticipantManagerStore = defineComponentStore(
 		}
 
 		function participantAssign() {
-			_actionFns.participantAssign(
+			participantManagerActions.participantAssign(
 				enrichActionArg({}),
 				triggerDataChangeCallback,
 			);
 		}
 
 		function participantRemove({participant}) {
-			_actionFns.participantRemove(
+			participantManagerActions.participantRemove(
 				enrichActionArg({participant}),
 				triggerDataChangeCallback,
 			);
 		}
 
 		function participantNotify({participant}) {
-			_actionFns.participantNotify(
+			participantManagerActions.participantNotify(
 				enrichActionArg({participant}),
 				triggerDataChangeCallback,
 			);
 		}
 
 		function participantEdit({participant}) {
-			_actionFns.participantEdit(
+			participantManagerActions.participantEdit(
 				enrichActionArg({participant}),
 				triggerDataChangeCallback,
 			);
 		}
 
 		function participantLoginAs({participant}) {
-			_actionFns.participantLoginAs(
+			participantManagerActions.participantLoginAs(
 				enrichActionArg({participant}),
 				triggerDataChangeCallback,
 			);
@@ -141,14 +154,20 @@ export const useParticipantManagerStore = defineComponentStore(
 
 		return {
 			participantsList,
-			_actionFns,
+
+			/** Config */
 			topItems,
 			getItemActions,
+			getItemInfoItems,
+
+			/** Actions */
 			participantAssign,
 			participantRemove,
 			participantNotify,
 			participantEdit,
 			participantLoginAs,
+
+			extender,
 		};
 	},
 );

@@ -14,71 +14,6 @@ export const Actions = {
 export function useGalleyManagerActions({galleyGridComponent}) {
 	const {t} = useLocalize();
 
-	function getBottomActions({config}) {
-		const actions = [];
-
-		if (config.permittedActions.includes(Actions.GALLEY_ADD)) {
-			actions.push({
-				component: 'GalleyManagerActionButton',
-				props: {label: t('grid.action.addGalley'), action: Actions.GALLEY_ADD},
-				isLink: true,
-			});
-		}
-
-		return actions;
-	}
-
-	function getTopItems({config, galleys}) {
-		const actions = [];
-
-		if (
-			config.permittedActions.includes(Actions.GALLEY_SORT) &&
-			galleys.value.length
-		) {
-			actions.push({component: 'GalleyManagerSortButton'});
-		}
-		return actions;
-	}
-
-	function getItemActions({config, publication}) {
-		const actions = [];
-
-		if (config.permittedActions.includes(Actions.GALLEY_EDIT)) {
-			const label =
-				publication.status === pkp.const.STATUS_PUBLISHED
-					? t('common.view')
-					: t('common.edit');
-
-			const icon =
-				publication.status === pkp.const.STATUS_PUBLISHED ? 'View' : 'Edit';
-
-			actions.push({
-				label,
-				name: Actions.GALLEY_EDIT,
-				icon,
-			});
-		}
-
-		if (config.permittedActions.includes(Actions.GALLEY_CHANGE_FILE)) {
-			actions.push({
-				label: t('submission.changeFile'),
-				name: Actions.GALLEY_CHANGE_FILE,
-				icon: 'New',
-			});
-		}
-
-		if (config.permittedActions.includes(Actions.GALLEY_DELETE)) {
-			actions.push({
-				label: t('common.delete'),
-				name: Actions.GALLEY_DELETE,
-				icon: 'Cancel',
-				isWarnable: true,
-			});
-		}
-
-		return actions;
-	}
-
 	function galleyAdd({submission, publication}, finishedCallback) {
 		const {openLegacyModal} = useLegacyGridUrl({
 			component: galleyGridComponent,
@@ -194,8 +129,5 @@ export function useGalleyManagerActions({galleyGridComponent}) {
 		galleyAdd,
 		galleyEdit,
 		galleyDelete,
-		getItemActions,
-		getBottomActions,
-		getTopItems,
 	};
 }

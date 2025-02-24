@@ -4,6 +4,7 @@ import {useSubmission} from '@/composables/useSubmission';
 import {useReviewerManagerActions} from './useReviewerManagerActions';
 import {useReviewerManagerConfig} from './useReviewerManagerConfig';
 import {useDataChanged} from '@/composables/useDataChanged';
+import {useExtender} from '@/composables/useExtender';
 
 export const useReviewerManagerStore = defineComponentStore(
 	'reviewerManagerStore',
@@ -12,6 +13,8 @@ export const useReviewerManagerStore = defineComponentStore(
 			getOpenAndCompletedReviewAssignmentsForRound,
 			getReviewAssignmentsForRound,
 		} = useSubmission();
+
+		const extender = useExtender();
 
 		const reviewAssignments = computed(() => {
 			const reviewAssignmentsForSelectedRound = getReviewAssignmentsForRound(
@@ -33,10 +36,29 @@ export const useReviewerManagerStore = defineComponentStore(
 		/**
 		 * Config
 		 */
-		const {getCellStatusItems, getColumns} = useReviewerManagerConfig();
+		const reviewerManagerConfig = extender.addFns(useReviewerManagerConfig());
 
 		const columns = computed(() =>
-			getColumns({
+			reviewerManagerConfig.getColumns({
+				submission: props.submission,
+				redactedForAuthors: props.redactedForAuthors,
+			}),
+		);
+
+		function getCellStatusItems(args) {
+			return reviewerManagerConfig.getCellStatusItems(args);
+		}
+
+		function getItemActions(args) {
+			return reviewerManagerConfig.getItemActions(args);
+		}
+
+		function getItemPrimaryActions(args) {
+			return reviewerManagerConfig.getItemPrimaryActions(args);
+		}
+
+		const topItems = computed(() =>
+			reviewerManagerConfig.getTopItems({
 				submission: props.submission,
 				redactedForAuthors: props.redactedForAuthors,
 			}),
@@ -45,14 +67,7 @@ export const useReviewerManagerStore = defineComponentStore(
 		/**
 		 * Actions
 		 */
-		const _actionFns = useReviewerManagerActions();
-
-		const topActions = computed(() =>
-			_actionFns.getTopActions({
-				submission: props.submission,
-				redactedForAuthors: props.redactedForAuthors,
-			}),
-		);
+		const reviewerManagerActions = useReviewerManagerActions();
 
 		function dataUpdateCallback() {
 			triggerDataChange();
@@ -69,117 +84,114 @@ export const useReviewerManagerStore = defineComponentStore(
 		}
 
 		function reviewerAddReviewer() {
-			_actionFns.reviewerAddReviewer(getActionArgs(), dataUpdateCallback);
+			reviewerManagerActions.reviewerAddReviewer(
+				getActionArgs(),
+				dataUpdateCallback,
+			);
 		}
 
 		function reviewerReadReview({reviewAssignment}) {
-			_actionFns.reviewerReadReview(
+			reviewerManagerActions.reviewerReadReview(
 				getActionArgs({reviewAssignment}),
 				dataUpdateCallback,
 			);
 		}
 
 		function reviewerReadReviewByAuthor({reviewAssignment}) {
-			_actionFns.reviewerReadReviewByAuthor(
+			reviewerManagerActions.reviewerReadReviewByAuthor(
 				getActionArgs({reviewAssignment}),
 				dataUpdateCallback,
 			);
 		}
 
 		function reviewerReviewDetails({reviewAssignment}) {
-			_actionFns.reviewerReviewDetails(
+			reviewerManagerActions.reviewerReviewDetails(
 				getActionArgs({reviewAssignment}),
 				dataUpdateCallback,
 			);
 		}
 
 		function reviewerEmailReviewer({reviewAssignment}) {
-			_actionFns.reviewerEmailReviewer(
+			reviewerManagerActions.reviewerEmailReviewer(
 				getActionArgs({reviewAssignment}),
 				dataUpdateCallback,
 			);
 		}
 
 		function reviewerEditReview({reviewAssignment}) {
-			_actionFns.reviewerEditReview(
+			reviewerManagerActions.reviewerEditReview(
 				getActionArgs({reviewAssignment}),
 				dataUpdateCallback,
 			);
 		}
 
 		function reviewerUnassignReviewer({reviewAssignment}) {
-			_actionFns.reviewerUnassignReviewer(
+			reviewerManagerActions.reviewerUnassignReviewer(
 				getActionArgs({reviewAssignment}),
 				dataUpdateCallback,
 			);
 		}
 
 		function reviewerCancelReviewer({reviewAssignment}) {
-			_actionFns.reviewerCancelReviewer(
+			reviewerManagerActions.reviewerCancelReviewer(
 				getActionArgs({reviewAssignment}),
 				dataUpdateCallback,
 			);
 		}
 
 		function reviewerReviewHistory({reviewAssignment}) {
-			_actionFns.reviewerReviewHistory(
+			reviewerManagerActions.reviewerReviewHistory(
 				getActionArgs({reviewAssignment}),
 				dataUpdateCallback,
 			);
 		}
 
 		function reviewerLoginAs({reviewAssignment}) {
-			_actionFns.reviewerLoginAs(
+			reviewerManagerActions.reviewerLoginAs(
 				getActionArgs({reviewAssignment}),
 				dataUpdateCallback,
 			);
 		}
 
 		function reviewerEditorialNotes({reviewAssignment}) {
-			_actionFns.reviewerEditorialNotes(
+			reviewerManagerActions.reviewerEditorialNotes(
 				getActionArgs({reviewAssignment}),
 				dataUpdateCallback,
 			);
 		}
 
 		function reviewerThankReviewer({reviewAssignment}) {
-			_actionFns.reviewerThankReviewer(
+			reviewerManagerActions.reviewerThankReviewer(
 				getActionArgs({reviewAssignment}),
 				dataUpdateCallback,
 			);
 		}
 
 		function reviewerRevertConsider({reviewAssignment}) {
-			_actionFns.reviewerRevertConsider(
+			reviewerManagerActions.reviewerRevertConsider(
 				getActionArgs({reviewAssignment}),
 				dataUpdateCallback,
 			);
 		}
 
 		function reviewerSendReminder({reviewAssignment}) {
-			_actionFns.reviewerSendReminder(
+			reviewerManagerActions.reviewerSendReminder(
 				getActionArgs({reviewAssignment}),
 				dataUpdateCallback,
 			);
 		}
 
 		function reviewerLogResponse({reviewAssignment}) {
-			_actionFns.reviewerLogResponse(
+			reviewerManagerActions.reviewerLogResponse(
 				getActionArgs({reviewAssignment}),
 				dataUpdateCallback,
 			);
 		}
 
-		function getItemActions(args) {
-			return _actionFns.getItemActions(args);
-		}
-
-		function getItemPrimaryActions(args) {
-			return _actionFns.getItemPrimaryActions(args);
-		}
-
 		function reviewerSendToOrcid({reviewAssignment}) {
-			return _actionFns.reviewerSendToOrcid(getActionArgs({reviewAssignment}));
+			return reviewerManagerActions.reviewerSendToOrcid(
+				getActionArgs({reviewAssignment}),
+			);
 		}
 
 		return {
@@ -188,11 +200,11 @@ export const useReviewerManagerStore = defineComponentStore(
 			/** Config */
 			getCellStatusItems,
 			columns,
-
-			/** Actions */
-			topActions,
 			getItemActions,
 			getItemPrimaryActions,
+			topItems,
+
+			/** Actions */
 			reviewerAddReviewer,
 			reviewerReadReview,
 			reviewerReadReviewByAuthor,
@@ -209,7 +221,11 @@ export const useReviewerManagerStore = defineComponentStore(
 			reviewerSendReminder,
 			reviewerLogResponse,
 			reviewerSendToOrcid,
-			_reviewerManagerActionFns: _actionFns,
+
+			/**
+			 * Extender
+			 */
+			extender,
 		};
 	},
 );
