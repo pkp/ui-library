@@ -17,7 +17,7 @@ const {
 	getStageLabel,
 } = useSubmission();
 
-export function useDashboardConfigurationEditorialActivity() {
+export function useDashboardConfigEditorialActivity() {
 	function getEditorialActivityForEditorialDashboard(submission) {
 		const activeStage = getActiveStage(submission);
 

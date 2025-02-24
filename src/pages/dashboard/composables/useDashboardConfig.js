@@ -1,7 +1,7 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {DashboardPageTypes} from '../dashboardPageStore';
 
-export function useDashboardConfiguration() {
+export function useDashboardConfig() {
 	const {t} = useLocalize();
 
 	function getLeftControls() {
