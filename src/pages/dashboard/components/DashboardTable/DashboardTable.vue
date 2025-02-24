@@ -28,7 +28,7 @@
 			"
 		>
 			<TableRow v-for="item in items" :key="item.id">
-				<CellBulkDelete
+				<DashboardCellBulkDelete
 					v-if="dashboardStore.bulkDeleteSelectionEnabled"
 					:item="item"
 				/>
@@ -55,18 +55,18 @@ import TableHeader from '@/components/Table/TableHeader.vue';
 import TableBody from '@/components/Table/TableBody.vue';
 import TableRow from '@/components/Table/TableRow.vue';
 import TablePagination from '@/components/Table/TablePagination.vue';
-import CellBulkDelete from './CellBulkDelete.vue';
-import CellSubmissionActions from './CellSubmissionActions.vue';
-import CellSubmissionActivity from './CellSubmissionActivity/CellSubmissionActivity.vue';
-import CellSubmissionDays from './CellSubmissionDays.vue';
-import CellSubmissionId from './CellSubmissionId.vue';
-import CellSubmissionStage from './CellSubmissionStage.vue';
-import CellSubmissionTitle from './CellSubmissionTitle.vue';
+import DashboardCellBulkDelete from './DashboardCellBulkDelete.vue';
+import DashboardCellSubmissionActions from './DashboardCellSubmissionActions.vue';
+import DashboardCellSubmissionActivity from './DashboardCellSubmissionActivity/DashboardCellSubmissionActivity.vue';
+import DashboardCellSubmissionDays from './DashboardCellSubmissionDays.vue';
+import DashboardCellSubmissionId from './DashboardCellSubmissionId.vue';
+import DashboardCellSubmissionStage from './DashboardCellSubmissionStage.vue';
+import DashboardCellSubmissionTitle from './DashboardCellSubmissionTitle.vue';
 
-import CellReviewAssignmentId from './CellReviewAssignmentId.vue';
-import CellReviewAssignmentTitle from './CellReviewAssignmentTitle.vue';
-import CellReviewAssignmentActivity from './CellReviewAssignmentActivity.vue';
-import CellReviewAssignmentActions from './CellReviewAssignmentActions.vue';
+import DashboardCellReviewAssignmentId from './DashboardCellReviewAssignmentId.vue';
+import DashboardCellReviewAssignmentTitle from './DashboardCellReviewAssignmentTitle.vue';
+import DashboardCellReviewAssignmentActivity from './DashboardCellReviewAssignmentActivity/DashboardCellReviewAssignmentActivity.vue';
+import DashboardCellReviewAssignmentActions from './DashboardCellReviewAssignmentActions.vue';
 
 import {useDashboardPageStore} from '@/pages/dashboard/dashboardPageStore';
 
@@ -79,17 +79,18 @@ defineProps({
 const emit = defineEmits(['setPage', 'sortColumn']);
 
 const cellComponents = {
-	CellSubmissionActions,
-	CellSubmissionActivity,
-	CellSubmissionDays,
-	CellSubmissionId,
-	CellSubmissionStage,
-	CellSubmissionTitle,
-	CellReviewAssignmentId,
-	CellReviewAssignmentTitle,
-	CellReviewAssignmentActivity,
-	CellReviewAssignmentActions,
+	DashboardCellSubmissionActions,
+	DashboardCellSubmissionActivity,
+	DashboardCellSubmissionDays,
+	DashboardCellSubmissionId,
+	DashboardCellSubmissionStage,
+	DashboardCellSubmissionTitle,
+	DashboardCellReviewAssignmentId,
+	DashboardCellReviewAssignmentTitle,
+	DashboardCellReviewAssignmentActivity,
+	DashboardCellReviewAssignmentActions,
 };
 
 const dashboardStore = useDashboardPageStore();
 </script>
+./DashboardCellReviewAssignmentActivity/DashboardCellReviewAssignmentActivity.vue./DashboardDashboardCellBulkDelete.vue./DashboardDashboardCellReviewAssignmentActions.vue./DashboardDashboardCellReviewAssignmentId.vue./DashboardDashboardCellReviewAssignmentTitle.vue./DashboardDashboardCellSubmissionActions.vue./DashboardDashboardCellSubmissionDays.vue./DashboardDashboardCellSubmissionId.vue./DashboardDashboardCellSubmissionStage.vue./DashboardDashboardCellSubmissionTitle.vue./DashboardCellSubmissionActivity/DashboardDashboardCellSubmissionActivity.vue

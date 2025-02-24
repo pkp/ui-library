@@ -24,7 +24,7 @@ export function useEditorialLogic() {
 		if (submission.status === pkp.const.STATUS_DECLINED) {
 			return [
 				{
-					component: 'CellSubmissionActivityActionAlert',
+					component: 'DashboardCellSubmissionActivityActionAlert',
 					props: {
 						alert: t('dashboard.declinedDuringStage', {
 							stageName: getStageLabel(submission),
@@ -37,7 +37,7 @@ export function useEditorialLogic() {
 			if (submission.submissionProgress) {
 				return [
 					{
-						component: 'CellSubmissionActivityActionAlert',
+						component: 'DashboardCellSubmissionActivityActionAlert',
 						props: {
 							actionName: 'openSubmissionWizard',
 							actionLabel: t('submission.list.completeSubmission'),
@@ -49,7 +49,7 @@ export function useEditorialLogic() {
 			if (!submission.editorAssigned) {
 				return [
 					{
-						component: 'CellSubmissionActivityActionAlert',
+						component: 'DashboardCellSubmissionActivityActionAlert',
 						props: {
 							actionName: ParticipantManagerActions.PARTICIPANT_ASSIGN,
 							actionLabel: t('submission.list.assignEditor'),
@@ -89,7 +89,7 @@ export function useEditorialLogic() {
 				if (activeStage.currentUserRecommendation) {
 					return [
 						{
-							component: 'CellSubmissionActivityActionAlert',
+							component: 'DashboardCellSubmissionActivityActionAlert',
 							props: {
 								alert: t(
 									'editor.submission.roundStatus.recommendationMadeByYou',
@@ -135,7 +135,7 @@ export function useEditorialLogic() {
 			) {
 				return [
 					{
-						component: 'CellSubmissionActivityActionAlert',
+						component: 'DashboardCellSubmissionActivityActionAlert',
 						props: {
 							actionName: ReviewerManagerActions.REVIEWER_ADD_REVIEWER,
 							actionLabel: t('dashboard.assignReviewers'),
@@ -152,13 +152,13 @@ export function useEditorialLogic() {
 			) {
 				return [
 					{
-						component: 'CellSubmissionActivityActionAlert',
+						component: 'DashboardCellSubmissionActivityActionAlert',
 						props: {
 							alert: t('dashboard.revisionRequestedFromAuthor'),
 						},
 					},
 					{
-						component: 'CellSubmissionActivityReviews',
+						component: 'DashboardCellSubmissionActivityReviews',
 						props: {
 							submissionId: submission.id,
 							reviewAssignments: getCurrentReviewAssignments(
@@ -174,7 +174,7 @@ export function useEditorialLogic() {
 			) {
 				return [
 					{
-						component: 'CellSubmissionActivityActionAlert',
+						component: 'DashboardCellSubmissionActivityActionAlert',
 						props: {
 							alert: t('dashboard.revisionsRequestedFromAuthorNextRound'),
 						},
@@ -186,13 +186,13 @@ export function useEditorialLogic() {
 			) {
 				return [
 					{
-						component: 'CellSubmissionActivityActionAlert',
+						component: 'DashboardCellSubmissionActivityActionAlert',
 						props: {
 							alert: t('submission.list.revisionsSubmitted'),
 						},
 					},
 					{
-						component: 'CellSubmissionActivityReviews',
+						component: 'DashboardCellSubmissionActivityReviews',
 						props: {
 							submissionId: submission.id,
 							reviewAssignments: getCurrentReviewAssignments(
@@ -208,7 +208,7 @@ export function useEditorialLogic() {
 			) {
 				return [
 					{
-						component: 'CellSubmissionActivityActionAlert',
+						component: 'DashboardCellSubmissionActivityActionAlert',
 						props: {
 							alert: t('dashboard.recommendOnly.pendingRecommendations'),
 						},
@@ -220,7 +220,7 @@ export function useEditorialLogic() {
 			) {
 				return [
 					{
-						component: 'CellSubmissionActivityActionAlert',
+						component: 'DashboardCellSubmissionActivityActionAlert',
 						props: {
 							alert: t('dashboard.recommendOnly.recommendationsReady'),
 						},
@@ -232,7 +232,7 @@ export function useEditorialLogic() {
 			) {
 				return [
 					{
-						component: 'CellSubmissionActivityActionAlert',
+						component: 'DashboardCellSubmissionActivityActionAlert',
 						props: {
 							alert: t('dashboard.recommendOnly.recommendationsCompleted'),
 						},
@@ -244,13 +244,13 @@ export function useEditorialLogic() {
 			) {
 				return [
 					{
-						component: 'CellSubmissionActivityActionAlert',
+						component: 'DashboardCellSubmissionActivityActionAlert',
 						props: {
 							alert: t('submission.list.revisionsSubmitted'),
 						},
 					},
 					{
-						component: 'CellSubmissionActivityActionAlert',
+						component: 'DashboardCellSubmissionActivityActionAlert',
 						props: {
 							alert: t('dashboard.newReviewRoundToBeCreated'),
 						},
@@ -261,7 +261,7 @@ export function useEditorialLogic() {
 			) {
 				return [
 					{
-						component: 'CellSubmissionActivityActionAlert',
+						component: 'DashboardCellSubmissionActivityActionAlert',
 						props: {
 							alert: t('dashboard.declinedDuringStage', {
 								stageName: t('manager.publication.reviewStage'),
@@ -274,13 +274,13 @@ export function useEditorialLogic() {
 			) {
 				return [
 					{
-						component: 'CellSubmissionActivityActionAlert',
+						component: 'DashboardCellSubmissionActivityActionAlert',
 						props: {
 							alert: t('editor.submission.roundStatus.reviewsCompleted'),
 						},
 					},
 					{
-						component: 'CellSubmissionActivityReviews',
+						component: 'DashboardCellSubmissionActivityReviews',
 						props: {
 							submissionId: submission.id,
 							reviewAssignments: getCurrentReviewAssignments(
@@ -293,7 +293,7 @@ export function useEditorialLogic() {
 			} else {
 				return [
 					{
-						component: 'CellSubmissionActivityReviews',
+						component: 'DashboardCellSubmissionActivityReviews',
 						props: {
 							submissionId: submission.id,
 							reviewAssignments: getCurrentReviewAssignments(
@@ -316,7 +316,7 @@ export function useEditorialLogic() {
 			if (submission.submissionProgress) {
 				return [
 					{
-						component: 'CellSubmissionActivityActionAlert',
+						component: 'DashboardCellSubmissionActivityActionAlert',
 						props: {
 							actionName: 'openSubmissionWizard',
 							actionLabel: t('submission.list.completeSubmission'),
@@ -342,7 +342,7 @@ export function useEditorialLogic() {
 						: pkp.const.SUBMISSION_FILE_REVIEW_REVISION;
 				return [
 					{
-						component: 'CellSubmissionActivityActionAlert',
+						component: 'DashboardCellSubmissionActivityActionAlert',
 						props: {
 							alert: t('dashboard.revisionRequested'),
 							actionLabel: t('dashboard.submitRevisions'),
@@ -364,13 +364,13 @@ export function useEditorialLogic() {
 
 				return [
 					{
-						component: 'CellSubmissionActivityReviewsUpdate',
+						component: 'DashboardCellSubmissionActivityReviewsUpdate',
 						props: {
 							reviewAssignments,
 						},
 					},
 					{
-						component: 'CellSubmissionActivityReviewsOpen',
+						component: 'DashboardCellSubmissionActivityReviewsOpen',
 						props: {
 							reviewAssignments,
 						},
@@ -392,7 +392,7 @@ export function useEditorialLogic() {
 			const date = reviewAssignment.dateResponseDue;
 			return [
 				{
-					component: 'CellReviewAssignmentActivityAlert',
+					component: 'DashboardCellReviewAssignmentActivityAlert',
 					props: {
 						alert: t('dashboard.reviewAssignment.acceptOrDeclineRequestDate', {
 							date: formatShortDate(date),
@@ -408,7 +408,7 @@ export function useEditorialLogic() {
 
 			return [
 				{
-					component: 'CellReviewAssignmentActivityAlert',
+					component: 'DashboardCellReviewAssignmentActivityAlert',
 					props: {
 						alert: t('dashboard.reviewAssignment.declined', {
 							date: formatShortDate(date),
@@ -422,7 +422,7 @@ export function useEditorialLogic() {
 		) {
 			return [
 				{
-					component: 'CellReviewAssignmentActivityAlert',
+					component: 'DashboardCellReviewAssignmentActivityAlert',
 					props: {
 						alert: t(
 							'dashboard.reviewAssignment.deadlineForRespondingAcceptOrDecline',
@@ -437,7 +437,7 @@ export function useEditorialLogic() {
 
 			return [
 				{
-					component: 'CellReviewAssignmentActivityAlert',
+					component: 'DashboardCellReviewAssignmentActivityAlert',
 					props: {
 						alert: t('dashboard.reviewAssignment.completeReviewByDate', {date}),
 					},
@@ -449,7 +449,7 @@ export function useEditorialLogic() {
 		) {
 			return [
 				{
-					component: 'CellReviewAssignmentActivityAlert',
+					component: 'DashboardCellReviewAssignmentActivityAlert',
 					props: {
 						alert: t(
 							'dashboard.reviewAssignment.deadlineForCompletingReviewHasPassed',
@@ -469,7 +469,7 @@ export function useEditorialLogic() {
 
 			return [
 				{
-					component: 'CellReviewAssignmentActivityAlert',
+					component: 'DashboardCellReviewAssignmentActivityAlert',
 					props: {
 						alert: t('dashboard.reviewAssignment.reviewSubmitted', {
 							date: formatShortDate(date),
@@ -483,7 +483,7 @@ export function useEditorialLogic() {
 		) {
 			return [
 				{
-					component: 'CellReviewAssignmentActivityAlert',
+					component: 'DashboardCellReviewAssignmentActivityAlert',
 					props: {
 						alert: `-`,
 					},
