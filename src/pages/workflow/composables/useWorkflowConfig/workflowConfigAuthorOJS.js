@@ -279,7 +279,7 @@ export const PublicationConfig = {
 			}
 			return {items, shouldContinue: true};
 		},
-		getPublicationControlsLeft: ({
+		getPrimaryControlsLeft: ({
 			submission,
 			selectedPublicationId,
 			selectedPublication,

@@ -54,13 +54,11 @@
 				<h2>{{ workflowStore.menuTitle }}</h2>
 			</template>
 			<template
-				v-if="workflowStore.publicationControlsLeft?.length"
+				v-if="workflowStore.primaryControlsLeft?.length"
 				#publication-controls-left
 			>
 				<div class="flex flex-col gap-y-2" data-cy="workflow-controls-left">
-					<template
-						v-for="(item, index) in workflowStore.publicationControlsLeft"
-					>
+					<template v-for="(item, index) in workflowStore.primaryControlsLeft">
 						<div v-if="Array.isArray(item)" :key="`${index}`">
 							<div class="flex gap-x-2">
 								<component
@@ -84,14 +82,14 @@
 				</div>
 			</template>
 			<template
-				v-if="workflowStore.publicationControlsRight?.length"
+				v-if="workflowStore.primaryControlsRight?.length"
 				#publication-controls-right
 			>
 				<div class="flex gap-x-3" data-cy="workflow-controls-right">
 					<component
 						:is="workflowStore.Components[item.component] || item.component"
 						v-bind="item.props"
-						v-for="(item, index) in workflowStore.publicationControlsRight"
+						v-for="(item, index) in workflowStore.primaryControlsRight"
 						:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
 					/>
 				</div>

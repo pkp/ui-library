@@ -27,7 +27,7 @@ export const WorkflowConfig = {};
 
 export const PublicationConfig = {
 	common: {
-		getPublicationControlsLeft: ({
+		getPrimaryControlsLeft: ({
 			submission,
 			selectedPublicationId,
 			selectedPublication,

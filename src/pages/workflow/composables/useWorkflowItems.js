@@ -1,28 +1,28 @@
 import {computed} from 'vue';
 
-export function useWorkflowItems(_workflowConfigFns, getArgsFn) {
+export function useWorkflowItems(workflowConfig, getArgsFn) {
 	const headerItems = computed(() => {
-		return _workflowConfigFns.getHeaderItems(getArgsFn());
+		return workflowConfig.getHeaderItems(getArgsFn());
 	});
 
 	const primaryItems = computed(() => {
-		return _workflowConfigFns.getPrimaryItems(getArgsFn());
+		return workflowConfig.getPrimaryItems(getArgsFn());
 	});
 
 	const secondaryItems = computed(() => {
-		return _workflowConfigFns.getSecondaryItems(getArgsFn());
+		return workflowConfig.getSecondaryItems(getArgsFn());
 	});
 
 	const actionItems = computed(() => {
-		return _workflowConfigFns.getActionItems(getArgsFn());
+		return workflowConfig.getActionItems(getArgsFn());
 	});
 
-	const publicationControlsLeft = computed(() => {
-		return _workflowConfigFns.getPublicationControlsLeft(getArgsFn());
+	const primaryControlsLeft = computed(() => {
+		return workflowConfig.getPrimaryControlsLeft(getArgsFn());
 	});
 
-	const publicationControlsRight = computed(() => {
-		return _workflowConfigFns.getPublicationControlsRight(getArgsFn());
+	const primaryControlsRight = computed(() => {
+		return workflowConfig.getPrimaryControlsRight(getArgsFn());
 	});
 
 	return {
@@ -30,7 +30,7 @@ export function useWorkflowItems(_workflowConfigFns, getArgsFn) {
 		primaryItems,
 		secondaryItems,
 		actionItems,
-		publicationControlsLeft,
-		publicationControlsRight,
+		primaryControlsLeft,
+		primaryControlsRight,
 	};
 }
