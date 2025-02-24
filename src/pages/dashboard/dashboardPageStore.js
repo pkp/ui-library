@@ -16,9 +16,9 @@ import {useDashboardBulkDelete} from './composables/useDashboardBulkDelete';
 import {useParticipantManagerActions} from '@/managers/ParticipantManager/useParticipantManagerActions';
 import {useFileManagerActions} from '@/managers/FileManager/useFileManagerActions';
 
-import {useDashboardConfigurationEditorialActivity} from './composables/useDashboardConfigurationEditorialActivity';
-import {useDashboardConfiguration} from './composables/useDashboardConfiguration';
-import {useDashboardConfigurationReviewActivity} from './composables/useDashboardConfigurationReviewActivity';
+import {useDashboardConfigEditorialActivity} from './composables/useDashboardConfigEditorialActivity';
+import {useDashboardConfig} from './composables/useDashboardConfig';
+import {useDashboardConfigReviewActivity} from './composables/useDashboardConfigReviewActivity';
 import {useSubmission} from '@/composables/useSubmission';
 
 import DashboardModalFilters from '@/pages/dashboard/modals/DashboardModalFilters.vue';
@@ -75,7 +75,7 @@ export const useDashboardPageStore = defineComponentStore(
 		/**
 		 * Config
 		 */
-		const dashboardConfig = extender.addFns(useDashboardConfiguration());
+		const dashboardConfig = extender.addFns(useDashboardConfig());
 		const leftControlItems = computed(() => dashboardConfig.getLeftControls());
 		const rightControlItems = computed(() =>
 			dashboardConfig.getRightControls(),
@@ -414,7 +414,7 @@ export const useDashboardPageStore = defineComponentStore(
 		 * Config functions for editorial activity
 		 * */
 		const dashboardConfigEditorialActivity = extender.addFns(
-			useDashboardConfigurationEditorialActivity(),
+			useDashboardConfigEditorialActivity(),
 		);
 
 		function getEditorialActivityForEditorialDashboard(...args) {
@@ -440,7 +440,7 @@ export const useDashboardPageStore = defineComponentStore(
 		 * */
 
 		const dashboardConfigReviewActivity = extender.addFns(
-			useDashboardConfigurationReviewActivity(),
+			useDashboardConfigReviewActivity(),
 		);
 
 		function getReviewActivityIndicatorProps(...args) {

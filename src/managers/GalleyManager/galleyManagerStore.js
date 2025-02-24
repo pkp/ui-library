@@ -4,7 +4,7 @@ import {useFetch, getCSRFToken} from '@/composables/useFetch';
 import {useModal} from '@/composables/useModal';
 import {useGalleyManagerActions} from './useGalleyManagerActions';
 import {useDataChanged} from '@/composables/useDataChanged';
-import {useGalleyManagerConfiguration} from './useGalleyManagerConfiguration';
+import {useGalleyManagerConfig} from './useGalleyManagerConfig';
 import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 import {useExtender} from '@/composables/useExtender';
 
@@ -24,9 +24,7 @@ export const useGalleyManagerStore = defineComponentStore(
 		/** Reload files when data on screen changes */
 
 		/** Columns */
-		const galleyManagerConfig = extender.addFns(
-			useGalleyManagerConfiguration(),
-		);
+		const galleyManagerConfig = extender.addFns(useGalleyManagerConfig());
 		const columns = computed(() => galleyManagerConfig.getColumns());
 
 		/**
