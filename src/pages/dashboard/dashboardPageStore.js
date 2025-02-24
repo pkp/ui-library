@@ -48,6 +48,7 @@ export const useDashboardPageStore = defineComponentStore(
 	(pageInitConfig) => {
 		const extender = useExtender();
 
+		const dashboardPage = pageInitConfig.dashboardPage;
 		/**
 		 * ModalStore
 		 */
@@ -60,10 +61,10 @@ export const useDashboardPageStore = defineComponentStore(
 		/** Dashboard Page */
 
 		const dashboardPageTitle = computed(() => {
-			return t(TitleTranslations[pageInitConfig.dashboardPage]);
+			return t(TitleTranslations[dashboardPage]);
 		});
 		const dashboardPageIcon = computed(() => {
-			return TitleIcons[pageInitConfig.dashboardPage];
+			return TitleIcons[dashboardPage];
 		});
 
 		/**
@@ -76,9 +77,11 @@ export const useDashboardPageStore = defineComponentStore(
 		 * Config
 		 */
 		const dashboardConfig = extender.addFns(useDashboardConfig());
-		const leftControlItems = computed(() => dashboardConfig.getLeftControls());
+		const leftControlItems = computed(() =>
+			dashboardConfig.getLeftControls({dashboardPage: dashboardPage}),
+		);
 		const rightControlItems = computed(() =>
-			dashboardConfig.getRightControls(),
+			dashboardConfig.getRightControls({dashboardPage: dashboardPage}),
 		);
 
 		/**
@@ -120,7 +123,7 @@ export const useDashboardPageStore = defineComponentStore(
 		 */
 		const columns = computed(() =>
 			dashboardConfig.getColumns({
-				dashboardPage: pageInitConfig.dashboardPage,
+				dashboardPage: dashboardPage,
 			}),
 		);
 
@@ -272,7 +275,7 @@ export const useDashboardPageStore = defineComponentStore(
 			bulkDeleteResetSelection,
 		} = useDashboardBulkDelete({
 			submissions,
-			dashboardPage: pageInitConfig.dashboardPage,
+			dashboardPage: dashboardPage,
 			onSubmissionDeleteCallback: () => {
 				fetchSubmissions();
 			},
@@ -417,21 +420,30 @@ export const useDashboardPageStore = defineComponentStore(
 			useDashboardConfigEditorialActivity(),
 		);
 
-		function getEditorialActivityForEditorialDashboard(...args) {
+		function getEditorialActivityForEditorialDashboard(args) {
 			return dashboardConfigEditorialActivity.getEditorialActivityForEditorialDashboard(
-				...args,
+				{
+					...args,
+					dashboardPage,
+				},
 			);
 		}
 
-		function getEditorialActivityForMySubmissions(...args) {
+		function getEditorialActivityForMySubmissions(args) {
 			return dashboardConfigEditorialActivity.getEditorialActivityForMySubmissions(
-				...args,
+				{
+					...args,
+					dashboardPage,
+				},
 			);
 		}
 
-		function getEditorialActivityForMyReviewAssignments(...args) {
+		function getEditorialActivityForMyReviewAssignments(args) {
 			return dashboardConfigEditorialActivity.getEditorialActivityForMyReviewAssignments(
-				...args,
+				{
+					...args,
+					dashboardPage,
+				},
 			);
 		}
 
@@ -443,21 +455,25 @@ export const useDashboardPageStore = defineComponentStore(
 			useDashboardConfigReviewActivity(),
 		);
 
-		function getReviewActivityIndicatorProps(...args) {
-			return dashboardConfigReviewActivity.getReviewActivityIndicatorProps(
+		function getReviewActivityIndicatorProps(args) {
+			return dashboardConfigReviewActivity.getReviewActivityIndicatorProps({
 				...args,
-			);
+				dashboardPage,
+			});
 		}
 
 		function getReviewActivityIndicatorPopoverProps(...args) {
 			return dashboardConfigReviewActivity.getReviewActivityIndicatorPopoverProps(
-				...args,
+				{
+					...args,
+					dashboardPage,
+				},
 			);
 		}
 
 		return {
 			// Dashboard
-			dashboardPage: pageInitConfig.dashboardPage,
+			dashboardPage,
 			dashboardPageTitle,
 			dashboardPageIcon,
 

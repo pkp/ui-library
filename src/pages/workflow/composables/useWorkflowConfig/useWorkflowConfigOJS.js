@@ -23,6 +23,7 @@ export function useWorkflowConfigOJS({dashboardPage}) {
 			selectedPublicationId,
 			selectedReviewRound,
 			permissions,
+			dashboardPage,
 		},
 	) {
 		if (selectedMenuState.stageId) {
@@ -53,6 +54,7 @@ export function useWorkflowConfigOJS({dashboardPage}) {
 				selectedPublication,
 				selectedPublicationId,
 				permissions,
+				dashboardPage,
 			};
 			if (!submission || !selectedPublication) {
 				return [];

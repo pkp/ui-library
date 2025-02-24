@@ -6,6 +6,7 @@ export function useWorkflowMenu({
 	menuItems,
 	submission,
 	workflowNavigationConfig,
+	dashboardPage,
 }) {
 	const {
 		sideMenuProps,
@@ -57,7 +58,10 @@ export function useWorkflowMenu({
 				}
 			}
 			navigateToMenu(
-				workflowNavigationConfig.getInitialSelectionItemKey(newSubmission),
+				workflowNavigationConfig.getInitialSelectionItemKey({
+					submission: newSubmission,
+					dashboardPage,
+				}),
 			);
 		}
 	});
