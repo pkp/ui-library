@@ -243,10 +243,10 @@ export const useDashboardPageStore = defineComponentStore(
 			{immediate: true},
 		);
 
-		const _reviewerManagerActionFns = useReviewerManagerActions(pageInitConfig);
-		const _participantManagerActionsFns =
+		const reviewerManagerActions = useReviewerManagerActions(pageInitConfig);
+		const participantManagerActions =
 			useParticipantManagerActions(pageInitConfig);
-		const _fileManagerActionFns = useFileManagerActions();
+		const fileManagerActions = useFileManagerActions();
 		const {getCurrentPublication} = useSubmission();
 
 		function refetchCallback() {
@@ -311,42 +311,42 @@ export const useDashboardPageStore = defineComponentStore(
 			};
 		}
 		function reviewerAddReviewer({reviewRoundId, submissionId}) {
-			_reviewerManagerActionFns.reviewerAddReviewer(
+			reviewerManagerActions.reviewerAddReviewer(
 				enrichActionArgs({reviewRoundId, submissionId}),
 				refetchCallback,
 			);
 		}
 
 		function reviewerResendRequest({reviewAssignment, submissionId}) {
-			_reviewerManagerActionFns.reviewerResendRequest(
+			reviewerManagerActions.reviewerResendRequest(
 				enrichActionArgs({reviewAssignment, submissionId}),
 				refetchCallback,
 			);
 		}
 
 		function reviewerEditReview({reviewAssignment, submissionId}) {
-			_reviewerManagerActionFns.reviewerEditReview(
+			reviewerManagerActions.reviewerEditReview(
 				enrichActionArgs({reviewAssignment, submissionId}),
 				refetchCallback,
 			);
 		}
 
 		function reviewerReviewDetails({reviewAssignment, submissionId}) {
-			_reviewerManagerActionFns.reviewerReviewDetails(
+			reviewerManagerActions.reviewerReviewDetails(
 				enrichActionArgs({reviewAssignment, submissionId}),
 				refetchCallback,
 			);
 		}
 
 		function reviewerCancelReviewer({reviewAssignment, submissionId}) {
-			_reviewerManagerActionFns.reviewerCancelReviewer(
+			reviewerManagerActions.reviewerCancelReviewer(
 				enrichActionArgs({reviewAssignment, submissionId}),
 				refetchCallback,
 			);
 		}
 
 		function reviewerUnassignReviewer({reviewAssignment, submissionId}) {
-			_reviewerManagerActionFns.reviewerUnassignReviewer(
+			reviewerManagerActions.reviewerUnassignReviewer(
 				enrichActionArgs({reviewAssignment, submissionId}),
 				refetchCallback,
 			);
@@ -356,7 +356,7 @@ export const useDashboardPageStore = defineComponentStore(
 		 * File Manager actions
 		 */
 		function fileUpload(args) {
-			_fileManagerActionFns.fileUpload(enrichActionArgs(args), refetchCallback);
+			fileManagerActions.fileUpload(enrichActionArgs(args), refetchCallback);
 		}
 
 		/**
@@ -364,7 +364,7 @@ export const useDashboardPageStore = defineComponentStore(
 		 *
 		 * */
 		function participantAssign({submissionId}) {
-			_participantManagerActionsFns.participantAssign(
+			participantManagerActions.participantAssign(
 				enrichActionArgs({submissionId}),
 				refetchCallback,
 			);
