@@ -1,28 +1,10 @@
 <template>
 	<div class="space-y-4 p-8">
 		<FieldText
-			:label="t('about.contact.email')"
-			:value="fields.email"
-			:description="t('userInvitation.emailField.description')"
-			name="email"
-			size="large"
-			@change="updateField"
-		/>
-		<p>or</p>
-		<FieldText
-			:label="t('user.username')"
-			:value="fields.username"
-			:description="t('userInvitation.usernameField.description')"
-			name="username"
-			size="large"
-			@change="updateField"
-		/>
-		<p>or</p>
-		<FieldText
-			:label="t('user.orcid')"
-			:value="fields.orcid"
-			:description="t('userInvitation.orcidField.description')"
-			name="orcid"
+			:label="t('userInvitation.searchField')"
+			:value="fields.search"
+			:description="t('userInvitation.searchField.description')"
+			name="search"
 			size="large"
 			@change="updateField"
 		/>
@@ -50,25 +32,14 @@ const store = useUserInvitationPageStore();
 const {t} = useLocalize();
 store.registerActionForStepId('searchUser', searchUser);
 
-const fields = ref({email: '', username: '', orcid: ''});
+const fields = ref({search: ''});
 
 function updateField(fieldName, b, fieldValue) {
 	fields.value[fieldName] = fieldValue;
 }
 
 const searchPhrase = computed(() => {
-	let searchText = '';
-	if (fields.value.email) {
-		searchText = fields.value.email.trim() + ' ';
-	}
-	if (fields.value.orcid) {
-		searchText = searchText + fields.value.orcid.trim() + ' ';
-	}
-	if (fields.value.username) {
-		searchText = searchText + fields.value.username.trim();
-	}
-
-	return searchText;
+	return fields.value.search.trim();
 });
 
 async function searchUser() {
@@ -82,21 +53,23 @@ async function searchUser() {
 		if (userData.value.items.length > 0) {
 			let user = {};
 			user = userData.value.items.find(
-				(value) => value.email === fields.value.email.trim(), // check provided email is exact match
+				(value) => value.email === fields.value.search.trim(), // check provided email is exact match
 			);
 			user
 				? user
 				: (user = userData.value.items.find(
-						(value) => value.userName === fields.value.username.trim(), // check provided username is exact match
+						(value) => value.userName === fields.value.search.trim(), // check provided username is exact match
 					));
 			user
 				? user
 				: (user = userData.value.items.find(
-						(value) => value.orcid === fields.value.orcid.trim(), // check provided orcid is exact match
+						(value) => value.orcid === fields.value.search.trim(), // check provided orcid is exact match
 					));
 
 			if (!user) {
-				store.updatePayload('inviteeEmail', fields.value.email.trim());
+				valid(fields.value.search.trim())
+					? store.updatePayload('inviteeEmail', fields.value.search.trim())
+					: '';
 				store.userSearch.message = t('userInvitation.search.userNotFound');
 				store.userSearch.class = 'font-bold text-negative';
 			} else {
@@ -108,11 +81,14 @@ async function searchUser() {
 				store.updatePayload('currentUserGroups', user.groups);
 				store.updatePayload('affiliation', user.affiliation);
 				store.updatePayload('country', user.country);
+				store.updatePayload('disabled', user.disabled);
 				store.userSearch.message = t('userInvitation.search.userFound');
 				store.userSearch.class = 'font-bold text-success';
 			}
 		} else {
-			store.updatePayload('inviteeEmail', fields.value.email.trim());
+			valid(fields.value.search.trim())
+				? store.updatePayload('inviteeEmail', fields.value.search.trim())
+				: '';
 			store.userSearch.message = t('userInvitation.search.userNotFound');
 			store.userSearch.class = 'font-bold text-negative';
 		}
@@ -120,6 +96,11 @@ async function searchUser() {
 	} else {
 		store.errors.error = t('invitation.searchForm.emptyError');
 		return false;
+	}
+
+	function valid(email) {
+		const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		return pattern.test(email);
 	}
 }
 </script>

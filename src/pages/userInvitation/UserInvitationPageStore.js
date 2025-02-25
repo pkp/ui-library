@@ -23,6 +23,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 		const updatedPayload = ref({});
 		const invitationType = ref(pageInitConfig.invitationType);
 		const invitationMode = ref(pageInitConfig.invitationMode);
+		const detectChanges = ref(false);
 
 		function updatePayload(fieldName, value, initialValue = true) {
 			invitationPayload.value[fieldName] = value;
@@ -267,6 +268,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 			await createInvitation();
 
 			if (validationError.value) {
+				delete validationError.value.errors['userId'];
 				errors.value = validationError.value.errors;
 			} else {
 				errors.value = [];
@@ -299,7 +301,27 @@ export const useUserInvitationPageStore = defineComponentStore(
 		}
 
 		const {redirectToPage} = useUrl('management/settings/access');
-		const isSubmitting = ref(false);
+		const isSubmitting = ref(
+			invitationMode.value === 'editUser'
+				? true
+				: invitationPayload.value.disabled,
+		);
+
+		/**
+		 * change isSubmitting value based on
+		 * user disable or not for disable submit button
+		 */
+		watch(
+			invitationPayload,
+			async (newVal, oldVal) => {
+				isSubmitting.value = invitationPayload.value.disabled;
+				if (invitationPayload.value.userGroupsToAdd.length === 0) {
+					isSubmitting.value = true;
+				}
+				detectChanges.value = true;
+			},
+			{deep: true},
+		);
 		/** Submit invitation */
 		async function submitInvitation() {
 			await updateInvitation();
@@ -336,28 +358,35 @@ export const useUserInvitationPageStore = defineComponentStore(
 		}
 
 		function cancel() {
-			openDialog({
-				name: 'cancel',
-				title: t('invitation.cancelInvite.title'),
-				message: t('userInvitation.cancel.message'),
-				actions: [
-					{
-						label: t('invitation.cancelInvite.actionName'),
-						isWarnable: true,
-						callback: (close) => {
-							redirectToPage();
-						},
-					},
-					{
-						label: t('userInvitation.cancel.goBack'),
-						callback: (close) => {
-							redirectToPage();
-							close();
-						},
-					},
-				],
-				modalStyle: 'negative',
-			});
+			if (detectChanges.value) {
+				if (invitationMode.value === 'editUser') {
+					confirm(t('form.dataHasChanged')) ? redirectToPage() : '';
+				} else {
+					openDialog({
+						name: 'cancel',
+						title: t('invitation.cancelInvite.title'),
+						message: t('userInvitation.cancel.message'),
+						actions: [
+							{
+								label: t('invitation.cancelInvite.actionName'),
+								isWarnable: true,
+								callback: (close) => {
+									redirectToPage();
+								},
+							},
+							{
+								label: t('userInvitation.cancel.goBack'),
+								callback: (close) => {
+									close();
+								},
+							},
+						],
+						modalStyle: 'negative',
+					});
+				}
+			} else {
+				redirectToPage();
+			}
 		}
 
 		const registeredActionsForSteps = {};

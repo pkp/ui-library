@@ -5,6 +5,12 @@
 		</span>
 
 		<Icon v-if="user.orcid" icon="Orcid" class="h-4 w-4" :inline="true" />
+		<Icon
+			v-if="user.disabled"
+			icon="DisableUser"
+			class="h-4 w-4 text-negative"
+			:inline="true"
+		/>
 	</TableCell>
 </template>
 

@@ -2,7 +2,7 @@
 	<TableCell>
 		<template v-for="(userGroups, i) in user.groups" :key="i">
 			<div class="flex flex-col">
-				{{ userGroups.name }}
+				{{ !userGroups.dateEnd ? userGroups.name : '' }}
 			</div>
 		</template>
 	</TableCell>

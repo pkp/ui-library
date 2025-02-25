@@ -845,12 +845,12 @@ window.pkp = {
 		'userInvitation.edit.message':
 			'If you edit the existing invitation or add a new role, the current invitation will be canceled and, a new one will be sent. Are you sure you want to proceed?',
 		'userInvitation.edit.title': 'Edit Invitation',
-		'userInvitation.emailField.description': 'e.g. aeinstein@example.com',
+		'userInvitation.searchField.description':
+			'e.g. aeinstein@example.com or aeinstein or 0000-0000-0000-0000',
 		'userInvitation.modal.button': 'View All Users',
 		'userInvitation.modal.message':
 			"{$email} has been invited to new role in OJS. You can be updated about the user's decision on the User and Role page, your OJS notification and/or your email",
 		'userInvitation.modal.title': 'Invitation Sent',
-		'userInvitation.orcidField.description': 'e.g. 0000-0000-0000-0000',
 		'userInvitation.roleTable.endDate': 'End Date',
 		'userInvitation.roleTable.journalMasthead': 'Journal Masthead',
 		'userInvitation.roleTable.role': 'Role',
@@ -859,7 +859,6 @@ window.pkp = {
 		'userInvitation.search.userNotFound':
 			'The user does not have a role in this journal',
 		'userInvitation.status.invited': 'Invited {$date}',
-		'userInvitation.usernameField.description': 'e.g. mickeymouse',
 		'validator.required': 'This field is required.',
 		'workflow.review.externalReview': 'Review',
 		'workflow.review.internalReview': 'Internal Review',
@@ -873,6 +872,19 @@ window.pkp = {
 		'workflow.submissionNextReviewRoundInFutureStage':
 			'The submission advanced to the next review round, was accepted, and is currently in the {$stage} stage.',
 		'workflow.uploadRevisions': 'Upload revisions',
+		'userInvitation.searchField':
+			'Search for a user by email address, username, or ORCID iD. Enter only one to get started!',
+		'grid.user.enable': 'Enable User',
+		'grid.user.disable': 'Disable User',
+		'grid.user.remove': 'Remove User',
+		'grid.user.logInAs': 'Login As',
+		'grid.user.grid.user.enableReasonDescription':
+			"Once the user is enabled, they will regain access to OJS, and you'll be able to invite them to roles as needed.",
+		'grid.user.grid.user.disableReasonDescription':
+			"Please note that once a user is disabled, you won't be able to add them to any roles until they are enabled again.",
+		'user.disabledModal.description': 'Current Roles : {$roles}',
+		'user.disabledModal.title': 'Disable {$fullName}',
+		'user.enabledModal.title': 'Enable {$fullName}',
 	},
 	tinyMCE: {
 		skinUrl: '/styles/tinymce',

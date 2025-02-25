@@ -36,25 +36,25 @@ export function useUserAccessManagerActions() {
 		if (getCurrentUserId() !== user.id) {
 			user.canLoginAs &&
 				actions.push({
-					label: t('grid.action.logInAs'),
+					label: t('grid.user.logInAs'),
 					icon: 'LoginAs',
 					name: Actions.USER_ACCESS_LOGIN_AS,
 				});
 
-			actions.push({
-				label: t('grid.action.remove'),
-				icon: 'Cancel',
-				name: Actions.USER_ACCESS_REMOVE_USER,
-				isWarnable: true,
-			});
+			if (user.groups.find((value) => value.dateEnd === null)) {
+				actions.push({
+					label: t('grid.user.remove'),
+					icon: 'Cancel',
+					name: Actions.USER_ACCESS_REMOVE_USER,
+					isWarnable: true,
+				});
+			}
 
 			actions.push({
-				label: user.disabled
-					? t('grid.action.enable')
-					: t('grid.action.disable'),
-				icon: 'DisableUser',
+				label: user.disabled ? t('grid.user.enable') : t('grid.user.disable'),
+				icon: user.disabled ? 'User' : 'DisableUser',
 				name: Actions.USER_ACCESS_DISABLE_USER,
-				isWarnable: true,
+				isWarnable: !user.disabled,
 			});
 
 			user.canMergeUser &&
@@ -89,10 +89,21 @@ export function useUserAccessManagerActions() {
 				enable: user.disabled ? '1' : '',
 			},
 		});
+		const currentRoles = user.groups.map((group) => group.name).join(', ');
 
-		openLegacyModal({title: t('grid.user.disable')}, (closeData) => {
-			finishedCallback();
-		});
+		openLegacyModal(
+			{
+				title: !user.disabled
+					? t('user.disabledModal.title', {fullName: user.fullName})
+					: t('user.enabledModal.title', {fullName: user.fullName}),
+				description: t('user.disabledModal.description', {
+					roles: currentRoles,
+				}),
+			},
+			(closeData) => {
+				finishedCallback();
+			},
+		);
 	}
 
 	const {openDialog, openDialogNetworkError} = useModal();
