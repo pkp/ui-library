@@ -57,7 +57,7 @@ export function useUserAccessManagerActions() {
 				isWarnable: !user.disabled,
 			});
 
-			user.canMergeUser &&
+			user.canMergeUsers &&
 				actions.push({
 					label: t('grid.action.mergeUser'),
 					icon: 'MergeUser',
