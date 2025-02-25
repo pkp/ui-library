@@ -362,19 +362,20 @@ export function useReviewerManagerConfig() {
 			icon: 'History',
 		});
 
-		// Login as TODO condition
-		actions.push({
-			label: t('grid.action.logInAs'),
-			name: Actions.REVIEWER_LOGIN_AS,
-			icon: 'LoginAs',
-		});
-
-		// Gossip TODO condition
-		actions.push({
-			label: t('user.gossip'),
-			name: Actions.REVIEWER_EDITORIAL_NOTES,
-			icon: 'DefaultDocument',
-		});
+		if (reviewAssignment.canLoginAs) {
+			actions.push({
+				label: t('grid.action.logInAs'),
+				name: Actions.REVIEWER_LOGIN_AS,
+				icon: 'LoginAs',
+			});
+		}
+		if (reviewAssignment.canGossip) {
+			actions.push({
+				label: t('user.gossip'),
+				name: Actions.REVIEWER_EDITORIAL_NOTES,
+				icon: 'DefaultDocument',
+			});
+		}
 
 		if (!reviewAssignment.dateConfirmed) {
 			actions.push({
