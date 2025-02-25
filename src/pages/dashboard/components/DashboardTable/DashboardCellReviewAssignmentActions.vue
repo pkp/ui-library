@@ -39,7 +39,7 @@ const actionLabel = computed(() => {
 		].includes(props.item.stageId)
 	) {
 		// It the review assignment is incomplete, show no action
-		// for complete sceario it will fallback to the 'View' below
+		// for complete scenario it will fallback to the 'View' below
 		if (!CompletedReviewAssignmentStatuses.includes(props.item.status)) {
 			return null;
 		}
