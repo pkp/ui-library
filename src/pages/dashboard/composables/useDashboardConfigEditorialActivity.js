@@ -386,11 +386,6 @@ export function useDashboardConfigEditorialActivity() {
 	}
 
 	function getEditorialActivityForMyReviewAssignments(reviewAssignment) {
-		console.log(
-			'getEditorialActivityForMyReviewAssignments',
-			reviewAssignment.status,
-		);
-
 		// When declined always show the same status regardless of the stage
 		if (
 			reviewAssignment.status === pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED
@@ -490,12 +485,7 @@ export function useDashboardConfigEditorialActivity() {
 				},
 			];
 		} else if (
-			[
-				pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
-				pkp.const.REVIEW_ASSIGNMENT_STATUS_VIEWED,
-				pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
-				pkp.const.REVIEW_ASSIGNMENT_STATUS_THANKED,
-			].includes(reviewAssignment.status)
+			CompletedReviewAssignmentStatuses.includes(reviewAssignment.status)
 		) {
 			const date = reviewAssignment.dateCompleted;
 
