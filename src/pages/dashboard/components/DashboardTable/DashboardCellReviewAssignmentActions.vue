@@ -1,6 +1,7 @@
 <template>
 	<TableCell>
 		<PkpButton
+			v-if="actionLabel"
 			class="-ms-3"
 			:aria-describedby="'submission-title-' + item.id"
 			:is-link="true"
@@ -18,6 +19,8 @@
 import {defineProps, computed} from 'vue';
 import PkpButton from '@/components/Button/Button.vue';
 import TableCell from '@/components/Table/TableCell.vue';
+import {CompletedReviewAssignmentStatuses} from '@/composables/useSubmission.js';
+
 import {useDashboardPageStore} from '@/pages/dashboard/dashboardPageStore.js';
 import {useLocalize} from '@/composables/useLocalize';
 
@@ -28,6 +31,19 @@ const props = defineProps({
 });
 
 const actionLabel = computed(() => {
+	// Submission progress to copyediting/production stage
+	if (
+		[
+			pkp.const.WORKFLOW_STAGE_ID_EDITING,
+			pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+		].includes(props.item.stageId)
+	) {
+		// It the review assignment is incomplete, show no action
+		// for complete sceario it will fallback to the 'View' below
+		if (!CompletedReviewAssignmentStatuses.includes(props.item.status)) {
+			return null;
+		}
+	}
 	switch (props.item.status) {
 		case pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE:
 		case pkp.const.REVIEW_ASSIGNMENT_STATUS_RESPONSE_OVERDUE:

@@ -1,5 +1,6 @@
 import {getReviewAssignmentFullMock} from './reviewAssignmentsMock';
 export const ReviewAssignmentEditorialActivityScenario = [
+	// Review stage
 	//REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE // request has been sent but reviewer has not responded
 	getReviewAssignmentFullMock({
 		submissionId: 1,
@@ -49,5 +50,19 @@ export const ReviewAssignmentEditorialActivityScenario = [
 	getReviewAssignmentFullMock({
 		submissionId: 10,
 		statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_VIEWED,
+	}),
+	// When moved to copyediting / production stage
+	// When the review was not completed (submitted)
+	getReviewAssignmentFullMock({
+		submissionId: 11,
+		statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_ACCEPTED,
+		stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+	}),
+	// When moved to copyediting / production stage
+	// When the review was declined - same indication for declined regardless of the stage
+	getReviewAssignmentFullMock({
+		submissionId: 12,
+		statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED,
+		stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 	}),
 ];
