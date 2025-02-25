@@ -28,11 +28,11 @@ export default {
 		<PkpPopover>
 				<template #button>
 					<ReviewActivityIndicator
-						v-bind="getReviewActivityIndicatorProps(args.reviewAssignment)"
+						v-bind="getReviewActivityIndicatorProps({reviewAssignment: args.reviewAssignment})"
 					></ReviewActivityIndicator>
 				</template>
 				<ReviewActivityIndicatorPopover
-					v-bind="getReviewActivityIndicatorPopoverProps(args.reviewAssignment)"
+					v-bind="getReviewActivityIndicatorPopoverProps({reviewAssignment: args.reviewAssignment})"
 				/>
 		</PkpPopover>
 `,
