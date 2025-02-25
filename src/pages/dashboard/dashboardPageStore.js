@@ -462,7 +462,7 @@ export const useDashboardPageStore = defineComponentStore(
 			});
 		}
 
-		function getReviewActivityIndicatorPopoverProps(...args) {
+		function getReviewActivityIndicatorPopoverProps(args) {
 			return dashboardConfigReviewActivity.getReviewActivityIndicatorPopoverProps(
 				{
 					...args,
