@@ -148,6 +148,7 @@ window.pkp = {
 		'acceptInvitation.verifyOrcid': 'Verify ORCID iD',
 		'admin.jobs.failed.action.redispatch': 'Try Again',
 		'admin.jobs.failed.action.redispatch.all': 'Requeue All Failed Jobs',
+		'admin.jobs.list.actions': 'Actions',
 		'admin.version': 'Version',
 		'article.article': 'Article',
 		'article.metadata': 'Metadata',
@@ -185,6 +186,7 @@ window.pkp = {
 		'common.filtersClear': 'Clear Filters',
 		'common.findTemplate': 'Find Template',
 		'common.geographic': 'Geographic',
+		'common.id': 'ID',
 		'common.insert': 'Insert',
 		'common.insertContent': 'Insert Content',
 		'common.insertContentSearch': 'Find content to insert',
@@ -294,11 +296,11 @@ window.pkp = {
 		'dashboard.reviewAssignment.statusAwaitingResponse.title':
 			'Awaiting Response from the reviewer',
 		'dashboard.reviewAssignment.statusCancelled.description':
-			'Reviewer has cancelled the review request on <b>{$date}</b>',
+			'Reviewer has cancelled the review request on <b>{$date}</b>.',
 		'dashboard.reviewAssignment.statusCancelled.title':
 			'Reviewer cancelled review request',
 		'dashboard.reviewAssignment.statusComplete.description':
-			'The review was accepted by the editor on {$date}.</b>',
+			'The review was accepted by the editor on <b>{$date}</b>.',
 		'dashboard.reviewAssignment.statusComplete.title':
 			'Review was confirmed by editor',
 		'dashboard.reviewAssignment.statusDeclined.description':
@@ -377,6 +379,7 @@ window.pkp = {
 		'editor.submission.addReviewer': 'Add Reviewer',
 		'editor.submission.addStageParticipant': 'Assign Participant',
 		'editor.submission.createNewRound': 'Create New Review Round',
+		'editor.submission.days': 'Days',
 		'editor.submission.decision.accept': 'Accept Submission',
 		'editor.submission.decision.backFromCopyediting': 'Cancel Copyediting',
 		'editor.submission.decision.backToCopyediting': 'Back To Copyediting',
@@ -485,8 +488,11 @@ window.pkp = {
 		'grid.user.confirmLogInAs':
 			'Log in as this user? All actions you perform will be attributed to this user.',
 		'grid.user.currentUsers': 'Current Users',
-		'grid.user.disable': 'Disable',
+		'grid.user.disable': 'Disable User',
 		'grid.user.email': 'Email',
+		'grid.user.enable': 'Enable User',
+		'grid.user.logInAs': 'Login As',
+		'grid.user.remove': 'Remove User',
 		'help.help': 'Help',
 		'informationCenter.informationCenter': 'Information Center',
 		'invitation.cancelInvite.actionName': 'Cancel Invite',
@@ -614,6 +620,7 @@ window.pkp = {
 		'navigation.dashboards': 'Dashboards',
 		'navigation.mySubmissions': 'My Submissions',
 		'navigation.reviewAssignments': 'Review Assignments',
+		'navigation.submissions': 'Submissions',
 		'notification.notifications': 'Notifications',
 		'notification.type.roundStatusTitle': 'Round {$round} Status',
 		'orcid.field.authorEmailModal.message':
@@ -714,6 +721,7 @@ window.pkp = {
 		'stats.countWithYearlyAverage': '{$count} ({$average}/year)',
 		'stats.dateRange': 'Date Range',
 		'stats.descriptionForStat': 'Description for {$stat}',
+		'stats.editorialActivity': 'Editorial Activity',
 		'stats.geographic.ccAttribution':
 			"Geolocation provided by <a href='https://db-ip.com'>DB-IP</a>",
 		'stats.geographic.tooltip.label': 'About Geolocation',
@@ -784,7 +792,6 @@ window.pkp = {
 		'submission.stage.internalReviewWithRound':
 			'##submission.stage.internalReviewWithRound##',
 		'submission.stage.published': 'Published',
-		'submission.stage.scheduledForPublication': 'Scheduled For Publication',
 		'submission.stageParticipants.notify': 'Notify',
 		'submission.status.scheduled': 'Scheduled',
 		'submission.submit.newSubmissionSingle': 'New Submission',
@@ -822,7 +829,10 @@ window.pkp = {
 			'Type the institute name in {$language}',
 		'user.authorization.accessibleWorkflowStage':
 			"You don't currently have access to that stage of the workflow.",
+		'user.disabledModal.description': 'Current Roles : {$roles}',
+		'user.disabledModal.title': 'Disable {$fullName}',
 		'user.email': 'Email',
+		'user.enabledModal.title': 'Enable {$fullName}',
 		'user.familyName': 'Family Name',
 		'user.givenName': 'Given Name',
 		'user.gossip': 'Editorial Notes',
@@ -845,12 +855,14 @@ window.pkp = {
 		'userInvitation.edit.message':
 			'If you edit the existing invitation or add a new role, the current invitation will be canceled and, a new one will be sent. Are you sure you want to proceed?',
 		'userInvitation.edit.title': 'Edit Invitation',
-		'userInvitation.searchField.description':
-			'e.g. aeinstein@example.com or aeinstein or 0000-0000-0000-0000',
+		'userInvitation.emailField.description':
+			'##userInvitation.emailField.description##',
 		'userInvitation.modal.button': 'View All Users',
 		'userInvitation.modal.message':
 			"{$email} has been invited to new role in OJS. You can be updated about the user's decision on the User and Role page, your OJS notification and/or your email",
 		'userInvitation.modal.title': 'Invitation Sent',
+		'userInvitation.orcidField.description':
+			'##userInvitation.orcidField.description##',
 		'userInvitation.roleTable.endDate': 'End Date',
 		'userInvitation.roleTable.journalMasthead': 'Journal Masthead',
 		'userInvitation.roleTable.role': 'Role',
@@ -858,11 +870,21 @@ window.pkp = {
 		'userInvitation.search.userFound': 'The user already exists in the journal',
 		'userInvitation.search.userNotFound':
 			'The user does not have a role in this journal',
+		'userInvitation.searchField':
+			'Search for a user by email address, username, or ORCID iD. Enter only one to get started!',
+		'userInvitation.searchField.description':
+			'e.g. aeinstein@example.com or aeinstein or 0000-0002-1825-0097',
 		'userInvitation.status.invited': 'Invited {$date}',
+		'userInvitation.user.disableMessage':
+			'The user was disabled. You cannot assign them a role while they are disabled. Please enable the user first to invite them to a role.',
+		'userInvitation.user.disableTitle': 'The user is currently disabled.',
+		'userInvitation.usernameField.description':
+			'##userInvitation.usernameField.description##',
 		'validator.required': 'This field is required.',
 		'workflow.review.externalReview': 'Review',
 		'workflow.review.internalReview': 'Internal Review',
 		'workflow.reviewRoundN': 'Review Round {$number}',
+		'workflow.stage': 'Stage',
 		'workflow.stageNotStarted':
 			'The {$stage} stage has not yet been initiated.',
 		'workflow.submissionInFutureStage':
@@ -872,19 +894,6 @@ window.pkp = {
 		'workflow.submissionNextReviewRoundInFutureStage':
 			'The submission advanced to the next review round, was accepted, and is currently in the {$stage} stage.',
 		'workflow.uploadRevisions': 'Upload revisions',
-		'userInvitation.searchField':
-			'Search for a user by email address, username, or ORCID iD. Enter only one to get started!',
-		'grid.user.enable': 'Enable User',
-		'grid.user.disable': 'Disable User',
-		'grid.user.remove': 'Remove User',
-		'grid.user.logInAs': 'Login As',
-		'grid.user.grid.user.enableReasonDescription':
-			"Once the user is enabled, they will regain access to OJS, and you'll be able to invite them to roles as needed.",
-		'grid.user.grid.user.disableReasonDescription':
-			"Please note that once a user is disabled, you won't be able to add them to any roles until they are enabled again.",
-		'user.disabledModal.description': 'Current Roles : {$roles}',
-		'user.disabledModal.title': 'Disable {$fullName}',
-		'user.enabledModal.title': 'Enable {$fullName}',
 	},
 	tinyMCE: {
 		skinUrl: '/styles/tinymce',

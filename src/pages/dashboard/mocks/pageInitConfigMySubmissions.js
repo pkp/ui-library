@@ -286,38 +286,6 @@ export default {
 			},
 		},
 	],
-	columns: [
-		{
-			id: 'id',
-			header: 'ID',
-			componentName: 'DashboardCellSubmissionId',
-			sortable: true,
-		},
-		{
-			id: 'title',
-			header: 'Submissions',
-			componentName: 'DashboardCellSubmissionTitle',
-			sortable: false,
-		},
-		{
-			id: 'stage',
-			header: 'Stage',
-			componentName: 'DashboardCellSubmissionStage',
-			sortable: false,
-		},
-		{
-			id: 'activity',
-			header: 'Editorial Activity',
-			componentName: 'DashboardCellSubmissionActivity',
-			sortable: false,
-		},
-		{
-			id: 'actions',
-			header: 'Actions',
-			componentName: 'DashboardCellSubmissionActions',
-			sortable: false,
-		},
-	],
 	publicationSettings: {
 		supportsCitations: true,
 		identifiersEnabled: true,

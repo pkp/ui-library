@@ -247,32 +247,6 @@ export default {
 			},
 		},
 	],
-	columns: [
-		{
-			id: 'id',
-			header: 'ID',
-			componentName: 'DashboardCellReviewAssignmentId',
-			sortable: true,
-		},
-		{
-			id: 'title',
-			header: 'Submissions',
-			componentName: 'DashboardCellReviewAssignmentTitle',
-			sortable: false,
-		},
-		{
-			id: 'activity',
-			header: 'Editorial Activity',
-			componentName: 'DashboardCellReviewAssignmentActivity',
-			sortable: false,
-		},
-		{
-			id: 'actions',
-			header: 'Actions',
-			componentName: 'DashboardCellReviewAssignmentActions',
-			sortable: false,
-		},
-	],
 	publicationSettings: {
 		supportsCitations: true,
 		identifiersEnabled: true,
