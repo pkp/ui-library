@@ -1,4 +1,7 @@
-import {useSubmission} from '@/composables/useSubmission.js';
+import {
+	useSubmission,
+	CompletedReviewAssignmentStatuses,
+} from '@/composables/useSubmission.js';
 import {useLocalize} from '@/composables/useLocalize';
 import {useDate} from '@/composables/useDate';
 import {Actions as ParticipantManagerActions} from '@/managers/ParticipantManager/useParticipantManagerActions';
@@ -383,7 +386,50 @@ export function useDashboardConfigEditorialActivity() {
 	}
 
 	function getEditorialActivityForMyReviewAssignments(reviewAssignment) {
+		console.log(
+			'getEditorialActivityForMyReviewAssignments',
+			reviewAssignment.status,
+		);
+
+		// When declined always show the same status regardless of the stage
 		if (
+			reviewAssignment.status === pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED
+		) {
+			// indeed when declined, the dateConfirmed gets set regardless if its accepted or declined
+			const date = reviewAssignment.dateConfirmed;
+
+			return [
+				{
+					component: 'DashboardCellReviewAssignmentActivityAlert',
+					props: {
+						alert: t('dashboard.reviewAssignment.declined', {
+							date: formatShortDate(date),
+						}),
+					},
+				},
+			];
+		}
+		// if the submission moved to editorial / production stage
+		else if (
+			[
+				pkp.const.WORKFLOW_STAGE_ID_EDITING,
+				pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+			].includes(reviewAssignment.stageId)
+		) {
+			// It the review assignment is incomplete
+			if (
+				!CompletedReviewAssignmentStatuses.includes(reviewAssignment.status)
+			) {
+				return [
+					{
+						component: 'DashboardCellReviewAssignmentActivityAlert',
+						props: {
+							alert: t(`submissions.incomplete`),
+						},
+					},
+				];
+			}
+		} else if (
 			[
 				pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE,
 				pkp.const.REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND,
@@ -395,22 +441,6 @@ export function useDashboardConfigEditorialActivity() {
 					component: 'DashboardCellReviewAssignmentActivityAlert',
 					props: {
 						alert: t('dashboard.reviewAssignment.acceptOrDeclineRequestDate', {
-							date: formatShortDate(date),
-						}),
-					},
-				},
-			];
-		} else if (
-			reviewAssignment.status === pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED
-		) {
-			// indeed when declined, the dateConfirmed gets set regardless if its accepted or declined
-			const date = reviewAssignment.dateConfirmed;
-
-			return [
-				{
-					component: 'DashboardCellReviewAssignmentActivityAlert',
-					props: {
-						alert: t('dashboard.reviewAssignment.declined', {
 							date: formatShortDate(date),
 						}),
 					},
@@ -439,7 +469,9 @@ export function useDashboardConfigEditorialActivity() {
 				{
 					component: 'DashboardCellReviewAssignmentActivityAlert',
 					props: {
-						alert: t('dashboard.reviewAssignment.completeReviewByDate', {date}),
+						alert: t('dashboard.reviewAssignment.completeReviewByDate', {
+							date,
+						}),
 					},
 				},
 			];
@@ -463,7 +495,7 @@ export function useDashboardConfigEditorialActivity() {
 				pkp.const.REVIEW_ASSIGNMENT_STATUS_VIEWED,
 				pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 				pkp.const.REVIEW_ASSIGNMENT_STATUS_THANKED,
-			].includes(reviewAssignment.statusId)
+			].includes(reviewAssignment.status)
 		) {
 			const date = reviewAssignment.dateCompleted;
 

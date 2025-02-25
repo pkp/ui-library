@@ -66,12 +66,13 @@ const InProgressReviewAssignmentStatuses = [
 	pkp.const.REVIEW_ASSIGNMENT_STATUS_ACCEPTED,
 	pkp.const.REVIEW_ASSIGNMENT_STATUS_REVIEW_OVERDUE,
 ];
-const CompletedReviewAssignmentStatuses = [
+
+// Submitted reviews
+export const CompletedReviewAssignmentStatuses = [
 	pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
 	pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 	pkp.const.REVIEW_ASSIGNMENT_STATUS_THANKED,
-	pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED,
-	pkp.const.REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND,
+	pkp.const.REVIEW_ASSIGNMENT_STATUS_VIEWED,
 ];
 
 const IgnoredReviewAssignmentStatuses = [
