@@ -35,10 +35,12 @@ const {
 const emit = defineEmits('action');
 
 const reviewActivityIndicatorProps = computed(() =>
-	getReviewActivityIndicatorProps(props.reviewAssignment),
+	getReviewActivityIndicatorProps({reviewAssignment: props.reviewAssignment}),
 );
 
 const reviewActivityIndicatorPopoverProps = computed(() =>
-	getReviewActivityIndicatorPopoverProps(props.reviewAssignment),
+	getReviewActivityIndicatorPopoverProps({
+		reviewAssignment: props.reviewAssignment,
+	}),
 );
 </script>

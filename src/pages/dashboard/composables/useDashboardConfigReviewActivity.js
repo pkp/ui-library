@@ -203,9 +203,7 @@ const ConfigPerStatus = {
 		textAction: null,
 		primaryAction: ReviewActivityActions.VIEW_RECOMMENDATION,
 		negativeAction: null,
-		// TODO: THIS IS INCORRECT this is when the review was completed!!
-		// https://github.com/pkp/pkp-lib/issues/10359
-		dateToDisplay: 'dateCompleted',
+		dateToDisplay: 'dateConsidered',
 	},
 	// reviewer has been thanked
 	// indicated currently exactly same as status complete
@@ -224,7 +222,7 @@ const ConfigPerStatus = {
 		textAction: null,
 		primaryAction: ReviewActivityActions.VIEW_RECOMMENDATION,
 		negativeAction: null,
-		dateToDisplay: 'dateCompleted',
+		dateToDisplay: 'dateConsidered',
 	},
 
 	// editor cancelled review request
@@ -269,7 +267,7 @@ const ConfigPerStatus = {
 };
 
 function getDays(config, reviewAssignment) {
-	if (config.dateToDisplay) {
+	if (config.dateToDisplay && reviewAssignment[config.dateToDisplay]) {
 		return calculateDaysBetweenDates(
 			new Date(),
 			reviewAssignment[config.dateToDisplay],
@@ -280,7 +278,7 @@ function getDays(config, reviewAssignment) {
 }
 
 export function useDashboardConfigReviewActivity() {
-	function getReviewActivityIndicatorProps(reviewAssignment) {
+	function getReviewActivityIndicatorProps({reviewAssignment}) {
 		const config = ConfigPerStatus[reviewAssignment.statusId];
 
 		const reviewActivityConfig = config.reviewActivityIndicator;
@@ -307,18 +305,17 @@ export function useDashboardConfigReviewActivity() {
 		};
 	}
 
-	function getReviewActivityIndicatorPopoverProps(reviewAssignment) {
+	function getReviewActivityIndicatorPopoverProps({reviewAssignment}) {
 		const config = ConfigPerStatus[reviewAssignment.statusId];
 
 		function getDate() {
-			if (config.dateToDisplay) {
+			if (config.dateToDisplay && reviewAssignment[config.dateToDisplay]) {
 				return reviewAssignment[config.dateToDisplay];
 			}
 
 			return '';
 		}
 		const date = getDate(config, reviewAssignment);
-
 		function getRecommendation() {
 			return RecommendationTranslations[reviewAssignment.recommendation]
 				? t(RecommendationTranslations[reviewAssignment.recommendation])
