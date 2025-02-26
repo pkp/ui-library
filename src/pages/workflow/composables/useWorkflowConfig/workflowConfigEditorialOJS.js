@@ -178,8 +178,14 @@ export const WorkflowConfig = {
 
 			return items;
 		},
-		getSecondaryItems: ({submission, selectedReviewRound, selectedStageId}) => {
+		getSecondaryItems: ({
+			submission,
+			selectedReviewRound,
+			selectedStageId,
+			pageInitConfig,
+		}) => {
 			const items = [];
+
 			items.push({
 				component: 'ParticipantManager',
 				props: {
@@ -187,6 +193,17 @@ export const WorkflowConfig = {
 					submissionStageId: selectedStageId,
 				},
 			});
+
+			if (pageInitConfig.publicationSettings.isReviewerSuggestionEnabled) {
+				items.push({
+					component: 'ReviewerSuggestionManager',
+					props: {
+						submission,
+						submissionStageId: selectedStageId,
+						reviewRoundId: selectedReviewRound?.id,
+					},
+				});
+			}
 
 			return items;
 		},
@@ -325,7 +342,12 @@ export const WorkflowConfig = {
 
 			return items;
 		},
-		getSecondaryItems: ({submission, selectedReviewRound, selectedStageId}) => {
+		getSecondaryItems: ({
+			submission,
+			selectedReviewRound,
+			selectedStageId,
+			pageInitConfig,
+		}) => {
 			const items = [];
 
 			if (selectedReviewRound) {
@@ -348,6 +370,17 @@ export const WorkflowConfig = {
 					submissionStageId: selectedStageId,
 				},
 			});
+
+			if (pageInitConfig.publicationSettings.isReviewerSuggestionEnabled) {
+				items.push({
+					component: 'ReviewerSuggestionManager',
+					props: {
+						submission,
+						submissionStageId: selectedStageId,
+						reviewRoundId: selectedReviewRound.id,
+					},
+				});
+			}
 
 			return items;
 		},

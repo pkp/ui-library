@@ -2,6 +2,48 @@
 	<div>
 		<slot>
 			<ListPanel
+				v-if="suggestions.length > 0"
+				class="listPanel--selectReviewer reviewer-sugestions-list"
+				:items="suggestions"
+			>
+				<template #header>
+					<PkpHeader>
+						<h2>
+							{{ suggestionTitle ?? title }}
+						</h2>
+						<Spinner v-if="isLoading" />
+					</PkpHeader>
+				</template>
+
+				<template v-if="isLoading" #itemsEmpty>
+					<template v-if="isLoading">
+						<Spinner />
+						{{ t('common.loading') }}
+					</template>
+					<template v-else>
+						{{ emptyLabel }}
+					</template>
+				</template>
+
+				<template #item="{item}">
+					<SelectReviewerSuggestionListItem
+						v-if="!item.approvedAt"
+						:key="item.id"
+						:item="item"
+						:submission-id="getParams.submissionId"
+						:stage-id="getParams.reviewStage"
+						:review-round-id="getParams.reviewRoundId"
+						:select-reviewer-label="selectReviewerLabel"
+						:currently-assigned="
+							currentlyAssigned.includes(item.existingUserId)
+						"
+						:currently-assigned-label="currentlyAssignedLabel"
+						@update:suggestions="updateReviewerSuggestionList"
+					/>
+				</template>
+			</ListPanel>
+
+			<ListPanel
 				class="listPanel--selectReviewer"
 				:is-sidebar-visible="isSidebarVisible"
 				:items="currentReviewers"
@@ -118,6 +160,7 @@ import Pagination from '@/components/Pagination/Pagination.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import Search from '@/components/Search/Search.vue';
 import SelectReviewerListItem from '@/components/ListPanel/users/SelectReviewerListItem.vue';
+import SelectReviewerSuggestionListItem from '@/components/ListPanel/users/SelectReviewerSuggestionListItem.vue';
 import fetch from '@/mixins/fetch';
 
 export default {
@@ -129,6 +172,7 @@ export default {
 		PkpHeader,
 		Search,
 		SelectReviewerListItem,
+		SelectReviewerSuggestionListItem,
 		Icon,
 		Spinner,
 		PkpButton,
@@ -311,6 +355,25 @@ export default {
 			type: String,
 			required: true,
 		},
+		/** The list panel title of reviewer suggestion list */
+		suggestionTitle: {
+			type: String,
+			required: false,
+			default: null,
+		},
+		/** An array of reviewer suggestion if there are any */
+		suggestions: {
+			type: Array,
+			default() {
+				return [];
+			},
+		},
+		/** The API Url to obtain reviewer suggestion for this submission */
+		reviewerSuggestionsApiUrl: {
+			type: String,
+			required: false,
+			default: null,
+		},
 	},
 	emits: [
 		/**  Emitted when a prop should be changed. Payload: `(id, newProps)`  */
@@ -406,6 +469,54 @@ export default {
 				itemsMax,
 			});
 		},
+
+		/**
+		 * Update the list of reviewer suggestions list
+		 *
+		 * @param {Number} reviewerSuggestionId
+		 */
+		updateReviewerSuggestionList(reviewerSuggestionId) {
+			this.isLoading = true;
+			$.ajax({
+				url: this.reviewerSuggestionsApiUrl + '/' + reviewerSuggestionId,
+				type: 'GET',
+				context: this,
+				headers: {
+					'X-Csrf-Token': pkp.currentUser.csrfToken,
+				},
+				data: {
+					include_reviewer_data: true,
+				},
+				error: this.ajaxErrorCallback,
+				success(r) {
+					if (r.approvedAt) {
+						this.suggestions.forEach((reviewerSuggestion) => {
+							if (reviewerSuggestion.id == reviewerSuggestionId) {
+								reviewerSuggestion.approvedAt = r.approvedAt;
+							}
+						});
+
+						if (r.reviewer) {
+							let reviewers = this.items.map((i) => i);
+							reviewers.push(r.reviewer);
+							this.setItems(reviewers, this.itemsMax + 1);
+							this.currentlyAssigned.push(r.reviewer.id);
+						}
+					}
+				},
+				complete(r) {
+					this.isLoading = false;
+				},
+			});
+		},
 	},
 };
 </script>
+
+<style lang="less">
+@import '../../../styles/_import';
+
+.reviewer-sugestions-list {
+	margin-bottom: 4rem;
+}
+</style>
