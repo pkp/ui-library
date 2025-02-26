@@ -894,6 +894,23 @@ window.pkp = {
 		'workflow.submissionNextReviewRoundInFutureStage':
 			'The submission advanced to the next review round, was accepted, and is currently in the {$stage} stage.',
 		'workflow.uploadRevisions': 'Upload revisions',
+		'userInvitation.searchField':
+			'Search for a user by email address, username, or ORCID iD. Enter only one to get started!',
+		'grid.user.enable': 'Enable User',
+		'grid.user.disable': 'Disable User',
+		'grid.user.remove': 'Remove User',
+		'grid.user.logInAs': 'Login As',
+		'grid.user.grid.user.enableReasonDescription':
+			"Once the user is enabled, they will regain access to OJS, and you'll be able to invite them to roles as needed.",
+		'grid.user.grid.user.disableReasonDescription':
+			"Please note that once a user is disabled, you won't be able to add them to any roles until they are enabled again.",
+		'user.disabledModal.description': 'Current Roles : {$roles}',
+		'user.disabledModal.title': 'Disable {$fullName}',
+		'user.enabledModal.title': 'Enable {$fullName}',
+		'user.homePageUrl':'Homepage URL',
+		'user.workingLanguages':'Working Languages',
+		'user.bioStatement':'Bio Statement',
+		'common.viewMoreDetails':'View more details',
 	},
 	tinyMCE: {
 		skinUrl: '/styles/tinymce',
