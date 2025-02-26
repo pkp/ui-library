@@ -77,6 +77,7 @@ const {
 	fetch: fetchSuggestions,
 } = useFetch(url, {
 	query: queryParams,
+	debouncedMs: 400,
 });
 
 const staticProps = {
