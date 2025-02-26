@@ -56,13 +56,13 @@ export const ReviewAssignmentEditorialActivityScenario = [
 	getReviewAssignmentFullMock({
 		submissionId: 11,
 		statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_ACCEPTED,
-		stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+		submissionStageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 	}),
 	// When moved to copyediting / production stage
 	// When the review was declined - same indication for declined regardless of the stage
 	getReviewAssignmentFullMock({
 		submissionId: 12,
 		statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED,
-		stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+		submissionStageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 	}),
 ];

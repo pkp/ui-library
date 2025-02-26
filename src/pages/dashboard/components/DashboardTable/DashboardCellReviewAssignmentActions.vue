@@ -36,7 +36,7 @@ const actionLabel = computed(() => {
 		[
 			pkp.const.WORKFLOW_STAGE_ID_EDITING,
 			pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-		].includes(props.item.stageId)
+		].includes(props.item.submissionStageId)
 	) {
 		// It the review assignment is incomplete, show no action
 		// for complete scenario it will fallback to the 'View' below

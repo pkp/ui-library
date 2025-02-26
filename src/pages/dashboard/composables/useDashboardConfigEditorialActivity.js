@@ -409,7 +409,7 @@ export function useDashboardConfigEditorialActivity() {
 			[
 				pkp.const.WORKFLOW_STAGE_ID_EDITING,
 				pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-			].includes(reviewAssignment.stageId)
+			].includes(reviewAssignment.submissionStageId)
 		) {
 			// It the review assignment is incomplete
 			if (
