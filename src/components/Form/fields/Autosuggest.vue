@@ -46,7 +46,7 @@
 				(allowCustom && localInputValue?.length) ||
 				isLoading
 			"
-			class="autosuggest__results-container autosuggest__results"
+			class="autosuggest__results-container autosuggest__results max-h-80 overflow-auto"
 		>
 			<ComboboxOption
 				v-if="isLoading"
