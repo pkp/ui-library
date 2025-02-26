@@ -52,6 +52,33 @@
 					:key="sideModal3?.modalId"
 					v-bind="sideModal3?.props"
 				/>
+				<PkpDialog
+					:key="JSON.stringify(dialogProps)"
+					:opened="dialogOpened && dialogLevel === 3"
+					v-bind="dialogProps"
+					@close="closeDialog"
+				></PkpDialog>
+				<SideModal
+					:data-cy="
+						activeModalId === sideModal4?.modalId ? 'active-modal' : undefined
+					"
+					close-label="Close"
+					:modal-level="4"
+					:open="sideModal4?.opened || false"
+					@close="(returnData) => close(sideModal4?.modalId, returnData)"
+				>
+					<component
+						:is="component4"
+						:key="sideModal4?.modalId"
+						v-bind="sideModal4?.props"
+					/>
+					<PkpDialog
+						:key="JSON.stringify(dialogProps)"
+						:opened="dialogOpened && dialogLevel === 4"
+						v-bind="dialogProps"
+						@close="closeDialog"
+					></PkpDialog>
+				</SideModal>
 			</SideModal>
 		</SideModal>
 	</SideModal>
@@ -79,13 +106,16 @@ const {
 	sideModal1,
 	sideModal2,
 	sideModal3,
+	sideModal4,
 	dialogProps,
 	dialogOpened,
 	dialogLevel,
 } = storeToRefs(useModalStore());
 
 const activeModalId = computed(() => {
-	if (sideModal3.value?.opened) {
+	if (sideModal4.value?.opened) {
+		return sideModal4.value.modalId;
+	} else if (sideModal3.value?.opened) {
 		return sideModal3.value.modalId;
 	} else if (sideModal2.value?.opened) {
 		return sideModal2.value.modalId;
@@ -116,6 +146,13 @@ const component3 = computed(() => {
 		return null;
 	}
 	return GlobalModals[sideModal3.value.component] || sideModal3.value.component;
+});
+
+const component4 = computed(() => {
+	if (!sideModal4.value?.component) {
+		return null;
+	}
+	return GlobalModals[sideModal4.value.component] || sideModal4.value.component;
 });
 
 function close(modalId, returnData) {
