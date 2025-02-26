@@ -66,7 +66,6 @@ const props = defineProps({
 		default: () => [],
 	},
 });
-const filterRorIds = props.filterIds;
 const {generateId} = useId();
 const autosuggestContainerId = generateId();
 const currentSelected = ref([]);
@@ -104,7 +103,7 @@ const autoSuggestProps = computed(() => ({
 
 const mappedSuggestions = computed(() => {
 	return suggestions.value?.items
-		.filter((item) => !filterRorIds.value?.includes(item.id))
+		.filter((item) => !props.filterIds?.includes(item.id))
 		.map((item) => {
 			return mapSuggestion(item);
 		});
