@@ -59,11 +59,11 @@
 								</span>
 							</div>
 						</TableCell>
-						<TableCell class="">
+						<TableCell>
 							<div v-if="affiliation.ror">
 								<a
 									:href="affiliation.ror"
-									class="inline-block cursor-pointer align-middle text-lg-semibold"
+									class="flex cursor-pointer py-2 align-middle text-lg-semibold"
 									target="_blank"
 								>
 									{{ affiliation.ror }}
@@ -153,14 +153,12 @@
 								:filter-ids="currentValueRorIds"
 							/>
 						</TableCell>
-						<TableCell class="">
+						<TableCell class="align-bottom">
 							<div v-if="showNewAffiliationForm">
 								<div v-if="newAffiliation.ror">
-									<span class="text-lg-semibold">&nbsp;</span>
-									<br />
 									<a
 										:href="newAffiliation.ror"
-										class="flex cursor-pointer items-center text-lg-semibold"
+										class="flex cursor-pointer items-center py-[0.625rem] text-lg-semibold"
 										target="_blank"
 									>
 										{{ newAffiliation.ror }}
@@ -173,7 +171,9 @@
 								</div>
 								<div v-else>
 									<div>
-										<span class="flex items-center text-lg-semibold">
+										<span
+											class="flex items-center py-[0.5rem] text-lg-semibold"
+										>
 											<Icon
 												:icon="
 													translations(newAffiliation).count ===
@@ -181,7 +181,7 @@
 														? 'Complete'
 														: 'InProgress'
 												"
-												:class="'ms-2 inline-block h-auto w-6 align-middle'"
+												:class="'inline-block h-auto w-6 align-middle'"
 												:inline="true"
 											/>
 											<span class="align-middle">
@@ -197,7 +197,10 @@
 										:key="newAffiliationNameLocale"
 									>
 										<div
-											v-if="supportedLocales.includes(newAffiliationNameLocale)"
+											v-if="
+												supportedLocales.includes(newAffiliationNameLocale) &&
+												newAffiliationNameLocale !== primaryLocale
+											"
 										>
 											<div>
 												<FieldText
