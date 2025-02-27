@@ -92,9 +92,9 @@ if (reviewAssignmentMenuItem) {
 }
 
 // helper to attach count to the menu item
-function enrichMenuItemWithCounts(page, itemsCount) {
+function enrichMenuItemWithCounts(menuItems, page, itemsCount) {
 	if (itemsCount.value) {
-		const menuItem = menuItems.value.find((item) => item.key === page);
+		const menuItem = menuItems.find((item) => item.key === page);
 		if (menuItem) {
 			const menuItemsEnriched = menuItem.items.map((item) => ({
 				...item,
@@ -105,14 +105,21 @@ function enrichMenuItemWithCounts(page, itemsCount) {
 			menuItem.items = menuItemsEnriched;
 		}
 	}
+	return menuItems;
 }
 
 const menuItemsEnriched = computed(() => {
-	enrichMenuItemWithCounts('dashboards', dashboardCount);
-	enrichMenuItemWithCounts('mySubmissions', mySubmissionsCount);
-	enrichMenuItemWithCounts('reviewAssignments', reviewAssignmentCount);
+	const menuItemsCopy = JSON.parse(JSON.stringify(menuItems.value));
 
-	return menuItems.value;
+	enrichMenuItemWithCounts(menuItemsCopy, 'dashboards', dashboardCount);
+	enrichMenuItemWithCounts(menuItemsCopy, 'mySubmissions', mySubmissionsCount);
+	enrichMenuItemWithCounts(
+		menuItemsCopy,
+		'reviewAssignments',
+		reviewAssignmentCount,
+	);
+
+	return menuItemsCopy;
 });
 
 function convertLinksToArray(links, level = 1, parentKey = '') {
@@ -179,6 +186,7 @@ const {sideMenuProps} = useSideMenu(menuItemsEnriched, {
 watch(
 	() => props.links,
 	(newLinks) => {
+		console.log('SideNav watch');
 		menuItems.value = convertLinksToArray(newLinks);
 	},
 );
