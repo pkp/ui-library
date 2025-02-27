@@ -2,7 +2,7 @@
 	<div class="mt-8 flex flex-col gap-y-2">
 		<FormDisplayItemBasic
 			heading-element="h4"
-			:heading="t('user.homePageUrl')"
+			:heading="t('user.url')"
 			:value="
 				store.invitationPayload.homePageUrl
 					? store.invitationPayload.homePageUrl
