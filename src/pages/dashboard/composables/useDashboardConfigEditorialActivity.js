@@ -405,7 +405,7 @@ export function useDashboardConfigEditorialActivity() {
 			];
 		}
 		// if the submission moved to editorial / production stage
-		else if (
+		if (
 			[
 				pkp.const.WORKFLOW_STAGE_ID_EDITING,
 				pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
@@ -424,7 +424,9 @@ export function useDashboardConfigEditorialActivity() {
 					},
 				];
 			}
-		} else if (
+		}
+
+		if (
 			[
 				pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE,
 				pkp.const.REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND,
@@ -441,7 +443,8 @@ export function useDashboardConfigEditorialActivity() {
 					},
 				},
 			];
-		} else if (
+		}
+		if (
 			reviewAssignment.status ===
 			pkp.const.REVIEW_ASSIGNMENT_STATUS_RESPONSE_OVERDUE
 		) {
@@ -455,7 +458,8 @@ export function useDashboardConfigEditorialActivity() {
 					},
 				},
 			];
-		} else if (
+		}
+		if (
 			reviewAssignment.status === pkp.const.REVIEW_ASSIGNMENT_STATUS_ACCEPTED
 		) {
 			const date = reviewAssignment.dateDue;
@@ -470,7 +474,8 @@ export function useDashboardConfigEditorialActivity() {
 					},
 				},
 			];
-		} else if (
+		}
+		if (
 			reviewAssignment.status ===
 			pkp.const.REVIEW_ASSIGNMENT_STATUS_REVIEW_OVERDUE
 		) {
@@ -484,9 +489,8 @@ export function useDashboardConfigEditorialActivity() {
 					},
 				},
 			];
-		} else if (
-			CompletedReviewAssignmentStatuses.includes(reviewAssignment.status)
-		) {
+		}
+		if (CompletedReviewAssignmentStatuses.includes(reviewAssignment.status)) {
 			const date = reviewAssignment.dateCompleted;
 
 			return [
@@ -499,7 +503,8 @@ export function useDashboardConfigEditorialActivity() {
 					},
 				},
 			];
-		} else if (
+		}
+		if (
 			// Cancelled review assignments should be filtered out, this should not appear, just for documentation
 			reviewAssignment.status === pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED
 		) {
