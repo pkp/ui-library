@@ -5,6 +5,7 @@
 	<component
 		:is="element"
 		class="pkpButton"
+		type="button"
 		:class="styles"
 		:href="element === 'a' ? href : false"
 		:disabled="element === 'a' && !isDisabled ? undefined : isDisabled"
