@@ -559,7 +559,7 @@ export default {
 		toolbar() {
 			let baseToolbar = 'bold italic superscript subscript | link ';
 
-			if (this.attachers) {
+			if (this.attachers?.length) {
 				baseToolbar += '| pkpAttachFiles';
 			}
 
