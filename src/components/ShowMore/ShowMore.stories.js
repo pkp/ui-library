@@ -8,7 +8,7 @@ export const Primary = {
 		setup() {
 			return {args};
 		},
-		template: '<ShowMore v-bind="args">Hello</Button>',
+		template: '<ShowMore v-bind="args">Hello</ShowMore>',
 	}),
 	args: {
 		label: 'Show more details',
