@@ -8,7 +8,6 @@
 		:class="styles"
 		:href="element === 'a' ? href : false"
 		:disabled="element === 'a' && !isDisabled ? undefined : isDisabled"
-		@click="click"
 		@focus="emit('focus')"
 		@blur="emit('blur')"
 	>
