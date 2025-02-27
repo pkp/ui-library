@@ -8,7 +8,6 @@
 		:class="styles"
 		:href="element === 'a' ? href : false"
 		:disabled="element === 'a' && !isDisabled ? undefined : isDisabled"
-		@click="click"
 		@focus="emit('focus')"
 		@blur="emit('blur')"
 	>
@@ -60,12 +59,6 @@ const isSecondary = computed(
 			!props.isWarnable &&
 			!props.isActive),
 );
-
-function click(e) {
-	if (props.element === 'button') {
-		e.preventDefault();
-	}
-}
 
 const styles = computed(() => ({
 	// Base
