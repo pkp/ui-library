@@ -232,24 +232,26 @@ export default {
 				language_url:
 					$.pkp?.plugins?.generic?.tinymceplugin?.tinymceParams?.language_url,
 				// See: https://www.tiny.cloud/docs/general-configuration-guide/upload-images/#rollingyourimagehandler
-				images_upload_handler(blobInfo, success, failure) {
-					const data = new FormData();
-					data.append('file', blobInfo.blob(), blobInfo.filename());
-					$.ajax({
-						method: 'POST',
-						url: self.uploadUrl,
-						data: data,
-						processData: false,
-						contentType: false,
-						headers: {
-							'X-Csrf-Token': pkp.currentUser.csrfToken,
-						},
-						success(r) {
-							success(r.url);
-						},
-						error(r) {
-							failure(r.responseJSON.errorMessage);
-						},
+				images_upload_handler(blobInfo, progress) {
+					return new Promise((resolve, reject) => {
+						const data = new FormData();
+						data.append('file', blobInfo.blob(), blobInfo.filename());
+						return $.ajax({
+							method: 'POST',
+							url: self.uploadUrl,
+							data: data,
+							processData: false,
+							contentType: false,
+							headers: {
+								'X-Csrf-Token': pkp.currentUser.csrfToken,
+							},
+							success(r) {
+								resolve(r.url);
+							},
+							error(r) {
+								reject(r.responseJSON.error);
+							},
+						});
 					});
 				},
 				init_instance_callback: (editor) => {
