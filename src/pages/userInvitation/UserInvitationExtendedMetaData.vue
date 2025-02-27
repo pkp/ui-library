@@ -1,12 +1,5 @@
 <template>
-	<Button
-		is-active
-		:icon="isVisible ? 'Dropup' : 'Dropdown'"
-		@click="isVisible = !isVisible"
-	>
-		{{ t('common.viewMoreDetails') }}
-	</Button>
-	<div v-if="isVisible" class="mt-8 flex flex-col gap-y-2">
+	<div class="mt-8 flex flex-col gap-y-2">
 		<FormDisplayItemBasic
 			heading-element="h4"
 			:heading="t('user.homePageUrl')"
@@ -88,13 +81,10 @@
 </template>
 
 <script setup>
-import Button from '@/components/Button/Button.vue';
 import FormDisplayItemBasic from '@/components/FormDisplay/FormDisplayItemBasic.vue';
 import {useTranslation} from '@/composables/useTranslation';
 import {useUserInvitationPageStore} from './UserInvitationPageStore';
-import {ref} from 'vue';
 
 const {t} = useTranslation();
 const store = useUserInvitationPageStore();
-const isVisible = ref(false);
 </script>

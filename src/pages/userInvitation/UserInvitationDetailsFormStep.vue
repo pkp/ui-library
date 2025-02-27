@@ -61,7 +61,9 @@
 			></FormDisplayItemBasic>
 		</div>
 		<div v-if="store.invitationMode != 'create'">
-			<UserInvitationExtendedMetaData></UserInvitationExtendedMetaData>
+			<ShowMore :label="t('common.viewMoreDetails')">
+				<UserInvitationExtendedMetaData></UserInvitationExtendedMetaData>
+			</ShowMore>
 		</div>
 	</div>
 	<div class="p-8">
@@ -80,6 +82,7 @@ import {useUserInvitationPageStore} from './UserInvitationPageStore';
 import {useForm} from '@/composables/useForm';
 import FormErrorSummary from '@/components/Form/FormErrorSummary.vue';
 import UserInvitationExtendedMetaData from './UserInvitationExtendedMetaData.vue';
+import ShowMore from '@/components/ShowMore/ShowMore.vue';
 
 /**
  * Update the payload by using form values on multilingual or not
