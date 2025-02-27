@@ -2,7 +2,7 @@ import {defineComponentStore} from '@/utils/defineComponentStore';
 import {useApiUrl} from '@/composables/useApiUrl';
 import {useUrl} from '@/composables/useUrl';
 import {useAnnouncer} from '@/composables/useAnnouncer';
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {ref, watch} from 'vue';
 import {useUserAccessManagerActions} from './useUserAccessManagerActions';
@@ -10,7 +10,7 @@ import {useUserAccessManagerActions} from './useUserAccessManagerActions';
 export const useUserAccessManagerStore = defineComponentStore(
 	'userAccessManager',
 	() => {
-		const {t} = useTranslation();
+		const {t} = useLocalize();
 		/** Announcer */
 
 		const {announce} = useAnnouncer();

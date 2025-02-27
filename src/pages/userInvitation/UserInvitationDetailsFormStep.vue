@@ -22,7 +22,7 @@
 		></PkpForm>
 	</div>
 	<div v-if="store.invitationPayload.userId !== null" class="p-8">
-		<div class="flex flex-col gap-y-2">
+		<div class="mb-8 flex flex-col gap-y-2">
 			<FormDisplayItemBasic
 				heading-element="h4"
 				:heading="t('user.email')"
@@ -60,6 +60,11 @@
 				:value="localize(store.invitationPayload.affiliation)"
 			></FormDisplayItemBasic>
 		</div>
+		<div v-if="store.invitationMode != 'create'">
+			<ShowMore :label="t('common.viewMoreDetails')">
+				<UserInvitationExtendedMetaData></UserInvitationExtendedMetaData>
+			</ShowMore>
+		</div>
 	</div>
 	<div class="p-8">
 		<UserInvitationUserGroupsTable :user-groups="userGroups" />
@@ -71,11 +76,13 @@ import {defineProps, computed} from 'vue';
 import FormDisplayItemBasic from '@/components/FormDisplay/FormDisplayItemBasic.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import PkpForm from '@/components/Form/Form.vue';
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 import UserInvitationUserGroupsTable from './UserInvitationUserGroupsTable.vue';
 import {useUserInvitationPageStore} from './UserInvitationPageStore';
 import {useForm} from '@/composables/useForm';
 import FormErrorSummary from '@/components/Form/FormErrorSummary.vue';
+import UserInvitationExtendedMetaData from './UserInvitationExtendedMetaData.vue';
+import ShowMore from '@/components/ShowMore/ShowMore.vue';
 
 /**
  * Update the payload by using form values on multilingual or not
@@ -102,7 +109,7 @@ function updateUserForm(id, form, c, d) {
 	}
 }
 
-const {t} = useTranslation();
+const {t} = useLocalize();
 const store = useUserInvitationPageStore();
 
 const props = defineProps({

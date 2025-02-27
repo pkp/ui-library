@@ -46,7 +46,7 @@ import TableBody from '@/components/Table/TableBody.vue';
 import TableRow from '@/components/Table/TableRow.vue';
 import {useUserAccessManagerStore} from './UserAccessManagerStore.js';
 import TablePagination from '@/components/Table/TablePagination.vue';
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 import Search from '@/components/Search/Search.vue';
 import {ref} from 'vue';
 import UserAccessManagerCellStartDate from './UserAccessManagerCellStartDate.vue';
@@ -66,6 +66,6 @@ const Components = {
 };
 
 const store = useUserAccessManagerStore();
-const {t} = useTranslation();
+const {t} = useLocalize();
 const searchPhrase = ref('');
 </script>
