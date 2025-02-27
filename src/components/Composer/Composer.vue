@@ -553,7 +553,7 @@ export default {
 			searchPhrase: '',
 			searchResults: [],
 			showSearchResultCount: 10,
-			toolbar: 'bold italic superscript subscript | link',
+			toolbar: 'bold italic superscript subscript | link | pkpAttachFiles',
 		};
 	},
 	computed: {
@@ -578,8 +578,6 @@ export default {
 				return {};
 			}
 			let self = this;
-
-			self.toolbar += ' | pkpAttachFiles';
 
 			return {
 				setup: function (editor) {
