@@ -1,5 +1,8 @@
-import {inject, ref, computed, watch} from 'vue';
-import {defineComponentStore} from '@/utils/defineComponentStore';
+import {ref, computed, watch} from 'vue';
+import {
+	defineComponentStore,
+	injectFromCurrentInstance,
+} from '@/utils/defineComponentStore';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 import {useForm} from '@/composables/useForm';
@@ -62,7 +65,7 @@ export const useWorkflowChangeSubmissionLanguageModalStore =
 		// Get publication props
 		getData();
 
-		const closeModal = inject('closeModal');
+		const closeModal = injectFromCurrentInstance('closeModal');
 
 		/**
 		 * Functions

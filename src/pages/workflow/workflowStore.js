@@ -1,4 +1,5 @@
-import {computed, inject} from 'vue';
+import {computed} from 'vue';
+import {injectFromCurrentInstance} from '@/utils/defineComponentStore';
 
 import {defineComponentStore} from '@/utils/defineComponentStore';
 import {
@@ -33,7 +34,7 @@ export const useWorkflowStore = defineComponentStore(
 		/**
 		 * Action to close the workflow from inside
 		 * */
-		const closeWorkflowModal = inject('closeModal');
+		const closeWorkflowModal = injectFromCurrentInstance('closeModal');
 
 		/**
 		 * Submission & Publication

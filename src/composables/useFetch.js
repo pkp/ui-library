@@ -1,8 +1,8 @@
-import {ref, unref, inject} from 'vue';
+import {ref, unref} from 'vue';
 import {ofetch, createFetch} from 'ofetch';
 import {useModalStore} from '@/stores/modalStore';
 import {useProgressStore} from '@/stores/progressStore';
-
+import {injectFromCurrentInstance} from '@/utils/defineComponentStore';
 import {useDebounceFn} from '@vueuse/core';
 
 let ofetchInstance = ofetch;
@@ -98,7 +98,7 @@ export function useFetch(url, options = {}) {
 
 	let lastRequestController = null;
 
-	const modalLevel = inject('modalLevel');
+	const modalLevel = injectFromCurrentInstance('modalLevel');
 	const screenName = modalLevel?.value ? `modal_${modalLevel.value}` : 'base';
 	const progressStore = useProgressStore();
 
