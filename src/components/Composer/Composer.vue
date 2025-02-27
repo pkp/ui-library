@@ -553,10 +553,18 @@ export default {
 			searchPhrase: '',
 			searchResults: [],
 			showSearchResultCount: 10,
-			toolbar: 'bold italic superscript subscript | link | pkpAttachFiles',
 		};
 	},
 	computed: {
+		toolbar() {
+			let baseToolbar = 'bold italic superscript subscript | link ';
+
+			if (this.attachers) {
+				baseToolbar += '| pkpAttachFiles';
+			}
+
+			return baseToolbar;
+		},
 		/**
 		 * A getter and setter to allow v-model on a prop
 		 */
