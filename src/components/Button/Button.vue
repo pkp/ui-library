@@ -61,12 +61,6 @@ const isSecondary = computed(
 			!props.isActive),
 );
 
-function click(e) {
-	if (props.element === 'button') {
-		e.preventDefault();
-	}
-}
-
 const styles = computed(() => ({
 	// Base
 	'inline-flex relative items-center gap-x-1 ': true,
