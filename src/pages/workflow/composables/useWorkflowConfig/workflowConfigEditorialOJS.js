@@ -329,6 +329,7 @@ export const WorkflowConfig = {
 					submission: submission,
 					reviewRoundId: selectedReviewRound?.id,
 					componentForms: pageInitConfig.componentForms,
+					recommendations: pageInitConfig.recommendations,
 				},
 			});
 

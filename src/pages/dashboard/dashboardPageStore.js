@@ -452,7 +452,7 @@ export const useDashboardPageStore = defineComponentStore(
 		 * */
 
 		const dashboardConfigReviewActivity = extender.addFns(
-			useDashboardConfigReviewActivity(),
+			useDashboardConfigReviewActivity(pageInitConfig.recommendations),
 		);
 
 		function getReviewActivityIndicatorProps(args) {
