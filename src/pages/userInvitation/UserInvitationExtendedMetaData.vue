@@ -44,47 +44,41 @@
 					: '--'
 			"
 		></FormDisplayItemBasic>
-		<h4 class="text-base-normal text-secondary">
-			{{ t('user.bioStatement') }}
-		</h4>
-		<p
-			class="pt-1 text-lg-normal"
-			v-html="
+		<FormDisplayItemBasic
+			heading-element="h4"
+			:heading="t('user.bioStatement')"
+			:html-value="
 				localize(store.invitationPayload.biography)
 					? localize(store.invitationPayload.biography)
 					: '--'
 			"
-		></p>
-		<h4 class="text-base-normal text-secondary">
-			{{ t('user.mailingAddress') }}
-		</h4>
-		<p
-			class="pt-1 text-lg-normal"
-			v-html="
+		></FormDisplayItemBasic>
+		<FormDisplayItemBasic
+			heading-element="h4"
+			:heading="t('user.mailingAddress')"
+			:html-value="
 				store.invitationPayload.mailingAddress
 					? store.invitationPayload.mailingAddress
 					: '--'
 			"
-		></p>
-		<h4 class="text-base-normal text-secondary">
-			{{ t('user.signature') }}
-		</h4>
-		<p
-			class="pt-1 text-lg-normal"
-			v-html="
+		></FormDisplayItemBasic>
+		<FormDisplayItemBasic
+			heading-element="h4"
+			:heading="t('user.signature')"
+			:html-value="
 				localize(store.invitationPayload.signature)
 					? localize(store.invitationPayload.signature)
 					: '--'
 			"
-		></p>
+		></FormDisplayItemBasic>
 	</div>
 </template>
 
 <script setup>
 import FormDisplayItemBasic from '@/components/FormDisplay/FormDisplayItemBasic.vue';
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 import {useUserInvitationPageStore} from './UserInvitationPageStore';
 
-const {t} = useTranslation();
+const {t} = useLocalize();
 const store = useUserInvitationPageStore();
 </script>

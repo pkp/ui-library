@@ -76,7 +76,7 @@ import {defineProps, computed} from 'vue';
 import FormDisplayItemBasic from '@/components/FormDisplay/FormDisplayItemBasic.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import PkpForm from '@/components/Form/Form.vue';
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 import UserInvitationUserGroupsTable from './UserInvitationUserGroupsTable.vue';
 import {useUserInvitationPageStore} from './UserInvitationPageStore';
 import {useForm} from '@/composables/useForm';
@@ -109,7 +109,7 @@ function updateUserForm(id, form, c, d) {
 	}
 }
 
-const {t} = useTranslation();
+const {t} = useLocalize();
 const store = useUserInvitationPageStore();
 
 const props = defineProps({
