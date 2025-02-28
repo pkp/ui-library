@@ -24,9 +24,10 @@
 			<TableBody>
 				<TableRow v-for="item in items" :key="item.id">
 					<TableCell :is-row-header="true">
-						<span class="text-base-normal">
-							{{ localize(item.title) }}
-						</span>
+						<span
+							v-strip-unsafe-html="localize(item.title)"
+							class="text-lg-normal"
+						></span>
 					</TableCell>
 
 					<TableCell>
@@ -77,6 +78,7 @@ import ReviewerRecommendationsEditModal from './ReviewerRecommendationsEditModal
 
 import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
+import {sanitizeHtml} from '@/directives/stripUnsafeHtml';
 
 const {t} = useLocalize();
 
@@ -249,7 +251,7 @@ export default {
 						? this.confirmDeactivateMessage
 						: this.confirmActivateMessage,
 					{
-						title: this.localize(recommendation.title),
+						title: sanitizeHtml(this.localize(recommendation.title)),
 					},
 				),
 				actions: [
@@ -362,7 +364,7 @@ export default {
 				name: 'delete',
 				title: this.deleteRecommendationLabel,
 				message: this.replaceLocaleParams(this.confirmDeleteMessage, {
-					title: this.localize(recommendation.title),
+					title: sanitizeHtml(this.localize(recommendation.title)),
 				}),
 				actions: [
 					{
