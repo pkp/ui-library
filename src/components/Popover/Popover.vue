@@ -23,7 +23,7 @@
 
 				<div
 					:class="sizeClasses"
-					class="text-sm flex-auto overflow-hidden rounded bg-secondary shadow"
+					class="text-sm flex-auto rounded bg-secondary shadow"
 				>
 					<div class="p-4"><slot></slot></div>
 				</div>
