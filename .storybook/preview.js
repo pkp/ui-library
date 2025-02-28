@@ -29,6 +29,7 @@ import ModalManager from '@/components/Modal/ModalManager.vue';
 
 import VueScrollTo from 'vue-scrollto';
 
+import '../tailwind.config.css';
 import '../src/styles/_import.less';
 import '../src/styles/_global.less';
 import '../src/styles/tw-theme-vars.css';

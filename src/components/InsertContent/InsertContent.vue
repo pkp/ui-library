@@ -151,6 +151,6 @@ export default {
 
 .insertContent__item__button {
 	margin-inline-start: auto;
-	flex-shrink: 0;
+	shrink: 0;
 }
 </style>

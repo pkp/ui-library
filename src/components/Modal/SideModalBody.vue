@@ -3,33 +3,33 @@
 		class="pointer-events-auto h-screen w-screen"
 		:class="levelClasses"
 	>
-		<div class="shadow-xl flex h-full flex-col bg-default py-6">
+		<div class="bg-default flex h-full flex-col py-6 shadow-xl">
 			<div class="">
 				<div class="flex items-start">
 					<div class="ms-4">
 						<button
 							type="button"
-							class="rounded-md text-gray-400 hover:text-gray-500 focus:ring-indigo-500 relative inline-flex focus:outline-none focus:ring-2 focus:ring-offset-2"
+							class="relative inline-flex rounded-md text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden"
 							@click="closeModal"
 						>
 							<span class="sr-only">{{ t('common.close') }}</span>
 							<Icon
-								class="h-8 w-8 text-primary"
+								class="text-primary h-8 w-8"
 								icon="BackButton"
 								:aria-hidden="true"
 							/>
 						</button>
 					</div>
-					<div class="ml-8 mr-8 flex-grow" data-cy="sidemodal-header">
+					<div class="mr-8 ml-8 grow" data-cy="sidemodal-header">
 						<div class="flex">
-							<div class="flex-grow">
+							<div class="grow">
 								<!-- @slot Small text above title, might be useful for example to display submission Id-->
 								<div class="text-xl-medium"><slot name="pre-title"></slot></div>
-								<DialogTitle as="h1" class="mt-1 text-4xl-bold text-heading">
+								<DialogTitle as="h1" class="text-4xl-bold text-heading mt-1">
 									<!-- @slot Main title, also used for accessibility (aria-labelledby) -->
 									<slot name="title"></slot>
 								</DialogTitle>
-								<DialogDescription class="mt-1 text-3xl-normal">
+								<DialogDescription class="text-3xl-normal mt-1">
 									<!-- @slot Optionally descrition, also used for accessibility (aria-describedby) -->
 									<slot name="description"></slot>
 								</DialogDescription>
