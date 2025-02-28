@@ -45,6 +45,7 @@
 						:max="max"
 						:step="step"
 						class="w-full"
+						unstyled
 						:aria-labelledby="labelId"
 						:pt="sliderStyling"
 					/>
