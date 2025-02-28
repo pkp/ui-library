@@ -45,6 +45,7 @@
 						:max="max"
 						:step="step"
 						class="w-full"
+						unstyled
 						:aria-labelledby="labelId"
 						:pt="sliderStyling"
 					/>
@@ -111,7 +112,7 @@ export default {
 					// Position
 					'block absolute',
 					{
-						'top-0 left-0': props.orientation == 'horizontal',
+						'top-0 start-0': props.orientation == 'horizontal',
 					},
 					//Size
 					{
@@ -133,9 +134,9 @@ export default {
 						'h-[1.143rem]',
 						'w-[1.143rem]',
 						{
-							'top-[50%] mt-[-0.5715rem] ml-[-0.5715rem]':
+							'top-[50%] mt-[-0.5715rem] ms-[-0.5715rem]':
 								props.orientation == 'horizontal',
-							'left-[50%] mb-[-0.5715rem] ml-[-0.5715rem]':
+							'start-[50%] mb-[-0.5715rem] ms-[-0.5715rem]':
 								props.orientation == 'vertical',
 						},
 						// Shape
