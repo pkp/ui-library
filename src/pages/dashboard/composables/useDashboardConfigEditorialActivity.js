@@ -36,19 +36,22 @@ export function useDashboardConfigEditorialActivity() {
 				},
 			];
 		}
-		if (activeStage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION) {
-			if (submission.submissionProgress) {
-				return [
-					{
-						component: 'DashboardCellSubmissionActivityActionAlert',
-						props: {
-							actionName: 'openSubmissionWizard',
-							actionLabel: t('submission.list.completeSubmission'),
-							actionArgs: {submissionId: submission.id},
-						},
+
+		// Not checking for submission stage, as OPS does not have it
+		if (submission.submissionProgress) {
+			return [
+				{
+					component: 'DashboardCellSubmissionActivityActionAlert',
+					props: {
+						actionName: 'openSubmissionWizard',
+						actionLabel: t('submission.list.completeSubmission'),
+						actionArgs: {submissionId: submission.id},
 					},
-				];
-			}
+				},
+			];
+		}
+
+		if (activeStage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION) {
 			if (!submission.editorAssigned) {
 				return [
 					{
@@ -315,20 +318,21 @@ export function useDashboardConfigEditorialActivity() {
 	function getEditorialActivityForMySubmissions(submission) {
 		const activeStage = getActiveStage(submission);
 
-		if (activeStage.id === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION) {
-			if (submission.submissionProgress) {
-				return [
-					{
-						component: 'DashboardCellSubmissionActivityActionAlert',
-						props: {
-							actionName: 'openSubmissionWizard',
-							actionLabel: t('submission.list.completeSubmission'),
-							actionArgs: {submissionId: submission.id},
-						},
+		// Not checking for submission stage, as OPS does not have it
+		if (submission.submissionProgress) {
+			return [
+				{
+					component: 'DashboardCellSubmissionActivityActionAlert',
+					props: {
+						actionName: 'openSubmissionWizard',
+						actionLabel: t('submission.list.completeSubmission'),
+						actionArgs: {submissionId: submission.id},
 					},
-				];
-			}
-		} else if (
+				},
+			];
+		}
+
+		if (
 			activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW ||
 			activeStage.id === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW
 		) {
