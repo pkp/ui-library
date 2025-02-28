@@ -359,12 +359,11 @@ export function useDashboardConfigReviewActivity() {
 			}
 			return t(ActionButtonTranslations[config.negativeAction]);
 		}
-
 		return {
 			titleBadgeProps: config.badgeProps,
 			title: getTitle(),
 			description: getDescription(),
-			reviewMethod: reviewAssignment.method,
+			reviewMethod: reviewAssignment.reviewMethod,
 			textButton: config.textAction && {
 				action: ActionsMapping[config.textAction],
 				label: getTextActionLabel(),
