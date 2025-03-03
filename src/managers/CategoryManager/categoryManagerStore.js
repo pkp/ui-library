@@ -88,6 +88,7 @@ export const useCategoryManagerStore = defineComponentStore(
 					label: 'Delete',
 					icon: 'Cancel',
 					name: Actions.CATEGORY_DELETE,
+					isWarnable: true,
 				},
 			];
 		}
@@ -169,7 +170,7 @@ export const useCategoryManagerStore = defineComponentStore(
 			await refreshCategories();
 
 			// 	If saved category has a parent then expand parent to have saved category displayed
-			if (_expandedIds.value.has(category.parentId)) {
+			if (category.parentId) {
 				_expandedIds.value.add(category.parentId);
 			}
 		}

@@ -58,7 +58,15 @@
 							</TreeItem>
 						</TableCell>
 
-						<TableCell>{{ !item.parentId ? 'TBD' : '' }}</TableCell>
+						<TableCell>
+							<span>
+								{{
+									item.value.assignedEditors
+										.map((editor) => editor.name)
+										.join(', ')
+								}}
+							</span>
+						</TableCell>
 						<TableCell :style="{'padding-right': `${item.level + 1}rem`}">
 							<div class="flex cursor-pointer justify-end gap-4">
 								<DropdownActions
@@ -108,24 +116,35 @@ import TableRow from '@/components/Table/TableRow.vue';
 import TableCell from '@/components/Table/TableCell.vue';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 import {useCategoryManagerStore} from './categoryManagerStore.js';
-
-// import CategoryTree from './CategoryTree.vue';
-// import PkpHeader from '@/components/Header/Header.vue';
 import PkpButton from '@/components/Button/Button.vue';
-// import Spinner from '@/components/Spinner/Spinner.vue';
 
 const props = defineProps({
+	/**
+	 * An Array of category objects to display.
+	 * Each object should contain
+	 * - `title` (string, required): The title of the category.
+	 * - `id` (number, required): Unique category ID.
+	 * - `path` (string, required): The path identifier for the category
+	 * - `assignedEditors` (array, optional): Editorial users assigned to category.
+	 * - `subCategories` (array, optional): Array of categories that the category is a parent of.
+	 */
 	categories: {
 		type: Array,
 		required: true,
-		// TODO validate this prop
-		validator: (value) => {
-			return true;
+		validator: (categories) => {
+			return categories.every((category) => {
+				const hasTitle =
+					typeof category.title === 'string' && category.title.trim() !== '';
+				const hasId = typeof category.id === 'number' && category.id > 0;
+				const hasPath =
+					typeof category.path === 'string' && category.path.trim() !== '';
+
+				return hasTitle && hasId && hasPath;
+			});
 		},
 	},
 	apiUrl: {
 		type: String,
-		default: '',
 		required: true,
 	},
 	primaryLocale: {
@@ -133,13 +152,12 @@ const props = defineProps({
 		required: true,
 	},
 	columns: {
-		// todo: validate this prop
 		type: Array,
 		required: true,
 	},
 	/**
 	 * Empty Category Form used when creating new categories. However, this form is not used for editing a category.
-	 * Instead, the form for editing will be fetched from API with firm fields populated.
+	 * Instead, the form for editing will be fetched from API with form fields populated.
 	 **/
 	categoryForm: {
 		type: Object,
