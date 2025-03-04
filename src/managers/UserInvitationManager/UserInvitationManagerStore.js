@@ -67,10 +67,7 @@ export const useUserInvitationManagerStore = defineComponentStore(
 		function getAllInvitedRoles(userGroups) {
 			let roles = '';
 			userGroups.forEach((element) => {
-				roles =
-					roles +
-					localize(element.userGroupName) +
-					t('common.commaListSeparator');
+				roles = roles + element.userGroupName + t('common.commaListSeparator');
 			});
 
 			return roles.substring(0, roles.length - 1);
