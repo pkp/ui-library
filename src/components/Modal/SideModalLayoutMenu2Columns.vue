@@ -1,5 +1,5 @@
 <template>
-	<div class="min-w-max p-4">
+	<div class="min-w-fit p-4">
 		<div class="flex w-full bg-secondary">
 			<div class="flex flex-col border-t border-light">
 				<slot name="menu"></slot>

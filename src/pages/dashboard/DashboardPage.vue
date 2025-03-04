@@ -1,5 +1,5 @@
 <template>
-	<div class="min-h-screentext-base-normal me-3 ms-5 text-base-normal">
+	<div class="me-3 ms-5 min-h-screen text-base-normal">
 		<div class="">
 			<span>
 				<h1 class="flex-inline items-center gap-4 py-6 text-5xl-bold">
@@ -122,7 +122,7 @@ const store = useDashboardPageStore(props);
 
 <style>
 .pkp_page_dashboard {
-	@apply min-w-max;
+	@apply min-w-fit;
 }
 
 .pkp_page_dashboard .app__main {
