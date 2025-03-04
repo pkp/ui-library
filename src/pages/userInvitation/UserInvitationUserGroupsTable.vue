@@ -66,7 +66,7 @@
 							:label="t('invitation.role.selectRole')"
 							:is-required="true"
 							:value="userGroupToAdd.userGroupId"
-							:options="availableUserGroups"
+							:options="userGroups"
 							:all-errors="{
 								userGroupId:
 									userGroupErrors['userGroupsToAdd.' + index + '.userGroupId'],
@@ -182,10 +182,6 @@ function updateUserGroup(index, fieldName, newValue) {
 	store.updatePayload('userGroupsToAdd', userGroupsUpdate, false);
 	updateWithSelectedUserGroups(props.userGroups);
 }
-
-const availableUserGroups = computed(() => {
-	return props.userGroups;
-});
 
 /**
  * add user groups to the invitation payload
