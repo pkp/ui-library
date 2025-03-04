@@ -180,6 +180,7 @@ function updateUserGroup(index, fieldName, newValue) {
 	const userGroupsUpdate = [...store.invitationPayload.userGroupsToAdd];
 	userGroupsUpdate[index][fieldName] = newValue;
 	store.updatePayload('userGroupsToAdd', userGroupsUpdate, false);
+	updateWithSelectedUserGroups(props.userGroups);
 }
 
 const availableUserGroups = computed(() => {
