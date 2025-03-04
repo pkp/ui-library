@@ -177,6 +177,7 @@ updateWithSelectedUserGroups(props.userGroups);
  * @param newValue String
  */
 function updateUserGroup(index, fieldName, newValue) {
+	delete store.errors['userGroupsToAdd.' + index + `.${fieldName}`];
 	const userGroupsUpdate = [...store.invitationPayload.userGroupsToAdd];
 	userGroupsUpdate[index][fieldName] = newValue;
 	store.updatePayload('userGroupsToAdd', userGroupsUpdate, false);
