@@ -133,7 +133,7 @@ export const useUserInvitationManagerStore = defineComponentStore(
 				actions: [
 					{
 						label: t('invitation.cancelInvite.title'),
-						isWarnable: true,
+						isPrimary: true,
 						callback: async (close) => {
 							const {apiUrl: cancelApiUrl} = useUrl(
 								`invitations/${invitationObj.id}/cancel`,
@@ -152,6 +152,7 @@ export const useUserInvitationManagerStore = defineComponentStore(
 					},
 					{
 						label: t('common.cancel'),
+						isWarnable: true,
 						callback: (close) => {
 							close();
 						},
