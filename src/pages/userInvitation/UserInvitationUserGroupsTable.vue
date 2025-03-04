@@ -184,11 +184,7 @@ function updateUserGroup(index, fieldName, newValue) {
 }
 
 const availableUserGroups = computed(() => {
-	return props.userGroups.filter((element) => {
-		return !store.invitationPayload.currentUserGroups.find(
-			(data) => data.id === element.value,
-		);
-	});
+	return props.userGroups;
 });
 
 /**
