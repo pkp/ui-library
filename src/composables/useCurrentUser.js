@@ -50,10 +50,19 @@ export function useCurrentUser() {
 		return roles.some((role) => assignedRoleIds.includes(role));
 	}
 
+	function isCurrentUserAssignedAsReviewer(submission) {
+		const {getActiveReviewAssignments} = useSubmission();
+
+		return getActiveReviewAssignments(submission.reviewAssignments).some(
+			(reviewAssignment) => reviewAssignment.isCurrentUserAssigned,
+		);
+	}
+
 	return {
 		hasCurrentUserAtLeastOneRole,
 		getCurrentUserId,
 		hasCurrentUserAtLeastOneAssignedRoleInStage,
 		hasCurrentUserAtLeastOneAssignedRoleInAnyStage,
+		isCurrentUserAssignedAsReviewer,
 	};
 }
