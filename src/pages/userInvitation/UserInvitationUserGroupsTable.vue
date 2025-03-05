@@ -118,7 +118,7 @@
 					</TableCell>
 					<TableCell>
 						<PkpButton
-							v-if="index > 0"
+							v-if="store.invitationPayload.userGroupsToAdd.length > 1"
 							:is-warnable="true"
 							@click="removeInvitedUserGroup(index)"
 						>
@@ -177,15 +177,17 @@ updateWithSelectedUserGroups(props.userGroups);
  * @param newValue String
  */
 function updateUserGroup(index, fieldName, newValue) {
+	delete store.errors['userGroupsToAdd.' + index + `.${fieldName}`];
 	const userGroupsUpdate = [...store.invitationPayload.userGroupsToAdd];
 	userGroupsUpdate[index][fieldName] = newValue;
 	store.updatePayload('userGroupsToAdd', userGroupsUpdate, false);
+	updateWithSelectedUserGroups(props.userGroups);
 }
 
 const availableUserGroups = computed(() => {
 	return props.userGroups.filter((element) => {
 		return !store.invitationPayload.currentUserGroups.find(
-			(data) => data.id === element.value,
+			(data) => data.id === element.value && !data.dateEnd,
 		);
 	});
 });
@@ -245,6 +247,7 @@ function removeInvitedUserGroup(index) {
 	const userGroupsUpdate = [...store.invitationPayload.userGroupsToAdd];
 	userGroupsUpdate.splice(index, 1);
 	store.updatePayload('userGroupsToAdd', userGroupsUpdate, false);
+	updateWithSelectedUserGroups(props.userGroups);
 }
 
 const userGroupErrors = computed(() => {

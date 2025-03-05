@@ -840,7 +840,7 @@ window.pkp = {
 		'user.orcid': 'ORCID iD',
 		'user.password': 'Password',
 		'user.removeRole.message':
-			'Are you sure want remove this role permanently?',
+			"Are you sure you want to permanently remove this role? This action will revoke the user's access to all information and permissions associated with this role",
 		'user.role.reviewer': 'Reviewer',
 		'user.role.reviewers': 'Reviewers',
 		'user.roles': 'Roles',
@@ -859,7 +859,7 @@ window.pkp = {
 			'##userInvitation.emailField.description##',
 		'userInvitation.modal.button': 'View All Users',
 		'userInvitation.modal.message':
-			"{$email} has been invited to new role in OJS. You can be updated about the user's decision on the User and Role page, your OJS notification and/or your email",
+			"{$email} has been invited to new role in OJS. You can be updated about the user's decision on the User & Role page, your OJS notification and/or your email",
 		'userInvitation.modal.title': 'Invitation Sent',
 		'userInvitation.orcidField.description':
 			'##userInvitation.orcidField.description##',
@@ -898,10 +898,10 @@ window.pkp = {
 			"Once the user is enabled, they will regain access to OJS, and you'll be able to invite them to roles as needed.",
 		'grid.user.grid.user.disableReasonDescription':
 			"Please note that once a user is disabled, you won't be able to add them to any roles until they are enabled again.",
-		'user.url':'Homepage URL',
-		'user.workingLanguages':'Working Languages',
-		'user.bioStatement':'Bio Statement',
-		'common.viewMoreDetails':'View more details',
+		'user.url': 'Homepage URL',
+		'user.workingLanguages': 'Working Languages',
+		'user.bioStatement': 'Bio Statement',
+		'common.viewMoreDetails': 'View more details',
 	},
 	tinyMCE: {
 		skinUrl: '/styles/tinymce',
