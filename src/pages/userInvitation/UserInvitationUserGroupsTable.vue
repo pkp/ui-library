@@ -66,7 +66,7 @@
 							:label="t('invitation.role.selectRole')"
 							:is-required="true"
 							:value="userGroupToAdd.userGroupId"
-							:options="userGroups"
+							:options="availableUserGroups"
 							:all-errors="{
 								userGroupId:
 									userGroupErrors['userGroupsToAdd.' + index + '.userGroupId'],
@@ -183,6 +183,14 @@ function updateUserGroup(index, fieldName, newValue) {
 	store.updatePayload('userGroupsToAdd', userGroupsUpdate, false);
 	updateWithSelectedUserGroups(props.userGroups);
 }
+
+const availableUserGroups = computed(() => {
+	return props.userGroups.filter((element) => {
+		return !store.invitationPayload.currentUserGroups.find(
+			(data) => data.id === element.value && !data.dateEnd,
+		);
+	});
+});
 
 /**
  * add user groups to the invitation payload
