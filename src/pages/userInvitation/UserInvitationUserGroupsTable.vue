@@ -203,7 +203,7 @@ const availableUserGroups = computed(() => {
  */
 function hasUserGroupsValue() {
 	if (store.invitationPayload.userGroupsToAdd[0]) {
-		Object.values(store.invitationPayload.userGroupsToAdd[0]).some(
+		return Object.values(store.invitationPayload.userGroupsToAdd[0]).some(
 			(value) => value !== null,
 		);
 	}
