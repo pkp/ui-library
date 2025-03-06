@@ -80,15 +80,6 @@ export function useDashboardConfigEditorialActivity() {
 		}
 
 		// Warning that I am assigned as author, relevant if I am NOT assigned via any editorial role
-		console.log('hola hej!');
-		console.log(isCurrentUserAssignedAsReviewer(submission));
-		console.log(
-			!hasCurrentUserAtLeastOneAssignedRoleInAnyStage(submission, [
-				pkp.const.ROLE_ID_MANAGER,
-				pkp.const.ROLE_ID_SUB_EDITOR,
-				pkp.const.ROLE_ID_ASSISTANT,
-			]),
-		);
 		if (
 			isCurrentUserAssignedAsReviewer(submission) &&
 			!hasCurrentUserAtLeastOneAssignedRoleInAnyStage(submission, [
