@@ -27,6 +27,14 @@ window.pkp = {
 	context: {
 		apiBaseUrl: 'https://mock/index.php/publicknowledge/api/v1/',
 		pageBaseUrl: 'https://mock/index.php/publicknowledge/',
+		currentLocale: 'en',
+		primaryLocale: 'en',
+		timeZone: 'UTC',
+		dateFormatShort: 'm/d/Y',
+		dateFormatLong: 'F j, Y',
+		datetimeFormatShort: 'm/d/Y h:i A',
+		datetimeFormatLong: 'F j, Y - h:i A',
+		timeFormat: 'h:i A',
 	},
 	/**
 	 * Dummy constants required by components
@@ -898,10 +906,10 @@ window.pkp = {
 			"Once the user is enabled, they will regain access to OJS, and you'll be able to invite them to roles as needed.",
 		'grid.user.grid.user.disableReasonDescription':
 			"Please note that once a user is disabled, you won't be able to add them to any roles until they are enabled again.",
-		'user.url':'Homepage URL',
-		'user.workingLanguages':'Working Languages',
-		'user.bioStatement':'Bio Statement',
-		'common.viewMoreDetails':'View more details',
+		'user.url': 'Homepage URL',
+		'user.workingLanguages': 'Working Languages',
+		'user.bioStatement': 'Bio Statement',
+		'common.viewMoreDetails': 'View more details',
 	},
 	tinyMCE: {
 		skinUrl: '/styles/tinymce',

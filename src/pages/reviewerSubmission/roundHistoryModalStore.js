@@ -2,17 +2,15 @@ import {defineComponentStore} from '@/utils/defineComponentStore';
 import {computed} from 'vue';
 import {useApiUrl} from '@/composables/useApiUrl';
 import {useFetch} from '@/composables/useFetch';
-import {useTranslation} from '@/composables/useTranslation';
-import moment from 'moment';
+import {useLocalize} from '@/composables/useLocalize';
+import {useDate} from '@/composables/useDate';
 
-function formatShortDate(dateString) {
-	return moment(dateString).format('DD-MM-YYYY');
-}
+const {formatShortDate} = useDate();
 
 export const useRoundHistoryModalStore = defineComponentStore(
 	'roundHistoryModal',
 	(props) => {
-		const {t, localize} = useTranslation();
+		const {t, localize} = useLocalize();
 
 		const {apiUrl: reviewRoundHistoryApiUrl} = useApiUrl(
 			`reviews/history/${props.submissionId}/${props.reviewRoundId}`,

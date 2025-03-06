@@ -118,19 +118,3 @@ When working with submissions, a component should use the localizeSubmission mix
 	);
 </script>
 ```
-
-## getMomentLocale
-
-When using moment, you should always use this method to localize the date.
-
-```html
-<script setup>
-	import {useLocalize} from '@/composables/useLocalize';
-
-	const {getMomentLocale} = useLocalize();
-
-	const timeSince = moment(timestamp)
-		.locale(getMomentLocale($.pkp.app.currentLocale))
-		.fromNow();
-</script>
-```

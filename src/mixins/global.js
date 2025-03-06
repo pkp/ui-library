@@ -7,7 +7,7 @@
  *
  * @see https://vuejs.org/v2/guide/mixins.html
  */
-import moment from 'moment';
+import {DateTime} from 'luxon';
 import {replaceLocaleParams, t, localize} from '../utils/i18n';
 export default {
 	methods: {
@@ -35,7 +35,7 @@ export default {
 		 * @param {String} dateString
 		 */
 		getBrowserSafeDate(dateString) {
-			return moment.utc(dateString).toDate();
+			return DateTime.fromISO(dateString, {zone: 'utc'}).toJSDate();
 		},
 
 		/**

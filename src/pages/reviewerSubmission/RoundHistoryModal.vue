@@ -200,13 +200,11 @@ import {defineProps} from 'vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayout2Columns from '@/components/Modal/SideModalLayout2Columns.vue';
 import ListingFilesListPanel from '@/components/ListPanel/listingFiles/ListingFilesListPanel.vue';
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 import {useRoundHistoryModalStore} from './roundHistoryModalStore';
-import moment from 'moment';
+import {useDate} from '@/composables/useDate';
 
-function formatShortDate(dateString) {
-	return moment(dateString).format('DD-MM-YYYY');
-}
+const {formatShortDate} = useDate();
 
 const props = defineProps({
 	submissionId: {type: Number, required: true},
@@ -214,7 +212,7 @@ const props = defineProps({
 	reviewRoundNumber: {type: Number, required: true},
 });
 
-const {t, localize} = useTranslation();
+const {t, localize} = useLocalize();
 
 const store = useRoundHistoryModalStore(props);
 </script>
