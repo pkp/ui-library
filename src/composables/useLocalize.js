@@ -1,9 +1,4 @@
-import {
-	t,
-	localize,
-	localizeSubmission,
-	getMomentLocale,
-} from '@/utils/i18n.js';
+import {t, localize, localizeSubmission} from '@/utils/i18n.js';
 
 function tk(translationKey) {
 	return translationKey;
@@ -15,6 +10,5 @@ export function useLocalize() {
 		tk,
 		localize,
 		localizeSubmission,
-		getMomentLocale,
 	};
 }

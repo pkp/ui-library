@@ -18,7 +18,7 @@
 					</a>
 				</span>
 				<span class="ms-4 shrink-0 text-base-normal text-secondary">
-					{{ formatDateAndTime(email.dateSent) }}
+					{{ formatShortDateTime(email.dateSent) }}
 				</span>
 			</li>
 		</ul>
@@ -40,7 +40,7 @@ const props = defineProps({
 });
 
 const {t} = useLocalize();
-const {formatDateAndTime} = useDate();
+const {formatShortDateTime} = useDate();
 const {apiUrl} = useUrl('emails/authorEmails');
 
 const requestQuery = computed(() => {

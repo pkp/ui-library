@@ -11,11 +11,9 @@
  * @see https://vuejs.org/v2/guide/mixins.html
  */
 import dialog from './dialog';
-import localizeMoment from './localizeMoment';
 import localStorage from './localStorage';
-import moment from 'moment';
 import {v4 as uuidv4} from 'uuid';
-
+import {useDate} from '@/composables/useDate';
 /**
  * The timer (setInterval) that calls _runAutosaveJobs
  */
@@ -38,7 +36,7 @@ let connectionTimerInterval = 4000;
 let isAutosaveRequestPending = false;
 
 export default {
-	mixins: [dialog, localizeMoment, localStorage],
+	mixins: [dialog, localStorage],
 	data() {
 		return {
 			/**
@@ -130,14 +128,13 @@ export default {
 			}
 
 			this.$nextTick(() => {
+				const {relativeStringTimeFromNow} = useDate();
 				this.openDialog({
 					name: 'loadAutosave',
 					title: this.i18nUnsavedChanges,
 					message: this.i18nUnsavedChangesMessage.replace(
 						'{$when}',
-						moment(storedAutosaves[0].timestamp)
-							.locale(this.getMomentLocale($.pkp.app.currentLocale))
-							.fromNow(),
+						relativeStringTimeFromNow(storedAutosaves[0].timestamp),
 					),
 					actions: [
 						{
