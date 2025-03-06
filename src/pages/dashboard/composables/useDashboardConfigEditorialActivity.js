@@ -2,6 +2,8 @@ import {
 	useSubmission,
 	CompletedReviewAssignmentStatuses,
 } from '@/composables/useSubmission.js';
+import {useCurrentUser} from '@/composables/useCurrentUser';
+
 import {useLocalize} from '@/composables/useLocalize';
 import {useDate} from '@/composables/useDate';
 import {Actions as ParticipantManagerActions} from '@/managers/ParticipantManager/useParticipantManagerActions';
@@ -19,6 +21,11 @@ const {
 	getReviewAssignmentsForRound,
 	getStageLabel,
 } = useSubmission();
+
+const {
+	hasCurrentUserAtLeastOneAssignedRoleInAnyStage,
+	isCurrentUserAssignedAsReviewer,
+} = useCurrentUser();
 
 export function useDashboardConfigEditorialActivity() {
 	function getEditorialActivityForEditorialDashboard(submission) {
@@ -46,6 +53,46 @@ export function useDashboardConfigEditorialActivity() {
 						actionName: 'openSubmissionWizard',
 						actionLabel: t('submission.list.completeSubmission'),
 						actionArgs: {submissionId: submission.id},
+					},
+				},
+			];
+		}
+
+		// Warning that I am assigned as author, relevant if I am NOT assigned via any editorial role
+		if (
+			hasCurrentUserAtLeastOneAssignedRoleInAnyStage(submission, [
+				pkp.const.ROLE_ID_AUTHOR,
+			]) &&
+			!hasCurrentUserAtLeastOneAssignedRoleInAnyStage(submission, [
+				pkp.const.ROLE_ID_MANAGER,
+				pkp.const.ROLE_ID_SUB_EDITOR,
+				pkp.const.ROLE_ID_ASSISTANT,
+			])
+		) {
+			return [
+				{
+					component: 'DashboardCellSubmissionActivityActionAlert',
+					props: {
+						alert: t('dashboard.noAccessBeingAuthor'),
+					},
+				},
+			];
+		}
+
+		// Warning that I am assigned as author, relevant if I am NOT assigned via any editorial role
+		if (
+			isCurrentUserAssignedAsReviewer(submission) &&
+			!hasCurrentUserAtLeastOneAssignedRoleInAnyStage(submission, [
+				pkp.const.ROLE_ID_MANAGER,
+				pkp.const.ROLE_ID_SUB_EDITOR,
+				pkp.const.ROLE_ID_ASSISTANT,
+			])
+		) {
+			return [
+				{
+					component: 'DashboardCellSubmissionActivityActionAlert',
+					props: {
+						alert: t('dashboard.noAccessBeingReviewer'),
 					},
 				},
 			];
