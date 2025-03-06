@@ -4,7 +4,7 @@ import {RecommendationTranslations} from '@/composables/useSubmission';
 import {Actions as ReviewerManagerActions} from '@/managers/ReviewerManager/useReviewerManagerActions';
 const {tk, t} = useLocalize();
 
-const {calculateDaysBetweenDates} = useDate();
+const {calculateDaysBetweenDates, formatShortDate} = useDate();
 const ReviewActivityActions = {
 	RESEND_REVIEW_REQUEST: 'resendReviewRequest',
 	EDIT_DUE_DATE: 'editDueDate',
@@ -326,14 +326,14 @@ export function useDashboardConfigReviewActivity() {
 
 		function getTitle() {
 			return t(config.titleKey, {
-				date: date,
+				date: formatShortDate(date),
 				days: Math.abs(days),
 			});
 		}
 
 		function getDescription() {
 			return t(config.descriptionKey, {
-				date: date,
+				date: formatShortDate(date),
 				days: Math.abs(days),
 				recommendation: getRecommendation(),
 			});

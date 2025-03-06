@@ -10,10 +10,9 @@ import SubmissionFilesListPanel from '../ListPanel/submissionFiles/SubmissionFil
 import ajaxError from '@/mixins/ajaxError';
 import autosave from '@/mixins/autosave';
 import dialog from '@/mixins/dialog';
-import localizeMoment from '@/mixins/localizeMoment';
 import localizeSubmission from '@/mixins/localizeSubmission';
 import localStorage from '@/mixins/localStorage';
-import moment from 'moment';
+import {useDate} from '@/composables/useDate';
 import {useModal} from '@/composables/useModal';
 
 export default {
@@ -26,14 +25,7 @@ export default {
 		SubmissionFilesListPanel,
 	},
 	extends: Page,
-	mixins: [
-		ajaxError,
-		autosave,
-		dialog,
-		localizeMoment,
-		localizeSubmission,
-		localStorage,
-	],
+	mixins: [ajaxError, autosave, dialog, localizeSubmission, localStorage],
 	data() {
 		return {
 			/** A unique string. See autosave mixin below. */
@@ -588,11 +580,11 @@ export default {
 				this.lastAutosavedMessage = '';
 				return;
 			}
+
+			const {relativeStringTimeFromNow} = useDate();
 			this.lastAutosavedMessage = this.i18nLastAutosaved.replace(
 				'{$when}',
-				moment(this.lastSavedTimestamp)
-					.locale(this.getMomentLocale($.pkp.app.currentLocale))
-					.fromNow(),
+				relativeStringTimeFromNow(this.lastSavedTimestamp),
 			);
 		},
 
@@ -799,7 +791,7 @@ export default {
 		/**
 		 * Cancel a submission.
 		 */
-		cancelSubmission(){
+		cancelSubmission() {
 			this.openDialog({
 				name: 'SubmissionCancel',
 				title: this.t('submission.wizard.submissionCancel'),
@@ -840,7 +832,7 @@ export default {
 				],
 				modalStyle: 'negative',
 			});
-		}
+		},
 	},
 };
 </script>

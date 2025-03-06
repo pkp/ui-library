@@ -1,12 +1,11 @@
 <script>
 import PkpForm from '../Form.vue';
 import moment from 'moment';
-import localizeMoment from '@/mixins/localizeMoment.js';
+import {getLuxonLocale} from '@/utils/dateUtils';
 
 export default {
 	name: 'DateTimeForm',
 	extends: PkpForm,
-	mixins: [localizeMoment],
 	data() {
 		return {
 			// holds initial value of the field that emitted set event
@@ -48,7 +47,7 @@ export default {
 			let dateTime = moment();
 			this.fields.forEach((field) => {
 				this.availableLocales.forEach((locale) => {
-					dateTime.locale(this.getMomentLocale(locale.key));
+					dateTime.locale(getLuxonLocale(locale.key));
 					field.options[locale.key].forEach((option) => {
 						const formatString = this.convertDateFormat(option.label);
 						if (formatString) {
@@ -198,8 +197,8 @@ export default {
 						name === 'dateFormatLong'
 							? this.fieldBeforeSetEvent.value + ' - ' + longDateTime.value.time
 							: longDateTime.value.date +
-							  ' - ' +
-							  this.fieldBeforeSetEvent.value;
+								' - ' +
+								this.fieldBeforeSetEvent.value;
 
 					if (suggestedOldValue === field.value[localeKey]) {
 						field.value[localeKey] =

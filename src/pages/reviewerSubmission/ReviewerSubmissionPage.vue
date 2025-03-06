@@ -30,15 +30,13 @@
 <script setup>
 import {defineProps} from 'vue';
 import PkpButton from '@/components/Button/Button.vue';
-import {useTranslation} from '@/composables/useTranslation';
+import {useLocalize} from '@/composables/useLocalize';
 import {useReviewerSubmissionPageStore} from './reviewerSubmissionPageStore';
-import moment from 'moment';
+import {useDate} from '@/composables/useDate';
 
-function formatShortDate(dateString) {
-	return moment(dateString).format('DD-MM-YYYY');
-}
+const {formatShortDate} = useDate();
 
-const {t} = useTranslation();
+const {t} = useLocalize();
 
 const props = defineProps({
 	reviewRoundHistories: {
