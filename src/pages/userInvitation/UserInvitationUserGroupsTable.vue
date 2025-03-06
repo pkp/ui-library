@@ -118,7 +118,10 @@
 					</TableCell>
 					<TableCell>
 						<PkpButton
-							v-if="store.invitationPayload.userGroupsToAdd.length > 1"
+							v-if="
+								store.invitationPayload.userGroupsToAdd.length > 1 ||
+								hasUserGroupsValue()
+							"
 							:is-warnable="true"
 							@click="removeInvitedUserGroup(index)"
 						>
@@ -169,6 +172,7 @@ const allUserGroupsToAdd = computed(
 	() => store.invitationPayload.userGroupsToAdd,
 );
 updateWithSelectedUserGroups(props.userGroups);
+hasUserGroupsValue();
 
 /**
  * update selected user group
@@ -182,6 +186,7 @@ function updateUserGroup(index, fieldName, newValue) {
 	userGroupsUpdate[index][fieldName] = newValue;
 	store.updatePayload('userGroupsToAdd', userGroupsUpdate, false);
 	updateWithSelectedUserGroups(props.userGroups);
+	hasUserGroupsValue();
 }
 
 const availableUserGroups = computed(() => {
@@ -191,6 +196,19 @@ const availableUserGroups = computed(() => {
 		);
 	});
 });
+
+/**
+ * check user groups array and show
+ * remove role button only for clear the fields
+ */
+function hasUserGroupsValue() {
+	if (store.invitationPayload.userGroupsToAdd[0]) {
+		Object.values(store.invitationPayload.userGroupsToAdd[0]).some(
+			(value) => value !== null,
+		);
+	}
+	return false;
+}
 
 /**
  * add user groups to the invitation payload
@@ -245,6 +263,13 @@ function removeUserGroup(userGroup, index) {
  */
 function removeInvitedUserGroup(index) {
 	const userGroupsUpdate = [...store.invitationPayload.userGroupsToAdd];
+	if (hasUserGroupsValue && userGroupsUpdate.length === 1) {
+		userGroupsUpdate.push({
+			userGroupId: null,
+			dateStart: null,
+			masthead: null,
+		});
+	}
 	userGroupsUpdate.splice(index, 1);
 	store.updatePayload('userGroupsToAdd', userGroupsUpdate, false);
 	updateWithSelectedUserGroups(props.userGroups);
