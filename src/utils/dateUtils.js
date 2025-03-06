@@ -16,15 +16,12 @@ function getDateTimeFormatShort() {
 	return pkp.context.datetimeFormatShort;
 }
 
-export function getLuxonLocale(_locale) {
-	// There might be added more nuanced mapping if we identify that some locale needs to be mapped
-	const locale = _locale.replace('_', '-');
-
-	if (isLocaleSupported(locale)) {
-		return locale;
+function getConfiguredTimezone() {
+	if (typeof pkp === 'undefined' || !pkp?.context?.timeZone) {
+		throw new Error('pkp.context.timeZone is not configured');
 	}
-	// falback
-	return 'en';
+
+	return pkp.context.timeZone || 'UTC';
 }
 
 export function getDateCurrentLocale() {
@@ -35,12 +32,15 @@ export function getDateCurrentLocale() {
 	return getLuxonLocale(pkp.context.currentLocale);
 }
 
-function getConfiguredTimezone() {
-	if (typeof pkp === 'undefined' || !pkp?.context?.timeZone) {
-		throw new Error('pkp.context.timeZone is not configured');
-	}
+export function getLuxonLocale(_locale) {
+	// There might be added more nuanced mapping if we identify that some locale needs to be mapped
+	const locale = _locale.replace('_', '-');
 
-	return pkp.context.timeZone || 'UTC';
+	if (isLocaleSupported(locale)) {
+		return locale;
+	}
+	// falback
+	return 'en';
 }
 
 function isLocaleSupported(locale) {
@@ -82,11 +82,9 @@ export function calculateDaysBetweenDates(_startDate, _endDate) {
 }
 
 // Helper function to format a date with a PHP-style format string
-export function formatDateWithPhpFormat(dateTime, phpFormat, _locale = 'en') {
+export function formatDateWithPhpFormat(dateTime, phpFormat, locale = 'en') {
 	const luxonFormat = convertPhpToLuxonFormat(phpFormat);
-	// fallback if the locale key is not recognised by Intl api
-	const locale = isLocaleSupported(_locale) ? _locale : 'en';
-	return dateTime.setLocale(locale).toFormat(luxonFormat);
+	return dateTime.setLocale(getLuxonLocale(locale)).toFormat(luxonFormat);
 }
 
 export function formatShortDate(dateString) {
