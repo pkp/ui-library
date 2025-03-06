@@ -1,160 +1,120 @@
 /**
- * PHP datetime format conversion to Luxon
- * Generated with LLM, so probably overkill implementation,
- * but works as expected
- * */
+ * Converts PHP datetime format tokens to Luxon format tokens
+ * Generate by Claude (with bit of help)
+ * @param {string} phpFormat - PHP datetime format string
+ * @return {string} - Equivalent Luxon format string
+ */
+export function phpToLuxonFormat(phpFormat) {
+	const formatMap = {
+		// Day
+		d: 'dd', // Day of the month, 2 digits with leading zeros
+		D: 'ccc', // A textual representation of a day, three letters
+		j: 'd', // Day of the month without leading zeros
+		l: 'cccc', // A full textual representation of the day of the week
+		N: 'E', // ISO-8601 numeric representation of the day of the week (1-7)
+		S: '', // English ordinal suffix for the day of the month (no direct Luxon equivalent)
+		w: 'c', // Numeric representation of the day of the week (0-6)
+		z: 'o', // The day of the year (starting from 0)
 
-const phpFormatSpecifiers = new Set([
-	'd',
-	'j',
-	'D',
-	'l',
-	'N',
-	'S',
-	'w',
-	'z',
-	'W',
-	'F',
-	'm',
-	'M',
-	'n',
-	't',
-	'L',
-	'o',
-	'Y',
-	'y',
-	'a',
-	'A',
-	'B',
-	'g',
-	'G',
-	'h',
-	'H',
-	'i',
-	's',
-	'u',
-	'e',
-	'I',
-	'O',
-	'P',
-	'T',
-	'Z',
-	'c',
-	'r',
-	'U',
-]);
+		// Week
+		W: 'WW', // ISO-8601 week number of year
 
-// Mapping from PHP format specifiers to Luxon tokens
-const phpToLuxonMap = {
-	// Day
-	d: 'dd', // Day of the month, 2 digits (01-31)
-	j: 'd', // Day of the month without leading zeros (1-31)
-	D: 'EEE', // Abbreviated weekday name (Mon-Sun)
-	l: 'EEEE', // Full weekday name (Monday-Sunday)
-	N: 'c', // ISO-8601 weekday (1 [Monday] to 7 [Sunday]), note: locale-dependent in Luxon
-	S: '', // English ordinal suffix (st, nd, rd, th), handled with 'jS' as 'do'
-	w: 'e', // Weekday (0 [Sunday] to 6 [Saturday]), note: locale-dependent in Luxon
-	z: 'DDD', // Day of the year (0-365), note: Luxon is 1-based (1-366)
-	W: 'W', // ISO-8601 week number
+		// Month
+		F: 'LLLL', // A full textual representation of a month
+		m: 'LL', // Numeric representation of a month, with leading zeros
+		M: 'LLL', // A short textual representation of a month, three letters
+		n: 'L', // Numeric representation of a month, without leading zeros
+		t: '', // Number of days in the given month (no direct Luxon equivalent)
 
-	// Month
-	F: 'LLLL', // Full month name (January-December)
-	m: 'LL', // Month, 2 digits (01-12)
-	M: 'LLL', // Abbreviated month name (Jan-Dec)
-	n: 'L', // Month without leading zeros (1-12)
-	t: '', // Number of days in the month (28-31), not supported in Luxon
+		// Year
+		L: '', // Whether it's a leap year (no direct Luxon equivalent)
+		o: 'kkkk', // ISO-8601 week-numbering year
+		Y: 'yyyy', // A full numeric representation of a year, 4 digits
+		y: 'yy', // A two digit representation of a year
 
-	// Year
-	L: '', // Leap year (1 or 0), not supported in Luxon
-	o: 'YYYY', // ISO-8601 week-numbering year
-	Y: 'yyyy', // Full year (e.g., 2023)
-	y: 'yy', // Two-digit year (e.g., 23)
+		// Time
+		a: 'a', // Lowercase Ante meridiem and Post meridiem
+		A: 'a', // Uppercase Ante meridiem and Post meridiem (Luxon doesn't distinguish case)
+		B: '', // Swatch Internet time (no Luxon equivalent)
+		g: 'h', // 12-hour format of an hour without leading zeros
+		G: 'H', // 24-hour format of an hour without leading zeros
+		h: 'hh', // 12-hour format of an hour with leading zeros
+		H: 'HH', // 24-hour format of an hour with leading zeros
+		i: 'mm', // Minutes with leading zeros
+		s: 'ss', // Seconds with leading zeros
+		u: 'SSS', // Microseconds (Luxon only has milliseconds precision)
+		v: 'SSS', // Milliseconds
+		f: 'SSS', // Microseconds with trailing zeros (Luxon only has milliseconds)
 
-	// Time
-	a: 'a', // Lowercase am/pm
-	A: 'a', // Uppercase AM/PM, Luxon uses locale-appropriate case
-	B: '', // Swatch Internet time (000-999), not supported in Luxon
-	g: 'h', // 12-hour hour without leading zeros (1-12)
-	G: 'H', // 24-hour hour without leading zeros (0-23)
-	h: 'hh', // 12-hour hour with leading zeros (01-12)
-	H: 'HH', // 24-hour hour with leading zeros (00-23)
-	i: 'mm', // Minutes with leading zeros (00-59)
-	s: 'ss', // Seconds with leading zeros (00-59)
-	u: 'SSS', // Microseconds, approximated to milliseconds in Luxon (000-999)
+		// Timezone
+		e: 'z', // Timezone identifier (e.g., UTC, GMT)
+		I: '', // Whether or not the date is in daylight saving time (no direct Luxon equivalent)
+		O: 'ZZ', // Difference to Greenwich time (GMT) without colon
+		P: 'Z', // Difference to Greenwich time (GMT) with colon
+		p: 'z', // The same as P, but returns Z instead of +00:00 (available in PHP 8.0+)
+		T: 'z', // Timezone abbreviation
+		Z: '', // Timezone offset in seconds (no direct Luxon equivalent)
 
-	// Timezone
-	e: 'z', // Timezone identifier (e.g., UTC, America/New_York)
-	I: '', // Daylight saving time (1 or 0), not supported in Luxon
-	O: 'ZZ', // Offset in hours and minutes (e.g., +0200)
-	P: 'ZZZ', // Offset with colon (e.g., +02:00)
-	T: 'z', // Timezone abbreviation (e.g., EST)
-	Z: '', // Offset in seconds, not supported in Luxon
+		// Full Date/Time
+		c: "yyyy-LL-dd'T'HH:mm:ssZ", // ISO 8601 date
+		r: 'ccc, dd LLL yyyy HH:mm:ss ZZ', // RFC 2822 formatted date
+		U: 'X', // Seconds since the Unix Epoch
 
-	// Full Date/Time
-	c: "yyyy-MM-dd'T'HH:mm:ssZZZ", // ISO 8601 date (e.g., 2004-02-12T15:19:21+00:00)
-	r: 'EEE, d MMM yyyy HH:mm:ss ZZZ', // RFC 2822 date (e.g., Thu, 21 Dec 2000 16:01:07 +0200)
-	U: 'X', // Unix timestamp in seconds (e.g., 1700000000)
-};
+		// Additional formats
+		x: "kkkk-'WW'", // ISO-8601 year-week pattern (e.g., 2022-W42)
+		X: 'W', // ISO-8601 week number of year without leading zeroes (PHP 7.2.0+)
+	};
 
-// Tokenize the PHP format string into format specifiers and literals
-function tokenizePhpFormat(phpFormat) {
-	const tokens = [];
+	// Characters used in Luxon format tokens that need to be escaped when used as literals
+	const luxonFormatChars = 'GyYQqMLwWdDFgHhmsSAazZEeOPTxkKc';
+
+	let result = [];
 	let i = 0;
+
+	// Process the PHP format string character by character
 	while (i < phpFormat.length) {
+		// Handle escaped character in PHP
+		if (phpFormat[i] === '\\' && i + 1 < phpFormat.length) {
+			const char = phpFormat[i + 1];
+
+			// Check if the escaped character needs quotes in Luxon
+			if (luxonFormatChars.includes(char)) {
+				result.push(`'${char}'`);
+			} else if (char === "'") {
+				// Escape single quotes by doubling them
+				result.push("''");
+			} else {
+				result.push(char);
+			}
+
+			i += 2;
+			continue;
+		}
+
+		// Check for PHP format tokens
+		if (Object.prototype.hasOwnProperty.call(formatMap, phpFormat[i])) {
+			const luxonToken = formatMap[phpFormat[i]];
+			if (luxonToken) {
+				result.push(luxonToken);
+			}
+			i++;
+			continue;
+		}
+
+		// Handle literal characters
 		const char = phpFormat[i];
-		if (char === '\\') {
-			if (i + 1 < phpFormat.length) {
-				tokens.push({type: 'literal', value: phpFormat[i + 1]});
-				i += 2;
-			} else {
-				tokens.push({type: 'literal', value: '\\'});
-				i++;
-			}
-		} else if (phpFormatSpecifiers.has(char)) {
-			tokens.push({type: 'format', value: char});
-			i++;
+
+		if (luxonFormatChars.includes(char)) {
+			result.push(`'${char}'`);
+		} else if (char === "'") {
+			// Escape single quotes by doubling them
+			result.push("''");
 		} else {
-			tokens.push({type: 'literal', value: char});
-			i++;
+			result.push(char);
 		}
-	}
-	return tokens;
-}
 
-// Convert tokens to Luxon format string
-function tokensToLuxonFormat(tokens) {
-	let luxonFormat = '';
-	for (let i = 0; i < tokens.length; i++) {
-		const token = tokens[i];
-		if (token.type === 'format') {
-			// Handle 'jS' as a special case
-			if (
-				token.value === 'j' &&
-				i + 1 < tokens.length &&
-				tokens[i + 1].type === 'format' &&
-				tokens[i + 1].value === 'S'
-			) {
-				luxonFormat += 'do';
-				i++; // Skip the 'S'
-			} else {
-				luxonFormat += phpToLuxonMap[token.value] || '';
-			}
-		} else if (token.type === 'literal') {
-			const char = token.value;
-			// Enclose letters in single quotes to treat as literals in Luxon
-			if (/[a-zA-Z]/.test(char)) {
-				luxonFormat += `'${char}'`;
-			} else {
-				luxonFormat += char;
-			}
-		}
+		i++;
 	}
-	return luxonFormat;
-}
 
-// Main conversion function
-export function convertPhpToLuxonFormat(phpFormat) {
-	const tokens = tokenizePhpFormat(phpFormat);
-	const luxonFormat = tokensToLuxonFormat(tokens);
-	return luxonFormat;
+	return result.join('');
 }

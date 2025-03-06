@@ -1,5 +1,5 @@
 import {DateTime} from 'luxon';
-import {convertPhpToLuxonFormat} from './convertPhpDateTimeFormatToLuxon';
+import {phpToLuxonFormat} from './convertPhpDateTimeFormatToLuxon';
 
 /**
  * Retrieves the short date format from the pkp context.
@@ -125,7 +125,7 @@ export function calculateDaysBetweenDates(_startDate, _endDate) {
  * @returns {string} The formatted date string.
  */
 export function formatDateWithPhpFormat(dateTime, phpFormat, locale = 'en') {
-	const luxonFormat = convertPhpToLuxonFormat(phpFormat);
+	const luxonFormat = phpToLuxonFormat(phpFormat);
 	return dateTime.setLocale(getLuxonLocale(locale)).toFormat(luxonFormat);
 }
 
