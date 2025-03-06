@@ -7,7 +7,7 @@
  *
  * @see https://vuejs.org/v2/guide/mixins.html
  */
-const {DateTime} = require('luxon');
+import {DateTime} from 'luxon';
 import {replaceLocaleParams, t, localize} from '../utils/i18n';
 export default {
 	methods: {
