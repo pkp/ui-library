@@ -32,6 +32,7 @@
 		@update:model-value="selectSuggestion"
 	>
 		<ComboboxInput
+			v-show="!(hideIfDisabled && (isDisabled || !enableSuggestions))"
 			class="pkpAutosuggest__input"
 			v-bind="inputProps"
 			autocomplete="off"
@@ -184,6 +185,11 @@ const props = defineProps({
 	allowCustom: {
 		type: Boolean,
 		default: () => false,
+	},
+	/** Hide input value field if disabled */
+	hideIfDisabled: {
+		type: Boolean,
+		default: () => false
 	},
 	/** Field input id, usually used to connect with FormFieldLabel  */
 	inputId: {type: String, required: false, default: null},
