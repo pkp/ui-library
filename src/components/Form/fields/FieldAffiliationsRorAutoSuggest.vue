@@ -33,19 +33,6 @@
 							class="ms-2 h-auto w-6"
 							:inline="true"
 						/>
-						<a
-							v-if="suggestion.hasSlot"
-							:href="suggestion.href"
-							target="_blank"
-							class="ms-auto flex"
-						>
-							<span class="sr-only">Open link in new tab</span>
-							<Icon
-								icon="OpenNewTab"
-								class="h-5 w-5 text-primary"
-								:inline="true"
-							/>
-						</a>
 					</template>
 				</Autosuggest>
 			</div>
