@@ -2,7 +2,7 @@
 	<div
 		v-if="reviewerSuggestionManagerStore.reviewerSuggestionsList.length > 0"
 		class="border border-light"
-		data-cy="reviewer-sguuestion-manager"
+		data-cy="reviewer-suggestion-manager"
 	>
 		<div class="flex items-center justify-between bg-default p-5">
 			<h3 class="text-2xl-bold uppercase text-heading">
