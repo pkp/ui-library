@@ -2,7 +2,7 @@
 	<PkpTable class="mt-2">
 		<template #label>
 			<h3 class="text-3xl-bold">
-				{{ t('grid.user.currentUsers') }}({{
+				{{ t('grid.user.currentUsers') }} ({{
 					store.userAccessPagination.itemCount
 				}})
 			</h3>

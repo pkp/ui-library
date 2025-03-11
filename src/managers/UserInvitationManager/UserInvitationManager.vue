@@ -2,7 +2,7 @@
 	<PkpTable>
 		<template #label>
 			<h3 class="text-3xl-bold">
-				{{ t('invitation.header') }}({{
+				{{ t('invitation.header') }} ({{
 					store.invitationsPagination.itemCount
 				}})
 			</h3>
