@@ -14,6 +14,7 @@
 				v-for="(currentUserGroup, index) in store.invitationPayload
 					.currentUserGroups"
 				:key="index"
+				class="h-[3.25rem]"
 			>
 				<TableCell>
 					{{ currentUserGroup.name }}
@@ -39,21 +40,41 @@
 							: t('invitation.masthead.hidden')
 					}}
 				</TableCell>
-				<TableCell v-if="!currentUserGroup.dateEnd">
-					<PkpButton
-						:is-warnable="true"
-						@click="removeUserGroup(currentUserGroup, index)"
-					>
-						{{ t('invitation.role.removeRole.button') }}
-					</PkpButton>
-				</TableCell>
-				<TableCell v-else>
-					<div
-						class="rounded border-light bg-[#fbe7f1] px-2 py-2 text-center text-lg-semibold leading-5"
-					>
-						{{ t('invitation.removeRoles') }}
-					</div>
-				</TableCell>
+				<template v-if="numberOfActiveRoles > 1">
+					<template v-if="!currentUserGroup.dateEnd">
+						<TableCell>
+							<PkpButton
+								:is-warnable="true"
+								@click="removeUserGroup(currentUserGroup, index)"
+							>
+								{{ t('invitation.role.removeRole.button') }}
+							</PkpButton>
+						</TableCell>
+					</template>
+					<template v-else>
+						<TableCell>
+							<div
+								class="rounded border-light bg-[#fbe7f1] px-2 py-2 text-center text-lg-semibold leading-5"
+							>
+								{{ t('invitation.removeRoles') }}
+							</div>
+						</TableCell>
+					</template>
+				</template>
+				<template v-else>
+					<template v-if="!currentUserGroup.dateEnd">
+						<TableCell></TableCell>
+					</template>
+					<template v-else>
+						<TableCell>
+							<div
+								class="rounded border-light bg-[#fbe7f1] px-2 py-2 text-center text-lg-semibold leading-5"
+							>
+								{{ t('invitation.removeRoles') }}
+							</div>
+						</TableCell>
+					</template>
+				</template>
 			</TableRow>
 			<template v-if="!store.invitationPayload.disabled">
 				<TableRow
@@ -173,6 +194,7 @@ const allUserGroupsToAdd = computed(
 );
 updateWithSelectedUserGroups(props.userGroups);
 hasUserGroupsValue();
+console.log(store.invitationPayload.currentUserGroups);
 
 /**
  * update selected user group
@@ -295,6 +317,15 @@ function updateWithSelectedUserGroups(userGroups) {
 		}
 	});
 }
+
+/**
+ * count number of active roles
+ */
+const numberOfActiveRoles = computed(() => {
+	return store.invitationPayload.currentUserGroups.filter(
+		(userGroup) => userGroup.dateEnd === null,
+	).length;
+});
 
 /**
  * remove user roles
