@@ -17,21 +17,21 @@ export default {
 	},
 	mounted() {
 		this.$nextTick(function () {
-			const dateTime = DateTime.now();
+			const dateTimeNow = DateTime.now();
 			this.fields.forEach((field) => {
 				this.availableLocales.forEach((locale) => {
-					dateTime.setLocale(getLuxonLocale(locale.key));
+					dateTimeNow.setLocale(getLuxonLocale(locale.key));
 					field.options[locale.key].forEach((option) => {
 						if (option.isInput) {
 							return;
 						}
-						const formatString = formatDateWithPhpFormat(
-							dateTime,
+						const formattedDate = formatDateWithPhpFormat(
+							dateTimeNow,
 							option.label,
 							locale.key,
 						);
-						if (formatString) {
-							option.label = formatString;
+						if (formattedDate) {
+							option.label = formattedDate;
 						}
 					});
 				});
