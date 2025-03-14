@@ -1,7 +1,7 @@
 <script>
+import {DateTime} from 'luxon';
 import PkpForm from '../Form.vue';
-import moment from 'moment';
-import {getLuxonLocale} from '@/utils/dateUtils';
+import {getLuxonLocale, formatDateWithPhpFormat} from '@/utils/dateUtils';
 
 export default {
 	name: 'DateTimeForm',
@@ -13,45 +13,25 @@ export default {
 				name: null,
 				value: null,
 			},
-
-			formatMap: new Map([
-				// day
-				['%a', 'ddd'],
-				['%A', 'dddd'],
-				['%d', 'DD'],
-				['%e', 'D'],
-				['%j', 'DDDD'],
-				// week
-				['%W', 'w'],
-				['%V', 'W'],
-				// month
-				['%b', 'MMM'],
-				['%B', 'MMMM'],
-				['%m', 'MM'],
-				// year
-				['%y', 'YY'],
-				['%Y', 'YYYY'],
-				// time
-				['%H', 'HH'],
-				['%k', 'H'],
-				['%I', 'hh'],
-				['%l', 'h'],
-				['%M', 'mm'],
-				['%p', 'A'],
-				['%P', 'a'],
-			]),
 		};
 	},
 	mounted() {
 		this.$nextTick(function () {
-			let dateTime = moment();
+			const dateTimeNow = DateTime.now();
 			this.fields.forEach((field) => {
 				this.availableLocales.forEach((locale) => {
-					dateTime.locale(getLuxonLocale(locale.key));
+					dateTimeNow.setLocale(getLuxonLocale(locale.key));
 					field.options[locale.key].forEach((option) => {
-						const formatString = this.convertDateFormat(option.label);
-						if (formatString) {
-							option.label = dateTime.format(formatString);
+						if (option.isInput) {
+							return;
+						}
+						const formattedDate = formatDateWithPhpFormat(
+							dateTimeNow,
+							option.label,
+							locale.key,
+						);
+						if (formattedDate) {
+							option.label = formattedDate;
 						}
 					});
 				});
@@ -211,40 +191,6 @@ export default {
 
 				return field;
 			});
-		},
-
-		/**
-		 * Converts strftime datetime format to the Moment.js format
-		 *
-		 * @param {String} strftimeFormat
-		 * @return {String|null}
-		 */
-		convertDateFormat: function (strftimeFormat) {
-			let convertedLabel = '';
-			const optArray = strftimeFormat.split('');
-			for (let i = 0; i < optArray.length; i++) {
-				const symbol = optArray[i];
-				if (symbol === '%') {
-					const nextSymbol = optArray[i + 1];
-					const formatToCompare = symbol + nextSymbol;
-					// map the format symbol
-					if (this.formatMap.has(formatToCompare)) {
-						convertedLabel += this.formatMap.get(formatToCompare);
-						i++;
-					} else if (nextSymbol === ' ') {
-						// treat as punctuation
-						convertedLabel += symbol;
-					} else {
-						// finally give-up, cannot convert
-						return null;
-					}
-				} else {
-					convertedLabel += symbol;
-				}
-			}
-			// Not a format
-			if (convertedLabel === strftimeFormat) return null;
-			return convertedLabel;
 		},
 	},
 };
