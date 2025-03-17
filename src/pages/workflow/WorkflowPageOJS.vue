@@ -27,7 +27,7 @@ import WorkflowPublicationVersionControl from './components/publication/Workflow
 import WorkflowChangeSubmissionLanguage from './components/publication/WorkflowChangeSubmissionLanguage.vue';
 import WorkflowPrimaryBasicMetadata from './components/primary/WorkflowPrimaryBasicMetadata.vue';
 import WorkflowSubmissionStatus from './components/primary/WorkflowSubmissionStatus.vue';
-import WorkflowPublicationEditDisabled from './components/publication/WorkflowPublicationEditDisabled.vue';
+import WorkflowPublicationEditWarning from './components/publication/WorkflowPublicationEditWarning.vue';
 
 import {useWorkflowConfigOJS as useWorkflowConfig} from './composables/useWorkflowConfig/useWorkflowConfigOJS';
 import {useWorkflowNavigationConfigOJS as useWorkflowNavigationConfig} from './composables/useWorkflowNavigationConfig/useWorkflowNavigationConfigOJS';
@@ -57,7 +57,7 @@ const Components = markRaw({
 	WorkflowPublicationVersionControl,
 	WorkflowChangeSubmissionLanguage,
 	WorkflowSubmissionStatus,
-	WorkflowPublicationEditDisabled,
+	WorkflowPublicationEditWarning,
 });
 
 const store = useWorkflowStore({

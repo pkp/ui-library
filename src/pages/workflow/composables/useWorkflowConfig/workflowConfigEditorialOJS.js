@@ -709,7 +709,7 @@ export const PublicationConfig = {
 			const items = [];
 			if (selectedPublication.status === pkp.const.STATUS_PUBLISHED) {
 				items.push({
-					component: 'WorkflowPublicationEditDisabled',
+					component: 'WorkflowPublicationEditWarning',
 					props: {},
 				});
 			}
@@ -930,7 +930,7 @@ export const PublicationConfig = {
 						formName: 'identifier',
 						submission,
 						publication: selectedPublication,
-						canEdit: permissions.canEditPublication,
+						canEdit: 'true',
 					},
 				},
 			];
@@ -963,6 +963,7 @@ export const PublicationConfig = {
 					props: {
 						submission,
 						publication: selectedPublication,
+						canEdit: permissions.canEditPublication,
 					},
 				},
 			];

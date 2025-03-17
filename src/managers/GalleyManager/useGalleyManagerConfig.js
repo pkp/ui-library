@@ -84,15 +84,6 @@ export function useGalleyManagerConfig() {
 	function getManagerConfig({submission, publication}) {
 		const permittedActions = GalleyManagerConfiguration.actions
 			.filter((action) => {
-				if (
-					publication.value.status === pkp.const.STATUS_PUBLISHED &&
-					GalleyManagerConfiguration.actionsRequiresUnpublishedState.includes(
-						action,
-					)
-				) {
-					return false;
-				}
-
 				return true;
 			})
 			.filter((action) => {
