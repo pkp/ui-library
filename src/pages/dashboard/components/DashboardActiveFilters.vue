@@ -15,7 +15,13 @@
 				@click="(...args) => emit('removeFilter', filter.name, filter.value)"
 			>
 				<Icon class="h-4 w-4 text-negative" icon="Cancel" :aria-hidden="true" />
-				<span class="sr-only">remove filter (todo better label)</span>
+				<span class="sr-only">
+					{{
+						t('common.filterRemove', {
+							filterTitle: `${filter.fieldLabel}: ${filter.label}`,
+						})
+					}}
+				</span>
 			</button>
 		</div>
 		<PkpButton
