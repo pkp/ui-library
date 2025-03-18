@@ -18,11 +18,6 @@
 <script>
 import Icon from '@/components/Icon/Icon.vue';
 
-/**
-TODO: review the badge use cases after new submission listing
-As the dot/button use cases seems to be relevant only for previous submission listing and might be opportunity to remove them
-*/
-
 export default {
 	name: 'Badge',
 	components: {Icon},
