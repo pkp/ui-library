@@ -248,6 +248,7 @@ window.pkp = {
 		'common.uploadedBy': 'Uploaded by {$name}',
 		'common.uploadedByAndWhen': 'Uploaded by {$name} on {$date}',
 		'common.view': 'View',
+		'common.viewMoreDetails': 'View more details',
 		'common.viewWithName': 'View {$name}',
 		'common.yes': 'Yes',
 		'context.context': 'Journal',
@@ -263,8 +264,13 @@ window.pkp = {
 		'dashboard.actions.respondToRequest': 'Respond to request',
 		'dashboard.applyFilters': 'Apply Filters',
 		'dashboard.assignReviewers': 'Assign Reviewers',
+		'dashboard.copyEditedFilesUploaded': 'Copyedited Files Uploaded: {$count}',
 		'dashboard.declinedDuringStage': 'Declined during the {$stageName} stage.',
 		'dashboard.newReviewRoundToBeCreated': 'New review round to be created',
+		'dashboard.noAccessBeingAuthor':
+			'You cannot access this submission as a Journal Manager since you are the author. To view it, go to "My Submissions"',
+		'dashboard.noAccessBeingReviewer':
+			'You cannot access this submission as a Journal Manager since you are the reviewer. To view it, go to "Review Assignments"',
 		'dashboard.recommendOnly.pendingRecommendations':
 			'Recommending Editors are tasked to advise the next steps for this submission',
 		'dashboard.recommendOnly.recommendationsCompleted':
@@ -414,6 +420,7 @@ window.pkp = {
 			'You are about to remove this participant from <strong>all</strong> stages.',
 		'editor.submission.review.currentFiles':
 			'Current Review Files For Round {$round}',
+		'editor.submission.reviewerSuggestions': 'Reviewers Suggested by Author',
 		'editor.submission.revisions': 'Revisions',
 		'editor.submission.roundStatus.recommendationMadeByYou':
 			'Recommendation has been made by you.',
@@ -475,19 +482,20 @@ window.pkp = {
 		'form.saved': 'Saved',
 		'grid.action.addContributor': 'Add Contributor',
 		'grid.action.addGalley': 'Add galley',
+		'grid.action.addReviewerSuggestion': 'Add Reviewer Suggestion',
 		'grid.action.delete': 'Delete',
 		'grid.action.deleteContributor': 'Delete Contributor',
 		'grid.action.deleteContributor.confirmationMessage':
 			'Are you sure you want to remove {$name} as a contributor? This action can not be undone.',
-		'grid.action.disable': 'Disable',
+		'grid.action.deleteReviewerSuggestion': 'Delete Reviewer Suggestion',
+		'grid.action.deleteReviewerSuggestion.confirmationMessage':
+			'Are you sure you want to remove this suggestion? This action can not be undone.',
 		'grid.action.edit': 'Edit',
 		'grid.action.editFile': 'Edit a file',
-		'grid.action.enable': 'Enable',
 		'grid.action.logInAs': 'Login As',
 		'grid.action.mergeUser': 'Merge user',
 		'grid.action.moreInformation': 'More Information',
 		'grid.action.order': 'Order',
-		'grid.action.remove': 'Remove',
 		'grid.action.saveOrdering': 'Save Order',
 		'grid.action.sort': 'Sort',
 		'grid.columns.actions': 'Actions',
@@ -837,6 +845,7 @@ window.pkp = {
 			'Type the institute name in {$language}',
 		'user.authorization.accessibleWorkflowStage':
 			"You don't currently have access to that stage of the workflow.",
+		'user.bioStatement': 'Bio Statement',
 		'user.disabledModal.description': 'Current Roles : {$roles}',
 		'user.disabledModal.title': 'Disable {$fullName}',
 		'user.email': 'Email',
@@ -844,15 +853,21 @@ window.pkp = {
 		'user.familyName': 'Family Name',
 		'user.givenName': 'Given Name',
 		'user.gossip': 'Editorial Notes',
+		'user.interests': 'Reviewing interests',
 		'user.logOut': 'Logout',
+		'user.mailingAddress': 'Mailing Address',
 		'user.orcid': 'ORCID iD',
 		'user.password': 'Password',
+		'user.phone': 'Phone',
 		'user.removeRole.message':
 			'Are you sure want remove this role permanently?',
 		'user.role.reviewer': 'Reviewer',
 		'user.role.reviewers': 'Reviewers',
 		'user.roles': 'Roles',
+		'user.signature': 'Signature',
+		'user.url': 'Homepage URL',
 		'user.username': 'Username',
+		'user.workingLanguages': 'Working Languages',
 		'userAccess.management.options': '##userAccess.management.options##',
 		'userAccess.search': 'Search User',
 		'userAccess.tableHeader.name': 'Name',
@@ -863,14 +878,10 @@ window.pkp = {
 		'userInvitation.edit.message':
 			'If you edit the existing invitation or add a new role, the current invitation will be canceled and, a new one will be sent. Are you sure you want to proceed?',
 		'userInvitation.edit.title': 'Edit Invitation',
-		'userInvitation.emailField.description':
-			'##userInvitation.emailField.description##',
 		'userInvitation.modal.button': 'View All Users',
 		'userInvitation.modal.message':
 			"{$email} has been invited to new role in OJS. You can be updated about the user's decision on the User and Role page, your OJS notification and/or your email",
 		'userInvitation.modal.title': 'Invitation Sent',
-		'userInvitation.orcidField.description':
-			'##userInvitation.orcidField.description##',
 		'userInvitation.roleTable.endDate': 'End Date',
 		'userInvitation.roleTable.journalMasthead': 'Journal Masthead',
 		'userInvitation.roleTable.role': 'Role',
@@ -886,8 +897,6 @@ window.pkp = {
 		'userInvitation.user.disableMessage':
 			'The user was disabled. You cannot assign them a role while they are disabled. Please enable the user first to invite them to a role.',
 		'userInvitation.user.disableTitle': 'The user is currently disabled.',
-		'userInvitation.usernameField.description':
-			'##userInvitation.usernameField.description##',
 		'validator.required': 'This field is required.',
 		'workflow.review.externalReview': 'Review',
 		'workflow.review.internalReview': 'Internal Review',
@@ -902,14 +911,6 @@ window.pkp = {
 		'workflow.submissionNextReviewRoundInFutureStage':
 			'The submission advanced to the next review round, was accepted, and is currently in the {$stage} stage.',
 		'workflow.uploadRevisions': 'Upload revisions',
-		'grid.user.grid.user.enableReasonDescription':
-			"Once the user is enabled, they will regain access to OJS, and you'll be able to invite them to roles as needed.",
-		'grid.user.grid.user.disableReasonDescription':
-			"Please note that once a user is disabled, you won't be able to add them to any roles until they are enabled again.",
-		'user.url': 'Homepage URL',
-		'user.workingLanguages': 'Working Languages',
-		'user.bioStatement': 'Bio Statement',
-		'common.viewMoreDetails': 'View more details',
 	},
 	tinyMCE: {
 		skinUrl: '/styles/tinymce',

@@ -359,6 +359,18 @@ export function useDashboardConfigEditorialActivity() {
 			}
 		}
 
+		if (activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EDITING) {
+			return [
+				{
+					component: 'DashboardCellSubmissionActivityActionAlert',
+					props: {
+						alert: t('dashboard.copyEditedFilesUploaded', {
+							count: activeStage.uploadedFilesCount || 0,
+						}),
+					},
+				},
+			];
+		}
 		return {};
 	}
 
@@ -431,6 +443,19 @@ export function useDashboardConfigEditorialActivity() {
 					},
 				];
 			}
+		}
+
+		if (activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EDITING) {
+			return [
+				{
+					component: 'DashboardCellSubmissionActivityActionAlert',
+					props: {
+						alert: t('dashboard.copyEditedFilesUploaded', {
+							count: activeStage.uploadedFilesCount || 0,
+						}),
+					},
+				},
+			];
 		}
 
 		return {};

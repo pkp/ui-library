@@ -306,16 +306,28 @@ export const EditorialActivityScenario = [
 	getSubmissionMock({
 		id: 21,
 		stageId: pkp.const.WORKFLOW_STAGE_ID_EDITING,
-	}),
-	// Scheduled
-	getSubmissionMock({
-		id: 22,
-		stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-		status: pkp.const.STATUS_SCHEDULED,
+		stages: [
+			{
+				id: pkp.const.WORKFLOW_STAGE_ID_EDITING,
+				uploadedFilesCount: 1,
+			},
+		],
 	}),
 	// Production stage
 	getSubmissionMock({
+		id: 22,
+		stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+	}),
+	// Scheduled
+	getSubmissionMock({
 		id: 23,
 		stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+		status: pkp.const.STATUS_SCHEDULED,
+	}),
+	// Published
+	getSubmissionMock({
+		id: 24,
+		stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+		status: pkp.const.STATUS_PUBLISHED,
 	}),
 ];
