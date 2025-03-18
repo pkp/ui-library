@@ -49,7 +49,6 @@ export const Init = {
 						const offset = parseInt(url.searchParams.get('offset') || 0);
 						const count = parseInt(url.searchParams.get('count'));
 						const submissions = SubmissionsMock25.slice(offset, offset + count);
-
 						return HttpResponse.json({
 							itemsMax: SubmissionsMock25.length,
 							items: submissions,
@@ -85,6 +84,8 @@ const SubmissionScenariosDescription = `<ul class="text-sm-normal">
 			<li>20. Review stage - Open reviews</li>
 			<li>21. Copyediting stage </li>
 			<li>22. Production stage</li>
+			<li>23. Production stage - Scheduled</li>
+			<li>24. Production stage - Published</li>
 		</ul>`;
 
 export const EditorEditorialActivity = {
