@@ -930,7 +930,7 @@ export const PublicationConfig = {
 						formName: 'identifier',
 						submission,
 						publication: selectedPublication,
-						canEdit: 'true',
+						canEdit: permissions.canEditPublication,
 					},
 				},
 			];
