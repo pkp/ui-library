@@ -24,6 +24,7 @@ export function useWorkflowConfigOJS({dashboardPage}) {
 			selectedReviewRound,
 			permissions,
 			dashboardPage,
+			contextMinReviewsPerSubmission,
 		},
 	) {
 		if (selectedMenuState.stageId) {
@@ -35,7 +36,7 @@ export function useWorkflowConfigOJS({dashboardPage}) {
 				selectedStageId: selectedMenuState.stageId,
 				selectedReviewRound,
 				permissions,
-				pageInitConfig,
+				contextMinReviewsPerSubmission,
 			};
 			if (!submission) {
 				return [];

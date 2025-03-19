@@ -3,6 +3,7 @@
 		<h3 v-if="message.heading" class="mb-2 text-lg-bold text-heading">
 			{{ message.heading }}
 		</h3>
+		<p v-if="message.body1" class="mb-2 text-sm-normal">{{ message.body1 }}</p>
 		<p v-if="message.body" class="text-sm-normal">{{ message.body }}</p>
 	</div>
 </template>
@@ -18,6 +19,7 @@ const props = defineProps({
 	},
 	selectedStageId: {type: Number, required: true},
 	selectedReviewRoundId: {type: Number, required: false, default: null},
+	contextMinReviewsPerSubmission: {type: Number, required: true},
 });
 
 const {t, tk} = useLocalize();
@@ -26,6 +28,7 @@ const {
 	hasNotSubmissionStartedStage,
 	hasSubmissionPassedStage,
 	getCurrentReviewRound,
+	checkMinimumConsideredReviews,
 } = useSubmission();
 
 //const activeStage = computed(() => getActiveStage(props.submission));
@@ -98,10 +101,47 @@ const message = computed(() => {
 			};
 		}
 
+		// #10363 Add minimum reviewers status
+		const {shouldMinimumReviewsBeConsidered, hasMinimumReviewsCount} =
+			checkMinimumConsideredReviews(
+				props.submission,
+				props.selectedStageId,
+				props.selectedReviewRoundId,
+				props.contextMinReviewsPerSubmission,
+			);
+
+		if (
+			// only for these statuses the minimum reviews completed status should take precedence
+			shouldMinimumReviewsBeConsidered &&
+			hasMinimumReviewsCount &&
+			[
+				pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWERS,
+				pkp.const.REVIEW_ROUND_STATUS_PENDING_REVIEWS,
+				pkp.const.REVIEW_ROUND_STATUS_REVIEWS_READY,
+				pkp.const.REVIEW_ROUND_STATUS_REVIEWS_COMPLETED,
+				pkp.const.REVIEW_ROUND_STATUS_REVIEWS_OVERDUE,
+			].includes(currentReviewRound.statusId)
+		) {
+			return {
+				heading: t('notification.type.roundStatusTitle', {
+					round: currentReviewRound.round,
+				}),
+				body1: t('dashboard.minimumConfirmedReviewsRequired', {
+					number: props.contextMinReviewsPerSubmission,
+				}),
+				body: t('dashboard.minimumReviewsConfirmedDecisionNeeded'),
+			};
+		}
+
 		return {
 			heading: t('notification.type.roundStatusTitle', {
 				round: currentReviewRound.round,
 			}),
+			body1: shouldMinimumReviewsBeConsidered
+				? t('dashboard.minimumConfirmedReviewsRequired', {
+						number: props.contextMinReviewsPerSubmission,
+					})
+				: null,
 			body: currentReviewRound.status,
 		};
 	} else if (props.selectedStageId === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION) {

@@ -46,7 +46,6 @@ import {useWorkflowStore} from '@/pages/workflow/workflowStore';
 import {useSubmission} from '@/composables/useSubmission';
 
 import {Actions as DecisionActions} from '../../composables/useWorkflowDecisions';
-import {Actions as WorkflowActions} from '../../composables/useWorkflowActions';
 
 const {t} = useLocalize();
 
@@ -88,7 +87,7 @@ function getRecommendationActions() {
 	if (props.stageId === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) {
 		actions.push({
 			label: t('editor.submission.recommend.revisions'),
-			action: WorkflowActions.WORKFLOW_RECOMMEND_REVISION,
+			action: DecisionActions.DECISION_RECOMMEND_REVISION,
 		});
 
 		actions.push({

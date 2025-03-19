@@ -93,6 +93,11 @@ const props = defineProps({
 		type: Array,
 		required: true,
 	},
+	/** Minimum reviews per submission */
+	contextMinReviewsPerSubmission: {
+		type: Number,
+		required: true,
+	},
 	/** Filters form config  */
 	filtersForm: {
 		type: Object,
