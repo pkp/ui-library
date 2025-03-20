@@ -15,7 +15,7 @@ const props = defineProps({
 	alert: {type: String, required: false, default: null},
 	actionLabel: {type: String, required: false, default: null},
 	actionName: {type: String, required: false, default: null},
-	actionArgs: {type: String, required: false, default: () => {}},
+	actionArgs: {type: Object, required: false, default: () => {}},
 });
 
 const dashboardStore = useDashboardPageStore();

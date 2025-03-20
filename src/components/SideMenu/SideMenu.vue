@@ -80,8 +80,8 @@ const props = defineProps({
 	 */
 	activeItemKey: {
 		type: String,
-		required: true,
-		validator: (value) => !!value,
+		required: false,
+		default: null,
 	},
 	/**
 	 * The background class that should be used for the SideMenu.

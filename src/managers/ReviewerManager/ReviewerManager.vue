@@ -45,6 +45,8 @@
 </template>
 
 <script setup>
+import {useId} from 'vue';
+
 import PkpTable from '@/components/Table/Table.vue';
 import TableColumn from '@/components/Table/TableColumn.vue';
 import TableHeader from '@/components/Table/TableHeader.vue';
@@ -60,12 +62,10 @@ import ReviewerManagerCellReviewType from './ReviewerManagerCellReviewType.vue';
 import ReviewerManagerActionButton from './ReviewerManagerActionButton.vue';
 
 import {useReviewerManagerStore} from './reviewerManagerStore.js';
-import {useId} from '@/composables/useId.js';
 import {useLocalize} from '@/composables/useLocalize.js';
 
-const {generateId} = useId();
 const {t} = useLocalize();
-const headingId = generateId();
+const headingId = useId();
 
 const Components = {
 	ReviewerManagerCellReviewer,

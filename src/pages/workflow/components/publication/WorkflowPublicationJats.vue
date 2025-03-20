@@ -78,9 +78,7 @@
 				:id="id + '-uploader'"
 				ref="uploader"
 				:api-url="publicationApiUrl"
-				:filename-locale="primaryLocale"
 				:files="newJatsFiles"
-				:options="options"
 				:query-params="{fileStage}"
 				:upload-progress-label="t('submission.upload.percentComplete')"
 				@updated:files="setJatsFile"
@@ -90,6 +88,7 @@
 </template>
 
 <script>
+import {useId} from 'vue';
 import PkpButton from '@/components/Button/Button.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import ajaxError from '@/mixins/ajaxError';
@@ -126,6 +125,7 @@ export default {
 			workingJatsProps: [],
 			hasLoadedContent: false,
 			newJatsFiles: [],
+			id: useId(),
 		};
 	},
 	computed: {

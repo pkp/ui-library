@@ -30,9 +30,9 @@
 </template>
 
 <script>
+import {useId} from 'vue';
 import debounce from 'debounce';
 import Icon from '@/components/Icon/Icon.vue';
-
 export default {
 	components: {Icon},
 	props: {
@@ -57,7 +57,7 @@ export default {
 	],
 	computed: {
 		inputId() {
-			return this._uid;
+			return useId();
 		},
 		currentSearchLabel() {
 			return this.searchLabel ? this.searchLabel : this.t('common.search');

@@ -67,7 +67,6 @@ const Components = {
 const props = defineProps({
 	publication: {type: Object, required: true},
 	submission: {type: Object, required: true},
-	canEdit: {type: Boolean, required: true},
 });
 
 const {t} = useLocalize();

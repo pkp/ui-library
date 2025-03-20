@@ -27,8 +27,8 @@ import {defineProps, inject, onMounted, onUnmounted} from 'vue';
 import Icon from '@/components/Icon/Icon.vue';
 
 const props = defineProps({
-	/** Unique column identifier */
-	id: {type: String, required: true},
+	/** Unique column identifier, required when sorting feature is used */
+	id: {type: String, required: false, default: null},
 	/** Enable sorting for given column */
 	allowsSorting: {type: Boolean, required: false, default: () => false},
 });

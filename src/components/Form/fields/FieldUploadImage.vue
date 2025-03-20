@@ -91,7 +91,7 @@
 					@vdropzone-file-added="onAddFile"
 					@vdropzone-thumbnail="onThumbnail"
 					@vdropzone-success="success"
-					@vdropzone-error="error"
+					@vdropzone-error="onError"
 					@vdropzone-removed-file="onRemoveFile"
 				/>
 				<FieldError

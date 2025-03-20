@@ -28,7 +28,7 @@ import {computed} from 'vue';
 
 const props = defineProps({
 	extendedStage: {
-		type: Number,
+		type: String,
 		required: true,
 		validator: function (value) {
 			return Object.keys(ExtendedStagesColorClass).includes(value);
