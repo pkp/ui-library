@@ -61,7 +61,7 @@ export const WorkflowConfig = {
 		},
 	},
 
-	[pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW]: {
+	[pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW]: {
 		getPrimaryItems: ({
 			submission,
 			selectedStageId,
