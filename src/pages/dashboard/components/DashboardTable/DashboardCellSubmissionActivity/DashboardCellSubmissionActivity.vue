@@ -37,11 +37,15 @@ const props = defineProps({item: {type: Object, required: true}});
 
 const cellConfig = computed(() => {
 	if (dashboardStore.dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD) {
-		return dashboardStore.getEditorialActivityForEditorialDashboard(props.item);
+		return dashboardStore.getEditorialActivityForEditorialDashboard({
+			submission: props.item,
+		});
 	} else if (
 		dashboardStore.dashboardPage === DashboardPageTypes.MY_SUBMISSIONS
 	) {
-		return dashboardStore.getEditorialActivityForMySubmissions(props.item);
+		return dashboardStore.getEditorialActivityForMySubmissions({
+			submission: props.item,
+		});
 	}
 
 	return [];

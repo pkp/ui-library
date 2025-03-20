@@ -26,9 +26,9 @@ const dashboardStore = useDashboardPageStore();
 const props = defineProps({item: {type: Object, required: true}});
 
 const cellConfig = computed(() => {
-	const config = dashboardStore.getEditorialActivityForMyReviewAssignments(
-		props.item,
-	);
+	const config = dashboardStore.getEditorialActivityForMyReviewAssignments({
+		reviewAssignment: props.item,
+	});
 	return config;
 });
 </script>

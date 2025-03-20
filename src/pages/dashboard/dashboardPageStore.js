@@ -51,6 +51,13 @@ export const useDashboardPageStore = defineComponentStore(
 		const extender = useExtender();
 
 		const dashboardPage = pageInitConfig.dashboardPage;
+
+		/**
+		 * Minimal reviews count feature
+		 */
+		const contextMinReviewsPerSubmission =
+			pageInitConfig.contextMinReviewsPerSubmission;
+
 		/**
 		 * ModalStore
 		 */
@@ -433,6 +440,7 @@ export const useDashboardPageStore = defineComponentStore(
 				{
 					...args,
 					dashboardPage,
+					contextMinReviewsPerSubmission,
 				},
 			);
 		}
@@ -575,6 +583,9 @@ export const useDashboardPageStore = defineComponentStore(
 
 			getReviewActivityIndicatorProps,
 			getReviewActivityIndicatorPopoverProps,
+
+			// Minimal reviews count feature
+			contextMinReviewsPerSubmission,
 
 			// Expose component forms, so managers and other dashboard/workflow component can access them
 			componentForms: pageInitConfig.componentForms,

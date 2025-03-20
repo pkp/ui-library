@@ -2,23 +2,16 @@ import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
 import {useSubmission} from '@/composables/useSubmission';
 import {useUrl} from '@/composables/useUrl';
-import {useForm} from '@/composables/useForm';
 import {useFetch} from '@/composables/useFetch';
 import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 
 import WorkflowModalChangeSubmissionLanguage from '@/pages/workflow/modals/WorkflowChangeSubmissionLanguageModal.vue';
-
-import WorkflowSelectRevisionFormModal from '@/pages/workflow/modals/WorkflowSelectRevisionFormModal.vue';
-
-import {useWorkflowDecisions} from '@/pages/workflow/composables/useWorkflowDecisions';
 
 export const Actions = {
 	WORKFLOW_VIEW_PUBLISHED_SUBMISSION: 'workflowViewPublishedSubmission',
 	WORKFLOW_ASSIGN_TO_ISSUE: 'workflowAssignToIssue',
 	WORKFLOW_VIEW_ACTIVITY_LOG: 'workflowViewActivityLog',
 	WORKFLOW_VIEW_LIBRARY: 'workflowViewLibrary',
-	WORKFLOW_REQUEST_REVISION: 'workflowRequestRevision',
-	WORKFLOW_RECOMMEND_REVISION: 'workflowRecommendRevision',
 	WORKFLOW_ASSIGN_TO_ISSUE_AND_SCHEDULE_FOR_PUBLICATION:
 		'workflowAssignToIssueAndScheduleForPublication',
 	WORKFLOW_SCHEDULE_FOR_PUBLICATION: 'workflowScheduleForPublication',
@@ -33,10 +26,7 @@ export const Actions = {
 	WORKFLOW_CHANGE_WORKTYPE: 'workflowChangeWorktype',
 };
 
-export function useWorkflowActions({
-	selectRevisionDecisionForm,
-	selectRevisionRecommendationForm,
-}) {
+export function useWorkflowActions() {
 	const {t} = useLocalize();
 
 	function workflowViewPublishedSubmission({submission}, finishedCallback) {
@@ -90,43 +80,6 @@ export function useWorkflowActions({
 			{title: t('grid.libraryFiles.submission.title')},
 			finishedCallback,
 		);
-	}
-
-	function workflowRequestRevision(
-		{submission, reviewRoundId},
-		finishedCallback,
-	) {
-		// open modal
-		const {openSideModal} = useModal();
-		const {set, form, getValue} = useForm(selectRevisionDecisionForm);
-		openSideModal(WorkflowSelectRevisionFormModal, {
-			formProps: form,
-			onSet: set,
-			onSuccess: () => {
-				const decision = getValue('decision');
-				const {openDecisionPage} = useWorkflowDecisions();
-				openDecisionPage(submission, decision, {reviewRoundId});
-			},
-		});
-	}
-
-	function workflowRecommendRevision(
-		{submission, reviewRoundId},
-		finishedCallback,
-	) {
-		const {openSideModal} = useModal();
-
-		const {set, form, getValue} = useForm(selectRevisionRecommendationForm);
-		openSideModal(WorkflowSelectRevisionFormModal, {
-			formProps: form,
-			onSet: set,
-			onSuccess: () => {
-				const decision = getValue('decision');
-				const {openDecisionPage} = useWorkflowDecisions();
-
-				openDecisionPage(submission, decision, {reviewRoundId});
-			},
-		});
 	}
 
 	function workflowAssignToIssueAndScheduleForPublication(
@@ -363,8 +316,6 @@ export function useWorkflowActions({
 		workflowAssignToIssue,
 		workflowViewActivityLog,
 		workflowViewLibrary,
-		workflowRequestRevision,
-		workflowRecommendRevision,
 		workflowAssignToIssueAndScheduleForPublication,
 		workflowScheduleForPublication,
 		workflowUnschedulePublication,

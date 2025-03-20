@@ -20,6 +20,7 @@ const {
 	getActiveReviewAssignments,
 	getReviewAssignmentsForRound,
 	getStageLabel,
+	checkMinimumConsideredReviews,
 } = useSubmission();
 
 const {
@@ -28,7 +29,10 @@ const {
 } = useCurrentUser();
 
 export function useDashboardConfigEditorialActivity() {
-	function getEditorialActivityForEditorialDashboard(submission) {
+	function getEditorialActivityForEditorialDashboard({
+		submission,
+		contextMinReviewsPerSubmission,
+	}) {
 		const activeStage = getActiveStage(submission);
 
 		if (submission.status === pkp.const.STATUS_DECLINED) {
@@ -118,6 +122,15 @@ export function useDashboardConfigEditorialActivity() {
 		) {
 			const activeRound = getCurrentReviewRound(submission, activeStage.id);
 			let activeRoundStatusId = activeRound.statusId;
+
+			// #10363 Calculate additional status for minimum reviews
+			const {shouldMinimumReviewsBeConsidered, hasMinimumReviewsCount} =
+				checkMinimumConsideredReviews(
+					submission,
+					activeStage.id,
+					activeRound.id,
+					contextMinReviewsPerSubmission,
+				);
 
 			// Workaround to customise deciding editor messaging, until we have way to provide personalised on backend
 			if (activeStage.isCurrentUserDecidingEditor) {
@@ -323,13 +336,34 @@ export function useDashboardConfigEditorialActivity() {
 					},
 				];
 			} else if (
-				activeRoundStatusId === pkp.const.REVIEW_ROUND_STATUS_REVIEWS_COMPLETED
+				activeRoundStatusId ===
+					pkp.const.REVIEW_ROUND_STATUS_REVIEWS_COMPLETED &&
+				!shouldMinimumReviewsBeConsidered
 			) {
 				return [
 					{
 						component: 'DashboardCellSubmissionActivityActionAlert',
 						props: {
 							alert: t('editor.submission.roundStatus.reviewsCompleted'),
+						},
+					},
+					{
+						component: 'DashboardCellSubmissionActivityReviews',
+						props: {
+							submissionId: submission.id,
+							reviewAssignments: getCurrentReviewAssignments(
+								submission,
+								activeStage.id,
+							),
+						},
+					},
+				];
+			} else if (shouldMinimumReviewsBeConsidered && hasMinimumReviewsCount) {
+				return [
+					{
+						component: 'DashboardCellSubmissionActivityActionAlert',
+						props: {
+							alert: t('dashboard.minimumReviewsConfirmedDecisionNeeded'),
 						},
 					},
 					{
@@ -392,7 +426,7 @@ export function useDashboardConfigEditorialActivity() {
 		return {};
 	}
 
-	function getEditorialActivityForMySubmissions(submission) {
+	function getEditorialActivityForMySubmissions({submission}) {
 		const activeStage = getActiveStage(submission);
 
 		// Not checking for submission stage, as OPS does not have it
@@ -496,7 +530,7 @@ export function useDashboardConfigEditorialActivity() {
 		return {};
 	}
 
-	function getEditorialActivityForMyReviewAssignments(reviewAssignment) {
+	function getEditorialActivityForMyReviewAssignments({reviewAssignment}) {
 		// When declined always show the same status regardless of the stage
 		if (
 			reviewAssignment.status === pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED

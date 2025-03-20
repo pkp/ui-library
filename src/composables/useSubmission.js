@@ -75,6 +75,12 @@ export const CompletedReviewAssignmentStatuses = [
 	pkp.const.REVIEW_ASSIGNMENT_STATUS_VIEWED,
 ];
 
+// Confirmed reviews
+export const ConfirmedReviewAssignmentStatuses = [
+	pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
+	pkp.const.REVIEW_ASSIGNMENT_STATUS_THANKED,
+];
+
 const IgnoredReviewAssignmentStatuses = [
 	pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED,
 	pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED,
@@ -229,6 +235,13 @@ export function useSubmission() {
 		);
 	}
 
+	function getConfirmedReviewAssignments(reviewAssignments = []) {
+		return getActiveReviewAssignments(reviewAssignments).filter(
+			(reviewAssignment) =>
+				ConfirmedReviewAssignmentStatuses.includes(reviewAssignment.statusId),
+		);
+	}
+
 	function getOpenReviewAssignments(reviewAssignments) {
 		return reviewAssignments.filter(
 			(reviewAssignment) =>
@@ -265,6 +278,38 @@ export function useSubmission() {
 		);
 	}
 
+	function checkMinimumConsideredReviews(
+		submission,
+		stageId,
+		reviewRoundId,
+		minReviewsCount,
+	) {
+		if (
+			!minReviewsCount ||
+			stageId !== pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW
+		) {
+			return {
+				shouldMinimumReviewsBeConsidered: false,
+				hasMinimumReviewsCount: false,
+			};
+		}
+		const reviewAssignments = getReviewAssignmentsForRound(
+			submission.reviewAssignments,
+			reviewRoundId,
+		);
+
+		const confirmedReviewAssignments =
+			getConfirmedReviewAssignments(reviewAssignments);
+
+		const hasMinimumReviewsCount =
+			confirmedReviewAssignments.length >= minReviewsCount;
+
+		return {
+			shouldMinimumReviewsBeConsidered: true,
+			hasMinimumReviewsCount,
+		};
+	}
+
 	return {
 		getSubmissionById,
 		getActiveStage,
@@ -283,7 +328,9 @@ export function useSubmission() {
 		// review assignments
 		getReviewAssignmentsForRound,
 		getActiveReviewAssignments,
+		getConfirmedReviewAssignments,
 		getCompletedReviewAssignments,
+		checkMinimumConsideredReviews,
 		getOpenReviewAssignments,
 		getOpenReviewAssignmentsForRound,
 		getOpenAndCompletedReviewAssignmentsForRound,
