@@ -70,7 +70,7 @@
 					:options="dropzoneOptions"
 					@vdropzone-file-added="onAddFile"
 					@vdropzone-success="success"
-					@vdropzone-error="error"
+					@vdropzone-error="onError"
 					@vdropzone-removed-file="onRemoveFile"
 				/>
 				<FieldError
@@ -349,7 +349,7 @@ export default {
 		 * @param {String|Object} message The error message
 		 * @see https://www.dropzonejs.com/#event-error
 		 */
-		error: function (file, message) {
+		onError: function (file, message) {
 			let errors = this.errors.slice();
 			if (typeof message === 'string') {
 				errors.push(message);

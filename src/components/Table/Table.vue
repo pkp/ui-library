@@ -44,8 +44,15 @@
 </template>
 
 <script setup>
-import {provide, toRefs, defineEmits, ref, useSlots, computed} from 'vue';
-import {useId} from '@/composables/useId.js';
+import {
+	provide,
+	toRefs,
+	defineEmits,
+	ref,
+	useSlots,
+	computed,
+	useId,
+} from 'vue';
 
 const emit = defineEmits([
 	/**
@@ -99,9 +106,8 @@ const tableContext = {
 
 const slots = useSlots();
 
-const {generateId} = useId();
-const labelId = slots.label ? generateId() : null;
-const descriptionId = slots.description ? generateId() : null;
+const labelId = slots.label ? useId() : null;
+const descriptionId = slots.description ? useId() : null;
 
 provide('tableContext', tableContext);
 </script>

@@ -74,7 +74,7 @@ import ParticipantManagerItemInfoRecommendOnly from './ParticipantManagerItemInf
 
 const props = defineProps({
 	submission: {type: Object, required: true},
-	submissionStageId: {type: String, required: true},
+	submissionStageId: {type: Number, required: true},
 });
 
 const Components = {

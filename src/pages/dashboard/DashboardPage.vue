@@ -78,11 +78,9 @@ const props = defineProps({
 		required: true,
 		type: String,
 		validator: (prop) =>
-			[
-				'EDITORIAL_DASHBOARD',
-				'MY_REVIEW_ASSIGNMENTS',
-				'MY_SUBMISSIONS',
-			].includes(prop),
+			['editorialDashboard', 'myReviewAssignments', 'mySubmissions'].includes(
+				prop,
+			),
 	},
 	/** Form for selection type of revision */
 	selectRevisionDecisionForm: {type: Object, required: true},
@@ -98,11 +96,6 @@ const props = defineProps({
 	/** Filters form config  */
 	filtersForm: {
 		type: Object,
-		required: true,
-	},
-	/** List of columns */
-	columns: {
-		type: Array,
 		required: true,
 	},
 	/** How many submissions to show per page */

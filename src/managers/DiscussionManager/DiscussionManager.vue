@@ -10,8 +10,8 @@ import GridWrapper from '@/components/GridWrapper/GridWrapper.vue';
 import {computed} from 'vue';
 
 const props = defineProps({
-	submissionId: {type: String, required: true},
-	stageId: {type: String, required: true},
+	submissionId: {type: Number, required: true},
+	stageId: {type: Number, required: true},
 });
 
 const params = computed(() => ({
