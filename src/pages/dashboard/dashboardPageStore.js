@@ -16,6 +16,7 @@ import {useDashboardBulkDelete} from './composables/useDashboardBulkDelete';
 import {useParticipantManagerActions} from '@/managers/ParticipantManager/useParticipantManagerActions';
 import {useFileManagerActions} from '@/managers/FileManager/useFileManagerActions';
 
+import {useAppStore} from '@/stores/appStore';
 import {useDashboardConfigEditorialActivity} from './composables/useDashboardConfigEditorialActivity';
 import {useDashboardConfig} from './composables/useDashboardConfig';
 import {useDashboardConfigReviewActivity} from './composables/useDashboardConfigReviewActivity';
@@ -46,6 +47,7 @@ export const DashboardPageTypes = {
 export const useDashboardPageStore = defineComponentStore(
 	'dashboard',
 	(pageInitConfig) => {
+		const appStore = useAppStore();
 		const extender = useExtender();
 
 		const dashboardPage = pageInitConfig.dashboardPage;
@@ -219,7 +221,7 @@ export const useDashboardPageStore = defineComponentStore(
 			items: submissions,
 			pagination: submissionsPagination,
 			isLoading: isSubmissionsLoading,
-			fetch: fetchSubmissions,
+			fetch: _fetchSubmissions,
 		} = useFetchPaginated(submissionsUrl, {
 			currentPage,
 			pageSize: countPerPage,
@@ -227,6 +229,12 @@ export const useDashboardPageStore = defineComponentStore(
 			// to avoid multiple fetch calls while view changing watchers triggers query params recalculation
 			debouncedMs: 2,
 		});
+
+		function fetchSubmissions(args) {
+			_fetchSubmissions(args);
+			appStore.triggerNavigationReloadCounts();
+		}
+
 		watch(
 			[submissionsUrl, submissionsQuery, currentPage],
 			async () => {
