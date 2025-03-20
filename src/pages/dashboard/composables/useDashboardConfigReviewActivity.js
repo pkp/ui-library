@@ -316,9 +316,9 @@ export function useDashboardConfigReviewActivity(recommendations) {
 		}
 		const date = getDate(config, reviewAssignment);
 		function getRecommendation() {
-			const recommendation = recommendations.filter(
-				(r) => r.value === reviewAssignment.recommendation,
-			)[0];
+			const recommendation = recommendations.find(
+				(r) => r.id === reviewAssignment.recommendationId,
+			);
 
 			return recommendation ? localize(recommendation.title) : null;
 		}
