@@ -13,6 +13,8 @@
 
 <script setup>
 import {ref, watch, computed} from 'vue';
+
+import {useAppStore} from '@/stores/appStore';
 import {useSideMenu} from '@/composables/useSideMenu.js';
 import SideMenu from '../SideMenu/SideMenu.vue';
 import {useUrl} from '@/composables/useUrl';
@@ -41,6 +43,8 @@ const props = defineProps({
 	},
 });
 
+const appStore = useAppStore();
+
 let currentActiveKey = '';
 const menuItems = ref(convertLinksToArray(props.links));
 
@@ -68,7 +72,15 @@ const dashboardsMenuItem = menuItems.value.find(
 	(item) => item.key === 'dashboards',
 );
 if (dashboardsMenuItem) {
-	fetchDashboardCount();
+	watch(
+		() => appStore.shouldReloadNavigationCounts,
+		(newVal) => {
+			if (newVal) {
+				fetchDashboardCount();
+			}
+		},
+	);
+	appStore.triggerNavigationReloadCounts();
 }
 
 /**
@@ -85,7 +97,15 @@ const mySubmissionsMenuItem = menuItems.value.find(
 	(item) => item.key === 'mySubmissions',
 );
 if (mySubmissionsMenuItem) {
-	fetchMySubmissionsCount();
+	watch(
+		() => appStore.shouldReloadNavigationCounts,
+		(newVal) => {
+			if (newVal) {
+				fetchMySubmissionsCount();
+			}
+		},
+	);
+	appStore.triggerNavigationReloadCounts();
 }
 
 /**
@@ -102,7 +122,15 @@ const reviewAssignmentMenuItem = menuItems.value.find(
 	(item) => item.key === 'reviewAssignments',
 );
 if (reviewAssignmentMenuItem) {
-	fetchReviewAssignmentCount();
+	watch(
+		() => appStore.shouldReloadNavigationCounts,
+		(newVal) => {
+			if (newVal) {
+				fetchReviewAssignmentCount();
+			}
+		},
+	);
+	appStore.triggerNavigationReloadCounts();
 }
 
 // helper to attach count to the menu item
