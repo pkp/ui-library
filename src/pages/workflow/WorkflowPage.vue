@@ -47,7 +47,10 @@
 		<SideModalLayoutMenu2Columns>
 			<template #menu>
 				<nav>
-					<SideMenu v-bind="workflowStore.sideMenuProps"></SideMenu>
+					<SideMenu
+						v-bind="workflowStore.sideMenuProps"
+						width-variant="compact"
+					></SideMenu>
 				</nav>
 			</template>
 			<template #heading>

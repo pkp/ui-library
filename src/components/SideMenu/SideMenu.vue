@@ -3,8 +3,8 @@
 		:expanded-keys="expandedKeys"
 		:model="items"
 		:pt="navigationStyling"
-		class="w-72 overflow-y-auto border-e border-s border-light"
-		:class="backgroundVariant"
+		class="overflow-y-auto border-e border-s border-light"
+		:class="[backgroundVariant, menuWidth]"
 		@update:expanded-keys="(...args) => emit('update:expandedKeys', ...args)"
 	>
 		<template #item="{item, active, hasSubmenu, props: itemProps}">
@@ -36,6 +36,7 @@
 </template>
 
 <script setup>
+import {computed} from 'vue';
 import PanelMenu from 'primevue/panelmenu';
 import Icon from '../Icon/Icon.vue';
 import Badge from '../Badge/Badge.vue';
@@ -91,12 +92,23 @@ const props = defineProps({
 		type: String,
 		default: 'bg-tertiary',
 	},
+	widthVariant: {
+		required: false,
+		type: String,
+		default: () => 'default',
+		validator: (prop) => ['default', 'compact'].includes(prop),
+	},
 });
 
 const emit = defineEmits([
 	/** When the expandedKeys gets updated by the PanelMenu */
 	'update:expandedKeys',
 ]);
+
+const menuWidth = computed(() => {
+	const menuSizes = {default: 'w-[21rem]', compact: 'w-[16rem]'};
+	return menuSizes[props.widthVariant];
+});
 
 const navigationStyling = {
 	header: {
