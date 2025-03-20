@@ -371,6 +371,24 @@ export function useDashboardConfigEditorialActivity() {
 				},
 			];
 		}
+
+		if (
+			activeStage.id === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION &&
+			submission.status === pkp.const.STATUS_SCHEDULED &&
+			submission?.issueToBePublished?.label
+		) {
+			return [
+				{
+					component: 'DashboardCellSubmissionActivityActionAlert',
+					props: {
+						alert: t('dashboard.toBePublishedInIssue', {
+							issue: submission.issueToBePublished.label,
+						}),
+					},
+				},
+			];
+		}
+
 		return {};
 	}
 
@@ -452,6 +470,23 @@ export function useDashboardConfigEditorialActivity() {
 					props: {
 						alert: t('dashboard.copyEditedFilesUploaded', {
 							count: activeStage.uploadedFilesCount || 0,
+						}),
+					},
+				},
+			];
+		}
+
+		if (
+			activeStage.id === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION &&
+			submission.status === pkp.const.STATUS_SCHEDULED &&
+			submission?.issueToBePublished?.label
+		) {
+			return [
+				{
+					component: 'DashboardCellSubmissionActivityActionAlert',
+					props: {
+						alert: t('dashboard.toBePublishedInIssue', {
+							issue: submission.issueToBePublished.label,
 						}),
 					},
 				},
