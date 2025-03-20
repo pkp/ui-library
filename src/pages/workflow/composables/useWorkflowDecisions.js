@@ -94,12 +94,11 @@ export function showWarningDialogAboutMinimumReviewsIfEnabled(
 		const {openDialog} = useModal();
 		const {t} = useLocalize();
 		openDialog({
+			title: t('dashboard.proceedWithoutMinimumReviews'),
 			message: t('dashboard.minimumConfirmedReviewsNotMet'),
-			modalStyle: 'negative',
 			actions: [
 				{
 					label: t('common.yesContinue'),
-					isWarnable: true,
 					callback: (close) => {
 						close();
 						callbackOnContinue();
