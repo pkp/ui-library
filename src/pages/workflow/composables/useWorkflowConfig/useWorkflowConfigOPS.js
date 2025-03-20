@@ -28,6 +28,7 @@ export function useWorkflowConfigOPS({dashboardPage}) {
 			selectedPublicationId,
 			selectedReviewRound,
 			permissions,
+			contextMinReviewsPerSubmission,
 		},
 	) {
 		if (selectedMenuState.stageId) {
@@ -39,6 +40,7 @@ export function useWorkflowConfigOPS({dashboardPage}) {
 				selectedReviewRound,
 				pageInitConfig,
 				permissions,
+				contextMinReviewsPerSubmission,
 			};
 			if (!submission) {
 				return [];

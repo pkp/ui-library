@@ -87,6 +87,7 @@ export const WorkflowConfig = {
 			permissions,
 			selectedStageId,
 			selectedReviewRound,
+			contextMinReviewsPerSubmission,
 		}) => {
 			if (!permissions.accessibleStages.includes(selectedStageId)) {
 				return {
@@ -123,6 +124,7 @@ export const WorkflowConfig = {
 					submission,
 					selectedStageId,
 					selectedReviewRoundId: selectedReviewRound?.id,
+					contextMinReviewsPerSubmission,
 				},
 			});
 
@@ -429,7 +431,7 @@ export const WorkflowConfig = {
 						props: {
 							label: t('editor.submission.decision.requestRevisions'),
 							isSecondary: true,
-							action: WorkflowActions.WORKFLOW_REQUEST_REVISION,
+							action: DecisionActions.DECISION_REQUEST_REVISION,
 							actionArgs,
 						},
 					},

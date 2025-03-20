@@ -1,5 +1,11 @@
 import {useUrlSearchParams} from '@vueuse/core';
 import {useUrl} from '@/composables/useUrl';
+import {useModal} from '@/composables/useModal';
+import {useLocalize} from '@/composables/useLocalize';
+import {useSubmission} from '@/composables/useSubmission';
+import {useForm} from '@/composables/useForm';
+
+import WorkflowSelectRevisionFormModal from '@/pages/workflow/modals/WorkflowSelectRevisionFormModal.vue';
 
 export const Actions = {
 	DECISION_ACCEPT: 'decisionAccept',
@@ -33,6 +39,10 @@ export const Actions = {
 	DECISION_REVERT_INTERNAL_DECLINE: 'decisionRevertInternalDecline',
 	DECISION_NEW_INTERNAL_ROUND: 'decisionNewInternalRound',
 	DECISION_CANCEL_INTERNAL_REVIEW_ROUND: 'decisionCancelInternalReviewRound',
+
+	// Request revisions
+	DECISION_REQUEST_REVISION: 'decisionRequestRevision',
+	DECISION_RECOMMEND_REVISION: 'decisionRecommendRevision',
 };
 
 function openDecisionPage(submission, decisionId, actionArgs = {}) {
@@ -66,11 +76,67 @@ function openDecisionPage(submission, decisionId, actionArgs = {}) {
 	redirectToPage();
 }
 
-export function useWorkflowDecisions() {
-	function decisionAccept({submission, reviewRoundId}) {
-		openDecisionPage(submission, pkp.const.DECISION_ACCEPT, {
+export function showWarningDialogAboutMinimumReviewsIfEnabled(
+	{submission, reviewRoundId, stageId, contextMinReviewsPerSubmission},
+	callbackOnContinue,
+) {
+	const {checkMinimumConsideredReviews} = useSubmission();
+
+	const {shouldMinimumReviewsBeConsidered, hasMinimumReviewsCount} =
+		checkMinimumConsideredReviews(
+			submission,
+			stageId,
 			reviewRoundId,
+			contextMinReviewsPerSubmission,
+		);
+
+	if (shouldMinimumReviewsBeConsidered && !hasMinimumReviewsCount) {
+		const {openDialog} = useModal();
+		const {t} = useLocalize();
+		openDialog({
+			title: t('dashboard.proceedWithoutMinimumReviews'),
+			message: t('dashboard.minimumConfirmedReviewsNotMet'),
+			actions: [
+				{
+					label: t('common.yesContinue'),
+					callback: (close) => {
+						close();
+						callbackOnContinue();
+					},
+				},
+				{
+					label: t('common.cancel'),
+					callback: (close) => close(),
+				},
+			],
 		});
+	} else {
+		callbackOnContinue();
+	}
+}
+
+export function useWorkflowDecisions({
+	selectRevisionDecisionForm,
+	selectRevisionRecommendationForm,
+}) {
+	function decisionAccept({
+		submission,
+		reviewRoundId,
+		contextMinReviewsPerSubmission,
+	}) {
+		showWarningDialogAboutMinimumReviewsIfEnabled(
+			{
+				submission,
+				reviewRoundId,
+				contextMinReviewsPerSubmission,
+				stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+			},
+			() => {
+				openDecisionPage(submission, pkp.const.DECISION_ACCEPT, {
+					reviewRoundId,
+				});
+			},
+		);
 	}
 
 	function decisionCancelReviewRound({submission, reviewRoundId}) {
@@ -117,10 +183,24 @@ export function useWorkflowDecisions() {
 		openDecisionPage(submission, pkp.const.DECISION_BACK_FROM_COPYEDITING);
 	}
 
-	function decisionNewExternalRound({submission, reviewRoundId}) {
-		openDecisionPage(submission, pkp.const.DECISION_NEW_EXTERNAL_ROUND, {
-			reviewRoundId,
-		});
+	function decisionNewExternalRound({
+		submission,
+		reviewRoundId,
+		contextMinReviewsPerSubmission,
+	}) {
+		showWarningDialogAboutMinimumReviewsIfEnabled(
+			{
+				submission,
+				reviewRoundId,
+				contextMinReviewsPerSubmission,
+				stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+			},
+			() => {
+				openDecisionPage(submission, pkp.const.DECISION_NEW_EXTERNAL_ROUND, {
+					reviewRoundId,
+				});
+			},
+		);
 	}
 
 	function decisionBackFromProduction({submission}) {
@@ -244,6 +324,51 @@ export function useWorkflowDecisions() {
 		);
 	}
 
+	function decisionRequestRevision(
+		{submission, reviewRoundId, contextMinReviewsPerSubmission},
+		finishedCallback,
+	) {
+		showWarningDialogAboutMinimumReviewsIfEnabled(
+			{
+				submission,
+				reviewRoundId,
+				contextMinReviewsPerSubmission,
+				stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+			},
+			() => {
+				// open modal
+				const {openSideModal} = useModal();
+				const {set, form, getValue} = useForm(selectRevisionDecisionForm);
+				openSideModal(WorkflowSelectRevisionFormModal, {
+					formProps: form,
+					onSet: set,
+					onSuccess: () => {
+						const decision = getValue('decision');
+						openDecisionPage(submission, decision, {reviewRoundId});
+					},
+				});
+			},
+		);
+	}
+
+	function decisionRecommendRevision(
+		{submission, reviewRoundId},
+		finishedCallback,
+	) {
+		const {openSideModal} = useModal();
+
+		const {set, form, getValue} = useForm(selectRevisionRecommendationForm);
+		openSideModal(WorkflowSelectRevisionFormModal, {
+			formProps: form,
+			onSet: set,
+			onSuccess: () => {
+				const decision = getValue('decision');
+
+				openDecisionPage(submission, decision, {reviewRoundId});
+			},
+		});
+	}
+
 	return {
 		openDecisionPage,
 		decisionAccept,
@@ -275,5 +400,8 @@ export function useWorkflowDecisions() {
 		decisionRevertInternalDecline,
 		decisionNewInternalRound,
 		decisionCancelInternalReviewRound,
+
+		decisionRequestRevision,
+		decisionRecommendRevision,
 	};
 }

@@ -40,6 +40,7 @@ export const WorkflowConfig = {
 			permissions,
 			selectedStageId,
 			selectedReviewRound,
+			contextMinReviewsPerSubmission,
 		}) => {
 			if (!permissions.accessibleStages.includes(selectedStageId)) {
 				return {
@@ -76,6 +77,7 @@ export const WorkflowConfig = {
 					submission,
 					selectedStageId,
 					selectedReviewRoundId: selectedReviewRound?.id,
+					contextMinReviewsPerSubmission,
 				},
 			});
 

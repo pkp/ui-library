@@ -29,7 +29,8 @@ export const useWorkflowStore = defineComponentStore(
 	'workflow',
 	({props, Components, useWorkflowConfig, useWorkflowNavigationConfig}) => {
 		const dashboardPage = props.pageInitConfig.dashboardPage;
-
+		const contextMinReviewsPerSubmission =
+			props.pageInitConfig.contextMinReviewsPerSubmission;
 		const extender = useExtender();
 		/**
 		 * Action to close the workflow from inside
@@ -148,7 +149,7 @@ export const useWorkflowStore = defineComponentStore(
 		 * Expose decision functions
 		 *
 		 * */
-		const _workflowDecisionsFns = useWorkflowDecisions();
+		const _workflowDecisionsFns = useWorkflowDecisions(props.pageInitConfig);
 		const decisionActions = wrapActionFns(
 			DecisionActions,
 			_workflowDecisionsFns,
@@ -158,6 +159,7 @@ export const useWorkflowStore = defineComponentStore(
 					submission: submission.value,
 					selectedPublication: selectedPublication.value,
 					reviewRoundId: selectedReviewRound.value?.id,
+					contextMinReviewsPerSubmission,
 				}),
 		);
 
@@ -204,6 +206,7 @@ export const useWorkflowStore = defineComponentStore(
 			selectedReviewRound: selectedReviewRound.value,
 			permissions: permissions.value,
 			publicationSettings: props.pageInitConfig.publicationSettings,
+			contextMinReviewsPerSubmission,
 		}));
 
 		const store = {
