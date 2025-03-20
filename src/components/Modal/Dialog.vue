@@ -109,7 +109,7 @@ const props = defineProps({
 	/** Used only internally, don't pass this prop via openDialog */
 	opened: {type: Boolean, default: false},
 	/** Title of the dialog */
-	title: {type: String, required: true},
+	title: {type: String, required: false, default: ''},
 	/** Message to be displayed, for more complex messages use bodyComponent&bodyProps */
 	message: {type: String, default: null},
 	/** For more complex messages Vue.js component can be passed */

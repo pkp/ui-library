@@ -79,6 +79,8 @@
 </template>
 
 <script setup>
+import {useId} from 'vue';
+
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
 import PkpTable from '@/components/Table/Table.vue';
@@ -90,7 +92,6 @@ import TableRow from '@/components/Table/TableRow.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';
 import PkpButton from '@/components/Button/Button.vue';
 
-import {useId} from '@/composables/useId.js';
 import {useLocalize} from '@/composables/useLocalize';
 defineProps({
 	isSaving: {type: Boolean, required: false, default: false},
@@ -101,8 +102,7 @@ defineProps({
 	mutableDois: {type: Array, required: true},
 });
 const {t} = useLocalize();
-const {generateId} = useId();
-const versionHeaderId = generateId();
+const versionHeaderId = useId();
 
 const emit = defineEmits(['saveDois', 'editDois']);
 /**

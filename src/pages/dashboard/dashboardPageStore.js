@@ -392,7 +392,7 @@ export const useDashboardPageStore = defineComponentStore(
 
 		// Tracking which submissionId is opened in workflow modal for query params
 		const workflowSubmissionId = computed(() => {
-			return queryParamsUrl.workflowSubmissionId;
+			return parseInt(queryParamsUrl.workflowSubmissionId);
 		});
 
 		function openWorkflowModal(submissionId) {
@@ -413,7 +413,7 @@ export const useDashboardPageStore = defineComponentStore(
 			);
 		}
 		if (queryParamsUrl.workflowSubmissionId) {
-			openWorkflowModal(queryParamsUrl.workflowSubmissionId);
+			openWorkflowModal(parseInt(queryParamsUrl.workflowSubmissionId));
 		}
 
 		function openSubmissionWizard({submissionId}) {

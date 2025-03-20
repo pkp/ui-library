@@ -13,11 +13,11 @@ import {useLocalize} from '@/composables/useLocalize';
 
 const props = defineProps({
 	submission: {
-		type: String,
+		type: Object,
 		required: true,
 	},
 	selectedStageId: {type: Number, required: true},
-	selectedReviewRoundId: {type: Number, required: false},
+	selectedReviewRoundId: {type: Number, required: false, default: null},
 });
 
 const {t, tk} = useLocalize();

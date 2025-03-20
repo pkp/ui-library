@@ -31,7 +31,7 @@ import {useWorkflowStore} from '@/pages/workflow/workflowStore';
 
 const props = defineProps({
 	submission: {type: Object, required: true},
-	selectedPublicationId: {type: Object, required: true},
+	selectedPublicationId: {type: Number, required: true},
 });
 
 const {t} = useLocalize();

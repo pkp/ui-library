@@ -54,11 +54,10 @@
 </template>
 
 <script setup>
-import {ref, watch, computed} from 'vue';
+import {ref, watch, computed, useId} from 'vue';
 import Autosuggest from './Autosuggest.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import {useFetch} from '@/composables/useFetch';
-import {useId} from '@/composables/useId';
 
 const props = defineProps({
 	filterIds: {
@@ -66,8 +65,8 @@ const props = defineProps({
 		default: () => [],
 	},
 });
-const {generateId} = useId();
-const autosuggestContainerId = generateId();
+
+const autosuggestContainerId = useId();
 const currentSelected = ref([]);
 const inputValue = ref('');
 const isFocused = ref(false);

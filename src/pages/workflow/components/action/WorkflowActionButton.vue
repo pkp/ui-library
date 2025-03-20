@@ -16,7 +16,11 @@ defineProps({
 	isSecondary: {type: Boolean, required: false, default: false},
 	isWarnable: {type: Boolean, required: false, default: false},
 	action: {type: String, required: true},
-	actionArgs: {type: Object, required: false, default: () => {}},
+	actionArgs: {
+		type: [Object, String, Number],
+		required: false,
+		default: () => {},
+	},
 	label: {type: String, required: true},
 });
 

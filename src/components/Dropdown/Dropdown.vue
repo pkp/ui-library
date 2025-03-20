@@ -38,6 +38,7 @@
 <script>
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
+import {useId} from 'vue';
 
 export default {
 	components: {PkpButton, Icon},
@@ -93,7 +94,7 @@ export default {
 		 * A unique id for the dropdown
 		 */
 		id() {
-			return this._uid;
+			return useId();
 		},
 	},
 	methods: {
