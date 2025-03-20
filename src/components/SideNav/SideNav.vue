@@ -133,6 +133,8 @@ if (reviewAssignmentMenuItem) {
 	appStore.triggerNavigationReloadCounts();
 }
 
+const ViewsWithAttentionBadge = ['reviewer-action-required', 'reviews-overdue'];
+
 // helper to attach count to the menu item
 function enrichMenuItemWithCounts(menuItems, page, itemsCount) {
 	if (itemsCount.value) {
@@ -142,6 +144,9 @@ function enrichMenuItemWithCounts(menuItems, page, itemsCount) {
 				...item,
 				badge: {
 					slot: itemsCount.value[item.id],
+					colorVariant: ViewsWithAttentionBadge.includes(item.id)
+						? 'attention-bg'
+						: 'primary',
 				},
 			}));
 			menuItem.items = menuItemsEnriched;
