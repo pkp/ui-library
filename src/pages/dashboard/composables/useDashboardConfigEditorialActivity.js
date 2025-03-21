@@ -35,33 +35,6 @@ export function useDashboardConfigEditorialActivity() {
 	}) {
 		const activeStage = getActiveStage(submission);
 
-		if (submission.status === pkp.const.STATUS_DECLINED) {
-			return [
-				{
-					component: 'DashboardCellSubmissionActivityActionAlert',
-					props: {
-						alert: t('dashboard.declinedDuringStage', {
-							stageName: getStageLabel(submission),
-						}),
-					},
-				},
-			];
-		}
-
-		// Not checking for submission stage, as OPS does not have it
-		if (submission.submissionProgress) {
-			return [
-				{
-					component: 'DashboardCellSubmissionActivityActionAlert',
-					props: {
-						actionName: 'openSubmissionWizard',
-						actionLabel: t('submission.list.completeSubmission'),
-						actionArgs: {submissionId: submission.id},
-					},
-				},
-			];
-		}
-
 		// Warning that I am assigned as author, relevant if I am NOT assigned via any editorial role
 		if (
 			hasCurrentUserAtLeastOneAssignedRoleInAnyStage(submission, [
@@ -97,6 +70,33 @@ export function useDashboardConfigEditorialActivity() {
 					component: 'DashboardCellSubmissionActivityActionAlert',
 					props: {
 						alert: t('dashboard.noAccessBeingReviewer'),
+					},
+				},
+			];
+		}
+
+		if (submission.status === pkp.const.STATUS_DECLINED) {
+			return [
+				{
+					component: 'DashboardCellSubmissionActivityActionAlert',
+					props: {
+						alert: t('dashboard.declinedDuringStage', {
+							stageName: getStageLabel(submission),
+						}),
+					},
+				},
+			];
+		}
+
+		// Not checking for submission stage, as OPS does not have it
+		if (submission.submissionProgress) {
+			return [
+				{
+					component: 'DashboardCellSubmissionActivityActionAlert',
+					props: {
+						actionName: 'openSubmissionWizard',
+						actionLabel: t('submission.list.completeSubmission'),
+						actionArgs: {submissionId: submission.id},
 					},
 				},
 			];
