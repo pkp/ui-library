@@ -1,11 +1,25 @@
 <template>
 	<p>{{ message }}</p>
-	<div>
-		<ul role="list">
-			<li>{{ t('user.email') }}: {{ email }}</li>
-			<li>{{ t('userInvitation.roleTable.role') }}: {{ roles }}</li>
-			<li>{{ t('common.status') }}: {{ status }}</li>
-			<li>{{ t('user.affiliation') }}: {{ affiliation }}</li>
+	<div class="px-8">
+		<ul role="list" class="list-disc">
+			<li>
+				<span class="text-xl-bold">{{ t('user.email') }}:</span>
+				{{ email }}
+			</li>
+			<li>
+				<span class="text-xl-bold">
+					{{ t('userInvitation.roleTable.role') }}:
+				</span>
+				{{ roles }}
+			</li>
+			<li>
+				<span class="text-xl-bold">{{ t('common.status') }}:</span>
+				{{ status }}
+			</li>
+			<li>
+				<span class="text-xl-bold">{{ t('user.affiliation') }}:</span>
+				{{ affiliation }}
+			</li>
 		</ul>
 	</div>
 </template>
