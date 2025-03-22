@@ -14,7 +14,7 @@ export const stripUnsafeHtml = {
 	mounted(el, binding) {
 		// Handle null and undefined values by defaulting to an empty string
 		const value = binding.value == null ? '' : String(binding.value);
-		const cleanContent = sanitizeHtml(value, sanitizeConfig);
+		const cleanContent = sanitizeHtml(value);
 		el.innerHTML = cleanContent;
 	},
 	// Called whenever the bound value changes.
@@ -22,7 +22,7 @@ export const stripUnsafeHtml = {
 		// Only re-sanitize and update if the value has changed, handling null and undefined
 		if (binding.value !== binding.oldValue) {
 			const value = binding.value == null ? '' : String(binding.value);
-			const cleanContent = sanitizeHtml(value, sanitizeConfig);
+			const cleanContent = sanitizeHtml(value);
 			el.innerHTML = cleanContent;
 		}
 	},
