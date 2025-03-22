@@ -116,7 +116,8 @@ const props = defineProps({
 	/** context available reviewer recommendations */
 	recommendations: {
 		type: Array,
-		required: true,
+		required: false,
+		default: () => [],
 	},
 });
 
