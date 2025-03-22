@@ -328,8 +328,13 @@ export function useDashboardConfigReviewActivity({recommendations}) {
 
 		const date = getDate(config, reviewAssignment);
 		function getRecommendation() {
+			// As recommendations only available for OJS, not in OMP and OPS
+			if (recommendations === undefined) {
+				return null;
+			}
+
 			const recommendation = recommendations.find(
-				(r) => r.id === reviewAssignment.recommendationId,
+				(r) => r.id === reviewAssignment.reviewerRecommendationId,
 			);
 
 			return recommendation ? localize(recommendation.title) : null;

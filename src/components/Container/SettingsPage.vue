@@ -8,7 +8,7 @@ import ThemeForm from '@/components/Form/context/ThemeForm.vue';
 import DateTimeForm from '@/components/Form/context/DateTimeForm.vue';
 import DoiSetupSettingsForm from '@/components/Form/context/DoiSetupSettingsForm.vue';
 import DoiRegistrationSettingsForm from '@/components/Form/context/DoiRegistrationSettingsForm.vue';
-import ReviewerRecommendationsListPanel from '@/components/ListPanel/reviewerRecommendations/ReviewerRecommendationsListPanel.vue';
+import ReviewerRecommendationManager from '@/managers/ReviewerRecommendationManager/ReviewerRecommendationManager.vue';
 
 export default {
 	name: 'SettingsPage',
@@ -21,7 +21,7 @@ export default {
 		DateTimeForm,
 		DoiSetupSettingsForm,
 		DoiRegistrationSettingsForm,
-		ReviewerRecommendationsListPanel,
+		ReviewerRecommendationManager,
 	},
 	extends: Page,
 	data() {
