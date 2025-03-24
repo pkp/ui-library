@@ -25,7 +25,7 @@
 				<TableRow v-for="item in store.items" :key="item.id">
 					<TableCell :is-row-header="true">
 						<span
-							v-strip-unsafe-html="localize(item.title)"
+							v-strip-unsafe-html="stripHtmlTags(localize(item.title))"
 							class="text-lg-normal"
 						></span>
 					</TableCell>
@@ -70,6 +70,7 @@ import TableRow from '@/components/Table/TableRow.vue';
 import TableCell from '@/components/Table/TableCell.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
+import {stripHtmlTags} from '@/directives/stripUnsafeHtml';
 
 const props = defineProps({
 	addRecommendationLabel: {type: String, required: true},
