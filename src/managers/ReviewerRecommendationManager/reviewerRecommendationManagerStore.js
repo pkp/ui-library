@@ -7,6 +7,7 @@ import {replaceLocaleParams} from '@/utils/i18n.js';
 import {useReviewerRecommendationManagerActions} from './reviewerRecommendationManagerActions';
 import {cloneDeep} from 'lodash';
 import ReviewerRecommendationsEditModal from './ReviewerRecommendationsEditModal.vue';
+import {stripHtmlTags} from '@/directives/stripUnsafeHtml';
 
 export const useReviewerRecommendationManagerStore = defineComponentStore(
 	'reviewerRecommendationManager',
@@ -42,7 +43,7 @@ export const useReviewerRecommendationManagerStore = defineComponentStore(
 						? props.confirmDeactivateMessage
 						: props.confirmActivateMessage,
 					{
-						title: localize(item.title),
+						title: stripHtmlTags(localize(item.title)),
 					},
 				),
 				actions: [
@@ -89,7 +90,7 @@ export const useReviewerRecommendationManagerStore = defineComponentStore(
 				name: 'delete',
 				title: props.deleteRecommendationLabel,
 				message: replaceLocaleParams(props.confirmDeleteMessage, {
-					title: localize(item.title),
+					title: stripHtmlTags(localize(item.title)),
 				}),
 				actions: [
 					{
