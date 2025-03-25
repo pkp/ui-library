@@ -128,6 +128,7 @@ export default {
 				onDownloadReport: this.downloadReport,
 				getFilterDescription: this.getFilterDescription,
 				geoReportType: this.geoReportType,
+				filters: this.filters,
 			});
 		},
 
