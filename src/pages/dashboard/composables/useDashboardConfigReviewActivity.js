@@ -277,6 +277,21 @@ function getDays(config, reviewAssignment) {
 	return null;
 }
 
+function getTitle(config, date, days) {
+	return t(config.titleKey, {
+		date: formatShortDate(date),
+		days: Math.abs(days),
+	});
+}
+
+function getDate(config, reviewAssignment) {
+	if (config.dateToDisplay && reviewAssignment[config.dateToDisplay]) {
+		return reviewAssignment[config.dateToDisplay];
+	}
+
+	return '';
+}
+
 export function useDashboardConfigReviewActivity() {
 	function getReviewActivityIndicatorProps({reviewAssignment}) {
 		const config = ConfigPerStatus[reviewAssignment.statusId];
@@ -293,28 +308,25 @@ export function useDashboardConfigReviewActivity() {
 
 			progress = 100 * (1 - (today - start) / (end - start));
 		}
+		const days = String(getDays(config, reviewAssignment));
+
 		// show days if icon is not defined in config
-		const text = !reviewActivityConfig.icon
-			? String(getDays(config, reviewAssignment))
-			: null;
+		const text = !reviewActivityConfig.icon ? days : null;
+		const date = getDate(config, reviewAssignment);
+
+		const srLabel = getTitle(config, date, days);
 
 		return {
 			...reviewActivityConfig,
 			text,
 			progress,
+			srLabel,
 		};
 	}
 
 	function getReviewActivityIndicatorPopoverProps({reviewAssignment}) {
 		const config = ConfigPerStatus[reviewAssignment.statusId];
 
-		function getDate() {
-			if (config.dateToDisplay && reviewAssignment[config.dateToDisplay]) {
-				return reviewAssignment[config.dateToDisplay];
-			}
-
-			return '';
-		}
 		const date = getDate(config, reviewAssignment);
 		function getRecommendation() {
 			return RecommendationTranslations[reviewAssignment.recommendation]
@@ -324,12 +336,7 @@ export function useDashboardConfigReviewActivity() {
 
 		const days = getDays(config, reviewAssignment);
 
-		function getTitle() {
-			return t(config.titleKey, {
-				date: formatShortDate(date),
-				days: Math.abs(days),
-			});
-		}
+		const title = getTitle(config, date, days);
 
 		function getDescription() {
 			return t(config.descriptionKey, {
@@ -361,7 +368,7 @@ export function useDashboardConfigReviewActivity() {
 		}
 		return {
 			titleBadgeProps: config.badgeProps,
-			title: getTitle(),
+			title,
 			description: getDescription(),
 			reviewMethod: reviewAssignment.reviewMethod,
 			textButton: config.textAction && {
