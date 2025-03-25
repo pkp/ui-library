@@ -115,6 +115,7 @@ export const IconGallery = {
 			'Globe',
 			'Hdd',
 			'Help',
+			'HelpTopNav',
 			'History',
 			'InProgress',
 			'IncreaseTextSize',
