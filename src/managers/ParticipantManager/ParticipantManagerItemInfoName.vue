@@ -1,5 +1,7 @@
 <template>
-	<div class="text-base-bold">{{ participant.fullName }}</div>
+	<div class="break-words text-base-bold">
+		{{ participant.fullName }}
+	</div>
 </template>
 
 <script setup>

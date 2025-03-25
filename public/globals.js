@@ -121,7 +121,8 @@ window.pkp = {
 		pdf: 'FilePdf', // DOCUMENT_TYPE_PDF
 		word: 'FileDoc', // DOCUMENT_TYPE_WORD
 		video: 'FileVideo', // DOCUMENT_TYPE_VIDEO
-		zip: 'file-FileZip-o', // DOCUMENT_TYPE_ZIP
+		zip: 'FileZip', // DOCUMENT_TYPE_ZIP
+		url: 'Url', // DOCUMENT_TYPE_URL
 	},
 
 	/**

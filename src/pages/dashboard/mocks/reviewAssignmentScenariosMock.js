@@ -1,4 +1,4 @@
-import {getReviewAssignmentFullMock} from './reviewAssignmentsMock';
+import {getReviewAssignmentFullMock} from '../../../mockFactories/reviewAssignmentsMock';
 export const ReviewAssignmentEditorialActivityScenario = [
 	// Review stage
 	//REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE // request has been sent but reviewer has not responded

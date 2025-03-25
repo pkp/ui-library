@@ -1,10 +1,4 @@
-function isObject(variable) {
-	return (
-		typeof variable === 'object' &&
-		variable !== null &&
-		!Array.isArray(variable)
-	);
-}
+import {isObject} from './mockHelpers';
 
 const CommonDefaults = {
 	_href:

@@ -1,6 +1,6 @@
-import {getSubmissionMock} from './submissionMock';
-import {getReviewRoundMock} from './reviewRoundsMock';
-import {getReviewAssignmentShortMock} from './reviewAssignmentsMock';
+import {getSubmissionMock} from '../../../mockFactories/submissionMock';
+import {getReviewRoundMock} from '../../../mockFactories/reviewRoundsMock';
+import {getReviewAssignmentShortMock} from '../../../mockFactories/reviewAssignmentsMock';
 
 export const EditorialActivityScenario = [
 	// Incomplete
