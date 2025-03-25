@@ -63,6 +63,7 @@ import Filter from './icons/Filter.vue';
 import Globe from './icons/Globe.vue';
 import Hdd from './icons/Hdd.vue';
 import Help from './icons/Help.vue';
+import HelpTopNav from './icons/HelpTopNav.vue';
 import History from './icons/History.vue';
 import InProgress from './icons/InProgress.vue';
 import IncreaseTextSize from './icons/IncreaseTextSize.vue';
@@ -176,6 +177,7 @@ const svgIcons = {
 	Globe,
 	Hdd,
 	Help,
+	HelpTopNav,
 	History,
 	InProgress,
 	IncreaseTextSize,
