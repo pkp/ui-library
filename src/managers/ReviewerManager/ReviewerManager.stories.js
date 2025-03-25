@@ -1,7 +1,7 @@
 import ReviewerManager from './ReviewerManager.vue';
-import {getSubmissionMock} from '@/pages/dashboard/mocks/submissionMock';
-import {getReviewAssignmentShortMock} from '@/pages/dashboard/mocks/reviewAssignmentsMock';
-import {getReviewRoundMock} from '@/pages/dashboard/mocks/reviewRoundsMock';
+import {getSubmissionMock} from '@/mockFactories/submissionMock';
+import {getReviewAssignmentShortMock} from '@/mockFactories/reviewAssignmentsMock';
+import {getReviewRoundMock} from '@/mockFactories/reviewRoundsMock';
 export default {
 	title: 'Managers/ReviewerManager',
 	component: ReviewerManager,

@@ -5,6 +5,11 @@ const CommonDefaults = {
 	dateSubmitted: '2024-03-23 11:01:02',
 	id: 19,
 	lastModified: '2024-03-23 11:01:02',
+	locale: 'en',
+	metadataLocales: {
+		en: 'English',
+		fr_CA: 'French (Canada)',
+	},
 	status: 1,
 	submissionProgress: '',
 	stageId: 3,

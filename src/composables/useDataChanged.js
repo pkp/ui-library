@@ -6,18 +6,26 @@ export function useDataChanged(callback) {
 		const registerDataChangeCallback = injectFromCurrentInstance(
 			'registerDataChangeCallback',
 		);
-		registerDataChangeCallback(callback);
+		if (registerDataChangeCallback) {
+			registerDataChangeCallback(callback);
+		}
 
 		const unRegisterDataChangeCallback = injectFromCurrentInstance(
 			'unRegisterDataChangeCallback',
 		);
 
 		onUnmounted(() => {
-			unRegisterDataChangeCallback(callback);
+			if (unRegisterDataChangeCallback) {
+				unRegisterDataChangeCallback(callback);
+			}
 		});
 	}
 
-	const triggerDataChange = injectFromCurrentInstance('triggerDataChange');
+	let triggerDataChange = injectFromCurrentInstance('triggerDataChange');
+	// to work fine even outside of the data change provider
+	if (!triggerDataChange) {
+		triggerDataChange = () => {};
+	}
 
 	return {triggerDataChange};
 }
