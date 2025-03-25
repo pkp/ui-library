@@ -7,6 +7,7 @@
 		close-label="Close"
 		:open="sideModal1?.opened || false"
 		:modal-level="1"
+		:is-inert="sideModal2?.opened || false"
 		@close="(returnData) => close(sideModal1?.modalId, returnData)"
 	>
 		<component :is="component1" v-bind="sideModal1?.props" />
@@ -25,6 +26,7 @@
 			"
 			:modal-level="2"
 			:open="sideModal2?.opened || false"
+			:is-inert="sideModal3?.opened || false"
 			@close="(returnData) => close(sideModal2?.modalId, returnData)"
 		>
 			<component
@@ -45,6 +47,7 @@
 				close-label="Close"
 				:modal-level="3"
 				:open="sideModal3?.opened || false"
+				:is-inert="sideModal4?.opened || false"
 				@close="(returnData) => close(sideModal3?.modalId, returnData)"
 			>
 				<component
@@ -91,7 +94,7 @@
 </template>
 
 <script setup>
-import {computed} from 'vue';
+import {computed, watch} from 'vue';
 import {useModalStore} from '@/stores/modalStore';
 import {storeToRefs} from 'pinia';
 import SideModal from '@/components/Modal/SideModal.vue';
@@ -124,6 +127,15 @@ const activeModalId = computed(() => {
 	}
 
 	return null;
+});
+
+watch(activeModalId, (newVal) => {
+	const appBody = document.querySelector('.app__body');
+	if (newVal) {
+		appBody?.setAttribute('inert', '');
+	} else {
+		appBody?.removeAttribute('inert');
+	}
 });
 
 // Component can be either string or vue component
