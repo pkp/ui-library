@@ -1,11 +1,9 @@
 <template>
 	<DialogPanel
-		class="pointer-events-auto top-12 h-[calc(100vh-3rem)] w-screen"
+		class="pointer-events-auto h-screen w-screen"
 		:class="levelClasses"
 	>
-		<div
-			class="shadow-xl top-12 flex h-[calc(100vh-3rem)] flex-col bg-default pt-6"
-		>
+		<div class="shadow-xl flex h-full flex-col bg-default py-6">
 			<div class="">
 				<div class="flex items-start">
 					<div class="ms-4">
