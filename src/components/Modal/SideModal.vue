@@ -1,45 +1,43 @@
 <template>
-	<teleport to="body">
-		<TransitionRoot as="template" :show="open">
-			<HLDialog as="div" class="relative z-10" @close="handleClose">
-				<TransitionChild
-					as="template"
-					enter="ease-in-out duration-500"
-					enter-from="opacity-0"
-					enter-to="opacity-100"
-					leave="ease-in-out duration-500"
-					leave-from="opacity-100"
-					leave-to="opacity-0"
-				>
-					<div
-						class="fixed inset-0 top-12 h-[calc(100vh-3rem)] bg-blur transition-opacity"
-					/>
-				</TransitionChild>
+	<TransitionRoot as="template" :show="open">
+		<HLDialog as="div" class="relative z-10" @close="handleClose">
+			<TransitionChild
+				as="template"
+				enter="ease-in-out duration-500"
+				enter-from="opacity-0"
+				enter-to="opacity-100"
+				leave="ease-in-out duration-500"
+				leave-from="opacity-100"
+				leave-to="opacity-0"
+			>
+				<div
+					class="fixed inset-0 top-12 h-[calc(100vh-3rem)] bg-blur transition-opacity"
+				/>
+			</TransitionChild>
 
-				<div class="fixed inset-0 overflow-hidden" :inert="isInert">
-					<div class="absolute inset-0 overflow-hidden">
-						<div
-							class="pointer-events-none fixed inset-y-0 top-12 flex h-[calc(100vh-3rem)] max-w-full ltr:right-0 ltr:pl-10 rtl:left-0 rtl:pr-10"
+			<div class="fixed inset-0 overflow-hidden">
+				<div class="absolute inset-0 overflow-hidden">
+					<div
+						class="pointer-events-none fixed inset-y-0 top-12 flex h-[calc(100vh-3rem)] max-w-full ltr:right-0 ltr:pl-10 rtl:left-0 rtl:pr-10"
+					>
+						<TransitionChild
+							as="template"
+							enter="transform transition ease-in-out duration-500"
+							enter-from="ltr:translate-x-full rtl:-translate-x-full"
+							enter-to="translate-x-0"
+							leave="transform transition ease-in-out duration-500"
+							leave-from="translate-x-0"
+							leave-to="ltr:translate-x-full rtl:-translate-x-full"
 						>
-							<TransitionChild
-								as="template"
-								enter="transform transition ease-in-out duration-500"
-								enter-from="ltr:translate-x-full rtl:-translate-x-full"
-								enter-to="translate-x-0"
-								leave="transform transition ease-in-out duration-500"
-								leave-from="translate-x-0"
-								leave-to="ltr:translate-x-full rtl:-translate-x-full"
-							>
-								<div>
-									<slot />
-								</div>
-							</TransitionChild>
-						</div>
+							<div>
+								<slot />
+							</div>
+						</TransitionChild>
 					</div>
 				</div>
-			</HLDialog>
-		</TransitionRoot>
-	</teleport>
+			</div>
+		</HLDialog>
+	</TransitionRoot>
 </template>
 
 <script setup>
@@ -59,10 +57,6 @@ const props = defineProps({
 		type: Number,
 		required: false,
 		default: 0,
-	},
-	isInert: {
-		type: Boolean,
-		default: false,
 	},
 });
 
