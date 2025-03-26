@@ -10,15 +10,13 @@
 				leave-from="opacity-100"
 				leave-to="opacity-0"
 			>
-				<div
-					class="fixed inset-0 top-12 h-[calc(100vh-3rem)] bg-blur transition-opacity"
-				/>
+				<div class="fixed inset-0 bg-blur transition-opacity" />
 			</TransitionChild>
 
 			<div class="fixed inset-0 overflow-hidden">
 				<div class="absolute inset-0 overflow-hidden">
 					<div
-						class="pointer-events-none fixed inset-y-0 top-12 flex h-[calc(100vh-3rem)] max-w-full ltr:right-0 ltr:pl-10 rtl:left-0 rtl:pr-10"
+						class="pointer-events-none fixed inset-y-0 flex max-w-full ltr:right-0 ltr:pl-10 rtl:left-0 rtl:pr-10"
 					>
 						<TransitionChild
 							as="template"

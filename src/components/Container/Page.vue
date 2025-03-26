@@ -154,7 +154,7 @@ export default {
 	min-height: 3rem;
 	background: @bg-anchor;
 	font-size: 0.85rem;
-	z-index: 30;
+	z-index: 10;
 }
 
 .app__contextTitle {
