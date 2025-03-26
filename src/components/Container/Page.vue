@@ -198,7 +198,7 @@ export default {
 .app__headerAction {
 	> button,
 	> a {
-		padding: 0.5rem 1rem;
+		padding: 0.5rem;
 		box-shadow: none;
 		background: transparent;
 		border: none;
@@ -242,7 +242,7 @@ export default {
 .app__tasks > button,
 .app__help > a {
 	position: relative;
-	padding: 0.5rem 1rem;
+	padding: 0.5rem;
 	background: transparent;
 	border: none;
 	line-height: 2rem;
