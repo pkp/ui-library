@@ -9,6 +9,7 @@
 			:open="sideModal1?.opened || false"
 			:modal-level="1"
 			:inert="sideModal2?.opened || false"
+			:aria-hidden="sideModal2?.opened || null"
 			@close="(returnData) => close(sideModal1?.modalId, returnData)"
 		>
 			<component :is="component1" v-bind="sideModal1?.props" />
@@ -28,6 +29,7 @@
 				:modal-level="2"
 				:open="sideModal2?.opened || false"
 				:inert="sideModal3?.opened || false"
+				:aria-hidden="sideModal3?.opened || null"
 				@close="(returnData) => close(sideModal2?.modalId, returnData)"
 			>
 				<component
@@ -49,6 +51,7 @@
 					:modal-level="3"
 					:open="sideModal3?.opened || false"
 					:inert="sideModal4?.opened || false"
+					:aria-hidden="sideModal4?.opened || null"
 					@close="(returnData) => close(sideModal3?.modalId, returnData)"
 				>
 					<component
@@ -135,8 +138,10 @@ watch(activeModalId, (newVal) => {
 	const appBody = document.querySelector('.app__body');
 	if (newVal) {
 		appBody?.setAttribute('inert', '');
+		appBody?.setAttribute('aria-hidden', 'true');
 	} else {
 		appBody?.removeAttribute('inert');
+		appBody?.removeAttribute('aria-hidden');
 	}
 });
 
