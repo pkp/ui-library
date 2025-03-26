@@ -154,7 +154,7 @@ export default {
 	min-height: 3rem;
 	background: @bg-anchor;
 	font-size: 0.85rem;
-	z-index: 10;
+	z-index: 30;
 }
 
 .app__contextTitle {
@@ -196,8 +196,9 @@ export default {
 }
 
 .app__headerAction {
-	> button {
-		padding: 0.5rem 1rem;
+	> button,
+	> a {
+		padding: 0.5rem;
 		box-shadow: none;
 		background: transparent;
 		border: none;
@@ -238,9 +239,10 @@ export default {
 	overflow-y: auto;
 }
 
-.app__tasks > button {
+.app__tasks > button,
+.app__help > a {
 	position: relative;
-	padding: 0.5rem 1rem;
+	padding: 0.5rem;
 	background: transparent;
 	border: none;
 	line-height: 2rem;
@@ -473,7 +475,8 @@ export default {
 	}
 
 	.app__contexts,
-	.app__tasks {
+	.app__tasks,
+	.app__help {
 		border-right: none;
 		border-left: 1px solid rgba(255, 255, 255, 0.2);
 	}
