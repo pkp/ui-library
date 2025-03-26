@@ -1,95 +1,87 @@
 <template>
-	<teleport to="body">
+	<SideModal
+		:key="sideModal1?.modalId"
+		:data-cy="
+			activeModalId === sideModal1?.modalId ? 'active-modal' : undefined
+		"
+		close-label="Close"
+		:open="sideModal1?.opened || false"
+		:modal-level="1"
+		@close="(returnData) => close(sideModal1?.modalId, returnData)"
+	>
+		<component :is="component1" v-bind="sideModal1?.props" />
+		<PkpDialog
+			:key="JSON.stringify(dialogProps)"
+			:opened="dialogOpened && dialogLevel === 1"
+			v-bind="dialogProps"
+			@close="closeDialog"
+		></PkpDialog>
+
 		<SideModal
-			:key="sideModal1?.modalId"
-			:data-cy="
-				activeModalId === sideModal1?.modalId ? 'active-modal' : undefined
-			"
+			:key="sideModal2?.modalId"
 			close-label="Close"
-			:open="sideModal1?.opened || false"
-			:modal-level="1"
-			:inert="sideModal2?.opened || false"
-			:aria-hidden="sideModal2?.opened || null"
-			@close="(returnData) => close(sideModal1?.modalId, returnData)"
+			:data-cy="
+				activeModalId === sideModal2?.modalId ? 'active-modal' : undefined
+			"
+			:modal-level="2"
+			:open="sideModal2?.opened || false"
+			@close="(returnData) => close(sideModal2?.modalId, returnData)"
 		>
-			<component :is="component1" v-bind="sideModal1?.props" />
+			<component
+				:is="component2"
+				:key="sideModal2?.modalId"
+				v-bind="sideModal2?.props"
+			/>
 			<PkpDialog
 				:key="JSON.stringify(dialogProps)"
-				:opened="dialogOpened && dialogLevel === 1"
+				:opened="dialogOpened && dialogLevel === 2"
 				v-bind="dialogProps"
 				@close="closeDialog"
 			></PkpDialog>
-
 			<SideModal
-				:key="sideModal2?.modalId"
-				close-label="Close"
 				:data-cy="
-					activeModalId === sideModal2?.modalId ? 'active-modal' : undefined
+					activeModalId === sideModal3?.modalId ? 'active-modal' : undefined
 				"
-				:modal-level="2"
-				:open="sideModal2?.opened || false"
-				:inert="sideModal3?.opened || false"
-				:aria-hidden="sideModal3?.opened || null"
-				@close="(returnData) => close(sideModal2?.modalId, returnData)"
+				close-label="Close"
+				:modal-level="3"
+				:open="sideModal3?.opened || false"
+				@close="(returnData) => close(sideModal3?.modalId, returnData)"
 			>
 				<component
-					:is="component2"
-					:key="sideModal2?.modalId"
-					v-bind="sideModal2?.props"
+					:is="component3"
+					:key="sideModal3?.modalId"
+					v-bind="sideModal3?.props"
 				/>
 				<PkpDialog
 					:key="JSON.stringify(dialogProps)"
-					:opened="dialogOpened && dialogLevel === 2"
+					:opened="dialogOpened && dialogLevel === 3"
 					v-bind="dialogProps"
 					@close="closeDialog"
 				></PkpDialog>
 				<SideModal
 					:data-cy="
-						activeModalId === sideModal3?.modalId ? 'active-modal' : undefined
+						activeModalId === sideModal4?.modalId ? 'active-modal' : undefined
 					"
 					close-label="Close"
-					:modal-level="3"
-					:open="sideModal3?.opened || false"
-					:inert="sideModal4?.opened || false"
-					:aria-hidden="sideModal4?.opened || null"
-					@close="(returnData) => close(sideModal3?.modalId, returnData)"
+					:modal-level="4"
+					:open="sideModal4?.opened || false"
+					@close="(returnData) => close(sideModal4?.modalId, returnData)"
 				>
 					<component
-						:is="component3"
-						:key="sideModal3?.modalId"
-						v-bind="sideModal3?.props"
+						:is="component4"
+						:key="sideModal4?.modalId"
+						v-bind="sideModal4?.props"
 					/>
 					<PkpDialog
 						:key="JSON.stringify(dialogProps)"
-						:opened="dialogOpened && dialogLevel === 3"
+						:opened="dialogOpened && dialogLevel === 4"
 						v-bind="dialogProps"
 						@close="closeDialog"
 					></PkpDialog>
-					<SideModal
-						:data-cy="
-							activeModalId === sideModal4?.modalId ? 'active-modal' : undefined
-						"
-						close-label="Close"
-						:modal-level="4"
-						:open="sideModal4?.opened || false"
-						@close="(returnData) => close(sideModal4?.modalId, returnData)"
-					>
-						<component
-							:is="component4"
-							:key="sideModal4?.modalId"
-							v-bind="sideModal4?.props"
-						/>
-						<PkpDialog
-							:key="JSON.stringify(dialogProps)"
-							:opened="dialogOpened && dialogLevel === 4"
-							v-bind="dialogProps"
-							@close="closeDialog"
-						></PkpDialog>
-					</SideModal>
 				</SideModal>
 			</SideModal>
 		</SideModal>
-	</teleport>
+	</SideModal>
 	<PkpDialog
 		:key="JSON.stringify(dialogProps)"
 		:opened="dialogOpened && dialogLevel === 0"
@@ -99,7 +91,7 @@
 </template>
 
 <script setup>
-import {computed, watch} from 'vue';
+import {computed} from 'vue';
 import {useModalStore} from '@/stores/modalStore';
 import {storeToRefs} from 'pinia';
 import SideModal from '@/components/Modal/SideModal.vue';
@@ -132,17 +124,6 @@ const activeModalId = computed(() => {
 	}
 
 	return null;
-});
-
-watch(activeModalId, (newVal) => {
-	const appBody = document.querySelector('.app__body');
-	if (newVal) {
-		appBody?.setAttribute('inert', '');
-		appBody?.setAttribute('aria-hidden', 'true');
-	} else {
-		appBody?.removeAttribute('inert');
-		appBody?.removeAttribute('aria-hidden');
-	}
 });
 
 // Component can be either string or vue component
