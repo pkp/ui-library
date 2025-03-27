@@ -27,8 +27,8 @@
 				:cy="singleCirclePosition.y"
 			/>
 		</svg>
-		<span class="sr-only">{{ t('common.viewMoreDetails') }}</span>
 		<span class="sr-only">{{ srLabel }}</span>
+		<span class="sr-only">{{ t('common.viewMoreDetails') }}</span>
 		<span
 			v-if="text"
 			aria-hidden="true"
