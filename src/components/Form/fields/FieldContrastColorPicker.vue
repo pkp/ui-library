@@ -41,30 +41,40 @@
 		<div class="pkpFormField__control">
 			<div class="pkpFormField__threeColumnsRow">
 				<div class="pkpFormField__colorPickerColumn">
-					<div class="pkpFormField__colorPickerLabel">Color 1</div>
+					<div class="pkpFormField__colorPickerLabel">
+						{{ t('common.colorPicker.color1') }}
+					</div>
 					<color-picker
+						ref="color1Picker"
 						:model-value="color1"
 						:disable-alpha="true"
+						aria-label="Color 1"
 						@update:model-value="setColor1"
 					/>
 				</div>
 				<div class="pkpFormField__colorPickerColumn">
-					<div class="pkpFormField__colorPickerLabel">Color 2</div>
+					<div class="pkpFormField__colorPickerLabel">
+						{{ t('common.colorPicker.color2') }}
+					</div>
 					<color-picker
+						ref="color2Picker"
 						:model-value="color2"
 						:disable-alpha="true"
+						aria-label="Color 2"
 						@update:model-value="setColor2"
 					/>
 				</div>
 				<div class="pkpFormField__contrastValueColumn">
-					<div class="pkpFormField__colorPickerLabel">Contrast Ratio</div>
-					<!-- Text sample with the selected colors -->
+					<div class="pkpFormField__colorPickerLabel">
+						{{ t('common.colorPicker.contrastRatio') }}
+					</div>
 					<div
 						class="pkpFormField__textSample"
 						:style="{
 							backgroundColor: color1.hex,
 							color: color2.hex,
 						}"
+						aria-label="Text preview with selected colors"
 					>
 						<span class="pkpFormField__textSampleContent">Text</span>
 					</div>
@@ -73,22 +83,36 @@
 							{{ currentContrast.toFixed(2) }}
 						</span>
 					</div>
+
+					<div class="pkpFormField__contrastCategoriesInColumn">
+						<div
+							v-for="category in contrastCategories"
+							:key="category.value"
+							class="pkpFormField__contrastCategory"
+							:class="{
+								'pkpFormField__contrastCategory--pass':
+									currentContrast >= category.value,
+								'pkpFormField__contrastCategory--fail':
+									currentContrast < category.value,
+							}"
+							:aria-label="`${category.label}: ${currentContrast >= category.value ? 'Pass' : 'Fail'}`"
+						>
+							{{ category.label }}
+						</div>
+					</div>
 				</div>
 			</div>
 
-			<div class="pkpFormField__contrastCategories">
-				<div
-					v-for="category in contrastCategories"
-					:key="category.value"
-					class="pkpFormField__contrastCategory"
-					:class="{
-						'pkpFormField__contrastCategory--pass':
-							currentContrast >= category.value,
-						'pkpFormField__contrastCategory--fail':
-							currentContrast < category.value,
-					}"
-				>
-					{{ category.label }}
+			<div class="pkpFormField__accessibilityInfoRow">
+				<div class="pkpFormField__accessibilityInfo">
+					<a
+						href="https://docs.pkp.sfu.ca/accessible-content/en/principles#contrast-ratio"
+						target="_blank"
+						rel="noopener"
+						:aria-label="t('common.colorPicker.contrastGuideText')"
+					>
+						{{ t('common.colorPicker.contrastGuideText') }}
+					</a>
 				</div>
 			</div>
 
@@ -126,10 +150,13 @@ export default {
 				{value: 3, label: 'AA Large Text (3:1)'},
 				{value: 4.5, label: 'AA Normal Text (4.5:1)'},
 				{value: 7, label: 'AAA Normal Text (7:1)'},
-				{value: 14, label: 'Enhanced (14:1)'},
-				{value: 21, label: 'Maximum (21:1)'},
 			],
+			keyboardStep: 1,
+			keyboardHueStep: 2,
 		};
+	},
+	mounted() {
+		this.setupKeyboardControls();
 	},
 	created() {
 		if (this.currentValue) {
@@ -166,6 +193,366 @@ export default {
 		});
 	},
 	methods: {
+		/**
+		 * Setup keyboard controls for the color pickers
+		 * This adds event listeners to the specific interactive elements within the color picker
+		 */
+		setupKeyboardControls() {
+			this.$nextTick(() => {
+				if (this.$refs.color1Picker) {
+					const saturation1 =
+						this.$refs.color1Picker.$el.querySelector('.vc-saturation');
+					const satPointer1 = saturation1
+						? saturation1.querySelector('.vc-saturation-circle')
+						: null;
+
+					if (saturation1 && satPointer1) {
+						saturation1.setAttribute('tabindex', '0');
+						saturation1.setAttribute(
+							'aria-label',
+							'Color 1 saturation and brightness selector',
+						);
+						saturation1.addEventListener('keydown', (e) =>
+							this.handleSaturationKeydown(e, 'color1'),
+						);
+
+						satPointer1.style.transition =
+							'box-shadow 0.2s ease, transform 0.1s ease';
+
+						saturation1.addEventListener('focus', () => {
+							satPointer1.style.boxShadow =
+								'0 0 0 2px white, 0 0 0 4px #1976d2';
+							satPointer1.style.transform = 'scale(1.2)';
+						});
+
+						saturation1.addEventListener('blur', () => {
+							satPointer1.style.boxShadow =
+								'0 0 0 1.5px #fff, inset 0 0 1px 1px rgba(0,0,0,.3)';
+							satPointer1.style.transform = 'scale(1)';
+						});
+					}
+
+					const hueSlider1 =
+						this.$refs.color1Picker.$el.querySelector('.vc-hue-container');
+					const huePointer1 = hueSlider1
+						? hueSlider1.querySelector('.vc-hue-picker')
+						: null;
+
+					if (hueSlider1 && huePointer1) {
+						hueSlider1.setAttribute('tabindex', '0');
+						hueSlider1.setAttribute('aria-label', 'Color 1 hue slider');
+						hueSlider1.addEventListener('keydown', (e) =>
+							this.handleHueKeydown(e, 'color1'),
+						);
+
+						huePointer1.style.transition =
+							'box-shadow 0.2s ease, transform 0.1s ease';
+
+						hueSlider1.addEventListener('focus', () => {
+							huePointer1.style.boxShadow =
+								'0 0 0 2px white, 0 0 0 4px #1976d2';
+						});
+
+						hueSlider1.addEventListener('blur', () => {
+							huePointer1.style.boxShadow =
+								'0 0 0 1.5px #fff, inset 0 0 1px 1px rgba(0,0,0,.3)';
+						});
+					}
+
+					const hexInput = this.$refs.color1Picker.$el.querySelector(
+						'.vc-chrome-hex input',
+					);
+					if (hexInput) {
+						hexInput.setAttribute('aria-label', 'Color 1 hex value');
+					}
+				}
+
+				if (this.$refs.color2Picker) {
+					const saturation2 =
+						this.$refs.color2Picker.$el.querySelector('.vc-saturation');
+					const satPointer2 = saturation2
+						? saturation2.querySelector('.vc-saturation-circle')
+						: null;
+
+					if (saturation2 && satPointer2) {
+						saturation2.setAttribute('tabindex', '0');
+						saturation2.setAttribute(
+							'aria-label',
+							'Color 2 saturation and brightness selector',
+						);
+						saturation2.addEventListener('keydown', (e) =>
+							this.handleSaturationKeydown(e, 'color2'),
+						);
+
+						satPointer2.style.transition =
+							'box-shadow 0.2s ease, transform 0.1s ease';
+
+						saturation2.addEventListener('focus', () => {
+							satPointer2.style.boxShadow =
+								'0 0 0 2px white, 0 0 0 4px #1976d2';
+							satPointer2.style.transform = 'scale(1.2)';
+						});
+
+						saturation2.addEventListener('blur', () => {
+							satPointer2.style.boxShadow =
+								'0 0 0 1.5px #fff, inset 0 0 1px 1px rgba(0,0,0,.3)';
+							satPointer2.style.transform = 'scale(1)';
+						});
+					}
+
+					const hueSlider2 =
+						this.$refs.color2Picker.$el.querySelector('.vc-hue-container');
+					const huePointer2 = hueSlider2
+						? hueSlider2.querySelector('.vc-hue-picker')
+						: null;
+
+					if (hueSlider2 && huePointer2) {
+						hueSlider2.setAttribute('tabindex', '0');
+						hueSlider2.setAttribute('aria-label', 'Color 2 hue slider');
+						hueSlider2.addEventListener('keydown', (e) =>
+							this.handleHueKeydown(e, 'color2'),
+						);
+
+						huePointer2.style.transition =
+							'box-shadow 0.2s ease, transform 0.1s ease';
+
+						hueSlider2.addEventListener('focus', () => {
+							huePointer2.style.boxShadow =
+								'0 0 0 2px white, 0 0 0 4px #1976d2';
+						});
+
+						hueSlider2.addEventListener('blur', () => {
+							huePointer2.style.boxShadow =
+								'0 0 0 1.5px #fff, inset 0 0 1px 1px rgba(0,0,0,.3)';
+						});
+					}
+
+					const hexInput = this.$refs.color2Picker.$el.querySelector(
+						'.vc-chrome-hex input',
+					);
+					if (hexInput) {
+						hexInput.setAttribute('aria-label', 'Color 2 hex value');
+					}
+				}
+			});
+		},
+
+		/**
+		 * Handle keyboard navigation for the saturation/brightness square
+		 *
+		 * @param {Event} event - Keyboard event
+		 * @param {String} colorId - Which color picker is being used (color1 or color2)
+		 */
+		handleSaturationKeydown(event, colorId) {
+			const color = colorId === 'color1' ? this.color1 : this.color2;
+			const pickerRef =
+				colorId === 'color1'
+					? this.$refs.color1Picker
+					: this.$refs.color2Picker;
+			if (!pickerRef || !pickerRef.$el) return;
+
+			const hsv = this.hexToHsv(color.hex);
+			let modified = false;
+
+			const hueContainer = pickerRef.$el.querySelector('.vc-hue-container');
+			const huePointer = hueContainer
+				? hueContainer.querySelector('.vc-hue-pointer')
+				: null;
+			let currentHuePosition = '0%';
+
+			if (huePointer) {
+				currentHuePosition = huePointer.style.left || '0%';
+				if (currentHuePosition !== '0%') {
+					const hueValue = Math.round(
+						(parseFloat(currentHuePosition) / 100) * 360,
+					);
+					hsv.h = hueValue;
+				}
+			}
+
+			switch (event.key) {
+				case 'ArrowUp':
+					hsv.v = Math.min(100, hsv.v + this.keyboardStep);
+					modified = true;
+					break;
+				case 'ArrowDown':
+					hsv.v = Math.max(0, hsv.v - this.keyboardStep);
+					modified = true;
+					break;
+				case 'ArrowRight':
+					hsv.s = Math.min(100, hsv.s + this.keyboardStep);
+					modified = true;
+					break;
+				case 'ArrowLeft':
+					hsv.s = Math.max(0, hsv.s - this.keyboardStep);
+					modified = true;
+					break;
+				case 'Home':
+					hsv.s = 0;
+					hsv.v = 100;
+					modified = true;
+					break;
+				case 'End':
+					hsv.s = 100;
+					hsv.v = 0;
+					modified = true;
+					break;
+				case 'PageUp':
+					hsv.s = 100;
+					hsv.v = 100;
+					modified = true;
+					break;
+				case 'PageDown':
+					hsv.s = 0;
+					hsv.v = 0;
+					modified = true;
+					break;
+			}
+
+			if (modified) {
+				event.preventDefault();
+				const newHex = this.hsvToHex(hsv);
+
+				if (colorId === 'color1') {
+					this.setColor1({hex: newHex});
+				} else {
+					this.setColor2({hex: newHex});
+				}
+
+				setTimeout(() => {
+					const saturation = pickerRef.$el.querySelector('.vc-saturation');
+					if (saturation) {
+						saturation.style.background = `hsl(${hsv.h}, 100%, 50%)`;
+					}
+
+					if (huePointer) {
+						huePointer.style.left = currentHuePosition;
+					}
+				}, 10);
+			}
+		},
+
+		/**
+		 * Handle keyboard navigation for the hue slider
+		 *
+		 * @param {Event} event - Keyboard event
+		 * @param {String} colorId - Which color picker is being used (color1 or color2)
+		 */
+		handleHueKeydown(event, colorId) {
+			const pickerRef =
+				colorId === 'color1'
+					? this.$refs.color1Picker
+					: this.$refs.color2Picker;
+			if (!pickerRef || !pickerRef.$el) return;
+
+			const satPointer = pickerRef.$el.querySelector('.vc-saturation-pointer');
+			if (!satPointer) return;
+			const currentTop = satPointer.style.top;
+			const currentLeft = satPointer.style.left;
+
+			const hueContainer = pickerRef.$el.querySelector('.vc-hue-container');
+			const huePointer = hueContainer
+				? hueContainer.querySelector('.vc-hue-pointer')
+				: null;
+			if (!hueContainer || !huePointer) return;
+
+			const color = colorId === 'color1' ? this.color1 : this.color2;
+			const currentHsv = this.hexToHsv(color.hex);
+
+			let currentHueLeft;
+
+			if (currentHsv.s === 0) {
+				const huePositionStr = huePointer.style.left;
+				if (!huePositionStr || huePositionStr === '') {
+					currentHueLeft = 0;
+				} else {
+					currentHueLeft = parseFloat(huePositionStr);
+				}
+			} else {
+				currentHueLeft = (currentHsv.h / 360) * 100;
+			}
+
+			let newHuePosition = currentHueLeft;
+			const smallStep = (this.keyboardHueStep / 360) * 100;
+			const largeStep = (60 / 360) * 100;
+			let modified = false;
+
+			switch (event.key) {
+				case 'ArrowRight':
+				case 'ArrowUp':
+					newHuePosition = Math.min(100, currentHueLeft + smallStep);
+					modified = true;
+					break;
+				case 'ArrowLeft':
+				case 'ArrowDown':
+					newHuePosition = Math.max(0, currentHueLeft - smallStep);
+					modified = true;
+					break;
+				case 'Home':
+					newHuePosition = 0;
+					modified = true;
+					break;
+				case 'End':
+					newHuePosition = 100;
+					modified = true;
+					break;
+				case 'PageUp':
+					newHuePosition = Math.min(100, currentHueLeft + largeStep);
+					modified = true;
+					break;
+				case 'PageDown':
+					newHuePosition = Math.max(0, currentHueLeft - largeStep);
+					modified = true;
+					break;
+			}
+
+			if (modified) {
+				event.preventDefault();
+				event.stopPropagation();
+
+				const hue = Math.round((newHuePosition / 100) * 360);
+
+				huePointer.style.left = `${newHuePosition}%`;
+				satPointer.style.top = currentTop;
+				satPointer.style.left = currentLeft;
+
+				const saturation = pickerRef.$el.querySelector('.vc-saturation');
+				if (saturation) {
+					saturation.style.background = `hsl(${hue}, 100%, 50%)`;
+				}
+
+				const hsv = {
+					h: hue,
+					s: currentHsv.s,
+					v: currentHsv.v,
+				};
+
+				if (currentHsv.s !== 0) {
+					const newHex = this.hsvToHex(hsv);
+					if (colorId === 'color1') {
+						this.setColor1({hex: newHex});
+					} else {
+						this.setColor2({hex: newHex});
+					}
+				}
+
+				setTimeout(() => {
+					if (satPointer) {
+						satPointer.style.top = currentTop;
+						satPointer.style.left = currentLeft;
+					}
+
+					if (huePointer) {
+						huePointer.style.left = `${newHuePosition}%`;
+					}
+
+					if (saturation) {
+						saturation.style.background = `hsl(${hue}, 100%, 50%)`;
+					}
+				}, 10);
+			}
+		},
+
 		/**
 		 * Update color 1
 		 *
@@ -261,6 +648,108 @@ export default {
 			const darker = Math.min(l1, l2);
 			return (lighter + 0.05) / (darker + 0.05);
 		},
+
+		/**
+		 * Convert hex color to HSV
+		 *
+		 * @param {String} hex - Hex color value
+		 * @return {Object} HSV object with h, s, v properties
+		 */
+		hexToHsv(hex) {
+			const rgb = this.hexToRgb(hex);
+			if (!rgb) return {h: 0, s: 0, v: 0};
+
+			const r = rgb.r;
+			const g = rgb.g;
+			const b = rgb.b;
+
+			const max = Math.max(r, g, b);
+			const min = Math.min(r, g, b);
+			const delta = max - min;
+
+			let h = 0;
+			let s = max === 0 ? 0 : delta / max;
+			let v = max;
+
+			if (delta > 0) {
+				if (max === r) {
+					h = ((g - b) / delta) % 6;
+				} else if (max === g) {
+					h = (b - r) / delta + 2;
+				} else {
+					h = (r - g) / delta + 4;
+				}
+
+				h = Math.round(h * 60);
+				if (h < 0) h += 360;
+			}
+
+			return {
+				h: h,
+				s: Math.round(s * 100),
+				v: Math.round(v * 100),
+			};
+		},
+
+		/**
+		 * Convert HSV color to hex
+		 *
+		 * @param {Object} hsv - HSV color object
+		 * @return {String} Hex color string
+		 */
+		hsvToHex(hsv) {
+			const h = hsv.h;
+			const s = hsv.s / 100;
+			const v = hsv.v / 100;
+
+			let r, g, b;
+
+			const i = Math.floor(h / 60) % 6;
+			const f = h / 60 - Math.floor(h / 60);
+			const p = v * (1 - s);
+			const q = v * (1 - f * s);
+			const t = v * (1 - (1 - f) * s);
+
+			switch (i) {
+				case 0:
+					r = v;
+					g = t;
+					b = p;
+					break;
+				case 1:
+					r = q;
+					g = v;
+					b = p;
+					break;
+				case 2:
+					r = p;
+					g = v;
+					b = t;
+					break;
+				case 3:
+					r = p;
+					g = q;
+					b = v;
+					break;
+				case 4:
+					r = t;
+					g = p;
+					b = v;
+					break;
+				default:
+					r = v;
+					g = p;
+					b = q;
+					break;
+			}
+
+			const toHex = (x) => {
+				const hex = Math.round(x * 255).toString(16);
+				return hex.length === 1 ? '0' + hex : hex;
+			};
+
+			return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+		},
 	},
 };
 </script>
@@ -281,29 +770,84 @@ export default {
 	border-radius: 2px;
 	margin-bottom: 12px;
 	width: 100%;
+	height: calc(100% - 44px);
+}
+
+.pkpFormField--contrastColor .vc-saturation {
+	height: 170px !important;
+}
+
+.pkpFormField--contrastColor .vc-saturation:focus,
+.pkpFormField--contrastColor
+	.vc-chrome-controls
+	.vc-chrome-sliders
+	.vc-chrome-hue-wrap
+	.vc-hue-picker:focus {
+	outline: 2px solid #1976d2;
+	outline-offset: 2px;
+	box-shadow: 0 0 5px rgba(25, 118, 210, 0.5);
+}
+
+.pkpFormField--contrastColor .vc-hue-container {
+	position: relative;
+	cursor: pointer;
+}
+
+.pkpFormField--contrastColor .vc-hue {
+	border-radius: 4px;
+}
+
+.pkpFormField--contrastColor .vc-hue-picker {
+	transition:
+		box-shadow 0.2s ease,
+		transform 0.1s ease;
+	height: 14px !important;
+	transform-origin: center;
+}
+
+.pkpFormField--contrastColor .vc-saturation-circle {
+	transition:
+		box-shadow 0.2s ease,
+		transform 0.1s ease;
+	transform-origin: center;
+}
+
+.pkpFormField--contrastColor .vc-chrome-fields input:focus {
+	outline: 2px solid #1976d2;
+	outline-offset: 0;
 }
 
 .pkpFormField__threeColumnsRow {
 	display: flex;
 	gap: 24px;
-	margin-bottom: 20px;
 }
 
 .pkpFormField__colorPickerColumn {
 	flex: 1;
 	max-width: calc(50% - 24px);
+	display: flex;
+	flex-direction: column;
+	height: 340px;
 }
 
 .pkpFormField__contrastValueColumn {
 	display: flex;
 	flex-direction: column;
-	flex: 0 0 120px;
+	flex: 0 0 140px;
 	gap: 8px;
+	height: 340px;
+	justify-content: space-between;
 }
 
 .pkpFormField__colorPickerLabel {
 	font-weight: 700;
-	margin-bottom: 8px;
+}
+
+.pkpFormField__keyboardInstructions {
+	margin-top: 8px;
+	font-size: 11px;
+	color: #666;
+	font-style: italic;
 }
 
 .pkpFormField__textSample {
@@ -311,8 +855,7 @@ export default {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	height: 60px;
-	margin-bottom: 8px;
+	height: 50px;
 	transition:
 		background-color 0.2s,
 		color 0.2s;
@@ -332,7 +875,8 @@ export default {
 	background-color: #f8f8f8;
 	border-radius: 4px;
 	padding: 12px;
-	height: 40px;
+	height: 50px;
+	margin-bottom: 16px;
 }
 
 .pkpFormField__contrastValueNumber {
@@ -340,21 +884,20 @@ export default {
 	font-size: 20px;
 }
 
-.pkpFormField__contrastCategories {
+.pkpFormField__contrastCategoriesInColumn {
 	display: flex;
-	justify-content: space-between;
-	gap: 8px;
-	margin-bottom: 16px;
+	flex-direction: column;
+	gap: 6px;
+	margin-bottom: 0;
+	flex-grow: 1;
 }
 
 .pkpFormField__contrastCategory {
-	flex: 1;
-	text-align: center;
-	padding: 8px 4px;
+	text-align: left;
+	padding: 8px;
 	border-radius: 4px;
 	font-weight: 600;
 	font-size: 11px;
-	white-space: nowrap;
 
 	&--pass {
 		background-color: rgba(0, 178, 141, 0.15);
@@ -364,6 +907,31 @@ export default {
 	&--fail {
 		background-color: rgba(208, 10, 108, 0.15);
 		color: #b00058;
+	}
+}
+
+.pkpFormField__accessibilityInfoRow {
+	display: flex;
+	justify-content: flex-start;
+	margin-bottom: 16px;
+}
+
+.pkpFormField__accessibilityInfo {
+	font-size: 12px;
+
+	a {
+		color: #007bff;
+		text-decoration: none;
+
+		&:hover,
+		&:focus {
+			text-decoration: underline;
+		}
+
+		&:focus {
+			outline: 2px solid #1976d2;
+			outline-offset: 2px;
+		}
 	}
 }
 </style>

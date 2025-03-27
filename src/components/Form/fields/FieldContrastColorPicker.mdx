@@ -14,18 +14,34 @@ Use this component when you need users to select two colors that work well toget
 - Allows selection of two colors (typically primary/background and secondary/text colors)
 - Displays the calculated contrast ratio between the selected colors
 - Shows visual indicators for WCAG accessibility compliance levels
+- Provides keyboard accessibility for color selection
+- Includes a link to documentation about contrast ratios and accessibility
+
+## Why Contrast Matters
+
+Color contrast is a critical aspect of web accessibility. Insufficient contrast between text and background colors can make content difficult or impossible to read for many users, including those with:
+
+- Low vision
+- Color blindness
+- Age-related vision changes
+- Situational limitations (e.g., bright sunlight on screens)
+
+The Web Content Accessibility Guidelines (WCAG) establish minimum contrast ratios to ensure readability:
+
+- **3:1** - Minimum for large text (18pt+) at Level AA
+- **4.5:1** - Minimum for normal text at Level AA
+- **7:1** - Enhanced contrast for normal text at Level AAA
+
+The component visually indicates whether selected colors meet these standards, helping content creators ensure their designs are accessible to all users.
 
 ## Features
 
 - Two color pickers with hex color selection
 - Live preview of text appearance with the selected colors
 - Real-time contrast ratio calculation
-- Visual indicators for WCAG accessibility compliance levels:
-  - AA Large Text (3:1)
-  - AA Normal Text (4.5:1)
-  - AAA Normal Text (7:1)
-  - Enhanced (14:1)
-  - Maximum (21:1)
+- Visual indicators for WCAG accessibility compliance levels
+- Keyboard navigation support for better accessibility
+- Documentation link for learning more about contrast requirements
 
 ## Technical Details
 
@@ -46,6 +62,14 @@ The component uses the WCAG formula to calculate luminance and contrast between 
 
 - Relative luminance is calculated using the formula specified in WCAG 2.0
 - Contrast ratio is calculated as (L1 + 0.05) / (L2 + 0.05), where L1 is the lighter color's luminance and L2 is the darker color's luminance
+
+### Keyboard Accessibility
+
+The component supports keyboard navigation for color selection:
+
+- Arrow keys: Adjust saturation and brightness
+- Page Up/Down: Adjust hue
+- Tab: Navigate between color pickers and other interactive elements
 
 ### Events
 
