@@ -1,6 +1,11 @@
 <template>
 	<TransitionRoot as="template" :show="open">
-		<HLDialog as="div" class="relative z-10" @close="handleClose">
+		<HLDialog
+			as="div"
+			class="relative z-10"
+			:initial-focus="closeModalButton"
+			@close="handleClose"
+		>
 			<TransitionChild
 				as="template"
 				enter="ease-in-out duration-500"
@@ -60,6 +65,7 @@ const props = defineProps({
 
 const emit = defineEmits(['close']);
 
+const closeModalButton = ref(null);
 const closeCallbacks = ref([]);
 function registerCloseCallback(callback) {
 	closeCallbacks.value.push(callback);
@@ -76,4 +82,5 @@ function handleClose(data) {
 provide('closeModal', handleClose);
 provide('registerCloseCallback', registerCloseCallback);
 provide('modalLevel', ref(props.modalLevel));
+provide('closeModalButton', closeModalButton);
 </script>
