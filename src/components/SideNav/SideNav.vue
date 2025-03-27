@@ -19,6 +19,7 @@ import {useSideMenu} from '@/composables/useSideMenu.js';
 import SideMenu from '../SideMenu/SideMenu.vue';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
+import {DashboardPageTypes} from '@/pages/dashboard/dashboardPageStore';
 
 const props = defineProps({
 	/**
@@ -73,14 +74,14 @@ const dashboardsMenuItem = menuItems.value.find(
 );
 if (dashboardsMenuItem) {
 	watch(
-		() => appStore.shouldReloadNavigationCounts,
+		() => appStore.shouldReloadViewCountsEditorDashboard,
 		(newVal) => {
 			if (newVal) {
 				fetchDashboardCount();
 			}
 		},
 	);
-	appStore.triggerNavigationReloadCounts();
+	appStore.triggerReloadViewsCount(DashboardPageTypes.EDITORIAL_DASHBOARD);
 }
 
 /**
@@ -98,14 +99,14 @@ const mySubmissionsMenuItem = menuItems.value.find(
 );
 if (mySubmissionsMenuItem) {
 	watch(
-		() => appStore.shouldReloadNavigationCounts,
+		() => appStore.shouldReloadViewCountsMySubmissions,
 		(newVal) => {
 			if (newVal) {
 				fetchMySubmissionsCount();
 			}
 		},
 	);
-	appStore.triggerNavigationReloadCounts();
+	appStore.triggerReloadViewsCount(DashboardPageTypes.MY_SUBMISSIONS);
 }
 
 /**
@@ -123,14 +124,14 @@ const reviewAssignmentMenuItem = menuItems.value.find(
 );
 if (reviewAssignmentMenuItem) {
 	watch(
-		() => appStore.shouldReloadNavigationCounts,
+		() => appStore.shouldReloadViewCountsReviewAssignments,
 		(newVal) => {
 			if (newVal) {
 				fetchReviewAssignmentCount();
 			}
 		},
 	);
-	appStore.triggerNavigationReloadCounts();
+	appStore.triggerReloadViewsCount(DashboardPageTypes.MY_REVIEW_ASSIGNMENTS);
 }
 
 const ViewsWithAttentionBadge = ['reviewer-action-required', 'reviews-overdue'];

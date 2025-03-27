@@ -237,9 +237,11 @@ export const useDashboardPageStore = defineComponentStore(
 			debouncedMs: 2,
 		});
 
-		function fetchSubmissions(args) {
-			_fetchSubmissions(args);
-			appStore.triggerNavigationReloadCounts();
+		function fetchSubmissions(updateViewCount = true) {
+			_fetchSubmissions();
+			if (updateViewCount) {
+				appStore.triggerReloadViewsCount(dashboardPage);
+			}
 		}
 
 		watch(
@@ -258,8 +260,11 @@ export const useDashboardPageStore = defineComponentStore(
 				await fetchSubmissions({clearData: true});
 				announce(t('common.loaded'));
 			},
-			{immediate: true},
+			{immediate: false},
 		);
+		// initial fetchSubmission should not trigger the view count reload as thats being
+		// already trigger by SideNav to get initial values for all dashboards
+		fetchSubmissions(false);
 
 		const reviewerManagerActions = useReviewerManagerActions(pageInitConfig);
 		const participantManagerActions =
