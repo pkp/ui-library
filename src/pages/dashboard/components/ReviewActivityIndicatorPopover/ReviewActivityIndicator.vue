@@ -27,7 +27,14 @@
 				:cy="singleCirclePosition.y"
 			/>
 		</svg>
-		<span v-if="text" :class="textColorClass" class="absolute text-sm-normal">
+		<span class="sr-only">{{ srLabel }}</span>
+		<span class="sr-only">{{ t('common.viewMoreDetails') }}</span>
+		<span
+			v-if="text"
+			aria-hidden="true"
+			:class="textColorClass"
+			class="absolute text-sm-normal"
+		>
 			{{ text }}
 		</span>
 		<Icon
@@ -81,6 +88,7 @@ const props = defineProps({
 	progress: {type: Number, required: false, default: () => null},
 	icon: {type: String, required: false, default: () => null},
 	text: {type: String, required: false, default: () => null},
+	srLabel: {type: String, required: true},
 });
 
 const boxWidth = 24;
