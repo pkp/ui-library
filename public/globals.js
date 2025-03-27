@@ -251,6 +251,7 @@ window.pkp = {
 		'common.viewMoreDetails': 'View more details',
 		'common.viewWithName': 'View {$name}',
 		'common.yes': 'Yes',
+		'common.yesContinue': 'Yes, Continue',
 		'context.context': 'Journal',
 		'contributor.listPanel.preview': 'Preview',
 		'contributor.listPanel.preview.abbreviated': 'Abbreviated',
@@ -266,11 +267,19 @@ window.pkp = {
 		'dashboard.assignReviewers': 'Assign Reviewers',
 		'dashboard.copyEditedFilesUploaded': 'Copyedited Files Uploaded: {$count}',
 		'dashboard.declinedDuringStage': 'Declined during the {$stageName} stage.',
+		'dashboard.minimumConfirmedReviewsNotMet':
+			'The minimum number of confirmed reviews has not been met. Do you still want to proceed with this editorial decision?',
+		'dashboard.minimumConfirmedReviewsRequired':
+			'Minimum number of confirmed reviews required: {$number}.',
+		'dashboard.minimumReviewsConfirmedDecisionNeeded':
+			'Minimum required number of reviews have been confirmed. A decision is needed.',
 		'dashboard.newReviewRoundToBeCreated': 'New review round to be created',
 		'dashboard.noAccessBeingAuthor':
 			'You cannot access this submission as a Journal Manager since you are the author. To view it, go to "My Submissions"',
 		'dashboard.noAccessBeingReviewer':
 			'You cannot access this submission as a Journal Manager since you are the reviewer. To view it, go to "Review Assignments"',
+		'dashboard.proceedWithoutMinimumReviews':
+			'Proceed Without Minimum Confirmed Reviews?',
 		'dashboard.recommendOnly.pendingRecommendations':
 			'Recommending Editors are tasked to advise the next steps for this submission',
 		'dashboard.recommendOnly.recommendationsCompleted':
@@ -353,6 +362,7 @@ window.pkp = {
 		'dashboard.submissions.incomplete.bulkDelete.confirm':
 			'Confirm Delete of Incomplete Submissions',
 		'dashboard.submitRevisions': 'Submit revisions',
+		'dashboard.toBePublishedInIssue': 'To be published in issue {$issue}',
 		'doi.manager.versions.countStatement': 'There are {$count} versions.',
 		'doi.manager.versions.modalTitle': 'DOIs for all versions',
 		'doi.manager.versions.view': 'View all',
@@ -421,7 +431,6 @@ window.pkp = {
 		'editor.submission.review.currentFiles':
 			'Current Review Files For Round {$round}',
 		'editor.submission.reviewerSuggestions': 'Reviewers Suggested by Author',
-		'editor.submission.revisions': 'Revisions',
 		'editor.submission.roundStatus.recommendationMadeByYou':
 			'Recommendation has been made by you.',
 		'editor.submission.roundStatus.reviewsCompleted':
@@ -633,9 +642,9 @@ window.pkp = {
 		'manager.statistics.counterR5Reports.usageNotPossible':
 			'There are no COUNTER R5 usage statistics available yet.',
 		'manager.workflow': 'Workflow',
-		'navigation.dashboards': 'Dashboards',
-		'navigation.mySubmissions': 'My Submissions',
-		'navigation.reviewAssignments': 'Review Assignments',
+		'navigation.dashboards': 'Editor Dashboard',
+		'navigation.mySubmissions': 'My Submissions as Author',
+		'navigation.reviewAssignments': 'My Assignments as Reviewer',
 		'navigation.submissions': 'Submissions',
 		'notification.notifications': 'Notifications',
 		'notification.type.roundStatusTitle': 'Round {$round} Status',

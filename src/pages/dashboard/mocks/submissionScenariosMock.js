@@ -323,6 +323,10 @@ export const EditorialActivityScenario = [
 		id: 23,
 		stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 		status: pkp.const.STATUS_SCHEDULED,
+		issueToBePublished: {
+			id: 2,
+			label: 'Vol. 2 No. 1 (2015)',
+		},
 	}),
 	// Published
 	getSubmissionMock({
