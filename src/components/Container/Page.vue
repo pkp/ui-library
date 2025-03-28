@@ -12,8 +12,6 @@ import CounterReportsPage from '@/pages/counter/CounterReportsPage.vue';
 import UserInvitationPage from '@/pages/userInvitation/UserInvitationPage.vue';
 import AcceptInvitationPage from '@/pages/acceptInvitation/AcceptInvitationPage.vue';
 
-import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
-
 export default {
 	name: 'Page',
 	components: {
@@ -126,18 +124,6 @@ export default {
 			while (parts.length) {
 				pkp.eventBus.$emit('open-tab', parts.shift());
 			}
-		},
-
-		/**
-		 * Open a modal showing the user's tasks
-		 */
-		openTasks() {
-			const {openLegacyModal} = useLegacyGridUrl({
-				component: 'grid.notifications.taskNotificationsGridHandler',
-				op: 'fetchGrid',
-			});
-
-			openLegacyModal({});
 		},
 	},
 };
