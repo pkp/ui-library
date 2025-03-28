@@ -4,7 +4,12 @@
 		:class="levelClasses"
 	>
 		<div class="shadow-xl flex h-full flex-col bg-default">
-			<TopNavActions />
+			<div
+				class="pointer-events-auto flex h-12 items-center justify-end bg-selection-dark px-4"
+			>
+				<TopNavActions />
+			</div>
+
 			<div class="py-6">
 				<div class="flex items-start">
 					<div class="ms-4">
