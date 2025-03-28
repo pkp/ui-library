@@ -26,7 +26,8 @@
 						<Icon icon="ROR" class="ms-2 h-auto w-6" :inline="true" />
 					</template>
 					<template #option="{suggestion}">
-						{{ suggestion.label }}
+						{{ suggestion.label }}&nbsp;
+						<sub class="opacity-75">{{ suggestion.country }}</sub>
 						<Icon
 							v-if="suggestion.hasSlot"
 							icon="ROR"
@@ -134,6 +135,7 @@ function mapSuggestion(item) {
 		label: names[displayLocale],
 		hasSlot: true,
 		href: item.id,
+		country: item.locations?.[0]?.geonames_details.country_name ?? '',
 	};
 }
 
