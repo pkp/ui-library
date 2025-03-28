@@ -32,6 +32,44 @@ export function useCurrentUser() {
 		return pkp.currentUser.id;
 	}
 
+	function getCurrentUserName() {
+		return pkp.currentUser.username;
+	}
+
+	function getCurrentUserInitials() {
+		return pkp.currentUser.initials;
+	}
+
+	function getUserLoggedInAsUserName() {
+		if (!isUserLoggedInAs()) {
+			return '';
+		}
+
+		const userLoggedInAs = getUserLoggedInAs();
+		return userLoggedInAs?.username || '';
+	}
+
+	function getUserLoggedInAsInitials() {
+		if (!isUserLoggedInAs()) {
+			return '';
+		}
+
+		const userLoggedInAs = getUserLoggedInAs();
+		return userLoggedInAs?.initials || '';
+	}
+
+	function getUnreadNotifications() {
+		return pkp.currentUser.unreadTasksCount;
+	}
+
+	function isUserLoggedInAs() {
+		return pkp.currentUser.isUserLoggedInAs;
+	}
+
+	function getUserLoggedInAs() {
+		return pkp.currentUser.loggedInAsUser;
+	}
+
 	/**
 	 * Check if the current user has at least one of the specified roles assigned in a particular stage
 	 * @param {Object} submission - The submission object
@@ -98,5 +136,12 @@ export function useCurrentUser() {
 		hasCurrentUserAtLeastOneAssignedRoleInStage,
 		hasCurrentUserAtLeastOneAssignedRoleInAnyStage,
 		isCurrentUserAssignedAsReviewer,
+		getUnreadNotifications,
+		isUserLoggedInAs,
+		getUserLoggedInAs,
+		getCurrentUserName,
+		getCurrentUserInitials,
+		getUserLoggedInAsUserName,
+		getUserLoggedInAsInitials,
 	};
 }
