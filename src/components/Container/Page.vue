@@ -170,17 +170,6 @@ export default {
 	}
 }
 
-.app__headerActions {
-	display: flex;
-	margin-inline-start: auto;
-	white-space: nowrap;
-
-	.pkpDropdown__content {
-		right: 0;
-		white-space: initial;
-	}
-}
-
 .app__headerAction {
 	> button,
 	> a {
@@ -223,56 +212,6 @@ export default {
 	max-width: 30em;
 	max-height: 85vh;
 	overflow-y: auto;
-}
-
-.app__tasks > button,
-.app__help > a {
-	position: relative;
-	padding: 0.5rem;
-	background: transparent;
-	border: none;
-	line-height: 2rem;
-	color: #fff;
-	cursor: pointer;
-}
-
-.app__tasksCount {
-	position: absolute;
-	top: 0.5rem;
-	right: 0.75rem;
-	background: @no;
-	line-height: 1;
-	padding: 2px;
-	border-radius: @radius;
-	color: #fff;
-	box-shadow: 0 0 1px 1px @bg-anchor;
-}
-
-.app__userNav {
-	display: flex;
-}
-
-.app__userNav .pkpDropdown__content {
-	right: 0.25rem;
-}
-
-.app__userNav .pkpDropdown__content {
-	min-width: 13rem;
-}
-
-.app__userNav__loggedInAs {
-	margin-top: 0.25rem;
-	margin-bottom: 0.25rem;
-	padding-left: 0.5rem;
-	padding-right: 0.5rem;
-	font-size: @font-tiny;
-	line-height: 1.7em;
-}
-
-.app__userNav__changeLocale {
-	padding-left: 0.5rem;
-	font-weight: @bold;
-	font-size: @font-tiny;
 }
 
 .app__returnHeader {
@@ -453,16 +392,7 @@ export default {
 }
 
 [dir='rtl'] {
-	.app__headerActions {
-		.pkpDropdown__content {
-			right: auto;
-			left: 0;
-		}
-	}
-
-	.app__contexts,
-	.app__tasks,
-	.app__help {
+	.app__contexts {
 		border-right: none;
 		border-left: 1px solid rgba(255, 255, 255, 0.2);
 	}
@@ -470,11 +400,6 @@ export default {
 	.app__contexts .pkpDropdown__content {
 		left: auto;
 		right: 0.25rem;
-	}
-
-	.app__userNav .pkpDropdown__content {
-		right: auto;
-		left: 0.25rem;
 	}
 
 	.app__notifications {
