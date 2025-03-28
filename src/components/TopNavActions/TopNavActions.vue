@@ -41,7 +41,7 @@
 					<InitialsAvatar
 						v-if="_isUserLoggedInAs"
 						:initials="currentUser.initials"
-						class="absolute top-0 h-5 w-5 rounded-full shadow ltr:right-0 rtl:left-0"
+						class="absolute top-1 h-6 w-6 rounded-full shadow ltr:right-1 rtl:left-1"
 						:is-warnable="true"
 						:shrink="true"
 					></InitialsAvatar>
@@ -187,8 +187,10 @@ function openTasks() {
 
 <style>
 .pkpDropdown > button {
-	@apply h-full !rounded-none hover:-translate-y-1 hover:text-on-dark hover:shadow-[0_0.25rem_#fff] focus:-translate-y-1 focus:text-on-dark focus:shadow-[0_0.25rem_#fff];
+	/* refer to animationStyle above, plus "!rounded-none h-full & border-none" */
+	@apply h-full !rounded-none border-none bg-transparent hover:-translate-y-1 hover:text-on-dark hover:shadow-[0_0.25rem_#fff] focus:-translate-y-1 focus:text-on-dark focus:shadow-[0_0.25rem_#fff];
 }
+
 .pkpDropdown .pkpDropdown__content {
 	@apply ltr:right-1 rtl:left-1;
 }
