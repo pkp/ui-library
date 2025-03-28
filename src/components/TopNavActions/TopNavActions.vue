@@ -29,7 +29,7 @@
 			</button>
 		</div>
 		<div>
-			<Dropdown class="flex h-full" :is-transparent="true">
+			<Dropdown class="app-user-nav flex h-full" data-cy="app-user-nav">
 				<template #button>
 					<InitialsAvatar
 						:initials="activeUser.initials"
@@ -51,7 +51,10 @@
 					:aria-label="t('common.navigation.user')"
 					class="mb-2 min-w-52 max-w-[20em]"
 				>
-					<div class="-ml-2 -mr-2 border-b border-b-light pb-2 pl-2 pr-2">
+					<div
+						v-if="supportedLocales.length > 1"
+						class="-ml-2 -mr-2 border-b border-b-light pb-2 pl-2 pr-2"
+					>
 						<div class="ps-2 text-base-bold leading-6 text-secondary">
 							Change Language
 						</div>
@@ -186,12 +189,12 @@ function openTasks() {
 </script>
 
 <style>
-.pkpDropdown > button {
-	/* refer to animationStyle above, plus "!rounded-none h-full & border-none" */
+.app-user-nav > button {
+	/* refer to animationStyle above, plus "!rounded-none h-full bg-transparent & border-none" */
 	@apply h-full !rounded-none border-none bg-transparent hover:-translate-y-1 hover:text-on-dark hover:shadow-[0_0.25rem_#fff] focus:-translate-y-1 focus:text-on-dark focus:shadow-[0_0.25rem_#fff];
 }
 
-.pkpDropdown .pkpDropdown__content {
+.app-user-nav .pkpDropdown__content {
 	@apply ltr:right-1 rtl:left-1;
 }
 </style>
