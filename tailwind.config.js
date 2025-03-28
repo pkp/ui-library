@@ -63,6 +63,7 @@ export default {
 		borderRadius: {
 			DEFAULT: '4px',
 			full: '9999px',
+			none: '0',
 		},
 		boxShadow: {
 			DEFAULT: '0 0 4px rgba(0, 0, 0, 0.5);',
