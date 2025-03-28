@@ -46,7 +46,7 @@
 								</div>
 
 								<div class="pkpDropdown__section">
-									<div class="app__userNav__loggedInAs">
+									<div class="mb-1 mt-1 pl-2 pr-2 text-base-normal leading-5">
 										{{
 											t('manager.dois.actions.description', {
 												count: selected.length,
