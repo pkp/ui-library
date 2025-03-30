@@ -16,6 +16,7 @@
     "@headlessui/vue": "^1.7.23",
     "@highlightjs/vue-plugin": "^2.1.2",
     "@lk77/vue3-color": "^3.0.6",
+    "@sciflow/component-demo": "^0.0.1-1668088552",
     "@storybook/test": "^8.6.4",
     "@tinymce/tinymce-vue": "^6.1.0",
     "@vue-a11y/announcer": "^3.1.5",
