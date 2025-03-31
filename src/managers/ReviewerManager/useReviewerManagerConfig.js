@@ -312,47 +312,43 @@ export function useReviewerManagerConfig() {
 			icon: 'Email',
 		});
 
-		// add condition if current user is not assigned author
-		const currentUserNotAssignedAuthor = true;
+		// Resend request reviewer
+		if (
+			reviewAssignmentStatusId === pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED
+		) {
+			actions.push({
+				label: t('editor.review.resendRequestReviewer'),
+				name: Actions.REVIEWER_RESEND_REQUEST,
+				icon: 'ReviewSent',
+			});
+		}
 
-		if (currentUserNotAssignedAuthor) {
-			// Resend request reviewer
-			if (
-				reviewAssignmentStatusId === pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED
-			) {
-				actions.push({
-					label: t('editor.review.resendRequestReviewer'),
-					name: Actions.REVIEWER_RESEND_REQUEST,
-				});
-			}
+		// Edit
+		if (
+			reviewAssignmentStatusId !== pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED
+		) {
+			actions.push({
+				label: t('common.edit'),
+				name: Actions.REVIEWER_EDIT_REVIEW,
+				icon: 'Edit',
+			});
 
-			// Edit
-			if (
-				reviewAssignmentStatusId !==
-				pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED
-			) {
-				actions.push({
-					label: t('common.edit'),
-					name: Actions.REVIEWER_EDIT_REVIEW,
-					icon: 'Edit',
-				});
-
-				actions.push({
-					label: reviewAssignment.dateConfirmed
-						? t('editor.review.cancelReviewer')
-						: t('editor.review.unassignReviewer'),
-					name: reviewAssignment.dateConfirmed
-						? Actions.REVIEWER_CANCEL_REVIEWER
-						: Actions.REVIEWER_UNASSIGN_REVIEWER,
-					icon: 'Cancel',
-					isWarnable: true,
-				});
-			} else {
-				actions.push({
-					label: t('editor.review.reinstateReviewer'),
-					name: Actions.REVIEWER_REINSTATE_REVIEWER,
-				});
-			}
+			actions.push({
+				label: reviewAssignment.dateConfirmed
+					? t('editor.review.cancelReviewer')
+					: t('editor.review.unassignReviewer'),
+				name: reviewAssignment.dateConfirmed
+					? Actions.REVIEWER_CANCEL_REVIEWER
+					: Actions.REVIEWER_UNASSIGN_REVIEWER,
+				icon: 'Cancel',
+				isWarnable: true,
+			});
+		} else {
+			actions.push({
+				label: t('editor.review.reinstateReviewer'),
+				name: Actions.REVIEWER_REINSTATE_REVIEWER,
+				icon: 'ReinstateReviewer',
+			});
 		}
 
 		// History

@@ -118,6 +118,13 @@ export const useReviewerManagerStore = defineComponentStore(
 			);
 		}
 
+		function reviewerResendRequest({reviewAssignment}) {
+			reviewerManagerActions.reviewerResendRequest(
+				getActionArgs({reviewAssignment}),
+				dataUpdateCallback,
+			);
+		}
+
 		function reviewerEditReview({reviewAssignment}) {
 			reviewerManagerActions.reviewerEditReview(
 				getActionArgs({reviewAssignment}),
@@ -127,6 +134,13 @@ export const useReviewerManagerStore = defineComponentStore(
 
 		function reviewerUnassignReviewer({reviewAssignment}) {
 			reviewerManagerActions.reviewerUnassignReviewer(
+				getActionArgs({reviewAssignment}),
+				dataUpdateCallback,
+			);
+		}
+
+		function reviewerReinstateReviewer({reviewAssignment}) {
+			reviewerManagerActions.reviewerReinstateReviewer(
 				getActionArgs({reviewAssignment}),
 				dataUpdateCallback,
 			);
@@ -210,8 +224,10 @@ export const useReviewerManagerStore = defineComponentStore(
 			reviewerReadReviewByAuthor,
 			reviewerReviewDetails,
 			reviewerEmailReviewer,
+			reviewerResendRequest,
 			reviewerEditReview,
 			reviewerUnassignReviewer,
+			reviewerReinstateReviewer,
 			reviewerCancelReviewer,
 			reviewerReviewHistory,
 			reviewerLoginAs,
