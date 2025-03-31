@@ -40,41 +40,21 @@
 							: t('invitation.masthead.hidden')
 					}}
 				</TableCell>
-				<template v-if="numberOfActiveRoles > 1">
-					<template v-if="!currentUserGroup.dateEnd">
-						<TableCell>
-							<PkpButton
-								:is-warnable="true"
-								@click="removeUserGroup(currentUserGroup, index)"
-							>
-								{{ t('invitation.role.removeRole.button') }}
-							</PkpButton>
-						</TableCell>
-					</template>
-					<template v-else>
-						<TableCell>
-							<div
-								class="rounded border-light bg-[#fbe7f1] px-2 py-2 text-center text-lg-semibold leading-5"
-							>
-								{{ t('invitation.removeRoles') }}
-							</div>
-						</TableCell>
-					</template>
-				</template>
-				<template v-else>
-					<template v-if="!currentUserGroup.dateEnd">
-						<TableCell></TableCell>
-					</template>
-					<template v-else>
-						<TableCell>
-							<div
-								class="rounded border-light bg-[#fbe7f1] px-2 py-2 text-center text-lg-semibold leading-5"
-							>
-								{{ t('invitation.removeRoles') }}
-							</div>
-						</TableCell>
-					</template>
-				</template>
+				<TableCell v-if="!currentUserGroup.dateEnd">
+					<PkpButton
+						:is-warnable="true"
+						@click="removeUserGroup(currentUserGroup, index)"
+					>
+						{{ t('invitation.role.removeRole.button') }}
+					</PkpButton>
+				</TableCell>
+				<TableCell v-else>
+					<div
+						class="rounded border-light bg-[#fbe7f1] px-2 py-2 text-center text-lg-semibold leading-5"
+					>
+						{{ t('invitation.removeRoles') }}
+					</div>
+				</TableCell>
 			</TableRow>
 			<template v-if="!store.invitationPayload.disabled">
 				<TableRow
@@ -141,7 +121,7 @@
 						<PkpButton
 							v-if="
 								store.invitationPayload.userGroupsToAdd.length > 1 ||
-								hasUserGroupsValue()
+								isUserGroupsToAddPopulated()
 							"
 							:is-warnable="true"
 							@click="removeInvitedUserGroup(index)"
@@ -193,8 +173,6 @@ const allUserGroupsToAdd = computed(
 	() => store.invitationPayload.userGroupsToAdd,
 );
 updateWithSelectedUserGroups(props.userGroups);
-hasUserGroupsValue();
-console.log(store.invitationPayload.currentUserGroups);
 
 /**
  * update selected user group
@@ -208,7 +186,6 @@ function updateUserGroup(index, fieldName, newValue) {
 	userGroupsUpdate[index][fieldName] = newValue;
 	store.updatePayload('userGroupsToAdd', userGroupsUpdate, false);
 	updateWithSelectedUserGroups(props.userGroups);
-	hasUserGroupsValue();
 }
 
 const availableUserGroups = computed(() => {
@@ -220,16 +197,14 @@ const availableUserGroups = computed(() => {
 });
 
 /**
- * check user groups array and show
- * remove role button only for clear the fields
+ * check any values filled with userGroupsToAdd
  */
-function hasUserGroupsValue() {
-	if (store.invitationPayload.userGroupsToAdd[0]) {
-		return Object.values(store.invitationPayload.userGroupsToAdd[0]).some(
-			(value) => value !== null,
-		);
-	}
-	return false;
+function isUserGroupsToAddPopulated() {
+	return store.invitationPayload.userGroupsToAdd[0]
+		? Object.values(store.invitationPayload.userGroupsToAdd[0]).some(
+				(value) => value !== null,
+			)
+		: false;
 }
 
 /**
@@ -252,31 +227,49 @@ const {openDialog} = useModal();
  * @param index Number
  */
 function removeUserGroup(userGroup, index) {
-	openDialog({
-		name: 'removeRole',
-		title: t('invitation.role.removeRole.button'),
-		message: t('user.removeRole.message'),
-		actions: [
-			{
-				label: t('common.yes'),
-				isWarnable: true,
-				callback: (close) => {
-					store.invitationPayload.currentUserGroups.find(
-						(data, i) => i === index,
-					).dateEnd = new Date();
-					removeRole(store.invitationPayload.userId, userGroup.id);
-					close();
+	if (numberOfActiveRoles.value <= 1) {
+		// user must have atleast one role
+		openDialog({
+			name: 'oneRoleRemain',
+			title: t('invitation.role.removeRole.button'),
+			message: t('user.removeRole.roleRemainMessage'),
+			actions: [
+				{
+					label: t('common.close'),
+					callback: (close) => {
+						close();
+					},
 				},
-			},
-			{
-				label: t('common.no'),
-				callback: (close) => {
-					close();
+			],
+			modalStyle: 'negative',
+		});
+	} else {
+		openDialog({
+			name: 'removeRole',
+			title: t('invitation.role.removeRole.button'),
+			message: t('user.removeRole.message'),
+			actions: [
+				{
+					label: t('common.yes'),
+					isWarnable: true,
+					callback: (close) => {
+						store.invitationPayload.currentUserGroups.find(
+							(data, i) => i === index,
+						).dateEnd = new Date();
+						removeRole(store.invitationPayload.userId, userGroup.id);
+						close();
+					},
 				},
-			},
-		],
-		modalStyle: 'negative',
-	});
+				{
+					label: t('common.no'),
+					callback: (close) => {
+						close();
+					},
+				},
+			],
+			modalStyle: 'negative',
+		});
+	}
 }
 
 /**
@@ -285,7 +278,7 @@ function removeUserGroup(userGroup, index) {
  */
 function removeInvitedUserGroup(index) {
 	const userGroupsUpdate = [...store.invitationPayload.userGroupsToAdd];
-	if (hasUserGroupsValue && userGroupsUpdate.length === 1) {
+	if (isUserGroupsToAddPopulated && userGroupsUpdate.length === 1) {
 		userGroupsUpdate.push({
 			userGroupId: null,
 			dateStart: null,
