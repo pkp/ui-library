@@ -8,12 +8,31 @@
 							<span>Categories</span>
 						</div>
 						<div class="flex flex-row items-center gap-x-3">
-							<PkpButton>Order</PkpButton>
-							<PkpButton
-								@click="categoryManagerStore.handleItemAction('categoryAdd')"
-							>
-								Add Category
-							</PkpButton>
+							<template v-if="categoryManagerStore.isOrdering">
+								<PkpButton
+									:is-active="categoryManagerStore.isOrdering"
+									@click="categoryManagerStore.saveOrdering"
+								>
+									Save Order
+								</PkpButton>
+								<PkpButton
+									:is-warnable="true"
+									@click="categoryManagerStore.cancelOrdering"
+								>
+									Cancel
+								</PkpButton>
+							</template>
+							<template v-else>
+								<PkpButton @click="categoryManagerStore.initOrdering">
+									Order
+								</PkpButton>
+								<PkpButton
+									v-if="!categoryManagerStore.isOrdering"
+									@click="categoryManagerStore.handleItemAction('categoryAdd')"
+								>
+									Add Category
+								</PkpButton>
+							</template>
 						</div>
 					</div>
 				</div>
@@ -42,8 +61,21 @@
 				</TableHeader>
 
 				<TableBody>
-					<TableRow v-for="item in flattenItems" :key="item.key">
+					<TableRow
+						v-for="item in flattenItems"
+						:key="item.key"
+						class="category"
+					>
 						<TableCell>
+							<!-- Only allow ordering on top level parent categories -->
+							<Orderer
+								v-if="categoryManagerStore.isOrdering && !item.value.parentId"
+								:item-id="item.value.id"
+								:item-title="item.value.title[primaryLocale]"
+								:is-draggable="false"
+								@up="categoryManagerStore.itemOrderUp(item.value)"
+								@down="categoryManagerStore.itemOrderDown(item.value)"
+							/>
 							<TreeItem
 								v-slot="{}"
 								:key="item._id"
@@ -117,6 +149,7 @@ import TableCell from '@/components/Table/TableCell.vue';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 import {useCategoryManagerStore} from './categoryManagerStore.js';
 import PkpButton from '@/components/Button/Button.vue';
+import Orderer from '@/components/Orderer/Orderer.vue';
 
 const props = defineProps({
 	/**
@@ -167,3 +200,21 @@ const props = defineProps({
 
 const categoryManagerStore = useCategoryManagerStore(props);
 </script>
+
+<style lang="less">
+.category {
+	td {
+		.orderer__dragDrop,
+		.orderer__up,
+		.orderer__down {
+			width: 4em;
+			top: unset;
+			height: 1.5rem;
+		}
+
+		.orderer__up {
+			right: 4em;
+		}
+	}
+}
+</style>

@@ -25,11 +25,13 @@ export const useCategoryManagerStore = defineComponentStore(
 
 		const _categories = ref(props.categories || []);
 		const _expandedIds = ref(new Set());
+		const isOrdering = ref(false);
 
 		const columns = props.columns;
 		const expanded = computed(() => Array.from(_expandedIds.value));
 
 		const categories = computed(() => _categories.value);
+		const categoriesBeforeReordering = ref([]);
 		const currentCategoryForm = ref({});
 		const categoryForm = props.categoryForm; //blank form used only for adding new categories
 
@@ -201,6 +203,65 @@ export const useCategoryManagerStore = defineComponentStore(
 			}
 		}
 
+		// * Move an item up in the list
+		// 	*
+		// 	* @param {Object} item The item to move
+		// 	*/
+		function itemOrderUp(item) {
+			var index = _categories.value.findIndex((obj) => {
+				return item.id === obj.id;
+			});
+			if (index === 0) {
+				return;
+			}
+			let categories = [..._categories.value];
+			categories.splice(index - 1, 0, categories.splice(index, 1)[0]);
+			_categories.value = categories;
+		}
+
+		function itemOrderDown(item) {
+			var index = _categories.value.findIndex((obj) => {
+				return item.id === obj.id;
+			});
+			if (index === _categories.value.length - 1) {
+				return;
+			}
+			let categories = [..._categories.value];
+			categories.splice(index + 1, 0, categories.splice(index, 1)[0]);
+			_categories.value = categories;
+		}
+
+		async function cancelOrdering() {
+			isOrdering.value = false;
+			_categories.value = categoriesBeforeReordering.value;
+			categoriesBeforeReordering.value = null;
+		}
+
+		async function saveOrdering() {
+			const categories = _categories.value.map((obj, index) => ({
+				seq: index + 1,
+				id: obj.id,
+			}));
+
+			const form = new FormData();
+			form.append('sortedCategories', JSON.stringify(categories));
+			const url = apiUrl.value + `/saveOrder`;
+			const {fetch} = useFetch(url, {
+				method: 'PUT',
+
+				body: form,
+			});
+			await fetch();
+		}
+
+		function initOrdering() {
+			if (isOrdering.value) {
+				return;
+			}
+			categoriesBeforeReordering.value = _categories.value;
+			isOrdering.value = true;
+		}
+
 		return {
 			getItemActions,
 			handleItemAction,
@@ -208,6 +269,12 @@ export const useCategoryManagerStore = defineComponentStore(
 			columns,
 			categories,
 			expanded,
+			itemOrderUp,
+			itemOrderDown,
+			isOrdering,
+			cancelOrdering,
+			initOrdering,
+			saveOrdering,
 		};
 	},
 );
