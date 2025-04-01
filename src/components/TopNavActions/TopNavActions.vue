@@ -118,6 +118,7 @@
 </template>
 
 <script setup>
+import {ref, onMounted, onUnmounted} from 'vue';
 import Icon from '@/components/Icon/Icon.vue';
 import Dropdown from '@/components/Dropdown/Dropdown.vue';
 import InitialsAvatar from '@/components/InitialsAvatar/InitialsAvatar.vue';
@@ -130,6 +131,7 @@ const {t} = useLocalize();
 
 const {
 	getUnreadNotifications,
+	setUnreadNotifications,
 	isUserLoggedInAs,
 	getCurrentUserName,
 	getCurrentUserInitials,
@@ -137,7 +139,8 @@ const {
 	getUserLoggedInAsInitials,
 } = useCurrentUser();
 
-const unreadTasksCount = getUnreadNotifications();
+let updateUnreadTasks;
+const unreadTasksCount = ref(getUnreadNotifications());
 const _isUserLoggedInAs = isUserLoggedInAs();
 const currentUser = {
 	username: getCurrentUserName(),
@@ -186,6 +189,22 @@ function openTasks() {
 
 	openLegacyModal({});
 }
+
+onMounted(() => {
+	if (updateUnreadTasks) {
+		pkp.eventBus.$off('update:unread-tasks-count', updateUnreadTasks);
+	}
+
+	updateUnreadTasks = (data) => {
+		unreadTasksCount.value = setUnreadNotifications(data.count);
+	};
+
+	pkp.eventBus.$on('update:unread-tasks-count', updateUnreadTasks);
+});
+
+onUnmounted(() => {
+	pkp.eventBus.$off('update:unread-tasks-count', updateUnreadTasks);
+});
 </script>
 
 <style>
