@@ -46,6 +46,11 @@ export function useCurrentUser() {
 		return pkp.currentUser.unreadTasksCount;
 	}
 
+	function setUnreadNotifications(count) {
+		pkp.currentUser.unreadTasksCount = count;
+		return pkp.currentUser.unreadTasksCount;
+	}
+
 	function isUserLoggedInAs() {
 		return pkp.currentUser.isUserLoggedInAs;
 	}
@@ -103,6 +108,7 @@ export function useCurrentUser() {
 		hasCurrentUserAtLeastOneAssignedRoleInAnyStage,
 		isCurrentUserAssignedAsReviewer,
 		getUnreadNotifications,
+		setUnreadNotifications,
 		isUserLoggedInAs,
 		getUserLoggedInAs,
 		getCurrentUserName,
