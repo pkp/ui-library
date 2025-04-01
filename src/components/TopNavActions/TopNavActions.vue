@@ -4,7 +4,7 @@
 			<a
 				href="#"
 				target="_blank"
-				:class="animationStyle"
+				:class="getAnimationStyle()"
 				class="flex h-full items-center p-2"
 			>
 				<Icon icon="HelpTopNav" class="h-7 w-7"></Icon>
@@ -14,14 +14,15 @@
 		<div>
 			<button
 				ref="tasksButton"
-				:class="animationStyle"
+				:class="getAnimationStyle(true)"
+				:disabled="isTasksModalOpened"
 				class="border-none p-2"
 				@click="openTasks"
 			>
 				<Icon icon="Notifications" class="h-7 w-7"></Icon>
 				<span class="-screenReader">{{ t('common.tasks') }}</span>
 				<span
-					v-if="unreadTasksCount"
+					v-if="unreadTasksCount && !isTasksModalOpened"
 					class="absolute right-3 top-2 rounded-[2px] bg-negative p-[2px] text-lg-normal leading-none text-on-dark shadow"
 				>
 					{{ unreadTasksCount }}
@@ -126,8 +127,10 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 import {useCurrentUser} from '@/composables/useCurrentUser';
 import {useUrl} from '@/composables/useUrl';
+import {useModalStore} from '@/stores/modalStore';
 
 const {t} = useLocalize();
+const {updateIsTasksModalOpened, isTasksModalOpened} = useModalStore();
 
 const {
 	getUnreadNotifications,
@@ -162,11 +165,19 @@ const supportedLocales = Object.entries(
 
 const currentLocale = pkp.context?.currentLocale;
 
-const animationStyle = [
-	'relative leading-8 !text-on-dark outline-none bg-transparent',
-	'hover:-translate-y-1 hover:text-on-dark hover:shadow-[0_0.25rem_#fff]',
-	'focus:-translate-y-1 focus:text-on-dark focus:shadow-[0_0.25rem_#fff]',
-];
+const getAnimationStyle = (isNotificationsButton) => {
+	const isAnimationEnabled = isNotificationsButton ? !isTasksModalOpened : true;
+
+	return {
+		'relative leading-8  outline-none bg-transparent': true,
+		'!text-on-dark': isAnimationEnabled,
+		'!text-disabled': !isAnimationEnabled,
+		'hover:-translate-y-1 hover:text-on-dark hover:shadow-[0_0.25rem_#fff]':
+			isAnimationEnabled,
+		'focus:-translate-y-1 focus:text-on-dark focus:shadow-[0_0.25rem_#fff]':
+			isAnimationEnabled,
+	};
+};
 
 const actionLinkStyle = [
 	'max-w-full cursor-pointer overflow-hidden truncate whitespace-nowrap rounded border border-transparent bg-transparent px-2 py-1 leading-6 text-primary hover:!border-primary',
@@ -187,7 +198,11 @@ function openTasks() {
 		op: 'fetchGrid',
 	});
 
-	openLegacyModal({});
+	openLegacyModal({}, () => {
+		updateIsTasksModalOpened(false);
+	});
+
+	updateIsTasksModalOpened(true);
 }
 
 onMounted(() => {
