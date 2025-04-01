@@ -37,10 +37,6 @@ export default {
 			notifications: [],
 			/** Used internally to clear notifications. Do not set this manually. */
 			notificationInterval: null,
-			/** The URL to load the tasks grid modal. */
-			tasksUrl: '',
-			/** The current number of unread tasks. */
-			unreadTasksCount: 0,
 		};
 	},
 	computed: {},
@@ -85,20 +81,11 @@ export default {
 		 * Respond to an event fired to clear all notifications
 		 */
 		pkp.eventBus.$on('clear-all-notify', () => (this.notifications = []));
-
-		/**
-		 * Response to an event when the unread task count changes
-		 */
-		pkp.eventBus.$on(
-			'update:unread-tasks-count',
-			(data) => (this.unreadTasksCount = data.count),
-		);
 	},
 	unmounted() {
 		pkp.eventBus.$off('notify');
 		pkp.eventBus.$off('clear-all-notify');
 		clearInterval(this.notificationInterval);
-		pkp.eventBus.$off('update:unread-tasks-count');
 	},
 	methods: {
 		/**
