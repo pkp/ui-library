@@ -35,6 +35,8 @@ window.pkp = {
 		datetimeFormatShort: 'm/d/Y h:i A',
 		datetimeFormatLong: 'F j, Y - h:i A',
 		timeFormat: 'h:i A',
+		legacyGridBaseUrl:
+			'http://mock/index.php/publicknowledge/$$$call$$$/component/action',
 	},
 	/**
 	 * Dummy constants required by components

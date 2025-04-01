@@ -40,6 +40,7 @@ export const EditorScenarios = {
 	args: {
 		reviewRoundId: 10,
 		submission: getSubmissionMock({
+			stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 			reviewAssignments: [
 				//REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE // request has been sent but reviewer has not responded
 				getReviewAssignmentShortMock({
@@ -143,6 +144,7 @@ export const AuthorScenarios = {
 		redactedForAuthors: true,
 		reviewRoundId: 10,
 		submission: getSubmissionMock({
+			stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 			reviewAssignments: [
 				// REVIEW_ASSIGNMENT_STATUS_RECEIVED
 				getReviewAssignmentShortMock({

@@ -12,7 +12,7 @@ const CommonDefaults = {
 	},
 	status: 1,
 	submissionProgress: '',
-	stageId: 3,
+	stageId: 1,
 	editorAssigned: true,
 	publications: [
 		{
@@ -64,7 +64,7 @@ const CommonDefaults = {
 		{
 			id: 1,
 			label: 'Submission',
-			isActiveStage: false,
+			isActiveStage: true,
 			openQueryCount: 0,
 			currentUserAssignedRoles: [],
 			files: {
@@ -74,7 +74,7 @@ const CommonDefaults = {
 		{
 			id: 3,
 			label: 'Review',
-			isActiveStage: true,
+			isActiveStage: false,
 			openQueryCount: 0,
 			currentUserAssignedRoles: [],
 			statusId: 1,
