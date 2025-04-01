@@ -159,7 +159,7 @@ export function useReviewerManagerActions() {
 		});
 
 		openLegacyModal(
-			{title: t('editor.review.emailReviewer')},
+			{title: t('editor.review.resendRequestReviewer')},
 			finishedCallback,
 		);
 	}
@@ -224,7 +224,7 @@ export function useReviewerManagerActions() {
 		});
 		openLegacyModal(
 			{
-				title: t('editor.review.unassignReviewer'),
+				title: t('editor.review.reinstateReviewer'),
 			},
 			finishedCallback,
 		);
