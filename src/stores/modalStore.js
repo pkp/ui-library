@@ -25,6 +25,7 @@ export const useModalStore = defineStore('modal', () => {
 	/** dialogProps coming from openDialog */
 	const dialogProps = ref({});
 	const dialogOpened = ref(false);
+	const isTasksModalOpened = ref(false);
 
 	function openDialog(_dialogProps) {
 		if (_dialogProps.bodyComponent) {
@@ -39,6 +40,10 @@ export const useModalStore = defineStore('modal', () => {
 		}
 		dialogProps.value = {};
 		dialogOpened.value = false;
+	}
+
+	function updateIsTasksModalOpened(value) {
+		isTasksModalOpened.value = value;
 	}
 
 	/** Default network error */
@@ -251,6 +256,7 @@ export const useModalStore = defineStore('modal', () => {
 		/** opening dialog */
 		dialogProps,
 		dialogOpened,
+		isTasksModalOpened,
 		openDialogNetworkError,
 		openDialog,
 		closeDialog,
@@ -258,6 +264,7 @@ export const useModalStore = defineStore('modal', () => {
 		closeSideModal,
 		closeSideModalById,
 		isSideModalOpened,
+		updateIsTasksModalOpened,
 		sideModal1,
 		sideModal2,
 		sideModal3,
