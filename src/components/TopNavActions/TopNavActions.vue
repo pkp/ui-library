@@ -1,5 +1,5 @@
 <template>
-	<div class="z-50 ms-auto flex h-full whitespace-nowrap">
+	<div class="ms-auto flex h-full whitespace-nowrap">
 		<div>
 			<a
 				href="#"
@@ -191,7 +191,7 @@ function openTasks() {
 <style>
 .app-user-nav > button {
 	/* refer to animationStyle above, plus "!rounded-none h-full bg-transparent & border-none" */
-	@apply h-full !rounded-none border-none bg-transparent hover:-translate-y-1 hover:text-on-dark hover:shadow-[0_0.25rem_#fff] focus:-translate-y-1 focus:text-on-dark focus:shadow-[0_0.25rem_#fff];
+	@apply h-full !rounded-none border-none bg-transparent hover:-translate-y-1 hover:text-on-dark hover:shadow-[0_0.25rem_#fff] focus:-translate-y-1 focus:text-on-dark focus:shadow-[0_0.25rem_#fff] focus:outline-none;
 }
 
 .app-user-nav .pkpDropdown__content {
