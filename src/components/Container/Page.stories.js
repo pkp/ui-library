@@ -1,4 +1,4 @@
-import {computed} from 'vue';
+import {onUnmounted} from 'vue';
 import Page from './Page.vue';
 import Dropdown from '@/components/Dropdown/Dropdown.vue';
 import SideNav from '@/components/SideNav/SideNav.vue';
@@ -15,25 +15,20 @@ export const Default = {
 	render: (args) => ({
 		components: {Page, Dropdown, SideNav, InitialsAvatar, TopNavActions},
 		setup() {
-			const classes = computed(() => {
-				let _classes = [];
-				if (args.isLoggedInAs) {
-					_classes.push('app--isLoggedInAs');
-				}
-				return _classes;
+			window.pkp.currentUser.isUserLoggedInAs = true;
+			window.pkp.currentUser.loggedInAsUser = {
+				username: 'admin',
+				initials: 'AA',
+			};
+
+			onUnmounted(() => {
+				window.pkp.currentUser.isUserLoggedInAs = false;
+				window.pkp.currentUser.loggedInAsUser = undefined;
 			});
-
-			const currentUsername = computed(() =>
-				args.isLoggedInAs ? args.isLoggedInAs : pkp.currentUser.username,
-			);
-
-			function alertFn(msg) {
-				alert(msg);
-			}
-			return {...args, classes, currentUsername, alert: alertFn};
+			return args;
 		},
 		template: `
-			<div class="app" :class="classes">
+			<div class="app">
 				<header class="app__header" role="banner">
 					<Dropdown v-if="contexts.length" class="app__headerAction app__contexts">
 						<template #button>
