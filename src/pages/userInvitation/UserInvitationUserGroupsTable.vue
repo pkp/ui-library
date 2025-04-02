@@ -14,6 +14,7 @@
 				v-for="(currentUserGroup, index) in store.invitationPayload
 					.currentUserGroups"
 				:key="index"
+				class="h-[3.25rem]"
 			>
 				<TableCell>
 					{{ currentUserGroup.name }}
@@ -118,7 +119,10 @@
 					</TableCell>
 					<TableCell>
 						<PkpButton
-							v-if="index > 0"
+							v-if="
+								store.invitationPayload.userGroupsToAdd.length > 1 ||
+								isUserGroupsToAddPopulated()
+							"
 							:is-warnable="true"
 							@click="removeInvitedUserGroup(index)"
 						>
@@ -177,18 +181,31 @@ updateWithSelectedUserGroups(props.userGroups);
  * @param newValue String
  */
 function updateUserGroup(index, fieldName, newValue) {
+	delete store.errors['userGroupsToAdd.' + index + `.${fieldName}`];
 	const userGroupsUpdate = [...store.invitationPayload.userGroupsToAdd];
 	userGroupsUpdate[index][fieldName] = newValue;
 	store.updatePayload('userGroupsToAdd', userGroupsUpdate, false);
+	updateWithSelectedUserGroups(props.userGroups);
 }
 
 const availableUserGroups = computed(() => {
 	return props.userGroups.filter((element) => {
 		return !store.invitationPayload.currentUserGroups.find(
-			(data) => data.id === element.value,
+			(data) => data.id === element.value && !data.dateEnd,
 		);
 	});
 });
+
+/**
+ * check any values filled with userGroupsToAdd
+ */
+function isUserGroupsToAddPopulated() {
+	return store.invitationPayload.userGroupsToAdd[0]
+		? Object.values(store.invitationPayload.userGroupsToAdd[0]).some(
+				(value) => value !== null,
+			)
+		: false;
+}
 
 /**
  * add user groups to the invitation payload
@@ -210,31 +227,49 @@ const {openDialog} = useModal();
  * @param index Number
  */
 function removeUserGroup(userGroup, index) {
-	openDialog({
-		name: 'removeRole',
-		title: t('invitation.role.removeRole.button'),
-		message: t('user.removeRole.message'),
-		actions: [
-			{
-				label: t('common.yes'),
-				isWarnable: true,
-				callback: (close) => {
-					store.invitationPayload.currentUserGroups.find(
-						(data, i) => i === index,
-					).dateEnd = new Date();
-					removeRole(store.invitationPayload.userId, userGroup.id);
-					close();
+	if (numberOfActiveRoles.value <= 1) {
+		// user must have atleast one role
+		openDialog({
+			name: 'oneRoleRemain',
+			title: t('invitation.role.removeRole.button'),
+			message: t('user.removeRole.roleRemainMessage'),
+			actions: [
+				{
+					label: t('common.close'),
+					callback: (close) => {
+						close();
+					},
 				},
-			},
-			{
-				label: t('common.no'),
-				callback: (close) => {
-					close();
+			],
+			modalStyle: 'negative',
+		});
+	} else {
+		openDialog({
+			name: 'removeRole',
+			title: t('invitation.role.removeRole.button'),
+			message: t('user.removeRole.message'),
+			actions: [
+				{
+					label: t('common.yes'),
+					isWarnable: true,
+					callback: (close) => {
+						store.invitationPayload.currentUserGroups.find(
+							(data, i) => i === index,
+						).dateEnd = new Date();
+						removeRole(store.invitationPayload.userId, userGroup.id);
+						close();
+					},
 				},
-			},
-		],
-		modalStyle: 'negative',
-	});
+				{
+					label: t('common.no'),
+					callback: (close) => {
+						close();
+					},
+				},
+			],
+			modalStyle: 'negative',
+		});
+	}
 }
 
 /**
@@ -243,8 +278,16 @@ function removeUserGroup(userGroup, index) {
  */
 function removeInvitedUserGroup(index) {
 	const userGroupsUpdate = [...store.invitationPayload.userGroupsToAdd];
+	if (isUserGroupsToAddPopulated && userGroupsUpdate.length === 1) {
+		userGroupsUpdate.push({
+			userGroupId: null,
+			dateStart: null,
+			masthead: null,
+		});
+	}
 	userGroupsUpdate.splice(index, 1);
 	store.updatePayload('userGroupsToAdd', userGroupsUpdate, false);
+	updateWithSelectedUserGroups(props.userGroups);
 }
 
 const userGroupErrors = computed(() => {
@@ -267,6 +310,15 @@ function updateWithSelectedUserGroups(userGroups) {
 		}
 	});
 }
+
+/**
+ * count number of active roles
+ */
+const numberOfActiveRoles = computed(() => {
+	return store.invitationPayload.currentUserGroups.filter(
+		(userGroup) => userGroup.dateEnd === null,
+	).length;
+});
 
 /**
  * remove user roles

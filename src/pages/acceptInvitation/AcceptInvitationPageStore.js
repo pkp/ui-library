@@ -43,12 +43,12 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 		 * request with invitation key and id
 		 */
 		async function receiveInvitation() {
-			const {data, validationError, fetch} = useFetch(receiveInvitationUrl, {
+			const {data, fetch} = useFetch(receiveInvitationUrl, {
 				expectValidationError: true,
 				method: 'GET',
 			});
 			await fetch();
-			if (validationError.value) {
+			if (!data.value) {
 				openDialog({
 					title: t('acceptInvitation.authorization.shouldBeAnonymous'),
 					message: t('acceptInvitation.authorization.message'),
@@ -58,13 +58,6 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 							callback: () => {
 								const {redirectToPage} = useUrl(`login/signOut`);
 								redirectToPage();
-							},
-						},
-						{
-							label: t('common.close'),
-							isWarnable: true,
-							callback: (close) => {
-								close();
 							},
 						},
 					],
