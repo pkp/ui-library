@@ -66,10 +66,7 @@ export const useUserInvitationManagerStore = defineComponentStore(
 		function getAllInvitedRoles(userGroups) {
 			let roles = '';
 			userGroups.forEach((element) => {
-				roles =
-					roles +
-					localize(element.userGroupName) +
-					t('common.commaListSeparator');
+				roles = roles + element.userGroupName + t('common.commaListSeparator');
 			});
 
 			return roles.substring(0, roles.length - 1);
@@ -135,7 +132,7 @@ export const useUserInvitationManagerStore = defineComponentStore(
 				actions: [
 					{
 						label: t('invitation.cancelInvite.title'),
-						isWarnable: true,
+						isPrimary: true,
 						callback: async (close) => {
 							const {apiUrl: cancelApiUrl} = useUrl(
 								`invitations/${invitationObj.id}/cancel`,
