@@ -26,6 +26,7 @@ export const useCategoryManagerStore = defineComponentStore(
 		const _categories = ref(props.categories || []);
 		const _expandedIds = ref(new Set());
 		const isOrdering = ref(false);
+		const isLoading = ref(false);
 
 		const columns = props.columns;
 		const expanded = computed(() => Array.from(_expandedIds.value));
@@ -77,17 +78,17 @@ export const useCategoryManagerStore = defineComponentStore(
 		function getItemActions() {
 			return [
 				{
-					label: 'Add',
+					label: t('common.add'),
 					icon: 'Add',
 					name: Actions.CATEGORY_ADD,
 				},
 				{
-					label: 'Edit',
+					label: t('common.edit'),
 					icon: 'Edit',
 					name: Actions.CATEGORY_EDIT,
 				},
 				{
-					label: 'Delete',
+					label: t('common.delete'),
 					icon: 'Cancel',
 					name: Actions.CATEGORY_DELETE,
 					isWarnable: true,
@@ -125,12 +126,6 @@ export const useCategoryManagerStore = defineComponentStore(
 						callback: async (close) => {
 							await fetchDelete();
 							close();
-							pkp.eventBus.$emit(
-								'notify',
-								'Category successfully deleted',
-								'success',
-							);
-
 							if (!isSuccess.value) {
 								openDialogNetworkError();
 							} else {
@@ -167,7 +162,7 @@ export const useCategoryManagerStore = defineComponentStore(
 		 *
 		 */
 		async function categorySaved(category) {
-			pkp.eventBus.$emit('notify', 'Category saved', 'success');
+			pkp.eventBus.$emit('notify', t('manager.categories.saved'), 'success');
 			closeCategoryFormModal();
 			await refreshCategories();
 
@@ -186,9 +181,11 @@ export const useCategoryManagerStore = defineComponentStore(
 		 * Loads updated list of categories from API
 		 */
 		async function refreshCategories() {
+			isLoading.value = true;
 			const {data, fetch} = useFetch(apiUrl, {method: 'GET'});
 			await fetch();
 			_categories.value = data.value;
+			isLoading.value = false;
 		}
 
 		/**
@@ -238,20 +235,32 @@ export const useCategoryManagerStore = defineComponentStore(
 		}
 
 		async function saveOrdering() {
+			isLoading.value = true;
+
 			const categories = _categories.value.map((obj, index) => ({
 				seq: index + 1,
 				id: obj.id,
 			}));
 
 			const form = new FormData();
-			form.append('sortedCategories', JSON.stringify(categories));
-			const url = apiUrl.value + `/saveOrder`;
-			const {fetch} = useFetch(url, {
-				method: 'PUT',
 
-				body: form,
+			categories.forEach((item, index) => {
+				Object.entries(item).forEach(([key, value]) => {
+					form.append(`sortedCategories[${index}][${key}]`, value);
+				});
 			});
+
+			const url = apiUrl.value + `/saveOrder`;
+			const {fetch, isSuccess} = useFetch(url, {method: 'PUT', body: form});
 			await fetch();
+
+			if (isSuccess) {
+				await refreshCategories();
+				pkp.eventBus.$emit('notify', t('common.changesSaved'), 'success');
+				isOrdering.value = false;
+			}
+
+			isLoading.value = false;
 		}
 
 		function initOrdering() {
@@ -275,6 +284,7 @@ export const useCategoryManagerStore = defineComponentStore(
 			cancelOrdering,
 			initOrdering,
 			saveOrdering,
+			isLoading,
 		};
 	},
 );

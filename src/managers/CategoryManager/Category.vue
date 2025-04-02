@@ -5,32 +5,40 @@
 				<div class="mt-2">
 					<div class="flex justify-between">
 						<div class="flex flex-row items-center gap-x-3 text-2xl-bold">
-							<span>Categories</span>
+							<span>{{ t('manager.setup.categories') }}</span>
 						</div>
 						<div class="flex flex-row items-center gap-x-3">
 							<template v-if="categoryManagerStore.isOrdering">
 								<PkpButton
 									:is-active="categoryManagerStore.isOrdering"
+									:disabled="categoryManagerStore.isLoading"
 									@click="categoryManagerStore.saveOrdering"
 								>
-									Save Order
+									{{ t('common.saveOrdering') }}
 								</PkpButton>
 								<PkpButton
 									:is-warnable="true"
 									@click="categoryManagerStore.cancelOrdering"
 								>
-									Cancel
+									{{ t('common.cancel') }}
 								</PkpButton>
 							</template>
 							<template v-else>
-								<PkpButton @click="categoryManagerStore.initOrdering">
-									Order
+								<PkpButton
+									:disabled="
+										categoryManagerStore.isLoading ||
+										!categoryManagerStore.categories.length
+									"
+									@click="categoryManagerStore.initOrdering"
+								>
+									{{ t('common.order') }}
 								</PkpButton>
 								<PkpButton
 									v-if="!categoryManagerStore.isOrdering"
+									:disabled="categoryManagerStore.isLoading"
 									@click="categoryManagerStore.handleItemAction('categoryAdd')"
 								>
-									Add Category
+									{{ t('manager.categories.addCategory') }}
 								</PkpButton>
 							</template>
 						</div>
@@ -64,7 +72,7 @@
 					<TableRow
 						v-for="item in flattenItems"
 						:key="item.key"
-						class="category"
+						class="category__table_row"
 					>
 						<TableCell>
 							<!-- Only allow ordering on top level parent categories -->
@@ -202,19 +210,19 @@ const categoryManagerStore = useCategoryManagerStore(props);
 </script>
 
 <style lang="less">
-.category {
-	td {
-		.orderer__dragDrop,
-		.orderer__up,
-		.orderer__down {
-			width: 4em;
-			top: unset;
-			height: 1.5rem;
-		}
-
-		.orderer__up {
-			right: 4em;
-		}
+.category__table_row {
+	//td {
+	.orderer__dragDrop,
+	.orderer__up,
+	.orderer__down {
+		width: 4em;
+		top: unset;
+		height: 1.5rem;
 	}
+
+	.orderer__up {
+		right: 4em;
+	}
+	//}
 }
 </style>
