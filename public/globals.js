@@ -869,8 +869,9 @@ window.pkp = {
 		'user.password': 'Password',
 		'user.phone': 'Phone',
 		'user.removeRole.message':
-			'Are you sure want remove this role permanently?',
-		'user.role.reviewer': 'Reviewer',
+			'Are you sure you want to permanently remove this role? This action will revoke the user\'s access to all information and permissions associated with this role.',
+		'user.removeRole.roleRemainMessage' :'You cannot remove the role. At least one role must be assigned to the user.',
+			'user.role.reviewer': 'Reviewer',
 		'user.role.reviewers': 'Reviewers',
 		'user.roles': 'Roles',
 		'user.signature': 'Signature',
@@ -889,7 +890,7 @@ window.pkp = {
 		'userInvitation.edit.title': 'Edit Invitation',
 		'userInvitation.modal.button': 'View All Users',
 		'userInvitation.modal.message':
-			"{$email} has been invited to new role in OJS. You can be updated about the user's decision on the User and Role page, your OJS notification and/or your email",
+			'{$email} has been invited to new role in OJS. You can be updated about the user\'s decision on the User & Role page, your OJS notification and/or your email.',
 		'userInvitation.modal.title': 'Invitation Sent',
 		'userInvitation.roleTable.endDate': 'End Date',
 		'userInvitation.roleTable.journalMasthead': 'Journal Masthead',
@@ -920,6 +921,10 @@ window.pkp = {
 		'workflow.submissionNextReviewRoundInFutureStage':
 			'The submission advanced to the next review round, was accepted, and is currently in the {$stage} stage.',
 		'workflow.uploadRevisions': 'Upload revisions',
+		'grid.user.grid.user.enableReasonDescription':
+			"Once the user is enabled, they will regain access to OJS, and you'll be able to invite them to roles as needed.",
+		'grid.user.grid.user.disableReasonDescription':
+			"Please note that once a user is disabled, you won't be able to add them to any roles until they are enabled again.",
 	},
 	tinyMCE: {
 		skinUrl: '/styles/tinymce',
