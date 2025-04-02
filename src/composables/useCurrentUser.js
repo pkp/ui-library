@@ -36,6 +36,10 @@ export function useCurrentUser() {
 		return pkp.currentUser.username;
 	}
 
+	function getCurrentUserFullName() {
+		return pkp.currentUser.fullName;
+	}
+
 	function getCurrentUserInitials() {
 		return pkp.currentUser.initials;
 	}
@@ -145,6 +149,7 @@ export function useCurrentUser() {
 		setUnreadNotifications,
 		isUserLoggedInAs,
 		getUserLoggedInAs,
+		getCurrentUserFullName,
 		getCurrentUserName,
 		getCurrentUserInitials,
 		getUserLoggedInAsUserName,
