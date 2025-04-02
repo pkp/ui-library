@@ -152,6 +152,10 @@ export const useParticipantManagerStore = defineComponentStore(
 			);
 		}
 
+		function participantLogoutAs() {
+			participantManagerActions.participantLogoutAs();
+		}
+
 		return {
 			participantsList,
 
@@ -166,6 +170,7 @@ export const useParticipantManagerStore = defineComponentStore(
 			participantNotify,
 			participantEdit,
 			participantLoginAs,
+			participantLogoutAs,
 
 			extender,
 		};
