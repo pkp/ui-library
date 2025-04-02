@@ -128,6 +128,7 @@ import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 import {useCurrentUser} from '@/composables/useCurrentUser';
 import {useUrl} from '@/composables/useUrl';
 import {useModalStore} from '@/stores/modalStore';
+import {useUserAuth} from '@/composables/useUserAuth';
 
 const {t} = useLocalize();
 const {updateIsTasksModalOpened, isTasksModalOpened} = useModalStore();
@@ -156,6 +157,11 @@ const activeUser = _isUserLoggedInAs
 		}
 	: currentUser;
 
+const {getLogoutUrl} = useUserAuth();
+const logoutUrl = getLogoutUrl();
+const {pageUrl: signOutLink} = useUrl(logoutUrl);
+const {pageUrl: editProfileLink} = useUrl('user/profile');
+
 const supportedLocales = Object.entries(
 	pkp.context?.supportedLocales || {},
 ).map(([key, value]) => {
@@ -182,12 +188,6 @@ const getAnimationStyle = (isNotificationsButton) => {
 const actionLinkStyle = [
 	'max-w-full cursor-pointer overflow-hidden truncate whitespace-nowrap rounded border border-transparent bg-transparent px-2 py-1 leading-6 text-primary hover:!border-primary',
 ];
-
-const {pageUrl: signOutLink} = useUrl(
-	`login/${_isUserLoggedInAs ? 'signOutAsUser' : 'signOut'}`,
-);
-
-const {pageUrl: editProfileLink} = useUrl('user/profile');
 
 /**
  * Open a modal showing the user's tasks
