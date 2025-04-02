@@ -3,6 +3,7 @@ import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
 import {useFetch, getCSRFToken} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
+import {useUserAuth} from '@/composables/useUserAuth';
 
 export const Actions = {
 	PARTICIPANT_ASSIGN: 'participantAssign',
@@ -14,6 +15,7 @@ export const Actions = {
 
 export function useParticipantManagerActions() {
 	const {t} = useLocalize();
+	const {getDashboardLoginAsUrl, getLogoutAsUrl} = useUserAuth();
 
 	function participantAssign(
 		{submission, submissionStageId},
@@ -136,21 +138,13 @@ export function useParticipantManagerActions() {
 				{
 					label: t('common.ok'),
 					callback: (close) => {
-						let redirectUrl = '';
-						if (participant.roleId === pkp.const.ROLE_ID_AUTHOR) {
-							const {pageUrl: authorRedirectUrl} = useUrl(
-								`dashboard/mySubmissions?workflowSubmissionId=${submission.id}`,
-							);
-							redirectUrl = authorRedirectUrl.value;
-						} else {
-							const {pageUrl: editorialRedirectUrl} = useUrl(
-								`dashboard/editorial?workflowSubmissionId=${submission.id}`,
-							);
-							redirectUrl = editorialRedirectUrl.value;
-						}
-						const {redirectToPage} = useUrl(
-							`login/signInAsUser/${participant.id}?redirectUrl=${encodeURIComponent(redirectUrl)}`,
+						const redirectUrl = getDashboardLoginAsUrl(
+							participant.roleId,
+							participant.id,
+							submission.id,
 						);
+
+						const {redirectToPage} = useUrl(redirectUrl);
 						redirectToPage();
 					},
 				},
@@ -168,11 +162,22 @@ export function useParticipantManagerActions() {
 		});
 	}
 
+	function participantLogoutAs() {
+		const logoutRedirect = getLogoutAsUrl();
+		if (!logoutRedirect) {
+			return;
+		}
+
+		const {redirectToPage} = useUrl(logoutRedirect);
+		redirectToPage();
+	}
+
 	return {
 		participantAssign,
 		participantRemove,
 		participantNotify,
 		participantEdit,
 		participantLoginAs,
+		participantLogoutAs,
 	};
 }
