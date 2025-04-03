@@ -22,7 +22,9 @@ export const useUserInvitationManagerStore = defineComponentStore(
 		/**
 		 * redirect to send invitation page
 		 */
-		const {pageUrl: sendInvitationPageUrl} = useUrl('invitation/invite');
+		const {pageUrl: sendInvitationPageUrl} = useUrl(
+			'invitation/userInvite/userRoleAssignment',
+		);
 		function createNewInvitation() {
 			window.location = sendInvitationPageUrl.value;
 		}
