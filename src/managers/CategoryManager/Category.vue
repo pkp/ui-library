@@ -75,15 +75,6 @@
 						class="category__table_row"
 					>
 						<TableCell>
-							<!-- Only allow ordering on top level parent categories -->
-							<Orderer
-								v-if="categoryManagerStore.isOrdering && !item.value.parentId"
-								:item-id="item.value.id"
-								:item-title="item.value.title[primaryLocale]"
-								:is-draggable="false"
-								@up="categoryManagerStore.itemOrderUp(item.value)"
-								@down="categoryManagerStore.itemOrderDown(item.value)"
-							/>
 							<TreeItem
 								v-slot="{}"
 								:key="item._id"
@@ -108,35 +99,49 @@
 							</span>
 						</TableCell>
 						<TableCell :style="{'padding-right': `${item.level + 1}rem`}">
-							<div class="flex cursor-pointer justify-end gap-4">
-								<DropdownActions
-									:label="t('common.moreActions')"
-									button-variant="ellipsis"
-									:actions="categoryManagerStore.getItemActions()"
-									@action="
-										(actionName) =>
-											categoryManagerStore.handleItemAction(
-												actionName,
-												item.value,
-											)
-									"
+							<template
+								v-if="categoryManagerStore.isOrdering && !item.value.parentId"
+							>
+								<Orderer
+									class="mr-4"
+									:item-id="item.value.id"
+									:item-title="item.value.title[primaryLocale]"
+									:is-draggable="false"
+									@up="categoryManagerStore.itemOrderUp(item.value)"
+									@down="categoryManagerStore.itemOrderDown(item.value)"
 								/>
-								<span
-									v-if="item.hasChildren"
-									@click="
-										categoryManagerStore.toggleItemExpansion(item.value.id)
-									"
-								>
-									<Icon
-										:icon="
-											categoryManagerStore.expanded.includes(item.value.id)
-												? 'Dropup'
-												: 'Dropdown'
+							</template>
+							<template v-if="!categoryManagerStore.isOrdering">
+								<div class="flex cursor-pointer justify-end gap-4">
+									<DropdownActions
+										:label="t('common.moreActions')"
+										button-variant="ellipsis"
+										:actions="categoryManagerStore.getItemActions()"
+										@action="
+											(actionName) =>
+												categoryManagerStore.handleItemAction(
+													actionName,
+													item.value,
+												)
 										"
-										class="h-6 w-6 text-primary"
 									/>
-								</span>
-							</div>
+									<span
+										v-if="item.hasChildren"
+										@click="
+											categoryManagerStore.toggleItemExpansion(item.value.id)
+										"
+									>
+										<Icon
+											:icon="
+												categoryManagerStore.expanded.includes(item.value.id)
+													? 'Dropup'
+													: 'Dropdown'
+											"
+											class="h-6 w-6 text-primary"
+										/>
+									</span>
+								</div>
+							</template>
 						</TableCell>
 					</TableRow>
 				</TableBody>
@@ -211,11 +216,9 @@ const categoryManagerStore = useCategoryManagerStore(props);
 
 <style lang="less">
 .category__table_row {
-	//td {
 	.orderer__dragDrop,
 	.orderer__up,
 	.orderer__down {
-		width: 4em;
 		top: unset;
 		height: 1.5rem;
 	}
@@ -223,6 +226,5 @@ const categoryManagerStore = useCategoryManagerStore(props);
 	.orderer__up {
 		right: 4em;
 	}
-	//}
 }
 </style>

@@ -1,4 +1,4 @@
-import {computed, ref, nextTick} from 'vue';
+import {computed, ref} from 'vue';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
@@ -28,18 +28,18 @@ export const useCategoryManagerStore = defineComponentStore(
 		const isOrdering = ref(false);
 		const isLoading = ref(false);
 
-		const columns = props.columns;
+		const columns = computed(() => props.columns);
 		const expanded = computed(() => Array.from(_expandedIds.value));
 
 		const categories = computed(() => _categories.value);
 		const categoriesBeforeReordering = ref([]);
 		const currentCategoryForm = ref({});
-		const categoryForm = props.categoryForm; //blank form used only for adding new categories
+		const categoryForm = props.categoryForm; // Blank form used only for adding new categories
 
 		/**
 		 * Prepares the form data for Adding/Editing a Category
 		 * @param {Object} category - Category object which is being edited or a sub category is being added to.
-		 * This wil be null when add a top level Category.
+		 * This wil be null when adding a top level Category.
 		 * @param {string} action - Action being performed. One of Actions.CATEGORY_ADD or Actions.CATEGORY_EDIT
 		 */
 		async function setupCategoryForm(category, action) {
@@ -67,6 +67,10 @@ export const useCategoryManagerStore = defineComponentStore(
 			currentCategoryForm.value = preparedForm;
 		}
 
+		/**
+		 * Get configured form to edit a category
+		 * @param category
+		 */
 		async function getEditForm(category) {
 			const url =
 				apiUrl.value + `/categoryFormComponent?categoryId=${category.id}`;
@@ -146,20 +150,22 @@ export const useCategoryManagerStore = defineComponentStore(
 			});
 		}
 
+		/**
+		 * Open the form modal to add/edit category.
+		 * @param title
+		 */
 		function openCategoryFormModal(title) {
 			const {openSideModal} = useModal();
 			const {form} = useForm(currentCategoryForm);
-			nextTick(() => {
-				openSideModal(EditCategoryModal, {
-					title,
-					formProps: form,
-					onCategorySaved: categorySaved,
-				});
+			openSideModal(EditCategoryModal, {
+				title,
+				formProps: form,
+				onCategorySaved: categorySaved,
 			});
 		}
+
 		/**
 		 * Function to execute when a category is successfully saved via form
-		 *
 		 */
 		async function categorySaved(category) {
 			pkp.eventBus.$emit('notify', t('manager.categories.saved'), 'success');
@@ -172,6 +178,9 @@ export const useCategoryManagerStore = defineComponentStore(
 			}
 		}
 
+		/**
+		 * CLose the currently opened category form modal.
+		 */
 		function closeCategoryFormModal() {
 			const {closeSideModal} = useModal();
 			closeSideModal(EditCategoryModal);
@@ -189,7 +198,7 @@ export const useCategoryManagerStore = defineComponentStore(
 		}
 
 		/**
-		 * Expand or collapse a parent in the Category tree
+		 * Expand or collapse a parent in the Category tree.
 		 * @param id - The ID of the category to expand
 		 * */
 		function toggleItemExpansion(id) {
@@ -200,12 +209,11 @@ export const useCategoryManagerStore = defineComponentStore(
 			}
 		}
 
-		// * Move an item up in the list
-		// 	*
-		// 	* @param {Object} item The item to move
-		// 	*/
+		/** Move an item up in the list.
+		 * @param {Object} item The item to move
+		 */
 		function itemOrderUp(item) {
-			var index = _categories.value.findIndex((obj) => {
+			const index = _categories.value.findIndex((obj) => {
 				return item.id === obj.id;
 			});
 			if (index === 0) {
@@ -216,8 +224,11 @@ export const useCategoryManagerStore = defineComponentStore(
 			_categories.value = categories;
 		}
 
+		/** Move an item down in the list.
+		 * @param {Object} item The item to move
+		 */
 		function itemOrderDown(item) {
-			var index = _categories.value.findIndex((obj) => {
+			const index = _categories.value.findIndex((obj) => {
 				return item.id === obj.id;
 			});
 			if (index === _categories.value.length - 1) {
@@ -228,12 +239,18 @@ export const useCategoryManagerStore = defineComponentStore(
 			_categories.value = categories;
 		}
 
-		async function cancelOrdering() {
+		/**
+		 * Cancel ordering.
+		 */
+		function cancelOrdering() {
 			isOrdering.value = false;
 			_categories.value = categoriesBeforeReordering.value;
 			categoriesBeforeReordering.value = null;
 		}
 
+		/**
+		 * Submit ordering to API to be saved.
+		 */
 		async function saveOrdering() {
 			isLoading.value = true;
 
@@ -275,15 +292,15 @@ export const useCategoryManagerStore = defineComponentStore(
 			getItemActions,
 			handleItemAction,
 			toggleItemExpansion,
-			columns,
-			categories,
-			expanded,
-			itemOrderUp,
-			itemOrderDown,
-			isOrdering,
 			cancelOrdering,
 			initOrdering,
 			saveOrdering,
+			itemOrderUp,
+			itemOrderDown,
+			isOrdering,
+			columns,
+			categories,
+			expanded,
 			isLoading,
 		};
 	},
