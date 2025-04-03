@@ -20,12 +20,14 @@
 			</span>
 		</template>
 		<template v-if="selectedPublication" #description>
-			{{
-				localizeSubmission(
-					selectedPublication.fullTitle,
-					selectedPublication.locale,
-				)
-			}}
+			<span
+				v-strip-unsafe-html="
+					localizeSubmission(
+						selectedPublication.fullTitle,
+						selectedPublication.locale,
+					)
+				"
+			></span>
 		</template>
 		<template v-if="submission" #post-description>
 			<StageBubble :extended-stage="workflowStore.extendedStage">
