@@ -1,10 +1,10 @@
-import {computed, ref, nextTick} from 'vue';
+import {computed, ref} from 'vue';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
-import EditCategoryModal from '@/managers/CategoryManager/EditCategoryModal.vue';
+import EditCategoryFormModal from '@/managers/CategoryManager/EditCategoryFormModal.vue';
 import {useForm} from '@/composables/useForm';
 
 const Actions = {
@@ -28,19 +28,21 @@ export const useCategoryManagerStore = defineComponentStore(
 		const isOrdering = ref(false);
 		const isLoading = ref(false);
 
-		const columns = props.columns;
+		const columns = computed(() => props.columns);
 		const expanded = computed(() => Array.from(_expandedIds.value));
 
 		const categories = computed(() => _categories.value);
-		const categoriesBeforeReordering = ref([]);
 		const currentCategoryForm = ref({});
-		const categoryForm = props.categoryForm; //blank form used only for adding new categories
+		const categoryForm = props.categoryForm; // Blank form used only for adding new categories
+
+		// Will store categories at the start of ordering. This will allow to reset data if user cancels ordering.
+		const _categoriesBeforeReordering = ref([]);
 
 		/**
 		 * Prepares the form data for Adding/Editing a Category
 		 * @param {Object} category - Category object which is being edited or a sub category is being added to.
-		 * This wil be null when add a top level Category.
-		 * @param {string} action - Action being performed. One of Actions.CATEGORY_ADD or Actions.CATEGORY_EDIT
+		 * This wil be null when adding a top level Category.
+		 * @param {string} action - Action being performed. One of Actions.CATEGORY_ADD or Actions.CATEGORY_EDIT.
 		 */
 		async function setupCategoryForm(category, action) {
 			// Get a deep copy of the form to eliminate references
@@ -59,17 +61,20 @@ export const useCategoryManagerStore = defineComponentStore(
 			}
 
 			// Prepare form for editing existing category
-			if (Object.entries(category).length) {
-				preparedForm = await getEditForm(category);
+			if (Object.entries(category).length && action === Actions.CATEGORY_EDIT) {
+				preparedForm = await getEditForm(category.id);
 				preparedForm.method = 'PUT';
 				preparedForm.action = `${preparedForm.action}/${category.id}`;
 			}
 			currentCategoryForm.value = preparedForm;
 		}
 
-		async function getEditForm(category) {
+		/**
+		 * Get configured form to edit a category.
+		 */
+		async function getEditForm(categoryId) {
 			const url =
-				apiUrl.value + `/categoryFormComponent?categoryId=${category.id}`;
+				apiUrl.value + `/categoryFormComponent?categoryId=${categoryId}`;
 			const {fetch, data} = useFetch(url, {method: 'GET'});
 			await fetch();
 			return data.value;
@@ -100,8 +105,8 @@ export const useCategoryManagerStore = defineComponentStore(
 			if (actionName === Actions.CATEGORY_DELETE) {
 				deleteCategory(category);
 			} else if (
-				Actions.CATEGORY_ADD === actionName ||
-				Actions.CATEGORY_EDIT === actionName
+				actionName === Actions.CATEGORY_ADD ||
+				actionName === Actions.CATEGORY_EDIT
 			) {
 				await setupCategoryForm(category, actionName);
 				openCategoryFormModal(ActionFormLabel[actionName]);
@@ -146,39 +151,43 @@ export const useCategoryManagerStore = defineComponentStore(
 			});
 		}
 
+		/**
+		 * Open the form modal to add/edit category.
+		 */
 		function openCategoryFormModal(title) {
 			const {openSideModal} = useModal();
 			const {form} = useForm(currentCategoryForm);
-			nextTick(() => {
-				openSideModal(EditCategoryModal, {
-					title,
-					formProps: form,
-					onCategorySaved: categorySaved,
-				});
+			openSideModal(EditCategoryFormModal, {
+				title,
+				formProps: form,
+				onCategorySaved: categorySaved,
 			});
 		}
+
 		/**
-		 * Function to execute when a category is successfully saved via form
-		 *
+		 * Function to execute when a category is successfully saved via form.
 		 */
 		async function categorySaved(category) {
-			pkp.eventBus.$emit('notify', t('manager.categories.saved'), 'success');
+			pkp.eventBus.$emit('notify', t('manager.category.saved'), 'success');
 			closeCategoryFormModal();
 			await refreshCategories();
 
-			// 	If saved category has a parent then expand parent to have saved category displayed
+			// If saved category has a parent then expand parent to have saved category displayed
 			if (category.parentId) {
 				_expandedIds.value.add(category.parentId);
 			}
 		}
 
+		/**
+		 * Close the currently opened category form modal.
+		 */
 		function closeCategoryFormModal() {
 			const {closeSideModal} = useModal();
-			closeSideModal(EditCategoryModal);
+			closeSideModal(EditCategoryFormModal);
 		}
 
 		/**
-		 * Loads updated list of categories from API
+		 * Loads updated list of categories from API.
 		 */
 		async function refreshCategories() {
 			isLoading.value = true;
@@ -189,8 +198,8 @@ export const useCategoryManagerStore = defineComponentStore(
 		}
 
 		/**
-		 * Expand or collapse a parent in the Category tree
-		 * @param id - The ID of the category to expand
+		 * Expand or collapse a parent in the category tree.
+		 * @param id - The ID of the category to expand/collapse.
 		 * */
 		function toggleItemExpansion(id) {
 			if (_expandedIds.value.has(id)) {
@@ -200,61 +209,72 @@ export const useCategoryManagerStore = defineComponentStore(
 			}
 		}
 
-		// * Move an item up in the list
-		// 	*
-		// 	* @param {Object} item The item to move
-		// 	*/
+		/** Move an item up in the list.
+		 * @param {Object} item  - The item to move
+		 */
 		function itemOrderUp(item) {
-			var index = _categories.value.findIndex((obj) => {
+			const index = categories.value.findIndex((obj) => {
 				return item.id === obj.id;
 			});
 			if (index === 0) {
 				return;
 			}
-			let categories = [..._categories.value];
-			categories.splice(index - 1, 0, categories.splice(index, 1)[0]);
-			_categories.value = categories;
+			let newCategoriesList = [...categories.value];
+			newCategoriesList.splice(
+				index - 1,
+				0,
+				newCategoriesList.splice(index, 1)[0],
+			);
+			_categories.value = newCategoriesList;
 		}
 
+		/** Move an item down in the list.
+		 * @param {Object} item - The item to move.
+		 */
 		function itemOrderDown(item) {
-			var index = _categories.value.findIndex((obj) => {
+			const index = categories.value.findIndex((obj) => {
 				return item.id === obj.id;
 			});
-			if (index === _categories.value.length - 1) {
+			if (index === categories.value.length - 1) {
 				return;
 			}
-			let categories = [..._categories.value];
-			categories.splice(index + 1, 0, categories.splice(index, 1)[0]);
-			_categories.value = categories;
+			let newCategoriesList = [...categories.value];
+			newCategoriesList.splice(
+				index + 1,
+				0,
+				newCategoriesList.splice(index, 1)[0],
+			);
+			_categories.value = newCategoriesList;
 		}
 
-		async function cancelOrdering() {
+		/**
+		 * Cancel ordering.
+		 */
+		function cancelOrdering() {
 			isOrdering.value = false;
-			_categories.value = categoriesBeforeReordering.value;
-			categoriesBeforeReordering.value = null;
+			_categories.value = _categoriesBeforeReordering.value;
+			_categoriesBeforeReordering.value = null;
 		}
 
+		/**
+		 * Submit ordering to API to be saved.
+		 */
 		async function saveOrdering() {
 			isLoading.value = true;
 
-			const categories = _categories.value.map((obj, index) => ({
+			const sortedCategories = categories.value.map((obj, index) => ({
 				seq: index + 1,
 				id: obj.id,
 			}));
 
-			const form = new FormData();
-
-			categories.forEach((item, index) => {
-				Object.entries(item).forEach(([key, value]) => {
-					form.append(`sortedCategories[${index}][${key}]`, value);
-				});
-			});
-
 			const url = apiUrl.value + `/saveOrder`;
-			const {fetch, isSuccess} = useFetch(url, {method: 'PUT', body: form});
+			const {fetch, isSuccess} = useFetch(url, {
+				method: 'PUT',
+				body: JSON.stringify(sortedCategories),
+			});
 			await fetch();
 
-			if (isSuccess) {
+			if (isSuccess.value) {
 				await refreshCategories();
 				pkp.eventBus.$emit('notify', t('common.changesSaved'), 'success');
 				isOrdering.value = false;
@@ -264,10 +284,7 @@ export const useCategoryManagerStore = defineComponentStore(
 		}
 
 		function initOrdering() {
-			if (isOrdering.value) {
-				return;
-			}
-			categoriesBeforeReordering.value = _categories.value;
+			_categoriesBeforeReordering.value = _categories.value;
 			isOrdering.value = true;
 		}
 
@@ -275,15 +292,15 @@ export const useCategoryManagerStore = defineComponentStore(
 			getItemActions,
 			handleItemAction,
 			toggleItemExpansion,
-			columns,
-			categories,
-			expanded,
-			itemOrderUp,
-			itemOrderDown,
-			isOrdering,
 			cancelOrdering,
 			initOrdering,
 			saveOrdering,
+			itemOrderUp,
+			itemOrderDown,
+			isOrdering,
+			columns,
+			categories,
+			expanded,
 			isLoading,
 		};
 	},
