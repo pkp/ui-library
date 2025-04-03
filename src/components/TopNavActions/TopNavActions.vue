@@ -14,7 +14,7 @@
 		<div>
 			<button
 				ref="tasksButton"
-				:class="getAnimationStyle(true)"
+				:class="getAnimationStyle('notif-button')"
 				:disabled="isTasksModalOpened"
 				class="border-none p-2"
 				@click="openTasks"
@@ -171,11 +171,12 @@ const supportedLocales = Object.entries(
 
 const currentLocale = pkp.context?.currentLocale;
 
-const getAnimationStyle = (isNotificationsButton) => {
-	const isAnimationEnabled = isNotificationsButton ? !isTasksModalOpened : true;
+const getAnimationStyle = (buttonType) => {
+	const isAnimationEnabled =
+		buttonType === 'notif-button' ? !isTasksModalOpened : true;
 
 	return {
-		'relative leading-8  outline-none bg-transparent': true,
+		'relative bg-transparent leading-8 outline-none': true,
 		'!text-on-dark': isAnimationEnabled,
 		'!text-disabled': !isAnimationEnabled,
 		'hover:-translate-y-1 hover:text-on-dark hover:shadow-[0_0.25rem_#fff]':
@@ -186,7 +187,9 @@ const getAnimationStyle = (isNotificationsButton) => {
 };
 
 const actionLinkStyle = [
-	'max-w-full cursor-pointer overflow-hidden truncate whitespace-nowrap rounded border border-transparent bg-transparent px-2 py-1 leading-6 text-primary hover:!border-primary',
+	'max-w-full cursor-pointer overflow-hidden truncate whitespace-nowrap',
+	'rounded border border-transparent bg-transparent hover:!border-primary',
+	'px-2 py-1 leading-6 text-primary',
 ];
 
 /**
@@ -198,7 +201,7 @@ function openTasks() {
 		op: 'fetchGrid',
 	});
 
-	openLegacyModal({}, () => {
+	openLegacyModal({title: t('common.tasks')}, () => {
 		updateIsTasksModalOpened(false);
 	});
 
@@ -224,8 +227,13 @@ onUnmounted(() => {
 
 <style>
 .app-user-nav > button {
-	/* refer to animationStyle above, plus "!rounded-none h-full bg-transparent & border-none" */
-	@apply h-full !rounded-none border-none bg-transparent hover:-translate-y-1 hover:text-on-dark hover:shadow-[0_0.25rem_#fff] focus:-translate-y-1 focus:text-on-dark focus:shadow-[0_0.25rem_#fff] focus:outline-none;
+	/* must match the animationStyle above */
+	@apply relative bg-transparent leading-8 outline-none;
+	@apply hover:-translate-y-1 hover:text-on-dark hover:shadow-[0_0.25rem_#fff];
+	@apply focus:-translate-y-1 focus:text-on-dark focus:shadow-[0_0.25rem_#fff];
+
+	/* other classes that need to be applied for dropdown button styling */
+	@apply h-full !rounded-none border-none focus:outline-none;
 }
 
 .app-user-nav .pkpDropdown__content {
