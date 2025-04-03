@@ -14,12 +14,12 @@ export const Main = {
 	render: () => ({
 		components: {TopNavActions},
 		template: `
-            <div
+			<div
 				class="flex h-12 items-center justify-end bg-selection-dark px-4"
 			>
 				<TopNavActions />
 			</div>
-        `,
+		`,
 	}),
 };
 
