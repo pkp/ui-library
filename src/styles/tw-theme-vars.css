@@ -1,4 +1,6 @@
 :root {
+	--spacing: 0.25rem;
+
 	--color-primary: #006798;
 	--color-hover: #0082bf;
 	--color-attention: #d00a0a;
@@ -45,8 +47,9 @@
 
 	--shadow: 0 0 4px rgba(0, 0, 0, 0.5);
 
-	--font-sans: 'Noto Sans', ui-sans-serif, system-ui, sans-serif,
-		'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+	--font-sans:
+		'Noto Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+		'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
 	/** 10px */
 	--text-xs-normal: 0.625rem;
@@ -116,4 +119,62 @@
 	--text-5xl-bold: 2.25rem;
 	--text-5xl-bold--line-height: 2.5rem;
 	--text-5xl-bold--font-weight: 700;
+
+	/* Additional css variables to make easier to use them in plugins*/
+	/* 10px */
+	--font-xs-normal: var(--text-xs-normal--font-weight) var(--text-xs-normal) /
+		var(--text-xs-normal--line-height) var(--font-sans);
+
+	/* 11px */
+	--font-sm-light: var(--text-sm-light--font-weight) var(--text-sm-light) /
+		var(--text-sm-light--line-height) var(--font-sans);
+	--font-sm-normal: var(--text-sm-normal--font-weight) var(--text-sm-normal) /
+		var(--text-sm-normal--line-height) var(--font-sans);
+
+	/* 12px */
+	--font-base-light: var(--text-base-light--font-weight)
+		var(--text-base-light) / var(--text-base-light--line-height)
+		var(--font-sans);
+	--font-base-normal: var(--text-base-normal--font-weight)
+		var(--text-base-normal) / var(--text-base-normal--line-height)
+		var(--font-sans);
+	--font-base-bold: var(--text-base-bold--font-weight) var(--text-base-bold) /
+		var(--text-base-bold--line-height) var(--font-sans);
+
+	/* 14px */
+	--font-lg-normal: var(--text-lg-normal--font-weight) var(--text-lg-normal) /
+		var(--text-lg-normal--line-height) var(--font-sans);
+	--font-lg-medium: var(--text-lg-medium--font-weight) var(--text-lg-medium) /
+		var(--text-lg-medium--line-height) var(--font-sans);
+	--font-lg-semibold: var(--text-lg-semibold--font-weight)
+		var(--text-lg-semibold) / var(--text-lg-semibold--line-height)
+		var(--font-sans);
+	--font-lg-bold: var(--text-lg-bold--font-weight) var(--text-lg-bold) /
+		var(--text-lg-bold--line-height) var(--font-sans);
+
+	/* 16px */
+	--font-xl-bold: var(--text-xl-bold--font-weight) var(--text-xl-bold) /
+		var(--text-xl-bold--line-height) var(--font-sans);
+
+	/* 18px */
+	--font-2xl-bold: var(--text-2xl-bold--font-weight) var(--text-2xl-bold) /
+		var(--text-2xl-bold--line-height) var(--font-sans);
+
+	/* 20px */
+	--font-3xl-normal: var(--text-3xl-normal--font-weight)
+		var(--text-3xl-normal) / var(--text-3xl-normal--line-height)
+		var(--font-sans);
+	--font-3xl-medium: var(--text-3xl-medium--font-weight)
+		var(--text-3xl-medium) / var(--text-3xl-medium--line-height)
+		var(--font-sans);
+	--font-3xl-bold: var(--text-3xl-bold--font-weight) var(--text-3xl-bold) /
+		var(--text-3xl-bold--line-height) var(--font-sans);
+
+	/* 24px */
+	--font-4xl-bold: var(--text-4xl-bold--font-weight) var(--text-4xl-bold) /
+		var(--text-4xl-bold--line-height) var(--font-sans);
+
+	/* 36px */
+	--font-5xl-bold: var(--text-5xl-bold--font-weight) var(--text-5xl-bold) /
+		var(--text-5xl-bold--line-height) var(--font-sans);
 }
