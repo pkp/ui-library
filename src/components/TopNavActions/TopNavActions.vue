@@ -1,8 +1,8 @@
 <template>
 	<div class="ms-auto flex h-full whitespace-nowrap">
-		<div>
+		<div v-if="helpUrl">
 			<a
-				href="#"
+				:href="helpUrl"
 				target="_blank"
 				:class="getAnimationStyle()"
 				class="flex h-full items-center p-2"
@@ -170,6 +170,7 @@ const supportedLocales = Object.entries(
 });
 
 const currentLocale = pkp.context?.currentLocale;
+const helpUrl = pkp.context?.helpUrl;
 
 const getAnimationStyle = (buttonType) => {
 	const isAnimationEnabled =
