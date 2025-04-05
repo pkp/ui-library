@@ -16,6 +16,53 @@ export function useCurrentUser() {
 		return pkp.currentUser.id;
 	}
 
+	function getCurrentUserName() {
+		return pkp.currentUser.username;
+	}
+
+	function getCurrentUserFullName() {
+		return pkp.currentUser.fullName;
+	}
+
+	function getCurrentUserInitials() {
+		return pkp.currentUser.initials;
+	}
+
+	function getUserLoggedInAsUserName() {
+		if (!isUserLoggedInAs()) {
+			return '';
+		}
+
+		const userLoggedInAs = getUserLoggedInAs();
+		return userLoggedInAs?.username || '';
+	}
+
+	function getUserLoggedInAsInitials() {
+		if (!isUserLoggedInAs()) {
+			return '';
+		}
+
+		const userLoggedInAs = getUserLoggedInAs();
+		return userLoggedInAs?.initials || '';
+	}
+
+	function getUnreadNotifications() {
+		return pkp.currentUser.unreadTasksCount;
+	}
+
+	function setUnreadNotifications(count) {
+		pkp.currentUser.unreadTasksCount = count;
+		return pkp.currentUser.unreadTasksCount;
+	}
+
+	function isUserLoggedInAs() {
+		return pkp.currentUser.isUserLoggedInAs;
+	}
+
+	function getUserLoggedInAs() {
+		return pkp.currentUser.loggedInAsUser;
+	}
+
 	function hasCurrentUserAtLeastOneAssignedRoleInStage(
 		submission,
 		stageId,
@@ -64,5 +111,14 @@ export function useCurrentUser() {
 		hasCurrentUserAtLeastOneAssignedRoleInStage,
 		hasCurrentUserAtLeastOneAssignedRoleInAnyStage,
 		isCurrentUserAssignedAsReviewer,
+		getUnreadNotifications,
+		setUnreadNotifications,
+		isUserLoggedInAs,
+		getUserLoggedInAs,
+		getCurrentUserFullName,
+		getCurrentUserName,
+		getCurrentUserInitials,
+		getUserLoggedInAsUserName,
+		getUserLoggedInAsInitials,
 	};
 }

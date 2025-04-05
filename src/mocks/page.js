@@ -29,7 +29,6 @@ export default {
 	],
 	currentLocale: 'en',
 	hasMultipleContexts: true,
-	isLoggedInAs: 'ccorino',
 	locales: [
 		{
 			key: 'en',
@@ -128,6 +127,4 @@ export default {
 			isCurrent: false,
 		},
 	},
-	tasksUrl: '',
-	unreadTasksCount: 3,
 };

@@ -1,7 +1,8 @@
-import {computed} from 'vue';
+import {onUnmounted} from 'vue';
 import Page from './Page.vue';
 import Dropdown from '@/components/Dropdown/Dropdown.vue';
 import SideNav from '@/components/SideNav/SideNav.vue';
+import TopNavActions from '@/components/TopNavActions/TopNavActions.vue';
 import InitialsAvatar from '@/components/InitialsAvatar/InitialsAvatar.vue';
 import PageMock from '@/mocks/page';
 
@@ -12,27 +13,22 @@ export default {
 
 export const Default = {
 	render: (args) => ({
-		components: {Page, Dropdown, SideNav, InitialsAvatar},
+		components: {Page, Dropdown, SideNav, InitialsAvatar, TopNavActions},
 		setup() {
-			const classes = computed(() => {
-				let _classes = [];
-				if (args.isLoggedInAs) {
-					_classes.push('app--isLoggedInAs');
-				}
-				return _classes;
+			window.pkp.currentUser.isUserLoggedInAs = true;
+			window.pkp.currentUser.loggedInAsUser = {
+				username: 'admin',
+				initials: 'AA',
+			};
+
+			onUnmounted(() => {
+				window.pkp.currentUser.isUserLoggedInAs = false;
+				window.pkp.currentUser.loggedInAsUser = undefined;
 			});
-
-			const currentUsername = computed(() =>
-				args.isLoggedInAs ? args.isLoggedInAs : pkp.currentUser.username,
-			);
-
-			function alertFn(msg) {
-				alert(msg);
-			}
-			return {...args, classes, currentUsername, alert: alertFn};
+			return args;
 		},
 		template: `
-			<div class="app" :class="classes">
+			<div class="app">
 				<header class="app__header" role="banner">
 					<Dropdown v-if="contexts.length" class="app__headerAction app__contexts">
 						<template #button>
@@ -48,67 +44,7 @@ export const Default = {
 						</ul>
 					</Dropdown>
 					<div class="app__contextTitle">Journal of Public Knowledge</div>
-					<div class="app__headerActions">
-						<div class="app__headerAction app__tasks">
-							<button
-								ref="tasksButton"
-								@click="alert('Opens the tasks grid in a modal')"
-							>
-								<Icon icon="Notifications" class="h-7 w-7"></Icon>
-								<span class="-screenReader">Tasks</span>
-								<span v-if="unreadTasksCount" class="app__tasksCount">
-									{{ unreadTasksCount }}
-								</span>
-							</button>
-						</div>
-						<Dropdown class="app__headerAction app__userNav">
-							<template #button>
-								<InitialsAvatar :is-secondary="true" given-name="Test" family-name="User"></InitialsAvatar>
-								<InitialsAvatar
-									v-if="isLoggedInAs"
-									class="absolute right-2 top-2 rounded-full h-5 w-5"
-									:is-warnable="true"
-									:shrink="true"
-								></InitialsAvatar>
-								<span class="-screenReader">Options for {{ currentUsername }}</span>
-							</template>
-							<div v-if="isLoggedInAs" class="pkpDropdown__section">
-								<div class="app__userNav__loggedInAs">
-									You are currently logged in as {{ currentUsername }}.
-									<a href="#" class="app__userNav__logOutAs">
-										Logout as {{ currentUsername }}
-									</a>
-									.
-								</div>
-							</div>
-							<div class="pkpDropdown__section">
-								<ul>
-									<li>
-										<a href="#" class="pkpDropdown__action">View Profile</a>
-									</li>
-									<li>
-										<a href="#" class="pkpDropdown__action">Logout</a>
-									</li>
-								</ul>
-							</div>
-							<div class="pkpDropdown__section">
-								<div class="app__userNav__changeLocale">Change Language</div>
-								<ul>
-									<li v-for="locale in locales" :key="locale.key">
-										<a :href="locale.key" class="pkpDropdown__action">
-											<Icon
-												v-if="locale.key === 'en'"
-												icon="Complete"
-												class="h-5 w-5"
-												:inline="true"
-											/>
-											{{ locale.name }}
-										</a>
-									</li>
-								</ul>
-							</div>
-						</Dropdown>
-					</div>
+					<TopNavActions></TopNavActions>
 				</header>
 
 				<div class="app__body">
