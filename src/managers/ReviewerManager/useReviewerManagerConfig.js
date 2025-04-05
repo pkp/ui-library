@@ -11,7 +11,7 @@ export function useReviewerManagerConfig(recommendations) {
 
 		function getRecommendationString(reviewAssignment) {
 			const recommendation = recommendations.find(
-				(r) => r.id === reviewAssignment.recommendationId,
+				(r) => r.id === reviewAssignment.reviewerRecommendationId,
 			);
 
 			return recommendation ? localize(recommendation.title) : null;
