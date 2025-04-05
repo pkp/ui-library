@@ -12,8 +12,6 @@ import CounterReportsPage from '@/pages/counter/CounterReportsPage.vue';
 import UserInvitationPage from '@/pages/userInvitation/UserInvitationPage.vue';
 import AcceptInvitationPage from '@/pages/acceptInvitation/AcceptInvitationPage.vue';
 
-import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
-
 export default {
 	name: 'Page',
 	components: {
@@ -39,10 +37,6 @@ export default {
 			notifications: [],
 			/** Used internally to clear notifications. Do not set this manually. */
 			notificationInterval: null,
-			/** The URL to load the tasks grid modal. */
-			tasksUrl: '',
-			/** The current number of unread tasks. */
-			unreadTasksCount: 0,
 		};
 	},
 	computed: {},
@@ -87,20 +81,11 @@ export default {
 		 * Respond to an event fired to clear all notifications
 		 */
 		pkp.eventBus.$on('clear-all-notify', () => (this.notifications = []));
-
-		/**
-		 * Response to an event when the unread task count changes
-		 */
-		pkp.eventBus.$on(
-			'update:unread-tasks-count',
-			(data) => (this.unreadTasksCount = data.count),
-		);
 	},
 	unmounted() {
 		pkp.eventBus.$off('notify');
 		pkp.eventBus.$off('clear-all-notify');
 		clearInterval(this.notificationInterval);
-		pkp.eventBus.$off('update:unread-tasks-count');
 	},
 	methods: {
 		/**
@@ -126,18 +111,6 @@ export default {
 			while (parts.length) {
 				pkp.eventBus.$emit('open-tab', parts.shift());
 			}
-		},
-
-		/**
-		 * Open a modal showing the user's tasks
-		 */
-		openTasks() {
-			const {openLegacyModal} = useLegacyGridUrl({
-				component: 'grid.notifications.taskNotificationsGridHandler',
-				op: 'fetchGrid',
-			});
-
-			openLegacyModal({});
 		},
 	},
 };
@@ -184,20 +157,10 @@ export default {
 	}
 }
 
-.app__headerActions {
-	display: flex;
-	margin-inline-start: auto;
-	white-space: nowrap;
-
-	.pkpDropdown__content {
-		right: 0;
-		white-space: initial;
-	}
-}
-
 .app__headerAction {
-	> button {
-		padding: 0.5rem 1rem;
+	> button,
+	> a {
+		padding: 0.5rem;
 		box-shadow: none;
 		background: transparent;
 		border: none;
@@ -236,55 +199,6 @@ export default {
 	max-width: 30em;
 	max-height: 85vh;
 	overflow-y: auto;
-}
-
-.app__tasks > button {
-	position: relative;
-	padding: 0.5rem 1rem;
-	background: transparent;
-	border: none;
-	line-height: 2rem;
-	color: #fff;
-	cursor: pointer;
-}
-
-.app__tasksCount {
-	position: absolute;
-	top: 0.5rem;
-	right: 0.75rem;
-	background: @no;
-	line-height: 1;
-	padding: 2px;
-	border-radius: @radius;
-	color: #fff;
-	box-shadow: 0 0 1px 1px @bg-anchor;
-}
-
-.app__userNav {
-	display: flex;
-}
-
-.app__userNav .pkpDropdown__content {
-	right: 0.25rem;
-}
-
-.app__userNav .pkpDropdown__content {
-	min-width: 13rem;
-}
-
-.app__userNav__loggedInAs {
-	margin-top: 0.25rem;
-	margin-bottom: 0.25rem;
-	padding-left: 0.5rem;
-	padding-right: 0.5rem;
-	font-size: @font-tiny;
-	line-height: 1.7em;
-}
-
-.app__userNav__changeLocale {
-	padding-left: 0.5rem;
-	font-weight: @bold;
-	font-size: @font-tiny;
 }
 
 .app__returnHeader {
@@ -465,15 +379,7 @@ export default {
 }
 
 [dir='rtl'] {
-	.app__headerActions {
-		.pkpDropdown__content {
-			right: auto;
-			left: 0;
-		}
-	}
-
-	.app__contexts,
-	.app__tasks {
+	.app__contexts {
 		border-right: none;
 		border-left: 1px solid rgba(255, 255, 255, 0.2);
 	}
@@ -481,11 +387,6 @@ export default {
 	.app__contexts .pkpDropdown__content {
 		left: auto;
 		right: 0.25rem;
-	}
-
-	.app__userNav .pkpDropdown__content {
-		right: auto;
-		left: 0.25rem;
 	}
 
 	.app__notifications {
