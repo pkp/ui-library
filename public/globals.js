@@ -699,7 +699,7 @@ window.pkp = {
 		'publication.unschedule': 'Unschedule',
 		'publication.unschedule.confirm':
 			"Are you sure you don't want this scheduled for publication?",
-		'publication.version': 'Version {$version}',
+		'publication.version': '{$version}',
 		'publication.version.all': 'All Versions',
 		'publication.version.confirm':
 			'Are you sure you want to create a new version?',
