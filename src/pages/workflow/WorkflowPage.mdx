@@ -6,23 +6,23 @@ import * as WorkflowPage from './WorkflowPage.stories.js';
 
 # WorkflowPage page
 
-Displays workflow interface for Editors/Authors withing side modal.
+Displays workflow interface for Editors/Authors within a side modal.
 
 <ArgTypes />
 
 ## Extension points for plugins
 
-For more details and examples how to use them, check out [Plugins guide](..?path=/docs/guide-plugins--docs)
+For more details and examples on how to use them, check out [Plugins guide](..?path=/docs/guide-plugins--docs)
 
-Name of the pinia store is `workflow`.
+The name of the Pinia store is `workflow`.
 
-- `getMenuItems`: To Add/Modify menu items of the navigation.
-- `getInitialSelectionItemKey`: To modify which item is automatically selected when workflow modal is opened.
-- `getHeaderItems`: Add/Change which items are displayed in top&right area. Thats where the Preview/Activity Log/Library buttons are displayed.
-- `getPrimaryItems`: Main area, where the File/Discussion/Reviewer managers are displayed. Also all the publication forms are displayed in this area.
-- `getPrimaryControlsLeft`: Additional section on top left of the primary area. Used currently for additional publication controls, like Version dropdown.
-- `getPrimaryControlsRight`: dditional section on top right of the primary area. Used currently for additional publication controls, Preview/Schedule for Publication.
-- `getActionItems`: Possibility to modify/add right column, next to primary area. Typically editorial decision buttons are displayed there.
-- `getSecondaryItems`: Possibility to modify/add items in the right column, next to primary area, below action items. Typically Participants managers are displayed there
+- `getMenuItems`: To add/modify menu items in the navigation.
+- `getInitialSelectionItemKey`: To modify which item is automatically selected when the workflow modal is opened.
+- `getHeaderItems`: Add/Change which items are displayed in the top andright area. That's where the Preview/Activity Log/Library buttons are displayed.
+- `getPrimaryItems`: Main area, where the File/Discussion/Reviewer managers are displayed. Also, all the publication forms are displayed in this area.
+- `getPrimaryControlsLeft`: Additional section on the top left of the primary area. Used currently for additional publication controls, like a Version dropdown.
+- `getPrimaryControlsRight`: Additional section on the top right of the primary area. Used currently for additional publication controls, Preview/Schedule for Publication.
+- `getActionItems`: Possibility to modify/add a right column, next to the primary area. Typically, editorial decision buttons are displayed there.
+- `getSecondaryItems`: Possibility to modify/add items in the right column, next to the primary area, below action items. Typically, Participants managers are displayed there.
 
 <ArgTypes />

@@ -4,9 +4,9 @@ import {Meta} from '@storybook/blocks';
 
 # Introduction
 
-From version 3.5, it's recommended to make any UI extensions of the editorial backend by creating your own Vue.js components and injecting them via available hooks. Vue.js components give you lots of flexibility, where to put your custom UI, including business logic and styling.
+As of version 3.5, it's recommended to make any UI extensions of the editorial backend by creating your own Vue.js components and injecting them via available hooks. Vue.js components give you lots of flexibility, where to put your custom UI, including business logic and styling.
 
-This guide is a recommendation on how to go about it. Lots of building blocks (components, composables, css variables) from ui-library are available to be used in your custom Vue.js components. Goal is to provide comparable developer experience to building the new UI directly in the OJS.
+This guide is a recommendation on how to go about it. Lots of building blocks (components, composables, CSS variables) from ui-library are available to be used in your custom Vue.js components. The goal is to provide comparable developer experience to building the new UI directly in the OJS.
 
 The best source of working examples is [backend-ui-example-plugin](https://github.com/jardakotesovec/backend-ui-example-plugin?), which will be mentioned multiple times as a good reference.
 
@@ -14,7 +14,7 @@ The best source of working examples is [backend-ui-example-plugin](https://githu
 
 It's recommended to set up a build step using [vite](https://vite.dev) for your custom JS and Vue.js components.
 
-The best way is to follow [backend-ui-example-plugin](https://github.com/jardakotesovec/backend-ui-example-plugin?tab=readme-ov-file#check-list-to-set-up-build-step-in-your-plugin), which includes a check list you can follow to add a build step to your plugin.
+The best way is to follow [backend-ui-example-plugin](https://github.com/jardakotesovec/backend-ui-example-plugin?tab=readme-ov-file#check-list-to-set-up-build-step-in-your-plugin), which includes a checklist you can follow to add a build step to your plugin.
 
 ## Creating a component
 
@@ -60,7 +60,7 @@ pkp.registry.registerComponent('BuiPublicationListing', BuiPublicationListing);
 
 If the page you would like to extend is still relying on Smarty templates, like the Submission Wizard for example. Its still possible to add your Vue component there via usual PHP hooks.
 
-Checkout example of adding an additional tab in a Smarty template in [backend-ui-example-plugin](https://github.com/jardakotesovec/backend-ui-example-plugin).
+Check out example of adding an additional tab in a Smarty template in [backend-ui-example-plugin](https://github.com/jardakotesovec/backend-ui-example-plugin).
 
 ### Registering via JS Hooks
 
@@ -100,7 +100,7 @@ pkp.registry.storeExtendFn(
 );
 ```
 
-More details about available hooks for individual pages/managers are covered in individual documentation ([dashboard](../?path=/docs/pages-dashboard--docs), [workflow](../?path=/docs/pages-workflow--docs), [fileManager](../?path=/docs/managers-filemanager--docs), [reviewerManager](../?path=/docs/managers-reviewermanager--docs), [participantManager](../?path=/docs/managers-participantmanager--docs), [galleyManager](../?path=/docs/managers-galleymanager--docs)).
+More details about available hooks for individual pages/managers are covered in individual documentation ([Dashboard](../?path=/docs/pages-dashboard--docs), [Workflow](../?path=/docs/pages-workflow--docs), [FileManager](../?path=/docs/managers-filemanager--docs), [ReviewerManager](../?path=/docs/managers-reviewermanager--docs), [ParticipantManager](../?path=/docs/managers-participantmanager--docs), [GalleyManager](../?path=/docs/managers-galleymanager--docs)).
 
 When the given store is present on the screen, it's also possible to get a list of available functions in the browser dev console with:
 
