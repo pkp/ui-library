@@ -1,0 +1,23 @@
+import {Primary, Controls, Stories, Meta, ArgTypes} from '@storybook/blocks';
+
+import * as ParticipantManager from './ParticipantManager.stories.js';
+
+<Meta of={ParticipantManager} />
+
+# Participant manager
+
+Listing of submission Participants. Connected to legacy modals for adding/editing participants. In future it will be replace with the Vue.js UIs.
+
+<ArgTypes />
+
+## Extension points for plugins
+
+For more details and examples how to use them, check out [Plugins guide](..?path=/docs/guide-plugins--docs)
+
+Name of the pinia store is `participantManager`.
+
+- `getTopItems`: Add/Change items in top right, where the `Assign` button is.
+- `getItemActions`: Add/Change list of actions that are displayed after clicking 3 dots button.
+- `getItemInfoItems`: Add/Change what information are displayed for individual participant.
+
+<ArgTypes />

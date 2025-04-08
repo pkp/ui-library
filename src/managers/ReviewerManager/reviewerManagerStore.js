@@ -7,7 +7,7 @@ import {useDataChanged} from '@/composables/useDataChanged';
 import {useExtender} from '@/composables/useExtender';
 
 export const useReviewerManagerStore = defineComponentStore(
-	'reviewerManagerStore',
+	'reviewerManager',
 	(props) => {
 		const {
 			getOpenAndCompletedReviewAssignmentsForRound,

@@ -1,0 +1,25 @@
+import {Primary, Controls, Stories, Meta, ArgTypes} from '@storybook/blocks';
+
+import * as ReviewerManager from './ReviewerManager.stories.js';
+
+<Meta of={ReviewerManager} />
+
+# Reviewer manager
+
+Listing of Reviewers. Connected to legacy modals for most actions. In future it will be replace with the Vue.js UIs.
+
+<ArgTypes />
+
+## Extension points for plugins
+
+For more details and examples how to use them, check out [Plugins guide](..?path=/docs/guide-plugins--docs)
+
+Name of the pinia store is `ReviewerManager`.
+
+- `getTopItems`: Add/Change items in top right, where the `Upload / Select` button is.
+- `getItemActions`: Add/Change list of actions that are displayed after clicking 3 dots button.
+- `getItemPrimaryActions`: Add/Change One individual Action which is displayed in ACTIONS column.
+- `getCellStatusItems`: Add/Change what components are displayed in the Reviewer status.
+- `getColumns`: Add/Change the columns being displayed in the table.
+
+<ArgTypes />
