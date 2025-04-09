@@ -55,7 +55,7 @@ export const Default = {
 					},
 				),
 				http.get(
-					'http://mock/index.php/publicknowledge/$$$call$$$/grid/queries/queries-grid/fetch-grid',
+					'https://mock/index.php/publicknowledge/$$$call$$$/grid/queries/queries-grid/fetch-grid',
 					({request}) => {
 						return HttpResponse.json({
 							content: '',
