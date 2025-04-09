@@ -4,6 +4,7 @@ import {ref, computed, watch} from 'vue';
 
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
+import {useCurrentUser} from '@/composables/useCurrentUser';
 
 import {useParticipantManagerActions} from './useParticipantManagerActions';
 import {useDataChanged} from '@/composables/useDataChanged';
@@ -72,6 +73,9 @@ export const useParticipantManagerStore = defineComponentStore(
 
 			return list;
 		});
+
+		const {isUserLoggedInAs, getCurrentUserFullName} = useCurrentUser();
+		const currentUserFullName = getCurrentUserFullName();
 
 		/**
 		 * Config
@@ -158,6 +162,8 @@ export const useParticipantManagerStore = defineComponentStore(
 
 		return {
 			participantsList,
+			currentUserFullName,
+			isUserLoggedInAs: isUserLoggedInAs(),
 
 			/** Config */
 			topItems,
