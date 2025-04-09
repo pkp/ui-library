@@ -45,21 +45,13 @@ export function useCurrentUser() {
 	}
 
 	function getUserLoggedInAsUserName() {
-		if (!isUserLoggedInAs()) {
-			return null;
-		}
-
 		const userLoggedInAs = getUserLoggedInAs();
-		return userLoggedInAs?.username || '';
+		return userLoggedInAs?.username || null;
 	}
 
 	function getUserLoggedInAsInitials() {
-		if (!isUserLoggedInAs()) {
-			return null;
-		}
-
 		const userLoggedInAs = getUserLoggedInAs();
-		return userLoggedInAs?.initials || '';
+		return userLoggedInAs?.initials || null;
 	}
 
 	function getUnreadNotifications() {

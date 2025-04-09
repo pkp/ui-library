@@ -38,20 +38,14 @@ export function useUserAuth() {
 		);
 
 		// if the user is currently on a submission page, build the redirect url to the same submission page
-		const submissionRedirect = submissionId
+		return submissionId
 			? getDashboardLogoutAsUrl(submissionId)
-			: '';
-
-		return submissionRedirect || 'login/signOutAsUser';
+			: 'login/signOutAsUser';
 	}
 
 	function getLogoutUrl() {
 		const {isUserLoggedInAs} = useCurrentUser();
-		if (isUserLoggedInAs()) {
-			return getLogoutAsUrl();
-		}
-
-		return 'login/signOut';
+		return isUserLoggedInAs() ? getLogoutAsUrl() : 'login/signOut';
 	}
 
 	return {
