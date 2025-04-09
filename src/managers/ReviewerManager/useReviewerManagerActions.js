@@ -5,7 +5,6 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useSubmission} from '@/composables/useSubmission';
 import {useFetch, getCSRFToken} from '@/composables/useFetch';
 import WorkflowLogResponseModal from '@/managers/ReviewerManager/modals/WorkflowLogResponseModal.vue';
-import {useApiUrl} from '@/composables/useApiUrl';
 
 export const Actions = {
 	REVIEWER_ADD_REVIEWER: 'reviewerAddReviewer',
@@ -421,7 +420,7 @@ export function useReviewerManagerActions() {
 		const currentPublication = getCurrentPublication(submission);
 		const title = `${localizeSubmission(currentPublication.fullTitle, currentPublication.locale)}`;
 
-		const {apiUrl} = useApiUrl(
+		const {apiUrl} = useUrl(
 			`reviews/${submissionId}/${reviewAssignment.id}/confirmReview`,
 		);
 
@@ -449,7 +448,7 @@ export function useReviewerManagerActions() {
 					label: t('common.ok'),
 					isPrimary: true,
 					callback: async (close) => {
-						const {apiUrl} = useApiUrl(
+						const {apiUrl} = useUrl(
 							`reviews/${submissionId}/${reviewAssignment.id}/sendToOrcid`,
 						);
 

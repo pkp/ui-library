@@ -32,7 +32,7 @@ import cloneDeep from 'clone-deep';
 import CounterReportsEditModal from './CounterReportsEditModal.vue';
 import {useModal} from '@/composables/useModal';
 import {useFetch} from '@/composables/useFetch';
-import {useApiUrl} from '@/composables/useApiUrl';
+import {useUrl} from '@/composables/useUrl';
 import {useLocalize} from '@/composables/useLocalize';
 import {ref, computed} from 'vue';
 
@@ -48,7 +48,7 @@ const items = computed(() => data.value || []);
 const activeForm = ref(null);
 const activeFormTitle = ref('');
 
-const {apiUrl} = useApiUrl(`stats/sushi/reports`);
+const {apiUrl} = useUrl(`stats/sushi/reports`);
 const {
 	data,
 	fetch,
@@ -73,7 +73,7 @@ function openEditModal(id) {
 	activeFormTitle.value = t('manager.statistics.counterR5Report.settings');
 
 	const {openSideModal} = useModal();
-	const {apiUrl} = useApiUrl(`stats/sushi/${report.Path}`);
+	const {apiUrl} = useUrl(`stats/sushi/${report.Path}`);
 
 	openSideModal(CounterReportsEditModal, {
 		title: t('manager.statistics.counterR5Report.settings'),
