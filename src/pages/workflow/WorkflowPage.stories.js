@@ -2,6 +2,7 @@ import WorkflowPage from './WorkflowPageOJS.vue';
 import {http, HttpResponse} from 'msw';
 import pageInitConfigEditorial from '../dashboard/mocks/pageInitConfigEditorial';
 import {useModal} from '@/composables/useModal';
+import {within, userEvent} from '@storybook/test';
 
 import {getSubmissionMock} from '@/mockFactories/submissionMock';
 import {getPublicationMock} from '@/mockFactories/publicationMock';
@@ -84,6 +85,17 @@ export const Default = {
 		    <button @click="openWorkflowPage">View</button>
         `,
 	}),
-
+	decorators: [
+		() => ({
+			template: '<div style="height: 900px"><story/></div>',
+		}),
+	],
 	args: {pageInitConfig: pageInitConfigEditorial},
+	play: async ({canvasElement}) => {
+		// Assigns canvas to the component root element
+		const canvas = within(canvasElement);
+		const user = userEvent.setup();
+
+		await user.click(canvas.getByText('View'));
+	},
 };
