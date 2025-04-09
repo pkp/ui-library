@@ -40,7 +40,7 @@ export const Default = {
 								id: 4,
 								displayInitials: 'TN',
 								fullName:
-									'Test some very longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglong name',
+									'Test some very longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglong name',
 							}),
 							getParticipantMock({
 								id: 5,

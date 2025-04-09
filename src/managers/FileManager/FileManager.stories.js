@@ -27,7 +27,7 @@ export const Default = {
 						const Files = [
 							getFileMock({
 								id: 1,
-								name: 'long-name-response-evaluation-all-team-members-draft-after-edits-final-version-final-lets-make-it-even-longer.ods',
+								name: 'long-name-response-evaluation-all-team-members-draft-after-edits-final-version-final-lets-make-it-even-longer-keep-going-this-is-supposed-to-be-really-long-to-see-result-in-storybook.ods',
 								createdAt: '2025-02-06 05:59:08',
 								documentType: 'default',
 							}),
