@@ -21,11 +21,7 @@ export function useDataChanged(callback) {
 		});
 	}
 
-	let triggerDataChange = injectFromCurrentInstance('triggerDataChange');
-	// to work fine even outside of the data change provider
-	if (!triggerDataChange) {
-		triggerDataChange = () => {};
-	}
+	const triggerDataChange = injectFromCurrentInstance('triggerDataChange') || () => {};
 
 	return {triggerDataChange};
 }
