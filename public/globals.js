@@ -28,8 +28,6 @@ window.pkp = {
 	context: {
 		apiBaseUrl: 'https://mock/index.php/publicknowledge/api/v1/',
 		pageBaseUrl: 'https://mock/index.php/publicknowledge/',
-		legacyGridBaseUrl:
-			'http://localhost:7003/index.php/publicknowledge/$$$call$$$/component/action',
 		currentLocale: 'en',
 		primaryLocale: 'en',
 		supportedLocales: {
