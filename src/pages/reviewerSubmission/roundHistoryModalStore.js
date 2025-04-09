@@ -1,6 +1,6 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
 import {computed} from 'vue';
-import {useApiUrl} from '@/composables/useApiUrl';
+import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 import {useLocalize} from '@/composables/useLocalize';
 import {useDate} from '@/composables/useDate';
@@ -12,7 +12,7 @@ export const useRoundHistoryModalStore = defineComponentStore(
 	(props) => {
 		const {t, localize} = useLocalize();
 
-		const {apiUrl: reviewRoundHistoryApiUrl} = useApiUrl(
+		const {apiUrl: reviewRoundHistoryApiUrl} = useUrl(
 			`reviews/history/${props.submissionId}/${props.reviewRoundId}`,
 		);
 		const {fetch: fetchReviewRoundHistory, data: reviewRoundHistory} = useFetch(

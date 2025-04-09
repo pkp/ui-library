@@ -24,14 +24,14 @@
 				class="border-t border-light p-4 text-base-normal even:bg-tertiary"
 			>
 				<div class="flex items-center justify-between">
-					<div class="flex">
+					<div class="flex w-full min-w-0 flex-1">
 						<div>
 							<UserAvatar
 								:user-id="participant.id"
 								:initials="participant.displayInitials"
 							></UserAvatar>
 						</div>
-						<div class="ms-2 flex flex-col justify-center">
+						<div class="ms-2 flex min-w-0 flex-1 flex-col justify-center">
 							<component
 								:is="Components[action.component] || action.component"
 								v-for="(action, i) in participantManagerStore.getItemInfoItems({
@@ -43,7 +43,7 @@
 							></component>
 						</div>
 					</div>
-					<div>
+					<div class="ms-2">
 						<DropdownActions
 							:actions="participantManagerStore.getItemActions({participant})"
 							:label="`${participant.fullName} ${t('common.moreActions')}`"
@@ -52,7 +52,6 @@
 								(actionName) =>
 									participantManagerStore[actionName]({
 										participant: participant,
-										stageAssignmen,
 									})
 							"
 						/>

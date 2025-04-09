@@ -263,7 +263,7 @@ import TableBody from '@/components/Table/TableBody.vue';
 import TableRow from '@/components/Table/TableRow.vue';
 import TableColumn from '@/components/Table/TableColumn.vue';
 import TableCell from '@/components/Table/TableCell.vue';
-import {useApiUrl} from '@/composables/useApiUrl';
+import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 
 const props = defineProps({
@@ -328,7 +328,7 @@ const autoSuggestSelected = computed({
 const indexEditMode = ref(-1);
 const newAffiliation = ref({});
 const emit = defineEmits(['change', 'set-errors']);
-const {apiUrl} = useApiUrl('rors/');
+const {apiUrl} = useUrl('rors/');
 const rorObjectToBeUpdated = computed(() => {
 	return Object.hasOwn(newAffiliation.value, 'rorObject')
 		? newAffiliation.value['rorObject']

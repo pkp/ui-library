@@ -15,7 +15,7 @@ import articleStats from '@/components/Table/mocks/articleStats.js';
 import {useSorting} from '@/composables/useSorting';
 
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
-import {useApiUrl} from '@/composables/useApiUrl';
+import {useUrl} from '@/composables/useUrl';
 
 export default {
 	title: 'Components/Table',
@@ -146,7 +146,7 @@ export const WithPagination = {
 			TablePagination,
 		},
 		setup() {
-			const {apiUrl: statsApiUrl} = useApiUrl('stats');
+			const {apiUrl: statsApiUrl} = useUrl('stats');
 
 			const pageSize = ref(11);
 			const currentPage = ref(1);

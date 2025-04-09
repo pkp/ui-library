@@ -15,7 +15,7 @@
 <script setup>
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 import {useLocalize} from '@/composables/useLocalize';
-import {useApiUrl} from '@/composables/useApiUrl';
+import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 const props = defineProps({
 	title: {type: String, required: true},
@@ -67,7 +67,7 @@ async function handleExport(name) {
 			break;
 	}
 
-	const {apiUrl} = useApiUrl(
+	const {apiUrl} = useUrl(
 		`reviews/${props.submissionId}/${props.reviewAssignmentId}/${op}?authorFriendly=${authorFriendly}`,
 	);
 
@@ -80,7 +80,7 @@ async function handleExport(name) {
 		pkp.eventBus.$emit('notify', validationError.value.error, 'warning');
 	} else if (isSuccess.value) {
 		const anchor = document.createElement('a');
-		anchor.href = useApiUrl(
+		anchor.href = useUrl(
 			`reviews/${props.submissionId}/exports/${data.value.temporaryFileId}`,
 		).apiUrl.value;
 		document.body.appendChild(anchor);

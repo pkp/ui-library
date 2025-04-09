@@ -1,0 +1,57 @@
+import {Meta} from '@storybook/blocks';
+
+<Meta title="Composables/useDate" />
+
+# useDate
+
+Provides date formatting and calculation functions that are commonly used within OJS. The underlying library is [Luxon](https://moment.github.io/luxon/#/). For localization, Luxon relies on the browser Intl API.
+
+It follows the formats that are configured in `Website -> Setup -> Date & Time` as much as technically possible. There are some limitations when transforming the date format from the PHP format to the Luxon format.
+
+All functions, which have a date argument, accept various string date/time formats that can be encountered in the API. Including the Date object as well.
+
+## formatShortDate
+
+```js
+const {formatShortDate} = useDate();
+console.log(formatShortDate(userGroups?.dateStart);
+// "2024-02-16"
+```
+
+## formatShortDateTime
+
+```js
+const {formatShortDateTime} = useDate();
+console.log(formatShortDateTime(email.dateSent);
+// "2024-02-16 10:15"
+```
+
+## getDateCurrentLocale
+
+Converts PKP locale to a Luxon-compatible locale.
+
+```js
+pkp.context.currentLocale = 'fr_CA';
+console.log(getDateCurrentLocale());
+// fr-CA
+```
+
+## relativeStringTimeFromNow
+
+Currently accepts a timestamp. It could be improved to accept a wider range of date inputs.
+
+```js
+const {relativeStringTimeFromNow} = useDate();
+console.log(relativeStringTimeFromNow(lastSavedTimestamp));
+// "2 days ago"
+```
+
+## calculateDaysBetweenDates
+
+Calculate the number of days between two dates.
+
+```js
+const {calculateDaysBetweenDates} = useDate();
+console.log(calculateDaysBetweenDates(props.item.dateLastActivity, new Date()));
+// 2
+```

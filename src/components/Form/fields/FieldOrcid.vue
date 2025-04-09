@@ -87,7 +87,7 @@ import PkpButton from '@/components/Button/Button.vue';
 import HelpButton from '@/components/HelpButton/HelpButton.vue';
 import Tooltip from '@/components/Tooltip/Tooltip.vue';
 
-import {useApiUrl} from '@/composables/useApiUrl';
+import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 import {useModal} from '@/composables/useModal';
 
@@ -166,7 +166,7 @@ export default {
 		sendAuthorEmail: async function () {
 			this.isButtonDisabled = true;
 
-			const {apiUrl} = useApiUrl(
+			const {apiUrl} = useUrl(
 				`orcid/requestAuthorVerification/${this.authorId}`,
 			);
 
@@ -220,7 +220,7 @@ export default {
 		deleteOrcid: async function () {
 			this.isButtonDisabled = true;
 
-			const {apiUrl} = useApiUrl(`orcid/deleteForAuthor/${this.authorId}`);
+			const {apiUrl} = useUrl(`orcid/deleteForAuthor/${this.authorId}`);
 			const {isSuccess, fetch} = useFetch(apiUrl, {
 				method: 'POST',
 				expectValidationError: true,

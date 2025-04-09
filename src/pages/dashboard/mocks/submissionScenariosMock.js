@@ -1,6 +1,6 @@
-import {getSubmissionMock} from './submissionMock';
-import {getReviewRoundMock} from './reviewRoundsMock';
-import {getReviewAssignmentShortMock} from './reviewAssignmentsMock';
+import {getSubmissionMock} from '../../../mockFactories/submissionMock';
+import {getReviewRoundMock} from '../../../mockFactories/reviewRoundsMock';
+import {getReviewAssignmentShortMock} from '../../../mockFactories/reviewAssignmentsMock';
 
 export const EditorialActivityScenario = [
 	// Incomplete
@@ -31,6 +31,7 @@ export const EditorialActivityScenario = [
 	// REVIEW_ROUND_STATUS_REVISIONS_REQUESTED
 	getSubmissionMock({
 		id: 5,
+		stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
@@ -47,6 +48,7 @@ export const EditorialActivityScenario = [
 	//REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW
 	getSubmissionMock({
 		id: 6,
+		stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_RECEIVED,
@@ -66,6 +68,7 @@ export const EditorialActivityScenario = [
 	getSubmissionMock({
 		id: 7,
 		status: pkp.const.STATUS_DECLINED,
+		stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
@@ -80,12 +83,14 @@ export const EditorialActivityScenario = [
 	// REVIEW_ROUND_STATUS_PENDING_REVIEWERS
 	getSubmissionMock({
 		id: 8,
+		stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 		reviewAssignments: [],
 		reviewRounds: [getReviewRoundMock()],
 	}),
 	// REVIEW_ROUND_STATUS_PENDING_REVIEWS
 	getSubmissionMock({
 		id: 9,
+		stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
@@ -103,6 +108,7 @@ export const EditorialActivityScenario = [
 	// REVIEW_ROUND_STATUS_REVIEWS_READY
 	getSubmissionMock({
 		id: 10,
+		stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
@@ -123,6 +129,7 @@ export const EditorialActivityScenario = [
 	// REVIEW_ROUND_STATUS_REVIEWS_COMPLETED
 	getSubmissionMock({
 		id: 11,
+		stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
@@ -140,6 +147,7 @@ export const EditorialActivityScenario = [
 	// REVIEW_ROUND_STATUS_REVIEWS_OVERDUE
 	getSubmissionMock({
 		id: 12,
+		stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
@@ -157,6 +165,7 @@ export const EditorialActivityScenario = [
 	// REVIEW_ROUND_STATUS_REVISIONS_SUBMITTED
 	getSubmissionMock({
 		id: 13,
+		stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
@@ -174,6 +183,7 @@ export const EditorialActivityScenario = [
 	// REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW_SUBMITTED
 	getSubmissionMock({
 		id: 14,
+		stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
@@ -191,6 +201,7 @@ export const EditorialActivityScenario = [
 	// REVIEW_ROUND_STATUS_RETURNED_TO_REVIEW
 	getSubmissionMock({
 		id: 15,
+		stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
@@ -209,6 +220,7 @@ export const EditorialActivityScenario = [
 	// REVIEW_ROUND_STATUS_PENDING_RECOMMENDATIONS
 	getSubmissionMock({
 		id: 16,
+		stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
@@ -226,6 +238,7 @@ export const EditorialActivityScenario = [
 	// REVIEW_ROUND_STATUS_RECOMMENDATIONS_READY
 	getSubmissionMock({
 		id: 17,
+		stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
@@ -243,6 +256,7 @@ export const EditorialActivityScenario = [
 	// REVIEW_ROUND_STATUS_RECOMMENDATIONS_COMPLETED
 	getSubmissionMock({
 		id: 18,
+		stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
@@ -260,6 +274,7 @@ export const EditorialActivityScenario = [
 	// Recommend only editor provided recommendation
 	getSubmissionMock({
 		id: 19,
+		stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 		stages: [
 			{
 				id: 3,
@@ -283,6 +298,7 @@ export const EditorialActivityScenario = [
 	// Open review assignments
 	getSubmissionMock({
 		id: 20,
+		stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,

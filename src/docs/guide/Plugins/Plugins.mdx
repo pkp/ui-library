@@ -1,0 +1,167 @@
+import {Meta} from '@storybook/blocks';
+
+<Meta title="Guide/Plugins" />
+
+# Introduction
+
+As of version 3.5, it's recommended to make any UI extensions of the editorial backend by creating your own Vue.js components and injecting them via available hooks. Vue.js components give you lots of flexibility, where to put your custom UI, including business logic and styling.
+
+This guide is a recommendation on how to go about it. Lots of building blocks (components, composables, CSS variables) from ui-library are available to be used in your custom Vue.js components. The goal is to provide comparable developer experience to building the new UI directly in the OJS.
+
+The best source of working examples is [backend-ui-example-plugin](https://github.com/jardakotesovec/backend-ui-example-plugin?), which will be mentioned multiple times as a good reference.
+
+## Setting up a build step
+
+It's recommended to set up a build step using [vite](https://vite.dev) for your custom JS and Vue.js components.
+
+The best way is to follow [backend-ui-example-plugin](https://github.com/jardakotesovec/backend-ui-example-plugin?tab=readme-ov-file#check-list-to-set-up-build-step-in-your-plugin), which includes a checklist you can follow to add a build step to your plugin.
+
+## Creating a component
+
+When creating new Vue.js components, it's best to follow the latest Vue.js practices, using [Single File Components](https://vuejs.org/guide/introduction.html#single-file-components) with [Composition API](https://vuejs.org/guide/introduction.html#composition-api). That makes it easier to follow our latest examples.
+
+It's recommended to prefix your components to avoid any naming conflicts.
+
+## Using ui-library component and composables
+
+Starting with version 3.4, ui-library components are available globally using the pkp prefix. In version 3.5, with the adoption of Vue 3, the OJS codebase is also transitioning to the Composition API. As a result, commonly used composables are now exposed to help plugins handle tasks like fetching data from the API, managing dialogs and side modals, handling translations, and more.
+
+```html
+<template>
+	<div>
+		<PkpButton @click="openExampleDialog">
+			{{ t("plugins.generic.backendUiExample.openDialog") }}
+		</PkpButton>
+	</div>
+</template>
+```
+
+Check out `BuiPublicationListing.vue` component in [backend-ui-example-plugin](https://github.com/jardakotesovec/backend-ui-example-plugin) plugin, showcasing use of the Table component from ui-library.
+
+Check out available [composables](../?path=/docs/composables-usefetch--docs), which can be accessed via `pkp.modules`:
+
+```js
+const {useLocalize} = pkp.modules.useLocalize;
+```
+
+## Registering component
+
+After adding a build step to your component, you also have the `resources/js/main.js` file as an entry point. That's a great place to import and register your components.
+
+```js
+import BuiPublicationListing from './Components/BuiPublicationListing.vue';
+
+pkp.registry.registerComponent('BuiPublicationListing', BuiPublicationListing);
+```
+
+## Adding component to the editorial interface
+
+### Registering via PHP Hooks
+
+If the page you would like to extend is still relying on Smarty templates, like the Submission Wizard for example. Its still possible to add your Vue component there via usual PHP hooks.
+
+Check out example of adding an additional tab in a Smarty template in [backend-ui-example-plugin](https://github.com/jardakotesovec/backend-ui-example-plugin).
+
+### Registering via JS Hooks
+
+Starting with version 3.5, most new pages/managers have hooks to inject your custom component in various locations.
+
+Pinia stores are used as an underlying mechanism to inject components and are exposing configuration functions that are driving the UI. It also makes it straightforward to interact with the store to retrieve data or trigger any existing actions.
+
+Example
+
+```js
+// Adding iThenticate column
+pkp.registry.storeExtendFn(
+	// Pinia store name
+	'fileManager_SUBMISSION_FILES',
+	// Function to extend
+	'getColumns',
+	// Columns is the result from the original function, which can be adjusted
+	// Args are the arguments that the getColumns function retrieved to calculate the columns
+
+	(columns, args) => {
+		// Adding new column last to the end
+		const newColumns = [...columns];
+
+		const {useLocalize} = pkp.modules.useLocalize;
+		const {t} = useLocalize();
+
+		newColumns.splice(newColumns.length - 1, 0, {
+			// Header label of new column
+			header: t('plugins.generic.backendUiExample.ithenticate'),
+			// Component responsible for rendering that table cell
+			component: 'BuiFileManagerCellIthenticate',
+			props: {},
+		});
+
+		return newColumns;
+	},
+);
+```
+
+More details about available hooks for individual pages/managers are covered in individual documentation ([Dashboard](../?path=/docs/pages-dashboard--docs), [Workflow](../?path=/docs/pages-workflow--docs), [FileManager](../?path=/docs/managers-filemanager--docs), [ReviewerManager](../?path=/docs/managers-reviewermanager--docs), [ParticipantManager](../?path=/docs/managers-participantmanager--docs), [GalleyManager](../?path=/docs/managers-galleymanager--docs)).
+
+When the given store is present on the screen, it's also possible to get a list of available functions in the browser dev console with:
+
+```js
+pkp.registry.getPiniaStore('dashboard').extender.listExtendableFns();
+```
+
+Feel free to suggest additional hooks via GitHub issue if your use case can't be covered with the existing ones.
+
+## Interacting with Pinia stores
+
+### Getting data / triggering actions
+
+A good approach to explore the options is to use [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=en&pli=1) extension, which also indicates which Pinia stores are on the page and some details about what data they provide.
+
+When interacting with the Pinia store, you can retrieve it by name and get the data or trigger actions if needed.
+
+```js
+const dashboardStore = pkp.registry.getPiniaStore('dashboard');
+console.log(dashboardStore.dashboardPage);
+dashboardStore.openFiltersModal();
+```
+
+### Advanced use cases
+
+Pinia stores have their own [plugins API](https://pinia.vuejs.org/core-concepts/plugins.html). Therefore, as a plugin developer, you can leverage that. It should be used with caution, as any attempts to override store internals will likely lead to a fragile solution. But it provides some additional options for use cases which we have not considered.
+
+To be able to leverage the Pinia plugin API, it's possible to access Pinia instance with
+
+```js
+pkp.registry.getPiniaInstance();
+```
+
+## Translations
+
+From version 3.5, it's automatically detected which locale strings are used in the js/vue files. Details about the mechanics are covered in [Translation guide](../?path=/docs/guide-translation--docs).
+
+In plugins, the same workflow is available. Just make sure that in your `vite.config.js` the `i18nExtractKeys.vite.js` plugin is added.
+
+## Styling
+
+Tailwindcss [is adopted](..?path=/docs/guide-style-introduction--docs) for our ui-library since version 3.5.
+
+But to avoid any conflicts or complicated setups, we advise plugins to use simple scoped styling. To tap into our color palette and typography - these are available via [CSS variables](..?path=/docs/guide-style-css-variables--docs).
+
+Example:
+
+```html
+<style scoped>
+	h3 {
+		margin-top: var(--spacing-8);
+	}
+	.custom-styling {
+		margin-top: var(--spacing-8);
+		height: var(--spacing-12);
+		background-color: var(--color-stage-in-review);
+	}
+
+	.custom-text-styling-heading {
+		font: var(--font-3xl-bold);
+		color: var(--text-color-heading);
+	}
+</style>
+```

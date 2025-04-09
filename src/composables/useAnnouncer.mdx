@@ -1,0 +1,26 @@
+import {Meta} from '@storybook/blocks';
+
+<Meta title="Composables/useAnnouncer" />
+
+# useAnnouncer
+
+`useAnnouncer` provides functions for making announcements to screen readers.
+
+### announce parameters
+
+- `content` (string) - The content to announce to screen readers
+- `politeness` (string, optional) - The politeness level for the announcement ('polite' or 'assertive'). Defaults to 'polite'
+
+## Examples
+
+```js
+import {useAnnouncer} from '@/composables/useAnnouncer';
+const {announce} = useAnnouncer();
+
+// Announce to screen readers that the page has changed
+announce('Page 2 of results loaded');
+
+// Announce critical information with 'assertive' politeness
+announce('An error occurred while saving your data', 'assertive');
+};
+```

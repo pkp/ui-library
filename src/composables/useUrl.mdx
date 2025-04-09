@@ -4,10 +4,18 @@ import {Meta} from '@storybook/blocks';
 
 # useUrl
 
-Simple composable to generate API URL. It correctly generates API URL based on currect context (Journal) selected. It does not cover adding query params, as query params are passed separately when making the request with [useFetch](?path=/docs/composables-usefetch--docs).
+Simple composable to generate URL either for Page or API url. See examples.
 
 ```javascript
 import {useApiUrl} from '@/composables/useUrl';
 
+// API url example
 const {apiUrl: submissionApiUrl} = useUrl(`submissions/${props.submissionId}`);
+// http://domain/index.php/publicknowledge/api/v1/submissions/19
+
+// Page url example
+const {pageUrl} = useUrl('dashboard/editorial', {
+	currentViewId: 'assigned-to-me',
+});
+// http://domain/index.php/publicknowledge/en/dashboard/editorial?currentViewId=assigned-to-me
 ```

@@ -1,7 +1,7 @@
 import ReviewerManager from './ReviewerManager.vue';
-import {getSubmissionMock} from '@/pages/dashboard/mocks/submissionMock';
-import {getReviewAssignmentShortMock} from '@/pages/dashboard/mocks/reviewAssignmentsMock';
-import {getReviewRoundMock} from '@/pages/dashboard/mocks/reviewRoundsMock';
+import {getSubmissionMock} from '@/mockFactories/submissionMock';
+import {getReviewAssignmentShortMock} from '@/mockFactories/reviewAssignmentsMock';
+import {getReviewRoundMock} from '@/mockFactories/reviewRoundsMock';
 export default {
 	title: 'Managers/ReviewerManager',
 	component: ReviewerManager,
@@ -40,6 +40,7 @@ export const EditorScenarios = {
 	args: {
 		reviewRoundId: 10,
 		submission: getSubmissionMock({
+			stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 			reviewAssignments: [
 				//REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE // request has been sent but reviewer has not responded
 				getReviewAssignmentShortMock({
@@ -143,6 +144,7 @@ export const AuthorScenarios = {
 		redactedForAuthors: true,
 		reviewRoundId: 10,
 		submission: getSubmissionMock({
+			stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 			reviewAssignments: [
 				// REVIEW_ASSIGNMENT_STATUS_RECEIVED
 				getReviewAssignmentShortMock({
