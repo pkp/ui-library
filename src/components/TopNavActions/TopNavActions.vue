@@ -126,6 +126,7 @@ import InitialsAvatar from '@/components/InitialsAvatar/InitialsAvatar.vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 import {useCurrentUser} from '@/composables/useCurrentUser';
+import {useApp} from '@/composables/useApp';
 import {useUrl} from '@/composables/useUrl';
 import {useAppStore} from '@/stores/appStore';
 import {useUserAuth} from '@/composables/useUserAuth';
@@ -162,15 +163,17 @@ const logoutUrl = getLogoutUrl();
 const {pageUrl: signOutLink} = useUrl(logoutUrl);
 const {pageUrl: editProfileLink} = useUrl('user/profile');
 
-const supportedLocales = Object.entries(
-	pkp.context?.supportedLocales || {},
-).map(([key, value]) => {
-	const {pageUrl} = useUrl(`user/setLocale/${key}`);
-	return {key, value, href: pageUrl.value};
-});
+const {getSupportedLocales, getCurrentLocale, getHelpUrl} = useApp();
 
-const currentLocale = pkp.context?.currentLocale;
-const helpUrl = pkp.context?.helpUrl;
+const supportedLocales = Object.entries(getSupportedLocales() || {}).map(
+	([key, value]) => {
+		const {pageUrl} = useUrl(`user/setLocale/${key}`);
+		return {key, value, href: pageUrl.value};
+	},
+);
+
+const currentLocale = getCurrentLocale();
+const helpUrl = getHelpUrl();
 
 const getAnimationStyle = (buttonType) => {
 	const isAnimationEnabled =
