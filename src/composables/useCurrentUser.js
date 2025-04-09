@@ -46,7 +46,7 @@ export function useCurrentUser() {
 
 	function getUserLoggedInAsUserName() {
 		if (!isUserLoggedInAs()) {
-			return '';
+			return null;
 		}
 
 		const userLoggedInAs = getUserLoggedInAs();
@@ -55,7 +55,7 @@ export function useCurrentUser() {
 
 	function getUserLoggedInAsInitials() {
 		if (!isUserLoggedInAs()) {
-			return '';
+			return null;
 		}
 
 		const userLoggedInAs = getUserLoggedInAs();
