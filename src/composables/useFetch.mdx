@@ -22,6 +22,7 @@ This is not the ultimate list of features, but highlights the ones that are rele
 - **Last request wins** implemented in **useFetch**. Typical use case is if the user is changing filters/search criteria on slower connection to make sure that the last request data are applied. Internally it aborts previous requests.
 - **Automatic X-Http-Method-Override** implemented in **useFetch**. For better [compatibility](https://github.com/pkp/pkp-lib/issues/5981) with some servers, we use **X-Http-Method-Override** header for **PUT/DELETE** requests, while keeping method as **POST**.
 - **Error Handling** is implemented in useFetch. By default, any response that is not a **200** status is considered an unexpected error, and a dialog is displayed to inform the user. If you anticipate a validation error of user input (**4xx** status codes) that require handling, this must be explicitly enabled. For more details, refer to the [POST 4xx](?path=/docs/composables-usefetch--docs#post-4xx-with-validation-error) in the Examples section.
+- **Debounce** when request should be debounced, useFetch supports `debounceMs` option.
 
 ## API
 
