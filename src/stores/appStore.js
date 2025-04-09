@@ -70,10 +70,18 @@ export const useAppStore = defineStore('app', () => {
 		}
 	}
 
+	const isTasksModalOpened = ref(false);
+
+	function updateIsTasksModalOpened(value) {
+		isTasksModalOpened.value = value;
+	}
+
 	return {
 		triggerReloadViewsCount,
 		shouldReloadViewCountsEditorDashboard,
 		shouldReloadViewCountsMySubmissions,
 		shouldReloadViewCountsReviewAssignments,
+		isTasksModalOpened,
+		updateIsTasksModalOpened,
 	};
 });
