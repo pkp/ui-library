@@ -26,7 +26,7 @@ To understand how the Components should interact with the **Component Pinia Stor
 
 - **Page**: Every Page will have its own [Component Pinia Store](?path=/docs/guide-pinia-store--docs#component-pinia-store), where most of the business logic is handled and for simpler Pages that should be good enough.
 - **Complex Modals**: If Pages contain Modal(s) that contain substantial functionality, which is reasonably well separable from the rest of the Page, then it's a good indication that the Modal should have its own Component Store. A good example is `SubmissionSummaryModal.vue`.
-- **Self-Contained Component**: We don't have a good example yet of a Self-Contained Component, which would have its own Pinia store. But good candidates in general are Components that can be used in multiple places, and their logic can be well separated from the rest of the page. For example, Submission files are managed in both the Submission wizard and Workflow interface.
+- **Self-Contained Component aka Managers**: Good candidates in general are Components that can be used in multiple places, and their logic can be well separated from the rest of the page. Existing examples: [FileManager](../?path=/docs/managers-filemanager--docs), [ReviewerManager](../?path=/docs/managers-reviewermanager--docs), [ParticipantManager](../?path=/docs/managers-participantmanager--docs), [GalleyManager](../?path=/docs/managers-galleymanager--docs).
 
 ## Server side configuration
 

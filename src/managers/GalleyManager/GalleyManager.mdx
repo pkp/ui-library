@@ -1,0 +1,25 @@
+import {Primary, Controls, Stories, Meta, ArgTypes} from '@storybook/blocks';
+
+import * as GalleyManager from './GalleyManager.stories.js';
+
+<Meta of={GalleyManager} />
+
+# Galley manager
+
+Listing of Galleys. Connected to legacy modals for individual actions. In the future, it will be replaced with the Vue.js UIs.
+
+## Props
+
+<ArgTypes />
+
+## Extension points for plugins
+
+For more details and examples on how to use them, check out [Plugins guide](..?path=/docs/guide-plugins--docs)
+
+The name of the Pinia store is `GalleyManager`.
+
+- `getTopItems`: Add/Change items in the top right, where the `Order` button is.
+- `getBottomItems`: Add/Change items in the top right, where the `Add galley` button is.
+- `getItemActions`: Add/Change the list of actions that are displayed after clicking the 3 dots button.
+- `getColumns`: Add/Change the columns being displayed in the table.
+- `getManagerConfig`: GalleyManager configuration. It's unlikely to use that for adjusting from a plugin, but it's available.

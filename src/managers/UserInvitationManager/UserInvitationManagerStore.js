@@ -1,7 +1,6 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
-import {useApiUrl} from '@/composables/useApiUrl';
-import {useAnnouncer} from '@/composables/useAnnouncer';
 import {useUrl} from '@/composables/useUrl';
+import {useAnnouncer} from '@/composables/useAnnouncer';
 import {useLocalize} from '@/composables/useLocalize';
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useFetch} from '@/composables/useFetch';
@@ -38,7 +37,7 @@ export const useUserInvitationManagerStore = defineComponentStore(
 			currentPage.value = _currentPage;
 		}
 
-		const {apiUrl} = useApiUrl('invitations/userRoleAssignment');
+		const {apiUrl} = useUrl('invitations/userRoleAssignment');
 		const {
 			items: invitations,
 			pagination: invitationsPagination,

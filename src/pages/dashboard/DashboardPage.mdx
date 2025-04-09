@@ -6,4 +6,23 @@ import * as DashboardPage from './DashboardPage.stories.js';
 
 # DashboardPage page
 
+Used for listing submissions for editors and authors as well as review assignments for reviewers.
+
+## Props
+
 <ArgTypes />
+
+## Extension points for plugins
+
+For more details and examples on how to use them, check out [Plugins guide](..?path=/docs/guide-plugins--docs)
+
+The name of the Pinia store is `dashboard`.
+
+- `getLeftControls`: Add additional controls above the table on the left, next to the `Filters` button.
+- `getRightControls`: Add additional controls above the table on the right, next to the Search field.
+- `getColumns`: Add/Change which columns to render.
+- `getEditorialActivityForEditorialDashboard`: Possibility to modify/add content in the editorial activity column for the Editorial Dashboard (for Editors).
+- `getEditorialActivityForMySubmissions`: Possibility to modify/add content in the editorial activity column for My Submissions dashboard (for Authors).
+- `getEditorialActivityForMyReviewAssignments`: Possibility to modify/add content in the editorial activity column for My Review Assignment dashboard (for Reviewers).
+- `getReviewActivityIndicatorProps` - Provides configuration for the individual Review Indicator (circle indicating status). This is an unlikely use case for a plugin, but it's available.
+- `getReviewActivityIndicatorPopoverProps` - Provides configuration for the popover, which gets displayed after clicking on the circle review indicator. This is an unlikely use case for a plugin, but it's available.

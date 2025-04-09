@@ -4,7 +4,7 @@ import {useModal} from '@/composables/useModal';
 import {within, userEvent} from '@storybook/test';
 
 export default {
-	title: 'Pages/Workflow/LogResponse',
+	title: 'Managers/ReviewerManager/LogResponse',
 	component: WorkflowLogResponseModal,
 };
 

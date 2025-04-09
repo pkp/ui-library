@@ -1,4 +1,6 @@
 :root {
+	--spacing: 0.25rem;
+
 	--color-primary: #006798;
 	--color-hover: #0082bf;
 	--color-attention: #d00a0a;
@@ -45,8 +47,9 @@
 
 	--shadow: 0 0 4px rgba(0, 0, 0, 0.5);
 
-	--font-sans: 'Noto Sans', ui-sans-serif, system-ui, sans-serif,
-		'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+	--font-sans:
+		'Noto Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+		'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
 	/** 10px */
 	--text-xs-normal: 0.625rem;
@@ -116,4 +119,98 @@
 	--text-5xl-bold: 2.25rem;
 	--text-5xl-bold--line-height: 2.5rem;
 	--text-5xl-bold--font-weight: 700;
+
+	/* Additional css variables to make easier to use them in plugins*/
+	/* 10px */
+	--font-xs-normal: var(--text-xs-normal--font-weight) var(--text-xs-normal) /
+		var(--text-xs-normal--line-height) var(--font-sans);
+
+	/* 11px */
+	--font-sm-light: var(--text-sm-light--font-weight) var(--text-sm-light) /
+		var(--text-sm-light--line-height) var(--font-sans);
+	--font-sm-normal: var(--text-sm-normal--font-weight) var(--text-sm-normal) /
+		var(--text-sm-normal--line-height) var(--font-sans);
+
+	/* 12px */
+	--font-base-light: var(--text-base-light--font-weight)
+		var(--text-base-light) / var(--text-base-light--line-height)
+		var(--font-sans);
+	--font-base-normal: var(--text-base-normal--font-weight)
+		var(--text-base-normal) / var(--text-base-normal--line-height)
+		var(--font-sans);
+	--font-base-bold: var(--text-base-bold--font-weight) var(--text-base-bold) /
+		var(--text-base-bold--line-height) var(--font-sans);
+
+	/* 14px */
+	--font-lg-normal: var(--text-lg-normal--font-weight) var(--text-lg-normal) /
+		var(--text-lg-normal--line-height) var(--font-sans);
+	--font-lg-medium: var(--text-lg-medium--font-weight) var(--text-lg-medium) /
+		var(--text-lg-medium--line-height) var(--font-sans);
+	--font-lg-semibold: var(--text-lg-semibold--font-weight)
+		var(--text-lg-semibold) / var(--text-lg-semibold--line-height)
+		var(--font-sans);
+	--font-lg-bold: var(--text-lg-bold--font-weight) var(--text-lg-bold) /
+		var(--text-lg-bold--line-height) var(--font-sans);
+
+	/* 16px */
+	--font-xl-bold: var(--text-xl-bold--font-weight) var(--text-xl-bold) /
+		var(--text-xl-bold--line-height) var(--font-sans);
+
+	/* 18px */
+	--font-2xl-bold: var(--text-2xl-bold--font-weight) var(--text-2xl-bold) /
+		var(--text-2xl-bold--line-height) var(--font-sans);
+
+	/* 20px */
+	--font-3xl-normal: var(--text-3xl-normal--font-weight)
+		var(--text-3xl-normal) / var(--text-3xl-normal--line-height)
+		var(--font-sans);
+	--font-3xl-medium: var(--text-3xl-medium--font-weight)
+		var(--text-3xl-medium) / var(--text-3xl-medium--line-height)
+		var(--font-sans);
+	--font-3xl-bold: var(--text-3xl-bold--font-weight) var(--text-3xl-bold) /
+		var(--text-3xl-bold--line-height) var(--font-sans);
+
+	/* 24px */
+	--font-4xl-bold: var(--text-4xl-bold--font-weight) var(--text-4xl-bold) /
+		var(--text-4xl-bold--line-height) var(--font-sans);
+
+	/* 36px */
+	--font-5xl-bold: var(--text-5xl-bold--font-weight) var(--text-5xl-bold) /
+		var(--text-5xl-bold--line-height) var(--font-sans);
+
+	--spacing-0: 0px;
+	--spacing-px: 1px;
+	--spacing-0-5: 0.125rem; /* 2px */
+	--spacing-1: 0.25rem; /* 4px */
+	--spacing-1-5: 0.375rem; /* 6px */
+	--spacing-2: 0.5rem; /* 8px */
+	--spacing-2-5: 0.625rem; /* 10px */
+	--spacing-3: 0.75rem; /* 12px */
+	--spacing-3-5: 0.875rem; /* 14px */
+	--spacing-4: 1rem; /* 16px */
+	--spacing-5: 1.25rem; /* 20px */
+	--spacing-6: 1.5rem; /* 24px */
+	--spacing-7: 1.75rem; /* 28px */
+	--spacing-8: 2rem; /* 32px */
+	--spacing-9: 2.25rem; /* 36px */
+	--spacing-10: 2.5rem; /* 40px */
+	--spacing-11: 2.75rem; /* 44px */
+	--spacing-12: 3rem; /* 48px */
+	--spacing-14: 3.5rem; /* 56px */
+	--spacing-16: 4rem; /* 64px */
+	--spacing-20: 5rem; /* 80px */
+	--spacing-24: 6rem; /* 96px */
+	--spacing-28: 7rem; /* 112px */
+	--spacing-32: 8rem; /* 128px */
+	--spacing-36: 9rem; /* 144px */
+	--spacing-40: 10rem; /* 160px */
+	--spacing-44: 11rem; /* 176px */
+	--spacing-48: 12rem; /* 192px */
+	--spacing-52: 13rem; /* 208px */
+	--spacing-56: 14rem; /* 224px */
+	--spacing-60: 15rem; /* 240px */
+	--spacing-64: 16rem; /* 256px */
+	--spacing-72: 18rem; /* 288px */
+	--spacing-80: 20rem; /* 320px */
+	--spacing-96: 24rem; /* 384px */
 }

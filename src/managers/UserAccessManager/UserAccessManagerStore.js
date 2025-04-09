@@ -1,5 +1,4 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
-import {useApiUrl} from '@/composables/useApiUrl';
 import {useUrl} from '@/composables/useUrl';
 import {useAnnouncer} from '@/composables/useAnnouncer';
 import {useLocalize} from '@/composables/useLocalize';
@@ -31,7 +30,7 @@ export const useUserAccessManagerStore = defineComponentStore(
 			searchPhrase.value = val;
 		}
 
-		const {apiUrl} = useApiUrl('users');
+		const {apiUrl} = useUrl('users');
 		const {
 			items: userList,
 			pagination: userAccessPagination,

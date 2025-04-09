@@ -1,0 +1,28 @@
+import {Primary, Controls, Stories, Meta, ArgTypes} from '@storybook/blocks';
+
+import * as WorkflowPage from './WorkflowPage.stories.js';
+
+<Meta of={WorkflowPage} />
+
+# WorkflowPage page
+
+Displays workflow interface for Editors/Authors within a side modal.
+
+## Props
+
+<ArgTypes />
+
+## Extension points for plugins
+
+For more details and examples on how to use them, check out [Plugins guide](..?path=/docs/guide-plugins--docs)
+
+The name of the Pinia store is `workflow`.
+
+- `getMenuItems`: To add/modify menu items in the navigation.
+- `getInitialSelectionItemKey`: To modify which item is automatically selected when the workflow modal is opened.
+- `getHeaderItems`: Add/Change which items are displayed in the top andright area. That's where the Preview/Activity Log/Library buttons are displayed.
+- `getPrimaryItems`: Main area, where the File/Discussion/Reviewer managers are displayed. Also, all the publication forms are displayed in this area.
+- `getPrimaryControlsLeft`: Additional section on the top left of the primary area. Used currently for additional publication controls, like a Version dropdown.
+- `getPrimaryControlsRight`: Additional section on the top right of the primary area. Used currently for additional publication controls, Preview/Schedule for Publication.
+- `getActionItems`: Possibility to modify/add a right column, next to the primary area. Typically, editorial decision buttons are displayed there.
+- `getSecondaryItems`: Possibility to modify/add items in the right column, next to the primary area, below action items. Typically, Participants managers are displayed there.

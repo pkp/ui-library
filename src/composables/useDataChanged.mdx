@@ -1,0 +1,33 @@
+import {Meta} from '@storybook/blocks';
+
+<Meta title="Composables/useDataChanged" />
+
+# useDataChanged
+
+`useDataChangedProvider` and `useDataChanged` composables are used to notify other components about data changes on more complex pages.
+
+Currently, this approach is used on the [Workflow](../?path=/docs/pages-workflow--docs) page.
+
+Workflow page store is responsible for fetching submission & publication objects as these are essential and useful also for many components on the page. In addition, there are multiple managers that are fetching additional data. ParticipantManager is fetching a list of participants. FileManagers are fetching a list of files. And whatever changes these managers make can impact data in the submission/publication.
+
+The following mechanism is used to ensure all data on the page stays up to date. If page/manager knows that data might have changed, the given page/manager store will notify about that using the `useDataChanged` composable. And that gives the opportunity to other stores to reload data that they own.
+
+## useDataChangedProvider
+
+`workflow` store is responsible for managing state for the workflow page (it's rendered within a modal, but still considered an independent page). It's the right place for the `useDataChangedProvider`, which is a coordinator of the data changes happening on that page.
+
+```js
+const {triggerDataChange} = useDataChangedProvider(() => {
+	// when the data change is triggered, it refetches submission and publication
+	return refetchSubmissionPublication();
+});
+```
+
+## useDataChanged
+
+For example, in ParticipantManager, which is rendered on the workflow page, the `useDataChanged` composable is used. It connects with the `useDataChangedProvider` using `provide/inject` to connect to the closest `useDataChangedProvider` parent.
+
+```js
+// when any other store triggers data change, this store is responsible for refetching participants
+const {triggerDataChange} = useDataChanged(() => fetchParticipants());
+```
