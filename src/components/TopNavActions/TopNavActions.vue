@@ -127,11 +127,11 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 import {useCurrentUser} from '@/composables/useCurrentUser';
 import {useUrl} from '@/composables/useUrl';
-import {useModalStore} from '@/stores/modalStore';
+import {useAppStore} from '@/stores/appStore';
 import {useUserAuth} from '@/composables/useUserAuth';
 
 const {t} = useLocalize();
-const {updateIsTasksModalOpened, isTasksModalOpened} = useModalStore();
+const {updateIsTasksModalOpened, isTasksModalOpened} = useAppStore();
 
 const {
 	getUnreadNotifications,
