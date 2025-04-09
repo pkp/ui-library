@@ -1,0 +1,9 @@
+import {Meta} from '@storybook/blocks';
+
+<Meta title="Composables/useQueryParams" />
+
+# useQueryParams
+
+Exposing query params from URL as a reactive object to read/write query params.
+
+`useQueryParams` is based on the [useUrlSearchParams](https://vueuse.org/core/useUrlSearchParams/?foo=bar&vueuse=awesome) and additionally making sure that one reactive queryParams object is shared. That's important for example when the **Views** in the main navigation are changing query params to be correctly detected in the **Dashboard store**.

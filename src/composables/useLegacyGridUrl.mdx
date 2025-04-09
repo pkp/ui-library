@@ -1,0 +1,20 @@
+import {Meta} from '@storybook/blocks';
+
+<Meta title="Composables/useLegacyGridUrl" />
+
+# useLegacyGridUrl
+
+This composable makes it easier to open legacy server-side modals. These modals are server-side rendered, so it's important to make a request to the correct URL and render the content which is returned.
+
+Lots of examples can be seen across the code base. Often used when refactoring legacy grids to new Vue.js managers, where first legacy modals are reused and replaced over time.
+
+```js
+const {openLegacyModal} = useLegacyGridUrl({
+	component: 'grid.notifications.taskNotificationsGridHandler',
+	op: 'fetchGrid',
+});
+
+openLegacyModal({title: t('common.tasks')}, () => {
+	updateIsTasksModalOpened(false);
+});
+```
