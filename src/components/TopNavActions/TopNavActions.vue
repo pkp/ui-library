@@ -177,7 +177,7 @@ const helpUrl = getHelpUrl();
 
 const getAnimationStyle = (buttonType) => {
 	const isAnimationEnabled =
-		buttonType === 'notif-button' ? !isTasksModalOpened : true;
+		buttonType !== 'notif-button' || !isTasksModalOpened;
 
 	return {
 		'relative bg-transparent leading-8 outline-none': true,
