@@ -26,5 +26,24 @@ export function useApp() {
 		return pkp.context.app === 'ops';
 	}
 
-	return {isOJS, isOMP, isOPS};
+	function getSupportedLocales() {
+		return pkp.context.supportedLocales;
+	}
+
+	function getCurrentLocale() {
+		return pkp.context.currentLocale;
+	}
+
+	function getHelpUrl() {
+		return pkp.context.helpUrl;
+	}
+
+	return {
+		isOJS,
+		isOMP,
+		isOPS,
+		getSupportedLocales,
+		getCurrentLocale,
+		getHelpUrl,
+	};
 }
