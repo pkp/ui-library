@@ -6,20 +6,16 @@ import {Meta} from '@storybook/blocks';
 
 `useAnnouncer` provides functions for making announcements to screen readers.
 
-### Parameters
-
-#### `announce`
+### announce parameters
 
 - `content` (string) - The content to announce to screen readers
 - `politeness` (string, optional) - The politeness level for the announcement ('polite' or 'assertive'). Defaults to 'polite'
 
 ## Examples
 
-### Basic Usage
-
 ```js
 import {useAnnouncer} from '@/composables/useAnnouncer';
-
+const {announce} = useAnnouncer();
 
 // Announce to screen readers that the page has changed
 announce('Page 2 of results loaded');
