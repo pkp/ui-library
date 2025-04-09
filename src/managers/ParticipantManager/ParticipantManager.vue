@@ -19,7 +19,7 @@
 			role="list"
 		>
 			<li
-				v-if="isUserLoggedInAs()"
+				v-if="participantManagerStore.isUserLoggedInAs"
 				class="border-t border-light p-4 text-base-normal even:bg-tertiary"
 			>
 				<PkpButton
@@ -27,7 +27,11 @@
 					:is-warnable="true"
 					@click="participantManagerStore.participantLogoutAs()"
 				>
-					{{ t('user.logOutAs', {username: currentuserFullName}) }}
+					{{
+						t('user.logOutAs', {
+							username: participantManagerStore.currentUserFullName,
+						})
+					}}
 				</PkpButton>
 			</li>
 			<li
@@ -76,7 +80,6 @@
 <script setup>
 import UserAvatar from '@/components/UserAvatar/UserAvatar.vue';
 import {useLocalize} from '@/composables/useLocalize';
-import {useCurrentUser} from '@/composables/useCurrentUser';
 import {useParticipantManagerStore} from './participantManagerStore';
 import PkpButton from '@/components/Button/Button.vue';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
@@ -100,6 +103,4 @@ const Components = {
 const participantManagerStore = useParticipantManagerStore(props);
 
 const {t} = useLocalize();
-const {isUserLoggedInAs, getCurrentUserFullName} = useCurrentUser();
-const currentuserFullName = getCurrentUserFullName();
 </script>
