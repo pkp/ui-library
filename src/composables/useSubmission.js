@@ -449,7 +449,10 @@ export function useSubmission() {
 	) {
 		if (
 			!minReviewsCount ||
-			stageId !== pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW
+			!(
+				stageId === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW ||
+				stageId === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW
+			)
 		) {
 			return {
 				shouldMinimumReviewsBeConsidered: false,

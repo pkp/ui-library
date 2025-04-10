@@ -235,18 +235,46 @@ export function useWorkflowDecisions({
 		openDecisionPage(submission, pkp.const.DECISION_SKIP_INTERNAL_REVIEW);
 	}
 
-	function decisionAcceptInternal({submission, reviewRoundId}) {
-		openDecisionPage(submission, pkp.const.DECISION_ACCEPT_INTERNAL, {
-			reviewRoundId,
-		});
+	function decisionAcceptInternal({
+		submission,
+		reviewRoundId,
+		contextMinReviewsPerSubmission,
+	}) {
+		showWarningDialogAboutMinimumReviewsIfEnabled(
+			{
+				submission,
+				reviewRoundId,
+				contextMinReviewsPerSubmission,
+				stageId: pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW,
+			},
+			() => {
+				openDecisionPage(submission, pkp.const.DECISION_ACCEPT_INTERNAL, {
+					reviewRoundId,
+				});
+			},
+		);
 	}
 
-	function decisionPendingRevisionsInternal({submission, reviewRoundId}) {
-		openDecisionPage(
-			submission,
-			pkp.const.DECISION_PENDING_REVISIONS_INTERNAL,
+	function decisionPendingRevisionsInternal({
+		submission,
+		reviewRoundId,
+		contextMinReviewsPerSubmission,
+	}) {
+		showWarningDialogAboutMinimumReviewsIfEnabled(
 			{
+				submission,
 				reviewRoundId,
+				contextMinReviewsPerSubmission,
+				stageId: pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW,
+			},
+			() => {
+				openDecisionPage(
+					submission,
+					pkp.const.DECISION_PENDING_REVISIONS_INTERNAL,
+					{
+						reviewRoundId,
+					},
+				);
 			},
 		);
 	}
@@ -308,10 +336,24 @@ export function useWorkflowDecisions({
 		});
 	}
 
-	function decisionNewInternalRound({submission, reviewRoundId}) {
-		openDecisionPage(submission, pkp.const.DECISION_NEW_INTERNAL_ROUND, {
-			reviewRoundId,
-		});
+	function decisionNewInternalRound({
+		submission,
+		reviewRoundId,
+		contextMinReviewsPerSubmission,
+	}) {
+		showWarningDialogAboutMinimumReviewsIfEnabled(
+			{
+				submission,
+				reviewRoundId,
+				contextMinReviewsPerSubmission,
+				stageId: pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW,
+			},
+			() => {
+				openDecisionPage(submission, pkp.const.DECISION_NEW_INTERNAL_ROUND, {
+					reviewRoundId,
+				});
+			},
+		);
 	}
 
 	function decisionCancelInternalReviewRound({submission, reviewRoundId}) {
