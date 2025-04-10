@@ -1,0 +1,26 @@
+import {Meta} from '@storybook/blocks';
+
+<Meta title="Composables/useUserAuth" />
+
+# useUserAuth
+
+Composable for authentication related features, currently its use is to generate user authentication URL for logging-in/out.
+
+```javascript
+import {useUserAuth} from '@/composables/useUserAuth';
+
+// Generate a login-as URL for logging in as another user
+const {getDashboardLoginAsUrl} = useUserAuth();
+const loginAsUrl = getDashboardLoginAsUrl(roleId, userId, submissionId);
+// Example: login/signInAsUser/5?redirectUrl=http%3A%2F%2Fdomain%2Fdashboard%2Feditorial%3FworkflowSubmissionId%3D19
+
+// Generate a logout URL for the current user
+const {getLogoutUrl} = useUserAuth();
+const logoutUrl = getLogoutUrl();
+// Example: login/signOut
+
+// Generate a logout-as URL and returning to the original user
+const {getDashboardLogoutAsUrl} = useUserAuth();
+const logoutAsUrl = getDashboardLogoutAsUrl(submissionId);
+// Example: login/signOutAsUser?redirectUrl=http%3A%2F%2Fdomain%2Fdashboard%2Feditorial%3FworkflowSubmissionId%3D19
+```

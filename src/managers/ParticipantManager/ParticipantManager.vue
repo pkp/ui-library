@@ -19,6 +19,22 @@
 			role="list"
 		>
 			<li
+				v-if="participantManagerStore.isUserLoggedInAs"
+				class="border-t border-light p-4 text-base-normal even:bg-tertiary"
+			>
+				<PkpButton
+					:is-link="true"
+					:is-warnable="true"
+					@click="participantManagerStore.participantLogoutAs()"
+				>
+					{{
+						t('user.logOutAs', {
+							username: participantManagerStore.currentUserFullName,
+						})
+					}}
+				</PkpButton>
+			</li>
+			<li
 				v-for="participant in participantManagerStore.participantsList"
 				:key="participant.id"
 				class="border-t border-light p-4 text-base-normal even:bg-tertiary"
@@ -65,6 +81,7 @@
 import UserAvatar from '@/components/UserAvatar/UserAvatar.vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useParticipantManagerStore} from './participantManagerStore';
+import PkpButton from '@/components/Button/Button.vue';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 import ParticipantManagerActionButton from './ParticipantManagerActionButton.vue';
 import ParticipantManagerItemInfoName from './ParticipantManagerItemInfoName.vue';

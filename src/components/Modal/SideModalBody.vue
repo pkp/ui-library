@@ -3,11 +3,18 @@
 		class="pointer-events-auto h-screen w-screen"
 		:class="levelClasses"
 	>
-		<div class="shadow-xl flex h-full flex-col bg-default py-6">
-			<div class="">
+		<div class="shadow-xl flex h-full flex-col bg-default">
+			<div
+				class="pointer-events-auto flex h-12 items-center justify-end bg-selection-dark px-4"
+			>
+				<TopNavActions />
+			</div>
+
+			<div class="py-6">
 				<div class="flex items-start">
 					<div class="ms-4">
 						<button
+							ref="closeModalButton"
 							type="button"
 							class="rounded-md text-gray-400 hover:text-gray-500 focus:ring-indigo-500 relative inline-flex focus:outline-none focus:ring-2 focus:ring-offset-2"
 							@click="closeModal"
@@ -58,9 +65,15 @@
 </template>
 
 <script setup>
-import {inject, computed} from 'vue';
+import {inject, computed, defineAsyncComponent} from 'vue';
 import {DialogPanel, DialogTitle, DialogDescription} from '@headlessui/vue';
 import Icon from '@/components/Icon/Icon.vue';
+
+// Use the async component to avoid loading the TopNavActions component when not needed
+// This resolves the issue with Storybook not being able to load the component
+const TopNavActions = defineAsyncComponent(
+	() => import('@/components/TopNavActions/TopNavActions.vue'),
+);
 
 import {useLocalize} from '@/composables/useLocalize';
 
@@ -85,4 +98,5 @@ const levelClasses = computed(() => {
 
 const closeModal = inject('closeModal');
 const modalLevel = inject('modalLevel');
+const closeModalButton = inject('closeModalButton');
 </script>

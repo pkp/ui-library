@@ -18,6 +18,7 @@ window.pkp = {
 		roles: [1, 16, 65536, 1048576],
 		username: 'dbarnes',
 		preferredName: 'Daniel Barnes',
+		initials: 'DB',
 	},
 
 	/**
@@ -29,6 +30,10 @@ window.pkp = {
 		pageBaseUrl: 'https://mock/index.php/publicknowledge/',
 		currentLocale: 'en',
 		primaryLocale: 'en',
+		supportedLocales: {
+			en: 'English',
+			fr_CA: 'français',
+		},
 		timeZone: 'UTC',
 		dateFormatShort: 'm/d/Y',
 		dateFormatLong: 'F j, Y',
@@ -197,6 +202,7 @@ window.pkp = {
 		'common.filtersClear': 'Clear Filters',
 		'common.findTemplate': 'Find Template',
 		'common.geographic': 'Geographic',
+		'common.help': 'Help',
 		'common.id': 'ID',
 		'common.insert': 'Insert',
 		'common.insertContent': 'Insert Content',
@@ -207,6 +213,7 @@ window.pkp = {
 		'common.loading': 'Loading',
 		'common.moreActions': 'More Actions',
 		'common.name': 'Name',
+		'common.navigation.user': 'User Navigation',
 		'common.no': 'No',
 		'common.noItemsFound': 'No items found.',
 		'common.none': 'None',
@@ -244,6 +251,7 @@ window.pkp = {
 		'common.status': 'Status',
 		'common.switchTo': 'Switch to',
 		'common.switchToNamedItem': 'Switch to {$name}',
+		'common.tasks': 'Tasks',
 		'common.type': 'Type',
 		'common.unknownError':
 			'An unexpected error has occurred. Please reload the page and try again.',
@@ -634,6 +642,7 @@ window.pkp = {
 		'manager.mailables.templates': 'Templates',
 		'manager.people.confirmRemove':
 			'Remove this user from this journal? This action will unenroll the user from all roles within this journal.',
+		'manager.people.signedInAs': 'You are currently logged in as {$username}',
 		'manager.publication.productionStage': 'Production',
 		'manager.publication.reviewStage': 'Review',
 		'manager.publication.submissionStage': 'Submission',
@@ -867,10 +876,12 @@ window.pkp = {
 		'user.gossip': 'Editorial Notes',
 		'user.interests': 'Reviewing interests',
 		'user.logOut': 'Logout',
+		'user.logOutAs': 'Logout as {$username}',
 		'user.mailingAddress': 'Mailing Address',
 		'user.orcid': 'ORCID iD',
 		'user.password': 'Password',
 		'user.phone': 'Phone',
+		'user.profile.editProfile': 'Edit Profile',
 		'user.removeRole.message':
 			"Are you sure you want to permanently remove this role? This action will revoke the user's access to all information and permissions associated with this role.",
 		'user.removeRole.roleRemainMessage':

@@ -68,7 +68,7 @@ export function useLegacyGridUrl({
 	 */
 	function openLegacyModal(
 		{title, closeOnFormSuccessId, description},
-		finishedCallback,
+		finishedCallback = () => {},
 	) {
 		const {openSideModal} = useModal();
 
