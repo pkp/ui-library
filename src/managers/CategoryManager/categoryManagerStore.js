@@ -35,8 +35,11 @@ export const useCategoryManagerStore = defineComponentStore(
 		const currentCategoryForm = ref({});
 		const categoryForm = props.categoryForm; // Blank form used only for adding new categories
 
-		// Will store categories at the start of ordering. This will allow to reset data if user cancels ordering.
+		// Store categories at the start of ordering. This will allow to reset data if user cancels ordering.
 		const _categoriesBeforeReordering = ref([]);
+		// IDs of expanded categories will be cleared at the start of ordering to collapse all expanded items.
+		// This will store the IDs of expanded categories at the start of ordering to allow re-expansion after ordering is completed/cancled.
+		const _expandedIdsBeforeOrdering = ref(new Set());
 
 		/**
 		 * Prepares the form data for Adding/Editing a Category
@@ -254,6 +257,8 @@ export const useCategoryManagerStore = defineComponentStore(
 			isOrdering.value = false;
 			_categories.value = _categoriesBeforeReordering.value;
 			_categoriesBeforeReordering.value = null;
+			_expandedIds.value = new Set([..._expandedIdsBeforeOrdering.value]);
+			_expandedIdsBeforeOrdering.value = null;
 		}
 
 		/**
@@ -276,8 +281,9 @@ export const useCategoryManagerStore = defineComponentStore(
 
 			if (isSuccess.value) {
 				await refreshCategories();
-				pkp.eventBus.$emit('notify', t('common.changesSaved'), 'success');
+				_expandedIds.value = new Set([..._expandedIdsBeforeOrdering.value]);
 				isOrdering.value = false;
+				pkp.eventBus.$emit('notify', t('common.changesSaved'), 'success');
 			}
 
 			isLoading.value = false;
@@ -285,6 +291,8 @@ export const useCategoryManagerStore = defineComponentStore(
 
 		function initOrdering() {
 			_categoriesBeforeReordering.value = _categories.value;
+			_expandedIdsBeforeOrdering.value = new Set([..._expandedIds.value]);
+			_expandedIds.value.clear(); // Clear entries in order to collapse all expanded items.
 			isOrdering.value = true;
 		}
 
