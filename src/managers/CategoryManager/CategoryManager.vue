@@ -3,7 +3,7 @@
 		<div class="mt-2">
 			<div class="flex justify-between">
 				<div class="flex flex-row items-center gap-x-3 text-2xl-bold">
-					<span>{{ t('manager.setup.categories') }}</span>
+					<span>{{ t('grid.category.categories') }}</span>
 				</div>
 				<div class="flex flex-row items-center gap-x-3">
 					<template v-if="categoryManagerStore.isOrdering">
@@ -40,7 +40,7 @@
 							:disabled="categoryManagerStore.isLoading"
 							@click="categoryManagerStore.handleItemAction('categoryAdd')"
 						>
-							{{ t('manager.category.add') }}
+							{{ t('grid.category.add') }}
 						</PkpButton>
 					</template>
 				</div>
