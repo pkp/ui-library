@@ -1,6 +1,7 @@
 import {within, userEvent} from '@storybook/test';
 import {onUnmounted} from 'vue';
 import TopNavActions from './TopNavActions.vue';
+import PkpButton from '@/components/Button/Button.vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
 import {useModal} from '@/composables/useModal.js';
@@ -34,7 +35,7 @@ const SideModalBase = {
 
 export const SideModal = {
 	render: (args) => ({
-		components: {SideModal, SideModalBase},
+		components: {PkpButton, SideModalBase},
 		setup() {
 			const {openSideModal, closeSideModal} = useModal();
 
@@ -49,7 +50,7 @@ export const SideModal = {
 			return {openModal};
 		},
 		template: `
-			<PkpButton  @click="openModal">
+			<PkpButton @click="openModal">
 				Open Modal
 			</PkpButton>
 		`,
