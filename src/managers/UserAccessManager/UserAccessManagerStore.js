@@ -111,7 +111,7 @@ export const useUserAccessManagerStore = defineComponentStore(
 		 * redirect to send invitation page
 		 */
 		function editUser({user}) {
-			const {redirectToPage} = useUrl(`invitation/editUser/${user.id}`);
+			const {redirectToPage} = useUrl(`management/settings/user/${user.id}`);
 			redirectToPage();
 		}
 
