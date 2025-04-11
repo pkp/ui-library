@@ -83,13 +83,6 @@ window.pkp = {
 		SUBMISSION_REVIEW_METHOD_DOUBLEANONYMOUS: 2,
 		SUBMISSION_REVIEW_METHOD_OPEN: 3,
 
-		SUBMISSION_REVIEWER_RECOMMENDATION_ACCEPT: 1,
-		SUBMISSION_REVIEWER_RECOMMENDATION_PENDING_REVISIONS: 2,
-		SUBMISSION_REVIEWER_RECOMMENDATION_RESUBMIT_HERE: 3,
-		SUBMISSION_REVIEWER_RECOMMENDATION_RESUBMIT_ELSEWHERE: 4,
-		SUBMISSION_REVIEWER_RECOMMENDATION_DECLINE: 5,
-		SUBMISSION_REVIEWER_RECOMMENDATION_SEE_COMMENTS: 6,
-
 		ROLE_ID_MANAGER: 16,
 		ROLE_ID_SITE_ADMIN: 1,
 		ROLE_ID_AUTHOR: 65536,
@@ -940,6 +933,7 @@ window.pkp = {
 			"Once the user is enabled, they will regain access to OJS, and you'll be able to invite them to roles as needed.",
 		'grid.user.grid.user.disableReasonDescription':
 			"Please note that once a user is disabled, you won't be able to add them to any roles until they are enabled again.",
+		'reviewer.recommendation.management.options': 'Recommendation management options',
 	},
 	tinyMCE: {
 		skinUrl: '/styles/tinymce',
