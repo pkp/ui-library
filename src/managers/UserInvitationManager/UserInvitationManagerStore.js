@@ -22,11 +22,12 @@ export const useUserInvitationManagerStore = defineComponentStore(
 		/**
 		 * redirect to send invitation page
 		 */
-		const {pageUrl: sendInvitationPageUrl} = useUrl(
-			'invitation/userInvite/userRoleAssignment',
+		const {pageUrl: createInvitationPageUrl} = useUrl(
+			'invitation/create/userRoleAssignment',
 		);
 		function createNewInvitation() {
-			window.location = sendInvitationPageUrl.value;
+			console.log(createInvitationPageUrl.value);
+			window.location = createInvitationPageUrl.value;
 		}
 
 		/**
@@ -86,6 +87,7 @@ export const useUserInvitationManagerStore = defineComponentStore(
 			}
 		}
 
+		const {pageUrl: editInvitationPageUrl} = useUrl('invitation/edit');
 		function handleEditInvitation(invitationObj) {
 			openDialog({
 				title: t('userInvitation.edit.title'),
@@ -96,7 +98,7 @@ export const useUserInvitationManagerStore = defineComponentStore(
 						isPrimary: true,
 						callback: async (close) => {
 							window.location =
-								sendInvitationPageUrl.value + '/' + invitationObj.id;
+								editInvitationPageUrl.value + '/' + invitationObj.id;
 						},
 					},
 					{
