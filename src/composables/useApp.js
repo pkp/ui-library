@@ -26,5 +26,39 @@ export function useApp() {
 		return pkp.context.app === 'ops';
 	}
 
-	return {isOJS, isOMP, isOPS};
+	/**
+	 * Get the list of supported locales for the current application.
+	 *
+	 * @returns {Object} An object of supported locale codes (e.g., {en: 'English', fr_CA: 'French'}).
+	 */
+	function getSupportedLocales() {
+		return pkp.context.supportedLocales;
+	}
+
+	/**
+	 * Get the current locale of the application.
+	 *
+	 * @returns {string} The current locale code (e.g., 'en').
+	 */
+	function getCurrentLocale() {
+		return pkp.context.currentLocale;
+	}
+
+	/**
+	 * Get the help URL for the current application.
+	 *
+	 * @returns {string} The URL to the help documentation.
+	 */
+	function getHelpUrl() {
+		return pkp.context.helpUrl;
+	}
+
+	return {
+		isOJS,
+		isOMP,
+		isOPS,
+		getSupportedLocales,
+		getCurrentLocale,
+		getHelpUrl,
+	};
 }
