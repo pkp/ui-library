@@ -117,6 +117,7 @@ export default {
 						ticks: {
 							color: 'rgba(255,255,255,0.85)',
 							padding: 7,
+							beginAtZero: true,
 						},
 					},
 				},
