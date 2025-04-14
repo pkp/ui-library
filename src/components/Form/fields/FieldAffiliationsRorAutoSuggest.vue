@@ -39,6 +39,7 @@
 							:href="suggestion.href"
 							target="_blank"
 							class="ms-auto flex"
+							@mousedown.stop=""
 						>
 							<span class="sr-only">Open link in new tab</span>
 							<Icon
