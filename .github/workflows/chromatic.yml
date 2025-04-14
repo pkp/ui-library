@@ -10,6 +10,7 @@ on:
   push:
     branches:
       - main
+      - stable-3_5_0
 
 # List of jobs
 jobs:
