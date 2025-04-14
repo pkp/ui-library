@@ -22,8 +22,8 @@ npm run storybook
 
 ## Links
 
-- [Latest storybook build](https://main--6555d3db80418bb1681b8b17.chromatic.com/)
-- [Latest snapshots](https://www.chromatic.com/library?appId=6555d3db80418bb1681b8b17&branch=main) captured via Chromatic service for visual testing of our components and pages
+- [Latest storybook build](https://stable-3_5_0--6555d3db80418bb1681b8b17.chromatic.com/)
+- [Latest snapshots](https://www.chromatic.com/library?appId=6555d3db80418bb1681b8b17&branch=stable-3_5_0) captured via Chromatic service for visual testing of our components and pages
 
 ## Issues
 
