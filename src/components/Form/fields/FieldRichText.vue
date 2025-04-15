@@ -98,7 +98,7 @@ export default {
 							// to use this as the wrapper, and then remove as a workaround to a
 							// deprecated option & value "{ forced_root_block: '' }"
 							// @see https://github.com/tinymce/tinymce/discussions/7342
-							ed.content = ed.content.replace(/^<div>(.*)<\/div>$/, '$1');
+							ed.content = ed.content.replace(/<\/?div>/g, '');
 						});
 					},
 				},
