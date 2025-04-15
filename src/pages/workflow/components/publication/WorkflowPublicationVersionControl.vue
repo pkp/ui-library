@@ -72,7 +72,7 @@ const statusProps = computed(() => {
 
 function getItemLabel(publication) {
 	const firstPart = t('publication.version', {
-		version: publication.versionDataDisplay,
+		version: publication.versionString,
 	});
 	let secondPart = '';
 	if (
