@@ -10,24 +10,25 @@
 			<template #top-controls>
 				<div class="flex space-x-2">
 					<PkpButton @click="openAddModal">
-						{{ addRecommendationLabel }}
+						{{ t('grid.action.addReviewerRecommendation') }}
 					</PkpButton>
 				</div>
 			</template>
 
 			<TableHeader>
-				<TableColumn>{{ recommendationNameTitle }}</TableColumn>
-				<TableColumn>{{ recommendationStatusTitle }}</TableColumn>
+				<TableColumn>
+					{{ t('manager.reviewerRecommendations.list.name.title') }}
+				</TableColumn>
+				<TableColumn>
+					{{ t('manager.reviewerRecommendations.list.status.title') }}
+				</TableColumn>
 				<TableColumn></TableColumn>
 			</TableHeader>
 
 			<TableBody>
 				<TableRow v-for="item in store.items" :key="item.id">
 					<TableCell :is-row-header="true">
-						<span
-							v-strip-unsafe-html="escapeHtml(localize(item.title))"
-							class="text-lg-normal"
-						></span>
+						<span class="text-lg-normal">{{ localize(item.title) }}</span>
 					</TableCell>
 
 					<TableCell>
@@ -47,7 +48,7 @@
 						<DropdownActions
 							v-if="item.removable"
 							:actions="getActions(item)"
-							:label="t('reviewer.recommendation.management.options')"
+							:label="t('common.moreActions')"
 							button-variant="ellipsis"
 							direction="left"
 							@action="(actionName) => handleAction(actionName, item)"
@@ -70,20 +71,8 @@ import TableRow from '@/components/Table/TableRow.vue';
 import TableCell from '@/components/Table/TableCell.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
-import {escapeHtml} from '@/directives/stripUnsafeHtml';
 
 const props = defineProps({
-	addRecommendationLabel: {type: String, required: true},
-	confirmDeleteMessage: {type: String, required: true},
-	deleteRecommendationLabel: {type: String, required: true},
-	editRecommendationLabel: {type: String, required: true},
-	activateTitle: {type: String, required: true},
-	confirmActivateMessage: {type: String, required: true},
-	deactivateTitle: {type: String, required: true},
-	confirmDeactivateMessage: {type: String, required: true},
-	recommendationNameTitle: {type: String, required: true},
-	recommendationStatusTitle: {type: String, required: true},
-	apiUrl: {type: String, required: true},
 	form: {type: Object, required: true},
 	id: {type: String, required: true},
 	title: {type: String, required: true},

@@ -36,7 +36,9 @@ export const useReviewerManagerStore = defineComponentStore(
 		/**
 		 * Config
 		 */
-		const reviewerManagerConfig = extender.addFns(useReviewerManagerConfig(props.recommendations));
+		const reviewerManagerConfig = extender.addFns(
+			useReviewerManagerConfig({recommendations: props.recommendations}),
+		);
 
 		const columns = computed(() =>
 			reviewerManagerConfig.getColumns({
