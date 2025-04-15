@@ -4,45 +4,26 @@
 			{{ title }}
 		</template>
 		<SideModalLayoutBasic>
-			<PkpForm v-bind="formData" @set="updateForm" @success="handleSuccess" />
+			<PkpForm
+				ref="editRecommendation"
+				class="recommendations__recommendationForm"
+				v-bind="formProps"
+				@success="(...args) => $emit('recommendationSaved', ...args)"
+				@set="(...args) => $emit('updateForm', ...args)"
+			></PkpForm>
 		</SideModalLayoutBasic>
 	</SideModalBody>
 </template>
 
 <script setup>
-import {ref, watch} from 'vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
 import PkpForm from '@/components/Form/Form.vue';
 
-const props = defineProps({
+defineProps({
 	title: {type: String, required: true},
-	activeForm: {type: Object, required: true},
+	formProps: {type: Object, required: true},
 });
 
-const emit = defineEmits(['updateForm', 'formSuccess']);
-
-// Create a reactive form data reference
-const formData = ref(props.activeForm);
-
-// Watch for changes to activeForm prop
-watch(
-	() => props.activeForm,
-	(newForm) => {
-		formData.value = newForm;
-	},
-	{deep: true},
-);
-
-function updateForm(formId, data) {
-	// Update the reactive form data
-	Object.keys(data).forEach((key) => {
-		formData.value[key] = data[key];
-	});
-	emit('updateForm', formId, data);
-}
-
-function handleSuccess(response) {
-	emit('formSuccess', response);
-}
+defineEmits(['recommendationSaved', 'updateForm']);
 </script>

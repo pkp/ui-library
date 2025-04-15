@@ -2,7 +2,7 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useDate} from '@/composables/useDate';
 import {Actions} from './useReviewerManagerActions';
 
-export function useReviewerManagerConfig(recommendations) {
+export function useReviewerManagerConfig({recommendations}) {
 	const {t, localize} = useLocalize();
 	const {formatShortDate} = useDate();
 
