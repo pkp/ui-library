@@ -77,7 +77,8 @@ export default {
 								drawBorder: false
 							},
 							ticks: {
-								fontColor: 'rgba(255,255,255,0.85)'
+								fontColor: 'rgba(255,255,255,0.85)',
+								beginAtZero: true
 							}
 						}
 					]
