@@ -157,6 +157,15 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 			);
 		}
 
+		if (publicationSettings.supportsDataCitations) {
+			items.push(
+				getPublicationItem({
+					name: 'dataCitations',
+					label: t('submission.dataCitations'),
+				}),
+			);
+		}
+
 		return items;
 	}
 
@@ -214,6 +223,15 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 					publicationId,
 					name: 'citations',
 					label: t('submission.citations'),
+				}),
+			);
+		}
+
+		if (publicationSettings.supportsDataCitations) {
+			items.push(
+				getPublicationItem({
+					name: 'dataCitations',
+					label: t('submission.dataCitations'),
 				}),
 			);
 		}

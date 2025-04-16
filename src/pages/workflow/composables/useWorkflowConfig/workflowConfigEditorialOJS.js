@@ -933,6 +933,26 @@ export const PublicationConfig = {
 			];
 		},
 	},
+	dataCitations: {
+		getPrimaryItems: ({
+			submission,
+			selectedPublication,
+			pageInitConfig,
+			permissions,
+		}) => {
+			return [
+				{
+					component: 'WorkflowPublicationForm',
+					props: {
+						formName: 'dataCitation',
+						submission,
+						publication: selectedPublication,
+						canEdit: permissions.canEditPublication,
+					},
+				},
+			];
+		},
+	},
 	identifiers: {
 		getPrimaryItems: ({
 			submission,

@@ -197,6 +197,15 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 			);
 		}
 
+		if (publicationSettings.supportsDataCitations) {
+			items.push(
+				getPublicationItem({
+					name: 'dataCitations',
+					label: t('submission.dataCitations'),
+				}),
+			);
+		}
+
 		items.push(
 			getPublicationItem({
 				publicationId,
@@ -287,6 +296,15 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 					publicationId,
 					name: 'citations',
 					label: t('submission.citations'),
+				}),
+			);
+		}
+
+		if (publicationSettings.supportsDataCitations) {
+			items.push(
+				getPublicationItem({
+					name: 'dataCitations',
+					label: t('submission.dataCitations'),
 				}),
 			);
 		}
