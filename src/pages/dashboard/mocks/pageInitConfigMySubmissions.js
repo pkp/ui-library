@@ -288,6 +288,7 @@ export default {
 	],
 	publicationSettings: {
 		supportsCitations: true,
+		supportsDataCitations: true,
 		identifiersEnabled: true,
 		submissionPaymentsEnabled: true,
 	},

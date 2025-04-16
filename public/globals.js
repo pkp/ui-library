@@ -1068,6 +1068,7 @@ window.pkp = {
 			'Search references here',
 		'submission.contributors': 'List of Contributors',
 		'submission.copyediting': 'Copyediting',
+		'submission.dataCitations': 'Data Citations',
 		'submission.files': 'Files',
 		'submission.files.downloadAll': 'Download All Files',
 		'submission.finalDraft': 'Draft Files',
