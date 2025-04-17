@@ -1,6 +1,6 @@
 <template>
 	<div data-cy="reviewer-recommendation-manager">
-		<PkpTable>
+		<PkpTable :show-spinner="store.isRecommendationsLoading">
 			<template #label>
 				<h3 class="text-3xl-bold">
 					{{ title }}

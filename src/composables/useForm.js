@@ -286,6 +286,14 @@ export function useForm(_form, {customSubmit} = {}) {
 		form.value.action = _action;
 	}
 
+	/**
+	 * Set the form's action URL
+	 * @param {string} _action - The action URL
+	 */
+	function setMethod(_method) {
+		form.value.method = _method;
+	}
+
 	return {
 		set,
 		setValue,
@@ -299,6 +307,7 @@ export function useForm(_form, {customSubmit} = {}) {
 		connectWithErrors,
 		setLocalesForSubmission,
 		setAction,
+		setMethod,
 		structuredErrors,
 	};
 }

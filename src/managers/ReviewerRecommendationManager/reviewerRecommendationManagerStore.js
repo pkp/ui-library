@@ -1,5 +1,5 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
-import {computed, ref} from 'vue';
+import {computed} from 'vue';
 import {useFetch} from '@/composables/useFetch';
 import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
@@ -14,11 +14,13 @@ export const useReviewerRecommendationManagerStore = defineComponentStore(
 	'reviewerRecommendationManager',
 	(props) => {
 		const {apiUrl} = useUrl('reviewers/recommendations');
-		const {data: recommendations, fetch: fetchRecommendations} =
-			useFetch(apiUrl);
-		const {openDialog, openSideModal, closeSideModal} = useModal();
+		const {
+			data: recommendations,
+			fetch: fetchRecommendations,
+			isLoading: isRecommendationsLoading,
+		} = useFetch(apiUrl);
+		const {openDialog, openSideModal} = useModal();
 		const {t, localize} = useLocalize();
-		const currentForm = ref({});
 
 		const items = computed({
 			get: () => recommendations.value?.items || [],
@@ -125,74 +127,50 @@ export const useReviewerRecommendationManagerStore = defineComponentStore(
 			});
 		}
 
-		async function setupRecommendationForm(item = null) {
-			let preparedForm = cloneDeep(props.form);
-
-			if (!item) {
-				// Adding new recommendation
-				preparedForm.action = apiUrl.value;
-				preparedForm.method = 'POST';
-			} else {
-				// Editing existing recommendation
-				preparedForm.action = `${apiUrl.value}/${item.id}`;
-				preparedForm.method = 'PUT';
-				preparedForm.fields = preparedForm.fields.map((field) => {
-					const baseField = {...field};
-
-					if (field.isMultilingual) {
-						baseField.value = {};
-						if (item[field.name]) {
-							Object.keys(item[field.name]).forEach((locale) => {
-								baseField.value[locale] = item[field.name][locale];
-							});
-						}
-					} else {
-						baseField.value =
-							item[field.name] !== undefined
-								? item[field.name]
-								: field.value || '';
-					}
-
-					return baseField;
-				});
-			}
-
-			currentForm.value = preparedForm;
-		}
-
-		function openRecommendationFormModal(title) {
-			const {form} = useForm(currentForm);
-			openSideModal(ReviewerRecommendationsEditModal, {
-				title,
-				formProps: form,
-				onRecommendationSaved: recommendationSaved,
-				onUpdateForm: (formId, data) => {
-					Object.keys(data).forEach((key) => {
-						form.value[key] = data[key];
-					});
+		function openRecommendationFormModal(title, form) {
+			openSideModal(
+				ReviewerRecommendationsEditModal,
+				{
+					title,
+					formProps: form,
 				},
-			});
-		}
-
-		async function recommendationSaved(recommendation) {
-			closeSideModal(ReviewerRecommendationsEditModal);
-			await fetchRecommendations();
+				{
+					onClose: async () => {
+						await fetchRecommendations();
+					},
+				},
+			);
 		}
 
 		function handleAdd() {
-			setupRecommendationForm();
-			openRecommendationFormModal(t('grid.action.addReviewerRecommendation'));
+			const newForm = cloneDeep(props.form);
+			const {setAction, setMethod} = useForm(newForm);
+			setAction(apiUrl.value);
+			setMethod('POST');
+
+			openRecommendationFormModal(
+				t('grid.action.addReviewerRecommendation'),
+				newForm,
+			);
 		}
 
 		function handleEdit(item) {
-			setupRecommendationForm(item);
-			openRecommendationFormModal(t('grid.action.editReviewerRecommendation'));
+			const editForm = cloneDeep(props.form);
+			const {setValues, setAction, setMethod} = useForm(editForm);
+			setAction(`${apiUrl.value}/${item.id}`);
+			setMethod('PUT');
+			setValues(item);
+			openRecommendationFormModal(
+				t('grid.action.editReviewerRecommendation'),
+				editForm,
+			);
 		}
 
 		// Initial data fetch
 		fetchRecommendations();
 
 		return {
+			isRecommendationsLoading,
 			items,
 			itemsMax,
 			handleStatusToggle,

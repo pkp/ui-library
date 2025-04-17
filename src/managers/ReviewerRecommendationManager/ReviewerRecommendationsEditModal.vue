@@ -3,15 +3,17 @@
 		<template #title>
 			{{ title }}
 		</template>
-		<SideModalLayoutBasic>
-			<PkpForm
-				ref="editRecommendation"
-				class="recommendations__recommendationForm"
-				v-bind="formProps"
-				@success="(...args) => $emit('recommendationSaved', ...args)"
-				@set="(...args) => $emit('updateForm', ...args)"
-			></PkpForm>
-		</SideModalLayoutBasic>
+		<template #default="{closeModal}">
+			<SideModalLayoutBasic>
+				<PkpForm
+					ref="editRecommendation"
+					class="recommendations__recommendationForm"
+					v-bind="formProps"
+					@success="closeModal()"
+					@set="set"
+				></PkpForm>
+			</SideModalLayoutBasic>
+		</template>
 	</SideModalBody>
 </template>
 
@@ -19,11 +21,12 @@
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
 import PkpForm from '@/components/Form/Form.vue';
+import {useForm} from '@/composables/useForm';
 
-defineProps({
+const props = defineProps({
 	title: {type: String, required: true},
 	formProps: {type: Object, required: true},
 });
 
-defineEmits(['recommendationSaved', 'updateForm']);
+const {set} = useForm(props.formProps);
 </script>

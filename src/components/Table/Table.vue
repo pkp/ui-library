@@ -5,13 +5,17 @@
 			class="flex justify-between border-x border-t border-light bg-secondary p-4"
 		>
 			<div v-if="slots.label || slots.description">
-				<span
-					v-if="slots.label"
-					:id="labelId"
-					class="text-lg-bold text-heading"
-				>
-					<slot name="label" />
-				</span>
+				<div class="flex">
+					<span
+						v-if="slots.label"
+						:id="labelId"
+						class="text-lg-bold text-heading"
+					>
+						<slot name="label" />
+					</span>
+					<Spinner class="ms-2" :class="showSpinner ? '' : 'invisible'" />
+				</div>
+
 				<div
 					v-if="slots.description"
 					:id="descriptionId"
@@ -53,6 +57,7 @@ import {
 	computed,
 	useId,
 } from 'vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
 
 const emit = defineEmits([
 	/**
@@ -76,6 +81,7 @@ const props = defineProps({
 	 * {column: String, direction: String}, use useSorting composable to control sortDescriptor
 	 */
 	sortDescriptor: {type: Object, default: null, required: false},
+	showSpinner: {type: Boolean, default: false},
 });
 
 const {sortDescriptor} = toRefs(props);
