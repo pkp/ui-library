@@ -8,14 +8,17 @@
 			</h3>
 		</template>
 		<template #top-controls>
-			<Search
-				:search-phrase="searchPhrase"
-				:search-label="t('userAccess.search')"
-				@search-phrase-changed="store.setSearchPhrase"
-			/>
+			<div class="flex gap-x-2">
+				<component
+					:is="Components[action.component] || action.component"
+					v-bind="action.props || {}"
+					v-for="(action, i) in store.topItems"
+					:key="i"
+				></component>
+			</div>
 		</template>
 		<TableHeader>
-			<TableColumn v-for="(column, i) in store.getColumns()" :key="i">
+			<TableColumn v-for="(column, i) in store.columns" :key="i">
 				<span :class="column.headerSrOnly ? 'sr-only' : ''">
 					{{ column.header }}
 				</span>
@@ -25,7 +28,7 @@
 			<TableRow v-for="user in store.userList" :key="user.id">
 				<component
 					:is="Components[column.component] || column.component"
-					v-for="(column, i) in store.getColumns()"
+					v-for="(column, i) in store.columns"
 					:key="i"
 					:user="user"
 				></component>
@@ -47,14 +50,13 @@ import TableRow from '@/components/Table/TableRow.vue';
 import {useUserAccessManagerStore} from './UserAccessManagerStore.js';
 import TablePagination from '@/components/Table/TablePagination.vue';
 import {useLocalize} from '@/composables/useLocalize';
-import Search from '@/components/Search/Search.vue';
-import {ref} from 'vue';
 import UserAccessManagerCellStartDate from './UserAccessManagerCellStartDate.vue';
 import UserAccessManagerCellUserGroups from './UserAccessManagerCellUserGroups.vue';
 import UserAccessManagerCellActions from './UserAccessManagerCellActions.vue';
 import UserAccessManagerCellName from './UserAccessManagerCellName.vue';
 import UserAccessManagerCellEmail from './UserAccessManagerCellEmail.vue';
 import UserAccessManagerCellAffiliation from './UserAccessManagerCellAffiliation.vue';
+import UserAccessManagerActionSearch from './UserAccessManagerActionSearch.vue';
 
 const Components = {
 	UserAccessManagerCellStartDate,
@@ -63,9 +65,9 @@ const Components = {
 	UserAccessManagerCellName,
 	UserAccessManagerCellEmail,
 	UserAccessManagerCellAffiliation,
+	UserAccessManagerActionSearch,
 };
 
 const store = useUserAccessManagerStore();
 const {t} = useLocalize();
-const searchPhrase = ref('');
 </script>

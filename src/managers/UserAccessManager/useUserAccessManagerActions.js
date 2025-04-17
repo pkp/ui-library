@@ -3,7 +3,6 @@ import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 import {useModal} from '@/composables/useModal';
 import {useFetch, getCSRFToken} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
-import {useCurrentUser} from '@/composables/useCurrentUser';
 
 export const Actions = {
 	USER_ACCESS_EDIT: 'editUser',
@@ -16,57 +15,6 @@ export const Actions = {
 
 export function useUserAccessManagerActions() {
 	const {t} = useLocalize();
-	const {getCurrentUserId} = useCurrentUser();
-
-	function getItemActions({user}) {
-		const actions = [];
-
-		actions.push({
-			label: t('common.edit'),
-			name: Actions.USER_ACCESS_EDIT,
-			icon: 'Edit',
-		});
-
-		actions.push({
-			label: t('email.email'),
-			icon: 'Email',
-			name: Actions.USER_ACCESS_SEND_MAIL,
-		});
-
-		if (getCurrentUserId() !== user.id) {
-			user.canLoginAs &&
-				actions.push({
-					label: t('grid.user.logInAs'),
-					icon: 'LoginAs',
-					name: Actions.USER_ACCESS_LOGIN_AS,
-				});
-
-			if (user.groups.find((value) => value.dateEnd === null)) {
-				actions.push({
-					label: t('grid.user.remove'),
-					icon: 'Cancel',
-					name: Actions.USER_ACCESS_REMOVE_USER,
-					isWarnable: true,
-				});
-			}
-
-			actions.push({
-				label: user.disabled ? t('grid.user.enable') : t('grid.user.disable'),
-				icon: user.disabled ? 'User' : 'DisableUser',
-				name: Actions.USER_ACCESS_DISABLE_USER,
-				isWarnable: !user.disabled,
-			});
-
-			user.canMergeUsers &&
-				actions.push({
-					label: t('grid.action.mergeUser'),
-					icon: 'MergeUser',
-					name: Actions.USER_ACCESS_MERGE_USER,
-				});
-		}
-
-		return actions;
-	}
 
 	function sendEmail({user}, finishedCallback) {
 		const {openLegacyModal} = useLegacyGridUrl({
@@ -197,6 +145,5 @@ export function useUserAccessManagerActions() {
 		loginAs,
 		removeUser,
 		mergeUser,
-		getItemActions,
 	};
 }
