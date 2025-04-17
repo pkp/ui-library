@@ -3,12 +3,15 @@ import {useUrl} from '@/composables/useUrl';
 import {useAnnouncer} from '@/composables/useAnnouncer';
 import {useLocalize} from '@/composables/useLocalize';
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
-import {ref, watch} from 'vue';
+import {ref, watch, computed} from 'vue';
 import {useUserAccessManagerActions} from './useUserAccessManagerActions';
+import {useUserAccessManagerConfig} from './useUserAccessManagerConfig';
+import {useExtender} from '@/composables/useExtender';
 
 export const useUserAccessManagerStore = defineComponentStore(
 	'userAccessManager',
 	() => {
+		const extender = useExtender();
 		const {t} = useLocalize();
 		/** Announcer */
 
@@ -60,52 +63,19 @@ export const useUserAccessManagerStore = defineComponentStore(
 		}
 
 		/**
-		 * User access table columns
-		 * @returns array
+		 * Config
 		 */
-		function getColumns() {
-			const columns = [];
+		const userAccessManagerConfig = extender.addFns(
+			useUserAccessManagerConfig(),
+		);
 
-			columns.push({
-				header: t('userAccess.tableHeader.name'),
-				component: 'UserAccessManagerCellName',
-				props: {},
-			});
+		const columns = computed(() => userAccessManagerConfig.getColumns());
 
-			columns.push({
-				header: t('about.contact.email'),
-				component: 'UserAccessManagerCellEmail',
-				props: {},
-			});
+		const topItems = computed(() => userAccessManagerConfig.getTopItems());
 
-			columns.push({
-				header: t('user.roles'),
-				component: 'UserAccessManagerCellUserGroups',
-				props: {},
-			});
-			columns.push({
-				header: t('userAccess.tableHeader.startDate'),
-				component: 'UserAccessManagerCellStartDate',
-				props: {},
-			});
-			columns.push({
-				header: t('user.affiliation'),
-				component: 'UserAccessManagerCellAffiliation',
-				props: {},
-			});
-
-			columns.push({
-				header: t('common.moreActions'),
-				component: 'UserAccessManagerCellActions',
-				props: {},
-				headerSrOnly: true,
-			});
-
-			return columns;
+		function getItemActions({user}) {
+			return userAccessManagerConfig.getItemActions({user});
 		}
-		/**
-		 * Actions
-		 */
 
 		/*
 		 * redirect to send invitation page
@@ -116,10 +86,6 @@ export const useUserAccessManagerStore = defineComponentStore(
 		}
 
 		const _userAccessActionsFns = useUserAccessManagerActions();
-
-		function getItemActions({user}) {
-			return _userAccessActionsFns.getItemActions({user});
-		}
 
 		function sendEmail({user}) {
 			_userAccessActionsFns.sendEmail({user}, triggerDataChangeCallback);
@@ -143,11 +109,18 @@ export const useUserAccessManagerStore = defineComponentStore(
 
 		return {
 			userAccessCount,
+			userList,
+			/** Configs*/
+			columns,
+			topItems,
+
+			/** Pagination*/
 			setCurrentPage,
 			currentPage,
 			userAccessPagination,
-			userList,
 			isUserAccessLoading,
+
+			/** Actions*/
 			setSearchPhrase,
 			sendEmail,
 			disableUser,
@@ -156,7 +129,9 @@ export const useUserAccessManagerStore = defineComponentStore(
 			loginAs,
 			getItemActions,
 			editUser,
-			getColumns,
+
+			/**refs */
+			searchPhrase,
 		};
 	},
 );
