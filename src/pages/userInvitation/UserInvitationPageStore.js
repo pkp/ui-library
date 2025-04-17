@@ -23,6 +23,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 		const updatedPayload = ref({});
 		const invitationType = ref(pageInitConfig.invitationType);
 		const invitationMode = ref(pageInitConfig.invitationMode);
+		const invitationUserData = ref(pageInitConfig.invitationUserData);
 		const detectChanges = ref(false);
 
 		function updatePayload(fieldName, value, initialValue = true) {
@@ -349,7 +350,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 								},
 							},
 						],
-						modalStyle: 'success',
+						modalStyle: 'primary',
 					});
 				} else {
 					isSubmitting.value = false;
@@ -411,6 +412,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 			updatePayload,
 			registerActionForStepId,
 			emailTemplatesApiUrl,
+			invitationUserData,
 
 			currentStep,
 			currentStepIndex,
