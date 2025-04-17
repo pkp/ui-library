@@ -4,8 +4,8 @@
 			heading-element="h4"
 			:heading="t('user.url')"
 			:value="
-				store.invitationPayload.homePageUrl
-					? store.invitationPayload.homePageUrl
+				store.invitationUserData.homePageUrl
+					? store.invitationUserData.homePageUrl
 					: '--'
 			"
 		></FormDisplayItemBasic>
@@ -14,14 +14,16 @@
 			heading-element="h4"
 			:heading="t('user.phone')"
 			:value="
-				store.invitationPayload.phone ? store.invitationPayload.phone : '--'
+				store.invitationUserData.phone ? store.invitationUserData.phone : '--'
 			"
 		></FormDisplayItemBasic>
 		<FormDisplayItemBasic
 			heading-element="h4"
 			:heading="t('user.workingLanguages')"
 			:value="
-				store.invitationPayload.locales ? store.invitationPayload.locales : '--'
+				store.invitationUserData.locales
+					? store.invitationUserData.locales
+					: '--'
 			"
 		></FormDisplayItemBasic>
 
@@ -29,18 +31,8 @@
 			heading-element="h4"
 			:heading="t('user.interests')"
 			:value="
-				localize(store.invitationPayload.reviewerInterests)
-					? localize(store.invitationPayload.reviewerInterests)
-					: '--'
-			"
-		></FormDisplayItemBasic>
-
-		<FormDisplayItemBasic
-			heading-element="h4"
-			:heading="t('user.affiliation')"
-			:value="
-				localize(store.invitationPayload.affiliation)
-					? localize(store.invitationPayload.affiliation)
+				localize(store.invitationUserData.reviewerInterests)
+					? localize(store.invitationUserData.reviewerInterests)
 					: '--'
 			"
 		></FormDisplayItemBasic>
@@ -48,8 +40,8 @@
 			heading-element="h4"
 			:heading="t('user.bioStatement')"
 			:html-value="
-				localize(store.invitationPayload.biography)
-					? localize(store.invitationPayload.biography)
+				localize(store.invitationUserData.biography)
+					? localize(store.invitationUserData.biography)
 					: '--'
 			"
 		></FormDisplayItemBasic>
@@ -57,8 +49,8 @@
 			heading-element="h4"
 			:heading="t('user.mailingAddress')"
 			:html-value="
-				store.invitationPayload.mailingAddress
-					? store.invitationPayload.mailingAddress
+				store.invitationUserData.mailingAddress
+					? store.invitationUserData.mailingAddress
 					: '--'
 			"
 		></FormDisplayItemBasic>
@@ -66,8 +58,8 @@
 			heading-element="h4"
 			:heading="t('user.signature')"
 			:html-value="
-				localize(store.invitationPayload.signature)
-					? localize(store.invitationPayload.signature)
+				localize(store.invitationUserData.signature)
+					? localize(store.invitationUserData.signature)
 					: '--'
 			"
 		></FormDisplayItemBasic>

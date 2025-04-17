@@ -1,6 +1,6 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
-import {useUrl} from '@/composables/useUrl';
 import {useAnnouncer} from '@/composables/useAnnouncer';
+import {useUrl} from '@/composables/useUrl';
 import {useLocalize} from '@/composables/useLocalize';
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useFetch} from '@/composables/useFetch';
@@ -21,9 +21,9 @@ export const useUserInvitationManagerStore = defineComponentStore(
 		/**
 		 * redirect to send invitation page
 		 */
-		const {pageUrl: sendInvitationPageUrl} = useUrl('invitation/invite');
+		const {redirectToPage} = useUrl('invitation/create/userRoleAssignment');
 		function createNewInvitation() {
-			window.location = sendInvitationPageUrl.value;
+			redirectToPage();
 		}
 
 		/**
@@ -81,6 +81,9 @@ export const useUserInvitationManagerStore = defineComponentStore(
 		}
 
 		function handleEditInvitation(invitationObj) {
+			const {redirectToPage: redirectToEditInvitationPage} = useUrl(
+				`invitation/edit/${invitationObj.id}`,
+			);
 			openDialog({
 				title: t('userInvitation.edit.title'),
 				message: t('userInvitation.edit.message'),
@@ -89,8 +92,7 @@ export const useUserInvitationManagerStore = defineComponentStore(
 						label: t('userInvitation.edit.title'),
 						isPrimary: true,
 						callback: async (close) => {
-							window.location =
-								sendInvitationPageUrl.value + '/' + invitationObj.id;
+							redirectToEditInvitationPage();
 						},
 					},
 					{
@@ -132,7 +134,7 @@ export const useUserInvitationManagerStore = defineComponentStore(
 				actions: [
 					{
 						label: t('invitation.cancelInvite.title'),
-						isPrimary: true,
+						isWarnable: true,
 						callback: async (close) => {
 							const {apiUrl: cancelApiUrl} = useUrl(
 								`invitations/${invitationObj.id}/cancel`,
