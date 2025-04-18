@@ -1,9 +1,9 @@
-<!-- file: WorkflowPublicationEditDisbabled.vue -->
+<!-- file: WorkflowPublicationEditWarning.vue -->
 <template>
 	<div
 		class="bg -mx-5 -mt-5 bg-attention p-5 text-center text-base-normal text-on-dark"
 	>
-		{{ t('publication.editDisabled') }}
+		{{ t('publication.editorEditWarning') }}
 	</div>
 </template>
 
