@@ -59,6 +59,8 @@ import FieldAffiliations from './fields/FieldAffiliations.vue';
 import FieldArchivingPn from './fields/FieldArchivingPn.vue';
 import FieldAutosuggestPreset from './fields/FieldAutosuggestPreset.vue';
 import FieldBaseAutosuggest from './fields/FieldBaseAutosuggest.vue';
+import FieldCitationAuthors from './fields/FieldCitationAuthors.vue';
+import FieldCitations from "./fields/FieldCitations.vue";
 import FieldColor from './fields/FieldColor.vue';
 import FieldControlledVocab from './fields/FieldControlledVocab.vue';
 import FieldPubId from './fields/FieldPubId.vue';
@@ -91,6 +93,8 @@ export default {
 		FieldArchivingPn,
 		FieldAutosuggestPreset,
 		FieldBaseAutosuggest,
+		FieldCitationAuthors,
+		FieldCitations,
 		FieldColor,
 		FieldControlledVocab,
 		FieldPubId,

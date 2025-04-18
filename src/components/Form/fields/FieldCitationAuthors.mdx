@@ -1,0 +1,17 @@
+import {Primary, Controls, Stories, Meta, ArgTypes} from '@storybook/blocks';
+
+import * as FieldCitationAuthorsStories from './FieldCitationAuthors.stories.js';
+
+<Meta of={FieldCitationAuthorsStories} />
+
+# FieldCitationAuthors
+
+## Usage
+
+A special component to maintain authors of a citation of publications.
+
+The `value` is an array of Author objects `{ displayName, givenName, familyName, orcid, wikidata, openAlex }`.
+
+<Primary />
+<Controls />
+<Stories />

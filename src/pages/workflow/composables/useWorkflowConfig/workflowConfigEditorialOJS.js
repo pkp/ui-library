@@ -913,6 +913,7 @@ export const PublicationConfig = {
 						submission,
 						publication: selectedPublication,
 						canEdit: permissions.canEditPublication,
+						// citationEditForm: pageInitConfig.componentForms.citationEditForm
 					},
 				},
 			];
