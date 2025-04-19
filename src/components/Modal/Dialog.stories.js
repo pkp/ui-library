@@ -114,7 +114,7 @@ const CustomActionDialogBodyComponent = {
 		const inputValue = ref('');
 		const isLoading = ref(false);
 
-		function doSomething() {
+		function confirmInput() {
 			if (inputValue.value !== 'Confirm') {
 				alert('Please type "Confirm" to proceed.');
 				return;
@@ -133,7 +133,7 @@ const CustomActionDialogBodyComponent = {
 			props.onClose?.();
 		}
 
-		return {doSomething, closeModal, inputValue, isLoading};
+		return {confirmInput, closeModal, inputValue, isLoading};
 	},
 	template: `
 		<PkpDialogBody>
@@ -143,11 +143,11 @@ const CustomActionDialogBodyComponent = {
 					<span>Please type "<b>Confirm</b>" to continue:</span>
 					<FieldText  :value="inputValue" @input="inputValue = $event.target.value" />
 					<div class="flex gap-x-4 mt-6">
-						<PkpButton @click="doSomething" :is-warnable="true">Confirm</PkpButton>
+						<PkpButton @click="confirmInput" :is-warnable="true">Confirm</PkpButton>
 						<PkpButton @click="closeModal">Cancel</PkpButton>
 						<Spinner v-if="isLoading" />
 					</div>
-				<div>
+				</div>
 			</template>
 		</PkpDialogBody>
     `,
