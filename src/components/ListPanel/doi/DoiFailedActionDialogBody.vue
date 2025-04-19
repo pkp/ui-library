@@ -1,14 +1,18 @@
 <template>
-	<p>{{ t('manager.dois.update.partialFailure') }}</p>
-	<ul class="list-inside list-disc">
-		<li v-for="(errorMessage, index) in failedDoiActions" :key="index">
-			{{ errorMessage }}
-		</li>
-	</ul>
+	<PkpDialogBody>
+		<p>{{ t('manager.dois.update.partialFailure') }}</p>
+		<ul class="list-inside list-disc">
+			<li v-for="(errorMessage, index) in failedDoiActions" :key="index">
+				{{ errorMessage }}
+			</li>
+		</ul>
+	</PkpDialogBody>
 </template>
 
 <script setup>
+import PkpDialogBody from '@/components/Modal/DialogBody.vue';
 import {useLocalize} from '@/composables/useLocalize';
+
 defineProps({
 	failedDoiActions: {type: Array, required: true},
 });
