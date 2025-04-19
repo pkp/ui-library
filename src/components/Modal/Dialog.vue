@@ -54,34 +54,21 @@
 									<span class="px-4">{{ title }}</span>
 								</DialogTitle>
 							</div>
-							<div class="modal-content" :class="icon ? 'px-24' : 'pt- px-12'">
-								<div v-strip-unsafe-html="message" />
+							<slot>
 								<component
 									:is="bodyComponent"
 									v-if="bodyComponent"
-									v-bind="bodyProps"
+									v-bind="{...bodyProps, actions, message, onClose}"
+									:has-icon="!!icon"
+									@has-actions="hasActionsFromSlot = $event"
 								/>
-							</div>
-							<div
-								class="flex items-center gap-x-4"
-								:class="icon ? 'p-10 ps-24' : 'p-12'"
-							>
-								<PkpButton
-									v-for="action in actions"
-									:key="action.label"
-									:element="action.element || 'button'"
-									:href="action.href || null"
-									:is-primary="action.isPrimary || null"
-									:is-warnable="action.isWarnable || null"
-									:is-disabled="isLoading"
-									@click="
-										action.callback ? fireCallback(action.callback) : null
-									"
-								>
-									{{ action.label }}
-								</PkpButton>
-								<Spinner v-if="isLoading" />
-							</div>
+								<DialogBody
+									v-else
+									v-bind="{...props, onClose}"
+									:has-icon="!!icon"
+									@has-actions="hasActionsFromSlot = $event"
+								></DialogBody>
+							</slot>
 						</DialogPanel>
 					</TransitionChild>
 				</div>
@@ -91,9 +78,8 @@
 </template>
 
 <script setup>
-import {ref, computed} from 'vue';
-import PkpButton from '@/components/Button/Button.vue';
-import Spinner from '@/components/Spinner/Spinner.vue';
+import {computed, ref} from 'vue';
+import DialogBody from './DialogBody.vue';
 
 import {
 	Dialog as HLDialog,
@@ -134,6 +120,8 @@ const props = defineProps({
 	},
 });
 
+const hasActionsFromSlot = ref(false);
+
 const styles = computed(() => ({
 	'relative mx-3 w-10/12 max-w-3xl transform overflow-hidden rounded bg-secondary text-start shadow transition-all sm:my-8': true,
 	'border-none': props.modalStyle === 'basic',
@@ -159,11 +147,11 @@ const iconStyles = computed(() => ({
 	'bg-negative': props.modalStyle === 'negative',
 }));
 
-const noActions = computed(() => !props.actions?.length);
+const noActions = computed(
+	() => !props.actions?.length && !hasActionsFromSlot.value,
+);
 
 const emit = defineEmits(['close']);
-
-const isLoading = ref(false);
 
 function onClose(triggerOrigin) {
 	// Prevent closing the modal on outside clicks or "Esc" key presses if isDismissible is false
@@ -176,14 +164,5 @@ function onClose(triggerOrigin) {
 	}
 
 	emit('close');
-}
-
-function fireCallback(callback) {
-	isLoading.value = true;
-	if (typeof callback === 'function') {
-		callback(() => {
-			onClose();
-		});
-	}
 }
 </script>
