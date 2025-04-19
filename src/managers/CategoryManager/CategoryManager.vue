@@ -6,43 +6,13 @@
 					<span>{{ t('grid.category.categories') }}</span>
 				</div>
 				<div class="flex flex-row items-center gap-x-3">
-					<template v-if="categoryManagerStore.isOrdering">
-						<PkpButton
-							class="category__manager__saveOrder"
-							:is-active="categoryManagerStore.isOrdering"
-							:disabled="categoryManagerStore.isLoading"
-							@click="categoryManagerStore.saveOrdering"
-						>
-							{{ t('common.saveOrdering') }}
-						</PkpButton>
-						<PkpButton
-							class="category__manager__cancelOrder"
-							:is-warnable="true"
-							@click="categoryManagerStore.cancelOrdering"
-						>
-							{{ t('common.cancel') }}
-						</PkpButton>
-					</template>
-					<template v-else>
-						<PkpButton
-							class="category__manager__order"
-							:disabled="
-								categoryManagerStore.isLoading ||
-								!categoryManagerStore.categories.length
-							"
-							@click="categoryManagerStore.initOrdering"
-						>
-							{{ t('common.order') }}
-						</PkpButton>
-						<PkpButton
-							v-if="!categoryManagerStore.isOrdering"
-							class="category__manager__addCategory"
-							:disabled="categoryManagerStore.isLoading"
-							@click="categoryManagerStore.handleItemAction('categoryAdd')"
-						>
-							{{ t('grid.category.add') }}
-						</PkpButton>
-					</template>
+					<PkpButton
+						class="category__manager__addCategory"
+						:disabled="categoryManagerStore.isLoading"
+						@click="categoryManagerStore.handleItemAction('categoryAdd')"
+					>
+						{{ t('grid.category.add') }}
+					</PkpButton>
 				</div>
 			</div>
 		</div>
@@ -100,50 +70,37 @@
 							</span>
 						</TableCell>
 						<TableCell :style="{'padding-right': `${item.level + 1}rem`}">
-							<template
-								v-if="categoryManagerStore.isOrdering && !item.value.parentId"
+							<div
+								class="category__manager__table_row_actions flex cursor-pointer justify-end gap-4"
 							>
-								<Orderer
-									:item-id="item.value.id"
-									:item-title="item.value.title[primaryLocale]"
-									:is-draggable="false"
-									@up="categoryManagerStore.itemOrderUp(item.value)"
-									@down="categoryManagerStore.itemOrderDown(item.value)"
+								<DropdownActions
+									:label="t('common.moreActions')"
+									button-variant="ellipsis"
+									:actions="categoryManagerStore.getItemActions()"
+									@action="
+										(actionName) =>
+											categoryManagerStore.handleItemAction(
+												actionName,
+												item.value,
+											)
+									"
 								/>
-							</template>
-							<template v-if="!categoryManagerStore.isOrdering">
-								<div
-									class="category__manager__table_row_actions flex cursor-pointer justify-end gap-4"
+								<span
+									v-if="item.hasChildren"
+									@click="
+										categoryManagerStore.toggleItemExpansion(item.value.id)
+									"
 								>
-									<DropdownActions
-										:label="t('common.moreActions')"
-										button-variant="ellipsis"
-										:actions="categoryManagerStore.getItemActions()"
-										@action="
-											(actionName) =>
-												categoryManagerStore.handleItemAction(
-													actionName,
-													item.value,
-												)
+									<Icon
+										:icon="
+											categoryManagerStore.expanded.includes(item.value.id)
+												? 'Dropup'
+												: 'Dropdown'
 										"
+										class="h-6 w-6 text-primary"
 									/>
-									<span
-										v-if="item.hasChildren"
-										@click="
-											categoryManagerStore.toggleItemExpansion(item.value.id)
-										"
-									>
-										<Icon
-											:icon="
-												categoryManagerStore.expanded.includes(item.value.id)
-													? 'Dropup'
-													: 'Dropdown'
-											"
-											class="h-6 w-6 text-primary"
-										/>
-									</span>
-								</div>
-							</template>
+								</span>
+							</div>
 						</TableCell>
 					</TableRow>
 				</TableBody>
@@ -164,7 +121,6 @@ import TableCell from '@/components/Table/TableCell.vue';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 import {useCategoryManagerStore} from './categoryManagerStore.js';
 import PkpButton from '@/components/Button/Button.vue';
-import Orderer from '@/components/Orderer/Orderer.vue';
 
 const props = defineProps({
 	/**
@@ -218,21 +174,3 @@ const props = defineProps({
 
 const categoryManagerStore = useCategoryManagerStore(props);
 </script>
-
-<style lang="less">
-.category__manager__table_row {
-	.orderer__up,
-	.orderer__down {
-		top: unset;
-		height: 1.5rem;
-	}
-
-	.orderer__up {
-		right: 6rem;
-	}
-
-	.orderer__down {
-		right: 2.5rem;
-	}
-}
-</style>
