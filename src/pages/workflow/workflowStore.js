@@ -1,4 +1,4 @@
-import {computed} from 'vue';
+import {computed, watch} from 'vue';
 import {injectFromCurrentInstance} from '@/utils/defineComponentStore';
 
 import {defineComponentStore} from '@/utils/defineComponentStore';
@@ -118,6 +118,18 @@ export const useWorkflowStore = defineComponentStore(
 			workflowNavigationConfig,
 			dashboardPage,
 		});
+
+		watch(
+			() => selectedMenuState.value.publicationId,
+			(newPublicationId) => {
+				if (
+					newPublicationId &&
+					newPublicationId !== selectedPublicationId.value
+				) {
+					selectPublicationId(newPublicationId);
+				}
+			},
+		);
 
 		/**
 		 * Expose workflow actions
