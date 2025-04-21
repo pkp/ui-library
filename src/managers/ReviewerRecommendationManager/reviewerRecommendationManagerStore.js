@@ -3,10 +3,8 @@ import {computed} from 'vue';
 import {useFetch} from '@/composables/useFetch';
 import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
-import {replaceLocaleParams} from '@/utils/i18n.js';
 import {cloneDeep} from 'lodash';
 import ReviewerRecommendationsEditModal from './ReviewerRecommendationsEditModal.vue';
-import {escapeHtml} from '@/directives/stripUnsafeHtml';
 import {useUrl} from '@/composables/useUrl';
 import {useForm} from '@/composables/useForm';
 
@@ -24,11 +22,6 @@ export const useReviewerRecommendationManagerStore = defineComponentStore(
 
 		const items = computed({
 			get: () => recommendations.value?.items || [],
-			set: (newValue) => {
-				if (recommendations.value) {
-					recommendations.value.items = newValue;
-				}
-			},
 		});
 
 		const itemsMax = computed(() => recommendations.value?.itemsMax || 0);
@@ -62,12 +55,12 @@ export const useReviewerRecommendationManagerStore = defineComponentStore(
 				title: newStatus
 					? t('manager.reviewerRecommendations.activate.title')
 					: t('manager.reviewerRecommendations.deactivate.title'),
-				message: replaceLocaleParams(
+				message: t(
 					item.status
-						? t('manager.reviewerRecommendations.confirmDeactivate')
-						: t('manager.reviewerRecommendations.confirmActivate'),
+						? 'manager.reviewerRecommendations.confirmDeactivate'
+						: 'manager.reviewerRecommendations.confirmActivate',
 					{
-						title: escapeHtml(localize(item.title)),
+						title: localize(item.title),
 					},
 				),
 				actions: [
@@ -75,13 +68,11 @@ export const useReviewerRecommendationManagerStore = defineComponentStore(
 						label: t('common.yes'),
 						isPrimary: true,
 						callback: async (close) => {
-							const success = await toggleStatus({
+							await toggleStatus({
 								id: item.id,
 								newStatus,
 							});
-							if (success) {
-								await fetchRecommendations();
-							}
+							await fetchRecommendations();
 							close();
 						},
 					},
@@ -98,23 +89,18 @@ export const useReviewerRecommendationManagerStore = defineComponentStore(
 			openDialog({
 				name: 'delete',
 				title: t('grid.action.deleteReviewerRecommendation'),
-				message: replaceLocaleParams(
-					t('manager.reviewerRecommendations.confirmDelete'),
-					{
-						title: escapeHtml(localize(item.title)),
-					},
-				),
+				message: t('manager.reviewerRecommendations.confirmDelete', {
+					title: localize(item.title),
+				}),
 				actions: [
 					{
 						label: t('common.yes'),
 						isPrimary: true,
 						callback: async (close) => {
-							const success = await deleteRecommendation({
+							await deleteRecommendation({
 								id: item.id,
 							});
-							if (success) {
-								await fetchRecommendations();
-							}
+							await fetchRecommendations();
 							close();
 						},
 					},
