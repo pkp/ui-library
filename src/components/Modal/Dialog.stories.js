@@ -6,6 +6,7 @@ import {within, userEvent} from '@storybook/test';
 import PkpButton from '@/components/Button/Button.vue';
 import FieldText from '@/components/Form/fields/FieldText.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';
+import {useModalStore} from '@/stores/modalStore';
 
 export default {
 	title: 'Components/Dialog',
@@ -111,8 +112,9 @@ export const WithBodyComponent = {
 const CustomActionDialogBodyComponent = {
 	components: {PkpButton, DialogBody, FieldText, Spinner},
 	setup(props) {
+		const modalStore = useModalStore();
+
 		const inputValue = ref('');
-		const isLoading = ref(false);
 
 		function confirmInput() {
 			if (inputValue.value !== 'Confirm') {
@@ -120,10 +122,10 @@ const CustomActionDialogBodyComponent = {
 				return;
 			}
 
-			isLoading.value = true;
+			modalStore.startLoading();
 
 			setTimeout(() => {
-				isLoading.value = false;
+				modalStore.stopLoading();
 				alert('Confirmed!');
 				props.onClose?.();
 			}, 2000);
@@ -133,21 +135,18 @@ const CustomActionDialogBodyComponent = {
 			props.onClose?.();
 		}
 
-		return {confirmInput, closeModal, inputValue, isLoading};
+		return {confirmInput, closeModal, inputValue};
 	},
 	template: `
 		<DialogBody>
 			<p>Are you sure you want to delete?</p>
+			<div class="relative mt-6">
+				<span>Please type "<b>Confirm</b>" to continue:</span>
+				<FieldText  :value="inputValue" @input="inputValue = $event.target.value" />
+			</div>
 			<template #actions>
-				<div class="relative">
-					<span>Please type "<b>Confirm</b>" to continue:</span>
-					<FieldText  :value="inputValue" @input="inputValue = $event.target.value" />
-					<div class="flex gap-x-4 mt-6">
-						<PkpButton @click="confirmInput" :is-warnable="true">Confirm</PkpButton>
-						<PkpButton @click="closeModal">Cancel</PkpButton>
-						<Spinner v-if="isLoading" />
-					</div>
-				</div>
+				<PkpButton @click="confirmInput">Confirm</PkpButton>
+				<PkpButton @click="closeModal" :is-warnable="true">Cancel</PkpButton>
 			</template>
 		</DialogBody>
     `,

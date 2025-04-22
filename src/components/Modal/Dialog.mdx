@@ -30,29 +30,25 @@ The style of the modal can be changed by passing the prop `modalStyle`. It accep
 
 ## Customizing Dialog Actions
 
-The dialog prop actions (e.g., an array[] of buttons like "OK" and "Cancel") can be overridden by passing a component to `bodyComponent` that uses the `PkpDialogBody` wrapper.
+The dialog prop actions (e.g., an array[] of buttons like "OK" and "Cancel") can be overridden by passing a component to `bodyComponent` that uses the `DialogBody` wrapper.
 
 This wrapper provides an `#actions` slot where you can define more complex logic, such as:
 
 - Validation before closing the modal
-- Showing a loading spinner
 - Conditional button states
 
 ```vue
-<PkpDialogBody>
+<DialogBody>
 	<p>Are you sure you want to delete?</p>
+	<div class="relative mt-6">
+		<span>Please type "<b>Confirm</b>" to continue:</span>
+		<FieldText  :value="inputValue" @input="inputValue = $event.target.value" />
+	</div>
 	<template #actions>
-		<div class="relative">
-			<span>Please type "<b>Confirm</b>" to continue:</span>
-			<FieldText  :value="inputValue" @input="inputValue = $event.target.value" />
-			<div class="flex gap-x-4 mt-6">
-				<PkpButton @click="confirmInput" :is-warnable="true">Confirm</PkpButton>
-				<PkpButton @click="closeModal">Cancel</PkpButton>
-				<Spinner v-if="isLoading" />
-			</div>
-		</div>
+		<PkpButton @click="confirmInput">Confirm</PkpButton>
+		<PkpButton @click="closeModal" :is-warnable="true">Cancel</PkpButton>
 	</template>
-</PkpDialogBody>
+</DialogBody>
 ```
 
 ## Accessibility
