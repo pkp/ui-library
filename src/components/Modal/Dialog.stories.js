@@ -1,6 +1,6 @@
 import {ref} from 'vue';
 import PkpDialog from './Dialog.vue';
-import PkpDialogBody from './DialogBody.vue';
+import DialogBody from './DialogBody.vue';
 import {useModal} from '@/composables/useModal.js';
 import {within, userEvent} from '@storybook/test';
 import PkpButton from '@/components/Button/Button.vue';
@@ -11,7 +11,7 @@ export default {
 	title: 'Components/Dialog',
 	component: PkpDialog,
 	render: (args) => ({
-		components: {PkpButton, PkpDialogBody},
+		components: {PkpButton, DialogBody},
 		setup() {
 			const {openDialog} = useModal();
 
@@ -61,16 +61,16 @@ export const DialogBasic = {
 };
 
 const DialogBodyComponent = {
-	components: {PkpDialogBody},
+	components: {DialogBody},
 	template: `
-		<PkpDialogBody>
+		<DialogBody>
 			<p>{{ 'Some DOI(s) could not be updated' }}</p>
 			<ul>
 				<li v-for="errorMessage in failedDoiActions" :key="errorMessage.index">
 					{{ errorMessage }}
 				</li>
 			</ul>
-		</PkpDialogBody>
+		</DialogBody>
     `,
 	props: {
 		failedDoiActions: {type: Array, required: true},
@@ -109,7 +109,7 @@ export const WithBodyComponent = {
 };
 
 const CustomActionDialogBodyComponent = {
-	components: {PkpButton, PkpDialogBody, FieldText, Spinner},
+	components: {PkpButton, DialogBody, FieldText, Spinner},
 	setup(props) {
 		const inputValue = ref('');
 		const isLoading = ref(false);
@@ -136,7 +136,7 @@ const CustomActionDialogBodyComponent = {
 		return {confirmInput, closeModal, inputValue, isLoading};
 	},
 	template: `
-		<PkpDialogBody>
+		<DialogBody>
 			<p>Are you sure you want to delete?</p>
 			<template #actions>
 				<div class="relative">
@@ -149,7 +149,7 @@ const CustomActionDialogBodyComponent = {
 					</div>
 				</div>
 			</template>
-		</PkpDialogBody>
+		</DialogBody>
     `,
 	props: {
 		failedDoiActions: {type: Array, required: true},
@@ -261,9 +261,9 @@ export const DialogComplex = {
 };
 
 const ErrorBodyComponent = {
-	components: {PkpDialogBody},
+	components: {DialogBody},
 	template: `
-		<PkpDialogBody>
+		<DialogBody>
 			<span>Cancelling the invitation sent to Emma Stone will deactivate the acceptance link sent to her via email. Here are the invitation details:</span>
 			<ul class="list-disc ms-7">
 				<li>
@@ -279,7 +279,7 @@ const ErrorBodyComponent = {
 					<strong>Affiliate:</strong> Stanford University
 				</li>
 			</ul>
-		</PkpDialogBody>
+		</DialogBody>
     `,
 	props: {
 		failedDoiActions: {type: Array, required: true},

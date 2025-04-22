@@ -1,5 +1,5 @@
 <template>
-	<PkpDialogBody>
+	<DialogBody>
 		<p>{{ message }}</p>
 		<div class="px-8">
 			<ul role="list" class="list-disc">
@@ -23,11 +23,11 @@
 				</li>
 			</ul>
 		</div>
-	</PkpDialogBody>
+	</DialogBody>
 </template>
 
 <script setup>
-import PkpDialogBody from '@/components/Modal/DialogBody.vue';
+import DialogBody from '@/components/Modal/DialogBody.vue';
 import {useLocalize} from '@/composables/useLocalize';
 
 defineProps({

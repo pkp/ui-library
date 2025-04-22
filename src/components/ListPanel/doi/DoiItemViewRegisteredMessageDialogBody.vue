@@ -1,12 +1,12 @@
 <template>
-	<PkpDialogBody>
+	<DialogBody>
 		<p>{{ registeredMessageAgencyPreamble }}</p>
 		<p>{{ registeredMessage }}</p>
-	</PkpDialogBody>
+	</DialogBody>
 </template>
 
 <script setup>
-import PkpDialogBody from '@/components/Modal/DialogBody.vue';
+import DialogBody from '@/components/Modal/DialogBody.vue';
 
 defineProps({
 	registeredMessageAgencyPreamble: {type: String, required: true},
