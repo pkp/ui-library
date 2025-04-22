@@ -29,7 +29,7 @@
 					>
 						<DialogPanel data-cy="dialog" :class="styles">
 							<button
-								v-if="noActions"
+								v-if="shouldShowCloseButton"
 								class="absolute right-3 top-3 cursor-pointer bg-transparent"
 								@click="onClose"
 							>
@@ -60,13 +60,11 @@
 									v-if="bodyComponent"
 									v-bind="{...bodyProps, actions, message, onClose}"
 									:has-icon="!!icon"
-									@has-actions="hasActionsFromSlot = $event"
 								/>
 								<DialogBody
 									v-else
 									v-bind="{...props, onClose}"
 									:has-icon="!!icon"
-									@has-actions="hasActionsFromSlot = $event"
 								></DialogBody>
 							</slot>
 						</DialogPanel>
@@ -78,7 +76,7 @@
 </template>
 
 <script setup>
-import {computed, ref} from 'vue';
+import {computed} from 'vue';
 import DialogBody from './DialogBody.vue';
 
 import {
@@ -118,9 +116,21 @@ const props = defineProps({
 		type: Boolean,
 		default: () => true,
 	},
+	/** Defines if the close button (x) should be shown */
+	/** If not set, the close button will be shown if there are no actions */
+	showCloseButton: {
+		type: Boolean,
+		default: undefined,
+	},
 });
 
-const hasActionsFromSlot = ref(false);
+const shouldShowCloseButton = computed(() => {
+	if (props.showCloseButton !== undefined) {
+		return props.showCloseButton;
+	}
+
+	return !props.actions?.length;
+});
 
 const styles = computed(() => ({
 	'relative mx-3 w-10/12 max-w-3xl transform overflow-hidden rounded bg-secondary text-start shadow transition-all sm:my-8': true,
@@ -146,10 +156,6 @@ const iconStyles = computed(() => ({
 	'bg-success': props.modalStyle === 'success',
 	'bg-negative': props.modalStyle === 'negative',
 }));
-
-const noActions = computed(
-	() => !props.actions?.length && !hasActionsFromSlot.value,
-);
 
 const emit = defineEmits(['close']);
 

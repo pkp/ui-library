@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import {ref, useSlots, onMounted} from 'vue';
+import {ref} from 'vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';
 
@@ -45,9 +45,6 @@ const props = defineProps({
 	},
 });
 
-const slots = useSlots();
-const emit = defineEmits(['has-actions']);
-
 const isLoading = ref(false);
 
 function fireCallback(callback) {
@@ -58,10 +55,4 @@ function fireCallback(callback) {
 		});
 	}
 }
-
-onMounted(() => {
-	if (slots.actions) {
-		emit('has-actions', true);
-	}
-});
 </script>
