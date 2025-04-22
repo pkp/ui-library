@@ -165,6 +165,7 @@ export const WithCustomActions = {
 		close: () => {
 			// dialog has been closed
 		},
+		showCloseButton: false,
 	},
 	play: async ({canvasElement}) => {
 		// Assigns canvas to the component root element
