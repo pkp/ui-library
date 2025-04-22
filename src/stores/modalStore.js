@@ -39,6 +39,7 @@ export const useModalStore = defineStore('modal', () => {
 		}
 		dialogProps.value = {};
 		dialogOpened.value = false;
+		stopLoading();
 	}
 
 	/** Default network error */
@@ -60,6 +61,20 @@ export const useModalStore = defineStore('modal', () => {
 			],
 			modalStyle: 'negative',
 		});
+	}
+
+	/**
+	 * Loading state for the dialog
+	 * @type {Ref<boolean>}
+	 */
+	const isDialogLoading = ref(false);
+
+	function startLoading() {
+		isDialogLoading.value = true;
+	}
+
+	function stopLoading() {
+		isDialogLoading.value = false;
 	}
 
 	/**
@@ -251,6 +266,12 @@ export const useModalStore = defineStore('modal', () => {
 		/** opening dialog */
 		dialogProps,
 		dialogOpened,
+
+		/** dialog loading state */
+		isDialogLoading,
+		startLoading,
+		stopLoading,
+
 		openDialogNetworkError,
 		openDialog,
 		closeDialog,
