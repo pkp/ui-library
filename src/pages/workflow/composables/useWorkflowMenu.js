@@ -13,6 +13,8 @@ export function useWorkflowMenu({
 		setExpandedKeys,
 		setActiveItemKey,
 		selectedItem: selectedMenuItem,
+		expandedKeys,
+		updateExpandedKeys,
 	} = useSideMenu(menuItems);
 
 	/**
@@ -26,6 +28,7 @@ export function useWorkflowMenu({
 	 * secondaryMenuItem: name of publication/marketing submenu
 	 * stageId: applicable when primaryMenuItem is workflow
 	 * reviewRoundId: applicable when reviewRound is selected
+	 * publicationId: applicable when primaryMenuItem is publication
 	 */
 	const selectedMenuState = computed(() => {
 		const state = selectedMenuItem.value?.state || {};
@@ -50,6 +53,14 @@ export function useWorkflowMenu({
 	watch(submission, (newSubmission, oldSubmission) => {
 		// Once the submission is fetched, select relevant stage in navigation
 		if (!oldSubmission && newSubmission) {
+			// Update expandedKeys for publication menu
+			if (newSubmission?.currentPublicationId) {
+				updateExpandedKeys({
+					...expandedKeys.value,
+					[`publication_${newSubmission.currentPublicationId}`]: true,
+				});
+			}
+
 			// use the menu selection from the url, if it does exist, otherwise fallback
 			if (queryParamsUrl?.workflowMenuKey?.length) {
 				const doesKeyExist = navigateToMenu(queryParamsUrl?.workflowMenuKey);
