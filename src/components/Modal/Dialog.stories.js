@@ -6,7 +6,6 @@ import {within, userEvent} from '@storybook/test';
 import PkpButton from '@/components/Button/Button.vue';
 import FieldText from '@/components/Form/fields/FieldText.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';
-import {useModalStore} from '@/stores/modalStore';
 
 export default {
 	title: 'Components/Dialog',
@@ -112,9 +111,8 @@ export const WithBodyComponent = {
 const CustomActionDialogBodyComponent = {
 	components: {PkpButton, DialogBody, FieldText, Spinner},
 	setup(props) {
-		const modalStore = useModalStore();
-
 		const inputValue = ref('');
+		const isLoading = ref(false);
 
 		function confirmInput() {
 			if (inputValue.value !== 'Confirm') {
@@ -122,10 +120,10 @@ const CustomActionDialogBodyComponent = {
 				return;
 			}
 
-			modalStore.startLoading();
+			isLoading.value = true;
 
 			setTimeout(() => {
-				modalStore.stopLoading();
+				isLoading.value = false;
 				alert('Confirmed!');
 				props.onClose?.();
 			}, 2000);
@@ -135,10 +133,10 @@ const CustomActionDialogBodyComponent = {
 			props.onClose?.();
 		}
 
-		return {confirmInput, closeModal, inputValue};
+		return {confirmInput, closeModal, inputValue, isLoading};
 	},
 	template: `
-		<DialogBody>
+		<DialogBody :is-loading="isLoading">
 			<p>Are you sure you want to delete?</p>
 			<div class="relative mt-6">
 				<span>Please type "<b>Confirm</b>" to continue:</span>

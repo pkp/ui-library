@@ -24,11 +24,12 @@
 			</PkpButton>
 		</slot>
 
-		<Spinner v-if="modalStore.isDialogLoading" />
+		<Spinner v-if="isLoading || isDialogLoading" />
 	</div>
 </template>
 
 <script setup>
+import {ref} from 'vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';
 
@@ -43,13 +44,17 @@ const props = defineProps({
 		type: Function,
 		default: () => () => {},
 	},
+	isLoading: {
+		type: Boolean,
+		default: false,
+	},
 });
 
-import {useModalStore} from '@/stores/modalStore';
-const modalStore = useModalStore();
+// for components that doesn't manually handle loading state
+const isDialogLoading = ref(props.isLoading);
 
 function fireCallback(callback) {
-	modalStore.startLoading();
+	isDialogLoading.value = true;
 	if (typeof callback === 'function') {
 		callback(() => {
 			props.onClose?.();
