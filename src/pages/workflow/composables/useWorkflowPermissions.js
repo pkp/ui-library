@@ -49,6 +49,16 @@ export function useWorkflowPermissions({submission, selectedPublication}) {
 		});
 
 		canEditPublication = submission.value.canCurrentUserChangeMetadata;
+		const isAuthor = hasIntersection(activeStage.currentUserAssignedRoles, [
+			pkp.const.ROLE_ID_AUTHOR,
+		]);
+		const pub = selectedPublication.value
+			? selectedPublication.value
+			: submission.value.currentPublication;
+
+		if (isAuthor && pub?.status === pkp.const.STATUS_PUBLISHED) {
+			canEditPublication = false;
+		}
 
 		if (
 			hasIntersection(activeStage.currentUserAssignedRoles, [...EditorialRoles])
