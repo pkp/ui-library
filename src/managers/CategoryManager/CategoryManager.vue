@@ -17,116 +17,44 @@
 			</div>
 		</div>
 
-		<!--Reka UI Tree component: https://reka-ui.com/docs/components/tree-->
-		<TreeRoot
-			v-slot="{flattenItems}"
-			class="pt-2"
-			:items="categoryManagerStore.categories"
-			:get-key="(item) => item.id"
-			:expanded="categoryManagerStore.expanded"
-			:get-children="
-				(item) => (item.subCategories ? item.subCategories : undefined)
-			"
-		>
-			<PkpTable>
-				<TableHeader>
-					<TableColumn
-						v-for="column in categoryManagerStore.columns"
-						:id="column.name"
-						:key="column.name"
-					>
-						{{ column.label }}
-					</TableColumn>
-					<TableColumn class="empty__action__column"></TableColumn>
-				</TableHeader>
+		<PkpTable>
+			<TableHeader>
+				<TableColumn
+					v-for="column in categoryManagerStore.columns"
+					:id="column.name"
+					:key="column.name"
+				>
+					{{ column.label }}
+				</TableColumn>
+				<TableColumn class="empty__action__column"></TableColumn>
+			</TableHeader>
 
-				<TableBody>
-					<TableRow
-						v-for="item in flattenItems"
-						:key="item.key"
-						class="category__manager__table_row"
-					>
-						<TableCell>
-							<TreeItem
-								:key="item.value.id"
-								:style="{'padding-left': `${item.level - 0.9}rem`}"
-								v-bind="item.bind"
-								class="my-0.5 items-center px-2"
-								:class="{'font-bold': item.level <= 2}"
-							>
-								<div class="bg-blue-100 py-1 pl-2">
-									{{ item.value.title[primaryLocale] }}
-								</div>
-							</TreeItem>
-						</TableCell>
-
-						<TableCell>
-							<span class="category__manager__assigendEditors">
-								{{
-									item.value.assignedEditors
-										.map((editor) => editor.name)
-										.join(', ')
-								}}
-							</span>
-						</TableCell>
-						<TableCell :style="{'padding-right': `${item.level + 1}rem`}">
-							<div
-								class="category__manager__table_row_actions flex cursor-pointer justify-end gap-4"
-							>
-								<DropdownActions
-									:label="t('common.moreActions')"
-									button-variant="ellipsis"
-									:actions="categoryManagerStore.getItemActions()"
-									@action="
-										(actionName) =>
-											categoryManagerStore.handleItemAction(
-												actionName,
-												item.value,
-											)
-									"
-								/>
-								<span
-									v-if="item.hasChildren"
-									@click="
-										categoryManagerStore.toggleItemExpansion(item.value.id)
-									"
-								>
-									<Icon
-										:icon="
-											categoryManagerStore.expanded.includes(item.value.id)
-												? 'Dropup'
-												: 'Dropdown'
-										"
-										class="h-6 w-6 text-primary"
-									/>
-								</span>
-							</div>
-						</TableCell>
-					</TableRow>
-				</TableBody>
-			</PkpTable>
-		</TreeRoot>
+			<TableBody>
+				<CategoryTreeRow
+					v-for="category in categoryManagerStore.categories"
+					:key="category.id"
+					:category="category"
+				/>
+			</TableBody>
+		</PkpTable>
 	</div>
 </template>
 
 <script setup>
-import {TreeItem, TreeRoot} from 'reka-ui';
-import Icon from '@/components/Icon/Icon.vue';
 import PkpTable from '@/components/Table/Table.vue';
 import TableHeader from '@/components/Table/TableHeader.vue';
 import TableColumn from '@/components/Table/TableColumn.vue';
 import TableBody from '@/components/Table/TableBody.vue';
-import TableRow from '@/components/Table/TableRow.vue';
-import TableCell from '@/components/Table/TableCell.vue';
-import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 import {useCategoryManagerStore} from './categoryManagerStore.js';
 import PkpButton from '@/components/Button/Button.vue';
+import CategoryTreeRow from '@/managers/CategoryManager/CategoryTreeRow.vue';
 
 const props = defineProps({
 	/**
 	 * An Array of category objects to display.
 	 * Each object should contain
 	 * - `title` (object, required): The title of the category, by locale.
+	 * - `localizedTitle` (string, required): The localized title of the category.
 	 * - `id` (number, required): Unique category ID.
 	 * - `path` (string, required): The path identifier for the category
 	 * - `assignedEditors` (array, optional): Editorial users assigned to category.
@@ -147,13 +75,6 @@ const props = defineProps({
 				return hasTitle && hasId && hasPath;
 			});
 		},
-	},
-	/**
-	 * The locale to use when displaying multilingual text.
-	 */
-	primaryLocale: {
-		type: String,
-		required: true,
 	},
 	/**
 	 * An array of objects representing columns in the table displayed in this component.
