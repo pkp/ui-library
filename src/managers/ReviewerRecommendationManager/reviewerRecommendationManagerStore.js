@@ -12,22 +12,23 @@ export const useReviewerRecommendationManagerStore = defineComponentStore(
 	'reviewerRecommendationManager',
 	(props) => {
 		const {apiUrl} = useUrl('reviewers/recommendations');
+		const {openDialog, openSideModal} = useModal();
+		const {t, localize} = useLocalize();
+
 		const {
 			data: recommendations,
 			fetch: fetchRecommendations,
 			isLoading: isRecommendationsLoading,
 		} = useFetch(apiUrl);
-		const {openDialog, openSideModal} = useModal();
-		const {t, localize} = useLocalize();
 
-		const items = computed({
-			get: () => recommendations.value?.items || [],
-		});
+		// Initial data fetch
+		fetchRecommendations();
 
+		const items = computed(() => recommendations.value?.items || []);
 		const itemsMax = computed(() => recommendations.value?.itemsMax || 0);
 
 		async function toggleStatus({id, newStatus}) {
-			const {isSuccess, fetch} = useFetch(`${apiUrl.value}/${id}/status`, {
+			const {fetch} = useFetch(`${apiUrl.value}/${id}/status`, {
 				method: 'PUT',
 				body: {
 					status: Number(newStatus),
@@ -35,34 +36,30 @@ export const useReviewerRecommendationManagerStore = defineComponentStore(
 			});
 
 			await fetch();
-			return isSuccess.value;
 		}
 
 		async function deleteRecommendation({id}) {
-			const {isSuccess, fetch} = useFetch(`${apiUrl.value}/${id}`, {
+			const {fetch} = useFetch(`${apiUrl.value}/${id}`, {
 				method: 'DELETE',
 			});
 
 			await fetch();
-			return isSuccess.value;
 		}
 
 		async function handleStatusToggle(item, event) {
 			const newStatus = !item.status;
 
 			openDialog({
-				name: 'edit',
 				title: newStatus
 					? t('manager.reviewerRecommendations.activate.title')
 					: t('manager.reviewerRecommendations.deactivate.title'),
-				message: t(
-					item.status
-						? 'manager.reviewerRecommendations.confirmDeactivate'
-						: 'manager.reviewerRecommendations.confirmActivate',
-					{
-						title: localize(item.title),
-					},
-				),
+				message: item.status
+					? t('manager.reviewerRecommendations.confirmDeactivate', {
+							title: localize(item.title),
+						})
+					: t('manager.reviewerRecommendations.confirmActivate', {
+							title: localize(item.title),
+						}),
 				actions: [
 					{
 						label: t('common.yes'),
@@ -151,9 +148,6 @@ export const useReviewerRecommendationManagerStore = defineComponentStore(
 				editForm,
 			);
 		}
-
-		// Initial data fetch
-		fetchRecommendations();
 
 		return {
 			isRecommendationsLoading,

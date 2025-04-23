@@ -6,8 +6,6 @@
 		<template #default="{closeModal}">
 			<SideModalLayoutBasic>
 				<PkpForm
-					ref="editRecommendation"
-					class="recommendations__recommendationForm"
 					v-bind="formProps"
 					@success="closeModal()"
 					@set="set"
