@@ -29,7 +29,7 @@
 					>
 						<DialogPanel data-cy="dialog" :class="styles">
 							<button
-								v-if="noActions"
+								v-if="shouldShowCloseButton"
 								class="absolute right-3 top-3 cursor-pointer bg-transparent"
 								@click="onClose"
 							>
@@ -54,34 +54,19 @@
 									<span class="px-4">{{ title }}</span>
 								</DialogTitle>
 							</div>
-							<div class="modal-content" :class="icon ? 'px-24' : 'pt- px-12'">
-								<div v-strip-unsafe-html="message" />
+							<slot>
 								<component
 									:is="bodyComponent"
 									v-if="bodyComponent"
-									v-bind="bodyProps"
+									v-bind="{...bodyProps, actions, message, onClose}"
+									:has-icon="!!icon"
 								/>
-							</div>
-							<div
-								class="flex items-center gap-x-4"
-								:class="icon ? 'p-10 ps-24' : 'p-12'"
-							>
-								<PkpButton
-									v-for="action in actions"
-									:key="action.label"
-									:element="action.element || 'button'"
-									:href="action.href || null"
-									:is-primary="action.isPrimary || null"
-									:is-warnable="action.isWarnable || null"
-									:is-disabled="isLoading"
-									@click="
-										action.callback ? fireCallback(action.callback) : null
-									"
-								>
-									{{ action.label }}
-								</PkpButton>
-								<Spinner v-if="isLoading" />
-							</div>
+								<DialogBody
+									v-else
+									v-bind="{...props, onClose}"
+									:has-icon="!!icon"
+								></DialogBody>
+							</slot>
 						</DialogPanel>
 					</TransitionChild>
 				</div>
@@ -91,9 +76,8 @@
 </template>
 
 <script setup>
-import {ref, computed} from 'vue';
-import PkpButton from '@/components/Button/Button.vue';
-import Spinner from '@/components/Spinner/Spinner.vue';
+import {computed} from 'vue';
+import DialogBody from './DialogBody.vue';
 
 import {
 	Dialog as HLDialog,
@@ -132,6 +116,20 @@ const props = defineProps({
 		type: Boolean,
 		default: () => true,
 	},
+	/** Defines if the close button (x) should be shown */
+	/** If not set, the close button will be shown if there are no actions */
+	showCloseButton: {
+		type: Boolean,
+		default: undefined,
+	},
+});
+
+const shouldShowCloseButton = computed(() => {
+	if (props.showCloseButton !== undefined) {
+		return props.showCloseButton;
+	}
+
+	return !props.actions?.length;
 });
 
 const styles = computed(() => ({
@@ -159,11 +157,7 @@ const iconStyles = computed(() => ({
 	'bg-negative': props.modalStyle === 'negative',
 }));
 
-const noActions = computed(() => !props.actions?.length);
-
 const emit = defineEmits(['close']);
-
-const isLoading = ref(false);
 
 function onClose(triggerOrigin) {
 	// Prevent closing the modal on outside clicks or "Esc" key presses if isDismissible is false
@@ -176,14 +170,5 @@ function onClose(triggerOrigin) {
 	}
 
 	emit('close');
-}
-
-function fireCallback(callback) {
-	isLoading.value = true;
-	if (typeof callback === 'function') {
-		callback(() => {
-			onClose();
-		});
-	}
 }
 </script>

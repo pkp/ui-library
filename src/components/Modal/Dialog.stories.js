@@ -1,13 +1,17 @@
+import {ref} from 'vue';
 import PkpDialog from './Dialog.vue';
+import DialogBody from './DialogBody.vue';
 import {useModal} from '@/composables/useModal.js';
 import {within, userEvent} from '@storybook/test';
 import PkpButton from '@/components/Button/Button.vue';
+import FieldText from '@/components/Form/fields/FieldText.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
 
 export default {
 	title: 'Components/Dialog',
 	component: PkpDialog,
 	render: (args) => ({
-		components: {PkpButton},
+		components: {PkpButton, DialogBody},
 		setup() {
 			const {openDialog} = useModal();
 
@@ -57,13 +61,16 @@ export const DialogBasic = {
 };
 
 const DialogBodyComponent = {
+	components: {DialogBody},
 	template: `
-    	<p>{{ 'Some DOI(s) could not be updated' }}</p>
-        <ul>
-            <li v-for="errorMessage in failedDoiActions" :key="errorMessage.index">
-                {{ errorMessage }}
-            </li>
-        </ul>
+		<DialogBody>
+			<p>{{ 'Some DOI(s) could not be updated' }}</p>
+			<ul>
+				<li v-for="errorMessage in failedDoiActions" :key="errorMessage.index">
+					{{ errorMessage }}
+				</li>
+			</ul>
+		</DialogBody>
     `,
 	props: {
 		failedDoiActions: {type: Array, required: true},
@@ -98,6 +105,72 @@ export const WithBodyComponent = {
 		const user = userEvent.setup();
 
 		await user.click(canvas.getByText('With Body Component'));
+	},
+};
+
+const CustomActionDialogBodyComponent = {
+	components: {PkpButton, DialogBody, FieldText, Spinner},
+	setup(props) {
+		const inputValue = ref('');
+		const isLoading = ref(false);
+
+		function confirmInput() {
+			if (inputValue.value !== 'Confirm') {
+				alert('Please type "Confirm" to proceed.');
+				return;
+			}
+
+			isLoading.value = true;
+
+			setTimeout(() => {
+				isLoading.value = false;
+				alert('Confirmed!');
+				props.onClose?.();
+			}, 2000);
+		}
+
+		function closeModal() {
+			props.onClose?.();
+		}
+
+		return {confirmInput, closeModal, inputValue, isLoading};
+	},
+	template: `
+		<DialogBody :is-loading="isLoading">
+			<p>Are you sure you want to delete?</p>
+			<div class="relative mt-6">
+				<span>Please type "<b>Confirm</b>" to continue:</span>
+				<FieldText  :value="inputValue" @input="inputValue = $event.target.value" />
+			</div>
+			<template #actions>
+				<PkpButton @click="confirmInput">Confirm</PkpButton>
+				<PkpButton @click="closeModal" :is-warnable="true">Cancel</PkpButton>
+			</template>
+		</DialogBody>
+    `,
+	props: {
+		failedDoiActions: {type: Array, required: true},
+		onClose: {type: Function, required: true},
+	},
+};
+
+export const WithCustomActions = {
+	args: {
+		buttonName: 'With Custom Actions Component',
+		title: 'Confirm',
+		bodyComponent: CustomActionDialogBodyComponent,
+		modalStyle: 'negative',
+		close: () => {
+			// dialog has been closed
+		},
+		showCloseButton: false,
+	},
+	play: async ({canvasElement}) => {
+		// Assigns canvas to the component root element
+		const canvas = within(canvasElement);
+		const user = userEvent.setup();
+
+		await user.click(canvas.getByText('With Custom Actions Component'));
 	},
 };
 
@@ -186,22 +259,25 @@ export const DialogComplex = {
 };
 
 const ErrorBodyComponent = {
+	components: {DialogBody},
 	template: `
-    	<span>Cancelling the invitation sent to Emma Stone will deactivate the acceptance link sent to her via email. Here are the invitation details:</span>
-        <ul class="list-disc ms-7">
-            <li>
-                <strong>Email Address:</strong> {email address}
-            </li>
-            <li>
-                <strong>Role:</strong> Reviewer
-            </li>
-            <li>
-                <strong>Status</strong> Invited on 17.05.2023
-            </li>
-            <li>
-                <strong>Affiliate:</strong> Stanford University
-            </li>
-        </ul>
+		<DialogBody>
+			<span>Cancelling the invitation sent to Emma Stone will deactivate the acceptance link sent to her via email. Here are the invitation details:</span>
+			<ul class="list-disc ms-7">
+				<li>
+					<strong>Email Address:</strong> {email address}
+				</li>
+				<li>
+					<strong>Role:</strong> Reviewer
+				</li>
+				<li>
+					<strong>Status</strong> Invited on 17.05.2023
+				</li>
+				<li>
+					<strong>Affiliate:</strong> Stanford University
+				</li>
+			</ul>
+		</DialogBody>
     `,
 	props: {
 		failedDoiActions: {type: Array, required: true},

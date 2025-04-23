@@ -28,6 +28,29 @@ The style of the modal can be changed by passing the prop `modalStyle`. It accep
 - **`success`**: Represents a positive state, often used for success notifications.
 - **` basic`**: The standard modal style, which has no special border styling. This style is applied by default in the legacy PHP implementation of the Dialog component, if no value is specified.
 
+## Customizing Dialog Actions
+
+The dialog prop actions (e.g., an array[] of buttons like "OK" and "Cancel") can be overridden by passing a component to `bodyComponent` that uses the `DialogBody` wrapper.
+
+This wrapper provides an `#actions` slot where you can define more complex logic, such as:
+
+- Validation before closing the modal
+- Conditional button states
+
+```vue
+<DialogBody>
+	<p>Are you sure you want to delete?</p>
+	<div class="relative mt-6">
+		<span>Please type "<b>Confirm</b>" to continue:</span>
+		<FieldText  :value="inputValue" @input="inputValue = $event.target.value" />
+	</div>
+	<template #actions>
+		<PkpButton @click="confirmInput">Confirm</PkpButton>
+		<PkpButton @click="closeModal" :is-warnable="true">Cancel</PkpButton>
+	</template>
+</DialogBody>
+```
+
 ## Accessibility
 
 To correctly handle accessibility (title, description) and focus management - [headless-ui](https://headlessui.com) library is used.
