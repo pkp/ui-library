@@ -1,6 +1,7 @@
 import {useSideMenu} from '@/composables/useSideMenu';
 import {computed, watch} from 'vue';
 import {useQueryParams} from '@/composables/useQueryParams';
+import {useSubmission} from '@/composables/useSubmission';
 
 export function useWorkflowMenu({
 	menuItems,
@@ -16,6 +17,8 @@ export function useWorkflowMenu({
 		expandedKeys,
 		updateExpandedKeys,
 	} = useSideMenu(menuItems);
+
+	const {getLatestPublication} = useSubmission();
 
 	/**
 	 * Url query params
@@ -54,10 +57,11 @@ export function useWorkflowMenu({
 		// Once the submission is fetched, select relevant stage in navigation
 		if (!oldSubmission && newSubmission) {
 			// Update expandedKeys for publication menu
-			if (newSubmission?.currentPublicationId) {
+			const latestPublication = getLatestPublication(newSubmission);
+			if (latestPublication?.id) {
 				updateExpandedKeys({
 					...expandedKeys.value,
-					[`publication_${newSubmission.currentPublicationId}`]: true,
+					[`publication_${latestPublication.id}`]: true,
 				});
 			}
 
