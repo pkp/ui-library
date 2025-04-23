@@ -201,6 +201,11 @@ export function useWorkflowNavigationConfigOPS(pageInitConfig) {
 	}
 
 	function getInitialSelectionItemKey({submission}) {
+		// Author seeing only publication items
+		if (pageInitConfig.dashboardPage === DashboardPageTypes.MY_SUBMISSIONS) {
+			return `publication_titleAbstract`;
+		}
+
 		if (
 			submission.stageId === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION &&
 			submission.status !== pkp.const.STATUS_QUEUED
