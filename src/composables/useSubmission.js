@@ -263,7 +263,14 @@ export function useSubmission() {
 			case pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW:
 				return ExtendedStages.EXTERNAL_REVIEW;
 			case pkp.const.WORKFLOW_STAGE_ID_EDITING:
-				return ExtendedStages.EDITING;
+				switch (submission.status) {
+					case pkp.const.STATUS_SCHEDULED:
+						return ExtendedStages.PRODUCTION_SCHEDULED;
+					case pkp.const.STATUS_PUBLISHED:
+						return ExtendedStages.PRODUCTION_PUBLISHED;
+					default:
+						return ExtendedStages.EDITING;
+				}
 			case pkp.const.WORKFLOW_STAGE_ID_PRODUCTION:
 				switch (submission.status) {
 					case pkp.const.STATUS_QUEUED:
