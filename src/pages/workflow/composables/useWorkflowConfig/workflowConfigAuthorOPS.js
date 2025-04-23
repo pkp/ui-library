@@ -48,7 +48,7 @@ export const PublicationConfig = {
 				},
 			]);
 
-			return items;
+			return {items, shouldContinue: true};
 		},
 	},
 	discussions: {
