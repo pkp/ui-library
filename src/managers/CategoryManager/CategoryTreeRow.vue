@@ -30,7 +30,7 @@
 					"
 				/>
 				<span
-					v-if="category?.subCategories?.length"
+					v-if="category.subCategories?.length"
 					@click="categoryManagerStore.toggleItemExpansion(category.id)"
 				>
 					<Icon
@@ -48,7 +48,7 @@
 
 	<template
 		v-if="
-			category?.subCategories?.length &&
+			category.subCategories?.length &&
 			categoryManagerStore.expanded.includes(category.id)
 		"
 	>
