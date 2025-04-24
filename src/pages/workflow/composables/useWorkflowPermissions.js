@@ -52,11 +52,13 @@ export function useWorkflowPermissions({submission, selectedPublication}) {
 		const isAuthor = hasIntersection(activeStage.currentUserAssignedRoles, [
 			pkp.const.ROLE_ID_AUTHOR,
 		]);
-		const pub = selectedPublication.value
-			? selectedPublication.value
-			: submission.value.currentPublication;
-
-		if (isAuthor && pub?.status === pkp.const.STATUS_PUBLISHED) {
+		// block authors from editing any version if there is a published or scheduled version
+		const hasBlockedPublication = submission.value.publications.some((p) =>
+			[pkp.const.STATUS_PUBLISHED, pkp.const.STATUS_SCHEDULED].includes(
+				p.status,
+			),
+		);
+		if (isAuthor && hasBlockedPublication) {
 			canEditPublication = false;
 		}
 
