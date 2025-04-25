@@ -10,7 +10,7 @@
 			</template>
 			<span v-if="isRequired" class="pkpFormFieldLabel__required">
 				*
-				<span class="-screenReader">{{ t('common.required') }}</span>
+				<span class="-screenReader">{{ componentKeys.required }}</span>
 			</span>
 			<Tooltip
 				v-if="isPrimaryLocale && tooltip"
@@ -22,58 +22,209 @@
 				v-if="isPrimaryLocale && tooltip"
 				:id="describedByTooltipId"
 				class="-screenReader"
-				v-html="tooltip"
-			/>
+			>
+				{{ tooltip }}
+			</span>
 			<HelpButton
 				v-if="isPrimaryLocale && helpTopic"
 				:id="describedByHelpId"
 				:topic="helpTopic"
 				:section="helpSection"
-				:label="t('help.help')"
+				:label="componentKeys.help"
 			/>
 		</legend>
 		<div
 			v-if="isPrimaryLocale && description"
 			:id="describedByDescriptionId"
 			class="pkpFormField__description"
-			v-html="description"
-		/>
+		>
+			{{ description }}
+		</div>
 		<div class="pkpFormField__control">
 			<div class="pkpFormField__threeColumnsRow">
 				<div class="pkpFormField__colorPickerColumn">
 					<div class="pkpFormField__colorPickerLabel">
-						{{ t('common.colorPicker.color1') }}
+						{{ componentKeys.color1 }}
 					</div>
-					<color-picker
-						ref="color1Picker"
-						:model-value="color1"
-						:disable-alpha="true"
-						aria-label="Color 1"
-						@update:model-value="setColor1"
-					/>
+					<div class="pkpFormField__colorPickerWrapper">
+						<div
+							class="pkpFormField__customSaturationBox"
+							tabindex="0"
+							:style="{background: `hsl(${hueValues.color1}, 100%, 50%)`}"
+							:aria-label="componentKeys.saturationValue + ' 1'"
+							@mousedown="startCustomSatValueDrag($event, 'color1')"
+							@touchstart="startCustomSatValueDrag($event, 'color1')"
+							@keydown="handleCustomSatValueKeydown($event, 'color1')"
+						>
+							<div class="pkpFormField__customSaturationBox--white"></div>
+							<div class="pkpFormField__customSaturationBox--black"></div>
+							<div
+								class="pkpFormField__customSaturationPointer"
+								:style="{
+									left: `${satValues.color1}%`,
+									top: `${100 - valueValues.color1}%`,
+								}"
+							>
+								<div class="pkpFormField__customSaturationCircle"></div>
+							</div>
+						</div>
+						<div class="pkpFormField__huePreviewRow">
+							<div
+								class="pkpFormField__colorPreview"
+								:style="{backgroundColor: color1.hex}"
+								:aria-label="componentKeys.preview + ' 1'"
+							></div>
+							<div
+								class="pkpFormField__customHueSlider"
+								tabindex="0"
+								:aria-label="componentKeys.hueSlider + ' 1'"
+								@click="handleCustomHueClick($event, 'color1')"
+								@mousedown="startCustomHueDrag($event, 'color1')"
+								@touchstart="startCustomHueDrag($event, 'color1')"
+								@keydown="handleCustomHueKeydown($event, 'color1')"
+							>
+								<div
+									class="pkpFormField__customHueHandle"
+									:style="{left: `${(hueValues.color1 / 360) * 100}%`}"
+								></div>
+							</div>
+						</div>
+						<div class="pkpFormField__inputFormatRow">
+							<div class="pkpFormField__formatArrows">
+								<button
+									type="button"
+									class="pkpFormField__formatArrowUp"
+									aria-label="Previous color format"
+									@click="cycleColorFormat('color1', -1)"
+								>
+									<span aria-hidden="true">▲</span>
+								</button>
+								<button
+									type="button"
+									class="pkpFormField__formatArrowDown"
+									aria-label="Next color format"
+									@click="cycleColorFormat('color1', 1)"
+								>
+									<span aria-hidden="true">▼</span>
+								</button>
+							</div>
+							<input
+								:value="getFormattedColorValue('color1')"
+								class="pkpFormField__colorValueInput"
+								type="text"
+								:aria-label="componentKeys.format + ' 1'"
+								@input="handleColorValueInput($event, 'color1')"
+							/>
+						</div>
+						<div class="pkpFormField__formatLabel">
+							{{ componentKeys[colorFormats.color1] }}
+						</div>
+						<div
+							aria-live="polite"
+							class="pkpFormField__a11yAnnouncer"
+							aria-atomic="true"
+						>
+							<span v-if="lastUpdated === 'color1'">
+								{{ getColorFormatAnnouncement('color1') }}
+							</span>
+						</div>
+					</div>
 				</div>
 				<div class="pkpFormField__colorPickerColumn">
 					<div class="pkpFormField__colorPickerLabel">
-						{{ t('common.colorPicker.color2') }}
+						{{ componentKeys.color2 }}
 					</div>
-					<color-picker
-						ref="color2Picker"
-						:model-value="color2"
-						:disable-alpha="true"
-						aria-label="Color 2"
-						@update:model-value="setColor2"
-					/>
+					<div class="pkpFormField__colorPickerWrapper">
+						<div
+							class="pkpFormField__customSaturationBox"
+							tabindex="0"
+							:style="{background: `hsl(${hueValues.color2}, 100%, 50%)`}"
+							:aria-label="componentKeys.saturationValue + ' 2'"
+							@mousedown="startCustomSatValueDrag($event, 'color2')"
+							@touchstart="startCustomSatValueDrag($event, 'color2')"
+							@keydown="handleCustomSatValueKeydown($event, 'color2')"
+						>
+							<div class="pkpFormField__customSaturationBox--white"></div>
+							<div class="pkpFormField__customSaturationBox--black"></div>
+							<div
+								class="pkpFormField__customSaturationPointer"
+								:style="{
+									left: `${satValues.color2}%`,
+									top: `${100 - valueValues.color2}%`,
+								}"
+							>
+								<div class="pkpFormField__customSaturationCircle"></div>
+							</div>
+						</div>
+						<div class="pkpFormField__huePreviewRow">
+							<div
+								class="pkpFormField__colorPreview"
+								:style="{backgroundColor: color2.hex}"
+								:aria-label="componentKeys.preview + ' 2'"
+							></div>
+							<div
+								class="pkpFormField__customHueSlider"
+								tabindex="0"
+								:aria-label="componentKeys.hueSlider + ' 2'"
+								@click="handleCustomHueClick($event, 'color2')"
+								@mousedown="startCustomHueDrag($event, 'color2')"
+								@touchstart="startCustomHueDrag($event, 'color2')"
+								@keydown="handleCustomHueKeydown($event, 'color2')"
+							>
+								<div
+									class="pkpFormField__customHueHandle"
+									:style="{left: `${(hueValues.color2 / 360) * 100}%`}"
+								></div>
+							</div>
+						</div>
+						<div class="pkpFormField__inputFormatRow">
+							<div class="pkpFormField__formatArrows">
+								<button
+									type="button"
+									class="pkpFormField__formatArrowUp"
+									aria-label="Previous color format"
+									@click="cycleColorFormat('color2', -1)"
+								>
+									<span aria-hidden="true">▲</span>
+								</button>
+								<button
+									type="button"
+									class="pkpFormField__formatArrowDown"
+									aria-label="Next color format"
+									@click="cycleColorFormat('color2', 1)"
+								>
+									<span aria-hidden="true">▼</span>
+								</button>
+							</div>
+							<input
+								:value="getFormattedColorValue('color2')"
+								class="pkpFormField__colorValueInput"
+								type="text"
+								:aria-label="componentKeys.format + ' 2'"
+								@input="handleColorValueInput($event, 'color2')"
+							/>
+						</div>
+						<div class="pkpFormField__formatLabel">
+							{{ componentKeys[colorFormats.color2] }}
+						</div>
+						<div
+							aria-live="polite"
+							class="pkpFormField__a11yAnnouncer"
+							aria-atomic="true"
+						>
+							<span v-if="lastUpdated === 'color2'">
+								{{ getColorFormatAnnouncement('color2') }}
+							</span>
+						</div>
+					</div>
 				</div>
 				<div class="pkpFormField__contrastValueColumn">
 					<div class="pkpFormField__colorPickerLabel">
-						{{ t('common.colorPicker.contrastRatio') }}
+						{{ componentKeys.contrastRatio }}
 					</div>
 					<div
 						class="pkpFormField__textSample"
-						:style="{
-							backgroundColor: color1.hex,
-							color: color2.hex,
-						}"
+						:style="{backgroundColor: color1.hex, color: color2.hex}"
 						aria-label="Text preview with selected colors"
 					>
 						<span class="pkpFormField__textSampleContent">Text</span>
@@ -100,6 +251,13 @@
 							{{ category.label }}
 						</div>
 					</div>
+					<div
+						aria-live="polite"
+						class="pkpFormField__a11yAnnouncer"
+						aria-atomic="true"
+					>
+						<span v-if="lastUpdated">{{ getContrastAnnouncement() }}</span>
+					</div>
 				</div>
 			</div>
 
@@ -109,9 +267,9 @@
 						href="https://docs.pkp.sfu.ca/accessible-content/en/principles#contrast-ratio"
 						target="_blank"
 						rel="noopener"
-						:aria-label="t('common.colorPicker.contrastGuideText')"
+						:aria-label="componentKeys.contrastGuideText"
 					>
-						{{ t('common.colorPicker.contrastGuideText') }}
+						{{ componentKeys.contrastGuideText }}
 					</a>
 				</div>
 			</div>
@@ -127,7 +285,6 @@
 
 <script>
 import FieldBase from './FieldBase.vue';
-import {Chrome} from '@lk77/vue3-color';
 import Tooltip from '@/components/Tooltip/Tooltip.vue';
 import HelpButton from '@/components/HelpButton/HelpButton.vue';
 import FieldError from '@/components/Form/FieldError.vue';
@@ -135,7 +292,6 @@ import FieldError from '@/components/Form/FieldError.vue';
 export default {
 	name: 'FieldContrastColorPicker',
 	components: {
-		'color-picker': Chrome,
 		Tooltip,
 		HelpButton,
 		FieldError,
@@ -147,16 +303,86 @@ export default {
 			color2: {hex: '#FFFFFF'},
 			currentContrast: 0,
 			contrastCategories: [
-				{value: 3, label: 'AA Large Text (3:1)'},
-				{value: 4.5, label: 'AA Normal Text (4.5:1)'},
-				{value: 7, label: 'AAA Normal Text (7:1)'},
+				{value: 3, label: this.t('common.colorPicker.AALargeText')},
+				{value: 4.5, label: this.t('common.colorPicker.AANormalText')},
+				{value: 7, label: this.t('common.colorPicker.AAANormalText')},
 			],
 			keyboardStep: 1,
 			keyboardHueStep: 2,
+			keyboardSatStep: 5,
+			hueValues: {
+				color1: 210,
+				color2: 0,
+			},
+			satValues: {
+				color1: 100,
+				color2: 0,
+			},
+			valueValues: {
+				color1: 60,
+				color2: 100,
+			},
+			isDraggingHue: false,
+			isDraggingSat: false,
+			currentDragTarget: null,
+			colorFormats: {
+				color1: 'hex',
+				color2: 'hex',
+			},
+			lastUpdated: null,
+			// Preloaded translation keys for SSR
+			componentKeys: {
+				required: this.t('common.required'),
+				help: this.t('help.help'),
+				color1: this.t('common.colorPicker.color1'),
+				color2: this.t('common.colorPicker.color2'),
+				saturationValue: this.t('common.colorPicker.saturationValue'),
+				preview: this.t('common.colorPicker.preview'),
+				hueSlider: this.t('common.colorPicker.hueSlider'),
+				format: this.t('common.colorPicker.format'),
+				hex: this.t('common.colorPicker.hex'),
+				rgb: this.t('common.colorPicker.rgb'),
+				rgba: this.t('common.colorPicker.rgba'),
+				hsl: this.t('common.colorPicker.hsl'),
+				hsv: this.t('common.colorPicker.hsv'),
+				contrastRatio: this.t('common.colorPicker.contrastRatio'),
+				contrastGuideText: this.t('common.colorPicker.contrastGuideText'),
+				colorFormatChanged: this.t('common.colorPicker.colorFormatChanged'),
+				contrastRatioAnnouncement: this.t(
+					'common.colorPicker.contrastRatioAnnouncement',
+				),
+				levelAccessible: this.t('common.colorPicker.levelAccessible'),
+				levelNotAccessible: this.t('common.colorPicker.levelNotAccessible'),
+			},
 		};
 	},
 	mounted() {
-		this.setupKeyboardControls();
+		if (this.color1 && this.color1.hex) {
+			const hsv1 = this.hexToHsv(this.color1.hex);
+			this.hueValues.color1 = hsv1.h;
+			this.satValues.color1 = hsv1.s;
+			this.valueValues.color1 = hsv1.v;
+		}
+
+		if (this.color2 && this.color2.hex) {
+			const hsv2 = this.hexToHsv(this.color2.hex);
+			this.hueValues.color2 = hsv2.h;
+			this.satValues.color2 = hsv2.s;
+			this.valueValues.color2 = hsv2.v;
+		}
+
+		document.addEventListener('mousemove', this.handleCustomHueDrag);
+		document.addEventListener('touchmove', this.handleCustomHueDrag);
+		document.addEventListener('mouseup', this.endCustomHueDrag);
+		document.addEventListener('touchend', this.endCustomHueDrag);
+
+		this.checkContrast();
+	},
+	beforeUnmount() {
+		document.removeEventListener('mousemove', this.handleCustomHueDrag);
+		document.removeEventListener('touchmove', this.handleCustomHueDrag);
+		document.removeEventListener('mouseup', this.endCustomHueDrag);
+		document.removeEventListener('touchend', this.endCustomHueDrag);
 	},
 	created() {
 		if (this.currentValue) {
@@ -188,396 +414,458 @@ export default {
 			}
 		}
 
+		if (this.$filters && !this.$filters.t('common.colorPicker.preview')) {
+			this.$filters.add('t', (value, params) => {
+				if (value === 'common.colorPicker.preview') {
+					return 'Color preview';
+				}
+				return value;
+			});
+		}
+
 		this.$nextTick(() => {
 			this.checkContrast();
 		});
 	},
 	methods: {
 		/**
-		 * Setup keyboard controls for the color pickers
-		 * This adds event listeners to the specific interactive elements within the color picker
-		 */
-		setupKeyboardControls() {
-			this.$nextTick(() => {
-				if (this.$refs.color1Picker) {
-					const saturation1 =
-						this.$refs.color1Picker.$el.querySelector('.vc-saturation');
-					const satPointer1 = saturation1
-						? saturation1.querySelector('.vc-saturation-circle')
-						: null;
-
-					if (saturation1 && satPointer1) {
-						saturation1.setAttribute('tabindex', '0');
-						saturation1.setAttribute(
-							'aria-label',
-							'Color 1 saturation and brightness selector',
-						);
-						saturation1.addEventListener('keydown', (e) =>
-							this.handleSaturationKeydown(e, 'color1'),
-						);
-
-						satPointer1.style.transition =
-							'box-shadow 0.2s ease, transform 0.1s ease';
-
-						saturation1.addEventListener('focus', () => {
-							satPointer1.style.boxShadow =
-								'0 0 0 2px white, 0 0 0 4px #1976d2';
-							satPointer1.style.transform = 'scale(1.2)';
-						});
-
-						saturation1.addEventListener('blur', () => {
-							satPointer1.style.boxShadow =
-								'0 0 0 1.5px #fff, inset 0 0 1px 1px rgba(0,0,0,.3)';
-							satPointer1.style.transform = 'scale(1)';
-						});
-					}
-
-					const hueSlider1 =
-						this.$refs.color1Picker.$el.querySelector('.vc-hue-container');
-					const huePointer1 = hueSlider1
-						? hueSlider1.querySelector('.vc-hue-picker')
-						: null;
-
-					if (hueSlider1 && huePointer1) {
-						hueSlider1.setAttribute('tabindex', '0');
-						hueSlider1.setAttribute('aria-label', 'Color 1 hue slider');
-						hueSlider1.addEventListener('keydown', (e) =>
-							this.handleHueKeydown(e, 'color1'),
-						);
-
-						huePointer1.style.transition =
-							'box-shadow 0.2s ease, transform 0.1s ease';
-
-						hueSlider1.addEventListener('focus', () => {
-							huePointer1.style.boxShadow =
-								'0 0 0 2px white, 0 0 0 4px #1976d2';
-						});
-
-						hueSlider1.addEventListener('blur', () => {
-							huePointer1.style.boxShadow =
-								'0 0 0 1.5px #fff, inset 0 0 1px 1px rgba(0,0,0,.3)';
-						});
-					}
-
-					const hexInput = this.$refs.color1Picker.$el.querySelector(
-						'.vc-chrome-hex input',
-					);
-					if (hexInput) {
-						hexInput.setAttribute('aria-label', 'Color 1 hex value');
-					}
-				}
-
-				if (this.$refs.color2Picker) {
-					const saturation2 =
-						this.$refs.color2Picker.$el.querySelector('.vc-saturation');
-					const satPointer2 = saturation2
-						? saturation2.querySelector('.vc-saturation-circle')
-						: null;
-
-					if (saturation2 && satPointer2) {
-						saturation2.setAttribute('tabindex', '0');
-						saturation2.setAttribute(
-							'aria-label',
-							'Color 2 saturation and brightness selector',
-						);
-						saturation2.addEventListener('keydown', (e) =>
-							this.handleSaturationKeydown(e, 'color2'),
-						);
-
-						satPointer2.style.transition =
-							'box-shadow 0.2s ease, transform 0.1s ease';
-
-						saturation2.addEventListener('focus', () => {
-							satPointer2.style.boxShadow =
-								'0 0 0 2px white, 0 0 0 4px #1976d2';
-							satPointer2.style.transform = 'scale(1.2)';
-						});
-
-						saturation2.addEventListener('blur', () => {
-							satPointer2.style.boxShadow =
-								'0 0 0 1.5px #fff, inset 0 0 1px 1px rgba(0,0,0,.3)';
-							satPointer2.style.transform = 'scale(1)';
-						});
-					}
-
-					const hueSlider2 =
-						this.$refs.color2Picker.$el.querySelector('.vc-hue-container');
-					const huePointer2 = hueSlider2
-						? hueSlider2.querySelector('.vc-hue-picker')
-						: null;
-
-					if (hueSlider2 && huePointer2) {
-						hueSlider2.setAttribute('tabindex', '0');
-						hueSlider2.setAttribute('aria-label', 'Color 2 hue slider');
-						hueSlider2.addEventListener('keydown', (e) =>
-							this.handleHueKeydown(e, 'color2'),
-						);
-
-						huePointer2.style.transition =
-							'box-shadow 0.2s ease, transform 0.1s ease';
-
-						hueSlider2.addEventListener('focus', () => {
-							huePointer2.style.boxShadow =
-								'0 0 0 2px white, 0 0 0 4px #1976d2';
-						});
-
-						hueSlider2.addEventListener('blur', () => {
-							huePointer2.style.boxShadow =
-								'0 0 0 1.5px #fff, inset 0 0 1px 1px rgba(0,0,0,.3)';
-						});
-					}
-
-					const hexInput = this.$refs.color2Picker.$el.querySelector(
-						'.vc-chrome-hex input',
-					);
-					if (hexInput) {
-						hexInput.setAttribute('aria-label', 'Color 2 hex value');
-					}
-				}
-			});
-		},
-
-		/**
-		 * Handle keyboard navigation for the saturation/brightness square
+		 * Get formatted color value based on selected format
 		 *
-		 * @param {Event} event - Keyboard event
-		 * @param {String} colorId - Which color picker is being used (color1 or color2)
+		 * @param {String} colorId - Which color (color1 or color2)
+		 * @return {String} Formatted color value
 		 */
-		handleSaturationKeydown(event, colorId) {
+		getFormattedColorValue(colorId) {
 			const color = colorId === 'color1' ? this.color1 : this.color2;
-			const pickerRef =
-				colorId === 'color1'
-					? this.$refs.color1Picker
-					: this.$refs.color2Picker;
-			if (!pickerRef || !pickerRef.$el) return;
+			const format = this.colorFormats[colorId];
+			const hexColor = color.hex;
+			const rgb = this.hexToRgb(hexColor);
 
-			const hsv = this.hexToHsv(color.hex);
-			let modified = false;
+			if (!rgb) return '';
 
-			const hueContainer = pickerRef.$el.querySelector('.vc-hue-container');
-			const huePointer = hueContainer
-				? hueContainer.querySelector('.vc-hue-pointer')
-				: null;
-			let currentHuePosition = '0%';
+			const h = this.hueValues[colorId];
+			const s = this.satValues[colorId];
+			const v = this.valueValues[colorId];
 
-			if (huePointer) {
-				currentHuePosition = huePointer.style.left || '0%';
-				if (currentHuePosition !== '0%') {
-					const hueValue = Math.round(
-						(parseFloat(currentHuePosition) / 100) * 360,
-					);
-					hsv.h = hueValue;
+			const r = Math.round(rgb.r * 255);
+			const g = Math.round(rgb.g * 255);
+			const b = Math.round(rgb.b * 255);
+
+			switch (format) {
+				case 'hex':
+					return hexColor;
+				case 'rgb':
+					return `rgb(${r}, ${g}, ${b})`;
+				case 'rgba':
+					return `rgba(${r}, ${g}, ${b}, 1)`;
+				case 'hsl': {
+					const l = v * (1 - s / 200);
+					const sat =
+						l === 0 || l === 1 ? 0 : ((v - l) / Math.min(l, 1 - l)) * 100;
+					return `hsl(${h}, ${Math.round(sat)}%, ${Math.round(l * 100)}%)`;
 				}
-			}
-
-			switch (event.key) {
-				case 'ArrowUp':
-					hsv.v = Math.min(100, hsv.v + this.keyboardStep);
-					modified = true;
-					break;
-				case 'ArrowDown':
-					hsv.v = Math.max(0, hsv.v - this.keyboardStep);
-					modified = true;
-					break;
-				case 'ArrowRight':
-					hsv.s = Math.min(100, hsv.s + this.keyboardStep);
-					modified = true;
-					break;
-				case 'ArrowLeft':
-					hsv.s = Math.max(0, hsv.s - this.keyboardStep);
-					modified = true;
-					break;
-				case 'Home':
-					hsv.s = 0;
-					hsv.v = 100;
-					modified = true;
-					break;
-				case 'End':
-					hsv.s = 100;
-					hsv.v = 0;
-					modified = true;
-					break;
-				case 'PageUp':
-					hsv.s = 100;
-					hsv.v = 100;
-					modified = true;
-					break;
-				case 'PageDown':
-					hsv.s = 0;
-					hsv.v = 0;
-					modified = true;
-					break;
-			}
-
-			if (modified) {
-				event.preventDefault();
-				const newHex = this.hsvToHex(hsv);
-
-				if (colorId === 'color1') {
-					this.setColor1({hex: newHex});
-				} else {
-					this.setColor2({hex: newHex});
-				}
-
-				setTimeout(() => {
-					const saturation = pickerRef.$el.querySelector('.vc-saturation');
-					if (saturation) {
-						saturation.style.background = `hsl(${hsv.h}, 100%, 50%)`;
-					}
-
-					if (huePointer) {
-						huePointer.style.left = currentHuePosition;
-					}
-				}, 10);
+				case 'hsv':
+					return `hsv(${h}, ${s}%, ${v}%)`;
+				default:
+					return hexColor;
 			}
 		},
 
 		/**
-		 * Handle keyboard navigation for the hue slider
+		 * Handle input from color value field
 		 *
-		 * @param {Event} event - Keyboard event
-		 * @param {String} colorId - Which color picker is being used (color1 or color2)
+		 * @param {Event} event - Input event
+		 * @param {String} colorId - Which color (color1 or color2)
 		 */
-		handleHueKeydown(event, colorId) {
-			const pickerRef =
-				colorId === 'color1'
-					? this.$refs.color1Picker
-					: this.$refs.color2Picker;
-			if (!pickerRef || !pickerRef.$el) return;
+		handleColorValueInput(event, colorId) {
+			const inputValue = event.target.value.trim();
+			const format = this.colorFormats[colorId];
+			let newHex = null;
 
-			const satPointer = pickerRef.$el.querySelector('.vc-saturation-pointer');
-			if (!satPointer) return;
-			const currentTop = satPointer.style.top;
-			const currentLeft = satPointer.style.left;
+			let rgbMatch, rgbaMatch, hslMatch, hsvMatch;
+			let r, g, b, h, s, l, v, sv;
 
-			const hueContainer = pickerRef.$el.querySelector('.vc-hue-container');
-			const huePointer = hueContainer
-				? hueContainer.querySelector('.vc-hue-pointer')
-				: null;
-			if (!hueContainer || !huePointer) return;
+			try {
+				switch (format) {
+					case 'hex':
+						if (/^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$/.test(inputValue)) {
+							newHex = inputValue;
+						}
+						break;
 
-			const color = colorId === 'color1' ? this.color1 : this.color2;
-			const currentHsv = this.hexToHsv(color.hex);
+					case 'rgb':
+						rgbMatch = inputValue.match(
+							/rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/,
+						);
+						if (rgbMatch) {
+							r = parseInt(rgbMatch[1]) / 255;
+							g = parseInt(rgbMatch[2]) / 255;
+							b = parseInt(rgbMatch[3]) / 255;
+							newHex = this.rgbToHex(r, g, b);
+						}
+						break;
 
-			let currentHueLeft;
+					case 'rgba':
+						rgbaMatch = inputValue.match(
+							/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([0-9.]+)\s*\)/,
+						);
+						if (rgbaMatch) {
+							r = parseInt(rgbaMatch[1]) / 255;
+							g = parseInt(rgbaMatch[2]) / 255;
+							b = parseInt(rgbaMatch[3]) / 255;
+							newHex = this.rgbToHex(r, g, b);
+						}
+						break;
 
-			if (currentHsv.s === 0) {
-				const huePositionStr = huePointer.style.left;
-				if (!huePositionStr || huePositionStr === '') {
-					currentHueLeft = 0;
-				} else {
-					currentHueLeft = parseFloat(huePositionStr);
-				}
-			} else {
-				currentHueLeft = (currentHsv.h / 360) * 100;
-			}
+					case 'hsl':
+						hslMatch = inputValue.match(
+							/hsl\(\s*(\d+)\s*,\s*(\d+)%\s*,\s*(\d+)%\s*\)/,
+						);
+						if (hslMatch) {
+							h = parseInt(hslMatch[1]);
+							s = parseInt(hslMatch[2]);
+							l = parseInt(hslMatch[3]);
 
-			let newHuePosition = currentHueLeft;
-			const smallStep = (this.keyboardHueStep / 360) * 100;
-			const largeStep = (60 / 360) * 100;
-			let modified = false;
+							v = l + (s * Math.min(l, 100 - l)) / 100;
+							sv = s === 0 ? 0 : (200 * (v - l)) / v;
 
-			switch (event.key) {
-				case 'ArrowRight':
-				case 'ArrowUp':
-					newHuePosition = Math.min(100, currentHueLeft + smallStep);
-					modified = true;
-					break;
-				case 'ArrowLeft':
-				case 'ArrowDown':
-					newHuePosition = Math.max(0, currentHueLeft - smallStep);
-					modified = true;
-					break;
-				case 'Home':
-					newHuePosition = 0;
-					modified = true;
-					break;
-				case 'End':
-					newHuePosition = 100;
-					modified = true;
-					break;
-				case 'PageUp':
-					newHuePosition = Math.min(100, currentHueLeft + largeStep);
-					modified = true;
-					break;
-				case 'PageDown':
-					newHuePosition = Math.max(0, currentHueLeft - largeStep);
-					modified = true;
-					break;
-			}
+							newHex = this.hsvToHex({h, s: sv, v});
+						}
+						break;
 
-			if (modified) {
-				event.preventDefault();
-				event.stopPropagation();
-
-				const hue = Math.round((newHuePosition / 100) * 360);
-
-				huePointer.style.left = `${newHuePosition}%`;
-				satPointer.style.top = currentTop;
-				satPointer.style.left = currentLeft;
-
-				const saturation = pickerRef.$el.querySelector('.vc-saturation');
-				if (saturation) {
-					saturation.style.background = `hsl(${hue}, 100%, 50%)`;
+					case 'hsv':
+						hsvMatch = inputValue.match(
+							/hsv\(\s*(\d+)\s*,\s*(\d+)%\s*,\s*(\d+)%\s*\)/,
+						);
+						if (hsvMatch) {
+							h = parseInt(hsvMatch[1]);
+							s = parseInt(hsvMatch[2]);
+							v = parseInt(hsvMatch[3]);
+							newHex = this.hsvToHex({h, s, v});
+						}
+						break;
 				}
 
-				const hsv = {
-					h: hue,
-					s: currentHsv.s,
-					v: currentHsv.v,
-				};
-
-				if (currentHsv.s !== 0) {
-					const newHex = this.hsvToHex(hsv);
+				if (newHex) {
 					if (colorId === 'color1') {
-						this.setColor1({hex: newHex});
+						this.color1.hex = newHex;
 					} else {
-						this.setColor2({hex: newHex});
+						this.color2.hex = newHex;
 					}
+
+					const hsv = this.hexToHsv(newHex);
+					this.hueValues[colorId] = hsv.h;
+					this.satValues[colorId] = hsv.s;
+					this.valueValues[colorId] = hsv.v;
+
+					this.updateValue();
+					this.checkContrast();
 				}
+			} catch (e) {
+				console.error('Error parsing color input:', e);
+			}
 
-				setTimeout(() => {
-					if (satPointer) {
-						satPointer.style.top = currentTop;
-						satPointer.style.left = currentLeft;
-					}
+			this.lastUpdated = colorId;
+		},
 
-					if (huePointer) {
-						huePointer.style.left = `${newHuePosition}%`;
-					}
+		/**
+		 * Convert RGB to hex
+		 *
+		 * @param {Number} r - Red (0-1)
+		 * @param {Number} g - Green (0-1)
+		 * @param {Number} b - Blue (0-1)
+		 * @return {String} Hex color
+		 */
+		rgbToHex(r, g, b) {
+			const toHex = (x) => {
+				const hex = Math.round(x * 255).toString(16);
+				return hex.length === 1 ? '0' + hex : hex;
+			};
 
-					if (saturation) {
-						saturation.style.background = `hsl(${hue}, 100%, 50%)`;
-					}
-				}, 10);
+			return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+		},
+
+		handleHexInput(colorId) {
+			const color = colorId === 'color1' ? this.color1 : this.color2;
+
+			let hex = color.hex.trim();
+
+			if (!hex.startsWith('#')) {
+				hex = '#' + hex;
+			}
+
+			if (!/^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$/.test(hex)) {
+				return;
+			}
+
+			if (colorId === 'color1') {
+				this.color1 = {hex};
+			} else {
+				this.color2 = {hex};
+			}
+
+			const hsv = this.hexToHsv(hex);
+			this.hueValues[colorId] = hsv.h;
+			this.satValues[colorId] = hsv.s;
+			this.valueValues[colorId] = hsv.v;
+
+			this.updateValue();
+			this.checkContrast();
+		},
+
+		handleCustomHueClick(event, colorId) {
+			const rect = event.currentTarget.getBoundingClientRect();
+			const x = event.clientX - rect.left;
+			const width = rect.width;
+			const hueValue = Math.round((x / width) * 360);
+
+			this.updateHueValue(colorId, hueValue);
+		},
+
+		startCustomHueDrag(event, colorId) {
+			if (event.preventDefault) {
+				event.preventDefault();
+			}
+
+			this.isDraggingHue = true;
+			this.currentDragTarget = colorId;
+
+			if (event.touches && event.touches[0]) {
+				const rect = event.currentTarget.getBoundingClientRect();
+				const x = event.touches[0].clientX - rect.left;
+				const width = rect.width;
+				const hueValue = Math.round((x / width) * 360);
+				this.updateHueValue(colorId, hueValue);
 			}
 		},
 
-		/**
-		 * Update color 1
-		 *
-		 * @param {Object} color - Color object from color picker
-		 */
-		setColor1(color) {
-			this.color1 = color;
-			this.updateValue();
-			this.checkContrast();
+		handleCustomHueDrag(event) {
+			if (!this.isDraggingHue || !this.currentDragTarget) return;
+
+			const sliderElement = document.querySelector(
+				`.pkpFormField__colorPickerColumn:nth-child(${this.currentDragTarget === 'color1' ? 1 : 2}) .pkpFormField__customHueSlider`,
+			);
+
+			if (!sliderElement) return;
+
+			const rect = sliderElement.getBoundingClientRect();
+			let x;
+
+			if (event.touches && event.touches[0]) {
+				x = event.touches[0].clientX - rect.left;
+			} else {
+				x = event.clientX - rect.left;
+			}
+
+			x = Math.max(0, Math.min(x, rect.width));
+
+			const width = rect.width;
+			const hueValue = Math.round((x / width) * 360);
+
+			this.updateHueValue(this.currentDragTarget, hueValue);
 		},
 
-		/**
-		 * Update color 2
-		 *
-		 * @param {Object} color - Color object from color picker
-		 */
-		setColor2(color) {
-			this.color2 = color;
-			this.updateValue();
-			this.checkContrast();
+		endCustomHueDrag() {
+			this.isDraggingHue = false;
+			this.currentDragTarget = null;
 		},
 
-		/**
-		 * Update the form value with both colors
-		 */
+		updateHueValue(colorId, hueValue) {
+			hueValue = Math.max(0, Math.min(359, hueValue));
+
+			this.hueValues[colorId] = hueValue;
+
+			const hsv = {
+				h: hueValue,
+				s: this.satValues[colorId],
+				v: this.valueValues[colorId],
+			};
+
+			const hex = this.hsvToHex(hsv);
+
+			if (colorId === 'color1') {
+				this.color1 = {hex};
+			} else {
+				this.color2 = {hex};
+			}
+
+			this.updateValue();
+			this.checkContrast();
+
+			this.lastUpdated = colorId;
+		},
+
+		handleCustomHueKeydown(event, colorId) {
+			let hueValue = this.hueValues[colorId];
+			let step = this.keyboardHueStep;
+			let modified = false;
+
+			switch (event.key) {
+				case 'ArrowRight':
+					hueValue = (hueValue + step) % 360;
+					modified = true;
+					break;
+				case 'ArrowLeft':
+					hueValue = (hueValue - step + 360) % 360;
+					modified = true;
+					break;
+				case 'Home':
+					hueValue = 0;
+					modified = true;
+					break;
+				case 'End':
+					hueValue = 359;
+					modified = true;
+					break;
+				case 'PageUp':
+					hueValue = (hueValue + 30) % 360;
+					modified = true;
+					break;
+				case 'PageDown':
+					hueValue = (hueValue - 30 + 360) % 360;
+					modified = true;
+					break;
+			}
+
+			if (modified) {
+				event.preventDefault();
+				this.updateHueValue(colorId, hueValue);
+			}
+		},
+
+		handleCustomSatValueKeydown(event, colorId) {
+			let s = this.satValues[colorId];
+			let v = this.valueValues[colorId];
+			let modified = false;
+
+			switch (event.key) {
+				case 'ArrowUp':
+					v = Math.min(100, v + this.keyboardStep);
+					modified = true;
+					break;
+				case 'ArrowDown':
+					v = Math.max(0, v - this.keyboardStep);
+					modified = true;
+					break;
+				case 'ArrowRight':
+					s = Math.min(100, s + this.keyboardStep);
+					modified = true;
+					break;
+				case 'ArrowLeft':
+					s = Math.max(0, s - this.keyboardStep);
+					modified = true;
+					break;
+				case 'Home':
+					s = 0;
+					v = 100;
+					modified = true;
+					break;
+				case 'End':
+					s = 100;
+					v = 0;
+					modified = true;
+					break;
+				case 'PageUp':
+					v = Math.min(100, v + 10);
+					modified = true;
+					break;
+				case 'PageDown':
+					v = Math.max(0, v - 10);
+					modified = true;
+					break;
+			}
+
+			if (modified) {
+				event.preventDefault();
+				this.updateSatValueValues(colorId, s, v);
+			}
+		},
+
+		startCustomSatValueDrag(event, colorId) {
+			if (event.preventDefault) {
+				event.preventDefault();
+			}
+
+			this.isDraggingSat = true;
+			this.currentDragTarget = colorId;
+
+			this.handleCustomSatValueDrag(event);
+
+			window.addEventListener('mousemove', this.handleCustomSatValueDrag);
+			window.addEventListener('mouseup', this.endCustomSatValueDrag);
+			window.addEventListener('touchmove', this.handleCustomSatValueDrag);
+			window.addEventListener('touchend', this.endCustomSatValueDrag);
+		},
+
+		handleCustomSatValueDrag(event) {
+			if (!this.isDraggingSat || !this.currentDragTarget) return;
+
+			const colorId = this.currentDragTarget;
+			const boxElement = document.querySelector(
+				`.pkpFormField__colorPickerColumn:nth-child(${colorId === 'color1' ? 1 : 2}) .pkpFormField__customSaturationBox`,
+			);
+
+			if (!boxElement) return;
+
+			const rect = boxElement.getBoundingClientRect();
+			let x, y;
+
+			if (event.touches && event.touches[0]) {
+				x = event.touches[0].clientX - rect.left;
+				y = event.touches[0].clientY - rect.top;
+			} else {
+				x = event.clientX - rect.left;
+				y = event.clientY - rect.top;
+			}
+
+			x = Math.max(0, Math.min(x, rect.width));
+			y = Math.max(0, Math.min(y, rect.height));
+
+			const s = Math.round((x / rect.width) * 100);
+			const v = Math.round(100 - (y / rect.height) * 100);
+
+			this.updateSatValueValues(colorId, s, v);
+		},
+
+		endCustomSatValueDrag() {
+			this.isDraggingSat = false;
+
+			if (!this.isDraggingHue) {
+				this.currentDragTarget = null;
+			}
+
+			window.removeEventListener('mousemove', this.handleCustomSatValueDrag);
+			window.removeEventListener('mouseup', this.endCustomSatValueDrag);
+			window.removeEventListener('touchmove', this.handleCustomSatValueDrag);
+			window.removeEventListener('touchend', this.endCustomSatValueDrag);
+		},
+
+		updateSatValueValues(colorId, satValue, valueValue) {
+			satValue = Math.max(0, Math.min(100, satValue));
+			valueValue = Math.max(0, Math.min(100, valueValue));
+
+			this.satValues[colorId] = satValue;
+			this.valueValues[colorId] = valueValue;
+
+			const hsv = {
+				h: this.hueValues[colorId],
+				s: satValue,
+				v: valueValue,
+			};
+
+			const hex = this.hsvToHex(hsv);
+
+			if (colorId === 'color1') {
+				this.color1 = {hex};
+			} else {
+				this.color2 = {hex};
+			}
+
+			this.updateValue();
+			this.checkContrast();
+
+			this.lastUpdated = colorId;
+		},
+
 		updateValue() {
 			const valueObj = {
 				color1: this.color1.hex,
@@ -587,9 +875,6 @@ export default {
 			this.currentValue = JSON.stringify(valueObj);
 		},
 
-		/**
-		 * Check if the contrast meets various requirements
-		 */
 		checkContrast() {
 			const rgb1 = this.hexToRgb(this.color1.hex);
 			const rgb2 = this.hexToRgb(this.color2.hex);
@@ -602,6 +887,10 @@ export default {
 			this.currentContrast = this.calculateContrast(lum1, lum2);
 
 			this.updateValue();
+
+			if (this.lastUpdated) {
+				this.lastUpdated = 'contrast';
+			}
 		},
 
 		/**
@@ -750,6 +1039,70 @@ export default {
 
 			return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 		},
+
+		/**
+		 * Get announcement text for color format change
+		 *
+		 * @param {String} colorId - Which color (color1 or color2)
+		 * @returns {String} - Announcement text
+		 */
+		getColorFormatAnnouncement(colorId) {
+			const colorName =
+				colorId === 'color1'
+					? this.componentKeys.color1
+					: this.componentKeys.color2;
+			const formatName = this.componentKeys[this.colorFormats[colorId]];
+			const colorValue = this.getFormattedColorValue(colorId);
+
+			return this.componentKeys.colorFormatChanged
+				.replace('{$colorName}', colorName)
+				.replace('{$formatName}', formatName)
+				.replace('{$colorValue}', colorValue);
+		},
+
+		/**
+		 * Get announcement text for contrast ratio
+		 *
+		 * @returns {String} - Announcement text
+		 */
+		getContrastAnnouncement() {
+			let announcement = this.componentKeys.contrastRatioAnnouncement.replace(
+				'{$ratio}',
+				this.currentContrast.toFixed(2),
+			);
+
+			for (const category of this.contrastCategories) {
+				const isAccessible = this.currentContrast >= category.value;
+				const accessibilityStatus = isAccessible
+					? this.componentKeys.levelAccessible
+					: this.componentKeys.levelNotAccessible;
+
+				announcement += ' ' + category.label + ' ' + accessibilityStatus + '.';
+			}
+
+			return announcement;
+		},
+
+		/**
+		 * Cycle through available color formats
+		 *
+		 * @param {String} colorId - Which color (color1 or color2)
+		 * @param {Number} direction - Direction to cycle (1 for next, -1 for previous)
+		 */
+		cycleColorFormat(colorId, direction) {
+			const formats = ['hex', 'rgb', 'rgba', 'hsl', 'hsv'];
+			const currentIndex = formats.indexOf(this.colorFormats[colorId]);
+			let newIndex = currentIndex + direction;
+
+			if (newIndex < 0) {
+				newIndex = formats.length - 1;
+			} else if (newIndex >= formats.length) {
+				newIndex = 0;
+			}
+
+			this.colorFormats[colorId] = formats[newIndex];
+			this.lastUpdated = colorId;
+		},
 	},
 };
 </script>
@@ -758,73 +1111,28 @@ export default {
 .pkpFormField--contrastColor {
 	padding: 0;
 	border: none;
+	max-width: 100%;
+	box-sizing: border-box;
+	overflow: hidden;
 }
 
 .pkpFormField__heading--legend {
 	font-weight: 700;
 }
 
-.pkpFormField--contrastColor .vc-chrome {
-	box-shadow: none;
-	border: 1px solid #ddd;
-	border-radius: 2px;
-	margin-bottom: 12px;
-	width: 100%;
-	height: calc(100% - 44px);
-}
-
-.pkpFormField--contrastColor .vc-saturation {
-	height: 170px !important;
-}
-
-.pkpFormField--contrastColor .vc-saturation:focus,
-.pkpFormField--contrastColor
-	.vc-chrome-controls
-	.vc-chrome-sliders
-	.vc-chrome-hue-wrap
-	.vc-hue-picker:focus {
-	outline: 2px solid #1976d2;
-	outline-offset: 2px;
-	box-shadow: 0 0 5px rgba(25, 118, 210, 0.5);
-}
-
-.pkpFormField--contrastColor .vc-hue-container {
-	position: relative;
-	cursor: pointer;
-}
-
-.pkpFormField--contrastColor .vc-hue {
-	border-radius: 4px;
-}
-
-.pkpFormField--contrastColor .vc-hue-picker {
-	transition:
-		box-shadow 0.2s ease,
-		transform 0.1s ease;
-	height: 14px !important;
-	transform-origin: center;
-}
-
-.pkpFormField--contrastColor .vc-saturation-circle {
-	transition:
-		box-shadow 0.2s ease,
-		transform 0.1s ease;
-	transform-origin: center;
-}
-
-.pkpFormField--contrastColor .vc-chrome-fields input:focus {
-	outline: 2px solid #1976d2;
-	outline-offset: 0;
-}
-
 .pkpFormField__threeColumnsRow {
 	display: flex;
-	gap: 24px;
+	gap: 12px;
+	width: 100%;
+	max-width: 100%;
+	overflow: hidden;
+	flex-wrap: wrap;
 }
 
 .pkpFormField__colorPickerColumn {
 	flex: 1;
-	max-width: calc(50% - 24px);
+	max-width: calc(37% - 12px);
+	min-width: 160px;
 	display: flex;
 	flex-direction: column;
 	height: 340px;
@@ -833,7 +1141,7 @@ export default {
 .pkpFormField__contrastValueColumn {
 	display: flex;
 	flex-direction: column;
-	flex: 0 0 140px;
+	flex: 0 0 180px;
 	gap: 8px;
 	height: 340px;
 	justify-content: space-between;
@@ -841,6 +1149,9 @@ export default {
 
 .pkpFormField__colorPickerLabel {
 	font-weight: 700;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .pkpFormField__keyboardInstructions {
@@ -933,5 +1244,249 @@ export default {
 			outline-offset: 2px;
 		}
 	}
+}
+
+.pkpFormField__colorPickerWrapper {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.pkpFormField__customSaturationBox {
+	position: relative;
+	width: 100%;
+	height: 100px;
+	margin: 10px auto 15px;
+	border-radius: 4px;
+	overflow: hidden;
+	cursor: pointer;
+	outline: none;
+	box-sizing: border-box;
+
+	&:focus {
+		box-shadow: 0 0 0 2px #1976d2;
+	}
+}
+
+.pkpFormField__huePreviewRow {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	gap: 10px;
+	margin-bottom: 10px;
+}
+
+.pkpFormField__customHueSlider {
+	position: relative;
+	height: 14px;
+	z-index: 10;
+	cursor: pointer;
+	background: linear-gradient(
+		to right,
+		#f00 0%,
+		#ff0 17%,
+		#0f0 33%,
+		#0ff 50%,
+		#00f 67%,
+		#f0f 83%,
+		#f00 100%
+	);
+	border-radius: 4px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	outline: none;
+	box-sizing: border-box;
+	flex: 1;
+	max-width: calc(100% - 30px);
+}
+
+.pkpFormField__colorPreview {
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	border: 1px solid #ddd;
+	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+	flex-shrink: 0;
+}
+
+.pkpFormField__inputFormatRow {
+	display: flex;
+	align-items: center;
+	margin: 0 auto 5px;
+	width: 100%;
+	box-sizing: border-box;
+	flex-wrap: nowrap;
+	overflow: hidden;
+}
+
+.pkpFormField__formatArrows {
+	display: flex;
+	flex-direction: column;
+	margin-right: 4px;
+	height: 28px;
+}
+
+.pkpFormField__formatArrowUp,
+.pkpFormField__formatArrowDown {
+	background: none;
+	border: none;
+	padding: 0;
+	margin: 0;
+	cursor: pointer;
+	height: 14px;
+	width: 20px;
+	line-height: 8px;
+	font-size: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #666;
+
+	&:hover {
+		color: #1976d2;
+	}
+
+	&:focus {
+		outline: 1px solid #1976d2;
+		color: #1976d2;
+	}
+}
+
+.pkpFormField__formatLabel {
+	font-size: 11px;
+	color: #666;
+	text-align: left;
+	margin-bottom: 10px;
+	letter-spacing: 0.5px;
+	padding-left: 24px;
+}
+
+.pkpFormField__colorValueInput {
+	flex: 1;
+	padding: 4px 8px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	font-family: monospace;
+	font-size: 12px;
+	height: 28px;
+	box-sizing: border-box;
+
+	&:focus {
+		outline: 2px solid #1976d2;
+		outline-offset: -1px;
+		border-color: #1976d2;
+	}
+}
+
+.pkpFormField__control {
+	max-width: 100%;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+
+@media (max-width: 767px) {
+	.pkpFormField__threeColumnsRow {
+		flex-direction: column;
+	}
+
+	.pkpFormField__colorPickerColumn {
+		max-width: 100%;
+		height: auto;
+		margin-bottom: 20px;
+	}
+
+	.pkpFormField__contrastValueColumn {
+		max-width: 100%;
+		flex: 1;
+		height: auto;
+	}
+
+	.pkpFormField__formatSelector {
+		flex-wrap: wrap;
+	}
+
+	.pkpFormField__formatSelect,
+	.pkpFormField__colorValueInput {
+		margin-top: 4px;
+	}
+
+	.pkpFormField__colorValueInput {
+		width: 100%;
+		min-width: 0;
+	}
+}
+
+.pkpFormField__customHueHandle {
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	border: 2px solid #fff;
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3);
+	background: #fff;
+	transform: translate(-50%, -1px);
+	pointer-events: none;
+}
+
+.pkpFormField__customHueSlider:focus {
+	box-shadow: 0 0 0 2px #1976d2;
+}
+
+.pkpFormField__customSaturationBox--white,
+.pkpFormField__customSaturationBox--black {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	pointer-events: none;
+}
+
+.pkpFormField__customSaturationBox--white {
+	background: linear-gradient(to right, #fff, rgba(255, 255, 255, 0));
+}
+
+.pkpFormField__customSaturationBox--black {
+	background: linear-gradient(to top, #000, rgba(0, 0, 0, 0));
+}
+
+.pkpFormField__customSaturationPointer {
+	position: absolute;
+	cursor: pointer;
+	transform: translate(-4px, -4px);
+}
+
+.pkpFormField__customSaturationCircle {
+	width: 8px;
+	height: 8px;
+	box-shadow:
+		0 0 0 1.5px #fff,
+		inset 0 0 1px 1px rgba(0, 0, 0, 0.3),
+		0 0 1px 2px rgba(0, 0, 0, 0.4);
+	border-radius: 50%;
+	cursor: pointer;
+	transform-origin: center;
+	transition: transform 0.1s ease;
+}
+
+.pkpFormField__customSaturationBox:focus .pkpFormField__customSaturationCircle {
+	transform: scale(1.2);
+	box-shadow:
+		0 0 0 1.5px #fff,
+		0 0 0 3px #1976d2,
+		inset 0 0 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+.pkpFormField__a11yAnnouncer {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
 }
 </style>
