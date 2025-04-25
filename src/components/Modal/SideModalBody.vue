@@ -10,7 +10,7 @@
 				<TopNavActions />
 			</div>
 
-			<div class="py-6">
+			<div class="mt-4">
 				<div class="flex items-start">
 					<div class="ms-4">
 						<button
