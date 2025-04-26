@@ -1,11 +1,12 @@
 <template>
-	<div class="modal-content" :class="hasIcon ? 'px-24' : 'pt- px-12'">
+	<div class="modal-content" :class="hasIcon ? 'px-24' : 'px-12'">
 		<slot>
 			<div v-if="message" v-strip-unsafe-html="message" />
 		</slot>
 	</div>
 
 	<div
+		v-if="actions.length || slots.actions"
 		class="flex items-center gap-x-4"
 		:class="hasIcon ? 'p-10 ps-24' : 'p-12'"
 	>
@@ -29,7 +30,7 @@
 </template>
 
 <script setup>
-import {ref} from 'vue';
+import {ref, useSlots} from 'vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';
 
@@ -50,6 +51,8 @@ const props = defineProps({
 	},
 });
 
+const slots = useSlots();
+
 // for components that doesn't manually handle loading state
 const isDialogLoading = ref(props.isLoading);
 
@@ -62,3 +65,14 @@ function fireCallback(callback) {
 	}
 }
 </script>
+
+<style>
+/* Override style when form is opened in a dialog */
+.modal-content .pkpFormPages > .pkpFormPage > .pkpFormGroup {
+	@apply p-0;
+}
+
+.modal-content .pkpFormPages > .pkpFormPage > .pkpFormPage__footer {
+	@apply px-0 py-12;
+}
+</style>
