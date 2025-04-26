@@ -27,7 +27,7 @@
 				<span>{{ item.label }}</span>
 				<Icon
 					v-if="hasSubmenu"
-					class="h-4 w-4 ltr:ml-auto rtl:mr-auto"
+					class="h-4 w-4 flex-shrink-0 ltr:ml-auto rtl:mr-auto"
 					:icon="active ? 'Dropup' : 'Dropdown'"
 				/>
 			</a>
