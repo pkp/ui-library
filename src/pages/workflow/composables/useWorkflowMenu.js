@@ -8,6 +8,7 @@ export function useWorkflowMenu({
 	submission,
 	workflowNavigationConfig,
 	dashboardPage,
+	handleCreateNewVersion = () => {},
 }) {
 	const {
 		sideMenuProps,
@@ -16,7 +17,7 @@ export function useWorkflowMenu({
 		selectedItem: selectedMenuItem,
 		expandedKeys,
 		updateExpandedKeys,
-	} = useSideMenu(menuItems);
+	} = useSideMenu(menuItems, {onActionFn: handleCreateNewVersion});
 
 	const {getLatestPublication} = useSubmission();
 
@@ -81,9 +82,15 @@ export function useWorkflowMenu({
 		}
 	});
 
+	function updateWorkflowMenuKey(key) {
+		queryParamsUrl.workflowMenuKey = key;
+	}
+
 	// Update selectedMenuKey in url when menu selection changes
 	watch(selectedMenuKey, (newSelectedMenuKey) => {
-		queryParamsUrl.workflowMenuKey = newSelectedMenuKey;
+		if (newSelectedMenuKey !== 'publication_create_new_version') {
+			updateWorkflowMenuKey(newSelectedMenuKey);
+		}
 	});
 
 	return {
@@ -93,5 +100,6 @@ export function useWorkflowMenu({
 		selectedMenuState,
 		setExpandedKeys,
 		sideMenuProps,
+		updateWorkflowMenuKey,
 	};
 }
