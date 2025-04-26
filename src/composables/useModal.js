@@ -18,6 +18,14 @@ export function useModal() {
 	}
 
 	/**
+	 * Close the currently open dialog modal
+	 * @param {boolean} [triggerLegacyCloseHandler=true] - Whether to trigger the legacy close handler
+	 */
+	function closeDialog(triggerLegacyCloseHandler = true) {
+		modalStore.closeDialog(triggerLegacyCloseHandler);
+	}
+
+	/**
 	 * Open a side modal component
 	 * @param {Object|string} component - The component to render in the side modal
 	 * @param {Object} [props] - Properties to pass to the component
@@ -54,6 +62,7 @@ export function useModal() {
 
 	return {
 		openDialog,
+		closeDialog,
 		openSideModal,
 		openDialogNetworkError,
 		closeSideModal,
