@@ -29,6 +29,7 @@ export const useWorkflowStore = defineComponentStore(
 	'workflow',
 	({props, Components, useWorkflowConfig, useWorkflowNavigationConfig}) => {
 		const dashboardPage = props.pageInitConfig.dashboardPage;
+		const versionForm = props.pageInitConfig.componentForms.versionForm;
 		const contextMinReviewsPerSubmission =
 			props.pageInitConfig.contextMinReviewsPerSubmission;
 		const extender = useExtender();
@@ -47,6 +48,7 @@ export const useWorkflowStore = defineComponentStore(
 			selectedPublication,
 			selectedPublicationId,
 			refetchSubmissionPublication,
+			createNewVersion,
 		} = useWorkflowDataSubmissionPublication({
 			submissionId: props.submissionId,
 		});
@@ -106,17 +108,37 @@ export const useWorkflowStore = defineComponentStore(
 			}),
 		);
 
+		function handleCreateNewVersion(action) {
+			if (action === 'createNewVersion') {
+				createNewVersion({submission: submission.value}, (result) => {
+					triggerDataChange();
+					const publicationId = result?.data?.id;
+					if (publicationId) {
+						// TODO: redirect to new version
+						updateWorkflowMenuKey(`publication_${publicationId}_titleAbstract`);
+					}
+
+					// return result to Form component handler
+					return result;
+				});
+			}
+
+			// some other actions are handled by the selectedMenuKey watch event
+		}
+
 		const {
 			menuTitle,
 			navigateToMenu,
 			selectedMenuState,
 			setExpandedKeys,
 			sideMenuProps,
+			updateWorkflowMenuKey,
 		} = useWorkflowMenu({
 			menuItems,
 			submission,
 			workflowNavigationConfig,
 			dashboardPage,
+			handleCreateNewVersion,
 		});
 
 		watch(
@@ -224,6 +246,7 @@ export const useWorkflowStore = defineComponentStore(
 		const store = {
 			dashboardPage,
 			closeWorkflowModal,
+			versionForm,
 
 			submission,
 			submissionId,
