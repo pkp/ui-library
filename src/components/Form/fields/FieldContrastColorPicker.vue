@@ -55,6 +55,8 @@
 							@mousedown="startCustomSatValueDrag($event, 'color1')"
 							@touchstart="startCustomSatValueDrag($event, 'color1')"
 							@keydown="handleCustomSatValueKeydown($event, 'color1')"
+							@focus="handleFocus('color1')"
+							@blur="handleBlur('color1')"
 						>
 							<div class="pkpFormField__customSaturationBox--white"></div>
 							<div class="pkpFormField__customSaturationBox--black"></div>
@@ -114,6 +116,8 @@
 								type="text"
 								:aria-label="componentKeys.format + ' 1'"
 								@input="handleColorValueInput($event, 'color1')"
+								@focus="handleFocus('color1')"
+								@blur="handleBlur('color1')"
 							/>
 						</div>
 						<div class="pkpFormField__formatLabel">
@@ -124,7 +128,7 @@
 							class="pkpFormField__a11yAnnouncer"
 							aria-atomic="true"
 						>
-							<span v-if="lastUpdated === 'color1'">
+							<span v-if="shouldAnnounceColor('color1')">
 								{{ getColorFormatAnnouncement('color1') }}
 							</span>
 						</div>
@@ -143,6 +147,8 @@
 							@mousedown="startCustomSatValueDrag($event, 'color2')"
 							@touchstart="startCustomSatValueDrag($event, 'color2')"
 							@keydown="handleCustomSatValueKeydown($event, 'color2')"
+							@focus="handleFocus('color2')"
+							@blur="handleBlur('color2')"
 						>
 							<div class="pkpFormField__customSaturationBox--white"></div>
 							<div class="pkpFormField__customSaturationBox--black"></div>
@@ -202,6 +208,8 @@
 								type="text"
 								:aria-label="componentKeys.format + ' 2'"
 								@input="handleColorValueInput($event, 'color2')"
+								@focus="handleFocus('color2')"
+								@blur="handleBlur('color2')"
 							/>
 						</div>
 						<div class="pkpFormField__formatLabel">
@@ -212,7 +220,7 @@
 							class="pkpFormField__a11yAnnouncer"
 							aria-atomic="true"
 						>
-							<span v-if="lastUpdated === 'color2'">
+							<span v-if="shouldAnnounceColor('color2')">
 								{{ getColorFormatAnnouncement('color2') }}
 							</span>
 						</div>
@@ -256,7 +264,9 @@
 						class="pkpFormField__a11yAnnouncer"
 						aria-atomic="true"
 					>
-						<span v-if="lastUpdated">{{ getContrastAnnouncement() }}</span>
+						<span v-if="shouldAnnounceContrast()">
+							{{ getContrastAnnouncement() }}
+						</span>
 					</div>
 				</div>
 			</div>
@@ -330,6 +340,15 @@ export default {
 				color2: 'hex',
 			},
 			lastUpdated: null,
+			focused: {
+				color1: false,
+				color2: false,
+			},
+			previousColors: {
+				color1: '#1E6292',
+				color2: '#FFFFFF',
+			},
+			debounceTimer: null,
 			// Preloaded translation keys for SSR
 			componentKeys: {
 				required: this.t('common.required'),
@@ -546,6 +565,9 @@ export default {
 				}
 
 				if (newHex) {
+					const previousColor =
+						colorId === 'color1' ? this.color1.hex : this.color2.hex;
+
 					if (colorId === 'color1') {
 						this.color1.hex = newHex;
 					} else {
@@ -558,13 +580,16 @@ export default {
 					this.valueValues[colorId] = hsv.v;
 
 					this.updateValue();
-					this.checkContrast();
+					this.debouncedCheckContrast();
+
+					if (previousColor !== newHex) {
+						this.lastUpdated = colorId;
+						this.previousColors[colorId] = newHex;
+					}
 				}
 			} catch (e) {
 				console.error('Error parsing color input:', e);
 			}
-
-			this.lastUpdated = colorId;
 		},
 
 		/**
@@ -586,6 +611,7 @@ export default {
 
 		handleHexInput(colorId) {
 			const color = colorId === 'color1' ? this.color1 : this.color2;
+			const previousHex = color.hex;
 
 			let hex = color.hex.trim();
 
@@ -609,7 +635,12 @@ export default {
 			this.valueValues[colorId] = hsv.v;
 
 			this.updateValue();
-			this.checkContrast();
+			this.debouncedCheckContrast();
+
+			if (previousHex !== hex) {
+				this.lastUpdated = colorId;
+				this.previousColors[colorId] = hex;
+			}
 		},
 
 		handleCustomHueClick(event, colorId) {
@@ -689,9 +720,14 @@ export default {
 			}
 
 			this.updateValue();
-			this.checkContrast();
+			this.debouncedCheckContrast();
 
-			this.lastUpdated = colorId;
+			const currentColor =
+				colorId === 'color1' ? this.color1.hex : this.color2.hex;
+			if (this.previousColors[colorId] !== currentColor) {
+				this.lastUpdated = colorId;
+				this.previousColors[colorId] = currentColor;
+			}
 		},
 
 		handleCustomHueKeydown(event, colorId) {
@@ -853,6 +889,8 @@ export default {
 			};
 
 			const hex = this.hsvToHex(hsv);
+			const previousHex =
+				colorId === 'color1' ? this.color1.hex : this.color2.hex;
 
 			if (colorId === 'color1') {
 				this.color1 = {hex};
@@ -861,9 +899,12 @@ export default {
 			}
 
 			this.updateValue();
-			this.checkContrast();
+			this.debouncedCheckContrast();
 
-			this.lastUpdated = colorId;
+			if (previousHex !== hex) {
+				this.lastUpdated = colorId;
+				this.previousColors[colorId] = hex;
+			}
 		},
 
 		updateValue() {
@@ -884,11 +925,12 @@ export default {
 			const lum1 = this.calculateLuminance(rgb1.r, rgb1.g, rgb1.b);
 			const lum2 = this.calculateLuminance(rgb2.r, rgb2.g, rgb2.b);
 
+			const previousContrast = this.currentContrast;
 			this.currentContrast = this.calculateContrast(lum1, lum2);
 
 			this.updateValue();
 
-			if (this.lastUpdated) {
+			if (previousContrast !== this.currentContrast) {
 				this.lastUpdated = 'contrast';
 			}
 		},
@@ -1102,6 +1144,46 @@ export default {
 
 			this.colorFormats[colorId] = formats[newIndex];
 			this.lastUpdated = colorId;
+		},
+
+		handleFocus(colorId) {
+			this.focused[colorId] = true;
+			this.previousColors[colorId] =
+				colorId === 'color1' ? this.color1.hex : this.color2.hex;
+		},
+
+		handleBlur(colorId) {
+			this.focused[colorId] = false;
+		},
+
+		shouldAnnounceColor(colorId) {
+			const currentColor =
+				colorId === 'color1' ? this.color1.hex : this.color2.hex;
+			// On first focus, announce even if no change
+			if (this.focused[colorId] && this.lastUpdated === null) {
+				return true;
+			}
+			// For subsequent changes, only announce if color actually changed
+			return (
+				this.lastUpdated === colorId &&
+				this.previousColors[colorId] !== currentColor
+			);
+		},
+
+		shouldAnnounceContrast() {
+			// Only announce contrast changes after debounce
+			return this.lastUpdated === 'contrast' && this.debounceTimer === null;
+		},
+
+		debouncedCheckContrast() {
+			if (this.debounceTimer) {
+				clearTimeout(this.debounceTimer);
+			}
+
+			this.debounceTimer = setTimeout(() => {
+				this.checkContrast();
+				this.debounceTimer = null;
+			}, 300); // 300ms debounce
 		},
 	},
 };
