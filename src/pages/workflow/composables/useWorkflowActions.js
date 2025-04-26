@@ -1,6 +1,6 @@
 import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
-import {useSubmission} from '@/composables/useSubmission';
+
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
@@ -215,46 +215,6 @@ export function useWorkflowActions() {
 		});
 	}
 
-	function workflowCreateNewVersion({submission, store}, finishedCallback) {
-		const {openDialog} = useModal();
-		const {getLatestPublication} = useSubmission();
-
-		openDialog({
-			title: t('publication.createVersion'),
-			message: t('publication.version.confirm'),
-			actions: [
-				{
-					label: t('common.yes'),
-					isPrimary: true,
-					callback: async (close) => {
-						const latestPublication = getLatestPublication(submission);
-
-						const {apiUrl: createNewVersionUrl} = useUrl(
-							`submissions/${submission.id}/publications/${latestPublication.id}/version`,
-						);
-						const {fetch, data: newPublication} = useFetch(
-							createNewVersionUrl,
-							{
-								method: 'POST',
-							},
-						);
-						await fetch();
-						// select newest publication
-						store.selectPublicationId(newPublication.value.id);
-						close();
-
-						finishedCallback();
-					},
-				},
-				{
-					label: t('common.no'),
-					callback: (close) => close(),
-				},
-			],
-			modalStyle: 'primary',
-		});
-	}
-
 	function workflowPreviewPublication({selectedPublication}) {
 		const {redirectToPage} = useUrl(selectedPublication.urlPublished);
 
@@ -320,7 +280,6 @@ export function useWorkflowActions() {
 		workflowScheduleForPublication,
 		workflowUnschedulePublication,
 		workflowUnpublishPublication,
-		workflowCreateNewVersion,
 		workflowPreviewPublication,
 		workflowChangeSubmissionLanguage,
 		workflowDeleteSubmission,
