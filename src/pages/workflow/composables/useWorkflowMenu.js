@@ -1,5 +1,5 @@
 import {useSideMenu} from '@/composables/useSideMenu';
-import {computed, watch} from 'vue';
+import {computed, watch, ref} from 'vue';
 import {useQueryParams} from '@/composables/useQueryParams';
 import {useSubmission} from '@/composables/useSubmission';
 
@@ -21,6 +21,8 @@ export function useWorkflowMenu({
 
 	const {getLatestPublication} = useSubmission();
 
+	const previousMenuState = ref({});
+
 	/**
 	 * Url query params
 	 */
@@ -33,9 +35,16 @@ export function useWorkflowMenu({
 	 * stageId: applicable when primaryMenuItem is workflow
 	 * reviewRoundId: applicable when reviewRound is selected
 	 * publicationId: applicable when primaryMenuItem is publication
+	 * isDialogOnly: Set to `true` when the menu item is intended to open a dialog without affecting the primary/secondary item state.
 	 */
 	const selectedMenuState = computed(() => {
 		const state = selectedMenuItem.value?.state || {};
+
+		// If menu is "dialog-only" action, don't update the actionArgs
+		// to preserve the current primary/secondary menu items dislayed in the workflow content
+		if (actionArgs.isDialogOnly) {
+			return previousMenuState.value;
+		}
 
 		return {
 			...state,
@@ -90,6 +99,12 @@ export function useWorkflowMenu({
 	watch(selectedMenuKey, (newSelectedMenuKey) => {
 		if (newSelectedMenuKey !== 'publication_create_new_version') {
 			updateWorkflowMenuKey(newSelectedMenuKey);
+		}
+	});
+
+	watch(selectedMenuState, (newState) => {
+		if (!selectedMenuItem.value?.actionArgs?.isDialogOnly) {
+			previousMenuState.value = newState;
 		}
 	});
 
