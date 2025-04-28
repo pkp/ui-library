@@ -248,6 +248,7 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 			action: 'createNewVersion',
 			actionArgs: {
 				submissionId: submission.id,
+				isDialogOnly: true,
 			},
 		});
 
