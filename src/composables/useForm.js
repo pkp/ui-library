@@ -424,5 +424,6 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		addGroup,
 		addFieldText,
 		addFieldSelect,
+		getField,
 	};
 }
