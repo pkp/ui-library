@@ -309,5 +309,6 @@ export function useForm(_form, {customSubmit} = {}) {
 		setAction,
 		setMethod,
 		structuredErrors,
+		getField,
 	};
 }
