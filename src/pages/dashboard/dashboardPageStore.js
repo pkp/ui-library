@@ -201,7 +201,24 @@ export const useDashboardPageStore = defineComponentStore(
 		/**
 		 * Sorting
 		 */
-		const {sortDescriptor, sortQueryParamsApi, applySort} = useSorting();
+		const {sortDescriptor, sortQueryParamsApi, applySort, sortQueryParams} =
+			useSorting();
+
+		// initially apply the sort query params
+		if (queryParamsUrl.sortColumn) {
+			applySort(queryParamsUrl.sortColumn, queryParamsUrl.sortDirection);
+		}
+
+		// apply the sort query params to the url
+		watch(sortQueryParams, (newSortQueryParams) => {
+			if (newSortQueryParams.sortColumn) {
+				queryParamsUrl.sortColumn = newSortQueryParams.sortColumn;
+			}
+
+			if (newSortQueryParams.sortDirection) {
+				queryParamsUrl.sortDirection = newSortQueryParams.sortDirection;
+			}
+		});
 
 		/**
 		 * Submissions
