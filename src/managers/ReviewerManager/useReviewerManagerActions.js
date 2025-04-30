@@ -30,14 +30,17 @@ export const Actions = {
 export function useReviewerManagerActions() {
 	const {t, localizeSubmission} = useLocalize();
 
-	function reviewerAddReviewer({submission, reviewRoundId}, finishedCallback) {
+	function reviewerAddReviewer(
+		{submission, reviewRoundId, submissionStageId},
+		finishedCallback,
+	) {
 		const {openLegacyModal} = useLegacyGridUrl({
 			op: 'showReviewerForm',
 			component: 'grid.users.reviewer.ReviewerGridHandler',
 			params: {
 				selectionType: pkp.const.REVIEWER_SELECT_ADVANCED_SEARCH,
 				submissionId: submission.id,
-				stageId: submission.stageId,
+				stageId: submissionStageId,
 				reviewRoundId,
 			},
 		});

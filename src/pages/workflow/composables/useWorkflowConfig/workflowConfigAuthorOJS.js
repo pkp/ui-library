@@ -131,7 +131,7 @@ export const WorkflowConfig = {
 				props: {
 					namespace: 'SUBMISSION_FILES',
 					submission: submission,
-					submissionStageId: submission.stageId,
+					submissionStageId: selectedStageId,
 				},
 			});
 
@@ -168,6 +168,7 @@ export const WorkflowConfig = {
 					component: 'ReviewerManager',
 					props: {
 						submission: submission,
+						submissionStageId: selectedStageId,
 						reviewRoundId: selectedReviewRound?.id,
 						redactedForAuthors: true,
 						componentForms: pageInitConfig.componentForms,
@@ -241,7 +242,7 @@ export const WorkflowConfig = {
 				props: {
 					namespace: 'COPYEDITED_FILES',
 					submission: submission,
-					submissionStageId: submission.stageId,
+					submissionStageId: selectedStageId,
 				},
 			});
 

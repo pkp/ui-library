@@ -208,6 +208,7 @@ export const WorkflowConfig = {
 				component: 'ReviewerManager',
 				props: {
 					submission: submission,
+					submissionStageId: selectedStageId,
 					reviewRoundId: selectedReviewRound?.id,
 					componentForms: pageInitConfig.componentForms,
 				},
