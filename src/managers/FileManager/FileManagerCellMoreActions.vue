@@ -1,10 +1,10 @@
 <template>
 	<TableCell>
 		<DropdownActions
-			v-if="fileManagerStore.itemActions?.length"
+			v-if="itemActions?.length"
 			:label="t('common.moreActions')"
 			button-variant="ellipsis"
-			:actions="fileManagerStore.itemActions"
+			:actions="itemActions"
 			:action-args="{file}"
 			@action="
 				(actionName, actionArgs) => fileManagerStore[actionName](actionArgs)
@@ -13,14 +13,19 @@
 	</TableCell>
 </template>
 <script setup>
-import {useFileManagerStore} from './fileManagerStore.js';
-
-defineProps({
-	file: {type: Object, required: true},
-});
-
+import {computed} from 'vue';
 import TableCell from '@/components/Table/TableCell.vue';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 
+import {useFileManagerStore} from './fileManagerStore.js';
+
+const props = defineProps({
+	file: {type: Object, required: true},
+});
+
 const fileManagerStore = useFileManagerStore();
+
+const itemActions = computed(() =>
+	fileManagerStore.getItemActions({file: props.file}),
+);
 </script>

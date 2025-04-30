@@ -331,7 +331,7 @@ export function useFileManagerConfig() {
 		return actions;
 	}
 
-	function getItemActions({managerConfig}) {
+	function getItemActions({item, managerConfig}) {
 		const actions = [];
 		const enabledActions = managerConfig.permittedActions;
 
