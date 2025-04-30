@@ -1,49 +1,14 @@
 <template>
 	<TableRow>
-		<TableCell>
-			<span
-				class="my-0.5 items-center px-2"
-				:class="{'font-bold': depth <= 2}"
-				:style="{'padding-left': `${depth - 0.9}rem`}"
-			>
-				{{ category.localizedTitle }}
-			</span>
-		</TableCell>
-
-		<TableCell>
-			<span class="category__manager__assigendEditors">
-				{{ category.assignedEditors.map((editor) => editor.name).join(', ') }}
-			</span>
-		</TableCell>
-
-		<TableCell>
-			<div
-				class="category__manager__table_row_actions flex cursor-pointer justify-end gap-4"
-			>
-				<DropdownActions
-					:label="t('common.moreActions')"
-					button-variant="ellipsis"
-					:actions="categoryManagerStore.getItemActions()"
-					@action="
-						(actionName) =>
-							categoryManagerStore.handleItemAction(actionName, category)
-					"
-				/>
-				<span
-					v-if="category.subCategories?.length"
-					@click="categoryManagerStore.toggleItemExpansion(category.id)"
-				>
-					<Icon
-						:icon="
-							categoryManagerStore.expanded.includes(category.id)
-								? 'Dropup'
-								: 'Dropdown'
-						"
-						class="h-6 w-6 text-primary"
-					/>
-				</span>
-			</div>
-		</TableCell>
+		<component
+			:is="Components[column.component] || column.component"
+			v-for="(column, i) in categoryManagerStore.columns"
+			:key="i"
+			:category="category"
+			:depth="depth"
+			v-bind="column.props"
+		></component>
+		<CategoryCellToggleSubCategories :category="category" :depth="depth" />
 	</TableRow>
 
 	<template
@@ -61,14 +26,15 @@
 	</template>
 </template>
 <script setup>
-import Icon from '@/components/Icon/Icon.vue';
 import TableRow from '@/components/Table/TableRow.vue';
-import TableCell from '@/components/Table/TableCell.vue';
-import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 import CategoryTreeRow from '@/managers/CategoryManager/CategoryTreeRow.vue';
+import CategoryManagerCellName from './CategoryManagerCellName.vue';
+import CategoryManagerCellAssignedTo from './CategoryManagerCellAssignedTo.vue';
+import CategoryManagerCellMoreActions from './CategoryManagerCellMoreActions.vue';
 import {useCategoryManagerStore} from './categoryManagerStore.js';
+import CategoryCellToggleSubCategories from './CategoryCellToggleSubCategories.vue';
 
-const props = defineProps({
+defineProps({
 	/**
 	 * The category object to display.
 	 */
@@ -86,5 +52,11 @@ const props = defineProps({
 		required: false,
 	},
 });
-const categoryManagerStore = useCategoryManagerStore(props);
+
+const Components = {
+	CategoryManagerCellName,
+	CategoryManagerCellAssignedTo,
+	CategoryManagerCellMoreActions,
+};
+const categoryManagerStore = useCategoryManagerStore();
 </script>
