@@ -78,7 +78,7 @@ export const useReviewerManagerStore = defineComponentStore(
 		function getActionArgs(additionalArgs = {}) {
 			return {
 				submission: props.submission,
-				submissionStageId: props.submission.stageId,
+				submissionStageId: props.submissionStageId,
 				reviewRoundId: props.reviewRoundId,
 				componentForms: props.componentForms,
 				...additionalArgs,
