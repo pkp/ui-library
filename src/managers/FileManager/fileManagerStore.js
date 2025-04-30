@@ -10,7 +10,7 @@ import {useExtender} from '@/composables/useExtender';
 export const useFileManagerStore = defineComponentStore(
 	'fileManager',
 	(props) => {
-		const extender = useExtender();
+		const extender = useExtender({context: {props}});
 
 		const {namespace, submissionStageId, submission} = toRefs(props);
 		/**
@@ -40,11 +40,12 @@ export const useFileManagerStore = defineComponentStore(
 			}),
 		);
 
-		const itemActions = computed(() =>
-			fileManagerConfig.getItemActions({
+		function getItemActions({file}) {
+			return fileManagerConfig.getItemActions({
+				file,
 				managerConfig: managerConfig.value,
-			}),
-		);
+			});
+		}
 
 		/**
 		 *  Files fetching
@@ -154,7 +155,7 @@ export const useFileManagerStore = defineComponentStore(
 			columns,
 			topItems,
 			bottomItems,
-			itemActions,
+			getItemActions,
 
 			/**
 			 * Actions
