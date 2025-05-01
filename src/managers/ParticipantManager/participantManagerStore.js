@@ -14,7 +14,7 @@ import {useExtender} from '@/composables/useExtender';
 export const useParticipantManagerStore = defineComponentStore(
 	'participantManager',
 	(props) => {
-		const extender = useExtender();
+		const extender = useExtender({context: {props}});
 		const submissionId = ref(props.submission.id);
 
 		const relativeUrl = computed(() => {

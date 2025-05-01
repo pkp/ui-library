@@ -79,13 +79,24 @@ pkp.registry.storeExtendFn(
 	'getColumns',
 	// Columns is the result from the original function, which can be adjusted
 	// Args are the arguments that the getColumns function retrieved to calculate the columns
+	// Context exposes props that are passed to given component
 
-	(columns, args) => {
+	(columns, args, context) => {
 		// Adding new column last to the end
 		const newColumns = [...columns];
 
 		const {useLocalize} = pkp.modules.useLocalize;
 		const {t} = useLocalize();
+
+		// to get file object
+		console.log(args.file);
+
+		// to get prop passed to FileManager
+		console.log(context.props.submission);
+
+		// to get anything thats not available in args/props, but its available on particular store.
+		const store = pkp.registry.getPiniaStore('fileManager_SUBMISSION_FILES');
+		console.log(store.files);
 
 		newColumns.splice(newColumns.length - 1, 0, {
 			// Header label of new column

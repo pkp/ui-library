@@ -48,7 +48,7 @@ export const useDashboardPageStore = defineComponentStore(
 	'dashboard',
 	(pageInitConfig) => {
 		const appStore = useAppStore();
-		const extender = useExtender();
+		const extender = useExtender({context: {props: pageInitConfig}});
 
 		const dashboardPage = pageInitConfig.dashboardPage;
 
