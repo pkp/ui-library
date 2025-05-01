@@ -11,7 +11,7 @@ import {useExtender} from '@/composables/useExtender';
 export const useGalleyManagerStore = defineComponentStore(
 	'galleyManager',
 	(props) => {
-		const extender = useExtender();
+		const extender = useExtender({context: {props}});
 
 		const {submission, publication} = toRefs(props);
 
@@ -37,9 +37,10 @@ export const useGalleyManagerStore = defineComponentStore(
 			}),
 		);
 
-		const itemActions = computed(() =>
-			galleyManagerConfig.getItemActions(getActionArgs()),
-		);
+		function getItemActions({galley}) {
+			return galleyManagerConfig.getItemActions({galley, ...getActionArgs()});
+		}
+
 		const bottomItems = computed(() =>
 			galleyManagerConfig.getBottomItems(getActionArgs()),
 		);
@@ -196,7 +197,7 @@ export const useGalleyManagerStore = defineComponentStore(
 
 			/** Config */
 			columns,
-			itemActions,
+			getItemActions,
 			topItems,
 			bottomItems,
 
