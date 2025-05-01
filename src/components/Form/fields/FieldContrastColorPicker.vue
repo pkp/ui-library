@@ -257,6 +257,13 @@
 							:aria-label="`${category.label}: ${currentContrast >= category.value ? 'Pass' : 'Fail'}`"
 						>
 							{{ category.label }}
+							<span class="pkpFormField__contrastCategoryIcon">
+								<span
+									v-if="currentContrast >= category.value"
+									class="fa fa-check"
+								></span>
+								<span v-else class="fa fa-times"></span>
+							</span>
 						</div>
 					</div>
 					<div
@@ -277,9 +284,19 @@
 						href="https://docs.pkp.sfu.ca/accessible-content/en/principles#contrast-ratio"
 						target="_blank"
 						rel="noopener"
-						:aria-label="componentKeys.contrastGuideText"
+						:aria-label="
+							componentKeys.contrastGuideText +
+							' ' +
+							componentKeys.opensInNewWindowText
+						"
 					>
 						{{ componentKeys.contrastGuideText }}
+						<span class="pkpFormField__newWindowNotice">
+							<span class="fa fa-external-link" aria-hidden="true"></span>
+							<span class="pkpFormField__srOnly">
+								{{ componentKeys.opensInNewWindowText }}
+							</span>
+						</span>
 					</a>
 				</div>
 			</div>
@@ -372,6 +389,7 @@ export default {
 				),
 				levelAccessible: this.t('common.colorPicker.levelAccessible'),
 				levelNotAccessible: this.t('common.colorPicker.levelNotAccessible'),
+				opensInNewWindowText: this.t('common.colorPicker.opensInNewWindowText'),
 			},
 		};
 	},

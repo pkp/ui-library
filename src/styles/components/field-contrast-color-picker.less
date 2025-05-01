@@ -100,6 +100,9 @@
 		border-radius: 4px;
 		font-weight: 600;
 		font-size: 11px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 
 		&--pass {
 			background-color: rgba(0, 178, 141, 0.15);
@@ -108,6 +111,20 @@
 
 		&--fail {
 			background-color: rgba(208, 10, 108, 0.15);
+			color: #b00058;
+		}
+	}
+
+	&__contrastCategoryIcon {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+
+		.fa-check {
+			color: #007a60;
+		}
+
+		.fa-times {
 			color: #b00058;
 		}
 	}
