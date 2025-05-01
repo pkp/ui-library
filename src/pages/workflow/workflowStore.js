@@ -31,7 +31,7 @@ export const useWorkflowStore = defineComponentStore(
 		const dashboardPage = props.pageInitConfig.dashboardPage;
 		const contextMinReviewsPerSubmission =
 			props.pageInitConfig.contextMinReviewsPerSubmission;
-		const extender = useExtender();
+		const extender = useExtender({context: {props}});
 		/**
 		 * Action to close the workflow from inside
 		 * */
