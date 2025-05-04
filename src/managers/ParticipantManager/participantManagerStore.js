@@ -14,7 +14,7 @@ import {useExtender} from '@/composables/useExtender';
 export const useParticipantManagerStore = defineComponentStore(
 	'participantManager',
 	(props) => {
-		const extender = useExtender({context: {props}});
+		const extender = useExtender();
 		const submissionId = ref(props.submission.id);
 
 		const relativeUrl = computed(() => {
@@ -179,6 +179,7 @@ export const useParticipantManagerStore = defineComponentStore(
 			participantLogoutAs,
 
 			extender,
+			props,
 		};
 	},
 );
