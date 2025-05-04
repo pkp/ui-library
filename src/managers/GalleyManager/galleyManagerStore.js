@@ -11,7 +11,7 @@ import {useExtender} from '@/composables/useExtender';
 export const useGalleyManagerStore = defineComponentStore(
 	'galleyManager',
 	(props) => {
-		const extender = useExtender({context: {props}});
+		const extender = useExtender();
 
 		const {submission, publication} = toRefs(props);
 
@@ -216,6 +216,7 @@ export const useGalleyManagerStore = defineComponentStore(
 
 			/** Extender */
 			extender,
+			props,
 		};
 	},
 );

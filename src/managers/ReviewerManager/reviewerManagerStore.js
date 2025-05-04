@@ -14,7 +14,7 @@ export const useReviewerManagerStore = defineComponentStore(
 			getReviewAssignmentsForRound,
 		} = useSubmission();
 
-		const extender = useExtender({context: {props}});
+		const extender = useExtender();
 
 		const reviewAssignments = computed(() => {
 			const reviewAssignmentsForSelectedRound = getReviewAssignmentsForRound(
@@ -242,6 +242,7 @@ export const useReviewerManagerStore = defineComponentStore(
 			 * Extender
 			 */
 			extender,
+			props,
 		};
 	},
 );

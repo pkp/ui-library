@@ -132,6 +132,9 @@ export const useUserAccessManagerStore = defineComponentStore(
 
 			/**refs */
 			searchPhrase,
+
+			// Extensibility
+			extender,
 		};
 	},
 );
