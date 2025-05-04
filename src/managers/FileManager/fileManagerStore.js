@@ -10,7 +10,7 @@ import {useExtender} from '@/composables/useExtender';
 export const useFileManagerStore = defineComponentStore(
 	'fileManager',
 	(props) => {
-		const extender = useExtender({context: {props}});
+		const extender = useExtender();
 
 		const {namespace, submissionStageId, submission} = toRefs(props);
 		/**
@@ -169,6 +169,7 @@ export const useFileManagerStore = defineComponentStore(
 
 			/** exposed for extensibility purposes */
 			extender,
+			props,
 		};
 	},
 	{requireNamespace: true},

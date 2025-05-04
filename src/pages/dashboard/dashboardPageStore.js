@@ -46,17 +46,16 @@ export const DashboardPageTypes = {
 
 export const useDashboardPageStore = defineComponentStore(
 	'dashboard',
-	(pageInitConfig) => {
+	(props) => {
 		const appStore = useAppStore();
-		const extender = useExtender({context: {props: pageInitConfig}});
+		const extender = useExtender();
 
-		const dashboardPage = pageInitConfig.dashboardPage;
+		const dashboardPage = props.dashboardPage;
 
 		/**
 		 * Minimal reviews count feature
 		 */
-		const contextMinReviewsPerSubmission =
-			pageInitConfig.contextMinReviewsPerSubmission;
+		const contextMinReviewsPerSubmission = props.contextMinReviewsPerSubmission;
 
 		/**
 		 * ModalStore
@@ -96,7 +95,7 @@ export const useDashboardPageStore = defineComponentStore(
 		/**
 		 * Views
 		 */
-		const views = ref(pageInitConfig.views);
+		const views = ref(props.views);
 		const currentViewId = computed(() => {
 			// does it exist
 			const view = views.value.find(
@@ -164,7 +163,7 @@ export const useDashboardPageStore = defineComponentStore(
 		/**
 		 * Filters form
 		 */
-		const filtersForm = ref(pageInitConfig.filtersForm);
+		const filtersForm = ref(props.filtersForm);
 
 		const {
 			filtersFormList,
@@ -227,7 +226,7 @@ export const useDashboardPageStore = defineComponentStore(
 		function setCurrentPage(_currentPage) {
 			currentPage.value = _currentPage;
 		}
-		const countPerPage = ref(pageInitConfig.countPerPage);
+		const countPerPage = ref(props.countPerPage);
 		const {apiUrl} = useUrl('_submissions');
 
 		const submissionsUrl = computed(() => {
@@ -283,9 +282,8 @@ export const useDashboardPageStore = defineComponentStore(
 		// already trigger by SideNav to get initial values for all dashboards
 		fetchSubmissions(false);
 
-		const reviewerManagerActions = useReviewerManagerActions(pageInitConfig);
-		const participantManagerActions =
-			useParticipantManagerActions(pageInitConfig);
+		const reviewerManagerActions = useReviewerManagerActions(props);
+		const participantManagerActions = useParticipantManagerActions(props);
 		const fileManagerActions = useFileManagerActions();
 		const {getCurrentPublication} = useSubmission();
 
@@ -430,7 +428,7 @@ export const useDashboardPageStore = defineComponentStore(
 				'WorkflowPage',
 				{
 					submissionId,
-					pageInitConfig,
+					pageInitConfig: props,
 				},
 				{
 					onClose: async () => {
@@ -612,10 +610,11 @@ export const useDashboardPageStore = defineComponentStore(
 			contextMinReviewsPerSubmission,
 
 			// Expose component forms, so managers and other dashboard/workflow component can access them
-			componentForms: pageInitConfig.componentForms,
+			componentForms: props.componentForms,
 
 			// Extender
 			extender,
+			props,
 		};
 	},
 );

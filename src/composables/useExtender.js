@@ -1,7 +1,7 @@
 /**
  * Provides functions to extend and enhance existing functions
  */
-export function useExtender({context} = {context: {}}) {
+export function useExtender() {
 	/**
 	 * Collection of functions that can be extended
 	 * @type {Object<string, Function>}
@@ -33,7 +33,7 @@ export function useExtender({context} = {context: {}}) {
 
 		availableFunctions[fnName] = (...args) => {
 			const originalResult = originalFn(...args);
-			return extendingFn(originalResult, ...args, context);
+			return extendingFn(originalResult, ...args);
 		};
 	}
 
