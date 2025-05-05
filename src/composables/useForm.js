@@ -63,6 +63,21 @@ export function isFieldValueArray(field) {
 }
 
 /**
+ * Set options for a select field
+ * @param {Object} form - The form object
+ * @param {string} fieldName - The name of the field to set options for
+ * @param {Array<Object>} optionsArray - Array of options to set (each option should have a label and value)
+ */
+function setSelectOptions(form, fieldName, optionsArray) {
+	const field = getField(form, fieldName);
+	if (field) {
+		field.options = optionsArray;
+	}
+
+	return field;
+}
+
+/**
  * Provides functions for form management
  * @param {Object} _form - The initial form object
  * @param {Object} [options={}] - Additional options
@@ -425,5 +440,6 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		addFieldText,
 		addFieldSelect,
 		getField,
+		setSelectOptions,
 	};
 }
