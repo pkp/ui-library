@@ -489,7 +489,7 @@ export const useDashboardPageStore = defineComponentStore(
 
 		const dashboardConfigReviewActivity = extender.addFns(
 			useDashboardConfigReviewActivity({
-				recommendations: pageInitConfig.recommendations,
+				recommendations: props.recommendations,
 			}),
 		);
 
