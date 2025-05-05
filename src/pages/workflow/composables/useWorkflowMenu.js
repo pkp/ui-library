@@ -91,14 +91,10 @@ export function useWorkflowMenu({
 		}
 	});
 
-	function updateWorkflowMenuKey(key) {
-		queryParamsUrl.workflowMenuKey = key;
-	}
-
 	// Update selectedMenuKey in url when menu selection changes
 	watch(selectedMenuKey, (newSelectedMenuKey) => {
 		if (newSelectedMenuKey !== 'publication_create_new_version') {
-			updateWorkflowMenuKey(newSelectedMenuKey);
+			queryParamsUrl.workflowMenuKey = newSelectedMenuKey;
 		}
 	});
 
@@ -115,6 +111,5 @@ export function useWorkflowMenu({
 		selectedMenuState,
 		setExpandedKeys,
 		sideMenuProps,
-		updateWorkflowMenuKey,
 	};
 }

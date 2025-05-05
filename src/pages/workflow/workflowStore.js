@@ -110,12 +110,12 @@ export const useWorkflowStore = defineComponentStore(
 
 		function handleCreateNewVersion(action) {
 			if (action === 'createNewVersion') {
-				createNewVersion({submission: submission.value}, (result) => {
-					triggerDataChange();
-					const publicationId = result?.data?.id;
-					if (publicationId) {
-						// TODO: redirect to new version
-						updateWorkflowMenuKey(`publication_${publicationId}_titleAbstract`);
+				createNewVersion({submission: submission.value}, async (result) => {
+					await triggerDataChange();
+					const newPublicationId = result?.data?.id;
+					if (newPublicationId) {
+						// redirect to the new version
+						navigateToMenu(`publication_${newPublicationId}_titleAbstract`);
 					}
 
 					// return result to Form component handler
@@ -132,7 +132,6 @@ export const useWorkflowStore = defineComponentStore(
 			selectedMenuState,
 			setExpandedKeys,
 			sideMenuProps,
-			updateWorkflowMenuKey,
 		} = useWorkflowMenu({
 			menuItems,
 			submission,
