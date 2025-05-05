@@ -66,52 +66,45 @@ Check out example of adding an additional tab in a Smarty template in [backend-u
 
 Starting with version 3.5, most new pages/managers have hooks to inject your custom component in various locations.
 
-Pinia stores are used as an underlying mechanism to inject components and are exposing configuration functions that are driving the UI. It also makes it straightforward to interact with the store to retrieve data or trigger any existing actions.
+More details about available hooks for individual pages/managers are covered in individual documentation ([Dashboard](../?path=/docs/pages-dashboard--docs), [Workflow](../?path=/docs/pages-workflow--docs), [FileManager](../?path=/docs/managers-filemanager--docs), [ReviewerManager](../?path=/docs/managers-reviewermanager--docs), [ParticipantManager](../?path=/docs/managers-participantmanager--docs), [GalleyManager](../?path=/docs/managers-galleymanager--docs)).
+
+Pinia stores are used as an underlying tool for extensibility. JS Hooks can be leveraged using `store.extender`.
 
 Example
 
 ```js
-// Adding iThenticate column
-pkp.registry.storeExtendFn(
-	// Pinia store name
-	'fileManager_SUBMISSION_FILES',
-	// Function to extend
-	'getColumns',
-	// Columns is the result from the original function, which can be adjusted
-	// Args are the arguments that the getColumns function retrieved to calculate the columns
-	// Context exposes props that are passed to given component
+pkp.registry.storeExtend('fileManager_SUBMISSION_FILES', (piniaContext) => {
+	const fileStore = piniaContext.store;
 
-	(columns, args, context) => {
-		// Adding new column last to the end
+	// Function to extend
+	fileStore.extender.extendFn('getColumns', (columns, args) => {
+		// adding new column last to the end
+		console.log('extending getColumn');
 		const newColumns = [...columns];
 
 		const {useLocalize} = pkp.modules.useLocalize;
 		const {t} = useLocalize();
 
-		// to get file object
-		console.log(args.file);
-
 		// to get prop passed to FileManager
-		console.log(context.props.submission);
+		console.log('submission:');
+		console.log(fileStore.props.submission);
 
-		// to get anything thats not available in args/props, but its available on particular store.
-		const store = pkp.registry.getPiniaStore('fileManager_SUBMISSION_FILES');
-		console.log(store.files);
+		// to get anything thats not available in args/props, but its available on store.
+		console.log('files:');
+		console.log(fileStore.files);
 
 		newColumns.splice(newColumns.length - 1, 0, {
-			// Header label of new column
+			// header label of new column
 			header: t('plugins.generic.backendUiExample.ithenticate'),
-			// Component responsible for rendering that table cell
+			// component responsible for rendering that table cell
 			component: 'BuiFileManagerCellIthenticate',
 			props: {},
 		});
 
 		return newColumns;
-	},
-);
+	});
+});
 ```
-
-More details about available hooks for individual pages/managers are covered in individual documentation ([Dashboard](../?path=/docs/pages-dashboard--docs), [Workflow](../?path=/docs/pages-workflow--docs), [FileManager](../?path=/docs/managers-filemanager--docs), [ReviewerManager](../?path=/docs/managers-reviewermanager--docs), [ParticipantManager](../?path=/docs/managers-participantmanager--docs), [GalleyManager](../?path=/docs/managers-galleymanager--docs)).
 
 When the given store is present on the screen, it's also possible to get a list of available functions in the browser dev console with:
 
@@ -134,6 +127,67 @@ const dashboardStore = pkp.registry.getPiniaStore('dashboard');
 console.log(dashboardStore.dashboardPage);
 dashboardStore.openFiltersModal();
 ```
+
+### Extending the store
+
+In addition to extending configuration functions, it's also possible to add new logic to the existing store. It's executed when the store is created.
+
+```js
+pkp.registry.storeExtend('fileManager_SUBMISSION_FILES', (piniaContext) => {
+	const store = piniaContext.store;
+	// Add custom logic here
+});
+```
+
+`pkp.registry.storeExtend` is shorthand for the [Pinia plugin API](https://pinia.vuejs.org/core-concepts/plugins.html):
+
+```js
+pkp.registry.getPiniaInstance().use((context) => {
+	if (context.store.$id === 'fileManager_SUBMISSION_FILES') {
+		// Add custom logic here
+	}
+});
+```
+
+For example, if some additional data are needed, it's possible to fetch them and attach them to the store, so they're available within the given manager/page. The same [Composition API](../?path=/docs/guide-vue-composition-api--docs) syntax is used.
+
+```js
+// File manager extensions
+pkp.registry.storeExtend('fileManager_SUBMISSION_FILES', (piniaContext) => {
+	const {useUrl} = pkp.modules.useUrl;
+	const {useFetch} = pkp.modules.useFetch;
+
+	const fileStore = piniaContext.store;
+
+	// build query params reactively based on current files
+	const ithenticateQueryParams = computed(() => {
+		const fileIds = fileStore?.files?.map((file) => file.id) || [];
+
+		return {fileIds};
+	});
+
+	const {apiUrl} = useUrl(`submissions/ithenticate`);
+
+	const {fetch: fetchIthenticateStatus, data: ithenticateStatus} = useFetch(
+		apiUrl,
+		{
+			query: ithenticateQueryParams,
+		},
+	);
+
+	// fetch the ithenticate status when the fileIds changes
+	watch(ithenticateQueryParams, (newQueryParams) => {
+		if (newQueryParams?.fileIds?.length) {
+			fetchIthenticateStatus();
+		}
+	});
+
+	// attach the state to the store, so its possible to retrieve it for example in the components that are injected via JS Hooks
+	fileStore.ithenticateStatus = ithenticateStatus;
+});
+```
+
+Complete example is available in [example plugin](https://github.com/jardakotesovec/backend-ui-example-plugin?tab=readme-ov-file#how-to-extend-filemanager-with-additional-column-and-custom-action).
 
 ### Advanced use cases
 
