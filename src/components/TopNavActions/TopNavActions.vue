@@ -53,7 +53,7 @@
 					class="mb-2 min-w-52 max-w-[20em]"
 				>
 					<div
-						v-if="supportedLocales.length > 1"
+						v-if="getSupportedLocalesList().length > 1"
 						class="-ml-2 -mr-2 border-b border-b-light pb-2 pl-2 pr-2"
 					>
 						<div class="ps-2 text-base-bold leading-6 text-secondary">
@@ -61,7 +61,7 @@
 						</div>
 						<ul>
 							<li
-								v-for="locale in supportedLocales"
+								v-for="locale in getSupportedLocalesList()"
 								:key="locale.key"
 								:class="actionLinkStyle"
 							>
@@ -165,13 +165,6 @@ const {pageUrl: editProfileLink} = useUrl('user/profile');
 
 const {getSupportedLocales, getCurrentLocale, getHelpUrl} = useApp();
 
-const supportedLocales = Object.entries(getSupportedLocales() || {}).map(
-	([key, value]) => {
-		const {pageUrl} = useUrl(`user/setLocale/${key}`);
-		return {key, value, href: pageUrl.value};
-	},
-);
-
 const currentLocale = getCurrentLocale();
 const helpUrl = getHelpUrl();
 
@@ -195,6 +188,13 @@ const actionLinkStyle = [
 	'rounded border border-transparent bg-transparent hover:!border-primary',
 	'px-2 py-1 leading-6 text-primary',
 ];
+
+function getSupportedLocalesList() {
+	return Object.entries(getSupportedLocales() || {}).map(([key, value]) => {
+		const {pageUrl} = useUrl(`user/setLocale/${key}`);
+		return {key, value, href: pageUrl.value + '?source=' + document.URL};
+	});
+}
 
 /**
  * Open a modal showing the user's tasks
