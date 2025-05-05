@@ -122,6 +122,13 @@ export const useFileManagerStore = defineComponentStore(
 			);
 		}
 
+		function fileSendToEditor() {
+			fileManagerActions.fileSendToEditor(
+				enrichActionArgs(),
+				actionFinishCallback,
+			);
+		}
+
 		function fileEdit({file}) {
 			fileManagerActions.fileEdit(
 				enrichActionArgs({file}),
@@ -163,6 +170,7 @@ export const useFileManagerStore = defineComponentStore(
 			fileUpload,
 			fileSelectUpload,
 			fileDownloadAll,
+			fileSendToEditor,
 			fileEdit,
 			fileDelete,
 			fileSeeNotes,

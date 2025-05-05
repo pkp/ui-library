@@ -10,6 +10,7 @@ export const FileManagerConfigurations = {
 			{
 				roles: [pkp.const.ROLE_ID_AUTHOR],
 				actions: [
+					Actions.FILE_SEND_TO_EDITOR,
 					Actions.FILE_LIST,
 					Actions.FILE_EDIT,
 					Actions.FILE_DOWNLOAD_ALL,
@@ -23,6 +24,7 @@ export const FileManagerConfigurations = {
 					pkp.const.ROLE_ID_ASSISTANT,
 				],
 				actions: [
+					Actions.FILE_SEND_TO_EDITOR,
 					Actions.FILE_LIST,
 					Actions.FILE_UPLOAD,
 					Actions.FILE_DOWNLOAD_ALL,
@@ -33,6 +35,7 @@ export const FileManagerConfigurations = {
 			},
 		],
 		actions: [
+			Actions.FILE_SEND_TO_EDITOR,
 			Actions.FILE_UPLOAD,
 			Actions.FILE_DOWNLOAD_ALL,
 			Actions.FILE_EDIT,
@@ -335,11 +338,19 @@ export function useFileManagerConfig() {
 		const actions = [];
 		const enabledActions = managerConfig.permittedActions;
 
+		if (enabledActions.includes(Actions.FILE_SEND_TO_EDITOR)) {
+			actions.push({
+				label: t('grid.action.sendToTextEditor'),
+				name: Actions.FILE_SEND_TO_EDITOR,
+				icon: 'Edit',
+			});
+		}
+
 		if (enabledActions.includes(Actions.FILE_EDIT)) {
 			actions.push({
-				label: t('grid.action.edit'),
+				label: t('grid.action.updateFile'),
 				name: Actions.FILE_EDIT,
-				icon: 'Edit',
+				icon: 'UpdateFile',
 			});
 		}
 
