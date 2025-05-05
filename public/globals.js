@@ -478,6 +478,7 @@ window.pkp = {
 			'These files have been submitted by the author after revisions were requested',
 		'fileManager.submissionFilesDescription':
 			'Files uploaded at the time of submission',
+		'fileManager.sendFileToTextEditor': 'Send File to Text Editor',
 		'form.dataHasChanged':
 			'The data on this form has changed. Do you wish to continue without saving?',
 		'form.errorA11y': 'Go to {$fieldLabel}: {$errorMessage}',
@@ -510,7 +511,9 @@ window.pkp = {
 		'grid.action.moreInformation': 'More Information',
 		'grid.action.order': 'Order',
 		'grid.action.saveOrdering': 'Save Order',
+		'grid.action.sendToTextEditor': 'Send to Text Editor',
 		'grid.action.sort': 'Sort',
+		'grid.action.updateFile': 'Update File Details',
 		'grid.columns.actions': 'Actions',
 		'grid.libraryFiles.submission.title': 'Submission Library',
 		'grid.noItems': 'No Items',
@@ -876,8 +879,9 @@ window.pkp = {
 		'user.phone': 'Phone',
 		'user.profile.editProfile': 'Edit Profile',
 		'user.removeRole.message':
-			'Are you sure you want to permanently remove this role? This action will revoke the user\'s access to all information and permissions associated with this role.',
-		'user.removeRole.roleRemainMessage' :'You cannot remove the role. At least one role must be assigned to the user.',
+			"Are you sure you want to permanently remove this role? This action will revoke the user's access to all information and permissions associated with this role.",
+		'user.removeRole.roleRemainMessage':
+			'You cannot remove the role. At least one role must be assigned to the user.',
 		'user.role.reviewer': 'Reviewer',
 		'user.role.reviewers': 'Reviewers',
 		'user.roles': 'Roles',
@@ -897,7 +901,7 @@ window.pkp = {
 		'userInvitation.edit.title': 'Edit Invitation',
 		'userInvitation.modal.button': 'View All Users',
 		'userInvitation.modal.message':
-			'{$email} has been invited to new role in OJS. You can be updated about the user\'s decision on the User & Role page, your OJS notification and/or your email.',
+			"{$email} has been invited to new role in OJS. You can be updated about the user's decision on the User & Role page, your OJS notification and/or your email.",
 		'userInvitation.modal.title': 'Invitation Sent',
 		'userInvitation.roleTable.endDate': 'End Date',
 		'userInvitation.roleTable.journalMasthead': 'Journal Masthead',
@@ -929,9 +933,9 @@ window.pkp = {
 			'The submission advanced to the next review round, was accepted, and is currently in the {$stage} stage.',
 		'workflow.uploadRevisions': 'Upload revisions',
 		'grid.user.grid.user.enableReasonDescription':
-			'Once the user is enabled, they will regain access to OJS, and you\'ll be able to invite them to roles as needed.',
+			"Once the user is enabled, they will regain access to OJS, and you'll be able to invite them to roles as needed.",
 		'grid.user.grid.user.disableReasonDescription':
-			'Please note that once a user is disabled, you won\'t be able to add them to any roles until they are enabled again.'
+			"Please note that once a user is disabled, you won't be able to add them to any roles until they are enabled again.",
 	},
 	tinyMCE: {
 		skinUrl: '/styles/tinymce',
