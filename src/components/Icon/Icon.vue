@@ -112,6 +112,7 @@ import Tools from './icons/Tools.vue';
 import Underline from './icons/Underline.vue';
 import Unlock from './icons/Unlock.vue';
 import Upload from './icons/Upload.vue';
+import UpdateFile from './icons/UpdateFile.vue';
 import Url from './icons/Url.vue';
 import UsefulTips from './icons/UsefulTips.vue';
 import UsefulTipsPrimary from './icons/UsefulTipsPrimary.vue';
@@ -225,6 +226,7 @@ const svgIcons = {
 	Underline,
 	Unlock,
 	Upload,
+	UpdateFile,
 	Url,
 	UsefulTips,
 	UsefulTipsPrimary,
