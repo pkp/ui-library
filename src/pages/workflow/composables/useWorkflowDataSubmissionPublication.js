@@ -3,7 +3,7 @@ import {useUrl} from '@/composables/useUrl';
 import {useModal} from '@/composables/useModal';
 import {useSubmission} from '@/composables/useSubmission';
 import {useLocalize} from '@/composables/useLocalize';
-import WorkflowCreateNewVersionDialogBody from '@/pages/workflow/components/publication/WorkflowCreateNewVersionDialogBody.vue';
+import WorkflowVersionDialogBody from '@/pages/workflow/components/publication/WorkflowVersionDialogBody.vue';
 
 import {computed, ref, watch} from 'vue';
 
@@ -66,14 +66,16 @@ export function useWorkflowDataSubmissionPublication({submissionId}) {
 
 		openDialog({
 			title: t('publication.createVersion'),
-			bodyComponent: WorkflowCreateNewVersionDialogBody,
+			bodyComponent: WorkflowVersionDialogBody,
 			bodyProps: {
+				mode: 'createNewVersion',
 				onCloseFn: () => closeDialog(false),
 				onSubmitFn: async (formData) => {
 					const latestPublication = getLatestPublication(submission);
+					const publicationId = formData.versionSource || latestPublication.id;
 
 					const {apiUrl: createNewVersionUrl} = useUrl(
-						`submissions/${submission.id}/publications/${latestPublication.id}/version`,
+						`submissions/${submission.id}/publications/${publicationId}/version`,
 					);
 					const {
 						fetch,
