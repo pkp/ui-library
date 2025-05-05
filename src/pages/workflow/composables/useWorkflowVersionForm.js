@@ -5,8 +5,8 @@ import {useSubmission} from '@/composables/useSubmission';
 import {useWorkflowStore} from '@/pages/workflow/workflowStore';
 
 export function useWorkflowVersionForm(
-	mode = 'createNewVersion',
-	onSubmitFn = () => () => {},
+	versionMode = 'createNewVersion',
+	onSubmitFn = () => {},
 ) {
 	const store = useWorkflowStore();
 	const {t} = useLocalize();
@@ -24,46 +24,69 @@ export function useWorkflowVersionForm(
 		customSubmit: onSubmitFn,
 	});
 
+	const isTextEditorMode = versionMode === 'sendToTextEditor';
+
+	const buildVersionSourceOptions = () => {
+		const defaultOption = isTextEditorMode
+			? [{label: t('publication.createVersion'), value: ''}]
+			: [];
+
+		const publicationOptions = publications.map((p) => ({
+			label: p.versionString,
+			value: p.id,
+		}));
+
+		return [...defaultOption, ...publicationOptions];
+	};
+
+	const updateMinorOptionAvailability = (newStage) => {
+		const versionIsMinorField = getField(store.versionForm, 'versionIsMinor');
+		if (!versionIsMinorField) return;
+
+		const allowMinor = publications.some(
+			(pub) => pub.versionStage === newStage,
+		);
+
+		const updatedOptions = (versionIsMinorField.options || []).map((option) =>
+			option.value === 'true' ? {...option, disabled: !allowMinor} : option,
+		);
+
+		setSelectOptions(store.versionForm, 'versionIsMinor', updatedOptions);
+
+		if (!allowMinor && versionIsMinorField.value === 'true') {
+			setValue('versionIsMinor', 'false');
+		}
+	};
+
 	onMounted(() => {
 		clearForm();
 
 		const latestPublication = getLatestPublication(store.submission);
 		publications = store.submission?.publications || [];
+
 		const versionSource = getField(store.versionForm, 'versionSource');
-
 		if (versionSource) {
-			if (mode === 'sendToTextEditor') {
-				versionSource.isRequired = true;
-				versionSource.label = t(
-					'publication.versionSource.sendToTextEditor.label',
-				);
-				versionSource.description = null;
-			} else {
-				versionSource.isRequired = false;
-				versionSource.label = t('publication.versionSource.create.label');
-				versionSource.description = t(
-					'publication.versionSource.create.description',
-				);
-			}
+			versionSource.isRequired = isTextEditorMode;
+			versionSource.label = t(
+				isTextEditorMode
+					? 'publication.versionSource.sendToTextEditor.label'
+					: 'publication.versionSource.create.label',
+			);
+			versionSource.description = isTextEditorMode
+				? null
+				: t('publication.versionSource.create.description');
 
-			const options = [
-				...(mode === 'sendToTextEditor'
-					? [{label: t('publication.createVersion'), value: ''}]
-					: []),
-				...publications.map((publication) => ({
-					label: publication.versionString,
-					value: publication.id,
-				})),
-			];
-
-			setSelectOptions(store.versionForm, 'versionSource', options);
+			setSelectOptions(
+				store.versionForm,
+				'versionSource',
+				buildVersionSourceOptions(),
+			);
 		}
 
-		if (mode === 'createNewVersion') {
-			setValue('versionSource', latestPublication?.id);
-		} else {
-			setValue('versionSource', null);
-		}
+		setValue(
+			'versionSource',
+			versionMode === 'createNewVersion' ? latestPublication?.id : null,
+		);
 
 		enableSelectOptions(store.versionForm, 'versionIsMinor');
 	});
@@ -72,37 +95,12 @@ export function useWorkflowVersionForm(
 		() => getField(store.versionForm, 'versionStage')?.value,
 		(newStage) => {
 			if (!newStage) return;
-
-			const versionIsMinorField = getField(store.versionForm, 'versionIsMinor');
-			if (!versionIsMinorField) return;
-
-			const allowMinor = publications.some(
-				(option) => option.versionStage === newStage,
-			);
-
-			const currentOptions =
-				getField(store.versionForm, 'versionIsMinor')?.options || [];
-
-			// Update the disabled status of the "Minor" option if version stage selected doesn't exist on any publication
-			const updatedOptions = currentOptions.map((option) =>
-				option.value === 'true' ? {...option, disabled: !allowMinor} : option,
-			);
-
-			setSelectOptions(store.versionForm, 'versionIsMinor', updatedOptions);
-
-			// reset the field if "Minor" is selected and now disabled
-			if (!allowMinor && versionIsMinorField.value === 'true') {
-				setValue('versionIsMinor', 'false');
-			}
+			updateMinorOptionAvailability(newStage);
 		},
 		{immediate: true},
 	);
 
 	return {
 		form,
-		clearForm,
-		getField,
-		setValue,
-		setSelectOptions,
 	};
 }
