@@ -2,8 +2,11 @@ import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
 import {useFetch, getCSRFToken} from '@/composables/useFetch';
+import {useUrl} from '@/composables/useUrl';
+import WorkflowVersionDialogBody from '@/pages/workflow/components/publication/WorkflowVersionDialogBody.vue';
 
 export const Actions = {
+	FILE_SEND_TO_EDITOR: 'fileSendToEditor',
 	FILE_LIST: 'fileList',
 	FILE_UPLOAD: 'fileUpload',
 	FILE_SELECT_UPLOAD: 'fileSelectUpload',
@@ -15,6 +18,52 @@ export const Actions = {
 
 export function useFileManagerActions() {
 	const {t, localize} = useLocalize();
+
+	function fileSendToEditor(
+		{fileStage, submission, submissionStageId},
+		finishedCallback,
+	) {
+		const {openDialog, closeDialog} = useModal();
+
+		openDialog({
+			title: t('fileManager.sendFileToTextEditor'),
+			bodyComponent: WorkflowVersionDialogBody,
+			bodyProps: {
+				mode: 'sendToTextEditor',
+				onCloseFn: () => closeDialog(false),
+				onSubmitFn: async (formData) => {
+					const method = formData.versionSource ? 'PUT' : 'POST';
+					const publicationId = formData.versionSource;
+
+					const {apiUrl: createNewVersionUrl} = useUrl(
+						`submissions/${submission.id}/publications/${publicationId}/version`,
+					);
+
+					const {
+						fetch,
+						data: publication,
+						validationError,
+					} = useFetch(createNewVersionUrl, {
+						method,
+						body: formData,
+					});
+
+					await fetch();
+					closeDialog(false);
+
+					finishedCallback();
+
+					// return result to Form component handler
+					return {
+						data: publication.value,
+						validationError: validationError.value,
+					};
+				},
+			},
+			showCloseButton: false,
+			modalStyle: 'basic',
+		});
+	}
 
 	function fileUpload(
 		{fileStage, reviewRoundId, submission, submissionStageId, wizardTitleKey},
@@ -180,6 +229,7 @@ export function useFileManagerActions() {
 	}
 
 	return {
+		fileSendToEditor,
 		fileUpload,
 		fileSelectUpload,
 		fileDownloadAll,
