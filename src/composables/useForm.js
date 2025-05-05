@@ -78,6 +78,25 @@ function setSelectOptions(form, fieldName, optionsArray) {
 }
 
 /**
+ * Enable all options of a select field by setting disabled: false
+ * @param {Object} form - The form object
+ * @param {string} fieldName - The name of the select field
+ * @returns {Object|undefined} The updated field object if found
+ */
+function enableSelectOptions(form, fieldName) {
+	const field = getField(form, fieldName);
+	if (!field?.options) return;
+
+	const updatedOptions = field.options.map((option) => ({
+		...option,
+		disabled: false,
+	}));
+
+	setSelectOptions(form, fieldName, updatedOptions);
+	return field;
+}
+
+/**
  * Provides functions for form management
  * @param {Object} _form - The initial form object
  * @param {Object} [options={}] - Additional options
@@ -441,5 +460,6 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		addFieldSelect,
 		getField,
 		setSelectOptions,
+		enableSelectOptions,
 	};
 }
