@@ -81,13 +81,18 @@ export function useWorkflowDataSubmissionPublication({submissionId}) {
 						fetch,
 						data: newPublication,
 						validationError,
+						isSuccess,
 					} = useFetch(createNewVersionUrl, {
 						method: 'POST',
 						body: formData,
+						expectValidationError: true,
 					});
 
 					await fetch();
-					closeDialog(false);
+
+					if (isSuccess.value) {
+						closeDialog(false);
+					}
 
 					return finishedCallback({
 						data: newPublication.value,
