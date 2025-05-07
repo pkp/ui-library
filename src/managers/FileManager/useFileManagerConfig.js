@@ -102,6 +102,7 @@ export const FileManagerConfigurations = {
 					pkp.const.ROLE_ID_ASSISTANT,
 				],
 				actions: [
+					Actions.FILE_SEND_TO_EDITOR,
 					Actions.FILE_LIST,
 					Actions.FILE_UPLOAD,
 					Actions.FILE_EDIT,
@@ -111,6 +112,7 @@ export const FileManagerConfigurations = {
 			},
 		],
 		actions: [
+			Actions.FILE_SEND_TO_EDITOR,
 			Actions.FILE_UPLOAD,
 			Actions.FILE_EDIT,
 			Actions.FILE_DELETE,
@@ -138,6 +140,7 @@ export const FileManagerConfigurations = {
 					pkp.const.ROLE_ID_ASSISTANT,
 				],
 				actions: [
+					Actions.FILE_SEND_TO_EDITOR,
 					Actions.FILE_LIST,
 					Actions.FILE_SELECT_UPLOAD,
 					Actions.FILE_EDIT,
@@ -147,6 +150,7 @@ export const FileManagerConfigurations = {
 			},
 		],
 		actions: [
+			Actions.FILE_SEND_TO_EDITOR,
 			Actions.FILE_LIST,
 			Actions.FILE_SELECT_UPLOAD,
 			Actions.FILE_EDIT,
