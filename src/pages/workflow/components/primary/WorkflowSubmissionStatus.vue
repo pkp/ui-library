@@ -131,6 +131,23 @@ const message = computed(() => {
 				}),
 				body: t('dashboard.minimumReviewsConfirmedDecisionNeeded'),
 			};
+		} else if (
+			// when reviews are completed, but its not enough reviews yet
+			// in this case does not make sense to indicate the 'COMPLETED' status
+			// agreed on indicate only number of minimum reviews
+			shouldMinimumReviewsBeConsidered &&
+			[pkp.const.REVIEW_ROUND_STATUS_REVIEWS_COMPLETED].includes(
+				currentReviewRound.statusId,
+			)
+		) {
+			return {
+				heading: t('notification.type.roundStatusTitle', {
+					round: currentReviewRound.round,
+				}),
+				body1: t('dashboard.minimumConfirmedReviewsRequired', {
+					number: props.contextMinReviewsPerSubmission,
+				}),
+			};
 		}
 
 		return {
