@@ -12,6 +12,7 @@ export function useWorkflowVersionForm(
 	const {t} = useLocalize();
 	const {getLatestPublication} = useSubmission();
 	let publications = [];
+	let latestPublication = null;
 
 	const {
 		getField,
@@ -26,10 +27,11 @@ export function useWorkflowVersionForm(
 
 	const isTextEditorMode = versionMode === 'sendToTextEditor';
 
-	const buildVersionSourceOptions = () => {
-		const defaultOption = isTextEditorMode
-			? [{label: t('publication.createVersion'), value: ''}]
-			: [];
+	const buildPublicationOptions = ({withCreateOption} = {}) => {
+		const defaultOption =
+			isTextEditorMode && withCreateOption
+				? [{label: t('publication.createVersion'), value: 'create'}]
+				: [];
 
 		const publicationOptions = publications.map((p) => ({
 			label: p.versionString,
@@ -58,29 +60,41 @@ export function useWorkflowVersionForm(
 		}
 	};
 
+	const updateForm = (formId, data) => {
+		let versionForm = {...form.value};
+		Object.keys(data).forEach((key) => (versionForm[key] = data[key]));
+		form.value = versionForm;
+	};
+
 	onMounted(() => {
 		clearForm();
 
-		const latestPublication = getLatestPublication(store.submission);
+		latestPublication = getLatestPublication(store.submission);
 		publications = store.submission?.publications || [];
+
+		const sendToVersionField = getField(store.versionForm, 'sendToVersion');
+		if (sendToVersionField) {
+			sendToVersionField.isRequired = isTextEditorMode;
+			setSelectOptions(
+				store.versionForm,
+				'sendToVersion',
+				buildPublicationOptions({withCreateOption: true}),
+			);
+
+			sendToVersionField.showWhen = !isTextEditorMode ? [] : undefined;
+		}
 
 		const versionSource = getField(store.versionForm, 'versionSource');
 		if (versionSource) {
-			versionSource.isRequired = isTextEditorMode;
-			versionSource.label = t(
-				isTextEditorMode
-					? 'publication.versionSource.sendToTextEditor.label'
-					: 'publication.versionSource.create.label',
-			);
-			versionSource.description = isTextEditorMode
-				? null
-				: t('publication.versionSource.create.description');
-
 			setSelectOptions(
 				store.versionForm,
 				'versionSource',
-				buildVersionSourceOptions(),
+				buildPublicationOptions(),
 			);
+
+			versionSource.showWhen = isTextEditorMode
+				? ['sendToVersion', 'create']
+				: undefined;
 		}
 
 		setValue(
@@ -100,7 +114,18 @@ export function useWorkflowVersionForm(
 		{immediate: true},
 	);
 
+	watch(
+		() => getField(store.versionForm, 'sendToVersion')?.value,
+		(sendToVersion) => {
+			if (sendToVersion !== 'create' || !latestPublication?.id) return;
+			// if sendToVersion should create a new version, set the versionSource to the latest publication
+			setValue('versionSource', latestPublication.id);
+		},
+		{immediate: true},
+	);
+
 	return {
 		form,
+		updateForm,
 	};
 }
