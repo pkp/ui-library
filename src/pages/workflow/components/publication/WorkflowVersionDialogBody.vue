@@ -1,6 +1,6 @@
 <template>
 	<DialogBody>
-		<PkpForm v-bind="form" @cancel="onCloseFn" />
+		<PkpForm v-bind="form" @cancel="onCloseFn" @set="updateForm" />
 	</DialogBody>
 </template>
 
@@ -26,5 +26,5 @@ const props = defineProps({
 	},
 });
 
-const {form} = useWorkflowVersionForm(props.mode, props.onSubmitFn);
+const {form, updateForm} = useWorkflowVersionForm(props.mode, props.onSubmitFn);
 </script>
