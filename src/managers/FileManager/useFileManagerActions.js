@@ -3,6 +3,7 @@ import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
 import {useFetch, getCSRFToken} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
+import {useSubmission} from '@/composables/useSubmission';
 import WorkflowVersionDialogBody from '@/pages/workflow/components/publication/WorkflowVersionDialogBody.vue';
 
 export const Actions = {
@@ -24,6 +25,8 @@ export function useFileManagerActions() {
 		finishedCallback,
 	) {
 		const {openDialog, closeDialog} = useModal();
+		const {getLatestPublication} = useSubmission();
+		const latestPublication = getLatestPublication(submission);
 
 		openDialog({
 			title: t('fileManager.sendFileToTextEditor'),
@@ -32,10 +35,13 @@ export function useFileManagerActions() {
 				mode: 'sendToTextEditor',
 				onCloseFn: () => closeDialog(false),
 				onSubmitFn: async (formData) => {
-					const method = formData.versionSource ? 'PUT' : 'POST';
-					const publicationId = formData.versionSource;
+					const method = formData.sendToVersion === 'create' ? 'POST' : 'PUT';
+					const publicationId =
+						formData.sendToVersion !== 'create'
+							? formData.sendToVersion
+							: formData.versionSource || latestPublication.id;
 
-					const {apiUrl: createNewVersionUrl} = useUrl(
+					const {apiUrl: updateOrCreateVersionUrl} = useUrl(
 						`submissions/${submission.id}/publications/${publicationId}/version`,
 					);
 
@@ -43,15 +49,19 @@ export function useFileManagerActions() {
 						fetch,
 						data: publication,
 						validationError,
-					} = useFetch(createNewVersionUrl, {
+						isSuccess,
+					} = useFetch(updateOrCreateVersionUrl, {
 						method,
 						body: formData,
+						expectValidationError: true,
 					});
 
 					await fetch();
-					closeDialog(false);
 
-					finishedCallback();
+					if (isSuccess.value) {
+						closeDialog(false);
+						finishedCallback();
+					}
 
 					// return result to Form component handler
 					return {
