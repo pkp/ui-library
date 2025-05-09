@@ -20,11 +20,7 @@ const props = defineProps({
 		type: Function,
 		default: () => () => {},
 	},
-	onSubmitFn: {
-		type: Function,
-		default: () => () => {},
-	},
 });
 
-const {form, updateForm} = useWorkflowVersionForm(props.mode, props.onSubmitFn);
+const {form, updateForm} = useWorkflowVersionForm(props.mode, props.onCloseFn);
 </script>
