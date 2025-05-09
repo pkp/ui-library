@@ -52,6 +52,8 @@ const actionLabel = computed(() => {
 		case pkp.const.REVIEW_ASSIGNMENT_STATUS_ACCEPTED:
 		case pkp.const.REVIEW_ASSIGNMENT_STATUS_REVIEW_OVERDUE:
 			return t('dashboard.actions.finishReview');
+		case pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED:
+			return null;
 		default:
 			return t('common.view');
 	}
