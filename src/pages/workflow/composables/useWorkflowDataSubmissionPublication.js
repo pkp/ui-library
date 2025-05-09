@@ -1,14 +1,9 @@
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
-import {useModal} from '@/composables/useModal';
-import {useLocalize} from '@/composables/useLocalize';
-import WorkflowVersionDialogBody from '@/pages/workflow/components/publication/WorkflowVersionDialogBody.vue';
 
 import {computed, ref, watch} from 'vue';
 
 export function useWorkflowDataSubmissionPublication({submissionId}) {
-	const {t} = useLocalize();
-
 	/**
 	 * Fetch submission details
 	 */
@@ -59,21 +54,6 @@ export function useWorkflowDataSubmissionPublication({submissionId}) {
 		return Promise.all([fetchSubmission(), fetchSelectedPublication()]);
 	}
 
-	function createNewVersion(finishedCallback) {
-		const {openDialog, closeDialog} = useModal();
-
-		openDialog({
-			title: t('publication.createVersion'),
-			bodyComponent: WorkflowVersionDialogBody,
-			bodyProps: {
-				mode: 'createNewVersion',
-				onCloseFn: () => closeDialog(false),
-			},
-			showCloseButton: false,
-			modalStyle: 'basic',
-		});
-	}
-
 	return {
 		submission,
 		submissionId,
@@ -81,6 +61,5 @@ export function useWorkflowDataSubmissionPublication({submissionId}) {
 		selectedPublicationId,
 		selectPublicationId,
 		refetchSubmissionPublication,
-		createNewVersion,
 	};
 }

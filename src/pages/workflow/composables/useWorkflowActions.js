@@ -6,6 +6,7 @@ import {useFetch} from '@/composables/useFetch';
 import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 
 import WorkflowModalChangeSubmissionLanguage from '@/pages/workflow/modals/WorkflowChangeSubmissionLanguageModal.vue';
+import WorkflowVersionDialogBody from '@/pages/workflow/components/publication/WorkflowVersionDialogBody.vue';
 
 export const Actions = {
 	WORKFLOW_VIEW_PUBLISHED_SUBMISSION: 'workflowViewPublishedSubmission',
@@ -215,6 +216,21 @@ export function useWorkflowActions() {
 		});
 	}
 
+	function workflowCreateNewVersion() {
+		const {openDialog, closeDialog} = useModal();
+
+		openDialog({
+			title: t('publication.createVersion'),
+			bodyComponent: WorkflowVersionDialogBody,
+			bodyProps: {
+				mode: 'createNewVersion',
+				onCloseFn: () => closeDialog(false),
+			},
+			showCloseButton: false,
+			modalStyle: 'basic',
+		});
+	}
+
 	function workflowPreviewPublication({selectedPublication}) {
 		const {redirectToPage} = useUrl(selectedPublication.urlPublished);
 
@@ -279,6 +295,7 @@ export function useWorkflowActions() {
 		workflowAssignToIssueAndScheduleForPublication,
 		workflowScheduleForPublication,
 		workflowUnschedulePublication,
+		workflowCreateNewVersion,
 		workflowUnpublishPublication,
 		workflowPreviewPublication,
 		workflowChangeSubmissionLanguage,

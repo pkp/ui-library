@@ -48,7 +48,6 @@ export const useWorkflowStore = defineComponentStore(
 			selectedPublication,
 			selectedPublicationId,
 			refetchSubmissionPublication,
-			createNewVersion,
 		} = useWorkflowDataSubmissionPublication({
 			submissionId: props.submissionId,
 		});
@@ -110,7 +109,7 @@ export const useWorkflowStore = defineComponentStore(
 
 		function handleCreateNewVersion(action) {
 			if (action === 'createNewVersion') {
-				createNewVersion();
+				_workflowActionsFns.workflowCreateNewVersion();
 			}
 
 			// some other actions are handled by the selectedMenuKey watch event
