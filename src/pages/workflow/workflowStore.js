@@ -110,17 +110,7 @@ export const useWorkflowStore = defineComponentStore(
 
 		function handleCreateNewVersion(action) {
 			if (action === 'createNewVersion') {
-				createNewVersion({submission: submission.value}, async (result) => {
-					await triggerDataChange();
-					const newPublicationId = result?.data?.id;
-					if (newPublicationId) {
-						// redirect to the new version
-						navigateToMenu(`publication_${newPublicationId}_titleAbstract`);
-					}
-
-					// return result to Form component handler
-					return result;
-				});
+				createNewVersion();
 			}
 
 			// some other actions are handled by the selectedMenuKey watch event
@@ -282,6 +272,7 @@ export const useWorkflowStore = defineComponentStore(
 			 */
 			fileUpload,
 
+			triggerDataChange,
 			Components,
 			extender,
 			props,
