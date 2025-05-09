@@ -1,7 +1,6 @@
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
 import {useModal} from '@/composables/useModal';
-import {useSubmission} from '@/composables/useSubmission';
 import {useLocalize} from '@/composables/useLocalize';
 import WorkflowVersionDialogBody from '@/pages/workflow/components/publication/WorkflowVersionDialogBody.vue';
 
@@ -60,9 +59,8 @@ export function useWorkflowDataSubmissionPublication({submissionId}) {
 		return Promise.all([fetchSubmission(), fetchSelectedPublication()]);
 	}
 
-	function createNewVersion({submission}, finishedCallback) {
+	function createNewVersion(finishedCallback) {
 		const {openDialog, closeDialog} = useModal();
-		const {getLatestPublication} = useSubmission();
 
 		openDialog({
 			title: t('publication.createVersion'),
@@ -70,35 +68,6 @@ export function useWorkflowDataSubmissionPublication({submissionId}) {
 			bodyProps: {
 				mode: 'createNewVersion',
 				onCloseFn: () => closeDialog(false),
-				onSubmitFn: async (formData) => {
-					const latestPublication = getLatestPublication(submission);
-					const publicationId = formData.versionSource || latestPublication.id;
-
-					const {apiUrl: createNewVersionUrl} = useUrl(
-						`submissions/${submission.id}/publications/${publicationId}/version`,
-					);
-					const {
-						fetch,
-						data: newPublication,
-						validationError,
-						isSuccess,
-					} = useFetch(createNewVersionUrl, {
-						method: 'POST',
-						body: formData,
-						expectValidationError: true,
-					});
-
-					await fetch();
-
-					if (isSuccess.value) {
-						closeDialog(false);
-					}
-
-					return finishedCallback({
-						data: newPublication.value,
-						validationError: validationError.value,
-					});
-				},
 			},
 			showCloseButton: false,
 			modalStyle: 'basic',

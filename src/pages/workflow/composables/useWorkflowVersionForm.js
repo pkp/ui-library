@@ -1,18 +1,109 @@
 import {onMounted, watch} from 'vue';
+import {useUrl} from '@/composables/useUrl';
 import {useForm} from '@/composables/useForm';
+import {useFetch} from '@/composables/useFetch';
 import {useLocalize} from '@/composables/useLocalize';
 import {useSubmission} from '@/composables/useSubmission';
 import {useWorkflowStore} from '@/pages/workflow/workflowStore';
 
+/**
+ * getRequestPublicationId - Determines the publication ID to use for the request
+ */
+function getRequestPublicationId({
+	shouldCreateNewVersion,
+	versionSource,
+	sendToVersion,
+	latestPublicationId,
+}) {
+	// POST: if the user chose to create a new version, we need to use the selected version source or the latest publication id by default
+	if (shouldCreateNewVersion) {
+		return versionSource || latestPublicationId;
+	}
+
+	// PUT: publicationId to use should be the sendToVersion id
+	return sendToVersion;
+}
+
+/**
+ * goToPublicationPage - Navigates to the publication page
+ */
+function goToPublicationPage(store, {publicationId}) {
+	store.navigateToMenu(`publication_${publicationId}_titleAbstract`);
+}
+
 export function useWorkflowVersionForm(
 	versionMode = 'createNewVersion',
-	onSubmitFn = () => {},
+	closeDialog = () => {},
 ) {
 	const store = useWorkflowStore();
 	const {t} = useLocalize();
 	const {getLatestPublication} = useSubmission();
 	let publications = [];
 	let latestPublication = null;
+	const isTextEditorMode = versionMode === 'sendToTextEditor';
+
+	const redirectToExistingVersion = (versionId) => {
+		closeDialog(false);
+		goToPublicationPage(store, {publicationId: versionId});
+
+		return {
+			data: null,
+			validationError: null,
+		};
+	};
+
+	const handleVersionSubmission = async (formData) => {
+		const shouldCreateNewVersion =
+			!isTextEditorMode || formData.sendToVersion === 'create';
+
+		if (!shouldCreateNewVersion && !formData.versionStage) {
+			// just redirect if no updates are needed for the selected version when sending to text editor
+			return redirectToExistingVersion(formData.sendToVersion);
+		}
+
+		const publicationId = getRequestPublicationId({
+			shouldCreateNewVersion,
+			versionSource: formData.versionSource,
+			sendToVersion: formData.sendToVersion,
+			latestPublicationId: latestPublication?.id,
+		});
+
+		const {apiUrl: versionUrl} = useUrl(
+			`submissions/${store.submission.id}/publications/${publicationId}/version`,
+		);
+
+		const {
+			fetch,
+			data: publicationData,
+			validationError,
+			isSuccess,
+		} = useFetch(versionUrl, {
+			method: shouldCreateNewVersion ? 'POST' : 'PUT',
+			body: {
+				versionStage: formData.versionStage,
+				versionIsMinor: formData.versionIsMinor,
+			},
+			expectValidationError: true,
+		});
+
+		await fetch();
+		await store.triggerDataChange();
+
+		if (isSuccess.value) {
+			closeDialog(false);
+			goToPublicationPage(store, {
+				publicationId: shouldCreateNewVersion
+					? publicationData.value?.id
+					: publicationId,
+			});
+		}
+
+		// return result to Form component handler
+		return {
+			data: publicationData.value,
+			validationError: validationError.value,
+		};
+	};
 
 	const {
 		getField,
@@ -22,10 +113,8 @@ export function useWorkflowVersionForm(
 		setSelectOptions,
 		enableSelectOptions,
 	} = useForm(store.versionForm, {
-		customSubmit: onSubmitFn,
+		customSubmit: handleVersionSubmission,
 	});
-
-	const isTextEditorMode = versionMode === 'sendToTextEditor';
 
 	const buildPublicationOptions = ({withCreateOption} = {}) => {
 		const defaultOption =
