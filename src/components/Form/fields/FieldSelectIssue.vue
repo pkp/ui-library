@@ -164,10 +164,10 @@ export default {
 				'@/pages/workflow/workflowStore.js'
 			);
 
-			const workflowSotre = useWorkflowStore();
+			const workflowStore = useWorkflowStore();
 
-			workflowSotre.workflowAssignToIssue({}, (finishedData) => {
-				if (finishedData.data.issueId) {
+			workflowStore.workflowAssignToIssue({}, (finishedData) => {
+				if (finishedData.data) {
 					this.currentValue = finishedData.data.issueId;
 				}
 			});
