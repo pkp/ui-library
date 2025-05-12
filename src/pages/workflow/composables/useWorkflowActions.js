@@ -82,10 +82,45 @@ export function useWorkflowActions() {
 		);
 	}
 
+	// This is the action that is used to assign a publication to an issue and schedule it for publication
+	// This also get the issue list form
 	function workflowAssignToIssueAndScheduleForPublication(
-		{selectedPublication, submission},
+		{pageInitConfig, selectedPublication, submission},
 		finishedCallback,
 	) {
+		if (
+			pageInitConfig.isContinuousPublicationEnabled &&
+			pageInitConfig.issueCount === 0
+		) {
+			const {openDialog} = useModal();
+			openDialog({
+				title: t('editor.submission.schedulePublication'),
+				message: t('publication.publish.confirmation'),
+				actions: [
+					{
+						label: t('common.yes'),
+						isPrimary: true,
+						callback: async (close) => {
+							close();
+							workflowScheduleForPublication(
+								{submission, selectedPublication},
+								finishedCallback,
+							);
+						},
+					},
+					{
+						label: t('common.no'),
+						isWarnable: true,
+						callback: (close) => {
+							close();
+						},
+					},
+				],
+			});
+
+			return;
+		}
+
 		if (selectedPublication.issueId === null) {
 			const {url} = useLegacyGridUrl({
 				component: 'modals.publish.AssignToIssueHandler',
@@ -108,7 +143,8 @@ export function useWorkflowActions() {
 				},
 				{
 					onClose: async ({formId, data}) => {
-						if (data?.issueId) {
+						console.log('onClose', formId, data);
+						if (data?.issueId || data?.continuousPublication) {
 							workflowScheduleForPublication(
 								{submission, selectedPublication},
 								finishedCallback,
@@ -131,6 +167,7 @@ export function useWorkflowActions() {
 		{submission, selectedPublication},
 		finishedCallback,
 	) {
+		console.log('workflowScheduleForPublication');
 		const {openLegacyModal} = useLegacyGridUrl({
 			component: 'modals.publish.PublishHandler',
 			op: 'publish',
