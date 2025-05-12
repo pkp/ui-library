@@ -1,0 +1,45 @@
+import {Meta} from '@storybook/blocks';
+
+<Meta title="Composables/useNotify" />
+
+# useNotify
+
+## notify
+
+A simple composable for displaying notification messages to the user.
+
+```html
+<template>
+	<div>
+		<PkpButton @click="showSuccessNotification">Success Notification</PkpButton>
+		<PkpButton @click="showWarningNotification">Warning Notification</PkpButton>
+		<PkpButton @click="showNeutralNotification">Neutral Notification</PkpButton>
+	</div>
+</template>
+
+<script setup>
+	import {useNotify} from '@/composables/useNotify';
+
+	const {notify} = useNotify();
+
+	function showSuccessNotification() {
+		notify('Your changes have been saved.', 'success');
+	}
+
+	function showWarningNotification() {
+		notify('Please review your submission before continuing.', 'warning');
+	}
+
+	function showNeutralNotification() {
+		notify('This is a neutral informational message.');
+	}
+</script>
+```
+
+### Parameters
+
+- `message` (String, required) - The text message to display in the notification
+- `level` (String, optional) - The notification style to use
+  - `'success'` - Green success notification
+  - `'warning'` - Yellow warning notification
+  - `''` (empty string or omitted) - Blue neutral notification (default)
