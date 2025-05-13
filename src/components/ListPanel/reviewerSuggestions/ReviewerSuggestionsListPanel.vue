@@ -1,3 +1,4 @@
+<!-- // todo: gazi -->
 <template>
 	<div class="reviewerSuggestionsListPanel">
 		<slot>
