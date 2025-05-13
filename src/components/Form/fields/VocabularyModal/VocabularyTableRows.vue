@@ -18,21 +18,11 @@
 					{{ item.name }}
 				</span>
 			</TableCell>
-			<TableCell>
-				<div
-					class="flex justify-center"
-					:style="{'padding-inline-start': `${depth + 0.5}rem`}"
-				>
-					<Icon
-						v-if="item?.items?.length"
-						class="h-6 w-6 cursor-pointer text-primary"
-						:icon="
-							expandedIds.includes(item.identifier) ? 'Dropup' : 'Dropdown'
-						"
-						@click="emit('toggleItemExpansion', item.identifier)"
-					/>
-				</div>
-			</TableCell>
+			<TableCellTreeExpand
+				:is-displayed="item?.items?.length"
+				:is-expanded="expandedIds.includes(item.identifier)"
+				@toggle="emit('toggleItemExpansion', item.identifier)"
+			></TableCellTreeExpand>
 		</TableRow>
 		<VocabularyTableRows
 			v-if="item?.items?.length && expandedIds.includes(item.identifier)"
@@ -49,8 +39,7 @@
 <script setup>
 import TableCell from '@/components/Table/TableCell.vue';
 import TableRow from '@/components/Table/TableRow.vue';
-import Icon from '@/components/Icon/Icon.vue';
-
+import TableCellTreeExpand from '@/components/Table/TableCellTreeExpand.vue';
 defineProps({
 	depth: {type: Number, default: 0},
 	items: {type: Array, default: () => []},
