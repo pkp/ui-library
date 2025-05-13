@@ -107,7 +107,9 @@ export const WithVocabulary = {
 		...Base.args,
 		vocabularies: [
 			{
+				locale: 'en',
 				addButtonLabel: 'Add Frascati Keywords',
+				title: 'Add Keywords from Frascati Taxonomy',
 				items: [
 					{
 						identifier: '1',

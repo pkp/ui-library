@@ -111,9 +111,9 @@
 				:messages="errors"
 			/>
 		</div>
-		<div v-if="vocabularies?.length" class="mt-2 flex gap-x-2">
+		<div v-if="localisedVocabularies?.length" class="mt-2 flex gap-x-2">
 			<PkpButton
-				v-for="(vocabulary, index) in vocabularies"
+				v-for="(vocabulary, index) in localisedVocabularies"
 				:key="index"
 				@click="handleOpenVocabulary(vocabulary)"
 			>
@@ -281,6 +281,14 @@ export default {
 				describedBy: this.describedByIds,
 				allowCustom: this.allowCustom,
 			};
+		},
+		localisedVocabularies() {
+			if (this.isMultilingual) {
+				return this.vocabularies.filter(
+					(vocabulary) => vocabulary.locale === this.localeKey,
+				);
+			}
+			return this.vocabularies;
 		},
 	},
 	watch: {

@@ -1,26 +1,31 @@
 <template>
-	<SideModalBody v-slot="{closeModal}">
-		<SideModalLayoutBasic>
-			<PkpTable>
-				<TableHeader>
-					<TableColumn></TableColumn>
-					<TableColumn></TableColumn>
-				</TableHeader>
-				<TableBody>
-					<VocabularyTableRows
-						:items="items"
-						:depth="0"
-						:expanded-ids="expandedIds"
-						:selected-item-ids="selectedItemIds"
-						@toggle-item-expansion="toggleItemExpansion"
-						@toggle-item-selection="toggleItemSelection"
-					/>
-				</TableBody>
-			</PkpTable>
-			<PkpButton class="mt-2" @click="saveChanges(closeModal)">
-				{{ t('common.save') }}
-			</PkpButton>
-		</SideModalLayoutBasic>
+	<SideModalBody>
+		<template #title>
+			{{ title }}
+		</template>
+		<template #default="{closeModal}">
+			<SideModalLayoutBasic>
+				<PkpTable>
+					<TableHeader>
+						<TableColumn></TableColumn>
+						<TableColumn></TableColumn>
+					</TableHeader>
+					<TableBody>
+						<VocabularyTableRows
+							:items="items"
+							:depth="0"
+							:expanded-ids="expandedIds"
+							:selected-item-ids="selectedItemIds"
+							@toggle-item-expansion="toggleItemExpansion"
+							@toggle-item-selection="toggleItemSelection"
+						/>
+					</TableBody>
+				</PkpTable>
+				<PkpButton class="mt-2" @click="saveChanges(closeModal)">
+					{{ t('common.save') }}
+				</PkpButton>
+			</SideModalLayoutBasic>
+		</template>
 	</SideModalBody>
 </template>
 
@@ -37,6 +42,7 @@ import VocabularyTableRows from './VocabularyTableRows.vue';
 import {useLocalize} from '@/composables/useLocalize';
 
 const props = defineProps({
+	title: {type: String, required: true},
 	initiallySelectedItems: {type: Array, default: () => []},
 	items: {type: Array, default: () => []},
 });
