@@ -26,10 +26,6 @@
 						<VocabularyTableRows
 							:items="vocabularymodalStore.items"
 							:depth="0"
-							:expanded-ids="vocabularymodalStore.expandedIds"
-							:selected-item-ids="vocabularymodalStore.selectedItemIds"
-							@toggle-item-expansion="vocabularymodalStore.toggleItemExpansion"
-							@toggle-item-selection="vocabularymodalStore.toggleItemSelection"
 						/>
 					</TableBody>
 				</PkpTable>
