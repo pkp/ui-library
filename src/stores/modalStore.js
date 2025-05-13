@@ -112,7 +112,7 @@ export const useModalStore = defineStore('modal', () => {
 		// At this point we support two levels of side modals
 		//
 		// toBeClosed is used for edge case when modal close is delayed in 'onFormSuccess_' in ModalHandler to indicate
-		// form was successfully submitted. This does not work well in scenario when follow-up modal is immediatelly opened and
+		// form was successfully submitted. This does not work well in scenario when follow-up modal is immediately opened and
 		// is supposed to replace it (selecting issue & confirm publishing article modals)
 		if (!sideModal1.value?.opened || sideModal1.value?.toBeClosed) {
 			sideModal1.value = opts;
