@@ -427,7 +427,10 @@ export default {
 		handleOpenVocabulary(vocabulary) {
 			const {openSideModal} = useModal();
 
-			openSideModal(VocabularyModal, {
+			// Use the custom modal component if specified, otherwise default to VocabularyModal
+			const ModalComponent = vocabulary.modalComponent || VocabularyModal;
+
+			openSideModal(ModalComponent, {
 				initiallySelectedItems: this.currentSelected,
 				...vocabulary,
 				onSaveChanges: (updatedKeywords) => {
