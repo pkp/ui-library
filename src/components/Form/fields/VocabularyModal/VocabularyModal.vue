@@ -7,21 +7,36 @@
 			<SideModalLayoutBasic>
 				<PkpTable>
 					<TableHeader>
-						<TableColumn></TableColumn>
-						<TableColumn></TableColumn>
+						<TableColumn
+							v-for="(column, i) in vocabularymodalStore.columns"
+							:key="i"
+						>
+							<span :class="column.headerSrOnly ? 'sr-only' : ''">
+								{{ column.header }}
+							</span>
+						</TableColumn>
+						<!-- Expand/Collapse column -->
+						<TableColumn>
+							<span class="sr-only">
+								{{ t('common.expand') }}
+							</span>
+						</TableColumn>
 					</TableHeader>
 					<TableBody>
 						<VocabularyTableRows
-							:items="items"
+							:items="vocabularymodalStore.items"
 							:depth="0"
-							:expanded-ids="expandedIds"
-							:selected-item-ids="selectedItemIds"
-							@toggle-item-expansion="toggleItemExpansion"
-							@toggle-item-selection="toggleItemSelection"
+							:expanded-ids="vocabularymodalStore.expandedIds"
+							:selected-item-ids="vocabularymodalStore.selectedItemIds"
+							@toggle-item-expansion="vocabularymodalStore.toggleItemExpansion"
+							@toggle-item-selection="vocabularymodalStore.toggleItemSelection"
 						/>
 					</TableBody>
 				</PkpTable>
-				<PkpButton class="mt-2" @click="saveChanges(closeModal)">
+				<PkpButton
+					class="mt-2"
+					@click="vocabularymodalStore.saveChanges(closeModal)"
+				>
 					{{ t('common.save') }}
 				</PkpButton>
 			</SideModalLayoutBasic>
@@ -30,7 +45,6 @@
 </template>
 
 <script setup>
-import {ref, computed} from 'vue';
 import PkpButton from '@/components/Button/Button.vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
@@ -40,6 +54,8 @@ import TableHeader from '@/components/Table/TableHeader.vue';
 import TableBody from '@/components/Table/TableBody.vue';
 import VocabularyTableRows from './VocabularyTableRows.vue';
 import {useLocalize} from '@/composables/useLocalize';
+import {useVocabularyModalStore} from './vocabularyModalStore';
+const {t} = useLocalize();
 
 const props = defineProps({
 	title: {type: String, required: true},
@@ -49,44 +65,5 @@ const props = defineProps({
 
 const emit = defineEmits(['saveChanges']);
 
-const {t} = useLocalize();
-
-const expandedIds = ref([]);
-
-function toggleItemExpansion(identifier) {
-	if (!expandedIds.value.includes(identifier)) {
-		expandedIds.value.push(identifier);
-	} else {
-		expandedIds.value = expandedIds.value.filter((id) => id !== identifier);
-	}
-}
-
-props.items.forEach((item) => {
-	toggleItemExpansion(item.identifier);
-});
-
-// [{label, value}]
-const selectedItems = ref([...props.initiallySelectedItems]);
-const selectedItemIds = computed(() =>
-	selectedItems.value.map((item) => item.value.identifier),
-);
-function toggleItemSelection(item) {
-	console.log('toggleItemSelection');
-	if (
-		selectedItems.value.find(
-			(_item) => _item.value.identifier === item.identifier,
-		)
-	) {
-		selectedItems.value = selectedItems.value.filter(
-			(_item) => _item.value.identifier !== item.identifier,
-		);
-	} else {
-		selectedItems.value.push({value: item, label: item.name});
-	}
-}
-
-function saveChanges(closeModalFn) {
-	emit('saveChanges', selectedItems.value);
-	closeModalFn();
-}
+const vocabularymodalStore = useVocabularyModalStore({props, emit});
 </script>
