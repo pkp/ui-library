@@ -31,10 +31,16 @@ const {t} = useLocalize();
 const props = defineProps({
 	isDisplayed: {type: Boolean, required: true, default: false},
 	isExpanded: {type: Boolean, required: true, default: false},
-	expandLabel: {type: String, required: false, default: () => null},
+	expandLabel: {
+		type: String,
+		required: false,
+		// default is handled in computed property to be able to reference `t`
+		default: () => null,
+	},
 	collapseLabel: {
 		type: String,
 		required: false,
+		// default is handled in computed property to be able to reference `t`
 		default: () => null,
 	},
 	depth: {type: Number, default: 0},
