@@ -64,16 +64,11 @@ export function isFieldValueArray(field) {
 
 /**
  * Set options for a select field
- * @param {Object} form - The form object
- * @param {string} fieldName - The name of the field to set options for
+ * @param {Object} field - The select field object to update
  * @param {Array<Object>} optionsArray - Array of options to set (each option should have a label and value)
  */
-function setSelectOptions(form, fieldName, optionsArray) {
-	const field = getField(form, fieldName);
-	if (field) {
-		field.options = optionsArray;
-	}
-
+function setSelectOptions(field, optionsArray) {
+	field.options = optionsArray;
 	return field;
 }
 
@@ -93,6 +88,28 @@ function enableSelectOptions(form, fieldName) {
 	}));
 
 	setSelectOptions(form, fieldName, updatedOptions);
+	return field;
+}
+
+/**
+ * Set the required status of a field
+ * @param {Object} field - The field object to update
+ * @param {boolean} isRequired - True if the field is required, false otherwise
+ * @returns {Object} The updated field object
+ */
+function setFieldIsRequired(field, isRequired) {
+	field.isRequired = isRequired;
+	return field;
+}
+
+/**
+ * Set the showWhen condition of a field
+ * @param {Object} field - The field object to update
+ * @param {Array<string>|undefined} showWhen - Array of field names that determine when this field should be shown, set to undefined to show always
+ * @returns {Object} The updated field object
+ */
+function setFieldShowWhen(field, showWhen) {
+	field.showWhen = showWhen;
 	return field;
 }
 
@@ -461,5 +478,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		getField,
 		setSelectOptions,
 		enableSelectOptions,
+		setFieldIsRequired,
+		setFieldShowWhen,
 	};
 }
