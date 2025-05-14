@@ -6,21 +6,34 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useSubmission} from '@/composables/useSubmission';
 import {useWorkflowStore} from '@/pages/workflow/workflowStore';
 
+const VERSION_MODE = {
+	CREATE: 'createNewVersion',
+	SEND_TO_TEXT_EDITOR: 'sendToTextEditor',
+	PUBLISH: 'publish',
+};
+
 /**
  * getRequestPublicationId - Determines the publication ID to use for the request
  */
 function getRequestPublicationId({
 	shouldCreateNewVersion,
+	versionMode,
 	versionSource,
 	sendToVersion,
 	latestPublicationId,
+	selectedPublicationId,
 }) {
-	// POST: if the user chose to create a new version, we need to use the selected version source or the latest publication id by default
+	if (versionMode === VERSION_MODE.PUBLISH) {
+		// For PUBLISH mode (PUT), use the selected publication before publishing the submission
+		return selectedPublicationId;
+	}
+
 	if (shouldCreateNewVersion) {
+		// For new versions (POST), use the version source or fallback to the latest publication
 		return versionSource || latestPublicationId;
 	}
 
-	// PUT: publicationId to use should be the sendToVersion id
+	// For updates (PUT) to an existing version, use the target version
 	return sendToVersion;
 }
 
@@ -34,13 +47,15 @@ function goToPublicationPage(store, {publicationId}) {
 export function useWorkflowVersionForm(
 	versionMode = 'createNewVersion',
 	closeDialog = () => {},
+	onSubmitFn = null,
 ) {
 	const store = useWorkflowStore();
 	const {t} = useLocalize();
 	const {getLatestPublication} = useSubmission();
 	let publications = [];
 	let latestPublication = null;
-	const isTextEditorMode = versionMode === 'sendToTextEditor';
+	const isTextEditorMode = versionMode === VERSION_MODE.SEND_TO_TEXT_EDITOR;
+	const isCreateMode = versionMode === VERSION_MODE.CREATE;
 
 	const redirectToExistingVersion = (versionId) => {
 		closeDialog(false);
@@ -54,7 +69,7 @@ export function useWorkflowVersionForm(
 
 	const handleVersionSubmission = async (formData) => {
 		const shouldCreateNewVersion =
-			!isTextEditorMode || formData.sendToVersion === 'create';
+			isCreateMode || formData.sendToVersion === 'create';
 
 		if (!shouldCreateNewVersion && !formData.versionStage) {
 			// just redirect if no updates are needed for the selected version when sending to text editor
@@ -63,9 +78,11 @@ export function useWorkflowVersionForm(
 
 		const publicationId = getRequestPublicationId({
 			shouldCreateNewVersion,
+			versionMode,
 			versionSource: formData.versionSource,
 			sendToVersion: formData.sendToVersion,
 			latestPublicationId: latestPublication?.id,
+			selectedPublicationId: store.selectedPublication?.id,
 		});
 
 		const {apiUrl: versionUrl} = useUrl(
@@ -91,11 +108,18 @@ export function useWorkflowVersionForm(
 
 		if (isSuccess.value) {
 			closeDialog(false);
-			goToPublicationPage(store, {
-				publicationId: shouldCreateNewVersion
-					? publicationData.value?.id
-					: publicationId,
-			});
+
+			if (versionMode !== VERSION_MODE.PUBLISH) {
+				goToPublicationPage(store, {
+					publicationId: shouldCreateNewVersion
+						? publicationData.value?.id
+						: publicationId,
+				});
+			}
+		}
+
+		if (typeof onSubmitFn === 'function') {
+			onSubmitFn(store.selectedPublication);
 		}
 
 		// return result to Form component handler
@@ -112,6 +136,8 @@ export function useWorkflowVersionForm(
 		setValue,
 		setSelectOptions,
 		enableSelectOptions,
+		setFieldIsRequired,
+		setFieldShowWhen,
 	} = useForm(store.versionForm, {
 		customSubmit: handleVersionSubmission,
 	});
@@ -142,7 +168,7 @@ export function useWorkflowVersionForm(
 			option.value === 'true' ? {...option, disabled: !allowMinor} : option,
 		);
 
-		setSelectOptions(store.versionForm, 'versionIsMinor', updatedOptions);
+		setSelectOptions(versionIsMinorField, updatedOptions);
 
 		if (!allowMinor && versionIsMinorField.value === 'true') {
 			setValue('versionIsMinor', 'false');
@@ -161,35 +187,30 @@ export function useWorkflowVersionForm(
 		latestPublication = getLatestPublication(store.submission);
 		publications = store.submission?.publications || [];
 
+		// Send To field (only visible when sending file to text editor)
 		const sendToVersionField = getField(store.versionForm, 'sendToVersion');
-		if (sendToVersionField) {
-			sendToVersionField.isRequired = isTextEditorMode;
-			setSelectOptions(
-				store.versionForm,
-				'sendToVersion',
-				buildPublicationOptions({withCreateOption: true}),
-			);
+		setFieldIsRequired(sendToVersionField, isTextEditorMode);
+		setFieldShowWhen(sendToVersionField, !isTextEditorMode ? [] : undefined);
+		setSelectOptions(
+			sendToVersionField,
+			buildPublicationOptions({withCreateOption: true}),
+		);
 
-			sendToVersionField.showWhen = !isTextEditorMode ? [] : undefined;
-		}
-
-		const versionSource = getField(store.versionForm, 'versionSource');
-		if (versionSource) {
-			setSelectOptions(
-				store.versionForm,
-				'versionSource',
-				buildPublicationOptions(),
-			);
-
-			versionSource.showWhen = isTextEditorMode
-				? ['sendToVersion', 'create']
-				: undefined;
-		}
-
+		// Version source field (only visible when creating a new version, either via Create New Version button or Send to Text Editor when Send to File field "create" option is selected)
+		const versionSourceField = getField(store.versionForm, 'versionSource');
+		setFieldShowWhen(
+			versionSourceField,
+			!isCreateMode ? ['sendToVersion', 'create'] : undefined,
+		);
+		setSelectOptions(versionSourceField, buildPublicationOptions());
 		setValue(
 			'versionSource',
-			versionMode === 'createNewVersion' ? latestPublication?.id : null,
+			versionMode === VERSION_MODE.CREATE ? latestPublication?.id : null,
 		);
+
+		// Version stage field is required when form is displayed before publishing an "Unassigned Version"
+		const versionStageField = getField(store.versionForm, 'versionStage');
+		setFieldIsRequired(versionStageField, versionMode === VERSION_MODE.PUBLISH);
 
 		enableSelectOptions(store.versionForm, 'versionIsMinor');
 	});
@@ -206,7 +227,10 @@ export function useWorkflowVersionForm(
 	watch(
 		() => getField(store.versionForm, 'sendToVersion')?.value,
 		(sendToVersion) => {
-			if (sendToVersion !== 'create' || !latestPublication?.id) return;
+			if (sendToVersion !== 'create' || !latestPublication?.id) {
+				return;
+			}
+
 			// if sendToVersion should create a new version, set the versionSource to the latest publication
 			setValue('versionSource', latestPublication.id);
 		},

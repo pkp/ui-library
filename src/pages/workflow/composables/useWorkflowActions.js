@@ -7,6 +7,7 @@ import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 
 import WorkflowModalChangeSubmissionLanguage from '@/pages/workflow/modals/WorkflowChangeSubmissionLanguageModal.vue';
 import WorkflowVersionDialogBody from '@/pages/workflow/components/publication/WorkflowVersionDialogBody.vue';
+import WorkflowVersionSideModal from '@/pages/workflow/components/publication/WorkflowVersionSideModal.vue';
 
 export const Actions = {
 	WORKFLOW_VIEW_PUBLISHED_SUBMISSION: 'workflowViewPublishedSubmission',
@@ -83,10 +84,38 @@ export function useWorkflowActions() {
 		);
 	}
 
+	function workflowAssignPublicationStage(
+		{selectedPublication, submission},
+		finishedCallback,
+	) {
+		const {openSideModal, closeSideModal} = useModal();
+
+		function onCloseFn() {
+			closeSideModal(WorkflowVersionSideModal);
+		}
+
+		openSideModal(WorkflowVersionSideModal, {
+			onCloseFn,
+			onSubmitFn: finishedCallback,
+		});
+	}
+
 	function workflowAssignToIssueAndScheduleForPublication(
 		{selectedPublication, submission},
 		finishedCallback,
 	) {
+		// if version is unassigned, we need to assign it to a publication stage first
+		if (!selectedPublication.versionStage) {
+			return workflowAssignPublicationStage(
+				{selectedPublication, submission},
+				(publicationData) =>
+					workflowAssignToIssueAndScheduleForPublication(
+						{submission, selectedPublication: publicationData},
+						finishedCallback,
+					),
+			);
+		}
+
 		if (selectedPublication.issueId === null) {
 			const {url} = useLegacyGridUrl({
 				component: 'modals.publish.AssignToIssueHandler',
