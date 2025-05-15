@@ -36,6 +36,8 @@
 
 		<div class="flex">
 			<FieldOptions
+				:label="t('acceptInvitation.privacyConsent')"
+				:is-required="true"
 				component="field-options"
 				:value="fields.privacyStatement"
 				name="privacyStatement"
