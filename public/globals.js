@@ -144,7 +144,7 @@ window.pkp = {
 		'acceptInvitation.cancelInvite.title': 'Cancel Role Invitation Process?',
 		'acceptInvitation.modal.button': 'View All Submissions',
 		'acceptInvitation.modal.message':
-			'Congratulations on your new role in OJS! You might now have access to new options. If you need assistance navigating the system, please click on the \u201cHelp\u201d buttons throughout the interface for guidance',
+			'Congratulations on your new role in OJS! You might now have access to new options. If you need any assistance in understanding the system, please click on the “Help” button throughout the system for guidance.',
 		'acceptInvitation.modal.title': "You've been assigned a new role in OJS",
 		'acceptInvitation.passwordField.description':
 			'It should be at least 6 characters long and could be a combination of uppercase letters, lowercase letters, numbers and symbols',
@@ -159,6 +159,7 @@ window.pkp = {
 		'acceptInvitation.usernameField.description':
 			'It could be a combination of uppercase letters, lowercase letters or numbers',
 		'acceptInvitation.verifyOrcid': 'Verify ORCID iD',
+		'acceptInvitation.privacyConsent':'Privacy Consent',
 		'admin.jobs.failed.action.redispatch': 'Try Again',
 		'admin.jobs.failed.action.redispatch.all': 'Requeue All Failed Jobs',
 		'admin.jobs.list.actions': 'Actions',
@@ -902,7 +903,7 @@ window.pkp = {
 		'userInvitation.edit.title': 'Edit Invitation',
 		'userInvitation.modal.button': 'View All Users',
 		'userInvitation.modal.message':
-			"{$email} has been invited to new role in OJS. You can be updated about the user's decision on the User & Role page, your OJS notification and/or your email.",
+			"{$email} has been invited to new role in OJS. You can be updated about the user's decision on the Users & Roles page, your OJS notifications and/or your email.",
 		'userInvitation.modal.title': 'Invitation Sent',
 		'userInvitation.roleTable.endDate': 'End Date',
 		'userInvitation.roleTable.journalMasthead': 'Journal Masthead',
