@@ -161,6 +161,17 @@ export function useWorkflowActions() {
 		{submission, selectedPublication},
 		finishedCallback,
 	) {
+		if (!selectedPublication.versionStage) {
+			return workflowAssignPublicationStage(
+				{selectedPublication, submission},
+				(publicationData) =>
+					workflowScheduleForPublication(
+						{submission, selectedPublication: publicationData},
+						finishedCallback,
+					),
+			);
+		}
+
 		const {openLegacyModal} = useLegacyGridUrl({
 			component: 'modals.publish.PublishHandler',
 			op: 'publish',
