@@ -1,4 +1,4 @@
-import {computed} from 'vue';
+import {computed, watch} from 'vue';
 import {injectFromCurrentInstance} from '@/utils/defineComponentStore';
 
 import {defineComponentStore} from '@/utils/defineComponentStore';
@@ -29,6 +29,7 @@ export const useWorkflowStore = defineComponentStore(
 	'workflow',
 	({props, Components, useWorkflowConfig, useWorkflowNavigationConfig}) => {
 		const dashboardPage = props.pageInitConfig.dashboardPage;
+		const versionForm = props.pageInitConfig.componentForms.versionForm;
 		const contextMinReviewsPerSubmission =
 			props.pageInitConfig.contextMinReviewsPerSubmission;
 		const extender = useExtender();
@@ -106,6 +107,14 @@ export const useWorkflowStore = defineComponentStore(
 			}),
 		);
 
+		function handleCreateNewVersion(action) {
+			if (action === 'createNewVersion') {
+				_workflowActionsFns.workflowCreateNewVersion();
+			}
+
+			// some other actions are handled by the selectedMenuKey watch event
+		}
+
 		const {
 			menuTitle,
 			navigateToMenu,
@@ -117,7 +126,20 @@ export const useWorkflowStore = defineComponentStore(
 			submission,
 			workflowNavigationConfig,
 			dashboardPage,
+			handleCreateNewVersion,
 		});
+
+		watch(
+			() => selectedMenuState.value.publicationId,
+			(newPublicationId) => {
+				if (
+					newPublicationId &&
+					newPublicationId !== selectedPublicationId.value
+				) {
+					selectPublicationId(newPublicationId);
+				}
+			},
+		);
 
 		/**
 		 * Expose workflow actions
@@ -212,6 +234,7 @@ export const useWorkflowStore = defineComponentStore(
 		const store = {
 			dashboardPage,
 			closeWorkflowModal,
+			versionForm,
 
 			submission,
 			submissionId,
@@ -248,6 +271,7 @@ export const useWorkflowStore = defineComponentStore(
 			 */
 			fileUpload,
 
+			triggerDataChange,
 			Components,
 			extender,
 			props,

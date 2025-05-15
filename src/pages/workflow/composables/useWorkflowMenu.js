@@ -1,19 +1,27 @@
 import {useSideMenu} from '@/composables/useSideMenu';
-import {computed, watch} from 'vue';
+import {computed, watch, ref} from 'vue';
 import {useQueryParams} from '@/composables/useQueryParams';
+import {useSubmission} from '@/composables/useSubmission';
 
 export function useWorkflowMenu({
 	menuItems,
 	submission,
 	workflowNavigationConfig,
 	dashboardPage,
+	handleCreateNewVersion = () => {},
 }) {
 	const {
 		sideMenuProps,
 		setExpandedKeys,
 		setActiveItemKey,
 		selectedItem: selectedMenuItem,
-	} = useSideMenu(menuItems);
+		expandedKeys,
+		updateExpandedKeys,
+	} = useSideMenu(menuItems, {onActionFn: handleCreateNewVersion});
+
+	const {getLatestPublication} = useSubmission();
+
+	const previousMenuState = ref({});
 
 	/**
 	 * Url query params
@@ -26,9 +34,17 @@ export function useWorkflowMenu({
 	 * secondaryMenuItem: name of publication/marketing submenu
 	 * stageId: applicable when primaryMenuItem is workflow
 	 * reviewRoundId: applicable when reviewRound is selected
+	 * publicationId: applicable when primaryMenuItem is publication
+	 * isDialogOnly: Set to `true` when the menu item is intended to open a dialog without affecting the primary/secondary item state.
 	 */
 	const selectedMenuState = computed(() => {
 		const actionArgs = selectedMenuItem.value?.actionArgs || {};
+
+		// If menu is "dialog-only" action, don't update the actionArgs
+		// to preserve the current primary/secondary menu items dislayed in the workflow content
+		if (actionArgs.isDialogOnly) {
+			return previousMenuState.value;
+		}
 
 		return {
 			...actionArgs,
@@ -50,6 +66,15 @@ export function useWorkflowMenu({
 	watch(submission, (newSubmission, oldSubmission) => {
 		// Once the submission is fetched, select relevant stage in navigation
 		if (!oldSubmission && newSubmission) {
+			// Update expandedKeys for publication menu
+			const latestPublication = getLatestPublication(newSubmission);
+			if (latestPublication?.id) {
+				updateExpandedKeys({
+					...expandedKeys.value,
+					[`publication_${latestPublication.id}`]: true,
+				});
+			}
+
 			// use the menu selection from the url, if it does exist, otherwise fallback
 			if (queryParamsUrl?.workflowMenuKey?.length) {
 				const doesKeyExist = navigateToMenu(queryParamsUrl?.workflowMenuKey);
@@ -68,7 +93,15 @@ export function useWorkflowMenu({
 
 	// Update selectedMenuKey in url when menu selection changes
 	watch(selectedMenuKey, (newSelectedMenuKey) => {
-		queryParamsUrl.workflowMenuKey = newSelectedMenuKey;
+		if (newSelectedMenuKey !== 'publication_create_new_version') {
+			queryParamsUrl.workflowMenuKey = newSelectedMenuKey;
+		}
+	});
+
+	watch(selectedMenuState, (newState) => {
+		if (!selectedMenuItem.value?.actionArgs?.isDialogOnly) {
+			previousMenuState.value = newState;
+		}
 	});
 
 	return {
