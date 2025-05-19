@@ -6,6 +6,8 @@ import FormMultilingual from './mocks/form-multilingual';
 import FormGroups from './mocks/form-groups';
 import FormUser from './mocks/form-user';
 import FormConditionalDisplay from './mocks/form-conditional-display';
+import {useForm} from '@/composables/useForm';
+import {useLocalize} from '@/composables/useLocalize';
 
 export default {
 	title: 'Forms/Form',
@@ -167,4 +169,40 @@ export const WithErrorSummary = {
 	args: {
 		showErrorFooter: false,
 	},
+};
+
+export const ClientSideConfigured = {
+	render: (args) => ({
+		components: {PkpForm: Form},
+		setup() {
+			const {t} = useLocalize();
+			const {form, initEmptyForm, addFieldSelect, addPage, addGroup, set} =
+				useForm();
+			initEmptyForm('versions', {});
+			addPage('default', {
+				submitButton: {label: t('common.confirm')},
+				cancelButton: {label: t('common.cancel')},
+			});
+			addGroup('default');
+			addFieldSelect('versionStage', {
+				label: 'Publication Stage',
+				size: 'large',
+				description: 'interesting description',
+				options: [
+					{label: 'Author Original (AO)', value: 'AO'},
+					{label: 'Accepted Manuscript (AM)', value: 'AM'},
+					{label: 'Submitted Manuscript (SM)', value: 'SM'},
+					{label: 'Proof (PF)', value: 'PF'},
+					{label: 'Version of Record (VoR)', value: 'VoR'},
+				],
+			});
+
+			return {args, set, form};
+		},
+		template: `
+			<PkpForm v-bind="form" @set="set" />
+		`,
+	}),
+
+	args: {},
 };

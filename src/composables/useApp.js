@@ -36,6 +36,24 @@ export function useApp() {
 	}
 
 	/**
+	 * Get the list of form supported locales for the current application.
+	 *
+	 * @returns {Object} An object of supported locale codes (e.g., {en: 'English', fr_CA: 'French'}).
+	 */
+	function getSupportedFormLocales() {
+		return pkp.context.supportedFormLocales;
+	}
+
+	/**
+	 * Get the primary locale of the application.
+	 *
+	 * @returns {string} The current locale code (e.g., 'en').
+	 */
+	function getPrimaryLocale() {
+		return pkp.context.primaryLocale;
+	}
+
+	/**
 	 * Get the current locale of the application.
 	 *
 	 * @returns {string} The current locale code (e.g., 'en').
@@ -58,7 +76,9 @@ export function useApp() {
 		isOMP,
 		isOPS,
 		getSupportedLocales,
+		getSupportedFormLocales,
 		getCurrentLocale,
+		getPrimaryLocale,
 		getHelpUrl,
 	};
 }

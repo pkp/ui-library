@@ -1,5 +1,5 @@
 import {ref, watch} from 'vue';
-
+import {useApp} from './useApp';
 /**
  * Get a field from a form by name
  * @param {Object} form - The form object
@@ -68,7 +68,7 @@ export function isFieldValueArray(field) {
  * @param {Object} [options={}] - Additional options
  * @param {Function} [options.customSubmit] - Custom submit function
  */
-export function useForm(_form, {customSubmit} = {}) {
+export function useForm(_form = {}, {customSubmit} = {}) {
 	/**
 	 * The form state
 	 * @type {Ref<Object>}
@@ -294,6 +294,114 @@ export function useForm(_form, {customSubmit} = {}) {
 		form.value.method = _method;
 	}
 
+	function setLocales(locales = null) {
+		const {getCurrentLocale, getPrimaryLocale, getSupportedFormLocales} =
+			useApp();
+		const supportedFormLocales = locales || getSupportedFormLocales();
+		if (Array.isArray(supportedFormLocales)) {
+			form.value.supportedFormLocales = supportedFormLocales;
+		} else {
+			form.value.supportedFormLocales = Object.keys(supportedFormLocales).map(
+				(localeKey) => ({
+					key: localeKey,
+					label: supportedFormLocales[localeKey],
+				}),
+			);
+		}
+
+		form.value.primaryLocale = getPrimaryLocale();
+		let visibleLocales = [getCurrentLocale()];
+		if (getCurrentLocale() !== getPrimaryLocale()) {
+			visibleLocales.unshift(getPrimaryLocale());
+		}
+		form.value.visibleLocales = visibleLocales;
+	}
+
+	function initEmptyForm(formId, {action, method, locales}) {
+		if (!form.value) {
+			form.value = {};
+		}
+		form.value.pages = [];
+		form.value.groups = [];
+		form.value.fields = [];
+
+		form.value.id = formId;
+		form.value.locales = locales;
+		setMethod(method || 'POST');
+		setAction(action || 'emit');
+		setLocales(locales);
+	}
+
+	function addPage(pageId, {submitButton, cancelButton, previousButton} = {}) {
+		form.value.pages.push({
+			id: pageId,
+			submitButton,
+			cancelButton,
+			previousButton,
+		});
+	}
+	function addGroup(groupId, {pageId, label, description} = {}) {
+		form.value.groups = form.value.groups || [];
+		form.value.groups.push({
+			id: groupId || 'default',
+			label,
+			description,
+			pageId: pageId || 'default',
+		});
+	}
+
+	function addField(
+		fieldName,
+		{
+			component,
+			label,
+			description,
+			groupId,
+			isRequired,
+			isMultilingual,
+			showWhen,
+			isInert,
+			...additionalFields
+		},
+	) {
+		form.value.fields.push({
+			name: fieldName,
+			component,
+			label,
+			description,
+			groupId: groupId || 'default',
+			isRequired,
+			isMultilingual,
+			showWhen,
+			isInert,
+			...additionalFields,
+		});
+	}
+
+	function addFieldText(
+		fieldName,
+		{inputType, optIntoEdit, optIntoEditLabel, size, prefix, ...commonFields},
+	) {
+		addField(fieldName, {
+			component: 'field-text',
+			inputType,
+			optIntoEdit,
+			optIntoEditLabel,
+			size,
+			prefix,
+			...commonFields,
+		});
+	}
+
+	function addFieldSelect(fieldName, {options, size, ...commonFields} = {}) {
+		return addField(fieldName, {
+			component: 'field-select',
+			options,
+			size,
+			...commonFields,
+		});
+	}
+
 	return {
 		set,
 		setValue,
@@ -309,5 +417,12 @@ export function useForm(_form, {customSubmit} = {}) {
 		setAction,
 		setMethod,
 		structuredErrors,
+
+		/** creating form */
+		initEmptyForm,
+		addPage,
+		addGroup,
+		addFieldText,
+		addFieldSelect,
 	};
 }
