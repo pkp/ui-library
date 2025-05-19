@@ -48,7 +48,8 @@ const props = defineProps({
 	 * - `label` (string, required): The label of the menu item.
 	 * - `key` (string, required): A unique key for each item.
 	 * - `link` (string, optional): The URL to navigate to when the item is clicked.
-	 * - `action` (string, optional): A function to be executed when the item is clicked.
+	 * - `state` (object, optional): Place to store item specific state. Item gets selected on click.
+	 * - `action` (string, optional): A function to be executed when the item is clicked. Gets selected only if also `state` is provided
 	 * - `actionArgs` (object, optional): An object to be passed as function arguments when the `item.action` is emitted.
 	 * - `badge` (object, optional): Contains `slot` (string) and other props for `<Badge>` customization.
 	 * - `colorStripe` (string, optional): A border class to add a color stripe to the item.
