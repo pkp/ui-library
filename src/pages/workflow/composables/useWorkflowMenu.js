@@ -28,10 +28,10 @@ export function useWorkflowMenu({
 	 * reviewRoundId: applicable when reviewRound is selected
 	 */
 	const selectedMenuState = computed(() => {
-		const actionArgs = selectedMenuItem.value?.actionArgs || {};
+		const state = selectedMenuItem.value?.state || {};
 
 		return {
-			...actionArgs,
+			...state,
 		};
 	});
 

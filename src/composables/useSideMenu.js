@@ -187,11 +187,15 @@ export function useSideMenu(_items, opts = {}) {
 					}
 					setActiveItemKey(item.key);
 				};
-			}
-
-			if (item.action) {
+			} else if (item.action) {
 				item.command = () => {
 					onActionFn(item.action, {...item.actionArgs, key: item.key});
+					if (item.state) {
+						setActiveItemKey(item.key);
+					}
+				};
+			} else if (item.state) {
+				item.command = () => {
 					setActiveItemKey(item.key);
 				};
 			}

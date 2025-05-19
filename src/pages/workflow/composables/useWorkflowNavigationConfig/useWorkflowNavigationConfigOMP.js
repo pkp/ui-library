@@ -21,8 +21,7 @@ function getMarketingItem({label, name}) {
 	return {
 		key: `marketing_${name}`,
 		label: label,
-		action: 'selectMenu',
-		actionArgs: {
+		state: {
 			primaryMenuItem: 'marketing',
 			secondaryMenuItem: name,
 			title: getMarketingTitle(label),
