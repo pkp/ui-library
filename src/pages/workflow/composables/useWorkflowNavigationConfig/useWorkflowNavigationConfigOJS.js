@@ -18,8 +18,7 @@ export function getPublicationItem({label, name}) {
 	return {
 		key: `publication_${name}`,
 		label: label,
-		action: 'selectMenu',
-		actionArgs: {
+		state: {
 			primaryMenuItem: 'publication',
 			secondaryMenuItem: name,
 			title: getPublicationTitle(label),
@@ -27,13 +26,12 @@ export function getPublicationItem({label, name}) {
 	};
 }
 
-export function getWorkflowItem({stageId, label, isActive, isDisabled, items}) {
+export function getWorkflowItem({stageId, label, isActive, items}) {
 	return {
 		key: `workflow_${stageId}`,
 		label: label,
 		colorStripe: isActive ? StageColors[stageId] : null,
-		action: isDisabled ? undefined : 'selectMenu',
-		actionArgs: {
+		state: {
 			primaryMenuItem: 'workflow',
 			stageId: stageId,
 			title: getWorkflowTitle(label),
@@ -93,8 +91,7 @@ export function getReviewItem({stageId, reviewRound, isActive, title}) {
 		key: `workflow_${stageId}_${reviewRound.id}`,
 		label: t('workflow.reviewRoundN', {number: reviewRound.round}),
 		colorStripe: isActive ? StageColors[stageId] : null,
-		action: 'selectMenu',
-		actionArgs: {
+		state: {
 			primaryMenuItem: 'workflow',
 			stageId: stageId,
 			reviewRoundId: reviewRound.id,
@@ -134,7 +131,6 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 				label: t('manager.publication.reviewStage'),
 				isActive:
 					activeStage.id === pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
-				isDisabled: externalReviewItems.length,
 				items: externalReviewItems,
 			}),
 		);
