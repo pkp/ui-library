@@ -350,7 +350,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 								},
 							},
 						],
-						modalStyle: 'primary',
+						modalStyle: 'success',
 					});
 				} else {
 					isSubmitting.value = false;
