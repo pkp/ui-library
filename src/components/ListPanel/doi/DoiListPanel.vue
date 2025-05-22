@@ -921,7 +921,7 @@ export default {
 					return {
 						id: publication.id,
 						isCurrentVersion: item.currentPublicationId === publication.id,
-						versionNumber: publication.version,
+						versionNumber: publication.versionString,
 						urlPublished: publication.urlPublished,
 						datePublished: publication.datePublished,
 					};
