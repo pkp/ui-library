@@ -26,6 +26,7 @@ const props = defineProps({
 	noFieldsMessage: {type: String, required: false, default: null},
 	submission: {type: Object, required: true},
 	publication: {type: Object, required: true},
+	pageInitConfig: {type: Object, required: true},
 });
 
 const relativeUrl = computed(() => {
