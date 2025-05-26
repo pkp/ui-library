@@ -29,7 +29,8 @@ export const useWorkflowStore = defineComponentStore(
 	'workflow',
 	({props, Components, useWorkflowConfig, useWorkflowNavigationConfig}) => {
 		const dashboardPage = props.pageInitConfig.dashboardPage;
-		const versionForm = props.pageInitConfig.componentForms.versionForm;
+		const versionStageOptions =
+			props.pageInitConfig.componentForms.versionStageOptions;
 		const contextMinReviewsPerSubmission =
 			props.pageInitConfig.contextMinReviewsPerSubmission;
 		const extender = useExtender();
@@ -234,7 +235,9 @@ export const useWorkflowStore = defineComponentStore(
 		const store = {
 			dashboardPage,
 			closeWorkflowModal,
-			versionForm,
+
+			// Workflow version form
+			versionStageOptions,
 
 			submission,
 			submissionId,
