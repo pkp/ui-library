@@ -10,11 +10,14 @@ export const FileManagerConfigurations = {
 			{
 				roles: [pkp.const.ROLE_ID_AUTHOR],
 				actions: [
-					Actions.FILE_SEND_TO_EDITOR,
 					Actions.FILE_LIST,
 					Actions.FILE_EDIT,
 					Actions.FILE_DOWNLOAD_ALL,
 				],
+			},
+			{
+				roles: [pkp.const.ROLE_ID_SITE_ADMIN, pkp.const.ROLE_ID_MANAGER],
+				actions: [Actions.FILE_SEND_TO_EDITOR],
 			},
 			{
 				roles: [
@@ -24,7 +27,6 @@ export const FileManagerConfigurations = {
 					pkp.const.ROLE_ID_ASSISTANT,
 				],
 				actions: [
-					Actions.FILE_SEND_TO_EDITOR,
 					Actions.FILE_LIST,
 					Actions.FILE_UPLOAD,
 					Actions.FILE_DOWNLOAD_ALL,
@@ -50,6 +52,10 @@ export const FileManagerConfigurations = {
 	EDITOR_REVIEW_FILES: ({stageId}) => ({
 		permissions: [
 			{
+				roles: [pkp.const.ROLE_ID_SITE_ADMIN, pkp.const.ROLE_ID_MANAGER],
+				actions: [Actions.FILE_SEND_TO_EDITOR],
+			},
+			{
 				roles: [
 					pkp.const.ROLE_ID_SUB_EDITOR,
 					pkp.const.ROLE_ID_MANAGER,
@@ -57,7 +63,6 @@ export const FileManagerConfigurations = {
 					pkp.const.ROLE_ID_ASSISTANT,
 				],
 				actions: [
-					Actions.FILE_SEND_TO_EDITOR,
 					Actions.FILE_LIST,
 					Actions.FILE_SELECT_UPLOAD,
 					Actions.FILE_EDIT,
@@ -95,6 +100,10 @@ export const FileManagerConfigurations = {
 				],
 			},
 			{
+				roles: [pkp.const.ROLE_ID_SITE_ADMIN, pkp.const.ROLE_ID_MANAGER],
+				actions: [Actions.FILE_SEND_TO_EDITOR],
+			},
+			{
 				roles: [
 					pkp.const.ROLE_ID_SUB_EDITOR,
 					pkp.const.ROLE_ID_MANAGER,
@@ -102,7 +111,6 @@ export const FileManagerConfigurations = {
 					pkp.const.ROLE_ID_ASSISTANT,
 				],
 				actions: [
-					Actions.FILE_SEND_TO_EDITOR,
 					Actions.FILE_LIST,
 					Actions.FILE_UPLOAD,
 					Actions.FILE_EDIT,
@@ -133,6 +141,10 @@ export const FileManagerConfigurations = {
 				actions: [Actions.FILE_LIST],
 			},
 			{
+				roles: [pkp.const.ROLE_ID_SITE_ADMIN, pkp.const.ROLE_ID_MANAGER],
+				actions: [Actions.FILE_SEND_TO_EDITOR],
+			},
+			{
 				roles: [
 					pkp.const.ROLE_ID_SUB_EDITOR,
 					pkp.const.ROLE_ID_MANAGER,
@@ -140,7 +152,6 @@ export const FileManagerConfigurations = {
 					pkp.const.ROLE_ID_ASSISTANT,
 				],
 				actions: [
-					Actions.FILE_SEND_TO_EDITOR,
 					Actions.FILE_LIST,
 					Actions.FILE_SELECT_UPLOAD,
 					Actions.FILE_EDIT,
@@ -166,6 +177,10 @@ export const FileManagerConfigurations = {
 	FINAL_DRAFT_FILES: ({stageId}) => ({
 		permissions: [
 			{
+				roles: [pkp.const.ROLE_ID_SITE_ADMIN, pkp.const.ROLE_ID_MANAGER],
+				actions: [Actions.FILE_SEND_TO_EDITOR],
+			},
+			{
 				roles: [
 					pkp.const.ROLE_ID_SUB_EDITOR,
 					pkp.const.ROLE_ID_MANAGER,
@@ -173,7 +188,6 @@ export const FileManagerConfigurations = {
 					pkp.const.ROLE_ID_ASSISTANT,
 				],
 				actions: [
-					Actions.FILE_SEND_TO_EDITOR,
 					Actions.FILE_LIST,
 					Actions.FILE_SELECT_UPLOAD,
 					Actions.FILE_EDIT,
@@ -199,6 +213,10 @@ export const FileManagerConfigurations = {
 	PRODUCTION_READY_FILES: ({stageId}) => ({
 		permissions: [
 			{
+				roles: [pkp.const.ROLE_ID_SITE_ADMIN, pkp.const.ROLE_ID_MANAGER],
+				actions: [Actions.FILE_SEND_TO_EDITOR],
+			},
+			{
 				roles: [
 					pkp.const.ROLE_ID_SUB_EDITOR,
 					pkp.const.ROLE_ID_MANAGER,
@@ -206,7 +224,6 @@ export const FileManagerConfigurations = {
 					pkp.const.ROLE_ID_ASSISTANT,
 				],
 				actions: [
-					Actions.FILE_SEND_TO_EDITOR,
 					Actions.FILE_LIST,
 					Actions.FILE_UPLOAD,
 					Actions.FILE_EDIT,
