@@ -493,10 +493,7 @@ export default {
 		 * @param {Object} data The form data to be updated
 		 */
 		updateCurrentTemplateForm(formId, data) {
-			this.currentTemplateForm = {
-				...this.currentTemplateForm,
-				...data,
-			};
+			Object.assign(this.currentTemplateForm, data);
 		},
 	},
 };
