@@ -30,7 +30,7 @@ export const useWorkflowStore = defineComponentStore(
 	({props, Components, useWorkflowConfig, useWorkflowNavigationConfig}) => {
 		const dashboardPage = props.pageInitConfig.dashboardPage;
 		const versionStageOptions =
-			props.pageInitConfig.componentForms.versionStageOptions;
+			props.pageInitConfig.componentForms.versionStageOptions || [];
 		const contextMinReviewsPerSubmission =
 			props.pageInitConfig.contextMinReviewsPerSubmission;
 		const extender = useExtender();
