@@ -42,7 +42,7 @@ export function useWorkflowMenu({
 
 		// If menu is "dialog-only" action, don't update the actionArgs
 		// to preserve the current primary/secondary menu items dislayed in the workflow content
-		if (actionArgs.isDialogOnly) {
+		if (state.isDialogOnly) {
 			return previousMenuState.value;
 		}
 
