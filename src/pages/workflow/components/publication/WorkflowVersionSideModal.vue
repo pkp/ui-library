@@ -9,7 +9,7 @@
 			</span>
 		</template>
 		<SideModalLayoutBasic>
-			<PkpForm v-bind="form" @cancel="onCloseFn" @set="updateForm" />
+			<PkpForm v-bind="form" @cancel="onCloseFn" @set="set" />
 		</SideModalLayoutBasic>
 	</SideModalBody>
 </template>
@@ -31,7 +31,7 @@ const props = defineProps({
 	},
 });
 
-const {form, updateForm} = useWorkflowVersionForm(
+const {form, set} = useWorkflowVersionForm(
 	'publish',
 	props.onCloseFn,
 	props.onSubmitFn,
