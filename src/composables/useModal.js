@@ -18,11 +18,10 @@ export function useModal() {
 	}
 
 	/**
-	 * Close the currently open dialog modal
-	 * @param {boolean} [triggerLegacyCloseHandler=true] - Whether to trigger the legacy close handler
+	 * Close the currently opened dialog modal
 	 */
-	function closeDialog(triggerLegacyCloseHandler = true) {
-		modalStore.closeDialog(triggerLegacyCloseHandler);
+	function closeDialog() {
+		modalStore.closeDialog();
 	}
 
 	/**

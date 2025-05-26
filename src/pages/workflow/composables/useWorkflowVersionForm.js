@@ -60,7 +60,7 @@ export function useWorkflowVersionForm(
 		isPublishMode: versionMode === VERSION_MODE.PUBLISH,
 	};
 
-	const redirectToExistingVersion = (versionId) => {
+	function redirectToExistingVersion(versionId) {
 		closeDialog(false);
 		goToPublicationPage(store, {publicationId: versionId});
 
@@ -68,9 +68,9 @@ export function useWorkflowVersionForm(
 			data: null,
 			validationError: null,
 		};
-	};
+	}
 
-	const handleVersionSubmission = async (formData) => {
+	async function handleVersionSubmission(formData) {
 		const shouldCreateNewVersion =
 			modeState.isCreateMode || formData.sendToVersion === 'create';
 
@@ -130,7 +130,7 @@ export function useWorkflowVersionForm(
 			data: publicationData.value,
 			validationError: validationError.value,
 		};
-	};
+	}
 
 	const {
 		form,
@@ -144,7 +144,7 @@ export function useWorkflowVersionForm(
 		setSelectOptions,
 	} = useForm({}, {customSubmit: handleVersionSubmission});
 
-	const buildPublicationOptions = ({withCreateOption} = {}) => {
+	function buildPublicationOptions({withCreateOption} = {}) {
 		const defaultOption =
 			modeState.isTextEditorMode && withCreateOption
 				? [{label: t('publication.createVersion'), value: 'create'}]
@@ -156,9 +156,9 @@ export function useWorkflowVersionForm(
 		}));
 
 		return [...defaultOption, ...publicationOptions];
-	};
+	}
 
-	const updateMinorOptionAvailability = (newStage) => {
+	function updateMinorOptionAvailability(newStage) {
 		const versionIsMinorField = getField(form.value, 'versionIsMinor');
 		if (!versionIsMinorField) return;
 
@@ -175,7 +175,7 @@ export function useWorkflowVersionForm(
 		if (!allowMinor && versionIsMinorField.value === 'true') {
 			setValue('versionIsMinor', 'false');
 		}
-	};
+	}
 
 	initEmptyForm('version', {showErrorFooter: false});
 	addPage('default', {

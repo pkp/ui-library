@@ -243,10 +243,6 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 				key: 'publication_create_new_version',
 				label: t('publication.createVersion'),
 				action: 'createNewVersion',
-				actionArgs: {
-					submissionId: submission.id,
-					isDialogOnly: true,
-				},
 			});
 		}
 
