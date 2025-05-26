@@ -69,14 +69,3 @@ function fireCallback(callback) {
 	}
 }
 </script>
-
-<style>
-/* Override style when form is opened in a dialog */
-.modal-content .pkpFormPages > .pkpFormPage > .pkpFormGroup {
-	@apply p-0;
-}
-
-.modal-content .pkpFormPages > .pkpFormPage > .pkpFormPage__footer {
-	@apply px-0 py-12;
-}
-</style>
