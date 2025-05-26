@@ -29,6 +29,7 @@ export function useFileManagerActions() {
 			bodyComponent: WorkflowVersionDialogBody,
 			bodyProps: {
 				mode: 'sendToTextEditor',
+				displayDefaultFooter: false,
 				onCloseFn: () => closeDialog(false),
 			},
 			showCloseButton: false,

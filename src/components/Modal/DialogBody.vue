@@ -6,7 +6,7 @@
 	</div>
 
 	<div
-		v-if="actions.length || slots.actions"
+		v-if="displayDefaultFooter"
 		class="flex items-center gap-x-4"
 		:class="hasIcon ? 'p-10 ps-24' : 'p-12'"
 	>
@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import {ref, useSlots} from 'vue';
+import {ref} from 'vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';
 
@@ -49,9 +49,12 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
+	// wether to display default footer with actions, set this to false if dialog will display PkpForm
+	displayDefaultFooter: {
+		type: Boolean,
+		default: true,
+	},
 });
-
-const slots = useSlots();
 
 // for components that doesn't manually handle loading state
 const isDialogLoading = ref(props.isLoading);
