@@ -17,13 +17,13 @@ const VERSION_MODE = {
  */
 function getRequestPublicationId({
 	shouldCreateNewVersion,
-	versionMode,
+	isPublishMode,
 	versionSource,
 	sendToVersion,
 	latestPublicationId,
 	selectedPublicationId,
 }) {
-	if (versionMode === VERSION_MODE.PUBLISH) {
+	if (isPublishMode) {
 		// For PUBLISH mode (PUT), use the selected publication before publishing the submission
 		return selectedPublicationId;
 	}
@@ -54,8 +54,11 @@ export function useWorkflowVersionForm(
 	const {getLatestPublication} = useSubmission();
 	let publications = [];
 	let latestPublication = null;
-	const isTextEditorMode = versionMode === VERSION_MODE.SEND_TO_TEXT_EDITOR;
-	const isCreateMode = versionMode === VERSION_MODE.CREATE;
+	const modeState = {
+		isCreateMode: versionMode === VERSION_MODE.CREATE,
+		isTextEditorMode: versionMode === VERSION_MODE.SEND_TO_TEXT_EDITOR,
+		isPublishMode: versionMode === VERSION_MODE.PUBLISH,
+	};
 
 	const redirectToExistingVersion = (versionId) => {
 		closeDialog(false);
@@ -69,7 +72,7 @@ export function useWorkflowVersionForm(
 
 	const handleVersionSubmission = async (formData) => {
 		const shouldCreateNewVersion =
-			isCreateMode || formData.sendToVersion === 'create';
+			modeState.isCreateMode || formData.sendToVersion === 'create';
 
 		if (!shouldCreateNewVersion && !formData.versionStage) {
 			// just redirect if no updates are needed for the selected version when sending to text editor
@@ -78,7 +81,7 @@ export function useWorkflowVersionForm(
 
 		const publicationId = getRequestPublicationId({
 			shouldCreateNewVersion,
-			versionMode,
+			isPublishMode: modeState.isPublishMode,
 			versionSource: formData.versionSource,
 			sendToVersion: formData.sendToVersion,
 			latestPublicationId: latestPublication?.id,
@@ -109,7 +112,7 @@ export function useWorkflowVersionForm(
 		if (isSuccess.value) {
 			closeDialog(false);
 
-			if (versionMode !== VERSION_MODE.PUBLISH) {
+			if (!modeState.isPublishMode) {
 				goToPublicationPage(store, {
 					publicationId: shouldCreateNewVersion
 						? publicationData.value?.id
@@ -130,21 +133,20 @@ export function useWorkflowVersionForm(
 	};
 
 	const {
-		getField,
 		form,
-		clearForm,
+		initEmptyForm,
+		addFieldSelect,
+		addPage,
+		addGroup,
+		set,
 		setValue,
+		getField,
 		setSelectOptions,
-		enableSelectOptions,
-		setFieldIsRequired,
-		setFieldShowWhen,
-	} = useForm(store.versionForm, {
-		customSubmit: handleVersionSubmission,
-	});
+	} = useForm({}, {customSubmit: handleVersionSubmission});
 
 	const buildPublicationOptions = ({withCreateOption} = {}) => {
 		const defaultOption =
-			isTextEditorMode && withCreateOption
+			modeState.isTextEditorMode && withCreateOption
 				? [{label: t('publication.createVersion'), value: 'create'}]
 				: [];
 
@@ -157,7 +159,7 @@ export function useWorkflowVersionForm(
 	};
 
 	const updateMinorOptionAvailability = (newStage) => {
-		const versionIsMinorField = getField(store.versionForm, 'versionIsMinor');
+		const versionIsMinorField = getField(form.value, 'versionIsMinor');
 		if (!versionIsMinorField) return;
 
 		const allowMinor = publications.some(
@@ -175,48 +177,68 @@ export function useWorkflowVersionForm(
 		}
 	};
 
-	const updateForm = (formId, data) => {
-		let versionForm = {...form.value};
-		Object.keys(data).forEach((key) => (versionForm[key] = data[key]));
-		form.value = versionForm;
-	};
+	initEmptyForm('version', {showErrorFooter: false});
+	addPage('default', {
+		submitButton: {label: t('common.confirm')},
+		cancelButton: {label: t('common.cancel')},
+	});
+	addGroup('default');
 
 	onMounted(() => {
-		clearForm();
-
 		latestPublication = getLatestPublication(store.submission);
 		publications = store.submission?.publications || [];
 
 		// Send To field (only visible when sending file to text editor)
-		const sendToVersionField = getField(store.versionForm, 'sendToVersion');
-		setFieldIsRequired(sendToVersionField, isTextEditorMode);
-		setFieldShowWhen(sendToVersionField, !isTextEditorMode ? [] : undefined);
-		setSelectOptions(
-			sendToVersionField,
-			buildPublicationOptions({withCreateOption: true}),
-		);
+		if (modeState.isTextEditorMode) {
+			addFieldSelect('sendToVersion', {
+				label: t('publication.sendToTextEditor.label'),
+				options: buildPublicationOptions({withCreateOption: true}),
+				size: 'large',
+				isRequired: modeState.isTextEditorMode,
+				showWhen: !modeState.isTextEditorMode ? [] : undefined,
+			});
+		}
 
 		// Version source field (only visible when creating a new version, either via Create New Version button or Send to Text Editor when Send to File field "create" option is selected)
-		const versionSourceField = getField(store.versionForm, 'versionSource');
-		setFieldShowWhen(
-			versionSourceField,
-			!isCreateMode ? ['sendToVersion', 'create'] : undefined,
-		);
-		setSelectOptions(versionSourceField, buildPublicationOptions());
-		setValue(
-			'versionSource',
-			versionMode === VERSION_MODE.CREATE ? latestPublication?.id : null,
-		);
+		addFieldSelect('versionSource', {
+			label: t('publication.versionSource.create.label'),
+			description: t('publication.versionSource.create.description'),
+			options: buildPublicationOptions(),
+			size: 'large',
+			showWhen: !modeState.isCreateMode
+				? ['sendToVersion', 'create']
+				: undefined,
+		});
 
 		// Version stage field is required when form is displayed before publishing an "Unassigned Version"
-		const versionStageField = getField(store.versionForm, 'versionStage');
-		setFieldIsRequired(versionStageField, versionMode === VERSION_MODE.PUBLISH);
+		addFieldSelect('versionStage', {
+			label: t('publication.versionStage.label'),
+			description: t('publication.versionStage.description'),
+			options: store.versionStageOptions,
+			size: 'large',
+			isRequired: modeState.isPublishMode,
+		});
 
-		enableSelectOptions(store.versionForm, 'versionIsMinor');
+		// Version significance field
+		addFieldSelect('versionIsMinor', {
+			label: t('publication.revisionSignificance.label'),
+			description: t('publication.revisionSignificance.description'),
+			options: [
+				{label: t('publication.revisionSignificance.major'), value: 'false'},
+				{label: t('publication.revisionSignificance.minor'), value: 'true'},
+			],
+			size: 'large',
+			isRequired: modeState.isPublishMode,
+		});
+
+		setValue(
+			'versionSource',
+			modeState.isCreateMode ? latestPublication?.id : null,
+		);
 	});
 
 	watch(
-		() => getField(store.versionForm, 'versionStage')?.value,
+		() => getField(form.value, 'versionStage')?.value,
 		(newStage) => {
 			if (!newStage) return;
 			updateMinorOptionAvailability(newStage);
@@ -225,7 +247,7 @@ export function useWorkflowVersionForm(
 	);
 
 	watch(
-		() => getField(store.versionForm, 'sendToVersion')?.value,
+		() => getField(form.value, 'sendToVersion')?.value,
 		(sendToVersion) => {
 			if (sendToVersion !== 'create' || !latestPublication?.id) {
 				return;
@@ -239,6 +261,6 @@ export function useWorkflowVersionForm(
 
 	return {
 		form,
-		updateForm,
+		set,
 	};
 }
