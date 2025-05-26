@@ -73,47 +73,6 @@ function setSelectOptions(field, optionsArray) {
 }
 
 /**
- * Enable all options of a select field by setting disabled: false
- * @param {Object} form - The form object
- * @param {string} fieldName - The name of the select field
- * @returns {Object|undefined} The updated field object if found
- */
-function enableSelectOptions(form, fieldName) {
-	const field = getField(form, fieldName);
-	if (!field?.options) return;
-
-	const updatedOptions = field.options.map((option) => ({
-		...option,
-		disabled: false,
-	}));
-
-	setSelectOptions(form, fieldName, updatedOptions);
-	return field;
-}
-
-/**
- * Set the required status of a field
- * @param {Object} field - The field object to update
- * @param {boolean} isRequired - True if the field is required, false otherwise
- * @returns {Object} The updated field object
- */
-function setFieldIsRequired(field, isRequired) {
-	field.isRequired = isRequired;
-	return field;
-}
-
-/**
- * Set the showWhen condition of a field
- * @param {Object} field - The field object to update
- * @param {Array<string>|undefined} showWhen - Array of field names that determine when this field should be shown, set to undefined to show always
- * @returns {Object} The updated field object
- */
-function setFieldShowWhen(field, showWhen) {
-	field.showWhen = showWhen;
-	return field;
-}
-
-/**
  * Provides functions for form management
  * @param {Object} _form - The initial form object
  * @param {Object} [options={}] - Additional options
@@ -368,7 +327,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		form.value.visibleLocales = visibleLocales;
 	}
 
-	function initEmptyForm(formId, {action, method, locales}) {
+	function initEmptyForm(formId, {action, method, locales, showErrorFooter}) {
 		if (!form.value) {
 			form.value = {};
 		}
@@ -378,6 +337,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 
 		form.value.id = formId;
 		form.value.locales = locales;
+		form.value.showErrorFooter = showErrorFooter;
 		setMethod(method || 'POST');
 		setAction(action || 'emit');
 		setLocales(locales);
@@ -477,8 +437,5 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		addFieldSelect,
 		getField,
 		setSelectOptions,
-		enableSelectOptions,
-		setFieldIsRequired,
-		setFieldShowWhen,
 	};
 }
