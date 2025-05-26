@@ -238,15 +238,17 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 			}
 		});
 
-		items.push({
-			key: 'publication_create_new_version',
-			label: t('publication.createVersion'),
-			action: 'createNewVersion',
-			actionArgs: {
-				submissionId: submission.id,
-				isDialogOnly: true,
-			},
-		});
+		if (permissions.canPublish) {
+			items.push({
+				key: 'publication_create_new_version',
+				label: t('publication.createVersion'),
+				action: 'createNewVersion',
+				actionArgs: {
+					submissionId: submission.id,
+					isDialogOnly: true,
+				},
+			});
+		}
 
 		return items;
 	}
