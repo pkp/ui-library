@@ -127,7 +127,7 @@ const ConfigPerStatus = {
 		descriptionKey: tk('dashboard.reviewAssignment.statusAccepted.description'),
 		textAction: ReviewActivityActions.EDIT_DUE_DATE,
 		primaryAction: ReviewActivityActions.VIEW_DETAILS,
-		negativeAction: ReviewActivityActions.UNASSIGN_REVIEWER,
+		negativeAction: ReviewActivityActions.CANCEL_REVIEWER,
 		dateToDisplay: 'dateDue',
 	},
 	// review not submitted within due date
@@ -146,7 +146,7 @@ const ConfigPerStatus = {
 		),
 		textAction: ReviewActivityActions.EDIT_DUE_DATE,
 		primaryAction: ReviewActivityActions.VIEW_DETAILS,
-		negativeAction: ReviewActivityActions.UNASSIGN_REVIEWER,
+		negativeAction: ReviewActivityActions.CANCEL_REVIEWER,
 		dateToDisplay: 'dateDue',
 	},
 	// review has been submitted
