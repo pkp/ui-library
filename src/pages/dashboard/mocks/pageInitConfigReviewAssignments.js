@@ -1196,7 +1196,7 @@ export default {
 						},
 						{
 							value: 'TW',
-							label: 'Taiwan, Province of China',
+							label: 'Taiwan, Repubic of China',
 						},
 						{
 							value: 'TJ',
