@@ -25,6 +25,59 @@
 	}
 }
 
+/* To compensate for tailwindcss default, which breaks legacy unstyled html */
+.legacyDefaults {
+	/* Default browser styles for common HTML elements */
+
+	/* Heading 2 */
+	h2 {
+		font-size: 1.5em; /* 24px */
+		font-weight: bold;
+		margin: 0.83em 0; /* Approx. 26.56px top/bottom */
+	}
+
+	/* Heading 3 */
+	h3 {
+		font-size: 1.17em; /* Approx. 18.72px */
+		font-weight: bold;
+		margin: 1em 0; /* Approx. 32px top/bottom */
+	}
+
+	/* Heading 4 */
+	h4 {
+		display: block;
+		font-size: 1em; /* 16px */
+		font-weight: bold;
+		margin: 1.33em 0; /* Approx. 42.56px top/bottom */
+	}
+
+	/* Unordered List */
+	ul {
+		display: block;
+		list-style-type: disc;
+		margin-block-start: 1em;
+		margin-block-end: 1em;
+		padding-inline-start: 40px;
+	}
+
+	/* List Item */
+	li {
+		display: list-item;
+		text-align: -webkit-match-parent;
+		unicode-bidi: isolate;
+	}
+
+	/* Paragraph */
+	p {
+		display: block;
+		display: block;
+		margin-block-start: 1em;
+		margin-block-end: 1em;
+		margin-inline-start: 0px;
+		margin-inline-end: 0px;
+	}
+}
+
 @tailwind components;
 @tailwind utilities;
 
