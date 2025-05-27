@@ -8,6 +8,7 @@ import EditMailableModal from '@/pages/manageEmails/EditMailableModal.vue';
 import EditTemplateModal from '@/pages/manageEmails/EditTemplateModal.vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
+import {useProgressStore} from '@/stores/progressStore';
 
 const {t} = useLocalize();
 
@@ -321,7 +322,10 @@ export default {
 		 */
 		openMailable(mailable) {
 			if (mailable.supportsTemplates) {
+				const progressStore = useProgressStore();
+				progressStore.startFullScreenSpinner();
 				this.getMailable(mailable, (mailable) => {
+					progressStore.stopFullScreenSpinner();
 					this.currentMailable = mailable;
 					const {openSideModal} = useModal();
 					openSideModal(EditMailableModal, {
@@ -333,8 +337,12 @@ export default {
 					});
 				});
 			} else {
+				const progressStore = useProgressStore();
+				progressStore.startFullScreenSpinner();
+
 				this.getTemplate(mailable.emailTemplateKey, (template) => {
 					this.currentMailable = mailable;
+					progressStore.stopFullScreenSpinner();
 					this.openTemplate(template);
 				});
 			}
