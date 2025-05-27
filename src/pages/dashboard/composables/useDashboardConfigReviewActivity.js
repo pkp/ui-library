@@ -334,7 +334,9 @@ export function useDashboardConfigReviewActivity({recommendations}) {
 			}
 
 			const recommendation = recommendations.find(
-				(r) => r.id === reviewAssignment.reviewerRecommendationId,
+				(r) =>
+					r.reviewerRecommendationId ===
+					reviewAssignment.reviewerRecommendationId,
 			);
 
 			return recommendation ? localize(recommendation.title) : null;

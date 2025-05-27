@@ -10,8 +10,15 @@ export function useReviewerManagerConfig({recommendations}) {
 		const items = [];
 
 		function getRecommendationString(reviewAssignment) {
+			// As recommendations only available for OJS, not in OMP and OPS
+			if (recommendations === undefined) {
+				return null;
+			}
+
 			const recommendation = recommendations.find(
-				(r) => r.id === reviewAssignment.reviewerRecommendationId,
+				(r) =>
+					r.reviewerRecommendationId ===
+					reviewAssignment.reviewerRecommendationId,
 			);
 
 			return recommendation ? localize(recommendation.title) : null;
