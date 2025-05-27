@@ -161,6 +161,9 @@ const ConfigPerStatus = {
 		},
 		titleKey: tk('dashboard.reviewAssignment.statusReceived.title'),
 		descriptionKey: tk('dashboard.reviewAssignment.statusReceived.description'),
+		descriptionWithoutRecommendationKey: tk(
+			'dashboard.reviewAssignment.statusReceived.withoutRecommendation.description',
+		),
 		textAction: null,
 		primaryAction: ReviewActivityActions.VIEW_UNREAD_RECOMMENDATION,
 		negativeAction: null,
@@ -179,6 +182,9 @@ const ConfigPerStatus = {
 		},
 		titleKey: tk('dashboard.reviewAssignment.statusReceived.title'),
 		descriptionKey: tk('dashboard.reviewAssignment.statusReceived.description'),
+		descriptionWithoutRecommendationKey: tk(
+			'dashboard.reviewAssignment.statusReceived.withoutRecommendation.description',
+		),
 		textAction: null,
 		primaryAction: ReviewActivityActions.VIEW_RECOMMENDATION,
 		negativeAction: null,
@@ -347,10 +353,18 @@ export function useDashboardConfigReviewActivity({recommendations}) {
 		const title = getTitle(config, date, days);
 
 		function getDescription() {
-			return t(config.descriptionKey, {
+			const recommendation = getRecommendation();
+			let descriptionKey = config.descriptionKey;
+
+			// use different description if recommendation is not available (omp)
+			if (config.descriptionWithoutRecommendationKey && !recommendation) {
+				descriptionKey = config.descriptionWithoutRecommendationKey;
+			}
+
+			return t(descriptionKey, {
 				date: formatShortDate(date),
 				days: Math.abs(days),
-				recommendation: getRecommendation(),
+				recommendation,
 			});
 		}
 
