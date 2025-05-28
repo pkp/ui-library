@@ -71,9 +71,7 @@ const statusProps = computed(() => {
 });
 
 function getItemLabel(publication) {
-	const firstPart = t('publication.version', {
-		version: publication.versionString,
-	});
+	const firstPart = publication.versionString;
 	let secondPart = '';
 	if (
 		publication.status === pkp.const.STATUS_QUEUED &&
