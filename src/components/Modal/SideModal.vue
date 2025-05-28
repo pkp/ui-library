@@ -2,7 +2,7 @@
 	<TransitionRoot as="template" :show="open">
 		<HLDialog
 			as="div"
-			class="relative z-10"
+			class="relative z-[100]"
 			:initial-focus="closeModalButton"
 			@close="handleClose"
 		>
