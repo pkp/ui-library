@@ -19,7 +19,7 @@ export default {
 				originalItem.publications.forEach((publication) => {
 					const isCurrentVersion =
 						publication.id === this.getCurrentPublication(originalItem).id;
-					const versionNumber = publication.version;
+					const versionNumber = publication.versionString;
 
 					if (this.enabledDoiTypes.includes('publication')) {
 						let doiObject = publication.doiObject;

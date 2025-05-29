@@ -113,9 +113,7 @@ function getVersionHeader(version) {
 		version.datePublished !== null
 			? `(${version.datePublished})`
 			: t('publication.status.unpublished');
-	return `${t('publication.version', {
-		version: version.versionNumber,
-	})} ${dateInfo}`;
+	return `${version.versionNumber} ${dateInfo}`;
 }
 </script>
 
