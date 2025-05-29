@@ -88,10 +88,7 @@ export function useWorkflowActions() {
 		{pageInitConfig, selectedPublication, submission},
 		finishedCallback,
 	) {
-		if (
-			pageInitConfig.isContinuousPublicationEnabled &&
-			pageInitConfig.issueCount === 0
-		) {
+		if (pageInitConfig.issueCount === 0) {
 			const {openDialog} = useModal();
 			openDialog({
 				title: t('editor.submission.schedulePublication'),
@@ -143,7 +140,6 @@ export function useWorkflowActions() {
 				},
 				{
 					onClose: async ({formId, data}) => {
-						console.log('onClose', formId, data);
 						if (data?.issueId || data?.continuousPublication) {
 							workflowScheduleForPublication(
 								{submission, selectedPublication},
