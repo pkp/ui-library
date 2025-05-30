@@ -533,20 +533,6 @@ export const PublicationConfig = {
 						action: WorkflowActions.WORKFLOW_UNPUBLISH_PUBLICATION,
 					},
 				});
-
-				const {getLatestPublication} = useSubmission();
-				const latestPublication = getLatestPublication(submission);
-
-				if (latestPublication.id === selectedPublication.id) {
-					items.push({
-						component: 'WorkflowActionButton',
-						props: {
-							label: t('publication.createVersion'),
-							isSecondary: true,
-							action: WorkflowActions.WORKFLOW_CREATE_NEW_VERSION,
-						},
-					});
-				}
 			}
 
 			return {items, shouldContinue: true};

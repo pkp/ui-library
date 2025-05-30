@@ -1,16 +1,5 @@
 import {ref, watch} from 'vue';
 import {useApp} from './useApp';
-/**
- * Get a field from a form by name
- * @param {Object} form - The form object
- * @param {string} name - The field name to find
- * @returns {Object|undefined} The field object if found
- */
-function getField(form, name) {
-	const fields = form.fields;
-
-	return fields.find((field) => field.name === name);
-}
 
 /**
  * Check if a field exists in a form
@@ -130,12 +119,23 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 	}
 
 	/**
+	 * Get a field from a form by name
+	 * @param {string} name - The field name to find
+	 * @returns {Object|undefined} The field object if found
+	 */
+	function getField(name) {
+		const fields = form.value.fields;
+
+		return fields.find((field) => field.name === name);
+	}
+
+	/**
 	 * Get a field's value
 	 * @param {string} name - The field name
 	 * @returns {*} The field's value
 	 */
 	function getValue(name) {
-		const field = getField(form.value, name);
+		const field = getField(name);
 
 		return field.value;
 	}
@@ -156,7 +156,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 	 * @param {*} inputValue - The value to set
 	 */
 	function setValue(name, inputValue) {
-		const field = getField(form.value, name);
+		const field = getField(name);
 		if (!field) {
 			return;
 		}
@@ -186,7 +186,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 	 * @param {string} fieldName - The name of the field to clear
 	 */
 	function clearFormField(fieldName) {
-		const field = getField(form.value, fieldName);
+		const field = getField(fieldName);
 
 		if (field.isMultilingual) {
 			const newValueMultilingual = {};
@@ -209,7 +209,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 	 */
 	function removeFieldValue(fieldName, fieldValue) {
 		const value = getValue(fieldName);
-		const field = getField(form.value, fieldName);
+		const field = getField(fieldName);
 		if (Array.isArray(value)) {
 			let newValue = null;
 			if (field.selected) {
@@ -317,7 +317,10 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		form.value.visibleLocales = visibleLocales;
 	}
 
-	function initEmptyForm(formId, {action, method, locales}) {
+	function initEmptyForm(
+		formId,
+		{action, method, locales, showErrorFooter, spacingVariant} = {},
+	) {
 		if (!form.value) {
 			form.value = {};
 		}
@@ -327,6 +330,8 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 
 		form.value.id = formId;
 		form.value.locales = locales;
+		form.value.showErrorFooter = showErrorFooter;
+		form.value.spacingVariant = spacingVariant || 'default';
 		setMethod(method || 'POST');
 		setAction(action || 'emit');
 		setLocales(locales);
@@ -393,7 +398,26 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		});
 	}
 
-	function addFieldSelect(fieldName, {options, size, ...commonFields} = {}) {
+	/**
+	 * Add/update a select field to the form
+	 * @param {string} fieldName - The name of the field
+	 * @param {Object} options - Options for the select field
+	 * @param {Object} commonFields - Common properties for the field
+	 * @param {Object} [override={}] - Override existing field if it exists, set this to true if updating the select options or value
+	 */
+	function addFieldSelect(
+		fieldName,
+		{options, size, ...commonFields} = {},
+		{override = false} = {},
+	) {
+		const field = getField(fieldName);
+		if (field && override) {
+			return Object.assign(field, {
+				options: options || field.options,
+				value: commonFields.value || field.value,
+			});
+		}
+
 		return addField(fieldName, {
 			component: 'field-select',
 			options,
@@ -424,5 +448,6 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		addGroup,
 		addFieldText,
 		addFieldSelect,
+		getField,
 	};
 }
