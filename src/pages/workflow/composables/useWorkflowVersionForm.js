@@ -54,6 +54,9 @@ export function useWorkflowVersionForm(
 	const {getLatestPublication} = useSubmission();
 	let publications = [];
 	let latestPublication = null;
+
+	// Determine the mode based on the versionMode parameter
+	// versionMode can be one of 'createNewVersion', 'sendToTextEditor', or 'publish'
 	const modeState = {
 		isCreateMode: versionMode === VERSION_MODE.CREATE,
 		isTextEditorMode: versionMode === VERSION_MODE.SEND_TO_TEXT_EDITOR,
@@ -159,7 +162,7 @@ export function useWorkflowVersionForm(
 	}
 
 	function updateMinorOptionAvailability(newStage) {
-		const versionIsMinorField = getField(form.value, 'versionIsMinor');
+		const versionIsMinorField = getField('versionIsMinor');
 		if (!versionIsMinorField) return;
 
 		const allowMinor = publications.some(
@@ -241,7 +244,7 @@ export function useWorkflowVersionForm(
 	});
 
 	watch(
-		() => getField(form.value, 'versionStage')?.value,
+		() => getField('versionStage')?.value,
 		(newStage) => {
 			if (!newStage) return;
 			updateMinorOptionAvailability(newStage);
@@ -250,7 +253,7 @@ export function useWorkflowVersionForm(
 	);
 
 	watch(
-		() => getField(form.value, 'sendToVersion')?.value,
+		() => getField('sendToVersion')?.value,
 		(sendToVersion) => {
 			if (sendToVersion !== 'create' || !latestPublication?.id) {
 				return;
