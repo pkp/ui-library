@@ -1,0 +1,29 @@
+import {Primary, Controls, Stories, Meta, ArgTypes} from '@storybook/blocks';
+
+import * as CitationManager from './CitationManager.stories.js';
+
+<Meta of={CitationManager} />
+
+# Citation manager
+
+Listing of Citations.
+
+## Props
+
+<ArgTypes />
+
+## Extension points for plugins
+
+For more details and examples on how to use them, check out [Plugins guide](..?path=/docs/guide-plugins--docs)
+
+The name of the Pinia store is `CitationManager`.
+
+- `getTopItems`: Add/Change items in the top right, where the `Upload / Select` button is.
+- `getItemActions`: Add/Change the list of actions that are displayed after clicking the 3 dots button.
+- `getItemPrimaryActions`: Add/Change one individual Action which is displayed in the ACTIONS column.
+- `getCellStatusItems`: Add/Change what components are displayed in the Reviewer status.
+- `getColumns`: Add/Change the columns being displayed in the table.
+
+<Primary />
+<Controls />
+<Stories />
