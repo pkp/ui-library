@@ -163,7 +163,6 @@ export function useWorkflowActions() {
 		{submission, selectedPublication},
 		finishedCallback,
 	) {
-		console.log('workflowScheduleForPublication');
 		const {openLegacyModal} = useLegacyGridUrl({
 			component: 'modals.publish.PublishHandler',
 			op: 'publish',

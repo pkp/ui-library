@@ -780,7 +780,6 @@ export const PublicationConfig = {
 					});
 				}
 
-				// This add the `Publish` button with
 				items.push({
 					component: 'WorkflowActionButton',
 					props: {
