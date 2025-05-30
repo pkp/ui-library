@@ -254,7 +254,7 @@ export function useWorkflowActions() {
 			bodyProps: {
 				mode: 'createNewVersion',
 				displayDefaultFooter: false,
-				onCloseFn: () => closeDialog(false),
+				onCloseFn: () => closeDialog(),
 			},
 			showCloseButton: false,
 			modalStyle: 'basic',

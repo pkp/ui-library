@@ -30,7 +30,7 @@ export function useFileManagerActions() {
 			bodyProps: {
 				mode: 'sendToTextEditor',
 				displayDefaultFooter: false,
-				onCloseFn: () => closeDialog(false),
+				onCloseFn: () => closeDialog(),
 			},
 			showCloseButton: false,
 			modalStyle: 'basic',
