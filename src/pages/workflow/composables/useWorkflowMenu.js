@@ -81,6 +81,11 @@ export function useWorkflowMenu({
 		}
 	});
 
+	// Update selectedMenuKey in url when menu selection changes
+	watch(selectedMenuKey, (newSelectedMenuKey) => {
+		queryParamsUrl.workflowMenuKey = newSelectedMenuKey;
+	});
+
 	return {
 		menuTitle,
 		navigateToMenu,
