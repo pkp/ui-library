@@ -117,12 +117,6 @@ export default {
 			},
 		},
 		spacingVariant: String,
-		footerSpacingVariant: {
-			required: false,
-			type: String,
-			default: () => 'default',
-			validator: (val) => ['default', 'vertical'].includes(val),
-		},
 	},
 	data() {
 		return {
@@ -157,7 +151,7 @@ export default {
 		},
 
 		footerSpacingStyle() {
-			if (this.footerSpacingVariant === 'vertical') {
+			if (this.spacingVariant === 'fullWidth') {
 				return '!px-0 !py-12';
 			}
 			return '';

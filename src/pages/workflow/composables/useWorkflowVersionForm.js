@@ -180,7 +180,6 @@ export function useWorkflowVersionForm(
 	initEmptyForm('version', {
 		showErrorFooter: false,
 		spacingVariant: 'fullWidth',
-		footerSpacingVariant: 'vertical',
 	});
 	addPage('default', {
 		submitButton: {label: t('common.confirm')},
