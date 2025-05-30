@@ -144,7 +144,6 @@ export function useWorkflowVersionForm(
 		set,
 		setValue,
 		getField,
-		setSelectOptions,
 	} = useForm({}, {customSubmit: handleVersionSubmission});
 
 	function buildPublicationOptions({withCreateOption} = {}) {
@@ -161,23 +160,39 @@ export function useWorkflowVersionForm(
 		return [...defaultOption, ...publicationOptions];
 	}
 
-	function updateMinorOptionAvailability(newStage) {
-		const versionIsMinorField = getField('versionIsMinor');
-		if (!versionIsMinorField) return;
+	function getVersionIsMinorField({allowMinorVersion, currentValue}) {
+		return {
+			label: t('publication.revisionSignificance.label'),
+			description: t('publication.revisionSignificance.description'),
+			options: [
+				{label: t('publication.revisionSignificance.major'), value: 'false'},
+				{
+					label: t('publication.revisionSignificance.minor'),
+					value: 'true',
+					disabled: !allowMinorVersion,
+				},
+			],
+			size: 'large',
+			isRequired: modeState.isPublishMode,
+			value:
+				currentValue === 'true' && !allowMinorVersion ? 'false' : currentValue,
+		};
+	}
 
-		const allowMinor = publications.some(
+	function updateMinorOptionAvailability(newStage) {
+		const allowMinorVersion = publications.some(
 			(pub) => pub.versionStage === newStage,
 		);
 
-		const updatedOptions = (versionIsMinorField.options || []).map((option) =>
-			option.value === 'true' ? {...option, disabled: !allowMinor} : option,
+		// Update the versionIsMinor field with the updated options availability
+		addFieldSelect(
+			'versionIsMinor',
+			getVersionIsMinorField({
+				allowMinorVersion,
+				currentValue: getField('versionIsMinor')?.value || '',
+			}),
+			{override: true},
 		);
-
-		setSelectOptions(versionIsMinorField, updatedOptions);
-
-		if (!allowMinor && versionIsMinorField.value === 'true') {
-			setValue('versionIsMinor', 'false');
-		}
 	}
 
 	initEmptyForm('version', {
@@ -226,16 +241,13 @@ export function useWorkflowVersionForm(
 		});
 
 		// Version significance field
-		addFieldSelect('versionIsMinor', {
-			label: t('publication.revisionSignificance.label'),
-			description: t('publication.revisionSignificance.description'),
-			options: [
-				{label: t('publication.revisionSignificance.major'), value: 'false'},
-				{label: t('publication.revisionSignificance.minor'), value: 'true'},
-			],
-			size: 'large',
-			isRequired: modeState.isPublishMode,
-		});
+		addFieldSelect(
+			'versionIsMinor',
+			getVersionIsMinorField({
+				allowMinorVersion: true,
+				currentValue: '',
+			}),
+		);
 
 		setValue(
 			'versionSource',

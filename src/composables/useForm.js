@@ -52,16 +52,6 @@ export function isFieldValueArray(field) {
 }
 
 /**
- * Set options for a select field
- * @param {Object} field - The select field object to update
- * @param {Array<Object>} optionsArray - Array of options to set (each option should have a label and value)
- */
-function setSelectOptions(field, optionsArray) {
-	field.options = optionsArray;
-	return field;
-}
-
-/**
  * Provides functions for form management
  * @param {Object} _form - The initial form object
  * @param {Object} [options={}] - Additional options
@@ -408,7 +398,26 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		});
 	}
 
-	function addFieldSelect(fieldName, {options, size, ...commonFields} = {}) {
+	/**
+	 * Add/update a select field to the form
+	 * @param {string} fieldName - The name of the field
+	 * @param {Object} options - Options for the select field
+	 * @param {Object} commonFields - Common properties for the field
+	 * @param {Object} [override={}] - Override existing field if it exists, set this to true if updating the select options or value
+	 */
+	function addFieldSelect(
+		fieldName,
+		{options, size, ...commonFields} = {},
+		{override = false} = {},
+	) {
+		const field = getField(fieldName);
+		if (field && override) {
+			return Object.assign(field, {
+				options: options || field.options,
+				value: commonFields.value || field.value,
+			});
+		}
+
 		return addField(fieldName, {
 			component: 'field-select',
 			options,
@@ -440,6 +449,5 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		addFieldText,
 		addFieldSelect,
 		getField,
-		setSelectOptions,
 	};
 }
