@@ -157,6 +157,12 @@ export default {
 				return '';
 			},
 		},
+		linkList: {
+			type: Array,
+			default() {
+				return [];
+			},
+		},
 		wordCountLabel: {
 			type: String,
 			default() {
@@ -227,6 +233,7 @@ export default {
 				statusbar: false,
 				entity_encoding: 'raw',
 				browser_spellcheck: true,
+				link_list: self.linkList,
 				language:
 					$.pkp?.plugins?.generic?.tinymceplugin?.tinymceParams?.language,
 				language_url:
