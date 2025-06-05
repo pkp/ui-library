@@ -83,9 +83,18 @@ export function useWorkflowActions() {
 	}
 
 	function workflowAssignToIssueAndScheduleForPublication(
-		{selectedPublication, submission},
+		{pageInitConfig, selectedPublication, submission},
 		finishedCallback,
 	) {
+		if (pageInitConfig.publicationSettings.countIssues === 0) {
+			workflowScheduleForPublication(
+				{submission, selectedPublication},
+				finishedCallback,
+			);
+
+			return;
+		}
+
 		if (selectedPublication.issueId === null) {
 			const {url} = useLegacyGridUrl({
 				component: 'modals.publish.AssignToIssueHandler',
@@ -108,7 +117,7 @@ export function useWorkflowActions() {
 				},
 				{
 					onClose: async ({formId, data}) => {
-						if (data?.issueId) {
+						if (data?.issueId || data?.continuousPublication) {
 							workflowScheduleForPublication(
 								{submission, selectedPublication},
 								finishedCallback,
