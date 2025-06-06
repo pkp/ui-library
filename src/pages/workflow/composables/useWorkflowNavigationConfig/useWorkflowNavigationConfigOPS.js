@@ -6,7 +6,8 @@ import {
 	getWorkflowItem,
 } from './useWorkflowNavigationConfigOJS';
 
-const {getActiveStage, getLatestPublication} = useSubmission();
+const {getActiveStage, getLatestPublication, getSortedPublications} =
+	useSubmission();
 
 const {t} = useLocalize();
 
@@ -187,7 +188,7 @@ export function useWorkflowNavigationConfigOPS(pageInitConfig) {
 			return [];
 		}
 
-		const {publications} = submission;
+		const publications = getSortedPublications(submission);
 		const items = [];
 
 		publications.forEach((publication) => {

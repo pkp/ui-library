@@ -1,7 +1,8 @@
 import {useSubmission} from '@/composables/useSubmission';
 import {useLocalize} from '@/composables/useLocalize';
 import {DashboardPageTypes} from '@/pages/dashboard/dashboardPageStore';
-const {getCurrentReviewRound, getLatestPublication} = useSubmission();
+const {getCurrentReviewRound, getLatestPublication, getSortedPublications} =
+	useSubmission();
 
 const {t} = useLocalize();
 
@@ -213,7 +214,7 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 			return [];
 		}
 
-		const {publications} = submission;
+		const publications = getSortedPublications(submission);
 		const items = [];
 
 		publications.forEach((publication) => {

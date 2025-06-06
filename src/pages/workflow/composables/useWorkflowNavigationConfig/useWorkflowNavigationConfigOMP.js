@@ -7,7 +7,8 @@ import {
 	getReviewItems,
 } from './useWorkflowNavigationConfigOJS';
 
-const {getCurrentReviewRound, getLatestPublication} = useSubmission();
+const {getCurrentReviewRound, getLatestPublication, getSortedPublications} =
+	useSubmission();
 
 const {t} = useLocalize();
 
@@ -281,7 +282,7 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 			return [];
 		}
 
-		const {publications} = submission;
+		const publications = getSortedPublications(submission);
 		const items = [];
 
 		publications.forEach((publication) => {

@@ -458,6 +458,46 @@ export function useSubmission() {
 		};
 	}
 
+	/**
+	 * Get sorted publications for a submission (used in workflow publications menu)
+	 * @param {Object} submission - The submission object
+	 * @returns {Array<Object>} Sorted array of publication objects
+	 */
+	function getSortedPublications(submission) {
+		const publications = submission?.publications.sort((a, b) => {
+			const aHasNullVersion =
+				a.versionStage == null ||
+				a.versionMajor == null ||
+				a.versionMinor == null;
+			const bHasNullVersion =
+				b.versionStage == null ||
+				b.versionMajor == null ||
+				b.versionMinor == null;
+
+			// Step 1: Unassigned versions come first
+			if (aHasNullVersion && !bHasNullVersion) return -1;
+			if (!aHasNullVersion && bHasNullVersion) return 1;
+
+			// Step 2: createdAt ascending
+			if (a.createdAt !== b.createdAt) return a.createdAt - b.createdAt;
+
+			// Step 3: versionStage alphabetical
+			const stageCompare = (a.versionStage || '').localeCompare(
+				b.versionStage || '',
+			);
+			if (stageCompare !== 0) return stageCompare;
+
+			// Step 4: versionMajor numeric
+			if (a.versionMajor !== b.versionMajor)
+				return a.versionMajor - b.versionMajor;
+
+			// Step 5: versionMinor numeric
+			return a.versionMinor - b.versionMinor;
+		});
+
+		return publications;
+	}
+
 	return {
 		getSubmissionById,
 		getActiveStage,
@@ -473,6 +513,7 @@ export function useSubmission() {
 		getLatestPublication,
 		hasNotSubmissionStartedStage,
 		hasSubmissionPassedStage,
+		getSortedPublications,
 		// review assignments
 		getReviewAssignmentsForRound,
 		getActiveReviewAssignments,
