@@ -60,11 +60,7 @@ async function searchUser() {
 				: (user = userData.value.items.find(
 						(value) => value.userName === fields.value.search.trim(), // check provided username is exact match
 					));
-			user
-				? user
-				: (user = userData.value.items.find(
-						(value) => value.orcid === fields.value.search.trim(), // check provided orcid is exact match
-					));
+			user ? user : (user = getMatchingOrcid(userData));
 
 			if (!user) {
 				valid(fields.value.search.trim())
@@ -101,6 +97,18 @@ async function searchUser() {
 	function valid(email) {
 		const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		return pattern.test(email);
+	}
+
+	function getMatchingOrcid(userData) {
+		const orcidUriRegex = /.*orcid.org\//;
+		const trimmedFieldValue = fields.value.search
+			.trim()
+			.replace(orcidUriRegex, '');
+
+		return userData.value.items.find((value) => {
+			const trimmedUserValue = value.orcid?.replace(orcidUriRegex, '');
+			return trimmedUserValue === trimmedFieldValue;
+		});
 	}
 }
 </script>

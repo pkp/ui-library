@@ -21,11 +21,20 @@
 					heading-element="h4"
 					:heading="t('user.orcid')"
 					:value="
-						store.acceptInvitationPayload.orcid
-							? store.acceptInvitationPayload.orcid
+						userOrcidData.orcid
+							? userOrcidData.orcid
 							: t('invitation.orcid.acceptInvitation.message')
 					"
-				></FormDisplayItemBasic>
+				>
+					<template #valueSuffix>
+						<Icon
+							v-if="userOrcidData.orcid && userOrcidData.orcidIsVerified"
+							icon="Orcid"
+							class="ml-1 h-4 w-4"
+							:inline="true"
+						/>
+					</template>
+				</FormDisplayItemBasic>
 			</div>
 		</div>
 		<div v-else>
@@ -63,7 +72,7 @@
 </template>
 
 <script setup>
-import {defineProps} from 'vue';
+import {computed, defineProps} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import AcceptInvitationUserRoles from './AcceptInvitationUserRoles.vue';
 import {useAcceptInvitationPageStore} from './AcceptInvitationPageStore';
@@ -71,6 +80,7 @@ import PkpButton from '@/components/Button/Button.vue';
 import FormDisplay from '@/components/FormDisplay/FormDisplay.vue';
 import FormDisplayItemBasic from '@/components/FormDisplay/FormDisplayItemBasic.vue';
 import {useForm} from '@/composables/useForm';
+import Icon from '@/components/Icon/Icon.vue';
 
 const props = defineProps({
 	form: {type: Object, required: true},
@@ -80,4 +90,23 @@ const {t} = useLocalize();
 
 const {form: userForm, connectWithPayload} = useForm(props.form);
 connectWithPayload(store.acceptInvitationPayload);
+
+const userOrcidData = computed(() => {
+	let orcid = '';
+	let orcidIsVerified = false;
+
+	if (store.acceptInvitationPayload.orcid) {
+		orcid = store.acceptInvitationPayload.orcid;
+	} else if (store.existingUser.orcid) {
+		orcid = store.existingUser.orcid;
+	}
+
+	if (store.acceptInvitationPayload.orcidIsVerified) {
+		orcidIsVerified = store.acceptInvitationPayload.orcidIsVerified;
+	} else if (store.existingUser.orcidIsVerified) {
+		orcidIsVerified = store.existingUser.orcidIsVerified;
+	}
+
+	return {orcid, orcidIsVerified};
+});
 </script>
