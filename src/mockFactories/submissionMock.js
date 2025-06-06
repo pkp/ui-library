@@ -55,7 +55,10 @@ const CommonDefaults = {
 			},
 			urlPublished:
 				'http://localhost:7002/index.php/publicknowledge/article/view/19/version/20',
-			version: 1,
+			versionStage: 'AO',
+			versionMajor: 1,
+			versionMinor: 0,
+			versionString: 'Author Original 1.0',
 		},
 	],
 	reviewAssignments: [],

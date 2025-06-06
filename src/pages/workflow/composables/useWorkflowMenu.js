@@ -1,19 +1,25 @@
 import {useSideMenu} from '@/composables/useSideMenu';
 import {computed, watch} from 'vue';
 import {useQueryParams} from '@/composables/useQueryParams';
+import {useSubmission} from '@/composables/useSubmission';
 
 export function useWorkflowMenu({
 	menuItems,
 	submission,
 	workflowNavigationConfig,
 	dashboardPage,
+	handleCreateNewVersion = () => {},
 }) {
 	const {
 		sideMenuProps,
 		setExpandedKeys,
 		setActiveItemKey,
 		selectedItem: selectedMenuItem,
-	} = useSideMenu(menuItems);
+		expandedKeys,
+		updateExpandedKeys,
+	} = useSideMenu(menuItems, {onActionFn: handleCreateNewVersion});
+
+	const {getLatestPublication} = useSubmission();
 
 	/**
 	 * Url query params
@@ -26,10 +32,10 @@ export function useWorkflowMenu({
 	 * secondaryMenuItem: name of publication/marketing submenu
 	 * stageId: applicable when primaryMenuItem is workflow
 	 * reviewRoundId: applicable when reviewRound is selected
+	 * publicationId: applicable when primaryMenuItem is publication
 	 */
 	const selectedMenuState = computed(() => {
-		const state = selectedMenuItem.value?.state || {};
-
+		const state = selectedMenuItem.value?.state;
 		return {
 			...state,
 		};
@@ -50,6 +56,15 @@ export function useWorkflowMenu({
 	watch(submission, (newSubmission, oldSubmission) => {
 		// Once the submission is fetched, select relevant stage in navigation
 		if (!oldSubmission && newSubmission) {
+			// Update expandedKeys for publication menu
+			const latestPublication = getLatestPublication(newSubmission);
+			if (latestPublication?.id) {
+				updateExpandedKeys({
+					...expandedKeys.value,
+					[`publication_${latestPublication.id}`]: true,
+				});
+			}
+
 			// use the menu selection from the url, if it does exist, otherwise fallback
 			if (queryParamsUrl?.workflowMenuKey?.length) {
 				const doesKeyExist = navigateToMenu(queryParamsUrl?.workflowMenuKey);

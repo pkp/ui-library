@@ -159,7 +159,7 @@ window.pkp = {
 		'acceptInvitation.usernameField.description':
 			'It could be a combination of uppercase letters, lowercase letters or numbers',
 		'acceptInvitation.verifyOrcid': 'Verify ORCID iD',
-		'acceptInvitation.privacyConsent':'Privacy Consent',
+		'acceptInvitation.privacyConsent': 'Privacy Consent',
 		'admin.jobs.failed.action.redispatch': 'Try Again',
 		'admin.jobs.failed.action.redispatch.all': 'Requeue All Failed Jobs',
 		'admin.jobs.list.actions': 'Actions',
@@ -483,6 +483,7 @@ window.pkp = {
 			'These files have been submitted by the author after revisions were requested',
 		'fileManager.submissionFilesDescription':
 			'Files uploaded at the time of submission',
+		'fileManager.sendFileToTextEditor': 'Send File to Text Editor',
 		'form.dataHasChanged':
 			'The data on this form has changed. Do you wish to continue without saving?',
 		'form.errorA11y': 'Go to {$fieldLabel}: {$errorMessage}',
@@ -515,7 +516,9 @@ window.pkp = {
 		'grid.action.moreInformation': 'More Information',
 		'grid.action.order': 'Order',
 		'grid.action.saveOrdering': 'Save Order',
+		'grid.action.sendToTextEditor': 'Send to Text Editor',
 		'grid.action.sort': 'Sort',
+		'grid.action.updateFile': 'Update File Details',
 		'grid.columns.actions': 'Actions',
 		'grid.libraryFiles.submission.title': 'Submission Library',
 		'grid.noItems': 'No Items',
@@ -699,7 +702,6 @@ window.pkp = {
 		'publication.unschedule': 'Unschedule',
 		'publication.unschedule.confirm':
 			"Are you sure you don't want this scheduled for publication?",
-		'publication.version': '{$version}',
 		'publication.version.all': 'All Versions',
 		'publication.version.confirm':
 			'Are you sure you want to create a new version?',

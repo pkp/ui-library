@@ -16,6 +16,10 @@ export const FileManagerConfigurations = {
 				],
 			},
 			{
+				roles: [pkp.const.ROLE_ID_SITE_ADMIN, pkp.const.ROLE_ID_MANAGER],
+				actions: [Actions.FILE_SEND_TO_EDITOR],
+			},
+			{
 				roles: [
 					pkp.const.ROLE_ID_SUB_EDITOR,
 					pkp.const.ROLE_ID_MANAGER,
@@ -33,6 +37,7 @@ export const FileManagerConfigurations = {
 			},
 		],
 		actions: [
+			Actions.FILE_SEND_TO_EDITOR,
 			Actions.FILE_UPLOAD,
 			Actions.FILE_DOWNLOAD_ALL,
 			Actions.FILE_EDIT,
@@ -46,6 +51,10 @@ export const FileManagerConfigurations = {
 	}),
 	EDITOR_REVIEW_FILES: ({stageId}) => ({
 		permissions: [
+			{
+				roles: [pkp.const.ROLE_ID_SITE_ADMIN, pkp.const.ROLE_ID_MANAGER],
+				actions: [Actions.FILE_SEND_TO_EDITOR],
+			},
 			{
 				roles: [
 					pkp.const.ROLE_ID_SUB_EDITOR,
@@ -64,6 +73,7 @@ export const FileManagerConfigurations = {
 		],
 
 		actions: [
+			Actions.FILE_SEND_TO_EDITOR,
 			Actions.FILE_SELECT_UPLOAD,
 			Actions.FILE_EDIT,
 			Actions.FILE_DELETE,
@@ -90,6 +100,10 @@ export const FileManagerConfigurations = {
 				],
 			},
 			{
+				roles: [pkp.const.ROLE_ID_SITE_ADMIN, pkp.const.ROLE_ID_MANAGER],
+				actions: [Actions.FILE_SEND_TO_EDITOR],
+			},
+			{
 				roles: [
 					pkp.const.ROLE_ID_SUB_EDITOR,
 					pkp.const.ROLE_ID_MANAGER,
@@ -106,6 +120,7 @@ export const FileManagerConfigurations = {
 			},
 		],
 		actions: [
+			Actions.FILE_SEND_TO_EDITOR,
 			Actions.FILE_UPLOAD,
 			Actions.FILE_EDIT,
 			Actions.FILE_DELETE,
@@ -126,36 +141,9 @@ export const FileManagerConfigurations = {
 				actions: [Actions.FILE_LIST],
 			},
 			{
-				roles: [
-					pkp.const.ROLE_ID_SUB_EDITOR,
-					pkp.const.ROLE_ID_MANAGER,
-					pkp.const.ROLE_ID_SITE_ADMIN,
-					pkp.const.ROLE_ID_ASSISTANT,
-				],
-				actions: [
-					Actions.FILE_LIST,
-					Actions.FILE_SELECT_UPLOAD,
-					Actions.FILE_EDIT,
-					Actions.FILE_DELETE,
-					Actions.FILE_SEE_NOTES,
-				],
+				roles: [pkp.const.ROLE_ID_SITE_ADMIN, pkp.const.ROLE_ID_MANAGER],
+				actions: [Actions.FILE_SEND_TO_EDITOR],
 			},
-		],
-		actions: [
-			Actions.FILE_LIST,
-			Actions.FILE_SELECT_UPLOAD,
-			Actions.FILE_EDIT,
-			Actions.FILE_DELETE,
-			Actions.FILE_SEE_NOTES,
-		],
-		fileStage: pkp.const.SUBMISSION_FILE_COPYEDIT,
-		titleKey: tk('fileManager.copyeditedFiles'),
-		descriptionKey: tk('fileManager.copyeditedFilesDescription'),
-		gridComponent: 'grid.files.copyedit.CopyeditFilesGridHandler',
-		uploadSelectTitleKey: tk('editor.submissionReview.uploadFile'),
-	}),
-	FINAL_DRAFT_FILES: ({stageId}) => ({
-		permissions: [
 			{
 				roles: [
 					pkp.const.ROLE_ID_SUB_EDITOR,
@@ -173,6 +161,43 @@ export const FileManagerConfigurations = {
 			},
 		],
 		actions: [
+			Actions.FILE_SEND_TO_EDITOR,
+			Actions.FILE_LIST,
+			Actions.FILE_SELECT_UPLOAD,
+			Actions.FILE_EDIT,
+			Actions.FILE_DELETE,
+			Actions.FILE_SEE_NOTES,
+		],
+		fileStage: pkp.const.SUBMISSION_FILE_COPYEDIT,
+		titleKey: tk('fileManager.copyeditedFiles'),
+		descriptionKey: tk('fileManager.copyeditedFilesDescription'),
+		gridComponent: 'grid.files.copyedit.CopyeditFilesGridHandler',
+		uploadSelectTitleKey: tk('editor.submissionReview.uploadFile'),
+	}),
+	FINAL_DRAFT_FILES: ({stageId}) => ({
+		permissions: [
+			{
+				roles: [pkp.const.ROLE_ID_SITE_ADMIN, pkp.const.ROLE_ID_MANAGER],
+				actions: [Actions.FILE_SEND_TO_EDITOR],
+			},
+			{
+				roles: [
+					pkp.const.ROLE_ID_SUB_EDITOR,
+					pkp.const.ROLE_ID_MANAGER,
+					pkp.const.ROLE_ID_SITE_ADMIN,
+					pkp.const.ROLE_ID_ASSISTANT,
+				],
+				actions: [
+					Actions.FILE_LIST,
+					Actions.FILE_SELECT_UPLOAD,
+					Actions.FILE_EDIT,
+					Actions.FILE_DELETE,
+					Actions.FILE_SEE_NOTES,
+				],
+			},
+		],
+		actions: [
+			Actions.FILE_SEND_TO_EDITOR,
 			Actions.FILE_LIST,
 			Actions.FILE_SELECT_UPLOAD,
 			Actions.FILE_EDIT,
@@ -187,6 +212,10 @@ export const FileManagerConfigurations = {
 	}),
 	PRODUCTION_READY_FILES: ({stageId}) => ({
 		permissions: [
+			{
+				roles: [pkp.const.ROLE_ID_SITE_ADMIN, pkp.const.ROLE_ID_MANAGER],
+				actions: [Actions.FILE_SEND_TO_EDITOR],
+			},
 			{
 				roles: [
 					pkp.const.ROLE_ID_SUB_EDITOR,
@@ -205,6 +234,7 @@ export const FileManagerConfigurations = {
 			},
 		],
 		actions: [
+			Actions.FILE_SEND_TO_EDITOR,
 			Actions.FILE_LIST,
 			Actions.FILE_UPLOAD,
 			Actions.FILE_EDIT,
@@ -335,11 +365,19 @@ export function useFileManagerConfig() {
 		const actions = [];
 		const enabledActions = managerConfig.permittedActions;
 
+		if (enabledActions.includes(Actions.FILE_SEND_TO_EDITOR)) {
+			actions.push({
+				label: t('grid.action.sendToTextEditor'),
+				name: Actions.FILE_SEND_TO_EDITOR,
+				icon: 'Edit',
+			});
+		}
+
 		if (enabledActions.includes(Actions.FILE_EDIT)) {
 			actions.push({
-				label: t('grid.action.edit'),
+				label: t('grid.action.updateFile'),
 				name: Actions.FILE_EDIT,
-				icon: 'Edit',
+				icon: 'UpdateFile',
 			});
 		}
 

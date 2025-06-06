@@ -11,6 +11,7 @@ const {
 	getStageById,
 	isDecisionAvailable,
 	hasNotSubmissionStartedStage,
+	getLatestPublication,
 } = useSubmission();
 
 const {hasCurrentUserAtLeastOneAssignedRoleInAnyStage} = useCurrentUser();
@@ -666,6 +667,7 @@ export const WorkflowConfig = {
 
 		getActionItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			const items = [];
+			const publicationId = getLatestPublication(submission)?.id;
 
 			addItemIf(
 				items,
@@ -675,7 +677,7 @@ export const WorkflowConfig = {
 						label: t('editor.submission.schedulePublication'),
 						isPrimary: true,
 						action: 'navigateToMenu',
-						actionArgs: 'publication_titleAbstract',
+						actionArgs: `publication_${publicationId}_titleAbstract`,
 					},
 				},
 				getActiveStage(submission).id ===
@@ -821,20 +823,6 @@ export const PublicationConfig = {
 						action: WorkflowActions.WORKFLOW_UNPUBLISH_PUBLICATION,
 					},
 				});
-
-				const {getLatestPublication} = useSubmission();
-				const latestPublication = getLatestPublication(submission);
-
-				if (latestPublication.id === selectedPublication.id) {
-					items.push({
-						component: 'WorkflowActionButton',
-						props: {
-							label: t('publication.createVersion'),
-							isSecondary: true,
-							action: WorkflowActions.WORKFLOW_CREATE_NEW_VERSION,
-						},
-					});
-				}
 			}
 
 			return {items, shouldContinue: true};

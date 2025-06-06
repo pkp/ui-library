@@ -9,25 +9,11 @@
 			aria-hidden="true"
 		/>
 		<span class="ms-1 text-base-normal">{{ statusProps.label }}</span>
-		<span class="ms-6 text-lg-bold">
-			{{ t('semicolon', {label: t('admin.version')}) }}
-		</span>
-		<span class="ms-2 text-base-normal">
-			{{ selectedPublication.version }}
-		</span>
-		<span class="ms-2">
-			<DropdownActions
-				v-bind="dropdownActionsProps"
-				@action="handleAction"
-			></DropdownActions>
-		</span>
 	</div>
 </template>
 <script setup>
 import {computed} from 'vue';
-import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 import {useLocalize} from '@/composables/useLocalize';
-import {useWorkflowStore} from '@/pages/workflow/workflowStore';
 
 const props = defineProps({
 	submission: {type: Object, required: true},
@@ -69,37 +55,4 @@ const statusProps = computed(() => {
 		};
 	}
 });
-
-function getItemLabel(publication) {
-	const firstPart = publication.versionString;
-	let secondPart = '';
-	if (
-		publication.status === pkp.const.STATUS_QUEUED &&
-		props.submission.currentPublicationId === publication.id
-	) {
-		secondPart = t('publication.status.unscheduled');
-	} else if (publication.status === pkp.const.STATUS_SCHEDULED) {
-		secondPart = t('publication.status.scheduled');
-	} else if (publication.status === pkp.const.STATUS_PUBLISHED) {
-		secondPart = publication.datePublished;
-	} else {
-		secondPart = t('publication.status.unpublished');
-	}
-
-	return `${t('semicolon', {label: firstPart})} ${secondPart}`;
-}
-
-const dropdownActionsProps = computed(() => {
-	const actions = props.submission.publications.map((publication) => ({
-		label: getItemLabel(publication),
-		name: publication.id,
-	}));
-	return {label: t('publication.version.all'), actions};
-});
-
-const workflowStore = useWorkflowStore();
-
-function handleAction(publicationId) {
-	workflowStore.selectPublicationId(publicationId);
-}
 </script>

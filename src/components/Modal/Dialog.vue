@@ -63,7 +63,7 @@
 								/>
 								<DialogBody
 									v-else
-									v-bind="{...props, onClose}"
+									v-bind="{...props, onClose, shouldShowCloseButton}"
 									:has-icon="!!icon"
 								></DialogBody>
 							</slot>
