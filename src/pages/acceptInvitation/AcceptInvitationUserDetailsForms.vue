@@ -19,13 +19,16 @@
 							? store.acceptInvitationPayload.orcid
 							: t('invitation.orcid.acceptInvitation.message')
 					"
-				></FormDisplayItemBasic>
-				<Icon
-					v-if="store.acceptInvitationPayload.orcid"
-					icon="Orcid"
-					class="h-4 w-4"
-					:inline="true"
-				/>
+				>
+					<template #valueSuffix>
+						<Icon
+							v-if="store.acceptInvitationPayload.orcid"
+							icon="Orcid"
+							class="ml-1 h-4 w-4"
+							:inline="true"
+						/>
+					</template>
+				</FormDisplayItemBasic>
 			</div>
 		</div>
 	</div>
