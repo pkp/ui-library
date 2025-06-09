@@ -36,7 +36,7 @@
 			v-if="isPrimaryLocale && description"
 			:id="describedByDescriptionId"
 			v-strip-unsafe-html="description"
-			class="pkpFormField__description pkpFormField--options__description"
+			class="pkpFormField__description pkpFormField--options__description semantic-defaults"
 		/>
 		<div class="pkpFormField__control">
 			<!-- avoid creating VueDraggable when not necessary as it was causing random problems with multiple VueDraggables in the form -->

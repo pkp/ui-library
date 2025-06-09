@@ -21,7 +21,7 @@
 			v-if="description"
 			:id="describedByDescriptionId"
 			v-strip-unsafe-html="description"
-			class="pkpFormField__description pkpFormField--options__description"
+			class="pkpFormField__description pkpFormField--options__description semantic-defaults"
 		/>
 		<FieldError
 			v-if="errors && errors.length"

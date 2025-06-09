@@ -12,7 +12,7 @@
 					</div>
 					<div
 						v-strip-unsafe-html="localize(item.suggestionReason)"
-						class="reviewer_sugestion_reason_container"
+						class="reviewer_sugestion_reason_container semantic-defaults"
 					></div>
 				</div>
 

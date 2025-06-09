@@ -36,7 +36,7 @@
 			v-if="isPrimaryLocale && description"
 			:id="describedByDescriptionId"
 			v-strip-unsafe-html="description"
-			class="pkpFormField__description"
+			class="pkpFormField__description semantic-defaults"
 		/>
 		<div class="pkpFormField__control">
 			<color-picker

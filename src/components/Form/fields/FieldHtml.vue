@@ -19,7 +19,7 @@
 		</div>
 		<div
 			v-strip-unsafe-html="description"
-			class="pkpFormField__control pkpFormField__control--html"
+			class="pkpFormField__control pkpFormField__control--html semantic-defaults"
 		/>
 	</div>
 </template>

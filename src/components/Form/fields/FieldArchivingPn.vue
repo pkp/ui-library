@@ -34,12 +34,12 @@
 			v-if="description"
 			:id="describedByDescriptionId"
 			v-strip-unsafe-html="description"
-			class="pkpFormField__description pkpFormField--options__description"
+			class="pkpFormField__description pkpFormField--options__description semantic-defaults"
 		/>
 		<div
 			v-if="terms && value"
 			v-strip-unsafe-html="terms"
-			class="pkpFormField__description pkpFormField--options__description pkpFormField--archivingPn__terms"
+			class="pkpFormField__description pkpFormField--options__description pkpFormField--archivingPn__terms semantic-defaults"
 		/>
 		<FieldError
 			v-if="errors && errors.length"
