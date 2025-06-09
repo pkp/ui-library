@@ -43,13 +43,13 @@
 									v-strip-unsafe-html="
 										store.reviewRoundHistory.declineEmail.subject
 									"
-									class="semantic-defaults mb-4 text-lg-normal text-secondary"
+									class="mb-4 text-lg-normal text-secondary"
 								></p>
 								<p
 									v-strip-unsafe-html="
 										store.reviewRoundHistory.declineEmail.body
 									"
-									class="semantic-defaults mt-4"
+									class="mt-4"
 								></p>
 							</div>
 							<p v-else>
@@ -110,10 +110,7 @@
 											})
 										}}
 									</dt>
-									<dd
-										v-strip-unsafe-html="reviewComment"
-										class="semantic-defaults"
-									></dd>
+									<dd v-strip-unsafe-html="reviewComment"></dd>
 								</template>
 							</dl>
 						</div>
