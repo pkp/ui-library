@@ -7,7 +7,7 @@ import {
 	getReviewItems,
 } from './useWorkflowNavigationConfigOJS';
 
-const {getCurrentReviewRound} = useSubmission();
+const {getCurrentReviewRound, getLatestPublication} = useSubmission();
 
 const {t} = useLocalize();
 
@@ -99,11 +99,17 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 		return items;
 	}
 
-	function getPublicationItemsAuthor({submission, permissions}) {
+	function getPublicationItemsAuthor({publication, permissions}) {
+		if (!publication?.id) {
+			return [];
+		}
+
 		const items = [];
+		const {id: publicationId} = publication;
 
 		items.push(
 			getPublicationItem({
+				publicationId,
 				name: 'titleAbstract',
 				label: t('publication.titleAbstract'),
 			}),
@@ -111,6 +117,7 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 
 		items.push(
 			getPublicationItem({
+				publicationId,
 				name: 'contributors',
 				label: t('publication.contributors'),
 			}),
@@ -118,6 +125,7 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 
 		items.push(
 			getPublicationItem({
+				publicationId,
 				name: 'chapters',
 				label: t('submission.chapters'),
 			}),
@@ -125,6 +133,7 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 
 		items.push(
 			getPublicationItem({
+				publicationId,
 				name: 'metadata',
 				label: t('submission.metadata'),
 			}),
@@ -132,6 +141,7 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 
 		items.push(
 			getPublicationItem({
+				publicationId,
 				name: 'publicationFormats',
 				label: t('submission.publicationFormats'),
 			}),
@@ -140,6 +150,7 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 		if (publicationSettings.supportsCitations) {
 			items.push(
 				getPublicationItem({
+					publicationId,
 					name: 'citations',
 					label: t('submission.citations'),
 				}),
@@ -149,11 +160,17 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 		return items;
 	}
 
-	function getPublicationItemsEditorial({submission, permissions}) {
+	function getPublicationItemsEditorial({publication, permissions}) {
+		if (!publication?.id) {
+			return [];
+		}
+
 		const items = [];
+		const {id: publicationId} = publication;
 
 		items.push(
 			getPublicationItem({
+				publicationId,
 				name: 'titleAbstract',
 				label: t('publication.titleAbstract'),
 			}),
@@ -161,6 +178,7 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 
 		items.push(
 			getPublicationItem({
+				publicationId,
 				name: 'contributors',
 				label: t('publication.contributors'),
 			}),
@@ -168,6 +186,7 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 
 		items.push(
 			getPublicationItem({
+				publicationId,
 				name: 'chapters',
 				label: t('submission.chapters'),
 			}),
@@ -175,6 +194,7 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 
 		items.push(
 			getPublicationItem({
+				publicationId,
 				name: 'metadata',
 				label: t('submission.metadata'),
 			}),
@@ -182,6 +202,7 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 
 		items.push(
 			getPublicationItem({
+				publicationId,
 				name: 'publicationFormats',
 				label: t('submission.publicationFormats'),
 			}),
@@ -190,6 +211,7 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 		if (publicationSettings.supportsCitations) {
 			items.push(
 				getPublicationItem({
+					publicationId,
 					name: 'citations',
 					label: t('submission.citations'),
 				}),
@@ -199,6 +221,7 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 		if (publicationSettings.identifiersEnabled) {
 			items.push(
 				getPublicationItem({
+					publicationId,
 					name: 'identifiers',
 					label: t('submission.identifiers'),
 				}),
@@ -208,6 +231,7 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 		if (permissions.canAccessProduction) {
 			items.push(
 				getPublicationItem({
+					publicationId,
 					name: 'catalogEntry',
 					label: t('publication.catalogEntry'),
 				}),
@@ -215,6 +239,7 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 
 			items.push(
 				getPublicationItem({
+					publicationId,
 					name: 'license',
 					label: t('publication.publicationLicense'),
 				}),
@@ -251,6 +276,47 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 		return menuItems;
 	}
 
+	function getPublicationVersionItems({submission, permissions}) {
+		if (!submission?.publications?.length) {
+			return [];
+		}
+
+		const {publications} = submission;
+		const items = [];
+
+		publications.forEach((publication) => {
+			if (
+				pageInitConfig.dashboardPage ===
+					DashboardPageTypes.EDITORIAL_DASHBOARD &&
+				permissions.canAccessPublication
+			) {
+				items.push({
+					key: `publication_${publication.id}`,
+					label: publication.versionString,
+					items: getPublicationItemsEditorial({publication, permissions}),
+				});
+			} else if (
+				pageInitConfig.dashboardPage === DashboardPageTypes.MY_SUBMISSIONS
+			) {
+				items.push({
+					key: `publication_${publication.id}`,
+					label: publication.versionString,
+					items: getPublicationItemsAuthor({publication, permissions}),
+				});
+			}
+		});
+
+		if (permissions.canPublish) {
+			items.push({
+				key: 'publication_create_new_version',
+				label: t('publication.createVersion'),
+				action: 'createNewVersion',
+			});
+		}
+
+		return items;
+	}
+
 	function getMenuItems({submission, permissions}) {
 		if (!submission) {
 			return [];
@@ -275,23 +341,16 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 			});
 		}
 		if (
-			pageInitConfig.dashboardPage === DashboardPageTypes.EDITORIAL_DASHBOARD &&
-			permissions.canAccessPublication
+			[
+				DashboardPageTypes.EDITORIAL_DASHBOARD,
+				DashboardPageTypes.MY_SUBMISSIONS,
+			].includes(pageInitConfig.dashboardPage)
 		) {
 			menuItems.push({
 				key: 'publication',
 				label: t('submission.publication'),
 				icon: 'MySubmissions',
-				items: getPublicationItemsEditorial({submission, permissions}),
-			});
-		} else if (
-			pageInitConfig.dashboardPage === DashboardPageTypes.MY_SUBMISSIONS
-		) {
-			menuItems.push({
-				key: 'publication',
-				label: t('submission.publication'),
-				icon: 'MySubmissions',
-				items: getPublicationItemsAuthor({submission, permissions}),
+				items: getPublicationVersionItems({submission, permissions}),
 			});
 		}
 
@@ -310,7 +369,8 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 			submission.stageId === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION &&
 			submission.status !== pkp.const.STATUS_QUEUED
 		) {
-			return `publication_titleAbstract`;
+			const latestPublication = getLatestPublication(submission);
+			return `publication_${latestPublication.id}_titleAbstract`;
 		} else {
 			return `workflow_${submission.stageId}`;
 		}

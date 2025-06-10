@@ -1,5 +1,5 @@
 <template>
-	<div class="modal-content" :class="hasIcon ? 'px-24' : 'pt- px-12'">
+	<div class="modal-content" :class="hasIcon ? 'px-24' : 'px-12'">
 		<slot>
 			<div
 				v-if="message"
@@ -10,6 +10,7 @@
 	</div>
 
 	<div
+		v-if="displayDefaultFooter"
 		class="flex items-center gap-x-4"
 		:class="hasIcon ? 'p-10 ps-24' : 'p-12'"
 	>
@@ -51,6 +52,11 @@ const props = defineProps({
 	isLoading: {
 		type: Boolean,
 		default: false,
+	},
+	// wether to display default footer with actions, set this to false if dialog will display PkpForm
+	displayDefaultFooter: {
+		type: Boolean,
+		default: true,
 	},
 });
 

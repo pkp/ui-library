@@ -1,11 +1,13 @@
 import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
-import {useSubmission} from '@/composables/useSubmission';
+
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 
 import WorkflowModalChangeSubmissionLanguage from '@/pages/workflow/modals/WorkflowChangeSubmissionLanguageModal.vue';
+import WorkflowVersionDialogBody from '@/pages/workflow/components/publication/WorkflowVersionDialogBody.vue';
+import WorkflowVersionSideModal from '@/pages/workflow/components/publication/WorkflowVersionSideModal.vue';
 
 export const Actions = {
 	WORKFLOW_VIEW_PUBLISHED_SUBMISSION: 'workflowViewPublishedSubmission',
@@ -82,10 +84,38 @@ export function useWorkflowActions() {
 		);
 	}
 
+	function workflowAssignPublicationStage(
+		{selectedPublication, submission},
+		finishedCallback,
+	) {
+		const {openSideModal, closeSideModal} = useModal();
+
+		function onCloseFn() {
+			closeSideModal(WorkflowVersionSideModal);
+		}
+
+		openSideModal(WorkflowVersionSideModal, {
+			onCloseFn,
+			onSubmitFn: finishedCallback,
+		});
+	}
+
 	function workflowAssignToIssueAndScheduleForPublication(
 		{selectedPublication, submission},
 		finishedCallback,
 	) {
+		// if version is unassigned, we need to assign it to a publication stage first
+		if (!selectedPublication.versionStage) {
+			return workflowAssignPublicationStage(
+				{selectedPublication, submission},
+				(publicationData) =>
+					workflowAssignToIssueAndScheduleForPublication(
+						{submission, selectedPublication: publicationData},
+						finishedCallback,
+					),
+			);
+		}
+
 		if (selectedPublication.issueId === null) {
 			const {url} = useLegacyGridUrl({
 				component: 'modals.publish.AssignToIssueHandler',
@@ -215,43 +245,19 @@ export function useWorkflowActions() {
 		});
 	}
 
-	function workflowCreateNewVersion({submission, store}, finishedCallback) {
-		const {openDialog} = useModal();
-		const {getLatestPublication} = useSubmission();
+	function workflowCreateNewVersion() {
+		const {openDialog, closeDialog} = useModal();
 
 		openDialog({
 			title: t('publication.createVersion'),
-			message: t('publication.version.confirm'),
-			actions: [
-				{
-					label: t('common.yes'),
-					isPrimary: true,
-					callback: async (close) => {
-						const latestPublication = getLatestPublication(submission);
-
-						const {apiUrl: createNewVersionUrl} = useUrl(
-							`submissions/${submission.id}/publications/${latestPublication.id}/version`,
-						);
-						const {fetch, data: newPublication} = useFetch(
-							createNewVersionUrl,
-							{
-								method: 'POST',
-							},
-						);
-						await fetch();
-						// select newest publication
-						store.selectPublicationId(newPublication.value.id);
-						close();
-
-						finishedCallback();
-					},
-				},
-				{
-					label: t('common.no'),
-					callback: (close) => close(),
-				},
-			],
-			modalStyle: 'primary',
+			bodyComponent: WorkflowVersionDialogBody,
+			bodyProps: {
+				mode: 'createNewVersion',
+				displayDefaultFooter: false,
+				onCloseFn: () => closeDialog(),
+			},
+			showCloseButton: false,
+			modalStyle: 'basic',
 		});
 	}
 
@@ -319,8 +325,8 @@ export function useWorkflowActions() {
 		workflowAssignToIssueAndScheduleForPublication,
 		workflowScheduleForPublication,
 		workflowUnschedulePublication,
-		workflowUnpublishPublication,
 		workflowCreateNewVersion,
+		workflowUnpublishPublication,
 		workflowPreviewPublication,
 		workflowChangeSubmissionLanguage,
 		workflowDeleteSubmission,

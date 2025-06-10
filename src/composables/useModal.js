@@ -18,6 +18,13 @@ export function useModal() {
 	}
 
 	/**
+	 * Close the currently opened dialog modal
+	 */
+	function closeDialog() {
+		modalStore.closeDialog();
+	}
+
+	/**
 	 * Open a side modal component
 	 * @param {Object|string} component - The component to render in the side modal
 	 * @param {Object} [props] - Properties to pass to the component
@@ -54,6 +61,7 @@ export function useModal() {
 
 	return {
 		openDialog,
+		closeDialog,
 		openSideModal,
 		openDialogNetworkError,
 		closeSideModal,

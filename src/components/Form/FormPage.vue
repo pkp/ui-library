@@ -9,6 +9,7 @@
 			:primary-locale="primaryLocale"
 			:visible-locales="visibleLocales"
 			:available-locales="availableLocales"
+			:spacing-variant="spacingVariant"
 			:form-id="formId"
 			@change="fieldChanged"
 			@set-errors="setErrors"
@@ -17,14 +18,15 @@
 			v-if="hasFooter"
 			ref="footer"
 			class="pkpFormPage__footer"
+			:class="footerSpacingStyle"
 			aria-live="polite"
 		>
 			<FormErrors
 				v-if="Object.keys(errors).length && showErrorFooter"
 				:errors="errors"
 				:fields="fields"
-				@showField="showField"
-				@showLocale="showLocale"
+				@show-field="showField"
+				@show-locale="showLocale"
 			/>
 			<span role="status" aria-live="polite" aria-atomic="true">
 				<transition name="pkpFormPage__status">
@@ -114,6 +116,7 @@ export default {
 				return true;
 			},
 		},
+		spacingVariant: String,
 	},
 	data() {
 		return {
@@ -145,6 +148,13 @@ export default {
 				this.submitButton ||
 				Object.keys(this.errors).length
 			);
+		},
+
+		footerSpacingStyle() {
+			if (this.spacingVariant === 'fullWidth') {
+				return '!px-0 !py-12';
+			}
+			return '';
 		},
 	},
 	mounted() {

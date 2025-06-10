@@ -49,7 +49,10 @@ export default [
 				},
 				urlPublished:
 					'http://localhost:7002/index.php/publicknowledge/article/view/19/version/20',
-				version: 1,
+				versionStage: 'AO',
+				versionMajor: 1,
+				versionMinor: 0,
+				versionString: 'Author Original 1.0',
 			},
 		],
 		reviewAssignments: [
@@ -200,7 +203,11 @@ export default [
 				},
 				urlPublished:
 					'http://localhost:7002/index.php/publicknowledge/article/view/16/version/17',
-				version: 1,
+
+				versionStage: 'AO',
+				versionMajor: 1,
+				versionMinor: 0,
+				versionString: 'Author Original 1.0',
 			},
 		],
 		reviewAssignments: [],
@@ -311,7 +318,11 @@ export default [
 				},
 				urlPublished:
 					'http://localhost:7002/index.php/publicknowledge/article/view/15/version/16',
-				version: 1,
+
+				versionStage: 'AO',
+				versionMajor: 1,
+				versionMinor: 0,
+				versionString: 'Author Original 1.0',
 			},
 		],
 		reviewAssignments: [
@@ -462,7 +473,11 @@ export default [
 				},
 				urlPublished:
 					'http://localhost:7002/index.php/publicknowledge/article/view/14/version/15',
-				version: 1,
+
+				versionStage: 'AO',
+				versionMajor: 1,
+				versionMinor: 0,
+				versionString: 'Author Original 1.0',
 			},
 		],
 		reviewAssignments: [],
@@ -573,7 +588,11 @@ export default [
 				},
 				urlPublished:
 					'http://localhost:7002/index.php/publicknowledge/article/view/13/version/14',
-				version: 1,
+
+				versionStage: 'AO',
+				versionMajor: 1,
+				versionMinor: 0,
+				versionString: 'Author Original 1.0',
 			},
 		],
 		reviewAssignments: [
@@ -741,7 +760,11 @@ export default [
 				},
 				urlPublished:
 					'http://localhost:7002/index.php/publicknowledge/article/view/12/version/13',
-				version: 1,
+
+				versionStage: 'AO',
+				versionMajor: 1,
+				versionMinor: 0,
+				versionString: 'Author Original 1.0',
 			},
 		],
 		reviewAssignments: [
@@ -893,7 +916,11 @@ export default [
 				},
 				urlPublished:
 					'http://localhost:7002/index.php/publicknowledge/article/view/11/version/12',
-				version: 1,
+
+				versionStage: 'AO',
+				versionMajor: 1,
+				versionMinor: 0,
+				versionString: 'Author Original 1.0',
 			},
 		],
 		reviewAssignments: [],
@@ -1004,7 +1031,11 @@ export default [
 				},
 				urlPublished:
 					'http://localhost:7002/index.php/publicknowledge/article/view/10/version/11',
-				version: 1,
+
+				versionStage: 'AO',
+				versionMajor: 1,
+				versionMinor: 0,
+				versionString: 'Author Original 1.0',
 			},
 		],
 		reviewAssignments: [
@@ -1155,7 +1186,11 @@ export default [
 				},
 				urlPublished:
 					'http://localhost:7002/index.php/publicknowledge/article/view/9/version/10',
-				version: 1,
+
+				versionStage: 'AO',
+				versionMajor: 1,
+				versionMinor: 0,
+				versionString: 'Author Original 1.0',
 			},
 		],
 		reviewAssignments: [
@@ -1307,7 +1342,11 @@ export default [
 				},
 				urlPublished:
 					'http://localhost:7002/index.php/publicknowledge/article/view/8/version/9',
-				version: 1,
+
+				versionStage: 'AO',
+				versionMajor: 1,
+				versionMinor: 0,
+				versionString: 'Author Original 1.0',
 			},
 		],
 		reviewAssignments: [],
@@ -1418,7 +1457,11 @@ export default [
 				},
 				urlPublished:
 					'http://localhost:7002/index.php/publicknowledge/article/view/7/version/8',
-				version: 1,
+
+				versionStage: 'AO',
+				versionMajor: 1,
+				versionMinor: 0,
+				versionString: 'Author Original 1.0',
 			},
 		],
 		reviewAssignments: [
@@ -1583,7 +1626,11 @@ export default [
 				},
 				urlPublished:
 					'http://localhost:7002/index.php/publicknowledge/article/view/6/version/7',
-				version: 1,
+
+				versionStage: 'AO',
+				versionMajor: 1,
+				versionMinor: 0,
+				versionString: 'Author Original 1.0',
 			},
 		],
 		reviewAssignments: [
@@ -1734,7 +1781,11 @@ export default [
 				},
 				urlPublished:
 					'http://localhost:7002/index.php/publicknowledge/article/view/5/version/6',
-				version: 1,
+
+				versionStage: 'AO',
+				versionMajor: 1,
+				versionMinor: 0,
+				versionString: 'Author Original 1.0',
 			},
 		],
 		reviewAssignments: [
@@ -1885,7 +1936,11 @@ export default [
 				},
 				urlPublished:
 					'http://localhost:7002/index.php/publicknowledge/article/view/4/version/5',
-				version: 1,
+
+				versionStage: 'AO',
+				versionMajor: 1,
+				versionMinor: 0,
+				versionString: 'Author Original 1.0',
 			},
 		],
 		reviewAssignments: [],
@@ -1996,7 +2051,11 @@ export default [
 				},
 				urlPublished:
 					'http://localhost:7002/index.php/publicknowledge/article/view/3/version/4',
-				version: 1,
+
+				versionStage: 'AO',
+				versionMajor: 1,
+				versionMinor: 0,
+				versionString: 'Author Original 1.0',
 			},
 		],
 		reviewAssignments: [
@@ -2147,7 +2206,11 @@ export default [
 				},
 				urlPublished:
 					'http://localhost:7002/index.php/publicknowledge/article/view/2/version/3',
-				version: 1,
+
+				versionStage: 'AO',
+				versionMajor: 1,
+				versionMinor: 0,
+				versionString: 'Author Original 1.0',
 			},
 		],
 		reviewAssignments: [],

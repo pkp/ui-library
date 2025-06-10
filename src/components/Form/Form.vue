@@ -62,6 +62,7 @@
 				:available-locales="availableLocales"
 				:is-saving="isSaving"
 				:show-error-footer="showErrorFooter"
+				:spacing-variant="spacingVariant"
 				@change="fieldChanged"
 				@page-submitted="nextPage"
 				@previous-page="setCurrentPage(false)"
@@ -143,6 +144,8 @@ export default {
 				return true;
 			},
 		},
+		/** Defines wether to add default spacing ("default") or not("fullWidth"). This is useful when displaying the form in a Dialog, as the modal styling is already handled there. */
+		spacingVariant: String,
 	},
 	emits: [
 		/** When the form props need to be updated. The payload is an object with any keys that need to be modified. */

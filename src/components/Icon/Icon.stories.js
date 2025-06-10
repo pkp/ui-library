@@ -164,6 +164,7 @@ export const IconGallery = {
 			'Underline',
 			'Unlock',
 			'Upload',
+			'UpdateFile',
 			'Url',
 			'UsefulTips',
 			'User',

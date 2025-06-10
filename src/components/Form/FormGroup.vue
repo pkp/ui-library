@@ -1,5 +1,5 @@
 <template>
-	<fieldset class="pkpFormGroup -pkpClearfix">
+	<fieldset class="pkpFormGroup -pkpClearfix" :class="spacingStyle">
 		<div v-if="label" class="pkpFormGroup__heading">
 			<legend class="pkpFormGroup__legend">{{ label }}</legend>
 			<div
@@ -126,6 +126,12 @@ export default {
 		visibleLocales: Array,
 		availableLocales: Array,
 		showWhen: [String, Array],
+		spacingVariant: {
+			required: false,
+			type: String,
+			default: () => 'default',
+			validator: (val) => ['default', 'fullWidth'].includes(val),
+		},
 	},
 	computed: {
 		/**
@@ -148,6 +154,13 @@ export default {
 				}
 			}
 			return false;
+		},
+
+		spacingStyle() {
+			if (this.spacingVariant === 'fullWidth') {
+				return '!p-0';
+			}
+			return '';
 		},
 	},
 	methods: {

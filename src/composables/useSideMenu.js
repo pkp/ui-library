@@ -246,5 +246,6 @@ export function useSideMenu(_items, opts = {}) {
 		setExpandedKeys,
 		setActiveItemKey,
 		selectedItem,
+		expandedKeys,
 	};
 }

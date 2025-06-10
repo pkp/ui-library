@@ -2,8 +2,10 @@ import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
 import {useFetch, getCSRFToken} from '@/composables/useFetch';
+import WorkflowVersionDialogBody from '@/pages/workflow/components/publication/WorkflowVersionDialogBody.vue';
 
 export const Actions = {
+	FILE_SEND_TO_EDITOR: 'fileSendToEditor',
 	FILE_LIST: 'fileList',
 	FILE_UPLOAD: 'fileUpload',
 	FILE_SELECT_UPLOAD: 'fileSelectUpload',
@@ -15,6 +17,25 @@ export const Actions = {
 
 export function useFileManagerActions() {
 	const {t, localize} = useLocalize();
+
+	function fileSendToEditor(
+		{fileStage, submission, submissionStageId},
+		finishedCallback,
+	) {
+		const {openDialog, closeDialog} = useModal();
+
+		openDialog({
+			title: t('fileManager.sendFileToTextEditor'),
+			bodyComponent: WorkflowVersionDialogBody,
+			bodyProps: {
+				mode: 'sendToTextEditor',
+				displayDefaultFooter: false,
+				onCloseFn: () => closeDialog(),
+			},
+			showCloseButton: false,
+			modalStyle: 'basic',
+		});
+	}
 
 	function fileUpload(
 		{fileStage, reviewRoundId, submission, submissionStageId, wizardTitleKey},
@@ -180,6 +201,7 @@ export function useFileManagerActions() {
 	}
 
 	return {
+		fileSendToEditor,
 		fileUpload,
 		fileSelectUpload,
 		fileDownloadAll,
