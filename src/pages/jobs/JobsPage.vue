@@ -4,7 +4,7 @@
 			<span v-strip-unsafe-html="label"></span>
 		</template>
 		<template v-if="description" #description>
-			<span v-strip-unsafe-html="description"></span>
+			<span v-strip-unsafe-html="description" class="semantic-defaults"></span>
 		</template>
 		<TableHeader>
 			<TableColumn

@@ -42,7 +42,7 @@
 			<div
 				v-if="hasOrcid"
 				v-strip-unsafe-html="orcidDisplayText"
-				class="pkpFormField__control pkpFormField__control--html"
+				class="pkpFormField__control pkpFormField__control--html semantic-defaults"
 			/>
 			<PkpButton
 				v-if="hasOrcid"

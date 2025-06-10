@@ -35,7 +35,7 @@
 			v-if="isPrimaryLocale && description"
 			:id="describedByDescriptionId"
 			v-strip-unsafe-html="description"
-			class="pkpFormField__description"
+			class="pkpFormField__description semantic-defaults"
 		/>
 		<div class="pkpFormField__control pkpAutosuggest__control">
 			<div
@@ -83,7 +83,7 @@
 				<Autosuggest
 					v-bind="autoSuggestProps"
 					ref="inputRef"
-					v-model:inputValue="inputValue"
+					v-model:input-value="inputValue"
 					@select-suggestion="selectSuggestion"
 					@deselect="deselect"
 					@focus-changed="changeFocus"
