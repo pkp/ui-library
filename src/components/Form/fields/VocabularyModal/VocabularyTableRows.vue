@@ -1,5 +1,5 @@
 <template>
-	<template v-for="item in items" :key="item.identifier">
+	<template v-for="item in items" :key="store.getIdForItem(item)">
 		<TableRow>
 			<component
 				:is="Components[column.component] || column.component"
@@ -10,12 +10,12 @@
 			/>
 			<TableCellTreeExpand
 				:is-displayed="item?.items?.length"
-				:is-expanded="store.expandedIds.includes(item.identifier)"
-				@toggle="store.toggleItemExpansion(item.identifier)"
+				:is-expanded="store.isExpanded(item)"
+				@toggle="store.toggleItemExpansion(item)"
 			></TableCellTreeExpand>
 		</TableRow>
 		<VocabularyTableRows
-			v-if="item?.items?.length && store.expandedIds.includes(item.identifier)"
+			v-if="item?.items?.length && store.isExpanded(item)"
 			:items="item.items"
 			:depth="depth + 1"
 		/>

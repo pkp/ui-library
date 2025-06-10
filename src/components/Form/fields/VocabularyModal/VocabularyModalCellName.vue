@@ -7,15 +7,13 @@
 		>
 			<input
 				type="checkbox"
-				:checked="
-					vocabularymodalStore.selectedItemIds.includes(item.identifier)
-				"
+				:checked="vocabularymodalStore.isSelected(item)"
 				@change="vocabularymodalStore.toggleItemSelection(item)"
 			/>
-			<span>{{ item.name }}</span>
+			<span>{{ item.label }}</span>
 		</label>
 		<span v-else :class="{'text-base-bold': depth === 0}">
-			{{ item.name }}
+			{{ item.label }}
 		</span>
 	</TableCell>
 </template>
