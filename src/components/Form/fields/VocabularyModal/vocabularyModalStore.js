@@ -14,37 +14,53 @@ export const useVocabularyModalStore = defineComponentStore(
 		// Computed
 		const columns = computed(() => vocabularyModalConfig.getColumns());
 
-		function toggleItemExpansion(identifier) {
-			if (!expandedIds.value.includes(identifier)) {
-				expandedIds.value.push(identifier);
+		function getIdForItem(item) {
+			return item?.value?.identifier || item.value;
+		}
+
+		function toggleItemExpansion(item) {
+			const itemId = getIdForItem(item);
+			if (!expandedIds.value.includes(itemId)) {
+				expandedIds.value.push(itemId);
 			} else {
-				expandedIds.value = expandedIds.value.filter((id) => id !== identifier);
+				expandedIds.value = expandedIds.value.filter((id) => id !== itemId);
 			}
 		}
 
 		items.value.forEach((item) => {
-			toggleItemExpansion(item.identifier);
+			toggleItemExpansion(item);
 		});
 
+		console.log('initiallySelectedItems:', props.initiallySelectedItems);
 		const selectedItems = ref([...props.initiallySelectedItems]);
 		const selectedItemIds = computed(() =>
-			selectedItems.value.map((item) => item.value.identifier),
+			selectedItems.value.map((item) => getIdForItem(item)),
 		);
+
 		function toggleItemSelection(item) {
 			if (
 				selectedItems.value.find(
-					(_item) => _item.value.identifier === item.identifier,
+					(_item) => getIdForItem(_item) === getIdForItem(item),
 				)
 			) {
 				selectedItems.value = selectedItems.value.filter(
-					(_item) => _item.value.identifier !== item.identifier,
+					(_item) => getIdForItem(_item) !== getIdForItem(item),
 				);
 			} else {
-				selectedItems.value.push({value: item, label: item.name});
+				selectedItems.value.push(item);
 			}
 		}
 
+		function isExpanded(item) {
+			return expandedIds.value.includes(getIdForItem(item));
+		}
+
+		function isSelected(item) {
+			return selectedItemIds.value.includes(getIdForItem(item));
+		}
+
 		function saveChanges(closeModalFn) {
+			console.log('saveChanges:', selectedItems.value);
 			emit('saveChanges', selectedItems.value);
 			closeModalFn();
 		}
@@ -52,8 +68,9 @@ export const useVocabularyModalStore = defineComponentStore(
 		return {
 			items,
 			columns,
-			selectedItemIds,
-			expandedIds,
+			isExpanded,
+			isSelected,
+			getIdForItem,
 			toggleItemExpansion,
 			toggleItemSelection,
 			saveChanges,
