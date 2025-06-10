@@ -5,7 +5,7 @@
 			<div
 				v-if="description"
 				v-strip-unsafe-html="description"
-				class="pkpFormGroup__description"
+				class="pkpFormGroup__description semantic-defaults"
 			></div>
 		</div>
 		<div class="pkpFormGroup__fields">

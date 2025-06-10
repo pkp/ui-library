@@ -227,7 +227,10 @@
 					<div class="listPanel__item--reviewer__detailHeading">
 						{{ biographyLabel }}
 					</div>
-					<div v-strip-unsafe-html="localize(item.biography)"></div>
+					<div
+						v-strip-unsafe-html="localize(item.biography)"
+						class="semantic-defaults"
+					></div>
 				</ListItem>
 			</List>
 		</div>
