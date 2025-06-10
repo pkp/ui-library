@@ -1,7 +1,11 @@
 <template>
 	<div class="modal-content" :class="hasIcon ? 'px-24' : 'pt- px-12'">
 		<slot>
-			<div v-if="message" v-strip-unsafe-html="message" />
+			<div
+				v-if="message"
+				v-strip-unsafe-html="message"
+				class="semantic-defaults"
+			/>
 		</slot>
 	</div>
 
