@@ -67,7 +67,10 @@
 		</div>
 	</div>
 	<div class="p-8">
-		<UserInvitationUserGroupsTable :user-groups="userGroups" />
+		<UserInvitationUserGroupsTable
+			:user-groups="userGroups"
+			:reviewer-user-group-ids="reviewerUserGroupIds"
+		/>
 	</div>
 </template>
 
@@ -115,6 +118,7 @@ const store = useUserInvitationPageStore();
 const props = defineProps({
 	form: {type: Object, required: true},
 	userGroups: {type: Object, required: true},
+	reviewerUserGroupIds: {type: Array, required: true},
 	validateFields: {type: Array, required: true},
 });
 const {
