@@ -4,7 +4,7 @@
 			class="flex justify-center"
 			:style="{'padding-inline-end': `${depth + 0.5}rem`}"
 		>
-			<button>
+			<button data-cy="category-manager-toggle-sub-categories">
 				<Icon
 					v-if="category.subCategories?.length"
 					class="h-6 w-6 cursor-pointer text-primary"
