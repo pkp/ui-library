@@ -103,10 +103,7 @@
 							:label="t('invitation.role.masthead')"
 							:is-required="true"
 							:value="userGroupToAdd.masthead"
-							:options="[
-								{label: t('invitation.masthead.show'), value: true},
-								{label: t('invitation.masthead.hidden'), value: false},
-							]"
+							:options="getMastheadOption(userGroupToAdd)"
 							:all-errors="{
 								masthead:
 									userGroupErrors['userGroupsToAdd.' + index + '.masthead'],
@@ -195,6 +192,25 @@ const availableUserGroups = computed(() => {
 		);
 	});
 });
+
+/**
+ * Masthead options
+ */
+function getMastheadOption(userGroupToAdd) {
+	const roleId = props.userGroups.find(
+		(userGroup) => userGroup.value === userGroupToAdd.userGroupId,
+	)?.roleId;
+
+	// Reviewer is always displayed on the masthead
+	if (roleId === pkp.const.ROLE_ID_REVIEWER) {
+		return [{label: t('invitation.masthead.show'), value: true}];
+	}
+
+	return [
+		{label: t('invitation.masthead.show'), value: true},
+		{label: t('invitation.masthead.hidden'), value: false},
+	];
+}
 
 /**
  * check any values filled with userGroupsToAdd
