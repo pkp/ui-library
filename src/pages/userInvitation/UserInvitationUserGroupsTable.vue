@@ -35,9 +35,11 @@
 				</TableCell>
 				<TableCell>
 					{{
-						currentUserGroup.masthead
+						reviewerRoleIds.includes(currentUserGroup.id)
 							? t('invitation.masthead.show')
-							: t('invitation.masthead.hidden')
+							: currentUserGroup.masthead
+								? t('invitation.masthead.show')
+								: t('invitation.masthead.hidden')
 					}}
 				</TableCell>
 				<TableCell v-if="!currentUserGroup.dateEnd">
@@ -160,8 +162,10 @@ import {useFetch} from '@/composables/useFetch';
 
 const props = defineProps({
 	userGroups: {type: Object, required: true},
+	reviewerUserGroupIds: {type: Array, required: true},
 });
 
+const reviewerRoleIds = props.reviewerUserGroupIds;
 const store = useUserInvitationPageStore();
 const {t} = useLocalize();
 const {formatShortDate} = useDate();
@@ -197,12 +201,8 @@ const availableUserGroups = computed(() => {
  * Masthead options
  */
 function getMastheadOption(userGroupToAdd) {
-	const roleId = props.userGroups.find(
-		(userGroup) => userGroup.value === userGroupToAdd.userGroupId,
-	)?.roleId;
-
 	// Reviewer is always displayed on the masthead
-	if (roleId === pkp.const.ROLE_ID_REVIEWER) {
+	if (reviewerRoleIds.includes(userGroupToAdd.userGroupId)) {
 		return [{label: t('invitation.masthead.show'), value: true}];
 	}
 
