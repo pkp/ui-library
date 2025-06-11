@@ -2,7 +2,18 @@ import DOMPurify from 'dompurify';
 
 const sanitizeConfig = {
 	USE_PROFILES: {html: true},
+	ADD_ATTR: ['target'],
 };
+
+/**
+ *  Anytime you open a link in a new tab, you risk giving the new page access to your original page via window.opener (in some older browsers)
+ *	The fix is to add rel="noopener noreferrer" whenever you see target="_blank".
+ */
+DOMPurify.addHook('afterSanitizeAttributes', (node) => {
+	if (node.tagName === 'A' && node.getAttribute('target') === '_blank') {
+		node.setAttribute('rel', 'noopener noreferrer');
+	}
+});
 
 export const stripUnsafeHtml = {
 	// Called only once, when the directive is first bound to the element.
