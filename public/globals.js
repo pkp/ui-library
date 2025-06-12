@@ -544,7 +544,7 @@ window.pkp = {
 		'invitation.masthead.hidden': 'Does not appear on the masthead',
 		'invitation.masthead.show': 'Appear on the masthead',
 		'invitation.orcid.acceptInvitation.message':
-			'Not verified. You can verify your ORCID iD from your profile section in OJS',
+			'Not verified. You can verify your ORCID iD from your profile section in OJS.',
 		'invitation.removeRoles': 'User Removed From Role',
 		'invitation.role.addRole.button': 'Add Another Role',
 		'invitation.role.dateStart': 'Start Date',
