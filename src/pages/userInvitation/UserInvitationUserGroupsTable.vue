@@ -165,6 +165,7 @@ const props = defineProps({
 	reviewerUserGroupIds: {type: Array, required: true},
 });
 
+const roleOptions = getRoleOptions();
 const reviewerRoleIds = props.reviewerUserGroupIds;
 const store = useUserInvitationPageStore();
 const {t} = useLocalize();
@@ -173,7 +174,22 @@ const {formatShortDate} = useDate();
 const allUserGroupsToAdd = computed(
 	() => store.invitationPayload.userGroupsToAdd,
 );
-updateWithSelectedUserGroups(props.userGroups);
+updateWithSelectedUserGroups(roleOptions);
+
+/**
+ * Role options
+ */
+function getRoleOptions() {
+	var returnArray = [];
+	Object.values(props.userGroups).forEach((element, i) => {
+		returnArray[i] = {
+			value: element.userGroupId,
+			label: 'bozana' + element.userGroupId, //localize(element.name)
+			disabled: false,
+		};
+	});
+	return returnArray;
+}
 
 /**
  * update selected user group
@@ -186,11 +202,11 @@ function updateUserGroup(index, fieldName, newValue) {
 	const userGroupsUpdate = [...store.invitationPayload.userGroupsToAdd];
 	userGroupsUpdate[index][fieldName] = newValue;
 	store.updatePayload('userGroupsToAdd', userGroupsUpdate, false);
-	updateWithSelectedUserGroups(props.userGroups);
+	updateWithSelectedUserGroups(roleOptions);
 }
 
 const availableUserGroups = computed(() => {
-	return props.userGroups.filter((element) => {
+	return Object.values(roleOptions).filter((element) => {
 		return !store.invitationPayload.currentUserGroups.find(
 			(data) => data.id === element.value && !data.dateEnd,
 		);
@@ -303,7 +319,7 @@ function removeInvitedUserGroup(index) {
 	}
 	userGroupsUpdate.splice(index, 1);
 	store.updatePayload('userGroupsToAdd', userGroupsUpdate, false);
-	updateWithSelectedUserGroups(props.userGroups);
+	updateWithSelectedUserGroups(roleOptions);
 }
 
 const userGroupErrors = computed(() => {
@@ -314,7 +330,7 @@ const userGroupErrors = computed(() => {
  * disabling selecting user groups that already selected
  */
 function updateWithSelectedUserGroups(userGroups) {
-	userGroups.filter((element) => {
+	Object.values(userGroups).filter((element) => {
 		if (
 			store.invitationPayload.userGroupsToAdd.find(
 				(data) => data.userGroupId === element.value,
