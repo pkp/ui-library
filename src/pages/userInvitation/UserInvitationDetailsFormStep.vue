@@ -33,14 +33,16 @@
 				heading-element="h4"
 				:heading="t('user.orcid')"
 				:value="store.invitationPayload.orcid"
-			></FormDisplayItemBasic>
-
-			<Icon
-				v-if="store.invitationPayload.orcidValidation"
-				icon="Orcid"
-				class="h-4 w-4"
-				:inline="true"
-			/>
+			>
+				<template #valueSuffix>
+					<Icon
+						v-if="store.invitationPayload.orcidIsVerified"
+						icon="Orcid"
+						class="ml-1 h-4 w-4"
+						:inline="true"
+					/>
+				</template>
+			</FormDisplayItemBasic>
 
 			<FormDisplayItemBasic
 				heading-element="h4"

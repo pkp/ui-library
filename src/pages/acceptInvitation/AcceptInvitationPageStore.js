@@ -70,6 +70,8 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			} else {
 				email.value = data.value.email;
 				userId.value = data.value.userId;
+				existingUser.value = data.value.existingUser;
+
 				if (data.value.familyName) {
 					updateAcceptInvitationPayload('familyName', data.value.familyName); //if not check this override the multilingual structure
 				}
@@ -120,7 +122,6 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 				// add password to invitation payload for validations
 				updateAcceptInvitationPayload('password', null);
 
-				existingUser.value = data.existingUser;
 				errors.value = [];
 				if (steps.value.length === 0) {
 					await submit();
@@ -360,9 +361,9 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 
 		const invitationRequestPayload = computed(() => {
 			let payload = {};
-			if (!userId.value) {
-				if (currentStep.value) {
-					currentStep.value.sections.forEach((element, index) => {
+			if (currentStep.value) {
+				if (currentStep.value.id === 'verifyOrcid' || !userId.value) {
+					currentStep.value.sections.forEach((element) => {
 						let sectionPayload = {};
 						element.props.validateFields.forEach((field) => {
 							if (Object.keys(acceptInvitationPayload.value).includes(field)) {
@@ -523,6 +524,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			acceptInvitationPayload,
 			email,
 			userId,
+			existingUser,
 		};
 	},
 );
