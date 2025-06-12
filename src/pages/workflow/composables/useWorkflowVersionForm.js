@@ -7,9 +7,9 @@ import {useSubmission} from '@/composables/useSubmission';
 import {useWorkflowStore} from '@/pages/workflow/workflowStore';
 
 const VERSION_MODE = {
-	CREATE: 'createNewVersion',
-	SEND_TO_TEXT_EDITOR: 'sendToTextEditor',
-	PUBLISH: 'publish',
+	CREATE: 'createNewVersion', // the "Create New Version" action in the publication workflow menu
+	SEND_TO_TEXT_EDITOR: 'sendToTextEditor', // the "Send to Text Editor" action from the dropdown options on a submission file
+	PUBLISH: 'publish', // the "Schedule for Publication" on the workflow page (applies only to OJS), user must assign a publication stage before scheduling the version for an issue ()
 };
 
 /**
@@ -189,7 +189,7 @@ export function useWorkflowVersionForm(
 			'versionIsMinor',
 			getVersionIsMinorField({
 				allowMinorVersion,
-				currentValue: getField('versionIsMinor')?.value || '',
+				currentValue: allowMinorVersion.toString(),
 			}),
 			{override: true},
 		);
