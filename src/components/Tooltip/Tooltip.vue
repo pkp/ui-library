@@ -1,8 +1,9 @@
 <template>
 	<span
 		v-tooltip="{
-			content: tooltip,
+			content: tooltipContent,
 			theme: 'pkp-tooltip',
+			html: true,
 		}"
 		class="tooltipButton"
 		@click.prevent
@@ -18,6 +19,7 @@
 <script>
 import 'floating-vue/dist/style.css';
 import Icon from '@/components/Icon/Icon.vue';
+import {sanitizeHtml} from '@/directives/stripUnsafeHtml';
 
 export default {
 	name: 'Tooltip',
@@ -48,6 +50,9 @@ export default {
 		},
 	},
 	computed: {
+		tooltipContent() {
+			return sanitizeHtml(this.tooltip);
+		},
 		iconClass() {
 			return {
 				'h-4 w-4': this.iconSize !== 'small',
