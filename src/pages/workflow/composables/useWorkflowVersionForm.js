@@ -176,6 +176,9 @@ export function useWorkflowVersionForm(
 			isRequired: modeState.isPublishMode,
 			value:
 				currentValue === 'true' && !allowMinorVersion ? 'false' : currentValue,
+			showWhen: modeState.isTextEditorMode
+				? ['sendToVersion', getUnassignedVersions()]
+				: undefined,
 		};
 	}
 
@@ -193,6 +196,27 @@ export function useWorkflowVersionForm(
 			}),
 			{override: true},
 		);
+	}
+
+	function resetVersionStageValues(sendToVersion) {
+		// versionStage and revisionSignificance are hidden in sendToTextEditor mode
+		// when the selected version already has a version stage assigned
+		// reset their values to null
+		if (
+			modeState.isTextEditorMode &&
+			!getUnassignedVersions().includes(sendToVersion)
+		) {
+			setValue('versionStage', null);
+			setValue('versionIsMinor', null);
+		}
+	}
+
+	// returns all the ids of unassigned versions and the "create" value for "Create New Version" option
+	function getUnassignedVersions() {
+		const unassignedVersionIds = publications
+			.filter((pub) => !pub.versionStage)
+			?.map(({id}) => id);
+		return ['create', ...unassignedVersionIds];
 	}
 
 	initEmptyForm('version', {
@@ -231,16 +255,21 @@ export function useWorkflowVersionForm(
 				: undefined,
 		});
 
-		// Version stage field is required when form is displayed before publishing an "Unassigned Version"
+		// Version stage field is required when form is in publish mode for "Unassigned Version"
+		// If sendToEditor mode, only show this field if the selected sendTo version is an "Unassigned version"
 		addFieldSelect('versionStage', {
 			label: t('publication.versionStage.label'),
 			description: t('publication.versionStage.description'),
 			options: store.versionStageOptions,
 			size: 'large',
 			isRequired: modeState.isPublishMode,
+			showWhen: modeState.isTextEditorMode
+				? ['sendToVersion', getUnassignedVersions()]
+				: undefined,
 		});
 
 		// Version significance field
+		// If sendToEditor mode, only show this field if the selected sendTo version is an "Unassigned version"
 		addFieldSelect(
 			'versionIsMinor',
 			getVersionIsMinorField({
@@ -267,6 +296,10 @@ export function useWorkflowVersionForm(
 	watch(
 		() => getField('sendToVersion')?.value,
 		(sendToVersion) => {
+			if (modeState.isTextEditorMode) {
+				resetVersionStageValues(sendToVersion);
+			}
+
 			if (sendToVersion !== 'create' || !latestPublication?.id) {
 				return;
 			}
