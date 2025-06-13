@@ -151,6 +151,23 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 	}
 
 	/**
+	 * Removes a field from the form's "errors" object
+	 * Call this when manually setting a new value to a field that was previously invalid
+	 * @param {String} name - The field name
+	 */
+	function removeFieldError(name) {
+		const field = getField(name);
+		const errors = form.value.errors || {};
+
+		if (!field || !errors[name]) {
+			return;
+		}
+
+		delete errors[name];
+		set('errors', errors);
+	}
+
+	/**
 	 * Set a field's value
 	 * @param {string} name - The field name
 	 * @param {*} inputValue - The value to set
@@ -412,10 +429,18 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 	) {
 		const field = getField(fieldName);
 		if (field && override) {
-			return Object.assign(field, {
+			const value = commonFields.value || field.value;
+			Object.assign(field, {
 				options: options || field.options,
-				value: commonFields.value || field.value,
+				value,
 			});
+
+			// if there's a value set for this field, remove it from the errors
+			if (value) {
+				removeFieldError(fieldName);
+			}
+
+			return;
 		}
 
 		return addField(fieldName, {
@@ -441,6 +466,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		setAction,
 		setMethod,
 		structuredErrors,
+		removeFieldError,
 
 		/** creating form */
 		initEmptyForm,
