@@ -8,7 +8,14 @@
 			:depth="depth"
 			v-bind="column.props"
 		></component>
-		<CategoryCellToggleSubCategories :category="category" :depth="depth" />
+		<TableCellTreeExpand
+			:is-expanded="categoryManagerStore.expanded.includes(category.id)"
+			:is-displayed="category.subCategories?.length"
+			:depth="depth"
+			:expand-label="t('manager.category.collapseSubcategories')"
+			:collapse-label="t('manager.category.expandSubcategories')"
+			@toggle="categoryManagerStore.toggleItemExpansion(category.id)"
+		/>
 	</TableRow>
 
 	<template
@@ -27,12 +34,12 @@
 </template>
 <script setup>
 import TableRow from '@/components/Table/TableRow.vue';
+import TableCellTreeExpand from '@/components/Table/TableCellTreeExpand.vue';
 import CategoryTreeRow from '@/managers/CategoryManager/CategoryTreeRow.vue';
 import CategoryManagerCellName from './CategoryManagerCellName.vue';
 import CategoryManagerCellAssignedTo from './CategoryManagerCellAssignedTo.vue';
 import CategoryManagerCellMoreActions from './CategoryManagerCellMoreActions.vue';
 import {useCategoryManagerStore} from './categoryManagerStore.js';
-import CategoryCellToggleSubCategories from './CategoryCellToggleSubCategories.vue';
 
 defineProps({
 	/**
