@@ -19,12 +19,7 @@
 <script>
 import 'floating-vue/dist/style.css';
 import Icon from '@/components/Icon/Icon.vue';
-
-import DOMPurify from 'dompurify';
-
-const sanitizeConfig = {
-	USE_PROFILES: {html: true},
-};
+import {sanitizeHtml} from '@/directives/stripUnsafeHtml';
 
 export default {
 	name: 'Tooltip',
@@ -56,7 +51,7 @@ export default {
 	},
 	computed: {
 		tooltipContent() {
-			return DOMPurify.sanitize(this.tooltip, sanitizeConfig);
+			return sanitizeHtml(this.tooltip);
 		},
 		iconClass() {
 			return {
