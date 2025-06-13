@@ -101,7 +101,7 @@ export function useWorkflowActions() {
 	}
 
 	function workflowAssignToIssueAndScheduleForPublication(
-		{selectedPublication, submission},
+		{pageInitConfig, selectedPublication, submission},
 		finishedCallback,
 	) {
 		// if version is unassigned, we need to assign it to a publication stage first
@@ -110,10 +110,19 @@ export function useWorkflowActions() {
 				{selectedPublication, submission},
 				(publicationData) =>
 					workflowAssignToIssueAndScheduleForPublication(
-						{submission, selectedPublication: publicationData},
+						{pageInitConfig, selectedPublication: publicationData, submission},
 						finishedCallback,
 					),
 			);
+		}
+
+		if (pageInitConfig.publicationSettings.countIssues === 0) {
+			workflowScheduleForPublication(
+				{submission, selectedPublication},
+				finishedCallback,
+			);
+
+			return;
 		}
 
 		if (selectedPublication.issueId === null) {
@@ -138,7 +147,7 @@ export function useWorkflowActions() {
 				},
 				{
 					onClose: async ({formId, data}) => {
-						if (data?.issueId) {
+						if (data?.issueId || data?.published) {
 							workflowScheduleForPublication(
 								{submission, selectedPublication},
 								finishedCallback,
