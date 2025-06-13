@@ -35,7 +35,7 @@
 				</TableCell>
 				<TableCell>
 					{{
-						reviewerRoleIds.includes(currentUserGroup.id)
+						reviewerUserGroupIds.includes(currentUserGroup.id)
 							? t('invitation.masthead.show')
 							: currentUserGroup.masthead
 								? t('invitation.masthead.show')
@@ -161,35 +161,33 @@ import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 
 const props = defineProps({
-	userGroups: {type: Object, required: true},
-	reviewerUserGroupIds: {type: Array, required: true},
+	userGroups: {type: Array, required: true},
 });
 
-const roleOptions = getRoleOptions();
-const reviewerRoleIds = props.reviewerUserGroupIds;
-const store = useUserInvitationPageStore();
+const {localize} = useLocalize();
 const {t} = useLocalize();
 const {formatShortDate} = useDate();
+
+const reviewerUserGroupIds = computed(() =>
+	props.userGroups
+		.filter((userGroup) => userGroup.roleId === pkp.const.ROLE_ID_REVIEWER)
+		.map((userGroup) => userGroup.userGroupId),
+);
+
+const roleOptions = computed(() =>
+	props.userGroups.map((userGroup) => ({
+		value: userGroup.userGroupId,
+		label: localize(userGroup.name),
+		disabled: false,
+	})),
+);
+
+const store = useUserInvitationPageStore();
 
 const allUserGroupsToAdd = computed(
 	() => store.invitationPayload.userGroupsToAdd,
 );
 updateWithSelectedUserGroups(roleOptions);
-
-/**
- * Role options
- */
-function getRoleOptions() {
-	var returnArray = [];
-	Object.values(props.userGroups).forEach((element, i) => {
-		returnArray[i] = {
-			value: element.userGroupId,
-			label: 'bozana' + element.userGroupId, //localize(element.name)
-			disabled: false,
-		};
-	});
-	return returnArray;
-}
 
 /**
  * update selected user group
@@ -206,7 +204,7 @@ function updateUserGroup(index, fieldName, newValue) {
 }
 
 const availableUserGroups = computed(() => {
-	return Object.values(roleOptions).filter((element) => {
+	return roleOptions.value.filter((element) => {
 		return !store.invitationPayload.currentUserGroups.find(
 			(data) => data.id === element.value && !data.dateEnd,
 		);
@@ -218,7 +216,7 @@ const availableUserGroups = computed(() => {
  */
 function getMastheadOption(userGroupToAdd) {
 	// Reviewer is always displayed on the masthead
-	if (reviewerRoleIds.includes(userGroupToAdd.userGroupId)) {
+	if (reviewerUserGroupIds.value.includes(userGroupToAdd.userGroupId)) {
 		return [{label: t('invitation.masthead.show'), value: true}];
 	}
 
@@ -329,8 +327,8 @@ const userGroupErrors = computed(() => {
 /**
  * disabling selecting user groups that already selected
  */
-function updateWithSelectedUserGroups(userGroups) {
-	Object.values(userGroups).filter((element) => {
+function updateWithSelectedUserGroups(roleOptions) {
+	roleOptions.value.filter((element) => {
 		if (
 			store.invitationPayload.userGroupsToAdd.find(
 				(data) => data.userGroupId === element.value,
