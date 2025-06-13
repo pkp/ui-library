@@ -2,7 +2,28 @@ import DOMPurify from 'dompurify';
 
 const sanitizeConfig = {
 	USE_PROFILES: {html: true},
+	ADD_ATTR: ['target'],
 };
+
+/**Add commentMore actions
+ *  Anytime you open a link in a new tab, you risk giving the new page access to your original page via window.opener (in some older browsers)
+ *	The fix is to add rel="noopener" whenever you see target="_blank".
+ */
+DOMPurify.addHook('afterSanitizeAttributes', (node) => {
+	if (node.tagName === 'A' && node.getAttribute('target') === '_blank') {
+		// 1) collect & normalize existing tokens, drop any bare "opener"
+		const tokens = (node.getAttribute('rel') || '')
+			.toLowerCase()
+			.split(/\s+/)
+			.filter((t) => t && t !== 'opener');
+
+		// 2) enforce noopener
+		tokens.push('noopener');
+
+		// 3) dedupe & reassign
+		node.setAttribute('rel', Array.from(new Set(tokens)).join(' '));
+	}
+});
 
 export function sanitizeHtml(value) {
 	return DOMPurify.sanitize(value, sanitizeConfig);
