@@ -103,12 +103,14 @@ export function showWarningDialogAboutMinimumReviewsIfEnabled(
 						close();
 						callbackOnContinue();
 					},
+					isWarnable: true,
 				},
 				{
 					label: t('common.cancel'),
 					callback: (close) => close(),
 				},
 			],
+			modalStyle: 'negative',
 		});
 	} else {
 		callbackOnContinue();
