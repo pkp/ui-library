@@ -35,9 +35,11 @@
 				</TableCell>
 				<TableCell>
 					{{
-						currentUserGroup.masthead
+						reviewerUserGroupIds.includes(currentUserGroup.id)
 							? t('invitation.masthead.show')
-							: t('invitation.masthead.hidden')
+							: currentUserGroup.masthead
+								? t('invitation.masthead.show')
+								: t('invitation.masthead.hidden')
 					}}
 				</TableCell>
 				<TableCell v-if="!currentUserGroup.dateEnd">
@@ -103,10 +105,7 @@
 							:label="t('invitation.role.masthead')"
 							:is-required="true"
 							:value="userGroupToAdd.masthead"
-							:options="[
-								{label: t('invitation.masthead.show'), value: true},
-								{label: t('invitation.masthead.hidden'), value: false},
-							]"
+							:options="getMastheadOption(userGroupToAdd)"
 							:all-errors="{
 								masthead:
 									userGroupErrors['userGroupsToAdd.' + index + '.masthead'],
@@ -162,17 +161,33 @@ import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 
 const props = defineProps({
-	userGroups: {type: Object, required: true},
+	userGroups: {type: Array, required: true},
 });
 
-const store = useUserInvitationPageStore();
+const {localize} = useLocalize();
 const {t} = useLocalize();
 const {formatShortDate} = useDate();
+
+const reviewerUserGroupIds = computed(() =>
+	props.userGroups
+		.filter((userGroup) => userGroup.roleId === pkp.const.ROLE_ID_REVIEWER)
+		.map((userGroup) => userGroup.userGroupId),
+);
+
+const roleOptions = computed(() =>
+	props.userGroups.map((userGroup) => ({
+		value: userGroup.userGroupId,
+		label: localize(userGroup.name),
+		disabled: false,
+	})),
+);
+
+const store = useUserInvitationPageStore();
 
 const allUserGroupsToAdd = computed(
 	() => store.invitationPayload.userGroupsToAdd,
 );
-updateWithSelectedUserGroups(props.userGroups);
+updateWithSelectedUserGroups(roleOptions);
 
 /**
  * update selected user group
@@ -185,16 +200,31 @@ function updateUserGroup(index, fieldName, newValue) {
 	const userGroupsUpdate = [...store.invitationPayload.userGroupsToAdd];
 	userGroupsUpdate[index][fieldName] = newValue;
 	store.updatePayload('userGroupsToAdd', userGroupsUpdate, false);
-	updateWithSelectedUserGroups(props.userGroups);
+	updateWithSelectedUserGroups(roleOptions);
 }
 
 const availableUserGroups = computed(() => {
-	return props.userGroups.filter((element) => {
+	return roleOptions.value.filter((element) => {
 		return !store.invitationPayload.currentUserGroups.find(
 			(data) => data.id === element.value && !data.dateEnd,
 		);
 	});
 });
+
+/**
+ * Masthead options
+ */
+function getMastheadOption(userGroupToAdd) {
+	// Reviewer is always displayed on the masthead
+	if (reviewerUserGroupIds.value.includes(userGroupToAdd.userGroupId)) {
+		return [{label: t('invitation.masthead.show'), value: true}];
+	}
+
+	return [
+		{label: t('invitation.masthead.show'), value: true},
+		{label: t('invitation.masthead.hidden'), value: false},
+	];
+}
 
 /**
  * check any values filled with userGroupsToAdd
@@ -287,7 +317,7 @@ function removeInvitedUserGroup(index) {
 	}
 	userGroupsUpdate.splice(index, 1);
 	store.updatePayload('userGroupsToAdd', userGroupsUpdate, false);
-	updateWithSelectedUserGroups(props.userGroups);
+	updateWithSelectedUserGroups(roleOptions);
 }
 
 const userGroupErrors = computed(() => {
@@ -297,8 +327,8 @@ const userGroupErrors = computed(() => {
 /**
  * disabling selecting user groups that already selected
  */
-function updateWithSelectedUserGroups(userGroups) {
-	userGroups.filter((element) => {
+function updateWithSelectedUserGroups(roleOptions) {
+	roleOptions.value.filter((element) => {
 		if (
 			store.invitationPayload.userGroupsToAdd.find(
 				(data) => data.userGroupId === element.value,

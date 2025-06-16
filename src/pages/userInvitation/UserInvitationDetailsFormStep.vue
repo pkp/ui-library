@@ -114,7 +114,7 @@ const store = useUserInvitationPageStore();
 
 const props = defineProps({
 	form: {type: Object, required: true},
-	userGroups: {type: Object, required: true},
+	userGroups: {type: Array, required: true},
 	validateFields: {type: Array, required: true},
 });
 const {
