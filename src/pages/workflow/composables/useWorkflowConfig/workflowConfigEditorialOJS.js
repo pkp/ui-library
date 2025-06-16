@@ -374,7 +374,10 @@ export const WorkflowConfig = {
 				},
 			});
 
-			if (pageInitConfig.publicationSettings.isReviewerSuggestionEnabled) {
+			if (
+				selectedReviewRound &&
+				pageInitConfig.publicationSettings.isReviewerSuggestionEnabled
+			) {
 				items.push({
 					component: 'ReviewerSuggestionManager',
 					props: {
