@@ -31,8 +31,8 @@
 			heading-element="h4"
 			:heading="t('user.interests')"
 			:value="
-				localize(store.invitationUserData.reviewerInterests)
-					? localize(store.invitationUserData.reviewerInterests)
+				store.invitationUserData.reviewInterests
+					? store.invitationUserData.reviewInterests
 					: '--'
 			"
 		></FormDisplayItemBasic>
