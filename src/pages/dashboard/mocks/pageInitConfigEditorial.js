@@ -277,7 +277,7 @@ export default {
 			queryParams: {status: [4], assignedWithRoles: null},
 		},
 	],
-	contextMinReviewsPerSubmission: 1,
+	contextMinReviewsPerSubmission: 0,
 	publicationSettings: {
 		supportsCitations: false,
 		identifiersEnabled: false,
