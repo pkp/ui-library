@@ -1,5 +1,6 @@
 <template>
 	<th
+		:id="id"
 		scope="col"
 		:aria-sort="props.allowsSorting ? tableContext.sortDirection : undefined"
 		class="whitespace-nowrap border-b border-t border-light px-2 py-4 text-start text-base-normal uppercase text-heading first:border-s first:ps-3 last:border-e last:pe-3"
