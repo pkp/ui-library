@@ -33,8 +33,8 @@ export const Base = {
 		...FieldBaseAutosuggest,
 		label: 'Keywords',
 		/*selected: [
-			{value: 'keyword1', name: 'keyword1'},
-			{value: 'keyword2', name: 'keyword2'},
+			{value: 'keyword1', label: 'keyword1'},
+			{value: 'keyword2', label: 'keyword2'},
 		],
 
 		//value: ['keyword1', 'keyword2'],
