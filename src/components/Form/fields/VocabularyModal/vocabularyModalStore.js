@@ -27,11 +27,11 @@ export const useVocabularyModalStore = defineComponentStore(
 			}
 		}
 
-		items.value.forEach((item) => {
+		/** Items that have items children gets initially expanded */
+		getExpandedableItems(items.value).forEach((item) => {
 			toggleItemExpansion(item);
 		});
 
-		console.log('initiallySelectedItems:', props.initiallySelectedItems);
 		const selectedItems = ref([...props.initiallySelectedItems]);
 		const selectedItemIds = computed(() =>
 			selectedItems.value.map((item) => getIdForItem(item)),
@@ -51,6 +51,23 @@ export const useVocabularyModalStore = defineComponentStore(
 			}
 		}
 
+		function getExpandedableItems(items) {
+			const result = [];
+
+			items.forEach((item) => {
+				// If this node is expanded, collect its identifier
+				if (item.items?.length) {
+					result.push(item);
+				}
+				// If it has children, recurse into them
+				if (Array.isArray(item.items) && item.items.length) {
+					result.push(...getExpandedableItems(item.items));
+				}
+			});
+
+			return result;
+		}
+
 		function isExpanded(item) {
 			return expandedIds.value.includes(getIdForItem(item));
 		}
@@ -60,7 +77,6 @@ export const useVocabularyModalStore = defineComponentStore(
 		}
 
 		function saveChanges(closeModalFn) {
-			console.log('saveChanges:', selectedItems.value);
 			emit('saveChanges', selectedItems.value);
 			closeModalFn();
 		}

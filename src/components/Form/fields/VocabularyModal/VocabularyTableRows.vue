@@ -9,7 +9,7 @@
 				:depth="depth"
 			/>
 			<TableCellTreeExpand
-				:is-displayed="item?.items?.length"
+				:is-displayed="!!item?.items?.length"
 				:is-expanded="store.isExpanded(item)"
 				@toggle="store.toggleItemExpansion(item)"
 			></TableCellTreeExpand>

@@ -1,7 +1,7 @@
 <template>
 	<SideModalBody>
 		<template #title>
-			{{ title }}
+			{{ modalTitleLabel }}
 		</template>
 		<template #default="{closeModal}">
 			<SideModalLayoutBasic>
@@ -54,7 +54,7 @@ import {useVocabularyModalStore} from './vocabularyModalStore';
 const {t} = useLocalize();
 
 const props = defineProps({
-	title: {type: String, required: true},
+	modalTitleLabel: {type: String, required: true},
 	initiallySelectedItems: {type: Array, default: () => []},
 	items: {type: Array, default: () => []},
 });
