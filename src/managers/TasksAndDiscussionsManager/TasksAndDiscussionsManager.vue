@@ -1,0 +1,108 @@
+<template>
+	<div>
+		<PkpTable>
+			<template #label>
+				<h3 class="">
+					{{ t('tasks.discussions.title') }}
+				</h3>
+			</template>
+			<template #description>
+				<p>
+					{{ t('tasks.discussions.description') }}
+				</p>
+			</template>
+			<template #top-controls>
+				<div class="flex gap-x-2">
+					<PkpButton icon="Search">
+						{{ t('common.search') }}
+					</PkpButton>
+					<PkpButton>
+						{{ t('common.add') }}
+					</PkpButton>
+				</div>
+			</template>
+			<TableHeader>
+				<TableColumn
+					v-for="(column, i) in tasksAndDiscussionsStore.columns"
+					v-bind="column.props"
+					:key="i"
+				>
+					<span :class="column.headerSrOnly ? 'sr-only' : ''">
+						{{ column.header }}
+					</span>
+				</TableColumn>
+			</TableHeader>
+			<TableBody>
+				<template
+					v-for="itemStatus in tasksAndDiscussionsStore.tasksAndDiscussions"
+					:key="itemStatus.name"
+				>
+					<TableRow>
+						<TableCell
+							:id="itemStatus.rowId"
+							:is-row-header="true"
+							:colspan="tasksAndDiscussionsStore.columns.length"
+						>
+							<Icon
+								:icon="itemStatus.icon"
+								class="h-5 w-5"
+								:class="
+									itemStatus.name === 'Closed' ? 'text-success' : 'text-primary'
+								"
+							></Icon>
+							<span class="ms-2">{{ itemStatus.name }}</span>
+						</TableCell>
+					</TableRow>
+					<TableRow
+						v-for="workItem in itemStatus.items"
+						:key="workItem.id"
+						:striped="false"
+					>
+						<component
+							:is="Components[column.component] || column.component"
+							v-for="(column, i) in tasksAndDiscussionsStore.columns"
+							:key="i"
+							:headers="`${column.props.id} ${itemStatus.rowId}`"
+							:work-item="workItem"
+						></component>
+					</TableRow>
+				</template>
+			</TableBody>
+		</PkpTable>
+	</div>
+</template>
+<script setup>
+import {useTasksAndDiscussionsManagerStore} from './tasksAndDiscussionsManagerStore';
+import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
+
+import PkpTable from '@/components/Table/Table.vue';
+import TableHeader from '@/components/Table/TableHeader.vue';
+import TableBody from '@/components/Table/TableBody.vue';
+import TableColumn from '@/components/Table/TableColumn.vue';
+import TableRow from '@/components/Table/TableRow.vue';
+import TableCell from '@/components/Table/TableCell.vue';
+
+import TasksAndDiscussionsCellName from './TasksAndDiscussionsCellName.vue';
+import TasksAndDiscussionsCellActivity from './TasksAndDiscussionsCellActivity.vue';
+import TasksAndDiscussionsCellDueDate from './TasksAndDiscussionsCellDueDate.vue';
+import TasksAndDiscussionsCellStarted from './TasksAndDiscussionsCellStarted.vue';
+import TasksAndDiscussionsCellClosed from './TasksAndDiscussionsCellClosed.vue';
+import TasksAndDiscussionsCellActions from './TasksAndDiscussionsCellActions.vue';
+
+const Components = {
+	TasksAndDiscussionsCellName,
+	TasksAndDiscussionsCellActivity,
+	TasksAndDiscussionsCellDueDate,
+	TasksAndDiscussionsCellStarted,
+	TasksAndDiscussionsCellClosed,
+	TasksAndDiscussionsCellActions,
+};
+
+const props = defineProps({
+	submission: {type: Object, required: true},
+	tasksAndDiscussions: {type: Array, required: true},
+});
+
+const tasksAndDiscussionsStore = useTasksAndDiscussionsManagerStore(props);
+</script>
