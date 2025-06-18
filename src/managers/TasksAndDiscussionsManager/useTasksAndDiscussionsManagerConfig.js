@@ -1,13 +1,12 @@
 import {useLocalize} from '@/composables/useLocalize';
+import {Actions} from './useTasksAndDiscussionsManagerActions';
 import {useCurrentUser} from '@/composables/useCurrentUser';
-
-// TODO: Define actions
 
 export const TasksAndDiscussionsConfigurations = {
 	permissions: [
 		{
 			roles: [pkp.const.ROLE_ID_AUTHOR],
-			actions: [],
+			actions: [Actions.TASKS_AND_DISCUSSIONS_LIST],
 		},
 		{
 			roles: [
@@ -16,10 +15,24 @@ export const TasksAndDiscussionsConfigurations = {
 				pkp.const.ROLE_ID_SITE_ADMIN,
 				pkp.const.ROLE_ID_ASSISTANT,
 			],
-			actions: [],
+			actions: [
+				Actions.TASKS_AND_DISCUSSIONS_LIST,
+				Actions.TASKS_AND_DISCUSSIONS_ADD,
+				Actions.TASKS_AND_DISCUSSIONS_EDIT,
+				Actions.TASKS_AND_DISCUSSIONS_DELETE,
+				Actions.TASKS_AND_DISCUSSIONS_HISTORY,
+				Actions.TASKS_AND_DISCUSSIONS_ADD_TASK_DETAILS,
+			],
 		},
 	],
-	actions: [],
+	actions: [
+		Actions.TASKS_AND_DISCUSSIONS_LIST,
+		Actions.TASKS_AND_DISCUSSIONS_ADD,
+		Actions.TASKS_AND_DISCUSSIONS_EDIT,
+		Actions.TASKS_AND_DISCUSSIONS_DELETE,
+		Actions.TASKS_AND_DISCUSSIONS_HISTORY,
+		Actions.TASKS_AND_DISCUSSIONS_ADD_TASK_DETAILS,
+	],
 };
 
 export function useTasksAndDiscussionsConfig() {
@@ -70,20 +83,8 @@ export function useTasksAndDiscussionsConfig() {
 	}
 
 	function getManagerConfig({submission, publication}) {
-		const permittedActions = TasksAndDiscussionsConfigurations.actions
-			.filter((action) => {
-				if (
-					publication.value.status === pkp.const.STATUS_PUBLISHED &&
-					TasksAndDiscussionsConfigurations.actionsRequiresUnpublishedState.includes(
-						action,
-					)
-				) {
-					return false;
-				}
-
-				return true;
-			})
-			.filter((action) => {
+		const permittedActions = TasksAndDiscussionsConfigurations.actions.filter(
+			(action) => {
 				return TasksAndDiscussionsConfigurations.permissions.some((perm) => {
 					return (
 						perm.actions.includes(action) &&
@@ -94,7 +95,8 @@ export function useTasksAndDiscussionsConfig() {
 						)
 					);
 				});
-			});
+			},
+		);
 		return {permittedActions};
 	}
 
@@ -110,6 +112,34 @@ export function useTasksAndDiscussionsConfig() {
 
 	function getItemActions({config}) {
 		const actions = [];
+		if (config.permittedActions.includes(Actions.TASKS_AND_DISCUSSIONS_EDIT)) {
+			actions.push({
+				label: t('common.edit'),
+				name: Actions.TASKS_AND_DISCUSSIONS_EDIT,
+				icon: 'Edit',
+			});
+		}
+
+		if (
+			config.permittedActions.includes(Actions.TASKS_AND_DISCUSSIONS_HISTORY)
+		) {
+			actions.push({
+				label: 'History', // TODO: add to locale key
+				name: Actions.TASKS_AND_DISCUSSIONS_HISTORY,
+				icon: 'History',
+			});
+		}
+
+		if (
+			config.permittedActions.includes(Actions.TASKS_AND_DISCUSSIONS_DELETE)
+		) {
+			actions.push({
+				label: t('common.delete'),
+				name: Actions.TASKS_AND_DISCUSSIONS_DELETE,
+				icon: 'Cancel',
+				isWarnable: true,
+			});
+		}
 		return actions;
 	}
 

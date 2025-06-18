@@ -1,7 +1,7 @@
 <template>
-	<TableCell class="w-28">
+	<TableCell>
 		<DropdownActions
-			v-if="!tasksAndDiscussionsStore.sortingEnabled && itemActions.length"
+			v-if="itemActions.length"
 			:label="t('common.moreActions')"
 			button-variant="ellipsis"
 			:actions="itemActions"

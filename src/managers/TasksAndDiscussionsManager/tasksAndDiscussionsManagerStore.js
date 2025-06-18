@@ -2,7 +2,9 @@ import {defineComponentStore} from '@/utils/defineComponentStore';
 
 import {computed, toRefs} from 'vue';
 import {useExtender} from '@/composables/useExtender';
-import {useTasksAndDiscussionsConfig} from './useTasksAndDiscussionsConfig';
+import {useDataChanged} from '@/composables/useDataChanged';
+import {useTasksAndDiscussionsConfig} from './useTasksAndDiscussionsManagerConfig';
+import {useTasksAndDiscussionsManagerActions} from './useTasksAndDiscussionsManagerActions';
 
 export const useTasksAndDiscussionsManagerStore = defineComponentStore(
 	'tasksAndDiscussionsManager',
@@ -63,15 +65,72 @@ export const useTasksAndDiscussionsManagerStore = defineComponentStore(
 		const bottomItems = computed(() =>
 			tasksAndDiscussionsManagerConfig.getBottomItems(getActionArgs()),
 		);
+
 		const topItems = computed(() =>
 			tasksAndDiscussionsManagerConfig.getTopItems(getActionArgs()),
 		);
+
+		/**
+		 * Actions
+		 */
+		const tasksAndDiscussionsActions = useTasksAndDiscussionsManagerActions();
 
 		function getActionArgs() {
 			return {
 				config: tasksAndDiscussionsConfig.value,
 				tasksAndDiscussions,
 			};
+		}
+
+		const {triggerDataChange} = useDataChanged();
+
+		function triggerDataChangeCallback() {
+			triggerDataChange();
+		}
+
+		function tasksAndDiscussionsAdd() {
+			tasksAndDiscussionsActions.tasksAndDiscussionsAdd(
+				{
+					submission: props.submission,
+				},
+				triggerDataChangeCallback,
+			);
+		}
+
+		function tasksAndDiscussionsEdit() {
+			tasksAndDiscussionsActions.tasksAndDiscussionsEdit(
+				{
+					submission: props.submission,
+				},
+				triggerDataChangeCallback,
+			);
+		}
+
+		function tasksAndDiscussionsHistory() {
+			tasksAndDiscussionsActions.tasksAndDiscussionsHistory(
+				{
+					submission: props.submission,
+				},
+				triggerDataChangeCallback,
+			);
+		}
+
+		function tasksAndDiscussionsAddTaskDetails() {
+			tasksAndDiscussionsActions.tasksAndDiscussionsAddTaskDetails(
+				{
+					submission: props.submission,
+				},
+				triggerDataChangeCallback,
+			);
+		}
+
+		function tasksAndDiscussionsDelete() {
+			tasksAndDiscussionsActions.tasksAndDiscussionsDelete(
+				{
+					submission: props.submission,
+				},
+				triggerDataChangeCallback,
+			);
 		}
 
 		return {
@@ -84,6 +143,13 @@ export const useTasksAndDiscussionsManagerStore = defineComponentStore(
 			getItemActions,
 			topItems,
 			bottomItems,
+
+			/** Actions */
+			tasksAndDiscussionsAdd,
+			tasksAndDiscussionsEdit,
+			tasksAndDiscussionsHistory,
+			tasksAndDiscussionsAddTaskDetails,
+			tasksAndDiscussionsDelete,
 
 			/** Extender */
 			extender,
