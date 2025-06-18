@@ -372,6 +372,13 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		});
 	}
 
+	/**
+	 * Adds a new field to the form or updates an existing one.
+	 * @param {string} fieldName - The name of the field
+	 * @param {Object} fieldOptions - Configuration options for the field
+	 * @param {Object} [opts] - Optional settings.
+	 * @param {boolean} [opts.override=false] - If true and the field already exists, it will be fully overridden.
+	 */
 	function addField(
 		fieldName,
 		{
@@ -385,8 +392,10 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 			isInert,
 			...additionalFields
 		},
+		{override = false} = {},
 	) {
-		form.value.fields.push({
+		const field = getField(fieldName);
+		const fieldObj = {
 			name: fieldName,
 			component,
 			label,
@@ -397,53 +406,66 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 			showWhen,
 			isInert,
 			...additionalFields,
-		});
-	}
+		};
 
-	function addFieldText(
-		fieldName,
-		{inputType, optIntoEdit, optIntoEditLabel, size, prefix, ...commonFields},
-	) {
-		addField(fieldName, {
-			component: 'field-text',
-			inputType,
-			optIntoEdit,
-			optIntoEditLabel,
-			size,
-			prefix,
-			...commonFields,
-		});
+		if (field && override) {
+			// replace the entire field if it exists and override is `true`
+			Object.assign(field, fieldObj);
+		} else {
+			form.value.fields.push(fieldObj);
+		}
 	}
 
 	/**
-	 * Add/update a select field to the form
+	 * Adds or updates a text field in the form.
 	 * @param {string} fieldName - The name of the field
-	 * @param {Object} options - Options for the select field
-	 * @param {Object} commonFields - Common properties for the field
-	 * @param {Object} [override={}] - Override existing field if it exists, set this to true if updating the select options or value
+	 * @param {Object} fieldOptions - Includes the input type and other common field properties.
+	 * @param {Object} [opts] - Optional settings.
+	 * @param {boolean} [opts.override] - If true and the field already exists, it will be fully overridden.
+	 */
+	function addFieldText(
+		fieldName,
+		{inputType, optIntoEdit, optIntoEditLabel, size, prefix, ...commonFields},
+		opts = {},
+	) {
+		addField(
+			fieldName,
+			{
+				component: 'field-text',
+				inputType,
+				optIntoEdit,
+				optIntoEditLabel,
+				size,
+				prefix,
+				...commonFields,
+			},
+			opts,
+		);
+	}
+
+	/**
+	 * Adds or updates a select field in the form.
+	 *
+	 * @param {string} fieldName - The name (or key) of the field.
+	 * @param {Object} fieldOptions - The select options (e.g., list of choices) and other shared/common properties for the field
+	 * @param {Object} [opts] - Optional settings.
+	 * @param {boolean} [opts.override] - If true and the field already exists, it will be fully overridden.
 	 */
 	function addFieldSelect(
 		fieldName,
 		{options, size, ...commonFields} = {},
-		{override = false} = {},
+		opts,
 	) {
-		const field = getField(fieldName);
-		if (field && override) {
-			const value = commonFields.value || field.value;
-			Object.assign(field, {
-				options: options || field.options,
-				value,
-			});
-
-			return;
-		}
-
-		return addField(fieldName, {
-			component: 'field-select',
-			options,
-			size,
-			...commonFields,
-		});
+		return addField(
+			fieldName,
+			{
+				component: 'field-select',
+				options,
+				size,
+				...commonFields,
+			},
+			opts,
+		);
 	}
 
 	return {
