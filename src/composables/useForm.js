@@ -435,11 +435,6 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 				value,
 			});
 
-			// if there's a value set for this field, remove it from the errors
-			if (value) {
-				removeFieldError(fieldName);
-			}
-
 			return;
 		}
 

@@ -144,6 +144,7 @@ export function useWorkflowVersionForm(
 		set,
 		setValue,
 		getField,
+		removeFieldError,
 	} = useForm({}, {customSubmit: handleVersionSubmission});
 
 	function buildPublicationOptions({withCreateOption} = {}) {
@@ -196,6 +197,9 @@ export function useWorkflowVersionForm(
 			}),
 			{override: true},
 		);
+
+		// Remove the field error for versionIsMinor, as there is a value assigned
+		removeFieldError('versionIsMinor');
 	}
 
 	function resetVersionStageValues(sendToVersion) {
