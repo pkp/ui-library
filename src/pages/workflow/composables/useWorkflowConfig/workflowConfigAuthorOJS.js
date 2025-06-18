@@ -140,6 +140,11 @@ export const WorkflowConfig = {
 				props: {submissionId: submission.id, stageId: selectedStageId},
 			});
 
+			items.push({
+				component: 'TasksAndDiscussionsManager',
+				props: {submission, selectedStageId: selectedStageId},
+			});
+
 			return items;
 		},
 	},

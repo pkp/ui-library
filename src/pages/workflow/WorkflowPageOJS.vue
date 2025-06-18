@@ -14,6 +14,7 @@ import DiscussionManager from '@/managers/DiscussionManager/DiscussionManager.vu
 import ContributorManager from '@/managers/ContributorManager/ContributorManager.vue';
 import ParticipantManager from '@/managers/ParticipantManager/ParticipantManager.vue';
 import ReviewerSuggestionManager from '@/managers/ReviewerSuggestionManager/ReviewerSuggestionManager.vue';
+import TasksAndDiscussionsManager from '@/managers/TasksAndDiscussionsManager/TasksAndDiscussionsManager.vue';
 import GalleyManager from '@/managers/GalleyManager/GalleyManager.vue';
 import WorkflowActionButton from './components/action/WorkflowActionButton.vue';
 import WorkflowRecommendOnlyControls from './components/action/WorkflowRecommendOnlyControls.vue';
@@ -44,6 +45,7 @@ const Components = markRaw({
 	ContributorManager,
 	ParticipantManager,
 	ReviewerSuggestionManager,
+	TasksAndDiscussionsManager,
 	GalleyManager,
 	WorkflowActionButton,
 	WorkflowRecommendOnlyControls,
