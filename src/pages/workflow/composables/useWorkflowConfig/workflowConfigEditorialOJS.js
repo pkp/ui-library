@@ -1,3 +1,4 @@
+// todo: @gaziyucel make relevant changes for structured citations
 import {useLocalize} from '@/composables/useLocalize';
 import {useSubmission} from '@/composables/useSubmission';
 import {useCurrentUser} from '@/composables/useCurrentUser';
@@ -911,12 +912,13 @@ export const PublicationConfig = {
 		}) => {
 			return [
 				{
-					component: 'WorkflowPublicationForm',
+					component: 'CitationManager',
 					props: {
-						formName: 'reference',
-						submission,
+						submission: submission,
 						publication: selectedPublication,
 						canEdit: permissions.canEditPublication,
+						// componentForms: pageInitConfig.componentForms,
+						// citationEditForm: pageInitConfig.componentForms.citationEditForm
 					},
 				},
 			];
