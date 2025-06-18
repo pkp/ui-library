@@ -1,8 +1,10 @@
 <template>
 	<component
 		:is="isRowHeader ? 'th' : 'td'"
-		:scope="isRowHeader ? 'row' : false"
-		class="border-b border-light px-2 py-2 text-start text-base-normal first:border-s first:ps-3 last:border-e last:pe-3"
+		:id="id"
+		:scope="scope"
+		:colspan="colspan"
+		class="border-b border-light px-2 py-2 text-start first:border-s first:ps-3 last:border-e last:pe-3"
 		:class="classes"
 	>
 		<slot />
@@ -35,6 +37,14 @@ const props = defineProps({
 			return false;
 		},
 	},
+	colspan: {
+		type: Number,
+		default: undefined,
+	},
+	id: {
+		type: String,
+		default: undefined,
+	},
 });
 
 const classes = computed(() => {
@@ -50,6 +60,25 @@ const classes = computed(() => {
 	if (props.fitContent) {
 		list.push('whitespace-nowrap w-1');
 	}
+
+	if (props.colspan) {
+		list.push('bg-tertiary text-lg-medium text-secondary');
+	} else {
+		list.push('text-base-normal');
+	}
+
 	return list;
+});
+
+const scope = computed(() => {
+	if (props.colspan) {
+		return 'colgroup';
+	}
+
+	if (props.isRowHeader) {
+		return 'row';
+	}
+
+	return undefined;
 });
 </script>
