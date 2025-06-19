@@ -17,7 +17,13 @@ export function shouldShowFieldWithinGroup(field, allFields) {
 	if (typeof field.showWhen === 'string') {
 		return !!whenField.value;
 	}
-	return whenField.value === field.showWhen[1];
+
+	const expectedValue = field.showWhen[1];
+	if (Array.isArray(expectedValue)) {
+		return expectedValue.includes(whenField.value);
+	}
+
+	return whenField.value === expectedValue;
 }
 /**
  * Should a group be shown?
