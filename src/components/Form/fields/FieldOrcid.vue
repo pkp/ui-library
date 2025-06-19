@@ -136,6 +136,13 @@ export default {
 	},
 	computed: {
 		/**
+		 * When creating a new contributor, the author ID will be zero.
+		 * @returns {boolean}
+		 */
+		hasAuthor: function () {
+			return !!this.authorId;
+		},
+		/**
 		 * Helper to see if an ORCID value is present
 		 * @returns {boolean}
 		 */
@@ -163,9 +170,22 @@ export default {
 		 *
 		 * @returns {Promise<void>}
 		 */
-		sendAuthorEmail: async function () {
+		handleEmailRequest: async function () {
 			this.isButtonDisabled = true;
 
+			if (this.hasAuthor) {
+				await this.sendEmailRequest();
+			} else {
+				this.includePostSaveEmailRequest();
+			}
+
+			this.isButtonDisabled = false;
+		},
+		/**
+		 * Triggers author email request via API
+		 * @returns {Promise<void>}
+		 */
+		sendEmailRequest: async function () {
 			const {apiUrl} = useUrl(
 				`orcid/requestAuthorVerification/${this.authorId}`,
 			);
@@ -179,8 +199,14 @@ export default {
 			if (isSuccess) {
 				this.verificationRequested = true;
 			}
-
-			this.isButtonDisabled = false;
+		},
+		/**
+		 * Gives this field a value to tell API the ORCID verification email should
+		 * be sent after the new user has been created.
+		 */
+		includePostSaveEmailRequest: function () {
+			this.currentValue = 'shouldRequestVerification';
+			this.verificationRequested = true;
 		},
 		/**
 		 * Open confirmation dialog for requesting author ORCID verification
@@ -190,13 +216,17 @@ export default {
 			openDialog({
 				name: 'sendAuthorEmail',
 				title: this.t('orcid.field.authorEmailModal.title'),
-				message: this.t('orcid.field.authorEmailModal.message'),
+				message:
+					this.t('orcid.field.authorEmailModal.message') +
+					(this.hasAuthor
+						? ''
+						: '<br>' + this.t('orcid.field.authorEmailModal.message.noAuthor')),
 				actions: [
 					{
 						label: this.t('common.yes'),
 						isPrimary: true,
 						callback: async (close) => {
-							await this.sendAuthorEmail();
+							await this.handleEmailRequest();
 							close();
 						},
 					},
