@@ -111,6 +111,15 @@
 				:messages="errors"
 			/>
 		</div>
+		<div v-if="localisedVocabularies?.length" class="mt-2 flex gap-x-2">
+			<PkpButton
+				v-for="(vocabulary, index) in localisedVocabularies"
+				:key="index"
+				@click="handleOpenVocabulary(vocabulary)"
+			>
+				{{ vocabulary.addButtonLabel }}
+			</PkpButton>
+		</div>
 	</div>
 </template>
 
@@ -122,9 +131,11 @@ import Tooltip from '@/components/Tooltip/Tooltip.vue';
 import HelpButton from '@/components/HelpButton/HelpButton.vue';
 import FieldError from '@/components/Form/FieldError.vue';
 import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
-
+import PkpButton from '@/components/Button/Button.vue';
 import ajaxError from '@/mixins/ajaxError';
 import debounce from 'debounce';
+import VocabularyModal from './VocabularyModal/VocabularyModal.vue';
+import {useModal} from '@/composables/useModal';
 
 export default {
 	name: 'FieldBaseAutosuggest',
@@ -135,6 +146,7 @@ export default {
 		FieldError,
 		MultilingualProgress,
 		Autosuggest,
+		PkpButton,
 	},
 	extends: FieldBase,
 	mixins: [ajaxError],
@@ -193,6 +205,11 @@ export default {
 		allowCustom: {
 			type: Boolean,
 			default: () => false,
+		},
+		/** Add predefined vocabularies to select keywords from */
+		vocabularies: {
+			type: Array,
+			default: () => [],
 		},
 	},
 	data() {
@@ -264,6 +281,14 @@ export default {
 				describedBy: this.describedByIds,
 				allowCustom: this.allowCustom,
 			};
+		},
+		localisedVocabularies() {
+			if (this.isMultilingual) {
+				return this.vocabularies.filter(
+					(vocabulary) => vocabulary.locale === this.localeKey,
+				);
+			}
+			return this.vocabularies;
 		},
 	},
 	watch: {
@@ -397,6 +422,21 @@ export default {
 			throw new Error(
 				'The setSuggestions method must be implemented in any component that extends FieldBaseAutosuggest.',
 			);
+		},
+
+		handleOpenVocabulary(vocabulary) {
+			const {openSideModal} = useModal();
+
+			// Use the custom modal component if specified, otherwise default to VocabularyModal
+			const ModalComponent = vocabulary.modalComponent || VocabularyModal;
+
+			openSideModal(ModalComponent, {
+				initiallySelectedItems: this.currentSelected,
+				...vocabulary,
+				onSaveChanges: (updatedKeywords) => {
+					this.setSelected(updatedKeywords);
+				},
+			});
 		},
 	},
 };
