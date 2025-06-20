@@ -89,6 +89,7 @@ const {sortDescriptor} = toRefs(props);
 
 const columnsCount = ref(0);
 const rowCount = ref(0);
+const currentColGroupId = ref('');
 
 const registerRow = () => {
 	rowCount.value++;
@@ -98,9 +99,19 @@ const unregisterRow = () => {
 	rowCount.value--;
 };
 
+const registerColGroup = (id) => {
+	currentColGroupId.value = id;
+	return currentColGroupId;
+};
+
 const isFooterDarker = computed(() => {
 	return !!(rowCount.value % 2);
 });
+
+const slots = useSlots();
+const tableId = useId();
+const labelId = slots.label ? useId() : null;
+const descriptionId = slots.description ? useId() : null;
 
 const tableContext = {
 	sortDescriptor,
@@ -109,12 +120,10 @@ const tableContext = {
 	rowCount,
 	registerRow,
 	unregisterRow,
+	tableId,
+	registerColGroup,
+	currentColGroupId,
 };
-
-const slots = useSlots();
-
-const labelId = slots.label ? useId() : null;
-const descriptionId = slots.description ? useId() : null;
 
 provide('tableContext', tableContext);
 </script>

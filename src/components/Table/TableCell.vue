@@ -1,10 +1,9 @@
 <template>
 	<component
 		:is="isRowHeader ? 'th' : 'td'"
-		:id="id"
-		:scope="scope"
-		:colspan="colspan"
-		class="border-b border-light px-2 py-2 text-start first:border-s first:ps-3 last:border-e last:pe-3"
+		:scope="isRowHeader ? 'row' : null"
+		:headers="headersAttr.length ? headersAttr : null"
+		class="border-b border-light px-2 py-2 text-start text-base-normal first:border-s first:ps-3 last:border-e last:pe-3"
 		:class="classes"
 	>
 		<slot />
@@ -12,7 +11,7 @@
 </template>
 
 <script setup>
-import {defineProps, computed} from 'vue';
+import {defineProps, computed, inject, ref, onMounted} from 'vue';
 
 const props = defineProps({
 	noWrap: {
@@ -37,14 +36,6 @@ const props = defineProps({
 			return false;
 		},
 	},
-	colspan: {
-		type: Number,
-		default: undefined,
-	},
-	id: {
-		type: String,
-		default: undefined,
-	},
 });
 
 const classes = computed(() => {
@@ -61,24 +52,30 @@ const classes = computed(() => {
 		list.push('whitespace-nowrap w-1');
 	}
 
-	if (props.colspan) {
-		list.push('bg-tertiary text-lg-medium text-secondary');
-	} else {
-		list.push('text-base-normal');
-	}
-
 	return list;
 });
 
-const scope = computed(() => {
-	if (props.colspan) {
-		return 'colgroup';
-	}
+const tableContext = inject('tableContext');
+const registerCell = inject('registerCell');
+const columnIndex = ref(0);
+const currentColGroupId = ref('');
 
-	if (props.isRowHeader) {
-		return 'row';
+onMounted(() => {
+	if (registerCell) {
+		columnIndex.value = registerCell();
 	}
-
-	return undefined;
+	currentColGroupId.value = tableContext.currentColGroupId.value;
 });
+
+// Attach headers attribute for complex table structures (with colgroups)
+const headersAttr = computed(() =>
+	[
+		tableContext.currentColGroupId.value
+			? `${tableContext.tableId}_${columnIndex.value}`
+			: '',
+		currentColGroupId.value,
+	]
+		.filter(Boolean)
+		.join(' '),
+);
 </script>
