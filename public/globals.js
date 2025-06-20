@@ -663,6 +663,8 @@ window.pkp = {
 		'notification.type.roundStatusTitle': 'Round {$round} Status',
 		'orcid.field.authorEmailModal.message':
 			'Would you like to send an email to this author requesting they verify their ORCID?',
+		'orcid.field.authorEmailModal.message.noAuthor':
+			'The email will be sent once the author has been created.',
 		'orcid.field.authorEmailModal.title': 'Request ORCID verification',
 		'orcid.field.deleteOrcidModal.message':
 			'Are you sure you want to remove this ORCID?',
