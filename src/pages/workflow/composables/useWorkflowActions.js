@@ -101,7 +101,7 @@ export function useWorkflowActions() {
 	}
 
 	function workflowAssignToIssueAndScheduleForPublication(
-		{selectedPublication, submission},
+		{pageInitConfig, selectedPublication, submission},
 		finishedCallback,
 	) {
 		// if version is unassigned, we need to assign it to a publication stage first
@@ -110,13 +110,40 @@ export function useWorkflowActions() {
 				{selectedPublication, submission},
 				(publicationData) =>
 					workflowAssignToIssueAndScheduleForPublication(
-						{submission, selectedPublication: publicationData},
+						{pageInitConfig, selectedPublication: publicationData, submission},
 						finishedCallback,
 					),
 			);
 		}
 
-		if (selectedPublication.issueId === null) {
+		// if there are no issues, we can schedule the publication immediately
+		if (pageInitConfig.publicationSettings.countIssues === 0) {
+			workflowScheduleForPublication(
+				{submission, selectedPublication},
+				finishedCallback,
+			);
+
+			return;
+		}
+
+		// If the publication is marked as published,
+		// and not assigned to an issue, or assigned to an issue that is not published (e.g. future issue),
+		// we can publish the publication immediately as issueless or continuous publication
+		if (
+			selectedPublication.published &&
+			(selectedPublication.issueId === null ||
+				!pageInitConfig.publicationSettings.issuePublishedStatus[
+					selectedPublication.issueId
+				])
+		) {
+			workflowScheduleForPublication(
+				{submission, selectedPublication},
+				finishedCallback,
+			);
+			return;
+		}
+
+		if (selectedPublication.issueId === null || selectedPublication.published) {
 			const {url} = useLegacyGridUrl({
 				component: 'modals.publish.AssignToIssueHandler',
 				op: 'assign',
@@ -138,7 +165,7 @@ export function useWorkflowActions() {
 				},
 				{
 					onClose: async ({formId, data}) => {
-						if (data?.issueId) {
+						if (data?.issueId || data?.published) {
 							workflowScheduleForPublication(
 								{submission, selectedPublication},
 								finishedCallback,
