@@ -14,26 +14,26 @@ export const useTasksAndDiscussionsManagerStore = defineComponentStore(
 		const {submission} = toRefs(props);
 
 		function getTasksAndDiscussionsByStatus(status) {
-			return props.tasksAndDiscussions.filter((data) => data.status === status);
+			return (
+				props.tasksAndDiscussions?.filter((data) => data.status === status) ||
+				[]
+			);
 		}
 
 		const tasksAndDiscussions = [
 			{
 				name: 'Yet To Begin',
 				icon: 'New',
-				rowId: 'td_pending',
 				items: getTasksAndDiscussionsByStatus('Pending'),
 			},
 			{
 				name: 'In Progress',
 				icon: 'InProgress',
-				rowId: 'td_inProgress',
 				items: getTasksAndDiscussionsByStatus('In Progress'),
 			},
 			{
 				name: 'Closed',
 				icon: 'Complete',
-				rowId: 'td_complete',
 				items: getTasksAndDiscussionsByStatus('Closed'),
 			},
 		];

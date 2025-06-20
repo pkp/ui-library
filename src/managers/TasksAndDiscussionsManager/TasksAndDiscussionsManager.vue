@@ -24,7 +24,6 @@
 			<TableHeader>
 				<TableColumn
 					v-for="(column, i) in tasksAndDiscussionsStore.columns"
-					v-bind="column.props"
 					:key="i"
 				>
 					<span :class="column.headerSrOnly ? 'sr-only' : ''">
@@ -38,11 +37,7 @@
 					:key="itemStatus.name"
 				>
 					<TableRow>
-						<TableCell
-							:id="itemStatus.rowId"
-							:is-row-header="true"
-							:colspan="tasksAndDiscussionsStore.columns.length"
-						>
+						<TableColGroup>
 							<Icon
 								:icon="itemStatus.icon"
 								class="h-5 w-5"
@@ -51,7 +46,7 @@
 								"
 							></Icon>
 							<span class="ms-2">{{ itemStatus.name }}</span>
-						</TableCell>
+						</TableColGroup>
 					</TableRow>
 					<TableRow
 						v-for="workItem in itemStatus.items"
@@ -62,7 +57,6 @@
 							:is="Components[column.component] || column.component"
 							v-for="(column, i) in tasksAndDiscussionsStore.columns"
 							:key="i"
-							:headers="`${column.props.id} ${itemStatus.rowId}`"
 							:work-item="workItem"
 						></component>
 					</TableRow>
@@ -80,8 +74,8 @@ import PkpTable from '@/components/Table/Table.vue';
 import TableHeader from '@/components/Table/TableHeader.vue';
 import TableBody from '@/components/Table/TableBody.vue';
 import TableColumn from '@/components/Table/TableColumn.vue';
+import TableColGroup from '@/components/Table/TableColGroup.vue';
 import TableRow from '@/components/Table/TableRow.vue';
-import TableCell from '@/components/Table/TableCell.vue';
 
 import TasksAndDiscussionsCellName from './TasksAndDiscussionsCellName.vue';
 import TasksAndDiscussionsCellActivity from './TasksAndDiscussionsCellActivity.vue';

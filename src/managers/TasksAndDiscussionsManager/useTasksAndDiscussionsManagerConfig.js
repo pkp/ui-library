@@ -45,38 +45,32 @@ export function useTasksAndDiscussionsConfig() {
 		columns.push({
 			header: t('common.name'),
 			component: 'TasksAndDiscussionsCellName',
-			props: {id: 'td_name'},
 		});
 
 		columns.push({
 			header: t('submission.query.activity'),
 			component: 'TasksAndDiscussionsCellActivity',
-			props: {id: 'td_activity'},
 		});
 
 		columns.push({
 			header: t('submission.query.dueDate'),
 			component: 'TasksAndDiscussionsCellDueDate',
-			props: {id: 'td_dueDate'},
 		});
 
 		columns.push({
 			header: t('submission.query.started'),
 			component: 'TasksAndDiscussionsCellStarted',
-			props: {id: 'td_started'},
 		});
 
 		columns.push({
 			header: t('submission.query.closed'),
 			component: 'TasksAndDiscussionsCellClosed',
-			props: {id: 'td_closed'},
 		});
 
 		columns.push({
 			header: t('common.moreActions'),
 			headerSrOnly: true,
 			component: 'TasksAndDiscussionsCellActions',
-			props: {id: 'td_actions'},
 		});
 
 		return columns;
