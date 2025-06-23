@@ -3,6 +3,7 @@ import {useModal} from '@/composables/useModal';
 
 export const Actions = {
 	TASKS_AND_DISCUSSIONS_LIST: 'tasksAndDiscussionsList',
+	TASKS_AND_DISCUSSIONS_SEARCH: 'tasksAndDiscussionsSearch',
 	TASKS_AND_DISCUSSIONS_ADD: 'tasksAndDiscussionsAdd',
 	TASKS_AND_DISCUSSIONS_EDIT: 'tasksAndDiscussionsEdit',
 	TASKS_AND_DISCUSSIONS_DELETE: 'tasksAndDiscussionsDelete',
@@ -32,6 +33,29 @@ export function useTasksAndDiscussionsManagerActions() {
 				},
 			],
 			title: 'Add',
+			message: 'Placeholder',
+		});
+	}
+
+	function tasksAndDiscussionsSearch({workItem, submission}, finishedCallback) {
+		const {openDialog} = useModal();
+		openDialog({
+			actions: [
+				{
+					label: t('common.ok'),
+					isWarnable: true,
+					callback: (close) => {
+						close();
+					},
+				},
+				{
+					label: t('common.cancel'),
+					callback: (close) => {
+						close();
+					},
+				},
+			],
+			title: 'Search',
 			message: 'Placeholder',
 		});
 	}
@@ -131,6 +155,7 @@ export function useTasksAndDiscussionsManagerActions() {
 
 	return {
 		tasksAndDiscussionsAdd,
+		tasksAndDiscussionsSearch,
 		tasksAndDiscussionsEdit,
 		tasksAndDiscussionsDelete,
 		tasksAndDiscussionsHistory,

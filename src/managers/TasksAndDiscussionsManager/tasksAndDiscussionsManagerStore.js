@@ -97,6 +97,15 @@ export const useTasksAndDiscussionsManagerStore = defineComponentStore(
 			);
 		}
 
+		function tasksAndDiscussionsSearch() {
+			tasksAndDiscussionsActions.tasksAndDiscussionsSearch(
+				{
+					submission: props.submission,
+				},
+				triggerDataChangeCallback,
+			);
+		}
+
 		function tasksAndDiscussionsEdit() {
 			tasksAndDiscussionsActions.tasksAndDiscussionsEdit(
 				{
@@ -146,6 +155,7 @@ export const useTasksAndDiscussionsManagerStore = defineComponentStore(
 
 			/** Actions */
 			tasksAndDiscussionsAdd,
+			tasksAndDiscussionsSearch,
 			tasksAndDiscussionsEdit,
 			tasksAndDiscussionsHistory,
 			tasksAndDiscussionsAddTaskDetails,

@@ -2,7 +2,7 @@
 	<div class="">
 		<div
 			v-if="slots.label || slots.description || slots['top-controls']"
-			class="flex justify-between border-x border-t border-light bg-secondary p-4"
+			class="flex justify-between gap-x-2 border-x border-t border-light bg-secondary p-4"
 		>
 			<div v-if="slots.label || slots.description">
 				<div class="flex">

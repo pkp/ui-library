@@ -6,7 +6,10 @@ export const TasksAndDiscussionsConfigurations = {
 	permissions: [
 		{
 			roles: [pkp.const.ROLE_ID_AUTHOR],
-			actions: [Actions.TASKS_AND_DISCUSSIONS_LIST],
+			actions: [
+				Actions.TASKS_AND_DISCUSSIONS_LIST,
+				Actions.TASKS_AND_DISCUSSIONS_SEARCH,
+			],
 		},
 		{
 			roles: [
@@ -18,6 +21,7 @@ export const TasksAndDiscussionsConfigurations = {
 			actions: [
 				Actions.TASKS_AND_DISCUSSIONS_LIST,
 				Actions.TASKS_AND_DISCUSSIONS_ADD,
+				Actions.TASKS_AND_DISCUSSIONS_SEARCH,
 				Actions.TASKS_AND_DISCUSSIONS_EDIT,
 				Actions.TASKS_AND_DISCUSSIONS_DELETE,
 				Actions.TASKS_AND_DISCUSSIONS_HISTORY,
@@ -28,6 +32,7 @@ export const TasksAndDiscussionsConfigurations = {
 	actions: [
 		Actions.TASKS_AND_DISCUSSIONS_LIST,
 		Actions.TASKS_AND_DISCUSSIONS_ADD,
+		Actions.TASKS_AND_DISCUSSIONS_SEARCH,
 		Actions.TASKS_AND_DISCUSSIONS_EDIT,
 		Actions.TASKS_AND_DISCUSSIONS_DELETE,
 		Actions.TASKS_AND_DISCUSSIONS_HISTORY,
@@ -99,8 +104,33 @@ export function useTasksAndDiscussionsConfig() {
 		return actions;
 	}
 
-	function getTopItems({config}) {
+	function getTopItems({config, tasksAndDiscussions}) {
 		const actions = [];
+		const enabledActions = config.permittedActions;
+
+		if (
+			enabledActions.includes(Actions.TASKS_AND_DISCUSSIONS_SEARCH) &&
+			tasksAndDiscussions.length
+		) {
+			actions.push({
+				component: 'TasksAndDiscussionsActionButton',
+				props: {
+					label: t('common.search'),
+					action: Actions.TASKS_AND_DISCUSSIONS_SEARCH,
+				},
+			});
+		}
+
+		if (enabledActions.includes(Actions.TASKS_AND_DISCUSSIONS_ADD)) {
+			actions.push({
+				component: 'TasksAndDiscussionsActionButton',
+				props: {
+					label: t('common.add'),
+					action: Actions.TASKS_AND_DISCUSSIONS_ADD,
+				},
+			});
+		}
+
 		return actions;
 	}
 

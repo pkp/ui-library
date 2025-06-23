@@ -13,12 +13,12 @@
 			</template>
 			<template #top-controls>
 				<div class="flex gap-x-2">
-					<PkpButton icon="Search">
-						{{ t('common.search') }}
-					</PkpButton>
-					<PkpButton>
-						{{ t('common.add') }}
-					</PkpButton>
+					<component
+						:is="Components[action.component] || action.component"
+						v-bind="action.props || {}"
+						v-for="(action, i) in tasksAndDiscussionsStore.topItems"
+						:key="i"
+					></component>
 				</div>
 			</template>
 			<TableHeader>
@@ -67,7 +67,6 @@
 </template>
 <script setup>
 import {useTasksAndDiscussionsManagerStore} from './tasksAndDiscussionsManagerStore';
-import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
 
 import PkpTable from '@/components/Table/Table.vue';
@@ -77,6 +76,7 @@ import TableColumn from '@/components/Table/TableColumn.vue';
 import TableColGroup from '@/components/Table/TableColGroup.vue';
 import TableRow from '@/components/Table/TableRow.vue';
 
+import TasksAndDiscussionsActionButton from './TasksAndDiscussionsActionButton.vue';
 import TasksAndDiscussionsCellName from './TasksAndDiscussionsCellName.vue';
 import TasksAndDiscussionsCellActivity from './TasksAndDiscussionsCellActivity.vue';
 import TasksAndDiscussionsCellDueDate from './TasksAndDiscussionsCellDueDate.vue';
@@ -85,6 +85,7 @@ import TasksAndDiscussionsCellClosed from './TasksAndDiscussionsCellClosed.vue';
 import TasksAndDiscussionsCellActions from './TasksAndDiscussionsCellActions.vue';
 
 const Components = {
+	TasksAndDiscussionsActionButton,
 	TasksAndDiscussionsCellName,
 	TasksAndDiscussionsCellActivity,
 	TasksAndDiscussionsCellDueDate,
