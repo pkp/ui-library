@@ -1,5 +1,6 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
+import TasksAndDiscussionsForm from './TasksAndDiscussionsForm.vue';
 
 export const Actions = {
 	TASKS_AND_DISCUSSIONS_LIST: 'tasksAndDiscussionsList',
@@ -15,25 +16,15 @@ export function useTasksAndDiscussionsManagerActions() {
 	const {t} = useLocalize();
 
 	function tasksAndDiscussionsAdd({workItem, submission}, finishedCallback) {
-		const {openDialog} = useModal();
-		openDialog({
-			actions: [
-				{
-					label: t('common.ok'),
-					isWarnable: true,
-					callback: (close) => {
-						close();
-					},
-				},
-				{
-					label: t('common.cancel'),
-					callback: (close) => {
-						close();
-					},
-				},
-			],
-			title: 'Add',
-			message: 'Placeholder',
+		const {openSideModal, closeSideModal} = useModal();
+
+		function onCloseFn() {
+			closeSideModal(TasksAndDiscussionsForm);
+		}
+
+		openSideModal(TasksAndDiscussionsForm, {
+			onCloseFn,
+			onSubmitFn: finishedCallback,
 		});
 	}
 
