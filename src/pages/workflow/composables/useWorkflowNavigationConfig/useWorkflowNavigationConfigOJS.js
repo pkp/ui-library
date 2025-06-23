@@ -309,6 +309,13 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 			}),
 		);
 
+		items.push(
+			getPublicationItem({
+				name: 'editors',
+				label: 'Fulltext Editor',
+			}),
+		);
+
 		if (permissions.canAccessProduction) {
 			items.push(
 				getPublicationItem({
