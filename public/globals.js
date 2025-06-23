@@ -212,6 +212,7 @@ window.pkp = {
 		'common.moreActions': 'More Actions',
 		'common.name': 'Name',
 		'common.navigation.user': 'User Navigation',
+		'common.new': 'New',
 		'common.no': 'No',
 		'common.noItemsFound': 'No items found.',
 		'common.none': 'None',
@@ -852,6 +853,9 @@ window.pkp = {
 		'tasks.discussions.title': 'Desk Review Tasks & Discussions',
 		'tasks.discussions.description':
 			'Use this space to start discussions, assign tasks to others, or create your personal task list to help you move this submission to the next stage.',
+		'tasks.discussions.form.title': 'Desk Review Discussions and Tasks',
+		'tasks.discussions.form.description':
+			'Open for What? Open to What? Beyond Content',
 		'user.affiliation': 'Affiliation',
 		'user.affiliations': 'Affiliations',
 		'user.affiliations.deleteModal.message':
