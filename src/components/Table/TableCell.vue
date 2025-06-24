@@ -1,6 +1,7 @@
 <template>
 	<component
 		:is="isRowHeader ? 'th' : 'td'"
+		ref="cellRef"
 		:scope="isRowHeader ? 'row' : null"
 		:headers="headersAttr.length ? headersAttr : null"
 		class="border-b border-light px-2 py-2 text-start text-base-normal first:border-s first:ps-3 last:border-e last:pe-3"
@@ -56,14 +57,12 @@ const classes = computed(() => {
 });
 
 const tableContext = inject('tableContext');
-const registerCell = inject('registerCell');
-const columnIndex = ref(0);
+const columnIndex = ref(-1);
+const cellRef = ref(null);
 const currentColGroupId = ref('');
 
 onMounted(() => {
-	if (registerCell) {
-		columnIndex.value = registerCell();
-	}
+	columnIndex.value = cellRef.value.cellIndex;
 	currentColGroupId.value = tableContext.currentColGroupId.value;
 });
 

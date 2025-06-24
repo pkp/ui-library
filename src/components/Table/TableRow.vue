@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import {inject, onMounted, onUnmounted, ref, provide} from 'vue';
+import {inject, onMounted, onUnmounted} from 'vue';
 
 const tableContext = inject('tableContext', null);
 
@@ -17,18 +17,9 @@ defineProps({
 	striped: {type: Boolean, default: true},
 });
 
-const cellIndex = ref(0);
-
-function registerCell() {
-	return cellIndex.value++;
-}
-
-provide('registerCell', registerCell);
-
 // Register the row when the component is mounted
 onMounted(() => {
 	if (tableContext) tableContext.registerRow();
-	cellIndex.value = 0;
 });
 
 // Unregister the row when the component is unmounted
