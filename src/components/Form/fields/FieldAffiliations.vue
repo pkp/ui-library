@@ -5,15 +5,15 @@
 		class="pkpFormField pkpFormField--affiliations"
 	>
 		<div class="pkpFormField__heading">
-			<label class="pkpFormFieldLabel">
+			<label :id="labelId" class="pkpFormFieldLabel">
 				{{ t('user.affiliations', {}) }}
 			</label>
 		</div>
-		<div class="pkpFormField__description">
+		<div :id="descriptionId" class="pkpFormField__description">
 			{{ t('user.affiliations.description', {}) }}
 		</div>
 		<div class="pkpFormField__control pkpFormField--affiliations__control">
-			<PkpTable aria-label="Affiliations">
+			<PkpTable :labelled-by="labelId" :described-by="descriptionId">
 				<TableHeader>
 					<TableColumn id="" class="w-[45%]">
 						{{ t('user.affiliations.institution', {}) }}
@@ -249,7 +249,7 @@
 </template>
 
 <script setup>
-import {ref, computed, onMounted, watch, onBeforeUnmount} from 'vue';
+import {ref, computed, onMounted, watch, onBeforeUnmount, useId} from 'vue';
 import {t} from '@/utils/i18n';
 import {useModal} from '@/composables/useModal';
 import Button from '@/components/Button/Button.vue';
@@ -305,6 +305,13 @@ const props = defineProps({
 		},
 	},
 });
+
+/**
+ * Accessibility
+ */
+const labelId = useId();
+const descriptionId = useId();
+
 const authorId = props.authorId;
 const primaryLocale = props.primaryLocale;
 const locales = props.locales;

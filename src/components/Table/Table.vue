@@ -30,6 +30,7 @@
 		</div>
 		<table
 			class="w-full max-w-full border-separate border-spacing-0"
+			:aria-label="ariaLabel"
 			:aria-labelledby="labelledBy ?? (slots.label ? labelId : null)"
 			:aria-describedby="
 				describedBy ?? (slots.description ? descriptionId : null)
