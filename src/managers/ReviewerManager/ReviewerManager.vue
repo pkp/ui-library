@@ -1,9 +1,6 @@
 <template>
 	<div data-cy="reviewer-manager">
-		<PkpTable
-			aria-label="Example for basic table"
-			:aria-describedby="headingId"
-		>
+		<PkpTable>
 			<template #label>
 				<h3 class="">
 					{{ t('user.role.reviewers') }}
@@ -45,8 +42,6 @@
 </template>
 
 <script setup>
-import {useId} from 'vue';
-
 import PkpTable from '@/components/Table/Table.vue';
 import TableColumn from '@/components/Table/TableColumn.vue';
 import TableHeader from '@/components/Table/TableHeader.vue';
@@ -65,7 +60,6 @@ import {useReviewerManagerStore} from './reviewerManagerStore.js';
 import {useLocalize} from '@/composables/useLocalize.js';
 
 const {t} = useLocalize();
-const headingId = useId();
 
 const Components = {
 	ReviewerManagerCellReviewer,

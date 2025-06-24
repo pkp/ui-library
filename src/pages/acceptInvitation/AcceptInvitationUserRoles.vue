@@ -1,5 +1,5 @@
 <template>
-	<PkpTable aria-label="Example for basic table">
+	<PkpTable :aria-label="t('manager.roles')">
 		<TableHeader>
 			<TableColumn>{{ t('userInvitation.roleTable.role') }}</TableColumn>
 			<TableColumn>{{ t('userInvitation.roleTable.startDate') }}</TableColumn>
