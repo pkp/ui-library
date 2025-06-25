@@ -57,23 +57,17 @@ const classes = computed(() => {
 });
 
 const tableContext = inject('tableContext');
+const groupId = inject('groupId', null);
 const columnIndex = ref(-1);
 const cellRef = ref(null);
-const currentColGroupId = ref('');
 
 onMounted(() => {
 	columnIndex.value = cellRef.value.cellIndex;
-	currentColGroupId.value = tableContext.currentColGroupId.value;
 });
 
 // Attach headers attribute for complex table structures (with colgroups)
 const headersAttr = computed(() =>
-	[
-		tableContext.currentColGroupId.value
-			? `${tableContext.tableId}_${columnIndex.value}`
-			: '',
-		currentColGroupId.value,
-	]
+	[groupId ? `${tableContext.tableId}_${columnIndex.value}` : '', groupId]
 		.filter(Boolean)
 		.join(' '),
 );

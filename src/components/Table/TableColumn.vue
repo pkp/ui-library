@@ -40,9 +40,7 @@ const currentColumnId = ref('');
 // Generate a columnId only if the table is using a complex structure (with colgroups).
 // This is used for accessibility attributes like <th :id="..." /> and <td headers="..." />.
 const columnId = computed(() => {
-	return tableContext.currentColGroupId.value
-		? currentColumnId.value
-		: undefined;
+	return tableContext.hasGroups.value ? currentColumnId.value : undefined;
 });
 
 onMounted(() => {
