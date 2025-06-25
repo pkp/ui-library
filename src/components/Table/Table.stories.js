@@ -1,10 +1,12 @@
-import {ref, watch} from 'vue';
+import {ref, watch, computed} from 'vue';
 import PkpTable from './Table.vue';
 import TableHeader from './TableHeader.vue';
 import TableBody from './TableBody.vue';
+import TableColGroup from './TableColGroup.vue';
 import TableColumn from './TableColumn.vue';
 import TableCell from './TableCell.vue';
 import TableRow from './TableRow.vue';
+import TableRowGroup from './TableRowGroup.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import TablePagination from './TablePagination.vue';
 
@@ -12,6 +14,7 @@ import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
 import {http, HttpResponse} from 'msw';
 
 import articleStats from '@/components/Table/mocks/articleStats.js';
+import multiLevelHeaders from '@/components/Table/mocks/multiLevelHeaders';
 import {useSorting} from '@/composables/useSorting';
 
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
@@ -316,6 +319,85 @@ export const WithNoItems = {
 				<TableBody>
 					<template #no-content>
 						This is a custom no-content slot. No items available.
+					</template>
+				</TableBody>
+			</PkpTable>
+		`,
+	}),
+
+	args: {},
+};
+
+export const MultiLevelHeaders = {
+	render: (args) => ({
+		components: {
+			PkpTable,
+			TableHeader,
+			TableBody,
+			TableRow,
+			TableRowGroup,
+			TableColumn,
+			TableColGroup,
+			TableCell,
+			PkpButton,
+		},
+		setup() {
+			const multiLevelTableMock = ref(multiLevelHeaders);
+
+			const groups = computed(() => {
+				return [
+					{
+						name: 'Pending',
+						items: multiLevelTableMock.value.filter(
+							(item) => item.status === 'Pending',
+						),
+					},
+					{
+						name: 'In Progress',
+						items: multiLevelTableMock.value.filter(
+							(item) => item.status === 'In Progress',
+						),
+					},
+					{
+						name: 'Completed',
+						items: multiLevelTableMock.value.filter(
+							(item) => item.status === 'Completed',
+						),
+					},
+				];
+			});
+
+			return {args, groups};
+		},
+		template: `
+			<PkpTable>
+				<template #label>
+					Multi Level Headers
+				</template>
+				<template #description>
+					Grouped by: <strong>Status</strong>
+				</template>
+				<TableHeader>
+					<TableColumn>ID</TableColumn>
+					<TableColumn>Title</TableColumn>
+					<TableColumn>Action</TableColumn>
+				</TableHeader>
+				<TableBody>
+					<template v-for="group in groups" :key="group.name">
+						<TableRowGroup>
+							<TableRow>
+								<TableColGroup>
+									{{ group.name }}
+								</TableColGroup>
+							</TableRow>
+							<TableRow v-for="row in group.items" :key="row.id" :striped="false">
+								<TableCell>{{ row.id }}</TableCell>
+								<TableCell>{{ row.title }}</TableCell>
+								<TableCell>
+									<PkpButton :is-link="true">View</PkpButton>
+								</TableCell>
+							</TableRow>
+						</TableRowGroup>
 					</template>
 				</TableBody>
 			</PkpTable>
