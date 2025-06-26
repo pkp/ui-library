@@ -157,6 +157,7 @@ export const useWorkflowStore = defineComponentStore(
 						submission: submission.value,
 						selectedPublication: selectedPublication.value,
 						reviewRoundId: selectedReviewRound.value?.id,
+						pageInitConfig: props.pageInitConfig,
 						store,
 					},
 					(finishedData) => {
