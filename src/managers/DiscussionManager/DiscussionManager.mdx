@@ -1,0 +1,25 @@
+import {Primary, Controls, Stories, Meta, ArgTypes} from '@storybook/blocks';
+
+import * as DiscussionManager from './DiscussionManager.stories.js';
+
+<Meta of={DiscussionManager} />
+
+# Tasks and Discussions manager
+
+Listing of Tasks and Discussions.
+
+## Props
+
+<ArgTypes />
+
+## Extension points for plugins
+
+For more details and examples on how to use them, check out [Plugins guide](..?path=/docs/guide-plugins--docs)
+
+The name of the Pinia store is `DiscussionManager`.
+
+- `getTopItems`: Add/Change items in the top right, where the `Seach` and `Add` buttons are.
+- `getBottomItems`: Add/Change items in the bottom left of the table.
+- `getItemActions`: Add/Change the list of actions that are displayed after clicking the 3 dots button.
+- `getColumns`: Add/Change the columns being displayed in the table.
+- `getManagerConfig`: DiscussionManager configuration. It's unlikely to use that for adjusting from a plugin, but it's available.

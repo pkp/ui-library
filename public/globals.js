@@ -212,6 +212,7 @@ window.pkp = {
 		'common.moreActions': 'More Actions',
 		'common.name': 'Name',
 		'common.navigation.user': 'User Navigation',
+		'common.new': 'New',
 		'common.no': 'No',
 		'common.noItemsFound': 'No items found.',
 		'common.none': 'None',
@@ -825,6 +826,10 @@ window.pkp = {
 		'submission.list.revisionsSubmitted': 'Revisions submitted',
 		'submission.production': 'Production',
 		'submission.publication': 'Publication',
+		'submission.query.activity': 'Activity',
+		'submission.query.dueDate': 'Due Date',
+		'submission.query.started': 'Started',
+		'submission.query.closed': 'Closed',
 		'submission.recommendation': 'Recommendation: {$recommendation}',
 		'submission.review': 'Review',
 		'submission.stage.externalReviewWithRound': 'Review (Round {$round})',
@@ -845,6 +850,12 @@ window.pkp = {
 		'submission.wizard.submissionCancel': 'Cancel submission',
 		'submissions.declined': 'Declined',
 		'submissions.incomplete': 'Incomplete',
+		'tasks.discussions.title': 'Desk Review Tasks & Discussions',
+		'tasks.discussions.description':
+			'Use this space to start discussions, assign tasks to others, or create your personal task list to help you move this submission to the next stage.',
+		'tasks.discussions.form.title': 'Desk Review Discussions and Tasks',
+		'tasks.discussions.form.description':
+			'Open for What? Open to What? Beyond Content',
 		'user.affiliation': 'Affiliation',
 		'user.affiliations': 'Affiliations',
 		'user.affiliations.deleteModal.message':

@@ -1,7 +1,9 @@
 <template>
 	<component
 		:is="isRowHeader ? 'th' : 'td'"
-		:scope="isRowHeader ? 'row' : false"
+		ref="cellRef"
+		:scope="isRowHeader ? 'row' : null"
+		:headers="headersAttr.length ? headersAttr : null"
 		class="border-b border-light px-2 py-2 text-start text-base-normal first:border-s first:ps-3 last:border-e last:pe-3"
 		:class="classes"
 	>
@@ -10,7 +12,7 @@
 </template>
 
 <script setup>
-import {defineProps, computed} from 'vue';
+import {defineProps, computed, inject, ref, onMounted} from 'vue';
 
 const props = defineProps({
 	noWrap: {
@@ -50,6 +52,23 @@ const classes = computed(() => {
 	if (props.fitContent) {
 		list.push('whitespace-nowrap w-1');
 	}
+
 	return list;
 });
+
+const tableContext = inject('tableContext');
+const groupId = inject('groupId', null);
+const columnIndex = ref(-1);
+const cellRef = ref(null);
+
+onMounted(() => {
+	columnIndex.value = cellRef.value.cellIndex;
+});
+
+// Attach headers attribute for complex table structures (with colgroups)
+const headersAttr = computed(() =>
+	[groupId ? `${tableContext.tableId}_${columnIndex.value}` : '', groupId]
+		.filter(Boolean)
+		.join(' '),
+);
 </script>

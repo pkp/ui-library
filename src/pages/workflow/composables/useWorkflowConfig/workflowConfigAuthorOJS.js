@@ -136,7 +136,7 @@ export const WorkflowConfig = {
 			});
 
 			items.push({
-				component: 'DiscussionManager',
+				component: 'DiscussionManagerLegacy',
 				props: {submissionId: submission.id, stageId: selectedStageId},
 			});
 
@@ -186,7 +186,7 @@ export const WorkflowConfig = {
 			});
 
 			items.push({
-				component: 'DiscussionManager',
+				component: 'DiscussionManagerLegacy',
 				props: {
 					submissionId: submission.id,
 					stageId: selectedStageId,
@@ -230,7 +230,7 @@ export const WorkflowConfig = {
 			const items = [];
 
 			items.push({
-				component: 'DiscussionManager',
+				component: 'DiscussionManagerLegacy',
 				props: {
 					submissionId: submission.id,
 					stageId: selectedStageId,
@@ -254,7 +254,7 @@ export const WorkflowConfig = {
 			const items = [];
 
 			items.push({
-				component: 'DiscussionManager',
+				component: 'DiscussionManagerLegacy',
 				props: {
 					submissionId: submission.id,
 					stageId: selectedStageId,

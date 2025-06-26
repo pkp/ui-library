@@ -2,7 +2,7 @@
 	<div class="">
 		<div
 			v-if="slots.label || slots.description || slots['top-controls']"
-			class="flex justify-between border-x border-t border-light bg-secondary p-4"
+			class="flex justify-between gap-x-2 border-x border-t border-light bg-secondary p-4"
 		>
 			<div v-if="slots.label || slots.description">
 				<div class="flex">
@@ -102,6 +102,16 @@ const isFooterDarker = computed(() => {
 	return !!(rowCount.value % 2);
 });
 
+const slots = useSlots();
+const tableId = useId();
+const labelId = slots.label ? useId() : null;
+const descriptionId = slots.description ? useId() : null;
+const hasGroups = ref(false);
+
+function markHasGroups() {
+	hasGroups.value = true;
+}
+
 const tableContext = {
 	sortDescriptor,
 	onSort,
@@ -109,12 +119,10 @@ const tableContext = {
 	rowCount,
 	registerRow,
 	unregisterRow,
+	tableId,
+	markHasGroups,
+	hasGroups,
 };
-
-const slots = useSlots();
-
-const labelId = slots.label ? useId() : null;
-const descriptionId = slots.description ? useId() : null;
 
 provide('tableContext', tableContext);
 </script>
