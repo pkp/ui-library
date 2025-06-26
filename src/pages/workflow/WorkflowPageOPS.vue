@@ -35,7 +35,7 @@ const props = defineProps({
 	title: {
 		type: String,
 		required: false,
-		default: null,
+		default: '',
 	},
 });
 
