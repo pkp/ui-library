@@ -62,6 +62,7 @@ import FieldBaseAutosuggest from './fields/FieldBaseAutosuggest.vue';
 import FieldAuthors from './fields/FieldAuthors.vue';
 import FieldColor from './fields/FieldColor.vue';
 import FieldControlledVocab from './fields/FieldControlledVocab.vue';
+import FieldCreditRoles from './fields/FieldCreditRoles.vue';
 import FieldPubId from './fields/FieldPubId.vue';
 import FieldHtml from './fields/FieldHtml.vue';
 import FieldMetadataSetting from './fields/FieldMetadataSetting.vue';
@@ -95,6 +96,7 @@ export default {
 		FieldAuthors,
 		FieldColor,
 		FieldControlledVocab,
+		FieldCreditRoles,
 		FieldPubId,
 		FieldHtml,
 		FieldMetadataSetting,
