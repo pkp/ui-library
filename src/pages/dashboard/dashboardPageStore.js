@@ -424,11 +424,25 @@ export const useDashboardPageStore = defineComponentStore(
 
 		function openWorkflowModal(submissionId) {
 			queryParamsUrl.workflowSubmissionId = submissionId;
+
+			// Accessibility
+			// Provide title when available so its available to screenreader before publication details are fetched
+			let title = null;
+			const submission = submissions.value.find(
+				(submission) => submission.id === submissionId,
+			);
+			if (submission) {
+				const {getCurrentPublication} = useSubmission();
+				const publication = getCurrentPublication(submission);
+				title = publication.authorsStringShort;
+			}
+
 			openSideModal(
 				'WorkflowPage',
 				{
 					submissionId,
 					pageInitConfig: props,
+					title,
 				},
 				{
 					onClose: async () => {

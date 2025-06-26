@@ -18,6 +18,7 @@
 			<span v-if="selectedPublication" class="underline">
 				{{ selectedPublication.authorsStringShort }}
 			</span>
+			<span v-else>{{ workflowStore.props.title }}</span>
 		</template>
 		<template v-if="selectedPublication" #description>
 			<span
