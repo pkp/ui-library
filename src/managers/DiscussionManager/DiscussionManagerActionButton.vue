@@ -4,16 +4,16 @@
 		:is-secondary="isSecondary"
 		:is-warnable="isWarnable"
 		:is-link="isLink"
-		@click="() => tasksAndDiscussionsManagerStore[action](actionArgs)"
+		@click="() => discussionManagerStore[action](actionArgs)"
 	>
 		{{ label }}
 	</PkpButton>
 </template>
 <script setup>
 import PkpButton from '@/components/Button/Button.vue';
-import {useTasksAndDiscussionsManagerStore} from './tasksAndDiscussionsManagerStore';
+import {useDiscussionManagerStore} from './discussionManagerStore';
 
-const tasksAndDiscussionsManagerStore = useTasksAndDiscussionsManagerStore();
+const discussionManagerStore = useDiscussionManagerStore();
 
 defineProps({
 	isPrimary: {type: Boolean, required: false, default: false},

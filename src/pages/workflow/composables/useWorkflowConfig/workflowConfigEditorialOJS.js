@@ -180,7 +180,7 @@ export const WorkflowConfig = {
 			});
 
 			items.push({
-				component: 'TasksAndDiscussionsManager',
+				component: 'DiscussionManager',
 				props: {submission, selectedStageId: selectedStageId},
 			});
 

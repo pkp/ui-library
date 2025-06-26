@@ -1,7 +1,7 @@
 import {useForm} from '@/composables/useForm';
 import {useLocalize} from '@/composables/useLocalize';
 
-export function useTasksAndDiscussionsForm(
+export function useDiscussionManagerForm(
 	status = 'New',
 	closeDialog = () => {},
 	onSubmitFn = null,

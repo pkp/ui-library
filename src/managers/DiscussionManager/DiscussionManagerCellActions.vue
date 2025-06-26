@@ -5,13 +5,13 @@
 			:label="t('common.moreActions')"
 			button-variant="ellipsis"
 			:actions="itemActions"
-			@action="(actionName) => tasksAndDiscussionsStore[actionName]({task})"
+			@action="(actionName) => discussionManagerStore[actionName]({task})"
 		></DropdownActions>
 	</TableCell>
 </template>
 <script setup>
 import {computed} from 'vue';
-import {useTasksAndDiscussionsManagerStore} from './tasksAndDiscussionsManagerStore';
+import {useDiscussionManagerStore} from './discussionManagerStore';
 
 const props = defineProps({
 	workItem: {type: Object, required: true},
@@ -20,9 +20,9 @@ const props = defineProps({
 import TableCell from '@/components/Table/TableCell.vue';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 
-const tasksAndDiscussionsStore = useTasksAndDiscussionsManagerStore();
+const discussionManagerStore = useDiscussionManagerStore();
 
 const itemActions = computed(() =>
-	tasksAndDiscussionsStore.getItemActions({workItem: props.workItem}),
+	discussionManagerStore.getItemActions({workItem: props.workItem}),
 );
 </script>

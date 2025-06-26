@@ -16,12 +16,12 @@ const CommonDefaults = {
 	closed: false,
 };
 
-export function getTasksAndDiscussionsMock(overrides = {}) {
-	const taskAndDiscussion = deepMerge({...CommonDefaults}, overrides);
-	return taskAndDiscussion;
+export function getDiscussionsMock(overrides = {}) {
+	const discussions = deepMerge({...CommonDefaults}, overrides);
+	return discussions;
 }
 
-export const TasksAndDiscussionsDataMock = [
+export const DiscussionsDataMock = [
 	{...CommonDefaults},
 	{
 		id: 2,

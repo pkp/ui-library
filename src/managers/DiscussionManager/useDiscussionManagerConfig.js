@@ -1,8 +1,8 @@
 import {useLocalize} from '@/composables/useLocalize';
-import {Actions} from './useTasksAndDiscussionsManagerActions';
+import {Actions} from './useDiscussionManagerActions';
 import {useCurrentUser} from '@/composables/useCurrentUser';
 
-export const TasksAndDiscussionsConfigurations = {
+export const DiscussionManagerConfigurations = {
 	permissions: [
 		{
 			roles: [pkp.const.ROLE_ID_AUTHOR],
@@ -40,7 +40,7 @@ export const TasksAndDiscussionsConfigurations = {
 	],
 };
 
-export function useTasksAndDiscussionsConfig() {
+export function useDiscussionManagerConfig() {
 	const {t} = useLocalize();
 	const {hasCurrentUserAtLeastOneAssignedRoleInStage} = useCurrentUser();
 
@@ -49,42 +49,42 @@ export function useTasksAndDiscussionsConfig() {
 
 		columns.push({
 			header: t('common.name'),
-			component: 'TasksAndDiscussionsCellName',
+			component: 'DiscussionManagerCellName',
 		});
 
 		columns.push({
 			header: t('submission.query.activity'),
-			component: 'TasksAndDiscussionsCellActivity',
+			component: 'DiscussionManagerCellActivity',
 		});
 
 		columns.push({
 			header: t('submission.query.dueDate'),
-			component: 'TasksAndDiscussionsCellDueDate',
+			component: 'DiscussionManagerCellDueDate',
 		});
 
 		columns.push({
 			header: t('submission.query.started'),
-			component: 'TasksAndDiscussionsCellStarted',
+			component: 'DiscussionManagerCellStarted',
 		});
 
 		columns.push({
 			header: t('submission.query.closed'),
-			component: 'TasksAndDiscussionsCellClosed',
+			component: 'DiscussionManagerCellClosed',
 		});
 
 		columns.push({
 			header: t('common.moreActions'),
 			headerSrOnly: true,
-			component: 'TasksAndDiscussionsCellActions',
+			component: 'DiscussionManagerCellActions',
 		});
 
 		return columns;
 	}
 
 	function getManagerConfig({submission, publication}) {
-		const permittedActions = TasksAndDiscussionsConfigurations.actions.filter(
+		const permittedActions = DiscussionManagerConfigurations.actions.filter(
 			(action) => {
-				return TasksAndDiscussionsConfigurations.permissions.some((perm) => {
+				return DiscussionManagerConfigurations.permissions.some((perm) => {
 					return (
 						perm.actions.includes(action) &&
 						hasCurrentUserAtLeastOneAssignedRoleInStage(
@@ -104,16 +104,16 @@ export function useTasksAndDiscussionsConfig() {
 		return actions;
 	}
 
-	function getTopItems({config, tasksAndDiscussions}) {
+	function getTopItems({config, discussions}) {
 		const actions = [];
 		const enabledActions = config.permittedActions;
 
 		if (
 			enabledActions.includes(Actions.TASKS_AND_DISCUSSIONS_SEARCH) &&
-			tasksAndDiscussions.length
+			discussions.length
 		) {
 			actions.push({
-				component: 'TasksAndDiscussionsActionButton',
+				component: 'DiscussionManagerActionButton',
 				props: {
 					label: t('common.search'),
 					action: Actions.TASKS_AND_DISCUSSIONS_SEARCH,
@@ -123,7 +123,7 @@ export function useTasksAndDiscussionsConfig() {
 
 		if (enabledActions.includes(Actions.TASKS_AND_DISCUSSIONS_ADD)) {
 			actions.push({
-				component: 'TasksAndDiscussionsActionButton',
+				component: 'DiscussionManagerActionButton',
 				props: {
 					label: t('common.add'),
 					action: Actions.TASKS_AND_DISCUSSIONS_ADD,

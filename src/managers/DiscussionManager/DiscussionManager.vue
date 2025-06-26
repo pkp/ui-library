@@ -16,14 +16,14 @@
 					<component
 						:is="Components[action.component] || action.component"
 						v-bind="action.props || {}"
-						v-for="(action, i) in tasksAndDiscussionsStore.topItems"
+						v-for="(action, i) in discussionManagerStore.topItems"
 						:key="i"
 					></component>
 				</div>
 			</template>
 			<TableHeader>
 				<TableColumn
-					v-for="(column, i) in tasksAndDiscussionsStore.columns"
+					v-for="(column, i) in discussionManagerStore.columns"
 					:key="i"
 				>
 					<span :class="column.headerSrOnly ? 'sr-only' : ''">
@@ -33,7 +33,7 @@
 			</TableHeader>
 			<TableBody>
 				<template
-					v-for="itemStatus in tasksAndDiscussionsStore.tasksAndDiscussions"
+					v-for="itemStatus in discussionManagerStore.discussions"
 					:key="itemStatus.name"
 				>
 					<TableRow>
@@ -55,7 +55,7 @@
 					>
 						<component
 							:is="Components[column.component] || column.component"
-							v-for="(column, i) in tasksAndDiscussionsStore.columns"
+							v-for="(column, i) in discussionManagerStore.columns"
 							:key="i"
 							:work-item="workItem"
 						></component>
@@ -66,7 +66,7 @@
 	</div>
 </template>
 <script setup>
-import {useTasksAndDiscussionsManagerStore} from './tasksAndDiscussionsManagerStore';
+import {useDiscussionManagerStore} from './discussionManagerStore';
 import Icon from '@/components/Icon/Icon.vue';
 
 import PkpTable from '@/components/Table/Table.vue';
@@ -76,28 +76,28 @@ import TableColumn from '@/components/Table/TableColumn.vue';
 import TableColGroup from '@/components/Table/TableColGroup.vue';
 import TableRow from '@/components/Table/TableRow.vue';
 
-import TasksAndDiscussionsActionButton from './TasksAndDiscussionsActionButton.vue';
-import TasksAndDiscussionsCellName from './TasksAndDiscussionsCellName.vue';
-import TasksAndDiscussionsCellActivity from './TasksAndDiscussionsCellActivity.vue';
-import TasksAndDiscussionsCellDueDate from './TasksAndDiscussionsCellDueDate.vue';
-import TasksAndDiscussionsCellStarted from './TasksAndDiscussionsCellStarted.vue';
-import TasksAndDiscussionsCellClosed from './TasksAndDiscussionsCellClosed.vue';
-import TasksAndDiscussionsCellActions from './TasksAndDiscussionsCellActions.vue';
+import DiscussionManagerActionButton from './DiscussionManagerActionButton.vue';
+import DiscussionManagerCellName from './DiscussionManagerCellName.vue';
+import DiscussionManagerCellActivity from './DiscussionManagerCellActivity.vue';
+import DiscussionManagerCellDueDate from './DiscussionManagerCellDueDate.vue';
+import DiscussionManagerCellStarted from './DiscussionManagerCellStarted.vue';
+import DiscussionManagerCellClosed from './DiscussionManagerCellClosed.vue';
+import DiscussionManagerCellActions from './DiscussionManagerCellActions.vue';
 
 const Components = {
-	TasksAndDiscussionsActionButton,
-	TasksAndDiscussionsCellName,
-	TasksAndDiscussionsCellActivity,
-	TasksAndDiscussionsCellDueDate,
-	TasksAndDiscussionsCellStarted,
-	TasksAndDiscussionsCellClosed,
-	TasksAndDiscussionsCellActions,
+	DiscussionManagerActionButton,
+	DiscussionManagerCellName,
+	DiscussionManagerCellActivity,
+	DiscussionManagerCellDueDate,
+	DiscussionManagerCellStarted,
+	DiscussionManagerCellClosed,
+	DiscussionManagerCellActions,
 };
 
 const props = defineProps({
 	submission: {type: Object, required: true},
-	tasksAndDiscussions: {type: Array, required: true},
+	discussions: {type: Array, required: true},
 });
 
-const tasksAndDiscussionsStore = useTasksAndDiscussionsManagerStore(props);
+const discussionManagerStore = useDiscussionManagerStore(props);
 </script>

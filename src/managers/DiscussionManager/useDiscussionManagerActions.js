@@ -1,34 +1,34 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
-import TasksAndDiscussionsForm from './TasksAndDiscussionsForm.vue';
+import DiscussionManagerForm from './DiscussionManagerForm.vue';
 
 export const Actions = {
-	TASKS_AND_DISCUSSIONS_LIST: 'tasksAndDiscussionsList',
-	TASKS_AND_DISCUSSIONS_SEARCH: 'tasksAndDiscussionsSearch',
-	TASKS_AND_DISCUSSIONS_ADD: 'tasksAndDiscussionsAdd',
-	TASKS_AND_DISCUSSIONS_EDIT: 'tasksAndDiscussionsEdit',
-	TASKS_AND_DISCUSSIONS_DELETE: 'tasksAndDiscussionsDelete',
-	TASKS_AND_DISCUSSIONS_HISTORY: 'tasksAndDiscussionsHistory',
-	TASKS_AND_DISCUSSIONS_ADD_TASK_DETAILS: 'tasksAndDiscussionsAddTaskDetails',
+	TASKS_AND_DISCUSSIONS_LIST: 'discussionList',
+	TASKS_AND_DISCUSSIONS_SEARCH: 'discussionSearch',
+	TASKS_AND_DISCUSSIONS_ADD: 'discussionAdd',
+	TASKS_AND_DISCUSSIONS_EDIT: 'discussionEdit',
+	TASKS_AND_DISCUSSIONS_DELETE: 'discussionDelete',
+	TASKS_AND_DISCUSSIONS_HISTORY: 'discussionHistory',
+	TASKS_AND_DISCUSSIONS_ADD_TASK_DETAILS: 'discussionAddTaskDetails',
 };
 
-export function useTasksAndDiscussionsManagerActions() {
+export function useDiscussionManagerActions() {
 	const {t} = useLocalize();
 
-	function tasksAndDiscussionsAdd({workItem, submission}, finishedCallback) {
+	function discussionAdd({workItem, submission}, finishedCallback) {
 		const {openSideModal, closeSideModal} = useModal();
 
 		function onCloseFn() {
-			closeSideModal(TasksAndDiscussionsForm);
+			closeSideModal(DiscussionManagerForm);
 		}
 
-		openSideModal(TasksAndDiscussionsForm, {
+		openSideModal(DiscussionManagerForm, {
 			onCloseFn,
 			onSubmitFn: finishedCallback,
 		});
 	}
 
-	function tasksAndDiscussionsSearch({workItem, submission}, finishedCallback) {
+	function discussionSearch({workItem, submission}, finishedCallback) {
 		const {openDialog} = useModal();
 		openDialog({
 			actions: [
@@ -51,7 +51,7 @@ export function useTasksAndDiscussionsManagerActions() {
 		});
 	}
 
-	function tasksAndDiscussionsEdit({workItem, submission}, finishedCallback) {
+	function discussionEdit({workItem, submission}, finishedCallback) {
 		const {openDialog} = useModal();
 		openDialog({
 			actions: [
@@ -74,7 +74,7 @@ export function useTasksAndDiscussionsManagerActions() {
 		});
 	}
 
-	function tasksAndDiscussionsDelete({workItem, submission}, finishedCallback) {
+	function discussionDelete({workItem, submission}, finishedCallback) {
 		const {openDialog} = useModal();
 		openDialog({
 			actions: [
@@ -98,7 +98,7 @@ export function useTasksAndDiscussionsManagerActions() {
 		});
 	}
 
-	function tasksAndDiscussionsHistory() {
+	function discussionHistory() {
 		const {openDialog} = useModal();
 		openDialog({
 			actions: [
@@ -121,7 +121,7 @@ export function useTasksAndDiscussionsManagerActions() {
 		});
 	}
 
-	function tasksAndDiscussionsAddTaskDetails() {
+	function discussionAddTaskDetails() {
 		const {openDialog} = useModal();
 		openDialog({
 			actions: [
@@ -145,11 +145,11 @@ export function useTasksAndDiscussionsManagerActions() {
 	}
 
 	return {
-		tasksAndDiscussionsAdd,
-		tasksAndDiscussionsSearch,
-		tasksAndDiscussionsEdit,
-		tasksAndDiscussionsDelete,
-		tasksAndDiscussionsHistory,
-		tasksAndDiscussionsAddTaskDetails,
+		discussionAdd,
+		discussionSearch,
+		discussionEdit,
+		discussionDelete,
+		discussionHistory,
+		discussionAddTaskDetails,
 	};
 }
