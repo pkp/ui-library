@@ -36,30 +36,34 @@
 					v-for="itemStatus in discussionManagerStore.discussions"
 					:key="itemStatus.name"
 				>
-					<TableRow>
-						<TableColGroup>
-							<Icon
-								:icon="itemStatus.icon"
-								class="h-5 w-5"
-								:class="
-									itemStatus.name === 'Closed' ? 'text-success' : 'text-primary'
-								"
-							></Icon>
-							<span class="ms-2">{{ itemStatus.name }}</span>
-						</TableColGroup>
-					</TableRow>
-					<TableRow
-						v-for="workItem in itemStatus.items"
-						:key="workItem.id"
-						:striped="false"
-					>
-						<component
-							:is="Components[column.component] || column.component"
-							v-for="(column, i) in discussionManagerStore.columns"
-							:key="i"
-							:work-item="workItem"
-						></component>
-					</TableRow>
+					<TableRowGroup>
+						<TableRow>
+							<TableColGroup>
+								<Icon
+									:icon="itemStatus.icon"
+									class="h-5 w-5"
+									:class="
+										itemStatus.name === 'Closed'
+											? 'text-success'
+											: 'text-primary'
+									"
+								></Icon>
+								<span class="ms-2">{{ itemStatus.name }}</span>
+							</TableColGroup>
+						</TableRow>
+						<TableRow
+							v-for="workItem in itemStatus.items"
+							:key="workItem.id"
+							:striped="false"
+						>
+							<component
+								:is="Components[column.component] || column.component"
+								v-for="(column, i) in discussionManagerStore.columns"
+								:key="i"
+								:work-item="workItem"
+							></component>
+						</TableRow>
+					</TableRowGroup>
 				</template>
 			</TableBody>
 		</PkpTable>
@@ -75,6 +79,7 @@ import TableBody from '@/components/Table/TableBody.vue';
 import TableColumn from '@/components/Table/TableColumn.vue';
 import TableColGroup from '@/components/Table/TableColGroup.vue';
 import TableRow from '@/components/Table/TableRow.vue';
+import TableRowGroup from '@/components/Table/TableRowGroup.vue';
 
 import DiscussionManagerActionButton from './DiscussionManagerActionButton.vue';
 import DiscussionManagerCellName from './DiscussionManagerCellName.vue';
