@@ -406,3 +406,81 @@ export const MultiLevelHeaders = {
 
 	args: {},
 };
+
+export const EmptyMultiLevelHeaders = {
+	render: (args) => ({
+		components: {
+			PkpTable,
+			TableHeader,
+			TableBody,
+			TableRow,
+			TableRowGroup,
+			TableColumn,
+			TableColGroup,
+			TableCell,
+			PkpButton,
+		},
+		setup() {
+			const multiLevelTableMock = ref(multiLevelHeaders);
+
+			const groups = computed(() => {
+				return [
+					{
+						name: 'Pending',
+						items: multiLevelTableMock.value.filter(
+							(item) => item.status === 'Pending',
+						),
+					},
+					{
+						name: 'In Progress',
+						items: [],
+					},
+					{
+						name: 'Completed',
+						items: [],
+					},
+				];
+			});
+
+			return {args, groups};
+		},
+		template: `
+			<PkpTable>
+				<template #label>
+					Empty Multi Level Headers
+				</template>
+				<template #description>
+					Grouped by: <strong>Status</strong>
+				</template>
+				<TableHeader>
+					<TableColumn>ID</TableColumn>
+					<TableColumn>Title</TableColumn>
+					<TableColumn>Action</TableColumn>
+				</TableHeader>
+				<TableBody>
+					<template v-for="group in groups" :key="group.name">
+						<TableRowGroup>
+							<TableRow>
+								<TableColGroup>
+									{{ group.name }}
+								</TableColGroup>
+							</TableRow>
+							<TableRow v-for="row in group.items" :key="row.id" :striped="false">
+								<TableCell>{{ row.id }}</TableCell>
+								<TableCell>{{ row.title }}</TableCell>
+								<TableCell>
+									<PkpButton :is-link="true">View</PkpButton>
+								</TableCell>
+							</TableRow>
+							<template #no-group-content>
+								This is a custom no-group-content slot. No items available for status "{{ group.name }}".
+							</template>
+						</TableRowGroup>
+					</template>
+				</TableBody>
+			</PkpTable>
+		`,
+	}),
+
+	args: {},
+};
