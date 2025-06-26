@@ -447,7 +447,7 @@ export const EmptyMultiLevelHeaders = {
 		template: `
 			<PkpTable>
 				<template #label>
-					Multi Level Headers
+					Empty Multi Level Headers
 				</template>
 				<template #description>
 					Grouped by: <strong>Status</strong>
