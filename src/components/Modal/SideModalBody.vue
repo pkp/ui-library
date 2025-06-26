@@ -6,7 +6,7 @@
 	>
 		<div
 			ref="container"
-			class="fixed inset-y-0 flex max-w-full ltr:right-0 rtl:left-0"
+			class="fixed inset-y-0 z-10 flex max-w-full ltr:right-0 rtl:left-0"
 		>
 			<div class="pointer-events-auto h-screen w-screen" :class="levelClasses">
 				<div class="shadow-xl flex h-full flex-col bg-default">

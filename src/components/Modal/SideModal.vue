@@ -1,8 +1,10 @@
 <template>
 	<DialogRoot :open="open" @update:open="handleRootClose">
 		<DialogPortal>
-			<DialogOverlay class="DialogOverlay fixed inset-0 bg-blur" />
-			<slot />
+			<div>
+				<DialogOverlay class="DialogOverlay fixed inset-0 z-10 bg-blur" />
+				<slot />
+			</div>
 		</DialogPortal>
 	</DialogRoot>
 </template>

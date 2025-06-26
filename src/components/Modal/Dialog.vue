@@ -2,9 +2,9 @@
 	<DialogRoot :open="opened" @update:open="handleCloseUpdate">
 		<DialogPortal>
 			<DialogOverlay
-				class="DialogOverlay fixed inset-0 bg-blur"
+				class="DialogOverlay fixed inset-0 z-10 bg-blur"
 			></DialogOverlay>
-			<div class="pointer-events-none fixed inset-0 z-20 overflow-y-auto">
+			<div class="pointer-events-none fixed inset-0 z-10 overflow-y-auto">
 				<div
 					class="flex min-h-full items-end justify-center p-4 text-center sm:items-start sm:p-0"
 				>
