@@ -2,13 +2,13 @@
 	<tbody class="">
 		<slot></slot>
 		<tr v-if="!tableContext.rowCount.value">
-			<td
+			<TableCell
 				:colspan="tableContext.columnsCount.value"
-				class="border-x border-b border-light p-5 text-base-normal"
+				padding-variant="spacious"
 			>
 				<slot v-if="slots['no-content']" name="no-content" />
 				<span v-else>{{ emptyText }}</span>
-			</td>
+			</TableCell>
 		</tr>
 	</tbody>
 </template>
@@ -16,6 +16,7 @@
 <script setup>
 import {useSlots, computed, inject} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
+import TableCell from './TableCell.vue';
 
 const props = defineProps({
 	emptyText: {type: String, default: ''},

@@ -1,20 +1,21 @@
 <template>
 	<slot />
 	<tr v-if="isGroupEmpty">
-		<td
+		<TableCell
 			:colspan="tableContext.columnsCount.value"
-			:headers="groupId"
-			class="border-x border-b border-light p-5 text-base-normal"
+			padding-variant="spacious"
 		>
 			<slot v-if="slots['no-group-content']" name="no-group-content" />
 			<span v-else>{{ emptyText }}</span>
-		</td>
+		</TableCell>
 	</tr>
 </template>
 
 <script setup>
 import {computed, inject, onMounted, provide, useId, useSlots} from 'vue';
 import {t} from '@/utils/i18n';
+import TableCell from './TableCell.vue';
+
 const groupId = useId();
 const slots = useSlots();
 
