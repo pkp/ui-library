@@ -55,7 +55,7 @@ export const PublicationConfig = {
 		getPrimaryItems: ({submission, selectedPublication, permissions}) => {
 			return [
 				{
-					component: 'DiscussionManager',
+					component: 'DiscussionManagerLegacy',
 					props: {
 						submissionId: submission.id,
 						stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
