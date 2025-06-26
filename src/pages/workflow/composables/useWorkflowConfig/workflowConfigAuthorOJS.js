@@ -140,11 +140,6 @@ export const WorkflowConfig = {
 				props: {submissionId: submission.id, stageId: selectedStageId},
 			});
 
-			items.push({
-				component: 'DiscussionManager',
-				props: {submission, selectedStageId: selectedStageId},
-			});
-
 			return items;
 		},
 	},
