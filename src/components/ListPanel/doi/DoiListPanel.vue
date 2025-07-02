@@ -915,17 +915,68 @@ export default {
 		getIsPublishedBase(item) {
 			return item.status === pkp.const.STATUS_PUBLISHED;
 		},
+		/**
+		 * Gets pubObject's versions/publications. Considers only latest minor versions. Assumes original object is submission.
+		 *
+		 * @param {Object} item Item being mapped
+		 * @returns {Object} Modified mapped item
+		 */
 		getVersions(item) {
+			var latestMinorPublications = [];
+			item.publications?.forEach((publication) => {
+				if (publication.versionStage == null) {
+					if (!('unassigned' in latestMinorPublications)) {
+						latestMinorPublications['unassigned'] = [];
+					}
+					latestMinorPublications['unassigned'].push(publication);
+					return;
+				}
+				if (!(publication.versionStage in latestMinorPublications)) {
+					latestMinorPublications[publication.versionStage] = [];
+				}
+				if (
+					!(
+						publication.versionMajor in
+						latestMinorPublications[publication.versionStage]
+					)
+				) {
+					latestMinorPublications[publication.versionStage][
+						publication.versionMajor
+					] = publication;
+					return;
+				}
+				if (
+					publication.versionMinor >
+					latestMinorPublications[publication.versionStage][
+						publication.versionMajor
+					].versionMinor
+				) {
+					latestMinorPublications[publication.versionStage][
+						publication.versionMajor
+					] = publication;
+				}
+			});
 			return (
-				item.publications?.map((publication) => {
-					return {
-						id: publication.id,
-						isCurrentVersion: item.currentPublicationId === publication.id,
-						versionNumber: publication.versionString,
-						urlPublished: publication.urlPublished,
-						datePublished: publication.datePublished,
-					};
-				}) || []
+				item.publications
+					?.filter((publication) =>
+						latestMinorPublications[
+							publication.versionStage ?? 'unassigned'
+						].includes(publication),
+					)
+					.map((publication) => {
+						let versionString = publication.versionString;
+						if (publication.versionStage == null) {
+							// to distinguish unassigned versions created on the same day, add publication ID
+							versionString = publication.id + ' - ' + versionString;
+						}
+						return {
+							id: publication.id,
+							isCurrentVersion: item.currentPublicationId === publication.id,
+							versionNumber: versionString,
+							urlPublished: publication.urlPublished,
+							datePublished: publication.datePublished,
+						};
+					}) || []
 			);
 		},
 		/**
