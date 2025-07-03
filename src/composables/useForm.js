@@ -468,6 +468,64 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		);
 	}
 
+	/**
+	 * Adds or updates a FieldOption in the form.
+	 * @param {string} fieldName - The name of the field
+	 * @param {string} fieldType - The field type for the OptionField component, either "checkbox" or "radio"
+	 * @param {Object} fieldOptions - The input options (e.g., list of choices) and other shared/common properties for the field
+	 * @param {Object} [opts] - Optional settings.
+	 * @param {boolean} [opts.override] - If true and the field already exists, it will be fully overridden.
+	 */
+	function addFieldOptions(
+		fieldName,
+		fieldType,
+		{options, value = [], ...commonFields},
+		opts = {},
+	) {
+		addField(
+			fieldName,
+			{
+				component: 'field-options',
+				type: fieldType,
+				options,
+				value,
+				...commonFields,
+			},
+			opts,
+		);
+	}
+
+	/**
+	 * Adds or updates a rich textarea field in the form.
+	 *
+	 * @param {string} fieldName - The name (or key) of the field.
+	 * @param {Object} fieldOptions - Configuration options for the field.
+	 * @param {Object} [opts] - Optional settings.
+	 * @param {boolean} [opts.override] - If true and the field already exists, it will be fully overridden.
+	 */
+	function addFieldRichTextArea(
+		fieldName,
+		{
+			size,
+			toolbar = 'bold italic superscript subscript | link',
+			plugins = ['link'],
+			...commonFields
+		} = {},
+		opts,
+	) {
+		return addField(
+			fieldName,
+			{
+				component: 'field-rich-textarea',
+				size,
+				toolbar,
+				plugins,
+				...commonFields,
+			},
+			opts,
+		);
+	}
+
 	return {
 		set,
 		setValue,
@@ -491,6 +549,8 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		addGroup,
 		addFieldText,
 		addFieldSelect,
+		addFieldOptions,
+		addFieldRichTextArea,
 		getField,
 	};
 }
