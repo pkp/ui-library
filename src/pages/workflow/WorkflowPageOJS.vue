@@ -24,6 +24,7 @@ import WorkflowListingEmails from './components/primary/WorkflowListingEmails.vu
 import WorkflowPaymentDropdown from './components/header/WorkflowPaymentDropdown.vue';
 import WorkflowPublicationForm from './components/publication/WorkflowPublicationForm.vue';
 import WorkflowPublicationJats from './components/publication/WorkflowPublicationJats.vue';
+import WorkflowPublicationEditor from './components/publication/WorkflowPublicationEditor.vue';
 import WorkflowPublicationVersionControl from './components/publication/WorkflowPublicationVersionControl.vue';
 import WorkflowChangeSubmissionLanguage from './components/publication/WorkflowChangeSubmissionLanguage.vue';
 import WorkflowPrimaryBasicMetadata from './components/primary/WorkflowPrimaryBasicMetadata.vue';
@@ -56,6 +57,7 @@ const Components = markRaw({
 	WorkflowPrimaryBasicMetadata,
 	WorkflowPublicationForm,
 	WorkflowPublicationJats,
+	WorkflowPublicationEditor,
 	WorkflowPublicationVersionControl,
 	WorkflowChangeSubmissionLanguage,
 	WorkflowSubmissionStatus,
