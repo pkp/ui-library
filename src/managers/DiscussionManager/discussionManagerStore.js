@@ -87,6 +87,7 @@ export const useDiscussionManagerStore = defineComponentStore(
 			discussionActions.discussionAdd(
 				{
 					submission: props.submission,
+					submissionStageId: props.submissionStageId,
 				},
 				triggerDataChangeCallback,
 			);
