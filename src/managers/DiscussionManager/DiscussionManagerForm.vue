@@ -32,6 +32,14 @@ const props = defineProps({
 		type: String,
 		default: () => 'New',
 	},
+	submission: {
+		type: Object,
+		required: true,
+	},
+	submissionStageId: {
+		type: Number,
+		required: true,
+	},
 	onCloseFn: {
 		type: Function,
 		default: () => () => {},
@@ -42,9 +50,5 @@ const props = defineProps({
 	},
 });
 
-const {form, set, badgeProps} = useDiscussionManagerForm(
-	props.status,
-	props.onCloseFn,
-	props.onSubmitFn,
-);
+const {form, set, badgeProps} = useDiscussionManagerForm(props);
 </script>
