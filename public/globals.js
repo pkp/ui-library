@@ -210,6 +210,7 @@ window.pkp = {
 		'common.lastActivity': 'Last activity recorded on {$date}.',
 		'common.loaded': 'Loaded',
 		'common.loading': 'Loading',
+		'common.me': 'Me',
 		'common.moreActions': 'More Actions',
 		'common.name': 'Name',
 		'common.navigation.user': 'User Navigation',
@@ -790,6 +791,7 @@ window.pkp = {
 		'submission.citations': 'References',
 		'submission.contributors': 'List of Contributors',
 		'submission.copyediting': 'Copyediting',
+		'submission.discussion': 'Discussion',
 		'submission.files': 'Files',
 		'submission.files.downloadAll': 'Download All Files',
 		'submission.finalDraft': 'Draft Files',
@@ -857,6 +859,12 @@ window.pkp = {
 		'tasks.discussions.form.title': 'Desk Review Discussions and Tasks',
 		'tasks.discussions.form.description':
 			'Open for What? Open to What? Beyond Content',
+		'tasks.discussions.form.discussion.description':
+			'You can start a discussion thread here by adding a message. This space is also available for providing a brief overview of the task, including any key details, goals, or specific instructions to help guide the assignees.',
+		'tasks.discussions.form.details.name.description':
+			'Please enter the name for this task and discussion.',
+		'tasks.discussions.form.details.participants.description':
+			'You have the option to assign participants or allocate it solely to yourself.',
 		'user.affiliation': 'Affiliation',
 		'user.affiliations': 'Affiliations',
 		'user.affiliations.deleteModal.message':
