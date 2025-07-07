@@ -97,12 +97,12 @@
 					<div class="-ml-2 -mr-2 text-wrap px-2 pt-2">
 						<ul>
 							<li :class="actionLinkStyle">
-								<a :href="editProfileLink" class="w-full">
+								<a :href="editProfileLink" class="block">
 									{{ t('user.profile.editProfile') }}
 								</a>
 							</li>
 							<li :class="actionLinkStyle">
-								<a :href="signOutLink" class="w-full">
+								<a :href="signOutLink" class="block">
 									{{
 										_isUserLoggedInAs
 											? t('user.logOutAs', {username: currentUser.username})
