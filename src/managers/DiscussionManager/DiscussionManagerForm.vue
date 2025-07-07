@@ -1,11 +1,11 @@
 <template>
 	<SideModalBody>
 		<template #title>
-			{{ t('tasks.discussions.form.title') }}
+			{{ t('discussion.title') }}
 		</template>
 		<template #description>
 			<span class="text-lg-medium">
-				{{ t('tasks.discussions.form.description') }}
+				{{ t('discussion.form.description') }}
 			</span>
 		</template>
 		<template #post-description>
