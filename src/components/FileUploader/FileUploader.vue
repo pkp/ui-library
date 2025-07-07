@@ -1,6 +1,7 @@
 <template>
 	<div :id="id" class="fileUploader" :class="{'-isDragging': isDragging}">
 		<VueDropzone
+			v-if="isMounted"
 			:id="dropzoneId"
 			ref="dropzone"
 			:options="dropzoneOptions"
@@ -78,6 +79,7 @@ export default {
 			dragEventCounter: 0,
 			isDragging: false,
 			status: '',
+			isMounted: false,
 		};
 	},
 	computed: {
@@ -125,6 +127,7 @@ export default {
 		},
 	},
 	mounted() {
+		this.isMounted = true;
 		/**
 		 * Listen for when the user performs a drag-and-drop action
 		 */
