@@ -23,21 +23,23 @@ export function useDiscussionManagerForm({
 
 	const currentUser = useCurrentUser();
 
-	const participantOptions = computed(() => {
-		return participantManagerStore.participantsList.map((participant) => {
-			let label = `${participant.fullName} (${participant.userName})`;
+	function getParticipantOptions(withSubLabel) {
+		return computed(() => {
+			return participantManagerStore.participantsList.map((participant) => {
+				let label = `${participant.fullName} (${participant.userName})`;
 
-			if (participant.userName === currentUser.getCurrentUserName()) {
-				label += ` (${t('common.me')})`;
-			}
+				if (participant.userName === currentUser.getCurrentUserName()) {
+					label += ` (${t('common.me')})`;
+				}
 
-			return {
-				label,
-				subLabel: participant.roleName,
-				value: participant.id,
-			};
+				return {
+					label,
+					subLabel: withSubLabel ? participant.roleName : undefined,
+					value: participant.id,
+				};
+			});
 		});
-	});
+	}
 
 	function getBadgeProps() {
 		let badgeProps = {};
@@ -98,6 +100,8 @@ export function useDiscussionManagerForm({
 		addFieldText,
 		addFieldOptions,
 		addFieldRichTextArea,
+		addFieldCheckbox,
+		addFieldSelect,
 	} = useForm({}, {customSubmit: handleFormSubmission});
 
 	initEmptyForm('discussion', {
@@ -111,29 +115,72 @@ export function useDiscussionManagerForm({
 
 	addGroup('details', {
 		label: t('common.details'),
-		description: 'Placeholder',
+		description: t('discussion.form.detailsDescription'),
 	});
 
 	addFieldText('detailsName', {
-		label: t('common.name'),
-		description: t('tasks.discussions.form.details.name.description'),
 		groupId: 'details',
+		label: t('common.name'),
+		description: t('discussion.form.detailsNameDescription'),
 		size: 'large',
 	});
 
 	addFieldOptions('detailsParticipants', 'checkbox', {
-		label: t('editor.submission.stageParticipants'),
-		description: t('tasks.discussions.form.details.participants.description'),
 		groupId: 'details',
+		label: t('editor.submission.stageParticipants'),
+		description: t('discussion.form.detailsParticipantsDescription'),
 		name: 'detailsParticipants',
-		options: participantOptions,
+		options: getParticipantOptions(true),
 	});
 
-	addGroup('taskInformation');
+	addGroup('taskInformation', {
+		label: t('discussion.form.taskInformation'),
+		description: t('discussion.form.taskInfoDescription'),
+	});
+
+	addFieldCheckbox('taskInfoAdd', {
+		groupId: 'taskInformation',
+		label: t('discussion.form.taskInfoLabel'),
+	});
+
+	addFieldText('taskInfoDueDate', {
+		groupId: 'taskInformation',
+		label: t('common.dueDate'),
+		inputType: 'date',
+		description: t('discussion.form.taskInfoDueDateDescription'),
+		size: 'large',
+		showWhen: 'taskInfoAdd',
+	});
+
+	addFieldOptions('taskInfoParticipants', 'checkbox', {
+		groupId: 'taskInformation',
+		label: t('discussion.form.taskInfoAssigneesLabel'),
+		description: t('discussion.form.taskInfoAssigneesDdescription'),
+		name: 'taskInfoParticipants',
+		showWhen: 'taskInfoAdd',
+		options: getParticipantOptions(),
+	});
+
+	addFieldSelect('taskInfoShouldStart', {
+		groupId: 'taskInformation',
+		name: 'taskInfoShouldStart',
+		showWhen: 'taskInfoAdd',
+		value: true,
+		options: [
+			{
+				label: t('discussion.form.startTaskUponSaving'),
+				value: true,
+			},
+			{
+				label: t('discussion.form.createDontStartTask'),
+				value: false,
+			},
+		],
+	});
 
 	addGroup('discussion', {
 		label: t('submission.discussion'),
-		description: t('tasks.discussions.form.discussion.description'),
+		description: t('discussion.form.discussionDescription'),
 	});
 
 	addFieldRichTextArea('discussionText', {
