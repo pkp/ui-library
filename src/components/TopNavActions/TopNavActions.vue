@@ -65,7 +65,10 @@
 								:key="locale.key"
 								:class="actionLinkStyle"
 							>
-								<a :href="locale.href" class="block w-full no-underline">
+								<a
+									:href="locale.href"
+									class="block w-full px-2 py-1 no-underline"
+								>
 									<Icon
 										v-if="locale.key === currentLocale"
 										icon="Complete"
@@ -97,12 +100,12 @@
 					<div class="-ml-2 -mr-2 text-wrap px-2 pt-2">
 						<ul>
 							<li :class="actionLinkStyle">
-								<a :href="editProfileLink" class="block">
+								<a :href="editProfileLink" class="block px-2 py-1">
 									{{ t('user.profile.editProfile') }}
 								</a>
 							</li>
 							<li :class="actionLinkStyle">
-								<a :href="signOutLink" class="block">
+								<a :href="signOutLink" class="block px-2 py-1">
 									{{
 										_isUserLoggedInAs
 											? t('user.logOutAs', {username: currentUser.username})
@@ -186,7 +189,7 @@ const getAnimationStyle = (buttonType) => {
 const actionLinkStyle = [
 	'max-w-full cursor-pointer overflow-hidden truncate whitespace-nowrap',
 	'rounded border border-transparent bg-transparent hover:!border-primary',
-	'px-2 py-1 leading-6 text-primary',
+	'leading-6 text-primary',
 ];
 
 function getSupportedLocalesList() {
