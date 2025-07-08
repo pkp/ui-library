@@ -174,6 +174,7 @@ window.pkp = {
 		'common.attachFiles': 'Attach Files',
 		'common.back': 'Back',
 		'common.cancel': 'Cancel',
+		'common.changeLanguage': 'Change Language',
 		'common.clearSearch': 'Clear search phrase',
 		'common.close': 'Close',
 		'common.commaListSeparator': ', ',

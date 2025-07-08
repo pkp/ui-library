@@ -57,7 +57,7 @@
 						class="-ml-2 -mr-2 border-b border-b-light pb-2 pl-2 pr-2"
 					>
 						<div class="ps-2 text-base-bold leading-6 text-secondary">
-							Change Language
+							{{ t('common.changeLanguage') }}
 						</div>
 						<ul>
 							<li
