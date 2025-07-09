@@ -58,6 +58,8 @@ import fetch from '@/mixins/fetch';
 import cloneDeep from 'clone-deep';
 import AnnouncementsEditModal from './AnnouncementsEditModal.vue';
 import {useModal} from '@/composables/useModal';
+import {useDate} from '@/composables/useDate';
+const {formatShortDate} = useDate();
 
 export default {
 	components: {
@@ -259,7 +261,12 @@ export default {
 			activeForm.method = 'PUT';
 			activeForm.fields = activeForm.fields.map((field) => {
 				if (Object.keys(announcement).includes(field.name)) {
-					field.value = announcement[field.name];
+					let value = announcement[field.name];
+
+					if (field.name == 'dateExpire') {
+						value = formatShortDate(value);
+					}
+					field.value = value;
 				}
 				return field;
 			});
