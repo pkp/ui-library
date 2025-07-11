@@ -1,3 +1,4 @@
+// todo: @gaziyucel make relevant changes for structured citations
 import {DashboardPageTypes} from '@/pages/dashboard/dashboardPageStore';
 
 import * as ConfigAuthorOJS from './workflowConfigAuthorOJS';
