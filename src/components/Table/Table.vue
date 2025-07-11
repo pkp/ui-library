@@ -145,8 +145,8 @@ provide('tableContext', tableContext);
 <style lang="less">
 @import '../../styles/_import';
 
-/** 
-Keeping subset of table styling to support urn plugin, which inserts table via FieldHtml 
+/**
+Keeping subset of table styling to support urn plugin, which inserts table via FieldHtml
 Better solution in future would be to implement custom Field, which would use our table component directly.
 */
 
