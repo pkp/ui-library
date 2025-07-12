@@ -1,11 +1,14 @@
 import {computed} from 'vue';
 import {useForm} from '@/composables/useForm';
 import {useModal} from '@/composables/useModal';
+import {useDate} from '@/composables/useDate';
 import {useLocalize} from '@/composables/useLocalize';
 import {useCurrentUser} from '@/composables/useCurrentUser';
 import {useParticipantManagerStore} from '../ParticipantManager/participantManagerStore';
+import {useTasksAndDiscussionsStore} from '@/pages/tasksAndDiscussions/tasksAndDiscussionsStore';
 import FileAttacherModal from '@/components/Composer/FileAttacherModal.vue';
 import FieldPreparedContentInsertModal from '@/components/Form/fields/FieldPreparedContentInsertModal.vue';
+import DiscussionManagerTemplates from './DiscussionManagerTemplates.vue';
 import preparedContent from '../../mixins/preparedContent';
 
 export function useDiscussionManagerForm({
@@ -22,6 +25,22 @@ export function useDiscussionManagerForm({
 	});
 
 	const currentUser = useCurrentUser();
+	const {getRelativeTargetDate} = useDate();
+
+	const {
+		form,
+		initEmptyForm,
+		addPage,
+		addGroup,
+		set,
+		setValue,
+		addFieldText,
+		addFieldOptions,
+		addFieldRichTextArea,
+		addFieldCheckbox,
+		addFieldSelect,
+		addGroupComponent,
+	} = useForm({}, {customSubmit: handleFormSubmission});
 
 	function getParticipantOptions(withSubLabel) {
 		return computed(() => {
@@ -83,6 +102,76 @@ export function useDiscussionManagerForm({
 		return badgeProps;
 	}
 
+	function initDiscussionText() {
+		return {
+			setup: (editor) => {
+				editor.ui.registry.addButton('pkpAttachFiles', {
+					icon: 'upload',
+					text: t('common.attachFiles'),
+					onAction() {
+						const {openSideModal} = useModal();
+
+						openSideModal(FileAttacherModal, {
+							title: t('common.attachFiles'),
+							attachers: [],
+							onAddAttachments: [],
+						});
+					},
+				});
+
+				editor.ui.registry.addButton('pkpInsert', {
+					icon: 'plus',
+					text: t('common.insertContent'),
+					onAction() {
+						const {openSideModal} = useModal(FieldPreparedContentInsertModal);
+						openSideModal(FieldPreparedContentInsertModal, {
+							title: t('common.insertContent'),
+							insertLabel: t('common.insert'),
+							preparedContent,
+							preparedContentLabel: 'Label',
+							onInsert: () => {},
+						});
+					},
+				});
+			},
+		};
+	}
+
+	function getTemplates() {
+		const tasksAndDiscussionsStore = useTasksAndDiscussionsStore();
+		return computed(() => {
+			return tasksAndDiscussionsStore.templatesList;
+		});
+	}
+
+	function selectTemplate(template) {
+		setValue('detailsName', template.name);
+		setValue('discussionText', template.content);
+
+		const selectedParticipants =
+			participantManagerStore.participantsList
+				.filter((p) =>
+					template.taskDetails?.participantRoles?.includes(p.roleId),
+				)
+				.map((p) => p.id) || [];
+		setValue('detailsParticipants', selectedParticipants);
+
+		setValue('taskInfoAdd', template.isTask);
+
+		if (template.isTask) {
+			setValue('taskInfoParticipants', selectedParticipants);
+
+			if (template.taskDetails.dueDate) {
+				setValue(
+					'taskInfoDueDate',
+					getRelativeTargetDate(template.taskDetails.dueDate),
+				);
+			}
+		} else {
+			setValue('taskInfoDueDate', null);
+		}
+	}
+
 	async function handleFormSubmission(formData) {
 		// return result to Form component handler
 		return {
@@ -90,19 +179,6 @@ export function useDiscussionManagerForm({
 			validationError: {},
 		};
 	}
-
-	const {
-		form,
-		initEmptyForm,
-		addPage,
-		addGroup,
-		set,
-		addFieldText,
-		addFieldOptions,
-		addFieldRichTextArea,
-		addFieldCheckbox,
-		addFieldSelect,
-	} = useForm({}, {customSubmit: handleFormSubmission});
 
 	initEmptyForm('discussion', {
 		showErrorFooter: false,
@@ -116,6 +192,15 @@ export function useDiscussionManagerForm({
 	addGroup('details', {
 		label: t('common.details'),
 		description: t('discussion.form.detailsDescription'),
+	});
+
+	addGroupComponent('details', {
+		id: 'discussionManagerTemplates',
+		component: DiscussionManagerTemplates,
+		props: {
+			templates: getTemplates(),
+		},
+		onEvent: selectTemplate,
 	});
 
 	addFieldText('detailsName', {
@@ -188,38 +273,7 @@ export function useDiscussionManagerForm({
 		toolbar: 'bold italic underline bullist | pkpAttachFiles | pkpInsert',
 		plugins: ['lists'],
 		size: 'large',
-		init: {
-			setup: (editor) => {
-				editor.ui.registry.addButton('pkpAttachFiles', {
-					icon: 'upload',
-					text: t('common.attachFiles'),
-					onAction() {
-						const {openSideModal} = useModal();
-
-						openSideModal(FileAttacherModal, {
-							title: t('common.attachFiles'),
-							attachers: [],
-							onAddAttachments: [],
-						});
-					},
-				});
-
-				editor.ui.registry.addButton('pkpInsert', {
-					icon: 'plus',
-					text: t('common.insertContent'),
-					onAction() {
-						const {openSideModal} = useModal(FieldPreparedContentInsertModal);
-						openSideModal(FieldPreparedContentInsertModal, {
-							title: t('common.insertContent'),
-							insertLabel: t('common.insert'),
-							preparedContent,
-							preparedContentLabel: 'Label',
-							onInsert: () => {},
-						});
-					},
-				});
-			},
-		},
+		init: initDiscussionText(),
 	});
 
 	const badgeProps = getBadgeProps(status);
