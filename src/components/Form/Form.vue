@@ -121,6 +121,8 @@ export default {
 		},
 		/** Array of form fields. This prop is typically configured on the server, using the `Form` and `Field` classes in the PHP application. */
 		fields: Array,
+		/** The components to render within the form group heading. */
+		groupComponents: Array,
 		/** Array of form groups. See "Groups and Group Descriptions" below. */
 		groups: Array,
 		/** Key/value of hidden fields that should be submitted with the form. The key will be used as the field's `name` attribute. */

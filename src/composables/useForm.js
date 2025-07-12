@@ -362,6 +362,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 			previousButton,
 		});
 	}
+
 	function addGroup(groupId, {pageId, label, description} = {}) {
 		form.value.groups = form.value.groups || [];
 		form.value.groups.push({
@@ -370,6 +371,16 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 			description,
 			pageId: pageId || 'default',
 		});
+	}
+
+	function addGroupComponent(groupId, component) {
+		const group = form.value.groups.find((g) => g.id === groupId);
+		if (group) {
+			group.groupComponents = group.groupComponents || [];
+			group.groupComponents.push(component);
+		} else {
+			console.warn(`Group with id ${groupId} not found.`);
+		}
 	}
 
 	/**
@@ -570,6 +581,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		initEmptyForm,
 		addPage,
 		addGroup,
+		addGroupComponent,
 		addFieldText,
 		addFieldSelect,
 		addFieldOptions,
