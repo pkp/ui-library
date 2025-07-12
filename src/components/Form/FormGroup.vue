@@ -7,6 +7,16 @@
 				v-strip-unsafe-html="description"
 				class="pkpFormGroup__description semantic-defaults"
 			></div>
+
+			<div v-if="groupComponents">
+				<template v-for="component in groupComponents" :key="component.id">
+					<component
+						:is="component.component"
+						v-bind="component.props"
+						@on-event="component.onEvent"
+					></component>
+				</template>
+			</div>
 		</div>
 		<div class="pkpFormGroup__fields">
 			<template v-for="field in fieldsInGroup">
@@ -126,6 +136,7 @@ export default {
 		description: String,
 		pageId: String,
 		fields: Array,
+		groupComponents: Array,
 		errors: Object,
 		formId: String,
 		primaryLocale: String,
