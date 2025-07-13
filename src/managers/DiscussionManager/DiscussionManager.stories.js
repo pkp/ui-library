@@ -2,6 +2,7 @@ import {within, userEvent} from '@storybook/test';
 import {http, HttpResponse} from 'msw';
 import DiscussionManager from './DiscussionManager.vue';
 import {DiscussionsDataMock} from '@/mockFactories/discussionMock';
+import {TemplatesDataMock} from '@/mockFactories/taskDiscussionTemplates';
 import {getSubmissionMock} from '@/mockFactories/submissionMock';
 import {getParticipantMock} from '@/mockFactories/participantMock';
 
@@ -74,37 +75,7 @@ export const AddForm = {
 				http.get(
 					'https://mock/index.php/publicknowledge/api/v1/templates',
 					() => {
-						return HttpResponse.json([
-							{
-								id: 1,
-								name: 'Template 1',
-								description: 'Description 1',
-								content: 'Content 1',
-								isTask: true,
-								taskDetails: {
-									participantRoles: [16, 1],
-									dueDate: 'P1W',
-								},
-							},
-							{
-								id: 2,
-								name: 'Template 2',
-								description: 'Description 2',
-								content: 'Content 2',
-								isTask: false,
-							},
-							{
-								id: 3,
-								name: 'Template 3',
-								description: 'Description 3',
-								content: 'Content 3',
-								isTask: true,
-								taskDetails: {
-									participantRoles: [65536],
-									dueDate: 'P3M',
-								},
-							},
-						]);
+						return HttpResponse.json(TemplatesDataMock);
 					},
 				),
 			],

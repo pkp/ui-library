@@ -145,6 +145,7 @@ export function useDiscussionManagerForm({
 	}
 
 	function selectTemplate(template) {
+		const isTask = template.type === 'Task';
 		setValue('detailsName', template.name);
 		setValue('discussionText', template.content);
 
@@ -156,9 +157,9 @@ export function useDiscussionManagerForm({
 				.map((p) => p.id) || [];
 		setValue('detailsParticipants', selectedParticipants);
 
-		setValue('taskInfoAdd', template.isTask);
+		setValue('taskInfoAdd', isTask);
 
-		if (template.isTask) {
+		if (isTask) {
 			setValue('taskInfoParticipants', selectedParticipants);
 
 			if (template.taskDetails.dueDate) {
