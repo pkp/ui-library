@@ -11,7 +11,7 @@
 		"
 	/>
 	<ul
-		class="mt-1 list-none p-0"
+		class="mt-2 max-h-80 list-none overflow-y-auto p-0"
 		aria-live="true"
 		:aria-label="t('search.searchResults')"
 	>
@@ -28,7 +28,11 @@
 					{{ template.name }}
 				</div>
 				<div class="mt-1 text-base-normal text-secondary">
-					{{ template.description }}
+					{{
+						template.type === 'Task'
+							? t('discussion.template.taskDescription')
+							: t('discussion.template.discussionDescription')
+					}}
 				</div>
 			</button>
 		</li>
