@@ -70,7 +70,11 @@
 				@show-locale="showLocale"
 				@cancel="cancel"
 				@set-errors="setErrors"
-			/>
+			>
+				<template #group-layout="{groupData}">
+					<slot name="group-layout" :group-data="groupData" />
+				</template>
+			</FormPage>
 		</div>
 	</form>
 </template>
