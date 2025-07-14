@@ -125,7 +125,6 @@ export default {
 		description: String,
 		pageId: String,
 		fields: Array,
-		groupComponents: Array,
 		errors: Object,
 		formId: String,
 		primaryLocale: String,
