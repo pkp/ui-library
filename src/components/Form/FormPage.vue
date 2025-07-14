@@ -13,7 +13,11 @@
 			:form-id="formId"
 			@change="fieldChanged"
 			@set-errors="setErrors"
-		/>
+		>
+			<template #group-layout="{groupData}">
+				<slot name="group-layout" :group-data="groupData" />
+			</template>
+		</FormGroup>
 		<ButtonRow
 			v-if="hasFooter"
 			ref="footer"

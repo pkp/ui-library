@@ -1,22 +1,9 @@
 <template>
 	<fieldset class="pkpFormGroup -pkpClearfix" :class="spacingStyle">
-		<div v-if="label" class="pkpFormGroup__heading">
-			<legend class="pkpFormGroup__legend">{{ label }}</legend>
-			<div
-				v-if="description"
-				v-strip-unsafe-html="description"
-				class="pkpFormGroup__description semantic-defaults"
-			></div>
-
-			<div v-if="groupComponents">
-				<template v-for="component in groupComponents" :key="component.id">
-					<component
-						:is="component.component"
-						v-bind="component.props"
-						@on-event="component.onEvent"
-					></component>
-				</template>
-			</div>
+		<div v-if="label || $slots.groupLayout" class="pkpFormGroup__heading">
+			<slot name="group-layout" :group-data="{id}">
+				<FormGroupHeader :label="label" :description="description" />
+			</slot>
 		</div>
 		<div class="pkpFormGroup__fields">
 			<template v-for="field in fieldsInGroup">
@@ -65,6 +52,7 @@
 </template>
 
 <script>
+import FormGroupHeader from './FormGroupHeader.vue';
 import FieldAffiliations from './fields/FieldAffiliations.vue';
 import FieldArchivingPn from './fields/FieldArchivingPn.vue';
 import FieldAutosuggestPreset from './fields/FieldAutosuggestPreset.vue';
@@ -100,6 +88,7 @@ import {shouldShowFieldWithinGroup} from './formHelpers';
 export default {
 	name: 'FormGroup',
 	components: {
+		FormGroupHeader,
 		FieldAffiliations,
 		FieldArchivingPn,
 		FieldAutosuggestPreset,
