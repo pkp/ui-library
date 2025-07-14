@@ -379,10 +379,11 @@ window.pkp = {
 		'discussion.title': 'Desk Review Tasks & Discussions',
 		'discussion.description':
 			'Use this space to start discussions, assign tasks to others, or create your personal task list to help you move this submission to the next stage.',
+		'discussion.form.templatesLabel': 'Templates to get you started!',
 		'discussion.form.description':
 			'Open for What? Open to What? Beyond Content',
 		'discussion.form.detailsDescription':
-			'Use this space to share essential information',
+			'Use this space to share essential information.',
 		'discussion.form.detailsNameDescription':
 			'Please enter the name for this task and discussion.',
 		'discussion.form.detailsParticipantsDescription':
@@ -395,12 +396,16 @@ window.pkp = {
 			'Please enter the tasks details here to help manage this task effectively.',
 		'discussion.form.taskInfoAssigneesLabel':
 			'Responsible to complete this task',
-		'discussion.form.taskInfoAssigneesDdescription':
+		'discussion.form.taskInfoAssigneesDescription':
 			'If there is a specific participant designated to complete this task, please assign it to them here.',
 		'discussion.form.taskInfoDueDateDescription':
 			'If there is a deadline for this task, you can indicate it here. The due date will be communicated and established for each participant assigned to this task.',
 		'discussion.form.createDontStartTask': 'Create Task (Do Not Start)',
 		'discussion.form.startTaskUponSaving': 'Begin Task Upon Saving',
+		'discussion.template.taskDescription':
+			'This task template auto-fills the task name, due date, description, and roles. After selecting the template, you can modify any details before saving the task.',
+		'discussion.template.discussionDescription':
+			'This discussion template pre-fills the name, participants, and starting message. You can adjust the details before starting.',
 		'doi.manager.versions.countStatement': 'There are {$count} versions.',
 		'doi.manager.versions.modalTitle': 'DOIs for all versions',
 		'doi.manager.versions.view': 'View all',
@@ -818,6 +823,7 @@ window.pkp = {
 		'submission.contributors': 'List of Contributors',
 		'submission.copyediting': 'Copyediting',
 		'submission.discussion': 'Discussion',
+		'submission.task': 'Task',
 		'submission.files': 'Files',
 		'submission.files.downloadAll': 'Download All Files',
 		'submission.finalDraft': 'Draft Files',
