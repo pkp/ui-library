@@ -1,4 +1,9 @@
 <template>
+	<FormGroupHeader
+		:label="t('common.details')"
+		:description="t('discussion.form.detailsDescription')"
+	/>
+
 	<div v-if="templates.length" class="mt-4 text-lg-bold">
 		{{ t('discussion.form.templatesLabel') }}
 	</div>
@@ -25,7 +30,14 @@
 				"
 			>
 				<div class="text-lg-medium text-primary">
-					{{ template.name }}
+					<span class="uppercase">
+						{{
+							template.type === 'Task'
+								? t('submission.task')
+								: t('submission.discussion')
+						}}
+					</span>
+					- {{ template.name }}
 				</div>
 				<div class="mt-1 text-base-normal text-secondary">
 					{{
@@ -40,8 +52,9 @@
 </template>
 
 <script setup>
-import {t} from '@/utils/i18n';
+import FormGroupHeader from '@/components/Form/FormGroupHeader.vue';
 import Search from '@/components/Search/Search.vue';
+import {t} from '@/utils/i18n';
 
 const emit = defineEmits(['on-event']);
 
