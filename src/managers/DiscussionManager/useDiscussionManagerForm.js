@@ -8,7 +8,6 @@ import {useParticipantManagerStore} from '../ParticipantManager/participantManag
 import {useTasksAndDiscussionsStore} from '@/pages/tasksAndDiscussions/tasksAndDiscussionsStore';
 import FileAttacherModal from '@/components/Composer/FileAttacherModal.vue';
 import FieldPreparedContentInsertModal from '@/components/Form/fields/FieldPreparedContentInsertModal.vue';
-import DiscussionManagerTemplates from './DiscussionManagerTemplates.vue';
 import preparedContent from '../../mixins/preparedContent';
 
 export function useDiscussionManagerForm({
@@ -39,7 +38,6 @@ export function useDiscussionManagerForm({
 		addFieldOptions,
 		addFieldRichTextArea,
 		addFieldSelect,
-		addGroupComponent,
 	} = useForm({}, {customSubmit: handleFormSubmission});
 
 	function getParticipantOptions(withSubLabel) {
@@ -198,15 +196,6 @@ export function useDiscussionManagerForm({
 	addGroup('details', {
 		label: t('common.details'),
 		description: t('discussion.form.detailsDescription'),
-	});
-
-	addGroupComponent('details', {
-		id: 'discussionManagerTemplates',
-		component: DiscussionManagerTemplates,
-		props: {
-			templates: getTemplates(),
-		},
-		onEvent: selectTemplate,
 	});
 
 	addFieldText('detailsName', {

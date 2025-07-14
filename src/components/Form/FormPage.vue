@@ -96,7 +96,6 @@ export default {
 		id: String,
 		groups: Array,
 		fields: Array,
-		groupComponents: Array,
 		errors: Object,
 		formId: String,
 		isCurrentPage: Boolean,

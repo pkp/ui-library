@@ -373,16 +373,6 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		});
 	}
 
-	function addGroupComponent(groupId, component) {
-		const group = form.value.groups.find((g) => g.id === groupId);
-		if (group) {
-			group.groupComponents = group.groupComponents || [];
-			group.groupComponents.push(component);
-		} else {
-			console.warn(`Group with id ${groupId} not found.`);
-		}
-	}
-
 	/**
 	 * Adds a new field to the form or updates an existing one.
 	 * @param {string} fieldName - The name of the field
@@ -581,7 +571,6 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		initEmptyForm,
 		addPage,
 		addGroup,
-		addGroupComponent,
 		addFieldText,
 		addFieldSelect,
 		addFieldOptions,
