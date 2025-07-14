@@ -1,4 +1,4 @@
-import {computed} from 'vue';
+import {computed, ref} from 'vue';
 import {useForm} from '@/composables/useForm';
 import {useModal} from '@/composables/useModal';
 import {useDate} from '@/composables/useDate';
@@ -26,6 +26,7 @@ export function useDiscussionManagerForm({
 
 	const currentUser = useCurrentUser();
 	const {getRelativeTargetDate} = useDate();
+	const isTask = ref(false);
 
 	const {
 		form,
@@ -37,7 +38,6 @@ export function useDiscussionManagerForm({
 		addFieldText,
 		addFieldOptions,
 		addFieldRichTextArea,
-		addFieldCheckbox,
 		addFieldSelect,
 		addGroupComponent,
 	} = useForm({}, {customSubmit: handleFormSubmission});
@@ -145,7 +145,7 @@ export function useDiscussionManagerForm({
 	}
 
 	function selectTemplate(template) {
-		const isTask = template.type === 'Task';
+		isTask.value = template.type === 'Task';
 		setValue('detailsName', template.name);
 		setValue('discussionText', template.content);
 
@@ -157,9 +157,9 @@ export function useDiscussionManagerForm({
 				.map((p) => p.id) || [];
 		setValue('detailsParticipants', selectedParticipants);
 
-		setValue('taskInfoAdd', isTask);
+		setValue('taskInfoIsChecked', isTask.value ? 'true' : 'false');
 
-		if (isTask) {
+		if (isTask.value) {
 			setValue('taskInfoParticipants', selectedParticipants);
 
 			if (template.taskDetails.dueDate) {
@@ -171,6 +171,11 @@ export function useDiscussionManagerForm({
 		} else {
 			setValue('taskInfoDueDate', null);
 		}
+	}
+
+	function onAddTaskInfo(checked) {
+		isTask.value = checked;
+		setValue('taskInfoIsChecked', checked ? 'true' : 'false');
 	}
 
 	async function handleFormSubmission(formData) {
@@ -224,9 +229,10 @@ export function useDiscussionManagerForm({
 		description: t('discussion.form.taskInfoDescription'),
 	});
 
-	addFieldCheckbox('taskInfoAdd', {
+	addFieldText('taskInfoIsChecked', {
 		groupId: 'taskInformation',
-		label: t('discussion.form.taskInfoLabel'),
+		inputType: 'hidden',
+		value: 'false',
 	});
 
 	addFieldText('taskInfoDueDate', {
@@ -235,22 +241,22 @@ export function useDiscussionManagerForm({
 		inputType: 'date',
 		description: t('discussion.form.taskInfoDueDateDescription'),
 		size: 'large',
-		showWhen: 'taskInfoAdd',
+		showWhen: ['taskInfoIsChecked', 'true'],
 	});
 
 	addFieldOptions('taskInfoParticipants', 'checkbox', {
 		groupId: 'taskInformation',
 		label: t('discussion.form.taskInfoAssigneesLabel'),
-		description: t('discussion.form.taskInfoAssigneesDdescription'),
+		description: t('discussion.form.taskInfoAssigneesDescription'),
 		name: 'taskInfoParticipants',
-		showWhen: 'taskInfoAdd',
+		showWhen: ['taskInfoIsChecked', 'true'],
 		options: getParticipantOptions(),
 	});
 
 	addFieldSelect('taskInfoShouldStart', {
 		groupId: 'taskInformation',
 		name: 'taskInfoShouldStart',
-		showWhen: 'taskInfoAdd',
+		showWhen: ['taskInfoIsChecked', 'true'],
 		value: true,
 		options: [
 			{
@@ -283,5 +289,13 @@ export function useDiscussionManagerForm({
 		form,
 		set,
 		badgeProps,
+		templates: getTemplates(),
+		detailsForm: {
+			selectTemplate,
+		},
+		taskForm: {
+			onAddTaskInfo,
+			isTask,
+		},
 	};
 }
