@@ -32,7 +32,7 @@
 				leave-to-class="transform opacity-0 scale-95"
 			>
 				<MenuItems
-					class="absolute z-10 w-max border border-light bg-secondary shadow focus:outline-none"
+					class="absolute z-10 flex w-fit min-w-[96px] flex-col border border-light bg-secondary shadow focus:outline-none"
 					:class="
 						direction === 'right'
 							? 'ltr:left-0 ltr:origin-top-left rtl:right-0 rtl:origin-top-left'
@@ -44,29 +44,28 @@
 						:key="i"
 						v-slot="{active, close}"
 						:disabled="action.disabled || false"
+						as="template"
 					>
-						<div class="min-w-[96px]">
-							<PkpButton
-								v-if="isValidAction(action)"
-								:element="action.url ? 'a' : 'button'"
-								:href="action.url"
-								:icon="action.icon"
-								:is-active="active"
-								:is-warnable="action.isWarnable"
-								:class="i !== actions.length - 1 ? 'border-b' : ''"
-								size-variant="fullWidth"
-								:is-disabled="action.disabled || false"
-								class="border-light"
-								@click="
-									() => {
-										emitAction(action);
-										close();
-									}
-								"
-							>
-								{{ action.label }}
-							</PkpButton>
-						</div>
+						<PkpButton
+							v-if="isValidAction(action)"
+							:element="action.url ? 'a' : 'button'"
+							:href="action.url"
+							:icon="action.icon"
+							:is-active="active"
+							:is-warnable="action.isWarnable"
+							:class="i !== actions.length - 1 ? 'border-b' : ''"
+							size-variant="fullWidth"
+							:is-disabled="action.disabled || false"
+							class="whitespace-nowrap border-light"
+							@click="
+								() => {
+									emitAction(action);
+									close();
+								}
+							"
+						>
+							{{ action.label }}
+						</PkpButton>
 					</MenuItem>
 				</MenuItems>
 			</transition>
