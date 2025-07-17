@@ -58,11 +58,11 @@ export const useUserCommentStore = defineComponentStore(
 		const reportsTableColumns = computed(() => {
 			return [
 				{
-					header: t('manager.userComment.reportedBy'),
+					header: t('manager.userComment.report.reason'),
 					headerSrOnly: false,
 				},
 				{
-					header: t('manager.userComment.reason'),
+					header: t('manager.userComment.reportedBy'),
 					headerSrOnly: false,
 				},
 				{
@@ -107,6 +107,7 @@ export const useUserCommentStore = defineComponentStore(
 		const {
 			items: comments,
 			pagination: commentsPagination,
+			isLoading: isCommentsLoading,
 			fetch: fetchComments,
 		} = useFetchPaginated(commentsUrl, {
 			currentPage: currentCommentsPage,
@@ -132,7 +133,7 @@ export const useUserCommentStore = defineComponentStore(
 
 		watch(
 			[currentCommentReportsPage, reportsUrl],
-			async () => await _fetchCommentReports(),
+			async () => await fetchCommentReports(),
 		);
 
 		/**
@@ -150,12 +151,12 @@ export const useUserCommentStore = defineComponentStore(
 						label: t('common.delete'),
 						isWarnable: true,
 						callback: async (close) => {
-							const {apiUrl} = useUrl(
-								`comments/${report.userCommentId}/reports/${report.id}`,
+							const {isSuccess, fetch: deleteReport} = useFetch(
+								`${apiUrl.value}/${report.userCommentId}/reports/${report.id}`,
+								{
+									method: 'DELETE',
+								},
 							);
-							const {isSuccess, fetch: deleteReport} = useFetch(apiUrl, {
-								method: 'DELETE',
-							});
 
 							await deleteReport();
 
@@ -165,7 +166,7 @@ export const useUserCommentStore = defineComponentStore(
 									t('manager.userComment.deleteReport.success'),
 									'success',
 								);
-								await _fetchCommentReports();
+								await fetchCommentReports();
 							}
 
 							close();
@@ -186,7 +187,7 @@ export const useUserCommentStore = defineComponentStore(
 		 * @param {boolean} isApproved - Whether the comment is approved or not.
 		 * @param {object} comment - The comment to toggle approval for.
 		 */
-		async function toggleCommentApproval(isApproved, comment) {
+		async function toggleCommentApproval(isApproved) {
 			const {apiUrl} = useUrl(
 				`comments/${currentComment.value.id}/setApproval`,
 			);
@@ -268,7 +269,7 @@ export const useUserCommentStore = defineComponentStore(
 
 		/**
 		 * Set the current comment to be displayed in the detail view.
-		 * @param {obejct} comment - The comment to set as current.
+		 * @param {object} comment - The comment to set as current.
 		 */
 		function setCurrentComment(comment) {
 			currentComment.value = comment;
@@ -322,9 +323,12 @@ export const useUserCommentStore = defineComponentStore(
 						label: t('common.delete'),
 						isWarnable: true,
 						callback: async (close) => {
-							const {isSuccess, fetch} = useFetch(apiUrl, {
-								method: 'DELETE',
-							});
+							const {isSuccess, fetch} = useFetch(
+								`${apiUrl.value}/${comment.id}`,
+								{
+									method: 'DELETE',
+								},
+							);
 							await fetch();
 							if (isSuccess.value) {
 								pkp.eventBus.$emit(
@@ -349,6 +353,26 @@ export const useUserCommentStore = defineComponentStore(
 		}
 
 		/**
+		 * Get the options for comment types(approved, needs approval, reported), to select from to view comments
+		 */
+		const commentTypeOptions = computed(() => {
+			return [
+				{
+					label: t('manager.userComment.approved'),
+					value: 'approved',
+				},
+				{
+					label: t('manager.userComment.needsApproval'),
+					value: 'needsApproval',
+				},
+				{
+					label: t('manager.userComment.reported'),
+					value: 'reported',
+				},
+			];
+		});
+
+		/**
 		 * Open the report detail modal for a specific report.
 		 * @param {object} report - The report to open in detail view.
 		 */
@@ -359,6 +383,25 @@ export const useUserCommentStore = defineComponentStore(
 				comment: comments.value.find((c) => c.id === report.userCommentId),
 			});
 		}
+
+		/**
+		 * Get the status text for a comment.
+		 * @param comment
+		 * @returns {string}
+		 */
+		function getCommentStatusText(comment) {
+			const status = [];
+			if (comment.isApproved) {
+				status.push(t('manager.userComment.approved'));
+			} else {
+				status.push(t('manager.userComment.needsApproval'));
+			}
+			if (comment.isReported) {
+				status.push(t('manager.userComment.reported'));
+			}
+			return status.join(', ');
+		}
+
 		return {
 			reportDelete,
 			toggleCommentApproval,
@@ -369,8 +412,8 @@ export const useUserCommentStore = defineComponentStore(
 			commentDelete,
 			getReportItemActions,
 			setCurrentReportsPage,
-			fetchReportsPaginated: fetchCommentReports,
 			openReport,
+			getCommentStatusText,
 			commentApprovalOptions,
 			selectedCommentStatus,
 			itemsPerPage,
@@ -380,6 +423,8 @@ export const useUserCommentStore = defineComponentStore(
 			currentCommentReports,
 			currentCommentReportsPagination,
 			reportsTableColumns,
+			commentTypeOptions,
+			isCommentsLoading,
 		};
 	},
 );

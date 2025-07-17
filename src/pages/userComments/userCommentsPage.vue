@@ -2,19 +2,23 @@
 	<div>
 		<PkpTable>
 			<template #label>
-				<h1 class="text-3xl-bold">
-					{{ t('manager.userComment.userComments') }}
-				</h1>
+				<span class="flex gap-4 text-3xl-bold">
+					User Comments
+					<Spinner
+						v-if="userCommentStore.isCommentsLoading"
+						size-variant="big"
+					></Spinner>
+				</span>
 			</template>
 			<template #top-controls>
 				<FieldSelect
 					label="Status"
-					:options="options"
+					:options="userCommentStore.commentTypeOptions"
 					primary-locale="en"
 					size="normal"
 					:value="userCommentStore.selectedCommentStatus"
 					@change="
-						(fieldName, propName, newValue, localeKey) =>
+						(fieldName, propName, newValue) =>
 							userCommentStore.onDropDownChanged(newValue)
 					"
 				/>
@@ -47,7 +51,9 @@
 							{{ comment.userName }}
 						</span>
 					</TableCell>
-					<TableCell>{{ getStatusText(comment) }}</TableCell>
+					<TableCell>
+						{{ userCommentStore.getCommentStatusText(comment) }}
+					</TableCell>
 					<TableCell>
 						<PkpButton
 							:is-link="true"
@@ -86,6 +92,7 @@ import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useUserCommentStore} from '@/pages/userComments/userCommentStore';
 import TablePagination from '@/components/Table/TablePagination.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
 
 const props = defineProps({
 	itemsPerPage: {
@@ -96,32 +103,4 @@ const props = defineProps({
 
 const userCommentStore = useUserCommentStore(props);
 const {t} = useLocalize();
-
-const options = [
-	{
-		label: t('manager.userComment.approved'),
-		value: 'approved',
-	},
-	{
-		label: t('manager.userComment.needsApproval'),
-		value: 'needsApproval',
-	},
-	{
-		label: t('manager.userComment.reported'),
-		value: 'reported',
-	},
-];
-
-function getStatusText(comment) {
-	const status = [];
-	if (comment.isApproved) {
-		status.push('Approved');
-	} else {
-		status.push('Hidden/Needs Approval');
-	}
-	if (comment.isReported) {
-		status.push('Reported');
-	}
-	return status.join(', ');
-}
 </script>
