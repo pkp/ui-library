@@ -1,55 +1,18 @@
 <template>
-	<TransitionRoot as="template" :show="open">
-		<HLDialog
-			as="div"
-			class="relative z-10"
-			:initial-focus="closeModalButton"
-			@close="handleClose"
-		>
-			<TransitionChild
-				as="template"
-				enter="ease-in-out duration-500"
-				enter-from="opacity-0"
-				enter-to="opacity-100"
-				leave="ease-in-out duration-500"
-				leave-from="opacity-100"
-				leave-to="opacity-0"
-			>
-				<div class="fixed inset-0 bg-blur transition-opacity" />
-			</TransitionChild>
-
-			<div class="fixed inset-0 overflow-hidden">
-				<div class="absolute inset-0 overflow-hidden">
-					<div
-						class="pointer-events-none fixed inset-y-0 flex max-w-full ltr:right-0 ltr:pl-10 rtl:left-0 rtl:pr-10"
-					>
-						<TransitionChild
-							as="template"
-							enter="transform transition ease-in-out duration-500"
-							enter-from="ltr:translate-x-full rtl:-translate-x-full"
-							enter-to="translate-x-0"
-							leave="transform transition ease-in-out duration-500"
-							leave-from="translate-x-0"
-							leave-to="ltr:translate-x-full rtl:-translate-x-full"
-						>
-							<div>
-								<slot />
-							</div>
-						</TransitionChild>
-					</div>
-				</div>
+	<DialogRoot :open="open" @update:open="handleRootClose">
+		<DialogPortal>
+			<div v-bind="$attrs">
+				<DialogOverlay class="DialogOverlay fixed inset-0 z-10 bg-blur" />
+				<slot />
 			</div>
-		</HLDialog>
-	</TransitionRoot>
+		</DialogPortal>
+	</DialogRoot>
 </template>
 
 <script setup>
 import {ref, provide, defineProps, defineEmits} from 'vue';
-import {
-	Dialog as HLDialog,
-	TransitionRoot,
-	TransitionChild,
-} from '@headlessui/vue';
+
+import {DialogRoot, DialogPortal, DialogOverlay} from 'reka-ui';
 
 const props = defineProps({
 	open: {
@@ -71,6 +34,16 @@ function registerCloseCallback(callback) {
 	closeCallbacks.value.push(callback);
 }
 
+function handleRootClose(opened) {
+	console.log('handleRootClose:', opened, props.open);
+	// apply it only if the SideModal is still opened, this is to address issue from
+	// cypress tests which managed to click on overlay while the side modal was closing
+	// to trigger additional close
+	if (!opened && props.open) {
+		handleClose();
+	}
+}
+
 function handleClose(data) {
 	let canClose = true;
 	closeCallbacks.value.forEach((callback) => (canClose = callback()));
@@ -84,3 +57,31 @@ provide('registerCloseCallback', registerCloseCallback);
 provide('modalLevel', ref(props.modalLevel));
 provide('closeModalButton', closeModalButton);
 </script>
+
+<style scoped>
+@keyframes sideModalFadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes sideModalFadeOut {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+.DialogOverlay[data-state='open'] {
+	animation: sideModalFadeIn 300ms ease-out;
+}
+
+.DialogOverlay[data-state='closed'] {
+	animation: sideModalFadeOut 300ms ease-in;
+}
+</style>

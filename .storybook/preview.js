@@ -35,9 +35,7 @@ import '../src/styles/tw-theme-vars.css';
 import {allModes} from './modes';
 import {initialize, mswLoader} from 'msw-storybook-addon';
 
-import {createPinia} from 'pinia';
-
-const pinia = createPinia();
+import {createPinia, setActivePinia} from 'pinia'; // Updated import
 
 // Initialize MSW
 initialize({
@@ -54,7 +52,6 @@ initialize({
 });
 
 setup((app) => {
-	app.use(pinia);
 	app.use(PrimeVue, {
 		unstyled: true,
 	});
@@ -133,6 +130,11 @@ const preview = {
 			</div>`,
 		}),
 		mockDateDecorator,
+		(story) => {
+			// New decorator for fresh Pinia per story
+			setActivePinia(createPinia());
+			return story();
+		},
 	],
 	parameters: {
 		// remove default storybook padding as it likely cuts off modals
