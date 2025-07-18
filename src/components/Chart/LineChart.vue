@@ -1,5 +1,5 @@
 <template>
-	<div class="chartjs-render-monitor">
+	<div class="chartjs-render-monitor" aria-hidden="true">
 		<LineChartJs :data="chartData" :options="options" />
 	</div>
 </template>
