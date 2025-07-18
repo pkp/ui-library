@@ -15,7 +15,10 @@ export const Actions = {
 export function useDiscussionManagerActions() {
 	const {t} = useLocalize();
 
-	function discussionAdd({workItem, submission}, finishedCallback) {
+	function discussionAdd(
+		{workItem, submission, submissionStageId},
+		finishedCallback,
+	) {
 		const {openSideModal, closeSideModal} = useModal();
 
 		function onCloseFn() {
@@ -23,6 +26,8 @@ export function useDiscussionManagerActions() {
 		}
 
 		openSideModal(DiscussionManagerForm, {
+			submission,
+			submissionStageId,
 			onCloseFn,
 			onSubmitFn: finishedCallback,
 		});
