@@ -50,6 +50,7 @@
 				:key="page.id"
 				v-bind="page"
 				:groups="groups"
+				:group-component="groupComponent"
 				:fields="fields"
 				:errors="errors"
 				:form-id="id"
@@ -70,11 +71,7 @@
 				@show-locale="showLocale"
 				@cancel="cancel"
 				@set-errors="setErrors"
-			>
-				<template #group-layout="{groupData}">
-					<slot name="group-layout" :group-data="groupData" />
-				</template>
-			</FormPage>
+			/>
 		</div>
 	</form>
 </template>
@@ -127,6 +124,8 @@ export default {
 		fields: Array,
 		/** Array of form groups. See "Groups and Group Descriptions" below. */
 		groups: Array,
+		/** The component to use to display a custom group layout */
+		groupComponent: Object,
 		/** Key/value of hidden fields that should be submitted with the form. The key will be used as the field's `name` attribute. */
 		hiddenFields: Object,
 		/** Array of form pages. See "Multi-page Forms" below. */

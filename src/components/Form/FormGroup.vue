@@ -1,9 +1,14 @@
 <template>
 	<fieldset class="pkpFormGroup -pkpClearfix" :class="spacingStyle">
 		<div v-if="label || $slots.groupLayout" class="pkpFormGroup__heading">
-			<slot name="group-layout" :group-data="{id}">
-				<FormGroupHeader :label="label" :description="description" />
-			</slot>
+			<template v-if="groupComponent">
+				<component
+					:is="groupComponent.component"
+					v-bind="groupComponent.props"
+					v-on="groupComponent.listeners"
+				></component>
+			</template>
+			<FormGroupHeader v-else :label="label" :description="description" />
 		</div>
 		<div class="pkpFormGroup__fields">
 			<template v-for="field in fieldsInGroup">
@@ -124,6 +129,7 @@ export default {
 		label: String,
 		description: String,
 		pageId: String,
+		groupComponent: Object,
 		fields: Array,
 		errors: Object,
 		formId: String,
