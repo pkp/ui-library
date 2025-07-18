@@ -8,6 +8,8 @@ import {useParticipantManagerStore} from '../ParticipantManager/participantManag
 import {useTasksAndDiscussionsStore} from '@/pages/tasksAndDiscussions/tasksAndDiscussionsStore';
 import FileAttacherModal from '@/components/Composer/FileAttacherModal.vue';
 import FieldPreparedContentInsertModal from '@/components/Form/fields/FieldPreparedContentInsertModal.vue';
+import DiscussionManagerTemplates from './DiscussionManagerTemplates.vue';
+import DiscussionManagerTaskInfo from './DiscussionManagerTaskInfo.vue';
 import preparedContent from '../../mixins/preparedContent';
 
 export function useDiscussionManagerForm({
@@ -32,6 +34,7 @@ export function useDiscussionManagerForm({
 		initEmptyForm,
 		addPage,
 		addGroup,
+		addGroupComponent,
 		set,
 		setValue,
 		addFieldText,
@@ -198,6 +201,16 @@ export function useDiscussionManagerForm({
 		description: t('discussion.form.detailsDescription'),
 	});
 
+	addGroupComponent('details', {
+		component: DiscussionManagerTemplates,
+		props: {
+			templates: getTemplates(),
+		},
+		listeners: {
+			'on-event': selectTemplate,
+		},
+	});
+
 	addFieldText('detailsName', {
 		groupId: 'details',
 		label: t('common.name'),
@@ -216,6 +229,16 @@ export function useDiscussionManagerForm({
 	addGroup('taskInformation', {
 		label: t('discussion.form.taskInformation'),
 		description: t('discussion.form.taskInfoDescription'),
+	});
+
+	addGroupComponent('taskInformation', {
+		component: DiscussionManagerTaskInfo,
+		props: {
+			isChecked: isTask,
+		},
+		listeners: {
+			'on-add-task-info': onAddTaskInfo,
+		},
 	});
 
 	addFieldText('taskInfoIsChecked', {
@@ -278,13 +301,5 @@ export function useDiscussionManagerForm({
 		form,
 		set,
 		badgeProps,
-		templates: getTemplates(),
-		detailsForm: {
-			selectTemplate,
-		},
-		taskForm: {
-			onAddTaskInfo,
-			isTask,
-		},
 	};
 }

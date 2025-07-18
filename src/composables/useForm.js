@@ -374,6 +374,20 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 	}
 
 	/**
+	 * Adds a custom group component to the form.
+	 * @param {string} groupId - The ID of the group to which the component belongs
+	 * @param {Object} component - The component object with `component`, `props` and `listeners` keys
+	 */
+	function addGroupComponent(groupId, component) {
+		if (!component?.component) {
+			return;
+		}
+
+		form.value.groupComponent = form.value.groupComponent || {};
+		form.value.groupComponent[groupId] = component;
+	}
+
+	/**
 	 * Adds a new field to the form or updates an existing one.
 	 * @param {string} fieldName - The name of the field
 	 * @param {Object} fieldOptions - Configuration options for the field
@@ -571,6 +585,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		initEmptyForm,
 		addPage,
 		addGroup,
+		addGroupComponent,
 		addFieldText,
 		addFieldSelect,
 		addFieldOptions,

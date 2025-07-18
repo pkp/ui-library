@@ -15,22 +15,7 @@
 		</template>
 
 		<SideModalLayoutBasic>
-			<PkpForm v-bind="form" @cancel="onCloseFn" @set="set">
-				<template #group-layout="{groupData}">
-					<template v-if="groupData.id === 'details'">
-						<DiscussionManagerTemplates
-							:templates="templates"
-							@on-event="detailsForm.selectTemplate"
-						/>
-					</template>
-					<template v-if="groupData.id === 'taskInformation'">
-						<DiscussionManagerTaskInfo
-							:is-checked="taskForm.isTask"
-							@add-task-info="taskForm.onAddTaskInfo"
-						/>
-					</template>
-				</template>
-			</PkpForm>
+			<PkpForm v-bind="form" @cancel="onCloseFn" @set="set" />
 		</SideModalLayoutBasic>
 	</SideModalBody>
 </template>
@@ -38,8 +23,6 @@
 <script setup>
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
-import DiscussionManagerTemplates from './DiscussionManagerTemplates.vue';
-import DiscussionManagerTaskInfo from './DiscussionManagerTaskInfo.vue';
 import Badge from '@/components/Badge/Badge.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import {useDiscussionManagerForm} from './useDiscussionManagerForm';
@@ -67,6 +50,5 @@ const props = defineProps({
 	},
 });
 
-const {form, set, badgeProps, templates, detailsForm, taskForm} =
-	useDiscussionManagerForm(props);
+const {form, set, badgeProps} = useDiscussionManagerForm(props);
 </script>
