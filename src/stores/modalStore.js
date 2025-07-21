@@ -185,7 +185,7 @@ export const useModalStore = defineStore('modal', () => {
 			if (!modalToClose.value?.opened) {
 				modalToClose.value = null;
 			}
-		}, 300);
+		}, 450);
 
 		// When closing legacy modal its always important to do legacy handler clean up.
 		// Therefore it depends if the close request is coming from the legacy handler, in such
