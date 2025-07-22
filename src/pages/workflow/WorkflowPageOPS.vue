@@ -31,6 +31,12 @@ import WorkflowPublicationEditDisabled from './components/publication/WorkflowPu
 const props = defineProps({
 	submissionId: {type: Number, required: true},
 	pageInitConfig: {type: Object, required: true},
+	// if available, make it available to screen reader before publication details are fetched
+	title: {
+		type: String,
+		required: false,
+		default: '',
+	},
 });
 
 const Components = markRaw({
