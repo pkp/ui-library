@@ -1,78 +1,62 @@
 <template>
-	<TransitionRoot as="template" :show="opened">
-		<HLDialog class="modal" @close="onClose('default')">
-			<TransitionChild
-				as="template"
-				enter="ease-out duration-300"
-				enter-from="opacity-0"
-				enter-to="opacity-100"
-				leave="ease-in duration-200"
-				leave-from="opacity-100"
-				leave-to="opacity-0"
+	<DialogRoot :open="opened" @update:open="handleCloseUpdate">
+		<DialogPortal>
+			<DialogOverlay
+				class="DialogOverlay fixed inset-0 z-10 bg-blur"
+			></DialogOverlay>
+
+			<DialogContent
+				class="modal !pointer-events-none fixed inset-0 z-20 overflow-y-auto"
+				data-cy="dialog"
 			>
-				<div
-					class="fixed inset-0 z-10 bg-blur bg-opacity-75 transition-opacity"
-				/>
-			</TransitionChild>
-			<div class="fixed inset-0 z-20 overflow-y-auto">
 				<div
 					class="flex min-h-full items-end justify-center p-4 text-center sm:items-start sm:p-0"
 				>
-					<TransitionChild
-						as="template"
-						enter="ease-out duration-300"
-						enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-						enter-to="opacity-100 translate-y-0 sm:scale-100"
-						leave="ease-in duration-200"
-						leave-from="opacity-100 translate-y-0 sm:scale-100"
-						leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-					>
-						<DialogPanel data-cy="dialog" :class="styles">
-							<button
-								v-if="shouldShowCloseButton"
-								class="absolute right-3 top-3 cursor-pointer bg-transparent"
-								@click="onClose"
+					<div :class="styles" class="DialogContent">
+						<DialogClose
+							v-if="shouldShowCloseButton"
+							class="absolute right-3 top-3 cursor-pointer bg-transparent"
+							@click="onClose"
+						>
+							<Icon
+								class="h-6 w-6 text-negative"
+								icon="Cancel"
+								:aria-hidden="true"
+							/>
+							<span class="-screenReader">
+								{{ t('common.close') }}
+							</span>
+						</DialogClose>
+						<div class="flex min-h-12 items-center">
+							<DialogTitle
+								v-if="title"
+								class="m-0 inline-flex min-w-[1px] items-center overflow-x-hidden overflow-ellipsis px-8 pt-12 text-4xl-bold"
+								:class="icon ? 'pb-5' : 'pb-8'"
 							>
-								<Icon
-									class="h-6 w-6 text-negative"
-									icon="Cancel"
-									:aria-hidden="true"
-								/>
-								<span class="-screenReader">
-									{{ t('common.close') }}
-								</span>
-							</button>
-							<div class="flex min-h-12 items-center">
-								<DialogTitle
-									v-if="title"
-									class="m-0 inline-flex min-w-[1px] items-center overflow-x-hidden overflow-ellipsis px-8 pt-12 text-4xl-bold"
-									:class="icon ? 'pb-5' : 'pb-8'"
-								>
-									<div v-if="icon" :class="iconStyles">
-										<Icon :icon="icon" class="h-11 w-11 text-on-dark"></Icon>
-									</div>
-									<span class="px-4">{{ title }}</span>
-								</DialogTitle>
-							</div>
-							<slot>
-								<component
-									:is="bodyComponent"
-									v-if="bodyComponent"
-									v-bind="{...bodyProps, actions, message, onClose}"
-									:has-icon="!!icon"
-								/>
-								<DialogBody
-									v-else
-									v-bind="{...props, onClose, shouldShowCloseButton}"
-									:has-icon="!!icon"
-								></DialogBody>
-							</slot>
-						</DialogPanel>
-					</TransitionChild>
+								<div v-if="icon" :class="iconStyles">
+									<Icon :icon="icon" class="h-11 w-11 text-on-dark"></Icon>
+								</div>
+								<span class="px-4">{{ title }}</span>
+							</DialogTitle>
+						</div>
+						<slot>
+							<component
+								:is="bodyComponent"
+								v-if="bodyComponent"
+								v-bind="{...bodyProps, actions, message, onClose}"
+								:has-icon="!!icon"
+							/>
+							<DialogBody
+								v-else
+								v-bind="{...props, onClose, shouldShowCloseButton}"
+								:has-icon="!!icon"
+							></DialogBody>
+						</slot>
+					</div>
 				</div>
-			</div>
-		</HLDialog>
-	</TransitionRoot>
+			</DialogContent>
+		</DialogPortal>
+	</DialogRoot>
 </template>
 
 <script setup>
@@ -80,12 +64,13 @@ import {computed} from 'vue';
 import DialogBody from './DialogBody.vue';
 
 import {
-	Dialog as HLDialog,
+	DialogRoot,
+	DialogPortal,
+	DialogContent,
+	DialogOverlay,
+	DialogClose,
 	DialogTitle,
-	DialogPanel,
-	TransitionRoot,
-	TransitionChild,
-} from '@headlessui/vue';
+} from 'reka-ui';
 
 import Icon from '@/components/Icon/Icon.vue';
 
@@ -133,7 +118,7 @@ const shouldShowCloseButton = computed(() => {
 });
 
 const styles = computed(() => ({
-	'relative mx-3 w-10/12 max-w-3xl transform overflow-hidden rounded bg-secondary text-start shadow transition-all sm:my-8': true,
+	'relative mx-3 w-10/12 max-w-3xl transform overflow-hidden pointer-events-auto rounded bg-secondary text-start shadow transition-all sm:my-8': true,
 	'border-none': props.modalStyle === 'basic',
 	'border-s-[14px] border-primary': props.modalStyle === 'primary',
 	'border-s-[14px] border-success': props.modalStyle === 'success',
@@ -159,6 +144,12 @@ const iconStyles = computed(() => ({
 
 const emit = defineEmits(['close']);
 
+function handleCloseUpdate(opened) {
+	if (!opened) {
+		onClose('default');
+	}
+}
+
 function onClose(triggerOrigin) {
 	// Prevent closing the modal on outside clicks or "Esc" key presses if isDismissible is false
 	if (!props.isDismissible && triggerOrigin === 'default') {
@@ -172,3 +163,91 @@ function onClose(triggerOrigin) {
 	emit('close');
 }
 </script>
+
+<style scoped>
+@keyframes sideModalFadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes sideModalFadeOut {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+.DialogOverlay[data-state='open'] {
+	animation: sideModalFadeIn 300ms ease-out;
+}
+
+.DialogOverlay[data-state='closed'] {
+	animation: sideModalFadeOut 300ms ease-in;
+}
+
+/* Mobile (default): fade + slide only */
+@keyframes sideModalContentEnterMobile {
+	0% {
+		opacity: 0;
+		transform: translateY(1rem);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+@keyframes sideModalContentExitMobile {
+	0% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	100% {
+		opacity: 0;
+		transform: translateY(1rem);
+	}
+}
+
+.DialogContent[data-state='open'] {
+	animation: sideModalContentEnterMobile 300ms ease-out forwards;
+}
+.DialogContent[data-state='closed'] {
+	animation: sideModalContentExitMobile 200ms ease-in forwards;
+}
+
+@keyframes sideModalContentEnterDesktop {
+	0% {
+		opacity: 0;
+		transform: scale(0.95);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+@keyframes sideModalContentExitDesktop {
+	0% {
+		opacity: 1;
+		transform: scale(1);
+	}
+	100% {
+		opacity: 0;
+		transform: scale(0.95);
+	}
+}
+
+/* Desktop (sm and up): fade + scale only (no slide) */
+@media (min-width: 640px) {
+	.DialogContent[data-state='open'] {
+		animation: sideModalContentEnterDesktop 300ms ease-out forwards;
+	}
+	.DialogContent[data-state='closed'] {
+		animation: sideModalContentExitDesktop 200ms ease-in forwards;
+	}
+}
+</style>

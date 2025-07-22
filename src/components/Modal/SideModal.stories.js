@@ -33,7 +33,7 @@ const SideModalBase = {
 				Additional info, check SubmissionSummaryModal.vue for good example
 			</template>
 			<template #actions>
-				<PkpButton element="a" href="https://www.google.com">
+				<PkpButton @click="console.log('trigger details')">
 					View submission in detail
 				</PkpButton>
 			</template>
@@ -51,10 +51,11 @@ export const Base = {
 			function openModal() {
 				openSideModal(SideModalBase, {});
 			}
+
 			return {openModal};
 		},
 		template: `
-			<PkpButton  @click="openModal">
+			<PkpButton  @click="openModal" >
 				Open Modal
 			</PkpButton>
 		`,
