@@ -32,9 +32,48 @@ const renderComponent = (args) => ({
 	template: `<DiscussionManager v-bind="args" />`,
 });
 
+const mswHandlers = [
+	http.get(
+		'https://mock/index.php/publicknowledge/api/v1/submissions/19/participants/5',
+		({request}) => {
+			const participants = [
+				getParticipantMock(),
+				getParticipantMock({
+					id: 4,
+					fullName: 'Andy Author',
+					userName: 'aauthor',
+					stageAssignments: [
+						{
+							stageAssignmentStageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+							stageAssignmentUserGroup: {
+								name: 'Author',
+								roleId: 65536,
+							},
+						},
+					],
+				}),
+				getParticipantMock({
+					id: 5,
+					fullName: 'Kaja Karina',
+					userName: 'kakarina',
+				}),
+			];
+			return HttpResponse.json(participants);
+		},
+	),
+	http.get('https://mock/index.php/publicknowledge/api/v1/templates', () => {
+		return HttpResponse.json(TemplatesDataMock);
+	}),
+];
+
 export const Default = {
 	render: renderComponent,
 	args: baseArgs,
+	parameters: {
+		msw: {
+			handlers: mswHandlers,
+		},
+	},
 };
 
 export const AddForm = {
@@ -42,43 +81,7 @@ export const AddForm = {
 	args: baseArgs,
 	parameters: {
 		msw: {
-			handlers: [
-				http.get(
-					'https://mock/index.php/publicknowledge/api/v1/submissions/19/participants/5',
-					({request}) => {
-						const participants = [
-							getParticipantMock(),
-							getParticipantMock({
-								id: 4,
-								fullName: 'Andy Author',
-								userName: 'aauthor',
-								stageAssignments: [
-									{
-										stageAssignmentStageId:
-											pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-										stageAssignmentUserGroup: {
-											name: 'Author',
-											roleId: 65536,
-										},
-									},
-								],
-							}),
-							getParticipantMock({
-								id: 5,
-								fullName: 'Kaja Karina',
-								userName: 'kakarina',
-							}),
-						];
-						return HttpResponse.json(participants);
-					},
-				),
-				http.get(
-					'https://mock/index.php/publicknowledge/api/v1/templates',
-					() => {
-						return HttpResponse.json(TemplatesDataMock);
-					},
-				),
-			],
+			handlers: mswHandlers,
 		},
 	},
 	play: async ({canvasElement}) => {

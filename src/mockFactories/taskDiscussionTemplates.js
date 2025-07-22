@@ -4,19 +4,37 @@ const CommonDefaults = {
 	id: 1,
 	name: 'Plagiarism Check',
 	content: `
-        <p><strong>Task:</strong> <strong>Run plagiarism check for draft article</strong></p>
-        
-        <p><strong>Description:</strong><br>
-        Please review the latest draft of the article titled <em>The Impact of AI on Education</em> and ensure it passes a plagiarism check. Use the department’s preferred tool (Grammarly or Turnitin).</p>
+        <p><strong>Task:</strong> <strong>Complete Prepublication Plagiarism and Originality Checklist</strong></p>
 
-        <p><strong>Steps to Complete:</strong></p>
+        <p><strong>Description:</strong><br>
+        Review the submitted manuscript to ensure it meets F1000Research’s requirements for originality and passes prepublication plagiarism screening.</p>
+
+        <p><strong>Checklist:</strong></p>
         <ul>
-        <li>Download the draft from the shared Google Drive folder.</li>
-        <li>Upload the document to the plagiarism checker.</li>
-        <li>Review the report and highlight any flagged sections.</li>
-        <li>Add comments or suggestions to the document if revisions are needed.</li>
-        <li>Mark the task complete once everything is verified.</li>
+        <li>Confirm the manuscript is <strong>original</strong> and not published or under consideration elsewhere (preprints allowed).</li>
+        <li>Submit the document to <strong>Similarity Check (iThenticate)</strong> via Crossref.</li>
+        <li>Review the similarity report:
+            <ul>
+            <li>Check for any signs of <strong>plagiarism</strong> or <strong>self-plagiarism</strong>.</li>
+            <li>Highlight flagged sections and suggest revisions as needed.</li>
+            </ul>
+        </li>
+        <li>Ensure the manuscript includes a clear <strong>statement of originality</strong>.</li>
+        <li>Verify other prepublication criteria:
+            <ul>
+            <li>Author affiliations are valid and verifiable (e.g., institutional email or profile).</li>
+            <li>The correct <strong>article type</strong> is selected and formatting aligns with guidelines.</li>
+            <li>Manuscript is written in <strong>clear, professional language</strong>.</li>
+            <li><strong>Methods section</strong> is sufficiently detailed for reproducibility.</li>
+            <li>All required <strong>ethical policies</strong> are addressed (e.g., conflicts of interest).</li>
+            <li>Includes a proper <strong>data availability statement</strong>.</li>
+            </ul>
+        </li>
         </ul>
+
+        <p><strong>Notes:</strong><br>
+        F1000Research will not accept submissions that fail originality checks. Ensure all compliance issues are resolved before final submission.</p>
+
     `,
 	type: 'Task',
 	taskDetails: {
@@ -25,7 +43,7 @@ const CommonDefaults = {
 	},
 };
 
-export function getTemplates(overrides = {}) {
+export function getTemplate(overrides = {}) {
 	const discussions = deepMerge({...CommonDefaults}, overrides);
 	return discussions;
 }
