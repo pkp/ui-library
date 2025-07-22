@@ -40,6 +40,10 @@ const props = defineProps({
 		type: Number,
 		required: true,
 	},
+	workItem: {
+		type: Object,
+		default: () => null,
+	},
 	onCloseFn: {
 		type: Function,
 		default: () => () => {},

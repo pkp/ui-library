@@ -16,10 +16,11 @@ export function useDiscussionManagerForm({
 	status = 'New',
 	submission,
 	submissionStageId,
+	workItem,
 	closeDialog = () => {},
 	onSubmitFn = null,
 } = {}) {
-	const {t} = useLocalize();
+	const {t, localize} = useLocalize();
 	const participantManagerStore = useParticipantManagerStore({
 		submission,
 		submissionStageId,
@@ -27,7 +28,7 @@ export function useDiscussionManagerForm({
 
 	const currentUser = useCurrentUser();
 	const {getRelativeTargetDate} = useDate();
-	const isTask = ref(false);
+	const isTask = ref(workItem?.type === 'Task');
 
 	const {
 		form,
@@ -216,6 +217,7 @@ export function useDiscussionManagerForm({
 		label: t('common.name'),
 		description: t('discussion.form.detailsNameDescription'),
 		size: 'large',
+		value: localize(workItem?.title),
 	});
 
 	addFieldOptions('detailsParticipants', 'checkbox', {
@@ -244,7 +246,7 @@ export function useDiscussionManagerForm({
 	addFieldText('taskInfoIsChecked', {
 		groupId: 'taskInformation',
 		inputType: 'hidden',
-		value: 'false',
+		value: isTask.value ? 'true' : 'false',
 	});
 
 	addFieldText('taskInfoDueDate', {
@@ -254,6 +256,7 @@ export function useDiscussionManagerForm({
 		description: t('discussion.form.taskInfoDueDateDescription'),
 		size: 'large',
 		showWhen: ['taskInfoIsChecked', 'true'],
+		value: isTask.value ? workItem?.dueDate : null,
 	});
 
 	addFieldOptions('taskInfoParticipants', 'checkbox', {
@@ -265,22 +268,24 @@ export function useDiscussionManagerForm({
 		options: getParticipantOptions(),
 	});
 
-	addFieldSelect('taskInfoShouldStart', {
-		groupId: 'taskInformation',
-		name: 'taskInfoShouldStart',
-		showWhen: ['taskInfoIsChecked', 'true'],
-		value: true,
-		options: [
-			{
-				label: t('discussion.form.startTaskUponSaving'),
-				value: true,
-			},
-			{
-				label: t('discussion.form.createDontStartTask'),
-				value: false,
-			},
-		],
-	});
+	if (['Pending', 'New'].includes(status)) {
+		addFieldSelect('taskInfoShouldStart', {
+			groupId: 'taskInformation',
+			name: 'taskInfoShouldStart',
+			showWhen: ['taskInfoIsChecked', 'true'],
+			value: true,
+			options: [
+				{
+					label: t('discussion.form.startTaskUponSaving'),
+					value: true,
+				},
+				{
+					label: t('discussion.form.createDontStartTask'),
+					value: false,
+				},
+			],
+		});
+	}
 
 	addGroup('discussion', {
 		label: t('submission.discussion'),
@@ -293,6 +298,7 @@ export function useDiscussionManagerForm({
 		plugins: ['lists'],
 		size: 'large',
 		init: initDiscussionText(),
+		value: workItem?.discussionText || '',
 	});
 
 	const badgeProps = getBadgeProps(status);

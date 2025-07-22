@@ -102,10 +102,12 @@ export const useDiscussionManagerStore = defineComponentStore(
 			);
 		}
 
-		function discussionEdit() {
+		function discussionEdit({workItem}) {
 			discussionActions.discussionEdit(
 				{
 					submission: props.submission,
+					submissionStageId: props.submissionStageId,
+					workItem,
 				},
 				triggerDataChangeCallback,
 			);

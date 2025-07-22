@@ -5,7 +5,7 @@
 			:label="t('common.moreActions')"
 			button-variant="ellipsis"
 			:actions="itemActions"
-			@action="(actionName) => discussionManagerStore[actionName]({task})"
+			@action="(actionName) => discussionManagerStore[actionName]({workItem})"
 		></DropdownActions>
 	</TableCell>
 </template>

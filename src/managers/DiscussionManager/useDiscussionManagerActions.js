@@ -56,26 +56,23 @@ export function useDiscussionManagerActions() {
 		});
 	}
 
-	function discussionEdit({workItem, submission}, finishedCallback) {
-		const {openDialog} = useModal();
-		openDialog({
-			actions: [
-				{
-					label: t('common.ok'),
-					isWarnable: true,
-					callback: (close) => {
-						close();
-					},
-				},
-				{
-					label: t('common.cancel'),
-					callback: (close) => {
-						close();
-					},
-				},
-			],
-			title: 'Edit',
-			message: 'Placeholder',
+	function discussionEdit(
+		{workItem, submission, submissionStageId},
+		finishedCallback,
+	) {
+		const {openSideModal, closeSideModal} = useModal();
+
+		function onCloseFn() {
+			closeSideModal(DiscussionManagerForm);
+		}
+
+		openSideModal(DiscussionManagerForm, {
+			status: workItem.status,
+			submission,
+			submissionStageId,
+			workItem,
+			onCloseFn,
+			onSubmitFn: finishedCallback,
 		});
 	}
 
