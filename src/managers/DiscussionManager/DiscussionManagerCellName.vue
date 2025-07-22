@@ -25,7 +25,7 @@ const props = defineProps({
 });
 
 const workItemType =
-	props.workItem.mode === 'task'
+	props.workItem.type === 'Task'
 		? {type: 'Task', icon: 'FileText', owner: 'Task Owner'}
 		: {type: 'Discussion', icon: 'Comment', owner: 'Created by'};
 </script>
