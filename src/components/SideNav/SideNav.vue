@@ -1,6 +1,7 @@
 <template>
 	<nav
 		v-if="Object.keys(links).length"
+		id="app-nav"
 		class="sticky top-12 flex h-[calc(100vh-3rem)] flex-none"
 		:aria-label="ariaLabel"
 	>
