@@ -26,7 +26,7 @@ import WorkflowChangeSubmissionLanguage from './components/publication/WorkflowC
 import WorkflowPrimaryBasicMetadata from './components/primary/WorkflowPrimaryBasicMetadata.vue';
 import WorkflowPublicationRelationDropdownOPS from './components/publication/WorkflowPublicationRelationDropdownOPS.vue';
 import WorkflowSubmissionStatus from './components/primary/WorkflowSubmissionStatus.vue';
-import WorkflowPublicationEditDisabled from './components/publication/WorkflowPublicationEditDisabled.vue';
+import WorkflowPublicationEditWarning from './components/publication/WorkflowPublicationEditWarning.vue';
 
 const props = defineProps({
 	submissionId: {type: Number, required: true},
@@ -55,7 +55,7 @@ const Components = markRaw({
 	WorkflowPublicationVersionControl,
 	WorkflowChangeSubmissionLanguage,
 	WorkflowSubmissionStatus,
-	WorkflowPublicationEditDisabled,
+	WorkflowPublicationEditWarning,
 });
 
 const store = useWorkflowStore({
