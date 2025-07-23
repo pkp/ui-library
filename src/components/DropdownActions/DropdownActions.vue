@@ -5,6 +5,7 @@
 	>
 		<Menu as="div">
 			<MenuButton
+				ref="buttonTriggerRef"
 				:class="menuButtonStyle"
 				:aria-label="displayAsEllipsis ? label : ariaLabel"
 			>
@@ -57,12 +58,7 @@
 							size-variant="fullWidth"
 							:is-disabled="action.disabled || false"
 							class="whitespace-nowrap border-light"
-							@click="
-								() => {
-									emitAction(action);
-									close();
-								}
-							"
+							@click="handleSelect(action, close)"
 						>
 							{{ action.label }}
 						</PkpButton>
@@ -77,7 +73,7 @@
 import {Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
-import {computed} from 'vue';
+import {computed, ref} from 'vue';
 
 const props = defineProps({
 	/**
@@ -140,6 +136,17 @@ const emit = defineEmits([
 	'action',
 ]);
 
+function handleSelect(action, close) {
+	close();
+	// important to set focus, because often another modal is opened and it needs to safe correct
+	// button to get back to
+	if (buttonTriggerRef.value && buttonTriggerRef.value.$el) {
+		const el = buttonTriggerRef.value.$el;
+		el.focus();
+	}
+	emitAction(action);
+}
+
 const emitAction = (action) => {
 	if (action.actionFn) {
 		action.actionFn(props?.actionArgs);
@@ -147,6 +154,8 @@ const emitAction = (action) => {
 		emit('action', action.name, props?.actionArgs || {});
 	}
 };
+
+const buttonTriggerRef = ref(null);
 
 const menuButtonStyle = computed(() => ({
 	// Base
