@@ -25,7 +25,7 @@
 				class="mt-2 w-full border border-light p-4 text-start hover:border-hover"
 				@click="
 					() => {
-						emit('on-event', template);
+						emit('selectTemplate', template);
 					}
 				"
 			>
@@ -56,7 +56,7 @@ import FormGroupHeader from '@/components/Form/FormGroupHeader.vue';
 import Search from '@/components/Search/Search.vue';
 import {t} from '@/utils/i18n';
 
-const emit = defineEmits(['on-event']);
+const emit = defineEmits(['selectTemplate']);
 
 defineProps({
 	templates: {

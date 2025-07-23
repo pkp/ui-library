@@ -5,7 +5,6 @@
 				<component
 					:is="groupComponent.component"
 					v-bind="groupComponent.props"
-					v-on="groupComponent.listeners"
 				></component>
 			</template>
 			<FormGroupHeader v-else :label="label" :description="description" />
