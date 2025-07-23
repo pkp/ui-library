@@ -83,6 +83,17 @@ export const useDiscussionManagerStore = defineComponentStore(
 			triggerDataChange();
 		}
 
+		function discussionView({workItem}) {
+			discussionActions.discussionView(
+				{
+					workItem,
+					submission: props.submission,
+					submissionStageId: props.submissionStageId,
+				},
+				triggerDataChangeCallback,
+			);
+		}
+
 		function discussionAdd() {
 			discussionActions.discussionAdd(
 				{
@@ -152,6 +163,7 @@ export const useDiscussionManagerStore = defineComponentStore(
 			bottomItems,
 
 			/** Actions */
+			discussionView,
 			discussionAdd,
 			discussionSearch,
 			discussionEdit,
