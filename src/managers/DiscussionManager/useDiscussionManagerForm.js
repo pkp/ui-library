@@ -146,7 +146,7 @@ export function useDiscussionManagerForm({
 		});
 	}
 
-	function selectTemplate(template) {
+	function onSelectTemplate(template) {
 		isTask.value = template.type === 'Task';
 		setValue('detailsName', template.name);
 		setValue('discussionText', template.content);
@@ -206,9 +206,7 @@ export function useDiscussionManagerForm({
 		component: DiscussionManagerTemplates,
 		props: {
 			templates: getTemplates(),
-		},
-		listeners: {
-			'on-event': selectTemplate,
+			onSelectTemplate,
 		},
 	});
 
@@ -237,9 +235,7 @@ export function useDiscussionManagerForm({
 		component: DiscussionManagerTaskInfo,
 		props: {
 			isChecked: isTask,
-		},
-		listeners: {
-			'on-add-task-info': onAddTaskInfo,
+			onAddTaskInfo,
 		},
 	});
 

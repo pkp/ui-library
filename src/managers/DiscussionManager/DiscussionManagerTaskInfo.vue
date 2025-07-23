@@ -18,7 +18,7 @@ import {ref, watch} from 'vue';
 import {t} from '@/utils/i18n';
 import FormGroupHeader from '@/components/Form/FormGroupHeader.vue';
 
-const emit = defineEmits(['on-add-task-info']);
+const emit = defineEmits(['addTaskInfo']);
 const props = defineProps({
 	/** If the task information is checked */
 	isChecked: {
@@ -30,7 +30,7 @@ const selectedValue = ref(props.isChecked);
 
 // emit the event to update the value of the checkbox
 watch(selectedValue, (val) => {
-	emit('on-add-task-info', val);
+	emit('addTaskInfo', val);
 });
 
 // update the selected value when the prop changes
