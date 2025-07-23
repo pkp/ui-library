@@ -1,6 +1,6 @@
 <template>
 	<fieldset class="pkpFormGroup -pkpClearfix" :class="spacingStyle">
-		<div v-if="label || $slots.groupLayout" class="pkpFormGroup__heading">
+		<div v-if="label || groupComponent" class="pkpFormGroup__heading">
 			<template v-if="groupComponent">
 				<component
 					:is="groupComponent.component"
