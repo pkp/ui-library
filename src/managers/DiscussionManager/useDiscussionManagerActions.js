@@ -1,7 +1,6 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
 import DiscussionManagerForm from './DiscussionManagerForm.vue';
-import DiscussionManagerView from './DiscussionManagerView.vue';
 
 export const Actions = {
 	TASKS_AND_DISCUSSIONS_LIST: 'discussionList',
@@ -23,10 +22,10 @@ export function useDiscussionManagerActions() {
 		const {openSideModal, closeSideModal} = useModal();
 
 		function onCloseFn() {
-			closeSideModal(DiscussionManagerView);
+			closeSideModal(DiscussionManagerForm);
 		}
 
-		openSideModal(DiscussionManagerView, {
+		openSideModal(DiscussionManagerForm, {
 			workItem,
 			submission,
 			submissionStageId,
