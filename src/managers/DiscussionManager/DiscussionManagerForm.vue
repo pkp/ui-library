@@ -25,6 +25,8 @@ import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
 import Badge from '@/components/Badge/Badge.vue';
 import PkpForm from '@/components/Form/Form.vue';
+
+import {t} from '@/utils/i18n';
 import {useDiscussionManagerForm} from './useDiscussionManagerForm';
 
 const props = defineProps({
