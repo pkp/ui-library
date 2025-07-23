@@ -363,7 +363,10 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		});
 	}
 
-	function addGroup(groupId, {pageId, label, description} = {}) {
+	function addGroup(
+		groupId,
+		{pageId, label, description, groupComponent} = {},
+	) {
 		form.value.groups = form.value.groups || [];
 		form.value.groups.push({
 			id: groupId || 'default',
@@ -371,20 +374,11 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 			description,
 			pageId: pageId || 'default',
 		});
-	}
 
-	/**
-	 * Adds a custom group component to the form.
-	 * @param {string} groupId - The ID of the group to which the component belongs
-	 * @param {Object} component - The component object with `component`, `props` and `listeners` keys
-	 */
-	function addGroupComponent(groupId, component) {
-		if (!component?.component) {
-			return;
+		if (groupComponent?.component) {
+			form.value.groupComponent = form.value.groupComponent || {};
+			form.value.groupComponent[groupId] = groupComponent;
 		}
-
-		form.value.groupComponent = form.value.groupComponent || {};
-		form.value.groupComponent[groupId] = component;
 	}
 
 	/**
@@ -585,7 +579,6 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		initEmptyForm,
 		addPage,
 		addGroup,
-		addGroupComponent,
 		addFieldText,
 		addFieldSelect,
 		addFieldOptions,
