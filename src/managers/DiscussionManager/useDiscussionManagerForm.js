@@ -35,7 +35,6 @@ export function useDiscussionManagerForm({
 		initEmptyForm,
 		addPage,
 		addGroup,
-		addGroupComponent,
 		set,
 		setValue,
 		addFieldText,
@@ -200,13 +199,12 @@ export function useDiscussionManagerForm({
 	addGroup('details', {
 		label: t('common.details'),
 		description: t('discussion.form.detailsDescription'),
-	});
-
-	addGroupComponent('details', {
-		component: DiscussionManagerTemplates,
-		props: {
-			templates: getTemplates(),
-			onSelectTemplate,
+		groupComponent: {
+			component: DiscussionManagerTemplates,
+			props: {
+				templates: getTemplates(),
+				onSelectTemplate,
+			},
 		},
 	});
 
@@ -229,13 +227,12 @@ export function useDiscussionManagerForm({
 	addGroup('taskInformation', {
 		label: t('discussion.form.taskInformation'),
 		description: t('discussion.form.taskInfoDescription'),
-	});
-
-	addGroupComponent('taskInformation', {
-		component: DiscussionManagerTaskInfo,
-		props: {
-			isChecked: isTask,
-			onAddTaskInfo,
+		groupComponent: {
+			component: DiscussionManagerTaskInfo,
+			props: {
+				isChecked: isTask,
+				onAddTaskInfo,
+			},
 		},
 	});
 
