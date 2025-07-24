@@ -2,15 +2,14 @@
 	<div
 		class="sr-only focus-within:not-sr-only focus-within:absolute focus-within:left-4 focus-within:top-4 focus-within:z-50 focus-within:flex focus-within:flex-col focus-within:gap-2 focus-within:rounded focus-within:bg-secondary focus-within:p-3 focus-within:shadow"
 	>
-		<a
+		<button
 			v-for="link in links"
 			:key="link.id"
-			:href="`#{link.id}`"
-			class="text-base-normal font-bold focus:text-primary focus:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+			class="text-base-normal font-bold text-primary focus:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
 			@click="moveFocus(link.id)"
 		>
 			{{ link.label }}
-		</a>
+		</button>
 	</div>
 </template>
 
