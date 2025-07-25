@@ -6,7 +6,10 @@
 				{{ workItemType.type }}
 			</span>
 			<div class="-ms-3">
-				<PkpButton :is-link="true">
+				<PkpButton
+					:is-link="true"
+					@click="() => discussionManagerStore.discussionView({workItem})"
+				>
 					{{ workItem.title.en }}
 				</PkpButton>
 			</div>
@@ -19,13 +22,15 @@
 import TableCell from '@/components/Table/TableCell.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import PkpButton from '@/components/Button/Button.vue';
+import {useDiscussionManagerStore} from './discussionManagerStore';
+const discussionManagerStore = useDiscussionManagerStore();
 
 const props = defineProps({
 	workItem: {type: Object, required: true},
 });
 
 const workItemType =
-	props.workItem.mode === 'task'
+	props.workItem.type === 'Task'
 		? {type: 'Task', icon: 'FileText', owner: 'Task Owner'}
 		: {type: 'Discussion', icon: 'Comment', owner: 'Created by'};
 </script>

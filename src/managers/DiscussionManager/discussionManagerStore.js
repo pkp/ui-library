@@ -83,10 +83,22 @@ export const useDiscussionManagerStore = defineComponentStore(
 			triggerDataChange();
 		}
 
+		function discussionView({workItem}) {
+			discussionActions.discussionView(
+				{
+					workItem,
+					submission: props.submission,
+					submissionStageId: props.submissionStageId,
+				},
+				triggerDataChangeCallback,
+			);
+		}
+
 		function discussionAdd() {
 			discussionActions.discussionAdd(
 				{
 					submission: props.submission,
+					submissionStageId: props.submissionStageId,
 				},
 				triggerDataChangeCallback,
 			);
@@ -101,10 +113,12 @@ export const useDiscussionManagerStore = defineComponentStore(
 			);
 		}
 
-		function discussionEdit() {
+		function discussionEdit({workItem}) {
 			discussionActions.discussionEdit(
 				{
 					submission: props.submission,
+					submissionStageId: props.submissionStageId,
+					workItem,
 				},
 				triggerDataChangeCallback,
 			);
@@ -149,6 +163,7 @@ export const useDiscussionManagerStore = defineComponentStore(
 			bottomItems,
 
 			/** Actions */
+			discussionView,
 			discussionAdd,
 			discussionSearch,
 			discussionEdit,

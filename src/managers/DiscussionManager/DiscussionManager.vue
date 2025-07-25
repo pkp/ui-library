@@ -3,12 +3,12 @@
 		<PkpTable>
 			<template #label>
 				<h3 class="">
-					{{ t('tasks.discussions.title') }}
+					{{ t('discussion.title') }}
 				</h3>
 			</template>
 			<template #description>
 				<p>
-					{{ t('tasks.discussions.description') }}
+					{{ t('discussion.description') }}
 				</p>
 			</template>
 			<template #top-controls>
@@ -101,6 +101,7 @@ const Components = {
 
 const props = defineProps({
 	submission: {type: Object, required: true},
+	submissionStageId: {type: Number, required: true},
 	discussions: {type: Array, required: true},
 });
 

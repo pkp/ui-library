@@ -10,6 +10,7 @@
 			:visible-locales="visibleLocales"
 			:available-locales="availableLocales"
 			:spacing-variant="spacingVariant"
+			:group-component="groupComponent?.[group.id]"
 			:form-id="formId"
 			@change="fieldChanged"
 			@set-errors="setErrors"
@@ -91,6 +92,7 @@ export default {
 	props: {
 		id: String,
 		groups: Array,
+		groupComponent: Object,
 		fields: Array,
 		errors: Object,
 		formId: String,

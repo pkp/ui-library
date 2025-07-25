@@ -1,7 +1,7 @@
 <template>
 	<TableCell>
 		<div class="flex items-center text-primary">
-			<Icon v-if="workItem.mode === 'task'" :icon="icon" class="h-5 w-5"></Icon>
+			<Icon v-if="workItem.type === 'Task'" :icon="icon" class="h-5 w-5"></Icon>
 		</div>
 	</TableCell>
 </template>

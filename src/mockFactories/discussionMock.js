@@ -11,9 +11,10 @@ const CommonDefaults = {
 	},
 	status: 'Pending',
 	dueDate: '2025-04-01',
-	mode: 'task',
+	type: 'Task',
 	started: false,
 	closed: false,
+	discussionText: 'Lorem ipsum',
 };
 
 export function getDiscussionsMock(overrides = {}) {
@@ -24,6 +25,7 @@ export function getDiscussionsMock(overrides = {}) {
 export const DiscussionsDataMock = [
 	{...CommonDefaults},
 	{
+		...CommonDefaults,
 		id: 2,
 		createdAt: '2025-03-06 06:01:17',
 		owner: 'kkarina',
@@ -37,11 +39,12 @@ export const DiscussionsDataMock = [
 		},
 		status: 'In Progress',
 		dueDate: '2025-04-01',
-		mode: 'task',
+		type: 'Task',
 		started: true,
 		closed: false,
 	},
 	{
+		...CommonDefaults,
 		id: 3,
 		createdAt: '2025-03-06 06:01:17',
 		owner: 'kstranack',
@@ -54,11 +57,12 @@ export const DiscussionsDataMock = [
 		},
 		status: 'In Progress',
 		dueDate: '2025-04-01',
-		mode: 'task',
+		type: 'Task',
 		started: true,
 		closed: false,
 	},
 	{
+		...CommonDefaults,
 		id: 4,
 		createdAt: '2025-03-06 06:01:17',
 		owner: 'aauthor',
@@ -69,10 +73,11 @@ export const DiscussionsDataMock = [
 		},
 		status: 'In Progress',
 		dueDate: '2025-04-01',
-		mode: 'discusssion',
+		type: 'Discussion',
 		closed: false,
 	},
 	{
+		...CommonDefaults,
 		id: 5,
 		createdAt: '2025-03-06 06:01:17',
 		owner: 'aauthor',
@@ -83,10 +88,11 @@ export const DiscussionsDataMock = [
 		},
 		status: 'In Progress',
 		dueDate: '2025-04-01',
-		mode: ' discusssion',
+		type: 'Discussion',
 		closed: false,
 	},
 	{
+		...CommonDefaults,
 		id: 6,
 		createdAt: '2025-03-06 06:01:17',
 		owner: 'ksimone',
@@ -97,11 +103,12 @@ export const DiscussionsDataMock = [
 		},
 		status: 'Closed',
 		dueDate: '2025-04-01',
-		mode: 'task',
+		type: 'Task',
 		started: true,
 		closed: true,
 	},
 	{
+		...CommonDefaults,
 		id: 7,
 		createdAt: '2025-03-06 06:01:17',
 		owner: 'kstranack',
@@ -112,7 +119,7 @@ export const DiscussionsDataMock = [
 		},
 		status: 'Closed',
 		dueDate: '2025-04-01',
-		mode: 'discussion',
+		type: 'Discussion',
 		closed: true,
 	},
 ];
