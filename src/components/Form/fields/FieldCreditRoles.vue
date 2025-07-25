@@ -15,13 +15,13 @@
 		<div class="pkpFormField__control pkpFormField--creditRoles__control">
 			<PkpTable :labelled-by="labelId" :described-by="descriptionId">
 				<TableHeader>
-					<TableColumn id="" class="w-[45%]">
+					<TableColumn id="">
 						{{ t('submission.submit.creditRoles.role', {}) }}
 					</TableColumn>
 					<TableColumn id="">
 						{{ t('submission.submit.creditRoles.degree', {}) }}
 					</TableColumn>
-					<TableColumn id="" class="w-[100px]">&nbsp;</TableColumn>
+					<TableColumn id="">&nbsp;</TableColumn>
 				</TableHeader>
 				<TableBody>
 					<TableRow
