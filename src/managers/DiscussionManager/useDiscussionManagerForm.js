@@ -69,6 +69,8 @@ export function useDiscussionManagerForm({
 				description: t('discussion.form.detailsParticipantsDescription'),
 				name: 'detailsParticipants',
 				options: getParticipantOptions(true),
+				showNumberedList: true,
+				value: workItem?.participants || [],
 			},
 			{override},
 		);
@@ -85,6 +87,7 @@ export function useDiscussionManagerForm({
 				name: 'taskInfoParticipants',
 				showWhen: ['taskInfoIsChecked', 'true'],
 				options: getParticipantOptions(),
+				value: workItem?.assignees,
 			},
 			{override},
 		);
@@ -104,7 +107,8 @@ export function useDiscussionManagerForm({
 
 	function getBadgeProps() {
 		let badgeProps = {};
-		switch (status) {
+		const formStatus = workItem?.status || status;
+		switch (formStatus) {
 			case 'Pending':
 				badgeProps = {
 					slot: t('common.yetToBegin'),
@@ -186,7 +190,7 @@ export function useDiscussionManagerForm({
 		});
 	}
 
-	function onSelectTemplate(template) {
+	function setValuesFromTemplate(template) {
 		isTask.value = template.type === 'Task';
 		setValue('detailsName', template.name);
 		setValue('discussionText', template.content);
@@ -213,6 +217,38 @@ export function useDiscussionManagerForm({
 		} else {
 			setValue('taskInfoDueDate', null);
 		}
+	}
+
+	function onSelectTemplate(template) {
+		if (!workItem?.id) {
+			return setValuesFromTemplate(template);
+		}
+
+		// Confirm overriding existing data with values from the selected template, if any data is already present
+		const {openDialog} = useModal();
+		openDialog({
+			name: 'selectTemplate',
+			title: 'Apply Template',
+			message: `Applying this template will replace data in related fields on the form. These changes won't be saved unless you choose to save. Continue?`,
+			actions: [
+				{
+					label: t('common.yes', {}),
+					isWarnable: true,
+					callback: async (close) => {
+						setValuesFromTemplate(template);
+						close();
+					},
+				},
+				{
+					label: t('common.no', {}),
+					callback: (close) => {
+						close();
+					},
+				},
+			],
+			close: () => {},
+			modalStyle: 'negative',
+		});
 	}
 
 	function onAddTaskInfo(checked) {
@@ -255,6 +291,7 @@ export function useDiscussionManagerForm({
 		description: t('discussion.form.detailsNameDescription'),
 		size: 'large',
 		value: localize(workItem?.title),
+		hideWhenReadOnly: true,
 	});
 
 	addParticipantsField({override: false});
@@ -295,6 +332,7 @@ export function useDiscussionManagerForm({
 			name: 'taskInfoShouldStart',
 			showWhen: ['taskInfoIsChecked', 'true'],
 			value: true,
+			hideWhenReadOnly: true,
 			options: [
 				{
 					label: t('discussion.form.startTaskUponSaving'),
