@@ -1,6 +1,6 @@
 <template>
 	<FormGroupHeader
-		:label="t('common.details')"
+		:heading="t('common.details')"
 		:description="t('discussion.form.detailsDescription')"
 	/>
 
