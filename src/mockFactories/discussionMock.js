@@ -15,6 +15,8 @@ const CommonDefaults = {
 	started: false,
 	closed: false,
 	discussionText: 'Lorem ipsum',
+	participants: [3, 4],
+	assignees: [5],
 };
 
 export function getDiscussionsMock(overrides = {}) {
