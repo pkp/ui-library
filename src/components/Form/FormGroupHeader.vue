@@ -1,7 +1,10 @@
 <template>
-	<legend v-if="label" class="text-lg mb-2 inline-block font-bold">
-		{{ label }}
-	</legend>
+	<component
+		:is="headingElement"
+		class="mb-2 inline-block text-xl-bold font-bold"
+	>
+		{{ heading }}
+	</component>
 	<div
 		v-if="description"
 		v-strip-unsafe-html="description"
@@ -11,13 +14,17 @@
 
 <script setup>
 defineProps({
-	label: {
+	heading: {
 		type: String,
-		default: '',
+		default: () => '',
+	},
+	headingElement: {
+		type: String,
+		default: () => 'h4',
 	},
 	description: {
 		type: String,
-		default: '',
+		default: () => '',
 	},
 });
 </script>

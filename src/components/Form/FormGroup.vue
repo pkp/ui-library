@@ -7,7 +7,7 @@
 					v-bind="groupComponent.props"
 				></component>
 			</template>
-			<FormGroupHeader v-else :label="label" :description="description" />
+			<FormGroupHeader v-else :heading="label" :description="description" />
 		</div>
 		<div class="pkpFormGroup__fields">
 			<template v-for="field in fieldsInGroup">
