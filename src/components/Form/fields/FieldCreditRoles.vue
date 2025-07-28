@@ -34,7 +34,7 @@
 								:label="t('submission.submit.creditRoles.selectRole')"
 								:is-required="true"
 								:value="role"
-								:options="props.options.roles"
+								:options="roleOptions"
 								class="creditRole__roleSelect"
 								@change="
 									(fieldName, propName, newValue, localeKey) =>
@@ -120,6 +120,14 @@ const emit = defineEmits(['change']);
 const currentValue = computed({
 	get: () => props.value,
 	set: (newVal) => emit('change', props.name, 'value', newVal),
+});
+
+const roleOptions = computed(() => {
+	return props.options.roles.map((role) => ({
+		value: role.value,
+		label: role.label,
+		disabled: currentValue.value.find((element) => element.role == role.value),
+	}));
 });
 
 function addCreditRole() {
