@@ -11,13 +11,14 @@ import UserCommentReportDetail from '@/pages/userComments/UserCommentReportDetai
 const Actions = {
 	COMMENT_DELETE: 'commentDelete',
 	REPORT_DELETE: 'reportDelete',
+	COMMENT_PUBLICATION_VIEW: 'commentPublicationView',
 };
 export const useUserCommentStore = defineComponentStore(
 	'userCommentStore',
 	(props) => {
 		const {t} = useLocalize();
 
-		const selectedCommentStatus = ref('approved');
+		const activeTab = ref('approved');
 		const itemsPerPage = props.itemsPerPage;
 		const currentCommentReportsPage = ref(1);
 		const currentCommentsPage = ref(1);
@@ -82,7 +83,7 @@ export const useUserCommentStore = defineComponentStore(
 
 		const commentsUrl = computed(() => {
 			let queryParams = '';
-			switch (selectedCommentStatus.value) {
+			switch (activeTab.value) {
 				case 'approved':
 					queryParams += `?isApproved=${true}`;
 					break;
@@ -225,6 +226,11 @@ export const useUserCommentStore = defineComponentStore(
 		function getCommentItemActions(comment) {
 			const actions = [
 				{
+					label: t('manager.userComment.viewPublication'),
+					icon: 'View',
+					name: Actions.COMMENT_PUBLICATION_VIEW,
+				},
+				{
 					label: t('manager.userComment.deleteComment'),
 					icon: 'Cancel',
 					name: Actions.COMMENT_DELETE,
@@ -294,17 +300,17 @@ export const useUserCommentStore = defineComponentStore(
 		}
 
 		/**
-		 * Handle the change of the dropdown selection for comment status.
-		 * @param {string} value - The selected comment status value.
+		 * Handle the change of the tab selection for comment status.
+		 * @param {string} tabId - The selected tab Id.
 		 */
-		async function onDropDownChanged(value) {
+		function onTabUpdate(tabId) {
 			// Track the current page for each comment table.
 			// This is useful when the user is switching between tables for different comments(approved, reported, needs approval).
 			// Instead of always starting from page 1 of the paginated table, we start from the last visited page for that comment table, defaulting to page 1 if there is no previous history.
-			const pageToStartFrom = trackedCommentPaginationPageHistory[value] ?? 1;
-			trackedCommentPaginationPageHistory[selectedCommentStatus.value] =
+			const pageToStartFrom = trackedCommentPaginationPageHistory[tabId] ?? 1;
+			trackedCommentPaginationPageHistory[activeTab.value] =
 				currentCommentsPage.value;
-			selectedCommentStatus.value = value;
+			activeTab.value = tabId;
 
 			setCurrentCommentsPage(pageToStartFrom);
 		}
@@ -355,19 +361,19 @@ export const useUserCommentStore = defineComponentStore(
 		/**
 		 * Get the options for comment types(approved, needs approval, reported), to select from to view comments
 		 */
-		const commentTypeOptions = computed(() => {
+		const commentTabOptions = computed(() => {
 			return [
 				{
 					label: t('manager.userComment.approved'),
-					value: 'approved',
+					id: 'approved',
 				},
 				{
 					label: t('manager.userComment.needsApproval'),
-					value: 'needsApproval',
+					id: 'needsApproval',
 				},
 				{
 					label: t('manager.userComment.reported'),
-					value: 'reported',
+					id: 'reported',
 				},
 			];
 		});
@@ -402,20 +408,28 @@ export const useUserCommentStore = defineComponentStore(
 			return status.join(', ');
 		}
 
+		/**
+		 * Open the publication a given comment was made for.
+		 * @param comment
+		 */
+		function commentPublicationView(comment) {
+			window.open(comment.publicationUrl, '_blank');
+		}
+
 		return {
 			reportDelete,
 			toggleCommentApproval,
 			getCommentItemActions,
 			openCommentDetail,
 			setCurrentCommentsPage,
-			onDropDownChanged,
 			commentDelete,
 			getReportItemActions,
 			setCurrentReportsPage,
 			openReport,
 			getCommentStatusText,
+			commentPublicationView,
+			onTabUpdate,
 			commentApprovalOptions,
-			selectedCommentStatus,
 			itemsPerPage,
 			commentsPageColumns,
 			comments,
@@ -423,8 +437,9 @@ export const useUserCommentStore = defineComponentStore(
 			currentCommentReports,
 			currentCommentReportsPagination,
 			reportsTableColumns,
-			commentTypeOptions,
+			commentTabOptions,
 			isCommentsLoading,
+			activeTab,
 		};
 	},
 );
