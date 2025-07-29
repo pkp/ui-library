@@ -1,4 +1,4 @@
-import {computed, ref} from 'vue';
+import {computed, ref, watch} from 'vue';
 import {useForm} from '@/composables/useForm';
 import {useModal} from '@/composables/useModal';
 import {useDate} from '@/composables/useDate';
@@ -44,22 +44,63 @@ export function useDiscussionManagerForm({
 	} = useForm({}, {customSubmit: handleFormSubmission});
 
 	function getParticipantOptions(withSubLabel) {
-		return computed(() => {
-			return participantManagerStore.participantsList.map((participant) => {
-				let label = `${participant.fullName} (${participant.userName})`;
+		return participantManagerStore.participantsList.map((participant) => {
+			let label = `${participant.fullName} (${participant.userName})`;
 
-				if (participant.userName === currentUser.getCurrentUserName()) {
-					label += ` (${t('common.me')})`;
-				}
+			if (participant.userName === currentUser.getCurrentUserName()) {
+				label += ` (${t('common.me')})`;
+			}
 
-				return {
-					label,
-					subLabel: withSubLabel ? participant.roleName : undefined,
-					value: participant.id,
-				};
-			});
+			return {
+				label,
+				subLabel: withSubLabel ? participant.roleName : undefined,
+				value: participant.id,
+			};
 		});
 	}
+
+	function addParticipantsField({override = false} = {}) {
+		addFieldOptions(
+			'detailsParticipants',
+			'checkbox',
+			{
+				groupId: 'details',
+				label: t('editor.submission.stageParticipants'),
+				description: t('discussion.form.detailsParticipantsDescription'),
+				name: 'detailsParticipants',
+				options: getParticipantOptions(true),
+			},
+			{override},
+		);
+	}
+
+	function addAssigneesField({override = false} = {}) {
+		addFieldOptions(
+			'taskInfoParticipants',
+			'checkbox',
+			{
+				groupId: 'taskInformation',
+				label: t('discussion.form.taskInfoAssigneesLabel'),
+				description: t('discussion.form.taskInfoAssigneesDescription'),
+				name: 'taskInfoParticipants',
+				showWhen: ['taskInfoIsChecked', 'true'],
+				options: getParticipantOptions(),
+			},
+			{override},
+		);
+	}
+
+	// update the field-options when participantsList changes
+	watch(
+		() => participantManagerStore.participantsList,
+		(participantsList) => {
+			if (participantsList.length) {
+				addParticipantsField({override: true});
+				addAssigneesField({override: true});
+			}
+		},
+		{immediate: true},
+	);
 
 	function getBadgeProps() {
 		let badgeProps = {};
@@ -216,13 +257,7 @@ export function useDiscussionManagerForm({
 		value: localize(workItem?.title),
 	});
 
-	addFieldOptions('detailsParticipants', 'checkbox', {
-		groupId: 'details',
-		label: t('editor.submission.stageParticipants'),
-		description: t('discussion.form.detailsParticipantsDescription'),
-		name: 'detailsParticipants',
-		options: getParticipantOptions(true),
-	});
+	addParticipantsField({override: false});
 
 	addGroup('taskInformation', {
 		label: t('discussion.form.taskInformation'),
@@ -252,14 +287,7 @@ export function useDiscussionManagerForm({
 		value: isTask.value ? workItem?.dueDate : null,
 	});
 
-	addFieldOptions('taskInfoParticipants', 'checkbox', {
-		groupId: 'taskInformation',
-		label: t('discussion.form.taskInfoAssigneesLabel'),
-		description: t('discussion.form.taskInfoAssigneesDescription'),
-		name: 'taskInfoParticipants',
-		showWhen: ['taskInfoIsChecked', 'true'],
-		options: getParticipantOptions(),
-	});
+	addAssigneesField({override: false});
 
 	if (['Pending', 'New'].includes(status)) {
 		addFieldSelect('taskInfoShouldStart', {
