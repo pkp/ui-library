@@ -17,7 +17,7 @@ export function useDiscussionManagerActions() {
 
 	function discussionView(
 		{workItem, submission, submissionStageId},
-		triggerDataChangeCallback,
+		finishedCallback,
 	) {
 		const {openSideModal, closeSideModal} = useModal();
 

@@ -18,6 +18,7 @@
 	<ul
 		class="mt-2 max-h-80 list-none overflow-y-auto p-0"
 		aria-live="true"
+		role="list"
 		:aria-label="t('search.searchResults')"
 	>
 		<li v-for="template in templates" :key="template.id">
