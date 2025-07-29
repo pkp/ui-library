@@ -373,12 +373,8 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 			label,
 			description,
 			pageId: pageId || 'default',
+			groupComponent,
 		});
-
-		if (groupComponent?.component) {
-			form.value.groupComponent = form.value.groupComponent || {};
-			form.value.groupComponent[groupId] = groupComponent;
-		}
 	}
 
 	/**
