@@ -1,7 +1,7 @@
 <template>
 	<component
 		:is="headingElement"
-		class="mb-2 inline-block text-xl-bold font-bold"
+		class="mb-2 inline-block text-2xl-bold font-bold"
 	>
 		{{ heading }}
 	</component>
@@ -20,7 +20,7 @@ defineProps({
 	},
 	headingElement: {
 		type: String,
-		default: () => 'h4',
+		default: () => 'h3',
 	},
 	description: {
 		type: String,
