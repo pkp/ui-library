@@ -8,6 +8,7 @@ import {useParticipantManagerStore} from '../ParticipantManager/participantManag
 import {useTasksAndDiscussionsStore} from '@/pages/tasksAndDiscussions/tasksAndDiscussionsStore';
 import FileAttacherModal from '@/components/Composer/FileAttacherModal.vue';
 import FieldPreparedContentInsertModal from '@/components/Form/fields/FieldPreparedContentInsertModal.vue';
+import DiscussionMessages from './DiscussionMessages.vue';
 import DiscussionManagerTemplates from './DiscussionManagerTemplates.vue';
 import DiscussionManagerTaskInfo from './DiscussionManagerTaskInfo.vue';
 import preparedContent from '../../mixins/preparedContent';
@@ -20,6 +21,7 @@ export function useDiscussionManagerForm({
 	closeDialog = () => {},
 	onSubmitFn = null,
 } = {}) {
+	const workItemStatus = workItem?.status || status;
 	const {t, localize} = useLocalize();
 	const participantManagerStore = useParticipantManagerStore({
 		submission,
@@ -41,6 +43,7 @@ export function useDiscussionManagerForm({
 		addFieldOptions,
 		addFieldRichTextArea,
 		addFieldSelect,
+		addFieldComponent,
 	} = useForm({}, {customSubmit: handleFormSubmission});
 
 	function getParticipantOptions(withSubLabel) {
@@ -107,8 +110,7 @@ export function useDiscussionManagerForm({
 
 	function getBadgeProps() {
 		let badgeProps = {};
-		const formStatus = workItem?.status || status;
-		switch (formStatus) {
+		switch (workItemStatus) {
 			case 'Pending':
 				badgeProps = {
 					slot: t('common.yetToBegin'),
@@ -351,14 +353,24 @@ export function useDiscussionManagerForm({
 		description: t('discussion.form.discussionDescription'),
 	});
 
-	addFieldRichTextArea('discussionText', {
-		groupId: 'discussion',
-		toolbar: 'bold italic underline bullist | pkpAttachFiles | pkpInsert',
-		plugins: ['lists'],
-		size: 'large',
-		init: initDiscussionText(),
-		value: workItem?.discussionText || '',
-	});
+	if (workItemStatus === 'New') {
+		addFieldRichTextArea('discussionText', {
+			groupId: 'discussion',
+			toolbar: 'bold italic underline bullist | pkpAttachFiles | pkpInsert',
+			plugins: ['lists'],
+			size: 'large',
+			init: initDiscussionText(),
+		});
+	} else {
+		addFieldComponent('messagesComponent', {
+			component: DiscussionMessages,
+			groupId: 'discussion',
+			toolbar: 'bold italic underline bullist | pkpAttachFiles | pkpInsert',
+			plugins: ['lists'],
+			size: 'large',
+			init: initDiscussionText(),
+		});
+	}
 
 	const badgeProps = getBadgeProps(status);
 
