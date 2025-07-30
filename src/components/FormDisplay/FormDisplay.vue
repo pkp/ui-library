@@ -29,6 +29,7 @@
 										<component
 											:is="
 												FieldComponents[field.component] ||
+												field.component ||
 												`${field.component}-display`
 											"
 											:field="field"

@@ -1,5 +1,5 @@
 <template>
-	<component :is="headingElement" class="text-lg mb-1 inline-block font-bold">
+	<component :is="headingElement" class="mb-1 inline-block text-xl-bold">
 		{{ heading }}
 	</component>
 	<div class="flex items-center">
