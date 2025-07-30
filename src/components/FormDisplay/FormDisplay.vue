@@ -12,7 +12,7 @@
 					class="flex flex-col gap-y-6 ps-6"
 					:class="shouldDisplayGroupHeader ? 'w-[70%]' : ''"
 				>
-					<div v-if="hasMultilingualFields" class="flex-colDisplay-6 flex">
+					<div v-if="hasMultilingualFields" class="flex flex-col gap-y-6">
 						<div v-for="locale in availableLocales" :key="locale.key">
 							<component
 								:is="localeHeadingElement"
@@ -25,7 +25,7 @@
 									v-for="field in groupFields[group.id]"
 									:key="field.name"
 								>
-									<div v-if="shouldRenderField(field)">
+									<div v-if="shouldDisplayField(field)">
 										<component
 											:is="
 												FieldComponents[field.component] ||
@@ -49,6 +49,7 @@
 							<component
 								:is="
 									FieldComponents[field.component] ||
+									field.component ||
 									`${field.component}-display`
 								"
 								:field="field"
