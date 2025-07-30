@@ -15,7 +15,10 @@ export const Actions = {
 export function useDiscussionManagerActions() {
 	const {t} = useLocalize();
 
-	function discussionAdd({workItem, submission}, finishedCallback) {
+	function discussionView(
+		{workItem, submission, submissionStageId},
+		finishedCallback,
+	) {
 		const {openSideModal, closeSideModal} = useModal();
 
 		function onCloseFn() {
@@ -23,6 +26,26 @@ export function useDiscussionManagerActions() {
 		}
 
 		openSideModal(DiscussionManagerForm, {
+			workItem,
+			submission,
+			submissionStageId,
+			onCloseFn,
+		});
+	}
+
+	function discussionAdd(
+		{workItem, submission, submissionStageId},
+		finishedCallback,
+	) {
+		const {openSideModal, closeSideModal} = useModal();
+
+		function onCloseFn() {
+			closeSideModal(DiscussionManagerForm);
+		}
+
+		openSideModal(DiscussionManagerForm, {
+			submission,
+			submissionStageId,
 			onCloseFn,
 			onSubmitFn: finishedCallback,
 		});
@@ -51,26 +74,23 @@ export function useDiscussionManagerActions() {
 		});
 	}
 
-	function discussionEdit({workItem, submission}, finishedCallback) {
-		const {openDialog} = useModal();
-		openDialog({
-			actions: [
-				{
-					label: t('common.ok'),
-					isWarnable: true,
-					callback: (close) => {
-						close();
-					},
-				},
-				{
-					label: t('common.cancel'),
-					callback: (close) => {
-						close();
-					},
-				},
-			],
-			title: 'Edit',
-			message: 'Placeholder',
+	function discussionEdit(
+		{workItem, submission, submissionStageId},
+		finishedCallback,
+	) {
+		const {openSideModal, closeSideModal} = useModal();
+
+		function onCloseFn() {
+			closeSideModal(DiscussionManagerForm);
+		}
+
+		openSideModal(DiscussionManagerForm, {
+			status: workItem.status,
+			submission,
+			submissionStageId,
+			workItem,
+			onCloseFn,
+			onSubmitFn: finishedCallback,
 		});
 	}
 
@@ -145,6 +165,7 @@ export function useDiscussionManagerActions() {
 	}
 
 	return {
+		discussionView,
 		discussionAdd,
 		discussionSearch,
 		discussionEdit,

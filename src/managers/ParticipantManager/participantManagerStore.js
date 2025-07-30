@@ -49,6 +49,7 @@ export const useParticipantManagerStore = defineComponentStore(
 					list.push({
 						id: participant.id,
 						fullName: participant.fullName,
+						userName: participant.userName,
 						stageAssignmentId: stageAssignment.stageAssignmentId,
 						roleName: stageAssignment.stageAssignmentUserGroup.name,
 						roleId: stageAssignment.stageAssignmentUserGroup.roleId,

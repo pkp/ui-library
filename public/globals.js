@@ -190,6 +190,7 @@ window.pkp = {
 		'common.deselect': 'Deselect',
 		'common.details': 'Details',
 		'common.download': 'Download',
+		'common.dueDate': 'Due Date',
 		'common.edit': 'Edit',
 		'common.editItem': 'Edit {$name}',
 		'common.emailTemplates': 'Email Templates',
@@ -210,6 +211,7 @@ window.pkp = {
 		'common.lastActivity': 'Last activity recorded on {$date}.',
 		'common.loaded': 'Loaded',
 		'common.loading': 'Loading',
+		'common.me': 'Me',
 		'common.moreActions': 'More Actions',
 		'common.name': 'Name',
 		'common.navigation.user': 'User Navigation',
@@ -263,6 +265,9 @@ window.pkp = {
 		'common.viewWithName': 'View {$name}',
 		'common.yes': 'Yes',
 		'common.yesContinue': 'Yes, Continue',
+		'common.yetToBegin': 'Yet to begin',
+		'common.inProgress': 'In Progress',
+		'common.closed': 'Closed',
 		'context.context': 'Journal',
 		'contributor.listPanel.preview': 'Preview',
 		'contributor.listPanel.preview.abbreviated': 'Abbreviated',
@@ -374,6 +379,36 @@ window.pkp = {
 			'Confirm Delete of Incomplete Submissions',
 		'dashboard.submitRevisions': 'Submit revisions',
 		'dashboard.toBePublishedInIssue': 'To be published in issue {$issue}',
+		'discussion.title': 'Desk Review Tasks & Discussions',
+		'discussion.description':
+			'Use this space to start discussions, assign tasks to others, or create your personal task list to help you move this submission to the next stage.',
+		'discussion.form.templatesLabel': 'Templates to get you started!',
+		'discussion.form.description':
+			'Open for What? Open to What? Beyond Content',
+		'discussion.form.detailsDescription':
+			'Use this space to share essential information.',
+		'discussion.form.detailsNameDescription':
+			'Please enter the name for this task and discussion.',
+		'discussion.form.detailsParticipantsDescription':
+			'You have the option to assign participants or allocate it solely to yourself.',
+		'discussion.form.discussionDescription':
+			'You can start a discussion thread here by adding a message. This space is also available for providing a brief overview of the task, including any key details, goals, or specific instructions to help guide the assignees.',
+		'discussion.form.taskInfoLabel': 'Enter task information',
+		'discussion.form.taskInformation': 'Task Information',
+		'discussion.form.taskInfoDescription':
+			'Please enter the tasks details here to help manage this task effectively.',
+		'discussion.form.taskInfoAssigneesLabel':
+			'Responsible to complete this task',
+		'discussion.form.taskInfoAssigneesDescription':
+			'If there is a specific participant designated to complete this task, please assign it to them here.',
+		'discussion.form.taskInfoDueDateDescription':
+			'If there is a deadline for this task, you can indicate it here. The due date will be communicated and established for each participant assigned to this task.',
+		'discussion.form.createDontStartTask': 'Create Task (Do Not Start)',
+		'discussion.form.startTaskUponSaving': 'Begin Task Upon Saving',
+		'discussion.template.taskDescription':
+			'This task template auto-fills the task name, due date, description, and roles. After selecting the template, you can modify any details before saving the task.',
+		'discussion.template.discussionDescription':
+			'This discussion template pre-fills the name, participants, and starting message. You can adjust the details before starting.',
 		'doi.manager.versions.countStatement': 'There are {$count} versions.',
 		'doi.manager.versions.modalTitle': 'DOIs for all versions',
 		'doi.manager.versions.view': 'View all',
@@ -790,6 +825,8 @@ window.pkp = {
 		'submission.citations': 'References',
 		'submission.contributors': 'List of Contributors',
 		'submission.copyediting': 'Copyediting',
+		'submission.discussion': 'Discussion',
+		'submission.task': 'Task',
 		'submission.files': 'Files',
 		'submission.files.downloadAll': 'Download All Files',
 		'submission.finalDraft': 'Draft Files',
@@ -851,12 +888,6 @@ window.pkp = {
 		'submission.wizard.submissionCancel': 'Cancel submission',
 		'submissions.declined': 'Declined',
 		'submissions.incomplete': 'Incomplete',
-		'tasks.discussions.title': 'Desk Review Tasks & Discussions',
-		'tasks.discussions.description':
-			'Use this space to start discussions, assign tasks to others, or create your personal task list to help you move this submission to the next stage.',
-		'tasks.discussions.form.title': 'Desk Review Discussions and Tasks',
-		'tasks.discussions.form.description':
-			'Open for What? Open to What? Beyond Content',
 		'user.affiliation': 'Affiliation',
 		'user.affiliations': 'Affiliations',
 		'user.affiliations.deleteModal.message':

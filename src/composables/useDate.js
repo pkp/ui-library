@@ -4,6 +4,7 @@ import {
 	calculateDaysBetweenDates,
 	getDateCurrentLocale,
 	relativeStringTimeFromNow,
+	getRelativeTargetDate,
 } from '@/utils/dateUtils';
 
 /**
@@ -51,5 +52,14 @@ export function useDate() {
 		 * @returns {string} Relative time string
 		 */
 		relativeStringTimeFromNow,
+
+		/**
+		 * Calculate a target date by adding a duration to a start date.
+		 * @type {Function}
+		 * @param {string} duration - Duration in ISO format (e.g., "P1W")
+		 * @param {string} [startDate] - Optional start date in ISO format
+		 * @returns {string} Target date in ISO format (YYYY-MM-DD)
+		 */
+		getRelativeTargetDate,
 	};
 }

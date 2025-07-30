@@ -1,4 +1,4 @@
-import {DateTime} from 'luxon';
+import {DateTime, Duration} from 'luxon';
 import {phpToLuxonFormat} from './convertPhpDateTimeFormatToLuxon';
 
 /**
@@ -172,4 +172,38 @@ export function relativeStringTimeFromNow(timestamp) {
 	return DateTime.fromMillis(timestamp).toRelative({
 		locale: getDateCurrentLocale(),
 	});
+}
+
+/**
+ * Calculates a target date by adding an ISO 8601 duration to a start date.
+ *
+ * If no duration is provided, returns the current date and time.
+ * If no start date is provided, uses the current date and time as the start.
+ *
+ * @param {string} duration - An ISO 8601 duration string (e.g., "P1W" for one week, "P3D" for three days).
+ * @param {string} [startDate] - Optional ISO 8601 date string to use as the starting point (e.g., "2025-07-12").
+ * @returns {string} The resulting target date as an ISO date string (e.g., "2025-07-19").
+ */
+export function getRelativeTargetDate(duration, startDate) {
+	const currentDate = DateTime.now().toISODate();
+	if (!duration) {
+		return currentDate;
+	}
+
+	const parsedDuration = Duration.fromISO(duration);
+	if (!parsedDuration.isValid) {
+		return currentDate;
+	}
+
+	let baseDate;
+	if (startDate) {
+		baseDate = DateTime.fromISO(startDate);
+		if (!baseDate.isValid) {
+			return currentDate;
+		}
+	} else {
+		baseDate = DateTime.now();
+	}
+
+	return baseDate.plus(parsedDuration).toISODate();
 }
