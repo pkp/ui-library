@@ -531,6 +531,31 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		);
 	}
 
+	/**
+	 * Adds or updates a custom component field in the form.
+	 * This is useful for rendering custom field components.
+	 * @param {string} fieldName - The name (or key) of the field.
+	 * @param {Object} fieldOptions - Contains the custom component and its props.
+	 * @param {Object} [fieldOptions.component] - The Vue component to render.
+	 * @param {Object} [fieldOptions.props] - Additional props to pass to the component.
+	 * @param {Object} [opts] - Optional settings.
+	 * @param {boolean} [opts.override] - If true and the field already exists, it will be fully overridden.
+	 */
+	function addFieldComponent(fieldName, {component, ...props}, opts = {}) {
+		if (!component) {
+			return;
+		}
+
+		return addField(
+			fieldName,
+			{
+				component,
+				...props,
+			},
+			opts,
+		);
+	}
+
 	return {
 		set,
 		setValue,
@@ -556,6 +581,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		addFieldSelect,
 		addFieldOptions,
 		addFieldRichTextArea,
+		addFieldComponent,
 		getField,
 	};
 }
