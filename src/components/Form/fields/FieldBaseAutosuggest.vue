@@ -112,6 +112,7 @@ import PkpBadge from '@/components/Badge/Badge.vue';
 import {VueAutosuggest} from 'vue-autosuggest';
 import ajaxError from '@/mixins/ajaxError';
 import debounce from 'debounce';
+import elementResizeEvent from 'element-resize-event';
 
 export default {
 	name: 'FieldBaseAutosuggest',
@@ -419,31 +420,18 @@ export default {
 		}
 	},
 	mounted() {
-		this.$nextTick(() => {
-			this.updateInputPadding();
-		});
-
-		// Set up ResizeObserver
-		const targetElement = this.$refs.autosuggest.$el;
-		if (targetElement) {
-			const debouncedUpdate = debounce(
-				() => this.updateInputPadding(),
-				100,
-				true
-			);
-			this.resizeObserver = new ResizeObserver(entries => {
-				const entry = entries[0]; // Single element, no need to loop
-				if (entry.contentRect.width > 0 || entry.contentRect.height > 0) {
-					debouncedUpdate();
-				}
-			});
-			this.resizeObserver.observe(targetElement);
-		}
+		/**
+		 * Shift the input cursor to make room for any pre-existing selections
+		 * and call this method whenever the element is resized
+		 */
+		this.updateInputPadding();
+		elementResizeEvent(
+			this.$refs.autosuggest.$el,
+			debounce(() => this.updateInputPadding(), 100)
+		);
 	},
 	beforeDestroy() {
-		if (this.resizeObserver) {
-			this.resizeObserver.disconnect();
-		}
+		elementResizeEvent.unbind(this.$refs.autosuggest.$el);
 	}
 };
 </script>
