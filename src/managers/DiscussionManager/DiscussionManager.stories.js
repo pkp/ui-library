@@ -92,13 +92,6 @@ export const Default = {
 			handlers: mswHandlers,
 		},
 	},
-	play: async ({canvasElement}) => {
-		// Assigns canvas to the component root element
-		const canvas = within(canvasElement);
-		const user = userEvent.setup();
-
-		await user.click(canvas.getByText('Plagiarism Check'));
-	},
 };
 
 export const AddForm = {
