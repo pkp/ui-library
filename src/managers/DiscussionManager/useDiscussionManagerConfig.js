@@ -134,13 +134,21 @@ export function useDiscussionManagerConfig() {
 		return actions;
 	}
 
-	function getItemActions({config}) {
+	function getItemActions({config, workItem}) {
 		const actions = [];
 		if (config.permittedActions.includes(Actions.TASKS_AND_DISCUSSIONS_EDIT)) {
 			actions.push({
 				label: t('common.edit'),
 				name: Actions.TASKS_AND_DISCUSSIONS_EDIT,
 				icon: 'Edit',
+			});
+		}
+
+		if (workItem.type === 'Discussion') {
+			actions.push({
+				label: t('discussion.addTaskDetails'),
+				name: Actions.TASKS_AND_DISCUSSIONS_ADD_TASK_DETAILS,
+				icon: 'TaskDetails',
 			});
 		}
 
