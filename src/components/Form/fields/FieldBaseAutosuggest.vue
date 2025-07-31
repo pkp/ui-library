@@ -419,9 +419,7 @@ export default {
 		}
 	},
 	mounted() {
-		this.$nextTick(() => {
-			this.updateInputPadding();
-		});
+		this.updateInputPadding();
 
 		// Set up ResizeObserver
 		const targetElement = this.$refs.autosuggest.$el;
