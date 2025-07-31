@@ -6,12 +6,10 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useCurrentUser} from '@/composables/useCurrentUser';
 import {useParticipantManagerStore} from '../ParticipantManager/participantManagerStore';
 import {useTasksAndDiscussionsStore} from '@/pages/tasksAndDiscussions/tasksAndDiscussionsStore';
-import FileAttacherModal from '@/components/Composer/FileAttacherModal.vue';
-import FieldPreparedContentInsertModal from '@/components/Form/fields/FieldPreparedContentInsertModal.vue';
+import {useDiscussionMessagesStore} from './discussionMessagesStore';
 import DiscussionMessages from './DiscussionMessages.vue';
 import DiscussionManagerTemplates from './DiscussionManagerTemplates.vue';
 import DiscussionManagerTaskInfo from './DiscussionManagerTaskInfo.vue';
-import preparedContent from '../../mixins/preparedContent';
 
 export function useDiscussionManagerForm({
 	status = 'New',
@@ -27,6 +25,7 @@ export function useDiscussionManagerForm({
 		submission,
 		submissionStageId,
 	});
+	const discussionMessagesStore = useDiscussionMessagesStore();
 
 	const currentUser = useCurrentUser();
 	const {getRelativeTargetDate} = useDate();
@@ -148,41 +147,6 @@ export function useDiscussionManagerForm({
 		}
 
 		return badgeProps;
-	}
-
-	function initDiscussionText() {
-		return {
-			setup: (editor) => {
-				editor.ui.registry.addButton('pkpAttachFiles', {
-					icon: 'upload',
-					text: t('common.attachFiles'),
-					onAction() {
-						const {openSideModal} = useModal();
-
-						openSideModal(FileAttacherModal, {
-							title: t('common.attachFiles'),
-							attachers: [],
-							onAddAttachments: [],
-						});
-					},
-				});
-
-				editor.ui.registry.addButton('pkpInsert', {
-					icon: 'plus',
-					text: t('common.insertContent'),
-					onAction() {
-						const {openSideModal} = useModal(FieldPreparedContentInsertModal);
-						openSideModal(FieldPreparedContentInsertModal, {
-							title: t('common.insertContent'),
-							insertLabel: t('common.insert'),
-							preparedContent,
-							preparedContentLabel: 'Label',
-							onInsert: () => {},
-						});
-					},
-				});
-			},
-		};
 	}
 
 	function getTemplates() {
@@ -356,19 +320,16 @@ export function useDiscussionManagerForm({
 	if (workItemStatus === 'New') {
 		addFieldRichTextArea('discussionText', {
 			groupId: 'discussion',
-			toolbar: 'bold italic underline bullist | pkpAttachFiles | pkpInsert',
-			plugins: ['lists'],
-			size: 'large',
-			init: initDiscussionText(),
+			...discussionMessagesStore.messageFieldOptions,
 		});
 	} else {
 		addFieldComponent('messagesComponent', {
 			component: DiscussionMessages,
+			componentProps: {
+				submission,
+				discussion: workItem,
+			},
 			groupId: 'discussion',
-			toolbar: 'bold italic underline bullist | pkpAttachFiles | pkpInsert',
-			plugins: ['lists'],
-			size: 'large',
-			init: initDiscussionText(),
 		});
 	}
 
