@@ -38,73 +38,75 @@
 			class="pkpFormField__description semantic-defaults"
 		/>
 		<div class="pkpFormField__control pkpAutosuggest__control">
-			<div
-				:id="describedBySelectedId"
-				ref="values"
-				class="pkpAutosuggest__inputWrapper pkpFormField__input"
-				:class="{
-					'pkpAutosuggest__inputWrapper--multilingual':
-						isMultilingual && locales.length > 1,
-					'pkpAutosuggest__inputWrapper--focus': inputFocused,
-				}"
-				@click="setFocusToInput"
-			>
-				<!-- Begin Heading part repeated for inline scenario -->
-				<div v-if="isLabelInline" ref="heading" class="pkpFormField__heading">
-					<FormFieldLabel
-						:control-id="controlId"
-						:label="label"
-						:locale-label="localeLabel"
-						:is-required="isRequired"
-						:required-label="t('common.required')"
-						:multilingual-label="multilingualLabel"
-					/>
-					<Tooltip
-						v-if="tooltip"
-						aria-hidden="true"
-						:tooltip="tooltip"
-						label=""
-					/>
-					<span
-						v-if="tooltip"
-						:id="describedByTooltipId"
-						v-strip-unsafe-html="tooltip"
-						class="-screenReader"
-					/>
-					<HelpButton
-						v-if="helpTopic"
-						:id="describedByHelpId"
-						:topic="helpTopic"
-						:section="helpSection"
-						:label="t('help.help')"
-					/>
-				</div>
-				<!-- End Heading part repeated for inline scenario -->
-				<Autosuggest
-					v-bind="autoSuggestProps"
-					ref="inputRef"
-					v-model:input-value="inputValue"
-					@select-suggestion="selectSuggestion"
-					@deselect="deselect"
-					@focus-changed="changeFocus"
+			<div class="relative">
+				<div
+					:id="describedBySelectedId"
+					ref="values"
+					class="pkpAutosuggest__inputWrapper pkpFormField__input"
+					:class="{
+						'pkpAutosuggest__inputWrapper--multilingual':
+							isMultilingual && locales.length > 1,
+						'pkpAutosuggest__inputWrapper--focus': inputFocused,
+					}"
+					@click="setFocusToInput"
 				>
-					<template v-if="$slots['input-slot']" #input-slot>
-						<slot name="input-slot"></slot>
-					</template>
-					<template v-if="$slots.option" #option="{suggestion}">
-						<slot name="option" :suggestion="suggestion"></slot>
-					</template>
-				</Autosuggest>
-				<span class="pkpAutosuggest__endslot">
-					<slot name="end"></slot>
-				</span>
+					<!-- Begin Heading part repeated for inline scenario -->
+					<div v-if="isLabelInline" ref="heading" class="pkpFormField__heading">
+						<FormFieldLabel
+							:control-id="controlId"
+							:label="label"
+							:locale-label="localeLabel"
+							:is-required="isRequired"
+							:required-label="t('common.required')"
+							:multilingual-label="multilingualLabel"
+						/>
+						<Tooltip
+							v-if="tooltip"
+							aria-hidden="true"
+							:tooltip="tooltip"
+							label=""
+						/>
+						<span
+							v-if="tooltip"
+							:id="describedByTooltipId"
+							v-strip-unsafe-html="tooltip"
+							class="-screenReader"
+						/>
+						<HelpButton
+							v-if="helpTopic"
+							:id="describedByHelpId"
+							:topic="helpTopic"
+							:section="helpSection"
+							:label="t('help.help')"
+						/>
+					</div>
+					<!-- End Heading part repeated for inline scenario -->
+					<Autosuggest
+						v-bind="autoSuggestProps"
+						ref="inputRef"
+						v-model:input-value="inputValue"
+						@select-suggestion="selectSuggestion"
+						@deselect="deselect"
+						@focus-changed="changeFocus"
+					>
+						<template v-if="$slots['input-slot']" #input-slot>
+							<slot name="input-slot"></slot>
+						</template>
+						<template v-if="$slots.option" #option="{suggestion}">
+							<slot name="option" :suggestion="suggestion"></slot>
+						</template>
+					</Autosuggest>
+					<span class="pkpAutosuggest__endslot">
+						<slot name="end"></slot>
+					</span>
+				</div>
+				<MultilingualProgress
+					v-if="isMultilingual && locales.length > 1"
+					:id="multilingualProgressId"
+					:count="multilingualFieldsCompleted"
+					:total="locales.length"
+				/>
 			</div>
-			<MultilingualProgress
-				v-if="isMultilingual && locales.length > 1"
-				:id="multilingualProgressId"
-				:count="multilingualFieldsCompleted"
-				:total="locales.length"
-			/>
 			<FieldError
 				v-if="errors && errors.length"
 				:id="describedByErrorId"
