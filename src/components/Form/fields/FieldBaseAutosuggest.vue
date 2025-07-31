@@ -424,15 +424,10 @@ export default {
 		// Set up ResizeObserver
 		const targetElement = this.$refs.autosuggest.$el;
 		if (targetElement) {
-			const debouncedUpdate = debounce(
-				() => this.updateInputPadding(),
-				100,
-				true
-			);
 			this.resizeObserver = new ResizeObserver(entries => {
 				const entry = entries[0]; // Single element, no need to loop
 				if (entry.contentRect.width > 0 || entry.contentRect.height > 0) {
-					debouncedUpdate();
+					this.updateInputPadding();
 				}
 			});
 			this.resizeObserver.observe(targetElement);
