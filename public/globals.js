@@ -203,6 +203,7 @@ window.pkp = {
 		'common.findTemplate': 'Find Template',
 		'common.geographic': 'Geographic',
 		'common.help': 'Help',
+		'common.history': 'History',
 		'common.id': 'ID',
 		'common.insert': 'Insert',
 		'common.insertContent': 'Insert Content',

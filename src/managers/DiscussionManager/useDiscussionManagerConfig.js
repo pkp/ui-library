@@ -156,7 +156,7 @@ export function useDiscussionManagerConfig() {
 			config.permittedActions.includes(Actions.TASKS_AND_DISCUSSIONS_HISTORY)
 		) {
 			actions.push({
-				label: 'History', // TODO: add to locale key
+				label: t('common.history'),
 				name: Actions.TASKS_AND_DISCUSSIONS_HISTORY,
 				icon: 'History',
 			});
