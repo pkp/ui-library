@@ -54,6 +54,7 @@
 									`${field.component}-display`
 								"
 								:field="field"
+								v-bind="field.componentProps"
 								:heading-element="fieldHeadingElement"
 							></component>
 						</div>

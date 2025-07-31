@@ -25,7 +25,7 @@
 						>
 							<component
 								:is="field.component"
-								v-bind="field"
+								v-bind="{...field, ...field.componentProps}"
 								:all-errors="errors"
 								:locale-key="locale.key"
 								:form-id="formId"
@@ -40,7 +40,7 @@
 				<template v-else>
 					<component
 						:is="field.component"
-						v-bind="field"
+						v-bind="{...field, ...field.componentProps}"
 						:key="field.name"
 						:all-errors="errors"
 						:form-id="formId"
