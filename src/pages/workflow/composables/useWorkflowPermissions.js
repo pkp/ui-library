@@ -51,13 +51,6 @@ export function useWorkflowPermissions({submission, selectedPublication}) {
 		canEditPublication = submission.value.canCurrentUserChangeMetadata;
 
 		if (
-			selectedPublication.value &&
-			selectedPublication.value?.status === pkp.const.STATUS_PUBLISHED
-		) {
-			canEditPublication = false;
-		}
-
-		if (
 			hasIntersection(activeStage.currentUserAssignedRoles, [...EditorialRoles])
 		) {
 			canAccessPublication = true;
