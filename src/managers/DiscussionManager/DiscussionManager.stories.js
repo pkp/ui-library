@@ -1,4 +1,4 @@
-import {within, userEvent} from '@storybook/test';
+import {within, userEvent} from 'storybook/test';
 import {http, HttpResponse} from 'msw';
 import DiscussionManager from './DiscussionManager.vue';
 import {DiscussionsDataMock} from '@/mockFactories/discussionMock';

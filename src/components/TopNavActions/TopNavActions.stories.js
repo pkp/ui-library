@@ -1,4 +1,4 @@
-import {within, userEvent} from '@storybook/test';
+import {within, userEvent} from 'storybook/test';
 import {onUnmounted} from 'vue';
 import TopNavActions from './TopNavActions.vue';
 import PkpButton from '@/components/Button/Button.vue';
