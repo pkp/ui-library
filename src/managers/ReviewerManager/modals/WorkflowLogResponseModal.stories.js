@@ -1,7 +1,7 @@
 import WorkflowLogResponseModal from './WorkflowLogResponseModal.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import {useModal} from '@/composables/useModal';
-import {within, userEvent} from '@storybook/test';
+import {within, userEvent} from 'storybook/test';
 
 export default {
 	title: 'Managers/ReviewerManager/LogResponse',

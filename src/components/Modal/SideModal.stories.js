@@ -1,4 +1,4 @@
-import {within, userEvent} from '@storybook/test';
+import {within, userEvent} from 'storybook/test';
 import {ref, inject} from 'vue';
 import SideModal from './SideModal.vue';
 import {useModal} from '@/composables/useModal.js';

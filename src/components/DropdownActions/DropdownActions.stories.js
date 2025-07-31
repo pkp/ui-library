@@ -1,5 +1,5 @@
 import DropdownActions from './DropdownActions.vue';
-import {within, userEvent} from '@storybook/test';
+import {within, userEvent} from 'storybook/test';
 
 export default {
 	title: 'Components/DropdownActions',
