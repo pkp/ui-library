@@ -30,7 +30,9 @@
 			</PkpButton>
 		</div>
 		<div v-if="toggleMessageForm">
-			<FieldRichTextarea v-bind="field"></FieldRichTextarea>
+			<FieldRichTextarea
+				v-bind="discussionMessagesStore.messageFieldOptions"
+			></FieldRichTextarea>
 		</div>
 	</div>
 </template>
@@ -49,7 +51,11 @@ const toggleMessageForm = ref(false);
 const discussionMessagesStore = useDiscussionMessagesStore();
 
 defineProps({
-	field: {
+	submission: {
+		type: Object,
+		required: true,
+	},
+	discussion: {
 		type: Object,
 		required: true,
 	},
