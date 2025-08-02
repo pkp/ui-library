@@ -1,3 +1,4 @@
+// todo: @gaziyucel make relevant changes for structured citations
 import {onUnmounted} from 'vue';
 import {injectFromCurrentInstance} from '@/utils/defineComponentStore';
 

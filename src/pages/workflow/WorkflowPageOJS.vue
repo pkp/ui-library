@@ -1,3 +1,4 @@
+<!-- // todo: @gaziyucel make relevant changes for structured citations -->
 <template>
 	<WorkflowPage />
 </template>
@@ -12,6 +13,7 @@ import FileManager from '@/managers/FileManager/FileManager.vue';
 import ReviewerManager from '@/managers/ReviewerManager/ReviewerManager.vue';
 import DiscussionManager from '@/managers/DiscussionManager/DiscussionManager.vue';
 import ContributorManager from '@/managers/ContributorManager/ContributorManager.vue';
+import CitationManager from '@/managers/CitationManager/CitationManager.vue';
 import ParticipantManager from '@/managers/ParticipantManager/ParticipantManager.vue';
 import ReviewerSuggestionManager from '@/managers/ReviewerSuggestionManager/ReviewerSuggestionManager.vue';
 import GalleyManager from '@/managers/GalleyManager/GalleyManager.vue';
@@ -49,6 +51,7 @@ const Components = markRaw({
 	ReviewerManager,
 	DiscussionManager,
 	ContributorManager,
+	CitationManager,
 	ParticipantManager,
 	ReviewerSuggestionManager,
 	GalleyManager,
