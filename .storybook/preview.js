@@ -1,10 +1,10 @@
-/** @type { import('@storybook/vue3').Preview } */
+/** @type { import('@storybook/vue3-vite').Preview } */
 
 import {withThemeByDataAttribute} from '@storybook/addon-themes';
 import {mockDateDecorator} from 'storybook-mock-date-decorator';
 import PrimeVue from 'primevue/config';
 
-import {setup} from '@storybook/vue3';
+import {setup} from '@storybook/vue3-vite';
 import GlobalMixins from '@/mixins/global.js';
 import emitter from 'tiny-emitter/instance';
 

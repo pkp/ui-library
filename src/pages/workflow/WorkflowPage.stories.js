@@ -2,7 +2,7 @@ import WorkflowPage from './WorkflowPageOJS.vue';
 import {http, HttpResponse} from 'msw';
 import pageInitConfigEditorial from '../dashboard/mocks/pageInitConfigEditorial';
 import {useModal} from '@/composables/useModal';
-import {within, userEvent} from '@storybook/test';
+import {within, userEvent} from 'storybook/test';
 
 import {getSubmissionMock} from '@/mockFactories/submissionMock';
 import {getPublicationMock} from '@/mockFactories/publicationMock';
