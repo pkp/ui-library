@@ -31,6 +31,6 @@ const props = defineProps({
 
 const workItemType =
 	props.workItem.type === 'Task'
-		? {type: 'Task', icon: 'FileText', owner: 'Task Owner'}
-		: {type: 'Discussion', icon: 'Comment', owner: 'Created by'};
+		? {type: 'Task', icon: 'Task', owner: 'Task Owner'}
+		: {type: 'Discussion', icon: 'Discussion', owner: 'Created by'};
 </script>

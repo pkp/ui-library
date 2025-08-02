@@ -38,6 +38,7 @@ import Declined from './icons/Declined.vue';
 import DecreaseTextSize from './icons/DecreaseTextSize.vue';
 import Desktop from './icons/Desktop.vue';
 import DisableUser from './icons/DisableUser.vue';
+import Discussion from './icons/Discussion.vue';
 import Download from './icons/Download.vue';
 import Dropdown from './icons/Dropdown.vue';
 import Dropup from './icons/Dropup.vue';
@@ -108,6 +109,8 @@ import Sort from './icons/Sort.vue';
 import Star from './icons/Star.vue';
 import StarTicked from './icons/StarTicked.vue';
 import Statistics from './icons/Statistics.vue';
+import Task from './icons/Task.vue';
+import TaskDetails from './icons/TaskDetails.vue';
 import Tools from './icons/Tools.vue';
 import Underline from './icons/Underline.vue';
 import Unlock from './icons/Unlock.vue';
@@ -154,6 +157,7 @@ const svgIcons = {
 	DecreaseTextSize,
 	Desktop,
 	DisableUser,
+	Discussion,
 	Download,
 	Dropdown,
 	Dropup,
@@ -222,6 +226,8 @@ const svgIcons = {
 	Star,
 	StarTicked,
 	Statistics,
+	Task,
+	TaskDetails,
 	Tools,
 	Underline,
 	Unlock,

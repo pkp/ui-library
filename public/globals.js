@@ -203,6 +203,7 @@ window.pkp = {
 		'common.findTemplate': 'Find Template',
 		'common.geographic': 'Geographic',
 		'common.help': 'Help',
+		'common.history': 'History',
 		'common.id': 'ID',
 		'common.insert': 'Insert',
 		'common.insertContent': 'Insert Content',
@@ -409,6 +410,9 @@ window.pkp = {
 			'This task template auto-fills the task name, due date, description, and roles. After selecting the template, you can modify any details before saving the task.',
 		'discussion.template.discussionDescription':
 			'This discussion template pre-fills the name, participants, and starting message. You can adjust the details before starting.',
+		'discussion.messageFrom': 'Message from {$from}',
+		'discussion.addNewMessage': 'Add New Message',
+		'discussion.addTaskDetails': 'Add Task Details',
 		'doi.manager.versions.countStatement': 'There are {$count} versions.',
 		'doi.manager.versions.modalTitle': 'DOIs for all versions',
 		'doi.manager.versions.view': 'View all',

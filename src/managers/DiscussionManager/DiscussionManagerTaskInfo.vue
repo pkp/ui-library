@@ -8,7 +8,7 @@
 
 	<FormGroupHeader
 		v-if="selectedValue"
-		:label="t('discussion.form.taskInformation')"
+		:heading="t('discussion.form.taskInformation')"
 		:description="t('discussion.form.taskInfoDescription')"
 	/>
 </template>

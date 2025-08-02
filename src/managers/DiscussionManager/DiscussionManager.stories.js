@@ -64,6 +64,24 @@ const mswHandlers = [
 	http.get('https://mock/index.php/publicknowledge/api/v1/templates', () => {
 		return HttpResponse.json(TemplatesDataMock);
 	}),
+	http.get('https://mock/index.php/publicknowledge/api/v1/messages', () => {
+		return HttpResponse.json([
+			{
+				id: 1,
+				message: 'Test',
+				email: 'test@test.com',
+				createdAt: '2025-03-06 06:01:17',
+				discussionText: TemplatesDataMock[0]?.content,
+			},
+			{
+				id: 2,
+				message: 'Test 2',
+				email: 'test2@test.com',
+				createdAt: '2025-03-08 06:01:17',
+				discussionText: 'Lorem ipsum',
+			},
+		]);
+	}),
 ];
 
 export const Default = {
