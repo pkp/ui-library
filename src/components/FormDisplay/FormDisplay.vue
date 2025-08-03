@@ -118,7 +118,7 @@ function shouldDisplayField(field) {
 		return false;
 	}
 
-	if (field.hideWhenReadOnly) {
+	if (field.hideOnDisplay) {
 		return false;
 	}
 

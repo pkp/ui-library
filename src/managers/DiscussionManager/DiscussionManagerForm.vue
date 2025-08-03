@@ -13,12 +13,12 @@
 				{{ badgeProps.slot }}
 			</Badge>
 		</template>
-		<template v-if="isReadOnlyRef" #actions>
+		<template v-if="inDisplayModeRef" #actions>
 			<PkpButton @click="editForm">{{ t('common.edit') }}</PkpButton>
 		</template>
 
 		<SideModalLayoutBasic>
-			<FormDisplay v-if="isReadOnlyRef" v-bind="form" />
+			<FormDisplay v-if="inDisplayModeRef" v-bind="form" />
 			<PkpForm v-else v-bind="form" @cancel="onClose" @set="set" />
 		</SideModalLayoutBasic>
 	</SideModalBody>
@@ -60,26 +60,29 @@ const props = defineProps({
 		type: Function,
 		default: () => () => {},
 	},
-	isReadOnly: {
+	inDisplayMode: {
 		type: Boolean,
 		default: () => false,
 	},
 });
 
-const isReadOnlyRef = ref(props.isReadOnly);
+const inDisplayModeRef = ref(props.inDisplayMode);
 const hasContent = computed(() => !!props.workItem?.id);
 
 function editForm() {
-	isReadOnlyRef.value = false;
+	inDisplayModeRef.value = false;
 }
 
 const onClose = function () {
-	if (props.isReadOnly) {
-		isReadOnlyRef.value = true;
+	if (props.inDisplayMode) {
+		inDisplayModeRef.value = true;
 	} else {
 		props.onCloseFn();
 	}
 };
 
-const {form, set, badgeProps} = useDiscussionManagerForm(props, isReadOnlyRef);
+const {form, set, badgeProps} = useDiscussionManagerForm(
+	props,
+	inDisplayModeRef,
+);
 </script>

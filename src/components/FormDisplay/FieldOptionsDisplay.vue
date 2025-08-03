@@ -1,5 +1,5 @@
 <template>
-	<component :is="headingElement" class="text-lg mb-1 inline-block font-bold">
+	<component :is="headingElement" class="mb-1 inline-block text-xl-bold">
 		{{ field.label }}
 	</component>
 	<div class="flex flex-col gap-y-2">
@@ -29,7 +29,7 @@ const props = defineProps({
 
 const selectedValues = computed(() => {
 	if (!props.field?.value?.length) {
-		return '-';
+		return [];
 	}
 
 	return props.field.options.filter((option) =>

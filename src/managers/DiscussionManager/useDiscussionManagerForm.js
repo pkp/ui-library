@@ -257,7 +257,7 @@ export function useDiscussionManagerForm({
 		description: t('discussion.form.detailsNameDescription'),
 		size: 'large',
 		value: localize(workItem?.title),
-		hideWhenReadOnly: true,
+		hideOnDisplay: true,
 	});
 
 	addParticipantsField({override: false});
@@ -298,7 +298,7 @@ export function useDiscussionManagerForm({
 			name: 'taskInfoShouldStart',
 			showWhen: ['taskInfoIsChecked', 'true'],
 			value: true,
-			hideWhenReadOnly: true,
+			hideOnDisplay: true,
 			options: [
 				{
 					label: t('discussion.form.startTaskUponSaving'),
