@@ -167,7 +167,7 @@ export default {
 			const workflowStore = useWorkflowStore();
 
 			workflowStore.workflowAssignToIssue({}, (finishedData) => {
-				if (finishedData.data) {
+				if (finishedData?.data) {
 					this.currentValue = finishedData.data.issueId;
 				}
 			});
