@@ -126,11 +126,11 @@ export function useWorkflowActions() {
 			return;
 		}
 
-		// If the publication is marked as published,
+		// If the publication is marked as ready to publish,
 		// and not assigned to an issue, or assigned to an issue that is not published (e.g. future issue),
 		// we can publish the publication immediately as issueless or continuous publication
 		if (
-			selectedPublication.published &&
+			selectedPublication.status === pkp.const.STATUS_READY_TO_PUBLISH &&
 			(selectedPublication.issueId === null ||
 				!pageInitConfig.publicationSettings.issuePublishedStatus[
 					selectedPublication.issueId
@@ -143,7 +143,10 @@ export function useWorkflowActions() {
 			return;
 		}
 
-		if (selectedPublication.issueId === null || selectedPublication.published) {
+		if (
+			selectedPublication.issueId === null ||
+			selectedPublication.status === pkp.const.STATUS_READY_TO_PUBLISH
+		) {
 			const {url} = useLegacyGridUrl({
 				component: 'modals.publish.AssignToIssueHandler',
 				op: 'assign',
@@ -165,7 +168,10 @@ export function useWorkflowActions() {
 				},
 				{
 					onClose: async ({formId, data}) => {
-						if (data?.issueId || data?.published) {
+						if (
+							data?.issueId ||
+							data?.status === pkp.const.STATUS_READY_TO_PUBLISH
+						) {
 							workflowScheduleForPublication(
 								{submission, selectedPublication},
 								finishedCallback,
