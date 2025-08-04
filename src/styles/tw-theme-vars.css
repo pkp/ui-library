@@ -1,5 +1,6 @@
 :root {
 	--spacing: 0.25rem;
+	--text-base-size: 1rem;
 
 	--color-primary: #006798;
 	--color-hover: #0082bf;
@@ -47,170 +48,165 @@
 
 	--shadow: 0 0 4px rgba(0, 0, 0, 0.5);
 
-	--font-sans:
+	--font:
 		'Noto Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
 		'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
 	/** 10px */
-	--text-xs-normal: 0.625rem;
-	--text-xs-normal--line-height: 0.75rem;
+	--text-xs-normal: calc(0.625 * var(--text-base-size));
+	--text-xs-normal--line-height: calc(0.75 * var(--text-base-size));
 	--text-xs-normal--font-weight: 400;
 
 	/** 11px */
-	--text-sm-light: 0.6875rem;
-	--text-sm-light--line-height: 0.875rem;
+	--text-sm-light: calc(0.6875 * var(--text-base-size));
+	--text-sm-light--line-height: calc(0.875 * var(--text-base-size));
 	--text-sm-light--font-weight: 300;
-	--text-sm-normal: 0.6875rem;
-	--text-sm-normal--line-height: 0.875rem;
+	--text-sm-normal: calc(0.6875 * var(--text-base-size));
+	--text-sm-normal--line-height: calc(0.875 * var(--text-base-size));
 	--text-sm-normal--font-weight: 400;
 
 	/** 12px */
-	--text-base-light: 0.75rem;
-	--text-base-light--line-height: 1rem;
+	--text-base-light: calc(0.75 * var(--text-base-size));
+	--text-base-light--line-height: calc(1 * var(--text-base-size));
 	--text-base-light--font-weight: 300;
-	--text-base-normal: 0.75rem;
-	--text-base-normal--line-height: 1rem;
+	--text-base-normal: calc(0.75 * var(--text-base-size));
+	--text-base-normal--line-height: calc(1 * var(--text-base-size));
 	--text-base-normal--font-weight: 400;
-	--text-base-bold: 0.75rem;
-	--text-base-bold--line-height: 1rem;
+	--text-base-bold: calc(0.75 * var(--text-base-size));
+	--text-base-bold--line-height: calc(1 * var(--text-base-size));
 	--text-base-bold--font-weight: 700;
 
 	/** 14px */
-	--text-lg-normal: 0.875rem;
-	--text-lg-normal--line-height: 1.25rem;
+	--text-lg-normal: calc(0.875 * var(--text-base-size));
+	--text-lg-normal--line-height: calc(1.25 * var(--text-base-size));
 	--text-lg-normal--font-weight: 400;
-	--text-lg-medium: 0.875rem;
-	--text-lg-medium--line-height: 1.25rem;
+	--text-lg-medium: calc(0.875 * var(--text-base-size));
+	--text-lg-medium--line-height: calc(1.25 * var(--text-base-size));
 	--text-lg-medium--font-weight: 500;
-	--text-lg-semibold: 0.875rem;
-	--text-lg-semibold--line-height: 1.25rem;
+	--text-lg-semibold: calc(0.875 * var(--text-base-size));
+	--text-lg-semibold--line-height: calc(1.25 * var(--text-base-size));
 	--text-lg-semibold--font-weight: 600;
-	--text-lg-bold: 0.875rem;
-	--text-lg-bold--line-height: 1.25rem;
+	--text-lg-bold: calc(0.875 * var(--text-base-size));
+	--text-lg-bold--line-height: calc(1.25 * var(--text-base-size));
 	--text-lg-bold--font-weight: 700;
 
 	/** 16px */
-	--text-xl-bold: 1rem;
-	--text-xl-bold--line-height: 1.5rem;
+	--text-xl-bold: calc(1 * var(--text-base-size));
+	--text-xl-bold--line-height: calc(1.5 * var(--text-base-size));
 	--text-xl-bold--font-weight: 700;
 
 	/** 18px */
-	--text-2xl-bold: 1.125rem;
-	--text-2xl-bold--line-height: 1.75rem;
+	--text-2xl-bold: calc(1.125 * var(--text-base-size));
+	--text-2xl-bold--line-height: calc(1.75 * var(--text-base-size));
 	--text-2xl-bold--font-weight: 700;
 
 	/** 20px */
-	--text-3xl-normal: 1.25rem;
-	--text-3xl-normal--line-height: 1.75rem;
+	--text-3xl-normal: calc(1.25 * var(--text-base-size));
+	--text-3xl-normal--line-height: calc(1.75 * var(--text-base-size));
 	--text-3xl-normal--font-weight: 400;
-	--text-3xl-medium: 1.25rem;
-	--text-3xl-medium--line-height: 1.75rem;
+	--text-3xl-medium: calc(1.25 * var(--text-base-size));
+	--text-3xl-medium--line-height: calc(1.75 * var(--text-base-size));
 	--text-3xl-medium--font-weight: 500;
-	--text-3xl-bold: 1.25rem;
-	--text-3xl-bold--line-height: 1.75rem;
+	--text-3xl-bold: calc(1.25 * var(--text-base-size));
+	--text-3xl-bold--line-height: calc(1.75 * var(--text-base-size));
 	--text-3xl-bold--font-weight: 700;
 
 	/** 24px */
-	--text-4xl-bold: 1.5rem;
-	--text-4xl-bold--line-height: 2rem;
+	--text-4xl-bold: calc(1.5 * var(--text-base-size));
+	--text-4xl-bold--line-height: calc(2 * var(--text-base-size));
 	--text-4xl-bold--font-weight: 700;
 
 	/** 36px */
-	--text-5xl-bold: 2.25rem;
-	--text-5xl-bold--line-height: 2.5rem;
+	--text-5xl-bold: calc(2.25 * var(--text-base-size));
+	--text-5xl-bold--line-height: calc(2.5 * var(--text-base-size));
 	--text-5xl-bold--font-weight: 700;
 
 	/* Additional css variables to make easier to use them in plugins*/
 	/* 10px */
 	--font-xs-normal: var(--text-xs-normal--font-weight) var(--text-xs-normal) /
-		var(--text-xs-normal--line-height) var(--font-sans);
+		var(--text-xs-normal--line-height) var(--font);
 
 	/* 11px */
 	--font-sm-light: var(--text-sm-light--font-weight) var(--text-sm-light) /
-		var(--text-sm-light--line-height) var(--font-sans);
+		var(--text-sm-light--line-height) var(--font);
 	--font-sm-normal: var(--text-sm-normal--font-weight) var(--text-sm-normal) /
-		var(--text-sm-normal--line-height) var(--font-sans);
+		var(--text-sm-normal--line-height) var(--font);
 
 	/* 12px */
 	--font-base-light: var(--text-base-light--font-weight)
-		var(--text-base-light) / var(--text-base-light--line-height)
-		var(--font-sans);
+		var(--text-base-light) / var(--text-base-light--line-height) var(--font);
 	--font-base-normal: var(--text-base-normal--font-weight)
-		var(--text-base-normal) / var(--text-base-normal--line-height)
-		var(--font-sans);
+		var(--text-base-normal) / var(--text-base-normal--line-height) var(--font);
 	--font-base-bold: var(--text-base-bold--font-weight) var(--text-base-bold) /
-		var(--text-base-bold--line-height) var(--font-sans);
+		var(--text-base-bold--line-height) var(--font);
 
 	/* 14px */
 	--font-lg-normal: var(--text-lg-normal--font-weight) var(--text-lg-normal) /
-		var(--text-lg-normal--line-height) var(--font-sans);
+		var(--text-lg-normal--line-height) var(--font);
 	--font-lg-medium: var(--text-lg-medium--font-weight) var(--text-lg-medium) /
-		var(--text-lg-medium--line-height) var(--font-sans);
+		var(--text-lg-medium--line-height) var(--font);
 	--font-lg-semibold: var(--text-lg-semibold--font-weight)
-		var(--text-lg-semibold) / var(--text-lg-semibold--line-height)
-		var(--font-sans);
+		var(--text-lg-semibold) / var(--text-lg-semibold--line-height) var(--font);
 	--font-lg-bold: var(--text-lg-bold--font-weight) var(--text-lg-bold) /
-		var(--text-lg-bold--line-height) var(--font-sans);
+		var(--text-lg-bold--line-height) var(--font);
 
 	/* 16px */
 	--font-xl-bold: var(--text-xl-bold--font-weight) var(--text-xl-bold) /
-		var(--text-xl-bold--line-height) var(--font-sans);
+		var(--text-xl-bold--line-height) var(--font);
 
 	/* 18px */
 	--font-2xl-bold: var(--text-2xl-bold--font-weight) var(--text-2xl-bold) /
-		var(--text-2xl-bold--line-height) var(--font-sans);
+		var(--text-2xl-bold--line-height) var(--font);
 
 	/* 20px */
 	--font-3xl-normal: var(--text-3xl-normal--font-weight)
-		var(--text-3xl-normal) / var(--text-3xl-normal--line-height)
-		var(--font-sans);
+		var(--text-3xl-normal) / var(--text-3xl-normal--line-height) var(--font);
 	--font-3xl-medium: var(--text-3xl-medium--font-weight)
-		var(--text-3xl-medium) / var(--text-3xl-medium--line-height)
-		var(--font-sans);
+		var(--text-3xl-medium) / var(--text-3xl-medium--line-height) var(--font);
 	--font-3xl-bold: var(--text-3xl-bold--font-weight) var(--text-3xl-bold) /
-		var(--text-3xl-bold--line-height) var(--font-sans);
+		var(--text-3xl-bold--line-height) var(--font);
 
 	/* 24px */
 	--font-4xl-bold: var(--text-4xl-bold--font-weight) var(--text-4xl-bold) /
-		var(--text-4xl-bold--line-height) var(--font-sans);
+		var(--text-4xl-bold--line-height) var(--font);
 
 	/* 36px */
 	--font-5xl-bold: var(--text-5xl-bold--font-weight) var(--text-5xl-bold) /
-		var(--text-5xl-bold--line-height) var(--font-sans);
+		var(--text-5xl-bold--line-height) var(--font);
 
 	--spacing-0: 0px;
-	--spacing-px: 1px;
-	--spacing-0-5: 0.125rem; /* 2px */
-	--spacing-1: 0.25rem; /* 4px */
-	--spacing-1-5: 0.375rem; /* 6px */
-	--spacing-2: 0.5rem; /* 8px */
-	--spacing-2-5: 0.625rem; /* 10px */
-	--spacing-3: 0.75rem; /* 12px */
-	--spacing-3-5: 0.875rem; /* 14px */
-	--spacing-4: 1rem; /* 16px */
-	--spacing-5: 1.25rem; /* 20px */
-	--spacing-6: 1.5rem; /* 24px */
-	--spacing-7: 1.75rem; /* 28px */
-	--spacing-8: 2rem; /* 32px */
-	--spacing-9: 2.25rem; /* 36px */
-	--spacing-10: 2.5rem; /* 40px */
-	--spacing-11: 2.75rem; /* 44px */
-	--spacing-12: 3rem; /* 48px */
-	--spacing-14: 3.5rem; /* 56px */
-	--spacing-16: 4rem; /* 64px */
-	--spacing-20: 5rem; /* 80px */
-	--spacing-24: 6rem; /* 96px */
-	--spacing-28: 7rem; /* 112px */
-	--spacing-32: 8rem; /* 128px */
-	--spacing-36: 9rem; /* 144px */
-	--spacing-40: 10rem; /* 160px */
-	--spacing-44: 11rem; /* 176px */
-	--spacing-48: 12rem; /* 192px */
-	--spacing-52: 13rem; /* 208px */
-	--spacing-56: 14rem; /* 224px */
-	--spacing-60: 15rem; /* 240px */
-	--spacing-64: 16rem; /* 256px */
-	--spacing-72: 18rem; /* 288px */
-	--spacing-80: 20rem; /* 320px */
-	--spacing-96: 24rem; /* 384px */
+	--spacing-px: calc(var(--spacing) / 4);
+	--spacing-0-5: calc(0.5 * var(--spacing)); /* 2px */
+	--spacing-1: calc(1 * var(--spacing)); /* 4px */
+	--spacing-1-5: calc(1.5 * var(--spacing)); /* 6px */
+	--spacing-2: calc(2 * var(--spacing)); /* 8px */
+	--spacing-2-5: calc(2.5 * var(--spacing)); /* 10px */
+	--spacing-3: calc(3 * var(--spacing)); /* 12px */
+	--spacing-3-5: calc(3.5 * var(--spacing)); /* 14px */
+	--spacing-4: calc(4 * var(--spacing)); /* 16px */
+	--spacing-5: calc(5 * var(--spacing)); /* 20px */
+	--spacing-6: calc(6 * var(--spacing)); /* 24px */
+	--spacing-7: calc(7 * var(--spacing)); /* 28px */
+	--spacing-8: calc(8 * var(--spacing)); /* 32px */
+	--spacing-9: calc(9 * var(--spacing)); /* 36px */
+	--spacing-10: calc(10 * var(--spacing)); /* 40px */
+	--spacing-11: calc(11 * var(--spacing)); /* 44px */
+	--spacing-12: calc(12 * var(--spacing)); /* 48px */
+	--spacing-14: calc(14 * var(--spacing)); /* 56px */
+	--spacing-16: calc(16 * var(--spacing)); /* 64px */
+	--spacing-20: calc(20 * var(--spacing)); /* 80px */
+	--spacing-24: calc(24 * var(--spacing)); /* 96px */
+	--spacing-28: calc(28 * var(--spacing)); /* 112px */
+	--spacing-32: calc(32 * var(--spacing)); /* 128px */
+	--spacing-36: calc(36 * var(--spacing)); /* 144px */
+	--spacing-40: calc(40 * var(--spacing)); /* 160px */
+	--spacing-44: calc(44 * var(--spacing)); /* 176px */
+	--spacing-48: calc(48 * var(--spacing)); /* 192px */
+	--spacing-52: calc(52 * var(--spacing)); /* 208px */
+	--spacing-56: calc(56 * var(--spacing)); /* 224px */
+	--spacing-60: calc(60 * var(--spacing)); /* 240px */
+	--spacing-64: calc(64 * var(--spacing)); /* 256px */
+	--spacing-72: calc(72 * var(--spacing)); /* 288px */
+	--spacing-80: calc(80 * var(--spacing)); /* 320px */
+	--spacing-96: calc(96 * var(--spacing)); /* 384px */
 }

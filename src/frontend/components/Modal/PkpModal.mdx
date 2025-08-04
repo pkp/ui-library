@@ -1,0 +1,82 @@
+import {
+	Primary,
+	Controls,
+	Stories,
+	Meta,
+	ArgTypes,
+	Source,
+} from '@storybook/blocks';
+import SideModalBody from './PkpModalBody.vue';
+import * as SideModalStories from './PkpModal.stories.js';
+
+<Meta of={SideModalStories} />
+
+# Side Modal
+
+Side modal has been introduced in 3.5 all existing modals, including jquery legacy ones are now rendered as SideModal.
+
+## Usage
+
+It's important to create modals as separate files, which works best with our [useModal](../?path=/docs/composables-usemodal--docs#opensidemodal) composable. Also having them defined as individual components ensures that the `setup` function and any other component life cycle event are triggered as modal is opened/closed. Therefore, it's easier to control when for example to fetch data from API.
+
+## Accessibility
+
+To correctly handle accessibility (title, description) and focus management - [headless-ui](https://headlessui.com) library is used.
+
+### Defining Modal Component
+
+```html
+/** SubmissionModal.vue */
+
+<template>
+	<SideModalBody>
+		<template #pre-title>325</template>
+		<template #title>Title</template>
+		<template #description>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+		</template>
+		<template #post-description>
+			Additional info, check SubmissionSummaryModal.vue for good example
+		</template>
+		<template #actions>
+			<PkpButton element="a" href="https://www.google.com">
+				View submission in detail
+			</PkpButton>
+		</template>
+
+		<SideModalLayoutBasic>CONTENT</SideModalLayoutBasic>
+	</SideModalBody>
+</template>
+
+<script setup>
+	import {SideModalBody} from '@/components/Modal/SideModal.vue';
+</script>
+```
+
+### Opening SideModal
+
+To open SideModal, use `openSideModal` function from [useModal](../?path=/docs/composables-usemodal--docs#opensidemodal) composable. This ensures that the SideModal is displayed correctly even if the SideModals are nested.
+
+### Closing SideModal
+
+To close the modal from the inside of the modal, there is `closeModal` slot prop available. Full example is in SideModalWithTabs story.
+
+```html
+<SideModalBody>
+	<template #title>Title</template>
+	<template #default="{closeModal}">
+		<div class="p-4">
+			<div class="bg-secondary p-4">
+				content
+				<PkpButton class="mt-4" @click="closeModal()">Close</PkpButton>
+			</div>
+		</div>
+	</template>
+</SideModalBody>
+```
+
+## SideModalBody Slots
+
+<ArgTypes of={SideModalBody} />
+
+<Stories />

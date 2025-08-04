@@ -1,0 +1,188 @@
+:root {
+	--pkp-spacing: 0.25rem;
+	--pkp-text-base-size: 1rem;
+	--pkp-color-primary: #006798;
+	--pkp-color-hover: #0082bf;
+	--pkp-color-attention: #d00a0a;
+	--pkp-color-success: #00b24e;
+	--pkp-color-negative: #d00a6c;
+	--pkp-color-transparent: transparent;
+	--pkp-background-color-default: #eaedee;
+	--pkp-background-color-secondary: #ffffff;
+	--pkp-background-color-tertiary: rgba(234, 237, 238, 0.3);
+	--pkp-background-color-blur: rgba(0, 0, 0, 0.5);
+	--pkp-background-color-selection-light: #d5e9f2;
+	--pkp-background-color-selection-dark: #002c40;
+	--pkp-background-color-disabled: rgba(28, 27, 31, 0.1);
+	--pkp-text-color-default: #222222;
+	--pkp-text-color-secondary: #505050;
+	--pkp-text-color-heading: #01354f;
+	--pkp-text-color-disabled: #4e4f4f;
+	--pkp-text-color-on-dark: #ffffff;
+	--pkp-border-color-dark: #696969;
+	--pkp-border-color-light: #bbbbbb;
+	--pkp-border-color-form-fields: #777777;
+	--pkp-border-color-transparent: transparent;
+	--pkp-radius: 4px;
+	--pkp-radius-full: 9999px;
+	--pkp-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+	--pkp-font:
+		'Noto Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+		'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+	/** 10px */
+	--pkp-text-xs-normal: calc(0.625 * var(--pkp-text-base-size));
+	--pkp-text-xs-normal--line-height: calc(0.75 * var(--pkp-text-base-size));
+	--pkp-text-xs-normal--font-weight: 400;
+	/** 11px */
+	--pkp-text-sm-light: calc(0.6875 * var(--pkp-text-base-size));
+	--pkp-text-sm-light--line-height: calc(0.875 * var(--pkp-text-base-size));
+	--pkp-text-sm-light--font-weight: 300;
+	--pkp-text-sm-normal: calc(0.6875 * var(--pkp-text-base-size));
+	--pkp-text-sm-normal--line-height: calc(0.875 * var(--pkp-text-base-size));
+	--pkp-text-sm-normal--font-weight: 400;
+	/** 12px */
+	--pkp-text-base-light: calc(0.75 * var(--pkp-text-base-size));
+	--pkp-text-base-light--line-height: calc(1 * var(--pkp-text-base-size));
+	--pkp-text-base-light--font-weight: 300;
+	--pkp-text-base-normal: calc(0.75 * var(--pkp-text-base-size));
+	--pkp-text-base-normal--line-height: calc(1 * var(--pkp-text-base-size));
+	--pkp-text-base-normal--font-weight: 400;
+	--pkp-text-base-bold: calc(0.75 * var(--pkp-text-base-size));
+	--pkp-text-base-bold--line-height: calc(1 * var(--pkp-text-base-size));
+	--pkp-text-base-bold--font-weight: 700;
+	/** 14px */
+	--pkp-text-lg-normal: calc(0.875 * var(--pkp-text-base-size));
+	--pkp-text-lg-normal--line-height: calc(1.25 * var(--pkp-text-base-size));
+	--pkp-text-lg-normal--font-weight: 400;
+	--pkp-text-lg-medium: calc(0.875 * var(--pkp-text-base-size));
+	--pkp-text-lg-medium--line-height: calc(1.25 * var(--pkp-text-base-size));
+	--pkp-text-lg-medium--font-weight: 500;
+	--pkp-text-lg-semibold: calc(0.875 * var(--pkp-text-base-size));
+	--pkp-text-lg-semibold--line-height: calc(1.25 * var(--pkp-text-base-size));
+	--pkp-text-lg-semibold--font-weight: 600;
+	--pkp-text-lg-bold: calc(0.875 * var(--pkp-text-base-size));
+	--pkp-text-lg-bold--line-height: calc(1.25 * var(--pkp-text-base-size));
+	--pkp-text-lg-bold--font-weight: 700;
+	/** 16px */
+	--pkp-text-xl-bold: calc(1 * var(--pkp-text-base-size));
+	--pkp-text-xl-bold--line-height: calc(1.5 * var(--pkp-text-base-size));
+	--pkp-text-xl-bold--font-weight: 700;
+	/** 18px */
+	--pkp-text-2xl-bold: calc(1.125 * var(--pkp-text-base-size));
+	--pkp-text-2xl-bold--line-height: calc(1.75 * var(--pkp-text-base-size));
+	--pkp-text-2xl-bold--font-weight: 700;
+	/** 20px */
+	--pkp-text-3xl-normal: calc(1.25 * var(--pkp-text-base-size));
+	--pkp-text-3xl-normal--line-height: calc(1.75 * var(--pkp-text-base-size));
+	--pkp-text-3xl-normal--font-weight: 400;
+	--pkp-text-3xl-medium: calc(1.25 * var(--pkp-text-base-size));
+	--pkp-text-3xl-medium--line-height: calc(1.75 * var(--pkp-text-base-size));
+	--pkp-text-3xl-medium--font-weight: 500;
+	--pkp-text-3xl-bold: calc(1.25 * var(--pkp-text-base-size));
+	--pkp-text-3xl-bold--line-height: calc(1.75 * var(--pkp-text-base-size));
+	--pkp-text-3xl-bold--font-weight: 700;
+	/** 24px */
+	--pkp-text-4xl-bold: calc(1.5 * var(--pkp-text-base-size));
+	--pkp-text-4xl-bold--line-height: calc(2 * var(--pkp-text-base-size));
+	--pkp-text-4xl-bold--font-weight: 700;
+	/** 36px */
+	--pkp-text-5xl-bold: calc(2.25 * var(--pkp-text-base-size));
+	--pkp-text-5xl-bold--line-height: calc(2.5 * var(--pkp-text-base-size));
+	--pkp-text-5xl-bold--font-weight: 700;
+	/* Additional css variables to make easier to use them in plugins*/
+	/* 10px */
+	--pkp-font-xs-normal: var(--pkp-text-xs-normal--font-weight)
+		var(--pkp-text-xs-normal) / var(--pkp-text-xs-normal--line-height)
+		var(--pkp-font);
+	/* 11px */
+	--pkp-font-sm-light: var(--pkp-text-sm-light--font-weight)
+		var(--pkp-text-sm-light) / var(--pkp-text-sm-light--line-height)
+		var(--pkp-font);
+	--pkp-font-sm-normal: var(--pkp-text-sm-normal--font-weight)
+		var(--pkp-text-sm-normal) / var(--pkp-text-sm-normal--line-height)
+		var(--pkp-font);
+	/* 12px */
+	--pkp-font-base-light: var(--pkp-text-base-light--font-weight)
+		var(--pkp-text-base-light) / var(--pkp-text-base-light--line-height)
+		var(--pkp-font);
+	--pkp-font-base-normal: var(--pkp-text-base-normal--font-weight)
+		var(--pkp-text-base-normal) / var(--pkp-text-base-normal--line-height)
+		var(--pkp-font);
+	--pkp-font-base-bold: var(--pkp-text-base-bold--font-weight)
+		var(--pkp-text-base-bold) / var(--pkp-text-base-bold--line-height)
+		var(--pkp-font);
+	/* 14px */
+	--pkp-font-lg-normal: var(--pkp-text-lg-normal--font-weight)
+		var(--pkp-text-lg-normal) / var(--pkp-text-lg-normal--line-height)
+		var(--pkp-font);
+	--pkp-font-lg-medium: var(--pkp-text-lg-medium--font-weight)
+		var(--pkp-text-lg-medium) / var(--pkp-text-lg-medium--line-height)
+		var(--pkp-font);
+	--pkp-font-lg-semibold: var(--pkp-text-lg-semibold--font-weight)
+		var(--pkp-text-lg-semibold) / var(--pkp-text-lg-semibold--line-height)
+		var(--pkp-font);
+	--pkp-font-lg-bold: var(--pkp-text-lg-bold--font-weight)
+		var(--pkp-text-lg-bold) / var(--pkp-text-lg-bold--line-height)
+		var(--pkp-font);
+	/* 16px */
+	--pkp-font-xl-bold: var(--pkp-text-xl-bold--font-weight)
+		var(--pkp-text-xl-bold) / var(--pkp-text-xl-bold--line-height)
+		var(--pkp-font);
+	/* 18px */
+	--pkp-font-2xl-bold: var(--pkp-text-2xl-bold--font-weight)
+		var(--pkp-text-2xl-bold) / var(--pkp-text-2xl-bold--line-height)
+		var(--pkp-font);
+	/* 20px */
+	--pkp-font-3xl-normal: var(--pkp-text-3xl-normal--font-weight)
+		var(--pkp-text-3xl-normal) / var(--pkp-text-3xl-normal--line-height)
+		var(--pkp-font);
+	--pkp-font-3xl-medium: var(--pkp-text-3xl-medium--font-weight)
+		var(--pkp-text-3xl-medium) / var(--pkp-text-3xl-medium--line-height)
+		var(--pkp-font);
+	--pkp-font-3xl-bold: var(--pkp-text-3xl-bold--font-weight)
+		var(--pkp-text-3xl-bold) / var(--pkp-text-3xl-bold--line-height)
+		var(--pkp-font);
+	/* 24px */
+	--pkp-font-4xl-bold: var(--pkp-text-4xl-bold--font-weight)
+		var(--pkp-text-4xl-bold) / var(--pkp-text-4xl-bold--line-height)
+		var(--pkp-font);
+	/* 36px */
+	--pkp-font-5xl-bold: var(--pkp-text-5xl-bold--font-weight)
+		var(--pkp-text-5xl-bold) / var(--pkp-text-5xl-bold--line-height)
+		var(--pkp-font);
+	--pkp-spacing-0: 0px;
+	--pkp-spacing-px: calc(var(--pkp-spacing) / 4);
+	--pkp-spacing-0-5: calc(0.5 * var(--pkp-spacing)); /* 2px */
+	--pkp-spacing-1: calc(1 * var(--pkp-spacing)); /* 4px */
+	--pkp-spacing-1-5: calc(1.5 * var(--pkp-spacing)); /* 6px */
+	--pkp-spacing-2: calc(2 * var(--pkp-spacing)); /* 8px */
+	--pkp-spacing-2-5: calc(2.5 * var(--pkp-spacing)); /* 10px */
+	--pkp-spacing-3: calc(3 * var(--pkp-spacing)); /* 12px */
+	--pkp-spacing-3-5: calc(3.5 * var(--pkp-spacing)); /* 14px */
+	--pkp-spacing-4: calc(4 * var(--pkp-spacing)); /* 16px */
+	--pkp-spacing-5: calc(5 * var(--pkp-spacing)); /* 20px */
+	--pkp-spacing-6: calc(6 * var(--pkp-spacing)); /* 24px */
+	--pkp-spacing-7: calc(7 * var(--pkp-spacing)); /* 28px */
+	--pkp-spacing-8: calc(8 * var(--pkp-spacing)); /* 32px */
+	--pkp-spacing-9: calc(9 * var(--pkp-spacing)); /* 36px */
+	--pkp-spacing-10: calc(10 * var(--pkp-spacing)); /* 40px */
+	--pkp-spacing-11: calc(11 * var(--pkp-spacing)); /* 44px */
+	--pkp-spacing-12: calc(12 * var(--pkp-spacing)); /* 48px */
+	--pkp-spacing-14: calc(14 * var(--pkp-spacing)); /* 56px */
+	--pkp-spacing-16: calc(16 * var(--pkp-spacing)); /* 64px */
+	--pkp-spacing-20: calc(20 * var(--pkp-spacing)); /* 80px */
+	--pkp-spacing-24: calc(24 * var(--pkp-spacing)); /* 96px */
+	--pkp-spacing-28: calc(28 * var(--pkp-spacing)); /* 112px */
+	--pkp-spacing-32: calc(32 * var(--pkp-spacing)); /* 128px */
+	--pkp-spacing-36: calc(36 * var(--pkp-spacing)); /* 144px */
+	--pkp-spacing-40: calc(40 * var(--pkp-spacing)); /* 160px */
+	--pkp-spacing-44: calc(44 * var(--pkp-spacing)); /* 176px */
+	--pkp-spacing-48: calc(48 * var(--pkp-spacing)); /* 192px */
+	--pkp-spacing-52: calc(52 * var(--pkp-spacing)); /* 208px */
+	--pkp-spacing-56: calc(56 * var(--pkp-spacing)); /* 224px */
+	--pkp-spacing-60: calc(60 * var(--pkp-spacing)); /* 240px */
+	--pkp-spacing-64: calc(64 * var(--pkp-spacing)); /* 256px */
+	--pkp-spacing-72: calc(72 * var(--pkp-spacing)); /* 288px */
+	--pkp-spacing-80: calc(80 * var(--pkp-spacing)); /* 320px */
+	--pkp-spacing-96: calc(96 * var(--pkp-spacing)); /* 384px */
+}
