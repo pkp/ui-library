@@ -1,9 +1,11 @@
 <script setup>
 import {computed} from 'vue';
 import Cancel from './icons/Cancel.vue';
+import MoreOptions from './icons/MoreOptions.vue';
 
 const svgIcons = {
 	Cancel,
+	MoreOptions,
 };
 
 const props = defineProps({

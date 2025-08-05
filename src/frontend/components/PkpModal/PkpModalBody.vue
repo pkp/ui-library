@@ -6,9 +6,6 @@
 	>
 		<div :id="containerId" class="pkp-modal-body__container">
 			<div class="pkp-modal-body__wrapper">
-				<div class="pkp-modal-body__top-nav">
-					<TopNavActions />
-				</div>
 				<div class="pkp-modal-body__header">
 					<div class="pkp-modal-body__header-start">
 						<div
@@ -53,7 +50,7 @@
 								<span class="pkp-modal-body__sr-only">
 									{{ t('common.close') }}
 								</span>
-								<Icon
+								<PkpIcon
 									class="pkp-modal-body__close-icon"
 									icon="Cancel"
 									:aria-hidden="true"
@@ -73,23 +70,17 @@
 </template>
 
 <script setup>
-import {inject, defineAsyncComponent, useId} from 'vue';
+import {inject, useId} from 'vue';
 import {
 	DialogContent,
 	DialogTitle,
 	DialogDescription,
 	DialogClose,
 } from 'reka-ui';
-import Icon from '@/frontend/components/PkpIcon/PkpIcon.vue';
+import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 import {focusFirstHeading} from '@/components/Modal/modalHelpers';
 
 const containerId = useId();
-
-// Use the async component to avoid loading the TopNavActions component when not needed
-// This resolves the issue with Storybook not being able to load the component
-const TopNavActions = defineAsyncComponent(
-	() => import('@/components/TopNavActions/TopNavActions.vue'),
-);
 
 import {useLocalize} from '@/composables/useLocalize';
 const {t} = useLocalize();
@@ -178,6 +169,7 @@ function handleAutoFocus(event) {
 	justify-content: center;
 	padding: var(--pkp-spacing-4);
 	text-align: center;
+	pointer-events: none !important;
 }
 
 @media (min-width: 640px) {
@@ -192,17 +184,20 @@ function handleAutoFocus(event) {
 	margin-left: var(--pkp-spacing-3);
 	margin-right: var(--pkp-spacing-3);
 	width: 83.333333%; /* w-10/12 */
-	max-width: calc(3 * var(--pkp-text-4xl-bold)); /* approx max-w-3xl */
+	max-width: calc(
+		48 * var(--pkp-text-base-size)
+	); /* max-w-3xl equivalent, assuming 1rem base = 48rem */
 	transform: none;
 	overflow: hidden;
 	pointer-events: auto;
 	border-radius: var(--pkp-radius);
-	background-color: var(--pkp-background-color-default);
+	background-color: var(--pkp-background-color-secondary);
 	text-align: start;
 	box-shadow: var(--pkp-shadow);
 	transition: all 0.3s ease;
 	display: flex;
 	flex-direction: column;
+	pointer-events: auto;
 }
 
 @media (min-width: 640px) {
@@ -240,6 +235,7 @@ function handleAutoFocus(event) {
 	color: var(--pkp-text-color-secondary); /* gray-400 */
 	position: relative;
 	outline: none;
+	background-color: var(--pkp-background-color-secondary);
 }
 
 .pkp-modal-body__close:hover {

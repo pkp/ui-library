@@ -36,6 +36,7 @@ function registerCloseCallback(callback) {
 }
 
 function handleRootClose(opened) {
+	console.log('handleRootClose');
 	// apply it only if the SideModal is still opened, this is to address issue from
 	// cypress tests which managed to click on overlay while the side modal was closing
 	// to trigger additional close

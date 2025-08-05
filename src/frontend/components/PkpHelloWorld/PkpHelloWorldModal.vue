@@ -7,6 +7,6 @@
 	</PkpModalBody>
 </template>
 <script setup>
-import PkpModalBody from '@/frontend/components/Modal/PkpModalBody.vue';
-import PkpModalLayoutBasic from '@/frontend/components/Modal/PkpModalLayoutBasic.vue';
+import PkpModalBody from '@/frontend/components/PkpModal/PkpModalBody.vue';
+import PkpModalLayoutBasic from '@/frontend/components/PkpModal/PkpModalLayoutBasic.vue';
 </script>

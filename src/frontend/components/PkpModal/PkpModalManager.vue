@@ -90,8 +90,8 @@
 import {computed} from 'vue';
 import {usePkpModalStore} from '@/frontend/stores/pkpModalStore';
 import {storeToRefs} from 'pinia';
-import PkpModal from '@/frontend/components/Modal/PkpModal.vue';
-import PkpDialog from '@/frontend/components/Modal/PkpDialog.vue';
+import PkpModal from '@/frontend/components/PkpModal/PkpModal.vue';
+import PkpDialog from '@/frontend/components/PkpModal/PkpDialog.vue';
 
 const modalStore = usePkpModalStore();
 const {modal1, modal2, modal3, modal4, dialogProps, dialogOpened, dialogLevel} =
