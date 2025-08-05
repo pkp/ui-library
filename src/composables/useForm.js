@@ -365,7 +365,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 
 	function addGroup(
 		groupId,
-		{pageId, label, description, groupComponent} = {},
+		{pageId, label, description, groupComponent, ...additionalOptions} = {},
 	) {
 		form.value.groups = form.value.groups || [];
 		form.value.groups.push({
@@ -374,6 +374,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 			description,
 			pageId: pageId || 'default',
 			groupComponent,
+			...additionalOptions,
 		});
 	}
 

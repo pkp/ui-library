@@ -272,6 +272,7 @@ export function useDiscussionManagerForm({
 				onAddTaskInfo,
 			},
 		},
+		hideOnDisplay: !isTask.value,
 	});
 
 	addFieldText('taskInfoIsChecked', {

@@ -18,7 +18,11 @@
 		</template>
 
 		<SideModalLayoutBasic>
-			<FormDisplay v-if="inDisplayModeRef" v-bind="form" />
+			<FormDisplay
+				v-if="inDisplayModeRef"
+				v-bind="form"
+				field-heading-element="h2"
+			/>
 			<PkpForm v-else v-bind="form" @cancel="onClose" @set="set" />
 		</SideModalLayoutBasic>
 	</SideModalBody>
