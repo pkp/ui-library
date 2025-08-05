@@ -1,15 +1,25 @@
 <template>
-	<fieldset class="pkpFormGroup -pkpClearfix" :class="spacingStyle">
+	<div class="pkpFormGroup -pkpClearfix" :class="spacingStyle">
 		<div v-if="label || groupComponent" class="pkpFormGroup__heading">
 			<template v-if="groupComponent">
 				<component
 					:is="groupComponent.component"
+					:group-id="groupId"
 					v-bind="groupComponent.props"
 				></component>
 			</template>
-			<FormGroupHeader v-else :heading="label" :description="description" />
+			<FormGroupHeader
+				v-else
+				:group-id="groupId"
+				:label="label"
+				:description="description"
+			/>
 		</div>
-		<div class="pkpFormGroup__fields">
+		<div
+			:role="groupLabelledBy && 'group'"
+			class="pkpFormGroup__fields"
+			:aria-labelledby="groupLabelledBy"
+		>
 			<template v-for="field in fieldsInGroup">
 				<template v-if="field.isMultilingual">
 					<div :key="field.name" class="pkpFormGroup__localeGroup -pkpClearfix">
@@ -52,7 +62,7 @@
 				</template>
 			</template>
 		</div>
-	</fieldset>
+	</div>
 </template>
 
 <script>
@@ -87,6 +97,7 @@ import FieldSlider from './fields/FieldSlider.vue';
 import FieldUploadImage from './fields/FieldUploadImage.vue';
 
 import {shouldShowFieldWithinGroup} from './formHelpers';
+import {useId} from 'vue';
 
 export default {
 	name: 'FormGroup',
@@ -169,6 +180,22 @@ export default {
 				return '!p-0';
 			}
 			return '';
+		},
+
+		groupId() {
+			return useId();
+		},
+
+		/** Get the IDs for aria-labelledby, or undefined if none */
+		groupLabelledBy() {
+			return (
+				[
+					this.label && `${this.groupId}_label`,
+					this.description && `${this.groupId}_description`,
+				]
+					.filter(Boolean)
+					.join(' ') || undefined
+			);
 		},
 	},
 	methods: {

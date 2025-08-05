@@ -1,16 +1,22 @@
 <template>
 	<div>
 		<div v-for="group in groups" :key="group.id">
-			<fieldset class="flex border-b border-light border-opacity-50 p-8">
+			<div
+				v-if="!group.hideOnDisplay"
+				class="flex border-b border-light border-opacity-50 p-8"
+			>
 				<div v-if="shouldDisplayGroupHeader" class="w-[30%] pe-6">
 					<FormGroupHeader
-						:heading="group.label"
+						:group-id="getGroupId(group)"
+						:label="group.label"
 						:description="group.description"
 					/>
 				</div>
 				<div
 					class="flex flex-col gap-y-6 ps-6"
 					:class="shouldDisplayGroupHeader ? 'w-[70%]' : ''"
+					:role="shouldDisplayGroupHeader && 'group'"
+					:aria-labelledby="getGroupLabelledBy(group)"
 				>
 					<div v-if="hasMultilingualFields" class="flex flex-col gap-y-6">
 						<div v-for="locale in availableLocales" :key="locale.key">
@@ -60,19 +66,21 @@
 						</div>
 					</template>
 				</div>
-			</fieldset>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script setup>
-import {computed} from 'vue';
+import {computed, useId} from 'vue';
 import {shouldShowFieldWithinGroup} from '@/components/Form/formHelpers';
 
 import FormGroupHeader from '@/components/Form/FormGroupHeader.vue';
 import FieldTextDisplay from './FieldTextDisplay.vue';
 import FieldSelectDisplay from './FieldSelectDisplay.vue';
 import FieldOptionsDisplay from './FieldOptionsDisplay.vue';
+
+const uniqueId = useId();
 
 const FieldComponents = {
 	'field-text': FieldTextDisplay,
@@ -123,5 +131,21 @@ function shouldDisplayField(field) {
 	}
 
 	return shouldShowFieldWithinGroup(field, props.fields);
+}
+
+function getGroupId(group) {
+	return `${group.id}_${uniqueId}`;
+}
+
+// Get the IDs for aria-labelledby, or undefined if none
+function getGroupLabelledBy(group) {
+	return (
+		[
+			group.label && `${getGroupId(group)}_label`,
+			group.description && `${getGroupId(group)}_description`,
+		]
+			.filter(Boolean)
+			.join(' ') || undefined
+	);
 }
 </script>

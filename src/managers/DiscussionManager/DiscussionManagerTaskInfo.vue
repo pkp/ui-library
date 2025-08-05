@@ -8,7 +8,8 @@
 
 	<FormGroupHeader
 		v-if="selectedValue"
-		:heading="t('discussion.form.taskInformation')"
+		:group-id="groupId"
+		:label="t('discussion.form.taskInformation')"
 		:description="t('discussion.form.taskInfoDescription')"
 	/>
 </template>
@@ -24,6 +25,11 @@ const props = defineProps({
 	isChecked: {
 		type: Boolean,
 		default: false,
+	},
+	/** The groupId to use from FormGroup component */
+	groupId: {
+		type: String,
+		required: true,
 	},
 });
 const selectedValue = ref(props.isChecked);
