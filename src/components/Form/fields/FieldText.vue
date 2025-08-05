@@ -46,7 +46,7 @@
 					:type="inputType"
 					:name="localizedName"
 					:aria-describedby="describedByIds"
-					:aria-invalid="errors && errors.length"
+					:aria-invalid="!!errors?.length"
 					:disabled="isDisabled"
 					:required="isRequired"
 					:style="inputStyles"
