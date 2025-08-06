@@ -29,11 +29,16 @@ const props = defineProps({
 		type: Function,
 		default: () => () => {},
 	},
+	issueCount: {
+		type: Number,
+		default: 0,
+	},
 });
 
 const {form, set} = useWorkflowVersionForm(
 	'publish',
 	props.onCloseFn,
 	props.onSubmitFn,
+	props.issueCount, // Pass issue count to the form
 );
 </script>
