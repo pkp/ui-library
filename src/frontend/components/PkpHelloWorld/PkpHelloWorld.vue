@@ -12,10 +12,10 @@
 		</div>
 		<div><PkpDropdownActions :items="dropdownItems"></PkpDropdownActions></div>
 		<div>
-			<PkpTextArea
+			<PkpTextarea
 				v-model="textAreaValue"
 				label="Please tell us why you want to report this comment"
-			></PkpTextArea>
+			></PkpTextarea>
 		</div>
 	</div>
 </template>
@@ -26,7 +26,7 @@ import PkpAccordion from '@/frontend/components/PkpAccordion/PkpAccordion.vue';
 import PkpDropdownActions from '@/frontend/components/PkpDropdownActions/PkpDropdownActions.vue';
 import {usePkpModal} from '@/frontend/composables/usePkpModal';
 import PkpHelloWorldModal from '@/frontend/components/PkpHelloWorld/PkpHelloWorldModal.vue';
-import PkpTextArea from '@/frontend/components/PkpTextArea/PkpTextArea.vue';
+import PkpTextarea from '@/frontend/components/PkpTextarea/PkpTextarea.vue';
 defineProps({one: {type: Object, required: true}});
 
 const {openModal, openDialog} = usePkpModal();
