@@ -1,22 +1,17 @@
 <template>
 	<div>
-		<div class="modal-content" :class="hasIcon ? 'px-24' : 'px-12'">
+		<div class="pkp-dialog-body">
 			<DialogDescription>
 				<slot>
 					<div
 						v-if="message"
 						v-strip-unsafe-html="message"
-						class="semantic-defaults"
+						class="pkp-dialog-body__message"
 					/>
 				</slot>
 			</DialogDescription>
 		</div>
-
-		<div
-			v-if="displayDefaultFooter"
-			class="flex items-center gap-x-4"
-			:class="hasIcon ? 'p-10 ps-24' : 'p-12'"
-		>
+		<div class="pkp-dialog-body__footer">
 			<slot name="actions">
 				<PkpButton
 					v-for="action in actions"
@@ -31,18 +26,16 @@
 					{{ action.label }}
 				</PkpButton>
 			</slot>
-
-			<Spinner v-if="isLoading || isDialogLoading" />
+			<PkpSpinner v-if="isLoading || isDialogLoading" />
 		</div>
 	</div>
 </template>
 
 <script setup>
 import {ref} from 'vue';
+import PkpButton from '@/frontend/components/PkpButton/PkpButton.vue';
+import PkpSpinner from '@/frontend/components/PkpSpinner/PkpSpinner.vue';
 import {DialogDescription} from 'reka-ui';
-
-import PkpButton from '@/components/Button/Button.vue';
-import Spinner from '@/components/Spinner/Spinner.vue';
 
 const props = defineProps({
 	message: {
@@ -59,11 +52,6 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
-	// wether to display default footer with actions, set this to false if dialog will display PkpForm
-	displayDefaultFooter: {
-		type: Boolean,
-		default: true,
-	},
 });
 
 // for components that doesn't manually handle loading state
@@ -78,3 +66,32 @@ function fireCallback(callback) {
 	}
 }
 </script>
+
+<style>
+.pkp-dialog-body {
+	padding-left: var(--pkp-spacing-12);
+	padding-right: var(--pkp-spacing-12);
+}
+
+.pkp-dialog-body--has-icon {
+	padding-left: var(--pkp-spacing-24);
+	padding-right: var(--pkp-spacing-24);
+}
+
+.pkp-dialog-body__message {
+	font: var(--pkp-font-base-normal);
+	color: var(--pkp-text-color-default);
+}
+
+.pkp-dialog-body__footer {
+	display: flex;
+	align-items: center;
+	gap: var(--pkp-spacing-4);
+	padding: var(--pkp-spacing-12);
+}
+
+.pkp-dialog-body__footer--has-icon {
+	padding: var(--pkp-spacing-10);
+	padding-inline-start: var(--pkp-spacing-24);
+}
+</style>
