@@ -770,7 +770,8 @@ export const PublicationConfig = {
 			}
 			if (
 				selectedPublication.status === pkp.const.STATUS_QUEUED ||
-				selectedPublication.status === pkp.const.STATUS_READY_TO_PUBLISH
+				selectedPublication.status === pkp.const.STATUS_READY_TO_PUBLISH ||
+				selectedPublication.status === pkp.const.STATUS_READY_TO_SCHEDULE
 			) {
 				if (
 					hasSubmissionPassedStage(
