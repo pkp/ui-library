@@ -1,27 +1,33 @@
 <template>
-	<div class="pkp-dialog-body" :class="bodyClass">
-		<div
-			v-if="message"
-			v-strip-unsafe-html="message"
-			class="pkp-dialog-body__message"
-		/>
-	</div>
-	<div class="pkp-dialog-body__footer" :class="footerClass">
-		<slot name="actions">
-			<PkpButton
-				v-for="action in actions"
-				:key="action.label"
-				:element="action.element || 'button'"
-				:href="action.href || null"
-				:is-primary="action.isPrimary || null"
-				:is-warnable="action.isWarnable || null"
-				:is-disabled="isLoading"
-				@click="action.callback ? fireCallback(action.callback) : null"
-			>
-				{{ action.label }}
-			</PkpButton>
-		</slot>
-		<PkpSpinner v-if="isLoading || isDialogLoading" />
+	<div>
+		<div class="pkp-dialog-body">
+			<DialogDescription>
+				<slot>
+					<div
+						v-if="message"
+						v-strip-unsafe-html="message"
+						class="pkp-dialog-body__message"
+					/>
+				</slot>
+			</DialogDescription>
+		</div>
+		<div class="pkp-dialog-body__footer">
+			<slot name="actions">
+				<PkpButton
+					v-for="action in actions"
+					:key="action.label"
+					:element="action.element || 'button'"
+					:href="action.href || null"
+					:is-primary="action.isPrimary || null"
+					:is-warnable="action.isWarnable || null"
+					:is-disabled="isLoading"
+					@click="action.callback ? fireCallback(action.callback) : null"
+				>
+					{{ action.label }}
+				</PkpButton>
+			</slot>
+			<PkpSpinner v-if="isLoading || isDialogLoading" />
+		</div>
 	</div>
 </template>
 
@@ -29,6 +35,7 @@
 import {ref} from 'vue';
 import PkpButton from '@/frontend/components/PkpButton/PkpButton.vue';
 import PkpSpinner from '@/frontend/components/PkpSpinner/PkpSpinner.vue';
+import {DialogDescription} from 'reka-ui';
 
 const props = defineProps({
 	message: {
