@@ -1,11 +1,11 @@
 <template>
 	<SideModalBody>
 		<template #title>
-			{{ t('publication.scheduledForPublication.versionStage.label') }}
+			{{ t('publication.scheduledForPublication.reviewDetails.label') }}
 		</template>
 		<template #description>
 			<span class="text-lg-medium">
-				{{ t('publication.scheduledForPublication.versionStage.description') }}
+				{{ t('publication.scheduledForPublication.reviewDetails.description') }}
 			</span>
 		</template>
 		<SideModalLayoutBasic>
@@ -29,11 +29,16 @@ const props = defineProps({
 		type: Function,
 		default: () => () => {},
 	},
+	issueCount: {
+		type: Number,
+		default: 0,
+	},
 });
 
 const {form, set} = useWorkflowVersionForm(
 	'publish',
 	props.onCloseFn,
 	props.onSubmitFn,
+	props.issueCount,
 );
 </script>
