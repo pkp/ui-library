@@ -90,6 +90,7 @@ import FieldRichText from './fields/FieldRichText.vue';
 import FieldSelect from './fields/FieldSelect.vue';
 import FieldSelectIssue from './fields/FieldSelectIssue.vue';
 import FieldSelectIssues from './fields/FieldSelectIssues.vue';
+import FieldIssueSelection from './fields/FieldIssueSelection.vue';
 import FieldSelectSubmissions from './fields/FieldSelectSubmissions.vue';
 import FieldSelectUsers from './fields/FieldSelectUsers.vue';
 import FieldShowEnsuringLink from './fields/FieldShowEnsuringLink.vue';
@@ -127,6 +128,7 @@ export default {
 		FieldSelect,
 		FieldSelectIssue,
 		FieldSelectIssues,
+		FieldIssueSelection,
 		FieldSelectSubmissions,
 		FieldSelectUsers,
 		FieldShowEnsuringLink,
