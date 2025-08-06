@@ -13,8 +13,8 @@
 					/>
 				</div>
 				<div
-					class="flex flex-col gap-y-6 ps-6"
-					:class="shouldDisplayGroupHeader ? 'w-[70%]' : ''"
+					class="flex flex-col gap-y-6"
+					:class="shouldDisplayGroupHeader ? 'w-[70%] ps-6' : ''"
 					:role="shouldDisplayGroupHeader && 'group'"
 					:aria-labelledby="getGroupLabelledBy(group)"
 				>
