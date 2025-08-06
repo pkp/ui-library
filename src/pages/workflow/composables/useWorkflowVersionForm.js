@@ -5,6 +5,7 @@ import {useFetch} from '@/composables/useFetch';
 import {useLocalize} from '@/composables/useLocalize';
 import {useSubmission} from '@/composables/useSubmission';
 import {useWorkflowStore} from '@/pages/workflow/workflowStore';
+import {useApp} from '@/composables/useApp';
 
 const VERSION_MODE = {
 	CREATE: 'createNewVersion', // the "Create New Version" action in the publication workflow menu
@@ -48,12 +49,14 @@ export function useWorkflowVersionForm(
 	versionMode = 'createNewVersion',
 	closeDialog = () => {},
 	onSubmitFn = null,
+	issueCount = 0,
 ) {
 	const store = useWorkflowStore();
 	const {t} = useLocalize();
 	const {getLatestPublication} = useSubmission();
 	let publications = [];
 	let latestPublication = null;
+	const {isOJS} = useApp();
 
 	// Determine the mode based on the versionMode parameter
 	// versionMode can be one of 'createNewVersion', 'sendToTextEditor', or 'publish'
@@ -95,6 +98,29 @@ export function useWorkflowVersionForm(
 			`submissions/${store.submission.id}/publications/${publicationId}/version`,
 		);
 
+		// Prepare request body with version data
+		const requestBody = {
+			versionStage: formData.versionStage,
+			versionIsMinor: formData.versionIsMinor,
+		};
+
+		if (isOJS()) {
+			// if the issue count is 0, e.g. issueless context,
+			// we can safely set the issueId and status to null and
+			// STATUS_READY_TO_PUBLISH
+			if (issueCount === 0) {
+				requestBody.issueId = null;
+				requestBody.status = pkp.const.STATUS_READY_TO_PUBLISH;
+			}
+			// Add issue assignment data if in publish mode and issue assignment is provided
+			else if (modeState.isPublishMode && formData.issueAssignment) {
+				const issueData = formData.issueAssignment;
+
+				requestBody.issueId = issueData.issueId;
+				requestBody.status = issueData.publicationStatus;
+			}
+		}
+
 		const {
 			fetch,
 			data: publicationData,
@@ -102,10 +128,7 @@ export function useWorkflowVersionForm(
 			isSuccess,
 		} = useFetch(versionUrl, {
 			method: shouldCreateNewVersion ? 'POST' : 'PUT',
-			body: {
-				versionStage: formData.versionStage,
-				versionIsMinor: formData.versionIsMinor,
-			},
+			body: requestBody,
 			expectValidationError: true,
 		});
 
@@ -138,6 +161,7 @@ export function useWorkflowVersionForm(
 	const {
 		form,
 		initEmptyForm,
+		addField,
 		addFieldSelect,
 		addPage,
 		addGroup,
@@ -281,6 +305,20 @@ export function useWorkflowVersionForm(
 				currentValue: '',
 			}),
 		);
+
+		// Issue assignment fields (only visible in publish mode)
+		if (modeState.isPublishMode && issueCount > 0 && isOJS()) {
+			addField('issueAssignment', {
+				component: 'FieldIssueSelection',
+				issueCount: issueCount,
+				value: {
+					assignmentType: 4, // 4 = CURRENT_BACK_ISSUES_PUBLISHED
+					issueId: store.selectedPublication?.issueId,
+					publicationStatus: store.selectedPublication?.status,
+				},
+				isRequired: true, // Make it required when visible
+			});
+		}
 
 		setValue(
 			'versionSource',
