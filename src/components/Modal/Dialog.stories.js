@@ -1,6 +1,6 @@
 import PkpDialog from './Dialog.vue';
 import {useModal} from '@/composables/useModal.js';
-import {within, userEvent} from '@storybook/test';
+import {within, userEvent} from 'storybook/test';
 import PkpButton from '@/components/Button/Button.vue';
 
 export default {
