@@ -30,9 +30,12 @@ export default {
 	content: [
 		'./index.html',
 		'./lib/ui-library/src/**/*.js',
-		'./**/*.vue',
-		'./**/*stories.js',
-		'./**/*.tpl',
+		'./lib/ui-library/src/**/*.vue',
+		'./lib/ui-library/src/**/*stories.js',
+		'./src/**/*.js',
+		'./src/**/*.vue',
+		'./src/**/*stories.js',
+		'./**/templates/**/*.tpl',
 	],
 	theme: {
 		backgroundColor: {
