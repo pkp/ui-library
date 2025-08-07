@@ -72,6 +72,7 @@ import FieldArchivingPn from './fields/FieldArchivingPn.vue';
 import FieldAutosuggestPreset from './fields/FieldAutosuggestPreset.vue';
 import FieldBaseAutosuggest from './fields/FieldBaseAutosuggest.vue';
 import FieldAuthors from './fields/FieldAuthors.vue';
+import FieldCheckbox from './fields/FieldCheckbox.vue';
 import FieldColor from './fields/FieldColor.vue';
 import FieldControlledVocab from './fields/FieldControlledVocab.vue';
 import FieldCreditRoles from './fields/FieldCreditRoles.vue';
@@ -108,6 +109,7 @@ export default {
 		FieldAutosuggestPreset,
 		FieldBaseAutosuggest,
 		FieldAuthors,
+		FieldCheckbox,
 		FieldColor,
 		FieldControlledVocab,
 		FieldCreditRoles,
