@@ -3,6 +3,10 @@
 		class="DialogContent"
 		as-child
 		@open-auto-focus="handleAutoFocus"
+		@focus-outside="handleOutsideEvent"
+		@interact-outside="handleOutsideEvent"
+		@pointer-down-outside="handleOutsideEvent"
+		@escape-key-down="handleOutsideEvent"
 	>
 		<div
 			:id="containerId"
@@ -120,6 +124,14 @@ const levelClasses = computed(() => {
 const closeModal = inject('closeModal');
 const modalLevel = inject('modalLevel');
 const closeModalButton = inject('closeModalButton');
+
+// #11693 When tinyMCE modal is opened inside modal, ignore outside clicks to prevent closing the current modals
+function handleOutsideEvent(event) {
+	// Check if the target is part of TinyMCE's dialog
+	if (event.target.closest('.tox-tinymce-aux')) {
+		event.preventDefault(); // Bypass the focus trap for TinyMCE elements
+	}
+}
 
 /* Initial focus */
 function handleAutoFocus(event) {
