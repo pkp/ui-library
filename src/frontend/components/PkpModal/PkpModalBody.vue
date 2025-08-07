@@ -1,57 +1,54 @@
 <template>
 	<DialogContent
-		class="pkp-modal-body__content"
+		class="pkpModalBody__content"
 		as-child
 		@open-auto-focus="handleAutoFocus"
 	>
-		<div :id="containerId" class="pkp-modal-body__container">
-			<div class="pkp-modal-body__wrapper">
-				<div class="pkp-modal-body__header">
-					<div class="pkp-modal-body__header-start">
-						<div
-							class="pkp-modal-body__header-content"
-							data-cy="sidemodal-header"
-						>
-							<div class="pkp-modal-body__header-flex">
-								<div class="pkp-modal-body__header-grow">
+		<div :id="containerId" class="pkpModalBody__container">
+			<div class="pkpModalBody__wrapper">
+				<div class="pkpModalBody__header">
+					<div class="pkpModalBody__headerStart">
+						<div class="pkpModalBody__headerContent" data-cy="sidemodal-header">
+							<div class="pkpModalBody__headerFlex">
+								<div class="pkpModalBody__headerGrow">
 									<!-- @slot Small text above title, might be useful for example for example to display submission Id-->
-									<div class="pkp-modal-body__pre-title">
+									<div class="pkpModalBody__preTitle">
 										<slot name="pre-title"></slot>
 									</div>
 									<DialogTitle
 										as="h1"
-										class="pkp-modal-body__title"
+										class="pkpModalBody__title"
 										tabindex="-1"
 									>
 										<!-- @slot Main title, also used for accessibility (aria-labelledby) -->
 										<slot name="title"></slot>
 									</DialogTitle>
-									<DialogDescription class="pkp-modal-body__description">
+									<DialogDescription class="pkpModalBody__description">
 										<!-- @slot Optionally descrition, also used for accessibility (aria-describedby) -->
 										<slot name="description"></slot>
 									</DialogDescription>
-									<div class="pkp-modal-body__post-description">
+									<div class="pkpModalBody__postDescription">
 										<!-- @slot For additional information that needs to be in the modal header add it here, check submissionSummaryModal.vue for good example -->
 										<slot name="post-description"></slot>
 									</div>
 								</div>
-								<div class="pkp-modal-body__header-actions">
+								<div class="pkpModalBody__headerActions">
 									<!-- @slot Optionally actions buttons that are placed on the right side of header -->
 									<slot name="actions" />
 								</div>
 							</div>
 						</div>
-						<div class="pkp-modal-body__close-wrapper">
+						<div class="pkpModalBody__closeWrapper">
 							<DialogClose
 								ref="closeModalButton"
 								type="button"
-								class="pkp-modal-body__close"
+								class="pkpModalBody__close"
 							>
-								<span class="pkp-modal-body__sr-only">
+								<span class="pkpModalBody__srOnly">
 									{{ t('common.close') }}
 								</span>
 								<PkpIcon
-									class="pkp-modal-body__close-icon"
+									class="pkpModalBody__closeIcon"
 									icon="Cancel"
 									:aria-hidden="true"
 								/>
@@ -59,8 +56,8 @@
 						</div>
 					</div>
 				</div>
-				<!-- pkp-modal-scroll-container is important for scrolling within form-->
-				<div class="pkp-modal-body__scroll-container">
+				<!-- pkpModalBody__scrollContainer is important for scrolling within form-->
+				<div class="pkpModalBody__scrollContainer">
 					<!-- @slot Body content -->
 					<slot :close-modal="closeModal" />
 				</div>
@@ -81,13 +78,10 @@ import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 import {focusFirstHeading} from '@/components/Modal/modalHelpers';
 
 const containerId = useId();
-
 import {useLocalize} from '@/composables/useLocalize';
 const {t} = useLocalize();
-
 const closeModal = inject('closeModal');
 const closeModalButton = inject('closeModalButton');
-
 /* Initial focus */
 function handleAutoFocus(event) {
 	const container = document.getElementById(containerId);
@@ -99,7 +93,7 @@ function handleAutoFocus(event) {
 
 <style>
 /* Mobile (default): fade + slide from bottom */
-@keyframes pkp-modal-body-content-enter-mobile {
+@keyframes pkpModalBodyContentEnterMobile {
 	0% {
 		opacity: 0;
 		transform: translateY(var(--pkp-spacing-4));
@@ -110,7 +104,7 @@ function handleAutoFocus(event) {
 	}
 }
 
-@keyframes pkp-modal-body-content-exit-mobile {
+@keyframes pkpModalBodyContentExitMobile {
 	0% {
 		opacity: 1;
 		transform: translateY(0);
@@ -122,7 +116,7 @@ function handleAutoFocus(event) {
 }
 
 /* Desktop: fade + scale */
-@keyframes pkp-modal-body-content-enter-desktop {
+@keyframes pkpModalBodyContentEnterDesktop {
 	0% {
 		opacity: 0;
 		transform: scale(0.95);
@@ -133,7 +127,7 @@ function handleAutoFocus(event) {
 	}
 }
 
-@keyframes pkp-modal-body-content-exit-desktop {
+@keyframes pkpModalBodyContentExitDesktop {
 	0% {
 		opacity: 1;
 		transform: scale(1);
@@ -144,24 +138,24 @@ function handleAutoFocus(event) {
 	}
 }
 
-.pkp-modal-body__content[data-state='open'] {
-	animation: pkp-modal-body-content-enter-mobile 300ms ease-out forwards;
+.pkpModalBody__content[data-state='open'] {
+	animation: pkpModalBodyContentEnterMobile 300ms ease-out forwards;
 }
 
-.pkp-modal-body__content[data-state='closed'] {
-	animation: pkp-modal-body-content-exit-mobile 200ms ease-in forwards;
+.pkpModalBody__content[data-state='closed'] {
+	animation: pkpModalBodyContentExitMobile 200ms ease-in forwards;
 }
 
 @media (min-width: 640px) {
-	.pkp-modal-body__content[data-state='open'] {
-		animation: pkp-modal-body-content-enter-desktop 300ms ease-out forwards;
+	.pkpModalBody__content[data-state='open'] {
+		animation: pkpModalBodyContentEnterDesktop 300ms ease-out forwards;
 	}
-	.pkp-modal-body__content[data-state='closed'] {
-		animation: pkp-modal-body-content-exit-desktop 200ms ease-in forwards;
+	.pkpModalBody__content[data-state='closed'] {
+		animation: pkpModalBodyContentExitDesktop 200ms ease-in forwards;
 	}
 }
 
-.pkp-modal-body__container {
+.pkpModalBody__container {
 	position: fixed;
 	inset: 0;
 	display: flex;
@@ -173,13 +167,13 @@ function handleAutoFocus(event) {
 }
 
 @media (min-width: 640px) {
-	.pkp-modal-body__container {
+	.pkpModalBody__container {
 		align-items: center;
 		padding: 0;
 	}
 }
 
-.pkp-modal-body__wrapper {
+.pkpModalBody__wrapper {
 	position: relative;
 	margin-left: var(--pkp-spacing-3);
 	margin-right: var(--pkp-spacing-3);
@@ -201,12 +195,12 @@ function handleAutoFocus(event) {
 }
 
 @media (min-width: 640px) {
-	.pkp-modal-body__wrapper {
+	.pkpModalBody__wrapper {
 		margin-block: var(--pkp-spacing-8);
 	}
 }
 
-.pkp-modal-body__top-nav {
+.pkpModalBody__topNav {
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
@@ -215,21 +209,21 @@ function handleAutoFocus(event) {
 	height: calc(3 * var(--pkp-text-base-size)); /* h-12 */
 }
 
-.pkp-modal-body__header {
+.pkpModalBody__header {
 	margin-top: var(--pkp-spacing-4);
 }
 
-.pkp-modal-body__header-start {
+.pkpModalBody__headerStart {
 	display: flex;
 	align-items: flex-start;
 	justify-content: space-between;
 }
 
-.pkp-modal-body__close-wrapper {
+.pkpModalBody__closeWrapper {
 	margin-inline-end: var(--pkp-spacing-4);
 }
 
-.pkp-modal-body__close {
+.pkpModalBody__close {
 	display: inline-flex;
 	border-radius: var(--pkp-radius);
 	color: var(--pkp-text-color-secondary); /* gray-400 */
@@ -238,16 +232,16 @@ function handleAutoFocus(event) {
 	background-color: var(--pkp-background-color-secondary);
 }
 
-.pkp-modal-body__close:hover {
+.pkpModalBody__close:hover {
 	color: var(--pkp-text-color-default); /* gray-500 */
 }
 
-.pkp-modal-body__close:focus {
+.pkpModalBody__close:focus {
 	ring: 2px solid var(--pkp-color-primary);
 	ring-offset: 2px;
 }
 
-.pkp-modal-body__sr-only {
+.pkpModalBody__srOnly {
 	position: absolute;
 	width: 1px;
 	height: 1px;
@@ -259,7 +253,7 @@ function handleAutoFocus(event) {
 	border-width: 0;
 }
 
-.pkp-modal-body__close-icon {
+.pkpModalBody__closeIcon {
 	height: calc(
 		1.5 * var(--pkp-text-base-size)
 	); /* Adjust for typical close X size, e.g., 24px */
@@ -267,25 +261,25 @@ function handleAutoFocus(event) {
 	color: var(--pkp-text-color-secondary);
 }
 
-.pkp-modal-body__header-content {
+.pkpModalBody__headerContent {
 	margin-left: var(--pkp-spacing-4);
 	margin-right: var(--pkp-spacing-4);
 	flex-grow: 1;
 }
 
-.pkp-modal-body__header-flex {
+.pkpModalBody__headerFlex {
 	display: flex;
 }
 
-.pkp-modal-body__header-grow {
+.pkpModalBody__headerGrow {
 	flex-grow: 1;
 }
 
-.pkp-modal-body__pre-title {
+.pkpModalBody__preTitle {
 	font: var(--pkp-font-xl-medium);
 }
 
-.pkp-modal-body__title {
+.pkpModalBody__title {
 	margin-top: var(--pkp-spacing-1);
 	display: inline-block;
 	font: var(--pkp-font-4xl-bold);
@@ -293,27 +287,27 @@ function handleAutoFocus(event) {
 	outline: none;
 }
 
-.pkp-modal-body__title:focus-visible {
+.pkpModalBody__title:focus-visible {
 	ring: 2px solid var(--pkp-color-primary);
 	ring-offset: 2px;
 }
 
-.pkp-modal-body__description {
+.pkpModalBody__description {
 	margin-top: var(--pkp-spacing-1);
 	font: var(--pkp-font-3xl-normal);
 }
 
-.pkp-modal-body__post-description {
+.pkpModalBody__postDescription {
 	margin-top: var(--pkp-spacing-1);
 }
 
-.pkp-modal-body__header-actions {
+.pkpModalBody__headerActions {
 	display: flex;
 	flex: none;
 	align-items: center;
 }
 
-.pkp-modal-body__scroll-container {
+.pkpModalBody__scrollContainer {
 	position: relative;
 	margin-top: var(--pkp-spacing-6);
 	flex: 1 1 auto;

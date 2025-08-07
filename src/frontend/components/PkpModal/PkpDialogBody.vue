@@ -1,17 +1,17 @@
 <template>
 	<div>
-		<div class="pkp-dialog-body">
+		<div class="pkpDialogBody">
 			<DialogDescription>
 				<slot>
 					<div
 						v-if="message"
 						v-strip-unsafe-html="message"
-						class="pkp-dialog-body__message"
+						class="pkpDialogBody__message"
 					/>
 				</slot>
 			</DialogDescription>
 		</div>
-		<div class="pkp-dialog-body__footer">
+		<div class="pkpDialogBody__footer">
 			<slot name="actions">
 				<PkpButton
 					v-for="action in actions"
@@ -68,29 +68,29 @@ function fireCallback(callback) {
 </script>
 
 <style>
-.pkp-dialog-body {
+.pkpDialogBody {
 	padding-left: var(--pkp-spacing-12);
 	padding-right: var(--pkp-spacing-12);
 }
 
-.pkp-dialog-body--has-icon {
+.pkpDialogBody--hasIcon {
 	padding-left: var(--pkp-spacing-24);
 	padding-right: var(--pkp-spacing-24);
 }
 
-.pkp-dialog-body__message {
+.pkpDialogBody__message {
 	font: var(--pkp-font-base-normal);
 	color: var(--pkp-text-color-default);
 }
 
-.pkp-dialog-body__footer {
+.pkpDialogBody__footer {
 	display: flex;
 	align-items: center;
 	gap: var(--pkp-spacing-4);
 	padding: var(--pkp-spacing-12);
 }
 
-.pkp-dialog-body__footer--has-icon {
+.pkpDialogBody__footer--hasIcon {
 	padding: var(--pkp-spacing-10);
 	padding-inline-start: var(--pkp-spacing-24);
 }

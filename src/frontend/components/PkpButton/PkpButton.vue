@@ -17,14 +17,14 @@ const props = defineProps({
 
 const buttonClass = computed(() => {
 	return [
-		'pkp-button',
-		props.isSecondary ? 'pkp-button--secondary' : 'pkp-button--primary',
+		'pkpButton',
+		props.isSecondary ? 'pkpButton--secondary' : 'pkpButton--primary',
 	];
 });
 </script>
 
 <style>
-.pkp-button {
+.pkpButton {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -36,39 +36,39 @@ const buttonClass = computed(() => {
 	gap: var(--pkp-spacing-2);
 }
 
-.pkp-button:disabled {
+.pkpButton:disabled {
 	background-color: var(--pkp-background-color-disabled);
 	color: var(--pkp-text-color-disabled);
 	cursor: not-allowed;
 	border-color: var(--pkp-color-transparent);
 }
 
-.pkp-button--primary {
+.pkpButton--primary {
 	background-color: var(--pkp-color-primary);
 	color: var(--pkp-text-color-on-dark);
 }
 
-.pkp-button--primary:hover {
+.pkpButton--primary:hover {
 	background-color: var(--pkp-color-hover);
 }
 
-.pkp-button--primary:disabled {
+.pkpButton--primary:disabled {
 	background-color: var(--pkp-background-color-disabled);
 }
 
-.pkp-button--secondary {
+.pkpButton--secondary {
 	background-color: var(--pkp-color-transparent);
 	border-color: var(--pkp-color-primary);
 	color: var(--pkp-color-primary);
 }
 
-.pkp-button--secondary:hover {
+.pkpButton--secondary:hover {
 	background-color: var(--pkp-color-primary);
 	border-color: var(--pkp-color-primary);
 	color: var(--pkp-text-color-on-dark);
 }
 
-.pkp-button--secondary:disabled {
+.pkpButton--secondary:disabled {
 	background-color: var(--pkp-color-transparent);
 	border-color: var(--pkp-text-color-disabled);
 	color: var(--pkp-text-color-disabled);

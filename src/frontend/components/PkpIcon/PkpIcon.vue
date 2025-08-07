@@ -14,7 +14,7 @@ const props = defineProps({
 });
 
 const classes = computed(() => {
-	return ['pkp-icon', props.icon === 'Error' ? 'pkp-icon--error' : ''];
+	return ['pkpIcon', props.icon === 'Error' ? 'pkpIcon--error' : ''];
 });
 </script>
 
@@ -25,16 +25,16 @@ const classes = computed(() => {
 </template>
 
 <style>
-.pkp-icon {
+.pkpIcon {
 	display: inline-block;
 	vertical-align: middle;
 }
 
-[dir='rtl'] .pkp-icon {
+[dir='rtl'] .pkpIcon {
 	transform: scaleX(-1);
 }
 
-.pkp-icon--error {
+.pkpIcon--error {
 	color: var(--pkp-color-negative);
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
-	<span class="pkp-spinner" :class="spinnerClass" aria-hidden="true">
-		<span v-if="message" class="pkp-spinner__message">
+	<span class="pkpSpinner" :class="spinnerClass" aria-hidden="true">
+		<span v-if="message" class="pkpSpinner__message">
 			{{ message }}
 		</span>
 	</span>
@@ -20,18 +20,18 @@ const props = defineProps({
 });
 
 const spinnerClass = computed(() => {
-	return props.sizeVariant === 'big' ? 'pkp-spinner--big' : '';
+	return props.sizeVariant === 'big' ? 'pkpSpinner--big' : '';
 });
 </script>
 
 <style>
-.pkp-spinner::before {
+.pkpSpinner::before {
 	display: inline-block;
 	position: relative;
 	width: calc(1.25 * var(--pkp-text-base-size));
 	height: calc(1.25 * var(--pkp-text-base-size));
 	vertical-align: middle;
-	animation: pkp-spinner-rotate 0.6s linear infinite;
+	animation: pkpSpinnerRotate 0.6s linear infinite;
 	border-radius: 100%;
 	border-top: 1px solid var(--pkp-color-primary);
 	border-bottom: 1px solid var(--pkp-color-transparent);
@@ -41,7 +41,7 @@ const spinnerClass = computed(() => {
 	opacity: 1;
 }
 
-.pkp-spinner--big::before {
+.pkpSpinner--big::before {
 	width: calc(2 * var(--pkp-text-base-size));
 	height: calc(2 * var(--pkp-text-base-size));
 	border-top: 3px solid var(--pkp-color-primary);
@@ -50,14 +50,14 @@ const spinnerClass = computed(() => {
 	border-right: 3px solid var(--pkp-color-transparent);
 }
 
-.pkp-spinner__message {
+.pkpSpinner__message {
 	margin-left: var(--pkp-spacing-3);
 	font: var(--pkp-font-base-normal);
 	color: var(--pkp-text-color-disabled);
 }
 
 /* Animation */
-@keyframes pkp-spinner-rotate {
+@keyframes pkpSpinnerRotate {
 	0% {
 		transform: rotateZ(-360deg);
 	}

@@ -1,6 +1,6 @@
 <template>
-	<div class="pkp-modal-layout-basic">
-		<div class="pkp-modal-layout-basic__inner">
+	<div class="pkpModalLayoutBasic">
+		<div class="pkpModalLayoutBasic__inner">
 			<slot></slot>
 		</div>
 	</div>
@@ -11,11 +11,11 @@
 </script>
 
 <style>
-.pkp-modal-layout-basic {
+.pkpModalLayoutBasic {
 	padding: var(--pkp-spacing-4);
 }
 
-.pkp-modal-layout-basic__inner {
+.pkpModalLayoutBasic__inner {
 	background-color: var(--pkp-background-color-secondary);
 	padding: var(--pkp-spacing-4);
 }

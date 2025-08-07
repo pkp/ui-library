@@ -1,9 +1,8 @@
-<!-- PkpModal.vue -->
 <template>
 	<DialogRoot :open="open" @update:open="handleRootClose">
 		<DialogPortal>
 			<div v-bind="$attrs">
-				<DialogOverlay class="pkp-modal__overlay" />
+				<DialogOverlay class="pkpModal__overlay" />
 				<slot />
 			</div>
 		</DialogPortal>
@@ -59,7 +58,7 @@ provide('closeModalButton', closeModalButton);
 </script>
 
 <style>
-@keyframes pkp-modal-fade-in {
+@keyframes pkpModalFadeIn {
 	from {
 		opacity: 0;
 	}
@@ -68,7 +67,7 @@ provide('closeModalButton', closeModalButton);
 	}
 }
 
-@keyframes pkp-modal-fade-out {
+@keyframes pkpModalFadeOut {
 	from {
 		opacity: 1;
 	}
@@ -77,15 +76,15 @@ provide('closeModalButton', closeModalButton);
 	}
 }
 
-.pkp-modal__overlay[data-state='open'] {
-	animation: pkp-modal-fade-in 300ms ease-out;
+.pkpModal__overlay[data-state='open'] {
+	animation: pkpModalFadeIn 300ms ease-out;
 }
 
-.pkp-modal__overlay[data-state='closed'] {
-	animation: pkp-modal-fade-out 300ms ease-in;
+.pkpModal__overlay[data-state='closed'] {
+	animation: pkpModalFadeOut 300ms ease-in;
 }
 
-.pkp-modal__overlay {
+.pkpModal__overlay {
 	position: fixed;
 	inset: 0;
 	background-color: var(--pkp-background-color-blur);

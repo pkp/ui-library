@@ -1,5 +1,6 @@
+```vue
 <template>
-	<div class="pkp-hello-world-container">
+	<div class="pkpHelloWorld__container">
 		<span>Hello world</span>
 		<div>
 			<PkpButton @click="openDialog1">open dialog</PkpButton>
@@ -19,6 +20,7 @@
 		</div>
 	</div>
 </template>
+
 <script setup>
 import {ref} from 'vue';
 import PkpButton from '@/frontend/components/PkpButton/PkpButton.vue';
@@ -27,10 +29,10 @@ import PkpDropdownActions from '@/frontend/components/PkpDropdownActions/PkpDrop
 import {usePkpModal} from '@/frontend/composables/usePkpModal';
 import PkpHelloWorldModal from '@/frontend/components/PkpHelloWorld/PkpHelloWorldModal.vue';
 import PkpTextarea from '@/frontend/components/PkpTextarea/PkpTextarea.vue';
+
 defineProps({one: {type: Object, required: true}});
 
 const {openModal, openDialog} = usePkpModal();
-
 const dropdownItems = [
 	{label: 'Report', name: 'report'},
 	{label: 'Delete', name: 'delete'},
@@ -49,16 +51,17 @@ function openDialog1() {
 		],
 	});
 }
+
 function openModal1() {
 	openModal(PkpHelloWorldModal);
 }
 
 const textAreaValue = ref('');
 </script>
+
 <style>
-.pkp-hello-world-container {
+.pkpHelloWorld__container {
 	display: flex;
 	flex-direction: column;
 }
 </style>
-@/frontend/components/PkpTextArea/PkpTextarea.vue

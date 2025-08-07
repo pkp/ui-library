@@ -5,14 +5,14 @@
 		:default-value="defaultOpen ? 'item-1' : undefined"
 		collapsible
 	>
-		<AccordionItem class="pkp-accordion__item" value="item-1">
-			<AccordionHeader class="pkp-accordion__header">
-				<AccordionTrigger class="pkp-accordion__trigger">
+		<AccordionItem class="pkpAccordion__item" value="item-1">
+			<AccordionHeader class="pkpAccordion__header">
+				<AccordionTrigger class="pkpAccordion__trigger">
 					{{ title }}
-					<span class="pkp-accordion__chevron">▼</span>
+					<span class="pkpAccordion__chevron">▼</span>
 				</AccordionTrigger>
 			</AccordionHeader>
-			<AccordionContent class="pkp-accordion__content">
+			<AccordionContent class="pkpAccordion__content">
 				<slot />
 			</AccordionContent>
 		</AccordionItem>
@@ -40,23 +40,23 @@ defineProps({
 	},
 });
 
-const accordionClass = computed(() => ['pkp-accordion']);
+const accordionClass = computed(() => ['pkpAccordion']);
 </script>
 
 <style>
-.pkp-accordion {
+.pkpAccordion {
 	width: 100%;
 }
 
-.pkp-accordion__item {
+.pkpAccordion__item {
 	border-bottom: 1px solid var(--pkp-border-color-light);
 }
 
-.pkp-accordion__header {
+.pkpAccordion__header {
 	margin: 0;
 }
 
-.pkp-accordion__trigger {
+.pkpAccordion__trigger {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -70,25 +70,25 @@ const accordionClass = computed(() => ['pkp-accordion']);
 	text-align: left;
 }
 
-.pkp-accordion__trigger:hover {
+.pkpAccordion__trigger:hover {
 	background-color: var(--pkp-background-color-selection-light);
 }
 
-.pkp-accordion__trigger[data-state='open'] {
+.pkpAccordion__trigger[data-state='open'] {
 	background-color: var(--pkp-background-color-default);
 }
 
-.pkp-accordion__trigger[data-state='open'] .pkp-accordion__chevron {
+.pkpAccordion__trigger[data-state='open'] .pkpAccordion__chevron {
 	transform: rotate(180deg);
 }
 
-.pkp-accordion__chevron {
+.pkpAccordion__chevron {
 	display: inline-block;
 	color: var(--pkp-text-color-secondary);
 	font-size: var(--pkp-text-lg-normal);
 }
 
-.pkp-accordion__content {
+.pkpAccordion__content {
 	overflow: hidden;
 	background-color: var(--pkp-background-color-secondary);
 	padding: var(--pkp-spacing-3);

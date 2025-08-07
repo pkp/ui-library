@@ -1,19 +1,16 @@
 <template>
 	<DropdownMenuRoot>
 		<DropdownMenuTrigger as-child>
-			<button class="pkp-dropdown-actions__trigger">
-				<PkpIcon
-					class="pkp-dropdown-actions__trigger-icon"
-					icon="MoreOptions"
-				/>
+			<button class="pkpDropdownActions__trigger">
+				<PkpIcon class="pkpDropdownActions__triggerIcon" icon="MoreOptions" />
 			</button>
 		</DropdownMenuTrigger>
 		<DropdownMenuPortal>
-			<DropdownMenuContent class="pkp-dropdown-actions__content">
+			<DropdownMenuContent class="pkpDropdownActions__content">
 				<DropdownMenuItem
 					v-for="item in props.items"
 					:key="item.label"
-					class="pkp-dropdown-actions__item"
+					class="pkpDropdownActions__item"
 					:disabled="item.disabled"
 					@click="handleClick(item)"
 				>
@@ -76,7 +73,7 @@ const handleClick = (item) => {
 </script>
 
 <style>
-.pkp-dropdown-actions__trigger {
+.pkpDropdownActions__trigger {
 	background-color: var(--pkp-background-color-transparent);
 	border: var(--pkp-border-color-transparent);
 	cursor: pointer;
@@ -88,18 +85,18 @@ const handleClick = (item) => {
 	justify-content: center;
 }
 
-.pkp-dropdown-actions__trigger-icon {
+.pkpDropdownActions__triggerIcon {
 	height: calc(
 		1.5 * var(--pkp-text-base-size)
 	); /* Adjust for typical close X size, e.g., 24px */
 	width: calc(1.5 * var(--pkp-text-base-size));
 }
 
-.pkp-dropdown-actions__trigger:hover {
+.pkpDropdownActions__trigger:hover {
 	background-color: var(--pkp-background-color-tertiary);
 }
 
-.pkp-dropdown-actions__content {
+.pkpDropdownActions__content {
 	background-color: var(--pkp-background-color-secondary);
 	border-radius: var(--pkp-radius);
 	box-shadow: var(--pkp-shadow);
@@ -108,7 +105,7 @@ const handleClick = (item) => {
 	z-index: 50;
 }
 
-.pkp-dropdown-actions__item {
+.pkpDropdownActions__item {
 	display: flex;
 	align-items: center;
 	padding: var(--pkp-spacing-2) var(--pkp-spacing-4);
@@ -118,11 +115,11 @@ const handleClick = (item) => {
 	border-radius: var(--pkp-radius);
 }
 
-.pkp-dropdown-actions__item:hover:not([data-disabled]) {
+.pkpDropdownActions__item:hover:not([data-disabled]) {
 	background-color: var(--pkp-background-color-selection-light);
 }
 
-.pkp-dropdown-actions__item[data-disabled] {
+.pkpDropdownActions__item[data-disabled] {
 	color: var(--pkp-text-color-disabled);
 	cursor: not-allowed;
 }
