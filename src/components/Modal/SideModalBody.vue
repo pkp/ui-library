@@ -6,6 +6,7 @@
 		@focus-outside="handleOutsideEvent"
 		@interact-outside="handleOutsideEvent"
 		@pointer-down-outside="handleOutsideEvent"
+		@escape-key-down="handleOutsideEvent"
 	>
 		<div
 			:id="containerId"
