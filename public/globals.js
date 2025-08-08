@@ -892,6 +892,9 @@ window.pkp = {
 		'submission.wizard.submissionCancel': 'Cancel submission',
 		'submissions.declined': 'Declined',
 		'submissions.incomplete': 'Incomplete',
+		'taskTemplate.apply': 'Apply Template',
+		'taskTemplate.applyConfirmation':
+			"Applying this template will replace data in related fields on the form. These changes won't be saved unless you choose to save. Continue?",
 		'user.affiliation': 'Affiliation',
 		'user.affiliations': 'Affiliations',
 		'user.affiliations.deleteModal.message':

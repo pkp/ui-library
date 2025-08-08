@@ -193,8 +193,8 @@ export function useDiscussionManagerForm({
 		const {openDialog} = useModal();
 		openDialog({
 			name: 'selectTemplate',
-			title: 'Apply Template',
-			message: `Applying this template will replace data in related fields on the form. These changes won't be saved unless you choose to save. Continue?`,
+			title: t('taskTemplate.apply'),
+			message: t('taskTemplate.applyConfirmation'),
 			actions: [
 				{
 					label: t('common.yes', {}),
@@ -262,12 +262,14 @@ export function useDiscussionManagerForm({
 		groupComponent: {
 			component: DiscussionManagerTaskInfo,
 		},
+		hideOnDisplay: !isTask.value,
 	});
 
 	addFieldCheckbox('taskInfoAdd', {
 		groupId: 'taskInformation',
 		label: t('discussion.form.taskInfoLabel'),
 		value: isTask,
+		hideOnDisplay: true,
 	});
 
 	addFieldText('taskInfoDueDate', {
