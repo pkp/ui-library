@@ -40,7 +40,7 @@
 					type="checkbox"
 					:value="option.value"
 					:aria-describedby="describedByIds"
-					:aria-invalid="errors && errors.length"
+					:aria-invalid="!!errors?.length"
 					:disabled="option.disabled"
 				/>
 				<span
@@ -59,7 +59,7 @@
 						class="pkpFormField--options__input pkpFormField--metadata__submissionInput"
 						type="radio"
 						:value="option.value"
-						:aria-invalid="errors && errors.length"
+						:aria-invalid="!!errors?.length"
 						:disabled="option.disabled"
 					/>
 					<span

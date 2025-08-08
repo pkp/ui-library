@@ -134,7 +134,7 @@ export function useDiscussionManagerConfig() {
 		return actions;
 	}
 
-	function getItemActions({config}) {
+	function getItemActions({config, workItem}) {
 		const actions = [];
 		if (config.permittedActions.includes(Actions.TASKS_AND_DISCUSSIONS_EDIT)) {
 			actions.push({
@@ -144,11 +144,19 @@ export function useDiscussionManagerConfig() {
 			});
 		}
 
+		if (workItem.type === 'Discussion') {
+			actions.push({
+				label: t('discussion.addTaskDetails'),
+				name: Actions.TASKS_AND_DISCUSSIONS_ADD_TASK_DETAILS,
+				icon: 'TaskDetails',
+			});
+		}
+
 		if (
 			config.permittedActions.includes(Actions.TASKS_AND_DISCUSSIONS_HISTORY)
 		) {
 			actions.push({
-				label: 'History', // TODO: add to locale key
+				label: t('common.history'),
 				name: Actions.TASKS_AND_DISCUSSIONS_HISTORY,
 				icon: 'History',
 			});

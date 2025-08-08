@@ -67,7 +67,7 @@
 							type="checkbox"
 							:name="localizedName"
 							:aria-describedby="describedByIds"
-							:aria-invalid="errors && errors.length"
+							:aria-invalid="!!errors?.length"
 							:disabled="option.disabled"
 						/>
 						<input
@@ -78,7 +78,7 @@
 							type="radio"
 							:name="localizedName"
 							:aria-describedby="describedByIds"
-							:aria-invalid="errors && errors.length"
+							:aria-invalid="!!errors?.length"
 							:disabled="option.disabled"
 						/>
 					</template>

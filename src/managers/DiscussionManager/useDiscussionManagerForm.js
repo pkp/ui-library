@@ -6,11 +6,10 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useCurrentUser} from '@/composables/useCurrentUser';
 import {useParticipantManagerStore} from '../ParticipantManager/participantManagerStore';
 import {useTasksAndDiscussionsStore} from '@/pages/tasksAndDiscussions/tasksAndDiscussionsStore';
-import FileAttacherModal from '@/components/Composer/FileAttacherModal.vue';
-import FieldPreparedContentInsertModal from '@/components/Form/fields/FieldPreparedContentInsertModal.vue';
+import {useDiscussionMessagesStore} from './discussionMessagesStore';
+import DiscussionMessages from './DiscussionMessages.vue';
 import DiscussionManagerTemplates from './DiscussionManagerTemplates.vue';
 import DiscussionManagerTaskInfo from './DiscussionManagerTaskInfo.vue';
-import preparedContent from '../../mixins/preparedContent';
 
 export function useDiscussionManagerForm({
 	status = 'New',
@@ -20,11 +19,13 @@ export function useDiscussionManagerForm({
 	closeDialog = () => {},
 	onSubmitFn = null,
 } = {}) {
+	const workItemStatus = workItem?.status || status;
 	const {t, localize} = useLocalize();
 	const participantManagerStore = useParticipantManagerStore({
 		submission,
 		submissionStageId,
 	});
+	const discussionMessagesStore = useDiscussionMessagesStore();
 
 	const currentUser = useCurrentUser();
 	const {getRelativeTargetDate} = useDate();
@@ -41,6 +42,8 @@ export function useDiscussionManagerForm({
 		addFieldOptions,
 		addFieldRichTextArea,
 		addFieldSelect,
+		addFieldCheckbox,
+		addFieldComponent,
 	} = useForm({}, {customSubmit: handleFormSubmission});
 
 	function getParticipantOptions(withSubLabel) {
@@ -69,6 +72,8 @@ export function useDiscussionManagerForm({
 				description: t('discussion.form.detailsParticipantsDescription'),
 				name: 'detailsParticipants',
 				options: getParticipantOptions(true),
+				showNumberedList: true,
+				value: workItem?.participants || [],
 			},
 			{override},
 		);
@@ -83,8 +88,9 @@ export function useDiscussionManagerForm({
 				label: t('discussion.form.taskInfoAssigneesLabel'),
 				description: t('discussion.form.taskInfoAssigneesDescription'),
 				name: 'taskInfoParticipants',
-				showWhen: ['taskInfoIsChecked', 'true'],
+				showWhen: 'taskInfoAdd',
 				options: getParticipantOptions(),
+				value: workItem?.assignees,
 			},
 			{override},
 		);
@@ -104,7 +110,7 @@ export function useDiscussionManagerForm({
 
 	function getBadgeProps() {
 		let badgeProps = {};
-		switch (status) {
+		switch (workItemStatus) {
 			case 'Pending':
 				badgeProps = {
 					slot: t('common.yetToBegin'),
@@ -144,41 +150,6 @@ export function useDiscussionManagerForm({
 		return badgeProps;
 	}
 
-	function initDiscussionText() {
-		return {
-			setup: (editor) => {
-				editor.ui.registry.addButton('pkpAttachFiles', {
-					icon: 'upload',
-					text: t('common.attachFiles'),
-					onAction() {
-						const {openSideModal} = useModal();
-
-						openSideModal(FileAttacherModal, {
-							title: t('common.attachFiles'),
-							attachers: [],
-							onAddAttachments: [],
-						});
-					},
-				});
-
-				editor.ui.registry.addButton('pkpInsert', {
-					icon: 'plus',
-					text: t('common.insertContent'),
-					onAction() {
-						const {openSideModal} = useModal(FieldPreparedContentInsertModal);
-						openSideModal(FieldPreparedContentInsertModal, {
-							title: t('common.insertContent'),
-							insertLabel: t('common.insert'),
-							preparedContent,
-							preparedContentLabel: 'Label',
-							onInsert: () => {},
-						});
-					},
-				});
-			},
-		};
-	}
-
 	function getTemplates() {
 		const tasksAndDiscussionsStore = useTasksAndDiscussionsStore();
 		return computed(() => {
@@ -186,7 +157,7 @@ export function useDiscussionManagerForm({
 		});
 	}
 
-	function onSelectTemplate(template) {
+	function setValuesFromTemplate(template) {
 		isTask.value = template.type === 'Task';
 		setValue('detailsName', template.name);
 		setValue('discussionText', template.content);
@@ -198,8 +169,6 @@ export function useDiscussionManagerForm({
 				)
 				.map((p) => p.id) || [];
 		setValue('detailsParticipants', selectedParticipants);
-
-		setValue('taskInfoIsChecked', isTask.value ? 'true' : 'false');
 
 		if (isTask.value) {
 			setValue('taskInfoParticipants', selectedParticipants);
@@ -215,9 +184,36 @@ export function useDiscussionManagerForm({
 		}
 	}
 
-	function onAddTaskInfo(checked) {
-		isTask.value = checked;
-		setValue('taskInfoIsChecked', checked ? 'true' : 'false');
+	function onSelectTemplate(template) {
+		if (!workItem?.id) {
+			return setValuesFromTemplate(template);
+		}
+
+		// Confirm overriding existing data with values from the selected template, if any data is already present
+		const {openDialog} = useModal();
+		openDialog({
+			name: 'selectTemplate',
+			title: t('taskTemplate.apply'),
+			message: t('taskTemplate.applyConfirmation'),
+			actions: [
+				{
+					label: t('common.yes', {}),
+					isWarnable: true,
+					callback: async (close) => {
+						setValuesFromTemplate(template);
+						close();
+					},
+				},
+				{
+					label: t('common.no', {}),
+					callback: (close) => {
+						close();
+					},
+				},
+			],
+			close: () => {},
+			modalStyle: 'negative',
+		});
 	}
 
 	async function handleFormSubmission(formData) {
@@ -255,6 +251,7 @@ export function useDiscussionManagerForm({
 		description: t('discussion.form.detailsNameDescription'),
 		size: 'large',
 		value: localize(workItem?.title),
+		hideOnDisplay: true,
 	});
 
 	addParticipantsField({override: false});
@@ -264,17 +261,15 @@ export function useDiscussionManagerForm({
 		description: t('discussion.form.taskInfoDescription'),
 		groupComponent: {
 			component: DiscussionManagerTaskInfo,
-			props: {
-				isChecked: isTask,
-				onAddTaskInfo,
-			},
 		},
+		hideOnDisplay: !isTask.value,
 	});
 
-	addFieldText('taskInfoIsChecked', {
+	addFieldCheckbox('taskInfoAdd', {
 		groupId: 'taskInformation',
-		inputType: 'hidden',
-		value: isTask.value ? 'true' : 'false',
+		label: t('discussion.form.taskInfoLabel'),
+		value: isTask,
+		hideOnDisplay: true,
 	});
 
 	addFieldText('taskInfoDueDate', {
@@ -283,7 +278,7 @@ export function useDiscussionManagerForm({
 		inputType: 'date',
 		description: t('discussion.form.taskInfoDueDateDescription'),
 		size: 'large',
-		showWhen: ['taskInfoIsChecked', 'true'],
+		showWhen: 'taskInfoAdd',
 		value: isTask.value ? workItem?.dueDate : null,
 	});
 
@@ -293,8 +288,9 @@ export function useDiscussionManagerForm({
 		addFieldSelect('taskInfoShouldStart', {
 			groupId: 'taskInformation',
 			name: 'taskInfoShouldStart',
-			showWhen: ['taskInfoIsChecked', 'true'],
+			showWhen: 'taskInfoAdd',
 			value: true,
+			hideOnDisplay: true,
 			options: [
 				{
 					label: t('discussion.form.startTaskUponSaving'),
@@ -313,14 +309,21 @@ export function useDiscussionManagerForm({
 		description: t('discussion.form.discussionDescription'),
 	});
 
-	addFieldRichTextArea('discussionText', {
-		groupId: 'discussion',
-		toolbar: 'bold italic underline bullist | pkpAttachFiles | pkpInsert',
-		plugins: ['lists'],
-		size: 'large',
-		init: initDiscussionText(),
-		value: workItem?.discussionText || '',
-	});
+	if (workItemStatus === 'New') {
+		addFieldRichTextArea('discussionText', {
+			groupId: 'discussion',
+			...discussionMessagesStore.messageFieldOptions,
+		});
+	} else {
+		addFieldComponent('messagesComponent', {
+			component: DiscussionMessages,
+			componentProps: {
+				submission,
+				discussion: workItem,
+			},
+			groupId: 'discussion',
+		});
+	}
 
 	const badgeProps = getBadgeProps(status);
 

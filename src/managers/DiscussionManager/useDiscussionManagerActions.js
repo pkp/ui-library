@@ -30,6 +30,7 @@ export function useDiscussionManagerActions() {
 			submission,
 			submissionStageId,
 			onCloseFn,
+			inDisplayMode: true,
 		});
 	}
 

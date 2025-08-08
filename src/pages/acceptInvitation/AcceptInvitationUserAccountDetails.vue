@@ -1,11 +1,11 @@
 <template>
 	<div class="p-8">
 		<div class="py-1">
-			<FormDisplayItemBasic
+			<AcceptInvitationFormDisplayItemBasic
 				heading-element="h4"
 				:heading="t('user.email')"
 				:value="store.email"
-			></FormDisplayItemBasic>
+			></AcceptInvitationFormDisplayItemBasic>
 		</div>
 		<div class="my-4">
 			<FieldText
@@ -53,7 +53,7 @@
 <script setup>
 import {defineProps, ref, computed} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
-import FormDisplayItemBasic from '@/components/FormDisplay/FormDisplayItemBasic.vue';
+import AcceptInvitationFormDisplayItemBasic from './AcceptInvitationFormDisplayItemBasic.vue';
 import FieldText from '@/components/Form/fields/FieldText.vue';
 import FieldOptions from '@/components/Form/fields/FieldOptions.vue';
 import {useAcceptInvitationPageStore} from './AcceptInvitationPageStore';

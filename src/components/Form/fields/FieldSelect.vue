@@ -45,7 +45,7 @@
 				:class="inputClasses"
 				:name="localizedName"
 				:aria-describedby="describedByIds"
-				:aria-invalid="errors && errors.length"
+				:aria-invalid="!!errors?.length"
 				:required="isRequired"
 			>
 				<option

@@ -60,7 +60,7 @@
 					type="checkbox"
 					:name="name"
 					:aria-describedby="describedByIds"
-					:aria-invalid="errors && errors.length"
+					:aria-invalid="!!errors?.length"
 					:disabled="isSaving || option.disabled"
 				/>
 				{{ option.label }}

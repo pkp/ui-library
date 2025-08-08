@@ -23,13 +23,13 @@
 	</div>
 	<div v-if="store.invitationPayload.userId !== null" class="p-8">
 		<div class="mb-8 flex flex-col gap-y-2">
-			<FormDisplayItemBasic
+			<AcceptInvitationFormDisplayItemBasic
 				heading-element="h4"
 				:heading="t('user.email')"
 				:value="store.invitationPayload.inviteeEmail"
-			></FormDisplayItemBasic>
+			></AcceptInvitationFormDisplayItemBasic>
 
-			<FormDisplayItemBasic
+			<AcceptInvitationFormDisplayItemBasic
 				heading-element="h4"
 				:heading="t('user.orcid')"
 				:value="store.invitationPayload.orcid"
@@ -42,25 +42,25 @@
 						:inline="true"
 					/>
 				</template>
-			</FormDisplayItemBasic>
+			</AcceptInvitationFormDisplayItemBasic>
 
-			<FormDisplayItemBasic
+			<AcceptInvitationFormDisplayItemBasic
 				heading-element="h4"
 				:heading="t('user.givenName')"
 				:value="localize(store.invitationPayload.givenName)"
-			></FormDisplayItemBasic>
+			></AcceptInvitationFormDisplayItemBasic>
 
-			<FormDisplayItemBasic
+			<AcceptInvitationFormDisplayItemBasic
 				heading-element="h4"
 				:heading="t('user.familyName')"
 				:value="localize(store.invitationPayload.familyName)"
-			></FormDisplayItemBasic>
+			></AcceptInvitationFormDisplayItemBasic>
 
-			<FormDisplayItemBasic
+			<AcceptInvitationFormDisplayItemBasic
 				heading-element="h4"
 				:heading="t('user.affiliation')"
 				:value="localize(store.invitationPayload.affiliation)"
-			></FormDisplayItemBasic>
+			></AcceptInvitationFormDisplayItemBasic>
 		</div>
 		<div v-if="store.invitationMode != 'create'">
 			<ShowMore :label="t('common.viewMoreDetails')">
@@ -75,7 +75,7 @@
 
 <script setup>
 import {defineProps, computed} from 'vue';
-import FormDisplayItemBasic from '@/components/FormDisplay/FormDisplayItemBasic.vue';
+import AcceptInvitationFormDisplayItemBasic from '@/pages/acceptInvitation/AcceptInvitationFormDisplayItemBasic.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import {useLocalize} from '@/composables/useLocalize';
