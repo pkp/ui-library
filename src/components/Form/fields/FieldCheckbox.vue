@@ -49,4 +49,12 @@ const selectedValue = ref(props.value);
 watch(selectedValue, (val) => {
 	emit('change', props.name, 'value', val);
 });
+
+// update the selected value when the prop changes
+watch(
+	() => props.value,
+	(val) => {
+		selectedValue.value = val;
+	},
+);
 </script>

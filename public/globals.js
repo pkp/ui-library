@@ -397,7 +397,7 @@ window.pkp = {
 		'discussion.form.taskInfoLabel': 'Enter task information',
 		'discussion.form.taskInformation': 'Task Information',
 		'discussion.form.taskInfoDescription':
-			'Please enter the tasks details here to help manage this task effectively.',
+			'Enter the tasks details here to help manage this task effectively, if selected.',
 		'discussion.form.taskInfoAssigneesLabel':
 			'Responsible to complete this task',
 		'discussion.form.taskInfoAssigneesDescription':

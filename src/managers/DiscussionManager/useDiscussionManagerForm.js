@@ -42,6 +42,7 @@ export function useDiscussionManagerForm({
 		addFieldOptions,
 		addFieldRichTextArea,
 		addFieldSelect,
+		addFieldCheckbox,
 		addFieldComponent,
 	} = useForm({}, {customSubmit: handleFormSubmission});
 
@@ -87,7 +88,7 @@ export function useDiscussionManagerForm({
 				label: t('discussion.form.taskInfoAssigneesLabel'),
 				description: t('discussion.form.taskInfoAssigneesDescription'),
 				name: 'taskInfoParticipants',
-				showWhen: ['taskInfoIsChecked', 'true'],
+				showWhen: 'taskInfoAdd',
 				options: getParticipantOptions(),
 				value: workItem?.assignees,
 			},
@@ -169,8 +170,6 @@ export function useDiscussionManagerForm({
 				.map((p) => p.id) || [];
 		setValue('detailsParticipants', selectedParticipants);
 
-		setValue('taskInfoIsChecked', isTask.value ? 'true' : 'false');
-
 		if (isTask.value) {
 			setValue('taskInfoParticipants', selectedParticipants);
 
@@ -215,11 +214,6 @@ export function useDiscussionManagerForm({
 			close: () => {},
 			modalStyle: 'negative',
 		});
-	}
-
-	function onAddTaskInfo(checked) {
-		isTask.value = checked;
-		setValue('taskInfoIsChecked', checked ? 'true' : 'false');
 	}
 
 	async function handleFormSubmission(formData) {
@@ -267,18 +261,13 @@ export function useDiscussionManagerForm({
 		description: t('discussion.form.taskInfoDescription'),
 		groupComponent: {
 			component: DiscussionManagerTaskInfo,
-			props: {
-				isChecked: isTask,
-				onAddTaskInfo,
-			},
 		},
-		hideOnDisplay: !isTask.value,
 	});
 
-	addFieldText('taskInfoIsChecked', {
+	addFieldCheckbox('taskInfoAdd', {
 		groupId: 'taskInformation',
-		inputType: 'hidden',
-		value: isTask.value ? 'true' : 'false',
+		label: t('discussion.form.taskInfoLabel'),
+		value: isTask,
 	});
 
 	addFieldText('taskInfoDueDate', {
@@ -287,7 +276,7 @@ export function useDiscussionManagerForm({
 		inputType: 'date',
 		description: t('discussion.form.taskInfoDueDateDescription'),
 		size: 'large',
-		showWhen: ['taskInfoIsChecked', 'true'],
+		showWhen: 'taskInfoAdd',
 		value: isTask.value ? workItem?.dueDate : null,
 	});
 
@@ -297,7 +286,7 @@ export function useDiscussionManagerForm({
 		addFieldSelect('taskInfoShouldStart', {
 			groupId: 'taskInformation',
 			name: 'taskInfoShouldStart',
-			showWhen: ['taskInfoIsChecked', 'true'],
+			showWhen: 'taskInfoAdd',
 			value: true,
 			hideOnDisplay: true,
 			options: [
