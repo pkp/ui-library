@@ -88,7 +88,7 @@ import FieldRadioInput from './fields/FieldRadioInput.vue';
 import FieldRichTextarea from './fields/FieldRichTextarea.vue';
 import FieldRichText from './fields/FieldRichText.vue';
 import FieldSelect from './fields/FieldSelect.vue';
-import FieldSelectIssue from './fields/FieldSelectIssue.vue';
+// import FieldSelectIssue from './fields/FieldSelectIssue.vue';
 import FieldSelectIssues from './fields/FieldSelectIssues.vue';
 import FieldIssueSelection from './fields/FieldIssueSelection.vue';
 import FieldSelectSubmissions from './fields/FieldSelectSubmissions.vue';
@@ -126,7 +126,7 @@ export default {
 		FieldRichTextarea,
 		FieldRichText,
 		FieldSelect,
-		FieldSelectIssue,
+		// FieldSelectIssue,
 		FieldSelectIssues,
 		FieldIssueSelection,
 		FieldSelectSubmissions,
