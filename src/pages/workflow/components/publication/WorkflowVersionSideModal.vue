@@ -39,6 +39,6 @@ const {form, set} = useWorkflowVersionForm(
 	'publish',
 	props.onCloseFn,
 	props.onSubmitFn,
-	props.issueCount, // Pass issue count to the form
+	props.issueCount,
 );
 </script>

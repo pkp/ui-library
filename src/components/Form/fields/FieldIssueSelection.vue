@@ -17,12 +17,11 @@
 			class="pkpFormField__description semantic-defaults"
 		/>
 		<div class="pkpFormField__control">
-			<!-- Assignment type radio buttons -->
 			<FieldOptions
 				:name="props.name + '_assignment'"
 				:label="t('publication.assignToIssue.description')"
 				:is-required="false"
-				:value="assignmentType"
+				:value="finalAssignmentType"
 				:options="assignmentOptions"
 				type="radio"
 				:all-errors="{}"
@@ -30,10 +29,9 @@
 				@change="onAssignmentChange"
 			/>
 
-			<!-- Issue dropdown (only shown when assignment type requires issue selection) -->
 			<div v-if="showIssueDropdown" class="pkpFormField__issueDropdown">
 				<FieldSelect
-					:name="props.name + '_issue'"
+					:name="props.name"
 					:label="t('issue.issue')"
 					:is-required="isRequired"
 					:value="selectedIssueId"
@@ -72,42 +70,59 @@ const props = defineProps({
 		type: String,
 		default: null,
 	},
-	isRequired: {
-		type: Boolean,
-		default: false,
-	},
 	errors: {
 		type: Array,
 		default: () => [],
-	},
-	value: {
-		type: Object,
-		default: () => ({
-			assignmentType: 4, // 4 = CURRENT_BACK_ISSUES_PUBLISHED
-			issueId: null,
-			publicationStatus: null,
-		}),
-	},
-	issueCount: {
-		type: Number,
-		default: 0,
 	},
 	allErrors: {
 		type: Object,
 		default: () => ({}),
 	},
+	assignmentType: {
+		type: Number,
+		default: null,
+	},
+	issueCount: {
+		type: Number,
+		default: 0,
+	},
+	publication: {
+		type: Object,
+		required: true,
+	},
+	isRequired: {
+		type: Boolean,
+		default: false,
+	},
+	isPhpForm: {
+		type: Boolean,
+		default: false,
+	},
 });
 
-const emit = defineEmits(['change']);
+const emit = defineEmits(['change', 'set-errors', 'set']);
 const {t} = useLocalize();
 
-const assignmentType = ref(props.value?.assignmentType || 4); // 4 = CURRENT_BACK_ISSUES_PUBLISHED
-const selectedIssueId = ref(props.value?.issueId || null);
+// Local state - track user selections
 const availableIssues = ref([]);
 const isLoadingIssues = ref(false);
 
+// User selections - these are what the user has actually chosen
+const selectedIssueId = ref(props.publication?.issueId || null);
+const selectedAssignmentType = ref(props.assignmentType || null);
+
+const fetchedAssignmentType = ref(null);
 const assignmentOptions = ref([]);
 const isLoadingAssignmentOptions = ref(false);
+
+// Computed final assignment type with fallback (only for initial/default values)
+const finalAssignmentType = computed(() => {
+	return (
+		selectedAssignmentType.value ||
+		fetchedAssignmentType.value ||
+		pkp.const.ISSUE_ASSIGNMENT_DEFAULT
+	);
+});
 
 const fetchAssignmentOptions = async () => {
 	if (isLoadingAssignmentOptions.value) {
@@ -123,7 +138,7 @@ const fetchAssignmentOptions = async () => {
 
 		if (data.value) {
 			const options = data.value.map((option) => ({
-				value: option.value, // Use enum value (1, 2, 3, 4) directly
+				value: option.value,
 				label: option.label,
 				status: option.status,
 				isPublished: option.isPublished,
@@ -139,47 +154,88 @@ const fetchAssignmentOptions = async () => {
 	}
 };
 
+const fetchAssignmentType = async () => {
+	// Skip if there is a preset assignment type
+	if (props.assignmentType !== null) {
+		return;
+	}
+
+	try {
+		const {apiUrl} = useUrl(
+			`submissions/${props.publication.submissionId}/publications/${props.publication.id}/issueAssignmentStatus`,
+		);
+		const {fetch, data} = useFetch(apiUrl);
+		await fetch();
+
+		if (data.value?.assignmentType) {
+			fetchedAssignmentType.value = data.value.assignmentType;
+			selectedAssignmentType.value = data.value.assignmentType;
+		}
+	} catch (error) {
+		console.error('Error fetching assignment type:', error);
+		selectedAssignmentType.value = pkp.const.ISSUE_ASSIGNMENT_DEFAULT; // Fallback to default
+	}
+};
+
 const showIssueDropdown = computed(() => {
+	// Don't show dropdown if no assignment options are loaded yet
+	if (assignmentOptions.value.length === 0) {
+		return false;
+	}
+
 	const option = assignmentOptions.value.find(
-		(opt) => opt.value === assignmentType.value,
+		(opt) => opt.value === selectedAssignmentType.value,
 	);
 	return option?.isPublished !== null;
 });
 
 const shouldFetchPublishedIssues = computed(() => {
 	const option = assignmentOptions.value.find(
-		(opt) => opt.value === assignmentType.value,
+		(opt) => opt.value === selectedAssignmentType.value,
 	);
 	return option?.isPublished;
 });
 
-const publicationStatus = computed(() => {
-	const option = assignmentOptions.value.find(
-		(opt) => opt.value === assignmentType.value,
-	);
-	return option?.status;
-});
-
 const isValid = computed(() => {
 	const option = assignmentOptions.value.find(
-		(opt) => opt.value === assignmentType.value,
+		(opt) => opt.value === selectedAssignmentType.value, // Use user's selection
 	);
-	return option?.isPublished === null || selectedIssueId.value;
+	return option?.isPublished === null || selectedIssueId.value; // Use user's issue selection
+});
+
+const publicationStatus = computed(() => {
+	const option = assignmentOptions.value.find(
+		(opt) => opt.value === selectedAssignmentType.value,
+	);
+	return option?.status || null;
 });
 
 const validationErrors = computed(() => {
-	if (props.isRequired && !isValid.value) {
+	if (!isValid.value) {
 		return [t('publication.assignToIssue.validation.issueRequired')];
 	}
 	return [];
 });
+
+// Emit validation errors to the form system
+watch(
+	validationErrors,
+	(errors) => {
+		if (errors.length > 0) {
+			emit('set-errors', props.name, errors);
+		} else {
+			emit('set-errors', props.name, []);
+		}
+	},
+	{immediate: true},
+);
 
 const describedByErrorId = computed(() => {
 	return `${useId()}-error`;
 });
 
 const onAssignmentChange = (fieldName, propName, newValue) => {
-	assignmentType.value = newValue;
+	selectedAssignmentType.value = newValue;
 	selectedIssueId.value = null;
 	availableIssues.value = [];
 
@@ -196,23 +252,37 @@ const onIssueChange = (fieldName, propName, newValue) => {
 };
 
 const emitValue = () => {
-	const value = {
-		assignmentType: assignmentType.value,
-		issueId: selectedIssueId.value,
-		publicationStatus: publicationStatus.value,
-	};
+	if (props.isPhpForm) {
+		if (assignmentOptions.value.length > 0) {
+			// TODO: Remove this after testing
+			// console.log('PHP Form - Emitting issueId, updating hiddenFields:', {
+			// 	issueId: selectedIssueId.value, // User's issue selection
+			// 	assignmentType: selectedAssignmentType.value, // User's assignment type selection
+			// 	publicationStatus: publicationStatus.value, // Calculated status from user's selection
+			// });
 
-	// TODO: Remove this after testing
-	console.log('FieldIssueSelection emitting:', {
-		name: props.name,
-		formId: props.formId,
-		value: value,
-		assignmentType: assignmentType.value,
-		selectedIssueId: selectedIssueId.value,
-		publicationStatus: publicationStatus.value,
-	});
+			emit('change', 'issueId', 'value', selectedIssueId.value);
+			emit('change', 'prePublishStatus', 'value', publicationStatus.value);
+		}
+	} else {
+		const value = {
+			assignmentType: selectedAssignmentType.value, // User's assignment type selection
+			issueId: selectedIssueId.value, // User's issue selection
+			publicationStatus: publicationStatus.value, // Calculated status from user's selection
+		};
 
-	emit('change', props.name, 'value', value);
+		// TODO: Remove this after testing
+		// console.log('Vue Form - FieldIssueSelection emitting:', {
+		// 	name: props.name,
+		// 	formId: props.formId,
+		// 	value: value,
+		// 	assignmentType: selectedAssignmentType.value, // User's selection
+		// 	selectedIssueId: selectedIssueId.value, // User's selection
+		// 	publicationStatus: publicationStatus.value, // Calculated status
+		// });
+
+		emit('change', props.name, 'value', value);
+	}
 };
 
 const fetchIssues = async () => {
@@ -255,7 +325,7 @@ const formatIssuesForDropdown = (issues) => {
 	}));
 };
 
-watch(assignmentType, (newType) => {
+watch(selectedAssignmentType, (newType) => {
 	selectedIssueId.value = null;
 	availableIssues.value = [];
 
@@ -263,31 +333,47 @@ watch(assignmentType, (newType) => {
 		fetchIssues();
 	}
 
-	emitValue();
+	// Small delay to ensure the dropdown visibility is updated
+	setTimeout(() => {
+		emitValue();
+	}, 100);
 });
 
 watch(selectedIssueId, () => {
 	emitValue();
 });
 
-// Watch for props.value changes to sync local state
-watch(
-	() => props.value,
-	(newValue) => {
-		if (newValue) {
-			assignmentType.value = newValue.assignmentType || 4; // 4 = CURRENT_BACK_ISSUES_PUBLISHED
-			selectedIssueId.value = newValue.issueId || null;
-		}
-	},
-	{deep: true},
-);
-
 onMounted(async () => {
-	await fetchAssignmentOptions();
-	emitValue();
+	// Initialize user selections with props or publication values
+	selectedAssignmentType.value = props.assignmentType || null;
+	selectedIssueId.value = props.publication?.issueId || null;
 
-	if (showIssueDropdown.value) {
-		fetchIssues();
+	await Promise.all([fetchAssignmentOptions(), fetchAssignmentType()]);
+
+	// Debug: Log the state after fetching
+	// console.log('FieldIssueSelection mounted:', {
+	// 	selectedAssignmentType: selectedAssignmentType.value,
+	// 	selectedIssueId: selectedIssueId.value,
+	// 	showIssueDropdown: showIssueDropdown.value,
+	// 	assignmentOptions: assignmentOptions.value,
+	// 	issueCount: props.issueCount
+	// });
+
+	// If we have an assignment type that requires issue selection and an existing issue ID,
+	// fetch the issues so the dropdown is populated and the correct issue is pre-selected
+	if (
+		selectedAssignmentType.value &&
+		selectedIssueId.value &&
+		showIssueDropdown.value
+	) {
+		await fetchIssues();
 	}
+
+	// TODO : remove this once the emit issue for hidden field is fixed
+	if (props.isPhpForm) {
+		$('input[name="prePublishStatus"]').hide();
+	}
+
+	emitValue();
 });
 </script>

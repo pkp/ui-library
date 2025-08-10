@@ -110,14 +110,14 @@ export function useWorkflowVersionForm(
 			// STATUS_READY_TO_PUBLISH
 			if (issueCount === 0) {
 				requestBody.issueId = null;
-				requestBody.status = pkp.const.STATUS_READY_TO_PUBLISH;
+				requestBody.prePublishStatus = pkp.const.STATUS_READY_TO_PUBLISH;
 			}
 			// Add issue assignment data if in publish mode and issue assignment is provided
 			else if (modeState.isPublishMode && formData.issueAssignment) {
 				const issueData = formData.issueAssignment;
 
 				requestBody.issueId = issueData.issueId;
-				requestBody.status = issueData.publicationStatus;
+				requestBody.prePublishStatus = issueData.publicationStatus;
 			}
 		}
 
@@ -311,12 +311,7 @@ export function useWorkflowVersionForm(
 			addField('issueAssignment', {
 				component: 'FieldIssueSelection',
 				issueCount: issueCount,
-				value: {
-					assignmentType: 4, // 4 = CURRENT_BACK_ISSUES_PUBLISHED
-					issueId: store.selectedPublication?.issueId,
-					publicationStatus: store.selectedPublication?.status,
-				},
-				isRequired: true, // Make it required when visible
+				publication: store.selectedPublication, // Always required for issueId and status
 			});
 		}
 

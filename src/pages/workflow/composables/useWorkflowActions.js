@@ -39,6 +39,7 @@ export function useWorkflowActions() {
 	}
 
 	/**
+	 * TODO: need this anymore ?
 	 * Legacy function to assign a publication to an issue.
 	 *
 	 * NOTE: This function is kept for backward compatibility.
@@ -151,12 +152,15 @@ export function useWorkflowActions() {
 		// STATUS_READY_TO_PUBLISH or STATUS_READY_TO_SCHEDULE,
 		// we need to assign the publication stage and status (for issue or issueless context)
 		const requirePublicationStage = isOJS()
-			? !selectedPublication.versionStage &&
+			? !selectedPublication.versionStage ||
 				![
 					pkp.const.STATUS_READY_TO_PUBLISH,
 					pkp.const.STATUS_READY_TO_SCHEDULE,
 				].includes(selectedPublication.status)
 			: !selectedPublication.versionStage;
+
+		// TODO: remove this after testing
+		console.log(requirePublicationStage);
 
 		if (requirePublicationStage) {
 			return workflowAssignPublicationStage(
