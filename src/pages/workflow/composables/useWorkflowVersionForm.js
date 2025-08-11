@@ -251,11 +251,21 @@ export function useWorkflowVersionForm(
 		showErrorFooter: false,
 		spacingVariant: 'fullWidth',
 	});
+
 	addPage('default', {
 		submitButton: {label: t('common.confirm')},
 		cancelButton: {label: t('common.cancel')},
 	});
-	addGroup('default');
+
+	addGroup(
+		'default',
+		// FIXME: adding group breaking the page layout
+		// {
+		// 	pageId: 'default',
+		// 	label: t('publication.scheduledForPublication.versionStage.label'),
+		// 	description: t('publication.scheduledForPublication.versionStage.description'),
+		// }
+	);
 
 	onMounted(() => {
 		latestPublication = getLatestPublication(store.submission);
@@ -267,6 +277,7 @@ export function useWorkflowVersionForm(
 				label: t('publication.sendToTextEditor.label'),
 				options: buildPublicationOptions({withCreateOption: true}),
 				size: 'large',
+				// groupId: 'default', // FIXME: adding group breaking the page layout
 				isRequired: modeState.isTextEditorMode,
 				showWhen: !modeState.isTextEditorMode ? [] : undefined,
 			});
@@ -278,6 +289,7 @@ export function useWorkflowVersionForm(
 			description: t('publication.versionSource.create.description'),
 			options: buildPublicationOptions(),
 			size: 'large',
+			// groupId: 'default', // FIXME: adding group breaking the page layout
 			showWhen: !modeState.isCreateMode
 				? ['sendToVersion', 'create']
 				: undefined,
@@ -290,6 +302,8 @@ export function useWorkflowVersionForm(
 			description: t('publication.versionStage.description'),
 			options: store.versionStageOptions,
 			size: 'large',
+			value: store.selectedPublication?.versionStage || null,
+			// groupId: 'default', // FIXME: adding group breaking the page layout
 			isRequired: modeState.isPublishMode,
 			showWhen: modeState.isTextEditorMode
 				? ['sendToVersion', getUnassignedVersions()]
@@ -306,12 +320,15 @@ export function useWorkflowVersionForm(
 			}),
 		);
 
-		// Issue assignment fields (only visible in publish mode)
+		// Issue assignment fields only visible when
+		// for OJS
+		// it's in publish mode
+		// have issues
 		if (modeState.isPublishMode && issueCount > 0 && isOJS()) {
 			addField('issueAssignment', {
 				component: 'FieldIssueSelection',
 				issueCount: issueCount,
-				publication: store.selectedPublication, // Always required for issueId and status
+				publication: store.selectedPublication,
 			});
 		}
 

@@ -3,63 +3,63 @@
 		:id="`${props.formId}-${props.name}`"
 		class="pkpFormField pkpFormField--issueSelection"
 	>
-		<div class="pkpFormField__heading">
-			<FormFieldLabel
-				:control-id="useId()"
-				:label="t('publication.assignToIssue.label')"
-				:is-required="isRequired"
-				:required-label="t('common.required')"
-				class="align-middle"
-			/>
-		</div>
-		<div
-			v-strip-unsafe-html="t('publication.assignToIssue.description')"
-			class="pkpFormField__description semantic-defaults"
-		/>
-		<div class="pkpFormField__control">
-			<FieldOptions
-				:name="props.name + '_assignment'"
-				:label="t('publication.assignToIssue.description')"
-				:is-required="false"
-				:value="finalAssignmentType"
-				:options="assignmentOptions"
-				type="radio"
-				:all-errors="{}"
-				:is-loading="isLoadingAssignmentOptions"
-				@change="onAssignmentChange"
-			/>
-
-			<div v-if="showIssueDropdown" class="pkpFormField__issueDropdown">
-				<FieldSelect
-					:name="props.name"
-					:label="t('issue.issue')"
-					:is-required="isRequired"
-					:value="selectedIssueId"
-					:options="availableIssues"
-					:all-errors="{}"
-					size="large"
-					@change="onIssueChange"
+		<fieldset class="pkpFormGroup pkpFormGroup--issueSelection">
+			<div class="pkpFormGroup__heading">
+				<FormGroupHeader
+					:label="
+						t('publication.assignToIssue.label') + (isRequired ? ' *' : '')
+					"
+					:description="
+						t('publication.assignToIssue.assignmentTypeDescription')
+					"
 				/>
 			</div>
+			<div class="pkpFormGroup__fields">
+				<FieldOptions
+					:name="props.name + '_assignment'"
+					:label="t('publication.assignToIssue.assignmentType')"
+					:is-required="false"
+					:value="finalAssignmentType"
+					:options="assignmentOptions"
+					type="radio"
+					:all-errors="{}"
+					:is-loading="isLoadingAssignmentOptions"
+					@change="onAssignmentChange"
+				/>
 
-			<FieldError
-				v-if="(errors && errors.length) || validationErrors.length"
-				:id="describedByErrorId"
-				:messages="errors && errors.length ? errors : validationErrors"
-			/>
-		</div>
+				<div v-if="showIssueDropdown" class="pkpFormField__issueDropdown">
+					<FieldSelect
+						:name="props.name"
+						:label="t('issue.issue')"
+						:description="t('publication.assignToIssue.issueDescription')"
+						:is-required="isRequired"
+						:value="selectedIssueId"
+						:options="availableIssues"
+						:all-errors="{}"
+						size="large"
+						@change="onIssueChange"
+					/>
+				</div>
+
+				<FieldError
+					v-if="(errors && errors.length) || validationErrors.length"
+					:id="describedByErrorId"
+					:messages="errors && errors.length ? errors : validationErrors"
+				/>
+			</div>
+		</fieldset>
 	</div>
 </template>
 
 <script setup>
-import {ref, computed, watch, onMounted, useId} from 'vue';
+import {ref, computed, watch, onMounted} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
-import FormFieldLabel from '@/components/Form/FormFieldLabel.vue';
 import FieldError from '@/components/Form/FieldError.vue';
 import FieldOptions from '@/components/Form/fields/FieldOptions.vue';
 import FieldSelect from '@/components/Form/fields/FieldSelect.vue';
+import FormGroupHeader from '@/components/Form/FormGroupHeader.vue';
 
 const props = defineProps({
 	name: {
@@ -73,10 +73,6 @@ const props = defineProps({
 	errors: {
 		type: Array,
 		default: () => [],
-	},
-	allErrors: {
-		type: Object,
-		default: () => ({}),
 	},
 	assignmentType: {
 		type: Number,
@@ -103,11 +99,9 @@ const props = defineProps({
 const emit = defineEmits(['change', 'set-errors', 'set']);
 const {t} = useLocalize();
 
-// Local state - track user selections
 const availableIssues = ref([]);
 const isLoadingIssues = ref(false);
 
-// User selections - these are what the user has actually chosen
 const selectedIssueId = ref(props.publication?.issueId || null);
 const selectedAssignmentType = ref(props.assignmentType || null);
 
@@ -155,7 +149,8 @@ const fetchAssignmentOptions = async () => {
 };
 
 const fetchAssignmentType = async () => {
-	// Skip if there is a preset assignment type
+	// we will not fetch if the assignment type is give for the publication
+	// for example, it's can be given from the PHP form
 	if (props.assignmentType !== null) {
 		return;
 	}
@@ -178,7 +173,7 @@ const fetchAssignmentType = async () => {
 };
 
 const showIssueDropdown = computed(() => {
-	// Don't show dropdown if no assignment options are loaded yet
+	// no dropdown if no assignment options available
 	if (assignmentOptions.value.length === 0) {
 		return false;
 	}
@@ -198,9 +193,9 @@ const shouldFetchPublishedIssues = computed(() => {
 
 const isValid = computed(() => {
 	const option = assignmentOptions.value.find(
-		(opt) => opt.value === selectedAssignmentType.value, // Use user's selection
+		(opt) => opt.value === selectedAssignmentType.value,
 	);
-	return option?.isPublished === null || selectedIssueId.value; // Use user's issue selection
+	return option?.isPublished === null || selectedIssueId.value;
 });
 
 const publicationStatus = computed(() => {
@@ -218,6 +213,7 @@ const validationErrors = computed(() => {
 });
 
 // Emit validation errors to the form system
+// FIXME : NOT propagating to top level from component
 watch(
 	validationErrors,
 	(errors) => {
@@ -231,7 +227,7 @@ watch(
 );
 
 const describedByErrorId = computed(() => {
-	return `${useId()}-error`;
+	return `${props.formId || 'form'}-${props.name}-error`;
 });
 
 const onAssignmentChange = (fieldName, propName, newValue) => {
@@ -344,22 +340,15 @@ watch(selectedIssueId, () => {
 });
 
 onMounted(async () => {
-	// Initialize user selections with props or publication values
 	selectedAssignmentType.value = props.assignmentType || null;
-	selectedIssueId.value = props.publication?.issueId || null;
 
 	await Promise.all([fetchAssignmentOptions(), fetchAssignmentType()]);
 
-	// Debug: Log the state after fetching
-	// console.log('FieldIssueSelection mounted:', {
-	// 	selectedAssignmentType: selectedAssignmentType.value,
-	// 	selectedIssueId: selectedIssueId.value,
-	// 	showIssueDropdown: showIssueDropdown.value,
-	// 	assignmentOptions: assignmentOptions.value,
-	// 	issueCount: props.issueCount
-	// });
+	// Need to set the selected issue id after the fetch of assignment type as
+	// the watcher of selected assignment type does update the `selectedIssueId`
+	selectedIssueId.value = props.publication?.issueId || null;
 
-	// If we have an assignment type that requires issue selection and an existing issue ID,
+	// already pre-existed assignment type that requires issue selection and an existing issue ID,
 	// fetch the issues so the dropdown is populated and the correct issue is pre-selected
 	if (
 		selectedAssignmentType.value &&
@@ -369,7 +358,7 @@ onMounted(async () => {
 		await fetchIssues();
 	}
 
-	// TODO : remove this once the emit issue for hidden field is fixed
+	// FIXME : remove this once the emit issue for hidden field is fixed
 	if (props.isPhpForm) {
 		$('input[name="prePublishStatus"]').hide();
 	}
@@ -377,3 +366,35 @@ onMounted(async () => {
 	emitValue();
 });
 </script>
+
+<style lang="less" scoped>
+.pkpFormGroup--issueSelection {
+	border: 1px solid #ddd;
+	border-radius: 2px;
+
+	.pkpFormGroup__heading {
+		border-bottom: 1px solid #ddd;
+		margin: -2rem 0rem 2rem 0rem;
+		padding: 1.5rem 0rem 2rem 0rem;
+		border-radius: 4px 4px 0 0;
+		float: none;
+		width: 100%;
+		padding-inline-end: 2rem;
+	}
+
+	.pkpFormGroup__fields {
+		float: none;
+		width: 100%;
+		padding-inline-start: 0;
+
+		> * + * {
+			margin-top: 1.5rem;
+		}
+	}
+
+	.pkpFormField__issueDropdown {
+		padding-top: 1rem;
+		margin-top: 1.5rem;
+	}
+}
+</style>

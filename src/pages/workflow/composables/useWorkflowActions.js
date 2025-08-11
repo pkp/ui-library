@@ -51,28 +51,28 @@ export function useWorkflowActions() {
 	 * @param {Object} params.selectedPublication - The selected publication
 	 * @param {Function} finishedCallback - Callback function to execute when finished
 	 */
-	function workflowAssignToIssue(
-		{submission, selectedPublication},
-		finishedCallback,
-	) {
-		console.log('Legacy workflowAssignToIssue called');
-		const {openLegacyModal} = useLegacyGridUrl({
-			component: 'modals.publish.AssignToIssueHandler',
-			op: 'assign',
-			params: {
-				submissionId: submission.id,
-				publicationId: selectedPublication.id,
-			},
-		});
+	// function workflowAssignToIssue(
+	// 	{submission, selectedPublication},
+	// 	finishedCallback,
+	// ) {
+	// 	console.log('Legacy workflowAssignToIssue called');
+	// 	const {openLegacyModal} = useLegacyGridUrl({
+	// 		component: 'modals.publish.AssignToIssueHandler',
+	// 		op: 'assign',
+	// 		params: {
+	// 			submissionId: submission.id,
+	// 			publicationId: selectedPublication.id,
+	// 		},
+	// 	});
 
-		openLegacyModal(
-			{
-				title: t('publication.selectIssue'),
-				closeOnFormSuccessId: pkp.const.FORM_ASSIGN_TO_ISSUE,
-			},
-			finishedCallback,
-		);
-	}
+	// 	openLegacyModal(
+	// 		{
+	// 			title: t('publication.selectIssue'),
+	// 			closeOnFormSuccessId: pkp.const.FORM_ASSIGN_TO_ISSUE,
+	// 		},
+	// 		finishedCallback,
+	// 	);
+	// }
 
 	function workflowViewActivityLog({submission}, finishedCallback) {
 		const {openLegacyModal} = useLegacyGridUrl({
@@ -158,9 +158,6 @@ export function useWorkflowActions() {
 					pkp.const.STATUS_READY_TO_SCHEDULE,
 				].includes(selectedPublication.status)
 			: !selectedPublication.versionStage;
-
-		// TODO: remove this after testing
-		console.log(requirePublicationStage);
 
 		if (requirePublicationStage) {
 			return workflowAssignPublicationStage(
@@ -416,7 +413,7 @@ export function useWorkflowActions() {
 
 	return {
 		workflowViewPublishedSubmission,
-		workflowAssignToIssue,
+		// workflowAssignToIssue,
 		workflowViewActivityLog,
 		workflowViewLibrary,
 		workflowAssignToIssueAndScheduleForPublication,
