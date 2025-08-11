@@ -336,7 +336,14 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 
 	function initEmptyForm(
 		formId,
-		{action, method, locales, showErrorFooter, spacingVariant} = {},
+		{
+			action,
+			method,
+			locales,
+			showErrorFooter,
+			spacingVariant,
+			showFieldsOnDisplay,
+		} = {},
 	) {
 		if (!form.value) {
 			form.value = {};
@@ -349,6 +356,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		form.value.locales = locales;
 		form.value.showErrorFooter = showErrorFooter;
 		form.value.spacingVariant = spacingVariant || 'default';
+		form.value.showFieldsOnDisplay = showFieldsOnDisplay || false;
 		setMethod(method || 'POST');
 		setAction(action || 'emit');
 		setLocales(locales);
