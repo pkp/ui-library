@@ -22,8 +22,9 @@
 				v-if="inDisplayModeRef"
 				v-bind="form"
 				field-heading-element="h2"
+				@cancel="onCloseFn"
 			/>
-			<PkpForm v-else v-bind="form" @cancel="onClose" @set="set" />
+			<PkpForm v-else v-bind="form" @cancel="onCloseFn" @set="set" />
 		</SideModalLayoutBasic>
 	</SideModalBody>
 </template>
@@ -76,14 +77,6 @@ const hasContent = computed(() => !!props.workItem?.id);
 function editForm() {
 	inDisplayModeRef.value = false;
 }
-
-const onClose = function () {
-	if (props.inDisplayMode) {
-		inDisplayModeRef.value = true;
-	} else {
-		props.onCloseFn();
-	}
-};
 
 const {form, set, badgeProps} = useDiscussionManagerForm(
 	props,
