@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<component :is="showFieldsOnDisplay ? 'form' : 'div'">
 		<template v-for="group in groups" :key="group.id">
 			<div
 				v-if="!group.hideOnDisplay"
@@ -71,19 +71,61 @@
 				</div>
 			</div>
 		</template>
-	</div>
+		<ButtonRow
+			v-if="hasFooter && showFieldsOnDisplay"
+			ref="footer"
+			class="pkpFormPage__footer"
+			:class="footerSpacingStyle"
+			aria-live="polite"
+		>
+			<span role="status" aria-live="polite" aria-atomic="true">
+				<transition name="pkpFormPage__status">
+					<span v-if="isSaving" class="pkpFormPage__status">
+						<Spinner />
+						{{ t('common.saving') }}
+					</span>
+					<span v-else-if="hasRecentSave" class="pkpFormPage__status">
+						<Icon icon="Complete" class="h-5 w-5 text-success" :inline="true" />
+						{{ t('form.saved') }}
+					</span>
+				</transition>
+			</span>
+			<PkpButton
+				v-if="cancelButton"
+				v-bind="cancelButton"
+				:is-warnable="true"
+				@click="cancel"
+			>
+				{{ cancelButton.label || t('common.cancel') }}
+			</PkpButton>
+			<PkpButton
+				v-if="submitButton"
+				v-bind="submitButton"
+				:disabled="isSaving || !canSubmit"
+				@click="submit"
+			>
+				{{ submitButton.label }}
+			</PkpButton>
+		</ButtonRow>
+	</component>
 </template>
 
 <script setup>
 import {computed, useId} from 'vue';
 import {shouldShowFieldWithinGroup} from '@/components/Form/formHelpers';
 
+import PkpButton from '@/components/Button/Button.vue';
+import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
+import Icon from '@/components/Icon/Icon.vue';
 import FormGroupHeader from '@/components/Form/FormGroupHeader.vue';
 import FieldTextDisplay from './FieldTextDisplay.vue';
 import FieldSelectDisplay from './FieldSelectDisplay.vue';
 import FieldOptionsDisplay from './FieldOptionsDisplay.vue';
 
 const uniqueId = useId();
+
+const emit = defineEmits(['cancel', 'success']);
 
 const FieldComponents = {
 	'field-text': FieldTextDisplay,
@@ -97,6 +139,12 @@ const props = defineProps({
 	supportedFormLocales: {type: Array, required: true, default: () => []},
 	localeHeadingElement: {required: false, default: 'h3', type: String},
 	fieldHeadingElement: {required: false, default: 'h4', type: String},
+	showFieldsOnDisplay: {type: Boolean, default: false},
+	spacingVariant: {type: String, default: ''},
+	pages: {type: Array, default: () => []},
+	canSubmit: {type: Boolean, default: true},
+	customSubmit: {type: Function, default: () => null},
+	action: {type: String, default: ''},
 });
 
 const availableLocales = computed(() => {
@@ -133,5 +181,44 @@ function shouldDisplayField(field) {
 
 function getGroupId(group) {
 	return `${group.id}_${uniqueId}`;
+}
+
+const defaultPage = computed(() => {
+	return props.pages?.find((page) => page.id === 'default') || {};
+});
+
+const cancelButton = computed(() => {
+	return defaultPage.value.cancelButton;
+});
+
+const submitButton = computed(() => {
+	return defaultPage.value.submitButton;
+});
+
+const hasFooter = computed(() => {
+	return cancelButton.value || submitButton.value;
+});
+
+const footerSpacingStyle = computed(() => {
+	if (props.spacingVariant === 'fullWidth') {
+		return '!px-0 !py-12';
+	}
+	return '';
+});
+
+function cancel() {
+	emit('cancel');
+}
+
+function submit() {
+	if (props.customSubmit) {
+		return props.customSubmit();
+	}
+
+	if (props.action === 'emit') {
+		emit('success');
+	}
+
+	// TODO: Ajax call
 }
 </script>
