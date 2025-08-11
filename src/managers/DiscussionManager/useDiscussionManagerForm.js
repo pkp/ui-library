@@ -226,6 +226,7 @@ export function useDiscussionManagerForm({
 
 	initEmptyForm('discussion', {
 		showErrorFooter: false,
+		showFieldsOnDisplay: true,
 	});
 
 	addPage('default', {
