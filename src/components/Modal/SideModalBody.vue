@@ -82,7 +82,8 @@
 </template>
 
 <script setup>
-import {inject, computed, defineAsyncComponent, useId} from 'vue';
+import {inject, computed, useId} from 'vue';
+import TopNavActions from '@/components/TopNavActions/TopNavActions.vue';
 import {
 	DialogContent,
 	DialogTitle,
@@ -93,12 +94,6 @@ import Icon from '@/components/Icon/Icon.vue';
 import {focusFirstHeading} from './modalHelpers';
 
 const containerId = useId();
-
-// Use the async component to avoid loading the TopNavActions component when not needed
-// This resolves the issue with Storybook not being able to load the component
-const TopNavActions = defineAsyncComponent(
-	() => import('@/components/TopNavActions/TopNavActions.vue'),
-);
 
 import {useLocalize} from '@/composables/useLocalize';
 
