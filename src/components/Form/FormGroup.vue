@@ -1,5 +1,11 @@
 <template>
-	<div class="pkpFormGroup -pkpClearfix" :class="spacingStyle">
+	<div
+		class="pkpFormGroup -pkpClearfix"
+		:class="spacingStyle"
+		:role="label && 'group'"
+		:aria-labelledby="label && `${groupId}_label`"
+		:aria-describedby="description && `${groupId}_description`"
+	>
 		<div v-if="label || groupComponent" class="pkpFormGroup__heading">
 			<template v-if="groupComponent">
 				<component
@@ -15,11 +21,7 @@
 				:description="description"
 			/>
 		</div>
-		<div
-			:role="groupLabelledBy && 'group'"
-			class="pkpFormGroup__fields"
-			:aria-labelledby="groupLabelledBy"
-		>
+		<div class="pkpFormGroup__fields">
 			<template v-for="field in fieldsInGroup">
 				<template v-if="field.isMultilingual">
 					<div :key="field.name" class="pkpFormGroup__localeGroup -pkpClearfix">
@@ -186,18 +188,6 @@ export default {
 
 		groupId() {
 			return useId();
-		},
-
-		/** Get the IDs for aria-labelledby, or undefined if none */
-		groupLabelledBy() {
-			return (
-				[
-					this.label && `${this.groupId}_label`,
-					this.description && `${this.groupId}_description`,
-				]
-					.filter(Boolean)
-					.join(' ') || undefined
-			);
 		},
 	},
 	methods: {

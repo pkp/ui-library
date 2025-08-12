@@ -1,9 +1,14 @@
 <template>
 	<div>
-		<div v-for="group in groups" :key="group.id">
+		<template v-for="group in groups" :key="group.id">
 			<div
 				v-if="!group.hideOnDisplay"
 				class="flex border-b border-light border-opacity-50 p-8"
+				:role="group.label && 'group'"
+				:aria-labelledby="group.label && `${getGroupId(group)}_label`"
+				:aria-describedby="
+					group.description && `${getGroupId(group)}_description`
+				"
 			>
 				<div v-if="shouldDisplayGroupHeader" class="w-[30%] pe-6">
 					<FormGroupHeader
@@ -15,8 +20,6 @@
 				<div
 					class="flex flex-col gap-y-6"
 					:class="shouldDisplayGroupHeader ? 'w-[70%] ps-6' : ''"
-					:role="shouldDisplayGroupHeader && 'group'"
-					:aria-labelledby="getGroupLabelledBy(group)"
 				>
 					<div v-if="hasMultilingualFields" class="flex flex-col gap-y-6">
 						<div v-for="locale in availableLocales" :key="locale.key">
@@ -67,7 +70,7 @@
 					</template>
 				</div>
 			</div>
-		</div>
+		</template>
 	</div>
 </template>
 
@@ -135,17 +138,5 @@ function shouldDisplayField(field) {
 
 function getGroupId(group) {
 	return `${group.id}_${uniqueId}`;
-}
-
-// Get the IDs for aria-labelledby, or undefined if none
-function getGroupLabelledBy(group) {
-	return (
-		[
-			group.label && `${getGroupId(group)}_label`,
-			group.description && `${getGroupId(group)}_description`,
-		]
-			.filter(Boolean)
-			.join(' ') || undefined
-	);
 }
 </script>
