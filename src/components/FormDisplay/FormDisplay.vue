@@ -10,7 +10,7 @@
 					group.description && `${getGroupId(group)}_description`
 				"
 			>
-				<div v-if="shouldDisplayGroupHeader" class="w-[30%] pe-6">
+				<div v-if="group.label || group.groupComponent" class="w-[30%] pe-6">
 					<FormGroupHeader
 						:group-id="getGroupId(group)"
 						:label="group.label"
@@ -19,7 +19,7 @@
 				</div>
 				<div
 					class="flex flex-col gap-y-6"
-					:class="shouldDisplayGroupHeader ? 'w-[70%] ps-6' : ''"
+					:class="group.label || group.groupComponent ? 'w-[70%] ps-6' : ''"
 				>
 					<div v-if="hasMultilingualFields" class="flex flex-col gap-y-6">
 						<div v-for="locale in availableLocales" :key="locale.key">
@@ -105,11 +105,6 @@ const availableLocales = computed(() => {
 
 const hasMultilingualFields = computed(() => {
 	return !!props.fields.find((field) => field.isMultilingual);
-});
-
-// if the group header should be displayed
-const shouldDisplayGroupHeader = computed(() => {
-	return props.groups.length > 1 && props.groups[0]?.label;
 });
 
 // get all the fields for each groups
