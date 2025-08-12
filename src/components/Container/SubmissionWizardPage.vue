@@ -14,7 +14,7 @@ import localizeSubmission from '@/mixins/localizeSubmission';
 import localStorage from '@/mixins/localStorage';
 import {useDate} from '@/composables/useDate';
 import {useModal} from '@/composables/useModal';
-
+import {useForm} from '@/composables/useForm';
 export default {
 	components: {
 		ButtonRow,
@@ -186,6 +186,13 @@ export default {
 		},
 	},
 	watch: {
+		'components.submissionFiles.items'(newSubmissionFiles, oldSubmissionFiles) {
+			const newGrobidded = !!newSubmissionFiles.find((file) => file.grobidded);
+			const oldGrobidded = !!oldSubmissionFiles.find((file) => file.grobidded);
+			if (newGrobidded && !oldGrobidded) {
+				this.reloadPublication();
+			}
+		},
 		/**
 		 * Update when the step changes
 		 */
@@ -467,6 +474,34 @@ export default {
 			if (previousIndex >= 0) {
 				this.openStep(this.steps[previousIndex].id);
 			}
+		},
+
+		/**
+		 * Refetch publication (useful for grobid metadata extraction)
+		 */
+		reloadPublication() {
+			console.log('reloading publication');
+			$.ajax({
+				url: this.publicationApiUrl,
+				method: 'GET',
+				context: this,
+				error: this.ajaxErrorCallback,
+				success(r) {
+					console.log('success:', r);
+					this.setPublication(r);
+					// update Details form
+					const detailsStep = this.steps.find((step) => step.id === 'details');
+					if (detailsStep) {
+						const detailsSection = detailsStep.sections.find(
+							(section) => section.id === 'titleAbstract',
+						);
+						if (detailsSection) {
+							const {setValues} = useForm(detailsSection.form);
+							setValues(r);
+						}
+					}
+				},
+			});
 		},
 
 		/**
