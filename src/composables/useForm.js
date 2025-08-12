@@ -198,6 +198,10 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		}
 	}
 
+	function setHiddenValue(name, value) {
+		form.value.hiddenFields[name] = value;
+	}
+
 	/**
 	 * Clear a specific form field
 	 * @param {string} fieldName - The name of the field to clear
@@ -535,6 +539,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		set,
 		setValue,
 		setValues,
+		setHiddenValue,
 		getValue,
 		removeFieldValue,
 		isFieldValueArray,

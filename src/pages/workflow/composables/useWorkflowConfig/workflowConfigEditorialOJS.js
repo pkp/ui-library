@@ -996,9 +996,8 @@ export const PublicationConfig = {
 		}) => {
 			return [
 				{
-					component: 'WorkflowPublicationForm',
+					component: 'WorkflowPublicationFormIssue',
 					props: {
-						formName: 'issue',
 						submission,
 						publication: selectedPublication,
 						canEdit: permissions.canEditPublication,
