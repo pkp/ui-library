@@ -106,15 +106,14 @@ export function useWorkflowVersionForm(
 
 		if (isOJS()) {
 			// if the issue count is 0, e.g. issueless context,
-			// we can safely set the issueId and status to null and
-			// STATUS_READY_TO_PUBLISH
+			// we can safely set the issueId to null and status to STATUS_READY_TO_PUBLISH
 			if (issueCount === 0) {
 				requestBody.issueId = null;
 				requestBody.prePublishStatus = pkp.const.STATUS_READY_TO_PUBLISH;
 			}
 			// Add issue assignment data if in publish mode and issue assignment is provided
-			else if (modeState.isPublishMode && formData.issueAssignment) {
-				const issueData = formData.issueAssignment;
+			else if (modeState.isPublishMode && formData.issueId) {
+				const issueData = formData.issueId;
 
 				requestBody.issueId = issueData.issueId;
 				requestBody.prePublishStatus = issueData.publicationStatus;
@@ -325,7 +324,7 @@ export function useWorkflowVersionForm(
 		// it's in publish mode
 		// have issues
 		if (modeState.isPublishMode && issueCount > 0 && isOJS()) {
-			addField('issueAssignment', {
+			addField('issueId', {
 				component: 'FieldIssueSelection',
 				issueCount: issueCount,
 				publication: store.selectedPublication,

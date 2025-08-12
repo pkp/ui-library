@@ -350,11 +350,7 @@ onMounted(async () => {
 
 	// already pre-existed assignment type that requires issue selection and an existing issue ID,
 	// fetch the issues so the dropdown is populated and the correct issue is pre-selected
-	if (
-		selectedAssignmentType.value &&
-		selectedIssueId.value &&
-		showIssueDropdown.value
-	) {
+	if (selectedAssignmentType.value && showIssueDropdown.value) {
 		await fetchIssues();
 	}
 
