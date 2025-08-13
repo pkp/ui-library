@@ -385,6 +385,9 @@ window.pkp = {
 		'discussion.closeThisDiscussion': 'Close this Discussion',
 		'discussion.confirmCloseDiscussion':
 			'Are you sure you want to close this discussion?',
+		'discussion.reopenThisDiscussion': 'Reopen this Discussion',
+		'discussion.confirmReopenDiscussion':
+			'Are you sure you want to reopen this discussion?',
 		'discussion.description':
 			'Use this space to start discussions, assign tasks to others, or create your personal task list to help you move this submission to the next stage.',
 		'discussion.form.templatesLabel': 'Templates to get you started!',
@@ -906,6 +909,8 @@ window.pkp = {
 		'task.confirmCloseTask': 'Are you sure you want to close this task?',
 		'task.confirmStartTask': 'Are you sure you want to start this task?',
 		'task.completeThisTask': 'Complete this task',
+		'task.reopenThisTask': 'Reopen this task',
+		'task.confirmReopenTask': 'Are you sure you want to reopen this task?',
 		'user.affiliation': 'Affiliation',
 		'user.affiliations': 'Affiliations',
 		'user.affiliations.deleteModal.message':

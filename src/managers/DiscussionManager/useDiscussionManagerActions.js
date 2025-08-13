@@ -188,15 +188,32 @@ export function useDiscussionManagerActions() {
 		});
 	}
 
-	function discussionClose({workItem}) {
-		const title =
-			workItem?.type === 'Task'
-				? t('task.closeThisTask')
-				: t('discussion.closeThisDiscussion');
-		const message =
-			workItem?.type === 'Task'
-				? t('task.confirmCloseTask')
-				: t('discussion.confirmCloseDiscussion');
+	function discussionSetClosed({workItem}) {
+		const isClosed = workItem.closed;
+		const statusUpdate = isClosed ? 'reopen' : 'close';
+		const modalProps = {
+			reopen: {
+				title:
+					workItem?.type === 'Task'
+						? t('task.reopenThisTask')
+						: t('discussion.reopenThisDiscussion'),
+				message:
+					workItem?.type === 'Task'
+						? t('task.confirmReopenTask')
+						: t('discussion.confirmReopenDiscussion'),
+			},
+			close: {
+				title:
+					workItem?.type === 'Task'
+						? t('task.closeThisTask')
+						: t('discussion.closeThisDiscussion'),
+				message:
+					workItem?.type === 'Task'
+						? t('task.confirmCloseTask')
+						: t('discussion.confirmCloseDiscussion'),
+			},
+		};
+
 		const {openDialog} = useModal();
 		openDialog({
 			actions: [
@@ -214,8 +231,8 @@ export function useDiscussionManagerActions() {
 					},
 				},
 			],
-			title,
-			message,
+			title: modalProps[statusUpdate].title,
+			message: modalProps[statusUpdate].message,
 		});
 	}
 
@@ -228,6 +245,6 @@ export function useDiscussionManagerActions() {
 		discussionHistory,
 		discussionAddTaskDetails,
 		discussionStartTask,
-		discussionClose,
+		discussionSetClosed,
 	};
 }

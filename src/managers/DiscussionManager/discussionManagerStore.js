@@ -163,8 +163,8 @@ export const useDiscussionManagerStore = defineComponentStore(
 			);
 		}
 
-		function discussionClose({workItem}) {
-			discussionActions.discussionClose(
+		function discussionSetClosed({workItem}) {
+			discussionActions.discussionSetClosed(
 				{
 					submission: props.submission,
 					submissionStageId: props.submissionStageId,
@@ -195,7 +195,7 @@ export const useDiscussionManagerStore = defineComponentStore(
 			discussionAddTaskDetails,
 			discussionDelete,
 			discussionStartTask,
-			discussionClose,
+			discussionSetClosed,
 
 			/** Extender */
 			extender,
