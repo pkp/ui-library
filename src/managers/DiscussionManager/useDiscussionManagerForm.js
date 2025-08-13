@@ -310,7 +310,6 @@ export function useDiscussionManagerForm(
 				onUpdateStatusCheckbox,
 			},
 		},
-		hideOnDisplay: !isTask.value,
 	});
 
 	addFieldCheckbox('taskInfoAdd', {
