@@ -13,6 +13,8 @@ const CommonDefaults = {
 	dueDate: '2025-04-01',
 	type: 'Task',
 	started: false,
+	startedBy: 'Kaja Karina (kkarina)',
+	startDate: '2025-08-01',
 	closed: false,
 	discussionText: 'Lorem ipsum',
 	participants: [3, 4],
