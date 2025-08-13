@@ -1,5 +1,5 @@
 <template>
-	<component :is="showFieldsOnDisplay ? 'form' : 'div'">
+	<component :is="containsForm ? 'form' : 'div'">
 		<template v-for="group in groups" :key="group.id">
 			<div
 				class="flex border-b border-light border-opacity-50 p-8"
@@ -79,7 +79,7 @@
 			</div>
 		</template>
 		<ButtonRow
-			v-if="showFieldsOnDisplay"
+			v-if="containsForm"
 			ref="footer"
 			class="pkpFormPage__footer"
 			:class="footerSpacingStyle"
@@ -146,7 +146,7 @@ const props = defineProps({
 	supportedFormLocales: {type: Array, required: true, default: () => []},
 	localeHeadingElement: {required: false, default: 'h3', type: String},
 	fieldHeadingElement: {required: false, default: 'h4', type: String},
-	showFieldsOnDisplay: {type: Boolean, default: false},
+	containsForm: {type: Boolean, default: false},
 	spacingVariant: {type: String, default: ''},
 	pages: {type: Array, default: () => []},
 	canSubmit: {type: Boolean, default: true},
