@@ -22,6 +22,7 @@
 				v-if="inDisplayModeRef"
 				v-bind="form"
 				field-heading-element="h2"
+				:contains-form="true"
 				@cancel="onCloseFn"
 			/>
 			<PkpForm v-else v-bind="form" @cancel="onCloseFn" @set="set" />
