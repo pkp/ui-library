@@ -11,7 +11,15 @@
 				"
 			>
 				<div v-if="group.label || group.groupComponent" class="w-[30%] pe-6">
+					<template v-if="group.groupComponent">
+						<component
+							:is="group.groupComponent.component"
+							:group-id="getGroupId(group)"
+							v-bind="group.groupComponent.props"
+						></component>
+					</template>
 					<FormGroupHeader
+						v-else
 						:group-id="getGroupId(group)"
 						:label="group.label"
 						:description="group.description"
@@ -72,7 +80,7 @@
 			</div>
 		</template>
 		<ButtonRow
-			v-if="hasFooter && showFieldsOnDisplay"
+			v-if="showFieldsOnDisplay"
 			ref="footer"
 			class="pkpFormPage__footer"
 			:class="footerSpacingStyle"
@@ -193,10 +201,6 @@ const cancelButton = computed(() => {
 
 const submitButton = computed(() => {
 	return defaultPage.value.submitButton;
-});
-
-const hasFooter = computed(() => {
-	return cancelButton.value || submitButton.value;
 });
 
 const footerSpacingStyle = computed(() => {
