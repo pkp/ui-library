@@ -13,7 +13,7 @@
 				{{ badgeProps.slot }}
 			</Badge>
 		</template>
-		<template v-if="inDisplayModeRef" #actions>
+		<template v-if="allowEdit" #actions>
 			<PkpButton @click="editForm">{{ t('common.edit') }}</PkpButton>
 		</template>
 
@@ -33,6 +33,8 @@
 import {ref, computed} from 'vue';
 import {t} from '@/utils/i18n';
 import {useDiscussionManagerForm} from './useDiscussionManagerForm';
+import {useDiscussionManagerStore} from './discussionManagerStore';
+import {Actions as DiscussionManagerActions} from './useDiscussionManagerActions';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
 import Badge from '@/components/Badge/Badge.vue';
@@ -82,4 +84,17 @@ const {form, set, badgeProps} = useDiscussionManagerForm(
 	props,
 	inDisplayModeRef,
 );
+
+const discussionManagerStore = useDiscussionManagerStore();
+const permittedActions =
+	discussionManagerStore.discussionConfig?.permittedActions;
+
+const allowEdit = computed(() => {
+	return (
+		inDisplayModeRef.value &&
+		permittedActions?.includes(
+			DiscussionManagerActions.TASKS_AND_DISCUSSIONS_EDIT,
+		)
+	);
+});
 </script>
