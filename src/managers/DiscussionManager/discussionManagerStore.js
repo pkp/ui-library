@@ -134,10 +134,12 @@ export const useDiscussionManagerStore = defineComponentStore(
 			);
 		}
 
-		function discussionAddTaskDetails() {
+		function discussionAddTaskDetails({workItem}) {
 			discussionActions.discussionAddTaskDetails(
 				{
 					submission: props.submission,
+					submissionStageId: props.submissionStageId,
+					workItem,
 				},
 				triggerDataChangeCallback,
 			);

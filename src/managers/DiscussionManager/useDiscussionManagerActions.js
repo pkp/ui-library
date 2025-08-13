@@ -142,27 +142,14 @@ export function useDiscussionManagerActions() {
 		});
 	}
 
-	function discussionAddTaskDetails() {
-		const {openDialog} = useModal();
-		openDialog({
-			actions: [
-				{
-					label: t('common.ok'),
-					isWarnable: true,
-					callback: (close) => {
-						close();
-					},
-				},
-				{
-					label: t('common.cancel'),
-					callback: (close) => {
-						close();
-					},
-				},
-			],
-			title: 'Task Details',
-			message: 'Placeholder',
-		});
+	function discussionAddTaskDetails(
+		{workItem, submission, submissionStageId},
+		finishedCallback,
+	) {
+		return discussionEdit(
+			{workItem, submission, submissionStageId},
+			finishedCallback,
+		);
 	}
 
 	function discussionStartTask() {
