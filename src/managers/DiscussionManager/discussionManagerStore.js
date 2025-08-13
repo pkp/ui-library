@@ -180,6 +180,7 @@ export const useDiscussionManagerStore = defineComponentStore(
 			/**
 			 * Config
 			 * */
+			discussionConfig,
 			columns,
 			getItemActions,
 			topItems,
