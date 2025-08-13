@@ -165,6 +165,60 @@ export function useDiscussionManagerActions() {
 		});
 	}
 
+	function discussionStartTask() {
+		const {openDialog} = useModal();
+		openDialog({
+			actions: [
+				{
+					label: t('common.yes'),
+					callback: (close) => {
+						close();
+					},
+				},
+				{
+					label: t('common.no'),
+					isWarnable: true,
+					callback: (close) => {
+						close();
+					},
+				},
+			],
+			title: t('task.startThisTask'),
+			message: t('task.confirmStartTask'),
+		});
+	}
+
+	function discussionClose({workItem}) {
+		const title =
+			workItem?.type === 'Task'
+				? t('task.closeThisTask')
+				: t('discussion.closeThisDiscussion');
+		const message =
+			workItem?.type === 'Task'
+				? t('task.confirmCloseTask')
+				: t('discussion.confirmCloseDiscussion');
+		const {openDialog} = useModal();
+		openDialog({
+			actions: [
+				{
+					label: t('common.yes'),
+					callback: (close) => {
+						close();
+					},
+				},
+				{
+					label: t('common.no'),
+					isWarnable: true,
+					callback: (close) => {
+						close();
+					},
+				},
+			],
+			title,
+			message,
+		});
+	}
+
 	return {
 		discussionView,
 		discussionAdd,
@@ -173,5 +227,7 @@ export function useDiscussionManagerActions() {
 		discussionDelete,
 		discussionHistory,
 		discussionAddTaskDetails,
+		discussionStartTask,
+		discussionClose,
 	};
 }

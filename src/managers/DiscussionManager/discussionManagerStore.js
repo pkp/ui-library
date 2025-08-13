@@ -152,6 +152,28 @@ export const useDiscussionManagerStore = defineComponentStore(
 			);
 		}
 
+		function discussionStartTask({workItem}) {
+			discussionActions.discussionStartTask(
+				{
+					submission: props.submission,
+					submissionStageId: props.submissionStageId,
+					workItem,
+				},
+				triggerDataChangeCallback,
+			);
+		}
+
+		function discussionClose({workItem}) {
+			discussionActions.discussionClose(
+				{
+					submission: props.submission,
+					submissionStageId: props.submissionStageId,
+					workItem,
+				},
+				triggerDataChangeCallback,
+			);
+		}
+
 		return {
 			discussions,
 
@@ -171,6 +193,8 @@ export const useDiscussionManagerStore = defineComponentStore(
 			discussionHistory,
 			discussionAddTaskDetails,
 			discussionDelete,
+			discussionStartTask,
+			discussionClose,
 
 			/** Extender */
 			extender,
