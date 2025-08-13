@@ -2,7 +2,6 @@
 	<component :is="showFieldsOnDisplay ? 'form' : 'div'">
 		<template v-for="group in groups" :key="group.id">
 			<div
-				v-if="!group.hideOnDisplay"
 				class="flex border-b border-light border-opacity-50 p-8"
 				:role="group.label && 'group'"
 				:aria-labelledby="group.label && `${getGroupId(group)}_label`"
