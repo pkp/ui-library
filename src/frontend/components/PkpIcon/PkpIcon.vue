@@ -2,10 +2,15 @@
 import {computed} from 'vue';
 import Cancel from './icons/Cancel.vue';
 import MoreOptions from './icons/MoreOptions.vue';
-
+import Error from './icons/Error.vue';
+import Help from './icons/Help.vue';
+import User from './icons/User.vue';
 const svgIcons = {
 	Cancel,
 	MoreOptions,
+	Error,
+	Help,
+	User,
 };
 
 const props = defineProps({

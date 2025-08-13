@@ -19,7 +19,7 @@ import * as useApp from '@/composables/useApp.js';
 import * as useUrl from '@/composables/useUrl.js';
 import * as usePkpFetch from '@/frontend/composables/usePkpFetch.js';
 import * as usePkpModal from '@/frontend/composables/usePkpModal.js';
-
+import * as usePkpDate from '@/frontend/composables/usePkpDate.js';
 // Directives
 import {stripUnsafeHtml} from '@/directives/stripUnsafeHtml';
 
@@ -85,6 +85,7 @@ export default {
 		useUrl,
 		usePkpFetch,
 		usePkpModal,
+		usePkpDate,
 	},
 	pkpCreateVueApp,
 	createApp,
