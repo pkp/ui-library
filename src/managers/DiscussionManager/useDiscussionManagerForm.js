@@ -11,14 +11,17 @@ import DiscussionMessages from './DiscussionMessages.vue';
 import DiscussionManagerTemplates from './DiscussionManagerTemplates.vue';
 import DiscussionManagerTaskInfo from './DiscussionManagerTaskInfo.vue';
 
-export function useDiscussionManagerForm({
-	status = 'New',
-	submission,
-	submissionStageId,
-	workItem,
-	closeDialog = () => {},
-	onSubmitFn = null,
-} = {}) {
+export function useDiscussionManagerForm(
+	{
+		status = 'New',
+		submission,
+		submissionStageId,
+		workItem,
+		closeDialog = () => {},
+		onSubmitFn = null,
+	} = {},
+	inDisplayModeRef,
+) {
 	const workItemStatus = workItem?.status || status;
 	const {t, localize} = useLocalize();
 	const participantManagerStore = useParticipantManagerStore({
@@ -30,6 +33,7 @@ export function useDiscussionManagerForm({
 	const currentUser = useCurrentUser();
 	const {getRelativeTargetDate} = useDate();
 	const isTask = ref(workItem?.type === 'Task');
+	const statusUpdateValue = ref(false);
 
 	const {
 		form,
@@ -216,7 +220,44 @@ export function useDiscussionManagerForm({
 		});
 	}
 
+	function onUpdateStatusCheckbox(val) {
+		statusUpdateValue.value = val;
+	}
+
+	function addWorkItem() {
+		console.log('add form');
+	}
+
+	function addNewMessage() {
+		console.log('add new message');
+	}
+
+	function updateWorkItemStatus() {
+		if (statusUpdateValue.value) {
+			console.log('update task status');
+		}
+	}
+
+	function updateWorkItem() {
+		console.log('update form');
+	}
+
 	async function handleFormSubmission(formData) {
+		if (inDisplayModeRef.value) {
+			updateWorkItemStatus();
+		} else {
+			if (workItem) {
+				updateWorkItem();
+			} else {
+				addWorkItem();
+			}
+		}
+
+		if (workItem) {
+			// check if there is message
+			addNewMessage();
+		}
+
 		// return result to Form component handler
 		return {
 			data: {},
@@ -242,6 +283,7 @@ export function useDiscussionManagerForm({
 			props: {
 				templates: getTemplates(),
 				onSelectTemplate,
+				inDisplayModeRef,
 			},
 		},
 	});
@@ -262,6 +304,11 @@ export function useDiscussionManagerForm({
 		description: t('discussion.form.taskInfoDescription'),
 		groupComponent: {
 			component: DiscussionManagerTaskInfo,
+			props: {
+				workItem,
+				inDisplayModeRef,
+				onUpdateStatusCheckbox,
+			},
 		},
 		hideOnDisplay: !isTask.value,
 	});
@@ -285,25 +332,25 @@ export function useDiscussionManagerForm({
 
 	addAssigneesField({override: false});
 
-	if (['Pending', 'New'].includes(status)) {
-		addFieldSelect('taskInfoShouldStart', {
-			groupId: 'taskInformation',
-			name: 'taskInfoShouldStart',
-			showWhen: 'taskInfoAdd',
-			value: true,
-			hideOnDisplay: true,
-			options: [
-				{
-					label: t('discussion.form.startTaskUponSaving'),
-					value: true,
-				},
-				{
-					label: t('discussion.form.createDontStartTask'),
-					value: false,
-				},
-			],
-		});
-	}
+	// this select is only enabled when adding a new entry
+	addFieldSelect('taskInfoShouldStart', {
+		groupId: 'taskInformation',
+		name: 'taskInfoShouldStart',
+		showWhen: 'taskInfoAdd',
+		value: true,
+		hideOnDisplay: true,
+		disabled: !!workItem,
+		options: [
+			{
+				label: t('discussion.form.startTaskUponSaving'),
+				value: true,
+			},
+			{
+				label: t('discussion.form.createDontStartTask'),
+				value: false,
+			},
+		],
+	});
 
 	addGroup('discussion', {
 		label: t('submission.discussion'),
