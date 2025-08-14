@@ -1,14 +1,8 @@
 <template>
-	<component
-		v-bind="$attrs"
-		:is="element"
-		:class="buttonClass"
-		:href="element === 'a' ? href : false"
-		:disabled="element === 'a' && !isDisabled ? undefined : isDisabled"
-	>
+	<button :class="buttonClass" v-bind="$attrs">
 		<slot name="left-icon" />
 		<slot />
-	</component>
+	</button>
 </template>
 
 <script setup>
@@ -16,15 +10,6 @@ import {computed} from 'vue';
 
 const props = defineProps({
 	isSecondary: {
-		type: Boolean,
-		default: false,
-	},
-	/** Whether to use a `button` or `a` HTML tag. */
-	element: {
-		type: String,
-		default: 'button',
-	},
-	isDisabled: {
 		type: Boolean,
 		default: false,
 	},
