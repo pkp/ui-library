@@ -1,54 +1,60 @@
 <template>
 	<div>
-		<div v-if="!isLatestPublication" class="commentsList__commentNotAllowed">
-			<PkpIcon class="commentsList__errorIcon" icon="Error" />
+		<div
+			v-if="!isLatestPublication"
+			class="pkpUserCommentsList__commentNotAllowed"
+		>
+			<PkpIcon class="pkpUserCommentsList__errorIcon" icon="Error" />
 			<span>{{ t('userComment.discussionClosed') }}</span>
 		</div>
 
 		<div v-if="isLatestPublication && !!currentUser">
 			<PkpTextarea
-				placeholder="What do you think about this publication? Type your comments here."
+				:placeholder="t('userComment.addYourComment')"
+				:label="t('userComment.addYourComment')"
+				:is-label-sr-only="true"
 				:model-value="commentText"
 				@update:model-value="updateCommentText"
 			/>
 
 			<PkpButton
-				style="margin-top: 1.5rem"
+				class="pkpUserCommentsList__submitButton"
 				:is-secondary="true"
 				:disabled="!commentText.trim()"
-				@click="addComment"
+				@click="commentAdd"
 			>
 				{{ t('form.submit') }}
 			</PkpButton>
 		</div>
 		<template v-if="comments.length">
-			<ul class="commentsList__items">
+			<ul class="pkpUserCommentsList__items">
 				<li
 					v-for="comment in comments"
 					:key="comment.id"
-					class="commentsList__item"
+					class="pkpUserCommentsList__item"
 				>
-					<div class="commentsList__item--content">
+					<div class="pkpUserCommentsList__item--content">
 						<div
 							v-if="
 								currentUser &&
 								comment.userId === currentUser.id &&
 								!comment.isApproved
 							"
-							class="commentsList__item--approvalNotice"
+							class="pkpUserCommentsList__item--approvalNotice"
 						>
 							<PkpIcon
 								icon="Help"
-								class="commentsList__item--helpIcon"
+								class="pkpUserCommentsList__item--helpIcon"
 							></PkpIcon>
-							{{ t('userComment.approvalNotice') }}
+							{{ t('userComment.awaitingApprovalNotice') }}
 						</div>
 
-						<div class="commentsList__item--actions">
-							<p class="commentsList__item--timestamp">
+						<div class="pkpUserCommentsList__item--actions">
+							<p class="pkpUserCommentsList__item--timestamp">
 								{{ formatShortDateTime(comment.createdAt) }}
 							</p>
 							<PkpDropdownActions
+								v-if="!!currentUser"
 								:items="getCommentActions(comment)"
 								@select="
 									(actionName) => commentActionMethods[actionName](comment)
@@ -58,24 +64,37 @@
 
 						<div
 							v-strip-unsafe-html="comment.commentText.trim()"
-							class="commentsList__item--commentText"
+							class="pkpUserCommentsList__item--commentText"
 						></div>
 
-						<div class="commentsList__item--author">
-							<PkpAvatarInitials :initials="comment.userInitials" />
-							<div class="commentsList__item--authorInfo">
-								<span class="commentsList__item--authorName">
+						<div class="pkpUserCommentsList__item--author">
+							<div class="pkpUserCommentsList__item--authorInfo">
+								<span class="pkpUserCommentsList__item--authorName">
 									{{ comment.userName }}
 								</span>
-								<span
+
+								<a
 									v-if="comment.userOrcidDisplayValue"
-									class="commentsList__item--orcid"
+									:href="comment.userOrcidDisplayValue"
+									target="_blank"
+									class="pkpUserCommentsList__item--orcid"
 								>
-									{{ comment.userOrcidDisplayValue }}
-								</span>
+									<span class="pkpUserCommentsList__item--orcidContainer">
+										<PkpIcon
+											:icon="
+												comment.isUserOrcidAuthenticated
+													? 'Orcid'
+													: 'OrcidUnauthenticated'
+											"
+											class="pkpUserCommentsList__item--orcidIcon"
+											style="height: 1rem; width: 1rem"
+										/>
+										{{ comment.userOrcidDisplayValue }}
+									</span>
+								</a>
 								<span
 									v-if="comment.userAffiliation"
-									class="commentsList__item--affiliation"
+									class="pkpUserCommentsList__item--affiliation"
 								>
 									{{ comment.userAffiliation }}
 								</span>
@@ -85,8 +104,8 @@
 				</li>
 			</ul>
 
-			<div class="commentsList__showMore">
-				<PkpButton v-if="hasMoreComments" @click="fetchComments">
+			<div class="pkpUserCommentsList__showMore">
+				<PkpButton v-if="hasMoreComments" @click="() => loadComments()">
 					{{ t('userComment.showMore', {count: showMoreCommentsCount}) }}
 				</PkpButton>
 			</div>
@@ -96,75 +115,85 @@
 
 <script setup>
 import {computed, onMounted, ref} from 'vue';
-import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import PkpButton from '@/frontend/components/PkpButton/PkpButton.vue';
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 import PkpTextarea from '@/frontend/components/PkpTextarea/PkpTextarea.vue';
 import PkpDropdownActions from '@/frontend/components/PkpDropdownActions/PkpDropdownActions.vue';
 import PkpUserCommentReportModal from '@/frontend/components/PkpUserComment/PkpUserCommentReportModal.vue';
-import PkpAvatarInitials from '@/frontend/components/PkpAvatarInitials/pkpAvatarInitials.vue';
 import {usePkpModal} from '@/frontend/composables/usePkpModal';
 import {usePkpFetch} from '@/frontend/composables/usePkpFetch';
 import {useUrl} from '@/frontend/composables/usePkpUrl';
 import {usePkpDate} from '@/frontend/composables/usePkpDate';
-import {useLocalize} from '@/composables/useLocalize';
+import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
+import {useFetchPaginated} from '@/composables/useFetchPaginated';
 
-const {t} = useLocalize();
+const {t} = usePkpLocalize();
+const {openModal, closeModal} = usePkpModal();
 
-const {openModal, closeModal, openDialogNetworkError} = usePkpModal();
 const {formatShortDateTime} = usePkpDate();
 const currentUser = pkp.currentUser;
 
 const props = defineProps({
+	/** The ID of the publication version for which comments are being displayed */
 	publicationId: {
 		type: Number,
 		required: true,
 	},
+	/** Indicates if the publication is the latest version */
 	isLatestPublication: {
 		type: Boolean,
 		default: false,
 		required: true,
 	},
+	/** Number of comments to fetch per page */
 	itemsPerPage: {
 		type: Number,
 		required: true,
 	},
+	/** Total number of approved comments for this publication version*/
 	totalPublicationComments: {
 		type: Number,
 		required: true,
 		default: 0,
 	},
 });
+
 let comments = ref([]);
-
-const showMoreCommentsCount = ref(props.totalPublicationComments);
-
+const showMoreCommentsCount = ref(0);
 const currentPage = ref(0);
 const pageCount = ref(0);
-
-const hasMoreComments = computed(() => pageCount.value > currentPage.value);
 const commentText = ref('');
 
+const hasMoreComments = computed(() => pageCount.value > currentPage.value);
+
+/*
+ * Methods for handling comment actions
+ */
 const commentActionMethods = {
 	commentReport,
-	deleteComment,
+	commentDelete,
 };
 
-function deleteComment(comment) {
+/**
+ * Deletes a comment.
+ * @param comment - The comment to be deleted.
+ */
+function commentDelete(comment) {
 	if (!currentUser || currentUser.id !== comment.userId) {
 		throw new Error('Only the comment author can delete the comment');
 	}
 
-	const {openDialog} = usePkpModal();
+	const {openDialog, openDialogNetworkError} = usePkpModal();
+
 	openDialog({
-		title: 'Delete Comment',
-		message: t('userComment.deleteCommentConfirm', {
+		title: t('userComment.deleteComment'),
+		message: t('userComment.deleteCommentConfirmation', {
 			comment: comment.commentText,
 		}),
+		modalStyle: 'negative',
 		actions: [
 			{
 				label: t('common.delete'),
-				isWarnable: true,
 				callback: async (close) => {
 					const {apiUrl} = useUrl(`comments/${comment.id}`);
 					const {fetch: deleteComment, isSuccess} = usePkpFetch(apiUrl, {
@@ -172,6 +201,7 @@ function deleteComment(comment) {
 					});
 					await deleteComment();
 					if (isSuccess.value) {
+						// Remove the comment from the list
 						comments.value = comments.value.filter((c) => c.id !== comment.id);
 					} else {
 						openDialogNetworkError();
@@ -182,83 +212,100 @@ function deleteComment(comment) {
 			},
 			{
 				label: t('common.cancel'),
-				callback: (close) => {
-					close();
-				},
+				isSecondary: true,
+				callback: (close) => close(),
 			},
 		],
 	});
 }
 
-function canReportComment(comment) {
-	return currentUser && currentUser.id !== comment.userId && comment.isApproved;
-}
-
+/**
+ * Updates the comment text.
+ * @param value
+ */
 function updateCommentText(value) {
 	commentText.value = value;
 }
 
+/**
+ * Returns the actions available for a comment.
+ * @param comment
+ * @returns {Array<{label: string, name: string, disabled?: boolean}>} - An array of available actions */
 function getCommentActions(comment) {
 	const actions = [];
 
-	if (!currentUser || currentUser.id !== comment.userId) {
+	if (currentUser && currentUser.id !== comment.userId) {
 		actions.push({
-			label: 'Report',
+			label: t('userComment.report'),
 			name: 'commentReport',
-			disabled: !canReportComment(comment),
 		});
 	}
+
 	if (currentUser && currentUser.id === comment.userId) {
 		actions.push({
-			label: 'Delete',
-			name: 'deleteComment',
+			label: t('userComment.deleteComment'),
+			name: 'commentDelete',
 		});
 	}
+
 	return actions;
 }
 
+/**
+ * Reports a comment.
+ * @param comment - The comment to be reported.
+ */
 function commentReport(comment) {
 	openModal(PkpUserCommentReportModal, {
-		title: 'Report Comment',
+		title: t('userComment.reportComment'),
 		comment,
 		onSubmit: performCommentReport,
 		onCancel: () => closeModal(PkpUserCommentReportModal),
 	});
 }
 
-async function addComment() {
+/**
+ * Creates a new comment for the publication.
+ */
+async function commentAdd() {
 	if (!props.isLatestPublication || !currentUser || !commentText.value.trim()) {
 		return;
 	}
 
-	// The logic below will no longer be needed once PkpForm component is used
+	const {openDialogNetworkError} = usePkpModal();
 	const {apiUrl} = useUrl('comments');
-	const {
-		fetch: submitComment,
-		isSuccess,
-		data,
-	} = usePkpFetch(apiUrl, {
+
+	const {fetch: submitComment, isSuccess} = usePkpFetch(apiUrl, {
 		method: 'POST',
 		body: {
 			publicationId: props.publicationId,
 			commentText: commentText.value,
 		},
 	});
+
 	await submitComment();
+
 	if (isSuccess.value) {
-		onCommentSaved(data.value);
+		commentText.value = '';
+		await loadComments(true);
 	} else {
-		throw new Error('Error saving comment');
+		openDialogNetworkError();
 	}
 }
 
+/**
+ * Performs the comment report action.
+ * @param comment - The comment to be reported.
+ * @param reportText - The text of the report.
+ */
 async function performCommentReport(comment, reportText) {
-	const commentId = comment.id;
-	if (!currentUser) {
-		throw new Error('User must be logged in to report a comment');
+	if (!currentUser || !reportText.trim()) {
+		return;
 	}
 
+	const commentId = comment.id;
 	const {apiUrl} = useUrl(`comments/${commentId}/reports`);
+	const {openDialogNetworkError} = usePkpModal();
 
 	const {fetch: postReport, isSuccess} = usePkpFetch(apiUrl, {
 		method: 'POST',
@@ -266,6 +313,7 @@ async function performCommentReport(comment, reportText) {
 			note: reportText,
 		},
 	});
+
 	await postReport();
 
 	if (!isSuccess.value) {
@@ -280,63 +328,62 @@ async function performCommentReport(comment, reportText) {
 	closeModal(PkpUserCommentReportModal);
 }
 
-function onCommentSaved(data) {
-	commentText.value = '';
-
-	// Add the new comment to the top of the comments list.
-	comments.value.unshift(data);
-}
-
-async function fetchComments() {
+/**
+ * Loads more comments for publication.
+ * @param refresh - Whether to refresh the comments list or append to it. When true, this will refresh the list with the first page of comments.
+ */
+async function loadComments(refresh = false) {
 	const {apiUrl} = useUrl(
 		`comments/public?publicationIds=${props.publicationId}`,
 	);
 
-	currentPage.value += 1;
+	currentPage.value = refresh ? 1 : currentPage.value + 1;
 	const {items, pagination, fetch} = useFetchPaginated(apiUrl, {
 		currentPage,
 		pageSize: props.itemsPerPage,
 	});
 
 	await fetch();
-	comments.value = [...comments.value, ...items.value];
+
+	comments.value = refresh ? items.value : [...comments.value, ...items.value];
+
 	pageCount.value = pagination.value.pageCount;
+
 	showMoreCommentsCount.value =
-		showMoreCommentsCount.value - props.itemsPerPage;
+		props.totalPublicationComments -
+		comments.value.filter((c) => c.isApproved).length;
 }
 
-onMounted(() => fetchComments());
+onMounted(() => loadComments());
 </script>
 
 <style>
-.commentsList__item {
+.pkpUserCommentsList__item {
 	list-style-type: none;
 	margin-top: 2rem;
 }
 
-.commentsList__item--content {
+.pkpUserCommentsList__item--content {
 	background-color: var(--pkp-background-color-tertiary);
-	border-radius: var(--pkp-radius);
-
+	border-radius: 15px;
 	padding-bottom: 1rem;
 }
 
-.commentsList__item--commentText {
-	color: #222222;
+.pkpUserCommentsList__item--commentText {
+	color: var(--pkp-text-color-default);
 	font-size: 0.85rem;
 	padding-left: 2rem;
 	padding-right: 2rem;
 }
 
-.commentsList__item--timestamp {
+.pkpUserCommentsList__item--timestamp {
 	font-size: 0.75rem;
-	color: #7a7a7a;
+	color: var(--pkp-text-color-secondary);
 }
 
-.commentsList__item--author {
-	margin-top: 0.75rem;
+.pkpUserCommentsList__item--author {
+	margin-top: 1.75rem;
 	margin-bottom: 2rem;
-	color: #000;
 	display: flex;
 	align-items: center;
 	gap: 0.75rem;
@@ -344,31 +391,34 @@ onMounted(() => fetchComments());
 	padding-right: 2rem;
 }
 
-.commentsList__item--authorName {
-	font-weight: bold;
+.pkpUserCommentsList__item--authorName {
+	font-size: var(--pkp-text-base-bold);
+	font-weight: var(--pkp-text-base-bold--font-weight);
+	margin-bottom: 0.25rem;
 }
 
-.commentsList__item--authorInfo {
+.pkpUserCommentsList__item--authorInfo {
 	display: flex;
 	flex-direction: column;
+	line-height: 1.25rem;
 }
 
-.commentsList__item--orcid {
+.pkpUserCommentsList__item--orcid {
 	color: var(--pkp-text-color-secondary);
 }
 
-.commentsList__item--orcid,
-.commentsList__item--affiliation {
-	font-size: 0.65rem;
+.pkpUserCommentsList__item--orcid,
+.pkpUserCommentsList__item--affiliation {
+	font-size: var(--pkp-text-sm-light);
 }
 
-.commentsList__item--helpIcon,
-.commentsList__errorIcon {
+.pkpUserCommentsList__item--helpIcon,
+.pkpUserCommentsList__errorIcon {
 	width: 1.25rem;
 	height: 1.25rem;
 }
 
-.commentsList__item--approvalNotice {
+.pkpUserCommentsList__item--approvalNotice {
 	color: var(--pkp-color-primary);
 	display: flex;
 	gap: 0.5rem;
@@ -377,9 +427,10 @@ onMounted(() => fetchComments());
 	padding-left: 2rem;
 	padding-right: 2rem;
 	padding-top: 1rem;
+	font-size: var(--pkp-text-sm-light);
 }
 
-.commentsList__commentNotAllowed {
+.pkpUserCommentsList__commentNotAllowed {
 	background-color: #f9e1e173;
 	padding: 1.5rem;
 	border-radius: 0.65rem;
@@ -388,19 +439,29 @@ onMounted(() => fetchComments());
 	align-items: center;
 }
 
-.commentsList__items {
+.pkpUserCommentsList__items {
 	padding: 0;
 	margin: 0;
 }
 
-.commentsList__item--actions {
+.pkpUserCommentsList__item--actions {
 	display: flex;
 	justify-content: space-between;
 	padding-left: 2rem;
 	padding-right: 2rem;
 }
 
-.commentsList__showMore {
+.pkpUserCommentsList__showMore {
 	margin-top: 2rem;
+}
+
+.pkpUserCommentsList__submitButton {
+	margin-top: 1.5rem;
+}
+
+.pkpUserCommentsList__item--orcidContainer {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.1rem;
 }
 </style>

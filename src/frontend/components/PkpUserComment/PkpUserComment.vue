@@ -9,7 +9,7 @@
 			>
 				<PkpButton
 					v-if="!currentUser && id === latestPublicationId"
-					class="userComments__loginButton"
+					class="pkpUserComments__loginButton"
 					@click="login"
 				>
 					{{ t('userComment.login') }}
@@ -19,7 +19,7 @@
 					:publication-id="id"
 					:items-per-page="itemsPerPage"
 					:is-latest-publication="id === latestPublicationId"
-					:total-publication-comments="commentsCountPerPublication[id] || 0"
+					:total-publication-comments="commentsCountPerPublication[id]"
 				/>
 			</PkpAccordion>
 		</template>
@@ -30,32 +30,36 @@
 import PkpUserCommentsList from '@/frontend/components/PkpUserComment/PkpUserCommentsList.vue';
 import PkpAccordion from '@/frontend/components/PkpAccordion/PkpAccordion.vue';
 import PkpButton from '@/frontend/components/PkpButton/PkpButton.vue';
-import {useLocalize} from '@/composables/useLocalize';
+import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 
-const {t} = useLocalize();
+const {t} = usePkpLocalize();
 const props = defineProps({
+	/** The ID of the latest publication associated with the published item(article, book, etc.)*/
 	latestPublicationId: {
 		type: Number,
 		required: true,
 	},
+	/** An array of published publication IDs associated with the published item(article, book, etc.) */
 	publicationIds: {
 		type: Array,
 		required: false,
 		default: () => [],
 	},
-	userCommentForm: {
-		type: Object,
+	/** Number of comments get when fetching comments */
+	itemsPerPage: {
+		type: Number,
 		required: true,
 	},
-	userCommentReportForm: {
-		type: Object,
-		required: true,
-	},
-	itemsPerPage: {},
+	/**
+	 * URL to redirect the user to login page
+	 */
 	loginUrl: {
 		type: String,
 		required: true,
 	},
+	/**
+	 * An object where keys are publication IDs and values are the number of approved comments for that publication
+	 */
 	commentsCountPerPublication: {
 		type: Object,
 		required: true,
@@ -63,20 +67,28 @@ const props = defineProps({
 });
 const currentUser = pkp.currentUser;
 
+/**
+ * Returns the title for the accordion based on the publication ID and the number of comments.
+ * @param {number} id - The publication ID.
+ * @returns {string} The title for the accordion.
+ */
 function getVersionTitle(id) {
 	return t('userComment.versionWithCount', {
 		version: id,
-		versionCommentsCount: props.commentsCountPerPublication[id],
+		versionCommentsCount: props.commentsCountPerPublication[id] || 0,
 	});
 }
 
+/**
+ * Redirects the user to the login page.
+ */
 function login() {
 	window.location = props.loginUrl;
 }
 </script>
 
 <style>
-.userComments__loginButton {
+.pkpUserComments__loginButton {
 	margin-top: 0.5rem;
 	margin-bottom: 1rem;
 }

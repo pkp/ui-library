@@ -19,7 +19,7 @@
 					:element="action.element || 'button'"
 					:href="action.href || null"
 					:is-primary="action.isPrimary || null"
-					:is-warnable="action.isWarnable || null"
+					:is-secondary="action.isSecondary || null"
 					:is-disabled="isLoading"
 					@click="action.callback ? fireCallback(action.callback) : null"
 				>

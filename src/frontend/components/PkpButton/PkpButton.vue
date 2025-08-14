@@ -13,15 +13,12 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
-	/** Use when this button represents an action such as delete, go back, revert or cancel. */
-	isWarnable: Boolean,
 });
 
 const buttonClass = computed(() => {
 	return [
 		'pkpButton',
 		props.isSecondary ? 'pkpButton--secondary' : 'pkpButton--primary',
-		props.isWarnable ? 'pkpButton--warnable' : '',
 	];
 });
 </script>
@@ -75,18 +72,5 @@ const buttonClass = computed(() => {
 	background-color: var(--pkp-color-transparent);
 	border-color: var(--pkp-text-color-disabled);
 	color: var(--pkp-text-color-disabled);
-}
-
-.pkpButton--warnable {
-	color: var(--pkp-color-negative);
-	border-color: var(--pkp-border-color-light);
-	background-color: var(--pkp-background-color-secondary);
-}
-
-.pkpButton--warnable:disabled {
-	color: var(--pkp-text-color-disabled);
-}
-.pkpButton--warnable:hover {
-	background-color: var(--pkp-background-color-secondary);
 }
 </style>

@@ -1,6 +1,10 @@
 <template>
 	<div class="pkpTextarea">
-		<Label class="pkpTextarea__label" :for="textareaId">
+		<Label
+			class="pkpTextarea__label"
+			:class="{'-screenReader': isLabelSrOnly}"
+			:for="textareaId"
+		>
 			{{ props.label }}
 		</Label>
 		<textarea
@@ -32,6 +36,11 @@ const props = defineProps({
 		default: '',
 	},
 	disabled: {
+		type: Boolean,
+		default: false,
+	},
+	// Whether the label should be visually hidden but still accessible to screen readers
+	isLabelSrOnly: {
 		type: Boolean,
 		default: false,
 	},
