@@ -38,10 +38,6 @@ const props = defineProps({
 		type: Number,
 		required: true,
 	},
-	publicationId: {
-		type: Number,
-		required: true,
-	},
 	publicationIds: {
 		type: Array,
 		required: false,
