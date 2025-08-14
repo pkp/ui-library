@@ -1,46 +1,7 @@
 import {defineStore} from 'pinia';
-import {ref, markRaw, computed} from 'vue';
+import {ref} from 'vue';
 import {t} from '@/utils/i18n';
 export const usePkpModalStore = defineStore('pkpModal', () => {
-	/**
-	 * Dialog Level
-	 *
-	 * Because Modal from headlessui requires to be correctly nested
-	 * Dialog is also available inside ModalBody and level helps to track
-	 * which of the existing dialogs should open
-	 */
-
-	const dialogLevel = computed(() => {
-		if (modal4?.value?.opened) {
-			return 4;
-		} else if (modal3?.value?.opened) {
-			return 3;
-		} else if (modal2?.value?.opened) {
-			return 2;
-		} else if (modal1?.value?.opened) {
-			return 1;
-		}
-		return 0;
-	});
-	/** dialogProps coming from openDialog */
-	const dialogProps = ref({});
-	const dialogOpened = ref(false);
-
-	function openDialog(_dialogProps) {
-		if (_dialogProps.bodyComponent) {
-			_dialogProps.bodyComponent = markRaw(_dialogProps.bodyComponent);
-		}
-		dialogProps.value = _dialogProps;
-		dialogOpened.value = true;
-	}
-	function closeDialog(triggerLegacyCloseHandler = true) {
-		if (triggerLegacyCloseHandler && dialogProps.value.closeLegacyHandler) {
-			dialogProps.value.closeLegacyHandler();
-		}
-		dialogProps.value = {};
-		dialogOpened.value = false;
-	}
-
 	/** Default network error */
 	function openDialogNetworkError(fetchError) {
 		const msg =
@@ -84,19 +45,11 @@ export const usePkpModalStore = defineStore('pkpModal', () => {
 
 	/**
 	 *
-	 * @param {*} _component
 	 * @param {*} props
 	 * @param {*} options - modalId: explicit ID coming from legacy stack, onClose: function to be called after modal is closed
 	 */
-	function openModal(_component, props = {}, options = {}) {
+	function openDialog(props = {}, options = {}) {
 		modalIdCounter++;
-		let component = null;
-		if (typeof _component !== 'string') {
-			// avoid making vue component object reactive which would be unnecessary performance hit
-			component = markRaw(_component);
-		} else {
-			component = _component;
-		}
 
 		// modalId is either calculated internally or its comming from the legacy handler if its legacy modal
 		const modalId = options?.modalId ? options?.modalId : modalIdCounter;
@@ -104,7 +57,6 @@ export const usePkpModalStore = defineStore('pkpModal', () => {
 		const opts = {
 			modalId,
 			opened: true,
-			component,
 			props,
 			onClose: options.onClose,
 		};
@@ -125,29 +77,16 @@ export const usePkpModalStore = defineStore('pkpModal', () => {
 		}
 	}
 
-	function closeModal(component, returnData) {
-		if (modal1?.value?.component === component) {
-			closeModalById(modal1?.value?.modalId, returnData);
-		} else if (modal2?.value?.component === component) {
-			closeModalById(modal2?.value?.modalId, returnData);
-		} else if (modal3?.value?.component === component) {
-			closeModalById(modal3?.value?.modalId, returnData);
-		} else if (modal4?.value?.component === component) {
-			closeModalById(modal4?.value?.modalId, returnData);
+	function closeTopDialog() {
+		if (modal4.value?.opened) {
+			closeModalById(modal4.value.modalId);
+		} else if (modal3.value?.opened) {
+			closeModalById(modal3.value.modalId);
+		} else if (modal2.value?.opened) {
+			closeModalById(modal2.value.modalId);
+		} else if (modal1.value?.opened) {
+			closeModalById(modal1.value.modalId);
 		}
-	}
-
-	function isModalOpened(component) {
-		if (modal1?.value?.component === component) {
-			return true;
-		} else if (modal2?.value?.component === component) {
-			return true;
-		} else if (modal3?.value?.component === component) {
-			return true;
-		} else if (modal4?.value?.component === component) {
-			return true;
-		}
-		return false;
 	}
 
 	function closeModalById(_modalId, returnData) {
@@ -181,22 +120,15 @@ export const usePkpModalStore = defineStore('pkpModal', () => {
 			if (!modalToClose.value?.opened) {
 				modalToClose.value = null;
 			}
-		}, 450);
+		}, 700);
 	}
 
 	return {
-		/** dialog level */
-		dialogLevel,
 		/** opening dialog */
-		dialogProps,
-		dialogOpened,
 		openDialogNetworkError,
 		openDialog,
-		closeDialog,
-		openModal,
-		closeModal,
+		closeTopDialog,
 		closeModalById,
-		isModalOpened,
 		modal1,
 		modal2,
 		modal3,
