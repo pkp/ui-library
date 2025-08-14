@@ -63,7 +63,7 @@ const accordionClass = computed(() => ['pkpAccordion']);
 	width: 100%;
 	padding: var(--pkp-spacing-2) var(--pkp-spacing-3);
 	background-color: var(--pkp-background-color-tertiary);
-	color: var(--pkp-text-color-secondary);
+	color: var(--pkp-text-color-heading);
 	font: var(--pkp-font-base-bold);
 	border: none;
 	cursor: pointer;
