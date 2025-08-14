@@ -104,7 +104,7 @@ export function useWorkflowVersionForm(
 			versionIsMinor: formData.versionIsMinor,
 		};
 
-		if (isOJS()) {
+		if (isOJS() && modeState.isPublishMode) {
 			// if the issue count is 0, e.g. issueless context,
 			// we can safely set the issueId to null and status to STATUS_READY_TO_PUBLISH
 			if (issueCount === 0) {
@@ -112,8 +112,18 @@ export function useWorkflowVersionForm(
 				requestBody.prePublishStatus = pkp.const.STATUS_READY_TO_PUBLISH;
 			}
 			// Add issue assignment data if in publish mode and issue assignment is provided
-			else if (modeState.isPublishMode && formData.issueId) {
+			else {
 				const issueData = formData.issueId;
+
+				// cehck if the issue selection is valid
+				if (!issueData || !issueData.isValid) {
+					return {
+						data: null,
+						validationError: {
+							issueId: [t('publication.assignToIssue.validation.incomplete')],
+						},
+					};
+				}
 
 				requestBody.issueId = issueData.issueId;
 				requestBody.prePublishStatus = issueData.publicationStatus;
@@ -328,6 +338,7 @@ export function useWorkflowVersionForm(
 				component: 'FieldIssueSelection',
 				issueCount: issueCount,
 				publication: store.selectedPublication,
+				isRequired: true,
 			});
 		}
 

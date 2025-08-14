@@ -13,6 +13,7 @@
 			:form-id="formId"
 			@change="fieldChanged"
 			@set-errors="setErrors"
+			@set-field-required="setFieldRequired"
 		/>
 		<ButtonRow
 			v-if="hasFooter"
@@ -233,6 +234,13 @@ export default {
 		 */
 		setErrors: function (errors) {
 			this.$emit('set-errors', errors);
+		},
+
+		/**
+		 * Forward field required events to the form
+		 */
+		setFieldRequired: function (fieldName, isRequired) {
+			this.$emit('set-field-required', fieldName, isRequired);
 		},
 	},
 };
