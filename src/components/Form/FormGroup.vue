@@ -45,6 +45,7 @@
 								:locales="availableLocales"
 								@change="fieldChanged"
 								@set-errors="setFieldErrors"
+								@set-field-required="setFieldRequired"
 							></component>
 						</div>
 					</div>
@@ -60,6 +61,7 @@
 						:locales="availableLocales"
 						@change="fieldChanged"
 						@set-errors="setFieldErrors"
+						@set-field-required="setFieldRequired"
 					></component>
 				</template>
 			</template>
@@ -241,6 +243,13 @@ export default {
 				}
 			}
 			this.$emit('set-errors', {...newErrors});
+		},
+
+		/**
+		 * Forward field required events to the form page
+		 */
+		setFieldRequired: function (fieldName, isRequired) {
+			this.$emit('set-field-required', fieldName, isRequired);
 		},
 	},
 };

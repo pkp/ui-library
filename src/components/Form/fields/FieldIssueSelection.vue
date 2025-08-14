@@ -32,7 +32,7 @@
 						:name="props.name"
 						:label="t('issue.issue')"
 						:description="t('publication.assignToIssue.issueDescription')"
-						:is-required="isRequired"
+						:is-required="isIssueSelectionRequired"
 						:value="selectedIssueId"
 						:options="availableIssues"
 						:all-errors="{}"
@@ -88,7 +88,7 @@ const props = defineProps({
 	},
 	isRequired: {
 		type: Boolean,
-		default: false,
+		default: true,
 	},
 	isPhpForm: {
 		type: Boolean,
@@ -149,7 +149,7 @@ const fetchAssignmentOptions = async () => {
 };
 
 const fetchAssignmentType = async () => {
-	// we will not fetch if the assignment type is give for the publication
+	// will not fetch if the assignment type is give for the publication
 	// for example, it's can be given from the PHP form
 	if (props.assignmentType !== null) {
 		return;
@@ -184,6 +184,19 @@ const showIssueDropdown = computed(() => {
 	return option?.isPublished !== null;
 });
 
+// TODO : need it ?
+// dynamic isRequired based on selection and props.isRequired
+const isIssueSelectionRequired = computed(() => {
+	// Only require issue selection if:
+	// 1. The field is marked as required (from PHP or JS)
+	// 2. AND the selected assignment type actually requires an issue (isPublished !== null)
+	const selectedOption = assignmentOptions.value.find(
+		(opt) => opt.value === selectedAssignmentType.value,
+	);
+
+	return props.isRequired && selectedOption?.isPublished !== null;
+});
+
 const shouldFetchPublishedIssues = computed(() => {
 	const option = assignmentOptions.value.find(
 		(opt) => opt.value === selectedAssignmentType.value,
@@ -191,11 +204,25 @@ const shouldFetchPublishedIssues = computed(() => {
 	return option?.isPublished;
 });
 
+// TODO : need this ?
+// better validation logic
 const isValid = computed(() => {
+	// If no assignment type selected, not valid
+	if (!selectedAssignmentType.value) {
+		return false;
+	}
+
 	const option = assignmentOptions.value.find(
 		(opt) => opt.value === selectedAssignmentType.value,
 	);
-	return option?.isPublished === null || selectedIssueId.value;
+
+	// If assignment type doesn't require issue selection, always valid
+	if (option?.isPublished === null) {
+		return true;
+	}
+
+	// If assignment type requires issue selection, check if issue is selected
+	return selectedIssueId.value !== null;
 });
 
 const publicationStatus = computed(() => {
@@ -205,23 +232,38 @@ const publicationStatus = computed(() => {
 	return option?.status || null;
 });
 
+// TODO : need this ?
+// validation error messages
 const validationErrors = computed(() => {
 	if (!isValid.value) {
-		return [t('publication.assignToIssue.validation.issueRequired')];
+		// If assignment type requires issue but none selected
+		if (isIssueSelectionRequired.value && !selectedIssueId.value) {
+			return [t('publication.assignToIssue.validation.issueRequired')];
+		}
+		// If no assignment type selected
+		if (!selectedAssignmentType.value) {
+			return [t('publication.assignToIssue.validation.assignmentRequired')];
+		}
 	}
 	return [];
 });
 
-// Emit validation errors to the form system
-// FIXME : NOT propagating to top level from component
 watch(
 	validationErrors,
 	(errors) => {
-		if (errors.length > 0) {
-			emit('set-errors', props.name, errors);
-		} else {
-			emit('set-errors', props.name, []);
-		}
+		errors.length > 0
+			? emit('set-errors', props.name, errors) // emit errors
+			: emit('set-errors', props.name, []); // clear errors
+	},
+	{immediate: true},
+);
+
+// Watch for assignment type changes to update validation
+watch(
+	selectedAssignmentType,
+	() => {
+		// Trigger validation update when assignment type changes
+		// This ensures validationErrors computed property updates
 	},
 	{immediate: true},
 );
@@ -262,9 +304,10 @@ const emitValue = () => {
 		}
 	} else {
 		const value = {
-			assignmentType: selectedAssignmentType.value, // User's assignment type selection
-			issueId: selectedIssueId.value, // User's issue selection
-			publicationStatus: publicationStatus.value, // Calculated status from user's selection
+			assignmentType: selectedAssignmentType.value,
+			issueId: selectedIssueId.value,
+			publicationStatus: publicationStatus.value,
+			isValid: isValid.value,
 		};
 
 		// TODO: Remove this after testing
@@ -339,6 +382,52 @@ watch(selectedIssueId, () => {
 	emitValue();
 });
 
+// Watch for changes and emit required state
+watch(
+	[selectedAssignmentType, selectedIssueId],
+	() => {
+		// Determine if field is currently required
+		let isCurrentlyRequired = true; // Default to required
+
+		if (selectedAssignmentType.value) {
+			const selectedOption = assignmentOptions.value.find(
+				(opt) => opt.value === selectedAssignmentType.value,
+			);
+
+			// If assignment type doesn't require issue selection, not required
+			if (selectedOption?.isPublished === null) {
+				isCurrentlyRequired = false;
+			}
+		}
+
+		// Emit the current required state
+		emit('set-field-required', props.name, isCurrentlyRequired);
+
+		emitValue(); // emit the value change
+	},
+	{immediate: false}, // not run immediately since we handle it in onMounted
+);
+
+// ✅ NEW: Function to emit initial required state
+const emitInitialRequiredState = () => {
+	// Determine if field is currently required based on initial values
+	let isCurrentlyRequired = true; // Default to required
+
+	if (selectedAssignmentType.value) {
+		const selectedOption = assignmentOptions.value.find(
+			(opt) => opt.value === selectedAssignmentType.value,
+		);
+
+		// If assignment type doesn't require issue selection, not required
+		if (selectedOption?.isPublished === null) {
+			isCurrentlyRequired = false;
+		}
+	}
+
+	// Emit the initial required state
+	emit('set-field-required', props.name, isCurrentlyRequired);
+};
+
 onMounted(async () => {
 	selectedAssignmentType.value = props.assignmentType || null;
 
@@ -354,12 +443,9 @@ onMounted(async () => {
 		await fetchIssues();
 	}
 
-	// FIXME : remove this once the emit issue for hidden field is fixed
-	if (props.isPhpForm) {
-		$('input[name="prePublishStatus"]').hide();
-	}
-
 	emitValue();
+
+	emitInitialRequiredState();
 });
 </script>
 
