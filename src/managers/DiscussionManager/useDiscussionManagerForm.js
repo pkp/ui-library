@@ -34,6 +34,7 @@ export function useDiscussionManagerForm(
 	const {getRelativeTargetDate} = useDate();
 	const isTask = ref(workItem?.type === 'Task');
 	const statusUpdateValue = ref(false);
+	const newMessage = ref(null);
 
 	const {
 		form,
@@ -224,6 +225,10 @@ export function useDiscussionManagerForm(
 		statusUpdateValue.value = val;
 	}
 
+	function onNewMessage(val) {
+		newMessage.value = val;
+	}
+
 	function addWorkItem() {
 		console.log('add form');
 	}
@@ -253,7 +258,7 @@ export function useDiscussionManagerForm(
 			}
 		}
 
-		if (workItem) {
+		if (workItem && newMessage.value) {
 			// check if there is message
 			addNewMessage();
 		}
@@ -366,6 +371,7 @@ export function useDiscussionManagerForm(
 			componentProps: {
 				submission,
 				discussion: workItem,
+				onNewMessage,
 			},
 			groupId: 'discussion',
 		});
