@@ -8,15 +8,26 @@
 					<CommentsNewInput></CommentsNewInput>
 					<CommentsNewSubmit></CommentsNewSubmit>
 				</CommentsNew>
-				<CommentsMessages>
-					<CommentsMessage>
-						<CommentsMessageDate></CommentsMessageDate>
-						<CommentsMessageActions></CommentsMessageActions>
-						<CommentsMessageBody></CommentsMessageBody>
-						<CommentsMessageAuthor>
-							<CommentsMessageAuthorName></CommentsMessageAuthorName>
-							<CommentsMessageAuthorOrcid></CommentsMessageAuthorOrcid>
-							<CommentsMessageAuthorAffiliation></CommentsMessageAuthorAffiliation>
+				<CommentsMessages class="flex flex-col gap-y-2">
+					<CommentsMessage class="rounded bg-default p-4">
+						<div class="flex justify-between">
+							<CommentsMessageDate class="text-sm-light"></CommentsMessageDate>
+							<CommentsMessageActions></CommentsMessageActions>
+						</div>
+						<CommentsMessageBody
+							class="mt-2 block text-lg-normal"
+						></CommentsMessageBody>
+
+						<CommentsMessageAuthor class="mt-2 flex flex-col">
+							<CommentsMessageAuthorName
+								class="text-base-bold"
+							></CommentsMessageAuthorName>
+							<CommentsMessageAuthorOrcid
+								class="text-xs-normal"
+							></CommentsMessageAuthorOrcid>
+							<CommentsMessageAuthorAffiliation
+								class="text-sm-light"
+							></CommentsMessageAuthorAffiliation>
 						</CommentsMessageAuthor>
 					</CommentsMessage>
 				</CommentsMessages>
