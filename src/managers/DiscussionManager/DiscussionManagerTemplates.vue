@@ -1,5 +1,6 @@
 <template>
 	<FormGroupHeader
+		:group-id="groupId"
 		:label="t('common.details')"
 		:description="t('discussion.form.detailsDescription')"
 	/>
@@ -17,11 +18,10 @@
 	/>
 	<ul
 		class="mt-2 max-h-80 list-none overflow-y-auto p-0"
-		aria-live="true"
 		role="list"
 		:aria-label="t('search.searchResults')"
 	>
-		<li v-for="template in templates" :key="template.id">
+		<li v-for="template in templates" :key="template.id" role="listitem">
 			<button
 				class="mt-2 w-full border border-light p-4 text-start hover:border-hover"
 				@click="
@@ -63,6 +63,11 @@ defineProps({
 	templates: {
 		type: Array,
 		default: () => [],
+	},
+	/** The groupId to use from FormGroup component */
+	groupId: {
+		type: String,
+		required: true,
 	},
 });
 </script>

@@ -1,13 +1,25 @@
 <template>
-	<fieldset class="pkpFormGroup -pkpClearfix" :class="spacingStyle">
+	<div
+		class="pkpFormGroup -pkpClearfix"
+		:class="spacingStyle"
+		:role="label && 'group'"
+		:aria-labelledby="label && `${groupId}_label`"
+		:aria-describedby="description && `${groupId}_description`"
+	>
 		<div v-if="label || groupComponent" class="pkpFormGroup__heading">
 			<template v-if="groupComponent">
 				<component
 					:is="groupComponent.component"
+					:group-id="groupId"
 					v-bind="groupComponent.props"
 				></component>
 			</template>
-			<FormGroupHeader v-else :label="label" :description="description" />
+			<FormGroupHeader
+				v-else
+				:group-id="groupId"
+				:label="label"
+				:description="description"
+			/>
 		</div>
 		<div class="pkpFormGroup__fields">
 			<template v-for="field in fieldsInGroup">
@@ -25,7 +37,7 @@
 						>
 							<component
 								:is="field.component"
-								v-bind="field"
+								v-bind="field.componentProps || field"
 								:all-errors="errors"
 								:locale-key="locale.key"
 								:form-id="formId"
@@ -40,7 +52,7 @@
 				<template v-else>
 					<component
 						:is="field.component"
-						v-bind="field"
+						v-bind="field.componentProps || field"
 						:key="field.name"
 						:all-errors="errors"
 						:form-id="formId"
@@ -52,7 +64,7 @@
 				</template>
 			</template>
 		</div>
-	</fieldset>
+	</div>
 </template>
 
 <script>
@@ -62,6 +74,7 @@ import FieldArchivingPn from './fields/FieldArchivingPn.vue';
 import FieldAutosuggestPreset from './fields/FieldAutosuggestPreset.vue';
 import FieldBaseAutosuggest from './fields/FieldBaseAutosuggest.vue';
 import FieldAuthors from './fields/FieldAuthors.vue';
+import FieldCheckbox from './fields/FieldCheckbox.vue';
 import FieldColor from './fields/FieldColor.vue';
 import FieldControlledVocab from './fields/FieldControlledVocab.vue';
 import FieldCreditRoles from './fields/FieldCreditRoles.vue';
@@ -87,6 +100,7 @@ import FieldSlider from './fields/FieldSlider.vue';
 import FieldUploadImage from './fields/FieldUploadImage.vue';
 
 import {shouldShowFieldWithinGroup} from './formHelpers';
+import {useId} from 'vue';
 
 export default {
 	name: 'FormGroup',
@@ -97,6 +111,7 @@ export default {
 		FieldAutosuggestPreset,
 		FieldBaseAutosuggest,
 		FieldAuthors,
+		FieldCheckbox,
 		FieldColor,
 		FieldControlledVocab,
 		FieldCreditRoles,
@@ -169,6 +184,10 @@ export default {
 				return '!p-0';
 			}
 			return '';
+		},
+
+		groupId() {
+			return useId();
 		},
 	},
 	methods: {

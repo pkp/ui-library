@@ -5,11 +5,11 @@
 				<h3>{{ t('acceptInvitation.review.accountDetails') }}</h3>
 			</div>
 			<div class="p-4">
-				<FormDisplayItemBasic
+				<AcceptInvitationFormDisplayBasicItem
 					heading-element="h4"
 					:heading="t('user.username')"
 					:value="store.acceptInvitationPayload.username"
-				></FormDisplayItemBasic>
+				></AcceptInvitationFormDisplayBasicItem>
 			</div>
 		</div>
 		<div v-if="store.userId != null" class="border-t border-light p-8">
@@ -17,7 +17,7 @@
 				<h3>{{ t('acceptInvitation.review.userDetails') }}</h3>
 			</div>
 			<div class="p-4">
-				<FormDisplayItemBasic
+				<AcceptInvitationFormDisplayBasicItem
 					heading-element="h4"
 					:heading="t('user.orcid')"
 					:value="
@@ -34,7 +34,7 @@
 							:inline="true"
 						/>
 					</template>
-				</FormDisplayItemBasic>
+				</AcceptInvitationFormDisplayBasicItem>
 			</div>
 		</div>
 		<div v-else>
@@ -48,12 +48,12 @@
 			</div>
 			<div class="p-8">
 				<div class="p-4 pb-8">
-					<FormDisplay
+					<AcceptInvitationFormDisplay
 						v-if="store.userId === null"
 						:fields="userForm.fields"
 						:supported-form-locales="userForm.supportedFormLocales"
 						heading-element="h4"
-					></FormDisplay>
+					></AcceptInvitationFormDisplay>
 				</div>
 			</div>
 		</div>
@@ -77,8 +77,8 @@ import {useLocalize} from '@/composables/useLocalize';
 import AcceptInvitationUserRoles from './AcceptInvitationUserRoles.vue';
 import {useAcceptInvitationPageStore} from './AcceptInvitationPageStore';
 import PkpButton from '@/components/Button/Button.vue';
-import FormDisplay from '@/components/FormDisplay/FormDisplay.vue';
-import FormDisplayItemBasic from '@/components/FormDisplay/FormDisplayItemBasic.vue';
+import AcceptInvitationFormDisplayBasicItem from './AcceptInvitationFormDisplayItemBasic.vue';
+import AcceptInvitationFormDisplay from './AcceptInvitationFormDisplay.vue';
 import {useForm} from '@/composables/useForm';
 import Icon from '@/components/Icon/Icon.vue';
 

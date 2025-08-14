@@ -1,6 +1,7 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
 import {computed, toRefs} from 'vue';
+import {t} from '@/utils/i18n';
 import {useExtender} from '@/composables/useExtender';
 import {useDataChanged} from '@/composables/useDataChanged';
 import {useDiscussionManagerConfig} from './useDiscussionManagerConfig';
@@ -19,17 +20,17 @@ export const useDiscussionManagerStore = defineComponentStore(
 
 		const discussions = [
 			{
-				name: 'Yet To Begin',
+				name: t('common.yetToBegin'),
 				icon: 'New',
 				items: getDiscussionByStatus('Pending'),
 			},
 			{
-				name: 'In Progress',
+				name: t('common.inProgress'),
 				icon: 'InProgress',
 				items: getDiscussionByStatus('In Progress'),
 			},
 			{
-				name: 'Closed',
+				name: t('common.closed'),
 				icon: 'Complete',
 				items: getDiscussionByStatus('Closed'),
 			},

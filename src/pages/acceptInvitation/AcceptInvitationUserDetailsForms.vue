@@ -2,16 +2,16 @@
 	<div class="p-8 pb-0">
 		<div>
 			<div class="p-1">
-				<FormDisplayItemBasic
+				<AcceptInvitationFormDisplayItemBasic
 					heading-element="h4"
 					:heading="t('user.email')"
 					:value="store.email"
-				></FormDisplayItemBasic>
+				></AcceptInvitationFormDisplayItemBasic>
 			</div>
 		</div>
 		<div>
 			<div class="p-1">
-				<FormDisplayItemBasic
+				<AcceptInvitationFormDisplayItemBasic
 					heading-element="h4"
 					:heading="t('user.orcid')"
 					:value="
@@ -28,7 +28,7 @@
 							:inline="true"
 						/>
 					</template>
-				</FormDisplayItemBasic>
+				</AcceptInvitationFormDisplayItemBasic>
 			</div>
 		</div>
 	</div>
@@ -41,7 +41,7 @@
 
 <script setup>
 import {defineProps, computed} from 'vue';
-import FormDisplayItemBasic from '@/components/FormDisplay/FormDisplayItemBasic.vue';
+import AcceptInvitationFormDisplayItemBasic from './AcceptInvitationFormDisplayItemBasic.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import {useForm} from '@/composables/useForm';
