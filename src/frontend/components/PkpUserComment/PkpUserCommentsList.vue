@@ -107,7 +107,9 @@ import {usePkpModal} from '@/frontend/composables/usePkpModal';
 import {usePkpFetch} from '@/frontend/composables/usePkpFetch';
 import {useUrl} from '@/frontend/composables/usePkpUrl';
 import {usePkpDate} from '@/frontend/composables/usePkpDate';
-import {t} from '@/utils/i18n';
+import {useLocalize} from '@/composables/useLocalize';
+
+const {t} = useLocalize();
 
 const {openModal, closeModal, openDialogNetworkError} = usePkpModal();
 const {formatShortDateTime} = usePkpDate();
@@ -145,7 +147,48 @@ const commentText = ref('');
 
 const commentActionMethods = {
 	commentReport,
+	deleteComment,
 };
+
+function deleteComment(comment) {
+	if (!currentUser || currentUser.id !== comment.userId) {
+		throw new Error('Only the comment author can delete the comment');
+	}
+
+	const {openDialog} = usePkpModal();
+	openDialog({
+		title: 'Delete Comment',
+		message: t('userComment.deleteCommentConfirm', {
+			comment: comment.commentText,
+		}),
+		actions: [
+			{
+				label: t('common.delete'),
+				isWarnable: true,
+				callback: async (close) => {
+					const {apiUrl} = useUrl(`comments/${comment.id}`);
+					const {fetch: deleteComment, isSuccess} = usePkpFetch(apiUrl, {
+						method: 'DELETE',
+					});
+					await deleteComment();
+					if (isSuccess.value) {
+						comments.value = comments.value.filter((c) => c.id !== comment.id);
+					} else {
+						openDialogNetworkError();
+					}
+
+					close();
+				},
+			},
+			{
+				label: t('common.cancel'),
+				callback: (close) => {
+					close();
+				},
+			},
+		],
+	});
+}
 
 function canReportComment(comment) {
 	return currentUser && currentUser.id !== comment.userId && comment.isApproved;
