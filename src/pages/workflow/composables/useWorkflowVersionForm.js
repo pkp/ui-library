@@ -95,7 +95,9 @@ export function useWorkflowVersionForm(
 		});
 
 		const {apiUrl: versionUrl} = useUrl(
-			`submissions/${store.submission.id}/publications/${publicationId}/version`,
+			isOJS() && modeState.isPublishMode
+				? `submissions/${store.submission.id}/publications/${publicationId}/reviewEdit`
+				: `submissions/${store.submission.id}/publications/${publicationId}/version`,
 		);
 
 		// Prepare request body with version data
@@ -195,6 +197,15 @@ export function useWorkflowVersionForm(
 	}
 
 	function getVersionIsMinorField({allowMinorVersion, currentValue}) {
+		const versionMinorValue =
+			modeState.isPublishMode && store.selectedPublication?.versionStage
+				? store.selectedPublication.versionMinor
+					? 'true'
+					: 'false'
+				: currentValue === 'true' && !allowMinorVersion
+					? 'false'
+					: currentValue;
+
 		return {
 			label: t('publication.revisionSignificance.label'),
 			description: t('publication.revisionSignificance.description'),
@@ -208,8 +219,7 @@ export function useWorkflowVersionForm(
 			],
 			size: 'large',
 			isRequired: modeState.isPublishMode,
-			value:
-				currentValue === 'true' && !allowMinorVersion ? 'false' : currentValue,
+			value: versionMinorValue,
 			showWhen: modeState.isTextEditorMode
 				? ['sendToVersion', getUnassignedVersions()]
 				: undefined,
@@ -346,6 +356,16 @@ export function useWorkflowVersionForm(
 			'versionSource',
 			modeState.isCreateMode ? latestPublication?.id : null,
 		);
+
+		if (modeState.isPublishMode) {
+			setValue(
+				'versionIsMinor',
+				store.selectedPublication?.versionStage &&
+					store.selectedPublication?.versionMinor
+					? 'true'
+					: 'false',
+			);
+		}
 	});
 
 	watch(
