@@ -178,6 +178,12 @@ export function useDiscussionManagerActions() {
 	function discussionSetClosed({workItem}) {
 		const isClosed = workItem.closed;
 		const statusUpdate = isClosed ? 'reopen' : 'close';
+
+		// Tasks cannot be reopened
+		if (workItem?.type === 'Task' && isClosed) {
+			return;
+		}
+
 		const modalProps = {
 			reopen: {
 				title:

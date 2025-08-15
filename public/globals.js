@@ -384,7 +384,7 @@ window.pkp = {
 		'discussion.title': 'Desk Review Tasks & Discussions',
 		'discussion.closeThisDiscussion': 'Close this Discussion',
 		'discussion.confirmCloseDiscussion':
-			'Are you sure you want to close this discussion?',
+			"Are you sure you want to close this discussion? Closing the discussion won't stop you from sending or receiving messages in this thread - this ensures no message is lost.",
 		'discussion.reopenThisDiscussion': 'Reopen this Discussion',
 		'discussion.confirmReopenDiscussion':
 			'Are you sure you want to reopen this discussion?',
@@ -906,7 +906,8 @@ window.pkp = {
 		'task.closeThisTask': 'Close this Task',
 		'task.startedBy': 'Task started by',
 		'task.startThisTask': 'Start this task',
-		'task.confirmCloseTask': 'Are you sure you want to close this task?',
+		'task.confirmCloseTask':
+			"Are you sure you want to close this task? Closing the task won't end the discussion - you can still send messages on it.",
 		'task.confirmStartTask': 'Are you sure you want to start this task?',
 		'task.completeThisTask': 'Complete this task',
 		'task.reopenThisTask': 'Reopen this task',
