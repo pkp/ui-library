@@ -5,6 +5,7 @@ import {useFetch} from '@/composables/useFetch';
 import {useLocalize} from '@/composables/useLocalize';
 import {useSubmission} from '@/composables/useSubmission';
 import {useWorkflowStore} from '@/pages/workflow/workflowStore';
+import {useApp} from '@/composables/useApp';
 
 const VERSION_MODE = {
 	CREATE: 'createNewVersion', // the "Create New Version" action in the publication workflow menu
@@ -48,12 +49,14 @@ export function useWorkflowVersionForm(
 	versionMode = 'createNewVersion',
 	closeDialog = () => {},
 	onSubmitFn = null,
+	issueCount = 0,
 ) {
 	const store = useWorkflowStore();
 	const {t} = useLocalize();
 	const {getLatestPublication} = useSubmission();
 	let publications = [];
 	let latestPublication = null;
+	const {isOJS} = useApp();
 
 	// Determine the mode based on the versionMode parameter
 	// versionMode can be one of 'createNewVersion', 'sendToTextEditor', or 'publish'
@@ -92,8 +95,42 @@ export function useWorkflowVersionForm(
 		});
 
 		const {apiUrl: versionUrl} = useUrl(
-			`submissions/${store.submission.id}/publications/${publicationId}/version`,
+			isOJS() && modeState.isPublishMode
+				? `submissions/${store.submission.id}/publications/${publicationId}/reviewEdit`
+				: `submissions/${store.submission.id}/publications/${publicationId}/version`,
 		);
+
+		// Prepare request body with version data
+		const requestBody = {
+			versionStage: formData.versionStage,
+			versionIsMinor: formData.versionIsMinor,
+		};
+
+		if (isOJS() && modeState.isPublishMode) {
+			// if the issue count is 0, e.g. issueless context,
+			// we can safely set the issueId to null and status to STATUS_READY_TO_PUBLISH
+			if (issueCount === 0) {
+				requestBody.issueId = null;
+				requestBody.prePublishStatus = pkp.const.STATUS_READY_TO_PUBLISH;
+			}
+			// Add issue assignment data if in publish mode and issue assignment is provided
+			else {
+				const issueData = formData.issueId;
+
+				// cehck if the issue selection is valid
+				if (!issueData || !issueData.isValid) {
+					return {
+						data: null,
+						validationError: {
+							issueId: [t('publication.assignToIssue.validation.incomplete')],
+						},
+					};
+				}
+
+				requestBody.issueId = issueData.issueId;
+				requestBody.prePublishStatus = issueData.publicationStatus;
+			}
+		}
 
 		const {
 			fetch,
@@ -102,10 +139,7 @@ export function useWorkflowVersionForm(
 			isSuccess,
 		} = useFetch(versionUrl, {
 			method: shouldCreateNewVersion ? 'POST' : 'PUT',
-			body: {
-				versionStage: formData.versionStage,
-				versionIsMinor: formData.versionIsMinor,
-			},
+			body: requestBody,
 			expectValidationError: true,
 		});
 
@@ -138,6 +172,7 @@ export function useWorkflowVersionForm(
 	const {
 		form,
 		initEmptyForm,
+		addField,
 		addFieldSelect,
 		addPage,
 		addGroup,
@@ -162,6 +197,15 @@ export function useWorkflowVersionForm(
 	}
 
 	function getVersionIsMinorField({allowMinorVersion, currentValue}) {
+		const versionMinorValue =
+			modeState.isPublishMode && store.selectedPublication?.versionStage
+				? store.selectedPublication.versionMinor
+					? 'true'
+					: 'false'
+				: currentValue === 'true' && !allowMinorVersion
+					? 'false'
+					: currentValue;
+
 		return {
 			label: t('publication.revisionSignificance.label'),
 			description: t('publication.revisionSignificance.description'),
@@ -175,8 +219,7 @@ export function useWorkflowVersionForm(
 			],
 			size: 'large',
 			isRequired: modeState.isPublishMode,
-			value:
-				currentValue === 'true' && !allowMinorVersion ? 'false' : currentValue,
+			value: versionMinorValue,
 			showWhen: modeState.isTextEditorMode
 				? ['sendToVersion', getUnassignedVersions()]
 				: undefined,
@@ -227,11 +270,21 @@ export function useWorkflowVersionForm(
 		showErrorFooter: false,
 		spacingVariant: 'fullWidth',
 	});
+
 	addPage('default', {
 		submitButton: {label: t('common.confirm')},
 		cancelButton: {label: t('common.cancel')},
 	});
-	addGroup('default');
+
+	addGroup(
+		'default',
+		// FIXME: adding group breaking the page layout
+		// {
+		// 	pageId: 'default',
+		// 	label: t('publication.scheduledForPublication.versionStage.label'),
+		// 	description: t('publication.scheduledForPublication.versionStage.description'),
+		// }
+	);
 
 	onMounted(() => {
 		latestPublication = getLatestPublication(store.submission);
@@ -243,6 +296,7 @@ export function useWorkflowVersionForm(
 				label: t('publication.sendToTextEditor.label'),
 				options: buildPublicationOptions({withCreateOption: true}),
 				size: 'large',
+				// groupId: 'default', // FIXME: adding group breaking the page layout
 				isRequired: modeState.isTextEditorMode,
 				showWhen: !modeState.isTextEditorMode ? [] : undefined,
 			});
@@ -254,6 +308,7 @@ export function useWorkflowVersionForm(
 			description: t('publication.versionSource.create.description'),
 			options: buildPublicationOptions(),
 			size: 'large',
+			// groupId: 'default', // FIXME: adding group breaking the page layout
 			showWhen: !modeState.isCreateMode
 				? ['sendToVersion', 'create']
 				: undefined,
@@ -266,6 +321,8 @@ export function useWorkflowVersionForm(
 			description: t('publication.versionStage.description'),
 			options: store.versionStageOptions,
 			size: 'large',
+			value: store.selectedPublication?.versionStage || null,
+			// groupId: 'default', // FIXME: adding group breaking the page layout
 			isRequired: modeState.isPublishMode,
 			showWhen: modeState.isTextEditorMode
 				? ['sendToVersion', getUnassignedVersions()]
@@ -282,10 +339,33 @@ export function useWorkflowVersionForm(
 			}),
 		);
 
+		// Issue assignment fields only visible when
+		// for OJS
+		// it's in publish mode
+		// have issues
+		if (modeState.isPublishMode && issueCount > 0 && isOJS()) {
+			addField('issueId', {
+				component: 'FieldIssueSelection',
+				issueCount: issueCount,
+				publication: store.selectedPublication,
+				isRequired: true,
+			});
+		}
+
 		setValue(
 			'versionSource',
 			modeState.isCreateMode ? latestPublication?.id : null,
 		);
+
+		if (modeState.isPublishMode) {
+			setValue(
+				'versionIsMinor',
+				store.selectedPublication?.versionStage &&
+					store.selectedPublication?.versionMinor
+					? 'true'
+					: 'false',
+			);
+		}
 	});
 
 	watch(

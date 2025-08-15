@@ -1,3 +1,4 @@
+<!-- TODO: need this anymore ? remove this after testing -->
 <template>
 	<div class="pkpFormField pkpFormField--select pkpFormField--selectIssue">
 		<div class="pkpFormField__heading">
@@ -167,7 +168,7 @@ export default {
 			const workflowStore = useWorkflowStore();
 
 			workflowStore.workflowAssignToIssue({}, (finishedData) => {
-				if (finishedData.data) {
+				if (finishedData?.data) {
 					this.currentValue = finishedData.data.issueId;
 				}
 			});

@@ -45,6 +45,7 @@
 								:locales="availableLocales"
 								@change="fieldChanged"
 								@set-errors="setFieldErrors"
+								@set-field-required="setFieldRequired"
 							></component>
 						</div>
 					</div>
@@ -60,6 +61,7 @@
 						:locales="availableLocales"
 						@change="fieldChanged"
 						@set-errors="setFieldErrors"
+						@set-field-required="setFieldRequired"
 					></component>
 				</template>
 			</template>
@@ -88,8 +90,9 @@ import FieldRadioInput from './fields/FieldRadioInput.vue';
 import FieldRichTextarea from './fields/FieldRichTextarea.vue';
 import FieldRichText from './fields/FieldRichText.vue';
 import FieldSelect from './fields/FieldSelect.vue';
-import FieldSelectIssue from './fields/FieldSelectIssue.vue';
+// import FieldSelectIssue from './fields/FieldSelectIssue.vue';
 import FieldSelectIssues from './fields/FieldSelectIssues.vue';
+import FieldIssueSelection from './fields/FieldIssueSelection.vue';
 import FieldSelectSubmissions from './fields/FieldSelectSubmissions.vue';
 import FieldSelectUsers from './fields/FieldSelectUsers.vue';
 import FieldShowEnsuringLink from './fields/FieldShowEnsuringLink.vue';
@@ -125,8 +128,9 @@ export default {
 		FieldRichTextarea,
 		FieldRichText,
 		FieldSelect,
-		FieldSelectIssue,
+		// FieldSelectIssue,
 		FieldSelectIssues,
+		FieldIssueSelection,
 		FieldSelectSubmissions,
 		FieldSelectUsers,
 		FieldShowEnsuringLink,
@@ -239,6 +243,13 @@ export default {
 				}
 			}
 			this.$emit('set-errors', {...newErrors});
+		},
+
+		/**
+		 * Forward field required events to the form page
+		 */
+		setFieldRequired: function (fieldName, isRequired) {
+			this.$emit('set-field-required', fieldName, isRequired);
 		},
 	},
 };
