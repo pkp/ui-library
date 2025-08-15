@@ -134,10 +134,12 @@ export const useDiscussionManagerStore = defineComponentStore(
 			);
 		}
 
-		function discussionAddTaskDetails() {
+		function discussionAddTaskDetails({workItem}) {
 			discussionActions.discussionAddTaskDetails(
 				{
 					submission: props.submission,
+					submissionStageId: props.submissionStageId,
+					workItem,
 				},
 				triggerDataChangeCallback,
 			);
@@ -152,12 +154,35 @@ export const useDiscussionManagerStore = defineComponentStore(
 			);
 		}
 
+		function discussionStartTask({workItem}) {
+			discussionActions.discussionStartTask(
+				{
+					submission: props.submission,
+					submissionStageId: props.submissionStageId,
+					workItem,
+				},
+				triggerDataChangeCallback,
+			);
+		}
+
+		function discussionSetClosed({workItem}) {
+			discussionActions.discussionSetClosed(
+				{
+					submission: props.submission,
+					submissionStageId: props.submissionStageId,
+					workItem,
+				},
+				triggerDataChangeCallback,
+			);
+		}
+
 		return {
 			discussions,
 
 			/**
 			 * Config
 			 * */
+			discussionConfig,
 			columns,
 			getItemActions,
 			topItems,
@@ -171,6 +196,8 @@ export const useDiscussionManagerStore = defineComponentStore(
 			discussionHistory,
 			discussionAddTaskDetails,
 			discussionDelete,
+			discussionStartTask,
+			discussionSetClosed,
 
 			/** Extender */
 			extender,

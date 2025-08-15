@@ -32,6 +32,7 @@
 		<div v-if="toggleMessageForm">
 			<FieldRichTextarea
 				v-bind="discussionMessagesStore.messageFieldOptions"
+				@change="fieldChanged"
 			></FieldRichTextarea>
 		</div>
 	</div>
@@ -46,6 +47,7 @@ import {useDiscussionMessagesStore} from './discussionMessagesStore';
 import PkpButton from '@/components/Button/Button.vue';
 import FieldRichTextarea from '@/components/Form/fields/FieldRichTextarea.vue';
 
+const emit = defineEmits(['newMessage']);
 const {formatShortDateTime} = useDate();
 const toggleMessageForm = ref(false);
 const discussionMessagesStore = useDiscussionMessagesStore();
@@ -63,5 +65,9 @@ defineProps({
 
 function addMessage() {
 	toggleMessageForm.value = true;
+}
+
+function fieldChanged(name, prop, newVal, localeKey) {
+	emit('newMessage', newVal);
 }
 </script>

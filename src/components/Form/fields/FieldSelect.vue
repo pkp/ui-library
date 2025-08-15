@@ -47,6 +47,7 @@
 				:aria-describedby="describedByIds"
 				:aria-invalid="!!errors?.length"
 				:required="isRequired"
+				:disabled="disabled"
 			>
 				<option
 					v-for="option in localizedOptions"
@@ -98,6 +99,10 @@ export default {
 			validator: function (value) {
 				return ['normal', 'large'].indexOf(value) !== -1;
 			},
+		},
+		disabled: {
+			type: Boolean,
+			default: false,
 		},
 	},
 

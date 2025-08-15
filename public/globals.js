@@ -251,6 +251,7 @@ window.pkp = {
 		'common.showingSteps': '{$current}/{$total} steps',
 		'common.showingXofX':
 			'Showing <strong>{$start} to {$finish}</strong> of {$total}',
+		'common.startDate': 'Start Date',
 		'common.status': 'Status',
 		'common.switchTo': 'Switch to',
 		'common.switchToNamedItem': 'Switch to {$name}',
@@ -381,6 +382,12 @@ window.pkp = {
 		'dashboard.submitRevisions': 'Submit revisions',
 		'dashboard.toBePublishedInIssue': 'To be published in issue {$issue}',
 		'discussion.title': 'Desk Review Tasks & Discussions',
+		'discussion.closeThisDiscussion': 'Close this Discussion',
+		'discussion.confirmCloseDiscussion':
+			"Are you sure you want to close this discussion? Closing the discussion won't stop you from sending or receiving messages in this thread - this ensures no message is lost.",
+		'discussion.reopenThisDiscussion': 'Reopen this Discussion',
+		'discussion.confirmReopenDiscussion':
+			'Are you sure you want to reopen this discussion?',
 		'discussion.description':
 			'Use this space to start discussions, assign tasks to others, or create your personal task list to help you move this submission to the next stage.',
 		'discussion.form.templatesLabel': 'Templates to get you started!',
@@ -895,6 +902,16 @@ window.pkp = {
 		'taskTemplate.apply': 'Apply Template',
 		'taskTemplate.applyConfirmation':
 			"Applying this template will replace data in related fields on the form. These changes won't be saved unless you choose to save. Continue?",
+
+		'task.closeThisTask': 'Close this Task',
+		'task.startedBy': 'Task started by',
+		'task.startThisTask': 'Start this task',
+		'task.confirmCloseTask':
+			"Are you sure you want to close this task? Closing the task won't end the discussion - you can still send messages on it.",
+		'task.confirmStartTask': 'Are you sure you want to start this task?',
+		'task.completeThisTask': 'Complete this task',
+		'task.reopenThisTask': 'Reopen this task',
+		'task.confirmReopenTask': 'Are you sure you want to reopen this task?',
 		'user.affiliation': 'Affiliation',
 		'user.affiliations': 'Affiliations',
 		'user.affiliations.deleteModal.message':

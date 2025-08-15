@@ -142,26 +142,90 @@ export function useDiscussionManagerActions() {
 		});
 	}
 
-	function discussionAddTaskDetails() {
+	function discussionAddTaskDetails(
+		{workItem, submission, submissionStageId},
+		finishedCallback,
+	) {
+		return discussionEdit(
+			{workItem, submission, submissionStageId},
+			finishedCallback,
+		);
+	}
+
+	function discussionStartTask() {
 		const {openDialog} = useModal();
 		openDialog({
 			actions: [
 				{
-					label: t('common.ok'),
+					label: t('common.yes'),
+					callback: (close) => {
+						close();
+					},
+				},
+				{
+					label: t('common.no'),
 					isWarnable: true,
 					callback: (close) => {
 						close();
 					},
 				},
+			],
+			title: t('task.startThisTask'),
+			message: t('task.confirmStartTask'),
+		});
+	}
+
+	function discussionSetClosed({workItem}) {
+		const isClosed = workItem.closed;
+		const statusUpdate = isClosed ? 'reopen' : 'close';
+
+		// Tasks cannot be reopened
+		if (workItem?.type === 'Task' && isClosed) {
+			return;
+		}
+
+		const modalProps = {
+			reopen: {
+				title:
+					workItem?.type === 'Task'
+						? t('task.reopenThisTask')
+						: t('discussion.reopenThisDiscussion'),
+				message:
+					workItem?.type === 'Task'
+						? t('task.confirmReopenTask')
+						: t('discussion.confirmReopenDiscussion'),
+			},
+			close: {
+				title:
+					workItem?.type === 'Task'
+						? t('task.closeThisTask')
+						: t('discussion.closeThisDiscussion'),
+				message:
+					workItem?.type === 'Task'
+						? t('task.confirmCloseTask')
+						: t('discussion.confirmCloseDiscussion'),
+			},
+		};
+
+		const {openDialog} = useModal();
+		openDialog({
+			actions: [
 				{
-					label: t('common.cancel'),
+					label: t('common.yes'),
+					callback: (close) => {
+						close();
+					},
+				},
+				{
+					label: t('common.no'),
+					isWarnable: true,
 					callback: (close) => {
 						close();
 					},
 				},
 			],
-			title: 'Task Details',
-			message: 'Placeholder',
+			title: modalProps[statusUpdate].title,
+			message: modalProps[statusUpdate].message,
 		});
 	}
 
@@ -173,5 +237,7 @@ export function useDiscussionManagerActions() {
 		discussionDelete,
 		discussionHistory,
 		discussionAddTaskDetails,
+		discussionStartTask,
+		discussionSetClosed,
 	};
 }
