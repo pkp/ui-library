@@ -96,7 +96,7 @@ export function useWorkflowVersionForm(
 
 		const {apiUrl: versionUrl} = useUrl(
 			isOJS() && modeState.isPublishMode
-				? `submissions/${store.submission.id}/publications/${publicationId}/reviewEdit`
+				? `submissions/${store.submission.id}/publications/${publicationId}`
 				: `submissions/${store.submission.id}/publications/${publicationId}/version`,
 		);
 
@@ -111,7 +111,7 @@ export function useWorkflowVersionForm(
 			// we can safely set the issueId to null and status to STATUS_READY_TO_PUBLISH
 			if (issueCount === 0) {
 				requestBody.issueId = null;
-				requestBody.prePublishStatus = pkp.const.STATUS_READY_TO_PUBLISH;
+				requestBody.status = pkp.const.STATUS_READY_TO_PUBLISH;
 			}
 			// Add issue assignment data if in publish mode and issue assignment is provided
 			else {
@@ -122,13 +122,15 @@ export function useWorkflowVersionForm(
 					return {
 						data: null,
 						validationError: {
-							issueId: [t('publication.assignToIssue.validation.incomplete')],
+							issueId: [
+								t('publication.assignToIssue.validation.issueRequired'),
+							],
 						},
 					};
 				}
 
 				requestBody.issueId = issueData.issueId;
-				requestBody.prePublishStatus = issueData.publicationStatus;
+				requestBody.status = issueData.publicationStatus;
 			}
 		}
 
@@ -276,15 +278,7 @@ export function useWorkflowVersionForm(
 		cancelButton: {label: t('common.cancel')},
 	});
 
-	addGroup(
-		'default',
-		// FIXME: adding group breaking the page layout
-		// {
-		// 	pageId: 'default',
-		// 	label: t('publication.scheduledForPublication.versionStage.label'),
-		// 	description: t('publication.scheduledForPublication.versionStage.description'),
-		// }
-	);
+	addGroup('default');
 
 	onMounted(() => {
 		latestPublication = getLatestPublication(store.submission);
@@ -296,7 +290,6 @@ export function useWorkflowVersionForm(
 				label: t('publication.sendToTextEditor.label'),
 				options: buildPublicationOptions({withCreateOption: true}),
 				size: 'large',
-				// groupId: 'default', // FIXME: adding group breaking the page layout
 				isRequired: modeState.isTextEditorMode,
 				showWhen: !modeState.isTextEditorMode ? [] : undefined,
 			});
@@ -308,7 +301,6 @@ export function useWorkflowVersionForm(
 			description: t('publication.versionSource.create.description'),
 			options: buildPublicationOptions(),
 			size: 'large',
-			// groupId: 'default', // FIXME: adding group breaking the page layout
 			showWhen: !modeState.isCreateMode
 				? ['sendToVersion', 'create']
 				: undefined,
@@ -322,7 +314,6 @@ export function useWorkflowVersionForm(
 			options: store.versionStageOptions,
 			size: 'large',
 			value: store.selectedPublication?.versionStage || null,
-			// groupId: 'default', // FIXME: adding group breaking the page layout
 			isRequired: modeState.isPublishMode,
 			showWhen: modeState.isTextEditorMode
 				? ['sendToVersion', getUnassignedVersions()]
@@ -357,13 +348,13 @@ export function useWorkflowVersionForm(
 			modeState.isCreateMode ? latestPublication?.id : null,
 		);
 
-		if (modeState.isPublishMode) {
+		// at initial setup, will set the version information(major/minor) only when
+		// at the publish mode
+		// and already have a verison stage assigned
+		if (modeState.isPublishMode && store.selectedPublication?.versionStage) {
 			setValue(
 				'versionIsMinor',
-				store.selectedPublication?.versionStage &&
-					store.selectedPublication?.versionMinor
-					? 'true'
-					: 'false',
+				store.selectedPublication?.versionMinor ? 'true' : 'false',
 			);
 		}
 	});
