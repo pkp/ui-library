@@ -5,7 +5,7 @@
 		:description="t('discussion.form.detailsDescription')"
 	/>
 
-	<template v-if="!inDisplayModeRef">
+	<template v-if="!inDisplayMode">
 		<div v-if="templates.length" class="mt-4 text-lg-bold">
 			{{ t('discussion.form.templatesLabel') }}
 		</div>
@@ -25,11 +25,7 @@
 			<li v-for="template in templates" :key="template.id" role="listitem">
 				<button
 					class="mt-2 w-full border border-light p-4 text-start hover:border-hover"
-					@click="
-						() => {
-							emit('selectTemplate', template);
-						}
-					"
+					@click="emit('selectTemplate', template)"
 				>
 					<div class="text-lg-medium text-primary">
 						<span class="uppercase">
@@ -71,7 +67,7 @@ defineProps({
 		type: String,
 		required: true,
 	},
-	inDisplayModeRef: {
+	inDisplayMode: {
 		type: Boolean,
 		required: true,
 	},
