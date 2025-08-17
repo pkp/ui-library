@@ -96,7 +96,7 @@ const props = defineProps({
 	},
 });
 
-const emit = defineEmits(['change', 'set-errors', 'set']);
+const emit = defineEmits(['change', 'set-errors', 'set', 'set-field-required']);
 const {t} = useLocalize();
 
 const availableIssues = ref([]);
@@ -184,12 +184,11 @@ const showIssueDropdown = computed(() => {
 	return option?.isPublished !== null;
 });
 
-// TODO : need it ?
-// dynamic isRequired based on selection and props.isRequired
+// dynamic isRequired based on selection and `props.isRequired`
 const isIssueSelectionRequired = computed(() => {
-	// Only require issue selection if:
-	// 1. The field is marked as required (from PHP or JS)
-	// 2. AND the selected assignment type actually requires an issue (isPublished !== null)
+	// we are only going to require issue selection if:
+	// 	1. The field is marked as required (from PHP or JS)
+	// 	2. AND the selected assignment type actually requires an issue (isPublished !== null)
 	const selectedOption = assignmentOptions.value.find(
 		(opt) => opt.value === selectedAssignmentType.value,
 	);
@@ -204,8 +203,6 @@ const shouldFetchPublishedIssues = computed(() => {
 	return option?.isPublished;
 });
 
-// TODO : need this ?
-// better validation logic
 const isValid = computed(() => {
 	// If no assignment type selected, not valid
 	if (!selectedAssignmentType.value) {
@@ -232,17 +229,12 @@ const publicationStatus = computed(() => {
 	return option?.status || null;
 });
 
-// TODO : need this ?
 // validation error messages
 const validationErrors = computed(() => {
 	if (!isValid.value) {
 		// If assignment type requires issue but none selected
 		if (isIssueSelectionRequired.value && !selectedIssueId.value) {
 			return [t('publication.assignToIssue.validation.issueRequired')];
-		}
-		// If no assignment type selected
-		if (!selectedAssignmentType.value) {
-			return [t('publication.assignToIssue.validation.assignmentRequired')];
 		}
 	}
 	return [];
@@ -263,7 +255,7 @@ watch(
 	selectedAssignmentType,
 	() => {
 		// Trigger validation update when assignment type changes
-		// This ensures validationErrors computed property updates
+		// which ensures validationErrors computed property updates
 	},
 	{immediate: true},
 );
@@ -292,15 +284,8 @@ const onIssueChange = (fieldName, propName, newValue) => {
 const emitValue = () => {
 	if (props.isPhpForm) {
 		if (assignmentOptions.value.length > 0) {
-			// TODO: Remove this after testing
-			// console.log('PHP Form - Emitting issueId, updating hiddenFields:', {
-			// 	issueId: selectedIssueId.value, // User's issue selection
-			// 	assignmentType: selectedAssignmentType.value, // User's assignment type selection
-			// 	publicationStatus: publicationStatus.value, // Calculated status from user's selection
-			// });
-
-			emit('change', 'issueId', 'value', selectedIssueId.value);
-			emit('change', 'prePublishStatus', 'value', publicationStatus.value);
+			emit('change', props.name, 'value', selectedIssueId.value);
+			emit('change', 'status', 'value', publicationStatus.value);
 		}
 	} else {
 		const value = {
@@ -309,16 +294,6 @@ const emitValue = () => {
 			publicationStatus: publicationStatus.value,
 			isValid: isValid.value,
 		};
-
-		// TODO: Remove this after testing
-		// console.log('Vue Form - FieldIssueSelection emitting:', {
-		// 	name: props.name,
-		// 	formId: props.formId,
-		// 	value: value,
-		// 	assignmentType: selectedAssignmentType.value, // User's selection
-		// 	selectedIssueId: selectedIssueId.value, // User's selection
-		// 	publicationStatus: publicationStatus.value, // Calculated status
-		// });
 
 		emit('change', props.name, 'value', value);
 	}
@@ -405,10 +380,10 @@ watch(
 
 		emitValue(); // emit the value change
 	},
-	{immediate: false}, // not run immediately since we handle it in onMounted
+	{immediate: false}, // not run immediately since it's been handled in onMounted
 );
 
-// ✅ NEW: Function to emit initial required state
+// emit initial required state
 const emitInitialRequiredState = () => {
 	// Determine if field is currently required based on initial values
 	let isCurrentlyRequired = true; // Default to required
@@ -453,12 +428,13 @@ onMounted(async () => {
 .pkpFormGroup--issueSelection {
 	border: 1px solid #ddd;
 	border-radius: 2px;
+	padding-left: 0rem;
+	padding-right: 0rem;
 
 	.pkpFormGroup__heading {
-		border-bottom: 1px solid #ddd;
+		border-bottom: 0.1rem solid #ddd;
 		margin: -2rem 0rem 2rem 0rem;
-		padding: 1.5rem 0rem 2rem 0rem;
-		border-radius: 4px 4px 0 0;
+		padding: 1.5rem 2rem 2rem 2rem;
 		float: none;
 		width: 100%;
 		padding-inline-end: 2rem;
@@ -468,6 +444,8 @@ onMounted(async () => {
 		float: none;
 		width: 100%;
 		padding-inline-start: 0;
+		padding-left: 2rem !important;
+		padding-right: 2rem !important;
 
 		> * + * {
 			margin-top: 1.5rem;
