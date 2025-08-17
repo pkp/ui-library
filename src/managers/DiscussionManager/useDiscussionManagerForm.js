@@ -1,4 +1,4 @@
-import {computed, ref, watch} from 'vue';
+import {computed, ref} from 'vue';
 import {useForm} from '@/composables/useForm';
 import {useModal} from '@/composables/useModal';
 import {useDate} from '@/composables/useDate';
@@ -20,7 +20,7 @@ export function useDiscussionManagerForm(
 		closeDialog = () => {},
 		onSubmitFn = null,
 	} = {},
-	inDisplayModeRef,
+	{inDisplayMode = false} = {},
 ) {
 	const workItemStatus = workItem?.status || status;
 	const {t, localize} = useLocalize();
@@ -35,6 +35,7 @@ export function useDiscussionManagerForm(
 	const isTask = ref(workItem?.type === 'Task');
 	const statusUpdateValue = ref(false);
 	const newMessage = ref(null);
+	const formId = inDisplayMode ? 'discussionDisplay' : 'discussionForm';
 
 	const {
 		form,
@@ -52,66 +53,22 @@ export function useDiscussionManagerForm(
 	} = useForm({}, {customSubmit: handleFormSubmission});
 
 	function getParticipantOptions(withSubLabel) {
-		return participantManagerStore.participantsList.map((participant) => {
-			let label = `${participant.fullName} (${participant.userName})`;
+		return computed(() => {
+			return participantManagerStore.participantsList.map((participant) => {
+				let label = `${participant.fullName} (${participant.userName})`;
 
-			if (participant.userName === currentUser.getCurrentUserName()) {
-				label += ` (${t('common.me')})`;
-			}
+				if (participant.userName === currentUser.getCurrentUserName()) {
+					label += ` (${t('common.me')})`;
+				}
 
-			return {
-				label,
-				subLabel: withSubLabel ? participant.roleName : undefined,
-				value: participant.id,
-			};
+				return {
+					label,
+					subLabel: withSubLabel ? participant.roleName : undefined,
+					value: participant.id,
+				};
+			});
 		});
 	}
-
-	function addParticipantsField({override = false} = {}) {
-		addFieldOptions(
-			'detailsParticipants',
-			'checkbox',
-			{
-				groupId: 'details',
-				label: t('editor.submission.stageParticipants'),
-				description: t('discussion.form.detailsParticipantsDescription'),
-				name: 'detailsParticipants',
-				options: getParticipantOptions(true),
-				showNumberedList: true,
-				value: workItem?.participants || [],
-			},
-			{override},
-		);
-	}
-
-	function addAssigneesField({override = false} = {}) {
-		addFieldOptions(
-			'taskInfoParticipants',
-			'checkbox',
-			{
-				groupId: 'taskInformation',
-				label: t('discussion.form.taskInfoAssigneesLabel'),
-				description: t('discussion.form.taskInfoAssigneesDescription'),
-				name: 'taskInfoParticipants',
-				showWhen: 'taskInfoAdd',
-				options: getParticipantOptions(),
-				value: workItem?.assignees,
-			},
-			{override},
-		);
-	}
-
-	// update the field-options when participantsList changes
-	watch(
-		() => participantManagerStore.participantsList,
-		(participantsList) => {
-			if (participantsList.length) {
-				addParticipantsField({override: true});
-				addAssigneesField({override: true});
-			}
-		},
-		{immediate: true},
-	);
 
 	function getBadgeProps() {
 		let badgeProps = {};
@@ -248,7 +205,7 @@ export function useDiscussionManagerForm(
 	}
 
 	async function handleFormSubmission(formData) {
-		if (inDisplayModeRef.value) {
+		if (inDisplayMode) {
 			updateWorkItemStatus();
 		} else {
 			if (workItem) {
@@ -270,7 +227,7 @@ export function useDiscussionManagerForm(
 		};
 	}
 
-	initEmptyForm('discussion', {
+	initEmptyForm(formId, {
 		showErrorFooter: false,
 	});
 
@@ -287,7 +244,7 @@ export function useDiscussionManagerForm(
 			props: {
 				templates: getTemplates(),
 				onSelectTemplate,
-				inDisplayModeRef,
+				inDisplayMode,
 			},
 		},
 	});
@@ -301,7 +258,15 @@ export function useDiscussionManagerForm(
 		hideOnDisplay: true,
 	});
 
-	addParticipantsField({override: false});
+	addFieldOptions('detailsParticipants', 'checkbox', {
+		groupId: 'details',
+		label: t('editor.submission.stageParticipants'),
+		description: t('discussion.form.detailsParticipantsDescription'),
+		name: 'detailsParticipants',
+		options: getParticipantOptions(true),
+		showNumberedList: true,
+		value: workItem?.participants || [],
+	});
 
 	addGroup('taskInformation', {
 		label: t('discussion.form.taskInformation'),
@@ -310,7 +275,7 @@ export function useDiscussionManagerForm(
 			component: DiscussionManagerTaskInfo,
 			props: {
 				workItem,
-				inDisplayModeRef,
+				inDisplayMode,
 				onUpdateStatusCheckbox,
 			},
 		},
@@ -333,7 +298,15 @@ export function useDiscussionManagerForm(
 		value: isTask.value ? workItem?.dueDate : null,
 	});
 
-	addAssigneesField({override: false});
+	addFieldOptions('taskInfoParticipants', 'checkbox', {
+		groupId: 'taskInformation',
+		label: t('discussion.form.taskInfoAssigneesLabel'),
+		description: t('discussion.form.taskInfoAssigneesDescription'),
+		name: 'taskInfoParticipants',
+		showWhen: 'taskInfoAdd',
+		options: getParticipantOptions(),
+		value: workItem?.assignees,
+	});
 
 	// this select is only enabled when adding a new entry
 	addFieldSelect('taskInfoShouldStart', {
@@ -371,6 +344,7 @@ export function useDiscussionManagerForm(
 			componentProps: {
 				submission,
 				discussion: workItem,
+				inDisplayMode,
 				onNewMessage,
 			},
 			groupId: 'discussion',

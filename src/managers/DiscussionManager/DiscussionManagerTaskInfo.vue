@@ -44,7 +44,7 @@ const props = defineProps({
 		type: Object,
 		required: true,
 	},
-	inDisplayModeRef: {
+	inDisplayMode: {
 		type: Boolean,
 		required: true,
 	},
@@ -66,7 +66,7 @@ const statusUpdateLabel = computed(() => {
 
 const showStatusUpdateCheckbox = computed(() => {
 	return (
-		props.inDisplayModeRef &&
+		props.inDisplayMode &&
 		props.workItem?.type === 'Task' &&
 		['Pending', 'In Progress'].includes(props.workItem?.status)
 	);

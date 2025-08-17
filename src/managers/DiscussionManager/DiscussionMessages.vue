@@ -32,6 +32,11 @@
 		<div v-if="toggleMessageForm">
 			<FieldRichTextarea
 				v-bind="discussionMessagesStore.messageFieldOptions"
+				id="newMessage"
+				name="newMessage"
+				group-id="discussion"
+				component="field-rich-textarea"
+				:form-id="formId"
 				@change="fieldChanged"
 			></FieldRichTextarea>
 		</div>
@@ -59,6 +64,14 @@ defineProps({
 	},
 	discussion: {
 		type: Object,
+		required: true,
+	},
+	inDisplayMode: {
+		type: Boolean,
+		default: () => false,
+	},
+	formId: {
+		type: String,
 		required: true,
 	},
 });
