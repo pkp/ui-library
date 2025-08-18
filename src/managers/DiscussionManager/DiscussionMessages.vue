@@ -1,24 +1,26 @@
 <template>
 	<div class="flex flex-col gap-y-6">
-		<div
-			v-for="message in discussionMessagesStore.discussionMessages"
-			:key="message.id"
-		>
-			<div class="flex justify-between border border-light bg-tertiary p-3">
-				<span class="text-lg-bold">
-					{{ t('discussion.messageFrom', {from: message.email}) }}
-				</span>
-				<span class="text-lg-normal">
-					{{ formatShortDateTime(message.createdAt) }}
-				</span>
-			</div>
-			<div class="border border-t-0 border-light p-6">
-				<div
-					v-strip-unsafe-html="message.discussionText"
-					class="semantic-defaults"
-				></div>
-			</div>
-		</div>
+		<ul class="flex flex-col gap-y-6">
+			<li
+				v-for="message in discussionMessagesStore.discussionMessages"
+				:key="message.id"
+			>
+				<p class="flex justify-between border border-light bg-tertiary p-3">
+					<span class="text-lg-bold">
+						{{ t('discussion.messageFrom', {from: message.email}) }}
+					</span>
+					<span class="text-lg-normal">
+						{{ formatShortDateTime(message.createdAt) }}
+					</span>
+				</p>
+				<p class="border border-t-0 border-light p-6">
+					<span
+						v-strip-unsafe-html="message.discussionText"
+						class="semantic-defaults"
+					></span>
+				</p>
+			</li>
+		</ul>
 
 		<div>
 			<PkpButton
