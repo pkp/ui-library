@@ -405,6 +405,8 @@ window.pkp = {
 		'discussion.form.taskInformation': 'Task Information',
 		'discussion.form.taskInfoDescription':
 			'Enter the tasks details here to help manage this task effectively, if selected.',
+		'discussion.form.taskInfoConvertToTask':
+			'You can convert this into a task by clicking <strong>Edit</strong>.',
 		'discussion.form.taskInfoAssigneesLabel':
 			'Responsible to complete this task',
 		'discussion.form.taskInfoAssigneesDescription':

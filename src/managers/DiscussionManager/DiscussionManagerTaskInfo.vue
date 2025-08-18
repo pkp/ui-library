@@ -2,7 +2,7 @@
 	<FormGroupHeader
 		:group-id="groupId"
 		:label="t('discussion.form.taskInformation')"
-		:description="t('discussion.form.taskInfoDescription')"
+		:description="taskInfoDescription"
 	/>
 	<div v-if="showStatusUpdateCheckbox" class="relative mt-6">
 		<label class="flex-start flex cursor-pointer gap-2 text-lg-normal">
@@ -77,6 +77,14 @@ const showTaskStartedInfo = computed(() => {
 		props.workItem?.type === 'Task' &&
 		['In Progress', 'Closed'].includes(props.workItem?.status)
 	);
+});
+
+const taskInfoDescription = computed(() => {
+	if (props.workItem?.type === 'Discussion' && props.inDisplayMode) {
+		return `${t('discussion.form.taskInfoDescription')}<br />${t('discussion.form.taskInfoConvertToTask')}`;
+	}
+
+	return t('discussion.form.taskInfoDescription');
 });
 
 // emit the event to update the value of the checkbox
