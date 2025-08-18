@@ -288,6 +288,7 @@ export function useDiscussionManagerForm(
 		label: t('discussion.form.taskInfoLabel'),
 		value: isTask.value || autoAddTaskDetails,
 		hideOnDisplay: true,
+		disabled: workItem?.type === 'Discussion' && workItem?.status === 'Closed',
 	});
 
 	addFieldText('taskInfoDueDate', {
