@@ -1,4 +1,4 @@
-import Comments from './Comments.vue';
+import Comments from './PkpComments.vue';
 
 export default {
 	title: 'Comments',

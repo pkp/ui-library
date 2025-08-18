@@ -1,26 +1,9 @@
 <template>
-	<button :class="buttonClass" v-bind="$attrs">
-		<slot name="left-icon" />
-		<slot />
-	</button>
+	<PkpBaseButton class="pkpButton" v-bind="$attrs"><slot /></PkpBaseButton>
 </template>
 
 <script setup>
-import {computed} from 'vue';
-
-const props = defineProps({
-	isSecondary: {
-		type: Boolean,
-		default: false,
-	},
-});
-
-const buttonClass = computed(() => {
-	return [
-		'pkpButton',
-		props.isSecondary ? 'pkpButton--secondary' : 'pkpButton--primary',
-	];
-});
+import PkpBaseButton from './PkpBaseButton.vue';
 </script>
 
 <style>
@@ -43,32 +26,32 @@ const buttonClass = computed(() => {
 	border-color: var(--pkp-color-transparent);
 }
 
-.pkpButton--primary {
+.pkpButton[data-type='primary'] {
 	background-color: var(--pkp-color-primary);
 	color: var(--pkp-text-color-on-dark);
 }
 
-.pkpButton--primary:hover {
+.pkpButton[data-type='primary']:hover {
 	background-color: var(--pkp-color-hover);
 }
 
-.pkpButton--primary:disabled {
+.pkpButton[data-type='primary']:disabled {
 	background-color: var(--pkp-background-color-disabled);
 }
 
-.pkpButton--secondary {
+.pkpButton[data-type='secondary'] {
 	background-color: var(--pkp-color-transparent);
 	border-color: var(--pkp-color-primary);
 	color: var(--pkp-color-primary);
 }
 
-.pkpButton--secondary:hover {
+.pkpButton[data-type='secondary']:hover {
 	background-color: var(--pkp-color-primary);
 	border-color: var(--pkp-color-primary);
 	color: var(--pkp-text-color-on-dark);
 }
 
-.pkpButton--secondary:disabled {
+.pkpButton[data-type='secondary']:disabled {
 	background-color: var(--pkp-color-transparent);
 	border-color: var(--pkp-text-color-disabled);
 	color: var(--pkp-text-color-disabled);

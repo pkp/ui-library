@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia';
 import {ref} from 'vue';
-export const useCommentsStore = defineStore('comments', () => {
+export const usePkpCommentsStore = defineStore('comments', () => {
 	const messages = ref([
 		{
 			body: 'blabla',
