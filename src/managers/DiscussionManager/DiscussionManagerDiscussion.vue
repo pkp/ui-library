@@ -38,14 +38,10 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['updateStatusCheckbox']);
-const statusUpdateValue = ref(false);
+const statusUpdateValue = ref(props.workItem?.status === 'Closed');
 
 const showCloseDiscussion = computed(() => {
-	return (
-		props.inDisplayMode &&
-		props.workItem?.type === 'Discussion' &&
-		props.workItem?.status === 'In Progress'
-	);
+	return props.inDisplayMode && props.workItem?.type === 'Discussion';
 });
 
 // emit the event to update the value of the checkbox
