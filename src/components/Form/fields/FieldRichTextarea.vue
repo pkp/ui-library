@@ -406,9 +406,4 @@ export default {
 		direction: rtl;
 	}
 }
-// #11693 reka-ui sets pointer-events: none on body when modal is opened
-// which prevented to click on tinyMCE modals
-body .tox-tinymce-aux.tox {
-	pointer-events: auto;
-}
 </style>
