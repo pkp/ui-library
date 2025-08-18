@@ -10,6 +10,7 @@ import {useDiscussionMessagesStore} from './discussionMessagesStore';
 import DiscussionMessages from './DiscussionMessages.vue';
 import DiscussionManagerTemplates from './DiscussionManagerTemplates.vue';
 import DiscussionManagerTaskInfo from './DiscussionManagerTaskInfo.vue';
+import DiscussionManagerDiscussion from './DiscussionManagerDiscussion.vue';
 
 export function useDiscussionManagerForm(
 	{
@@ -331,6 +332,14 @@ export function useDiscussionManagerForm(
 	addGroup('discussion', {
 		label: t('submission.discussion'),
 		description: t('discussion.form.discussionDescription'),
+		groupComponent: {
+			component: DiscussionManagerDiscussion,
+			props: {
+				workItem,
+				inDisplayMode,
+				onUpdateStatusCheckbox,
+			},
+		},
 	});
 
 	if (workItemStatus === 'New') {
