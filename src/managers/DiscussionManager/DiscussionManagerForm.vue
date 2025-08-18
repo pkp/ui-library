@@ -62,7 +62,5 @@ const props = defineProps({
 
 const hasContent = computed(() => !!props.workItem?.id);
 
-const {form, set, badgeProps} = useDiscussionManagerForm(props, {
-	autoAddTaskDetails: props.autoAddTaskDetails,
-});
+const {form, set, badgeProps} = useDiscussionManagerForm(props);
 </script>

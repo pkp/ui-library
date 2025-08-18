@@ -18,10 +18,11 @@ export function useDiscussionManagerForm(
 		submission,
 		submissionStageId,
 		workItem,
+		autoAddTaskDetails = false,
 		closeDialog = () => {},
 		onSubmitFn = null,
 	} = {},
-	{inDisplayMode = false, autoAddTaskDetails = false} = {},
+	{inDisplayMode = false} = {},
 ) {
 	const workItemStatus = workItem?.status || status;
 	const {t, localize} = useLocalize();
