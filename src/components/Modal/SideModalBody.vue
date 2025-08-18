@@ -123,7 +123,7 @@ const closeModalButton = inject('closeModalButton');
 // #11693 When tinyMCE modal is opened inside modal, ignore outside clicks to prevent closing the current modals
 function handleOutsideEvent(event) {
 	// Check if the target is part of TinyMCE's dialog
-	if (event.target.closest('.tox-tinymce-aux')) {
+	if (event.target.closest('.tox-tinymce-aux, .ui-widget')) {
 		event.preventDefault(); // Bypass the focus trap for TinyMCE elements
 	}
 }
@@ -185,5 +185,17 @@ html[dir='rtl'] .DialogContent[data-state='open'] {
 }
 html[dir='rtl'] .DialogContent[data-state='closed'] {
 	animation: sideModalSlideOutRtl 450ms ease-in-out;
+}
+</style>
+<style>
+/** #11693 reka-ui sets pointer-events: none on body when modal is opened */
+/** Addresses jquery widgets, like the date selector */
+.ui-widget {
+	pointer-events: auto;
+}
+
+/** Addresses tinyMCE modals */
+body .tox-tinymce-aux.tox {
+	pointer-events: auto;
 }
 </style>
