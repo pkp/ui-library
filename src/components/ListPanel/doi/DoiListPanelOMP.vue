@@ -17,13 +17,17 @@ export default {
 			originalItem.publications.forEach((publication) => {
 				const isCurrentVersion =
 					publication.id === this.getCurrentPublication(originalItem).id;
-				const versionNumber = publication.versionString;
+				let versionNumber = publication.versionString;
+				if (publication.versionStage == null) {
+					// to distinguish unassigned versions created on the same day, add publication ID
+					versionNumber = publication.id + ' - ' + versionNumber;
+				}
 
 				// Submissions
 				if (this.enabledDoiTypes.includes('publication')) {
 					let doiObject = publication.doiObject;
 
-					let updateWithNewDoiEndpoint = `${this.doiApiUrl}/publications/${originalItem.currentPublicationId}`;
+					let updateWithNewDoiEndpoint = `${this.doiApiUrl}/publications/${publication.id}`;
 					updateWithNewDoiEndpoint = updateWithNewDoiEndpoint.replace(
 						/dois/g,
 						'_dois',
