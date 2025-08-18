@@ -21,7 +21,7 @@ export function useDiscussionManagerForm(
 		closeDialog = () => {},
 		onSubmitFn = null,
 	} = {},
-	{inDisplayMode = false} = {},
+	{inDisplayMode = false, autoAddTaskDetails = false} = {},
 ) {
 	const workItemStatus = workItem?.status || status;
 	const {t, localize} = useLocalize();
@@ -277,6 +277,7 @@ export function useDiscussionManagerForm(
 			props: {
 				workItem,
 				inDisplayMode,
+				autoAddTaskDetails,
 				onUpdateStatusCheckbox,
 			},
 		},
@@ -285,7 +286,7 @@ export function useDiscussionManagerForm(
 	addFieldCheckbox('taskInfoAdd', {
 		groupId: 'taskInformation',
 		label: t('discussion.form.taskInfoLabel'),
-		value: isTask,
+		value: isTask.value || autoAddTaskDetails,
 		hideOnDisplay: true,
 	});
 

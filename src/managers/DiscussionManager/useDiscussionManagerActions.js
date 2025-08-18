@@ -76,7 +76,7 @@ export function useDiscussionManagerActions() {
 	}
 
 	function discussionEdit(
-		{workItem, submission, submissionStageId},
+		{workItem, submission, submissionStageId, autoAddTaskDetails},
 		finishedCallback,
 	) {
 		const {openSideModal, closeSideModal} = useModal();
@@ -90,6 +90,7 @@ export function useDiscussionManagerActions() {
 			submission,
 			submissionStageId,
 			workItem,
+			autoAddTaskDetails,
 			onCloseFn,
 			onSubmitFn: finishedCallback,
 		});
@@ -147,7 +148,7 @@ export function useDiscussionManagerActions() {
 		finishedCallback,
 	) {
 		return discussionEdit(
-			{workItem, submission, submissionStageId},
+			{workItem, submission, submissionStageId, autoAddTaskDetails: true},
 			finishedCallback,
 		);
 	}
