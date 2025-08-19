@@ -10,7 +10,9 @@
 					:is-link="true"
 					@click="() => discussionManagerStore.discussionView({workItem})"
 				>
-					{{ workItem.title.en }}
+					<span :id="`discussion_name_${workItem.id}`">
+						{{ workItem.title.en }}
+					</span>
 				</PkpButton>
 			</div>
 			<span>{{ workItemType.owner }}: {{ workItem.owner }}</span>
