@@ -11,7 +11,7 @@ import FailedJobDetailsPage from '@/pages/jobs/FailedJobDetailsPage.vue';
 import CounterReportsPage from '@/pages/counter/CounterReportsPage.vue';
 import UserInvitationPage from '@/pages/userInvitation/UserInvitationPage.vue';
 import AcceptInvitationPage from '@/pages/acceptInvitation/AcceptInvitationPage.vue';
-import UserCommentsPage from '@/pages/userComments/userCommentsPage.vue';
+import UserCommentsPage from '@/pages/userComments/UserCommentsPage.vue';
 
 export default {
 	name: 'Page',
