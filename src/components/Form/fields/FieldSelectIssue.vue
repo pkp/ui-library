@@ -76,7 +76,7 @@ export default {
 			type: String,
 			required: true,
 		},
-		/** One of the `PKPSubmission::STATUS_` constants. When set to `PKPSubmission::STATUS_QUEUED` or `PKPSubmission::STATUS_PUBLISHED` the issue selection will be hidden. */
+		/** One of the `PKPPublication::STATUS_` constants. When set to `PKPPublication::STATUS_QUEUED` or `PKPPublication::STATUS_PUBLISHED` the issue selection will be hidden. */
 		publicationStatus: {
 			type: Number,
 			required: true,
@@ -113,7 +113,7 @@ export default {
 		 */
 		button() {
 			let button = null;
-			if (this.publicationStatus !== pkp.const.STATUS_PUBLISHED) {
+			if (this.publicationStatus !== pkp.const.PUBLICATION_STATUS_PUBLISHED) {
 				button = {
 					label: this.value ? this.changeIssueLabel : this.assignLabel,
 				};
@@ -129,9 +129,11 @@ export default {
 		 */
 		notice() {
 			let notice = '';
-			if (this.publicationStatus === pkp.const.STATUS_PUBLISHED) {
+			if (this.publicationStatus === pkp.const.PUBLICATION_STATUS_PUBLISHED) {
 				notice = this.publishedNoticeBase;
-			} else if (this.publicationStatus === pkp.const.STATUS_SCHEDULED) {
+			} else if (
+				this.publicationStatus === pkp.const.PUBLICATION_STATUS_SCHEDULED
+			) {
 				notice = this.scheduledNoticeBase;
 			} else if (this.value) {
 				notice = this.assignedNoticeBase;
