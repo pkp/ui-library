@@ -111,7 +111,7 @@ export function useWorkflowVersionForm(
 			// we can safely set the issueId to null and status to STATUS_READY_TO_PUBLISH
 			if (issueCount === 0) {
 				requestBody.issueId = null;
-				requestBody.status = pkp.const.STATUS_READY_TO_PUBLISH;
+				requestBody.status = pkp.const.PUBLICATION_STATUS_READY_TO_PUBLISH;
 			}
 			// Add issue assignment data if in publish mode and issue assignment is provided
 			else {

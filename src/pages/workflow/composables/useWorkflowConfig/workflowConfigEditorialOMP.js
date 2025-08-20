@@ -479,7 +479,7 @@ export const PublicationConfig = {
 			if (!permissions.canPublish) {
 				return [];
 			}
-			if (selectedPublication.status === pkp.const.STATUS_QUEUED) {
+			if (selectedPublication.status === pkp.const.PUBLICATION_STATUS_QUEUED) {
 				if (
 					hasSubmissionPassedStage(
 						submission,
@@ -506,7 +506,9 @@ export const PublicationConfig = {
 						action: WorkflowActions.WORKFLOW_SCHEDULE_FOR_PUBLICATION,
 					},
 				});
-			} else if (selectedPublication.status === pkp.const.STATUS_SCHEDULED) {
+			} else if (
+				selectedPublication.status === pkp.const.PUBLICATION_STATUS_SCHEDULED
+			) {
 				items.push({
 					component: 'WorkflowActionButton',
 					props: {
@@ -524,7 +526,9 @@ export const PublicationConfig = {
 						action: WorkflowActions.WORKFLOW_UNSCHEDULE_PUBLICATION,
 					},
 				});
-			} else if (selectedPublication.status === pkp.const.STATUS_PUBLISHED) {
+			} else if (
+				selectedPublication.status === pkp.const.PUBLICATION_STATUS_PUBLISHED
+			) {
 				items.push({
 					component: 'WorkflowActionButton',
 					props: {
