@@ -122,6 +122,7 @@ import UsefulTipsPrimary from './icons/UsefulTipsPrimary.vue';
 import User from './icons/User.vue';
 import View from './icons/View.vue';
 import Workflow from './icons/Workflow.vue';
+import Content from './icons/Content.vue';
 
 const svgIcons = {
 	Add,
@@ -240,6 +241,7 @@ const svgIcons = {
 	View,
 	Workflow,
 	OrcidUnauthenticated,
+	Content,
 };
 
 const props = defineProps({

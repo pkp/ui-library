@@ -5,41 +5,50 @@ import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useLocalize} from '@/composables/useLocalize';
-import UserCommentDetail from '@/pages/userComments/userCommentDetail.vue';
-import UserCommentReportDetail from '@/pages/userComments/UserCommentReportDetail.vue';
+import UserCommentDetailModal from '@/pages/userComments/UserCommentDetailModal.vue';
+import UserCommentReportDetailModal from '@/pages/userComments/UserCommentReportDetailModal.vue';
+
+const {t} = useLocalize();
 
 const Actions = {
+	COMMENT_VIEW: 'commentView',
 	COMMENT_DELETE: 'commentDelete',
 	REPORT_DELETE: 'reportDelete',
-	COMMENT_PUBLICATION_VIEW: 'commentPublicationView',
+	REPORT_VIEW: 'reportView',
 };
+
+const CommentStatusMap = {
+	approved: t('manager.userComment.approved'),
+	needsApproval: t('manager.userComment.hiddenOrNeedsApproval'),
+	reported: t('manager.userComment.reported'),
+	all: t('manager.userComment.all'),
+};
+
 export const useUserCommentStore = defineComponentStore(
 	'userCommentStore',
 	(props) => {
-		const {t} = useLocalize();
-
-		const activeTab = ref('approved');
+		const activeTab = ref('all');
 		const itemsPerPage = props.itemsPerPage;
 		const currentCommentReportsPage = ref(1);
 		const currentCommentsPage = ref(1);
-		const currentComment = ref(null);
+		const currentComment = ref({});
 		const {apiUrl} = useUrl('comments');
+
+		// Used to track the last paginated page visited for comments of given status.
 		const trackedCommentPaginationPageHistory = ref({});
 
-		const commentApprovalOptions = ref([
-			{
-				label: t('manager.userComment.approveThisComment'),
-			},
-		]);
-
-		const commentsPageColumns = computed(() => {
+		const commentsTableColumns = computed(() => {
 			return [
+				{
+					header: t('submission.submission'),
+					headerSrOnly: false,
+				},
 				{
 					header: t('manager.userComment.comment'),
 					headerSrOnly: false,
 				},
 				{
-					header: t('user.role.author'),
+					header: t('common.user'),
 					headerSrOnly: false,
 				},
 				{
@@ -47,32 +56,25 @@ export const useUserCommentStore = defineComponentStore(
 					headerSrOnly: false,
 				},
 				{
-					header: t('common.view'),
-					headerSrOnly: true,
-				},
-				{
 					header: t('grid.columns.actions'),
 					headerSrOnly: true,
 				},
 			];
 		});
+
 		const reportsTableColumns = computed(() => {
 			return [
-				{
-					header: t('manager.userComment.report.reason'),
-					headerSrOnly: false,
-				},
 				{
 					header: t('manager.userComment.reportedBy'),
 					headerSrOnly: false,
 				},
 				{
-					header: t('manager.userComment.dateReported'),
+					header: t('manager.userComment.report.reason'),
 					headerSrOnly: false,
 				},
 				{
-					header: t('common.view'),
-					headerSrOnly: true,
+					header: t('manager.userComment.dateReported'),
+					headerSrOnly: false,
 				},
 				{
 					header: t('grid.columns.actions'),
@@ -83,19 +85,15 @@ export const useUserCommentStore = defineComponentStore(
 
 		const commentsUrl = computed(() => {
 			let queryParams = '';
-			switch (activeTab.value) {
-				case 'approved':
-					queryParams += `?isApproved=${true}`;
-					break;
-				case 'needsApproval':
-					queryParams += `?isApproved=${false}`;
-					break;
-				case 'reported':
-					queryParams += `?isReported=${true}`;
-					break;
-				default:
-					queryParams += `?isApproved=${true}`;
+
+			if (activeTab.value === 'approved') {
+				queryParams += `?isApproved=${true}`;
+			} else if (activeTab.value === 'needsApproval') {
+				queryParams += `?isApproved=${false}`;
+			} else if (activeTab.value === 'reported') {
+				queryParams += `?isReported=${true}`;
 			}
+
 			return apiUrl.value + queryParams;
 		});
 
@@ -109,7 +107,7 @@ export const useUserCommentStore = defineComponentStore(
 			items: comments,
 			pagination: commentsPagination,
 			isLoading: isCommentsLoading,
-			fetch: fetchComments,
+			fetch: _fetchComments,
 		} = useFetchPaginated(commentsUrl, {
 			currentPage: currentCommentsPage,
 			pageSize: itemsPerPage,
@@ -142,7 +140,7 @@ export const useUserCommentStore = defineComponentStore(
 		 * @param {object} report - The report to delete.
 		 */
 		async function reportDelete(report) {
-			const {openDialog} = useModal();
+			const {openDialog, closeSideModal, isSideModalOpened} = useModal();
 
 			openDialog({
 				title: t('manager.userComment.deleteReport'),
@@ -167,7 +165,12 @@ export const useUserCommentStore = defineComponentStore(
 									t('manager.userComment.deleteReport.success'),
 									'success',
 								);
-								await fetchCommentReports();
+
+								if (isSideModalOpened(UserCommentReportDetailModal)) {
+									closeSideModal(UserCommentReportDetailModal);
+								} else {
+									await fetchCommentReports();
+								}
 							}
 
 							close();
@@ -175,9 +178,7 @@ export const useUserCommentStore = defineComponentStore(
 					},
 					{
 						label: t('common.cancel'),
-						callback: (close) => {
-							close();
-						},
+						callback: (close) => close(),
 					},
 				],
 			});
@@ -186,18 +187,24 @@ export const useUserCommentStore = defineComponentStore(
 		/**
 		 * Toggle the approval status of a comment.
 		 * @param {boolean} isApproved - Whether the comment is approved or not.
-		 * @param {object} comment - The comment to toggle approval for.
 		 */
-		async function toggleCommentApproval(isApproved) {
-			const {apiUrl} = useUrl(
-				`comments/${currentComment.value.id}/setApproval`,
-			);
+		async function commentToggleApproval(isApproved) {
+			// Don't proceed if the current comment is already in the desired approval state.
+			if (currentComment.value.isApproved === isApproved) {
+				return;
+			}
+
 			const form = new FormData();
 			form.set('approved', isApproved);
-			const {isSuccess, fetch} = useFetch(apiUrl, {
-				method: 'PUT',
-				body: form,
-			});
+
+			const {isSuccess, fetch} = useFetch(
+				`${apiUrl.value}/${currentComment.value.id}/setApproval`,
+				{
+					method: 'PUT',
+					body: form,
+				},
+			);
+
 			await fetch();
 
 			if (isSuccess.value) {
@@ -206,7 +213,17 @@ export const useUserCommentStore = defineComponentStore(
 					t('manager.userComment.commentUpdated'),
 					'success',
 				);
+
+				const {closeSideModal} = useModal();
+				closeSideModal(UserCommentDetailModal);
 			}
+		}
+
+		/**
+		 * Fetches the comments.
+		 */
+		async function fetchComments() {
+			await _fetchComments();
 		}
 
 		/**
@@ -219,16 +236,15 @@ export const useUserCommentStore = defineComponentStore(
 		}
 
 		/**
-		 * Get the actions available for a comment item.
-		 * @param {object} comment - The comment to get actions for.
-		 * @returns {[{label: string, icon: string, name: string, isWarnable: boolean}]}
+		 * Get the actions available for a comment.
+		 * @returns {[{label: string, icon: string, name: string, isWarnable?: boolean}]}
 		 */
-		function getCommentItemActions(comment) {
+		function getCommentItemActions() {
 			const actions = [
 				{
-					label: t('manager.userComment.viewPublication'),
+					label: t('manager.userComment.viewComment'),
 					icon: 'View',
-					name: Actions.COMMENT_PUBLICATION_VIEW,
+					name: Actions.COMMENT_VIEW,
 				},
 				{
 					label: t('manager.userComment.deleteComment'),
@@ -242,14 +258,18 @@ export const useUserCommentStore = defineComponentStore(
 		}
 
 		/**
-		 * Get the actions available for a report item.
-		 * @param {object} report - The report to get actions for.
-		 * @returns {[{label: string, icon: string, name: string, isWarnable: boolean}]}
+		 * Get the actions available for a report.
+		 * @returns {[{label: string, icon: string, name: string, isWarnable?: boolean}]}
 		 */
-		function getReportItemActions(report) {
+		function getReportItemActions() {
 			return [
 				{
-					label: t('manager.userComment.deletedReport'),
+					label: t('manager.userComment.viewReport'),
+					icon: 'View',
+					name: Actions.REPORT_VIEW,
+				},
+				{
+					label: t('manager.userComment.deleteReport'),
 					icon: 'Cancel',
 					name: Actions.REPORT_DELETE,
 					isWarnable: true,
@@ -259,10 +279,10 @@ export const useUserCommentStore = defineComponentStore(
 
 		/**
 		 * Set the current page for the comment reports table.
-		 * @param {number} _currentReportsPage - The page number to set as current.
+		 * @param {number} _currentPage - The page number to set as current.
 		 */
-		function setCurrentReportsPage(_currentReportsPage) {
-			currentCommentReportsPage.value = _currentReportsPage;
+		function setCurrentReportsPage(_currentPage) {
+			currentCommentReportsPage.value = _currentPage;
 		}
 
 		/**
@@ -274,7 +294,7 @@ export const useUserCommentStore = defineComponentStore(
 		}
 
 		/**
-		 * Set the current comment to be displayed in the detail view.
+		 * Set the current comment to be displayed in the UserCommentDetail modal.
 		 * @param {object} comment - The comment to set as current.
 		 */
 		function setCurrentComment(comment) {
@@ -285,30 +305,33 @@ export const useUserCommentStore = defineComponentStore(
 		 * Open the comment detail modal for a specific comment.
 		 * @param {object} comment - The comment to open in detail view.
 		 */
-		function openCommentDetail(comment) {
+		function commentView(comment) {
 			setCurrentComment(comment);
 			const {openSideModal} = useModal();
+
 			openSideModal(
-				UserCommentDetail,
+				UserCommentDetailModal,
+				{},
 				{
-					comment,
-				},
-				{
-					onClose: async () => await fetchComments(),
+					onClose: async () => {
+						await fetchComments();
+					},
 				},
 			);
 		}
 
 		/**
 		 * Handle the change of the tab selection for comment status.
-		 * @param {string} tabId - The selected tab Id.
+		 * @param {string} tabId - The selected tab ID.
 		 */
 		function onTabUpdate(tabId) {
 			// Track the current page for each comment table.
 			// This is useful when the user is switching between tables for different comments(approved, reported, needs approval).
 			// Instead of always starting from page 1 of the paginated table, we start from the last visited page for that comment table, defaulting to page 1 if there is no previous history.
-			const pageToStartFrom = trackedCommentPaginationPageHistory[tabId] ?? 1;
-			trackedCommentPaginationPageHistory[activeTab.value] =
+			const pageToStartFrom =
+				trackedCommentPaginationPageHistory.value[tabId] ?? 1;
+
+			trackedCommentPaginationPageHistory.value[activeTab.value] =
 				currentCommentsPage.value;
 			activeTab.value = tabId;
 
@@ -320,7 +343,7 @@ export const useUserCommentStore = defineComponentStore(
 		 * @param {object} comment - The comment to delete.
 		 */
 		function commentDelete(comment) {
-			const {openDialog} = useModal();
+			const {openDialog, closeSideModal, isSideModalOpened} = useModal();
 			openDialog({
 				title: t('manager.userComment.deleteComment'),
 				message: t('manager.userComment.deleteComment.confirm'),
@@ -335,14 +358,25 @@ export const useUserCommentStore = defineComponentStore(
 									method: 'DELETE',
 								},
 							);
+
 							await fetch();
+
 							if (isSuccess.value) {
 								pkp.eventBus.$emit(
 									'notify',
 									t('manager.userComment.deleteComment.success'),
 									'success',
 								);
-								await fetchComments();
+
+								/**
+								 * Comments can be deleted from the actions options in comments list or from the comment detail modal.
+								 * If the comment was deleted from the modal, then we don't need to call `fetchComments`, as closure of the modal triggers refresh of the comments list.
+								 */
+								if (isSideModalOpened(UserCommentDetailModal)) {
+									closeSideModal(UserCommentDetailModal);
+								} else {
+									await fetchComments();
+								}
 							}
 
 							close();
@@ -350,9 +384,7 @@ export const useUserCommentStore = defineComponentStore(
 					},
 					{
 						label: t('common.cancel'),
-						callback: (close) => {
-							close();
-						},
+						callback: (close) => close(),
 					},
 				],
 			});
@@ -364,15 +396,19 @@ export const useUserCommentStore = defineComponentStore(
 		const commentTabOptions = computed(() => {
 			return [
 				{
-					label: t('manager.userComment.approved'),
+					label: CommentStatusMap['all'],
+					id: 'all',
+				},
+				{
+					label: CommentStatusMap['approved'],
 					id: 'approved',
 				},
 				{
-					label: t('manager.userComment.needsApproval'),
+					label: CommentStatusMap['needsApproval'],
 					id: 'needsApproval',
 				},
 				{
-					label: t('manager.userComment.reported'),
+					label: CommentStatusMap['reported'],
 					id: 'reported',
 				},
 			];
@@ -382,57 +418,62 @@ export const useUserCommentStore = defineComponentStore(
 		 * Open the report detail modal for a specific report.
 		 * @param {object} report - The report to open in detail view.
 		 */
-		function openReport(report) {
+		function reportView(report) {
 			const {openSideModal} = useModal();
-			openSideModal(UserCommentReportDetail, {
-				report,
-				comment: comments.value.find((c) => c.id === report.userCommentId),
-			});
+			openSideModal(
+				UserCommentReportDetailModal,
+				{
+					report,
+				},
+				{
+					onClose: async () => await fetchCommentReports(),
+				},
+			);
 		}
 
 		/**
 		 * Get the status text for a comment.
-		 * @param comment
+		 * @param comment - The comment to get the status text for.
 		 * @returns {string}
 		 */
 		function getCommentStatusText(comment) {
-			const status = [];
-			if (comment.isApproved) {
-				status.push(t('manager.userComment.approved'));
-			} else {
-				status.push(t('manager.userComment.needsApproval'));
-			}
-			if (comment.isReported) {
-				status.push(t('manager.userComment.reported'));
-			}
-			return status.join(', ');
-		}
+			let status = [];
 
-		/**
-		 * Open the publication a given comment was made for.
-		 * @param comment
-		 */
-		function commentPublicationView(comment) {
-			window.open(comment.publicationUrl, '_blank');
+			// If user is viewing all comments then show all statuses that the comment has.
+			if (activeTab.value === 'all') {
+				if (comment.isApproved) {
+					status.push(t('manager.userComment.approved'));
+				} else {
+					status.push(t('manager.userComment.hiddenOrNeedsApproval'));
+				}
+				if (comment.isReported) {
+					status.push(t('manager.userComment.reported'));
+				}
+
+				status = status.join(', ');
+			} else {
+				status = CommentStatusMap[activeTab.value];
+			}
+
+			return status;
 		}
 
 		return {
 			reportDelete,
-			toggleCommentApproval,
+			commentToggleApproval,
 			getCommentItemActions,
-			openCommentDetail,
 			setCurrentCommentsPage,
 			commentDelete,
 			getReportItemActions,
 			setCurrentReportsPage,
-			openReport,
+			reportView,
 			getCommentStatusText,
-			commentPublicationView,
 			onTabUpdate,
-			commentApprovalOptions,
+			commentView,
 			itemsPerPage,
-			commentsPageColumns,
+			commentsTableColumns,
 			comments,
+			currentComment,
 			commentsPagination,
 			currentCommentReports,
 			currentCommentReportsPagination,
