@@ -12,10 +12,7 @@
 						<Spinner v-if="isLoading" />
 						<template #actions>
 							<PkpButton
-								v-if="
-									publication.status !== getConstant('STATUS_PUBLISHED') &&
-									canEditPublication
-								"
+								v-if="canEditPublication"
 								icon="Sort"
 								:is-active="isOrdering"
 								:disabled="isLoading"
@@ -39,11 +36,7 @@
 								{{ t('contributor.listPanel.preview') }}
 							</PkpButton>
 							<PkpButton
-								v-if="
-									!isOrdering &&
-									publication.status !== getConstant('STATUS_PUBLISHED') &&
-									canEditPublication
-								"
+								v-if="!isOrdering && canEditPublication"
 								:disabled="isLoading"
 								@click="openAddModal"
 							>
@@ -65,13 +58,7 @@
 						{{ localize(item.affiliation) }}
 					</div>
 				</template>
-				<template
-					v-if="
-						publication.status !== getConstant('STATUS_PUBLISHED') &&
-						canEditPublication
-					"
-					#item-actions="{item}"
-				>
+				<template v-if="canEditPublication" #item-actions="{item}">
 					<template v-if="isOrdering">
 						<Orderer
 							:item-id="item.id"
