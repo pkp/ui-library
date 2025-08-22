@@ -41,7 +41,7 @@
 						<div class="pkpModalBody__closeWrapper">
 							<DialogClose
 								ref="closeModalButton"
-								type="button"
+								as="button"
 								class="pkpModalBody__close"
 							>
 								<span class="pkpModalBody__srOnly">
@@ -78,8 +78,8 @@ import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 import {focusFirstHeading} from '@/components/Modal/modalHelpers';
 
 const containerId = useId();
-import {useLocalize} from '@/composables/useLocalize';
-const {t} = useLocalize();
+import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
+const {t} = usePkpLocalize();
 const closeModal = inject('closeModal');
 const closeModalButton = inject('closeModalButton');
 /* Initial focus */
@@ -230,6 +230,7 @@ function handleAutoFocus(event) {
 	position: relative;
 	outline: none;
 	background-color: var(--pkp-background-color-secondary);
+	cursor: pointer;
 }
 
 .pkpModalBody__close:hover {
