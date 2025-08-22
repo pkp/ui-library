@@ -15,7 +15,7 @@
 		</template>
 
 		<SideModalLayoutBasic>
-			<PkpForm v-bind="form" @cancel="onCloseFn" @set="set" />
+			<PkpForm v-bind="form" @cancel="closeFn" @set="set" />
 		</SideModalLayoutBasic>
 	</SideModalBody>
 </template>
@@ -50,6 +50,10 @@ const props = defineProps({
 		type: Boolean,
 		default: () => false,
 	},
+	shouldWarnOnClose: {
+		type: Boolean,
+		default: () => false,
+	},
 	onCloseFn: {
 		type: Function,
 		default: () => () => {},
@@ -62,5 +66,5 @@ const props = defineProps({
 
 const hasContent = computed(() => !!props.workItem?.id);
 
-const {form, set, badgeProps} = useDiscussionManagerForm(props);
+const {form, set, badgeProps, closeFn} = useDiscussionManagerForm(props);
 </script>

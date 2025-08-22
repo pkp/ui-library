@@ -1,5 +1,6 @@
-import {computed, ref} from 'vue';
+import {computed, ref, inject} from 'vue';
 import {useForm} from '@/composables/useForm';
+import {useFormChanged} from '@/composables/useFormChanged';
 import {useModal} from '@/composables/useModal';
 import {useDate} from '@/composables/useDate';
 import {useLocalize} from '@/composables/useLocalize';
@@ -19,7 +20,8 @@ export function useDiscussionManagerForm(
 		submissionStageId,
 		workItem,
 		autoAddTaskDetails = false,
-		closeDialog = () => {},
+		shouldWarnOnClose = false,
+		onCloseFn = () => {},
 		onSubmitFn = null,
 	} = {},
 	{inDisplayMode = false} = {},
@@ -38,6 +40,7 @@ export function useDiscussionManagerForm(
 	const statusUpdateValue = ref(false);
 	const newMessage = ref(null);
 	const formId = inDisplayMode ? 'discussionDisplay' : 'discussionForm';
+	const registerCloseCallback = inject('registerCloseCallback');
 
 	const {
 		form,
@@ -364,10 +367,29 @@ export function useDiscussionManagerForm(
 	}
 
 	const badgeProps = getBadgeProps(status);
+	const additionalFields = [newMessage, statusUpdateValue];
+	const {hasStateChanged, confirmClose} = useFormChanged(
+		form,
+		additionalFields,
+		onCloseFn,
+	);
+
+	registerCloseCallback(() => {
+		if (shouldWarnOnClose) {
+			confirmClose();
+		}
+
+		return !shouldWarnOnClose || !hasStateChanged();
+	});
+
+	function closeFn() {
+		return shouldWarnOnClose ? confirmClose() : onCloseFn();
+	}
 
 	return {
 		form,
 		set,
 		badgeProps,
+		closeFn,
 	};
 }
