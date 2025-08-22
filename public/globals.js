@@ -270,6 +270,9 @@ window.pkp = {
 		'common.yetToBegin': 'Yet to begin',
 		'common.inProgress': 'In Progress',
 		'common.closed': 'Closed',
+		'common.warning': 'Warning',
+		'common.confirmUnsavedChanges':
+			'You have unsaved changes. Are you sure you want to cancel?',
 		'context.context': 'Journal',
 		'contributor.listPanel.preview': 'Preview',
 		'contributor.listPanel.preview.abbreviated': 'Abbreviated',

@@ -17,7 +17,7 @@
 				v-bind="form"
 				field-heading-element="h2"
 				:contains-form="true"
-				@cancel="onCloseFn"
+				@cancel="closeFn"
 				@set="set"
 			/>
 		</SideModalLayoutBasic>
@@ -56,6 +56,10 @@ const props = defineProps({
 		type: Object,
 		default: () => null,
 	},
+	shouldWarnOnClose: {
+		type: Boolean,
+		default: () => false,
+	},
 	onCloseFn: {
 		type: Function,
 		default: () => () => {},
@@ -69,7 +73,7 @@ const props = defineProps({
 const discussionManagerStore = useDiscussionManagerStore();
 const discussionManagerActions = useDiscussionManagerActions();
 
-const {form, set, badgeProps} = useDiscussionManagerForm(props, {
+const {form, set, badgeProps, closeFn} = useDiscussionManagerForm(props, {
 	inDisplayMode: true,
 });
 
