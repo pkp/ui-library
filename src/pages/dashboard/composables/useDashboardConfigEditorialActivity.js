@@ -75,7 +75,7 @@ export function useDashboardConfigEditorialActivity() {
 			];
 		}
 
-		if (submission.status === pkp.const.STATUS_DECLINED) {
+		if (submission.status === pkp.const.submission.STATUS_DECLINED) {
 			return [
 				{
 					component: 'DashboardCellSubmissionActivityActionAlert',
@@ -408,7 +408,7 @@ export function useDashboardConfigEditorialActivity() {
 
 		if (
 			activeStage.id === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION &&
-			submission.status === pkp.const.STATUS_SCHEDULED &&
+			submission.status === pkp.const.submission.STATUS_SCHEDULED &&
 			submission?.issueToBePublished?.label
 		) {
 			return [
@@ -512,7 +512,7 @@ export function useDashboardConfigEditorialActivity() {
 
 		if (
 			activeStage.id === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION &&
-			submission.status === pkp.const.STATUS_SCHEDULED &&
+			submission.status === pkp.const.submission.STATUS_SCHEDULED &&
 			submission?.issueToBePublished?.label
 		) {
 			return [

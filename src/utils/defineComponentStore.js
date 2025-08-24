@@ -56,6 +56,10 @@ export function defineComponentStore(
 			storesMap[storeName].mountedCount = storesMap[storeName].mountedCount + 1;
 		});
 		onBeforeUnmount(() => {
+			if (!storesMap[storeName]) {
+				return;
+			}
+
 			storesMap[storeName].mountedCount = storesMap[storeName].mountedCount - 1;
 
 			if (storesMap[storeName].mountedCount === 0) {
