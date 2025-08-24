@@ -71,7 +71,6 @@
 				@show-locale="showLocale"
 				@cancel="cancel"
 				@set-errors="setErrors"
-				@set-field-required="setFieldRequired"
 			/>
 		</div>
 	</form>
@@ -162,7 +161,6 @@ export default {
 			currentPage: '',
 			isSaving: false,
 			lastSaveTimestamp: -1,
-			fieldRequiredStates: {}, // track field required states for dynamic fields
 		};
 	},
 	computed: {
@@ -386,16 +384,6 @@ export default {
 					!shouldShowField(field, this.fields, this.groups)
 				) {
 					return;
-				}
-
-				// Check if field has custom required state
-				if (field.name in this.fieldRequiredStates) {
-					const isFieldRequired = this.fieldRequiredStates[field.name];
-					// check if Field is required by dynamic update and return if not
-					// otherwise continue with default checks
-					if (!isFieldRequired) {
-						return;
-					}
 				}
 
 				let missingValue = false;

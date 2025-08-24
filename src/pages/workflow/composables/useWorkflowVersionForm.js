@@ -6,6 +6,7 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useSubmission} from '@/composables/useSubmission';
 import {useWorkflowStore} from '@/pages/workflow/workflowStore';
 import {useApp} from '@/composables/useApp';
+import {useWorkflowPublicationFormIssue} from '@/pages/workflow/composables/useWorkflowPublicationFormIssue';
 
 const VERSION_MODE = {
 	CREATE: 'createNewVersion', // the "Create New Version" action in the publication workflow menu
@@ -111,26 +112,12 @@ export function useWorkflowVersionForm(
 			// we can safely set the issueId to null and status to STATUS_READY_TO_PUBLISH
 			if (issueCount === 0) {
 				requestBody.issueId = null;
-				requestBody.status = pkp.const.PUBLICATION_STATUS_READY_TO_PUBLISH;
+				requestBody.status = pkp.const.publication.STATUS_READY_TO_PUBLISH;
 			}
 			// Add issue assignment data if in publish mode and issue assignment is provided
 			else {
-				const issueData = formData.issueId;
-
-				// cehck if the issue selection is valid
-				if (!issueData || !issueData.isValid) {
-					return {
-						data: null,
-						validationError: {
-							issueId: [
-								t('publication.assignToIssue.validation.issueRequired'),
-							],
-						},
-					};
-				}
-
-				requestBody.issueId = issueData.issueId;
-				requestBody.status = issueData.publicationStatus;
+				requestBody.issueId = formData.issueId;
+				requestBody.status = formData.status;
 			}
 		}
 
@@ -174,7 +161,6 @@ export function useWorkflowVersionForm(
 	const {
 		form,
 		initEmptyForm,
-		addField,
 		addFieldSelect,
 		addPage,
 		addGroup,
@@ -280,7 +266,7 @@ export function useWorkflowVersionForm(
 
 	addGroup('default');
 
-	onMounted(() => {
+	onMounted(async () => {
 		latestPublication = getLatestPublication(store.submission);
 		publications = store.submission?.publications || [];
 
@@ -335,12 +321,7 @@ export function useWorkflowVersionForm(
 		// it's in publish mode
 		// have issues
 		if (modeState.isPublishMode && issueCount > 0 && isOJS()) {
-			addField('issueId', {
-				component: 'FieldIssueSelection',
-				issueCount: issueCount,
-				publication: store.selectedPublication,
-				isRequired: true,
-			});
+			await useWorkflowPublicationFormIssue(form);
 		}
 
 		setValue(
