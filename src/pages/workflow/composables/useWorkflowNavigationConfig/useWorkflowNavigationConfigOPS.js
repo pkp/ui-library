@@ -268,7 +268,7 @@ export function useWorkflowNavigationConfigOPS(pageInitConfig) {
 
 		if (
 			submission.stageId === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION &&
-			submission.status !== pkp.const.STATUS_QUEUED
+			submission.status !== pkp.const.submission.STATUS_QUEUED
 		) {
 			return `publication_${latestPublication.id}_titleAbstract`;
 		} else {

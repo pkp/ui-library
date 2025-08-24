@@ -379,7 +379,7 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 			}`;
 		} else if (
 			submission.stageId === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION &&
-			submission.status !== pkp.const.STATUS_QUEUED
+			submission.status !== pkp.const.submission.STATUS_QUEUED
 		) {
 			const latestPublication = getLatestPublication(submission);
 			return `publication_${latestPublication.id}_titleAbstract`;

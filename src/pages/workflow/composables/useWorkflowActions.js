@@ -118,8 +118,8 @@ export function useWorkflowActions() {
 		const requirePublicationStage = isOJS()
 			? !selectedPublication.versionStage ||
 				![
-					pkp.const.PUBLICATION_STATUS_READY_TO_PUBLISH,
-					pkp.const.PUBLICATION_STATUS_READY_TO_SCHEDULE,
+					pkp.const.publication.STATUS_READY_TO_PUBLISH,
+					pkp.const.publication.STATUS_READY_TO_SCHEDULE,
 				].includes(selectedPublication.status)
 			: !selectedPublication.versionStage;
 

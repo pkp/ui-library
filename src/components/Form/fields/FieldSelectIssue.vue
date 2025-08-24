@@ -113,7 +113,7 @@ export default {
 		 */
 		button() {
 			let button = null;
-			if (this.publicationStatus !== pkp.const.PUBLICATION_STATUS_PUBLISHED) {
+			if (this.publicationStatus !== pkp.const.publication.STATUS_PUBLISHED) {
 				button = {
 					label: this.value ? this.changeIssueLabel : this.assignLabel,
 				};
@@ -129,10 +129,10 @@ export default {
 		 */
 		notice() {
 			let notice = '';
-			if (this.publicationStatus === pkp.const.PUBLICATION_STATUS_PUBLISHED) {
+			if (this.publicationStatus === pkp.const.publication.STATUS_PUBLISHED) {
 				notice = this.publishedNoticeBase;
 			} else if (
-				this.publicationStatus === pkp.const.PUBLICATION_STATUS_SCHEDULED
+				this.publicationStatus === pkp.const.publication.STATUS_SCHEDULED
 			) {
 				notice = this.scheduledNoticeBase;
 			} else if (this.value) {

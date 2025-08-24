@@ -199,6 +199,24 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 	}
 
 	/**
+	 * Set a hidden field's value
+	 * @param {string} name - The field name
+	 * @param {*} value - The value to set
+	 */
+	function setHiddenValue(name, value) {
+		form.value.hiddenFields[name] = value;
+	}
+
+	/**
+	 * Get a hidden field's value
+	 * @param {string} name - The field name
+	 * @returns {*} The hidden field's value
+	 */
+	function getHiddenValue(name) {
+		return form.value.hiddenFields[name];
+	}
+
+	/**
 	 * Clear a specific form field
 	 * @param {string} fieldName - The name of the field to clear
 	 */
@@ -344,6 +362,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		form.value.pages = [];
 		form.value.groups = [];
 		form.value.fields = [];
+		form.value.hiddenFields = [];
 
 		form.value.id = formId;
 		form.value.locales = locales;
@@ -584,7 +603,9 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		set,
 		setValue,
 		setValues,
+		setHiddenValue,
 		getValue,
+		getHiddenValue,
 		removeFieldValue,
 		isFieldValueArray,
 		clearForm,

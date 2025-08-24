@@ -235,13 +235,6 @@ export default {
 		setErrors: function (errors) {
 			this.$emit('set-errors', errors);
 		},
-
-		/**
-		 * Forward field required events to the form
-		 */
-		setFieldRequired: function (fieldName, isRequired) {
-			this.$emit('set-field-required', fieldName, isRequired);
-		},
 	},
 };
 </script>

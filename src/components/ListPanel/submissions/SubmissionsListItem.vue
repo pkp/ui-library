@@ -307,7 +307,7 @@ export default {
 					pkp.const.ROLE_ID_MANAGER,
 					pkp.const.ROLE_ID_SITE_ADMIN,
 				]) &&
-				this.item.status === pkp.const.STATUS_DECLINED
+				this.item.status === pkp.const.submission.STATUS_DECLINED
 			) {
 				return true;
 			} else if (
@@ -501,9 +501,9 @@ export default {
 		 */
 		isArchived() {
 			return (
-				this.item.status === pkp.const.STATUS_SCHEDULED ||
-				this.item.status === pkp.const.STATUS_PUBLISHED ||
-				this.item.status === pkp.const.STATUS_DECLINED
+				this.item.status === pkp.const.submission.STATUS_SCHEDULED ||
+				this.item.status === pkp.const.submission.STATUS_PUBLISHED ||
+				this.item.status === pkp.const.submission.STATUS_DECLINED
 			);
 		},
 
@@ -513,7 +513,7 @@ export default {
 		 * @return {Boolean}
 		 */
 		isDeclined() {
-			return this.item.status === pkp.const.STATUS_DECLINED;
+			return this.item.status === pkp.const.submission.STATUS_DECLINED;
 		},
 
 		/**
@@ -522,7 +522,7 @@ export default {
 		 * @return {Boolean}
 		 */
 		isScheduled() {
-			return this.item.status === pkp.const.STATUS_SCHEDULED;
+			return this.item.status === pkp.const.submission.STATUS_SCHEDULED;
 		},
 
 		/**
@@ -531,7 +531,7 @@ export default {
 		 * @return {Boolean}
 		 */
 		isPublished() {
-			return this.item.status === pkp.const.STATUS_PUBLISHED;
+			return this.item.status === pkp.const.submission.STATUS_PUBLISHED;
 		},
 
 		/**
