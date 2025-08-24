@@ -91,7 +91,6 @@ import FieldRichTextarea from './fields/FieldRichTextarea.vue';
 import FieldRichText from './fields/FieldRichText.vue';
 import FieldSelect from './fields/FieldSelect.vue';
 import FieldSelectIssues from './fields/FieldSelectIssues.vue';
-import FieldIssueSelection from './fields/FieldIssueSelection.vue';
 import FieldSelectSubmissions from './fields/FieldSelectSubmissions.vue';
 import FieldSelectUsers from './fields/FieldSelectUsers.vue';
 import FieldShowEnsuringLink from './fields/FieldShowEnsuringLink.vue';
@@ -128,7 +127,6 @@ export default {
 		FieldRichText,
 		FieldSelect,
 		FieldSelectIssues,
-		FieldIssueSelection,
 		FieldSelectSubmissions,
 		FieldSelectUsers,
 		FieldShowEnsuringLink,
@@ -241,13 +239,6 @@ export default {
 				}
 			}
 			this.$emit('set-errors', {...newErrors});
-		},
-
-		/**
-		 * Forward field required events to the form page
-		 */
-		setFieldRequired: function (fieldName, isRequired) {
-			this.$emit('set-field-required', fieldName, isRequired);
 		},
 	},
 };

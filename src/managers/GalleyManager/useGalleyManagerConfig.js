@@ -85,7 +85,7 @@ export function useGalleyManagerConfig() {
 		const permittedActions = GalleyManagerConfiguration.actions
 			.filter((action) => {
 				if (
-					publication.value.status === pkp.const.PUBLICATION_STATUS_PUBLISHED &&
+					publication.value.status === pkp.const.publication.STATUS_PUBLISHED &&
 					GalleyManagerConfiguration.actionsRequiresUnpublishedState.includes(
 						action,
 					)
@@ -141,12 +141,12 @@ export function useGalleyManagerConfig() {
 
 		if (config.permittedActions.includes(Actions.GALLEY_EDIT)) {
 			const label =
-				publication.status === pkp.const.PUBLICATION_STATUS_PUBLISHED
+				publication.status === pkp.const.publication.STATUS_PUBLISHED
 					? t('common.view')
 					: t('common.edit');
 
 			const icon =
-				publication.status === pkp.const.PUBLICATION_STATUS_PUBLISHED
+				publication.status === pkp.const.publication.STATUS_PUBLISHED
 					? 'View'
 					: 'Edit';
 

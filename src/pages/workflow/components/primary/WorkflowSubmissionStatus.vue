@@ -162,7 +162,7 @@ const message = computed(() => {
 			body: currentReviewRound.status,
 		};
 	} else if (props.selectedStageId === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION) {
-		if (props.submission.status === pkp.const.STATUS_PUBLISHED) {
+		if (props.submission.status === pkp.const.submission.STATUS_PUBLISHED) {
 			return {
 				heading: t('common.status'),
 				body: t('editor.submission.workflowDecision.submission.published'),
