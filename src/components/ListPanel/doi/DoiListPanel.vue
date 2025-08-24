@@ -913,7 +913,7 @@ export default {
 		 * @returns {Boolean} Publication status of pubObject
 		 */
 		getIsPublishedBase(item) {
-			return item.status === pkp.const.STATUS_PUBLISHED;
+			return item.status === pkp.const.submission.STATUS_PUBLISHED;
 		},
 		getVersions(item) {
 			return (

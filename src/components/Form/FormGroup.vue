@@ -45,6 +45,7 @@
 								:locales="availableLocales"
 								@change="fieldChanged"
 								@set-errors="setFieldErrors"
+								@set-field-required="setFieldRequired"
 							></component>
 						</div>
 					</div>
@@ -60,6 +61,7 @@
 						:locales="availableLocales"
 						@change="fieldChanged"
 						@set-errors="setFieldErrors"
+						@set-field-required="setFieldRequired"
 					></component>
 				</template>
 			</template>
@@ -88,7 +90,6 @@ import FieldRadioInput from './fields/FieldRadioInput.vue';
 import FieldRichTextarea from './fields/FieldRichTextarea.vue';
 import FieldRichText from './fields/FieldRichText.vue';
 import FieldSelect from './fields/FieldSelect.vue';
-import FieldSelectIssue from './fields/FieldSelectIssue.vue';
 import FieldSelectIssues from './fields/FieldSelectIssues.vue';
 import FieldSelectSubmissions from './fields/FieldSelectSubmissions.vue';
 import FieldSelectUsers from './fields/FieldSelectUsers.vue';
@@ -125,7 +126,6 @@ export default {
 		FieldRichTextarea,
 		FieldRichText,
 		FieldSelect,
-		FieldSelectIssue,
 		FieldSelectIssues,
 		FieldSelectSubmissions,
 		FieldSelectUsers,

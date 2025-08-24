@@ -52,7 +52,8 @@ export function useWorkflowPermissions({submission, selectedPublication}) {
 
 		if (
 			selectedPublication.value &&
-			selectedPublication.value?.status === pkp.const.STATUS_PUBLISHED
+			selectedPublication.value?.status ===
+				pkp.const.publication.STATUS_PUBLISHED
 		) {
 			canEditPublication = false;
 		}
