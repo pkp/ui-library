@@ -7,6 +7,7 @@ import {useModal} from '@/composables/useModal';
 export const useUserInvitationPageStore = defineComponentStore(
 	'userInvitationPage',
 	(pageInitConfig) => {
+		const INVITATION_USER_ROLE_ASSIGNMENT = 'userRoleAssignment';
 		const {openDialog} = useModal();
 		const {t} = useLocalize();
 		/**
@@ -339,12 +340,21 @@ export const useUserInvitationPageStore = defineComponentStore(
 				if (data.value) {
 					openDialog({
 						title: t('userInvitation.modal.title'),
-						message: t('userInvitation.modal.message', {
-							email: invitationPayload.value.inviteeEmail,
-						}),
+						message:
+							invitationType.value === INVITATION_USER_ROLE_ASSIGNMENT
+								? t('userInvitation.modal.message', {
+										email: invitationPayload.value.inviteeEmail,
+									})
+								: t('reviewerInvitation.modal.message', {
+										email: invitationPayload.value.inviteeEmail,
+										articleTitle: '',
+									}),
 						actions: [
 							{
-								label: t('userInvitation.modal.button'),
+								label:
+									invitationType.value === INVITATION_USER_ROLE_ASSIGNMENT
+										? t('userInvitation.modal.button')
+										: t('reviewerInvitation.modal.button'),
 								callback: (close) => {
 									redirectToPage();
 								},
