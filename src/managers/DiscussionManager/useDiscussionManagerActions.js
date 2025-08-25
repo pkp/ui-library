@@ -155,81 +155,22 @@ export function useDiscussionManagerActions() {
 		);
 	}
 
-	function discussionStartTask() {
-		const {openDialog} = useModal();
-		openDialog({
-			actions: [
-				{
-					label: t('common.yes'),
-					callback: (close) => {
-						close();
-					},
-				},
-				{
-					label: t('common.no'),
-					isWarnable: true,
-					callback: (close) => {
-						close();
-					},
-				},
-			],
-			title: t('task.startThisTask'),
-			message: t('task.confirmStartTask'),
-		});
-	}
-
-	function discussionSetClosed({workItem}) {
-		const isClosed = workItem.closed;
-		const statusUpdate = isClosed ? 'reopen' : 'close';
-
-		// Tasks cannot be reopened
-		if (workItem?.type === 'Task' && isClosed) {
+	function discussionStartTask({workItem}) {
+		// Discussions cannot be started
+		if (workItem?.type === 'Discussion') {
 			return;
 		}
 
-		const modalProps = {
-			reopen: {
-				title:
-					workItem?.type === 'Task'
-						? t('task.reopenThisTask')
-						: t('discussion.reopenThisDiscussion'),
-				message:
-					workItem?.type === 'Task'
-						? t('task.confirmReopenTask')
-						: t('discussion.confirmReopenDiscussion'),
-			},
-			close: {
-				title:
-					workItem?.type === 'Task'
-						? t('task.closeThisTask')
-						: t('discussion.closeThisDiscussion'),
-				message:
-					workItem?.type === 'Task'
-						? t('task.confirmCloseTask')
-						: t('discussion.confirmCloseDiscussion'),
-			},
-		};
+		// TODO: start task
+	}
 
-		const {openDialog} = useModal();
-		openDialog({
-			actions: [
-				{
-					label: t('common.yes'),
-					callback: (close) => {
-						close();
-					},
-				},
-				{
-					label: t('common.no'),
-					isWarnable: true,
-					callback: (close) => {
-						close();
-					},
-				},
-			],
-			title: modalProps[statusUpdate].title,
-			message: modalProps[statusUpdate].message,
-		});
+	function discussionSetClosed({workItem}) {
+		// Tasks cannot be reopened
+		if (workItem?.type === 'Task' && workItem.closed) {
+			return;
+		}
+
+		// TODO: update status
 	}
 
 	return {
