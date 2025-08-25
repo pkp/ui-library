@@ -142,14 +142,14 @@ export function useDiscussionManagerConfig() {
 				name: Actions.TASKS_AND_DISCUSSIONS_EDIT,
 				icon: 'Edit',
 			});
-		}
 
-		if (workItem.type === 'Discussion') {
-			actions.push({
-				label: t('discussion.addTaskDetails'),
-				name: Actions.TASKS_AND_DISCUSSIONS_ADD_TASK_DETAILS,
-				icon: 'TaskDetails',
-			});
+			if (workItem.type === 'Discussion' && workItem.status === 'In Progress') {
+				actions.push({
+					label: t('discussion.addTaskDetails'),
+					name: Actions.TASKS_AND_DISCUSSIONS_ADD_TASK_DETAILS,
+					icon: 'TaskDetails',
+				});
+			}
 		}
 
 		if (

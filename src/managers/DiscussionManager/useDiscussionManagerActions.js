@@ -1,6 +1,7 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
 import DiscussionManagerForm from './DiscussionManagerForm.vue';
+import DiscussionManagerFormDisplay from './DiscussionManagerFormDisplay.vue';
 
 export const Actions = {
 	TASKS_AND_DISCUSSIONS_LIST: 'discussionList',
@@ -22,15 +23,14 @@ export function useDiscussionManagerActions() {
 		const {openSideModal, closeSideModal} = useModal();
 
 		function onCloseFn() {
-			closeSideModal(DiscussionManagerForm);
+			closeSideModal(DiscussionManagerFormDisplay);
 		}
 
-		openSideModal(DiscussionManagerForm, {
+		openSideModal(DiscussionManagerFormDisplay, {
 			workItem,
 			submission,
 			submissionStageId,
 			onCloseFn,
-			inDisplayMode: true,
 		});
 	}
 
@@ -76,7 +76,7 @@ export function useDiscussionManagerActions() {
 	}
 
 	function discussionEdit(
-		{workItem, submission, submissionStageId},
+		{workItem, submission, submissionStageId, autoAddTaskDetails},
 		finishedCallback,
 	) {
 		const {openSideModal, closeSideModal} = useModal();
@@ -90,6 +90,7 @@ export function useDiscussionManagerActions() {
 			submission,
 			submissionStageId,
 			workItem,
+			autoAddTaskDetails,
 			onCloseFn,
 			onSubmitFn: finishedCallback,
 		});
@@ -142,27 +143,32 @@ export function useDiscussionManagerActions() {
 		});
 	}
 
-	function discussionAddTaskDetails() {
-		const {openDialog} = useModal();
-		openDialog({
-			actions: [
-				{
-					label: t('common.ok'),
-					isWarnable: true,
-					callback: (close) => {
-						close();
-					},
-				},
-				{
-					label: t('common.cancel'),
-					callback: (close) => {
-						close();
-					},
-				},
-			],
-			title: 'Task Details',
-			message: 'Placeholder',
-		});
+	function discussionAddTaskDetails(
+		{workItem, submission, submissionStageId},
+		finishedCallback,
+	) {
+		return discussionEdit(
+			{workItem, submission, submissionStageId, autoAddTaskDetails: true},
+			finishedCallback,
+		);
+	}
+
+	function discussionStartTask({workItem}) {
+		// Discussions cannot be started
+		if (workItem?.type === 'Discussion') {
+			return;
+		}
+
+		// TODO: start task
+	}
+
+	function discussionSetClosed({workItem}) {
+		// Tasks cannot be reopened
+		if (workItem?.type === 'Task' && workItem.closed) {
+			return;
+		}
+
+		// TODO: update status
 	}
 
 	return {
@@ -173,5 +179,7 @@ export function useDiscussionManagerActions() {
 		discussionDelete,
 		discussionHistory,
 		discussionAddTaskDetails,
+		discussionStartTask,
+		discussionSetClosed,
 	};
 }

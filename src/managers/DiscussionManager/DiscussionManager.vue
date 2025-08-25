@@ -60,6 +60,7 @@
 								:is="Components[column.component] || column.component"
 								v-for="(column, i) in discussionManagerStore.columns"
 								:key="i"
+								:index="i"
 								:work-item="workItem"
 							></component>
 						</TableRow>

@@ -1,5 +1,6 @@
-import {computed, ref, watch} from 'vue';
+import {computed, ref, inject} from 'vue';
 import {useForm} from '@/composables/useForm';
+import {useFormChanged} from '@/composables/useFormChanged';
 import {useModal} from '@/composables/useModal';
 import {useDate} from '@/composables/useDate';
 import {useLocalize} from '@/composables/useLocalize';
@@ -10,15 +11,20 @@ import {useDiscussionMessagesStore} from './discussionMessagesStore';
 import DiscussionMessages from './DiscussionMessages.vue';
 import DiscussionManagerTemplates from './DiscussionManagerTemplates.vue';
 import DiscussionManagerTaskInfo from './DiscussionManagerTaskInfo.vue';
+import DiscussionManagerDiscussion from './DiscussionManagerDiscussion.vue';
 
-export function useDiscussionManagerForm({
-	status = 'New',
-	submission,
-	submissionStageId,
-	workItem,
-	closeDialog = () => {},
-	onSubmitFn = null,
-} = {}) {
+export function useDiscussionManagerForm(
+	{
+		status = 'New',
+		submission,
+		submissionStageId,
+		workItem,
+		autoAddTaskDetails = false,
+		onCloseFn = () => {},
+		onSubmitFn = null,
+	} = {},
+	{inDisplayMode = false} = {},
+) {
 	const workItemStatus = workItem?.status || status;
 	const {t, localize} = useLocalize();
 	const participantManagerStore = useParticipantManagerStore({
@@ -30,6 +36,10 @@ export function useDiscussionManagerForm({
 	const currentUser = useCurrentUser();
 	const {getRelativeTargetDate} = useDate();
 	const isTask = ref(workItem?.type === 'Task');
+	const statusUpdateValue = ref(false);
+	const newMessage = ref(null);
+	const formId = inDisplayMode ? 'discussionDisplay' : 'discussionForm';
+	const registerCloseCallback = inject('registerCloseCallback');
 
 	const {
 		form,
@@ -47,66 +57,22 @@ export function useDiscussionManagerForm({
 	} = useForm({}, {customSubmit: handleFormSubmission});
 
 	function getParticipantOptions(withSubLabel) {
-		return participantManagerStore.participantsList.map((participant) => {
-			let label = `${participant.fullName} (${participant.userName})`;
+		return computed(() => {
+			return participantManagerStore.participantsList.map((participant) => {
+				let label = `${participant.fullName} (${participant.userName})`;
 
-			if (participant.userName === currentUser.getCurrentUserName()) {
-				label += ` (${t('common.me')})`;
-			}
+				if (participant.userName === currentUser.getCurrentUserName()) {
+					label += ` (${t('common.me')})`;
+				}
 
-			return {
-				label,
-				subLabel: withSubLabel ? participant.roleName : undefined,
-				value: participant.id,
-			};
+				return {
+					label,
+					subLabel: withSubLabel ? participant.roleName : undefined,
+					value: participant.id,
+				};
+			});
 		});
 	}
-
-	function addParticipantsField({override = false} = {}) {
-		addFieldOptions(
-			'detailsParticipants',
-			'checkbox',
-			{
-				groupId: 'details',
-				label: t('editor.submission.stageParticipants'),
-				description: t('discussion.form.detailsParticipantsDescription'),
-				name: 'detailsParticipants',
-				options: getParticipantOptions(true),
-				showNumberedList: true,
-				value: workItem?.participants || [],
-			},
-			{override},
-		);
-	}
-
-	function addAssigneesField({override = false} = {}) {
-		addFieldOptions(
-			'taskInfoParticipants',
-			'checkbox',
-			{
-				groupId: 'taskInformation',
-				label: t('discussion.form.taskInfoAssigneesLabel'),
-				description: t('discussion.form.taskInfoAssigneesDescription'),
-				name: 'taskInfoParticipants',
-				showWhen: 'taskInfoAdd',
-				options: getParticipantOptions(),
-				value: workItem?.assignees,
-			},
-			{override},
-		);
-	}
-
-	// update the field-options when participantsList changes
-	watch(
-		() => participantManagerStore.participantsList,
-		(participantsList) => {
-			if (participantsList.length) {
-				addParticipantsField({override: true});
-				addAssigneesField({override: true});
-			}
-		},
-		{immediate: true},
-	);
 
 	function getBadgeProps() {
 		let badgeProps = {};
@@ -216,7 +182,48 @@ export function useDiscussionManagerForm({
 		});
 	}
 
+	function onUpdateStatusCheckbox(val) {
+		statusUpdateValue.value = val;
+	}
+
+	function onNewMessage(val) {
+		newMessage.value = val;
+	}
+
+	function addWorkItem() {
+		console.log('add form');
+	}
+
+	function addNewMessage() {
+		console.log('add new message');
+	}
+
+	function updateWorkItemStatus() {
+		if (statusUpdateValue.value) {
+			console.log('update task status');
+		}
+	}
+
+	function updateWorkItem() {
+		console.log('update form');
+	}
+
 	async function handleFormSubmission(formData) {
+		if (inDisplayMode) {
+			updateWorkItemStatus();
+		} else {
+			if (workItem) {
+				updateWorkItem();
+			} else {
+				addWorkItem();
+			}
+		}
+
+		if (workItem && newMessage.value) {
+			// check if there is message
+			addNewMessage();
+		}
+
 		// return result to Form component handler
 		return {
 			data: {},
@@ -224,7 +231,7 @@ export function useDiscussionManagerForm({
 		};
 	}
 
-	initEmptyForm('discussion', {
+	initEmptyForm(formId, {
 		showErrorFooter: false,
 	});
 
@@ -241,6 +248,7 @@ export function useDiscussionManagerForm({
 			props: {
 				templates: getTemplates(),
 				onSelectTemplate,
+				inDisplayMode,
 			},
 		},
 	});
@@ -254,22 +262,36 @@ export function useDiscussionManagerForm({
 		hideOnDisplay: true,
 	});
 
-	addParticipantsField({override: false});
+	addFieldOptions('detailsParticipants', 'checkbox', {
+		groupId: 'details',
+		label: t('editor.submission.stageParticipants'),
+		description: t('discussion.form.detailsParticipantsDescription'),
+		name: 'detailsParticipants',
+		options: getParticipantOptions(true),
+		showNumberedList: true,
+		value: workItem?.participants || [],
+	});
 
 	addGroup('taskInformation', {
 		label: t('discussion.form.taskInformation'),
 		description: t('discussion.form.taskInfoDescription'),
 		groupComponent: {
 			component: DiscussionManagerTaskInfo,
+			props: {
+				workItem,
+				inDisplayMode,
+				autoAddTaskDetails,
+				onUpdateStatusCheckbox,
+			},
 		},
-		hideOnDisplay: !isTask.value,
 	});
 
 	addFieldCheckbox('taskInfoAdd', {
 		groupId: 'taskInformation',
 		label: t('discussion.form.taskInfoLabel'),
-		value: isTask,
+		value: isTask.value || autoAddTaskDetails,
 		hideOnDisplay: true,
+		disabled: workItem?.type === 'Discussion' && workItem?.status === 'Closed',
 	});
 
 	addFieldText('taskInfoDueDate', {
@@ -282,31 +304,47 @@ export function useDiscussionManagerForm({
 		value: isTask.value ? workItem?.dueDate : null,
 	});
 
-	addAssigneesField({override: false});
+	addFieldOptions('taskInfoParticipants', 'checkbox', {
+		groupId: 'taskInformation',
+		label: t('discussion.form.taskInfoAssigneesLabel'),
+		description: t('discussion.form.taskInfoAssigneesDescription'),
+		name: 'taskInfoParticipants',
+		showWhen: 'taskInfoAdd',
+		options: getParticipantOptions(),
+		value: workItem?.assignees,
+	});
 
-	if (['Pending', 'New'].includes(status)) {
-		addFieldSelect('taskInfoShouldStart', {
-			groupId: 'taskInformation',
-			name: 'taskInfoShouldStart',
-			showWhen: 'taskInfoAdd',
-			value: true,
-			hideOnDisplay: true,
-			options: [
-				{
-					label: t('discussion.form.startTaskUponSaving'),
-					value: true,
-				},
-				{
-					label: t('discussion.form.createDontStartTask'),
-					value: false,
-				},
-			],
-		});
-	}
+	// this select is only enabled when adding a new entry
+	addFieldSelect('taskInfoShouldStart', {
+		groupId: 'taskInformation',
+		name: 'taskInfoShouldStart',
+		showWhen: 'taskInfoAdd',
+		value: true,
+		hideOnDisplay: true,
+		disabled: !!workItem,
+		options: [
+			{
+				label: t('discussion.form.startTaskUponSaving'),
+				value: true,
+			},
+			{
+				label: t('discussion.form.createDontStartTask'),
+				value: false,
+			},
+		],
+	});
 
 	addGroup('discussion', {
 		label: t('submission.discussion'),
 		description: t('discussion.form.discussionDescription'),
+		groupComponent: {
+			component: DiscussionManagerDiscussion,
+			props: {
+				workItem,
+				inDisplayMode,
+				onUpdateStatusCheckbox,
+			},
+		},
 	});
 
 	if (workItemStatus === 'New') {
@@ -320,16 +358,47 @@ export function useDiscussionManagerForm({
 			componentProps: {
 				submission,
 				discussion: workItem,
+				inDisplayMode,
+				onNewMessage,
 			},
 			groupId: 'discussion',
 		});
 	}
 
 	const badgeProps = getBadgeProps(status);
+	const additionalFields = [newMessage, statusUpdateValue];
+	const {hasStateChanged, confirmClose} = useFormChanged(
+		form,
+		additionalFields,
+		onCloseFn,
+	);
+
+	// show a warning before closing the modal if there are unsaved changes
+	registerCloseCallback(() => {
+		if (workItem) {
+			confirmClose();
+		}
+
+		return !workItem || !hasStateChanged();
+	});
+
+	// ask before leaving the page (close tab, refresh, navigate) if unsaved changes exist
+	if (workItem) {
+		window.addEventListener('beforeunload', (event) => {
+			if (hasStateChanged()) {
+				event.preventDefault();
+			}
+		});
+	}
+
+	function closeFn() {
+		return workItem ? confirmClose() : onCloseFn();
+	}
 
 	return {
 		form,
 		set,
 		badgeProps,
+		closeFn,
 	};
 }

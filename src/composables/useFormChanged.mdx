@@ -1,0 +1,24 @@
+import {Meta} from '@storybook/addon-docs/blocks';
+
+<Meta title="Composables/useFormChanged" />
+
+# useFormChanged
+
+This composable helps keep track of whether a form has been edited (but not saved) and can be used to prompt a confirmation before closing it. Useful for preventing users from accidentally losing work.
+
+## Example
+
+```
+const {hasStateChanged, confirmClose} = useFormChanged(
+    form,
+    additionalFields,
+    onCloseFn,
+);
+
+// Can be used with modals or close handlers
+registerCloseCallback(() => {
+    confirmClose();
+
+    return !hasStateChanged();
+});
+```
