@@ -69,6 +69,16 @@ export default {
 				return false;
 			},
 		},
+		/**
+		 * Passing a string value will enable `controlled mode`.
+		 * In this mode, the `activeTab` is used by the parent component to control which tab is active.
+		 *
+		 * When `null`, the component will manage the active tab internally.
+		 */
+		activeTab: {
+			type: [String, null],
+			default: null,
+		},
 	},
 	data() {
 		return {
@@ -83,7 +93,11 @@ export default {
 		 * @param {String} tabId
 		 */
 		setCurrentTab(tabId) {
-			this.currentTab = tabId;
+			if (this.activeTab === null) {
+				this.currentTab = tabId;
+			} else {
+				this.$emit('update:activeTab', tabId);
+			}
 			this.$nextTick(() => {
 				$(this.$refs['button' + tabId]).focus();
 				this.updateUrl();
@@ -155,6 +169,14 @@ export default {
 		currentTab(newVal, oldVal) {
 			this.tabs.forEach((tab) => tab.isActive(tab.id === newVal));
 		},
+		/**
+		 * In controlled mode, when the `activeTab` prop changes, update the current tab.
+		 */
+		activeTab(newVal) {
+			if (newVal !== null) {
+				this.currentTab = newVal;
+			}
+		},
 	},
 	provide() {
 		return {
@@ -176,7 +198,11 @@ export default {
 		/**
 		 * Set the tab to view when loaded
 		 */
-		this.currentTab = this.defaultTab || this.tabs[0].id;
+		const initialTab =
+			this.activeTab !== null
+				? this.activeTab
+				: this.defaultTab || this.tabs[0]?.id || '';
+		this.currentTab = initialTab;
 
 		/**
 		 * Listen for global 'open-tab' events and open the correct tab when called
