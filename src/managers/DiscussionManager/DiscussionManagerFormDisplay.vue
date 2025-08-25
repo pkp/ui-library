@@ -56,10 +56,6 @@ const props = defineProps({
 		type: Object,
 		default: () => null,
 	},
-	shouldWarnOnClose: {
-		type: Boolean,
-		default: () => false,
-	},
 	onCloseFn: {
 		type: Function,
 		default: () => () => {},
