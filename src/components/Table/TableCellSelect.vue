@@ -55,6 +55,7 @@ function onClick($event) {
 			{
 				label: t('common.yes'),
 				callback: (close) => {
+					isChecked.value = !isChecked.value;
 					emit('change', isChecked.value);
 					close();
 				},
