@@ -20,7 +20,6 @@ export function useDiscussionManagerForm(
 		submissionStageId,
 		workItem,
 		autoAddTaskDetails = false,
-		shouldWarnOnClose = false,
 		onCloseFn = () => {},
 		onSubmitFn = null,
 	} = {},
@@ -374,16 +373,26 @@ export function useDiscussionManagerForm(
 		onCloseFn,
 	);
 
+	// show a warning before closing the modal if there are unsaved changes
 	registerCloseCallback(() => {
-		if (shouldWarnOnClose) {
+		if (workItem) {
 			confirmClose();
 		}
 
-		return !shouldWarnOnClose || !hasStateChanged();
+		return !workItem || !hasStateChanged();
 	});
 
+	// ask before leaving the page (close tab, refresh, navigate) if unsaved changes exist
+	if (workItem) {
+		window.addEventListener('beforeunload', (event) => {
+			if (hasStateChanged()) {
+				event.preventDefault();
+			}
+		});
+	}
+
 	function closeFn() {
-		return shouldWarnOnClose ? confirmClose() : onCloseFn();
+		return workItem ? confirmClose() : onCloseFn();
 	}
 
 	return {

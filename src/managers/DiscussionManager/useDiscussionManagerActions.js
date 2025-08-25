@@ -30,7 +30,6 @@ export function useDiscussionManagerActions() {
 			workItem,
 			submission,
 			submissionStageId,
-			shouldWarnOnClose: true,
 			onCloseFn,
 		});
 	}
@@ -92,7 +91,6 @@ export function useDiscussionManagerActions() {
 			submissionStageId,
 			workItem,
 			autoAddTaskDetails,
-			shouldWarnOnClose: true,
 			onCloseFn,
 			onSubmitFn: finishedCallback,
 		});
