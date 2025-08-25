@@ -1014,6 +1014,11 @@ window.pkp = {
 			"Once the user is enabled, they will regain access to OJS, and you'll be able to invite them to roles as needed.",
 		'grid.user.grid.user.disableReasonDescription':
 			"Please note that once a user is disabled, you won't be able to add them to any roles until they are enabled again.",
+		'reviewer.responseDueDate':'Review Response Date',
+		'reviewer.reviewDueDate':'Review Response Due Date',
+		'reviewer.reviewTypes':'Review Types',
+		'reviewerInvitation.modal.message':'{$email} has been invited to review the submission "{$articleTitle}"<br><br> You can be updated about the user\'s descision on the reviewer panel in the review workflow or through email and OJS notifications',
+		'reviewerInvitation.modal.button':'View submission'
 	},
 	tinyMCE: {
 		skinUrl: '/styles/tinymce',
