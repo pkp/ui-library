@@ -1,4 +1,4 @@
-import {onMounted, watch} from 'vue';
+import {watch} from 'vue';
 import {useUrl} from '@/composables/useUrl';
 import {useForm} from '@/composables/useForm';
 import {useFetch} from '@/composables/useFetch';
@@ -233,60 +233,56 @@ export function useWorkflowVersionForm(
 	});
 	addGroup('default');
 
-	onMounted(() => {
-		latestPublication = getLatestPublication(store.submission);
-		publications = store.submission?.publications || [];
+	latestPublication = getLatestPublication(store.submission);
+	publications = store.submission?.publications || [];
 
-		// Send To field (only visible when sending file to text editor)
-		if (modeState.isTextEditorMode) {
-			addFieldSelect('sendToVersion', {
-				label: t('publication.sendToTextEditor.label'),
-				options: buildPublicationOptions({withCreateOption: true}),
-				size: 'large',
-				isRequired: modeState.isTextEditorMode,
-				showWhen: !modeState.isTextEditorMode ? [] : undefined,
-			});
-		}
-
-		// Version source field (only visible when creating a new version, either via Create New Version button or Send to Text Editor when Send to File field "create" option is selected)
-		addFieldSelect('versionSource', {
-			label: t('publication.versionSource.create.label'),
-			description: t('publication.versionSource.create.description'),
-			options: buildPublicationOptions(),
+	// Send To field (only visible when sending file to text editor)
+	if (modeState.isTextEditorMode) {
+		addFieldSelect('sendToVersion', {
+			label: t('publication.sendToTextEditor.label'),
+			options: buildPublicationOptions({withCreateOption: true}),
 			size: 'large',
-			showWhen: !modeState.isCreateMode
-				? ['sendToVersion', 'create']
-				: undefined,
+			isRequired: modeState.isTextEditorMode,
+			showWhen: !modeState.isTextEditorMode ? [] : undefined,
 		});
+	}
 
-		// Version stage field is required when form is in publish mode for "Unassigned Version"
-		// If sendToEditor mode, only show this field if the selected sendTo version is an "Unassigned version"
-		addFieldSelect('versionStage', {
-			label: t('publication.versionStage.label'),
-			description: t('publication.versionStage.description'),
-			options: store.versionStageOptions,
-			size: 'large',
-			isRequired: modeState.isPublishMode,
-			showWhen: modeState.isTextEditorMode
-				? ['sendToVersion', getUnassignedVersions()]
-				: undefined,
-		});
-
-		// Version significance field
-		// If sendToEditor mode, only show this field if the selected sendTo version is an "Unassigned version"
-		addFieldSelect(
-			'versionIsMinor',
-			getVersionIsMinorField({
-				allowMinorVersion: true,
-				currentValue: '',
-			}),
-		);
-
-		setValue(
-			'versionSource',
-			modeState.isCreateMode ? latestPublication?.id : null,
-		);
+	// Version source field (only visible when creating a new version, either via Create New Version button or Send to Text Editor when Send to File field "create" option is selected)
+	addFieldSelect('versionSource', {
+		label: t('publication.versionSource.create.label'),
+		description: t('publication.versionSource.create.description'),
+		options: buildPublicationOptions(),
+		size: 'large',
+		showWhen: !modeState.isCreateMode ? ['sendToVersion', 'create'] : undefined,
 	});
+
+	// Version stage field is required when form is in publish mode for "Unassigned Version"
+	// If sendToEditor mode, only show this field if the selected sendTo version is an "Unassigned version"
+	addFieldSelect('versionStage', {
+		label: t('publication.versionStage.label'),
+		description: t('publication.versionStage.description'),
+		options: store.versionStageOptions,
+		size: 'large',
+		isRequired: modeState.isPublishMode,
+		showWhen: modeState.isTextEditorMode
+			? ['sendToVersion', getUnassignedVersions()]
+			: undefined,
+	});
+
+	// Version significance field
+	// If sendToEditor mode, only show this field if the selected sendTo version is an "Unassigned version"
+	addFieldSelect(
+		'versionIsMinor',
+		getVersionIsMinorField({
+			allowMinorVersion: true,
+			currentValue: '',
+		}),
+	);
+
+	setValue(
+		'versionSource',
+		modeState.isCreateMode ? latestPublication?.id : null,
+	);
 
 	watch(
 		() => getField('versionStage')?.value,
