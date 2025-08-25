@@ -22,11 +22,8 @@ export const dbarnes = {
 	},
 	publicationId: 17,
 	seq: 1,
-	userGroupId: 14,
-	userGroupName: {
-		fr_CA: '',
-		en: 'Author',
-	},
+	contributorType: 'PERSON',
+	contributorRoles: {AUTHOR: {en: 'Author', fr_CA: 'Auteur-e'}},
 };
 
 export const lipsum = {
@@ -54,11 +51,8 @@ export const lipsum = {
 	},
 	publicationId: 17,
 	seq: 1,
-	userGroupId: 14,
-	userGroupName: {
-		fr_CA: '',
-		en: 'Author',
-	},
+	contributorType: 'PERSON',
+	contributorRoles: {AUTHOR: {en: 'Author', fr_CA: 'Auteur-e'}},
 };
 
 export default [{...dbarnes}, {...lipsum}];
