@@ -1,24 +1,19 @@
 <template>
-	<TableCell>
-		<div v-if="workItem.type === 'Task'" class="flex items-center text-primary">
-			<button
-				type="button"
-				class="m-0 border-0 bg-transparent p-0 outline-none focus:outline-none"
-				:aria-pressed="!!props.workItem?.started"
-				:aria-labelledby="labelIds"
-				:disabled="workItem.status !== 'Pending'"
-				@click="discussionManagerStore.discussionStartTask({workItem})"
-			>
-				<Icon :icon="icon" class="h-5 w-5"></Icon>
-			</button>
-		</div>
-	</TableCell>
+	<TableCellSelect
+		:visible="workItem.type === 'Task'"
+		:disabled="workItem.status !== 'Pending'"
+		:checked="!!props.workItem?.started"
+		:labelled-by="labelIds"
+		:confirm-title="t('task.startThisTask')"
+		:confirm-message="t('task.confirmStartTask')"
+		@change="discussionManagerStore.discussionStartTask({workItem})"
+	/>
 </template>
 
 <script setup>
 import {inject} from 'vue';
-import TableCell from '@/components/Table/TableCell.vue';
-import Icon from '@/components/Icon/Icon.vue';
+import {t} from '@/utils/i18n';
+import TableCellSelect from '@/components/Table/TableCellSelect.vue';
 
 import {useDiscussionManagerStore} from './discussionManagerStore';
 
@@ -29,7 +24,6 @@ const props = defineProps({
 	workItem: {type: Object, required: true},
 	index: {type: Number, required: true},
 });
-const icon = props.workItem?.started ? 'CheckboxTicked' : 'Checkbox';
 
 const labelIds = `discussion_name_${props.workItem?.id} ${tableContext.tableId}_${props.index}`;
 </script>
