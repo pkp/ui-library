@@ -194,14 +194,13 @@ export const useUserCommentStore = defineComponentStore(
 				return;
 			}
 
-			const form = new FormData();
-			form.set('approved', isApproved);
-
 			const {isSuccess, fetch} = useFetch(
 				`${apiUrl.value}/${currentComment.value.id}/setApproval`,
 				{
 					method: 'PUT',
-					body: form,
+					body: {
+						approved: isApproved,
+					},
 				},
 			);
 
@@ -450,7 +449,7 @@ export const useUserCommentStore = defineComponentStore(
 					status.push(t('manager.userComment.reported'));
 				}
 
-				status = status.join(', ');
+				status = status.join(t('common.commaListSeparator'));
 			} else {
 				status = CommentStatusMap[activeTab.value];
 			}

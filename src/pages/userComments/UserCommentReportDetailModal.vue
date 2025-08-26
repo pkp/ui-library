@@ -13,61 +13,55 @@
 				<div class="border-y border-e border-s border-light">
 					<div class="flex h-full">
 						<div class="flex-grow border-e border-light p-5">
-							<Panel>
-								<PanelSection>
-									<template #header>
-										<span class="font-bold text-heading">
-											{{ t('manager.userComment.reportPreview') }}
-										</span>
-									</template>
-								</PanelSection>
-
-								<PanelSection>
-									<div>
-										<span class="text-sm-light text-secondary">
+							<div class="border border-light">
+								<div class="border-b border-light px-6 py-4">
+									<span class="font-bold text-heading">
+										{{ t('manager.userComment.reportPreview') }}
+									</span>
+								</div>
+								<div class="mb-4 space-y-4 px-6 py-4">
+									<div class="text-sm-light text-secondary">
+										<span>
 											{{ formatShortDateTime(report.createdAt) }}
 										</span>
+									</div>
 
+									<div
+										v-strip-unsafe-html="report.note"
+										class="text-lg-normal"
+									></div>
+									<div class="pt-2">
+										<div class="text-base-normal font-bold">
+											{{ report.userName }}
+										</div>
 										<div
-											v-strip-unsafe-html="report.note"
-											class="mt-3 text-lg-normal"
-										></div>
-										<div class="mt-4">
-											<div class="text-base-normal font-bold leading-5">
-												{{ report.userName }}
-											</div>
-											<div
-												v-if="report.userOrcidDisplayValue"
-												class="mb-1 flex items-center"
+											v-if="report.userOrcidDisplayValue"
+											class="mb-1 flex items-center"
+										>
+											<Icon
+												:icon="
+													report.isUserOrcidAuthenticated
+														? 'Orcid'
+														: 'OrcidUnauthenticated'
+												"
+											/>
+											<a
+												class="text-sm-light text-secondary"
+												target="_blank"
+												:href="report.userOrcidDisplayValue"
 											>
-												<Icon
-													:icon="
-														report.isUserOrcidAuthenticated
-															? 'Orcid'
-															: 'OrcidUnauthenticated'
-													"
-												/>
-												<a
-													class="text-sm-light text-secondary"
-													target="_blank"
-													:href="report.userOrcidDisplayValue"
-												>
-													{{ report.userOrcidDisplayValue }}
-												</a>
-											</div>
+												{{ report.userOrcidDisplayValue }}
+											</a>
+										</div>
 
-											<div
-												v-if="report.userAffiliation"
-												class="text-base-normal"
-											>
-												{{ report.userAffiliation }}
-											</div>
+										<div v-if="report.userAffiliation" class="text-base-normal">
+											{{ report.userAffiliation }}
 										</div>
 									</div>
-								</PanelSection>
-							</Panel>
+								</div>
+							</div>
 						</div>
-						<div class="w-96 border-s border-light">
+						<div class="w-48 border-s border-light">
 							<div class="flex flex-col items-start space-y-4 p-4">
 								<PkpButton
 									:is-warnable="true"
@@ -87,9 +81,7 @@
 <script setup>
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import {useDate} from '@/composables/useDate';
-import PanelSection from '@/components/Panel/PanelSection.vue';
 import Icon from '@/components/Icon/Icon.vue';
-import Panel from '@/components/Panel/Panel.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import {useUserCommentStore} from '@/pages/userComments/userCommentStore';
 

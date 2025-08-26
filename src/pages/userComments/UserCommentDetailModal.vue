@@ -3,7 +3,7 @@
 		<template #pre-title>
 			<span>{{ comment.id }}.</span>
 			<span>{{ comment.publication.authorsStringShort }}</span>
-			<span>;</span>
+			<span>{{ t('common.semicolonListSeparator') }}</span>
 			<span>{{ comment.publication.fullTitle }}</span>
 		</template>
 		<template #title>
@@ -19,59 +19,57 @@
 				<div class="border-y border-e border-s border-light">
 					<div class="flex h-full">
 						<div class="flex-grow border-e border-light p-5">
-							<Panel>
-								<PanelSection>
-									<template #header>
-										<span class="font-bold text-heading">
-											{{ t('manager.userComment.commentPreview') }}
-										</span>
-									</template>
-								</PanelSection>
-
-								<PanelSection>
-									<div>
-										<span class="text-sm-light text-secondary">
+							<div class="border border-light">
+								<div class="border-b border-light px-6 py-4">
+									<span class="font-bold text-heading">
+										{{ t('manager.userComment.commentPreview') }}
+									</span>
+								</div>
+								<div class="mb-4 space-y-4 px-6 py-4">
+									<div class="text-sm-light text-secondary">
+										<span>
 											{{ formatShortDateTime(comment.createdAt) }}
 										</span>
+									</div>
+
+									<div
+										v-strip-unsafe-html="comment.commentText"
+										class="text-lg-normal"
+									></div>
+									<div class="pt-2">
+										<div class="text-base-normal font-bold">
+											{{ comment.userName }}
+										</div>
+										<div
+											v-if="comment.userOrcidDisplayValue"
+											class="mb-1 flex items-center"
+										>
+											<Icon
+												:icon="
+													comment.isUserOrcidAuthenticated
+														? 'Orcid'
+														: 'OrcidUnauthenticated'
+												"
+											/>
+											<a
+												class="text-sm-light text-secondary"
+												target="_blank"
+												:href="comment.userOrcidDisplayValue"
+											>
+												{{ comment.userOrcidDisplayValue }}
+											</a>
+										</div>
 
 										<div
-											v-strip-unsafe-html="comment.commentText"
-											class="mt-3 text-lg-normal"
-										></div>
-										<div class="mt-4">
-											<div class="text-base-normal font-bold leading-5">
-												{{ comment.userName }}
-											</div>
-											<div
-												v-if="comment.userOrcidDisplayValue"
-												class="mb-1 flex items-center"
-											>
-												<Icon
-													:icon="
-														comment.isUserOrcidAuthenticated
-															? 'Orcid'
-															: 'OrcidUnauthenticated'
-													"
-												/>
-												<a
-													class="text-sm-light text-secondary"
-													target="_blank"
-													:href="comment.userOrcidDisplayValue"
-												>
-													{{ comment.userOrcidDisplayValue }}
-												</a>
-											</div>
-
-											<div
-												v-if="comment.userAffiliation"
-												class="text-base-normal"
-											>
-												{{ comment.userAffiliation }}
-											</div>
+											v-if="comment.userAffiliation"
+											class="text-base-normal"
+										>
+											{{ comment.userAffiliation }}
 										</div>
 									</div>
-								</PanelSection>
-							</Panel>
+								</div>
+							</div>
+
 							<div class="mt-6">
 								<UserCommentReportsTable
 									:items="userCommentStore.currentCommentReports"
@@ -79,7 +77,7 @@
 							</div>
 						</div>
 						<div class="w-96 border-s border-light">
-							<div class="border-b border-light p-8">
+							<div class="border-b border-light p-4">
 								<div class="text-lg-normal">
 									<span v-if="comment.isApproved">
 										{{
@@ -126,8 +124,6 @@
 
 <script setup>
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
-import Panel from '@/components/Panel/Panel.vue';
-import PanelSection from '@/components/Panel/PanelSection.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import {useUserCommentStore} from '@/pages/userComments/userCommentStore';

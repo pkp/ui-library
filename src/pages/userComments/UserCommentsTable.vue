@@ -25,7 +25,7 @@
 						<span class="font-bold">
 							{{ comment.publication.authorsStringShort }}
 						</span>
-						<span>;</span>
+						<span>{{ t('common.semicolonListSeparator') }}</span>
 						<span v-strip-unsafe-html="comment.publication.fullTitle"></span>
 					</div>
 				</TableCell>
