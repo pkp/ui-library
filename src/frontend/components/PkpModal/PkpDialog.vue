@@ -67,6 +67,9 @@ import {
 	DialogTitle,
 } from 'reka-ui';
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
+import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
+
+const {t} = usePkpLocalize();
 
 const props = defineProps({
 	/** Used only internally, don't pass this prop via openDialog */

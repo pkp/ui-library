@@ -19,7 +19,6 @@ import * as useApp from '@/composables/useApp.js';
 import * as useUrl from '@/composables/useUrl.js';
 import * as usePkpFetch from '@/frontend/composables/usePkpFetch.js';
 import * as usePkpModal from '@/frontend/composables/usePkpModal.js';
-
 // Directives
 import {stripUnsafeHtml} from '@/directives/stripUnsafeHtml';
 
