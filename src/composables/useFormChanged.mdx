@@ -4,22 +4,37 @@ import {Meta} from '@storybook/addon-docs/blocks';
 
 # useFormChanged
 
-This composable helps keep track of whether a form has been edited (but not saved) and can be used to prompt a confirmation before closing it. Useful for preventing users from accidentally losing work.
+The `useFormChanged` composable tracks whether a form has been modified (but not saved).  
+It can be used to show a confirmation prompt before closing the form, preventing users from accidentally losing their work.
 
-## Example
+## Basic usage
+
+Detect if the form state has changed:
 
 ```
-const {hasStateChanged, confirmClose} = useFormChanged(
+const {hasStateChanged} = useFormChanged(
     form,
     additionalFields,
-    onCloseFn,
-    {mountBeforeUnload: true} // default: false, set to true if it should mount a beforeunload listener
+);
+```
+
+## Warn before closing
+
+Enable a warning dialog if there are unsaved changes before:
+
+- closing the browser tab
+- closing a modal
+
+Pass the option `warnOnClose: true` and an `onCloseFn` callback (called when the user confirms closing). This will automatically attach a `beforeunload` listener for browser tabs and register the close callback for modals.
+
+```
+const { confirmClose } = useFormChanged(
+  form,
+  additionalFields,
+  onCloseFn,
+  { warnOnClose: true }
 );
 
-// Can be used with modals or close handlers
-registerCloseCallback(() => {
-    confirmClose();
-
-    return !hasStateChanged();
-});
 ```
+
+You can then pass `confirmClose` as the @cancel handler in your Form component.

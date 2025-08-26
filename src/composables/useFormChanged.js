@@ -1,4 +1,4 @@
-import {onMounted, onUnmounted} from 'vue';
+import {onMounted, onUnmounted, inject} from 'vue';
 import {useModal} from './useModal';
 import {t} from '@/utils/i18n';
 
@@ -12,16 +12,17 @@ import {t} from '@/utils/i18n';
  * @param {Array} additionalFields - Extra fields to include in tracking. (e.g. [Ref])
  * @param {Function} onCloseFn - Called when the form can be closed.
  * @param {Object} options
- * @param {Boolean} options.mountBeforeUnload - Whether to mount the beforeunload handler.
+ * @param {Boolean} options.warnOnClose - If true, shows a confirmation prompt when closing with unsaved changes.
  */
 export function useFormChanged(
 	form,
 	additionalFields,
 	onCloseFn = () => {},
-	{mountBeforeUnload = false} = {},
+	{warnOnClose = false} = {},
 ) {
 	let initialState = getCurrentState();
 	let beforeUnloadHandler;
+	const registerCloseCallback = inject('registerCloseCallback');
 
 	function getCurrentState() {
 		const fields = (form.value?.fields || []).concat(additionalFields || []);
@@ -71,7 +72,7 @@ export function useFormChanged(
 	}
 
 	onMounted(() => {
-		if (!mountBeforeUnload) return;
+		if (!warnOnClose) return;
 
 		// ask before leaving the page (close tab, refresh, navigate) if unsaved changes exist
 		beforeUnloadHandler = (event) => {
@@ -82,10 +83,18 @@ export function useFormChanged(
 		};
 
 		window.addEventListener('beforeunload', beforeUnloadHandler);
+
+		// show a warning before closing the modal if there are unsaved changes
+		if (registerCloseCallback) {
+			registerCloseCallback(() => {
+				confirmClose();
+				return !hasStateChanged();
+			});
+		}
 	});
 
 	onUnmounted(() => {
-		if (!mountBeforeUnload) return;
+		if (!warnOnClose) return;
 
 		if (beforeUnloadHandler) {
 			window.removeEventListener('beforeunload', beforeUnloadHandler);

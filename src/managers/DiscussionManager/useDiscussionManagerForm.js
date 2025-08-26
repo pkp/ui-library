@@ -1,4 +1,4 @@
-import {computed, ref, inject} from 'vue';
+import {computed, ref} from 'vue';
 import {useForm} from '@/composables/useForm';
 import {useFormChanged} from '@/composables/useFormChanged';
 import {useModal} from '@/composables/useModal';
@@ -39,7 +39,6 @@ export function useDiscussionManagerForm(
 	const statusUpdateValue = ref(false);
 	const newMessage = ref(null);
 	const formId = inDisplayMode ? 'discussionDisplay' : 'discussionForm';
-	const registerCloseCallback = inject('registerCloseCallback');
 
 	const {
 		form,
@@ -367,20 +366,9 @@ export function useDiscussionManagerForm(
 
 	const badgeProps = getBadgeProps(status);
 	const additionalFields = [newMessage, statusUpdateValue];
-	const {hasStateChanged, confirmClose} = useFormChanged(
-		form,
-		additionalFields,
-		onCloseFn,
-		{mountBeforeUnload: !!workItem},
-	);
 
-	// show a warning before closing the modal if there are unsaved changes
-	registerCloseCallback(() => {
-		if (workItem) {
-			confirmClose();
-		}
-
-		return !workItem || !hasStateChanged();
+	const {confirmClose} = useFormChanged(form, additionalFields, onCloseFn, {
+		warnOnClose: !!workItem,
 	});
 
 	function closeFn() {
