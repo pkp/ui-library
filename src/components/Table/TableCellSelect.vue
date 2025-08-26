@@ -2,7 +2,7 @@
 	<TableCell>
 		<label
 			v-if="visible"
-			class="inline-flex select-none items-center text-primary"
+			class="flex select-none items-center"
 			:class="{'cursor-pointer': !disabled}"
 		>
 			<input
@@ -13,7 +13,13 @@
 				:disabled="disabled"
 				@click="onClick"
 			/>
-			<span class="relative mr-2 flex h-5 w-5 items-center justify-center">
+			<span
+				class="relative mr-2 flex h-5 w-5 items-center justify-center peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-1"
+				:class="{
+					'text-primary': !disabled,
+					'text-disabled': disabled,
+				}"
+			>
 				<Icon :icon="icon" class="h-5 w-5"></Icon>
 			</span>
 		</label>
