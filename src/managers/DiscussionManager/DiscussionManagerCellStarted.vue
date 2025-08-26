@@ -1,6 +1,6 @@
 <template>
 	<TableCellSelect
-		:visible="workItem.type === 'Task'"
+		:hidden="workItem.type === 'Discussion'"
 		:disabled="workItem.status !== 'Pending'"
 		:checked="!!props.workItem?.started"
 		:labelled-by="labelIds"

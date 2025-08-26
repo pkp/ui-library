@@ -1,7 +1,7 @@
 <template>
 	<TableCell>
 		<label
-			v-if="visible"
+			v-if="!hidden"
 			class="flex select-none items-center"
 			:class="{'cursor-pointer': !disabled}"
 		>
@@ -11,7 +11,7 @@
 				:checked="isChecked"
 				:aria-labelledby="props.labelledBy"
 				:disabled="disabled"
-				@click="onClick"
+				@change="onChange"
 			/>
 			<span
 				class="relative mr-2 flex h-5 w-5 items-center justify-center peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-1"
@@ -37,7 +37,7 @@ const props = defineProps({
 	checked: {type: Boolean, required: true},
 	labelledBy: {type: String, required: true},
 	disabled: {type: Boolean, required: false, default: () => false},
-	visible: {type: Boolean, default: () => true},
+	hidden: {type: Boolean, default: () => false},
 	confirmTitle: {type: String, default: () => ''},
 	confirmMessage: {type: String, default: () => ''},
 });
@@ -46,7 +46,7 @@ const emit = defineEmits(['change']);
 const isChecked = ref(!!props.checked);
 const icon = computed(() => (isChecked.value ? 'CheckboxTicked' : 'Checkbox'));
 
-function onClick($event) {
+function onChange($event) {
 	if (!props.confirmTitle || !props.confirmMessage) {
 		isChecked.value = !isChecked.value;
 		return emit('change', isChecked.value);

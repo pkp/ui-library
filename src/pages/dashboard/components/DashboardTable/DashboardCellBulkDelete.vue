@@ -1,6 +1,6 @@
 <template>
 	<TableCellSelect
-		:visible="canBeDeleted"
+		:hidden="!canBeDeleted"
 		:checked="isChecked"
 		:labelled-by="'submission-title-' + item.id"
 		@change="change"
