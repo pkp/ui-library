@@ -1,3 +1,4 @@
+import {onMounted, onUnmounted} from 'vue';
 import {useModal} from './useModal';
 import {t} from '@/utils/i18n';
 
@@ -10,9 +11,17 @@ import {t} from '@/utils/i18n';
  * @param {Ref} form - Reactive form object (expects `.value.fields`).
  * @param {Array} additionalFields - Extra fields to include in tracking. (e.g. [Ref])
  * @param {Function} onCloseFn - Called when the form can be closed.
+ * @param {Object} options
+ * @param {Boolean} options.mountBeforeUnload - Whether to mount the beforeunload handler.
  */
-export function useFormChanged(form, additionalFields, onCloseFn = () => {}) {
+export function useFormChanged(
+	form,
+	additionalFields,
+	onCloseFn = () => {},
+	{mountBeforeUnload = false} = {},
+) {
 	let initialState = getCurrentState();
+	let beforeUnloadHandler;
 
 	function getCurrentState() {
 		const fields = (form.value?.fields || []).concat(additionalFields || []);
@@ -60,6 +69,29 @@ export function useFormChanged(form, additionalFields, onCloseFn = () => {}) {
 			modalStyle: 'negative',
 		});
 	}
+
+	onMounted(() => {
+		if (!mountBeforeUnload) return;
+
+		// ask before leaving the page (close tab, refresh, navigate) if unsaved changes exist
+		beforeUnloadHandler = (event) => {
+			if (hasStateChanged()) {
+				event.preventDefault();
+				event.returnValue = '';
+			}
+		};
+
+		window.addEventListener('beforeunload', beforeUnloadHandler);
+	});
+
+	onUnmounted(() => {
+		if (!mountBeforeUnload) return;
+
+		if (beforeUnloadHandler) {
+			window.removeEventListener('beforeunload', beforeUnloadHandler);
+			beforeUnloadHandler = null;
+		}
+	});
 
 	return {
 		setInitialState,

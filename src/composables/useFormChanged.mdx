@@ -13,6 +13,7 @@ const {hasStateChanged, confirmClose} = useFormChanged(
     form,
     additionalFields,
     onCloseFn,
+    {mountBeforeUnload: true} // default: false, set to true if it should mount a beforeunload listener
 );
 
 // Can be used with modals or close handlers

@@ -371,6 +371,7 @@ export function useDiscussionManagerForm(
 		form,
 		additionalFields,
 		onCloseFn,
+		{mountBeforeUnload: !!workItem},
 	);
 
 	// show a warning before closing the modal if there are unsaved changes
@@ -381,15 +382,6 @@ export function useDiscussionManagerForm(
 
 		return !workItem || !hasStateChanged();
 	});
-
-	// ask before leaving the page (close tab, refresh, navigate) if unsaved changes exist
-	if (workItem) {
-		window.addEventListener('beforeunload', (event) => {
-			if (hasStateChanged()) {
-				event.preventDefault();
-			}
-		});
-	}
 
 	function closeFn() {
 		return workItem ? confirmClose() : onCloseFn();
