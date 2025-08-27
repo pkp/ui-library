@@ -12,4 +12,28 @@ export default {
 	}),
 };
 
-export const Primary = {args: {title: 'title test'}};
+export const Primary = {
+	args: {
+		open: true,
+		buttonName: 'Basic Example',
+		name: 'basic',
+		title: 'Submit Article',
+		message: 'Are you sure you want to submit this article?',
+		actions: [
+			{
+				label: 'Confirm',
+				isPrimary: true,
+				callback: (close) => {
+					// Simulate a server request
+					setTimeout(() => close(), 2000);
+				},
+			},
+			{
+				label: 'Cancel',
+				isSeconadary: true,
+				callback: (close) => close(),
+			},
+		],
+		modalStyle: 'basic',
+	},
+};

@@ -1,9 +1,9 @@
 <template>
-	<PkpBaseButton class="pkpButton" v-bind="$attrs"><slot /></PkpBaseButton>
+	<BaseButton class="pkpButton" v-bind="$attrs"><slot /></BaseButton>
 </template>
 
 <script setup>
-import PkpBaseButton from './PkpBaseButton.vue';
+import BaseButton from './BaseButton.vue';
 </script>
 
 <style>
@@ -57,3 +57,4 @@ import PkpBaseButton from './PkpBaseButton.vue';
 	color: var(--pkp-text-color-disabled);
 }
 </style>
+./BaseButton.vue

@@ -18,9 +18,9 @@
 					<PkpBaseCommentsNewSubmit class="my-2"></PkpBaseCommentsNewSubmit>
 				</PkpBaseCommentsNew>
 				<PkpBaseCommentsMessages class="flex flex-col gap-y-2">
-					<template #item="data">
+					<template #item="item">
 						<PkpBaseCommentsMessage
-							v-bind="data"
+							v-bind="item"
 							class="rounded bg-default p-4"
 						>
 							<div class="flex justify-between">

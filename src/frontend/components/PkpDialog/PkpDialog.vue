@@ -1,11 +1,7 @@
 <template>
 	<PkpBaseDialog v-bind="$attrs">
-		<PkpBaseDialogOverlay
-			class="data-[state=open]:animate-overlayShow fixed inset-0 z-30 bg-tertiary"
-		></PkpBaseDialogOverlay>
-		<PkpBaseDialogContent
-			class="data-[state=open]:animate-contentShow bg-white fixed left-[50%] top-[50%] z-[100] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none"
-		>
+		<PkpBaseDialogOverlay class="dialog-overlay"></PkpBaseDialogOverlay>
+		<PkpBaseDialogContent class="dialog-content">
 			<PkpBaseDialogTitle></PkpBaseDialogTitle>
 			<PkpBaseDialogBody></PkpBaseDialogBody>
 			<PkpBaseDialogActionButtons></PkpBaseDialogActionButtons>
@@ -23,3 +19,61 @@ import PkpBaseDialogActionButtons from './PkpBaseDialogActionButtons.vue';
 
 //defineProps({title: {type: String, required: true}});
 </script>
+
+<style scoped>
+.dialog-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 30;
+	background-color: var(--bg-tertiary, rgba(0, 0, 0, 0.5));
+}
+
+.dialog-overlay[data-state='open'] {
+	animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dialog-content {
+	background-color: white;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	z-index: 100;
+	max-height: 85vh;
+	width: 90vw;
+	max-width: 450px;
+	transform: translate(-50%, -50%);
+	border-radius: 6px;
+	padding: 25px;
+	box-shadow:
+		hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
+		hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
+}
+
+.dialog-content:focus {
+	outline: none;
+}
+
+.dialog-content[data-state='open'] {
+	animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes overlayShow {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes contentShow {
+	from {
+		opacity: 0;
+		transform: translate(-50%, -48%) scale(0.96);
+	}
+	to {
+		opacity: 1;
+		transform: translate(-50%, -50%) scale(1);
+	}
+}
+</style>

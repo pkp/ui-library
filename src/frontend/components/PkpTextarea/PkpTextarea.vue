@@ -1,56 +1,14 @@
 <template>
-	<div class="pkpTextarea">
-		<Label
-			class="pkpTextarea__label"
-			:class="{'-screenReader': isLabelSrOnly}"
-			:for="textareaId"
-		>
-			{{ props.label }}
-		</Label>
-		<textarea
-			:id="textareaId"
-			class="pkpTextarea__element"
-			:value="props.modelValue"
-			:placeholder="props.placeholder"
-			:disabled="props.disabled"
-			@input="$emit('update:modelValue', $event.target.value)"
-		/>
-	</div>
+	<BaseTextarea v-bind="$attrs" class="pkpTextarea">
+		<BaseTextareaLabel class="pkpTextarea__label" />
+		<BaseTextareaInput class="pkpTextarea__element" />
+	</BaseTextarea>
 </template>
-
 <script setup>
-import {Label} from 'reka-ui';
-import {defineProps, defineEmits, useId} from 'vue';
-
-const props = defineProps({
-	label: {
-		type: String,
-		default: '',
-	},
-	modelValue: {
-		type: String,
-		default: '',
-	},
-	placeholder: {
-		type: String,
-		default: '',
-	},
-	disabled: {
-		type: Boolean,
-		default: false,
-	},
-	// Whether the label should be visually hidden but still accessible to screen readers
-	isLabelSrOnly: {
-		type: Boolean,
-		default: false,
-	},
-});
-
-defineEmits(['update:modelValue']);
-
-const textareaId = useId();
+import BaseTextarea from './BaseTextarea.vue';
+import BaseTextareaLabel from './BaseTextareaLabel.vue';
+import BaseTextareaInput from './BaseTextareaInput.vue';
 </script>
-
 <style>
 .pkpTextarea {
 	display: flex;
