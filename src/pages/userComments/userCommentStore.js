@@ -5,17 +5,12 @@ import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useLocalize} from '@/composables/useLocalize';
+import {useUserCommentsConfig} from '@/pages/userComments/useUserCommentsConfig';
+import {useExtender} from '@/composables/useExtender';
+
 import UserCommentDetailModal from '@/pages/userComments/UserCommentDetailModal.vue';
 import UserCommentReportDetailModal from '@/pages/userComments/UserCommentReportDetailModal.vue';
-
 const {t} = useLocalize();
-
-const Actions = {
-	COMMENT_VIEW: 'commentView',
-	COMMENT_DELETE: 'commentDelete',
-	REPORT_DELETE: 'reportDelete',
-	REPORT_VIEW: 'reportView',
-};
 
 const CommentStatusMap = {
 	approved: t('manager.userComment.approved'),
@@ -27,6 +22,9 @@ const CommentStatusMap = {
 export const useUserCommentStore = defineComponentStore(
 	'userCommentStore',
 	(props) => {
+		const extender = useExtender();
+		const userCommentsConfig = extender.addFns(useUserCommentsConfig());
+
 		const activeTab = ref('all');
 		const itemsPerPage = props.itemsPerPage;
 		const currentCommentReportsPage = ref(1);
@@ -37,51 +35,13 @@ export const useUserCommentStore = defineComponentStore(
 		// Used to track the last paginated page visited for comments of given status.
 		const trackedCommentPaginationPageHistory = ref({});
 
-		const commentsTableColumns = computed(() => {
-			return [
-				{
-					header: t('submission.submission'),
-					headerSrOnly: false,
-				},
-				{
-					header: t('manager.userComment.comment'),
-					headerSrOnly: false,
-				},
-				{
-					header: t('common.user'),
-					headerSrOnly: false,
-				},
-				{
-					header: t('common.status'),
-					headerSrOnly: false,
-				},
-				{
-					header: t('grid.columns.actions'),
-					headerSrOnly: true,
-				},
-			];
-		});
+		const commentsTableColumns = computed(() =>
+			userCommentsConfig.getCommentsTableColumns(),
+		);
 
-		const reportsTableColumns = computed(() => {
-			return [
-				{
-					header: t('manager.userComment.reportedBy'),
-					headerSrOnly: false,
-				},
-				{
-					header: t('manager.userComment.report.reason'),
-					headerSrOnly: false,
-				},
-				{
-					header: t('manager.userComment.dateReported'),
-					headerSrOnly: false,
-				},
-				{
-					header: t('grid.columns.actions'),
-					headerSrOnly: true,
-				},
-			];
-		});
+		const reportsTableColumns = computed(() =>
+			userCommentsConfig.getReportsTableColumns(),
+		);
 
 		const commentsUrl = computed(() => {
 			let queryParams = '';
@@ -238,42 +198,16 @@ export const useUserCommentStore = defineComponentStore(
 		 * Get the actions available for a comment.
 		 * @returns {[{label: string, icon: string, name: string, isWarnable?: boolean}]}
 		 */
-		function getCommentItemActions() {
-			const actions = [
-				{
-					label: t('manager.userComment.viewComment'),
-					icon: 'View',
-					name: Actions.COMMENT_VIEW,
-				},
-				{
-					label: t('manager.userComment.deleteComment'),
-					icon: 'Cancel',
-					name: Actions.COMMENT_DELETE,
-					isWarnable: true,
-				},
-			];
-
-			return actions;
+		function getCommentItemActions({comment}) {
+			return userCommentsConfig.getCommentItemActions({comment});
 		}
 
 		/**
 		 * Get the actions available for a report.
 		 * @returns {[{label: string, icon: string, name: string, isWarnable?: boolean}]}
 		 */
-		function getReportItemActions() {
-			return [
-				{
-					label: t('manager.userComment.viewReport'),
-					icon: 'View',
-					name: Actions.REPORT_VIEW,
-				},
-				{
-					label: t('manager.userComment.deleteReport'),
-					icon: 'Cancel',
-					name: Actions.REPORT_DELETE,
-					isWarnable: true,
-				},
-			];
+		function getReportItemActions({report}) {
+			return userCommentsConfig.getReportItemActions({report});
 		}
 
 		/**
@@ -389,29 +323,9 @@ export const useUserCommentStore = defineComponentStore(
 			});
 		}
 
-		/**
-		 * Get the options for comment types(approved, needs approval, reported), to select from to view comments
-		 */
-		const commentTabOptions = computed(() => {
-			return [
-				{
-					label: CommentStatusMap['all'],
-					id: 'all',
-				},
-				{
-					label: CommentStatusMap['approved'],
-					id: 'approved',
-				},
-				{
-					label: CommentStatusMap['needsApproval'],
-					id: 'needsApproval',
-				},
-				{
-					label: CommentStatusMap['reported'],
-					id: 'reported',
-				},
-			];
-		});
+		const commentTabOptions = computed(() =>
+			userCommentsConfig.getCommentTabOptions(),
+		);
 
 		/**
 		 * Open the report detail modal for a specific report.
