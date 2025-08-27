@@ -1,7 +1,7 @@
 <template>
 	<SideModalBody>
 		<template #pre-title>
-			<span>{{ comment.id }}.</span>
+			<span>{{ comment.publication.submissionId }}.</span>
 			<span>{{ comment.publication.authorsStringShort }}</span>
 			<span>{{ t('common.semicolonListSeparator') }}</span>
 			<span>{{ comment.publication.fullTitle }}</span>

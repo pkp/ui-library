@@ -19,22 +19,14 @@
 			</TableColumn>
 		</TableHeader>
 		<TableBody :empty-text="t('manager.userComment.report.noReports')">
-			<TableRow v-for="(report, i) in items" :key="i">
-				<TableCell>{{ report.userName }}</TableCell>
-				<TableCell class="max-w-[25em] truncate">
-					{{ report.note }}
-				</TableCell>
-				<TableCell>
-					{{ formatShortDate(report.createdAt) }}
-				</TableCell>
-				<TableCell>
-					<DropdownActions
-						:label="t('common.moreActions')"
-						button-variant="ellipsis"
-						:actions="userCommentStore.getReportItemActions()"
-						@action="(actionName) => userCommentStore[actionName](report)"
-					/>
-				</TableCell>
+			<TableRow v-for="report in items" :key="report.id">
+				<component
+					:is="Components[column.component] || column.component"
+					v-for="(column, i) in userCommentStore.reportsTableColumns"
+					:key="i"
+					:item="report"
+					v-bind="column.props"
+				></component>
 			</TableRow>
 		</TableBody>
 	</PkpTable>
@@ -48,19 +40,18 @@
 <script setup>
 import TableColumn from '@/components/Table/TableColumn.vue';
 import PkpTable from '@/components/Table/Table.vue';
-import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 import TablePagination from '@/components/Table/TablePagination.vue';
 import TableRow from '@/components/Table/TableRow.vue';
 import TableBody from '@/components/Table/TableBody.vue';
-import TableCell from '@/components/Table/TableCell.vue';
 import TableHeader from '@/components/Table/TableHeader.vue';
 import {useUserCommentStore} from '@/pages/userComments/userCommentStore';
-
 import {useLocalize} from '@/composables/useLocalize';
-import {useDate} from '@/composables/useDate';
+import UserCommentCellUserName from '@/pages/userComments/UserCommentCellUserName.vue';
+import UserCommentReportCellReason from '@/pages/userComments/UserCommentReportCellReason.vue';
+import UserCommentReportCellDateReported from '@/pages/userComments/UserCommentReportCellDateReported.vue';
+import UserCommentReportCellMoreActions from '@/pages/userComments/UserCommentReportCellMoreActions.vue';
 
 const {t} = useLocalize();
-const {formatShortDate} = useDate();
 
 defineProps({
 	/**
@@ -73,4 +64,11 @@ defineProps({
 });
 
 const userCommentStore = useUserCommentStore();
+
+const Components = {
+	UserCommentCellUserName,
+	UserCommentReportCellReason,
+	UserCommentReportCellDateReported,
+	UserCommentReportCellMoreActions,
+};
 </script>

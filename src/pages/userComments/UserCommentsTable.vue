@@ -10,7 +10,6 @@
 				</span>
 			</TableColumn>
 		</TableHeader>
-
 		<TableBody
 			:empty-text="
 				userCommentStore.isCommentsLoading
@@ -18,34 +17,14 @@
 					: t('grid.noItems')
 			"
 		>
-			<TableRow v-for="(comment, index) in items" :key="index">
-				<TableCell class="max-w-[25em]">
-					<div class="truncate">
-						<span class="mr-1">{{ comment.id }}.</span>
-						<span class="font-bold">
-							{{ comment.publication.authorsStringShort }}
-						</span>
-						<span>{{ t('common.semicolonListSeparator') }}</span>
-						<span v-strip-unsafe-html="comment.publication.fullTitle"></span>
-					</div>
-				</TableCell>
-				<TableCell class="max-w-[25em] truncate">
-					<span v-strip-unsafe-html="comment.commentText"></span>
-				</TableCell>
-				<TableCell>
-					{{ comment.userName }}
-				</TableCell>
-				<TableCell>
-					{{ userCommentStore.getCommentStatusText(comment) }}
-				</TableCell>
-				<TableCell>
-					<DropdownActions
-						:label="t('common.moreActions')"
-						button-variant="ellipsis"
-						:actions="userCommentStore.getCommentItemActions()"
-						@action="(actionName) => userCommentStore[actionName](comment)"
-					/>
-				</TableCell>
+			<TableRow v-for="comment in items" :key="comment.id">
+				<component
+					:is="Components[column.component] || column.component"
+					v-for="(column, i) in userCommentStore.commentsTableColumns"
+					:key="i"
+					:item="comment"
+					v-bind="column.props"
+				></component>
 			</TableRow>
 		</TableBody>
 	</PkpTable>
@@ -59,14 +38,17 @@
 <script setup>
 import TableColumn from '@/components/Table/TableColumn.vue';
 import PkpTable from '@/components/Table/Table.vue';
-import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 import TablePagination from '@/components/Table/TablePagination.vue';
 import TableRow from '@/components/Table/TableRow.vue';
 import TableBody from '@/components/Table/TableBody.vue';
-import TableCell from '@/components/Table/TableCell.vue';
 import TableHeader from '@/components/Table/TableHeader.vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useUserCommentStore} from '@/pages/userComments/userCommentStore';
+import UserCommentCellSubmission from '@/pages/userComments/UserCommentCellSubmission.vue';
+import UserCommentCellComment from '@/pages/userComments/UserCommentCellComment.vue';
+import UserCommentCellUserName from '@/pages/userComments/UserCommentCellUserName.vue';
+import UserCommentCellMoreActions from '@/pages/userComments/UserCommentCellMoreActions.vue';
+import UserCommentCellStatus from '@/pages/userComments/UserCommentCellStatus.vue';
 
 const {t} = useLocalize();
 const userCommentStore = useUserCommentStore();
@@ -80,4 +62,12 @@ defineProps({
 		required: true,
 	},
 });
+
+const Components = {
+	UserCommentCellSubmission,
+	UserCommentCellComment,
+	UserCommentCellUserName,
+	UserCommentCellStatus,
+	UserCommentCellMoreActions,
+};
 </script>

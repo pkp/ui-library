@@ -17,22 +17,32 @@ export function useUserCommentsConfig() {
 		return [
 			{
 				header: t('submission.submission'),
+				component: 'UserCommentCellSubmission',
+				props: {},
 				headerSrOnly: false,
 			},
 			{
 				header: t('manager.userComment.comment'),
+				component: 'UserCommentCellComment',
+				props: {},
 				headerSrOnly: false,
 			},
 			{
 				header: t('common.user'),
+				component: 'UserCommentCellUserName',
+				props: {},
 				headerSrOnly: false,
 			},
 			{
 				header: t('common.status'),
+				component: 'UserCommentCellStatus',
+				props: {},
 				headerSrOnly: false,
 			},
 			{
 				header: t('grid.columns.actions'),
+				component: 'UserCommentCellMoreActions',
+				props: {},
 				headerSrOnly: true,
 			},
 		];
@@ -45,18 +55,26 @@ export function useUserCommentsConfig() {
 		return [
 			{
 				header: t('manager.userComment.reportedBy'),
+				component: 'UserCommentCellUserName',
+				props: {},
 				headerSrOnly: false,
 			},
 			{
 				header: t('manager.userComment.report.reason'),
+				component: 'UserCommentReportCellReason',
+				props: {},
 				headerSrOnly: false,
 			},
 			{
 				header: t('manager.userComment.dateReported'),
+				component: 'UserCommentReportCellDateReported',
+				props: {},
 				headerSrOnly: false,
 			},
 			{
 				header: t('grid.columns.actions'),
+				component: 'UserCommentReportCellMoreActions',
+				props: {},
 				headerSrOnly: true,
 			},
 		];
