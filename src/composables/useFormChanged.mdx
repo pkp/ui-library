@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks';
+
+<Meta title="Composables/useFormChanged" />
+
+# useFormChanged
+
+The `useFormChanged` composable tracks whether a form has been modified (but not saved).  
+It can be used to show a confirmation prompt before closing the form, preventing users from accidentally losing their work.
+
+## Basic usage
+
+Detect if the form state has changed:
+
+```
+const {hasStateChanged} = useFormChanged(
+    form,
+    additionalFields,
+);
+```
+
+## Warn before closing
+
+Enable a warning dialog if there are unsaved changes before:
+
+- closing the browser tab
+- closing a modal
+
+Pass the option `warnOnClose: true` and an `onCloseFn` callback (called when the user confirms closing). This will automatically attach a `beforeunload` listener for browser tabs and register the close callback for modals.
+
+```
+useFormChanged(
+  form,
+  additionalFields,
+  onCloseFn,
+  { warnOnClose: true }
+);
+
+```
+
+To close the modal when using a form’s Cancel button, make sure to attach the `@cancel="closeModal"` event:
+
+```
+<template>
+	<SideModalLayoutBasic>
+		<PkpForm v-bind="form" @cancel="closeModal" @set="set" />
+	</SideModalLayoutBasic>
+</template>
+
+<script setup>
+const closeModal = inject('closeModal');
+</script>
+```

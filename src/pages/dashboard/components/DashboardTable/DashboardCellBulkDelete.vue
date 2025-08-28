@@ -1,8 +1,8 @@
 <template>
 	<TableCellSelect
-		:disabled="!canBeDeleted"
+		:hidden="!canBeDeleted"
 		:checked="isChecked"
-		:described-by="'submission-title-' + item.id"
+		:labelled-by="'submission-title-' + item.id"
 		@change="change"
 	/>
 </template>

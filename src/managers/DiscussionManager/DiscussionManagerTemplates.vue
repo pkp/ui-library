@@ -5,51 +5,49 @@
 		:description="t('discussion.form.detailsDescription')"
 	/>
 
-	<div v-if="templates.length" class="mt-4 text-lg-bold">
-		{{ t('discussion.form.templatesLabel') }}
-	</div>
-	<Search
-		:search-label="t('common.findTemplate')"
-		class="mt-2"
-		:search-phrase="searchPhrase"
-		@search-phrase-changed="
-			(newSearchPhrase) => (searchPhrase = newSearchPhrase)
-		"
-	/>
-	<ul
-		class="mt-2 max-h-80 list-none overflow-y-auto p-0"
-		role="list"
-		:aria-label="t('search.searchResults')"
-	>
-		<li v-for="template in templates" :key="template.id" role="listitem">
-			<button
-				class="mt-2 w-full border border-light p-4 text-start hover:border-hover"
-				@click="
-					() => {
-						emit('selectTemplate', template);
-					}
-				"
-			>
-				<div class="text-lg-medium text-primary">
-					<span class="uppercase">
+	<template v-if="!inDisplayMode">
+		<div v-if="templates.length" class="mt-4 text-lg-bold">
+			{{ t('discussion.form.templatesLabel') }}
+		</div>
+		<Search
+			:search-label="t('common.findTemplate')"
+			class="mt-2"
+			:search-phrase="searchPhrase"
+			@search-phrase-changed="
+				(newSearchPhrase) => (searchPhrase = newSearchPhrase)
+			"
+		/>
+		<ul
+			class="mt-2 max-h-80 list-none overflow-y-auto p-0"
+			role="list"
+			:aria-label="t('search.searchResults')"
+		>
+			<li v-for="template in templates" :key="template.id" role="listitem">
+				<button
+					class="mt-2 w-full border border-light p-4 text-start hover:border-hover"
+					@click="emit('selectTemplate', template)"
+				>
+					<div class="text-lg-medium text-primary">
+						<span class="uppercase">
+							{{
+								template.type === 'Task'
+									? t('submission.task')
+									: t('submission.discussion')
+							}}
+						</span>
+						- {{ template.name }}
+					</div>
+					<div class="mt-1 text-base-normal text-secondary">
 						{{
 							template.type === 'Task'
-								? t('submission.task')
-								: t('submission.discussion')
+								? t('discussion.template.taskDescription')
+								: t('discussion.template.discussionDescription')
 						}}
-					</span>
-					- {{ template.name }}
-				</div>
-				<div class="mt-1 text-base-normal text-secondary">
-					{{
-						template.type === 'Task'
-							? t('discussion.template.taskDescription')
-							: t('discussion.template.discussionDescription')
-					}}
-				</div>
-			</button>
-		</li>
-	</ul>
+					</div>
+				</button>
+			</li>
+		</ul>
+	</template>
 </template>
 
 <script setup>
@@ -67,6 +65,10 @@ defineProps({
 	/** The groupId to use from FormGroup component */
 	groupId: {
 		type: String,
+		required: true,
+	},
+	inDisplayMode: {
+		type: Boolean,
 		required: true,
 	},
 });
