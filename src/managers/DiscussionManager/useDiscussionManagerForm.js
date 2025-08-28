@@ -367,18 +367,13 @@ export function useDiscussionManagerForm(
 	const badgeProps = getBadgeProps(status);
 	const additionalFields = [newMessage, statusUpdateValue];
 
-	const {confirmClose} = useFormChanged(form, additionalFields, onCloseFn, {
-		warnOnClose: !!workItem,
+	useFormChanged(form, additionalFields, onCloseFn, {
+		warnOnClose: true,
 	});
-
-	function closeFn() {
-		return workItem ? confirmClose() : onCloseFn();
-	}
 
 	return {
 		form,
 		set,
 		badgeProps,
-		closeFn,
 	};
 }

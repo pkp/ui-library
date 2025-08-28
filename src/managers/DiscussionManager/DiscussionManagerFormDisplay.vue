@@ -17,7 +17,7 @@
 				v-bind="form"
 				field-heading-element="h2"
 				:contains-form="true"
-				@cancel="closeFn"
+				@cancel="closeModal"
 				@set="set"
 			/>
 		</SideModalLayoutBasic>
@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import {computed} from 'vue';
+import {computed, inject} from 'vue';
 import {t} from '@/utils/i18n';
 import {useDiscussionManagerForm} from './useDiscussionManagerForm';
 import {useDiscussionManagerStore} from './discussionManagerStore';
@@ -66,10 +66,12 @@ const props = defineProps({
 	},
 });
 
+const closeModal = inject('closeModal');
+
 const discussionManagerStore = useDiscussionManagerStore();
 const discussionManagerActions = useDiscussionManagerActions();
 
-const {form, set, badgeProps, closeFn} = useDiscussionManagerForm(props, {
+const {form, set, badgeProps} = useDiscussionManagerForm(props, {
 	inDisplayMode: true,
 });
 

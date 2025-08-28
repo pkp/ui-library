@@ -15,19 +15,21 @@
 		</template>
 
 		<SideModalLayoutBasic>
-			<PkpForm v-bind="form" @cancel="closeFn" @set="set" />
+			<PkpForm v-bind="form" @cancel="closeModal" @set="set" />
 		</SideModalLayoutBasic>
 	</SideModalBody>
 </template>
 
 <script setup>
-import {computed} from 'vue';
+import {computed, inject} from 'vue';
 import {t} from '@/utils/i18n';
 import {useDiscussionManagerForm} from './useDiscussionManagerForm';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
 import Badge from '@/components/Badge/Badge.vue';
 import PkpForm from '@/components/Form/Form.vue';
+
+const closeModal = inject('closeModal');
 
 const props = defineProps({
 	status: {
@@ -62,5 +64,5 @@ const props = defineProps({
 
 const hasContent = computed(() => !!props.workItem?.id);
 
-const {form, set, badgeProps, closeFn} = useDiscussionManagerForm(props);
+const {form, set, badgeProps} = useDiscussionManagerForm(props);
 </script>
