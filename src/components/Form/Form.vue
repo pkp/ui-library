@@ -13,6 +13,7 @@
 			type="hidden"
 			:name="name"
 			:value="value"
+			@change="fieldChanged"
 		/>
 		<FormLocales
 			v-if="availableLocales.length > 1"
@@ -384,7 +385,9 @@ export default {
 				) {
 					return;
 				}
+
 				let missingValue = false;
+
 				// Only require the primary locale by default for multilingual fields
 				let value = field.isMultilingual
 					? field.value[this.primaryLocale]

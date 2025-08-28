@@ -13,7 +13,7 @@ export const EditorialActivityScenario = [
 	getSubmissionMock({
 		id: 2,
 		stageId: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
-		status: pkp.const.STATUS_DECLINED,
+		status: pkp.const.submission.STATUS_DECLINED,
 	}),
 	// Submission stage
 	getSubmissionMock({
@@ -67,7 +67,7 @@ export const EditorialActivityScenario = [
 	// REVIEW_ROUND_STATUS_DECLINED
 	getSubmissionMock({
 		id: 7,
-		status: pkp.const.STATUS_DECLINED,
+		status: pkp.const.submission.STATUS_DECLINED,
 		stageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 		reviewAssignments: [
 			getReviewAssignmentShortMock({
@@ -338,7 +338,7 @@ export const EditorialActivityScenario = [
 	getSubmissionMock({
 		id: 23,
 		stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-		status: pkp.const.STATUS_SCHEDULED,
+		status: pkp.const.submission.STATUS_SCHEDULED,
 		issueToBePublished: {
 			id: 2,
 			label: 'Vol. 2 No. 1 (2015)',
@@ -348,6 +348,6 @@ export const EditorialActivityScenario = [
 	getSubmissionMock({
 		id: 24,
 		stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-		status: pkp.const.STATUS_PUBLISHED,
+		status: pkp.const.submission.STATUS_PUBLISHED,
 	}),
 ];
