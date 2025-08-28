@@ -1004,8 +1004,7 @@ export const PublicationConfig = {
 		}) => {
 			return [
 				{
-					// component: 'WorkflowPublicationForm',
-					component: 'WorkflowPublicationFormIssue',
+					component: 'WorkflowPublicationForm',
 					props: {
 						formName: 'issue',
 						submission,
