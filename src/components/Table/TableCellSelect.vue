@@ -1,37 +1,21 @@
 <template>
 	<TableCell>
-		<label
+		<Checkbox
 			v-if="!hidden"
-			class="flex select-none items-center"
-			:class="{'cursor-pointer': !disabled}"
-		>
-			<input
-				type="checkbox"
-				class="peer sr-only"
-				:checked="isChecked"
-				:aria-labelledby="props.labelledBy"
-				:disabled="disabled"
-				@change="onChange"
-			/>
-			<span
-				class="relative mr-2 flex h-5 w-5 items-center justify-center peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-1"
-				:class="{
-					'text-primary': !disabled,
-					'text-disabled': disabled,
-				}"
-			>
-				<Icon :icon="icon" class="h-5 w-5"></Icon>
-			</span>
-		</label>
+			:checked="isChecked"
+			:labelled-by="labelledBy"
+			:disabled="disabled"
+			@change="onChange"
+		></Checkbox>
 	</TableCell>
 </template>
 
 <script setup>
-import {ref, computed} from 'vue';
+import {ref} from 'vue';
 import {useModal} from '@/composables/useModal';
 import {t} from '@/utils/i18n';
 import TableCell from './TableCell.vue';
-import Icon from '@/components/Icon/Icon.vue';
+import Checkbox from '@/components/Checkbox/Checkbox.vue';
 
 const props = defineProps({
 	checked: {type: Boolean, required: true},
@@ -44,7 +28,6 @@ const props = defineProps({
 
 const emit = defineEmits(['change']);
 const isChecked = ref(!!props.checked);
-const icon = computed(() => (isChecked.value ? 'CheckboxTicked' : 'Checkbox'));
 
 function onChange($event) {
 	if (!props.confirmTitle || !props.confirmMessage) {
