@@ -493,29 +493,18 @@ export default {
 		 * @param {String} localeKey Optional locale key for multilingual props
 		 */
 		fieldChanged: function (name, prop, value, localeKey) {
-			// Check if this is a hidden field or normal field
-			const isHiddenField = this.hiddenFields && name in this.hiddenFields;
-
-			if (isHiddenField) {
-				const newHiddenFields = {...this.hiddenFields};
-				newHiddenFields[name] = value;
-				this.$emit('set', this.id, {hiddenFields: newHiddenFields});
-			} else {
-				const newFields = this.fields.map((field) => {
-					if (field.name === name) {
-						if (localeKey) {
-							field[prop][localeKey] = value;
-						} else {
-							field[prop] = value;
-						}
+			const newFields = this.fields.map((field) => {
+				if (field.name === name) {
+					if (localeKey) {
+						field[prop][localeKey] = value;
+					} else {
+						field[prop] = value;
 					}
-					return field;
-				});
-				this.$emit('set', this.id, {fields: newFields});
-
-				// Remove any errors for this field
-				this.removeError(name, localeKey);
-			}
+				}
+				return field;
+			});
+			this.$emit('set', this.id, {fields: newFields});
+			this.removeError(name, localeKey);
 		},
 
 		/**
@@ -644,13 +633,6 @@ export default {
 		 */
 		setErrors: function (errors) {
 			this.$emit('set', this.id, {errors: errors});
-		},
-
-		/**
-		 * Set the required state for a specific field
-		 */
-		setFieldRequired(fieldName, isRequired) {
-			this.fieldRequiredStates[fieldName] = isRequired;
 		},
 	},
 };

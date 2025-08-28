@@ -12,7 +12,6 @@ import WorkflowVersionSideModal from '@/pages/workflow/components/publication/Wo
 
 export const Actions = {
 	WORKFLOW_VIEW_PUBLISHED_SUBMISSION: 'workflowViewPublishedSubmission',
-	WORKFLOW_ASSIGN_TO_ISSUE: 'workflowAssignToIssue',
 	WORKFLOW_VIEW_ACTIVITY_LOG: 'workflowViewActivityLog',
 	WORKFLOW_VIEW_LIBRARY: 'workflowViewLibrary',
 	WORKFLOW_ASSIGN_TO_ISSUE_AND_SCHEDULE_FOR_PUBLICATION:
