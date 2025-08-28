@@ -28,7 +28,7 @@ Enable a warning dialog if there are unsaved changes before:
 Pass the option `warnOnClose: true` and an `onCloseFn` callback (called when the user confirms closing). This will automatically attach a `beforeunload` listener for browser tabs and register the close callback for modals.
 
 ```
-const { confirmClose } = useFormChanged(
+useFormChanged(
   form,
   additionalFields,
   onCloseFn,
@@ -37,4 +37,16 @@ const { confirmClose } = useFormChanged(
 
 ```
 
-You can then pass `confirmClose` as the @cancel handler in your Form component.
+To close the modal when using a form’s Cancel button, make sure to attach the `@cancel="closeModal"` event:
+
+```
+<template>
+	<SideModalLayoutBasic>
+		<PkpForm v-bind="form" @cancel="closeModal" @set="set" />
+	</SideModalLayoutBasic>
+</template>
+
+<script setup>
+const closeModal = inject('closeModal');
+</script>
+```
