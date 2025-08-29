@@ -1,7 +1,7 @@
 <template>
 	<TableCellSelect
-		:disabled="props.workItem?.closed && props.workItem?.type === 'Task'"
-		:checked="!!props.workItem?.closed"
+		:disabled="!!props.workItem?.dateClosed && isTask"
+		:checked="!!props.workItem?.dateClosed"
 		:labelled-by="labelIds"
 		:confirm-title="modalProps[statusUpdate].title"
 		:confirm-message="modalProps[statusUpdate].message"
@@ -24,28 +24,26 @@ const props = defineProps({
 	index: {type: Number, required: true},
 });
 
-const statusUpdate = props.workItem?.closed ? 'reopen' : 'close';
+const statusUpdate = props.workItem?.dateClosed ? 'reopen' : 'close';
+
+const isTask = props.workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK;
 
 const modalProps = {
 	reopen: {
-		title:
-			props.workItem?.type === 'Task'
-				? t('task.reopenThisTask')
-				: t('discussion.reopenThisDiscussion'),
-		message:
-			props.workItem?.type === 'Task'
-				? t('task.confirmReopenTask')
-				: t('discussion.confirmReopenDiscussion'),
+		title: isTask
+			? t('task.reopenThisTask')
+			: t('discussion.reopenThisDiscussion'),
+		message: isTask
+			? t('task.confirmReopenTask')
+			: t('discussion.confirmReopenDiscussion'),
 	},
 	close: {
-		title:
-			props.workItem?.type === 'Task'
-				? t('task.closeThisTask')
-				: t('discussion.closeThisDiscussion'),
-		message:
-			props.workItem?.type === 'Task'
-				? t('task.confirmCloseTask')
-				: t('discussion.confirmCloseDiscussion'),
+		title: isTask
+			? t('task.closeThisTask')
+			: t('discussion.closeThisDiscussion'),
+		message: isTask
+			? t('task.confirmCloseTask')
+			: t('discussion.confirmCloseDiscussion'),
 	},
 };
 

@@ -118,6 +118,12 @@ window.pkp = {
 		DOI_STATUS_REGISTERED: 3,
 		DOI_STATUS_ERROR: 4,
 		DOI_STATUS_STALE: 5,
+
+		EDITORIAL_TASK_TYPE_DISCUSSION: 1,
+		EDITORIAL_TASK_TYPE_TASK: 2,
+		EDITORIAL_TASK_STATUS_PENDING: 1,
+		EDITORIAL_TASK_STATUS_IN_PROGRESS: 2,
+		EDITORIAL_TASK_STATUS_CLOSED: 3,
 	},
 
 	/**
@@ -191,6 +197,7 @@ window.pkp = {
 		'common.confirmDelete':
 			'Are you sure you wish to delete this item? This action cannot be undone.',
 		'common.content': 'Content',
+		'common.createdBy': 'Created by',
 		'common.dateUploaded': 'Date uploaded',
 		'common.default': 'Default',
 		'common.delete': 'Delete',
@@ -433,6 +440,7 @@ window.pkp = {
 		'discussion.messageFrom': 'Message from {$from}',
 		'discussion.addNewMessage': 'Add New Message',
 		'discussion.addTaskDetails': 'Add Task Details',
+		'discussion.name': 'Discussion',
 		'doi.manager.versions.countStatement': 'There are {$count} versions.',
 		'doi.manager.versions.modalTitle': 'DOIs for all versions',
 		'doi.manager.versions.view': 'View all',
@@ -925,6 +933,8 @@ window.pkp = {
 		'task.completeThisTask': 'Complete this task',
 		'task.reopenThisTask': 'Reopen this task',
 		'task.confirmReopenTask': 'Are you sure you want to reopen this task?',
+		'task.owner': 'Task Owner',
+		'task.name': 'Task',
 		'user.affiliation': 'Affiliation',
 		'user.affiliations': 'Affiliations',
 		'user.affiliations.deleteModal.message':

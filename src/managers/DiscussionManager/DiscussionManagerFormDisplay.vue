@@ -1,7 +1,7 @@
 <template>
 	<SideModalBody>
 		<template #title>
-			{{ localize(workItem.title) }}
+			{{ workItem.title }}
 		</template>
 		<template #post-description>
 			<Badge v-bind="badgeProps" class="mt-1">

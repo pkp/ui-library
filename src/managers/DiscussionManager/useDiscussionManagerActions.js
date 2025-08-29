@@ -155,7 +155,7 @@ export function useDiscussionManagerActions() {
 
 	function discussionStartTask({workItem}) {
 		// Discussions cannot be started
-		if (workItem?.type === 'Discussion') {
+		if (workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION) {
 			return;
 		}
 
@@ -164,7 +164,10 @@ export function useDiscussionManagerActions() {
 
 	function discussionSetClosed({workItem}) {
 		// Tasks cannot be reopened
-		if (workItem?.type === 'Task' && workItem.closed) {
+		if (
+			workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK &&
+			!!workItem.dateClosed
+		) {
 			return;
 		}
 

@@ -43,7 +43,7 @@
 									:icon="itemStatus.icon"
 									class="h-5 w-5"
 									:class="
-										itemStatus.name === 'Closed'
+										itemStatus.key === 'closed'
 											? 'text-success'
 											: 'text-primary'
 									"

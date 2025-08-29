@@ -26,7 +26,7 @@ export function useDiscussionManagerForm(
 	{inDisplayMode = false} = {},
 ) {
 	const workItemStatus = workItem?.status || status;
-	const {t, localize} = useLocalize();
+	const {t} = useLocalize();
 	const participantManagerStore = useParticipantManagerStore({
 		submission,
 		submissionStageId,
@@ -35,7 +35,7 @@ export function useDiscussionManagerForm(
 
 	const currentUser = useCurrentUser();
 	const {getRelativeTargetDate} = useDate();
-	const isTask = ref(workItem?.type === 'Task');
+	const isTask = ref(workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK);
 	const statusUpdateValue = ref(false);
 	const newMessage = ref(null);
 	const formId = inDisplayMode ? 'discussionDisplay' : 'discussionForm';
@@ -76,28 +76,21 @@ export function useDiscussionManagerForm(
 	function getBadgeProps() {
 		let badgeProps = {};
 		switch (workItemStatus) {
-			case 'Pending':
+			case pkp.const.EDITORIAL_TASK_STATUS_PENDING:
 				badgeProps = {
 					slot: t('common.yetToBegin'),
 					icon: 'New',
 					isPrimary: true,
 				};
 				break;
-			case 'In Progress':
+			case pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS:
 				badgeProps = {
 					slot: t('common.inProgress'),
 					icon: 'InProgress',
 					isPrimary: true,
 				};
 				break;
-			case 'Overdue':
-				badgeProps = {
-					slot: t('common.overdue'),
-					icon: 'InProgress',
-					isWarnable: true,
-				};
-				break;
-			case 'Closed':
+			case pkp.const.EDITORIAL_TASK_STATUS_CLOSED:
 				badgeProps = {
 					slot: t('common.closed'),
 					icon: 'Complete',
@@ -110,6 +103,22 @@ export function useDiscussionManagerForm(
 					icon: 'New',
 					colorVariant: 'stage-in-review-bg',
 				};
+		}
+
+		// check if overdue
+		const isOverdue =
+			workItem?.dateDue &&
+			!workItem?.dateClosed &&
+			new Date(workItem.dateDue) < new Date();
+		if (
+			workItemStatus === pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS &&
+			isOverdue
+		) {
+			badgeProps = {
+				slot: t('common.overdue'),
+				icon: 'Overdue',
+				isWarnable: true,
+			};
 		}
 
 		return badgeProps;
@@ -257,7 +266,7 @@ export function useDiscussionManagerForm(
 		label: t('common.name'),
 		description: t('discussion.form.detailsNameDescription'),
 		size: 'large',
-		value: localize(workItem?.title),
+		value: workItem?.title,
 		hideOnDisplay: true,
 	});
 
@@ -290,7 +299,9 @@ export function useDiscussionManagerForm(
 		label: t('discussion.form.taskInfoLabel'),
 		value: isTask.value || autoAddTaskDetails,
 		hideOnDisplay: true,
-		disabled: workItem?.type === 'Discussion' && workItem?.status === 'Closed',
+		disabled:
+			workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION &&
+			workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED,
 	});
 
 	addFieldText('taskInfoDueDate', {
@@ -300,7 +311,7 @@ export function useDiscussionManagerForm(
 		description: t('discussion.form.taskInfoDueDateDescription'),
 		size: 'large',
 		showWhen: 'taskInfoAdd',
-		value: isTask.value ? workItem?.dueDate : null,
+		value: isTask.value ? workItem?.dateDue : null,
 	});
 
 	addFieldOptions('taskInfoParticipants', 'checkbox', {

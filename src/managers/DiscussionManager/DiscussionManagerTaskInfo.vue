@@ -24,7 +24,7 @@
 			<FormDisplayItemBasic
 				heading-element="h2"
 				:heading="t('common.startDate')"
-				:value="workItem?.startDate"
+				:value="workItem?.dateStarted"
 			/>
 		</div>
 	</div>
@@ -59,12 +59,13 @@ const props = defineProps({
 const emit = defineEmits(['updateStatusCheckbox']);
 const statusUpdateValue = ref(false);
 const taskInfoSectionRef = ref(null);
+const isTask = props.workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK;
 
 const statusUpdateLabel = computed(() => {
 	switch (props.workItem?.status) {
-		case 'Pending':
+		case pkp.const.EDITORIAL_TASK_STATUS_PENDING:
 			return t('task.startThisTask');
-		case 'In Progress':
+		case pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS:
 			return t('task.completeThisTask');
 		default:
 			return '';
@@ -74,20 +75,26 @@ const statusUpdateLabel = computed(() => {
 const showStatusUpdateCheckbox = computed(() => {
 	return (
 		props.inDisplayMode &&
-		props.workItem?.type === 'Task' &&
-		['Pending', 'In Progress'].includes(props.workItem?.status)
+		isTask &&
+		[
+			pkp.const.EDITORIAL_TASK_STATUS_PENDING,
+			pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS,
+		].includes(props.workItem?.status)
 	);
 });
 
 const showTaskStartedInfo = computed(() => {
 	return (
-		props.workItem?.type === 'Task' &&
-		['In Progress', 'Closed'].includes(props.workItem?.status)
+		isTask &&
+		[
+			pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS,
+			pkp.const.EDITORIAL_TASK_STATUS_CLOSED,
+		].includes(props.workItem?.status)
 	);
 });
 
 const taskInfoDescription = computed(() => {
-	if (props.workItem?.type === 'Discussion' && props.inDisplayMode) {
+	if (!isTask && props.inDisplayMode) {
 		return `${t('discussion.form.taskInfoDescription')}<br />${t('discussion.form.taskInfoConvertToTask')}`;
 	}
 

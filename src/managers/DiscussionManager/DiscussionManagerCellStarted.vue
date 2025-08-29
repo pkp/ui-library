@@ -1,8 +1,8 @@
 <template>
 	<TableCellSelect
-		:hidden="workItem.type === 'Discussion'"
-		:disabled="workItem.status !== 'Pending'"
-		:checked="!!props.workItem?.started"
+		:hidden="!isTask"
+		:disabled="!isPending"
+		:checked="!!props.workItem?.dateStarted"
 		:labelled-by="labelIds"
 		:confirm-title="t('task.startThisTask')"
 		:confirm-message="t('task.confirmStartTask')"
@@ -24,6 +24,10 @@ const props = defineProps({
 	workItem: {type: Object, required: true},
 	index: {type: Number, required: true},
 });
+
+const isTask = props.workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK;
+const isPending =
+	props.workItem.status === pkp.const.EDITORIAL_TASK_STATUS_PENDING;
 
 const labelIds = `discussion_name_${props.workItem?.id} ${tableContext.tableId}_${props.index}`;
 </script>

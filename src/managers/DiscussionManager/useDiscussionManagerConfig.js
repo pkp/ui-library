@@ -143,7 +143,10 @@ export function useDiscussionManagerConfig() {
 				icon: 'Edit',
 			});
 
-			if (workItem.type === 'Discussion' && workItem.status === 'In Progress') {
+			if (
+				workItem.type === pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION &&
+				workItem.status === pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS
+			) {
 				actions.push({
 					label: t('discussion.addTaskDetails'),
 					name: Actions.TASKS_AND_DISCUSSIONS_ADD_TASK_DETAILS,

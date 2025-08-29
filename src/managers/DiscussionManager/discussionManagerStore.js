@@ -21,18 +21,23 @@ export const useDiscussionManagerStore = defineComponentStore(
 		const discussions = [
 			{
 				name: t('common.yetToBegin'),
+				key: 'pending',
 				icon: 'New',
-				items: getDiscussionByStatus('Pending'),
+				items: getDiscussionByStatus(pkp.const.EDITORIAL_TASK_STATUS_PENDING),
 			},
 			{
 				name: t('common.inProgress'),
+				key: 'inProgress',
 				icon: 'InProgress',
-				items: getDiscussionByStatus('In Progress'),
+				items: getDiscussionByStatus(
+					pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS,
+				),
 			},
 			{
 				name: t('common.closed'),
+				key: 'closed',
 				icon: 'Complete',
-				items: getDiscussionByStatus('Closed'),
+				items: getDiscussionByStatus(pkp.const.EDITORIAL_TASK_STATUS_CLOSED),
 			},
 		];
 

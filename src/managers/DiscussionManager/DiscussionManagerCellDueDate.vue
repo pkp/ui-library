@@ -2,7 +2,7 @@
 	<TableCell>
 		<div class="flex items-center">
 			<span class="text-base-normal">
-				{{ workItem.dueDate }}
+				{{ workItem.dateDue }}
 			</span>
 		</div>
 	</TableCell>
