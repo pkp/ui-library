@@ -141,6 +141,7 @@ export function useDiscussionManagerConfig() {
 				label: t('common.edit'),
 				name: Actions.TASKS_AND_DISCUSSIONS_EDIT,
 				icon: 'Edit',
+				disabled: !!workItem?.dateClosed,
 			});
 
 			if (

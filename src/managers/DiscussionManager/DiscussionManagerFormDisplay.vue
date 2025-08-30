@@ -9,7 +9,9 @@
 			</Badge>
 		</template>
 		<template v-if="allowEdit" #actions>
-			<PkpButton @click="editForm">{{ t('common.edit') }}</PkpButton>
+			<PkpButton :disabled="!!workItem?.dateClosed" @click="editForm">
+				{{ t('common.edit') }}
+			</PkpButton>
 		</template>
 
 		<SideModalLayoutBasic>
