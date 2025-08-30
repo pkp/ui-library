@@ -96,6 +96,10 @@ const showTaskStartedInfo = computed(() => {
 
 const taskInfoDescription = computed(() => {
 	if (!isTask && props.inDisplayMode) {
+		if (props.workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED) {
+			return `${t('discussion.form.taskInfoDescription')}<br />${t('discussion.form.taskInfoReopenAndConvertToTask')}`;
+		}
+
 		return `${t('discussion.form.taskInfoDescription')}<br />${t('discussion.form.taskInfoConvertToTask')}`;
 	}
 
