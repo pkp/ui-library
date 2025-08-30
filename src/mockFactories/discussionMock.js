@@ -16,8 +16,29 @@ const CommonDefaults = {
 
 	activities: ['Task created by kkarina on 2025-03-06'],
 	startedBy: 'Kaja Karina (kkarina)',
-	participants: [3, 4],
-	assignees: [5],
+	participants: [
+		{
+			id: 1,
+			userId: 3,
+			isResponsible: false,
+			fullName: 'Daniel Barnes',
+			username: 'dbarnes',
+			roles: [
+				{
+					id: 16,
+					name: 'Journal manager',
+				},
+			],
+		},
+		{
+			id: 2,
+			userId: 4,
+			isResponsible: true,
+			fullName: 'Andy Author',
+			username: 'aauthor',
+			roles: [],
+		},
+	],
 };
 
 export function getDiscussionsMock(overrides = {}) {

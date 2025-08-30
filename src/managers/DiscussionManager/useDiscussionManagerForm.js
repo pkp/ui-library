@@ -47,6 +47,7 @@ export function useDiscussionManagerForm(
 		addGroup,
 		set,
 		setValue,
+		getField,
 		addFieldText,
 		addFieldOptions,
 		addFieldRichTextArea,
@@ -55,21 +56,35 @@ export function useDiscussionManagerForm(
 		addFieldComponent,
 	} = useForm({}, {customSubmit: handleFormSubmission});
 
-	function getParticipantOptions(withSubLabel) {
+	function mapParticipantOptions(withSubLabel) {
+		return (participant) => {
+			let label = `${participant.fullName} (${participant.userName})`;
+
+			if (participant.userName === currentUser.getCurrentUserName()) {
+				label += ` (${t('common.me')})`;
+			}
+
+			return {
+				label,
+				subLabel: withSubLabel ? participant.roleName : null,
+				value: participant.id,
+			};
+		};
+	}
+
+	function getParticipantOptions() {
+		return computed(() =>
+			participantManagerStore.participantsList.map(mapParticipantOptions(true)),
+		);
+	}
+
+	function getAssigneeOptions() {
 		return computed(() => {
-			return participantManagerStore.participantsList.map((participant) => {
-				let label = `${participant.fullName} (${participant.userName})`;
-
-				if (participant.userName === currentUser.getCurrentUserName()) {
-					label += ` (${t('common.me')})`;
-				}
-
-				return {
-					label,
-					subLabel: withSubLabel ? participant.roleName : undefined,
-					value: participant.id,
-				};
-			});
+			return participantManagerStore.participantsList
+				?.filter((participant) => {
+					return selectedParticipants.value.includes(participant.id);
+				})
+				.map(mapParticipantOptions());
 		});
 	}
 
@@ -156,6 +171,18 @@ export function useDiscussionManagerForm(
 		} else {
 			setValue('taskInfoDueDate', null);
 		}
+	}
+
+	function getSelectedParticipants() {
+		return workItem?.participants?.map((p) => p.userId) || [];
+	}
+
+	function getSelectedAssignees() {
+		return (
+			workItem?.participants
+				?.filter((p) => p.isResponsible)
+				.map((p) => p.userId) || []
+		);
 	}
 
 	function onSelectTemplate(template) {
@@ -275,10 +302,13 @@ export function useDiscussionManagerForm(
 		label: t('editor.submission.stageParticipants'),
 		description: t('discussion.form.detailsParticipantsDescription'),
 		name: 'detailsParticipants',
-		options: getParticipantOptions(true),
+		options: getParticipantOptions(),
 		showNumberedList: true,
-		value: workItem?.participants || [],
+		value: getSelectedParticipants(),
 	});
+
+	const participantsField = getField('detailsParticipants');
+	const selectedParticipants = computed(() => participantsField?.value || []);
 
 	addGroup('taskInformation', {
 		label: t('discussion.form.taskInformation'),
@@ -320,8 +350,8 @@ export function useDiscussionManagerForm(
 		description: t('discussion.form.taskInfoAssigneesDescription'),
 		name: 'taskInfoParticipants',
 		showWhen: 'taskInfoAdd',
-		options: getParticipantOptions(),
-		value: workItem?.assignees,
+		options: getAssigneeOptions(),
+		value: getSelectedAssignees(),
 	});
 
 	// this select is only enabled when adding a new entry
