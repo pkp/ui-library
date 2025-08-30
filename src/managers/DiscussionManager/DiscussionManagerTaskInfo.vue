@@ -85,6 +85,7 @@ const showStatusUpdateCheckbox = computed(() => {
 
 const showTaskStartedInfo = computed(() => {
 	return (
+		props.inDisplayMode &&
 		isTask &&
 		[
 			pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS,

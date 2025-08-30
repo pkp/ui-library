@@ -36,7 +36,9 @@ export function useDiscussionManagerForm(
 	const currentUser = useCurrentUser();
 	const {getRelativeTargetDate} = useDate();
 	const isTask = ref(workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK);
-	const statusUpdateValue = ref(false);
+	const statusUpdateValue = ref(
+		workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED,
+	);
 	const newMessage = ref(null);
 	const formId = inDisplayMode ? 'discussionDisplay' : 'discussionForm';
 
