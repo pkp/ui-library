@@ -21,7 +21,6 @@ const baseArgs = {
 		],
 	}),
 	submissionStageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-	discussions: DiscussionsDataMock,
 };
 
 const renderComponent = (args) => ({
@@ -33,6 +32,12 @@ const renderComponent = (args) => ({
 });
 
 const mswHandlers = [
+	http.get(
+		'https://mock/index.php/publicknowledge/api/v1/submissions/19/stage/1/tasks',
+		() => {
+			return HttpResponse.json(DiscussionsDataMock);
+		},
+	),
 	http.get(
 		'https://mock/index.php/publicknowledge/api/v1/submissions/19/participants/5',
 		({request}) => {

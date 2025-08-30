@@ -1,9 +1,11 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
-import {computed, toRefs} from 'vue';
+import {computed, toRefs, watch} from 'vue';
 import {t} from '@/utils/i18n';
 import {useExtender} from '@/composables/useExtender';
 import {useDataChanged} from '@/composables/useDataChanged';
+import {useUrl} from '@/composables/useUrl';
+import {useFetch} from '@/composables/useFetch';
 import {useDiscussionManagerConfig} from './useDiscussionManagerConfig';
 import {useDiscussionManagerActions} from './useDiscussionManagerActions';
 
@@ -14,8 +16,34 @@ export const useDiscussionManagerStore = defineComponentStore(
 
 		const {submission} = toRefs(props);
 
+		const relativeUrl = computed(() => {
+			return `submissions/${encodeURIComponent(submission.value.id)}/stage/${submission.value.stageId}/tasks`;
+		});
+
+		const {apiUrl: submissionTasksApiUrl} = useUrl(relativeUrl);
+
+		const {data: discussionsData, fetch: fetchDiscussions} = useFetch(
+			submissionTasksApiUrl,
+		);
+
+		watch(relativeUrl, () => {
+			discussionsData.value = null;
+			fetchDiscussions();
+		});
+
+		fetchDiscussions();
+
+		const {triggerDataChange} = useDataChanged(() => fetchDiscussions());
+
+		function triggerDataChangeCallback() {
+			triggerDataChange();
+		}
+
 		function getDiscussionByStatus(status) {
-			return props.discussions?.filter((data) => data.status === status) || [];
+			return computed(
+				() =>
+					discussionsData.value?.filter((data) => data.status === status) || [],
+			);
 		}
 
 		const discussions = [
@@ -81,12 +109,6 @@ export const useDiscussionManagerStore = defineComponentStore(
 				config: discussionConfig.value,
 				discussions,
 			};
-		}
-
-		const {triggerDataChange} = useDataChanged();
-
-		function triggerDataChangeCallback() {
-			triggerDataChange();
 		}
 
 		function discussionView({workItem}) {
