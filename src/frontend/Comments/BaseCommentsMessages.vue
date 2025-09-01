@@ -9,9 +9,9 @@
 import {inject} from 'vue';
 import {usePkpCommentsStore} from './usePkpCommentsStore';
 console.log('BaseCommentsMessages loaded');
-const publicationId = inject('publicationId');
+const versionProps = inject('versionProps');
 const {getApiPerVersion} = usePkpCommentsStore();
 
-const versionApi = getApiPerVersion(publicationId);
+const versionApi = getApiPerVersion(versionProps.publicationId);
 console.log('BaseCommentsMessages, versionApi:', versionApi);
 </script>

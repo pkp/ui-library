@@ -7,5 +7,5 @@ import {provide} from 'vue';
 
 const props = defineProps({publicationId: {type: Number, required: true}});
 
-provide('publicationId', props.publicationId);
+provide('versionProps', props);
 </script>

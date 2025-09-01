@@ -1,8 +1,8 @@
 <template>
-	<span>{{ currentMessage.date }}</span>
+	<span>{{ messageProps.message.date }}</span>
 </template>
 <script setup>
 import {inject} from 'vue';
 
-const currentMessage = inject('currentMessage');
+const messageProps = inject('messageProps');
 </script>
