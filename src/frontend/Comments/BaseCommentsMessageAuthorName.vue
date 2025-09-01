@@ -1,5 +1,5 @@
 <template>
-	<span>{{ currentMessage.author.name }}</span>
+	<span>{{ currentMessage.userName }}</span>
 </template>
 <script setup>
 import {inject} from 'vue';

@@ -118,7 +118,7 @@ import {computed, onMounted, ref} from 'vue';
 import PkpButton from '@/frontend/components/PkpButton/PkpButton.vue';
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 import PkpTextarea from '@/frontend/components/PkpTextarea/PkpTextarea.vue';
-import PkpDropdownActions from '@/frontend/components/PkpDropdownActions/PkpDropdownActions.vue';
+import PkpDropdownActions from '@/frontend/components/PkpDropdownMenu/PkpDropdownMenu.vue';
 import PkpUserCommentReportModal from '@/frontend/components/PkpUserComment/PkpUserCommentReportModal.vue';
 import {usePkpModal} from '@/frontend/composables/usePkpModal';
 import {usePkpFetch} from '@/frontend/composables/usePkpFetch';

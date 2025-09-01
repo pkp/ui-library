@@ -1,5 +1,5 @@
 <template>
-	<span>{{ currentMessage.author.affiliation }}</span>
+	<span>{{ currentMessage.userAffiliation }}</span>
 </template>
 <script setup>
 import {inject} from 'vue';

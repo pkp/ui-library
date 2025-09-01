@@ -1,5 +1,5 @@
 <template>
-	<span>{{ currentMessage.author.orcid }}</span>
+	<span>{{ currentMessage.userOrcidDisplayValue }}</span>
 </template>
 <script setup>
 import {inject} from 'vue';

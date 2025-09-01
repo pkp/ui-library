@@ -1,78 +1,81 @@
 <template>
-	<PkpBaseCommentsVersions>
-		<PkpBaseCommentsVersion class="w-96">
-			<PkpBaseCommentsVersionHeader>
-				<PkpBaseCommentsVersionHeaderTrigger
-					class="group flex w-full justify-between"
-				>
-					<PkpBaseCommentsVersionHeaderLabel></PkpBaseCommentsVersionHeaderLabel>
-					<PkpBaseCommentsVersionHeaderChevron
-						class="inline-block transition-transform duration-300 group-data-[state=open]:rotate-180"
-					></PkpBaseCommentsVersionHeaderChevron>
-				</PkpBaseCommentsVersionHeaderTrigger>
-			</PkpBaseCommentsVersionHeader>
-			<PkpBaseCommentsVersionContent>
-				<PkpBaseCommentsLogInto></PkpBaseCommentsLogInto>
-				<PkpBaseCommentsNew>
-					<PkpBaseCommentsNewInput></PkpBaseCommentsNewInput>
-					<PkpBaseCommentsNewSubmit class="my-2"></PkpBaseCommentsNewSubmit>
-				</PkpBaseCommentsNew>
-				<PkpBaseCommentsMessages class="flex flex-col gap-y-2">
-					<template #item="item">
-						<PkpBaseCommentsMessage
-							v-bind="item"
-							class="rounded bg-default p-4"
-						>
-							<div class="flex justify-between">
-								<PkpBaseCommentsMessageDate
-									class="text-sm-light"
-								></PkpBaseCommentsMessageDate>
-								<PkpBaseCommentsMessageActions></PkpBaseCommentsMessageActions>
-							</div>
-							<PkpBaseCommentsMessageBody
-								class="mt-2 block text-lg-normal"
-							></PkpBaseCommentsMessageBody>
+	<BaseComments v-bind="$attrs">
+		<BaseCommentsVersions v-slot="versionProps">
+			<BaseCommentsVersion class="w-96" v-bind="versionProps">
+				<BaseCommentsVersionHeader>
+					<BaseCommentsVersionHeaderTrigger
+						class="group flex w-full justify-between"
+					>
+						<BaseCommentsVersionHeaderLabel></BaseCommentsVersionHeaderLabel>
+						<BaseCommentsVersionHeaderChevron
+							class="inline-block transition-transform duration-300 group-data-[state=open]:rotate-180"
+						></BaseCommentsVersionHeaderChevron>
+					</BaseCommentsVersionHeaderTrigger>
+				</BaseCommentsVersionHeader>
+				<BaseCommentsVersionContent>
+					<BaseCommentsLogInto></BaseCommentsLogInto>
+					<BaseCommentsNew>
+						<BaseCommentsNewInput></BaseCommentsNewInput>
+						<BaseCommentsNewSubmit class="my-2"></BaseCommentsNewSubmit>
+					</BaseCommentsNew>
+					<BaseCommentsMessages class="flex flex-col gap-y-2">
+						<template #default="messageProps">
+							<BaseCommentsMessage
+								v-bind="messageProps"
+								class="rounded bg-default p-4"
+							>
+								<div class="flex justify-between">
+									<BaseCommentsMessageDate
+										class="text-sm-light"
+									></BaseCommentsMessageDate>
+									<BaseCommentsMessageActions></BaseCommentsMessageActions>
+								</div>
+								<BaseCommentsMessageBody
+									class="mt-2 block text-lg-normal"
+								></BaseCommentsMessageBody>
 
-							<PkpBaseCommentsMessageAuthor class="mt-2 flex flex-col">
-								<PkpBaseCommentsMessageAuthorName
-									class="text-base-bold"
-								></PkpBaseCommentsMessageAuthorName>
-								<PkpBaseCommentsMessageAuthorOrcid
-									class="text-xs-normal"
-								></PkpBaseCommentsMessageAuthorOrcid>
-								<PkpBaseCommentsMessageAuthorAffiliation
-									class="text-sm-light"
-								></PkpBaseCommentsMessageAuthorAffiliation>
-							</PkpBaseCommentsMessageAuthor>
-						</PkpBaseCommentsMessage>
-					</template>
-				</PkpBaseCommentsMessages>
-			</PkpBaseCommentsVersionContent>
-		</PkpBaseCommentsVersion>
-	</PkpBaseCommentsVersions>
+								<BaseCommentsMessageAuthor class="mt-2 flex flex-col">
+									<BaseCommentsMessageAuthorName
+										class="text-base-bold"
+									></BaseCommentsMessageAuthorName>
+									<BaseCommentsMessageAuthorOrcid
+										class="text-xs-normal"
+									></BaseCommentsMessageAuthorOrcid>
+									<BaseCommentsMessageAuthorAffiliation
+										class="text-sm-light"
+									></BaseCommentsMessageAuthorAffiliation>
+								</BaseCommentsMessageAuthor>
+							</BaseCommentsMessage>
+						</template>
+					</BaseCommentsMessages>
+				</BaseCommentsVersionContent>
+			</BaseCommentsVersion>
+		</BaseCommentsVersions>
+	</BaseComments>
 </template>
 
 <script setup>
-import PkpBaseCommentsVersions from './PkpBaseCommentsVersions.vue';
-import PkpBaseCommentsVersion from './PkpBaseCommentsVersion.vue';
-import PkpBaseCommentsNew from './PkpBaseCommentsNew.vue';
-import PkpBaseCommentsNewInput from './PkpBaseCommentsNewInput.vue';
-import PkpBaseCommentsNewSubmit from './PkpBaseCommentsNewSubmit.vue';
-import PkpBaseCommentsVersionHeader from './PkpBaseCommentsVersionHeader.vue';
-import PkpBaseCommentsVersionHeaderTrigger from './PkpBaseCommentsVersionHeaderTrigger.vue';
-import PkpBaseCommentsVersionHeaderLabel from './PkpBaseCommentsVersionHeaderLabel.vue';
-import PkpBaseCommentsVersionHeaderChevron from './PkpBaseCommentsVersionHeaderChevron.vue';
+import BaseComments from './BaseComments.vue';
+import BaseCommentsVersions from './BaseCommentsVersions.vue';
+import BaseCommentsVersion from './BaseCommentsVersion.vue';
+import BaseCommentsNew from './BaseCommentsNew.vue';
+import BaseCommentsNewInput from './BaseCommentsNewInput.vue';
+import BaseCommentsNewSubmit from './BaseCommentsNewSubmit.vue';
+import BaseCommentsVersionHeader from './BaseCommentsVersionHeader.vue';
+import BaseCommentsVersionHeaderTrigger from './BaseCommentsVersionHeaderTrigger.vue';
+import BaseCommentsVersionHeaderLabel from './BaseCommentsVersionHeaderLabel.vue';
+import BaseCommentsVersionHeaderChevron from './BaseCommentsVersionHeaderChevron.vue';
 
-import PkpBaseCommentsVersionContent from './PkpBaseCommentsVersionContent.vue';
+import BaseCommentsVersionContent from './BaseCommentsVersionContent.vue';
 
-import PkpBaseCommentsLogInto from './PkpBaseCommentsLogInto.vue';
-import PkpBaseCommentsMessages from './PkpBaseCommentsMessages.vue';
-import PkpBaseCommentsMessage from './PkpBaseCommentsMessage.vue';
-import PkpBaseCommentsMessageDate from './PkpBaseCommentsMessageDate.vue';
-import PkpBaseCommentsMessageActions from './PkpBaseCommentsMessageActions.vue';
-import PkpBaseCommentsMessageBody from './PkpBaseCommentsMessageBody.vue';
-import PkpBaseCommentsMessageAuthor from './PkpBaseCommentsMessageAuthor.vue';
-import PkpBaseCommentsMessageAuthorName from './PkpBaseCommentsMessageAuthorName.vue';
-import PkpBaseCommentsMessageAuthorOrcid from './PkpBaseCommentsMessageAuthorOrcid.vue';
-import PkpBaseCommentsMessageAuthorAffiliation from './PkpBaseCommentsMessageAuthorAffiliation.vue';
+import BaseCommentsLogInto from './BaseCommentsLogInto.vue';
+import BaseCommentsMessages from './BaseCommentsMessages.vue';
+import BaseCommentsMessage from './BaseCommentsMessage.vue';
+import BaseCommentsMessageDate from './BaseCommentsMessageDate.vue';
+import BaseCommentsMessageActions from './BaseCommentsMessageActions.vue';
+import BaseCommentsMessageBody from './BaseCommentsMessageBody.vue';
+import BaseCommentsMessageAuthor from './BaseCommentsMessageAuthor.vue';
+import BaseCommentsMessageAuthorName from './BaseCommentsMessageAuthorName.vue';
+import BaseCommentsMessageAuthorOrcid from './BaseCommentsMessageAuthorOrcid.vue';
+import BaseCommentsMessageAuthorAffiliation from './BaseCommentsMessageAuthorAffiliation.vue';
 </script>

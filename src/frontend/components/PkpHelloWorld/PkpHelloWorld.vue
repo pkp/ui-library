@@ -28,6 +28,10 @@
 				label="Please tell us why you want to report this comment"
 			></PkpTextarea>
 		</div>
+		<div>
+			PKP Comments
+			<PkpComments v-bind="commentsInit"></PkpComments>
+		</div>
 	</div>
 </template>
 
@@ -40,8 +44,12 @@ import PkpDropdownMenu from '@/frontend/components/PkpDropdownMenu/PkpDropdownMe
 import {usePkpModal} from '@/frontend/composables/usePkpModal';
 import PkpHelloWorldModal from '@/frontend/components/PkpHelloWorld/PkpHelloWorldModal.vue';
 import PkpTextarea from '@/frontend/components/PkpTextarea/PkpTextarea.vue';
+import PkpComments from '@/frontend/Comments/PkpComments.vue';
 
-defineProps({one: {type: Object, required: true}});
+defineProps({
+	commentsInit: {type: Object, required: true},
+	one: {type: Object, required: true},
+});
 
 const {openModal, openDialog} = usePkpModal();
 const dropdownItems = [

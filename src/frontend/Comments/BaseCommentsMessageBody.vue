@@ -1,7 +1,5 @@
 <template>
-	<span>
-		{{ currentMessage.body }}
-	</span>
+	<div v-strip-unsafe-html="currentMessage.commentText.trim()"></div>
 </template>
 <script setup>
 import {inject} from 'vue';

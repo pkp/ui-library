@@ -1,20 +1,24 @@
-import {defineStore} from 'pinia';
-import {ref} from 'vue';
-export const usePkpCommentsStore = defineStore('comments', () => {
-	const messages = ref([
-		{
-			body: 'blabla',
-			author: {name: 'name author', affiliation: 'affiliation', orcid: null},
-		},
-		{
-			body: 'blabla 2',
-			author: {
-				name: 'name author 2',
-				affiliation: 'affiliation 2',
-				orcid: null,
-			},
-		},
-	]);
+import {defineComponentStore} from '@/utils/defineComponentStore';
+import {useCommentsVersion} from './useCommentsVersion';
+import {reactive} from 'vue';
 
-	return {messages};
+export const usePkpCommentsStore = defineComponentStore('comments', (props) => {
+	const apiPerVersion = reactive({});
+	console.log('usePkpCOmmentsStore:', props);
+	props.publicationIds.forEach((publicationId) => {
+		apiPerVersion[publicationId] = useCommentsVersion({
+			publicationId,
+			itemsPerPage: props.itemsPerPage,
+			totalPublicationComments:
+				props.commentsCountPerPublication[publicationId],
+		});
+
+		apiPerVersion[publicationId].loadComments();
+	});
+
+	function getApiPerVersion(publicationId) {
+		return apiPerVersion[publicationId];
+	}
+
+	return {getApiPerVersion, publicationIds: props.publicationIds};
 });
