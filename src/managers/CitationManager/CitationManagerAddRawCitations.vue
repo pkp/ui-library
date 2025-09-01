@@ -4,7 +4,7 @@
 			{{ t('submission.citations') }}
 		</div>
 		<div class="pkpFormField__description">
-			{{ t('submission.citations.description') }}
+			{{ t('submission.citations.structured.description') }}
 		</div>
 		<div>
 			<textarea
