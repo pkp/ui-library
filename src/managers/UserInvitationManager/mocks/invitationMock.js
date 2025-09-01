@@ -60,7 +60,7 @@ export default {
 			emailBody: null,
 			userGroupsToAdd: [
 				{
-					userGroupId: 16,
+					userGroupId: 15,
 					userGroupName: 'Reviewer',
 					masthead: true,
 					dateStart: '2024-09-10',
