@@ -39,7 +39,7 @@ export default {
 	pageTitleDescription:
 		'You are inviting a user to take a role in OJS along with appearing in the journal masthead',
 	primaryLocale: 'en',
-	invitationType: 'reviewerAccess',
+	invitationType: 'reviewerAccessInvite',
 	invitationMode: 'create',
 	invitationPayload: {
 		userId: null,
@@ -48,7 +48,10 @@ export default {
 		givenName: '',
 		familyName: '',
 		orcidValidation: false,
-		userGroupsToAdd: [{userGroupId: null, dateStart: null, masthead: null}],
+		responseDueDate: '',
+		reviewDueDate: '',
+		reviewTypes: '',
+		userGroupsToAdd: [{userGroupId: 16, dateStart: null, masthead: null}],
 		currentUserGroups: [],
 		userGroupsToRemove: [],
 		emailComposer: {
@@ -561,6 +564,7 @@ export default {
 			stepLabel: '{$step} - Enter Review Details',
 			description: 'You can add review related details',
 			nextButtonLabel: 'Invite user to the role (t)',
+			skipInvitationUpdate: false,
 			sections: [
 				{
 					id: 'reviewDetails',
@@ -568,7 +572,7 @@ export default {
 						'<p>Please provide the following details to help us manage your submission in our system.</p>',
 					sectionComponent: 'ReviewerReviewDetailsStep',
 					props: {
-						validateFields: [],
+						validateFields: ['responseDueDate', 'reviewTypes', 'reviewDueDate'],
 					},
 				},
 			],
