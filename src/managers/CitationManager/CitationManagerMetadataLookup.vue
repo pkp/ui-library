@@ -12,7 +12,7 @@
 				type="checkbox"
 				id="citations-citationsMetadataLookup"
 				@change="citationStore.citationsMetadataLookupChanged()"
-				v-model="citationStore.citationsMetadataLookup"
+				v-model="citationStore.currentCitationsMetadataLookup"
 			/>
 			<label
 				for="citations-citationsMetadataLookup"

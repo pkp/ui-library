@@ -45,19 +45,22 @@ export const useCitationManagerStore = defineComponentStore(
 		/**
 		 * citations metadata lookup
 		 */
-		const citationsMetadataLookup = ref(false);
+		const currentCitationsMetadataLookup = ref(false);
+		const citationsMetadataLookup = computed(
+			() => publication.value.citationsMetadataLookup,
+		);
 		onMounted(() => {
 			if (publication.value.citationsMetadataLookup === null) {
-				citationsMetadataLookup.value = false;
+				currentCitationsMetadataLookup.value = false;
 			} else {
-				citationsMetadataLookup.value =
+				currentCitationsMetadataLookup.value =
 					publication.value.citationsMetadataLookup;
 			}
 		});
 		function citationsMetadataLookupChanged() {
 			let title = t('submission.citations.structured.disableModal.title');
 			let message = t('submission.citations.structured.disableModal.confirm');
-			if (citationsMetadataLookup.value) {
+			if (currentCitationsMetadataLookup.value) {
 				title = t('submission.citations.structured.enableModal.title');
 				message = t('submission.citations.structured.enableModal.confirm');
 			}
@@ -77,7 +80,8 @@ export const useCitationManagerStore = defineComponentStore(
 								{
 									method: 'PUT',
 									body: {
-										citationsMetadataLookup: citationsMetadataLookup.value,
+										citationsMetadataLookup:
+											currentCitationsMetadataLookup.value,
 									},
 								},
 							);
@@ -90,7 +94,8 @@ export const useCitationManagerStore = defineComponentStore(
 						label: t('common.no', {}),
 						isPrimary: true,
 						callback: (close) => {
-							citationsMetadataLookup.value = !citationsMetadataLookup.value;
+							currentCitationsMetadataLookup.value =
+								!currentCitationsMetadataLookup.value;
 							close();
 						},
 					},
@@ -242,7 +247,6 @@ export const useCitationManagerStore = defineComponentStore(
 			if (!citation.authors) {
 				citation.authors = [];
 			}
-			console.log('citation', citation);
 			let formName = 'citationRawEditForm';
 			if (props.publication.citationsMetadataLookup) {
 				formName = 'citationStructuredEditForm';
@@ -308,6 +312,7 @@ export const useCitationManagerStore = defineComponentStore(
 
 			doiPrefix,
 
+			currentCitationsMetadataLookup,
 			citationsMetadataLookup,
 			citationsMetadataLookupChanged,
 
