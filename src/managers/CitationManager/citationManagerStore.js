@@ -73,7 +73,6 @@ export const useCitationManagerStore = defineComponentStore(
 				actions: [
 					{
 						label: t('common.yes', {}),
-						isWarnable: true,
 						callback: async (close) => {
 							const {fetch} = useFetch(
 								`${apiUrlSubmissions.value}/metadataLookup`,
@@ -158,7 +157,7 @@ export const useCitationManagerStore = defineComponentStore(
 				actions: [
 					{
 						label: t('common.deleteAll'),
-						isPrimary: true,
+                        isWarnable: true,
 						callback: async (close) => {
 							const {fetch} = useFetch(
 								`${apiUrlSubmissions.value}/deleteCitationsByPublicationId`,
@@ -171,7 +170,7 @@ export const useCitationManagerStore = defineComponentStore(
 					},
 					{
 						label: t('common.no'),
-						isWarnable: true,
+                        isPrimary: true,
 						callback: (close) => {
 							close();
 						},
@@ -276,7 +275,7 @@ export const useCitationManagerStore = defineComponentStore(
 				actions: [
 					{
 						label: t('common.yes'),
-						isPrimary: true,
+						isWarnable: true,
 						callback: async (close) => {
 							const {apiUrl} = useUrl(`citations`);
 							const {fetch} = useFetch(`${apiUrl.value}/${citation.id}`, {
@@ -289,13 +288,28 @@ export const useCitationManagerStore = defineComponentStore(
 					},
 					{
 						label: t('common.no'),
-						isWarnable: true,
+						isPrimary: true,
 						callback: (close) => {
 							close();
 						},
 					},
 				],
 			});
+		}
+
+		/**
+		 * Add a new job for this citation
+		 */
+		async function citationAddJob({citation}) {
+			const {fetch} = useFetch(
+				`${apiUrlCitations.value}/${citation.id}/addJob`,
+				{
+					method: 'POST',
+					body: {},
+				},
+			);
+			await fetch();
+			dataUpdateCallback();
 		}
 
 		return {
@@ -336,6 +350,7 @@ export const useCitationManagerStore = defineComponentStore(
 
 			citationEditCitation,
 			citationDeleteCitation,
+			citationAddJob,
 		};
 	},
 );

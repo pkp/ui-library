@@ -63,6 +63,12 @@ export function useCitationManagerConfig() {
 			icon: 'Cancel',
 		});
 
+		actions.push({
+			label: t('admin.job.add'),
+			name: Actions.CITATION_ADD_JOB,
+			icon: 'Add',
+		});
+
 		return actions;
 	}
 
