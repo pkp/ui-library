@@ -1,7 +1,9 @@
 <template>
 	<TableCell :is-row-header="false">
-		<div v-if="citationStore.currentCitationsMetadataLookup">
-			<div>
+		<!-- citationsMetadataLookup enabled -->
+		<div v-if="citationStore.citationsMetadataLookup">
+			<!-- is structured -->
+			<div v-if="citation.isStructured">
 				<div class="text-lg-normal">
 					<a
 						v-if="citation.doi"
@@ -22,64 +24,70 @@
 					<span v-if="citation.urn">urn: {{ citation.urn }}</span>
 				</div>
 				<div>{{ citation.title }}</div>
+				<div v-if="toggleStatusRow">
+					<div class="text-lg-normal leading-[2rem]">
+						<span v-for="(author, authorIndex) in citation.authors">
+							<span>{{ author.familyName }} {{ author.givenName }}</span>
+							<a v-if="author.orcid" :href="author.orcid" target="_blank">
+								<Icon
+									icon="Orcid"
+									:class="'relative top-[-2px] inline-block h-auto w-[16px] align-middle'"
+									:inline="true"
+								/>
+							</a>
+						</span>
+					</div>
+					<div v-if="citation.sourceName">
+						{{ citation.sourceName }}
+					</div>
+					<div class="leading-[2rem]">
+						<span v-if="citation.date">Date: {{ citation.date }}</span>
+						<span v-if="citation.volume">Volume: {{ citation.volume }}</span>
+						<span v-if="citation.issue">
+							Issue number: {{ citation.issue }}
+						</span>
+						<span v-if="citation.firstPage && citation.lastPage">
+							Pages: {{ citation.firstPage }} - {{ citation.lastPage }}
+						</span>
+					</div>
+					<div v-if="citation.isStructured" class="w-fit pt-1">
+						{{ citation.rawCitation }}
+					</div>
+				</div>
+				<div>
+					<a
+						v-if="citation.wikidata"
+						:href="citation.wikidata"
+						class="service-button"
+						target="_blank"
+					>
+						Wikidata
+					</a>
+					<a
+						v-if="citation.openAlex"
+						:href="citation.openAlex"
+						class="service-button"
+						target="_blank"
+					>
+						OpenAlex
+					</a>
+				</div>
 			</div>
-			<div v-if="toggleStatusRow">
-				<div class="text-lg-normal leading-[2rem]">
-					<span v-for="(author, authorIndex) in citation.authors">
-						<span>{{ author.familyName }} {{ author.givenName }}</span>
-						<a v-if="author.orcid" :href="author.orcid" target="_blank">
-							<Icon
-								icon="Orcid"
-								:class="'relative top-[-2px] inline-block h-auto w-[16px] align-middle'"
-								:inline="true"
-							/>
-						</a>
+			<!-- is not structured -->
+			<div v-else>
+				<div>{{ citation.rawCitation }}</div>
+				<div v-if="citation.isProcessed">
+					<span class="service-button text-negative">
+						{{
+							t('submission.citations.structured.noStructuredInformationFound')
+						}}
 					</span>
 				</div>
-				<div v-if="citation.sourceName">
-					{{ citation.sourceName }}
-				</div>
-				<div class="leading-[2rem]">
-					<span v-if="citation.date">Date: {{ citation.date }}</span>
-					<span v-if="citation.volume">Volume: {{ citation.volume }}</span>
-					<span v-if="citation.issue">Issue number: {{ citation.issue }}</span>
-					<span v-if="citation.firstPage && citation.lastPage">
-						Pages: {{ citation.firstPage }} - {{ citation.lastPage }}
-					</span>
-				</div>
-				<div class="w-fit pt-1">{{ citation.rawCitation }}</div>
-			</div>
-			<div>
-				<a
-					v-if="citation.wikidata"
-					:href="citation.wikidata"
-					class="service-button"
-					target="_blank"
-				>
-					Wikidata
-				</a>
-				<a
-					v-if="citation.openAlex"
-					:href="citation.openAlex"
-					class="service-button"
-					target="_blank"
-				>
-					OpenAlex
-				</a>
-			</div>
-			<div>
-				<span
-					v-if="!citation.isStructured && citation.isProcessed"
-					class="service-button text-negative"
-				>
-					{{
-						t('submission.citations.structured.noStructuredInformationFound')
-					}}
-				</span>
 			</div>
 		</div>
+		<!-- citationsMetadataLookup disabled -->
 		<div v-else>
-			<div class="w-fit pt-1">{{ citation.rawCitation }}</div>
+			<div>{{ citation.rawCitation }}</div>
 		</div>
 	</TableCell>
 </template>

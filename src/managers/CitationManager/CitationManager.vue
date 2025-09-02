@@ -2,7 +2,7 @@
 	<CitationManagerMetadataLookup />
 	<CitationManagerAddRawCitations />
 	<CitationManagerStatusProcessed
-		v-if="citationStore.currentCitationsMetadataLookup"
+		v-if="citationStore.citationsMetadataLookup"
 	/>
 	<div>
 		<a

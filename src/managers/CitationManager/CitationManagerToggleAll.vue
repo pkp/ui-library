@@ -1,6 +1,6 @@
 <template>
 	<a
-		v-if="citationStore.currentCitationsMetadataLookup"
+		v-if="citationStore.citationsMetadataLookup"
 		@click="citationStore.allRowsExpandedChanged"
 		class="cursor-pointer"
 	>

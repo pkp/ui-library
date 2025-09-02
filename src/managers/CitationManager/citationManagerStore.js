@@ -37,27 +37,27 @@ export const useCitationManagerStore = defineComponentStore(
 			`submissions/${submission.value.id}/publications/${publication.value.id}/citations`,
 		);
 
-        /**
-         * constants
-         */
-        const doiPrefix = 'https://doi.org';
+		/**
+		 * constants
+		 */
+		const doiPrefix = 'https://doi.org';
 
 		/**
 		 * citations metadata lookup
 		 */
-		const currentCitationsMetadataLookup = ref(false);
+		const citationsMetadataLookup = ref(false);
 		onMounted(() => {
 			if (publication.value.citationsMetadataLookup === null) {
-				currentCitationsMetadataLookup.value = false;
+				citationsMetadataLookup.value = false;
 			} else {
-				currentCitationsMetadataLookup.value =
+				citationsMetadataLookup.value =
 					publication.value.citationsMetadataLookup;
 			}
 		});
 		function citationsMetadataLookupChanged() {
 			let title = t('submission.citations.structured.disableModal.title');
 			let message = t('submission.citations.structured.disableModal.confirm');
-			if (currentCitationsMetadataLookup.value) {
+			if (citationsMetadataLookup.value) {
 				title = t('submission.citations.structured.enableModal.title');
 				message = t('submission.citations.structured.enableModal.confirm');
 			}
@@ -77,8 +77,7 @@ export const useCitationManagerStore = defineComponentStore(
 								{
 									method: 'PUT',
 									body: {
-										citationsMetadataLookup:
-											currentCitationsMetadataLookup.value,
+										citationsMetadataLookup: citationsMetadataLookup.value,
 									},
 								},
 							);
@@ -91,8 +90,7 @@ export const useCitationManagerStore = defineComponentStore(
 						label: t('common.no', {}),
 						isPrimary: true,
 						callback: (close) => {
-							currentCitationsMetadataLookup.value =
-								!currentCitationsMetadataLookup.value;
+							citationsMetadataLookup.value = !citationsMetadataLookup.value;
 							close();
 						},
 					},
@@ -308,9 +306,9 @@ export const useCitationManagerStore = defineComponentStore(
 			apiUrlCitations,
 			apiUrlSubmissions,
 
-            doiPrefix,
+			doiPrefix,
 
-			currentCitationsMetadataLookup,
+			citationsMetadataLookup,
 			citationsMetadataLookupChanged,
 
 			citationsRawToBeAdded,

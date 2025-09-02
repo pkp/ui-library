@@ -1,7 +1,7 @@
 <template>
 	<TableCell :is-row-header="false" class="!text-center">
 		<span
-			v-if="citationStore.currentCitationsMetadataLookup"
+			v-if="citationStore.citationsMetadataLookup"
 			class="text-base-normal"
 		>
 			<a
