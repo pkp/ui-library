@@ -7,6 +7,8 @@ import {useModal} from '@/composables/useModal';
 export const useUserInvitationPageStore = defineComponentStore(
 	'userInvitationPage',
 	(pageInitConfig) => {
+		const invitationUserRoleAssignment = 'userRoleAssignment';
+		const invitationReviewerAccessInvite = 'reviewerAccessInvite';
 		const {openDialog} = useModal();
 		const {t} = useLocalize();
 		/**
@@ -74,6 +76,14 @@ export const useUserInvitationPageStore = defineComponentStore(
 		 */
 		const isOnLastStep = computed(() => {
 			return currentStepIndex.value === steps.value.length - 1;
+		});
+
+		const isUserRoleAssignment = computed(() => {
+			return invitationType.value === invitationUserRoleAssignment;
+		});
+
+		const isReviewerAccess = computed(() => {
+			return invitationType.value === invitationReviewerAccessInvite;
 		});
 
 		/**
@@ -339,12 +349,21 @@ export const useUserInvitationPageStore = defineComponentStore(
 				if (data.value) {
 					openDialog({
 						title: t('userInvitation.modal.title'),
-						message: t('userInvitation.modal.message', {
-							email: invitationPayload.value.inviteeEmail,
-						}),
+						message:
+							invitationType.value === invitationUserRoleAssignment
+								? t('userInvitation.modal.message', {
+										email: invitationPayload.value.inviteeEmail,
+									})
+								: t('reviewerInvitation.modal.message', {
+										email: invitationPayload.value.inviteeEmail,
+										articleTitle: '',
+									}),
 						actions: [
 							{
-								label: t('userInvitation.modal.button'),
+								label:
+									invitationType.value === invitationUserRoleAssignment
+										? t('userInvitation.modal.button')
+										: t('reviewerInvitation.modal.button'),
 								callback: (close) => {
 									redirectToPage();
 								},
@@ -413,6 +432,8 @@ export const useUserInvitationPageStore = defineComponentStore(
 			registerActionForStepId,
 			emailTemplatesApiUrl,
 			invitationUserData,
+			isUserRoleAssignment,
+			isReviewerAccess,
 
 			currentStep,
 			currentStepIndex,

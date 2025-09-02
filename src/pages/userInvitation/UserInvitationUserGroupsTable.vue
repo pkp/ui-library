@@ -66,6 +66,7 @@
 					<TableCell>
 						<FieldSelect
 							name="userGroupId"
+							:disabled="store.isReviewerAccess"
 							:label="t('invitation.role.selectRole')"
 							:is-required="true"
 							:value="userGroupToAdd.userGroupId"
@@ -119,8 +120,9 @@
 					<TableCell>
 						<PkpButton
 							v-if="
-								store.invitationPayload.userGroupsToAdd.length > 1 ||
-								isUserGroupsToAddPopulated()
+								(store.invitationPayload.userGroupsToAdd.length > 1 ||
+									isUserGroupsToAddPopulated()) &&
+								store.isUserRoleAssignment
 							"
 							:is-warnable="true"
 							@click="removeInvitedUserGroup(index)"
@@ -131,7 +133,7 @@
 				</TableRow>
 			</template>
 		</TableBody>
-		<template #bottom-controls>
+		<template v-if="store.isUserRoleAssignment" #bottom-controls>
 			<PkpButton
 				:is-disabled="store.invitationPayload.disabled"
 				@click="addUserGroup()"
