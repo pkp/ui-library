@@ -64,6 +64,4 @@ import Icon from '@/components/Icon/Icon.vue';
 const {t} = useLocalize();
 
 const citationStore = useCitationManagerStore();
-
-function citationsRawShowMessage() {}
 </script>

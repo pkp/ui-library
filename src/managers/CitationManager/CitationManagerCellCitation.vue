@@ -71,14 +71,25 @@
 		>
 			{{ citation.rawCitation }}
 		</div>
+		<div>
+			<span
+				v-if="!citation.isStructured && citation.isProcessed"
+				class="service-button text-negative"
+			>
+				{{ t('submission.citations.structured.noStructuredInformationFound') }}
+			</span>
+		</div>
 	</TableCell>
 </template>
 
 <script setup>
 import {computed} from 'vue';
+import {useLocalize} from '@/composables/useLocalize';
 import TableCell from '@/components/Table/TableCell.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import {useCitationManagerStore} from '@/managers/CitationManager/citationManagerStore';
+
+const {t} = useLocalize();
 
 const props = defineProps({
 	citation: {type: Object, required: true},

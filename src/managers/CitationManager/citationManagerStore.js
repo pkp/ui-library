@@ -151,7 +151,7 @@ export const useCitationManagerStore = defineComponentStore(
 				),
 				actions: [
 					{
-						label: t('common.yes'),
+						label: t('common.deleteAll'),
 						isPrimary: true,
 						callback: async (close) => {
 							const {fetch} = useFetch(
@@ -243,6 +243,9 @@ export const useCitationManagerStore = defineComponentStore(
 				formName = 'citationStructuredEditForm';
 			}
 			const {form, set, setValues, setAction} = useForm(props[formName]);
+			if (!citation.authors) {
+				citation.authors = [];
+			}
 			setValues(citation);
 			setAction(`${apiUrlCitations.value}/${citation.id}`);
 			openSideModal(CitationEditModal, {
