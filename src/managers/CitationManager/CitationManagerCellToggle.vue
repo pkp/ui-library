@@ -1,6 +1,9 @@
 <template>
 	<TableCell :is-row-header="false" class="!text-center">
-		<span class="text-base-normal">
+		<span
+			v-if="citationStore.currentCitationsMetadataLookup"
+			class="text-base-normal"
+		>
 			<a
 				v-if="citation.isStructured"
 				@click="toggleStatusRowChanged"
@@ -13,6 +16,7 @@
 				/>
 			</a>
 		</span>
+		<span v-else>&nbsp;</span>
 	</TableCell>
 </template>
 

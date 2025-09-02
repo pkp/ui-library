@@ -5,16 +5,6 @@
 		</template>
 		<div class="citation-edit-modal-container">
 			<div class="ml-8 mr-8 h-full bg-secondary">
-				<div class="pl-[2rem] pr-[2rem] pt-[2rem]">
-					<div class="pkpFormField__heading">
-						<span class="pkpFormFieldLabel align-middle">
-							{{ t('submission.citations.structured.label.citation') }}
-						</span>
-					</div>
-					<div class="pkpFormField__control text-lg-normal">
-						{{ citation['rawCitation'] }}
-					</div>
-				</div>
 				<PkpForm
 					v-bind="form"
 					@set="(...args) => emit('set', ...args)"
@@ -50,9 +40,9 @@ const closeModal = inject('closeModal');
 </script>
 
 <style>
-#citation_raw-citationsRaw-control,
-#citation_structured-citationsRaw-control {
-	height: 4rem;
+.citation-edit-modal-container #citation_raw-rawCitation-control,
+.citation-edit-modal-container #citation_structured-rawCitation-control {
+	height: 5rem;
 }
 .citation-edit-modal-container fieldset {
 	padding-top: 0;

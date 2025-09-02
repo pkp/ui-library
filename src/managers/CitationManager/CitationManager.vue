@@ -1,7 +1,9 @@
 <template>
 	<CitationManagerMetadataLookup />
 	<CitationManagerAddRawCitations />
-	<CitationManagerStatusProcessed />
+	<CitationManagerStatusProcessed
+		v-if="citationStore.currentCitationsMetadataLookup"
+	/>
 	<div>
 		<a
 			@click="citationStore.citationDeleteAllCitations"

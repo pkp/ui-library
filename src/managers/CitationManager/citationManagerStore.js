@@ -37,18 +37,21 @@ export const useCitationManagerStore = defineComponentStore(
 			`submissions/${submission.value.id}/publications/${publication.value.id}/citations`,
 		);
 
+        /**
+         * constants
+         */
+        const doiPrefix = 'https://doi.org';
+
 		/**
 		 * citations metadata lookup
-		 * // todo: this value should come from the metadata setting of journal
 		 */
-		const defaultCitationsMetadataLookup = true;
 		const currentCitationsMetadataLookup = ref(false);
 		onMounted(() => {
-			if (publication.value.citationsMetadataLookup !== null) {
+			if (publication.value.citationsMetadataLookup === null) {
+				currentCitationsMetadataLookup.value = false;
+			} else {
 				currentCitationsMetadataLookup.value =
 					publication.value.citationsMetadataLookup;
-			} else {
-				currentCitationsMetadataLookup.value = defaultCitationsMetadataLookup;
 			}
 		});
 		function citationsMetadataLookupChanged() {
@@ -238,14 +241,15 @@ export const useCitationManagerStore = defineComponentStore(
 		 * Edit citation
 		 */
 		function citationEditCitation({citation}) {
+			if (!citation.authors) {
+				citation.authors = [];
+			}
+			console.log('citation', citation);
 			let formName = 'citationRawEditForm';
 			if (props.publication.citationsMetadataLookup) {
 				formName = 'citationStructuredEditForm';
 			}
 			const {form, set, setValues, setAction} = useForm(props[formName]);
-			if (!citation.authors) {
-				citation.authors = [];
-			}
 			setValues(citation);
 			setAction(`${apiUrlCitations.value}/${citation.id}`);
 			openSideModal(CitationEditModal, {
@@ -304,7 +308,8 @@ export const useCitationManagerStore = defineComponentStore(
 			apiUrlCitations,
 			apiUrlSubmissions,
 
-			defaultCitationsMetadataLookup,
+            doiPrefix,
+
 			currentCitationsMetadataLookup,
 			citationsMetadataLookupChanged,
 
