@@ -3,22 +3,17 @@
 		:placeholder="t('userComment.addYourComment')"
 		:label="t('userComment.addYourComment')"
 		:is-label-sr-only="true"
-		:model-value="versionApi.commentText"
-		@update:model-value="versionApi.updateCommentText"
+		:model-value="commentsVersionStore.commentText"
+		@update:model-value="commentsVersionStore.updateCommentText"
 	/>
 </template>
 <script setup>
-import {inject} from 'vue';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 
 import PkpTextarea from '../components/PkpTextarea/PkpTextarea.vue';
-import {usePkpCommentsStore} from './usePkpCommentsStore';
+import {usePkpCommentsVersionStore} from './usePkpCommentsVersionStore';
 
 const {t} = usePkpLocalize();
 
-const versionProps = inject('versionProps');
-
-const commentsStore = usePkpCommentsStore();
-
-const versionApi = commentsStore.getApiPerVersion(versionProps.publicationId);
+const commentsVersionStore = usePkpCommentsVersionStore();
 </script>

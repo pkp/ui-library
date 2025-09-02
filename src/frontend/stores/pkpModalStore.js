@@ -128,6 +128,7 @@ export const usePkpModalStore = defineStore('pkpModal', () => {
 		openDialogNetworkError,
 		openDialog,
 		closeTopDialog,
+		closeModalById,
 		modal1,
 		modal2,
 		modal3,

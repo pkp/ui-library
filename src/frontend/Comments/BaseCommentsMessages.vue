@@ -1,17 +1,12 @@
 <template>
 	<div>
-		<template v-for="comment in versionApi.comments">
+		<template v-for="comment in commentsVersionStore.comments">
 			<slot :message="comment"></slot>
 		</template>
 	</div>
 </template>
 <script setup>
-import {inject} from 'vue';
-import {usePkpCommentsStore} from './usePkpCommentsStore';
-console.log('BaseCommentsMessages loaded');
-const versionProps = inject('versionProps');
-const {getApiPerVersion} = usePkpCommentsStore();
+import {usePkpCommentsVersionStore} from './usePkpCommentsVersionStore';
 
-const versionApi = getApiPerVersion(versionProps.publicationId);
-console.log('BaseCommentsMessages, versionApi:', versionApi);
+const commentsVersionStore = usePkpCommentsVersionStore();
 </script>

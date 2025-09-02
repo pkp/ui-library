@@ -1,16 +1,15 @@
 <template>
-	<div v-if="versionApi.isLatestPublication && !!versionApi.currentUser">
+	<div
+		v-if="
+			commentsVersionStore.isLatestPublication &&
+			!!commentsVersionStore.currentUser
+		"
+	>
 		<slot></slot>
 	</div>
 </template>
 <script setup>
-import {inject} from 'vue';
+import {usePkpCommentsVersionStore} from './usePkpCommentsVersionStore';
 
-import {usePkpCommentsStore} from './usePkpCommentsStore';
-
-const versionProps = inject('versionProps');
-
-const commentsStore = usePkpCommentsStore();
-
-const versionApi = commentsStore.getApiPerVersion(versionProps.publicationId);
+const commentsVersionStore = usePkpCommentsVersionStore();
 </script>

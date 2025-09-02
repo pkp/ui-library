@@ -1,8 +1,8 @@
 <template>
 	<div
 		v-if="
-			versionApi.currentUser &&
-			messageProps.message.userId === versionApi.currentUser.id &&
+			commentsVersionStore.currentUser &&
+			messageProps.message.userId === commentsVersionStore.currentUser.id &&
 			!messageProps.message.isApproved
 		"
 		class="pkpUserCommentsList__item--approvalNotice"
@@ -13,13 +13,11 @@
 </template>
 <script setup>
 import {inject} from 'vue';
-import {usePkpCommentsStore} from './usePkpCommentsStore';
+import {usePkpCommentsVersionStore} from './usePkpCommentsVersionStore';
 import {usePkpLocalize} from '../composables/usePkpLocalize';
 const messageProps = inject('messageProps');
-const versionProps = inject('versionProps');
 
 const {t} = usePkpLocalize();
-const commentsStore = usePkpCommentsStore();
 
-const versionApi = commentsStore.getApiPerVersion(versionProps.publicationId);
+const commentsVersionStore = usePkpCommentsVersionStore();
 </script>

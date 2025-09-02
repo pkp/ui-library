@@ -25,7 +25,7 @@
 								v-bind="messageProps"
 								class="rounded bg-default p-4"
 							>
-								<BaseCommentsMessageIsApproved />
+								<BaseCommentsNotificationMessageApproved />
 								<div class="flex justify-between">
 									<BaseCommentsMessageDate
 										class="text-sm-light"
@@ -74,7 +74,7 @@ import BaseCommentsLogInto from './BaseCommentsLogInto.vue';
 import BaseCommentsMessages from './BaseCommentsMessages.vue';
 import BaseCommentsNotificationNotLatest from './BaseCommentsNotificationNotLatest.vue';
 import BaseCommentsMessage from './BaseCommentsMessage.vue';
-import BaseCommentsMessageIsApproved from './BaseCommentsMessageIsApproved.vue';
+import BaseCommentsNotificationMessageApproved from './BaseCommentsNotificationMessageApproved.vue';
 import BaseCommentsMessageDate from './BaseCommentsMessageDate.vue';
 import BaseCommentsMessageActions from './BaseCommentsMessageActions.vue';
 import BaseCommentsMessageBody from './BaseCommentsMessageBody.vue';

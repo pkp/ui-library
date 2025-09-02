@@ -1,14 +1,8 @@
 <template>
-	<span>{{ versionApi.versionLabel }}</span>
+	<span>{{ commentsVersionStore.versionLabel }}</span>
 </template>
 <script setup>
-import {inject} from 'vue';
+import {usePkpCommentsVersionStore} from './usePkpCommentsVersionStore';
 
-import {usePkpCommentsStore} from './usePkpCommentsStore';
-
-const versionProps = inject('versionProps');
-
-const commentsStore = usePkpCommentsStore();
-
-const versionApi = commentsStore.getApiPerVersion(versionProps.publicationId);
+const commentsVersionStore = usePkpCommentsVersionStore();
 </script>

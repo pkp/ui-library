@@ -83,3 +83,4 @@ import BaseCommentsMessageAuthorName from './BaseCommentsMessageAuthorName.vue';
 import BaseCommentsMessageAuthorOrcid from './BaseCommentsMessageAuthorOrcid.vue';
 import BaseCommentsMessageAuthorAffiliation from './BaseCommentsMessageAuthorAffiliation.vue';
 </script>
+./BaseCommentsNotificationMessageApproved.vue
