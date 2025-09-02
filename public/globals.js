@@ -1281,7 +1281,10 @@ window.pkp = {
 		'reviewer.reviewDueDate':'Review Response Due Date',
 		'reviewer.reviewTypes':'Review Types',
 		'reviewerInvitation.modal.message':'{$email} has been invited to review the submission "{$articleTitle}"<br><br> You can be updated about the user\'s descision on the reviewer panel in the review workflow or through email and OJS notifications',
-		'reviewerInvitation.modal.button':'View submission'
+		'reviewerInvitation.modal.button':'View submission',
+		'reviewerInvitation.reviewTypes.anonymusAuthorOrReviewer':'Anonymus Reviewer / Anonymus Author',
+		'reviewerInvitation.reviewTypes.disclosedAuthor':'Anonymus Reviewer / Disclosed Author',
+		'reviewerInvitation.reviewTypes.open':'Open'
 	},
 	tinyMCE: {
 		skinUrl: '/styles/tinymce',

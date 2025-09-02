@@ -132,7 +132,7 @@ export const Reviewer = {
 		msw: {
 			handlers: [
 				http.post(
-					'https://mock/index.php/publicknowledge/api/v1/invitations/add/reviewerAccess',
+					'https://mock/index.php/publicknowledge/api/v1/invitations/add/reviewerAccessInvite',
 					() => {
 						return HttpResponse.json({invitationId: 15});
 					},
@@ -142,6 +142,7 @@ export const Reviewer = {
 					async ({request}) => {
 						const data = await request.json();
 						let errors = {};
+						console.log(data.invitationData);
 
 						data.invitationData.userGroupsToAdd.forEach((element, index) => {
 							Object.keys(element).forEach((key) => {
@@ -164,6 +165,18 @@ export const Reviewer = {
 						}
 						if (data.invitationData.givenName === '') {
 							errors['givenName'] = ['This field is required'];
+						}
+
+						if (data.invitationData.responseDueDate === '') {
+							errors['responseDueDate'] = ['This field is required'];
+						}
+
+						if (data.invitationData.reviewDueDate === '') {
+							errors['reviewDueDate'] = ['This field is required'];
+						}
+
+						if (data.invitationData.reviewTypes === '') {
+							errors['reviewTypes'] = ['This field is required'];
 						}
 
 						if (data.invitationData.emailComposer) {
