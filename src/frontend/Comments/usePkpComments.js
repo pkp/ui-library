@@ -4,6 +4,7 @@ import {useUrl} from '@/frontend/composables/usePkpUrl';
 import {usePkpModal} from '@/frontend/composables/usePkpModal';
 import {usePkpFetch} from '@/frontend/composables/usePkpFetch';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
+import PkpUserCommentReportDialogBody from './PkpUserCommentReportDialogBody.vue';
 
 export function useCommentsVersion({
 	publicationId,
@@ -90,8 +91,10 @@ export function useCommentsVersion({
 	 * @param comment
 	 * @returns {Array<{label: string, name: string, disabled?: boolean}>} - An array of available actions */
 	function getCommentActions(comment) {
+		console.log('getCommentActions');
 		const actions = [];
 
+		console.log('getCommentActions:', currentUser.id, comment.userId);
 		if (currentUser && currentUser.id !== comment.userId) {
 			actions.push({
 				label: t('userComment.report'),
@@ -157,7 +160,69 @@ export function useCommentsVersion({
 		});
 	}
 
+	/**
+	 * Reports a comment.
+	 * @param comment - The comment to be reported.
+	 */
+	function commentReport(comment) {
+		const {openDialog, closeTopDialog} = usePkpModal();
+
+		openDialog({
+			title: t('userComment.reportComment'),
+			comment,
+			bodyComponent: PkpUserCommentReportDialogBody,
+			bodyProps: {
+				comment,
+				onSubmit: performCommentReport,
+				onCancel: () => closeTopDialog(),
+			},
+		});
+	}
+
+	/**
+	 * Performs the comment report action.
+	 * @param comment - The comment to be reported.
+	 * @param reportText - The text of the report.
+	 */
+	async function performCommentReport(comment, reportText) {
+		if (!currentUser || !reportText.trim()) {
+			return;
+		}
+
+		const commentId = comment.id;
+		const {apiUrl} = useUrl(`comments/${commentId}/reports`);
+		const {closeTopDialog} = usePkpModal();
+
+		const {fetch: postReport, isSuccess} = usePkpFetch(apiUrl, {
+			method: 'POST',
+			body: {
+				note: reportText,
+			},
+		});
+
+		await postReport();
+
+		if (isSuccess.value) {
+			comments.value.forEach((comment) => {
+				if (comment.id === commentId) {
+					comment.isReported = true;
+				}
+			});
+		}
+		closeTopDialog();
+	}
+
+	const versionLabel = computed(() => {
+		return t('userComment.versionWithCount', {
+			version: publicationId,
+			versionCommentsCount: totalPublicationComments || 0,
+		});
+	});
+
 	return reactive({
+		versionLabel,
+		isLatestPublication,
+		currentUser,
 		comments,
 		showMoreCommentsCount,
 		currentPage,
@@ -168,5 +233,6 @@ export function useCommentsVersion({
 		commentAdd,
 		getCommentActions,
 		commentDelete,
+		commentReport,
 	});
 }

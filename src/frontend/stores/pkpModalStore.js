@@ -3,13 +3,13 @@ import {ref} from 'vue';
 import {t} from '@/utils/i18n';
 export const usePkpModalStore = defineStore('pkpModal', () => {
 	/** Default network error */
-	function openModalNetworkError(fetchError) {
+	function openDialogNetworkError(fetchError) {
 		const msg =
 			fetchError?.data?.errorMessage ||
 			fetchError?.data?.error ||
 			t('common.unknownError');
 
-		openModal({
+		openDialog({
 			name: 'ajaxError',
 			title: t('common.error'),
 			message: msg,
@@ -48,7 +48,7 @@ export const usePkpModalStore = defineStore('pkpModal', () => {
 	 * @param {*} props
 	 * @param {*} options - modalId: explicit ID coming from legacy stack, onClose: function to be called after modal is closed
 	 */
-	function openModal(props = {}, options = {}) {
+	function openDialog(props = {}, options = {}) {
 		modalIdCounter++;
 
 		// modalId is either calculated internally or its comming from the legacy handler if its legacy modal
@@ -77,29 +77,16 @@ export const usePkpModalStore = defineStore('pkpModal', () => {
 		}
 	}
 
-	function closeModal(component, returnData) {
-		if (modal1?.value?.component === component) {
-			closeModalById(modal1?.value?.modalId, returnData);
-		} else if (modal2?.value?.component === component) {
-			closeModalById(modal2?.value?.modalId, returnData);
-		} else if (modal3?.value?.component === component) {
-			closeModalById(modal3?.value?.modalId, returnData);
-		} else if (modal4?.value?.component === component) {
-			closeModalById(modal4?.value?.modalId, returnData);
+	function closeTopDialog() {
+		if (modal4.value?.opened) {
+			closeModalById(modal4.value.modalId);
+		} else if (modal3.value?.opened) {
+			closeModalById(modal3.value.modalId);
+		} else if (modal2.value?.opened) {
+			closeModalById(modal2.value.modalId);
+		} else if (modal1.value?.opened) {
+			closeModalById(modal1.value.modalId);
 		}
-	}
-
-	function isModalOpened(component) {
-		if (modal1?.value?.component === component) {
-			return true;
-		} else if (modal2?.value?.component === component) {
-			return true;
-		} else if (modal3?.value?.component === component) {
-			return true;
-		} else if (modal4?.value?.component === component) {
-			return true;
-		}
-		return false;
 	}
 
 	function closeModalById(_modalId, returnData) {
@@ -138,11 +125,9 @@ export const usePkpModalStore = defineStore('pkpModal', () => {
 
 	return {
 		/** opening dialog */
-		openModalNetworkError,
-		openModal,
-		closeModal,
-		closeModalById,
-		isModalOpened,
+		openDialogNetworkError,
+		openDialog,
+		closeTopDialog,
 		modal1,
 		modal2,
 		modal3,

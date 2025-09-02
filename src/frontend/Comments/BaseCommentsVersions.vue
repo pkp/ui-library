@@ -1,5 +1,9 @@
 <template>
-	<AccordionRoot collapsible type="multiple">
+	<AccordionRoot
+		type="single"
+		collapsible
+		:default-value="commentsStore.publicationIds[0]"
+	>
 		<template
 			v-for="publicationId in commentsStore.publicationIds"
 			:key="publicationId"

@@ -1,5 +1,5 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
-import {useCommentsVersion} from './useCommentsVersion';
+import {useCommentsVersion} from './usePkpComments';
 
 export const usePkpCommentsStore = defineComponentStore('comments', (props) => {
 	const apiPerVersion = {};
@@ -20,9 +20,16 @@ export const usePkpCommentsStore = defineComponentStore('comments', (props) => {
 		return apiPerVersion[publicationId];
 	}
 
+	/**
+	 * Redirects the user to the login page.
+	 */
+	function login() {
+		window.location = props.loginUrl;
+	}
+
 	return {
 		getApiPerVersion,
 		publicationIds: props.publicationIds,
-		isLatestPublication: props.isLatestPublication,
+		login,
 	};
 });

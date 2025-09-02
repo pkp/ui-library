@@ -13,6 +13,7 @@ import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 
 import PkpTextarea from '../components/PkpTextarea/PkpTextarea.vue';
 import {usePkpCommentsStore} from './usePkpCommentsStore';
+
 const {t} = usePkpLocalize();
 
 const versionProps = inject('versionProps');

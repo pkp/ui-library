@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div v-if="dialogProps.actions?.length">
 		<PkpButton
 			v-for="action in dialogProps.actions"
 			:key="action.label"
