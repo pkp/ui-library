@@ -5,7 +5,7 @@ import {t} from '@/utils/i18n';
 import {useExtender} from '@/composables/useExtender';
 import {useDataChanged} from '@/composables/useDataChanged';
 import {useUrl} from '@/composables/useUrl';
-import {useFetch} from '@/composables/useFetch';
+import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useDiscussionManagerConfig} from './useDiscussionManagerConfig';
 import {useDiscussionManagerActions} from './useDiscussionManagerActions';
 
@@ -22,8 +22,12 @@ export const useDiscussionManagerStore = defineComponentStore(
 
 		const {apiUrl: submissionTasksApiUrl} = useUrl(relativeUrl);
 
-		const {data: discussionsData, fetch: fetchDiscussions} = useFetch(
+		const {items: discussionsData, fetch: fetchDiscussions} = useFetchPaginated(
 			submissionTasksApiUrl,
+			{
+				page: 1,
+				pageSize: 25,
+			},
 		);
 
 		watch(relativeUrl, () => {

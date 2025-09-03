@@ -13,9 +13,6 @@ const CommonDefaults = {
 	dateStarted: null,
 	dateClosed: null,
 	title: 'Plagiarism Check',
-
-	activities: ['Task created by kkarina on 2025-03-06'],
-	startedBy: 'Kaja Karina (kkarina)',
 	participants: [
 		{
 			id: 1,
@@ -39,6 +36,9 @@ const CommonDefaults = {
 			roles: [],
 		},
 	],
+
+	activities: ['Task created by kkarina on 2025-03-06'],
+	startedBy: 'Kaja Karina (kkarina)',
 };
 
 export function getDiscussionsMock(overrides = {}) {

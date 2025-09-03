@@ -35,7 +35,10 @@ const mswHandlers = [
 	http.get(
 		'https://mock/index.php/publicknowledge/api/v1/submissions/19/stage/1/tasks',
 		() => {
-			return HttpResponse.json(DiscussionsDataMock);
+			return HttpResponse.json({
+				items: DiscussionsDataMock,
+				itemMax: DiscussionsDataMock.length,
+			});
 		},
 	),
 	http.get(
