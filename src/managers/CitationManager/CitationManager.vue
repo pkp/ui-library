@@ -6,8 +6,8 @@
 	/>
 	<div>
 		<a
-			@click="citationStore.citationDeleteAllCitations"
 			class="cursor-pointer text-lg-normal"
+			@click="citationStore.citationDeleteAllCitations"
 		>
 			{{ t('submission.citations.structured.deleteAllLink') }}
 		</a>
@@ -35,7 +35,7 @@
 			<TableColumn
 				v-for="(column, i) in citationStore.columns"
 				:key="i"
-				:class="i > 0 ? 'w-[3rem] text-center' : ''"
+				:class="i > 0 ? '!w-[4rem] !text-center' : ''"
 			>
 				<span v-if="column.isHeaderComponent">
 					<component :is="Components[column.header] || column.header" />
@@ -49,7 +49,7 @@
 			:empty-text="t('submission.citations.structured.emptyCitations')"
 		>
 			<TableRow
-				v-for="(citation, index) in citationStore.citationsFiltered"
+				v-for="citation in citationStore.citationsFiltered"
 				:key="citation.id"
 			>
 				<component

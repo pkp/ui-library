@@ -2,31 +2,32 @@
 	<TableCell :is-row-header="false">
 		<!-- citationsMetadataLookup enabled -->
 		<div v-if="citationStore.citationsMetadataLookup">
+			<!-- all -->
+			<div class="text-lg-normal">
+				<a
+					v-if="citation.doi"
+					:href="citationStore.doiPrefix + '/' + citation.doi"
+					target="_blank"
+				>
+					{{ citation.doi }}
+				</a>
+				<a v-if="citation.url" :href="citation.url" target="_blank">
+					{{ citation.url }}
+				</a>
+				<a v-if="citation.arxiv" :href="citation.arxiv" target="_blank">
+					{{ citation.arxiv }}
+				</a>
+				<a v-if="citation.handle" :href="citation.handle" target="_blank">
+					{{ citation.handle }}
+				</a>
+				<span v-if="citation.urn">urn: {{ citation.urn }}</span>
+			</div>
 			<!-- is structured -->
 			<div v-if="citation.isStructured">
-				<div class="text-lg-normal">
-					<a
-						v-if="citation.doi"
-						:href="citationStore.doiPrefix + '/' + citation.doi"
-						target="_blank"
-					>
-						{{ citation.doi }}
-					</a>
-					<a v-if="citation.url" :href="citation.url" target="_blank">
-						{{ citation.url }}
-					</a>
-					<a v-if="citation.arxiv" :href="citation.arxiv" target="_blank">
-						{{ citation.arxiv }}
-					</a>
-					<a v-if="citation.handle" :href="citation.handle" target="_blank">
-						{{ citation.handle }}
-					</a>
-					<span v-if="citation.urn">urn: {{ citation.urn }}</span>
-				</div>
 				<div>{{ citation.title }}</div>
 				<div v-if="toggleStatusRow">
 					<div class="text-lg-normal leading-[2rem]">
-						<span v-for="(author, authorIndex) in citation.authors">
+						<span v-for="(author, authorIndex) in citation.authors" :key="authorIndex">
 							<span>{{ author.familyName }} {{ author.givenName }}</span>
 							<a v-if="author.orcid" :href="author.orcid" target="_blank">
 								<Icon
