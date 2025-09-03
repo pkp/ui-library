@@ -3,8 +3,8 @@
 		<div class="pkpFormField__heading pkpFormFieldLabel">
 			{{ t('submission.citations.structured') }}
 		</div>
-		<div class="pkpFormField__description">
-			{{ t('submission.citations.structured.description') }}
+		<div class="pkpFormField__description py-4">
+			{{ t('submission.citations.structured.citationsMetadataLookup.description') }}
 		</div>
 		<div>
 			<input

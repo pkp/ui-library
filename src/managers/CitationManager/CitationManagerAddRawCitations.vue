@@ -3,7 +3,7 @@
 		<div class="pkpFormField__heading pkpFormFieldLabel">
 			{{ t('submission.citations') }}
 		</div>
-		<div class="pkpFormField__description">
+		<div class="pkpFormField__description py-4">
 			{{ t('submission.citations.structured.description') }}
 		</div>
 		<div>
