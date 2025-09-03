@@ -18,7 +18,7 @@
 				for="citations-citationsMetadataLookup"
 				class="pkpFormField--options__optionLabel"
 			>
-				{{ t('submission.citations.structured.citationsMetadataLookup') }}
+				{{ t('submission.citations.structured.enableCitationsMetadataLookup') }}
 			</label>
 		</div>
 	</div>
