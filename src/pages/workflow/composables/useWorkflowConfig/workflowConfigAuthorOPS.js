@@ -61,6 +61,13 @@ export const PublicationConfig = {
 						stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 					},
 				},
+				{
+					component: 'DiscussionManager',
+					props: {
+						submission,
+						submissionStageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+					},
+				},
 			];
 		},
 	},

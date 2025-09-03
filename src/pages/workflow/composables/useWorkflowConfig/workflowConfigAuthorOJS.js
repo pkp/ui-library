@@ -140,6 +140,11 @@ export const WorkflowConfig = {
 				props: {submissionId: submission.id, stageId: selectedStageId},
 			});
 
+			items.push({
+				component: 'DiscussionManager',
+				props: {submission, submissionStageId: selectedStageId},
+			});
+
 			return items;
 		},
 	},
@@ -193,6 +198,11 @@ export const WorkflowConfig = {
 				},
 			});
 
+			items.push({
+				component: 'DiscussionManager',
+				props: {submission, submissionStageId: selectedStageId},
+			});
+
 			return items;
 		},
 		getActionItems: ({submission, selectedReviewRound}) => {
@@ -238,6 +248,11 @@ export const WorkflowConfig = {
 			});
 
 			items.push({
+				component: 'DiscussionManager',
+				props: {submission, submissionStageId: selectedStageId},
+			});
+
+			items.push({
 				component: 'FileManager',
 				props: {
 					namespace: 'COPYEDITED_FILES',
@@ -259,6 +274,11 @@ export const WorkflowConfig = {
 					submissionId: submission.id,
 					stageId: selectedStageId,
 				},
+			});
+
+			items.push({
+				component: 'DiscussionManager',
+				props: {submission, submissionStageId: selectedStageId},
 			});
 
 			return items;

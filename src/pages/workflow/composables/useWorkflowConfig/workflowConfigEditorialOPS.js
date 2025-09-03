@@ -90,6 +90,11 @@ export const WorkflowConfig = {
 				},
 			});
 
+			items.push({
+				component: 'DiscussionManager',
+				props: {submission, submissionStageId: selectedStageId},
+			});
+
 			return items;
 		},
 
