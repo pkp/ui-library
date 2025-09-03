@@ -38,7 +38,7 @@ const props = defineProps({
 const workItemType =
 	props.workItem.type === pkp.const.EDITORIAL_TASK_TYPE_TASK
 		? {
-				type: t('task.name'),
+				type: t('submission.query.task'),
 				icon: 'Task',
 				createdByText: t('task.owner'),
 			}

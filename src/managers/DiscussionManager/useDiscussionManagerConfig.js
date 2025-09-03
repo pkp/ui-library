@@ -53,12 +53,12 @@ export function useDiscussionManagerConfig() {
 		});
 
 		columns.push({
-			header: t('submission.query.activity'),
+			header: t('submission.query.activityName'),
 			component: 'DiscussionManagerCellActivity',
 		});
 
 		columns.push({
-			header: t('submission.query.dueDate'),
+			header: t('common.dueDate'),
 			component: 'DiscussionManagerCellDueDate',
 		});
 

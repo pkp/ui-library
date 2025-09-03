@@ -31,8 +31,8 @@
 						<span class="uppercase">
 							{{
 								template.type === 'Task'
-									? t('submission.task')
-									: t('submission.discussion')
+									? t('submission.query.task')
+									: t('discussion.name')
 							}}
 						</span>
 						- {{ template.name }}

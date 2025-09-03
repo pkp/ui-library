@@ -377,7 +377,7 @@ export function useDiscussionManagerForm(
 	});
 
 	addGroup('discussion', {
-		label: t('submission.discussion'),
+		label: t('discussion.name'),
 		description: t('discussion.form.discussionDescription'),
 		groupComponent: {
 			component: DiscussionManagerDiscussion,

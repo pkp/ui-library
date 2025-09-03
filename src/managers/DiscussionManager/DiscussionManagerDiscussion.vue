@@ -1,7 +1,7 @@
 <template>
 	<FormGroupHeader
 		:group-id="groupId"
-		:label="t('submission.discussion')"
+		:label="t('discussion.name')"
 		:description="t('discussion.form.discussionDescription')"
 	/>
 	<div v-if="showCloseDiscussion" class="relative mt-6">
