@@ -32,4 +32,16 @@ describe('useLegacyGridUrl', () => {
 			'http://mock/index.php/publicknowledge/$$$call$$$/grid/users/reviewer/reviewer-grid/read-review?submissionId=13&reviewAssignmentId=19&stageId=3',
 		);
 	});
+
+	test('modals.documentLibrary.DocumentLibraryHandler', () => {
+		const {url} = useLegacyGridUrl({
+			component: 'modals.documentLibrary.DocumentLibraryHandler',
+			op: 'documentLibrary',
+			params: {submissionId: 13},
+		});
+
+		expect(url.value).toBe(
+			'http://mock/index.php/publicknowledge/$$$call$$$/modals/document-library/document-library/document-library?submissionId=13',
+		);
+	});
 });

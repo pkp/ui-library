@@ -13,7 +13,6 @@
 			:form-id="formId"
 			@change="fieldChanged"
 			@set-errors="setErrors"
-			@set-field-required="setFieldRequired"
 		/>
 		<ButtonRow
 			v-if="hasFooter"
