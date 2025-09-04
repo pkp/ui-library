@@ -2,8 +2,10 @@ import {computed, ref} from 'vue';
 import {useForm} from '@/composables/useForm';
 import {useFormChanged} from '@/composables/useFormChanged';
 import {useModal} from '@/composables/useModal';
+import {useUrl} from '@/composables/useUrl';
 import {useDate} from '@/composables/useDate';
 import {useLocalize} from '@/composables/useLocalize';
+import {useFetch} from '@/composables/useFetch';
 import {useCurrentUser} from '@/composables/useCurrentUser';
 import {useParticipantManagerStore} from '../ParticipantManager/participantManagerStore';
 import {useTasksAndDiscussionsStore} from '@/pages/tasksAndDiscussions/tasksAndDiscussionsStore';
@@ -21,7 +23,7 @@ export function useDiscussionManagerForm(
 		workItem,
 		autoAddTaskDetails = false,
 		onCloseFn = () => {},
-		onSubmitFn = null,
+		onSubmitFn = async () => {},
 	} = {},
 	{inDisplayMode = false} = {},
 ) {
@@ -39,6 +41,11 @@ export function useDiscussionManagerForm(
 	const statusUpdateValue = ref(
 		workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED,
 	);
+	const statusUpdates = {
+		start: 'start',
+		close: 'close',
+		open: 'open',
+	};
 	const newMessage = ref(null);
 	const formId = inDisplayMode ? 'discussionDisplay' : 'discussionForm';
 
@@ -161,8 +168,10 @@ export function useDiscussionManagerForm(
 				.map((p) => p.id) || [];
 		setValue('detailsParticipants', selectedParticipants);
 
+		setValue('taskInfoAdd', isTask.value);
+
 		if (isTask.value) {
-			setValue('taskInfoParticipants', selectedParticipants);
+			setValue('taskInfoAssignee', selectedParticipants);
 
 			if (template.taskDetails.dueDate) {
 				setValue(
@@ -179,12 +188,8 @@ export function useDiscussionManagerForm(
 		return workItem?.participants?.map((p) => p.userId) || [];
 	}
 
-	function getSelectedAssignees() {
-		return (
-			workItem?.participants
-				?.filter((p) => p.isResponsible)
-				.map((p) => p.userId) || []
-		);
+	function getSelectedAssignee() {
+		return workItem?.participants?.find((p) => p.isResponsible)?.userId || null;
 	}
 
 	function onSelectTemplate(template) {
@@ -227,45 +232,139 @@ export function useDiscussionManagerForm(
 		newMessage.value = val;
 	}
 
-	function addWorkItem() {
-		console.log('add form');
+	function mapParticipantsBody(formData) {
+		if (!formData.detailsParticipants) return [];
+
+		return (
+			formData.detailsParticipants.map((userId) => {
+				return {
+					userId,
+					isResponsible: formData?.taskInfoAssignee === userId,
+				};
+			}) || []
+		);
 	}
 
-	function addNewMessage() {
+	async function saveWorkItem(formData) {
+		const dataBody = {
+			type: formData.taskInfoAdd
+				? pkp.const.EDITORIAL_TASK_TYPE_TASK
+				: pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION,
+			title: formData.detailsName,
+			stageId: submissionStageId,
+			dateDue: formData.taskInfoDueDate,
+			participants: mapParticipantsBody(formData),
+		};
+
+		let taskUrl = `submissions/${submission.id}/tasks`;
+		if (workItem?.id) {
+			taskUrl += `/${workItem.id}`;
+		}
+		const {apiUrl: addTaskUrl} = useUrl(taskUrl);
+
+		const {
+			fetch,
+			data: taskData,
+			validationError,
+			isSuccess,
+		} = useFetch(addTaskUrl, {
+			method: workItem?.id ? 'PUT' : 'POST',
+			body: dataBody,
+			expectValidationError: true,
+		});
+
+		await fetch();
+
+		return {
+			data: taskData.value,
+			validationError: validationError.value,
+			isSuccess: isSuccess.value,
+		};
+	}
+
+	async function addWorkItem(formData) {
+		const {data, validationError, isSuccess} = await saveWorkItem(formData);
+
+		if (isSuccess) {
+			// start the task if begin upon saving is selected
+			if (formData.taskInfoAdd && formData.taskInfoShouldStart) {
+				await updateWorkItemStatus(data?.id, true);
+			}
+		}
+
+		return {
+			data,
+			validationError,
+		};
+	}
+
+	async function addNewMessage() {
 		console.log('add new message');
 	}
 
-	function updateWorkItemStatus() {
-		if (statusUpdateValue.value) {
-			console.log('update task status');
-		}
-	}
+	async function updateWorkItemStatus(workItemId, isNewTask) {
+		if (!workItemId) return;
+		let status;
 
-	function updateWorkItem() {
-		console.log('update form');
+		if (workItem && statusUpdateValue.value) {
+			if (!workItem.dateClosed) {
+				status = statusUpdates.close;
+			}
+			if (!workItem.dateStarted) {
+				status = statusUpdates.start;
+			}
+		} else {
+			if (isNewTask) {
+				status = statusUpdates.start;
+			}
+		}
+
+		if (!status) return;
+
+		const {apiUrl: updateTaskStatusUrl} = useUrl(
+			`submissions/${submission.id}/tasks/${workItemId}/${status}`,
+		);
+
+		const {
+			fetch,
+			data: updateTaskStatusData,
+			isSuccess,
+		} = useFetch(updateTaskStatusUrl, {
+			method: 'PUT',
+			expectValidationError: true,
+		});
+
+		await fetch();
+
+		return {data: updateTaskStatusData.value, isSuccess: isSuccess.value};
 	}
 
 	async function handleFormSubmission(formData) {
+		let result = {
+			data: {},
+			validationError: null,
+		};
+
 		if (inDisplayMode) {
-			updateWorkItemStatus();
+			await updateWorkItemStatus(workItem?.id);
 		} else {
 			if (workItem) {
-				updateWorkItem();
+				result = await saveWorkItem(formData);
 			} else {
-				addWorkItem();
+				result = await addWorkItem(formData);
 			}
 		}
 
 		if (workItem && newMessage.value) {
 			// check if there is message
-			addNewMessage();
+			await addNewMessage();
 		}
 
+		await onSubmitFn();
+		onCloseFn();
+
 		// return result to Form component handler
-		return {
-			data: {},
-			validationError: {},
-		};
+		return result;
 	}
 
 	initEmptyForm(formId, {
@@ -346,14 +445,14 @@ export function useDiscussionManagerForm(
 		value: isTask.value ? workItem?.dateDue : null,
 	});
 
-	addFieldOptions('taskInfoParticipants', 'checkbox', {
+	addFieldOptions('taskInfoAssignee', 'radio', {
 		groupId: 'taskInformation',
 		label: t('discussion.form.taskInfoAssigneesLabel'),
 		description: t('discussion.form.taskInfoAssigneesDescription'),
-		name: 'taskInfoParticipants',
+		name: 'taskInfoAssignee',
 		showWhen: 'taskInfoAdd',
 		options: getAssigneeOptions(),
-		value: getSelectedAssignees(),
+		value: getSelectedAssignee(),
 	});
 
 	// this select is only enabled when adding a new entry
