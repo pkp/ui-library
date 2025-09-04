@@ -4,9 +4,8 @@ import {computed, watch} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useWorkflowStore} from '@/pages/workflow/workflowStore';
 import {useForm} from '@/composables/useForm';
-import {sanitizeHtml} from '@/directives/stripUnsafeHtml';
 
-export async function useWorkflowPublicationFormIssue(form) {
+export function useWorkflowPublicationFormIssue(form) {
 	const {t} = useLocalize();
 	const store = useWorkflowStore();
 	const {
@@ -51,11 +50,6 @@ export async function useWorkflowPublicationFormIssue(form) {
 
 		let currentValue = getField('assignment')?.value;
 
-		// If no form value yet, try to get from store (for modal context)
-		if (!currentValue && assignmentStatus.value?.assignmentType) {
-			currentValue = assignmentStatus.value.assignmentType;
-		}
-
 		if (!currentValue) {
 			return null;
 		}
@@ -95,7 +89,7 @@ export async function useWorkflowPublicationFormIssue(form) {
 
 		return issues.value.items.map((issue) => ({
 			value: issue.id,
-			label: sanitizeHtml(issue.identification),
+			label: issue.identification,
 		}));
 	});
 
@@ -120,58 +114,107 @@ export async function useWorkflowPublicationFormIssue(form) {
 	}
 
 	/**
-	 * Create all required fields
+	 * Create fields immediately with placeholder data for instant UI rendering
 	 */
 	function createFields() {
-		const initialAssignment = assignmentStatus.value?.assignmentType || null;
-		const initialStatus =
-			assignmentStatus.value?.status || pkp.const.submission.STATUS_QUEUED;
-
 		addFieldOptions('assignment', 'radio', {
 			label: t('publication.assignToIssue.assignmentType'),
-			options: assignmentOptions.value,
+			options: [],
 			isRequired: true,
-			value: initialAssignment,
+			value: null,
 		});
 
 		addFieldSelect('issueId', {
 			label: t('issue.issue'),
 			description: t('publication.assignToIssue.issueDescription'),
-			options: issueOptions.value,
+			options: [],
 			size: 'large',
 			value: store.selectedPublication?.issueId,
 			isRequired: true,
-			showWhen: ['assignment', showWhenAssignmentIds.value],
+			showWhen: ['assignment', []],
 		});
 
-		setHiddenValue('status', initialStatus);
+		// Set initial status - will be updated by watchers when assignmentStatus data arrives
+		setHiddenValue('status', store.selectedPublication?.status);
 	}
 
 	/**
-	 * Set up watchers for dynamic updates and validation
+	 * Set up watchers to handle data updates and field synchronization
 	 */
-	function setupWatchers() {
-		// Watch assignment options changes and apply to form
-		watch(assignmentOptions, (newOptions) => {
-			const assignmentField = getField('assignment');
-			if (assignmentField) {
-				assignmentField.options = newOptions;
-			}
-		});
+	function setupDataWatchers() {
+		// Track if this is the initial data load to preserve existing issueId values
+		let isInitialDataLoad = true;
+
+		// Watch assignmentStatus and update initial assignment value
+		watch(
+			assignmentStatus,
+			(newStatus) => {
+				if (newStatus?.assignmentType) {
+					const assignmentField = getField('assignment');
+
+					if (assignmentField && !assignmentField.value) {
+						setValue('assignment', newStatus.assignmentType);
+					}
+
+					// At initial data load, if the publication is published or scheduled, don't set the new status
+					if (
+						![
+							pkp.const.publication.STATUS_PUBLISHED,
+							pkp.const.publication.STATUS_SCHEDULED,
+						].includes(store.selectedPublication?.status)
+					) {
+						setHiddenValue('status', newStatus.status);
+					}
+				}
+			},
+			{immediate: true},
+		);
+
+		// Watch assignment options and update field options
+		watch(
+			assignmentOptions,
+			(newOptions) => {
+				const assignmentField = getField('assignment');
+				if (assignmentField) {
+					assignmentField.options = newOptions;
+				}
+			},
+			{immediate: true},
+		);
 
 		// Watch showWhen changes and apply to issue field
-		watch(showWhenAssignmentIds, (newShowWhenIds) => {
-			const issueIdField = getField('issueId');
-			if (issueIdField) {
-				issueIdField.showWhen = ['assignment', newShowWhenIds];
-			}
-		});
+		watch(
+			showWhenAssignmentIds,
+			(newShowWhenIds) => {
+				const issueIdField = getField('issueId');
+				if (issueIdField) {
+					issueIdField.showWhen = ['assignment', newShowWhenIds];
+				}
+			},
+			{immediate: true},
+		);
 
 		// Watch current assignment option changes and update status
 		watch(currentAssignmentOption, async (newOption) => {
 			if (newOption) {
-				setHiddenValue('status', newOption.status);
-				setValue('issueId', null);
+				// Only reset issueId to null if this is NOT the initial data load
+				// This preserves the initial issueId value from store.selectedPublication?.issueId
+				// Or coming from PHP form's end
+				// Also at initial data load, if the publication is published or scheduled, don't set the new status
+				if (!isInitialDataLoad) {
+					setValue('issueId', null);
+					setHiddenValue('status', newOption.status);
+				} else {
+					if (
+						[
+							pkp.const.publication.STATUS_PUBLISHED,
+							pkp.const.publication.STATUS_SCHEDULED,
+						].includes(store.selectedPublication?.status)
+					) {
+						setHiddenValue('status', null);
+					}
+				}
+
 				if (newOption.isPublished !== null) {
 					await fetchIssues();
 				}
@@ -179,30 +222,42 @@ export async function useWorkflowPublicationFormIssue(form) {
 		});
 
 		// Watch issue options and apply to form
-		watch(issueOptions, (newIssueOptions) => {
-			const issueIdField = getField('issueId');
-			if (issueIdField) {
-				issueIdField.options = newIssueOptions;
-				issueIdField.isRequired = newIssueOptions.length > 0;
-			}
-		});
+		watch(
+			issueOptions,
+			(newIssueOptions) => {
+				const issueIdField = getField('issueId');
+				if (issueIdField) {
+					issueIdField.options = newIssueOptions;
+				}
+			},
+			{immediate: true},
+		);
+
+		// Mark initial data load as complete after a short delay
+		// which in return all initial watchers have had a chance to run
+		setTimeout(() => {
+			isInitialDataLoad = false;
+		}, 100);
 	}
 
 	/**
-	 * Initialize the composable - fetch data, create fields, and set up watchers
+	 * Initialize the composable
+	 * Create fields immediately(if not exist) and fetch data in parallel
 	 */
 	async function initialize() {
-		await fetchAssignments();
-		await fetchAssignmentStatus();
-		await fetchIssues();
-
 		const fieldsExist = await checkFieldsExist();
+
 		if (!fieldsExist) {
 			createFields();
 		}
 
-		setupWatchers();
+		setupDataWatchers();
+
+		fetchAssignments();
+		fetchAssignmentStatus();
 	}
 
-	await initialize();
+	return {
+		initialize,
+	};
 }

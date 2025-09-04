@@ -45,7 +45,6 @@
 								:locales="availableLocales"
 								@change="fieldChanged"
 								@set-errors="setFieldErrors"
-								@set-field-required="setFieldRequired"
 							></component>
 						</div>
 					</div>
@@ -61,7 +60,6 @@
 						:locales="availableLocales"
 						@change="fieldChanged"
 						@set-errors="setFieldErrors"
-						@set-field-required="setFieldRequired"
 					></component>
 				</template>
 			</template>
