@@ -182,7 +182,7 @@ export const useUserCommentStore = defineComponentStore(
 		 * Fetches the comments.
 		 */
 		async function fetchComments() {
-			await _fetchComments();
+			await _fetchComments({clearData: true});
 		}
 
 		/**
