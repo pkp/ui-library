@@ -36,7 +36,13 @@
 					v-for="itemStatus in discussionManagerStore.discussions"
 					:key="itemStatus.name"
 				>
-					<TableRowGroup>
+					<TableRowGroup
+						:empty-text="
+							discussionManagerStore.isLoadingDiscussions
+								? t('common.loading')
+								: t('grid.noItems')
+						"
+					>
 						<TableRow>
 							<TableColGroup>
 								<Icon

@@ -17,18 +17,19 @@ export const useDiscussionManagerStore = defineComponentStore(
 		const {submission} = toRefs(props);
 
 		const relativeUrl = computed(() => {
-			return `submissions/${encodeURIComponent(submission.value.id)}/stage/${submission.value.stageId}/tasks`;
+			return `submissions/${encodeURIComponent(submission.value.id)}/stage/${props.submissionStageId}/tasks`;
 		});
 
 		const {apiUrl: submissionTasksApiUrl} = useUrl(relativeUrl);
 
-		const {items: discussionsData, fetch: fetchDiscussions} = useFetchPaginated(
-			submissionTasksApiUrl,
-			{
-				page: 1,
-				pageSize: 25,
-			},
-		);
+		const {
+			items: discussionsData,
+			fetch: fetchDiscussions,
+			isLoading: isLoadingDiscussions,
+		} = useFetchPaginated(submissionTasksApiUrl, {
+			page: 1,
+			pageSize: 25,
+		});
 
 		watch(relativeUrl, () => {
 			discussionsData.value = null;
@@ -209,6 +210,7 @@ export const useDiscussionManagerStore = defineComponentStore(
 
 		return {
 			discussions,
+			isLoadingDiscussions,
 
 			/**
 			 * Config
