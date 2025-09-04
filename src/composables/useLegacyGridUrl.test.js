@@ -33,15 +33,15 @@ describe('useLegacyGridUrl', () => {
 		);
 	});
 
-	test('modals.publish.AssignToIssueHandler', () => {
+	test('modals.documentLibrary.DocumentLibraryHandler', () => {
 		const {url} = useLegacyGridUrl({
-			component: 'modals.publish.AssignToIssueHandler',
-			op: 'assign',
-			params: {submissionId: 13, publicationId: 14},
+			component: 'modals.documentLibrary.DocumentLibraryHandler',
+			op: 'documentLibrary',
+			params: {submissionId: 13},
 		});
 
 		expect(url.value).toBe(
-			'http://mock/index.php/publicknowledge/$$$call$$$/modals/publish/assign-to-issue/assign?submissionId=13&publicationId=14',
+			'http://mock/index.php/publicknowledge/$$$call$$$/modals/document-library/document-library/document-library?submissionId=13',
 		);
 	});
 });
