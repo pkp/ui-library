@@ -1,7 +1,7 @@
 <template>
 	<SideModalBody>
 		<template #title>
-			{{ workItem.title }}
+			{{ workItem?.title }}
 		</template>
 		<template #post-description>
 			<Badge v-bind="badgeProps" class="mt-1">
@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import {computed, inject} from 'vue';
+import {computed, inject, watch} from 'vue';
 import {t} from '@/utils/i18n';
 import {useDiscussionManagerForm} from './useDiscussionManagerForm';
 import {useDiscussionManagerStore} from './discussionManagerStore';
@@ -64,7 +64,7 @@ const props = defineProps({
 	},
 	onSubmitFn: {
 		type: Function,
-		default: () => () => {},
+		default: () => async () => {},
 	},
 });
 
@@ -73,16 +73,22 @@ const closeModal = inject('closeModal');
 const discussionManagerStore = useDiscussionManagerStore();
 const discussionManagerActions = useDiscussionManagerActions();
 
-const {form, set, badgeProps} = useDiscussionManagerForm(props, {
-	inDisplayMode: true,
-});
+const {form, set, badgeProps, refreshFormData} = useDiscussionManagerForm(
+	props,
+	{
+		inDisplayMode: true,
+	},
+);
 
 function editForm() {
-	discussionManagerActions.discussionEdit({
-		workItem: props.workItem,
-		submission: props.submission,
-		submissionStageId: props.submissionStageId,
-	});
+	discussionManagerActions.discussionEdit(
+		{
+			workItem: props.workItem,
+			submission: props.submission,
+			submissionStageId: props.submissionStageId,
+		},
+		props.onSubmitFn,
+	);
 }
 
 const permittedActions =
@@ -93,4 +99,12 @@ const allowEdit = computed(() => {
 		DiscussionManagerActions.TASKS_AND_DISCUSSIONS_EDIT,
 	);
 });
+
+watch(
+	() => props.workItem,
+	(newWorkItem) => {
+		refreshFormData(newWorkItem);
+	},
+	{immediate: true},
+);
 </script>

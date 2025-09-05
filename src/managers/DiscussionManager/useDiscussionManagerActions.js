@@ -1,5 +1,7 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
+import {useFetch} from '@/composables/useFetch';
+import {useUrl} from '@/composables/useUrl';
 import DiscussionManagerForm from './DiscussionManagerForm.vue';
 import DiscussionManagerFormDisplay from './DiscussionManagerFormDisplay.vue';
 
@@ -16,21 +18,39 @@ export const Actions = {
 export function useDiscussionManagerActions() {
 	const {t} = useLocalize();
 
-	function discussionView(
+	async function discussionView(
 		{workItem, submission, submissionStageId},
 		finishedCallback,
 	) {
+		const {apiUrl: taskApiUrl} = useUrl(
+			`submissions/${encodeURIComponent(submission.id)}/tasks/${workItem.id}`,
+		);
+		let reloadList = false;
+
+		const {data: workItemData, fetch: fetchTaskData} = useFetch(taskApiUrl);
+
+		await fetchTaskData();
+
+		function triggerDataChange() {
+			reloadList = true;
+			fetchTaskData();
+		}
+
 		const {openSideModal, closeSideModal} = useModal();
 
 		function onCloseFn() {
 			closeSideModal(DiscussionManagerFormDisplay);
+			if (reloadList) {
+				finishedCallback();
+			}
 		}
 
 		openSideModal(DiscussionManagerFormDisplay, {
-			workItem,
+			workItem: workItemData,
 			submission,
 			submissionStageId,
 			onCloseFn,
+			onSubmitFn: triggerDataChange,
 		});
 	}
 

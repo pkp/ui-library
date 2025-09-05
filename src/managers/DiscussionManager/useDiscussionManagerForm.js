@@ -184,12 +184,14 @@ export function useDiscussionManagerForm(
 		}
 	}
 
-	function getSelectedParticipants() {
-		return workItem?.participants?.map((p) => p.userId) || [];
+	function getSelectedParticipants(workItemData) {
+		return workItemData?.participants?.map((p) => p.userId) || [];
 	}
 
-	function getSelectedAssignee() {
-		return workItem?.participants?.find((p) => p.isResponsible)?.userId || null;
+	function getSelectedAssignee(workItemData) {
+		return (
+			workItemData?.participants?.find((p) => p.isResponsible)?.userId || null
+		);
 	}
 
 	function onSelectTemplate(template) {
@@ -405,7 +407,7 @@ export function useDiscussionManagerForm(
 		name: 'detailsParticipants',
 		options: getParticipantOptions(),
 		showNumberedList: true,
-		value: getSelectedParticipants(),
+		value: getSelectedParticipants(workItem),
 	});
 
 	const participantsField = getField('detailsParticipants');
@@ -452,7 +454,7 @@ export function useDiscussionManagerForm(
 		name: 'taskInfoAssignee',
 		showWhen: 'taskInfoAdd',
 		options: getAssigneeOptions(),
-		value: getSelectedAssignee(),
+		value: getSelectedAssignee(workItem),
 	});
 
 	// this select is only enabled when adding a new entry
@@ -509,13 +511,27 @@ export function useDiscussionManagerForm(
 	const badgeProps = getBadgeProps(status);
 	const additionalFields = [newMessage, statusUpdateValue];
 
-	useFormChanged(form, additionalFields, onCloseFn, {
+	const {setInitialState} = useFormChanged(form, additionalFields, onCloseFn, {
 		warnOnClose: true,
 	});
+
+	function refreshFormData(newWorkItem) {
+		setValue('detailsName', newWorkItem?.title || '');
+		setValue('detailsParticipants', getSelectedParticipants(newWorkItem));
+		setValue(
+			'taskInfoAdd',
+			newWorkItem.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
+		);
+		setValue('taskInfoDueDate', newWorkItem?.dateDue || '');
+		setValue('taskInfoAssignee', getSelectedAssignee(newWorkItem));
+
+		setInitialState(form, additionalFields);
+	}
 
 	return {
 		form,
 		set,
 		badgeProps,
+		refreshFormData,
 	};
 }
