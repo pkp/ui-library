@@ -87,7 +87,9 @@ export function useFormChanged(
 		// show a warning before closing the modal if there are unsaved changes
 		if (registerCloseCallback) {
 			registerCloseCallback(() => {
-				confirmClose();
+				if (hasStateChanged()) {
+					confirmClose();
+				}
 				return !hasStateChanged();
 			});
 		}
