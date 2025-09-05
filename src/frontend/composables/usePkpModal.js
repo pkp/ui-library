@@ -7,39 +7,23 @@ export function usePkpModal() {
 	const modalStore = usePkpModalStore();
 
 	/**
-	 * Open a dialog modal
-	 * @param {Object} props - Properties for the dialog
-	 * @param {string} props.title - Dialog title
-	 * @param {string} [props.message] - Dialog message
-	 * @param {Object} [props.actions] - Actions configuration for the dialog
-	 */
-	function openDialog(props) {
-		modalStore.openDialog(props);
-	}
-
-	/**
-	 * Close the currently opened dialog modal
-	 */
-	function closeDialog() {
-		modalStore.closeDialog();
-	}
-
-	/**
 	 * Open a side modal component
-	 * @param {Object|string} component - The component to render in the side modal
 	 * @param {Object} [props] - Properties to pass to the component
+ 	 * @param {string} [props.message] - message
+	 * @param {Object} [props.actions] - Actions configuration
+
 	 * @param {Object} [opts] - Additional options for the side modal
 	 */
-	function openModal(component, props, opts) {
-		modalStore.openModal(component, props, opts);
+	function openModal(props, opts) {
+		modalStore.openModal(props, opts);
 	}
 
 	/**
 	 * Open a network error dialog
 	 * @param {Object} fetchError - The error object from a failed fetch operation
 	 */
-	function openDialogNetworkError(fetchError) {
-		modalStore.openDialogNetworkError(fetchError);
+	function openModalNetworkError(fetchError) {
+		modalStore.openModalNetworkError(fetchError);
 	}
 
 	/**
@@ -60,10 +44,8 @@ export function usePkpModal() {
 	}
 
 	return {
-		openDialog,
-		closeDialog,
 		openModal,
-		openDialogNetworkError,
+		openModalNetworkError,
 		closeModal,
 		isModalOpened,
 	};

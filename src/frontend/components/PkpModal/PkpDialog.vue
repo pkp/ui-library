@@ -93,17 +93,6 @@ const props = defineProps({
 		validator: (value) =>
 			['primary', 'negative', 'success', 'basic'].includes(value),
 	},
-	/** Defines if clicking outside the modal should close it */
-	isDismissible: {
-		type: Boolean,
-		default: () => true,
-	},
-	/** Defines if the close button (x) should be shown */
-	/** If not set, the close button will be shown if there are no actions */
-	showCloseButton: {
-		type: Boolean,
-		default: undefined,
-	},
 });
 
 const shouldShowCloseButton = computed(() => {

@@ -1,6 +1,7 @@
 import {ref, unref} from 'vue';
 import {ofetch, createFetch} from 'ofetch';
 import {useDebounceFn} from '@vueuse/core';
+import {usePkpModal} from '@/frontend/composables/usePkpModal';
 
 let ofetchInstance = ofetch;
 
@@ -86,6 +87,7 @@ export function usePkpFetch(url, options = {}) {
 	const query = ref(_query || {});
 	const body = ref(_body || undefined);
 
+	const {openModalNetworkError} = usePkpModal();
 	const isLoading = ref(false);
 	const data = ref(null);
 	const isSuccess = ref(null);
@@ -150,8 +152,7 @@ export function usePkpFetch(url, options = {}) {
 				data.value = null;
 				return;
 			}
-			// replace some other option
-			// modalStore.openDialogNetworkError(e);
+			openModalNetworkError(e);
 		} finally {
 			isLoading.value = false;
 		}
