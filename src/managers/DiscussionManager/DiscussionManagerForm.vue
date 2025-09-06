@@ -58,7 +58,7 @@ const props = defineProps({
 	},
 	onFinishFn: {
 		type: Function,
-		default: () => () => {},
+		default: () => async () => {},
 	},
 });
 

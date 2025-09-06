@@ -23,7 +23,7 @@ export function useDiscussionManagerForm(
 		workItem,
 		autoAddTaskDetails = false,
 		onCloseFn = () => {},
-		onSubmitFn = async () => {},
+		onFinishFn = null,
 	} = {},
 	{inDisplayMode = false} = {},
 ) {
@@ -148,6 +148,8 @@ export function useDiscussionManagerForm(
 		return badgeProps;
 	}
 
+	// temporarily disable fetching templates until the api is ready
+	// eslint-disable-next-line no-unused-vars
 	function getTemplates() {
 		const tasksAndDiscussionsStore = useTasksAndDiscussionsStore();
 		return computed(() => {
@@ -239,9 +241,12 @@ export function useDiscussionManagerForm(
 
 		return (
 			formData.detailsParticipants.map((userId) => {
+				let isResponsible = formData.taskInfoAdd
+					? formData?.taskInfoAssignee === userId
+					: undefined;
 				return {
 					userId,
-					isResponsible: formData?.taskInfoAssignee === userId,
+					isResponsible,
 				};
 			}) || []
 		);
@@ -254,7 +259,7 @@ export function useDiscussionManagerForm(
 				: pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION,
 			title: formData.detailsName,
 			stageId: submissionStageId,
-			dateDue: formData.taskInfoDueDate,
+			dateDue: formData.taskInfoDueDate || undefined,
 			participants: mapParticipantsBody(formData),
 		};
 
@@ -362,7 +367,9 @@ export function useDiscussionManagerForm(
 			await addNewMessage();
 		}
 
-		await onSubmitFn();
+		if (typeof onFinishFn === 'function') {
+			await onFinishFn();
+		}
 		onCloseFn();
 
 		// return result to Form component handler
@@ -384,7 +391,8 @@ export function useDiscussionManagerForm(
 		groupComponent: {
 			component: DiscussionManagerTemplates,
 			props: {
-				templates: getTemplates(),
+				// templates: getTemplates(), // temporarily disable fetching templates until the api is ready
+				templates: [],
 				onSelectTemplate,
 				inDisplayMode,
 			},

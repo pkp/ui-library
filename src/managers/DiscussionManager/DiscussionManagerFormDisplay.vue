@@ -1,15 +1,19 @@
 <template>
 	<SideModalBody>
 		<template #title>
-			{{ workItem?.title }}
+			{{ displayTitle }}
 		</template>
 		<template #post-description>
-			<Badge v-bind="badgeProps" class="mt-1">
-				{{ badgeProps.slot }}
-			</Badge>
+			<div>
+				<Badge v-bind="badgeProps" class="mt-1">
+					{{ badgeProps.slot }}
+				</Badge>
+			</div>
+
+			<Spinner v-if="isLoadingWorkItem"></Spinner>
 		</template>
 		<template v-if="allowEdit" #actions>
-			<PkpButton :disabled="!!workItem?.dateClosed" @click="editForm">
+			<PkpButton :disabled="isWorkItemClosed" @click="editForm">
 				{{ t('common.edit') }}
 			</PkpButton>
 		</template>
@@ -27,8 +31,10 @@
 </template>
 
 <script setup>
-import {computed, inject, watch} from 'vue';
+import {computed, inject, onUnmounted} from 'vue';
 import {t} from '@/utils/i18n';
+import {useFetch} from '@/composables/useFetch';
+import {useUrl} from '@/composables/useUrl';
 import {useDiscussionManagerForm} from './useDiscussionManagerForm';
 import {useDiscussionManagerStore} from './discussionManagerStore';
 import {
@@ -40,6 +46,7 @@ import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
 import Badge from '@/components/Badge/Badge.vue';
 import FormDisplay from '@/components/FormDisplay/FormDisplay.vue';
 import PkpButton from '@/components/Button/Button.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
 
 const props = defineProps({
 	status: {
@@ -62,7 +69,7 @@ const props = defineProps({
 		type: Function,
 		default: () => () => {},
 	},
-	onSubmitFn: {
+	onFinishFn: {
 		type: Function,
 		default: () => async () => {},
 	},
@@ -72,6 +79,25 @@ const closeModal = inject('closeModal');
 
 const discussionManagerStore = useDiscussionManagerStore();
 const discussionManagerActions = useDiscussionManagerActions();
+let reloadList = false;
+
+const {apiUrl: taskApiUrl} = useUrl(
+	`submissions/${encodeURIComponent(props.submission.id)}/tasks/${props.workItem.id}`,
+);
+
+const {
+	data: workItemData,
+	fetch: fetchTaskData,
+	isLoading: isLoadingWorkItem,
+} = useFetch(taskApiUrl);
+
+fetchTaskData();
+
+async function triggerDataChangeCallback() {
+	reloadList = true;
+	await fetchTaskData();
+	refreshFormData(workItemData.value);
+}
 
 const {form, set, badgeProps, refreshFormData} = useDiscussionManagerForm(
 	props,
@@ -83,11 +109,11 @@ const {form, set, badgeProps, refreshFormData} = useDiscussionManagerForm(
 function editForm() {
 	discussionManagerActions.discussionEdit(
 		{
-			workItem: props.workItem,
+			workItem: workItemData.value,
 			submission: props.submission,
 			submissionStageId: props.submissionStageId,
 		},
-		props.onSubmitFn,
+		triggerDataChangeCallback,
 	);
 }
 
@@ -100,11 +126,18 @@ const allowEdit = computed(() => {
 	);
 });
 
-watch(
-	() => props.workItem,
-	(newWorkItem) => {
-		refreshFormData(newWorkItem);
-	},
-	{immediate: true},
-);
+const displayTitle = computed(() => {
+	return workItemData.value?.title ?? props.workItem?.title ?? '';
+});
+
+const isWorkItemClosed = computed(() => {
+	return !!workItemData.value?.dateClosed ?? !!props.workItem?.dateClosed;
+});
+
+onUnmounted(() => {
+	// when this modal closes, refresh the list if there are changes made from the Edit modal
+	if (reloadList) {
+		props.onFinishFn();
+	}
+});
 </script>
