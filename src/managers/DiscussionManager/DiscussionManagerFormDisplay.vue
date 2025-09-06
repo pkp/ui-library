@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import {computed, inject, onUnmounted} from 'vue';
+import {computed, inject, onUnmounted, watch} from 'vue';
 import {t} from '@/utils/i18n';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
@@ -93,10 +93,8 @@ const {
 
 fetchTaskData();
 
-async function triggerDataChangeCallback() {
-	reloadList = true;
-	await fetchTaskData();
-	refreshFormData(workItemData.value);
+function finishedCallback() {
+	fetchTaskData();
 }
 
 const {form, set, badgeProps, refreshFormData} = useDiscussionManagerForm(
@@ -113,7 +111,7 @@ function editForm() {
 			submission: props.submission,
 			submissionStageId: props.submissionStageId,
 		},
-		triggerDataChangeCallback,
+		finishedCallback,
 	);
 }
 
@@ -132,6 +130,11 @@ const displayTitle = computed(() => {
 
 const isWorkItemClosed = computed(() => {
 	return !!workItemData.value?.dateClosed ?? !!props.workItem?.dateClosed;
+});
+
+watch(workItemData.value, (newVal) => {
+	reloadList = true;
+	refreshFormData(newVal);
 });
 
 onUnmounted(() => {
