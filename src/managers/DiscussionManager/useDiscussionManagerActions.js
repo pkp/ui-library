@@ -1,7 +1,5 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
-import {useFetch} from '@/composables/useFetch';
-import {useUrl} from '@/composables/useUrl';
 import DiscussionManagerForm from './DiscussionManagerForm.vue';
 import DiscussionManagerFormDisplay from './DiscussionManagerFormDisplay.vue';
 
@@ -18,39 +16,22 @@ export const Actions = {
 export function useDiscussionManagerActions() {
 	const {t} = useLocalize();
 
-	async function discussionView(
+	function discussionView(
 		{workItem, submission, submissionStageId},
 		finishedCallback,
 	) {
-		const {apiUrl: taskApiUrl} = useUrl(
-			`submissions/${encodeURIComponent(submission.id)}/tasks/${workItem.id}`,
-		);
-		let reloadList = false;
-
-		const {data: workItemData, fetch: fetchTaskData} = useFetch(taskApiUrl);
-
-		await fetchTaskData();
-
-		function triggerDataChange() {
-			reloadList = true;
-			fetchTaskData();
-		}
-
 		const {openSideModal, closeSideModal} = useModal();
 
 		function onCloseFn() {
 			closeSideModal(DiscussionManagerFormDisplay);
-			if (reloadList) {
-				finishedCallback();
-			}
 		}
 
 		openSideModal(DiscussionManagerFormDisplay, {
-			workItem: workItemData,
+			workItem,
 			submission,
 			submissionStageId,
 			onCloseFn,
-			onSubmitFn: triggerDataChange,
+			onFinishFn: finishedCallback,
 		});
 	}
 
@@ -68,7 +49,7 @@ export function useDiscussionManagerActions() {
 			submission,
 			submissionStageId,
 			onCloseFn,
-			onSubmitFn: finishedCallback,
+			onFinishFn: finishedCallback,
 		});
 	}
 
@@ -112,7 +93,7 @@ export function useDiscussionManagerActions() {
 			workItem,
 			autoAddTaskDetails,
 			onCloseFn,
-			onSubmitFn: finishedCallback,
+			onFinishFn: finishedCallback,
 		});
 	}
 

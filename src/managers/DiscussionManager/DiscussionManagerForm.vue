@@ -56,7 +56,7 @@ const props = defineProps({
 		type: Function,
 		default: () => () => {},
 	},
-	onSubmitFn: {
+	onFinishFn: {
 		type: Function,
 		default: () => () => {},
 	},
