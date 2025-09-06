@@ -213,7 +213,17 @@ export const WorkflowConfig = {
 
 		getActionItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			let items = [];
+			const publicationId = getLatestPublication(submission)?.id;
 
+			items.push({
+				component: 'WorkflowActionButton',
+				props: {
+					label: t('editor.submission.schedulePublication'),
+					isPrimary: true,
+					action: 'navigateToMenu',
+					actionArgs: `publication_${publicationId}_titleAbstract`,
+				},
+			});
 			addItemIf(
 				items,
 				{
