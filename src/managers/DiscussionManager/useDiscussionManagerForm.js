@@ -236,6 +236,26 @@ export function useDiscussionManagerForm(
 		newMessage.value = val;
 	}
 
+	function addTaskInfoGroup(workItemData, {override = false} = {}) {
+		addGroup(
+			'taskInformation',
+			{
+				label: t('discussion.form.taskInformation'),
+				description: t('discussion.form.taskInfoDescription'),
+				groupComponent: {
+					component: DiscussionManagerTaskInfo,
+					props: {
+						workItem: workItemData,
+						inDisplayMode,
+						autoAddTaskDetails,
+						onUpdateStatusCheckbox,
+					},
+				},
+			},
+			{override},
+		);
+	}
+
 	function mapParticipantsBody(formData) {
 		if (!formData.detailsParticipants) return [];
 
@@ -253,13 +273,14 @@ export function useDiscussionManagerForm(
 	}
 
 	async function saveWorkItem(formData) {
+		const isTaskType = formData.taskInfoAdd;
 		const dataBody = {
-			type: formData.taskInfoAdd
+			type: isTaskType
 				? pkp.const.EDITORIAL_TASK_TYPE_TASK
 				: pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION,
 			title: formData.detailsName,
 			stageId: submissionStageId,
-			dateDue: formData.taskInfoDueDate || undefined,
+			dateDue: isTaskType ? formData.taskInfoDueDate : undefined,
 			participants: mapParticipantsBody(formData),
 		};
 
@@ -421,19 +442,7 @@ export function useDiscussionManagerForm(
 	const participantsField = getField('detailsParticipants');
 	const selectedParticipants = computed(() => participantsField?.value || []);
 
-	addGroup('taskInformation', {
-		label: t('discussion.form.taskInformation'),
-		description: t('discussion.form.taskInfoDescription'),
-		groupComponent: {
-			component: DiscussionManagerTaskInfo,
-			props: {
-				workItem,
-				inDisplayMode,
-				autoAddTaskDetails,
-				onUpdateStatusCheckbox,
-			},
-		},
-	});
+	addTaskInfoGroup(workItem);
 
 	addFieldCheckbox('taskInfoAdd', {
 		groupId: 'taskInformation',
@@ -532,6 +541,8 @@ export function useDiscussionManagerForm(
 		);
 		setValue('taskInfoDueDate', newWorkItem?.dateDue || '');
 		setValue('taskInfoAssignee', getSelectedAssignee(newWorkItem));
+
+		addTaskInfoGroup(newWorkItem, {override: true});
 
 		setInitialState(form, additionalFields);
 	}
