@@ -59,7 +59,9 @@ const props = defineProps({
 const emit = defineEmits(['updateStatusCheckbox']);
 const statusUpdateValue = ref(false);
 const taskInfoSectionRef = ref(null);
-const isTask = props.workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK;
+const isTask = computed(
+	() => props.workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
+);
 
 const statusUpdateLabel = computed(() => {
 	switch (props.workItem?.status) {
@@ -75,7 +77,7 @@ const statusUpdateLabel = computed(() => {
 const showStatusUpdateCheckbox = computed(() => {
 	return (
 		props.inDisplayMode &&
-		isTask &&
+		isTask.value &&
 		[
 			pkp.const.EDITORIAL_TASK_STATUS_PENDING,
 			pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS,
@@ -86,7 +88,7 @@ const showStatusUpdateCheckbox = computed(() => {
 const showTaskStartedInfo = computed(() => {
 	return (
 		props.inDisplayMode &&
-		isTask &&
+		isTask.value &&
 		[
 			pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS,
 			pkp.const.EDITORIAL_TASK_STATUS_CLOSED,
@@ -95,7 +97,7 @@ const showTaskStartedInfo = computed(() => {
 });
 
 const taskInfoDescription = computed(() => {
-	if (!isTask && props.inDisplayMode) {
+	if (!isTask.value && props.inDisplayMode) {
 		if (props.workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED) {
 			return `${t('discussion.form.taskInfoDescription')}<br />${t('discussion.form.taskInfoReopenAndConvertToTask')}`;
 		}

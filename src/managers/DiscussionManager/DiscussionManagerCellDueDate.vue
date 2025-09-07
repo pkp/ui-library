@@ -1,6 +1,6 @@
 <template>
 	<TableCell>
-		<div class="flex items-center">
+		<div v-if="isTask" class="flex items-center">
 			<span class="text-base-normal">
 				{{ workItem.dateDue }}
 			</span>
@@ -9,7 +9,11 @@
 </template>
 
 <script setup>
+import {computed} from 'vue';
 import TableCell from '@/components/Table/TableCell.vue';
 
-defineProps({workItem: {type: Object, required: true}});
+const props = defineProps({workItem: {type: Object, required: true}});
+const isTask = computed(
+	() => props.workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
+);
 </script>

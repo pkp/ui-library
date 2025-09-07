@@ -132,7 +132,7 @@ const isWorkItemClosed = computed(() => {
 	return !!workItemData.value?.dateClosed ?? !!props.workItem?.dateClosed;
 });
 
-watch(workItemData.value, (newVal) => {
+watch(workItemData, (newVal) => {
 	reloadList = true;
 	refreshFormData(newVal);
 });

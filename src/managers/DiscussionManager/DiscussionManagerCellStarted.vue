@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import {inject} from 'vue';
+import {inject, computed} from 'vue';
 import {t} from '@/utils/i18n';
 import TableCellSelect from '@/components/Table/TableCellSelect.vue';
 
@@ -25,9 +25,12 @@ const props = defineProps({
 	index: {type: Number, required: true},
 });
 
-const isTask = props.workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK;
-const isPending =
-	props.workItem.status === pkp.const.EDITORIAL_TASK_STATUS_PENDING;
+const isTask = computed(
+	() => props.workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
+);
+const isPending = computed(
+	() => props.workItem.status === pkp.const.EDITORIAL_TASK_STATUS_PENDING,
+);
 
 const labelIds = `discussion_name_${props.workItem?.id} ${tableContext.tableId}_${props.index}`;
 </script>

@@ -23,6 +23,7 @@
 </template>
 
 <script setup>
+import {computed} from 'vue';
 import TableCell from '@/components/Table/TableCell.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import PkpButton from '@/components/Button/Button.vue';
@@ -35,8 +36,8 @@ const props = defineProps({
 	workItem: {type: Object, required: true},
 });
 
-const workItemType =
-	props.workItem.type === pkp.const.EDITORIAL_TASK_TYPE_TASK
+const workItemType = computed(() => {
+	return props.workItem.type === pkp.const.EDITORIAL_TASK_TYPE_TASK
 		? {
 				type: t('submission.query.task'),
 				icon: 'Task',
@@ -47,4 +48,5 @@ const workItemType =
 				icon: 'Discussion',
 				createdByText: t('common.createdBy'),
 			};
+});
 </script>
