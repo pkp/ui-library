@@ -177,10 +177,11 @@ export const useDiscussionManagerStore = defineComponentStore(
 			);
 		}
 
-		function discussionDelete() {
+		function discussionDelete({workItem}) {
 			discussionActions.discussionDelete(
 				{
 					submission: props.submission,
+					workItem,
 				},
 				triggerDataChangeCallback,
 			);

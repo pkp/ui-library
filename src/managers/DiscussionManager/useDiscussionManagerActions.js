@@ -1,5 +1,7 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
+import {useFetch} from '../../composables/useFetch';
+import {useUrl} from '../../composables/useUrl';
 import {useDiscussionManagerStatusUpdater} from './useDiscussionManagerStatusUpdater';
 import DiscussionManagerForm from './DiscussionManagerForm.vue';
 import DiscussionManagerFormDisplay from './DiscussionManagerFormDisplay.vue';
@@ -99,13 +101,36 @@ export function useDiscussionManagerActions() {
 	}
 
 	function discussionDelete({workItem, submission}, finishedCallback) {
+		async function deleteWorkItem() {
+			const {apiUrl: deleteTaskUrl} = useUrl(
+				`submissions/${submission.id}/tasks/${workItem.id}`,
+			);
+
+			const {
+				fetch,
+				data: deleteTaskData,
+				isSuccess,
+			} = useFetch(deleteTaskUrl, {
+				method: 'DELETE',
+			});
+
+			await fetch();
+
+			return {
+				data: deleteTaskData.value,
+				isSuccess: isSuccess.value,
+			};
+		}
+
 		const {openDialog} = useModal();
 		openDialog({
 			actions: [
 				{
 					label: t('common.ok'),
 					isWarnable: true,
-					callback: (close) => {
+					callback: async (close) => {
+						await deleteWorkItem();
+						finishedCallback();
 						close();
 					},
 				},
