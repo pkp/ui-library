@@ -2,9 +2,9 @@
 	<div id="pkpUserCommentsContainer">
 		<h3>{{ t('userComment.commentOnThisPublication') }}</h3>
 
-		<template v-for="id in publicationIds" :key="id">
+		<template v-for="(id, index) in publicationIds" :key="id">
 			<PkpAccordion
-				:title="getVersionTitle(id)"
+				:title="getVersionTitle(id, publicationIds.length - index)"
 				:default-open="id === latestPublicationId"
 			>
 				<PkpButton
@@ -72,9 +72,9 @@ const currentUser = pkp.currentUser;
  * @param {number} id - The publication ID.
  * @returns {string} The title for the accordion.
  */
-function getVersionTitle(id) {
+function getVersionTitle(id, versionNumber) {
 	return t('userComment.versionWithCount', {
-		version: id,
+		version: versionNumber,
 		versionCommentsCount: props.commentsCountPerPublication[id] || 0,
 	});
 }
