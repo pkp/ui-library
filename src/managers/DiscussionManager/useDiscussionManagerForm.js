@@ -35,7 +35,9 @@ export function useDiscussionManagerForm(
 		submissionStageId,
 	});
 	const discussionMessagesStore = useDiscussionMessagesStore();
-	const {updateStatus} = useDiscussionManagerStatusUpdater(submission.id);
+	const {updateStatus, startWorkItem} = useDiscussionManagerStatusUpdater(
+		submission.id,
+	);
 
 	const currentUser = useCurrentUser();
 	const {getRelativeTargetDate} = useDate();
@@ -322,7 +324,7 @@ export function useDiscussionManagerForm(
 		if (isSuccess) {
 			// start the task if begin upon saving is selected
 			if (formData.taskInfoAdd && formData.taskInfoShouldStart) {
-				await updateStatus(data?.id, statusUpdates.start);
+				await startWorkItem(data?.id);
 			}
 		}
 
