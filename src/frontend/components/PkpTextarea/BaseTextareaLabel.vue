@@ -1,5 +1,5 @@
 <template>
-	<Label class="pkpTextarea__label" :for="textAreaId">
+	<Label :for="textAreaId" :class="{'sr-only': props.isLabelSrOnly}">
 		{{ props.label }}
 	</Label>
 </template>

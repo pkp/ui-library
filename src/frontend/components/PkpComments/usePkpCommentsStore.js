@@ -6,5 +6,6 @@ export const usePkpCommentsStore = defineComponentStore('comments', (props) => {
 		latestPublicationId: props.latestPublicationId,
 		itemsPerPage: props.itemsPerPage,
 		loginUrl: props.loginUrl,
+		commentsCountPerPublication: props.commentsCountPerPublication,
 	};
 });

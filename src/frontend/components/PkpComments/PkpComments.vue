@@ -1,51 +1,34 @@
 <template>
 	<BaseComments v-bind="$attrs">
 		<BaseCommentsVersions v-slot="versionProps">
-			<BaseCommentsVersion class="w-96" v-bind="versionProps">
+			<BaseCommentsVersion class="" v-bind="versionProps">
 				<BaseCommentsVersionHeader>
-					<BaseCommentsVersionHeaderTrigger
-						class="group flex w-full justify-between"
-					>
+					<BaseCommentsVersionHeaderTrigger>
 						<BaseCommentsVersionHeaderLabel></BaseCommentsVersionHeaderLabel>
-						<BaseCommentsVersionHeaderChevron
-							class="inline-block transition-transform duration-300 group-data-[state=open]:rotate-180"
-						></BaseCommentsVersionHeaderChevron>
+						<BaseCommentsVersionHeaderChevron></BaseCommentsVersionHeaderChevron>
 					</BaseCommentsVersionHeaderTrigger>
 				</BaseCommentsVersionHeader>
 				<BaseCommentsVersionContent>
 					<BaseCommentsLogInto></BaseCommentsLogInto>
 					<BaseCommentsNotificationNotLatest></BaseCommentsNotificationNotLatest>
-					<BaseCommentsNew>
+					<BaseCommentsNew class="">
 						<BaseCommentsNewInput></BaseCommentsNewInput>
-						<BaseCommentsNewSubmit class="my-2"></BaseCommentsNewSubmit>
+						<BaseCommentsNewSubmit></BaseCommentsNewSubmit>
 					</BaseCommentsNew>
-					<BaseCommentsMessages class="flex flex-col gap-y-2">
+					<BaseCommentsMessages>
 						<template #default="messageProps">
-							<BaseCommentsMessage
-								v-bind="messageProps"
-								class="rounded bg-default p-4"
-							>
+							<BaseCommentsMessage v-bind="messageProps">
 								<BaseCommentsNotificationMessageApproved />
-								<div class="flex justify-between">
-									<BaseCommentsMessageDate
-										class="text-sm-light"
-									></BaseCommentsMessageDate>
+								<div class="BaseCommentsMessageHeader">
+									<BaseCommentsMessageDate></BaseCommentsMessageDate>
 									<BaseCommentsMessageActions></BaseCommentsMessageActions>
 								</div>
-								<BaseCommentsMessageBody
-									class="mt-2 block text-lg-normal"
-								></BaseCommentsMessageBody>
+								<BaseCommentsMessageBody></BaseCommentsMessageBody>
 
-								<BaseCommentsMessageAuthor class="mt-2 flex flex-col">
-									<BaseCommentsMessageAuthorName
-										class="text-base-bold"
-									></BaseCommentsMessageAuthorName>
-									<BaseCommentsMessageAuthorOrcid
-										class="text-xs-normal"
-									></BaseCommentsMessageAuthorOrcid>
-									<BaseCommentsMessageAuthorAffiliation
-										class="text-sm-light"
-									></BaseCommentsMessageAuthorAffiliation>
+								<BaseCommentsMessageAuthor>
+									<BaseCommentsMessageAuthorName></BaseCommentsMessageAuthorName>
+									<BaseCommentsMessageAuthorOrcid></BaseCommentsMessageAuthorOrcid>
+									<BaseCommentsMessageAuthorAffiliation></BaseCommentsMessageAuthorAffiliation>
 								</BaseCommentsMessageAuthor>
 							</BaseCommentsMessage>
 						</template>
@@ -83,3 +66,4 @@ import BaseCommentsMessageAuthorName from './base/BaseCommentsMessageAuthorName.
 import BaseCommentsMessageAuthorOrcid from './base/BaseCommentsMessageAuthorOrcid.vue';
 import BaseCommentsMessageAuthorAffiliation from './base/BaseCommentsMessageAuthorAffiliation.vue';
 </script>
+<style></style>

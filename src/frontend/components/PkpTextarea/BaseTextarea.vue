@@ -20,6 +20,11 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
+	// Whether the label should be visually hidden but still accessible to screen readers
+	isLabelSrOnly: {
+		type: Boolean,
+		default: false,
+	},
 });
 
 const emit = defineEmits(['update:modelValue']);

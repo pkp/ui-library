@@ -1,7 +1,7 @@
 <template>
-	<BaseTextarea v-bind="$attrs" class="pkpTextarea">
-		<BaseTextareaLabel class="pkpTextarea__label" />
-		<BaseTextareaInput class="pkpTextarea__element" />
+	<BaseTextarea v-bind="$attrs">
+		<BaseTextareaLabel />
+		<BaseTextareaInput />
 	</BaseTextarea>
 </template>
 <script setup>

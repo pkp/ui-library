@@ -21,6 +21,10 @@ export const usePkpCommentsVersionStore = defineComponentStore(
 		const pageCount = ref(0);
 		const commentText = ref('');
 
+		const commentsInThisVersion = computed(
+			() => commentsStore.commentsCountPerPublication[publicationId] || 0,
+		);
+
 		/* * Updates the comment text.
 		 * @param value
 		 */
@@ -54,7 +58,7 @@ export const usePkpCommentsVersionStore = defineComponentStore(
 			pageCount.value = pagination.value.pageCount;
 
 			showMoreCommentsCount.value =
-				commentsStore.totalPublicationComments -
+				commentsInThisVersion.value -
 				comments.value.filter((c) => c.isApproved).length;
 		}
 
@@ -236,7 +240,7 @@ export const usePkpCommentsVersionStore = defineComponentStore(
 		const versionLabel = computed(() => {
 			return t('userComment.versionWithCount', {
 				version: publicationId,
-				versionCommentsCount: commentsStore.totalPublicationComments || 0,
+				versionCommentsCount: commentsInThisVersion.value || 0,
 			});
 		});
 
