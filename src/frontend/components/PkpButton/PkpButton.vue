@@ -1,5 +1,7 @@
 <template>
-	<BaseButton class="pkpButton" v-bind="$attrs"><slot /></BaseButton>
+	<BaseButton class="pkpButton cmp_button_wire" v-bind="$attrs">
+		<slot />
+	</BaseButton>
 </template>
 
 <script setup>
@@ -7,7 +9,7 @@ import BaseButton from './BaseButton.vue';
 </script>
 
 <style>
-.pkpButton {
+/*.pkpButton {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -55,6 +57,5 @@ import BaseButton from './BaseButton.vue';
 	background-color: var(--pkp-color-transparent);
 	border-color: var(--pkp-text-color-disabled);
 	color: var(--pkp-text-color-disabled);
-}
+}*/
 </style>
-./BaseButton.vue

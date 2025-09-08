@@ -10,7 +10,7 @@ import BaseTextareaLabel from './BaseTextareaLabel.vue';
 import BaseTextareaInput from './BaseTextareaInput.vue';
 </script>
 <style>
-.pkpTextarea {
+/*.pkpTextarea {
 	display: flex;
 	flex-direction: column;
 	gap: var(--pkp-spacing-1);
@@ -35,12 +35,12 @@ import BaseTextareaInput from './BaseTextareaInput.vue';
 .pkpTextarea__element:focus {
 	outline: none;
 	border-color: var(--pkp-color-hover);
-	box-shadow: 0 0 0 2px rgba(0, 103, 152, 0.2); /* derived from primary */
+	box-shadow: 0 0 0 2px rgba(0, 103, 152, 0.2); /* derived from primary
 }
 
 .pkpTextarea__element:disabled {
 	background-color: var(--pkp-background-color-disabled);
 	color: var(--pkp-text-color-disabled);
 	cursor: not-allowed;
-}
+}*/
 </style>

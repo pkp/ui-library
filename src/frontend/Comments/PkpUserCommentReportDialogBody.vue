@@ -1,7 +1,8 @@
 <template>
-	<span class="pkpUserCommentReportModal____commentAuthor">
-		{{
-			`
+	<div class="cmp_form">
+		<span class="pkpUserCommentReportModal____commentAuthor">
+			{{
+				`
 					${
 						comment.userAffiliation
 							? t('userComment.reportCommentByUserWithAffiliation', {
@@ -12,30 +13,31 @@
 									userName: comment.userName,
 								})
 					}`
-		}}
-	</span>
+			}}
+		</span>
 
-	<p
-		v-strip-unsafe-html="comment.commentText.trim()"
-		class="pkpUserCommentReportModal____commentText"
-	></p>
+		<p
+			v-strip-unsafe-html="comment.commentText.trim()"
+			class="pkpUserCommentReportModal____commentText"
+		></p>
 
-	<strong class="pkpUserCommentReportModal____reportReason">
-		{{ t('userComment.report.reason') }}
-	</strong>
+		<strong class="pkpUserCommentReportModal____reportReason">
+			{{ t('userComment.report.reason') }}
+		</strong>
 
-	<PkpTextarea
-		:model-value="reportText"
-		@update:model-value="updateReportText"
-	></PkpTextarea>
+		<PkpTextarea
+			:model-value="reportText"
+			@update:model-value="updateReportText"
+		></PkpTextarea>
 
-	<div class="pkpUserCommentReportModal____actions">
-		<PkpButton :is-secondary="true" @click="onCancel">
-			{{ t('common.cancel') }}
-		</PkpButton>
-		<PkpButton @click="onSubmit(comment, reportText)">
-			{{ t('userComment.report') }}
-		</PkpButton>
+		<div class="pkpUserCommentReportModal____actions">
+			<PkpButton :is-secondary="true" @click="onCancel">
+				{{ t('common.cancel') }}
+			</PkpButton>
+			<PkpButton @click="onSubmit(comment, reportText)">
+				{{ t('userComment.report') }}
+			</PkpButton>
+		</div>
 	</div>
 </template>
 <script setup>
@@ -75,7 +77,7 @@ function updateReportText(value) {
 </script>
 
 <style>
-.pkpUserCommentReportModal____actions {
+/*.pkpUserCommentReportModal____actions {
 	display: flex;
 	justify-content: flex-end;
 	gap: 0.5rem;
@@ -95,5 +97,5 @@ function updateReportText(value) {
 
 .pkpUserCommentReportModal____reportReason {
 	color: var(--pkp-text-color-heading);
-}
+}*/
 </style>
