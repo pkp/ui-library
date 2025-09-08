@@ -2,12 +2,10 @@ import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
 import {computed, watch} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
-import {useWorkflowStore} from '@/pages/workflow/workflowStore';
 import {useForm} from '@/composables/useForm';
 
-export function useWorkflowPublicationFormIssue(form) {
+export function useWorkflowPublicationFormIssue(form, selectedPublication) {
 	const {t} = useLocalize();
-	const store = useWorkflowStore();
 	const {
 		setHiddenValue,
 		getHiddenValue,
@@ -21,7 +19,7 @@ export function useWorkflowPublicationFormIssue(form) {
 	const {fetch: fetchAssignments, data: assignments} = useFetch(assignmentsUrl);
 
 	const {apiUrl: assignmentStatusUrl} = useUrl(
-		`submissions/${store.submission.id}/publications/${store.selectedPublication.id}/issueAssignmentStatus`,
+		`submissions/${selectedPublication.submissionId}/publications/${selectedPublication.id}/issueAssignmentStatus`,
 	);
 	const {fetch: fetchAssignmentStatus, data: assignmentStatus} =
 		useFetch(assignmentStatusUrl);
@@ -103,14 +101,8 @@ export function useWorkflowPublicationFormIssue(form) {
 
 		const issueIdField = getField('issueId');
 		const assignmentField = getField('assignment');
-		const statusValue = getHiddenValue('status');
 
-		return (
-			issueIdField &&
-			assignmentField &&
-			statusValue !== null &&
-			statusValue !== undefined
-		);
+		return issueIdField && assignmentField;
 	}
 
 	/**
@@ -129,13 +121,13 @@ export function useWorkflowPublicationFormIssue(form) {
 			description: t('publication.assignToIssue.issueDescription'),
 			options: [],
 			size: 'large',
-			value: store.selectedPublication?.issueId,
+			value: selectedPublication?.issueId,
 			isRequired: true,
 			showWhen: ['assignment', []],
 		});
 
 		// Set initial status - will be updated by watchers when assignmentStatus data arrives
-		setHiddenValue('status', store.selectedPublication?.status);
+		setHiddenValue('status', selectedPublication?.status);
 	}
 
 	/**
@@ -161,7 +153,7 @@ export function useWorkflowPublicationFormIssue(form) {
 						![
 							pkp.const.publication.STATUS_PUBLISHED,
 							pkp.const.publication.STATUS_SCHEDULED,
-						].includes(store.selectedPublication?.status)
+						].includes(selectedPublication?.status)
 					) {
 						setHiddenValue('status', newStatus.status);
 					}
@@ -191,7 +183,7 @@ export function useWorkflowPublicationFormIssue(form) {
 					issueIdField.showWhen = ['assignment', newShowWhenIds];
 				}
 			},
-			{immediate: true},
+			{immediate: false},
 		);
 
 		// Watch current assignment option changes and update status
@@ -209,10 +201,12 @@ export function useWorkflowPublicationFormIssue(form) {
 						[
 							pkp.const.publication.STATUS_PUBLISHED,
 							pkp.const.publication.STATUS_SCHEDULED,
-						].includes(store.selectedPublication?.status)
+						].includes(selectedPublication?.status)
 					) {
 						setHiddenValue('status', null);
 					}
+
+					isInitialDataLoad = false;
 				}
 
 				if (newOption.isPublished !== null) {
@@ -232,12 +226,6 @@ export function useWorkflowPublicationFormIssue(form) {
 			},
 			{immediate: true},
 		);
-
-		// Mark initial data load as complete after a short delay
-		// which in return all initial watchers have had a chance to run
-		setTimeout(() => {
-			isInitialDataLoad = false;
-		}, 100);
 	}
 
 	/**

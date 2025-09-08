@@ -250,14 +250,12 @@ export default {
 			 * Add attributes to the hidden file input field so that labels and
 			 * descriptions can be accessed by those using assistive devices.
 			 */
-			if (this.$refs.dropzone) {
-				this.$refs.dropzone.dropzone.hiddenFileInput.id =
-					this.dropzoneHiddenFileId;
-				this.$refs.dropzone.dropzone.hiddenFileInput.setAttribute(
-					'aria-describedby',
-					this.describedByIds,
-				);
-			}
+			this.$refs.dropzone.dropzone.hiddenFileInput.id =
+				this.dropzoneHiddenFileId;
+			this.$refs.dropzone.dropzone.hiddenFileInput.setAttribute(
+				'aria-describedby',
+				this.describedByIds,
+			);
 
 			/**
 			 * Set the initial data, which can't be set in the data() function because it relies on

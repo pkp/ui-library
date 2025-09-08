@@ -321,7 +321,10 @@ export function useWorkflowVersionForm(
 		// it's in publish mode
 		// have issues
 		if (modeState.isPublishMode && issueCount > 0 && isOJS()) {
-			const {initialize} = useWorkflowPublicationFormIssue(form);
+			const {initialize} = useWorkflowPublicationFormIssue(
+				form,
+				store.selectedPublication,
+			);
 			await initialize();
 		}
 

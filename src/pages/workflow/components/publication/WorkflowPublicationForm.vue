@@ -73,6 +73,9 @@ async function metadataDataChange() {
 	await fetchForm();
 }
 
+// This handle the case where the issue selection done vai `Schedule For Publication` modal while at issue page
+// but not finalise the publication status(publishing or scheduling) at final step but close the modal
+// so we need to fetch the form again to update the issue selection field to reflect the changes.
 async function issueDataChange() {
 	await fetchForm();
 }
@@ -81,10 +84,13 @@ watch(
 	form,
 	async (newForm) => {
 		if (newForm && props.formName === 'issue' && isOJS()) {
-			const {initialize} = useWorkflowPublicationFormIssue(newForm);
+			const {initialize} = useWorkflowPublicationFormIssue(
+				newForm,
+				props.publicationpublication,
+			);
 			await initialize();
 		}
 	},
-	{immediate: true},
+	{immediate: false},
 );
 </script>
