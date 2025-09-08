@@ -264,6 +264,23 @@ export function useDiscussionManagerForm(
 		);
 	}
 
+	function addTaskInfoDueDate({override = false} = {}) {
+		addFieldText(
+			'taskInfoDueDate',
+			{
+				groupId: 'taskInformation',
+				label: t('common.dueDate'),
+				inputType: 'date',
+				description: t('discussion.form.taskInfoDueDateDescription'),
+				size: 'large',
+				showWhen: 'taskInfoAdd',
+				value: isTask.value ? workItem?.dateDue : null,
+				isRequired: isTask.value,
+			},
+			{override},
+		);
+	}
+
 	function mapParticipantsBody(formData) {
 		if (!formData.detailsParticipants) return [];
 
@@ -435,6 +452,7 @@ export function useDiscussionManagerForm(
 		size: 'large',
 		value: workItem?.title,
 		hideOnDisplay: true,
+		isRequired: true,
 	});
 
 	addFieldOptions('detailsParticipants', 'checkbox', {
@@ -445,6 +463,7 @@ export function useDiscussionManagerForm(
 		options: getParticipantOptions(),
 		showNumberedList: true,
 		value: getSelectedParticipants(workItem),
+		isRequired: true,
 	});
 
 	const participantsField = getField('detailsParticipants');
@@ -460,17 +479,13 @@ export function useDiscussionManagerForm(
 		disabled:
 			workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION &&
 			workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED,
+		onChange: (val) => {
+			isTask.value = val;
+			addTaskInfoDueDate({override: true});
+		},
 	});
 
-	addFieldText('taskInfoDueDate', {
-		groupId: 'taskInformation',
-		label: t('common.dueDate'),
-		inputType: 'date',
-		description: t('discussion.form.taskInfoDueDateDescription'),
-		size: 'large',
-		showWhen: 'taskInfoAdd',
-		value: isTask.value ? workItem?.dateDue : null,
-	});
+	addTaskInfoDueDate();
 
 	addFieldOptions('taskInfoAssignee', 'radio', {
 		groupId: 'taskInformation',
