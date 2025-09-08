@@ -4,7 +4,6 @@ import {useUrl} from '@/frontend/composables/usePkpUrl';
 import {usePkpModal} from '@/frontend/composables/usePkpModal';
 import {usePkpFetch} from '@/frontend/composables/usePkpFetch';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
-import PkpUserCommentReportDialogBody from './PkpUserCommentReportDialogBody.vue';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 import {usePkpCommentsStore} from './usePkpCommentsStore';
 export const usePkpCommentsVersionStore = defineComponentStore(
@@ -168,18 +167,36 @@ export const usePkpCommentsVersionStore = defineComponentStore(
 		 * Reports a comment.
 		 * @param comment - The comment to be reported.
 		 */
+		const reportText = ref('');
 		function commentReport(comment) {
-			const {openDialog, closeTopDialog} = usePkpModal();
-
+			const {openDialog} = usePkpModal();
+			reportText.value = '';
 			openDialog({
 				title: t('userComment.reportComment'),
 				comment,
-				bodyComponent: PkpUserCommentReportDialogBody,
+				bodyComponent: pkp.registry.getComponent('PkpCommentReportDialog'),
 				bodyProps: {
 					comment,
-					onSubmit: performCommentReport,
-					onCancel: () => closeTopDialog(),
+					reportText: reportText,
+					'onUpdate:reportText': (value) => {
+						reportText.value = value;
+					},
 				},
+				actions: [
+					{
+						label: t('form.submit'),
+						isPrimary: true,
+						callback: async (close) => {
+							await performCommentReport(comment, reportText.value);
+							close();
+						},
+					},
+					{
+						label: t('common.cancel'),
+						isSecondary: true,
+						callback: (close) => close(),
+					},
+				],
 			});
 		}
 

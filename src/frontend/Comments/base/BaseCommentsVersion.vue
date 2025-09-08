@@ -14,3 +14,4 @@ usePkpCommentsVersionStore(
 
 provide('versionProps', props);
 </script>
+../usePkpCommentsVersionStore

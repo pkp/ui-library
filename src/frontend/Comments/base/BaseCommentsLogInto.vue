@@ -19,3 +19,4 @@ const commentsVersionStore = usePkpCommentsVersionStore();
 
 const {t} = usePkpLocalize();
 </script>
+../usePkpCommentsVersionStore

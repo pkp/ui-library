@@ -18,3 +18,4 @@ import {usePkpCommentsStore} from './usePkpCommentsStore';
 
 const commentsStore = usePkpCommentsStore();
 </script>
+../usePkpCommentsStore

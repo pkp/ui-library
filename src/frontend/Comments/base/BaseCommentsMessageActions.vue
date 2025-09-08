@@ -16,3 +16,4 @@ import {usePkpCommentsVersionStore} from './usePkpCommentsVersionStore';
 
 const commentsVersionStore = usePkpCommentsVersionStore();
 </script>
+../usePkpCommentsVersionStore

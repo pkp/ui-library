@@ -21,3 +21,4 @@ const {t} = usePkpLocalize();
 
 const commentsVersionStore = usePkpCommentsVersionStore();
 </script>
+../usePkpCommentsVersionStore../../composables/usePkpLocalize

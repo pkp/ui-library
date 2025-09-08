@@ -14,3 +14,4 @@ import {usePkpCommentsVersionStore} from './usePkpCommentsVersionStore';
 const {t} = usePkpLocalize();
 const commentsVersionStore = usePkpCommentsVersionStore();
 </script>
+../../composables/usePkpLocalize../usePkpCommentsVersionStore

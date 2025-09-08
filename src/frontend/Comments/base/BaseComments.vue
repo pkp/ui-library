@@ -38,3 +38,4 @@ const props = defineProps({
 });
 usePkpCommentsStore(props);
 </script>
+../usePkpCommentsStore

@@ -57,29 +57,29 @@
 </template>
 
 <script setup>
-import BaseComments from './BaseComments.vue';
-import BaseCommentsVersions from './BaseCommentsVersions.vue';
-import BaseCommentsVersion from './BaseCommentsVersion.vue';
-import BaseCommentsNew from './BaseCommentsNew.vue';
-import BaseCommentsNewInput from './BaseCommentsNewInput.vue';
-import BaseCommentsNewSubmit from './BaseCommentsNewSubmit.vue';
-import BaseCommentsVersionHeader from './BaseCommentsVersionHeader.vue';
-import BaseCommentsVersionHeaderTrigger from './BaseCommentsVersionHeaderTrigger.vue';
-import BaseCommentsVersionHeaderLabel from './BaseCommentsVersionHeaderLabel.vue';
-import BaseCommentsVersionHeaderChevron from './BaseCommentsVersionHeaderChevron.vue';
+import BaseComments from './base/BaseComments.vue';
+import BaseCommentsVersions from './base/BaseCommentsVersions.vue';
+import BaseCommentsVersion from './base/BaseCommentsVersion.vue';
+import BaseCommentsNew from './base/BaseCommentsNew.vue';
+import BaseCommentsNewInput from './base/BaseCommentsNewInput.vue';
+import BaseCommentsNewSubmit from './base/BaseCommentsNewSubmit.vue';
+import BaseCommentsVersionHeader from './base/BaseCommentsVersionHeader.vue';
+import BaseCommentsVersionHeaderTrigger from './base/BaseCommentsVersionHeaderTrigger.vue';
+import BaseCommentsVersionHeaderLabel from './base/BaseCommentsVersionHeaderLabel.vue';
+import BaseCommentsVersionHeaderChevron from './base/BaseCommentsVersionHeaderChevron.vue';
 
-import BaseCommentsVersionContent from './BaseCommentsVersionContent.vue';
+import BaseCommentsVersionContent from './base/BaseCommentsVersionContent.vue';
 
-import BaseCommentsLogInto from './BaseCommentsLogInto.vue';
-import BaseCommentsMessages from './BaseCommentsMessages.vue';
-import BaseCommentsNotificationNotLatest from './BaseCommentsNotificationNotLatest.vue';
-import BaseCommentsMessage from './BaseCommentsMessage.vue';
-import BaseCommentsNotificationMessageApproved from './BaseCommentsNotificationMessageApproved.vue';
-import BaseCommentsMessageDate from './BaseCommentsMessageDate.vue';
-import BaseCommentsMessageActions from './BaseCommentsMessageActions.vue';
-import BaseCommentsMessageBody from './BaseCommentsMessageBody.vue';
-import BaseCommentsMessageAuthor from './BaseCommentsMessageAuthor.vue';
-import BaseCommentsMessageAuthorName from './BaseCommentsMessageAuthorName.vue';
-import BaseCommentsMessageAuthorOrcid from './BaseCommentsMessageAuthorOrcid.vue';
-import BaseCommentsMessageAuthorAffiliation from './BaseCommentsMessageAuthorAffiliation.vue';
+import BaseCommentsLogInto from './base/BaseCommentsLogInto.vue';
+import BaseCommentsMessages from './base/BaseCommentsMessages.vue';
+import BaseCommentsNotificationNotLatest from './base/BaseCommentsNotificationNotLatest.vue';
+import BaseCommentsMessage from './base/BaseCommentsMessage.vue';
+import BaseCommentsNotificationMessageApproved from './base/BaseCommentsNotificationMessageApproved.vue';
+import BaseCommentsMessageDate from './base/BaseCommentsMessageDate.vue';
+import BaseCommentsMessageActions from './base/BaseCommentsMessageActions.vue';
+import BaseCommentsMessageBody from './base/BaseCommentsMessageBody.vue';
+import BaseCommentsMessageAuthor from './base/BaseCommentsMessageAuthor.vue';
+import BaseCommentsMessageAuthorName from './base/BaseCommentsMessageAuthorName.vue';
+import BaseCommentsMessageAuthorOrcid from './base/BaseCommentsMessageAuthorOrcid.vue';
+import BaseCommentsMessageAuthorAffiliation from './base/BaseCommentsMessageAuthorAffiliation.vue';
 </script>
