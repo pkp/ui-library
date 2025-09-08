@@ -1,5 +1,7 @@
 <template>
-	<span>{{ messageProps.message.userOrcidDisplayValue }}</span>
+	<span class="BaseCommentsMessageAuthorOrcid">
+		{{ messageProps.message.userOrcidDisplayValue }}
+	</span>
 </template>
 <script setup>
 import {inject} from 'vue';

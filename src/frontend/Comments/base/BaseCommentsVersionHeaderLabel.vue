@@ -1,5 +1,7 @@
 <template>
-	<span>{{ commentsVersionStore.versionLabel }}</span>
+	<span class="BaseCommentsVersionHeaderLabel">
+		{{ commentsVersionStore.versionLabel }}
+	</span>
 </template>
 <script setup>
 import {usePkpCommentsVersionStore} from '../usePkpCommentsVersionStore';

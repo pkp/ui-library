@@ -1,5 +1,7 @@
 <template>
-	<span>{{ messageProps.message.userAffiliation }}</span>
+	<span class="BaseCommentsMessageAuthorAffiliation">
+		{{ messageProps.message.userAffiliation }}
+	</span>
 </template>
 <script setup>
 import {inject} from 'vue';

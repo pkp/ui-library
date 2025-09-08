@@ -1,5 +1,7 @@
 <template>
-	<span>{{ formatShortDateTime(messageProps.message.createdAt) }}</span>
+	<span class="BaseCommentsMessageDate">
+		{{ formatShortDateTime(messageProps.message.createdAt) }}
+	</span>
 </template>
 <script setup>
 import {inject} from 'vue';

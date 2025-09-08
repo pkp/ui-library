@@ -1,5 +1,5 @@
 <template>
-	<div><slot></slot></div>
+	<div class="BaseComments"><slot></slot></div>
 </template>
 
 <script setup>

@@ -1,5 +1,6 @@
 <template>
 	<AccordionRoot
+		class="BaseCommentsVersions"
 		type="single"
 		collapsible
 		:default-value="commentsStore.publicationIds[0]"

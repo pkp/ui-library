@@ -1,5 +1,7 @@
 <template>
-	<AccordionItem :value="props.publicationId"><slot /></AccordionItem>
+	<AccordionItem class="BaseCommentsVersion" :value="props.publicationId">
+		<slot />
+	</AccordionItem>
 </template>
 <script setup>
 import {AccordionItem} from 'reka-ui';

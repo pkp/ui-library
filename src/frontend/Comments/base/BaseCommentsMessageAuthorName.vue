@@ -1,5 +1,7 @@
 <template>
-	<span>{{ messageProps.message.userName }}</span>
+	<span class="BaseCommentsMessageAuthorName">
+		{{ messageProps.message.userName }}
+	</span>
 </template>
 <script setup>
 import {inject} from 'vue';

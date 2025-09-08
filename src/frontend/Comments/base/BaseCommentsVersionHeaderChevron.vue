@@ -1,1 +1,1 @@
-<template><span>▼</span></template>
+<template><span class="BaseCommentsVersionHeaderChevron">▼</span></template>

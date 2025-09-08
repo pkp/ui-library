@@ -4,6 +4,7 @@
 			!commentsVersionStore.currentUser &&
 			commentsVersionStore.isLatestPublication
 		"
+		class="BaseCommentsLogInto"
 		@click="commentsVersionStore.login"
 	>
 		{{ t('userComment.login') }}

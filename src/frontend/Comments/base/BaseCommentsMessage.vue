@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="BaseCommentsMessage">
 		<slot :message="message"></slot>
 	</div>
 </template>

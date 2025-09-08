@@ -1,5 +1,5 @@
 <template>
-	<AccordionTrigger>
+	<AccordionTrigger class="BaseCommentsVersionHeaderTrigger">
 		<slot></slot>
 	</AccordionTrigger>
 </template>

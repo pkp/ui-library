@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="BaseCommentsMessages">
 		<template v-for="comment in commentsVersionStore.comments">
 			<slot :message="comment"></slot>
 		</template>

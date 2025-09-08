@@ -1,3 +1,3 @@
 <template>
-	<div><slot></slot></div>
+	<div class="BaseCommentsMessageAuthor"><slot></slot></div>
 </template>

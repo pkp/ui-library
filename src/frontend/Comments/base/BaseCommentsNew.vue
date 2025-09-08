@@ -4,6 +4,7 @@
 			commentsVersionStore.isLatestPublication &&
 			!!commentsVersionStore.currentUser
 		"
+		class="BaseCommentsNew"
 	>
 		<slot></slot>
 	</div>

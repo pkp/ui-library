@@ -1,6 +1,7 @@
 <template>
 	<pkp-dropdown-menu
 		v-if="!!commentsVersionStore.currentUser"
+		class="BaseCommentsMessageActions"
 		:items="commentsVersionStore.getCommentActions(messageProps.message)"
 		@select="
 			(actionName) => commentsVersionStore[actionName](messageProps.message)

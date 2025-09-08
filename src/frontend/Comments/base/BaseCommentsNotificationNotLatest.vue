@@ -1,7 +1,7 @@
 <template>
 	<div
 		v-if="!commentsVersionStore.isLatestPublication"
-		class="pkpUserCommentsList__commentNotAllowed"
+		class="BaseCommentsNotificationNotLatest pkpUserCommentsList__commentNotAllowed"
 	>
 		<PkpIcon class="pkpUserCommentsList__errorIcon" icon="Error" />
 		<span>{{ t('userComment.discussionClosed') }}</span>

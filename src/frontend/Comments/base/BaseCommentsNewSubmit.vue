@@ -1,5 +1,10 @@
 <template>
-	<pkp-button @click="commentsVersionStore.commentAdd">Submit</pkp-button>
+	<pkp-button
+		class="BaseCommentsNewSubmit"
+		@click="commentsVersionStore.commentAdd"
+	>
+		Submit
+	</pkp-button>
 </template>
 
 <script setup>
