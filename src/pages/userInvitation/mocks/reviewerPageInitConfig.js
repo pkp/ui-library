@@ -48,6 +48,8 @@ export default {
 		givenName: '',
 		familyName: '',
 		orcidValidation: false,
+		submissionId: 10,
+		reviewRoundId: 1,
 		responseDueDate: '',
 		reviewDueDate: '',
 		reviewTypes: '',
