@@ -41,6 +41,9 @@ export function useDiscussionManagerForm(
 	const statusUpdateValue = ref(
 		workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED,
 	);
+	let updateOnDisplayMode = false;
+	const initialStatusUpdateVal =
+		workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED;
 	const statusUpdates = {
 		start: 'start',
 		close: 'close',
@@ -229,6 +232,7 @@ export function useDiscussionManagerForm(
 	}
 
 	function onUpdateStatusCheckbox(val) {
+		updateOnDisplayMode = initialStatusUpdateVal !== val;
 		statusUpdateValue.value = val;
 	}
 
@@ -316,7 +320,7 @@ export function useDiscussionManagerForm(
 		if (isSuccess) {
 			// start the task if begin upon saving is selected
 			if (formData.taskInfoAdd && formData.taskInfoShouldStart) {
-				await updateWorkItemStatus(data?.id, true);
+				await updateWorkItemStatus(data?.id, statusUpdates.start);
 			}
 		}
 
@@ -330,24 +334,40 @@ export function useDiscussionManagerForm(
 		console.log('add new message');
 	}
 
-	async function updateWorkItemStatus(workItemId, isNewTask) {
+	// Update the work item status: start, close, or open
+	async function updateWorkItemStatus(workItemId, overrideStatus) {
 		if (!workItemId) return;
 		let status;
 
-		if (workItem && statusUpdateValue.value) {
-			if (!workItem.dateClosed) {
+		if (workItem && inDisplayMode && updateOnDisplayMode) {
+			switch (workItem.status) {
+				case pkp.const.EDITORIAL_TASK_STATUS_PENDING:
+					status = statusUpdates.start;
+					break;
+				case pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS:
+					status = statusUpdates.close;
+					break;
+				case pkp.const.EDITORIAL_TASK_STATUS_CLOSED:
+					status = statusUpdates.open;
+					break;
+				default:
+					break;
+			}
+
+			// if discussion, only allow closing or re-opening
+			if (
+				status === statusUpdates.start &&
+				workItem.type === pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION
+			) {
 				status = statusUpdates.close;
 			}
-			if (!workItem.dateStarted) {
-				status = statusUpdates.start;
-			}
-		} else {
-			if (isNewTask) {
-				status = statusUpdates.start;
-			}
+		} else if (statusUpdates[overrideStatus]) {
+			status = overrideStatus;
 		}
 
-		if (!status) return;
+		if (!status) {
+			return;
+		}
 
 		const {apiUrl: updateTaskStatusUrl} = useUrl(
 			`submissions/${submission.id}/tasks/${workItemId}/${status}`,
@@ -357,6 +377,7 @@ export function useDiscussionManagerForm(
 			fetch,
 			data: updateTaskStatusData,
 			isSuccess,
+			validationError,
 		} = useFetch(updateTaskStatusUrl, {
 			method: 'PUT',
 			expectValidationError: true,
@@ -364,7 +385,11 @@ export function useDiscussionManagerForm(
 
 		await fetch();
 
-		return {data: updateTaskStatusData.value, isSuccess: isSuccess.value};
+		return {
+			data: updateTaskStatusData.value,
+			validationError: validationError.value,
+			isSuccess: isSuccess.value,
+		};
 	}
 
 	async function handleFormSubmission(formData) {
@@ -374,7 +399,7 @@ export function useDiscussionManagerForm(
 		};
 
 		if (inDisplayMode) {
-			await updateWorkItemStatus(workItem?.id);
+			result = (await updateWorkItemStatus(workItem?.id)) ?? result;
 		} else {
 			if (workItem) {
 				result = await saveWorkItem(formData);
@@ -388,9 +413,10 @@ export function useDiscussionManagerForm(
 			await addNewMessage();
 		}
 
-		if (typeof onFinishFn === 'function') {
+		if (typeof onFinishFn === 'function' || updateOnDisplayMode) {
 			await onFinishFn();
 		}
+
 		onCloseFn();
 
 		// return result to Form component handler
