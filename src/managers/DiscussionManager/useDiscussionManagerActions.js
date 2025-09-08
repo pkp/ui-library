@@ -1,5 +1,6 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
+import {useDiscussionManagerStatusUpdater} from './useDiscussionManagerStatusUpdater';
 import DiscussionManagerForm from './DiscussionManagerForm.vue';
 import DiscussionManagerFormDisplay from './DiscussionManagerFormDisplay.vue';
 
@@ -154,16 +155,21 @@ export function useDiscussionManagerActions() {
 		);
 	}
 
-	function discussionStartTask({workItem}) {
+	async function discussionStartTask({workItem, submission}, finishedCallback) {
 		// Discussions cannot be started
 		if (workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION) {
 			return;
 		}
 
-		// TODO: start task
+		const {startWorkItem} = useDiscussionManagerStatusUpdater(submission.id);
+		await startWorkItem(workItem.id);
+		finishedCallback();
 	}
 
-	function discussionSetClosed({workItem}) {
+	async function discussionSetClosed(
+		{workItem, submission, status},
+		finishedCallback,
+	) {
 		// Tasks cannot be reopened
 		if (
 			workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK &&
@@ -172,7 +178,16 @@ export function useDiscussionManagerActions() {
 			return;
 		}
 
-		// TODO: update status
+		const {openWorkItem, closeWorkItem} = useDiscussionManagerStatusUpdater(
+			submission.id,
+		);
+		if (status === 'open') {
+			await openWorkItem(workItem.id);
+		} else {
+			await closeWorkItem(workItem.id);
+		}
+
+		finishedCallback();
 	}
 
 	return {

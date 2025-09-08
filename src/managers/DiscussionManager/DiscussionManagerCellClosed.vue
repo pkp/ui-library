@@ -5,7 +5,7 @@
 		:labelled-by="labelIds"
 		:confirm-title="confirmProps.title"
 		:confirm-message="confirmProps.message"
-		@change="discussionManagerStore.discussionSetClosed({workItem})"
+		@change="discussionManagerStore.discussionSetClosed({workItem, status})"
 	/>
 </template>
 
@@ -28,10 +28,14 @@ const isTask = computed(
 	() => props.workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
 );
 
-const confirmProps = computed(() => {
-	const statusUpdate = props.workItem?.dateClosed ? 'reopen' : 'close';
+const status = computed(() =>
+	props.workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED
+		? 'open'
+		: 'close',
+);
 
-	if (statusUpdate === 'reopen') {
+const confirmProps = computed(() => {
+	if (status.value === 'open') {
 		return {
 			title: isTask.value
 				? t('task.reopenThisTask')

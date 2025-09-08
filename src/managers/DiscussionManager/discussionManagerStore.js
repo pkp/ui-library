@@ -197,12 +197,13 @@ export const useDiscussionManagerStore = defineComponentStore(
 			);
 		}
 
-		function discussionSetClosed({workItem}) {
+		function discussionSetClosed({workItem, status}) {
 			discussionActions.discussionSetClosed(
 				{
 					submission: props.submission,
 					submissionStageId: props.submissionStageId,
 					workItem,
+					status,
 				},
 				triggerDataChangeCallback,
 			);
