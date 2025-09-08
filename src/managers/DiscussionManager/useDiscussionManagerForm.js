@@ -10,6 +10,7 @@ import {useCurrentUser} from '@/composables/useCurrentUser';
 import {useParticipantManagerStore} from '../ParticipantManager/participantManagerStore';
 import {useTasksAndDiscussionsStore} from '@/pages/tasksAndDiscussions/tasksAndDiscussionsStore';
 import {useDiscussionMessagesStore} from './discussionMessagesStore';
+import {useDiscussionManagerStatusUpdater} from './useDiscussionManagerStatusUpdater';
 import DiscussionMessages from './DiscussionMessages.vue';
 import DiscussionManagerTemplates from './DiscussionManagerTemplates.vue';
 import DiscussionManagerTaskInfo from './DiscussionManagerTaskInfo.vue';
@@ -34,6 +35,7 @@ export function useDiscussionManagerForm(
 		submissionStageId,
 	});
 	const discussionMessagesStore = useDiscussionMessagesStore();
+	const {updateStatus} = useDiscussionManagerStatusUpdater(submission.id);
 
 	const currentUser = useCurrentUser();
 	const {getRelativeTargetDate} = useDate();
@@ -320,7 +322,7 @@ export function useDiscussionManagerForm(
 		if (isSuccess) {
 			// start the task if begin upon saving is selected
 			if (formData.taskInfoAdd && formData.taskInfoShouldStart) {
-				await updateWorkItemStatus(data?.id, statusUpdates.start);
+				await updateStatus(data?.id, statusUpdates.start);
 			}
 		}
 
@@ -335,7 +337,7 @@ export function useDiscussionManagerForm(
 	}
 
 	// Update the work item status: start, close, or open
-	async function updateWorkItemStatus(workItemId, overrideStatus) {
+	async function updateWorkItemStatus(workItemId) {
 		if (!workItemId) return;
 		let status;
 
@@ -361,35 +363,13 @@ export function useDiscussionManagerForm(
 			) {
 				status = statusUpdates.close;
 			}
-		} else if (statusUpdates[overrideStatus]) {
-			status = overrideStatus;
 		}
 
 		if (!status) {
 			return;
 		}
 
-		const {apiUrl: updateTaskStatusUrl} = useUrl(
-			`submissions/${submission.id}/tasks/${workItemId}/${status}`,
-		);
-
-		const {
-			fetch,
-			data: updateTaskStatusData,
-			isSuccess,
-			validationError,
-		} = useFetch(updateTaskStatusUrl, {
-			method: 'PUT',
-			expectValidationError: true,
-		});
-
-		await fetch();
-
-		return {
-			data: updateTaskStatusData.value,
-			validationError: validationError.value,
-			isSuccess: isSuccess.value,
-		};
+		return await updateStatus(workItemId, status);
 	}
 
 	async function handleFormSubmission(formData) {
