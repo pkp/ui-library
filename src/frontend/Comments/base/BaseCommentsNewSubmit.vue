@@ -1,11 +1,9 @@
 <template>
-	<PkpButton @click="commentsVersionStore.commentAdd">Submit</PkpButton>
+	<pkp-button @click="commentsVersionStore.commentAdd">Submit</pkp-button>
 </template>
 
 <script setup>
-import PkpButton from '../components/PkpButton/PkpButton.vue';
-import {usePkpCommentsVersionStore} from './usePkpCommentsVersionStore';
+import {usePkpCommentsVersionStore} from '../usePkpCommentsVersionStore';
 
 const commentsVersionStore = usePkpCommentsVersionStore();
 </script>
-../usePkpCommentsVersionStore

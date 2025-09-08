@@ -6,9 +6,8 @@
 	</BaseCommentReportDialog>
 </template>
 <script setup>
-import BaseCommentReportDialog from './BaseCommentReportDialog.vue';
-import BaseCommentReportDialogAuthor from './BaseCommentReportDialogAuthor.vue';
-import BaseCommentReportDialogCommentText from './BaseCommentReportDialogCommentText.vue';
-import BaseCommentReportDialogReasonInput from './BaseCommentReportDialogReasonInput.vue';
+import BaseCommentReportDialog from './base/BaseCommentReportDialog.vue';
+import BaseCommentReportDialogAuthor from './base/BaseCommentReportDialogAuthor.vue';
+import BaseCommentReportDialogCommentText from './base/BaseCommentReportDialogCommentText.vue';
+import BaseCommentReportDialogReasonInput from './base/BaseCommentReportDialogReasonInput.vue';
 </script>
-../base/BaseCommentReportDialog.vue../base/BaseCommentReportDialogAuthor.vue../base/BaseCommentReportDialogCommentText.vue../base/BaseCommentReportDialogReasonInput.vue

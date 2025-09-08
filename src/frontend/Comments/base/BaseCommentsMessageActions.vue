@@ -12,7 +12,7 @@ import {inject} from 'vue';
 
 const messageProps = inject('messageProps');
 
-import {usePkpCommentsVersionStore} from './usePkpCommentsVersionStore';
+import {usePkpCommentsVersionStore} from '../usePkpCommentsVersionStore';
 
 const commentsVersionStore = usePkpCommentsVersionStore();
 </script>

@@ -1,5 +1,5 @@
 <template>
-	<PkpTextarea
+	<pkp-textarea
 		:placeholder="t('userComment.addYourComment')"
 		:label="t('userComment.addYourComment')"
 		:is-label-sr-only="true"
@@ -10,11 +10,9 @@
 <script setup>
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 
-import PkpTextarea from '../components/PkpTextarea/PkpTextarea.vue';
-import {usePkpCommentsVersionStore} from './usePkpCommentsVersionStore';
+import {usePkpCommentsVersionStore} from '../usePkpCommentsVersionStore';
 
 const {t} = usePkpLocalize();
 
 const commentsVersionStore = usePkpCommentsVersionStore();
 </script>
-../usePkpCommentsVersionStore

@@ -4,7 +4,7 @@
 <script setup>
 import {AccordionItem} from 'reka-ui';
 import {provide} from 'vue';
-import {usePkpCommentsVersionStore} from './usePkpCommentsVersionStore';
+import {usePkpCommentsVersionStore} from '../usePkpCommentsVersionStore';
 
 const props = defineProps({publicationId: {type: Number, required: true}});
 usePkpCommentsVersionStore(
@@ -14,4 +14,3 @@ usePkpCommentsVersionStore(
 
 provide('versionProps', props);
 </script>
-../usePkpCommentsVersionStore

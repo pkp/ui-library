@@ -13,12 +13,11 @@
 </template>
 <script setup>
 import {inject} from 'vue';
-import {usePkpCommentsVersionStore} from './usePkpCommentsVersionStore';
-import {usePkpLocalize} from '../composables/usePkpLocalize';
+import {usePkpCommentsVersionStore} from '../usePkpCommentsVersionStore';
+import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 const messageProps = inject('messageProps');
 
 const {t} = usePkpLocalize();
 
 const commentsVersionStore = usePkpCommentsVersionStore();
 </script>
-../usePkpCommentsVersionStore../../composables/usePkpLocalize

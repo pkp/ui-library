@@ -1,5 +1,5 @@
 <template>
-	<PkpButton
+	<pkp-button
 		v-if="
 			!commentsVersionStore.currentUser &&
 			commentsVersionStore.isLatestPublication
@@ -7,13 +7,12 @@
 		@click="commentsVersionStore.login"
 	>
 		{{ t('userComment.login') }}
-	</PkpButton>
+	</pkp-button>
 </template>
 
 <script setup>
-import PkpButton from '../components/PkpButton/PkpButton.vue';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
-import {usePkpCommentsVersionStore} from './usePkpCommentsVersionStore';
+import {usePkpCommentsVersionStore} from '../usePkpCommentsVersionStore';
 
 const commentsVersionStore = usePkpCommentsVersionStore();
 

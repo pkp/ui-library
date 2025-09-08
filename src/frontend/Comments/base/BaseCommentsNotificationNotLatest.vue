@@ -8,10 +8,9 @@
 	</div>
 </template>
 <script setup>
-import {usePkpLocalize} from '../composables/usePkpLocalize';
-import {usePkpCommentsVersionStore} from './usePkpCommentsVersionStore';
+import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
+import {usePkpCommentsVersionStore} from '../usePkpCommentsVersionStore';
 
 const {t} = usePkpLocalize();
 const commentsVersionStore = usePkpCommentsVersionStore();
 </script>
-../../composables/usePkpLocalize../usePkpCommentsVersionStore

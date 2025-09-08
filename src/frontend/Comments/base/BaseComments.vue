@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import {usePkpCommentsStore} from './usePkpCommentsStore';
+import {usePkpCommentsStore} from '../usePkpCommentsStore';
 const props = defineProps({
 	/** The ID of the latest publication associated with the published item(article, book, etc.)*/
 	latestPublicationId: {
