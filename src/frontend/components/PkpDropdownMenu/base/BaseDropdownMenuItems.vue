@@ -1,6 +1,6 @@
 <template>
 	<DropdownMenuPortal>
-		<DropdownMenuContent v-bind="$attrs">
+		<DropdownMenuContent v-bind="$attrs" class="BaseDropdownMenuItems">
 			<template v-for="item in items" :key="item.name">
 				<slot :item="item" />
 			</template>

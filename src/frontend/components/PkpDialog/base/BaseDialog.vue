@@ -1,5 +1,5 @@
 <template>
-	<DialogRoot :open="opened">
+	<DialogRoot class="BaseDialog" :open="opened">
 		<DialogPortal><slot></slot></DialogPortal>
 	</DialogRoot>
 </template>
@@ -39,4 +39,5 @@ function fireCallback(callback) {
 
 provide('dialogProps', props);
 provide('fireCallback', fireCallback);
+provide('isDialogLoading', isDialogLoading);
 </script>

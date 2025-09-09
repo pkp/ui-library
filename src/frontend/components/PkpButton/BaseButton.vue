@@ -1,5 +1,9 @@
 <template>
-	<button v-bind="$attrs" :data-type="isSecondary ? 'secondary' : 'primary'">
+	<button
+		v-bind="$attrs"
+		class="BaseButton"
+		:data-type="isSecondary ? 'secondary' : 'primary'"
+	>
 		<slot />
 	</button>
 </template>

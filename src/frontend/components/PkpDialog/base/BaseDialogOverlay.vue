@@ -1,5 +1,5 @@
 <template>
-	<DialogOverlay>
+	<DialogOverlay class="BaseDialogOverlay">
 		<slot></slot>
 	</DialogOverlay>
 </template>

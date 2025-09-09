@@ -98,10 +98,8 @@ export const usePkpCommentsVersionStore = defineComponentStore(
 		 * @param comment
 		 * @returns {Array<{label: string, name: string, disabled?: boolean}>} - An array of available actions */
 		function getCommentActions(comment) {
-			console.log('getCommentActions');
 			const actions = [];
 
-			console.log('getCommentActions:', currentUser.id, comment.userId);
 			if (currentUser && currentUser.id !== comment.userId) {
 				actions.push({
 					label: t('userComment.report'),
@@ -129,8 +127,6 @@ export const usePkpCommentsVersionStore = defineComponentStore(
 			}
 
 			const {openDialog, openDialogNetworkError} = usePkpModal();
-			console.log('wtf', t);
-			console.log('delete comment:', t('userComment.deleteComment'));
 			openDialog({
 				title: t('userComment.deleteComment'),
 				message: t('userComment.deleteCommentConfirmation', {
@@ -140,6 +136,7 @@ export const usePkpCommentsVersionStore = defineComponentStore(
 				actions: [
 					{
 						label: t('common.delete'),
+						isDisabled: true,
 						callback: async (close) => {
 							const {apiUrl} = useUrl(`comments/${comment.id}`);
 							const {fetch: deleteComment, isSuccess} = usePkpFetch(apiUrl, {
@@ -191,6 +188,9 @@ export const usePkpCommentsVersionStore = defineComponentStore(
 						label: t('form.submit'),
 						isPrimary: true,
 						callback: async (close) => {
+							if (reportText.value.trim() === '') {
+								return;
+							}
 							await performCommentReport(comment, reportText.value);
 							close();
 						},

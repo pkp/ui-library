@@ -1,5 +1,5 @@
 <template>
-	<DropdownMenuTrigger as-child>
+	<DropdownMenuTrigger as-child class="BaseDropdownMenuTrigger">
 		<button class="pkpDropdownActions__trigger">
 			<slot />
 		</button>

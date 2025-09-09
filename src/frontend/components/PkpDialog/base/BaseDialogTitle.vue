@@ -1,5 +1,5 @@
 <template>
-	<DialogTitle>{{ dialogProps.title }}</DialogTitle>
+	<DialogTitle class="BaseDialogTitle">{{ dialogProps.title }}</DialogTitle>
 </template>
 <script setup>
 import {inject} from 'vue';

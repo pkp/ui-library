@@ -11,7 +11,7 @@
 				<BaseCommentsVersionContent>
 					<BaseCommentsLogInto></BaseCommentsLogInto>
 					<BaseCommentsNotificationNotLatest></BaseCommentsNotificationNotLatest>
-					<BaseCommentsNew class="">
+					<BaseCommentsNew>
 						<BaseCommentsNewInput></BaseCommentsNewInput>
 						<BaseCommentsNewSubmit></BaseCommentsNewSubmit>
 					</BaseCommentsNew>

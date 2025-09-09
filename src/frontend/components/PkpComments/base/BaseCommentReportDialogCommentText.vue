@@ -1,7 +1,7 @@
 <template>
 	<p
 		v-strip-unsafe-html="props.comment.commentText.trim()"
-		class="BaseCommentReportDialogCommentText pkpUserCommentReportModal____commentText"
+		class="BaseCommentReportDialogCommentText"
 	></p>
 </template>
 <script setup>

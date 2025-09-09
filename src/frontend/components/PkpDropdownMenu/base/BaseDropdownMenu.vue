@@ -1,5 +1,5 @@
 <template>
-	<DropdownMenuRoot>
+	<DropdownMenuRoot class="BaseDropdownMenu">
 		<slot />
 	</DropdownMenuRoot>
 </template>

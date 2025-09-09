@@ -1,5 +1,9 @@
 <template>
-	<DropdownMenuItem :disabled="item.disabled" @click="handleClick(item)">
+	<DropdownMenuItem
+		:disabled="item.disabled"
+		class="BaseDropdownMenuItem"
+		@click="handleClick(item)"
+	>
 		<slot />
 	</DropdownMenuItem>
 </template>

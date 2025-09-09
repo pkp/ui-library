@@ -33,7 +33,6 @@ const modalStore = usePkpModalStore();
 const {modal1, modal2, modal3} = storeToRefs(usePkpModalStore());
 
 function close(modalId, returnData) {
-	console.log('close manager triggered');
 	modalStore.closeModalById(modalId, returnData);
 }
 </script>

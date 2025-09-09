@@ -28,22 +28,11 @@ const classes = computed(() => {
 </script>
 
 <template>
-	<span :class="classes">
-		<component :is="svgIcons[icon]"></component>
-	</span>
+	<component :is="svgIcons[icon]" :class="classes"></component>
 </template>
 
 <style>
-.pkpIcon {
-	display: inline-block;
-	vertical-align: middle;
-}
-
 [dir='rtl'] .pkpIcon {
 	transform: scaleX(-1);
-}
-
-.pkpIcon--error {
-	color: var(--pkp-color-negative);
 }
 </style>

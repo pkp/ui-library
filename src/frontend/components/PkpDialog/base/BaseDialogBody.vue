@@ -1,5 +1,5 @@
 <template>
-	<DialogDescription as-child>
+	<DialogDescription as-child class="BaseDialogBody">
 		<component
 			:is="dialogProps.bodyComponent"
 			v-if="dialogProps.bodyComponent"

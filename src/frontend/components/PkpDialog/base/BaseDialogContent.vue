@@ -1,5 +1,5 @@
 <template>
-	<DialogContent>
+	<DialogContent class="BaseDialogContent">
 		<slot></slot>
 	</DialogContent>
 </template>

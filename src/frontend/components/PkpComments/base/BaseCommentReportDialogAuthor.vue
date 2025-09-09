@@ -1,7 +1,5 @@
 <template>
-	<span
-		class="BaseCommentReportDialogAuthor pkpUserCommentReportModal____commentAuthor"
-	>
+	<span class="BaseCommentReportDialogAuthor">
 		{{
 			`
 					${
