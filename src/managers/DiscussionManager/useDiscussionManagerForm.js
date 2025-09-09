@@ -175,7 +175,7 @@ export function useDiscussionManagerForm(
 					template.taskDetails?.participantRoles?.includes(p.roleId),
 				)
 				.map((p) => p.id) || [];
-		setValue('detailsParticipants', selectedParticipants);
+		setValue('participants', selectedParticipants);
 
 		setValue('taskInfoAdd', isTask.value);
 
@@ -281,11 +281,30 @@ export function useDiscussionManagerForm(
 		);
 	}
 
+	function addDiscussionGroup(workItemData, {override = false} = {}) {
+		addGroup(
+			'discussion',
+			{
+				label: t('discussion.name'),
+				description: t('discussion.form.discussionDescription'),
+				groupComponent: {
+					component: DiscussionManagerDiscussion,
+					props: {
+						workItem: workItemData,
+						inDisplayMode,
+						onUpdateStatusCheckbox,
+					},
+				},
+			},
+			{override},
+		);
+	}
+
 	function mapParticipantsBody(formData) {
-		if (!formData.detailsParticipants) return [];
+		if (!formData.participants) return [];
 
 		return (
-			formData.detailsParticipants.map((userId) => {
+			formData.participants.map((userId) => {
 				let isResponsible = formData.taskInfoAdd
 					? formData?.taskInfoAssignee === userId
 					: undefined;
@@ -348,6 +367,7 @@ export function useDiscussionManagerForm(
 		return {
 			data,
 			validationError,
+			isSuccess,
 		};
 	}
 
@@ -395,6 +415,7 @@ export function useDiscussionManagerForm(
 		let result = {
 			data: {},
 			validationError: null,
+			isSuccess: false,
 		};
 
 		if (inDisplayMode) {
@@ -416,7 +437,9 @@ export function useDiscussionManagerForm(
 			await onFinishFn();
 		}
 
-		onCloseFn();
+		if (result.isSuccess) {
+			onCloseFn();
+		}
 
 		// return result to Form component handler
 		return result;
@@ -455,18 +478,18 @@ export function useDiscussionManagerForm(
 		isRequired: true,
 	});
 
-	addFieldOptions('detailsParticipants', 'checkbox', {
+	addFieldOptions('participants', 'checkbox', {
 		groupId: 'details',
 		label: t('editor.submission.stageParticipants'),
 		description: t('discussion.form.detailsParticipantsDescription'),
-		name: 'detailsParticipants',
+		name: 'participants',
 		options: getParticipantOptions(),
 		showNumberedList: true,
 		value: getSelectedParticipants(workItem),
 		isRequired: true,
 	});
 
-	const participantsField = getField('detailsParticipants');
+	const participantsField = getField('participants');
 	const selectedParticipants = computed(() => participantsField?.value || []);
 
 	addTaskInfoGroup(workItem);
@@ -517,18 +540,7 @@ export function useDiscussionManagerForm(
 		],
 	});
 
-	addGroup('discussion', {
-		label: t('discussion.name'),
-		description: t('discussion.form.discussionDescription'),
-		groupComponent: {
-			component: DiscussionManagerDiscussion,
-			props: {
-				workItem,
-				inDisplayMode,
-				onUpdateStatusCheckbox,
-			},
-		},
-	});
+	addDiscussionGroup(workItem);
 
 	if (workItemStatus === 'New') {
 		addFieldRichTextArea('discussionText', {
@@ -557,7 +569,7 @@ export function useDiscussionManagerForm(
 
 	function refreshFormData(newWorkItem) {
 		setValue('detailsName', newWorkItem?.title || '');
-		setValue('detailsParticipants', getSelectedParticipants(newWorkItem));
+		setValue('participants', getSelectedParticipants(newWorkItem));
 		setValue(
 			'taskInfoAdd',
 			newWorkItem.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
@@ -566,6 +578,7 @@ export function useDiscussionManagerForm(
 		setValue('taskInfoAssignee', getSelectedAssignee(newWorkItem));
 
 		addTaskInfoGroup(newWorkItem, {override: true});
+		addDiscussionGroup(newWorkItem, {override: true});
 
 		setInitialState(form, additionalFields);
 	}
