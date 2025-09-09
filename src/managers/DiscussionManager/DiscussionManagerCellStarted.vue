@@ -1,8 +1,8 @@
 <template>
 	<TableCellSelect
 		:hidden="!isTask"
-		:disabled="hasStarted"
-		:checked="hasStarted"
+		:disabled="!isPending"
+		:checked="!!props.workItem?.dateStarted"
 		:labelled-by="labelIds"
 		:confirm-title="t('task.startThisTask')"
 		:confirm-message="t('task.confirmStartTask')"
@@ -29,11 +29,8 @@ const isTask = computed(
 	() => props.workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
 );
 
-const hasStarted = computed(() =>
-	[
-		pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS,
-		pkp.const.EDITORIAL_TASK_STATUS_CLOSED,
-	].includes(props.workItem.status),
+const isPending = computed(
+	() => props.workItem.status === pkp.const.EDITORIAL_TASK_STATUS_PENDING,
 );
 
 const labelIds = `discussion_name_${props.workItem?.id} ${tableContext.tableId}_${props.index}`;
