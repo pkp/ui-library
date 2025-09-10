@@ -16,7 +16,7 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 	const allCommentsCount = ref(0);
 
 	// Version-specific state stored in a Map
-	const versionStates = ref(new Map());
+	const versionStates = ref({});
 
 	/**
 	 * Initialize the store with global configuration
@@ -56,20 +56,17 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 
 	// Get or create version-specific state
 	function getVersionState(publicationId) {
-		if (!versionStates.value.has(publicationId)) {
-			versionStates.value.set(
-				publicationId,
-				reactive({
-					comments: [],
-					showMoreCommentsCount: 0,
-					currentPage: 0,
-					pageCount: 0,
-					commentText: '',
-					reportText: '',
-				}),
-			);
+		if (!versionStates.value[publicationId]) {
+			versionStates.value[publicationId] = reactive({
+				comments: [],
+				showMoreCommentsCount: 0,
+				currentPage: 0,
+				pageCount: 0,
+				commentText: '',
+				reportText: '',
+			});
 		}
-		return versionStates.value.get(publicationId);
+		return versionStates.value[publicationId];
 	}
 
 	// Clear API methods for version-specific operations
@@ -194,7 +191,7 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 	}
 
 	// Delete a comment
-	function deleteComment(publicationId, comment) {
+	function commentDelete(publicationId, comment) {
 		const currentUser = getCurrentUser();
 
 		if (!currentUser || currentUser.id !== comment.userId) {
@@ -242,7 +239,7 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 	}
 
 	// Report a comment
-	function reportComment(publicationId, comment) {
+	function commentReport(publicationId, comment) {
 		const {t} = usePkpLocalize();
 		const {openDialog} = usePkpModal();
 		const versionState = getVersionState(publicationId);
@@ -342,7 +339,7 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 		loadComments,
 		addComment,
 		getCommentActions,
-		deleteComment,
-		reportComment,
+		commentDelete,
+		commentReport,
 	};
 });
