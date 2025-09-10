@@ -33,7 +33,7 @@ const renderComponent = (args) => ({
 
 const mswHandlers = [
 	http.get(
-		'https://mock/index.php/publicknowledge/api/v1/submissions/19/stage/1/tasks',
+		'https://mock/index.php/publicknowledge/api/v1/submissions/19/stage/5/tasks',
 		() => {
 			return HttpResponse.json({
 				items: DiscussionsDataMock,
