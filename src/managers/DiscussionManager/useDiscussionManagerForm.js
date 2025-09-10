@@ -272,7 +272,7 @@ export function useDiscussionManagerForm(
 				label: t('common.dueDate'),
 				inputType: 'date',
 				description: t('discussion.form.taskInfoDueDateDescription'),
-				size: 'small',
+				size: 'normal',
 				showWhen: 'taskInfoAdd',
 				value: isTask.value ? workItem?.dateDue : null,
 				isRequired: isTask.value,
