@@ -1,13 +1,13 @@
 import {useFetch} from '../../composables/useFetch';
 import {useUrl} from '../../composables/useUrl';
 
-export function useDiscussionManagerStatusUpdater(submissionId) {
-	const statusUpdates = {
-		start: 'start',
-		close: 'close',
-		open: 'open',
-	};
+export const statusUpdates = {
+	start: 'start',
+	close: 'close',
+	open: 'open',
+};
 
+export function useDiscussionManagerStatusUpdater(submissionId) {
 	async function updateStatus(workItemId, status) {
 		const {apiUrl: updateTaskStatusUrl} = useUrl(
 			`submissions/${submissionId}/tasks/${workItemId}/${status}`,
@@ -20,7 +20,6 @@ export function useDiscussionManagerStatusUpdater(submissionId) {
 			validationError,
 		} = useFetch(updateTaskStatusUrl, {
 			method: 'PUT',
-			expectValidationError: true,
 		});
 
 		await fetch();

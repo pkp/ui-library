@@ -10,7 +10,10 @@ import {useCurrentUser} from '@/composables/useCurrentUser';
 import {useParticipantManagerStore} from '../ParticipantManager/participantManagerStore';
 import {useTasksAndDiscussionsStore} from '@/pages/tasksAndDiscussions/tasksAndDiscussionsStore';
 import {useDiscussionMessagesStore} from './discussionMessagesStore';
-import {useDiscussionManagerStatusUpdater} from './useDiscussionManagerStatusUpdater';
+import {
+	useDiscussionManagerStatusUpdater,
+	statusUpdates,
+} from './useDiscussionManagerStatusUpdater';
 import DiscussionMessages from './DiscussionMessages.vue';
 import DiscussionManagerTemplates from './DiscussionManagerTemplates.vue';
 import DiscussionManagerTaskInfo from './DiscussionManagerTaskInfo.vue';
@@ -42,17 +45,11 @@ export function useDiscussionManagerForm(
 	const currentUser = useCurrentUser();
 	const {getRelativeTargetDate} = useDate();
 	const isTask = ref(workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK);
-	const statusUpdateValue = ref(
-		workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED,
-	);
+	const isClosed = workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED;
+	const statusUpdateValue = ref(isClosed);
 	let updateOnDisplayMode = false;
-	const initialStatusUpdateVal =
-		workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED;
-	const statusUpdates = {
-		start: 'start',
-		close: 'close',
-		open: 'open',
-	};
+	const initialStatusUpdateVal = isClosed;
+
 	const newMessage = ref(null);
 	const formId = inDisplayMode ? 'discussionDisplay' : 'discussionForm';
 
@@ -373,6 +370,7 @@ export function useDiscussionManagerForm(
 
 	async function addNewMessage() {
 		console.log('add new message');
+		return {};
 	}
 
 	// Update the work item status: start, close, or open
