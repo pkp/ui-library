@@ -1,14 +1,16 @@
 <template>
 	<pkp-button
 		class="BaseCommentsNewSubmit"
-		@click="commentsVersionStore.commentAdd"
+		@click="commentsStore.addComment(publicationId)"
 	>
 		Submit
 	</pkp-button>
 </template>
 
 <script setup>
-import {usePkpCommentsVersionStore} from '../usePkpCommentsVersionStore';
+import {inject} from 'vue';
+import {usePkpCommentsStore} from '../usePkpCommentsStore';
 
-const commentsVersionStore = usePkpCommentsVersionStore();
+const publicationId = inject('publicationId');
+const commentsStore = usePkpCommentsStore();
 </script>

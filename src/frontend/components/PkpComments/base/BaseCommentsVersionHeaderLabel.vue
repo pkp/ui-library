@@ -1,10 +1,12 @@
 <template>
 	<span class="BaseCommentsVersionHeaderLabel">
-		{{ commentsVersionStore.versionLabel }}
+		{{ commentsStore.getVersionLabel(publicationId) }}
 	</span>
 </template>
 <script setup>
-import {usePkpCommentsVersionStore} from '../usePkpCommentsVersionStore';
+import {inject} from 'vue';
+import {usePkpCommentsStore} from '../usePkpCommentsStore';
 
-const commentsVersionStore = usePkpCommentsVersionStore();
+const publicationId = inject('publicationId');
+const commentsStore = usePkpCommentsStore();
 </script>

@@ -1,11 +1,11 @@
 <template>
 	<pkp-button
 		v-if="
-			!commentsVersionStore.currentUser &&
-			commentsVersionStore.isLatestPublication
+			!commentsStore.getCurrentUser() &&
+			commentsStore.isLatestPublication(publicationId)
 		"
 		class="BaseCommentsLogInto"
-		@click="commentsVersionStore.login"
+		@click="commentsStore.login"
 	>
 		{{ t('userComment.login') }}
 	</pkp-button>
@@ -13,10 +13,10 @@
 
 <script setup>
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
-import {usePkpCommentsVersionStore} from '../usePkpCommentsVersionStore';
+import {inject} from 'vue';
+import {usePkpCommentsStore} from '../usePkpCommentsStore';
 
-const commentsVersionStore = usePkpCommentsVersionStore();
-
+const commentsStore = usePkpCommentsStore();
+const publicationId = inject('publicationId');
 const {t} = usePkpLocalize();
 </script>
-../usePkpCommentsVersionStore

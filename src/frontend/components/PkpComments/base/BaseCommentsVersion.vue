@@ -6,13 +6,14 @@
 <script setup>
 import {AccordionItem} from 'reka-ui';
 import {provide} from 'vue';
-import {usePkpCommentsVersionStore} from '../usePkpCommentsVersionStore';
+import {usePkpCommentsStore} from '../usePkpCommentsStore';
 
 const props = defineProps({publicationId: {type: Number, required: true}});
-usePkpCommentsVersionStore(
-	{publicationId: props.publicationId},
-	props.publicationId,
-);
 
-provide('versionProps', props);
+const commentsStore = usePkpCommentsStore();
+
+// Load initial comments
+commentsStore.loadComments(props.publicationId);
+
+provide('publicationId', props.publicationId);
 </script>

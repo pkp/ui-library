@@ -5,13 +5,17 @@
 			style="cursor: pointer"
 			@click.prevent="scrollToComments"
 		>
-			{{ t('userComment.allComments', {commentCount: allCommentsCount}) }}
+			{{
+				t('userComment.allComments', {
+					commentCount: commentsStore.allCommentsCount,
+				})
+			}}
 		</a>
 		<div style="margin-top: 1.5rem">
 			<a
-				v-if="!currentUser"
+				v-if="!commentsStore.getCurrentUser()"
 				class="pkpScrollToComments__login"
-				:href="loginUrl"
+				:href="commentsStore.loginUrl"
 			>
 				{{ t('userComment.login') }}
 			</a>
@@ -20,23 +24,11 @@
 </template>
 
 <script setup>
+import {usePkpCommentsStore} from './usePkpCommentsStore';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 
 const {t} = usePkpLocalize();
-const currentUser = pkp.currentUser;
-
-defineProps({
-	/** The total number of approved comments across all publication versions */
-	allCommentsCount: {
-		type: Number,
-		required: true,
-	},
-	/** The URL to the login page */
-	loginUrl: {
-		type: String,
-		required: true,
-	},
-});
+const commentsStore = usePkpCommentsStore();
 
 const scrollToComments = () => {
 	// Element with ID 'pkpUserCommentsContainer' is defined in the pkpUserComment component.

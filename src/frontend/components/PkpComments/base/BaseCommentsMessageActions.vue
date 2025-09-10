@@ -1,20 +1,21 @@
 <template>
 	<pkp-dropdown-menu
-		v-if="!!commentsVersionStore.currentUser"
+		v-if="!!commentsStore.getCurrentUser()"
 		class="BaseCommentsMessageActions"
-		:items="commentsVersionStore.getCommentActions(messageProps.message)"
+		:items="
+			commentsStore.getCommentActions(publicationId, messageProps.message)
+		"
 		@select="
-			(actionName) => commentsVersionStore[actionName](messageProps.message)
+			(actionName) =>
+				commentsStore[actionName](publicationId, messageProps.message)
 		"
 	/>
 </template>
 <script setup>
 import {inject} from 'vue';
+import {usePkpCommentsStore} from '../usePkpCommentsStore';
 
 const messageProps = inject('messageProps');
-
-import {usePkpCommentsVersionStore} from '../usePkpCommentsVersionStore';
-
-const commentsVersionStore = usePkpCommentsVersionStore();
+const publicationId = inject('publicationId');
+const commentsStore = usePkpCommentsStore();
 </script>
-../usePkpCommentsVersionStore

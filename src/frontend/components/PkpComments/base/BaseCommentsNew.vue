@@ -1,8 +1,8 @@
 <template>
 	<div
 		v-if="
-			commentsVersionStore.isLatestPublication &&
-			!!commentsVersionStore.currentUser
+			commentsStore.isLatestPublication(publicationId) &&
+			!!commentsStore.getCurrentUser()
 		"
 		class="BaseCommentsNew"
 	>
@@ -10,8 +10,9 @@
 	</div>
 </template>
 <script setup>
-import {usePkpCommentsVersionStore} from '../usePkpCommentsVersionStore';
+import {inject} from 'vue';
+import {usePkpCommentsStore} from '../usePkpCommentsStore';
 
-const commentsVersionStore = usePkpCommentsVersionStore();
+const publicationId = inject('publicationId');
+const commentsStore = usePkpCommentsStore();
 </script>
-../usePkpCommentsVersionStore

@@ -4,6 +4,7 @@
 
 <script setup>
 import {usePkpCommentsStore} from '../usePkpCommentsStore';
+
 const props = defineProps({
 	/** The ID of the latest publication associated with the published item(article, book, etc.)*/
 	latestPublicationId: {
@@ -35,6 +36,15 @@ const props = defineProps({
 		type: Object,
 		required: true,
 	},
+	/**
+	 * Total number of approved comments across all publications
+	 */
+	allCommentsCount: {
+		type: Number,
+		required: true,
+	},
 });
-usePkpCommentsStore(props);
+
+const commentsStore = usePkpCommentsStore();
+commentsStore.initialize(props);
 </script>

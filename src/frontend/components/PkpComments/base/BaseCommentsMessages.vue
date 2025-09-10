@@ -1,12 +1,14 @@
 <template>
 	<div class="BaseCommentsMessages">
-		<template v-for="comment in commentsVersionStore.comments">
+		<template v-for="comment in commentsStore.getComments(publicationId)">
 			<slot :message="comment"></slot>
 		</template>
 	</div>
 </template>
 <script setup>
-import {usePkpCommentsVersionStore} from '../usePkpCommentsVersionStore';
+import {inject} from 'vue';
+import {usePkpCommentsStore} from '../usePkpCommentsStore';
 
-const commentsVersionStore = usePkpCommentsVersionStore();
+const publicationId = inject('publicationId');
+const commentsStore = usePkpCommentsStore();
 </script>

@@ -1,8 +1,8 @@
 <template>
 	<div
 		v-if="
-			commentsVersionStore.currentUser &&
-			messageProps.message.userId === commentsVersionStore.currentUser.id &&
+			commentsStore.getCurrentUser() &&
+			messageProps.message.userId === commentsStore.getCurrentUser().id &&
 			!messageProps.message.isApproved
 		"
 		class="BaseCommentsNotificationMessageApproved"
@@ -13,11 +13,10 @@
 </template>
 <script setup>
 import {inject} from 'vue';
-import {usePkpCommentsVersionStore} from '../usePkpCommentsVersionStore';
+import {usePkpCommentsStore} from '../usePkpCommentsStore';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
+
 const messageProps = inject('messageProps');
-
+const commentsStore = usePkpCommentsStore();
 const {t} = usePkpLocalize();
-
-const commentsVersionStore = usePkpCommentsVersionStore();
 </script>

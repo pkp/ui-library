@@ -4,16 +4,16 @@
 		:placeholder="t('userComment.addYourComment')"
 		:label="t('userComment.addYourComment')"
 		:is-label-sr-only="true"
-		:model-value="commentsVersionStore.commentText"
-		@update:model-value="commentsVersionStore.updateCommentText"
+		:model-value="commentsStore.getCommentText(publicationId)"
+		@update:model-value="commentsStore.updateCommentText(publicationId, $event)"
 	/>
 </template>
 <script setup>
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
-
-import {usePkpCommentsVersionStore} from '../usePkpCommentsVersionStore';
+import {inject} from 'vue';
+import {usePkpCommentsStore} from '../usePkpCommentsStore';
 
 const {t} = usePkpLocalize();
-
-const commentsVersionStore = usePkpCommentsVersionStore();
+const publicationId = inject('publicationId');
+const commentsStore = usePkpCommentsStore();
 </script>
