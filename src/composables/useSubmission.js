@@ -190,7 +190,8 @@ export function useSubmission() {
 		const currentReviewRound = getCurrentReviewRound(submission, stageId);
 
 		return submission.reviewAssignments.filter(
-			(reviewAssignment) => reviewAssignment.round === currentReviewRound.round,
+			(reviewAssignment) =>
+				reviewAssignment.round === currentReviewRound?.round,
 		);
 	}
 

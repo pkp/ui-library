@@ -8,6 +8,7 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useFetch} from '@/composables/useFetch';
 import {useCurrentUser} from '@/composables/useCurrentUser';
 import {useParticipantManagerStore} from '../ParticipantManager/participantManagerStore';
+import {useSubmission} from '@/composables/useSubmission';
 import {useTasksAndDiscussionsStore} from '@/pages/tasksAndDiscussions/tasksAndDiscussionsStore';
 import {useDiscussionMessagesStore} from './discussionMessagesStore';
 import {
@@ -41,6 +42,7 @@ export function useDiscussionManagerForm(
 	const {updateStatus, startWorkItem} = useDiscussionManagerStatusUpdater(
 		submission.id,
 	);
+	const {getCurrentReviewAssignments} = useSubmission();
 
 	const currentUser = useCurrentUser();
 	const {getRelativeTargetDate} = useDate();
@@ -85,15 +87,46 @@ export function useDiscussionManagerForm(
 		};
 	}
 
+	function getAllParticipants() {
+		const reviewwers = getCurrentReviewAssignments(
+			submission,
+			submissionStageId,
+		).map((r) => {
+			return {
+				fullName: r.reviewerFullName,
+				userName: r.reviewerUserName || '',
+				id: r.reviewerId,
+				roleName: t('user.role.reviewer'),
+			};
+		});
+
+		const siteAdmin = currentUser.isCurrentUserSiteAdmin()
+			? [
+					{
+						fullName: currentUser.getCurrentUserFullName(),
+						userName: currentUser.getCurrentUserName(),
+						id: currentUser.getCurrentUserId(),
+						roleName: t('submission.status.unassigned'),
+					},
+				]
+			: [];
+
+		return participantManagerStore.participantsList
+			.concat(siteAdmin)
+			.concat(reviewwers);
+	}
+
 	function getParticipantOptions() {
 		return computed(() =>
-			participantManagerStore.participantsList.map(mapParticipantOptions(true)),
+			getAllParticipants().map(mapParticipantOptions(true)),
 		);
 	}
 
+	const allParticipants = computed(() => getAllParticipants());
+
 	function getAssigneeOptions() {
 		return computed(() => {
-			return participantManagerStore.participantsList
+			return allParticipants.value
 				?.filter((participant) => {
 					return selectedParticipants.value.includes(participant.id);
 				})
@@ -167,7 +200,7 @@ export function useDiscussionManagerForm(
 		setValue('discussionText', template.content);
 
 		const selectedParticipants =
-			participantManagerStore.participantsList
+			allParticipants.value
 				.filter((p) =>
 					template.taskDetails?.participantRoles?.includes(p.roleId),
 				)
