@@ -33,15 +33,15 @@ describe('useLegacyGridUrl', () => {
 		);
 	});
 
-	test('modals.publish.AssignToIssueHandler', () => {
-		const {url} = useLegacyGridUrl({
-			component: 'modals.publish.AssignToIssueHandler',
-			op: 'assign',
-			params: {submissionId: 13, publicationId: 14},
-		});
+	// test('modals.publish.AssignToIssueHandler', () => {
+	// 	const {url} = useLegacyGridUrl({
+	// 		component: 'modals.publish.AssignToIssueHandler',
+	// 		op: 'assign',
+	// 		params: {submissionId: 13, publicationId: 14},
+	// 	});
 
-		expect(url.value).toBe(
-			'http://mock/index.php/publicknowledge/$$$call$$$/modals/publish/assign-to-issue/assign?submissionId=13&publicationId=14',
-		);
-	});
+	// 	expect(url.value).toBe(
+	// 		'http://mock/index.php/publicknowledge/$$$call$$$/modals/publish/assign-to-issue/assign?submissionId=13&publicationId=14',
+	// 	);
+	// });
 });

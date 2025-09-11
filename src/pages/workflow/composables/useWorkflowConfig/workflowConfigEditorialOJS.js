@@ -768,7 +768,11 @@ export const PublicationConfig = {
 			if (!permissions.canPublish) {
 				return [];
 			}
-			if (selectedPublication.status === pkp.const.STATUS_QUEUED) {
+			if (
+				selectedPublication.status === pkp.const.STATUS_QUEUED ||
+				selectedPublication.status === pkp.const.STATUS_READY_TO_PUBLISH ||
+				selectedPublication.status === pkp.const.STATUS_READY_TO_SCHEDULE
+			) {
 				if (
 					hasSubmissionPassedStage(
 						submission,
@@ -992,9 +996,8 @@ export const PublicationConfig = {
 		}) => {
 			return [
 				{
-					component: 'WorkflowPublicationForm',
+					component: 'WorkflowPublicationFormIssue',
 					props: {
-						formName: 'issue',
 						submission,
 						publication: selectedPublication,
 						canEdit: permissions.canEditPublication,
