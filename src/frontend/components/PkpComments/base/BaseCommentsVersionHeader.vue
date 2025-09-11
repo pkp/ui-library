@@ -1,5 +1,5 @@
 <template>
-	<AccordionHeader class="BaseCommentsVersionHeader">
+	<AccordionHeader as="h3" class="BaseCommentsVersionHeader">
 		<slot></slot>
 	</AccordionHeader>
 </template>

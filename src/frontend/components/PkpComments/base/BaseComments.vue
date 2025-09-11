@@ -11,8 +11,8 @@ const props = defineProps({
 		type: Number,
 		required: true,
 	},
-	/** An array of published publication IDs associated with the published item(article, book, etc.) */
-	publicationIds: {
+	/** An array of published publication objects with id and version associated with the published item(article, book, etc.) */
+	publications: {
 		type: Array,
 		required: false,
 		default: () => [],

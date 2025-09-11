@@ -3,13 +3,13 @@
 		class="BaseCommentsVersions"
 		type="single"
 		collapsible
-		:default-value="commentsStore.publicationIds[0]"
+		:default-value="commentsStore.publications[0]?.id"
 	>
 		<template
-			v-for="publicationId in commentsStore.publicationIds"
-			:key="publicationId"
+			v-for="publication in commentsStore.publications"
+			:key="publication.id"
 		>
-			<slot :publication-id="publicationId" />
+			<slot :publication="publication" :publication-id="publication.id" />
 		</template>
 	</AccordionRoot>
 </template>

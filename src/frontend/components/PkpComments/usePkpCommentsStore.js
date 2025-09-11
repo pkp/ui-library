@@ -8,7 +8,7 @@ import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 
 export const usePkpCommentsStore = defineStore('pkpComments', () => {
 	// Global state
-	const publicationIds = ref([]);
+	const publications = ref([]);
 	const latestPublicationId = ref(null);
 	const itemsPerPage = ref(10);
 	const loginUrl = ref('');
@@ -21,7 +21,7 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 	/**
 	 * Initialize the store with global configuration
 	 * @param {Object} props - Configuration object
-	 * @param {Array<number>} [props.publicationIds=[]] - Array of publication IDs
+	 * @param {Array<Object>} [props.publications=[]] - Array of publication objects with id and version
 	 * @param {number|null} props.latestPublicationId - ID of the latest publication
 	 * @param {number} [props.itemsPerPage=10] - Number of items per page
 	 * @param {string} props.loginUrl - URL for login redirect
@@ -29,14 +29,16 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 	 * @param {number} [props.allCommentsCount=0] - Total comments count across all publications
 	 */
 	function initialize({
-		publicationIds: _publicationIds = [],
+		publications: _publications = [],
 		latestPublicationId: _latestPublicationId,
 		itemsPerPage: _itemsPerPage = 10,
 		loginUrl: _loginUrl,
 		commentsCountPerPublication: _commentsCountPerPublication = {},
 		allCommentsCount: _allCommentsCount = 0,
 	}) {
-		publicationIds.value = _publicationIds;
+		// Set publications array
+		publications.value = _publications || [];
+
 		latestPublicationId.value = _latestPublicationId;
 		itemsPerPage.value = _itemsPerPage;
 		loginUrl.value = _loginUrl;
@@ -91,10 +93,22 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 		const {t} = usePkpLocalize();
 		const commentsInThisVersion =
 			commentsCountPerPublication.value[publicationId] || 0;
+
+		// Try to find the publication object to get its version
+		const publication = publications.value.find(
+			(pub) => pub.id === publicationId,
+		);
+		const version = publication ? publication.version : publicationId;
+
 		return t('userComment.versionWithCount', {
-			version: publicationId,
+			version: version,
 			versionCommentsCount: commentsInThisVersion,
 		});
+	}
+
+	// Get publication object by ID
+	function getPublication(publicationId) {
+		return publications.value.find((pub) => pub.id === publicationId);
 	}
 
 	// Check if a publication is the latest
@@ -315,7 +329,7 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 
 	return {
 		// Global state
-		publicationIds,
+		publications,
 		latestPublicationId,
 		itemsPerPage,
 		loginUrl,
@@ -331,6 +345,7 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 		getComments,
 		getCommentText,
 		getVersionLabel,
+		getPublication,
 		isLatestPublication,
 		hasMoreComments,
 

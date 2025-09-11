@@ -9,7 +9,6 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:reportText']);
-console.log('BaseCommentReportDialog props', props);
 provide('reportDialogProps', props);
 provide('reportDialogEmit', emit);
 </script>

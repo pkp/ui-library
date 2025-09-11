@@ -21,5 +21,4 @@ import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 const {t} = usePkpLocalize();
 
 const props = inject('reportDialogProps');
-console.log('BaseCommentReportDialogAuthor props', props);
 </script>
