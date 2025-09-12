@@ -19,6 +19,8 @@ import {useFetch} from '@/composables/useFetch';
 import {useForm} from '@/composables/useForm';
 import {useUrl} from '@/composables/useUrl';
 import {useDataChanged} from '@/composables/useDataChanged';
+import {useApp} from '@/composables/useApp';
+import {useWorkflowPublicationFormIssue} from '../../composables/useWorkflowPublicationFormIssue';
 
 const props = defineProps({
 	canEdit: {type: Boolean, required: true},
@@ -27,6 +29,8 @@ const props = defineProps({
 	submission: {type: Object, required: true},
 	publication: {type: Object, required: true},
 });
+
+const {isOJS} = useApp();
 
 const relativeUrl = computed(() => {
 	return `submissions/${props.submission.id}/publications/${props.publication.id}/_components/${props.formName}`;
@@ -55,16 +59,38 @@ const displayNoFieldsEnabled = computed(() => {
 	return false;
 });
 
+const {set, form} = useForm(publicationForm);
+
 const customFns = {
 	metadata: metadataDataChange,
+	issue: issueDataChange,
 };
 
 const {triggerDataChange} = useDataChanged(customFns[props.formName]);
-
-const {set, form} = useForm(publicationForm);
 
 async function metadataDataChange() {
 	// Some metadata fields need extra data from db not in publication object
 	await fetchForm();
 }
+
+// This handle the case where the issue selection done vai `Schedule For Publication` modal while at issue page
+// but not finalise the publication status(publishing or scheduling) at final step but close the modal
+// so we need to fetch the form again to update the issue selection field to reflect the changes.
+async function issueDataChange() {
+	await fetchForm();
+}
+
+watch(
+	form,
+	async (newForm) => {
+		if (newForm && props.formName === 'issue' && isOJS()) {
+			const {initialize} = useWorkflowPublicationFormIssue(
+				newForm,
+				props.publicationpublication,
+			);
+			await initialize();
+		}
+	},
+	{immediate: false},
+);
 </script>

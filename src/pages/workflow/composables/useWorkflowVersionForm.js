@@ -5,6 +5,8 @@ import {useFetch} from '@/composables/useFetch';
 import {useLocalize} from '@/composables/useLocalize';
 import {useSubmission} from '@/composables/useSubmission';
 import {useWorkflowStore} from '@/pages/workflow/workflowStore';
+import {useApp} from '@/composables/useApp';
+import {useWorkflowPublicationFormIssue} from '@/pages/workflow/composables/useWorkflowPublicationFormIssue';
 
 const VERSION_MODE = {
 	CREATE: 'createNewVersion', // the "Create New Version" action in the publication workflow menu
@@ -48,12 +50,14 @@ export function useWorkflowVersionForm(
 	versionMode = 'createNewVersion',
 	closeDialog = () => {},
 	onSubmitFn = null,
+	issueCount = 0,
 ) {
 	const store = useWorkflowStore();
 	const {t} = useLocalize();
 	const {getLatestPublication} = useSubmission();
 	let publications = [];
 	let latestPublication = null;
+	const {isOJS} = useApp();
 
 	// Determine the mode based on the versionMode parameter
 	// versionMode can be one of 'createNewVersion', 'sendToTextEditor', or 'publish'
@@ -92,8 +96,30 @@ export function useWorkflowVersionForm(
 		});
 
 		const {apiUrl: versionUrl} = useUrl(
-			`submissions/${store.submission.id}/publications/${publicationId}/version`,
+			isOJS() && modeState.isPublishMode
+				? `submissions/${store.submission.id}/publications/${publicationId}`
+				: `submissions/${store.submission.id}/publications/${publicationId}/version`,
 		);
+
+		// Prepare request body with version data
+		const requestBody = {
+			versionStage: formData.versionStage,
+			versionIsMinor: formData.versionIsMinor,
+		};
+
+		if (isOJS() && modeState.isPublishMode) {
+			// if the issue count is 0, e.g. issueless context,
+			// we can safely set the issueId to null and status to STATUS_READY_TO_PUBLISH
+			if (issueCount === 0) {
+				requestBody.issueId = null;
+				requestBody.status = pkp.const.publication.STATUS_READY_TO_PUBLISH;
+			}
+			// Add issue assignment data if in publish mode and issue assignment is provided
+			else {
+				requestBody.issueId = formData.issueId;
+				requestBody.status = formData.status;
+			}
+		}
 
 		const {
 			fetch,
@@ -102,10 +128,7 @@ export function useWorkflowVersionForm(
 			isSuccess,
 		} = useFetch(versionUrl, {
 			method: shouldCreateNewVersion ? 'POST' : 'PUT',
-			body: {
-				versionStage: formData.versionStage,
-				versionIsMinor: formData.versionIsMinor,
-			},
+			body: requestBody,
 			expectValidationError: true,
 		});
 
@@ -162,6 +185,15 @@ export function useWorkflowVersionForm(
 	}
 
 	function getVersionIsMinorField({allowMinorVersion, currentValue}) {
+		const versionMinorValue =
+			modeState.isPublishMode && store.selectedPublication?.versionStage
+				? store.selectedPublication.versionMinor
+					? 'true'
+					: 'false'
+				: currentValue === 'true' && !allowMinorVersion
+					? 'false'
+					: currentValue;
+
 		return {
 			label: t('publication.revisionSignificance.label'),
 			description: t('publication.revisionSignificance.description'),
@@ -175,8 +207,7 @@ export function useWorkflowVersionForm(
 			],
 			size: 'large',
 			isRequired: modeState.isPublishMode,
-			value:
-				currentValue === 'true' && !allowMinorVersion ? 'false' : currentValue,
+			value: versionMinorValue,
 			showWhen: modeState.isTextEditorMode
 				? ['sendToVersion', getUnassignedVersions()]
 				: undefined,
@@ -227,13 +258,15 @@ export function useWorkflowVersionForm(
 		showErrorFooter: false,
 		spacingVariant: 'fullWidth',
 	});
+
 	addPage('default', {
 		submitButton: {label: t('common.confirm')},
 		cancelButton: {label: t('common.cancel')},
 	});
+
 	addGroup('default');
 
-	onMounted(() => {
+	onMounted(async () => {
 		latestPublication = getLatestPublication(store.submission);
 		publications = store.submission?.publications || [];
 
@@ -266,6 +299,7 @@ export function useWorkflowVersionForm(
 			description: t('publication.versionStage.description'),
 			options: store.versionStageOptions,
 			size: 'large',
+			value: store.selectedPublication?.versionStage || null,
 			isRequired: modeState.isPublishMode,
 			showWhen: modeState.isTextEditorMode
 				? ['sendToVersion', getUnassignedVersions()]
@@ -282,10 +316,32 @@ export function useWorkflowVersionForm(
 			}),
 		);
 
+		// Issue assignment fields only visible when
+		// for OJS
+		// it's in publish mode
+		// have issues
+		if (modeState.isPublishMode && issueCount > 0 && isOJS()) {
+			const {initialize} = useWorkflowPublicationFormIssue(
+				form,
+				store.selectedPublication,
+			);
+			await initialize();
+		}
+
 		setValue(
 			'versionSource',
 			modeState.isCreateMode ? latestPublication?.id : null,
 		);
+
+		// at initial setup, will set the version information(major/minor) only when
+		// at the publish mode
+		// and already have a verison stage assigned
+		if (modeState.isPublishMode && store.selectedPublication?.versionStage) {
+			setValue(
+				'versionIsMinor',
+				store.selectedPublication?.versionMinor ? 'true' : 'false',
+			);
+		}
 	});
 
 	watch(

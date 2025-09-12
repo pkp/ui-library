@@ -37,7 +37,7 @@ export function getHeaderItems({
 		});
 	}
 
-	if (submission.status === pkp.const.STATUS_PUBLISHED) {
+	if (submission.status === pkp.const.submission.STATUS_PUBLISHED) {
 		actions.push({
 			component: 'WorkflowActionButton',
 			props: {
@@ -48,7 +48,7 @@ export function getHeaderItems({
 	}
 
 	if (
-		submission.status !== pkp.const.STATUS_PUBLISHED &&
+		submission.status !== pkp.const.submission.STATUS_PUBLISHED &&
 		(submission.stageId === pkp.const.WORKFLOW_STAGE_ID_EDITING ||
 			submission.stageId === pkp.const.WORKFLOW_STAGE_ID_PRODUCTION)
 	) {
@@ -716,7 +716,9 @@ export const PublicationConfig = {
 			selectedPublication,
 		}) => {
 			const items = [];
-			if (selectedPublication.status === pkp.const.STATUS_PUBLISHED) {
+			if (
+				selectedPublication.status === pkp.const.publication.STATUS_PUBLISHED
+			) {
 				items.push({
 					component: 'WorkflowPublicationEditDisabled',
 					props: {},
@@ -733,7 +735,7 @@ export const PublicationConfig = {
 			const items = [];
 
 			if (
-				submission.status !== pkp.const.STATUS_PUBLISHED &&
+				submission.status !== pkp.const.submission.STATUS_PUBLISHED &&
 				submission.publications.length < 2
 			) {
 				items.push({
@@ -768,7 +770,13 @@ export const PublicationConfig = {
 			if (!permissions.canPublish) {
 				return [];
 			}
-			if (selectedPublication.status === pkp.const.STATUS_QUEUED) {
+			if (
+				selectedPublication.status === pkp.const.publication.STATUS_QUEUED ||
+				selectedPublication.status ===
+					pkp.const.publication.STATUS_READY_TO_PUBLISH ||
+				selectedPublication.status ===
+					pkp.const.publication.STATUS_READY_TO_SCHEDULE
+			) {
 				if (
 					hasSubmissionPassedStage(
 						submission,
@@ -791,7 +799,7 @@ export const PublicationConfig = {
 						// 	{{ submission.status === getConstant('STATUS_PUBLISHED') ? publishLabel : schedulePublicationLabel }}
 
 						label:
-							submission.status === pkp.const.STATUS_PUBLISHED
+							submission.status === pkp.const.submission.STATUS_PUBLISHED
 								? t('publication.publish')
 								: t('editor.submission.schedulePublication'),
 						isSecondary: true,
@@ -799,7 +807,9 @@ export const PublicationConfig = {
 							WorkflowActions.WORKFLOW_ASSIGN_TO_ISSUE_AND_SCHEDULE_FOR_PUBLICATION,
 					},
 				});
-			} else if (selectedPublication.status === pkp.const.STATUS_SCHEDULED) {
+			} else if (
+				selectedPublication.status === pkp.const.publication.STATUS_SCHEDULED
+			) {
 				items.push({
 					component: 'WorkflowActionButton',
 					props: {
@@ -817,7 +827,9 @@ export const PublicationConfig = {
 						action: WorkflowActions.WORKFLOW_UNSCHEDULE_PUBLICATION,
 					},
 				});
-			} else if (selectedPublication.status === pkp.const.STATUS_PUBLISHED) {
+			} else if (
+				selectedPublication.status === pkp.const.publication.STATUS_PUBLISHED
+			) {
 				items.push({
 					component: 'WorkflowActionButton',
 					props: {

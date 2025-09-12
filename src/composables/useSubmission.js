@@ -225,7 +225,7 @@ export function useSubmission() {
 	 */
 	function getExtendedStage(submission) {
 		const activeStage = getActiveStage(submission);
-		if (submission.status === pkp.const.STATUS_DECLINED) {
+		if (submission.status === pkp.const.submission.STATUS_DECLINED) {
 			return ExtendedStages.DECLINED;
 		}
 		switch (activeStage.id) {
@@ -239,20 +239,20 @@ export function useSubmission() {
 				return ExtendedStages.EXTERNAL_REVIEW;
 			case pkp.const.WORKFLOW_STAGE_ID_EDITING:
 				switch (submission.status) {
-					case pkp.const.STATUS_SCHEDULED:
+					case pkp.const.submission.STATUS_SCHEDULED:
 						return ExtendedStages.PRODUCTION_SCHEDULED;
-					case pkp.const.STATUS_PUBLISHED:
+					case pkp.const.submission.STATUS_PUBLISHED:
 						return ExtendedStages.PRODUCTION_PUBLISHED;
 					default:
 						return ExtendedStages.EDITING;
 				}
 			case pkp.const.WORKFLOW_STAGE_ID_PRODUCTION:
 				switch (submission.status) {
-					case pkp.const.STATUS_QUEUED:
+					case pkp.const.submission.STATUS_QUEUED:
 						return ExtendedStages.PRODUCTION_QUEUED;
-					case pkp.const.STATUS_SCHEDULED:
+					case pkp.const.submission.STATUS_SCHEDULED:
 						return ExtendedStages.PRODUCTION_SCHEDULED;
-					case pkp.const.STATUS_PUBLISHED:
+					case pkp.const.submission.STATUS_PUBLISHED:
 						return ExtendedStages.PRODUCTION_PUBLISHED;
 				}
 		}
