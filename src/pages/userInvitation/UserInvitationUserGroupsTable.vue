@@ -58,7 +58,16 @@
 					</div>
 				</TableCell>
 			</TableRow>
-			<template v-if="!store.invitationPayload.disabled">
+			<template
+				v-if="
+					!store.invitationPayload.disabled &&
+					!(
+						store.invitationPayload.currentUserGroups.some((group) =>
+							reviewerUserGroupIds.includes(group.id),
+						) && store.isReviewerAccess
+					)
+				"
+			>
 				<TableRow
 					v-for="(userGroupToAdd, index) in allUserGroupsToAdd"
 					:key="index"
@@ -363,5 +372,14 @@ async function removeRole(userId, roleId) {
 		method: 'PUT',
 	});
 	await fetch();
+}
+
+if (
+	store.invitationPayload.currentUserGroups.some((group) =>
+		reviewerUserGroupIds.value.includes(group.id),
+	) &&
+	store.isReviewerAccess
+) {
+	store.updatePayload('userGroupsToAdd', [], false);
 }
 </script>
