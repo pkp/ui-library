@@ -71,7 +71,6 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 		return versionStates.value[publicationId];
 	}
 
-	// Clear API methods for version-specific operations
 
 	// Get comments for a specific publication
 	function getComments(publicationId) {
