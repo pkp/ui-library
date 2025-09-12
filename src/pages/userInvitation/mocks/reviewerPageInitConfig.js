@@ -39,7 +39,7 @@ export default {
 	pageTitleDescription:
 		'You are inviting a user to take a role in OJS along with appearing in the journal masthead',
 	primaryLocale: 'en',
-	invitationType: 'reviewerAccessInvite',
+	invitationType: 'reviewerAccess',
 	invitationMode: 'create',
 	invitationPayload: {
 		userId: null,
