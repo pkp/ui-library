@@ -222,10 +222,12 @@ export const WorkflowConfig = {
 				},
 			});
 
-			items.push({
-				component: 'DiscussionManager',
-				props: {submission, submissionStageId: selectedStageId},
-			});
+			if (pkp.context.featureFlags?.enableNewDiscussions) {
+				items.push({
+					component: 'DiscussionManager',
+					props: {submission, submissionStageId: selectedStageId},
+				});
+			}
 
 			return items;
 		},

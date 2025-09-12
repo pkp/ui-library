@@ -178,10 +178,12 @@ export const WorkflowConfig = {
 				props: {submissionId: submission.id, stageId: selectedStageId},
 			});
 
-			items.push({
-				component: 'DiscussionManager',
-				props: {submission, submissionStageId: selectedStageId},
-			});
+			if (pkp.context.featureFlags?.enableNewDiscussions) {
+				items.push({
+					component: 'DiscussionManager',
+					props: {submission, submissionStageId: selectedStageId},
+				});
+			}
 
 			return items;
 		},
@@ -359,10 +361,12 @@ export const WorkflowConfig = {
 				},
 			});
 
-			items.push({
-				component: 'DiscussionManager',
-				props: {submission, submissionStageId: selectedStageId},
-			});
+			if (pkp.context.featureFlags?.enableNewDiscussions) {
+				items.push({
+					component: 'DiscussionManager',
+					props: {submission, submissionStageId: selectedStageId},
+				});
+			}
 
 			return items;
 		},
@@ -586,10 +590,12 @@ export const WorkflowConfig = {
 				},
 			});
 
-			items.push({
-				component: 'DiscussionManager',
-				props: {submission, submissionStageId: selectedStageId},
-			});
+			if (pkp.context.featureFlags?.enableNewDiscussions) {
+				items.push({
+					component: 'DiscussionManager',
+					props: {submission, submissionStageId: selectedStageId},
+				});
+			}
 
 			items.push({
 				component: 'FileManager',
@@ -677,10 +683,12 @@ export const WorkflowConfig = {
 				},
 			});
 
-			items.push({
-				component: 'DiscussionManager',
-				props: {submission, submissionStageId: selectedStageId},
-			});
+			if (pkp.context.featureFlags?.enableNewDiscussions) {
+				items.push({
+					component: 'DiscussionManager',
+					props: {submission, submissionStageId: selectedStageId},
+				});
+			}
 
 			return items;
 		},
