@@ -7,7 +7,6 @@ import {Actions as DecisionActions} from '../useWorkflowDecisions';
 import {addItemIf} from './workflowConfigHelpers';
 const {
 	hasSubmissionPassedStage,
-	getActiveStage,
 	getStageById,
 	isDecisionAvailable,
 	hasNotSubmissionStartedStage,
@@ -214,6 +213,16 @@ export const WorkflowConfig = {
 		getActionItems: ({submission, selectedStageId, selectedReviewRound}) => {
 			let items = [];
 
+			const publicationId = getLatestPublication(submission)?.id;
+			items.push({
+				component: 'WorkflowActionButton',
+				props: {
+					label: t('editor.submission.schedulePublication'),
+					isPrimary: true,
+					action: 'navigateToMenu',
+					actionArgs: `publication_${publicationId}_titleAbstract`,
+				},
+			});
 			addItemIf(
 				items,
 				{
@@ -672,20 +681,15 @@ export const WorkflowConfig = {
 			const items = [];
 			const publicationId = getLatestPublication(submission)?.id;
 
-			addItemIf(
-				items,
-				{
-					component: 'WorkflowActionButton',
-					props: {
-						label: t('editor.submission.schedulePublication'),
-						isPrimary: true,
-						action: 'navigateToMenu',
-						actionArgs: `publication_${publicationId}_titleAbstract`,
-					},
+			items.push({
+				component: 'WorkflowActionButton',
+				props: {
+					label: t('editor.submission.schedulePublication'),
+					isPrimary: true,
+					action: 'navigateToMenu',
+					actionArgs: `publication_${publicationId}_titleAbstract`,
 				},
-				getActiveStage(submission).id ===
-					pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-			);
+			});
 
 			addItemIf(
 				items,
