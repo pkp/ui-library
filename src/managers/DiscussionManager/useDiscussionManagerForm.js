@@ -100,16 +100,22 @@ export function useDiscussionManagerForm(
 			};
 		});
 
-		const siteAdmin = currentUser.isCurrentUserSiteAdmin()
-			? [
-					{
-						fullName: currentUser.getCurrentUserFullName(),
-						userName: currentUser.getCurrentUserName(),
-						id: currentUser.getCurrentUserId(),
-						roleName: t('submission.status.unassigned'),
-					},
-				]
-			: [];
+		const isParticipant = participantManagerStore.participantsList.some(
+			(p) => p.id === currentUser.getCurrentUserId(),
+		);
+		// If the current user is a site admin but not already in the participants list, add them as "Unassigned"
+		// This ensures site admins can always assign tasks to themselves
+		const siteAdmin =
+			currentUser.isCurrentUserSiteAdmin() && !isParticipant
+				? [
+						{
+							fullName: currentUser.getCurrentUserFullName(),
+							userName: currentUser.getCurrentUserName(),
+							id: currentUser.getCurrentUserId(),
+							roleName: t('submission.status.unassigned'),
+						},
+					]
+				: [];
 
 		return participantManagerStore.participantsList
 			.concat(siteAdmin)
@@ -495,6 +501,7 @@ export function useDiscussionManagerForm(
 				templates: [],
 				onSelectTemplate,
 				inDisplayMode,
+				isTask: workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
 			},
 		},
 	});
@@ -530,9 +537,7 @@ export function useDiscussionManagerForm(
 		label: t('discussion.form.taskInfoLabel'),
 		value: isTask.value || autoAddTaskDetails,
 		hideOnDisplay: true,
-		disabled:
-			workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION &&
-			workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED,
+		disabled: workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
 		onChange: (val) => {
 			isTask.value = val;
 			addTaskInfoDueDate({override: true});
