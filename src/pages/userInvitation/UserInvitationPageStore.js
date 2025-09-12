@@ -8,7 +8,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 	'userInvitationPage',
 	(pageInitConfig) => {
 		const invitationUserRoleAssignment = 'userRoleAssignment';
-		const invitationReviewerAccessInvite = 'reviewerAccessInvite';
+		const invitationReviewerAccessInvite = 'reviewerAccess';
 		const {openDialog} = useModal();
 		const {t} = useLocalize();
 		/**

@@ -3,7 +3,7 @@
 		:is-required="false"
 		component="field-options"
 		name="reviewTypes"
-		:label="t('reviewer.reviewTypes')"
+		:label="t('reviewerInvitation.reviewTypes')"
 		type="radio"
 		:options="options"
 		:all-errors="sectionErrors"
@@ -15,7 +15,7 @@
 	<div class="p-8">
 		<FieldText
 			name="responseDueDate"
-			:label="t('reviewer.responseDueDate')"
+			:label="t('reviewerInvitation.responseDueDate')"
 			input-type="date"
 			:is-required="true"
 			value=""
@@ -27,7 +27,7 @@
 		/>
 		<FieldText
 			name="reviewDueDate"
-			:label="t('reviewer.reviewDueDate')"
+			:label="t('reviewerInvitation.reviewDueDate')"
 			input-type="date"
 			:is-required="true"
 			value=""
