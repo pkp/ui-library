@@ -71,7 +71,6 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 		return versionStates.value[publicationId];
 	}
 
-
 	// Get comments for a specific publication
 	function getComments(publicationId) {
 		return getVersionState(publicationId).comments;
@@ -95,7 +94,7 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 		const version = publication ? publication.version : publicationId;
 
 		return t('userComment.versionWithCount', {
-			version: version,
+			versionLabel: version,
 			versionCommentsCount: commentsInThisVersion,
 		});
 	}
