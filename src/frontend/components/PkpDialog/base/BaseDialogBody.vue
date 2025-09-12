@@ -3,13 +3,9 @@
 		<component
 			:is="dialogProps.bodyComponent"
 			v-if="dialogProps.bodyComponent"
-			v-bind="{...dialogProps.bodyProps, message, onClose}"
+			v-bind="dialogProps.bodyProps"
 		/>
-		<div
-			v-else
-			v-strip-unsafe-html="dialogProps.message"
-			class="pkpDialogBody__message"
-		/>
+		<div v-else v-strip-unsafe-html="dialogProps.message" />
 	</DialogDescription>
 </template>
 <script setup>

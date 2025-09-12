@@ -14,6 +14,8 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 	const loginUrl = ref('');
 	const commentsCountPerPublication = ref({});
 	const allCommentsCount = ref(0);
+	const commentText = ref('');
+	const reportText = ref('');
 
 	// Version-specific state stored in a Map
 	const versionStates = ref({});
@@ -64,8 +66,6 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 				showMoreCommentsCount: 0,
 				currentPage: 0,
 				pageCount: 0,
-				commentText: '',
-				reportText: '',
 			});
 		}
 		return versionStates.value[publicationId];
@@ -77,14 +77,9 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 		return getVersionState(publicationId).comments;
 	}
 
-	// Get comment text for a specific publication
-	function getCommentText(publicationId) {
-		return getVersionState(publicationId).commentText;
-	}
-
-	// Update comment text for a specific publication
-	function updateCommentText(publicationId, value) {
-		getVersionState(publicationId).commentText = value;
+	// Update comment text
+	function updateCommentText(value) {
+		commentText.value = value;
 	}
 
 	// Get version label for a specific publication
@@ -149,34 +144,29 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 
 	// Add a comment for a specific publication
 	async function addComment(publicationId) {
-		const versionState = getVersionState(publicationId);
-
 		if (
 			!isLatestPublication(publicationId) ||
 			!getCurrentUser() ||
-			!versionState.commentText.trim()
+			!commentText.value.trim()
 		) {
 			return;
 		}
 
-		const {openDialogNetworkError} = usePkpModal();
 		const {apiUrl} = useUrl('comments');
 
 		const {fetch: submitComment, isSuccess} = usePkpFetch(apiUrl, {
 			method: 'POST',
 			body: {
 				publicationId: publicationId,
-				commentText: versionState.commentText,
+				commentText: commentText.value,
 			},
 		});
 
 		await submitComment();
 
 		if (isSuccess.value) {
-			versionState.commentText = '';
+			commentText.value = '';
 			await loadComments(publicationId, true);
-		} else {
-			openDialogNetworkError();
 		}
 	}
 
@@ -255,18 +245,17 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 	function commentReport(publicationId, comment) {
 		const {t} = usePkpLocalize();
 		const {openDialog} = usePkpModal();
-		const versionState = getVersionState(publicationId);
-		versionState.reportText = '';
+		reportText.value = '';
 
 		openDialog({
 			title: t('userComment.reportComment'),
 			comment,
-			bodyComponent: pkp.registry.getComponent('PkpCommentReportDialog'),
+			bodyComponent: 'PkpCommentReportDialog',
 			bodyProps: {
 				comment,
-				reportText: versionState.reportText,
+				reportText: reportText,
 				'onUpdate:reportText': (value) => {
-					versionState.reportText = value;
+					reportText.value = value;
 				},
 			},
 			actions: [
@@ -274,13 +263,13 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 					label: t('form.submit'),
 					isPrimary: true,
 					callback: async (close) => {
-						if (versionState.reportText.trim() === '') {
+						if (reportText.value.trim() === '') {
 							return;
 						}
 						await performCommentReport(
 							publicationId,
 							comment,
-							versionState.reportText,
+							reportText.value,
 						);
 						close();
 					},
@@ -334,6 +323,9 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 		loginUrl,
 		commentsCountPerPublication,
 		allCommentsCount,
+		commentText,
+		reportText,
+		updateCommentText,
 
 		// Global actions
 		initialize,
@@ -342,14 +334,12 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 
 		// Version-specific getters
 		getComments,
-		getCommentText,
 		getVersionLabel,
 		getPublication,
 		isLatestPublication,
 		hasMoreComments,
 
 		// Version-specific actions
-		updateCommentText,
 		loadComments,
 		addComment,
 		getCommentActions,

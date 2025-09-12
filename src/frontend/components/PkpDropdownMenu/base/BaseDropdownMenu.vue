@@ -11,28 +11,7 @@ import {provide} from 'vue';
 const props = defineProps({
 	items: {
 		type: Array,
-		default: () => [
-			{
-				label: 'Edit',
-				name: 'edit',
-				disabled: false,
-			},
-			{
-				label: 'Notify',
-				name: 'notify',
-				disabled: false,
-			},
-			{
-				label: 'Login As',
-				name: 'login_as',
-				disabled: false,
-			},
-			{
-				label: 'Remove',
-				name: 'remove',
-				disabled: false,
-			},
-		],
+		default: () => [],
 	},
 });
 

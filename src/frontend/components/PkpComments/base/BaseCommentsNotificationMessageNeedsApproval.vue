@@ -5,7 +5,7 @@
 			messageProps.message.userId === commentsStore.getCurrentUser().id &&
 			!messageProps.message.isApproved
 		"
-		class="BaseCommentsNotificationMessageApproved"
+		class="BaseCommentsNotificationMessageNeedsApproval"
 	>
 		<PkpIcon icon="Help" class="pkpUserCommentsList__item--helpIcon"></PkpIcon>
 		{{ t('userComment.awaitingApprovalNotice') }}

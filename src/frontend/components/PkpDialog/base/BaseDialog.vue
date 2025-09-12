@@ -16,7 +16,7 @@ const props = defineProps({
 	/** Message to be displayed, for more complex messages use bodyComponent&bodyProps */
 	message: {type: String, default: null},
 	/** For more complex messages Vue.js component can be passed */
-	bodyComponent: {type: Object, default: null},
+	bodyComponent: {type: [Object, String], default: null},
 	/** Props to be passed to bodyComponent */
 	bodyProps: {type: Object, default: null},
 	/** Array of button props to display actions, following props are passed to button component: label, element, href, isPrimary, isWarnable, callback */
