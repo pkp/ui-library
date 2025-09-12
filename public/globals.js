@@ -18,6 +18,7 @@ window.pkp = {
 		roles: [1, 16, 65536, 1048576],
 		username: 'dbarnes',
 		preferredName: 'Daniel Barnes',
+		fullName: 'Daniel Barnes',
 		initials: 'DB',
 	},
 
@@ -908,6 +909,7 @@ window.pkp = {
 		'submission.stage.published': 'Published',
 		'submission.stageParticipants.notify': 'Notify',
 		'submission.status.scheduled': 'Scheduled',
+		'submission.status.unassigned': 'Unassigned',
 		'submission.submit.newSubmissionSingle': 'New Submission',
 		'submission.submit.submissionFiles': 'Submission Files',
 		'submission.submit.uploadSubmissionFile': 'Upload Submission File',
