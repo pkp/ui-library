@@ -92,6 +92,17 @@ const mswHandlers = [
 	}),
 ];
 
+DiscussionsDataMock.forEach((discussion) => {
+	mswHandlers.push(
+		http.get(
+			`https://mock/index.php/publicknowledge/api/v1/submissions/19/tasks/${discussion.id}`,
+			() => {
+				return HttpResponse.json(discussion);
+			},
+		),
+	);
+});
+
 export const Default = {
 	render: renderComponent,
 	args: baseArgs,
