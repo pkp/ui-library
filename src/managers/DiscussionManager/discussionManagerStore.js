@@ -32,8 +32,7 @@ export const useDiscussionManagerStore = defineComponentStore(
 		});
 
 		watch(relativeUrl, () => {
-			discussionsData.value = null;
-			fetchDiscussions();
+			fetchDiscussions({clearData: true});
 		});
 
 		fetchDiscussions();

@@ -17,7 +17,6 @@ export function useDiscussionManagerStatusUpdater(submissionId) {
 			fetch,
 			data: updateTaskStatusData,
 			isSuccess,
-			validationError,
 		} = useFetch(updateTaskStatusUrl, {
 			method: 'PUT',
 		});
@@ -26,7 +25,6 @@ export function useDiscussionManagerStatusUpdater(submissionId) {
 
 		return {
 			data: updateTaskStatusData.value,
-			validationError: validationError.value,
 			isSuccess: isSuccess.value,
 		};
 	}
