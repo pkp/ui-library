@@ -80,9 +80,5 @@ const Components = {
 	TaskTemplateManagerCellActions,
 };
 
-const props = defineProps({
-	templates: {type: Array, required: true},
-});
-
-const taskTemplateManagerStore = useTaskTemplateManagerStore(props);
+const taskTemplateManagerStore = useTaskTemplateManagerStore();
 </script>
