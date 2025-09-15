@@ -13,7 +13,7 @@ import {useTaskTemplateActions} from './useTaskTemplateManagerActions';
 
 export const useTaskTemplateManagerStore = defineComponentStore(
 	'taskTemplateManager',
-	(props) => {
+	() => {
 		const extender = useExtender();
 
 		const relativeUrl = computed(() => {
@@ -22,11 +22,11 @@ export const useTaskTemplateManagerStore = defineComponentStore(
 
 		const {apiUrl: templatesApiUrl} = useUrl(relativeUrl);
 
-		const {data: templates, fetch: fetchTemplates} = useFetch(templatesApiUrl);
+		const {data: templatesList, fetch: fetchTemplates} =
+			useFetch(templatesApiUrl);
 
 		watch(relativeUrl, () => {
-			templates.value = null;
-			fetchTemplates();
+			fetchTemplates({clearData: true});
 		});
 
 		fetchTemplates();
@@ -37,16 +37,11 @@ export const useTaskTemplateManagerStore = defineComponentStore(
 			triggerDataChange();
 		}
 
-		const templatesList = computed(() => {
-			if (!templates.value) {
-				return [];
-			}
-
-			return templates.value;
-		});
-
 		function getTemplatesByStage(stageId) {
-			return props.templates?.filter((data) => data.stageId === stageId) || [];
+			return computed(
+				() =>
+					templatesList.value?.filter((data) => data.stageId === stageId) || [],
+			);
 		}
 
 		const stagedTemplates = [
@@ -76,7 +71,6 @@ export const useTaskTemplateManagerStore = defineComponentStore(
 		function getActionArgs() {
 			return {
 				config: discussionConfig.value,
-				templates,
 			};
 		}
 
@@ -131,7 +125,6 @@ export const useTaskTemplateManagerStore = defineComponentStore(
 			templateDelete,
 
 			extender,
-			props,
 		};
 	},
 );
