@@ -317,6 +317,24 @@ export function useDiscussionManagerForm(
 		);
 	}
 
+	function addTaskInfoAssignee({override = false} = {}) {
+		addFieldOptions(
+			'taskInfoAssignee',
+			'radio',
+			{
+				groupId: 'taskInformation',
+				label: t('discussion.form.taskInfoAssigneesLabel'),
+				description: t('discussion.form.taskInfoAssigneesDescription'),
+				name: 'taskInfoAssignee',
+				showWhen: 'taskInfoAdd',
+				options: getAssigneeOptions(),
+				value: getSelectedAssignee(workItem),
+				isRequired: isTask.value,
+			},
+			{override},
+		);
+	}
+
 	function addDiscussionGroup(workItemData, {override = false} = {}) {
 		addGroup(
 			'discussion',
@@ -541,20 +559,13 @@ export function useDiscussionManagerForm(
 		onChange: (val) => {
 			isTask.value = val;
 			addTaskInfoDueDate({override: true});
+			addTaskInfoAssignee({override: true});
 		},
 	});
 
 	addTaskInfoDueDate();
 
-	addFieldOptions('taskInfoAssignee', 'radio', {
-		groupId: 'taskInformation',
-		label: t('discussion.form.taskInfoAssigneesLabel'),
-		description: t('discussion.form.taskInfoAssigneesDescription'),
-		name: 'taskInfoAssignee',
-		showWhen: 'taskInfoAdd',
-		options: getAssigneeOptions(),
-		value: getSelectedAssignee(workItem),
-	});
+	addTaskInfoAssignee();
 
 	// this select is only enabled when adding a new entry
 	addFieldSelect('taskInfoShouldStart', {
