@@ -823,6 +823,10 @@ window.pkp = {
 		'reviewerManager.reviewerStatus': 'Reviewer status',
 		'search.searchResults': 'Search Results',
 		semicolon: '{$label}:',
+		'stage.submission': 'Submission Stage',
+		'stage.review': 'Review Stage',
+		'stage.copyediting': 'Copyediting Stage',
+		'stage.production': 'Production Stage',
 		'stageParticipants.notify.message': 'Message',
 		'stats.context.downloadReport.description':
 			'Download a CSV/Excel spreadsheet with usage statistics for this journal matching the following parameters.',
@@ -925,7 +929,13 @@ window.pkp = {
 		'taskTemplate.apply': 'Apply Template',
 		'taskTemplate.applyConfirmation':
 			"Applying this template will replace data in related fields on the form. These changes won't be saved unless you choose to save. Continue?",
-
+		'taskTemplates.title': 'Tasks and Discussions Templates',
+		'taskTemplates.description':
+			'Use this space to create templates for tasks and discussions. These templates automatically fill in the task name, due date, description, and roles, giving you a head start.',
+		'taskTemplates.templateName': 'Task and discussion template name',
+		'taskTemplates.templateAutoAdd':
+			'Automatically add this task and discussion when a submission reaches a specific stage',
+		'taskTemplates.add': 'Add template',
 		'task.closeThisTask': 'Close this Task',
 		'task.startedBy': 'Task started by',
 		'task.startThisTask': 'Start this task',
