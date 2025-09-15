@@ -90,9 +90,18 @@ export const useTaskTemplateManagerStore = defineComponentStore(
 			);
 		}
 
-		function templateDelete(taskTemplate) {
+		function templateDelete({taskTemplate}) {
 			taskTemplateActions.templateDelete(
 				{taskTemplate},
+				triggerDataChangeCallback,
+			);
+		}
+
+		function templateUpdateAutoAdd({taskTemplate}) {
+			taskTemplateActions.templateUpdateAutoAdd(
+				{
+					taskTemplate,
+				},
 				triggerDataChangeCallback,
 			);
 		}
@@ -131,6 +140,7 @@ export const useTaskTemplateManagerStore = defineComponentStore(
 			templateAdd,
 			templateEdit,
 			templateDelete,
+			templateUpdateAutoAdd,
 
 			extender,
 		};
