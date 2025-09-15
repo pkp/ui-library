@@ -943,6 +943,11 @@ window.pkp = {
 			'Automatically add this task and/or discussion when a submission reaches the stage',
 		'taskTemplates.add': 'Add template',
 		'taskTemplates.addInStage': 'Add Task and Discussion Template in {$stage}',
+		'taskTemplates.confirmAutoAdd': 'Confirm Automatic Addition',
+		'taskTemplates.confirmAutoAddEnable':
+			'Are you sure you want this task/discussion template to be automatically added when a submission reaches the {$stage}?',
+		'taskTemplates.confirmAutoAddDisable':
+			'Are you sure you want to stop automatically adding this task/discussion template when a submission reaches the {$stage}?',
 		'taskTemplates.edit': 'Edit Task and Discussion Template',
 		'taskTemplates.dueDateFromCreationDate':
 			'{$dueDate} from the creation date',
