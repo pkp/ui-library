@@ -34,7 +34,7 @@
 									<PkpButton
 										:is-link="true"
 										:aria-labelledby="groupId"
-										@click="taskTemplateManagerStore.templateAdd(stage)"
+										@click="taskTemplateManagerStore.templateAdd({stage})"
 									>
 										{{ t('taskTemplates.add') }}
 									</PkpButton>
@@ -50,7 +50,7 @@
 								:is="Components[column.component] || column.component"
 								v-for="(column, i) in taskTemplateManagerStore.columns"
 								:key="i"
-								:template="template"
+								:task-template="template"
 							></component>
 						</TableRow>
 					</TableRowGroup>
