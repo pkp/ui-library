@@ -233,6 +233,7 @@ window.pkp = {
 		'common.loading': 'Loading',
 		'common.me': 'Me',
 		'common.moreActions': 'More Actions',
+		'common.months': 'months',
 		'common.name': 'Name',
 		'common.navigation.user': 'User Navigation',
 		'common.new': 'New',
@@ -246,6 +247,8 @@ window.pkp = {
 		'common.orderDown': 'Decrease position of {$itemTitle}',
 		'common.orderUp': 'Increase position of {$itemTitle}',
 		'common.overdue': 'Overdue',
+		'common.oneWeek': '1 week',
+		'common.oneMonth': '1 month',
 		'common.pageNumber': 'Page {$pageNumber}',
 		'common.pagination.goToPage': 'Go to {$page}',
 		'common.pagination.label': 'View additional pages',
@@ -290,6 +293,7 @@ window.pkp = {
 		'common.yes': 'Yes',
 		'common.yesContinue': 'Yes, Continue',
 		'common.yetToBegin': 'Yet to begin',
+		'common.weeks': 'weeks',
 		'context.context': 'Journal',
 		'contributor.listPanel.preview': 'Preview',
 		'contributor.listPanel.preview.abbreviated': 'Abbreviated',
@@ -1098,7 +1102,13 @@ window.pkp = {
 		'taskTemplates.templateName': 'Task and discussion template name',
 		'taskTemplates.templateAutoAdd':
 			'Automatically add this task and discussion when a submission reaches a specific stage',
+		'taskTemplates.templateAutoAddInStage':
+			'Automatically add this task and/or discussion when a submission reaches the stage',
 		'taskTemplates.add': 'Add template',
+		'taskTemplates.addInStage': 'Add Task and Discussion Template in {$stage}',
+		'taskTemplates.edit': 'Edit Task and Discussion Template',
+		'taskTemplates.dueDateFromCreationDate':
+			'{$dueDate} from the creation date',
 		'user.affiliation': 'Affiliation',
 		'user.affiliations': 'Affiliations',
 		'user.affiliations.deleteModal.message':
