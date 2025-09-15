@@ -65,9 +65,14 @@ export function useTaskTemplateActions() {
 		});
 	}
 
+	function templateUpdateAutoAdd({taskTemplate}, finishedCallback) {
+		// TODO: update status
+	}
+
 	return {
 		templateAdd,
 		templateEdit,
 		templateDelete,
+		templateUpdateAutoAdd,
 	};
 }

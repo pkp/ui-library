@@ -50,6 +50,7 @@
 								:is="Components[column.component] || column.component"
 								v-for="(column, i) in taskTemplateManagerStore.columns"
 								:key="i"
+								:stage="stage"
 								:task-template="template"
 							></component>
 						</TableRow>
