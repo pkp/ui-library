@@ -74,28 +74,36 @@ export const useTaskTemplateManagerStore = defineComponentStore(
 			};
 		}
 
-		function templateAdd(stageId) {
+		function templateAdd({stage}) {
 			taskTemplateActions.templateAdd(
 				{
-					stageId,
+					stage,
 				},
 				triggerDataChangeCallback,
 			);
 		}
-		function templateEdit(template) {
-			taskTemplateActions.templateEdit({template}, triggerDataChangeCallback);
+
+		function templateEdit({taskTemplate}) {
+			taskTemplateActions.templateEdit(
+				{taskTemplate},
+				triggerDataChangeCallback,
+			);
 		}
-		function templateDelete(template) {
-			taskTemplateActions.templateDelete({template}, triggerDataChangeCallback);
+
+		function templateDelete(taskTemplate) {
+			taskTemplateActions.templateDelete(
+				{taskTemplate},
+				triggerDataChangeCallback,
+			);
 		}
 
 		const discussionConfig = computed(() =>
 			taskTemplateManagerConfig.getManagerConfig(),
 		);
 
-		function getItemActions({template}) {
+		function getItemActions({taskTemplate}) {
 			return taskTemplateManagerConfig.getItemActions({
-				template,
+				taskTemplate,
 				...getActionArgs(),
 			});
 		}
