@@ -37,10 +37,8 @@ const CommonDefaults = {
 
     `,
 	type: 'Task',
-	taskDetails: {
-		participantRoles: [16, 1],
-		dueDate: 'P1W',
-	},
+	participantRoles: [16, 1],
+	dueDate: 'P1W',
 	stageId: 'Submission',
 	autoAdd: true,
 };
@@ -75,6 +73,7 @@ export const TemplatesDataMock = [
         `,
 		type: 'Discussion',
 		stageId: 'Submission',
+		participantRoles: [65536],
 	},
 	{
 		id: 3,
@@ -98,9 +97,7 @@ export const TemplatesDataMock = [
             Ensure all documents are consistent and up to date. Reach out to the ethics coordinator if clarification is needed.</p>
         `,
 		type: 'Task',
-		taskDetails: {
-			participantRoles: [65536],
-			dueDate: 'P3M',
-		},
+		participantRoles: [65536],
+		dueDate: 'P3M',
 	},
 ];
