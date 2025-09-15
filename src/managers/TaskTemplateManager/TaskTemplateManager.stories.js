@@ -13,7 +13,12 @@ export default {
 const baseArgs = {
 	templates: [
 		...TemplatesDataMock,
-		getTemplate({name: 'Ethical Approval', stageId: 'Submission'}),
+		getTemplate({
+			name: 'Ethical Approval',
+			stageId: 'Submission',
+			participantRoles: [65536],
+			dueDate: 'P3M',
+		}),
 		getTemplate({
 			name: 'Adherence to Policy and Guidelines',
 			stageId: 'Submission',
