@@ -41,6 +41,8 @@ const CommonDefaults = {
 		participantRoles: [16, 1],
 		dueDate: 'P1W',
 	},
+	stageId: 'Submission',
+	autoAdd: true,
 };
 
 export function getTemplate(overrides = {}) {
@@ -72,6 +74,7 @@ export const TemplatesDataMock = [
             Please share your thoughts by July 15. Any concerns about authorship should be raised before we finalize the submission.</p>
         `,
 		type: 'Discussion',
+		stageId: 'Submission',
 	},
 	{
 		id: 3,
