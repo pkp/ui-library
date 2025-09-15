@@ -1,5 +1,5 @@
 <template>
-	<TableCellSelect :checked="!!template?.autoAdd" :labelled-by="labelIds" />
+	<TableCellSelect :checked="!!taskTemplate?.autoAdd" :labelled-by="labelIds" />
 </template>
 
 <script setup>
@@ -8,6 +8,6 @@ import TableCellSelect from '@/components/Table/TableCellSelect.vue';
 
 const tableContext = inject('tableContext');
 
-const props = defineProps({template: {type: Object, required: true}});
-const labelIds = `template_name_${props.template.id} ${tableContext.tableId}_${props.index}`;
+const props = defineProps({taskTemplate: {type: Object, required: true}});
+const labelIds = `template_name_${props.taskTemplate.id} ${tableContext.tableId}_${props.index}`;
 </script>
