@@ -230,6 +230,7 @@ window.pkp = {
 		'common.loading': 'Loading',
 		'common.me': 'Me',
 		'common.moreActions': 'More Actions',
+		'common.months': 'months',
 		'common.name': 'Name',
 		'common.navigation.user': 'User Navigation',
 		'common.new': 'New',
@@ -243,6 +244,8 @@ window.pkp = {
 		'common.orderDown': 'Decrease position of {$itemTitle}',
 		'common.orderUp': 'Increase position of {$itemTitle}',
 		'common.overdue': 'Overdue',
+		'common.oneWeek': '1 week',
+		'common.oneMonth': '1 month',
 		'common.pageNumber': 'Page {$pageNumber}',
 		'common.pagination.goToPage': 'Go to {$page}',
 		'common.pagination.label': 'View additional pages',
@@ -287,6 +290,7 @@ window.pkp = {
 		'common.inProgress': 'In Progress',
 		'common.closed': 'Closed',
 		'common.warning': 'Warning',
+		'common.weeks': 'weeks',
 		'common.confirmUnsavedChanges':
 			'You have unsaved changes. Are you sure you want to cancel?',
 		'context.context': 'Journal',
@@ -415,7 +419,7 @@ window.pkp = {
 		'discussion.form.detailsDescription':
 			'Use this space to share essential information.',
 		'discussion.form.detailsNameDescription':
-			'Please enter the name for this task and discussion.',
+			'Please enter the name for the task and discussion.',
 		'discussion.form.detailsParticipantsDescription':
 			'You have the option to assign participants or allocate it solely to yourself.',
 		'discussion.form.discussionDescription':
@@ -935,7 +939,13 @@ window.pkp = {
 		'taskTemplates.templateName': 'Task and discussion template name',
 		'taskTemplates.templateAutoAdd':
 			'Automatically add this task and discussion when a submission reaches a specific stage',
+		'taskTemplates.templateAutoAddInStage':
+			'Automatically add this task and/or discussion when a submission reaches the stage',
 		'taskTemplates.add': 'Add template',
+		'taskTemplates.addInStage': 'Add Task and Discussion Template in {$stage}',
+		'taskTemplates.edit': 'Edit Task and Discussion Template',
+		'taskTemplates.dueDateFromCreationDate':
+			'{$dueDate} from the creation date',
 		'task.closeThisTask': 'Close this Task',
 		'task.startedBy': 'Task started by',
 		'task.startThisTask': 'Start this task',
