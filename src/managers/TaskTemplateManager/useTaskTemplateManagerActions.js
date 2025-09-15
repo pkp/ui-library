@@ -1,6 +1,8 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
 
+import TaskTemplateManagerForm from './TaskTemplateManagerForm.vue';
+
 export const Actions = {
 	TASK_TEMPLATES_LIST: 'templateList',
 	TASK_TEMPLATES_ADD: 'templateAdd',
@@ -11,59 +13,35 @@ export const Actions = {
 export function useTaskTemplateActions() {
 	const {t} = useLocalize();
 
-	function templateAdd(
-		{workItem, submission, submissionStageId},
-		finishedCallback,
-	) {
-		const {openDialog} = useModal();
-		openDialog({
-			actions: [
-				{
-					label: t('common.ok'),
-					isWarnable: true,
-					callback: (close) => {
-						close();
-					},
-				},
-				{
-					label: t('common.cancel'),
-					callback: (close) => {
-						close();
-					},
-				},
-			],
-			title: 'Add',
-			message: 'Placeholder',
+	function templateAdd({stage}, finishedCallback) {
+		const {openSideModal, closeSideModal} = useModal();
+
+		function onCloseFn() {
+			closeSideModal(TaskTemplateManagerForm);
+		}
+
+		openSideModal(TaskTemplateManagerForm, {
+			stage,
+			onCloseFn,
+			onFinishFn: finishedCallback,
 		});
 	}
 
-	function templateEdit(
-		{workItem, submission, submissionStageId},
-		finishedCallback,
-	) {
-		const {openDialog} = useModal();
-		openDialog({
-			actions: [
-				{
-					label: t('common.ok'),
-					isWarnable: true,
-					callback: (close) => {
-						close();
-					},
-				},
-				{
-					label: t('common.cancel'),
-					callback: (close) => {
-						close();
-					},
-				},
-			],
-			title: 'Edit',
-			message: 'Placeholder',
+	function templateEdit({taskTemplate}, finishedCallback) {
+		const {openSideModal, closeSideModal} = useModal();
+
+		function onCloseFn() {
+			closeSideModal(TaskTemplateManagerForm);
+		}
+
+		openSideModal(TaskTemplateManagerForm, {
+			taskTemplate,
+			onCloseFn,
+			onFinishFn: finishedCallback,
 		});
 	}
 
-	function templateDelete({workItem, submission}, finishedCallback) {
+	function templateDelete({taskTemplate}, finishedCallback) {
 		const {openDialog} = useModal();
 		openDialog({
 			actions: [
