@@ -1,16 +1,16 @@
 <template>
 	<TableCellSelect
-		:disabled="props.workItem?.closed && props.workItem?.type === 'Task'"
-		:checked="!!props.workItem?.closed"
+		:disabled="!!props.workItem?.dateClosed && isTask"
+		:checked="!!props.workItem?.dateClosed"
 		:labelled-by="labelIds"
-		:confirm-title="modalProps[statusUpdate].title"
-		:confirm-message="modalProps[statusUpdate].message"
-		@change="discussionManagerStore.discussionSetClosed({workItem})"
+		:confirm-title="confirmProps.title"
+		:confirm-message="confirmProps.message"
+		@change="discussionManagerStore.discussionSetClosed({workItem, status})"
 	/>
 </template>
 
 <script setup>
-import {inject} from 'vue';
+import {inject, computed} from 'vue';
 import {t} from '@/utils/i18n';
 import TableCellSelect from '@/components/Table/TableCellSelect.vue';
 
@@ -24,30 +24,37 @@ const props = defineProps({
 	index: {type: Number, required: true},
 });
 
-const statusUpdate = props.workItem?.closed ? 'reopen' : 'close';
+const isTask = computed(
+	() => props.workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
+);
 
-const modalProps = {
-	reopen: {
-		title:
-			props.workItem?.type === 'Task'
+const status = computed(() =>
+	props.workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED
+		? 'open'
+		: 'close',
+);
+
+const confirmProps = computed(() => {
+	if (status.value === 'open') {
+		return {
+			title: isTask.value
 				? t('task.reopenThisTask')
 				: t('discussion.reopenThisDiscussion'),
-		message:
-			props.workItem?.type === 'Task'
+			message: isTask.value
 				? t('task.confirmReopenTask')
 				: t('discussion.confirmReopenDiscussion'),
-	},
-	close: {
-		title:
-			props.workItem?.type === 'Task'
-				? t('task.closeThisTask')
-				: t('discussion.closeThisDiscussion'),
-		message:
-			props.workItem?.type === 'Task'
-				? t('task.confirmCloseTask')
-				: t('discussion.confirmCloseDiscussion'),
-	},
-};
+		};
+	}
+
+	return {
+		title: isTask.value
+			? t('task.closeThisTask')
+			: t('discussion.closeThisDiscussion'),
+		message: isTask.value
+			? t('task.confirmCloseTask')
+			: t('discussion.confirmCloseDiscussion'),
+	};
+});
 
 const labelIds = `discussion_name_${props.workItem?.id} ${tableContext.tableId}_${props.index}`;
 </script>

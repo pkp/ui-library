@@ -32,6 +32,14 @@ const closeModalButton = ref(null);
 const closeCallbacks = ref([]);
 function registerCloseCallback(callback) {
 	closeCallbacks.value.push(callback);
+
+	// return an unregister function
+	return () => {
+		const index = closeCallbacks.value.indexOf(callback);
+		if (index !== -1) {
+			closeCallbacks.value.splice(index, 1);
+		}
+	};
 }
 
 function handleRootClose(opened) {

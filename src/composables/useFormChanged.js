@@ -23,6 +23,7 @@ export function useFormChanged(
 	let initialState = getCurrentState();
 	let beforeUnloadHandler;
 	const registerCloseCallback = inject('registerCloseCallback');
+	let unregisterCloseCallback = null;
 
 	function getCurrentState() {
 		const fields = (form.value?.fields || []).concat(additionalFields || []);
@@ -86,8 +87,10 @@ export function useFormChanged(
 
 		// show a warning before closing the modal if there are unsaved changes
 		if (registerCloseCallback) {
-			registerCloseCallback(() => {
-				confirmClose();
+			unregisterCloseCallback = registerCloseCallback(() => {
+				if (hasStateChanged()) {
+					confirmClose();
+				}
 				return !hasStateChanged();
 			});
 		}
@@ -99,6 +102,10 @@ export function useFormChanged(
 		if (beforeUnloadHandler) {
 			window.removeEventListener('beforeunload', beforeUnloadHandler);
 			beforeUnloadHandler = null;
+		}
+
+		if (unregisterCloseCallback) {
+			unregisterCloseCallback();
 		}
 	});
 

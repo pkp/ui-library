@@ -53,12 +53,12 @@ export function useDiscussionManagerConfig() {
 		});
 
 		columns.push({
-			header: t('submission.query.activity'),
+			header: t('submission.query.activityName'),
 			component: 'DiscussionManagerCellActivity',
 		});
 
 		columns.push({
-			header: t('submission.query.dueDate'),
+			header: t('common.dueDate'),
 			component: 'DiscussionManagerCellDueDate',
 		});
 
@@ -141,9 +141,13 @@ export function useDiscussionManagerConfig() {
 				label: t('common.edit'),
 				name: Actions.TASKS_AND_DISCUSSIONS_EDIT,
 				icon: 'Edit',
+				disabled: !!workItem?.dateClosed,
 			});
 
-			if (workItem.type === 'Discussion' && workItem.status === 'In Progress') {
+			if (
+				workItem.type === pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION &&
+				workItem.status === pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS
+			) {
 				actions.push({
 					label: t('discussion.addTaskDetails'),
 					name: Actions.TASKS_AND_DISCUSSIONS_ADD_TASK_DETAILS,

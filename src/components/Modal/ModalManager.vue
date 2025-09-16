@@ -18,6 +18,7 @@
 		></PkpDialog>
 
 		<SideModal
+			v-if="component2"
 			:key="sideModal2?.modalId"
 			close-label="Close"
 			:data-cy="
@@ -39,6 +40,8 @@
 				@close="closeDialog"
 			></PkpDialog>
 			<SideModal
+				v-if="component3"
+				:key="sideModal3?.modalId"
 				:data-cy="
 					activeModalId === sideModal3?.modalId ? 'active-modal' : undefined
 				"
@@ -59,6 +62,8 @@
 					@close="closeDialog"
 				></PkpDialog>
 				<SideModal
+					v-if="component4"
+					:key="sideModal4?.modalId"
 					:data-cy="
 						activeModalId === sideModal4?.modalId ? 'active-modal' : undefined
 					"

@@ -28,12 +28,16 @@ const props = defineProps({
 });
 
 const selectedValues = computed(() => {
-	if (!props.field?.value?.length) {
+	if (!props.field?.value) {
 		return [];
 	}
 
-	return props.field.options.filter((option) =>
-		props.field.value.includes(option.value),
-	);
+	return props.field.options.filter((option) => {
+		if (props.field.type === 'checkbox' && Array.isArray(props.field.value)) {
+			return props.field.value.includes(option.value);
+		} else {
+			return props.field.value === option.value;
+		}
+	});
 });
 </script>

@@ -65,6 +65,15 @@ export const Default = {
 						});
 					},
 				),
+				http.get(
+					'https://mock/index.php/publicknowledge/api/v1/submissions/19/stage/1/tasks',
+					() => {
+						return HttpResponse.json({
+							items: [],
+							itemMax: 0,
+						});
+					},
+				),
 			],
 		},
 	},

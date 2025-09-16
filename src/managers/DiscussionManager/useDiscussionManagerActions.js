@@ -1,5 +1,8 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
+import {useFetch} from '../../composables/useFetch';
+import {useUrl} from '../../composables/useUrl';
+import {useDiscussionManagerStatusUpdater} from './useDiscussionManagerStatusUpdater';
 import DiscussionManagerForm from './DiscussionManagerForm.vue';
 import DiscussionManagerFormDisplay from './DiscussionManagerFormDisplay.vue';
 
@@ -31,6 +34,7 @@ export function useDiscussionManagerActions() {
 			submission,
 			submissionStageId,
 			onCloseFn,
+			onFinishFn: finishedCallback,
 		});
 	}
 
@@ -48,7 +52,7 @@ export function useDiscussionManagerActions() {
 			submission,
 			submissionStageId,
 			onCloseFn,
-			onSubmitFn: finishedCallback,
+			onFinishFn: finishedCallback,
 		});
 	}
 
@@ -92,18 +96,41 @@ export function useDiscussionManagerActions() {
 			workItem,
 			autoAddTaskDetails,
 			onCloseFn,
-			onSubmitFn: finishedCallback,
+			onFinishFn: finishedCallback,
 		});
 	}
 
 	function discussionDelete({workItem, submission}, finishedCallback) {
+		async function deleteWorkItem() {
+			const {apiUrl: deleteTaskUrl} = useUrl(
+				`submissions/${submission.id}/tasks/${workItem.id}`,
+			);
+
+			const {
+				fetch,
+				data: deleteTaskData,
+				isSuccess,
+			} = useFetch(deleteTaskUrl, {
+				method: 'DELETE',
+			});
+
+			await fetch();
+
+			return {
+				data: deleteTaskData.value,
+				isSuccess: isSuccess.value,
+			};
+		}
+
 		const {openDialog} = useModal();
 		openDialog({
 			actions: [
 				{
 					label: t('common.ok'),
 					isWarnable: true,
-					callback: (close) => {
+					callback: async (close) => {
+						await deleteWorkItem();
+						finishedCallback();
 						close();
 					},
 				},
@@ -153,22 +180,39 @@ export function useDiscussionManagerActions() {
 		);
 	}
 
-	function discussionStartTask({workItem}) {
+	async function discussionStartTask({workItem, submission}, finishedCallback) {
 		// Discussions cannot be started
-		if (workItem?.type === 'Discussion') {
+		if (workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION) {
 			return;
 		}
 
-		// TODO: start task
+		const {startWorkItem} = useDiscussionManagerStatusUpdater(submission.id);
+		await startWorkItem(workItem.id);
+		finishedCallback();
 	}
 
-	function discussionSetClosed({workItem}) {
+	async function discussionSetClosed(
+		{workItem, submission, status},
+		finishedCallback,
+	) {
 		// Tasks cannot be reopened
-		if (workItem?.type === 'Task' && workItem.closed) {
+		if (
+			workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK &&
+			!!workItem.dateClosed
+		) {
 			return;
 		}
 
-		// TODO: update status
+		const {openWorkItem, closeWorkItem} = useDiscussionManagerStatusUpdater(
+			submission.id,
+		);
+		if (status === 'open') {
+			await openWorkItem(workItem.id);
+		} else {
+			await closeWorkItem(workItem.id);
+		}
+
+		finishedCallback();
 	}
 
 	return {

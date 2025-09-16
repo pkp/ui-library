@@ -36,14 +36,20 @@
 					v-for="itemStatus in discussionManagerStore.discussions"
 					:key="itemStatus.name"
 				>
-					<TableRowGroup>
+					<TableRowGroup
+						:empty-text="
+							discussionManagerStore.isLoadingDiscussions
+								? t('common.loading')
+								: t('grid.noItems')
+						"
+					>
 						<TableRow>
 							<TableColGroup>
 								<Icon
 									:icon="itemStatus.icon"
 									class="h-5 w-5"
 									:class="
-										itemStatus.name === 'Closed'
+										itemStatus.key === 'closed'
 											? 'text-success'
 											: 'text-primary'
 									"

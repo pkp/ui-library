@@ -1,9 +1,9 @@
 <template>
 	<SideModalBody>
 		<template #title>
-			{{ hasContent ? localize(workItem.title) : t('discussion.title') }}
+			{{ t('discussion.title') }}
 		</template>
-		<template v-if="!hasContent" #description>
+		<template #description>
 			<span class="text-lg-medium">
 				{{ t('discussion.form.description') }}
 			</span>
@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import {computed, inject} from 'vue';
+import {inject} from 'vue';
 import {t} from '@/utils/i18n';
 import {useDiscussionManagerForm} from './useDiscussionManagerForm';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
@@ -56,13 +56,11 @@ const props = defineProps({
 		type: Function,
 		default: () => () => {},
 	},
-	onSubmitFn: {
+	onFinishFn: {
 		type: Function,
-		default: () => () => {},
+		default: () => async () => {},
 	},
 });
-
-const hasContent = computed(() => !!props.workItem?.id);
 
 const {form, set, badgeProps} = useDiscussionManagerForm(props);
 </script>

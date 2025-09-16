@@ -39,7 +39,7 @@ export const useDiscussionMessagesStore = defineComponentStore(
 			fetchDiscussionMessages();
 		});
 
-		fetchDiscussionMessages();
+		// fetchDiscussionMessages(); // disable message fetching until the api is ready
 
 		const {triggerDataChange} = useDataChanged(() => fetchDiscussionMessages());
 

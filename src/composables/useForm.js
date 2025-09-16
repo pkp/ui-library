@@ -119,6 +119,17 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 	}
 
 	/**
+	 * Get a group from a form by name
+	 * @param {string} groupId - The group id to find
+	 * @returns {Object|undefined} The group object if found
+	 */
+	function getGroup(groupId) {
+		const groups = form.value.groups;
+
+		return groups.find((group) => group.id === groupId);
+	}
+
+	/**
 	 * Get a field from a form by name
 	 * @param {string} name - The field name to find
 	 * @returns {Object|undefined} The field object if found
@@ -385,16 +396,26 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 	function addGroup(
 		groupId,
 		{pageId, label, description, groupComponent, ...additionalOptions} = {},
+		{override = false} = {},
 	) {
 		form.value.groups = form.value.groups || [];
-		form.value.groups.push({
+
+		const group = getGroup(groupId);
+		const groupObj = {
 			id: groupId || 'default',
 			label,
 			description,
 			pageId: pageId || 'default',
 			groupComponent,
 			...additionalOptions,
-		});
+		};
+
+		if (group && override) {
+			// replace the entire group if it exists and override is `true`
+			Object.assign(group, groupObj);
+		} else {
+			form.value.groups.push(groupObj);
+		}
 	}
 
 	/**

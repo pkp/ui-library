@@ -1,9 +1,11 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
-import {computed, toRefs} from 'vue';
+import {computed, toRefs, watch} from 'vue';
 import {t} from '@/utils/i18n';
 import {useExtender} from '@/composables/useExtender';
 import {useDataChanged} from '@/composables/useDataChanged';
+import {useUrl} from '@/composables/useUrl';
+import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useDiscussionManagerConfig} from './useDiscussionManagerConfig';
 import {useDiscussionManagerActions} from './useDiscussionManagerActions';
 
@@ -14,25 +16,60 @@ export const useDiscussionManagerStore = defineComponentStore(
 
 		const {submission} = toRefs(props);
 
+		const relativeUrl = computed(() => {
+			return `submissions/${encodeURIComponent(submission.value.id)}/stage/${props.submissionStageId}/tasks`;
+		});
+
+		const {apiUrl: submissionTasksApiUrl} = useUrl(relativeUrl);
+
+		const {
+			items: discussionsData,
+			fetch: fetchDiscussions,
+			isLoading: isLoadingDiscussions,
+		} = useFetchPaginated(submissionTasksApiUrl, {
+			page: 1,
+			pageSize: 25,
+		});
+
+		watch(relativeUrl, () => {
+			fetchDiscussions({clearData: true});
+		});
+
+		fetchDiscussions();
+
+		const {triggerDataChange} = useDataChanged(() => fetchDiscussions());
+
+		function triggerDataChangeCallback() {
+			triggerDataChange();
+		}
+
 		function getDiscussionByStatus(status) {
-			return props.discussions?.filter((data) => data.status === status) || [];
+			return computed(
+				() =>
+					discussionsData.value?.filter((data) => data.status === status) || [],
+			);
 		}
 
 		const discussions = [
 			{
 				name: t('common.yetToBegin'),
+				key: 'pending',
 				icon: 'New',
-				items: getDiscussionByStatus('Pending'),
+				items: getDiscussionByStatus(pkp.const.EDITORIAL_TASK_STATUS_PENDING),
 			},
 			{
 				name: t('common.inProgress'),
+				key: 'inProgress',
 				icon: 'InProgress',
-				items: getDiscussionByStatus('In Progress'),
+				items: getDiscussionByStatus(
+					pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS,
+				),
 			},
 			{
 				name: t('common.closed'),
+				key: 'closed',
 				icon: 'Complete',
-				items: getDiscussionByStatus('Closed'),
+				items: getDiscussionByStatus(pkp.const.EDITORIAL_TASK_STATUS_CLOSED),
 			},
 		];
 
@@ -76,12 +113,6 @@ export const useDiscussionManagerStore = defineComponentStore(
 				config: discussionConfig.value,
 				discussions,
 			};
-		}
-
-		const {triggerDataChange} = useDataChanged();
-
-		function triggerDataChangeCallback() {
-			triggerDataChange();
 		}
 
 		function discussionView({workItem}) {
@@ -145,10 +176,11 @@ export const useDiscussionManagerStore = defineComponentStore(
 			);
 		}
 
-		function discussionDelete() {
+		function discussionDelete({workItem}) {
 			discussionActions.discussionDelete(
 				{
 					submission: props.submission,
+					workItem,
 				},
 				triggerDataChangeCallback,
 			);
@@ -165,12 +197,13 @@ export const useDiscussionManagerStore = defineComponentStore(
 			);
 		}
 
-		function discussionSetClosed({workItem}) {
+		function discussionSetClosed({workItem, status}) {
 			discussionActions.discussionSetClosed(
 				{
 					submission: props.submission,
 					submissionStageId: props.submissionStageId,
 					workItem,
+					status,
 				},
 				triggerDataChangeCallback,
 			);
@@ -178,6 +211,7 @@ export const useDiscussionManagerStore = defineComponentStore(
 
 		return {
 			discussions,
+			isLoadingDiscussions,
 
 			/**
 			 * Config

@@ -2,12 +2,19 @@ import {computed, ref} from 'vue';
 import {useForm} from '@/composables/useForm';
 import {useFormChanged} from '@/composables/useFormChanged';
 import {useModal} from '@/composables/useModal';
+import {useUrl} from '@/composables/useUrl';
 import {useDate} from '@/composables/useDate';
 import {useLocalize} from '@/composables/useLocalize';
+import {useFetch} from '@/composables/useFetch';
 import {useCurrentUser} from '@/composables/useCurrentUser';
 import {useParticipantManagerStore} from '../ParticipantManager/participantManagerStore';
+import {useSubmission} from '@/composables/useSubmission';
 import {useTasksAndDiscussionsStore} from '@/pages/tasksAndDiscussions/tasksAndDiscussionsStore';
 import {useDiscussionMessagesStore} from './discussionMessagesStore';
+import {
+	useDiscussionManagerStatusUpdater,
+	statusUpdates,
+} from './useDiscussionManagerStatusUpdater';
 import DiscussionMessages from './DiscussionMessages.vue';
 import DiscussionManagerTemplates from './DiscussionManagerTemplates.vue';
 import DiscussionManagerTaskInfo from './DiscussionManagerTaskInfo.vue';
@@ -21,22 +28,30 @@ export function useDiscussionManagerForm(
 		workItem,
 		autoAddTaskDetails = false,
 		onCloseFn = () => {},
-		onSubmitFn = null,
+		onFinishFn = null,
 	} = {},
 	{inDisplayMode = false} = {},
 ) {
 	const workItemStatus = workItem?.status || status;
-	const {t, localize} = useLocalize();
+	const {t} = useLocalize();
 	const participantManagerStore = useParticipantManagerStore({
 		submission,
 		submissionStageId,
 	});
 	const discussionMessagesStore = useDiscussionMessagesStore();
+	const {updateStatus, startWorkItem} = useDiscussionManagerStatusUpdater(
+		submission.id,
+	);
+	const {getCurrentReviewAssignments} = useSubmission();
 
 	const currentUser = useCurrentUser();
 	const {getRelativeTargetDate} = useDate();
-	const isTask = ref(workItem?.type === 'Task');
-	const statusUpdateValue = ref(false);
+	const isTask = ref(workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK);
+	const isClosed = workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED;
+	const statusUpdateValue = ref(isClosed);
+	let updateOnDisplayMode = false;
+	const initialStatusUpdateVal = isClosed;
+
 	const newMessage = ref(null);
 	const formId = inDisplayMode ? 'discussionDisplay' : 'discussionForm';
 
@@ -47,6 +62,7 @@ export function useDiscussionManagerForm(
 		addGroup,
 		set,
 		setValue,
+		getField,
 		addFieldText,
 		addFieldOptions,
 		addFieldRichTextArea,
@@ -55,49 +71,93 @@ export function useDiscussionManagerForm(
 		addFieldComponent,
 	} = useForm({}, {customSubmit: handleFormSubmission});
 
-	function getParticipantOptions(withSubLabel) {
+	function mapParticipantOptions(withSubLabel) {
+		return (participant) => {
+			let label = `${participant.fullName} (${participant.userName})`;
+
+			if (participant.userName === currentUser.getCurrentUserName()) {
+				label += ` (${t('common.me')})`;
+			}
+
+			return {
+				label,
+				subLabel: withSubLabel ? participant.roleName : null,
+				value: participant.id,
+			};
+		};
+	}
+
+	function getAllParticipants() {
+		const reviewwers = getCurrentReviewAssignments(
+			submission,
+			submissionStageId,
+		).map((r) => {
+			return {
+				fullName: r.reviewerFullName,
+				userName: r.reviewerUserName || '',
+				id: r.reviewerId,
+				roleName: t('user.role.reviewer'),
+			};
+		});
+
+		const isParticipant = participantManagerStore.participantsList.some(
+			(p) => p.id === currentUser.getCurrentUserId(),
+		);
+		// If the current user is a site admin but not already in the participants list, add them as "Unassigned"
+		// This ensures site admins can always assign tasks to themselves
+		const siteAdmin =
+			currentUser.isCurrentUserSiteAdmin() && !isParticipant
+				? [
+						{
+							fullName: currentUser.getCurrentUserFullName(),
+							userName: currentUser.getCurrentUserName(),
+							id: currentUser.getCurrentUserId(),
+							roleName: t('submission.status.unassigned'),
+						},
+					]
+				: [];
+
+		return participantManagerStore.participantsList
+			.concat(siteAdmin)
+			.concat(reviewwers);
+	}
+
+	function getParticipantOptions() {
+		return computed(() =>
+			getAllParticipants().map(mapParticipantOptions(true)),
+		);
+	}
+
+	const allParticipants = computed(() => getAllParticipants());
+
+	function getAssigneeOptions() {
 		return computed(() => {
-			return participantManagerStore.participantsList.map((participant) => {
-				let label = `${participant.fullName} (${participant.userName})`;
-
-				if (participant.userName === currentUser.getCurrentUserName()) {
-					label += ` (${t('common.me')})`;
-				}
-
-				return {
-					label,
-					subLabel: withSubLabel ? participant.roleName : undefined,
-					value: participant.id,
-				};
-			});
+			return allParticipants.value
+				?.filter((participant) => {
+					return selectedParticipants.value.includes(participant.id);
+				})
+				.map(mapParticipantOptions());
 		});
 	}
 
 	function getBadgeProps() {
 		let badgeProps = {};
 		switch (workItemStatus) {
-			case 'Pending':
+			case pkp.const.EDITORIAL_TASK_STATUS_PENDING:
 				badgeProps = {
 					slot: t('common.yetToBegin'),
 					icon: 'New',
 					isPrimary: true,
 				};
 				break;
-			case 'In Progress':
+			case pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS:
 				badgeProps = {
 					slot: t('common.inProgress'),
 					icon: 'InProgress',
 					isPrimary: true,
 				};
 				break;
-			case 'Overdue':
-				badgeProps = {
-					slot: t('common.overdue'),
-					icon: 'InProgress',
-					isWarnable: true,
-				};
-				break;
-			case 'Closed':
+			case pkp.const.EDITORIAL_TASK_STATUS_CLOSED:
 				badgeProps = {
 					slot: t('common.closed'),
 					icon: 'Complete',
@@ -112,9 +172,27 @@ export function useDiscussionManagerForm(
 				};
 		}
 
+		// check if overdue
+		const isOverdue =
+			workItem?.dateDue &&
+			!workItem?.dateClosed &&
+			new Date(workItem.dateDue) < new Date();
+		if (
+			workItemStatus === pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS &&
+			isOverdue
+		) {
+			badgeProps = {
+				slot: t('common.overdue'),
+				icon: 'Overdue',
+				isWarnable: true,
+			};
+		}
+
 		return badgeProps;
 	}
 
+	// temporarily disable fetching templates until the api is ready
+	// eslint-disable-next-line no-unused-vars
 	function getTemplates() {
 		const tasksAndDiscussionsStore = useTasksAndDiscussionsStore();
 		return computed(() => {
@@ -128,15 +206,17 @@ export function useDiscussionManagerForm(
 		setValue('discussionText', template.content);
 
 		const selectedParticipants =
-			participantManagerStore.participantsList
+			allParticipants.value
 				.filter((p) =>
 					template.taskDetails?.participantRoles?.includes(p.roleId),
 				)
 				.map((p) => p.id) || [];
-		setValue('detailsParticipants', selectedParticipants);
+		setValue('participants', selectedParticipants);
+
+		setValue('taskInfoAdd', isTask.value);
 
 		if (isTask.value) {
-			setValue('taskInfoParticipants', selectedParticipants);
+			setValue('taskInfoAssignee', selectedParticipants);
 
 			if (template.taskDetails.dueDate) {
 				setValue(
@@ -147,6 +227,16 @@ export function useDiscussionManagerForm(
 		} else {
 			setValue('taskInfoDueDate', null);
 		}
+	}
+
+	function getSelectedParticipants(workItemData) {
+		return workItemData?.participants?.map((p) => p.userId) || [];
+	}
+
+	function getSelectedAssignee(workItemData) {
+		return (
+			workItemData?.participants?.find((p) => p.isResponsible)?.userId || null
+		);
 	}
 
 	function onSelectTemplate(template) {
@@ -182,6 +272,7 @@ export function useDiscussionManagerForm(
 	}
 
 	function onUpdateStatusCheckbox(val) {
+		updateOnDisplayMode = initialStatusUpdateVal !== val;
 		statusUpdateValue.value = val;
 	}
 
@@ -189,45 +280,224 @@ export function useDiscussionManagerForm(
 		newMessage.value = val;
 	}
 
-	function addWorkItem() {
-		console.log('add form');
+	function addTaskInfoGroup(workItemData, {override = false} = {}) {
+		addGroup(
+			'taskInformation',
+			{
+				label: t('discussion.form.taskInformation'),
+				description: t('discussion.form.taskInfoDescription'),
+				groupComponent: {
+					component: DiscussionManagerTaskInfo,
+					props: {
+						workItem: workItemData,
+						inDisplayMode,
+						autoAddTaskDetails,
+						onUpdateStatusCheckbox,
+					},
+				},
+			},
+			{override},
+		);
 	}
 
-	function addNewMessage() {
-		console.log('add new message');
+	function addTaskInfoDueDate({override = false} = {}) {
+		addFieldText(
+			'taskInfoDueDate',
+			{
+				groupId: 'taskInformation',
+				label: t('common.dueDate'),
+				inputType: 'date',
+				description: t('discussion.form.taskInfoDueDateDescription'),
+				size: 'normal',
+				showWhen: 'taskInfoAdd',
+				value: isTask.value ? workItem?.dateDue : null,
+				isRequired: isTask.value,
+			},
+			{override},
+		);
 	}
 
-	function updateWorkItemStatus() {
-		if (statusUpdateValue.value) {
-			console.log('update task status');
+	function addTaskInfoAssignee({override = false} = {}) {
+		addFieldOptions(
+			'taskInfoAssignee',
+			'radio',
+			{
+				groupId: 'taskInformation',
+				label: t('discussion.form.taskInfoAssigneesLabel'),
+				description: t('discussion.form.taskInfoAssigneesDescription'),
+				name: 'taskInfoAssignee',
+				showWhen: 'taskInfoAdd',
+				options: getAssigneeOptions(),
+				value: getSelectedAssignee(workItem),
+				isRequired: isTask.value,
+			},
+			{override},
+		);
+	}
+
+	function addDiscussionGroup(workItemData, {override = false} = {}) {
+		addGroup(
+			'discussion',
+			{
+				label: t('discussion.name'),
+				description: t('discussion.form.discussionDescription'),
+				groupComponent: {
+					component: DiscussionManagerDiscussion,
+					props: {
+						workItem: workItemData,
+						inDisplayMode,
+						onUpdateStatusCheckbox,
+					},
+				},
+			},
+			{override},
+		);
+	}
+
+	function mapParticipantsBody(formData) {
+		if (!formData.participants) return [];
+
+		return (
+			formData.participants.map((userId) => {
+				let isResponsible = formData.taskInfoAdd
+					? formData?.taskInfoAssignee === userId
+					: undefined;
+				return {
+					userId,
+					isResponsible,
+				};
+			}) || []
+		);
+	}
+
+	async function saveWorkItem(formData) {
+		const isTaskType = formData.taskInfoAdd;
+		const dataBody = {
+			type: isTaskType
+				? pkp.const.EDITORIAL_TASK_TYPE_TASK
+				: pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION,
+			title: formData.detailsName,
+			stageId: submissionStageId,
+			dateDue: isTaskType ? formData.taskInfoDueDate : undefined,
+			participants: mapParticipantsBody(formData),
+		};
+
+		let taskUrl = `submissions/${submission.id}/tasks`;
+		if (workItem?.id) {
+			taskUrl += `/${workItem.id}`;
 		}
+		const {apiUrl: addTaskUrl} = useUrl(taskUrl);
+
+		const {
+			fetch,
+			data: taskData,
+			validationError,
+			isSuccess,
+		} = useFetch(addTaskUrl, {
+			method: workItem?.id ? 'PUT' : 'POST',
+			body: dataBody,
+			expectValidationError: true,
+		});
+
+		await fetch();
+
+		return {
+			data: taskData.value,
+			validationError: validationError.value,
+			isSuccess: isSuccess.value,
+		};
 	}
 
-	function updateWorkItem() {
-		console.log('update form');
+	async function addWorkItem(formData) {
+		const {data, validationError, isSuccess} = await saveWorkItem(formData);
+
+		if (isSuccess) {
+			// start the task if begin upon saving is selected
+			if (formData.taskInfoAdd && formData.taskInfoShouldStart) {
+				await startWorkItem(data?.id);
+			}
+		}
+
+		return {
+			data,
+			validationError,
+			isSuccess,
+		};
+	}
+
+	async function addNewMessage() {
+		console.log('add new message');
+		return {};
+	}
+
+	// Update the work item status: start, close, or open
+	async function updateWorkItemStatus(workItemId) {
+		if (!workItemId) return;
+		let status;
+
+		if (workItem && inDisplayMode && updateOnDisplayMode) {
+			switch (workItem.status) {
+				case pkp.const.EDITORIAL_TASK_STATUS_PENDING:
+					status = statusUpdates.start;
+					break;
+				case pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS:
+					status = statusUpdates.close;
+					break;
+				case pkp.const.EDITORIAL_TASK_STATUS_CLOSED:
+					status = statusUpdates.open;
+					break;
+				default:
+					break;
+			}
+
+			// if discussion, only allow closing or re-opening
+			if (
+				status === statusUpdates.start &&
+				workItem.type === pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION
+			) {
+				status = statusUpdates.close;
+			}
+		}
+
+		if (!status) {
+			return;
+		}
+
+		return await updateStatus(workItemId, status);
 	}
 
 	async function handleFormSubmission(formData) {
+		let result = {
+			data: {},
+			validationError: null,
+			isSuccess: false,
+		};
+
 		if (inDisplayMode) {
-			updateWorkItemStatus();
+			result = (await updateWorkItemStatus(workItem?.id)) ?? result;
 		} else {
 			if (workItem) {
-				updateWorkItem();
+				result = await saveWorkItem(formData);
 			} else {
-				addWorkItem();
+				result = await addWorkItem(formData);
 			}
 		}
 
 		if (workItem && newMessage.value) {
 			// check if there is message
-			addNewMessage();
+			await addNewMessage();
+		}
+
+		if (typeof onFinishFn === 'function' || updateOnDisplayMode) {
+			await onFinishFn();
+		}
+
+		if (result.isSuccess) {
+			onCloseFn();
 		}
 
 		// return result to Form component handler
-		return {
-			data: {},
-			validationError: {},
-		};
+		return result;
 	}
 
 	initEmptyForm(formId, {
@@ -245,9 +515,11 @@ export function useDiscussionManagerForm(
 		groupComponent: {
 			component: DiscussionManagerTemplates,
 			props: {
-				templates: getTemplates(),
+				// templates: getTemplates(), // temporarily disable fetching templates until the api is ready
+				templates: [],
 				onSelectTemplate,
 				inDisplayMode,
+				isTask: workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
 			},
 		},
 	});
@@ -257,61 +529,43 @@ export function useDiscussionManagerForm(
 		label: t('common.name'),
 		description: t('discussion.form.detailsNameDescription'),
 		size: 'large',
-		value: localize(workItem?.title),
+		value: workItem?.title,
 		hideOnDisplay: true,
+		isRequired: true,
 	});
 
-	addFieldOptions('detailsParticipants', 'checkbox', {
+	addFieldOptions('participants', 'checkbox', {
 		groupId: 'details',
 		label: t('editor.submission.stageParticipants'),
 		description: t('discussion.form.detailsParticipantsDescription'),
-		name: 'detailsParticipants',
-		options: getParticipantOptions(true),
+		name: 'participants',
+		options: getParticipantOptions(),
 		showNumberedList: true,
-		value: workItem?.participants || [],
+		value: getSelectedParticipants(workItem),
+		isRequired: true,
 	});
 
-	addGroup('taskInformation', {
-		label: t('discussion.form.taskInformation'),
-		description: t('discussion.form.taskInfoDescription'),
-		groupComponent: {
-			component: DiscussionManagerTaskInfo,
-			props: {
-				workItem,
-				inDisplayMode,
-				autoAddTaskDetails,
-				onUpdateStatusCheckbox,
-			},
-		},
-	});
+	const participantsField = getField('participants');
+	const selectedParticipants = computed(() => participantsField?.value || []);
+
+	addTaskInfoGroup(workItem);
 
 	addFieldCheckbox('taskInfoAdd', {
 		groupId: 'taskInformation',
 		label: t('discussion.form.taskInfoLabel'),
 		value: isTask.value || autoAddTaskDetails,
 		hideOnDisplay: true,
-		disabled: workItem?.type === 'Discussion' && workItem?.status === 'Closed',
+		disabled: workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
+		onChange: (val) => {
+			isTask.value = val;
+			addTaskInfoDueDate({override: true});
+			addTaskInfoAssignee({override: true});
+		},
 	});
 
-	addFieldText('taskInfoDueDate', {
-		groupId: 'taskInformation',
-		label: t('common.dueDate'),
-		inputType: 'date',
-		description: t('discussion.form.taskInfoDueDateDescription'),
-		size: 'large',
-		showWhen: 'taskInfoAdd',
-		value: isTask.value ? workItem?.dueDate : null,
-	});
+	addTaskInfoDueDate();
 
-	addFieldOptions('taskInfoParticipants', 'checkbox', {
-		groupId: 'taskInformation',
-		label: t('discussion.form.taskInfoAssigneesLabel'),
-		description: t('discussion.form.taskInfoAssigneesDescription'),
-		name: 'taskInfoParticipants',
-		showWhen: 'taskInfoAdd',
-		options: getParticipantOptions(),
-		value: workItem?.assignees,
-	});
+	addTaskInfoAssignee();
 
 	// this select is only enabled when adding a new entry
 	addFieldSelect('taskInfoShouldStart', {
@@ -333,18 +587,7 @@ export function useDiscussionManagerForm(
 		],
 	});
 
-	addGroup('discussion', {
-		label: t('submission.discussion'),
-		description: t('discussion.form.discussionDescription'),
-		groupComponent: {
-			component: DiscussionManagerDiscussion,
-			props: {
-				workItem,
-				inDisplayMode,
-				onUpdateStatusCheckbox,
-			},
-		},
-	});
+	addDiscussionGroup(workItem);
 
 	if (workItemStatus === 'New') {
 		addFieldRichTextArea('discussionText', {
@@ -367,13 +610,30 @@ export function useDiscussionManagerForm(
 	const badgeProps = getBadgeProps(status);
 	const additionalFields = [newMessage, statusUpdateValue];
 
-	useFormChanged(form, additionalFields, onCloseFn, {
+	const {setInitialState} = useFormChanged(form, additionalFields, onCloseFn, {
 		warnOnClose: true,
 	});
+
+	function refreshFormData(newWorkItem) {
+		setValue('detailsName', newWorkItem?.title || '');
+		setValue('participants', getSelectedParticipants(newWorkItem));
+		setValue(
+			'taskInfoAdd',
+			newWorkItem.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
+		);
+		setValue('taskInfoDueDate', newWorkItem?.dateDue || '');
+		setValue('taskInfoAssignee', getSelectedAssignee(newWorkItem));
+
+		addTaskInfoGroup(newWorkItem, {override: true});
+		addDiscussionGroup(newWorkItem, {override: true});
+
+		setInitialState(form, additionalFields);
+	}
 
 	return {
 		form,
 		set,
 		badgeProps,
+		refreshFormData,
 	};
 }

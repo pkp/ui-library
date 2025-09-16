@@ -18,6 +18,7 @@ window.pkp = {
 		roles: [1, 16, 65536, 1048576],
 		username: 'dbarnes',
 		preferredName: 'Daniel Barnes',
+		fullName: 'Daniel Barnes',
 		initials: 'DB',
 	},
 
@@ -118,6 +119,12 @@ window.pkp = {
 		DOI_STATUS_REGISTERED: 3,
 		DOI_STATUS_ERROR: 4,
 		DOI_STATUS_STALE: 5,
+
+		EDITORIAL_TASK_TYPE_DISCUSSION: 1,
+		EDITORIAL_TASK_TYPE_TASK: 2,
+		EDITORIAL_TASK_STATUS_PENDING: 1,
+		EDITORIAL_TASK_STATUS_IN_PROGRESS: 2,
+		EDITORIAL_TASK_STATUS_CLOSED: 3,
 	},
 
 	/**
@@ -191,6 +198,7 @@ window.pkp = {
 		'common.confirmDelete':
 			'Are you sure you wish to delete this item? This action cannot be undone.',
 		'common.content': 'Content',
+		'common.createdBy': 'Created by',
 		'common.dateUploaded': 'Date uploaded',
 		'common.default': 'Default',
 		'common.delete': 'Delete',
@@ -418,6 +426,8 @@ window.pkp = {
 			'Enter the tasks details here to help manage this task effectively, if selected.',
 		'discussion.form.taskInfoConvertToTask':
 			'You can convert this into a task by clicking <strong>Edit</strong>.',
+		'discussion.form.taskInfoReopenAndConvertToTask':
+			'You can convert this into a task by re-opening the discussion and clicking <strong>Edit</strong>.',
 		'discussion.form.taskInfoAssigneesLabel':
 			'Responsible to complete this task',
 		'discussion.form.taskInfoAssigneesDescription':
@@ -433,6 +443,7 @@ window.pkp = {
 		'discussion.messageFrom': 'Message from {$from}',
 		'discussion.addNewMessage': 'Add New Message',
 		'discussion.addTaskDetails': 'Add Task Details',
+		'discussion.name': 'Discussion',
 		'doi.manager.versions.countStatement': 'There are {$count} versions.',
 		'doi.manager.versions.modalTitle': 'DOIs for all versions',
 		'doi.manager.versions.view': 'View all',
@@ -849,8 +860,6 @@ window.pkp = {
 		'submission.citations': 'References',
 		'submission.contributors': 'List of Contributors',
 		'submission.copyediting': 'Copyediting',
-		'submission.discussion': 'Discussion',
-		'submission.task': 'Task',
 		'submission.files': 'Files',
 		'submission.files.downloadAll': 'Download All Files',
 		'submission.finalDraft': 'Draft Files',
@@ -888,10 +897,10 @@ window.pkp = {
 		'submission.list.revisionsSubmitted': 'Revisions submitted',
 		'submission.production': 'Production',
 		'submission.publication': 'Publication',
-		'submission.query.activity': 'Activity',
-		'submission.query.dueDate': 'Due Date',
+		'submission.query.activityName': 'Activity',
 		'submission.query.started': 'Started',
 		'submission.query.closed': 'Closed',
+		'submission.query.task': 'Task',
 		'submission.recommendation': 'Recommendation: {$recommendation}',
 		'submission.review': 'Review',
 		'submission.stage.externalReviewWithRound': 'Review (Round {$round})',
@@ -900,6 +909,7 @@ window.pkp = {
 		'submission.stage.published': 'Published',
 		'submission.stageParticipants.notify': 'Notify',
 		'submission.status.scheduled': 'Scheduled',
+		'submission.status.unassigned': 'Unassigned',
 		'submission.submit.newSubmissionSingle': 'New Submission',
 		'submission.submit.submissionFiles': 'Submission Files',
 		'submission.submit.uploadSubmissionFile': 'Upload Submission File',
@@ -925,6 +935,7 @@ window.pkp = {
 		'task.completeThisTask': 'Complete this task',
 		'task.reopenThisTask': 'Reopen this task',
 		'task.confirmReopenTask': 'Are you sure you want to reopen this task?',
+		'task.owner': 'Task Owner',
 		'user.affiliation': 'Affiliation',
 		'user.affiliations': 'Affiliations',
 		'user.affiliations.deleteModal.message':

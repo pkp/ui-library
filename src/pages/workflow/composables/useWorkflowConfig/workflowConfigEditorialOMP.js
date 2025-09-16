@@ -222,6 +222,13 @@ export const WorkflowConfig = {
 				},
 			});
 
+			if (pkp.context.featureFlags?.enableNewDiscussions) {
+				items.push({
+					component: 'DiscussionManager',
+					props: {submission, submissionStageId: selectedStageId},
+				});
+			}
+
 			return items;
 		},
 		getSecondaryItems: ({submission, selectedReviewRound, selectedStageId}) => {

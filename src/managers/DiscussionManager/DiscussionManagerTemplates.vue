@@ -24,15 +24,23 @@
 		>
 			<li v-for="template in templates" :key="template.id" role="listitem">
 				<button
-					class="mt-2 w-full border border-light p-4 text-start hover:border-hover"
+					class="mt-2 w-full border border-light p-4 text-start"
+					:class="{
+						'cursor-not-allowed bg-disabled': isDisabled(template),
+						'border-light hover:border-hover': !isDisabled(template),
+					}"
+					:disabled="isDisabled(template)"
 					@click="emit('selectTemplate', template)"
 				>
-					<div class="text-lg-medium text-primary">
+					<div
+						class="text-lg-medium"
+						:class="isDisabled(template) ? 'text-disabled' : 'text-primary'"
+					>
 						<span class="uppercase">
 							{{
 								template.type === 'Task'
-									? t('submission.task')
-									: t('submission.discussion')
+									? t('submission.query.task')
+									: t('discussion.name')
 							}}
 						</span>
 						- {{ template.name }}
@@ -57,7 +65,7 @@ import {t} from '@/utils/i18n';
 
 const emit = defineEmits(['selectTemplate']);
 
-defineProps({
+const props = defineProps({
 	templates: {
 		type: Array,
 		default: () => [],
@@ -71,5 +79,13 @@ defineProps({
 		type: Boolean,
 		required: true,
 	},
+	isTask: {
+		type: Boolean,
+		required: false,
+	},
 });
+
+function isDisabled(template) {
+	return props.isTask && template.type === 'Discussion';
+}
 </script>
