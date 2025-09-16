@@ -14,15 +14,32 @@
 		</div>
 		<div>
 			<PkpButton
-				class="my-2"
+				class="my-2 mr-2"
 				:is-required="true"
-				:disabled="!citationStore.citationsRawToBeAdded"
 				@click="citationStore.handleAddCitationsRawToList"
 			>
 				{{ t('common.add', {}) }}
 			</PkpButton>
 			<span
-				v-if="citationStore.citationsRawShowMessage === 'success'"
+				v-if="citationStore.citationsRawShowMessage === 'isEmpty'"
+				class="align-middle font-normal"
+			>
+				<Icon
+					:icon="'Declined'"
+					:class="'inline-block h-auto w-6 align-middle'"
+					:inline="true"
+				/>
+				<span class="align-middle font-normal">
+					{{
+						t('submission.citations.structured.addRaw.empty')
+					}}
+				</span>
+			</span>
+			<span v-if="citationStore.citationsRawShowMessage === 'isLoading'">
+				<Spinner />
+			</span>
+			<span
+				v-if="citationStore.citationsRawShowMessage === 'isSuccess'"
 				class="items-center py-[0.5rem] text-success"
 			>
 				<Icon
@@ -30,14 +47,12 @@
 					:class="'inline-block h-auto w-6 align-middle'"
 					:inline="true"
 				/>
-				<span class="align-middle">
-					<span class="font-normal">
-						{{ t('submission.citations.structured.addRaw.success') }}
-					</span>
+				<span class="align-middle font-normal">
+					{{ t('submission.citations.structured.addRaw.success') }}
 				</span>
 			</span>
 			<span
-				v-if="citationStore.citationsRawShowMessage === 'partial'"
+				v-if="citationStore.citationsRawShowMessage === 'isPartial'"
 				class="items-center py-[0.5rem] text-attention"
 			>
 				<Icon
@@ -45,10 +60,8 @@
 					:class="'inline-block h-auto w-6 align-middle'"
 					:inline="true"
 				/>
-				<span class="align-middle">
-					<span class="font-normal">
-						{{ t('submission.citations.structured.addRaw.partialSuccess') }}
-					</span>
+				<span class="align-middle font-normal">
+					{{ t('submission.citations.structured.addRaw.partialSuccess') }}
 				</span>
 			</span>
 		</div>
@@ -60,6 +73,7 @@ import {useLocalize} from '@/composables/useLocalize';
 import PkpButton from '@/components/Button/Button.vue';
 import {useCitationManagerStore} from './citationManagerStore.js';
 import Icon from '@/components/Icon/Icon.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
 
 const {t} = useLocalize();
 
