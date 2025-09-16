@@ -911,12 +911,12 @@ export const PublicationConfig = {
 		}) => {
 			return [
 				{
-					component: 'WorkflowPublicationForm',
+					component: 'CitationManager',
 					props: {
-						formName: 'reference',
-						submission,
+						submission: submission,
 						publication: selectedPublication,
 						canEdit: permissions.canEditPublication,
+                        componentForms: pageInitConfig.componentForms,
 					},
 				},
 			];
