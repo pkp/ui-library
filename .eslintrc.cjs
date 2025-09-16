@@ -38,7 +38,7 @@ module.exports = {
 		'vue/no-undef-components': [
 			'error',
 			{
-				ignorePatterns: [],
+				ignorePatterns: ['.*-.*'],
 			},
 		],
 	},
