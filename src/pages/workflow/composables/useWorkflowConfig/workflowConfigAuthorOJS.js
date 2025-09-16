@@ -367,16 +367,16 @@ export const PublicationConfig = {
 			permissions,
 		}) => {
 			return [
-				{
-					component: 'WorkflowPublicationForm',
-					props: {
-						formName: 'reference',
-						submission,
-						publication: selectedPublication,
-						canEdit: permissions.canEditPublication,
-					},
-				},
-			];
+                {
+                    component: 'CitationManager',
+                    props: {
+                        submission: submission,
+                        publication: selectedPublication,
+                        canEdit: permissions.canEditPublication,
+                        componentForms: pageInitConfig.componentForms,
+                    },
+                },
+            ];
 		},
 	},
 	galleys: {
