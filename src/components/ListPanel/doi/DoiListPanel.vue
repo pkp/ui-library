@@ -346,6 +346,7 @@ export default {
 					id: item.id,
 					type: this.itemType,
 					title: this.getItemTitle(item),
+					versionString: this.getItemVersionString(item),
 					urlPublished: this.getUrlPublished(item),
 					isPublished: this.getIsPublished(item),
 					versions: this.getVersions(item),
@@ -880,6 +881,25 @@ export default {
 			return `${authorString} — ${title}`;
 		},
 		/**
+		 * Gets version string to be used in mapped object. Extended in app-specific component.
+		 *
+		 * @param {Object} item Item being mapped
+		 * @returns {String} Version string of the publication (used in DoiListItem)
+		 */
+		getItemVersionString(item) {
+			return this.getItemVersionStringBase(item);
+		},
+		/**
+		 * Gets version string to be used in mapped object. Assumes original object is submission.
+		 *
+		 * @param {Object} item Item being mapped
+		 * @returns {String} Version string of the publication (used in DoiListItem)
+		 */
+		getItemVersionStringBase(item) {
+			const currentPublication = this.getCurrentPublication(item);
+			return currentPublication.versionString;
+		},
+		/**
 		 * Gets the pubObject's published URL—to be used in mapped object. Extended in app-specific component.
 		 *
 		 * @param {Object} item Item being mapped
@@ -915,17 +935,81 @@ export default {
 		getIsPublishedBase(item) {
 			return item.status === pkp.const.submission.STATUS_PUBLISHED;
 		},
+		/**
+		 * Gets pubObject's versions/publications. Considers only latest minor versions. Assumes original object is submission.
+		 *
+		 * @param {Object} item Item being mapped
+		 * @returns {Object} Modified mapped item
+		 */
 		getVersions(item) {
+			var latestMinorPublications = [];
+			// keep only the latest minor version with the same version stage and version major
+			// use the 'associative' array latestMinorPublications array,
+			// with version stage and version major as array's keys
+			item.publications?.forEach((publication) => {
+				// there could be several unassigned versions,
+				// we need to keep them all
+				if (publication.versionStage == null) {
+					if (!('unassigned' in latestMinorPublications)) {
+						latestMinorPublications['unassigned'] = [];
+					}
+					latestMinorPublications['unassigned'].push(publication);
+					return;
+				}
+				// create array for this version stage, if it does not exist
+				if (!(publication.versionStage in latestMinorPublications)) {
+					latestMinorPublications[publication.versionStage] = [];
+				}
+				// create array for this version major, if it does not exist
+				if (
+					!(
+						publication.versionMajor in
+						latestMinorPublications[publication.versionStage]
+					)
+				) {
+					// add the publication
+					latestMinorPublications[publication.versionStage][
+						publication.versionMajor
+					] = publication;
+					return;
+				}
+				// version stage and version major array already exist
+				// if this version minor is bigger than the existing one
+				// replace the exisng one with this publication
+				if (
+					publication.versionMinor >
+					latestMinorPublications[publication.versionStage][
+						publication.versionMajor
+					].versionMinor
+				) {
+					latestMinorPublications[publication.versionStage][
+						publication.versionMajor
+					] = publication;
+				}
+			});
 			return (
-				item.publications?.map((publication) => {
-					return {
-						id: publication.id,
-						isCurrentVersion: item.currentPublicationId === publication.id,
-						versionNumber: publication.versionString,
-						urlPublished: publication.urlPublished,
-						datePublished: publication.datePublished,
-					};
-				}) || []
+				// filter/take only publication that are in latestMinorPublications array
+				item.publications
+					?.filter((publication) =>
+						latestMinorPublications[
+							publication.versionStage ?? 'unassigned'
+						].includes(publication),
+					)
+					.map((publication) => {
+						// map needed 	properties
+						let versionString = publication.versionString;
+						if (publication.versionStage == null) {
+							// to distinguish unassigned versions created on the same day, add publication ID
+							versionString = publication.id + ' - ' + versionString;
+						}
+						return {
+							id: publication.id,
+							isCurrentVersion: item.currentPublicationId === publication.id,
+							versionNumber: versionString,
+							urlPublished: publication.urlPublished,
+							datePublished: publication.datePublished,
+						};
+					}) || []
 			);
 		},
 		/**

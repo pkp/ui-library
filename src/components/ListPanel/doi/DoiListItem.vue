@@ -67,6 +67,10 @@
 			v-if="isExpanded"
 			class="listPanel__itemExpanded listPanel__itemExpanded--doi mt-2"
 		>
+			<span v-if="item.versionString">
+				{{ item.versionString }}
+			</span>
+
 			<PkpTable>
 				<TableHeader>
 					<TableColumn

@@ -17,7 +17,11 @@ export default {
 			originalItem.publications.forEach((publication) => {
 				const isCurrentVersion =
 					publication.id === this.getCurrentPublication(originalItem).id;
-				const versionNumber = publication.versionString;
+				let versionNumber = publication.versionString;
+				if (publication.versionStage == null) {
+					// to distinguish unassigned versions created on the same day, add publication ID
+					versionNumber = publication.id + ' - ' + versionNumber;
+				}
 
 				// Submissions
 				if (this.enabledDoiTypes.includes('publication')) {
