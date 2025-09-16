@@ -132,7 +132,7 @@ export const Reviewer = {
 		msw: {
 			handlers: [
 				http.post(
-					'https://mock/index.php/publicknowledge/api/v1/invitations/add/reviewerAccessInvite',
+					'https://mock/index.php/publicknowledge/api/v1/invitations/add/reviewerAccess',
 					() => {
 						return HttpResponse.json({invitationId: 15});
 					},
