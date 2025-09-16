@@ -91,7 +91,7 @@ import UserInvitationHeader from './UserInvitationHeader.vue';
 import UserInvitationDetailsFormStep from './UserInvitationDetailsFormStep.vue';
 import UserInvitationSearchFormStep from './UserInvitationSearchFormStep.vue';
 import UserInvitationEmailComposerStep from './UserInvitationEmailComposerStep.vue';
-import ReviewerReviewDetailsStep from './ReviewerReviewDetailsStep.vue';
+import ReviewerReviewDetailsFormStep from './ReviewerReviewDetailsFormStep.vue';
 
 const props = defineProps({
 	/** steps for invite user */
@@ -141,7 +141,7 @@ const userInvitationComponents = {
 	UserInvitationDetailsFormStep,
 	UserInvitationSearchFormStep,
 	UserInvitationEmailComposerStep,
-	ReviewerReviewDetailsStep,
+	ReviewerReviewDetailsFormStep,
 };
-console.log(props);
+console.log(JSON.stringify(props.steps[1].sections[0].props.form));
 </script>
