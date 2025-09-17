@@ -14,10 +14,10 @@
   </div>
   <PkpTable aria-label="Structured References" :aria-describedby="headingId">
     <template #label>
-      <h3 class="text-[1rem] font-semibold">
+      <h3 class="text-4 font-semibold">
         {{ t('submission.citations.structured') }}
       </h3>
-      <span class="text-lg-normal font-normal">
+      <span class="text-lg-normal">
 				{{ t('submission.citations.structured.descriptionTable') }}
 			</span>
     </template>
@@ -35,7 +35,7 @@
       <TableColumn
           v-for="(column, i) in citationStore.columns"
           :key="i"
-          :class="i > 0 ? '!w-[4rem] !text-center' : ''"
+          :class="i > 0 ? '!w-16 !text-center' : ''"
       >
 				<span v-if="column.isHeaderComponent">
 					<component :is="Components[column.header] || column.header"/>

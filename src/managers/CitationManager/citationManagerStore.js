@@ -1,4 +1,4 @@
-import {computed, onMounted, reactive, ref, toRefs} from 'vue';
+import {computed, onMounted, ref, toRefs} from 'vue';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 import {useDataChanged} from '@/composables/useDataChanged';
 import {useExtender} from '@/composables/useExtender';
@@ -34,6 +34,9 @@ export const useCitationManagerStore = defineComponentStore(
 		}
 
 		const {submission, publication} = toRefs(props);
+		const citations = computed(() => {
+			return publication.value.citations ?? [];
+		});
 
 		/**
 		 * constants
@@ -49,64 +52,64 @@ export const useCitationManagerStore = defineComponentStore(
 		const citationsMetadataLookup = computed(
 			() => publication.value.citationsMetadataLookup,
 		);
+		// todo: not working
+		function citationsMetadataLookupChanged($event) {
+			console.log('event', $event);
+			// return;
 
-		function citationsMetadataLookupChanged() {
-			let title = t('submission.citations.structured.disableModal.title');
-			let message = t('submission.citations.structured.disableModal.confirm');
-			if (currentCitationsMetadataLookup.value) {
-				title = t('submission.citations.structured.enableModal.title');
-				message = t('submission.citations.structured.enableModal.confirm');
-			}
+			/*
+			// confirm the change event before emitting
+			$event.preventDefault();
 
-			const {openDialog} = useModal();
 			openDialog({
-				name: 'disableCitationsMetadataLookup',
-				title: title,
-				message: message,
+				title: currentCitationsMetadataLookup.value
+					? t('submission.citations.structured.enableModal.title')
+					: t('submission.citations.structured.disableModal.title'),
+				message: currentCitationsMetadataLookup.value
+					? t('submission.citations.structured.enableModal.confirm')
+					: t('submission.citations.structured.disableModal.confirm'),
+				modalStyle: 'negative',
 				actions: [
 					{
-						label: t('common.yes', {}),
+						label: t('common.ok'),
+						isPrimary: true,
 						callback: async (close) => {
-							const {apiUrl} = useUrl(apiPathSubmissions);
-							const {fetch} = useFetch(`${apiUrl.value}/metadataLookup`, {
-								method: 'PUT',
-								body: {
-									citationsMetadataLookup: currentCitationsMetadataLookup.value,
-								},
-							});
-							await fetch();
-							dataUpdateCallback();
+							// const {apiUrl} = useUrl(apiPathSubmissions);
+							// const {fetch} = useFetch(`${apiUrl.value}/metadataLookup`, {
+							// 	method: 'PUT',
+							// 	body: {
+							// 		citationsMetadataLookup: currentCitationsMetadataLookup.value,
+							// 	},
+							// });
+							// await fetch();
+							// dataUpdateCallback();
 							close();
 						},
 					},
 					{
-						label: t('common.no', {}),
-						isPrimary: true,
+						label: t('common.cancel'),
+						isSecondary: true,
 						callback: (close) => {
-							currentCitationsMetadataLookup.value =
-								!currentCitationsMetadataLookup.value;
+							// currentCitationsMetadataLookup.value =
+							// 	!currentCitationsMetadataLookup.value;
+							$event.preventDefault();
 							close();
 						},
 					},
 				],
 				close: () => {},
 			});
+			*/
 		}
 
 		onMounted(() => {
-			if (publication.value.citationsMetadataLookup === null) {
-				if (submission.value.contextCitationsMetadataLookup) {
-					currentCitationsMetadataLookup.value =
-						submission.value.contextCitationsMetadataLookup;
-					publication.value.citationsMetadataLookup =
-						submission.value.contextCitationsMetadataLookup;
-				} else {
-					currentCitationsMetadataLookup.value = false;
-				}
-			} else {
-				currentCitationsMetadataLookup.value =
-					publication.value.citationsMetadataLookup;
-			}
+			currentCitationsMetadataLookup.value = !!(
+				publication.value.citationsMetadataLookup ??
+				submission.value.contextCitationsMetadataLookup
+			);
+
+			publication.value.citationsMetadataLookup =
+				currentCitationsMetadataLookup.value;
 		});
 
 		/**
@@ -119,7 +122,7 @@ export const useCitationManagerStore = defineComponentStore(
 			if (!citationsRawToBeAdded.value) {
 				citationsRawShowMessage.value = 'isEmpty';
 				setTimeout(() => {
-					citationsRawShowMessage.value = 'isEmpty';
+					citationsRawShowMessage.value = '';
 				}, 4000);
 				return;
 			}
@@ -134,11 +137,9 @@ export const useCitationManagerStore = defineComponentStore(
 			citationsRawShowMessage.value = 'isLoading';
 			await fetch();
 			citationsRawToBeAdded.value = data.value.trim();
-			if (citationsRawToBeAdded.value) {
-				citationsRawShowMessage.value = 'isPartial';
-			} else {
-				citationsRawShowMessage.value = 'isSuccess';
-			}
+			citationsRawShowMessage.value = citationsRawToBeAdded.value
+				? 'isPartial'
+				: 'isSuccess';
 			dataUpdateCallback();
 			setTimeout(() => {
 				citationsRawShowMessage.value = '';
@@ -149,12 +150,10 @@ export const useCitationManagerStore = defineComponentStore(
 		 * status processed citations
 		 */
 		const totalCitations = computed(() => {
-			return publication.value.citations
-				? publication.value.citations.length
-				: 0;
+			return citations.value ? citations.value.length : 0;
 		});
 		const processedCitations = computed(() => {
-			return Object.entries(publication.value.citations)
+			return Object.entries(citations.value)
 				.filter(([key, value]) => value['isProcessed'] === true)
 				.map(([key, value]) => ({item: key, c: value})).length;
 		});
@@ -164,15 +163,12 @@ export const useCitationManagerStore = defineComponentStore(
 		 */
 		function citationDeleteAllCitations() {
 			openDialog({
-				name: 'deleteCitation',
 				title: t('submission.citations.structured.deleteAllDialog.title'),
-				message: t(
-					'submission.citations.structured.deleteAllDialog.confirm',
-					{},
-				),
+				message: t('submission.citations.structured.deleteAllDialog.confirm'),
+				modalStyle: 'negative',
 				actions: [
 					{
-						label: t('common.deleteAll'),
+						label: t('common.ok'),
 						isWarnable: true,
 						callback: async (close) => {
 							const {apiUrl} = useUrl(apiPathSubmissions);
@@ -181,13 +177,13 @@ export const useCitationManagerStore = defineComponentStore(
 								{method: 'DELETE'},
 							);
 							await fetch();
-							await dataUpdateCallback();
+							dataUpdateCallback();
 							close();
 						},
 					},
 					{
-						label: t('common.no'),
-						isPrimary: true,
+						label: t('common.cancel'),
+						isSecondary: true,
 						callback: (close) => {
 							close();
 						},
@@ -199,21 +195,35 @@ export const useCitationManagerStore = defineComponentStore(
 		/**
 		 * Toggle all / toggle status
 		 */
-		const allRowsExpanded = ref(false);
-		let toggleStatusRows = reactive({});
-
-		function toggleStatusRowChanged(citationId) {
-			if (typeof toggleStatusRows[citationId] === 'undefined') {
-				toggleStatusRows[citationId] = false;
+		const allIdsExpanded = ref(false);
+		const expandedIds = ref([]);
+		function toggleItemExpansion(citation) {
+			if (!expandedIds.value.includes(citation.id)) {
+				expandedIds.value.push(citation.id);
+			} else {
+				expandedIds.value = expandedIds.value.filter(
+					(id) => id !== citation.id,
+				);
 			}
-			toggleStatusRows[citationId] = !toggleStatusRows[citationId];
 		}
-
-		function allRowsExpandedChanged() {
-			allRowsExpanded.value = !allRowsExpanded.value;
-			publication.value.citations.forEach((citation) => {
-				toggleStatusRows[citation.id] = allRowsExpanded.value;
-			});
+		function toggleAllItemsExpansion() {
+			allIdsExpanded.value = !allIdsExpanded.value;
+			if (allIdsExpanded.value) {
+				citations.value.forEach((citation) => {
+					if (
+						allIdsExpanded.value &&
+						citation.isStructured &&
+						!expandedIds.value.includes(citation.id)
+					) {
+						expandedIds.value.push(citation.id);
+					}
+				});
+			} else {
+				expandedIds.value = [];
+			}
+		}
+		function isExpanded(citation) {
+			return expandedIds.value.includes(citation.id);
 		}
 
 		/**
@@ -322,10 +332,11 @@ export const useCitationManagerStore = defineComponentStore(
 
 			citationDeleteAllCitations,
 
-			allRowsExpanded,
-			allRowsExpandedChanged,
-			toggleStatusRows,
-			toggleStatusRowChanged,
+			allIdsExpanded,
+			expandedIds,
+			toggleItemExpansion,
+			toggleAllItemsExpansion,
+			isExpanded,
 
 			citationsFiltered,
 			searchPhrase,

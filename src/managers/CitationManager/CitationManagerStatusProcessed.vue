@@ -1,12 +1,12 @@
 <template>
 	<div v-if="total > 0">
-		<span class="flex items-center py-[0.5rem]">
+		<div class="flex items-center py-2">
 			<Icon
 				:icon="processed === total ? 'Complete' : 'InProgress'"
 				:class="'inline-block h-auto w-12 align-middle'"
 				:inline="true"
 			/>
-			<span class="align-middle">
+			<div class="align-middle">
 				<span class="font-semibold">
 					{{
 						processed === total
@@ -20,15 +20,15 @@
 					}}
 				</span>
 				<br />
-				<span class="text-lg-normal">
+				<p class="text-lg-normal">
 					{{
 						processed === total
 							? t('submission.citations.structured.processed.description')
 							: t('submission.citations.structured.processing.description')
 					}}
-				</span>
-			</span>
-		</span>
+				</p>
+			</div>
+		</div>
 	</div>
 </template>
 

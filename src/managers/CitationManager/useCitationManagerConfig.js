@@ -44,11 +44,10 @@ export function useCitationManagerConfig() {
 	}
 
 	function getItemPrimaryActions() {
-		const items = [];
-		return items;
+		return [];
 	}
 
-	function getItemActions() {
+	function getItemActions(args) {
 		const actions = [];
 
 		actions.push({
@@ -61,13 +60,18 @@ export function useCitationManagerConfig() {
 			label: t('common.delete'),
 			name: Actions.CITATION_DELETE_CITATION,
 			icon: 'Cancel',
+			isWarnable: true,
 		});
 
-		actions.push({
-			label: t('admin.citation.reprocess'),
-			name: Actions.CITATION_REPROCESS_CITATION,
-			icon: 'Add',
-		});
+		if (args.citationStore.citationsMetadataLookup) {
+			if (!args.citation.isStructured) {
+				actions.push({
+					label: t('admin.citation.reprocess'),
+					name: Actions.CITATION_REPROCESS_CITATION,
+					icon: 'Add',
+				});
+			}
+		}
 
 		return actions;
 	}

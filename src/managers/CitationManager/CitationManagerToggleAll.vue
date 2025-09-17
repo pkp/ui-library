@@ -1,11 +1,11 @@
 <template>
 	<a
 		v-if="citationStore.citationsMetadataLookup"
-		@click="citationStore.allRowsExpandedChanged"
 		class="cursor-pointer"
+		@click="citationStore.toggleAllItemsExpansion"
 	>
 		{{
-			citationStore.allRowsExpanded
+			citationStore.allIdsExpanded
 				? t('submission.citations.structured.collapseAll')
 				: t('submission.citations.structured.expandAll')
 		}}

@@ -1,25 +1,19 @@
 <template>
 	<div>
-		<div class="pkpFormField__heading pkpFormFieldLabel">
+		<h3 class="font-bold leading-6">
 			{{ t('submission.citations.structured') }}
-		</div>
-		<div class="pkpFormField__description py-4">
+		</h3>
+		<div class="py-4 leading-8">
 			{{ t('submission.citations.structured.citationsMetadataLookup.description') }}
 		</div>
 		<div>
-			<input
-				class="pkpFormField--options__input"
-				type="checkbox"
+			<Checkbox
 				id="citations-citationsMetadataLookup"
-				@change="citationStore.citationsMetadataLookupChanged()"
-				v-model="citationStore.currentCitationsMetadataLookup"
+				:label="t('submission.citations.structured.enableCitationsMetadataLookup')"
+				:checked="!!citationStore.citationsMetadataLookup"
+				:labelled-by="''"
+				@change="citationStore.citationsMetadataLookupChanged"
 			/>
-			<label
-				for="citations-citationsMetadataLookup"
-				class="pkpFormField--options__optionLabel"
-			>
-				{{ t('submission.citations.structured.enableCitationsMetadataLookup') }}
-			</label>
 		</div>
 	</div>
 </template>
@@ -27,6 +21,7 @@
 <script setup>
 import {useLocalize} from '@/composables/useLocalize';
 import {useCitationManagerStore} from './citationManagerStore.js';
+import Checkbox from '@/components/Checkbox/Checkbox.vue';
 
 const {t} = useLocalize();
 

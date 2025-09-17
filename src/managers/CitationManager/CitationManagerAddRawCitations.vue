@@ -1,38 +1,35 @@
 <template>
 	<div>
-		<div class="pkpFormField__heading pkpFormFieldLabel">
+		<h3 class="leading-6 font-bold">
 			{{ t('submission.citations') }}
-		</div>
-		<div class="pkpFormField__description py-4">
+		</h3>
+		<div class="leading-8 py-4">
 			{{ t('submission.citations.structured.description') }}
 		</div>
 		<div>
 			<textarea
-				class="pkpFormField__input pkpFormField--textarea__input !h-[9em]"
 				v-model="citationStore.citationsRawToBeAdded"
+				class="w-full pt-2 pb-2 leading-8 border border-gray-600 !min-h-18"
 			></textarea>
 		</div>
 		<div>
 			<PkpButton
-				class="my-2 mr-2"
-				:is-required="true"
+				class="my-2"
 				@click="citationStore.handleAddCitationsRawToList"
 			>
-				{{ t('common.add', {}) }}
+				{{ t('common.add') }}
 			</PkpButton>
 			<span
 				v-if="citationStore.citationsRawShowMessage === 'isEmpty'"
-				class="align-middle font-normal"
+				class="align-middle"
 			>
 				<Icon
 					:icon="'Declined'"
 					:class="'inline-block h-auto w-6 align-middle'"
 					:inline="true"
 				/>
-				<span class="align-middle font-normal">
-					{{
-						t('submission.citations.structured.addRaw.empty')
-					}}
+				<span class="align-middle">
+					{{ t('submission.citations.structured.addRaw.empty') }}
 				</span>
 			</span>
 			<span v-if="citationStore.citationsRawShowMessage === 'isLoading'">
@@ -40,27 +37,27 @@
 			</span>
 			<span
 				v-if="citationStore.citationsRawShowMessage === 'isSuccess'"
-				class="items-center py-[0.5rem] text-success"
+				class="items-center py-2 text-success"
 			>
 				<Icon
 					:icon="'Complete'"
 					:class="'inline-block h-auto w-6 align-middle'"
 					:inline="true"
 				/>
-				<span class="align-middle font-normal">
+				<span class="align-middle">
 					{{ t('submission.citations.structured.addRaw.success') }}
 				</span>
 			</span>
 			<span
 				v-if="citationStore.citationsRawShowMessage === 'isPartial'"
-				class="items-center py-[0.5rem] text-attention"
+				class="items-center py-2 text-attention"
 			>
 				<Icon
 					:icon="'InProgress'"
 					:class="'inline-block h-auto w-6 align-middle'"
 					:inline="true"
 				/>
-				<span class="align-middle font-normal">
+				<span class="align-middle">
 					{{ t('submission.citations.structured.addRaw.partialSuccess') }}
 				</span>
 			</span>

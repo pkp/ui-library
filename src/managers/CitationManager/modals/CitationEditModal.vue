@@ -21,12 +21,9 @@
 </template>
 
 <script setup>
-import {defineProps, inject} from 'vue';
-import {useLocalize} from '@/composables/useLocalize';
+import {inject, defineEmits} from 'vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import PkpForm from '@/components/Form/Form.vue';
-
-const {t} = useLocalize();
 
 const props = defineProps({
 	title: {type: String, required: true},
