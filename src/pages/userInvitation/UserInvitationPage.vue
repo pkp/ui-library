@@ -143,5 +143,4 @@ const userInvitationComponents = {
 	UserInvitationEmailComposerStep,
 	ReviewerReviewDetailsFormStep,
 };
-console.log(JSON.stringify(props.steps[1].sections[0].props.form));
 </script>
