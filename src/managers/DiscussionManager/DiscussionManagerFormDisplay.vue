@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import {computed, inject, onUnmounted, watch} from 'vue';
+import {computed, inject, watch} from 'vue';
 import {t} from '@/utils/i18n';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
@@ -69,17 +69,12 @@ const props = defineProps({
 		type: Function,
 		default: () => () => {},
 	},
-	onFinishFn: {
-		type: Function,
-		default: () => async () => {},
-	},
 });
 
 const closeModal = inject('closeModal');
 
 const discussionManagerStore = useDiscussionManagerStore();
 const discussionManagerActions = useDiscussionManagerActions();
-let reloadList = false;
 
 const {apiUrl: taskApiUrl} = useUrl(
 	`submissions/${encodeURIComponent(props.submission.id)}/tasks/${props.workItem.id}`,
@@ -134,15 +129,7 @@ const isWorkItemClosed = computed(() => {
 
 watch(workItemData, (newVal, oldVal) => {
 	if (oldVal && newVal && newVal !== oldVal) {
-		reloadList = true;
 		refreshFormData(newVal);
-	}
-});
-
-onUnmounted(() => {
-	// when this modal closes, refresh the list if there are changes made from the Edit modal
-	if (reloadList) {
-		props.onFinishFn();
 	}
 });
 </script>
