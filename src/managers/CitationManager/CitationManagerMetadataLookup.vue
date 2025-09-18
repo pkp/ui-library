@@ -15,6 +15,7 @@
 					t('submission.citations.structured.enableCitationsMetadataLookup')
 				"
 				:checked="isChecked"
+				:disabled="!citationStore.canEditPublication"
 				:labelled-by="''"
 				@change="onChange"
 			/>
@@ -32,7 +33,6 @@ import {useModal} from '@/composables/useModal';
 const {t} = useLocalize();
 
 const props = defineProps({
-	publication: {type: Object, required: true},
 	checked: {type: Boolean, required: true},
 });
 
@@ -42,7 +42,7 @@ const emit = defineEmits(['change']);
 const isChecked = ref(!!props.checked);
 
 function onChange($event) {
-	// confirm the change event before emitting
+	// confirm before emitting
 	$event.preventDefault();
 
 	const {openDialog} = useModal();

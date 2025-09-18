@@ -1,16 +1,12 @@
 <template>
-	<CitationManagerMetadataLookup
-		:publication="props.publication"
-		:checked="isChecked"
-		@change="change"
-	/>
+	<CitationManagerMetadataLookup :checked="isChecked" @change="change" />
 	<CitationManagerAddRawCitations />
 	<CitationManagerStatusProcessed
 		v-if="citationStore.citationsMetadataLookup"
 	/>
 	<div>
 		<PkpButton
-			class="cursor-pointer text-lg-normal"
+			:is-disabled="!citationStore.canEditPublication"
 			:is-link="true"
 			@click="citationStore.citationDeleteAllCitations"
 		>
@@ -72,7 +68,7 @@
 <script setup>
 import {computed, useId} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
-import PkpButton from '@/frontend/components/PkpButton/PkpButton.vue';
+import PkpButton from '@/components/Button/Button.vue';
 import PkpTable from '@/components/Table/Table.vue';
 import TableColumn from '@/components/Table/TableColumn.vue';
 import TableHeader from '@/components/Table/TableHeader.vue';

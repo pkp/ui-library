@@ -10,11 +10,13 @@
 			<textarea
 				v-model="citationStore.citationsRawToBeAdded"
 				class="border-gray-600 min-h-20 w-full border p-2"
+				:disabled="!citationStore.canEditPublication"
 			></textarea>
 		</div>
 		<div>
 			<PkpButton
 				class="my-2"
+				:is-disabled="!citationStore.canEditPublication"
 				@click="citationStore.handleAddCitationsRawToList"
 			>
 				{{ t('common.add') }}

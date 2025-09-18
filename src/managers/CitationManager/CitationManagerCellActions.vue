@@ -1,8 +1,9 @@
 <template>
 	<TableCell>
 		<DropdownActions
-			:label="t('common.moreActions')"
+			v-show="citationStore.canEditPublication"
 			button-variant="ellipsis"
+			:label="t('common.moreActions')"
 			:actions="citationStore.getItemActions({citationStore, citation})"
 			@action="(actionName) => handleAction(actionName, citation)"
 		/>
