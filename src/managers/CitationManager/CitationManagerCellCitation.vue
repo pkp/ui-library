@@ -60,8 +60,12 @@
 									<Icon icon="Orcid" class="mx-1 w-4" aria-hidden="true" />
 									<!-- Screen reader-only text with author context -->
 									<span class="sr-only">
-										ORCID profile for {{ author.givenName }}
-										{{ author.familyName }}
+										{{
+											t('submission.citations.structured.label.authorOrcid', {
+												givenName: author.givenName,
+												familyName: author.familyName,
+											})
+										}}
 									</span>
 								</a>
 							</li>
