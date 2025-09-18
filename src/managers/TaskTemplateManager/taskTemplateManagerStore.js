@@ -47,18 +47,22 @@ export const useTaskTemplateManagerStore = defineComponentStore(
 		const stagedTemplates = [
 			{
 				name: t('stage.submission'),
+				key: 'Submission',
 				templates: getTemplatesByStage('Submission'),
 			},
 			{
 				name: t('stage.review'),
+				key: 'Review',
 				templates: getTemplatesByStage('Review'),
 			},
 			{
 				name: t('stage.copyediting'),
+				key: 'Copyediting',
 				templates: getTemplatesByStage('Copyediting'),
 			},
 			{
 				name: t('stage.production'),
+				key: 'Production',
 				templates: getTemplatesByStage('Production'),
 			},
 		];

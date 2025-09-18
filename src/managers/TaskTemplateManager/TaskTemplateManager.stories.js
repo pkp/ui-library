@@ -1,9 +1,11 @@
+import {within, userEvent} from 'storybook/test';
 import {http, HttpResponse} from 'msw';
 import TaskTemplateManager from './TaskTemplateManager.vue';
 import {
 	TemplatesDataMock,
 	getTemplate,
 } from '@/mockFactories/taskDiscussionTemplates';
+import {emailTemplateMock} from '@/mockFactories/emailTemplateMock';
 
 export default {
 	title: 'Managers/TaskTemplateManager',
@@ -70,6 +72,39 @@ const mswHandlers = [
 	http.get('https://mock/index.php/publicknowledge/api/v1/templates', () => {
 		return HttpResponse.json(baseArgs.templates);
 	}),
+	http.get(
+		'https://mock/index.php/publicknowledge/api/v1/mailables/DISCUSSION_NOTIFICATION_SUBMISSION',
+		() => {
+			return HttpResponse.json(
+				emailTemplateMock['DISCUSSION_NOTIFICATION_SUBMISSION'],
+			);
+		},
+	),
+	http.get(
+		'https://mock/index.php/publicknowledge/api/v1/mailables/DISCUSSION_NOTIFICATION_REVIEW',
+		() => {
+			return HttpResponse.json(
+				emailTemplateMock['DISCUSSION_NOTIFICATION_REVIEW'],
+			);
+		},
+	),
+	http.get(
+		'https://mock/index.php/publicknowledge/api/v1/mailables/DISCUSSION_NOTIFICATION_COPYEDITING',
+		() => {
+			return HttpResponse.json(
+				emailTemplateMock['DISCUSSION_NOTIFICATION_COPYEDITING'],
+			);
+		},
+	),
+
+	http.get(
+		'https://mock/index.php/publicknowledge/api/v1/mailables/DISCUSSION_NOTIFICATION_PRODUCTION',
+		() => {
+			return HttpResponse.json(
+				emailTemplateMock['DISCUSSION_NOTIFICATION_PRODUCTION'],
+			);
+		},
+	),
 ];
 
 export const Default = {
@@ -79,5 +114,26 @@ export const Default = {
 		msw: {
 			handlers: mswHandlers,
 		},
+	},
+};
+
+export const AddNewTemplate = {
+	render: renderComponent,
+	args: baseArgs,
+	parameters: {
+		msw: {
+			handlers: mswHandlers,
+		},
+	},
+	play: async ({canvasElement}) => {
+		// Assigns canvas to the component root element
+		const canvas = within(canvasElement);
+		const user = userEvent.setup();
+
+		await user.click(
+			within(canvas.getByText('Submission Stage').closest('th')).getByText(
+				'Add template',
+			),
+		);
 	},
 };
