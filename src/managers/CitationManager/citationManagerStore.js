@@ -1,4 +1,4 @@
-import {computed, onMounted, ref, toRefs} from 'vue';
+import {computed, ref, toRefs} from 'vue';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 import {useDataChanged} from '@/composables/useDataChanged';
 import {useExtender} from '@/composables/useExtender';
@@ -48,69 +48,20 @@ export const useCitationManagerStore = defineComponentStore(
 		/**
 		 * citations metadata lookup
 		 */
-		const currentCitationsMetadataLookup = ref(false);
 		const citationsMetadataLookup = computed(
 			() => publication.value.citationsMetadataLookup,
 		);
-		// todo: not working
-		function citationsMetadataLookupChanged($event) {
-			console.log('event', $event);
-			// return;
-
-			/*
-			// confirm the change event before emitting
-			$event.preventDefault();
-
-			openDialog({
-				title: currentCitationsMetadataLookup.value
-					? t('submission.citations.structured.enableModal.title')
-					: t('submission.citations.structured.disableModal.title'),
-				message: currentCitationsMetadataLookup.value
-					? t('submission.citations.structured.enableModal.confirm')
-					: t('submission.citations.structured.disableModal.confirm'),
-				modalStyle: 'negative',
-				actions: [
-					{
-						label: t('common.ok'),
-						isPrimary: true,
-						callback: async (close) => {
-							// const {apiUrl} = useUrl(apiPathSubmissions);
-							// const {fetch} = useFetch(`${apiUrl.value}/metadataLookup`, {
-							// 	method: 'PUT',
-							// 	body: {
-							// 		citationsMetadataLookup: currentCitationsMetadataLookup.value,
-							// 	},
-							// });
-							// await fetch();
-							// dataUpdateCallback();
-							close();
-						},
-					},
-					{
-						label: t('common.cancel'),
-						isSecondary: true,
-						callback: (close) => {
-							// currentCitationsMetadataLookup.value =
-							// 	!currentCitationsMetadataLookup.value;
-							$event.preventDefault();
-							close();
-						},
-					},
-				],
-				close: () => {},
+		async function citationsMetadataLookupChanged(newValue) {
+			const {apiUrl} = useUrl(apiPathSubmissions);
+			const {fetch} = useFetch(`${apiUrl.value}/metadataLookup`, {
+				method: 'PUT',
+				body: {
+					citationsMetadataLookup: newValue,
+				},
 			});
-			*/
+			await fetch();
+			dataUpdateCallback();
 		}
-
-		onMounted(() => {
-			currentCitationsMetadataLookup.value = !!(
-				publication.value.citationsMetadataLookup ??
-				submission.value.contextCitationsMetadataLookup
-			);
-
-			publication.value.citationsMetadataLookup =
-				currentCitationsMetadataLookup.value;
-		});
 
 		/**
 		 * add new raw citations
@@ -319,7 +270,6 @@ export const useCitationManagerStore = defineComponentStore(
 			apiPathCitations,
 			apiPathSubmissions,
 
-			currentCitationsMetadataLookup,
 			citationsMetadataLookup,
 			citationsMetadataLookupChanged,
 

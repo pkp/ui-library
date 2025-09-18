@@ -1,5 +1,9 @@
 <template>
-	<CitationManagerMetadataLookup />
+	<CitationManagerMetadataLookup
+		:publication="props.publication"
+		:checked="isChecked"
+		@change="change"
+	/>
 	<CitationManagerAddRawCitations />
 	<CitationManagerStatusProcessed
 		v-if="citationStore.citationsMetadataLookup"
@@ -66,7 +70,7 @@
 </template>
 
 <script setup>
-import {useId} from 'vue';
+import {computed, useId} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import PkpButton from '@/frontend/components/PkpButton/PkpButton.vue';
 import PkpTable from '@/components/Table/Table.vue';
@@ -104,4 +108,12 @@ const props = defineProps({
 });
 
 const citationStore = useCitationManagerStore(props);
+
+const isChecked = computed(() => {
+	return citationStore.citationsMetadataLookup;
+});
+
+function change(checked) {
+	citationStore.citationsMetadataLookupChanged(checked);
+}
 </script>
