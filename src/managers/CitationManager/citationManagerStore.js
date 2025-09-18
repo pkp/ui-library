@@ -26,19 +26,15 @@ export const useCitationManagerStore = defineComponentStore(
 		const citationManagerConfig = extender.addFns(useCitationManagerConfig());
 		const columns = computed(() => citationManagerConfig.getColumns());
 		const topItems = computed(() => citationManagerConfig.getTopItems());
-
 		function getItemPrimaryActions(args) {
 			return citationManagerConfig.getItemPrimaryActions(args);
 		}
-
 		function getItemActions(args) {
 			return citationManagerConfig.getItemActions(args);
 		}
 
 		const {submission, publication} = toRefs(props);
-		const citations = computed(() => {
-			return publication.value.citations ?? [];
-		});
+		const citations = computed(() => publication.value.citations ?? []);
 
 		/**
 		 * constants
@@ -70,7 +66,6 @@ export const useCitationManagerStore = defineComponentStore(
 		 */
 		const citationsRawToBeAdded = ref('');
 		const citationsRawShowMessage = ref('');
-
 		async function handleAddCitationsRawToList() {
 			if (!citationsRawToBeAdded.value) {
 				citationsRawShowMessage.value = 'isEmpty';
@@ -84,12 +79,12 @@ export const useCitationManagerStore = defineComponentStore(
 				`${apiUrl.value}/importAdditionalCitations`,
 				{
 					method: 'POST',
-					body: {rawCitations: citationsRawToBeAdded},
+					body: {rawCitations: citationsRawToBeAdded.value},
 				},
 			);
 			citationsRawShowMessage.value = 'isLoading';
 			await fetch();
-			citationsRawToBeAdded.value = data.value.trim();
+			citationsRawToBeAdded.value = data.value?.trim?.() ?? '';
 			citationsRawShowMessage.value = citationsRawToBeAdded.value
 				? 'isPartial'
 				: 'isSuccess';
@@ -102,14 +97,11 @@ export const useCitationManagerStore = defineComponentStore(
 		/**
 		 * status processed citations
 		 */
-		const totalCitations = computed(() => {
-			return citations.value ? citations.value.length : 0;
-		});
-		const processedCitations = computed(() => {
-			return Object.entries(citations.value)
-				.filter(([key, value]) => value['isProcessed'] === true)
-				.map(([key, value]) => ({item: key, c: value})).length;
-		});
+		const totalCitations = computed(() => citations.value?.length ?? 0);
+		const processedCitations = computed(
+			() =>
+				(citations.value || []).filter((c) => c?.isProcessed === true).length,
+		);
 
 		/**
 		 * delete all citations
@@ -182,53 +174,44 @@ export const useCitationManagerStore = defineComponentStore(
 		/**
 		 * Filtered citations and search phrase
 		 */
-		const citationsFiltered = computed(() => {
-			if (searchPhrase.value) {
-				return filterArrayByPhrase(
-					props?.publication?.citations,
-					searchPhrase.value,
-				);
-			} else {
-				return props?.publication?.citations;
-			}
-		});
 		const searchPhrase = ref('');
-
+		const citationsFiltered = computed(() => {
+			const data = citations.value || [];
+			return searchPhrase.value
+				? filterArrayByPhrase(data, searchPhrase.value)
+				: data;
+		});
 		function setSearchPhrase(value) {
 			searchPhrase.value = value;
 		}
-
 		function containsSearchPhrase(obj, phrase) {
 			function deepSearch(value) {
 				if (value === null || value === undefined) return false;
-
 				if (typeof value === 'string') {
-					return value.toLowerCase().includes(phrase.toLowerCase());
+					return value
+						.toLowerCase()
+						.includes(String(phrase ?? '').toLowerCase());
 				}
-
 				if (Array.isArray(value)) {
 					return value.some(deepSearch);
 				}
-
 				if (typeof value === 'object') {
 					return Object.values(value).some(deepSearch);
 				}
-
 				return false;
 			}
-
 			return deepSearch(obj);
 		}
-
 		function filterArrayByPhrase(data, phrase) {
-			return data.filter((item) => containsSearchPhrase(item, phrase));
+			return (Array.isArray(data) ? data : []).filter((item) =>
+				containsSearchPhrase(item, phrase),
+			);
 		}
 
 		/**
 		 * Actions
 		 */
 		const citationManagerActions = useCitationManagerActions();
-
 		function getActionArgs(additionalArgs = {}) {
 			return {
 				submission: props.submission,
@@ -237,21 +220,18 @@ export const useCitationManagerStore = defineComponentStore(
 				...additionalArgs,
 			};
 		}
-
 		function citationEditCitation({citation}) {
 			citationManagerActions.citationEditCitation(
 				getActionArgs({citation}),
 				dataUpdateCallback,
 			);
 		}
-
 		function citationDeleteCitation({citation}) {
 			citationManagerActions.citationDeleteCitation(
 				getActionArgs({citation}),
 				dataUpdateCallback,
 			);
 		}
-
 		function citationReprocessCitation({citation}) {
 			citationManagerActions.citationReprocessCitation(
 				getActionArgs({citation}),

@@ -1,15 +1,15 @@
 <template>
 	<div>
-		<h3 class="leading-6 font-bold">
+		<h3 class="font-bold leading-6">
 			{{ t('submission.citations') }}
 		</h3>
-		<div class="leading-8 py-4">
+		<div class="py-4 leading-6">
 			{{ t('submission.citations.structured.description') }}
 		</div>
 		<div>
 			<textarea
 				v-model="citationStore.citationsRawToBeAdded"
-				class="w-full pt-2 pb-2 leading-8 border border-gray-600 !min-h-18"
+				class="border-gray-600 min-h-20 w-full border p-2"
 			></textarea>
 		</div>
 		<div>
