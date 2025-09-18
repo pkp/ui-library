@@ -9,6 +9,8 @@ import {useFetch} from '@/composables/useFetch';
 import {useCitationManagerConfig} from './useCitationManagerConfig';
 import {useCitationManagerActions} from './useCitationManagerActions';
 
+// todo: canEdit; add raw citations with useForm; localise date/volume
+
 export const useCitationManagerStore = defineComponentStore(
 	'citationManager',
 	(props) => {

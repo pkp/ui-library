@@ -76,7 +76,6 @@
 					</div>
 					<div class="leading-8">
 						<dl>
-							// todo: The strings like Date/Volume etc needs to be localised
 							<dt v-if="citation.date" class="inline">Date:</dt>
 							<dd v-if="citation.date" class="inline">{{ citation.date }}</dd>
 							<dt v-if="citation.volume" class="inline">Volume:</dt>
