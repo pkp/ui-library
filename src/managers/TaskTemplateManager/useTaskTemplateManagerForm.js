@@ -1,9 +1,11 @@
 import {ref} from 'vue';
+import {localize} from '@/utils/i18n';
 import {useForm} from '@/composables/useForm';
 import {useFormChanged} from '@/composables/useFormChanged';
 import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
 
+import TaskTemplateManagerEmails from './TaskTemplateManagerEmails.vue';
 import FileAttacherModal from '@/components/Composer/FileAttacherModal.vue';
 import FieldPreparedContentInsertModal from '@/components/Form/fields/FieldPreparedContentInsertModal.vue';
 
@@ -11,11 +13,26 @@ import preparedContent from '../../mixins/preparedContent';
 
 export function useTaskTemplateManagerForm({
 	taskTemplate = null,
+	stage = null,
 	onCloseFn = () => {},
 	onFinishFn = null,
 } = {}) {
 	const {t} = useLocalize();
 	const isTask = ref(taskTemplate?.type === 'Task');
+
+	const {
+		form,
+		initEmptyForm,
+		addPage,
+		addGroup,
+		set,
+		setValue,
+		addFieldText,
+		addFieldOptions,
+		addFieldRichTextArea,
+		addFieldSelect,
+		addFieldCheckbox,
+	} = useForm({}, {customSubmit: handleFormSubmission});
 
 	async function handleFormSubmission(formData) {
 		// return result to Form component handler
@@ -93,6 +110,42 @@ export function useTaskTemplateManagerForm({
 		];
 	}
 
+	function onSelectEmailTemplate(emailTemplate) {
+		const content = localize(emailTemplate?.body);
+		if (!content) return;
+
+		if (!taskTemplate) {
+			setValue('discussionText', content);
+			return;
+		}
+
+		// When editing, confirm overriding the discussion text with the selected email template
+		const {openDialog} = useModal();
+		openDialog({
+			name: 'selectTemplate',
+			title: t('taskTemplate.apply'),
+			message: t('taskTemplates.confirmEmailTemplate'),
+			actions: [
+				{
+					label: t('common.yes', {}),
+					isWarnable: true,
+					callback: async (close) => {
+						setValue('discussionText', content);
+						close();
+					},
+				},
+				{
+					label: t('common.no', {}),
+					callback: (close) => {
+						close();
+					},
+				},
+			],
+			close: () => {},
+			modalStyle: 'negative',
+		});
+	}
+
 	function initDiscussionText() {
 		return {
 			setup: (editor) => {
@@ -127,19 +180,6 @@ export function useTaskTemplateManagerForm({
 			},
 		};
 	}
-
-	const {
-		form,
-		initEmptyForm,
-		addPage,
-		addGroup,
-		set,
-		addFieldText,
-		addFieldOptions,
-		addFieldRichTextArea,
-		addFieldSelect,
-		addFieldCheckbox,
-	} = useForm({}, {customSubmit: handleFormSubmission});
 
 	initEmptyForm('taskTemplate', {
 		showErrorFooter: false,
@@ -189,6 +229,7 @@ export function useTaskTemplateManagerForm({
 
 	addFieldSelect('taskInfoDueDate', {
 		groupId: 'taskInformation',
+		label: t('common.dueDate'),
 		name: 'taskInfoDueDate',
 		showWhen: 'taskInfoAdd',
 		value: isTask.value ? taskTemplate?.dueDate : null,
@@ -197,8 +238,16 @@ export function useTaskTemplateManagerForm({
 	});
 
 	addGroup('discussion', {
-		label: t('submission.discussion'),
+		label: t('discussion.name'),
 		description: t('discussion.form.discussionDescription'),
+		groupComponent: {
+			component: TaskTemplateManagerEmails,
+			props: {
+				stage,
+				taskTemplate,
+				onSelectEmailTemplate,
+			},
+		},
 	});
 
 	addFieldRichTextArea('discussionText', {

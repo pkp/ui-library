@@ -1111,6 +1111,8 @@ window.pkp = {
 			'Are you sure you want this task/discussion template to be automatically added when a submission reaches the {$stage}?',
 		'taskTemplates.confirmAutoAddDisable':
 			'Are you sure you want to stop automatically adding this task/discussion template when a submission reaches the {$stage}?',
+		'taskTemplates.confirmEmailTemplate':
+			'Applying this email template will replace the discussion text in the form. The changes will not be saved unless you choose to save. Do you want to continue?',
 		'taskTemplates.edit': 'Edit Task and Discussion Template',
 		'taskTemplates.dueDateFromCreationDate':
 			'{$dueDate} from the creation date',
