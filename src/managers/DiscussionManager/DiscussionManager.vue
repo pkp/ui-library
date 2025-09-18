@@ -44,7 +44,7 @@
 						"
 					>
 						<TableRow>
-							<TableColGroup>
+							<TableColGroup class="py-4">
 								<Icon
 									:icon="itemStatus.icon"
 									class="h-5 w-5"
