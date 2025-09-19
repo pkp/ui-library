@@ -16,43 +16,51 @@ const baseArgs = {
 	templates: [
 		...TemplatesDataMock,
 		getTemplate({
+			id: 4,
 			name: 'Ethical Approval',
 			stageId: 'Submission',
 			participantRoles: [65536],
 			dueDate: 'P3M',
 		}),
 		getTemplate({
+			id: 5,
 			name: 'Adherence to Policy and Guidelines',
 			stageId: 'Submission',
 			autoAdd: false,
 		}),
-		getTemplate({name: 'Language Review', stageId: 'Submission'}),
+		getTemplate({id: 6, name: 'Language Review', stageId: 'Submission'}),
 		getTemplate({
+			id: 7,
 			name: 'Analysis of the Method',
 			stageId: 'Submission',
 			autoAdd: false,
 		}),
-		getTemplate({name: 'Lorem ipsum dolor sit amet', stageId: 'Review'}),
+		getTemplate({id: 8, name: 'Lorem ipsum dolor sit amet', stageId: 'Review'}),
 		getTemplate({
+			id: 9,
 			name: 'Consectetur adipiscing elit',
 			stageId: 'Review',
 			autoAdd: false,
 		}),
 		getTemplate({
+			id: 10,
 			name: 'Sed do eiusmod tempor incididunt ut',
 			stageId: 'Copyediting',
 			autoAdd: false,
 		}),
 		getTemplate({
+			id: 11,
 			name: 'labore et dolore magna aliqua',
 			stageId: 'Production',
 		}),
 		getTemplate({
+			id: 12,
 			name: 'Ut enim ad minim veniam',
 			stageId: 'Production',
 			autoAdd: false,
 		}),
 		getTemplate({
+			id: 13,
 			name: 'Quis nostrud exercitation ullamco',
 			stageId: 'Production',
 			autoAdd: false,
