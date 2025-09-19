@@ -15,7 +15,6 @@ export function useTaskTemplateManagerForm({
 	taskTemplate = null,
 	stage = null,
 	onCloseFn = () => {},
-	onFinishFn = null,
 } = {}) {
 	const {t} = useLocalize();
 	const isTask = ref(taskTemplate?.type === 'Task');
