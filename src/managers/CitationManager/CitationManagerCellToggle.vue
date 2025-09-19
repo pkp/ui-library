@@ -10,7 +10,7 @@
 
 <script setup>
 import {computed} from 'vue';
-import {useCitationManagerStore} from '.§citationManagerStore';
+import {useCitationManagerStore} from './citationManagerStore';
 import TableCellTreeExpand from '@/components/Table/TableCellTreeExpand.vue';
 
 const props = defineProps({
