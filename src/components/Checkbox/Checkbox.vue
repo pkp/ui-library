@@ -1,6 +1,6 @@
 <template>
 	<label
-		class="flex select-none items-center text-base-normal"
+		class="text-base flex select-none items-center"
 		:class="{'w-5': !label}"
 	>
 		<input

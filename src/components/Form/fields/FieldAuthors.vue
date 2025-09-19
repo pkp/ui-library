@@ -57,7 +57,7 @@
 						/>
 					</TableCell>
 					<TableCell>
-						<PkpButton :is-link="true" @click="deleteRow(index)">
+						<PkpButton :is-link="true" :is-warnable="true" @click="deleteRow(index)">
 							{{ t('common.delete', []) }}
 						</PkpButton>
 					</TableCell>
