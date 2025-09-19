@@ -942,6 +942,10 @@ export const PublicationConfig = {
 			pageInitConfig,
 			permissions,
 		}) => {
+			selectedPublication.citationsMetadataLookup =
+				selectedPublication.citationsMetadataLookup ??
+				submission.contextCitationsMetadataLookup ??
+				false;
 			return [
 				{
 					component: 'CitationManager',
@@ -949,7 +953,7 @@ export const PublicationConfig = {
 						submission: submission,
 						publication: selectedPublication,
 						canEdit: permissions.canEditPublication,
-                        componentForms: pageInitConfig.componentForms,
+						componentForms: pageInitConfig.componentForms,
 					},
 				},
 			];

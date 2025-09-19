@@ -396,17 +396,21 @@ export const PublicationConfig = {
 			pageInitConfig,
 			permissions,
 		}) => {
+			selectedPublication.citationsMetadataLookup =
+				selectedPublication.citationsMetadataLookup ??
+				submission.contextCitationsMetadataLookup ??
+				false;
 			return [
-                {
-                    component: 'CitationManager',
-                    props: {
-                        submission: submission,
-                        publication: selectedPublication,
-                        canEdit: permissions.canEditPublication,
-                        componentForms: pageInitConfig.componentForms,
-                    },
-                },
-            ];
+				{
+					component: 'CitationManager',
+					props: {
+						submission: submission,
+						publication: selectedPublication,
+						canEdit: permissions.canEditPublication,
+						componentForms: pageInitConfig.componentForms,
+					},
+				},
+			];
 		},
 	},
 	galleys: {
