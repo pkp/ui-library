@@ -1,16 +1,16 @@
 <template>
-		<TableCellTreeExpand
-			:is-displayed="
-				citationStore.citationsMetadataLookup && citation.isStructured
-			"
-			:is-expanded="citationStore.isExpanded(citation)"
-			@toggle="citationStore.toggleItemExpansion(citation)"
-		></TableCellTreeExpand>
+	<TableCellTreeExpand
+		:is-displayed="
+			citationStore.citationsMetadataLookup && citation.isStructured
+		"
+		:is-expanded="citationStore.isExpanded(citation)"
+		@toggle="citationStore.toggleItemExpansion(citation)"
+	></TableCellTreeExpand>
 </template>
 
 <script setup>
 import {computed} from 'vue';
-import {useCitationManagerStore} from '@/managers/CitationManager/citationManagerStore';
+import {useCitationManagerStore} from '.§citationManagerStore';
 import TableCellTreeExpand from '@/components/Table/TableCellTreeExpand.vue';
 
 const props = defineProps({

@@ -8,7 +8,7 @@
 <script setup>
 import {useLocalize} from '@/composables/useLocalize';
 import PkpSearch from '@/components/Search/Search.vue';
-import {useCitationManagerStore} from '@/managers/CitationManager/citationManagerStore';
+import {useCitationManagerStore} from './citationManagerStore';
 
 const {t} = useLocalize();
 

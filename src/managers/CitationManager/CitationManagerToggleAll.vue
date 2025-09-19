@@ -15,7 +15,7 @@
 
 <script setup>
 import {useLocalize} from '@/composables/useLocalize';
-import {useCitationManagerStore} from '@/managers/CitationManager/citationManagerStore';
+import {useCitationManagerStore} from './citationManagerStore';
 
 const {t} = useLocalize();
 

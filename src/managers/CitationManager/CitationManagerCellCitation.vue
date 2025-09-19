@@ -71,13 +71,13 @@
 							</li>
 						</ul>
 					</div>
-					<div v-if="citation.sourceName">
-						{{ citation.sourceName }}
-					</div>
+					<div v-if="citation.sourceName">{{ citation.sourceName }}</div>
 					<div class="leading-8">
 						<dl>
-							<dt v-if="citation.date" class="inline">Date:</dt>
-							<dd v-if="citation.date" class="inline">{{ citation.date }}</dd>
+							<dt v-if="citation.dateToDisplay" class="inline">Date:</dt>
+							<dd v-if="citation.dateToDisplay" class="inline">
+								{{ citation.dateToDisplay }}
+							</dd>
 							<dt v-if="citation.volume" class="inline">Volume:</dt>
 							<dd v-if="citation.volume" class="inline">
 								{{ citation.volume }}
@@ -88,8 +88,7 @@
 								Pages:
 							</dt>
 							<dd v-if="citation.firstPage && citation.lastPage" class="inline">
-								{{ citation.firstPage }} -
-								{{ citation.lastPage }}
+								{{ citation.firstPage }} - {{ citation.lastPage }}
 							</dd>
 						</dl>
 					</div>
@@ -136,7 +135,7 @@ import Badge from '@/components/Badge/Badge.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import TableCell from '@/components/Table/TableCell.vue';
 import Icon from '@/components/Icon/Icon.vue';
-import {useCitationManagerStore} from '@/managers/CitationManager/citationManagerStore';
+import {useCitationManagerStore} from './citationManagerStore';
 
 const {t} = useLocalize();
 
