@@ -1,7 +1,7 @@
 <template>
-	<a
+	<PkpButton
 		v-if="citationStore.citationsMetadataLookup"
-		class="cursor-pointer"
+		:is-link="true"
 		@click="citationStore.toggleAllItemsExpansion"
 	>
 		{{
@@ -9,12 +9,13 @@
 				? t('submission.citations.structured.collapseAll')
 				: t('submission.citations.structured.expandAll')
 		}}
-	</a>
+	</PkpButton>
 	<span v-else>&nbsp;</span>
 </template>
 
 <script setup>
 import {useLocalize} from '@/composables/useLocalize';
+import PkpButton from '@/components/Button/Button.vue';
 import {useCitationManagerStore} from './citationManagerStore';
 
 const {t} = useLocalize();
