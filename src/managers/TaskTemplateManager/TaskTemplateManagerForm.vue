@@ -37,10 +37,6 @@ const props = defineProps({
 		type: Function,
 		default: () => () => {},
 	},
-	onFinishFn: {
-		type: Function,
-		default: () => async () => {},
-	},
 });
 
 const {form, set} = useTaskTemplateManagerForm(props);

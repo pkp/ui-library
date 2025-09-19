@@ -20,11 +20,16 @@ export function useTaskTemplateActions() {
 			closeSideModal(TaskTemplateManagerForm);
 		}
 
-		openSideModal(TaskTemplateManagerForm, {
-			stage,
-			onCloseFn,
-			onFinishFn: finishedCallback,
-		});
+		openSideModal(
+			TaskTemplateManagerForm,
+			{
+				stage,
+				onCloseFn,
+			},
+			{
+				onClose: finishedCallback,
+			},
+		);
 	}
 
 	function templateEdit({taskTemplate}, finishedCallback) {
@@ -34,11 +39,16 @@ export function useTaskTemplateActions() {
 			closeSideModal(TaskTemplateManagerForm);
 		}
 
-		openSideModal(TaskTemplateManagerForm, {
-			taskTemplate,
-			onCloseFn,
-			onFinishFn: finishedCallback,
-		});
+		openSideModal(
+			TaskTemplateManagerForm,
+			{
+				taskTemplate,
+				onCloseFn,
+			},
+			{
+				onClose: finishedCallback,
+			},
+		);
 	}
 
 	function templateDelete({taskTemplate}, finishedCallback) {
