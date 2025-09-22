@@ -28,7 +28,6 @@ export function useDiscussionManagerForm(
 		workItem,
 		autoAddTaskDetails = false,
 		onCloseFn = () => {},
-		onFinishFn = null,
 	} = {},
 	{inDisplayMode = false} = {},
 ) {
@@ -486,10 +485,6 @@ export function useDiscussionManagerForm(
 		if (workItem && newMessage.value) {
 			// check if there is message
 			await addNewMessage();
-		}
-
-		if (typeof onFinishFn === 'function' || updateOnDisplayMode) {
-			await onFinishFn();
 		}
 
 		if (result.isSuccess) {

@@ -29,13 +29,18 @@ export function useDiscussionManagerActions() {
 			closeSideModal(DiscussionManagerFormDisplay);
 		}
 
-		openSideModal(DiscussionManagerFormDisplay, {
-			workItem,
-			submission,
-			submissionStageId,
-			onCloseFn,
-			onFinishFn: finishedCallback,
-		});
+		openSideModal(
+			DiscussionManagerFormDisplay,
+			{
+				workItem,
+				submission,
+				submissionStageId,
+				onCloseFn,
+			},
+			{
+				onClose: finishedCallback,
+			},
+		);
 	}
 
 	function discussionAdd(
@@ -48,12 +53,17 @@ export function useDiscussionManagerActions() {
 			closeSideModal(DiscussionManagerForm);
 		}
 
-		openSideModal(DiscussionManagerForm, {
-			submission,
-			submissionStageId,
-			onCloseFn,
-			onFinishFn: finishedCallback,
-		});
+		openSideModal(
+			DiscussionManagerForm,
+			{
+				submission,
+				submissionStageId,
+				onCloseFn,
+			},
+			{
+				onClose: finishedCallback,
+			},
+		);
 	}
 
 	function discussionSearch({workItem, submission}, finishedCallback) {
@@ -89,15 +99,20 @@ export function useDiscussionManagerActions() {
 			closeSideModal(DiscussionManagerForm);
 		}
 
-		openSideModal(DiscussionManagerForm, {
-			status: workItem.status,
-			submission,
-			submissionStageId,
-			workItem,
-			autoAddTaskDetails,
-			onCloseFn,
-			onFinishFn: finishedCallback,
-		});
+		openSideModal(
+			DiscussionManagerForm,
+			{
+				status: workItem.status,
+				submission,
+				submissionStageId,
+				workItem,
+				autoAddTaskDetails,
+				onCloseFn,
+			},
+			{
+				onClose: finishedCallback,
+			},
+		);
 	}
 
 	function discussionDelete({workItem, submission}, finishedCallback) {
