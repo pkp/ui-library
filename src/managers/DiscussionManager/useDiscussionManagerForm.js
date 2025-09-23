@@ -10,7 +10,7 @@ import {useCurrentUser} from '@/composables/useCurrentUser';
 import {useParticipantManagerStore} from '../ParticipantManager/participantManagerStore';
 import {useSubmission} from '@/composables/useSubmission';
 import {useTasksAndDiscussionsStore} from '@/pages/tasksAndDiscussions/tasksAndDiscussionsStore';
-import {useDiscussionMessagesStore} from './discussionMessagesStore';
+import {useDiscussionMessages} from './useDiscussionMessages';
 import {
 	useDiscussionManagerStatusUpdater,
 	statusUpdates,
@@ -37,7 +37,7 @@ export function useDiscussionManagerForm(
 		submission,
 		submissionStageId,
 	});
-	const discussionMessagesStore = useDiscussionMessagesStore();
+	const {messageFieldOptions} = useDiscussionMessages();
 	const {updateStatus, startWorkItem} = useDiscussionManagerStatusUpdater(
 		submission.id,
 	);
@@ -353,6 +353,23 @@ export function useDiscussionManagerForm(
 		);
 	}
 
+	function addMessagesComponent(workItemData, {override = false} = {}) {
+		addFieldComponent(
+			'messagesComponent',
+			{
+				component: DiscussionMessages,
+				componentProps: {
+					submission,
+					workItem: workItemData,
+					inDisplayMode,
+					onNewMessage,
+				},
+				groupId: 'discussion',
+			},
+			{override},
+		);
+	}
+
 	function mapParticipantsBody(formData) {
 		if (!formData.participants) return [];
 
@@ -379,6 +396,7 @@ export function useDiscussionManagerForm(
 			stageId: submissionStageId,
 			dateDue: isTaskType ? formData.taskInfoDueDate : undefined,
 			participants: mapParticipantsBody(formData),
+			description: formData.discussionText,
 		};
 
 		let taskUrl = `submissions/${submission.id}/tasks`;
@@ -584,22 +602,14 @@ export function useDiscussionManagerForm(
 
 	addDiscussionGroup(workItem);
 
-	if (workItemStatus === 'New') {
+	if (!inDisplayMode) {
 		addFieldRichTextArea('discussionText', {
 			groupId: 'discussion',
-			...discussionMessagesStore.messageFieldOptions,
+			...messageFieldOptions,
+			value: workItem?.notes?.[0]?.contents,
 		});
 	} else {
-		addFieldComponent('messagesComponent', {
-			component: DiscussionMessages,
-			componentProps: {
-				submission,
-				discussion: workItem,
-				inDisplayMode,
-				onNewMessage,
-			},
-			groupId: 'discussion',
-		});
+		addMessagesComponent(workItem);
 	}
 
 	const badgeProps = getBadgeProps(status);
@@ -621,6 +631,7 @@ export function useDiscussionManagerForm(
 
 		addTaskInfoGroup(newWorkItem, {override: true});
 		addDiscussionGroup(newWorkItem, {override: true});
+		addMessagesComponent(newWorkItem, {override: true});
 
 		setInitialState(form, additionalFields);
 	}
