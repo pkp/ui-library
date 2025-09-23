@@ -1,21 +1,18 @@
 <template>
 	<div class="flex flex-col gap-y-6">
 		<ul class="flex flex-col gap-y-6">
-			<li
-				v-for="message in discussionMessagesStore.discussionMessages"
-				:key="message.id"
-			>
+			<li v-for="note in workItem.notes" :key="note.id">
 				<p class="flex justify-between border border-light bg-tertiary p-3">
 					<span class="text-lg-bold">
-						{{ t('discussion.messageFrom', {from: message.email}) }}
+						{{ t('discussion.messageFrom', {from: note.createdByUsername}) }}
 					</span>
 					<span class="text-lg-normal">
-						{{ formatShortDateTime(message.createdAt) }}
+						{{ formatShortDateTime(note.dateCreated) }}
 					</span>
 				</p>
-				<p class="border border-t-0 border-light p-6">
+				<p class="border border-t-0 border-light p-4">
 					<span
-						v-strip-unsafe-html="message.discussionText"
+						v-strip-unsafe-html="note.contents"
 						class="semantic-defaults"
 					></span>
 				</p>
@@ -33,7 +30,7 @@
 		</div>
 		<div v-if="toggleMessageForm">
 			<FieldRichTextarea
-				v-bind="discussionMessagesStore.messageFieldOptions"
+				v-bind="messageFieldOptions"
 				id="newMessage"
 				name="newMessage"
 				group-id="discussion"
@@ -49,7 +46,7 @@
 import {ref} from 'vue';
 import {t} from '@/utils/i18n';
 import {useDate} from '@/composables/useDate';
-import {useDiscussionMessagesStore} from './discussionMessagesStore';
+import {useDiscussionMessages} from './useDiscussionMessages';
 
 import PkpButton from '@/components/Button/Button.vue';
 import FieldRichTextarea from '@/components/Form/fields/FieldRichTextarea.vue';
@@ -57,14 +54,14 @@ import FieldRichTextarea from '@/components/Form/fields/FieldRichTextarea.vue';
 const emit = defineEmits(['newMessage']);
 const {formatShortDateTime} = useDate();
 const toggleMessageForm = ref(false);
-const discussionMessagesStore = useDiscussionMessagesStore();
+const {messageFieldOptions} = useDiscussionMessages();
 
 defineProps({
 	submission: {
 		type: Object,
 		required: true,
 	},
-	discussion: {
+	workItem: {
 		type: Object,
 		required: true,
 	},
