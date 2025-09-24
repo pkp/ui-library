@@ -1,4 +1,5 @@
 import {deepMerge} from './mockHelpers';
+import {TemplatesDataMock} from './taskDiscussionTemplates';
 
 const CommonDefaults = {
 	id: 1,
@@ -36,6 +37,16 @@ const CommonDefaults = {
 			roles: [],
 		},
 	],
+	notes: [
+		{
+			id: 1,
+			userId: 1,
+			contents: TemplatesDataMock[0]?.content,
+			createdByName: 'Test',
+			createdByUsername: 'test',
+			dateCreated: '2025-03-06 06:01:17',
+		},
+	],
 
 	activities: ['Task created by kkarina on 2025-03-06'],
 	startedBy: 'Kaja Karina (kkarina)',
@@ -63,6 +74,16 @@ export const DiscussionsDataMock = [
 		type: 2,
 		dateStarted: '2025-08-01',
 		closed: false,
+		notes: [
+			{
+				id: 1,
+				userId: 1,
+				contents: TemplatesDataMock[1]?.content,
+				createdByName: 'Test',
+				createdByUsername: 'test',
+				dateCreated: '2025-03-06 06:01:17',
+			},
+		],
 	},
 	{
 		...CommonDefaults,
@@ -99,6 +120,16 @@ export const DiscussionsDataMock = [
 		status: 2,
 		dateDue: '2035-04-01',
 		type: 1,
+		notes: [
+			{
+				id: 1,
+				userId: 1,
+				contents: TemplatesDataMock[2]?.content,
+				createdByName: 'Test',
+				createdByUsername: 'test',
+				dateCreated: '2025-03-06 06:01:17',
+			},
+		],
 	},
 	{
 		...CommonDefaults,
