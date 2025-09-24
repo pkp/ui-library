@@ -443,8 +443,28 @@ export function useDiscussionManagerForm(
 	}
 
 	async function addNewMessage() {
-		console.log('add new message');
-		return {};
+		const {apiUrl: addNoteUrl} = useUrl(
+			`submissions/${submission.id}/tasks/${workItem.id}/notes`,
+		);
+
+		const {
+			fetch,
+			data: noteData,
+			validationError,
+			isSuccess,
+		} = useFetch(addNoteUrl, {
+			method: 'POST',
+			body: {contents: newMessage.value},
+			expectValidationError: true,
+		});
+
+		await fetch();
+
+		return {
+			data: noteData.value,
+			validationError: validationError.value,
+			isSuccess: isSuccess.value,
+		};
 	}
 
 	// Update the work item status: start, close, or open
@@ -500,9 +520,9 @@ export function useDiscussionManagerForm(
 			}
 		}
 
-		if (workItem && newMessage.value) {
-			// check if there is message
-			await addNewMessage();
+		// save the note if there is a new message
+		if (workItem && inDisplayMode && newMessage.value) {
+			result = await addNewMessage();
 		}
 
 		if (result.isSuccess) {
@@ -607,6 +627,7 @@ export function useDiscussionManagerForm(
 			groupId: 'discussion',
 			...messageFieldOptions,
 			value: workItem?.notes?.[0]?.contents,
+			isRequired: true,
 		});
 	} else {
 		addMessagesComponent(workItem);
