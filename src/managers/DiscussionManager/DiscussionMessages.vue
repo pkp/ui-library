@@ -21,6 +21,7 @@
 
 		<div>
 			<PkpButton
+				v-if="hasAccessToAddMessage"
 				:is-active="toggleMessageForm"
 				:is-disabled="toggleMessageForm"
 				@click="addMessage"
@@ -43,10 +44,11 @@
 </template>
 
 <script setup>
-import {ref} from 'vue';
+import {ref, computed} from 'vue';
 import {t} from '@/utils/i18n';
 import {useDate} from '@/composables/useDate';
 import {useDiscussionMessages} from './useDiscussionMessages';
+import {useCurrentUser} from '@/composables/useCurrentUser';
 
 import PkpButton from '@/components/Button/Button.vue';
 import FieldRichTextarea from '@/components/Form/fields/FieldRichTextarea.vue';
@@ -55,8 +57,9 @@ const emit = defineEmits(['newMessage']);
 const {formatShortDateTime} = useDate();
 const toggleMessageForm = ref(false);
 const {messageFieldOptions} = useDiscussionMessages();
+const {getCurrentUserId} = useCurrentUser();
 
-defineProps({
+const props = defineProps({
 	submission: {
 		type: Object,
 		required: true,
@@ -82,4 +85,10 @@ function addMessage() {
 function fieldChanged(name, prop, newVal, localeKey) {
 	emit('newMessage', newVal);
 }
+
+const hasAccessToAddMessage = computed(() =>
+	props.workItem.participants?.find(
+		(particpant) => particpant.userId === getCurrentUserId(),
+	),
+);
 </script>
