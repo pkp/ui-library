@@ -48,7 +48,9 @@ export function useDiscussionManagerForm(
 	const isTask = ref(workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK);
 	const isClosed = workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED;
 	const statusUpdateValue = ref(isClosed);
-	let updateOnDisplayMode = false;
+	let updateStatusInViewMode = false;
+	let sendNewMessage = false;
+	const newMessageError = ref(null);
 	const initialStatusUpdateVal = isClosed;
 
 	const newMessage = ref(null);
@@ -271,12 +273,20 @@ export function useDiscussionManagerForm(
 	}
 
 	function onUpdateStatusCheckbox(val) {
-		updateOnDisplayMode = initialStatusUpdateVal !== val;
+		updateStatusInViewMode = initialStatusUpdateVal !== val;
 		statusUpdateValue.value = val;
+		toggleSaveBtnOnDisplayMode();
 	}
 
-	function onNewMessage(val) {
+	function onNewMessage() {
+		sendNewMessage = true;
+		toggleSaveBtnOnDisplayMode();
+	}
+
+	function onNewMessageChanged(val) {
 		newMessage.value = val;
+		newMessageError.value = null;
+		toggleSaveBtnOnDisplayMode();
 	}
 
 	function addTaskInfoGroup(workItemData, {override = false} = {}) {
@@ -362,12 +372,27 @@ export function useDiscussionManagerForm(
 					submission,
 					workItem: workItemData,
 					inDisplayMode,
+					onNewMessageChanged,
 					onNewMessage,
+					newMessageError,
 				},
 				groupId: 'discussion',
 			},
 			{override},
 		);
+	}
+
+	// This function updates the Save button state in display mode
+	function toggleSaveBtnOnDisplayMode() {
+		if (!inDisplayMode) return;
+
+		const hasValidMessage = !newMessageError.value;
+		const hasChanges =
+			updateStatusInViewMode || sendNewMessage || newMessage.value;
+
+		set(formId, {
+			canSubmit: hasValidMessage && hasChanges,
+		});
 	}
 
 	function mapParticipantsBody(formData) {
@@ -472,7 +497,7 @@ export function useDiscussionManagerForm(
 		if (!workItemId) return;
 		let status;
 
-		if (workItem && inDisplayMode && updateOnDisplayMode) {
+		if (workItem && inDisplayMode && updateStatusInViewMode) {
 			switch (workItem.status) {
 				case pkp.const.EDITORIAL_TASK_STATUS_PENDING:
 					status = statusUpdates.start;
@@ -503,6 +528,16 @@ export function useDiscussionManagerForm(
 		return await updateStatus(workItemId, status);
 	}
 
+	// manually validate the new message field in display mode, since it doesn't use the standard form component.
+	function validateNewMessage() {
+		const isInvalid = sendNewMessage && !newMessage.value;
+		newMessageError.value = isInvalid ? [t('validator.filled')] : null;
+
+		toggleSaveBtnOnDisplayMode();
+
+		return !isInvalid;
+	}
+
 	async function handleFormSubmission(formData) {
 		let result = {
 			data: {},
@@ -511,6 +546,9 @@ export function useDiscussionManagerForm(
 		};
 
 		if (inDisplayMode) {
+			// manually validate the new message field since display mode doesn't use the standard form component
+			if (!validateNewMessage()) return;
+
 			result = (await updateWorkItemStatus(workItem?.id)) ?? result;
 		} else {
 			if (workItem) {
@@ -622,15 +660,15 @@ export function useDiscussionManagerForm(
 
 	addDiscussionGroup(workItem);
 
-	if (!inDisplayMode) {
+	if (inDisplayMode) {
+		addMessagesComponent(workItem);
+	} else {
 		addFieldRichTextArea('discussionText', {
 			groupId: 'discussion',
 			...messageFieldOptions,
 			value: workItem?.notes?.[0]?.contents,
 			isRequired: true,
 		});
-	} else {
-		addMessagesComponent(workItem);
 	}
 
 	const badgeProps = getBadgeProps(status);

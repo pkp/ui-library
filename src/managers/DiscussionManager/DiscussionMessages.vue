@@ -39,6 +39,10 @@
 				:form-id="formId"
 				@change="fieldChanged"
 			></FieldRichTextarea>
+			<FieldError
+				v-if="newMessageError && newMessageError.length"
+				:messages="newMessageError"
+			/>
 		</div>
 	</div>
 </template>
@@ -52,8 +56,9 @@ import {useCurrentUser} from '@/composables/useCurrentUser';
 
 import PkpButton from '@/components/Button/Button.vue';
 import FieldRichTextarea from '@/components/Form/fields/FieldRichTextarea.vue';
+import FieldError from '@/components/Form/FieldError.vue';
 
-const emit = defineEmits(['newMessage']);
+const emit = defineEmits(['newMessage', 'newMessageChanged']);
 const {formatShortDateTime} = useDate();
 const toggleMessageForm = ref(false);
 const {messageFieldOptions} = useDiscussionMessages();
@@ -76,14 +81,19 @@ const props = defineProps({
 		type: String,
 		required: true,
 	},
+	newMessageError: {
+		type: String,
+		default: () => null,
+	},
 });
 
 function addMessage() {
 	toggleMessageForm.value = true;
+	emit('newMessage');
 }
 
 function fieldChanged(name, prop, newVal, localeKey) {
-	emit('newMessage', newVal);
+	emit('newMessageChanged', newVal);
 }
 
 const hasAccessToAddMessage = computed(() =>
