@@ -415,7 +415,7 @@ window.pkp = {
 		'discussion.form.detailsDescription':
 			'Use this space to share essential information.',
 		'discussion.form.detailsNameDescription':
-			'Please enter the name for this task and discussion.',
+			'Please enter the name for the task and discussion.',
 		'discussion.form.detailsParticipantsDescription':
 			'You have the option to assign participants or allocate it solely to yourself.',
 		'discussion.form.discussionDescription':
@@ -924,7 +924,7 @@ window.pkp = {
 		'submissions.incomplete': 'Incomplete',
 		'taskTemplate.apply': 'Apply Template',
 		'taskTemplate.applyConfirmation':
-			"Applying this template will replace data in related fields on the form. These changes won't be saved unless you choose to save. Continue?",
+			"Applying this template will replace information in related fields on the form. These changes won't be saved unless you choose to save. Continue?",
 
 		'task.closeThisTask': 'Close this Task',
 		'task.startedBy': 'Task started by',
