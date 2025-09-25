@@ -199,9 +199,11 @@ export default {
 				cancelLabel: this.__('common.no'),
 				modalName: 'delete',
 				title: this.deleteAnnouncementLabel,
-				message: this.replaceLocaleParams(this.confirmDeleteMessage, {
-					title: this.localize(announcement.title)
-				}),
+				message: this.replaceLocaleParams(
+					this.confirmDeleteMessage,
+					{title: this.localize(announcement.title)},
+					{htmlEscaping: true}
+				),
 				callback: () => {
 					var self = this;
 					$.ajax({

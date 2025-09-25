@@ -146,11 +146,20 @@ export default {
 		 *
 		 * @param {String} str String to replace params in
 		 * @param {Object} params Key/value hash of params to replace
+		 * @param {Object} [options={}]
+		 * @param {boolean} [options.htmlEscaping=false] - Set to `true` to escape HTML content in param values.
 		 * @return {String}
 		 */
-		replaceLocaleParams(str, params) {
+		replaceLocaleParams(str, params, options = {}) {
+			const {htmlEscaping} = options;
+
 			for (var param in params) {
 				let value = params[param];
+				if (htmlEscaping) {
+					var p = document.createElement('p');
+					p.innerText = value;
+					value = p.innerHTML;
+				}
 				// If a locale object is passed, take the value from the current locale
 				if (value === Object(value)) {
 					value = this.localize(value);
