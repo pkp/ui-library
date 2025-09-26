@@ -63,6 +63,7 @@ export function useDiscussionManagerForm(
 		addGroup,
 		set,
 		setValue,
+		setCanSubmit,
 		getField,
 		addFieldText,
 		addFieldOptions,
@@ -390,9 +391,7 @@ export function useDiscussionManagerForm(
 		const hasChanges =
 			updateStatusInViewMode || sendNewMessage || newMessage.value;
 
-		set(formId, {
-			canSubmit: hasValidMessage && hasChanges,
-		});
+		setCanSubmit(hasValidMessage && hasChanges);
 	}
 
 	function mapParticipantsBody(formData) {
@@ -573,6 +572,7 @@ export function useDiscussionManagerForm(
 
 	initEmptyForm(formId, {
 		showErrorFooter: false,
+		canSubmit: !inDisplayMode,
 	});
 
 	addPage('default', {
