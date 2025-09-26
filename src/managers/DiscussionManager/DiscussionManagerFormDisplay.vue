@@ -99,8 +99,6 @@ const {form, set, badgeProps, refreshFormData} = useDiscussionManagerForm(
 	},
 );
 
-set('discussionDisplay', {canSubmit: false});
-
 function editForm() {
 	discussionManagerActions.discussionEdit(
 		{
