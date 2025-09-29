@@ -31,7 +31,8 @@ export function useDiscussionManagerForm(
 	} = {},
 	{inDisplayMode = false, refetchData = null} = {},
 ) {
-	const workItemStatus = workItem?.status || status;
+	const workItemRef = ref(workItem);
+	const workItemStatus = workItemRef.value?.status || status;
 	const {t} = useLocalize();
 	const participantManagerStore = useParticipantManagerStore({
 		submission,
@@ -45,8 +46,11 @@ export function useDiscussionManagerForm(
 
 	const currentUser = useCurrentUser();
 	const {getRelativeTargetDate} = useDate();
-	const isTask = ref(workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK);
-	const isClosed = workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED;
+	const isTask = ref(
+		workItemRef.value?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
+	);
+	const isClosed =
+		workItemRef.value?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED;
 	const statusUpdateValue = ref(isClosed);
 	let updateStatusInViewMode = false;
 	let sendNewMessage = false;
@@ -177,9 +181,9 @@ export function useDiscussionManagerForm(
 
 		// check if overdue
 		const isOverdue =
-			workItem?.dateDue &&
-			!workItem?.dateClosed &&
-			new Date(workItem.dateDue) < new Date();
+			workItemRef.value?.dateDue &&
+			!workItemRef.value?.dateClosed &&
+			new Date(workItemRef.value.dateDue) < new Date();
 		if (
 			workItemStatus === pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS &&
 			isOverdue
@@ -243,7 +247,7 @@ export function useDiscussionManagerForm(
 	}
 
 	function onSelectTemplate(template) {
-		if (!workItem?.id) {
+		if (!workItemRef.value?.id) {
 			return setValuesFromTemplate(template);
 		}
 
@@ -322,7 +326,7 @@ export function useDiscussionManagerForm(
 				description: t('discussion.form.taskInfoDueDateDescription'),
 				size: 'normal',
 				showWhen: 'taskInfoAdd',
-				value: isTask.value ? workItem?.dateDue : null,
+				value: isTask.value ? workItemRef.value?.dateDue : null,
 				isRequired: isTask.value,
 			},
 			{override},
@@ -340,7 +344,7 @@ export function useDiscussionManagerForm(
 				name: 'taskInfoAssignee',
 				showWhen: 'taskInfoAdd',
 				options: getAssigneeOptions(),
-				value: getSelectedAssignee(workItem),
+				value: getSelectedAssignee(workItemRef.value),
 				isRequired: isTask.value,
 			},
 			{override},
@@ -429,8 +433,8 @@ export function useDiscussionManagerForm(
 		};
 
 		let taskUrl = `submissions/${submission.id}/tasks`;
-		if (workItem?.id) {
-			taskUrl += `/${workItem.id}`;
+		if (workItemRef.value?.id) {
+			taskUrl += `/${workItemRef.value.id}`;
 		}
 		const {apiUrl: addTaskUrl} = useUrl(taskUrl);
 
@@ -440,7 +444,7 @@ export function useDiscussionManagerForm(
 			validationError,
 			isSuccess,
 		} = useFetch(addTaskUrl, {
-			method: workItem?.id ? 'PUT' : 'POST',
+			method: workItemRef.value?.id ? 'PUT' : 'POST',
 			body: dataBody,
 			expectValidationError: true,
 		});
@@ -473,7 +477,7 @@ export function useDiscussionManagerForm(
 
 	async function addNewMessage() {
 		const {apiUrl: addNoteUrl} = useUrl(
-			`submissions/${submission.id}/tasks/${workItem.id}/notes`,
+			`submissions/${submission.id}/tasks/${workItemRef.value.id}/notes`,
 		);
 
 		const {
@@ -500,8 +504,8 @@ export function useDiscussionManagerForm(
 		if (!workItemId) return;
 		let status;
 
-		if (workItem && inDisplayMode && updateStatusInViewMode) {
-			switch (workItem.status) {
+		if (workItemRef.value && inDisplayMode && updateStatusInViewMode) {
+			switch (workItemRef.value.status) {
 				case pkp.const.EDITORIAL_TASK_STATUS_PENDING:
 					status = statusUpdates.start;
 					break;
@@ -518,7 +522,7 @@ export function useDiscussionManagerForm(
 			// if discussion, only allow closing or re-opening
 			if (
 				status === statusUpdates.start &&
-				workItem.type === pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION
+				workItemRef.value.type === pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION
 			) {
 				status = statusUpdates.close;
 			}
@@ -552,9 +556,9 @@ export function useDiscussionManagerForm(
 			// manually validate the new message field since display mode doesn't use the standard form component
 			if (!validateNewMessage()) return;
 
-			result = (await updateWorkItemStatus(workItem?.id)) ?? result;
+			result = (await updateWorkItemStatus(workItemRef.value?.id)) ?? result;
 		} else {
-			if (workItem) {
+			if (workItemRef.value) {
 				result = await saveWorkItem(formData);
 			} else {
 				result = await addWorkItem(formData);
@@ -562,7 +566,7 @@ export function useDiscussionManagerForm(
 		}
 
 		// save the note if there is a new message
-		if (workItem && inDisplayMode && newMessage.value) {
+		if (workItemRef.value && inDisplayMode && newMessage.value) {
 			result = await addNewMessage();
 		}
 
@@ -598,7 +602,7 @@ export function useDiscussionManagerForm(
 				templates: [],
 				onSelectTemplate,
 				inDisplayMode,
-				isTask: workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
+				isTask: workItemRef.value?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
 			},
 		},
 	});
@@ -608,7 +612,7 @@ export function useDiscussionManagerForm(
 		label: t('common.name'),
 		description: t('discussion.form.detailsNameDescription'),
 		size: 'large',
-		value: workItem?.title,
+		value: workItemRef.value?.title,
 		hideOnDisplay: true,
 		isRequired: true,
 	});
@@ -620,21 +624,21 @@ export function useDiscussionManagerForm(
 		name: 'participants',
 		options: getParticipantOptions(),
 		showNumberedList: true,
-		value: getSelectedParticipants(workItem),
+		value: getSelectedParticipants(workItemRef.value),
 		isRequired: true,
 	});
 
 	const participantsField = getField('participants');
 	const selectedParticipants = computed(() => participantsField?.value || []);
 
-	addTaskInfoGroup(workItem);
+	addTaskInfoGroup(workItemRef.value);
 
 	addFieldCheckbox('taskInfoAdd', {
 		groupId: 'taskInformation',
 		label: t('discussion.form.taskInfoLabel'),
 		value: isTask.value || autoAddTaskDetails,
 		hideOnDisplay: true,
-		disabled: workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
+		disabled: workItemRef.value?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
 		onChange: (val) => {
 			isTask.value = val;
 			addTaskInfoDueDate({override: true});
@@ -653,7 +657,7 @@ export function useDiscussionManagerForm(
 		showWhen: 'taskInfoAdd',
 		value: true,
 		hideOnDisplay: true,
-		disabled: !!workItem,
+		disabled: !!workItemRef.value,
 		options: [
 			{
 				label: t('discussion.form.startTaskUponSaving'),
@@ -666,15 +670,15 @@ export function useDiscussionManagerForm(
 		],
 	});
 
-	addDiscussionGroup(workItem);
+	addDiscussionGroup(workItemRef.value);
 
 	if (inDisplayMode) {
-		addMessagesComponent(workItem);
+		addMessagesComponent(workItemRef.value);
 	} else {
 		addFieldRichTextArea('discussionText', {
 			groupId: 'discussion',
 			...messageFieldOptions,
-			value: workItem?.notes?.[0]?.contents,
+			value: workItemRef.value?.notes?.[0]?.contents,
 			isRequired: true,
 		});
 	}
@@ -687,6 +691,7 @@ export function useDiscussionManagerForm(
 	});
 
 	function refreshFormData(newWorkItem) {
+		workItemRef.value = newWorkItem;
 		setValue('detailsName', newWorkItem?.title || '');
 		setValue('participants', getSelectedParticipants(newWorkItem));
 		setValue(
