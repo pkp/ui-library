@@ -22,14 +22,14 @@
 		<div>
 			<PkpButton
 				v-if="hasAccessToAddMessage"
-				:is-active="messageFieldState"
-				:is-disabled="messageFieldState"
+				:is-active="showNewMessageField"
+				:is-disabled="showNewMessageField"
 				@click="addMessage"
 			>
 				{{ t('discussion.addNewMessage') }}
 			</PkpButton>
 		</div>
-		<div v-if="messageFieldState">
+		<div v-if="showNewMessageField">
 			<FieldRichTextarea
 				v-bind="messageFieldOptions"
 				id="newMessage"
@@ -84,7 +84,7 @@ const props = defineProps({
 		type: Object,
 		default: () => null,
 	},
-	messageFieldState: {
+	showNewMessageField: {
 		type: Boolean,
 		default: false,
 	},
