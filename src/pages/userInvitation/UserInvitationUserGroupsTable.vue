@@ -432,13 +432,4 @@ async function updateMasthead(userId, userUserGroupId, masthead) {
 	});
 	await fetch();
 }
-
-if (
-	store.invitationPayload.currentUserGroups.some((group) =>
-		reviewerUserGroupIds.value.includes(group.id),
-	) &&
-	store.isReviewerAccess
-) {
-	store.updatePayload('userGroupsToAdd', [], false);
-}
 </script>
