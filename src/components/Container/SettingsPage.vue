@@ -9,6 +9,7 @@ import DateTimeForm from '@/components/Form/context/DateTimeForm.vue';
 import DoiSetupSettingsForm from '@/components/Form/context/DoiSetupSettingsForm.vue';
 import DoiRegistrationSettingsForm from '@/components/Form/context/DoiRegistrationSettingsForm.vue';
 import ReviewerRecommendationManager from '@/managers/ReviewerRecommendationManager/ReviewerRecommendationManager.vue';
+import TaskTemplateManager from '@/managers/TaskTemplateManager/TaskTemplateManager.vue';
 
 export default {
 	name: 'SettingsPage',
@@ -22,6 +23,7 @@ export default {
 		DoiSetupSettingsForm,
 		DoiRegistrationSettingsForm,
 		ReviewerRecommendationManager,
+		TaskTemplateManager,
 	},
 	extends: Page,
 	data() {
