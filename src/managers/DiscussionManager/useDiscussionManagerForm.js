@@ -29,7 +29,7 @@ export function useDiscussionManagerForm(
 		autoAddTaskDetails = false,
 		onCloseFn = () => {},
 	} = {},
-	{inDisplayMode = false} = {},
+	{inDisplayMode = false, refetchData = null} = {},
 ) {
 	const workItemStatus = workItem?.status || status;
 	const {t} = useLocalize();
@@ -51,7 +51,8 @@ export function useDiscussionManagerForm(
 	let updateStatusInViewMode = false;
 	let sendNewMessage = false;
 	const newMessageError = ref(null);
-	const initialStatusUpdateVal = isClosed;
+	const messageFieldState = ref(false);
+	let initialStatusUpdateVal = isClosed;
 
 	const newMessage = ref(null);
 	const formId = inDisplayMode ? 'discussionDisplay' : 'discussionForm';
@@ -281,6 +282,7 @@ export function useDiscussionManagerForm(
 
 	function onNewMessage() {
 		sendNewMessage = true;
+		messageFieldState.value = true;
 		toggleSaveBtnOnDisplayMode();
 	}
 
@@ -365,6 +367,8 @@ export function useDiscussionManagerForm(
 	}
 
 	function addMessagesComponent(workItemData, {override = false} = {}) {
+		messageFieldState.value = false;
+
 		addFieldComponent(
 			'messagesComponent',
 			{
@@ -373,6 +377,7 @@ export function useDiscussionManagerForm(
 					submission,
 					workItem: workItemData,
 					inDisplayMode,
+					messageFieldState,
 					onNewMessageChanged,
 					onNewMessage,
 					newMessageError,
@@ -479,7 +484,6 @@ export function useDiscussionManagerForm(
 		} = useFetch(addNoteUrl, {
 			method: 'POST',
 			body: {contents: newMessage.value},
-			expectValidationError: true,
 		});
 
 		await fetch();
@@ -563,7 +567,11 @@ export function useDiscussionManagerForm(
 		}
 
 		if (result.isSuccess) {
-			onCloseFn();
+			if (inDisplayMode && refetchData) {
+				await refetchData();
+			} else {
+				onCloseFn();
+			}
 		}
 
 		// return result to Form component handler

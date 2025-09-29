@@ -22,14 +22,14 @@
 		<div>
 			<PkpButton
 				v-if="hasAccessToAddMessage"
-				:is-active="toggleMessageForm"
-				:is-disabled="toggleMessageForm"
+				:is-active="messageFieldState"
+				:is-disabled="messageFieldState"
 				@click="addMessage"
 			>
 				{{ t('discussion.addNewMessage') }}
 			</PkpButton>
 		</div>
-		<div v-if="toggleMessageForm">
+		<div v-if="messageFieldState">
 			<FieldRichTextarea
 				v-bind="messageFieldOptions"
 				id="newMessage"
@@ -48,7 +48,7 @@
 </template>
 
 <script setup>
-import {ref, computed} from 'vue';
+import {computed} from 'vue';
 import {t} from '@/utils/i18n';
 import {useDate} from '@/composables/useDate';
 import {useDiscussionMessages} from './useDiscussionMessages';
@@ -60,7 +60,6 @@ import FieldError from '@/components/Form/FieldError.vue';
 
 const emit = defineEmits(['newMessage', 'newMessageChanged']);
 const {formatShortDateTime} = useDate();
-const toggleMessageForm = ref(false);
 const {messageFieldOptions} = useDiscussionMessages();
 const {getCurrentUserId} = useCurrentUser();
 
@@ -82,13 +81,16 @@ const props = defineProps({
 		required: true,
 	},
 	newMessageError: {
-		type: String,
+		type: Object,
 		default: () => null,
+	},
+	messageFieldState: {
+		type: Boolean,
+		default: false,
 	},
 });
 
 function addMessage() {
-	toggleMessageForm.value = true;
 	emit('newMessage');
 }
 
