@@ -32,7 +32,7 @@ export function useDiscussionManagerForm(
 	{inDisplayMode = false, refetchData = null} = {},
 ) {
 	const workItemRef = ref(workItem);
-	const workItemStatus = workItemRef.value?.status || status;
+	const workItemStatus = ref(workItemRef.value?.status || status);
 	const {t} = useLocalize();
 	const participantManagerStore = useParticipantManagerStore({
 		submission,
@@ -148,7 +148,7 @@ export function useDiscussionManagerForm(
 
 	function getBadgeProps() {
 		let badgeProps = {};
-		switch (workItemStatus) {
+		switch (workItemStatus.value) {
 			case pkp.const.EDITORIAL_TASK_STATUS_PENDING:
 				badgeProps = {
 					slot: t('common.yetToBegin'),
@@ -184,7 +184,7 @@ export function useDiscussionManagerForm(
 			!workItemRef.value?.dateClosed &&
 			new Date(workItemRef.value.dateDue) < new Date();
 		if (
-			workItemStatus === pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS &&
+			workItemStatus.value === pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS &&
 			isOverdue
 		) {
 			badgeProps = {
@@ -682,7 +682,7 @@ export function useDiscussionManagerForm(
 		});
 	}
 
-	const badgeProps = getBadgeProps(status);
+	const badgeProps = computed(() => getBadgeProps());
 	const additionalFields = [newMessage, statusUpdateValue];
 
 	const {setInitialState} = useFormChanged(form, additionalFields, onCloseFn, {
@@ -691,6 +691,8 @@ export function useDiscussionManagerForm(
 
 	function refreshFormData(newWorkItem) {
 		workItemRef.value = newWorkItem;
+		workItemStatus.value = newWorkItem?.status;
+
 		setValue('detailsName', newWorkItem?.title || '');
 		setValue('participants', getSelectedParticipants(newWorkItem));
 		setValue(
