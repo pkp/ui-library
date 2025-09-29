@@ -18,6 +18,7 @@ export function useTaskTemplateManagerForm({
 } = {}) {
 	const {t} = useLocalize();
 	const isTask = ref(taskTemplate?.type === 'Task');
+	let isTemplateOverrideConfirmed = false;
 
 	const {
 		form,
@@ -113,7 +114,7 @@ export function useTaskTemplateManagerForm({
 		const content = localize(emailTemplate?.body);
 		if (!content) return;
 
-		if (!taskTemplate) {
+		if (!taskTemplate || isTemplateOverrideConfirmed) {
 			setValue('discussionText', content);
 			return;
 		}
@@ -130,6 +131,7 @@ export function useTaskTemplateManagerForm({
 					isWarnable: true,
 					callback: async (close) => {
 						setValue('discussionText', content);
+						isTemplateOverrideConfirmed = true;
 						close();
 					},
 				},
