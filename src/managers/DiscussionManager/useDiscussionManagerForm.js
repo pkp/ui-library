@@ -53,7 +53,6 @@ export function useDiscussionManagerForm(
 		workItemRef.value?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED;
 	const statusUpdateValue = ref(isClosed);
 	let updateStatusInViewMode = false;
-	let sendNewMessage = false;
 	const newMessageError = ref(null);
 	const showNewMessageField = ref(false);
 	let initialStatusUpdateVal = isClosed;
@@ -285,7 +284,6 @@ export function useDiscussionManagerForm(
 	}
 
 	function onNewMessage() {
-		sendNewMessage = true;
 		showNewMessageField.value = true;
 		toggleSaveBtnOnDisplayMode();
 	}
@@ -372,6 +370,7 @@ export function useDiscussionManagerForm(
 
 	function addMessagesComponent(workItemData, {override = false} = {}) {
 		showNewMessageField.value = false;
+		newMessage.value = null;
 
 		addFieldComponent(
 			'messagesComponent',
@@ -398,7 +397,7 @@ export function useDiscussionManagerForm(
 
 		const hasValidMessage = !newMessageError.value;
 		const hasChanges =
-			updateStatusInViewMode || sendNewMessage || newMessage.value;
+			updateStatusInViewMode || showNewMessageField.value || newMessage.value;
 
 		setCanSubmit(hasValidMessage && hasChanges);
 	}
@@ -537,7 +536,7 @@ export function useDiscussionManagerForm(
 
 	// manually validate the new message field in display mode, since it doesn't use the standard form component.
 	function validateNewMessage() {
-		const isInvalid = sendNewMessage && !newMessage.value;
+		const isInvalid = showNewMessageField.value && !newMessage.value;
 		newMessageError.value = isInvalid ? [t('validator.filled')] : null;
 
 		toggleSaveBtnOnDisplayMode();
@@ -705,6 +704,12 @@ export function useDiscussionManagerForm(
 		addDiscussionGroup(newWorkItem, {override: true});
 		addMessagesComponent(newWorkItem, {override: true});
 
+		statusUpdateValue.value =
+			newWorkItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED;
+		initialStatusUpdateVal = statusUpdateValue.value;
+		updateStatusInViewMode = false;
+
+		toggleSaveBtnOnDisplayMode();
 		setInitialState(form, additionalFields);
 	}
 
