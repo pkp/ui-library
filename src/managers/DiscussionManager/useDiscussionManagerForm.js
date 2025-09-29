@@ -51,7 +51,7 @@ export function useDiscussionManagerForm(
 	let updateStatusInViewMode = false;
 	let sendNewMessage = false;
 	const newMessageError = ref(null);
-	const messageFieldState = ref(false);
+	const showNewMessageField = ref(false);
 	let initialStatusUpdateVal = isClosed;
 
 	const newMessage = ref(null);
@@ -282,7 +282,7 @@ export function useDiscussionManagerForm(
 
 	function onNewMessage() {
 		sendNewMessage = true;
-		messageFieldState.value = true;
+		showNewMessageField.value = true;
 		toggleSaveBtnOnDisplayMode();
 	}
 
@@ -367,7 +367,7 @@ export function useDiscussionManagerForm(
 	}
 
 	function addMessagesComponent(workItemData, {override = false} = {}) {
-		messageFieldState.value = false;
+		showNewMessageField.value = false;
 
 		addFieldComponent(
 			'messagesComponent',
@@ -377,7 +377,7 @@ export function useDiscussionManagerForm(
 					submission,
 					workItem: workItemData,
 					inDisplayMode,
-					messageFieldState,
+					showNewMessageField,
 					onNewMessageChanged,
 					onNewMessage,
 					newMessageError,
