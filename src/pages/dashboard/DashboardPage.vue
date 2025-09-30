@@ -98,6 +98,11 @@ const props = defineProps({
 		type: Number,
 		required: true,
 	},
+	/** Context setting, whether the citations metadata lookup is enabled per default for a publication */
+	contextCitationsMetadataLookup: {
+		type: Boolean,
+		required: true,
+	},
 	/** Filters form config  */
 	filtersForm: {
 		type: Object,

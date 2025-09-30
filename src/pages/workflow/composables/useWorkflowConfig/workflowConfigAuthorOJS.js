@@ -398,7 +398,7 @@ export const PublicationConfig = {
 		}) => {
 			selectedPublication.citationsMetadataLookup =
 				selectedPublication.citationsMetadataLookup ??
-				submission.contextCitationsMetadataLookup ??
+				pageInitConfig.contextCitationsMetadataLookup ??
 				false;
 			return [
 				{
