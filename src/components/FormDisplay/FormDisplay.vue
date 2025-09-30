@@ -85,6 +85,10 @@
 			:class="footerSpacingStyle"
 			aria-live="polite"
 		>
+			<span v-if="lastSavedMessage" class="me-auto text-base-normal">
+				<Icon icon="Help" class="h-4 w-4 text-primary"></Icon>
+				{{ lastSavedMessage }}
+			</span>
 			<span role="status" aria-live="polite" aria-atomic="true">
 				<transition name="pkpFormPage__status">
 					<span v-if="isSaving" class="pkpFormPage__status">
@@ -118,7 +122,9 @@
 </template>
 
 <script setup>
-import {computed, useId} from 'vue';
+import {computed, useId, ref, watch, onUnmounted} from 'vue';
+import {t} from '@/utils/i18n';
+import {useDate} from '@/composables/useDate';
 import {shouldShowFieldWithinGroup} from '@/components/Form/formHelpers';
 
 import PkpButton from '@/components/Button/Button.vue';
@@ -131,8 +137,14 @@ import FieldSelectDisplay from './FieldSelectDisplay.vue';
 import FieldOptionsDisplay from './FieldOptionsDisplay.vue';
 
 const uniqueId = useId();
+const {relativeStringTimeFromNow} = useDate();
 
 const emit = defineEmits(['cancel', 'success']);
+const isSaving = ref(false);
+const lastSaveTimestamp = ref(-1);
+const hasRecentSave = ref(false);
+const lastSavedMessage = ref(null);
+let recentInterval = null;
 
 const FieldComponents = {
 	'field-text': FieldTextDisplay,
@@ -213,15 +225,57 @@ function cancel() {
 	emit('cancel');
 }
 
-function submit() {
+async function submit() {
+	isSaving.value = true;
+	lastSaveTimestamp.value = null;
+
 	if (props.customSubmit) {
-		return props.customSubmit();
+		const result = await props.customSubmit();
+		isSaving.value = false;
+
+		if (result?.isSuccess) {
+			lastSaveTimestamp.value = Date.now();
+		}
+		return result;
 	}
 
 	if (props.action === 'emit') {
 		emit('success');
+		isSaving.value = false;
 	}
 
 	// TODO: Ajax call
 }
+
+watch(lastSaveTimestamp, (newVal) => {
+	if (recentInterval) {
+		clearInterval(recentInterval);
+		lastSavedMessage.value = '';
+	}
+
+	if (!newVal) {
+		hasRecentSave.value = false;
+		return;
+	}
+
+	hasRecentSave.value = true;
+
+	// clear the hasRecentSave value after 5 seconds
+	setTimeout(() => {
+		hasRecentSave.value = false;
+	}, 5000);
+
+	// update the last saved message every 3 seconds
+	recentInterval = setInterval(() => {
+		lastSavedMessage.value = t('common.lastSaved', {
+			when: relativeStringTimeFromNow(lastSaveTimestamp.value),
+		});
+	}, 3000);
+});
+
+onUnmounted(() => {
+	if (recentInterval) {
+		clearInterval(recentInterval);
+	}
+});
 </script>
