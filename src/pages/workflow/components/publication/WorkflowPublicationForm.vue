@@ -86,7 +86,7 @@ watch(
 		if (newForm && props.formName === 'issue' && isOJS()) {
 			const {initialize} = useWorkflowPublicationFormIssue(
 				newForm,
-				props.publicationpublication,
+				props.publication,
 			);
 			await initialize();
 		}
