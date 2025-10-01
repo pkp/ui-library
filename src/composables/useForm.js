@@ -365,7 +365,15 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 
 	function initEmptyForm(
 		formId,
-		{action, method, locales, showErrorFooter, spacingVariant} = {},
+		{
+			action,
+			method,
+			locales,
+			showErrorFooter,
+			spacingVariant,
+			onSuccess,
+			onSet,
+		} = {},
 	) {
 		if (!form.value) {
 			form.value = {};
@@ -379,6 +387,9 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		form.value.locales = locales;
 		form.value.showErrorFooter = showErrorFooter;
 		form.value.spacingVariant = spacingVariant || 'default';
+		form.value.onSuccess = onSuccess || undefined;
+		form.value.onSet = onSet || set;
+
 		setMethod(method || 'POST');
 		setAction(action || 'emit');
 		setLocales(locales);
@@ -593,6 +604,25 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 	}
 
 	/**
+	 * Adds or updates a textarea field in the form.
+	 *
+	 * @param {string} fieldName - The name (or key) of the field.
+	 * @param {Object} fieldOptions - Configuration options for the field.
+	 * @param {Object} [opts] - Optional settings.
+	 * @param {boolean} [opts.override] - If true and the field already exists, it will be fully overridden.
+	 */
+	function addFieldHtml(fieldName, {...commonFields} = {}, opts) {
+		return addField(
+			fieldName,
+			{
+				component: 'field-html',
+				...commonFields,
+			},
+			opts,
+		);
+	}
+
+	/**
 	 * Adds or updates a FieldCheckbox in the form.
 	 * @param {string} fieldName - The name of the field
 	 * @param {Object} fieldOptions - The input options (e.g., label) and other shared/common properties for the field
@@ -670,6 +700,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		addFieldTextArea,
 		addFieldCheckbox,
 		addFieldComponent,
+		addFieldHtml,
 		getField,
 	};
 }

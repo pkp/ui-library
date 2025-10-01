@@ -85,7 +85,9 @@ export default {
 			type: String,
 			default: 'normal',
 			validator: function (value) {
-				return ['small', 'normal', 'large'].indexOf(value) !== -1;
+				return (
+					['small', 'small-height', 'normal', 'large'].indexOf(value) !== -1
+				);
 			},
 		},
 	},
@@ -116,6 +118,10 @@ export default {
 .pkpFormField--small .pkpFormField--textarea__input {
 	max-width: 20em;
 	height: 8em;
+}
+
+.pkpFormField--small-height .pkpFormField--textarea__input {
+	height: 10em;
 }
 
 .pkpFormField--large .pkpFormField--textarea__input {

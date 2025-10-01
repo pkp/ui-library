@@ -78,12 +78,12 @@ export function useCitationManagerActions() {
 
 	function citationReprocessCitation({citation}, finishedCallback) {
 		openDialog({
-			title: 'Are you sure you want to reprocess this citation?',
+			title: t('submission.citations.structured.reprocessDialog.title'),
 			message: '',
 			actions: [
 				{
 					label: t('common.ok'),
-					isWarnable: true,
+					isPrimary: true,
 					callback: async (close) => {
 						const {apiUrl} = useUrl(`citations`);
 						const {fetch} = useFetch(
