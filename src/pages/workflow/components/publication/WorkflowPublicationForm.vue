@@ -28,6 +28,7 @@ const props = defineProps({
 	noFieldsMessage: {type: String, required: false, default: null},
 	submission: {type: Object, required: true},
 	publication: {type: Object, required: true},
+	issueCount: {type: Number, required: false, default: 0},
 });
 
 const {isOJS} = useApp();
@@ -83,12 +84,17 @@ async function issueDataChange() {
 watch(
 	form,
 	async (newForm) => {
-		if (newForm && props.formName === 'issue' && isOJS()) {
+		if (
+			newForm &&
+			props.formName === 'issue' &&
+			props.issueCount > 0 &&
+			isOJS()
+		) {
 			const {initialize} = useWorkflowPublicationFormIssue(
 				newForm,
 				props.publication,
 			);
-			await initialize();
+			initialize();
 		}
 	},
 	{immediate: false},

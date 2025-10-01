@@ -1,6 +1,10 @@
 import {ref, watch} from 'vue';
 import {useApp} from './useApp';
 
+// Position constants for field placement
+const FIELD_POSITION_BEFORE = 'before';
+const FIELD_POSITION_AFTER = 'after';
+
 /**
  * Check if a field exists in a form
  * @param {Object} form - The form object
@@ -49,6 +53,42 @@ function mapFromSelectedToValue(selected) {
  */
 export function isFieldValueArray(field) {
 	return Array.isArray(field.value) || field.selected ? true : false;
+}
+
+/**
+ * Add a field to a specific position in the fields array
+ * @param {string} targetFieldName - The name of the field to position relative to
+ * @param {Array} fieldsList - The current fields array
+ * @param {Object} newField - The field object to insert
+ * @param {string} position - Either FIELD_POSITION_BEFORE or FIELD_POSITION_AFTER
+ * @returns {Array} The updated fields array
+ */
+function addToPosition(targetFieldName, fieldsList, newField, position) {
+	let targetIndex = fieldsList.length; // Default to end if target not found
+
+	// Find the index of the target field
+	for (let i = 0; i < fieldsList.length; i++) {
+		if (fieldsList[i].name === targetFieldName) {
+			targetIndex = i;
+			break;
+		}
+	}
+
+	// Handle special case: insert at beginning if before first element
+	if (targetIndex === 0 && position === FIELD_POSITION_BEFORE) {
+		return [newField, ...fieldsList];
+	}
+
+	// Calculate the insertion point
+	const insertIndex =
+		position === FIELD_POSITION_BEFORE ? targetIndex : targetIndex + 1;
+
+	// Insert the new field at the calculated position
+	return [
+		...fieldsList.slice(0, insertIndex),
+		newField,
+		...fieldsList.slice(insertIndex),
+	];
 }
 
 /**
@@ -446,6 +486,8 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 	 * @param {Object} fieldOptions - Configuration options for the field
 	 * @param {Object} [opts] - Optional settings.
 	 * @param {boolean} [opts.override=false] - If true and the field already exists, it will be fully overridden.
+	 * @param {string} [opts.positionBefore] - Name of field to position this field before
+	 * @param {string} [opts.positionAfter] - Name of field to position this field after
 	 */
 	function addField(
 		fieldName,
@@ -460,7 +502,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 			isInert,
 			...additionalFields
 		},
-		{override = false} = {},
+		{override = false, positionBefore, positionAfter} = {},
 	) {
 		const field = getField(fieldName);
 		const fieldObj = {
@@ -480,7 +522,22 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 			// replace the entire field if it exists and override is `true`
 			Object.assign(field, fieldObj);
 		} else {
-			form.value.fields.push(fieldObj);
+			// Handle positioning if specified
+			if (positionBefore || positionAfter) {
+				const targetFieldName = positionBefore || positionAfter;
+				const position = positionBefore
+					? FIELD_POSITION_BEFORE
+					: FIELD_POSITION_AFTER;
+				form.value.fields = addToPosition(
+					targetFieldName,
+					form.value.fields,
+					fieldObj,
+					position,
+				);
+			} else {
+				// Default behavior: add to end
+				form.value.fields.push(fieldObj);
+			}
 		}
 	}
 
@@ -490,6 +547,8 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 	 * @param {Object} fieldOptions - Includes the input type and other common field properties.
 	 * @param {Object} [opts] - Optional settings.
 	 * @param {boolean} [opts.override] - If true and the field already exists, it will be fully overridden.
+	 * @param {string} [opts.positionBefore] - Name of field to position this field before
+	 * @param {string} [opts.positionAfter] - Name of field to position this field after
 	 */
 	function addFieldText(
 		fieldName,
@@ -518,6 +577,8 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 	 * @param {Object} fieldOptions - The select options (e.g., list of choices) and other shared/common properties for the field
 	 * @param {Object} [opts] - Optional settings.
 	 * @param {boolean} [opts.override] - If true and the field already exists, it will be fully overridden.
+	 * @param {string} [opts.positionBefore] - Name of field to position this field before
+	 * @param {string} [opts.positionAfter] - Name of field to position this field after
 	 */
 	function addFieldSelect(
 		fieldName,
@@ -543,6 +604,8 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 	 * @param {Object} fieldOptions - The input options (e.g., list of choices) and other shared/common properties for the field
 	 * @param {Object} [opts] - Optional settings.
 	 * @param {boolean} [opts.override] - If true and the field already exists, it will be fully overridden.
+	 * @param {string} [opts.positionBefore] - Name of field to position this field before
+	 * @param {string} [opts.positionAfter] - Name of field to position this field after
 	 */
 	function addFieldOptions(
 		fieldName,
@@ -570,6 +633,8 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 	 * @param {Object} fieldOptions - Configuration options for the field.
 	 * @param {Object} [opts] - Optional settings.
 	 * @param {boolean} [opts.override] - If true and the field already exists, it will be fully overridden.
+	 * @param {string} [opts.positionBefore] - Name of field to position this field before
+	 * @param {string} [opts.positionAfter] - Name of field to position this field after
 	 */
 	function addFieldRichTextArea(
 		fieldName,
@@ -601,6 +666,8 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 	 * @param {Object} fieldOptions - Configuration options for the field.
 	 * @param {Object} [opts] - Optional settings.
 	 * @param {boolean} [opts.override] - If true and the field already exists, it will be fully overridden.
+	 * @param {string} [opts.positionBefore] - Name of field to position this field before
+	 * @param {string} [opts.positionAfter] - Name of field to position this field after
 	 */
 	function addFieldTextArea(fieldName, {size, ...commonFields} = {}, opts) {
 		return addField(
@@ -639,6 +706,8 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 	 * @param {Object} fieldOptions - The input options (e.g., label) and other shared/common properties for the field
 	 * @param {Object} [opts] - Optional settings.
 	 * @param {boolean} [opts.override] - If true and the field already exists, it will be fully overridden.
+	 * @param {string} [opts.positionBefore] - Name of field to position this field before
+	 * @param {string} [opts.positionAfter] - Name of field to position this field after
 	 */
 	function addFieldCheckbox(
 		fieldName,
@@ -665,6 +734,8 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 	 * @param {Object} [fieldOptions.props] - Additional props to pass to the component.
 	 * @param {Object} [opts] - Optional settings.
 	 * @param {boolean} [opts.override] - If true and the field already exists, it will be fully overridden.
+	 * @param {string} [opts.positionBefore] - Name of field to position this field before
+	 * @param {string} [opts.positionAfter] - Name of field to position this field after
 	 */
 	function addFieldComponent(fieldName, {component, ...props}, opts = {}) {
 		if (!component) {
