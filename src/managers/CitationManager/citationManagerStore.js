@@ -1,4 +1,4 @@
-import {computed, ref, toRefs} from 'vue';
+import {computed, onUnmounted, ref, toRefs} from 'vue';
 import {defineComponentStore} from '@/utils/defineComponentStore';
 import {useDataChanged} from '@/composables/useDataChanged';
 import {useExtender} from '@/composables/useExtender';
@@ -8,6 +8,8 @@ import {useModal} from '@/composables/useModal';
 import {useFetch} from '@/composables/useFetch';
 import {useCitationManagerConfig} from './useCitationManagerConfig';
 import {useCitationManagerActions} from './useCitationManagerActions';
+import {useCitationManagerFormAddRawCitation} from './useCitationManagerFormAddRawCitation';
+import {useCitationManagerFormEnableLookup} from './useCitationManagerFormEnableLookup';
 
 export const useCitationManagerStore = defineComponentStore(
 	'citationManager',
@@ -24,11 +26,12 @@ export const useCitationManagerStore = defineComponentStore(
 		const citationManagerConfig = extender.addFns(useCitationManagerConfig());
 		const columns = computed(() => citationManagerConfig.getColumns());
 		const topItems = computed(() => citationManagerConfig.getTopItems());
-		function getItemPrimaryActions(args) {
-			return citationManagerConfig.getItemPrimaryActions(args);
-		}
-		function getItemActions(args) {
-			return citationManagerConfig.getItemActions(args);
+
+		function getItemActions({citation}) {
+			return citationManagerConfig.getItemActions({
+				citation,
+				store,
+			});
 		}
 
 		const {
@@ -48,9 +51,19 @@ export const useCitationManagerStore = defineComponentStore(
 		/**
 		 * citations metadata lookup
 		 */
+
 		const citationsMetadataLookup = computed(
 			() => publication.value.citationsMetadataLookup,
 		);
+
+		const {form: formEnableLookup} = useCitationManagerFormEnableLookup({
+			citationsMetadataLookup,
+			onCitationMetadataLookupChange: async (newValue) => {
+				console.log('onCitationMetadataLookUPChange');
+				await citationsMetadataLookupChanged(newValue);
+			},
+		});
+
 		async function citationsMetadataLookupChanged(newValue) {
 			const {apiUrl} = useUrl(apiPathSubmissions);
 			const {fetch} = useFetch(`${apiUrl.value}/metadataLookup`, {
@@ -66,35 +79,12 @@ export const useCitationManagerStore = defineComponentStore(
 		/**
 		 * add new raw citations
 		 */
-		const citationsRawToBeAdded = ref('');
-		const citationsRawShowMessage = ref('');
-		async function handleAddCitationsRawToList() {
-			if (!citationsRawToBeAdded.value) {
-				citationsRawShowMessage.value = 'isEmpty';
-				setTimeout(() => {
-					citationsRawShowMessage.value = '';
-				}, 4000);
-				return;
-			}
-			const {apiUrl} = useUrl(apiPathSubmissions);
-			const {fetch, data} = useFetch(
-				`${apiUrl.value}/importAdditionalCitations`,
-				{
-					method: 'POST',
-					body: {rawCitations: citationsRawToBeAdded.value},
-				},
-			);
-			citationsRawShowMessage.value = 'isLoading';
-			await fetch();
-			citationsRawToBeAdded.value = data.value?.trim?.() ?? '';
-			citationsRawShowMessage.value = citationsRawToBeAdded.value
-				? 'isPartial'
-				: 'isSuccess';
-			dataUpdateCallback();
-			setTimeout(() => {
-				citationsRawShowMessage.value = '';
-			}, 4000);
-		}
+		const {form: formAddRawCitations} = useCitationManagerFormAddRawCitation({
+			apiPathSubmissions,
+			onSuccess: () => {
+				dataUpdateCallback();
+			},
+		});
 
 		/**
 		 * status processed citations
@@ -104,6 +94,23 @@ export const useCitationManagerStore = defineComponentStore(
 			() =>
 				(citations.value || []).filter((c) => c?.isProcessed === true).length,
 		);
+
+		/**
+		 * Reload publication until all citations are processed
+		 */
+		const reloadIntervalId = setInterval(() => {
+			if (
+				citationsMetadataLookup.value &&
+				processedCitations.value < totalCitations.value
+			) {
+				// simple way to refresh publication
+				triggerDataChange();
+			}
+		}, 7000);
+
+		onUnmounted(() => {
+			clearInterval(reloadIntervalId);
+		});
 
 		/**
 		 * delete all citations
@@ -241,10 +248,9 @@ export const useCitationManagerStore = defineComponentStore(
 			);
 		}
 
-		return {
+		const store = {
 			columns,
 			topItems,
-			getItemPrimaryActions,
 			getItemActions,
 
 			submission,
@@ -255,12 +261,11 @@ export const useCitationManagerStore = defineComponentStore(
 			apiPathCitations,
 			apiPathSubmissions,
 
+			formEnableLookup,
 			citationsMetadataLookup,
 			citationsMetadataLookupChanged,
 
-			citationsRawToBeAdded,
-			citationsRawShowMessage,
-			handleAddCitationsRawToList,
+			formAddRawCitations,
 
 			totalCitations,
 			processedCitations,
@@ -281,5 +286,7 @@ export const useCitationManagerStore = defineComponentStore(
 			citationDeleteCitation,
 			citationReprocessCitation,
 		};
+
+		return store;
 	},
 );

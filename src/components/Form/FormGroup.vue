@@ -154,6 +154,12 @@ export default {
 			validator: (val) => ['default', 'fullWidth'].includes(val),
 		},
 	},
+	emits: [
+		/** Emitted when a field prop changes. Payload: `(fieldName, propName, newValue, [localeKey])`. The `localeKey` will be null for fields that are not multilingual. This event is fired every time the `value` changes, so you should [debounce](https://www.npmjs.com/package/debounce) event callbacks that contain resource-intensive code. */
+		'change',
+		'set-errors',
+	],
+
 	computed: {
 		/**
 		 * All fields assigned to this group

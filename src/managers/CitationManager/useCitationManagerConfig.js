@@ -43,11 +43,7 @@ export function useCitationManagerConfig() {
 		return items;
 	}
 
-	function getItemPrimaryActions() {
-		return [];
-	}
-
-	function getItemActions(args) {
+	function getItemActions({citation, store}) {
 		const actions = [];
 
 		actions.push({
@@ -63,8 +59,8 @@ export function useCitationManagerConfig() {
 			isWarnable: true,
 		});
 
-		if (args.citationStore.citationsMetadataLookup) {
-			if (!args.citation.isStructured) {
+		if (store.citationsMetadataLookup.value) {
+			if (!citation.isStructured) {
 				actions.push({
 					label: t('admin.citation.reprocess'),
 					name: Actions.CITATION_REPROCESS_CITATION,
@@ -79,7 +75,6 @@ export function useCitationManagerConfig() {
 	return {
 		getColumns,
 		getTopItems,
-		getItemPrimaryActions,
 		getItemActions,
 	};
 }

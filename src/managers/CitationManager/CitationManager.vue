@@ -1,72 +1,75 @@
 <template>
-	<CitationManagerMetadataLookup :checked="isChecked" @change="change" />
-	<CitationManagerAddRawCitations />
-	<CitationManagerStatusProcessed
-		v-if="citationStore.citationsMetadataLookup"
-	/>
 	<div>
-		<PkpButton
-			:is-disabled="!citationStore.canEditPublication"
-			:is-link="true"
-			@click="citationStore.citationDeleteAllCitations"
-		>
-			{{ t('submission.citations.structured.deleteAllLink') }}
-		</PkpButton>
-	</div>
-	<PkpTable aria-label="Structured References" :aria-describedby="headingId">
-		<template #label>
-			<h3 class="text-4 font-semibold">
-				{{ t('submission.citations.structured') }}
-			</h3>
-			<span class="text-lg-normal">
-				{{ t('submission.citations.structured.descriptionTable') }}
-			</span>
-		</template>
-		<template #top-controls>
-			<div class="flex gap-x-2">
-				<component
-					:is="Components[action.component] || action.component"
-					v-bind="action.props || {}"
-					v-for="(action, i) in citationStore.topItems"
+		<CitationManagerMetadataLookup />
+		<div class="pt-3">
+			<CitationManagerAddRawCitations />
+		</div>
+		<CitationManagerStatusProcessed
+			v-if="citationStore.citationsMetadataLookup"
+		/>
+		<div>
+			<PkpButton
+				:is-disabled="!citationStore.canEditPublication"
+				:is-link="true"
+				@click="citationStore.citationDeleteAllCitations"
+			>
+				{{ t('submission.citations.structured.deleteAllLink') }}
+			</PkpButton>
+		</div>
+		<PkpTable :aria-label="t('submission.citations.structured')">
+			<template #label>
+				<h3 class="text-4 font-semibold">
+					{{ t('submission.citations.structured') }}
+				</h3>
+				<span class="text-lg-normal">
+					{{ t('submission.citations.structured.descriptionTable') }}
+				</span>
+			</template>
+			<template #top-controls>
+				<div class="flex gap-x-2">
+					<component
+						:is="Components[action.component] || action.component"
+						v-bind="action.props || {}"
+						v-for="(action, i) in citationStore.topItems"
+						:key="i"
+					></component>
+				</div>
+			</template>
+			<TableHeader>
+				<TableColumn
+					v-for="(column, i) in citationStore.columns"
 					:key="i"
-				></component>
-			</div>
-		</template>
-		<TableHeader>
-			<TableColumn
-				v-for="(column, i) in citationStore.columns"
-				:key="i"
-				:class="i > 0 ? '!w-16 !text-center' : ''"
+					:class="i > 0 ? '!w-16 !text-center' : ''"
+				>
+					<span v-if="column.isHeaderComponent">
+						<component :is="Components[column.header] || column.header" />
+					</span>
+					<span v-else :class="column.headerSrOnly ? 'sr-only' : ''">
+						{{ column.header }}
+					</span>
+				</TableColumn>
+			</TableHeader>
+			<TableBody
+				:empty-text="t('submission.citations.structured.emptyCitations')"
 			>
-				<span v-if="column.isHeaderComponent">
-					<component :is="Components[column.header] || column.header" />
-				</span>
-				<span v-else :class="column.headerSrOnly ? 'sr-only' : ''">
-					{{ column.header }}
-				</span>
-			</TableColumn>
-		</TableHeader>
-		<TableBody
-			:empty-text="t('submission.citations.structured.emptyCitations')"
-		>
-			<TableRow
-				v-for="citation in citationStore.citationsFiltered"
-				:key="citation.id"
-			>
-				<component
-					:is="Components[column.component] || column.component"
-					v-for="(column, index) in citationStore.columns"
-					:key="index"
-					v-bind="citation"
-					:citation="citation"
-				></component>
-			</TableRow>
-		</TableBody>
-	</PkpTable>
+				<TableRow
+					v-for="citation in citationStore.citationsFiltered"
+					:key="citation.id"
+				>
+					<component
+						:is="Components[column.component] || column.component"
+						v-for="(column, index) in citationStore.columns"
+						:key="index"
+						v-bind="citation"
+						:citation="citation"
+					></component>
+				</TableRow>
+			</TableBody>
+		</PkpTable>
+	</div>
 </template>
 
 <script setup>
-import {computed, useId} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import PkpButton from '@/components/Button/Button.vue';
 import PkpTable from '@/components/Table/Table.vue';
@@ -86,8 +89,6 @@ import {useCitationManagerStore} from './citationManagerStore.js';
 
 const {t} = useLocalize();
 
-const headingId = useId();
-
 const Components = {
 	CitationManagerCellCitation,
 	CitationManagerCellToggle,
@@ -104,12 +105,4 @@ const props = defineProps({
 });
 
 const citationStore = useCitationManagerStore(props);
-
-const isChecked = computed(() => {
-	return citationStore.citationsMetadataLookup;
-});
-
-function change(checked) {
-	citationStore.citationsMetadataLookupChanged(checked);
-}
 </script>
