@@ -26,6 +26,6 @@ export default {
 	preferredPublicName: {en: '', es: '', fr_CA: '', pt: ''},
 	publicationId: 10,
 	seq: 0,
-	userGroupId: 14,
-	userGroupName: {en: 'Author', fr_CA: 'Auteur-e'},
+	contributorType: 'PERSON',
+	contributorRoles: {AUTHOR: {en: 'Author', fr_CA: 'Auteur-e'}},
 };
