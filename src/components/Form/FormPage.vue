@@ -118,6 +118,11 @@ export default {
 		},
 		spacingVariant: String,
 	},
+	emits: [
+		/** Emitted when a field prop changes. Payload: `(fieldName, propName, newValue, [localeKey])`. The `localeKey` will be null for fields that are not multilingual. This event is fired every time the `value` changes, so you should [debounce](https://www.npmjs.com/package/debounce) event callbacks that contain resource-intensive code. */
+		'change',
+		'set-errors',
+	],
 	data() {
 		return {
 			hasRecentSave: false,
@@ -152,7 +157,7 @@ export default {
 
 		footerSpacingStyle() {
 			if (this.spacingVariant === 'fullWidth') {
-				return '!px-0 !py-12';
+				return '!px-0';
 			}
 			return '';
 		},

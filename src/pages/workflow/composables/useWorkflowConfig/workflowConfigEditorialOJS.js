@@ -942,14 +942,18 @@ export const PublicationConfig = {
 			pageInitConfig,
 			permissions,
 		}) => {
+			selectedPublication.citationsMetadataLookup =
+				selectedPublication.citationsMetadataLookup ??
+				pageInitConfig.contextCitationsMetadataLookup ??
+				false;
 			return [
 				{
-					component: 'WorkflowPublicationForm',
+					component: 'CitationManager',
 					props: {
-						formName: 'reference',
-						submission,
+						submission: submission,
 						publication: selectedPublication,
 						canEdit: permissions.canEditPublication,
+						componentForms: pageInitConfig.componentForms,
 					},
 				},
 			];
