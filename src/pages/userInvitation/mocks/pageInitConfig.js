@@ -369,27 +369,6 @@ export default {
 							{
 								userGroupId: 15,
 								contextId: 1,
-								roleId: 65536,
-								isDefault: true,
-								showTitle: true,
-								permitSelfRegistration: false,
-								permitMetadataEdit: false,
-								permitSettings: false,
-								masthead: false,
-								nameLocaleKey: 'default.groups.name.translator',
-								abbrevLocaleKey: 'default.groups.abbrev.translator',
-								name: {
-									en: 'Translator',
-									fr_CA: 'Traducteur-trice',
-								},
-								abbrev: {
-									en: 'Trans',
-									fr_CA: 'Trad',
-								},
-							},
-							{
-								userGroupId: 16,
-								contextId: 1,
 								roleId: 4096,
 								isDefault: true,
 								showTitle: true,
@@ -409,7 +388,7 @@ export default {
 								},
 							},
 							{
-								userGroupId: 17,
+								userGroupId: 16,
 								contextId: 1,
 								roleId: 1048576,
 								isDefault: true,
@@ -430,7 +409,7 @@ export default {
 								},
 							},
 							{
-								userGroupId: 18,
+								userGroupId: 17,
 								contextId: 1,
 								roleId: 2097152,
 								isDefault: true,
@@ -451,7 +430,7 @@ export default {
 								},
 							},
 							{
-								userGroupId: 19,
+								userGroupId: 18,
 								contextId: 1,
 								roleId: 4097,
 								isDefault: true,
