@@ -1,8 +1,8 @@
 <template>
 	<button
 		v-bind="$attrs"
-		class="BaseButton"
-		:data-type="isSecondary ? 'secondary' : 'primary'"
+		class="BaseButton BaseButtonDisabled"
+		:disabled="isDisabled"
 	>
 		<slot />
 	</button>
@@ -10,7 +10,7 @@
 
 <script setup>
 defineProps({
-	isSecondary: {
+	isDisabled: {
 		type: Boolean,
 		default: false,
 	},
