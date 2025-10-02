@@ -37,10 +37,10 @@ const CommonDefaults = {
 
     `,
 	type: 'Task',
-	taskDetails: {
-		participantRoles: [16, 1],
-		dueDate: 'P1W',
-	},
+	participantRoles: [16, 1],
+	dueDate: 'P1W',
+	stageId: 'Submission',
+	autoAdd: true,
 };
 
 export function getTemplate(overrides = {}) {
@@ -72,6 +72,8 @@ export const TemplatesDataMock = [
             Please share your thoughts by July 15. Any concerns about authorship should be raised before we finalize the submission.</p>
         `,
 		type: 'Discussion',
+		stageId: 'Submission',
+		participantRoles: [65536],
 	},
 	{
 		id: 3,
@@ -95,9 +97,7 @@ export const TemplatesDataMock = [
             Ensure all documents are consistent and up to date. Reach out to the ethics coordinator if clarification is needed.</p>
         `,
 		type: 'Task',
-		taskDetails: {
-			participantRoles: [65536],
-			dueDate: 'P3M',
-		},
+		participantRoles: [65536],
+		dueDate: 'P3M',
 	},
 ];
