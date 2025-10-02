@@ -206,9 +206,7 @@ export function useDiscussionManagerForm(
 
 		const selectedParticipants =
 			allParticipants.value
-				.filter((p) =>
-					template.taskDetails?.participantRoles?.includes(p.roleId),
-				)
+				.filter((p) => template.participantRoles?.includes(p.roleId))
 				.map((p) => p.id) || [];
 		setValue('participants', selectedParticipants);
 
@@ -217,11 +215,8 @@ export function useDiscussionManagerForm(
 		if (isTask.value) {
 			setValue('taskInfoAssignee', selectedParticipants);
 
-			if (template.taskDetails.dueDate) {
-				setValue(
-					'taskInfoDueDate',
-					getRelativeTargetDate(template.taskDetails.dueDate),
-				);
+			if (template.dueDate) {
+				setValue('taskInfoDueDate', getRelativeTargetDate(template.dueDate));
 			}
 		} else {
 			setValue('taskInfoDueDate', null);

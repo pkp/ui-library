@@ -51,6 +51,7 @@
 				license-key="gpl"
 				:toolbar="toolbar"
 				:plugins="plugins"
+				:disabled="disabled"
 				:init="compiledInit"
 				@focus="focus"
 				@blur="blur"
@@ -168,6 +169,12 @@ export default {
 			type: Number,
 			default() {
 				return 0;
+			},
+		},
+		disabled: {
+			type: Boolean,
+			default() {
+				return false;
 			},
 		},
 	},
