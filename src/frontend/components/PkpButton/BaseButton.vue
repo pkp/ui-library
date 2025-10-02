@@ -1,9 +1,5 @@
 <template>
-	<button
-		v-bind="$attrs"
-		class="BaseButton BaseButtonDisabled"
-		:disabled="isDisabled"
-	>
+	<button v-bind="$attrs" class="BaseButton" :disabled="isDisabled">
 		<slot />
 	</button>
 </template>

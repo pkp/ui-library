@@ -1,6 +1,9 @@
 <template>
 	<pkp-button
 		class="BaseCommentsNewSubmit"
+		:is-disabled="
+			!commentsStore.commentText.trim() || commentsStore.isCommentSubmitting
+		"
 		@click="commentsStore.addComment(publicationId)"
 	>
 		{{ t('form.submit') }}
