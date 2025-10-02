@@ -6,6 +6,7 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
 
 import TaskTemplateManagerEmails from './TaskTemplateManagerEmails.vue';
+import TaskTemplateManagerEmailLink from './TaskTemplateManagerEmailLink.vue';
 import FileAttacherModal from '@/components/Composer/FileAttacherModal.vue';
 import FieldPreparedContentInsertModal from '@/components/Form/fields/FieldPreparedContentInsertModal.vue';
 
@@ -32,6 +33,7 @@ export function useTaskTemplateManagerForm({
 		addFieldRichTextArea,
 		addFieldSelect,
 		addFieldCheckbox,
+		addFieldComponent,
 	} = useForm({}, {customSubmit: handleFormSubmission});
 
 	async function handleFormSubmission(formData) {
@@ -179,6 +181,7 @@ export function useTaskTemplateManagerForm({
 					},
 				});
 			},
+			readonly: true,
 		};
 	}
 
@@ -258,6 +261,12 @@ export function useTaskTemplateManagerForm({
 		size: 'large',
 		init: initDiscussionText(),
 		value: taskTemplate?.content || '',
+		disabled: true,
+	});
+
+	addFieldComponent('messagesComponent', {
+		component: TaskTemplateManagerEmailLink,
+		groupId: 'discussion',
 	});
 
 	addGroup('autoAddTemplate');
