@@ -543,6 +543,7 @@ window.pkp = {
 			'Are you sure you want to change to {$localeName} to compose this email? Any changes you have made to the subject and body of the email will be lost.',
 		'email.email': 'Email',
 		'email.subject': 'Subject',
+		'email.body': 'Body',
 		'email.to': 'To',
 		'fileManager.copyeditedFiles': 'Copyedited Files',
 		'fileManager.copyeditedFilesDescription':
