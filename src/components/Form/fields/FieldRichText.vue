@@ -198,12 +198,12 @@ export default {
  * is not focused. See the comment at closeToolbar().
  */
 .pkpFormField--richTextArea__control--oneline .tox-editor-header {
-	display: none;
+	display: none !important;
 }
 
 .pkpFormField--richTextarea.-isFocused
 	.pkpFormField--richTextArea__control--oneline
 	.tox-editor-header {
-	display: flex;
+	display: grid !important;
 }
 </style>
