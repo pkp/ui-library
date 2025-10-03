@@ -208,8 +208,8 @@ export function useDiscussionManagerForm(
 
 	function setValuesFromTemplate(template) {
 		isTask.value = template.type === 'Task';
-		setValue('detailsName', template.name);
-		setValue('discussionText', template.content);
+		setValue('title', template.name);
+		setValue('description', template.content);
 
 		const selectedParticipants =
 			allParticipants.value
@@ -226,12 +226,12 @@ export function useDiscussionManagerForm(
 
 			if (template.taskDetails.dueDate) {
 				setValue(
-					'taskInfoDueDate',
+					'dateDue',
 					getRelativeTargetDate(template.taskDetails.dueDate),
 				);
 			}
 		} else {
-			setValue('taskInfoDueDate', null);
+			setValue('dateDue', null);
 		}
 	}
 
@@ -316,7 +316,7 @@ export function useDiscussionManagerForm(
 
 	function addTaskInfoDueDate({override = false} = {}) {
 		addFieldText(
-			'taskInfoDueDate',
+			'dateDue',
 			{
 				groupId: 'taskInformation',
 				label: t('common.dueDate'),
@@ -424,11 +424,11 @@ export function useDiscussionManagerForm(
 			type: isTaskType
 				? pkp.const.EDITORIAL_TASK_TYPE_TASK
 				: pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION,
-			title: formData.detailsName,
+			title: formData.title,
 			stageId: submissionStageId,
-			dateDue: isTaskType ? formData.taskInfoDueDate : undefined,
+			dateDue: isTaskType ? formData.dateDue : undefined,
 			participants: mapParticipantsBody(formData),
-			description: formData.discussionText,
+			description: formData.description,
 		};
 
 		let taskUrl = `submissions/${submission.id}/tasks`;
@@ -606,7 +606,7 @@ export function useDiscussionManagerForm(
 		},
 	});
 
-	addFieldText('detailsName', {
+	addFieldText('title', {
 		groupId: 'details',
 		label: t('common.name'),
 		description: t('discussion.form.detailsNameDescription'),
@@ -674,7 +674,7 @@ export function useDiscussionManagerForm(
 	if (inDisplayMode) {
 		addMessagesComponent(workItemRef.value);
 	} else {
-		addFieldRichTextArea('discussionText', {
+		addFieldRichTextArea('description', {
 			groupId: 'discussion',
 			...messageFieldOptions,
 			value: workItemRef.value?.notes?.[0]?.contents,
@@ -693,13 +693,13 @@ export function useDiscussionManagerForm(
 		workItemRef.value = newWorkItem;
 		workItemStatus.value = newWorkItem?.status;
 
-		setValue('detailsName', newWorkItem?.title || '');
+		setValue('title', newWorkItem?.title || '');
 		setValue('participants', getSelectedParticipants(newWorkItem));
 		setValue(
 			'taskInfoAdd',
 			newWorkItem.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
 		);
-		setValue('taskInfoDueDate', newWorkItem?.dateDue || '');
+		setValue('dateDue', newWorkItem?.dateDue || '');
 		setValue('taskInfoAssignee', getSelectedAssignee(newWorkItem));
 
 		addTaskInfoGroup(newWorkItem, {override: true});
