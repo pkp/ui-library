@@ -24,7 +24,7 @@
 			<TableBody>
 				<template
 					v-for="stage in taskTemplateManagerStore.stagedTemplates"
-					:key="stage.name"
+					:key="stage.key"
 				>
 					<TableRowGroup>
 						<TableRow>

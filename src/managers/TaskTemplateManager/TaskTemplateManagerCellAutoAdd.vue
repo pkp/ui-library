@@ -1,6 +1,6 @@
 <template>
 	<TableCellSelect
-		:checked="!!taskTemplate?.autoAdd"
+		:checked="!!taskTemplate?.include"
 		:labelled-by="labelIds"
 		:confirm-title="t('taskTemplates.confirmAutoAdd')"
 		:confirm-message="confirmMsg"
@@ -23,7 +23,7 @@ const props = defineProps({
 });
 
 const confirmMsg = computed(() =>
-	props.taskTemplate?.autoAdd
+	props.taskTemplate?.include
 		? t('taskTemplates.confirmAutoAddDisable', {
 				stage: `<b>${props.stage.name}</b>`,
 			})

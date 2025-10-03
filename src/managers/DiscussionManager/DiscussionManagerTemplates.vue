@@ -43,7 +43,7 @@
 									: t('discussion.name')
 							}}
 						</span>
-						- {{ template.name }}
+						- {{ template.title }}
 					</div>
 					<div class="mt-1 text-base-normal text-secondary">
 						{{

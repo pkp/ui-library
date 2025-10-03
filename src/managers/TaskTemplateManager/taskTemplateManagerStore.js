@@ -39,23 +39,25 @@ export const useTaskTemplateManagerStore = defineComponentStore(
 		const stagedTemplates = [
 			{
 				name: t('stage.submission'),
-				key: 'Submission',
-				templates: getTemplatesByStage('Submission'),
+				key: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
+				templates: getTemplatesByStage(pkp.const.WORKFLOW_STAGE_ID_SUBMISSION),
 			},
 			{
 				name: t('stage.review'),
-				key: 'Review',
-				templates: getTemplatesByStage('Review'),
+				key: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+				templates: getTemplatesByStage(
+					pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+				),
 			},
 			{
 				name: t('stage.copyediting'),
-				key: 'Copyediting',
-				templates: getTemplatesByStage('Copyediting'),
+				key: pkp.const.WORKFLOW_STAGE_ID_EDITING,
+				templates: getTemplatesByStage(pkp.const.WORKFLOW_STAGE_ID_EDITING),
 			},
 			{
 				name: t('stage.production'),
-				key: 'Production',
-				templates: getTemplatesByStage('Production'),
+				key: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+				templates: getTemplatesByStage(pkp.const.WORKFLOW_STAGE_ID_PRODUCTION),
 			},
 		];
 

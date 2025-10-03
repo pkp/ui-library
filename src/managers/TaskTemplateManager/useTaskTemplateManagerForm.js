@@ -201,7 +201,7 @@ export function useTaskTemplateManagerForm({
 		label: t('common.name'),
 		description: t('discussion.form.detailsNameDescription'),
 		size: 'large',
-		value: taskTemplate?.name,
+		value: taskTemplate?.title,
 		hideOnDisplay: true,
 	});
 
@@ -211,7 +211,7 @@ export function useTaskTemplateManagerForm({
 		description: t('discussion.form.detailsParticipantsDescription'),
 		name: 'detailsParticipants',
 		options: getParticipantOptions(),
-		value: taskTemplate?.participantRoles || [],
+		value: taskTemplate?.userGroups?.map(({id}) => id) || [],
 	});
 
 	addGroup('taskInformation', {
@@ -265,7 +265,7 @@ export function useTaskTemplateManagerForm({
 	addFieldCheckbox('autoAddTemplate', {
 		groupId: 'autoAddTemplate',
 		label: t('taskTemplates.templateAutoAddInStage'),
-		value: taskTemplate?.autoAdd || false,
+		value: taskTemplate?.include || false,
 	});
 
 	useFormChanged(form, [], onCloseFn, {
