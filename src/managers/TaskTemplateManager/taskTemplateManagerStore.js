@@ -1,6 +1,6 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
-import {computed, watch} from 'vue';
+import {computed} from 'vue';
 
 import {t} from '@/utils/i18n';
 import {useFetch} from '@/composables/useFetch';
@@ -16,18 +16,10 @@ export const useTaskTemplateManagerStore = defineComponentStore(
 	() => {
 		const extender = useExtender();
 
-		const relativeUrl = computed(() => {
-			return `templates`;
-		});
-
-		const {apiUrl: templatesApiUrl} = useUrl(relativeUrl);
+		const {apiUrl: templatesApiUrl} = useUrl('editTaskTemplates');
 
 		const {data: templatesList, fetch: fetchTemplates} =
 			useFetch(templatesApiUrl);
-
-		watch(relativeUrl, () => {
-			fetchTemplates({clearData: true});
-		});
 
 		fetchTemplates();
 
