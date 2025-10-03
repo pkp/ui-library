@@ -6,14 +6,8 @@ import {useForm} from '@/composables/useForm';
 
 export function useWorkflowPublicationFormIssue(form, selectedPublication) {
 	const {t} = useLocalize();
-	const {
-		setHiddenValue,
-		// getHiddenValue,
-		getField,
-		addFieldOptions,
-		addFieldSelect,
-		setValue,
-	} = useForm(form);
+	const {setHiddenValue, getField, addFieldOptions, addFieldSelect, setValue} =
+		useForm(form);
 
 	const {apiUrl: assignmentsUrl} = useUrl('issues/assignmentOptions');
 	const {fetch: fetchAssignments, data: assignments} = useFetch(assignmentsUrl);
@@ -90,20 +84,6 @@ export function useWorkflowPublicationFormIssue(form, selectedPublication) {
 			label: issue.identification,
 		}));
 	});
-
-	/**
-	 * Check if the required fields already exist in the form
-	 */
-	// async function checkFieldsExist() {
-	// 	if (!getField || !getHiddenValue) {
-	// 		return false;
-	// 	}
-
-	// 	const issueIdField = getField('issueId');
-	// 	const assignmentField = getField('assignment');
-
-	// 	return issueIdField && assignmentField;
-	// }
 
 	/**
 	 * Create fields immediately with placeholder data for instant UI rendering
@@ -242,16 +222,8 @@ export function useWorkflowPublicationFormIssue(form, selectedPublication) {
 	 * Create fields immediately(if not exist) and fetch data in parallel
 	 */
 	function initialize() {
-		// const fieldsExist = await checkFieldsExist();
-
-		// if (!fieldsExist) {
-		// 	createFields();
-		// }
-
 		createFields();
-
 		setupDataWatchers();
-
 		fetchAssignments();
 		fetchAssignmentStatus();
 	}
