@@ -1046,6 +1046,7 @@ export const PublicationConfig = {
 						submission,
 						publication: selectedPublication,
 						canEdit: permissions.canEditPublication,
+						issueCount: pageInitConfig?.publicationSettings?.countIssues || 0,
 					},
 				},
 			];
