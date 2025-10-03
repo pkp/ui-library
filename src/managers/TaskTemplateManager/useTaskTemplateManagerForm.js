@@ -196,7 +196,7 @@ export function useTaskTemplateManagerForm({
 		description: t('discussion.form.detailsDescription'),
 	});
 
-	addFieldText('detailsName', {
+	addFieldText('title', {
 		groupId: 'details',
 		label: t('common.name'),
 		description: t('discussion.form.detailsNameDescription'),
@@ -205,11 +205,11 @@ export function useTaskTemplateManagerForm({
 		hideOnDisplay: true,
 	});
 
-	addFieldOptions('detailsParticipants', 'checkbox', {
+	addFieldOptions('userGroupIds', 'checkbox', {
 		groupId: 'details',
 		label: t('editor.submission.stageParticipants'),
 		description: t('discussion.form.detailsParticipantsDescription'),
-		name: 'detailsParticipants',
+		name: 'userGroupIds',
 		options: getParticipantOptions(),
 		value: taskTemplate?.userGroups?.map(({id}) => id) || [],
 	});
@@ -262,7 +262,7 @@ export function useTaskTemplateManagerForm({
 
 	addGroup('autoAddTemplate');
 
-	addFieldCheckbox('autoAddTemplate', {
+	addFieldCheckbox('include', {
 		groupId: 'autoAddTemplate',
 		label: t('taskTemplates.templateAutoAddInStage'),
 		value: taskTemplate?.include || false,
