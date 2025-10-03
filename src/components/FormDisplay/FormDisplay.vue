@@ -85,10 +85,6 @@
 			:class="footerSpacingStyle"
 			aria-live="polite"
 		>
-			<span v-if="lastSavedMessage" class="me-auto text-base-normal">
-				<Icon icon="Help" class="h-4 w-4 text-primary"></Icon>
-				{{ lastSavedMessage }}
-			</span>
 			<span role="status" aria-live="polite" aria-atomic="true">
 				<transition name="pkpFormPage__status">
 					<span v-if="isSaving" class="pkpFormPage__status">
@@ -124,7 +120,6 @@
 <script setup>
 import {computed, useId, ref, watch, onUnmounted} from 'vue';
 import {t} from '@/utils/i18n';
-import {useDate} from '@/composables/useDate';
 import {shouldShowFieldWithinGroup} from '@/components/Form/formHelpers';
 
 import PkpButton from '@/components/Button/Button.vue';
@@ -137,13 +132,11 @@ import FieldSelectDisplay from './FieldSelectDisplay.vue';
 import FieldOptionsDisplay from './FieldOptionsDisplay.vue';
 
 const uniqueId = useId();
-const {relativeStringTimeFromNow} = useDate();
 
 const emit = defineEmits(['cancel', 'success']);
 const isSaving = ref(false);
 const lastSaveTimestamp = ref(-1);
 const hasRecentSave = ref(false);
-const lastSavedMessage = ref(null);
 let recentInterval = null;
 
 const FieldComponents = {
@@ -250,7 +243,6 @@ async function submit() {
 watch(lastSaveTimestamp, (newVal) => {
 	if (recentInterval) {
 		clearInterval(recentInterval);
-		lastSavedMessage.value = '';
 	}
 
 	if (!newVal) {
@@ -264,13 +256,6 @@ watch(lastSaveTimestamp, (newVal) => {
 	setTimeout(() => {
 		hasRecentSave.value = false;
 	}, 5000);
-
-	// update the last saved message every 3 seconds
-	recentInterval = setInterval(() => {
-		lastSavedMessage.value = t('common.lastSaved', {
-			when: relativeStringTimeFromNow(lastSaveTimestamp.value),
-		});
-	}, 3000);
 });
 
 onUnmounted(() => {
