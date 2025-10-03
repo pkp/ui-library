@@ -208,12 +208,14 @@ export function useDiscussionManagerForm(
 
 	function setValuesFromTemplate(template) {
 		isTask.value = template.type === 'Task';
-		setValue('title', template.name);
+		setValue('title', template.title);
 		setValue('description', template.content);
 
 		const selectedParticipants =
 			allParticipants.value
-				.filter((p) => template.participantRoles?.includes(p.roleId))
+				.filter((p) =>
+					template.userGroups?.find((userGroup) => userGroup.id === p.roleId),
+				)
 				.map((p) => p.id) || [];
 		setValue('participants', selectedParticipants);
 
