@@ -84,7 +84,7 @@ const mswHandlers = [
 	http.get(
 		'https://mock/index.php/publicknowledge/api/v1/editTaskTemplates',
 		() => {
-			return HttpResponse.json(baseArgs.templates);
+			return HttpResponse.json({data: baseArgs.templates});
 		},
 	),
 	http.get(
