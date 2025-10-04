@@ -26,7 +26,13 @@
 					v-for="stage in taskTemplateManagerStore.stagedTemplates"
 					:key="stage.key"
 				>
-					<TableRowGroup>
+					<TableRowGroup
+						:empty-text="
+							taskTemplateManagerStore.isLoadingTemplates
+								? t('common.loading')
+								: t('grid.noItems')
+						"
+					>
 						<TableRow>
 							<TableColGroup>
 								<span class="text-lg-bold">{{ stage.name }}</span>

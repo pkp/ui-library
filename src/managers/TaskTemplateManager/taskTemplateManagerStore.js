@@ -5,7 +5,7 @@ import {computed} from 'vue';
 import {t} from '@/utils/i18n';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
-import {useDataChanged} from '@/composables/useDataChanged';
+import {useDataChangedProvider} from '@/composables/useDataChangedProvider';
 import {useExtender} from '@/composables/useExtender';
 
 import {useTaskTemplateManagerConfig} from './useTaskTemplateManagerConfig';
@@ -18,22 +18,28 @@ export const useTaskTemplateManagerStore = defineComponentStore(
 
 		const {apiUrl: templatesApiUrl} = useUrl('editTaskTemplates');
 
-		const {data: templatesList, fetch: fetchTemplates} =
-			useFetch(templatesApiUrl);
+		const {
+			data: templatesList,
+			fetch: fetchTemplates,
+			isLoading: isLoadingTemplates,
+		} = useFetch(templatesApiUrl);
 
 		fetchTemplates();
 
-		const {triggerDataChange} = useDataChanged(() => fetchTemplates());
+		const {triggerDataChange} = useDataChangedProvider(() => fetchTemplates());
 
 		function triggerDataChangeCallback() {
 			triggerDataChange();
 		}
 
 		function getTemplatesByStage(stageId) {
-			return computed(
-				() =>
-					templatesList.value?.filter((data) => data.stageId === stageId) || [],
-			);
+			return computed(() => {
+				return (
+					templatesList.value?.data?.filter(
+						(data) => data.stageId === stageId,
+					) || []
+				);
+			});
 		}
 
 		const stagedTemplates = [
@@ -124,6 +130,7 @@ export const useTaskTemplateManagerStore = defineComponentStore(
 		return {
 			templatesList,
 			stagedTemplates,
+			isLoadingTemplates,
 			triggerDataChangeCallback,
 
 			/**
