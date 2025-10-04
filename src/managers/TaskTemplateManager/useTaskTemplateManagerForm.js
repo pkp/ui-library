@@ -1,6 +1,8 @@
 import {ref} from 'vue';
 import {localize} from '@/utils/i18n';
 import {useForm} from '@/composables/useForm';
+import {useUrl} from '@/composables/useUrl';
+import {useFetch} from '@/composables/useFetch';
 import {useFormChanged} from '@/composables/useFormChanged';
 import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
@@ -18,6 +20,7 @@ export function useTaskTemplateManagerForm({
 } = {}) {
 	const {t} = useLocalize();
 	const isTask = ref(taskTemplate?.type === 'Task');
+	const stageId = taskTemplate?.stageId || stage?.key;
 	let isTemplateOverrideConfirmed = false;
 
 	const {
@@ -35,10 +38,41 @@ export function useTaskTemplateManagerForm({
 	} = useForm({}, {customSubmit: handleFormSubmission});
 
 	async function handleFormSubmission(formData) {
+		const dataBody = {
+			title: formData.title,
+			stageId,
+			userGroupIds: formData.userGroupIds,
+			include: formData.include,
+		};
+
+		let taskTemplatesUrl = 'editTaskTemplates';
+		if (taskTemplate?.id) {
+			taskTemplatesUrl += `/${taskTemplate.id}`;
+		}
+		const {apiUrl: addTaskTemplateUrl} = useUrl(taskTemplatesUrl);
+
+		const {
+			fetch,
+			data: taskTemplateData,
+			validationError,
+			isSuccess,
+		} = useFetch(addTaskTemplateUrl, {
+			method: taskTemplate?.id ? 'PUT' : 'POST',
+			body: dataBody,
+			expectValidationError: true,
+		});
+
+		await fetch();
+
+		if (isSuccess.value) {
+			onCloseFn();
+		}
+
 		// return result to Form component handler
 		return {
-			data: {},
-			validationError: {},
+			data: taskTemplateData.value,
+			validationError: validationError.value,
+			isSuccess: isSuccess.value,
 		};
 	}
 
