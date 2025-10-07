@@ -2,7 +2,22 @@ import {deepMerge} from './mockHelpers';
 
 const CommonDefaults = {
 	id: 1,
-	name: 'Plagiarism Check',
+	stageId: 1,
+	title: 'Plagiarism Check',
+	include: true,
+	userGroups: [
+		{
+			id: 16,
+			name: 'Reviewer',
+		},
+		{
+			id: 1,
+			name: 'Site Admin',
+		},
+	],
+
+	dueDate: 'P1W',
+	type: 'Task',
 	content: `
         <p><strong>Task:</strong> <strong>Complete Prepublication Plagiarism and Originality Checklist</strong></p>
 
@@ -36,11 +51,6 @@ const CommonDefaults = {
         F1000Research will not accept submissions that fail originality checks. Ensure all compliance issues are resolved before final submission.</p>
 
     `,
-	type: 'Task',
-	taskDetails: {
-		participantRoles: [16, 1],
-		dueDate: 'P1W',
-	},
 };
 
 export function getTemplate(overrides = {}) {
@@ -52,7 +62,7 @@ export const TemplatesDataMock = [
 	{...CommonDefaults},
 	{
 		id: 2,
-		name: 'Authorship Criteria',
+		title: 'Authorship Criteria',
 		content: `
             <p><strong>Discussion Topic:</strong> <strong>Authorship Criteria for Manuscript Submission</strong></p>
 
@@ -72,10 +82,12 @@ export const TemplatesDataMock = [
             Please share your thoughts by July 15. Any concerns about authorship should be raised before we finalize the submission.</p>
         `,
 		type: 'Discussion',
+		stageId: 1,
+		userGroups: [{id: 65536}],
 	},
 	{
 		id: 3,
-		name: 'Ethical Approval',
+		title: 'Ethical Approval',
 		content: `
             <p><strong>Task:</strong> <strong>Secure ethical approval for research study</strong></p>    
 
@@ -95,9 +107,7 @@ export const TemplatesDataMock = [
             Ensure all documents are consistent and up to date. Reach out to the ethics coordinator if clarification is needed.</p>
         `,
 		type: 'Task',
-		taskDetails: {
-			participantRoles: [65536],
-			dueDate: 'P3M',
-		},
+		userGroups: [{id: 65536}],
+		dueDate: 'P3M',
 	},
 ];

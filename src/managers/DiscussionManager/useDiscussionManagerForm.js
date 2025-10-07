@@ -208,13 +208,13 @@ export function useDiscussionManagerForm(
 
 	function setValuesFromTemplate(template) {
 		isTask.value = template.type === 'Task';
-		setValue('title', template.name);
+		setValue('title', template.title);
 		setValue('description', template.content);
 
 		const selectedParticipants =
 			allParticipants.value
 				.filter((p) =>
-					template.taskDetails?.participantRoles?.includes(p.roleId),
+					template.userGroups?.find((userGroup) => userGroup.id === p.roleId),
 				)
 				.map((p) => p.id) || [];
 		setValue('participants', selectedParticipants);
@@ -224,11 +224,8 @@ export function useDiscussionManagerForm(
 		if (isTask.value) {
 			setValue('taskInfoAssignee', selectedParticipants);
 
-			if (template.taskDetails.dueDate) {
-				setValue(
-					'dateDue',
-					getRelativeTargetDate(template.taskDetails.dueDate),
-				);
+			if (template.dueDate) {
+				setValue('dateDue', getRelativeTargetDate(template.dueDate));
 			}
 		} else {
 			setValue('dateDue', null);

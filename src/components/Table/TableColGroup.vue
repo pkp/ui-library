@@ -3,9 +3,15 @@
 		:id="groupId"
 		:colspan="tableContext.columnsCount.value"
 		scope="colgroup"
-		class="whitespace-nowrap border-b border-light bg-tertiary px-2 py-4 text-start text-lg-medium text-secondary first:border-s first:ps-3 last:border-e last:pe-3"
+		class="whitespace-nowrap border-b border-light bg-tertiary p-2 text-start text-lg-medium text-secondary first:border-s first:ps-3 last:border-e last:pe-3"
 	>
-		<slot />
+		<div class="flex w-full items-center gap-2">
+			<slot />
+
+			<div v-if="$slots.action" class="ms-auto">
+				<slot name="action" :group-id="groupId" />
+			</div>
+		</div>
 	</th>
 </template>
 
