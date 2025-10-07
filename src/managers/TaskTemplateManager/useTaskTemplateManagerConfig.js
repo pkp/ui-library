@@ -4,16 +4,7 @@ import {Actions} from './useTaskTemplateManagerActions';
 export const TaskTemplateManagerConfigurations = {
 	permissions: [
 		{
-			roles: [pkp.const.ROLE_ID_AUTHOR],
-			actions: [Actions.TASK_TEMPLATES_LIST],
-		},
-		{
-			roles: [
-				pkp.const.ROLE_ID_SUB_EDITOR,
-				pkp.const.ROLE_ID_MANAGER,
-				pkp.const.ROLE_ID_SITE_ADMIN,
-				pkp.const.ROLE_ID_ASSISTANT,
-			],
+			roles: [pkp.const.ROLE_ID_MANAGER, pkp.const.ROLE_ID_SITE_ADMIN],
 			actions: [
 				Actions.TASK_TEMPLATES_LIST,
 				Actions.TASK_TEMPLATES_ADD,
