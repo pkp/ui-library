@@ -79,12 +79,7 @@ export const useTaskTemplateManagerStore = defineComponentStore(
 		}
 
 		function templateAdd({stage}) {
-			taskTemplateActions.templateAdd(
-				{
-					stage,
-				},
-				triggerDataChangeCallback,
-			);
+			taskTemplateActions.templateAdd({stage}, triggerDataChangeCallback);
 		}
 
 		function templateEdit({taskTemplate}) {
@@ -103,9 +98,7 @@ export const useTaskTemplateManagerStore = defineComponentStore(
 
 		function templateUpdateAutoAdd({taskTemplate}) {
 			taskTemplateActions.templateUpdateAutoAdd(
-				{
-					taskTemplate,
-				},
+				{taskTemplate},
 				triggerDataChangeCallback,
 			);
 		}

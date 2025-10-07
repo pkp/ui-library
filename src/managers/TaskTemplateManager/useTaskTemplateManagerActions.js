@@ -76,7 +76,7 @@ export function useTaskTemplateActions() {
 	}
 
 	function templateUpdateAutoAdd({taskTemplate}, finishedCallback) {
-		// TODO: update status
+		// TODO: update template
 	}
 
 	return {
