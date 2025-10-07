@@ -16,6 +16,7 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 	const allCommentsCount = ref(0);
 	const commentText = ref('');
 	const reportText = ref('');
+	const isCommentSubmitting = ref(false);
 
 	// Version-specific state stored in a Map
 	const versionStates = ref({});
@@ -146,10 +147,13 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 		if (
 			!isLatestPublication(publicationId) ||
 			!getCurrentUser() ||
-			!commentText.value.trim()
+			!commentText.value.trim() ||
+			isCommentSubmitting.value
 		) {
 			return;
 		}
+
+		isCommentSubmitting.value = true;
 
 		const {apiUrl} = useUrl('comments');
 
@@ -167,6 +171,8 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 			commentText.value = '';
 			await loadComments(publicationId, true);
 		}
+
+		isCommentSubmitting.value = false;
 	}
 
 	// Get available actions for a comment
@@ -325,6 +331,7 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 		commentText,
 		reportText,
 		updateCommentText,
+		isCommentSubmitting,
 
 		// Global actions
 		initialize,
