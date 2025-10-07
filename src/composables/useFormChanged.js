@@ -67,7 +67,7 @@ export function useFormChanged(
 				},
 			],
 			title: t('common.warning'),
-			message: t('common.confirmUnsavedChanges'),
+			message: t('form.dataHasChanged'),
 			modalStyle: 'negative',
 		});
 	}

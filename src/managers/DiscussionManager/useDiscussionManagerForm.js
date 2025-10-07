@@ -10,7 +10,7 @@ import {useCurrentUser} from '@/composables/useCurrentUser';
 import {useParticipantManagerStore} from '../ParticipantManager/participantManagerStore';
 import {useSubmission} from '@/composables/useSubmission';
 import {useTasksAndDiscussionsStore} from '@/pages/tasksAndDiscussions/tasksAndDiscussionsStore';
-import {useDiscussionMessagesStore} from './discussionMessagesStore';
+import {useDiscussionMessages} from './useDiscussionMessages';
 import {
 	useDiscussionManagerStatusUpdater,
 	statusUpdates,
@@ -29,15 +29,16 @@ export function useDiscussionManagerForm(
 		autoAddTaskDetails = false,
 		onCloseFn = () => {},
 	} = {},
-	{inDisplayMode = false} = {},
+	{inDisplayMode = false, refetchData = null} = {},
 ) {
-	const workItemStatus = workItem?.status || status;
+	const workItemRef = ref(workItem);
+	const workItemStatus = ref(workItemRef.value?.status || status);
 	const {t} = useLocalize();
 	const participantManagerStore = useParticipantManagerStore({
 		submission,
 		submissionStageId,
 	});
-	const discussionMessagesStore = useDiscussionMessagesStore();
+	const {messageFieldOptions} = useDiscussionMessages();
 	const {updateStatus, startWorkItem} = useDiscussionManagerStatusUpdater(
 		submission.id,
 	);
@@ -45,11 +46,16 @@ export function useDiscussionManagerForm(
 
 	const currentUser = useCurrentUser();
 	const {getRelativeTargetDate} = useDate();
-	const isTask = ref(workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK);
-	const isClosed = workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED;
+	const isTask = ref(
+		workItemRef.value?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
+	);
+	const isClosed =
+		workItemRef.value?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED;
 	const statusUpdateValue = ref(isClosed);
-	let updateOnDisplayMode = false;
-	const initialStatusUpdateVal = isClosed;
+	let updateStatusInViewMode = false;
+	const newMessageError = ref(null);
+	const showNewMessageField = ref(false);
+	let initialStatusUpdateVal = isClosed;
 
 	const newMessage = ref(null);
 	const formId = inDisplayMode ? 'discussionDisplay' : 'discussionForm';
@@ -61,6 +67,7 @@ export function useDiscussionManagerForm(
 		addGroup,
 		set,
 		setValue,
+		setCanSubmit,
 		getField,
 		addFieldText,
 		addFieldOptions,
@@ -141,7 +148,7 @@ export function useDiscussionManagerForm(
 
 	function getBadgeProps() {
 		let badgeProps = {};
-		switch (workItemStatus) {
+		switch (workItemStatus.value) {
 			case pkp.const.EDITORIAL_TASK_STATUS_PENDING:
 				badgeProps = {
 					slot: t('common.yetToBegin'),
@@ -173,11 +180,11 @@ export function useDiscussionManagerForm(
 
 		// check if overdue
 		const isOverdue =
-			workItem?.dateDue &&
-			!workItem?.dateClosed &&
-			new Date(workItem.dateDue) < new Date();
+			workItemRef.value?.dateDue &&
+			!workItemRef.value?.dateClosed &&
+			new Date(workItemRef.value.dateDue) < new Date();
 		if (
-			workItemStatus === pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS &&
+			workItemStatus.value === pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS &&
 			isOverdue
 		) {
 			badgeProps = {
@@ -201,8 +208,8 @@ export function useDiscussionManagerForm(
 
 	function setValuesFromTemplate(template) {
 		isTask.value = template.type === 'Task';
-		setValue('detailsName', template.name);
-		setValue('discussionText', template.content);
+		setValue('title', template.name);
+		setValue('description', template.content);
 
 		const selectedParticipants =
 			allParticipants.value
@@ -219,12 +226,12 @@ export function useDiscussionManagerForm(
 
 			if (template.taskDetails.dueDate) {
 				setValue(
-					'taskInfoDueDate',
+					'dateDue',
 					getRelativeTargetDate(template.taskDetails.dueDate),
 				);
 			}
 		} else {
-			setValue('taskInfoDueDate', null);
+			setValue('dateDue', null);
 		}
 	}
 
@@ -239,7 +246,7 @@ export function useDiscussionManagerForm(
 	}
 
 	function onSelectTemplate(template) {
-		if (!workItem?.id) {
+		if (!workItemRef.value?.id) {
 			return setValuesFromTemplate(template);
 		}
 
@@ -271,12 +278,20 @@ export function useDiscussionManagerForm(
 	}
 
 	function onUpdateStatusCheckbox(val) {
-		updateOnDisplayMode = initialStatusUpdateVal !== val;
+		updateStatusInViewMode = initialStatusUpdateVal !== val;
 		statusUpdateValue.value = val;
+		toggleSaveBtnOnDisplayMode();
 	}
 
-	function onNewMessage(val) {
+	function onNewMessage() {
+		showNewMessageField.value = true;
+		toggleSaveBtnOnDisplayMode();
+	}
+
+	function onNewMessageChanged(val) {
 		newMessage.value = val;
+		newMessageError.value = null;
+		toggleSaveBtnOnDisplayMode();
 	}
 
 	function addTaskInfoGroup(workItemData, {override = false} = {}) {
@@ -292,6 +307,7 @@ export function useDiscussionManagerForm(
 						inDisplayMode,
 						autoAddTaskDetails,
 						onUpdateStatusCheckbox,
+						statusValue: statusUpdateValue,
 					},
 				},
 			},
@@ -301,7 +317,7 @@ export function useDiscussionManagerForm(
 
 	function addTaskInfoDueDate({override = false} = {}) {
 		addFieldText(
-			'taskInfoDueDate',
+			'dateDue',
 			{
 				groupId: 'taskInformation',
 				label: t('common.dueDate'),
@@ -309,7 +325,7 @@ export function useDiscussionManagerForm(
 				description: t('discussion.form.taskInfoDueDateDescription'),
 				size: 'normal',
 				showWhen: 'taskInfoAdd',
-				value: isTask.value ? workItem?.dateDue : null,
+				value: isTask.value ? workItemRef.value?.dateDue : null,
 				isRequired: isTask.value,
 			},
 			{override},
@@ -327,7 +343,7 @@ export function useDiscussionManagerForm(
 				name: 'taskInfoAssignee',
 				showWhen: 'taskInfoAdd',
 				options: getAssigneeOptions(),
-				value: getSelectedAssignee(workItem),
+				value: getSelectedAssignee(workItemRef.value),
 				isRequired: isTask.value,
 			},
 			{override},
@@ -353,6 +369,40 @@ export function useDiscussionManagerForm(
 		);
 	}
 
+	function addMessagesComponent(workItemData, {override = false} = {}) {
+		showNewMessageField.value = false;
+		newMessage.value = null;
+
+		addFieldComponent(
+			'messagesComponent',
+			{
+				component: DiscussionMessages,
+				componentProps: {
+					submission,
+					workItem: workItemData,
+					inDisplayMode,
+					showNewMessageField,
+					onNewMessageChanged,
+					onNewMessage,
+					newMessageError,
+				},
+				groupId: 'discussion',
+			},
+			{override},
+		);
+	}
+
+	// This function updates the Save button state in display mode
+	function toggleSaveBtnOnDisplayMode() {
+		if (!inDisplayMode) return;
+
+		const hasValidMessage = !newMessageError.value;
+		const hasChanges =
+			updateStatusInViewMode || showNewMessageField.value || newMessage.value;
+
+		setCanSubmit(hasValidMessage && hasChanges);
+	}
+
 	function mapParticipantsBody(formData) {
 		if (!formData.participants) return [];
 
@@ -375,15 +425,16 @@ export function useDiscussionManagerForm(
 			type: isTaskType
 				? pkp.const.EDITORIAL_TASK_TYPE_TASK
 				: pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION,
-			title: formData.detailsName,
+			title: formData.title,
 			stageId: submissionStageId,
-			dateDue: isTaskType ? formData.taskInfoDueDate : undefined,
+			dateDue: isTaskType ? formData.dateDue : undefined,
 			participants: mapParticipantsBody(formData),
+			description: formData.description,
 		};
 
 		let taskUrl = `submissions/${submission.id}/tasks`;
-		if (workItem?.id) {
-			taskUrl += `/${workItem.id}`;
+		if (workItemRef.value?.id) {
+			taskUrl += `/${workItemRef.value.id}`;
 		}
 		const {apiUrl: addTaskUrl} = useUrl(taskUrl);
 
@@ -393,7 +444,7 @@ export function useDiscussionManagerForm(
 			validationError,
 			isSuccess,
 		} = useFetch(addTaskUrl, {
-			method: workItem?.id ? 'PUT' : 'POST',
+			method: workItemRef.value?.id ? 'PUT' : 'POST',
 			body: dataBody,
 			expectValidationError: true,
 		});
@@ -425,8 +476,27 @@ export function useDiscussionManagerForm(
 	}
 
 	async function addNewMessage() {
-		console.log('add new message');
-		return {};
+		const {apiUrl: addNoteUrl} = useUrl(
+			`submissions/${submission.id}/tasks/${workItemRef.value.id}/notes`,
+		);
+
+		const {
+			fetch,
+			data: noteData,
+			validationError,
+			isSuccess,
+		} = useFetch(addNoteUrl, {
+			method: 'POST',
+			body: {contents: newMessage.value},
+		});
+
+		await fetch();
+
+		return {
+			data: noteData.value,
+			validationError: validationError.value,
+			isSuccess: isSuccess.value,
+		};
 	}
 
 	// Update the work item status: start, close, or open
@@ -434,8 +504,8 @@ export function useDiscussionManagerForm(
 		if (!workItemId) return;
 		let status;
 
-		if (workItem && inDisplayMode && updateOnDisplayMode) {
-			switch (workItem.status) {
+		if (workItemRef.value && inDisplayMode && updateStatusInViewMode) {
+			switch (workItemRef.value.status) {
 				case pkp.const.EDITORIAL_TASK_STATUS_PENDING:
 					status = statusUpdates.start;
 					break;
@@ -452,7 +522,7 @@ export function useDiscussionManagerForm(
 			// if discussion, only allow closing or re-opening
 			if (
 				status === statusUpdates.start &&
-				workItem.type === pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION
+				workItemRef.value.type === pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION
 			) {
 				status = statusUpdates.close;
 			}
@@ -465,6 +535,16 @@ export function useDiscussionManagerForm(
 		return await updateStatus(workItemId, status);
 	}
 
+	// manually validate the new message field in display mode, since it doesn't use the standard form component.
+	function validateNewMessage() {
+		const isInvalid = showNewMessageField.value && !newMessage.value;
+		newMessageError.value = isInvalid ? [t('validator.filled')] : null;
+
+		toggleSaveBtnOnDisplayMode();
+
+		return !isInvalid;
+	}
+
 	async function handleFormSubmission(formData) {
 		let result = {
 			data: {},
@@ -473,22 +553,29 @@ export function useDiscussionManagerForm(
 		};
 
 		if (inDisplayMode) {
-			result = (await updateWorkItemStatus(workItem?.id)) ?? result;
+			// manually validate the new message field since display mode doesn't use the standard form component
+			if (!validateNewMessage()) return;
+
+			result = (await updateWorkItemStatus(workItemRef.value?.id)) ?? result;
 		} else {
-			if (workItem) {
+			if (workItemRef.value) {
 				result = await saveWorkItem(formData);
 			} else {
 				result = await addWorkItem(formData);
 			}
 		}
 
-		if (workItem && newMessage.value) {
-			// check if there is message
-			await addNewMessage();
+		// save the note if there is a new message
+		if (workItemRef.value && inDisplayMode && newMessage.value) {
+			result = await addNewMessage();
 		}
 
 		if (result.isSuccess) {
-			onCloseFn();
+			if (inDisplayMode && refetchData) {
+				await refetchData();
+			} else {
+				onCloseFn();
+			}
 		}
 
 		// return result to Form component handler
@@ -497,6 +584,7 @@ export function useDiscussionManagerForm(
 
 	initEmptyForm(formId, {
 		showErrorFooter: false,
+		canSubmit: !inDisplayMode,
 	});
 
 	addPage('default', {
@@ -514,17 +602,17 @@ export function useDiscussionManagerForm(
 				templates: [],
 				onSelectTemplate,
 				inDisplayMode,
-				isTask: workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
+				isTask: workItemRef.value?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
 			},
 		},
 	});
 
-	addFieldText('detailsName', {
+	addFieldText('title', {
 		groupId: 'details',
 		label: t('common.name'),
 		description: t('discussion.form.detailsNameDescription'),
 		size: 'large',
-		value: workItem?.title,
+		value: workItemRef.value?.title,
 		hideOnDisplay: true,
 		isRequired: true,
 	});
@@ -536,21 +624,21 @@ export function useDiscussionManagerForm(
 		name: 'participants',
 		options: getParticipantOptions(),
 		showNumberedList: true,
-		value: getSelectedParticipants(workItem),
+		value: getSelectedParticipants(workItemRef.value),
 		isRequired: true,
 	});
 
 	const participantsField = getField('participants');
 	const selectedParticipants = computed(() => participantsField?.value || []);
 
-	addTaskInfoGroup(workItem);
+	addTaskInfoGroup(workItemRef.value);
 
 	addFieldCheckbox('taskInfoAdd', {
 		groupId: 'taskInformation',
 		label: t('discussion.form.taskInfoLabel'),
 		value: isTask.value || autoAddTaskDetails,
 		hideOnDisplay: true,
-		disabled: workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
+		disabled: workItemRef.value?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
 		onChange: (val) => {
 			isTask.value = val;
 			addTaskInfoDueDate({override: true});
@@ -569,7 +657,7 @@ export function useDiscussionManagerForm(
 		showWhen: 'taskInfoAdd',
 		value: true,
 		hideOnDisplay: true,
-		disabled: !!workItem,
+		disabled: !!workItemRef.value,
 		options: [
 			{
 				label: t('discussion.form.startTaskUponSaving'),
@@ -582,27 +670,20 @@ export function useDiscussionManagerForm(
 		],
 	});
 
-	addDiscussionGroup(workItem);
+	addDiscussionGroup(workItemRef.value);
 
-	if (workItemStatus === 'New') {
-		addFieldRichTextArea('discussionText', {
-			groupId: 'discussion',
-			...discussionMessagesStore.messageFieldOptions,
-		});
+	if (inDisplayMode) {
+		addMessagesComponent(workItemRef.value);
 	} else {
-		addFieldComponent('messagesComponent', {
-			component: DiscussionMessages,
-			componentProps: {
-				submission,
-				discussion: workItem,
-				inDisplayMode,
-				onNewMessage,
-			},
+		addFieldRichTextArea('description', {
 			groupId: 'discussion',
+			...messageFieldOptions,
+			value: workItemRef.value?.notes?.[0]?.contents,
+			isRequired: true,
 		});
 	}
 
-	const badgeProps = getBadgeProps(status);
+	const badgeProps = computed(() => getBadgeProps());
 	const additionalFields = [newMessage, statusUpdateValue];
 
 	const {setInitialState} = useFormChanged(form, additionalFields, onCloseFn, {
@@ -610,18 +691,28 @@ export function useDiscussionManagerForm(
 	});
 
 	function refreshFormData(newWorkItem) {
-		setValue('detailsName', newWorkItem?.title || '');
+		workItemRef.value = newWorkItem;
+		workItemStatus.value = newWorkItem?.status;
+
+		statusUpdateValue.value =
+			newWorkItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED;
+		initialStatusUpdateVal = statusUpdateValue.value;
+		updateStatusInViewMode = false;
+
+		setValue('title', newWorkItem?.title || '');
 		setValue('participants', getSelectedParticipants(newWorkItem));
 		setValue(
 			'taskInfoAdd',
 			newWorkItem.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
 		);
-		setValue('taskInfoDueDate', newWorkItem?.dateDue || '');
+		setValue('dateDue', newWorkItem?.dateDue || '');
 		setValue('taskInfoAssignee', getSelectedAssignee(newWorkItem));
 
 		addTaskInfoGroup(newWorkItem, {override: true});
 		addDiscussionGroup(newWorkItem, {override: true});
+		addMessagesComponent(newWorkItem, {override: true});
 
+		toggleSaveBtnOnDisplayMode();
 		setInitialState(form, additionalFields);
 	}
 

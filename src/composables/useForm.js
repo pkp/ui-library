@@ -228,6 +228,15 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 	}
 
 	/**
+	 * Set whether the form can be submitted.
+	 *
+	 * @param {boolean} canSubmitVal - The value to assign (true if the form can be submitted).
+	 */
+	function setCanSubmit(canSubmitVal) {
+		form.value.canSubmit = canSubmitVal;
+	}
+
+	/**
 	 * Clear a specific form field
 	 * @param {string} fieldName - The name of the field to clear
 	 */
@@ -373,6 +382,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 			spacingVariant,
 			onSuccess,
 			onSet,
+			canSubmit,
 		} = {},
 	) {
 		if (!form.value) {
@@ -390,6 +400,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		form.value.onSuccess = onSuccess || undefined;
 		form.value.onSet = onSet || set;
 
+		form.value.canSubmit = canSubmit;
 		setMethod(method || 'POST');
 		setAction(action || 'emit');
 		setLocales(locales);
@@ -675,6 +686,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		setValue,
 		setValues,
 		setHiddenValue,
+		setCanSubmit,
 		getValue,
 		getHiddenValue,
 		removeFieldValue,

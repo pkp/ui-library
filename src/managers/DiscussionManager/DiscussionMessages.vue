@@ -1,21 +1,18 @@
 <template>
 	<div class="flex flex-col gap-y-6">
 		<ul class="flex flex-col gap-y-6">
-			<li
-				v-for="message in discussionMessagesStore.discussionMessages"
-				:key="message.id"
-			>
+			<li v-for="note in workItem.notes" :key="note.id">
 				<p class="flex justify-between border border-light bg-tertiary p-3">
 					<span class="text-lg-bold">
-						{{ t('discussion.messageFrom', {from: message.email}) }}
+						{{ t('discussion.messageFrom', {from: note.createdByUsername}) }}
 					</span>
 					<span class="text-lg-normal">
-						{{ formatShortDateTime(message.createdAt) }}
+						{{ formatShortDateTime(note.dateCreated) }}
 					</span>
 				</p>
-				<p class="border border-t-0 border-light p-6">
+				<p class="border border-t-0 border-light p-4">
 					<span
-						v-strip-unsafe-html="message.discussionText"
+						v-strip-unsafe-html="note.contents"
 						class="semantic-defaults"
 					></span>
 				</p>
@@ -24,16 +21,17 @@
 
 		<div>
 			<PkpButton
-				:is-active="toggleMessageForm"
-				:is-disabled="toggleMessageForm"
+				v-if="hasAccessToAddMessage"
+				:is-active="showNewMessageField"
+				:is-disabled="showNewMessageField"
 				@click="addMessage"
 			>
 				{{ t('discussion.addNewMessage') }}
 			</PkpButton>
 		</div>
-		<div v-if="toggleMessageForm">
+		<div v-if="showNewMessageField">
 			<FieldRichTextarea
-				v-bind="discussionMessagesStore.messageFieldOptions"
+				v-bind="messageFieldOptions"
 				id="newMessage"
 				name="newMessage"
 				group-id="discussion"
@@ -41,30 +39,36 @@
 				:form-id="formId"
 				@change="fieldChanged"
 			></FieldRichTextarea>
+			<FieldError
+				v-if="newMessageError && newMessageError.length"
+				:messages="newMessageError"
+			/>
 		</div>
 	</div>
 </template>
 
 <script setup>
-import {ref} from 'vue';
+import {computed} from 'vue';
 import {t} from '@/utils/i18n';
 import {useDate} from '@/composables/useDate';
-import {useDiscussionMessagesStore} from './discussionMessagesStore';
+import {useDiscussionMessages} from './useDiscussionMessages';
+import {useCurrentUser} from '@/composables/useCurrentUser';
 
 import PkpButton from '@/components/Button/Button.vue';
 import FieldRichTextarea from '@/components/Form/fields/FieldRichTextarea.vue';
+import FieldError from '@/components/Form/FieldError.vue';
 
-const emit = defineEmits(['newMessage']);
+const emit = defineEmits(['newMessage', 'newMessageChanged']);
 const {formatShortDateTime} = useDate();
-const toggleMessageForm = ref(false);
-const discussionMessagesStore = useDiscussionMessagesStore();
+const {messageFieldOptions} = useDiscussionMessages();
+const {getCurrentUserId} = useCurrentUser();
 
-defineProps({
+const props = defineProps({
 	submission: {
 		type: Object,
 		required: true,
 	},
-	discussion: {
+	workItem: {
 		type: Object,
 		required: true,
 	},
@@ -76,13 +80,27 @@ defineProps({
 		type: String,
 		required: true,
 	},
+	newMessageError: {
+		type: Object,
+		default: () => null,
+	},
+	showNewMessageField: {
+		type: Boolean,
+		default: false,
+	},
 });
 
 function addMessage() {
-	toggleMessageForm.value = true;
+	emit('newMessage');
 }
 
 function fieldChanged(name, prop, newVal, localeKey) {
-	emit('newMessage', newVal);
+	emit('newMessageChanged', newVal);
 }
+
+const hasAccessToAddMessage = computed(() =>
+	props.workItem.participants?.find(
+		(particpant) => particpant.userId === getCurrentUserId(),
+	),
+);
 </script>
