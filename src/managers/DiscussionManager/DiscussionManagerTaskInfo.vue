@@ -6,11 +6,15 @@
 			:description="taskInfoDescription"
 		/>
 		<div v-if="showStatusUpdateCheckbox" class="relative mt-6">
-			<label class="flex-start flex cursor-pointer gap-2 text-lg-normal">
+			<label
+				class="flex-start flex cursor-pointer gap-2 text-lg-normal"
+				:class="isStatusClosed && 'text-disabled'"
+			>
 				<input
 					v-model="statusUpdateValue"
 					type="checkbox"
 					name="statusUpdateValue"
+					:disabled="isStatusClosed"
 				/>
 				{{ statusUpdateLabel }}
 			</label>
@@ -50,6 +54,10 @@ const props = defineProps({
 		type: Boolean,
 		required: true,
 	},
+	statusValue: {
+		type: Boolean,
+		default: () => false,
+	},
 	autoAddTaskDetails: {
 		type: Boolean,
 		default: () => false,
@@ -57,32 +65,24 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['updateStatusCheckbox']);
-const statusUpdateValue = ref(false);
+const statusUpdateValue = ref(props.statusValue);
 const taskInfoSectionRef = ref(null);
 const isTask = computed(
 	() => props.workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
 );
 
-const statusUpdateLabel = computed(() => {
-	switch (props.workItem?.status) {
-		case pkp.const.EDITORIAL_TASK_STATUS_PENDING:
-			return t('task.startThisTask');
-		case pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS:
-			return t('task.completeThisTask');
-		default:
-			return '';
-	}
+const isStatusClosed = computed(() => {
+	return props.workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED;
 });
 
 const showStatusUpdateCheckbox = computed(() => {
-	return (
-		props.inDisplayMode &&
-		isTask.value &&
-		[
-			pkp.const.EDITORIAL_TASK_STATUS_PENDING,
-			pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS,
-		].includes(props.workItem?.status)
-	);
+	return props.inDisplayMode && isTask.value;
+});
+
+const statusUpdateLabel = computed(() => {
+	return props.workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_PENDING
+		? t('task.startThisTask')
+		: t('task.completeThisTask');
 });
 
 const showTaskStartedInfo = computed(() => {
@@ -113,6 +113,15 @@ watch(statusUpdateValue, (val) => {
 	emit('updateStatusCheckbox', val);
 });
 
+// update the checkbox state if statusValue from props changes
+watch(
+	() => props.statusValue,
+	(val) => {
+		statusUpdateValue.value = val;
+	},
+);
+
+// When "Add Task Details" is clicked on the listing, focus of the form should be put to the Task Information section
 onMounted(async () => {
 	if (props.autoAddTaskDetails) {
 		await nextTick();

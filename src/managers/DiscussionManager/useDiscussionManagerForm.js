@@ -307,6 +307,7 @@ export function useDiscussionManagerForm(
 						inDisplayMode,
 						autoAddTaskDetails,
 						onUpdateStatusCheckbox,
+						statusValue: statusUpdateValue,
 					},
 				},
 			},
@@ -693,6 +694,11 @@ export function useDiscussionManagerForm(
 		workItemRef.value = newWorkItem;
 		workItemStatus.value = newWorkItem?.status;
 
+		statusUpdateValue.value =
+			newWorkItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED;
+		initialStatusUpdateVal = statusUpdateValue.value;
+		updateStatusInViewMode = false;
+
 		setValue('title', newWorkItem?.title || '');
 		setValue('participants', getSelectedParticipants(newWorkItem));
 		setValue(
@@ -705,11 +711,6 @@ export function useDiscussionManagerForm(
 		addTaskInfoGroup(newWorkItem, {override: true});
 		addDiscussionGroup(newWorkItem, {override: true});
 		addMessagesComponent(newWorkItem, {override: true});
-
-		statusUpdateValue.value =
-			newWorkItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED;
-		initialStatusUpdateVal = statusUpdateValue.value;
-		updateStatusInViewMode = false;
 
 		toggleSaveBtnOnDisplayMode();
 		setInitialState(form, additionalFields);
