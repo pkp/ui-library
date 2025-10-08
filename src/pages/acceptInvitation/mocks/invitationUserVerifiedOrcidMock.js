@@ -27,18 +27,7 @@ export default {
 			dateEnd: null,
 		},
 	],
-	userGroupsToRemove: [
-		{
-			userGroupId: 15,
-			userGroupName: {
-				en: 'Translator',
-				fr_CA: 'Traducteur-trice',
-			},
-			masthead: null,
-			dateStart: null,
-			dateEnd: null,
-		},
-	],
+	userGroupsToRemove: [],
 	username: null,
 	sendEmailAddress: 'zwoods@mailinator.com',
 	existingUser: {
