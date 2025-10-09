@@ -7,7 +7,7 @@
 				<a
 					v-if="citation.doi"
 					:is-link="true"
-					:href="citationStore.doiPrefix + '/' + citation.doi"
+					:href="citationStore.doiUrlPrefix + citation.doi"
 					target="_blank"
 				>
 					{{ citation.doi }}
@@ -23,7 +23,7 @@
 				<a
 					v-if="citation.arxiv"
 					:is-link="true"
-					:href="citation.arxiv"
+					:href="citationStore.arxivUrlPrefix + citation.arxiv"
 					target="_blank"
 				>
 					{{ citation.arxiv }}
@@ -31,7 +31,7 @@
 				<a
 					v-if="citation.handle"
 					:is-link="true"
-					:href="citation.handle"
+					:href="citationStore.handleUrlPrefix + citation.handle"
 					target="_blank"
 				>
 					{{ citation.handle }}

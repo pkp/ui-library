@@ -44,14 +44,15 @@ export const useCitationManagerStore = defineComponentStore(
 		/**
 		 * constants
 		 */
-		const doiPrefix = 'https://doi.org';
+		const arxivUrlPrefix = 'https://arxiv.org/abs/';
+		const doiUrlPrefix = 'https://doi.org/';
+		const handleUrlPrefix = 'https://hdl.handle.net/';
 		const apiPathCitations = 'citations';
 		const apiPathSubmissions = `submissions/${submission.value.id}/publications/${publication.value.id}/citations`;
 
 		/**
 		 * citations metadata lookup
 		 */
-
 		const citationsMetadataLookup = computed(
 			() => publication.value.citationsMetadataLookup,
 		);
@@ -59,9 +60,9 @@ export const useCitationManagerStore = defineComponentStore(
 		const {form: formEnableLookup} = useCitationManagerFormEnableLookup({
 			citationsMetadataLookup,
 			onCitationMetadataLookupChange: async (newValue) => {
-				console.log('onCitationMetadataLookUPChange');
 				await citationsMetadataLookupChanged(newValue);
 			},
+			canEditPublication,
 		});
 
 		async function citationsMetadataLookupChanged(newValue) {
@@ -81,6 +82,7 @@ export const useCitationManagerStore = defineComponentStore(
 		 */
 		const {form: formAddRawCitations} = useCitationManagerFormAddRawCitation({
 			apiPathSubmissions,
+			canEditPublication,
 			onSuccess: () => {
 				dataUpdateCallback();
 			},
@@ -257,13 +259,14 @@ export const useCitationManagerStore = defineComponentStore(
 			publication,
 			canEditPublication,
 
-			doiPrefix,
+			arxivUrlPrefix,
+			doiUrlPrefix,
+			handleUrlPrefix,
 			apiPathCitations,
 			apiPathSubmissions,
 
 			formEnableLookup,
 			citationsMetadataLookup,
-			citationsMetadataLookupChanged,
 
 			formAddRawCitations,
 
