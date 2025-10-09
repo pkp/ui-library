@@ -47,9 +47,9 @@ const CommonDefaults = {
 			dateCreated: '2025-03-06 06:01:17',
 		},
 	],
+	startedByName: 'Kaja Karina',
 
 	activities: ['Task created by kkarina on 2025-03-06'],
-	startedBy: 'Kaja Karina (kkarina)',
 };
 
 export function getDiscussionsMock(overrides = {}) {

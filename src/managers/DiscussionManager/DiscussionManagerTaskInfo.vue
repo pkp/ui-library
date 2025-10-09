@@ -23,7 +23,7 @@
 			<FormDisplayItemBasic
 				heading-element="h2"
 				:heading="t('task.startedBy')"
-				:value="workItem?.startedBy"
+				:value="workItem?.startedByName"
 			/>
 			<FormDisplayItemBasic
 				heading-element="h2"
