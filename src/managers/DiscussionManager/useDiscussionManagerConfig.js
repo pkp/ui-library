@@ -5,18 +5,13 @@ import {useCurrentUser} from '@/composables/useCurrentUser';
 export const DiscussionManagerConfigurations = {
 	permissions: [
 		{
-			roles: [pkp.const.ROLE_ID_AUTHOR],
-			actions: [
-				Actions.TASKS_AND_DISCUSSIONS_LIST,
-				Actions.TASKS_AND_DISCUSSIONS_SEARCH,
-			],
-		},
-		{
 			roles: [
 				pkp.const.ROLE_ID_SUB_EDITOR,
 				pkp.const.ROLE_ID_MANAGER,
 				pkp.const.ROLE_ID_SITE_ADMIN,
 				pkp.const.ROLE_ID_ASSISTANT,
+				pkp.const.ROLE_ID_AUTHOR,
+				pkp.const.ROLE_ID_REVIEWER,
 			],
 			actions: [
 				Actions.TASKS_AND_DISCUSSIONS_LIST,
