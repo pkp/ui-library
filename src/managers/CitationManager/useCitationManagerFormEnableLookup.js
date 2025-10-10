@@ -6,6 +6,7 @@ import {useModal} from '@/composables/useModal';
 export function useCitationManagerFormEnableLookup({
 	citationsMetadataLookup,
 	onCitationMetadataLookupChange,
+	canEditPublication,
 } = {}) {
 	const {t} = useLocalize();
 
@@ -30,7 +31,7 @@ export function useCitationManagerFormEnableLookup({
 
 	addGroup('default');
 
-	addFieldOptions('metadataLookup', 'checkbox', {
+	let fieldParams = {
 		label: t('submission.citations.structured'),
 		description: t(
 			'submission.citations.structured.citationsMetadataLookup.description',
@@ -44,7 +45,13 @@ export function useCitationManagerFormEnableLookup({
 				value: true,
 			},
 		],
-	});
+	};
+
+	if (!canEditPublication.value) {
+		fieldParams.disabled = 'disabled';
+	}
+
+	addFieldOptions('metadataLookup', 'checkbox', fieldParams);
 
 	watch(citationsMetadataLookup, (newValue) => {
 		setValue('metadataLookup', newValue);
