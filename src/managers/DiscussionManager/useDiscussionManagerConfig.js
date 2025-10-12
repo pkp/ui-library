@@ -37,7 +37,10 @@ export const DiscussionManagerConfigurations = {
 
 export function useDiscussionManagerConfig() {
 	const {t} = useLocalize();
-	const {hasCurrentUserAtLeastOneAssignedRoleInStage} = useCurrentUser();
+	const {
+		hasCurrentUserAtLeastOneAssignedRoleInStage,
+		isCurrentUserAssignedAsReviewer,
+	} = useCurrentUser();
 
 	function getColumns() {
 		const columns = [];
@@ -81,12 +84,13 @@ export function useDiscussionManagerConfig() {
 			(action) => {
 				return DiscussionManagerConfigurations.permissions.some((perm) => {
 					return (
-						perm.actions.includes(action) &&
-						hasCurrentUserAtLeastOneAssignedRoleInStage(
-							submission.value,
-							submissionStageId,
-							perm.roles,
-						)
+						(perm.actions.includes(action) &&
+							hasCurrentUserAtLeastOneAssignedRoleInStage(
+								submission.value,
+								submissionStageId,
+								perm.roles,
+							)) ||
+						isCurrentUserAssignedAsReviewer(submission.value)
 					);
 				});
 			},
