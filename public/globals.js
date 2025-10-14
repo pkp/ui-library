@@ -1108,9 +1108,9 @@ window.pkp = {
 		'taskTemplates.addInStage': 'Add Task and Discussion Template in {$stage}',
 		'taskTemplates.confirmAutoAdd': 'Confirm Automatic Addition',
 		'taskTemplates.confirmAutoAddEnable':
-			'Are you sure you want this task/discussion template to be automatically added when a submission reaches the {$stage}?',
+			'Are you sure you want this task/discussion template to be automatically added when a submission reaches the <b>{$stage}</b>?',
 		'taskTemplates.confirmAutoAddDisable':
-			'Are you sure you want to stop automatically adding this task/discussion template when a submission reaches the {$stage}?',
+			'Are you sure you want to stop automatically adding this task/discussion template when a submission reaches the <b>{$stage}</b>?',
 		'taskTemplates.confirmEmailTemplate':
 			'Applying this email template will replace the discussion text in the form. The changes will not be saved unless you choose to save. Do you want to continue?',
 		'taskTemplates.edit': 'Edit Task and Discussion Template',

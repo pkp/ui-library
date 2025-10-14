@@ -25,10 +25,10 @@ const props = defineProps({
 const confirmMsg = computed(() =>
 	props.taskTemplate?.include
 		? t('taskTemplates.confirmAutoAddDisable', {
-				stage: `<b>${props.stage.name}</b>`,
+				stage: props.stage.name,
 			})
 		: t('taskTemplates.confirmAutoAddEnable', {
-				stage: `<b>${props.stage.name}</b>`,
+				stage: props.stage.name,
 			}),
 );
 
