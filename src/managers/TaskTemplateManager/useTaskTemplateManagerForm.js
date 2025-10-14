@@ -1,4 +1,4 @@
-import {ref} from 'vue';
+import {ref, computed} from 'vue';
 import {localize} from '@/utils/i18n';
 import {useForm} from '@/composables/useForm';
 import {useUrl} from '@/composables/useUrl';
@@ -6,12 +6,10 @@ import {useFetch} from '@/composables/useFetch';
 import {useFormChanged} from '@/composables/useFormChanged';
 import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
+import {useTaskTemplateManagerEmails} from './useTaskTemplateManagerEmails';
 
-import TaskTemplateManagerEmails from './TaskTemplateManagerEmails.vue';
 import FileAttacherModal from '@/components/Composer/FileAttacherModal.vue';
 import FieldPreparedContentInsertModal from '@/components/Form/fields/FieldPreparedContentInsertModal.vue';
-
-import preparedContent from '../../mixins/preparedContent';
 
 export function useTaskTemplateManagerForm({
 	taskTemplate = null,
@@ -22,6 +20,10 @@ export function useTaskTemplateManagerForm({
 	const isTask = ref(taskTemplate?.type === 'Task');
 	const stageId = taskTemplate?.stageId || stage?.key;
 	let isTemplateOverrideConfirmed = false;
+	const {emailTemplatesData} = useTaskTemplateManagerEmails({
+		stage,
+		taskTemplate,
+	});
 
 	const {
 		form,
@@ -144,6 +146,7 @@ export function useTaskTemplateManagerForm({
 		];
 	}
 
+	// eslint-disable-next-line no-unused-vars
 	function onSelectEmailTemplate(emailTemplate) {
 		const content = localize(emailTemplate?.body);
 		if (!content) return;
@@ -202,19 +205,43 @@ export function useTaskTemplateManagerForm({
 					icon: 'plus',
 					text: t('common.insertContent'),
 					onAction() {
-						const {openSideModal} = useModal(FieldPreparedContentInsertModal);
+						const {openSideModal, closeSideModal} = useModal(
+							FieldPreparedContentInsertModal,
+						);
 						openSideModal(FieldPreparedContentInsertModal, {
 							title: t('common.insertContent'),
 							insertLabel: t('common.insert'),
 							preparedContent,
 							preparedContentLabel: 'Label',
-							onInsert: () => {},
+							onInsert: (text) => {
+								editor.insertContent(text);
+								closeSideModal(FieldPreparedContentInsertModal);
+							},
 						});
 					},
 				});
 			},
 		};
 	}
+
+	const preparedContent = computed(() => {
+		const dataDescriptions = emailTemplatesData.value?.dataDescriptions;
+		if (!dataDescriptions) {
+			return [];
+		}
+
+		const items = [];
+
+		Object.keys(dataDescriptions).forEach((key) => {
+			items.push({
+				key,
+				value: `{$${key}}`,
+				description: dataDescriptions[key],
+			});
+		});
+
+		return items;
+	});
 
 	initEmptyForm('taskTemplate', {
 		showErrorFooter: false,
@@ -275,14 +302,6 @@ export function useTaskTemplateManagerForm({
 	addGroup('discussion', {
 		label: t('discussion.name'),
 		description: t('discussion.form.discussionDescription'),
-		groupComponent: {
-			component: TaskTemplateManagerEmails,
-			props: {
-				stage,
-				taskTemplate,
-				onSelectEmailTemplate,
-			},
-		},
 	});
 
 	addFieldRichTextArea('discussionText', {
