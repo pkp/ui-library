@@ -20,6 +20,7 @@ const taskTemplateManagerStore = useTaskTemplateManagerStore();
 const props = defineProps({
 	taskTemplate: {type: Object, required: true},
 	stage: {type: Object, required: true},
+	index: {type: Number, required: true},
 });
 
 const confirmMsg = computed(() =>

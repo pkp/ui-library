@@ -1,5 +1,5 @@
 <template>
-	<TableCell>
+	<TableCell :is-row-header="true">
 		<div class="ms-8 flex items-center">
 			<span :id="`template_name_${taskTemplate.id}`" class="text-lg-normal">
 				{{ taskTemplate.title }}
