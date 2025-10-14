@@ -1,7 +1,7 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
 
-import TaskTemplateManagerForm from './TaskTemplateManagerForm.vue';
+import TaskTemplateManagerFormModal from './TaskTemplateManagerFormModal.vue';
 
 export const Actions = {
 	TASK_TEMPLATES_LIST: 'templateList',
@@ -17,11 +17,11 @@ export function useTaskTemplateActions() {
 		const {openSideModal, closeSideModal} = useModal();
 
 		function onCloseFn() {
-			closeSideModal(TaskTemplateManagerForm);
+			closeSideModal(TaskTemplateManagerFormModal);
 		}
 
 		openSideModal(
-			TaskTemplateManagerForm,
+			TaskTemplateManagerFormModal,
 			{
 				stage,
 				onCloseFn,
@@ -36,11 +36,11 @@ export function useTaskTemplateActions() {
 		const {openSideModal, closeSideModal} = useModal();
 
 		function onCloseFn() {
-			closeSideModal(TaskTemplateManagerForm);
+			closeSideModal(TaskTemplateManagerFormModal);
 		}
 
 		openSideModal(
-			TaskTemplateManagerForm,
+			TaskTemplateManagerFormModal,
 			{
 				taskTemplate,
 				onCloseFn,
