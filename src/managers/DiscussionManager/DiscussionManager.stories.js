@@ -15,12 +15,13 @@ const baseArgs = {
 	submission: getSubmissionMock({
 		stages: [
 			{
-				id: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+				id: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
+				isActiveStage: true,
 				currentUserAssignedRoles: [16, 1],
 			},
 		],
 	}),
-	submissionStageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+	submissionStageId: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
 };
 
 const renderComponent = (args) => ({
@@ -42,7 +43,7 @@ const mswHandlers = [
 		},
 	),
 	http.get(
-		'https://mock/index.php/publicknowledge/api/v1/submissions/19/participants/5',
+		'https://mock/index.php/publicknowledge/api/v1/submissions/19/participants/1',
 		({request}) => {
 			const participants = [
 				getParticipantMock(),
@@ -69,9 +70,12 @@ const mswHandlers = [
 			return HttpResponse.json(participants);
 		},
 	),
-	http.get('https://mock/index.php/publicknowledge/api/v1/templates', () => {
-		return HttpResponse.json(TemplatesDataMock);
-	}),
+	http.get(
+		'https://mock/index.php/publicknowledge/api/v1/editTaskTemplates',
+		() => {
+			return HttpResponse.json({data: TemplatesDataMock});
+		},
+	),
 ];
 
 DiscussionsDataMock.forEach((discussion) => {
