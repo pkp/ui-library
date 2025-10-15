@@ -19,7 +19,7 @@ const commentsStore = usePkpCommentsStore();
 
 const {t} = usePkpLocalize();
 const scrollToComments = () => {
-	const commentsContainer = document.querySelector('.BaseComments');
+	const commentsContainer = document.querySelector('#public-comments');
 	if (commentsContainer) {
 		commentsContainer.scrollIntoView({behavior: 'smooth'});
 	}
