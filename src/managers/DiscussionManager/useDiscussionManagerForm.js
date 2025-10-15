@@ -9,7 +9,7 @@ import {useFetch} from '@/composables/useFetch';
 import {useCurrentUser} from '@/composables/useCurrentUser';
 import {useParticipantManagerStore} from '../ParticipantManager/participantManagerStore';
 import {useSubmission} from '@/composables/useSubmission';
-import {useTasksAndDiscussionsStore} from '@/pages/tasksAndDiscussions/tasksAndDiscussionsStore';
+import {useTaskTemplateManagerStore} from '@/managers/TaskTemplateManager/taskTemplateManagerStore';
 import {useDiscussionMessages} from './useDiscussionMessages';
 import {
 	useDiscussionManagerStatusUpdater,
@@ -197,12 +197,14 @@ export function useDiscussionManagerForm(
 		return badgeProps;
 	}
 
-	// temporarily disable fetching templates until the api is ready
-	// eslint-disable-next-line no-unused-vars
 	function getTemplates() {
-		const tasksAndDiscussionsStore = useTasksAndDiscussionsStore();
+		const taskTemplateManagerStore = useTaskTemplateManagerStore();
 		return computed(() => {
-			return tasksAndDiscussionsStore.templatesList;
+			return (
+				taskTemplateManagerStore.stagedTemplates?.find(
+					(stage) => stage.key === submissionStageId,
+				)?.templates || []
+			);
 		});
 	}
 
@@ -595,8 +597,7 @@ export function useDiscussionManagerForm(
 		groupComponent: {
 			component: DiscussionManagerTemplates,
 			props: {
-				// templates: getTemplates(), // temporarily disable fetching templates until the api is ready
-				templates: [],
+				templates: getTemplates(),
 				onSelectTemplate,
 				inDisplayMode,
 				isTask: workItemRef.value?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
