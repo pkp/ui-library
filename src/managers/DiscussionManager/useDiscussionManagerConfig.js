@@ -5,18 +5,13 @@ import {useCurrentUser} from '@/composables/useCurrentUser';
 export const DiscussionManagerConfigurations = {
 	permissions: [
 		{
-			roles: [pkp.const.ROLE_ID_AUTHOR],
-			actions: [
-				Actions.TASKS_AND_DISCUSSIONS_LIST,
-				Actions.TASKS_AND_DISCUSSIONS_SEARCH,
-			],
-		},
-		{
 			roles: [
 				pkp.const.ROLE_ID_SUB_EDITOR,
 				pkp.const.ROLE_ID_MANAGER,
 				pkp.const.ROLE_ID_SITE_ADMIN,
 				pkp.const.ROLE_ID_ASSISTANT,
+				pkp.const.ROLE_ID_AUTHOR,
+				pkp.const.ROLE_ID_REVIEWER,
 			],
 			actions: [
 				Actions.TASKS_AND_DISCUSSIONS_LIST,
@@ -42,7 +37,10 @@ export const DiscussionManagerConfigurations = {
 
 export function useDiscussionManagerConfig() {
 	const {t} = useLocalize();
-	const {hasCurrentUserAtLeastOneAssignedRoleInStage} = useCurrentUser();
+	const {
+		hasCurrentUserAtLeastOneAssignedRoleInStage,
+		isCurrentUserAssignedAsReviewer,
+	} = useCurrentUser();
 
 	function getColumns() {
 		const columns = [];
@@ -81,17 +79,18 @@ export function useDiscussionManagerConfig() {
 		return columns;
 	}
 
-	function getManagerConfig({submission, publication}) {
+	function getManagerConfig({submission, submissionStageId}) {
 		const permittedActions = DiscussionManagerConfigurations.actions.filter(
 			(action) => {
 				return DiscussionManagerConfigurations.permissions.some((perm) => {
 					return (
-						perm.actions.includes(action) &&
-						hasCurrentUserAtLeastOneAssignedRoleInStage(
-							submission.value,
-							pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-							perm.roles,
-						)
+						(perm.actions.includes(action) &&
+							hasCurrentUserAtLeastOneAssignedRoleInStage(
+								submission.value,
+								submissionStageId,
+								perm.roles,
+							)) ||
+						isCurrentUserAssignedAsReviewer(submission.value)
 					);
 				});
 			},
