@@ -159,10 +159,11 @@ window.pkp = {
 		'acceptInvitation.cancelInvite.title': 'Cancel Role Invitation Process?',
 		'acceptInvitation.modal.button': 'View All Submissions',
 		'acceptInvitation.modal.message':
-			'Congratulations on your new role in OJS! You might now have access to new options. If you need any assistance in understanding the system, please click on the “Help” button throughout the system for guidance.',
+			'Congratulations on your new role in OJS! You might now have access to new options. If you need any assistance in understanding the system, please click on the \u201cHelp\u201d button throughout the system for guidance.',
 		'acceptInvitation.modal.title': "You've been assigned a new role in OJS",
 		'acceptInvitation.passwordField.description':
 			'It should be at least 6 characters long and could be a combination of uppercase letters, lowercase letters, numbers and symbols',
+		'acceptInvitation.privacyConsent': 'Privacy Consent',
 		'acceptInvitation.privacyStatement.btn': 'Privacy Statement',
 		'acceptInvitation.privacyStatement.label':
 			'Yes, I agree to have my data collected and stored according to the {$url}',
@@ -174,11 +175,10 @@ window.pkp = {
 		'acceptInvitation.usernameField.description':
 			'It could be a combination of uppercase letters, lowercase letters or numbers',
 		'acceptInvitation.verifyOrcid': 'Verify ORCID iD',
-		'acceptInvitation.privacyConsent': 'Privacy Consent',
+		'admin.citation.reprocess': 'Reprocess',
 		'admin.jobs.failed.action.redispatch': 'Try Again',
 		'admin.jobs.failed.action.redispatch.all': 'Requeue All Failed Jobs',
 		'admin.jobs.list.actions': 'Actions',
-		'admin.version': 'Version',
 		'article.article': 'Article',
 		'article.metadata': 'Metadata',
 		'author.users.contributor.principalContact': 'Primary Contact',
@@ -192,6 +192,7 @@ window.pkp = {
 		'common.changeLanguage': 'Change Language',
 		'common.clearSearch': 'Clear search phrase',
 		'common.close': 'Close',
+		'common.closed': 'Closed',
 		'common.commaListSeparator': ', ',
 		'common.complete': 'Complete',
 		'common.confirm': 'Confirm',
@@ -211,6 +212,7 @@ window.pkp = {
 		'common.editItem': 'Edit {$name}',
 		'common.emailTemplates': 'Email Templates',
 		'common.error': 'Error',
+		'common.expand': '##common.expand##',
 		'common.fileName': 'File Name',
 		'common.filter': 'Filters',
 		'common.filterAdd': 'Add filter: {$filterTitle}',
@@ -218,9 +220,10 @@ window.pkp = {
 		'common.filtersClear': 'Clear Filters',
 		'common.findTemplate': 'Find Template',
 		'common.geographic': 'Geographic',
-		'common.help': 'Help',
+		'common.help': '##common.help##',
 		'common.history': 'History',
 		'common.id': 'ID',
+		'common.inProgress': 'In progress',
 		'common.insert': 'Insert',
 		'common.insertContent': 'Insert Content',
 		'common.insertContentSearch': 'Find content to insert',
@@ -264,6 +267,7 @@ window.pkp = {
 		'common.selectAll': 'Select All',
 		'common.selectNone': 'Select None',
 		'common.selectWithName': 'Select {$name}',
+		'common.semicolonListSeparator': '; ',
 		'common.showingSteps': '{$current}/{$total} steps',
 		'common.showingXofX':
 			'Showing <strong>{$start} to {$finish}</strong> of {$total}',
@@ -278,15 +282,14 @@ window.pkp = {
 		'common.upload': 'Upload',
 		'common.uploadedBy': 'Uploaded by {$name}',
 		'common.uploadedByAndWhen': 'Uploaded by {$name} on {$date}',
+		'common.user': 'User',
 		'common.view': 'View',
 		'common.viewMoreDetails': 'View more details',
 		'common.viewWithName': 'View {$name}',
+		'common.warning': 'Warning',
 		'common.yes': 'Yes',
 		'common.yesContinue': 'Yes, Continue',
 		'common.yetToBegin': 'Yet to begin',
-		'common.inProgress': 'In Progress',
-		'common.closed': 'Closed',
-		'common.warning': 'Warning',
 		'context.context': 'Journal',
 		'contributor.listPanel.preview': 'Preview',
 		'contributor.listPanel.preview.abbreviated': 'Abbreviated',
@@ -369,6 +372,8 @@ window.pkp = {
 			'The review was completed on {$date} with the following recommendation: <b>{$recommendation}</b>',
 		'dashboard.reviewAssignment.statusReceived.title':
 			'Review completed on {$date}',
+		'dashboard.reviewAssignment.statusReceived.withoutRecommendation.description':
+			'The review was completed on {$date}',
 		'dashboard.reviewAssignment.statusRequestResend.description':
 			'Review request has been reshared with reviewer. Awaiting response in {$days} days on {$date}',
 		'dashboard.reviewAssignment.statusRequestResend.title':
@@ -398,16 +403,16 @@ window.pkp = {
 			'Confirm Delete of Incomplete Submissions',
 		'dashboard.submitRevisions': 'Submit revisions',
 		'dashboard.toBePublishedInIssue': 'To be published in issue {$issue}',
-		'discussion.title': 'Desk Review Tasks & Discussions',
+		'discussion.addNewMessage': 'Add New Message',
+		'discussion.addTaskDetails': 'Add Task Details',
 		'discussion.closeThisDiscussion': 'Close this Discussion',
 		'discussion.confirmCloseDiscussion':
 			"Are you sure you want to close this discussion? Closing the discussion won't stop you from sending or receiving messages in this thread - this ensures no message is lost.",
-		'discussion.reopenThisDiscussion': 'Reopen this Discussion',
 		'discussion.confirmReopenDiscussion':
 			'Are you sure you want to reopen this discussion?',
 		'discussion.description':
 			'Use this space to start discussions, assign tasks to others, or create your personal task list to help you move this submission to the next stage.',
-		'discussion.form.templatesLabel': 'Templates to get you started!',
+		'discussion.form.createDontStartTask': 'Create Task (Do Not Start)',
 		'discussion.form.description':
 			'Open for What? Open to What? Beyond Content',
 		'discussion.form.detailsDescription':
@@ -418,30 +423,30 @@ window.pkp = {
 			'You have the option to assign participants or allocate it solely to yourself.',
 		'discussion.form.discussionDescription':
 			'You can start a discussion thread here by adding a message. This space is also available for providing a brief overview of the task, including any key details, goals, or specific instructions to help guide the assignees.',
-		'discussion.form.taskInfoLabel': 'Enter task information',
-		'discussion.form.taskInformation': 'Task Information',
-		'discussion.form.taskInfoDescription':
-			'Enter the tasks details here to help manage this task effectively, if selected.',
-		'discussion.form.taskInfoConvertToTask':
-			'You can convert this into a task by clicking <strong>Edit</strong>.',
-		'discussion.form.taskInfoReopenAndConvertToTask':
-			'You can convert this into a task by re-opening the discussion and clicking <strong>Edit</strong>.',
-		'discussion.form.taskInfoAssigneesLabel':
-			'Responsible to complete this task',
+		'discussion.form.startTaskUponSaving': 'Begin Task Upon Saving',
 		'discussion.form.taskInfoAssigneesDescription':
 			'If there is a specific participant designated to complete this task, please assign it to them here.',
+		'discussion.form.taskInfoAssigneesLabel':
+			'Responsible to complete this task',
+		'discussion.form.taskInfoConvertToTask':
+			'You can convert this into a task by clicking <strong>Edit</strong>.',
+		'discussion.form.taskInfoDescription':
+			'Enter the tasks details here to help manage this task effectively, if selected.',
 		'discussion.form.taskInfoDueDateDescription':
 			'If there is a deadline for this task, you can indicate it here. The due date will be communicated and established for each participant assigned to this task.',
-		'discussion.form.createDontStartTask': 'Create Task (Do Not Start)',
-		'discussion.form.startTaskUponSaving': 'Begin Task Upon Saving',
-		'discussion.template.taskDescription':
-			'This task template auto-fills the task name, due date, description, and roles. After selecting the template, you can modify any details before saving the task.',
+		'discussion.form.taskInfoLabel': 'Enter task information',
+		'discussion.form.taskInfoReopenAndConvertToTask':
+			'You can convert this into a task by re-opening the discussion and clicking <strong>Edit</strong>.',
+		'discussion.form.taskInformation': 'Task Information',
+		'discussion.form.templatesLabel': 'Templates to get you started!',
+		'discussion.messageFrom': 'Message from {$from}',
+		'discussion.name': 'Discussion',
+		'discussion.reopenThisDiscussion': 'Reopen this Discussion',
 		'discussion.template.discussionDescription':
 			'This discussion template pre-fills the name, participants, and starting message. You can adjust the details before starting.',
-		'discussion.messageFrom': 'Message from {$from}',
-		'discussion.addNewMessage': 'Add New Message',
-		'discussion.addTaskDetails': 'Add Task Details',
-		'discussion.name': 'Discussion',
+		'discussion.template.taskDescription':
+			'This task template auto-fills the task name, due date, description, and roles. After selecting the template, you can modify any details before saving the task.',
+		'discussion.title': 'Desk Review Tasks & Discussions',
 		'doi.manager.versions.countStatement': 'There are {$count} versions.',
 		'doi.manager.versions.modalTitle': 'DOIs for all versions',
 		'doi.manager.versions.view': 'View all',
@@ -551,9 +556,9 @@ window.pkp = {
 		'fileManager.revisionsUploaded': 'Revisions Uploaded',
 		'fileManager.revisionsUploadedDescription':
 			'These files have been submitted by the author after revisions were requested',
+		'fileManager.sendFileToTextEditor': 'Send File to Text Editor',
 		'fileManager.submissionFilesDescription':
 			'Files uploaded at the time of submission',
-		'fileManager.sendFileToTextEditor': 'Send File to Text Editor',
 		'form.dataHasChanged':
 			'The data on this form has changed. Do you wish to continue without saving?',
 		'form.errorA11y': 'Go to {$fieldLabel}: {$errorMessage}',
@@ -571,16 +576,19 @@ window.pkp = {
 		'form.saved': 'Saved',
 		'grid.action.addContributor': 'Add Contributor',
 		'grid.action.addGalley': 'Add galley',
+		'grid.action.addReviewerRecommendation': 'Add Recommendation',
 		'grid.action.addReviewerSuggestion': 'Add Reviewer Suggestion',
 		'grid.action.delete': 'Delete',
 		'grid.action.deleteContributor': 'Delete Contributor',
 		'grid.action.deleteContributor.confirmationMessage':
 			'Are you sure you want to remove {$name} as a contributor? This action can not be undone.',
+		'grid.action.deleteReviewerRecommendation': 'Delete Recommendation',
 		'grid.action.deleteReviewerSuggestion': 'Delete Reviewer Suggestion',
 		'grid.action.deleteReviewerSuggestion.confirmationMessage':
 			'Are you sure you want to remove this suggestion? This action can not be undone.',
 		'grid.action.edit': 'Edit',
 		'grid.action.editFile': 'Edit a file',
+		'grid.action.editReviewerRecommendation': 'Edit Recommendation',
 		'grid.action.logInAs': 'Login As',
 		'grid.action.mergeUser': 'Merge user',
 		'grid.action.moreInformation': 'More Information',
@@ -589,6 +597,10 @@ window.pkp = {
 		'grid.action.sendToTextEditor': 'Send to Text Editor',
 		'grid.action.sort': 'Sort',
 		'grid.action.updateFile': 'Update File Details',
+		'grid.category.add': 'Add Category',
+		'grid.category.categories': 'Categories',
+		'grid.category.categoryName': 'Category Name',
+		'grid.category.edit': 'Edit Category',
 		'grid.columns.actions': 'Actions',
 		'grid.libraryFiles.submission.title': 'Submission Library',
 		'grid.noItems': 'No Items',
@@ -626,10 +638,29 @@ window.pkp = {
 		'invitation.wizard.errors': '##invitation.wizard.errors##',
 		'issue.issue': 'Issue',
 		'issue.issues': 'Issues',
+		'list.collapse': 'Collapse',
 		'list.collapseAll': 'Collapse all',
+		'list.expand': 'Expand',
 		'list.expandAll': 'Expand all',
 		'list.viewLess': 'Hide expanded details about {$name}',
 		'list.viewMore': 'Show more details about {$name}',
+		'manager.category.assignedTo': 'Assigned To',
+		'manager.category.backToCategories': 'Back to Categories',
+		'manager.category.collapseSubcategories': 'Collapse sub-categories',
+		'manager.category.confirmDelete':
+			'I understand the consequences, delete this category',
+		'manager.category.delete.confirmationTitle':
+			'Are you absolutely sure you want to delete "{$title}" category?',
+		'manager.category.delete.message': '##manager.category.delete.message##',
+		'manager.category.delete.message.body':
+			'<div class="font-semibold">Warning: Deleting this category will remove all {$subCategoryCount} sub-categories within it.</div><div class="text-secondary"><p class="mt-6">This action cannot be undone. Deleting the category will:</p><ul role="list" class="list-disc ml-8"><li>Permanently remove all nested sub-categories</li><li>Unassign this category from any submissions currently using it</li></ul><p class="mt-4">This will not delete the submissions themselves \u2014 they will simply be left without a category.</p></div><p class="mt-4 text-primary text-lg-bold">To confirm, please type the name of the category "{$title}" below to proceed</p>',
+		'manager.category.deleteCategory': 'Delete Category',
+		'manager.category.deleted': 'Category Deleted',
+		'manager.category.deleted.description':
+			'<p>"{$title}" and its {$subCategoryCount} sub-categories have been successfully deleted.</p><p class="mt-4 text-secondary">All submissions previously tagged under these categories are now unassigned. You can reassign them from the submission details page.</p>',
+		'manager.category.expandSubcategories': 'Expand sub-categories',
+		'manager.category.saved': 'Category saved',
+		'manager.category.toggleSubcategories': 'Expand or collapse sub-categories',
 		'manager.dois.actions.assign.label': 'Assign DOIs',
 		'manager.dois.actions.assign.prompt':
 			'You are about to assign new DOIs to {$count} item(s) for any eligible item that does not already have a DOI assigned. Are you sure you want to assign DOIs to these items?',
@@ -717,6 +748,18 @@ window.pkp = {
 		'manager.publication.productionStage': 'Production',
 		'manager.publication.reviewStage': 'Review',
 		'manager.publication.submissionStage': 'Submission',
+		'manager.reviewerRecommendations.activate.title':
+			'Activate Reviewer Recommendation',
+		'manager.reviewerRecommendations.confirmActivate':
+			'Are you sure you want to activate the recommendation <b>{$title}</b>',
+		'manager.reviewerRecommendations.confirmDeactivate':
+			'Are you sure you want to deactivate the recommendation <b>{$title}</b>',
+		'manager.reviewerRecommendations.confirmDelete':
+			'Are you sure you want to delete the recommendation <b>{$title}</b>',
+		'manager.reviewerRecommendations.deactivate.title':
+			'Deactivate Reviewer Recommendation',
+		'manager.reviewerRecommendations.list.name.title': 'Recommendations',
+		'manager.reviewerRecommendations.list.status.title': 'Activate',
 		'manager.roles': 'Roles',
 		'manager.statistics.counterR5Report.settings': 'Report Settings',
 		'manager.statistics.counterR5Reports': 'Counter R5 Reports',
@@ -724,10 +767,51 @@ window.pkp = {
 			'See <a href="https://cop5.projectcounter.org/en/5.0.3/04-reports/index.html" target="_new">COUNTER 5.0.3 documentation</a> for more information about each report.',
 		'manager.statistics.counterR5Reports.usageNotPossible':
 			'There are no COUNTER R5 usage statistics available yet.',
+		'manager.userComment.all': 'All',
+		'manager.userComment.approval.warning':
+			'Approving this comment will make it visible to all users on the site',
+		'manager.userComment.approveComment': 'Approve Comment',
+		'manager.userComment.approved': 'Approved',
+		'manager.userComment.approved.note':
+			'This comment was approved on {$approvedAt} by {$approvedBy}.',
+		'manager.userComment.comment': 'Comment',
+		'manager.userComment.commentPreview': 'Comment preview',
+		'manager.userComment.commentUpdated':
+			'The comment has been updated successfully.',
+		'manager.userComment.comments': 'Comments',
+		'manager.userComment.dateReported': 'Date Reported',
+		'manager.userComment.deleteComment': 'Delete Comment',
+		'manager.userComment.deleteComment.confirm':
+			'Are you sure you want to delete this comment? This action cannot be undone.',
+		'manager.userComment.deleteComment.success':
+			'The comment has been deleted successfully.',
+		'manager.userComment.deleteReport': 'Delete Report',
+		'manager.userComment.deleteReport.confirm':
+			'Are you sure you want to delete this report? This action cannot be undone.',
+		'manager.userComment.deleteReport.success':
+			'The report has been deleted successfully.',
+		'manager.userComment.hiddenOrNeedsApproval': 'Hidden/Needs Approval',
+		'manager.userComment.hideComment': 'Hide Comment',
+		'manager.userComment.report.description':
+			'This is the list of all the users who have reported this comment',
+		'manager.userComment.report.noReports':
+			'No one has reported this comment yet',
+		'manager.userComment.report.reason': 'Reason',
+		'manager.userComment.reportPreview': 'Report preview',
+		'manager.userComment.reported': 'Reported',
+		'manager.userComment.reportedBy': 'Reported By',
+		'manager.userComment.reports': 'Reports',
+		'manager.userComment.userComments': 'User Comments',
+		'manager.userComment.viewComment': 'View Comment',
+		'manager.userComment.viewDetailsCommentBy': 'View comment details by',
+		'manager.userComment.viewReport': 'View Report',
+		'manager.userComment.viewReportDetailsBy': 'View report details by',
 		'manager.workflow': 'Workflow',
 		'navigation.dashboards': 'Editor Dashboard',
 		'navigation.mySubmissions': 'My Submissions as Author',
 		'navigation.reviewAssignments': 'My Assignments as Reviewer',
+		'navigation.skip.main': 'Skip to main content',
+		'navigation.skip.nav': 'Skip to main navigation menu',
 		'navigation.submissions': 'Submissions',
 		'notification.notifications': 'Notifications',
 		'notification.type.roundStatusTitle': 'Round {$round} Status',
@@ -747,6 +831,9 @@ window.pkp = {
 		'orcid.field.verification.resendRequest': 'Resend Verification Email',
 		'participantManager.onlyAllowedToRecommend':
 			'Only allowed to recommend an editorial decision',
+		'publication.assignToIssue.assignmentType': 'Issue Assignment',
+		'publication.assignToIssue.issueDescription':
+			'Select the issue to assign this publication to.',
 		'publication.contributors': 'Contributors',
 		'publication.createVersion': 'Create New Version',
 		'publication.editDisabled':
@@ -762,7 +849,17 @@ window.pkp = {
 			'Last Modification at {$modificationDate} by {$username}',
 		'publication.publicationLicense': 'Permissions & Disclosure',
 		'publication.publish': 'Publish',
-		'publication.selectIssue': 'Select an issue to schedule for publication',
+		'publication.revisionSignificance.description':
+			'Would you like to assign a revision significance to this document, such as minor or major? Based on your selection, the document information will be automatically updated.',
+		'publication.revisionSignificance.label': 'Revision Significance',
+		'publication.revisionSignificance.major': 'Major Revision',
+		'publication.revisionSignificance.minor': 'Minor Revision',
+		'publication.scheduledForPublication.reviewDetails.description':
+			'Before scheduling this submission for publication, please take a moment to review some of the entered important details. This is your opportunity to assign a version name, confirm the issue it belongs to, and ensure all necessary information is correct.',
+		'publication.scheduledForPublication.reviewDetails.label':
+			'Review Publishing Details',
+		'publication.sendToTextEditor.label':
+			'To which version would you like to send this file?',
 		'publication.status.published': 'Published',
 		'publication.status.scheduled': 'Scheduled',
 		'publication.status.unpublished': 'Unpublished',
@@ -774,15 +871,13 @@ window.pkp = {
 		'publication.unschedule': 'Unschedule',
 		'publication.unschedule.confirm':
 			"Are you sure you don't want this scheduled for publication?",
-		'publication.version.all': 'All Versions',
-		'publication.version.confirm':
-			'Are you sure you want to create a new version?',
-		'reviewer.article.decision.accept': 'Accept Submission',
-		'reviewer.article.decision.decline': 'Decline Submission',
-		'reviewer.article.decision.pendingRevisions': 'Revisions Required',
-		'reviewer.article.decision.resubmitElsewhere': 'Resubmit Elsewhere',
-		'reviewer.article.decision.resubmitHere': 'Resubmit for Review',
-		'reviewer.article.decision.seeComments': 'See Comments',
+		'publication.versionSource.create.description':
+			"The selected version's metadata will be used to pre-fill fields in the new version. You can make edits after importing.",
+		'publication.versionSource.create.label':
+			'Which version should metadata be copied from?',
+		'publication.versionStage.description':
+			"Would you like to assign a stage to this document, such as author's original or version of record? Based on your selection, the document information will be automatically updated.",
+		'publication.versionStage.label': 'Publication Stage',
 		'reviewer.article.recommendation': 'Recommendation',
 		'reviewer.competingInterests': 'Competing Interests',
 		'reviewer.submission.acceptedOn': 'Review Accepted On',
@@ -820,7 +915,7 @@ window.pkp = {
 		'reviewer.submission.submittedOn': 'Review Submitted On',
 		'reviewerManager.reviewerStatus': 'Reviewer status',
 		'search.searchResults': 'Search Results',
-		semicolon: '{$label}:',
+		semicolon: '{$label}: ',
 		'stageParticipants.notify.message': 'Message',
 		'stats.context.downloadReport.description':
 			'Download a CSV/Excel spreadsheet with usage statistics for this journal matching the following parameters.',
@@ -856,6 +951,56 @@ window.pkp = {
 		'stats.timeline.downloadReport.downloadTimeline': 'Download Timeline',
 		'submission.changeFile': 'Change File',
 		'submission.citations': 'References',
+		'submission.citations.structured': 'Structured References',
+		'submission.citations.structured.citationsMetadataLookup.description':
+			'This section helps you structure your references. Clicking "Enable Metadata Lookup" will allow the system to process your references and retrieve DOIs and other metadata from external sources. This may take some time, but you can continue working on your submission and return to this page later to view the updated structured citations. ',
+		'submission.citations.structured.collapseAll': 'Collapse All',
+		'submission.citations.structured.deleteAllDialog.confirm':
+			"This will remove all references currently listed. You'll need to re-enter and process your citations again if you continue.",
+		'submission.citations.structured.deleteAllDialog.title':
+			'Delete all Structured Citations',
+		'submission.citations.structured.deleteAllLink':
+			'Delete All Structured References',
+		'submission.citations.structured.description':
+			'Enter each reference on a new line so that they can be individually processed. You can add one or multiple references at a time. Click "Add" button to process and move them into the table below. To edit existing entries, please use the "Edit" option in the table to modify individual entries.',
+		'submission.citations.structured.descriptionTable':
+			'The above references have been organised here in a structured format.',
+		'submission.citations.structured.disableModal.confirm':
+			"This will disable structured citations for this submission. This will also remove all references currently listed. You'll need to re-enter and process your citations again if you continue.",
+		'submission.citations.structured.disableModal.title':
+			'Disable usage of Structured Citations',
+		'submission.citations.structured.editModal.title': 'Edit citation',
+		'submission.citations.structured.emptyCitations':
+			'The citations list is empty, please add citations above.',
+		'submission.citations.structured.enableCitationsMetadataLookup':
+			'Enable Metadata Lookup',
+		'submission.citations.structured.enableModal.confirm':
+			'This will enable structured citations for this submission. ',
+		'submission.citations.structured.enableModal.title':
+			'Enable usage of Structured Citations',
+		'submission.citations.structured.expandAll': 'Expand All',
+		'submission.citations.structured.label.authorOrcid':
+			'ORCID profile for {$givenName} {$familyName}',
+		'submission.citations.structured.label.date': 'Publication Date',
+		'submission.citations.structured.label.issueNumber': 'Issue Number',
+		'submission.citations.structured.label.openAlex': 'OpenAlex',
+		'submission.citations.structured.label.pages': 'Pages',
+		'submission.citations.structured.label.volume': 'Volume',
+		'submission.citations.structured.label.wikidata': 'Wikidata',
+		'submission.citations.structured.noStructuredInformationFound':
+			'No structured information found',
+		'submission.citations.structured.processed.description':
+			'All references have been processed and added below. You can review, edit or remove them at any time.',
+		'submission.citations.structured.processed.title':
+			'All {$total} references successfully processed',
+		'submission.citations.structured.processing.description':
+			"We're retrieving metadata for each reference. This may take a few moments. While we aim to match as many references as possible, some entries may not return metadata. Feel free to continue working in the meantime.",
+		'submission.citations.structured.processing.title':
+			'Processing references - {$processed}/{$total}',
+		'submission.citations.structured.reprocessDialog.title':
+			'Are you sure you want to reprocess this citation?',
+		'submission.citations.structured.search.placeholder':
+			'Search references here',
 		'submission.contributors': 'List of Contributors',
 		'submission.copyediting': 'Copyediting',
 		'submission.files': 'Files',
@@ -896,10 +1041,9 @@ window.pkp = {
 		'submission.production': 'Production',
 		'submission.publication': 'Publication',
 		'submission.query.activityName': 'Activity',
-		'submission.query.started': 'Started',
 		'submission.query.closed': 'Closed',
+		'submission.query.started': 'Started',
 		'submission.query.task': 'Task',
-		'submission.recommendation': 'Recommendation: {$recommendation}',
 		'submission.review': 'Review',
 		'submission.stage.externalReviewWithRound': 'Review (Round {$round})',
 		'submission.stage.internalReviewWithRound':
@@ -908,6 +1052,17 @@ window.pkp = {
 		'submission.stageParticipants.notify': 'Notify',
 		'submission.status.scheduled': 'Scheduled',
 		'submission.status.unassigned': 'Unassigned',
+		'submission.submission': 'Submission',
+		'submission.submit.creditRoles.button.add': 'Add Another Role',
+		'submission.submit.creditRoles.button.remove': 'Remove Role',
+		'submission.submit.creditRoles.degree': 'Degree',
+		'submission.submit.creditRoles.description':
+			'Select the CRediT roles of the contributor and the degrees of contribution.',
+		'submission.submit.creditRoles.role': 'Role',
+		'submission.submit.creditRoles.selectDegree': 'Degree',
+		'submission.submit.creditRoles.selectRole': 'Select a new role (required)',
+		'submission.submit.creditRoles.title':
+			'CRediT roles and the degrees of contribution',
 		'submission.submit.newSubmissionSingle': 'New Submission',
 		'submission.submit.submissionFiles': 'Submission Files',
 		'submission.submit.uploadSubmissionFile': 'Upload Submission File',
@@ -920,20 +1075,19 @@ window.pkp = {
 		'submission.wizard.submissionCancel': 'Cancel submission',
 		'submissions.declined': 'Declined',
 		'submissions.incomplete': 'Incomplete',
+		'task.closeThisTask': 'Close this Task',
+		'task.completeThisTask': 'Complete this task',
+		'task.confirmCloseTask':
+			"Are you sure you want to close this task? Closing the task won't end the discussion - you can still send messages on it.",
+		'task.confirmReopenTask': 'Are you sure you want to reopen this task?',
+		'task.confirmStartTask': 'Are you sure you want to start this task?',
+		'task.owner': 'Task Owner',
+		'task.reopenThisTask': 'Reopen this task',
+		'task.startThisTask': 'Start this task',
+		'task.startedBy': 'Task started by',
 		'taskTemplate.apply': 'Apply Template',
 		'taskTemplate.applyConfirmation':
 			"Applying this template will replace information in related fields on the form. These changes won't be saved unless you choose to save. Continue?",
-
-		'task.closeThisTask': 'Close this Task',
-		'task.startedBy': 'Task started by',
-		'task.startThisTask': 'Start this task',
-		'task.confirmCloseTask':
-			"Are you sure you want to close this task? Closing the task won't end the discussion - you can still send messages on it.",
-		'task.confirmStartTask': 'Are you sure you want to start this task?',
-		'task.completeThisTask': 'Complete this task',
-		'task.reopenThisTask': 'Reopen this task',
-		'task.confirmReopenTask': 'Are you sure you want to reopen this task?',
-		'task.owner': 'Task Owner',
 		'user.affiliation': 'Affiliation',
 		'user.affiliations': 'Affiliations',
 		'user.affiliations.deleteModal.message':
@@ -985,7 +1139,8 @@ window.pkp = {
 		'user.username': 'Username',
 		'user.workingLanguages': 'Working Languages',
 		'userAccess.management.options': '##userAccess.management.options##',
-		'userAccess.search': 'Search User',
+		'userAccess.search':
+			"Enter a user's name, role (e.g Journal editor), or affiliation",
 		'userAccess.tableHeader.name': 'Name',
 		'userAccess.tableHeader.startDate': 'Start Date',
 		'userInvitation.cancel.goBack': 'Go Back',
@@ -996,7 +1151,7 @@ window.pkp = {
 		'userInvitation.edit.title': 'Edit Invitation',
 		'userInvitation.modal.button': 'View All Users',
 		'userInvitation.modal.message':
-			"{$email} has been invited to new role in OJS. You can be updated about the user's decision on the Users & Roles page, your OJS notifications and/or your email.",
+			"{$email} has been invited to new role in OJS. You can be updated about the user's decision on the Users & Roles page, your OJS notifications and/or your email",
 		'userInvitation.modal.title': 'Invitation Sent',
 		'userInvitation.roleTable.endDate': 'End Date',
 		'userInvitation.roleTable.journalMasthead': 'Journal Masthead',
@@ -1013,6 +1168,7 @@ window.pkp = {
 		'userInvitation.user.disableMessage':
 			'The user was disabled. You cannot assign them a role while they are disabled. Please enable the user first to invite them to a role.',
 		'userInvitation.user.disableTitle': 'The user is currently disabled.',
+		'validator.filled': 'This field is required.',
 		'validator.required': 'This field is required.',
 		'workflow.review.externalReview': 'Review',
 		'workflow.review.internalReview': 'Internal Review',
@@ -1027,10 +1183,6 @@ window.pkp = {
 		'workflow.submissionNextReviewRoundInFutureStage':
 			'The submission advanced to the next review round, was accepted, and is currently in the {$stage} stage.',
 		'workflow.uploadRevisions': 'Upload revisions',
-		'grid.user.grid.user.enableReasonDescription':
-			"Once the user is enabled, they will regain access to OJS, and you'll be able to invite them to roles as needed.",
-		'grid.user.grid.user.disableReasonDescription':
-			"Please note that once a user is disabled, you won't be able to add them to any roles until they are enabled again.",
 	},
 	tinyMCE: {
 		skinUrl: '/styles/tinymce',
