@@ -218,7 +218,13 @@
 					:insert-modal-label="insertModalLabel"
 					:prepared-content-label="insertContentLabel"
 					:search-label="insertSearchLabel"
-					@change="(name, prop, value) => emitChange({body: value})"
+					@change="
+						(name, prop, value) =>
+							emitChange({
+								body: value,
+								bodyTokenized: toToken(value),
+							})
+					"
 				>
 					<template #footer>
 						<div
@@ -729,6 +735,36 @@ export default {
 		}
 	},
 	methods: {
+		toToken(html) {
+			const temp = document.createElement('div');
+			temp.innerHTML = html ?? '';
+
+			temp.querySelectorAll('span.pkpTag[data-symbolic]').forEach((el) => {
+				const key = el.getAttribute('data-symbolic');
+				el.replaceWith(document.createTextNode(`{$${key}}`));
+			});
+
+			// 2) Replace pkpTag spans that exist INSIDE attribute strings (e.g., href, title, data-*)
+			const spanInAttrRe =
+				/<span[^>]*\bpkpTag\b[^>]*\bdata-symbolic=(?:"|')([^"']+)(?:"|')[^>]*>.*?<\/span>/gi;
+
+			const replaceInAttrs = (node) => {
+				if (node.nodeType !== 1) return;
+				// iterate a static copy of attributes
+				Array.from(node.attributes).forEach((attr) => {
+					const orig = attr.value;
+					const replaced = orig.replace(spanInAttrRe, (_m, key) => `{$${key}}`);
+					if (replaced !== orig) {
+						node.setAttribute(attr.name, replaced);
+					}
+				});
+
+				Array.from(node.children).forEach(replaceInAttrs);
+			};
+			replaceInAttrs(temp);
+
+			return temp.innerHTML; // tokenized string including attrs
+		},
 		/**
 		 * Add file attachments to the email
 		 *
