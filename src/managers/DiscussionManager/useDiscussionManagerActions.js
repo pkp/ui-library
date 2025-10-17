@@ -3,7 +3,7 @@ import {useModal} from '@/composables/useModal';
 import {useFetch} from '../../composables/useFetch';
 import {useUrl} from '../../composables/useUrl';
 import {useDiscussionManagerStatusUpdater} from './useDiscussionManagerStatusUpdater';
-import DiscussionManagerForm from './DiscussionManagerForm.vue';
+import DiscussionManagerFormModal from './DiscussionManagerFormModal.vue';
 import DiscussionManagerFormDisplay from './DiscussionManagerFormDisplay.vue';
 
 export const Actions = {
@@ -50,11 +50,11 @@ export function useDiscussionManagerActions() {
 		const {openSideModal, closeSideModal} = useModal();
 
 		function onCloseFn() {
-			closeSideModal(DiscussionManagerForm);
+			closeSideModal(DiscussionManagerFormModal);
 		}
 
 		openSideModal(
-			DiscussionManagerForm,
+			DiscussionManagerFormModal,
 			{
 				submission,
 				submissionStageId,
@@ -96,11 +96,11 @@ export function useDiscussionManagerActions() {
 		const {openSideModal, closeSideModal} = useModal();
 
 		function onCloseFn() {
-			closeSideModal(DiscussionManagerForm);
+			closeSideModal(DiscussionManagerFormModal);
 		}
 
 		openSideModal(
-			DiscussionManagerForm,
+			DiscussionManagerFormModal,
 			{
 				status: workItem.status,
 				submission,

@@ -232,6 +232,7 @@ window.pkp = {
 		'common.loaded': 'Loaded',
 		'common.loading': 'Loading',
 		'common.me': 'Me',
+		'common.months': 'months',
 		'common.moreActions': 'More Actions',
 		'common.name': 'Name',
 		'common.navigation.user': 'User Navigation',
@@ -242,6 +243,8 @@ window.pkp = {
 		'common.numberedMore': '{$number} more',
 		'common.numero': 'No',
 		'common.ok': 'OK',
+		'common.oneMonth': '1 month',
+		'common.oneWeek': '1 week',
 		'common.order': 'Order',
 		'common.orderDown': 'Decrease position of {$itemTitle}',
 		'common.orderUp': 'Increase position of {$itemTitle}',
@@ -287,6 +290,7 @@ window.pkp = {
 		'common.viewMoreDetails': 'View more details',
 		'common.viewWithName': 'View {$name}',
 		'common.warning': 'Warning',
+		'common.weeks': 'weeks',
 		'common.yes': 'Yes',
 		'common.yesContinue': 'Yes, Continue',
 		'common.yetToBegin': 'Yet to begin',
@@ -916,6 +920,10 @@ window.pkp = {
 		'reviewerManager.reviewerStatus': 'Reviewer status',
 		'search.searchResults': 'Search Results',
 		semicolon: '{$label}: ',
+		'stage.copyediting': 'Copyediting Stage',
+		'stage.production': 'Production Stage',
+		'stage.review': 'Review Stage',
+		'stage.submission': 'Submission Stage',
 		'stageParticipants.notify.message': 'Message',
 		'stats.context.downloadReport.description':
 			'Download a CSV/Excel spreadsheet with usage statistics for this journal matching the following parameters.',
@@ -1088,6 +1096,26 @@ window.pkp = {
 		'taskTemplate.apply': 'Apply Template',
 		'taskTemplate.applyConfirmation':
 			"Applying this template will replace information in related fields on the form. These changes won't be saved unless you choose to save. Continue?",
+		'taskTemplates.add': 'Add template',
+		'taskTemplates.addInStage': 'Add Task and Discussion Template in {$stage}',
+		'taskTemplates.confirmAutoAdd': 'Confirm Automatic Addition',
+		'taskTemplates.confirmAutoAddDisable':
+			'Are you sure you want to stop automatically adding this task/discussion template when a submission reaches the <b>{$stage}</b>?',
+		'taskTemplates.confirmAutoAddEnable':
+			'Are you sure you want this task/discussion template to be automatically added when a submission reaches the <b>{$stage}</b>?',
+		'taskTemplates.confirmEmailTemplate':
+			'Applying this email template will replace the discussion text in the form. The changes will not be saved unless you choose to save. Do you want to continue?',
+		'taskTemplates.description':
+			'Use this space to create templates for tasks and discussions. These templates automatically fill in the task name, due date, description, and roles, giving you a head start.',
+		'taskTemplates.dueDateFromCreationDate':
+			'{$dueDate} from the creation date',
+		'taskTemplates.edit': 'Edit Task and Discussion Template',
+		'taskTemplates.templateAutoAdd':
+			'Automatically add this task and discussion when a submission reaches a specific stage',
+		'taskTemplates.templateAutoAddInStage':
+			'Automatically add this task and/or discussion when a submission reaches the stage',
+		'taskTemplates.templateName': 'Task and discussion template name',
+		'taskTemplates.title': 'Tasks and Discussions Templates',
 		'user.affiliation': 'Affiliation',
 		'user.affiliations': 'Affiliations',
 		'user.affiliations.deleteModal.message':
