@@ -1,6 +1,18 @@
 <template>
 	<div>
-		<CitationManagerMetadataLookup />
+		<div v-if="citationStore.citationsMetadataLookup">
+			<span class="font-semibold">
+				{{ t('submission.citations.structured') }}
+			</span>
+			<br />
+			<p class="text-lg-normal leading-6">
+				{{
+					t(
+						'submission.citations.structured.citationsMetadataLookup.description',
+					)
+				}}
+			</p>
+		</div>
 		<div class="pt-3">
 			<CitationManagerAddRawCitations />
 		</div>
@@ -84,7 +96,6 @@ import CitationManagerCellActions from '@/managers/CitationManager/CitationManag
 import CitationManagerSearchField from '@/managers/CitationManager/CitationManagerSearchField.vue';
 import CitationManagerStatusProcessed from '@/managers/CitationManager/CitationManagerStatusProcessed.vue';
 import CitationManagerAddRawCitations from '@/managers/CitationManager/CitationManagerAddRawCitations.vue';
-import CitationManagerMetadataLookup from '@/managers/CitationManager/CitationManagerMetadataLookup.vue';
 import {useCitationManagerStore} from './citationManagerStore.js';
 
 const {t} = useLocalize();
@@ -100,6 +111,7 @@ const Components = {
 const props = defineProps({
 	submission: {type: Object, required: true},
 	publication: {type: Object, required: true},
+	citationsMetadataLookup: {type: Boolean, required: true},
 	canEdit: {type: Boolean, required: true},
 	componentForms: {type: Object, required: true},
 });

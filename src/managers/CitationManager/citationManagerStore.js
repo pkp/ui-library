@@ -9,7 +9,6 @@ import {useFetch} from '@/composables/useFetch';
 import {useCitationManagerConfig} from './useCitationManagerConfig';
 import {useCitationManagerActions} from './useCitationManagerActions';
 import {useCitationManagerFormAddRawCitation} from './useCitationManagerFormAddRawCitation';
-import {useCitationManagerFormEnableLookup} from './useCitationManagerFormEnableLookup';
 
 export const useCitationManagerStore = defineComponentStore(
 	'citationManager',
@@ -37,6 +36,7 @@ export const useCitationManagerStore = defineComponentStore(
 		const {
 			submission,
 			publication,
+			citationsMetadataLookup,
 			canEdit: canEditPublication,
 		} = toRefs(props);
 		const citations = computed(() => publication.value.citations ?? []);
@@ -44,43 +44,18 @@ export const useCitationManagerStore = defineComponentStore(
 		/**
 		 * constants
 		 */
-		const doiPrefix = 'https://doi.org';
+		const arxivUrlPrefix = 'https://arxiv.org/abs/';
+		const doiUrlPrefix = 'https://doi.org/';
+		const handleUrlPrefix = 'https://hdl.handle.net/';
 		const apiPathCitations = 'citations';
 		const apiPathSubmissions = `submissions/${submission.value.id}/publications/${publication.value.id}/citations`;
-
-		/**
-		 * citations metadata lookup
-		 */
-
-		const citationsMetadataLookup = computed(
-			() => publication.value.citationsMetadataLookup,
-		);
-
-		const {form: formEnableLookup} = useCitationManagerFormEnableLookup({
-			citationsMetadataLookup,
-			onCitationMetadataLookupChange: async (newValue) => {
-				console.log('onCitationMetadataLookUPChange');
-				await citationsMetadataLookupChanged(newValue);
-			},
-		});
-
-		async function citationsMetadataLookupChanged(newValue) {
-			const {apiUrl} = useUrl(apiPathSubmissions);
-			const {fetch} = useFetch(`${apiUrl.value}/metadataLookup`, {
-				method: 'PUT',
-				body: {
-					citationsMetadataLookup: newValue,
-				},
-			});
-			await fetch();
-			dataUpdateCallback();
-		}
 
 		/**
 		 * add new raw citations
 		 */
 		const {form: formAddRawCitations} = useCitationManagerFormAddRawCitation({
 			apiPathSubmissions,
+			canEditPublication,
 			onSuccess: () => {
 				dataUpdateCallback();
 			},
@@ -225,6 +200,7 @@ export const useCitationManagerStore = defineComponentStore(
 			return {
 				submission: props.submission,
 				publication: props.publication,
+				citationsMetadataLookup: props.citationsMetadataLookup,
 				componentForms: props.componentForms,
 				...additionalArgs,
 			};
@@ -257,13 +233,13 @@ export const useCitationManagerStore = defineComponentStore(
 			publication,
 			canEditPublication,
 
-			doiPrefix,
+			arxivUrlPrefix,
+			doiUrlPrefix,
+			handleUrlPrefix,
 			apiPathCitations,
 			apiPathSubmissions,
 
-			formEnableLookup,
 			citationsMetadataLookup,
-			citationsMetadataLookupChanged,
 
 			formAddRawCitations,
 

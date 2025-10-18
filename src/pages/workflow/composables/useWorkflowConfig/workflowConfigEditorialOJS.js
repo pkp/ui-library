@@ -942,16 +942,14 @@ export const PublicationConfig = {
 			pageInitConfig,
 			permissions,
 		}) => {
-			selectedPublication.citationsMetadataLookup =
-				selectedPublication.citationsMetadataLookup ??
-				pageInitConfig.contextCitationsMetadataLookup ??
-				false;
 			return [
 				{
 					component: 'CitationManager',
 					props: {
 						submission: submission,
 						publication: selectedPublication,
+						citationsMetadataLookup:
+							pageInitConfig.contextCitationsMetadataLookup ?? false,
 						canEdit: permissions.canEditPublication,
 						componentForms: pageInitConfig.componentForms,
 					},
