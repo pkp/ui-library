@@ -3,6 +3,7 @@ import {http, HttpResponse} from 'msw';
 import TaskTemplateManager from './TaskTemplateManager.vue';
 import {TemplatesDataMock} from '@/mockFactories/taskDiscussionTemplates';
 import {emailTemplateMock} from '@/mockFactories/emailTemplateMock';
+import {UserGroupMock} from '@/mockFactories/userGroupMock';
 
 export default {
 	title: 'Managers/TaskTemplateManager',
@@ -59,6 +60,13 @@ const mswHandlers = [
 			return HttpResponse.json(
 				emailTemplateMock['DISCUSSION_NOTIFICATION_PRODUCTION'],
 			);
+		},
+	),
+
+	http.get(
+		'https://mock/index.php/publicknowledge/api/v1/contexts/1/userGroups',
+		() => {
+			return HttpResponse.json(UserGroupMock);
 		},
 	),
 ];
