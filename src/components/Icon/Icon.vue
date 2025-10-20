@@ -33,6 +33,7 @@ import ChevronUp from './icons/ChevronUp.vue';
 import Clock from './icons/Clock.vue';
 import Comment from './icons/Comment.vue';
 import Complete from './icons/Complete.vue';
+import Content from './icons/Content.vue';
 import Dashboard from './icons/Dashboard.vue';
 import Declined from './icons/Declined.vue';
 import DecreaseTextSize from './icons/DecreaseTextSize.vue';
@@ -122,7 +123,6 @@ import UsefulTipsPrimary from './icons/UsefulTipsPrimary.vue';
 import User from './icons/User.vue';
 import View from './icons/View.vue';
 import Workflow from './icons/Workflow.vue';
-import Content from './icons/Content.vue';
 
 const svgIcons = {
 	Add,
@@ -152,6 +152,7 @@ const svgIcons = {
 	Clock,
 	Comment,
 	Complete,
+	Content,
 	Dashboard,
 	Declined,
 	DefaultDocument,
@@ -206,6 +207,7 @@ const svgIcons = {
 	NotVisible,
 	OpenReview,
 	Orcid,
+	OrcidUnauthenticated,
 	Overdue,
 	Paste,
 	Payment,
@@ -240,8 +242,6 @@ const svgIcons = {
 	User,
 	View,
 	Workflow,
-	OrcidUnauthenticated,
-	Content,
 };
 
 const props = defineProps({
