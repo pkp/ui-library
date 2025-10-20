@@ -1,4 +1,11 @@
 <template>
+	<div class="pb-8">
+		<h4>{{ t('user.roles') }}</h4>
+		<p v-if="store.isReviewerAccess" class="pt-1 text-lg-normal">
+			<Icon icon="Error" class="ml-1 h-4 w-4" :inline="true" />
+			{{ t('reviewerInvitation.addUserRolesMessage') }}
+		</p>
+	</div>
 	<PkpTable>
 		<TableHeader>
 			<TableColumn>{{ t('userInvitation.roleTable.role') }}</TableColumn>
@@ -157,6 +164,7 @@
 import {computed} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import PkpTable from '@/components/Table/Table.vue';
+import Icon from '@/components/Icon/Icon.vue';
 import TableCell from '@/components/Table/TableCell.vue';
 import TableHeader from '@/components/Table/TableHeader.vue';
 import TableColumn from '@/components/Table/TableColumn.vue';
