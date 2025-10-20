@@ -1279,12 +1279,12 @@ window.pkp = {
 			"Please note that once a user is disabled, you won't be able to add them to any roles until they are enabled again.",
 		'reviewerInvitation.responseDueDate':'Review Response Date',
 		'reviewerInvitation.reviewDueDate':'Review Response Due Date',
-		'reviewerInvitation.reviewTypes':'Review Types',
+		'reviewerInvitation.reviewType':'Review Type',
 		'reviewerInvitation.modal.message':'{$email} has been invited to review the submission "{$articleTitle}"<br><br> You can be updated about the user\'s descision on the reviewer panel in the review workflow or through email and OJS notifications',
 		'reviewerInvitation.modal.button':'View submission',
-		'reviewerInvitation.reviewTypes.anonymousAuthorOrReviewer':'Anonymous Reviewer / Anonymous Author',
-		'reviewerInvitation.reviewTypes.disclosedAuthor':'Anonymous Reviewer / Disclosed Author',
-		'reviewerInvitation.reviewTypes.open':'Open'
+		'reviewerInvitation.reviewType.anonymousAuthorOrReviewer':'Anonymous Reviewer / Anonymous Author',
+		'reviewerInvitation.reviewType.disclosedAuthor':'Anonymous Reviewer / Disclosed Author',
+		'reviewerInvitation.reviewType.open':'Open'
 	},
 	tinyMCE: {
 		skinUrl: '/styles/tinymce',

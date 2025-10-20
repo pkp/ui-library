@@ -32,7 +32,11 @@
 			<AcceptInvitationFormDisplayItemBasic
 				heading-element="h4"
 				:heading="t('user.orcid')"
-				:value="store.invitationPayload.orcid"
+				:value="
+					store.invitationPayload.orcidIsVerified
+						? store.invitationPayload.orcid
+						: t('invitation.orcid.description')
+				"
 			>
 				<template #valueSuffix>
 					<Icon
