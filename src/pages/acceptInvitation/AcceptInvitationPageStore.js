@@ -22,6 +22,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 		const email = ref(null);
 		const userId = ref(null);
 		const existingUser = ref(null);
+		const submission = ref(null); // use for reviewer accept invitations
 
 		/** All Errors */
 		const errors = ref({});
@@ -68,9 +69,11 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 					modalStyle: 'negative',
 				});
 			} else {
+				console.log(data.value);
 				email.value = data.value.email;
 				userId.value = data.value.userId;
 				existingUser.value = data.value.existingUser;
+				submission.value = data.value.submission && data.value.submission;
 
 				if (data.value.familyName) {
 					updateAcceptInvitationPayload('familyName', data.value.familyName); //if not check this override the multilingual structure
@@ -80,6 +83,18 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 				}
 				if (data.value.affiliation) {
 					updateAcceptInvitationPayload('affiliation', data.value.affiliation);
+				}
+				if (data.value.reviewDueDate) {
+					updateAcceptInvitationPayload(
+						'reviewDueDate',
+						data.value.reviewDueDate,
+					);
+				}
+				if (data.value.responseDueDate) {
+					updateAcceptInvitationPayload(
+						'responseDueDate',
+						data.value.responseDueDate,
+					);
 				}
 				updateAcceptInvitationPayload('userCountry', data.value.country);
 
@@ -241,11 +256,16 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 		 * Go to the next step or submit if this is the last step
 		 */
 		async function nextStep() {
+			console.log(steps.value[0]);
 			if (isOnLastStep.value) {
 				submit();
 			} else {
-				await updateInvitationPayload();
-				if (isValid.value) {
+				if (!currentStep.value?.skipInvitationUpdate) {
+					await updateInvitationPayload();
+					if (isValid.value) {
+						openStep(steps.value[1 + currentStepIndex.value].id);
+					}
+				} else {
 					openStep(steps.value[1 + currentStepIndex.value].id);
 				}
 			}
@@ -485,6 +505,28 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			});
 		}
 
+		/** Create receive invitation url */
+		const declineInvitationUrl = computed(() => {
+			const {apiUrl} = useUrl('invitations');
+			return (
+				apiUrl.value +
+				'/' +
+				pageInitConfig.invitationId +
+				'/key/' +
+				pageInitConfig.invitationKey +
+				'/decline'
+			);
+		});
+
+		async function decline() {
+			const {fetch} = useFetch(declineInvitationUrl, {
+				method: 'PUT',
+				body: {},
+			});
+			await fetch();
+			redirectToPage();
+		}
+
 		onMounted(async () => {
 			announce(t('common.loading'));
 			await receiveInvitation();
@@ -519,12 +561,14 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			setOrcidData,
 			updateAcceptInvitationPayload,
 			cancel,
+			decline,
 
 			//refs
 			acceptInvitationPayload,
 			email,
 			userId,
 			existingUser,
+			submission,
 		};
 	},
 );

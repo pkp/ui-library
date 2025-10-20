@@ -318,7 +318,11 @@ export const useUserInvitationPageStore = defineComponentStore(
 			}
 		}
 
-		const {redirectToPage} = useUrl('management/settings/access');
+		const {redirectToPage} = useUrl(
+			invitationType.value === invitationUserRoleAssignment
+				? 'management/settings/access'
+				: `dashboard/editorial?workflowSubmissionId=${invitationPayload.value.submissionId}`,
+		);
 		const isSubmitting = ref(
 			invitationMode.value === 'editUser'
 				? true
@@ -363,7 +367,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 									})
 								: t('reviewerInvitation.modal.message', {
 										email: invitationPayload.value.inviteeEmail,
-										articleTitle: '',
+										articleTitle: data.value.submission.title,
 									}),
 						actions: [
 							{
