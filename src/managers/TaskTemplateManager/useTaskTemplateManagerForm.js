@@ -18,7 +18,7 @@ export function useTaskTemplateManagerForm({
 	onCloseFn = () => {},
 } = {}) {
 	const {t} = useLocalize();
-	const isTask = ref(taskTemplate?.type === 'Task');
+	const isTask = ref(taskTemplate?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK);
 	const stageId = taskTemplate?.stageId || stage?.key;
 	let isTemplateOverrideConfirmed = false;
 	const {emailTemplatesData} = useTaskTemplateManagerEmails({
@@ -46,6 +46,11 @@ export function useTaskTemplateManagerForm({
 			stageId,
 			userGroupIds: formData.userGroupIds,
 			include: formData.include,
+			dueInterval: isTask.value ? formData.dueInterval : null,
+			description: formData.description,
+			type: isTask.value
+				? pkp.const.EDITORIAL_TASK_TYPE_TASK
+				: pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION,
 		};
 
 		let taskTemplatesUrl = 'editTaskTemplates';
@@ -168,11 +173,11 @@ export function useTaskTemplateManagerForm({
 		if (!content) return;
 
 		if (!taskTemplate || isTemplateOverrideConfirmed) {
-			setValue('discussionText', content);
+			setValue('description', content);
 			return;
 		}
 
-		// When editing, confirm overriding the discussion text with the selected email template
+		// When editing, confirm overriding the description with the selected email template
 		const {openDialog} = useModal();
 		openDialog({
 			name: 'selectTemplate',
@@ -183,7 +188,7 @@ export function useTaskTemplateManagerForm({
 					label: t('common.yes', {}),
 					isWarnable: true,
 					callback: async (close) => {
-						setValue('discussionText', content);
+						setValue('description', content);
 						isTemplateOverrideConfirmed = true;
 						close();
 					},
@@ -301,14 +306,15 @@ export function useTaskTemplateManagerForm({
 		label: t('discussion.form.taskInfoLabel'),
 		value: isTask.value,
 		hideOnDisplay: true,
-		disabled:
-			taskTemplate?.type === 'Discussion' && taskTemplate?.status === 'Closed',
+		onChange: (val) => {
+			isTask.value = val;
+		},
 	});
 
-	addFieldSelect('taskInfoDueDate', {
+	addFieldSelect('dueInterval', {
 		groupId: 'taskInformation',
 		label: t('common.dueDate'),
-		name: 'taskInfoDueDate',
+		name: 'dueInterval',
 		showWhen: 'taskInfoAdd',
 		value: isTask.value ? taskTemplate?.dueDate : null,
 		options: getDueDateOptions(),
@@ -320,7 +326,7 @@ export function useTaskTemplateManagerForm({
 		description: t('discussion.form.discussionDescription'),
 	});
 
-	addFieldRichTextArea('discussionText', {
+	addFieldRichTextArea('description', {
 		groupId: 'discussion',
 		toolbar: 'bold italic underline bullist | pkpAttachFiles | pkpInsert',
 		plugins: ['lists'],
