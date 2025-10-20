@@ -9,7 +9,6 @@ import {useFetch} from '@/composables/useFetch';
 import {useCurrentUser} from '@/composables/useCurrentUser';
 import {useParticipantManagerStore} from '../ParticipantManager/participantManagerStore';
 import {useSubmission} from '@/composables/useSubmission';
-import {useTaskTemplateManagerStore} from '@/managers/TaskTemplateManager/taskTemplateManagerStore';
 import {useDiscussionMessages} from './useDiscussionMessages';
 import {
 	useDiscussionManagerStatusUpdater,
@@ -198,14 +197,19 @@ export function useDiscussionManagerForm(
 	}
 
 	function getTemplates() {
-		const taskTemplateManagerStore = useTaskTemplateManagerStore();
-		return computed(() => {
-			return (
-				taskTemplateManagerStore.stagedTemplates?.find(
-					(stage) => stage.key === submissionStageId,
-				)?.templates || []
-			);
-		});
+		const {apiUrl: taskTemplatesApiUrl} = useUrl('editTaskTemplates');
+
+		const {data: taskTemplatesData, fetch: fetchTaskTemplates} =
+			useFetch(taskTemplatesApiUrl);
+
+		fetchTaskTemplates();
+
+		return computed(
+			() =>
+				taskTemplatesData.value?.data?.filter(
+					(data) => data.stageId === submissionStageId,
+				) || [],
+		);
 	}
 
 	function setValuesFromTemplate(template) {
