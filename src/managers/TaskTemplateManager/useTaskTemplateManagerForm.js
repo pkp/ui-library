@@ -3,6 +3,7 @@ import {localize} from '@/utils/i18n';
 import {useForm} from '@/composables/useForm';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
+import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useFormChanged} from '@/composables/useFormChanged';
 import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
@@ -79,12 +80,27 @@ export function useTaskTemplateManagerForm({
 	}
 
 	function getParticipantOptions() {
-		return [
-			{label: 'Journal Manager', value: pkp.const.ROLE_ID_MANAGER},
-			{label: 'Editor', value: pkp.const.ROLE_ID_MANAGER},
-			{label: 'Author', value: pkp.const.ROLE_ID_AUTHOR},
-			{label: 'Section Editor', value: pkp.const.ROLE_ID_SUB_EDITOR},
-		];
+		const {apiUrl: userGroupsApiUrl} = useUrl(
+			`contexts/${pkp.context.id}/userGroups`,
+		);
+
+		const {items: userGroupsData, fetch: fetchUserGroups} = useFetchPaginated(
+			userGroupsApiUrl,
+			{
+				page: 1,
+				pageSize: 50,
+			},
+		);
+
+		fetchUserGroups();
+
+		return computed(
+			() =>
+				userGroupsData.value?.map((userGroup) => ({
+					value: userGroup.id,
+					label: userGroup.name,
+				})) || [],
+		);
 	}
 
 	function getDueDateOptions() {
