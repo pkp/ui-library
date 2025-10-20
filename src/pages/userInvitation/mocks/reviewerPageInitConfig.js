@@ -52,7 +52,7 @@ export default {
 		reviewRoundId: 1,
 		responseDueDate: '',
 		reviewDueDate: '',
-		reviewTypes: '',
+		reviewMethod: '',
 		userGroupsToAdd: [{userGroupId: 16, dateStart: null, masthead: null}],
 		currentUserGroups: [],
 		userGroupsToRemove: [],
@@ -576,7 +576,11 @@ export default {
 					sectionComponent: 'ReviewerReviewDetailsFormStep',
 					type: 'form',
 					props: {
-						validateFields: ['responseDueDate', 'reviewTypes', 'reviewDueDate'],
+						validateFields: [
+							'responseDueDate',
+							'reviewMethod',
+							'reviewDueDate',
+						],
 						form: {
 							id: 'reviewerReviewDetails',
 							type: 'form',
@@ -587,7 +591,7 @@ export default {
 							action: 'reviewers',
 							fields: [
 								{
-									name: 'reviewTypes',
+									name: 'reviewMethod',
 									component: 'field-options',
 									label: 'Review Types',
 									groupId: 'default',
