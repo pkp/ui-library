@@ -114,6 +114,8 @@ export function useDiscussionManagerForm(
 			(p) => p.id === currentUser.getCurrentUserId(),
 		);
 
+		// If the current user is a site admin but not already in the participants list, add them as "Unassigned"
+		// This ensures site admins can always assign tasks to themselves
 		const siteAdmin =
 			currentUser.isCurrentUserSiteAdmin() && !isParticipant
 				? [
