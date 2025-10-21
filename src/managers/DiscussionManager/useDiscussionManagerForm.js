@@ -74,7 +74,8 @@ export function useDiscussionManagerForm(
 
 	function mapParticipantOptions(withSubLabel) {
 		return (participant) => {
-			let label = `${participant.fullName} (${participant.userName})`;
+			const userName = participant.userName && `(${participant.userName})`;
+			let label = `${participant.fullName} ${userName}`;
 
 			if (participant.userName === currentUser.getCurrentUserName()) {
 				label += ` (${t('common.me')})`;
@@ -109,7 +110,7 @@ export function useDiscussionManagerForm(
 
 		await fetchParticipants();
 
-		const isParticipant = participantsData.value.some(
+		const isParticipant = participantsData.value?.some(
 			(p) => p.id === currentUser.getCurrentUserId(),
 		);
 
@@ -127,8 +128,8 @@ export function useDiscussionManagerForm(
 				: [];
 
 		const list = [];
-		participantsData.value.forEach((participant) => {
-			participant.stageAssignments.forEach((stageAssignment) => {
+		participantsData.value?.forEach((participant) => {
+			participant.stageAssignments?.forEach((stageAssignment) => {
 				list.push({
 					id: participant.id,
 					fullName: participant.fullName,
