@@ -43,18 +43,15 @@
 						class="listPanel__item--reviewer__affiliation"
 					>
 						{{ localize(item.affiliation) }}
-						<a
-							v-if="item.orcid"
-							:href="item.orcid"
-							class="listPanel__item--reviewer__orcid"
-							target="_blank"
-						>
-							<icon icon="orcid" :inline="true" />
-							{{ item.orcid }}
-						</a>
 					</div>
 				</div>
 
+				<div v-if="item.orcid" class="listPanel__item--reviewer__orcid">
+					<a :href="item.orcid" target="_blank">
+						<icon icon="orcid" :inline="true" />
+						{{ item.orcid }}
+					</a>
+				</div>
 				<!-- use aria-hidden on these details because the information can be
 					more easily acquired by screen readers from the details panel. -->
 				<div
@@ -420,7 +417,6 @@ export default {
 }
 
 .listPanel__item--reviewer__orcid {
-	margin-left: 0.5rem;
 	font-size: @font-tiny;
 	text-decoration: none;
 }
