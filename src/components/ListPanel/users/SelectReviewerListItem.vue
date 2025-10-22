@@ -39,12 +39,10 @@
 						class="listPanel__item--reviewer__affiliation"
 					>
 						{{ localize(item.affiliation) }}
-						<a
-							v-if="item.orcid"
-							:href="item.orcid"
-							class="listPanel__item--reviewer__orcid"
-							target="_blank"
-						>
+					</div>
+
+					<div v-if="item.orcid" class="listPanel__item--reviewer__orcid">
+						<a :href="item.orcid" target="_blank">
 							<Icon
 								:icon="item.orcidIsVerified ? 'Orcid' : 'OrcidUnauthenticated'"
 								:inline="true"
