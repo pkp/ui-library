@@ -16,9 +16,9 @@ const CommonDefaults = {
 		},
 	],
 
-	dueDate: 'P1W',
+	dueInterval: 'P1W',
 	type: 'Task',
-	content: `
+	description: `
         <p><strong>Task:</strong> <strong>Complete Prepublication Plagiarism and Originality Checklist</strong></p>
 
         <p><strong>Description:</strong><br>
@@ -63,7 +63,7 @@ export const TemplatesDataMock = [
 	{
 		id: 2,
 		title: 'Authorship Criteria',
-		content: `
+		description: `
             <p><strong>Discussion Topic:</strong> <strong>Authorship Criteria for Manuscript Submission</strong></p>
 
             <p><strong>Context:</strong><br>
@@ -88,7 +88,7 @@ export const TemplatesDataMock = [
 	{
 		id: 3,
 		title: 'Ethical Approval',
-		content: `
+		description: `
             <p><strong>Task:</strong> <strong>Secure ethical approval for research study</strong></p>    
 
             <p><strong>Description:</strong><br>
@@ -108,14 +108,14 @@ export const TemplatesDataMock = [
         `,
 		type: 'Task',
 		userGroups: [{id: 65536}],
-		dueDate: 'P3M',
+		dueInterval: 'P3M',
 	},
 	getTemplate({
 		id: 4,
 		title: 'Ethical Approval',
 		stageId: 1,
 		userGroups: [{id: 65536}],
-		dueDate: 'P3M',
+		dueInterval: 'P3M',
 	}),
 	getTemplate({
 		id: 5,

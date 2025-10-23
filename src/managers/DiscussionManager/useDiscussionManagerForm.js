@@ -215,7 +215,7 @@ export function useDiscussionManagerForm(
 	function setValuesFromTemplate(template) {
 		isTask.value = template.type === 'Task';
 		setValue('title', template.title);
-		setValue('description', template.content);
+		setValue('description', template.description);
 
 		const selectedParticipants =
 			allParticipants.value
@@ -230,8 +230,8 @@ export function useDiscussionManagerForm(
 		if (isTask.value) {
 			setValue('taskInfoAssignee', selectedParticipants);
 
-			if (template.dueDate) {
-				setValue('dateDue', getRelativeTargetDate(template.dueDate));
+			if (template.dueInterval) {
+				setValue('dateDue', getRelativeTargetDate(template.dueInterval));
 			}
 		} else {
 			setValue('dateDue', null);

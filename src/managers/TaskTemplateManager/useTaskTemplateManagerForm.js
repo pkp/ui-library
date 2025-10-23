@@ -316,7 +316,7 @@ export function useTaskTemplateManagerForm({
 		label: t('common.dueDate'),
 		name: 'dueInterval',
 		showWhen: 'taskInfoAdd',
-		value: isTask.value ? taskTemplate?.dueDate : null,
+		value: isTask.value ? taskTemplate?.dueInterval : null,
 		options: getDueDateOptions(),
 		size: 'large',
 	});
@@ -332,7 +332,7 @@ export function useTaskTemplateManagerForm({
 		plugins: ['lists'],
 		size: 'large',
 		init: initDiscussionText(),
-		value: taskTemplate?.content || '',
+		value: taskTemplate?.description || '',
 	});
 
 	addGroup('autoAddTemplate');
