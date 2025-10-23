@@ -85,6 +85,7 @@ export const useDiscussionManagerStore = defineComponentStore(
 		const discussionConfig = computed(() =>
 			discussionManagerConfig.getManagerConfig({
 				submission,
+				submissionStageId: props.submissionStageId,
 			}),
 		);
 
