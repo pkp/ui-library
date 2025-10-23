@@ -6,14 +6,8 @@ import {useForm} from '@/composables/useForm';
 
 export function useWorkflowPublicationFormIssue(form, selectedPublication) {
 	const {t} = useLocalize();
-	const {
-		setHiddenValue,
-		getHiddenValue,
-		getField,
-		addFieldOptions,
-		addFieldSelect,
-		setValue,
-	} = useForm(form);
+	const {setHiddenValue, getField, addFieldOptions, addFieldSelect, setValue} =
+		useForm(form);
 
 	const {apiUrl: assignmentsUrl} = useUrl('issues/assignmentOptions');
 	const {fetch: fetchAssignments, data: assignments} = useFetch(assignmentsUrl);
@@ -92,39 +86,34 @@ export function useWorkflowPublicationFormIssue(form, selectedPublication) {
 	});
 
 	/**
-	 * Check if the required fields already exist in the form
-	 */
-	async function checkFieldsExist() {
-		if (!getField || !getHiddenValue) {
-			return false;
-		}
-
-		const issueIdField = getField('issueId');
-		const assignmentField = getField('assignment');
-
-		return issueIdField && assignmentField;
-	}
-
-	/**
 	 * Create fields immediately with placeholder data for instant UI rendering
 	 */
 	function createFields() {
-		addFieldOptions('assignment', 'radio', {
-			label: t('publication.assignToIssue.assignmentType'),
-			options: [],
-			isRequired: true,
-			value: null,
-		});
+		addFieldOptions(
+			'assignment',
+			'radio',
+			{
+				label: t('publication.assignToIssue.assignmentType'),
+				options: [],
+				isRequired: true,
+				value: null,
+			},
+			{positionBefore: 'sectionId'},
+		);
 
-		addFieldSelect('issueId', {
-			label: t('issue.issue'),
-			description: t('publication.assignToIssue.issueDescription'),
-			options: [],
-			size: 'large',
-			value: selectedPublication?.issueId,
-			isRequired: true,
-			showWhen: ['assignment', []],
-		});
+		addFieldSelect(
+			'issueId',
+			{
+				label: t('issue.issue'),
+				description: t('publication.assignToIssue.issueDescription'),
+				options: [],
+				size: 'large',
+				value: selectedPublication?.issueId,
+				isRequired: true,
+				showWhen: ['assignment', []],
+			},
+			{positionAfter: 'assignment'},
+		);
 
 		// Set initial status - will be updated by watchers when assignmentStatus data arrives
 		setHiddenValue('status', selectedPublication?.status);
@@ -232,15 +221,9 @@ export function useWorkflowPublicationFormIssue(form, selectedPublication) {
 	 * Initialize the composable
 	 * Create fields immediately(if not exist) and fetch data in parallel
 	 */
-	async function initialize() {
-		const fieldsExist = await checkFieldsExist();
-
-		if (!fieldsExist) {
-			createFields();
-		}
-
+	function initialize() {
+		createFields();
 		setupDataWatchers();
-
 		fetchAssignments();
 		fetchAssignmentStatus();
 	}
