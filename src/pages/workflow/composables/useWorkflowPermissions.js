@@ -50,11 +50,17 @@ export function useWorkflowPermissions({submission, selectedPublication}) {
 
 		canEditPublication = submission.value.canCurrentUserChangeMetadata;
 
-		if (
-			selectedPublication.value &&
-			selectedPublication.value?.status ===
-				pkp.const.publication.STATUS_PUBLISHED
-		) {
+		const isAuthor = hasIntersection(activeStage.currentUserAssignedRoles, [
+			pkp.const.ROLE_ID_AUTHOR,
+		]);
+		// block authors from editing any version if there is a published or scheduled version
+		const hasBlockedPublication = submission.value.publications.some((p) =>
+			[pkp.const.STATUS_PUBLISHED, pkp.const.STATUS_SCHEDULED].includes(
+				p.status,
+			),
+		);
+
+		if (isAuthor && hasBlockedPublication) {
 			canEditPublication = false;
 		}
 

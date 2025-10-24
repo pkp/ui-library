@@ -34,12 +34,6 @@ export const GalleyManagerConfiguration = {
 		Actions.GALLEY_EDIT,
 		Actions.GALLEY_SORT,
 	],
-	actionsRequiresUnpublishedState: [
-		Actions.GALLEY_ADD,
-		Actions.GALLEY_CHANGE_FILE,
-		Actions.GALLEY_DELETE,
-		Actions.GALLEY_SORT,
-	],
 };
 
 export function useGalleyManagerConfig() {
@@ -84,15 +78,6 @@ export function useGalleyManagerConfig() {
 	function getManagerConfig({submission, publication}) {
 		const permittedActions = GalleyManagerConfiguration.actions
 			.filter((action) => {
-				if (
-					publication.value.status === pkp.const.publication.STATUS_PUBLISHED &&
-					GalleyManagerConfiguration.actionsRequiresUnpublishedState.includes(
-						action,
-					)
-				) {
-					return false;
-				}
-
 				return true;
 			})
 			.filter((action) => {

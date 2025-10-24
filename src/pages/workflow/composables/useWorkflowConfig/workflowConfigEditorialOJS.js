@@ -752,7 +752,7 @@ export const PublicationConfig = {
 				selectedPublication.status === pkp.const.publication.STATUS_PUBLISHED
 			) {
 				items.push({
-					component: 'WorkflowPublicationEditDisabled',
+					component: 'WorkflowPublicationEditWarning',
 					props: {},
 				});
 			}
@@ -1006,6 +1006,7 @@ export const PublicationConfig = {
 					props: {
 						submission,
 						publication: selectedPublication,
+						canEdit: permissions.canEditPublication,
 					},
 				},
 			];
