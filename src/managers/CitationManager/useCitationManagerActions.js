@@ -16,14 +16,14 @@ export function useCitationManagerActions() {
 	const {t} = useLocalize();
 
 	function citationEditCitation(
-		{publication, componentForms, citation},
+		{publication, citationsMetadataLookup, componentForms, citation},
 		finishedCallback,
 	) {
 		if (!citation.authors) {
 			citation.authors = [];
 		}
 		let formName = 'citationRawEditForm';
-		if (publication.citationsMetadataLookup) {
+		if (citationsMetadataLookup) {
 			formName = 'citationStructuredEditForm';
 		}
 
