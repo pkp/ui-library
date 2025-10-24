@@ -10,7 +10,6 @@ import {useModal} from '@/composables/useModal';
 import {useTaskTemplateManagerEmails} from './useTaskTemplateManagerEmails';
 
 import FileAttacherModal from '@/components/Composer/FileAttacherModal.vue';
-import FieldPreparedContentInsertModal from '@/components/Form/fields/FieldPreparedContentInsertModal.vue';
 
 export function useTaskTemplateManagerForm({
 	taskTemplate = null,
@@ -35,9 +34,9 @@ export function useTaskTemplateManagerForm({
 		setValue,
 		addFieldText,
 		addFieldOptions,
-		addFieldRichTextArea,
 		addFieldSelect,
 		addFieldCheckbox,
+		addFieldPreparedContent,
 	} = useForm({}, {customSubmit: handleFormSubmission});
 
 	async function handleFormSubmission(formData) {
@@ -93,7 +92,7 @@ export function useTaskTemplateManagerForm({
 			userGroupsApiUrl,
 			{
 				page: 1,
-				pageSize: 50,
+				pageSize: 999,
 			},
 		);
 
@@ -221,26 +220,6 @@ export function useTaskTemplateManagerForm({
 						});
 					},
 				});
-
-				editor.ui.registry.addButton('pkpInsert', {
-					icon: 'plus',
-					text: t('common.insertContent'),
-					onAction() {
-						const {openSideModal, closeSideModal} = useModal(
-							FieldPreparedContentInsertModal,
-						);
-						openSideModal(FieldPreparedContentInsertModal, {
-							title: t('common.insertContent'),
-							insertLabel: t('common.insert'),
-							preparedContent,
-							preparedContentLabel: 'Label',
-							onInsert: (text) => {
-								editor.insertContent(text);
-								closeSideModal(FieldPreparedContentInsertModal);
-							},
-						});
-					},
-				});
 			},
 		};
 	}
@@ -326,13 +305,17 @@ export function useTaskTemplateManagerForm({
 		description: t('discussion.form.discussionDescription'),
 	});
 
-	addFieldRichTextArea('description', {
+	addFieldPreparedContent('description', {
 		groupId: 'discussion',
 		toolbar: 'bold italic underline bullist | pkpAttachFiles | pkpInsert',
 		plugins: ['lists'],
 		size: 'large',
 		init: initDiscussionText(),
 		value: taskTemplate?.description || '',
+		insertModalLabel: t('common.insertContent'),
+		insertLabel: t('common.insert'),
+		preparedContent,
+		preparedContentLabel: t('common.label'),
 	});
 
 	addGroup('autoAddTemplate');
