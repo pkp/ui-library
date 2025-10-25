@@ -9,7 +9,6 @@ import {useFetch} from '@/composables/useFetch';
 import {useCurrentUser} from '@/composables/useCurrentUser';
 import {useParticipantManagerStore} from '../ParticipantManager/participantManagerStore';
 import {useSubmission} from '@/composables/useSubmission';
-import {useTasksAndDiscussionsStore} from '@/pages/tasksAndDiscussions/tasksAndDiscussionsStore';
 import {useDiscussionMessages} from './useDiscussionMessages';
 import {
 	useDiscussionManagerStatusUpdater,
@@ -197,19 +196,26 @@ export function useDiscussionManagerForm(
 		return badgeProps;
 	}
 
-	// temporarily disable fetching templates until the api is ready
-	// eslint-disable-next-line no-unused-vars
 	function getTemplates() {
-		const tasksAndDiscussionsStore = useTasksAndDiscussionsStore();
-		return computed(() => {
-			return tasksAndDiscussionsStore.templatesList;
-		});
+		const {apiUrl: taskTemplatesApiUrl} = useUrl('editTaskTemplates');
+
+		const {data: taskTemplatesData, fetch: fetchTaskTemplates} =
+			useFetch(taskTemplatesApiUrl);
+
+		fetchTaskTemplates();
+
+		return computed(
+			() =>
+				taskTemplatesData.value?.data?.filter(
+					(data) => data.stageId === submissionStageId,
+				) || [],
+		);
 	}
 
 	function setValuesFromTemplate(template) {
 		isTask.value = template.type === 'Task';
 		setValue('title', template.title);
-		setValue('description', template.content);
+		setValue('description', template.description);
 
 		const selectedParticipants =
 			allParticipants.value
@@ -224,8 +230,8 @@ export function useDiscussionManagerForm(
 		if (isTask.value) {
 			setValue('taskInfoAssignee', selectedParticipants);
 
-			if (template.dueDate) {
-				setValue('dateDue', getRelativeTargetDate(template.dueDate));
+			if (template.dueInterval) {
+				setValue('dateDue', getRelativeTargetDate(template.dueInterval));
 			}
 		} else {
 			setValue('dateDue', null);
@@ -595,8 +601,7 @@ export function useDiscussionManagerForm(
 		groupComponent: {
 			component: DiscussionManagerTemplates,
 			props: {
-				// templates: getTemplates(), // temporarily disable fetching templates until the api is ready
-				templates: [],
+				templates: getTemplates(),
 				onSelectTemplate,
 				inDisplayMode,
 				isTask: workItemRef.value?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,

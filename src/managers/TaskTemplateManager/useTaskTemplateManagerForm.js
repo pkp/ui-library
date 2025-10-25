@@ -1,17 +1,15 @@
-import {ref} from 'vue';
+import {ref, computed} from 'vue';
 import {localize} from '@/utils/i18n';
 import {useForm} from '@/composables/useForm';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
+import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useFormChanged} from '@/composables/useFormChanged';
 import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
+import {useTaskTemplateManagerEmails} from './useTaskTemplateManagerEmails';
 
-import TaskTemplateManagerEmails from './TaskTemplateManagerEmails.vue';
 import FileAttacherModal from '@/components/Composer/FileAttacherModal.vue';
-import FieldPreparedContentInsertModal from '@/components/Form/fields/FieldPreparedContentInsertModal.vue';
-
-import preparedContent from '../../mixins/preparedContent';
 
 export function useTaskTemplateManagerForm({
 	taskTemplate = null,
@@ -19,9 +17,13 @@ export function useTaskTemplateManagerForm({
 	onCloseFn = () => {},
 } = {}) {
 	const {t} = useLocalize();
-	const isTask = ref(taskTemplate?.type === 'Task');
+	const isTask = ref(taskTemplate?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK);
 	const stageId = taskTemplate?.stageId || stage?.key;
 	let isTemplateOverrideConfirmed = false;
+	const {emailTemplatesData} = useTaskTemplateManagerEmails({
+		stage,
+		taskTemplate,
+	});
 
 	const {
 		form,
@@ -32,9 +34,9 @@ export function useTaskTemplateManagerForm({
 		setValue,
 		addFieldText,
 		addFieldOptions,
-		addFieldRichTextArea,
 		addFieldSelect,
 		addFieldCheckbox,
+		addFieldPreparedContent,
 	} = useForm({}, {customSubmit: handleFormSubmission});
 
 	async function handleFormSubmission(formData) {
@@ -43,6 +45,11 @@ export function useTaskTemplateManagerForm({
 			stageId,
 			userGroupIds: formData.userGroupIds,
 			include: formData.include,
+			dueInterval: isTask.value ? formData.dueInterval : null,
+			description: formData.description,
+			type: isTask.value
+				? pkp.const.EDITORIAL_TASK_TYPE_TASK
+				: pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION,
 		};
 
 		let taskTemplatesUrl = 'editTaskTemplates';
@@ -77,12 +84,27 @@ export function useTaskTemplateManagerForm({
 	}
 
 	function getParticipantOptions() {
-		return [
-			{label: 'Journal Manager', value: pkp.const.ROLE_ID_MANAGER},
-			{label: 'Editor', value: pkp.const.ROLE_ID_MANAGER},
-			{label: 'Author', value: pkp.const.ROLE_ID_AUTHOR},
-			{label: 'Section Editor', value: pkp.const.ROLE_ID_SUB_EDITOR},
-		];
+		const {apiUrl: userGroupsApiUrl} = useUrl(
+			`contexts/${pkp.context.id}/userGroups`,
+		);
+
+		const {items: userGroupsData, fetch: fetchUserGroups} = useFetchPaginated(
+			userGroupsApiUrl,
+			{
+				page: 1,
+				pageSize: 999,
+			},
+		);
+
+		fetchUserGroups();
+
+		return computed(
+			() =>
+				userGroupsData.value?.map((userGroup) => ({
+					value: userGroup.id,
+					label: userGroup.name,
+				})) || [],
+		);
 	}
 
 	function getDueDateOptions() {
@@ -144,16 +166,17 @@ export function useTaskTemplateManagerForm({
 		];
 	}
 
+	// eslint-disable-next-line no-unused-vars
 	function onSelectEmailTemplate(emailTemplate) {
 		const content = localize(emailTemplate?.body);
 		if (!content) return;
 
 		if (!taskTemplate || isTemplateOverrideConfirmed) {
-			setValue('discussionText', content);
+			setValue('description', content);
 			return;
 		}
 
-		// When editing, confirm overriding the discussion text with the selected email template
+		// When editing, confirm overriding the description with the selected email template
 		const {openDialog} = useModal();
 		openDialog({
 			name: 'selectTemplate',
@@ -164,7 +187,7 @@ export function useTaskTemplateManagerForm({
 					label: t('common.yes', {}),
 					isWarnable: true,
 					callback: async (close) => {
-						setValue('discussionText', content);
+						setValue('description', content);
 						isTemplateOverrideConfirmed = true;
 						close();
 					},
@@ -197,24 +220,28 @@ export function useTaskTemplateManagerForm({
 						});
 					},
 				});
-
-				editor.ui.registry.addButton('pkpInsert', {
-					icon: 'plus',
-					text: t('common.insertContent'),
-					onAction() {
-						const {openSideModal} = useModal(FieldPreparedContentInsertModal);
-						openSideModal(FieldPreparedContentInsertModal, {
-							title: t('common.insertContent'),
-							insertLabel: t('common.insert'),
-							preparedContent,
-							preparedContentLabel: 'Label',
-							onInsert: () => {},
-						});
-					},
-				});
 			},
 		};
 	}
+
+	const preparedContent = computed(() => {
+		const dataDescriptions = emailTemplatesData.value?.dataDescriptions;
+		if (!dataDescriptions) {
+			return [];
+		}
+
+		const items = [];
+
+		Object.keys(dataDescriptions).forEach((key) => {
+			items.push({
+				key,
+				value: `{$${key}}`,
+				description: dataDescriptions[key],
+			});
+		});
+
+		return items;
+	});
 
 	initEmptyForm('taskTemplate', {
 		showErrorFooter: false,
@@ -258,16 +285,17 @@ export function useTaskTemplateManagerForm({
 		label: t('discussion.form.taskInfoLabel'),
 		value: isTask.value,
 		hideOnDisplay: true,
-		disabled:
-			taskTemplate?.type === 'Discussion' && taskTemplate?.status === 'Closed',
+		onChange: (val) => {
+			isTask.value = val;
+		},
 	});
 
-	addFieldSelect('taskInfoDueDate', {
+	addFieldSelect('dueInterval', {
 		groupId: 'taskInformation',
 		label: t('common.dueDate'),
-		name: 'taskInfoDueDate',
+		name: 'dueInterval',
 		showWhen: 'taskInfoAdd',
-		value: isTask.value ? taskTemplate?.dueDate : null,
+		value: isTask.value ? taskTemplate?.dueInterval : null,
 		options: getDueDateOptions(),
 		size: 'large',
 	});
@@ -275,23 +303,19 @@ export function useTaskTemplateManagerForm({
 	addGroup('discussion', {
 		label: t('discussion.name'),
 		description: t('discussion.form.discussionDescription'),
-		groupComponent: {
-			component: TaskTemplateManagerEmails,
-			props: {
-				stage,
-				taskTemplate,
-				onSelectEmailTemplate,
-			},
-		},
 	});
 
-	addFieldRichTextArea('discussionText', {
+	addFieldPreparedContent('description', {
 		groupId: 'discussion',
 		toolbar: 'bold italic underline bullist | pkpAttachFiles | pkpInsert',
 		plugins: ['lists'],
 		size: 'large',
 		init: initDiscussionText(),
-		value: taskTemplate?.content || '',
+		value: taskTemplate?.description || '',
+		insertModalLabel: t('common.insertContent'),
+		insertLabel: t('common.insert'),
+		preparedContent,
+		preparedContentLabel: t('common.label'),
 	});
 
 	addGroup('autoAddTemplate');

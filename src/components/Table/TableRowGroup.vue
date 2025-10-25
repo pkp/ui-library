@@ -1,42 +1,20 @@
 <template>
-	<slot />
-	<tr v-if="isGroupEmpty">
-		<TableCell
-			:colspan="tableContext.columnsCount.value"
-			padding-variant="spacious"
-		>
-			<slot v-if="slots['no-group-content']" name="no-group-content" />
-			<span v-else>{{ emptyText }}</span>
-		</TableCell>
-	</tr>
+	<th
+		:colspan="tableContext.columnsCount.value"
+		scope="rowgroup"
+		class="whitespace-nowrap border-b border-light bg-tertiary p-2 text-start text-lg-medium text-secondary first:border-s first:ps-3 last:border-e last:pe-3"
+	>
+		<div class="flex w-full items-center gap-2">
+			<slot />
+
+			<div v-if="$slots.action" class="ms-auto">
+				<slot name="action" :group-id="groupId" />
+			</div>
+		</div>
+	</th>
 </template>
 
 <script setup>
-import {computed, inject, onMounted, provide, useId, useSlots} from 'vue';
-import {t} from '@/utils/i18n';
-import TableCell from './TableCell.vue';
-
-const groupId = useId();
-const slots = useSlots();
-
+import {inject} from 'vue';
 const tableContext = inject('tableContext');
-
-// Group is empty if it only has the header row
-const isGroupEmpty = computed(
-	() => tableContext.getGroupRowCount(groupId) === 1,
-);
-
-const props = defineProps({
-	emptyText: {type: String, default: ''},
-});
-
-const emptyText = computed(() => {
-	return props.emptyText || t('grid.noItems');
-});
-
-onMounted(() => {
-	tableContext?.markHasGroups();
-});
-
-provide('groupId', groupId);
 </script>

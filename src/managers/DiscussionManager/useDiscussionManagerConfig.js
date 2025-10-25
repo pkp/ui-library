@@ -81,7 +81,7 @@ export function useDiscussionManagerConfig() {
 		return columns;
 	}
 
-	function getManagerConfig({submission, publication}) {
+	function getManagerConfig({submission, submissionStageId}) {
 		const permittedActions = DiscussionManagerConfigurations.actions.filter(
 			(action) => {
 				return DiscussionManagerConfigurations.permissions.some((perm) => {
@@ -89,7 +89,7 @@ export function useDiscussionManagerConfig() {
 						perm.actions.includes(action) &&
 						hasCurrentUserAtLeastOneAssignedRoleInStage(
 							submission.value,
-							pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+							submissionStageId,
 							perm.roles,
 						)
 					);

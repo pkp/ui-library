@@ -119,13 +119,7 @@ export default {
 					self.init.setup.call(this, editor);
 				}
 				if (self.preparedContent.length) {
-					editor.ui.registry.addButton('pkpInsert', {
-						icon: 'plus',
-						text: self.t('common.insertContent'),
-						onAction() {
-							self.openInsertModal();
-						},
-					});
+					self.addInsertButton(editor);
 				}
 			};
 			return {
@@ -149,6 +143,19 @@ export default {
 			return newValue;
 		},
 	},
+	watch: {
+		preparedContent(newVal) {
+			this.$nextTick(() => {
+				const editor = this.$refs.textarea?.$refs?.editor?.getEditor?.();
+				if (editor && newVal?.length) {
+					const buttons = editor.ui.registry.getAll()?.buttons || {};
+					if (!buttons.pkpInsert) {
+						this.addInsertButton(editor);
+					}
+				}
+			});
+		},
+	},
 	methods: {
 		openInsertModal() {
 			const {openSideModal} = useModal(FieldPreparedContentInsertModal);
@@ -167,6 +174,13 @@ export default {
 			this.$refs.textarea.$refs.editor.getEditor().insertContent(text);
 			const {closeSideModal} = useModal();
 			closeSideModal(FieldPreparedContentInsertModal);
+		},
+		addInsertButton(editor) {
+			editor.ui.registry.addButton('pkpInsert', {
+				icon: 'plus',
+				text: this.t('common.insertContent'),
+				onAction: () => this.openInsertModal(),
+			});
 		},
 	},
 };
