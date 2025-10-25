@@ -2,7 +2,7 @@ import {ref, watch, computed} from 'vue';
 import PkpTable from './Table.vue';
 import TableHeader from './TableHeader.vue';
 import TableBody from './TableBody.vue';
-import TableColGroup from './TableColGroup.vue';
+import TableRowGroup from './TableRowGroup.vue';
 import TableColumn from './TableColumn.vue';
 import TableCell from './TableCell.vue';
 import TableRow from './TableRow.vue';
@@ -337,7 +337,7 @@ export const MultiLevelHeaders = {
 			TableRow,
 			TableRowGroupWrapper,
 			TableColumn,
-			TableColGroup,
+			TableRowGroup,
 			TableCell,
 			PkpButton,
 		},
@@ -386,9 +386,9 @@ export const MultiLevelHeaders = {
 					<template v-for="group in groups" :key="group.name">
 						<TableRowGroupWrapper>
 							<TableRow>
-								<TableColGroup>
+								<TableRowGroup>
 									{{ group.name }}
-								</TableColGroup>
+								</TableRowGroup>
 							</TableRow>
 							<TableRow v-for="row in group.items" :key="row.id" :striped="false">
 								<TableCell>{{ row.id }}</TableCell>
@@ -416,7 +416,7 @@ export const EmptyMultiLevelHeaders = {
 			TableRow,
 			TableRowGroupWrapper,
 			TableColumn,
-			TableColGroup,
+			TableRowGroup,
 			TableCell,
 			PkpButton,
 		},
@@ -461,9 +461,9 @@ export const EmptyMultiLevelHeaders = {
 					<template v-for="group in groups" :key="group.name">
 						<TableRowGroupWrapper>
 							<TableRow>
-								<TableColGroup>
+								<TableRowGroup>
 									{{ group.name }}
-								</TableColGroup>
+								</TableRowGroup>
 							</TableRow>
 							<TableRow v-for="row in group.items" :key="row.id" :striped="false">
 								<TableCell>{{ row.id }}</TableCell>
