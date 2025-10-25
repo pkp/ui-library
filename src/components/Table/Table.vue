@@ -90,7 +90,6 @@ const {sortDescriptor} = toRefs(props);
 const columnsCount = ref(0);
 const rowCount = ref(0);
 const groupRowCounts = ref({});
-const rowHeaderIds = ref([]);
 
 const registerRow = (groupId) => {
 	rowCount.value++;
@@ -111,21 +110,6 @@ const unregisterRow = (groupId) => {
 
 const getGroupRowCount = (groupId) => {
 	return groupRowCounts.value[groupId] ?? 0;
-};
-
-const registerRowHeader = (rowHeaderId) => {
-	if (rowHeaderId) {
-		rowHeaderIds.value.push(rowHeaderId);
-	}
-};
-
-const unregisterRowHeader = (rowHeaderId) => {
-	if (rowHeaderId) {
-		const index = rowHeaderIds.value.indexOf(rowHeaderId);
-		if (index !== -1) {
-			rowHeaderIds.value.splice(index, 1);
-		}
-	}
 };
 
 const isFooterDarker = computed(() => {
@@ -153,9 +137,6 @@ const tableContext = {
 	markHasGroups,
 	hasGroups,
 	getGroupRowCount,
-	registerRowHeader,
-	unregisterRowHeader,
-	rowHeaderIds,
 };
 
 provide('tableContext', tableContext);

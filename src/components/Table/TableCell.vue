@@ -1,10 +1,8 @@
 <template>
 	<component
 		:is="isRowHeader ? 'th' : 'td'"
-		:id="isRowHeader ? rowHeaderId : null"
 		ref="cellRef"
 		:scope="isRowHeader ? 'row' : null"
-		:headers="headersAttr.length ? headersAttr : null"
 		class="border-b border-light text-start text-base-normal first:border-s first:ps-3 last:border-e last:pe-3"
 		:class="classes"
 	>
@@ -13,15 +11,7 @@
 </template>
 
 <script setup>
-import {
-	defineProps,
-	computed,
-	inject,
-	ref,
-	onMounted,
-	watch,
-	onUnmounted,
-} from 'vue';
+import {defineProps, computed, ref, onMounted} from 'vue';
 
 const props = defineProps({
 	noWrap: {
@@ -79,46 +69,10 @@ const classes = computed(() => {
 	return list;
 });
 
-const tableContext = inject('tableContext');
-const groupId = inject('groupId', null);
-const rowIndex = inject('rowIndex', null);
 const columnIndex = ref(-1);
 const cellRef = ref(null);
 
 onMounted(() => {
 	columnIndex.value = cellRef.value.cellIndex;
 });
-
-onUnmounted(() => {
-	if (props.isRowHeader && rowIndex.value) {
-		tableContext.unregisterRowHeader(rowHeaderId.value);
-	}
-});
-
-const rowHeaderId = computed(() =>
-	groupId ? `${tableContext.tableId}_th-${rowIndex?.value}` : null,
-);
-
-// Attach headers attribute for complex table structures (with colgroups)
-const headersAttr = computed(() =>
-	[
-		groupId ? `${tableContext.tableId}_${columnIndex.value}` : '',
-		groupId,
-		tableContext.rowHeaderIds?.value?.includes(rowHeaderId.value) &&
-			!props.isRowHeader &&
-			rowHeaderId.value,
-	]
-		.filter(Boolean)
-		.join(' '),
-);
-
-watch(
-	rowIndex,
-	() => {
-		if (props.isRowHeader && rowIndex.value) {
-			tableContext.registerRowHeader(rowHeaderId.value);
-		}
-	},
-	{immediate: true},
-);
 </script>
