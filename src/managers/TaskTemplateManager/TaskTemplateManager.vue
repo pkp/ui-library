@@ -26,7 +26,7 @@
 					v-for="stage in taskTemplateManagerStore.stagedTemplates"
 					:key="stage.key"
 				>
-					<TableRowGroup
+					<TableRowGroupWrapper
 						:empty-text="
 							taskTemplateManagerStore.isLoadingTemplates
 								? t('common.loading')
@@ -61,7 +61,7 @@
 								:task-template="template"
 							></component>
 						</TableRow>
-					</TableRowGroup>
+					</TableRowGroupWrapper>
 				</template>
 			</TableBody>
 		</PkpTable>
@@ -77,7 +77,7 @@ import TableBody from '@/components/Table/TableBody.vue';
 import TableColumn from '@/components/Table/TableColumn.vue';
 import TableColGroup from '@/components/Table/TableColGroup.vue';
 import TableRow from '@/components/Table/TableRow.vue';
-import TableRowGroup from '@/components/Table/TableRowGroup.vue';
+import TableRowGroupWrapper from '@/components/Table/TableRowGroupWrapper.vue';
 import TaskTemplateManagerCellName from './TaskTemplateManagerCellName.vue';
 import TaskTemplateManagerCellAutoAdd from './TaskTemplateManagerCellAutoAdd.vue';
 import TaskTemplateManagerCellActions from './TaskTemplateManagerCellActions.vue';

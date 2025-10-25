@@ -36,7 +36,7 @@
 					v-for="itemStatus in discussionManagerStore.discussions"
 					:key="itemStatus.name"
 				>
-					<TableRowGroup
+					<TableRowGroupWrapper
 						:empty-text="
 							discussionManagerStore.isLoadingDiscussions
 								? t('common.loading')
@@ -70,7 +70,7 @@
 								:work-item="workItem"
 							></component>
 						</TableRow>
-					</TableRowGroup>
+					</TableRowGroupWrapper>
 				</template>
 			</TableBody>
 		</PkpTable>
@@ -86,7 +86,7 @@ import TableBody from '@/components/Table/TableBody.vue';
 import TableColumn from '@/components/Table/TableColumn.vue';
 import TableColGroup from '@/components/Table/TableColGroup.vue';
 import TableRow from '@/components/Table/TableRow.vue';
-import TableRowGroup from '@/components/Table/TableRowGroup.vue';
+import TableRowGroupWrapper from '@/components/Table/TableRowGroupWrapper.vue';
 
 import DiscussionManagerActionButton from './DiscussionManagerActionButton.vue';
 import DiscussionManagerCellName from './DiscussionManagerCellName.vue';
