@@ -36,7 +36,7 @@
 					v-for="itemStatus in discussionManagerStore.discussions"
 					:key="itemStatus.name"
 				>
-					<TableRowGroup
+					<TableRowGroupWrapper
 						:empty-text="
 							discussionManagerStore.isLoadingDiscussions
 								? t('common.loading')
@@ -44,7 +44,7 @@
 						"
 					>
 						<TableRow>
-							<TableColGroup class="py-4">
+							<TableRowGroup class="py-4">
 								<Icon
 									:icon="itemStatus.icon"
 									class="h-5 w-5"
@@ -55,7 +55,7 @@
 									"
 								></Icon>
 								<span class="ms-2">{{ itemStatus.name }}</span>
-							</TableColGroup>
+							</TableRowGroup>
 						</TableRow>
 						<TableRow
 							v-for="workItem in itemStatus.items"
@@ -70,7 +70,7 @@
 								:work-item="workItem"
 							></component>
 						</TableRow>
-					</TableRowGroup>
+					</TableRowGroupWrapper>
 				</template>
 			</TableBody>
 		</PkpTable>
@@ -84,9 +84,9 @@ import PkpTable from '@/components/Table/Table.vue';
 import TableHeader from '@/components/Table/TableHeader.vue';
 import TableBody from '@/components/Table/TableBody.vue';
 import TableColumn from '@/components/Table/TableColumn.vue';
-import TableColGroup from '@/components/Table/TableColGroup.vue';
-import TableRow from '@/components/Table/TableRow.vue';
 import TableRowGroup from '@/components/Table/TableRowGroup.vue';
+import TableRow from '@/components/Table/TableRow.vue';
+import TableRowGroupWrapper from '@/components/Table/TableRowGroupWrapper.vue';
 
 import DiscussionManagerActionButton from './DiscussionManagerActionButton.vue';
 import DiscussionManagerCellName from './DiscussionManagerCellName.vue';

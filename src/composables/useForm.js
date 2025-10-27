@@ -726,6 +726,29 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 	}
 
 	/**
+	 * Adds or updates a FieldPreparedContent in the form.
+	 * @param {string} fieldName - The name of the field
+	 * @param {Object} fieldOptions - The field options (e.g., preparedContent) and other shared/common properties for the field
+	 * @param {Object} [opts] - Optional settings.
+	 * @param {boolean} [opts.override] - If true and the field already exists, it will be fully overridden.
+	 */
+	function addFieldPreparedContent(
+		fieldName,
+		{value = false, ...commonFields},
+		opts = {},
+	) {
+		addField(
+			fieldName,
+			{
+				component: 'field-prepared-content',
+				value,
+				...commonFields,
+			},
+			opts,
+		);
+	}
+
+	/**
 	 * Adds or updates a custom component field in the form.
 	 * This is useful for rendering custom field components.
 	 * @param {string} fieldName - The name (or key) of the field.
@@ -784,6 +807,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		addFieldCheckbox,
 		addFieldComponent,
 		addFieldHtml,
+		addFieldPreparedContent,
 		getField,
 	};
 }

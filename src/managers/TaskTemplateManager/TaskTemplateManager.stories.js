@@ -1,11 +1,9 @@
 import {within, userEvent} from 'storybook/test';
 import {http, HttpResponse} from 'msw';
 import TaskTemplateManager from './TaskTemplateManager.vue';
-import {
-	TemplatesDataMock,
-	getTemplate,
-} from '@/mockFactories/taskDiscussionTemplates';
+import {TemplatesDataMock} from '@/mockFactories/taskDiscussionTemplates';
 import {emailTemplateMock} from '@/mockFactories/emailTemplateMock';
+import {UserGroupMock} from '@/mockFactories/userGroupMock';
 
 export default {
 	title: 'Managers/TaskTemplateManager',
@@ -13,63 +11,7 @@ export default {
 };
 
 const baseArgs = {
-	templates: [
-		...TemplatesDataMock,
-		getTemplate({
-			id: 4,
-			title: 'Ethical Approval',
-			stageId: 1,
-			userGroups: [{id: 65536}],
-			dueDate: 'P3M',
-		}),
-		getTemplate({
-			id: 5,
-			title: 'Adherence to Policy and Guidelines',
-			stageId: 1,
-			include: false,
-		}),
-		getTemplate({id: 6, title: 'Language Review', stageId: 1}),
-		getTemplate({
-			id: 7,
-			title: 'Analysis of the Method',
-			stageId: 1,
-			include: false,
-		}),
-		getTemplate({
-			id: 8,
-			title: 'Lorem ipsum dolor sit amet',
-			stageId: 3,
-		}),
-		getTemplate({
-			id: 9,
-			title: 'Consectetur adipiscing elit',
-			stageId: 3,
-			include: false,
-		}),
-		getTemplate({
-			id: 10,
-			title: 'Sed do eiusmod tempor incididunt ut',
-			stageId: 4,
-			include: false,
-		}),
-		getTemplate({
-			id: 11,
-			title: 'labore et dolore magna aliqua',
-			stageId: 5,
-		}),
-		getTemplate({
-			id: 12,
-			title: 'Ut enim ad minim veniam',
-			stageId: 5,
-			include: false,
-		}),
-		getTemplate({
-			id: 13,
-			title: 'Quis nostrud exercitation ullamco',
-			stageId: 5,
-			include: false,
-		}),
-	],
+	templates: TemplatesDataMock,
 };
 
 const renderComponent = (args) => ({
@@ -118,6 +60,13 @@ const mswHandlers = [
 			return HttpResponse.json(
 				emailTemplateMock['DISCUSSION_NOTIFICATION_PRODUCTION'],
 			);
+		},
+	),
+
+	http.get(
+		'https://mock/index.php/publicknowledge/api/v1/contexts/1/userGroups',
+		() => {
+			return HttpResponse.json(UserGroupMock);
 		},
 	),
 ];

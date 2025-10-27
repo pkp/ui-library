@@ -3,7 +3,6 @@
 		:is="isRowHeader ? 'th' : 'td'"
 		ref="cellRef"
 		:scope="isRowHeader ? 'row' : null"
-		:headers="headersAttr.length ? headersAttr : null"
 		class="border-b border-light text-start text-base-normal first:border-s first:ps-3 last:border-e last:pe-3"
 		:class="classes"
 	>
@@ -12,7 +11,7 @@
 </template>
 
 <script setup>
-import {defineProps, computed, inject, ref, onMounted} from 'vue';
+import {defineProps, computed, ref, onMounted} from 'vue';
 
 const props = defineProps({
 	noWrap: {
@@ -70,19 +69,10 @@ const classes = computed(() => {
 	return list;
 });
 
-const tableContext = inject('tableContext');
-const groupId = inject('groupId', null);
 const columnIndex = ref(-1);
 const cellRef = ref(null);
 
 onMounted(() => {
 	columnIndex.value = cellRef.value.cellIndex;
 });
-
-// Attach headers attribute for complex table structures (with colgroups)
-const headersAttr = computed(() =>
-	[groupId ? `${tableContext.tableId}_${columnIndex.value}` : '', groupId]
-		.filter(Boolean)
-		.join(' '),
-);
 </script>

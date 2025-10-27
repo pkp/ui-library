@@ -23,6 +23,35 @@ const CommonDefaults = {
 	},
 };
 
+const dataDescriptions = {
+	authorSubmissionUrl: "The author's URL to the submission",
+	authors: 'The full names of the authors',
+	authorsShort:
+		'The names of the authors in a short string, like "Barnes, et al"',
+	contactEmail: "The email address of the journal's primary contact",
+	contactName: "The name of the journal's primary contact",
+	contextAcronym: "The journal's initials",
+	journalName: "The journal's name",
+	journalSignature: "The journal's email signature for automated emails",
+	journalUrl: "The URL to the journal's homepage",
+	mailingAddress: 'The mailing address of the journal',
+	passwordLostUrl:
+		'The URL to a page where the user can recover a lost password',
+	recipientName: 'The full name of the recipient or all recipients',
+	recipientUsername: 'The username of the recipient or all recipients',
+	senderEmail: 'The email address of the sender',
+	senderName: 'The full name of the sender',
+	signature: 'The email signature of the sender',
+	submissionAbstract: "The submission's abstract",
+	submissionId: "The submission's unique ID number",
+	submissionPublishedUrl: 'The URL to the published submission',
+	submissionTitle: "The submission's title",
+	submissionUrl: 'The URL to the submission in the editorial backend',
+	submissionWizardUrl: 'The URL to the submission in the submission wizard',
+	submissionsUrl: "The URL to view all of a user's assigned submissions",
+	userProfileUrl: 'The URL for a user to view and edit their profile',
+};
+
 export const emailTemplateMock = {
 	DISCUSSION_NOTIFICATION_SUBMISSION: {
 		emailTemplates: [
@@ -48,6 +77,7 @@ export const emailTemplateMock = {
 				},
 			),
 		],
+		dataDescriptions,
 	},
 	DISCUSSION_NOTIFICATION_REVIEW: {
 		emailTemplates: [
@@ -92,6 +122,7 @@ export const emailTemplateMock = {
 				},
 			),
 		],
+		dataDescriptions,
 	},
 	DISCUSSION_NOTIFICATION_COPYEDITING: {
 		emailTemplates: [
@@ -135,6 +166,7 @@ export const emailTemplateMock = {
 				},
 			),
 		],
+		dataDescriptions,
 	},
 	DISCUSSION_NOTIFICATION_PRODUCTION: {
 		emailTemplates: [
@@ -220,5 +252,6 @@ export const emailTemplateMock = {
 				},
 			),
 		],
+		dataDescriptions,
 	},
 };

@@ -2,11 +2,11 @@ import {ref, watch, computed} from 'vue';
 import PkpTable from './Table.vue';
 import TableHeader from './TableHeader.vue';
 import TableBody from './TableBody.vue';
-import TableColGroup from './TableColGroup.vue';
+import TableRowGroup from './TableRowGroup.vue';
 import TableColumn from './TableColumn.vue';
 import TableCell from './TableCell.vue';
 import TableRow from './TableRow.vue';
-import TableRowGroup from './TableRowGroup.vue';
+import TableRowGroupWrapper from './TableRowGroupWrapper.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import TablePagination from './TablePagination.vue';
 
@@ -335,9 +335,9 @@ export const MultiLevelHeaders = {
 			TableHeader,
 			TableBody,
 			TableRow,
-			TableRowGroup,
+			TableRowGroupWrapper,
 			TableColumn,
-			TableColGroup,
+			TableRowGroup,
 			TableCell,
 			PkpButton,
 		},
@@ -384,11 +384,11 @@ export const MultiLevelHeaders = {
 				</TableHeader>
 				<TableBody>
 					<template v-for="group in groups" :key="group.name">
-						<TableRowGroup>
+						<TableRowGroupWrapper>
 							<TableRow>
-								<TableColGroup>
+								<TableRowGroup>
 									{{ group.name }}
-								</TableColGroup>
+								</TableRowGroup>
 							</TableRow>
 							<TableRow v-for="row in group.items" :key="row.id" :striped="false">
 								<TableCell>{{ row.id }}</TableCell>
@@ -397,7 +397,7 @@ export const MultiLevelHeaders = {
 									<PkpButton :is-link="true">View</PkpButton>
 								</TableCell>
 							</TableRow>
-						</TableRowGroup>
+						</TableRowGroupWrapper>
 					</template>
 				</TableBody>
 			</PkpTable>
@@ -414,9 +414,9 @@ export const EmptyMultiLevelHeaders = {
 			TableHeader,
 			TableBody,
 			TableRow,
-			TableRowGroup,
+			TableRowGroupWrapper,
 			TableColumn,
-			TableColGroup,
+			TableRowGroup,
 			TableCell,
 			PkpButton,
 		},
@@ -459,11 +459,11 @@ export const EmptyMultiLevelHeaders = {
 				</TableHeader>
 				<TableBody>
 					<template v-for="group in groups" :key="group.name">
-						<TableRowGroup>
+						<TableRowGroupWrapper>
 							<TableRow>
-								<TableColGroup>
+								<TableRowGroup>
 									{{ group.name }}
-								</TableColGroup>
+								</TableRowGroup>
 							</TableRow>
 							<TableRow v-for="row in group.items" :key="row.id" :striped="false">
 								<TableCell>{{ row.id }}</TableCell>
@@ -475,7 +475,7 @@ export const EmptyMultiLevelHeaders = {
 							<template #no-group-content>
 								This is a custom no-group-content slot. No items available for status "{{ group.name }}".
 							</template>
-						</TableRowGroup>
+						</TableRowGroupWrapper>
 					</template>
 				</TableBody>
 			</PkpTable>

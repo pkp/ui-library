@@ -16,9 +16,9 @@ const CommonDefaults = {
 		},
 	],
 
-	dueDate: 'P1W',
+	dueInterval: 'P1W',
 	type: 'Task',
-	content: `
+	description: `
         <p><strong>Task:</strong> <strong>Complete Prepublication Plagiarism and Originality Checklist</strong></p>
 
         <p><strong>Description:</strong><br>
@@ -53,7 +53,7 @@ const CommonDefaults = {
     `,
 };
 
-export function getTemplate(overrides = {}) {
+function getTemplate(overrides = {}) {
 	const discussions = deepMerge({...CommonDefaults}, overrides);
 	return discussions;
 }
@@ -63,7 +63,7 @@ export const TemplatesDataMock = [
 	{
 		id: 2,
 		title: 'Authorship Criteria',
-		content: `
+		description: `
             <p><strong>Discussion Topic:</strong> <strong>Authorship Criteria for Manuscript Submission</strong></p>
 
             <p><strong>Context:</strong><br>
@@ -88,7 +88,7 @@ export const TemplatesDataMock = [
 	{
 		id: 3,
 		title: 'Ethical Approval',
-		content: `
+		description: `
             <p><strong>Task:</strong> <strong>Secure ethical approval for research study</strong></p>    
 
             <p><strong>Description:</strong><br>
@@ -108,6 +108,60 @@ export const TemplatesDataMock = [
         `,
 		type: 'Task',
 		userGroups: [{id: 65536}],
-		dueDate: 'P3M',
+		dueInterval: 'P3M',
 	},
+	getTemplate({
+		id: 4,
+		title: 'Ethical Approval',
+		stageId: 1,
+		userGroups: [{id: 65536}],
+		dueInterval: 'P3M',
+	}),
+	getTemplate({
+		id: 5,
+		title: 'Adherence to Policy and Guidelines',
+		stageId: 1,
+		include: false,
+	}),
+	getTemplate({id: 6, title: 'Language Review', stageId: 1}),
+	getTemplate({
+		id: 7,
+		title: 'Analysis of the Method',
+		stageId: 1,
+		include: false,
+	}),
+	getTemplate({
+		id: 8,
+		title: 'Lorem ipsum dolor sit amet',
+		stageId: 3,
+	}),
+	getTemplate({
+		id: 9,
+		title: 'Consectetur adipiscing elit',
+		stageId: 3,
+		include: false,
+	}),
+	getTemplate({
+		id: 10,
+		title: 'Sed do eiusmod tempor incididunt ut',
+		stageId: 4,
+		include: false,
+	}),
+	getTemplate({
+		id: 11,
+		title: 'labore et dolore magna aliqua',
+		stageId: 5,
+	}),
+	getTemplate({
+		id: 12,
+		title: 'Ut enim ad minim veniam',
+		stageId: 5,
+		include: false,
+	}),
+	getTemplate({
+		id: 13,
+		title: 'Quis nostrud exercitation ullamco',
+		stageId: 5,
+		include: false,
+	}),
 ];
