@@ -125,7 +125,6 @@ export const useCitationManagerStore = defineComponentStore(
 		 * reprocess all citations
 		 */
 		function reprocessAllCitations() {
-			console.log('publication store', publication);
 			openDialog({
 				title: t('submission.citations.structured.reprocessAllCitations.title'),
 				message: t(
