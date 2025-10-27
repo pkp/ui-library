@@ -18,7 +18,6 @@ export const Base = {
 	args: {
 		submission: getSubmissionMock(),
 		publication: getPublicationMock({
-			citationsMetadataLookup: true,
 			citations: [
 				{
 					_href:
@@ -180,6 +179,7 @@ export const Base = {
 				},
 			],
 		}),
+		citationsMetadataLookup: true,
 		canEdit: true,
 		componentForms: {
 			citationStructuredEditForm: {
