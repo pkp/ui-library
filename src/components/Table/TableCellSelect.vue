@@ -3,6 +3,7 @@
 		<Checkbox
 			v-if="!hidden"
 			:checked="isChecked"
+			:aria-label="ariaLabel"
 			:labelled-by="labelledBy"
 			:disabled="disabled"
 			@change="onChange"
@@ -19,6 +20,7 @@ import Checkbox from '@/components/Checkbox/Checkbox.vue';
 
 const props = defineProps({
 	checked: {type: Boolean, required: true},
+	ariaLabel: {type: String, required: false, default: () => ''},
 	labelledBy: {type: String, required: true},
 	disabled: {type: Boolean, required: false, default: () => false},
 	hidden: {type: Boolean, default: () => false},
