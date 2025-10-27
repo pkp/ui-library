@@ -1,5 +1,4 @@
 import {ref, computed} from 'vue';
-import {localize} from '@/utils/i18n';
 import {useForm} from '@/composables/useForm';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
@@ -19,7 +18,6 @@ export function useTaskTemplateManagerForm({
 	const {t} = useLocalize();
 	const isTask = ref(taskTemplate?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK);
 	const stageId = taskTemplate?.stageId || stage?.key;
-	let isTemplateOverrideConfirmed = false;
 	const {emailTemplatesData} = useTaskTemplateManagerEmails({
 		stage,
 		taskTemplate,
@@ -31,7 +29,6 @@ export function useTaskTemplateManagerForm({
 		addPage,
 		addGroup,
 		set,
-		setValue,
 		addFieldText,
 		addFieldOptions,
 		addFieldSelect,
@@ -166,44 +163,6 @@ export function useTaskTemplateManagerForm({
 		];
 	}
 
-	// eslint-disable-next-line no-unused-vars
-	function onSelectEmailTemplate(emailTemplate) {
-		const content = localize(emailTemplate?.body);
-		if (!content) return;
-
-		if (!taskTemplate || isTemplateOverrideConfirmed) {
-			setValue('description', content);
-			return;
-		}
-
-		// When editing, confirm overriding the description with the selected email template
-		const {openDialog} = useModal();
-		openDialog({
-			name: 'selectTemplate',
-			title: t('taskTemplate.apply'),
-			message: t('taskTemplates.confirmEmailTemplate'),
-			actions: [
-				{
-					label: t('common.yes', {}),
-					isWarnable: true,
-					callback: async (close) => {
-						setValue('description', content);
-						isTemplateOverrideConfirmed = true;
-						close();
-					},
-				},
-				{
-					label: t('common.no', {}),
-					callback: (close) => {
-						close();
-					},
-				},
-			],
-			close: () => {},
-			modalStyle: 'negative',
-		});
-	}
-
 	function initDiscussionText() {
 		return {
 			setup: (editor) => {
@@ -264,6 +223,7 @@ export function useTaskTemplateManagerForm({
 		size: 'large',
 		value: taskTemplate?.title,
 		hideOnDisplay: true,
+		isRequired: true,
 	});
 
 	addFieldOptions('userGroupIds', 'checkbox', {
@@ -273,6 +233,7 @@ export function useTaskTemplateManagerForm({
 		name: 'userGroupIds',
 		options: getParticipantOptions(),
 		value: taskTemplate?.userGroups?.map(({id}) => id) || [],
+		isRequired: true,
 	});
 
 	addGroup('taskInformation', {
@@ -298,6 +259,7 @@ export function useTaskTemplateManagerForm({
 		value: isTask.value ? taskTemplate?.dueInterval : null,
 		options: getDueDateOptions(),
 		size: 'large',
+		isRequired: isTask,
 	});
 
 	addGroup('discussion', {
@@ -316,6 +278,7 @@ export function useTaskTemplateManagerForm({
 		insertLabel: t('common.insert'),
 		preparedContent,
 		preparedContentLabel: t('common.label'),
+		isRequired: true,
 	});
 
 	addGroup('autoAddTemplate');
