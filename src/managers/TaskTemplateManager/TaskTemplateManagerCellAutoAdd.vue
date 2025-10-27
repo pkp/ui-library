@@ -1,6 +1,7 @@
 <template>
 	<TableCellSelect
 		:checked="!!taskTemplate?.include"
+		:aria-label="t('taskTemplates.templateAutoAdd')"
 		:confirm-title="t('taskTemplates.confirmAutoAdd')"
 		:confirm-message="confirmMsg"
 		@change="taskTemplateManagerStore.templateUpdateAutoAdd({taskTemplate})"
