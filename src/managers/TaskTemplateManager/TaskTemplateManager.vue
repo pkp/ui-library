@@ -15,6 +15,7 @@
 				<TableColumn
 					v-for="(column, i) in taskTemplateManagerStore.columns"
 					:key="i"
+					:no-text-wrap="false"
 				>
 					<span :class="column.headerSrOnly ? 'sr-only' : ''">
 						{{ column.header }}

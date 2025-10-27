@@ -2,7 +2,11 @@
 	<th
 		scope="col"
 		:aria-sort="props.allowsSorting ? tableContext.sortDirection : undefined"
-		class="whitespace-normal break-words border-b border-t border-light px-2 py-4 text-start text-base-normal uppercase text-heading first:border-s first:ps-3 last:border-e last:pe-3 lg:whitespace-nowrap"
+		class="border-b border-t border-light px-2 py-4 text-start text-base-normal uppercase text-heading first:border-s first:ps-3 last:border-e last:pe-3"
+		:class="{
+			'whitespace-nowrap': props.noTextWrap,
+			'whitespace-normal break-words': !props.noTextWrap,
+		}"
 	>
 		<template v-if="props.allowsSorting">
 			<button
@@ -31,6 +35,8 @@ const props = defineProps({
 	id: {type: String, required: false, default: null},
 	/** Enable sorting for given column */
 	allowsSorting: {type: Boolean, required: false, default: () => false},
+	/** Disable text wrapping in column header, set this to false if column name is too long */
+	noTextWrap: {type: Boolean, required: false, default: () => true},
 });
 
 const tableContext = inject('tableContext');
