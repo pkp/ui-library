@@ -1,7 +1,11 @@
 <template>
 	<TableCell :is-row-header="true">
 		<span class="text-base-normal">
-			{{ reviewAssignment.reviewerFullName }}
+			{{
+				reviewAssignment.reviewerFullName
+					? reviewAssignment.reviewerFullName
+					: reviewAssignment.invitedReviewerEmail
+			}}
 		</span>
 	</TableCell>
 </template>
