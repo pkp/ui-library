@@ -58,7 +58,10 @@
 			</div>
 		</div>
 
-		<div class="border-t border-light p-8">
+		<div
+			v-if="store.acceptInvitationPayload.userGroupsToAdd.length > 0"
+			class="border-t border-light p-8"
+		>
 			<div class="flex items-center p-4">
 				<h3>{{ t('manager.roles') }}</h3>
 			</div>
