@@ -59,7 +59,7 @@
 		</div>
 
 		<div
-			v-if="store.acceptInvitationPayload.userGroupsToAdd.length > 0"
+			v-if="store.acceptInvitationPayload.userGroupsToAdd?.length > 0"
 			class="border-t border-light p-8"
 		>
 			<div class="flex items-center p-4">
