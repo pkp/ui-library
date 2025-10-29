@@ -3,7 +3,6 @@ import {useForm} from '@/composables/useForm';
 import {useFormChanged} from '@/composables/useFormChanged';
 import {useModal} from '@/composables/useModal';
 import {useUrl} from '@/composables/useUrl';
-import {useDate} from '@/composables/useDate';
 import {useLocalize} from '@/composables/useLocalize';
 import {useFetch} from '@/composables/useFetch';
 import {useCurrentUser} from '@/composables/useCurrentUser';
@@ -40,7 +39,6 @@ export function useDiscussionManagerForm(
 	const {getCurrentReviewAssignments} = useSubmission();
 
 	const currentUser = useCurrentUser();
-	const {getRelativeTargetDate} = useDate();
 	const isTask = ref(
 		workItemRef.value?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
 	);
@@ -50,6 +48,7 @@ export function useDiscussionManagerForm(
 	let updateStatusInViewMode = false;
 	const newMessageError = ref(null);
 	const showNewMessageField = ref(false);
+	const isLoadingTemplate = ref(false);
 	let initialStatusUpdateVal = isClosed;
 
 	const newMessage = ref(null);
@@ -220,6 +219,11 @@ export function useDiscussionManagerForm(
 	}
 
 	function getTemplates() {
+		// no need to fetch the templates in display mode
+		if (inDisplayMode) {
+			return [];
+		}
+
 		const {apiUrl: taskTemplatesApiUrl} = useUrl('editTaskTemplates');
 
 		const {data: taskTemplatesData, fetch: fetchTaskTemplates} =
@@ -235,30 +239,33 @@ export function useDiscussionManagerForm(
 		);
 	}
 
-	function setValuesFromTemplate(template) {
-		isTask.value = template.type === 'Task';
-		setValue('title', template.title);
-		setValue('description', template.description);
+	async function setValuesFromTemplate(template) {
+		const {apiUrl: applyTemplateUrl} = useUrl(
+			`submissions/${encodeURIComponent(submission.id)}/stages/${submissionStageId}/tasks/fromTemplate/${template.id}`,
+		);
 
-		const selectedParticipants =
-			participants.value
-				.filter((p) =>
-					template.userGroups?.find((userGroup) => userGroup.id === p.roleId),
-				)
-				.map((p) => p.id) || [];
-		setValue('participants', selectedParticipants);
+		isLoadingTemplate.value = true;
+
+		const {data: templateData, fetch: fetchTemplateData} =
+			useFetch(applyTemplateUrl);
+
+		await fetchTemplateData();
+		isLoadingTemplate.value = false;
+
+		isTask.value =
+			templateData.value.type === pkp.const.EDITORIAL_TASK_TYPE_TASK;
+		setValue('title', templateData.value.title);
+		setValue(
+			'participants',
+			templateData.value.participants.map((p) => p.userId) || [],
+		);
 
 		setValue('taskInfoAdd', isTask.value);
+		// there's no assignee data from the template, this needs to be always reset
+		setValue('taskInfoAssignee', null);
+		setValue('dateDue', isTask.value ? templateData.value.dateDue : null);
 
-		if (isTask.value) {
-			setValue('taskInfoAssignee', selectedParticipants);
-
-			if (template.dueInterval) {
-				setValue('dateDue', getRelativeTargetDate(template.dueInterval));
-			}
-		} else {
-			setValue('dateDue', null);
-		}
+		setValue('description', templateData.value.notes?.[0]?.contents);
 	}
 
 	function getSelectedParticipants(workItemData) {
@@ -750,5 +757,6 @@ export function useDiscussionManagerForm(
 		set,
 		badgeProps,
 		refreshFormData,
+		isLoadingTemplate,
 	};
 }
