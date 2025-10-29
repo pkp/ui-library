@@ -329,7 +329,7 @@ export function useDiscussionManagerForm(
 				size: 'normal',
 				showWhen: 'taskInfoAdd',
 				value: isTask.value ? workItemRef.value?.dateDue : null,
-				isRequired: isTask.value,
+				isRequired: isTask.value || autoAddTaskDetails,
 			},
 			{override},
 		);
@@ -347,7 +347,7 @@ export function useDiscussionManagerForm(
 				showWhen: 'taskInfoAdd',
 				options: getAssigneeOptions(),
 				value: getSelectedAssignee(workItemRef.value),
-				isRequired: isTask.value,
+				isRequired: isTask.value || autoAddTaskDetails,
 			},
 			{override},
 		);
