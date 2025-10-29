@@ -17,7 +17,7 @@ const CommonDefaults = {
 	],
 
 	dueInterval: 'P1W',
-	type: 'Task',
+	type: 2,
 	description: `
         <p><strong>Task:</strong> <strong>Complete Prepublication Plagiarism and Originality Checklist</strong></p>
 
@@ -81,7 +81,7 @@ export const TemplatesDataMock = [
             <p><strong>Action:</strong><br>
             Please share your thoughts by July 15. Any concerns about authorship should be raised before we finalize the submission.</p>
         `,
-		type: 'Discussion',
+		type: 1,
 		stageId: 1,
 		userGroups: [{id: 65536}],
 	},
@@ -106,7 +106,7 @@ export const TemplatesDataMock = [
             <p><strong>Notes:</strong><br>
             Ensure all documents are consistent and up to date. Reach out to the ethics coordinator if clarification is needed.</p>
         `,
-		type: 'Task',
+		type: 2,
 		userGroups: [{id: 65536}],
 		dueInterval: 'P3M',
 	},

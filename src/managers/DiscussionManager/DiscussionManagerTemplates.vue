@@ -38,7 +38,7 @@
 					>
 						<span class="uppercase">
 							{{
-								template.type === 'Task'
+								isTaskTemplate(template)
 									? t('submission.query.task')
 									: t('discussion.name')
 							}}
@@ -47,7 +47,7 @@
 					</div>
 					<div class="mt-1 text-base-normal text-secondary">
 						{{
-							template.type === 'Task'
+							isTaskTemplate(template)
 								? t('discussion.template.taskDescription')
 								: t('discussion.template.discussionDescription')
 						}}
@@ -86,6 +86,12 @@ const props = defineProps({
 });
 
 function isDisabled(template) {
-	return props.isTask && template.type === 'Discussion';
+	return (
+		props.isTask && template.type === pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION
+	);
+}
+
+function isTaskTemplate(template) {
+	return template.type === pkp.const.EDITORIAL_TASK_TYPE_TASK;
 }
 </script>
