@@ -41,7 +41,7 @@ const CommonDefaults = {
 		{
 			id: 1,
 			userId: 1,
-			contents: TemplatesDataMock[0]?.content,
+			contents: TemplatesDataMock[0]?.description,
 			createdByName: 'Test',
 			createdByUsername: 'test',
 			dateCreated: '2025-03-06 06:01:17',
@@ -78,7 +78,7 @@ export const DiscussionsDataMock = [
 			{
 				id: 1,
 				userId: 1,
-				contents: TemplatesDataMock[1]?.content,
+				contents: TemplatesDataMock[1]?.description,
 				createdByName: 'Test',
 				createdByUsername: 'test',
 				dateCreated: '2025-03-06 06:01:17',
@@ -124,7 +124,7 @@ export const DiscussionsDataMock = [
 			{
 				id: 1,
 				userId: 1,
-				contents: TemplatesDataMock[2]?.content,
+				contents: TemplatesDataMock[2]?.description,
 				createdByName: 'Test',
 				createdByUsername: 'test',
 				dateCreated: '2025-03-06 06:01:17',
