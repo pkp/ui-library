@@ -15,7 +15,15 @@
 		</template>
 
 		<SideModalLayoutBasic>
-			<PkpForm v-bind="form" @cancel="closeModal" @set="set" />
+			<transition>
+				<div v-if="isLoadingTemplate" class="app__loading">
+					<div class="app__loading__content">
+						<Spinner></Spinner>
+						{{ t('common.loading') }}
+					</div>
+				</div>
+			</transition>
+			<PkpForm v-bind="form" novalidate @cancel="closeModal" @set="set" />
 		</SideModalLayoutBasic>
 	</SideModalBody>
 </template>
@@ -28,6 +36,7 @@ import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
 import Badge from '@/components/Badge/Badge.vue';
 import PkpForm from '@/components/Form/Form.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
 
 const closeModal = inject('closeModal');
 
@@ -58,5 +67,6 @@ const props = defineProps({
 	},
 });
 
-const {form, set, badgeProps} = useDiscussionManagerForm(props);
+const {form, set, badgeProps, isLoadingTemplate} =
+	useDiscussionManagerForm(props);
 </script>
