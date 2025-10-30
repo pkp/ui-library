@@ -1,4 +1,11 @@
 <template>
+	<div class="pb-8">
+		<h4>{{ t('user.roles') }}</h4>
+		<p v-if="store.isReviewerAccess" class="pt-1 text-lg-normal">
+			<Icon icon="Error" class="ml-1 h-4 w-4" :inline="true" />
+			{{ t('reviewerInvitation.addUserRolesMessage') }}
+		</p>
+	</div>
 	<PkpTable>
 		<TableHeader>
 			<TableColumn>{{ t('userInvitation.roleTable.role') }}</TableColumn>
@@ -58,7 +65,16 @@
 					</div>
 				</TableCell>
 			</TableRow>
-			<template v-if="!store.invitationPayload.disabled">
+			<template
+				v-if="
+					!store.invitationPayload.disabled &&
+					!(
+						store.invitationPayload.currentUserGroups.some((group) =>
+							reviewerUserGroupIds.includes(group.id),
+						) && store.isReviewerAccess
+					)
+				"
+			>
 				<TableRow
 					v-for="(userGroupToAdd, index) in allUserGroupsToAdd"
 					:key="index"
@@ -66,6 +82,7 @@
 					<TableCell>
 						<FieldSelect
 							name="userGroupId"
+							:disabled="store.isReviewerAccess"
 							:label="t('invitation.role.selectRole')"
 							:is-required="true"
 							:value="userGroupToAdd.userGroupId"
@@ -119,8 +136,9 @@
 					<TableCell>
 						<PkpButton
 							v-if="
-								store.invitationPayload.userGroupsToAdd.length > 1 ||
-								isUserGroupsToAddPopulated()
+								(store.invitationPayload.userGroupsToAdd.length > 1 ||
+									isUserGroupsToAddPopulated()) &&
+								store.isUserRoleAssignment
 							"
 							:is-warnable="true"
 							@click="removeInvitedUserGroup(index)"
@@ -131,7 +149,7 @@
 				</TableRow>
 			</template>
 		</TableBody>
-		<template #bottom-controls>
+		<template v-if="store.isUserRoleAssignment" #bottom-controls>
 			<PkpButton
 				:is-disabled="store.invitationPayload.disabled"
 				@click="addUserGroup()"
@@ -146,6 +164,7 @@
 import {computed} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import PkpTable from '@/components/Table/Table.vue';
+import Icon from '@/components/Icon/Icon.vue';
 import TableCell from '@/components/Table/TableCell.vue';
 import TableHeader from '@/components/Table/TableHeader.vue';
 import TableColumn from '@/components/Table/TableColumn.vue';
