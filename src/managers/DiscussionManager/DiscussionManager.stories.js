@@ -1,5 +1,6 @@
 import {within, userEvent} from 'storybook/test';
 import {http, HttpResponse} from 'msw';
+import {useDate} from '@/composables/useDate';
 import DiscussionManager from './DiscussionManager.vue';
 import {DiscussionsDataMock} from '@/mockFactories/discussionMock';
 import {TemplatesDataMock} from '@/mockFactories/taskDiscussionTemplates';
@@ -23,6 +24,8 @@ const baseArgs = {
 	}),
 	submissionStageId: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
 };
+
+const {getRelativeTargetDate} = useDate();
 
 const renderComponent = (args) => ({
 	components: {DiscussionManager},
@@ -84,6 +87,24 @@ DiscussionsDataMock.forEach((discussion) => {
 			`https://mock/index.php/publicknowledge/api/v1/submissions/19/tasks/${discussion.id}`,
 			() => {
 				return HttpResponse.json(discussion);
+			},
+		),
+	);
+});
+
+TemplatesDataMock.forEach((template) => {
+	mswHandlers.push(
+		http.get(
+			`https://mock/index.php/publicknowledge/api/v1/submissions/19/stages/1/tasks/fromTemplate/${template.id}`,
+			() => {
+				return HttpResponse.json({
+					...template,
+					dateDue: getRelativeTargetDate(template.dueInterval),
+					participants: template.userGroups.filter(({id}) =>
+						[2, 3, 5].includes(id),
+					),
+					notes: [{contents: template.description}],
+				});
 			},
 		),
 	);

@@ -13,7 +13,10 @@
 			<Spinner v-if="isLoadingWorkItem"></Spinner>
 		</template>
 		<template v-if="allowEdit" #actions>
-			<PkpButton :disabled="isWorkItemClosed" @click="editForm">
+			<PkpButton
+				:disabled="isWorkItemClosed || isLoadingWorkItem"
+				@click="editForm"
+			>
 				{{ t('common.edit') }}
 			</PkpButton>
 		</template>
