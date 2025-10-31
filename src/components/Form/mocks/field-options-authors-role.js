@@ -1,13 +1,13 @@
 export default {
-	name: 'userGroupId',
+	name: 'contributorRoles',
 	component: 'field-options',
-	label: "Contributor's role",
-	type: 'radio',
-	isRequired: false,
-	value: 14,
+	label: "Contributor's roles",
+	type: 'checkbox',
+	isRequired: true,
+	value: [1],
 	groupId: 'default',
 	options: [
-		{value: 14, label: 'Author'},
-		{value: 15, label: 'Translator'},
+		{value: 1, label: 'Author'},
+		{value: 2, label: 'Translator'},
 	],
 };
