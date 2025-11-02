@@ -35,8 +35,19 @@
 								),
 							}"
 						>
+							<template v-if="displayOnly && !field.componentProps">
+								<div v-if="!field.hideOnDisplay" class="mt-6 first:mt-0">
+									<component
+										:is="`${field.component}-display`"
+										:field="field"
+										:heading-element="fieldHeadingElement"
+										v-bind="field.componentProps"
+									></component>
+								</div>
+							</template>
 							<component
 								:is="field.component"
+								v-else
 								v-bind="field.componentProps || field"
 								:all-errors="errors"
 								:locale-key="locale.key"
@@ -50,8 +61,23 @@
 					</div>
 				</template>
 				<template v-else>
+					<template v-if="displayOnly && !field.componentProps">
+						<div
+							v-if="!field.hideOnDisplay"
+							:key="field.name"
+							class="mt-6 first:mt-0"
+						>
+							<component
+								:is="`${field.component}-display`"
+								:field="field"
+								:heading-element="fieldHeadingElement"
+								v-bind="field.componentProps"
+							></component>
+						</div>
+					</template>
 					<component
 						:is="field.component"
+						v-else
 						v-bind="field.componentProps || field"
 						:key="field.name"
 						:all-errors="errors"
@@ -98,6 +124,11 @@ import FieldUpload from './fields/FieldUpload.vue';
 import FieldSlider from './fields/FieldSlider.vue';
 import FieldUploadImage from './fields/FieldUploadImage.vue';
 
+// Form Display components
+import FieldTextDisplay from './display/FieldTextDisplay.vue';
+import FieldSelectDisplay from './display/FieldSelectDisplay.vue';
+import FieldOptionsDisplay from './display/FieldOptionsDisplay.vue';
+
 import {shouldShowFieldWithinGroup} from './formHelpers';
 import {useId} from 'vue';
 
@@ -133,6 +164,11 @@ export default {
 		FieldSlider,
 		FieldUpload,
 		FieldUploadImage,
+
+		// Form Display components
+		FieldTextDisplay,
+		FieldSelectDisplay,
+		FieldOptionsDisplay,
 	},
 	props: {
 		id: String,
@@ -153,6 +189,8 @@ export default {
 			default: () => 'default',
 			validator: (val) => ['default', 'fullWidth'].includes(val),
 		},
+		displayOnly: Boolean,
+		fieldHeadingElement: String,
 	},
 	emits: [
 		/** Emitted when a field prop changes. Payload: `(fieldName, propName, newValue, [localeKey])`. The `localeKey` will be null for fields that are not multilingual. This event is fired every time the `value` changes, so you should [debounce](https://www.npmjs.com/package/debounce) event callbacks that contain resource-intensive code. */

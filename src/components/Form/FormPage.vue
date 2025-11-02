@@ -11,6 +11,8 @@
 			:available-locales="availableLocales"
 			:spacing-variant="spacingVariant"
 			:form-id="formId"
+			:display-only="displayOnly"
+			:field-heading-element="fieldHeadingElement"
 			@change="fieldChanged"
 			@set-errors="setErrors"
 		/>
@@ -117,6 +119,8 @@ export default {
 			},
 		},
 		spacingVariant: String,
+		displayOnly: Boolean,
+		fieldHeadingElement: String,
 	},
 	emits: [
 		/** Emitted when a field prop changes. Payload: `(fieldName, propName, newValue, [localeKey])`. The `localeKey` will be null for fields that are not multilingual. This event is fired every time the `value` changes, so you should [debounce](https://www.npmjs.com/package/debounce) event callbacks that contain resource-intensive code. */
