@@ -1,3 +1,4 @@
+import {ref} from 'vue';
 import Form from './Form.vue';
 import FormErrorSummary from './FormErrorSummary.vue';
 import {useContainerStateManager} from '@/composables/useContainerStateManager';
@@ -5,6 +6,7 @@ import FormBase from './mocks/form-base';
 import FormMultilingual from './mocks/form-multilingual';
 import FormGroups from './mocks/form-groups';
 import FormUser from './mocks/form-user';
+import FormDisplay from './mocks/form-display';
 import FormConditionalDisplay from './mocks/form-conditional-display';
 import {useForm} from '@/composables/useForm';
 import {useLocalize} from '@/composables/useLocalize';
@@ -205,4 +207,26 @@ export const ClientSideConfigured = {
 	}),
 
 	args: {},
+};
+
+export const DisplayOnly = {
+	render: (args) => ({
+		components: {PkpForm: Form},
+		setup() {
+			const {connectWithPayload, set} = useForm(args.form);
+			const payload = ref({
+				givenName: 'Jarda',
+				familyName: 'Kotesovec',
+				affiliation: 'PKP',
+				country: 'AI',
+			});
+			connectWithPayload(payload);
+			return {args, set};
+		},
+		template: `
+			<PkpForm v-bind="args.form" :display-only="true" @set="set" />
+		`,
+	}),
+
+	args: FormDisplay,
 };
