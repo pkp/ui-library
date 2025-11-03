@@ -68,10 +68,6 @@ const props = defineProps({
 		type: Object,
 		default: () => null,
 	},
-	onCloseFn: {
-		type: Function,
-		default: () => () => {},
-	},
 });
 
 const closeModal = inject('closeModal');

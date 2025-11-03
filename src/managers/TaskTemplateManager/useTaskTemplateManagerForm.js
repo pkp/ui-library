@@ -1,4 +1,4 @@
-import {ref, computed} from 'vue';
+import {ref, computed, inject} from 'vue';
 import {useForm} from '@/composables/useForm';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
@@ -13,9 +13,9 @@ import FileAttacherModal from '@/components/Composer/FileAttacherModal.vue';
 export function useTaskTemplateManagerForm({
 	taskTemplate = null,
 	stage = null,
-	onCloseFn = () => {},
 } = {}) {
 	const {t} = useLocalize();
+	const closeModal = inject('closeModal');
 	const isTask = ref(taskTemplate?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK);
 	const stageId = taskTemplate?.stageId || stage?.key;
 	const {emailTemplatesData} = useTaskTemplateManagerEmails({
@@ -69,7 +69,8 @@ export function useTaskTemplateManagerForm({
 		await fetch();
 
 		if (isSuccess.value) {
-			onCloseFn();
+			setInitialState(form);
+			closeModal();
 		}
 
 		// return result to Form component handler
@@ -289,7 +290,7 @@ export function useTaskTemplateManagerForm({
 		value: taskTemplate?.include || false,
 	});
 
-	useFormChanged(form, [], onCloseFn, {
+	const {setInitialState} = useFormChanged(form, [], {
 		warnOnClose: true,
 	});
 

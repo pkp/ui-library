@@ -23,11 +23,7 @@ export function useDiscussionManagerActions() {
 		{workItem, submission, submissionStageId},
 		finishedCallback,
 	) {
-		const {openSideModal, closeSideModal} = useModal();
-
-		function onCloseFn() {
-			closeSideModal(DiscussionManagerFormDisplayModal);
-		}
+		const {openSideModal} = useModal();
 
 		openSideModal(
 			DiscussionManagerFormDisplayModal,
@@ -35,7 +31,6 @@ export function useDiscussionManagerActions() {
 				workItem,
 				submission,
 				submissionStageId,
-				onCloseFn,
 			},
 			{
 				onClose: finishedCallback,
@@ -47,18 +42,13 @@ export function useDiscussionManagerActions() {
 		{workItem, submission, submissionStageId},
 		finishedCallback,
 	) {
-		const {openSideModal, closeSideModal} = useModal();
-
-		function onCloseFn() {
-			closeSideModal(DiscussionManagerFormModal);
-		}
+		const {openSideModal} = useModal();
 
 		openSideModal(
 			DiscussionManagerFormModal,
 			{
 				submission,
 				submissionStageId,
-				onCloseFn,
 			},
 			{
 				onClose: finishedCallback,
@@ -93,11 +83,7 @@ export function useDiscussionManagerActions() {
 		{workItem, submission, submissionStageId, autoAddTaskDetails},
 		finishedCallback,
 	) {
-		const {openSideModal, closeSideModal} = useModal();
-
-		function onCloseFn() {
-			closeSideModal(DiscussionManagerFormModal);
-		}
+		const {openSideModal} = useModal();
 
 		openSideModal(
 			DiscussionManagerFormModal,
@@ -107,7 +93,6 @@ export function useDiscussionManagerActions() {
 				submissionStageId,
 				workItem,
 				autoAddTaskDetails,
-				onCloseFn,
 			},
 			{
 				onClose: finishedCallback,
