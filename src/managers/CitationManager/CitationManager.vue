@@ -1,10 +1,9 @@
 <template>
 	<div>
-		<div v-if="citationStore.citationsMetadataLookup">
-			<span class="font-semibold">
+		<div v-if="citationStore.citationsMetadataLookup" class="pb-3">
+			<h3 class="text-xl-bold">
 				{{ t('submission.citations.structured') }}
-			</span>
-			<br />
+			</h3>
 			<p class="text-lg-normal leading-6">
 				{{
 					t(
@@ -13,7 +12,7 @@
 				}}
 			</p>
 		</div>
-		<div class="pt-3">
+		<div>
 			<CitationManagerAddRawCitations />
 		</div>
 		<CitationManagerStatusProcessed
@@ -28,6 +27,7 @@
 				{{ t('submission.citations.structured.deleteAllLink') }}
 			</PkpButton>
 			<PkpButton
+				v-show="citationStore.citationsMetadataLookup"
 				:is-disabled="!citationStore.canEditPublication"
 				:is-link="true"
 				@click="citationStore.reprocessAllCitations"

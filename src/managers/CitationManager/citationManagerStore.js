@@ -199,12 +199,23 @@ export const useCitationManagerStore = defineComponentStore(
 		const searchPhrase = ref('');
 		const citationsFiltered = computed(() => {
 			const data = citations.value || [];
-			return searchPhrase.value
-				? data.filter((item) =>
-						JSON.stringify(item)
-							.toLowerCase()
-							.includes(searchPhrase.value.toString().toLowerCase()),
-					)
+			const searchWords = searchPhrase.value
+				? searchPhrase.value.toLowerCase().split(' ')
+				: [];
+
+			return searchWords.length > 0
+				? data.filter((citation) => {
+						// remove all keys from object and search in values only
+						let values = Object.values(citation).map((value) => {
+							if (Array.isArray(value)) {
+								return value.map((innerObj) => Object.values(innerObj));
+							}
+							return value;
+						});
+						return searchWords.every((word) => {
+							return JSON.stringify(values).toLowerCase().includes(word);
+						});
+					})
 				: data;
 		});
 		function setSearchPhrase(value) {
