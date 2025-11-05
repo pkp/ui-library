@@ -4,6 +4,7 @@ import {useLocalize} from '@/composables/useLocalize';
 
 export function useCitationManagerFormAddRawCitation({
 	apiPathSubmissions,
+	canEditPublication,
 	onSuccess,
 }) {
 	const {t} = useLocalize();
@@ -21,6 +22,7 @@ export function useCitationManagerFormAddRawCitation({
 			setValue('rawCitations', '');
 			onSuccess();
 		},
+		canSubmit: canEditPublication.value,
 	});
 
 	addPage('default', {

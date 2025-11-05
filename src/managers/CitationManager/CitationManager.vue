@@ -1,7 +1,18 @@
 <template>
 	<div>
-		<CitationManagerMetadataLookup />
-		<div class="pt-3">
+		<div v-if="citationStore.citationsMetadataLookup" class="pb-3">
+			<h3 class="text-xl-bold">
+				{{ t('submission.citations.structured') }}
+			</h3>
+			<p class="text-lg-normal leading-6">
+				{{
+					t(
+						'submission.citations.structured.citationsMetadataLookup.description',
+					)
+				}}
+			</p>
+		</div>
+		<div>
 			<CitationManagerAddRawCitations />
 		</div>
 		<CitationManagerStatusProcessed
@@ -11,9 +22,17 @@
 			<PkpButton
 				:is-disabled="!citationStore.canEditPublication"
 				:is-link="true"
-				@click="citationStore.citationDeleteAllCitations"
+				@click="citationStore.deleteAllCitations"
 			>
 				{{ t('submission.citations.structured.deleteAllLink') }}
+			</PkpButton>
+			<PkpButton
+				v-show="citationStore.citationsMetadataLookup"
+				:is-disabled="!citationStore.canEditPublication"
+				:is-link="true"
+				@click="citationStore.reprocessAllCitations"
+			>
+				{{ t('submission.citations.structured.reprocessAllCitations') }}
 			</PkpButton>
 		</div>
 		<PkpTable :aria-label="t('submission.citations.structured')">
@@ -84,7 +103,6 @@ import CitationManagerCellActions from '@/managers/CitationManager/CitationManag
 import CitationManagerSearchField from '@/managers/CitationManager/CitationManagerSearchField.vue';
 import CitationManagerStatusProcessed from '@/managers/CitationManager/CitationManagerStatusProcessed.vue';
 import CitationManagerAddRawCitations from '@/managers/CitationManager/CitationManagerAddRawCitations.vue';
-import CitationManagerMetadataLookup from '@/managers/CitationManager/CitationManagerMetadataLookup.vue';
 import {useCitationManagerStore} from './citationManagerStore.js';
 
 const {t} = useLocalize();
@@ -100,6 +118,7 @@ const Components = {
 const props = defineProps({
 	submission: {type: Object, required: true},
 	publication: {type: Object, required: true},
+	citationsMetadataLookup: {type: Boolean, required: true},
 	canEdit: {type: Boolean, required: true},
 	componentForms: {type: Object, required: true},
 });

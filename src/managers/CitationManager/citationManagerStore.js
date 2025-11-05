@@ -9,7 +9,6 @@ import {useFetch} from '@/composables/useFetch';
 import {useCitationManagerConfig} from './useCitationManagerConfig';
 import {useCitationManagerActions} from './useCitationManagerActions';
 import {useCitationManagerFormAddRawCitation} from './useCitationManagerFormAddRawCitation';
-import {useCitationManagerFormEnableLookup} from './useCitationManagerFormEnableLookup';
 
 export const useCitationManagerStore = defineComponentStore(
 	'citationManager',
@@ -37,6 +36,7 @@ export const useCitationManagerStore = defineComponentStore(
 		const {
 			submission,
 			publication,
+			citationsMetadataLookup,
 			canEdit: canEditPublication,
 		} = toRefs(props);
 		const citations = computed(() => publication.value.citations ?? []);
@@ -44,43 +44,18 @@ export const useCitationManagerStore = defineComponentStore(
 		/**
 		 * constants
 		 */
-		const doiPrefix = 'https://doi.org';
+		const arxivUrlPrefix = 'https://arxiv.org/abs/';
+		const doiUrlPrefix = 'https://doi.org/';
+		const handleUrlPrefix = 'https://hdl.handle.net/';
 		const apiPathCitations = 'citations';
 		const apiPathSubmissions = `submissions/${submission.value.id}/publications/${publication.value.id}/citations`;
-
-		/**
-		 * citations metadata lookup
-		 */
-
-		const citationsMetadataLookup = computed(
-			() => publication.value.citationsMetadataLookup,
-		);
-
-		const {form: formEnableLookup} = useCitationManagerFormEnableLookup({
-			citationsMetadataLookup,
-			onCitationMetadataLookupChange: async (newValue) => {
-				console.log('onCitationMetadataLookUPChange');
-				await citationsMetadataLookupChanged(newValue);
-			},
-		});
-
-		async function citationsMetadataLookupChanged(newValue) {
-			const {apiUrl} = useUrl(apiPathSubmissions);
-			const {fetch} = useFetch(`${apiUrl.value}/metadataLookup`, {
-				method: 'PUT',
-				body: {
-					citationsMetadataLookup: newValue,
-				},
-			});
-			await fetch();
-			dataUpdateCallback();
-		}
 
 		/**
 		 * add new raw citations
 		 */
 		const {form: formAddRawCitations} = useCitationManagerFormAddRawCitation({
 			apiPathSubmissions,
+			canEditPublication,
 			onSuccess: () => {
 				dataUpdateCallback();
 			},
@@ -115,7 +90,7 @@ export const useCitationManagerStore = defineComponentStore(
 		/**
 		 * delete all citations
 		 */
-		function citationDeleteAllCitations() {
+		function deleteAllCitations() {
 			openDialog({
 				title: t('submission.citations.structured.deleteAllDialog.title'),
 				message: t('submission.citations.structured.deleteAllDialog.confirm'),
@@ -129,6 +104,44 @@ export const useCitationManagerStore = defineComponentStore(
 							const {fetch} = useFetch(
 								`${apiUrl.value}/deleteCitationsByPublicationId`,
 								{method: 'DELETE'},
+							);
+							await fetch();
+							dataUpdateCallback();
+							close();
+						},
+					},
+					{
+						label: t('common.cancel'),
+						isSecondary: true,
+						callback: (close) => {
+							close();
+						},
+					},
+				],
+			});
+		}
+
+		/**
+		 * reprocess all citations
+		 */
+		function reprocessAllCitations() {
+			openDialog({
+				title: t('submission.citations.structured.reprocessAllCitations.title'),
+				message: t(
+					'submission.citations.structured.reprocessAllCitations.confirm',
+				),
+				modalStyle: 'negative',
+				actions: [
+					{
+						label: t('common.ok'),
+						isWarnable: true,
+						callback: async (close) => {
+							const {apiUrl} = useUrl(apiPathSubmissions);
+							const {fetch} = useFetch(
+								`${apiUrl.value}/reprocessCitationsByPublicationId`,
+								{
+									method: 'POST',
+								},
 							);
 							await fetch();
 							dataUpdateCallback();
@@ -186,35 +199,27 @@ export const useCitationManagerStore = defineComponentStore(
 		const searchPhrase = ref('');
 		const citationsFiltered = computed(() => {
 			const data = citations.value || [];
-			return searchPhrase.value
-				? filterArrayByPhrase(data, searchPhrase.value)
+			const searchWords = searchPhrase.value
+				? searchPhrase.value.toLowerCase().split(' ')
+				: [];
+
+			return searchWords.length > 0
+				? data.filter((citation) => {
+						// remove all keys from object and search in values only
+						let values = Object.values(citation).map((value) => {
+							if (Array.isArray(value)) {
+								return value.map((innerObj) => Object.values(innerObj));
+							}
+							return value;
+						});
+						return searchWords.every((word) => {
+							return JSON.stringify(values).toLowerCase().includes(word);
+						});
+					})
 				: data;
 		});
 		function setSearchPhrase(value) {
 			searchPhrase.value = value;
-		}
-		function containsSearchPhrase(obj, phrase) {
-			function deepSearch(value) {
-				if (value === null || value === undefined) return false;
-				if (typeof value === 'string') {
-					return value
-						.toLowerCase()
-						.includes(String(phrase ?? '').toLowerCase());
-				}
-				if (Array.isArray(value)) {
-					return value.some(deepSearch);
-				}
-				if (typeof value === 'object') {
-					return Object.values(value).some(deepSearch);
-				}
-				return false;
-			}
-			return deepSearch(obj);
-		}
-		function filterArrayByPhrase(data, phrase) {
-			return (Array.isArray(data) ? data : []).filter((item) =>
-				containsSearchPhrase(item, phrase),
-			);
 		}
 
 		/**
@@ -225,6 +230,7 @@ export const useCitationManagerStore = defineComponentStore(
 			return {
 				submission: props.submission,
 				publication: props.publication,
+				citationsMetadataLookup: props.citationsMetadataLookup,
 				componentForms: props.componentForms,
 				...additionalArgs,
 			};
@@ -257,20 +263,20 @@ export const useCitationManagerStore = defineComponentStore(
 			publication,
 			canEditPublication,
 
-			doiPrefix,
+			arxivUrlPrefix,
+			doiUrlPrefix,
+			handleUrlPrefix,
 			apiPathCitations,
 			apiPathSubmissions,
 
-			formEnableLookup,
 			citationsMetadataLookup,
-			citationsMetadataLookupChanged,
 
 			formAddRawCitations,
 
 			totalCitations,
 			processedCitations,
 
-			citationDeleteAllCitations,
+			deleteAllCitations,
 
 			allIdsExpanded,
 			expandedIds,
@@ -284,6 +290,7 @@ export const useCitationManagerStore = defineComponentStore(
 
 			citationEditCitation,
 			citationDeleteCitation,
+			reprocessAllCitations,
 			citationReprocessCitation,
 		};
 
