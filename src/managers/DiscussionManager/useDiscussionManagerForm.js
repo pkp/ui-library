@@ -48,7 +48,6 @@ export function useDiscussionManagerForm(
 	let updateStatusInViewMode = false;
 	const newMessageError = ref(null);
 	const showNewMessageField = ref(false);
-	const isLoadingTemplate = ref(false);
 	let initialStatusUpdateVal = isClosed;
 
 	const newMessage = ref(null);
@@ -244,13 +243,12 @@ export function useDiscussionManagerForm(
 			`submissions/${encodeURIComponent(submission.id)}/stages/${submissionStageId}/tasks/fromTemplate/${template.id}`,
 		);
 
-		isLoadingTemplate.value = true;
-
-		const {data: templateData, fetch: fetchTemplateData} =
-			useFetch(applyTemplateUrl);
+		const {data: templateData, fetch: fetchTemplateData} = useFetch(
+			applyTemplateUrl,
+			{showFullScreenSpinner: true},
+		);
 
 		await fetchTemplateData();
-		isLoadingTemplate.value = false;
 
 		isTask.value =
 			templateData.value.type === pkp.const.EDITORIAL_TASK_TYPE_TASK;
@@ -757,6 +755,5 @@ export function useDiscussionManagerForm(
 		set,
 		badgeProps,
 		refreshFormData,
-		isLoadingTemplate,
 	};
 }
