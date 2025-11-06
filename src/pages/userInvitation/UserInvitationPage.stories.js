@@ -142,7 +142,6 @@ export const Reviewer = {
 					async ({request}) => {
 						const data = await request.json();
 						let errors = {};
-						console.log(data.invitationData);
 
 						data.invitationData.userGroupsToAdd.forEach((element, index) => {
 							Object.keys(element).forEach((key) => {
