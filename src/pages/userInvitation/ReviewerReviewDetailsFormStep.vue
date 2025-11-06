@@ -46,14 +46,12 @@ const store = useUserInvitationPageStore();
 const {t} = useLocalize();
 
 reviewerRevieweDetailsForm.value.fields.forEach((field) => {
-	console.log(field, store.invitationPayload[field.name]);
 	if (store.invitationPayload[field.name] === null) {
 		store.updatePayload(field.name, field.value, false);
 	} else {
 		store.updatePayload(field.name, store.invitationPayload[field.name], false);
 	}
 });
-console.log(store.invitationPayload);
 connectWithPayload(store.invitationPayload);
 
 /*
