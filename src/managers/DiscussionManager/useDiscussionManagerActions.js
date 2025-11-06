@@ -4,7 +4,7 @@ import {useFetch} from '../../composables/useFetch';
 import {useUrl} from '../../composables/useUrl';
 import {useDiscussionManagerStatusUpdater} from './useDiscussionManagerStatusUpdater';
 import DiscussionManagerFormModal from './DiscussionManagerFormModal.vue';
-import DiscussionManagerFormDisplay from './DiscussionManagerFormDisplay.vue';
+import DiscussionManagerFormDisplayModal from './DiscussionManagerFormDisplayModal.vue';
 
 export const Actions = {
 	TASKS_AND_DISCUSSIONS_LIST: 'discussionList',
@@ -26,11 +26,11 @@ export function useDiscussionManagerActions() {
 		const {openSideModal, closeSideModal} = useModal();
 
 		function onCloseFn() {
-			closeSideModal(DiscussionManagerFormDisplay);
+			closeSideModal(DiscussionManagerFormDisplayModal);
 		}
 
 		openSideModal(
-			DiscussionManagerFormDisplay,
+			DiscussionManagerFormDisplayModal,
 			{
 				workItem,
 				submission,

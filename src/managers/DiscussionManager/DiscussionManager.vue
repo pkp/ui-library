@@ -109,7 +109,6 @@ const Components = {
 const props = defineProps({
 	submission: {type: Object, required: true},
 	submissionStageId: {type: Number, required: true},
-	discussions: {type: Array, required: true},
 });
 
 const discussionManagerStore = useDiscussionManagerStore(props);

@@ -1,13 +1,11 @@
-import {computed, ref} from 'vue';
+import {computed, ref, onMounted} from 'vue';
 import {useForm} from '@/composables/useForm';
 import {useFormChanged} from '@/composables/useFormChanged';
 import {useModal} from '@/composables/useModal';
 import {useUrl} from '@/composables/useUrl';
-import {useDate} from '@/composables/useDate';
 import {useLocalize} from '@/composables/useLocalize';
 import {useFetch} from '@/composables/useFetch';
 import {useCurrentUser} from '@/composables/useCurrentUser';
-import {useParticipantManagerStore} from '../ParticipantManager/participantManagerStore';
 import {useSubmission} from '@/composables/useSubmission';
 import {useDiscussionMessages} from './useDiscussionMessages';
 import {
@@ -33,10 +31,7 @@ export function useDiscussionManagerForm(
 	const workItemRef = ref(workItem);
 	const workItemStatus = ref(workItemRef.value?.status || status);
 	const {t} = useLocalize();
-	const participantManagerStore = useParticipantManagerStore({
-		submission,
-		submissionStageId,
-	});
+	const participants = ref([]);
 	const {messageFieldOptions} = useDiscussionMessages();
 	const {updateStatus, startWorkItem} = useDiscussionManagerStatusUpdater(
 		submission.id,
@@ -44,7 +39,6 @@ export function useDiscussionManagerForm(
 	const {getCurrentReviewAssignments} = useSubmission();
 
 	const currentUser = useCurrentUser();
-	const {getRelativeTargetDate} = useDate();
 	const isTask = ref(
 		workItemRef.value?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
 	);
@@ -78,7 +72,8 @@ export function useDiscussionManagerForm(
 
 	function mapParticipantOptions(withSubLabel) {
 		return (participant) => {
-			let label = `${participant.fullName} (${participant.userName})`;
+			const userName = participant.userName && `(${participant.userName})`;
+			let label = `${participant.fullName} ${userName}`;
 
 			if (participant.userName === currentUser.getCurrentUserName()) {
 				label += ` (${t('common.me')})`;
@@ -92,22 +87,31 @@ export function useDiscussionManagerForm(
 		};
 	}
 
-	function getAllParticipants() {
-		const reviewwers = getCurrentReviewAssignments(
+	async function getAllParticipants() {
+		const reviewers = getCurrentReviewAssignments(
 			submission,
 			submissionStageId,
-		).map((r) => {
-			return {
-				fullName: r.reviewerFullName,
-				userName: r.reviewerUserName || '',
-				id: r.reviewerId,
-				roleName: t('user.role.reviewer'),
-			};
-		});
+		).map((r) => ({
+			fullName: r.reviewerFullName,
+			userName: r.reviewerUserName || '',
+			id: r.reviewerId,
+			roleName: t('user.role.reviewer'),
+			roleId: pkp.const.ROLE_ID_REVIEWER,
+		}));
 
-		const isParticipant = participantManagerStore.participantsList.some(
+		const {apiUrl: participantsApiUrl} = useUrl(
+			`submissions/${encodeURIComponent(submission.id)}/participants/${submissionStageId}`,
+		);
+
+		const {data: participantsData, fetch: fetchParticipants} =
+			useFetch(participantsApiUrl);
+
+		await fetchParticipants();
+
+		const isParticipant = participantsData.value?.some(
 			(p) => p.id === currentUser.getCurrentUserId(),
 		);
+
 		// If the current user is a site admin but not already in the participants list, add them as "Unassigned"
 		// This ensures site admins can always assign tasks to themselves
 		const siteAdmin =
@@ -118,32 +122,49 @@ export function useDiscussionManagerForm(
 							userName: currentUser.getCurrentUserName(),
 							id: currentUser.getCurrentUserId(),
 							roleName: t('submission.status.unassigned'),
+							roleId: pkp.const.ROLE_ID_SITE_ADMIN,
 						},
 					]
 				: [];
 
-		return participantManagerStore.participantsList
-			.concat(siteAdmin)
-			.concat(reviewwers);
-	}
-
-	function getParticipantOptions() {
-		return computed(() =>
-			getAllParticipants().map(mapParticipantOptions(true)),
-		);
-	}
-
-	const allParticipants = computed(() => getAllParticipants());
-
-	function getAssigneeOptions() {
-		return computed(() => {
-			return allParticipants.value
-				?.filter((participant) => {
-					return selectedParticipants.value.includes(participant.id);
-				})
-				.map(mapParticipantOptions());
+		const list = [];
+		participantsData.value?.forEach((participant) => {
+			participant.stageAssignments?.forEach((stageAssignment) => {
+				list.push({
+					id: participant.id,
+					fullName: participant.fullName,
+					userName: participant.userName,
+					roleName: stageAssignment.stageAssignmentUserGroup.name,
+					roleId: stageAssignment.stageAssignmentUserGroup.roleId,
+					userGroupId: stageAssignment.stageAssignmentUserGroup.id,
+				});
+			});
 		});
+
+		list.sort((participantA, participantB) => {
+			// First, compare by roleId
+			if (participantA.roleId !== participantB.roleId) {
+				return participantA.roleId - participantB.roleId;
+			}
+
+			// If roleIds are equal, compare by userGroupId
+			return participantA.userGroupId - participantB.userGroupId;
+		});
+
+		return list.concat(siteAdmin).concat(reviewers);
 	}
+
+	const participantOptions = computed(() =>
+		participants.value.map(mapParticipantOptions(true)),
+	);
+
+	const assigneeOptions = computed(() => {
+		return participants.value
+			.filter((participant) =>
+				selectedParticipants.value.includes(participant.id),
+			)
+			.map(mapParticipantOptions());
+	});
 
 	function getBadgeProps() {
 		let badgeProps = {};
@@ -197,6 +218,11 @@ export function useDiscussionManagerForm(
 	}
 
 	function getTemplates() {
+		// no need to fetch the templates in display mode
+		if (inDisplayMode) {
+			return [];
+		}
+
 		const {apiUrl: taskTemplatesApiUrl} = useUrl('editTaskTemplates');
 
 		const {data: taskTemplatesData, fetch: fetchTaskTemplates} =
@@ -212,30 +238,32 @@ export function useDiscussionManagerForm(
 		);
 	}
 
-	function setValuesFromTemplate(template) {
-		isTask.value = template.type === 'Task';
-		setValue('title', template.title);
-		setValue('description', template.description);
+	async function setValuesFromTemplate(template) {
+		const {apiUrl: applyTemplateUrl} = useUrl(
+			`submissions/${encodeURIComponent(submission.id)}/stages/${submissionStageId}/tasks/fromTemplate/${template.id}`,
+		);
 
-		const selectedParticipants =
-			allParticipants.value
-				.filter((p) =>
-					template.userGroups?.find((userGroup) => userGroup.id === p.roleId),
-				)
-				.map((p) => p.id) || [];
-		setValue('participants', selectedParticipants);
+		const {data: templateData, fetch: fetchTemplateData} = useFetch(
+			applyTemplateUrl,
+			{showFullScreenSpinner: true},
+		);
+
+		await fetchTemplateData();
+
+		isTask.value =
+			templateData.value.type === pkp.const.EDITORIAL_TASK_TYPE_TASK;
+		setValue('title', templateData.value.title);
+		setValue(
+			'participants',
+			templateData.value.participants.map((p) => p.userId) || [],
+		);
 
 		setValue('taskInfoAdd', isTask.value);
+		// there's no assignee data from the template, this needs to be always reset
+		setValue('taskInfoAssignee', null);
+		setValue('dateDue', isTask.value ? templateData.value.dateDue : null);
 
-		if (isTask.value) {
-			setValue('taskInfoAssignee', selectedParticipants);
-
-			if (template.dueInterval) {
-				setValue('dateDue', getRelativeTargetDate(template.dueInterval));
-			}
-		} else {
-			setValue('dateDue', null);
-		}
+		setValue('description', templateData.value.notes?.[0]?.contents);
 	}
 
 	function getSelectedParticipants(workItemData) {
@@ -345,7 +373,7 @@ export function useDiscussionManagerForm(
 				description: t('discussion.form.taskInfoAssigneesDescription'),
 				name: 'taskInfoAssignee',
 				showWhen: 'taskInfoAdd',
-				options: getAssigneeOptions(),
+				options: assigneeOptions,
 				value: getSelectedAssignee(workItemRef.value),
 				isRequired: isTask.value || autoAddTaskDetails,
 			},
@@ -624,7 +652,7 @@ export function useDiscussionManagerForm(
 		label: t('editor.submission.stageParticipants'),
 		description: t('discussion.form.detailsParticipantsDescription'),
 		name: 'participants',
-		options: getParticipantOptions(),
+		options: participantOptions,
 		showNumberedList: true,
 		value: getSelectedParticipants(workItemRef.value),
 		isRequired: true,
@@ -717,6 +745,10 @@ export function useDiscussionManagerForm(
 		toggleSaveBtnOnDisplayMode();
 		setInitialState(form, additionalFields);
 	}
+
+	onMounted(async () => {
+		participants.value = await getAllParticipants();
+	});
 
 	return {
 		form,
