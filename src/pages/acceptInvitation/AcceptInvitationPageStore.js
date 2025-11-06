@@ -69,7 +69,6 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 					modalStyle: 'negative',
 				});
 			} else {
-				console.log(data.value);
 				email.value = data.value.email;
 				userId.value = data.value.userId;
 				existingUser.value = data.value.existingUser;
@@ -256,7 +255,6 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 		 * Go to the next step or submit if this is the last step
 		 */
 		async function nextStep() {
-			console.log(steps.value[0]);
 			if (isOnLastStep.value) {
 				submit();
 			} else {
