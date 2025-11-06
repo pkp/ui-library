@@ -8,7 +8,8 @@
 </template>
 
 <script setup>
-import {useWorkflowDataSubmissionPublication} from '@/pages/workflow/composables/useWorkflowDataSubmissionPublication';
+import {useFetch} from '@/composables/useFetch';
+import {useUrl} from '@/composables/useUrl';
 import DiscussionManager from './DiscussionManager.vue';
 
 const props = defineProps({
@@ -16,7 +17,9 @@ const props = defineProps({
 	submissionStageId: {type: Number, required: true},
 });
 
-const {submission} = useWorkflowDataSubmissionPublication({
-	submissionId: props.submissionId,
-});
+const {apiUrl: submissionApiUrl} = useUrl(
+	`submissions/${encodeURIComponent(props.submissionId)}`,
+);
+const {data: submission, fetch: fetchSubmission} = useFetch(submissionApiUrl);
+fetchSubmission();
 </script>
