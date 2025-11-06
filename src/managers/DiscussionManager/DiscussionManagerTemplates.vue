@@ -30,6 +30,7 @@
 						'border-light hover:border-hover': !isDisabled(template),
 					}"
 					:disabled="isDisabled(template)"
+					type="button"
 					@click="emit('selectTemplate', template)"
 				>
 					<div

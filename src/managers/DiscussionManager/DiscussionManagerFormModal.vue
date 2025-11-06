@@ -15,7 +15,7 @@
 		</template>
 
 		<SideModalLayoutBasic>
-			<PkpForm v-bind="form" novalidate @cancel="closeModal" @set="set" />
+			<PkpForm v-bind="form" @cancel="closeModal" @set="set" />
 		</SideModalLayoutBasic>
 	</SideModalBody>
 </template>
