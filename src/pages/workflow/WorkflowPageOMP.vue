@@ -33,6 +33,7 @@ import WorkflowPublicationVersionControl from './components/publication/Workflow
 import WorkflowChangeSubmissionLanguage from './components/publication/WorkflowChangeSubmissionLanguage.vue';
 import WorkflowPrimaryBasicMetadata from './components/primary/WorkflowPrimaryBasicMetadata.vue';
 import WorkflowSubmissionStatus from './components/primary/WorkflowSubmissionStatus.vue';
+import WorkflowPublicationEditWarning from './components/publication/WorkflowPublicationEditWarning.vue';
 import WorkflowPublicationEditDisabled from './components/publication/WorkflowPublicationEditDisabled.vue';
 
 const props = defineProps({
@@ -68,6 +69,7 @@ const Components = markRaw({
 	WorkflowPublicationVersionControl,
 	WorkflowChangeSubmissionLanguage,
 	WorkflowSubmissionStatus,
+	WorkflowPublicationEditWarning,
 	WorkflowPublicationEditDisabled,
 	WorkflowMarketingForm,
 	WorkflowWorkTypeOMP,
