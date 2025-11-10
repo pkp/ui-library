@@ -85,6 +85,7 @@ export const IconGallery = {
 			'Clock',
 			'Comment',
 			'Complete',
+			'Content',
 			'Dashboard',
 			'Declined',
 			'DefaultDocument',

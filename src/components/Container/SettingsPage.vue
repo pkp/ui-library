@@ -110,6 +110,13 @@ export default {
 				}
 			}
 
+			// Add or remove the content navigation link by reloading the page,
+			// since the content menu is handled by app-specific server-side code
+			// to avoid managing it in the frontend, as it's shared across other apps.
+			if (formId === pkp.const.FORM_CONTENT_COMMENT) {
+				window.location.reload();
+			}
+
 			// Update allowed pubObjects for DOI assignment on registration agency change
 			if (formId === pkp.const.FORM_DOI_REGISTRATION_SETTINGS) {
 				const newlyEnabledPlugin = context.registrationAgency;
