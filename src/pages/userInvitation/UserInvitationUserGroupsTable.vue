@@ -77,11 +77,7 @@
 			<template
 				v-if="
 					!store.invitationPayload.disabled &&
-					!(
-						store.invitationPayload.currentUserGroups.some((group) =>
-							reviewerUserGroupIds.includes(group.id),
-						) && store.isReviewerAccess
-					)
+					!(checkActiveReviewerRole && store.isReviewerAccess)
 				"
 			>
 				<TableRow
@@ -440,4 +436,17 @@ async function updateMasthead(userId, userUserGroupId, masthead) {
 	});
 	await fetch();
 }
+
+const checkActiveReviewerRole = computed(() => {
+	return store.invitationPayload.currentUserGroups.some((userGroup) => {
+		const isReviewerGroup = reviewerUserGroupIds.value.includes(userGroup.id);
+
+		// Check if this user group is active
+		let isActive = true;
+		if (userGroup.dateEnd !== undefined && userGroup.dateEnd !== null) {
+			isActive = new Date(userGroup.endDate) > new Date();
+		}
+		return isReviewerGroup && isActive;
+	});
+});
 </script>
