@@ -38,7 +38,10 @@
 							<template v-if="displayOnly && !field.componentProps">
 								<div v-if="!field.hideOnDisplay" class="mt-6 first:mt-0">
 									<component
-										:is="`${field.component}-display`"
+										:is="
+											FormDisplayComponents[field.component] ||
+											FormDisplayDefault
+										"
 										:field="field"
 										:heading-element="fieldHeadingElement"
 										v-bind="field.componentProps"
@@ -68,7 +71,9 @@
 							class="mt-6 first:mt-0"
 						>
 							<component
-								:is="`${field.component}-display`"
+								:is="
+									FormDisplayComponents[field.component] || FormDisplayDefault
+								"
 								:field="field"
 								:heading-element="fieldHeadingElement"
 								v-bind="field.componentProps"
@@ -132,6 +137,12 @@ import FieldOptionsDisplay from './display/FieldOptionsDisplay.vue';
 import {shouldShowFieldWithinGroup} from './formHelpers';
 import {useId} from 'vue';
 
+const FormDisplayComponents = {
+	'field-text': FieldTextDisplay,
+	'field-select': FieldSelectDisplay,
+	'field-options': FieldOptionsDisplay,
+};
+
 export default {
 	name: 'FormGroup',
 	components: {
@@ -165,10 +176,8 @@ export default {
 		FieldUpload,
 		FieldUploadImage,
 
-		// Form Display components
+		// default field display component
 		FieldTextDisplay,
-		FieldSelectDisplay,
-		FieldOptionsDisplay,
 	},
 	props: {
 		id: String,
@@ -197,6 +206,9 @@ export default {
 		'change',
 		'set-errors',
 	],
+	data() {
+		return {FormDisplayComponents, FormDisplayDefault: FieldTextDisplay};
+	},
 
 	computed: {
 		/**
