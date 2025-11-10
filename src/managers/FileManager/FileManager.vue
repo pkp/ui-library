@@ -59,6 +59,7 @@ import TableBody from '@/components/Table/TableBody.vue';
 import TableColumn from '@/components/Table/TableColumn.vue';
 import TableRow from '@/components/Table/TableRow.vue';
 
+import FileManagerCellSelect from './FileManagerCellSelect.vue';
 import FileManagerCellNumero from './FileManagerCellNumero.vue';
 import FileManagerCellFileName from './FileManagerCellFileName.vue';
 import FileManagerCellDateUploaded from './FileManagerCellDateUploaded.vue';
@@ -67,6 +68,7 @@ import FileManagerCellMoreActions from './FileManagerCellMoreActions.vue';
 import FileManagerActionButton from './FileManagerActionButton.vue';
 
 const Components = {
+	FileManagerCellSelect,
 	FileManagerCellNumero,
 	FileManagerCellFileName,
 	FileManagerCellDateUploaded,
@@ -86,7 +88,10 @@ const props = defineProps({
 	submission: {type: Object, required: true},
 	submissionStageId: {type: Number, required: true},
 	reviewRoundId: {type: Number, required: false, default: null},
+	selectedFileIds: {type: Array, required: false, default: () => []},
 });
 
-const fileManagerStore = useFileManagerStore(props, props.namespace);
+const emit = defineEmits(['update:selectedFileIds']);
+
+const fileManagerStore = useFileManagerStore({props, emit}, props.namespace);
 </script>
