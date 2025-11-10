@@ -1,5 +1,5 @@
 import {http, HttpResponse} from 'msw';
-
+import {ref} from 'vue';
 import FileManager from './FileManager.vue';
 import {getFileMock} from '@/mockFactories/fileMock';
 import {getSubmissionMock} from '@/mockFactories/submissionMock';
@@ -123,5 +123,61 @@ export const Default = {
 			],
 		}),
 		submissionStageId: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
+	},
+};
+
+export const SelectMode = {
+	render: (args) => ({
+		components: {FileManager},
+		setup() {
+			const selectedFileIds = ref([]);
+			return {args, selectedFileIds};
+		},
+		template: `
+            <FileManager v-bind="args" v-model:selectedItems="selectedItems"/>`,
+	}),
+	parameters: {
+		// mock date to consistently show sensible editorial activity popups
+		msw: {
+			handlers: [
+				http.get(
+					'https://mock/index.php/publicknowledge/api/v1/submissions/19/files',
+					({request}) => {
+						const Files = [
+							getFileMock({
+								id: 1,
+								name: 'long-name-response-evaluation-all-team-members-draft-after-edits-final-version-final-lets-make-it-even-longer-keep-going-this-is-supposed-to-be-really-long-to-see-result-in-storybook.ods',
+								createdAt: '2025-02-06 05:59:08',
+								documentType: 'default',
+							}),
+							getFileMock({
+								id: 2,
+								documentType: 'audio',
+								name: 'document.mp3',
+								genreName: 'Data Set',
+								genreIsSupplementary: true,
+							}),
+						];
+
+						return HttpResponse.json({
+							itemsMax: Files.length,
+							items: Files,
+						});
+					},
+				),
+			],
+		},
+	},
+	args: {
+		namespace: 'EDITOR_REVIEW_FILES_SELECT',
+		submission: getSubmissionMock({
+			stages: [
+				{
+					id: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+					currentUserAssignedRoles: [16, 1],
+				},
+			],
+		}),
+		submissionStageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 	},
 };

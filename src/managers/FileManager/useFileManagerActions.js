@@ -13,6 +13,7 @@ export const Actions = {
 	FILE_EDIT: 'fileEdit',
 	FILE_DELETE: 'fileDelete',
 	FILE_SEE_NOTES: 'fileSeeNotes',
+	FILE_SELECT: 'fileSelect',
 };
 
 export function useFileManagerActions() {
