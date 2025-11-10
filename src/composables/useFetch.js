@@ -148,15 +148,15 @@ export function useFetch(url, options = {}) {
 			validationError.value = null;
 			isSuccess.value = true;
 		} catch (e) {
-			data.value = null;
-			isSuccess.value = false;
-
 			if (signal) {
 				e.aborted = signal.aborted;
 			}
 			if (e.aborted) {
 				return; // aborted by subsequent request
 			}
+
+			data.value = null;
+			isSuccess.value = false;
 
 			if (expectValidationError && [400, 422].includes(e.status)) {
 				validationError.value = e.data;
