@@ -32,7 +32,7 @@
 				<FormDisplayItemBasic
 					heading-element="h4"
 					:heading="t('reviewerInvitation.reviewDueDate')"
-					:value="store.acceptInvitationPayload.responseDueDate"
+					:value="store.acceptInvitationPayload.reviewDueDate"
 				></FormDisplayItemBasic>
 			</div>
 		</div>
