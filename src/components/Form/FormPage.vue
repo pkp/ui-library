@@ -12,6 +12,7 @@
 			:spacing-variant="spacingVariant"
 			:form-id="formId"
 			:display-only="displayOnly"
+			:locale-heading-element="localeHeadingElement"
 			:field-heading-element="fieldHeadingElement"
 			@change="fieldChanged"
 			@set-errors="setErrors"
@@ -120,6 +121,7 @@ export default {
 		},
 		spacingVariant: String,
 		displayOnly: Boolean,
+		localeHeadingElement: String,
 		fieldHeadingElement: String,
 	},
 	emits: [

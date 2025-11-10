@@ -22,7 +22,34 @@
 			/>
 		</div>
 		<div class="pkpFormGroup__fields">
-			<template v-for="field in fieldsInGroup">
+			<div
+				v-if="displayOnly && hasMultilingualFields"
+				class="flex flex-col gap-y-6"
+			>
+				<div v-for="locale in availableLocales" :key="locale.key">
+					<component
+						:is="localeHeadingElement"
+						class="mb-1 text-2xl-bold text-heading"
+					>
+						{{ locale.label }}
+					</component>
+					<div class="flex flex-col gap-y-6">
+						<template v-for="field in fieldsInGroup" :key="field.name">
+							<div v-if="!field.hideOnDisplay && field.inputType !== 'hidden'">
+								<component
+									:is="
+										FormDisplayComponents[field.component] || FormDisplayDefault
+									"
+									:field="field"
+									:heading-element="fieldHeadingElement"
+									:display-locale="field.isMultilingual ? locale.key : ''"
+								></component>
+							</div>
+						</template>
+					</div>
+				</div>
+			</div>
+			<template v-for="field in fieldsInGroup" v-else :key="field.name">
 				<template v-if="field.isMultilingual">
 					<div :key="field.name" class="pkpFormGroup__localeGroup -pkpClearfix">
 						<div
@@ -35,22 +62,8 @@
 								),
 							}"
 						>
-							<template v-if="displayOnly && !field.componentProps">
-								<div v-if="!field.hideOnDisplay" class="mt-6 first:mt-0">
-									<component
-										:is="
-											FormDisplayComponents[field.component] ||
-											FormDisplayDefault
-										"
-										:field="field"
-										:heading-element="fieldHeadingElement"
-										v-bind="field.componentProps"
-									></component>
-								</div>
-							</template>
 							<component
 								:is="field.component"
-								v-else
 								v-bind="field.componentProps || field"
 								:all-errors="errors"
 								:locale-key="locale.key"
@@ -64,7 +77,7 @@
 					</div>
 				</template>
 				<template v-else>
-					<template v-if="displayOnly && !field.componentProps">
+					<template v-if="displayOnly">
 						<div
 							v-if="!field.hideOnDisplay"
 							:key="field.name"
@@ -199,6 +212,7 @@ export default {
 			validator: (val) => ['default', 'fullWidth'].includes(val),
 		},
 		displayOnly: Boolean,
+		localeHeadingElement: String,
 		fieldHeadingElement: String,
 	},
 	emits: [
@@ -242,6 +256,10 @@ export default {
 
 		groupId() {
 			return useId();
+		},
+
+		hasMultilingualFields() {
+			return !!this.fields.find((field) => field.isMultilingual);
 		},
 	},
 	methods: {

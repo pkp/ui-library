@@ -230,3 +230,34 @@ export const DisplayOnly = {
 
 	args: FormDisplay,
 };
+
+export const MultilingualDisplayOnly = {
+	render: (args) => ({
+		components: {PkpForm: Form},
+		setup() {
+			const {connectWithPayload} = useForm(args.form);
+			const payload = ref({
+				givenName: {en: 'Jarda', fr_CA: 'Jardous'},
+				familyName: {en: 'Kotesovec', fr_CA: ''},
+				affiliation: {en: 'PKP', fr_CA: 'PKP fr'},
+				country: 'AI',
+			});
+			connectWithPayload(payload);
+
+			const form = {
+				...args.form,
+				fields: args.form.fields.map((field) => ({
+					...field,
+					isMultilingual: true,
+				})),
+			};
+
+			return {form};
+		},
+		template: `
+			<PkpForm v-bind="form" :display-only="true" @set="set" />
+		`,
+	}),
+
+	args: FormDisplay,
+};
