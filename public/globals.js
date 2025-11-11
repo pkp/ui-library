@@ -1122,9 +1122,10 @@ window.pkp = {
 		'taskTemplates.edit': 'Edit Task and Discussion Template',
 		'taskTemplates.templateAutoAdd':
 			'Automatically add this task and discussion when a submission reaches a specific stage',
+		'taskTemplates.templateAutoAddAtStage': 'Auto-add at stage',
 		'taskTemplates.templateAutoAddInStage':
 			'Automatically add this task and/or discussion when a submission reaches the stage',
-		'taskTemplates.templateName': 'Task and discussion template name',
+		'taskTemplates.templateName': 'Template name',
 		'taskTemplates.title': 'Tasks and Discussions Templates',
 		'user.affiliation': 'Affiliation',
 		'user.affiliations': 'Affiliations',
