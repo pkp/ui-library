@@ -48,8 +48,11 @@
 				<template #item-title="{item}">
 					<div class="whitespace-normal text-justify">
 						{{ item.fullName }}
-						<Badge v-if="item.userGroupName">
-							{{ localize(item.userGroupName) }}
+						<Badge
+							v-for="contributorRole in item.contributorRoles"
+							:key="contributorRole.id"
+						>
+							{{ localize(contributorRole.name) }}
 						</Badge>
 					</div>
 				</template>
@@ -386,6 +389,10 @@ export default {
 						} else if (field.name === 'affiliations') {
 							field.authorId = author['id'];
 							field.value = author[field.name];
+						} else if (field.name === 'contributorRoles') {
+							field.value = author[field.name].map(
+								(contributorRole) => contributorRole.id,
+							);
 						} else if (Object.keys(author).includes(field.name)) {
 							field.value = author[field.name];
 						}

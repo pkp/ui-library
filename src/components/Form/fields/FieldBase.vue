@@ -42,8 +42,9 @@ export default {
 		},
 		/** Whether or not this field should be presented for each supported language. */
 		isMultilingual: Boolean,
-		/**  Whether or not a value for this field should be required. */
-		isRequired: Boolean,
+		/**  Whether or not a value for this field should be required.
+		 * You can also pass an array to require a specific value or multiple values. Similar as below 'showWhen'. */
+		isRequired: [Boolean, Array],
 		/** The `name` of another field which should have a truthy value before this field is shown.
 		 * You can also pass an array to require a specific value or multiple values. For example, `['primaryLocale', 'en_US']` would hide this field unless the `primaryLocale` field had a value of `en_US`. Or `['primaryLocale', ['en_US', 'fr_CA']]` to check for multiple values. */
 		showWhen: [String, Array],
