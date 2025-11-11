@@ -142,3 +142,9 @@ const userInvitationComponents = {
 	UserInvitationEmailComposerStep,
 };
 </script>
+
+<style>
+.pkp_page_invitation {
+	@apply min-w-fit;
+}
+</style>
