@@ -503,26 +503,17 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			});
 		}
 
-		/** Create receive invitation url */
-		const declineInvitationUrl = computed(() => {
-			const {apiUrl} = useUrl('invitations');
-			return (
-				apiUrl.value +
-				'/' +
-				pageInitConfig.invitationId +
-				'/key/' +
-				pageInitConfig.invitationKey +
-				'/decline'
-			);
-		});
+		/** create decline invitation url */
+		const {redirectToPage: redirectToDecLinePage} = useUrl(
+			'invitation/decline',
+			{
+				id: pageInitConfig.invitationId,
+				key: pageInitConfig.invitationKey,
+			},
+		);
 
 		async function decline() {
-			const {fetch} = useFetch(declineInvitationUrl, {
-				method: 'PUT',
-				body: {},
-			});
-			await fetch();
-			redirectToPage();
+			redirectToDecLinePage();
 		}
 
 		onMounted(async () => {
