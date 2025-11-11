@@ -571,6 +571,33 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 	}
 
 	/**
+	 * Adds or updates a date field in the form.
+	 * @param {string} fieldName - The name of the field
+	 * @param {Object} fieldOptions - Configuration options for the field, including size, min, and max.
+	 * @param {Object} [opts] - Optional settings.
+	 * @param {boolean} [opts.override] - If true and the field already exists, it will be fully overridden.
+	 * @param {string} [opts.positionBefore] - Name of field to position this field before
+	 * @param {string} [opts.positionAfter] - Name of field to position this field after
+	 */
+	function addFieldDate(
+		fieldName,
+		{size, min, max, ...commonFields},
+		opts = {},
+	) {
+		addField(
+			fieldName,
+			{
+				component: 'field-date',
+				size,
+				min,
+				max,
+				...commonFields,
+			},
+			opts,
+		);
+	}
+
+	/**
 	 * Adds or updates a select field in the form.
 	 *
 	 * @param {string} fieldName - The name (or key) of the field.
@@ -800,6 +827,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		addPage,
 		addGroup,
 		addFieldText,
+		addFieldDate,
 		addFieldSelect,
 		addFieldOptions,
 		addFieldRichTextArea,

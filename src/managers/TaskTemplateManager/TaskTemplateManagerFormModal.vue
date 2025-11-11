@@ -33,10 +33,6 @@ const props = defineProps({
 		type: Object,
 		default: () => null,
 	},
-	onCloseFn: {
-		type: Function,
-		default: () => () => {},
-	},
 });
 
 const {form, set} = useTaskTemplateManagerForm(props);
