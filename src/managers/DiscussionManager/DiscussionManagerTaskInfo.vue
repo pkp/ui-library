@@ -37,7 +37,7 @@
 <script setup>
 import {ref, watch, computed, onMounted, nextTick} from 'vue';
 import {t} from '@/utils/i18n';
-import FormDisplayItemBasic from '@/components/form/display/FormDisplayItemBasic.vue';
+import FormDisplayItemBasic from '@/components/Form/display/FormDisplayItemBasic.vue';
 import FormGroupHeader from '@/components/Form/FormGroupHeader.vue';
 
 const props = defineProps({
