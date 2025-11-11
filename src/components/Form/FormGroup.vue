@@ -122,6 +122,7 @@ import FieldCheckbox from './fields/FieldCheckbox.vue';
 import FieldColor from './fields/FieldColor.vue';
 import FieldControlledVocab from './fields/FieldControlledVocab.vue';
 import FieldCreditRoles from './fields/FieldCreditRoles.vue';
+import FieldDate from './fields/FieldDate.vue';
 import FieldPubId from './fields/FieldPubId.vue';
 import FieldHtml from './fields/FieldHtml.vue';
 import FieldMetadataSetting from './fields/FieldMetadataSetting.vue';
@@ -169,6 +170,7 @@ export default {
 		FieldColor,
 		FieldControlledVocab,
 		FieldCreditRoles,
+		FieldDate,
 		FieldPubId,
 		FieldHtml,
 		FieldMetadataSetting,
