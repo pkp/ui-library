@@ -63,6 +63,7 @@ export function useDiscussionManagerForm(
 		setCanSubmit,
 		getField,
 		addFieldText,
+		addFieldDate,
 		addFieldOptions,
 		addFieldRichTextArea,
 		addFieldSelect,
@@ -347,17 +348,17 @@ export function useDiscussionManagerForm(
 	}
 
 	function addTaskInfoDueDate({override = false} = {}) {
-		addFieldText(
+		addFieldDate(
 			'dateDue',
 			{
 				groupId: 'taskInformation',
 				label: t('common.dueDate'),
-				inputType: 'date',
 				description: t('discussion.form.taskInfoDueDateDescription'),
 				size: 'normal',
 				showWhen: 'taskInfoAdd',
 				value: isTask.value ? workItemRef.value?.dateDue : null,
 				isRequired: isTask.value || autoAddTaskDetails,
+				min: 'today',
 			},
 			{override},
 		);
