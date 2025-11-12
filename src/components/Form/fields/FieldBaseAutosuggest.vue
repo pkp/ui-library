@@ -23,13 +23,6 @@
 				v-strip-unsafe-html="tooltip"
 				class="-screenReader"
 			/>
-			<HelpButton
-				v-if="helpTopic"
-				:id="describedByHelpId"
-				:topic="helpTopic"
-				:section="helpSection"
-				:label="t('help.help')"
-			/>
 		</div>
 		<div
 			v-if="isPrimaryLocale && description"
@@ -71,13 +64,6 @@
 							:id="describedByTooltipId"
 							v-strip-unsafe-html="tooltip"
 							class="-screenReader"
-						/>
-						<HelpButton
-							v-if="helpTopic"
-							:id="describedByHelpId"
-							:topic="helpTopic"
-							:section="helpSection"
-							:label="t('help.help')"
 						/>
 					</div>
 					<!-- End Heading part repeated for inline scenario -->
@@ -121,7 +107,6 @@ import FieldBase from './FieldBase.vue';
 import Autosuggest from './Autosuggest.vue';
 import FormFieldLabel from '@/components/Form/FormFieldLabel.vue';
 import Tooltip from '@/components/Tooltip/Tooltip.vue';
-import HelpButton from '@/components/HelpButton/HelpButton.vue';
 import FieldError from '@/components/Form/FieldError.vue';
 import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
 
@@ -133,7 +118,6 @@ export default {
 	components: {
 		FormFieldLabel,
 		Tooltip,
-		HelpButton,
 		FieldError,
 		MultilingualProgress,
 		Autosuggest,
