@@ -17,13 +17,6 @@
 				v-strip-unsafe-html="tooltip"
 				class="-screenReader"
 			/>
-			<HelpButton
-				v-if="helpTopic"
-				:id="describedByHelpId"
-				:topic="helpTopic"
-				:section="helpSection"
-				:label="t('help.help')"
-			/>
 		</div>
 		<div
 			v-if="isPrimaryLocale && description"
@@ -76,7 +69,6 @@ import FieldBase from './FieldBase.vue';
 import FormFieldLabel from '@/components/Form/FormFieldLabel.vue';
 import Tooltip from '@/components/Tooltip/Tooltip.vue';
 import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
-import HelpButton from '@/components/HelpButton/HelpButton.vue';
 import FieldError from '@/components/Form/FieldError.vue';
 
 export default {
@@ -85,7 +77,6 @@ export default {
 		FormFieldLabel,
 		Tooltip,
 		MultilingualProgress,
-		HelpButton,
 		FieldError,
 	},
 	extends: FieldBase,
