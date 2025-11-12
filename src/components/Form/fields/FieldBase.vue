@@ -1,7 +1,6 @@
 <script>
 import FieldError from '../FieldError.vue';
 import FormFieldLabel from '../FormFieldLabel.vue';
-import HelpButton from '@/components/HelpButton/HelpButton.vue';
 import Tooltip from '@/components/Tooltip/Tooltip.vue';
 import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
 
@@ -10,7 +9,6 @@ export default {
 	components: {
 		FieldError,
 		FormFieldLabel,
-		HelpButton,
 		Tooltip,
 		MultilingualProgress,
 	},
@@ -25,10 +23,6 @@ export default {
 		description: String,
 		/** Adds a tooltip to the field. Can include HTML code. */
 		tooltip: String,
-		/** Adds a button to the field which will open the in-app help panel to this topic. */
-		helpTopic: String,
-		/** When the in-app help panel is opened to `helpTopic`, it will scroll to `helpSection` if included. */
-		helpSection: String,
 		/** The ID of the group this field should appear in.  */
 		groupId: String,
 		/** The ID of the form this field should appear in. This is passed down from the `Form`.  */
@@ -143,15 +137,6 @@ export default {
 		},
 
 		/**
-		 * A unique id for the field's help link button
-		 *
-		 * @return {String}
-		 */
-		describedByHelpId() {
-			return this.compileId('help');
-		},
-
-		/**
 		 * A unique id for the field's description
 		 *
 		 * @return {String}
@@ -192,9 +177,6 @@ export default {
 			}
 			if (this.tooltip) {
 				ids.push(this.describedByTooltipId);
-			}
-			if (this.helpTopic) {
-				ids.push(this.describedByHelpId);
 			}
 			if (this.error) {
 				ids.push(this.describedByErrorId);

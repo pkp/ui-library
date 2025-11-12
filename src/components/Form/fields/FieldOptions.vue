@@ -24,13 +24,6 @@
 				v-strip-unsafe-html="tooltip"
 				class="-screenReader"
 			/>
-			<HelpButton
-				v-if="isPrimaryLocale && helpTopic"
-				:id="describedByHelpId"
-				:topic="helpTopic"
-				:section="helpSection"
-				:label="t('help.help')"
-			/>
 		</legend>
 		<div
 			v-if="isPrimaryLocale && description"
@@ -115,7 +108,6 @@ import FieldBase from './FieldBase.vue';
 import {VueDraggable} from 'vue-draggable-plus';
 import Orderer from '@/components/Orderer/Orderer.vue';
 import Tooltip from '@/components/Tooltip/Tooltip.vue';
-import HelpButton from '@/components/HelpButton/HelpButton.vue';
 import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
 import FieldError from '@/components/Form/FieldError.vue';
 
@@ -125,7 +117,6 @@ export default {
 		VueDraggable,
 		Orderer,
 		Tooltip,
-		HelpButton,
 		MultilingualProgress,
 		FieldError,
 	},

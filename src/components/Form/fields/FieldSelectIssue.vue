@@ -15,13 +15,6 @@
 				v-strip-unsafe-html="tooltip"
 				class="-screenReader"
 			/>
-			<HelpButton
-				v-if="helpTopic"
-				:id="describedByHelpId"
-				:topic="helpTopic"
-				:section="helpSection"
-				:label="t('help.help')"
-			/>
 		</div>
 		<div
 			v-if="description"
@@ -54,13 +47,12 @@
 import FieldSelect from './FieldSelect.vue';
 import Tooltip from '@/components/Tooltip/Tooltip.vue';
 import FormFieldLabel from '@/components/Form/FormFieldLabel.vue';
-import HelpButton from '@/components/HelpButton/HelpButton.vue';
 import FieldError from '@/components/Form/FieldError.vue';
 import PkpButton from '@/components/Button/Button.vue';
 
 export default {
 	name: 'FieldSelectIssue',
-	components: {Tooltip, FormFieldLabel, HelpButton, FieldError, PkpButton},
+	components: {Tooltip, FormFieldLabel, FieldError, PkpButton},
 	extends: FieldSelect,
 	props: {
 		assignedNoticeBase: {
