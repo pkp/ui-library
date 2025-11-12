@@ -10,12 +10,6 @@
 				v-strip-unsafe-html="tooltip"
 				class="-screenReader"
 			/>
-			<HelpButton
-				v-if="helpTopic"
-				:topic="helpTopic"
-				:section="helpSection"
-				:label="t('help.help')"
-			/>
 		</div>
 		<div
 			v-strip-unsafe-html="description"
@@ -27,11 +21,10 @@
 <script>
 import FieldBase from './FieldBase.vue';
 import Tooltip from '@/components/Tooltip/Tooltip.vue';
-import HelpButton from '@/components/HelpButton/HelpButton.vue';
 
 export default {
 	name: 'FieldHtml',
-	components: {Tooltip, HelpButton},
+	components: {Tooltip},
 	extends: FieldBase,
 };
 </script>
