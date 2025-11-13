@@ -10,12 +10,6 @@
 				v-strip-unsafe-html="tooltip"
 				class="-screenReader"
 			/>
-			<HelpButton
-				v-if="helpTopic"
-				:topic="helpTopic"
-				:section="helpSection"
-				:label="t('help.help')"
-			/>
 		</div>
 		<div
 			v-if="!isVerified && hasOrcid"
@@ -84,7 +78,6 @@
 import FieldBase from '@/components/Form/fields/FieldBase.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import PkpButton from '@/components/Button/Button.vue';
-import HelpButton from '@/components/HelpButton/HelpButton.vue';
 import Tooltip from '@/components/Tooltip/Tooltip.vue';
 
 import {useUrl} from '@/composables/useUrl';
@@ -93,7 +86,7 @@ import {useModal} from '@/composables/useModal';
 
 export default {
 	name: 'FieldOrcid',
-	components: {Icon, PkpButton, HelpButton, Tooltip},
+	components: {Icon, PkpButton, Tooltip},
 	extends: FieldBase,
 	props: {
 		/** ORCID URL that has been verified */
