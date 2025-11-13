@@ -214,6 +214,9 @@ export default {
 				return url;
 			};
 			return {
+				/* non editable*/
+				noneditable_regexp: /\{\$[\w]+\}/g, // Regex to match {$variable} patterns (adjust [\w]+ if your variables allow other characters)
+				noneditable_class: 'mceNonEditable pkpTag', // Default; change if you want a custom class
 				license_key: 'gpl',
 				skin_url: this.$root?.tinyMCE?.skinUrl || pkp?.tinyMCE?.skinUrl,
 				content_css: $.pkp.app.tinyMceContentCSS,
