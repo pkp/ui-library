@@ -132,32 +132,38 @@ const {
 
 ```vue
 <template>
-	<PkpTable>
+	<Table>
 		<template #top-controls>
 			<PkpButton @click="sortingEnabled ? saveSorting() : startSorting()">
 				{{ sortingEnabled ? 'Save Order' : 'Reorder' }}
 			</PkpButton>
 		</template>
 
-		<PkpTableBody>
-			<PkpTableRow v-for="item in orderedItems" :key="item.id">
-				<PkpTableCell>{{ item.title }}</PkpTableCell>
-				<PkpTableCellOrder
+		<TableBody>
+			<TableRow v-for="item in orderedItems" :key="item.id">
+				<TableCell>{{ item.title }}</TableCell>
+				<TableCellOrder
 					v-if="sortingEnabled"
 					@up="moveUp(item.id)"
 					@down="moveDown(item.id)"
 				/>
-				<PkpTableCell v-else>
+				<TableCell v-else>
 					<!-- Normal mode actions -->
-				</PkpTableCell>
-			</PkpTableRow>
-		</PkpTableBody>
-	</PkpTable>
+				</TableCell>
+			</TableRow>
+		</TableBody>
+	</Table>
 </template>
 
 <script setup>
 import {useOrdering} from '@/composables/useOrdering';
 import {computed} from 'vue';
+import Table from '@/components/Table/Table.vue';
+import TableBody from '@/components/Table/TableBody.vue';
+import TableRow from '@/components/Table/TableRow.vue';
+import TableCell from '@/components/Table/TableCell.vue';
+import TableCellOrder from '@/components/Table/TableCellOrder.vue';
+import PkpButton from '@/components/Button/Button.vue';
 
 const props = defineProps({
 	items: {type: Array, required: true},
