@@ -313,7 +313,8 @@ export function useFileManagerConfig() {
 
 		if (enabledActions.includes(Actions.FILE_SELECT)) {
 			columns.push({
-				header: t('common.numero'),
+				header: t('editor.submission.selectFiles'),
+				headerSrOnly: true,
 				component: 'FileManagerCellSelect',
 				props: {},
 			});
