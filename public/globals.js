@@ -126,6 +126,15 @@ window.pkp = {
 		EDITORIAL_TASK_STATUS_PENDING: 1,
 		EDITORIAL_TASK_STATUS_IN_PROGRESS: 2,
 		EDITORIAL_TASK_STATUS_CLOSED: 3,
+
+		citationProcessingStatus: {
+			NOT_PROCESSED: 0,
+			PID_EXTRACTED: 1,
+			CROSSREF: 2,
+			OPEN_ALEX: 3,
+			ORCID: 4,
+			PROCESSED: 5,
+		},
 	},
 
 	/**
@@ -962,7 +971,7 @@ window.pkp = {
 		'submission.citations': 'References',
 		'submission.citations.structured': 'Structured References',
 		'submission.citations.structured.citationsMetadataLookup.description':
-			'This section helps you structure your references. Clicking "Enable Metadata Lookup" will allow the system to process your references and retrieve DOIs and other metadata from external sources. This may take some time, but you can continue working on your submission and return to this page later to view the updated structured citations. ',
+			'Structuring and Metadata Lookup is enabled for this Journal. The system will process your references and retrieve DOIs and other metadata from external sources. This may take some time, but you can continue working on your submission and return to this page later to view the updated structured citations.',
 		'submission.citations.structured.collapseAll': 'Collapse All',
 		'submission.citations.structured.deleteAllDialog.confirm':
 			"This will remove all references currently listed. You'll need to re-enter and process your citations again if you continue.",
