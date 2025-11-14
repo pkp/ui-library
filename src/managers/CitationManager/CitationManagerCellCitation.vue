@@ -143,7 +143,7 @@
 			<!-- is not structured -->
 			<div v-else>
 				<div>{{ citation.rawCitation }}</div>
-				<div v-if="citation.isProcessed" class="mt-2">
+				<div v-if="citation.processingStatus == 5" class="mt-2">
 					<Badge :color-variant="'attention'" :size-variant="'compact'">
 						{{
 							t('submission.citations.structured.noStructuredInformationFound')

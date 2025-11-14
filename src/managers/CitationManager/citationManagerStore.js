@@ -67,7 +67,7 @@ export const useCitationManagerStore = defineComponentStore(
 		const totalCitations = computed(() => citations.value?.length ?? 0);
 		const processedCitations = computed(
 			() =>
-				(citations.value || []).filter((c) => c?.isProcessed === true).length,
+				(citations.value || []).filter((c) => c?.processingStatus === 5).length,
 		);
 
 		/**
