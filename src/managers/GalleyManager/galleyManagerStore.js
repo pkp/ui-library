@@ -1,5 +1,5 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
-import {ref, computed, toRefs} from 'vue';
+import {computed, toRefs} from 'vue';
 import {useFetch, getCSRFToken} from '@/composables/useFetch';
 import {useModal} from '@/composables/useModal';
 import {useGalleyManagerActions} from './useGalleyManagerActions';
@@ -7,6 +7,7 @@ import {useDataChanged} from '@/composables/useDataChanged';
 import {useGalleyManagerConfig} from './useGalleyManagerConfig';
 import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 import {useExtender} from '@/composables/useExtender';
+import {useOrdering} from '@/composables/useOrdering';
 
 export const useGalleyManagerStore = defineComponentStore(
 	'galleyManager',
@@ -15,11 +16,61 @@ export const useGalleyManagerStore = defineComponentStore(
 
 		const {submission, publication} = toRefs(props);
 
-		const galleys = computed(() => {
-			return sortingEnabled.value
-				? galleysOrdered.value
-				: props?.publication?.galleys || [];
+		const {triggerDataChange} = useDataChanged();
+
+		/**
+		 * Sorting with useOrdering composable
+		 */
+		const {
+			items: galleys,
+			sortingEnabled,
+			startSorting,
+			saveSorting: saveOrderingChanges,
+			moveUp: sortMoveUp,
+			moveDown: sortMoveDown,
+		} = useOrdering({
+			items: computed(() => props?.publication?.galleys || []),
+			onSave: async (orderedItems) => {
+				const {openDialogNetworkError} = useModal();
+				const {url} = useLegacyGridUrl({
+					component: 'grid.articleGalleys.ArticleGalleyGridHandler',
+					op: 'saveSequence',
+					params: {
+						submissionId: props.submission.id,
+						publicationId: props.publication.id,
+					},
+				});
+
+				const sequence = orderedItems.map((galley) => galley.id);
+
+				const payload = {
+					csrfToken: getCSRFToken(),
+					data: JSON.stringify(sequence),
+				};
+
+				const body = new URLSearchParams(payload);
+
+				const {fetch, data} = useFetch(url, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded',
+					},
+					body,
+				});
+				await fetch();
+				if (data.value.status !== true) {
+					openDialogNetworkError();
+					return false;
+				}
+				await triggerDataChange();
+				return true;
+			},
 		});
+
+		// Wrapper for saveSorting to maintain backwards compatibility
+		async function saveSorting() {
+			await saveOrderingChanges();
+		}
 
 		/** Reload files when data on screen changes */
 
@@ -49,85 +100,6 @@ export const useGalleyManagerStore = defineComponentStore(
 		);
 
 		/**
-		 * Sorting
-		 */
-		const galleysOrdered = ref([]);
-		const sortingEnabled = ref(false);
-		function startSorting() {
-			galleysOrdered.value = [...props.publication.galleys];
-			sortingEnabled.value = true;
-		}
-		async function saveSorting() {
-			const {openDialogNetworkError} = useModal();
-			const {url} = useLegacyGridUrl({
-				component: 'grid.articleGalleys.ArticleGalleyGridHandler',
-				op: 'saveSequence',
-				params: {
-					submissionId: props.submission.id,
-					publicationId: props.publication.id,
-				},
-			});
-
-			const sequence = galleysOrdered.value.map((galley) => galley.id);
-
-			const formData = new FormData();
-			formData.append('csrfToken', getCSRFToken());
-			formData.append('data', sequence);
-
-			const payload = {
-				csrfToken: getCSRFToken(),
-				data: JSON.stringify(sequence),
-			};
-
-			const body = new URLSearchParams(payload);
-
-			const {fetch, data} = useFetch(url, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded',
-				},
-				body,
-			});
-			await fetch();
-			if (data.value.status !== true) {
-				openDialogNetworkError();
-			}
-			await triggerDataChange();
-			sortingEnabled.value = false;
-		}
-
-		function sortMoveDown(itemId) {
-			const index = galleysOrdered.value.findIndex(
-				(galley) => galley.id === itemId,
-			);
-
-			if (index === galleysOrdered.value.length - 1) {
-				return;
-			}
-
-			const tempArray = [...galleysOrdered.value];
-			const tempItem = tempArray[index];
-			tempArray[index] = tempArray[index + 1];
-			tempArray[index + 1] = tempItem;
-
-			galleysOrdered.value = tempArray;
-		}
-
-		function sortMoveUp(itemId) {
-			const index = galleysOrdered.value.findIndex(
-				(galley) => galley.id === itemId,
-			);
-
-			if (index === 0) {
-				return;
-			}
-
-			const temp = galleysOrdered.value[index];
-			galleysOrdered.value[index] = galleysOrdered.value[index - 1];
-			galleysOrdered.value[index - 1] = temp;
-		}
-
-		/**
 		 * Actions
 		 */
 		const galleyManagerActions = useGalleyManagerActions({
@@ -141,8 +113,6 @@ export const useGalleyManagerStore = defineComponentStore(
 				publication: publication.value,
 			};
 		}
-
-		const {triggerDataChange} = useDataChanged();
 
 		function triggerDataChangeCallback() {
 			triggerDataChange();

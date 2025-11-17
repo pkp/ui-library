@@ -1,12 +1,13 @@
 <template>
-	<TableCell class="w-28">
-		<TableRowSortControls
-			v-if="galleyManagerStore.sortingEnabled"
-			@up="galleyManagerStore.sortMoveUp(galley.id)"
-			@down="galleyManagerStore.sortMoveDown(galley.id)"
-		/>
+	<TableCellOrder
+		v-if="galleyManagerStore.sortingEnabled"
+		class="w-28"
+		@up="galleyManagerStore.sortMoveUp(galley.id)"
+		@down="galleyManagerStore.sortMoveDown(galley.id)"
+	/>
+	<TableCell v-else class="w-28">
 		<DropdownActions
-			v-if="!galleyManagerStore.sortingEnabled && itemActions.length"
+			v-if="itemActions.length"
 			:label="t('common.moreActions')"
 			button-variant="ellipsis"
 			:actions="itemActions"
@@ -17,7 +18,7 @@
 <script setup>
 import {computed} from 'vue';
 import {useGalleyManagerStore} from './galleyManagerStore';
-import TableRowSortControls from './TableRowSortControls.vue';
+import TableCellOrder from '@/components/Table/TableCellOrder.vue';
 
 const props = defineProps({
 	galley: {type: Object, required: true},

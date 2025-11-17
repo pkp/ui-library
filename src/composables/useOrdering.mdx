@@ -1,0 +1,190 @@
+import {Meta} from '@storybook/addon-docs/blocks';
+
+<Meta title="Composables/useOrdering" />
+
+# useOrdering
+
+`useOrdering` is a composable for managing item ordering with an enable/disable state pattern. It provides a simple way to add reorderable lists/tables to your components.
+
+## Overview
+
+The composable handles the common pattern of:
+
+1. Displaying items in a normal view mode
+2. Entering an "ordering mode" with a working copy of items
+3. Moving items up/down in the list
+4. Saving the new order via a callback
+5. Canceling and reverting changes
+
+## Features
+
+- **State Management**: Automatically manages sorting enabled/disabled state
+- **Working Copy**: Creates a copy of items when entering ordering mode to prevent accidental changes
+- **Custom Save Logic**: Flexible `onSave` callback for any backend implementation
+- **Custom ID Field**: Support for any identifier field (defaults to 'id')
+
+## API
+
+```javascript
+const {
+	items, // Computed items (original or working copy)
+	sortingEnabled, // Boolean indicating if ordering mode is active
+	startSorting, // Enable ordering mode
+	saveSorting, // Save changes via onSave callback
+	cancelSorting, // Cancel and revert changes
+	moveUp, // Move item up by id
+	moveDown, // Move item down by id
+} = useOrdering({
+	items: computed(() => sourceArray),
+	onSave: async (orderedItems) => {
+		// Your save logic
+		return true; // return true on success, false on failure
+	},
+	idField: 'id', // optional, defaults to 'id'
+});
+```
+
+## Parameters
+
+### items
+
+**Type:** `Ref<Array>` or `ComputedRef<Array>` **Required:** Yes The reactive reference to the array of items to be ordered.
+
+### onSave
+
+**Type:** `(orderedItems: Array) => Promise<boolean>` **Required:** Yes Async function called when saving the order. Receives the reordered items array and should return `true` for success or `false` for failure.
+
+### idField
+
+**Type:** `string` **Default:** `'id'` **Required:** No The field name to use as a unique identifier for items when moving them.
+
+## Return Values
+
+### items
+
+**Type:** `ComputedRef<Array>` Returns the original items when sorting is disabled, or the working copy when sorting is enabled.
+
+### sortingEnabled
+
+**Type:** `Ref<boolean>` Reactive boolean indicating whether ordering mode is currently active.
+
+### startSorting
+
+**Type:** `() => void` Function to enable ordering mode. Creates a working copy of the items.
+
+### saveSorting
+
+**Type:** `() => Promise<boolean>` Async function to save the current order by calling the `onSave` callback. Automatically disables sorting mode on success.
+
+### cancelSorting
+
+**Type:** `() => void` Function to cancel ordering mode and discard any changes to the order.
+
+### moveUp
+
+**Type:** `(itemId) => void` Function to move an item up one position. Accepts the item's ID (using `idField`). Does nothing if item is already at the top.
+
+### moveDown
+
+**Type:** `(itemId) => void` Function to move an item down one position. Accepts the item's ID (using `idField`). Does nothing if item is already at the bottom.
+
+## Examples
+
+### Basic Usage
+
+```javascript
+import {useOrdering} from '@/composables/useOrdering';
+import {computed} from 'vue';
+
+// In your component or store
+const galleys = ref([
+	{id: 1, title: 'PDF'},
+	{id: 2, title: 'HTML'},
+	{id: 3, title: 'XML'},
+]);
+
+const {
+	items: orderedGalleys,
+	sortingEnabled,
+	startSorting,
+	saveSorting,
+	moveUp,
+	moveDown,
+} = useOrdering({
+	items: computed(() => galleys.value),
+	onSave: async (orderedItems) => {
+		// Send new order to API
+		const sequence = orderedItems.map((item) => item.id);
+		const response = await fetch('/api/save-order', {
+			method: 'POST',
+			body: JSON.stringify({sequence}),
+		});
+		return response.ok;
+	},
+});
+
+// Usage in template
+// Normal mode: shows items in current order
+// Ordering mode: shows items with up/down controls
+```
+
+### With Table Components
+
+```vue
+<template>
+	<Table>
+		<template #top-controls>
+			<PkpButton @click="sortingEnabled ? saveSorting() : startSorting()">
+				{{ sortingEnabled ? 'Save Order' : 'Reorder' }}
+			</PkpButton>
+		</template>
+
+		<TableBody>
+			<TableRow v-for="item in orderedItems" :key="item.id">
+				<TableCell>{{ item.title }}</TableCell>
+				<TableCellOrder
+					v-if="sortingEnabled"
+					@up="moveUp(item.id)"
+					@down="moveDown(item.id)"
+				/>
+				<TableCell v-else>
+					<!-- Normal mode actions -->
+				</TableCell>
+			</TableRow>
+		</TableBody>
+	</Table>
+</template>
+
+<script setup>
+import {useOrdering} from '@/composables/useOrdering';
+import {computed} from 'vue';
+import Table from '@/components/Table/Table.vue';
+import TableBody from '@/components/Table/TableBody.vue';
+import TableRow from '@/components/Table/TableRow.vue';
+import TableCell from '@/components/Table/TableCell.vue';
+import TableCellOrder from '@/components/Table/TableCellOrder.vue';
+import PkpButton from '@/components/Button/Button.vue';
+
+const props = defineProps({
+	items: {type: Array, required: true},
+});
+
+const {
+	items: orderedItems,
+	sortingEnabled,
+	startSorting,
+	saveSorting,
+	moveUp,
+	moveDown,
+} = useOrdering({
+	items: computed(() => props.items),
+	onSave: async (orderedItems) => {
+		await saveToBackend(orderedItems);
+	},
+});
+</script>
+```
+
+## Implementation Example
+
+See `GalleyManager` for a complete implementation example using `useOrdering` with tables.
