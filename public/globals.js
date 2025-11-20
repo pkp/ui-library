@@ -202,8 +202,10 @@ window.pkp = {
 		'author.users.contributor.setPrincipalContact': 'Set Primary Contact',
 		'common.add': 'Add',
 		'common.addCCBCC': 'Add CC/BCC',
+		'common.addFiles': 'Add Files',
 		'common.assign': 'Assign',
 		'common.attachFiles': 'Attach Files',
+		'common.attachSelected': 'Attach Selected',
 		'common.back': 'Back',
 		'common.cancel': 'Cancel',
 		'common.changeLanguage': 'Change Language',
@@ -224,6 +226,7 @@ window.pkp = {
 		'common.deselect': 'Deselect',
 		'common.details': 'Details',
 		'common.download': 'Download',
+		'common.dragAndDropHere': 'Drag and drop files here.',
 		'common.dueDate': 'Due Date',
 		'common.edit': 'Edit',
 		'common.editItem': 'Edit {$name}',
@@ -265,6 +268,7 @@ window.pkp = {
 		'common.order': 'Order',
 		'common.orderDown': 'Decrease position of {$itemTitle}',
 		'common.orderUp': 'Increase position of {$itemTitle}',
+		'common.orUploadFile': 'Or upload a file',
 		'common.overdue': 'Overdue',
 		'common.pageNumber': 'Page {$pageNumber}',
 		'common.pagination.goToPage': 'Go to {$page}',
@@ -300,6 +304,8 @@ window.pkp = {
 		'common.unknownError':
 			'An unexpected error has occurred. Please reload the page and try again.',
 		'common.upload': 'Upload',
+		'common.upload.addFile': 'Add File',
+		'common.upload.addFile.description': 'Upload a file from your computer.',
 		'common.uploadedBy': 'Uploaded by {$name}',
 		'common.uploadedByAndWhen': 'Uploaded by {$name} on {$date}',
 		'common.user': 'User',
@@ -536,6 +542,7 @@ window.pkp = {
 		'editor.submission.review.currentFiles':
 			'Current Review Files For Round {$round}',
 		'editor.submission.reviewerSuggestions': 'Reviewers Suggested by Author',
+		'editor.submission.revisions': 'Revisions',
 		'editor.submission.roundStatus.recommendationMadeByYou':
 			'Recommendation has been made by you.',
 		'editor.submission.roundStatus.reviewsCompleted':
@@ -557,6 +564,10 @@ window.pkp = {
 		'editor.submissionReview.editReview': 'Edit Review',
 		'editor.submissionReview.open': 'Open',
 		'editor.submissionReview.uploadFile': 'Upload Review File',
+		'email.addAttachment.libraryFiles': 'Library Files',
+		'email.addAttachment.libraryFiles.attach': 'Attach Library Files',
+		'email.addAttachment.libraryFiles.description':
+			'Attach files from the Submission and Publisher Libraries.',
 		'email.bcc': 'BCC',
 		'email.cc': 'CC',
 		'email.confirmSwitchLocale':
@@ -582,6 +593,23 @@ window.pkp = {
 			'Files uploaded at the time of submission',
 		'form.dataHasChanged':
 			'The data on this form has changed. Do you wish to continue without saving?',
+		'form.dropzone.dictDefaultMessage': 'Drop files here to upload',
+		'form.dropzone.dictFallbackMessage':
+			"Your browser does not support drag'n'drop file uploads.",
+		'form.dropzone.dictFallbackText':
+			'Please use the fallback form below to upload your files.',
+		'form.dropzone.dictFileTooBig':
+			'File is too big ({$filesize}mb). Files larger than {$maxFilesize}mb can not be uploaded.',
+		'form.dropzone.dictInvalidFileType':
+			'Files of this type can not be uploaded.',
+		'form.dropzone.dictResponseError':
+			'Server responded with {$statusCode} code. Please contact the system administrator if this problem persists.',
+		'form.dropzone.dictCancelUpload': 'Cancel upload',
+		'form.dropzone.dictUploadCanceled': 'Upload canceled',
+		'form.dropzone.dictCancelUploadConfirmation':
+			'Are you sure you want to cancel this upload?',
+		'form.dropzone.dictRemoveFile': 'Remove file',
+		'form.dropzone.dictMaxFilesExceeded': 'You can not upload any more files.',
 		'form.errorA11y': 'Go to {$fieldLabel}: {$errorMessage}',
 		'form.errorGoTo': 'Jump to next error',
 		'form.errorMany': 'Please correct {$count} errors.',
@@ -1216,6 +1244,10 @@ window.pkp = {
 		'userInvitation.user.disableTitle': 'The user is currently disabled.',
 		'validator.filled': 'This field is required.',
 		'validator.required': 'This field is required.',
+		'workflow.attachUploadedFiles':
+			'Attach files uploaded during the submission workflow, such as revisions or files to be reviewed.',
+		'workflow.attachWorkflowFiles': 'Attach Workflow Files',
+		'workflow.files': 'Workflow Files',
 		'workflow.review.externalReview': 'Review',
 		'workflow.review.internalReview': 'Internal Review',
 		'workflow.reviewRoundN': 'Review Round {$number}',

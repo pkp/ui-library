@@ -60,7 +60,6 @@ import FieldError from '@/components/Form/FieldError.vue';
 
 const emit = defineEmits(['newMessage', 'newMessageChanged']);
 const {formatShortDateTime} = useDate();
-const {messageFieldOptions} = useDiscussionMessages();
 const {getCurrentUserId} = useCurrentUser();
 
 const props = defineProps({
@@ -88,6 +87,10 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
+});
+
+const {messageFieldOptions} = useDiscussionMessages({
+	submissionId: props.submission.id,
 });
 
 function addMessage() {
