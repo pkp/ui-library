@@ -78,7 +78,7 @@
 <script>
 import FormLocales from './FormLocales.vue';
 import FormPage from './FormPage.vue';
-import {shouldShowField} from './formHelpers';
+import {shouldShowField, requireWhen} from './formHelpers';
 import Icon from '@/components/Icon/Icon.vue';
 
 export default {
@@ -87,6 +87,11 @@ export default {
 		FormLocales,
 		FormPage,
 		Icon,
+	},
+	provide() {
+		return {
+			requireWhen: (isRequired) => requireWhen(isRequired, this.fields),
+		};
 	},
 	props: {
 		/** Used by a parent component, such as `Container`, to identify events emitted from the form and update the form props when necessary. */
@@ -379,8 +384,8 @@ export default {
 			let errors = {};
 			this.fields.forEach((field) => {
 				if (
-					!field.isRequired ||
-					!shouldShowField(field, this.fields, this.groups)
+					!shouldShowField(field, this.fields, this.groups) ||
+					!requireWhen(field.isRequired, this.fields)
 				) {
 					return;
 				}
