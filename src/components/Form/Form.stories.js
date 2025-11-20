@@ -190,9 +190,7 @@ export const ClientSideConfigured = {
 				description: 'interesting description',
 				options: [
 					{label: 'Author Original (AO)', value: 'AO'},
-					{label: 'Accepted Manuscript (AM)', value: 'AM'},
-					{label: 'Submitted Manuscript (SM)', value: 'SM'},
-					{label: 'Proof (PF)', value: 'PF'},
+					{label: 'Published Manuscript Under Review (PMUR)', value: 'PMUR'},
 					{label: 'Version of Record (VoR)', value: 'VoR'},
 				],
 			});
