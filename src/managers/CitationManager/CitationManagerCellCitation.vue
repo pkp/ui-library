@@ -143,7 +143,10 @@
 			<!-- is not structured -->
 			<div v-else>
 				<div>{{ citation.rawCitation }}</div>
-				<div v-if="citation.isProcessed" class="mt-2">
+				<div
+					v-if="citation.processingStatus == citationProcessingStatus.PROCESSED"
+					class="mt-2"
+				>
 					<Badge :color-variant="'attention'" :size-variant="'compact'">
 						{{
 							t('submission.citations.structured.noStructuredInformationFound')
@@ -183,4 +186,6 @@ const citationStore = useCitationManagerStore();
 const isExpanded = computed(() => {
 	return citationStore.expandedIds.includes(citation.value.id);
 });
+
+const citationProcessingStatus = pkp.const.citationProcessingStatus;
 </script>
