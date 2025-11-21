@@ -5,10 +5,7 @@ import {useFetch} from '@/composables/useFetch';
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useFormChanged} from '@/composables/useFormChanged';
 import {useLocalize} from '@/composables/useLocalize';
-import {useModal} from '@/composables/useModal';
 import {useTaskTemplateManagerEmails} from './useTaskTemplateManagerEmails';
-
-import FileAttacherModal from '@/components/Composer/FileAttacherModal.vue';
 
 export function useTaskTemplateManagerForm({
 	taskTemplate = null,
@@ -163,26 +160,6 @@ export function useTaskTemplateManagerForm({
 		];
 	}
 
-	function initDiscussionText() {
-		return {
-			setup: (editor) => {
-				editor.ui.registry.addButton('pkpAttachFiles', {
-					icon: 'upload',
-					text: t('common.attachFiles'),
-					onAction() {
-						const {openSideModal} = useModal();
-
-						openSideModal(FileAttacherModal, {
-							title: t('common.attachFiles'),
-							attachers: [],
-							onAddAttachments: [],
-						});
-					},
-				});
-			},
-		};
-	}
-
 	const preparedContent = computed(() => {
 		const dataDescriptions = emailTemplatesData.value?.dataDescriptions;
 		if (!dataDescriptions) {
@@ -269,10 +246,9 @@ export function useTaskTemplateManagerForm({
 
 	addFieldPreparedContent('description', {
 		groupId: 'discussion',
-		toolbar: 'bold italic underline bullist | pkpAttachFiles | pkpInsert',
+		toolbar: 'bold italic underline bullist | pkpInsert',
 		plugins: ['lists'],
 		size: 'large',
-		init: initDiscussionText(),
 		value: taskTemplate?.description || '',
 		insertModalLabel: t('common.insertContent'),
 		insertLabel: t('common.insert'),
