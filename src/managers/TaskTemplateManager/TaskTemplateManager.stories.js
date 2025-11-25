@@ -63,12 +63,9 @@ const mswHandlers = [
 		},
 	),
 
-	http.get(
-		'https://mock/index.php/publicknowledge/api/v1/contexts/1/userGroups',
-		() => {
-			return HttpResponse.json(UserGroupMock);
-		},
-	),
+	http.get('https://mock/index.php/publicknowledge/api/v1/userGroups', () => {
+		return HttpResponse.json(UserGroupMock);
+	}),
 ];
 
 export const Default = {
