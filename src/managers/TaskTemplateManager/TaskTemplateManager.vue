@@ -4,6 +4,10 @@
 			<template #label>
 				<h3 class="text-xl-bold">
 					{{ t('taskTemplates.title') }}
+					<Spinner
+						v-if="taskTemplateManagerStore.isLoadingTemplates"
+						class="ms-2"
+					/>
 				</h3>
 			</template>
 			<template #description>
@@ -82,6 +86,7 @@ import TableRowGroupWrapper from '@/components/Table/TableRowGroupWrapper.vue';
 import TaskTemplateManagerCellName from './TaskTemplateManagerCellName.vue';
 import TaskTemplateManagerCellAutoAdd from './TaskTemplateManagerCellAutoAdd.vue';
 import TaskTemplateManagerCellActions from './TaskTemplateManagerCellActions.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
 
 const Components = {
 	TaskTemplateManagerCellName,
