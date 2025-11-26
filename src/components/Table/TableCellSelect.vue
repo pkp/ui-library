@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-import {ref} from 'vue';
+import {ref, watch} from 'vue';
 import {useModal} from '@/composables/useModal';
 import {t} from '@/utils/i18n';
 import TableCell from './TableCell.vue';
@@ -64,4 +64,12 @@ function onChange($event) {
 		message: props.confirmMessage,
 	});
 }
+
+// update the selected value when the prop changes
+watch(
+	() => props.checked,
+	(val) => {
+		isChecked.value = val;
+	},
+);
 </script>
