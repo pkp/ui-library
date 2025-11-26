@@ -28,7 +28,7 @@ export const useDiscussionManagerStore = defineComponentStore(
 			isLoading: isLoadingDiscussions,
 		} = useFetchPaginated(submissionTasksApiUrl, {
 			page: 1,
-			pageSize: 25,
+			pageSize: 999, // set to a high number to fetch all items, until we implement pagination
 		});
 
 		watch(relativeUrl, () => {
