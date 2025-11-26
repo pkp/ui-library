@@ -223,7 +223,7 @@ export function useTaskTemplateManagerForm({
 		label: t('discussion.form.taskInfoLabel'),
 		value: isTask.value,
 		hideOnDisplay: true,
-		onChange: (val) => {
+		onChange: (name, attr, val) => {
 			isTask.value = val;
 		},
 	});

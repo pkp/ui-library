@@ -669,7 +669,7 @@ export function useDiscussionManagerForm(
 		value: isTask.value || autoAddTaskDetails,
 		hideOnDisplay: true,
 		disabled: workItemRef.value?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
-		onChange: (val) => {
+		onChange: (name, attr, val) => {
 			isTask.value = val;
 			addTaskInfoDueDate({override: true});
 			addTaskInfoAssignee({override: true});
