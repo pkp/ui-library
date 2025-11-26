@@ -81,9 +81,7 @@ export function useTaskTemplateManagerForm({
 	}
 
 	function getParticipantOptions() {
-		const {apiUrl: userGroupsApiUrl} = useUrl(
-			`contexts/${pkp.context.id}/userGroups`,
-		);
+		const {apiUrl: userGroupsApiUrl} = useUrl(`/userGroups`);
 
 		const {items: userGroupsData, fetch: fetchUserGroups} = useFetchPaginated(
 			userGroupsApiUrl,
