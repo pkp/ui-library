@@ -74,27 +74,22 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 				existingUser.value = data.value.existingUser;
 				submission.value = data.value.submission && data.value.submission;
 
-				if (data.value.familyName) {
-					updateAcceptInvitationPayload('familyName', data.value.familyName); //if not check this override the multilingual structure
-				}
-				if (data.value.givenName) {
-					updateAcceptInvitationPayload('givenName', data.value.givenName); //if not check this override the multilingual structure
-				}
-				if (data.value.affiliation) {
-					updateAcceptInvitationPayload('affiliation', data.value.affiliation);
-				}
-				if (data.value.reviewDueDate) {
-					updateAcceptInvitationPayload(
-						'reviewDueDate',
-						data.value.reviewDueDate,
-					);
-				}
-				if (data.value.responseDueDate) {
-					updateAcceptInvitationPayload(
-						'responseDueDate',
-						data.value.responseDueDate,
-					);
-				}
+				const fieldsToSync = [
+					'familyName',
+					'givenName',
+					'affiliation',
+					'reviewDueDate',
+					'userInterests',
+					'responseDueDate',
+				];
+
+				fieldsToSync.forEach((key) => {
+					const value = data.value[key];
+					if (value) {
+						updateAcceptInvitationPayload(key, value);
+					}
+				});
+
 				updateAcceptInvitationPayload('userCountry', data.value.country);
 
 				updateAcceptInvitationPayload('orcid', data.value.orcid);
@@ -145,6 +140,8 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 
 		function updateAcceptInvitationPayload(fieldName, value) {
 			acceptInvitationPayload.value[fieldName] = value;
+			console.log('Updated payload:', acceptInvitationPayload.value);
+			console.log('Field updated:', fieldName, 'Value:', value);
 		}
 
 		/**
