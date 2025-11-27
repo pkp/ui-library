@@ -1,11 +1,11 @@
 <template>
 	<div><PkpButton @click="onSave">Save</PkpButton></div>
 	<div class="flex">
-		<div>
+		<div class="w-3/5">
 			<sciflow-formatbar for="editor"></sciflow-formatbar>
 			<sciflow-editor id="editor"></sciflow-editor>
 		</div>
-		<div>
+		<div class="w-2/5">
 			<h2 id="selected-element-heading">Selected Element</h2>
 			<sciflow-selection-editor for="editor"></sciflow-selection-editor>
 			<h2>References</h2>
@@ -25,6 +25,7 @@ import {
 	copyPasteFeature,
 	headingFeature,
 	createFigureFeature,
+	SourceField,
 } from '@sciflow/editor-start/dist/bundle/sciflow-editor.js';
 
 import PkpButton from '@/components/Button/Button.vue';
@@ -50,43 +51,77 @@ const featureList = [
 	createFigureFeature({imageUpload: {uploadFile: onFigureUpload}}),
 ];
 
+/**
+ * Transform OJS citations to the format expected by sciflow-reference-list.
+ * The sciflow editor requires references to have a string `id` for drag & drop to work.
+ */
+function transformCitationsForSciflow(citations) {
+	return (citations || []).map((citation) => ({
+		...citation,
+		// Convert numeric ID to string for sciflow compatibility
+		id: String(citation.id),
+	}));
+}
+
 onMounted(async () => {
 	editor = document.querySelector('sciflow-editor');
 	referenceList = document.getElementById('references');
-	referenceList.references = props.publication.references;
+	referenceList.references = transformCitationsForSciflow(
+		props.publication.citations,
+	);
 
 	const toolbar = document.querySelector('sciflow-formatbar');
 	if (editor && toolbar) {
-		/*const bindToolbar = () => {
-			toolbar.editor = editor;
-		};
-
-		editor.addEventListener('editor-ready', bindToolbar, {once: true});
-		bindToolbar();*/
-
 		await editor.configureFeatures(featureList);
-
-		// References
-		/*const editor = document.querySelector('sciflow-editor');
-		const refList = document.querySelector('sciflow-reference-list');*/
-
-		/*editor.addEventListener('editor-change', (event) => {
-			const {doc, references} = event.detail;
-			refList.references = Array.isArray(references)
-				? references
-				: collectReferencesFromDoc(doc);
-		});
-
-		editor.addEventListener('editor-selection-change', (event) => {
-			const ids = extractCitationIds(event.detail); // derive citation ids from selection
-			refList.highlight(ids);
-		});*/
 
 		editor.addEventListener('editor-change', async (event) => {
 			const {doc, operations, files} = event.detail;
 			console.log('editor-change, files:', files);
 			console.log('[demo] Updated doc', doc, operations);
 			latestDoc = doc;
+		});
+
+		// Handle selection changes to highlight references when citations are selected
+		editor.addEventListener('editor-selection-change', (event) => {
+			const selection = event.detail;
+			const view = editor.editorView;
+			if (!view || !selection) {
+				referenceList.highlight([]);
+				return;
+			}
+
+			// Get the selection range (handles both cursor position and selection)
+			const from = Math.min(selection.anchor, selection.head);
+			const to = Math.max(selection.anchor, selection.head);
+			const citations = [];
+
+			// Walk through all nodes in/around the selection to find citations
+			// Using from, to+1 ensures we catch citations when cursor is at position
+			view.state.doc.nodesBetween(from, Math.max(to, from + 1), (node) => {
+				if (node.type.name !== 'citation') {
+					return;
+				}
+
+				// Parse citation source (CSL format stored as URI-encoded JSON)
+				const sourceEntries = SourceField.fromString(
+					node.attrs?.source ?? null,
+				);
+				citations.push({
+					id: node.attrs?.id ?? null,
+					source: sourceEntries,
+				});
+			});
+
+			// Extract all reference IDs from the selected citations
+			const referencedIds = citations.flatMap((citation) =>
+				citation.source
+					.map((entry) =>
+						typeof entry?.id === 'string' ? entry.id.trim() : null,
+					)
+					.filter((id) => id),
+			);
+
+			referenceList.highlight(referencedIds);
 		});
 	}
 });
