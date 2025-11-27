@@ -33,7 +33,7 @@ export function useTaskTemplateManagerConfig() {
 		});
 
 		columns.push({
-			header: t('taskTemplates.templateAutoAdd'),
+			header: t('taskTemplates.templateAutoAddAtStage'),
 			component: 'TaskTemplateManagerCellAutoAdd',
 		});
 

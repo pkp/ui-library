@@ -1,5 +1,7 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
+import {useFetch} from '../../composables/useFetch';
+import {useUrl} from '../../composables/useUrl';
 
 import TaskTemplateManagerFormModal from './TaskTemplateManagerFormModal.vue';
 
@@ -42,13 +44,36 @@ export function useTaskTemplateActions() {
 	}
 
 	function templateDelete({taskTemplate}, finishedCallback) {
+		async function deleteTaskTemplate() {
+			const {apiUrl: deleteTaskTemplateUrl} = useUrl(
+				`editTaskTemplates/${taskTemplate.id}`,
+			);
+
+			const {
+				fetch,
+				data: deleteTaskTemplateData,
+				isSuccess,
+			} = useFetch(deleteTaskTemplateUrl, {
+				method: 'DELETE',
+			});
+
+			await fetch();
+
+			return {
+				data: deleteTaskTemplateData.value,
+				isSuccess: isSuccess.value,
+			};
+		}
+
 		const {openDialog} = useModal();
 		openDialog({
 			actions: [
 				{
 					label: t('common.ok'),
 					isWarnable: true,
-					callback: (close) => {
+					callback: async (close) => {
+						await deleteTaskTemplate();
+						finishedCallback();
 						close();
 					},
 				},
@@ -65,8 +90,18 @@ export function useTaskTemplateActions() {
 		});
 	}
 
-	function templateUpdateAutoAdd({taskTemplate}, finishedCallback) {
-		// TODO: update template
+	async function templateUpdateAutoAdd({taskTemplate}, finishedCallback) {
+		const {apiUrl: updateTaskTemplateUrl} = useUrl(
+			`editTaskTemplates/${taskTemplate.id}`,
+		);
+
+		const {fetch} = useFetch(updateTaskTemplateUrl, {
+			method: 'PUT',
+			body: {include: !taskTemplate.include},
+		});
+
+		await fetch();
+		finishedCallback();
 	}
 
 	return {
