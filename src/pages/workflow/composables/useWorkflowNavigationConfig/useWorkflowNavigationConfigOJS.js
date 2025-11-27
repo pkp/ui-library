@@ -313,6 +313,14 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 			items.push(
 				getPublicationItem({
 					publicationId,
+					name: 'bodyText',
+					label: t('publication.bodyText'),
+				}),
+			);
+
+			items.push(
+				getPublicationItem({
+					publicationId,
 					name: 'galleys',
 					label: t('submission.layout.galleys'),
 				}),
