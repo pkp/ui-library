@@ -10,19 +10,19 @@ import {t} from '@/utils/i18n';
  *
  * @param {Ref} form - Reactive form object (expects `.value.fields`).
  * @param {Array} additionalFields - Extra fields to include in tracking. (e.g. [Ref])
- * @param {Function} onCloseFn - Called when the form can be closed.
  * @param {Object} options
  * @param {Boolean} options.warnOnClose - If true, shows a confirmation prompt when closing with unsaved changes.
  */
 export function useFormChanged(
 	form,
 	additionalFields,
-	onCloseFn = () => {},
 	{warnOnClose = false} = {},
 ) {
 	let initialState = getCurrentState();
 	let beforeUnloadHandler;
+	let closeConfirmed = false;
 	const registerCloseCallback = inject('registerCloseCallback');
+	const closeModal = inject('closeModal');
 	let unregisterCloseCallback = null;
 
 	function getCurrentState() {
@@ -45,7 +45,7 @@ export function useFormChanged(
 	// confirm before closing if changes exist
 	function confirmClose() {
 		if (!hasStateChanged()) {
-			return onCloseFn();
+			return closeModal();
 		}
 
 		const {openDialog} = useModal();
@@ -56,7 +56,8 @@ export function useFormChanged(
 					isWarnable: true,
 					callback: (close) => {
 						close();
-						onCloseFn();
+						closeConfirmed = true;
+						closeModal();
 					},
 				},
 				{
@@ -88,10 +89,10 @@ export function useFormChanged(
 		// show a warning before closing the modal if there are unsaved changes
 		if (registerCloseCallback) {
 			unregisterCloseCallback = registerCloseCallback(() => {
-				if (hasStateChanged()) {
+				if (hasStateChanged() && !closeConfirmed) {
 					confirmClose();
 				}
-				return !hasStateChanged();
+				return !hasStateChanged() || closeConfirmed;
 			});
 		}
 	});

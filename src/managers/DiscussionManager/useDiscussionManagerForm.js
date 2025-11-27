@@ -1,4 +1,4 @@
-import {computed, ref, onMounted} from 'vue';
+import {computed, ref, onMounted, inject} from 'vue';
 import {useForm} from '@/composables/useForm';
 import {useFormChanged} from '@/composables/useFormChanged';
 import {useModal} from '@/composables/useModal';
@@ -24,7 +24,6 @@ export function useDiscussionManagerForm(
 		submissionStageId,
 		workItem,
 		autoAddTaskDetails = false,
-		onCloseFn = () => {},
 	} = {},
 	{inDisplayMode = false, refetchData = null} = {},
 ) {
@@ -37,6 +36,7 @@ export function useDiscussionManagerForm(
 		submission.id,
 	);
 	const {getCurrentReviewAssignments} = useSubmission();
+	const closeModal = inject('closeModal');
 
 	const currentUser = useCurrentUser();
 	const isTask = ref(
@@ -63,6 +63,7 @@ export function useDiscussionManagerForm(
 		setCanSubmit,
 		getField,
 		addFieldText,
+		addFieldDate,
 		addFieldOptions,
 		addFieldRichTextArea,
 		addFieldSelect,
@@ -347,17 +348,17 @@ export function useDiscussionManagerForm(
 	}
 
 	function addTaskInfoDueDate({override = false} = {}) {
-		addFieldText(
+		addFieldDate(
 			'dateDue',
 			{
 				groupId: 'taskInformation',
 				label: t('common.dueDate'),
-				inputType: 'date',
 				description: t('discussion.form.taskInfoDueDateDescription'),
 				size: 'normal',
 				showWhen: 'taskInfoAdd',
 				value: isTask.value ? workItemRef.value?.dateDue : null,
 				isRequired: isTask.value || autoAddTaskDetails,
+				min: 'today',
 			},
 			{override},
 		);
@@ -605,7 +606,8 @@ export function useDiscussionManagerForm(
 			if (inDisplayMode && refetchData) {
 				await refetchData();
 			} else {
-				onCloseFn();
+				setInitialState(form, additionalFields);
+				closeModal();
 			}
 		}
 
@@ -716,7 +718,7 @@ export function useDiscussionManagerForm(
 	const badgeProps = computed(() => getBadgeProps());
 	const additionalFields = [newMessage, statusUpdateValue];
 
-	const {setInitialState} = useFormChanged(form, additionalFields, onCloseFn, {
+	const {setInitialState} = useFormChanged(form, additionalFields, {
 		warnOnClose: true,
 	});
 

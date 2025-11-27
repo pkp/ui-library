@@ -22,10 +22,10 @@
 		</template>
 
 		<SideModalLayoutBasic>
-			<FormDisplay
+			<PkpForm
 				v-bind="form"
 				field-heading-element="h2"
-				:contains-form="true"
+				:display-only="true"
 				@cancel="closeModal"
 				@set="set"
 			/>
@@ -47,7 +47,7 @@ import {
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
 import Badge from '@/components/Badge/Badge.vue';
-import FormDisplay from '@/components/FormDisplay/FormDisplay.vue';
+import PkpForm from '@/components/Form/Form.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';
 
@@ -67,10 +67,6 @@ const props = defineProps({
 	workItem: {
 		type: Object,
 		default: () => null,
-	},
-	onCloseFn: {
-		type: Function,
-		default: () => () => {},
 	},
 });
 
