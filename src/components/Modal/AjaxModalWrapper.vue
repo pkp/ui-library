@@ -1,5 +1,5 @@
 <template>
-	<div ref="contentDiv" @click="catchInsideClick"></div>
+	<div ref="contentDiv"></div>
 </template>
 <script setup>
 /**
@@ -50,19 +50,6 @@ registerCloseCallback(() => {
 
 	return true;
 });
-
-function catchInsideClick(e) {
-	// open help dialog
-	// click event does not propagate to the body when in modal
-	// therefore triggering help panel explicitely
-	if (e?.target?.className?.includes('requestHelpPanel')) {
-		// forward it to body
-		e.preventDefault();
-		const $self = $(e.target);
-		const opts = $.extend({}, $self.data(), {caller: $self});
-		$('#pkpHelpPanel').trigger('pkp.HelpPanel.Open', opts);
-	}
-}
 
 /** The wrapping div element for modal is still created by legacy modal handler, but its not mounted
  * only used to keep the legacy event communication going from inside modal to the outside (often its grid component)
