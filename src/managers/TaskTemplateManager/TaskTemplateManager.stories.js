@@ -63,9 +63,40 @@ const mswHandlers = [
 		},
 	),
 
-	http.get('https://mock/index.php/publicknowledge/api/v1/userGroups', () => {
-		return HttpResponse.json(UserGroupMock);
-	}),
+	http.get(
+		'https://mock/index.php/publicknowledge/api/v1/userGroups',
+		({request}) => {
+			const url = new URL(request.url);
+			const stageId = url.searchParams.get('stageIds');
+			switch (stageId) {
+				case '1':
+					return HttpResponse.json({
+						items: UserGroupMock.WORKFLOW_STAGE_ID_SUBMISSION,
+						itemsMax: UserGroupMock.WORKFLOW_STAGE_ID_SUBMISSION.length,
+					});
+				case '3':
+					return HttpResponse.json({
+						items: UserGroupMock.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+						itemsMax: UserGroupMock.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW.length,
+					});
+				case '4':
+					return HttpResponse.json({
+						items: UserGroupMock.WORKFLOW_STAGE_ID_EDITING,
+						itemsMax: UserGroupMock.WORKFLOW_STAGE_ID_EDITING.length,
+					});
+				case '5':
+					return HttpResponse.json({
+						items: UserGroupMock.WORKFLOW_STAGE_ID_PRODUCTION,
+						itemsMax: UserGroupMock.WORKFLOW_STAGE_ID_PRODUCTION.length,
+					});
+				default:
+					return HttpResponse.json({
+						items: [],
+						itemsMax: 0,
+					});
+			}
+		},
+	),
 ];
 
 export const Default = {
