@@ -37,7 +37,10 @@ export function useTaskTemplateManagerForm({
 		const dataBody = {
 			title: formData.title,
 			stageId,
-			userGroupIds: formData.userGroupIds,
+			isUnrestricted: formData.isUnrestricted,
+			assignedUserGroupIds: formData.isUnrestricted
+				? null
+				: formData.assignedUserGroupIds,
 			include: formData.include,
 			dueInterval: isTask.value ? formData.dueInterval : null,
 			description: formData.description,
@@ -78,8 +81,8 @@ export function useTaskTemplateManagerForm({
 		};
 	}
 
-	function getParticipantOptions() {
-		const {apiUrl: userGroupsApiUrl} = useUrl('userGroups');
+	function getUserGroupOptions() {
+		const {apiUrl: userGroupsApiUrl} = useUrl(`userGroups?stageIds=${stageId}`);
 
 		const {items: userGroupsData, fetch: fetchUserGroups} = useFetchPaginated(
 			userGroupsApiUrl,
@@ -202,14 +205,32 @@ export function useTaskTemplateManagerForm({
 		isRequired: true,
 	});
 
-	addFieldOptions('userGroupIds', 'checkbox', {
+	addFieldOptions('isUnrestricted', 'radio', {
 		groupId: 'details',
-		label: t('editor.submission.stageParticipants'),
-		description: t('discussion.form.detailsParticipantsDescription'),
-		name: 'userGroupIds',
-		options: getParticipantOptions(),
+		label: t('admin.workflow.email.userGroup.assign.unrestricted'),
+		description: t('admin.workflow.email.userGroup.unrestricted.template.note'),
+		name: 'isUnrestricted',
+		options: [
+			{
+				value: true,
+				label: t('admin.workflow.email.userGroup.assign.unrestricted'),
+			},
+			{
+				value: false,
+				label: t('admin.workflow.email.userGroup.limitAccess'),
+			},
+		],
+		value: taskTemplate?.isUnrestricted ?? true,
+	});
+
+	addFieldOptions('assignedUserGroupIds', 'checkbox', {
+		groupId: 'details',
+		label: t('admin.workflow.email.userGroup.limitAccess'),
+		name: 'assignedUserGroupIds',
+		options: getUserGroupOptions(),
 		value: taskTemplate?.userGroups?.map(({id}) => id) || [],
 		isRequired: true,
+		showWhen: ['isUnrestricted', false],
 	});
 
 	addGroup('taskInformation', {
