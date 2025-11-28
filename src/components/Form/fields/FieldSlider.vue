@@ -22,13 +22,6 @@
 				v-strip-unsafe-html="tooltip"
 				class="-screenReader"
 			/>
-			<HelpButton
-				v-if="isPrimaryLocale && helpTopic"
-				:id="describedByHelpId"
-				:topic="helpTopic"
-				:section="helpSection"
-				:label="t('help.help')"
-			/>
 		</div>
 		<div
 			v-if="isPrimaryLocale && description"
@@ -68,12 +61,11 @@
 import FieldBase from './FieldBase.vue';
 import Slider from 'primevue/slider';
 import Tooltip from '@/components/Tooltip/Tooltip.vue';
-import HelpButton from '@/components/HelpButton/HelpButton.vue';
 import FormFieldLabel from '@/components/Form/FormFieldLabel.vue';
 
 export default {
 	name: 'FieldSlider',
-	components: {Slider, Tooltip, HelpButton, FormFieldLabel},
+	components: {Slider, Tooltip, FormFieldLabel},
 	extends: FieldBase,
 	props: {
 		min: {required: true, type: Number},
