@@ -27,7 +27,6 @@ window.pkp = {
 	 *
 	 */
 	context: {
-		id: 1,
 		apiBaseUrl: 'https://mock/index.php/publicknowledge/api/v1/',
 		pageBaseUrl: 'https://mock/index.php/publicknowledge/',
 		currentLocale: 'en',
@@ -189,6 +188,12 @@ window.pkp = {
 		'admin.jobs.failed.action.redispatch': 'Try Again',
 		'admin.jobs.failed.action.redispatch.all': 'Requeue All Failed Jobs',
 		'admin.jobs.list.actions': 'Actions',
+		'admin.workflow.email.userGroup.assign.unrestricted':
+			'Mark as unrestricted',
+		'admin.workflow.email.userGroup.limitAccess':
+			'Limit Access to Specific User Groups',
+		'admin.workflow.email.userGroup.unrestricted.template.note':
+			'Unrestricted templates will be accessible to all user groups.',
 		'article.article': 'Article',
 		'article.metadata': 'Metadata',
 		'author.users.contributor.principalContact': 'Primary Contact',
