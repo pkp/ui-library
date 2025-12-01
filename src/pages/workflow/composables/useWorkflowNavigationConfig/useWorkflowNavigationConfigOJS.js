@@ -309,6 +309,19 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 			}),
 		);
 
+		if (
+			permissions.canAccessProduction &&
+			pkp.context.featureFlags?.enableBodyTextEditor
+		) {
+			items.push(
+				getPublicationItem({
+					publicationId,
+					name: 'bodyText',
+					label: t('publication.bodyText'),
+				}),
+			);
+		}
+
 		if (permissions.canAccessProduction) {
 			items.push(
 				getPublicationItem({

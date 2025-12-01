@@ -977,6 +977,25 @@ export const PublicationConfig = {
 			];
 		},
 	},
+	bodyText: {
+		getPrimaryItems: ({
+			submission,
+			selectedPublication,
+			pageInitConfig,
+			permissions,
+		}) => {
+			return [
+				{
+					component: 'WorkflowPublicationBodyText',
+					props: {
+						canEdit: permissions.canEditPublication,
+						submission,
+						publication: selectedPublication,
+					},
+				},
+			];
+		},
+	},
 	jats: {
 		getPrimaryItems: ({
 			submission,
