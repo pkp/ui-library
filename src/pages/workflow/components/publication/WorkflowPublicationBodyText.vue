@@ -6,7 +6,7 @@
 		<div class="flex gap-4">
 			<div class="w-3/5">
 				<sciflow-formatbar for="sciflow-editor"></sciflow-formatbar>
-				<sciflow-editor id="sciflow-editor"></sciflow-editor>
+				<sciflow-editor id="sciflow-editor" ref="editorRef"></sciflow-editor>
 			</div>
 			<div class="w-2/5">
 				<h2 class="text-lg-bold">Selected Element</h2>
@@ -16,6 +16,7 @@
 				<h2 class="mt-4 text-lg-bold">References</h2>
 				<sciflow-reference-list
 					id="sciflow-references"
+					ref="referenceListRef"
 				></sciflow-reference-list>
 			</div>
 		</div>
@@ -23,7 +24,7 @@
 </template>
 
 <script setup>
-import {ref, onMounted} from 'vue';
+import {ref, watch, onMounted} from 'vue';
 import {
 	citationFeature,
 	listFeature,
@@ -42,16 +43,29 @@ const props = defineProps({
 	publication: {type: Object, required: true},
 });
 
-/** Current body text metadata (updated after save) */
-const bodyTextMeta = ref(null);
+/** Template refs */
+const editorRef = ref(null);
+const referenceListRef = ref(null);
+
+/** Track if editor is mounted and configured */
+const isEditorReady = ref(false);
 
 /** Current document state from editor */
 const currentDocument = ref(null);
 
-/** API URL for submission files */
+/** API URL for body text endpoint */
+const {apiUrl: bodyTextApiUrl} = useUrl(
+	`submissions/${props.submission.id}/publications/${props.publication.id}/bodyText`,
+);
+
+/** API URL for submission files (used for figure uploads) */
 const {apiUrl: filesApiUrl} = useUrl(
 	`submissions/${props.submission.id}/files`,
 );
+
+/** Fetch body text data immediately */
+const {data: bodyTextData, fetch: fetchBodyText} = useFetch(bodyTextApiUrl);
+fetchBodyText();
 
 /** Editor features configuration */
 const editorFeatures = [
@@ -63,117 +77,69 @@ const editorFeatures = [
 	createFigureFeature({imageUpload: {uploadFile: handleFigureUpload}}),
 ];
 
-/** Default document shown when no body text file exists */
-const defaultDocument = {
-	type: 'doc',
-	content: [
-		{
-			type: 'heading',
-			attrs: {level: 1},
-			content: [{type: 'text', text: 'Introduction'}],
-		},
-		{
-			type: 'paragraph',
-			content: [
-				{type: 'text', text: 'Start writing your article content here...'},
-			],
-		},
-	],
-};
-
 onMounted(async () => {
-	const editor = getEditorElement();
-	const referenceList = getReferenceListElement();
-	const toolbar = document.querySelector('sciflow-formatbar');
-
-	if (!editor || !toolbar) {
+	const editor = editorRef.value;
+	if (!editor) {
 		return;
 	}
 
-	// 1. Configure editor
 	await editor.configureFeatures(editorFeatures);
 	editor.addEventListener('editor-change', handleEditorChange);
 	editor.addEventListener('editor-selection-change', handleSelectionChange);
 
-	// 2. Load references
-	if (referenceList) {
-		referenceList.references = transformCitationsForEditor(
+	if (referenceListRef.value) {
+		referenceListRef.value.references = transformCitationsForEditor(
 			props.publication.citations,
 		);
 	}
 
-	// 3. Load document
-	await loadDocument(editor);
+	isEditorReady.value = true;
 });
 
-async function loadDocument(editor) {
-	const fetchedBodyTextMeta = await fetchBodyTextMeta();
+// Initialize editor when both editor is ready and data is loaded
+watch(
+	[isEditorReady, bodyTextData],
+	([editorReady, data]) => {
+		if (!editorReady || !data) {
+			return;
+		}
 
-	if (fetchedBodyTextMeta) {
-		bodyTextMeta.value = fetchedBodyTextMeta;
+		const documentContent =
+			typeof data.bodyTextContent === 'string'
+				? JSON.parse(data.bodyTextContent)
+				: data.bodyTextContent;
 
-		const [bodyTextContent, bodyTextMetaFull] = await Promise.all([
-			fetchBodyTextContent(fetchedBodyTextMeta.url),
-			// Fetch full metadata to get list of dependent files (images)
-			fetchBodyTextMetaFull(fetchedBodyTextMeta.id),
-		]);
-
-		const dependentFiles = (bodyTextMetaFull.dependentFiles || []).map((f) => ({
+		const dependentFiles = (data.dependentFiles || []).map((f) => ({
 			id: f.id,
 			url: f.url,
 			mimeType: f.mimetype,
 		}));
 
-		editor.doc = {doc: bodyTextContent, files: dependentFiles};
-	} else {
-		editor.doc = {doc: defaultDocument, files: []};
-		currentDocument.value = defaultDocument;
-	}
-}
-
-async function fetchBodyTextMeta() {
-	const {data, fetch} = useFetch(filesApiUrl, {
-		query: {fileStages: pkp.const.SUBMISSION_FILE_BODY_TEXT},
-	});
-	await fetch();
-	return data.value?.items?.[0] || null;
-}
-
-async function fetchBodyTextContent(url) {
-	const {data, fetch} = useFetch(url);
-	await fetch();
-	return data.value;
-}
-
-async function fetchBodyTextMetaFull(bodyTextMetaId) {
-	const {data, fetch} = useFetch(`${filesApiUrl.value}/${bodyTextMetaId}`, {
-		query: {stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION},
-	});
-	await fetch();
-	return data.value;
-}
+		editorRef.value.doc = {doc: documentContent, files: dependentFiles};
+		currentDocument.value = documentContent;
+	},
+	{immediate: true},
+);
 
 function handleEditorChange(event) {
 	currentDocument.value = event.detail.doc;
 }
 
 function handleSelectionChange(event) {
-	const referenceList = getReferenceListElement();
-	if (!referenceList) {
+	if (!referenceListRef.value) {
 		return;
 	}
 
 	const selection = event.detail;
-	const editor = getEditorElement();
-	const view = editor?.editorView;
+	const view = editorRef.value?.editorView;
 
 	if (!view || !selection) {
-		referenceList.highlight([]);
+		referenceListRef.value.highlight([]);
 		return;
 	}
 
 	const referencedIds = extractReferencedIds(view, selection);
-	referenceList.highlight(referencedIds);
+	referenceListRef.value.highlight(referencedIds);
 }
 
 function extractReferencedIds(view, selection) {
@@ -201,63 +167,34 @@ async function saveDocument() {
 		return;
 	}
 
-	const jsonBlob = new Blob([JSON.stringify(currentDocument.value)], {
-		type: 'application/json',
-	});
-
-	if (bodyTextMeta.value) {
-		await updateExistingFile(jsonBlob);
-	} else {
-		await createNewFile(jsonBlob);
-		bodyTextMeta.value = await fetchBodyTextMeta();
-	}
-}
-
-async function updateExistingFile(blob) {
-	const {apiUrl} = useUrl(
-		`submissions/${props.submission.id}/files/${bodyTextMeta.value.id}`,
-	);
-
 	const formData = new FormData();
-	formData.append('file', blob);
+	formData.append('bodyText', JSON.stringify(currentDocument.value));
 
-	const {fetch} = useFetch(apiUrl, {
+	const {data, fetch} = useFetch(bodyTextApiUrl, {
 		method: 'PUT',
-		query: {stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION},
 		body: formData,
 	});
 
 	await fetch();
-}
 
-async function createNewFile(blob) {
-	const formData = new FormData();
-	formData.append('fileStage', String(pkp.const.SUBMISSION_FILE_BODY_TEXT));
-	formData.append('assocId', props.publication.id);
-	formData.append('assocType', pkp.const.ASSOC_TYPE_PUBLICATION);
-	formData.append('file', blob);
-
-	const {fetch} = useFetch(filesApiUrl, {
-		method: 'POST',
-		body: formData,
-	});
-
-	await fetch();
+	if (data.value) {
+		bodyTextData.value = data.value;
+	}
 }
 
 async function handleFigureUpload(file) {
 	// Auto-save document first if no body text file exists yet
-	if (!bodyTextMeta.value) {
+	if (!bodyTextData.value?.id) {
 		await saveDocument();
 	}
 
-	if (!bodyTextMeta.value) {
+	if (!bodyTextData.value?.id) {
 		throw new Error('Failed to save document before uploading figure');
 	}
 
 	const formData = new FormData();
 	formData.append('fileStage', String(pkp.const.SUBMISSION_FILE_DEPENDENT));
-	formData.append('assocId', bodyTextMeta.value.id);
+	formData.append('assocId', bodyTextData.value.id);
 	formData.append('assocType', pkp.const.ASSOC_TYPE_SUBMISSION_FILE);
 	formData.append('file', file);
 
@@ -272,14 +209,6 @@ async function handleFigureUpload(file) {
 		id: uploadedFile.value.id,
 		url: uploadedFile.value.url,
 	};
-}
-
-function getEditorElement() {
-	return document.getElementById('sciflow-editor');
-}
-
-function getReferenceListElement() {
-	return document.getElementById('sciflow-references');
 }
 
 function transformCitationsForEditor(citations) {
