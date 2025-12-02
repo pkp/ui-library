@@ -16,7 +16,7 @@
 			<!-- By Record View -->
 			<BaseTabContent value="byRecord" class="BaseOpenReviewTabsContent">
 				<h2 class="BaseOpenReviewHeading">Reviewer Reports by Record</h2>
-				<BaseOpenReviewRounds v-slot="{round, summary}">
+				<BaseOpenReviewRounds v-slot="{round, summary, reviewCount}">
 					<BaseOpenReviewRound :round="round">
 						<BaseOpenReviewRoundHeader>
 							<div class="BaseOpenReviewRoundHeaderMain">
@@ -27,7 +27,7 @@
 									</template>
 								</span>
 								<span class="BaseOpenReviewRoundHeaderCount">
-									({{ round.reviews.length }} Reviewers)
+									({{ reviewCount }} Reviewers)
 								</span>
 							</div>
 							<div class="BaseOpenReviewRoundHeaderSummary">
@@ -68,7 +68,7 @@
 			<!-- By Reviewer View -->
 			<BaseTabContent value="byReviewer" class="BaseOpenReviewTabsContent">
 				<h2 class="BaseOpenReviewHeading">Reviewer Reports by Reviewer</h2>
-				<BaseOpenReviewReviewers v-slot="{reviewer}">
+				<BaseOpenReviewReviewers v-slot="{reviewer, reviewCount}">
 					<BaseOpenReviewReviewer :reviewer="reviewer">
 						<BaseOpenReviewRoundHeader>
 							<div class="BaseOpenReviewRoundHeaderMain">
@@ -80,7 +80,7 @@
 								{{ reviewer.reviewerAffiliation }}
 							</div>
 							<div class="BaseOpenReviewReviewerCount">
-								{{ reviewer.reviews.length }} Reviews
+								{{ reviewCount }} Reviews
 							</div>
 						</BaseOpenReviewRoundHeader>
 						<BaseOpenReviewRoundContent>

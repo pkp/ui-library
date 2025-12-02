@@ -6,7 +6,12 @@
 		:default-value="defaultValue"
 	>
 		<template v-for="(round, index) in rounds" :key="round.roundId">
-			<slot :round="round" :index="index" :summary="getRoundSummary(round)" />
+			<slot
+				:round="round"
+				:index="index"
+				:review-count="round.reviews?.length || 0"
+				:summary="getRoundSummary(round)"
+			/>
 		</template>
 	</AccordionRoot>
 </template>
