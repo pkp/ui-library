@@ -14,7 +14,7 @@ export default {
 
 export const Primary = {
 	args: {
-		openReview: {
+		openReviewData: {
 			publicationId: 5,
 			reviewRounds: [
 				{

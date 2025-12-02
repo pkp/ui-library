@@ -1,5 +1,5 @@
 <template>
-	<BaseOpenReview :open-review="openReview">
+	<BaseOpenReview :open-review-data="openReviewData">
 		<BaseTabRoot default-value="byRecord">
 			<div class="BaseOpenReviewTabsHeader">
 				<span class="BaseOpenReviewTabsLabel">Sort by:</span>
@@ -18,49 +18,50 @@
 				<h2 class="BaseOpenReviewHeading">Reviewer Reports by Record</h2>
 				<BaseOpenReviewRounds v-slot="{round, summary, reviewCount}">
 					<BaseOpenReviewRound :round="round">
-						<BaseOpenReviewRoundHeader>
-							<div class="BaseOpenReviewRoundHeaderMain">
-								<span class="BaseOpenReviewRoundHeaderTitle">
+						<BaseOpenReviewHeader>
+							<div class="BaseOpenReviewHeaderMain">
+								<span class="BaseOpenReviewHeaderTitle">
 									{{ round.displayText }}
 									<template v-if="round.date">
 										• {{ formatShortDate(round.date) }}
 									</template>
 								</span>
-								<span class="BaseOpenReviewRoundHeaderCount">
+								<span class="BaseOpenReviewHeaderCount">
 									({{ reviewCount }} Reviewers)
 								</span>
 							</div>
-							<div class="BaseOpenReviewRoundHeaderSummary">
+							<div class="BaseOpenReviewHeaderSummary">
 								<span
 									v-for="item in summary"
 									:key="item.recommendation"
-									class="BaseOpenReviewRoundHeaderSummaryBadge"
-									:class="`BaseOpenReviewRoundHeaderSummaryBadge--${item.recommendation}`"
+									class="BaseOpenReviewHeaderSummaryBadge"
+									:class="`BaseOpenReviewHeaderSummaryBadge--${item.recommendation}`"
 								>
 									<PkpIcon :icon="item.recommendation" />
 									{{ item.count }} {{ item.label }}
 								</span>
 							</div>
-						</BaseOpenReviewRoundHeader>
-						<BaseOpenReviewRoundContent>
-							<BaseOpenReviewRoundReviews v-slot="{review}">
-								<BaseOpenReviewRoundReview :review="review">
-									<span class="BaseOpenReviewRoundReviewStatus">
+						</BaseOpenReviewHeader>
+						<BaseOpenReviewContent>
+							<BaseOpenReviewList v-slot="{review}">
+								<BaseOpenReviewListItem :review="review">
+									<span
+										class="BaseOpenReviewListItemStatus"
+										:class="`BaseOpenReviewListItemStatus--${review.recommendation}`"
+									>
 										<PkpIcon :icon="review.recommendation" />
 										{{ review.reviewerRecommendationDisplayText }}
 									</span>
-									<span class="BaseOpenReviewRoundReviewerName">
+									<span class="BaseOpenReviewListItemReviewerName">
 										{{ review.reviewerFullName }}
 									</span>
-									<span class="BaseOpenReviewRoundReviewerAffiliation">
+									<span class="BaseOpenReviewListItemReviewerAffiliation">
 										— {{ review.reviewerAffiliation }}
 									</span>
-									<button class="BaseOpenReviewRoundReviewReadBtn">
-										Read Review
-									</button>
-								</BaseOpenReviewRoundReview>
-							</BaseOpenReviewRoundReviews>
-						</BaseOpenReviewRoundContent>
+									<BaseOpenReviewReadButton />
+								</BaseOpenReviewListItem>
+							</BaseOpenReviewList>
+						</BaseOpenReviewContent>
 					</BaseOpenReviewRound>
 				</BaseOpenReviewRounds>
 			</BaseTabContent>
@@ -70,9 +71,9 @@
 				<h2 class="BaseOpenReviewHeading">Reviewer Reports by Reviewer</h2>
 				<BaseOpenReviewReviewers v-slot="{reviewer, reviewCount}">
 					<BaseOpenReviewReviewer :reviewer="reviewer">
-						<BaseOpenReviewRoundHeader>
-							<div class="BaseOpenReviewRoundHeaderMain">
-								<span class="BaseOpenReviewRoundHeaderTitle">
+						<BaseOpenReviewHeader>
+							<div class="BaseOpenReviewHeaderMain">
+								<span class="BaseOpenReviewHeaderTitle">
 									{{ reviewer.reviewerFullName }}
 								</span>
 							</div>
@@ -82,29 +83,27 @@
 							<div class="BaseOpenReviewReviewerCount">
 								{{ reviewCount }} Reviews
 							</div>
-						</BaseOpenReviewRoundHeader>
-						<BaseOpenReviewRoundContent>
-							<BaseOpenReviewRoundReviews
-								v-slot="{review}"
-								:reviews="reviewer.reviews"
-							>
-								<BaseOpenReviewRoundReview :review="review">
-									<span class="BaseOpenReviewRoundReviewStatus">
+						</BaseOpenReviewHeader>
+						<BaseOpenReviewContent>
+							<BaseOpenReviewList v-slot="{review}">
+								<BaseOpenReviewListItem :review="review">
+									<span
+										class="BaseOpenReviewListItemStatus"
+										:class="`BaseOpenReviewListItemStatus--${review.recommendation}`"
+									>
 										<PkpIcon :icon="review.recommendation" />
 										{{ review.reviewerRecommendationDisplayText }}
 									</span>
-									<span class="BaseOpenReviewRoundReviewVersionTitle">
+									<span class="BaseOpenReviewListItemVersionTitle">
 										{{ review.roundDisplayText }}
 									</span>
-									<span class="BaseOpenReviewRoundReviewVersionDate">
+									<span class="BaseOpenReviewListItemVersionDate">
 										— {{ formatShortDate(review.roundDate) }}
 									</span>
-									<button class="BaseOpenReviewRoundReviewReadBtn">
-										Read Review
-									</button>
-								</BaseOpenReviewRoundReview>
-							</BaseOpenReviewRoundReviews>
-						</BaseOpenReviewRoundContent>
+									<BaseOpenReviewReadButton />
+								</BaseOpenReviewListItem>
+							</BaseOpenReviewList>
+						</BaseOpenReviewContent>
 					</BaseOpenReviewReviewer>
 				</BaseOpenReviewReviewers>
 			</BaseTabContent>
@@ -121,17 +120,18 @@ import BaseOpenReviewRounds from './base/BaseOpenReviewRounds.vue';
 import BaseOpenReviewRound from './base/BaseOpenReviewRound.vue';
 import BaseOpenReviewReviewers from './base/BaseOpenReviewReviewers.vue';
 import BaseOpenReviewReviewer from './base/BaseOpenReviewReviewer.vue';
-import BaseOpenReviewRoundHeader from './base/BaseOpenReviewRoundHeader.vue';
-import BaseOpenReviewRoundContent from './base/BaseOpenReviewRoundContent.vue';
-import BaseOpenReviewRoundReviews from './base/BaseOpenReviewRoundReviews.vue';
-import BaseOpenReviewRoundReview from './base/BaseOpenReviewRoundReview.vue';
+import BaseOpenReviewHeader from './base/BaseOpenReviewHeader.vue';
+import BaseOpenReviewContent from './base/BaseOpenReviewContent.vue';
+import BaseOpenReviewList from './base/BaseOpenReviewList.vue';
+import BaseOpenReviewListItem from './base/BaseOpenReviewListItem.vue';
+import BaseOpenReviewReadButton from './base/BaseOpenReviewReadButton.vue';
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 import {usePkpDate} from '@/frontend/composables/usePkpDate';
 
 const {formatShortDate} = usePkpDate();
 
 defineProps({
-	openReview: {type: Object, required: true},
+	openReviewData: {type: Object, required: true},
 });
 </script>
 
@@ -233,12 +233,12 @@ defineProps({
 }
 
 /* Round header (AccordionHeader + Trigger) */
-.BaseOpenReviewRoundHeader {
+.BaseOpenReviewHeader {
 	width: 100%;
 	margin: 0;
 }
 
-.BaseOpenReviewRoundHeaderTrigger {
+.BaseOpenReviewHeaderTrigger {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -250,30 +250,29 @@ defineProps({
 	text-align: left;
 }
 
-.BaseOpenReviewRoundHeaderTrigger:hover {
+.BaseOpenReviewHeaderTrigger:hover {
 	background: #f8f9fa;
 }
 
 /* Chevron rotation when open */
-.BaseOpenReviewRoundHeaderTrigger[data-state='open']
-	.BaseOpenReviewRoundHeaderChevron {
+.BaseOpenReviewHeaderTrigger[data-state='open'] .BaseOpenReviewHeaderChevron {
 	transform: rotate(180deg);
 }
 
 /* Round header main line */
-.BaseOpenReviewRoundHeaderMain {
+.BaseOpenReviewHeaderMain {
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
 }
 
-.BaseOpenReviewRoundHeaderTitle {
+.BaseOpenReviewHeaderTitle {
 	font-weight: 600;
 	font-size: 1rem;
 	color: #1a1a1a;
 }
 
-.BaseOpenReviewRoundHeaderCount {
+.BaseOpenReviewHeaderCount {
 	font-size: 0.875rem;
 	color: #666;
 }
@@ -292,47 +291,47 @@ defineProps({
 }
 
 /* Summary badges row */
-.BaseOpenReviewRoundHeaderSummary {
+.BaseOpenReviewHeaderSummary {
 	display: flex;
 	gap: 1rem;
 	margin-top: 0.25rem;
 }
 
-.BaseOpenReviewRoundHeaderSummaryBadge {
+.BaseOpenReviewHeaderSummaryBadge {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.25rem;
 	font-size: 0.8125rem;
 }
 
-.BaseOpenReviewRoundHeaderSummaryBadge .BaseIcon {
+.BaseOpenReviewHeaderSummaryBadge .BaseIcon {
 	width: 1rem;
 	height: 1rem;
 }
 
-.BaseOpenReviewRoundHeaderSummaryBadge--approved {
+.BaseOpenReviewHeaderSummaryBadge--approved .BaseIcon {
 	color: #0d6d3d;
 }
 
-.BaseOpenReviewRoundHeaderSummaryBadge--revisions_requested {
+.BaseOpenReviewHeaderSummaryBadge--revisions_requested .BaseIcon {
 	color: #b45309;
 }
 
-.BaseOpenReviewRoundHeaderSummaryBadge--not_approved {
+.BaseOpenReviewHeaderSummaryBadge--not_approved .BaseIcon {
 	color: #dc2626;
 }
 
-.BaseOpenReviewRoundHeaderSummaryBadge--comments {
+.BaseOpenReviewHeaderSummaryBadge--comments .BaseIcon {
 	color: #2563eb;
 }
 
 /* Round content (AccordionContent) */
-.BaseOpenReviewRoundContent {
+.BaseOpenReviewContent {
 	padding: 0 1.25rem 1.25rem 1.25rem;
 }
 
 /* Reviews list */
-.BaseOpenReviewRoundReviews {
+.BaseOpenReviewList {
 	list-style: none;
 	margin: 0;
 	padding: 0;
@@ -341,7 +340,7 @@ defineProps({
 }
 
 /* Single review item */
-.BaseOpenReviewRoundReview {
+.BaseOpenReviewListItem {
 	display: flex;
 	align-items: center;
 	gap: 0.75rem;
@@ -349,12 +348,12 @@ defineProps({
 	border-top: 1px solid #e5e7eb;
 }
 
-.BaseOpenReviewRoundReview:first-child {
+.BaseOpenReviewListItem:first-child {
 	border-top: none;
 }
 
 /* Review status badge */
-.BaseOpenReviewRoundReviewStatus {
+.BaseOpenReviewListItemStatus {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.375rem;
@@ -364,41 +363,36 @@ defineProps({
 	white-space: nowrap;
 }
 
-.BaseOpenReviewRoundReviewStatus .BaseIcon {
+.BaseOpenReviewListItemStatus .BaseIcon {
 	width: 1.125rem;
 	height: 1.125rem;
 }
 
-/* Status colors based on recommendation */
-.BaseOpenReviewRoundReview[data-recommendation='approved']
-	.BaseOpenReviewRoundReviewStatus {
+.BaseOpenReviewListItemStatus--approved .BaseIcon {
 	color: #0d6d3d;
 }
 
-.BaseOpenReviewRoundReview[data-recommendation='revisions_requested']
-	.BaseOpenReviewRoundReviewStatus {
+.BaseOpenReviewListItemStatus--revisions_requested .BaseIcon {
 	color: #b45309;
 }
 
-.BaseOpenReviewRoundReview[data-recommendation='not_approved']
-	.BaseOpenReviewRoundReviewStatus {
+.BaseOpenReviewListItemStatus--not_approved .BaseIcon {
 	color: #dc2626;
 }
 
-.BaseOpenReviewRoundReview[data-recommendation='comments']
-	.BaseOpenReviewRoundReviewStatus {
+.BaseOpenReviewListItemStatus--comments .BaseIcon {
 	color: #2563eb;
 }
 
 /* Reviewer name */
-.BaseOpenReviewRoundReviewerName {
+.BaseOpenReviewListItemReviewerName {
 	font-weight: 600;
 	font-size: 0.9375rem;
 	color: #1a1a1a;
 }
 
 /* Reviewer affiliation */
-.BaseOpenReviewRoundReviewerAffiliation {
+.BaseOpenReviewListItemReviewerAffiliation {
 	flex: 1;
 	font-size: 0.875rem;
 	color: #666;
@@ -408,21 +402,21 @@ defineProps({
 }
 
 /* Version title (for by-reviewer view) */
-.BaseOpenReviewRoundReviewVersionTitle {
+.BaseOpenReviewListItemVersionTitle {
 	font-weight: 600;
 	font-size: 0.9375rem;
 	color: #1a1a1a;
 }
 
 /* Version date (for by-reviewer view) */
-.BaseOpenReviewRoundReviewVersionDate {
+.BaseOpenReviewListItemVersionDate {
 	flex: 1;
 	font-size: 0.875rem;
 	color: #666;
 }
 
 /* Read Review button */
-.BaseOpenReviewRoundReviewReadBtn {
+.BaseOpenReviewReadButton {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.375rem;
@@ -438,7 +432,7 @@ defineProps({
 	margin-left: auto;
 }
 
-.BaseOpenReviewRoundReviewReadBtn:hover {
+.BaseOpenReviewReadButton:hover {
 	background: #1a56db;
 	color: #fff;
 }

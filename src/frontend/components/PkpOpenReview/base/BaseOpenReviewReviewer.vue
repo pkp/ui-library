@@ -12,4 +12,5 @@ const props = defineProps({
 });
 
 provide('openReviewReviewer', props.reviewer);
+provide('openReviewReviews', props.reviewer.reviews);
 </script>

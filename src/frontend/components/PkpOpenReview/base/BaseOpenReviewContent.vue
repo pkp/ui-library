@@ -1,5 +1,5 @@
 <template>
-	<AccordionContent class="BaseOpenReviewRoundContent">
+	<AccordionContent class="BaseOpenReviewContent">
 		<slot />
 	</AccordionContent>
 </template>

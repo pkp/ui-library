@@ -1,8 +1,5 @@
 <template>
-	<li
-		class="BaseOpenReviewRoundReview"
-		:data-recommendation="review.recommendation"
-	>
+	<li class="BaseOpenReviewListItem">
 		<slot />
 	</li>
 </template>
@@ -13,5 +10,5 @@ const props = defineProps({
 	review: {type: Object, required: true},
 });
 
-provide('openReviewRoundReview', props.review);
+provide('openReviewListItem', props.review);
 </script>
