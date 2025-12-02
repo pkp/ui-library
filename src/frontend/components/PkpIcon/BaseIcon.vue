@@ -10,6 +10,10 @@ import Help from './icons/Help.vue';
 import User from './icons/User.vue';
 import Orcid from '@/frontend/components/PkpIcon/icons/Orcid.vue';
 import OrcidUnauthenticated from '@/frontend/components/PkpIcon/icons/OrcidUnauthenticated.vue';
+import ReviewApproved from './icons/ReviewApproved.vue';
+import ReviewRevisionsRequested from './icons/ReviewRevisionsRequested.vue';
+import ReviewNotApproved from './icons/ReviewNotApproved.vue';
+import ReviewComments from './icons/ReviewComments.vue';
 const svgIcons = {
 	Cancel,
 	MoreOptions,
@@ -18,6 +22,11 @@ const svgIcons = {
 	User,
 	Orcid,
 	OrcidUnauthenticated,
+	// Review recommendation icons - keys match recommendation values
+	approved: ReviewApproved,
+	revisions_requested: ReviewRevisionsRequested,
+	not_approved: ReviewNotApproved,
+	comments: ReviewComments,
 };
 defineProps({
 	/** Which icon to use from our [Icon Gallery](?path=/story/components-icon--icon-gallery) */
