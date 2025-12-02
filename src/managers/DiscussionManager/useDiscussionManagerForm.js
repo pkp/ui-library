@@ -30,9 +30,7 @@ export function useDiscussionManagerForm(
 	const workItemStatus = ref(workItemRef.value?.status || status);
 	const {t} = useLocalize();
 	const participants = ref([]);
-	const {messageFieldOptions} = useDiscussionMessages({
-		submissionId: submission.id,
-	});
+	const {messageFieldOptions} = useDiscussionMessages(submission);
 	const {updateStatus, startWorkItem} = useDiscussionManagerStatusUpdater(
 		submission.id,
 	);

@@ -6,6 +6,7 @@ import {DiscussionsDataMock} from '@/mockFactories/discussionMock';
 import {TemplatesDataMock} from '@/mockFactories/taskDiscussionTemplates';
 import {getSubmissionMock} from '@/mockFactories/submissionMock';
 import {getParticipantMock} from '@/mockFactories/participantMock';
+import {getFileMock} from '@/mockFactories/fileMock';
 
 export default {
 	title: 'Managers/DiscussionManager',
@@ -18,6 +19,21 @@ const baseArgs = {
 			{
 				id: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
 				isActiveStage: true,
+				currentUserAssignedRoles: [16, 1],
+			},
+			{
+				id: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+				isActiveStage: false,
+				currentUserAssignedRoles: [16, 1],
+			},
+			{
+				id: pkp.const.WORKFLOW_STAGE_ID_EDITING,
+				isActiveStage: false,
+				currentUserAssignedRoles: [16, 1],
+			},
+			{
+				id: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+				isActiveStage: false,
 				currentUserAssignedRoles: [16, 1],
 			},
 		],
@@ -77,6 +93,46 @@ const mswHandlers = [
 		'https://mock/index.php/publicknowledge/api/v1/editTaskTemplates',
 		() => {
 			return HttpResponse.json({data: TemplatesDataMock});
+		},
+	),
+	http.get(
+		'https://mock/index.php/publicknowledge/api/v1/submissions/19/files',
+		({request}) => {
+			const Files = [
+				getFileMock({
+					id: 2,
+					documentType: 'audio',
+					name: 'document.mp3',
+					genreName: 'Data Set',
+					genreIsSupplementary: true,
+				}),
+				getFileMock({
+					id: 5,
+					documentType: 'html',
+					name: 'document.html',
+					genreName: 'Other',
+					genreIsSupplementary: true,
+				}),
+				getFileMock({
+					id: 6,
+					documentType: 'image',
+					name: 'document.png',
+					genreName: 'Other',
+					genreIsSupplementary: true,
+				}),
+				getFileMock({
+					id: 7,
+					documentType: 'pdf',
+					name: 'document.pdf',
+					genreName: 'Other',
+					genreIsSupplementary: true,
+				}),
+			];
+
+			return HttpResponse.json({
+				itemsMax: Files.length,
+				items: Files,
+			});
 		},
 	),
 ];
