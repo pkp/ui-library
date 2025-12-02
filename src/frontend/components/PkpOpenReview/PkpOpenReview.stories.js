@@ -14,11 +14,12 @@ export default {
 
 export const Primary = {
 	args: {
-		reviews: {
+		openReview: {
 			publicationId: 5,
 			reviewRounds: [
 				{
-					displayText: 'Version of Record 6 • October 2025',
+					displayText: 'Version of Record 6',
+					date: '2025-10-15 00:00:00',
 					roundId: 6,
 					reviews: [
 						{
@@ -73,36 +74,11 @@ export const Primary = {
 							recommendation: 'not_approved',
 							reviewerRecommendationDisplayText: 'Not Approved',
 						},
-						{
-							id: 605,
-							reviewerId: 105,
-							reviewerFullName: 'Dr. Hiroshi Tanaka',
-							reviewerAffiliation:
-								'Kyoto University, Graduate School of Agriculture, Japan',
-							dateAssigned: '2025-10-01 09:00:00',
-							dateConfirmed: '2025-10-02 11:20:00',
-							dateCompleted: '2025-10-09 15:30:00',
-							declined: false,
-							recommendation: 'not_approved',
-							reviewerRecommendationDisplayText: 'Not Approved',
-						},
-						{
-							id: 606,
-							reviewerId: 106,
-							reviewerFullName: 'Dr. Amelia Nguyen',
-							reviewerAffiliation:
-								'Monash University, School of Biological Sciences, Australia',
-							dateAssigned: '2025-10-01 09:00:00',
-							dateConfirmed: '2025-10-03 13:00:00',
-							dateCompleted: '2025-10-14 09:15:00',
-							declined: false,
-							recommendation: 'revisions_requested',
-							reviewerRecommendationDisplayText: 'Revisions Requested',
-						},
 					],
 				},
 				{
-					displayText: 'Version of Record 5 • July 2025',
+					displayText: 'Version of Record 5',
+					date: '2025-07-20 00:00:00',
 					roundId: 5,
 					reviews: [
 						{
@@ -133,16 +109,16 @@ export const Primary = {
 						},
 						{
 							id: 503,
-							reviewerId: 107,
-							reviewerFullName: 'Dr. Marcus Johnson',
+							reviewerId: 103,
+							reviewerFullName: 'Dr. Arjun Patel',
 							reviewerAffiliation:
-								'Stanford University, Department of Biology, USA',
+								'University of Toronto, Department of Molecular Genetics, Canada',
 							dateAssigned: '2025-07-01 09:00:00',
 							dateConfirmed: '2025-07-02 14:00:00',
 							dateCompleted: '2025-07-11 11:30:00',
 							declined: false,
 							recommendation: 'comments',
-							reviewerRecommendationDisplayText: 'See Comments',
+							reviewerRecommendationDisplayText: 'Comments',
 						},
 						{
 							id: 504,
@@ -157,44 +133,19 @@ export const Primary = {
 							recommendation: 'not_approved',
 							reviewerRecommendationDisplayText: 'Not Approved',
 						},
-						{
-							id: 505,
-							reviewerId: 105,
-							reviewerFullName: 'Dr. Hiroshi Tanaka',
-							reviewerAffiliation:
-								'Kyoto University, Graduate School of Agriculture, Japan',
-							dateAssigned: '2025-07-01 09:00:00',
-							dateConfirmed: '2025-07-02 11:20:00',
-							dateCompleted: '2025-07-09 15:30:00',
-							declined: false,
-							recommendation: 'not_approved',
-							reviewerRecommendationDisplayText: 'Not Approved',
-						},
-						{
-							id: 506,
-							reviewerId: 106,
-							reviewerFullName: 'Dr. Amelia Nguyen',
-							reviewerAffiliation:
-								'Monash University, School of Biological Sciences, Australia',
-							dateAssigned: '2025-07-01 09:00:00',
-							dateConfirmed: '2025-07-03 13:00:00',
-							dateCompleted: '2025-07-14 09:15:00',
-							declined: false,
-							recommendation: 'revisions_requested',
-							reviewerRecommendationDisplayText: 'Revisions Requested',
-						},
 					],
 				},
 				{
-					displayText: 'Version of Record 4 • March 2024',
+					displayText: 'Version of Record 4',
+					date: '2024-03-10 00:00:00',
 					roundId: 4,
 					reviews: [
 						{
 							id: 401,
-							reviewerId: 108,
-							reviewerFullName: 'Dr. Emma Thompson',
+							reviewerId: 101,
+							reviewerFullName: 'Dr. Elaine Morris',
 							reviewerAffiliation:
-								'University of Cambridge, Department of Plant Sciences, United Kingdom',
+								'University of Oxford, Department of Biochemistry, United Kingdom',
 							dateAssigned: '2024-03-01 09:00:00',
 							dateConfirmed: '2024-03-02 10:30:00',
 							dateCompleted: '2024-03-10 14:20:00',
@@ -204,10 +155,10 @@ export const Primary = {
 						},
 						{
 							id: 402,
-							reviewerId: 109,
-							reviewerFullName: 'Dr. Chen Xiaoming',
+							reviewerId: 102,
+							reviewerFullName: 'Dr. Li Wei',
 							reviewerAffiliation:
-								'Peking University, School of Life Sciences, China',
+								'National University of Singapore, Department of Biological Sciences, Singapore',
 							dateAssigned: '2024-03-01 09:00:00',
 							dateConfirmed: '2024-03-03 08:15:00',
 							dateCompleted: '2024-03-12 16:45:00',
@@ -217,38 +168,13 @@ export const Primary = {
 						},
 						{
 							id: 403,
-							reviewerId: 110,
-							reviewerFullName: 'Dr. Maria Garcia',
+							reviewerId: 103,
+							reviewerFullName: 'Dr. Arjun Patel',
 							reviewerAffiliation:
-								'Universidad de Buenos Aires, Faculty of Exact Sciences, Argentina',
+								'University of Toronto, Department of Molecular Genetics, Canada',
 							dateAssigned: '2024-03-01 09:00:00',
 							dateConfirmed: '2024-03-02 14:00:00',
 							dateCompleted: '2024-03-11 11:30:00',
-							declined: false,
-							recommendation: 'comments',
-							reviewerRecommendationDisplayText: 'See Comments',
-						},
-						{
-							id: 404,
-							reviewerId: 111,
-							reviewerFullName: 'Dr. Klaus Weber',
-							reviewerAffiliation: 'Max Planck Institute for Biology, Germany',
-							dateAssigned: '2024-03-01 09:00:00',
-							dateConfirmed: '2024-03-04 09:45:00',
-							dateCompleted: '2024-03-13 10:00:00',
-							declined: false,
-							recommendation: 'approved',
-							reviewerRecommendationDisplayText: 'Approved',
-						},
-						{
-							id: 405,
-							reviewerId: 112,
-							reviewerFullName: 'Dr. Priya Sharma',
-							reviewerAffiliation:
-								'Indian Institute of Science, Department of Biochemistry, India',
-							dateAssigned: '2024-03-01 09:00:00',
-							dateConfirmed: '2024-03-02 11:20:00',
-							dateCompleted: '2024-03-09 15:30:00',
 							declined: false,
 							recommendation: 'revisions_requested',
 							reviewerRecommendationDisplayText: 'Revisions Requested',
@@ -256,14 +182,16 @@ export const Primary = {
 					],
 				},
 				{
-					displayText: 'Version of Record 3 • November 2023',
+					displayText: 'Version of Record 3',
+					date: '2023-11-05 00:00:00',
 					roundId: 3,
 					reviews: [
 						{
 							id: 301,
-							reviewerId: 113,
-							reviewerFullName: 'Dr. James Wilson',
-							reviewerAffiliation: 'Harvard University, Department of MCB, USA',
+							reviewerId: 101,
+							reviewerFullName: 'Dr. Elaine Morris',
+							reviewerAffiliation:
+								'University of Oxford, Department of Biochemistry, United Kingdom',
 							dateAssigned: '2023-11-01 09:00:00',
 							dateConfirmed: '2023-11-02 10:30:00',
 							dateCompleted: '2023-11-10 14:20:00',
@@ -273,10 +201,10 @@ export const Primary = {
 						},
 						{
 							id: 302,
-							reviewerId: 114,
-							reviewerFullName: 'Dr. Yuki Yamamoto',
+							reviewerId: 102,
+							reviewerFullName: 'Dr. Li Wei',
 							reviewerAffiliation:
-								'University of Tokyo, Graduate School of Science, Japan',
+								'National University of Singapore, Department of Biological Sciences, Singapore',
 							dateAssigned: '2023-11-01 09:00:00',
 							dateConfirmed: '2023-11-03 08:15:00',
 							dateCompleted: '2023-11-12 16:45:00',
@@ -286,10 +214,10 @@ export const Primary = {
 						},
 						{
 							id: 303,
-							reviewerId: 115,
-							reviewerFullName: 'Dr. Anna Kowalski',
+							reviewerId: 104,
+							reviewerFullName: 'Dr. Sofia Rodriguez',
 							reviewerAffiliation:
-								'University of Warsaw, Faculty of Biology, Poland',
+								'University of Lisbon, Faculty of Sciences, Portugal',
 							dateAssigned: '2023-11-01 09:00:00',
 							dateConfirmed: '2023-11-02 14:00:00',
 							dateCompleted: '2023-11-11 11:30:00',
