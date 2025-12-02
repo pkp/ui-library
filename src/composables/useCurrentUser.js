@@ -80,6 +80,15 @@ export function useCurrentUser() {
 	}
 
 	/**
+	 * Get the roles of the currently logged-in user.
+	 *
+	 * @returns {Array<number>} The array of role IDs assigned to the user.
+	 */
+	function getCurrentUserRoles() {
+		return pkp.currentUser.roles;
+	}
+
+	/**
 	 * Get the number of unread notifications for the current user.
 	 *
 	 * @returns {number} The count of unread notifications.
@@ -199,6 +208,7 @@ export function useCurrentUser() {
 		getCurrentUserFullName,
 		getCurrentUserName,
 		getCurrentUserInitials,
+		getCurrentUserRoles,
 		getUserLoggedInAsUserName,
 		getUserLoggedInAsInitials,
 	};
