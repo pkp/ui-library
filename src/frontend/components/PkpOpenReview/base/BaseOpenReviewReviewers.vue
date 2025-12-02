@@ -9,7 +9,11 @@
 			v-for="(reviewer, index) in reviewerGroups"
 			:key="reviewer.reviewerId"
 		>
-			<slot :reviewer="reviewer" :index="index" />
+			<slot
+				:reviewer="reviewer"
+				:index="index"
+				:review-count="reviewer.reviews?.length || 0"
+			/>
 		</template>
 	</AccordionRoot>
 </template>
