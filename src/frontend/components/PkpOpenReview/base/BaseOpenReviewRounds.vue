@@ -11,20 +11,32 @@
 	</AccordionRoot>
 </template>
 <script setup>
+import {inject, computed} from 'vue';
 import {AccordionRoot} from 'reka-ui';
-import {computed} from 'vue';
+
+/**
+ * Labels for recommendation summary badges
+ */
+const recommendationLabels = {
+	approved: 'Approved',
+	revisions_requested: 'Revisions Requested',
+	not_approved: 'Not Approved',
+	comments: 'Comments',
+};
 
 const props = defineProps({
-	rounds: {type: Array, required: true},
 	defaultExpanded: {type: [Number, String], default: null},
 });
 
+// Inject review rounds from BaseOpenReview
+const openReviewRounds = inject('openReviewRounds');
+const rounds = computed(() => openReviewRounds?.value || []);
+
 const defaultValue = computed(() => {
-	// If defaultExpanded is provided, use it; otherwise expand the first round
 	if (props.defaultExpanded !== null) {
 		return props.defaultExpanded;
 	}
-	return props.rounds.length > 0 ? props.rounds[0].roundId : null;
+	return rounds.value.length > 0 ? rounds.value[0].roundId : null;
 });
 
 /**
@@ -47,6 +59,10 @@ function getRoundSummary(round) {
 	// Return only non-zero counts as array for easy iteration
 	return Object.entries(counts)
 		.filter(([, count]) => count > 0)
-		.map(([recommendation, count]) => ({recommendation, count}));
+		.map(([recommendation, count]) => ({
+			recommendation,
+			count,
+			label: recommendationLabels[recommendation],
+		}));
 }
 </script>
