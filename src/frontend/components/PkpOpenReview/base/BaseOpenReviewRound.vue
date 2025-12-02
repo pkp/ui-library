@@ -12,4 +12,5 @@ const props = defineProps({
 });
 
 provide('openReviewRound', props.round);
+provide('openReviewReviews', props.round.reviews);
 </script>

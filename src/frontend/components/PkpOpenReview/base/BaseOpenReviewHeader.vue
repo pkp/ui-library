@@ -1,6 +1,6 @@
 <template>
-	<AccordionHeader as="div" class="BaseOpenReviewRoundHeader">
-		<AccordionTrigger class="BaseOpenReviewRoundHeaderTrigger">
+	<AccordionHeader as="div" class="BaseOpenReviewHeader">
+		<AccordionTrigger class="BaseOpenReviewHeaderTrigger">
 			<slot />
 		</AccordionTrigger>
 	</AccordionHeader>
