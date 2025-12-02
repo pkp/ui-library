@@ -89,9 +89,7 @@ const props = defineProps({
 	},
 });
 
-const {messageFieldOptions} = useDiscussionMessages({
-	submissionId: props.submission.id,
-});
+const {messageFieldOptions} = useDiscussionMessages(props.submission);
 
 function addMessage() {
 	emit('newMessage');

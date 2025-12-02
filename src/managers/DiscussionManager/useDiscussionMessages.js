@@ -8,7 +8,7 @@ import FieldPreparedContentInsertModal from '@/components/Form/fields/FieldPrepa
 
 import preparedContent from '../../mixins/preparedContent';
 
-export function useDiscussionMessages({submissionId} = {}) {
+export function useDiscussionMessages(submission) {
 	const messageFieldOptions = {
 		toolbar: 'bold italic underline bullist | pkpAttachFiles | pkpInsert',
 		plugins: ['lists'],
@@ -18,7 +18,7 @@ export function useDiscussionMessages({submissionId} = {}) {
 
 	const {apiUrl: temporaryFilesApiUrl} = useUrl('temporaryFiles');
 	const {apiUrl: submissionFilesApiUrl} = useUrl(
-		`submissions/${submissionId}/files`,
+		`submissions/${submission.id}/files`,
 	);
 	const {apiUrl: libraryApiUrl} = useUrl('_library');
 
@@ -40,30 +40,15 @@ export function useDiscussionMessages({submissionId} = {}) {
 			removeItemLabel: t('common.removeItem'),
 		},
 		{
-			component: 'FileAttacherFileStage',
+			component: 'FileAttacherSubmissionStage',
 			label: t('workflow.files'),
 			description: t('workflow.attachUploadedFiles'),
 			button: t('workflow.attachWorkflowFiles'),
 			submissionFilesApiUrl,
+			submission,
 			attachSelectedLabel: t('common.attachSelected'),
 			backLabel: t('common.back'),
 			downloadLabel: t('common.download'),
-			fileStages: [
-				{
-					label: t('editor.submission.revisions'),
-					queryParams: {
-						fileStage: pkp.const.SUBMISSION_FILE_REVIEW_REVISION,
-						reviewRoundId: 1,
-					},
-				},
-				{
-					label: t('fileManager.filesForReview'),
-					queryParams: {
-						fileStage: pkp.const.SUBMISSION_FILE_REVIEW_FILE,
-						reviewRoundId: 1,
-					},
-				},
-			],
 		},
 		{
 			component: 'FileAttacherLibrary',
@@ -71,7 +56,7 @@ export function useDiscussionMessages({submissionId} = {}) {
 			description: t('email.addAttachment.libraryFiles.description'),
 			button: t('email.addAttachment.libraryFiles.attach'),
 			libraryApiUrl,
-			includeSubmissionId: submissionId,
+			includeSubmissionId: submission.id,
 			attachSelectedLabel: t('common.attachSelected'),
 			backLabel: t('common.back'),
 			downloadLabel: t('common.download'),
